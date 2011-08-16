@@ -90,6 +90,11 @@
 		return;
 	}
 
+    // remove the downloaded book if it failed DRM to retry later
+    [self performWithBook:^(SCHAppBook *book) {
+        [book.ContentMetadataItem deleteXPSFile];
+    }];    
+    
     [self setProcessingState:SCHBookProcessingStateUnableToAcquireLicense];
     [self setIsProcessing:NO];
     [self endOperation];

@@ -29,7 +29,7 @@
 NSString * const kSCHProcessingManagerConnectionIdle = @"SCHProcessingManagerConnectionIdle";
 NSString * const kSCHProcessingManagerConnectionBusy = @"SCHProcessingManagerConnectionBusy";
 
-#pragma mark Class Extension
+#pragma mark - Class Extension
 
 @interface SCHProcessingManager()
 
@@ -61,9 +61,12 @@ NSString * const kSCHProcessingManagerConnectionBusy = @"SCHProcessingManagerCon
 @property BOOL connectionIsIdle;
 @property BOOL firedFirstBusyIdleNotification;
 
+- (BOOL)spaceSaverMode;
+- (void)postBookStateUpdate:(SCHBookIdentifier *)identifier;
+
 @end
 
-#pragma mark -
+#pragma mark - Class
 
 @implementation SCHProcessingManager
 
@@ -74,8 +77,7 @@ NSString * const kSCHProcessingManagerConnectionBusy = @"SCHProcessingManagerCon
 @synthesize managedObjectContext;
 @synthesize thumbnailAccessQueue;
 
-#pragma mark -
-#pragma mark Object Lifecycle
+#pragma mark - Object Lifecycle
 
 - (void)dealloc
 {
@@ -125,8 +127,7 @@ NSString * const kSCHProcessingManagerConnectionBusy = @"SCHProcessingManagerCon
     self.managedObjectContext = [[notification userInfo] objectForKey:SCHCoreDataHelperManagedObjectContext];
 }
 
-#pragma mark -
-#pragma mark Default Manager Object
+#pragma mark - Default Manager Object
 
 static SCHProcessingManager *sharedManager = nil;
 
@@ -153,8 +154,7 @@ static SCHProcessingManager *sharedManager = nil;
 	return sharedManager;
 }
 
-#pragma mark -
-#pragma mark Background Processing Methods
+#pragma mark - Background Processing Methods
 
 - (void)enterBackground
 {
@@ -238,8 +238,8 @@ static SCHProcessingManager *sharedManager = nil;
 	SCHAppBook *book = [[SCHBookManager sharedBookManager] bookWithIdentifier:identifier inManagedObjectContext:self.managedObjectContext];
 
 	BOOL needsProcessing = YES;
-	BOOL spaceSaverMode = [[NSUserDefaults standardUserDefaults] boolForKey:kSCHUserDefaultsSpaceSaverMode];
-
+	BOOL spaceSaverMode = [self spaceSaverMode];
+    
 	if (book.processingState == SCHBookProcessingStateReadyToRead) {
 		needsProcessing = NO;
 	} else if (book.processingState == SCHBookProcessingStateReadyForBookFileDownload
@@ -250,8 +250,18 @@ static SCHProcessingManager *sharedManager = nil;
 	return needsProcessing;
 }
 
-#pragma mark -
-#pragma mark Processing Book Tracking
+- (BOOL)spaceSaverMode
+{
+    BOOL ret = YES;
+    
+    if ([[SCHAppStateManager sharedAppStateManager] isSampleStore] == NO) {
+    	ret = [[NSUserDefaults standardUserDefaults] boolForKey:kSCHUserDefaultsSpaceSaverMode];
+    }
+    
+    return(ret);
+}
+
+#pragma mark - Processing Book Tracking
 
 - (BOOL)identifierIsProcessing:(SCHBookIdentifier *)identifier
 {
@@ -312,8 +322,7 @@ static SCHProcessingManager *sharedManager = nil;
     }
 }
 
-#pragma mark -
-#pragma mark Processing Methods
+#pragma mark - Processing Methods
 
 - (void)processIdentifier:(SCHBookIdentifier *)identifier
 {
@@ -538,7 +547,7 @@ static SCHProcessingManager *sharedManager = nil;
         SCHAppBook *book = [[SCHBookManager sharedBookManager] bookWithIdentifier:identifier inManagedObjectContext:self.managedObjectContext];
         
         // check for space saver mode
-        BOOL spaceSaverMode = [[NSUserDefaults standardUserDefaults] boolForKey:kSCHUserDefaultsSpaceSaverMode];
+        BOOL spaceSaverMode = [self spaceSaverMode];
         
         switch (book.processingState) {
                 // these book states always require additional processing actions
@@ -628,8 +637,7 @@ static SCHProcessingManager *sharedManager = nil;
 	[[NSNotificationCenter defaultCenter] postNotificationName:name object:nil];
 }	
 
-#pragma mark -
-#pragma mark User Selection Methods
+#pragma mark - User Selection Methods
 
 - (void)userSelectedBookWithIdentifier:(SCHBookIdentifier *)identifier
 {
@@ -642,10 +650,7 @@ static SCHProcessingManager *sharedManager = nil;
 	if (book.processingState == SCHBookProcessingStateDownloadStarted) {
         [book setProcessingState:SCHBookProcessingStateDownloadPaused];
 
-        NSDictionary *userInfo = [NSDictionary dictionaryWithObjectsAndKeys:
-                                  identifier, @"bookIdentifier",
-                                  nil];
-        [[NSNotificationCenter defaultCenter] postNotificationName:@"SCHBookStateUpdate" object:nil userInfo:userInfo];
+        [self postBookStateUpdate:identifier];
 
 		return;
 	} 
@@ -655,10 +660,7 @@ static SCHProcessingManager *sharedManager = nil;
 		book.processingState == SCHBookProcessingStateReadyForBookFileDownload) {
 		[book setProcessingState:SCHBookProcessingStateDownloadStarted];
         
-        NSDictionary *userInfo = [NSDictionary dictionaryWithObjectsAndKeys:
-                                  identifier, @"bookIdentifier",
-                                  nil];
-        [[NSNotificationCenter defaultCenter] postNotificationName:@"SCHBookStateUpdate" object:nil userInfo:userInfo];
+        [self postBookStateUpdate:identifier];
         
 		[self processIdentifier:identifier];
 	}
@@ -672,16 +674,32 @@ static SCHProcessingManager *sharedManager = nil;
 	
 	SCHAppBook *book = [[SCHBookManager sharedBookManager] bookWithIdentifier:identifier inManagedObjectContext:self.managedObjectContext];
 
-    if (book.processingState == SCHBookProcessingStateError ||
-		book.processingState == SCHBookProcessingStateUnableToAcquireLicense ||
-        book.processingState == SCHBookProcessingStateURLsNotPopulated ||
-        book.processingState == SCHBookProcessingStateDownloadFailed) {
+    if (book.processingState == SCHBookProcessingStateUnableToAcquireLicense) {
+        book.ForceProcess = [NSNumber numberWithBool:YES];
+        [book setProcessingState:SCHBookProcessingStateReadyForBookFileDownload];
+        [self postBookStateUpdate:identifier];
+        [self redispatchIdentifier:identifier];
+    } else if (book.processingState == SCHBookProcessingStateError ||
+               book.processingState == SCHBookProcessingStateURLsNotPopulated ||
+               book.processingState == SCHBookProcessingStateDownloadFailed) {
         if (book.processingState == SCHBookProcessingStateError ||
             book.processingState == SCHBookProcessingStateDownloadFailed) {
             book.ForceProcess = [NSNumber numberWithBool:YES];
         }
-        [book setProcessingState:SCHBookProcessingStateNoURLs];
-		[self redispatchIdentifier:identifier];
-	}
+        [book setProcessingState:SCHBookProcessingStateNoURLs];       
+        [self redispatchIdentifier:identifier];
+    }
 }
+
+- (void)postBookStateUpdate:(SCHBookIdentifier *)identifier
+{
+    if (identifier != nil) {
+        NSDictionary *userInfo = [NSDictionary dictionaryWithObject:identifier 
+                                                             forKey:@"bookIdentifier"];
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"SCHBookStateUpdate" 
+                                                            object:nil 
+                                                          userInfo:userInfo];    
+    }
+}
+
 @end

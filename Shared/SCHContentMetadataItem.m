@@ -107,6 +107,17 @@ static NSString * const kSCHContentMetadataItemAnnotationsItemProfileID = @"Anno
     }
 }
 
+- (void)deleteXPSFile
+{
+    NSError *error = nil;
+    
+    if ([[NSFileManager defaultManager] removeItemAtPath:self.AppBook.xpsPath 
+                                                   error:&error] == NO) {
+        NSLog(@"Failed to delete XPS file for %@, error: %@", 
+              self.ContentIdentifier, [error localizedDescription]);
+    }
+}
+
 #pragma mark - Core Data Generated Accessors
 
 - (void)addEReaderCategoriesObject:(SCHeReaderCategories *)value {    

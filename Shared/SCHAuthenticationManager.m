@@ -396,6 +396,7 @@ typedef struct AuthenticateWithUserNameParameters AuthenticateWithUserNameParame
                                                           userInfo:nil];		        
         [self clearOnMainThread];
         [self clearAppProcessingOnMainThread];
+        [[NSUserDefaults standardUserDefaults] removePersistentDomainForName:[[NSBundle mainBundle] bundleIdentifier]];
     }
 }
 
@@ -468,6 +469,7 @@ typedef struct AuthenticateWithUserNameParameters AuthenticateWithUserNameParame
                                                           userInfo:nil];		        
         [self clearOnMainThread];
         [self clearAppProcessingOnMainThread];
+        [[NSUserDefaults standardUserDefaults] removePersistentDomainForName:[[NSBundle mainBundle] bundleIdentifier]];        
     }
     self.drmRegistrationSession = nil;
 }

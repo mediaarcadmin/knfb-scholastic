@@ -116,7 +116,7 @@
     }
 }
 
-- (void) viewWillDisappear:(BOOL)animated
+- (void)viewWillDisappear:(BOOL)animated
 {
     [[SCHDictionaryAccessManager sharedAccessManager] stopAllSpeaking];
     [super viewWillDisappear:animated];
@@ -174,7 +174,8 @@
     return YES;
 }
 
-- (IBAction)closeDictionaryView:(id)sender {
+- (IBAction)closeDictionaryView:(id)sender 
+{
     [[SCHDictionaryAccessManager sharedAccessManager] stopAllSpeaking];
     [self dismissModalViewControllerAnimated:YES];
 }
@@ -200,7 +201,7 @@
     }
 }
 
-- (IBAction) playWord
+- (IBAction)playWord
 {
     if (self.categoryMode == kSCHDictionaryYoungReader) {
         [[SCHDictionaryAccessManager sharedAccessManager] speakYoungerWordDefinition:self.word];
@@ -235,6 +236,15 @@
     }
 
     switch (state) {
+        case SCHDictionaryProcessingStateUserSetup:
+        case SCHDictionaryProcessingStateUserDeclined:
+        {
+            self.topLabel.text = @"No Dictionary";
+            self.bottomLabel.text = @"The dictionary needs to be downloaded before it can be used. To download the dictionary go to Parent Tools.";
+            [self.activityIndicator stopAnimating];
+            self.progressBar.hidden = YES;            
+            break;
+        }
         case SCHDictionaryProcessingStateNotEnoughFreeSpace:
         {
             self.topLabel.text = @"Error";

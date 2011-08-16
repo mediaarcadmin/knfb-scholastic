@@ -40,5 +40,6 @@ extern NSString * const kSCHContentMetadataItem;
 
 - (NSArray *)annotationsContentForProfile:(NSNumber *)profileID;
 - (void)deleteAllFiles;
+- (void)deleteXPSFile;
 
 @end

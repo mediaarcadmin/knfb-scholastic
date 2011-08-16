@@ -12,6 +12,7 @@
 
 - (NSString *)imagePathForPuzzle;
 
+- (NSString *)audioPathForChooseYourPuzzle;
 - (NSString *)audioPathForClickPuzzleToStart;
 
 @end

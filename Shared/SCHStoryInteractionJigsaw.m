@@ -31,7 +31,7 @@
     return [KNFBXPSStoryInteractionsDirectory stringByAppendingPathComponent:filename];
 }
 
-- (NSString *)audioPathForQuestion
+- (NSString *)audioPathForChooseYourPuzzle
 {
     return [KNFBXPSStoryInteractionsDirectory stringByAppendingPathComponent:@"gen_chooseyourpuzzle.mp3"];
 }

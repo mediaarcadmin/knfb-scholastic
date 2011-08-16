@@ -140,12 +140,14 @@
 						<string key="targetRuntimeIdentifier">IBIPadFramework</string>
 						<int key="IBUIContentHorizontalAlignment">0</int>
 						<int key="IBUIContentVerticalAlignment">0</int>
-						<reference key="IBUIFont" ref="5164983"/>
-						<reference key="IBUIHighlightedTitleColor" ref="614533843"/>
-						<object class="NSColor" key="IBUINormalTitleColor">
-							<int key="NSColorSpace">1</int>
-							<bytes key="NSRGB">MC4xOTYwNzg0MzQ2IDAuMzA5ODAzOTMyOSAwLjUyMTU2ODY1NgA</bytes>
+						<object class="NSFont" key="IBUIFont" id="86325670">
+							<string key="NSName">Arial-BoldMT</string>
+							<double key="NSSize">22</double>
+							<int key="NSfFlags">16</int>
 						</object>
+						<string key="IBUINormalTitle">6 Pieces</string>
+						<reference key="IBUIHighlightedTitleColor" ref="614533843"/>
+						<reference key="IBUINormalTitleColor" ref="614533843"/>
 						<reference key="IBUINormalTitleShadowColor" ref="836106312"/>
 						<object class="NSCustomResource" key="IBUINormalBackgroundImage">
 							<string key="NSClassName">NSImage</string>
@@ -165,12 +167,10 @@
 						<string key="targetRuntimeIdentifier">IBIPadFramework</string>
 						<int key="IBUIContentHorizontalAlignment">0</int>
 						<int key="IBUIContentVerticalAlignment">0</int>
-						<reference key="IBUIFont" ref="5164983"/>
+						<reference key="IBUIFont" ref="86325670"/>
+						<string key="IBUINormalTitle">12 Pieces</string>
 						<reference key="IBUIHighlightedTitleColor" ref="614533843"/>
-						<object class="NSColor" key="IBUINormalTitleColor">
-							<int key="NSColorSpace">1</int>
-							<bytes key="NSRGB">MC4xOTYwNzg0MzQ2IDAuMzA5ODAzOTMyOSAwLjUyMTU2ODY1NgA</bytes>
-						</object>
+						<reference key="IBUINormalTitleColor" ref="614533843"/>
 						<reference key="IBUINormalTitleShadowColor" ref="836106312"/>
 						<object class="NSCustomResource" key="IBUINormalBackgroundImage">
 							<string key="NSClassName">NSImage</string>
@@ -190,12 +190,10 @@
 						<string key="targetRuntimeIdentifier">IBIPadFramework</string>
 						<int key="IBUIContentHorizontalAlignment">0</int>
 						<int key="IBUIContentVerticalAlignment">0</int>
-						<reference key="IBUIFont" ref="5164983"/>
+						<reference key="IBUIFont" ref="86325670"/>
+						<string key="IBUINormalTitle">20 Pieces</string>
 						<reference key="IBUIHighlightedTitleColor" ref="614533843"/>
-						<object class="NSColor" key="IBUINormalTitleColor">
-							<int key="NSColorSpace">1</int>
-							<bytes key="NSRGB">MC4xOTYwNzg0MzQ2IDAuMzA5ODAzOTMyOSAwLjUyMTU2ODY1NgA</bytes>
-						</object>
+						<reference key="IBUINormalTitleColor" ref="614533843"/>
 						<reference key="IBUINormalTitleShadowColor" ref="836106312"/>
 						<object class="NSCustomResource" key="IBUINormalBackgroundImage">
 							<string key="NSClassName">NSImage</string>
@@ -429,9 +427,9 @@
 							<reference ref="780617887"/>
 							<reference ref="395837400"/>
 							<reference ref="330395358"/>
-							<reference ref="941291736"/>
 							<reference ref="483026036"/>
 							<reference ref="476500754"/>
+							<reference ref="941291736"/>
 						</object>
 						<reference key="parent" ref="0"/>
 					</object>
@@ -524,13 +522,16 @@
 					<string>3.IBPluginDependency</string>
 					<string>4.IBPluginDependency</string>
 					<string>5.IBPluginDependency</string>
+					<string>6.CustomClassName</string>
 					<string>6.IBPluginDependency</string>
+					<string>7.CustomClassName</string>
 					<string>7.IBPluginDependency</string>
+					<string>8.CustomClassName</string>
 					<string>8.IBPluginDependency</string>
 				</object>
 				<object class="NSMutableArray" key="dict.values">
 					<bool key="EncodedWithXMLCoder">YES</bool>
-					<string>SCHStoryInteractionControllerJigsaw</string>
+					<string>SCHStoryInteractionControllerJigsaw_Common</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>UIResponder</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
@@ -544,8 +545,11 @@
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
+					<string>SCHStretchableImageButton</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
+					<string>SCHStretchableImageButton</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
+					<string>SCHStretchableImageButton</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				</object>
 			</object>
@@ -561,7 +565,7 @@
 				<reference key="dict.values" ref="0"/>
 			</object>
 			<nil key="sourceID"/>
-			<int key="maxID">28</int>
+			<int key="maxID">30</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<object class="NSMutableArray" key="referencedPartialClassDescriptions">
@@ -586,7 +590,7 @@
 					</object>
 				</object>
 				<object class="IBPartialClassDescription">
-					<string key="className">SCHStoryInteractionControllerJigsaw</string>
+					<string key="className">SCHStoryInteractionControllerJigsaw_Common</string>
 					<string key="superclassName">SCHStoryInteractionController</string>
 					<object class="NSMutableDictionary" key="actions">
 						<bool key="EncodedWithXMLCoder">YES</bool>
@@ -641,7 +645,7 @@
 					</object>
 					<object class="IBClassDescriptionSource" key="sourceIdentifier">
 						<string key="majorKey">IBProjectSource</string>
-						<string key="minorKey">./Classes/SCHStoryInteractionControllerJigsaw.h</string>
+						<string key="minorKey">./Classes/SCHStoryInteractionControllerJigsaw_Common.h</string>
 					</object>
 				</object>
 				<object class="IBPartialClassDescription">

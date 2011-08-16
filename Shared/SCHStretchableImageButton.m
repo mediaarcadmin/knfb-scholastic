@@ -8,17 +8,25 @@
 
 #import "SCHStretchableImageButton.h"
 
-#define kLeftCap 10
-#define kTopCap 0
-
 @implementation SCHStretchableImageButton
+
+NSInteger leftCapForImage(UIImage *image)
+{
+    return image.size.width/2-1;
+}
+
+NSInteger topCapForImage(UIImage *image)
+{
+    return image.size.height/2-1;
+}
 
 - (id)initWithCoder:(NSCoder *)aDecoder
 {
     if ((self = [super initWithCoder:aDecoder])) {
         UIImage *normalBackgroundImage = [self backgroundImageForState:UIControlStateNormal];
         if (normalBackgroundImage) {
-            UIImage *stretchable = [normalBackgroundImage stretchableImageWithLeftCapWidth:kLeftCap topCapHeight:kTopCap];
+            UIImage *stretchable = [normalBackgroundImage stretchableImageWithLeftCapWidth:leftCapForImage(normalBackgroundImage)
+                                                                              topCapHeight:topCapForImage(normalBackgroundImage)];
             [self setBackgroundImage:stretchable forState:UIControlStateNormal];
             
             static const UIControlState states[] = {
@@ -29,7 +37,9 @@
             for (int i = 0; i < sizeof(states)/sizeof(states[0]); ++i) {
                 UIImage *image = [self backgroundImageForState:states[i]];
                 if (image != nil && image != stretchable) {
-                    [self setBackgroundImage:[image stretchableImageWithLeftCapWidth:kLeftCap topCapHeight:kTopCap] forState:states[i]];
+                    [self setBackgroundImage:[image stretchableImageWithLeftCapWidth:leftCapForImage(image)
+                                                                        topCapHeight:topCapForImage(image)]
+                                    forState:states[i]];
                 }
             }
         }
@@ -39,13 +49,13 @@
 
 - (void)setImage:(UIImage *)image forState:(UIControlState)state
 {
-    UIImage *stretchable = [image stretchableImageWithLeftCapWidth:kLeftCap topCapHeight:kTopCap];
+    UIImage *stretchable = [image stretchableImageWithLeftCapWidth:leftCapForImage(image) topCapHeight:topCapForImage(image)];
     [super setImage:stretchable forState:state];
 }
 
 - (void)setBackgroundImage:(UIImage *)image forState:(UIControlState)state
 {
-    UIImage *stretchable = [image stretchableImageWithLeftCapWidth:kLeftCap topCapHeight:kTopCap];
+    UIImage *stretchable = [image stretchableImageWithLeftCapWidth:leftCapForImage(image) topCapHeight:topCapForImage(image)];
     [super setBackgroundImage:stretchable forState:state];
 }
 
