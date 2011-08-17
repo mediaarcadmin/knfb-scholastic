@@ -15,6 +15,7 @@
 }
 
 @property (nonatomic, retain) IBOutlet UIView *movieContainerView;
+@property (nonatomic, retain) IBOutlet UIView *borderView;
 @property (nonatomic, retain) IBOutlet SCHPlayButton *playButton;
 @property (nonatomic, retain) IBOutlet UIButton *closeButton;
 

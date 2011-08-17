@@ -19,7 +19,7 @@ static NSString * const kSCHHelpViewControllerYoungerVideo = @"youngerHelpVideo"
 static NSString * const kSCHHelpViewControllerOlderVideo = @"olderHelpVideo";
 static NSString * const kSCHHelpViewControllerVideoExtension = @"mp4";
 
-static CGFloat const kSCHStoryInteractionControllerVideoCornerRadius = 8.0;
+static CGFloat const kSCHStoryInteractionControllerVideoCornerRadius = 20.0;
 static CGFloat const kSCHStoryInteractionControllerVideoBorderWidth = 4.0;
 
 @interface SCHHelpViewController ()
@@ -38,6 +38,7 @@ static CGFloat const kSCHStoryInteractionControllerVideoBorderWidth = 4.0;
 @implementation SCHHelpViewController
 
 @synthesize movieContainerView;
+@synthesize borderView;
 @synthesize playButton;
 @synthesize closeButton;
 @synthesize moviePlayer;
@@ -69,6 +70,7 @@ static CGFloat const kSCHStoryInteractionControllerVideoBorderWidth = 4.0;
     [[NSNotificationCenter defaultCenter] removeObserver:self];
     
     [movieContainerView release], movieContainerView = nil;
+    [borderView release], borderView = nil;
     [moviePlayer stop];
     [moviePlayer release], moviePlayer = nil;
     [playButton release], playButton = nil;
@@ -89,24 +91,18 @@ static CGFloat const kSCHStoryInteractionControllerVideoBorderWidth = 4.0;
     // Do any additional setup after loading the view from its nib.
     
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
-        self.movieContainerView.layer.cornerRadius = kSCHStoryInteractionControllerVideoCornerRadius;  
-        self.movieContainerView.layer.borderWidth = kSCHStoryInteractionControllerVideoBorderWidth; 
-        if (self.youngerMode == NO) {
-            self.movieContainerView.layer.borderColor = [[UIColor SCHPurple1Color] CGColor];    
-        } else {
-            self.movieContainerView.layer.borderColor = [[UIColor SCHBlue2Color] CGColor];    
-        }        
-        self.movieContainerView.layer.masksToBounds = YES;
+        self.borderView.layer.cornerRadius = kSCHStoryInteractionControllerVideoCornerRadius;  
+        self.borderView.layer.borderWidth = kSCHStoryInteractionControllerVideoBorderWidth; 
         
-        self.playButton.layer.cornerRadius = kSCHStoryInteractionControllerVideoCornerRadius;  
-        self.playButton.layer.borderWidth = kSCHStoryInteractionControllerVideoBorderWidth; 
-        self.playButton.layer.borderColor = self.movieContainerView.layer.borderColor;
-        self.playButton.layer.masksToBounds = YES;
+        if (self.youngerMode == NO) {
+            self.borderView.layer.borderColor = [[UIColor SCHPurple1Color] CGColor];    
+        } else {
+            self.borderView.layer.borderColor = [[UIColor SCHBlue2Color] CGColor];    
+        }                
     }
     
     if (self.firstPlay == YES) {
-        self.closeButton.hidden = YES;
-        self.playButton.hidden = YES;
+        self.playButton.play = YES;
     }
     
     self.playButton.actionBlock = ^(SCHPlayButton *button) {
