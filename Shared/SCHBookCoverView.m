@@ -27,7 +27,7 @@
 @property (nonatomic, retain) UIView *bookTintView;
 @property (nonatomic, retain) UIImageView *newBadge;
 @property (nonatomic, retain) UIImageView *errorBadge;
-@property (nonatomic, retain) UIImageView *rightSideTab;
+@property (nonatomic, retain) UIImageView *featureTab;
 @property (nonatomic, retain) UIActivityIndicatorView *activitySpinner;
 
 @property (nonatomic, assign) BOOL coalesceRefreshes;
@@ -56,7 +56,7 @@
 @synthesize coverViewMode;
 @synthesize loading;
 @synthesize activitySpinner;
-@synthesize rightSideTab;
+@synthesize featureTab;
 
 #pragma mark - Initialisation and dealloc
 
@@ -70,7 +70,7 @@
     [bookTintView release], bookTintView = nil;
     [newBadge release], newBadge = nil;
     [errorBadge release], errorBadge = nil;
-    [rightSideTab release], rightSideTab = nil;
+    [featureTab release], featureTab = nil;
     
 	[super dealloc];
 }
@@ -119,12 +119,12 @@
     [self addSubview:self.progressView];
     self.progressView.hidden = YES;
 
-    // right side tab - only for iPad!
+    // feature tab - only for iPad!
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
-        self.rightSideTab = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"BookSampleTab"]];
-        self.rightSideTab.hidden = YES;
-        self.rightSideTab.contentMode = UIViewContentModeRight;
-        [self addSubview:self.rightSideTab];
+        self.featureTab = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"BookSampleTab"]];
+        self.featureTab.hidden = YES;
+        self.featureTab.contentMode = UIViewContentModeRight;
+        [self addSubview:self.featureTab];
     }
     
     // add the new graphic view
@@ -353,25 +353,6 @@
     CGSize thumbSize = CGSizeMake(self.frame.size.width - (self.leftRightInset * 2), 
                                   self.frame.size.height - self.topInset);
     
-    // if there's a tab to show, make the thumb image smaller
-    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad 
-        && self.coverViewMode == SCHBookCoverViewModeGridView) {
-        switch (book.bookFeatures) {
-            case kSCHAppBookFeaturesSample:
-            case kSCHAppBookFeaturesStoryInteractions:
-            case kSCHAppBookFeaturesSampleWithStoryInteractions:
-            {
-                thumbSize.width -= 30;
-                break;
-            }   
-            case kSCHAppBookFeaturesNone:
-            default:
-            {
-                break;
-            }   
-        }
-    }
-
     thumbPath = [book thumbPathForSize:thumbSize];
     
     if (bookState <= SCHBookProcessingStateNoCoverImage && 
@@ -460,6 +441,8 @@
     NSManagedObjectContext *context = appDelegate.coreDataHelper.managedObjectContext;
 	SCHAppBook *book = [[SCHBookManager sharedBookManager] bookWithIdentifier:self.identifier inManagedObjectContext:context];    
     
+    BOOL tabOnRight = YES;
+    
     // resize and position the thumb image view - the image view should never scale, and should always
     // be set to an integer value for positioning to avoid blurring
     
@@ -468,6 +451,8 @@
     // if the thumb is not the full height of the view, then calculate differently
     // (cases where the thumb is wider than it is high)
     if (thumbSize.height != self.frame.size.height) {
+        tabOnRight = NO;
+        
         if (self.coverViewMode == SCHBookCoverViewModeGridView) {
             // cover is attached to the bottom of the frame
             coverFrame = CGRectMake(self.leftRightInset, self.frame.size.height - thumbSize.height, thumbSize.width, thumbSize.height);
@@ -584,58 +569,90 @@
     
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad 
         && self.coverViewMode == SCHBookCoverViewModeGridView) {
+        
+        // the offset amount that the image tab is over onto the cover
+        NSInteger overhang = 0;
+        // the size (width for right side, height for top side) of the tab
+        NSInteger tabSize = 25;
+        // whether to actually do the resizing work
+        BOOL doSizing = YES;
+        
         switch (book.bookFeatures) {
             case kSCHAppBookFeaturesNone:
             {
-                self.rightSideTab.image = nil;
-                self.rightSideTab.hidden = YES;
+                self.featureTab.image = nil;
+                self.featureTab.hidden = YES;
+                doSizing = NO;
                 break;
             }   
             case kSCHAppBookFeaturesStoryInteractions:
             {
-                self.rightSideTab.image = [UIImage imageNamed:@"BookSITab"];
-                CGRect frame = self.rightSideTab.frame;
-                frame.origin.x = coverFrame.origin.x + coverFrame.size.width + 6;
-                frame.origin.y = floorf(coverFrame.origin.y);
-                frame.size.height = coverFrame.size.height;
-                self.rightSideTab.frame = frame;
+                if (tabOnRight) {
+                    self.featureTab.image = [UIImage imageNamed:@"BookSITab"];
+                } else {
+                    self.featureTab.image = [UIImage imageNamed:@"BookSITabHorizontal"];
+                }
                 
-                self.rightSideTab.hidden = NO;
+                overhang = 6;
                 break;
             }   
             case kSCHAppBookFeaturesSampleWithStoryInteractions:
             {
-                self.rightSideTab.image = [UIImage imageNamed:@"BookSISampleTab"];
-                CGRect frame = self.rightSideTab.frame;
-                frame.origin.x = coverFrame.origin.x + coverFrame.size.width + 4;
-                frame.origin.y = floorf(coverFrame.origin.y);
-                frame.size.height = coverFrame.size.height;
-                self.rightSideTab.frame = frame;
+                if (tabOnRight) {
+                    self.featureTab.image = [UIImage imageNamed:@"BookSISampleTab"];
+                } else {
+                    self.featureTab.image = [UIImage imageNamed:@"BookSISampleTabHorizontal"];
+                }
                 
-                self.rightSideTab.hidden = NO;
+                overhang = 4;
                 break;
             }   
 
             case kSCHAppBookFeaturesSample:
             {
-                self.rightSideTab.image = [UIImage imageNamed:@"BookSampleTab"];
-                CGRect frame = self.rightSideTab.frame;
-                frame.origin.x = coverFrame.origin.x + coverFrame.size.width;
-                frame.origin.y = floorf(coverFrame.origin.y);
-                frame.size.height = coverFrame.size.height;
-                self.rightSideTab.frame = frame;
-
-                self.rightSideTab.hidden = NO;
+                if (tabOnRight) {
+                    self.featureTab.image = [UIImage imageNamed:@"BookSampleTab"];
+                } else {
+                    self.featureTab.image = [UIImage imageNamed:@"BookSampleTabHorizontal"];
+                }
+                
+                overhang = 0;
                 break;
             }   
             default:
             {
                 NSLog(@"Warning: unknown type for book features.");
-                self.rightSideTab.image = nil;
-                self.rightSideTab.hidden = YES;
+                self.featureTab.image = nil;
+                self.featureTab.hidden = YES;
+                doSizing = NO;
                 break;
             }
         }
+        
+        if (doSizing) {
+            if (tabOnRight) {
+                // move the tab to the right side of the cover
+                self.featureTab.contentMode = UIViewContentModeRight;
+                CGRect frame = self.featureTab.frame;
+                frame.origin.x = coverFrame.origin.x + coverFrame.size.width + overhang;
+                frame.origin.y = floorf(coverFrame.origin.y);
+                frame.size.height = coverFrame.size.height;
+                frame.size.width = tabSize;
+                self.featureTab.frame = frame;
+            } else {
+                // move the tab across the top of the cover
+                self.featureTab.contentMode = UIViewContentModeTop;
+                CGRect frame = self.featureTab.frame;
+                frame.origin.x = coverFrame.origin.x;
+                frame.size.width = coverFrame.size.width;
+                frame.size.height = tabSize;
+                frame.origin.y = self.frame.size.height - coverFrame.size.height - frame.size.height - overhang;
+                self.featureTab.frame = frame;
+            }
+            
+            self.featureTab.hidden = NO;
+        }
+        
     }
 
 }
