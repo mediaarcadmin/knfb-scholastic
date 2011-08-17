@@ -810,6 +810,20 @@
 		C93113EB13FBBE7C00355693 /* storyinteraction-jigsaw-you-won@2x~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = C93113E613FBBE7C00355693 /* storyinteraction-jigsaw-you-won@2x~iphone.png */; };
 		C93113EC13FBBE7C00355693 /* storyinteraction-jigsaw-you-won~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = C93113E713FBBE7C00355693 /* storyinteraction-jigsaw-you-won~ipad.png */; };
 		C93113ED13FBBE7C00355693 /* storyinteraction-jigsaw-you-won~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = C93113E713FBBE7C00355693 /* storyinteraction-jigsaw-you-won~ipad.png */; };
+		C93113F513FBC85900355693 /* storyinteraction-concentration-tile-purple~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = C93113EE13FBC81E00355693 /* storyinteraction-concentration-tile-purple~iphone.png */; };
+		C93113F613FBC85900355693 /* storyinteraction-concentration-tile-purple~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = C93113EE13FBC81E00355693 /* storyinteraction-concentration-tile-purple~iphone.png */; };
+		C93113F713FBC85900355693 /* storyinteraction-concentration-tile-blue~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = C93113EF13FBC82000355693 /* storyinteraction-concentration-tile-blue~iphone.png */; };
+		C93113F813FBC85900355693 /* storyinteraction-concentration-tile-blue~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = C93113EF13FBC82000355693 /* storyinteraction-concentration-tile-blue~iphone.png */; };
+		C93113F913FBC85900355693 /* storyinteraction-concentration-tile-purple~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = C93113F013FBC82400355693 /* storyinteraction-concentration-tile-purple~ipad.png */; };
+		C93113FA13FBC85900355693 /* storyinteraction-concentration-tile-purple~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = C93113F013FBC82400355693 /* storyinteraction-concentration-tile-purple~ipad.png */; };
+		C93113FB13FBC85900355693 /* storyinteraction-concentration-tile-blue~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = C93113F113FBC82600355693 /* storyinteraction-concentration-tile-blue~ipad.png */; };
+		C93113FC13FBC85900355693 /* storyinteraction-concentration-tile-blue~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = C93113F113FBC82600355693 /* storyinteraction-concentration-tile-blue~ipad.png */; };
+		C93113FD13FBC85900355693 /* storyinteraction-concentration-tile-purple@2x~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = C93113F213FBC83300355693 /* storyinteraction-concentration-tile-purple@2x~iphone.png */; };
+		C93113FE13FBC85900355693 /* storyinteraction-concentration-tile-purple@2x~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = C93113F213FBC83300355693 /* storyinteraction-concentration-tile-purple@2x~iphone.png */; };
+		C93113FF13FBC85900355693 /* storyinteraction-concentration-tile-blue@2x~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = C93113F313FBC84600355693 /* storyinteraction-concentration-tile-blue@2x~iphone.png */; };
+		C931140013FBC85900355693 /* storyinteraction-concentration-tile-blue@2x~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = C93113F313FBC84600355693 /* storyinteraction-concentration-tile-blue@2x~iphone.png */; };
+		C931140113FBC85900355693 /* storyinteraction-concentration-tile-orange@2x~iphone in Resources */ = {isa = PBXBuildFile; fileRef = C93113F413FBC85400355693 /* storyinteraction-concentration-tile-orange@2x~iphone */; };
+		C931140213FBC85900355693 /* storyinteraction-concentration-tile-orange@2x~iphone in Resources */ = {isa = PBXBuildFile; fileRef = C93113F413FBC85400355693 /* storyinteraction-concentration-tile-orange@2x~iphone */; };
 		C93EBDFD13462883003B99FD /* SCHBookRange.m in Sources */ = {isa = PBXBuildFile; fileRef = C93EBDFC13462883003B99FD /* SCHBookRange.m */; };
 		C93EBDFE13462883003B99FD /* SCHBookRange.m in Sources */ = {isa = PBXBuildFile; fileRef = C93EBDFC13462883003B99FD /* SCHBookRange.m */; };
 		C93EBEAF13472FED003B99FD /* SCHTextFlowParagraphSource.m in Sources */ = {isa = PBXBuildFile; fileRef = C93EBEAE13472FEC003B99FD /* SCHTextFlowParagraphSource.m */; };
@@ -2678,6 +2692,13 @@
 		C93113E513FBBE7C00355693 /* storyinteraction-jigsaw-you-won~iphone copy.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "storyinteraction-jigsaw-you-won~iphone copy.png"; sourceTree = "<group>"; };
 		C93113E613FBBE7C00355693 /* storyinteraction-jigsaw-you-won@2x~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "storyinteraction-jigsaw-you-won@2x~iphone.png"; sourceTree = "<group>"; };
 		C93113E713FBBE7C00355693 /* storyinteraction-jigsaw-you-won~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "storyinteraction-jigsaw-you-won~ipad.png"; sourceTree = "<group>"; };
+		C93113EE13FBC81E00355693 /* storyinteraction-concentration-tile-purple~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "storyinteraction-concentration-tile-purple~iphone.png"; sourceTree = "<group>"; };
+		C93113EF13FBC82000355693 /* storyinteraction-concentration-tile-blue~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "storyinteraction-concentration-tile-blue~iphone.png"; sourceTree = "<group>"; };
+		C93113F013FBC82400355693 /* storyinteraction-concentration-tile-purple~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "storyinteraction-concentration-tile-purple~ipad.png"; sourceTree = "<group>"; };
+		C93113F113FBC82600355693 /* storyinteraction-concentration-tile-blue~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "storyinteraction-concentration-tile-blue~ipad.png"; sourceTree = "<group>"; };
+		C93113F213FBC83300355693 /* storyinteraction-concentration-tile-purple@2x~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "storyinteraction-concentration-tile-purple@2x~iphone.png"; sourceTree = "<group>"; };
+		C93113F313FBC84600355693 /* storyinteraction-concentration-tile-blue@2x~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "storyinteraction-concentration-tile-blue@2x~iphone.png"; sourceTree = "<group>"; };
+		C93113F413FBC85400355693 /* storyinteraction-concentration-tile-orange@2x~iphone */ = {isa = PBXFileReference; lastKnownFileType = file; path = "storyinteraction-concentration-tile-orange@2x~iphone"; sourceTree = "<group>"; };
 		C93EBDFB13462882003B99FD /* SCHBookRange.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHBookRange.h; path = Shared/SCHBookRange.h; sourceTree = "<group>"; };
 		C93EBDFC13462883003B99FD /* SCHBookRange.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHBookRange.m; path = Shared/SCHBookRange.m; sourceTree = "<group>"; };
 		C93EBEAD13472FEC003B99FD /* SCHTextFlowParagraphSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHTextFlowParagraphSource.h; path = Shared/SCHTextFlowParagraphSource.h; sourceTree = "<group>"; };
@@ -3693,6 +3714,13 @@
 				C91E99FA13F94513004F8062 /* storyinteraction-concentration-9-pairs@2x~iphone.png */,
 				2866313D13F02ABA0092A5DE /* storyinteraction-concentration-tile-orange~ipad.png */,
 				28B1AA0B13F14635006F1F63 /* storyinteraction-concentration-tile-orange~iphone.png */,
+				C93113EE13FBC81E00355693 /* storyinteraction-concentration-tile-purple~iphone.png */,
+				C93113EF13FBC82000355693 /* storyinteraction-concentration-tile-blue~iphone.png */,
+				C93113F013FBC82400355693 /* storyinteraction-concentration-tile-purple~ipad.png */,
+				C93113F113FBC82600355693 /* storyinteraction-concentration-tile-blue~ipad.png */,
+				C93113F213FBC83300355693 /* storyinteraction-concentration-tile-purple@2x~iphone.png */,
+				C93113F313FBC84600355693 /* storyinteraction-concentration-tile-blue@2x~iphone.png */,
+				C93113F413FBC85400355693 /* storyinteraction-concentration-tile-orange@2x~iphone */,
 				C9AC869313AFAF7B000ECDAE /* storyinteraction-wordmatch-target~ipad.png */,
 				C9AC869413AFAF7D000ECDAE /* storyinteraction-read-aloud~ipad.png */,
 				C9AC869513AFAF7F000ECDAE /* storyinteraction-draggable-top-circle~ipad.png */,
@@ -6336,6 +6364,13 @@
 				C93113E813FBBE7C00355693 /* storyinteraction-jigsaw-you-won~iphone copy.png in Resources */,
 				C93113EA13FBBE7C00355693 /* storyinteraction-jigsaw-you-won@2x~iphone.png in Resources */,
 				C93113EC13FBBE7C00355693 /* storyinteraction-jigsaw-you-won~ipad.png in Resources */,
+				C93113F513FBC85900355693 /* storyinteraction-concentration-tile-purple~iphone.png in Resources */,
+				C93113F713FBC85900355693 /* storyinteraction-concentration-tile-blue~iphone.png in Resources */,
+				C93113F913FBC85900355693 /* storyinteraction-concentration-tile-purple~ipad.png in Resources */,
+				C93113FB13FBC85900355693 /* storyinteraction-concentration-tile-blue~ipad.png in Resources */,
+				C93113FD13FBC85900355693 /* storyinteraction-concentration-tile-purple@2x~iphone.png in Resources */,
+				C93113FF13FBC85900355693 /* storyinteraction-concentration-tile-blue@2x~iphone.png in Resources */,
+				C931140113FBC85900355693 /* storyinteraction-concentration-tile-orange@2x~iphone in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -6923,6 +6958,13 @@
 				C93113E913FBBE7C00355693 /* storyinteraction-jigsaw-you-won~iphone copy.png in Resources */,
 				C93113EB13FBBE7C00355693 /* storyinteraction-jigsaw-you-won@2x~iphone.png in Resources */,
 				C93113ED13FBBE7C00355693 /* storyinteraction-jigsaw-you-won~ipad.png in Resources */,
+				C93113F613FBC85900355693 /* storyinteraction-concentration-tile-purple~iphone.png in Resources */,
+				C93113F813FBC85900355693 /* storyinteraction-concentration-tile-blue~iphone.png in Resources */,
+				C93113FA13FBC85900355693 /* storyinteraction-concentration-tile-purple~ipad.png in Resources */,
+				C93113FC13FBC85900355693 /* storyinteraction-concentration-tile-blue~ipad.png in Resources */,
+				C93113FE13FBC85900355693 /* storyinteraction-concentration-tile-purple@2x~iphone.png in Resources */,
+				C931140013FBC85900355693 /* storyinteraction-concentration-tile-blue@2x~iphone.png in Resources */,
+				C931140213FBC85900355693 /* storyinteraction-concentration-tile-orange@2x~iphone in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
