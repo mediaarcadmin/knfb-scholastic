@@ -67,6 +67,9 @@ enum {
 {
     SCHStoryInteractionCardCollection *cardCollection = (SCHStoryInteractionCardCollection *)self.storyInteraction;
 
+    self.titleView.adjustsFontSizeToFitWidth = YES;
+    self.titleView.numberOfLines = 1;
+    
     [self hideZoomedCardButtonsAnimated:NO];
     self.cardViews = [self.cardViews viewsInRowMajorOrder];
     
