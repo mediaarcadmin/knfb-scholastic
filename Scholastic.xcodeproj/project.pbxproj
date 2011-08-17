@@ -478,10 +478,6 @@
 		528C616013FAA57200D033F8 /* SCHHelpViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 528C615D13FAA56C00D033F8 /* SCHHelpViewController.m */; };
 		528C616113FAA57200D033F8 /* SCHHelpViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 528C615E13FAA56F00D033F8 /* SCHHelpViewController.xib */; };
 		528C616213FAA57200D033F8 /* SCHHelpViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 528C615E13FAA56F00D033F8 /* SCHHelpViewController.xib */; };
-		528C616713FAAB4B00D033F8 /* youngerHelpVideo.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = 528C616513FAAB4B00D033F8 /* youngerHelpVideo.mp4 */; };
-		528C616813FAAB4B00D033F8 /* youngerHelpVideo.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = 528C616513FAAB4B00D033F8 /* youngerHelpVideo.mp4 */; };
-		528C616913FAAB4B00D033F8 /* olderHelpVideo.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = 528C616613FAAB4B00D033F8 /* olderHelpVideo.mp4 */; };
-		528C616A13FAAB4B00D033F8 /* olderHelpVideo.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = 528C616613FAAB4B00D033F8 /* olderHelpVideo.mp4 */; };
 		529385B512DF231800045B44 /* SCHSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 529385B312DF231800045B44 /* SCHSettingsViewController.m */; };
 		529385B612DF231800045B44 /* SCHSettingsViewController_iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 529385B412DF231800045B44 /* SCHSettingsViewController_iPad.xib */; };
 		5293869C12DF3A3300045B44 /* AuthenticateSvc.m in Sources */ = {isa = PBXBuildFile; fileRef = 5293868F12DF3A3300045B44 /* AuthenticateSvc.m */; };
@@ -804,6 +800,10 @@
 		C92FA7D31355BE20001BAA6B /* SCHSmartZoomBlockSource.m in Sources */ = {isa = PBXBuildFile; fileRef = C92FA7D11355BE20001BAA6B /* SCHSmartZoomBlockSource.m */; };
 		C92FA7E81355E8F4001BAA6B /* KNFBSmartZoomBlock.m in Sources */ = {isa = PBXBuildFile; fileRef = C92FA7E71355E8F2001BAA6B /* KNFBSmartZoomBlock.m */; };
 		C92FA7E91355E8F4001BAA6B /* KNFBSmartZoomBlock.m in Sources */ = {isa = PBXBuildFile; fileRef = C92FA7E71355E8F2001BAA6B /* KNFBSmartZoomBlock.m */; };
+		C93113E113FBB55B00355693 /* olderHelpVideo.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = C93113DF13FBB55B00355693 /* olderHelpVideo.mp4 */; };
+		C93113E213FBB55B00355693 /* olderHelpVideo.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = C93113DF13FBB55B00355693 /* olderHelpVideo.mp4 */; };
+		C93113E313FBB55B00355693 /* youngerHelpVideo.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = C93113E013FBB55B00355693 /* youngerHelpVideo.mp4 */; };
+		C93113E413FBB55B00355693 /* youngerHelpVideo.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = C93113E013FBB55B00355693 /* youngerHelpVideo.mp4 */; };
 		C93EBDFD13462883003B99FD /* SCHBookRange.m in Sources */ = {isa = PBXBuildFile; fileRef = C93EBDFC13462883003B99FD /* SCHBookRange.m */; };
 		C93EBDFE13462883003B99FD /* SCHBookRange.m in Sources */ = {isa = PBXBuildFile; fileRef = C93EBDFC13462883003B99FD /* SCHBookRange.m */; };
 		C93EBEAF13472FED003B99FD /* SCHTextFlowParagraphSource.m in Sources */ = {isa = PBXBuildFile; fileRef = C93EBEAE13472FEC003B99FD /* SCHTextFlowParagraphSource.m */; };
@@ -2258,8 +2258,6 @@
 		528C615C13FAA56A00D033F8 /* SCHHelpViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHHelpViewController.h; path = Shared/SCHHelpViewController.h; sourceTree = "<group>"; };
 		528C615D13FAA56C00D033F8 /* SCHHelpViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHHelpViewController.m; path = Shared/SCHHelpViewController.m; sourceTree = "<group>"; };
 		528C615E13FAA56F00D033F8 /* SCHHelpViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = SCHHelpViewController.xib; path = Shared/SCHHelpViewController.xib; sourceTree = "<group>"; };
-		528C616513FAAB4B00D033F8 /* youngerHelpVideo.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; name = youngerHelpVideo.mp4; path = "Shared/Debug Books/Goosebumps/Documents/1/Other/KNFB/Extras/youngerHelpVideo.mp4"; sourceTree = "<group>"; };
-		528C616613FAAB4B00D033F8 /* olderHelpVideo.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; name = olderHelpVideo.mp4; path = "Shared/Debug Books/Shiver/Documents/1/Other/KNFB/Extras/olderHelpVideo.mp4"; sourceTree = "<group>"; };
 		529385B212DF231800045B44 /* SCHSettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHSettingsViewController.h; path = iPhone/SCHSettingsViewController.h; sourceTree = "<group>"; };
 		529385B312DF231800045B44 /* SCHSettingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHSettingsViewController.m; path = iPhone/SCHSettingsViewController.m; sourceTree = "<group>"; };
 		529385B412DF231800045B44 /* SCHSettingsViewController_iPad.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = SCHSettingsViewController_iPad.xib; path = iPhone/SCHSettingsViewController_iPad.xib; sourceTree = "<group>"; };
@@ -2669,6 +2667,8 @@
 		C92FA7D11355BE20001BAA6B /* SCHSmartZoomBlockSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHSmartZoomBlockSource.m; path = Shared/SCHSmartZoomBlockSource.m; sourceTree = "<group>"; };
 		C92FA7E61355E8F1001BAA6B /* KNFBSmartZoomBlock.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = KNFBSmartZoomBlock.h; path = SmartZoom/KNFBSmartZoomBlock.h; sourceTree = "<group>"; };
 		C92FA7E71355E8F2001BAA6B /* KNFBSmartZoomBlock.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = KNFBSmartZoomBlock.m; path = SmartZoom/KNFBSmartZoomBlock.m; sourceTree = "<group>"; };
+		C93113DF13FBB55B00355693 /* olderHelpVideo.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; name = olderHelpVideo.mp4; path = Resources/Videos/olderHelpVideo.mp4; sourceTree = "<group>"; };
+		C93113E013FBB55B00355693 /* youngerHelpVideo.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; name = youngerHelpVideo.mp4; path = Resources/Videos/youngerHelpVideo.mp4; sourceTree = "<group>"; };
 		C93EBDFB13462882003B99FD /* SCHBookRange.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHBookRange.h; path = Shared/SCHBookRange.h; sourceTree = "<group>"; };
 		C93EBDFC13462883003B99FD /* SCHBookRange.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHBookRange.m; path = Shared/SCHBookRange.m; sourceTree = "<group>"; };
 		C93EBEAD13472FEC003B99FD /* SCHTextFlowParagraphSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHTextFlowParagraphSource.h; path = Shared/SCHTextFlowParagraphSource.h; sourceTree = "<group>"; };
@@ -4336,8 +4336,8 @@
 		528C616413FAAA9D00D033F8 /* Help */ = {
 			isa = PBXGroup;
 			children = (
-				528C616513FAAB4B00D033F8 /* youngerHelpVideo.mp4 */,
-				528C616613FAAB4B00D033F8 /* olderHelpVideo.mp4 */,
+				C93113DF13FBB55B00355693 /* olderHelpVideo.mp4 */,
+				C93113E013FBB55B00355693 /* youngerHelpVideo.mp4 */,
 			);
 			name = Help;
 			sourceTree = "<group>";
@@ -6319,8 +6319,8 @@
 				528C615813FAA46200D033F8 /* icon-help.png in Resources */,
 				528C615A13FAA46200D033F8 /* icon-help@2x.png in Resources */,
 				528C616113FAA57200D033F8 /* SCHHelpViewController.xib in Resources */,
-				528C616713FAAB4B00D033F8 /* youngerHelpVideo.mp4 in Resources */,
-				528C616913FAAB4B00D033F8 /* olderHelpVideo.mp4 in Resources */,
+				C93113E113FBB55B00355693 /* olderHelpVideo.mp4 in Resources */,
+				C93113E313FBB55B00355693 /* youngerHelpVideo.mp4 in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -6903,8 +6903,8 @@
 				528C615913FAA46200D033F8 /* icon-help.png in Resources */,
 				528C615B13FAA46200D033F8 /* icon-help@2x.png in Resources */,
 				528C616213FAA57200D033F8 /* SCHHelpViewController.xib in Resources */,
-				528C616813FAAB4B00D033F8 /* youngerHelpVideo.mp4 in Resources */,
-				528C616A13FAAB4B00D033F8 /* olderHelpVideo.mp4 in Resources */,
+				C93113E213FBB55B00355693 /* olderHelpVideo.mp4 in Resources */,
+				C93113E413FBB55B00355693 /* youngerHelpVideo.mp4 in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
