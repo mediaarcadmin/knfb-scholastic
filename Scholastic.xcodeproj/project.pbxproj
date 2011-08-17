@@ -804,8 +804,8 @@
 		C93113E213FBB55B00355693 /* olderHelpVideo.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = C93113DF13FBB55B00355693 /* olderHelpVideo.mp4 */; };
 		C93113E313FBB55B00355693 /* youngerHelpVideo.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = C93113E013FBB55B00355693 /* youngerHelpVideo.mp4 */; };
 		C93113E413FBB55B00355693 /* youngerHelpVideo.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = C93113E013FBB55B00355693 /* youngerHelpVideo.mp4 */; };
-		C93113E813FBBE7C00355693 /* storyinteraction-jigsaw-you-won~iphone copy.png in Resources */ = {isa = PBXBuildFile; fileRef = C93113E513FBBE7C00355693 /* storyinteraction-jigsaw-you-won~iphone copy.png */; };
-		C93113E913FBBE7C00355693 /* storyinteraction-jigsaw-you-won~iphone copy.png in Resources */ = {isa = PBXBuildFile; fileRef = C93113E513FBBE7C00355693 /* storyinteraction-jigsaw-you-won~iphone copy.png */; };
+		C93113E813FBBE7C00355693 /* storyinteraction-jigsaw-you-won~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = C93113E513FBBE7C00355693 /* storyinteraction-jigsaw-you-won~iphone.png */; };
+		C93113E913FBBE7C00355693 /* storyinteraction-jigsaw-you-won~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = C93113E513FBBE7C00355693 /* storyinteraction-jigsaw-you-won~iphone.png */; };
 		C93113EA13FBBE7C00355693 /* storyinteraction-jigsaw-you-won@2x~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = C93113E613FBBE7C00355693 /* storyinteraction-jigsaw-you-won@2x~iphone.png */; };
 		C93113EB13FBBE7C00355693 /* storyinteraction-jigsaw-you-won@2x~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = C93113E613FBBE7C00355693 /* storyinteraction-jigsaw-you-won@2x~iphone.png */; };
 		C93113EC13FBBE7C00355693 /* storyinteraction-jigsaw-you-won~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = C93113E713FBBE7C00355693 /* storyinteraction-jigsaw-you-won~ipad.png */; };
@@ -2689,7 +2689,7 @@
 		C92FA7E71355E8F2001BAA6B /* KNFBSmartZoomBlock.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = KNFBSmartZoomBlock.m; path = SmartZoom/KNFBSmartZoomBlock.m; sourceTree = "<group>"; };
 		C93113DF13FBB55B00355693 /* olderHelpVideo.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; name = olderHelpVideo.mp4; path = Resources/Videos/olderHelpVideo.mp4; sourceTree = "<group>"; };
 		C93113E013FBB55B00355693 /* youngerHelpVideo.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; name = youngerHelpVideo.mp4; path = Resources/Videos/youngerHelpVideo.mp4; sourceTree = "<group>"; };
-		C93113E513FBBE7C00355693 /* storyinteraction-jigsaw-you-won~iphone copy.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "storyinteraction-jigsaw-you-won~iphone copy.png"; sourceTree = "<group>"; };
+		C93113E513FBBE7C00355693 /* storyinteraction-jigsaw-you-won~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "storyinteraction-jigsaw-you-won~iphone.png"; sourceTree = "<group>"; };
 		C93113E613FBBE7C00355693 /* storyinteraction-jigsaw-you-won@2x~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "storyinteraction-jigsaw-you-won@2x~iphone.png"; sourceTree = "<group>"; };
 		C93113E713FBBE7C00355693 /* storyinteraction-jigsaw-you-won~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "storyinteraction-jigsaw-you-won~ipad.png"; sourceTree = "<group>"; };
 		C93113EE13FBC81E00355693 /* storyinteraction-concentration-tile-purple~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "storyinteraction-concentration-tile-purple~iphone.png"; sourceTree = "<group>"; };
@@ -3840,7 +3840,7 @@
 				C91E9A4113F96F7E004F8062 /* storyinteraction-jigsaw-6-pieces~ipad.png */,
 				28EAA5FA13F986D00040EF3A /* storyinteraction-jigsaw-scroller-overlay@2x~iphone.png */,
 				28EAA5FB13F986D00040EF3A /* storyinteraction-jigsaw-scroller-overlay~iphone.png */,
-				C93113E513FBBE7C00355693 /* storyinteraction-jigsaw-you-won~iphone copy.png */,
+				C93113E513FBBE7C00355693 /* storyinteraction-jigsaw-you-won~iphone.png */,
 				C93113E613FBBE7C00355693 /* storyinteraction-jigsaw-you-won@2x~iphone.png */,
 				C93113E713FBBE7C00355693 /* storyinteraction-jigsaw-you-won~ipad.png */,
 			);
@@ -6361,7 +6361,7 @@
 				528C616113FAA57200D033F8 /* SCHHelpViewController.xib in Resources */,
 				C93113E113FBB55B00355693 /* olderHelpVideo.mp4 in Resources */,
 				C93113E313FBB55B00355693 /* youngerHelpVideo.mp4 in Resources */,
-				C93113E813FBBE7C00355693 /* storyinteraction-jigsaw-you-won~iphone copy.png in Resources */,
+				C93113E813FBBE7C00355693 /* storyinteraction-jigsaw-you-won~iphone.png in Resources */,
 				C93113EA13FBBE7C00355693 /* storyinteraction-jigsaw-you-won@2x~iphone.png in Resources */,
 				C93113EC13FBBE7C00355693 /* storyinteraction-jigsaw-you-won~ipad.png in Resources */,
 				C93113F513FBC85900355693 /* storyinteraction-concentration-tile-purple~iphone.png in Resources */,
@@ -6955,7 +6955,7 @@
 				528C616213FAA57200D033F8 /* SCHHelpViewController.xib in Resources */,
 				C93113E213FBB55B00355693 /* olderHelpVideo.mp4 in Resources */,
 				C93113E413FBB55B00355693 /* youngerHelpVideo.mp4 in Resources */,
-				C93113E913FBBE7C00355693 /* storyinteraction-jigsaw-you-won~iphone copy.png in Resources */,
+				C93113E913FBBE7C00355693 /* storyinteraction-jigsaw-you-won~iphone.png in Resources */,
 				C93113EB13FBBE7C00355693 /* storyinteraction-jigsaw-you-won@2x~iphone.png in Resources */,
 				C93113ED13FBBE7C00355693 /* storyinteraction-jigsaw-you-won~ipad.png in Resources */,
 				C93113F613FBC85900355693 /* storyinteraction-concentration-tile-purple~iphone.png in Resources */,

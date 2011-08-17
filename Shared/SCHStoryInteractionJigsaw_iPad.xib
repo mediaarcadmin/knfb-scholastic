@@ -2,7 +2,7 @@
 <archive type="com.apple.InterfaceBuilder3.CocoaTouch.iPad.XIB" version="7.10">
 	<data>
 		<int key="IBDocument.SystemTarget">1056</int>
-		<string key="IBDocument.SystemVersion">11A511</string>
+		<string key="IBDocument.SystemVersion">11B26</string>
 		<string key="IBDocument.InterfaceBuilderVersion">1617</string>
 		<string key="IBDocument.AppKitVersion">1138</string>
 		<string key="IBDocument.HIToolboxVersion">566.00</string>
@@ -12,9 +12,10 @@
 		</object>
 		<object class="NSArray" key="IBDocument.IntegratedClassDependencies">
 			<bool key="EncodedWithXMLCoder">YES</bool>
-			<string>IBProxyObject</string>
-			<string>IBUIView</string>
 			<string>IBUIButton</string>
+			<string>IBUIImageView</string>
+			<string>IBUIView</string>
+			<string>IBProxyObject</string>
 		</object>
 		<object class="NSArray" key="IBDocument.PluginDependencies">
 			<bool key="EncodedWithXMLCoder">YES</bool>
@@ -247,7 +248,7 @@
 					<object class="IBUIButton" id="244304598">
 						<reference key="NSNextResponder" ref="230312338"/>
 						<int key="NSvFlags">292</int>
-						<string key="NSFrame">{{351, 315}, {199, 50}}</string>
+						<string key="NSFrame">{{351, 401}, {199, 50}}</string>
 						<reference key="NSSuperview" ref="230312338"/>
 						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView"/>
@@ -271,11 +272,27 @@
 							<string key="NSResourceName">answer-button-blue~ipad.png</string>
 						</object>
 					</object>
+					<object class="IBUIImageView" id="215220439">
+						<reference key="NSNextResponder" ref="230312338"/>
+						<int key="NSvFlags">292</int>
+						<string key="NSFrame">{{200, 228}, {500, 165}}</string>
+						<reference key="NSSuperview" ref="230312338"/>
+						<reference key="NSWindow"/>
+						<reference key="NSNextKeyView" ref="244304598"/>
+						<string key="NSReuseIdentifierKey">_NS:544</string>
+						<reference key="IBUIBackgroundColor" ref="958280769"/>
+						<bool key="IBUIUserInteractionEnabled">NO</bool>
+						<string key="targetRuntimeIdentifier">IBIPadFramework</string>
+						<object class="NSCustomResource" key="IBUIImage">
+							<string key="NSClassName">NSImage</string>
+							<string key="NSResourceName">storyinteraction-jigsaw-you-won~ipad.png</string>
+						</object>
+					</object>
 				</object>
 				<string key="NSFrameSize">{900, 680}</string>
 				<reference key="NSSuperview"/>
 				<reference key="NSWindow"/>
-				<reference key="NSNextKeyView" ref="244304598"/>
+				<reference key="NSNextKeyView" ref="215220439"/>
 				<string key="NSReuseIdentifierKey">_NS:195</string>
 				<reference key="IBUIBackgroundColor" ref="958280769"/>
 				<string key="targetRuntimeIdentifier">IBIPadFramework</string>
@@ -494,12 +511,18 @@
 						<object class="NSMutableArray" key="children">
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<reference ref="244304598"/>
+							<reference ref="215220439"/>
 						</object>
 						<reference key="parent" ref="0"/>
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">26</int>
 						<reference key="object" ref="244304598"/>
+						<reference key="parent" ref="230312338"/>
+					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">31</int>
+						<reference key="object" ref="215220439"/>
 						<reference key="parent" ref="230312338"/>
 					</object>
 				</object>
@@ -520,6 +543,7 @@
 					<string>26.CustomClassName</string>
 					<string>26.IBPluginDependency</string>
 					<string>3.IBPluginDependency</string>
+					<string>31.IBPluginDependency</string>
 					<string>4.IBPluginDependency</string>
 					<string>5.IBPluginDependency</string>
 					<string>6.CustomClassName</string>
@@ -545,6 +569,7 @@
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
+					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>SCHStretchableImageButton</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>SCHStretchableImageButton</string>
@@ -565,7 +590,7 @@
 				<reference key="dict.values" ref="0"/>
 			</object>
 			<nil key="sourceID"/>
-			<int key="maxID">30</int>
+			<int key="maxID">31</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<object class="NSMutableArray" key="referencedPartialClassDescriptions">
@@ -685,6 +710,7 @@
 				<string>storyinteraction-jigsaw-20-pieces.png</string>
 				<string>storyinteraction-jigsaw-6-pieces-button.png</string>
 				<string>storyinteraction-jigsaw-6-pieces.png</string>
+				<string>storyinteraction-jigsaw-you-won~ipad.png</string>
 			</object>
 			<object class="NSMutableArray" key="dict.values">
 				<bool key="EncodedWithXMLCoder">YES</bool>
@@ -695,6 +721,7 @@
 				<string>{234, 176}</string>
 				<string>{185, 56}</string>
 				<string>{234, 176}</string>
+				<string>{500, 165}</string>
 			</object>
 		</object>
 		<string key="IBCocoaTouchPluginVersion">534</string>
