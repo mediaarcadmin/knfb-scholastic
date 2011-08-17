@@ -54,6 +54,8 @@
 		282782AA13A25EC700E968C1 /* SCHStoryInteractionWordScrambler_iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2827827513A23DF100E968C1 /* SCHStoryInteractionWordScrambler_iPad.xib */; };
 		2830DAC213D822B6001366D9 /* SCHNavigationControllerForModalForm.m in Sources */ = {isa = PBXBuildFile; fileRef = 2830DAC113D822B6001366D9 /* SCHNavigationControllerForModalForm.m */; };
 		2830DAC313D822B6001366D9 /* SCHNavigationControllerForModalForm.m in Sources */ = {isa = PBXBuildFile; fileRef = 2830DAC113D822B6001366D9 /* SCHNavigationControllerForModalForm.m */; };
+		2842A77313FBE9B10049AEE1 /* SCHAnimatedLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 2842A77213FBE9B10049AEE1 /* SCHAnimatedLayer.m */; };
+		2842A77413FBE9B10049AEE1 /* SCHAnimatedLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 2842A77213FBE9B10049AEE1 /* SCHAnimatedLayer.m */; };
 		28456BC413E071B600BD3804 /* SCHSetProfilePasswordView~ipad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 28456BC313E071B600BD3804 /* SCHSetProfilePasswordView~ipad.xib */; };
 		28456BC513E071B600BD3804 /* SCHSetProfilePasswordView~ipad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 28456BC313E071B600BD3804 /* SCHSetProfilePasswordView~ipad.xib */; };
 		2848D34613A0C647007DD45F /* SCHStoryInteractionControllerTitleTwister.m in Sources */ = {isa = PBXBuildFile; fileRef = 2848D34513A0C647007DD45F /* SCHStoryInteractionControllerTitleTwister.m */; };
@@ -1941,6 +1943,8 @@
 		2827827913A241E100E968C1 /* SCHStoryInteractionControllerWordScrambler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCHStoryInteractionControllerWordScrambler.m; sourceTree = "<group>"; };
 		2830DAC013D822B6001366D9 /* SCHNavigationControllerForModalForm.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHNavigationControllerForModalForm.h; path = Shared/SCHNavigationControllerForModalForm.h; sourceTree = "<group>"; };
 		2830DAC113D822B6001366D9 /* SCHNavigationControllerForModalForm.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHNavigationControllerForModalForm.m; path = Shared/SCHNavigationControllerForModalForm.m; sourceTree = "<group>"; };
+		2842A77113FBE9B10049AEE1 /* SCHAnimatedLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCHAnimatedLayer.h; sourceTree = "<group>"; };
+		2842A77213FBE9B10049AEE1 /* SCHAnimatedLayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCHAnimatedLayer.m; sourceTree = "<group>"; };
 		28456BC313E071B600BD3804 /* SCHSetProfilePasswordView~ipad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = "SCHSetProfilePasswordView~ipad.xib"; path = "iPad/SCHSetProfilePasswordView~ipad.xib"; sourceTree = "<group>"; };
 		2848D34413A0C647007DD45F /* SCHStoryInteractionControllerTitleTwister.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCHStoryInteractionControllerTitleTwister.h; sourceTree = "<group>"; };
 		2848D34513A0C647007DD45F /* SCHStoryInteractionControllerTitleTwister.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCHStoryInteractionControllerTitleTwister.m; sourceTree = "<group>"; };
@@ -4040,6 +4044,8 @@
 				280C99C61397C65E00381C31 /* SCHStoryInteractionProgressView.m */,
 				28CC985E139CD574001F560F /* SCHBoxWithShadowView.h */,
 				28CC985F139CD574001F560F /* SCHBoxWithShadowView.m */,
+				2842A77113FBE9B10049AEE1 /* SCHAnimatedLayer.h */,
+				2842A77213FBE9B10049AEE1 /* SCHAnimatedLayer.m */,
 			);
 			name = "Common Views";
 			sourceTree = "<group>";
@@ -7346,6 +7352,7 @@
 				2860010413F96CFC005C6AEB /* SCHStoryInteractionControllerJigsaw_iPhone.m in Sources */,
 				2860010813F9782C005C6AEB /* SCHStoryInteractionJigsawPieceView_iPhone.m in Sources */,
 				528C615F13FAA57200D033F8 /* SCHHelpViewController.m in Sources */,
+				2842A77313FBE9B10049AEE1 /* SCHAnimatedLayer.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -7677,6 +7684,7 @@
 				2860010513F96CFC005C6AEB /* SCHStoryInteractionControllerJigsaw_iPhone.m in Sources */,
 				2860010913F9782C005C6AEB /* SCHStoryInteractionJigsawPieceView_iPhone.m in Sources */,
 				528C616013FAA57200D033F8 /* SCHHelpViewController.m in Sources */,
+				2842A77413FBE9B10049AEE1 /* SCHAnimatedLayer.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
