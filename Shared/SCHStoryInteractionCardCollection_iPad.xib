@@ -2,7 +2,7 @@
 <archive type="com.apple.InterfaceBuilder3.CocoaTouch.iPad.XIB" version="7.10">
 	<data>
 		<int key="IBDocument.SystemTarget">1056</int>
-		<string key="IBDocument.SystemVersion">11A511</string>
+		<string key="IBDocument.SystemVersion">11B26</string>
 		<string key="IBDocument.InterfaceBuilderVersion">1617</string>
 		<string key="IBDocument.AppKitVersion">1138</string>
 		<string key="IBDocument.HIToolboxVersion">566.00</string>
@@ -153,7 +153,7 @@
 								<string key="NSFrame">{{51, 204}, {48, 48}}</string>
 								<reference key="NSSuperview" ref="621697733"/>
 								<reference key="NSWindow"/>
-								<reference key="NSNextKeyView" ref="70129140"/>
+								<reference key="NSNextKeyView" ref="227530063"/>
 								<string key="NSReuseIdentifierKey">_NS:544</string>
 								<reference key="IBUIBackgroundColor" ref="620910758"/>
 								<bool key="IBUIUserInteractionEnabled">NO</bool>
@@ -193,7 +193,7 @@
 								<string key="NSFrame">{{51, 204}, {48, 48}}</string>
 								<reference key="NSSuperview" ref="769833327"/>
 								<reference key="NSWindow"/>
-								<reference key="NSNextKeyView" ref="568420018"/>
+								<reference key="NSNextKeyView" ref="70129140"/>
 								<string key="NSReuseIdentifierKey">_NS:544</string>
 								<reference key="IBUIBackgroundColor" ref="620910758"/>
 								<bool key="IBUIUserInteractionEnabled">NO</bool>
@@ -273,7 +273,7 @@
 								<string key="NSFrame">{{51, 204}, {48, 48}}</string>
 								<reference key="NSSuperview" ref="568420018"/>
 								<reference key="NSWindow"/>
-								<reference key="NSNextKeyView" ref="857352935"/>
+								<reference key="NSNextKeyView"/>
 								<string key="NSReuseIdentifierKey">_NS:544</string>
 								<reference key="IBUIBackgroundColor" ref="620910758"/>
 								<bool key="IBUIUserInteractionEnabled">NO</bool>
@@ -289,25 +289,13 @@
 						<reference key="IBUIBackgroundColor" ref="620910758"/>
 						<string key="targetRuntimeIdentifier">IBIPadFramework</string>
 					</object>
-					<object class="IBUIView" id="530597355">
-						<reference key="NSNextResponder" ref="191373211"/>
-						<int key="NSvFlags">292</int>
-						<string key="NSFrameSize">{650, 578}</string>
-						<reference key="NSSuperview" ref="191373211"/>
-						<reference key="NSWindow"/>
-						<reference key="NSNextKeyView" ref="378095409"/>
-						<string key="NSReuseIdentifierKey">_NS:195</string>
-						<reference key="IBUIBackgroundColor" ref="620910758"/>
-						<bool key="IBUIUserInteractionEnabled">NO</bool>
-						<string key="targetRuntimeIdentifier">IBIPadFramework</string>
-					</object>
 					<object class="IBUIButton" id="70129140">
 						<reference key="NSNextResponder" ref="191373211"/>
 						<int key="NSvFlags">292</int>
-						<string key="NSFrame">{{20, 502}, {65, 65}}</string>
+						<string key="NSFrame">{{30, 256}, {65, 65}}</string>
 						<reference key="NSSuperview" ref="191373211"/>
 						<reference key="NSWindow"/>
-						<reference key="NSNextKeyView" ref="227530063"/>
+						<reference key="NSNextKeyView" ref="857352935"/>
 						<string key="NSReuseIdentifierKey">_NS:237</string>
 						<reference key="IBUIBackgroundColor" ref="620910758"/>
 						<bool key="IBUIOpaque">NO</bool>
@@ -339,10 +327,10 @@
 					<object class="IBUIButton" id="857352935">
 						<reference key="NSNextResponder" ref="191373211"/>
 						<int key="NSvFlags">292</int>
-						<string key="NSFrame">{{565, 502}, {65, 65}}</string>
+						<string key="NSFrame">{{555, 256}, {65, 65}}</string>
 						<reference key="NSSuperview" ref="191373211"/>
 						<reference key="NSWindow"/>
-						<reference key="NSNextKeyView"/>
+						<reference key="NSNextKeyView" ref="568420018"/>
 						<string key="NSReuseIdentifierKey">_NS:237</string>
 						<reference key="IBUIBackgroundColor" ref="620910758"/>
 						<bool key="IBUIOpaque">NO</bool>
@@ -360,6 +348,18 @@
 							<string key="NSClassName">NSImage</string>
 							<string key="NSResourceName">storyinteraction-card-collection-flip.png</string>
 						</object>
+					</object>
+					<object class="IBUIView" id="530597355">
+						<reference key="NSNextResponder" ref="191373211"/>
+						<int key="NSvFlags">292</int>
+						<string key="NSFrameSize">{650, 578}</string>
+						<reference key="NSSuperview" ref="191373211"/>
+						<reference key="NSWindow"/>
+						<reference key="NSNextKeyView" ref="378095409"/>
+						<string key="NSReuseIdentifierKey">_NS:195</string>
+						<reference key="IBUIBackgroundColor" ref="620910758"/>
+						<bool key="IBUIUserInteractionEnabled">NO</bool>
+						<string key="targetRuntimeIdentifier">IBIPadFramework</string>
 					</object>
 				</object>
 				<string key="NSFrameSize">{650, 578}</string>
@@ -630,6 +630,14 @@
 						<reference key="parent" ref="769833327"/>
 					</object>
 					<object class="IBObjectRecord">
+						<int key="objectID">41</int>
+						<reference key="object" ref="530597355"/>
+						<object class="NSMutableArray" key="children">
+							<bool key="EncodedWithXMLCoder">YES</bool>
+						</object>
+						<reference key="parent" ref="191373211"/>
+					</object>
+					<object class="IBObjectRecord">
 						<int key="objectID">34</int>
 						<reference key="object" ref="70129140"/>
 						<reference key="parent" ref="191373211"/>
@@ -640,11 +648,6 @@
 						<reference key="object" ref="857352935"/>
 						<reference key="parent" ref="191373211"/>
 						<string key="objectName">Flip button</string>
-					</object>
-					<object class="IBObjectRecord">
-						<int key="objectID">41</int>
-						<reference key="object" ref="530597355"/>
-						<reference key="parent" ref="191373211"/>
 					</object>
 				</object>
 			</object>
@@ -799,10 +802,12 @@
 						<object class="NSArray" key="dict.sortedKeys">
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<string>perspectiveView</string>
+							<string>scrollContentView</string>
 							<string>zoomedCardScrollView</string>
 						</object>
 						<object class="NSMutableArray" key="dict.values">
 							<bool key="EncodedWithXMLCoder">YES</bool>
+							<string>UIView</string>
 							<string>UIView</string>
 							<string>UIScrollView</string>
 						</object>
@@ -812,12 +817,17 @@
 						<object class="NSArray" key="dict.sortedKeys">
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<string>perspectiveView</string>
+							<string>scrollContentView</string>
 							<string>zoomedCardScrollView</string>
 						</object>
 						<object class="NSMutableArray" key="dict.values">
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<object class="IBToOneOutletInfo">
 								<string key="name">perspectiveView</string>
+								<string key="candidateClassName">UIView</string>
+							</object>
+							<object class="IBToOneOutletInfo">
+								<string key="name">scrollContentView</string>
 								<string key="candidateClassName">UIView</string>
 							</object>
 							<object class="IBToOneOutletInfo">
