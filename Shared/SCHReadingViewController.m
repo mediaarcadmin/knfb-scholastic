@@ -920,8 +920,8 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
                                                                                    youngerMode:self.youngerMode];
     
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
-        helpViewController.modalPresentationStyle = UIModalPresentationFormSheet;
-        helpViewController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
+        helpViewController.modalPresentationStyle = UIModalPresentationFullScreen;
+        helpViewController.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
     }
     
     [self.navigationController presentModalViewController:helpViewController animated:YES];
