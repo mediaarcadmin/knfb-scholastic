@@ -7,5 +7,3 @@ buildlocal
 *.mode*
 *.perspective*
 xcuserdata
-Shared/Debug Books/*
-!Shared/Debug Books/*.xps
