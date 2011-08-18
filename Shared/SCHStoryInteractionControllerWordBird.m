@@ -22,7 +22,7 @@ enum {
     kTileLetterWidth = 25,
     kTileLetterHeight = 25,
     kTileLetterGap = 5,
-    kNumberOfBalloons = 3
+    kNumberOfBalloons = 10
     
 };
 
@@ -31,7 +31,8 @@ enum {
 @property (nonatomic, retain) NSArray *answerLetters;
 @property (nonatomic, assign) NSInteger correctLetterCount;
 @property (nonatomic, assign) NSInteger remainingBalloonCount;
-@property (nonatomic, retain) SCHAnimatedLayer *penguinLayer;
+@property (nonatomic, retain) SCHAnimatedLayer *shockedPenguinLayer;
+@property (nonatomic, retain) SCHAnimatedLayer *happyPenguinLayer;
 @property (nonatomic, retain) SCHAnimatedLayer *balloonsLayer;
 @property (nonatomic, retain) SCHAnimatedLayer *animationContainerLayer;
 
@@ -54,7 +55,8 @@ enum {
 @synthesize answerLetters;
 @synthesize correctLetterCount;
 @synthesize remainingBalloonCount;
-@synthesize penguinLayer;
+@synthesize shockedPenguinLayer;
+@synthesize happyPenguinLayer;
 @synthesize balloonsLayer;
 @synthesize animationContainerLayer;
 
@@ -64,7 +66,8 @@ enum {
     [lettersContainer release], lettersContainer = nil;
     [animationContainer release], animationContainer = nil;
     [answerLetters release], answerLetters = nil;
-    [penguinLayer release], penguinLayer = nil;
+    [shockedPenguinLayer release], shockedPenguinLayer = nil;
+    [happyPenguinLayer release], happyPenguinLayer = nil;
     [balloonsLayer release], balloonsLayer = nil;
     [animationContainerLayer release], animationContainerLayer = nil;
     [super dealloc];
@@ -172,15 +175,25 @@ enum {
     [self.animationContainerLayer addSublayer:self.balloonsLayer];
     [self.balloonsLayer setNeedsDisplay];
 
-    self.penguinLayer = [SCHAnimatedLayer layer];
-    self.penguinLayer.position = CGPointMake(77, 194);
-    self.penguinLayer.bounds = CGRectMake(0, 0, 150, 160);
-    self.penguinLayer.contents = (id)[[UIImage imageNamed:@"storyinteraction-wordbird-Shocked_Pen.png"] CGImage];
-    self.penguinLayer.frameSize = CGSizeMake(150, 160);
-    self.penguinLayer.frameIndex = 0;
-    [self.animationContainerLayer addSublayer:self.penguinLayer];
-    [self.penguinLayer setNeedsDisplay];
+    self.shockedPenguinLayer = [SCHAnimatedLayer layer];
+    self.shockedPenguinLayer.position = CGPointMake(77, 194);
+    self.shockedPenguinLayer.bounds = CGRectMake(0, 0, 150, 160);
+    self.shockedPenguinLayer.contents = (id)[[UIImage imageNamed:@"storyinteraction-wordbird-Shocked_Pen.png"] CGImage];
+    self.shockedPenguinLayer.frameSize = CGSizeMake(150, 160);
+    self.shockedPenguinLayer.frameIndex = 0;
+    [self.animationContainerLayer addSublayer:self.shockedPenguinLayer];
+    [self.shockedPenguinLayer setNeedsDisplay];
         
+    self.happyPenguinLayer = [SCHAnimatedLayer layer];
+    self.happyPenguinLayer.position = CGPointMake(60, 181);
+    self.happyPenguinLayer.bounds = self.shockedPenguinLayer.bounds;
+    self.happyPenguinLayer.contents = (id)[[UIImage imageNamed:@"storyinteraction-wordbird-Pen_Happy_Filmstrip.png"] CGImage];
+    self.happyPenguinLayer.frameSize = CGSizeMake(150, 160);
+    self.happyPenguinLayer.frameIndex = 0;
+    self.happyPenguinLayer.hidden = YES;
+    [self.animationContainerLayer addSublayer:self.happyPenguinLayer];
+    [self.happyPenguinLayer setNeedsDisplay];
+    
     self.remainingBalloonCount = kNumberOfBalloons;
 }
 
@@ -271,17 +284,32 @@ enum {
     [CATransaction begin];
     [CATransaction setDisableActions:YES];
     
-    CGFloat ystep = (CGRectGetHeight(self.animationContainer.bounds)-CGRectGetHeight(self.animationContainerLayer.bounds))/([[self currentWord] length]-1);
-    CGPoint targetPosition = CGPointMake(self.animationContainerLayer.position.x, 
-                                         CGRectGetMaxY(self.animationContainer.bounds)-CGRectGetMidY(self.animationContainerLayer.bounds)-ystep*self.correctLetterCount);
-    
-    CABasicAnimation *move = [CABasicAnimation animationWithKeyPath:@"position"];
-    move.fromValue = [NSValue valueWithCGPoint:self.animationContainerLayer.position];
-    move.toValue = [NSValue valueWithCGPoint:targetPosition];
-    move.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
-    move.duration = 0.5;
-    [self.animationContainerLayer addAnimation:move forKey:@"move"];
-    self.animationContainerLayer.position = targetPosition;
+    if (self.correctLetterCount < [[self currentWord] length]) {
+        CGFloat ystep = (CGRectGetHeight(self.animationContainer.bounds)-CGRectGetHeight(self.animationContainerLayer.bounds))/([[self currentWord] length]-1);
+        CGPoint targetPosition = CGPointMake(self.animationContainerLayer.position.x, 
+                                             CGRectGetMaxY(self.animationContainer.bounds)-CGRectGetMidY(self.animationContainerLayer.bounds)-ystep*self.correctLetterCount);
+        
+        CABasicAnimation *move = [CABasicAnimation animationWithKeyPath:@"position"];
+        move.fromValue = [NSValue valueWithCGPoint:self.animationContainerLayer.position];
+        move.toValue = [NSValue valueWithCGPoint:targetPosition];
+        move.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
+        move.duration = 0.5;
+        move.fillMode = kCAFillModeForwards;
+        move.delegate = [SCHAnimationDelegate animationDelegateWithStopBlock:^(CAAnimation *animation, BOOL finished) {
+            [CATransaction begin];
+            [CATransaction setDisableActions:YES];
+            self.happyPenguinLayer.hidden = NO;
+            self.shockedPenguinLayer.hidden = YES;
+            [self.happyPenguinLayer animateAllFramesWithDuration:1.5 delegate:nil];
+            [CATransaction commit];
+        }];
+        
+        [self.animationContainerLayer addAnimation:move forKey:@"move"];
+        self.animationContainerLayer.position = targetPosition;
+        [self enqueueAudioWithPath:[self.storyInteraction storyInteractionCorrectAnswerSoundFilename] fromBundle:YES];
+    } else {
+        
+    }
     
     [CATransaction commit];
 }
@@ -305,7 +333,7 @@ enum {
                     [CATransaction begin];
                     [CATransaction setDisableActions:YES];
                     [self.balloonsLayer removeFromSuperlayer];
-                    [self.penguinLayer removeFromSuperlayer];
+                    [self.shockedPenguinLayer removeFromSuperlayer];
                     self.animationContainerLayer.contents = (id)[[UIImage imageNamed:@"storyinteraction-wordbird-Pen_Lose.png"] CGImage];
                     self.animationContainerLayer.frameSize = CGSizeMake(220, 360);
                     self.animationContainerLayer.frameIndex = 0;
@@ -320,7 +348,12 @@ enum {
                 self.balloonsLayer.frameIndex = 0;
                 [self.balloonsLayer setNeedsDisplay];
             }
-            [self.penguinLayer animateAllFramesWithDuration:1.5 delegate:penguinAnimationDelegate];
+            [CATransaction begin];
+            [CATransaction setDisableActions:YES];
+            self.happyPenguinLayer.hidden = YES;
+            self.shockedPenguinLayer.hidden = NO;
+            [self.shockedPenguinLayer animateAllFramesWithDuration:1.5 delegate:penguinAnimationDelegate];
+            [CATransaction commit];
         }];
     
         self.balloonsLayer.frameIndex = self.balloonsLayer.numberOfFrames-1;
