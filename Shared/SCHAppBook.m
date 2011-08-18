@@ -387,12 +387,19 @@ NSString * const kSCHAppBookEucalyptusCacheDir = @"libEucalyptusCache";
 
 - (SCHAppBookFeatures)bookFeatures
 {
-    // FIXME: use the new tuple to determine whether the book is a sample or not
-    if (self.HasStoryInteractions) {
-        return kSCHAppBookFeaturesStoryInteractions;
-    } else {
-        return kSCHAppBookFeaturesNone;
+    SCHAppBookFeatures ret = kSCHAppBookFeaturesNone;
+    BOOL storyInteractions = [self.ContentMetadataItem.Enhanced boolValue];
+    BOOL sample = ([self.ContentMetadataItem.DRMQualifier DRMQualifierValue] == kSCHDRMQualifiersSample);
+    
+    if (storyInteractions == YES && sample == YES) {
+        ret = kSCHAppBookFeaturesSampleWithStoryInteractions;
+    } else if (storyInteractions == YES) {
+        ret = kSCHAppBookFeaturesStoryInteractions;        
+    } else if (sample == YES) {
+        ret = kSCHAppBookFeaturesSample;        
     }
+        
+    return(ret);    
 }
 
 - (void)setForcedProcessing:(BOOL)forceProcess

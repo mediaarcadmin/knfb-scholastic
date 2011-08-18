@@ -26,6 +26,7 @@
 #import "SCHAppStateManager.h"
 #import "NSNumber+ObjectTypes.h"
 #import "SCHProfileItem.h"
+#import "SCHUserDefaults.h"
 
 enum {
     kTableSectionSamples = 0,
@@ -53,6 +54,8 @@ typedef enum {
 @property (nonatomic, assign) SCHStartingViewControllerBookshelf sampleBookshelf;
 
 - (void)setupAssetsForOrientation:(UIInterfaceOrientation)orientation;
+- (void)firstLogin;
+- (void)clearCacheDirectory;
 - (NSString *)sampleBookshelfTitleAtIndex:(NSInteger)index;
 - (void)openSampleBookshelfAtIndex:(NSInteger)index;
 - (void)showSignInForm;
@@ -128,6 +131,10 @@ typedef enum {
     [super viewWillAppear:animated];
     [self setupAssetsForOrientation:self.interfaceOrientation];
     [self.navigationController.navigationBar setAlpha:1.0f];
+
+    // if we logged in and deregistered then we will need to refresh so we 
+    // don't show the Sample bookshelves
+    [self.starterTableView reloadData];
 }
 
 #pragma mark - Orientation methods
@@ -164,11 +171,19 @@ typedef enum {
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    return kNumberOfTableSections;
+    if ([[NSUserDefaults standardUserDefaults] boolForKey:kSCHUserDefaultsHasEverLoggedIn] == YES) {
+        return kNumberOfTableSections - 1;
+    }
+    
+    return kNumberOfTableSections;   
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
+    if ([[NSUserDefaults standardUserDefaults] boolForKey:kSCHUserDefaultsHasEverLoggedIn] == YES) {
+        section += kTableSectionSignIn;
+    }
+    
     switch (section) {
         case kTableSectionSamples:
             return kNumberOfSampleBookshelves;
@@ -180,6 +195,10 @@ typedef enum {
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
+    if ([[NSUserDefaults standardUserDefaults] boolForKey:kSCHUserDefaultsHasEverLoggedIn] == YES) {
+        section += kTableSectionSignIn;
+    }
+    
     switch (section) {
         case kTableSectionSamples:
             return CGRectGetHeight(self.samplesHeaderView.bounds);
@@ -191,6 +210,10 @@ typedef enum {
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 {
+    if ([[NSUserDefaults standardUserDefaults] boolForKey:kSCHUserDefaultsHasEverLoggedIn] == YES) {
+        section += kTableSectionSignIn;
+    }
+        
     switch (section) {
         case kTableSectionSamples:
             return self.samplesHeaderView;
@@ -204,14 +227,18 @@ typedef enum {
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     static NSString * const CellIdentifier = @"Cell";
+    NSInteger section = indexPath.section;
     
     SCHStartingViewCell *cell = (SCHStartingViewCell *)[tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     if (!cell) {
         cell = [[[SCHStartingViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier] autorelease];
         cell.delegate = self;
     }
-    
-    switch (indexPath.section) {
+
+    if ([[NSUserDefaults standardUserDefaults] boolForKey:kSCHUserDefaultsHasEverLoggedIn] == YES) {
+        section += kTableSectionSignIn;
+    }
+    switch (section) {
         case kTableSectionSamples:
             [cell setTitle:[self sampleBookshelfTitleAtIndex:indexPath.row]];
             break;
@@ -226,7 +253,12 @@ typedef enum {
 
 - (void)cellButtonTapped:(NSIndexPath *)indexPath
 {
-    switch (indexPath.section) {
+    NSInteger section = indexPath.section;
+
+    if ([[NSUserDefaults standardUserDefaults] boolForKey:kSCHUserDefaultsHasEverLoggedIn] == YES) {
+        section += kTableSectionSignIn;
+    }
+    switch (section) {
         case kTableSectionSamples:
             [self openSampleBookshelfAtIndex:indexPath.row];
             break;
@@ -268,6 +300,35 @@ typedef enum {
     [self advanceToNextSignInForm];
 }
 
+- (void)firstLogin
+{
+    AppDelegate_Shared *appDelegate = (AppDelegate_Shared *)[[UIApplication sharedApplication] delegate];    
+    
+    [[NSUserDefaults standardUserDefaults] setBool:YES forKey:kSCHUserDefaultsHasEverLoggedIn];
+    
+    // remove data store
+    [appDelegate.coreDataHelper removeSampleStore];
+    // clear all books
+    [self clearCacheDirectory];
+}
+
+- (void)clearCacheDirectory
+{
+    dispatch_async(dispatch_get_main_queue(), ^{
+        NSString *libraryCacheDirectory = [NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) lastObject];        
+        NSError *error = nil;
+        
+        if (libraryCacheDirectory != nil) {
+            for (NSString *fileName in [[NSFileManager defaultManager] enumeratorAtPath:libraryCacheDirectory]) {
+                if ([[NSFileManager defaultManager] removeItemAtPath:[libraryCacheDirectory stringByAppendingPathComponent:fileName] 
+                                                               error:&error] == NO) {
+                    NSLog(@"Error deleting XPS file: %@", [error localizedDescription]);                        
+                }
+            }                                                
+        }
+    });    
+}
+
 #pragma mark - Sign In
 
 - (void)showSignInForm
@@ -303,6 +364,8 @@ typedef enum {
     [[NSNotificationCenter defaultCenter] removeObserver:self name:SCHAuthenticationManagerDidFailNotification object:nil];
 	
 	if ([notification.name isEqualToString:SCHAuthenticationManagerDidSucceedNotification]) {
+        [self firstLogin];
+        
         [[SCHURLManager sharedURLManager] clear];
         [[SCHSyncManager sharedSyncManager] clear];
         [[SCHSyncManager sharedSyncManager] firstSync:YES];

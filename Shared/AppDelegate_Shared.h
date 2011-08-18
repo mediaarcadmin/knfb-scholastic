@@ -21,6 +21,8 @@
 - (NSURL *)applicationDocumentsDirectory;
 - (NSURL *)applicationSupportDocumentsDirectory;
 
+- (void)clearUserDefaults;
+
 // YES if we have user authentication credentials (regardless of build type)
 - (BOOL)isAuthenticated;
 

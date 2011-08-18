@@ -37,7 +37,7 @@
 @implementation SCHLocalDebugXPSReader
 
 @synthesize tempDirectory, xpsData, xpsPagesDirectory, uriMap;
-@synthesize ISBN, pageCount, author, title, fileName, fileSize, type;
+@synthesize ISBN, pageCount, author, title, fileName, fileSize, type, enhanced;
 
 - (id) init
 {
@@ -260,6 +260,20 @@
 	}
 	
 	[doc release], doc = nil;
+}
+
+- (BOOL)enhanced
+{
+    BOOL ret = NO;
+    XPS_FILE_PACKAGE_INFO packageInfo;
+	
+    if (XPS_GetComponentInfo(xpsHandle, 
+                             (char *)[KNFBXPSStoryInteractionsMetadataFile UTF8String], 
+                             &packageInfo)) {
+        ret = YES;
+    }
+        
+    return(ret);
 }
 
 #pragma mark -
