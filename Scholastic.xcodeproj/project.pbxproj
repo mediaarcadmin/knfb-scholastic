@@ -1833,6 +1833,22 @@
 		F8EB725D13FBD82800FE2410 /* BookSISampleTab~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = F82E3BBB13F9289A000B67A4 /* BookSISampleTab~ipad.png */; };
 		F8EB725E13FBD82E00FE2410 /* BookShelfErrorIcon~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = F82E3BBA13F9289A000B67A4 /* BookShelfErrorIcon~ipad.png */; };
 		F8EB725F13FBD82F00FE2410 /* BookShelfErrorIcon~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = F82E3BBA13F9289A000B67A4 /* BookShelfErrorIcon~ipad.png */; };
+		F8EB729613FD504900FE2410 /* OptionsCustomButtonActive.png in Resources */ = {isa = PBXBuildFile; fileRef = F8EB728E13FD504900FE2410 /* OptionsCustomButtonActive.png */; };
+		F8EB729713FD504900FE2410 /* OptionsCustomButtonActive.png in Resources */ = {isa = PBXBuildFile; fileRef = F8EB728E13FD504900FE2410 /* OptionsCustomButtonActive.png */; };
+		F8EB729813FD504900FE2410 /* OptionsCustomButtonActive@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F8EB728F13FD504900FE2410 /* OptionsCustomButtonActive@2x.png */; };
+		F8EB729913FD504900FE2410 /* OptionsCustomButtonActive@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F8EB728F13FD504900FE2410 /* OptionsCustomButtonActive@2x.png */; };
+		F8EB729A13FD504900FE2410 /* OptionsCustomButtonInactive.png in Resources */ = {isa = PBXBuildFile; fileRef = F8EB729013FD504900FE2410 /* OptionsCustomButtonInactive.png */; };
+		F8EB729B13FD504900FE2410 /* OptionsCustomButtonInactive.png in Resources */ = {isa = PBXBuildFile; fileRef = F8EB729013FD504900FE2410 /* OptionsCustomButtonInactive.png */; };
+		F8EB729C13FD504900FE2410 /* OptionsCustomButtonInactive@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F8EB729113FD504900FE2410 /* OptionsCustomButtonInactive@2x.png */; };
+		F8EB729D13FD504900FE2410 /* OptionsCustomButtonInactive@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F8EB729113FD504900FE2410 /* OptionsCustomButtonInactive@2x.png */; };
+		F8EB729E13FD504900FE2410 /* OptionsOriginalButtonActive.png in Resources */ = {isa = PBXBuildFile; fileRef = F8EB729213FD504900FE2410 /* OptionsOriginalButtonActive.png */; };
+		F8EB729F13FD504900FE2410 /* OptionsOriginalButtonActive.png in Resources */ = {isa = PBXBuildFile; fileRef = F8EB729213FD504900FE2410 /* OptionsOriginalButtonActive.png */; };
+		F8EB72A013FD504900FE2410 /* OptionsOriginalButtonActive@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F8EB729313FD504900FE2410 /* OptionsOriginalButtonActive@2x.png */; };
+		F8EB72A113FD504900FE2410 /* OptionsOriginalButtonActive@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F8EB729313FD504900FE2410 /* OptionsOriginalButtonActive@2x.png */; };
+		F8EB72A213FD504900FE2410 /* OptionsOriginalButtonInactive.png in Resources */ = {isa = PBXBuildFile; fileRef = F8EB729413FD504900FE2410 /* OptionsOriginalButtonInactive.png */; };
+		F8EB72A313FD504900FE2410 /* OptionsOriginalButtonInactive.png in Resources */ = {isa = PBXBuildFile; fileRef = F8EB729413FD504900FE2410 /* OptionsOriginalButtonInactive.png */; };
+		F8EB72A413FD504900FE2410 /* OptionsOriginalButtonInactive@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F8EB729513FD504900FE2410 /* OptionsOriginalButtonInactive@2x.png */; };
+		F8EB72A513FD504900FE2410 /* OptionsOriginalButtonInactive@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F8EB729513FD504900FE2410 /* OptionsOriginalButtonInactive@2x.png */; };
 		F8EDE542138561390079BFD8 /* SCHReadingNoteView.m in Sources */ = {isa = PBXBuildFile; fileRef = F8EDE541138561390079BFD8 /* SCHReadingNoteView.m */; };
 		F8EDE543138561390079BFD8 /* SCHReadingNoteView.m in Sources */ = {isa = PBXBuildFile; fileRef = F8EDE541138561390079BFD8 /* SCHReadingNoteView.m */; };
 		F8FAF2F313F12F20009C7E9F /* SCHAppStateManager.m in Sources */ = {isa = PBXBuildFile; fileRef = F8FAF2F213F12F20009C7E9F /* SCHAppStateManager.m */; };
@@ -3309,6 +3325,14 @@
 		F8E2D3BF13B9C7AC001E207B /* CoreText.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreText.framework; path = System/Library/Frameworks/CoreText.framework; sourceTree = SDKROOT; };
 		F8E2D3CF13B9CB8A001E207B /* TTTAttributedLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TTTAttributedLabel.h; path = Shared/Libraries/TTTAttributedLabel/TTTAttributedLabel.h; sourceTree = "<group>"; };
 		F8E2D3D013B9CB8A001E207B /* TTTAttributedLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TTTAttributedLabel.m; path = Shared/Libraries/TTTAttributedLabel/TTTAttributedLabel.m; sourceTree = "<group>"; };
+		F8EB728E13FD504900FE2410 /* OptionsCustomButtonActive.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = OptionsCustomButtonActive.png; path = Resources/UIAssets/OptionsCustomButtonActive.png; sourceTree = "<group>"; };
+		F8EB728F13FD504900FE2410 /* OptionsCustomButtonActive@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "OptionsCustomButtonActive@2x.png"; path = "Resources/UIAssets/OptionsCustomButtonActive@2x.png"; sourceTree = "<group>"; };
+		F8EB729013FD504900FE2410 /* OptionsCustomButtonInactive.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = OptionsCustomButtonInactive.png; path = Resources/UIAssets/OptionsCustomButtonInactive.png; sourceTree = "<group>"; };
+		F8EB729113FD504900FE2410 /* OptionsCustomButtonInactive@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "OptionsCustomButtonInactive@2x.png"; path = "Resources/UIAssets/OptionsCustomButtonInactive@2x.png"; sourceTree = "<group>"; };
+		F8EB729213FD504900FE2410 /* OptionsOriginalButtonActive.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = OptionsOriginalButtonActive.png; path = Resources/UIAssets/OptionsOriginalButtonActive.png; sourceTree = "<group>"; };
+		F8EB729313FD504900FE2410 /* OptionsOriginalButtonActive@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "OptionsOriginalButtonActive@2x.png"; path = "Resources/UIAssets/OptionsOriginalButtonActive@2x.png"; sourceTree = "<group>"; };
+		F8EB729413FD504900FE2410 /* OptionsOriginalButtonInactive.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = OptionsOriginalButtonInactive.png; path = Resources/UIAssets/OptionsOriginalButtonInactive.png; sourceTree = "<group>"; };
+		F8EB729513FD504900FE2410 /* OptionsOriginalButtonInactive@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "OptionsOriginalButtonInactive@2x.png"; path = "Resources/UIAssets/OptionsOriginalButtonInactive@2x.png"; sourceTree = "<group>"; };
 		F8EDE540138561390079BFD8 /* SCHReadingNoteView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHReadingNoteView.h; path = Shared/SCHReadingNoteView.h; sourceTree = "<group>"; };
 		F8EDE541138561390079BFD8 /* SCHReadingNoteView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHReadingNoteView.m; path = Shared/SCHReadingNoteView.m; sourceTree = "<group>"; };
 		F8FAF2F113F12F20009C7E9F /* SCHAppStateManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHAppStateManager.h; path = Shared/SCHAppStateManager.h; sourceTree = "<group>"; };
@@ -4383,6 +4407,14 @@
 				C93ECB29134B64B1003B99FD /* libKNFBReader Resources */,
 				C93ECA2C134B5EF9003B99FD /* libEucalyptus Resources */,
 				C908D87F133F941100661718 /* PlaceholderBook.png */,
+				F8EB728E13FD504900FE2410 /* OptionsCustomButtonActive.png */,
+				F8EB728F13FD504900FE2410 /* OptionsCustomButtonActive@2x.png */,
+				F8EB729013FD504900FE2410 /* OptionsCustomButtonInactive.png */,
+				F8EB729113FD504900FE2410 /* OptionsCustomButtonInactive@2x.png */,
+				F8EB729213FD504900FE2410 /* OptionsOriginalButtonActive.png */,
+				F8EB729313FD504900FE2410 /* OptionsOriginalButtonActive@2x.png */,
+				F8EB729413FD504900FE2410 /* OptionsOriginalButtonInactive.png */,
+				F8EB729513FD504900FE2410 /* OptionsOriginalButtonInactive@2x.png */,
 				F8C6DA91136073D300D9E953 /* paper-black.png */,
 				F8C6DA92136073D300D9E953 /* paper-black@2x.png */,
 				F8C6DA93136073D300D9E953 /* paper-neutral.png */,
@@ -6465,6 +6497,14 @@
 				C9FD83A213FBD674007D5B47 /* storyinteraction-wordbird-BalloonPop_03.png in Resources */,
 				C9FD83A413FBD674007D5B47 /* storyinteraction-wordbird-BalloonPop_02.png in Resources */,
 				C9FD83A613FBD674007D5B47 /* storyinteraction-wordbird-BalloonPop_01.png in Resources */,
+				F8EB729613FD504900FE2410 /* OptionsCustomButtonActive.png in Resources */,
+				F8EB729813FD504900FE2410 /* OptionsCustomButtonActive@2x.png in Resources */,
+				F8EB729A13FD504900FE2410 /* OptionsCustomButtonInactive.png in Resources */,
+				F8EB729C13FD504900FE2410 /* OptionsCustomButtonInactive@2x.png in Resources */,
+				F8EB729E13FD504900FE2410 /* OptionsOriginalButtonActive.png in Resources */,
+				F8EB72A013FD504900FE2410 /* OptionsOriginalButtonActive@2x.png in Resources */,
+				F8EB72A213FD504900FE2410 /* OptionsOriginalButtonInactive.png in Resources */,
+				F8EB72A413FD504900FE2410 /* OptionsOriginalButtonInactive@2x.png in Resources */,
 				5256959113FD00B600799BFC /* olderHelpVideo~iphone.mp4 in Resources */,
 				5256959313FD00B600799BFC /* youngerHelpVideo~iphone.mp4 in Resources */,
 				C9F17C2213FD185700C06DF6 /* SCHHelpViewController~iphone.xib in Resources */,
@@ -7079,6 +7119,14 @@
 				C9FD83A313FBD674007D5B47 /* storyinteraction-wordbird-BalloonPop_03.png in Resources */,
 				C9FD83A513FBD674007D5B47 /* storyinteraction-wordbird-BalloonPop_02.png in Resources */,
 				C9FD83A713FBD674007D5B47 /* storyinteraction-wordbird-BalloonPop_01.png in Resources */,
+				F8EB729713FD504900FE2410 /* OptionsCustomButtonActive.png in Resources */,
+				F8EB729913FD504900FE2410 /* OptionsCustomButtonActive@2x.png in Resources */,
+				F8EB729B13FD504900FE2410 /* OptionsCustomButtonInactive.png in Resources */,
+				F8EB729D13FD504900FE2410 /* OptionsCustomButtonInactive@2x.png in Resources */,
+				F8EB729F13FD504900FE2410 /* OptionsOriginalButtonActive.png in Resources */,
+				F8EB72A113FD504900FE2410 /* OptionsOriginalButtonActive@2x.png in Resources */,
+				F8EB72A313FD504900FE2410 /* OptionsOriginalButtonInactive.png in Resources */,
+				F8EB72A513FD504900FE2410 /* OptionsOriginalButtonInactive@2x.png in Resources */,
 				5256959213FD00B600799BFC /* olderHelpVideo~iphone.mp4 in Resources */,
 				5256959413FD00B600799BFC /* youngerHelpVideo~iphone.mp4 in Resources */,
 				C9F17C2313FD185700C06DF6 /* SCHHelpViewController~iphone.xib in Resources */,

@@ -29,6 +29,7 @@ typedef enum {
 @property (nonatomic, readonly) NSPersistentStoreCoordinator *persistentStoreCoordinator;
 
 - (void)setupSampleStore;
+- (void)removeSampleStore;
 - (void)setStoreType:(SCHCoreDataHelperStoreType)storeType;
 
 - (void)saveContext;

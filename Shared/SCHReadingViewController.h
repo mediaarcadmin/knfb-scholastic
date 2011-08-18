@@ -72,10 +72,12 @@ SCHStoryInteractionControllerDelegate>
 
 @property (nonatomic, retain) IBOutlet UIView *optionsView;
 @property (nonatomic, retain) IBOutlet UIViewController *popoverOptionsViewController;
+@property (nonatomic, retain) IBOutlet UIView *customOptionsView;
+@property (nonatomic, retain) IBOutletCollection(UIButton) NSArray *originalButtons;
+@property (nonatomic, retain) IBOutletCollection(UIButton) NSArray *customButtons;
+@property (nonatomic, retain) IBOutlet UISegmentedControl *fontSegmentedControl;
+@property (nonatomic, retain) IBOutlet UISegmentedControl *paperTypeSegmentedControl;
 
-@property (nonatomic, retain) IBOutletCollection(UISegmentedControl) NSArray *fontSegmentedControls;
-@property (nonatomic, retain) IBOutletCollection(UISegmentedControl) NSArray *paperTypeSegmentedControls;
-@property (nonatomic, retain) IBOutletCollection(UISegmentedControl) NSArray *flowFixedSegmentedControls;
 
 @property (nonatomic, retain) IBOutlet UIButton *storyInteractionButton;
 @property (nonatomic, retain) IBOutlet UIView *storyInteractionButtonView;

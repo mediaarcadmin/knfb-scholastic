@@ -560,8 +560,8 @@ static NSTimeInterval const kSCHLastFirstSyncInterval = -300.0;
 - (void)populateFromImport
 {
     NSError *error = nil;
-    NSArray * documentDirectorys = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-    NSString* documentDirectory = ([documentDirectorys count] > 0) ? [documentDirectorys objectAtIndex:0] : nil;
+    NSArray *documentDirectorys = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    NSString *documentDirectory = ([documentDirectorys count] > 0) ? [documentDirectorys objectAtIndex:0] : nil;
 
     if (documentDirectory != nil) {
         for (NSString *xpsFilePath in [self listXPSFilesFrom:documentDirectory]) {
@@ -782,7 +782,7 @@ static NSTimeInterval const kSCHLastFirstSyncInterval = -300.0;
                                            drmQualifer:kSCHDRMQualifiersFullNoDRM
                                               coverURL:nil
                                             contentURL:nil
-                                              enhanced:NO];
+                                              enhanced:localDebugXPSReader.enhanced];
     
     [self.contentSyncComponent addUserContentItem:[self userContentItemWith:[book objectForKey:kSCHLibreAccessWebServiceContentIdentifier] 
                                                                 drmQualifer:[[book objectForKey:kSCHLibreAccessWebServiceDRMQualifier] DRMQualifierValue]                                                    
