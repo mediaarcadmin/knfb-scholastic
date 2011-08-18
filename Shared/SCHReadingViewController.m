@@ -128,7 +128,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 - (void)jumpToBookPoint:(SCHBookPoint *)bookPoint animated:(BOOL)animated; 
 - (void)jumpToCurrentPlaceInBookAnimated:(BOOL)animated;
 
-- (void)presentHelp;
+- (void)presentHelpAnimated:(BOOL)animated;
 
 - (void)setDictionarySelectionMode;
 
@@ -570,6 +570,18 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 {
 	[super viewWillAppear:animated];
     [self setupAssetsForOrientation:self.interfaceOrientation];
+    
+    if (youngerMode == YES) {
+        if ([[NSUserDefaults standardUserDefaults] boolForKey:kSCHUserDefaultsYoungerHelpVideoFirstPlay] == YES) {
+            [self presentHelpAnimated:NO];
+            [self cancelInitialTimer];
+        }
+    } else {
+        if ([[NSUserDefaults standardUserDefaults] boolForKey:kSCHUserDefaultsOlderHelpVideoFirstPlay] == YES) {
+            [self presentHelpAnimated:NO];
+            [self cancelInitialTimer];
+        }
+    }
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -579,21 +591,6 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     
     [self.popover dismissPopoverAnimated:NO];
     self.popover = nil;    
-}
-
-- (void)viewDidAppear:(BOOL)animated
-{
-    [super viewDidAppear:animated];
-    
-    if (youngerMode == YES) {
-        if ([[NSUserDefaults standardUserDefaults] boolForKey:kSCHUserDefaultsYoungerHelpVideoFirstPlay] == YES) {
-            [self presentHelp];
-        }
-    } else {
-        if ([[NSUserDefaults standardUserDefaults] boolForKey:kSCHUserDefaultsOlderHelpVideoFirstPlay] == YES) {
-            [self presentHelp];
-        }
-    }
 }
 
 #pragma mark - Rotation
@@ -911,23 +908,21 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
         [self.optionsView removeFromSuperview];
     }
 
-    [self presentHelp];
+    [self presentHelpAnimated:YES];
     
     [self pauseAudioPlayback];        
 }
 
-- (void)presentHelp
+- (void)presentHelpAnimated:(BOOL)animated
 {
     SCHHelpViewController *helpViewController = [[SCHHelpViewController alloc] initWithNibName:nil 
                                                                                         bundle:nil
                                                                                    youngerMode:self.youngerMode];
     
-    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
-        helpViewController.modalPresentationStyle = UIModalPresentationFormSheet;
-        helpViewController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
-    }
+    helpViewController.modalPresentationStyle = UIModalPresentationFullScreen;
+    helpViewController.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
     
-    [self.navigationController presentModalViewController:helpViewController animated:YES];
+    [self.navigationController presentModalViewController:helpViewController animated:animated];
     [helpViewController release];
 }
 

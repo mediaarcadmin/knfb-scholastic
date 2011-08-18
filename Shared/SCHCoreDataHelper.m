@@ -71,7 +71,8 @@ static NSString * const kSCHCoreDataHelperSampleStoreName = @"Scholastic_Sample.
 
 - (void)setupSampleStore
 {  
-    if ([self storeExists:kSCHCoreDataHelperSampleStoreName] == NO) {
+    if ([[NSUserDefaults standardUserDefaults] boolForKey:kSCHUserDefaultsHasEverLoggedIn] == NO &&
+        [self storeExists:kSCHCoreDataHelperSampleStoreName] == NO) {
         dispatch_async(dispatch_get_main_queue(), ^{
             NSString *sourceSampleStorePath = [[[NSBundle mainBundle] bundlePath] stringByAppendingPathComponent:kSCHCoreDataHelperSampleStoreName];
             NSURL *applicationSupportDocumentsDirectory = [[[NSFileManager defaultManager] URLsForDirectory:NSApplicationSupportDirectory inDomains:NSUserDomainMask] lastObject];
@@ -88,6 +89,23 @@ static NSString * const kSCHCoreDataHelperSampleStoreName = @"Scholastic_Sample.
     }
 }
              
+- (void)removeSampleStore
+{
+    if ([self storeExists:kSCHCoreDataHelperSampleStoreName] == YES) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            NSURL *applicationSupportDocumentsDirectory = [[[NSFileManager defaultManager] URLsForDirectory:NSApplicationSupportDirectory inDomains:NSUserDomainMask] lastObject];
+            NSURL *sampleStoreURL = [applicationSupportDocumentsDirectory URLByAppendingPathComponent:kSCHCoreDataHelperSampleStoreName];    
+            NSString *sampleStorePath = [sampleStoreURL path];
+            
+            NSError *error = nil;
+			if ([[NSFileManager defaultManager] removeItemAtPath:sampleStorePath
+                                                         error:&error] == NO) {
+                NSLog(@"Error removing Sample Data Store: %@, %@", error, [error userInfo]);
+            }            
+        });
+    }    
+}
+
 #pragma mark - Core Data stack
 
 /**

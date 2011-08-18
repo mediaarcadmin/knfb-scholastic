@@ -30,6 +30,7 @@
 @property (nonatomic, retain) NSString *fileName;
 @property (nonatomic) unsigned long long fileSize;
 @property (nonatomic, retain) NSString *type;
+@property (nonatomic, readonly) BOOL enhanced;
 
 
 - (id) initWithPath: (NSString *) path;

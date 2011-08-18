@@ -589,22 +589,24 @@
             {
                 if (tabOnRight) {
                     self.featureTab.image = [UIImage imageNamed:@"BookSITab"];
+                    overhang = 13;
                 } else {
                     self.featureTab.image = [UIImage imageNamed:@"BookSITabHorizontal"];
+                    overhang = 16;
                 }
                 
-                overhang = 6;
                 break;
             }   
             case kSCHAppBookFeaturesSampleWithStoryInteractions:
             {
                 if (tabOnRight) {
                     self.featureTab.image = [UIImage imageNamed:@"BookSISampleTab"];
+                    overhang = 13;
                 } else {
                     self.featureTab.image = [UIImage imageNamed:@"BookSISampleTabHorizontal"];
+                    overhang = 15;
                 }
                 
-                overhang = 4;
                 break;
             }   
 
@@ -612,11 +614,12 @@
             {
                 if (tabOnRight) {
                     self.featureTab.image = [UIImage imageNamed:@"BookSampleTab"];
-                } else {
+                    overhang = 3;
+               } else {
                     self.featureTab.image = [UIImage imageNamed:@"BookSampleTabHorizontal"];
+                   overhang = 3;
                 }
                 
-                overhang = 0;
                 break;
             }   
             default:
