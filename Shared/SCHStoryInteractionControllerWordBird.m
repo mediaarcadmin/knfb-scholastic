@@ -171,6 +171,7 @@ enum {
     NSString *filename = [NSString stringWithFormat:@"storyinteraction-wordbird-BalloonPop_%02d.png", 11-kNumberOfBalloons];
     self.balloonsLayer.contents = (id)[[UIImage imageNamed:filename] CGImage];
     self.balloonsLayer.frameSize = CGSizeMake(200, 230);
+    self.balloonsLayer.numberOfFrames = 46;
     self.balloonsLayer.frameIndex = 0;
     [self.animationContainerLayer addSublayer:self.balloonsLayer];
     [self.balloonsLayer setNeedsDisplay];
@@ -180,6 +181,7 @@ enum {
     self.shockedPenguinLayer.bounds = CGRectMake(0, 0, 150, 160);
     self.shockedPenguinLayer.contents = (id)[[UIImage imageNamed:@"storyinteraction-wordbird-Shocked_Pen.png"] CGImage];
     self.shockedPenguinLayer.frameSize = CGSizeMake(150, 160);
+    self.shockedPenguinLayer.numberOfFrames = 99;
     self.shockedPenguinLayer.frameIndex = 0;
     [self.animationContainerLayer addSublayer:self.shockedPenguinLayer];
     [self.shockedPenguinLayer setNeedsDisplay];
@@ -189,6 +191,7 @@ enum {
     self.happyPenguinLayer.bounds = self.shockedPenguinLayer.bounds;
     self.happyPenguinLayer.contents = (id)[[UIImage imageNamed:@"storyinteraction-wordbird-Pen_Happy_Filmstrip.png"] CGImage];
     self.happyPenguinLayer.frameSize = CGSizeMake(150, 160);
+    self.happyPenguinLayer.numberOfFrames = 49;
     self.happyPenguinLayer.frameIndex = 0;
     self.happyPenguinLayer.hidden = YES;
     [self.animationContainerLayer addSublayer:self.happyPenguinLayer];
