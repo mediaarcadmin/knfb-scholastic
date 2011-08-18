@@ -47,6 +47,11 @@
     return NO;
 }
 
+- (NSString *)audioPathForQuestion
+{
+    return [KNFBXPSStoryInteractionsDirectory stringByAppendingPathComponent:@"gen_penguinfly.mp3"];
+}
+
 - (NSString *)audioPathForLetter:(unichar)letter
 {   
     if (letter < L'A' || L'Z' < letter) {
