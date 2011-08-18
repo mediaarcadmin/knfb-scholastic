@@ -139,6 +139,8 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 - (void)presentStoryInteraction:(SCHStoryInteraction *)storyInteraction;
 - (void)save;
 
+- (void)setupOptionsViewForMode: (SCHReadingViewLayoutType) newLayoutType;
+
 @end
 
 #pragma mark - SCHReadingViewController
@@ -171,10 +173,12 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 @synthesize notesCountView;
 
 @synthesize optionsView;
+@synthesize customOptionsView;
+@synthesize originalButtons;
+@synthesize customButtons;
+@synthesize fontSegmentedControl;
+@synthesize paperTypeSegmentedControl;
 @synthesize popoverOptionsViewController;
-@synthesize fontSegmentedControls;
-@synthesize paperTypeSegmentedControls;
-@synthesize flowFixedSegmentedControls;
 @synthesize storyInteractionButton;
 @synthesize storyInteractionButtonView;
 @synthesize toolbarToggleView;
@@ -263,12 +267,15 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     [scrubberInfoView release], scrubberInfoView = nil;
     [pageLabel release], pageLabel = nil;
     [optionsView release], optionsView = nil;
-    [fontSegmentedControls release], fontSegmentedControls = nil;
-    [paperTypeSegmentedControls release], paperTypeSegmentedControls = nil;
-    [flowFixedSegmentedControls release], flowFixedSegmentedControls = nil;
+    [customOptionsView release], customOptionsView = nil;
     [storyInteractionButton release], storyInteractionButton = nil;
     [storyInteractionButtonView release], storyInteractionButtonView = nil;
     [toolbarToggleView release], toolbarToggleView = nil;
+    
+    [originalButtons release], originalButtons = nil;
+    [customButtons release], customButtons = nil;
+    [fontSegmentedControl release], fontSegmentedControl = nil;
+    [paperTypeSegmentedControl release], paperTypeSegmentedControl = nil;
     
     [readingView release], readingView = nil;
 }
@@ -462,24 +469,17 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
         
         // Default paper type
         NSNumber *savedPaperType = [[self.profile AppProfile] PaperType];
-        if (savedPaperType) {
+        if (savedPaperType && self.layoutType == SCHReadingViewLayoutTypeFlow) {
             self.paperType = [savedPaperType intValue];
         } else {
             self.paperType = SCHReadingViewPaperTypeWhite;
         }
-        
-        for (UISegmentedControl* paperTypeSegmentedControl in self.paperTypeSegmentedControls) {
-            [paperTypeSegmentedControl setSelectedSegmentIndex:self.paperType];
-        }
-        
-        // add in the actions here for flowFixedSegmentedControl
-        // to prevent actions being fired while setting defaults
-        for (UISegmentedControl* flowFixedSegmentedControl in self.flowFixedSegmentedControls) {
-            [flowFixedSegmentedControl setSelectedSegmentIndex:self.layoutType];
-            [flowFixedSegmentedControl addTarget:self action:@selector(flowedFixedSegmentChanged:) forControlEvents:UIControlEventValueChanged];
-        }
-    }    
+    }  
     
+    [self.paperTypeSegmentedControl setSelectedSegmentIndex:self.paperType];
+    
+    [self.paperTypeSegmentedControl addTarget:self action:@selector(paperTypeSegmentChanged:) forControlEvents:UIControlEventValueChanged];
+
 	self.scrubberInfoView.layer.cornerRadius = 5.0f;
 	self.scrubberInfoView.layer.masksToBounds = YES;
     
@@ -561,6 +561,9 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     [self save];
     
     self.bookStatisticsReadingStartTime = [NSDate date];
+    
+    [self setupOptionsViewForMode:self.layoutType];
+    
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -1020,7 +1023,8 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
             optionsFrame.size.width = self.view.frame.size.width;
             self.optionsView.frame = optionsFrame;
             
-            [self.view addSubview:self.optionsView];
+//            [self.view addSubview:self.optionsView];
+            [self.view insertSubview:self.optionsView belowSubview:self.olderBottomToolbar];
         }
     } else {
         if (self.popover) {
@@ -1028,12 +1032,16 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
             self.popover = nil;
         } else {
 
-            self.popoverOptionsViewController.contentSizeForViewInPopover = CGSizeMake(320, 86);
+//            self.popoverOptionsViewController.contentSizeForViewInPopover = CGSizeMake(320, 86);
+            
             self.popover = [[UIPopoverController alloc] initWithContentViewController:self.popoverOptionsViewController];
+
+            [self setupOptionsViewForMode:self.layoutType];
+            
             self.popover.delegate = self;
             
             CGRect popoverRect = sender.frame;
-            popoverRect.origin.x -= 10;
+            popoverRect.origin.x -= 0;
             
             [self.popover presentPopoverFromRect:popoverRect inView:self.olderBottomToolbar permittedArrowDirections:UIPopoverArrowDirectionDown animated:YES];
 
@@ -1042,6 +1050,150 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 
     [self pauseAudioPlayback];
 }
+
+- (void)setupOptionsViewForMode: (SCHReadingViewLayoutType) newLayoutType
+{
+    // weirdness with the popover controller means this needs to be hardcoded. ugh.
+    const float topHeight = 134;
+
+    // set the buttons to the correct selection
+    bool isFixed = YES;
+    
+    if (newLayoutType == SCHReadingViewLayoutTypeFlow) {
+        isFixed = NO;
+    }
+    
+    for (UIButton *button in self.originalButtons) {
+        button.selected = isFixed;
+    }
+    
+    for (UIButton *button in self.customButtons) {
+        button.selected = !isFixed;
+    }
+    
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
+        if (newLayoutType == SCHReadingViewLayoutTypeFlow) {
+            // show the additional options and resize the parent view
+            float totalHeight = ceilf(topHeight + self.customOptionsView.frame.size.height);
+            
+            NSLog(@"Frame for custom view: %@", NSStringFromCGRect(self.customOptionsView.frame));
+            
+            if (!self.customOptionsView.superview) {
+                CGRect frame = self.customOptionsView.frame;
+                frame.origin.y = topHeight;
+                frame.origin.x = 60;
+                self.customOptionsView.frame = frame;
+                self.customOptionsView.alpha = 0;
+                
+                [self.optionsView addSubview:self.customOptionsView];
+            }
+            
+            if (self.customOptionsView.alpha < 1) {
+                [UIView animateWithDuration:0.25 animations:^{
+                    
+                    CGRect frame = self.optionsView.frame;
+                    frame.origin.y = CGRectGetMinY(self.olderBottomToolbar.frame) - totalHeight;
+                    frame.size.height = totalHeight;
+                    self.optionsView.frame = frame;
+                    
+                    self.customOptionsView.alpha = 1;
+                }];
+            }
+            
+        } else if (newLayoutType == SCHReadingViewLayoutTypeFixed) {
+            // hide the additional options and resize the popover
+            
+            float totalHeight = 150;
+            
+            if (self.customOptionsView.alpha > 0) {
+                [UIView animateWithDuration:0.25 animations:^{
+                    
+                    CGRect frame = self.optionsView.frame;
+                    frame.origin.y = CGRectGetMinY(self.olderBottomToolbar.frame) - totalHeight;
+                    frame.size.height = totalHeight;
+                    self.optionsView.frame = frame;
+                    
+                    self.customOptionsView.alpha = 0;
+                }];
+            }
+        }
+    } else {
+        if (newLayoutType == SCHReadingViewLayoutTypeFlow) {
+            // show the additional options and resize the popover
+            
+            float totalHeight = ceilf(topHeight + self.customOptionsView.frame.size.height);
+            
+            NSLog(@"Frame for custom view: %@", NSStringFromCGRect(self.customOptionsView.frame));
+            
+            if (!self.customOptionsView.superview) {
+                CGRect frame = self.customOptionsView.frame;
+                frame.origin.y = topHeight;
+                frame.size.width = 200;
+                self.customOptionsView.frame = frame;
+                
+                [self.popoverOptionsViewController.view addSubview:self.customOptionsView];
+            }
+            
+            self.popoverOptionsViewController.contentSizeForViewInPopover = CGSizeMake(200, totalHeight);
+            
+            if (self.customOptionsView.alpha < 1) {
+                [UIView animateWithDuration:0.25 animations:^{
+                    self.customOptionsView.alpha = 1;
+                }];
+            }
+            
+        } else if (newLayoutType == SCHReadingViewLayoutTypeFixed) {
+            // hide the additional options and resize the popover
+            
+            float totalHeight = 150;
+            
+            self.popoverOptionsViewController.contentSizeForViewInPopover = CGSizeMake(200, totalHeight);
+            
+            if (self.customOptionsView.alpha > 0) {
+                [UIView animateWithDuration:0.25 animations:^{
+                    self.customOptionsView.alpha = 0;
+                }];
+            }
+        }
+    }
+}
+
+
+
+- (IBAction)fixedButtonPressed:(id)sender {
+    if (self.layoutType != SCHReadingViewLayoutTypeFixed) {
+        [self setupOptionsViewForMode:SCHReadingViewLayoutTypeFixed];
+        
+        SCHBookPoint *currentBookPoint = [self.readingView currentBookPoint];
+        [self.readingView dismissSelector];
+        
+        // Dispatch this after a delay to allow the slector to be immediately dismissed
+        dispatch_time_t delay = dispatch_time(DISPATCH_TIME_NOW, NSEC_PER_SEC * 0.01);
+        dispatch_after(delay, dispatch_get_main_queue(), ^{
+            self.layoutType = SCHReadingViewLayoutTypeFixed;
+            [self jumpToBookPoint:currentBookPoint animated:NO];
+            [self updateScrubberValue];
+        });
+    }
+}
+
+- (IBAction)flowedButtonPressed:(id)sender {
+
+    if (self.layoutType != SCHReadingViewLayoutTypeFlow) {
+        [self setupOptionsViewForMode:SCHReadingViewLayoutTypeFlow];
+        SCHBookPoint *currentBookPoint = [self.readingView currentBookPoint];
+        [self.readingView dismissSelector];
+        
+        // Dispatch this after a delay to allow the slector to be immediately dismissed
+        dispatch_time_t delay = dispatch_time(DISPATCH_TIME_NOW, NSEC_PER_SEC * 0.01);
+        dispatch_after(delay, dispatch_get_main_queue(), ^{
+            self.layoutType = SCHReadingViewLayoutTypeFlow;
+            [self jumpToBookPoint:currentBookPoint animated:NO];
+            [self updateScrubberValue];
+        });
+    }
+}
+
 
 - (IBAction)storyInteractionButtonAction:(id)sender
 {
@@ -1378,6 +1530,8 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
         [[self.profile AppProfile] setLayoutType:savedLayoutType];
     }
     
+//    BOOL useSavedFontAndPaperSettings = NO;
+    
     [self.readingView removeFromSuperview];
     
     switch (newLayoutType) {
@@ -1390,12 +1544,12 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
             [self setDictionarySelectionMode];
 
             [flowView release];
-                        
-            for (UISegmentedControl* fontSegmentedControl in self.fontSegmentedControls) {
-                [fontSegmentedControl setEnabled:YES forSegmentAtIndex:0];
-                [fontSegmentedControl setEnabled:YES forSegmentAtIndex:1];
-            }
             
+            [self.fontSegmentedControl setEnabled:YES forSegmentAtIndex:0];
+            [self.fontSegmentedControl setEnabled:YES forSegmentAtIndex:1];
+            
+//            useSavedFontAndPaperSettings = YES;
+
             break;
         }
         case SCHReadingViewLayoutTypeFixed: 
@@ -1408,10 +1562,8 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
             
             [self setDictionarySelectionMode];
                         
-            for (UISegmentedControl* fontSegmentedControl in self.fontSegmentedControls) {
-                [fontSegmentedControl setEnabled:NO forSegmentAtIndex:0];
-                [fontSegmentedControl setEnabled:NO forSegmentAtIndex:1];
-            }
+            [self.fontSegmentedControl setEnabled:NO forSegmentAtIndex:0];
+            [self.fontSegmentedControl setEnabled:NO forSegmentAtIndex:1];
 
             [layoutView release];
             
@@ -1426,12 +1578,15 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     [self.view addSubview:self.readingView];
     [self.view sendSubviewToBack:self.readingView];
     
-    NSNumber *savedPaperType = [[self.profile AppProfile] PaperType];
-    self.paperType = [savedPaperType intValue];
-    
-    NSNumber *savedFontSizeIndex = [[self.profile AppProfile] FontIndex];
-    self.currentFontSizeIndex = [savedFontSizeIndex intValue];
-
+//    if (useSavedFontAndPaperSettings) {
+        NSNumber *savedPaperType = [[self.profile AppProfile] PaperType];
+        self.paperType = [savedPaperType intValue];
+        
+        NSNumber *savedFontSizeIndex = [[self.profile AppProfile] FontIndex];
+        self.currentFontSizeIndex = [savedFontSizeIndex intValue];
+//    } else {
+//        self.paperType = SCHReadingViewPaperTypeWhite;
+//    }
 }
 
 - (SCHReadingViewLayoutType)layoutType
@@ -1636,7 +1791,10 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     self.storyInteractionsCompleteOnCurrentPages = NO;
     [self setupStoryInteractionButtonForCurrentPagesAnimated:YES];
     
-    if (self.toolbarsVisible && !self.initialFadeTimer) {
+    BOOL changingFromOptionsView = (self.optionsView.superview || self.popover);
+    
+    // FIXME: decide if we want to hide the toolbars on change, or not
+    if (self.toolbarsVisible && !self.initialFadeTimer && !changingFromOptionsView) {
         [self setToolbarVisibility:NO animated:YES];
     }
 }
