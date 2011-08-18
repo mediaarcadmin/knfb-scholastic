@@ -2,7 +2,7 @@
 <archive type="com.apple.InterfaceBuilder3.CocoaTouch.iPad.XIB" version="7.10">
 	<data>
 		<int key="IBDocument.SystemTarget">1056</int>
-		<string key="IBDocument.SystemVersion">11A511</string>
+		<string key="IBDocument.SystemVersion">11B26</string>
 		<string key="IBDocument.InterfaceBuilderVersion">1617</string>
 		<string key="IBDocument.AppKitVersion">1138</string>
 		<string key="IBDocument.HIToolboxVersion">566.00</string>
@@ -123,7 +123,7 @@
 					<object class="IBUIView" id="502779944">
 						<reference key="NSNextResponder" ref="576631708"/>
 						<int key="NSvFlags">274</int>
-						<string key="NSFrame">{{20, 20}, {200, 460}}</string>
+						<string key="NSFrame">{{20, 20}, {300, 460}}</string>
 						<reference key="NSSuperview" ref="576631708"/>
 						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="267365956"/>
@@ -134,7 +134,7 @@
 					<object class="IBUIView" id="267365956">
 						<reference key="NSNextResponder" ref="576631708"/>
 						<int key="NSvFlags">292</int>
-						<string key="NSFrame">{{228, 20}, {452, 202}}</string>
+						<string key="NSFrame">{{328, 20}, {452, 202}}</string>
 						<reference key="NSSuperview" ref="576631708"/>
 						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="716364506"/>
@@ -151,7 +151,7 @@
 					<object class="IBUIView" id="716364506">
 						<reference key="NSNextResponder" ref="576631708"/>
 						<int key="NSvFlags">292</int>
-						<string key="NSFrame">{{228, 237}, {452, 243}}</string>
+						<string key="NSFrame">{{328, 237}, {452, 243}}</string>
 						<reference key="NSSuperview" ref="576631708"/>
 						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView"/>
@@ -160,7 +160,7 @@
 						<string key="targetRuntimeIdentifier">IBIPadFramework</string>
 					</object>
 				</object>
-				<string key="NSFrameSize">{700, 500}</string>
+				<string key="NSFrameSize">{800, 500}</string>
 				<reference key="NSSuperview"/>
 				<reference key="NSWindow"/>
 				<reference key="NSNextKeyView" ref="502779944"/>

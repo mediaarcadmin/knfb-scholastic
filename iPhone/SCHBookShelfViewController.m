@@ -341,7 +341,7 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 131;
 - (IBAction)back
 {
     if ([[SCHAppStateManager sharedAppStateManager] isSampleStore] == YES) {
-        [self.navigationController popToRootViewControllerAnimated:NO];        
+        [self.navigationController popToRootViewControllerAnimated:YES];        
     } else {
         [self.navigationController popViewControllerAnimated:YES];
     }

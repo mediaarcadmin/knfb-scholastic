@@ -18,6 +18,7 @@
 #import "SCHProcessingManager.h"                
 #import "SCHSyncManager.h"
 #import "SCHAppStateManager.h"
+#import "AppDelegate_Shared.h"
 
 #import "SCHNonDRMAuthenticationManager.h"
 
@@ -469,7 +470,7 @@ typedef struct AuthenticateWithUserNameParameters AuthenticateWithUserNameParame
                                                           userInfo:nil];		        
         [self clearOnMainThread];
         [self clearAppProcessingOnMainThread];
-        [[NSUserDefaults standardUserDefaults] removePersistentDomainForName:[[NSBundle mainBundle] bundleIdentifier]];        
+        [(AppDelegate_Shared *)[[UIApplication sharedApplication] delegate] clearUserDefaults];
     }
     self.drmRegistrationSession = nil;
 }
