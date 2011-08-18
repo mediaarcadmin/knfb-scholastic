@@ -165,14 +165,15 @@ enum {
 
 - (void)setupAnimationView
 {
-    CGRect bounds = CGRectMake(0, 0, 220, 360);
+    CGRect bounds = CGRectMake(0, 0, 260, 400);
     self.animationContainerLayer = [SCHAnimatedLayer layer];
     self.animationContainerLayer.bounds = bounds;
-    self.animationContainerLayer.position = CGPointMake(CGRectGetMidX(bounds), CGRectGetMaxY(self.animationContainer.bounds)-CGRectGetMidY(bounds));
+    self.animationContainerLayer.position = CGPointMake(CGRectGetMidX(self.animationContainer.bounds),
+                                                        CGRectGetMaxY(self.animationContainer.bounds)-CGRectGetMidY(bounds));
     [self.animationContainer.layer addSublayer:self.animationContainerLayer];
     
     self.balloonsLayer = [SCHAnimatedLayer layer];
-    self.balloonsLayer.position = CGPointMake(102, 36);
+    self.balloonsLayer.position = CGPointMake(122, 76);
     self.balloonsLayer.bounds = CGRectMake(0, 0, 200, 230);
     NSString *filename = [NSString stringWithFormat:@"storyinteraction-wordbird-BalloonPop_%02d.png", 11-kNumberOfBalloons];
     self.balloonsLayer.contents = (id)[[UIImage imageNamed:filename] CGImage];
@@ -183,7 +184,7 @@ enum {
     [self.balloonsLayer setNeedsDisplay];
 
     self.shockedPenguinLayer = [SCHAnimatedLayer layer];
-    self.shockedPenguinLayer.position = CGPointMake(77, 194);
+    self.shockedPenguinLayer.position = CGPointMake(97, 234);
     self.shockedPenguinLayer.bounds = CGRectMake(0, 0, 150, 160);
     self.shockedPenguinLayer.contents = (id)[[UIImage imageNamed:@"storyinteraction-wordbird-Shocked_Pen.png"] CGImage];
     self.shockedPenguinLayer.frameSize = CGSizeMake(150, 160);
@@ -193,7 +194,7 @@ enum {
     [self.shockedPenguinLayer setNeedsDisplay];
         
     self.happyPenguinLayer = [SCHAnimatedLayer layer];
-    self.happyPenguinLayer.position = CGPointMake(60, 181);
+    self.happyPenguinLayer.position = CGPointMake(80, 221);
     self.happyPenguinLayer.bounds = self.shockedPenguinLayer.bounds;
     self.happyPenguinLayer.contents = (id)[[UIImage imageNamed:@"storyinteraction-wordbird-Pen_Happy_Filmstrip.png"] CGImage];
     self.happyPenguinLayer.frameSize = CGSizeMake(150, 160);
@@ -206,8 +207,8 @@ enum {
     NSMutableArray *loseLayers = [NSMutableArray arrayWithCapacity:3];
     for (NSInteger i = 0; i < 3; ++i) {
         SCHAnimatedLayer *loseLayer = [SCHAnimatedLayer layer];
-        loseLayer.position = CGPointMake(CGRectGetMidX(self.animationContainerLayer.bounds), CGRectGetMidY(self.animationContainerLayer.bounds));
-        loseLayer.bounds = self.animationContainerLayer.bounds;
+        loseLayer.position = CGPointMake(130, 220);
+        loseLayer.bounds = CGRectMake(0, 0, 220, 360);
         NSString *filename = [NSString stringWithFormat:@"storyinteraction-wordbird-Pen_Lose_%d.png", i];
         loseLayer.contents = (id)[[UIImage imageNamed:filename] CGImage];
         loseLayer.frameSize = CGSizeMake(220, 360);
@@ -221,6 +222,13 @@ enum {
     self.loseAnimationLayers = [NSArray arrayWithArray:loseLayers];
     
     self.remainingBalloonCount = kNumberOfBalloons;
+}
+
+- (SCHAnimationDelegate *)continueInteraction
+{
+    return [SCHAnimationDelegate animationDelegateWithStopBlock:^(CAAnimation *animation, BOOL finished) {
+        self.controllerState = SCHStoryInteractionControllerStateInteractionInProgress;
+    }];
 }
 
 - (void)playTapped:(id)sender
@@ -259,11 +267,6 @@ enum {
                   [self movePenguinHigher];
               } else {
                   [self popBalloon];
-              }
-              if (self.correctLetterCount == [[self currentWord] length]) {
-                  [self didComplete];
-              } else {
-                  self.controllerState = SCHStoryInteractionControllerStateInteractionInProgress;
               }
           }];
 
@@ -326,7 +329,9 @@ enum {
             [CATransaction setDisableActions:YES];
             self.happyPenguinLayer.hidden = NO;
             self.shockedPenguinLayer.hidden = YES;
-            [self.happyPenguinLayer animateAllFramesWithDuration:1.5 delegate:nil];
+            [self.happyPenguinLayer animateAllFramesWithDuration:1.5
+                                                     repeatCount:1
+                                                        delegate:[self continueInteraction]];
             [CATransaction commit];
         }];
         
@@ -334,7 +339,31 @@ enum {
         self.animationContainerLayer.position = targetPosition;
         [self enqueueAudioWithPath:[self.storyInteraction storyInteractionCorrectAnswerSoundFilename] fromBundle:YES];
     } else {
+        self.happyPenguinLayer.hidden = NO;
+        self.shockedPenguinLayer.hidden = YES;
+        self.happyPenguinLayer.frameIndex = 0;
+        [self.happyPenguinLayer setNeedsDisplay];
+        [self.happyPenguinLayer animateAllFramesWithDuration:1.5
+                                                 repeatCount:3
+                                                    delegate:nil];
         
+        CGPoint targetPosition = CGPointMake(self.animationContainerLayer.position.x, -300);
+        CABasicAnimation *move = [CABasicAnimation animationWithKeyPath:@"position"];
+        move.fromValue = [NSValue valueWithCGPoint:self.animationContainerLayer.position];
+        move.toValue = [NSValue valueWithCGPoint:targetPosition];
+        move.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseIn];
+        move.duration = 4.5;
+        [self.animationContainerLayer addAnimation:move forKey:@"move"];
+        self.animationContainerLayer.position = targetPosition;
+        
+        [self enqueueAudioWithPath:@"sfx_penguinwin.mp3"
+                        fromBundle:YES
+                        startDelay:0
+            synchronizedStartBlock:nil
+              synchronizedEndBlock:^{
+                  self.controllerState = SCHStoryInteractionControllerStateInteractionFinishedSuccessfully;
+                  [self removeFromHostView];
+              }];
     }
     
     [CATransaction commit];
@@ -357,8 +386,12 @@ enum {
             [CATransaction begin];
             [CATransaction setDisableActions:YES];
             releaseLayer([self.loseAnimationLayers objectAtIndex:1]);
-            [[self.loseAnimationLayers objectAtIndex:2] setHidden:NO];
-            [[self.loseAnimationLayers objectAtIndex:2] animateAllFramesWithDuration:1.56 delegate:nil];
+            SCHAnimatedLayer *finalLayer = [self.loseAnimationLayers objectAtIndex:2];
+            [finalLayer setHidden:NO];
+            [finalLayer animateAllFramesWithDuration:1.56
+                                         repeatCount:1 
+                                            delegate:[self continueInteraction]];
+            [finalLayer setFrameIndex:finalLayer.numberOfFrames-1];
             [CATransaction commit];
         }];
         SCHAnimationDelegate *step2 = [SCHAnimationDelegate animationDelegateWithStopBlock:^(CAAnimation *animation, BOOL finished) {
@@ -366,14 +399,18 @@ enum {
             [CATransaction setDisableActions:YES];
             releaseLayer([self.loseAnimationLayers objectAtIndex:0]);
             [[self.loseAnimationLayers objectAtIndex:1] setHidden:NO];
-            [[self.loseAnimationLayers objectAtIndex:1] animateAllFramesWithDuration:1.59 delegate:step3];
+            [[self.loseAnimationLayers objectAtIndex:1] animateAllFramesWithDuration:1.59
+                                                                         repeatCount:1
+                                                                            delegate:step3];
             [CATransaction commit];
         }];
-        [[self.loseAnimationLayers objectAtIndex:0] animateAllFramesWithDuration:1.59 delegate:step2];
+        [[self.loseAnimationLayers objectAtIndex:0] animateAllFramesWithDuration:1.59 
+                                                                     repeatCount:1
+                                                                        delegate:step2];
         [self enqueueAudioWithPath:@"sfx_penguinfall.mp3" fromBundle:YES];
     } else {
         SCHAnimationDelegate *balloonAnimationDelegate = [SCHAnimationDelegate animationDelegateWithStopBlock:^(CAAnimation *animation, BOOL finished) {
-            SCHAnimationDelegate *penguinAnimationDelegate = nil;
+            SCHAnimationDelegate *penguinAnimationDelegate;
             if (self.remainingBalloonCount == 1) {
                 penguinAnimationDelegate = [SCHAnimationDelegate animationDelegateWithStopBlock:^(CAAnimation *animation, BOOL finished) {
                     [CATransaction begin];
@@ -383,23 +420,29 @@ enum {
                     self.happyPenguinLayer.hidden = YES;
                     [[self.loseAnimationLayers objectAtIndex:0] setHidden:NO];
                     [CATransaction commit];
+                    self.controllerState = SCHStoryInteractionControllerStateInteractionInProgress;
                 }];
             } else {
                 NSString *filename = [NSString stringWithFormat:@"storyinteraction-wordbird-BalloonPop_%02d.png", 11-self.remainingBalloonCount];
                 self.balloonsLayer.contents = (id)[[UIImage imageNamed:filename] CGImage];
                 self.balloonsLayer.frameIndex = 0;
+                penguinAnimationDelegate = [self continueInteraction];
             }
             [CATransaction begin];
             [CATransaction setDisableActions:YES];
             [self.balloonsLayer setNeedsDisplay];
             self.happyPenguinLayer.hidden = YES;
             self.shockedPenguinLayer.hidden = NO;
-            [self.shockedPenguinLayer animateAllFramesWithDuration:1.5 delegate:penguinAnimationDelegate];
+            [self.shockedPenguinLayer animateAllFramesWithDuration:1.5
+                                                       repeatCount:1
+                                                          delegate:penguinAnimationDelegate];
             [CATransaction commit];
         }];
     
         self.balloonsLayer.frameIndex = self.balloonsLayer.numberOfFrames-1;
-        [self.balloonsLayer animateAllFramesWithDuration:1.5 delegate:balloonAnimationDelegate];
+        [self.balloonsLayer animateAllFramesWithDuration:1.5
+                                             repeatCount:1
+                                                delegate:balloonAnimationDelegate];
         [self enqueueAudioWithPath:@"sfx_penguinpop.mp3" fromBundle:YES];
     }
     

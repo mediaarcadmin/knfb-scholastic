@@ -61,12 +61,14 @@
 }
 
 - (void)animateAllFramesWithDuration:(CFTimeInterval)duration
+                         repeatCount:(NSInteger)repeats
                             delegate:(id)delegate
 {
     CABasicAnimation *anim = [CABasicAnimation animationWithKeyPath:@"frameIndex"];
     anim.fromValue = [NSNumber numberWithInteger:0];
     anim.toValue = [NSNumber numberWithInteger:self.numberOfFrames-1];
     anim.duration = duration;
+    anim.repeatCount = repeats;
     anim.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionLinear];
     anim.fillMode = kCAFillModeForwards;
     anim.delegate = delegate;
