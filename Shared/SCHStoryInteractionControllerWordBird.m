@@ -22,7 +22,7 @@ enum {
     kTileLetterWidth = 25,
     kTileLetterHeight = 25,
     kTileLetterGap = 5,
-    kNumberOfBalloons = 10
+    kNumberOfBalloons = 2
     
 };
 
@@ -35,6 +35,7 @@ enum {
 @property (nonatomic, retain) SCHAnimatedLayer *happyPenguinLayer;
 @property (nonatomic, retain) SCHAnimatedLayer *balloonsLayer;
 @property (nonatomic, retain) SCHAnimatedLayer *animationContainerLayer;
+@property (nonatomic, retain) NSArray *loseAnimationLayers;
 
 - (void)setupAnswerView;
 - (void)setupLettersView;
@@ -59,6 +60,7 @@ enum {
 @synthesize happyPenguinLayer;
 @synthesize balloonsLayer;
 @synthesize animationContainerLayer;
+@synthesize loseAnimationLayers;
 
 - (void)dealloc
 {
@@ -70,17 +72,18 @@ enum {
     [happyPenguinLayer release], happyPenguinLayer = nil;
     [balloonsLayer release], balloonsLayer = nil;
     [animationContainerLayer release], animationContainerLayer = nil;
+    [loseAnimationLayers release], loseAnimationLayers = nil;
     [super dealloc];
 }
 
 - (void)storyInteractionDisableUserInteraction
 {
-    [self.lettersContainer setUserInteractionEnabled:NO];
+    [self setUserInteractionsEnabled:NO];
 }
 
 - (void)storyInteractionEnableUserInteraction
 {
-    [self.lettersContainer setUserInteractionEnabled:YES];
+    [self setUserInteractionsEnabled:YES];
 }
 
 - (BOOL)shouldPlayQuestionAudioForViewAtIndex:(NSInteger)screenIndex
@@ -90,11 +93,14 @@ enum {
 
 - (void)setupViewAtIndex:(NSInteger)screenIndex
 {
-    if (screenIndex == 1) {
-        [self setupAnswerView];
-        [self setupLettersView];
-        [self setupAnimationView];
-        self.correctLetterCount = 0;
+    switch (screenIndex) {
+        case 1: {
+            [self setupAnswerView];
+            [self setupLettersView];
+            [self setupAnimationView];
+            self.correctLetterCount = 0;
+            break;
+        }
     }
 }
 
@@ -196,6 +202,23 @@ enum {
     self.happyPenguinLayer.hidden = YES;
     [self.animationContainerLayer addSublayer:self.happyPenguinLayer];
     [self.happyPenguinLayer setNeedsDisplay];
+    
+    NSMutableArray *loseLayers = [NSMutableArray arrayWithCapacity:3];
+    for (NSInteger i = 0; i < 3; ++i) {
+        SCHAnimatedLayer *loseLayer = [SCHAnimatedLayer layer];
+        loseLayer.position = CGPointMake(CGRectGetMidX(self.animationContainerLayer.bounds), CGRectGetMidY(self.animationContainerLayer.bounds));
+        loseLayer.bounds = self.animationContainerLayer.bounds;
+        NSString *filename = [NSString stringWithFormat:@"storyinteraction-wordbird-Pen_Lose_%d.png", i];
+        loseLayer.contents = (id)[[UIImage imageNamed:filename] CGImage];
+        loseLayer.frameSize = CGSizeMake(220, 360);
+        loseLayer.frameIndex = 0;
+        loseLayer.numberOfFrames = (i == 2) ? 39 : 40;
+        loseLayer.hidden = YES;
+        [loseLayer setNeedsDisplay];
+        [self.animationContainerLayer addSublayer:loseLayer];
+        [loseLayers addObject:loseLayer];
+    }
+    self.loseAnimationLayers = [NSArray arrayWithArray:loseLayers];
     
     self.remainingBalloonCount = kNumberOfBalloons;
 }
@@ -319,40 +342,56 @@ enum {
 
 - (void)popBalloon
 {
+    void (^releaseLayer)(CALayer *) = ^(CALayer *layer) {
+        [layer removeFromSuperlayer];
+        layer.contents = nil;
+    };
+    
     [CATransaction begin];
     [CATransaction setDisableActions:YES];
     
     if (--self.remainingBalloonCount == 0) {
-        // pop last balloon
-        self.animationContainerLayer.numberOfFrames = 119;
-        [self.animationContainerLayer animateAllFramesWithDuration:4.78 delegate:nil];
+        // pop last balloon - there are three stages to the animation due to the number of frames required
+        // not fitting in the maximum texture size
+        SCHAnimationDelegate *step3 = [SCHAnimationDelegate animationDelegateWithStopBlock:^(CAAnimation *animation, BOOL finished) {
+            [CATransaction begin];
+            [CATransaction setDisableActions:YES];
+            releaseLayer([self.loseAnimationLayers objectAtIndex:1]);
+            [[self.loseAnimationLayers objectAtIndex:2] setHidden:NO];
+            [[self.loseAnimationLayers objectAtIndex:2] animateAllFramesWithDuration:1.56 delegate:nil];
+            [CATransaction commit];
+        }];
+        SCHAnimationDelegate *step2 = [SCHAnimationDelegate animationDelegateWithStopBlock:^(CAAnimation *animation, BOOL finished) {
+            [CATransaction begin];
+            [CATransaction setDisableActions:YES];
+            releaseLayer([self.loseAnimationLayers objectAtIndex:0]);
+            [[self.loseAnimationLayers objectAtIndex:1] setHidden:NO];
+            [[self.loseAnimationLayers objectAtIndex:1] animateAllFramesWithDuration:1.59 delegate:step3];
+            [CATransaction commit];
+        }];
+        [[self.loseAnimationLayers objectAtIndex:0] animateAllFramesWithDuration:1.59 delegate:step2];
         [self enqueueAudioWithPath:@"sfx_penguinfall.mp3" fromBundle:YES];
     } else {
         SCHAnimationDelegate *balloonAnimationDelegate = [SCHAnimationDelegate animationDelegateWithStopBlock:^(CAAnimation *animation, BOOL finished) {
             SCHAnimationDelegate *penguinAnimationDelegate = nil;
             if (self.remainingBalloonCount == 1) {
                 penguinAnimationDelegate = [SCHAnimationDelegate animationDelegateWithStopBlock:^(CAAnimation *animation, BOOL finished) {
-                    // the last balloon's animation is in a single image
                     [CATransaction begin];
                     [CATransaction setDisableActions:YES];
-                    [self.balloonsLayer removeFromSuperlayer];
-                    [self.shockedPenguinLayer removeFromSuperlayer];
-                    self.animationContainerLayer.contents = (id)[[UIImage imageNamed:@"storyinteraction-wordbird-Pen_Lose.png"] CGImage];
-                    self.animationContainerLayer.frameSize = CGSizeMake(220, 360);
-                    self.animationContainerLayer.frameIndex = 0;
-                    [self.animationContainerLayer setNeedsDisplay];
+                    releaseLayer(self.balloonsLayer);
+                    releaseLayer(self.shockedPenguinLayer);
+                    self.happyPenguinLayer.hidden = YES;
+                    [[self.loseAnimationLayers objectAtIndex:0] setHidden:NO];
                     [CATransaction commit];
                 }];
-                NSLog(@"balloon frame index = %d", self.balloonsLayer.frameIndex);
-                [self.balloonsLayer setNeedsDisplay];
             } else {
                 NSString *filename = [NSString stringWithFormat:@"storyinteraction-wordbird-BalloonPop_%02d.png", 11-self.remainingBalloonCount];
                 self.balloonsLayer.contents = (id)[[UIImage imageNamed:filename] CGImage];
                 self.balloonsLayer.frameIndex = 0;
-                [self.balloonsLayer setNeedsDisplay];
             }
             [CATransaction begin];
             [CATransaction setDisableActions:YES];
+            [self.balloonsLayer setNeedsDisplay];
             self.happyPenguinLayer.hidden = YES;
             self.shockedPenguinLayer.hidden = NO;
             [self.shockedPenguinLayer animateAllFramesWithDuration:1.5 delegate:penguinAnimationDelegate];
