@@ -12,7 +12,7 @@
 
 @property (nonatomic, assign) CGSize frameSize;
 @property (nonatomic, assign) NSInteger frameIndex;
-@property (nonatomic, readonly) NSInteger numberOfFrames;
+@property (nonatomic, assign) NSInteger numberOfFrames;
 
 - (void)animateAllFramesWithDuration:(CFTimeInterval)duration
                             delegate:(id)delegate;
