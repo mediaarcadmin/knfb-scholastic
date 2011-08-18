@@ -417,7 +417,7 @@ typedef enum {
     if ([[SCHAppStateManager sharedAppStateManager] isSampleStore] == YES) {
         for (SCHProfileItem *item in [profile.fetchedResultsController fetchedObjects]) {
             if ([item.ID integerValue] == sampleBookshelf + 1) {    // added 1 to convert from index to profileID
-                [profile pushBookshelvesControllerWithProfileItem:item animated:NO];
+                [profile pushBookshelvesControllerWithProfileItem:item animated:YES];
                 break;
             }
         }    
