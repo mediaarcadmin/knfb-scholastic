@@ -1444,6 +1444,30 @@
 		C9EFB294134F795900ADF905 /* SCHXPSURLProtocol.m in Sources */ = {isa = PBXBuildFile; fileRef = C9EFB292134F795800ADF905 /* SCHXPSURLProtocol.m */; };
 		C9F17C2213FD185700C06DF6 /* SCHHelpViewController~iphone.xib in Resources */ = {isa = PBXBuildFile; fileRef = C9F17C2113FD185700C06DF6 /* SCHHelpViewController~iphone.xib */; };
 		C9F17C2313FD185700C06DF6 /* SCHHelpViewController~iphone.xib in Resources */ = {isa = PBXBuildFile; fileRef = C9F17C2113FD185700C06DF6 /* SCHHelpViewController~iphone.xib */; };
+		C9F17C2513FD3D1000C06DF6 /* Stickers in Resources */ = {isa = PBXBuildFile; fileRef = C9F17C2413FD3D1000C06DF6 /* Stickers */; };
+		C9F17C2613FD3D1000C06DF6 /* Stickers in Resources */ = {isa = PBXBuildFile; fileRef = C9F17C2413FD3D1000C06DF6 /* Stickers */; };
+		C9F17C2B13FD412400C06DF6 /* storyinteraction-picturestarter-pallette-overlay~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = C9F17C2713FD412400C06DF6 /* storyinteraction-picturestarter-pallette-overlay~iphone.png */; };
+		C9F17C2C13FD412400C06DF6 /* storyinteraction-picturestarter-pallette-overlay~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = C9F17C2713FD412400C06DF6 /* storyinteraction-picturestarter-pallette-overlay~iphone.png */; };
+		C9F17C2D13FD412400C06DF6 /* storyinteraction-picturestarter-pallette-overlay@2x~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = C9F17C2813FD412400C06DF6 /* storyinteraction-picturestarter-pallette-overlay@2x~iphone.png */; };
+		C9F17C2E13FD412400C06DF6 /* storyinteraction-picturestarter-pallette-overlay@2x~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = C9F17C2813FD412400C06DF6 /* storyinteraction-picturestarter-pallette-overlay@2x~iphone.png */; };
+		C9F17C2F13FD412400C06DF6 /* storyinteraction-picturestarter-scroller-overlay~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = C9F17C2913FD412400C06DF6 /* storyinteraction-picturestarter-scroller-overlay~iphone.png */; };
+		C9F17C3013FD412400C06DF6 /* storyinteraction-picturestarter-scroller-overlay~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = C9F17C2913FD412400C06DF6 /* storyinteraction-picturestarter-scroller-overlay~iphone.png */; };
+		C9F17C3113FD412400C06DF6 /* storyinteraction-picturestarter-scroller-overlay@2x~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = C9F17C2A13FD412400C06DF6 /* storyinteraction-picturestarter-scroller-overlay@2x~iphone.png */; };
+		C9F17C3213FD412400C06DF6 /* storyinteraction-picturestarter-scroller-overlay@2x~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = C9F17C2A13FD412400C06DF6 /* storyinteraction-picturestarter-scroller-overlay@2x~iphone.png */; };
+		C9F17C3A13FD461000C06DF6 /* storyinteraction-picturestarter-scroller-overlay~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = C9F17C3313FD460E00C06DF6 /* storyinteraction-picturestarter-scroller-overlay~ipad.png */; };
+		C9F17C3B13FD461000C06DF6 /* storyinteraction-picturestarter-scroller-overlay~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = C9F17C3313FD460E00C06DF6 /* storyinteraction-picturestarter-scroller-overlay~ipad.png */; };
+		C9F17C3C13FD461000C06DF6 /* storyinteraction-picturestarter-questionmark~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = C9F17C3413FD460E00C06DF6 /* storyinteraction-picturestarter-questionmark~ipad.png */; };
+		C9F17C3D13FD461000C06DF6 /* storyinteraction-picturestarter-questionmark~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = C9F17C3413FD460E00C06DF6 /* storyinteraction-picturestarter-questionmark~ipad.png */; };
+		C9F17C3E13FD461000C06DF6 /* storyinteraction-picturestarter-blank~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = C9F17C3513FD460E00C06DF6 /* storyinteraction-picturestarter-blank~ipad.png */; };
+		C9F17C3F13FD461000C06DF6 /* storyinteraction-picturestarter-blank~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = C9F17C3513FD460E00C06DF6 /* storyinteraction-picturestarter-blank~ipad.png */; };
+		C9F17C4013FD461000C06DF6 /* storyinteraction-picturestarter-blank~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = C9F17C3613FD460F00C06DF6 /* storyinteraction-picturestarter-blank~iphone.png */; };
+		C9F17C4113FD461000C06DF6 /* storyinteraction-picturestarter-blank~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = C9F17C3613FD460F00C06DF6 /* storyinteraction-picturestarter-blank~iphone.png */; };
+		C9F17C4213FD461000C06DF6 /* storyinteraction-picturestarter-blank@2x~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = C9F17C3713FD460F00C06DF6 /* storyinteraction-picturestarter-blank@2x~iphone.png */; };
+		C9F17C4313FD461000C06DF6 /* storyinteraction-picturestarter-blank@2x~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = C9F17C3713FD460F00C06DF6 /* storyinteraction-picturestarter-blank@2x~iphone.png */; };
+		C9F17C4413FD461000C06DF6 /* storyinteraction-picturestarter-questionmark~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = C9F17C3813FD461000C06DF6 /* storyinteraction-picturestarter-questionmark~iphone.png */; };
+		C9F17C4513FD461000C06DF6 /* storyinteraction-picturestarter-questionmark~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = C9F17C3813FD461000C06DF6 /* storyinteraction-picturestarter-questionmark~iphone.png */; };
+		C9F17C4613FD461000C06DF6 /* storyinteraction-picturestarter-questionmark@2x~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = C9F17C3913FD461000C06DF6 /* storyinteraction-picturestarter-questionmark@2x~iphone.png */; };
+		C9F17C4713FD461000C06DF6 /* storyinteraction-picturestarter-questionmark@2x~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = C9F17C3913FD461000C06DF6 /* storyinteraction-picturestarter-questionmark@2x~iphone.png */; };
 		C9F1A4D6133B507100FD984C /* libPlayReadyPK.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A3D933851326D92000037111 /* libPlayReadyPK.a */; };
 		C9F1A57A133B83D100FD984C /* libxml2.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = C9F1A579133B83D100FD984C /* libxml2.dylib */; };
 		C9F5B750138FBBB3009DE113 /* SCHUnderlinedButton.m in Sources */ = {isa = PBXBuildFile; fileRef = C9F5B74F138FBBB3009DE113 /* SCHUnderlinedButton.m */; };
@@ -3090,6 +3114,18 @@
 		C9EFB291134F795800ADF905 /* SCHXPSURLProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHXPSURLProtocol.h; path = Shared/SCHXPSURLProtocol.h; sourceTree = SOURCE_ROOT; };
 		C9EFB292134F795800ADF905 /* SCHXPSURLProtocol.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHXPSURLProtocol.m; path = Shared/SCHXPSURLProtocol.m; sourceTree = SOURCE_ROOT; };
 		C9F17C2113FD185700C06DF6 /* SCHHelpViewController~iphone.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = "SCHHelpViewController~iphone.xib"; path = "iPhone/SCHHelpViewController~iphone.xib"; sourceTree = "<group>"; };
+		C9F17C2413FD3D1000C06DF6 /* Stickers */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Stickers; sourceTree = "<group>"; };
+		C9F17C2713FD412400C06DF6 /* storyinteraction-picturestarter-pallette-overlay~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "storyinteraction-picturestarter-pallette-overlay~iphone.png"; sourceTree = "<group>"; };
+		C9F17C2813FD412400C06DF6 /* storyinteraction-picturestarter-pallette-overlay@2x~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "storyinteraction-picturestarter-pallette-overlay@2x~iphone.png"; sourceTree = "<group>"; };
+		C9F17C2913FD412400C06DF6 /* storyinteraction-picturestarter-scroller-overlay~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "storyinteraction-picturestarter-scroller-overlay~iphone.png"; sourceTree = "<group>"; };
+		C9F17C2A13FD412400C06DF6 /* storyinteraction-picturestarter-scroller-overlay@2x~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "storyinteraction-picturestarter-scroller-overlay@2x~iphone.png"; sourceTree = "<group>"; };
+		C9F17C3313FD460E00C06DF6 /* storyinteraction-picturestarter-scroller-overlay~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "storyinteraction-picturestarter-scroller-overlay~ipad.png"; sourceTree = "<group>"; };
+		C9F17C3413FD460E00C06DF6 /* storyinteraction-picturestarter-questionmark~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "storyinteraction-picturestarter-questionmark~ipad.png"; sourceTree = "<group>"; };
+		C9F17C3513FD460E00C06DF6 /* storyinteraction-picturestarter-blank~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "storyinteraction-picturestarter-blank~ipad.png"; sourceTree = "<group>"; };
+		C9F17C3613FD460F00C06DF6 /* storyinteraction-picturestarter-blank~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "storyinteraction-picturestarter-blank~iphone.png"; sourceTree = "<group>"; };
+		C9F17C3713FD460F00C06DF6 /* storyinteraction-picturestarter-blank@2x~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "storyinteraction-picturestarter-blank@2x~iphone.png"; sourceTree = "<group>"; };
+		C9F17C3813FD461000C06DF6 /* storyinteraction-picturestarter-questionmark~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "storyinteraction-picturestarter-questionmark~iphone.png"; sourceTree = "<group>"; };
+		C9F17C3913FD461000C06DF6 /* storyinteraction-picturestarter-questionmark@2x~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "storyinteraction-picturestarter-questionmark@2x~iphone.png"; sourceTree = "<group>"; };
 		C9F1A579133B83D100FD984C /* libxml2.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libxml2.dylib; path = usr/lib/libxml2.dylib; sourceTree = SDKROOT; };
 		C9F5B74E138FBBB3009DE113 /* SCHUnderlinedButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHUnderlinedButton.h; path = Shared/SCHUnderlinedButton.h; sourceTree = "<group>"; };
 		C9F5B74F138FBBB3009DE113 /* SCHUnderlinedButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHUnderlinedButton.m; path = Shared/SCHUnderlinedButton.m; sourceTree = "<group>"; };
@@ -3726,6 +3762,18 @@
 		28A60F7A1397BB340090853E /* StoryInteractions */ = {
 			isa = PBXGroup;
 			children = (
+				C9F17C2413FD3D1000C06DF6 /* Stickers */,
+				C9F17C2713FD412400C06DF6 /* storyinteraction-picturestarter-pallette-overlay~iphone.png */,
+				C9F17C2813FD412400C06DF6 /* storyinteraction-picturestarter-pallette-overlay@2x~iphone.png */,
+				C9F17C2913FD412400C06DF6 /* storyinteraction-picturestarter-scroller-overlay~iphone.png */,
+				C9F17C2A13FD412400C06DF6 /* storyinteraction-picturestarter-scroller-overlay@2x~iphone.png */,
+				C9F17C3313FD460E00C06DF6 /* storyinteraction-picturestarter-scroller-overlay~ipad.png */,
+				C9F17C3413FD460E00C06DF6 /* storyinteraction-picturestarter-questionmark~ipad.png */,
+				C9F17C3513FD460E00C06DF6 /* storyinteraction-picturestarter-blank~ipad.png */,
+				C9F17C3613FD460F00C06DF6 /* storyinteraction-picturestarter-blank~iphone.png */,
+				C9F17C3713FD460F00C06DF6 /* storyinteraction-picturestarter-blank@2x~iphone.png */,
+				C9F17C3813FD461000C06DF6 /* storyinteraction-picturestarter-questionmark~iphone.png */,
+				C9F17C3913FD461000C06DF6 /* storyinteraction-picturestarter-questionmark@2x~iphone.png */,
 				C91E99B313F930F8004F8062 /* storyinteraction-card-collection-flip~ipad.png */,
 				C91E99B413F930F8004F8062 /* storyinteraction-card-collection-zoom-out~ipad.png */,
 				C91E99B513F930F8004F8062 /* storyinteraction-card-collection-zoom-in~ipad.png */,
@@ -6466,6 +6514,18 @@
 				5256959113FD00B600799BFC /* olderHelpVideo~iphone.mp4 in Resources */,
 				5256959313FD00B600799BFC /* youngerHelpVideo~iphone.mp4 in Resources */,
 				C9F17C2213FD185700C06DF6 /* SCHHelpViewController~iphone.xib in Resources */,
+				C9F17C2513FD3D1000C06DF6 /* Stickers in Resources */,
+				C9F17C2B13FD412400C06DF6 /* storyinteraction-picturestarter-pallette-overlay~iphone.png in Resources */,
+				C9F17C2D13FD412400C06DF6 /* storyinteraction-picturestarter-pallette-overlay@2x~iphone.png in Resources */,
+				C9F17C2F13FD412400C06DF6 /* storyinteraction-picturestarter-scroller-overlay~iphone.png in Resources */,
+				C9F17C3113FD412400C06DF6 /* storyinteraction-picturestarter-scroller-overlay@2x~iphone.png in Resources */,
+				C9F17C3A13FD461000C06DF6 /* storyinteraction-picturestarter-scroller-overlay~ipad.png in Resources */,
+				C9F17C3C13FD461000C06DF6 /* storyinteraction-picturestarter-questionmark~ipad.png in Resources */,
+				C9F17C3E13FD461000C06DF6 /* storyinteraction-picturestarter-blank~ipad.png in Resources */,
+				C9F17C4013FD461000C06DF6 /* storyinteraction-picturestarter-blank~iphone.png in Resources */,
+				C9F17C4213FD461000C06DF6 /* storyinteraction-picturestarter-blank@2x~iphone.png in Resources */,
+				C9F17C4413FD461000C06DF6 /* storyinteraction-picturestarter-questionmark~iphone.png in Resources */,
+				C9F17C4613FD461000C06DF6 /* storyinteraction-picturestarter-questionmark@2x~iphone.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -7079,6 +7139,18 @@
 				5256959213FD00B600799BFC /* olderHelpVideo~iphone.mp4 in Resources */,
 				5256959413FD00B600799BFC /* youngerHelpVideo~iphone.mp4 in Resources */,
 				C9F17C2313FD185700C06DF6 /* SCHHelpViewController~iphone.xib in Resources */,
+				C9F17C2613FD3D1000C06DF6 /* Stickers in Resources */,
+				C9F17C2C13FD412400C06DF6 /* storyinteraction-picturestarter-pallette-overlay~iphone.png in Resources */,
+				C9F17C2E13FD412400C06DF6 /* storyinteraction-picturestarter-pallette-overlay@2x~iphone.png in Resources */,
+				C9F17C3013FD412400C06DF6 /* storyinteraction-picturestarter-scroller-overlay~iphone.png in Resources */,
+				C9F17C3213FD412400C06DF6 /* storyinteraction-picturestarter-scroller-overlay@2x~iphone.png in Resources */,
+				C9F17C3B13FD461000C06DF6 /* storyinteraction-picturestarter-scroller-overlay~ipad.png in Resources */,
+				C9F17C3D13FD461000C06DF6 /* storyinteraction-picturestarter-questionmark~ipad.png in Resources */,
+				C9F17C3F13FD461000C06DF6 /* storyinteraction-picturestarter-blank~ipad.png in Resources */,
+				C9F17C4113FD461000C06DF6 /* storyinteraction-picturestarter-blank~iphone.png in Resources */,
+				C9F17C4313FD461000C06DF6 /* storyinteraction-picturestarter-blank@2x~iphone.png in Resources */,
+				C9F17C4513FD461000C06DF6 /* storyinteraction-picturestarter-questionmark~iphone.png in Resources */,
+				C9F17C4713FD461000C06DF6 /* storyinteraction-picturestarter-questionmark@2x~iphone.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
