@@ -22,7 +22,7 @@ enum {
     kTileLetterWidth = 25,
     kTileLetterHeight = 25,
     kTileLetterGap = 5,
-    kNumberOfBalloons = 2
+    kNumberOfBalloons = 10
     
 };
 
@@ -379,7 +379,7 @@ enum {
     [CATransaction begin];
     [CATransaction setDisableActions:YES];
     
-    if (--self.remainingBalloonCount == 0) {
+    if (self.remainingBalloonCount == 1) {
         // pop last balloon - there are three stages to the animation due to the number of frames required
         // not fitting in the maximum texture size
         SCHAnimationDelegate *step3 = [SCHAnimationDelegate animationDelegateWithStopBlock:^(CAAnimation *animation, BOOL finished) {
@@ -404,38 +404,29 @@ enum {
                                                                             delegate:step3];
             [CATransaction commit];
         }];
+
+        releaseLayer(self.balloonsLayer);
+        releaseLayer(self.shockedPenguinLayer);
+        releaseLayer(self.happyPenguinLayer);
+        [[self.loseAnimationLayers objectAtIndex:0] setHidden:NO];
         [[self.loseAnimationLayers objectAtIndex:0] animateAllFramesWithDuration:1.59 
                                                                      repeatCount:1
                                                                         delegate:step2];
         [self enqueueAudioWithPath:@"sfx_penguinfall.mp3" fromBundle:YES];
     } else {
+        NSString *filename = [NSString stringWithFormat:@"storyinteraction-wordbird-BalloonPop_%02d.png", 11-self.remainingBalloonCount];
+        self.balloonsLayer.contents = (id)[[UIImage imageNamed:filename] CGImage];
+        self.balloonsLayer.frameIndex = 0;
+        [self.balloonsLayer setNeedsDisplay];
+        
         SCHAnimationDelegate *balloonAnimationDelegate = [SCHAnimationDelegate animationDelegateWithStopBlock:^(CAAnimation *animation, BOOL finished) {
-            SCHAnimationDelegate *penguinAnimationDelegate;
-            if (self.remainingBalloonCount == 1) {
-                penguinAnimationDelegate = [SCHAnimationDelegate animationDelegateWithStopBlock:^(CAAnimation *animation, BOOL finished) {
-                    [CATransaction begin];
-                    [CATransaction setDisableActions:YES];
-                    releaseLayer(self.balloonsLayer);
-                    releaseLayer(self.shockedPenguinLayer);
-                    self.happyPenguinLayer.hidden = YES;
-                    [[self.loseAnimationLayers objectAtIndex:0] setHidden:NO];
-                    [CATransaction commit];
-                    self.controllerState = SCHStoryInteractionControllerStateInteractionInProgress;
-                }];
-            } else {
-                NSString *filename = [NSString stringWithFormat:@"storyinteraction-wordbird-BalloonPop_%02d.png", 11-self.remainingBalloonCount];
-                self.balloonsLayer.contents = (id)[[UIImage imageNamed:filename] CGImage];
-                self.balloonsLayer.frameIndex = 0;
-                penguinAnimationDelegate = [self continueInteraction];
-            }
             [CATransaction begin];
             [CATransaction setDisableActions:YES];
-            [self.balloonsLayer setNeedsDisplay];
             self.happyPenguinLayer.hidden = YES;
             self.shockedPenguinLayer.hidden = NO;
             [self.shockedPenguinLayer animateAllFramesWithDuration:1.5
                                                        repeatCount:1
-                                                          delegate:penguinAnimationDelegate];
+                                                          delegate:[self continueInteraction]];
             [CATransaction commit];
         }];
     
@@ -447,6 +438,7 @@ enum {
     }
     
     [CATransaction commit];
+    self.remainingBalloonCount--;
 }
 
 @end
