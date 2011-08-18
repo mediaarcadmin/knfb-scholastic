@@ -11,5 +11,6 @@
 // Constants
 NSString * const kSCHUserDefaultsPerformedFirstSyncUpToBooks = @"PerformedFirstSyncUpToBooks";
 NSString * const kSCHUserDefaultsSpaceSaverMode = @"SpaceSaverMode";
-NSString * const kSCHUserDefaultsYoungerHelpVideoFirstPlay = @"kSCHUserDefaultsYoungerHelpVideoFirstPlay";
-NSString * const kSCHUserDefaultsOlderHelpVideoFirstPlay = @"kSCHUserDefaultsOlderHelpVideoFirstPlay";
+NSString * const kSCHUserDefaultsYoungerHelpVideoFirstPlay = @"UserDefaultsYoungerHelpVideoFirstPlay";
+NSString * const kSCHUserDefaultsOlderHelpVideoFirstPlay = @"UserDefaultsOlderHelpVideoFirstPlay";
+NSString * const kSCHUserDefaultsHasEverLoggedIn = @"UserDefaultsHasEverLoggedIn";
