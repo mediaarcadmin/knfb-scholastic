@@ -21,12 +21,16 @@ static NSString * const kSCHHelpViewControllerVideoExtension = @"mp4";
 
 static CGFloat const kSCHStoryInteractionControllerVideoCornerRadius = 20.0;
 static CGFloat const kSCHStoryInteractionControllerVideoBorderWidth = 4.0;
+static CGFloat const kSCHStoryInteractionControllerCloseCornerRadius = 8.0;
+static CGFloat const kSCHStoryInteractionControllerCloseBorderWidth = 1.5;
+
 
 @interface SCHHelpViewController ()
 
 @property (nonatomic, retain) MPMoviePlayerController *moviePlayer;
 @property (nonatomic, assign) BOOL youngerMode;
 @property (nonatomic, assign) BOOL firstPlay;
+@property (nonatomic, assign) BOOL statusBarHiddenOnEntry;
 
 - (void)releaseViewObjects;
 - (void)pause;
@@ -44,6 +48,7 @@ static CGFloat const kSCHStoryInteractionControllerVideoBorderWidth = 4.0;
 @synthesize moviePlayer;
 @synthesize youngerMode;
 @synthesize firstPlay;
+@synthesize statusBarHiddenOnEntry;
 
 #pragma mark - Object lifecycle
 
@@ -89,21 +94,27 @@ static CGFloat const kSCHStoryInteractionControllerVideoBorderWidth = 4.0;
 {
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
-    
-    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
-        self.borderView.layer.cornerRadius = kSCHStoryInteractionControllerVideoCornerRadius;  
-        self.borderView.layer.borderWidth = kSCHStoryInteractionControllerVideoBorderWidth; 
         
-        if (self.youngerMode == NO) {
-            self.borderView.layer.borderColor = [[UIColor SCHPurple1Color] CGColor];    
-        } else {
-            self.borderView.layer.borderColor = [[UIColor SCHBlue2Color] CGColor];    
-        }                
+    self.closeButton.alpha = 0.4f;
+    
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
+        self.wantsFullScreenLayout = YES;
+    } else {
+        self.closeButton.layer.cornerRadius = kSCHStoryInteractionControllerCloseCornerRadius;  
+        self.closeButton.layer.borderWidth = kSCHStoryInteractionControllerCloseBorderWidth;
+        self.closeButton.layer.borderColor = [[UIColor whiteColor] CGColor];
     }
     
-    if (self.firstPlay == YES) {
-        self.playButton.play = YES;
-    }
+    self.borderView.layer.cornerRadius = kSCHStoryInteractionControllerVideoCornerRadius;  
+    self.borderView.layer.borderWidth = kSCHStoryInteractionControllerVideoBorderWidth;
+        
+    if (self.youngerMode == NO) {
+        self.borderView.layer.borderColor = [[UIColor SCHPurple1Color] CGColor];    
+    } else {
+        self.borderView.layer.borderColor = [[UIColor SCHBlue2Color] CGColor];    
+    }                
+    
+    self.playButton.play = YES; // We always want help to start playing
     
     self.playButton.actionBlock = ^(SCHPlayButton *button) {
         if (button.play == YES) {
@@ -131,7 +142,7 @@ static CGFloat const kSCHStoryInteractionControllerVideoBorderWidth = 4.0;
         
         [self.moviePlayer prepareToPlay];
         self.moviePlayer.controlStyle = MPMovieControlStyleNone;
-        self.moviePlayer.shouldAutoplay = self.firstPlay;
+        self.moviePlayer.shouldAutoplay = YES;
         [self.moviePlayer.view setFrame:self.movieContainerView.bounds];
         self.moviePlayer.view.autoresizingMask =  
         UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleWidth | 
@@ -146,6 +157,23 @@ static CGFloat const kSCHStoryInteractionControllerVideoBorderWidth = 4.0;
                                              selector:@selector(willResignActiveNotification:)
                                                  name:UIApplicationWillResignActiveNotification
                                                object:nil];    
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
+        self.statusBarHiddenOnEntry = [[UIApplication sharedApplication] isStatusBarHidden];
+        [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationFade];
+    }
+}
+
+- (void)viewWillDisappear:(BOOL)animated
+{
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
+        [[UIApplication sharedApplication] setStatusBarHidden:self.statusBarHiddenOnEntry];
+    }
 }
 
 - (void)viewDidUnload
