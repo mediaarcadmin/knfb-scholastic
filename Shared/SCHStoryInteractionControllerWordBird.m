@@ -167,8 +167,18 @@ enum {
     CGRect bounds = CGRectMake(0, 0, 260, 400);
     self.animationContainerLayer = [SCHAnimatedLayer layer];
     self.animationContainerLayer.bounds = bounds;
+    
+    CGFloat scale = 1.0f;
+    CGFloat neededHeight = CGRectGetHeight(bounds)*1.5;
+    if (CGRectGetWidth(bounds) > CGRectGetWidth(self.animationContainer.bounds)
+        || neededHeight > CGRectGetHeight(self.animationContainer.bounds)) {
+        // scale the animation layer down to fit
+        scale = MIN(CGRectGetWidth(self.animationContainer.bounds) / CGRectGetWidth(bounds),
+                    CGRectGetHeight(self.animationContainer.bounds) / neededHeight);
+    }
+    self.animationContainerLayer.affineTransform = CGAffineTransformMakeScale(scale, scale);
     self.animationContainerLayer.position = CGPointMake(CGRectGetMidX(self.animationContainer.bounds),
-                                                        CGRectGetMaxY(self.animationContainer.bounds)-CGRectGetMidY(bounds));
+                                                        CGRectGetMaxY(self.animationContainer.bounds)-CGRectGetMidY(bounds)*scale);
     [self.animationContainer.layer addSublayer:self.animationContainerLayer];
     
     self.balloonsLayer = [SCHAnimatedLayer layer];
@@ -313,9 +323,10 @@ enum {
     [CATransaction setDisableActions:YES];
     
     if (self.correctLetterCount < [[self currentWord] length]) {
-        CGFloat ystep = (CGRectGetHeight(self.animationContainer.bounds)-CGRectGetHeight(self.animationContainerLayer.bounds))/([[self currentWord] length]-1);
+        CGRect bounds = CGRectApplyAffineTransform(self.animationContainerLayer.bounds, self.animationContainerLayer.affineTransform);
+        CGFloat ystep = (CGRectGetHeight(self.animationContainer.bounds)-CGRectGetHeight(bounds))/([[self currentWord] length]-1);
         CGPoint targetPosition = CGPointMake(self.animationContainerLayer.position.x, 
-                                             CGRectGetMaxY(self.animationContainer.bounds)-CGRectGetMidY(self.animationContainerLayer.bounds)-ystep*self.correctLetterCount);
+                                             CGRectGetMaxY(self.animationContainer.bounds)-CGRectGetMidY(bounds)-ystep*self.correctLetterCount);
         
         CABasicAnimation *move = [CABasicAnimation animationWithKeyPath:@"position"];
         move.fromValue = [NSValue valueWithCGPoint:self.animationContainerLayer.position];
