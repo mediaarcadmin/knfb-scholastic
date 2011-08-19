@@ -1605,13 +1605,6 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 {
     paperType = newPaperType;
     
-//    NSNumber *savedPaperType = [[self.profile AppProfile] PaperType];
-//    
-//    if (!self.youngerMode && (!savedPaperType || [savedPaperType intValue] != newPaperType)) {
-//        savedPaperType = [NSNumber numberWithInt:newPaperType];
-//        [[self.profile AppProfile] setPaperType:savedPaperType];
-//    }
-
     switch (newPaperType) {
         case SCHReadingViewPaperTypeBlack:
             [self.readingView setPageTexture:[UIImage imageNamed: @"paper-black.png"] isDark:YES];
