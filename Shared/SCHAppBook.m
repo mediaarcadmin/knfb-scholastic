@@ -144,6 +144,21 @@ NSString * const kSCHAppBookEucalyptusCacheDir = @"libEucalyptusCache";
 {
     return(self.ContentMetadataItem.bookIdentifier);
 }
+            
+- (NSNumber *)HasStoryInteractions
+{
+    NSNumber *ret = NO;
+
+    [self willAccessValueForKey:kSCHAppBookHasStoryInteractions];
+    ret = [self primitiveValueForKey:kSCHAppBookHasStoryInteractions];
+    // if it hasnt been set then use the book info    
+    if (ret == nil) {
+        ret = self.ContentMetadataItem.Enhanced;
+    }
+    [self didAccessValueForKey:kSCHAppBookHasStoryInteractions];
+    
+    return(ret);
+}
 
 - (BOOL)haveURLs
 {
@@ -388,7 +403,7 @@ NSString * const kSCHAppBookEucalyptusCacheDir = @"libEucalyptusCache";
 - (SCHAppBookFeatures)bookFeatures
 {
     SCHAppBookFeatures ret = kSCHAppBookFeaturesNone;
-    BOOL storyInteractions = [self.ContentMetadataItem.Enhanced boolValue];
+    BOOL storyInteractions = [[self HasStoryInteractions] boolValue];
     BOOL sample = ([self.ContentMetadataItem.DRMQualifier DRMQualifierValue] == kSCHDRMQualifiersSample);
     
     if (storyInteractions == YES && sample == YES) {
