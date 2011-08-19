@@ -139,7 +139,8 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 - (void)presentStoryInteraction:(SCHStoryInteraction *)storyInteraction;
 - (void)save;
 
-- (void)setupOptionsViewForMode: (SCHReadingViewLayoutType) newLayoutType;
+- (void)setupOptionsViewForMode:(SCHReadingViewLayoutType)newLayoutType;
+- (void)setupOptionsViewForMode:(SCHReadingViewLayoutType)newLayoutType orientation:(UIInterfaceOrientation)orientation;
 
 @end
 
@@ -176,6 +177,8 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 @synthesize customOptionsView;
 @synthesize originalButtons;
 @synthesize customButtons;
+@synthesize largeOptionsButtons;
+@synthesize smallOptionsButtons;
 @synthesize fontSegmentedControl;
 @synthesize paperTypeSegmentedControl;
 @synthesize popoverOptionsViewController;
@@ -274,6 +277,8 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     
     [originalButtons release], originalButtons = nil;
     [customButtons release], customButtons = nil;
+    [largeOptionsButtons release], largeOptionsButtons = nil;
+    [smallOptionsButtons release], smallOptionsButtons = nil;
     [fontSegmentedControl release], fontSegmentedControl = nil;
     [paperTypeSegmentedControl release], paperTypeSegmentedControl = nil;
     
@@ -599,6 +604,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 
 -(void)setupAssetsForOrientation:(UIInterfaceOrientation)orientation
 {    
+    // toolbars
     if (UIInterfaceOrientationIsPortrait(orientation)) {
         [self.backButton setImage:[UIImage imageNamed:@"icon-books.png"] forState:UIControlStateNormal];
         
@@ -627,11 +633,17 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
         }
     }    
     
+    // shadows
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
         CGRect topShadowFrame = self.topShadow.frame;
         topShadowFrame.origin.y = CGRectGetMinY(self.navigationController.navigationBar.frame) + 
         [(SCHCustomNavigationBar *)self.navigationController.navigationBar backgroundImage].size.height;
         self.topShadow.frame = topShadowFrame;
+    }
+    
+    // options buttons
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
+        [self setupOptionsViewForMode:self.layoutType orientation:orientation];
     }
     
 }
@@ -1367,43 +1379,67 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 
 #pragma mark - Options View Setup and Button Actions
 
-- (void)setupOptionsViewForMode: (SCHReadingViewLayoutType) newLayoutType
+- (void)setupOptionsViewForMode:(SCHReadingViewLayoutType)newLayoutType
 {
-    // weirdness with the popover controller means this needs to be hardcoded. ugh.
-    const float topHeight = 134;
+    [self setupOptionsViewForMode:newLayoutType orientation:[[UIApplication sharedApplication] statusBarOrientation]];
+}
+
+- (void)setupOptionsViewForMode:(SCHReadingViewLayoutType)newLayoutType orientation:(UIInterfaceOrientation)orientation
+{
     
-    // set the buttons to the correct selection
-    bool isFixed = YES;
+    // initialise state
+    BOOL iPhone = (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone);
+    BOOL landscape = UIInterfaceOrientationIsLandscape(orientation);
     
-    if (newLayoutType == SCHReadingViewLayoutTypeFlow) {
-        isFixed = NO;
+    NSInteger optionsViewHeight = 134;
+    
+    if (landscape && iPhone) {
+        optionsViewHeight = 84;
     }
     
-    for (UIButton *button in self.originalButtons) {
-        button.selected = isFixed;
+    BOOL isFlow = YES;
+
+    if (newLayoutType == SCHReadingViewLayoutTypeFixed) {
+        isFlow = NO;
     }
     
+    // buttons - set the correct states and button types
     for (UIButton *button in self.customButtons) {
-        button.selected = !isFixed;
+        button.selected = isFlow;
+    }
+
+    for (UIButton *button in self.originalButtons) {
+        button.selected = !isFlow;
     }
     
-    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
-        if (newLayoutType == SCHReadingViewLayoutTypeFlow) {
+    for (UIButton *button in self.largeOptionsButtons) {
+        button.hidden = landscape;
+    }
+
+    for (UIButton *button in self.smallOptionsButtons) {
+        button.hidden = !landscape;
+    }
+    
+    
+    if (iPhone) {
+        if (isFlow) {
             
             // show the additional options and resize the parent view
-            float totalHeight = ceilf(topHeight + self.customOptionsView.frame.size.height);
+            float totalHeight = ceilf(optionsViewHeight + self.customOptionsView.frame.size.height);
             
             if (!self.customOptionsView.superview) {
                 CGRect frame = self.customOptionsView.frame;
-                frame.origin.y = topHeight;
-                frame.origin.x = 60;
+                frame.origin.y = optionsViewHeight;
+                frame.origin.x = 0;
+                frame.size.width = self.view.frame.size.width;
                 self.customOptionsView.frame = frame;
                 self.customOptionsView.alpha = 0;
                 
                 [self.optionsView addSubview:self.customOptionsView];
             }
             
-            if (self.customOptionsView.alpha < 1) {
+            // show the custom options
+//            if (self.customOptionsView.alpha < 1) {
                 [UIView animateWithDuration:0.25 animations:^{
                     
                     CGRect frame = self.optionsView.frame;
@@ -1411,38 +1447,42 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
                     frame.size.height = totalHeight;
                     self.optionsView.frame = frame;
                     
+                    frame = self.customOptionsView.frame;
+                    frame.origin.y = optionsViewHeight;
+                    self.customOptionsView.frame = frame;
+                    
                     self.customOptionsView.alpha = 1;
                 }];
-            }
+//            }
             
-        } else if (newLayoutType == SCHReadingViewLayoutTypeFixed) {
+        } else {
             
             // hide the additional options and resize the parent view
-            float totalHeight = 150;
+//            float totalHeight = 150;
             
-            if (self.customOptionsView.alpha > 0) {
+//            if (self.customOptionsView.alpha > 0) {
                 [UIView animateWithDuration:0.25 animations:^{
                     
                     CGRect frame = self.optionsView.frame;
-                    frame.origin.y = CGRectGetMinY(self.olderBottomToolbar.frame) - totalHeight;
-                    frame.size.height = totalHeight;
+                    frame.origin.y = CGRectGetMinY(self.olderBottomToolbar.frame) - optionsViewHeight;
+                    frame.size.height = optionsViewHeight;
                     self.optionsView.frame = frame;
                     
                     self.customOptionsView.alpha = 0;
                 }];
-            }
+//            }
         }
     } else {
-        if (newLayoutType == SCHReadingViewLayoutTypeFlow) {
+        if (isFlow) {
             // show the additional options and resize the popover
             
-            float totalHeight = ceilf(topHeight + self.customOptionsView.frame.size.height);
+            float totalHeight = ceilf(optionsViewHeight + self.customOptionsView.frame.size.height);
             
             NSLog(@"Frame for custom view: %@", NSStringFromCGRect(self.customOptionsView.frame));
             
             if (!self.customOptionsView.superview) {
                 CGRect frame = self.customOptionsView.frame;
-                frame.origin.y = topHeight;
+                frame.origin.y = optionsViewHeight;
                 frame.size.width = 200;
                 self.customOptionsView.frame = frame;
                 
@@ -1457,7 +1497,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
                 }];
             }
             
-        } else if (newLayoutType == SCHReadingViewLayoutTypeFixed) {
+        } else {
             // hide the additional options and resize the popover
             
             float totalHeight = 150;

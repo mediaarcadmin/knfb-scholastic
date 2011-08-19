@@ -75,6 +75,8 @@ SCHStoryInteractionControllerDelegate>
 @property (nonatomic, retain) IBOutlet UIView *customOptionsView;
 @property (nonatomic, retain) IBOutletCollection(UIButton) NSArray *originalButtons;
 @property (nonatomic, retain) IBOutletCollection(UIButton) NSArray *customButtons;
+@property (nonatomic, retain) IBOutletCollection(UIButton) NSArray *largeOptionsButtons;
+@property (nonatomic, retain) IBOutletCollection(UIButton) NSArray *smallOptionsButtons;
 @property (nonatomic, retain) IBOutlet UISegmentedControl *fontSegmentedControl;
 @property (nonatomic, retain) IBOutlet UISegmentedControl *paperTypeSegmentedControl;
 

@@ -1885,6 +1885,22 @@
 		F8EB72A313FD504900FE2410 /* OptionsOriginalButtonInactive.png in Resources */ = {isa = PBXBuildFile; fileRef = F8EB729413FD504900FE2410 /* OptionsOriginalButtonInactive.png */; };
 		F8EB72A413FD504900FE2410 /* OptionsOriginalButtonInactive@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F8EB729513FD504900FE2410 /* OptionsOriginalButtonInactive@2x.png */; };
 		F8EB72A513FD504900FE2410 /* OptionsOriginalButtonInactive@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F8EB729513FD504900FE2410 /* OptionsOriginalButtonInactive@2x.png */; };
+		F8EB72DC13FE6D8000FE2410 /* OptionsCustomButtonActiveSmall.png in Resources */ = {isa = PBXBuildFile; fileRef = F8EB72D413FE6D8000FE2410 /* OptionsCustomButtonActiveSmall.png */; };
+		F8EB72DD13FE6D8000FE2410 /* OptionsCustomButtonActiveSmall.png in Resources */ = {isa = PBXBuildFile; fileRef = F8EB72D413FE6D8000FE2410 /* OptionsCustomButtonActiveSmall.png */; };
+		F8EB72DE13FE6D8000FE2410 /* OptionsCustomButtonActiveSmall@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F8EB72D513FE6D8000FE2410 /* OptionsCustomButtonActiveSmall@2x.png */; };
+		F8EB72DF13FE6D8000FE2410 /* OptionsCustomButtonActiveSmall@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F8EB72D513FE6D8000FE2410 /* OptionsCustomButtonActiveSmall@2x.png */; };
+		F8EB72E013FE6D8000FE2410 /* OptionsCustomButtonInactiveSmall.png in Resources */ = {isa = PBXBuildFile; fileRef = F8EB72D613FE6D8000FE2410 /* OptionsCustomButtonInactiveSmall.png */; };
+		F8EB72E113FE6D8000FE2410 /* OptionsCustomButtonInactiveSmall.png in Resources */ = {isa = PBXBuildFile; fileRef = F8EB72D613FE6D8000FE2410 /* OptionsCustomButtonInactiveSmall.png */; };
+		F8EB72E213FE6D8000FE2410 /* OptionsCustomButtonInactiveSmall@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F8EB72D713FE6D8000FE2410 /* OptionsCustomButtonInactiveSmall@2x.png */; };
+		F8EB72E313FE6D8000FE2410 /* OptionsCustomButtonInactiveSmall@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F8EB72D713FE6D8000FE2410 /* OptionsCustomButtonInactiveSmall@2x.png */; };
+		F8EB72E413FE6D8000FE2410 /* OptionsOriginalButtonActiveSmall.png in Resources */ = {isa = PBXBuildFile; fileRef = F8EB72D813FE6D8000FE2410 /* OptionsOriginalButtonActiveSmall.png */; };
+		F8EB72E513FE6D8000FE2410 /* OptionsOriginalButtonActiveSmall.png in Resources */ = {isa = PBXBuildFile; fileRef = F8EB72D813FE6D8000FE2410 /* OptionsOriginalButtonActiveSmall.png */; };
+		F8EB72E613FE6D8000FE2410 /* OptionsOriginalButtonActiveSmall@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F8EB72D913FE6D8000FE2410 /* OptionsOriginalButtonActiveSmall@2x.png */; };
+		F8EB72E713FE6D8000FE2410 /* OptionsOriginalButtonActiveSmall@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F8EB72D913FE6D8000FE2410 /* OptionsOriginalButtonActiveSmall@2x.png */; };
+		F8EB72E813FE6D8000FE2410 /* OptionsOriginalButtonInactiveSmall.png in Resources */ = {isa = PBXBuildFile; fileRef = F8EB72DA13FE6D8000FE2410 /* OptionsOriginalButtonInactiveSmall.png */; };
+		F8EB72E913FE6D8000FE2410 /* OptionsOriginalButtonInactiveSmall.png in Resources */ = {isa = PBXBuildFile; fileRef = F8EB72DA13FE6D8000FE2410 /* OptionsOriginalButtonInactiveSmall.png */; };
+		F8EB72EA13FE6D8000FE2410 /* OptionsOriginalButtonInactiveSmall@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F8EB72DB13FE6D8000FE2410 /* OptionsOriginalButtonInactiveSmall@2x.png */; };
+		F8EB72EB13FE6D8000FE2410 /* OptionsOriginalButtonInactiveSmall@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F8EB72DB13FE6D8000FE2410 /* OptionsOriginalButtonInactiveSmall@2x.png */; };
 		F8EDE542138561390079BFD8 /* SCHReadingNoteView.m in Sources */ = {isa = PBXBuildFile; fileRef = F8EDE541138561390079BFD8 /* SCHReadingNoteView.m */; };
 		F8EDE543138561390079BFD8 /* SCHReadingNoteView.m in Sources */ = {isa = PBXBuildFile; fileRef = F8EDE541138561390079BFD8 /* SCHReadingNoteView.m */; };
 		F8FAF2F313F12F20009C7E9F /* SCHAppStateManager.m in Sources */ = {isa = PBXBuildFile; fileRef = F8FAF2F213F12F20009C7E9F /* SCHAppStateManager.m */; };
@@ -3393,6 +3409,14 @@
 		F8EB729313FD504900FE2410 /* OptionsOriginalButtonActive@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "OptionsOriginalButtonActive@2x.png"; path = "Resources/UIAssets/OptionsOriginalButtonActive@2x.png"; sourceTree = "<group>"; };
 		F8EB729413FD504900FE2410 /* OptionsOriginalButtonInactive.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = OptionsOriginalButtonInactive.png; path = Resources/UIAssets/OptionsOriginalButtonInactive.png; sourceTree = "<group>"; };
 		F8EB729513FD504900FE2410 /* OptionsOriginalButtonInactive@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "OptionsOriginalButtonInactive@2x.png"; path = "Resources/UIAssets/OptionsOriginalButtonInactive@2x.png"; sourceTree = "<group>"; };
+		F8EB72D413FE6D8000FE2410 /* OptionsCustomButtonActiveSmall.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = OptionsCustomButtonActiveSmall.png; path = Resources/UIAssets/OptionsCustomButtonActiveSmall.png; sourceTree = "<group>"; };
+		F8EB72D513FE6D8000FE2410 /* OptionsCustomButtonActiveSmall@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "OptionsCustomButtonActiveSmall@2x.png"; path = "Resources/UIAssets/OptionsCustomButtonActiveSmall@2x.png"; sourceTree = "<group>"; };
+		F8EB72D613FE6D8000FE2410 /* OptionsCustomButtonInactiveSmall.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = OptionsCustomButtonInactiveSmall.png; path = Resources/UIAssets/OptionsCustomButtonInactiveSmall.png; sourceTree = "<group>"; };
+		F8EB72D713FE6D8000FE2410 /* OptionsCustomButtonInactiveSmall@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "OptionsCustomButtonInactiveSmall@2x.png"; path = "Resources/UIAssets/OptionsCustomButtonInactiveSmall@2x.png"; sourceTree = "<group>"; };
+		F8EB72D813FE6D8000FE2410 /* OptionsOriginalButtonActiveSmall.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = OptionsOriginalButtonActiveSmall.png; path = Resources/UIAssets/OptionsOriginalButtonActiveSmall.png; sourceTree = "<group>"; };
+		F8EB72D913FE6D8000FE2410 /* OptionsOriginalButtonActiveSmall@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "OptionsOriginalButtonActiveSmall@2x.png"; path = "Resources/UIAssets/OptionsOriginalButtonActiveSmall@2x.png"; sourceTree = "<group>"; };
+		F8EB72DA13FE6D8000FE2410 /* OptionsOriginalButtonInactiveSmall.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = OptionsOriginalButtonInactiveSmall.png; path = Resources/UIAssets/OptionsOriginalButtonInactiveSmall.png; sourceTree = "<group>"; };
+		F8EB72DB13FE6D8000FE2410 /* OptionsOriginalButtonInactiveSmall@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "OptionsOriginalButtonInactiveSmall@2x.png"; path = "Resources/UIAssets/OptionsOriginalButtonInactiveSmall@2x.png"; sourceTree = "<group>"; };
 		F8EDE540138561390079BFD8 /* SCHReadingNoteView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHReadingNoteView.h; path = Shared/SCHReadingNoteView.h; sourceTree = "<group>"; };
 		F8EDE541138561390079BFD8 /* SCHReadingNoteView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHReadingNoteView.m; path = Shared/SCHReadingNoteView.m; sourceTree = "<group>"; };
 		F8FAF2F113F12F20009C7E9F /* SCHAppStateManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHAppStateManager.h; path = Shared/SCHAppStateManager.h; sourceTree = "<group>"; };
@@ -4499,6 +4523,14 @@
 				F8EB729313FD504900FE2410 /* OptionsOriginalButtonActive@2x.png */,
 				F8EB729413FD504900FE2410 /* OptionsOriginalButtonInactive.png */,
 				F8EB729513FD504900FE2410 /* OptionsOriginalButtonInactive@2x.png */,
+				F8EB72D413FE6D8000FE2410 /* OptionsCustomButtonActiveSmall.png */,
+				F8EB72D513FE6D8000FE2410 /* OptionsCustomButtonActiveSmall@2x.png */,
+				F8EB72D613FE6D8000FE2410 /* OptionsCustomButtonInactiveSmall.png */,
+				F8EB72D713FE6D8000FE2410 /* OptionsCustomButtonInactiveSmall@2x.png */,
+				F8EB72D813FE6D8000FE2410 /* OptionsOriginalButtonActiveSmall.png */,
+				F8EB72D913FE6D8000FE2410 /* OptionsOriginalButtonActiveSmall@2x.png */,
+				F8EB72DA13FE6D8000FE2410 /* OptionsOriginalButtonInactiveSmall.png */,
+				F8EB72DB13FE6D8000FE2410 /* OptionsOriginalButtonInactiveSmall@2x.png */,
 				F8C6DA91136073D300D9E953 /* paper-black.png */,
 				F8C6DA92136073D300D9E953 /* paper-black@2x.png */,
 				F8C6DA93136073D300D9E953 /* paper-neutral.png */,
@@ -6607,6 +6639,14 @@
 				C9F17C4213FD461000C06DF6 /* storyinteraction-picturestarter-blank@2x~iphone.png in Resources */,
 				C9F17C4413FD461000C06DF6 /* storyinteraction-picturestarter-questionmark~iphone.png in Resources */,
 				C9F17C4613FD461000C06DF6 /* storyinteraction-picturestarter-questionmark@2x~iphone.png in Resources */,
+				F8EB72DC13FE6D8000FE2410 /* OptionsCustomButtonActiveSmall.png in Resources */,
+				F8EB72DE13FE6D8000FE2410 /* OptionsCustomButtonActiveSmall@2x.png in Resources */,
+				F8EB72E013FE6D8000FE2410 /* OptionsCustomButtonInactiveSmall.png in Resources */,
+				F8EB72E213FE6D8000FE2410 /* OptionsCustomButtonInactiveSmall@2x.png in Resources */,
+				F8EB72E413FE6D8000FE2410 /* OptionsOriginalButtonActiveSmall.png in Resources */,
+				F8EB72E613FE6D8000FE2410 /* OptionsOriginalButtonActiveSmall@2x.png in Resources */,
+				F8EB72E813FE6D8000FE2410 /* OptionsOriginalButtonInactiveSmall.png in Resources */,
+				F8EB72EA13FE6D8000FE2410 /* OptionsOriginalButtonInactiveSmall@2x.png in Resources */,
 				C92E732E13FE7033005CE812 /* storyinteraction-concentration-startover-button~iphone.png in Resources */,
 				C92E733013FE7033005CE812 /* storyinteraction-concentration-flips-button~iphone.png in Resources */,
 				C92E733213FE7033005CE812 /* storyinteraction-concentration-flips-button@2x~iphone.png in Resources */,
@@ -7247,6 +7287,14 @@
 				C9F17C4313FD461000C06DF6 /* storyinteraction-picturestarter-blank@2x~iphone.png in Resources */,
 				C9F17C4513FD461000C06DF6 /* storyinteraction-picturestarter-questionmark~iphone.png in Resources */,
 				C9F17C4713FD461000C06DF6 /* storyinteraction-picturestarter-questionmark@2x~iphone.png in Resources */,
+				F8EB72DD13FE6D8000FE2410 /* OptionsCustomButtonActiveSmall.png in Resources */,
+				F8EB72DF13FE6D8000FE2410 /* OptionsCustomButtonActiveSmall@2x.png in Resources */,
+				F8EB72E113FE6D8000FE2410 /* OptionsCustomButtonInactiveSmall.png in Resources */,
+				F8EB72E313FE6D8000FE2410 /* OptionsCustomButtonInactiveSmall@2x.png in Resources */,
+				F8EB72E513FE6D8000FE2410 /* OptionsOriginalButtonActiveSmall.png in Resources */,
+				F8EB72E713FE6D8000FE2410 /* OptionsOriginalButtonActiveSmall@2x.png in Resources */,
+				F8EB72E913FE6D8000FE2410 /* OptionsOriginalButtonInactiveSmall.png in Resources */,
+				F8EB72EB13FE6D8000FE2410 /* OptionsOriginalButtonInactiveSmall@2x.png in Resources */,
 				C92E732F13FE7033005CE812 /* storyinteraction-concentration-startover-button~iphone.png in Resources */,
 				C92E733113FE7033005CE812 /* storyinteraction-concentration-flips-button~iphone.png in Resources */,
 				C92E733313FE7033005CE812 /* storyinteraction-concentration-flips-button@2x~iphone.png in Resources */,
