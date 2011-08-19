@@ -806,6 +806,18 @@
 		C9261FC013970220009FF459 /* notes-count.png in Resources */ = {isa = PBXBuildFile; fileRef = C9261FBD13970220009FF459 /* notes-count.png */; };
 		C9261FC113970220009FF459 /* notes-count@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C9261FBE13970220009FF459 /* notes-count@2x.png */; };
 		C9261FC213970220009FF459 /* notes-count@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C9261FBE13970220009FF459 /* notes-count@2x.png */; };
+		C92E732E13FE7033005CE812 /* storyinteraction-concentration-startover-button~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = C92E732813FE7033005CE812 /* storyinteraction-concentration-startover-button~iphone.png */; };
+		C92E732F13FE7033005CE812 /* storyinteraction-concentration-startover-button~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = C92E732813FE7033005CE812 /* storyinteraction-concentration-startover-button~iphone.png */; };
+		C92E733013FE7033005CE812 /* storyinteraction-concentration-flips-button~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = C92E732913FE7033005CE812 /* storyinteraction-concentration-flips-button~iphone.png */; };
+		C92E733113FE7033005CE812 /* storyinteraction-concentration-flips-button~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = C92E732913FE7033005CE812 /* storyinteraction-concentration-flips-button~iphone.png */; };
+		C92E733213FE7033005CE812 /* storyinteraction-concentration-flips-button@2x~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = C92E732A13FE7033005CE812 /* storyinteraction-concentration-flips-button@2x~iphone.png */; };
+		C92E733313FE7033005CE812 /* storyinteraction-concentration-flips-button@2x~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = C92E732A13FE7033005CE812 /* storyinteraction-concentration-flips-button@2x~iphone.png */; };
+		C92E733413FE7033005CE812 /* storyinteraction-concentration-startover-button@2x~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = C92E732B13FE7033005CE812 /* storyinteraction-concentration-startover-button@2x~iphone.png */; };
+		C92E733513FE7033005CE812 /* storyinteraction-concentration-startover-button@2x~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = C92E732B13FE7033005CE812 /* storyinteraction-concentration-startover-button@2x~iphone.png */; };
+		C92E733613FE7033005CE812 /* storyinteraction-concentration-flips-button~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = C92E732C13FE7033005CE812 /* storyinteraction-concentration-flips-button~ipad.png */; };
+		C92E733713FE7033005CE812 /* storyinteraction-concentration-flips-button~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = C92E732C13FE7033005CE812 /* storyinteraction-concentration-flips-button~ipad.png */; };
+		C92E733813FE7033005CE812 /* storyinteraction-concentration-startover-button~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = C92E732D13FE7033005CE812 /* storyinteraction-concentration-startover-button~ipad.png */; };
+		C92E733913FE7033005CE812 /* storyinteraction-concentration-startover-button~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = C92E732D13FE7033005CE812 /* storyinteraction-concentration-startover-button~ipad.png */; };
 		C92FA7CD1355B8B7001BAA6B /* KNFBSmartZoomBlockSource.m in Sources */ = {isa = PBXBuildFile; fileRef = C92FA7CC1355B8B7001BAA6B /* KNFBSmartZoomBlockSource.m */; };
 		C92FA7CE1355B8B7001BAA6B /* KNFBSmartZoomBlockSource.m in Sources */ = {isa = PBXBuildFile; fileRef = C92FA7CC1355B8B7001BAA6B /* KNFBSmartZoomBlockSource.m */; };
 		C92FA7D21355BE20001BAA6B /* SCHSmartZoomBlockSource.m in Sources */ = {isa = PBXBuildFile; fileRef = C92FA7D11355BE20001BAA6B /* SCHSmartZoomBlockSource.m */; };
@@ -2785,6 +2797,12 @@
 		C923A27912F06FE60054426F /* MRGridViewDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MRGridViewDelegate.h; path = Shared/Libraries/MRGridView/MRGridViewDelegate.h; sourceTree = "<group>"; };
 		C9261FBD13970220009FF459 /* notes-count.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "notes-count.png"; path = "Resources/notes-count.png"; sourceTree = "<group>"; };
 		C9261FBE13970220009FF459 /* notes-count@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "notes-count@2x.png"; path = "Resources/notes-count@2x.png"; sourceTree = "<group>"; };
+		C92E732813FE7033005CE812 /* storyinteraction-concentration-startover-button~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "storyinteraction-concentration-startover-button~iphone.png"; sourceTree = "<group>"; };
+		C92E732913FE7033005CE812 /* storyinteraction-concentration-flips-button~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "storyinteraction-concentration-flips-button~iphone.png"; sourceTree = "<group>"; };
+		C92E732A13FE7033005CE812 /* storyinteraction-concentration-flips-button@2x~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "storyinteraction-concentration-flips-button@2x~iphone.png"; sourceTree = "<group>"; };
+		C92E732B13FE7033005CE812 /* storyinteraction-concentration-startover-button@2x~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "storyinteraction-concentration-startover-button@2x~iphone.png"; sourceTree = "<group>"; };
+		C92E732C13FE7033005CE812 /* storyinteraction-concentration-flips-button~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "storyinteraction-concentration-flips-button~ipad.png"; sourceTree = "<group>"; };
+		C92E732D13FE7033005CE812 /* storyinteraction-concentration-startover-button~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "storyinteraction-concentration-startover-button~ipad.png"; sourceTree = "<group>"; };
 		C92FA7CB1355B8B7001BAA6B /* KNFBSmartZoomBlockSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = KNFBSmartZoomBlockSource.h; path = SmartZoom/KNFBSmartZoomBlockSource.h; sourceTree = "<group>"; };
 		C92FA7CC1355B8B7001BAA6B /* KNFBSmartZoomBlockSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = KNFBSmartZoomBlockSource.m; path = SmartZoom/KNFBSmartZoomBlockSource.m; sourceTree = "<group>"; };
 		C92FA7CF1355B8E0001BAA6B /* KNFBPageZoomBlockSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = KNFBPageZoomBlockSource.h; path = SmartZoom/KNFBPageZoomBlockSource.h; sourceTree = "<group>"; };
@@ -3814,6 +3832,12 @@
 			isa = PBXGroup;
 			children = (
 				C9F17C2413FD3D1000C06DF6 /* Stickers */,
+				C92E732813FE7033005CE812 /* storyinteraction-concentration-startover-button~iphone.png */,
+				C92E732913FE7033005CE812 /* storyinteraction-concentration-flips-button~iphone.png */,
+				C92E732A13FE7033005CE812 /* storyinteraction-concentration-flips-button@2x~iphone.png */,
+				C92E732B13FE7033005CE812 /* storyinteraction-concentration-startover-button@2x~iphone.png */,
+				C92E732C13FE7033005CE812 /* storyinteraction-concentration-flips-button~ipad.png */,
+				C92E732D13FE7033005CE812 /* storyinteraction-concentration-startover-button~ipad.png */,
 				C9F17C2713FD412400C06DF6 /* storyinteraction-picturestarter-pallette-overlay~iphone.png */,
 				C9F17C2813FD412400C06DF6 /* storyinteraction-picturestarter-pallette-overlay@2x~iphone.png */,
 				C9F17C2913FD412400C06DF6 /* storyinteraction-picturestarter-scroller-overlay~iphone.png */,
@@ -6611,6 +6635,12 @@
 				F8EB72E613FE6D8000FE2410 /* OptionsOriginalButtonActiveSmall@2x.png in Resources */,
 				F8EB72E813FE6D8000FE2410 /* OptionsOriginalButtonInactiveSmall.png in Resources */,
 				F8EB72EA13FE6D8000FE2410 /* OptionsOriginalButtonInactiveSmall@2x.png in Resources */,
+				C92E732E13FE7033005CE812 /* storyinteraction-concentration-startover-button~iphone.png in Resources */,
+				C92E733013FE7033005CE812 /* storyinteraction-concentration-flips-button~iphone.png in Resources */,
+				C92E733213FE7033005CE812 /* storyinteraction-concentration-flips-button@2x~iphone.png in Resources */,
+				C92E733413FE7033005CE812 /* storyinteraction-concentration-startover-button@2x~iphone.png in Resources */,
+				C92E733613FE7033005CE812 /* storyinteraction-concentration-flips-button~ipad.png in Resources */,
+				C92E733813FE7033005CE812 /* storyinteraction-concentration-startover-button~ipad.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -7253,6 +7283,12 @@
 				F8EB72E713FE6D8000FE2410 /* OptionsOriginalButtonActiveSmall@2x.png in Resources */,
 				F8EB72E913FE6D8000FE2410 /* OptionsOriginalButtonInactiveSmall.png in Resources */,
 				F8EB72EB13FE6D8000FE2410 /* OptionsOriginalButtonInactiveSmall@2x.png in Resources */,
+				C92E732F13FE7033005CE812 /* storyinteraction-concentration-startover-button~iphone.png in Resources */,
+				C92E733113FE7033005CE812 /* storyinteraction-concentration-flips-button~iphone.png in Resources */,
+				C92E733313FE7033005CE812 /* storyinteraction-concentration-flips-button@2x~iphone.png in Resources */,
+				C92E733513FE7033005CE812 /* storyinteraction-concentration-startover-button@2x~iphone.png in Resources */,
+				C92E733713FE7033005CE812 /* storyinteraction-concentration-flips-button~ipad.png in Resources */,
+				C92E733913FE7033005CE812 /* storyinteraction-concentration-startover-button~ipad.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
