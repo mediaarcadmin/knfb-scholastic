@@ -47,6 +47,8 @@ typedef enum
 SCHReadingNoteViewDelegate, SCHReadingInteractionsListControllerDelegate, SCHAudioBookPlayerDelegate, UIPopoverControllerDelegate,
 SCHStoryInteractionControllerDelegate> 
 {}
+UIImageView *optionsPhoneTopBackground;
+
 
 
 @property (nonatomic, assign) BOOL youngerMode;
@@ -70,9 +72,11 @@ SCHStoryInteractionControllerDelegate>
 @property (nonatomic, retain) IBOutlet UIView *scrubberInfoView;
 @property (nonatomic, retain) IBOutlet UILabel *pageLabel;
 
+@property (nonatomic, retain) IBOutlet UIView *optionsPhoneTopBackground;
 @property (nonatomic, retain) IBOutlet UIView *optionsView;
 @property (nonatomic, retain) IBOutlet UIViewController *popoverOptionsViewController;
 @property (nonatomic, retain) IBOutlet UIView *customOptionsView;
+@property (nonatomic, retain) IBOutlet UILabel *popoverNavigationTitleLabel;
 @property (nonatomic, retain) IBOutletCollection(UIButton) NSArray *originalButtons;
 @property (nonatomic, retain) IBOutletCollection(UIButton) NSArray *customButtons;
 @property (nonatomic, retain) IBOutletCollection(UIButton) NSArray *largeOptionsButtons;
