@@ -514,6 +514,22 @@
 		5293873012DF43D200045B44 /* SCHScholasticWebService.m in Sources */ = {isa = PBXBuildFile; fileRef = 5293872F12DF43D200045B44 /* SCHScholasticWebService.m */; };
 		5293883312E03CD000045B44 /* SCHBookShelfViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5293883112E03CD000045B44 /* SCHBookShelfViewController.m */; };
 		5293883412E03CD000045B44 /* SCHBookShelfViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5293883212E03CD000045B44 /* SCHBookShelfViewController.xib */; };
+		5296F99E13FE7B4F009532F3 /* 9780545283502.NightOfTheLivingDummy.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 5296F99613FE7B4F009532F3 /* 9780545283502.NightOfTheLivingDummy.jpg */; };
+		5296F99F13FE7B4F009532F3 /* 9780545283502.NightOfTheLivingDummy.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 5296F99613FE7B4F009532F3 /* 9780545283502.NightOfTheLivingDummy.jpg */; };
+		5296F9A013FE7B4F009532F3 /* 9780545287012_r1.HalloweenParade.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 5296F99713FE7B4F009532F3 /* 9780545287012_r1.HalloweenParade.jpg */; };
+		5296F9A113FE7B4F009532F3 /* 9780545287012_r1.HalloweenParade.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 5296F99713FE7B4F009532F3 /* 9780545287012_r1.HalloweenParade.jpg */; };
+		5296F9A213FE7B4F009532F3 /* 9780545289726_r1.OlliesNewTricks.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 5296F99813FE7B4F009532F3 /* 9780545289726_r1.OlliesNewTricks.jpg */; };
+		5296F9A313FE7B4F009532F3 /* 9780545289726_r1.OlliesNewTricks.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 5296F99813FE7B4F009532F3 /* 9780545289726_r1.OlliesNewTricks.jpg */; };
+		5296F9A413FE7B4F009532F3 /* 9780545308656.6.StableMatesPatch.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 5296F99913FE7B4F009532F3 /* 9780545308656.6.StableMatesPatch.jpg */; };
+		5296F9A513FE7B4F009532F3 /* 9780545308656.6.StableMatesPatch.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 5296F99913FE7B4F009532F3 /* 9780545308656.6.StableMatesPatch.jpg */; };
+		5296F9A613FE7B4F009532F3 /* 9780545327619_r1.WhoWillCarveTheTurkey.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 5296F99A13FE7B4F009532F3 /* 9780545327619_r1.WhoWillCarveTheTurkey.jpg */; };
+		5296F9A713FE7B4F009532F3 /* 9780545327619_r1.WhoWillCarveTheTurkey.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 5296F99A13FE7B4F009532F3 /* 9780545327619_r1.WhoWillCarveTheTurkey.jpg */; };
+		5296F9A813FE7B4F009532F3 /* 9780545345019_r1.AllieFinkleMovingDay.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 5296F99B13FE7B4F009532F3 /* 9780545345019_r1.AllieFinkleMovingDay.jpg */; };
+		5296F9A913FE7B4F009532F3 /* 9780545345019_r1.AllieFinkleMovingDay.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 5296F99B13FE7B4F009532F3 /* 9780545345019_r1.AllieFinkleMovingDay.jpg */; };
+		5296F9AA13FE7B4F009532F3 /* 9780545366779.2.MazeOfBones.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 5296F99C13FE7B4F009532F3 /* 9780545366779.2.MazeOfBones.jpg */; };
+		5296F9AB13FE7B4F009532F3 /* 9780545366779.2.MazeOfBones.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 5296F99C13FE7B4F009532F3 /* 9780545366779.2.MazeOfBones.jpg */; };
+		5296F9AC13FE7B4F009532F3 /* 9780545368896_r1.TheHiddenStairs.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 5296F99D13FE7B4F009532F3 /* 9780545368896_r1.TheHiddenStairs.jpg */; };
+		5296F9AD13FE7B4F009532F3 /* 9780545368896_r1.TheHiddenStairs.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 5296F99D13FE7B4F009532F3 /* 9780545368896_r1.TheHiddenStairs.jpg */; };
 		5297B44913A8C362008ADD9B /* SCHStoryInteractionControllerMultipleChoiceWithAnswerPictures.m in Sources */ = {isa = PBXBuildFile; fileRef = 5297B44813A8C362008ADD9B /* SCHStoryInteractionControllerMultipleChoiceWithAnswerPictures.m */; };
 		5297B44A13A8C362008ADD9B /* SCHStoryInteractionControllerMultipleChoiceWithAnswerPictures.m in Sources */ = {isa = PBXBuildFile; fileRef = 5297B44813A8C362008ADD9B /* SCHStoryInteractionControllerMultipleChoiceWithAnswerPictures.m */; };
 		5297B44C13A8C489008ADD9B /* SCHStoryInteractionMultipleChoiceWithAnswerPictures_iPhone.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5297B44B13A8C489008ADD9B /* SCHStoryInteractionMultipleChoiceWithAnswerPictures_iPhone.xib */; };
@@ -846,8 +862,8 @@
 		C93113FE13FBC85900355693 /* storyinteraction-concentration-tile-purple@2x~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = C93113F213FBC83300355693 /* storyinteraction-concentration-tile-purple@2x~iphone.png */; };
 		C93113FF13FBC85900355693 /* storyinteraction-concentration-tile-blue@2x~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = C93113F313FBC84600355693 /* storyinteraction-concentration-tile-blue@2x~iphone.png */; };
 		C931140013FBC85900355693 /* storyinteraction-concentration-tile-blue@2x~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = C93113F313FBC84600355693 /* storyinteraction-concentration-tile-blue@2x~iphone.png */; };
-		C931140113FBC85900355693 /* storyinteraction-concentration-tile-orange@2x~iphone in Resources */ = {isa = PBXBuildFile; fileRef = C93113F413FBC85400355693 /* storyinteraction-concentration-tile-orange@2x~iphone */; };
-		C931140213FBC85900355693 /* storyinteraction-concentration-tile-orange@2x~iphone in Resources */ = {isa = PBXBuildFile; fileRef = C93113F413FBC85400355693 /* storyinteraction-concentration-tile-orange@2x~iphone */; };
+		C931140113FBC85900355693 /* storyinteraction-concentration-tile-orange@2x~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = C93113F413FBC85400355693 /* storyinteraction-concentration-tile-orange@2x~iphone.png */; };
+		C931140213FBC85900355693 /* storyinteraction-concentration-tile-orange@2x~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = C93113F413FBC85400355693 /* storyinteraction-concentration-tile-orange@2x~iphone.png */; };
 		C93EBDFD13462883003B99FD /* SCHBookRange.m in Sources */ = {isa = PBXBuildFile; fileRef = C93EBDFC13462883003B99FD /* SCHBookRange.m */; };
 		C93EBDFE13462883003B99FD /* SCHBookRange.m in Sources */ = {isa = PBXBuildFile; fileRef = C93EBDFC13462883003B99FD /* SCHBookRange.m */; };
 		C93EBEAF13472FED003B99FD /* SCHTextFlowParagraphSource.m in Sources */ = {isa = PBXBuildFile; fileRef = C93EBEAE13472FEC003B99FD /* SCHTextFlowParagraphSource.m */; };
@@ -2096,6 +2112,12 @@
 		287D771913F55C7F00C76070 /* SCHStoryInteractionJigsawPieceView_iPad.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCHStoryInteractionJigsawPieceView_iPad.h; sourceTree = "<group>"; };
 		287D771A13F55C8000C76070 /* SCHStoryInteractionJigsawPieceView_iPad.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCHStoryInteractionJigsawPieceView_iPad.m; sourceTree = "<group>"; };
 		288765FC0DF74451002DB57D /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
+		2888571813FE714600289C4E /* storyinteraction-concentration-flips-button@2x~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "storyinteraction-concentration-flips-button@2x~iphone.png"; sourceTree = "<group>"; };
+		2888571913FE714600289C4E /* storyinteraction-concentration-flips-button~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "storyinteraction-concentration-flips-button~ipad.png"; sourceTree = "<group>"; };
+		2888571A13FE714600289C4E /* storyinteraction-concentration-flips-button~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "storyinteraction-concentration-flips-button~iphone.png"; sourceTree = "<group>"; };
+		2888571B13FE714600289C4E /* storyinteraction-concentration-startover-button@2x~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "storyinteraction-concentration-startover-button@2x~iphone.png"; sourceTree = "<group>"; };
+		2888571C13FE714600289C4E /* storyinteraction-concentration-startover-button~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "storyinteraction-concentration-startover-button~ipad.png"; sourceTree = "<group>"; };
+		2888571D13FE714600289C4E /* storyinteraction-concentration-startover-button~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "storyinteraction-concentration-startover-button~iphone.png"; sourceTree = "<group>"; };
 		2888FE7B13A61CD300FF2FA8 /* SCHStoryInteractionTitleTwister_iPhone.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SCHStoryInteractionTitleTwister_iPhone.xib; sourceTree = "<group>"; };
 		288A1C7E13E2E7EE009F56BA /* SCHStartingView~iphone.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "SCHStartingView~iphone.xib"; sourceTree = "<group>"; };
 		2891B71D13954355005FC4DD /* StoryInteractionMultipleChoiceText1.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = StoryInteractionMultipleChoiceText1.xml; sourceTree = "<group>"; };
@@ -2444,6 +2466,14 @@
 		5293883012E03CD000045B44 /* SCHBookShelfViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHBookShelfViewController.h; path = iPhone/SCHBookShelfViewController.h; sourceTree = "<group>"; };
 		5293883112E03CD000045B44 /* SCHBookShelfViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHBookShelfViewController.m; path = iPhone/SCHBookShelfViewController.m; sourceTree = "<group>"; };
 		5293883212E03CD000045B44 /* SCHBookShelfViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = SCHBookShelfViewController.xib; path = iPhone/SCHBookShelfViewController.xib; sourceTree = "<group>"; };
+		5296F99613FE7B4F009532F3 /* 9780545283502.NightOfTheLivingDummy.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = 9780545283502.NightOfTheLivingDummy.jpg; path = "Shared/Debug Books/9780545283502.NightOfTheLivingDummy.jpg"; sourceTree = "<group>"; };
+		5296F99713FE7B4F009532F3 /* 9780545287012_r1.HalloweenParade.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = 9780545287012_r1.HalloweenParade.jpg; path = "Shared/Debug Books/9780545287012_r1.HalloweenParade.jpg"; sourceTree = "<group>"; };
+		5296F99813FE7B4F009532F3 /* 9780545289726_r1.OlliesNewTricks.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = 9780545289726_r1.OlliesNewTricks.jpg; path = "Shared/Debug Books/9780545289726_r1.OlliesNewTricks.jpg"; sourceTree = "<group>"; };
+		5296F99913FE7B4F009532F3 /* 9780545308656.6.StableMatesPatch.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = 9780545308656.6.StableMatesPatch.jpg; path = "Shared/Debug Books/9780545308656.6.StableMatesPatch.jpg"; sourceTree = "<group>"; };
+		5296F99A13FE7B4F009532F3 /* 9780545327619_r1.WhoWillCarveTheTurkey.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = 9780545327619_r1.WhoWillCarveTheTurkey.jpg; path = "Shared/Debug Books/9780545327619_r1.WhoWillCarveTheTurkey.jpg"; sourceTree = "<group>"; };
+		5296F99B13FE7B4F009532F3 /* 9780545345019_r1.AllieFinkleMovingDay.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = 9780545345019_r1.AllieFinkleMovingDay.jpg; path = "Shared/Debug Books/9780545345019_r1.AllieFinkleMovingDay.jpg"; sourceTree = "<group>"; };
+		5296F99C13FE7B4F009532F3 /* 9780545366779.2.MazeOfBones.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = 9780545366779.2.MazeOfBones.jpg; path = "Shared/Debug Books/9780545366779.2.MazeOfBones.jpg"; sourceTree = "<group>"; };
+		5296F99D13FE7B4F009532F3 /* 9780545368896_r1.TheHiddenStairs.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = 9780545368896_r1.TheHiddenStairs.jpg; path = "Shared/Debug Books/9780545368896_r1.TheHiddenStairs.jpg"; sourceTree = "<group>"; };
 		5297B44713A8C362008ADD9B /* SCHStoryInteractionControllerMultipleChoiceWithAnswerPictures.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCHStoryInteractionControllerMultipleChoiceWithAnswerPictures.h; sourceTree = "<group>"; };
 		5297B44813A8C362008ADD9B /* SCHStoryInteractionControllerMultipleChoiceWithAnswerPictures.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCHStoryInteractionControllerMultipleChoiceWithAnswerPictures.m; sourceTree = "<group>"; };
 		5297B44B13A8C489008ADD9B /* SCHStoryInteractionMultipleChoiceWithAnswerPictures_iPhone.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SCHStoryInteractionMultipleChoiceWithAnswerPictures_iPhone.xib; sourceTree = "<group>"; };
@@ -2821,7 +2851,7 @@
 		C93113F113FBC82600355693 /* storyinteraction-concentration-tile-blue~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "storyinteraction-concentration-tile-blue~ipad.png"; sourceTree = "<group>"; };
 		C93113F213FBC83300355693 /* storyinteraction-concentration-tile-purple@2x~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "storyinteraction-concentration-tile-purple@2x~iphone.png"; sourceTree = "<group>"; };
 		C93113F313FBC84600355693 /* storyinteraction-concentration-tile-blue@2x~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "storyinteraction-concentration-tile-blue@2x~iphone.png"; sourceTree = "<group>"; };
-		C93113F413FBC85400355693 /* storyinteraction-concentration-tile-orange@2x~iphone */ = {isa = PBXFileReference; lastKnownFileType = file; path = "storyinteraction-concentration-tile-orange@2x~iphone"; sourceTree = "<group>"; };
+		C93113F413FBC85400355693 /* storyinteraction-concentration-tile-orange@2x~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "storyinteraction-concentration-tile-orange@2x~iphone.png"; sourceTree = "<group>"; };
 		C93EBDFB13462882003B99FD /* SCHBookRange.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHBookRange.h; path = Shared/SCHBookRange.h; sourceTree = "<group>"; };
 		C93EBDFC13462883003B99FD /* SCHBookRange.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHBookRange.m; path = Shared/SCHBookRange.m; sourceTree = "<group>"; };
 		C93EBEAD13472FEC003B99FD /* SCHTextFlowParagraphSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHTextFlowParagraphSource.h; path = Shared/SCHTextFlowParagraphSource.h; sourceTree = "<group>"; };
@@ -3901,7 +3931,13 @@
 				C93113F113FBC82600355693 /* storyinteraction-concentration-tile-blue~ipad.png */,
 				C93113F213FBC83300355693 /* storyinteraction-concentration-tile-purple@2x~iphone.png */,
 				C93113F313FBC84600355693 /* storyinteraction-concentration-tile-blue@2x~iphone.png */,
-				C93113F413FBC85400355693 /* storyinteraction-concentration-tile-orange@2x~iphone */,
+				C93113F413FBC85400355693 /* storyinteraction-concentration-tile-orange@2x~iphone.png */,
+				2888571813FE714600289C4E /* storyinteraction-concentration-flips-button@2x~iphone.png */,
+				2888571913FE714600289C4E /* storyinteraction-concentration-flips-button~ipad.png */,
+				2888571A13FE714600289C4E /* storyinteraction-concentration-flips-button~iphone.png */,
+				2888571B13FE714600289C4E /* storyinteraction-concentration-startover-button@2x~iphone.png */,
+				2888571C13FE714600289C4E /* storyinteraction-concentration-startover-button~ipad.png */,
+				2888571D13FE714600289C4E /* storyinteraction-concentration-startover-button~iphone.png */,
 				C9AC869313AFAF7B000ECDAE /* storyinteraction-wordmatch-target~ipad.png */,
 				C9AC869413AFAF7D000ECDAE /* storyinteraction-read-aloud~ipad.png */,
 				C9AC869513AFAF7F000ECDAE /* storyinteraction-draggable-top-circle~ipad.png */,
@@ -5583,13 +5619,21 @@
 		F8509E7512F0620D00197EB5 /* Debug Books */ = {
 			isa = PBXGroup;
 			children = (
+				5296F99613FE7B4F009532F3 /* 9780545283502.NightOfTheLivingDummy.jpg */,
 				A33477FA13DF206000768DC6 /* 9780545283502.NightOfTheLivingDummy.xps */,
+				5296F99713FE7B4F009532F3 /* 9780545287012_r1.HalloweenParade.jpg */,
 				A33477FB13DF206000768DC6 /* 9780545287012_r1.HalloweenParade.xps */,
+				5296F99813FE7B4F009532F3 /* 9780545289726_r1.OlliesNewTricks.jpg */,
 				A33477FC13DF206000768DC6 /* 9780545289726_r1.OlliesNewTricks.xps */,
+				5296F99913FE7B4F009532F3 /* 9780545308656.6.StableMatesPatch.jpg */,
 				A33477FD13DF206000768DC6 /* 9780545308656.6.StableMatesPatch.xps */,
+				5296F99A13FE7B4F009532F3 /* 9780545327619_r1.WhoWillCarveTheTurkey.jpg */,
 				A33477FE13DF206000768DC6 /* 9780545327619_r1.WhoWillCarveTheTurkey.xps */,
+				5296F99B13FE7B4F009532F3 /* 9780545345019_r1.AllieFinkleMovingDay.jpg */,
 				A33477FF13DF206000768DC6 /* 9780545345019_r1.AllieFinkleMovingDay.xps */,
+				5296F99C13FE7B4F009532F3 /* 9780545366779.2.MazeOfBones.jpg */,
 				A334780013DF206000768DC6 /* 9780545366779.2.MazeOfBones.xps */,
+				5296F99D13FE7B4F009532F3 /* 9780545368896_r1.TheHiddenStairs.jpg */,
 				A334780113DF206000768DC6 /* 9780545368896_r1.TheHiddenStairs.xps */,
 				F83D86B312FC070F00227031 /* SCHLocalDebugXPSReader.h */,
 				F83D86B412FC070F00227031 /* SCHLocalDebugXPSReader.m */,
@@ -6589,7 +6633,7 @@
 				C93113FB13FBC85900355693 /* storyinteraction-concentration-tile-blue~ipad.png in Resources */,
 				C93113FD13FBC85900355693 /* storyinteraction-concentration-tile-purple@2x~iphone.png in Resources */,
 				C93113FF13FBC85900355693 /* storyinteraction-concentration-tile-blue@2x~iphone.png in Resources */,
-				C931140113FBC85900355693 /* storyinteraction-concentration-tile-orange@2x~iphone in Resources */,
+				C931140113FBC85900355693 /* storyinteraction-concentration-tile-orange@2x~iphone.png in Resources */,
 				C9FD839013FBD674007D5B47 /* storyinteraction-wordbird-Shocked_Pen.png in Resources */,
 				C9FD839413FBD674007D5B47 /* storyinteraction-wordbird-Pen_Happy_Filmstrip.png in Resources */,
 				C9FD839613FBD674007D5B47 /* storyinteraction-wordbird-BalloonPop_09.png in Resources */,
@@ -6641,6 +6685,14 @@
 				C92E733413FE7033005CE812 /* storyinteraction-concentration-startover-button@2x~iphone.png in Resources */,
 				C92E733613FE7033005CE812 /* storyinteraction-concentration-flips-button~ipad.png in Resources */,
 				C92E733813FE7033005CE812 /* storyinteraction-concentration-startover-button~ipad.png in Resources */,
+				5296F99E13FE7B4F009532F3 /* 9780545283502.NightOfTheLivingDummy.jpg in Resources */,
+				5296F9A013FE7B4F009532F3 /* 9780545287012_r1.HalloweenParade.jpg in Resources */,
+				5296F9A213FE7B4F009532F3 /* 9780545289726_r1.OlliesNewTricks.jpg in Resources */,
+				5296F9A413FE7B4F009532F3 /* 9780545308656.6.StableMatesPatch.jpg in Resources */,
+				5296F9A613FE7B4F009532F3 /* 9780545327619_r1.WhoWillCarveTheTurkey.jpg in Resources */,
+				5296F9A813FE7B4F009532F3 /* 9780545345019_r1.AllieFinkleMovingDay.jpg in Resources */,
+				5296F9AA13FE7B4F009532F3 /* 9780545366779.2.MazeOfBones.jpg in Resources */,
+				5296F9AC13FE7B4F009532F3 /* 9780545368896_r1.TheHiddenStairs.jpg in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -7237,7 +7289,7 @@
 				C93113FC13FBC85900355693 /* storyinteraction-concentration-tile-blue~ipad.png in Resources */,
 				C93113FE13FBC85900355693 /* storyinteraction-concentration-tile-purple@2x~iphone.png in Resources */,
 				C931140013FBC85900355693 /* storyinteraction-concentration-tile-blue@2x~iphone.png in Resources */,
-				C931140213FBC85900355693 /* storyinteraction-concentration-tile-orange@2x~iphone in Resources */,
+				C931140213FBC85900355693 /* storyinteraction-concentration-tile-orange@2x~iphone.png in Resources */,
 				C9FD839113FBD674007D5B47 /* storyinteraction-wordbird-Shocked_Pen.png in Resources */,
 				C9FD839513FBD674007D5B47 /* storyinteraction-wordbird-Pen_Happy_Filmstrip.png in Resources */,
 				C9FD839713FBD674007D5B47 /* storyinteraction-wordbird-BalloonPop_09.png in Resources */,
@@ -7289,6 +7341,14 @@
 				C92E733513FE7033005CE812 /* storyinteraction-concentration-startover-button@2x~iphone.png in Resources */,
 				C92E733713FE7033005CE812 /* storyinteraction-concentration-flips-button~ipad.png in Resources */,
 				C92E733913FE7033005CE812 /* storyinteraction-concentration-startover-button~ipad.png in Resources */,
+				5296F99F13FE7B4F009532F3 /* 9780545283502.NightOfTheLivingDummy.jpg in Resources */,
+				5296F9A113FE7B4F009532F3 /* 9780545287012_r1.HalloweenParade.jpg in Resources */,
+				5296F9A313FE7B4F009532F3 /* 9780545289726_r1.OlliesNewTricks.jpg in Resources */,
+				5296F9A513FE7B4F009532F3 /* 9780545308656.6.StableMatesPatch.jpg in Resources */,
+				5296F9A713FE7B4F009532F3 /* 9780545327619_r1.WhoWillCarveTheTurkey.jpg in Resources */,
+				5296F9A913FE7B4F009532F3 /* 9780545345019_r1.AllieFinkleMovingDay.jpg in Resources */,
+				5296F9AB13FE7B4F009532F3 /* 9780545366779.2.MazeOfBones.jpg in Resources */,
+				5296F9AD13FE7B4F009532F3 /* 9780545368896_r1.TheHiddenStairs.jpg in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

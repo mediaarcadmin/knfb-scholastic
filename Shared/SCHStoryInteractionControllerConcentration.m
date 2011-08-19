@@ -13,9 +13,11 @@
 #import "UIColor+Scholastic.h"
 #import "NSArray+Shuffling.h"
 
-#define kTileGap 5
-#define kBorderWidth 2
-#define kCornerRadius 8
+enum {
+    kTileGap = 5,
+    kBorderWidth = 2,
+    kCornerRadius = 8,
+};
 
 @interface SCHStoryInteractionControllerConcentration ()
 
@@ -25,6 +27,8 @@
 @property (nonatomic, assign) UIView *firstFlippedTile;
 
 - (void)setupPuzzleView;
+- (UIImage *)tileBackground;
+- (UIColor *)tileBorderColor;
 - (void)matchTile:(UIView *)tile withTile:(UIView *)tile;
 
 @end
@@ -51,13 +55,14 @@
 
 - (BOOL)shouldPlayQuestionAudioForViewAtIndex:(NSInteger)screenIndex
 {
-    return screenIndex == 1;
+    return screenIndex == 0;
 }
 
 - (void)setupViewAtIndex:(NSInteger)index
 {
     if (index == 1) {
         [self setupPuzzleView];
+        [self enqueueAudioWithPath:[(SCHStoryInteractionConcentration *)self.storyInteraction audioPathForIntroduction] fromBundle:NO];
     }
 }
 
@@ -88,15 +93,11 @@
     CALayer *layer = [CALayer layer];
     layer.bounds = (CGRect){CGPointZero, size};
     layer.contents = (id)[image CGImage];
-    if (image.size.width > size.width || image.size.height > size.height) {
-        layer.contentsGravity = kCAGravityResizeAspect;
-    } else {
-        layer.contentsGravity = kCAGravityCenter;
-    }
+    layer.contentsGravity = kCAGravityResizeAspect;
     layer.doubleSided = NO;
 
     layer.borderWidth = kBorderWidth;
-    layer.borderColor = [[UIColor SCHOrange1Color] CGColor];
+    layer.borderColor = [[self tileBorderColor] CGColor];
     layer.cornerRadius = kCornerRadius;
     layer.masksToBounds = YES;
     layer.backgroundColor = layer.borderColor;
@@ -119,10 +120,13 @@
     NSInteger cols = MIN(6, (self.numberOfPairs*2)/3);
     NSInteger rows = (self.numberOfPairs*2)/cols;
     NSAssert(rows*cols == self.numberOfPairs*2, @"invalid factorisation of numberOfPairs");
+    CGFloat maxTileWidth = floorf((CGRectGetWidth(self.flipContainer.bounds)-(cols+1)*kTileGap-cols*2*kBorderWidth) / cols);
+    CGFloat maxTileHeight = floorf((CGRectGetHeight(self.flipContainer.bounds)-(rows+1)*kTileGap-rows*2*kBorderWidth) / rows);
+    CGFloat maxTileSize = MIN(maxTileWidth, maxTileHeight);
     
-    // TODO different tiles for each level
-    UIImage *tileBackImage = [UIImage imageNamed:@"storyinteraction-concentration-tile-orange.png"];
-    CGSize tileSize = CGSizeMake(tileBackImage.size.width+kBorderWidth*2, tileBackImage.size.height+kBorderWidth*2);
+    UIImage *tileBackImage = [self tileBackground];
+    CGSize tileSize = CGSizeMake(MIN(maxTileSize, tileBackImage.size.width)+kBorderWidth*2,
+                                 MIN(maxTileSize, tileBackImage.size.height)+kBorderWidth*2);
     
     CGSize layoutSize = CGSizeMake(tileSize.width*cols + kTileGap*(cols-1),
                                    tileSize.height*rows + kTileGap*(rows-1));
@@ -176,10 +180,30 @@
     self.numberOfFlips = 0;
 }
 
+- (UIImage *)tileBackground
+{
+    switch (self.numberOfPairs) {
+        case  6: return [UIImage imageNamed:@"storyinteraction-concentration-tile-blue.png"];
+        case  9: return [UIImage imageNamed:@"storyinteraction-concentration-tile-purple.png"];
+        case 12: return [UIImage imageNamed:@"storyinteraction-concentration-tile-orange.png"];
+    }
+    return nil;
+}
+
+- (UIColor *)tileBorderColor
+{
+    switch (self.numberOfPairs) {
+        case  6: return [UIColor SCHLightBlue2Color];
+        case  9: return [UIColor SCHPurple1Color];
+        case 12: return [UIColor SCHOrange1Color];
+    }
+    return nil;
+}
+
 - (void)setNumberOfFlips:(NSInteger)newNumberOfFlips
 {
     numberOfFlips = newNumberOfFlips;
-    self.flipCounterLabel.text = [NSString stringWithFormat:@"%d FLIPS", numberOfFlips];
+    [self.flipCounterLabel setTitle:[NSString stringWithFormat:@"%d FLIPS", numberOfFlips] forState:UIControlStateNormal];
 }
 
 - (void)startOverTapped:(id)sender
@@ -234,7 +258,7 @@
         [tile1 setUserInteractionEnabled:NO];
         [tile2 setUserInteractionEnabled:NO];
         if (++self.numberOfPairsFound == self.numberOfPairs) {
-            [self enqueueAudioWithPath:[(SCHStoryInteractionConcentration *)self.storyInteraction audioPathForYouGotThemAll]
+            [self enqueueAudioWithPath:[(SCHStoryInteractionConcentration *)self.storyInteraction audioPathForYouWon]
                             fromBundle:NO
                             startDelay:0
                 synchronizedStartBlock:nil
