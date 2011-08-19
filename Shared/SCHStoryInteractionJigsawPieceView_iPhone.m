@@ -51,7 +51,7 @@
 
 - (BOOL)isInCorrectPosition
 {
-    static const CGFloat kSnapDistanceSq = 900;
+    static const CGFloat kSnapDistanceSq = 500;
     return SCHCGPointDistanceSq(self.center, self.solutionPosition) < kSnapDistanceSq;
 }
 

@@ -25,9 +25,21 @@
     return NO;
 }
 
-- (NSString *)imagePathForPuzzle
+- (NSString *)imagePathForEasyPuzzle
+{
+    NSString *filename = [NSString stringWithFormat:@"%@_easy.png", self.ID];
+    return [KNFBXPSStoryInteractionsDirectory stringByAppendingPathComponent:filename];
+}
+
+- (NSString *)imagePathForMediumPuzzle
 {
     NSString *filename = [NSString stringWithFormat:@"%@_medium.png", self.ID];
+    return [KNFBXPSStoryInteractionsDirectory stringByAppendingPathComponent:filename];
+}
+
+- (NSString *)imagePathForHardPuzzle
+{
+    NSString *filename = [NSString stringWithFormat:@"%@_hard.png", self.ID];
     return [KNFBXPSStoryInteractionsDirectory stringByAppendingPathComponent:filename];
 }
 

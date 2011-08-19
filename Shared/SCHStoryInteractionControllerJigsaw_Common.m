@@ -98,7 +98,19 @@ enum {
 
 - (UIImage *)puzzleImage
 {
-    NSString *path = [(SCHStoryInteractionJigsaw *)self.storyInteraction imagePathForPuzzle];
+    SCHStoryInteractionJigsaw *jigsaw = (SCHStoryInteractionJigsaw *)self.storyInteraction;
+    NSString *path = nil;
+    switch (self.numberOfPieces) {
+        case 6:
+            path = [jigsaw imagePathForEasyPuzzle];
+            break;
+        case 12:
+            path = [jigsaw imagePathForMediumPuzzle];
+            break;
+        case 20:
+            path = [jigsaw imagePathForHardPuzzle];
+            break;
+    }
     return [self imageAtPath:path];
 }
 
@@ -174,9 +186,7 @@ enum {
     [self.contentsView addSubview:preview];
         
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{
-        NSString *imagePath = [(SCHStoryInteractionJigsaw *)self.storyInteraction imagePathForPuzzle];
-        UIImage *puzzleImage = [self imageAtPath:imagePath];
-
+        UIImage *puzzleImage = [self puzzleImage];
         CGRect puzzleFrame = SCHAspectFitSizeInTargetRect(puzzleImage.size, self.puzzleBackground.frame);
         self.puzzleBackground.frame = puzzleFrame;
         
