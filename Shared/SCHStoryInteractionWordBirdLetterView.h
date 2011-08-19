@@ -16,5 +16,6 @@
 
 - (void)setCorrectHighlight;
 - (void)setIncorrectHighlight;
+- (void)removeHighlight;
 
 @end

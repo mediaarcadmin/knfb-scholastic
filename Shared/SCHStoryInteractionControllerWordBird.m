@@ -45,6 +45,8 @@ enum {
 - (void)didComplete;
 - (void)movePenguinHigher;
 - (void)popBalloon;
+- (void)showPlayAgainButton;
+- (void)playAgainTapped:(id)sender;
 
 @end
 
@@ -93,14 +95,11 @@ enum {
 
 - (void)setupViewAtIndex:(NSInteger)screenIndex
 {
-    switch (screenIndex) {
-        case 1: {
-            [self setupAnswerView];
-            [self setupLettersView];
-            [self setupAnimationView];
-            self.correctLetterCount = 0;
-            break;
-        }
+    if (screenIndex == 1) {
+        [self setupAnswerView];
+        [self setupLettersView];
+        [self setupAnimationView];
+        self.correctLetterCount = 0;
     }
 }
 
@@ -168,8 +167,18 @@ enum {
     CGRect bounds = CGRectMake(0, 0, 260, 400);
     self.animationContainerLayer = [SCHAnimatedLayer layer];
     self.animationContainerLayer.bounds = bounds;
+    
+    CGFloat scale = 1.0f;
+    CGFloat neededHeight = CGRectGetHeight(bounds)*1.5;
+    if (CGRectGetWidth(bounds) > CGRectGetWidth(self.animationContainer.bounds)
+        || neededHeight > CGRectGetHeight(self.animationContainer.bounds)) {
+        // scale the animation layer down to fit
+        scale = MIN(CGRectGetWidth(self.animationContainer.bounds) / CGRectGetWidth(bounds),
+                    CGRectGetHeight(self.animationContainer.bounds) / neededHeight);
+    }
+    self.animationContainerLayer.affineTransform = CGAffineTransformMakeScale(scale, scale);
     self.animationContainerLayer.position = CGPointMake(CGRectGetMidX(self.animationContainer.bounds),
-                                                        CGRectGetMaxY(self.animationContainer.bounds)-CGRectGetMidY(bounds));
+                                                        CGRectGetMaxY(self.animationContainer.bounds)-CGRectGetMidY(bounds)*scale);
     [self.animationContainer.layer addSublayer:self.animationContainerLayer];
     
     self.balloonsLayer = [SCHAnimatedLayer layer];
@@ -233,6 +242,7 @@ enum {
 
 - (void)playTapped:(id)sender
 {
+    [self cancelQueuedAudioExecutingSynchronizedBlocksImmediately];
     [self presentNextView];
 }
 
@@ -295,7 +305,6 @@ enum {
 
 - (void)didComplete
 {
-    // TODO animate penguin flying away
     [self enqueueAudioWithPath:[(SCHStoryInteractionWordBird *)self.storyInteraction audioPathForNiceFlying]
                     fromBundle:NO
                     startDelay:0
@@ -314,9 +323,10 @@ enum {
     [CATransaction setDisableActions:YES];
     
     if (self.correctLetterCount < [[self currentWord] length]) {
-        CGFloat ystep = (CGRectGetHeight(self.animationContainer.bounds)-CGRectGetHeight(self.animationContainerLayer.bounds))/([[self currentWord] length]-1);
+        CGRect bounds = CGRectApplyAffineTransform(self.animationContainerLayer.bounds, self.animationContainerLayer.affineTransform);
+        CGFloat ystep = (CGRectGetHeight(self.animationContainer.bounds)-CGRectGetHeight(bounds))/([[self currentWord] length]-1);
         CGPoint targetPosition = CGPointMake(self.animationContainerLayer.position.x, 
-                                             CGRectGetMaxY(self.animationContainer.bounds)-CGRectGetMidY(self.animationContainerLayer.bounds)-ystep*self.correctLetterCount);
+                                             CGRectGetMaxY(self.animationContainer.bounds)-CGRectGetMidY(bounds)-ystep*self.correctLetterCount);
         
         CABasicAnimation *move = [CABasicAnimation animationWithKeyPath:@"position"];
         move.fromValue = [NSValue valueWithCGPoint:self.animationContainerLayer.position];
@@ -356,14 +366,8 @@ enum {
         [self.animationContainerLayer addAnimation:move forKey:@"move"];
         self.animationContainerLayer.position = targetPosition;
         
-        [self enqueueAudioWithPath:@"sfx_penguinwin.mp3"
-                        fromBundle:YES
-                        startDelay:0
-            synchronizedStartBlock:nil
-              synchronizedEndBlock:^{
-                  self.controllerState = SCHStoryInteractionControllerStateInteractionFinishedSuccessfully;
-                  [self removeFromHostView];
-              }];
+        [self enqueueAudioWithPath:@"sfx_penguinwin.mp3" fromBundle:YES];
+        [self didComplete];
     }
     
     [CATransaction commit];
@@ -382,7 +386,10 @@ enum {
     if (self.remainingBalloonCount == 1) {
         // pop last balloon - there are three stages to the animation due to the number of frames required
         // not fitting in the maximum texture size
-        SCHAnimationDelegate *step3 = [SCHAnimationDelegate animationDelegateWithStopBlock:^(CAAnimation *animation, BOOL finished) {
+        SCHAnimationDelegate *step2delegate = [SCHAnimationDelegate animationDelegateWithStopBlock:^(CAAnimation *animation, BOOL finished) {
+            [self showPlayAgainButton];
+        }];
+        SCHAnimationDelegate *step1delegate = [SCHAnimationDelegate animationDelegateWithStopBlock:^(CAAnimation *animation, BOOL finished) {
             [CATransaction begin];
             [CATransaction setDisableActions:YES];
             releaseLayer([self.loseAnimationLayers objectAtIndex:1]);
@@ -390,18 +397,18 @@ enum {
             [finalLayer setHidden:NO];
             [finalLayer animateAllFramesWithDuration:1.56
                                          repeatCount:1 
-                                            delegate:[self continueInteraction]];
+                                            delegate:step2delegate];
             [finalLayer setFrameIndex:finalLayer.numberOfFrames-1];
             [CATransaction commit];
         }];
-        SCHAnimationDelegate *step2 = [SCHAnimationDelegate animationDelegateWithStopBlock:^(CAAnimation *animation, BOOL finished) {
+        SCHAnimationDelegate *step0delegate = [SCHAnimationDelegate animationDelegateWithStopBlock:^(CAAnimation *animation, BOOL finished) {
             [CATransaction begin];
             [CATransaction setDisableActions:YES];
             releaseLayer([self.loseAnimationLayers objectAtIndex:0]);
             [[self.loseAnimationLayers objectAtIndex:1] setHidden:NO];
             [[self.loseAnimationLayers objectAtIndex:1] animateAllFramesWithDuration:1.59
                                                                          repeatCount:1
-                                                                            delegate:step3];
+                                                                            delegate:step1delegate];
             [CATransaction commit];
         }];
 
@@ -411,7 +418,7 @@ enum {
         [[self.loseAnimationLayers objectAtIndex:0] setHidden:NO];
         [[self.loseAnimationLayers objectAtIndex:0] animateAllFramesWithDuration:1.59 
                                                                      repeatCount:1
-                                                                        delegate:step2];
+                                                                        delegate:step0delegate];
         [self enqueueAudioWithPath:@"sfx_penguinfall.mp3" fromBundle:YES];
     } else {
         NSString *filename = [NSString stringWithFormat:@"storyinteraction-wordbird-BalloonPop_%02d.png", 11-self.remainingBalloonCount];
@@ -439,6 +446,33 @@ enum {
     
     [CATransaction commit];
     self.remainingBalloonCount--;
+}
+
+- (void)showPlayAgainButton
+{
+    UIButton *playAgain = [UIButton buttonWithType:UIButtonTypeCustom];
+    playAgain.frame = self.contentsView.bounds;
+    [playAgain addTarget:self action:@selector(playAgainTapped:) forControlEvents:UIControlEventTouchUpInside];
+    [self.contentsView addSubview:playAgain];
+    self.controllerState = SCHStoryInteractionControllerStateInteractionInProgress;
+}
+
+- (void)playAgainTapped:(UIButton *)sender
+{
+    [sender removeFromSuperview];
+    for (SCHStoryInteractionWordBirdAnswerLetterView *answer in [self.answerContainer subviews]) {
+        answer.letter = ' ';
+    }
+    for (SCHStoryInteractionWordBirdLetterView *letter in [self.lettersContainer subviews]) {
+        [letter removeHighlight];
+        [letter setUserInteractionEnabled:YES];
+    }
+    
+    self.correctLetterCount = 0;
+    self.remainingBalloonCount = kNumberOfBalloons;
+
+    [self.animationContainerLayer removeFromSuperlayer];
+    [self setupAnimationView];
 }
 
 @end
