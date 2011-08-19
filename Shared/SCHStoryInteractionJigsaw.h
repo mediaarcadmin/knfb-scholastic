@@ -10,7 +10,9 @@
 
 @interface SCHStoryInteractionJigsaw : SCHStoryInteraction {}
 
-- (NSString *)imagePathForPuzzle;
+- (NSString *)imagePathForEasyPuzzle;
+- (NSString *)imagePathForMediumPuzzle;
+- (NSString *)imagePathForHardPuzzle;
 
 - (NSString *)audioPathForChooseYourPuzzle;
 - (NSString *)audioPathForClickPuzzleToStart;

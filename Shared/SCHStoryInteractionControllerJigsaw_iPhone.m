@@ -132,6 +132,9 @@ enum {
         case UIGestureRecognizerStateChanged: {
             CGPoint point = [drag locationInView:drag.dragContainerView];
             self.draggingPiece.center = CGPointMake(point.x + self.dragOffset.x, point.y + self.dragOffset.y);
+            if ([self.draggingPiece isInCorrectPosition]) {
+                self.draggingPiece.center = self.draggingPiece.solutionPosition;
+            }
             break;
         }
         case UIGestureRecognizerStateEnded:
