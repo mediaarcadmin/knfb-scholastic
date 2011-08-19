@@ -44,4 +44,9 @@
     [self setBackgroundImage:[UIImage imageNamed:@"storyinteraction-lettertile-red"] forState:UIControlStateNormal];
 }
 
+- (void)removeHighlight
+{
+    [self setBackgroundImage:[UIImage imageNamed:@"storyinteraction-lettertile"] forState:UIControlStateNormal];
+}
+
 @end
