@@ -12,7 +12,8 @@
 
 @property (nonatomic, retain) NSString *introduction;
 
-- (NSString *)audioPathForYouGotThemAll;
+- (NSString *)audioPathForIntroduction;
+- (NSString *)audioPathForYouWon;
 
 - (NSInteger)numberOfPairs;
 - (NSString *)imagePathForFirstOfPairAtIndex:(NSInteger)index;

@@ -35,13 +35,18 @@
 
 - (NSString *)audioPathForQuestion
 {
+    return [KNFBXPSStoryInteractionsDirectory stringByAppendingPathComponent:@"gen_memorymatch.mp3"];
+}
+
+- (NSString *)audioPathForIntroduction
+{
     NSString *filename = [NSString stringWithFormat:@"%@_intro.mp3", self.ID];
     return [KNFBXPSStoryInteractionsDirectory stringByAppendingPathComponent:filename];
 }
 
 - (NSString *)audioPathForYouGotThemAll
 {
-    return [KNFBXPSStoryInteractionsDirectory stringByAppendingPathComponent:@"gen_gotthemall.mp3"];
+    return [KNFBXPSStoryInteractionsDirectory stringByAppendingPathComponent:@"gen_youwon.mp3"];
 }
 
 - (NSString *)imagePathForFirstOfPairAtIndex:(NSInteger)index
