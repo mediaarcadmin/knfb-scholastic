@@ -44,7 +44,7 @@
     return [KNFBXPSStoryInteractionsDirectory stringByAppendingPathComponent:filename];
 }
 
-- (NSString *)audioPathForYouGotThemAll
+- (NSString *)audioPathForYouWon
 {
     return [KNFBXPSStoryInteractionsDirectory stringByAppendingPathComponent:@"gen_youwon.mp3"];
 }

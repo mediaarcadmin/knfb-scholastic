@@ -248,48 +248,52 @@
 					<object class="IBUIButton" id="787744147">
 						<reference key="NSNextResponder" ref="892273010"/>
 						<int key="NSvFlags">292</int>
-						<string key="NSFrame">{{184, 20}, {152, 37}}</string>
+						<string key="NSFrame">{{166, 20}, {152, 37}}</string>
 						<reference key="NSSuperview" ref="892273010"/>
 						<reference key="NSWindow"/>
-						<reference key="NSNextKeyView" ref="1052922495"/>
+						<reference key="NSNextKeyView" ref="918200515"/>
 						<string key="NSReuseIdentifierKey">_NS:237</string>
 						<bool key="IBUIOpaque">NO</bool>
 						<string key="targetRuntimeIdentifier">IBIPadFramework</string>
 						<int key="IBUIContentHorizontalAlignment">0</int>
 						<int key="IBUIContentVerticalAlignment">0</int>
 						<reference key="IBUIFont" ref="1072710838"/>
-						<string key="IBUINormalTitle">&lt; START OVER</string>
+						<string key="IBUINormalTitle">START OVER</string>
 						<reference key="IBUIHighlightedTitleColor" ref="81923980"/>
 						<reference key="IBUINormalTitleColor" ref="81923980"/>
 						<reference key="IBUINormalTitleShadowColor" ref="681398678"/>
 						<object class="NSCustomResource" key="IBUINormalBackgroundImage">
 							<string key="NSClassName">NSImage</string>
-							<string key="NSResourceName">answer-button-blue~ipad.png</string>
+							<string key="NSResourceName">storyinteraction-concentration-startover-button~ipad.png</string>
 						</object>
 					</object>
-					<object class="IBUILabel" id="1052922495">
+					<object class="IBUIButton" id="918200515">
 						<reference key="NSNextResponder" ref="892273010"/>
 						<int key="NSvFlags">292</int>
-						<string key="NSFrame">{{344, 28}, {117, 22}}</string>
+						<string key="NSFrame">{{326, 20}, {152, 37}}</string>
 						<reference key="NSSuperview" ref="892273010"/>
 						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="918645225"/>
-						<string key="NSReuseIdentifierKey">_NS:327</string>
+						<string key="NSReuseIdentifierKey">_NS:237</string>
 						<bool key="IBUIOpaque">NO</bool>
-						<bool key="IBUIClipsSubviews">YES</bool>
-						<int key="IBUIContentMode">7</int>
 						<bool key="IBUIUserInteractionEnabled">NO</bool>
 						<string key="targetRuntimeIdentifier">IBIPadFramework</string>
-						<string key="IBUIText">20 FLIPS</string>
+						<int key="IBUIContentHorizontalAlignment">0</int>
+						<int key="IBUIContentVerticalAlignment">0</int>
 						<reference key="IBUIFont" ref="1072710838"/>
-						<object class="NSColor" key="IBUITextColor">
+						<bool key="IBUIAdjustsImageWhenHighlighted">NO</bool>
+						<bool key="IBUIAdjustsImageWhenDisabled">NO</bool>
+						<string key="IBUINormalTitle">20 Flips</string>
+						<reference key="IBUIHighlightedTitleColor" ref="81923980"/>
+						<object class="NSColor" key="IBUINormalTitleColor">
 							<int key="NSColorSpace">1</int>
-							<bytes key="NSRGB">MCAwIDAAA</bytes>
+							<bytes key="NSRGB">MC4xOTYwNzg0MzQ2IDAuMzA5ODAzOTMyOSAwLjUyMTU2ODY1NgA</bytes>
 						</object>
-						<nil key="IBUIHighlightedColor"/>
-						<int key="IBUIBaselineAdjustment">1</int>
-						<float key="IBUIMinimumFontSize">10</float>
-						<int key="IBUITextAlignment">1</int>
+						<reference key="IBUINormalTitleShadowColor" ref="681398678"/>
+						<object class="NSCustomResource" key="IBUINormalBackgroundImage">
+							<string key="NSClassName">NSImage</string>
+							<string key="NSResourceName">storyinteraction-concentration-flips-button~ipad.png</string>
+						</object>
 					</object>
 					<object class="IBUIView" id="918645225">
 						<reference key="NSNextResponder" ref="892273010"/>
@@ -442,19 +446,19 @@
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBCocoaTouchOutletConnection" key="connection">
-						<string key="label">flipCounterLabel</string>
-						<reference key="source" ref="372490531"/>
-						<reference key="destination" ref="1052922495"/>
-					</object>
-					<int key="connectionID">35</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBCocoaTouchOutletConnection" key="connection">
 						<string key="label">startOverButton</string>
 						<reference key="source" ref="372490531"/>
 						<reference key="destination" ref="787744147"/>
 					</object>
 					<int key="connectionID">36</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBCocoaTouchOutletConnection" key="connection">
+						<string key="label">flipCounterLabel</string>
+						<reference key="source" ref="372490531"/>
+						<reference key="destination" ref="918200515"/>
+					</object>
+					<int key="connectionID">38</int>
 				</object>
 			</object>
 			<object class="IBMutableOrderedSet" key="objectRecords">
@@ -532,9 +536,9 @@
 						<reference key="object" ref="892273010"/>
 						<object class="NSMutableArray" key="children">
 							<bool key="EncodedWithXMLCoder">YES</bool>
-							<reference ref="787744147"/>
-							<reference ref="1052922495"/>
 							<reference ref="918645225"/>
+							<reference ref="787744147"/>
+							<reference ref="918200515"/>
 						</object>
 						<reference key="parent" ref="0"/>
 					</object>
@@ -544,13 +548,13 @@
 						<reference key="parent" ref="892273010"/>
 					</object>
 					<object class="IBObjectRecord">
-						<int key="objectID">31</int>
-						<reference key="object" ref="1052922495"/>
+						<int key="objectID">32</int>
+						<reference key="object" ref="918645225"/>
 						<reference key="parent" ref="892273010"/>
 					</object>
 					<object class="IBObjectRecord">
-						<int key="objectID">32</int>
-						<reference key="object" ref="918645225"/>
+						<int key="objectID">37</int>
+						<reference key="object" ref="918200515"/>
 						<reference key="parent" ref="892273010"/>
 					</object>
 				</object>
@@ -571,8 +575,9 @@
 					<string>3.IBPluginDependency</string>
 					<string>30.CustomClassName</string>
 					<string>30.IBPluginDependency</string>
-					<string>31.IBPluginDependency</string>
 					<string>32.IBPluginDependency</string>
+					<string>37.CustomClassName</string>
+					<string>37.IBPluginDependency</string>
 					<string>7.CustomClassName</string>
 					<string>7.IBPluginDependency</string>
 					<string>8.CustomClassName</string>
@@ -595,6 +600,7 @@
 					<string>SCHStretchableImageButton</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
+					<string>SCHStretchableImageButton</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>SCHStretchableImageButton</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
@@ -616,7 +622,7 @@
 				<reference key="dict.values" ref="0"/>
 			</object>
 			<nil key="sourceID"/>
-			<int key="maxID">36</int>
+			<int key="maxID">38</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<object class="NSMutableArray" key="referencedPartialClassDescriptions">
@@ -686,7 +692,7 @@
 						<object class="NSMutableArray" key="dict.values">
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<string>UIView</string>
-							<string>UILabel</string>
+							<string>UIButton</string>
 							<string>UIButton</string>
 						</object>
 					</object>
@@ -706,7 +712,7 @@
 							</object>
 							<object class="IBToOneOutletInfo">
 								<string key="name">flipCounterLabel</string>
-								<string key="candidateClassName">UILabel</string>
+								<string key="candidateClassName">UIButton</string>
 							</object>
 							<object class="IBToOneOutletInfo">
 								<string key="name">startOverButton</string>
@@ -749,23 +755,25 @@
 			<bool key="EncodedWithXMLCoder">YES</bool>
 			<object class="NSArray" key="dict.sortedKeys">
 				<bool key="EncodedWithXMLCoder">YES</bool>
-				<string>answer-button-blue~ipad.png</string>
 				<string>storyinteraction-concentration-12-pairs-button.png</string>
 				<string>storyinteraction-concentration-12-pairs.png</string>
 				<string>storyinteraction-concentration-6-pairs-button.png</string>
 				<string>storyinteraction-concentration-6-pairs.png</string>
 				<string>storyinteraction-concentration-9-pairs-button.png</string>
 				<string>storyinteraction-concentration-9-pairs.png</string>
+				<string>storyinteraction-concentration-flips-button~ipad.png</string>
+				<string>storyinteraction-concentration-startover-button~ipad.png</string>
 			</object>
 			<object class="NSMutableArray" key="dict.values">
 				<bool key="EncodedWithXMLCoder">YES</bool>
-				<string>{21, 54}</string>
 				<string>{155, 47}</string>
 				<string>{196, 148}</string>
 				<string>{155, 47}</string>
 				<string>{196, 148}</string>
 				<string>{155, 47}</string>
 				<string>{196, 148}</string>
+				<string>{21, 50}</string>
+				<string>{21, 50}</string>
 			</object>
 		</object>
 		<string key="IBCocoaTouchPluginVersion">534</string>

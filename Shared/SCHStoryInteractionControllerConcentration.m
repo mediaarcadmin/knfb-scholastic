@@ -203,7 +203,7 @@ enum {
 - (void)setNumberOfFlips:(NSInteger)newNumberOfFlips
 {
     numberOfFlips = newNumberOfFlips;
-    self.flipCounterLabel.text = [NSString stringWithFormat:@"%d FLIPS", numberOfFlips];
+    [self.flipCounterLabel setTitle:[NSString stringWithFormat:@"%d FLIPS", numberOfFlips] forState:UIControlStateNormal];
 }
 
 - (void)startOverTapped:(id)sender

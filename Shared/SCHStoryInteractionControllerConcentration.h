@@ -13,7 +13,7 @@
 @property (nonatomic, retain) IBOutletCollection(UIButton) NSArray *levelButtons;
 @property (nonatomic, retain) IBOutlet UIView *flipContainer;
 @property (nonatomic, retain) IBOutlet UIButton *startOverButton;
-@property (nonatomic, retain) IBOutlet UILabel *flipCounterLabel;
+@property (nonatomic, retain) IBOutlet UIButton *flipCounterLabel;
 
 - (IBAction)levelButtonTapped:(id)sender;
 - (IBAction)startOverTapped:(id)sender;
