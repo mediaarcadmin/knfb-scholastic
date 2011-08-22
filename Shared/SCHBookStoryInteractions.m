@@ -117,7 +117,7 @@
 {
     NSMutableArray *result = [NSMutableArray array];
     for (SCHStoryInteraction *si in self.storyInteractions) {
-        if ([si class] == storyInteractionClass) {
+        if ([si isKindOfClass:storyInteractionClass]) {
             [result addObject:si];
         }
     }

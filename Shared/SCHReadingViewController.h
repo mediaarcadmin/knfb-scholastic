@@ -108,5 +108,6 @@ managedObjectContext:(NSManagedObjectContext *)moc
 - (IBAction)audioPlayAction:(id)sender;
 - (IBAction)helpAction:(id)sender;
 - (IBAction)paperTypeSegmentChanged:(UISegmentedControl *)segControl;
+- (IBAction)pictureStarterPressed:(id)sender;
 
 @end

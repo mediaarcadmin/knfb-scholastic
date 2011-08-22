@@ -2495,4 +2495,18 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 		abort();
     }
 }
+
+#pragma mark - Picture Starter
+
+- (void)pictureStarterPressed:(id)sender
+{
+    NSArray *storyInteractions = [self.bookStoryInteractions storyInteractionsOfClass:[SCHStoryInteractionPictureStarter class]];
+    if ([storyInteractions count] < 1) {
+        NSLog(@"No PictureStarter found - button should be disabled");
+        return;
+    }
+    SCHStoryInteractionPictureStarter *pictureStarter = [storyInteractions lastObject];
+    [self presentStoryInteraction:pictureStarter];
+}
+
 @end
