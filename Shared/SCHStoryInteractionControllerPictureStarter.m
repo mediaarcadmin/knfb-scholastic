@@ -26,7 +26,7 @@
 @synthesize stampChooserOverlay;
 @synthesize doneButton;
 @synthesize clearButton;
-@synthesize downloadButton;
+@synthesize saveButton;
 
 - (void)dealloc
 {
@@ -37,7 +37,7 @@
     [stampChooserOverlay release], stampChooserOverlay = nil;
     [doneButton release], doneButton = nil;
     [clearButton release], clearButton = nil;
-    [downloadButton release], downloadButton = nil;
+    [saveButton release], saveButton = nil;
     [super dealloc];
 }
 
@@ -49,6 +49,11 @@
         default:
             return SCHStoryInteractionNoTitle;
     }
+}
+
+- (BOOL)shouldShowCloseButton
+{
+    return NO;
 }
 
 - (void)storyInteractionDisableUserInteraction
@@ -103,7 +108,7 @@
 
 #pragma mark - Actions
 
-- (void)downloadButtonPressed:(id)sender
+- (void)saveButtonPressed:(id)sender
 {
 }
 
@@ -113,6 +118,8 @@
 
 - (void)doneButtonPressed:(id)sender
 {
+    self.controllerState = SCHStoryInteractionControllerStateInteractionFinishedSuccessfully;
+    [self removeFromHostView];
 }
 
 - (void)colorSelected:(id)sender

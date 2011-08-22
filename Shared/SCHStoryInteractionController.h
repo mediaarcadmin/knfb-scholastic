@@ -187,6 +187,9 @@ typedef enum
 // to viewDidLoad, but used a separate message name to avoid confusion.
 - (void)setupViewAtIndex:(NSInteger)screenIndex;
 
+// override to return NO if the story interaction should not show the top-left close button
+- (BOOL)shouldShowCloseButton;
+
 // normally the question audio (if any) is played when the view appears; override
 // to change this behaviour
 - (BOOL)shouldPlayQuestionAudioForViewAtIndex:(NSInteger)screenIndex;

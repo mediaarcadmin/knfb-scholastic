@@ -10,12 +10,12 @@
 
 @implementation SCHStretchableImageButton
 
-NSInteger leftCapForImage(UIImage *image)
+static NSInteger leftCapForImage(UIImage *image)
 {
     return image.size.width/2-1;
 }
 
-NSInteger topCapForImage(UIImage *image)
+static NSInteger topCapForImage(UIImage *image)
 {
     return image.size.height/2-1;
 }
@@ -36,7 +36,7 @@ NSInteger topCapForImage(UIImage *image)
             };
             for (int i = 0; i < sizeof(states)/sizeof(states[0]); ++i) {
                 UIImage *image = [self backgroundImageForState:states[i]];
-                if (image != nil && image != stretchable) {
+                if (image != nil && [image CGImage] != [stretchable CGImage]) {
                     [self setBackgroundImage:[image stretchableImageWithLeftCapWidth:leftCapForImage(image)
                                                                         topCapHeight:topCapForImage(image)]
                                     forState:states[i]];

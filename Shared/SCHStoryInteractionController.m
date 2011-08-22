@@ -238,12 +238,14 @@ static Class controllerClassForStoryInteraction(SCHStoryInteraction *storyIntera
             [title release];   
         }
         
-        NSString *age = [self.storyInteraction isOlderStoryInteraction] ? @"older" : @"younger";
-        UIImage *closeImage = [UIImage imageNamed:[NSString stringWithFormat:@"storyinteraction-bolt-%@", age]];
-        self.closeButton = [UIButton buttonWithType:UIButtonTypeCustom];
-        [self.closeButton setImage:closeImage forState:UIControlStateNormal];
-        [self.closeButton addTarget:self action:@selector(closeButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
-        [container addSubview:self.closeButton];
+        if ([self shouldShowCloseButton]) {
+            NSString *age = [self.storyInteraction isOlderStoryInteraction] ? @"older" : @"younger";
+            UIImage *closeImage = [UIImage imageNamed:[NSString stringWithFormat:@"storyinteraction-bolt-%@", age]];
+            self.closeButton = [UIButton buttonWithType:UIButtonTypeCustom];
+            [self.closeButton setImage:closeImage forState:UIControlStateNormal];
+            [self.closeButton addTarget:self action:@selector(closeButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
+            [container addSubview:self.closeButton];
+        }
         
         if (questionAudioPath) {
             UIImage *readAloudImage = [UIImage imageNamed:@"storyinteraction-read-aloud"];
@@ -805,6 +807,11 @@ static Class controllerClassForStoryInteraction(SCHStoryInteraction *storyIntera
 - (BOOL)shouldPresentInPortraitOrientation
 {
     return NO;
+}
+
+- (BOOL)shouldShowCloseButton
+{
+    return YES;
 }
 
 @end

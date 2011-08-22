@@ -23,7 +23,7 @@
 @property (nonatomic, retain) IBOutlet UIImageView *stampChooserOverlay;
 @property (nonatomic, retain) IBOutlet SCHStretchableImageButton *doneButton;
 @property (nonatomic, retain) IBOutlet SCHStretchableImageButton *clearButton;
-@property (nonatomic, retain) IBOutlet SCHStretchableImageButton *downloadButton;
+@property (nonatomic, retain) IBOutlet SCHStretchableImageButton *saveButton;
 
 - (IBAction)colorSelected:(id)sender;
 - (IBAction)sizeSelected:(id)sender;
@@ -31,7 +31,7 @@
 - (IBAction)stampSelected:(id)sender;
 - (IBAction)doneButtonPressed:(id)sender;
 - (IBAction)clearButtonPressed:(id)sender;
-- (IBAction)downloadButtonPressed:(id)sender;
+- (IBAction)saveButtonPressed:(id)sender;
 
 // override in subclasses
 - (void)setupOpeningScreen;
