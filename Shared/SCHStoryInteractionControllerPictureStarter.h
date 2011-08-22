@@ -7,6 +7,7 @@
 //
 
 #import "SCHStoryInteractionController.h"
+#import "SCHPictureStarterStickerChooserDelegate.h"
 
 @class SCHPictureStarterCanvas;
 @class SCHPictureStarterColorChooser;
@@ -14,7 +15,7 @@
 @class SCHPictureStarterStickerChooser;
 @class SCHStretchableImageButton;
 
-@interface SCHStoryInteractionControllerPictureStarter : SCHStoryInteractionController
+@interface SCHStoryInteractionControllerPictureStarter : SCHStoryInteractionController <SCHPictureStarterStickerChooserDelegate>
 
 @property (nonatomic, retain) IBOutlet SCHPictureStarterCanvas *canvas;
 @property (nonatomic, retain) IBOutlet SCHPictureStarterColorChooser *colorChooser;

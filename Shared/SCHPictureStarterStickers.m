@@ -81,15 +81,21 @@
     }
 }
 
+- (NSInteger)arrayIndexForStickerIndex:(NSInteger)sticker inChooser:(NSInteger)chooser
+{
+    NSInteger countPerChooser = [self.imagePaths count] / self.numberOfChoosers;
+    return countPerChooser*chooser + sticker;
+}
+
 - (UIImage *)thumbnailAtIndex:(NSInteger)index forChooserIndex:(NSInteger)chooser
 {
-    NSInteger thumbIndex = index*self.numberOfChoosers + chooser;
+    NSInteger thumbIndex = [self arrayIndexForStickerIndex:index inChooser:chooser];
     return [UIImage imageWithContentsOfFile:[self.thumbPaths objectAtIndex:thumbIndex]];
 }
 
 - (UIImage *)imageAtIndex:(NSInteger)index forChooserIndex:(NSInteger)chooser
 {
-    NSInteger imageIndex = index*self.numberOfChoosers + chooser;
+    NSInteger imageIndex = [self arrayIndexForStickerIndex:index inChooser:chooser];
     return [UIImage imageWithContentsOfFile:[self.imagePaths objectAtIndex:imageIndex]];
 }
 

@@ -60,6 +60,11 @@ enum {
     return [[self.sizes objectAtIndex:self.selectedSizeIndex] integerValue];
 }
 
+- (void)clearSelection
+{
+    self.selectedSizeIndex = NSNotFound;
+}
+
 - (void)drawRect:(CGRect)rect
 {
     CGContextRef context = UIGraphicsGetCurrentContext();

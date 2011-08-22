@@ -12,4 +12,6 @@
 
 @property (nonatomic, readonly) NSInteger selectedSize;
 
+- (void)clearSelection;
+
 @end

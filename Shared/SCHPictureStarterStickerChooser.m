@@ -8,23 +8,35 @@
 
 #import "SCHPictureStarterStickerChooser.h"
 #import "SCHPictureStarterStickerChooserDataSource.h"
+#import "SCHPictureStarterStickerChooserDelegate.h"
+#import "SCHPictureStarterStickerChooserThumbnailView.h"
 
 enum {
-    kCellImageViewTag = 101,
+    kThumbnailTag = 101,
     kThumbnailWidth = 49,
     kThumbnailHeight = 49,
     kThumbnailVerticalSpace = 5
 };
 
+@interface SCHPictureStarterStickerChooser ()
+@property (nonatomic, assign) NSInteger selectedRowIndex;
+@end
+
 @implementation SCHPictureStarterStickerChooser
 
 @synthesize chooserIndex;
 @synthesize stickerDataSource;
+@synthesize stickerDelegate;
+@synthesize selectedRowIndex;
 
 - (void)setStickerDataSource:(id<SCHPictureStarterStickerChooserDataSource>)newStickerDataSource
 {
     self.dataSource = self;
+    self.delegate = self;
+    self.selectedRowIndex = NSNotFound;
     self.rowHeight = kThumbnailHeight + kThumbnailVerticalSpace;
+    self.showsVerticalScrollIndicator = NO;
+    self.showsHorizontalScrollIndicator = NO;
     stickerDataSource = newStickerDataSource;
     [self reloadData];
 }
@@ -48,20 +60,50 @@ enum {
     if (!cell) {
         cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellID] autorelease];
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
-
-        UIImageView *cellImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, kThumbnailWidth, kThumbnailHeight)];
-        cellImageView.center = CGPointMake(CGRectGetMidX(cell.bounds), CGRectGetMidY(cell.bounds));
-        cellImageView.autoresizingMask = (UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin
-                                          | UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin);
-        cellImageView.tag = kCellImageViewTag;
-        cellImageView.backgroundColor = [UIColor clearColor];
-        [cell addSubview:cellImageView];
-        [cellImageView release];
+        
+        CGRect frame = CGRectInset(cell.bounds, 5, 0);
+        SCHPictureStarterStickerChooserThumbnailView *thumbnail = [[SCHPictureStarterStickerChooserThumbnailView alloc] initWithFrame:frame];
+        thumbnail.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+        thumbnail.contentMode = UIViewContentModeCenter;
+        thumbnail.tag = kThumbnailTag;
+        thumbnail.backgroundColor = [UIColor clearColor];
+        [cell addSubview:thumbnail];
+        [thumbnail release];
     }
     
-    UIImageView *imageView = (UIImageView *)[cell viewWithTag:kCellImageViewTag];
-    imageView.image = [self.stickerDataSource thumbnailAtIndex:indexPath.row forChooserIndex:self.chooserIndex];
+    SCHPictureStarterStickerChooserThumbnailView *thumbnail = (SCHPictureStarterStickerChooserThumbnailView *)[cell viewWithTag:kThumbnailTag];
+    thumbnail.image = [self.stickerDataSource thumbnailAtIndex:indexPath.row forChooserIndex:self.chooserIndex];
+    thumbnail.selected = (self.selectedRowIndex == indexPath.row);
     return cell;
+}
+
+- (SCHPictureStarterStickerChooserThumbnailView *)thumbnailAtIndex:(NSInteger)index
+{
+    NSIndexPath *indexPath = [NSIndexPath indexPathForRow:index inSection:0];
+    UITableViewCell *cell = [self cellForRowAtIndexPath:indexPath];
+    return (SCHPictureStarterStickerChooserThumbnailView *)[cell viewWithTag:kThumbnailTag];
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    self.selectedRowIndex = indexPath.row;
+    [self.stickerDelegate stickerChooser:self.chooserIndex choseImageAtIndex:self.selectedRowIndex];
+}
+
+#pragma mark - Selection
+
+- (void)clearSelection
+{
+    self.selectedRowIndex = NSNotFound;
+}
+
+- (void)setSelectedRowIndex:(NSInteger)index
+{
+    if (selectedRowIndex != NSNotFound) {
+        [self thumbnailAtIndex:selectedRowIndex].selected = NO;
+    }
+    [self thumbnailAtIndex:index].selected = YES;
+    selectedRowIndex = index;
 }
 
 

@@ -12,4 +12,6 @@
 
 @property (nonatomic, readonly) UIColor *selectedColor;
 
+- (void)clearSelection;
+
 @end

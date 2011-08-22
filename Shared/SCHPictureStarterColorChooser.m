@@ -74,6 +74,11 @@ enum {
     return [self.colors objectAtIndex:self.selectedColorIndex];
 }
 
+- (void)clearSelection
+{
+    self.selectedColorIndex = NSNotFound;
+}
+
 - (void)drawRect:(CGRect)rect
 {
     CGContextRef context = UIGraphicsGetCurrentContext();

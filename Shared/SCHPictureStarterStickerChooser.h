@@ -9,10 +9,14 @@
 #import <UIKit/UIKit.h>
 
 @protocol SCHPictureStarterStickerChooserDataSource;
+@protocol SCHPictureStarterStickerChooserDelegate;
 
-@interface SCHPictureStarterStickerChooser : UITableView <UITableViewDataSource> {}
+@interface SCHPictureStarterStickerChooser : UITableView <UITableViewDataSource, UITableViewDelegate> {}
 
 @property (nonatomic, assign) NSInteger chooserIndex;
 @property (nonatomic, assign) id<SCHPictureStarterStickerChooserDataSource> stickerDataSource;
+@property (nonatomic, assign) id<SCHPictureStarterStickerChooserDelegate> stickerDelegate;
+
+- (void)clearSelection;
 
 @end

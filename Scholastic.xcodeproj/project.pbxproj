@@ -126,6 +126,8 @@
 		286E21B213AC93CB00CB4232 /* DummyAVAudioPlayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 286E21B113AC93CB00CB4232 /* DummyAVAudioPlayer.m */; };
 		286E21B313AC954900CB4232 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 526A8A501385143000101A96 /* AVFoundation.framework */; };
 		286E21B413AD060E00CB4232 /* sfx_scratch.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = F86DEC1513A21F2600053999 /* sfx_scratch.mp3 */; };
+		286F30CA1402C15B00051CBC /* SCHPictureStarterStickerChooserThumbnailView.m in Sources */ = {isa = PBXBuildFile; fileRef = 286F30C91402C15B00051CBC /* SCHPictureStarterStickerChooserThumbnailView.m */; };
+		286F30CB1402C15B00051CBC /* SCHPictureStarterStickerChooserThumbnailView.m in Sources */ = {isa = PBXBuildFile; fileRef = 286F30C91402C15B00051CBC /* SCHPictureStarterStickerChooserThumbnailView.m */; };
 		287186BA14027B7C000A3761 /* SCHStoryInteractionControllerPictureStarter.m in Sources */ = {isa = PBXBuildFile; fileRef = 287186B914027B7B000A3761 /* SCHStoryInteractionControllerPictureStarter.m */; };
 		287186BB14027B7C000A3761 /* SCHStoryInteractionControllerPictureStarter.m in Sources */ = {isa = PBXBuildFile; fileRef = 287186B914027B7B000A3761 /* SCHStoryInteractionControllerPictureStarter.m */; };
 		287186BD14027CCF000A3761 /* SCHStoryInteractionPictureStarter_iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 287186BC14027CCF000A3761 /* SCHStoryInteractionPictureStarter_iPad.xib */; };
@@ -2189,6 +2191,9 @@
 		286E21A813AC851700CB4232 /* SCHQueuedAudioPlayerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCHQueuedAudioPlayerTests.m; sourceTree = "<group>"; };
 		286E21B013AC93CB00CB4232 /* DummyAVAudioPlayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DummyAVAudioPlayer.h; sourceTree = "<group>"; };
 		286E21B113AC93CB00CB4232 /* DummyAVAudioPlayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DummyAVAudioPlayer.m; sourceTree = "<group>"; };
+		286F30C81402C15A00051CBC /* SCHPictureStarterStickerChooserThumbnailView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCHPictureStarterStickerChooserThumbnailView.h; sourceTree = "<group>"; };
+		286F30C91402C15B00051CBC /* SCHPictureStarterStickerChooserThumbnailView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCHPictureStarterStickerChooserThumbnailView.m; sourceTree = "<group>"; };
+		286F30CC1402C60A00051CBC /* SCHPictureStarterStickerChooserDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCHPictureStarterStickerChooserDelegate.h; sourceTree = "<group>"; };
 		2870939E111907710040F596 /* Scholastic.xcdatamodel */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = wrapper.xcdatamodel; path = Scholastic.xcdatamodel; sourceTree = "<group>"; };
 		287186B814027B7B000A3761 /* SCHStoryInteractionControllerPictureStarter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCHStoryInteractionControllerPictureStarter.h; sourceTree = "<group>"; };
 		287186B914027B7B000A3761 /* SCHStoryInteractionControllerPictureStarter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCHStoryInteractionControllerPictureStarter.m; sourceTree = "<group>"; };
@@ -4416,9 +4421,12 @@
 				28B7FF0D140286D6009E26F5 /* SCHPictureStarterSizeChooser.m */,
 				28B7FF341402B1F1009E26F5 /* SCHPictureStarterStickers.h */,
 				28B7FF351402B1F1009E26F5 /* SCHPictureStarterStickers.m */,
+				28D59DD51402B5D9002E4831 /* SCHPictureStarterStickerChooserDataSource.h */,
+				286F30CC1402C60A00051CBC /* SCHPictureStarterStickerChooserDelegate.h */,
 				28B7FF1414028707009E26F5 /* SCHPictureStarterStickerChooser.h */,
 				28B7FF1514028708009E26F5 /* SCHPictureStarterStickerChooser.m */,
-				28D59DD51402B5D9002E4831 /* SCHPictureStarterStickerChooserDataSource.h */,
+				286F30C81402C15A00051CBC /* SCHPictureStarterStickerChooserThumbnailView.h */,
+				286F30C91402C15B00051CBC /* SCHPictureStarterStickerChooserThumbnailView.m */,
 			);
 			name = "Picture Starter";
 			sourceTree = "<group>";
@@ -7937,6 +7945,7 @@
 				28B7FF1614028708009E26F5 /* SCHPictureStarterStickerChooser.m in Sources */,
 				28B7FF2F1402AC3D009E26F5 /* SCHStoryInteractionControllerPictureStarterCustom.m in Sources */,
 				28B7FF361402B1F1009E26F5 /* SCHPictureStarterStickers.m in Sources */,
+				286F30CA1402C15B00051CBC /* SCHPictureStarterStickerChooserThumbnailView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -8277,6 +8286,7 @@
 				28B7FF1714028708009E26F5 /* SCHPictureStarterStickerChooser.m in Sources */,
 				28B7FF301402AC3E009E26F5 /* SCHStoryInteractionControllerPictureStarterCustom.m in Sources */,
 				28B7FF371402B1F1009E26F5 /* SCHPictureStarterStickers.m in Sources */,
+				286F30CB1402C15B00051CBC /* SCHPictureStarterStickerChooserThumbnailView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

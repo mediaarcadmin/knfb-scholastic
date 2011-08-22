@@ -13,6 +13,7 @@
 #import "SCHPictureStarterStickerChooser.h"
 #import "SCHPictureStarterStickers.h"
 #import "UIColor+Scholastic.h"
+#import "NSArray+ViewSorting.h"
 
 @interface SCHStoryInteractionControllerPictureStarter ()
 
@@ -110,13 +111,28 @@
 
     self.canvas.backgroundImage = [self drawingBackgroundImage];
     
+    self.stickerChoosers = [self.stickerChoosers viewsSortedHorizontally];
     self.stickers = [[[SCHPictureStarterStickers alloc] init] autorelease];
     self.stickers.numberOfChoosers = [self.stickerChoosers count];
     NSInteger index = 0;
     for (SCHPictureStarterStickerChooser *chooser in self.stickerChoosers) {
         [chooser setChooserIndex:index++];
         [chooser setStickerDataSource:self.stickers];
+        [chooser setStickerDelegate:self];
     }
+}
+
+#pragma mark - Sticker chooser delegate
+
+- (void)stickerChooser:(NSInteger)chooserIndex choseImageAtIndex:(NSInteger)imageIndex
+{
+    for (SCHPictureStarterStickerChooser *chooser in self.stickerChoosers) {
+        if (chooser.chooserIndex != chooserIndex) {
+            [chooser clearSelection];
+        }
+    }
+    [self.colorChooser clearSelection];
+    [self.sizeChooser clearSelection];
 }
 
 #pragma mark - Actions
@@ -137,10 +153,12 @@
 
 - (void)colorSelected:(id)sender
 {
+    [self.stickerChoosers makeObjectsPerformSelector:@selector(clearSelection)];
 }
 
 - (void)sizeSelected:(id)sender
 {
+    [self.stickerChoosers makeObjectsPerformSelector:@selector(clearSelection)];
 }
 
 - (void)eraserSelected:(id)sender

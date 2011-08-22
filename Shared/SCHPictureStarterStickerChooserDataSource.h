@@ -12,6 +12,7 @@
 
 @protocol SCHPictureStarterStickerChooserDataSource <NSObject>
 
+@required
 - (NSInteger)numberOfStickersForChooserIndex:(NSInteger)chooser;
 - (UIImage *)thumbnailAtIndex:(NSInteger)index forChooserIndex:(NSInteger)chooser;
 - (UIImage *)imageAtIndex:(NSInteger)index forChooserIndex:(NSInteger)chooser;
