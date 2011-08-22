@@ -7,15 +7,33 @@
 //
 
 #import "SCHReadingViewNavigationToolbar.h"
+#import "SCHCustomToolbar.h"
 
+@interface SCHReadingViewNavigationToolbar()
+
++ (CGSize)sizeForStyle:(SCHReadingViewNavigationToolbarStyle)style orientation:(UIInterfaceOrientation)orientation;
+
+@property (nonatomic, retain) UIImageView *shadowView;
+@property (nonatomic, retain) UIImageView *backgroundView;
+@property (nonatomic, retain) SCHCustomToolbar *toolbar;
+
+@end
 
 @implementation SCHReadingViewNavigationToolbar
 
-- (id)initWithFrame:(CGRect)frame
+@synthesize shadowView;
+@synthesize backgroundView;
+@synthesize toolbar;
+
+- (id)initWithStyle:(SCHReadingViewNavigationToolbarStyle)style orientation:(UIInterfaceOrientation)orientation
 {
-    self = [super initWithFrame:frame];
+    CGRect bounds = CGRectZero;
+    bounds.size = [SCHReadingViewNavigationToolbar sizeForStyle:style orientation:orientation];
+    
+    self = [super initWithFrame:bounds];
     if (self) {
         // Initialization code
+        
     }
     return self;
 }
@@ -32,6 +50,46 @@
 - (void)dealloc
 {
     [super dealloc];
+}
+
++ (CGSize)sizeForStyle:(SCHReadingViewNavigationToolbarStyle)style orientation:(UIInterfaceOrientation)orientation
+{
+    
+    CGSize size = CGSizeZero;
+
+    if (UIInterfaceOrientationIsPortrait(orientation)) {
+        switch (style) {
+            case kSCHReadingViewNavigationToolbarStyleYoungerPhone:
+                size = CGSizeMake(320, 44);
+                break;
+            case kSCHReadingViewNavigationToolbarStyleOlderPhone:
+                size = CGSizeMake(320, 33);
+                break;
+            case kSCHReadingViewNavigationToolbarStyleYoungerPad:
+                size = CGSizeMake(320, 60);
+                break;
+            case kSCHReadingViewNavigationToolbarStyleOlderPad:
+                size = CGSizeMake(320, 44);
+                break;
+        }
+    } else {
+        switch (style) {
+            case kSCHReadingViewNavigationToolbarStyleYoungerPhone:
+                size = CGSizeMake(320, 60);
+                break;
+            case kSCHReadingViewNavigationToolbarStyleOlderPhone:
+                size = CGSizeMake(320, 44);
+                break;
+            case kSCHReadingViewNavigationToolbarStyleYoungerPad:
+                size = CGSizeMake(320, 60);
+                break;
+            case kSCHReadingViewNavigationToolbarStyleOlderPad:
+                size = CGSizeMake(320, 44);
+                break;
+        }
+    }
+    
+    return size;
 }
 
 @end

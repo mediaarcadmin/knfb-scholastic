@@ -8,9 +8,18 @@
 
 #import <UIKit/UIKit.h>
 
+typedef enum
+{
+	kSCHReadingViewNavigationToolbarStyleYoungerPhone = 0,
+	kSCHReadingViewNavigationToolbarStyleOlderPhone,
+	kSCHReadingViewNavigationToolbarStyleYoungerPad,
+    kSCHReadingViewNavigationToolbarStyleOlderPad
+} SCHReadingViewNavigationToolbarStyle;
 
 @interface SCHReadingViewNavigationToolbar : UIView {
     
 }
+
+- (id)initWithStyle:(SCHReadingViewNavigationToolbarStyle)style orientation:(UIInterfaceOrientation)orientation;
 
 @end
