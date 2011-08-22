@@ -1189,6 +1189,8 @@
 		C9864898140259C800B9DFE1 /* icon-help-older-landscape~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = C9864885140259C800B9DFE1 /* icon-help-older-landscape~iphone.png */; };
 		C9864899140259C800B9DFE1 /* icon-help-older-landscape@2x~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = C9864886140259C800B9DFE1 /* icon-help-older-landscape@2x~iphone.png */; };
 		C986489A140259C800B9DFE1 /* icon-help-older-landscape@2x~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = C9864886140259C800B9DFE1 /* icon-help-older-landscape@2x~iphone.png */; };
+		C98648A01402686300B9DFE1 /* SCHReadingViewNavigationToolbar.m in Sources */ = {isa = PBXBuildFile; fileRef = C986489F1402686300B9DFE1 /* SCHReadingViewNavigationToolbar.m */; };
+		C98648A11402686300B9DFE1 /* SCHReadingViewNavigationToolbar.m in Sources */ = {isa = PBXBuildFile; fileRef = C986489F1402686300B9DFE1 /* SCHReadingViewNavigationToolbar.m */; };
 		C9A1129F13608319007FD763 /* button-blue.png in Resources */ = {isa = PBXBuildFile; fileRef = C9A1129513608319007FD763 /* button-blue.png */; };
 		C9A112A013608319007FD763 /* button-blue.png in Resources */ = {isa = PBXBuildFile; fileRef = C9A1129513608319007FD763 /* button-blue.png */; };
 		C9A112A113608319007FD763 /* button-blue@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C9A1129613608319007FD763 /* button-blue@2x.png */; };
@@ -3051,6 +3053,8 @@
 		C9864884140259C800B9DFE1 /* icon-help-younger-landscape@2x~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "icon-help-younger-landscape@2x~iphone.png"; path = "Shared/Libraries/Submodules/libKNFBReader/libKNFBReader Resources/icon-help-younger-landscape@2x~iphone.png"; sourceTree = "<group>"; };
 		C9864885140259C800B9DFE1 /* icon-help-older-landscape~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "icon-help-older-landscape~iphone.png"; path = "Shared/Libraries/Submodules/libKNFBReader/libKNFBReader Resources/icon-help-older-landscape~iphone.png"; sourceTree = "<group>"; };
 		C9864886140259C800B9DFE1 /* icon-help-older-landscape@2x~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "icon-help-older-landscape@2x~iphone.png"; path = "Shared/Libraries/Submodules/libKNFBReader/libKNFBReader Resources/icon-help-older-landscape@2x~iphone.png"; sourceTree = "<group>"; };
+		C986489E1402686300B9DFE1 /* SCHReadingViewNavigationToolbar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHReadingViewNavigationToolbar.h; path = Shared/SCHReadingViewNavigationToolbar.h; sourceTree = "<group>"; };
+		C986489F1402686300B9DFE1 /* SCHReadingViewNavigationToolbar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHReadingViewNavigationToolbar.m; path = Shared/SCHReadingViewNavigationToolbar.m; sourceTree = "<group>"; };
 		C9A1129513608319007FD763 /* button-blue.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "button-blue.png"; path = "Resources/UIAssets/button-blue.png"; sourceTree = "<group>"; };
 		C9A1129613608319007FD763 /* button-blue@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "button-blue@2x.png"; path = "Resources/UIAssets/button-blue@2x.png"; sourceTree = "<group>"; };
 		C9AC854713ACE175000ECDAE /* old-lightning-bolt-0~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "old-lightning-bolt-0~ipad.png"; sourceTree = "<group>"; };
@@ -5892,6 +5896,8 @@
 				F8DC565B138C0BCA00F27146 /* SCHReadingViewController.h */,
 				F8DC565C138C0BCA00F27146 /* SCHReadingViewController.m */,
 				F8DC565D138C0BCA00F27146 /* SCHReadingViewController.xib */,
+				C986489E1402686300B9DFE1 /* SCHReadingViewNavigationToolbar.h */,
+				C986489F1402686300B9DFE1 /* SCHReadingViewNavigationToolbar.m */,
 				F8DC564E138BBE7D00F27146 /* SCHReadingInteractionsListController.h */,
 				F8DC564F138BBE7D00F27146 /* SCHReadingInteractionsListController.m */,
 				F8DC5656138C0BCA00F27146 /* SCHReadingInteractionsListController.xib */,
@@ -7733,6 +7739,7 @@
 				2860010813F9782C005C6AEB /* SCHStoryInteractionJigsawPieceView_iPhone.m in Sources */,
 				528C615F13FAA57200D033F8 /* SCHHelpViewController.m in Sources */,
 				2842A77313FBE9B10049AEE1 /* SCHAnimatedLayer.m in Sources */,
+				C98648A01402686300B9DFE1 /* SCHReadingViewNavigationToolbar.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -8065,6 +8072,7 @@
 				2860010913F9782C005C6AEB /* SCHStoryInteractionJigsawPieceView_iPhone.m in Sources */,
 				528C616013FAA57200D033F8 /* SCHHelpViewController.m in Sources */,
 				2842A77413FBE9B10049AEE1 /* SCHAnimatedLayer.m in Sources */,
+				C98648A11402686300B9DFE1 /* SCHReadingViewNavigationToolbar.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
