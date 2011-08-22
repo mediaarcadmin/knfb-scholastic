@@ -126,6 +126,10 @@
 		286E21B213AC93CB00CB4232 /* DummyAVAudioPlayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 286E21B113AC93CB00CB4232 /* DummyAVAudioPlayer.m */; };
 		286E21B313AC954900CB4232 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 526A8A501385143000101A96 /* AVFoundation.framework */; };
 		286E21B413AD060E00CB4232 /* sfx_scratch.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = F86DEC1513A21F2600053999 /* sfx_scratch.mp3 */; };
+		287186BA14027B7C000A3761 /* SCHStoryInteractionControllerPictureStarter.m in Sources */ = {isa = PBXBuildFile; fileRef = 287186B914027B7B000A3761 /* SCHStoryInteractionControllerPictureStarter.m */; };
+		287186BB14027B7C000A3761 /* SCHStoryInteractionControllerPictureStarter.m in Sources */ = {isa = PBXBuildFile; fileRef = 287186B914027B7B000A3761 /* SCHStoryInteractionControllerPictureStarter.m */; };
+		287186BD14027CCF000A3761 /* SCHStoryInteractionPictureStarter_iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 287186BC14027CCF000A3761 /* SCHStoryInteractionPictureStarter_iPad.xib */; };
+		287186BE14027CCF000A3761 /* SCHStoryInteractionPictureStarter_iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 287186BC14027CCF000A3761 /* SCHStoryInteractionPictureStarter_iPad.xib */; };
 		287262AA13E0621A0053CEDE /* SCHSetProfilePasswordView~iphone.xib in Resources */ = {isa = PBXBuildFile; fileRef = 287262A913E0621A0053CEDE /* SCHSetProfilePasswordView~iphone.xib */; };
 		287262AB13E0621A0053CEDE /* SCHSetProfilePasswordView~iphone.xib in Resources */ = {isa = PBXBuildFile; fileRef = 287262A913E0621A0053CEDE /* SCHSetProfilePasswordView~iphone.xib */; };
 		2873B04813E024BF008C9F0D /* SCHUpdateBooksTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 2873B04713E024BF008C9F0D /* SCHUpdateBooksTableViewCell.m */; };
@@ -288,6 +292,14 @@
 		28B1AA0D13F14635006F1F63 /* storyinteraction-concentration-tile-orange~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = 28B1AA0B13F14635006F1F63 /* storyinteraction-concentration-tile-orange~iphone.png */; };
 		28B1AA0F13F174EE006F1F63 /* SCHStoryInteractionCardCollection_iPhone.xib in Resources */ = {isa = PBXBuildFile; fileRef = 28B1AA0E13F174EE006F1F63 /* SCHStoryInteractionCardCollection_iPhone.xib */; };
 		28B1AA1013F174EE006F1F63 /* SCHStoryInteractionCardCollection_iPhone.xib in Resources */ = {isa = PBXBuildFile; fileRef = 28B1AA0E13F174EE006F1F63 /* SCHStoryInteractionCardCollection_iPhone.xib */; };
+		28B7FF061402865B009E26F5 /* SCHPictureStarterCanvas.m in Sources */ = {isa = PBXBuildFile; fileRef = 28B7FF051402865B009E26F5 /* SCHPictureStarterCanvas.m */; };
+		28B7FF071402865B009E26F5 /* SCHPictureStarterCanvas.m in Sources */ = {isa = PBXBuildFile; fileRef = 28B7FF051402865B009E26F5 /* SCHPictureStarterCanvas.m */; };
+		28B7FF0A140286C6009E26F5 /* SCHPictureStarterColorChooser.m in Sources */ = {isa = PBXBuildFile; fileRef = 28B7FF09140286C6009E26F5 /* SCHPictureStarterColorChooser.m */; };
+		28B7FF0B140286C6009E26F5 /* SCHPictureStarterColorChooser.m in Sources */ = {isa = PBXBuildFile; fileRef = 28B7FF09140286C6009E26F5 /* SCHPictureStarterColorChooser.m */; };
+		28B7FF0E140286D6009E26F5 /* SCHPictureStarterSizeChooser.m in Sources */ = {isa = PBXBuildFile; fileRef = 28B7FF0D140286D6009E26F5 /* SCHPictureStarterSizeChooser.m */; };
+		28B7FF0F140286D6009E26F5 /* SCHPictureStarterSizeChooser.m in Sources */ = {isa = PBXBuildFile; fileRef = 28B7FF0D140286D6009E26F5 /* SCHPictureStarterSizeChooser.m */; };
+		28B7FF1614028708009E26F5 /* SCHPictureStarterStampChooser.m in Sources */ = {isa = PBXBuildFile; fileRef = 28B7FF1514028708009E26F5 /* SCHPictureStarterStampChooser.m */; };
+		28B7FF1714028708009E26F5 /* SCHPictureStarterStampChooser.m in Sources */ = {isa = PBXBuildFile; fileRef = 28B7FF1514028708009E26F5 /* SCHPictureStarterStampChooser.m */; };
 		28BF26F013D5A15400535A82 /* SCHSetupBookshelvesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 28BF26EE13D5A15400535A82 /* SCHSetupBookshelvesViewController.m */; };
 		28BF26F113D5A15400535A82 /* SCHSetupBookshelvesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 28BF26EE13D5A15400535A82 /* SCHSetupBookshelvesViewController.m */; };
 		28BF26F213D5A15400535A82 /* SCHSetupBookshelvesViewController~iphone.xib in Resources */ = {isa = PBXBuildFile; fileRef = 28BF26EF13D5A15400535A82 /* SCHSetupBookshelvesViewController~iphone.xib */; };
@@ -381,10 +393,10 @@
 		28F689CC13B0F305008A9BF9 /* storyinteraction-bg-younger-titleonly~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = 28F689C913B0F305008A9BF9 /* storyinteraction-bg-younger-titleonly~iphone.png */; };
 		28F689CD13B0F305008A9BF9 /* storyinteraction-bg-younger-titleonly@2x~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = 28F689CA13B0F305008A9BF9 /* storyinteraction-bg-younger-titleonly@2x~iphone.png */; };
 		28F689CE13B0F305008A9BF9 /* storyinteraction-bg-younger-titleonly@2x~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = 28F689CA13B0F305008A9BF9 /* storyinteraction-bg-younger-titleonly@2x~iphone.png */; };
-		28F8B3D713FEA38B00BE0B47 /* SCHStoryInteractionControllerPictureStarter.m in Sources */ = {isa = PBXBuildFile; fileRef = 28F8B3D613FEA38B00BE0B47 /* SCHStoryInteractionControllerPictureStarter.m */; };
-		28F8B3D813FEA38B00BE0B47 /* SCHStoryInteractionControllerPictureStarter.m in Sources */ = {isa = PBXBuildFile; fileRef = 28F8B3D613FEA38B00BE0B47 /* SCHStoryInteractionControllerPictureStarter.m */; };
-		28F8B3DA13FEA46200BE0B47 /* SCHStoryInteractionPictureStarter_iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 28F8B3D913FEA46200BE0B47 /* SCHStoryInteractionPictureStarter_iPad.xib */; };
-		28F8B3DB13FEA46200BE0B47 /* SCHStoryInteractionPictureStarter_iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 28F8B3D913FEA46200BE0B47 /* SCHStoryInteractionPictureStarter_iPad.xib */; };
+		28F8B3D713FEA38B00BE0B47 /* SCHStoryInteractionControllerPictureStarterCustom.m in Sources */ = {isa = PBXBuildFile; fileRef = 28F8B3D613FEA38B00BE0B47 /* SCHStoryInteractionControllerPictureStarterCustom.m */; };
+		28F8B3D813FEA38B00BE0B47 /* SCHStoryInteractionControllerPictureStarterCustom.m in Sources */ = {isa = PBXBuildFile; fileRef = 28F8B3D613FEA38B00BE0B47 /* SCHStoryInteractionControllerPictureStarterCustom.m */; };
+		28F8B3DA13FEA46200BE0B47 /* SCHStoryInteractionPictureStarterCustom~ipad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 28F8B3D913FEA46200BE0B47 /* SCHStoryInteractionPictureStarterCustom~ipad.xib */; };
+		28F8B3DB13FEA46200BE0B47 /* SCHStoryInteractionPictureStarterCustom~ipad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 28F8B3D913FEA46200BE0B47 /* SCHStoryInteractionPictureStarterCustom~ipad.xib */; };
 		28FFD4F213AF635F00F28637 /* SCHGeometry.m in Sources */ = {isa = PBXBuildFile; fileRef = 28FFD4F113AF635F00F28637 /* SCHGeometry.m */; };
 		28FFD4F313AF635F00F28637 /* SCHGeometry.m in Sources */ = {isa = PBXBuildFile; fileRef = 28FFD4F113AF635F00F28637 /* SCHGeometry.m */; };
 		5200EFEE12F6CFE400BAC355 /* SCHPrivateAnnotations.m in Sources */ = {isa = PBXBuildFile; fileRef = 5200EFEB12F6CFE400BAC355 /* SCHPrivateAnnotations.m */; };
@@ -2112,6 +2124,9 @@
 		286E21B013AC93CB00CB4232 /* DummyAVAudioPlayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DummyAVAudioPlayer.h; sourceTree = "<group>"; };
 		286E21B113AC93CB00CB4232 /* DummyAVAudioPlayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DummyAVAudioPlayer.m; sourceTree = "<group>"; };
 		2870939E111907710040F596 /* Scholastic.xcdatamodel */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = wrapper.xcdatamodel; path = Scholastic.xcdatamodel; sourceTree = "<group>"; };
+		287186B814027B7B000A3761 /* SCHStoryInteractionControllerPictureStarter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCHStoryInteractionControllerPictureStarter.h; sourceTree = "<group>"; };
+		287186B914027B7B000A3761 /* SCHStoryInteractionControllerPictureStarter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCHStoryInteractionControllerPictureStarter.m; sourceTree = "<group>"; };
+		287186BC14027CCF000A3761 /* SCHStoryInteractionPictureStarter_iPad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SCHStoryInteractionPictureStarter_iPad.xib; sourceTree = "<group>"; };
 		287262A913E0621A0053CEDE /* SCHSetProfilePasswordView~iphone.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "SCHSetProfilePasswordView~iphone.xib"; sourceTree = "<group>"; };
 		2873B04613E024BF008C9F0D /* SCHUpdateBooksTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHUpdateBooksTableViewCell.h; path = Shared/SCHUpdateBooksTableViewCell.h; sourceTree = "<group>"; };
 		2873B04713E024BF008C9F0D /* SCHUpdateBooksTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHUpdateBooksTableViewCell.m; path = Shared/SCHUpdateBooksTableViewCell.m; sourceTree = "<group>"; };
@@ -2242,6 +2257,14 @@
 		28B1AA0813F142D5006F1F63 /* SCHStoryInteractionConcentration_iPhone.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SCHStoryInteractionConcentration_iPhone.xib; sourceTree = "<group>"; };
 		28B1AA0B13F14635006F1F63 /* storyinteraction-concentration-tile-orange~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "storyinteraction-concentration-tile-orange~iphone.png"; sourceTree = "<group>"; };
 		28B1AA0E13F174EE006F1F63 /* SCHStoryInteractionCardCollection_iPhone.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SCHStoryInteractionCardCollection_iPhone.xib; sourceTree = "<group>"; };
+		28B7FF041402865B009E26F5 /* SCHPictureStarterCanvas.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCHPictureStarterCanvas.h; sourceTree = "<group>"; };
+		28B7FF051402865B009E26F5 /* SCHPictureStarterCanvas.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCHPictureStarterCanvas.m; sourceTree = "<group>"; };
+		28B7FF08140286C6009E26F5 /* SCHPictureStarterColorChooser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCHPictureStarterColorChooser.h; sourceTree = "<group>"; };
+		28B7FF09140286C6009E26F5 /* SCHPictureStarterColorChooser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCHPictureStarterColorChooser.m; sourceTree = "<group>"; };
+		28B7FF0C140286D6009E26F5 /* SCHPictureStarterSizeChooser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCHPictureStarterSizeChooser.h; sourceTree = "<group>"; };
+		28B7FF0D140286D6009E26F5 /* SCHPictureStarterSizeChooser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCHPictureStarterSizeChooser.m; sourceTree = "<group>"; };
+		28B7FF1414028707009E26F5 /* SCHPictureStarterStampChooser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCHPictureStarterStampChooser.h; sourceTree = "<group>"; };
+		28B7FF1514028708009E26F5 /* SCHPictureStarterStampChooser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCHPictureStarterStampChooser.m; sourceTree = "<group>"; };
 		28BF26ED13D5A15400535A82 /* SCHSetupBookshelvesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHSetupBookshelvesViewController.h; path = Shared/SCHSetupBookshelvesViewController.h; sourceTree = "<group>"; };
 		28BF26EE13D5A15400535A82 /* SCHSetupBookshelvesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHSetupBookshelvesViewController.m; path = Shared/SCHSetupBookshelvesViewController.m; sourceTree = "<group>"; };
 		28BF26EF13D5A15400535A82 /* SCHSetupBookshelvesViewController~iphone.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "SCHSetupBookshelvesViewController~iphone.xib"; sourceTree = "<group>"; };
@@ -2311,9 +2334,9 @@
 		28F689C613B0E616008A9BF9 /* SCHStoryInteractionHotSpot_iPhone.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SCHStoryInteractionHotSpot_iPhone.xib; sourceTree = "<group>"; };
 		28F689C913B0F305008A9BF9 /* storyinteraction-bg-younger-titleonly~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "storyinteraction-bg-younger-titleonly~iphone.png"; sourceTree = "<group>"; };
 		28F689CA13B0F305008A9BF9 /* storyinteraction-bg-younger-titleonly@2x~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "storyinteraction-bg-younger-titleonly@2x~iphone.png"; sourceTree = "<group>"; };
-		28F8B3D513FEA38B00BE0B47 /* SCHStoryInteractionControllerPictureStarter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCHStoryInteractionControllerPictureStarter.h; sourceTree = "<group>"; };
-		28F8B3D613FEA38B00BE0B47 /* SCHStoryInteractionControllerPictureStarter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCHStoryInteractionControllerPictureStarter.m; sourceTree = "<group>"; };
-		28F8B3D913FEA46200BE0B47 /* SCHStoryInteractionPictureStarter_iPad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SCHStoryInteractionPictureStarter_iPad.xib; sourceTree = "<group>"; };
+		28F8B3D513FEA38B00BE0B47 /* SCHStoryInteractionControllerPictureStarterCustom.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCHStoryInteractionControllerPictureStarterCustom.h; sourceTree = "<group>"; };
+		28F8B3D613FEA38B00BE0B47 /* SCHStoryInteractionControllerPictureStarterCustom.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCHStoryInteractionControllerPictureStarterCustom.m; sourceTree = "<group>"; };
+		28F8B3D913FEA46200BE0B47 /* SCHStoryInteractionPictureStarterCustom~ipad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "SCHStoryInteractionPictureStarterCustom~ipad.xib"; sourceTree = "<group>"; };
 		28FFD4F013AF635F00F28637 /* SCHGeometry.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCHGeometry.h; sourceTree = "<group>"; };
 		28FFD4F113AF635F00F28637 /* SCHGeometry.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCHGeometry.m; sourceTree = "<group>"; };
 		29B97316FDCFA39411CA2CEA /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = Shared/main.m; sourceTree = "<group>"; };
@@ -4268,9 +4291,20 @@
 			children = (
 				28D81EE513E8413B00A2B25F /* SCHStoryInteractionPictureStarter.h */,
 				28D81EE613E8413B00A2B25F /* SCHStoryInteractionPictureStarter.m */,
-				28F8B3D513FEA38B00BE0B47 /* SCHStoryInteractionControllerPictureStarter.h */,
-				28F8B3D613FEA38B00BE0B47 /* SCHStoryInteractionControllerPictureStarter.m */,
-				28F8B3D913FEA46200BE0B47 /* SCHStoryInteractionPictureStarter_iPad.xib */,
+				287186B814027B7B000A3761 /* SCHStoryInteractionControllerPictureStarter.h */,
+				287186B914027B7B000A3761 /* SCHStoryInteractionControllerPictureStarter.m */,
+				28F8B3D513FEA38B00BE0B47 /* SCHStoryInteractionControllerPictureStarterCustom.h */,
+				28F8B3D613FEA38B00BE0B47 /* SCHStoryInteractionControllerPictureStarterCustom.m */,
+				287186BC14027CCF000A3761 /* SCHStoryInteractionPictureStarter_iPad.xib */,
+				28F8B3D913FEA46200BE0B47 /* SCHStoryInteractionPictureStarterCustom~ipad.xib */,
+				28B7FF041402865B009E26F5 /* SCHPictureStarterCanvas.h */,
+				28B7FF051402865B009E26F5 /* SCHPictureStarterCanvas.m */,
+				28B7FF08140286C6009E26F5 /* SCHPictureStarterColorChooser.h */,
+				28B7FF09140286C6009E26F5 /* SCHPictureStarterColorChooser.m */,
+				28B7FF0C140286D6009E26F5 /* SCHPictureStarterSizeChooser.h */,
+				28B7FF0D140286D6009E26F5 /* SCHPictureStarterSizeChooser.m */,
+				28B7FF1414028707009E26F5 /* SCHPictureStarterStampChooser.h */,
+				28B7FF1514028708009E26F5 /* SCHPictureStarterStampChooser.m */,
 			);
 			name = "Picture Starter";
 			sourceTree = "<group>";
@@ -6711,7 +6745,7 @@
 				C92E733413FE7033005CE812 /* storyinteraction-concentration-startover-button@2x~iphone.png in Resources */,
 				C92E733613FE7033005CE812 /* storyinteraction-concentration-flips-button~ipad.png in Resources */,
 				C92E733813FE7033005CE812 /* storyinteraction-concentration-startover-button~ipad.png in Resources */,
-				28F8B3DA13FEA46200BE0B47 /* SCHStoryInteractionPictureStarter_iPad.xib in Resources */,
+				28F8B3DA13FEA46200BE0B47 /* SCHStoryInteractionPictureStarterCustom~ipad.xib in Resources */,
 				F806563313FEB00900DFAE43 /* OptionsViewTopBackground.png in Resources */,
 				F806563513FEB00900DFAE43 /* OptionsViewTopBackground@2x.png in Resources */,
 				5296F99E13FE7B4F009532F3 /* 9780545283502.NightOfTheLivingDummy.jpg in Resources */,
@@ -6722,6 +6756,7 @@
 				5296F9A813FE7B4F009532F3 /* 9780545345019_r1.AllieFinkleMovingDay.jpg in Resources */,
 				5296F9AA13FE7B4F009532F3 /* 9780545366779.2.MazeOfBones.jpg in Resources */,
 				5296F9AC13FE7B4F009532F3 /* 9780545368896_r1.TheHiddenStairs.jpg in Resources */,
+				287186BD14027CCF000A3761 /* SCHStoryInteractionPictureStarter_iPad.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -7370,7 +7405,7 @@
 				C92E733513FE7033005CE812 /* storyinteraction-concentration-startover-button@2x~iphone.png in Resources */,
 				C92E733713FE7033005CE812 /* storyinteraction-concentration-flips-button~ipad.png in Resources */,
 				C92E733913FE7033005CE812 /* storyinteraction-concentration-startover-button~ipad.png in Resources */,
-				28F8B3DB13FEA46200BE0B47 /* SCHStoryInteractionPictureStarter_iPad.xib in Resources */,
+				28F8B3DB13FEA46200BE0B47 /* SCHStoryInteractionPictureStarterCustom~ipad.xib in Resources */,
 				F806563413FEB00900DFAE43 /* OptionsViewTopBackground.png in Resources */,
 				F806563613FEB00900DFAE43 /* OptionsViewTopBackground@2x.png in Resources */,
 				5296F99F13FE7B4F009532F3 /* 9780545283502.NightOfTheLivingDummy.jpg in Resources */,
@@ -7381,6 +7416,7 @@
 				5296F9A913FE7B4F009532F3 /* 9780545345019_r1.AllieFinkleMovingDay.jpg in Resources */,
 				5296F9AB13FE7B4F009532F3 /* 9780545366779.2.MazeOfBones.jpg in Resources */,
 				5296F9AD13FE7B4F009532F3 /* 9780545368896_r1.TheHiddenStairs.jpg in Resources */,
+				287186BE14027CCF000A3761 /* SCHStoryInteractionPictureStarter_iPad.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -7685,7 +7721,12 @@
 				2860010813F9782C005C6AEB /* SCHStoryInteractionJigsawPieceView_iPhone.m in Sources */,
 				528C615F13FAA57200D033F8 /* SCHHelpViewController.m in Sources */,
 				2842A77313FBE9B10049AEE1 /* SCHAnimatedLayer.m in Sources */,
-				28F8B3D713FEA38B00BE0B47 /* SCHStoryInteractionControllerPictureStarter.m in Sources */,
+				28F8B3D713FEA38B00BE0B47 /* SCHStoryInteractionControllerPictureStarterCustom.m in Sources */,
+				287186BA14027B7C000A3761 /* SCHStoryInteractionControllerPictureStarter.m in Sources */,
+				28B7FF061402865B009E26F5 /* SCHPictureStarterCanvas.m in Sources */,
+				28B7FF0A140286C6009E26F5 /* SCHPictureStarterColorChooser.m in Sources */,
+				28B7FF0E140286D6009E26F5 /* SCHPictureStarterSizeChooser.m in Sources */,
+				28B7FF1614028708009E26F5 /* SCHPictureStarterStampChooser.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -8018,7 +8059,12 @@
 				2860010913F9782C005C6AEB /* SCHStoryInteractionJigsawPieceView_iPhone.m in Sources */,
 				528C616013FAA57200D033F8 /* SCHHelpViewController.m in Sources */,
 				2842A77413FBE9B10049AEE1 /* SCHAnimatedLayer.m in Sources */,
-				28F8B3D813FEA38B00BE0B47 /* SCHStoryInteractionControllerPictureStarter.m in Sources */,
+				28F8B3D813FEA38B00BE0B47 /* SCHStoryInteractionControllerPictureStarterCustom.m in Sources */,
+				287186BB14027B7C000A3761 /* SCHStoryInteractionControllerPictureStarter.m in Sources */,
+				28B7FF071402865B009E26F5 /* SCHPictureStarterCanvas.m in Sources */,
+				28B7FF0B140286C6009E26F5 /* SCHPictureStarterColorChooser.m in Sources */,
+				28B7FF0F140286D6009E26F5 /* SCHPictureStarterSizeChooser.m in Sources */,
+				28B7FF1714028708009E26F5 /* SCHPictureStarterStampChooser.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

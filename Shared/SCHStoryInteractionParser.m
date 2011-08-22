@@ -902,6 +902,7 @@ static void storyInteractionCharacterDataHandler(void *userData, const XML_Char 
             self.story.ID = extractXmlAttribute(attributes, "ID");
             self.questions = [NSMutableArray array];
             self.array = [NSMutableArray array];
+            NSLog(@"found %s ID=%@", object_getClassName(self.story), self.story.ID);
         } else {
             NSLog(@"unknown StoryInteractionType: %@", type);
         }

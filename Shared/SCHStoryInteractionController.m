@@ -114,12 +114,23 @@ static Class controllerClassForStoryInteraction(SCHStoryInteraction *storyIntera
     if ((self = [super init])) {
         storyInteraction = [aStoryInteraction retain];
         
-        NSString *controllerClass = [NSString stringWithCString:object_getClassName(self) encoding:NSUTF8StringEncoding];
-        NSString *prefix = [controllerClass stringByReplacingOccurrencesOfString:@"Controller" withString:@""];
-        NSString *suffix = (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ? @"_iPad" : @"_iPhone");
-        prefix = [prefix stringByReplacingOccurrencesOfString:suffix withString:@""];
+        NSBundle *mainBundle = [NSBundle mainBundle];
+        NSString *nibName = nil;
+        Class controllerClass = [self class];
+        do {
+            NSString *controllerClassName = [NSString stringWithCString:class_getName(controllerClass) encoding:NSUTF8StringEncoding];
+            NSString *prefix = [controllerClassName stringByReplacingOccurrencesOfString:@"Controller" withString:@""];
+            NSString *suffix = (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ? @"_iPad" : @"_iPhone");
+            prefix = [prefix stringByReplacingOccurrencesOfString:suffix withString:@""];
+            controllerClass = class_getSuperclass(controllerClass);
+            nibName = [NSString stringWithFormat:@"%@%@", prefix, suffix];
+        } while (controllerClass != nil && [mainBundle pathForResource:nibName ofType:@"nib"] == nil);
         
-        NSString *nibName = [NSString stringWithFormat:@"%@%@", prefix, suffix];
+        if (!nibName) {
+            NSLog(@"can't find NIB for Story Interaction controller '%s'", object_getClassName(self));
+            return nil;
+        }
+        
         self.nibObjects = [[NSBundle mainBundle] loadNibNamed:nibName owner:self options:nil];
         if ([self.nibObjects count] == 0) {
             NSLog(@"failed to load nib %@", nibName);

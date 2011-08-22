@@ -31,13 +31,13 @@
 
 - (NSString *)audioPathAtIndex:(NSInteger)index
 {
-    NSString *filename = [NSString stringWithFormat:@"ollie_q%d.mp3", index+1];
+    NSString *filename = [NSString stringWithFormat:@"%@_q%d.mp3", self.ID, index+1];
     return [KNFBXPSStoryInteractionsDirectory stringByAppendingPathComponent:filename];
 }
 
 - (NSString *)imagePathAtIndex:(NSInteger)index
 {
-    NSString *filename = [NSString stringWithFormat:@"ollie_q%d.png", index+1];
+    NSString *filename = [NSString stringWithFormat:@"%@_q%d.png", self.ID, index+1];
     return [KNFBXPSStoryInteractionsDirectory stringByAppendingPathComponent:filename];
 }
 
