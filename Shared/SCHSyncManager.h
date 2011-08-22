@@ -38,9 +38,6 @@ extern NSString * const SCHSyncManagerDidCompleteNotification;
 - (void)openDocument:(SCHUserContentItem *)userContentItem forProfile:(NSNumber *)profileID;
 - (void)closeDocument:(SCHUserContentItem *)userContentItem forProfile:(NSNumber *)profileID;
 
-// check for Local Debug and Import populating
-- (void)checkPopulations;
-
 // for populating Sample Store
 - (void)populateSampleStore;
 

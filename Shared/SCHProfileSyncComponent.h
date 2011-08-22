@@ -21,6 +21,7 @@ extern NSString * const SCHProfileSyncComponentDidFailNotification;
 {
 }
 
+- (NSArray *)localProfiles;
 - (void)addProfile:(NSDictionary *)webProfile;
 
 @end

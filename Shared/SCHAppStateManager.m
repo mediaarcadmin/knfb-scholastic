@@ -64,7 +64,6 @@
                                               inManagedObjectContext:self.managedObjectContext];
     NSFetchRequest *fetchRequest = [entityDescription.managedObjectModel 
                                     fetchRequestTemplateForName:kSCHAppStatefetchAppState];
-    fetchRequest.returnsObjectsAsFaults = NO;
     
     NSArray *state = [self.managedObjectContext executeFetchRequest:fetchRequest error:nil];	
     
