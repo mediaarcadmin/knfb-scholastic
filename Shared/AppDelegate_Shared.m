@@ -10,15 +10,11 @@
 #import "AppDelegate_Private.h"
 #import "SCHBookManager.h"
 #import "SCHSyncManager.h"
-#import "SCHAuthenticationManager.h"
 #import "SCHUserDefaults.h"
 #import "SCHURLManager.h"
 #import "SCHDictionaryDownloadManager.h"
 #import "SCHDictionaryAccessManager.h"
-#import "SCHBookshelfSyncComponent.h"
 #import <CoreText/CoreText.h>
-#import "SCHUserContentItem.h"
-#import "SCHAppStateManager.h"
 
 static NSString* const wmModelCertFilename = @"devcerttemplate.dat";
 static NSString* const prModelCertFilename = @"iphonecert.dat";
@@ -84,8 +80,6 @@ static NSString* const prModelCertFilename = @"iphonecert.dat";
         CFRelease(matchingFont);
         CFRelease(fontDesc);
     });
-    
-    [[SCHSyncManager sharedSyncManager] performSelector:@selector(checkPopulations) withObject:nil afterDelay:0.1f]; // Stop the watchdog from killing us on launch
 	
     SCHDictionaryDownloadManager *ddm = [SCHDictionaryDownloadManager sharedDownloadManager];
     ddm.mainThreadManagedObjectContext = self.coreDataHelper.managedObjectContext;
@@ -225,35 +219,12 @@ static NSString* const prModelCertFilename = @"iphonecert.dat";
 
 - (SCHCoreDataHelper *)coreDataHelper
 {
-    if (coreDataHelper != nil) {
-        return(coreDataHelper);
+    if (coreDataHelper == nil) {
+        coreDataHelper = [[SCHCoreDataHelper alloc] init];
     }
-    
-    coreDataHelper = [[SCHCoreDataHelper alloc] init];
-    
+
     return(coreDataHelper);
 }
-
-#pragma mark - Authentication check
-
-// If you want to know if a call to LibreAccess will succeed then use 
-// SCHAuthenticationManager:isAuthenticated instead
-- (BOOL)isAuthenticated
-{
-    BOOL isAuthenticated;
-#if LOCALDEBUG	
-    isAuthenticated = YES;
-#elif NONDRMAUTHENTICATION
-	SCHAuthenticationManager *authenticationManager = [SCHAuthenticationManager sharedAuthenticationManager];
-	isAuthenticated = [authenticationManager hasUsernameAndPassword];
-#else 
-    NSString *deviceKey = [[NSUserDefaults standardUserDefaults] stringForKey:kSCHAuthenticationManagerDeviceKey];
-    isAuthenticated = (deviceKey != nil);
-#endif
-
-    return isAuthenticated;
-}
-
 
 @end
 

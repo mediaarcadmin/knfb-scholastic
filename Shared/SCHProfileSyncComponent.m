@@ -10,7 +10,6 @@
 #import "SCHSyncComponentProtected.h"
 #import "NSManagedObjectContext+Extensions.h"
 
-#import "SCHLibreAccessWebService.h"
 #import "SCHProfileItem.h"
 #import "SCHAppProfile.h"
 #import "SCHAnnotationsItem.h"
@@ -26,7 +25,6 @@ NSString * const SCHProfileSyncComponentDidFailNotification = @"SCHProfileSyncCo
 @property (retain, nonatomic) NSMutableArray *createdProfiles;
 
 - (BOOL)updateProfiles;
-- (NSArray *)localProfiles;
 - (void)syncProfiles:(NSArray *)profileList;
 - (void)syncProfile:(NSDictionary *)webProfile withProfile:(SCHProfileItem *)localProfile;
 

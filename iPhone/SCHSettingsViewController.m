@@ -7,14 +7,9 @@
 //
 
 #import "SCHSettingsViewController.h"
-#import "SCHSetupDelegate.h"
-#import "SCHLoginPasswordViewController.h"
-#import "SCHCustomToolbar.h"
-#import "SCHURLManager.h"
-#import "SCHSyncManager.h"
+
 #import "SCHAboutViewController.h"
 #import "SCHPrivacyPolicyViewController.h"
-#import "SCHProcessingManager.h"
 #import "SCHDictionaryDownloadManager.h"
 #import "SCHRemoveDictionaryViewController.h"
 #import "SCHDeregisterDeviceViewController.h"
@@ -36,7 +31,6 @@ extern NSString * const kSCHAuthenticationManagerDeviceKey;
 - (void)updateUpdateBooksButton;
 - (void)updateDictionaryButton;
 - (void)releaseViewObjects;
-- (void)resetLocalSettings;
 
 @end
 
@@ -196,15 +190,10 @@ extern NSString * const kSCHAuthenticationManagerDeviceKey;
 
 - (IBAction)deregisterDevice:(id)sender 
 {
-    if ([[SCHAppStateManager sharedAppStateManager] canAuthenticate] == NO) {
-        [self resetLocalSettings];
-        [self.setupDelegate dismissSettingsForm];
-    } else {
-        SCHDeregisterDeviceViewController *vc = [[SCHDeregisterDeviceViewController alloc] init];
-        vc.setupDelegate = self.setupDelegate;
-        [self.navigationController pushViewController:vc animated:YES];
-        [vc release];
-    }
+    SCHDeregisterDeviceViewController *vc = [[SCHDeregisterDeviceViewController alloc] init];
+    vc.setupDelegate = self.setupDelegate;
+    [self.navigationController pushViewController:vc animated:YES];
+    [vc release];
 }
 
 - (IBAction)showPrivacyPolicy:(id)sender
@@ -295,20 +284,6 @@ extern NSString * const kSCHAuthenticationManagerDeviceKey;
         [vc release];
     } else {
         [[SCHDictionaryDownloadManager sharedDownloadManager] beginDictionaryDownload];
-    }
-}
-
-#pragma mark - Local settings
-
-- (void)resetLocalSettings
-{
-    [NSUserDefaults resetStandardUserDefaults];
-    [[SCHDictionaryDownloadManager sharedDownloadManager] threadSafeUpdateDictionaryState:SCHDictionaryProcessingStateUserSetup];
-    
-    if ([[SCHAppStateManager sharedAppStateManager] canAuthenticate] == NO) {
-        [[SCHURLManager sharedURLManager] clear];
-        [[SCHProcessingManager sharedProcessingManager] cancelAllOperations];                
-        [[SCHSyncManager sharedSyncManager] clear];
     }
 }
 
