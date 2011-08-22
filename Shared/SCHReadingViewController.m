@@ -192,6 +192,8 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 
 @synthesize scrubberInfoView;
 @synthesize pageLabel;
+@synthesize optionsPhoneTopBackground;
+@synthesize popoverNavigationTitleLabel;
 
 @synthesize titleLabel;
 @synthesize leftBarButtonItemContainer;
@@ -274,6 +276,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     [storyInteractionButton release], storyInteractionButton = nil;
     [storyInteractionButtonView release], storyInteractionButtonView = nil;
     [toolbarToggleView release], toolbarToggleView = nil;
+    [optionsPhoneTopBackground release], optionsPhoneTopBackground = nil;
     
     [originalButtons release], originalButtons = nil;
     [customButtons release], customButtons = nil;
@@ -281,6 +284,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     [smallOptionsButtons release], smallOptionsButtons = nil;
     [fontSegmentedControl release], fontSegmentedControl = nil;
     [paperTypeSegmentedControl release], paperTypeSegmentedControl = nil;
+    [popoverNavigationTitleLabel release], popoverNavigationTitleLabel = nil;
     
     [readingView release], readingView = nil;
 }
@@ -570,6 +574,8 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     self.bookStatisticsReadingStartTime = [NSDate date];
     
     [self setupOptionsViewForMode:self.layoutType];
+    self.optionsPhoneTopBackground.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"OptionsViewTopBackground"]];
+    self.optionsPhoneTopBackground.layer.opaque = NO;
     
 }
 
@@ -1040,9 +1046,11 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
             self.popover = nil;
         } else {
 
-            self.popover = [[UIPopoverController alloc] initWithContentViewController:self.popoverOptionsViewController];
+            UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:self.popoverOptionsViewController];
+            self.popoverOptionsViewController.navigationItem.titleView = self.popoverNavigationTitleLabel;
 
-            [self setupOptionsViewForMode:self.layoutType];
+            self.popover = [[UIPopoverController alloc] initWithContentViewController:navController];
+
             
             self.popover.delegate = self;
             
@@ -1050,6 +1058,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
             popoverRect.origin.x -= 0;
             
             [self.popover presentPopoverFromRect:popoverRect inView:self.olderBottomToolbar permittedArrowDirections:UIPopoverArrowDirectionDown animated:YES];
+            [self setupOptionsViewForMode:self.layoutType];
 
         }
     }
@@ -1391,12 +1400,6 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     BOOL iPhone = (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone);
     BOOL landscape = UIInterfaceOrientationIsLandscape(orientation);
     
-    NSInteger optionsViewHeight = 134;
-    
-    if (landscape && iPhone) {
-        optionsViewHeight = 84;
-    }
-    
     BOOL isFlow = YES;
 
     if (newLayoutType == SCHReadingViewLayoutTypeFixed) {
@@ -1422,6 +1425,12 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     
     
     if (iPhone) {
+        NSInteger optionsViewHeight = 134;
+        
+        if (landscape && iPhone) {
+            optionsViewHeight = 84;
+        }
+        
         if (isFlow) {
             
             // show the additional options and resize the parent view
@@ -1439,49 +1448,59 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
             }
             
             // show the custom options
-//            if (self.customOptionsView.alpha < 1) {
-                [UIView animateWithDuration:0.25 animations:^{
-                    
-                    CGRect frame = self.optionsView.frame;
-                    frame.origin.y = CGRectGetMinY(self.olderBottomToolbar.frame) - totalHeight;
-                    frame.size.height = totalHeight;
-                    self.optionsView.frame = frame;
-                    
-                    frame = self.customOptionsView.frame;
-                    frame.origin.y = optionsViewHeight;
-                    self.customOptionsView.frame = frame;
-                    
-                    self.customOptionsView.alpha = 1;
-                }];
-//            }
+            [UIView animateWithDuration:0.25 
+                                  delay:0.1 
+                                options:UIViewAnimationOptionCurveEaseInOut 
+                             animations:^{
+                                 
+                                 CGRect frame = self.optionsView.frame;
+                                 frame.origin.y = CGRectGetMinY(self.olderBottomToolbar.frame) - totalHeight;
+                                 frame.size.height = totalHeight;
+                                 self.optionsView.frame = frame;
+                                 
+                                 frame = self.customOptionsView.frame;
+                                 frame.origin.y = optionsViewHeight;
+                                 self.customOptionsView.frame = frame;
+                                 
+                                 self.customOptionsView.alpha = 1;
+                             } 
+                             completion:nil];
             
         } else {
             
             // hide the additional options and resize the parent view
-//            float totalHeight = 150;
+            [UIView animateWithDuration:0.25
+                                  delay:0.1 
+                                options:UIViewAnimationOptionCurveEaseInOut 
+                             animations:^{
+              
+                                 CGRect frame = self.optionsView.frame;
+                                 frame.origin.y = CGRectGetMinY(self.olderBottomToolbar.frame) - optionsViewHeight;
+                                 frame.size.height = optionsViewHeight;
+                                 self.optionsView.frame = frame;
+                                 
+                             }
+                             completion:nil];
             
-//            if (self.customOptionsView.alpha > 0) {
-                [UIView animateWithDuration:0.25 animations:^{
-                    
-                    CGRect frame = self.optionsView.frame;
-                    frame.origin.y = CGRectGetMinY(self.olderBottomToolbar.frame) - optionsViewHeight;
-                    frame.size.height = optionsViewHeight;
-                    self.optionsView.frame = frame;
-                    
-                    self.customOptionsView.alpha = 0;
-                }];
-//            }
+            self.customOptionsView.alpha = 0;
         }
     } else {
+        NSInteger optionsViewHeight = 110;
+
         if (isFlow) {
             // show the additional options and resize the popover
-            
             float totalHeight = ceilf(optionsViewHeight + self.customOptionsView.frame.size.height);
+
+            NSLog(@"Changing popover height.");
+            self.popoverOptionsViewController.contentSizeForViewInPopover = CGSizeMake(200, totalHeight);
             
-            NSLog(@"Frame for custom view: %@", NSStringFromCGRect(self.customOptionsView.frame));
+            NSLog(@"Frame for custom view BEFORE: %@", NSStringFromCGRect(self.customOptionsView.frame));
+            
+            [self.customOptionsView removeFromSuperview];
             
             if (!self.customOptionsView.superview) {
                 CGRect frame = self.customOptionsView.frame;
+                frame.origin.x = 0;
                 frame.origin.y = optionsViewHeight;
                 frame.size.width = 200;
                 self.customOptionsView.frame = frame;
@@ -1489,8 +1508,8 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
                 [self.popoverOptionsViewController.view addSubview:self.customOptionsView];
             }
             
-            self.popoverOptionsViewController.contentSizeForViewInPopover = CGSizeMake(200, totalHeight);
-            
+            NSLog(@"Frame for custom view AFTER: %@", NSStringFromCGRect(self.customOptionsView.frame));
+
             if (self.customOptionsView.alpha < 1) {
                 [UIView animateWithDuration:0.25 animations:^{
                     self.customOptionsView.alpha = 1;
@@ -1500,14 +1519,13 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
         } else {
             // hide the additional options and resize the popover
             
-            float totalHeight = 150;
+            float totalHeight = 106;
             
+            NSLog(@"Changing popover height.");
             self.popoverOptionsViewController.contentSizeForViewInPopover = CGSizeMake(200, totalHeight);
             
             if (self.customOptionsView.alpha > 0) {
-                [UIView animateWithDuration:0.25 animations:^{
-                    self.customOptionsView.alpha = 0;
-                }];
+                self.customOptionsView.alpha = 0;
             }
         }
     }
@@ -1521,7 +1539,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
         [self.readingView dismissSelector];
         
         // Dispatch this after a delay to allow the slector to be immediately dismissed
-        dispatch_time_t delay = dispatch_time(DISPATCH_TIME_NOW, NSEC_PER_SEC * 0.01);
+        dispatch_time_t delay = dispatch_time(DISPATCH_TIME_NOW, NSEC_PER_SEC * 0.1);
         dispatch_after(delay, dispatch_get_main_queue(), ^{
             self.layoutType = SCHReadingViewLayoutTypeFixed;
             [self jumpToBookPoint:currentBookPoint animated:NO];
@@ -1538,7 +1556,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
         [self.readingView dismissSelector];
         
         // Dispatch this after a delay to allow the slector to be immediately dismissed
-        dispatch_time_t delay = dispatch_time(DISPATCH_TIME_NOW, NSEC_PER_SEC * 0.01);
+        dispatch_time_t delay = dispatch_time(DISPATCH_TIME_NOW, NSEC_PER_SEC * 0.1);
         dispatch_after(delay, dispatch_get_main_queue(), ^{
             self.layoutType = SCHReadingViewLayoutTypeFlow;
             [self jumpToBookPoint:currentBookPoint animated:NO];

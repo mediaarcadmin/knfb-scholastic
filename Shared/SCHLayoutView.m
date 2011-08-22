@@ -487,7 +487,7 @@ managedObjectContext:(NSManagedObjectContext *)managedObjectContext
     NSUInteger pageIndex = MAX(bookPoint.layoutPage, 1) - 1;
     NSString *pageStr = [self displayPageNumberForPageAtIndex:pageIndex];
     
-    if (!pageStr) {
+    if (![pageStr length]) {
         pageStr = [self.textFlow contentsTableViewController:nil displayPageNumberForPageIndex:pageIndex];
     }
     
@@ -508,7 +508,7 @@ managedObjectContext:(NSManagedObjectContext *)managedObjectContext
     NSString *pageLabel = nil;
     
     if (chapterName) {
-        if (pageStr) {
+        if ([pageStr length]) {
             pageLabel = [NSString stringWithFormat:NSLocalizedString(@"Page %@ \u2013 %@",@"Page label with page number and chapter (layout view)"), pageStr, chapterName];
         } else {
             pageLabel = [NSString stringWithFormat:@"%@", chapterName];
