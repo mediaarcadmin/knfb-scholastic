@@ -87,18 +87,17 @@ static const CGFloat kDeregisterContentHeightLandscape = 380;
                                                  selector:@selector(keyboardWillHide:)
                                                      name:UIKeyboardWillHideNotification
                                                    object:nil];
-        
-        [[NSNotificationCenter defaultCenter] addObserver:self
-                                                 selector:@selector(authenticationManagerDidDeregister:)
-                                                     name:SCHAuthenticationManagerDidDeregisterNotification
-                                                   object:nil];
-
-        [[NSNotificationCenter defaultCenter] addObserver:self
-                                                 selector:@selector(authenticationManagerDidFailDeregistration:)
-                                                     name:SCHAuthenticationManagerDidFailDeregistrationNotification
-                                                   object:nil];
-
     }
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(authenticationManagerDidDeregister:)
+                                                 name:SCHAuthenticationManagerDidDeregisterNotification
+                                               object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(authenticationManagerDidFailDeregistration:)
+                                                 name:SCHAuthenticationManagerDidFailDeregistrationNotification
+                                               object:nil];
 }
 
 - (void)viewWillAppear:(BOOL)animated 
