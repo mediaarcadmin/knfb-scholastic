@@ -7,9 +7,8 @@
 //
 
 #import "SCHDownloadBookFileOperation.h"
-#import "SCHProcessingManager.h"
+
 #import "SCHAppBook.h"
-#import "SCHBookManager.h"
 
 #pragma mark - Class Extension
 
@@ -17,6 +16,8 @@
 
 @property (nonatomic, copy) NSString *localPath;
 @property (nonatomic, assign) unsigned long bookFileSize;
+
+- (void)completedDownload;
 
 @end
 
@@ -37,6 +38,8 @@
 
 - (void)beginOperation
 {
+    NSError *error = nil;
+    
     if (self.identifier == nil) {
         NSLog(@"WARNING: tried to download a book without setting the ISBN");
         [self setProcessingState:SCHBookProcessingStateError];
@@ -63,12 +66,28 @@
             NSLog(@"WARNING: problem with SCHAppBook (ISBN: %@ localPath: %@ bookFileURL: %@", self.identifier, self.localPath, bookFileURL);
             [self setProcessingState:SCHBookProcessingStateError];
             [self endOperation];
+            [bookFileURL release];            
             return;
         }
         
-		request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:bookFileURL]];
+        if ([[bookFileURL substringToIndex:7] length] >= 7 &&
+            [[bookFileURL substringToIndex:7] isEqualToString:@"file://"] == YES) {
+            [[NSFileManager defaultManager] copyItemAtPath:[bookFileURL substringFromIndex:7]
+                                                    toPath:self.localPath 
+                                                     error:&error];        
+            if (error != nil) {
+                NSLog(@"Error copying XPS file from bundle: %@, %@", error, [error userInfo]);
+            } 
+            
+            [self completedDownload];	
+            [bookFileURL release];            
+            return;
+            
+        } else {
+            request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:bookFileURL]];
+        }
+        
         [bookFileURL release];
-		
 	} else if (self.fileType == kSCHDownloadFileTypeCoverImage) {
 
         __block NSString *cacheDir = nil;
@@ -82,7 +101,24 @@
         
 		self.localPath = [cacheDir stringByAppendingPathComponent:[NSString stringWithFormat:@"%@.png", contentIdentifier]];
 		
-		request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:coverURL]];
+        if ([[coverURL substringToIndex:7] length] >= 7 &&
+            [[coverURL substringToIndex:7] isEqualToString:@"file://"] == YES) {
+            [[NSFileManager defaultManager] copyItemAtPath:[coverURL substringFromIndex:6]
+                                                    toPath:self.localPath 
+                                                     error:&error];        
+            if (error != nil) {
+                NSLog(@"Error copying cover file from bundle: %@, %@", error, [error userInfo]);
+            } 
+            
+            [self completedDownload];
+            [cacheDir release];
+            [contentIdentifier release];
+            [coverURL release];
+            return;
+
+        } else {
+            request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:coverURL]];
+        }
         
         [cacheDir release];
         [contentIdentifier release];
@@ -197,7 +233,12 @@
 - (void)connectionDidFinishLoading:(NSURLConnection *)connection
 {
 	NSLog(@"Finished file %@.", [self.localPath lastPathComponent]);
-	
+    
+    [self completedDownload];
+}
+
+- (void)completedDownload
+{
 	switch (self.fileType) {
 		case kSCHDownloadFileTypeXPSBook:
             [self performWithBookAndSave:^(SCHAppBook *book) {
@@ -211,7 +252,6 @@
 		default:
 			break;
 	}
-	
 	
     [self endOperation];	
 }

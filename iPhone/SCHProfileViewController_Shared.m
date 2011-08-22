@@ -7,16 +7,13 @@
 //
 
 #import "SCHProfileViewController_Shared.h"
-#import "AppDelegate_Shared.h"
 #import "SCHSettingsViewController.h"
 #import "SCHBookShelfViewController.h"
 #import "SCHLoginPasswordViewController.h"
 #import "SCHLibreAccessWebService.h"
 #import "SCHProfileItem.h"
-#import "SCHProfileViewCell.h"
-#import "SCHCustomNavigationBar.h"
+#import "SCHAuthenticationManager.h"
 #import "SCHThemeManager.h"
-#import "SCHBookshelfSyncComponent.h"
 #import "SCHBookUpdates.h"
 #import "SCHAppProfile.h"
 #import "SCHBookIdentifier.h"
@@ -389,8 +386,7 @@
 - (void)dismissSettingsForm
 {
     // check for deregistration
-    AppDelegate_Shared *appDelegate = (AppDelegate_Shared *)[[UIApplication sharedApplication] delegate];
-    if (![appDelegate isAuthenticated]) {
+    if ([[SCHAuthenticationManager sharedAuthenticationManager] hasUsernameAndPassword] == NO) {
         [self dismissModalViewControllerAnimated:YES];
         [self.navigationController popViewControllerAnimated:NO];
     } else {

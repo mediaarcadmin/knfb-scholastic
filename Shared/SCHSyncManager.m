@@ -38,10 +38,12 @@ static NSTimeInterval const kSCHLastFirstSyncInterval = -300.0;
 - (void)kickQueue;
 - (BOOL)shouldSync;
 
+- (void)checkPopulations;
 - (void)populateLocalDebugStore;
+- (NSString *)fullPathToBundledFile:(NSString *)fileName;
+- (void)addBook:(NSDictionary *)book forProfiles:(NSArray *)profileIDs;
 - (void)populateFromImport;
 - (void)setAppStateForSample;
-- (void)setAppStateForLocalDebug;
 - (NSDictionary *)profileItemWith:(NSInteger)profileID
                             title:(NSString *)title 
                          password:(NSString *)password
@@ -290,9 +292,20 @@ static NSTimeInterval const kSCHLastFirstSyncInterval = -300.0;
             [self kickQueue];	
         }
     } else {
-        // used to kick off the processing manager so even though we're not
-        // syncing we still post the notification
-        [[NSNotificationCenter defaultCenter] postNotificationName:SCHBookshelfSyncComponentDidCompleteNotification object:nil];    
+        [self checkPopulations];
+
+        [[NSNotificationCenter defaultCenter] postNotificationName:SCHProfileSyncComponentDidCompleteNotification 
+                                                            object:self];		
+        [[NSNotificationCenter defaultCenter] postNotificationName:SCHContentSyncComponentDidCompleteNotification 
+                                                            object:self];		
+        [[NSNotificationCenter defaultCenter] postNotificationName:SCHBookshelfSyncComponentDidCompleteNotification 
+                                                            object:self];		
+        [[NSNotificationCenter defaultCenter] postNotificationName:SCHAnnotationSyncComponentDidCompleteNotification 
+                                                            object:self];		        
+        [[NSNotificationCenter defaultCenter] postNotificationName:SCHReadingStatsSyncComponentDidCompleteNotification
+                                                            object:nil];    
+        [[NSNotificationCenter defaultCenter] postNotificationName:SCHSettingsSyncComponentDidCompleteNotification
+                                                            object:nil];            
     }
 }
 
@@ -304,6 +317,9 @@ static NSTimeInterval const kSCHLastFirstSyncInterval = -300.0;
         [self addToQueue:self.profileSyncComponent];
         
         [self kickQueue];
+    } else {
+        [[NSNotificationCenter defaultCenter] postNotificationName:SCHProfileSyncComponentDidCompleteNotification 
+                                                            object:self];		
     }
 }
 
@@ -315,6 +331,9 @@ static NSTimeInterval const kSCHLastFirstSyncInterval = -300.0;
         [self addToQueue:self.bookshelfSyncComponent];
         
         [self kickQueue];
+    } else {
+        [[NSNotificationCenter defaultCenter] postNotificationName:SCHBookshelfSyncComponentDidCompleteNotification 
+                                                            object:self];		
     }
 }
 
@@ -377,6 +396,9 @@ static NSTimeInterval const kSCHLastFirstSyncInterval = -300.0;
             
             [self kickQueue];
         }
+    } else {
+        [[NSNotificationCenter defaultCenter] postNotificationName:SCHAnnotationSyncComponentDidCompleteNotification 
+                                                            object:self];		        
     }
 }
 
@@ -397,6 +419,11 @@ static NSTimeInterval const kSCHLastFirstSyncInterval = -300.0;
             
             [self kickQueue];	
         }
+    } else {
+        [[NSNotificationCenter defaultCenter] postNotificationName:SCHAnnotationSyncComponentDidCompleteNotification 
+                                                            object:self];		        
+        [[NSNotificationCenter defaultCenter] postNotificationName:SCHReadingStatsSyncComponentDidCompleteNotification
+                                                            object:nil];    
     }
 }
 
@@ -477,84 +504,154 @@ static NSTimeInterval const kSCHLastFirstSyncInterval = -300.0;
 
 - (void)checkPopulations
 {
-	BOOL localDebugMode = NO;
-    
-#if LOCALDEBUG    
-    localDebugMode = YES;
-#endif         
- 
-    // check for change between local debug mode and normal network mode	
-    if ((localDebugMode == YES && [[SCHAppStateManager sharedAppStateManager] isLocalDebugStore] == NO) ||
-        (localDebugMode == NO && [[SCHAppStateManager sharedAppStateManager] isLocalDebugStore] == YES)) {
-        NSLog(@"Changed between local debug mode and network mode - deleting database & removing login details.");        
-        [self clear];
-        [[SCHAuthenticationManager sharedAuthenticationManager] clear];
-    }
-    
-	if (localDebugMode == YES) {        
+    if ([[self.profileSyncComponent localProfiles] count] < 1) {
         [self populateLocalDebugStore];        
-        [self populateFromImport];
-    } 
-    
-    NSLog(@"Currently in %@.", localDebugMode ? @"Local Debug Mode" : @"Network Mode");
+    }
+    [self populateFromImport];
 }
 
 - (void)populateLocalDebugStore
 {
-    if ([[self.contentSyncComponent localUserContentItems] count] < 1) {
-        NSLog(@"Copying local files as none present in database");
-        NSError *error = nil;
-        
-        [self setAppStateForLocalDebug];
-        
-        NSDictionary *youngerProfileItem = [self profileItemWith:1
-                                                           title:NSLocalizedString(@"Bookshelf #1", nil) 
-                                                        password:@"pass"                                 
-                                                             age:5 
-                                                       bookshelf:kSCHBookshelfStyleYoungChild];
-        [self.profileSyncComponent addProfile:youngerProfileItem];
-        
-        NSDictionary *olderProfileItem = [self profileItemWith:2
-                                                         title:NSLocalizedString(@"Bookshelf #2", nil) 
-                                                      password:@"pass"                                 
-                                                           age:14 
-                                                     bookshelf:kSCHBookshelfStyleOlderChild];
-        [self.profileSyncComponent addProfile:olderProfileItem];
-        
-        for (NSString *xpsFilePath in [self listXPSFilesFrom:[[NSBundle mainBundle] bundlePath]]) {
-            if ([[xpsFilePath lastPathComponent] isEqualToString:@"9780545308656.6.StableMatesPatch.xps"]) { 
-                // Add to both bookshelves
-                [self populateBook:xpsFilePath profileIDs:[NSArray arrayWithObjects:[youngerProfileItem  objectForKey:kSCHLibreAccessWebServiceID], 
-                                                           [olderProfileItem  objectForKey:kSCHLibreAccessWebServiceID], nil]];
-            } else if([[xpsFilePath lastPathComponent] isEqualToString:@"9780545289726_r1.OlliesNewTricks.xps"] || 
-                      [[xpsFilePath lastPathComponent] isEqualToString:@"9780545327619_r1.WhoWillCarveTheTurkey.xps"] || 
-                      [[xpsFilePath lastPathComponent] isEqualToString:@"9780545287012_r1.HalloweenParade.xps"]) { 
-                // Add to 1st bookshelf
-                [self populateBook:xpsFilePath profileIDs:[NSArray arrayWithObject:[youngerProfileItem objectForKey:kSCHLibreAccessWebServiceID]]];
-            } else {  
-                // Add to 2nd bookshelf
-                [self populateBook:xpsFilePath profileIDs:[NSArray arrayWithObject:[olderProfileItem objectForKey:kSCHLibreAccessWebServiceID]]];
-            }
-        }
-        
-        if ([self.managedObjectContext save:&error] == NO) {
-            NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
-            abort();
-        }         
-        
-        // fire off processing
-        [[NSNotificationCenter defaultCenter] postNotificationName:SCHBookshelfSyncComponentDidCompleteNotification object:self];
-    }
+    NSError *error = nil;
+
+    // Younger bookshelf    
+    NSDictionary *youngerProfileItem = [self profileItemWith:1
+                                                       title:NSLocalizedString(@"Bookshelf #1", nil) 
+                                                    password:@"pass"                                 
+                                                         age:5 
+                                                   bookshelf:kSCHBookshelfStyleYoungChild];
+    [self.profileSyncComponent addProfile:youngerProfileItem];
+    
+    // Older bookshelf    
+    NSDictionary *olderProfileItem = [self profileItemWith:2
+                                                     title:NSLocalizedString(@"Bookshelf #2", nil) 
+                                                  password:@"pass"                                 
+                                                       age:14 
+                                                 bookshelf:kSCHBookshelfStyleOlderChild];
+    [self.profileSyncComponent addProfile:olderProfileItem];
+    
+    NSArray *youngerBookshelfOnly = [NSArray arrayWithObject:[youngerProfileItem objectForKey:kSCHLibreAccessWebServiceID]];
+    NSArray *olderBookshelfOnly = [NSArray arrayWithObject:[olderProfileItem objectForKey:kSCHLibreAccessWebServiceID]];
+    NSArray *allBookshelves = [NSArray arrayWithObjects:[youngerProfileItem objectForKey:kSCHLibreAccessWebServiceID],
+                               [olderProfileItem objectForKey:kSCHLibreAccessWebServiceID], 
+                               nil];
+    
+    // Books
+    NSDictionary *book1 = [self contentMetaDataItemWith:@"9780545283502"
+                                                  title:@"Classic Goosebumps: Night of the Living Dummy"
+                                                 author:@"R.L. Stine"
+                                             pageNumber:162
+                                               fileSize:4142171
+                                            drmQualifer:kSCHDRMQualifiersFullNoDRM
+                                               coverURL:[self fullPathToBundledFile:@"9780545283502.NightOfTheLivingDummy.jpg"]
+                                             contentURL:[self fullPathToBundledFile:@"9780545283502.NightOfTheLivingDummy.xps"]
+                                               enhanced:YES];
+    [self addBook:book1 forProfiles:olderBookshelfOnly];
+    
+    NSDictionary *book2 = [self contentMetaDataItemWith:@"9780545287012"
+                                                  title:@"Scholastic Reader Level 1: Clifford and the Halloween Parade"
+                                                 author:@"Norman Bridwell"
+                                             pageNumber:34
+                                               fileSize:5149305
+                                            drmQualifer:kSCHDRMQualifiersFullNoDRM
+                                               coverURL:[self fullPathToBundledFile:@"9780545287012_r1.HalloweenParade.jpg"]
+                                             contentURL:[self fullPathToBundledFile:@"9780545287012_r1.HalloweenParade.xps"]
+                                               enhanced:YES];
+    [self addBook:book2 forProfiles:youngerBookshelfOnly];
+    
+    NSDictionary *book3 = [self contentMetaDataItemWith:@"9780545289726"
+                                                  title:@"Ollie's New Tricks"
+                                                 author:@"by True Kelley, illustrated by True Kelley"
+                                             pageNumber:34
+                                               fileSize:21251026
+                                            drmQualifer:kSCHDRMQualifiersFullNoDRM
+                                               coverURL:[self fullPathToBundledFile:@"9780545289726_r1.OlliesNewTricks.jpg"]
+                                             contentURL:[self fullPathToBundledFile:@"9780545289726_r1.OlliesNewTricks.xps"]
+                                               enhanced:YES];
+    [self addBook:book3 forProfiles:youngerBookshelfOnly];
+    
+    NSDictionary *book4 = [self contentMetaDataItemWith:@"9780545345019"
+                                                  title:@"Allie Finkle's Rules for Girls: Moving Day"
+                                                 author:@"Meg Cabot"
+                                             pageNumber:258
+                                               fileSize:5620118
+                                            drmQualifer:kSCHDRMQualifiersFullNoDRM
+                                               coverURL:[self fullPathToBundledFile:@"9780545345019_r1.AllieFinkleMovingDay.jpg"]
+                                             contentURL:[self fullPathToBundledFile:@"9780545345019_r1.AllieFinkleMovingDay.xps"]
+                                               enhanced:YES];
+    [self addBook:book4 forProfiles:olderBookshelfOnly];
+    
+    NSDictionary *book5 = [self contentMetaDataItemWith:@"9780545327619"
+                                                  title:@"Who Will Carve the Turkey This Thanksgiving?"
+                                                 author:@"by Jerry Pallotta, illustrated by David Biedrzycki"
+                                             pageNumber:35
+                                               fileSize:5808879
+                                            drmQualifer:kSCHDRMQualifiersFullNoDRM
+                                               coverURL:[self fullPathToBundledFile:@"9780545327619_r1.WhoWillCarveTheTurkey.jpg"]
+                                             contentURL:[self fullPathToBundledFile:@"9780545327619_r1.WhoWillCarveTheTurkey.xps"]
+                                               enhanced:YES];
+    [self addBook:book5 forProfiles:youngerBookshelfOnly];
+    
+    NSDictionary *book6 = [self contentMetaDataItemWith:@"9780545366779"
+                                                  title:@"The 39 Clues Book 1: The Maze of Bones"
+                                                 author:@"Rick Riordan"
+                                             pageNumber:247
+                                               fileSize:9280193
+                                            drmQualifer:kSCHDRMQualifiersFullNoDRM
+                                               coverURL:[self fullPathToBundledFile:@"9780545366779.2.MazeOfBones.jpg"]
+                                             contentURL:[self fullPathToBundledFile:@"9780545366779.2.MazeOfBones.xps"]
+                                               enhanced:YES];
+    [self addBook:book6 forProfiles:olderBookshelfOnly];
+    
+    NSDictionary *book7 = [self contentMetaDataItemWith:@"9780545308656"
+                                                  title:@"Scholastic Reader Level 3: Stablemates: Patch"
+                                                 author:@"by Kristin Earhart, illustrated by Lisa Papp"
+                                             pageNumber:42
+                                               fileSize:11099476
+                                            drmQualifer:kSCHDRMQualifiersFullNoDRM
+                                               coverURL:[self fullPathToBundledFile:@"9780545308656.6.StableMatesPatch.jpg"]
+                                             contentURL:[self fullPathToBundledFile:@"9780545308656.6.StableMatesPatch.xps"]
+                                               enhanced:YES];
+    [self addBook:book7 forProfiles:allBookshelves];
+    
+    NSDictionary *book8 = [self contentMetaDataItemWith:@"9780545368896"
+                                                  title:@"The Secrets of Droon #1: The Hidden Stairs and the Magic Carpet"
+                                                 author:@"by Tony Abbott, illustrated by Tim Jessell"
+                                             pageNumber:98
+                                               fileSize:2794624
+                                            drmQualifer:kSCHDRMQualifiersFullNoDRM
+                                               coverURL:[self fullPathToBundledFile:@"9780545368896_r1.TheHiddenStairs.jpg"]
+                                             contentURL:[self fullPathToBundledFile:@"9780545368896_r1.TheHiddenStairs.xps"]
+                                               enhanced:YES];
+    [self addBook:book8 forProfiles:olderBookshelfOnly];
+    
+    if ([self.managedObjectContext save:&error] == NO) {
+        NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
+        abort();
+    }     
 }
 
-- (void)setAppStateForLocalDebug
+- (NSString *)fullPathToBundledFile:(NSString *)fileName
 {
-    SCHAppState *appState = [SCHAppStateManager sharedAppStateManager].appState;
+    NSString *ret = nil;
     
-    appState.ShouldSync = [NSNumber numberWithBool:NO];
-    appState.ShouldDownloadBooks = [NSNumber numberWithBool:NO];
-    appState.ShouldAuthenticate = [NSNumber numberWithBool:NO];
-    appState.DataStoreType = [NSNumber numberWithDataStoreType:kSCHDataStoreTypesLocalDebug];    
+    if (fileName != nil) {
+        NSString *fullPath = [[[NSBundle mainBundle] bundlePath] stringByAppendingPathComponent:fileName];
+        ret = [NSString stringWithFormat:@"file:/%@", fullPath];
+    }
+    
+    return(ret);
+}
+
+- (void)addBook:(NSDictionary *)book forProfiles:(NSArray *)profileIDs
+{
+    if (book != nil && profileIDs != nil && [profileIDs count] > 0) {
+        [self.contentSyncComponent addUserContentItem:[self userContentItemWith:[book objectForKey:kSCHLibreAccessWebServiceContentIdentifier]
+                                                                    drmQualifer:[[book objectForKey:kSCHLibreAccessWebServiceDRMQualifier] DRMQualifierValue]
+                                                                     profileIDs:profileIDs]];
+        
+        [self.bookshelfSyncComponent addContentMetadataItem:book];
+    }
 }
 
 - (void)populateFromImport
@@ -623,12 +720,7 @@ static NSTimeInterval const kSCHLastFirstSyncInterval = -300.0;
                                                    coverURL:@"http://bitwink.com/private/ChristmasCarol.jpg"
                                                  contentURL:@"http://bitwink.com/private/ChristmasCarol.xps"
                                                    enhanced:NO];
-
-    [self.contentSyncComponent addUserContentItem:[self userContentItemWith:[youngerBook objectForKey:kSCHLibreAccessWebServiceContentIdentifier]
-                                                                drmQualifer:[[youngerBook objectForKey:kSCHLibreAccessWebServiceDRMQualifier] DRMQualifierValue]
-                                                                  profileIDs:[NSArray arrayWithObject:[youngerProfileItem objectForKey:kSCHLibreAccessWebServiceID]]]];
-
-    [self.bookshelfSyncComponent addContentMetadataItem:youngerBook];
+    [self addBook:youngerBook forProfiles:[NSArray arrayWithObject:[youngerProfileItem objectForKey:kSCHLibreAccessWebServiceID]]];
 
     // Older bookshelf    
     NSDictionary *olderProfileItem = [self profileItemWith:2
@@ -647,13 +739,8 @@ static NSTimeInterval const kSCHLastFirstSyncInterval = -300.0;
                                               coverURL:@"http://bitwink.com/private/ATaleOfTwoCities.jpg"
                                             contentURL:@"http://bitwink.com/private/ATaleOfTwoCities.xps"
                                               enhanced:NO];
-
-    [self.contentSyncComponent addUserContentItem:[self userContentItemWith:[olderBook objectForKey:kSCHLibreAccessWebServiceContentIdentifier] 
-                                                                drmQualifer:[[olderBook objectForKey:kSCHLibreAccessWebServiceDRMQualifier] DRMQualifierValue]
-                                                                 profileIDs:[NSArray arrayWithObject:[olderProfileItem objectForKey:kSCHLibreAccessWebServiceID]]]];
+    [self addBook:olderBook forProfiles:[NSArray arrayWithObject:[olderProfileItem objectForKey:kSCHLibreAccessWebServiceID]]];
     
-    [self.bookshelfSyncComponent addContentMetadataItem:olderBook];
-
     if ([self.managedObjectContext save:&error] == NO) {
         NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
         abort();
@@ -788,7 +875,7 @@ static NSTimeInterval const kSCHLastFirstSyncInterval = -300.0;
                                                                 drmQualifer:[[book objectForKey:kSCHLibreAccessWebServiceDRMQualifier] DRMQualifierValue]                                                    
                                                                  profileIDs:profileIDs]];
     SCHContentMetadataItem *newContentMetadataItem = [self.bookshelfSyncComponent addContentMetadataItem:book];
-    newContentMetadataItem.FileName = @"9780545283502.NightOfTheLivingDummy.xps";
+    newContentMetadataItem.FileName = [xpsFilePath lastPathComponent];
     // copy the XPS file from the bundle
     [[NSFileManager defaultManager] copyItemAtPath:xpsFilePath 
                                             toPath:[newContentMetadataItem.AppBook xpsPath] 

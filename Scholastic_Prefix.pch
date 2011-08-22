@@ -10,7 +10,7 @@
     #import "UIColor+Scholastic.h"
 #endif
 
-#define UATSERVER 1
+#define UATSERVER 1 // Setting 0 points to the production server - BitWink employees should NOT use this!
 #define NONDRMAUTHENTICATION 0
 #define DICTIONARY_DOWNLOAD_DISABLED 0
 

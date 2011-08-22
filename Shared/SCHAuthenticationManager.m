@@ -154,12 +154,10 @@ typedef struct AuthenticateWithUserNameParameters AuthenticateWithUserNameParame
 {
     BOOL ret = YES;
     
-    if ([[SCHAppStateManager sharedAppStateManager] canAuthenticate] == YES) {
-        NSString *storedUsername = [[NSUserDefaults standardUserDefaults] stringForKey:kSCHAuthenticationManagerUsername];
-        NSString *storedPassword = [SFHFKeychainUtils getPasswordForUsername:storedUsername andServiceName:kSCHAuthenticationManagerServiceName error:nil];
+    NSString *storedUsername = [[NSUserDefaults standardUserDefaults] stringForKey:kSCHAuthenticationManagerUsername];
+    NSString *storedPassword = [SFHFKeychainUtils getPasswordForUsername:storedUsername andServiceName:kSCHAuthenticationManagerServiceName error:nil];
         
-        ret = ([password isEqualToString:storedPassword] == YES);
-    }
+    ret = ([password isEqualToString:storedPassword] == YES);
     
     return(ret);
 }
@@ -245,35 +243,49 @@ typedef struct AuthenticateWithUserNameParameters AuthenticateWithUserNameParame
 {	
     AuthenticateWithUserNameParameters *authenticateWithUserNameParameters = parameters.pointerValue;
     
-    if ([[Reachability reachabilityForInternetConnection] isReachable] == YES) {
-        if (authenticateWithUserNameParameters->username != nil &&
-            [[authenticateWithUserNameParameters->username stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]] length] > 0 &&
-            authenticateWithUserNameParameters->password != nil &&
-            [[authenticateWithUserNameParameters->password stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]] length] > 0) {
-            [self clearOnMainThread];
-            [[NSUserDefaults standardUserDefaults] setObject:authenticateWithUserNameParameters->username 
-                                                      forKey:kSCHAuthenticationManagerUsername];
-            [SFHFKeychainUtils storeUsername:authenticateWithUserNameParameters->username 
-                                 andPassword:authenticateWithUserNameParameters->password 
-                              forServiceName:kSCHAuthenticationManagerServiceName 
-                              updateExisting:YES 
-                                       error:nil];
-            [self authenticate];
+    if([[SCHAppStateManager sharedAppStateManager] canAuthenticate] == YES) {
+        if ([[Reachability reachabilityForInternetConnection] isReachable] == YES) {
+            if (authenticateWithUserNameParameters->username != nil &&
+                [[authenticateWithUserNameParameters->username stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]] length] > 0 &&
+                authenticateWithUserNameParameters->password != nil &&
+                [[authenticateWithUserNameParameters->password stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]] length] > 0) {
+                [self clearOnMainThread];
+                [[NSUserDefaults standardUserDefaults] setObject:authenticateWithUserNameParameters->username 
+                                                          forKey:kSCHAuthenticationManagerUsername];
+                [SFHFKeychainUtils storeUsername:authenticateWithUserNameParameters->username 
+                                     andPassword:authenticateWithUserNameParameters->password 
+                                  forServiceName:kSCHAuthenticationManagerServiceName 
+                                  updateExisting:YES 
+                                           error:nil];
+                [self authenticate];
+            } else {
+                NSError *error = [NSError errorWithDomain:kSCHAuthenticationManagerErrorDomain 
+                                                     code:kSCHAuthenticationManagerLoginError 
+                                                 userInfo:[NSDictionary dictionaryWithObject:NSLocalizedString(@"You must enter a username and password", @"") 
+                                                                                      forKey:NSLocalizedDescriptionKey]];
+                
+                [self postFailureWithError:error];
+            }
         } else {
             NSError *error = [NSError errorWithDomain:kSCHAuthenticationManagerErrorDomain 
                                                  code:kSCHAuthenticationManagerLoginError 
-                                             userInfo:[NSDictionary dictionaryWithObject:NSLocalizedString(@"You must enter a username and password", @"") 
+                                             userInfo:[NSDictionary dictionaryWithObject:NSLocalizedString(@"You must have internet access to login", @"") 
                                                                                   forKey:NSLocalizedDescriptionKey]];
             
-            [self postFailureWithError:error];
+            [self postFailureWithError:error];	
         }
     } else {
-        NSError *error = [NSError errorWithDomain:kSCHAuthenticationManagerErrorDomain 
-                                             code:kSCHAuthenticationManagerLoginError 
-                                         userInfo:[NSDictionary dictionaryWithObject:NSLocalizedString(@"You must have internet access to login", @"") 
-                                                                              forKey:NSLocalizedDescriptionKey]];
+        [[NSUserDefaults standardUserDefaults] setObject:authenticateWithUserNameParameters->username 
+                                                  forKey:kSCHAuthenticationManagerUsername];
+        [SFHFKeychainUtils storeUsername:authenticateWithUserNameParameters->username 
+                             andPassword:authenticateWithUserNameParameters->password 
+                          forServiceName:kSCHAuthenticationManagerServiceName 
+                          updateExisting:YES 
+                                   error:nil];
+        self.aToken = @"";
+        self.tokenExpires = [NSDate distantFuture];        
         
-        [self postFailureWithError:error];	
+        [self performSelector:@selector(postSuccessWithOfflineMode:) withObject:[NSNumber numberWithBool:NO] afterDelay:0.1];
     }
 }
 
@@ -285,39 +297,46 @@ typedef struct AuthenticateWithUserNameParameters AuthenticateWithUserNameParame
     
     NSLog(@"Authenticating %@ with %@", storedUsername, (deviceKey == nil ? @"no deviceKey" :deviceKey));        
     
-    if (waitingOnResponse == NO) {
-        if ([[Reachability reachabilityForInternetConnection] isReachable] == YES) {
-            if (self.aToken != nil && [[self.aToken stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]] length] > 0) {
-                [self.libreAccessWebService renewToken:self.aToken];
-                waitingOnResponse = YES;                
-            } else if (deviceKey != nil && [[deviceKey stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]] length] > 0) {
-                [self.libreAccessWebService authenticateDevice:deviceKey forUserKey:nil];
-                waitingOnResponse = YES;                                
+    if([[SCHAppStateManager sharedAppStateManager] canAuthenticate] == YES) {
+        if (waitingOnResponse == NO) {
+            if ([[Reachability reachabilityForInternetConnection] isReachable] == YES) {
+                if (self.aToken != nil && [[self.aToken stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]] length] > 0) {
+                    [self.libreAccessWebService renewToken:self.aToken];
+                    waitingOnResponse = YES;                
+                } else if (deviceKey != nil && [[deviceKey stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]] length] > 0) {
+                    [self.libreAccessWebService authenticateDevice:deviceKey forUserKey:nil];
+                    waitingOnResponse = YES;                                
+                } else if (storedUsername != nil &&
+                           [[storedUsername stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]] length] > 0 &&
+                           storedPassword != nil &&
+                           [[storedPassword stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]] length] > 0) {
+                    [self.scholasticWebService authenticateUserName:storedUsername withPassword:storedPassword];
+                    waitingOnResponse = YES;         
+                } else {
+                    NSError *error = [NSError errorWithDomain:kSCHAuthenticationManagerErrorDomain 
+                                                         code:kSCHAuthenticationManagerLoginError 
+                                                     userInfo:[NSDictionary dictionaryWithObject:NSLocalizedString(@"You must enter a username and password", @"") 
+                                                                                          forKey:NSLocalizedDescriptionKey]];
+                    
+                    [self postFailureWithError:error];            
+                }
             } else if (storedUsername != nil &&
-                       [[storedUsername stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]] length] > 0 &&
-                       storedPassword != nil &&
-                       [[storedPassword stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]] length] > 0) {
-                [self.scholasticWebService authenticateUserName:storedUsername withPassword:storedPassword];
-                waitingOnResponse = YES;         
+                       [[storedUsername stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]] length] > 0) {            
+                [self postSuccessWithOfflineMode:YES];
             } else {
                 NSError *error = [NSError errorWithDomain:kSCHAuthenticationManagerErrorDomain 
                                                      code:kSCHAuthenticationManagerLoginError 
                                                  userInfo:[NSDictionary dictionaryWithObject:NSLocalizedString(@"You must enter a username and password", @"") 
                                                                                       forKey:NSLocalizedDescriptionKey]];
                 
-                [self postFailureWithError:error];            
+                [self postFailureWithError:error];
             }
-        } else if (storedUsername != nil &&
-                   [[storedUsername stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]] length] > 0) {            
-            [self postSuccessWithOfflineMode:YES];
-        } else {
-            NSError *error = [NSError errorWithDomain:kSCHAuthenticationManagerErrorDomain 
-                                                 code:kSCHAuthenticationManagerLoginError 
-                                             userInfo:[NSDictionary dictionaryWithObject:NSLocalizedString(@"You must enter a username and password", @"") 
-                                                                                  forKey:NSLocalizedDescriptionKey]];
-            
-            [self postFailureWithError:error];
-        }
+        } 
+    } else {
+        self.aToken = @"";
+        self.tokenExpires = [NSDate distantFuture];        
+        
+        [self performSelector:@selector(postSuccessWithOfflineMode:) withObject:[NSNumber numberWithBool:NO] afterDelay:0.1];
     }
 }
 
@@ -389,7 +408,7 @@ typedef struct AuthenticateWithUserNameParameters AuthenticateWithUserNameParame
 
 - (void)deregisterOnMainThread:(NSString *)token
 {
-    if (token != nil) {
+    if ([[SCHAppStateManager sharedAppStateManager] canAuthenticate] == YES && token != nil) {
         [self.drmRegistrationSession deregisterDevice:token];
     } else {
         [[NSNotificationCenter defaultCenter] postNotificationName:SCHAuthenticationManagerDidDeregisterNotification
