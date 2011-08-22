@@ -10,11 +10,16 @@
 #import "SCHPictureStarterCanvas.h"
 #import "SCHPictureStarterColorChooser.h"
 #import "SCHPictureStarterSizeChooser.h"
-#import "SCHPictureStarterStampChooser.h"
+#import "SCHPictureStarterStickerChooser.h"
+#import "SCHPictureStarterStickers.h"
 #import "UIColor+Scholastic.h"
 
 @interface SCHStoryInteractionControllerPictureStarter ()
+
+@property (nonatomic, retain) SCHPictureStarterStickers *stickers;
+
 - (void)setupDrawingScreen;
+
 @end
 
 @implementation SCHStoryInteractionControllerPictureStarter
@@ -22,22 +27,22 @@
 @synthesize canvas;
 @synthesize colorChooser;
 @synthesize sizeChooser;
-@synthesize stampChoosers;
-@synthesize stampChooserOverlay;
+@synthesize stickerChoosers;
 @synthesize doneButton;
 @synthesize clearButton;
 @synthesize saveButton;
+@synthesize stickers;
 
 - (void)dealloc
 {
     [canvas release], canvas = nil;
     [colorChooser release], colorChooser = nil;
     [sizeChooser release], sizeChooser = nil;
-    [stampChoosers release], stampChoosers = nil;
-    [stampChooserOverlay release], stampChooserOverlay = nil;
+    [stickerChoosers release], stickerChoosers = nil;
     [doneButton release], doneButton = nil;
     [clearButton release], clearButton = nil;
     [saveButton release], saveButton = nil;
+    [stickers release], stickers = nil;
     [super dealloc];
 }
 
@@ -104,6 +109,14 @@
     [self applyRoundRectStyle:self.sizeChooser];
 
     self.canvas.backgroundImage = [self drawingBackgroundImage];
+    
+    self.stickers = [[[SCHPictureStarterStickers alloc] init] autorelease];
+    self.stickers.numberOfChoosers = [self.stickerChoosers count];
+    NSInteger index = 0;
+    for (SCHPictureStarterStickerChooser *chooser in self.stickerChoosers) {
+        [chooser setChooserIndex:index++];
+        [chooser setStickerDataSource:self.stickers];
+    }
 }
 
 #pragma mark - Actions

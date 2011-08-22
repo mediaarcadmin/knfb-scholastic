@@ -298,10 +298,12 @@
 		28B7FF0B140286C6009E26F5 /* SCHPictureStarterColorChooser.m in Sources */ = {isa = PBXBuildFile; fileRef = 28B7FF09140286C6009E26F5 /* SCHPictureStarterColorChooser.m */; };
 		28B7FF0E140286D6009E26F5 /* SCHPictureStarterSizeChooser.m in Sources */ = {isa = PBXBuildFile; fileRef = 28B7FF0D140286D6009E26F5 /* SCHPictureStarterSizeChooser.m */; };
 		28B7FF0F140286D6009E26F5 /* SCHPictureStarterSizeChooser.m in Sources */ = {isa = PBXBuildFile; fileRef = 28B7FF0D140286D6009E26F5 /* SCHPictureStarterSizeChooser.m */; };
-		28B7FF1614028708009E26F5 /* SCHPictureStarterStampChooser.m in Sources */ = {isa = PBXBuildFile; fileRef = 28B7FF1514028708009E26F5 /* SCHPictureStarterStampChooser.m */; };
-		28B7FF1714028708009E26F5 /* SCHPictureStarterStampChooser.m in Sources */ = {isa = PBXBuildFile; fileRef = 28B7FF1514028708009E26F5 /* SCHPictureStarterStampChooser.m */; };
+		28B7FF1614028708009E26F5 /* SCHPictureStarterStickerChooser.m in Sources */ = {isa = PBXBuildFile; fileRef = 28B7FF1514028708009E26F5 /* SCHPictureStarterStickerChooser.m */; };
+		28B7FF1714028708009E26F5 /* SCHPictureStarterStickerChooser.m in Sources */ = {isa = PBXBuildFile; fileRef = 28B7FF1514028708009E26F5 /* SCHPictureStarterStickerChooser.m */; };
 		28B7FF2F1402AC3D009E26F5 /* SCHStoryInteractionControllerPictureStarterCustom.m in Sources */ = {isa = PBXBuildFile; fileRef = 28F8B3D613FEA38B00BE0B47 /* SCHStoryInteractionControllerPictureStarterCustom.m */; };
 		28B7FF301402AC3E009E26F5 /* SCHStoryInteractionControllerPictureStarterCustom.m in Sources */ = {isa = PBXBuildFile; fileRef = 28F8B3D613FEA38B00BE0B47 /* SCHStoryInteractionControllerPictureStarterCustom.m */; };
+		28B7FF361402B1F1009E26F5 /* SCHPictureStarterStickers.m in Sources */ = {isa = PBXBuildFile; fileRef = 28B7FF351402B1F1009E26F5 /* SCHPictureStarterStickers.m */; };
+		28B7FF371402B1F1009E26F5 /* SCHPictureStarterStickers.m in Sources */ = {isa = PBXBuildFile; fileRef = 28B7FF351402B1F1009E26F5 /* SCHPictureStarterStickers.m */; };
 		28BF26F013D5A15400535A82 /* SCHSetupBookshelvesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 28BF26EE13D5A15400535A82 /* SCHSetupBookshelvesViewController.m */; };
 		28BF26F113D5A15400535A82 /* SCHSetupBookshelvesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 28BF26EE13D5A15400535A82 /* SCHSetupBookshelvesViewController.m */; };
 		28BF26F213D5A15400535A82 /* SCHSetupBookshelvesViewController~iphone.xib in Resources */ = {isa = PBXBuildFile; fileRef = 28BF26EF13D5A15400535A82 /* SCHSetupBookshelvesViewController~iphone.xib */; };
@@ -2327,8 +2329,10 @@
 		28B7FF09140286C6009E26F5 /* SCHPictureStarterColorChooser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCHPictureStarterColorChooser.m; sourceTree = "<group>"; };
 		28B7FF0C140286D6009E26F5 /* SCHPictureStarterSizeChooser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCHPictureStarterSizeChooser.h; sourceTree = "<group>"; };
 		28B7FF0D140286D6009E26F5 /* SCHPictureStarterSizeChooser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCHPictureStarterSizeChooser.m; sourceTree = "<group>"; };
-		28B7FF1414028707009E26F5 /* SCHPictureStarterStampChooser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCHPictureStarterStampChooser.h; sourceTree = "<group>"; };
-		28B7FF1514028708009E26F5 /* SCHPictureStarterStampChooser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCHPictureStarterStampChooser.m; sourceTree = "<group>"; };
+		28B7FF1414028707009E26F5 /* SCHPictureStarterStickerChooser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCHPictureStarterStickerChooser.h; sourceTree = "<group>"; };
+		28B7FF1514028708009E26F5 /* SCHPictureStarterStickerChooser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCHPictureStarterStickerChooser.m; sourceTree = "<group>"; };
+		28B7FF341402B1F1009E26F5 /* SCHPictureStarterStickers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCHPictureStarterStickers.h; sourceTree = "<group>"; };
+		28B7FF351402B1F1009E26F5 /* SCHPictureStarterStickers.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCHPictureStarterStickers.m; sourceTree = "<group>"; };
 		28BF26ED13D5A15400535A82 /* SCHSetupBookshelvesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHSetupBookshelvesViewController.h; path = Shared/SCHSetupBookshelvesViewController.h; sourceTree = "<group>"; };
 		28BF26EE13D5A15400535A82 /* SCHSetupBookshelvesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHSetupBookshelvesViewController.m; path = Shared/SCHSetupBookshelvesViewController.m; sourceTree = "<group>"; };
 		28BF26EF13D5A15400535A82 /* SCHSetupBookshelvesViewController~iphone.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "SCHSetupBookshelvesViewController~iphone.xib"; sourceTree = "<group>"; };
@@ -2372,6 +2376,7 @@
 		28D2AA0913D6E80D00BEB359 /* SCHDownloadDictionaryViewController~ipad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = "SCHDownloadDictionaryViewController~ipad.xib"; path = "iPad/SCHDownloadDictionaryViewController~ipad.xib"; sourceTree = "<group>"; };
 		28D2AA0C13D6E8F700BEB359 /* SCHDownloadDictionaryViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHDownloadDictionaryViewController.h; path = Shared/SCHDownloadDictionaryViewController.h; sourceTree = "<group>"; };
 		28D2AA0D13D6E8F700BEB359 /* SCHDownloadDictionaryViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHDownloadDictionaryViewController.m; path = Shared/SCHDownloadDictionaryViewController.m; sourceTree = "<group>"; };
+		28D59DD51402B5D9002E4831 /* SCHPictureStarterStickerChooserDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCHPictureStarterStickerChooserDataSource.h; sourceTree = "<group>"; };
 		28D67DEA13D9B28700F715CD /* SCHRemoveDictionaryViewController~iphone.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "SCHRemoveDictionaryViewController~iphone.xib"; sourceTree = "<group>"; };
 		28D67DED13D9B30500F715CD /* SCHRemoveDictionaryViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHRemoveDictionaryViewController.h; path = Shared/SCHRemoveDictionaryViewController.h; sourceTree = "<group>"; };
 		28D67DEE13D9B30500F715CD /* SCHRemoveDictionaryViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHRemoveDictionaryViewController.m; path = Shared/SCHRemoveDictionaryViewController.m; sourceTree = "<group>"; };
@@ -4409,8 +4414,11 @@
 				28B7FF09140286C6009E26F5 /* SCHPictureStarterColorChooser.m */,
 				28B7FF0C140286D6009E26F5 /* SCHPictureStarterSizeChooser.h */,
 				28B7FF0D140286D6009E26F5 /* SCHPictureStarterSizeChooser.m */,
-				28B7FF1414028707009E26F5 /* SCHPictureStarterStampChooser.h */,
-				28B7FF1514028708009E26F5 /* SCHPictureStarterStampChooser.m */,
+				28B7FF341402B1F1009E26F5 /* SCHPictureStarterStickers.h */,
+				28B7FF351402B1F1009E26F5 /* SCHPictureStarterStickers.m */,
+				28B7FF1414028707009E26F5 /* SCHPictureStarterStickerChooser.h */,
+				28B7FF1514028708009E26F5 /* SCHPictureStarterStickerChooser.m */,
+				28D59DD51402B5D9002E4831 /* SCHPictureStarterStickerChooserDataSource.h */,
 			);
 			name = "Picture Starter";
 			sourceTree = "<group>";
@@ -7926,8 +7934,9 @@
 				28B7FF061402865B009E26F5 /* SCHPictureStarterCanvas.m in Sources */,
 				28B7FF0A140286C6009E26F5 /* SCHPictureStarterColorChooser.m in Sources */,
 				28B7FF0E140286D6009E26F5 /* SCHPictureStarterSizeChooser.m in Sources */,
-				28B7FF1614028708009E26F5 /* SCHPictureStarterStampChooser.m in Sources */,
+				28B7FF1614028708009E26F5 /* SCHPictureStarterStickerChooser.m in Sources */,
 				28B7FF2F1402AC3D009E26F5 /* SCHStoryInteractionControllerPictureStarterCustom.m in Sources */,
+				28B7FF361402B1F1009E26F5 /* SCHPictureStarterStickers.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -8265,8 +8274,9 @@
 				28B7FF071402865B009E26F5 /* SCHPictureStarterCanvas.m in Sources */,
 				28B7FF0B140286C6009E26F5 /* SCHPictureStarterColorChooser.m in Sources */,
 				28B7FF0F140286D6009E26F5 /* SCHPictureStarterSizeChooser.m in Sources */,
-				28B7FF1714028708009E26F5 /* SCHPictureStarterStampChooser.m in Sources */,
+				28B7FF1714028708009E26F5 /* SCHPictureStarterStickerChooser.m in Sources */,
 				28B7FF301402AC3E009E26F5 /* SCHStoryInteractionControllerPictureStarterCustom.m in Sources */,
+				28B7FF371402B1F1009E26F5 /* SCHPictureStarterStickers.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
