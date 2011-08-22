@@ -7,6 +7,7 @@
 //
 
 #import <QuartzCore/QuartzCore.h>
+#import <objc/runtime.h>
 
 #import "SCHStoryInteractionController.h"
 #import "SCHStoryInteractionTypes.h"
@@ -54,18 +55,38 @@
 @synthesize shadeView;
 @synthesize controllerState;
 
-+ (SCHStoryInteractionController *)storyInteractionControllerForStoryInteraction:(SCHStoryInteraction *)storyInteraction
+static Class controllerClassForStoryInteraction(SCHStoryInteraction *storyInteraction)
 {
-    NSString *className = [NSString stringWithCString:object_getClassName(storyInteraction) encoding:NSUTF8StringEncoding];
-    NSString *controllerClassName = [NSString stringWithFormat:@"%@Controller%@", [className substringToIndex:19], [className substringFromIndex:19]];
-    Class controllerClass = NSClassFromString(controllerClassName);
-    if (!controllerClass) {
-        controllerClassName = [controllerClassName stringByAppendingString:(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ? @"_iPad" : @"_iPhone")];
-        controllerClass = NSClassFromString(controllerClassName);
-        if (!controllerClass) {
-            NSLog(@"Can't find controller class for %@", controllerClassName);
+    Class storyInteractionClass = object_getClass(storyInteraction);
+    do {
+        // only evaluate SCH- classes
+        NSString *className = [NSString stringWithCString:class_getName(storyInteractionClass) encoding:NSUTF8StringEncoding];
+        if (![[className substringToIndex:3] isEqualToString:@"SCH"]) {
             return nil;
         }
+        NSString *controllerClassName = [NSString stringWithFormat:@"%@Controller%@", [className substringToIndex:19], [className substringFromIndex:19]];
+        Class controllerClass = NSClassFromString(controllerClassName);
+        if (controllerClass) {
+            return controllerClass;
+        }
+        controllerClassName = [controllerClassName stringByAppendingString:(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ? @"_iPad" : @"_iPhone")];
+        controllerClass = NSClassFromString(controllerClassName);
+        if (controllerClass) {
+            return controllerClass;
+        }
+        
+        storyInteractionClass = class_getSuperclass(storyInteractionClass);
+    }
+    while (storyInteractionClass != nil);
+    return nil;
+}
+
++ (SCHStoryInteractionController *)storyInteractionControllerForStoryInteraction:(SCHStoryInteraction *)storyInteraction
+{
+    Class controllerClass = controllerClassForStoryInteraction(storyInteraction);
+    if (!controllerClass) {
+        NSLog(@"Can't find controller class for %@", object_getClassName(storyInteraction));
+        return nil;
     }
     return [[[controllerClass alloc] initWithStoryInteraction:storyInteraction] autorelease];
 }
@@ -93,9 +114,12 @@
     if ((self = [super init])) {
         storyInteraction = [aStoryInteraction retain];
         
-        NSString *nibName = [NSString stringWithFormat:@"%s_%s", object_getClassName(aStoryInteraction),
-                             (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ? "iPad" : "iPhone")];
+        NSString *controllerClass = [NSString stringWithCString:object_getClassName(self) encoding:NSUTF8StringEncoding];
+        NSString *prefix = [controllerClass stringByReplacingOccurrencesOfString:@"Controller" withString:@""];
+        NSString *suffix = (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ? @"_iPad" : @"_iPhone");
+        prefix = [prefix stringByReplacingOccurrencesOfString:suffix withString:@""];
         
+        NSString *nibName = [NSString stringWithFormat:@"%@%@", prefix, suffix];
         self.nibObjects = [[NSBundle mainBundle] loadNibNamed:nibName owner:self options:nil];
         if ([self.nibObjects count] == 0) {
             NSLog(@"failed to load nib %@", nibName);
