@@ -8,12 +8,7 @@
 
 #import "AppDelegate_iPad.h"
 #import "AppDelegate_Private.h"
-#import "SCHReadingViewController.h"
-#import "SCHAppBook.h"
-#import "SCHBookManager.h"
-#import "SCHThemeManager.h"
 #import "SCHProfileViewController_iPad.h"
-#import "SCHStartingViewController.h"
 #import "SCHSyncManager.h"
 #import "SCHAuthenticationManager.h"
 
@@ -32,7 +27,7 @@ static NSTimeInterval const kAppDelegate_iPadSyncManagerWakeDelay = 5.0;
 {    
 	[super application:application didFinishLaunchingWithOptions:launchOptions];
 	
-    if ([self isAuthenticated]) {
+    if ([[SCHAuthenticationManager sharedAuthenticationManager] hasUsernameAndPassword]) {
         // skip the starter screen if already authenticated
         SCHProfileViewController_iPad *profileViewController = [[SCHProfileViewController_iPad alloc] initWithNibName:@"SCHProfileViewController_iPad" bundle:nil];
         profileViewController.managedObjectContext = self.coreDataHelper.managedObjectContext;

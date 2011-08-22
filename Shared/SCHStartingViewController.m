@@ -7,13 +7,12 @@
 //
 
 #import "SCHStartingViewController.h"
-#import "SCHLoginPasswordViewController.h"
+
 #import "SCHProfileViewController_iPad.h"
 #import "SCHProfileViewController_iPhone.h"
 #import "SCHSetupBookshelvesViewController.h"
 #import "SCHDownloadDictionaryViewController.h"
 #import "SCHLoginPasswordViewController.h"
-#import "SCHStartingViewCell.h"
 #import "SCHCustomNavigationBar.h"
 #import "SCHAuthenticationManager.h"
 #import "SCHDictionaryDownloadManager.h"
@@ -395,7 +394,7 @@ typedef enum {
 {
     UIViewController *next = nil;
     
-    if ([[SCHAppStateManager sharedAppStateManager] isLocalDebugStore] == NO) {
+    if ([[SCHAppStateManager sharedAppStateManager] isSampleStore] == NO) {
         SCHProfileViewController_Shared *profile = [self profileViewController];
         if ([[profile.fetchedResultsController sections] count] == 0 
             || [[[profile.fetchedResultsController sections] objectAtIndex:0] numberOfObjects] == 0) {

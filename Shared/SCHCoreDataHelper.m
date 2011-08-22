@@ -12,6 +12,8 @@
 #import "SCHAuthenticationManager.h"
 #import "AppDelegate_Shared.h"
 #import "SCHAppStateManager.h"
+#import "NSNumber+ObjectTypes.h"
+#import "SCHSyncManager.h"
 
 // Constants
 NSString * const SCHCoreDataHelperManagedObjectContextDidChangeNotification = @"SCHCoreDataHelperManagedObjectContextDidChangeNotification";
@@ -178,6 +180,44 @@ static NSString * const kSCHCoreDataHelperSampleStoreName = @"Scholastic_Sample.
     SCHAppStateManager *appStateManager = [SCHAppStateManager sharedAppStateManager];
     appStateManager.managedObjectContext = self.managedObjectContext;
     [appStateManager createAppStateIfNeeded];
+
+    BOOL localDebugMode = NO;
+#if LOCALDEBUG    
+    localDebugMode = YES;
+#endif 
+
+    // check for change between local debug mode and normal network mode	
+    if ((localDebugMode == YES && [[SCHAppStateManager sharedAppStateManager] isLocalDebugStore] == NO) ||
+        (localDebugMode == NO && [[SCHAppStateManager sharedAppStateManager] isLocalDebugStore] == YES)) {
+        // we need to let the core data initialisation complete first though
+        
+        dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, 0.1 * NSEC_PER_SEC);
+        dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+            NSLog(@"Changed between local debug mode and network mode - emptying database & removing login details.");        
+            [[SCHSyncManager sharedSyncManager] clear];
+        });
+        [[SCHAuthenticationManager sharedAuthenticationManager] clear];
+    } 
+
+    SCHAppState *appState = [appStateManager appState];
+    if (appState != nil) {
+        if (localDebugMode == YES) {
+            appState.ShouldSync = [NSNumber numberWithBool:NO];
+            appState.ShouldDownloadBooks = [NSNumber numberWithBool:YES];
+            appState.ShouldAuthenticate = [NSNumber numberWithBool:NO];
+            appState.DataStoreType = [NSNumber numberWithDataStoreType:kSCHDataStoreTypesLocalDebug];    
+            appState.LastAnnotationSync = nil;            
+        } else if ([appState.DataStoreType isEqualToNumber:[NSNumber numberWithDataStoreType:kSCHDataStoreTypesSample]] == NO) {
+            appState.ShouldSync = [NSNumber numberWithBool:YES];
+            appState.ShouldDownloadBooks = [NSNumber numberWithBool:YES];
+            appState.ShouldAuthenticate = [NSNumber numberWithBool:YES];
+            appState.DataStoreType = [NSNumber numberWithDataStoreType:kSCHDataStoreTypesStandard];    
+            appState.LastAnnotationSync = nil;
+        }
+        
+    }
+        
+    NSLog(@"Currently in %@.", localDebugMode ? @"Local Debug Mode" : @"Network Mode");
     
     return(persistentStoreCoordinator);
 }

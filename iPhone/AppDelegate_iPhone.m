@@ -12,7 +12,6 @@
 #import "SCHProfileViewController_iPhone.h"
 #import "SCHSyncManager.h"
 #import "SCHAuthenticationManager.h"
-#import "SCHCustomNavigationBar.h"
 #import "SCHThemeManager.h"
 
 extern NSString * const kSCHAuthenticationManagerDeviceKey;
@@ -30,7 +29,7 @@ static NSTimeInterval const kAppDelegate_iPhoneSyncManagerWakeDelay = 5.0;
 {    
 	[super application:application didFinishLaunchingWithOptions:launchOptions];
 
-    if ([self isAuthenticated]) {
+    if ([[SCHAuthenticationManager sharedAuthenticationManager] hasUsernameAndPassword]) {
         // skip the starter screen if already authenticated
         SCHProfileViewController_iPhone *profileViewController = [[SCHProfileViewController_iPhone alloc] initWithNibName:@"SCHProfileViewController_iPhone" bundle:nil];
         profileViewController.managedObjectContext = self.coreDataHelper.managedObjectContext;
