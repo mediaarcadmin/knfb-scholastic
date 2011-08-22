@@ -168,7 +168,7 @@
 						</object>
 						<object class="NSCustomResource" key="IBUINormalBackgroundImage">
 							<string key="NSClassName">NSImage</string>
-							<string key="NSResourceName">answer-button-blue.png</string>
+							<string key="NSResourceName">storyinteraction-picturestarter-done.png</string>
 						</object>
 					</object>
 					<object class="IBUIButton" id="871532943">
@@ -190,7 +190,7 @@
 						<reference key="IBUINormalTitleShadowColor" ref="925312579"/>
 						<object class="NSCustomResource" key="IBUINormalBackgroundImage">
 							<string key="NSClassName">NSImage</string>
-							<string key="NSResourceName">answer-button-red.png</string>
+							<string key="NSResourceName">storyinteraction-picturestarter-clear.png</string>
 						</object>
 					</object>
 					<object class="IBUIButton" id="1070473748">
@@ -212,7 +212,7 @@
 						<reference key="IBUINormalTitleShadowColor" ref="925312579"/>
 						<object class="NSCustomResource" key="IBUINormalBackgroundImage">
 							<string key="NSClassName">NSImage</string>
-							<string key="NSResourceName">answer-button-yellow.png</string>
+							<string key="NSResourceName">storyinteraction-picturestarter-save.png</string>
 						</object>
 					</object>
 					<object class="IBUIView" id="977748085">
@@ -741,9 +741,9 @@
 			<bool key="EncodedWithXMLCoder">YES</bool>
 			<object class="NSArray" key="dict.sortedKeys">
 				<bool key="EncodedWithXMLCoder">YES</bool>
-				<string>answer-button-blue.png</string>
-				<string>answer-button-red.png</string>
-				<string>answer-button-yellow.png</string>
+				<string>storyinteraction-picturestarter-clear.png</string>
+				<string>storyinteraction-picturestarter-done.png</string>
+				<string>storyinteraction-picturestarter-save.png</string>
 				<string>storyinteraction-picturestarter-scroller-overlay~ipad.png</string>
 			</object>
 			<object class="NSMutableArray" key="dict.values">

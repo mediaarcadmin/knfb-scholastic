@@ -300,6 +300,8 @@
 		28B7FF0F140286D6009E26F5 /* SCHPictureStarterSizeChooser.m in Sources */ = {isa = PBXBuildFile; fileRef = 28B7FF0D140286D6009E26F5 /* SCHPictureStarterSizeChooser.m */; };
 		28B7FF1614028708009E26F5 /* SCHPictureStarterStampChooser.m in Sources */ = {isa = PBXBuildFile; fileRef = 28B7FF1514028708009E26F5 /* SCHPictureStarterStampChooser.m */; };
 		28B7FF1714028708009E26F5 /* SCHPictureStarterStampChooser.m in Sources */ = {isa = PBXBuildFile; fileRef = 28B7FF1514028708009E26F5 /* SCHPictureStarterStampChooser.m */; };
+		28B7FF2F1402AC3D009E26F5 /* SCHStoryInteractionControllerPictureStarterCustom.m in Sources */ = {isa = PBXBuildFile; fileRef = 28F8B3D613FEA38B00BE0B47 /* SCHStoryInteractionControllerPictureStarterCustom.m */; };
+		28B7FF301402AC3E009E26F5 /* SCHStoryInteractionControllerPictureStarterCustom.m in Sources */ = {isa = PBXBuildFile; fileRef = 28F8B3D613FEA38B00BE0B47 /* SCHStoryInteractionControllerPictureStarterCustom.m */; };
 		28BF26F013D5A15400535A82 /* SCHSetupBookshelvesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 28BF26EE13D5A15400535A82 /* SCHSetupBookshelvesViewController.m */; };
 		28BF26F113D5A15400535A82 /* SCHSetupBookshelvesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 28BF26EE13D5A15400535A82 /* SCHSetupBookshelvesViewController.m */; };
 		28BF26F213D5A15400535A82 /* SCHSetupBookshelvesViewController~iphone.xib in Resources */ = {isa = PBXBuildFile; fileRef = 28BF26EF13D5A15400535A82 /* SCHSetupBookshelvesViewController~iphone.xib */; };
@@ -393,8 +395,6 @@
 		28F689CC13B0F305008A9BF9 /* storyinteraction-bg-younger-titleonly~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = 28F689C913B0F305008A9BF9 /* storyinteraction-bg-younger-titleonly~iphone.png */; };
 		28F689CD13B0F305008A9BF9 /* storyinteraction-bg-younger-titleonly@2x~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = 28F689CA13B0F305008A9BF9 /* storyinteraction-bg-younger-titleonly@2x~iphone.png */; };
 		28F689CE13B0F305008A9BF9 /* storyinteraction-bg-younger-titleonly@2x~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = 28F689CA13B0F305008A9BF9 /* storyinteraction-bg-younger-titleonly@2x~iphone.png */; };
-		28F8B3D713FEA38B00BE0B47 /* SCHStoryInteractionControllerPictureStarterCustom.m in Sources */ = {isa = PBXBuildFile; fileRef = 28F8B3D613FEA38B00BE0B47 /* SCHStoryInteractionControllerPictureStarterCustom.m */; };
-		28F8B3D813FEA38B00BE0B47 /* SCHStoryInteractionControllerPictureStarterCustom.m in Sources */ = {isa = PBXBuildFile; fileRef = 28F8B3D613FEA38B00BE0B47 /* SCHStoryInteractionControllerPictureStarterCustom.m */; };
 		28F8B3DA13FEA46200BE0B47 /* SCHStoryInteractionPictureStarterCustom~ipad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 28F8B3D913FEA46200BE0B47 /* SCHStoryInteractionPictureStarterCustom~ipad.xib */; };
 		28F8B3DB13FEA46200BE0B47 /* SCHStoryInteractionPictureStarterCustom~ipad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 28F8B3D913FEA46200BE0B47 /* SCHStoryInteractionPictureStarterCustom~ipad.xib */; };
 		28FFD4F213AF635F00F28637 /* SCHGeometry.m in Sources */ = {isa = PBXBuildFile; fileRef = 28FFD4F113AF635F00F28637 /* SCHGeometry.m */; };
@@ -7921,14 +7921,13 @@
 				2860010813F9782C005C6AEB /* SCHStoryInteractionJigsawPieceView_iPhone.m in Sources */,
 				528C615F13FAA57200D033F8 /* SCHHelpViewController.m in Sources */,
 				2842A77313FBE9B10049AEE1 /* SCHAnimatedLayer.m in Sources */,
-				28F8B3D713FEA38B00BE0B47 /* SCHStoryInteractionControllerPictureStarterCustom.m in Sources */,
 				C98648A01402686300B9DFE1 /* SCHReadingViewNavigationToolbar.m in Sources */,
-				28F8B3D713FEA38B00BE0B47 /* SCHStoryInteractionControllerPictureStarterCustom.m in Sources */,
 				287186BA14027B7C000A3761 /* SCHStoryInteractionControllerPictureStarter.m in Sources */,
 				28B7FF061402865B009E26F5 /* SCHPictureStarterCanvas.m in Sources */,
 				28B7FF0A140286C6009E26F5 /* SCHPictureStarterColorChooser.m in Sources */,
 				28B7FF0E140286D6009E26F5 /* SCHPictureStarterSizeChooser.m in Sources */,
 				28B7FF1614028708009E26F5 /* SCHPictureStarterStampChooser.m in Sources */,
+				28B7FF2F1402AC3D009E26F5 /* SCHStoryInteractionControllerPictureStarterCustom.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -8261,14 +8260,13 @@
 				2860010913F9782C005C6AEB /* SCHStoryInteractionJigsawPieceView_iPhone.m in Sources */,
 				528C616013FAA57200D033F8 /* SCHHelpViewController.m in Sources */,
 				2842A77413FBE9B10049AEE1 /* SCHAnimatedLayer.m in Sources */,
-				28F8B3D813FEA38B00BE0B47 /* SCHStoryInteractionControllerPictureStarterCustom.m in Sources */,
 				C98648A11402686300B9DFE1 /* SCHReadingViewNavigationToolbar.m in Sources */,
-				28F8B3D813FEA38B00BE0B47 /* SCHStoryInteractionControllerPictureStarterCustom.m in Sources */,
 				287186BB14027B7C000A3761 /* SCHStoryInteractionControllerPictureStarter.m in Sources */,
 				28B7FF071402865B009E26F5 /* SCHPictureStarterCanvas.m in Sources */,
 				28B7FF0B140286C6009E26F5 /* SCHPictureStarterColorChooser.m in Sources */,
 				28B7FF0F140286D6009E26F5 /* SCHPictureStarterSizeChooser.m in Sources */,
 				28B7FF1714028708009E26F5 /* SCHPictureStarterStampChooser.m in Sources */,
+				28B7FF301402AC3E009E26F5 /* SCHStoryInteractionControllerPictureStarterCustom.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
