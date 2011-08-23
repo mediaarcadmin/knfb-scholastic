@@ -92,6 +92,7 @@
 @property (nonatomic, retain) NSMutableData *responseData;
 @property (nonatomic, retain) NSURLConnection *urlConnection;
 - (id)initWithBinding:(AuthenticateSoap11Binding *)aBinding delegate:(id<AuthenticateSoap11BindingResponseDelegate>)aDelegate;
+- (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error;
 @end
 @interface AuthenticateSoap11Binding_processRemote : AuthenticateSoap11BindingOperation {
 	AuthenticateSvc_processRemote * parameters;
