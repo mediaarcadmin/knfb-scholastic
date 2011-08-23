@@ -465,7 +465,8 @@ static void sortedHighlightRangePredicateInit() {
 
 - (CGRect) pageRect
 {
-    return eucBookView.contentRect;
+//    return eucBookView.contentRect;
+    return self.frame;
 }
 
 @end

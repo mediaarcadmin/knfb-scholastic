@@ -145,7 +145,8 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 - (void)setupOptionsViewForMode:(SCHReadingViewLayoutType)newLayoutType;
 - (void)setupOptionsViewForMode:(SCHReadingViewLayoutType)newLayoutType orientation:(UIInterfaceOrientation)orientation;
 
-- (void)positionCoverCornerViewForOrientation: (UIInterfaceOrientation) newOrientation;
+- (void)positionCoverCornerViewForOrientation:(UIInterfaceOrientation)newOrientation;
+- (void)dismissCoverCornerViewWithAnimation:(BOOL)animated;
 
 @end
 
@@ -610,7 +611,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 
 - (void)viewDidAppear:(BOOL)animated
 {
-    [self positionCoverCornerViewForOrientation:[[UIApplication sharedApplication] statusBarOrientation]];
+    [self positionCoverCornerViewForOrientation:self.interfaceOrientation];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -697,10 +698,8 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     self.currentlyRotating = YES;
     
     [self setupAssetsForOrientation:toInterfaceOrientation];
-    
-    if ([self.sampleSICoverMarker superview]) {
-        [self.sampleSICoverMarker removeFromSuperview];
-    }
+
+    [self dismissCoverCornerViewWithAnimation:NO];
     
     [self.readingView willRotateToInterfaceOrientation:toInterfaceOrientation duration:duration];
     [self.storyInteractionController willRotateToInterfaceOrientation:toInterfaceOrientation duration:duration];
@@ -1518,6 +1517,8 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
             
             self.customOptionsView.alpha = 0;
         }
+        
+        [self dismissCoverCornerViewWithAnimation:YES];
     } else {
         NSInteger optionsViewHeight = 110;
 
@@ -1849,15 +1850,8 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     // hide the book corner view if we need to
     if (self.coverMarkerShouldAppear) {
         self.coverMarkerShouldAppear = NO;
-        NSLog(@"Hiding cover marker.");
-        [UIView animateWithDuration:0.1 
-                         animations:^{
-             self.sampleSICoverMarker.alpha = 0;
-         }
-                         completion:^(BOOL finished) {
-             [self.sampleSICoverMarker removeFromSuperview];
-             self.sampleSICoverMarker = nil;
-         }];
+        
+        [self dismissCoverCornerViewWithAnimation:YES];
 
     }
     
@@ -2625,8 +2619,8 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
             CGRect frame = self.sampleSICoverMarker.frame;
             
             // offsets are to accommodate borders in the images
-            frame.origin.x = ceilf((bookCoverFrame.origin.x + bookCoverFrame.size.width) - frame.size.width) + 2;
-            frame.origin.y = ceilf(bookCoverFrame.origin.y) - 3;
+            frame.origin.x = ceilf((bookCoverFrame.origin.x + bookCoverFrame.size.width) - frame.size.width) + 8;
+            frame.origin.y = ceilf(bookCoverFrame.origin.y) - 10;
             
             self.sampleSICoverMarker.frame = frame;
             
@@ -2637,6 +2631,25 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
                 self.sampleSICoverMarker.alpha = 1;
             }];
         }
+    }
+}
+
+- (void)dismissCoverCornerViewWithAnimation:(BOOL)animated
+{
+    if (!animated) {
+        if ([self.sampleSICoverMarker superview]) {
+            [self.sampleSICoverMarker removeFromSuperview];
+            self.sampleSICoverMarker = nil;
+        }
+    } else {
+        [UIView animateWithDuration:0.1 
+                         animations:^{
+                             self.sampleSICoverMarker.alpha = 0;
+                         }
+                         completion:^(BOOL finished) {
+                             [self.sampleSICoverMarker removeFromSuperview];
+                             self.sampleSICoverMarker = nil;
+                         }];
     }
 }
 
