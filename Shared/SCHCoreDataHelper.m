@@ -26,10 +26,12 @@ static NSString * const kSCHCoreDataHelperStandardStoreName = @"Scholastic.sqlit
 static NSString * const kSCHCoreDataHelperDictionaryStoreName = @"Scholastic_Dictionary.sqlite";
 
 static NSString * const kSCHCoreDataHelperSampleStoreName = @"Scholastic_Sample.sqlite";
+static NSString * const kSCHCoreDataHelperLocalDebugSampleStoreName = @"Scholastic_LocalDebug_Sample.sqlite";
 
 @interface SCHCoreDataHelper ()
 
 @property (nonatomic, retain) NSManagedObjectContext *managedObjectContext;
+@property (nonatomic, retain) NSString *bundleSampleStoreName;
 
 - (BOOL)storeExists:(NSString *)storeName;
 - (void)addPersistentStore:(NSPersistentStoreCoordinator *)aPersistentStoreCoordinator 
@@ -46,6 +48,7 @@ static NSString * const kSCHCoreDataHelperSampleStoreName = @"Scholastic_Sample.
 @synthesize managedObjectContext;
 @synthesize managedObjectModel;
 @synthesize persistentStoreCoordinator;
+@synthesize bundleSampleStoreName;
 
 #pragma mark - Application lifecycle
 
@@ -76,7 +79,7 @@ static NSString * const kSCHCoreDataHelperSampleStoreName = @"Scholastic_Sample.
     if ([[NSUserDefaults standardUserDefaults] boolForKey:kSCHUserDefaultsHasEverLoggedIn] == NO &&
         [self storeExists:kSCHCoreDataHelperSampleStoreName] == NO) {
         dispatch_async(dispatch_get_main_queue(), ^{
-            NSString *sourceSampleStorePath = [[[NSBundle mainBundle] bundlePath] stringByAppendingPathComponent:kSCHCoreDataHelperSampleStoreName];
+            NSString *sourceSampleStorePath = [[[NSBundle mainBundle] bundlePath] stringByAppendingPathComponent:self.bundleSampleStoreName];
             NSURL *applicationSupportDocumentsDirectory = [[[NSFileManager defaultManager] URLsForDirectory:NSApplicationSupportDirectory inDomains:NSUserDomainMask] lastObject];
             NSURL *destinationSampleStoreURL = [applicationSupportDocumentsDirectory URLByAppendingPathComponent:kSCHCoreDataHelperSampleStoreName];    
             NSString *destinationSampleStorePath = [destinationSampleStoreURL path];
@@ -184,6 +187,9 @@ static NSString * const kSCHCoreDataHelperSampleStoreName = @"Scholastic_Sample.
     BOOL localDebugMode = NO;
 #if LOCALDEBUG    
     localDebugMode = YES;
+    self.bundleSampleStoreName = kSCHCoreDataHelperLocalDebugSampleStoreName;    
+#elsif
+    self.bundleSampleStoreName = kSCHCoreDataHelperSampleStoreName;
 #endif 
 
     // check for change between local debug mode and normal network mode	
@@ -203,18 +209,15 @@ static NSString * const kSCHCoreDataHelperSampleStoreName = @"Scholastic_Sample.
     if (appState != nil) {
         if (localDebugMode == YES) {
             appState.ShouldSync = [NSNumber numberWithBool:NO];
-            appState.ShouldDownloadBooks = [NSNumber numberWithBool:YES];
             appState.ShouldAuthenticate = [NSNumber numberWithBool:NO];
             appState.DataStoreType = [NSNumber numberWithDataStoreType:kSCHDataStoreTypesLocalDebug];    
             appState.LastAnnotationSync = nil;            
         } else if ([appState.DataStoreType isEqualToNumber:[NSNumber numberWithDataStoreType:kSCHDataStoreTypesSample]] == NO) {
             appState.ShouldSync = [NSNumber numberWithBool:YES];
-            appState.ShouldDownloadBooks = [NSNumber numberWithBool:YES];
             appState.ShouldAuthenticate = [NSNumber numberWithBool:YES];
             appState.DataStoreType = [NSNumber numberWithDataStoreType:kSCHDataStoreTypesStandard];    
             appState.LastAnnotationSync = nil;
         }
-        
     }
         
     NSLog(@"Currently in %@.", localDebugMode ? @"Local Debug Mode" : @"Network Mode");

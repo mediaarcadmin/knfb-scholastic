@@ -22,7 +22,6 @@
 
 - (SCHAppState *)appState;
 - (void)createAppStateIfNeeded;
-- (BOOL)canDownloadBooks;
 - (BOOL)canSync;
 - (BOOL)canAuthenticate;
 - (BOOL)isStandardStore;
