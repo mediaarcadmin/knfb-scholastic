@@ -8,7 +8,7 @@
 
 #import "SCHPictureStarterCanvas.h"
 #import "SCHPictureStarterCanvasDelegate.h"
-#import "SCHPictureStarterDrawingList.h"
+#import "SCHPictureStarterDrawingInstruction.h"
 
 @interface SCHPictureStarterCanvas ()
 
@@ -18,7 +18,10 @@
 @property (nonatomic, retain) CALayer *paintedLayer;
 @property (nonatomic, retain) CALayer *liveLayer;
 @property (nonatomic, assign) CGContextRef paintContext;
-@property (nonatomic, retain) SCHPictureStarterDrawingList *drawingList;
+@property (nonatomic, retain) id<SCHPictureStarterDrawingInstruction> currentInstruction;
+
+- (void)commitDrawingInstruction:(id<SCHPictureStarterDrawingInstruction>)instruction;
+- (void)createPaintContext;
 
 @end;
 
@@ -31,14 +34,14 @@
 @synthesize paintedLayer;
 @synthesize liveLayer;
 @synthesize paintContext;
-@synthesize drawingList;
+@synthesize currentInstruction;
 
 - (void)dealloc
 {
     [backgroundLayer release], backgroundLayer = nil;
     [paintedLayer release], paintedLayer = nil;
     [liveLayer release], liveLayer = nil;
-    [drawingList release], drawingList = nil;
+    [currentInstruction release], currentInstruction = nil;
     CGContextRelease(paintContext), paintContext = NULL;
     [super dealloc];
 }
@@ -60,7 +63,6 @@
         [pan release];
 
         self.zoomScale = 1.0f;
-        self.drawingList = [[[SCHPictureStarterDrawingList alloc] init] autorelease];
         
         self.backgroundLayer = [CALayer layer];
         self.backgroundLayer.frame = self.bounds;
@@ -75,15 +77,22 @@
         self.liveLayer = [CALayer layer];
         self.liveLayer.frame = self.bounds;
         self.liveLayer.position = self.backgroundLayer.position;
-        self.liveLayer.delegate = self.drawingList;
         [self.layer addSublayer:self.liveLayer];
-        
-        CGColorSpaceRef colorSpace = CGColorSpaceCreateDeviceRGB();
-        self.paintContext = CGBitmapContextCreate(NULL, CGRectGetWidth(self.bounds), CGRectGetHeight(self.bounds),
-                                                  8, 4*CGRectGetWidth(self.bounds), colorSpace, kCGImageAlphaPremultipliedLast);
-        CGContextSaveGState(self.paintContext);
+
+        [self createPaintContext];
     }
     return self;
+}
+
+- (void)createPaintContext
+{
+    CGColorSpaceRef colorSpace = CGColorSpaceCreateDeviceRGB();
+    self.paintContext = CGBitmapContextCreate(NULL, CGRectGetWidth(self.bounds), CGRectGetHeight(self.bounds),
+                                              8, 4*CGRectGetWidth(self.bounds), colorSpace, kCGImageAlphaPremultipliedLast);
+    CGColorSpaceRelease(colorSpace);
+    CGContextSaveGState(self.paintContext);
+    
+    self.paintedLayer.contents = nil;
 }
 
 - (void)setBackgroundImage:(UIImage *)backgroundImage
@@ -98,7 +107,12 @@
 
 - (void)handleTap:(UITapGestureRecognizer *)tap
 {
-    [self.delegate canvas:self didReceiveTapAtPoint:[tap locationInView:self]];
+    CGPoint point = [tap locationInView:self];
+    point.y = CGRectGetHeight(self.bounds) - point.y;
+    
+    id<SCHPictureStarterDrawingInstruction> di = [self.delegate drawingInstruction];
+    [di updatePosition:point];
+    [self commitDrawingInstruction:di];
 }
 
 - (void)handlePan:(UIPanGestureRecognizer *)pan
@@ -106,21 +120,45 @@
     if ([pan numberOfTouches] != 1) {
         return;
     }
+    
     CGPoint point = [pan locationInView:self];
+    point.y = CGRectGetHeight(self.bounds) - point.y;
+   
     switch ([pan state]) {
-        case UIGestureRecognizerStateBegan:
-            [self.delegate canvas:self didBeginDragAtPoint:point];
+        case UIGestureRecognizerStateBegan: {
+            if (self.currentInstruction != nil) {
+                [self commitDrawingInstruction:self.currentInstruction];
+            }
+            self.currentInstruction = [self.delegate drawingInstruction];
+            [self.currentInstruction updatePosition:point];
+            self.liveLayer.delegate = self.currentInstruction;
             break;
-        case UIGestureRecognizerStateChanged:
-            [self.delegate canvas:self didMoveDragAtPoint:point];
+        }
+        case UIGestureRecognizerStateChanged: {
+            [self.currentInstruction updatePosition:point];
+            if ([self.currentInstruction shouldCommitInstantly]) {
+                [self commitDrawingInstruction:self.currentInstruction];
+            }
             break;
-        case UIGestureRecognizerStateEnded:
-        case UIGestureRecognizerStateCancelled:
-            [self.delegate canvas:self didEndDragAtPoint:point];
+        }
+        case UIGestureRecognizerStateFailed:
+        case UIGestureRecognizerStateCancelled: {
+            self.liveLayer.delegate = nil;
+            self.currentInstruction = nil;
             break;
+        }
+        case UIGestureRecognizerStateEnded: {
+            [self.currentInstruction updatePosition:point];
+            [self commitDrawingInstruction:self.currentInstruction];
+            self.liveLayer.delegate = nil;
+            self.currentInstruction = nil;
+            break;
+        }
         default:
             break;
     }
+
+    [self.liveLayer setNeedsDisplay];
 }
 
 - (void)handlePinch:(UIPinchGestureRecognizer *)pinch
@@ -152,47 +190,28 @@
 
 #pragma mark - Painting
 
-- (void)setNeedsCommit
-{
-    [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(commit) object:nil];
-    [self performSelector:@selector(commit) withObject:nil afterDelay:1.0];
-    [self.liveLayer setNeedsDisplay];
-}
-
-- (void)paintAtPoint:(CGPoint)point color:(UIColor *)color size:(NSInteger)size
-{
-    point.y = CGRectGetHeight(self.bounds)-point.y;
-    [self.drawingList addPoint:point color:color size:size];
-    [self setNeedsCommit];
-}
-
-- (void)paintLineFromPoint:(CGPoint)start toPoint:(CGPoint)end color:(UIColor *)color size:(NSInteger)size
-{
-    CGFloat height = CGRectGetHeight(self.bounds);
-    start.y = height-start.y;
-    end.y = height-end.y;
-    
-    [self.drawingList addLineFrom:start to:end color:color size:size];
-    [self setNeedsCommit];
-}
-
-- (void)addSticker:(UIImage *)sticker atPoint:(CGPoint)point
-{
-    point.y = CGRectGetHeight(self.bounds)-point.y;
-    [self.drawingList addSticker:sticker atPoint:point];
-    [self setNeedsCommit];
-}
-
-- (void)commit
+- (void)commitDrawingInstruction:(id<SCHPictureStarterDrawingInstruction>)instruction
 {
     [CATransaction begin];
     [CATransaction setDisableActions:YES];
     
-    [self.drawingList drawInContext:self.paintContext];
+    [instruction drawLayer:nil inContext:self.paintContext];
+
     CGImageRef image = CGBitmapContextCreateImage(self.paintContext);
     self.paintedLayer.contents = (id)image;
     CGImageRelease(image);
-    [self.drawingList clear];
+    
+    [CATransaction commit];
+}
+
+- (void)clear
+{
+    [CATransaction begin];
+    [CATransaction setDisableActions:YES];
+    
+    self.liveLayer.delegate = nil;
+    self.currentInstruction = nil;
+    [self createPaintContext];
     [self.liveLayer setNeedsDisplay];
     
     [CATransaction commit];

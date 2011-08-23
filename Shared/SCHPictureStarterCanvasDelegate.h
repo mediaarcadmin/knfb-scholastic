@@ -9,13 +9,11 @@
 #import <Foundation/Foundation.h>
 
 @class SCHPictureStarterCanvas;
+@protocol SCHPictureStarterDrawingInstruction;
 
 @protocol SCHPictureStarterCanvasDelegate <NSObject>
 
 @required
-- (void)canvas:(SCHPictureStarterCanvas *)canvas didReceiveTapAtPoint:(CGPoint)point;
-- (void)canvas:(SCHPictureStarterCanvas *)canvas didBeginDragAtPoint:(CGPoint)point;
-- (void)canvas:(SCHPictureStarterCanvas *)canvas didMoveDragAtPoint:(CGPoint)point;
-- (void)canvas:(SCHPictureStarterCanvas *)canvas didEndDragAtPoint:(CGPoint)point;
+- (id<SCHPictureStarterDrawingInstruction>)drawingInstruction;
 
 @end
