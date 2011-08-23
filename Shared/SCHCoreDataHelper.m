@@ -188,7 +188,7 @@ static NSString * const kSCHCoreDataHelperLocalDebugSampleStoreName = @"Scholast
 #if LOCALDEBUG    
     localDebugMode = YES;
     self.bundleSampleStoreName = kSCHCoreDataHelperLocalDebugSampleStoreName;    
-#elsif
+#elif
     self.bundleSampleStoreName = kSCHCoreDataHelperSampleStoreName;
 #endif 
 
