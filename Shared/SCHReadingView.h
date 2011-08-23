@@ -128,5 +128,6 @@ managedObjectContext:(NSManagedObjectContext *)managedObjectContext
 - (UIImage *)pageSnapshot;
 - (void)dismissReadingViewAdornments;
 
+- (CGRect) pageRect;
 
 @end

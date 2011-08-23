@@ -463,4 +463,9 @@ static void sortedHighlightRangePredicateInit() {
     return [range autorelease];
 }
 
+- (CGRect) pageRect
+{
+    return eucBookView.contentRect;
+}
+
 @end

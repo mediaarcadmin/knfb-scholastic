@@ -1024,4 +1024,9 @@ CGAffineTransform transformRectToFitRect(CGRect sourceRect, CGRect targetRect, B
     return [self pageTurningViewTransformForPageAtIndex:pageIndex offsetOrigin:YES applyZoom:YES];
 }
 
+- (CGRect)pageRect
+{
+    return self.pageTurningView.rightPageFrame;
+}
+
 @end
