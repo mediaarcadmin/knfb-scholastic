@@ -319,10 +319,6 @@ static const CGFloat kContentHeightLandscape = 380;
     NSAssert(self.actionBlock != nil || self.retainLoopSafeActionBlock != nil, @"Action block must be set!");
 
     [self.view endEditing:YES];
-
-    if (self.controllerType == kSCHControllerLoginView) {
-        [self startShowingProgress];
-    }
     
     if (self.actionBlock) {
         self.actionBlock();

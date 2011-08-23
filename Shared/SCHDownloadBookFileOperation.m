@@ -17,6 +17,7 @@
 @property (nonatomic, copy) NSString *localPath;
 @property (nonatomic, assign) unsigned long bookFileSize;
 
+- (NSString *)fullPathToBundledFile:(NSString *)fileName;
 - (void)completedDownload;
 
 @end
@@ -71,8 +72,8 @@
         }
         
         if ([[bookFileURL substringToIndex:7] length] >= 7 &&
-            [[bookFileURL substringToIndex:7] isEqualToString:@"file://"] == YES) {
-            [[NSFileManager defaultManager] copyItemAtPath:[bookFileURL substringFromIndex:7]
+            [[bookFileURL substringToIndex:7] isEqualToString:@"http://"] == NO) {
+            [[NSFileManager defaultManager] copyItemAtPath:[self fullPathToBundledFile:bookFileURL]
                                                     toPath:self.localPath 
                                                      error:&error];        
             if (error != nil) {
@@ -102,8 +103,8 @@
 		self.localPath = [cacheDir stringByAppendingPathComponent:[NSString stringWithFormat:@"%@.png", contentIdentifier]];
 		
         if ([[coverURL substringToIndex:7] length] >= 7 &&
-            [[coverURL substringToIndex:7] isEqualToString:@"file://"] == YES) {
-            [[NSFileManager defaultManager] copyItemAtPath:[coverURL substringFromIndex:6]
+            [[coverURL substringToIndex:7] isEqualToString:@"http://"] == NO) {
+            [[NSFileManager defaultManager] copyItemAtPath:[self fullPathToBundledFile:coverURL]
                                                     toPath:self.localPath 
                                                      error:&error];        
             if (error != nil) {
@@ -171,6 +172,17 @@
     
 	[self setIsProcessing:NO];
 	return;
+}
+
+- (NSString *)fullPathToBundledFile:(NSString *)fileName
+{
+    NSString *ret = nil;
+    
+    if (fileName != nil) {
+        ret = [[[NSBundle mainBundle] bundlePath] stringByAppendingPathComponent:fileName];
+    }
+    
+    return(ret);
 }
 
 #pragma mark -
