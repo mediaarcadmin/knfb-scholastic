@@ -9,6 +9,10 @@
 #import "SCHPictureStarterCanvas.h"
 #import "SCHPictureStarterCanvasDelegate.h"
 #import "SCHPictureStarterDrawingInstruction.h"
+#import "SCHGeometry.h"
+#import "SCHGestureSmoother.h"
+
+#define kMinimumPinchOffset 20
 
 @interface SCHPictureStarterCanvas ()
 
@@ -19,9 +23,12 @@
 @property (nonatomic, retain) CALayer *liveLayer;
 @property (nonatomic, assign) CGContextRef paintContext;
 @property (nonatomic, retain) id<SCHPictureStarterDrawingInstruction> currentInstruction;
+@property (nonatomic, retain) SCHGestureSmoother *pinchSmoother;
 
+- (void)cancelCurrentDrawingInstruction;
 - (void)commitDrawingInstruction:(id<SCHPictureStarterDrawingInstruction>)instruction;
 - (void)createPaintContext;
+- (CGFloat)updateZoom:(CGFloat)scale point:(CGPoint)point;
 
 @end;
 
@@ -35,6 +42,7 @@
 @synthesize liveLayer;
 @synthesize paintContext;
 @synthesize currentInstruction;
+@synthesize pinchSmoother;
 
 - (void)dealloc
 {
@@ -42,6 +50,7 @@
     [paintedLayer release], paintedLayer = nil;
     [liveLayer release], liveLayer = nil;
     [currentInstruction release], currentInstruction = nil;
+    [pinchSmoother release], pinchSmoother = nil;
     CGContextRelease(paintContext), paintContext = NULL;
     [super dealloc];
 }
@@ -54,14 +63,6 @@
         [self addGestureRecognizer:pinch];
         [pinch release];
         
-        UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTap:)];
-        [self addGestureRecognizer:tap];
-        [tap release];
-        
-        UIPanGestureRecognizer *pan = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(handlePan:)];
-        [self addGestureRecognizer:pan];
-        [pan release];
-
         self.zoomScale = 1.0f;
         
         self.backgroundLayer = [CALayer layer];
@@ -105,87 +106,109 @@
 
 #pragma mark - Gesture recognition
 
-- (void)handleTap:(UITapGestureRecognizer *)tap
+- (CGPoint)touchPoint:(NSSet *)touches
 {
-    CGPoint point = [tap locationInView:self];
-    point.y = CGRectGetHeight(self.bounds) - point.y;
-    
-    id<SCHPictureStarterDrawingInstruction> di = [self.delegate drawingInstruction];
-    [di updatePosition:point];
-    [self commitDrawingInstruction:di];
+    CGPoint p = [[touches anyObject] locationInView:self];
+    return CGPointMake(p.x, CGRectGetHeight(self.bounds)-p.y);
 }
 
-- (void)handlePan:(UIPanGestureRecognizer *)pan
+- (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
 {
-    if ([pan numberOfTouches] != 1) {
-        return;
-    }
+    NSLog(@"began");
     
-    CGPoint point = [pan locationInView:self];
-    point.y = CGRectGetHeight(self.bounds) - point.y;
-   
-    switch ([pan state]) {
-        case UIGestureRecognizerStateBegan: {
-            if (self.currentInstruction != nil) {
-                [self commitDrawingInstruction:self.currentInstruction];
-            }
-            self.currentInstruction = [self.delegate drawingInstruction];
-            [self.currentInstruction updatePosition:point];
-            self.liveLayer.delegate = self.currentInstruction;
-            break;
-        }
-        case UIGestureRecognizerStateChanged: {
-            [self.currentInstruction updatePosition:point];
-            if ([self.currentInstruction shouldCommitInstantly]) {
-                [self commitDrawingInstruction:self.currentInstruction];
-            }
-            break;
-        }
-        case UIGestureRecognizerStateFailed:
-        case UIGestureRecognizerStateCancelled: {
-            self.liveLayer.delegate = nil;
-            self.currentInstruction = nil;
-            break;
-        }
-        case UIGestureRecognizerStateEnded: {
-            [self.currentInstruction updatePosition:point];
-            [self commitDrawingInstruction:self.currentInstruction];
-            self.liveLayer.delegate = nil;
-            self.currentInstruction = nil;
-            break;
-        }
-        default:
-            break;
+    if ([touches count] == 1) {
+        // single touch = create new drawing instruction
+        self.currentInstruction = [self.delegate drawingInstruction];
+        [self.currentInstruction setScale:self.zoomScale];
+        [self.currentInstruction updatePosition:[self touchPoint:touches]];
+        self.liveLayer.delegate = self.currentInstruction;
+        [self.liveLayer setNeedsDisplay];
+    } else {
+        [self cancelCurrentDrawingInstruction];
     }
+}
 
-    [self.liveLayer setNeedsDisplay];
+- (void)touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event
+{
+    if ([touches count] == 1 && self.currentInstruction) {
+        [self.currentInstruction updatePosition:[self touchPoint:touches]];
+        if ([self.currentInstruction shouldCommitInstantly]) {
+            [self commitDrawingInstruction:self.currentInstruction];
+        }
+        [self.liveLayer setNeedsDisplay];
+    } else {
+        [self cancelCurrentDrawingInstruction];
+    }
+}
+
+- (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event
+{
+    NSLog(@"ended");
+    
+    if (self.currentInstruction) {
+        [self.currentInstruction updatePosition:[self touchPoint:touches]];
+        [self commitDrawingInstruction:self.currentInstruction];
+        [self cancelCurrentDrawingInstruction];
+        [self.liveLayer setNeedsDisplay];
+    }
+}
+
+- (void)touchesCancelled:(NSSet *)touches withEvent:(UIEvent *)event
+{
+    [self cancelCurrentDrawingInstruction];
+}
+
+- (void)cancelCurrentDrawingInstruction
+{
+    if (self.currentInstruction) {
+        self.liveLayer.delegate = nil;
+        self.currentInstruction = nil;
+        [self.liveLayer setNeedsDisplay];
+    }
 }
 
 - (void)handlePinch:(UIPinchGestureRecognizer *)pinch
 {
-    UIGestureRecognizerState state = [pinch state];
-    if (state == UIGestureRecognizerStateBegan && self.zoomScale == 1.0f) {
-        self.pinchPoint = [pinch locationInView:self];
-        NSLog(@"start pinch at %@", NSStringFromCGPoint(self.pinchPoint));
+    switch ([pinch state]) {
+        case UIGestureRecognizerStateBegan:
+            self.pinchPoint = [pinch locationInView:self];
+            self.pinchSmoother = [SCHGestureSmoother smoother];
+            break;
+        case UIGestureRecognizerStateChanged:
+            [self.pinchSmoother addPoint:[pinch locationInView:self]];
+            [self updateZoom:pinch.scale point:[self.pinchSmoother smoothedPoint]];
+            break;
+        case UIGestureRecognizerStateEnded:
+            [self.pinchSmoother addPoint:[pinch locationInView:self]];
+            self.zoomScale = [self updateZoom:pinch.scale point:[self.pinchSmoother smoothedPoint]];
+            self.pinchSmoother = nil;
+            break;
+        case UIGestureRecognizerStateCancelled:
+        case UIGestureRecognizerStateFailed:
+            [self updateZoom:self.zoomScale point:self.pinchPoint];
+            self.pinchSmoother = nil;
+            break;
+        default:
+            break;
     }
-    CGFloat scale = self.zoomScale * [pinch scale];
-    if (scale > 1.0f) {
-        CGAffineTransform t1 = CGAffineTransformMakeTranslation(-self.pinchPoint.x, -self.pinchPoint.y);
-        CGAffineTransform t2 = CGAffineTransformMakeScale(scale, scale);
-        CGAffineTransform t3 = CGAffineTransformMakeTranslation(self.pinchPoint.x, self.pinchPoint.y);
-        self.transform = CGAffineTransformConcat(CGAffineTransformConcat(t1, t2), t3);
-        NSLog(@"transform = %@", NSStringFromCGAffineTransform(self.transform));
-    } else {
-        self.transform = CGAffineTransformIdentity;
+}
+
+#pragma mark - Zoom
+
+- (CGFloat)updateZoom:(CGFloat)scale point:(CGPoint)point
+{
+    scale = MIN(10.0f, self.zoomScale*scale);
+    if (scale < 1.0f) {
         scale = 1.0f;
+        point = self.pinchPoint;
     }
     
-    if (state == UIGestureRecognizerStateEnded || state == UIGestureRecognizerStateCancelled) {
-        self.zoomScale = scale;
-        CGContextRestoreGState(self.paintContext);
-        CGContextSaveGState(self.paintContext);
-        CGContextScaleCTM(self.paintContext, 1.0f/scale, 1.0f/scale);
-    }
+    CGAffineTransform t1 = CGAffineTransformMakeTranslation(-self.pinchPoint.x, -self.pinchPoint.y);
+    CGAffineTransform t2 = CGAffineTransformMakeScale(scale, scale);
+    CGAffineTransform t3 = CGAffineTransformMakeTranslation(point.x*scale, point.y*scale);
+    self.transform = CGAffineTransformConcat(CGAffineTransformConcat(t1, t2), t3);
+    
+    return scale;
 }
 
 #pragma mark - Painting
