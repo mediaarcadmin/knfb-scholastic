@@ -15,7 +15,7 @@
 #import "SCHFlowView.h"
 #import "SCHLayoutView.h"
 #import "SCHXPSProvider.h"
-#import "SCHCustomNavigationBar.h"
+//#import "SCHCustomNavigationBar.h"
 #import "SCHCustomToolbar.h"
 #import "SCHSyncManager.h"
 #import "SCHProfileItem.h"
@@ -61,6 +61,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 
 // the page view, either fixed or flow
 @property (nonatomic, retain) SCHReadingView *readingView;
+@property (nonatomic, retain) SCHReadingViewNavigationToolbar *navigationToolbar;
 
 // toolbars/nav bar visible/not visible
 @property (nonatomic, assign) BOOL toolbarsVisible;
@@ -156,6 +157,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 @synthesize bookStatistics;
 @synthesize bookStatisticsReadingStartTime;
 @synthesize readingView;
+@synthesize navigationToolbar;
 @synthesize youngerMode;
 @synthesize toolbarsVisible;
 @synthesize suppressToolbarToggle;
@@ -287,6 +289,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     [popoverNavigationTitleLabel release], popoverNavigationTitleLabel = nil;
     
     [readingView release], readingView = nil;
+    [navigationToolbar release], navigationToolbar = nil;
 }
 
 - (void)viewDidUnload 
@@ -438,11 +441,10 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 	
 	self.toolbarsVisible = YES;
     self.pauseAudioOnNextPageTurn = YES;
-	
-    SCHAppBook *book = [[SCHBookManager sharedBookManager] bookWithIdentifier:self.bookIdentifier inManagedObjectContext:self.managedObjectContext];
     
     self.wantsFullScreenLayout = YES;
-    self.navigationController.navigationBar.barStyle = UIBarStyleBlackTranslucent;
+    //self.navigationController.navigationBar.barStyle = UIBarStyleBlackTranslucent;
+    self.navigationController.navigationBarHidden = YES;
     
     [self.view addSubview:self.readingView];
     [self.view sendSubviewToBack:self.readingView];
@@ -503,8 +505,9 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
                                                             repeats:NO];
     [self startFadeTimer];
     
+#if 0
     CGFloat containerHeight = CGRectGetHeight(self.navigationController.navigationBar.bounds);
-    
+        
     CGRect leftBarButtonItemFrame = self.leftBarButtonItemContainer.frame;
     leftBarButtonItemFrame.size.height = containerHeight;
     self.leftBarButtonItemContainer.frame = leftBarButtonItemFrame;
@@ -536,13 +539,46 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     self.titleLabel.frame = r;
     self.titleLabel.text = book.Title;    
     self.navigationItem.titleView = self.titleLabel;
+#endif
     
     if (self.youngerMode) {
         [self.olderBottomToolbar removeFromSuperview];
     }
     
+    
+    BOOL pictureStarter = YES; // FIXME: read from book
+    SCHReadingViewNavigationToolbarStyle style = 0;
+    
+    if (self.youngerMode) {
+        if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
+            if (pictureStarter) {
+                style = kSCHReadingViewNavigationToolbarStyleYoungerPictureStarterPhone;
+            } else {
+                style = kSCHReadingViewNavigationToolbarStyleYoungerPhone;
+            }
+        } else {
+            if (pictureStarter) {
+                style = kSCHReadingViewNavigationToolbarStyleYoungerPictureStarterPad; 
+            } else {
+                style = kSCHReadingViewNavigationToolbarStyleYoungerPad; 
+            }
+        }
+    } else {
+        if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
+            style = kSCHReadingViewNavigationToolbarStyleOlderPhone; 
+        } else {
+            style = kSCHReadingViewNavigationToolbarStyleOlderPad;
+        }
+    }
+    
+    navigationToolbar = [[SCHReadingViewNavigationToolbar alloc] initWithStyle:style orientation:self.interfaceOrientation];
+    SCHAppBook *book = [[SCHBookManager sharedBookManager] bookWithIdentifier:self.bookIdentifier inManagedObjectContext:self.managedObjectContext];
+    [navigationToolbar setTitle:book.Title];
+    [navigationToolbar setDelegate:self];
+    [self.view addSubview:navigationToolbar];
+    
     // Set non-rotation specific graphics
-    [self.topShadow    setImage:[UIImage imageNamed:@"reading-view-top-shadow.png"]];
+    //[self.topShadow    setImage:[UIImage imageNamed:@"reading-view-top-shadow.png"]];
     [self.bottomShadow setImage:[UIImage imageNamed:@"reading-view-bottom-shadow.png"]];
     [self.scrubberToolbar setBackgroundImage:[UIImage imageNamed:@"reading-view-scrubber-bar.png"]];
     [self.olderBottomToolbar setBackgroundImage:[UIImage imageNamed:@"reading-view-bottom-bar.png"]];        
@@ -608,8 +644,11 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 
 #pragma mark - Rotation
 
--(void)setupAssetsForOrientation:(UIInterfaceOrientation)orientation
+- (void)setupAssetsForOrientation:(UIInterfaceOrientation)orientation
 {    
+    
+    [self.navigationToolbar setOrientation:orientation];
+    
     // toolbars
     if (UIInterfaceOrientationIsPortrait(orientation)) {
         [self.backButton setImage:[UIImage imageNamed:@"icon-books.png"] forState:UIControlStateNormal];
@@ -619,7 +658,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
             [audioButton setImage:[UIImage imageNamed:@"icon-play-active.png"] forState:UIControlStateSelected];
         }
         
-        [(SCHCustomNavigationBar *)self.navigationController.navigationBar setBackgroundImage:[UIImage imageNamed:@"reading-view-portrait-top-bar.png"]];
+//        [(SCHCustomNavigationBar *)self.navigationController.navigationBar setBackgroundImage:[UIImage imageNamed:@"reading-view-portrait-top-bar.png"]];
     } else {
         if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
             [self.backButton setImage:[UIImage imageNamed:@"icon-books-landscape.png"] forState:UIControlStateNormal];
@@ -632,20 +671,20 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
             [audioButton setImage:[UIImage imageNamed:@"icon-play-landscape-active.png"] forState:UIControlStateSelected];
         }
         
-        if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
-            [(SCHCustomNavigationBar *)self.navigationController.navigationBar setBackgroundImage:[UIImage imageNamed:@"reading-view-landscape-top-bar.png"]];
-        } else {
-            [(SCHCustomNavigationBar *)self.navigationController.navigationBar setBackgroundImage:[UIImage imageNamed:@"reading-view-portrait-top-bar.png"]];
-        }
+//        if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
+//            [(SCHCustomNavigationBar *)self.navigationController.navigationBar setBackgroundImage:[UIImage imageNamed:@"reading-view-landscape-top-bar.png"]];
+//        } else {
+//            [(SCHCustomNavigationBar *)self.navigationController.navigationBar setBackgroundImage:[UIImage imageNamed:@"reading-view-portrait-top-bar.png"]];
+//        }
     }    
     
     // shadows
-    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
-        CGRect topShadowFrame = self.topShadow.frame;
-        topShadowFrame.origin.y = CGRectGetMinY(self.navigationController.navigationBar.frame) + 
-        [(SCHCustomNavigationBar *)self.navigationController.navigationBar backgroundImage].size.height;
-        self.topShadow.frame = topShadowFrame;
-    }
+//    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
+//        CGRect topShadowFrame = self.topShadow.frame;
+//        topShadowFrame.origin.y = CGRectGetMinY(self.navigationController.navigationBar.frame) + 
+//        [(SCHCustomNavigationBar *)self.navigationController.navigationBar backgroundImage].size.height;
+//        self.topShadow.frame = topShadowFrame;
+//    }
     
     // options buttons
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
@@ -762,7 +801,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
                 [self.modalViewController dismissModalViewControllerAnimated:NO];
             }              
             [self.storyInteractionController removeFromHostView];
-            [self popViewController:self];
+            [self performSelector:@selector(backAction:) withObject:nil];
             break;
         }
     }
@@ -839,17 +878,6 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 #pragma mark -
 #pragma mark Button Actions
 
-- (IBAction)popViewController:(id)sender
-{
-    [self updateBookState];
-    [self.xpsProvider reportReadingIfRequired];
-    [self.audioBookPlayer cleanAudio];
-    
-    [self cancelInitialTimer];
-    [self setToolbarVisibility:YES animated:NO];
-	[self.navigationController popViewControllerAnimated:YES];
-}
-
 - (IBAction)toolbarButtonPressed:(id)sender
 {
     [self cancelInitialTimer];
@@ -920,9 +948,21 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     }    
 }
 
-- (IBAction)helpAction:(id)sender
+#pragma mark - SCHReadingViewNavigationToolbarDelegate
+
+- (void)backAction:(id)sender
 {
-    NSLog(@"Help action");
+    [self updateBookState];
+    [self.xpsProvider reportReadingIfRequired];
+    [self.audioBookPlayer cleanAudio];
+    
+    [self cancelInitialTimer];
+    [self setToolbarVisibility:YES animated:NO];
+	[self.navigationController popViewControllerAnimated:YES];
+}
+
+- (void)helpAction:(id)sender
+{
 
     if (self.optionsView.superview) {
         [self.optionsView removeFromSuperview];
@@ -1970,7 +2010,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     if ((self.layoutType == SCHReadingViewLayoutTypeFixed) && imageSize.width > 0 && imageSize.height > 0) {
         
         // the maximum space available for an image
-        int maxImageHeight = (self.view.frame.size.height - scrubberToolbar.frame.size.height - self.navigationController.navigationBar.frame.size.height - kReadingViewStandardScrubHeight - 60);
+        int maxImageHeight = (self.view.frame.size.height - scrubberToolbar.frame.size.height - self.navigationToolbar.frame.size.height - kReadingViewStandardScrubHeight - 60);
         
         // if the double toolbar is visible, reduce available space
         if ([self.olderBottomToolbar superview]) {
@@ -2017,7 +2057,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
         scrubFrame.size.height = kReadingViewStandardScrubHeight;
     }
     
-    float topLimit = statusBarHeight + self.navigationController.navigationBar.frame.size.height;
+    float topLimit = statusBarHeight + self.navigationToolbar.frame.size.height;
     float bottomLimit = self.view.frame.size.height - scrubberToolbar.frame.size.height;
     
     if ([self.olderBottomToolbar superview]) {
@@ -2030,9 +2070,6 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     
     float topPoint = ((bottomLimit - topLimit) / 2) - (scrubFrame.size.height / 2);
     
-    //NSLog(@"Top limit: %f, bottom limit: %f", topLimit, bottomLimit);
-    
-//    scrubFrame.origin.y = statusBarHeight + self.navigationController.navigationBar.frame.size.height + 10;
     scrubFrame.origin.y = floorf(topLimit + topPoint);
     
     self.scrubberInfoView.frame = scrubFrame;
@@ -2191,11 +2228,11 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 	self.toolbarsVisible = visibility;
 
     if (!self.currentlyRotating) {
-        CGRect navRect = self.navigationController.navigationBar.frame;
-        if (navRect.origin.y == 0) {
-            navRect.origin.y = 20;
-            self.navigationController.navigationBar.frame = navRect;
-        }
+//        CGRect navRect = self.navigationController.navigationBar.frame;
+//        if (navRect.origin.y == 0) {
+//            navRect.origin.y = 20;
+//            self.navigationController.navigationBar.frame = navRect;
+//        }
     }
     
     if (self.toolbarsVisible) {
@@ -2217,7 +2254,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 	}
 	
 	if (self.toolbarsVisible) {
-        [self.navigationController.navigationBar setAlpha:1.0f];
+        [self.navigationToolbar setAlpha:1.0f];
         [self.scrubberToolbar setAlpha:1.0f];
         if (!self.youngerMode) {
             [self.olderBottomToolbar setAlpha:1.0f];
@@ -2228,7 +2265,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
         [self.topShadow setAlpha:1.0f];   
         [self.bottomShadow setAlpha:1.0f];  
 	} else {
-        [self.navigationController.navigationBar setAlpha:0.0f];
+        [self.navigationToolbar setAlpha:0.0f];
         [self.scrubberToolbar setAlpha:0.0f];
         if (!self.youngerMode) {
             [self.olderBottomToolbar setAlpha:0.0f];

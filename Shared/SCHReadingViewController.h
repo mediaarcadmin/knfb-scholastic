@@ -15,6 +15,7 @@
 #import "SCHReadingNoteView.h"
 #import "SCHStoryInteractionControllerDelegate.h"
 #import <AVFoundation/AVAudioPlayer.h>
+#import "SCHReadingViewNavigationToolbar.h"
 
 extern NSString * const kSCHReadingViewErrorDomain;
 
@@ -45,7 +46,7 @@ typedef enum
 
 @interface SCHReadingViewController : UIViewController <SCHReadingViewDelegate, SCHReadingNotesListControllerDelegate, 
 SCHReadingNoteViewDelegate, SCHReadingInteractionsListControllerDelegate, SCHAudioBookPlayerDelegate, UIPopoverControllerDelegate,
-SCHStoryInteractionControllerDelegate> 
+SCHStoryInteractionControllerDelegate, SCHReadingViewNavigationToolbarDelegate> 
 {}
 UIImageView *optionsPhoneTopBackground;
 
@@ -104,9 +105,7 @@ managedObjectContext:(NSManagedObjectContext *)moc
 - (IBAction)highlightsAction:(id)sender;
 - (IBAction)notesAction:(id)sender;
 - (IBAction)settingsAction:(UIButton *)sender;
-- (IBAction)popViewController:(id)sender;
 - (IBAction)audioPlayAction:(id)sender;
-- (IBAction)helpAction:(id)sender;
 - (IBAction)paperTypeSegmentChanged:(UISegmentedControl *)segControl;
 - (IBAction)pictureStarterPressed:(id)sender;
 
