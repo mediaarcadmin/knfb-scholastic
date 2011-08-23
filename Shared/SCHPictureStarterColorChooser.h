@@ -10,6 +10,7 @@
 
 @interface SCHPictureStarterColorChooser : UIControl
 
+@property (nonatomic, assign) NSInteger selectedColorIndex;
 @property (nonatomic, readonly) UIColor *selectedColor;
 
 - (void)clearSelection;

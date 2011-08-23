@@ -18,6 +18,8 @@
 @interface SCHStoryInteractionControllerPictureStarter ()
 
 @property (nonatomic, retain) SCHPictureStarterStickers *stickers;
+@property (nonatomic, assign) NSInteger lastSelectedColour;
+@property (nonatomic, assign) NSInteger lastSelectedSize;
 
 - (void)setupDrawingScreen;
 
@@ -33,6 +35,8 @@
 @synthesize clearButton;
 @synthesize saveButton;
 @synthesize stickers;
+@synthesize lastSelectedColour;
+@synthesize lastSelectedSize;
 
 - (void)dealloc
 {
@@ -120,6 +124,9 @@
         [chooser setStickerDataSource:self.stickers];
         [chooser setStickerDelegate:self];
     }
+    
+    self.lastSelectedColour = NSNotFound;
+    self.lastSelectedSize = NSNotFound;
 }
 
 #pragma mark - Sticker chooser delegate
@@ -153,12 +160,20 @@
 
 - (void)colorSelected:(id)sender
 {
-    [self.stickerChoosers makeObjectsPerformSelector:@selector(clearSelection)];
+    if (self.colorChooser.selectedColor != nil) {
+        [self.stickerChoosers makeObjectsPerformSelector:@selector(clearSelection)];
+        self.lastSelectedColour = self.colorChooser.selectedColorIndex;
+        self.sizeChooser.selectedSize = self.lastSelectedSize;
+    }
 }
 
 - (void)sizeSelected:(id)sender
 {
-    [self.stickerChoosers makeObjectsPerformSelector:@selector(clearSelection)];
+    if (self.sizeChooser.selectedSize != NSNotFound) {
+        [self.stickerChoosers makeObjectsPerformSelector:@selector(clearSelection)];
+        self.lastSelectedSize = self.sizeChooser.selectedSize;
+        self.colorChooser.selectedColorIndex = self.lastSelectedColour;
+    }
 }
 
 - (void)eraserSelected:(id)sender

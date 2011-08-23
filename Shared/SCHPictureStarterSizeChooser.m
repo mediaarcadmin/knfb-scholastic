@@ -118,4 +118,16 @@ enum {
     }
 }
 
+- (void)setSelectedSize:(NSInteger)newSize
+{
+    NSInteger index = 0;
+    for (NSNumber *size in self.sizes) {
+        if ([size integerValue] == newSize) {
+            self.selectedSizeIndex = index;
+            break;
+        }
+        index++;
+    }
+}
+
 @end
