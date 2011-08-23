@@ -15,10 +15,7 @@
 @property (nonatomic, assign) id<SCHPictureStarterCanvasDelegate> delegate;
 
 - (void)setBackgroundImage:(UIImage *)backgroundImage;
-- (void)paintAtPoint:(CGPoint)point color:(UIColor *)color size:(NSInteger)size;
-- (void)paintLineFromPoint:(CGPoint)start toPoint:(CGPoint)end color:(UIColor *)color size:(NSInteger)size;
-- (void)addSticker:(UIImage *)sticker atPoint:(CGPoint)point;
+- (void)clear;
 
-- (void)commit;
 
 @end

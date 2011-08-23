@@ -13,6 +13,7 @@
 @property (nonatomic, assign) NSInteger selectedColorIndex;
 @property (nonatomic, readonly) UIColor *selectedColor;
 
+- (BOOL)selectionIsEraser;
 - (void)clearSelection;
 
 @end

@@ -39,7 +39,7 @@ enum {
     self = [super initWithCoder:aDecoder];
     if (self) {
         self.colors = [NSArray arrayWithObjects:
-                       [UIColor clearColor],
+                       [UIColor whiteColor],
                        [UIColor SCHBlackColor],
                        [UIColor SCHGrayColor],
                        [UIColor SCHGray2Color],
@@ -73,6 +73,11 @@ enum {
     return [self.colors objectAtIndex:self.selectedColorIndex];
 }
 
+- (BOOL)selectionIsEraser
+{
+    return self.selectedColorIndex == 0;
+}
+
 - (void)clearSelection
 {
     self.selectedColorIndex = NSNotFound;
@@ -94,6 +99,7 @@ enum {
         CGContextFillRect(context, rect);
         
         if (index == 0) {
+            // eraser
             CGContextSaveGState(context);
             CGContextSetRGBStrokeColor(context, 1, 0, 0, 1);
             CGContextSetLineWidth(context, 6);
