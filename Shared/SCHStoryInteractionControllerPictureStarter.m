@@ -127,7 +127,7 @@ enum SCHToolType {
     [self applyRoundRectStyle:self.colorChooser];
     [self applyRoundRectStyle:self.sizeChooser];
 
-    self.drawingCanvas.backgroundImage = [self drawingBackgroundImage];
+    [self.drawingCanvas setBackgroundImage:[self drawingBackgroundImage]];
     self.drawingCanvas.delegate = self;
     
     self.stickerChoosers = [self.stickerChoosers viewsSortedHorizontally];
