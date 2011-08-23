@@ -292,7 +292,9 @@ static NSTimeInterval const kSCHLastFirstSyncInterval = -300.0;
             [self kickQueue];	
         }
     } else {
-        [self checkPopulations];
+        if ([[SCHAppStateManager sharedAppStateManager] isLocalDebugStore] == YES) {
+            [self checkPopulations];
+        }
 
         [[NSNotificationCenter defaultCenter] postNotificationName:SCHProfileSyncComponentDidCompleteNotification 
                                                             object:self];		
