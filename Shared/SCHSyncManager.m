@@ -40,7 +40,7 @@ static NSTimeInterval const kSCHLastFirstSyncInterval = -300.0;
 
 - (void)checkPopulations;
 - (void)populateLocalDebugStore;
-- (NSString *)fullPathToBundledFile:(NSString *)fileName;
+- (void)populateWithTestInformation;
 - (void)addBook:(NSDictionary *)book forProfiles:(NSArray *)profileIDs;
 - (void)populateFromImport;
 - (void)setAppStateForSample;
@@ -292,7 +292,9 @@ static NSTimeInterval const kSCHLastFirstSyncInterval = -300.0;
             [self kickQueue];	
         }
     } else {
-        [self checkPopulations];
+        if ([[SCHAppStateManager sharedAppStateManager] isLocalDebugStore] == YES) {
+            [self checkPopulations];
+        }
 
         [[NSNotificationCenter defaultCenter] postNotificationName:SCHProfileSyncComponentDidCompleteNotification 
                                                             object:self];		
@@ -512,8 +514,13 @@ static NSTimeInterval const kSCHLastFirstSyncInterval = -300.0;
 
 - (void)populateLocalDebugStore
 {
-    NSError *error = nil;
+    [self populateWithTestInformation];    
+}
 
+- (void)populateWithTestInformation
+{
+    NSError *error = nil;
+    
     // Younger bookshelf    
     NSDictionary *youngerProfileItem = [self profileItemWith:1
                                                        title:NSLocalizedString(@"Bookshelf #1", nil) 
@@ -543,8 +550,8 @@ static NSTimeInterval const kSCHLastFirstSyncInterval = -300.0;
                                              pageNumber:162
                                                fileSize:4142171
                                             drmQualifer:kSCHDRMQualifiersFullNoDRM
-                                               coverURL:[self fullPathToBundledFile:@"9780545283502.NightOfTheLivingDummy.jpg"]
-                                             contentURL:[self fullPathToBundledFile:@"9780545283502.NightOfTheLivingDummy.xps"]
+                                               coverURL:@"9780545283502.NightOfTheLivingDummy.jpg"
+                                             contentURL:@"9780545283502.NightOfTheLivingDummy.xps"
                                                enhanced:YES];
     [self addBook:book1 forProfiles:olderBookshelfOnly];
     
@@ -554,8 +561,8 @@ static NSTimeInterval const kSCHLastFirstSyncInterval = -300.0;
                                              pageNumber:34
                                                fileSize:5149305
                                             drmQualifer:kSCHDRMQualifiersFullNoDRM
-                                               coverURL:[self fullPathToBundledFile:@"9780545287012_r1.HalloweenParade.jpg"]
-                                             contentURL:[self fullPathToBundledFile:@"9780545287012_r1.HalloweenParade.xps"]
+                                               coverURL:@"9780545287012_r1.HalloweenParade.jpg"
+                                             contentURL:@"9780545287012_r1.HalloweenParade.xps"
                                                enhanced:YES];
     [self addBook:book2 forProfiles:youngerBookshelfOnly];
     
@@ -565,8 +572,8 @@ static NSTimeInterval const kSCHLastFirstSyncInterval = -300.0;
                                              pageNumber:34
                                                fileSize:21251026
                                             drmQualifer:kSCHDRMQualifiersFullNoDRM
-                                               coverURL:[self fullPathToBundledFile:@"9780545289726_r1.OlliesNewTricks.jpg"]
-                                             contentURL:[self fullPathToBundledFile:@"9780545289726_r1.OlliesNewTricks.xps"]
+                                               coverURL:@"9780545289726_r1.OlliesNewTricks.jpg"
+                                             contentURL:@"9780545289726_r1.OlliesNewTricks.xps"
                                                enhanced:YES];
     [self addBook:book3 forProfiles:youngerBookshelfOnly];
     
@@ -576,8 +583,8 @@ static NSTimeInterval const kSCHLastFirstSyncInterval = -300.0;
                                              pageNumber:258
                                                fileSize:5620118
                                             drmQualifer:kSCHDRMQualifiersFullNoDRM
-                                               coverURL:[self fullPathToBundledFile:@"9780545345019_r1.AllieFinkleMovingDay.jpg"]
-                                             contentURL:[self fullPathToBundledFile:@"9780545345019_r1.AllieFinkleMovingDay.xps"]
+                                               coverURL:@"9780545345019_r1.AllieFinkleMovingDay.jpg"
+                                             contentURL:@"9780545345019_r1.AllieFinkleMovingDay.xps"
                                                enhanced:YES];
     [self addBook:book4 forProfiles:olderBookshelfOnly];
     
@@ -587,8 +594,8 @@ static NSTimeInterval const kSCHLastFirstSyncInterval = -300.0;
                                              pageNumber:35
                                                fileSize:5808879
                                             drmQualifer:kSCHDRMQualifiersFullNoDRM
-                                               coverURL:[self fullPathToBundledFile:@"9780545327619_r1.WhoWillCarveTheTurkey.jpg"]
-                                             contentURL:[self fullPathToBundledFile:@"9780545327619_r1.WhoWillCarveTheTurkey.xps"]
+                                               coverURL:@"9780545327619_r1.WhoWillCarveTheTurkey.jpg"
+                                             contentURL:@"9780545327619_r1.WhoWillCarveTheTurkey.xps"
                                                enhanced:YES];
     [self addBook:book5 forProfiles:youngerBookshelfOnly];
     
@@ -598,8 +605,8 @@ static NSTimeInterval const kSCHLastFirstSyncInterval = -300.0;
                                              pageNumber:247
                                                fileSize:9280193
                                             drmQualifer:kSCHDRMQualifiersFullNoDRM
-                                               coverURL:[self fullPathToBundledFile:@"9780545366779.2.MazeOfBones.jpg"]
-                                             contentURL:[self fullPathToBundledFile:@"9780545366779.2.MazeOfBones.xps"]
+                                               coverURL:@"9780545366779.2.MazeOfBones.jpg"
+                                             contentURL:@"9780545366779.2.MazeOfBones.xps"
                                                enhanced:YES];
     [self addBook:book6 forProfiles:olderBookshelfOnly];
     
@@ -609,8 +616,8 @@ static NSTimeInterval const kSCHLastFirstSyncInterval = -300.0;
                                              pageNumber:42
                                                fileSize:11099476
                                             drmQualifer:kSCHDRMQualifiersFullNoDRM
-                                               coverURL:[self fullPathToBundledFile:@"9780545308656.6.StableMatesPatch.jpg"]
-                                             contentURL:[self fullPathToBundledFile:@"9780545308656.6.StableMatesPatch.xps"]
+                                               coverURL:@"9780545308656.6.StableMatesPatch.jpg"
+                                             contentURL:@"9780545308656.6.StableMatesPatch.xps"
                                                enhanced:YES];
     [self addBook:book7 forProfiles:allBookshelves];
     
@@ -620,27 +627,15 @@ static NSTimeInterval const kSCHLastFirstSyncInterval = -300.0;
                                              pageNumber:98
                                                fileSize:2794624
                                             drmQualifer:kSCHDRMQualifiersFullNoDRM
-                                               coverURL:[self fullPathToBundledFile:@"9780545368896_r1.TheHiddenStairs.jpg"]
-                                             contentURL:[self fullPathToBundledFile:@"9780545368896_r1.TheHiddenStairs.xps"]
+                                               coverURL:@"9780545368896_r1.TheHiddenStairs.jpg"
+                                             contentURL:@"9780545368896_r1.TheHiddenStairs.xps"
                                                enhanced:YES];
-    [self addBook:book8 forProfiles:olderBookshelfOnly];
+    [self addBook:book8 forProfiles:olderBookshelfOnly]; 
     
     if ([self.managedObjectContext save:&error] == NO) {
         NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
         abort();
     }     
-}
-
-- (NSString *)fullPathToBundledFile:(NSString *)fileName
-{
-    NSString *ret = nil;
-    
-    if (fileName != nil) {
-        NSString *fullPath = [[[NSBundle mainBundle] bundlePath] stringByAppendingPathComponent:fileName];
-        ret = [NSString stringWithFormat:@"file:/%@", fullPath];
-    }
-    
-    return(ret);
 }
 
 - (void)addBook:(NSDictionary *)book forProfiles:(NSArray *)profileIDs
@@ -705,23 +700,23 @@ static NSTimeInterval const kSCHLastFirstSyncInterval = -300.0;
 
     // Younger bookshelf    
     NSDictionary *youngerProfileItem = [self profileItemWith:1
-                                                title:NSLocalizedString(@"Younger kids' bookshelf (3-6)", nil) 
-                                             password:@"pass"                                 
-                                                  age:5 
-                                            bookshelf:kSCHBookshelfStyleYoungChild];
+                                                       title:NSLocalizedString(@"Younger kids' bookshelf (3-6)", nil) 
+                                                    password:@"pass"                                 
+                                                         age:5 
+                                                   bookshelf:kSCHBookshelfStyleYoungChild];
     [self.profileSyncComponent addProfile:youngerProfileItem];
     
     NSDictionary *youngerBook = [self contentMetaDataItemWith:@"0-393-05158-7"
-                                                      title:@"A Christmas Carol"
-                                                     author:@"Charles Dickens"
-                                                 pageNumber:1
-                                                   fileSize:862109
-                                                drmQualifer:kSCHDRMQualifiersSample
-                                                   coverURL:@"http://bitwink.com/private/ChristmasCarol.jpg"
-                                                 contentURL:@"http://bitwink.com/private/ChristmasCarol.xps"
-                                                   enhanced:NO];
+                                                        title:@"A Christmas Carol"
+                                                       author:@"Charles Dickens"
+                                                   pageNumber:1
+                                                     fileSize:862109
+                                                  drmQualifer:kSCHDRMQualifiersSample
+                                                     coverURL:@"http://bitwink.com/private/ChristmasCarol.jpg"
+                                                   contentURL:@"http://bitwink.com/private/ChristmasCarol.xps"
+                                                     enhanced:NO];
     [self addBook:youngerBook forProfiles:[NSArray arrayWithObject:[youngerProfileItem objectForKey:kSCHLibreAccessWebServiceID]]];
-
+    
     // Older bookshelf    
     NSDictionary *olderProfileItem = [self profileItemWith:2
                                                      title:NSLocalizedString(@"Older kids' bookshelf (7+)", nil) 
@@ -731,14 +726,14 @@ static NSTimeInterval const kSCHLastFirstSyncInterval = -300.0;
     [self.profileSyncComponent addProfile:olderProfileItem];
     
     NSDictionary *olderBook = [self contentMetaDataItemWith:@"978-0-14-143960-0"
-                                                 title:@"A Tale of Two Cities"
-                                                author:@"Charles Dickens"
-                                            pageNumber:1
-                                              fileSize:4023944
-                                           drmQualifer:kSCHDRMQualifiersSample
-                                              coverURL:@"http://bitwink.com/private/ATaleOfTwoCities.jpg"
-                                            contentURL:@"http://bitwink.com/private/ATaleOfTwoCities.xps"
-                                              enhanced:NO];
+                                                      title:@"A Tale of Two Cities"
+                                                     author:@"Charles Dickens"
+                                                 pageNumber:1
+                                                   fileSize:4023944
+                                                drmQualifer:kSCHDRMQualifiersSample
+                                                   coverURL:@"http://bitwink.com/private/ATaleOfTwoCities.jpg"
+                                                 contentURL:@"http://bitwink.com/private/ATaleOfTwoCities.xps"
+                                                   enhanced:NO];
     [self addBook:olderBook forProfiles:[NSArray arrayWithObject:[olderProfileItem objectForKey:kSCHLibreAccessWebServiceID]]];
     
     if ([self.managedObjectContext save:&error] == NO) {
@@ -747,12 +742,17 @@ static NSTimeInterval const kSCHLastFirstSyncInterval = -300.0;
     }     
 }
 
+- (void)populateLocalDebugSampleStore
+{
+    [self setAppStateForSample];
+    [self populateWithTestInformation];     
+}
+
 - (void)setAppStateForSample
 {
     SCHAppState *appState = [SCHAppStateManager sharedAppStateManager].appState;
     
     appState.ShouldSync = [NSNumber numberWithBool:NO];
-    appState.ShouldDownloadBooks = [NSNumber numberWithBool:YES];
     appState.ShouldAuthenticate = [NSNumber numberWithBool:NO];
     appState.DataStoreType = [NSNumber numberWithDataStoreType:kSCHDataStoreTypesSample];
 }

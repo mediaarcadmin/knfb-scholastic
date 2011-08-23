@@ -19,7 +19,6 @@ enum {
 
 @interface SCHPictureStarterColorChooser ()
 @property (nonatomic, retain) NSArray *colors;
-@property (nonatomic, assign) NSInteger selectedColorIndex;
 @property (nonatomic, assign) CGSize paintSize;
 @end
 

@@ -471,6 +471,7 @@
 		5248E11113C4858900FA2CDC /* SCHReadingStatsDetailItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 5248E10F13C4858900FA2CDC /* SCHReadingStatsDetailItem.m */; };
 		5248E11413C4858900FA2CDC /* SCHReadingStatsEntryItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 5248E11313C4858900FA2CDC /* SCHReadingStatsEntryItem.m */; };
 		5248E11513C4858900FA2CDC /* SCHReadingStatsEntryItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 5248E11313C4858900FA2CDC /* SCHReadingStatsEntryItem.m */; };
+		524F971314039775009D4577 /* Scholastic_LocalDebug_Sample.sqlite in Resources */ = {isa = PBXBuildFile; fileRef = 524F971214039775009D4577 /* Scholastic_LocalDebug_Sample.sqlite */; };
 		5256959113FD00B600799BFC /* olderHelpVideo~iphone.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = 5256958F13FD00B600799BFC /* olderHelpVideo~iphone.mp4 */; };
 		5256959213FD00B600799BFC /* olderHelpVideo~iphone.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = 5256958F13FD00B600799BFC /* olderHelpVideo~iphone.mp4 */; };
 		5256959313FD00B600799BFC /* youngerHelpVideo~iphone.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = 5256959013FD00B600799BFC /* youngerHelpVideo~iphone.mp4 */; };
@@ -568,7 +569,6 @@
 		52AD9D73130000570099FB88 /* SCHReadingStatsSyncComponent.m in Sources */ = {isa = PBXBuildFile; fileRef = 52AD9D6C130000570099FB88 /* SCHReadingStatsSyncComponent.m */; };
 		52AD9D74130000570099FB88 /* SCHSettingsSyncComponent.m in Sources */ = {isa = PBXBuildFile; fileRef = 52AD9D6E130000570099FB88 /* SCHSettingsSyncComponent.m */; };
 		52AFC2B113F167370016C4A1 /* Scholastic_Sample.sqlite in Resources */ = {isa = PBXBuildFile; fileRef = 52AFC2B013F167370016C4A1 /* Scholastic_Sample.sqlite */; };
-		52AFC2B213F167370016C4A1 /* Scholastic_Sample.sqlite in Resources */ = {isa = PBXBuildFile; fileRef = 52AFC2B013F167370016C4A1 /* Scholastic_Sample.sqlite */; };
 		52BAFB69135DAB8600C2AFF3 /* SCHThemeImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 52BAFB68135DAB8600C2AFF3 /* SCHThemeImageView.m */; };
 		52BAFB6A135DAB8600C2AFF3 /* SCHThemeImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 52BAFB68135DAB8600C2AFF3 /* SCHThemeImageView.m */; };
 		52C489CB1369AC4200460876 /* UIColor+Extensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 52C489CA1369AC4200460876 /* UIColor+Extensions.m */; };
@@ -1877,8 +1877,6 @@
 		F878D6B3134498FB00DDB98B /* SCHTextFlowPreParseOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = F878D6A9134498FB00DDB98B /* SCHTextFlowPreParseOperation.m */; };
 		F878D6B81344996400DDB98B /* SCHBookOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = F878D6B71344996400DDB98B /* SCHBookOperation.m */; };
 		F878D6B91344996400DDB98B /* SCHBookOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = F878D6B71344996400DDB98B /* SCHBookOperation.m */; };
-		F878D77C1344A1E400DDB98B /* SCHXPSCoverImageOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = F878D77B1344A1E400DDB98B /* SCHXPSCoverImageOperation.m */; };
-		F878D77D1344A1E400DDB98B /* SCHXPSCoverImageOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = F878D77B1344A1E400DDB98B /* SCHXPSCoverImageOperation.m */; };
 		F87B6E2E1398ED65005CC0FA /* SCHBookShelfSortPopoverTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = F87B6E2C1398ED65005CC0FA /* SCHBookShelfSortPopoverTableView.m */; };
 		F87B6E2F1398ED65005CC0FA /* SCHBookShelfSortPopoverTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = F87B6E2C1398ED65005CC0FA /* SCHBookShelfSortPopoverTableView.m */; };
 		F87B6E301398ED65005CC0FA /* SCHBookShelfSortPopoverTableView.xib in Resources */ = {isa = PBXBuildFile; fileRef = F87B6E2D1398ED65005CC0FA /* SCHBookShelfSortPopoverTableView.xib */; };
@@ -2194,6 +2192,7 @@
 		286F30C81402C15A00051CBC /* SCHPictureStarterStickerChooserThumbnailView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCHPictureStarterStickerChooserThumbnailView.h; sourceTree = "<group>"; };
 		286F30C91402C15B00051CBC /* SCHPictureStarterStickerChooserThumbnailView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCHPictureStarterStickerChooserThumbnailView.m; sourceTree = "<group>"; };
 		286F30CC1402C60A00051CBC /* SCHPictureStarterStickerChooserDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCHPictureStarterStickerChooserDelegate.h; sourceTree = "<group>"; };
+		286F30CD14038D0F00051CBC /* SCHPictureStarterCanvasDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCHPictureStarterCanvasDelegate.h; sourceTree = "<group>"; };
 		2870939E111907710040F596 /* Scholastic.xcdatamodel */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = wrapper.xcdatamodel; path = Scholastic.xcdatamodel; sourceTree = "<group>"; };
 		287186B814027B7B000A3761 /* SCHStoryInteractionControllerPictureStarter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCHStoryInteractionControllerPictureStarter.h; sourceTree = "<group>"; };
 		287186B914027B7B000A3761 /* SCHStoryInteractionControllerPictureStarter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCHStoryInteractionControllerPictureStarter.m; sourceTree = "<group>"; };
@@ -2491,6 +2490,7 @@
 		5248E10F13C4858900FA2CDC /* SCHReadingStatsDetailItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHReadingStatsDetailItem.m; path = Shared/SCHReadingStatsDetailItem.m; sourceTree = "<group>"; };
 		5248E11213C4858900FA2CDC /* SCHReadingStatsEntryItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHReadingStatsEntryItem.h; path = Shared/SCHReadingStatsEntryItem.h; sourceTree = "<group>"; };
 		5248E11313C4858900FA2CDC /* SCHReadingStatsEntryItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHReadingStatsEntryItem.m; path = Shared/SCHReadingStatsEntryItem.m; sourceTree = "<group>"; };
+		524F971214039775009D4577 /* Scholastic_LocalDebug_Sample.sqlite */ = {isa = PBXFileReference; lastKnownFileType = file; name = Scholastic_LocalDebug_Sample.sqlite; path = Resources/Scholastic_LocalDebug_Sample.sqlite; sourceTree = "<group>"; };
 		5256958F13FD00B600799BFC /* olderHelpVideo~iphone.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; name = "olderHelpVideo~iphone.mp4"; path = "Resources/Videos/olderHelpVideo~iphone.mp4"; sourceTree = "<group>"; };
 		5256959013FD00B600799BFC /* youngerHelpVideo~iphone.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; name = "youngerHelpVideo~iphone.mp4"; path = "Resources/Videos/youngerHelpVideo~iphone.mp4"; sourceTree = "<group>"; };
 		525E82D1138FFFF6006A6775 /* SCHAudioInfoProcessor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHAudioInfoProcessor.h; path = Shared/SCHAudioInfoProcessor.h; sourceTree = "<group>"; };
@@ -3495,8 +3495,6 @@
 		F878D6A9134498FB00DDB98B /* SCHTextFlowPreParseOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHTextFlowPreParseOperation.m; path = Shared/SCHTextFlowPreParseOperation.m; sourceTree = "<group>"; };
 		F878D6B61344996400DDB98B /* SCHBookOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHBookOperation.h; path = Shared/SCHBookOperation.h; sourceTree = "<group>"; };
 		F878D6B71344996400DDB98B /* SCHBookOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHBookOperation.m; path = Shared/SCHBookOperation.m; sourceTree = "<group>"; };
-		F878D77A1344A1E300DDB98B /* SCHXPSCoverImageOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHXPSCoverImageOperation.h; path = Shared/SCHXPSCoverImageOperation.h; sourceTree = "<group>"; };
-		F878D77B1344A1E400DDB98B /* SCHXPSCoverImageOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHXPSCoverImageOperation.m; path = Shared/SCHXPSCoverImageOperation.m; sourceTree = "<group>"; };
 		F87B6E2B1398ED65005CC0FA /* SCHBookShelfSortPopoverTableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHBookShelfSortPopoverTableView.h; path = Shared/SCHBookShelfSortPopoverTableView.h; sourceTree = "<group>"; };
 		F87B6E2C1398ED65005CC0FA /* SCHBookShelfSortPopoverTableView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHBookShelfSortPopoverTableView.m; path = Shared/SCHBookShelfSortPopoverTableView.m; sourceTree = "<group>"; };
 		F87B6E2D1398ED65005CC0FA /* SCHBookShelfSortPopoverTableView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = SCHBookShelfSortPopoverTableView.xib; path = Shared/SCHBookShelfSortPopoverTableView.xib; sourceTree = "<group>"; };
@@ -4413,6 +4411,7 @@
 				28F8B3D613FEA38B00BE0B47 /* SCHStoryInteractionControllerPictureStarterCustom.m */,
 				287186BC14027CCF000A3761 /* SCHStoryInteractionPictureStarter_iPad.xib */,
 				28F8B3D913FEA46200BE0B47 /* SCHStoryInteractionPictureStarterCustom~ipad.xib */,
+				286F30CD14038D0F00051CBC /* SCHPictureStarterCanvasDelegate.h */,
 				28B7FF041402865B009E26F5 /* SCHPictureStarterCanvas.h */,
 				28B7FF051402865B009E26F5 /* SCHPictureStarterCanvas.m */,
 				28B7FF08140286C6009E26F5 /* SCHPictureStarterColorChooser.h */,
@@ -4679,6 +4678,7 @@
 				F806563013FEAFF200DFAE43 /* Options View */,
 				528C616413FAAA9D00D033F8 /* Help */,
 				52AFC2B013F167370016C4A1 /* Scholastic_Sample.sqlite */,
+				524F971214039775009D4577 /* Scholastic_LocalDebug_Sample.sqlite */,
 				F837018D13BB322F009B280D /* List View Icons */,
 				F86DEC0813A21F2600053999 /* Sounds */,
 				F8FF8D7F139513B000CD7B73 /* OldDictionary-additions.css */,
@@ -6004,8 +6004,6 @@
 				F878D6A9134498FB00DDB98B /* SCHTextFlowPreParseOperation.m */,
 				C90AB9A4135495C5009DC49D /* SCHSmartZoomPreParseOperation.h */,
 				C90AB9A5135495C5009DC49D /* SCHSmartZoomPreParseOperation.m */,
-				F878D77A1344A1E300DDB98B /* SCHXPSCoverImageOperation.h */,
-				F878D77B1344A1E400DDB98B /* SCHXPSCoverImageOperation.m */,
 				F81C74781344DC1200B1D9DB /* SCHFlowAnalysisOperation.h */,
 				F81C74791344DC1200B1D9DB /* SCHFlowAnalysisOperation.m */,
 				F81B4BF81356E9FE00C0DAF4 /* SCHLicenseAcquisitionOperation.h */,
@@ -7451,7 +7449,6 @@
 				C9747CDD13EAEAC5003ADC71 /* Default-Portrait~ipad.jpg in Resources */,
 				C9747CDF13EAEAC5003ADC71 /* Default.jpg in Resources */,
 				C9747CE113EAEAC5003ADC71 /* Default@2x.jpg in Resources */,
-				52AFC2B213F167370016C4A1 /* Scholastic_Sample.sqlite in Resources */,
 				2866312413F01D0E0092A5DE /* SCHStoryInteractionConcentration_iPad.xib in Resources */,
 				2866313F13F02ABA0092A5DE /* storyinteraction-concentration-tile-orange~ipad.png in Resources */,
 				2866314513F03F450092A5DE /* 9780545289726_r1.OlliesNewTricks.xps in Resources */,
@@ -7633,6 +7630,7 @@
 				C9EB4D751402A55F00DBC3BD /* storyinteraction-picturestarter-clear@2x~iphone.png in Resources */,
 				C9EB4D771402A55F00DBC3BD /* storyinteraction-picturestarter-save@2x~iphone.png in Resources */,
 				C9EB4D791402A55F00DBC3BD /* storyinteraction-picturestarter-done@2x~iphone.png in Resources */,
+				524F971314039775009D4577 /* Scholastic_LocalDebug_Sample.sqlite in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -7748,7 +7746,6 @@
 				F878D6B0134498FB00DDB98B /* SCHRightsParsingOperation.m in Sources */,
 				F878D6B2134498FB00DDB98B /* SCHTextFlowPreParseOperation.m in Sources */,
 				F878D6B81344996400DDB98B /* SCHBookOperation.m in Sources */,
-				F878D77C1344A1E400DDB98B /* SCHXPSCoverImageOperation.m in Sources */,
 				C9B08BC81344D34F001963D0 /* KNFBFlowEucBook.m in Sources */,
 				C9B08BCA1344D34F001963D0 /* KNFBTextFlow.m in Sources */,
 				C9B08BCC1344D34F001963D0 /* KNFBTextFlowBlock.m in Sources */,
@@ -8089,7 +8086,6 @@
 				F878D6B1134498FB00DDB98B /* SCHRightsParsingOperation.m in Sources */,
 				F878D6B3134498FB00DDB98B /* SCHTextFlowPreParseOperation.m in Sources */,
 				F878D6B91344996400DDB98B /* SCHBookOperation.m in Sources */,
-				F878D77D1344A1E400DDB98B /* SCHXPSCoverImageOperation.m in Sources */,
 				C9B08BC91344D34F001963D0 /* KNFBFlowEucBook.m in Sources */,
 				C9B08BCB1344D34F001963D0 /* KNFBTextFlow.m in Sources */,
 				C9B08BCD1344D34F001963D0 /* KNFBTextFlowBlock.m in Sources */,

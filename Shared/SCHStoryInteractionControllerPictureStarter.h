@@ -8,6 +8,7 @@
 
 #import "SCHStoryInteractionController.h"
 #import "SCHPictureStarterStickerChooserDelegate.h"
+#import "SCHPictureStarterCanvasDelegate.h"
 
 @class SCHPictureStarterCanvas;
 @class SCHPictureStarterColorChooser;
@@ -15,9 +16,9 @@
 @class SCHPictureStarterStickerChooser;
 @class SCHStretchableImageButton;
 
-@interface SCHStoryInteractionControllerPictureStarter : SCHStoryInteractionController <SCHPictureStarterStickerChooserDelegate>
+@interface SCHStoryInteractionControllerPictureStarter : SCHStoryInteractionController <SCHPictureStarterStickerChooserDelegate, SCHPictureStarterCanvasDelegate>
 
-@property (nonatomic, retain) IBOutlet SCHPictureStarterCanvas *canvas;
+@property (nonatomic, retain) IBOutlet SCHPictureStarterCanvas *drawingCanvas;
 @property (nonatomic, retain) IBOutlet SCHPictureStarterColorChooser *colorChooser;
 @property (nonatomic, retain) IBOutlet SCHPictureStarterSizeChooser *sizeChooser;
 @property (nonatomic, retain) IBOutletCollection(SCHPictureStarterStickerChooser) NSArray *stickerChoosers;
@@ -27,8 +28,6 @@
 
 - (IBAction)colorSelected:(id)sender;
 - (IBAction)sizeSelected:(id)sender;
-- (IBAction)eraserSelected:(id)sender;
-- (IBAction)stampSelected:(id)sender;
 - (IBAction)doneButtonPressed:(id)sender;
 - (IBAction)clearButtonPressed:(id)sender;
 - (IBAction)saveButtonPressed:(id)sender;
