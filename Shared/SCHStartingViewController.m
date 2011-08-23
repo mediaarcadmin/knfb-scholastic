@@ -345,8 +345,14 @@ typedef enum {
     login.retainLoopSafeActionBlock = ^BOOL(NSString *username, NSString *password) {
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(authenticationManager:) name:SCHAuthenticationManagerDidSucceedNotification object:nil];			
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(authenticationManager:) name:SCHAuthenticationManagerDidFailNotification object:nil];					
-        [[SCHAuthenticationManager sharedAuthenticationManager] authenticateWithUserName:username withPassword:password];
-        return YES;
+        
+        if ([[username stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]] length] > 0 &&
+            [[password stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]] length] > 0) {      
+            [[SCHAuthenticationManager sharedAuthenticationManager] authenticateWithUserName:username withPassword:password];
+            return(YES);
+        } else {
+            return(NO);
+        }
     };
     
     [self.modalNavigationController setModalTransitionStyle:UIModalTransitionStyleCoverVertical];

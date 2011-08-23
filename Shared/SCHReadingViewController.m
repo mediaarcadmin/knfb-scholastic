@@ -108,6 +108,9 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 @property (nonatomic, assign) NSInteger lastPageInteractionSoundPlayedOn;
 @property (nonatomic, assign) BOOL pauseAudioOnNextPageTurn;
 
+@property (nonatomic, retain) UIImageView *sampleSICoverMarker;
+@property (nonatomic, assign) BOOL coverMarkerShouldAppear;
+
 - (id)failureWithErrorCode:(NSInteger)code error:(NSError **)error;
 - (NSError *)errorWithCode:(NSInteger)code;
 - (void)releaseViewObjects;
@@ -142,6 +145,8 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 
 - (void)setupOptionsViewForMode:(SCHReadingViewLayoutType)newLayoutType;
 - (void)setupOptionsViewForMode:(SCHReadingViewLayoutType)newLayoutType orientation:(UIInterfaceOrientation)orientation;
+
+- (void)positionCoverCornerViewForOrientation: (UIInterfaceOrientation) newOrientation;
 
 @end
 
@@ -216,6 +221,9 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 @synthesize lastPageInteractionSoundPlayedOn;
 @synthesize pauseAudioOnNextPageTurn;
 
+@synthesize sampleSICoverMarker;
+@synthesize coverMarkerShouldAppear;
+
 #pragma mark - Dealloc and View Teardown
 
 - (void)dealloc 
@@ -287,6 +295,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     [fontSegmentedControl release], fontSegmentedControl = nil;
     [paperTypeSegmentedControl release], paperTypeSegmentedControl = nil;
     [popoverNavigationTitleLabel release], popoverNavigationTitleLabel = nil;
+    [sampleSICoverMarker release], sampleSICoverMarker = nil;
     
     [readingView release], readingView = nil;
     [navigationToolbar release], navigationToolbar = nil;
@@ -416,6 +425,8 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
         self.lastPageInteractionSoundPlayedOn = -1;
         
         self.queuedAudioPlayer = [[[SCHQueuedAudioPlayer alloc] init] autorelease];
+
+        self.coverMarkerShouldAppear = YES;
 
     } else {
         return [self failureWithErrorCode:kSCHReadingViewUnspecifiedError error:error];
@@ -633,6 +644,11 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     }
 }
 
+- (void)viewDidAppear:(BOOL)animated
+{
+    [self positionCoverCornerViewForOrientation:[[UIApplication sharedApplication] statusBarOrientation]];
+}
+
 - (void)viewWillDisappear:(BOOL)animated
 {
     [self cancelInitialTimer];
@@ -704,7 +720,8 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     self.currentlyRotating = NO;
     [self.readingView didRotateFromInterfaceOrientation:fromInterfaceOrientation];
     [self.storyInteractionController didRotateToInterfaceOrientation:self.interfaceOrientation];
-    
+    [self positionCoverCornerViewForOrientation:self.interfaceOrientation];
+
     [super didRotateFromInterfaceOrientation:fromInterfaceOrientation];
 }
 
@@ -719,6 +736,10 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     self.currentlyRotating = YES;
     
     [self setupAssetsForOrientation:toInterfaceOrientation];
+    
+    if ([self.sampleSICoverMarker superview]) {
+        [self.sampleSICoverMarker removeFromSuperview];
+    }
     
     [self.readingView willRotateToInterfaceOrientation:toInterfaceOrientation duration:duration];
     [self.storyInteractionController willRotateToInterfaceOrientation:toInterfaceOrientation duration:duration];
@@ -856,12 +877,21 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
         lastPoint.layoutPage = 1;
     }
   
+    if (lastPoint.layoutPage != 1) {
+        self.coverMarkerShouldAppear = NO;
+    }
     [self jumpToBookPoint:lastPoint animated:NO];
 }
 
 - (void)jumpToBookPoint:(SCHBookPoint *)bookPoint animated:(BOOL)animated 
 {
     if (bookPoint) {
+        
+        NSLog(@"Layout page: %d", bookPoint.layoutPage);
+        if (bookPoint.layoutPage != 1) {
+            self.coverMarkerShouldAppear = NO;
+        }
+        
         [self.readingView jumpToBookPoint:bookPoint animated:animated];
     }
 }
@@ -869,8 +899,12 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 - (void)jumpToCurrentPlaceInBookAnimated:(BOOL)animated
 {
     if (self.currentPageIndex == NSUIntegerMax) {
+        self.coverMarkerShouldAppear = NO;
         [self.readingView jumpToProgressPositionInBook:self.currentBookProgress animated:YES];
     } else {
+        if (self.currentPageIndex != 1) {
+            self.coverMarkerShouldAppear = NO;
+        }
         [self.readingView jumpToPageAtIndex:self.currentPageIndex animated:YES];
     }
 }
@@ -1833,7 +1867,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     return [annotations highlightsForPage:page];    
 }
 
-- (void)readingViewWillAppear: (SCHReadingView *) readingView
+- (void)readingViewWillAppear: (SCHReadingView *) aReadingView
 {
     [self jumpToLastPageLocation];
 }
@@ -1852,6 +1886,21 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
         [self setToolbarVisibility:NO animated:YES];
     }
 
+    // hide the book corner view if we need to
+    if (self.coverMarkerShouldAppear) {
+        self.coverMarkerShouldAppear = NO;
+        NSLog(@"Hiding cover marker.");
+        [UIView animateWithDuration:0.1 
+                         animations:^{
+             self.sampleSICoverMarker.alpha = 0;
+         }
+                         completion:^(BOOL finished) {
+             [self.sampleSICoverMarker removeFromSuperview];
+             self.sampleSICoverMarker = nil;
+         }];
+
+    }
+    
     if (self.audioBookPlayer && self.audioBookPlayer.playing) {
         [self setStoryInteractionButtonVisible:NO animated:NO withSound:YES];
     } else {
@@ -1882,7 +1931,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     }
 }
 
-- (void)readingView:(SCHReadingView *)readingView hasMovedToPageAtIndex:(NSUInteger)pageIndex
+- (void)readingView:(SCHReadingView *)aReadingView hasMovedToPageAtIndex:(NSUInteger)pageIndex
 {
     // Increment pages read only if we have moved forwards and only if the page advance is <= 1
     // This will exclude larger jumps made by the scrubber
@@ -2545,5 +2594,89 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     SCHStoryInteractionPictureStarter *pictureStarter = [storyInteractions lastObject];
     [self presentStoryInteraction:pictureStarter];
 }
+
+#pragma mark - Sample/SI Cover Corner
+
+- (void)positionCoverCornerViewForOrientation: (UIInterfaceOrientation) newOrientation
+{
+    if (self.coverMarkerShouldAppear) {
+        //        NSLog(@"reading view bounds: %@", NSStringFromCGRect([self.readingView pageRect]));
+        
+        // load the reading view
+        if (self.sampleSICoverMarker) {
+            [self.sampleSICoverMarker removeFromSuperview];
+        }
+        
+        BOOL iPad = (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad);
+        
+        NSString *portraitLandscape = @"portrait";
+        
+        if (UIInterfaceOrientationIsLandscape(newOrientation)) {
+            portraitLandscape = @"landscape";
+        }
+        
+        SCHBookManager *bookManager = [SCHBookManager sharedBookManager];
+        SCHAppBook *book = [bookManager bookWithIdentifier:self.bookIdentifier inManagedObjectContext:bookManager.mainThreadManagedObjectContext];    
+        
+        NSString *bookFeatures = nil;
+        
+        switch (book.bookFeatures) {
+            case kSCHAppBookFeaturesSample:
+            {
+                bookFeatures = @"sample";
+                break;
+            }   
+            case kSCHAppBookFeaturesStoryInteractions:
+            {
+                bookFeatures = @"si";
+                break;
+            }   
+            case kSCHAppBookFeaturesSampleWithStoryInteractions:
+            {
+                bookFeatures = @"samplesi";
+                break;
+            }   
+            default:
+            {
+                break;
+            }
+        }
+        
+        NSString *imageName = nil;
+        
+        if (bookFeatures) {
+            imageName = [NSString stringWithFormat:@"reading-%@-%@", bookFeatures, portraitLandscape];
+            
+            if (iPad) {
+                imageName = [NSString stringWithFormat:@"%@~iPhone", imageName];
+            }
+        }
+        
+        if (imageName) {
+            NSLog(@"Loading image: %@", imageName);
+            self.sampleSICoverMarker = [[UIImageView alloc] initWithImage:[UIImage imageNamed:imageName]];
+            
+            // put it in the top right corner of the book
+            CGRect bookCoverFrame = [self.readingView pageRect];
+            
+            CGRect frame = self.sampleSICoverMarker.frame;
+            
+            // offsets are to accommodate borders in the images
+            frame.origin.x = ceilf((bookCoverFrame.origin.x + bookCoverFrame.size.width) - frame.size.width) + 2;
+            frame.origin.y = ceilf(bookCoverFrame.origin.y) - 3;
+            
+            self.sampleSICoverMarker.frame = frame;
+            
+            self.sampleSICoverMarker.alpha = 0;
+            [self.view addSubview:self.sampleSICoverMarker];
+            
+            [UIView animateWithDuration:0.1 animations:^{
+                self.sampleSICoverMarker.alpha = 1;
+            }];
+        }
+    }
+}
+
+
 
 @end

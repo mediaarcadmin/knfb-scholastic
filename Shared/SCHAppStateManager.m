@@ -99,18 +99,6 @@
     }
 }
 
-- (BOOL)canDownloadBooks
-{
-    BOOL ret = NO;
-    SCHAppState *appState = [self appState];
-    
-    if (appState != nil) {
-        ret = [appState.ShouldDownloadBooks boolValue];
-    }
-    
-    return(ret);
-}
-
 - (BOOL)canSync
 {
     BOOL ret = NO;

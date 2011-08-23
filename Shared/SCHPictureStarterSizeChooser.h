@@ -10,7 +10,7 @@
 
 @interface SCHPictureStarterSizeChooser : UIControl
 
-@property (nonatomic, readonly) NSInteger selectedSize;
+@property (nonatomic, assign) NSInteger selectedSize;
 
 - (void)clearSelection;
 

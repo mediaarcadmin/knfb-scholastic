@@ -369,6 +369,9 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 131;
     self.navigationItem.title = [self.profileItem bookshelfName:YES];
     
 	self.books = [self.profileItem allBookIdentifiers];
+        
+    // tell the theme manager which profile to use for storage
+    [SCHThemeManager sharedThemeManager].appProfile = self.profileItem.AppProfile;
 }
 
 - (void)setBooks:(NSMutableArray *)newBooks

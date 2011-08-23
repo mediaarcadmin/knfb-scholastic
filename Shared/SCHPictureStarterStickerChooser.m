@@ -86,6 +86,7 @@ enum {
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    [self deselectRowAtIndexPath:indexPath animated:NO];
     self.selectedRowIndex = indexPath.row;
     [self.stickerDelegate stickerChooser:self.chooserIndex choseImageAtIndex:self.selectedRowIndex];
 }
