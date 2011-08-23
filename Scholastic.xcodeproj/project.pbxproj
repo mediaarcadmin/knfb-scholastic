@@ -2194,6 +2194,7 @@
 		286F30C81402C15A00051CBC /* SCHPictureStarterStickerChooserThumbnailView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCHPictureStarterStickerChooserThumbnailView.h; sourceTree = "<group>"; };
 		286F30C91402C15B00051CBC /* SCHPictureStarterStickerChooserThumbnailView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCHPictureStarterStickerChooserThumbnailView.m; sourceTree = "<group>"; };
 		286F30CC1402C60A00051CBC /* SCHPictureStarterStickerChooserDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCHPictureStarterStickerChooserDelegate.h; sourceTree = "<group>"; };
+		286F30CD14038D0F00051CBC /* SCHPictureStarterCanvasDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCHPictureStarterCanvasDelegate.h; sourceTree = "<group>"; };
 		2870939E111907710040F596 /* Scholastic.xcdatamodel */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = wrapper.xcdatamodel; path = Scholastic.xcdatamodel; sourceTree = "<group>"; };
 		287186B814027B7B000A3761 /* SCHStoryInteractionControllerPictureStarter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCHStoryInteractionControllerPictureStarter.h; sourceTree = "<group>"; };
 		287186B914027B7B000A3761 /* SCHStoryInteractionControllerPictureStarter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCHStoryInteractionControllerPictureStarter.m; sourceTree = "<group>"; };
@@ -4413,6 +4414,7 @@
 				28F8B3D613FEA38B00BE0B47 /* SCHStoryInteractionControllerPictureStarterCustom.m */,
 				287186BC14027CCF000A3761 /* SCHStoryInteractionPictureStarter_iPad.xib */,
 				28F8B3D913FEA46200BE0B47 /* SCHStoryInteractionPictureStarterCustom~ipad.xib */,
+				286F30CD14038D0F00051CBC /* SCHPictureStarterCanvasDelegate.h */,
 				28B7FF041402865B009E26F5 /* SCHPictureStarterCanvas.h */,
 				28B7FF051402865B009E26F5 /* SCHPictureStarterCanvas.m */,
 				28B7FF08140286C6009E26F5 /* SCHPictureStarterColorChooser.h */,

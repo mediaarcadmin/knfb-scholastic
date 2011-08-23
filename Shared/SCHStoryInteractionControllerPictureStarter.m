@@ -15,11 +15,21 @@
 #import "UIColor+Scholastic.h"
 #import "NSArray+ViewSorting.h"
 
+enum SCHToolType {
+    SCHToolTypeNone,
+    SCHToolTypePaint,
+    SCHToolTypeSticker
+};
+
 @interface SCHStoryInteractionControllerPictureStarter ()
 
 @property (nonatomic, retain) SCHPictureStarterStickers *stickers;
 @property (nonatomic, assign) NSInteger lastSelectedColour;
 @property (nonatomic, assign) NSInteger lastSelectedSize;
+@property (nonatomic, assign) NSInteger selectedStickerIndex;
+@property (nonatomic, assign) NSInteger selectedStickerChooser;
+@property (nonatomic, assign) enum SCHToolType toolType;
+@property (nonatomic, assign) CGPoint lastDragPoint;
 
 - (void)setupDrawingScreen;
 
@@ -27,7 +37,7 @@
 
 @implementation SCHStoryInteractionControllerPictureStarter
 
-@synthesize canvas;
+@synthesize drawingCanvas;
 @synthesize colorChooser;
 @synthesize sizeChooser;
 @synthesize stickerChoosers;
@@ -37,10 +47,14 @@
 @synthesize stickers;
 @synthesize lastSelectedColour;
 @synthesize lastSelectedSize;
+@synthesize selectedStickerIndex;
+@synthesize selectedStickerChooser;
+@synthesize toolType;
+@synthesize lastDragPoint;
 
 - (void)dealloc
 {
-    [canvas release], canvas = nil;
+    [drawingCanvas release], drawingCanvas = nil;
     [colorChooser release], colorChooser = nil;
     [sizeChooser release], sizeChooser = nil;
     [stickerChoosers release], stickerChoosers = nil;
@@ -109,11 +123,12 @@
 - (void)setupDrawingScreen
 {
     self.contentsView.backgroundColor = [UIColor clearColor];
-    [self applyRoundRectStyle:self.canvas];
+    [self applyRoundRectStyle:self.drawingCanvas];
     [self applyRoundRectStyle:self.colorChooser];
     [self applyRoundRectStyle:self.sizeChooser];
 
-    self.canvas.backgroundImage = [self drawingBackgroundImage];
+    self.drawingCanvas.backgroundImage = [self drawingBackgroundImage];
+    self.drawingCanvas.delegate = self;
     
     self.stickerChoosers = [self.stickerChoosers viewsSortedHorizontally];
     self.stickers = [[[SCHPictureStarterStickers alloc] init] autorelease];
@@ -127,12 +142,19 @@
     
     self.lastSelectedColour = NSNotFound;
     self.lastSelectedSize = NSNotFound;
+    self.selectedStickerChooser = NSNotFound;
+    self.selectedStickerIndex = NSNotFound;
+    self.toolType = SCHToolTypeNone;
 }
 
 #pragma mark - Sticker chooser delegate
 
 - (void)stickerChooser:(NSInteger)chooserIndex choseImageAtIndex:(NSInteger)imageIndex
 {
+    self.selectedStickerIndex = imageIndex;
+    self.selectedStickerChooser = chooserIndex;
+    self.toolType = SCHToolTypeSticker;
+    
     for (SCHPictureStarterStickerChooser *chooser in self.stickerChoosers) {
         if (chooser.chooserIndex != chooserIndex) {
             [chooser clearSelection];
@@ -164,6 +186,7 @@
         [self.stickerChoosers makeObjectsPerformSelector:@selector(clearSelection)];
         self.lastSelectedColour = self.colorChooser.selectedColorIndex;
         self.sizeChooser.selectedSize = self.lastSelectedSize;
+        self.toolType = SCHToolTypePaint;
     }
 }
 
@@ -173,15 +196,67 @@
         [self.stickerChoosers makeObjectsPerformSelector:@selector(clearSelection)];
         self.lastSelectedSize = self.sizeChooser.selectedSize;
         self.colorChooser.selectedColorIndex = self.lastSelectedColour;
+        self.toolType = SCHToolTypePaint;
     }
 }
 
-- (void)eraserSelected:(id)sender
+#pragma mark - Canvas delegate
+
+- (void)canvas:(SCHPictureStarterCanvas *)canvas didReceiveTapAtPoint:(CGPoint)point
 {
+    switch (self.toolType) {
+        case SCHToolTypePaint: {
+            [canvas paintAtPoint:point color:[self.colorChooser selectedColor] size:[self.sizeChooser selectedSize]];
+            break;
+        }
+        case SCHToolTypeSticker: {
+            UIImage *image = [self.stickers imageAtIndex:self.selectedStickerIndex forChooserIndex:self.selectedStickerChooser];
+            [canvas addSticker:image atPoint:point];
+            break;
+        }
+        default:
+            break;
+    }
+    
 }
 
-- (void)stampSelected:(id)sender
+- (void)canvas:(SCHPictureStarterCanvas *)canvas didBeginDragAtPoint:(CGPoint)point
 {
+    switch (self.toolType) {
+        case SCHToolTypePaint: {
+            [canvas paintAtPoint:point color:[self.colorChooser selectedColor] size:[self.sizeChooser selectedSize]];
+            self.lastDragPoint = point;
+            break;
+        }
+        default:
+            break;
+    }
+}
+
+- (void)canvas:(SCHPictureStarterCanvas *)canvas didMoveDragAtPoint:(CGPoint)point
+{
+    switch (self.toolType) {
+        case SCHToolTypePaint: {
+            [canvas paintLineFromPoint:self.lastDragPoint toPoint:point color:[self.colorChooser selectedColor] size:[self.sizeChooser selectedSize]];
+            self.lastDragPoint = point;
+            break;
+        }
+        default:
+            break;
+    }    
+}
+
+- (void)canvas:(SCHPictureStarterCanvas *)canvas didEndDragAtPoint:(CGPoint)point
+{
+    
+    switch (self.toolType) {
+        case SCHToolTypePaint: {
+            [canvas paintLineFromPoint:self.lastDragPoint toPoint:point color:[self.colorChooser selectedColor] size:[self.sizeChooser selectedSize]];
+            break;
+        }
+        default:
+            break;
+        }
 }
 
 @end
