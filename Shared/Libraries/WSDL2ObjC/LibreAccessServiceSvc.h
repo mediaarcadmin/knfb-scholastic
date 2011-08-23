@@ -4645,6 +4645,7 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
 @property (nonatomic, retain) NSMutableData *responseData;
 @property (nonatomic, retain) NSURLConnection *urlConnection;
 - (id)initWithBinding:(LibreAccessServiceSoap11Binding *)aBinding delegate:(id<LibreAccessServiceSoap11BindingResponseDelegate>)aDelegate;
+- (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error;
 @end
 @interface LibreAccessServiceSoap11Binding_ValidateScreenName : LibreAccessServiceSoap11BindingOperation {
 	LibreAccessServiceSvc_ValidateScreenNameRequest * parameters;
