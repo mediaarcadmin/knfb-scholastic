@@ -55,17 +55,10 @@ UIImageView *optionsPhoneTopBackground;
 @property (nonatomic, assign) BOOL youngerMode;
 
 // interface builder
-@property (nonatomic, retain) IBOutlet UILabel *titleLabel;
-@property (nonatomic, retain) IBOutlet UIView *leftBarButtonItemContainer;
-@property (nonatomic, retain) IBOutlet UIView *youngerRightBarButtonItemContainer;
-@property (nonatomic, retain) IBOutlet UIView *olderRightBarButtonItemContainer;
-@property (nonatomic, retain) IBOutlet UIButton *backButton;
-@property (nonatomic, retain) IBOutletCollection(UIButton) NSArray *audioButtons;
 @property (nonatomic, retain) IBOutlet UIButton *notesButton;
 @property (nonatomic, retain) IBOutlet UIButton *storyInteractionsListButton;
 @property (nonatomic, retain) IBOutlet SCHCustomToolbar *scrubberToolbar;
 @property (nonatomic, retain) IBOutlet SCHCustomToolbar *olderBottomToolbar;
-@property (nonatomic, retain) IBOutlet UIImageView *topShadow;
 @property (nonatomic, retain) IBOutlet UIImageView *bottomShadow;
 
 @property (nonatomic, retain) IBOutlet UISlider *pageSlider;

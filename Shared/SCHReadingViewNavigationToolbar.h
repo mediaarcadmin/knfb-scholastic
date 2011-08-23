@@ -38,6 +38,7 @@ typedef enum
 - (id)initWithStyle:(SCHReadingViewNavigationToolbarStyle)style orientation:(UIInterfaceOrientation)orientation;
 
 - (void)setTitle:(NSString *)title;
+- (void)setAudioItemActive:(BOOL)active;
 - (void)setOrientation:(UIInterfaceOrientation)orientation;
 
 @end

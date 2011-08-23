@@ -15,7 +15,6 @@
 #import "SCHFlowView.h"
 #import "SCHLayoutView.h"
 #import "SCHXPSProvider.h"
-//#import "SCHCustomNavigationBar.h"
 #import "SCHCustomToolbar.h"
 #import "SCHSyncManager.h"
 #import "SCHProfileItem.h"
@@ -204,15 +203,8 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 @synthesize optionsPhoneTopBackground;
 @synthesize popoverNavigationTitleLabel;
 
-@synthesize titleLabel;
-@synthesize leftBarButtonItemContainer;
-@synthesize youngerRightBarButtonItemContainer;
-@synthesize olderRightBarButtonItemContainer;
-@synthesize backButton;
-@synthesize audioButtons;
 @synthesize scrubberToolbar;
 @synthesize olderBottomToolbar;
-@synthesize topShadow;
 @synthesize bottomShadow;
 
 @synthesize audioBookPlayer;
@@ -264,12 +256,6 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
         [notesView removeFromView];
     }
     
-    [titleLabel release], titleLabel = nil;
-    [leftBarButtonItemContainer release], leftBarButtonItemContainer = nil;
-    [youngerRightBarButtonItemContainer release], youngerRightBarButtonItemContainer = nil;
-    [olderRightBarButtonItemContainer release], olderRightBarButtonItemContainer = nil;
-    [backButton release], backButton = nil;
-    [audioButtons release], audioButtons = nil;
     [notesView release], notesView = nil;
     [notesCountView release], notesCountView = nil;
     [notesButton release], notesButton = nil;
@@ -277,7 +263,6 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 
     [scrubberToolbar release], scrubberToolbar = nil;
     [olderBottomToolbar release], olderBottomToolbar = nil;
-    [topShadow release], topShadow = nil;
     [bottomShadow release], bottomShadow = nil;
     [pageSlider release], pageSlider = nil;
     [scrubberThumbImage release], scrubberThumbImage = nil;
@@ -517,42 +502,6 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
                                                             repeats:NO];
     [self startFadeTimer];
     
-#if 0
-    CGFloat containerHeight = CGRectGetHeight(self.navigationController.navigationBar.bounds);
-        
-    CGRect leftBarButtonItemFrame = self.leftBarButtonItemContainer.frame;
-    leftBarButtonItemFrame.size.height = containerHeight;
-    self.leftBarButtonItemContainer.frame = leftBarButtonItemFrame;
-    
-    self.navigationItem.leftBarButtonItem = [[[UIBarButtonItem alloc] initWithCustomView:self.leftBarButtonItemContainer] autorelease];
-    
-    CGRect rightBarButtonItemFrame = CGRectZero;
-    if (self.youngerMode) {
-        rightBarButtonItemFrame = self.youngerRightBarButtonItemContainer.frame;
-        rightBarButtonItemFrame.size.height = containerHeight;
-        self.youngerRightBarButtonItemContainer.frame = rightBarButtonItemFrame;
-        
-        self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithCustomView:self.youngerRightBarButtonItemContainer] autorelease];
-    } else {
-        rightBarButtonItemFrame = self.olderRightBarButtonItemContainer.frame;
-        rightBarButtonItemFrame.size.height = containerHeight;
-        self.youngerRightBarButtonItemContainer.frame = rightBarButtonItemFrame;
-        
-        self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithCustomView:self.olderRightBarButtonItemContainer] autorelease];
-    }
-    
-    CGRect r = self.titleLabel.frame;
-    r.size.width = (CGRectGetWidth(self.navigationController.navigationBar.bounds) - 
-                    (MAX(CGRectGetWidth(leftBarButtonItemFrame),  
-                    CGRectGetWidth(rightBarButtonItemFrame)) * 2.0));
-    CGFloat widthDelta = CGRectGetWidth(self.navigationController.navigationBar.bounds) - r.size.width;
-    r.origin.x = (widthDelta > 0 ? widthDelta / 2.0 : 0.0);
-    r.size.height = containerHeight;
-    self.titleLabel.frame = r;
-    self.titleLabel.text = book.Title;    
-    self.navigationItem.titleView = self.titleLabel;
-#endif
-    
     if (self.youngerMode) {
         [self.olderBottomToolbar removeFromSuperview];
     }
@@ -594,7 +543,6 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     [self.view addSubview:navigationToolbar];
     
     // Set non-rotation specific graphics
-    //[self.topShadow    setImage:[UIImage imageNamed:@"reading-view-top-shadow.png"]];
     [self.bottomShadow setImage:[UIImage imageNamed:@"reading-view-bottom-shadow.png"]];
     [self.scrubberToolbar setBackgroundImage:[UIImage imageNamed:@"reading-view-scrubber-bar.png"]];
     [self.olderBottomToolbar setBackgroundImage:[UIImage imageNamed:@"reading-view-bottom-bar.png"]];        
@@ -669,43 +617,6 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 {    
     
     [self.navigationToolbar setOrientation:orientation];
-    
-    // toolbars
-    if (UIInterfaceOrientationIsPortrait(orientation)) {
-        [self.backButton setImage:[UIImage imageNamed:@"icon-books.png"] forState:UIControlStateNormal];
-        
-        for (UIButton *audioButton in self.audioButtons) {
-            [audioButton setImage:[UIImage imageNamed:@"icon-play.png"] forState:UIControlStateNormal];
-            [audioButton setImage:[UIImage imageNamed:@"icon-play-active.png"] forState:UIControlStateSelected];
-        }
-        
-//        [(SCHCustomNavigationBar *)self.navigationController.navigationBar setBackgroundImage:[UIImage imageNamed:@"reading-view-portrait-top-bar.png"]];
-    } else {
-        if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
-            [self.backButton setImage:[UIImage imageNamed:@"icon-books-landscape.png"] forState:UIControlStateNormal];
-        } else {
-            [self.backButton setImage:[UIImage imageNamed:@"icon-books.png"] forState:UIControlStateNormal];
-        }
-        
-        for (UIButton *audioButton in self.audioButtons) {
-            [audioButton setImage:[UIImage imageNamed:@"icon-play-landscape.png"] forState:UIControlStateNormal];
-            [audioButton setImage:[UIImage imageNamed:@"icon-play-landscape-active.png"] forState:UIControlStateSelected];
-        }
-        
-//        if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
-//            [(SCHCustomNavigationBar *)self.navigationController.navigationBar setBackgroundImage:[UIImage imageNamed:@"reading-view-landscape-top-bar.png"]];
-//        } else {
-//            [(SCHCustomNavigationBar *)self.navigationController.navigationBar setBackgroundImage:[UIImage imageNamed:@"reading-view-portrait-top-bar.png"]];
-//        }
-    }    
-    
-    // shadows
-//    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
-//        CGRect topShadowFrame = self.topShadow.frame;
-//        topShadowFrame.origin.y = CGRectGetMinY(self.navigationController.navigationBar.frame) + 
-//        [(SCHCustomNavigationBar *)self.navigationController.navigationBar backgroundImage].size.height;
-//        self.topShadow.frame = topShadowFrame;
-//    }
     
     // options buttons
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
@@ -848,7 +759,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     for (SCHContentMetadataItem *object in [[notification userInfo] objectForKey:NSUpdatedObjectsKey]) {
         if ([object isKindOfClass:[SCHContentMetadataItem class]] == YES &&
             [[object bookIdentifier] isEqual:self.bookIdentifier] == YES) {
-            self.titleLabel.text = object.Title;    
+            [self.navigationToolbar setTitle:object.Title];
         }
     }    
 }
@@ -1458,9 +1369,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
         [self setupStoryInteractionButtonForCurrentPagesAnimated:YES];
     }
     
-    for (UIButton *audioButton in self.audioButtons) {
-        [audioButton setSelected:NO];
-    }
+    [self.navigationToolbar setAudioItemActive:NO];
 }
 
 #pragma mark - Audio Book Delegate methods
@@ -2332,7 +2241,6 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
         if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
             [self.optionsView setAlpha:1.0f];
         }
-        [self.topShadow setAlpha:1.0f];   
         [self.bottomShadow setAlpha:1.0f];  
 	} else {
         [self.navigationToolbar setAlpha:0.0f];
@@ -2344,7 +2252,6 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
         if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
             [self.optionsView setAlpha:0.0f];
         }
-        [self.topShadow setAlpha:0.0f];
         [self.bottomShadow setAlpha:0.0f];
 	}
 
@@ -2676,11 +2583,15 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
             self.sampleSICoverMarker.frame = frame;
             
             self.sampleSICoverMarker.alpha = 0;
-            [self.view addSubview:self.sampleSICoverMarker];
+            [self.view insertSubview:self.sampleSICoverMarker belowSubview:self.navigationToolbar];
             
-            [UIView animateWithDuration:0.1 animations:^{
+            [UIView animateWithDuration:0.1
+                                  delay:0
+                                options:UIViewAnimationOptionAllowUserInteraction
+                             animations:^{
                 self.sampleSICoverMarker.alpha = 1;
-            }];
+            }
+                             completion:nil];
         }
     }
 }
@@ -2694,6 +2605,8 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
         }
     } else {
         [UIView animateWithDuration:0.1 
+                              delay:0
+                            options:UIViewAnimationOptionAllowUserInteraction
                          animations:^{
                              self.sampleSICoverMarker.alpha = 0;
                          }

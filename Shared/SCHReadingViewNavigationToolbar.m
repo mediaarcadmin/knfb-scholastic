@@ -161,6 +161,11 @@ static const CGFloat kSCHReadingViewNavigationToolbarShadowHeight = 4.0f;
     [self.titleItemLabel setText:title];
 }
 
+- (void)setAudioItemActive:(BOOL)active
+{
+    [self.audioItemButton setSelected:active];
+}
+
 - (void)setOrientation:(UIInterfaceOrientation)orientation
 {
     CGRect bounds = CGRectZero;
