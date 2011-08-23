@@ -143,12 +143,13 @@ static const CGFloat kSCHReadingViewNavigationToolbarShadowHeight = 4.0f;
     
     CGRect titleBounds = self.titleItemLabel.bounds;
     titleBounds.size.height = CGRectGetHeight(self.toolbar.bounds);
-    self.titleItemLabel.frame = CGRectInset(titleBounds, 0, 4);
+    titleBounds = CGRectInset(titleBounds, 0, 4);
+    
     [self setFontSizeOfMultiLineLabel:self.titleItemLabel
                             toFitSize:titleBounds.size
                        forMaxFontSize:self.titleItemLabel.font.pointSize
                        andMinFontSize:self.titleItemLabel.minimumFontSize
-             startCharacterWrapAtSize:self.titleItemLabel.minimumFontSize + 2];
+             startCharacterWrapAtSize:self.titleItemLabel.minimumFontSize];
     
     [self.backItemButton sizeToFit];
     [self.pictureStarterItemButton sizeToFit];
@@ -183,7 +184,7 @@ static const CGFloat kSCHReadingViewNavigationToolbarShadowHeight = 4.0f;
         titleItemLabel = [[UILabel alloc] init];
         titleItemLabel.font = [UIFont fontWithName:@"Arial-BoldMT" size:20.0f];
         titleItemLabel.numberOfLines = 2;
-        titleItemLabel.minimumFontSize = 10.0f;
+        titleItemLabel.minimumFontSize = 9.0f;
         titleItemLabel.adjustsFontSizeToFitWidth = YES;
         titleItemLabel.textAlignment = UITextAlignmentCenter;
         titleItemLabel.backgroundColor = [UIColor clearColor];
