@@ -8,27 +8,38 @@
 
 #import "SCHPictureStarterCanvas.h"
 #import "SCHPictureStarterCanvasDelegate.h"
+#import "SCHPictureStarterDrawingList.h"
 
 @interface SCHPictureStarterCanvas ()
 
 @property (nonatomic, assign) CGPoint pinchPoint;
 @property (nonatomic, assign) CGFloat zoomScale;
+@property (nonatomic, retain) CALayer *backgroundLayer;
+@property (nonatomic, retain) CALayer *paintedLayer;
+@property (nonatomic, retain) CALayer *liveLayer;
 @property (nonatomic, assign) CGContextRef paintContext;
+@property (nonatomic, retain) SCHPictureStarterDrawingList *drawingList;
 
 @end;
 
 @implementation SCHPictureStarterCanvas
 
 @synthesize delegate;
-@synthesize backgroundImage;
 @synthesize pinchPoint;
 @synthesize zoomScale;
+@synthesize backgroundLayer;
+@synthesize paintedLayer;
+@synthesize liveLayer;
 @synthesize paintContext;
+@synthesize drawingList;
 
 - (void)dealloc
 {
-    [backgroundImage release], backgroundImage = nil;
-    CGContextRelease(paintContext), paintContext = nil;
+    [backgroundLayer release], backgroundLayer = nil;
+    [paintedLayer release], paintedLayer = nil;
+    [liveLayer release], liveLayer = nil;
+    [drawingList release], drawingList = nil;
+    CGContextRelease(paintContext), paintContext = NULL;
     [super dealloc];
 }
 
@@ -47,31 +58,40 @@
         UIPanGestureRecognizer *pan = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(handlePan:)];
         [self addGestureRecognizer:pan];
         [pan release];
-        
+
         self.zoomScale = 1.0f;
+        self.drawingList = [[[SCHPictureStarterDrawingList alloc] init] autorelease];
+        
+        self.backgroundLayer = [CALayer layer];
+        self.backgroundLayer.frame = self.bounds;
+        self.backgroundLayer.position = CGPointMake(CGRectGetMidX(self.bounds), CGRectGetMidY(self.bounds));
+        [self.layer addSublayer:self.backgroundLayer];
+        
+        self.paintedLayer = [CALayer layer];
+        self.paintedLayer.frame = self.bounds;
+        self.paintedLayer.position = self.backgroundLayer.position;
+        [self.layer addSublayer:self.paintedLayer];
+        
+        self.liveLayer = [CALayer layer];
+        self.liveLayer.frame = self.bounds;
+        self.liveLayer.position = self.backgroundLayer.position;
+        self.liveLayer.delegate = self.drawingList;
+        [self.layer addSublayer:self.liveLayer];
         
         CGColorSpaceRef colorSpace = CGColorSpaceCreateDeviceRGB();
         self.paintContext = CGBitmapContextCreate(NULL, CGRectGetWidth(self.bounds), CGRectGetHeight(self.bounds),
                                                   8, 4*CGRectGetWidth(self.bounds), colorSpace, kCGImageAlphaPremultipliedLast);
-        CGContextSetLineCap(self.paintContext, kCGLineCapRound);
         CGContextSaveGState(self.paintContext);
     }
     return self;
 }
 
-#pragma mark - Drawing
-
-- (void)drawRect:(CGRect)rect
+- (void)setBackgroundImage:(UIImage *)backgroundImage
 {
-    CGContextRef context = UIGraphicsGetCurrentContext();
-    
-    CGContextTranslateCTM(context, 0, CGRectGetHeight(self.bounds));
-    CGContextScaleCTM(context, 1, -1);
-    CGContextDrawImage(context, self.bounds, [self.backgroundImage CGImage]);
-    
-    CGImageRef paintImage = CGBitmapContextCreateImage(self.paintContext);
-    CGContextDrawImage(context, self.bounds, paintImage);
-    CGImageRelease(paintImage);
+    [CATransaction begin];
+    [CATransaction setDisableActions:YES];
+    self.backgroundLayer.contents = (id)[backgroundImage CGImage];
+    [CATransaction commit];
 }
 
 #pragma mark - Gesture recognition
@@ -132,35 +152,50 @@
 
 #pragma mark - Painting
 
-- (CGRect)rectAtPoint:(CGPoint)center ofSize:(CGSize)size
+- (void)setNeedsCommit
 {
-    return CGRectMake(center.x-size.width/2, CGRectGetHeight(self.bounds)-center.y-size.height/2, size.width, size.height);
+    [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(commit) object:nil];
+    [self performSelector:@selector(commit) withObject:nil afterDelay:1.0];
+    [self.liveLayer setNeedsDisplay];
 }
 
 - (void)paintAtPoint:(CGPoint)point color:(UIColor *)color size:(NSInteger)size
 {
-    CGRect rect = [self rectAtPoint:point ofSize:CGSizeMake(size, size)];
-    CGContextSetFillColorWithColor(self.paintContext, [color CGColor]);
-    CGContextFillEllipseInRect(self.paintContext, rect);
-    [self setNeedsDisplay];
+    point.y = CGRectGetHeight(self.bounds)-point.y;
+    [self.drawingList addPoint:point color:color size:size];
+    [self setNeedsCommit];
 }
 
 - (void)paintLineFromPoint:(CGPoint)start toPoint:(CGPoint)end color:(UIColor *)color size:(NSInteger)size
 {
     CGFloat height = CGRectGetHeight(self.bounds);
-    CGContextSetStrokeColorWithColor(self.paintContext, [color CGColor]);
-    CGContextSetLineWidth(self.paintContext, size);
-    CGContextMoveToPoint(self.paintContext, start.x, height-start.y);
-    CGContextAddLineToPoint(self.paintContext, end.x, height-end.y);
-    CGContextDrawPath(self.paintContext, kCGPathStroke);
-    [self setNeedsDisplay];
+    start.y = height-start.y;
+    end.y = height-end.y;
+    
+    [self.drawingList addLineFrom:start to:end color:color size:size];
+    [self setNeedsCommit];
 }
 
 - (void)addSticker:(UIImage *)sticker atPoint:(CGPoint)point
 {
-    CGRect rect = [self rectAtPoint:point ofSize:sticker.size];
-    CGContextDrawImage(self.paintContext, rect, [sticker CGImage]);
-    [self setNeedsDisplay];
+    point.y = CGRectGetHeight(self.bounds)-point.y;
+    [self.drawingList addSticker:sticker atPoint:point];
+    [self setNeedsCommit];
+}
+
+- (void)commit
+{
+    [CATransaction begin];
+    [CATransaction setDisableActions:YES];
+    
+    [self.drawingList drawInContext:self.paintContext];
+    CGImageRef image = CGBitmapContextCreateImage(self.paintContext);
+    self.paintedLayer.contents = (id)image;
+    CGImageRelease(image);
+    [self.drawingList clear];
+    [self.liveLayer setNeedsDisplay];
+    
+    [CATransaction commit];
 }
 
 @end
