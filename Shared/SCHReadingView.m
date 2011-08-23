@@ -171,6 +171,11 @@ managedObjectContext:(NSManagedObjectContext *)managedObjectContext
     return nil;
 }
 
+- (CGRect) pageRect
+{
+    return CGRectNull;
+}
+
 #pragma mark - SCHBookPoint Conversions
 
 - (void)layoutPage:(NSUInteger *)layoutPage pageWordOffset:(NSUInteger *)pageWordOffset forBookPoint:(SCHBookPoint *)bookPoint includingFolioBlocks:(BOOL)folio
