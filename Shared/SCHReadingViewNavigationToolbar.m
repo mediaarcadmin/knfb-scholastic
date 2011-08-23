@@ -40,11 +40,18 @@ static const CGFloat kSCHReadingViewNavigationToolbarShadowHeight = 4.0f;
 - (UIBarButtonItem *)audioItemForOrientation:(UIInterfaceOrientation)orientation;
 - (UIBarButtonItem *)helpItemForOrientation:(UIInterfaceOrientation)orientation;
 - (UIBarButtonItem *)flexibleItem;
+- (UIBarButtonItem *)fixedItemOfWidth:(CGFloat)width;
 
 - (void)backItemAction:(id)selector;
 - (void)pictureStarterItemAction:(id)selector;
 - (void)audioItemAction:(id)selector;
 - (void)helpItemAction:(id)selector;
+
+- (void)setFontSizeOfMultiLineLabel:(UILabel*)label 
+                          toFitSize:(CGSize)size 
+                     forMaxFontSize:(CGFloat)maxFontSize 
+                     andMinFontSize:(CGFloat)minFontSize 
+           startCharacterWrapAtSize:(CGFloat)characterWrapSize;
 
 + (CGSize)sizeForStyle:(SCHReadingViewNavigationToolbarStyle)style orientation:(UIInterfaceOrientation)orientation;
 
@@ -134,8 +141,15 @@ static const CGFloat kSCHReadingViewNavigationToolbarShadowHeight = 4.0f;
                                CGRectGetWidth(self.bounds),
                                CGRectGetHeight(self.bounds) - kSCHReadingViewNavigationToolbarShadowHeight);
     
+    CGRect titleBounds = self.titleItemLabel.bounds;
+    titleBounds.size.height = CGRectGetHeight(self.toolbar.bounds);
+    self.titleItemLabel.frame = CGRectInset(titleBounds, 0, 4);
+    [self setFontSizeOfMultiLineLabel:self.titleItemLabel
+                            toFitSize:titleBounds.size
+                       forMaxFontSize:self.titleItemLabel.font.pointSize
+                       andMinFontSize:self.titleItemLabel.minimumFontSize
+             startCharacterWrapAtSize:self.titleItemLabel.minimumFontSize + 2];
     
-    [self.titleItemLabel sizeToFit];
     [self.backItemButton sizeToFit];
     [self.pictureStarterItemButton sizeToFit];
     [self.audioItemButton sizeToFit];
@@ -145,7 +159,6 @@ static const CGFloat kSCHReadingViewNavigationToolbarShadowHeight = 4.0f;
 - (void)setTitle:(NSString *)title
 {
     [self.titleItemLabel setText:title];
-    [self.titleItemLabel sizeToFit];
 }
 
 - (void)setOrientation:(UIInterfaceOrientation)orientation
@@ -163,9 +176,47 @@ static const CGFloat kSCHReadingViewNavigationToolbarShadowHeight = 4.0f;
 {
     if (!titleItem) {
         titleItemLabel = [[UILabel alloc] init];
+        titleItemLabel.font = [UIFont fontWithName:@"Arial-BoldMT" size:20.0f];
+        titleItemLabel.numberOfLines = 2;
+        titleItemLabel.minimumFontSize = 10.0f;
+        titleItemLabel.adjustsFontSizeToFitWidth = YES;
+        titleItemLabel.textAlignment = UITextAlignmentCenter;
         titleItemLabel.backgroundColor = [UIColor clearColor];
         titleItem = [[UIBarButtonItem alloc] initWithCustomView:titleItemLabel];
     }
+    
+    CGRect titleBounds = titleItemLabel.bounds;
+    titleBounds.origin = CGPointZero;
+    
+    if (UIInterfaceOrientationIsPortrait(orientation)) {
+        switch (self.style) {
+            case kSCHReadingViewNavigationToolbarStyleOlderPhone:
+                titleBounds.size.width = 200;
+                break;
+            case kSCHReadingViewNavigationToolbarStyleYoungerPad:
+            case kSCHReadingViewNavigationToolbarStyleYoungerPictureStarterPad:
+            case kSCHReadingViewNavigationToolbarStyleOlderPad:
+                titleBounds.size.width = 320;
+                break;
+            default:
+                break;
+        }
+    } else {
+        switch (self.style) {
+            case kSCHReadingViewNavigationToolbarStyleOlderPhone:
+                titleBounds.size.width = 360;
+                break;
+            case kSCHReadingViewNavigationToolbarStyleYoungerPad:
+            case kSCHReadingViewNavigationToolbarStyleYoungerPictureStarterPad:
+            case kSCHReadingViewNavigationToolbarStyleOlderPad:
+                titleBounds.size.width = 588;
+                break;
+            default:
+                break;
+        }
+    }
+    
+    titleItemLabel.frame = titleBounds;
     
     return titleItem;
 }
@@ -178,17 +229,29 @@ static const CGFloat kSCHReadingViewNavigationToolbarShadowHeight = 4.0f;
         backItem = [[UIBarButtonItem alloc] initWithCustomView:backItemButton];        
     }
         
-    if (UIInterfaceOrientationIsPortrait(orientation)) {
-        [backItemButton setImage:[UIImage imageNamed:@"icon-books.png"] forState:UIControlStateNormal];
-    } else {
-        switch (self.style) {
-            case kSCHReadingViewNavigationToolbarStyleOlderPhone:
-                [backItemButton setImage:[UIImage imageNamed:@"icon-books-landscape.png"] forState:UIControlStateNormal];
-                break;
-            default:
-                [backItemButton setImage:[UIImage imageNamed:@"icon-books.png"] forState:UIControlStateNormal];
-                break;
-        }
+    switch (self.style) {
+        case kSCHReadingViewNavigationToolbarStyleOlderPad:
+            [backItemButton setImage:[UIImage imageNamed:@"icon-back-older.png"] forState:UIControlStateNormal];
+            break;
+        case kSCHReadingViewNavigationToolbarStyleYoungerPad:
+        case kSCHReadingViewNavigationToolbarStyleYoungerPictureStarterPad:
+            [backItemButton setImage:[UIImage imageNamed:@"icon-back-younger.png"] forState:UIControlStateNormal];
+            break;
+        case kSCHReadingViewNavigationToolbarStyleOlderPhone:
+            if (UIInterfaceOrientationIsPortrait(orientation)) {
+                [backItemButton setImage:[UIImage imageNamed:@"icon-back-older-portrait.png"] forState:UIControlStateNormal];
+            } else {
+                [backItemButton setImage:[UIImage imageNamed:@"icon-back-older-landscape.png"] forState:UIControlStateNormal];
+            }
+            break;
+        case kSCHReadingViewNavigationToolbarStyleYoungerPhone:
+        case kSCHReadingViewNavigationToolbarStyleYoungerPictureStarterPhone:
+            if (UIInterfaceOrientationIsPortrait(orientation)) {
+                [backItemButton setImage:[UIImage imageNamed:@"icon-back-younger-portrait.png"] forState:UIControlStateNormal];
+            } else {
+                [backItemButton setImage:[UIImage imageNamed:@"icon-back-younger-landscape.png"] forState:UIControlStateNormal];
+            }
+            break;
     }
     
     return backItem;
@@ -202,17 +265,19 @@ static const CGFloat kSCHReadingViewNavigationToolbarShadowHeight = 4.0f;
         pictureStarterItem = [[UIBarButtonItem alloc] initWithCustomView:pictureStarterItemButton];        
     }
     
-    if (UIInterfaceOrientationIsPortrait(orientation)) {
-        [pictureStarterItemButton setImage:[UIImage imageNamed:@"icon-play.png"] forState:UIControlStateNormal];
-    } else {
-        switch (self.style) {
-            case kSCHReadingViewNavigationToolbarStyleOlderPhone:
-                [pictureStarterItemButton setImage:[UIImage imageNamed:@"icon-play-landscape.png"] forState:UIControlStateNormal];
-                break;
-            default:
-                [pictureStarterItemButton setImage:[UIImage imageNamed:@"icon-play.png"] forState:UIControlStateNormal];
-                break;
-        }
+    switch (self.style) {
+        case kSCHReadingViewNavigationToolbarStyleYoungerPictureStarterPad:
+            [pictureStarterItemButton setImage:[UIImage imageNamed:@"icon-picturestarter-younger.png"] forState:UIControlStateNormal];
+            break;
+        case kSCHReadingViewNavigationToolbarStyleYoungerPictureStarterPhone:
+            if (UIInterfaceOrientationIsPortrait(orientation)) {
+                [pictureStarterItemButton setImage:[UIImage imageNamed:@"icon-picturestarter-younger-portrait.png"] forState:UIControlStateNormal];
+            } else {
+                [pictureStarterItemButton setImage:[UIImage imageNamed:@"icon-picturestarter-younger-landscape.png"] forState:UIControlStateNormal];
+            }
+            break;
+        default:
+            break;
     }
     
     return pictureStarterItem;
@@ -226,17 +291,21 @@ static const CGFloat kSCHReadingViewNavigationToolbarShadowHeight = 4.0f;
         audioItem = [[UIBarButtonItem alloc] initWithCustomView:audioItemButton];        
     }
     
-    if (UIInterfaceOrientationIsPortrait(orientation)) {
-        [audioItemButton setImage:[UIImage imageNamed:@"icon-play.png"] forState:UIControlStateNormal];
-    } else {
-        switch (self.style) {
-            case kSCHReadingViewNavigationToolbarStyleOlderPhone:
-                [audioItemButton setImage:[UIImage imageNamed:@"icon-play-landscape.png"] forState:UIControlStateNormal];
-                break;
-            default:
-                [audioItemButton setImage:[UIImage imageNamed:@"icon-play.png"] forState:UIControlStateNormal];
-                break;
-        }
+    switch (self.style) {
+        case kSCHReadingViewNavigationToolbarStyleYoungerPad:
+        case kSCHReadingViewNavigationToolbarStyleYoungerPictureStarterPad:
+            [audioItemButton setImage:[UIImage imageNamed:@"icon-audio-younger.png"] forState:UIControlStateNormal];
+            break;
+        case kSCHReadingViewNavigationToolbarStyleYoungerPhone:
+        case kSCHReadingViewNavigationToolbarStyleYoungerPictureStarterPhone:
+            if (UIInterfaceOrientationIsPortrait(orientation)) {
+                [audioItemButton setImage:[UIImage imageNamed:@"icon-audio-younger-portrait.png"] forState:UIControlStateNormal];
+            } else {
+                [audioItemButton setImage:[UIImage imageNamed:@"icon-audio-younger-landscape.png"] forState:UIControlStateNormal];
+            }
+            break;
+        default:
+            break;
     }
     
     return audioItem;
@@ -283,6 +352,14 @@ static const CGFloat kSCHReadingViewNavigationToolbarShadowHeight = 4.0f;
     return [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil] autorelease];
 }
 
+- (UIBarButtonItem *)fixedItemOfWidth:(CGFloat)width
+{
+    UIBarButtonItem *item = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil] autorelease];
+    item.width = width;
+    
+    return item;
+}
+
 - (NSArray *)toolbarItemsForOrientation:(UIInterfaceOrientation)orientation
 {
     NSArray *items = nil;
@@ -293,6 +370,7 @@ static const CGFloat kSCHReadingViewNavigationToolbarShadowHeight = 4.0f;
                      [self backItemForOrientation:orientation],
                      [self flexibleItem],
                      [self audioItemForOrientation:orientation],
+                     [self flexibleItem],
                      [self helpItemForOrientation:orientation],
                      nil];
             break;
@@ -301,28 +379,35 @@ static const CGFloat kSCHReadingViewNavigationToolbarShadowHeight = 4.0f;
                      [self backItemForOrientation:orientation],
                      [self flexibleItem],
                      [self pictureStarterItemForOrientation:orientation],
+                     [self flexibleItem],
                      [self audioItemForOrientation:orientation],
+                     [self flexibleItem],
                      [self helpItemForOrientation:orientation],
                      nil];
             break;
         case kSCHReadingViewNavigationToolbarStyleYoungerPad:
             items = [NSArray arrayWithObjects:
                      [self backItemForOrientation:orientation],
+                     [self fixedItemOfWidth:48],
                      [self flexibleItem],
                      [self titleItemForOrientation:orientation],
                      [self flexibleItem],
                      [self audioItemForOrientation:orientation],
+                     [self fixedItemOfWidth:9],
                      [self helpItemForOrientation:orientation],
                      nil];
             break;
         case kSCHReadingViewNavigationToolbarStyleYoungerPictureStarterPad:
             items = [NSArray arrayWithObjects:
                      [self backItemForOrientation:orientation],
+                     [self fixedItemOfWidth:124],
                      [self flexibleItem],
                      [self titleItemForOrientation:orientation],
                      [self flexibleItem],
-                     [self pictureStarterItemForOrientation:orientation],
                      [self audioItemForOrientation:orientation],
+                     [self fixedItemOfWidth:9],
+                     [self pictureStarterItemForOrientation:orientation],
+                     [self fixedItemOfWidth:12],
                      [self helpItemForOrientation:orientation],
                      nil];
             break;
@@ -369,6 +454,34 @@ static const CGFloat kSCHReadingViewNavigationToolbarShadowHeight = 4.0f;
     if ([self.delegate respondsToSelector:@selector(helpAction:)]) {
         [self.delegate helpAction:sender];
     }
+}
+
+- (void)setFontSizeOfMultiLineLabel:(UILabel*)label 
+                         toFitSize:(CGSize)size 
+                    forMaxFontSize:(CGFloat)maxFontSize 
+                    andMinFontSize:(CGFloat)minFontSize 
+          startCharacterWrapAtSize:(CGFloat)characterWrapSize
+{
+    CGRect constraintSize = CGRectMake(0, 0, size.width, 0);
+    label.frame = constraintSize;
+    label.lineBreakMode = UILineBreakModeWordWrap;
+    label.numberOfLines = 0; // allow any number of lines
+    
+    for (int i = maxFontSize; i > minFontSize; i--) {
+        
+        if((i < characterWrapSize) && (label.lineBreakMode == UILineBreakModeWordWrap)){
+            // start over again with lineBreakeMode set to character wrap 
+            i = maxFontSize;
+            label.lineBreakMode = UILineBreakModeCharacterWrap;
+        }
+        
+        label.font = [label.font fontWithSize:i];
+        [label sizeToFit];
+        if(label.frame.size.height < size.height){
+            break;
+        }       
+        label.frame = constraintSize;
+    } 
 }
 
 #pragma mark - Class Methods

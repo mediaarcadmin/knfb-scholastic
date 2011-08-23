@@ -100,13 +100,10 @@ managedObjectContext:(NSManagedObjectContext *)moc
                error:(NSError **)error;
 
 // interface builder
-- (IBAction)toolbarButtonPressed:(id)sender;
 - (IBAction)storyInteractionAction:(id)sender;
 - (IBAction)highlightsAction:(id)sender;
 - (IBAction)notesAction:(id)sender;
 - (IBAction)settingsAction:(UIButton *)sender;
-- (IBAction)audioPlayAction:(id)sender;
 - (IBAction)paperTypeSegmentChanged:(UISegmentedControl *)segControl;
-- (IBAction)pictureStarterPressed:(id)sender;
 
 @end
