@@ -244,4 +244,9 @@
     [CATransaction commit];
 }
 
+- (CGImageRef)image
+{
+    return (CGImageRef)self.paintedLayer.contents;
+}
+
 @end

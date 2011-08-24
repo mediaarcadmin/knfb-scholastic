@@ -6,6 +6,8 @@
 //  Copyright 2011 BitWink. All rights reserved.
 //
 
+#import <AssetsLibrary/AssetsLibrary.h>
+
 #import "SCHStoryInteractionControllerPictureStarter.h"
 #import "SCHPictureStarterDrawingInstruction.h"
 #import "SCHPictureStarterCanvas.h"
@@ -181,6 +183,20 @@ enum SCHToolType {
 
 - (void)saveButtonPressed:(id)sender
 {
+    ALAssetsLibrary *library = [[ALAssetsLibrary alloc] init];
+    [library writeImageToSavedPhotosAlbum:[self.drawingCanvas image]
+                              orientation:ALAssetOrientationUp
+                          completionBlock:^(NSURL *assetURL, NSError *error) {
+                              if (error) {
+                                  UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error", @"Error")
+                                                                                  message:[error localizedDescription]
+                                                                                 delegate:nil
+                                                                        cancelButtonTitle:NSLocalizedString(@"OK", @"OK")
+                                                                        otherButtonTitles:nil];
+                                  [alert show];
+                                  [alert release];
+                              }
+                          }];
 }
 
 - (void)clearButtonPressed:(id)sender

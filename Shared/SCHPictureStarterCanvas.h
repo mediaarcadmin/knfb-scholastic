@@ -17,5 +17,6 @@
 - (void)setBackgroundImage:(UIImage *)backgroundImage;
 - (void)clear;
 
+- (CGImageRef)image;
 
 @end
