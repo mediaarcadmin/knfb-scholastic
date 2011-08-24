@@ -16,6 +16,8 @@
 // Constants
 extern NSString * const kSCHAppContentProfileItem;
 
+extern NSString * const kSCHAppContentProfileItemDRMQualifier;
+extern NSString * const kSCHAppContentProfileItemISBN;
 extern NSString * const kSCHAppContentProfileItemOrder;
 
 @interface SCHAppContentProfileItem : NSManagedObject {
