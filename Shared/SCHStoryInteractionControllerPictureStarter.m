@@ -125,7 +125,6 @@ enum SCHToolType {
 {
     self.contentsView.backgroundColor = [UIColor clearColor];
     [self applyRoundRectStyle:self.drawingCanvas];
-    [self applyRoundRectStyle:self.colorChooser];
     [self applyRoundRectStyle:self.sizeChooser];
 
     [self.drawingCanvas setBackgroundImage:[self drawingBackgroundImage]];
@@ -156,8 +155,9 @@ enum SCHToolType {
     if ([self.colorChooser.superview isKindOfClass:[UIScrollView class]]) {
         UIScrollView *scrollView = (UIScrollView *)self.colorChooser.superview;
         scrollView.contentSize = self.colorChooser.bounds.size;
+    } else {
+        [self applyRoundRectStyle:self.colorChooser];
     }
-
 }
 
 #pragma mark - Sticker chooser delegate

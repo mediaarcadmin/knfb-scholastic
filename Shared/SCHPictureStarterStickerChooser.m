@@ -55,13 +55,15 @@ enum {
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    const BOOL iPad = (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad);
+    
     static NSString * const CellID = @"cell";
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellID];
     if (!cell) {
         cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellID] autorelease];
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         
-        CGRect frame = CGRectInset(cell.bounds, 5, 0);
+        CGRect frame = CGRectInset(cell.bounds, iPad ? 5 : 1, 0);
         SCHPictureStarterStickerChooserThumbnailView *thumbnail = [[SCHPictureStarterStickerChooserThumbnailView alloc] initWithFrame:frame];
         thumbnail.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
         thumbnail.contentMode = UIViewContentModeCenter;

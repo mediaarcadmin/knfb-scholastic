@@ -16,6 +16,7 @@
 
 @interface SCHPictureStarterCanvas ()
 
+@property (nonatomic, assign) CGFloat deviceScale;
 @property (nonatomic, assign) CGPoint pinchPoint;
 @property (nonatomic, assign) CGFloat zoomScale;
 @property (nonatomic, retain) CALayer *backgroundLayer;
@@ -35,6 +36,7 @@
 @implementation SCHPictureStarterCanvas
 
 @synthesize delegate;
+@synthesize deviceScale;
 @synthesize pinchPoint;
 @synthesize zoomScale;
 @synthesize backgroundLayer;
@@ -64,20 +66,22 @@
         [pinch release];
         
         self.zoomScale = 1.0f;
-        
+        self.deviceScale = [[UIScreen mainScreen] scale];
+
         self.backgroundLayer = [CALayer layer];
         self.backgroundLayer.frame = self.bounds;
         self.backgroundLayer.position = CGPointMake(CGRectGetMidX(self.bounds), CGRectGetMidY(self.bounds));
         [self.layer addSublayer:self.backgroundLayer];
         
         self.paintedLayer = [CALayer layer];
-        self.paintedLayer.frame = self.bounds;
+        self.paintedLayer.frame = self.backgroundLayer.bounds;
         self.paintedLayer.position = self.backgroundLayer.position;
         [self.layer addSublayer:self.paintedLayer];
         
         self.liveLayer = [CALayer layer];
-        self.liveLayer.frame = self.bounds;
+        self.liveLayer.frame = self.backgroundLayer.bounds;
         self.liveLayer.position = self.backgroundLayer.position;
+        self.liveLayer.contentsScale = self.deviceScale;
         [self.layer addSublayer:self.liveLayer];
 
         [self createPaintContext];
@@ -88,9 +92,10 @@
 - (void)createPaintContext
 {
     CGColorSpaceRef colorSpace = CGColorSpaceCreateDeviceRGB();
-    self.paintContext = CGBitmapContextCreate(NULL, CGRectGetWidth(self.bounds), CGRectGetHeight(self.bounds),
-                                              8, 4*CGRectGetWidth(self.bounds), colorSpace, kCGImageAlphaPremultipliedLast);
+    self.paintContext = CGBitmapContextCreate(NULL, CGRectGetWidth(self.bounds)*self.deviceScale, CGRectGetHeight(self.bounds)*self.deviceScale,
+                                              8, 4*CGRectGetWidth(self.bounds)*self.deviceScale, colorSpace, kCGImageAlphaPremultipliedLast);
     CGColorSpaceRelease(colorSpace);
+    CGContextConcatCTM(self.paintContext, CGAffineTransformMakeScale(self.deviceScale, self.deviceScale));
     CGContextSaveGState(self.paintContext);
     
     self.paintedLayer.contents = nil;
@@ -114,10 +119,13 @@
 
 - (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
 {
+    // draw smaller on a smaller (i.e. iPhone) canvas
+    const CGFloat sizeScale = (CGRectGetWidth(self.bounds) > 400) ? 1.0f : 2.0f;
+    
     if ([touches count] == 1) {
         // single touch = create new drawing instruction
         self.currentInstruction = [self.delegate drawingInstruction];
-        [self.currentInstruction setScale:self.zoomScale];
+        [self.currentInstruction setScale:self.zoomScale*sizeScale];
         [self.currentInstruction updatePosition:[self touchPoint:touches]];
         self.liveLayer.delegate = self.currentInstruction;
         [self.liveLayer setNeedsDisplay];
