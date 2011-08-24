@@ -151,6 +151,13 @@ enum SCHToolType {
     // TODO uses indices rather than actual values for size
     self.lastSelectedSize = 8;
     self.sizeChooser.selectedSize = self.lastSelectedSize;
+    
+    // color chooser is in a scroller on iPhone
+    if ([self.colorChooser.superview isKindOfClass:[UIScrollView class]]) {
+        UIScrollView *scrollView = (UIScrollView *)self.colorChooser.superview;
+        scrollView.contentSize = self.colorChooser.bounds.size;
+    }
+
 }
 
 #pragma mark - Sticker chooser delegate
