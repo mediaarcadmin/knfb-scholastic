@@ -11,6 +11,7 @@
 #import "SCHStoryInteractionJigsawPreviewView.h"
 #import "SCHDragFromScrollViewGestureRecognizer.h"
 #import "NSArray+Shuffling.h"
+#import "NSArray+ViewSorting.h"
 
 enum {
     kPieceMargin = 5,
@@ -25,6 +26,7 @@ enum {
 
 - (void)beginDragFromView:(SCHStoryInteractionJigsawPieceView_iPhone *)sourceView point:(CGPoint)point;
 - (void)endDrag;
+- (void)coalescePiecesInScroller;
 
 @end
 
@@ -63,12 +65,12 @@ enum {
         [positions addObject:[NSValue valueWithCGPoint:CGPointMake(x, y)]];
         y += kPieceHeightInScroller;
     }
-    return [positions shuffled];
+    return positions;
 }
 
 - (void)setupPuzzlePiecesForInteractionFromPreview:(SCHStoryInteractionJigsawPreviewView *)preview
 {
-    NSArray *homePositions = [self homePositionsInScroller];
+    NSArray *homePositions = [[self homePositionsInScroller] shuffled];
     NSInteger pieceIndex = 0;
     CGFloat maxPieceWidth = 0, maxPieceHeight = 0;
     for (SCHStoryInteractionJigsawPieceView_iPhone *piece in self.jigsawPieceViews) {
@@ -115,6 +117,7 @@ enum {
                              piece.center = piece.homePosition;
                              piece.alpha = 1;
                          }
+                         self.jigsawPieceViews = [self.jigsawPieceViews viewsSortedVertically];
                          self.puzzlePieceScroller.contentSize = CGSizeMake(CGRectGetWidth(self.puzzlePieceScroller.bounds),
                                                                            kPieceHeightInScroller*self.numberOfPieces);
                      }];
@@ -182,6 +185,7 @@ enum {
         self.dragSourcePiece.center = self.dragSourcePiece.solutionPosition;
         self.dragSourcePiece.alpha = 1;
         self.dragSourcePiece = nil;
+        [self coalescePiecesInScroller];
         [self checkForCompletion];
     } else {
         [self enqueueAudioWithPath:@"sfx_dropNo.mp3" fromBundle:YES];
@@ -200,7 +204,35 @@ enum {
                              self.dragSourcePiece = nil;
                          }];
     }
+}
+
+- (void)coalescePiecesInScroller
+{
+    NSMutableArray *remainingPieces = [NSMutableArray array];
+    NSArray *homePositions = [self homePositionsInScroller];
     
+    for (SCHStoryInteractionJigsawPieceView_iPhone *piece in self.jigsawPieceViews) {
+        if (![piece isInCorrectPosition]) {
+            NSInteger pieceIndex = [remainingPieces count];
+            piece.homePosition = [[homePositions objectAtIndex:pieceIndex] CGPointValue];
+            [remainingPieces addObject:piece];
+        }
+    }
+    
+    self.jigsawPieceViews = [NSArray arrayWithArray:remainingPieces];
+    
+    [UIView animateWithDuration:0.25
+                     animations:^{
+                         [self.jigsawPieceViews makeObjectsPerformSelector:@selector(moveToHomePosition)];
+                         CGFloat height = kPieceHeightInScroller*[self.jigsawPieceViews count];
+                         if (height > CGRectGetHeight(self.puzzlePieceScroller.bounds)) {
+                             CGFloat maxOffset = height - CGRectGetHeight(self.puzzlePieceScroller.bounds);
+                             if (self.puzzlePieceScroller.contentOffset.y > maxOffset) {
+                                 [self.puzzlePieceScroller setContentOffset:CGPointMake(0, maxOffset) animated:NO];
+                             }
+                             self.puzzlePieceScroller.contentSize = CGSizeMake(CGRectGetWidth(self.puzzlePieceScroller.bounds), height);
+                         }
+                     }];
 }
 
 @end

@@ -55,4 +55,9 @@
     return SCHCGPointDistanceSq(self.center, self.solutionPosition) < kSnapDistanceSq;
 }
 
+- (void)moveToHomePosition
+{
+    self.center = self.homePosition;
+}
+
 @end

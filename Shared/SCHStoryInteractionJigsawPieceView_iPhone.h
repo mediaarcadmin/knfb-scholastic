@@ -13,4 +13,6 @@
 
 @property (nonatomic, assign) CGPoint homePosition;
 
+- (void)moveToHomePosition;
+
 @end
