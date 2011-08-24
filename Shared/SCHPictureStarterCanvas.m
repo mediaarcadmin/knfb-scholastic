@@ -178,6 +178,7 @@
         case UIGestureRecognizerStateBegan:
             self.pinchPoint = [pinch locationInView:self];
             self.pinchSmoother = [SCHGestureSmoother smoother];
+            [self.pinchSmoother addPoint:[pinch locationInView:self]];
             break;
         case UIGestureRecognizerStateChanged:
             [self.pinchSmoother addPoint:[pinch locationInView:self]];
@@ -202,18 +203,21 @@
 
 - (CGFloat)updateZoom:(CGFloat)scale point:(CGPoint)point
 {
-    scale = MIN(10.0f, self.zoomScale*scale);
-    if (scale < 1.0f) {
-        scale = 1.0f;
-        point = self.pinchPoint;
+    CGFloat absoluteScale = MIN(10.0f, self.zoomScale*scale);
+    CGPoint translatePoint;
+    if (absoluteScale < 1.0f) {
+        absoluteScale = 1.0f;
+        translatePoint = self.pinchPoint;
+    } else {
+        translatePoint = CGPointMake(point.x*absoluteScale, point.y*absoluteScale);
     }
     
     CGAffineTransform t1 = CGAffineTransformMakeTranslation(-self.pinchPoint.x, -self.pinchPoint.y);
-    CGAffineTransform t2 = CGAffineTransformMakeScale(scale, scale);
-    CGAffineTransform t3 = CGAffineTransformMakeTranslation(point.x*scale, point.y*scale);
+    CGAffineTransform t2 = CGAffineTransformMakeScale(absoluteScale, absoluteScale);
+    CGAffineTransform t3 = CGAffineTransformMakeTranslation(translatePoint.x, translatePoint.y);
     self.transform = CGAffineTransformConcat(CGAffineTransformConcat(t1, t2), t3);
     
-    return scale;
+    return absoluteScale;
 }
 
 #pragma mark - Painting
