@@ -868,9 +868,6 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     
     [self toolbarButtonPressed];
     
-    UIButton *audioPlayButton = (UIButton *)sender;
-    [audioPlayButton setSelected:![audioPlayButton isSelected]];
-    
     NSUInteger layoutPage = 0;
     NSUInteger pageWordOffset = 0;
     [self.readingView currentLayoutPage:&layoutPage pageWordOffset:&pageWordOffset];
