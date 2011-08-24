@@ -114,8 +114,6 @@
 
 - (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
 {
-    NSLog(@"began");
-    
     if ([touches count] == 1) {
         // single touch = create new drawing instruction
         self.currentInstruction = [self.delegate drawingInstruction];
@@ -143,8 +141,6 @@
 
 - (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event
 {
-    NSLog(@"ended");
-    
     if (self.currentInstruction) {
         [self.currentInstruction updatePosition:[self touchPoint:touches]];
         [self commitDrawingInstruction:self.currentInstruction];

@@ -13,8 +13,9 @@ enum {
     kGap = 3,
     kInsetX = 8,
     kInsetY = 8,
-    kNumberOfColumns = 4,
-    kSelectionStrokeWidth = 4
+    kNumberOfColumns_iPad = 4,
+    kNumberOfColumns_iPhone = 2,
+    kSelectionStrokeWidth = 4,
 };
 
 @interface SCHPictureStarterColorChooser ()
@@ -85,8 +86,10 @@ enum {
 
 - (void)drawRect:(CGRect)rect
 {
+    const BOOL iPad = (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad);
+    
     CGContextRef context = UIGraphicsGetCurrentContext();
-    NSInteger cols = kNumberOfColumns;
+    NSInteger cols = iPad ? kNumberOfColumns_iPad : kNumberOfColumns_iPhone;
     NSInteger rows = [self.colors count] / cols;
     NSInteger index = 0;
     self.paintSize = CGSizeMake(floorf((CGRectGetWidth(self.bounds)-kInsetX*2+kGap)/cols-kGap),
@@ -123,11 +126,14 @@ enum {
 
 - (void)handleTap:(UITapGestureRecognizer *)tap
 {
+    const BOOL iPad = (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad);
+    const NSInteger numberOfColumns = iPad ? kNumberOfColumns_iPad : kNumberOfColumns_iPhone;
+
     CGPoint p = [tap locationInView:self];
     NSInteger col = (p.x-kInsetX) / (self.paintSize.width+kGap);
     NSInteger row = (p.y-kInsetY) / (self.paintSize.height+kGap);
-    if (0 <= col && col < kNumberOfColumns && 0 <= row && row < ([self.colors count]/kNumberOfColumns)) {
-        self.selectedColorIndex = row*kNumberOfColumns+col;
+    if (0 <= col && col < numberOfColumns && 0 <= row && row < ([self.colors count]/numberOfColumns)) {
+        self.selectedColorIndex = row*numberOfColumns+col;
     }
 }
 
