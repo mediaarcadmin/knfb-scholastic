@@ -114,7 +114,7 @@ static CGFloat const kSCHStoryInteractionControllerCloseBorderWidth = 1.5;
         self.borderView.layer.borderColor = [[UIColor SCHBlue2Color] CGColor];    
     }                
     
-    self.playButton.play = YES; // We always want help to start playing
+    [self.playButton setPlay:YES animated:NO]; // We always want help to start playing
     
     self.playButton.actionBlock = ^(SCHPlayButton *button) {
         if (button.play == YES) {

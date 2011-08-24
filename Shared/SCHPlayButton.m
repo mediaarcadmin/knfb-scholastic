@@ -92,6 +92,11 @@
 
 - (void)setPlay:(BOOL)setPlay
 {
+    [self setPlay:setPlay animated:YES];
+}
+
+- (void)setPlay:(BOOL)setPlay animated:(BOOL)animated
+{
     if (play != setPlay) {
         play = setPlay;
         if (play == NO) {
@@ -99,7 +104,8 @@
             self.backgroundColor = [UIColor clearColor];
             self.alpha = 0.0;
         }
-        [UIView animateWithDuration:0.3 delay:0.0 options:UIViewAnimationOptionCurveEaseOut | UIViewAnimationOptionAllowUserInteraction animations:^ {
+        
+        void (^toggle)(void) = ^ {
             if (play == YES) {
                 self.alpha = 0.0;    
                 self.backgroundColor = [UIColor clearColor];
@@ -107,13 +113,20 @@
                 self.alpha = 1.0;
                 self.backgroundColor = self.tintedBackgroundColor;
             }
-        } completion:^(BOOL finished){
-            if (play == YES) {
-                self.alpha = 1.0;
-                self.backgroundColor = [UIColor clearColor];
-                self.icon = SCHPlayButtonIconNone;
-            }
-        }];
+        };
+        
+        if (animated) {
+            [UIView animateWithDuration:0.3 delay:0.0 options:UIViewAnimationOptionCurveEaseOut | UIViewAnimationOptionAllowUserInteraction animations:toggle completion:^(BOOL finished){
+                if (play == YES) {
+                    self.alpha = 1.0;
+                    self.backgroundColor = [UIColor clearColor];
+                    self.icon = SCHPlayButtonIconNone;
+                }
+            }];
+        } else {
+            toggle();
+        }
+        
         if (self.actionBlock != nil) {
             self.actionBlock(self);
         }

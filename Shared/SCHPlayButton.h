@@ -26,4 +26,6 @@ typedef void (^PlayButtonActionBlock)(SCHPlayButton *playButton);
 @property (nonatomic, assign) SCHPlayButtonIcon icon;
 @property (nonatomic, copy) PlayButtonActionBlock actionBlock;
 
+- (void)setPlay:(BOOL)setPlay animated:(BOOL)animated;
+
 @end
