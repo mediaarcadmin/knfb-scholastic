@@ -125,7 +125,10 @@ NSString * const kSCHProfileItemDRM_QUALIFIER = @"DRM_QUALIFIER";
         
         // order the books
         if ([self.AppContentProfileItem count] > 0) {
-            NSArray *bookOrder = [self.AppContentProfileItem sortedArrayUsingDescriptors:[NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:kSCHAppContentProfileItemOrder ascending:YES]]];
+            NSArray *bookOrder = [self.AppContentProfileItem sortedArrayUsingDescriptors:
+                                  [NSArray arrayWithObjects:[NSSortDescriptor sortDescriptorWithKey:kSCHAppContentProfileItemOrder ascending:YES], 
+                                   [NSSortDescriptor sortDescriptorWithKey:kSCHAppContentProfileItemISBN ascending:YES], 
+                                   [NSSortDescriptor sortDescriptorWithKey:kSCHAppContentProfileItemDRMQualifier ascending:YES], nil]];
             for (int i = 0; i < [bookOrder count]; i++) {
                 SCHAppContentProfileItem *appContentProfileItem = [bookOrder objectAtIndex:i];
                 

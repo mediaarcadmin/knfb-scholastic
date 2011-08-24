@@ -46,8 +46,8 @@ enum {
                        [UIColor SCHGray2Color],
                        [UIColor SCHRed4Color],
                        [UIColor SCHRed2Color],
-                       [UIColor SCHPurple1Color], // pale pink
-                       [UIColor SCHPurple2Color], // deep pink
+                       [UIColor colorWithRed:0.988 green:0.839 blue:1.000 alpha:1.], // pale pink
+                       [UIColor colorWithRed:0.957 green:0.059 blue:0.659 alpha:1.], // deep pink
                        [UIColor SCHGreen1Color],
                        [UIColor SCHGreen2Color],
                        [UIColor SCHLightBlue1Color],
