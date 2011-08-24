@@ -581,6 +581,8 @@
 		52C7F8731377DEE800DB08C9 /* SCHAppState.m in Sources */ = {isa = PBXBuildFile; fileRef = 52C7F8711377DEE800DB08C9 /* SCHAppState.m */; };
 		52D438E013F521EE00D51FDA /* SCH3DView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2866314313F03C140092A5DE /* SCH3DView.m */; };
 		52D612B812E4650B0033DA92 /* NSNumber+ObjectTypes.m in Sources */ = {isa = PBXBuildFile; fileRef = 52D612B712E4650B0033DA92 /* NSNumber+ObjectTypes.m */; };
+		52D6D3851403EC6900962FC6 /* SCHPopulateDataStore.m in Sources */ = {isa = PBXBuildFile; fileRef = 52D6D3841403EC6900962FC6 /* SCHPopulateDataStore.m */; };
+		52D6D3861404FB0600962FC6 /* SCHPopulateDataStore.m in Sources */ = {isa = PBXBuildFile; fileRef = 52D6D3841403EC6900962FC6 /* SCHPopulateDataStore.m */; };
 		52DAE4F813ABA0970003560E /* popoverTick.png in Resources */ = {isa = PBXBuildFile; fileRef = 52DAE4F713ABA0970003560E /* popoverTick.png */; };
 		52DAE4F913ABA0970003560E /* popoverTick.png in Resources */ = {isa = PBXBuildFile; fileRef = 52DAE4F713ABA0970003560E /* popoverTick.png */; };
 		52DAE4FB13ABA3DD0003560E /* popoverTickLight.png in Resources */ = {isa = PBXBuildFile; fileRef = 52DAE4FA13ABA3DD0003560E /* popoverTickLight.png */; };
@@ -1754,8 +1756,6 @@
 		F837C6B212F179AE00833448 /* SCHUserContentItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 52298A6812F0EF5600BBBCE6 /* SCHUserContentItem.m */; };
 		F837C6B312F179AF00833448 /* SCHUserSettingsItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 52298A6012F0EF5600BBBCE6 /* SCHUserSettingsItem.m */; };
 		F837C6B412F179B100833448 /* SCHWordIndex.m in Sources */ = {isa = PBXBuildFile; fileRef = 52298A6C12F0EF5600BBBCE6 /* SCHWordIndex.m */; };
-		F83D86B512FC070F00227031 /* SCHLocalDebugXPSReader.m in Sources */ = {isa = PBXBuildFile; fileRef = F83D86B412FC070F00227031 /* SCHLocalDebugXPSReader.m */; };
-		F83D86BE12FC60C600227031 /* SCHLocalDebugXPSReader.m in Sources */ = {isa = PBXBuildFile; fileRef = F83D86B412FC070F00227031 /* SCHLocalDebugXPSReader.m */; };
 		F83D874612FC67A400227031 /* SCHSyncManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 52AD9ACE12FC0EEF0099FB88 /* SCHSyncManager.m */; };
 		F83D874712FC67A600227031 /* SCHSyncComponent.m in Sources */ = {isa = PBXBuildFile; fileRef = 52AD9B1B12FC1B6B0099FB88 /* SCHSyncComponent.m */; };
 		F84CE156134C691D0044729E /* SCHNonDRMAuthenticationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = F84CE155134C691D0044729E /* SCHNonDRMAuthenticationManager.m */; };
@@ -2640,6 +2640,8 @@
 		52C7F8711377DEE800DB08C9 /* SCHAppState.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHAppState.m; path = Shared/SCHAppState.m; sourceTree = "<group>"; };
 		52D612B612E4650B0033DA92 /* NSNumber+ObjectTypes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSNumber+ObjectTypes.h"; path = "Shared/NSNumber+ObjectTypes.h"; sourceTree = "<group>"; };
 		52D612B712E4650B0033DA92 /* NSNumber+ObjectTypes.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSNumber+ObjectTypes.m"; path = "Shared/NSNumber+ObjectTypes.m"; sourceTree = "<group>"; };
+		52D6D3831403EC6900962FC6 /* SCHPopulateDataStore.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHPopulateDataStore.h; path = Shared/SCHPopulateDataStore.h; sourceTree = "<group>"; };
+		52D6D3841403EC6900962FC6 /* SCHPopulateDataStore.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHPopulateDataStore.m; path = Shared/SCHPopulateDataStore.m; sourceTree = "<group>"; };
 		52DAE4F713ABA0970003560E /* popoverTick.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = popoverTick.png; path = Resources/popoverTick.png; sourceTree = "<group>"; };
 		52DAE4FA13ABA3DD0003560E /* popoverTickLight.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = popoverTickLight.png; path = Resources/popoverTickLight.png; sourceTree = "<group>"; };
 		52DAE4FD13ABA51A0003560E /* popoverTick@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "popoverTick@2x.png"; path = "Resources/popoverTick@2x.png"; sourceTree = "<group>"; };
@@ -3459,8 +3461,6 @@
 		F83701AD13BC73BE009B280D /* BookShelfModeGridInactive~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "BookShelfModeGridInactive~iphone.png"; path = "Resources/BookShelfModeGridInactive~iphone.png"; sourceTree = "<group>"; };
 		F83701AE13BC73BE009B280D /* BookShelfModeListActive~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "BookShelfModeListActive~iphone.png"; path = "Resources/BookShelfModeListActive~iphone.png"; sourceTree = "<group>"; };
 		F83701AF13BC73BE009B280D /* BookShelfModeListInactive~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "BookShelfModeListInactive~iphone.png"; path = "Resources/BookShelfModeListInactive~iphone.png"; sourceTree = "<group>"; };
-		F83D86B312FC070F00227031 /* SCHLocalDebugXPSReader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHLocalDebugXPSReader.h; path = Shared/SCHLocalDebugXPSReader.h; sourceTree = "<group>"; };
-		F83D86B412FC070F00227031 /* SCHLocalDebugXPSReader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHLocalDebugXPSReader.m; path = Shared/SCHLocalDebugXPSReader.m; sourceTree = "<group>"; };
 		F84CE154134C691D0044729E /* SCHNonDRMAuthenticationManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHNonDRMAuthenticationManager.h; path = Shared/SCHNonDRMAuthenticationManager.h; sourceTree = "<group>"; };
 		F84CE155134C691D0044729E /* SCHNonDRMAuthenticationManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHNonDRMAuthenticationManager.m; path = Shared/SCHNonDRMAuthenticationManager.m; sourceTree = "<group>"; };
 		F8509E9A12F0621E00197EB5 /* SCHScrubberView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCHScrubberView.h; sourceTree = "<group>"; };
@@ -4499,7 +4499,6 @@
 				5293872912DF436100045B44 /* Web Services */,
 				5250C4AB12DE075C00542055 /* Core Data Models */,
 				F8678D88133216E7001FDB2F /* Configuration */,
-				F8509E7512F0620D00197EB5 /* Debug Books */,
 				528A2CCE12CCDC380053A343 /* Audio */,
 				528A2CCF12CCDC400053A343 /* Resources */,
 				528A2CFE12CCFD050053A343 /* Libraries */,
@@ -4711,6 +4710,7 @@
 		528A2CCF12CCDC400053A343 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				F8509E7512F0620D00197EB5 /* Debug Books */,
 				F806563013FEAFF200DFAE43 /* Options View */,
 				528C616413FAAA9D00D033F8 /* Help */,
 				52AFC2B013F167370016C4A1 /* Scholastic_Sample.sqlite */,
@@ -4965,6 +4965,8 @@
 			children = (
 				52AD9ACD12FC0EEF0099FB88 /* SCHSyncManager.h */,
 				52AD9ACE12FC0EEF0099FB88 /* SCHSyncManager.m */,
+				52D6D3831403EC6900962FC6 /* SCHPopulateDataStore.h */,
+				52D6D3841403EC6900962FC6 /* SCHPopulateDataStore.m */,
 				52AD9B1A12FC1B6B0099FB88 /* SCHSyncComponent.h */,
 				52AD9B1B12FC1B6B0099FB88 /* SCHSyncComponent.m */,
 				52AD9D9813000CAA0099FB88 /* SCHSyncComponentProtected.h */,
@@ -5891,8 +5893,6 @@
 				A334780013DF206000768DC6 /* 9780545366779.2.MazeOfBones.xps */,
 				5296F99D13FE7B4F009532F3 /* 9780545368896_r1.TheHiddenStairs.jpg */,
 				A334780113DF206000768DC6 /* 9780545368896_r1.TheHiddenStairs.xps */,
-				F83D86B312FC070F00227031 /* SCHLocalDebugXPSReader.h */,
-				F83D86B412FC070F00227031 /* SCHLocalDebugXPSReader.m */,
 			);
 			name = "Debug Books";
 			sourceTree = "<group>";
@@ -7773,7 +7773,6 @@
 				5200EFF512F6D00B00BAC355 /* SCHeReaderCategories.m in Sources */,
 				52AD966E12F9B1B40099FB88 /* SCHAnnotationsItem.m in Sources */,
 				F81B3A8612FAADB000A20D52 /* SCHBookManager.m in Sources */,
-				F83D86B512FC070F00227031 /* SCHLocalDebugXPSReader.m in Sources */,
 				52AD9ACF12FC0EEF0099FB88 /* SCHSyncManager.m in Sources */,
 				52AD9B1C12FC1B6B0099FB88 /* SCHSyncComponent.m in Sources */,
 				52AD9D6F130000570099FB88 /* SCHAnnotationSyncComponent.m in Sources */,
@@ -8005,6 +8004,7 @@
 				286F30CA1402C15B00051CBC /* SCHPictureStarterStickerChooserThumbnailView.m in Sources */,
 				2861EE2C1403DC2F00B5EB3D /* SCHPictureStarterDrawingInstruction.m in Sources */,
 				28789AAD140417BA00910D31 /* SCHGestureSmoother.m in Sources */,
+				52D6D3861404FB0600962FC6 /* SCHPopulateDataStore.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -8115,7 +8115,6 @@
 				F8CD24F612F97E62001C748B /* SCHBookManager.m in Sources */,
 				52AD966B12F9B1B40099FB88 /* SCHAnnotationsItem.m in Sources */,
 				F81B3A7F12FAAD8E00A20D52 /* SCHNote.m in Sources */,
-				F83D86BE12FC60C600227031 /* SCHLocalDebugXPSReader.m in Sources */,
 				F83D874612FC67A400227031 /* SCHSyncManager.m in Sources */,
 				F83D874712FC67A600227031 /* SCHSyncComponent.m in Sources */,
 				52E332E413018EDF002F3011 /* SCHComponent.m in Sources */,
@@ -8347,6 +8346,7 @@
 				286F30CB1402C15B00051CBC /* SCHPictureStarterStickerChooserThumbnailView.m in Sources */,
 				2861EE2D1403DC2F00B5EB3D /* SCHPictureStarterDrawingInstruction.m in Sources */,
 				28789AAE140417BA00910D31 /* SCHGestureSmoother.m in Sources */,
+				52D6D3851403EC6900962FC6 /* SCHPopulateDataStore.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
