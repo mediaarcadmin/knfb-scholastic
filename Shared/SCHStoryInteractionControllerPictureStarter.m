@@ -86,6 +86,11 @@ enum SCHToolType {
     return NO;
 }
 
+- (BOOL)shouldAnimateTransitionBetweenViews
+{
+    return NO;
+}
+
 - (void)setUserInteractionState:(BOOL)state
 {
     self.drawingCanvas.userInteractionEnabled = state;
