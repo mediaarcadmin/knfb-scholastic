@@ -148,6 +148,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 
 - (void)positionCoverCornerViewForOrientation:(UIInterfaceOrientation)newOrientation;
 - (void)dismissCoverCornerViewWithAnimation:(BOOL)animated;
+- (void)checkCornerAudioButtonVisibilityWithAnimation:(BOOL)animated;
 
 @end
 
@@ -193,6 +194,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 @synthesize storyInteractionButton;
 @synthesize storyInteractionButtonView;
 @synthesize toolbarToggleView;
+@synthesize cornerAudioButtonView;
 @synthesize notesButton;
 @synthesize storyInteractionsListButton;
 @synthesize pageSlider;
@@ -273,6 +275,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     [storyInteractionButton release], storyInteractionButton = nil;
     [storyInteractionButtonView release], storyInteractionButtonView = nil;
     [toolbarToggleView release], toolbarToggleView = nil;
+    [cornerAudioButtonView release], cornerAudioButtonView = nil;
     [optionsPhoneTopBackground release], optionsPhoneTopBackground = nil;
     
     [originalButtons release], originalButtons = nil;
@@ -862,7 +865,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     [self presentStoryInteraction:pictureStarter];
 }
 
-- (void)audioAction:(id)sender
+- (IBAction)audioAction:(id)sender
 {
     NSLog(@"Audio Play action");
     
@@ -925,6 +928,8 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     if (self.optionsView.superview) {
         [self.optionsView removeFromSuperview];
     }    
+    
+    [self checkCornerAudioButtonVisibilityWithAnimation:YES];
 }
 
 #pragma mark -
@@ -1859,6 +1864,8 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     if (self.toolbarsVisible && !self.initialFadeTimer && !changingFromOptionsView) {
         [self setToolbarVisibility:NO animated:YES];
     }
+    
+    [self checkCornerAudioButtonVisibilityWithAnimation:YES];
 }
 
 - (void)readingView:(SCHReadingView *)aReadingView hasMovedToPageAtIndex:(NSUInteger)pageIndex
@@ -2217,11 +2224,13 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     if (self.toolbarsVisible) {
 		[[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationFade];
         self.toolbarToggleView.alpha = 0.0f;
+        self.cornerAudioButtonView.alpha = 0.0f;
         [self.readingView dismissReadingViewAdornments];
 
 	} else {
 		[[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationFade];
         self.toolbarToggleView.alpha = 1.0f;
+        [self checkCornerAudioButtonVisibilityWithAnimation:YES];
 	}
     
 
@@ -2617,6 +2626,32 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     }
 }
 
+- (void)checkCornerAudioButtonVisibilityWithAnimation:(BOOL)animated
+{
+    // only show on the first page, if toolbars are not visible and the audio isn't already playing (and it's in younger mode!)
+    BOOL shouldShow = (self.currentPageIndex == 0 && !self.toolbarsVisible && !self.audioBookPlayer.playing && self.youngerMode);
+    float buttonAlpha = 0.0f;
+    
+    if (shouldShow) {
+        buttonAlpha = 1.0f;
+    }
+
+    // don't try to change alpha if it's already set
+    if (self.cornerAudioButtonView.alpha != buttonAlpha) {
+    
+        if (!animated) {
+            self.cornerAudioButtonView.alpha = buttonAlpha;
+        } else {
+            [UIView animateWithDuration:0.3 
+                                  delay:0
+                                options:UIViewAnimationOptionAllowUserInteraction
+                             animations:^{
+                                 self.cornerAudioButtonView.alpha = buttonAlpha;
+                             }
+                             completion:nil];
+        }
+    }
+}
 
 
 @end
