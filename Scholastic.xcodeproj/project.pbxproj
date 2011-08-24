@@ -1122,6 +1122,10 @@
 		C95ECB50133A77F800D88768 /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C95ECB48133A770B00D88768 /* OpenGLES.framework */; };
 		C95ECB51133A77FA00D88768 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C95ECB46133A76DE00D88768 /* QuartzCore.framework */; };
 		C95ECB52133A77FC00D88768 /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C95ECB44133A76C400D88768 /* Accelerate.framework */; };
+		C9613DDD1405359A00AE1F8C /* icon-audio-younger-small.png in Resources */ = {isa = PBXBuildFile; fileRef = C9613DDB1405359A00AE1F8C /* icon-audio-younger-small.png */; };
+		C9613DDE1405359A00AE1F8C /* icon-audio-younger-small.png in Resources */ = {isa = PBXBuildFile; fileRef = C9613DDB1405359A00AE1F8C /* icon-audio-younger-small.png */; };
+		C9613DDF1405359A00AE1F8C /* icon-audio-younger-small@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C9613DDC1405359A00AE1F8C /* icon-audio-younger-small@2x.png */; };
+		C9613DE01405359A00AE1F8C /* icon-audio-younger-small@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C9613DDC1405359A00AE1F8C /* icon-audio-younger-small@2x.png */; };
 		C9703A6313E9617F0003C4D8 /* bookshelf-bottom-shadow.png in Resources */ = {isa = PBXBuildFile; fileRef = C9703A5313E9617F0003C4D8 /* bookshelf-bottom-shadow.png */; };
 		C9703A6413E9617F0003C4D8 /* bookshelf-bottom-shadow.png in Resources */ = {isa = PBXBuildFile; fileRef = C9703A5313E9617F0003C4D8 /* bookshelf-bottom-shadow.png */; };
 		C9703A6513E9617F0003C4D8 /* bookshelf-top-shadow.png in Resources */ = {isa = PBXBuildFile; fileRef = C9703A5413E9617F0003C4D8 /* bookshelf-top-shadow.png */; };
@@ -3131,6 +3135,8 @@
 		C95ECB46133A76DE00D88768 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		C95ECB48133A770B00D88768 /* OpenGLES.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGLES.framework; path = System/Library/Frameworks/OpenGLES.framework; sourceTree = SDKROOT; };
 		C95ECB4C133A77A500D88768 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
+		C9613DDB1405359A00AE1F8C /* icon-audio-younger-small.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "icon-audio-younger-small.png"; path = "Resources/icon-audio-younger-small.png"; sourceTree = "<group>"; };
+		C9613DDC1405359A00AE1F8C /* icon-audio-younger-small@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "icon-audio-younger-small@2x.png"; path = "Resources/icon-audio-younger-small@2x.png"; sourceTree = "<group>"; };
 		C9703A5313E9617F0003C4D8 /* bookshelf-bottom-shadow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "bookshelf-bottom-shadow.png"; path = "Resources/UIAssets/bookshelf-bottom-shadow.png"; sourceTree = "<group>"; };
 		C9703A5413E9617F0003C4D8 /* bookshelf-top-shadow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "bookshelf-top-shadow.png"; path = "Resources/UIAssets/bookshelf-top-shadow.png"; sourceTree = "<group>"; };
 		C9703A5513E9617F0003C4D8 /* bookshelf-right-shadow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "bookshelf-right-shadow.png"; path = "Resources/UIAssets/bookshelf-right-shadow.png"; sourceTree = "<group>"; };
@@ -4811,6 +4817,8 @@
 				C92EB9011403F43B00832B31 /* icon-picturestarter-younger-landscape@2x~iphone.png */,
 				F83468061404FF2600D09F0E /* show-tools@2x.png */,
 				F83468071404FF2A00D09F0E /* show-tools.png */,
+				C9613DDB1405359A00AE1F8C /* icon-audio-younger-small.png */,
+				C9613DDC1405359A00AE1F8C /* icon-audio-younger-small@2x.png */,
 				C93ECB29134B64B1003B99FD /* libKNFBReader Resources */,
 				C93ECA2C134B5EF9003B99FD /* libEucalyptus Resources */,
 				C908D87F133F941100661718 /* PlaceholderBook.png */,
@@ -7050,6 +7058,8 @@
 				28789AD91404FE7900910D31 /* SCHStoryInteractionPictureStarterFavorite~ipad.xib in Resources */,
 				28789ADB1404FE7900910D31 /* SCHStoryInteractionPictureStarterFavorite~iphone.xib in Resources */,
 				28789ADE1404FFA600910D31 /* SCHStoryInteractionPictureStarterCustom~iphone.xib in Resources */,
+				C9613DDD1405359A00AE1F8C /* icon-audio-younger-small.png in Resources */,
+				C9613DDF1405359A00AE1F8C /* icon-audio-younger-small@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -7757,6 +7767,8 @@
 				28789ADA1404FE7900910D31 /* SCHStoryInteractionPictureStarterFavorite~ipad.xib in Resources */,
 				28789ADC1404FE7900910D31 /* SCHStoryInteractionPictureStarterFavorite~iphone.xib in Resources */,
 				28789ADF1404FFA600910D31 /* SCHStoryInteractionPictureStarterCustom~iphone.xib in Resources */,
+				C9613DDE1405359A00AE1F8C /* icon-audio-younger-small.png in Resources */,
+				C9613DE01405359A00AE1F8C /* icon-audio-younger-small@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
