@@ -140,6 +140,20 @@
 		2873B04913E024BF008C9F0D /* SCHUpdateBooksTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 2873B04713E024BF008C9F0D /* SCHUpdateBooksTableViewCell.m */; };
 		28789AAD140417BA00910D31 /* SCHGestureSmoother.m in Sources */ = {isa = PBXBuildFile; fileRef = 28789AAC140417BA00910D31 /* SCHGestureSmoother.m */; };
 		28789AAE140417BA00910D31 /* SCHGestureSmoother.m in Sources */ = {isa = PBXBuildFile; fileRef = 28789AAC140417BA00910D31 /* SCHGestureSmoother.m */; };
+		28789AC81404F94B00910D31 /* SCHStoryInteractionControllerPictureStarterNewEnding.m in Sources */ = {isa = PBXBuildFile; fileRef = 28789AC71404F94B00910D31 /* SCHStoryInteractionControllerPictureStarterNewEnding.m */; };
+		28789AC91404F94B00910D31 /* SCHStoryInteractionControllerPictureStarterNewEnding.m in Sources */ = {isa = PBXBuildFile; fileRef = 28789AC71404F94B00910D31 /* SCHStoryInteractionControllerPictureStarterNewEnding.m */; };
+		28789ACB1404F99400910D31 /* SCHStoryInteractionPictureStarterNewEnding~ipad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 28789ACA1404F99400910D31 /* SCHStoryInteractionPictureStarterNewEnding~ipad.xib */; };
+		28789ACC1404F99400910D31 /* SCHStoryInteractionPictureStarterNewEnding~ipad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 28789ACA1404F99400910D31 /* SCHStoryInteractionPictureStarterNewEnding~ipad.xib */; };
+		28789ACE1404FC6100910D31 /* SCHStoryInteractionPictureStarter_iPhone.xib in Resources */ = {isa = PBXBuildFile; fileRef = 28789ACD1404FC6100910D31 /* SCHStoryInteractionPictureStarter_iPhone.xib */; };
+		28789ACF1404FC6100910D31 /* SCHStoryInteractionPictureStarter_iPhone.xib in Resources */ = {isa = PBXBuildFile; fileRef = 28789ACD1404FC6100910D31 /* SCHStoryInteractionPictureStarter_iPhone.xib */; };
+		28789AD11404FC9800910D31 /* SCHStoryInteractionPictureStarterNewEnding~iphone.xib in Resources */ = {isa = PBXBuildFile; fileRef = 28789AD01404FC9800910D31 /* SCHStoryInteractionPictureStarterNewEnding~iphone.xib */; };
+		28789AD21404FC9800910D31 /* SCHStoryInteractionPictureStarterNewEnding~iphone.xib in Resources */ = {isa = PBXBuildFile; fileRef = 28789AD01404FC9800910D31 /* SCHStoryInteractionPictureStarterNewEnding~iphone.xib */; };
+		28789AD51404FDA500910D31 /* SCHStoryInteractionControllerPictureStarterFavorite.m in Sources */ = {isa = PBXBuildFile; fileRef = 28789AD41404FDA400910D31 /* SCHStoryInteractionControllerPictureStarterFavorite.m */; };
+		28789AD61404FDA500910D31 /* SCHStoryInteractionControllerPictureStarterFavorite.m in Sources */ = {isa = PBXBuildFile; fileRef = 28789AD41404FDA400910D31 /* SCHStoryInteractionControllerPictureStarterFavorite.m */; };
+		28789AD91404FE7900910D31 /* SCHStoryInteractionPictureStarterFavorite~ipad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 28789AD71404FE7800910D31 /* SCHStoryInteractionPictureStarterFavorite~ipad.xib */; };
+		28789ADA1404FE7900910D31 /* SCHStoryInteractionPictureStarterFavorite~ipad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 28789AD71404FE7800910D31 /* SCHStoryInteractionPictureStarterFavorite~ipad.xib */; };
+		28789ADB1404FE7900910D31 /* SCHStoryInteractionPictureStarterFavorite~iphone.xib in Resources */ = {isa = PBXBuildFile; fileRef = 28789AD81404FE7800910D31 /* SCHStoryInteractionPictureStarterFavorite~iphone.xib */; };
+		28789ADC1404FE7900910D31 /* SCHStoryInteractionPictureStarterFavorite~iphone.xib in Resources */ = {isa = PBXBuildFile; fileRef = 28789AD81404FE7800910D31 /* SCHStoryInteractionPictureStarterFavorite~iphone.xib */; };
 		287ADE9F13BB7A1C00D03247 /* SCHCoreDataOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 287ADE9E13BB7A1B00D03247 /* SCHCoreDataOperation.m */; };
 		287ADEA013BB7A1C00D03247 /* SCHCoreDataOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 287ADE9E13BB7A1B00D03247 /* SCHCoreDataOperation.m */; };
 		287D771B13F55C8000C76070 /* SCHStoryInteractionJigsawPieceView_iPad.m in Sources */ = {isa = PBXBuildFile; fileRef = 287D771A13F55C8000C76070 /* SCHStoryInteractionJigsawPieceView_iPad.m */; };
@@ -2224,6 +2238,15 @@
 		2873B04713E024BF008C9F0D /* SCHUpdateBooksTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHUpdateBooksTableViewCell.m; path = Shared/SCHUpdateBooksTableViewCell.m; sourceTree = "<group>"; };
 		28789AAB140417BA00910D31 /* SCHGestureSmoother.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCHGestureSmoother.h; sourceTree = "<group>"; };
 		28789AAC140417BA00910D31 /* SCHGestureSmoother.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCHGestureSmoother.m; sourceTree = "<group>"; };
+		28789AC61404F94B00910D31 /* SCHStoryInteractionControllerPictureStarterNewEnding.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCHStoryInteractionControllerPictureStarterNewEnding.h; sourceTree = "<group>"; };
+		28789AC71404F94B00910D31 /* SCHStoryInteractionControllerPictureStarterNewEnding.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCHStoryInteractionControllerPictureStarterNewEnding.m; sourceTree = "<group>"; };
+		28789ACA1404F99400910D31 /* SCHStoryInteractionPictureStarterNewEnding~ipad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "SCHStoryInteractionPictureStarterNewEnding~ipad.xib"; sourceTree = "<group>"; };
+		28789ACD1404FC6100910D31 /* SCHStoryInteractionPictureStarter_iPhone.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SCHStoryInteractionPictureStarter_iPhone.xib; sourceTree = "<group>"; };
+		28789AD01404FC9800910D31 /* SCHStoryInteractionPictureStarterNewEnding~iphone.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "SCHStoryInteractionPictureStarterNewEnding~iphone.xib"; sourceTree = "<group>"; };
+		28789AD31404FDA400910D31 /* SCHStoryInteractionControllerPictureStarterFavorite.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCHStoryInteractionControllerPictureStarterFavorite.h; sourceTree = "<group>"; };
+		28789AD41404FDA400910D31 /* SCHStoryInteractionControllerPictureStarterFavorite.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCHStoryInteractionControllerPictureStarterFavorite.m; sourceTree = "<group>"; };
+		28789AD71404FE7800910D31 /* SCHStoryInteractionPictureStarterFavorite~ipad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "SCHStoryInteractionPictureStarterFavorite~ipad.xib"; sourceTree = "<group>"; };
+		28789AD81404FE7800910D31 /* SCHStoryInteractionPictureStarterFavorite~iphone.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "SCHStoryInteractionPictureStarterFavorite~iphone.xib"; sourceTree = "<group>"; };
 		287ADE9D13BB7A1B00D03247 /* SCHCoreDataOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHCoreDataOperation.h; path = Shared/SCHCoreDataOperation.h; sourceTree = "<group>"; };
 		287ADE9E13BB7A1B00D03247 /* SCHCoreDataOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHCoreDataOperation.m; path = Shared/SCHCoreDataOperation.m; sourceTree = "<group>"; };
 		287D771913F55C7F00C76070 /* SCHStoryInteractionJigsawPieceView_iPad.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCHStoryInteractionJigsawPieceView_iPad.h; sourceTree = "<group>"; };
@@ -4441,8 +4464,17 @@
 				287186B914027B7B000A3761 /* SCHStoryInteractionControllerPictureStarter.m */,
 				28F8B3D513FEA38B00BE0B47 /* SCHStoryInteractionControllerPictureStarterCustom.h */,
 				28F8B3D613FEA38B00BE0B47 /* SCHStoryInteractionControllerPictureStarterCustom.m */,
+				28789AC61404F94B00910D31 /* SCHStoryInteractionControllerPictureStarterNewEnding.h */,
+				28789AC71404F94B00910D31 /* SCHStoryInteractionControllerPictureStarterNewEnding.m */,
+				28789AD31404FDA400910D31 /* SCHStoryInteractionControllerPictureStarterFavorite.h */,
+				28789AD41404FDA400910D31 /* SCHStoryInteractionControllerPictureStarterFavorite.m */,
 				287186BC14027CCF000A3761 /* SCHStoryInteractionPictureStarter_iPad.xib */,
+				28789ACD1404FC6100910D31 /* SCHStoryInteractionPictureStarter_iPhone.xib */,
 				28F8B3D913FEA46200BE0B47 /* SCHStoryInteractionPictureStarterCustom~ipad.xib */,
+				28789ACA1404F99400910D31 /* SCHStoryInteractionPictureStarterNewEnding~ipad.xib */,
+				28789AD01404FC9800910D31 /* SCHStoryInteractionPictureStarterNewEnding~iphone.xib */,
+				28789AD71404FE7800910D31 /* SCHStoryInteractionPictureStarterFavorite~ipad.xib */,
+				28789AD81404FE7800910D31 /* SCHStoryInteractionPictureStarterFavorite~iphone.xib */,
 				286F30CD14038D0F00051CBC /* SCHPictureStarterCanvasDelegate.h */,
 				28B7FF041402865B009E26F5 /* SCHPictureStarterCanvas.h */,
 				28B7FF051402865B009E26F5 /* SCHPictureStarterCanvas.m */,
@@ -6992,6 +7024,11 @@
 				C92EB9291404068F00832B31 /* icon-back-older-landscape~iphone.png in Resources */,
 				C92EB92B1404068F00832B31 /* icon-back-older-landscape@2x~iphone.png in Resources */,
 				C92EB92D1404068F00832B31 /* icon-back-older~ipad.png in Resources */,
+				28789ACB1404F99400910D31 /* SCHStoryInteractionPictureStarterNewEnding~ipad.xib in Resources */,
+				28789ACE1404FC6100910D31 /* SCHStoryInteractionPictureStarter_iPhone.xib in Resources */,
+				28789AD11404FC9800910D31 /* SCHStoryInteractionPictureStarterNewEnding~iphone.xib in Resources */,
+				28789AD91404FE7900910D31 /* SCHStoryInteractionPictureStarterFavorite~ipad.xib in Resources */,
+				28789ADB1404FE7900910D31 /* SCHStoryInteractionPictureStarterFavorite~iphone.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -7691,6 +7728,11 @@
 				C92EB92A1404068F00832B31 /* icon-back-older-landscape~iphone.png in Resources */,
 				C92EB92C1404068F00832B31 /* icon-back-older-landscape@2x~iphone.png in Resources */,
 				C92EB92E1404068F00832B31 /* icon-back-older~ipad.png in Resources */,
+				28789ACC1404F99400910D31 /* SCHStoryInteractionPictureStarterNewEnding~ipad.xib in Resources */,
+				28789ACF1404FC6100910D31 /* SCHStoryInteractionPictureStarter_iPhone.xib in Resources */,
+				28789AD21404FC9800910D31 /* SCHStoryInteractionPictureStarterNewEnding~iphone.xib in Resources */,
+				28789ADA1404FE7900910D31 /* SCHStoryInteractionPictureStarterFavorite~ipad.xib in Resources */,
+				28789ADC1404FE7900910D31 /* SCHStoryInteractionPictureStarterFavorite~iphone.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -8005,6 +8047,8 @@
 				286F30CA1402C15B00051CBC /* SCHPictureStarterStickerChooserThumbnailView.m in Sources */,
 				2861EE2C1403DC2F00B5EB3D /* SCHPictureStarterDrawingInstruction.m in Sources */,
 				28789AAD140417BA00910D31 /* SCHGestureSmoother.m in Sources */,
+				28789AC81404F94B00910D31 /* SCHStoryInteractionControllerPictureStarterNewEnding.m in Sources */,
+				28789AD51404FDA500910D31 /* SCHStoryInteractionControllerPictureStarterFavorite.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -8347,6 +8391,8 @@
 				286F30CB1402C15B00051CBC /* SCHPictureStarterStickerChooserThumbnailView.m in Sources */,
 				2861EE2D1403DC2F00B5EB3D /* SCHPictureStarterDrawingInstruction.m in Sources */,
 				28789AAE140417BA00910D31 /* SCHGestureSmoother.m in Sources */,
+				28789AC91404F94B00910D31 /* SCHStoryInteractionControllerPictureStarterNewEnding.m in Sources */,
+				28789AD61404FDA500910D31 /* SCHStoryInteractionControllerPictureStarterFavorite.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
