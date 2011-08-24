@@ -39,6 +39,11 @@
     return NO;
 }
 
+- (void)setScale:(CGFloat)scale
+{
+    self.size /= scale;
+}
+
 - (void)updatePosition:(CGPoint)point
 {
     if (self.pointCount == self.pointCapacity) {
@@ -55,6 +60,8 @@
         CGContextScaleCTM(context, 1, -1);
     }
     
+    CGContextSetLineCap(context, kCGLineCapRound);
+    CGContextSetLineJoin(context, kCGLineJoinRound);
     CGContextSetBlendMode(context, [self blendMode]);
     CGContextSetStrokeColorWithColor(context, [self.color CGColor]);
     CGContextSetLineWidth(context, size);
@@ -92,6 +99,7 @@
 
 @synthesize sticker;
 @synthesize point;
+@synthesize scale;
 
 - (void)dealloc
 {
@@ -116,7 +124,7 @@
         CGContextScaleCTM(context, 1, -1);
     }
     
-    CGSize size = self.sticker.size;
+    CGSize size = CGSizeMake(self.sticker.size.width/self.scale, self.sticker.size.height/self.scale);
     CGRect rect = CGRectMake(self.point.x-size.width/2, self.point.y-size.height/2, size.width, size.height);
     CGContextSetBlendMode(context, kCGBlendModeNormal);
     CGContextDrawImage(context, rect, [self.sticker CGImage]);

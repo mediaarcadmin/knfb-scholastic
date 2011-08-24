@@ -10,6 +10,7 @@
 
 @protocol SCHPictureStarterDrawingInstruction <NSObject>
 
+- (void)setScale:(CGFloat)scale;
 - (void)updatePosition:(CGPoint)point;
 - (void)drawLayer:(CALayer *)layer inContext:(CGContextRef)context;
 - (BOOL)shouldCommitInstantly;
@@ -31,4 +32,5 @@
 @interface SCHPictureStarterStickerDrawingInstruction : NSObject <SCHPictureStarterDrawingInstruction>
 @property (nonatomic, assign) CGPoint point;
 @property (nonatomic, retain) UIImage *sticker;
+@property (nonatomic, assign) CGFloat scale;
 @end

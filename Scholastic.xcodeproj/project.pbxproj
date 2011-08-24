@@ -138,6 +138,8 @@
 		287262AB13E0621A0053CEDE /* SCHSetProfilePasswordView~iphone.xib in Resources */ = {isa = PBXBuildFile; fileRef = 287262A913E0621A0053CEDE /* SCHSetProfilePasswordView~iphone.xib */; };
 		2873B04813E024BF008C9F0D /* SCHUpdateBooksTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 2873B04713E024BF008C9F0D /* SCHUpdateBooksTableViewCell.m */; };
 		2873B04913E024BF008C9F0D /* SCHUpdateBooksTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 2873B04713E024BF008C9F0D /* SCHUpdateBooksTableViewCell.m */; };
+		28789AAD140417BA00910D31 /* SCHGestureSmoother.m in Sources */ = {isa = PBXBuildFile; fileRef = 28789AAC140417BA00910D31 /* SCHGestureSmoother.m */; };
+		28789AAE140417BA00910D31 /* SCHGestureSmoother.m in Sources */ = {isa = PBXBuildFile; fileRef = 28789AAC140417BA00910D31 /* SCHGestureSmoother.m */; };
 		287ADE9F13BB7A1C00D03247 /* SCHCoreDataOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 287ADE9E13BB7A1B00D03247 /* SCHCoreDataOperation.m */; };
 		287ADEA013BB7A1C00D03247 /* SCHCoreDataOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 287ADE9E13BB7A1B00D03247 /* SCHCoreDataOperation.m */; };
 		287D771B13F55C8000C76070 /* SCHStoryInteractionJigsawPieceView_iPad.m in Sources */ = {isa = PBXBuildFile; fileRef = 287D771A13F55C8000C76070 /* SCHStoryInteractionJigsawPieceView_iPad.m */; };
@@ -2220,6 +2222,8 @@
 		287262A913E0621A0053CEDE /* SCHSetProfilePasswordView~iphone.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "SCHSetProfilePasswordView~iphone.xib"; sourceTree = "<group>"; };
 		2873B04613E024BF008C9F0D /* SCHUpdateBooksTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHUpdateBooksTableViewCell.h; path = Shared/SCHUpdateBooksTableViewCell.h; sourceTree = "<group>"; };
 		2873B04713E024BF008C9F0D /* SCHUpdateBooksTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHUpdateBooksTableViewCell.m; path = Shared/SCHUpdateBooksTableViewCell.m; sourceTree = "<group>"; };
+		28789AAB140417BA00910D31 /* SCHGestureSmoother.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCHGestureSmoother.h; sourceTree = "<group>"; };
+		28789AAC140417BA00910D31 /* SCHGestureSmoother.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCHGestureSmoother.m; sourceTree = "<group>"; };
 		287ADE9D13BB7A1B00D03247 /* SCHCoreDataOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHCoreDataOperation.h; path = Shared/SCHCoreDataOperation.h; sourceTree = "<group>"; };
 		287ADE9E13BB7A1B00D03247 /* SCHCoreDataOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHCoreDataOperation.m; path = Shared/SCHCoreDataOperation.m; sourceTree = "<group>"; };
 		287D771913F55C7F00C76070 /* SCHStoryInteractionJigsawPieceView_iPad.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCHStoryInteractionJigsawPieceView_iPad.h; sourceTree = "<group>"; };
@@ -4444,6 +4448,8 @@
 				28B7FF051402865B009E26F5 /* SCHPictureStarterCanvas.m */,
 				2861EE291403D8CC00B5EB3D /* SCHPictureStarterDrawingInstruction.h */,
 				2861EE2B1403DC2F00B5EB3D /* SCHPictureStarterDrawingInstruction.m */,
+				28789AAB140417BA00910D31 /* SCHGestureSmoother.h */,
+				28789AAC140417BA00910D31 /* SCHGestureSmoother.m */,
 				28B7FF08140286C6009E26F5 /* SCHPictureStarterColorChooser.h */,
 				28B7FF09140286C6009E26F5 /* SCHPictureStarterColorChooser.m */,
 				28B7FF0C140286D6009E26F5 /* SCHPictureStarterSizeChooser.h */,
@@ -7998,6 +8004,7 @@
 				28B7FF361402B1F1009E26F5 /* SCHPictureStarterStickers.m in Sources */,
 				286F30CA1402C15B00051CBC /* SCHPictureStarterStickerChooserThumbnailView.m in Sources */,
 				2861EE2C1403DC2F00B5EB3D /* SCHPictureStarterDrawingInstruction.m in Sources */,
+				28789AAD140417BA00910D31 /* SCHGestureSmoother.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -8339,6 +8346,7 @@
 				28B7FF371402B1F1009E26F5 /* SCHPictureStarterStickers.m in Sources */,
 				286F30CB1402C15B00051CBC /* SCHPictureStarterStickerChooserThumbnailView.m in Sources */,
 				2861EE2D1403DC2F00B5EB3D /* SCHPictureStarterDrawingInstruction.m in Sources */,
+				28789AAE140417BA00910D31 /* SCHGestureSmoother.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
