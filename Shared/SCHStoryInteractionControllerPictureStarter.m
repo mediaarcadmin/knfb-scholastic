@@ -86,6 +86,11 @@ enum SCHToolType {
     return NO;
 }
 
+- (BOOL)shouldAnimateTransitionBetweenViews
+{
+    return NO;
+}
+
 - (void)setUserInteractionState:(BOOL)state
 {
     self.drawingCanvas.userInteractionEnabled = state;
@@ -144,7 +149,7 @@ enum SCHToolType {
 - (void)setupDrawingScreen
 {
     self.contentsView.backgroundColor = [UIColor clearColor];
-    [self applyRoundRectStyle:self.drawingCanvas];
+    [self applyRoundRectStyle:self.drawingCanvas.superview];
     [self applyRoundRectStyle:self.sizeChooser];
     [self applyRoundRectStyle:self.savingLabel];
     self.savingLabel.alpha = 0;

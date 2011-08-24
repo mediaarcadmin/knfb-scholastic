@@ -45,7 +45,7 @@
     [super dealloc];
 }
 
-- (SCHFrameStyle)frameStyle
+- (SCHFrameStyle)frameStyleForViewAtIndex:(NSInteger)viewIndex
 {
     return SCHStoryInteractionTitleOverlaysContents;
 }

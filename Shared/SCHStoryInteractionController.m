@@ -275,15 +275,15 @@ static Class controllerClassForStoryInteraction(SCHStoryInteraction *storyIntera
     }
     
     dispatch_block_t setupViews = ^{
+        self.backgroundView.image = [self backgroundImage];
         [self setupGeometryForContentsView:newContentsView contentsSize:newContentsView.bounds.size];
         self.contentsView.alpha = 0;
         newContentsView.alpha = 1;
         newContentsView.transform = CGAffineTransformIdentity;
-        self.backgroundView.image = [self backgroundImage];
     };
     
     if (self.contentsView != nil) {
-        // on iPad, animate the transition between screens
+        // if required, animate the transition between screens
         NSAssert([self frameStyleForViewAtIndex:self.currentScreenIndex] != SCHStoryInteractionTitleOverlaysContents, @"can't have multiple views with SCHStoryInteractionTitleOverlaysContents");
         UIView *oldContentsView = self.contentsView;
         newContentsView.alpha = 0;
@@ -292,7 +292,7 @@ static Class controllerClassForStoryInteraction(SCHStoryInteraction *storyIntera
         newContentsView.center = oldContentsView.center;
         [self.backgroundView addSubview:newContentsView];
         
-        if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+        if ([self shouldAnimateTransitionBetweenViews]) {
             [UIView animateWithDuration:0.3
                              animations:setupViews
                              completion:^(BOOL finished) {
@@ -812,6 +812,11 @@ static Class controllerClassForStoryInteraction(SCHStoryInteraction *storyIntera
 - (BOOL)shouldShowCloseButton
 {
     return YES;
+}
+
+- (BOOL)shouldAnimateTransitionBetweenViews
+{
+    return (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad);
 }
 
 @end

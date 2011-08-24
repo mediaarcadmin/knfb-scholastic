@@ -183,6 +183,9 @@ typedef enum
 // presented in portrait orientation
 - (BOOL)shouldPresentInPortraitOrientation;
 
+// should the transition between successive views be animated? defaults to YES on iPad, NO on iPhone
+- (BOOL)shouldAnimateTransitionBetweenViews;
+
 // send then the nib is loaded and its view objects are attached to the container; similar
 // to viewDidLoad, but used a separate message name to avoid confusion.
 - (void)setupViewAtIndex:(NSInteger)screenIndex;
