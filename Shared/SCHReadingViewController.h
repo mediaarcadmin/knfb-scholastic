@@ -82,6 +82,7 @@ UIImageView *optionsPhoneTopBackground;
 @property (nonatomic, retain) IBOutlet UIButton *storyInteractionButton;
 @property (nonatomic, retain) IBOutlet UIView *storyInteractionButtonView;
 @property (nonatomic, retain) IBOutlet UIView *toolbarToggleView;
+@property (nonatomic, retain) IBOutlet UIView *cornerAudioButtonView;
 
 @property (nonatomic, retain) NSManagedObjectContext *managedObjectContext;
 
