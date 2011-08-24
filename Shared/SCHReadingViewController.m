@@ -2520,6 +2520,12 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 
 - (void)positionCoverCornerViewForOrientation: (UIInterfaceOrientation) newOrientation
 {
+    BOOL iPad = (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad);
+    
+    if (iPad) {
+        self.coverMarkerShouldAppear = NO;
+    }
+    
     if (self.coverMarkerShouldAppear) {
         //        NSLog(@"reading view bounds: %@", NSStringFromCGRect([self.readingView pageRect]));
         
@@ -2527,8 +2533,6 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
         if (self.sampleSICoverMarker) {
             [self.sampleSICoverMarker removeFromSuperview];
         }
-        
-        BOOL iPad = (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad);
         
         NSString *portraitLandscape = @"portrait";
         
@@ -2567,10 +2571,6 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
         
         if (bookFeatures) {
             imageName = [NSString stringWithFormat:@"reading-%@-%@", bookFeatures, portraitLandscape];
-            
-            if (iPad) {
-                imageName = [NSString stringWithFormat:@"%@~iPhone", imageName];
-            }
         }
         
         if (imageName) {
