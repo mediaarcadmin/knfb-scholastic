@@ -88,7 +88,13 @@ static const CGFloat kProfilePhoneTableOffsetLandscape = 20.0f;
     
     UIBarButtonItem *item = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil] autorelease];
     self.barSpacer = item;
-    self.navigationItem.leftBarButtonItem = self.barSpacer;
+    
+    // FIXME: When we are compiling against iOS 5 this should be cleaned up 
+    if ([self.navigationItem respondsToSelector:@selector(setLeftBarButtonItems:)]) {
+        [self.navigationItem performSelector:@selector(setLeftBarButtonItems:) withObject:[NSArray arrayWithObject:self.barSpacer]];
+    } else {
+        self.navigationItem.leftBarButtonItem = self.barSpacer;
+    }
     
     self.tableView.tableHeaderView = self.headerView;
 }  
