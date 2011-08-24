@@ -38,6 +38,10 @@
         [button setBackgroundImage:[self imageAtPath:path] forState:UIControlStateNormal];
     }
     
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
+        [self setTitle:NSLocalizedString(@"To get started, choose a picture below.", @"Picture Starter custom opening screen title, iPhone")];
+    }
+    
     [self enqueueAudioWithPath:@"gen_chooseyourpicture.mp3" fromBundle:NO];
 }
 
