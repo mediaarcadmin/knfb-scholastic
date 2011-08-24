@@ -14,6 +14,8 @@
 // Constants
 NSString * const kSCHAppContentProfileItem = @"SCHAppContentProfileItem";
 
+NSString * const kSCHAppContentProfileItemDRMQualifier = @"DRMQualifier";
+NSString * const kSCHAppContentProfileItemISBN = @"ISBN";
 NSString * const kSCHAppContentProfileItemOrder = @"Order";
 
 @implementation SCHAppContentProfileItem
