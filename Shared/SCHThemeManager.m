@@ -26,7 +26,6 @@ NSString * const kSCHThemeManagerNavigationBarImage = @"NavigationBarImage";
 NSString * const kSCHThemeManagerBackgroundImage = @"BackgroundImage";
 NSString * const kSCHThemeManagerShelfImage = @"ShelfImage";
 NSString * const kSCHThemeManagerHomeIcon = @"HomeIcon";
-NSString * const kSCHThemeManagerBooksIcon = @"BooksIcon";
 NSString * const kSCHThemeManagerThemeIcon = @"ThemeIcon";
 NSString * const kSCHThemeManagerColorForListBackground = @"ListBackgroundColor";
 
@@ -245,13 +244,6 @@ static NSString * const kSCHThemeManagerName = @"Name";
 {
     return([UIImage imageNamed:[kSCHThemeManagerDirectory 
                                 stringByAppendingPathComponent:[self filePath:[self.selectedTheme objectForKey:kSCHThemeManagerHomeIcon]
-                                                                  orientation:orientation]]]);
-}
-
-- (UIImage *)imageForBooksIcon:(UIInterfaceOrientation)orientation
-{
-    return([UIImage imageNamed:[kSCHThemeManagerDirectory 
-                                stringByAppendingPathComponent:[self filePath:[self.selectedTheme objectForKey:kSCHThemeManagerBooksIcon]
                                                                   orientation:orientation]]]);
 }
 

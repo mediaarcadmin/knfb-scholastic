@@ -28,7 +28,6 @@ extern NSString * const kSCHThemeManagerNavigationBarImage;
 extern NSString * const kSCHThemeManagerBackgroundImage;
 extern NSString * const kSCHThemeManagerShelfImage;
 extern NSString * const kSCHThemeManagerHomeIcon;
-extern NSString * const kSCHThemeManagerBooksIcon;
 extern NSString * const kSCHThemeManagerThemeIcon;
 extern NSString * const kSCHThemeManagerColorForListBackground;
 
@@ -60,7 +59,6 @@ extern NSString * const kSCHThemeManagerColorForListBackground;
 - (UIImage *)imageForBackground:(UIInterfaceOrientation)orientation;
 - (UIImage *)imageForShelf:(UIInterfaceOrientation)orientation;
 - (UIImage *)imageForHomeIcon:(UIInterfaceOrientation)orientation;
-- (UIImage *)imageForBooksIcon:(UIInterfaceOrientation)orientation;
 - (UIImage *)imageForThemeIcon:(UIInterfaceOrientation)orientation;
 - (UIColor *)colorForListBackground;
 
