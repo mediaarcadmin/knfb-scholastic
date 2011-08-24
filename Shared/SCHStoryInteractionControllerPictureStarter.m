@@ -15,6 +15,7 @@
 #import "SCHPictureStarterSizeChooser.h"
 #import "SCHPictureStarterStickerChooser.h"
 #import "SCHPictureStarterStickers.h"
+#import "SCHStretchableImageButton.h"
 #import "UIColor+Scholastic.h"
 #import "NSArray+ViewSorting.h"
 
@@ -47,6 +48,7 @@ enum SCHToolType {
 @synthesize doneButton;
 @synthesize clearButton;
 @synthesize saveButton;
+@synthesize savingLabel;
 @synthesize stickers;
 @synthesize lastSelectedColour;
 @synthesize lastSelectedSize;
@@ -64,6 +66,7 @@ enum SCHToolType {
     [doneButton release], doneButton = nil;
     [clearButton release], clearButton = nil;
     [saveButton release], saveButton = nil;
+    [savingLabel release], savingLabel = nil;
     [stickers release], stickers = nil;
     [super dealloc];
 }
@@ -83,12 +86,27 @@ enum SCHToolType {
     return NO;
 }
 
+- (void)setUserInteractionState:(BOOL)state
+{
+    self.drawingCanvas.userInteractionEnabled = state;
+    self.colorChooser.userInteractionEnabled = state;
+    self.sizeChooser.userInteractionEnabled = state;
+    self.doneButton.userInteractionEnabled = state;
+    self.clearButton.userInteractionEnabled = state;
+    self.savingLabel.userInteractionEnabled = state;
+    for (UIView *view in self.stickerChoosers) {
+        view.userInteractionEnabled = state;
+    }
+}
+
 - (void)storyInteractionDisableUserInteraction
 {
+    [self setUserInteractionState:NO];
 }
 
 - (void)storyInteractionEnableUserInteraction
 {
+    [self setUserInteractionState:YES];
 }
 
 - (void)setupViewAtIndex:(NSInteger)screenIndex
@@ -128,7 +146,9 @@ enum SCHToolType {
     self.contentsView.backgroundColor = [UIColor clearColor];
     [self applyRoundRectStyle:self.drawingCanvas];
     [self applyRoundRectStyle:self.sizeChooser];
-
+    [self applyRoundRectStyle:self.savingLabel];
+    self.savingLabel.alpha = 0;
+    
     [self.drawingCanvas setBackgroundImage:[self drawingBackgroundImage]];
     self.drawingCanvas.delegate = self;
     
@@ -183,11 +203,21 @@ enum SCHToolType {
 
 - (void)saveButtonPressed:(id)sender
 {
+    [self storyInteractionDisableUserInteraction];
+    
+    self.savingLabel.text = NSLocalizedString(@"Saving...", @"");
+    [UIView animateWithDuration:0.25
+                     animations:^{
+                         self.savingLabel.alpha = 1;
+                     }];
+    
     ALAssetsLibrary *library = [[ALAssetsLibrary alloc] init];
     [library writeImageToSavedPhotosAlbum:[self.drawingCanvas image]
                               orientation:ALAssetOrientationUp
                           completionBlock:^(NSURL *assetURL, NSError *error) {
+                              [self storyInteractionEnableUserInteraction];
                               if (error) {
+                                  self.savingLabel.alpha = 0;
                                   UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error", @"Error")
                                                                                   message:[error localizedDescription]
                                                                                  delegate:nil
@@ -195,6 +225,15 @@ enum SCHToolType {
                                                                         otherButtonTitles:nil];
                                   [alert show];
                                   [alert release];
+                              } else {
+                                  self.savingLabel.text = NSLocalizedString(@"Saved.", @"");
+                                  [UIView animateWithDuration:0.25
+                                                        delay:0.5
+                                                      options:UIViewAnimationOptionAllowUserInteraction
+                                                   animations:^{
+                                                       self.savingLabel.alpha = 0;
+                                                   }
+                                                   completion:nil];
                               }
                           }];
 }

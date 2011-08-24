@@ -25,6 +25,7 @@
 @property (nonatomic, retain) IBOutlet SCHStretchableImageButton *doneButton;
 @property (nonatomic, retain) IBOutlet SCHStretchableImageButton *clearButton;
 @property (nonatomic, retain) IBOutlet SCHStretchableImageButton *saveButton;
+@property (nonatomic, retain) IBOutlet UILabel *savingLabel;
 
 - (IBAction)colorSelected:(id)sender;
 - (IBAction)sizeSelected:(id)sender;

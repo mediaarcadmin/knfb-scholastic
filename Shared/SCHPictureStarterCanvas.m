@@ -28,7 +28,7 @@
 
 - (void)cancelCurrentDrawingInstruction;
 - (void)commitDrawingInstruction:(id<SCHPictureStarterDrawingInstruction>)instruction;
-- (void)createPaintContext;
+- (CGContextRef)createPaintContext;
 - (CGFloat)updateZoom:(CGFloat)scale point:(CGPoint)point;
 
 @end;
@@ -84,21 +84,22 @@
         self.liveLayer.contentsScale = self.deviceScale;
         [self.layer addSublayer:self.liveLayer];
 
-        [self createPaintContext];
+        self.paintContext = [self createPaintContext];
+        self.paintedLayer.contents = nil;
     }
     return self;
 }
 
-- (void)createPaintContext
+- (CGContextRef)createPaintContext
 {
     CGColorSpaceRef colorSpace = CGColorSpaceCreateDeviceRGB();
-    self.paintContext = CGBitmapContextCreate(NULL, CGRectGetWidth(self.bounds)*self.deviceScale, CGRectGetHeight(self.bounds)*self.deviceScale,
-                                              8, 4*CGRectGetWidth(self.bounds)*self.deviceScale, colorSpace, kCGImageAlphaPremultipliedLast);
+    CGContextRef context = CGBitmapContextCreate(NULL, CGRectGetWidth(self.bounds)*self.deviceScale, CGRectGetHeight(self.bounds)*self.deviceScale,
+                                                 8, 4*CGRectGetWidth(self.bounds)*self.deviceScale, colorSpace, kCGImageAlphaPremultipliedLast);
     CGColorSpaceRelease(colorSpace);
-    CGContextConcatCTM(self.paintContext, CGAffineTransformMakeScale(self.deviceScale, self.deviceScale));
-    CGContextSaveGState(self.paintContext);
-    
-    self.paintedLayer.contents = nil;
+    CGContextConcatCTM(context, CGAffineTransformMakeScale(self.deviceScale, self.deviceScale));
+    CGContextSaveGState(context);
+
+    return context;
 }
 
 - (void)setBackgroundImage:(UIImage *)backgroundImage
@@ -239,6 +240,7 @@
     self.liveLayer.delegate = nil;
     self.currentInstruction = nil;
     [self createPaintContext];
+    self.paintedLayer.contents = nil;
     [self.liveLayer setNeedsDisplay];
     
     [CATransaction commit];
@@ -246,7 +248,21 @@
 
 - (CGImageRef)image
 {
-    return (CGImageRef)self.paintedLayer.contents;
+    CGContextRef context = [self createPaintContext];
+    
+    CGImageRef backgroundImage = (CGImageRef)self.backgroundLayer.contents;
+    if (backgroundImage != NULL) {
+        CGContextDrawImage(context, self.paintedLayer.bounds, backgroundImage);
+    }
+    
+    CGImageRef paintedImage = (CGImageRef)self.paintedLayer.contents;
+    CGContextDrawImage(context, self.paintedLayer.bounds, paintedImage);
+    
+    CGImageRef image = CGBitmapContextCreateImage(context);
+    CGContextRelease(context);
+    
+    [(id)image autorelease];
+    return image;
 }
 
 @end
