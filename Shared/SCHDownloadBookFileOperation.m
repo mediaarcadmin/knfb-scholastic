@@ -17,6 +17,7 @@
 @property (nonatomic, copy) NSString *localPath;
 @property (nonatomic, assign) unsigned long bookFileSize;
 
+- (BOOL)stringBeginsWithHTTPScheme:(NSString *)string;
 - (NSString *)fullPathToBundledFile:(NSString *)fileName;
 - (void)completedDownload;
 
@@ -71,8 +72,7 @@
             return;
         }
         
-        if ([[bookFileURL substringToIndex:7] length] >= 7 &&
-            [[bookFileURL substringToIndex:7] isEqualToString:@"http://"] == NO) {
+        if ([self stringBeginsWithHTTPScheme:bookFileURL] == NO) {
             [[NSFileManager defaultManager] copyItemAtPath:[self fullPathToBundledFile:bookFileURL]
                                                     toPath:self.localPath 
                                                      error:&error];        
@@ -102,8 +102,7 @@
         
 		self.localPath = [cacheDir stringByAppendingPathComponent:[NSString stringWithFormat:@"%@.png", contentIdentifier]];
 		
-        if ([[coverURL substringToIndex:7] length] >= 7 &&
-            [[coverURL substringToIndex:7] isEqualToString:@"http://"] == NO) {
+        if ([self stringBeginsWithHTTPScheme:coverURL] == NO) {
             [[NSFileManager defaultManager] copyItemAtPath:[self fullPathToBundledFile:coverURL]
                                                     toPath:self.localPath 
                                                      error:&error];        
@@ -172,6 +171,18 @@
     
 	[self setIsProcessing:NO];
 	return;
+}
+
+- (BOOL)stringBeginsWithHTTPScheme:(NSString *)string
+{
+    BOOL ret = NO;
+    
+    if (([string length] >= 7 && [[string substringToIndex:7] isEqualToString:@"http://"] == YES) ||
+        ([string length] >= 8 && [[string substringToIndex:8] isEqualToString:@"https://"] == YES)) {
+        ret = YES;
+    }
+    
+    return(ret);
 }
 
 - (NSString *)fullPathToBundledFile:(NSString *)fileName

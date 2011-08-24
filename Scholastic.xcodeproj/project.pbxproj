@@ -1237,6 +1237,18 @@
 		C97F2001133B8E2100EA6BC8 /* libxml2.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = C9F1A579133B83D100FD984C /* libxml2.dylib */; };
 		C98648A01402686300B9DFE1 /* SCHReadingViewNavigationToolbar.m in Sources */ = {isa = PBXBuildFile; fileRef = C986489F1402686300B9DFE1 /* SCHReadingViewNavigationToolbar.m */; };
 		C98648A11402686300B9DFE1 /* SCHReadingViewNavigationToolbar.m in Sources */ = {isa = PBXBuildFile; fileRef = C986489F1402686300B9DFE1 /* SCHReadingViewNavigationToolbar.m */; };
+		C99B4A971405124E00B3ADF0 /* reading-view-scrubber-rightcap-large.png in Resources */ = {isa = PBXBuildFile; fileRef = C99B4A911405124E00B3ADF0 /* reading-view-scrubber-rightcap-large.png */; };
+		C99B4A981405124E00B3ADF0 /* reading-view-scrubber-rightcap-large.png in Resources */ = {isa = PBXBuildFile; fileRef = C99B4A911405124E00B3ADF0 /* reading-view-scrubber-rightcap-large.png */; };
+		C99B4A991405124E00B3ADF0 /* reading-view-scrubber-rightcap-large@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C99B4A921405124E00B3ADF0 /* reading-view-scrubber-rightcap-large@2x.png */; };
+		C99B4A9A1405124E00B3ADF0 /* reading-view-scrubber-rightcap-large@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C99B4A921405124E00B3ADF0 /* reading-view-scrubber-rightcap-large@2x.png */; };
+		C99B4A9B1405124E00B3ADF0 /* reading-view-scrubber-leftcap-large.png in Resources */ = {isa = PBXBuildFile; fileRef = C99B4A931405124E00B3ADF0 /* reading-view-scrubber-leftcap-large.png */; };
+		C99B4A9C1405124E00B3ADF0 /* reading-view-scrubber-leftcap-large.png in Resources */ = {isa = PBXBuildFile; fileRef = C99B4A931405124E00B3ADF0 /* reading-view-scrubber-leftcap-large.png */; };
+		C99B4A9D1405124E00B3ADF0 /* reading-view-scrubber-leftcap-large@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C99B4A941405124E00B3ADF0 /* reading-view-scrubber-leftcap-large@2x.png */; };
+		C99B4A9E1405124E00B3ADF0 /* reading-view-scrubber-leftcap-large@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C99B4A941405124E00B3ADF0 /* reading-view-scrubber-leftcap-large@2x.png */; };
+		C99B4A9F1405124E00B3ADF0 /* reading-view-scrubber-knob-large.png in Resources */ = {isa = PBXBuildFile; fileRef = C99B4A951405124E00B3ADF0 /* reading-view-scrubber-knob-large.png */; };
+		C99B4AA01405124E00B3ADF0 /* reading-view-scrubber-knob-large.png in Resources */ = {isa = PBXBuildFile; fileRef = C99B4A951405124E00B3ADF0 /* reading-view-scrubber-knob-large.png */; };
+		C99B4AA11405124E00B3ADF0 /* reading-view-scrubber-knob-large@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C99B4A961405124E00B3ADF0 /* reading-view-scrubber-knob-large@2x.png */; };
+		C99B4AA21405124E00B3ADF0 /* reading-view-scrubber-knob-large@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C99B4A961405124E00B3ADF0 /* reading-view-scrubber-knob-large@2x.png */; };
 		C9A1129F13608319007FD763 /* button-blue.png in Resources */ = {isa = PBXBuildFile; fileRef = C9A1129513608319007FD763 /* button-blue.png */; };
 		C9A112A013608319007FD763 /* button-blue.png in Resources */ = {isa = PBXBuildFile; fileRef = C9A1129513608319007FD763 /* button-blue.png */; };
 		C9A112A113608319007FD763 /* button-blue@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C9A1129613608319007FD763 /* button-blue@2x.png */; };
@@ -3183,6 +3195,12 @@
 		C97D6DA213696D7B0017974B /* SCHBookPoint.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHBookPoint.m; path = Shared/SCHBookPoint.m; sourceTree = "<group>"; };
 		C986489E1402686300B9DFE1 /* SCHReadingViewNavigationToolbar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHReadingViewNavigationToolbar.h; path = Shared/SCHReadingViewNavigationToolbar.h; sourceTree = "<group>"; };
 		C986489F1402686300B9DFE1 /* SCHReadingViewNavigationToolbar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHReadingViewNavigationToolbar.m; path = Shared/SCHReadingViewNavigationToolbar.m; sourceTree = "<group>"; };
+		C99B4A911405124E00B3ADF0 /* reading-view-scrubber-rightcap-large.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "reading-view-scrubber-rightcap-large.png"; path = "Resources/UIAssets/reading-view-scrubber-rightcap-large.png"; sourceTree = "<group>"; };
+		C99B4A921405124E00B3ADF0 /* reading-view-scrubber-rightcap-large@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "reading-view-scrubber-rightcap-large@2x.png"; path = "Resources/UIAssets/reading-view-scrubber-rightcap-large@2x.png"; sourceTree = "<group>"; };
+		C99B4A931405124E00B3ADF0 /* reading-view-scrubber-leftcap-large.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "reading-view-scrubber-leftcap-large.png"; path = "Resources/UIAssets/reading-view-scrubber-leftcap-large.png"; sourceTree = "<group>"; };
+		C99B4A941405124E00B3ADF0 /* reading-view-scrubber-leftcap-large@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "reading-view-scrubber-leftcap-large@2x.png"; path = "Resources/UIAssets/reading-view-scrubber-leftcap-large@2x.png"; sourceTree = "<group>"; };
+		C99B4A951405124E00B3ADF0 /* reading-view-scrubber-knob-large.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "reading-view-scrubber-knob-large.png"; path = "Resources/UIAssets/reading-view-scrubber-knob-large.png"; sourceTree = "<group>"; };
+		C99B4A961405124E00B3ADF0 /* reading-view-scrubber-knob-large@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "reading-view-scrubber-knob-large@2x.png"; path = "Resources/UIAssets/reading-view-scrubber-knob-large@2x.png"; sourceTree = "<group>"; };
 		C9A1129513608319007FD763 /* button-blue.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "button-blue.png"; path = "Resources/UIAssets/button-blue.png"; sourceTree = "<group>"; };
 		C9A1129613608319007FD763 /* button-blue@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "button-blue@2x.png"; path = "Resources/UIAssets/button-blue@2x.png"; sourceTree = "<group>"; };
 		C9AC854713ACE175000ECDAE /* old-lightning-bolt-0~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "old-lightning-bolt-0~ipad.png"; sourceTree = "<group>"; };
@@ -5223,6 +5241,12 @@
 		C920DD1F1389625F00F1583D /* Reading View Toolbars */ = {
 			isa = PBXGroup;
 			children = (
+				C99B4A911405124E00B3ADF0 /* reading-view-scrubber-rightcap-large.png */,
+				C99B4A921405124E00B3ADF0 /* reading-view-scrubber-rightcap-large@2x.png */,
+				C99B4A931405124E00B3ADF0 /* reading-view-scrubber-leftcap-large.png */,
+				C99B4A941405124E00B3ADF0 /* reading-view-scrubber-leftcap-large@2x.png */,
+				C99B4A951405124E00B3ADF0 /* reading-view-scrubber-knob-large.png */,
+				C99B4A961405124E00B3ADF0 /* reading-view-scrubber-knob-large@2x.png */,
 				C920DD3813896F5A00F1583D /* reading-view-scrubber-bar.png */,
 				C920DD3913896F5A00F1583D /* reading-view-scrubber-bar@2x.png */,
 				C920DD3213896C3000F1583D /* reading-view-bottom-bar.png */,
@@ -7006,6 +7030,12 @@
 				C92EB9291404068F00832B31 /* icon-back-older-landscape~iphone.png in Resources */,
 				C92EB92B1404068F00832B31 /* icon-back-older-landscape@2x~iphone.png in Resources */,
 				C92EB92D1404068F00832B31 /* icon-back-older~ipad.png in Resources */,
+				C99B4A971405124E00B3ADF0 /* reading-view-scrubber-rightcap-large.png in Resources */,
+				C99B4A991405124E00B3ADF0 /* reading-view-scrubber-rightcap-large@2x.png in Resources */,
+				C99B4A9B1405124E00B3ADF0 /* reading-view-scrubber-leftcap-large.png in Resources */,
+				C99B4A9D1405124E00B3ADF0 /* reading-view-scrubber-leftcap-large@2x.png in Resources */,
+				C99B4A9F1405124E00B3ADF0 /* reading-view-scrubber-knob-large.png in Resources */,
+				C99B4AA11405124E00B3ADF0 /* reading-view-scrubber-knob-large@2x.png in Resources */,
 				F83468081404FF2E00D09F0E /* show-tools@2x.png in Resources */,
 				F834680A1404FF2E00D09F0E /* show-tools.png in Resources */,
 				28789ACB1404F99400910D31 /* SCHStoryInteractionPictureStarterNewEnding~ipad.xib in Resources */,
@@ -7707,6 +7737,12 @@
 				C92EB92A1404068F00832B31 /* icon-back-older-landscape~iphone.png in Resources */,
 				C92EB92C1404068F00832B31 /* icon-back-older-landscape@2x~iphone.png in Resources */,
 				C92EB92E1404068F00832B31 /* icon-back-older~ipad.png in Resources */,
+				C99B4A981405124E00B3ADF0 /* reading-view-scrubber-rightcap-large.png in Resources */,
+				C99B4A9A1405124E00B3ADF0 /* reading-view-scrubber-rightcap-large@2x.png in Resources */,
+				C99B4A9C1405124E00B3ADF0 /* reading-view-scrubber-leftcap-large.png in Resources */,
+				C99B4A9E1405124E00B3ADF0 /* reading-view-scrubber-leftcap-large@2x.png in Resources */,
+				C99B4AA01405124E00B3ADF0 /* reading-view-scrubber-knob-large.png in Resources */,
+				C99B4AA21405124E00B3ADF0 /* reading-view-scrubber-knob-large@2x.png in Resources */,
 				F83468091404FF2E00D09F0E /* show-tools@2x.png in Resources */,
 				F834680B1404FF2E00D09F0E /* show-tools.png in Resources */,
 				28789ACC1404F99400910D31 /* SCHStoryInteractionPictureStarterNewEnding~ipad.xib in Resources */,

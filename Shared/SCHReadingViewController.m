@@ -46,6 +46,8 @@
 NSString *const kSCHReadingViewErrorDomain  = @"com.knfb.scholastic.ReadingViewErrorDomain";
 
 static const CGFloat kReadingViewStandardScrubHeight = 47.0f;
+static const CGFloat kReadingViewOlderScrubberToolbarHeight = 44;
+static const CGFloat kReadingViewYoungerScrubberToolbarHeight = 60.0f;
 static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 
 #pragma mark - Class Extension
@@ -620,6 +622,42 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 {    
     
     [self.navigationToolbar setOrientation:orientation];
+    
+    // Adjust scrubber dimensions and graphics for younger mode (portrait only for iPhone)
+    CGFloat scrubberToolbarHeight = kReadingViewOlderScrubberToolbarHeight;
+    [self.pageSlider setThumbImage:nil forState:UIControlStateNormal];
+    [self.pageSlider setThumbImage:nil forState:UIControlStateHighlighted];
+    [self.pageSlider setMinimumTrackImage:nil forState:UIControlStateNormal];
+    [self.pageSlider setMaximumTrackImage:nil forState:UIControlStateNormal];
+    
+    if (self.youngerMode) {
+        if ((UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) ||
+            (UIInterfaceOrientationIsPortrait(orientation))) {
+            scrubberToolbarHeight = kReadingViewYoungerScrubberToolbarHeight;
+            
+            UIImage *leftSliderImage = [UIImage imageNamed:@"reading-view-scrubber-leftcap-large"];
+            leftSliderImage = [leftSliderImage stretchableImageWithLeftCapWidth:6 topCapHeight:0];
+            
+            UIImage *rightSliderImage = [UIImage imageNamed:@"reading-view-scrubber-rightcap-large"];
+            rightSliderImage = [rightSliderImage stretchableImageWithLeftCapWidth:6 topCapHeight:0];
+            
+            [self.pageSlider setThumbImage:[UIImage imageNamed:@"reading-view-scrubber-knob-large"] forState:UIControlStateNormal];
+            [self.pageSlider setThumbImage:[UIImage imageNamed:@"reading-view-scrubber-knob-large"] forState:UIControlStateHighlighted];
+            [self.pageSlider setMinimumTrackImage:leftSliderImage forState:UIControlStateNormal];
+            [self.pageSlider setMaximumTrackImage:rightSliderImage forState:UIControlStateNormal];
+        }
+    }
+    
+    CGRect scrubberFrame = self.scrubberToolbar.bounds;
+    if (CGRectGetHeight(scrubberFrame) != scrubberToolbarHeight) {
+        scrubberFrame.size.height = scrubberToolbarHeight;
+        scrubberFrame.origin.y = CGRectGetHeight(self.scrubberToolbar.superview.bounds) - scrubberToolbarHeight;
+        self.scrubberToolbar.frame = scrubberFrame;
+        
+        CGRect bottomShadowFrame = self.bottomShadow.frame;
+        bottomShadowFrame.origin.y = CGRectGetMinY(scrubberFrame) - CGRectGetHeight(bottomShadowFrame);
+        self.bottomShadow.frame = bottomShadowFrame;
+    }
     
     // options buttons
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
