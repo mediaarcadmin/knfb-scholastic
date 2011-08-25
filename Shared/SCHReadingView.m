@@ -225,7 +225,6 @@ managedObjectContext:(NSManagedObjectContext *)managedObjectContext
     [self.selector addObserver:self forKeyPath:@"trackingStage" options:NSKeyValueObservingOptionPrior context:NULL];
     
     self.selector.magnifiesDuringSelection = NO;
-    self.selector.selectionDelay = 0.2f;
     self.selector.allowsAdjustment = NO;
 
     [self configureSelectorForSelectionMode]; 
