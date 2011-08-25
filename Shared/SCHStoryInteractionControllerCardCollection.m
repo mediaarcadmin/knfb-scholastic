@@ -253,21 +253,23 @@ enum {
     CATransform3D scale = CATransform3DMakeScale(CGRectGetWidth(self.selectedCardView.bounds)/CGRectGetWidth(self.cardLayer.bounds),
                                                  CGRectGetHeight(self.selectedCardView.bounds)/CGRectGetHeight(self.cardLayer.bounds),
                                                  1);
-    CATransform3D flip = CATransform3DMakeRotation(M_PI, 0, 1, 0);
-    BOOL showingFront = CATransform3DIsIdentity(self.cardLayer.transform);
     
-    CABasicAnimation *rotate = [CABasicAnimation animationWithKeyPath:@"transform"];
-    rotate.fromValue = [NSValue valueWithCATransform3D:showingFront ? CATransform3DIdentity : flip];
-    rotate.toValue = [NSValue valueWithCATransform3D:scale];
+    CABasicAnimation *scaleAnim = [CABasicAnimation animationWithKeyPath:@"transform"];
+    scaleAnim.fromValue = [NSValue valueWithCATransform3D:self.cardLayer.transform];
+    scaleAnim.toValue = [NSValue valueWithCATransform3D:scale];
+    scaleAnim.fillMode = kCAFillModeForwards;
     
-    CABasicAnimation *position = [CABasicAnimation animationWithKeyPath:@"position"];
-    position.fromValue = [NSValue valueWithCGPoint:self.cardLayer.position];
-    position.toValue = [NSValue valueWithCGPoint:[self.selectedCardView convertPoint:self.selectedCardView.center toView:self.contentsView]];
+    CABasicAnimation *positionAnim = [CABasicAnimation animationWithKeyPath:@"position"];
+    positionAnim.fromValue = [NSValue valueWithCGPoint:self.cardLayer.position];
+    positionAnim.toValue = [NSValue valueWithCGPoint:[self.selectedCardView convertPoint:self.selectedCardView.center toView:self.contentsView]];
+    positionAnim.fillMode = kCAFillModeForwards;
     
     CAAnimationGroup *group = [CAAnimationGroup animation];
-    group.animations = [NSArray arrayWithObjects:rotate, position, nil];
+    group.animations = [NSArray arrayWithObjects:scaleAnim, positionAnim, nil];
     group.duration = 0.5;
     group.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
+    group.fillMode = kCAFillModeForwards;
+    group.removedOnCompletion = NO;
     group.delegate = [SCHAnimationDelegate animationDelegateWithStopBlock:^(CAAnimation *animation, BOOL finished) {
         // replace the zooming layer with the original one in a single transaction
         [CATransaction begin];
@@ -288,8 +290,6 @@ enum {
                          }];
     }];
     
-    self.cardLayer.transform = CATransform3DConcat(scale, flip);
-    self.cardLayer.position = [self.selectedCardView convertPoint:self.selectedCardView.center toView:self.contentsView];
     [self.cardLayer addAnimation:group forKey:@"zoomOut"];
 
     [self hideCardButtonsIncludingZoomout:YES animated:YES];
