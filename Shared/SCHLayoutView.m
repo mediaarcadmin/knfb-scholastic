@@ -101,15 +101,15 @@
         // Must do this here so that the page aspect ratio takes account of the twoUp property
         CGRect myBounds = self.bounds;
         if(myBounds.size.width > myBounds.size.height) {
-            pageTurningView.twoUp = YES;
             if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
                 pageTurningView.potentiallyVisiblePageEdgeCount = LAYOUT_LANDSCAPE_PAGE_EDGE_COUNT;
             } else {
                 pageTurningView.potentiallyVisiblePageEdgeCount = 0;
             }
+			pageTurningView.twoUp = YES;
         } else {
-            pageTurningView.twoUp = NO;
             pageTurningView.potentiallyVisiblePageEdgeCount = 0;
+			pageTurningView.twoUp = NO;
         } 
         
         if (CGRectEqualToRect(firstPageCrop, CGRectZero)) {
@@ -167,15 +167,15 @@ managedObjectContext:(NSManagedObjectContext *)managedObjectContext
 - (void)layoutSubviews {
     CGRect myBounds = self.bounds;
     if(myBounds.size.width > myBounds.size.height) {
-        self.pageTurningView.twoUp = YES;      
         if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
             pageTurningView.potentiallyVisiblePageEdgeCount = LAYOUT_LANDSCAPE_PAGE_EDGE_COUNT;
         } else {
             pageTurningView.potentiallyVisiblePageEdgeCount = 0;
         }
+		self.pageTurningView.twoUp = YES;      
     } else {
-        self.pageTurningView.twoUp = NO;
         self.pageTurningView.potentiallyVisiblePageEdgeCount = 0;
+		self.pageTurningView.twoUp = NO;
     }   
     [super layoutSubviews];
     CGSize newSize = self.bounds.size;
