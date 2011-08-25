@@ -1,4 +1,4 @@
-    //
+//
 //  SCHLayoutView.m
 //  Scholastic
 //
@@ -23,7 +23,7 @@
 
 @interface SCHLayoutView() <EucSelectorDataSource>
 
-@property (nonatomic, retain) EucPageTurningView *pageTurningView;
+@property (nonatomic, retain) EucIndexBasedPageTurningView *pageTurningView;
 @property (nonatomic, assign) NSUInteger pageCount;
 @property (nonatomic, assign) NSUInteger currentPageIndex;
 @property (nonatomic, assign) CGRect firstPageCrop;
@@ -91,9 +91,9 @@
         pageCount = [self.xpsProvider pageCount];
         firstPageCrop = [self cropForPage:1 allowEstimate:NO];
         
-        pageTurningView = [[EucPageTurningView alloc] initWithFrame:self.bounds];
+        pageTurningView = [[EucIndexBasedPageTurningView alloc] initWithFrame:self.bounds];
         pageTurningView.delegate = self;
-        pageTurningView.bitmapDataSource = self;
+        pageTurningView.indexBasedDataSource = self;
         pageTurningView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
         pageTurningView.zoomHandlingKind = EucPageTurningViewZoomHandlingKindZoom;
         pageTurningView.vibratesOnInvalidTurn = NO;
@@ -319,7 +319,7 @@ managedObjectContext:(NSManagedObjectContext *)managedObjectContext
     return [self cropForPage:page allowEstimate:NO];
 }
 
-- (NSString *)pageTurningViewAccessibilityPageDescriptionForPagesAtIndexes:(NSArray *)pageIndexes
+- (NSString *)pageTurningView:(EucIndexBasedPageTurningView *)pageTurningView accessibilityPageDescriptionForPagesAtIndexes:(NSArray *)pageIdentifiers
 { 
     return nil;
 }
@@ -526,14 +526,14 @@ managedObjectContext:(NSManagedObjectContext *)managedObjectContext
 }
 
 #pragma mark -
-#pragma mark EucPageTurningViewBitmapDataSource
+#pragma mark EucIndexBasedPageTurningViewDataSource
 
-- (CGRect)pageTurningView:(EucPageTurningView *)aPageTurningView contentRectForPageAtIndex:(NSUInteger)index 
+- (CGRect)pageTurningView:(EucIndexBasedPageTurningView *)aPageTurningView contentRectForPageAtIndex:(NSUInteger)index 
 {
     return [self cropForPage:index + 1];
 }
 
-- (THPositionedCGContext *)pageTurningView:(EucPageTurningView *)aPageTurningView 
+- (THPositionedCGContext *)pageTurningView:(EucIndexBasedPageTurningView *)aPageTurningView 
            RGBABitmapContextForPageAtIndex:(NSUInteger)index
                                   fromRect:(CGRect)rect 
                                     atSize:(CGSize)size {
@@ -553,25 +553,20 @@ managedObjectContext:(NSManagedObjectContext *)managedObjectContext
     return [[[THPositionedCGContext alloc] initWithCGContext:CGContext backing:backing] autorelease];
 }
 
-- (UIImage *)pageTurningView:(EucPageTurningView *)aPageTurningView 
-   fastUIImageForPageAtIndex:(NSUInteger)index
+- (UIImage *)pageTurningView:(EucIndexBasedPageTurningView *)aPageTurningView
+fastThumbnailUIImageForPageAtIndex:(NSUInteger)index
 {
     return [self.xpsProvider thumbnailForPage:index + 1];
 }
 
-- (NSArray *)pageTurningView:(EucPageTurningView *)pageTurningView highlightsForPageAtIndex:(NSUInteger)pageIndex
+- (NSArray *)pageTurningView:(EucIndexBasedPageTurningView *)pageTurningView highlightsForPageAtIndex:(NSUInteger)pageIndex
 {
     return [self highlightRectsForPageAtIndex:pageIndex excluding:nil];
 }
 
-- (NSUInteger)pageTurningView:(EucPageTurningView *)pageTurningView pageCountBeforePageAtIndex:(NSUInteger)pageIndex
+- (NSUInteger)pageTurningViewPageCount:(EucIndexBasedPageTurningView *)pageTurningView
 {
-    return pageIndex;    
-}
-
-- (NSUInteger)pageTurningView:(EucPageTurningView *)pageTurningView pageCountAfterPageAtIndex:(NSUInteger)pageIndex
-{
-    return self.pageCount - pageIndex - 1;
+	return self.pageCount;
 }
 
 #pragma mark - EucPageTurningViewDelegate
@@ -990,9 +985,7 @@ CGAffineTransform transformRectToFitRect(CGRect sourceRect, CGRect targetRect, B
     
 	BOOL isOnRight = YES;
 	if (self.pageTurningView.isTwoUp) {
-		BOOL rightIsEven = !self.pageTurningView.oddPagesOnRight;
-		BOOL indexIsEven = (pageIndex % 2 == 0);
-		if (rightIsEven != indexIsEven) {
+		if ((pageIndex % 2) != 0) {
 			isOnRight = NO;
 		}
 	}

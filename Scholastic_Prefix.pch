@@ -13,7 +13,6 @@
 #define UATSERVER 1 // Setting 0 points to the production server - BitWink employees should NOT use this!
 #define NONDRMAUTHENTICATION 0
 #define DICTIONARY_DOWNLOAD_DISABLED 0
-#define LIBEUCALYPTUS_EPUB_IS_STILL_BUPE 1 // Should remove this when libEucalyptus is updated to master branch.
 
 // Stops all NSLog() functions executing under release builds
 #ifdef __OPTIMIZE__
