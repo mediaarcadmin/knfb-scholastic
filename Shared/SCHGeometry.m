@@ -39,3 +39,9 @@ CGRect SCHAspectFitSizeInTargetRect(CGSize sourceSize, CGRect targetRect)
                       width, height);
 }
 
+CGRect SCHCGRectForSizeCenteredInCGRect(CGSize rectSize, CGRect containerRect)
+{
+    return CGRectMake((CGRectGetWidth(containerRect)-rectSize.width)/2,
+                      (CGRectGetHeight(containerRect)-rectSize.height)/2,
+                      rectSize.width, rectSize.height);
+}
