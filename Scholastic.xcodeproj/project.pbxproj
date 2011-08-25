@@ -1787,7 +1787,6 @@
 		F84CE156134C691D0044729E /* SCHNonDRMAuthenticationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = F84CE155134C691D0044729E /* SCHNonDRMAuthenticationManager.m */; };
 		F84CE157134C691D0044729E /* SCHNonDRMAuthenticationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = F84CE155134C691D0044729E /* SCHNonDRMAuthenticationManager.m */; };
 		F8509EA312F0621E00197EB5 /* SCHScrubberView.m in Sources */ = {isa = PBXBuildFile; fileRef = F8509E9B12F0621E00197EB5 /* SCHScrubberView.m */; };
-		F8509EB812F0625100197EB5 /* libstdc++.6.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = F8509EB712F0625100197EB5 /* libstdc++.6.dylib */; };
 		F8509EF612F063C900197EB5 /* MainWindow_iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 28AD733E0D9D9553002E5188 /* MainWindow_iPad.xib */; };
 		F8509EF712F063C900197EB5 /* MainWindow_iPhone.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2860E389111B897F00E27156 /* MainWindow_iPhone.xib */; };
 		F8509EF812F063C900197EB5 /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 528A2CD212CCDD9E0053A343 /* Settings.bundle */; };
@@ -1834,7 +1833,6 @@
 		F8509F4412F063C900197EB5 /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 529386C212DF3A8900045B44 /* CFNetwork.framework */; };
 		F8509F4512F063C900197EB5 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 529386C412DF3A9000045B44 /* SystemConfiguration.framework */; };
 		F8509F4612F063C900197EB5 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 52EF553D12E9EB8500E374F7 /* Security.framework */; };
-		F8509F4812F063C900197EB5 /* libstdc++.6.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = F8509EB712F0625100197EB5 /* libstdc++.6.dylib */; };
 		F8537F13139E3BB10092C743 /* SCHStoryInteractionAboutYouQuiz_iPhone.xib in Resources */ = {isa = PBXBuildFile; fileRef = F8537F12139E3BB10092C743 /* SCHStoryInteractionAboutYouQuiz_iPhone.xib */; };
 		F8537F14139E3BB10092C743 /* SCHStoryInteractionAboutYouQuiz_iPhone.xib in Resources */ = {isa = PBXBuildFile; fileRef = F8537F12139E3BB10092C743 /* SCHStoryInteractionAboutYouQuiz_iPhone.xib */; };
 		F8537F17139E3E4C0092C743 /* SCHStoryInteractionControllerAboutYouQuiz.m in Sources */ = {isa = PBXBuildFile; fileRef = F8537F16139E3E4C0092C743 /* SCHStoryInteractionControllerAboutYouQuiz.m */; };
@@ -3506,7 +3504,6 @@
 		F84CE155134C691D0044729E /* SCHNonDRMAuthenticationManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHNonDRMAuthenticationManager.m; path = Shared/SCHNonDRMAuthenticationManager.m; sourceTree = "<group>"; };
 		F8509E9A12F0621E00197EB5 /* SCHScrubberView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCHScrubberView.h; sourceTree = "<group>"; };
 		F8509E9B12F0621E00197EB5 /* SCHScrubberView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCHScrubberView.m; sourceTree = "<group>"; };
-		F8509EB712F0625100197EB5 /* libstdc++.6.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libstdc++.6.dylib"; path = "usr/lib/libstdc++.6.dylib"; sourceTree = SDKROOT; };
 		F8509F4D12F063C900197EB5 /* Scholastic.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Scholastic.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F8537F12139E3BB10092C743 /* SCHStoryInteractionAboutYouQuiz_iPhone.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SCHStoryInteractionAboutYouQuiz_iPhone.xib; sourceTree = "<group>"; };
 		F8537F15139E3E4C0092C743 /* SCHStoryInteractionControllerAboutYouQuiz.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCHStoryInteractionControllerAboutYouQuiz.h; sourceTree = "<group>"; };
@@ -3684,7 +3681,6 @@
 				C9ED56761343322300A25486 /* libwapcaplet.a in Frameworks */,
 				C9F1A57A133B83D100FD984C /* libxml2.dylib in Frameworks */,
 				A3D933861326D92000037111 /* libPlayReadyPK.a in Frameworks */,
-				F8509EB812F0625100197EB5 /* libstdc++.6.dylib in Frameworks */,
 				C95ECB52133A77FC00D88768 /* Accelerate.framework in Frameworks */,
 				C95ECB4E133A77F000D88768 /* AudioToolbox.framework in Frameworks */,
 				526A8A5C1385166E00101A96 /* AVFoundation.framework in Frameworks */,
@@ -3724,7 +3720,6 @@
 				28B193EE1405253100313821 /* AssetsLibrary.framework in Frameworks */,
 				F8E2D3C013B9C7AC001E207B /* CoreText.framework in Frameworks */,
 				C9F1A4D6133B507100FD984C /* libPlayReadyPK.a in Frameworks */,
-				F8509F4812F063C900197EB5 /* libstdc++.6.dylib in Frameworks */,
 				C95ECB45133A76C400D88768 /* Accelerate.framework in Frameworks */,
 				C95ECB4D133A77A500D88768 /* AudioToolbox.framework in Frameworks */,
 				526A8A5D1385167A00101A96 /* AVFoundation.framework in Frameworks */,
@@ -4623,7 +4618,6 @@
 				F80060FD13D9CF76001CA881 /* ImageIO.framework */,
 				C9ED56811343328F00A25486 /* libiconv.dylib */,
 				28A08D2013953393006FD008 /* libexpat.a */,
-				F8509EB712F0625100197EB5 /* libstdc++.6.dylib */,
 				C9F1A579133B83D100FD984C /* libxml2.dylib */,
 				C9B7EABD13DEDBAB00BD5CB7 /* MessageUI.framework */,
 				C95ECB44133A76C400D88768 /* Accelerate.framework */,
