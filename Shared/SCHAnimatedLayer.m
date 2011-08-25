@@ -61,14 +61,30 @@
 }
 
 - (void)animateAllFramesWithDuration:(CFTimeInterval)duration
+                          frameOrder:(NSArray*)frameOrder
+                         autoreverse:(BOOL)autoreverse
                          repeatCount:(NSInteger)repeats
                             delegate:(id)delegate
 {
-    CABasicAnimation *anim = [CABasicAnimation animationWithKeyPath:@"frameIndex"];
-    anim.fromValue = [NSNumber numberWithInteger:0];
-    anim.toValue = [NSNumber numberWithInteger:self.numberOfFrames-1];
+    CAKeyframeAnimation *anim = [CAKeyframeAnimation animationWithKeyPath:@"frameIndex"];
+    
+    NSArray *frames = frameOrder;
+    
+    if (!frames) {
+        NSMutableArray *keyFrames = [NSMutableArray array];
+        
+        for (int i = 0; i < self.numberOfFrames; i++) {
+            [keyFrames addObject:[NSNumber numberWithInteger:i]];
+        }
+        
+        frames = keyFrames;
+    }
+    
+    anim.values = frames;
     anim.duration = duration;
+    anim.calculationMode = kCAAnimationDiscrete;
     anim.repeatCount = repeats;
+    anim.autoreverses = autoreverse;
     anim.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionLinear];
     anim.fillMode = kCAFillModeForwards;
     anim.delegate = delegate;
