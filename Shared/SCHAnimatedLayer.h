@@ -15,6 +15,8 @@
 @property (nonatomic, assign) NSInteger numberOfFrames;
 
 - (void)animateAllFramesWithDuration:(CFTimeInterval)duration
+                          frameOrder:(NSArray*)frameOrder
+                         autoreverse:(BOOL)autoreverse
                          repeatCount:(NSInteger)repeats
                             delegate:(id)delegate;
 
