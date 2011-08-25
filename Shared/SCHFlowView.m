@@ -14,7 +14,7 @@
 #import "KNFBTextFlow.h"
 #import "KNFBTextFlowParagraphSource.h"
 #import <libEucalyptus/EucBookView.h>
-#import <libEucalyptus/EucBUpeBook.h>
+#import <libEucalyptus/EucEPubBook.h>
 #import <libEucalyptus/EucBookPageIndexPoint.h>
 #import <libEucalyptus/EucHighlightRange.h>
 #import <libEucalyptus/EucMenuItem.h>
@@ -446,11 +446,11 @@ static void sortedHighlightRangePredicateInit() {
     
     indexPoint.source = [self.eucBook currentPageIndexPoint].source;
     
-    indexPoint.block = [selectorRange.startBlockId unsignedIntValue];
+    indexPoint.block = [((THPair *)selectorRange.startBlockId).second unsignedIntValue];
     indexPoint.word = [selectorRange.startElementId unsignedIntValue];
     SCHBookPoint *startPoint = [self.eucBook bookPointFromBookPageIndexPoint:indexPoint];
     
-    indexPoint.block = [selectorRange.endBlockId unsignedIntValue];
+    indexPoint.block = [((THPair *)selectorRange.endBlockId).second unsignedIntValue];
     indexPoint.word = [selectorRange.endElementId unsignedIntValue];
     SCHBookPoint *endPoint = [self.eucBook bookPointFromBookPageIndexPoint:indexPoint];
     
