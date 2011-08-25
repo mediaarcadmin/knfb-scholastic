@@ -15,6 +15,8 @@
 
 enum {
     kZoomOutButtonTag = 42,
+    kPreviousCardButtonTag = 97,
+    kNextCardButtonTag = 98,
     kCardImageViewTag = 99
 };
 
@@ -24,6 +26,7 @@ enum {
 @property (nonatomic, retain) CALayer *cardLayer;
 @property (nonatomic, retain) NSArray *scrollSublayers;
 
+- (void)zoomToCardLayerFromView:(UIView *)view;
 - (void)showCardButtons;
 - (void)hideCardButtonsIncludingZoomout:(BOOL)hideZoomOutButton animated:(BOOL)animated;
 - (void)setPurpleBorderOnLayer:(CALayer *)layer;
@@ -115,11 +118,18 @@ enum {
 
 - (void)showCardButtons
 {
+    const BOOL isFirstCard = ([self.scrollSublayers objectAtIndex:0] == self.cardLayer);
+    const BOOL isLastCard = ([self.scrollSublayers lastObject] == self.cardLayer);
+    
     [UIView animateWithDuration:0.2
                           delay:0
                         options:UIViewAnimationOptionAllowUserInteraction
                      animations:^{
                          for (UIButton *button in self.cardButtons) {
+                             if ((button.tag == kPreviousCardButtonTag && isFirstCard)
+                                 || (button.tag == kNextCardButtonTag && isLastCard)) {
+                                 continue;
+                             }
                              button.userInteractionEnabled = YES;
                              button.alpha = 1;
                          }
@@ -154,57 +164,69 @@ enum {
     if (self.cardLayer != nil) {
         return;
     }
-    
-    SCHStoryInteractionCardCollection *cardCollection = (SCHStoryInteractionCardCollection *)self.storyInteraction;
-    UIImage *backImage = [self imageAtPath:[cardCollection imagePathForCardBackAtIndex:tap.view.tag]];
 
-    self.selectedCardView = (UIImageView *)[tap.view viewWithTag:kCardImageViewTag];
+    // hide other card views
+    [UIView animateWithDuration:0.2
+                     animations:^{
+                         for (UIView *view in self.cardViews) {
+                             if (view != tap.view) {
+                                 view.alpha = 0;
+                             }
+                         }
+                     }
+                     completion:^(BOOL finished) {
+                         [self zoomToCardLayerFromView:tap.view];
+                     }];
+}
+
+- (void)zoomToCardLayerFromView:(UIView *)cardView
+{
+   SCHStoryInteractionCardCollection *cardCollection = (SCHStoryInteractionCardCollection *)self.storyInteraction;
+    UIImage *backImage = [self imageAtPath:[cardCollection imagePathForCardBackAtIndex:cardView.tag]];
+
+    self.selectedCardView = (UIImageView *)[cardView viewWithTag:kCardImageViewTag];
 
     CGFloat verticalSpace = (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) ? 30 : 40;
     CGFloat height = CGRectGetHeight(self.contentsView.bounds) - verticalSpace;
     CGFloat width = height * CGRectGetWidth(self.selectedCardView.bounds) / CGRectGetHeight(self.selectedCardView.bounds);
     
     self.cardLayer = [self cardLayerWithFront:self.selectedCardView.image back:backImage size:CGSizeMake(width, height)];
-    self.cardLayer.position = CGPointMake(floorf(CGRectGetMidX(self.perspectiveView.bounds)),
-                                          floorf(CGRectGetMidY(self.perspectiveView.bounds)));
+    self.cardLayer.position = [self.selectedCardView convertPoint:self.selectedCardView.center toView:self.contentsView];
     
     // replace the UIView layer with the zooming layer in a single transaction
     [CATransaction begin];
     [CATransaction setDisableActions:YES];
     [self.perspectiveView.layer addSublayer:self.cardLayer];
-    tap.view.layer.opacity = 0;
-    [CATransaction commit];
+    cardView.layer.opacity = 0;
     
     // zoom card from current position
-    CATransform3D scale = CATransform3DMakeScale(CGRectGetWidth(self.selectedCardView.bounds)/width,
-                                                 CGRectGetHeight(self.selectedCardView.bounds)/height,
-                                                 1);    
+    self.cardLayer.transform = CATransform3DMakeScale(CGRectGetWidth(self.selectedCardView.bounds)/width,
+                                                      CGRectGetHeight(self.selectedCardView.bounds)/height,
+                                                      1);
+    
     CABasicAnimation *scaleAnim = [CABasicAnimation animationWithKeyPath:@"transform"];
-    scaleAnim.fromValue = [NSValue valueWithCATransform3D:scale];
     scaleAnim.toValue = [NSValue valueWithCATransform3D:CATransform3DIdentity];
+    scaleAnim.fillMode = kCAFillModeForwards;
     
     CABasicAnimation *positionAnim = [CABasicAnimation animationWithKeyPath:@"position"];
-    positionAnim.fromValue = [NSValue valueWithCGPoint:[self.selectedCardView convertPoint:self.selectedCardView.center toView:self.contentsView]];
-    positionAnim.toValue = [NSValue valueWithCGPoint:self.cardLayer.position];
+    positionAnim.toValue = [NSValue valueWithCGPoint:CGPointMake(floorf(CGRectGetMidX(self.perspectiveView.bounds)),
+                                                                 floorf(CGRectGetMidY(self.perspectiveView.bounds)))];
+    positionAnim.fillMode = kCAFillModeForwards;
 
     CAAnimationGroup *group = [CAAnimationGroup animation];
     group.animations = [NSArray arrayWithObjects:scaleAnim, positionAnim, nil];
     group.duration = 0.5;
     group.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
+    group.removedOnCompletion = NO;
+    group.fillMode = kCAFillModeForwards;
     group.delegate = [SCHAnimationDelegate animationDelegateWithStopBlock:^(CAAnimation *animation, BOOL finished) {
+        [self.cardLayer removeAllAnimations];
+        [self showCardsInScrollViewAtIndex:cardView.tag];
         [self showCardButtons];
-        [self showCardsInScrollViewAtIndex:tap.view.tag];
     }];
     
     [self.cardLayer addAnimation:group forKey:@"zoomIn"];
-    
-    // hide other card views
-    [UIView animateWithDuration:0.2
-                     animations:^{
-                         for (UIView *view in self.cardViews) {
-                             view.alpha = 0;
-                         }
-                     }];
+    [CATransaction commit];
 }
 
 - (void)zoomOut:(id)sender
@@ -255,6 +277,15 @@ enum {
         self.selectedCardView.superview.layer.opacity = 1.0;
         self.selectedCardView = nil;
         [CATransaction commit];
+        
+        [UIView animateWithDuration:0.2
+                         animations:^{
+                             for (UIView *view in self.cardViews) {
+                                 if (view != self.selectedCardView.superview) {
+                                     view.alpha = 1.0;
+                                 }
+                             }
+                         }];
     }];
     
     self.cardLayer.transform = CATransform3DConcat(scale, flip);
@@ -262,21 +293,6 @@ enum {
     [self.cardLayer addAnimation:group forKey:@"zoomOut"];
 
     [self hideCardButtonsIncludingZoomout:YES animated:YES];
-
-    NSMutableArray *unselectedCards = [self.cardViews mutableCopy];
-    [unselectedCards removeObject:self.selectedCardView.superview];
-    
-    [UIView animateWithDuration:0.2
-                          delay:0.3
-                        options:UIViewAnimationOptionCurveLinear
-                     animations:^{
-                         for (UIView *view in unselectedCards) {
-                             view.alpha = 1.0;
-                         }
-                     }
-                     completion:nil];
-    
-    [unselectedCards release];
 }
 
 - (void)setPurpleBorderOnLayer:(CALayer *)layer
@@ -369,10 +385,10 @@ enum {
     SCHStoryInteractionCardCollection *cardCollection = (SCHStoryInteractionCardCollection *)self.storyInteraction;
     const NSInteger numCards = [cardCollection numberOfCards];
     const CGSize cardSize = self.cardLayer.bounds.size;
-    NSInteger gap = CGRectGetWidth(self.contentsView.bounds) - cardSize.width;
+    const CGFloat width = CGRectGetWidth(self.contentsView.bounds);
 
-    NSInteger x = cardSize.width/2 + CGRectGetMinX(self.cardLayer.frame);
-    NSInteger y = cardSize.height/2 + CGRectGetMinY(self.cardLayer.frame);
+    CGPoint position = CGPointMake(floorf(CGRectGetMidX(self.perspectiveView.bounds)),
+                                   floorf(CGRectGetMidY(self.perspectiveView.bounds)));
     NSMutableArray *sublayers = [NSMutableArray arrayWithCapacity:numCards];
     
     for (NSInteger cardIndex = 0; cardIndex < numCards; ++cardIndex) {
@@ -382,14 +398,14 @@ enum {
             continue;
         }
         CALayer *layer = [self cardLayerWithFront:frontImage back:backImage size:cardSize];
-        layer.position = CGPointMake(x, y);
+        layer.position = position;
         [self.scrollContentView.layer addSublayer:layer];
         [sublayers addObject:layer];
-        x += cardSize.width + gap;
+        position.x += width;
     }
     
     self.scrollSublayers = [NSArray arrayWithArray:sublayers];
-    self.cardScrollView.contentSize = CGSizeMake((cardSize.width+gap)*[sublayers count], cardSize.height);
+    self.cardScrollView.contentSize = CGSizeMake(width*[sublayers count], cardSize.height);
     self.scrollContentView.frame = (CGRect){CGPointZero, self.cardScrollView.contentSize};
 
     // replace zoom layer with scroller
@@ -397,7 +413,7 @@ enum {
     self.cardLayer = [self.scrollSublayers objectAtIndex:index];
 
     [self.cardScrollView setHidden:NO];
-    [self.cardScrollView setContentOffset:CGPointMake((cardSize.width+gap)*index, 0) animated:NO];
+    [self.cardScrollView setContentOffset:CGPointMake(width*index, 0) animated:NO];
     [CATransaction commit];
     
     // adjust the view order
@@ -515,7 +531,6 @@ enum {
         } else {
             self.zoomContentView.layer.position = CGPointMake(CGRectGetMidX(self.zoomContentView.layer.bounds)*scrollView.zoomScale,
                                                               CGRectGetMidY(self.zoomContentView.layer.bounds)*scrollView.zoomScale);
-            NSLog(@"bounds=%@", NSStringFromCGRect(self.zoomContentView.bounds));
         }
         [CATransaction commit];
     }
