@@ -71,6 +71,8 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 // timer used to fade toolbars out after a certain period of time
 @property (nonatomic, retain) NSTimer *initialFadeTimer;
 
+@property (nonatomic, retain) NSTimer *cornerCoverFadeTimer;
+
 // updates the notes counter in the toolbar
 - (void)updateNotesCounter;
 
@@ -227,6 +229,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 @synthesize highlightsModeEnabled;
 @synthesize highlightsInfoButton;
 @synthesize highlightsCancelButton;
+@synthesize cornerCoverFadeTimer;
 
 #pragma mark - Dealloc and View Teardown
 
@@ -508,13 +511,8 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 	self.scrubberInfoView.layer.masksToBounds = YES;
     
 	
-//	self.initialFadeTimer = [NSTimer scheduledTimerWithTimeInterval:5.0f
-//                                                             target:self
-//                                                           selector:@selector(hideToolbarsFromTimer)
-//                                                           userInfo:nil
-//                                                            repeats:NO];
-//    [self startFadeTimer];
-    
+    [self startFadeTimer];
+
     if (self.youngerMode) {
         [self.olderBottomToolbar removeFromSuperview];
     }
@@ -639,13 +637,11 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 
 - (void)setupAssetsForOrientation:(UIInterfaceOrientation)orientation
 {    
-    
     [self.navigationToolbar setOrientation:orientation];
     
+    // set the highlights toolbar to the same size as the navigation toolbar
     CGRect toolbarFrame = self.navigationToolbar.frame;
     toolbarFrame.size.height -= kSCHReadingViewNavigationToolbarShadowHeight;
-    NSLog(@"Frame: %@", NSStringFromCGRect(toolbarFrame));
-
     self.highlightsToolbar.frame = toolbarFrame;
 
     // Adjust scrubber dimensions and graphics for younger mode (portrait only for iPhone)
@@ -1190,6 +1186,8 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 - (IBAction)toggleToolbarButtonAction:(id)sender {
     // Setting highlight stops the flicker
     [self pauseAudioPlayback];
+    
+    [self dismissCoverCornerViewWithAnimation:YES];
     
     // Perform this after a delay to allow the button to unhighlight before teh animation starts
     [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(toggleToolbarVisibility) object:nil];
@@ -2378,16 +2376,21 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 
 - (void)startFadeTimer
 {
-    if (self.initialFadeTimer) {
-        [self.initialFadeTimer invalidate];
-        self.initialFadeTimer = nil;
-    }
-    
-    self.initialFadeTimer = [NSTimer scheduledTimerWithTimeInterval:5.0f
-                                                             target:self
-                                                           selector:@selector(hideToolbarsFromTimer)
-                                                           userInfo:nil
-                                                            repeats:NO];
+//    if (self.initialFadeTimer) {
+//        [self.initialFadeTimer invalidate];
+//        self.initialFadeTimer = nil;
+//    }
+//    
+//    self.initialFadeTimer = [NSTimer scheduledTimerWithTimeInterval:5.0f
+//                                                             target:self
+//                                                           selector:@selector(hideToolbarsFromTimer)
+//                                                           userInfo:nil
+//                                                            repeats:NO];
+
+    self.cornerCoverFadeTimer = [NSTimer scheduledTimerWithTimeInterval:4.0f 
+                                                                 target:self selector:@selector(dismissCoverCornerView)
+                                                               userInfo:nil
+                                                                repeats:NO];
 }
 
 - (void)cancelInitialTimer
@@ -2691,6 +2694,14 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
             }
                              completion:nil];
         }
+    }
+}
+
+- (void)dismissCoverCornerView
+{
+    if (self.sampleSICoverMarker) {
+        [self dismissCoverCornerViewWithAnimation:YES];
+        self.coverMarkerShouldAppear = NO;
     }
 }
 
