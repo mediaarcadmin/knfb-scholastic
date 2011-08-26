@@ -41,10 +41,21 @@
     return [KNFBXPSStoryInteractionsDirectory stringByAppendingPathComponent:filename];
 }
 
+- (NSString *)audioPathForClearThisPicture
+{
+    return [KNFBXPSStoryInteractionsDirectory stringByAppendingPathComponent:@"gen_clearpicture.mp3"];
+}
+
 @end
 
 
 @implementation SCHStoryInteractionPictureStarterCustom
+
+- (NSString *)audioPathForChooseYourPicture
+{
+    return [KNFBXPSStoryInteractionsDirectory stringByAppendingPathComponent:@"gen_chooseyourpicture.mp3"];
+}
+
 @end
 
 @implementation SCHStoryInteractionPictureStarterNewEnding
