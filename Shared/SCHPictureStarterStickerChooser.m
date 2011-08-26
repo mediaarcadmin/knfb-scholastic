@@ -74,7 +74,11 @@ enum {
     }
     
     SCHPictureStarterStickerChooserThumbnailView *thumbnail = (SCHPictureStarterStickerChooserThumbnailView *)[cell viewWithTag:kThumbnailTag];
-    thumbnail.image = [self.stickerDataSource thumbnailAtIndex:indexPath.row forChooserIndex:self.chooserIndex];
+    [self.stickerDataSource thumbnailAtIndex:indexPath.row
+                             forChooserIndex:self.chooserIndex
+                                      result:^(UIImage *thumb) {
+                                          thumbnail.image = thumb;
+                                      }];
     thumbnail.selected = (self.selectedRowIndex == indexPath.row);
     return cell;
 }

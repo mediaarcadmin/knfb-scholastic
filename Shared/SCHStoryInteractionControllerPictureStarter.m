@@ -127,6 +127,11 @@ enum SCHToolType {
 
 - (void)setupViewAtIndex:(NSInteger)screenIndex
 {
+    if (!self.stickers) {
+        // set this up early to avoid delays when the drawing screen first appears
+        self.stickers = [[[SCHPictureStarterStickers alloc] init] autorelease];
+    }
+    
     switch (screenIndex) {
         case 0 :
             [self setupOpeningScreen];
@@ -169,7 +174,6 @@ enum SCHToolType {
     self.drawingCanvas.delegate = self;
     
     self.stickerChoosers = [self.stickerChoosers viewsSortedHorizontally];
-    self.stickers = [[[SCHPictureStarterStickers alloc] init] autorelease];
     self.stickers.numberOfChoosers = [self.stickerChoosers count];
     NSInteger index = 0;
     for (SCHPictureStarterStickerChooser *chooser in self.stickerChoosers) {
