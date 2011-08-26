@@ -42,7 +42,8 @@
         [self setTitle:NSLocalizedString(@"To get started, choose a picture below.", @"Picture Starter custom opening screen title, iPhone")];
     }
     
-    [self enqueueAudioWithPath:@"gen_chooseyourpicture.mp3" fromBundle:NO];
+    [self enqueueAudioWithPath:[(SCHStoryInteractionPictureStarterCustom *)self.storyInteraction audioPathForChooseYourPicture]
+                    fromBundle:NO];
 }
 
 - (void)chooseBackground:(UIButton *)sender

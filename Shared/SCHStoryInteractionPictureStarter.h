@@ -15,10 +15,14 @@
 - (NSString *)introductionAtIndex:(NSInteger)index;
 - (NSString *)audioPathAtIndex:(NSInteger)index;
 - (NSString *)imagePathAtIndex:(NSInteger)index;
+- (NSString *)audioPathForClearThisPicture;
 
 @end
 
 @interface SCHStoryInteractionPictureStarterCustom : SCHStoryInteractionPictureStarter {}
+
+- (NSString *)audioPathForChooseYourPicture;
+
 @end
 
 @interface SCHStoryInteractionPictureStarterNewEnding : SCHStoryInteractionPictureStarter {}

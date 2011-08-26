@@ -15,5 +15,6 @@
 
 @required
 - (id<SCHPictureStarterDrawingInstruction>)drawingInstruction;
+- (void)canvas:(SCHPictureStarterCanvas *)canvas didCommitDrawingInstruction:(id<SCHPictureStarterDrawingInstruction>)drawingInstruction;
 
 @end

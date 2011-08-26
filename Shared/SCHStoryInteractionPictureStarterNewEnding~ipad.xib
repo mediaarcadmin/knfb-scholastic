@@ -45,8 +45,8 @@
 					<bool key="EncodedWithXMLCoder">YES</bool>
 					<object class="IBUILabel" id="367412169">
 						<reference key="NSNextResponder" ref="191373211"/>
-						<int key="NSvFlags">292</int>
-						<string key="NSFrame">{{244, 124}, {462, 58}}</string>
+						<int key="NSvFlags">293</int>
+						<string key="NSFrame">{{194, 127}, {462, 58}}</string>
 						<reference key="NSSuperview" ref="191373211"/>
 						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="167085662"/>
@@ -73,8 +73,8 @@
 					</object>
 					<object class="IBUIButton" id="167085662">
 						<reference key="NSNextResponder" ref="191373211"/>
-						<int key="NSvFlags">292</int>
-						<string key="NSFrame">{{405, 226}, {140, 45}}</string>
+						<int key="NSvFlags">293</int>
+						<string key="NSFrame">{{355, 229}, {140, 45}}</string>
 						<reference key="NSSuperview" ref="191373211"/>
 						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView"/>
@@ -104,7 +104,7 @@
 						</object>
 					</object>
 				</object>
-				<string key="NSFrameSize">{950, 593}</string>
+				<string key="NSFrameSize">{850, 500}</string>
 				<reference key="NSSuperview"/>
 				<reference key="NSWindow"/>
 				<reference key="NSNextKeyView" ref="367412169"/>
@@ -328,6 +328,7 @@
 							<string>doneButton</string>
 							<string>drawingCanvas</string>
 							<string>saveButton</string>
+							<string>savingLabel</string>
 							<string>sizeChooser</string>
 						</object>
 						<object class="NSMutableArray" key="dict.values">
@@ -337,6 +338,7 @@
 							<string>SCHStretchableImageButton</string>
 							<string>SCHPictureStarterCanvas</string>
 							<string>SCHStretchableImageButton</string>
+							<string>UILabel</string>
 							<string>SCHPictureStarterSizeChooser</string>
 						</object>
 					</object>
@@ -349,6 +351,7 @@
 							<string>doneButton</string>
 							<string>drawingCanvas</string>
 							<string>saveButton</string>
+							<string>savingLabel</string>
 							<string>sizeChooser</string>
 						</object>
 						<object class="NSMutableArray" key="dict.values">
@@ -372,6 +375,10 @@
 							<object class="IBToOneOutletInfo">
 								<string key="name">saveButton</string>
 								<string key="candidateClassName">SCHStretchableImageButton</string>
+							</object>
+							<object class="IBToOneOutletInfo">
+								<string key="name">savingLabel</string>
+								<string key="candidateClassName">UILabel</string>
 							</object>
 							<object class="IBToOneOutletInfo">
 								<string key="name">sizeChooser</string>

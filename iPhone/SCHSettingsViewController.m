@@ -117,7 +117,6 @@ extern NSString * const kSCHAuthenticationManagerDeviceKey;
     
     if ([[SCHAppStateManager sharedAppStateManager] canAuthenticate] == NO) {
         [self.manageBooksButton setEnabled:NO];
-        [self.deregisterDeviceButton setTitle:@"Reset Content and Settings" forState:UIControlStateNormal];
     }
 }
 
