@@ -28,6 +28,12 @@
     return @"Video";
 }
 
+- (BOOL)isValid
+{
+    return([super isValid] == YES && self.videoFilename != nil &&
+           [[[self.videoFilename pathExtension] lowercaseString] isEqualToString:@"mp4"] == YES);
+}
+
 - (NSString *)audioPathForQuestion
 {
     NSUInteger videoIndex = [[self.bookStoryInteractions storyInteractionsOfClass:[self class]] indexOfObject:self];

@@ -31,6 +31,11 @@ NSString * const KNFBXPSStoryInteractionsDirectory = @"/Documents/1/Other/KNFB/I
     return NO;
 }
 
+- (BOOL)isValid
+{
+    return(YES);
+}
+
 - (NSString *)title
 {
     // override in subclasses

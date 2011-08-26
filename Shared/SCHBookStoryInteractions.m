@@ -46,6 +46,9 @@
         NSArray *all = [parser parseStoryInteractionsFromData:xml];
         [parser release];
         
+        // only use valid story interactions
+        all = [all filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"isValid == YES"]];
+        
         self.storyInteractions = [all sortedArrayUsingComparator:^NSComparisonResult(id obj1, id obj2) {
             return [(SCHStoryInteraction *)obj1 documentPageNumber] - [(SCHStoryInteraction *)obj2 documentPageNumber];
         }];
