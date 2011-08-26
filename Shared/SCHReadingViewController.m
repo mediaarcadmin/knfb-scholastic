@@ -1628,15 +1628,13 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 - (IBAction)fixedButtonPressed:(id)sender {
     if (self.layoutType != SCHReadingViewLayoutTypeFixed) {
         [self setupOptionsViewForMode:SCHReadingViewLayoutTypeFixed];
-        
-        SCHBookPoint *currentBookPoint = [self.readingView currentBookPoint];
         [self.readingView dismissSelector];
+        [self saveLastPageLocation];
         
         // Dispatch this after a delay to allow the slector to be immediately dismissed
         dispatch_time_t delay = dispatch_time(DISPATCH_TIME_NOW, NSEC_PER_SEC * 0.1);
         dispatch_after(delay, dispatch_get_main_queue(), ^{
             self.layoutType = SCHReadingViewLayoutTypeFixed;
-            [self jumpToBookPoint:currentBookPoint animated:NO];
             [self updateScrubberValue];
         });
     }
@@ -1646,14 +1644,13 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     
     if (self.layoutType != SCHReadingViewLayoutTypeFlow) {
         [self setupOptionsViewForMode:SCHReadingViewLayoutTypeFlow];
-        SCHBookPoint *currentBookPoint = [self.readingView currentBookPoint];
         [self.readingView dismissSelector];
+        [self saveLastPageLocation];
         
         // Dispatch this after a delay to allow the slector to be immediately dismissed
         dispatch_time_t delay = dispatch_time(DISPATCH_TIME_NOW, NSEC_PER_SEC * 0.1);
         dispatch_after(delay, dispatch_get_main_queue(), ^{
             self.layoutType = SCHReadingViewLayoutTypeFlow;
-            [self jumpToBookPoint:currentBookPoint animated:NO];
             [self updateScrubberValue];
         });
     }
