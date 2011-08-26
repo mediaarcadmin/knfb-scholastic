@@ -117,7 +117,7 @@ static CGFloat const kSCHStoryInteractionControllerCloseBorderWidth = 1.5;
     if (self.firstPlay == YES) {
         self.playButton.hidden = YES;
     }
-    self.playButton.icon = SCHPlayButtonIconPlay;
+    self.playButton.icon = SCHPlayButtonIconNone;
     
     self.playButton.actionBlock = ^(SCHPlayButton *button) {
         if (button.play == YES) {
