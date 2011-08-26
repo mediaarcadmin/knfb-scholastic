@@ -2173,7 +2173,6 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 
 - (IBAction)scrubValueStartChanges:(UISlider *)slider
 {
-    
     [self.readingView dismissSelector];
     
     if (self.currentPageIndex == NSUIntegerMax) {
@@ -2209,6 +2208,8 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     if (!self.currentlyScrubbing) {
         return;
     }
+    
+    [self dismissCoverCornerViewWithAnimation:YES];
 
 	[UIView animateWithDuration:0.3f 
                           delay:0.2f 
