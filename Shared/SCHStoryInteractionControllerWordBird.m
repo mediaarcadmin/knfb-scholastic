@@ -180,9 +180,10 @@ enum {
     self.animationContainerLayer.position = CGPointMake(CGRectGetMidX(self.animationContainer.bounds),
                                                         CGRectGetMaxY(self.animationContainer.bounds)-CGRectGetMidY(bounds)*scale);
     [self.animationContainer.layer addSublayer:self.animationContainerLayer];
+    [self.animationContainer.layer setMasksToBounds:YES];
     
     self.balloonsLayer = [SCHAnimatedLayer layer];
-    self.balloonsLayer.position = CGPointMake(122, 76);
+    self.balloonsLayer.position = CGPointMake(122, 96);
     self.balloonsLayer.bounds = CGRectMake(0, 0, 200, 230);
     NSString *filename = [NSString stringWithFormat:@"storyinteraction-wordbird-BalloonPop_%02d.png", 11-kNumberOfBalloons];
     self.balloonsLayer.contents = (id)[[UIImage imageNamed:filename] CGImage];
@@ -193,21 +194,21 @@ enum {
     [self.balloonsLayer setNeedsDisplay];
 
     self.shockedPenguinLayer = [SCHAnimatedLayer layer];
-    self.shockedPenguinLayer.position = CGPointMake(97, 234);
+    self.shockedPenguinLayer.position = CGPointMake(97, 254);
     self.shockedPenguinLayer.bounds = CGRectMake(0, 0, 150, 160);
     self.shockedPenguinLayer.contents = (id)[[UIImage imageNamed:@"storyinteraction-wordbird-Shocked_Pen.png"] CGImage];
     self.shockedPenguinLayer.frameSize = CGSizeMake(150, 160);
-    self.shockedPenguinLayer.numberOfFrames = 99;
+    self.shockedPenguinLayer.numberOfFrames = 24;
     self.shockedPenguinLayer.frameIndex = 0;
     [self.animationContainerLayer addSublayer:self.shockedPenguinLayer];
     [self.shockedPenguinLayer setNeedsDisplay];
         
     self.happyPenguinLayer = [SCHAnimatedLayer layer];
-    self.happyPenguinLayer.position = CGPointMake(80, 221);
+    self.happyPenguinLayer.position = CGPointMake(80, 241);
     self.happyPenguinLayer.bounds = self.shockedPenguinLayer.bounds;
     self.happyPenguinLayer.contents = (id)[[UIImage imageNamed:@"storyinteraction-wordbird-Pen_Happy_Filmstrip.png"] CGImage];
     self.happyPenguinLayer.frameSize = CGSizeMake(150, 160);
-    self.happyPenguinLayer.numberOfFrames = 49;
+    self.happyPenguinLayer.numberOfFrames = 12;
     self.happyPenguinLayer.frameIndex = 0;
     self.happyPenguinLayer.hidden = YES;
     [self.animationContainerLayer addSublayer:self.happyPenguinLayer];
@@ -216,13 +217,23 @@ enum {
     NSMutableArray *loseLayers = [NSMutableArray arrayWithCapacity:3];
     for (NSInteger i = 0; i < 3; ++i) {
         SCHAnimatedLayer *loseLayer = [SCHAnimatedLayer layer];
-        loseLayer.position = CGPointMake(130, 220);
+        loseLayer.position = CGPointMake(130, 240);
         loseLayer.bounds = CGRectMake(0, 0, 220, 360);
         NSString *filename = [NSString stringWithFormat:@"storyinteraction-wordbird-Pen_Lose_%d.png", i];
         loseLayer.contents = (id)[[UIImage imageNamed:filename] CGImage];
         loseLayer.frameSize = CGSizeMake(220, 360);
         loseLayer.frameIndex = 0;
-        loseLayer.numberOfFrames = (i == 2) ? 39 : 40;
+        switch (i) {
+            case 0:
+                loseLayer.numberOfFrames = 9;
+                break;
+            case 1:
+                loseLayer.numberOfFrames = 40;
+                break;
+            case 2:
+                loseLayer.numberOfFrames = 39;
+                break;
+        }
         loseLayer.hidden = YES;
         [loseLayer setNeedsDisplay];
         [self.animationContainerLayer addSublayer:loseLayer];
@@ -340,6 +351,8 @@ enum {
             self.happyPenguinLayer.hidden = NO;
             self.shockedPenguinLayer.hidden = YES;
             [self.happyPenguinLayer animateAllFramesWithDuration:1.5
+                                                      frameOrder:nil
+                                                     autoreverse:NO
                                                      repeatCount:1
                                                         delegate:[self continueInteraction]];
             [CATransaction commit];
@@ -354,6 +367,8 @@ enum {
         self.happyPenguinLayer.frameIndex = 0;
         [self.happyPenguinLayer setNeedsDisplay];
         [self.happyPenguinLayer animateAllFramesWithDuration:1.5
+                                                  frameOrder:nil
+                                                 autoreverse:NO
                                                  repeatCount:3
                                                     delegate:nil];
         
@@ -396,6 +411,8 @@ enum {
             SCHAnimatedLayer *finalLayer = [self.loseAnimationLayers objectAtIndex:2];
             [finalLayer setHidden:NO];
             [finalLayer animateAllFramesWithDuration:1.56
+                                          frameOrder:nil
+                                         autoreverse:NO
                                          repeatCount:1 
                                             delegate:step2delegate];
             [finalLayer setFrameIndex:finalLayer.numberOfFrames-1];
@@ -405,8 +422,53 @@ enum {
             [CATransaction begin];
             [CATransaction setDisableActions:YES];
             releaseLayer([self.loseAnimationLayers objectAtIndex:0]);
+            
+            NSArray *frameOrder = [NSArray arrayWithObjects:[NSNumber numberWithInt:0],
+                                   [NSNumber numberWithInt:1],
+                                   [NSNumber numberWithInt:2],
+                                   [NSNumber numberWithInt:3],
+                                   [NSNumber numberWithInt:4],
+                                   [NSNumber numberWithInt:5],
+                                   [NSNumber numberWithInt:6],
+                                   [NSNumber numberWithInt:6],
+                                   [NSNumber numberWithInt:6],
+                                   [NSNumber numberWithInt:7],
+                                   [NSNumber numberWithInt:7],
+                                   [NSNumber numberWithInt:7],
+                                   [NSNumber numberWithInt:7],
+                                   [NSNumber numberWithInt:7],
+                                   [NSNumber numberWithInt:7],
+                                   [NSNumber numberWithInt:7],
+                                   [NSNumber numberWithInt:7],
+                                   [NSNumber numberWithInt:7],
+                                   [NSNumber numberWithInt:7],
+                                   [NSNumber numberWithInt:8],
+                                   [NSNumber numberWithInt:8],
+                                   [NSNumber numberWithInt:8],
+                                   [NSNumber numberWithInt:8],
+                                   [NSNumber numberWithInt:7],
+                                   [NSNumber numberWithInt:7],
+                                   [NSNumber numberWithInt:7],
+                                   [NSNumber numberWithInt:7],
+                                   [NSNumber numberWithInt:7],
+                                   [NSNumber numberWithInt:7],
+                                   [NSNumber numberWithInt:7],
+                                   [NSNumber numberWithInt:7],
+                                   [NSNumber numberWithInt:7],
+                                   [NSNumber numberWithInt:7],
+                                   [NSNumber numberWithInt:7],
+                                   [NSNumber numberWithInt:7],
+                                   [NSNumber numberWithInt:7],
+                                   [NSNumber numberWithInt:7],
+                                   [NSNumber numberWithInt:7],
+                                   [NSNumber numberWithInt:7],
+                                   [NSNumber numberWithInt:7],
+                                   nil];
+            
             [[self.loseAnimationLayers objectAtIndex:1] setHidden:NO];
             [[self.loseAnimationLayers objectAtIndex:1] animateAllFramesWithDuration:1.59
+                                                                          frameOrder:frameOrder
+                                                                         autoreverse:NO
                                                                          repeatCount:1
                                                                             delegate:step1delegate];
             [CATransaction commit];
@@ -416,7 +478,9 @@ enum {
         releaseLayer(self.shockedPenguinLayer);
         releaseLayer(self.happyPenguinLayer);
         [[self.loseAnimationLayers objectAtIndex:0] setHidden:NO];
-        [[self.loseAnimationLayers objectAtIndex:0] animateAllFramesWithDuration:1.59 
+        [[self.loseAnimationLayers objectAtIndex:0] animateAllFramesWithDuration:1.59
+                                                                      frameOrder:nil
+                                                                     autoreverse:NO
                                                                      repeatCount:1
                                                                         delegate:step0delegate];
         [self enqueueAudioWithPath:@"sfx_penguinfall.mp3" fromBundle:YES];
@@ -432,6 +496,8 @@ enum {
             self.happyPenguinLayer.hidden = YES;
             self.shockedPenguinLayer.hidden = NO;
             [self.shockedPenguinLayer animateAllFramesWithDuration:1.5
+                                                        frameOrder:nil
+                                                       autoreverse:NO
                                                        repeatCount:1
                                                           delegate:[self continueInteraction]];
             [CATransaction commit];
@@ -439,6 +505,8 @@ enum {
     
         self.balloonsLayer.frameIndex = self.balloonsLayer.numberOfFrames-1;
         [self.balloonsLayer animateAllFramesWithDuration:1.5
+                                              frameOrder:nil
+                                             autoreverse:NO
                                              repeatCount:1
                                                 delegate:balloonAnimationDelegate];
         [self enqueueAudioWithPath:@"sfx_penguinpop.mp3" fromBundle:YES];

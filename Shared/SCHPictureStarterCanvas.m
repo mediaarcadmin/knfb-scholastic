@@ -234,6 +234,8 @@
     CGImageRelease(image);
     
     [CATransaction commit];
+    
+    [self.delegate canvas:self didCommitDrawingInstruction:instruction];
 }
 
 - (void)clear
@@ -243,7 +245,8 @@
     
     self.liveLayer.delegate = nil;
     self.currentInstruction = nil;
-    [self createPaintContext];
+    CGContextRelease(self.paintContext);
+    self.paintContext = [self createPaintContext];
     self.paintedLayer.contents = nil;
     [self.liveLayer setNeedsDisplay];
     

@@ -17,3 +17,6 @@ void SCHCGPathApplyBlock(CGPathRef path, void (^block)(const CGPathElement *));
 // return an adjusted rect centered within the target rect but aspect-adjusted
 // to match the aspect ratio of a source size
 CGRect SCHAspectFitSizeInTargetRect(CGSize sourceSize, CGRect targetRect);
+
+// return a CGRect of a given size centered inside another CGRect
+CGRect SCHCGRectForSizeCenteredInCGRect(CGSize rectSize, CGRect containingRect);

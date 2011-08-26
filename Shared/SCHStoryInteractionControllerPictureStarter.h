@@ -16,7 +16,7 @@
 @class SCHPictureStarterStickerChooser;
 @class SCHStretchableImageButton;
 
-@interface SCHStoryInteractionControllerPictureStarter : SCHStoryInteractionController <SCHPictureStarterStickerChooserDelegate, SCHPictureStarterCanvasDelegate>
+@interface SCHStoryInteractionControllerPictureStarter : SCHStoryInteractionController <SCHPictureStarterStickerChooserDelegate, SCHPictureStarterCanvasDelegate, UIActionSheetDelegate>
 
 @property (nonatomic, retain) IBOutlet SCHPictureStarterCanvas *drawingCanvas;
 @property (nonatomic, retain) IBOutlet SCHPictureStarterColorChooser *colorChooser;

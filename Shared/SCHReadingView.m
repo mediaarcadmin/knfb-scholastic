@@ -225,7 +225,6 @@ managedObjectContext:(NSManagedObjectContext *)managedObjectContext
     [self.selector addObserver:self forKeyPath:@"trackingStage" options:NSKeyValueObservingOptionPrior context:NULL];
     
     self.selector.magnifiesDuringSelection = NO;
-    self.selector.selectionDelay = 0.2f;
     self.selector.allowsAdjustment = NO;
 
     [self configureSelectorForSelectionMode]; 
@@ -245,12 +244,14 @@ managedObjectContext:(NSManagedObjectContext *)managedObjectContext
             self.selector.allowsInitialDragSelection = NO;
             self.selector.shouldTrackSingleTapsOnHighights = NO;
             self.selector.defaultSelectionColor = nil;
+            self.selector.selectionDelay = 0.2f;
             break;
         case SCHReadingViewSelectionModeHighlights:
             self.selector.shouldTrackSingleTaps = NO;
             self.selector.allowsInitialDragSelection = YES;
             self.selector.shouldTrackSingleTapsOnHighights = YES;
             self.selector.defaultSelectionColor = [self.delegate highlightColor];
+            self.selector.selectionDelay = 0.0f;
             break;
     }
     

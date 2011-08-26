@@ -9,6 +9,7 @@
 #import <AssetsLibrary/AssetsLibrary.h>
 
 #import "SCHStoryInteractionControllerPictureStarter.h"
+#import "SCHStoryInteractionPictureStarter.h"
 #import "SCHPictureStarterDrawingInstruction.h"
 #import "SCHPictureStarterCanvas.h"
 #import "SCHPictureStarterColorChooser.h"
@@ -34,8 +35,13 @@ enum SCHToolType {
 @property (nonatomic, assign) NSInteger selectedStickerChooser;
 @property (nonatomic, assign) enum SCHToolType toolType;
 @property (nonatomic, assign) CGPoint lastDragPoint;
+@property (nonatomic, retain) UIActionSheet *clearActionSheet;
+@property (nonatomic, retain) UIActionSheet *doneActionSheet;
+@property (nonatomic, assign) BOOL drawingChanged;
 
 - (void)setupDrawingScreen;
+- (void)savePicture:(void(^)(BOOL success))completionBlock;
+- (void)close;
 
 @end
 
@@ -56,6 +62,9 @@ enum SCHToolType {
 @synthesize selectedStickerChooser;
 @synthesize toolType;
 @synthesize lastDragPoint;
+@synthesize clearActionSheet;
+@synthesize doneActionSheet;
+@synthesize drawingChanged;
 
 - (void)dealloc
 {
@@ -68,6 +77,8 @@ enum SCHToolType {
     [saveButton release], saveButton = nil;
     [savingLabel release], savingLabel = nil;
     [stickers release], stickers = nil;
+    [clearActionSheet release], clearActionSheet = nil;
+    [doneActionSheet release], doneActionSheet = nil;
     [super dealloc];
 }
 
@@ -81,9 +92,9 @@ enum SCHToolType {
     }
 }
 
-- (BOOL)shouldShowCloseButton
+- (BOOL)shouldShowCloseButtonForViewAtIndex:(NSInteger)screenIndex
 {
-    return NO;
+    return screenIndex == 0;
 }
 
 - (BOOL)shouldAnimateTransitionBetweenViews
@@ -185,6 +196,14 @@ enum SCHToolType {
     } else {
         [self applyRoundRectStyle:self.colorChooser];
     }
+    
+    self.drawingChanged = NO;
+}
+
+- (void)close
+{
+    self.controllerState = SCHStoryInteractionControllerStateInteractionFinishedSuccessfully;
+    [self removeFromHostView];
 }
 
 #pragma mark - Sticker chooser delegate
@@ -210,48 +229,90 @@ enum SCHToolType {
 {
     [self storyInteractionDisableUserInteraction];
     
-    self.savingLabel.text = NSLocalizedString(@"Saving...", @"");
-    [UIView animateWithDuration:0.25
-                     animations:^{
-                         self.savingLabel.alpha = 1;
-                     }];
-    
-    ALAssetsLibrary *library = [[ALAssetsLibrary alloc] init];
-    [library writeImageToSavedPhotosAlbum:[self.drawingCanvas image]
-                              orientation:ALAssetOrientationUp
-                          completionBlock:^(NSURL *assetURL, NSError *error) {
-                              [self storyInteractionEnableUserInteraction];
-                              if (error) {
-                                  self.savingLabel.alpha = 0;
-                                  UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error", @"Error")
-                                                                                  message:[error localizedDescription]
-                                                                                 delegate:nil
-                                                                        cancelButtonTitle:NSLocalizedString(@"OK", @"OK")
-                                                                        otherButtonTitles:nil];
-                                  [alert show];
-                                  [alert release];
-                              } else {
-                                  self.savingLabel.text = NSLocalizedString(@"Saved.", @"");
-                                  [UIView animateWithDuration:0.25
-                                                        delay:0.5
-                                                      options:UIViewAnimationOptionAllowUserInteraction
-                                                   animations:^{
-                                                       self.savingLabel.alpha = 0;
-                                                   }
-                                                   completion:nil];
-                              }
-                          }];
+    [self savePicture:^(BOOL success) {
+        [self storyInteractionEnableUserInteraction];
+        if (success) {
+            self.drawingChanged = NO;
+        }
+    }];
 }
 
 - (void)clearButtonPressed:(id)sender
 {
-    [self.drawingCanvas clear];
+    [self enqueueAudioWithPath:[(SCHStoryInteractionPictureStarter *)self.storyInteraction audioPathForClearThisPicture]
+                    fromBundle:NO];
+
+    UIActionSheet *sheet = [[UIActionSheet alloc] initWithTitle:NSLocalizedString(@"Do you want to clear this picture and start again?", @"Picture starter clear prompt")
+                                                       delegate:self
+                                              cancelButtonTitle:NSLocalizedString(@"Cancel", @"Cancel")
+                                         destructiveButtonTitle:NSLocalizedString(@"Clear", @"Clear")
+                                              otherButtonTitles:nil];
+    sheet.actionSheetStyle = UIActionSheetStyleBlackTranslucent;
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+        [sheet showFromRect:self.clearButton.frame inView:self.contentsView animated:YES];
+    } else {
+        [sheet showInView:self.contentsView];
+    }
+    self.clearActionSheet = sheet;
+    [sheet release];
 }
 
 - (void)doneButtonPressed:(id)sender
 {
-    self.controllerState = SCHStoryInteractionControllerStateInteractionFinishedSuccessfully;
-    [self removeFromHostView];
+    if (!self.drawingChanged) {
+        [self close];
+        return;
+    }
+    
+    UIActionSheet *sheet = [[UIActionSheet alloc] initWithTitle:NSLocalizedString(@"Do you want to save this picture?", @"picture starter save prompt")
+                                                       delegate:self
+                                              cancelButtonTitle:NSLocalizedString(@"Cancel", @"Cancel")
+                                         destructiveButtonTitle:NSLocalizedString(@"Don't Save", @"Don't Save")
+                                              otherButtonTitles:NSLocalizedString(@"Save", @"Save"), nil];
+    sheet.actionSheetStyle = UIActionSheetStyleBlackTranslucent;
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+        [sheet showFromRect:self.doneButton.frame inView:self.contentsView animated:YES];
+    } else {
+        [sheet showInView:self.contentsView];
+    }
+    self.doneActionSheet = sheet;
+    [sheet release];
+}
+
+- (void)actionSheet:(UIActionSheet *)actionSheet didDismissWithButtonIndex:(NSInteger)buttonIndex
+{
+    [self cancelQueuedAudioExecutingSynchronizedBlocksImmediately];
+    if (actionSheet == self.clearActionSheet) {
+        if (buttonIndex == actionSheet.destructiveButtonIndex) {
+            [self.drawingCanvas clear];
+            self.drawingChanged = NO;
+        }
+        self.clearActionSheet = nil;
+    }
+    if (actionSheet == self.doneActionSheet) {
+        if (buttonIndex == actionSheet.destructiveButtonIndex) {
+            [self close];
+        }
+        else if (buttonIndex != actionSheet.cancelButtonIndex) {
+            [self savePicture:^(BOOL success) {
+                if (success) {
+                    [self close];
+                }
+            }];
+        }
+        self.doneActionSheet = nil;
+    }
+}
+
+- (void)actionSheetCancel:(UIActionSheet *)actionSheet
+{
+    [self cancelQueuedAudioExecutingSynchronizedBlocksImmediately];
+    if (actionSheet == self.clearActionSheet) {
+        self.clearActionSheet = nil;
+    }
+    if (actionSheet == self.doneActionSheet) {
+        self.doneActionSheet = nil;
+    }
 }
 
 - (void)colorSelected:(id)sender
@@ -301,6 +362,50 @@ enum SCHToolType {
             return nil;
         }
     }
+}
+
+- (void)canvas:(SCHPictureStarterCanvas *)canvas didCommitDrawingInstruction:(id<SCHPictureStarterDrawingInstruction>)drawingInstruction
+{
+    self.drawingChanged = YES;
+}
+
+#pragma mark - Save to photo library
+
+- (void)savePicture:(void (^)(BOOL))completionBlock
+{
+    self.savingLabel.text = NSLocalizedString(@"Saving...", @"");
+    [UIView animateWithDuration:0.25
+                     animations:^{
+                         self.savingLabel.alpha = 1;
+                     }];
+    
+    ALAssetsLibrary *library = [[ALAssetsLibrary alloc] init];
+    [library writeImageToSavedPhotosAlbum:[self.drawingCanvas image]
+                              orientation:ALAssetOrientationUp
+                          completionBlock:^(NSURL *assetURL, NSError *error) {
+                              if (error) {
+                                  self.savingLabel.alpha = 0;
+                                  UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error", @"Error")
+                                                                                  message:[error localizedDescription]
+                                                                                 delegate:nil
+                                                                        cancelButtonTitle:NSLocalizedString(@"OK", @"OK")
+                                                                        otherButtonTitles:nil];
+                                  [alert show];
+                                  [alert release];
+                                  completionBlock(NO);
+                              } else {
+                                  self.savingLabel.text = NSLocalizedString(@"Saved.", @"");
+                                  [UIView animateWithDuration:0.25
+                                                        delay:0.5
+                                                      options:UIViewAnimationOptionAllowUserInteraction
+                                                   animations:^{
+                                                       self.savingLabel.alpha = 0;
+                                                   }
+                                                   completion:^(BOOL finished) {
+                                                       completionBlock(YES);
+                                                   }];
+                              }
+                          }];
 }
 
 @end

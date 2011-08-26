@@ -11,25 +11,29 @@
 #import "UIColor+Scholastic.h"
 #import "NSArray+ViewSorting.h"
 #import "SCHAnimationDelegate.h"
+#import "SCHGeometry.h"
 
 enum {
+    kZoomOutButtonTag = 42,
+    kPreviousCardButtonTag = 97,
+    kNextCardButtonTag = 98,
     kCardImageViewTag = 99
 };
 
 @interface SCHStoryInteractionControllerCardCollection ()
 
 @property (nonatomic, retain) UIImageView *selectedCardView;
-@property (nonatomic, retain) CALayer *zoomCardLayer;
+@property (nonatomic, retain) CALayer *cardLayer;
 @property (nonatomic, retain) NSArray *scrollSublayers;
 
-- (void)showZoomedCardButtons;
-- (void)hideZoomedCardButtonsAnimated:(BOOL)animated;
+- (void)zoomToCardLayerFromView:(UIView *)view;
+- (void)showCardButtons;
+- (void)hideCardButtonsIncludingZoomout:(BOOL)hideZoomOutButton animated:(BOOL)animated;
 - (void)setPurpleBorderOnLayer:(CALayer *)layer;
 - (CALayer *)cardLayerWithFront:(UIImage *)front back:(UIImage *)back size:(CGSize)size;
 - (void)showCardsInScrollViewAtIndex:(NSInteger)index;
 - (void)hideScrollView;
-- (void)updateZoomButtons;
-- (void)updateZoomedLayer;
+- (void)syncCardLayerWithScrollView;
 
 @end
 
@@ -37,21 +41,25 @@ enum {
 
 @synthesize cardViews;
 @synthesize perspectiveView;
-@synthesize zoomedCardButtons;
-@synthesize zoomedCardScrollView;
+@synthesize cardButtons;
+@synthesize cardScrollView;
 @synthesize scrollContentView;
+@synthesize zoomScrollView;
+@synthesize zoomContentView;
 @synthesize selectedCardView;
-@synthesize zoomCardLayer;
+@synthesize cardLayer;
 @synthesize scrollSublayers;
 
 - (void)dealloc
 {
     [cardViews release], cardViews = nil;
     [perspectiveView release], perspectiveView = nil;
-    [zoomedCardButtons release], zoomedCardButtons = nil;
-    [zoomedCardScrollView release], zoomedCardScrollView = nil;
+    [cardButtons release], cardButtons = nil;
+    [cardScrollView release], cardScrollView = nil;
     [scrollContentView release], scrollContentView = nil;
-    [zoomCardLayer release], zoomCardLayer = nil;
+    [zoomScrollView release], zoomScrollView = nil;
+    [zoomContentView release], zoomContentView = nil;
+    [cardLayer release], cardLayer = nil;
     [selectedCardView release], selectedCardView = nil;
     [scrollSublayers release], scrollSublayers = nil;
     [super dealloc];
@@ -70,7 +78,8 @@ enum {
     self.titleView.adjustsFontSizeToFitWidth = YES;
     self.titleView.numberOfLines = 1;
     
-    [self hideZoomedCardButtonsAnimated:NO];
+    [self hideCardButtonsIncludingZoomout:YES animated:NO];
+    self.zoomScrollView.hidden = YES;
     self.cardViews = [self.cardViews viewsInRowMajorOrder];
     
     // enable depth in the perspective view so the flip animations look 3D
@@ -90,7 +99,7 @@ enum {
         [self setPurpleBorderOnLayer:imageView.layer];
     }
     
-    [self.zoomedCardScrollView setHidden:YES];
+    [self.cardScrollView setHidden:YES];
 }
 
 - (void)storyInteractionDisableUserInteraction
@@ -107,13 +116,20 @@ enum {
     }
 }
 
-- (void)showZoomedCardButtons
+- (void)showCardButtons
 {
+    const BOOL isFirstCard = ([self.scrollSublayers objectAtIndex:0] == self.cardLayer);
+    const BOOL isLastCard = ([self.scrollSublayers lastObject] == self.cardLayer);
+    
     [UIView animateWithDuration:0.2
                           delay:0
                         options:UIViewAnimationOptionAllowUserInteraction
                      animations:^{
-                         for (UIButton *button in self.zoomedCardButtons) {
+                         for (UIButton *button in self.cardButtons) {
+                             if ((button.tag == kPreviousCardButtonTag && isFirstCard)
+                                 || (button.tag == kNextCardButtonTag && isLastCard)) {
+                                 continue;
+                             }
                              button.userInteractionEnabled = YES;
                              button.alpha = 1;
                          }
@@ -121,12 +137,14 @@ enum {
                      completion:nil];
 }
 
-- (void)hideZoomedCardButtonsAnimated:(BOOL)animated
+- (void)hideCardButtonsIncludingZoomout:(BOOL)hideZoomOutButton animated:(BOOL)animated
 {
     dispatch_block_t block = ^{
-        for (UIButton *button in self.zoomedCardButtons) {
-            button.userInteractionEnabled = NO;
-            button.alpha = 0;
+        for (UIButton *button in self.cardButtons) {
+            if (button.tag != kZoomOutButtonTag || hideZoomOutButton) {
+                button.userInteractionEnabled = NO;
+                button.alpha = 0;
+            }
         }
     };
     
@@ -143,124 +161,138 @@ enum {
 
 - (void)cardTapped:(UITapGestureRecognizer *)tap
 {
-    if (self.zoomCardLayer != nil) {
+    if (self.cardLayer != nil) {
         return;
     }
-    
-    SCHStoryInteractionCardCollection *cardCollection = (SCHStoryInteractionCardCollection *)self.storyInteraction;
-    UIImage *backImage = [self imageAtPath:[cardCollection imagePathForCardBackAtIndex:tap.view.tag]];
 
-    self.selectedCardView = (UIImageView *)[tap.view viewWithTag:kCardImageViewTag];
+    // hide other card views
+    [UIView animateWithDuration:0.2
+                     animations:^{
+                         for (UIView *view in self.cardViews) {
+                             if (view != tap.view) {
+                                 view.alpha = 0;
+                             }
+                         }
+                     }
+                     completion:^(BOOL finished) {
+                         [self zoomToCardLayerFromView:tap.view];
+                     }];
+}
+
+- (void)zoomToCardLayerFromView:(UIView *)cardView
+{
+   SCHStoryInteractionCardCollection *cardCollection = (SCHStoryInteractionCardCollection *)self.storyInteraction;
+    UIImage *backImage = [self imageAtPath:[cardCollection imagePathForCardBackAtIndex:cardView.tag]];
+
+    self.selectedCardView = (UIImageView *)[cardView viewWithTag:kCardImageViewTag];
 
     CGFloat verticalSpace = (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) ? 30 : 40;
     CGFloat height = CGRectGetHeight(self.contentsView.bounds) - verticalSpace;
     CGFloat width = height * CGRectGetWidth(self.selectedCardView.bounds) / CGRectGetHeight(self.selectedCardView.bounds);
     
-    self.zoomCardLayer = [self cardLayerWithFront:self.selectedCardView.image back:backImage size:CGSizeMake(width, height)];
-    self.zoomCardLayer.position = CGPointMake(floorf(CGRectGetMidX(self.contentsView.bounds)),
-                                              floorf(CGRectGetMidY(self.contentsView.bounds)));
+    self.cardLayer = [self cardLayerWithFront:self.selectedCardView.image back:backImage size:CGSizeMake(width, height)];
+    self.cardLayer.position = [self.selectedCardView convertPoint:self.selectedCardView.center toView:self.contentsView];
     
     // replace the UIView layer with the zooming layer in a single transaction
     [CATransaction begin];
     [CATransaction setDisableActions:YES];
-    [self.perspectiveView.layer addSublayer:self.zoomCardLayer];
-    tap.view.layer.opacity = 0;
-    [CATransaction commit];
-
-    // zoom card from current position
-    CATransform3D scale = CATransform3DMakeScale(CGRectGetWidth(self.selectedCardView.bounds)/width,
-                                                 CGRectGetHeight(self.selectedCardView.bounds)/height,
-                                                 1);    
-    CABasicAnimation *rotate = [CABasicAnimation animationWithKeyPath:@"transform"];
-    rotate.fromValue = [NSValue valueWithCATransform3D:scale];
-    rotate.toValue = [NSValue valueWithCATransform3D:CATransform3DIdentity];
+    [self.perspectiveView.layer addSublayer:self.cardLayer];
+    cardView.layer.opacity = 0;
     
-    CABasicAnimation *position = [CABasicAnimation animationWithKeyPath:@"position"];
-    position.fromValue = [NSValue valueWithCGPoint:[self.selectedCardView convertPoint:self.selectedCardView.center toView:self.contentsView]];
-    position.toValue = [NSValue valueWithCGPoint:self.zoomCardLayer.position];
+    // zoom card from current position
+    self.cardLayer.transform = CATransform3DMakeScale(CGRectGetWidth(self.selectedCardView.bounds)/width,
+                                                      CGRectGetHeight(self.selectedCardView.bounds)/height,
+                                                      1);
+    
+    CABasicAnimation *scaleAnim = [CABasicAnimation animationWithKeyPath:@"transform"];
+    scaleAnim.toValue = [NSValue valueWithCATransform3D:CATransform3DIdentity];
+    scaleAnim.fillMode = kCAFillModeForwards;
+    
+    CABasicAnimation *positionAnim = [CABasicAnimation animationWithKeyPath:@"position"];
+    positionAnim.toValue = [NSValue valueWithCGPoint:CGPointMake(floorf(CGRectGetMidX(self.perspectiveView.bounds)),
+                                                                 floorf(CGRectGetMidY(self.perspectiveView.bounds)))];
+    positionAnim.fillMode = kCAFillModeForwards;
 
     CAAnimationGroup *group = [CAAnimationGroup animation];
-    group.animations = [NSArray arrayWithObjects:rotate, position, nil];
+    group.animations = [NSArray arrayWithObjects:scaleAnim, positionAnim, nil];
     group.duration = 0.5;
     group.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
+    group.removedOnCompletion = NO;
+    group.fillMode = kCAFillModeForwards;
     group.delegate = [SCHAnimationDelegate animationDelegateWithStopBlock:^(CAAnimation *animation, BOOL finished) {
-        [self showZoomedCardButtons];
-        [self showCardsInScrollViewAtIndex:tap.view.tag];
+        [self.cardLayer removeAllAnimations];
+        [self showCardsInScrollViewAtIndex:cardView.tag];
+        [self showCardButtons];
     }];
     
-    [self.zoomCardLayer addAnimation:group forKey:@"zoomIn"];
-    
-    // hide other card views
-    [UIView animateWithDuration:0.2
-                     animations:^{
-                         for (UIView *view in self.cardViews) {
-                             view.alpha = 0;
-                         }
-                     }];
+    [self.cardLayer addAnimation:group forKey:@"zoomIn"];
+    [CATransaction commit];
 }
 
 - (void)zoomOut:(id)sender
 {
-    if (self.zoomCardLayer == nil) {
+    if (self.cardLayer == nil) {
         return;
     }
     
-    if (self.zoomedCardScrollView) {
+    if (self.zoomScrollView != nil && ![self.zoomScrollView isHidden]) {
+        [self.zoomScrollView setZoomScale:1.0f animated:YES];
+        return;
+    }
+    
+    if (self.cardScrollView) {
         [self hideScrollView];
-        self.zoomCardLayer.position = CGPointMake(floorf(CGRectGetMidX(self.perspectiveView.bounds)),
+        [CATransaction begin];
+        [CATransaction setDisableActions:YES];
+        self.cardLayer.position = CGPointMake(floorf(CGRectGetMidX(self.perspectiveView.bounds)),
                                                   floorf(CGRectGetMidY(self.perspectiveView.bounds)));
-        [self.perspectiveView.layer addSublayer:self.zoomCardLayer];
+        [self.perspectiveView.layer addSublayer:self.cardLayer];
+        [CATransaction commit];
     }
 
-    CATransform3D scale = CATransform3DMakeScale(CGRectGetWidth(self.selectedCardView.bounds)/CGRectGetWidth(self.zoomCardLayer.bounds),
-                                                 CGRectGetHeight(self.selectedCardView.bounds)/CGRectGetHeight(self.zoomCardLayer.bounds),
+    CATransform3D scale = CATransform3DMakeScale(CGRectGetWidth(self.selectedCardView.bounds)/CGRectGetWidth(self.cardLayer.bounds),
+                                                 CGRectGetHeight(self.selectedCardView.bounds)/CGRectGetHeight(self.cardLayer.bounds),
                                                  1);
-    CATransform3D flip = CATransform3DMakeRotation(M_PI, 0, 1, 0);
-    BOOL showingFront = CATransform3DIsIdentity(self.zoomCardLayer.transform);
     
-    CABasicAnimation *rotate = [CABasicAnimation animationWithKeyPath:@"transform"];
-    rotate.fromValue = [NSValue valueWithCATransform3D:showingFront ? CATransform3DIdentity : flip];
-    rotate.toValue = [NSValue valueWithCATransform3D:scale];
+    CABasicAnimation *scaleAnim = [CABasicAnimation animationWithKeyPath:@"transform"];
+    scaleAnim.fromValue = [NSValue valueWithCATransform3D:self.cardLayer.transform];
+    scaleAnim.toValue = [NSValue valueWithCATransform3D:scale];
+    scaleAnim.fillMode = kCAFillModeForwards;
     
-    CABasicAnimation *position = [CABasicAnimation animationWithKeyPath:@"position"];
-    position.fromValue = [NSValue valueWithCGPoint:self.zoomCardLayer.position];
-    position.toValue = [NSValue valueWithCGPoint:[self.selectedCardView convertPoint:self.selectedCardView.center toView:self.contentsView]];
+    CABasicAnimation *positionAnim = [CABasicAnimation animationWithKeyPath:@"position"];
+    positionAnim.fromValue = [NSValue valueWithCGPoint:self.cardLayer.position];
+    positionAnim.toValue = [NSValue valueWithCGPoint:[self.selectedCardView convertPoint:self.selectedCardView.center toView:self.contentsView]];
+    positionAnim.fillMode = kCAFillModeForwards;
     
     CAAnimationGroup *group = [CAAnimationGroup animation];
-    group.animations = [NSArray arrayWithObjects:rotate, position, nil];
+    group.animations = [NSArray arrayWithObjects:scaleAnim, positionAnim, nil];
     group.duration = 0.5;
     group.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
+    group.fillMode = kCAFillModeForwards;
+    group.removedOnCompletion = NO;
     group.delegate = [SCHAnimationDelegate animationDelegateWithStopBlock:^(CAAnimation *animation, BOOL finished) {
         // replace the zooming layer with the original one in a single transaction
         [CATransaction begin];
         [CATransaction setDisableActions:YES];
-        [self.zoomCardLayer removeFromSuperlayer];
-        self.zoomCardLayer = nil;
+        [self.cardLayer removeFromSuperlayer];
+        self.cardLayer = nil;
         self.selectedCardView.superview.layer.opacity = 1.0;
         self.selectedCardView = nil;
         [CATransaction commit];
+        
+        [UIView animateWithDuration:0.2
+                         animations:^{
+                             for (UIView *view in self.cardViews) {
+                                 if (view != self.selectedCardView.superview) {
+                                     view.alpha = 1.0;
+                                 }
+                             }
+                         }];
     }];
     
-    self.zoomCardLayer.transform = CATransform3DConcat(scale, flip);
-    self.zoomCardLayer.position = [self.selectedCardView convertPoint:self.selectedCardView.center toView:self.contentsView];
-    [self.zoomCardLayer addAnimation:group forKey:@"zoomOut"];
+    [self.cardLayer addAnimation:group forKey:@"zoomOut"];
 
-    [self hideZoomedCardButtonsAnimated:YES];
-
-    NSMutableArray *unselectedCards = [self.cardViews mutableCopy];
-    [unselectedCards removeObject:self.selectedCardView.superview];
-    
-    [UIView animateWithDuration:0.2
-                          delay:0.3
-                        options:UIViewAnimationOptionCurveLinear
-                     animations:^{
-                         for (UIView *view in unselectedCards) {
-                             view.alpha = 1.0;
-                         }
-                     }
-                     completion:nil];
-    
-    [unselectedCards release];
+    [self hideCardButtonsIncludingZoomout:YES animated:YES];
 }
 
 - (void)setPurpleBorderOnLayer:(CALayer *)layer
@@ -273,12 +305,12 @@ enum {
 
 - (CALayer *)cardLayerWithFront:(UIImage *)frontImage back:(UIImage *)backImage size:(CGSize)size
 {
-    CATransformLayer *cardLayer = [CATransformLayer layer];
-    cardLayer.bounds = CGRectIntegral((CGRect){CGPointZero, size});
+    CATransformLayer *layer = [CATransformLayer layer];
+    layer.bounds = CGRectIntegral((CGRect){CGPointZero, size});
     
     CALayer *front = [CALayer layer];
     front.contents = (id)[frontImage CGImage];
-    front.bounds = cardLayer.bounds;
+    front.bounds = layer.bounds;
     front.position = CGPointMake(floorf(size.width/2), floorf(size.height/2));
     front.transform = CATransform3DIdentity;
     front.doubleSided = NO;
@@ -292,58 +324,58 @@ enum {
     back.doubleSided = NO;
     [self setPurpleBorderOnLayer:back];
     
-    [cardLayer addSublayer:back];
-    [cardLayer addSublayer:front];
+    [layer addSublayer:back];
+    [layer addSublayer:front];
 
-    return cardLayer;
+    return layer;
 }
 
 - (void)flip:(UIButton *)sender
 {
-    if ([self.zoomCardLayer animationForKey:@"flip"] != nil) {
+    if ([self.cardLayer animationForKey:@"flip"] != nil) {
         return;
     }
     
-    BOOL showingFront = CATransform3DIsIdentity(self.zoomCardLayer.transform);
+    BOOL showingFront = CATransform3DIsIdentity(self.cardLayer.transform);
     CATransform3D toTransform = showingFront ? CATransform3DMakeRotation(M_PI, 0, 1, 0) : CATransform3DIdentity;
 
     CABasicAnimation *flip = [CABasicAnimation animationWithKeyPath:@"transform"];
-    flip.fromValue = [NSValue valueWithCATransform3D:self.zoomCardLayer.transform];
+    flip.fromValue = [NSValue valueWithCATransform3D:self.cardLayer.transform];
     flip.toValue = [NSValue valueWithCATransform3D:toTransform];
     flip.duration = 0.5;
     flip.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
     
-    self.zoomCardLayer.transform = toTransform;
-    [self.zoomCardLayer addAnimation:flip forKey:@"flip"];
+    self.cardLayer.transform = toTransform;
+    [self.cardLayer addAnimation:flip forKey:@"flip"];
 }
 
-#pragma mark - Scroll view
+#pragma mark - Card scroll view
 
 - (void)previousCard:(id)sender
 {
-    CGPoint contentOffset = self.zoomedCardScrollView.contentOffset;
-    CGFloat width = CGRectGetWidth(self.zoomedCardScrollView.bounds);
+    CGPoint contentOffset = self.cardScrollView.contentOffset;
+    CGFloat width = CGRectGetWidth(self.cardScrollView.bounds);
     NSInteger cardIndex = contentOffset.x / width;
     if (cardIndex > 0) {
         contentOffset.x = (cardIndex-1) * width;
-        [self.zoomedCardScrollView setContentOffset:contentOffset animated:YES];
+        [self.cardScrollView setContentOffset:contentOffset animated:YES];
     }
 }
 
 - (void)nextCard:(id)sender
 {
-    CGPoint contentOffset = self.zoomedCardScrollView.contentOffset;
-    CGFloat width = CGRectGetWidth(self.zoomedCardScrollView.bounds);
+    CGPoint contentOffset = self.cardScrollView.contentOffset;
+    CGFloat width = CGRectGetWidth(self.cardScrollView.bounds);
     NSInteger cardIndex = contentOffset.x / width;
     if (cardIndex < [self.scrollSublayers count]-1) {
         contentOffset.x = (cardIndex+1) * width;
-        [self.zoomedCardScrollView setContentOffset:contentOffset animated:YES];
+        [self.cardScrollView setContentOffset:contentOffset animated:YES];
     }
 }
 
 - (void)showCardsInScrollViewAtIndex:(NSInteger)index
 {
-    if (!self.zoomedCardScrollView) {
+    if (!self.cardScrollView) {
         return;
     }
     
@@ -352,11 +384,11 @@ enum {
 
     SCHStoryInteractionCardCollection *cardCollection = (SCHStoryInteractionCardCollection *)self.storyInteraction;
     const NSInteger numCards = [cardCollection numberOfCards];
-    const CGSize cardSize = self.zoomCardLayer.bounds.size;
-    NSInteger gap = CGRectGetWidth(self.contentsView.bounds) - cardSize.width;
+    const CGSize cardSize = self.cardLayer.bounds.size;
+    const CGFloat width = CGRectGetWidth(self.contentsView.bounds);
 
-    NSInteger x = cardSize.width/2 + CGRectGetMinX(self.zoomCardLayer.frame);
-    NSInteger y = cardSize.height/2 + CGRectGetMinY(self.zoomCardLayer.frame);
+    CGPoint position = CGPointMake(floorf(CGRectGetMidX(self.perspectiveView.bounds)),
+                                   floorf(CGRectGetMidY(self.perspectiveView.bounds)));
     NSMutableArray *sublayers = [NSMutableArray arrayWithCapacity:numCards];
     
     for (NSInteger cardIndex = 0; cardIndex < numCards; ++cardIndex) {
@@ -365,28 +397,28 @@ enum {
         if (!frontImage || !backImage) {
             continue;
         }
-        CALayer *cardLayer = [self cardLayerWithFront:frontImage back:backImage size:cardSize];
-        cardLayer.position = CGPointMake(x, y);
-        [self.scrollContentView.layer addSublayer:cardLayer];
-        [sublayers addObject:cardLayer];
-        x += cardSize.width + gap;
+        CALayer *layer = [self cardLayerWithFront:frontImage back:backImage size:cardSize];
+        layer.position = position;
+        [self.scrollContentView.layer addSublayer:layer];
+        [sublayers addObject:layer];
+        position.x += width;
     }
     
     self.scrollSublayers = [NSArray arrayWithArray:sublayers];
-    self.zoomedCardScrollView.contentSize = CGSizeMake((cardSize.width+gap)*[sublayers count], cardSize.height);
-    self.scrollContentView.frame = (CGRect){CGPointZero, self.zoomedCardScrollView.contentSize};
+    self.cardScrollView.contentSize = CGSizeMake(width*[sublayers count], cardSize.height);
+    self.scrollContentView.frame = (CGRect){CGPointZero, self.cardScrollView.contentSize};
 
     // replace zoom layer with scroller
-    [self.zoomCardLayer removeFromSuperlayer];
-    self.zoomCardLayer = [self.scrollSublayers objectAtIndex:index];
+    [self.cardLayer removeFromSuperlayer];
+    self.cardLayer = [self.scrollSublayers objectAtIndex:index];
 
-    [self.zoomedCardScrollView setHidden:NO];
-    [self.zoomedCardScrollView setContentOffset:CGPointMake((cardSize.width+gap)*index, 0) animated:NO];
+    [self.cardScrollView setHidden:NO];
+    [self.cardScrollView setContentOffset:CGPointMake(width*index, 0) animated:NO];
     [CATransaction commit];
     
     // adjust the view order
     [self.contentsView bringSubviewToFront:self.perspectiveView];
-    for (UIButton *button in self.zoomedCardButtons) {
+    for (UIButton *button in self.cardButtons) {
         [self.contentsView bringSubviewToFront:button];
     }
 }
@@ -394,62 +426,114 @@ enum {
 - (void)hideScrollView
 {
     [self.contentsView sendSubviewToBack:self.perspectiveView];
-    [self.zoomedCardScrollView setHidden:YES];
+    [self.cardScrollView setHidden:YES];
     [self.scrollSublayers makeObjectsPerformSelector:@selector(removeFromSuperlayer)];
     self.scrollSublayers = nil;
 }
 
-- (void)updateZoomButtons
+- (void)syncCardLayerWithScrollView
 {
-    if (self.zoomedCardScrollView.zoomScale > 1.0) {
-        [self hideZoomedCardButtonsAnimated:YES];
-    } else {
-        [self showZoomedCardButtons];
-    }
-}
-
-- (void)updateZoomedLayer
-{
-    CGFloat width = CGRectGetWidth(self.zoomedCardScrollView.bounds);
-    NSInteger cardIndex = (self.zoomedCardScrollView.contentOffset.x + width/2) / width;
+    CGFloat width = CGRectGetWidth(self.cardScrollView.bounds);
+    NSInteger cardIndex = (self.cardScrollView.contentOffset.x + width/2) / width;
     cardIndex = MAX(0, MIN([self.scrollSublayers count]-1, cardIndex));
-    self.zoomCardLayer = [self.scrollSublayers objectAtIndex:cardIndex];
+    self.cardLayer = [self.scrollSublayers objectAtIndex:cardIndex];
     self.selectedCardView = (UIImageView *)[[self.cardViews objectAtIndex:cardIndex] viewWithTag:kCardImageViewTag];
 }
 
 - (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView
 {
-    [self hideZoomedCardButtonsAnimated:YES];
+    if (scrollView == self.cardScrollView) {
+        [self hideCardButtonsIncludingZoomout:YES animated:YES];
+    }
 }
 
 - (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate
 {
-    if (!decelerate) {
-        [self updateZoomButtons];
-        [self updateZoomedLayer];
+    if (scrollView == self.cardScrollView && !decelerate) {
+        [self syncCardLayerWithScrollView];
+        [self showCardButtons];
     }
 }
 
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
 {
-    [self updateZoomButtons];
-    [self updateZoomedLayer];
+    if (scrollView == self.cardScrollView) {
+        [self syncCardLayerWithScrollView];
+        [self showCardButtons];
+    }
 }
 
 - (void)scrollViewDidEndScrollingAnimation:(UIScrollView *)scrollView
 {
-    [self updateZoomButtons];
-    [self updateZoomedLayer];
+    if (scrollView == self.cardScrollView) {
+        [self syncCardLayerWithScrollView];
+        [self showCardButtons];
+    }
 }
+
+#pragma mark - Zoom view
 
 - (UIView *)viewForZoomingInScrollView:(UIScrollView *)scrollView
 {
-    return self.scrollContentView;
+    if (scrollView == self.zoomScrollView) {
+        return self.zoomContentView;
+    }
+    return nil;
+}
+
+- (void)zoomIn:(id)sender
+{
+    [CATransaction begin];
+    [CATransaction setDisableActions:YES];
+    
+    // duplicate the visible layer in the zoom view
+    BOOL showingFront = CATransform3DIsIdentity(self.cardLayer.transform);
+    CALayer *visibleLayer = [self.cardLayer.sublayers objectAtIndex:showingFront ? 1 : 0];
+    self.zoomContentView.layer.contents = visibleLayer.contents;
+    self.zoomContentView.layer.bounds = self.cardLayer.bounds;
+    [CATransaction commit];
+
+    self.zoomScrollView.contentSize = self.zoomContentView.bounds.size;
+    self.zoomScrollView.minimumZoomScale = CGRectGetWidth(self.cardLayer.bounds) / CGRectGetWidth(self.zoomScrollView.bounds);
+    
+    [self.perspectiveView setHidden:YES];
+    [self.zoomScrollView setHidden:NO];
+    [self.zoomScrollView setZoomScale:1.0f animated:NO];
+    [self.zoomScrollView setZoomScale:2.0f animated:YES];
+    [self hideCardButtonsIncludingZoomout:NO animated:YES];
 }
 
 - (void)scrollViewDidEndZooming:(UIScrollView *)scrollView withView:(UIView *)view atScale:(float)scale
 {
-    [self updateZoomButtons];
+    if (scrollView == self.zoomScrollView) {
+        if (scale <= 1.0f) {
+            [self.zoomScrollView setHidden:YES];
+            [self.perspectiveView setHidden:NO];
+            [self showCardButtons];
+        }
+        else if (scale < 1.5f) {
+            [self.zoomScrollView setZoomScale:1.0f animated:YES];
+        }
+    }
+}
+
+- (void)scrollViewDidZoom:(UIScrollView *)scrollView
+{
+    if (scrollView == self.zoomScrollView) {
+        [CATransaction begin];
+        [CATransaction setDisableActions:YES];
+        if (scrollView.zoomScale <= 1.0f) {
+            // center the card
+            CGAffineTransform scale = CGAffineTransformMakeScale(scrollView.zoomScale, scrollView.zoomScale);
+            CGRect effectiveRect = CGRectApplyAffineTransform(self.zoomContentView.frame, scale);
+            CGRect frame = SCHCGRectForSizeCenteredInCGRect(effectiveRect.size, scrollView.bounds);
+            self.zoomContentView.layer.position = CGPointMake(CGRectGetMidX(frame), CGRectGetMidY(frame));
+        } else {
+            self.zoomContentView.layer.position = CGPointMake(CGRectGetMidX(self.zoomContentView.layer.bounds)*scrollView.zoomScale,
+                                                              CGRectGetMidY(self.zoomContentView.layer.bounds)*scrollView.zoomScale);
+        }
+        [CATransaction commit];
+    }
 }
 
 @end
