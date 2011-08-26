@@ -333,8 +333,11 @@ enum {
     [CATransaction setDisableActions:YES];
     
     if (self.correctLetterCount < [[self currentWord] length]) {
+        
+        CGFloat heightInset = self.animationContainer.frame.origin.y;
+        
         CGRect bounds = CGRectApplyAffineTransform(self.animationContainerLayer.bounds, self.animationContainerLayer.affineTransform);
-        CGFloat ystep = (CGRectGetHeight(self.animationContainer.bounds)-CGRectGetHeight(bounds))/([[self currentWord] length]-1);
+        CGFloat ystep = (CGRectGetHeight(self.animationContainer.bounds) + heightInset - CGRectGetHeight(bounds))/([[self currentWord] length]-1);
         CGPoint targetPosition = CGPointMake(self.animationContainerLayer.position.x, 
                                              CGRectGetMaxY(self.animationContainer.bounds)-CGRectGetMidY(bounds)-ystep*self.correctLetterCount);
         
@@ -370,7 +373,7 @@ enum {
                                                  autoreverse:NO
                                                  repeatCount:3
                                                     delegate:nil];
-        
+
         CGPoint targetPosition = CGPointMake(self.animationContainerLayer.position.x, -300);
         CABasicAnimation *move = [CABasicAnimation animationWithKeyPath:@"position"];
         move.fromValue = [NSValue valueWithCGPoint:self.animationContainerLayer.position];
