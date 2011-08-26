@@ -81,9 +81,9 @@ enum SCHToolType {
     }
 }
 
-- (BOOL)shouldShowCloseButton
+- (BOOL)shouldShowCloseButtonForViewAtIndex:(NSInteger)screenIndex
 {
-    return NO;
+    return screenIndex == 0;
 }
 
 - (BOOL)shouldAnimateTransitionBetweenViews

@@ -238,15 +238,6 @@ static Class controllerClassForStoryInteraction(SCHStoryInteraction *storyIntera
             [title release];   
         }
         
-        if ([self shouldShowCloseButton]) {
-            NSString *age = [self.storyInteraction isOlderStoryInteraction] ? @"older" : @"younger";
-            UIImage *closeImage = [UIImage imageNamed:[NSString stringWithFormat:@"storyinteraction-bolt-%@", age]];
-            self.closeButton = [UIButton buttonWithType:UIButtonTypeCustom];
-            [self.closeButton setImage:closeImage forState:UIControlStateNormal];
-            [self.closeButton addTarget:self action:@selector(closeButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
-            [container addSubview:self.closeButton];
-        }
-        
         if (questionAudioPath) {
             UIImage *readAloudImage = [UIImage imageNamed:@"storyinteraction-read-aloud"];
             self.readAloudButton = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -265,6 +256,20 @@ static Class controllerClassForStoryInteraction(SCHStoryInteraction *storyIntera
         [hostView addSubview:self.containerView];
     }
 
+    if ([self shouldShowCloseButtonForViewAtIndex:self.currentScreenIndex]) {
+        if (!self.closeButton) {
+            NSString *age = [self.storyInteraction isOlderStoryInteraction] ? @"older" : @"younger";
+            UIImage *closeImage = [UIImage imageNamed:[NSString stringWithFormat:@"storyinteraction-bolt-%@", age]];
+            self.closeButton = [UIButton buttonWithType:UIButtonTypeCustom];
+            [self.closeButton setImage:closeImage forState:UIControlStateNormal];
+            [self.closeButton addTarget:self action:@selector(closeButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
+            [self.containerView addSubview:self.closeButton];
+        }
+    } else {
+        [self.closeButton removeFromSuperview];
+        self.closeButton = nil;
+    }
+    
     self.interfaceOrientation = aInterfaceOrientation;
 
     // put multiple views at the top-level in the nib for multi-screen interactions
@@ -809,7 +814,7 @@ static Class controllerClassForStoryInteraction(SCHStoryInteraction *storyIntera
     return NO;
 }
 
-- (BOOL)shouldShowCloseButton
+- (BOOL)shouldShowCloseButtonForViewAtIndex:(NSInteger)screenIndex
 {
     return YES;
 }
