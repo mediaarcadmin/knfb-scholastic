@@ -835,35 +835,34 @@ fastThumbnailUIImageForPageAtIndex:(NSUInteger)index
     return [pagesBlocks valueForKey:@"blockID"];
 }
 
-- (CGRect)eucSelector:(EucSelector *)selector frameOfBlockWithIdentifier:(id)blockID
+- (CGRect)eucSelector:(EucSelector *)selector frameOfBlockWithIdentifier:(id)blockId
 {
-    NSInteger pageIndex = [KNFBTextFlowBlock pageIndexForBlockID:blockID];
-    
+    NSInteger pageIndex = [KNFBTextFlowBlock pageIndexForBlockID:blockId];
+    NSInteger blockIndex = [KNFBTextFlowBlock blockIndexForBlockID:blockId];
+
     KNFBTextFlowBlock *block = nil;
-    // We say "YES" to includingFolioBlocks here because we know that we're not going
-    // to be asked about a folio block anyway, and getting all the blocks is more
-    // efficient than getting just the non-folio blocks. 
-    for (KNFBTextFlowBlock *candidateBlock in [self.textFlow blocksForPageAtIndex:pageIndex includingFolioBlocks:YES]) {
-        if (candidateBlock.blockID == blockID) {
-            block = candidateBlock;
-            break;
-        }
+    NSArray *blocks = [self.textFlow blocksForPageAtIndex:pageIndex includingFolioBlocks:YES];
+    if (blockIndex < blocks.count) {
+        block = [blocks objectAtIndex:blockIndex];
     }
     
-    CGAffineTransform viewTransform = [self pageTurningViewTransformForPageAtIndex:pageIndex];
-    return block ? CGRectApplyAffineTransform([block rect], viewTransform) : CGRectZero;
+    if (block) {
+        CGAffineTransform viewTransform = [self pageTurningViewTransformForPageAtIndex:pageIndex];
+        return CGRectApplyAffineTransform([block rect], viewTransform);
+    } else {
+        return CGRectZero;
+    }
 }
 
 - (NSArray *)eucSelector:(EucSelector *)selector identifiersForElementsOfBlockWithIdentifier:(id)blockId
 {
     NSInteger pageIndex = [KNFBTextFlowBlock pageIndexForBlockID:blockId];
-    
+    NSInteger blockIndex = [KNFBTextFlowBlock blockIndexForBlockID:blockId];
+
     KNFBTextFlowBlock *block = nil;
-    for (KNFBTextFlowBlock *candidateBlock in [self.textFlow blocksForPageAtIndex:pageIndex includingFolioBlocks:YES]) {
-        if (candidateBlock.blockID == blockId) {
-            block = candidateBlock;
-            break;
-        }
+    NSArray *blocks = [self.textFlow blocksForPageAtIndex:pageIndex includingFolioBlocks:YES];
+    if (blockIndex < blocks.count) {
+        block = [blocks objectAtIndex:blockIndex];
     }
     
     if (block) {
@@ -878,23 +877,22 @@ fastThumbnailUIImageForPageAtIndex:(NSUInteger)index
 - (NSArray *)eucSelector:(EucSelector *)selector rectsForElementWithIdentifier:(id)elementId ofBlockWithIdentifier:(id)blockId
 {
     NSInteger pageIndex = [KNFBTextFlowBlock pageIndexForBlockID:blockId];
+    NSInteger blockIndex = [KNFBTextFlowBlock blockIndexForBlockID:blockId];
     
     KNFBTextFlowBlock *block = nil;
-    for (KNFBTextFlowBlock *candidateBlock in [self.textFlow blocksForPageAtIndex:pageIndex includingFolioBlocks:YES]) {
-        if (candidateBlock.blockID == blockId) {
-            block = candidateBlock;
-            break;
-        }
+    NSArray *blocks = [self.textFlow blocksForPageAtIndex:pageIndex includingFolioBlocks:YES];
+    if (blockIndex < blocks.count) {
+        block = [blocks objectAtIndex:blockIndex];
     }
-    
+
     if (block) {
+        NSUInteger wordIndex = [KNFBTextFlowPositionedWord wordIndexForWordID:elementId];
+        
         KNFBTextFlowPositionedWord *word = nil;
-        for (KNFBTextFlowPositionedWord *candidateWord in [block words]) {
-            if([[candidateWord wordID] isEqual:elementId]) {
-                word = candidateWord;
-                break;
-            }
-        }        
+        NSArray *blockWords = [block words];
+        if (wordIndex < blockWords.count) {
+            word = [blockWords objectAtIndex:wordIndex];
+        }
         if (word) {
             CGAffineTransform viewTransform = [self pageTurningViewTransformForPageAtIndex:pageIndex];
             CGRect wordRect = [[[block words] objectAtIndex:[elementId integerValue]] rect];            
