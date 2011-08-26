@@ -185,10 +185,9 @@ enum {
     self.balloonsLayer = [SCHAnimatedLayer layer];
     self.balloonsLayer.position = CGPointMake(122, 96);
     self.balloonsLayer.bounds = CGRectMake(0, 0, 200, 230);
-    NSString *filename = [NSString stringWithFormat:@"storyinteraction-wordbird-BalloonPop_%02d.png", 11-kNumberOfBalloons];
-    self.balloonsLayer.contents = (id)[[UIImage imageNamed:filename] CGImage];
+    self.balloonsLayer.contents = (id)[[UIImage imageNamed:@"storyinteraction-wordbird-BalloonPop.png"] CGImage];
     self.balloonsLayer.frameSize = CGSizeMake(200, 230);
-    self.balloonsLayer.numberOfFrames = 46;
+    self.balloonsLayer.numberOfFrames = 28;
     self.balloonsLayer.frameIndex = 0;
     [self.animationContainerLayer addSublayer:self.balloonsLayer];
     [self.balloonsLayer setNeedsDisplay];
@@ -401,6 +400,7 @@ enum {
     if (self.remainingBalloonCount == 1) {
         // pop last balloon - there are three stages to the animation due to the number of frames required
         // not fitting in the maximum texture size
+        // Actually they have been reduced in size so could be combined but the 3 stages lets a frameOrder to be specified for 2 out of 3 stages
         SCHAnimationDelegate *step2delegate = [SCHAnimationDelegate animationDelegateWithStopBlock:^(CAAnimation *animation, BOOL finished) {
             [self showPlayAgainButton];
         }];
@@ -527,10 +527,50 @@ enum {
                                                                         delegate:step0delegate];
         [self enqueueAudioWithPath:@"sfx_penguinfall.mp3" fromBundle:YES];
     } else {
-        NSString *filename = [NSString stringWithFormat:@"storyinteraction-wordbird-BalloonPop_%02d.png", 11-self.remainingBalloonCount];
-        self.balloonsLayer.contents = (id)[[UIImage imageNamed:filename] CGImage];
-        self.balloonsLayer.frameIndex = 0;
-        [self.balloonsLayer setNeedsDisplay];
+        
+        switch (self.remainingBalloonCount) {
+            case 10:
+                self.balloonsLayer.frameIndex = 3;                
+                break;
+            case 9:
+                self.balloonsLayer.frameIndex = 6;
+                break;
+            case 8:
+                self.balloonsLayer.frameIndex = 9;
+                break;
+            case 7:
+                self.balloonsLayer.frameIndex = 12;
+                break;
+            case 6:
+                self.balloonsLayer.frameIndex = 15;
+                break;
+            case 5:
+                self.balloonsLayer.frameIndex = 18;
+                break;
+            case 4:
+                self.balloonsLayer.frameIndex = 21;
+                break;
+            case 3:
+                self.balloonsLayer.frameIndex = 24;
+                break;
+            case 2:
+                self.balloonsLayer.frameIndex = 27;
+                break;
+        }
+        
+        // This is the repeating pattern of the 4 frames of each balloon pop that best match the sound effect
+        NSMutableArray *frameOrder = [NSArray arrayWithObjects:[NSNumber numberWithInt:self.balloonsLayer.frameIndex - 3],
+                      [NSNumber numberWithInt:self.balloonsLayer.frameIndex - 2],
+                      [NSNumber numberWithInt:self.balloonsLayer.frameIndex - 2],
+                      [NSNumber numberWithInt:self.balloonsLayer.frameIndex - 2],
+                      [NSNumber numberWithInt:self.balloonsLayer.frameIndex - 3],
+                      [NSNumber numberWithInt:self.balloonsLayer.frameIndex - 3],
+                      [NSNumber numberWithInt:self.balloonsLayer.frameIndex - 2],
+                      [NSNumber numberWithInt:self.balloonsLayer.frameIndex - 2],
+                      [NSNumber numberWithInt:self.balloonsLayer.frameIndex - 2],
+                      [NSNumber numberWithInt:self.balloonsLayer.frameIndex - 1],
+                      [NSNumber numberWithInt:self.balloonsLayer.frameIndex],
+                      nil];
         
         SCHAnimationDelegate *balloonAnimationDelegate = [SCHAnimationDelegate animationDelegateWithStopBlock:^(CAAnimation *animation, BOOL finished) {
             [CATransaction begin];
@@ -544,10 +584,9 @@ enum {
                                                           delegate:[self continueInteraction]];
             [CATransaction commit];
         }];
-    
-        self.balloonsLayer.frameIndex = self.balloonsLayer.numberOfFrames-1;
+            
         [self.balloonsLayer animateAllFramesWithDuration:1.5
-                                              frameOrder:nil
+                                              frameOrder:frameOrder
                                              autoreverse:NO
                                              repeatCount:1
                                                 delegate:balloonAnimationDelegate];
@@ -555,6 +594,7 @@ enum {
     }
     
     [CATransaction commit];
+    
     self.remainingBalloonCount--;
 }
 
