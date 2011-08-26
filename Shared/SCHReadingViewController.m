@@ -507,14 +507,13 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 	self.scrubberInfoView.layer.cornerRadius = 5.0f;
 	self.scrubberInfoView.layer.masksToBounds = YES;
     
-	[self setToolbarVisibility:YES animated:NO];
 	
-	self.initialFadeTimer = [NSTimer scheduledTimerWithTimeInterval:5.0f
-                                                             target:self
-                                                           selector:@selector(hideToolbarsFromTimer)
-                                                           userInfo:nil
-                                                            repeats:NO];
-    [self startFadeTimer];
+//	self.initialFadeTimer = [NSTimer scheduledTimerWithTimeInterval:5.0f
+//                                                             target:self
+//                                                           selector:@selector(hideToolbarsFromTimer)
+//                                                           userInfo:nil
+//                                                            repeats:NO];
+//    [self startFadeTimer];
     
     if (self.youngerMode) {
         [self.olderBottomToolbar removeFromSuperview];
@@ -595,6 +594,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     self.highlightsToolbar.alpha = 0.0f;
     [self.view addSubview:self.highlightsToolbar];
     
+    [self setToolbarVisibility:NO animated:NO];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -2677,8 +2677,8 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
             self.sampleSICoverMarker.alpha = 0;
             [self.view insertSubview:self.sampleSICoverMarker belowSubview:self.navigationToolbar];
             
-            [UIView animateWithDuration:0.1
-                                  delay:0
+            [UIView animateWithDuration:0.3
+                                  delay:0.1
                                 options:UIViewAnimationOptionAllowUserInteraction
                              animations:^{
                 self.sampleSICoverMarker.alpha = 1;
