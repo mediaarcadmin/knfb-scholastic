@@ -8,6 +8,8 @@
 
 #import <UIKit/UIKit.h>
 
+static const CGFloat kSCHReadingViewNavigationToolbarShadowHeight = 4.0f;
+
 typedef enum
 {
 	kSCHReadingViewNavigationToolbarStyleYoungerPhone = 0,

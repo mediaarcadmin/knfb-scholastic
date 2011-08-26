@@ -225,13 +225,13 @@ enum {
         loseLayer.frameIndex = 0;
         switch (i) {
             case 0:
-                loseLayer.numberOfFrames = 9;
+                loseLayer.numberOfFrames = 10;
                 break;
             case 1:
-                loseLayer.numberOfFrames = 40;
+                loseLayer.numberOfFrames = 9;
                 break;
             case 2:
-                loseLayer.numberOfFrames = 39;
+                loseLayer.numberOfFrames = 7;
                 break;
         }
         loseLayer.hidden = YES;
@@ -410,8 +410,50 @@ enum {
             releaseLayer([self.loseAnimationLayers objectAtIndex:1]);
             SCHAnimatedLayer *finalLayer = [self.loseAnimationLayers objectAtIndex:2];
             [finalLayer setHidden:NO];
+            
+            NSArray *frameOrder = [NSArray arrayWithObjects:[NSNumber numberWithInt:0],
+                                   [NSNumber numberWithInt:0],
+                                   [NSNumber numberWithInt:1],
+                                   [NSNumber numberWithInt:1],
+                                   [NSNumber numberWithInt:1],
+                                   [NSNumber numberWithInt:1],
+                                   [NSNumber numberWithInt:0],
+                                   [NSNumber numberWithInt:2],
+                                   [NSNumber numberWithInt:2],
+                                   [NSNumber numberWithInt:3],
+                                   [NSNumber numberWithInt:3],
+                                   [NSNumber numberWithInt:3],
+                                   [NSNumber numberWithInt:3],
+                                   [NSNumber numberWithInt:3],
+                                   [NSNumber numberWithInt:3],
+                                   [NSNumber numberWithInt:3],
+                                   [NSNumber numberWithInt:3],
+                                   [NSNumber numberWithInt:3],
+                                   [NSNumber numberWithInt:3],
+                                   [NSNumber numberWithInt:3],
+                                   [NSNumber numberWithInt:3],
+                                   [NSNumber numberWithInt:3],
+                                   [NSNumber numberWithInt:3],
+                                   [NSNumber numberWithInt:3],
+                                   [NSNumber numberWithInt:3],
+                                   [NSNumber numberWithInt:3],
+                                   [NSNumber numberWithInt:3],
+                                   [NSNumber numberWithInt:4],
+                                   [NSNumber numberWithInt:4],
+                                   [NSNumber numberWithInt:4],
+                                   [NSNumber numberWithInt:5],
+                                   [NSNumber numberWithInt:5],
+                                   [NSNumber numberWithInt:5],
+                                   [NSNumber numberWithInt:5],
+                                   [NSNumber numberWithInt:6],
+                                   [NSNumber numberWithInt:6],
+                                   [NSNumber numberWithInt:6],
+                                   [NSNumber numberWithInt:6],
+                                   [NSNumber numberWithInt:6],
+                                   nil];
+            
             [finalLayer animateAllFramesWithDuration:1.56
-                                          frameOrder:nil
+                                          frameOrder:frameOrder
                                          autoreverse:NO
                                          repeatCount:1 
                                             delegate:step2delegate];
