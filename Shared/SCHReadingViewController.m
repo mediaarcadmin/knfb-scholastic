@@ -549,11 +549,17 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
         }
     }
     
-    navigationToolbar = [[SCHReadingViewNavigationToolbar alloc] initWithStyle:style orientation:self.interfaceOrientation];
+    self.navigationToolbar = [[SCHReadingViewNavigationToolbar alloc] initWithStyle:style orientation:self.interfaceOrientation];
     SCHAppBook *book = [[SCHBookManager sharedBookManager] bookWithIdentifier:self.bookIdentifier inManagedObjectContext:self.managedObjectContext];
-    [navigationToolbar setTitle:book.Title];
-    [navigationToolbar setDelegate:self];
-    [self.view addSubview:navigationToolbar];
+    [self.navigationToolbar setTitle:book.Title];
+    [self.navigationToolbar setDelegate:self];
+    
+    // if the book has no audio, hide the audio buttons
+    BOOL audioButtonsHidden = ![[book HasAudio] boolValue];
+    [self.navigationToolbar setAudioItemHidden:audioButtonsHidden];
+    self.cornerAudioButtonView.hidden = audioButtonsHidden;
+    
+    [self.view addSubview:self.navigationToolbar];
     
     // Set non-rotation specific graphics
     [self.bottomShadow setImage:[UIImage imageNamed:@"reading-view-bottom-shadow.png"]];

@@ -72,6 +72,7 @@
 @synthesize audioItemButton;
 @synthesize helpItem;
 @synthesize helpItemButton;
+@synthesize audioItemHidden;
 
 
 - (void)dealloc
@@ -121,6 +122,8 @@
         toolbar.clipsToBounds = YES;
         [toolbar setItems:[self toolbarItemsForOrientation:orientation]];
         [self addSubview:toolbar];
+        
+        self.audioItemHidden = NO;
 
     }
     return self;
@@ -366,20 +369,30 @@
 
 - (NSArray *)toolbarItemsForOrientation:(UIInterfaceOrientation)orientation
 {
-    NSArray *items = nil;
+    NSMutableArray *items = nil;
     
     switch (self.style) {
         case kSCHReadingViewNavigationToolbarStyleYoungerPhone:
-            items = [NSArray arrayWithObjects:
+        {
+            items = [NSMutableArray arrayWithObjects:
                      [self backItemForOrientation:orientation],
                      [self flexibleItem],
                      [self audioItemForOrientation:orientation],
                      [self flexibleItem],
                      [self helpItemForOrientation:orientation],
                      nil];
+            
+            // if audio item is hidden, remove the button
+            // done this way to prevent the array from being created twice in code
+            if (self.audioItemHidden) {
+                [items removeObjectAtIndex:2];
+                [items removeObjectAtIndex:2];
+            }
             break;
+        }
         case kSCHReadingViewNavigationToolbarStyleYoungerPictureStarterPhone:
-            items = [NSArray arrayWithObjects:
+        {
+            items = [NSMutableArray arrayWithObjects:
                      [self backItemForOrientation:orientation],
                      [self flexibleItem],
                      [self pictureStarterItemForOrientation:orientation],
@@ -388,9 +401,16 @@
                      [self flexibleItem],
                      [self helpItemForOrientation:orientation],
                      nil];
+
+            if (self.audioItemHidden) {
+                [items removeObjectAtIndex:4];
+                [items removeObjectAtIndex:4];
+            }
             break;
+        }
         case kSCHReadingViewNavigationToolbarStyleYoungerPad:
-            items = [NSArray arrayWithObjects:
+        {
+            items = [NSMutableArray arrayWithObjects:
                      [self backItemForOrientation:orientation],
                      [self fixedItemOfWidth:48],
                      [self flexibleItem],
@@ -400,9 +420,17 @@
                      [self fixedItemOfWidth:9],
                      [self helpItemForOrientation:orientation],
                      nil];
+
+            if (self.audioItemHidden) {
+                [items removeObjectAtIndex:4];
+                [items removeObjectAtIndex:4];
+            }
+            
             break;
+        }
         case kSCHReadingViewNavigationToolbarStyleYoungerPictureStarterPad:
-            items = [NSArray arrayWithObjects:
+        {
+            items = [NSMutableArray arrayWithObjects:
                      [self backItemForOrientation:orientation],
                      [self fixedItemOfWidth:124],
                      [self flexibleItem],
@@ -414,10 +442,18 @@
                      [self fixedItemOfWidth:12],
                      [self helpItemForOrientation:orientation],
                      nil];
+            
+            if (self.audioItemHidden) {
+                [items removeObjectAtIndex:4];
+                [items removeObjectAtIndex:4];
+            }
+            
             break;
+        }
         case kSCHReadingViewNavigationToolbarStyleOlderPhone:
         case kSCHReadingViewNavigationToolbarStyleOlderPad:
-            items = [NSArray arrayWithObjects:
+        {
+            items = [NSMutableArray arrayWithObjects:
                      [self backItemForOrientation:orientation],
                      [self flexibleItem],
                      [self titleItemForOrientation:orientation],
@@ -425,9 +461,10 @@
                      [self helpItemForOrientation:orientation],
                      nil];
             break;
+        }
     }
     
-    return items;
+    return [NSArray arrayWithArray:items];
 }
 
 #pragma Toolbar Item Actions
