@@ -635,8 +635,12 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 {    
     
     [self.navigationToolbar setOrientation:orientation];
-    NSLog(@"Frame: %@", NSStringFromCGRect(self.navigationToolbar.frame));
-    self.highlightsToolbar.frame = self.navigationToolbar.frame;
+    
+    CGRect toolbarFrame = self.navigationToolbar.frame;
+    toolbarFrame.size.height -= kSCHReadingViewNavigationToolbarShadowHeight;
+    NSLog(@"Frame: %@", NSStringFromCGRect(toolbarFrame));
+
+    self.highlightsToolbar.frame = toolbarFrame;
 
     // Adjust scrubber dimensions and graphics for younger mode (portrait only for iPhone)
     CGFloat scrubberToolbarHeight = kReadingViewOlderScrubberToolbarHeight;
@@ -2307,7 +2311,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 	
 	if (self.toolbarsVisible) {
         if (self.highlightsModeEnabled) {
-            [self.navigationToolbar setAlpha:0.0f];
+            [self.navigationToolbar setAlpha:1.0f];
             [self.scrubberToolbar setAlpha:0.0f];
             [self.bottomShadow setAlpha:0.0f];  
             if (!self.youngerMode) {
@@ -2622,12 +2626,6 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
             [self.sampleSICoverMarker removeFromSuperview];
         }
         
-        NSString *portraitLandscape = @"portrait";
-        
-        if (UIInterfaceOrientationIsLandscape(newOrientation)) {
-            portraitLandscape = @"landscape";
-        }
-        
         SCHBookManager *bookManager = [SCHBookManager sharedBookManager];
         SCHAppBook *book = [bookManager bookWithIdentifier:self.bookIdentifier inManagedObjectContext:bookManager.mainThreadManagedObjectContext];    
         
@@ -2658,7 +2656,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
         NSString *imageName = nil;
         
         if (bookFeatures) {
-            imageName = [NSString stringWithFormat:@"reading-%@-%@", bookFeatures, portraitLandscape];
+            imageName = [NSString stringWithFormat:@"reading-%@", bookFeatures];
         }
         
         if (imageName) {
@@ -2671,8 +2669,8 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
             CGRect frame = self.sampleSICoverMarker.frame;
             
             // offsets are to accommodate borders in the images
-            frame.origin.x = ceilf((bookCoverFrame.origin.x + bookCoverFrame.size.width) - frame.size.width) + 8;
-            frame.origin.y = ceilf(bookCoverFrame.origin.y) - 10;
+            frame.origin.x = ceilf((bookCoverFrame.origin.x + bookCoverFrame.size.width) - frame.size.width);
+            frame.origin.y = ceilf(bookCoverFrame.origin.y);
             
             self.sampleSICoverMarker.frame = frame;
             
