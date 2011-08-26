@@ -59,6 +59,7 @@ UIImageView *optionsPhoneTopBackground;
 @property (nonatomic, retain) IBOutlet UIButton *storyInteractionsListButton;
 @property (nonatomic, retain) IBOutlet SCHCustomToolbar *scrubberToolbar;
 @property (nonatomic, retain) IBOutlet SCHCustomToolbar *olderBottomToolbar;
+@property (nonatomic, retain) IBOutlet SCHCustomToolbar *highlightsToolbar;
 @property (nonatomic, retain) IBOutlet UIImageView *bottomShadow;
 
 @property (nonatomic, retain) IBOutlet UISlider *pageSlider;
@@ -83,6 +84,10 @@ UIImageView *optionsPhoneTopBackground;
 @property (nonatomic, retain) IBOutlet UIView *storyInteractionButtonView;
 @property (nonatomic, retain) IBOutlet UIView *toolbarToggleView;
 @property (nonatomic, retain) IBOutlet UIView *cornerAudioButtonView;
+
+@property (nonatomic, retain) IBOutlet UIButton *highlightsCancelButton;
+@property (nonatomic, retain) IBOutlet UIButton *highlightsInfoButton;
+
 
 @property (nonatomic, retain) NSManagedObjectContext *managedObjectContext;
 

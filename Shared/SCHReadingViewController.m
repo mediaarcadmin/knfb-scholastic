@@ -112,6 +112,8 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 @property (nonatomic, retain) UIImageView *sampleSICoverMarker;
 @property (nonatomic, assign) BOOL coverMarkerShouldAppear;
 
+@property (nonatomic, assign) BOOL highlightsModeEnabled;
+
 - (id)failureWithErrorCode:(NSInteger)code error:(NSError **)error;
 - (NSError *)errorWithCode:(NSInteger)code;
 - (void)releaseViewObjects;
@@ -209,6 +211,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 
 @synthesize scrubberToolbar;
 @synthesize olderBottomToolbar;
+@synthesize highlightsToolbar;
 @synthesize bottomShadow;
 
 @synthesize audioBookPlayer;
@@ -221,6 +224,9 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 
 @synthesize sampleSICoverMarker;
 @synthesize coverMarkerShouldAppear;
+@synthesize highlightsModeEnabled;
+@synthesize highlightsInfoButton;
+@synthesize highlightsCancelButton;
 
 #pragma mark - Dealloc and View Teardown
 
@@ -267,6 +273,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 
     [scrubberToolbar release], scrubberToolbar = nil;
     [olderBottomToolbar release], olderBottomToolbar = nil;
+    [highlightsToolbar release], highlightsToolbar = nil;
     [bottomShadow release], bottomShadow = nil;
     [pageSlider release], pageSlider = nil;
     [scrubberThumbImage release], scrubberThumbImage = nil;
@@ -288,6 +295,8 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     [paperTypeSegmentedControl release], paperTypeSegmentedControl = nil;
     [popoverNavigationTitleLabel release], popoverNavigationTitleLabel = nil;
     [sampleSICoverMarker release], sampleSICoverMarker = nil;
+    [highlightsInfoButton release], highlightsInfoButton = nil;
+    [highlightsCancelButton release], highlightsCancelButton = nil;
     
     [readingView release], readingView = nil;
     [navigationToolbar release], navigationToolbar = nil;
@@ -551,7 +560,8 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     [self.bottomShadow setImage:[UIImage imageNamed:@"reading-view-bottom-shadow.png"]];
     [self.scrubberToolbar setBackgroundImage:[UIImage imageNamed:@"reading-view-scrubber-bar.png"]];
     [self.olderBottomToolbar setBackgroundImage:[UIImage imageNamed:@"reading-view-bottom-bar.png"]];        
-    
+    [self.highlightsToolbar setBackgroundImage:[[UIImage imageNamed:@"reading-view-navigation-toolbar.png"] stretchableImageWithLeftCapWidth:5 topCapHeight:5]];
+
     CGRect bottomShadowFrame = self.bottomShadow.frame;
 
     if (self.youngerMode) {
@@ -581,6 +591,9 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     [self setupOptionsViewForMode:self.layoutType];
     self.optionsPhoneTopBackground.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"OptionsViewTopBackground"]];
     self.optionsPhoneTopBackground.layer.opaque = NO;
+ 
+    self.highlightsToolbar.alpha = 0.0f;
+    [self.view addSubview:self.highlightsToolbar];
     
 }
 
@@ -622,7 +635,9 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 {    
     
     [self.navigationToolbar setOrientation:orientation];
-    
+    NSLog(@"Frame: %@", NSStringFromCGRect(self.navigationToolbar.frame));
+    self.highlightsToolbar.frame = self.navigationToolbar.frame;
+
     // Adjust scrubber dimensions and graphics for younger mode (portrait only for iPhone)
     CGFloat scrubberToolbarHeight = kReadingViewOlderScrubberToolbarHeight;
     [self.pageSlider setThumbImage:nil forState:UIControlStateNormal];
@@ -657,6 +672,15 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
         CGRect bottomShadowFrame = self.bottomShadow.frame;
         bottomShadowFrame.origin.y = CGRectGetMinY(scrubberFrame) - CGRectGetHeight(bottomShadowFrame);
         self.bottomShadow.frame = bottomShadowFrame;
+    }
+    
+    // highlights bar
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad || UIInterfaceOrientationIsPortrait(orientation)) {
+        [self.highlightsInfoButton setImage:[UIImage imageNamed:@"icon-higlights-active"] forState:UIControlStateNormal];
+        [self.highlightsCancelButton setImage:[UIImage imageNamed:@"icon-higlights-cancel"] forState:UIControlStateNormal];
+    } else {
+        [self.highlightsInfoButton setImage:[UIImage imageNamed:@"icon-higlights-active-landscape"] forState:UIControlStateNormal];
+        [self.highlightsCancelButton setImage:[UIImage imageNamed:@"icon-higlights-cancel-landscape"] forState:UIControlStateNormal];
     }
     
     // options buttons
@@ -1028,14 +1052,23 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     [self toolbarButtonPressed];
     
     NSLog(@"HighlightsAction action");
-    UIButton *highlightsButton = (UIButton *)sender;
-    [highlightsButton setSelected:![highlightsButton isSelected]];
+//    UIButton *highlightsButton = (UIButton *)sender;
+//    [highlightsButton setSelected:![highlightsButton isSelected]];
     
-    if ([highlightsButton isSelected]) {
+    self.highlightsModeEnabled = !self.highlightsModeEnabled;
+
+    // turn off the corner cover view if necessary
+    [self dismissCoverCornerViewWithAnimation:YES];
+
+    if (self.highlightsModeEnabled) {
+        // set up the highlights toolbar
+        [self setToolbarVisibility:YES animated:YES];
+        
         // Need to dismiss selector now to ensure a highlight isn't added immediately
         [self.readingView dismissSelector];
         [self.readingView setSelectionMode:SCHReadingViewSelectionModeHighlights];
     } else {
+        [self setToolbarVisibility:YES animated:YES];
         [self setDictionarySelectionMode];
     }
     if (self.optionsView.superview) {
@@ -2245,25 +2278,21 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
         [self.optionsView removeFromSuperview];
     }
 
-//	NSLog(@"Setting visibility to %@.", visibility?@"True":@"False");
 	self.toolbarsVisible = visibility;
 
-    if (!self.currentlyRotating) {
-//        CGRect navRect = self.navigationController.navigationBar.frame;
-//        if (navRect.origin.y == 0) {
-//            navRect.origin.y = 20;
-//            self.navigationController.navigationBar.frame = navRect;
-//        }
-    }
-    
     if (self.toolbarsVisible) {
-		[[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationFade];
+        if (!self.highlightsModeEnabled) {
+            [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationFade];
+        }
         self.toolbarToggleView.alpha = 0.0f;
         self.cornerAudioButtonView.alpha = 0.0f;
         [self.readingView dismissReadingViewAdornments];
 
 	} else {
-		[[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationFade];
+        if (!self.highlightsModeEnabled) {
+            [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationFade];
+        }
+        
         self.toolbarToggleView.alpha = 1.0f;
         [self checkCornerAudioButtonVisibilityWithAnimation:YES];
 	}
@@ -2277,16 +2306,33 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 	}
 	
 	if (self.toolbarsVisible) {
-        [self.navigationToolbar setAlpha:1.0f];
-        [self.scrubberToolbar setAlpha:1.0f];
-        if (!self.youngerMode) {
-            [self.olderBottomToolbar setAlpha:1.0f];
+        if (self.highlightsModeEnabled) {
+            [self.navigationToolbar setAlpha:0.0f];
+            [self.scrubberToolbar setAlpha:0.0f];
+            [self.bottomShadow setAlpha:0.0f];  
+            if (!self.youngerMode) {
+                [self.olderBottomToolbar setAlpha:0.0f];
+            }
+            [self.highlightsToolbar setAlpha:1.0f];
+        } else {
+            [self.navigationToolbar setAlpha:1.0f];
+            [self.highlightsToolbar setAlpha:0.0f];
+            [self.scrubberToolbar setAlpha:1.0f];
+            if (!self.youngerMode) {
+                [self.olderBottomToolbar setAlpha:1.0f];
+            }
+
+            [self.bottomShadow setAlpha:1.0f];  
         }
+
         if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
             [self.optionsView setAlpha:1.0f];
         }
-        [self.bottomShadow setAlpha:1.0f];  
+        
 	} else {
+        if (!self.highlightsModeEnabled) {
+            [self.highlightsToolbar setAlpha:0.0f];
+        }
         [self.navigationToolbar setAlpha:0.0f];
         [self.scrubberToolbar setAlpha:0.0f];
         if (!self.youngerMode) {
@@ -2564,6 +2610,10 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
         self.coverMarkerShouldAppear = NO;
     }
     
+    if (self.highlightsModeEnabled) {
+        self.coverMarkerShouldAppear = NO;
+    }
+    
     if (self.coverMarkerShouldAppear) {
         //        NSLog(@"reading view bounds: %@", NSStringFromCGRect([self.readingView pageRect]));
         
@@ -2663,8 +2713,10 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 
 - (void)checkCornerAudioButtonVisibilityWithAnimation:(BOOL)animated
 {
-    // only show on the first page, if toolbars are not visible and the audio isn't already playing (and it's in younger mode!)
-    BOOL shouldShow = (self.currentPageIndex == 0 && !self.toolbarsVisible && !self.audioBookPlayer.playing && self.youngerMode);
+    // only show on the first page, if toolbars are not visible, not in highlights mode
+    // and the audio isn't already playing (and it's in younger mode!)
+    BOOL shouldShow = (self.currentPageIndex == 0 && !self.toolbarsVisible && !self.audioBookPlayer.playing 
+                       && self.youngerMode && !self.highlightsModeEnabled);
     float buttonAlpha = 0.0f;
     
     if (shouldShow) {
