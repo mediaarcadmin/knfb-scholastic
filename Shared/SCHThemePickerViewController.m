@@ -62,12 +62,12 @@ static NSTimeInterval const kSCHThemePickerViewControllerThemeTransitionDuration
         
         [self.cancelButton setBackgroundImage:[[themeManager imageForTheme:themeName 
                                                                        key:kSCHThemeManagerDoneButtonImage 
-                                                               orientation:orientation] stretchableImageWithLeftCapWidth:5 topCapHeight:0] 
+                                                               orientation:orientation] stretchableImageWithLeftCapWidth:7 topCapHeight:0] 
                                      forState:UIControlStateNormal];
         
         [self.doneButton setBackgroundImage:[[themeManager imageForTheme:themeName 
                                                                      key:kSCHThemeManagerButtonImage 
-                                                             orientation:orientation] stretchableImageWithLeftCapWidth:5 topCapHeight:0] 
+                                                             orientation:orientation] stretchableImageWithLeftCapWidth:7 topCapHeight:0] 
                                    forState:UIControlStateNormal];
         
         [(SCHThemeImageView *)self.tableView.backgroundView setImage:[themeManager imageForTheme:themeName 
@@ -115,7 +115,7 @@ static NSTimeInterval const kSCHThemePickerViewControllerThemeTransitionDuration
         self.cancelButton.titleLabel.font = [UIFont boldSystemFontOfSize:14];
         self.cancelButton.titleLabel.shadowOffset = CGSizeMake(0, -1);
         
-        [self.cancelButton setThemeButton:kSCHThemeManagerDoneButtonImage leftCapWidth:5 topCapHeight:0];
+        [self.cancelButton setThemeButton:kSCHThemeManagerDoneButtonImage leftCapWidth:7 topCapHeight:0];
         [self.cancelButton addTarget:self action:@selector(cancel) forControlEvents:UIControlEventTouchUpInside];    
         self.navigationItem.leftBarButtonItem = [[[UIBarButtonItem alloc] initWithCustomView:cancelButton] autorelease];
         
@@ -129,7 +129,7 @@ static NSTimeInterval const kSCHThemePickerViewControllerThemeTransitionDuration
         self.doneButton.titleLabel.font = [UIFont boldSystemFontOfSize:14];
         self.doneButton.titleLabel.shadowOffset = CGSizeMake(0, -1);
         
-        [self.doneButton setThemeButton:kSCHThemeManagerButtonImage leftCapWidth:5 topCapHeight:0];
+        [self.doneButton setThemeButton:kSCHThemeManagerButtonImage leftCapWidth:7 topCapHeight:0];
         [self.doneButton addTarget:self action:@selector(done) forControlEvents:UIControlEventTouchUpInside];    
         self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithCustomView:doneButton] autorelease];
         [(SCHCustomNavigationBar *)self.navigationController.navigationBar setTheme:kSCHThemeManagerNavigationBarImage];

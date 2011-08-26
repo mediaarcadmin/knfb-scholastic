@@ -90,7 +90,7 @@ static NSTimeInterval const kSCHBookShelfViewControllerTopTenRefreshTime = -600.
     
     if ([[SCHAppStateManager sharedAppStateManager] canAuthenticate] == YES) {
         self.topTenPicksButton = [SCHThemeButton buttonWithType:UIButtonTypeCustom];
-        [self.topTenPicksButton setFrame:CGRectMake(0, 0, 120, 30)];
+        [self.topTenPicksButton setFrame:CGRectMake(0, 3, 120, 30)];
         [self.topTenPicksButton setTitle:NSLocalizedString(@"Top 10 Picks", @"") forState:UIControlStateNormal];
         [self.topTenPicksButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
         [self.topTenPicksButton setTitleColor:[UIColor colorWithWhite:1 alpha:0.5f] forState:UIControlStateHighlighted];
@@ -99,7 +99,7 @@ static NSTimeInterval const kSCHBookShelfViewControllerTopTenRefreshTime = -600.
         self.topTenPicksButton.titleLabel.font = [UIFont boldSystemFontOfSize:14];
         self.topTenPicksButton.titleLabel.shadowOffset = CGSizeMake(0, -1);
         
-        [self.topTenPicksButton setThemeButton:kSCHThemeManagerButtonImage leftCapWidth:5 topCapHeight:0];
+        [self.topTenPicksButton setThemeButton:kSCHThemeManagerButtonImage leftCapWidth:7 topCapHeight:0];
         [self.topTenPicksButton addTarget:self action:@selector(topTenAction:) forControlEvents:UIControlEventTouchUpInside];    
     }
     
@@ -128,7 +128,7 @@ static NSTimeInterval const kSCHBookShelfViewControllerTopTenRefreshTime = -600.
         [containerView release];
     } else {
         self.sortButton = [SCHThemeButton buttonWithType:UIButtonTypeCustom];
-        [self.sortButton setFrame:CGRectMake(0, 0, 120, 30)];
+        [self.sortButton setFrame:CGRectMake(0, 3, 120, 30)];
         [self.sortButton setTitle:NSLocalizedString(@"Sort", @"") forState:UIControlStateNormal];
         [self.sortButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
         [self.sortButton setTitleColor:[UIColor colorWithWhite:1 alpha:0.5f] forState:UIControlStateHighlighted];
@@ -137,7 +137,7 @@ static NSTimeInterval const kSCHBookShelfViewControllerTopTenRefreshTime = -600.
         self.sortButton.titleLabel.font = [UIFont boldSystemFontOfSize:14];
         self.sortButton.titleLabel.shadowOffset = CGSizeMake(0, -1);
         
-        [self.sortButton setThemeButton:kSCHThemeManagerButtonImage leftCapWidth:5 topCapHeight:0];
+        [self.sortButton setThemeButton:kSCHThemeManagerButtonImage leftCapWidth:7 topCapHeight:0];
         [self.sortButton addTarget:self action:@selector(sortAction:) forControlEvents:UIControlEventTouchUpInside];   
         
         containerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth(homeButton.frame) + kSCHBookShelfButtonPadding + CGRectGetWidth(self.sortButton.frame) + kSCHBookShelfButtonPadding, CGRectGetHeight(homeButton.frame))];
