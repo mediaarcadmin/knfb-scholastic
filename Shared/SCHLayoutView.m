@@ -639,7 +639,7 @@ fastThumbnailUIImageForPageAtIndex:(NSUInteger)index
     }
 }
 
-- (CGFloat)pageTurningView:(EucPageTurningView *)pageTurningView tapTurnMarginForPageAtIndex:(NSUInteger)index
+- (CGFloat)pageTurningView:(EucPageTurningView *)pageTurningView tapTurnMarginForPageWithIdentifier:(id)pageIdentifier
 {
     return 0;
 }
