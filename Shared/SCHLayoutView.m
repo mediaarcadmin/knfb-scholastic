@@ -595,7 +595,7 @@ fastThumbnailUIImageForPageAtIndex:(NSUInteger)index
     [self dismissFollowAlongHighlighter];
 }
 
-- (void)pageTurningViewDidEndAnimation:(EucPageTurningView *)aPageTurningView
+- (void)pageTurningViewDidEndAnimating:(EucPageTurningView *)aPageTurningView
 {    
     if(self.temporaryHighlightRange) {
 		NSInteger targetIndex = self.temporaryHighlightRange.startPoint.layoutPage - 1;
