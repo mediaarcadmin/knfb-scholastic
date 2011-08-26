@@ -101,8 +101,14 @@
 {
     // add the image view
     self.coverImageView = [[UIImageView alloc] initWithFrame:self.frame];
-    self.coverImageView.layer.borderColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0.3].CGColor;
-    self.coverImageView.layer.borderWidth = 1;
+    self.coverImageView.layer.borderColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0.7].CGColor;
+    
+    if (self.contentScaleFactor > 1) {
+        self.coverImageView.layer.borderWidth = 0.5f;
+    } else {
+        self.coverImageView.layer.borderWidth = 1;
+    }
+    
     [self addSubview:self.coverImageView];
 
     // no scaling of the cover view
