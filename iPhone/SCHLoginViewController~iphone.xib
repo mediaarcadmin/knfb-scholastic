@@ -65,7 +65,7 @@
 								<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 								<object class="NSCustomResource" key="IBUIImage">
 									<string key="NSClassName">NSImage</string>
-									<string key="NSResourceName">plain-background-portrait.png</string>
+									<string key="NSResourceName">plain-background-portrait.jpg</string>
 								</object>
 							</object>
 							<object class="IBUIScrollView" id="627327703">
@@ -317,6 +317,7 @@
 								<string key="NSFrameSize">{320, 7}</string>
 								<reference key="NSSuperview" ref="489633664"/>
 								<reference key="NSWindow"/>
+								<reference key="NSNextKeyView"/>
 								<reference key="IBUIBackgroundColor" ref="764302899"/>
 								<bool key="IBUIOpaque">NO</bool>
 								<bool key="IBUIUserInteractionEnabled">NO</bool>
@@ -1017,7 +1018,7 @@
 				<string>button-close.png</string>
 				<string>button-field.png</string>
 				<string>logo.png</string>
-				<string>plain-background-portrait.png</string>
+				<string>plain-background-portrait.jpg</string>
 			</object>
 			<object class="NSMutableArray" key="dict.values">
 				<bool key="EncodedWithXMLCoder">YES</bool>
