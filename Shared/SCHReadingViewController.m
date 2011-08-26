@@ -2296,9 +2296,11 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 	} else {
         if (!self.highlightsModeEnabled) {
             [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationFade];
+            self.toolbarToggleView.alpha = 1.0f;
+        } else {
+            self.toolbarToggleView.alpha = 0.0f;
         }
         
-        self.toolbarToggleView.alpha = 1.0f;
         [self checkCornerAudioButtonVisibilityWithAnimation:YES];
 	}
     
