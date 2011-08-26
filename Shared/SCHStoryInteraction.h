@@ -32,6 +32,9 @@ extern NSString * const KNFBXPSStoryInteractionsDirectory;
 // YES if this is an interaction for older readers
 - (BOOL)isOlderStoryInteraction;
 
+// YES if this story interaction has all the necessary properties to be used
+- (BOOL)isValid;
+
 // Short story interaction title for the pop up list view
 - (NSString *)title;
 
