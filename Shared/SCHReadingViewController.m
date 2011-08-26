@@ -2339,8 +2339,8 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 	} else {
         if (!self.highlightsModeEnabled) {
             [self.highlightsToolbar setAlpha:0.0f];
+            [self.navigationToolbar setAlpha:0.0f];
         }
-        [self.navigationToolbar setAlpha:0.0f];
         [self.scrubberToolbar setAlpha:0.0f];
         if (!self.youngerMode) {
             [self.olderBottomToolbar setAlpha:0.0f];
