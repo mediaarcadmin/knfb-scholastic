@@ -237,24 +237,26 @@ managedObjectContext:(NSManagedObjectContext *)managedObjectContext
 
 - (void)configureSelectorForSelectionMode
 {
+    EucSelector *mySelector = self.selector;
     switch (self.selectionMode) {
         case SCHReadingViewSelectionModeYoungerDictionary:
         case SCHReadingViewSelectionModeOlderDictionary:
-            self.selector.shouldTrackSingleTaps = YES;
-            self.selector.allowsInitialDragSelection = NO;
-            self.selector.shouldTrackSingleTapsOnHighights = NO;
-            self.selector.defaultSelectionColor = nil;
-            self.selector.selectionDelay = 0.2f;
+            mySelector.shouldTrackSingleTaps = YES;
+            mySelector.tracksClosestElementsInsteadOfHoveredElements = NO;
+            mySelector.allowsInitialDragSelection = NO;
+            mySelector.shouldTrackSingleTapsOnHighights = NO;
+            mySelector.defaultSelectionColor = nil;
+            mySelector.selectionDelay = 0.2f;
             break;
         case SCHReadingViewSelectionModeHighlights:
-            self.selector.shouldTrackSingleTaps = NO;
-            self.selector.allowsInitialDragSelection = YES;
-            self.selector.shouldTrackSingleTapsOnHighights = YES;
-            self.selector.defaultSelectionColor = [self.delegate highlightColor];
-            self.selector.selectionDelay = 0.0f;
+            mySelector.shouldTrackSingleTaps = NO;
+            mySelector.tracksClosestElementsInsteadOfHoveredElements = YES;
+            mySelector.allowsInitialDragSelection = YES;
+            mySelector.shouldTrackSingleTapsOnHighights = YES;
+            mySelector.defaultSelectionColor = [self.delegate highlightColor];
+            mySelector.selectionDelay = 0.0f;
             break;
     }
-    
 }
 
 - (void)setSelectionMode:(SCHReadingViewSelectionMode)newSelectionMode
