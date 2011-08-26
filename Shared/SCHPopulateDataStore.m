@@ -22,10 +22,8 @@
 
 @interface SCHPopulateDataStore ()
 
-- (void)populateLocalDebugStore;
 - (void)populateWithTestInformation;
 - (void)addBook:(NSDictionary *)book forProfiles:(NSArray *)profileIDs;
-- (void)populateFromImport;
 - (void)setAppStateForSample;
 - (NSDictionary *)profileItemWith:(NSInteger)profileID
                             title:(NSString *)title 
@@ -75,19 +73,6 @@
 }
 
 #pragma mark - Population methods
-
-- (void)checkPopulations
-{
-    if ([[self.profileSyncComponent localProfiles] count] < 1) {
-        [self populateLocalDebugStore];        
-    }
-    [self populateFromImport];
-}
-
-- (void)populateLocalDebugStore
-{
-    [self populateWithTestInformation];    
-}
 
 - (void)populateWithTestInformation
 {
@@ -312,12 +297,6 @@
         NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
         abort();
     }     
-}
-
-- (void)populateLocalDebugSampleStore
-{
-    [self setAppStateForSample];
-    [self populateWithTestInformation];     
 }
 
 - (void)setAppStateForSample

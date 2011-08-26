@@ -40,6 +40,5 @@ extern NSString * const SCHSyncManagerDidCompleteNotification;
 
 // for populating Sample Store
 - (void)populateSampleStore;
-- (void)populateLocalDebugSampleStore;
 
 @end

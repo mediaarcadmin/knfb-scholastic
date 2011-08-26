@@ -69,7 +69,6 @@ typedef enum {
 typedef enum {
 	kSCHDataStoreTypesStandard,
 	kSCHDataStoreTypesSample,
-	kSCHDataStoreTypesLocalDebug,    
 } SCHDataStoreTypes;
 
 @interface NSNumber (ObjectTypes)

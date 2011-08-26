@@ -267,10 +267,10 @@ static NSTimeInterval const kSCHLastFirstSyncInterval = -300.0;
             [self kickQueue];	
         }
     } else {
-        if ([[SCHAppStateManager sharedAppStateManager] isLocalDebugStore] == YES) {
+        if ([[SCHAppStateManager sharedAppStateManager] isSampleStore] == YES) {
             SCHPopulateDataStore *populateDataStore = [self populateDataStore];
             
-            [populateDataStore checkPopulations];
+            [populateDataStore populateFromImport];
         }
 
         [[NSNotificationCenter defaultCenter] postNotificationName:SCHProfileSyncComponentDidCompleteNotification 
@@ -486,13 +486,6 @@ static NSTimeInterval const kSCHLastFirstSyncInterval = -300.0;
     SCHPopulateDataStore *populateDataStore = [self populateDataStore];
     
     [populateDataStore populateSampleStore];
-}
-
-- (void)populateLocalDebugSampleStore
-{
-    SCHPopulateDataStore *populateDataStore = [self populateDataStore];
-    
-    [populateDataStore populateLocalDebugSampleStore];    
 }
 
 - (SCHPopulateDataStore *)populateDataStore

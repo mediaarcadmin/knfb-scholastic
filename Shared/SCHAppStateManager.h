@@ -26,6 +26,5 @@
 - (BOOL)canAuthenticate;
 - (BOOL)isStandardStore;
 - (BOOL)isSampleStore;
-- (BOOL)isLocalDebugStore;
 
 @end
