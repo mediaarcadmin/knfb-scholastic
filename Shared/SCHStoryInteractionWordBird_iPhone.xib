@@ -76,6 +76,7 @@
 						<string key="NSFrame">{{150, 133}, {170, 50}}</string>
 						<reference key="NSSuperview" ref="191373211"/>
 						<reference key="NSWindow"/>
+						<reference key="NSNextKeyView"/>
 						<bool key="IBUIOpaque">NO</bool>
 						<string key="targetRuntimeIdentifier">IBIPadFramework</string>
 						<int key="IBUIContentHorizontalAlignment">0</int>
@@ -120,7 +121,7 @@
 					<object class="IBUIView" id="502779944">
 						<reference key="NSNextResponder" ref="576631708"/>
 						<int key="NSvFlags">274</int>
-						<string key="NSFrame">{{0, 10}, {150, 240}}</string>
+						<string key="NSFrame">{{32, -65}, {130, 315}}</string>
 						<reference key="NSSuperview" ref="576631708"/>
 						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="267365956"/>
@@ -149,6 +150,7 @@
 						<string key="NSFrame">{{150, 125}, {320, 125}}</string>
 						<reference key="NSSuperview" ref="576631708"/>
 						<reference key="NSWindow"/>
+						<reference key="NSNextKeyView"/>
 						<reference key="IBUIBackgroundColor" ref="129709008"/>
 						<string key="targetRuntimeIdentifier">IBIPadFramework</string>
 					</object>
@@ -243,9 +245,9 @@
 						<reference key="object" ref="576631708"/>
 						<object class="NSMutableArray" key="children">
 							<bool key="EncodedWithXMLCoder">YES</bool>
-							<reference ref="502779944"/>
 							<reference ref="267365956"/>
 							<reference ref="716364506"/>
+							<reference ref="502779944"/>
 						</object>
 						<reference key="parent" ref="0"/>
 					</object>

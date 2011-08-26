@@ -2229,6 +2229,8 @@
 		C97F7F9C14078A91002BB9FB /* reading-samplesi~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = C97F7F9114078A91002BB9FB /* reading-samplesi~iphone.png */; };
 		C97F7F9D14078A91002BB9FB /* reading-samplesi@2x~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = C97F7F9214078A91002BB9FB /* reading-samplesi@2x~iphone.png */; };
 		C97F7F9E14078A91002BB9FB /* reading-samplesi@2x~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = C97F7F9214078A91002BB9FB /* reading-samplesi@2x~iphone.png */; };
+		C97F84031407B349002BB9FB /* storyinteraction-wordbird-BalloonPop.png in Resources */ = {isa = PBXBuildFile; fileRef = C97F84021407B349002BB9FB /* storyinteraction-wordbird-BalloonPop.png */; };
+		C97F84041407B349002BB9FB /* storyinteraction-wordbird-BalloonPop.png in Resources */ = {isa = PBXBuildFile; fileRef = C97F84021407B349002BB9FB /* storyinteraction-wordbird-BalloonPop.png */; };
 		C98648A01402686300B9DFE1 /* SCHReadingViewNavigationToolbar.m in Sources */ = {isa = PBXBuildFile; fileRef = C986489F1402686300B9DFE1 /* SCHReadingViewNavigationToolbar.m */; };
 		C98648A11402686300B9DFE1 /* SCHReadingViewNavigationToolbar.m in Sources */ = {isa = PBXBuildFile; fileRef = C986489F1402686300B9DFE1 /* SCHReadingViewNavigationToolbar.m */; };
 		C99B4A971405124E00B3ADF0 /* reading-view-scrubber-rightcap-large.png in Resources */ = {isa = PBXBuildFile; fileRef = C99B4A911405124E00B3ADF0 /* reading-view-scrubber-rightcap-large.png */; };
@@ -2620,24 +2622,6 @@
 		C9FD839113FBD674007D5B47 /* storyinteraction-wordbird-Shocked_Pen.png in Resources */ = {isa = PBXBuildFile; fileRef = C9FD838213FBD66E007D5B47 /* storyinteraction-wordbird-Shocked_Pen.png */; };
 		C9FD839413FBD674007D5B47 /* storyinteraction-wordbird-Pen_Happy_Filmstrip.png in Resources */ = {isa = PBXBuildFile; fileRef = C9FD838413FBD66F007D5B47 /* storyinteraction-wordbird-Pen_Happy_Filmstrip.png */; };
 		C9FD839513FBD674007D5B47 /* storyinteraction-wordbird-Pen_Happy_Filmstrip.png in Resources */ = {isa = PBXBuildFile; fileRef = C9FD838413FBD66F007D5B47 /* storyinteraction-wordbird-Pen_Happy_Filmstrip.png */; };
-		C9FD839613FBD674007D5B47 /* storyinteraction-wordbird-BalloonPop_09.png in Resources */ = {isa = PBXBuildFile; fileRef = C9FD838513FBD670007D5B47 /* storyinteraction-wordbird-BalloonPop_09.png */; };
-		C9FD839713FBD674007D5B47 /* storyinteraction-wordbird-BalloonPop_09.png in Resources */ = {isa = PBXBuildFile; fileRef = C9FD838513FBD670007D5B47 /* storyinteraction-wordbird-BalloonPop_09.png */; };
-		C9FD839813FBD674007D5B47 /* storyinteraction-wordbird-BalloonPop_08.png in Resources */ = {isa = PBXBuildFile; fileRef = C9FD838613FBD670007D5B47 /* storyinteraction-wordbird-BalloonPop_08.png */; };
-		C9FD839913FBD674007D5B47 /* storyinteraction-wordbird-BalloonPop_08.png in Resources */ = {isa = PBXBuildFile; fileRef = C9FD838613FBD670007D5B47 /* storyinteraction-wordbird-BalloonPop_08.png */; };
-		C9FD839A13FBD674007D5B47 /* storyinteraction-wordbird-BalloonPop_07.png in Resources */ = {isa = PBXBuildFile; fileRef = C9FD838713FBD671007D5B47 /* storyinteraction-wordbird-BalloonPop_07.png */; };
-		C9FD839B13FBD674007D5B47 /* storyinteraction-wordbird-BalloonPop_07.png in Resources */ = {isa = PBXBuildFile; fileRef = C9FD838713FBD671007D5B47 /* storyinteraction-wordbird-BalloonPop_07.png */; };
-		C9FD839C13FBD674007D5B47 /* storyinteraction-wordbird-BalloonPop_06.png in Resources */ = {isa = PBXBuildFile; fileRef = C9FD838813FBD671007D5B47 /* storyinteraction-wordbird-BalloonPop_06.png */; };
-		C9FD839D13FBD674007D5B47 /* storyinteraction-wordbird-BalloonPop_06.png in Resources */ = {isa = PBXBuildFile; fileRef = C9FD838813FBD671007D5B47 /* storyinteraction-wordbird-BalloonPop_06.png */; };
-		C9FD839E13FBD674007D5B47 /* storyinteraction-wordbird-BalloonPop_05.png in Resources */ = {isa = PBXBuildFile; fileRef = C9FD838913FBD672007D5B47 /* storyinteraction-wordbird-BalloonPop_05.png */; };
-		C9FD839F13FBD674007D5B47 /* storyinteraction-wordbird-BalloonPop_05.png in Resources */ = {isa = PBXBuildFile; fileRef = C9FD838913FBD672007D5B47 /* storyinteraction-wordbird-BalloonPop_05.png */; };
-		C9FD83A013FBD674007D5B47 /* storyinteraction-wordbird-BalloonPop_04.png in Resources */ = {isa = PBXBuildFile; fileRef = C9FD838A13FBD672007D5B47 /* storyinteraction-wordbird-BalloonPop_04.png */; };
-		C9FD83A113FBD674007D5B47 /* storyinteraction-wordbird-BalloonPop_04.png in Resources */ = {isa = PBXBuildFile; fileRef = C9FD838A13FBD672007D5B47 /* storyinteraction-wordbird-BalloonPop_04.png */; };
-		C9FD83A213FBD674007D5B47 /* storyinteraction-wordbird-BalloonPop_03.png in Resources */ = {isa = PBXBuildFile; fileRef = C9FD838B13FBD672007D5B47 /* storyinteraction-wordbird-BalloonPop_03.png */; };
-		C9FD83A313FBD674007D5B47 /* storyinteraction-wordbird-BalloonPop_03.png in Resources */ = {isa = PBXBuildFile; fileRef = C9FD838B13FBD672007D5B47 /* storyinteraction-wordbird-BalloonPop_03.png */; };
-		C9FD83A413FBD674007D5B47 /* storyinteraction-wordbird-BalloonPop_02.png in Resources */ = {isa = PBXBuildFile; fileRef = C9FD838C13FBD673007D5B47 /* storyinteraction-wordbird-BalloonPop_02.png */; };
-		C9FD83A513FBD674007D5B47 /* storyinteraction-wordbird-BalloonPop_02.png in Resources */ = {isa = PBXBuildFile; fileRef = C9FD838C13FBD673007D5B47 /* storyinteraction-wordbird-BalloonPop_02.png */; };
-		C9FD83A613FBD674007D5B47 /* storyinteraction-wordbird-BalloonPop_01.png in Resources */ = {isa = PBXBuildFile; fileRef = C9FD838D13FBD673007D5B47 /* storyinteraction-wordbird-BalloonPop_01.png */; };
-		C9FD83A713FBD674007D5B47 /* storyinteraction-wordbird-BalloonPop_01.png in Resources */ = {isa = PBXBuildFile; fileRef = C9FD838D13FBD673007D5B47 /* storyinteraction-wordbird-BalloonPop_01.png */; };
 		C9FE8CFA13AA60D300D55181 /* answer-button-yellow~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = C9FE8CF913AA60D300D55181 /* answer-button-yellow~ipad.png */; };
 		C9FE8CFB13AA60D300D55181 /* answer-button-yellow~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = C9FE8CF913AA60D300D55181 /* answer-button-yellow~ipad.png */; };
 		F80060FB13D8892D001CA881 /* SCHBookCoverView.m in Sources */ = {isa = PBXBuildFile; fileRef = F80060FA13D88924001CA881 /* SCHBookCoverView.m */; };
@@ -4199,6 +4183,7 @@
 		C97F7F9014078A91002BB9FB /* reading-sample@2x~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "reading-sample@2x~iphone.png"; path = "Resources/UIAssets/reading-sample@2x~iphone.png"; sourceTree = "<group>"; };
 		C97F7F9114078A91002BB9FB /* reading-samplesi~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "reading-samplesi~iphone.png"; path = "Resources/UIAssets/reading-samplesi~iphone.png"; sourceTree = "<group>"; };
 		C97F7F9214078A91002BB9FB /* reading-samplesi@2x~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "reading-samplesi@2x~iphone.png"; path = "Resources/UIAssets/reading-samplesi@2x~iphone.png"; sourceTree = "<group>"; };
+		C97F84021407B349002BB9FB /* storyinteraction-wordbird-BalloonPop.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "storyinteraction-wordbird-BalloonPop.png"; sourceTree = "<group>"; };
 		C986489E1402686300B9DFE1 /* SCHReadingViewNavigationToolbar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHReadingViewNavigationToolbar.h; path = Shared/SCHReadingViewNavigationToolbar.h; sourceTree = "<group>"; };
 		C986489F1402686300B9DFE1 /* SCHReadingViewNavigationToolbar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHReadingViewNavigationToolbar.m; path = Shared/SCHReadingViewNavigationToolbar.m; sourceTree = "<group>"; };
 		C99B4A911405124E00B3ADF0 /* reading-view-scrubber-rightcap-large.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "reading-view-scrubber-rightcap-large.png"; path = "Resources/UIAssets/reading-view-scrubber-rightcap-large.png"; sourceTree = "<group>"; };
@@ -4424,15 +4409,6 @@
 		C9F5BA0013918CE8009DE113 /* SCHProfilePasswordView~iphone.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "SCHProfilePasswordView~iphone.xib"; sourceTree = "<group>"; };
 		C9FD838213FBD66E007D5B47 /* storyinteraction-wordbird-Shocked_Pen.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "storyinteraction-wordbird-Shocked_Pen.png"; sourceTree = "<group>"; };
 		C9FD838413FBD66F007D5B47 /* storyinteraction-wordbird-Pen_Happy_Filmstrip.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "storyinteraction-wordbird-Pen_Happy_Filmstrip.png"; sourceTree = "<group>"; };
-		C9FD838513FBD670007D5B47 /* storyinteraction-wordbird-BalloonPop_09.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "storyinteraction-wordbird-BalloonPop_09.png"; sourceTree = "<group>"; };
-		C9FD838613FBD670007D5B47 /* storyinteraction-wordbird-BalloonPop_08.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "storyinteraction-wordbird-BalloonPop_08.png"; sourceTree = "<group>"; };
-		C9FD838713FBD671007D5B47 /* storyinteraction-wordbird-BalloonPop_07.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "storyinteraction-wordbird-BalloonPop_07.png"; sourceTree = "<group>"; };
-		C9FD838813FBD671007D5B47 /* storyinteraction-wordbird-BalloonPop_06.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "storyinteraction-wordbird-BalloonPop_06.png"; sourceTree = "<group>"; };
-		C9FD838913FBD672007D5B47 /* storyinteraction-wordbird-BalloonPop_05.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "storyinteraction-wordbird-BalloonPop_05.png"; sourceTree = "<group>"; };
-		C9FD838A13FBD672007D5B47 /* storyinteraction-wordbird-BalloonPop_04.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "storyinteraction-wordbird-BalloonPop_04.png"; sourceTree = "<group>"; };
-		C9FD838B13FBD672007D5B47 /* storyinteraction-wordbird-BalloonPop_03.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "storyinteraction-wordbird-BalloonPop_03.png"; sourceTree = "<group>"; };
-		C9FD838C13FBD673007D5B47 /* storyinteraction-wordbird-BalloonPop_02.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "storyinteraction-wordbird-BalloonPop_02.png"; sourceTree = "<group>"; };
-		C9FD838D13FBD673007D5B47 /* storyinteraction-wordbird-BalloonPop_01.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "storyinteraction-wordbird-BalloonPop_01.png"; sourceTree = "<group>"; };
 		C9FE8CF913AA60D300D55181 /* answer-button-yellow~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "answer-button-yellow~ipad.png"; sourceTree = "<group>"; };
 		F80060F913D88924001CA881 /* SCHBookCoverView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHBookCoverView.h; path = Shared/SCHBookCoverView.h; sourceTree = "<group>"; };
 		F80060FA13D88924001CA881 /* SCHBookCoverView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHBookCoverView.m; path = Shared/SCHBookCoverView.m; sourceTree = "<group>"; };
@@ -5312,15 +5288,7 @@
 				28974E2613FD4EE10082120E /* storyinteraction-wordbird-Pen_Lose_1.png */,
 				28974E2713FD4EE10082120E /* storyinteraction-wordbird-Pen_Lose_2.png */,
 				C9FD838413FBD66F007D5B47 /* storyinteraction-wordbird-Pen_Happy_Filmstrip.png */,
-				C9FD838513FBD670007D5B47 /* storyinteraction-wordbird-BalloonPop_09.png */,
-				C9FD838613FBD670007D5B47 /* storyinteraction-wordbird-BalloonPop_08.png */,
-				C9FD838713FBD671007D5B47 /* storyinteraction-wordbird-BalloonPop_07.png */,
-				C9FD838813FBD671007D5B47 /* storyinteraction-wordbird-BalloonPop_06.png */,
-				C9FD838913FBD672007D5B47 /* storyinteraction-wordbird-BalloonPop_05.png */,
-				C9FD838A13FBD672007D5B47 /* storyinteraction-wordbird-BalloonPop_04.png */,
-				C9FD838B13FBD672007D5B47 /* storyinteraction-wordbird-BalloonPop_03.png */,
-				C9FD838C13FBD673007D5B47 /* storyinteraction-wordbird-BalloonPop_02.png */,
-				C9FD838D13FBD673007D5B47 /* storyinteraction-wordbird-BalloonPop_01.png */,
+				C97F84021407B349002BB9FB /* storyinteraction-wordbird-BalloonPop.png */,
 			);
 			name = StoryInteractions;
 			path = Resources/UIAssets/StoryInteractions;
@@ -7957,15 +7925,6 @@
 				C931140113FBC85900355693 /* storyinteraction-concentration-tile-orange@2x~iphone.png in Resources */,
 				C9FD839013FBD674007D5B47 /* storyinteraction-wordbird-Shocked_Pen.png in Resources */,
 				C9FD839413FBD674007D5B47 /* storyinteraction-wordbird-Pen_Happy_Filmstrip.png in Resources */,
-				C9FD839613FBD674007D5B47 /* storyinteraction-wordbird-BalloonPop_09.png in Resources */,
-				C9FD839813FBD674007D5B47 /* storyinteraction-wordbird-BalloonPop_08.png in Resources */,
-				C9FD839A13FBD674007D5B47 /* storyinteraction-wordbird-BalloonPop_07.png in Resources */,
-				C9FD839C13FBD674007D5B47 /* storyinteraction-wordbird-BalloonPop_06.png in Resources */,
-				C9FD839E13FBD674007D5B47 /* storyinteraction-wordbird-BalloonPop_05.png in Resources */,
-				C9FD83A013FBD674007D5B47 /* storyinteraction-wordbird-BalloonPop_04.png in Resources */,
-				C9FD83A213FBD674007D5B47 /* storyinteraction-wordbird-BalloonPop_03.png in Resources */,
-				C9FD83A413FBD674007D5B47 /* storyinteraction-wordbird-BalloonPop_02.png in Resources */,
-				C9FD83A613FBD674007D5B47 /* storyinteraction-wordbird-BalloonPop_01.png in Resources */,
 				F8EB729613FD504900FE2410 /* OptionsCustomButtonActive.png in Resources */,
 				F8EB729813FD504900FE2410 /* OptionsCustomButtonActive@2x.png in Resources */,
 				F8EB729A13FD504900FE2410 /* OptionsCustomButtonInactive.png in Resources */,
@@ -8077,6 +8036,7 @@
 				C97F7F9914078A91002BB9FB /* reading-sample@2x~iphone.png in Resources */,
 				C97F7F9B14078A91002BB9FB /* reading-samplesi~iphone.png in Resources */,
 				C97F7F9D14078A91002BB9FB /* reading-samplesi@2x~iphone.png in Resources */,
+				C97F84031407B349002BB9FB /* storyinteraction-wordbird-BalloonPop.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -9312,15 +9272,6 @@
 				C931140213FBC85900355693 /* storyinteraction-concentration-tile-orange@2x~iphone.png in Resources */,
 				C9FD839113FBD674007D5B47 /* storyinteraction-wordbird-Shocked_Pen.png in Resources */,
 				C9FD839513FBD674007D5B47 /* storyinteraction-wordbird-Pen_Happy_Filmstrip.png in Resources */,
-				C9FD839713FBD674007D5B47 /* storyinteraction-wordbird-BalloonPop_09.png in Resources */,
-				C9FD839913FBD674007D5B47 /* storyinteraction-wordbird-BalloonPop_08.png in Resources */,
-				C9FD839B13FBD674007D5B47 /* storyinteraction-wordbird-BalloonPop_07.png in Resources */,
-				C9FD839D13FBD674007D5B47 /* storyinteraction-wordbird-BalloonPop_06.png in Resources */,
-				C9FD839F13FBD674007D5B47 /* storyinteraction-wordbird-BalloonPop_05.png in Resources */,
-				C9FD83A113FBD674007D5B47 /* storyinteraction-wordbird-BalloonPop_04.png in Resources */,
-				C9FD83A313FBD674007D5B47 /* storyinteraction-wordbird-BalloonPop_03.png in Resources */,
-				C9FD83A513FBD674007D5B47 /* storyinteraction-wordbird-BalloonPop_02.png in Resources */,
-				C9FD83A713FBD674007D5B47 /* storyinteraction-wordbird-BalloonPop_01.png in Resources */,
 				F8EB729713FD504900FE2410 /* OptionsCustomButtonActive.png in Resources */,
 				F8EB729913FD504900FE2410 /* OptionsCustomButtonActive@2x.png in Resources */,
 				F8EB729B13FD504900FE2410 /* OptionsCustomButtonInactive.png in Resources */,
@@ -9441,6 +9392,7 @@
 				C97F7F9A14078A91002BB9FB /* reading-sample@2x~iphone.png in Resources */,
 				C97F7F9C14078A91002BB9FB /* reading-samplesi~iphone.png in Resources */,
 				C97F7F9E14078A91002BB9FB /* reading-samplesi@2x~iphone.png in Resources */,
+				C97F84041407B349002BB9FB /* storyinteraction-wordbird-BalloonPop.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
