@@ -9,8 +9,6 @@
 #import "SCHReadingViewNavigationToolbar.h"
 #import "SCHCustomToolbar.h"
 
-static const CGFloat kSCHReadingViewNavigationToolbarShadowHeight = 4.0f;
-
 @interface SCHReadingViewNavigationToolbar()
 
 @property (nonatomic, retain) UIImageView *shadowView;
@@ -488,6 +486,11 @@ static const CGFloat kSCHReadingViewNavigationToolbarShadowHeight = 4.0f;
         }       
         label.frame = constraintSize;
     } 
+}
+
+- (CGRect)toolbarFrame
+{
+    return self.toolbar.frame;
 }
 
 #pragma mark - Class Methods
