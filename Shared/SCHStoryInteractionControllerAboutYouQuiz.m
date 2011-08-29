@@ -224,6 +224,7 @@ typedef enum {
     self.simultaneousTapCount++;
     if (self.simultaneousTapCount == 1) {
         [sender setSelected:YES];
+        self.controllerState = SCHStoryInteractionControllerStateInteractionReadingAnswerWithPause;        
         [self performSelector:@selector(answerChosen:) withObject:sender afterDelay:kMinimumDistinguishedAnswerDelay];
     }
 }
@@ -234,11 +235,12 @@ typedef enum {
     self.simultaneousTapCount = 0;
     if (tapCount > 1) {
         [sender setSelected:NO];
+        self.controllerState = SCHStoryInteractionControllerStateInteractionInProgress;                
         return;
     }
 
     [self playDefaultButtonAudio];
-    self.controllerState = SCHStoryInteractionControllerStateInteractionReadingAnswerWithPause;
+
     [sender setSelected:YES];
     
     [self performSelector:@selector(unhighlightAndMoveOn:) withObject:sender afterDelay:1.0];
