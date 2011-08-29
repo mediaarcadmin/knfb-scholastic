@@ -19,6 +19,8 @@
 #import "SCHXPSProvider.h"
 #import "KNFBXPSConstants.h"
 #import "TouchXML.h"
+#import "SCHBookManager.h"
+#import "SCHBookIdentifier.h"
 
 @interface SCHPopulateDataStore ()
 
@@ -446,46 +448,56 @@
         }
         [doc release], doc = nil;
 
-        fileSize = [[NSFileManager defaultManager] attributesOfItemAtPath:xpsFilePath 
-                                                                    error:&error].fileSize;
-
-        if (error != nil) {
-            NSLog(@"Error reading XPS file size: %@, %@", error, [error userInfo]);
+        // check we don't already have the book
+        SCHAppBook *appBook = [[SCHBookManager sharedBookManager] bookWithIdentifier:[[[SCHBookIdentifier alloc] initWithISBN:ISBN 
+                                                                                                                 DRMQualifier:[NSNumber numberWithDRMQualifier:kSCHDRMQualifiersFullNoDRM]] autorelease]
+                                                              inManagedObjectContext:self.managedObjectContext];
+        
+        if (appBook == nil) {
+            fileSize = [[NSFileManager defaultManager] attributesOfItemAtPath:xpsFilePath 
+                                                                        error:&error].fileSize;
+            
+            if (error != nil) {
+                NSLog(@"Error reading XPS file size: %@, %@", error, [error userInfo]);
+            }
+            
+            NSDictionary *book = [self contentMetaDataItemWith:ISBN
+                                                         title:title
+                                                        author:author
+                                                    pageNumber:[xpsProvider pageCount]
+                                                      fileSize:fileSize
+                                                   drmQualifer:kSCHDRMQualifiersFullNoDRM
+                                                      coverURL:nil
+                                                    contentURL:nil
+                                                      enhanced:[xpsProvider componentExistsAtPath:KNFBXPSStoryInteractionsMetadataFile]];
+            
+            [self.contentSyncComponent addUserContentItem:[self userContentItemWith:[book objectForKey:kSCHLibreAccessWebServiceContentIdentifier] 
+                                                                        drmQualifer:[[book objectForKey:kSCHLibreAccessWebServiceDRMQualifier] DRMQualifierValue]                                                    
+                                                                         profileIDs:profileIDs]];
+            SCHContentMetadataItem *newContentMetadataItem = [self.bookshelfSyncComponent addContentMetadataItem:book];
+            newContentMetadataItem.FileName = [xpsFilePath lastPathComponent];
+            
+            // extract the cover image
+            NSData *imageData = [xpsProvider coverThumbData];
+            if (imageData != nil) {   
+                NSData *pngData = UIImagePNGRepresentation([UIImage imageWithData:imageData]);
+                [pngData writeToFile:[newContentMetadataItem.AppBook coverImagePath] atomically:YES];
+            }
+            [xpsProvider release], xpsProvider = nil;
+            
+            // move the XPS file
+            [[NSFileManager defaultManager] moveItemAtPath:xpsFilePath 
+                                                    toPath:[newContentMetadataItem.AppBook xpsPath] 
+                                                     error:&error];        
+            if (error != nil) {
+                NSLog(@"Error moving XPS file: %@, %@", error, [error userInfo]);
+            }
+            
+            newContentMetadataItem.AppBook.State = [NSNumber numberWithInt:SCHBookProcessingStateReadyForLicenseAcquisition];
         }
-
-        NSDictionary *book = [self contentMetaDataItemWith:ISBN
-                                                     title:title
-                                                    author:author
-                                                pageNumber:[xpsProvider pageCount]
-                                                  fileSize:fileSize
-                                               drmQualifer:kSCHDRMQualifiersFullNoDRM
-                                                  coverURL:nil
-                                                contentURL:nil
-                                                  enhanced:[xpsProvider componentExistsAtPath:KNFBXPSStoryInteractionsMetadataFile]];
-        
-        [self.contentSyncComponent addUserContentItem:[self userContentItemWith:[book objectForKey:kSCHLibreAccessWebServiceContentIdentifier] 
-                                                                    drmQualifer:[[book objectForKey:kSCHLibreAccessWebServiceDRMQualifier] DRMQualifierValue]                                                    
-                                                                     profileIDs:profileIDs]];
-        SCHContentMetadataItem *newContentMetadataItem = [self.bookshelfSyncComponent addContentMetadataItem:book];
-        newContentMetadataItem.FileName = [xpsFilePath lastPathComponent];
-        
-        // extract the cover image
-        NSData *imageData = [xpsProvider coverThumbData];
-        if (imageData != nil) {   
-            NSData *pngData = UIImagePNGRepresentation([UIImage imageWithData:imageData]);
-            [pngData writeToFile:[newContentMetadataItem.AppBook coverImagePath] atomically:YES];
+        else {
+            [xpsProvider release], xpsProvider = nil;
         }
-        [xpsProvider release], xpsProvider = nil;
-        
-        // move the XPS file
-        [[NSFileManager defaultManager] moveItemAtPath:xpsFilePath 
-                                                toPath:[newContentMetadataItem.AppBook xpsPath] 
-                                                 error:&error];        
-        if (error != nil) {
-            NSLog(@"Error moving XPS file: %@, %@", error, [error userInfo]);
-        }
-        
-        newContentMetadataItem.AppBook.State = [NSNumber numberWithInt:SCHBookProcessingStateReadyForLicenseAcquisition];
     }
 }
 
