@@ -39,7 +39,6 @@
 #import "SCHAnnotationSyncComponent.h"
 #import "LambdaAlert.h"
 #import "SCHAppContentProfileItem.h"
-#import "SCHHelpViewController.h"
 #import "SCHUserDefaults.h"
 
 // constants
@@ -115,6 +114,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 @property (nonatomic, assign) BOOL coverMarkerShouldAppear;
 
 @property (nonatomic, assign) BOOL highlightsModeEnabled;
+@property (nonatomic, assign) BOOL firstTimePlayForHelpController;
 
 - (id)failureWithErrorCode:(NSInteger)code error:(NSError **)error;
 - (NSError *)errorWithCode:(NSInteger)code;
@@ -230,6 +230,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 @synthesize highlightsInfoButton;
 @synthesize highlightsCancelButton;
 @synthesize cornerCoverFadeTimer;
+@synthesize firstTimePlayForHelpController;
 
 #pragma mark - Dealloc and View Teardown
 
@@ -431,6 +432,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
         self.queuedAudioPlayer = [[[SCHQueuedAudioPlayer alloc] init] autorelease];
 
         self.coverMarkerShouldAppear = YES;
+        self.firstTimePlayForHelpController = NO;
 
     } else {
         return [self failureWithErrorCode:kSCHReadingViewUnspecifiedError error:error];
@@ -510,9 +512,6 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 	self.scrubberInfoView.layer.cornerRadius = 5.0f;
 	self.scrubberInfoView.layer.masksToBounds = YES;
     
-	
-    [self startFadeTimer];
-
     if (self.youngerMode) {
         [self.olderBottomToolbar removeFromSuperview];
     }
@@ -608,20 +607,24 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     
     if (youngerMode == YES) {
         if ([[NSUserDefaults standardUserDefaults] boolForKey:kSCHUserDefaultsYoungerHelpVideoFirstPlay] == YES) {
+            self.firstTimePlayForHelpController = YES;
             [self presentHelpAnimated:NO];
-            [self cancelInitialTimer];
         }
     } else {
         if ([[NSUserDefaults standardUserDefaults] boolForKey:kSCHUserDefaultsOlderHelpVideoFirstPlay] == YES) {
+            self.firstTimePlayForHelpController = YES;
             [self presentHelpAnimated:NO];
-            [self cancelInitialTimer];
+            
         }
     }
 }
 
 - (void)viewDidAppear:(BOOL)animated
 {
-    [self positionCoverCornerViewForOrientation:self.interfaceOrientation];
+    if (!self.firstTimePlayForHelpController) {
+        [self positionCoverCornerViewForOrientation:self.interfaceOrientation];
+        [self startFadeTimer];
+    }
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -1012,6 +1015,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     SCHHelpViewController *helpViewController = [[SCHHelpViewController alloc] initWithNibName:nil 
                                                                                         bundle:nil
                                                                                    youngerMode:self.youngerMode];
+    helpViewController.delegate = self;
     
     helpViewController.modalPresentationStyle = UIModalPresentationFullScreen;
     helpViewController.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
@@ -2755,5 +2759,14 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     }
 }
 
+#pragma mark - Help View Delegate
+
+- (void)helpViewWillClose:(SCHHelpViewController *)helpViewController
+{
+    // clear the firstTimePlay flag if it was set - this allows the corner view to appear
+    if (self.firstTimePlayForHelpController) {
+        self.firstTimePlayForHelpController = NO;
+    }
+}
 
 @end

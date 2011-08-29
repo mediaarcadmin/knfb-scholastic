@@ -8,7 +8,14 @@
 
 #import <UIKit/UIKit.h>
 
-@class SCHPlayButton;
+@class SCHPlayButton, SCHHelpViewController;
+
+@protocol SCHHelpViewControllerDelegate <NSObject>
+
+@optional
+- (void)helpViewWillClose:(SCHHelpViewController *)helpViewController;
+
+@end
 
 @interface SCHHelpViewController : UIViewController 
 {    
@@ -18,6 +25,8 @@
 @property (nonatomic, retain) IBOutlet UIView *borderView;
 @property (nonatomic, retain) IBOutlet SCHPlayButton *playButton;
 @property (nonatomic, retain) IBOutlet UIButton *closeButton;
+
+@property (nonatomic, assign) id <SCHHelpViewControllerDelegate> delegate;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil 
                bundle:(NSBundle *)nibBundleOrNil
