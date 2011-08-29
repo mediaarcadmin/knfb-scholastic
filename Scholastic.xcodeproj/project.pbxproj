@@ -34,6 +34,9 @@
 		2827824513A20FA200E968C1 /* NSArray+ViewSorting.m in Sources */ = {isa = PBXBuildFile; fileRef = 2827824413A20FA200E968C1 /* NSArray+ViewSorting.m */; };
 		2827827613A23DF100E968C1 /* SCHStoryInteractionWordScrambler_iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2827827513A23DF100E968C1 /* SCHStoryInteractionWordScrambler_iPad.xib */; };
 		2827827A13A241E200E968C1 /* SCHStoryInteractionControllerWordScrambler.m in Sources */ = {isa = PBXBuildFile; fileRef = 2827827913A241E100E968C1 /* SCHStoryInteractionControllerWordScrambler.m */; };
+		282FE399140BB65D00CBB6AB /* storyinteraction-wordbird-BalloonPop.png in Resources */ = {isa = PBXBuildFile; fileRef = C97F84021407B349002BB9FB /* storyinteraction-wordbird-BalloonPop.png */; };
+		282FE39A140BB7E400CBB6AB /* popoverTickLight@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 52DAE4FE13ABA51A0003560E /* popoverTickLight@2x.png */; };
+		282FE39B140BB7E900CBB6AB /* popoverTick@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 52DAE4FD13ABA51A0003560E /* popoverTick@2x.png */; };
 		2830DAC213D822B6001366D9 /* SCHNavigationControllerForModalForm.m in Sources */ = {isa = PBXBuildFile; fileRef = 2830DAC113D822B6001366D9 /* SCHNavigationControllerForModalForm.m */; };
 		2842A77313FBE9B10049AEE1 /* SCHAnimatedLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 2842A77213FBE9B10049AEE1 /* SCHAnimatedLayer.m */; };
 		28456BC413E071B600BD3804 /* SCHSetProfilePasswordView~ipad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 28456BC313E071B600BD3804 /* SCHSetProfilePasswordView~ipad.xib */; };
@@ -2275,11 +2278,8 @@
 		2894E7FE13B09E5800AEAD79 /* SCHStoryInteractionControllerHotSpot.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCHStoryInteractionControllerHotSpot.h; sourceTree = "<group>"; };
 		2894E7FF13B09E5800AEAD79 /* SCHStoryInteractionControllerHotSpot.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCHStoryInteractionControllerHotSpot.m; sourceTree = "<group>"; };
 		2894E80213B09EC800AEAD79 /* storyinteraction-findinpage-wrong~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "storyinteraction-findinpage-wrong~ipad.png"; sourceTree = "<group>"; };
-		2894E80313B09EC800AEAD79 /* storyinteraction-findinpage-correct~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "storyinteraction-findinpage-correct~ipad.png"; sourceTree = "<group>"; };
 		2894E80413B09EC800AEAD79 /* storyinteraction-findinpage-wrong~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "storyinteraction-findinpage-wrong~iphone.png"; sourceTree = "<group>"; };
 		2894E80513B09EC800AEAD79 /* storyinteraction-findinpage-wrong@2x~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "storyinteraction-findinpage-wrong@2x~iphone.png"; sourceTree = "<group>"; };
-		2894E80613B09EC800AEAD79 /* storyinteraction-findinpage-correct~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "storyinteraction-findinpage-correct~iphone.png"; sourceTree = "<group>"; };
-		2894E80713B09EC800AEAD79 /* storyinteraction-findinpage-correct@2x~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "storyinteraction-findinpage-correct@2x~iphone.png"; sourceTree = "<group>"; };
 		289699F113E2C55000B7E3DF /* SCHStartingViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHStartingViewCell.h; path = Shared/SCHStartingViewCell.h; sourceTree = "<group>"; };
 		289699F213E2C55000B7E3DF /* SCHStartingViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHStartingViewCell.m; path = Shared/SCHStartingViewCell.m; sourceTree = "<group>"; };
 		28974E2513FD4EE10082120E /* storyinteraction-wordbird-Pen_Lose_0.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "storyinteraction-wordbird-Pen_Lose_0.png"; sourceTree = "<group>"; };
@@ -4223,9 +4223,6 @@
 				2894E80213B09EC800AEAD79 /* storyinteraction-findinpage-wrong~ipad.png */,
 				2894E80413B09EC800AEAD79 /* storyinteraction-findinpage-wrong~iphone.png */,
 				2894E80513B09EC800AEAD79 /* storyinteraction-findinpage-wrong@2x~iphone.png */,
-				2894E80313B09EC800AEAD79 /* storyinteraction-findinpage-correct~ipad.png */,
-				2894E80613B09EC800AEAD79 /* storyinteraction-findinpage-correct~iphone.png */,
-				2894E80713B09EC800AEAD79 /* storyinteraction-findinpage-correct@2x~iphone.png */,
 				F8DB746813A0DDA2006E8D06 /* progressbar-cover.png */,
 				F8DB746313A0DCC3006E8D06 /* progressbar-fill.png */,
 				C91E9A1513F96738004F8062 /* storyinteraction-jigsaw-20-pieces-button~iphone.png */,
@@ -7699,6 +7696,9 @@
 				52488ABA1407990500DA9AFA /* reading-samplesi~iphone.png in Resources */,
 				52488ABB1407990500DA9AFA /* reading-samplesi@2x~iphone.png in Resources */,
 				C944D2CF1407D518008E04FF /* Scholastic_Sample.sqlite in Resources */,
+				282FE399140BB65D00CBB6AB /* storyinteraction-wordbird-BalloonPop.png in Resources */,
+				282FE39A140BB7E400CBB6AB /* popoverTickLight@2x.png in Resources */,
+				282FE39B140BB7E900CBB6AB /* popoverTick@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
