@@ -89,6 +89,7 @@
         self.scoreSublabel.text = popQuiz.scoreResponseMedium;
     } else {
         self.scoreSublabel.text = popQuiz.scoreResponseHigh;
+        self.controllerState = SCHStoryInteractionControllerStateInteractionFinishedSuccessfully;
     }
     [self playBundleAudioWithFilename:[self.storyInteraction storyInteractionRevealSoundFilename] completion:nil];
 }
