@@ -61,7 +61,7 @@
 						<string key="targetRuntimeIdentifier">IBIPadFramework</string>
 						<object class="NSCustomResource" key="IBUIImage">
 							<string key="NSClassName">NSImage</string>
-							<string key="NSResourceName">admin-background-ipad-landscape.png</string>
+							<string key="NSResourceName">plain-background-landscape~ipad.jpg</string>
 						</object>
 					</object>
 					<object class="IBUITableView" id="815132763">
@@ -143,7 +143,7 @@
 				<string key="targetRuntimeIdentifier">IBIPadFramework</string>
 			</object>
 			<object class="IBUIView" id="897561001">
-				<reference key="NSNextResponder"/>
+				<nil key="NSNextResponder"/>
 				<int key="NSvFlags">298</int>
 				<object class="NSMutableArray" key="NSSubviews">
 					<bool key="EncodedWithXMLCoder">YES</bool>
@@ -152,7 +152,6 @@
 						<int key="NSvFlags">277</int>
 						<string key="NSFrameSize">{320, 34}</string>
 						<reference key="NSSuperview" ref="897561001"/>
-						<reference key="NSWindow"/>
 						<object class="NSColor" key="IBUIBackgroundColor">
 							<int key="NSColorSpace">3</int>
 							<bytes key="NSWhite">MSAwAA</bytes>
@@ -183,8 +182,6 @@
 					</object>
 				</object>
 				<string key="NSFrameSize">{320, 72}</string>
-				<reference key="NSSuperview"/>
-				<reference key="NSWindow"/>
 				<reference key="NSNextKeyView" ref="1048665864"/>
 				<object class="NSColor" key="IBUIBackgroundColor">
 					<int key="NSColorSpace">3</int>
@@ -868,15 +865,15 @@
 			<bool key="EncodedWithXMLCoder">YES</bool>
 			<object class="NSArray" key="dict.sortedKeys">
 				<bool key="EncodedWithXMLCoder">YES</bool>
-				<string>admin-background-ipad-landscape.png</string>
 				<string>admin-iphone-top-shadow.png</string>
 				<string>admin-updates-available~ipad.png</string>
+				<string>plain-background-landscape~ipad.jpg</string>
 			</object>
 			<object class="NSMutableArray" key="dict.values">
 				<bool key="EncodedWithXMLCoder">YES</bool>
-				<string>{1320, 704}</string>
 				<string>{7, 7}</string>
 				<string>{178, 154}</string>
+				<string>{1320, 704}</string>
 			</object>
 		</object>
 		<string key="IBCocoaTouchPluginVersion">301</string>

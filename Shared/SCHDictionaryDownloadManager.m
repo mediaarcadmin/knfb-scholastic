@@ -146,18 +146,18 @@ static SCHDictionaryDownloadManager *sharedManager = nil;
 												   object:nil];
 
 		
-		// notification for processing manager being idle
-		[[NSNotificationCenter defaultCenter] addObserver:sharedManager 
-												 selector:@selector(connectionBecameIdle:) 
-													 name:kSCHProcessingManagerConnectionIdle
-												   object:nil];			
-		
-		
-		// notification for processing manager starting work
-		[[NSNotificationCenter defaultCenter] addObserver:sharedManager 
-												 selector:@selector(connectionBecameBusy:) 
-													 name:kSCHProcessingManagerConnectionBusy
-												   object:nil];			
+//		// notification for processing manager being idle
+//		[[NSNotificationCenter defaultCenter] addObserver:sharedManager 
+//												 selector:@selector(connectionBecameIdle:) 
+//													 name:kSCHProcessingManagerConnectionIdle
+//												   object:nil];			
+//		
+//		
+//		// notification for processing manager starting work
+//		[[NSNotificationCenter defaultCenter] addObserver:sharedManager 
+//												 selector:@selector(connectionBecameBusy:) 
+//													 name:kSCHProcessingManagerConnectionBusy
+//												   object:nil];			
 		
 		
 		// background notifications
@@ -291,10 +291,12 @@ static SCHDictionaryDownloadManager *sharedManager = nil;
     return;
 #endif
     
-	NSLog(@"*** wifi: %@ connectionIdle: %@ ***", self.wifiAvailable?@"Yes":@"No", self.connectionIdle?@"Yes":@"No");
+//	NSLog(@"*** wifi: %@ connectionIdle: %@ ***", self.wifiAvailable?@"Yes":@"No", self.connectionIdle?@"Yes":@"No");
+	NSLog(@"*** wifi: %@ ***", self.wifiAvailable?@"Yes":@"No");
 	
 	// if both conditions are met, start the countdown to begin work
-	if (self.wifiAvailable && self.connectionIdle) {
+//	if (self.wifiAvailable && self.connectionIdle) {
+	if (self.wifiAvailable) {
 
 		// start the countdown from 10 seconds again
 		if (self.startTimer && [self.startTimer isValid]) {
@@ -331,8 +333,9 @@ static SCHDictionaryDownloadManager *sharedManager = nil;
 		return;
 	}
 	
-	if (!self.wifiAvailable || !self.connectionIdle) {
-        NSLog(@"Process dictionary called, but no wifi/connection busy.");
+//	if (!self.wifiAvailable || !self.connectionIdle) {
+    if (!self.wifiAvailable) {
+        NSLog(@"Process dictionary called, but no wifi available.");
 		return;
 	}
 	

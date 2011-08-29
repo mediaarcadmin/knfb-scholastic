@@ -218,6 +218,11 @@ typedef enum {
     [self presentNextView];
 }
 
+- (IBAction)questionButtonTouched:(UIButton *)sender
+{
+    self.controllerState = SCHStoryInteractionControllerStateInteractionReadingAnswerWithPause;        
+}
+
 - (IBAction)questionButtonTapped:(UIButton *)sender
 {
     NSLog(@"Question button tapped: %d", [self.answerButtons indexOfObject:sender]);
@@ -238,7 +243,7 @@ typedef enum {
     }
 
     [self playDefaultButtonAudio];
-    self.controllerState = SCHStoryInteractionControllerStateInteractionReadingAnswerWithPause;
+
     [sender setSelected:YES];
     
     [self performSelector:@selector(unhighlightAndMoveOn:) withObject:sender afterDelay:1.0];

@@ -26,6 +26,7 @@
 @property (nonatomic, retain) IBOutlet UILabel *outcomeTextLabel;
 
 - (IBAction)startButtonTapped:(id)sender;
+- (IBAction)questionButtonTouched:(UIButton *)sender;
 - (IBAction)questionButtonTapped:(id)sender;
 - (IBAction)doneButtonTapped:(id)sender;
 
