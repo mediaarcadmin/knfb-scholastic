@@ -8,14 +8,15 @@
 
 #import "SCHPictureStarterStickers.h"
 
-#define DEBUG_THUMBNAIL_CACHE 1
+#define DEBUG_THUMBNAIL_CACHE 0
 
 @interface SCHPictureStarterStickers ()
 
+@property (nonatomic, assign) NSInteger numberOfChoosers;
 @property (nonatomic, retain) NSArray *imagePaths;
 @property (nonatomic, retain) NSArray *thumbPaths;
 
-+ (void)generateMissingThumbs:(NSArray *)thumbPaths fromImages:(NSArray *)imagePaths;
++ (void)generateMissingThumbs:(NSArray *)thumbPaths fromImages:(NSArray *)imagePaths forChooserCount:(NSInteger)chooserCount;
 + (void)generateThumb:(NSString *)thumbPath fromImage:(NSString *)imagePath;
 
 @end
@@ -48,9 +49,9 @@ static NSMutableDictionary *pendingThumbs = nil;
 static NSString *cacheDirectory()
 {
     NSURL *cacheURL = [[[NSFileManager defaultManager] URLsForDirectory:NSCachesDirectory inDomains:NSUserDomainMask] lastObject];
-    NSString *cachePath = [cacheURL path];
+    NSString *cachePath = [[cacheURL path] stringByAppendingPathComponent:@"StickerThumbs"];
     
-#ifdef DEBUG_THUMBNAIL_CACHE
+#if DEBUG_THUMBNAIL_CACHE
     NSError *error = nil;
     if (![thumbFileManager removeItemAtPath:cachePath error:&error]) {
         NSLog(@"failed to clear thumbnail cache directory %@: %@", cachePath, error);
@@ -60,15 +61,17 @@ static NSString *cacheDirectory()
     return cachePath;
 }
 
-- (id)init
+- (id)initForChooserCount:(NSInteger)chooserCount
 {
     self = [super init];
     if (self) {
+        self.numberOfChoosers = chooserCount;
+        
         NSMutableArray *imagePathsArray = [NSMutableArray array];
         NSMutableArray *thumbPathsArray = [NSMutableArray array];
         
         NSString *root = [[NSBundle mainBundle] pathForResource:@"Stickers" ofType:nil];
-        NSString *thumbsRoot = [cacheDirectory() stringByAppendingPathComponent:@"StickerThumbs"];
+        NSString *thumbsRoot = cacheDirectory();
         NSString *thumbsSuffix = ([[UIScreen mainScreen] scale] == 2 ? @"@2x" : @"");
         
         NSFileManager *fileManager = [NSFileManager defaultManager];
@@ -111,7 +114,9 @@ static NSString *cacheDirectory()
         
         NSLog(@"%d stickers found", [self.imagePaths count]);
         
-        [SCHPictureStarterStickers generateMissingThumbs:self.thumbPaths fromImages:self.imagePaths];
+        [SCHPictureStarterStickers generateMissingThumbs:self.thumbPaths
+                                              fromImages:self.imagePaths
+                                         forChooserCount:self.numberOfChoosers];
     }
     
     return self;
@@ -120,7 +125,7 @@ static NSString *cacheDirectory()
 - (NSInteger)numberOfStickersForChooserIndex:(NSInteger)chooser
 {
     NSInteger count = [self.imagePaths count];
-    NSInteger countPerChooser = count / self.numberOfChoosers;
+    NSInteger countPerChooser = (count+self.numberOfChoosers-1) / self.numberOfChoosers;
     if (chooser < self.numberOfChoosers-1) {
         return countPerChooser;
     } else {
@@ -130,7 +135,7 @@ static NSString *cacheDirectory()
 
 - (NSInteger)arrayIndexForStickerIndex:(NSInteger)sticker inChooser:(NSInteger)chooser
 {
-    NSInteger countPerChooser = [self.imagePaths count] / self.numberOfChoosers;
+    NSInteger countPerChooser = ([self.imagePaths count]+self.numberOfChoosers-1) / self.numberOfChoosers;
     return countPerChooser*chooser + sticker;
 }
 
@@ -163,7 +168,7 @@ static NSString *cacheDirectory()
 
 #pragma mark - Thumbnail generation
 
-+ (void)generateMissingThumbs:(NSArray *)thumbPaths fromImages:(NSArray *)imagePaths
++ (void)generateMissingThumbs:(NSArray *)thumbPaths fromImages:(NSArray *)imagePaths forChooserCount:(NSInteger)chooserCount
 {
     if (thumbQueue != NULL) {
         return;
@@ -171,17 +176,27 @@ static NSString *cacheDirectory()
     
     thumbQueue = dispatch_queue_create("stickerThumbs", 0);
     pendingThumbs = [[NSMutableDictionary alloc] init];
+
+    // fill sticker thumbnails across choosers, so that if the drawing view opens
+    // early the top sticker thumbs in all chooser are available
     
-    for (NSInteger index = 0, count = [imagePaths count]; index < count; ++index) {
-        NSString *thumbPath = [thumbPaths objectAtIndex:index];
-        if (![thumbFileManager fileExistsAtPath:thumbPath]) {
-            NSString *imagePath = [imagePaths objectAtIndex:index];
-            dispatch_async(thumbQueue, ^{
-                [self generateThumb:thumbPath fromImage:imagePath];
-            });
+    NSInteger totalCount = [imagePaths count];
+    NSInteger stickersPerChooser = (totalCount+chooserCount-1) / chooserCount;
+    for (NSInteger sticker = 0; sticker < stickersPerChooser; ++sticker) {
+        for (NSInteger chooser = 0; chooser < chooserCount; ++chooser) {
+            NSInteger index = chooser*stickersPerChooser + sticker;
+            if (index < totalCount) {
+                NSString *thumbPath = [thumbPaths objectAtIndex:index];
+                if (![thumbFileManager fileExistsAtPath:thumbPath]) {
+                    NSString *imagePath = [imagePaths objectAtIndex:index];
+                    dispatch_async(thumbQueue, ^{
+                        [self generateThumb:thumbPath fromImage:imagePath];
+                    });
+                }
+            }
         }
     }
-    
+            
     dispatch_async(thumbQueue, ^{
         if (thumbContext) {
             dispatch_async(dispatch_get_main_queue(), ^{

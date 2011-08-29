@@ -15,6 +15,7 @@ enum {
 @implementation SCHPictureStarterStickerChooserThumbnailView
 
 @synthesize selected;
+@synthesize stickerTag;
 
 - (void)setSelected:(BOOL)newSelected
 {

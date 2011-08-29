@@ -72,12 +72,19 @@ enum {
         [cell addSubview:thumbnail];
         [thumbnail release];
     }
-    
+
+    NSInteger uniqueTag = indexPath.row*10+self.chooserIndex;
+
     SCHPictureStarterStickerChooserThumbnailView *thumbnail = (SCHPictureStarterStickerChooserThumbnailView *)[cell viewWithTag:kThumbnailTag];
+    thumbnail.stickerTag = uniqueTag;
+    thumbnail.image = nil;
+    
     [self.stickerDataSource thumbnailAtIndex:indexPath.row
                              forChooserIndex:self.chooserIndex
                                       result:^(UIImage *thumb) {
-                                          thumbnail.image = thumb;
+                                          if (thumbnail.stickerTag == uniqueTag) { // guard aginst view reuse
+                                              thumbnail.image = thumb;
+                                          }
                                       }];
     thumbnail.selected = (self.selectedRowIndex == indexPath.row);
     return cell;
