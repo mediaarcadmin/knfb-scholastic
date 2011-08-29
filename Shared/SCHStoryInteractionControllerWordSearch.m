@@ -227,7 +227,7 @@
         }            
         
         
-        [self cancelQueuedAudio];
+        [self cancelQueuedAudioExecutingSynchronizedBlocksImmediately];
         [self enqueueAudioWithPath:[wordSearch storyInteractionCorrectAnswerSoundFilename]
                         fromBundle:YES];
         [self enqueueAudioWithPath:[wordSearch audioPathForYouFound] fromBundle:NO];
