@@ -185,10 +185,9 @@ enum {
     self.balloonsLayer = [SCHAnimatedLayer layer];
     self.balloonsLayer.position = CGPointMake(122, 96);
     self.balloonsLayer.bounds = CGRectMake(0, 0, 200, 230);
-    NSString *filename = [NSString stringWithFormat:@"storyinteraction-wordbird-BalloonPop_%02d.png", 11-kNumberOfBalloons];
-    self.balloonsLayer.contents = (id)[[UIImage imageNamed:filename] CGImage];
+    self.balloonsLayer.contents = (id)[[UIImage imageNamed:@"storyinteraction-wordbird-BalloonPop.png"] CGImage];
     self.balloonsLayer.frameSize = CGSizeMake(200, 230);
-    self.balloonsLayer.numberOfFrames = 46;
+    self.balloonsLayer.numberOfFrames = 28;
     self.balloonsLayer.frameIndex = 0;
     [self.animationContainerLayer addSublayer:self.balloonsLayer];
     [self.balloonsLayer setNeedsDisplay];
@@ -225,13 +224,13 @@ enum {
         loseLayer.frameIndex = 0;
         switch (i) {
             case 0:
-                loseLayer.numberOfFrames = 9;
+                loseLayer.numberOfFrames = 10;
                 break;
             case 1:
-                loseLayer.numberOfFrames = 40;
+                loseLayer.numberOfFrames = 9;
                 break;
             case 2:
-                loseLayer.numberOfFrames = 39;
+                loseLayer.numberOfFrames = 7;
                 break;
         }
         loseLayer.hidden = YES;
@@ -334,8 +333,11 @@ enum {
     [CATransaction setDisableActions:YES];
     
     if (self.correctLetterCount < [[self currentWord] length]) {
+        
+        CGFloat heightInset = self.animationContainer.frame.origin.y;
+        
         CGRect bounds = CGRectApplyAffineTransform(self.animationContainerLayer.bounds, self.animationContainerLayer.affineTransform);
-        CGFloat ystep = (CGRectGetHeight(self.animationContainer.bounds)-CGRectGetHeight(bounds))/([[self currentWord] length]-1);
+        CGFloat ystep = (CGRectGetHeight(self.animationContainer.bounds) + heightInset - CGRectGetHeight(bounds))/([[self currentWord] length]-1);
         CGPoint targetPosition = CGPointMake(self.animationContainerLayer.position.x, 
                                              CGRectGetMaxY(self.animationContainer.bounds)-CGRectGetMidY(bounds)-ystep*self.correctLetterCount);
         
@@ -371,7 +373,7 @@ enum {
                                                  autoreverse:NO
                                                  repeatCount:3
                                                     delegate:nil];
-        
+
         CGPoint targetPosition = CGPointMake(self.animationContainerLayer.position.x, -300);
         CABasicAnimation *move = [CABasicAnimation animationWithKeyPath:@"position"];
         move.fromValue = [NSValue valueWithCGPoint:self.animationContainerLayer.position];
@@ -401,6 +403,7 @@ enum {
     if (self.remainingBalloonCount == 1) {
         // pop last balloon - there are three stages to the animation due to the number of frames required
         // not fitting in the maximum texture size
+        // Actually they have been reduced in size so could be combined but the 3 stages lets a frameOrder to be specified for 2 out of 3 stages
         SCHAnimationDelegate *step2delegate = [SCHAnimationDelegate animationDelegateWithStopBlock:^(CAAnimation *animation, BOOL finished) {
             [self showPlayAgainButton];
         }];
@@ -410,8 +413,50 @@ enum {
             releaseLayer([self.loseAnimationLayers objectAtIndex:1]);
             SCHAnimatedLayer *finalLayer = [self.loseAnimationLayers objectAtIndex:2];
             [finalLayer setHidden:NO];
+            
+            NSArray *frameOrder = [NSArray arrayWithObjects:[NSNumber numberWithInt:0],
+                                   [NSNumber numberWithInt:0],
+                                   [NSNumber numberWithInt:1],
+                                   [NSNumber numberWithInt:1],
+                                   [NSNumber numberWithInt:1],
+                                   [NSNumber numberWithInt:1],
+                                   [NSNumber numberWithInt:0],
+                                   [NSNumber numberWithInt:2],
+                                   [NSNumber numberWithInt:2],
+                                   [NSNumber numberWithInt:3],
+                                   [NSNumber numberWithInt:3],
+                                   [NSNumber numberWithInt:3],
+                                   [NSNumber numberWithInt:3],
+                                   [NSNumber numberWithInt:3],
+                                   [NSNumber numberWithInt:3],
+                                   [NSNumber numberWithInt:3],
+                                   [NSNumber numberWithInt:3],
+                                   [NSNumber numberWithInt:3],
+                                   [NSNumber numberWithInt:3],
+                                   [NSNumber numberWithInt:3],
+                                   [NSNumber numberWithInt:3],
+                                   [NSNumber numberWithInt:3],
+                                   [NSNumber numberWithInt:3],
+                                   [NSNumber numberWithInt:3],
+                                   [NSNumber numberWithInt:3],
+                                   [NSNumber numberWithInt:3],
+                                   [NSNumber numberWithInt:3],
+                                   [NSNumber numberWithInt:4],
+                                   [NSNumber numberWithInt:4],
+                                   [NSNumber numberWithInt:4],
+                                   [NSNumber numberWithInt:5],
+                                   [NSNumber numberWithInt:5],
+                                   [NSNumber numberWithInt:5],
+                                   [NSNumber numberWithInt:5],
+                                   [NSNumber numberWithInt:6],
+                                   [NSNumber numberWithInt:6],
+                                   [NSNumber numberWithInt:6],
+                                   [NSNumber numberWithInt:6],
+                                   [NSNumber numberWithInt:6],
+                                   nil];
+            
             [finalLayer animateAllFramesWithDuration:1.56
-                                          frameOrder:nil
+                                          frameOrder:frameOrder
                                          autoreverse:NO
                                          repeatCount:1 
                                             delegate:step2delegate];
@@ -485,10 +530,50 @@ enum {
                                                                         delegate:step0delegate];
         [self enqueueAudioWithPath:@"sfx_penguinfall.mp3" fromBundle:YES];
     } else {
-        NSString *filename = [NSString stringWithFormat:@"storyinteraction-wordbird-BalloonPop_%02d.png", 11-self.remainingBalloonCount];
-        self.balloonsLayer.contents = (id)[[UIImage imageNamed:filename] CGImage];
-        self.balloonsLayer.frameIndex = 0;
-        [self.balloonsLayer setNeedsDisplay];
+        
+        switch (self.remainingBalloonCount) {
+            case 10:
+                self.balloonsLayer.frameIndex = 3;                
+                break;
+            case 9:
+                self.balloonsLayer.frameIndex = 6;
+                break;
+            case 8:
+                self.balloonsLayer.frameIndex = 9;
+                break;
+            case 7:
+                self.balloonsLayer.frameIndex = 12;
+                break;
+            case 6:
+                self.balloonsLayer.frameIndex = 15;
+                break;
+            case 5:
+                self.balloonsLayer.frameIndex = 18;
+                break;
+            case 4:
+                self.balloonsLayer.frameIndex = 21;
+                break;
+            case 3:
+                self.balloonsLayer.frameIndex = 24;
+                break;
+            case 2:
+                self.balloonsLayer.frameIndex = 27;
+                break;
+        }
+        
+        // This is the repeating pattern of the 4 frames of each balloon pop that best match the sound effect
+        NSMutableArray *frameOrder = [NSArray arrayWithObjects:[NSNumber numberWithInt:self.balloonsLayer.frameIndex - 3],
+                      [NSNumber numberWithInt:self.balloonsLayer.frameIndex - 2],
+                      [NSNumber numberWithInt:self.balloonsLayer.frameIndex - 2],
+                      [NSNumber numberWithInt:self.balloonsLayer.frameIndex - 2],
+                      [NSNumber numberWithInt:self.balloonsLayer.frameIndex - 3],
+                      [NSNumber numberWithInt:self.balloonsLayer.frameIndex - 3],
+                      [NSNumber numberWithInt:self.balloonsLayer.frameIndex - 2],
+                      [NSNumber numberWithInt:self.balloonsLayer.frameIndex - 2],
+                      [NSNumber numberWithInt:self.balloonsLayer.frameIndex - 2],
+                      [NSNumber numberWithInt:self.balloonsLayer.frameIndex - 1],
+                      [NSNumber numberWithInt:self.balloonsLayer.frameIndex],
+                      nil];
         
         SCHAnimationDelegate *balloonAnimationDelegate = [SCHAnimationDelegate animationDelegateWithStopBlock:^(CAAnimation *animation, BOOL finished) {
             [CATransaction begin];
@@ -502,10 +587,9 @@ enum {
                                                           delegate:[self continueInteraction]];
             [CATransaction commit];
         }];
-    
-        self.balloonsLayer.frameIndex = self.balloonsLayer.numberOfFrames-1;
+            
         [self.balloonsLayer animateAllFramesWithDuration:1.5
-                                              frameOrder:nil
+                                              frameOrder:frameOrder
                                              autoreverse:NO
                                              repeatCount:1
                                                 delegate:balloonAnimationDelegate];
@@ -513,6 +597,7 @@ enum {
     }
     
     [CATransaction commit];
+    
     self.remainingBalloonCount--;
 }
 

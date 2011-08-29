@@ -189,7 +189,7 @@ static Class controllerClassForStoryInteraction(SCHStoryInteraction *storyIntera
         }   
         case SCHStoryInteractionControllerStateInteractionInProgress:
         {
-            self.readAloudButton.enabled = [self shouldPlayQuestionAudioForViewAtIndex:self.currentScreenIndex];
+            self.readAloudButton.enabled = YES;
             [self storyInteractionEnableUserInteraction];
             break;
         }   
@@ -238,16 +238,6 @@ static Class controllerClassForStoryInteraction(SCHStoryInteraction *storyIntera
             [title release];   
         }
         
-        if (questionAudioPath) {
-            UIImage *readAloudImage = [UIImage imageNamed:@"storyinteraction-read-aloud"];
-            self.readAloudButton = [UIButton buttonWithType:UIButtonTypeCustom];
-            self.readAloudButton.bounds = (CGRect){ CGPointZero, readAloudImage.size };
-            [self.readAloudButton setImage:readAloudImage forState:UIControlStateNormal];
-            [self.readAloudButton setImage:readAloudImage forState:UIControlStateDisabled];
-            [self.readAloudButton addTarget:self action:@selector(playAudioButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
-            [container addSubview:self.readAloudButton];
-        }
-        
         self.containerView = container;
         self.backgroundView = background;
         [container release];
@@ -256,6 +246,21 @@ static Class controllerClassForStoryInteraction(SCHStoryInteraction *storyIntera
         [hostView addSubview:self.containerView];
     }
 
+    if (questionAudioPath) {
+        if (!self.readAloudButton) {
+            UIImage *readAloudImage = [UIImage imageNamed:@"storyinteraction-read-aloud"];
+            self.readAloudButton = [UIButton buttonWithType:UIButtonTypeCustom];
+            self.readAloudButton.bounds = (CGRect){ CGPointZero, readAloudImage.size };
+            [self.readAloudButton setImage:readAloudImage forState:UIControlStateNormal];
+            [self.readAloudButton setImage:readAloudImage forState:UIControlStateDisabled];
+            [self.readAloudButton addTarget:self action:@selector(playAudioButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
+            [self.containerView addSubview:self.readAloudButton];
+        }
+    } else {
+        [self.readAloudButton release];
+        self.readAloudButton = nil;
+    }
+    
     if ([self shouldShowCloseButtonForViewAtIndex:self.currentScreenIndex]) {
         if (!self.closeButton) {
             NSString *age = [self.storyInteraction isOlderStoryInteraction] ? @"older" : @"younger";

@@ -27,10 +27,9 @@
 @property (retain, nonatomic) SCHReadingStatsSyncComponent *readingStatsSyncComponent;
 @property (retain, nonatomic) SCHSettingsSyncComponent *settingsSyncComponent;
 
-- (void)checkPopulations;
+- (void)populateFromImport;
 
 // for populating Sample Store
 - (void)populateSampleStore;
-- (void)populateLocalDebugSampleStore;
 
 @end

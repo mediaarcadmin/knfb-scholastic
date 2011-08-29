@@ -19,8 +19,11 @@
 @property (nonatomic, retain) NSArray *wordViews;
 @property (nonatomic, assign) NSInteger tapCount;
 
+- (void)playQuestionSequence;
 - (void)layoutWordViewsForPad;
 - (void)layoutWordViewsForPhone;
+- (void)letterGridTapped:(UITapGestureRecognizer *)tap;
+- (void)wordTapped:(UITapGestureRecognizer *)tap;
 
 @end
 
@@ -41,10 +44,16 @@
     [super dealloc];
 }
 
+- (BOOL)shouldPlayQuestionAudioForViewAtIndex:(NSInteger)screenIndex
+{
+    // special question audio handling in this SI
+    return NO;
+}
+
 - (IBAction)playAudioButtonTapped:(id)sender
 {
     [self cancelQueuedAudioExecutingSynchronizedBlocksImmediately];
-    [self enqueueAudioWithPath:[self audioPathForQuestion] fromBundle:NO];
+    [self playQuestionSequence];
 }
 
 - (void)setupViewAtIndex:(NSInteger)screenIndex
@@ -67,18 +76,26 @@
                        nil];
     
     NSMutableArray *views = [NSMutableArray arrayWithCapacity:[wordSearch.words count]];
-    NSInteger colorIndex = 0;
+    NSInteger index = 0;
     for (NSString *word in wordSearch.words) {
         SCHStoryInteractionStrikeOutLabelView *label = [[SCHStoryInteractionStrikeOutLabelView alloc] initWithFrame:CGRectZero];
-        label.text = word;
+        label.text = [word uppercaseString];
         label.textColor = [UIColor SCHDarkBlue1Color];
         label.textAlignment = UITextAlignmentCenter;
         label.backgroundColor = [UIColor clearColor];
         label.adjustsFontSizeToFitWidth = YES;
-        label.strikeOutColor = [colors objectAtIndex:(colorIndex++ % [colors count])]; 
+        label.tag = index;
+        label.strikeOutColor = [colors objectAtIndex:(index % [colors count])]; 
         [views addObject:label];
         [self.wordsContainerView addSubview:label];
+        
+        UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(wordTapped:)];
+        [label addGestureRecognizer:tap];
+        [label setUserInteractionEnabled:YES];
+        [tap release];
+        
         [label release];
+        ++index;
     }
     self.wordViews = [NSArray arrayWithArray:views];
     
@@ -102,9 +119,11 @@
     }
     
     self.tapCount = 0;
-    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTap:)];
+    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(letterGridTapped:)];
     [self.lettersContainerView addGestureRecognizer:tap];
     [tap release];
+    
+    [self playQuestionSequence];
 }
 
 - (void)layoutWordViewsForPad
@@ -148,6 +167,34 @@
     }
 }
 
+- (void)playQuestionSequence
+{
+    self.controllerState = SCHStoryInteractionControllerStateAskingOpeningQuestion;
+    
+    SCHStoryInteractionWordSearch *wordSearch = (SCHStoryInteractionWordSearch *)self.storyInteraction;
+    [self enqueueAudioWithPath:[wordSearch audioPathForQuestion] fromBundle:NO];
+    for (SCHStoryInteractionStrikeOutLabelView *wordView in self.wordViews) {
+        wordView.layer.cornerRadius = 8;
+        if (!wordView.strikedOut) {
+            [self enqueueAudioWithPath:[wordSearch audioPathForWordAtIndex:wordView.tag]
+                            fromBundle:NO
+                            startDelay:0.5
+                synchronizedStartBlock:^{
+                    [wordView setBackgroundColor:[UIColor SCHBlue2Color]];
+                    [wordView setTextColor:[UIColor whiteColor]];
+                }
+                  synchronizedEndBlock:^{
+                      [wordView setBackgroundColor:[UIColor clearColor]];
+                      [wordView setTextColor:[UIColor SCHDarkBlue1Color]];
+                      if (wordView == [self.wordViews lastObject]) {
+                          self.controllerState = SCHStoryInteractionControllerStateInteractionInProgress;
+                      }
+                  }];
+        }
+    }
+}
+
+
 #pragma mark - SCHStoryInteractionWordSearchContainerViewDelegate
 
 - (void)letterContainer:(SCHStoryInteractionWordSearchContainerView *)containerView
@@ -170,7 +217,6 @@
     if ([self.remainingWords containsObject:selectedLetters]) {
         [self.remainingWords removeObject:selectedLetters];
         SCHStoryInteractionStrikeOutLabelView *label = [self.wordViews objectAtIndex:index];
-        [label setStrikedOut:YES];
         [containerView addPermanentHighlightFromCurrentSelectionWithColor:label.strikeOutColor];
         [containerView clearSelection];
         
@@ -188,7 +234,9 @@
         [self enqueueAudioWithPath:[wordSearch audioPathForWordAtIndex:index]
                         fromBundle:NO
                         startDelay:0
-            synchronizedStartBlock:nil
+            synchronizedStartBlock:^{
+                [label setStrikedOut:YES];
+            }
               synchronizedEndBlock:^{ 
                   if ([self.remainingWords count] > 0) {
                       self.controllerState = SCHStoryInteractionControllerStateInteractionInProgress;
@@ -241,14 +289,20 @@
     [self.lettersContainerView setUserInteractionEnabled:YES];
 }
 
-#pragma mark - Warn user about tapping
+#pragma mark - Gesture handling
 
-- (void)handleTap:(UIGestureRecognizer *)tap
+- (void)letterGridTapped:(UITapGestureRecognizer *)tap
 {
     if (++self.tapCount == 3) {
         [self enqueueAudioWithPath:[(SCHStoryInteractionWordSearch *)self.storyInteraction dragYourFingerAudioPath] fromBundle:NO];
         self.tapCount = 0;
     }
+}
+
+- (void)wordTapped:(UITapGestureRecognizer *)tap
+{
+    NSString *audioPath = [(SCHStoryInteractionWordSearch *)self.storyInteraction audioPathForWordAtIndex:tap.view.tag];
+    [self enqueueAudioWithPath:audioPath fromBundle:NO];
 }
 
 @end

@@ -114,7 +114,10 @@ static CGFloat const kSCHStoryInteractionControllerCloseBorderWidth = 1.5;
         self.borderView.layer.borderColor = [[UIColor SCHBlue2Color] CGColor];    
     }                
     
-    [self.playButton setPlay:YES animated:NO]; // We always want help to start playing
+    if (self.firstPlay == YES) {
+        self.playButton.hidden = YES;
+    }
+    self.playButton.icon = SCHPlayButtonIconNone;
     
     self.playButton.actionBlock = ^(SCHPlayButton *button) {
         if (button.play == YES) {
@@ -227,7 +230,7 @@ static CGFloat const kSCHStoryInteractionControllerCloseBorderWidth = 1.5;
                     if (self.firstPlay == YES) {
                         [self dismiss];
                     } else {
-                    self.playButton.icon = SCHPlayButtonIconPlay;  
+                        self.playButton.icon = SCHPlayButtonIconPlay;  
                     }
                 }
                 break;

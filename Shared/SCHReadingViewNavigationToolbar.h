@@ -8,6 +8,8 @@
 
 #import <UIKit/UIKit.h>
 
+static const CGFloat kSCHReadingViewNavigationToolbarShadowHeight = 4.0f;
+
 typedef enum
 {
 	kSCHReadingViewNavigationToolbarStyleYoungerPhone = 0,
@@ -34,6 +36,7 @@ typedef enum
 }
 
 @property (nonatomic, assign) id <SCHReadingViewNavigationToolbarDelegate> delegate;
+@property (nonatomic, assign) BOOL audioItemHidden;
 
 - (id)initWithStyle:(SCHReadingViewNavigationToolbarStyle)style orientation:(UIInterfaceOrientation)orientation;
 

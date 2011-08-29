@@ -133,11 +133,6 @@
     return([[self appState].DataStoreType isEqualToNumber:[NSNumber numberWithDataStoreType:kSCHDataStoreTypesSample]]);
 }
 
-- (BOOL)isLocalDebugStore
-{
-    return([[self appState].DataStoreType isEqualToNumber:[NSNumber numberWithDataStoreType:kSCHDataStoreTypesLocalDebug]]);
-}
-
 #pragma mark - NSManagedObjectContext Changed Notification
 
 - (void)coreDataHelperManagedObjectContextDidChangeNotification:(NSNotification *)notification

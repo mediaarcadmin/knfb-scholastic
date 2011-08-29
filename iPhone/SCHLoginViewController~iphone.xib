@@ -65,7 +65,7 @@
 								<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 								<object class="NSCustomResource" key="IBUIImage">
 									<string key="NSClassName">NSImage</string>
-									<string key="NSResourceName">plain-background-portrait.png</string>
+									<string key="NSResourceName">plain-background-portrait.jpg</string>
 								</object>
 							</object>
 							<object class="IBUIScrollView" id="627327703">
@@ -317,6 +317,7 @@
 								<string key="NSFrameSize">{320, 7}</string>
 								<reference key="NSSuperview" ref="489633664"/>
 								<reference key="NSWindow"/>
+								<reference key="NSNextKeyView"/>
 								<reference key="IBUIBackgroundColor" ref="764302899"/>
 								<bool key="IBUIOpaque">NO</bool>
 								<bool key="IBUIUserInteractionEnabled">NO</bool>
@@ -758,7 +759,6 @@
 					<string>147.IBEditorWindowLastContentRect</string>
 					<string>147.IBPluginDependency</string>
 					<string>148.IBPluginDependency</string>
-					<string>150.CustomClassName</string>
 					<string>150.IBPluginDependency</string>
 					<string>151.IBPluginDependency</string>
 					<string>152.CustomClassName</string>
@@ -791,7 +791,6 @@
 					<string>{{354, 412}, {320, 480}}</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
-					<string>DebugScrollView</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>SCHUnderlinedButton</string>
@@ -1017,7 +1016,7 @@
 				<string>button-close.png</string>
 				<string>button-field.png</string>
 				<string>logo.png</string>
-				<string>plain-background-portrait.png</string>
+				<string>plain-background-portrait.jpg</string>
 			</object>
 			<object class="NSMutableArray" key="dict.values">
 				<bool key="EncodedWithXMLCoder">YES</bool>

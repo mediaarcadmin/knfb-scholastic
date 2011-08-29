@@ -26,12 +26,10 @@ static NSString * const kSCHCoreDataHelperStandardStoreName = @"Scholastic.sqlit
 static NSString * const kSCHCoreDataHelperDictionaryStoreName = @"Scholastic_Dictionary.sqlite";
 
 static NSString * const kSCHCoreDataHelperSampleStoreName = @"Scholastic_Sample.sqlite";
-static NSString * const kSCHCoreDataHelperLocalDebugSampleStoreName = @"Scholastic_LocalDebug_Sample.sqlite";
 
 @interface SCHCoreDataHelper ()
 
 @property (nonatomic, retain) NSManagedObjectContext *managedObjectContext;
-@property (nonatomic, retain) NSString *bundleSampleStoreName;
 
 - (BOOL)storeExists:(NSString *)storeName;
 - (void)addPersistentStore:(NSPersistentStoreCoordinator *)aPersistentStoreCoordinator 
@@ -48,7 +46,6 @@ static NSString * const kSCHCoreDataHelperLocalDebugSampleStoreName = @"Scholast
 @synthesize managedObjectContext;
 @synthesize managedObjectModel;
 @synthesize persistentStoreCoordinator;
-@synthesize bundleSampleStoreName;
 
 #pragma mark - Application lifecycle
 
@@ -79,7 +76,7 @@ static NSString * const kSCHCoreDataHelperLocalDebugSampleStoreName = @"Scholast
     if ([[NSUserDefaults standardUserDefaults] boolForKey:kSCHUserDefaultsHasEverLoggedIn] == NO &&
         [self storeExists:kSCHCoreDataHelperSampleStoreName] == NO) {
         dispatch_async(dispatch_get_main_queue(), ^{
-            NSString *sourceSampleStorePath = [[[NSBundle mainBundle] bundlePath] stringByAppendingPathComponent:self.bundleSampleStoreName];
+            NSString *sourceSampleStorePath = [[[NSBundle mainBundle] bundlePath] stringByAppendingPathComponent:kSCHCoreDataHelperSampleStoreName];
             NSURL *applicationSupportDocumentsDirectory = [[[NSFileManager defaultManager] URLsForDirectory:NSApplicationSupportDirectory inDomains:NSUserDomainMask] lastObject];
             NSURL *destinationSampleStoreURL = [applicationSupportDocumentsDirectory URLByAppendingPathComponent:kSCHCoreDataHelperSampleStoreName];    
             NSString *destinationSampleStorePath = [destinationSampleStoreURL path];
@@ -183,44 +180,6 @@ static NSString * const kSCHCoreDataHelperLocalDebugSampleStoreName = @"Scholast
     SCHAppStateManager *appStateManager = [SCHAppStateManager sharedAppStateManager];
     appStateManager.managedObjectContext = self.managedObjectContext;
     [appStateManager createAppStateIfNeeded];
-
-    BOOL localDebugMode = NO;
-#if LOCALDEBUG    
-    localDebugMode = YES;
-    self.bundleSampleStoreName = kSCHCoreDataHelperLocalDebugSampleStoreName;    
-#else
-    self.bundleSampleStoreName = kSCHCoreDataHelperSampleStoreName;
-#endif 
-
-    // check for change between local debug mode and normal network mode	
-    if ((localDebugMode == YES && [[SCHAppStateManager sharedAppStateManager] isLocalDebugStore] == NO) ||
-        (localDebugMode == NO && [[SCHAppStateManager sharedAppStateManager] isLocalDebugStore] == YES)) {
-        // we need to let the core data initialisation complete first though
-        
-        dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, 0.1 * NSEC_PER_SEC);
-        dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
-            NSLog(@"Changed between local debug mode and network mode - emptying database & removing login details.");        
-            [[SCHSyncManager sharedSyncManager] clear];
-        });
-        [[SCHAuthenticationManager sharedAuthenticationManager] clear];
-    } 
-
-    SCHAppState *appState = [appStateManager appState];
-    if (appState != nil) {
-        if (localDebugMode == YES) {
-            appState.ShouldSync = [NSNumber numberWithBool:NO];
-            appState.ShouldAuthenticate = [NSNumber numberWithBool:NO];
-            appState.DataStoreType = [NSNumber numberWithDataStoreType:kSCHDataStoreTypesLocalDebug];    
-            appState.LastAnnotationSync = nil;            
-        } else if ([appState.DataStoreType isEqualToNumber:[NSNumber numberWithDataStoreType:kSCHDataStoreTypesSample]] == NO) {
-            appState.ShouldSync = [NSNumber numberWithBool:YES];
-            appState.ShouldAuthenticate = [NSNumber numberWithBool:YES];
-            appState.DataStoreType = [NSNumber numberWithDataStoreType:kSCHDataStoreTypesStandard];    
-            appState.LastAnnotationSync = nil;
-        }
-    }
-        
-    NSLog(@"Currently in %@.", localDebugMode ? @"Local Debug Mode" : @"Network Mode");
     
     return(persistentStoreCoordinator);
 }
