@@ -49,6 +49,7 @@ static CGFloat const kSCHStoryInteractionControllerCloseBorderWidth = 1.5;
 @synthesize youngerMode;
 @synthesize firstPlay;
 @synthesize statusBarHiddenOnEntry;
+@synthesize delegate;
 
 #pragma mark - Object lifecycle
 
@@ -84,6 +85,7 @@ static CGFloat const kSCHStoryInteractionControllerCloseBorderWidth = 1.5;
 - (void)dealloc
 {
     [self releaseViewObjects];
+    delegate = nil;
     
     [super dealloc];
 }
@@ -201,7 +203,11 @@ static CGFloat const kSCHStoryInteractionControllerCloseBorderWidth = 1.5;
 {
     self.playButton.actionBlock = nil;
     [self.moviePlayer stop];
-    [self dismissModalViewControllerAnimated:YES];    
+    [self dismissModalViewControllerAnimated:YES];   
+    
+    if (self.delegate && [self.delegate respondsToSelector:@selector(helpViewWillClose:)]) {
+        [self.delegate helpViewWillClose:self];
+    }
 }
 
 #pragma mark - Movie methods
