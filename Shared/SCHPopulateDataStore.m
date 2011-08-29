@@ -483,6 +483,7 @@
                 NSData *pngData = UIImagePNGRepresentation([UIImage imageWithData:imageData]);
                 [pngData writeToFile:[newContentMetadataItem.AppBook coverImagePath] atomically:YES];
             }
+            // we need to unlock the file from XPS before we can move it
             [xpsProvider release], xpsProvider = nil;
             
             // move the XPS file
