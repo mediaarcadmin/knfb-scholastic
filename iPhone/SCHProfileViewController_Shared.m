@@ -21,7 +21,6 @@
 
 @interface SCHProfileViewController_Shared()  
 
-@property (nonatomic, retain) SCHLoginPasswordViewController *parentPasswordController; // Lazily instantiated
 @property (nonatomic, retain) SCHBookUpdates *bookUpdates;
 
 - (void)checkForBookUpdates;
@@ -41,7 +40,6 @@
 @synthesize managedObjectContext=managedObjectContext_;
 @synthesize modalNavigationController;
 @synthesize settingsViewController;
-@synthesize parentPasswordController;
 @synthesize bookUpdates;
 @synthesize updatesBubble;
 
@@ -77,7 +75,6 @@
     
     [fetchedResultsController_ release], fetchedResultsController_ = nil;
     [managedObjectContext_ release], managedObjectContext_ = nil;
-    [parentPasswordController release], parentPasswordController = nil;
     [bookUpdates release], bookUpdates = nil;
     
     [super dealloc];
@@ -394,36 +391,9 @@
     }
 }
 
-- (SCHLoginPasswordViewController *)parentPasswordController
-{
-    if (!parentPasswordController) {
-        parentPasswordController = [[[SCHLoginPasswordViewController alloc] initWithNibName:@"SCHParentToolsViewController" bundle:nil] retain];
-        parentPasswordController.controllerType = kSCHControllerParentToolsView;
-    }
-    
-    return parentPasswordController;
-}
-
 - (void)pushSettingsController
 {
-    self.parentPasswordController.actionBlock = ^{
-        
-        if ([[SCHAuthenticationManager sharedAuthenticationManager] validatePassword:[self.parentPasswordController password]] == NO) {
-            UIAlertView *errorAlert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error", @"Error") 
-                                                                 message:NSLocalizedString(@"Incorrect password", nil)
-                                                                delegate:nil 
-                                                       cancelButtonTitle:NSLocalizedString(@"OK", @"OK")
-                                                       otherButtonTitles:nil]; 
-            [errorAlert show]; 
-            [errorAlert release];
-        } else {
-            [self.modalNavigationController pushViewController:self.settingsViewController animated:YES];
-        }
-        
-        [self.parentPasswordController clearFields]; 
-    };
-    
-    [self.modalNavigationController setViewControllers:[NSArray arrayWithObject:self.parentPasswordController]];
+    [self.modalNavigationController setViewControllers:[NSArray arrayWithObject:self.settingsViewController]];
     [self.modalNavigationController setModalTransitionStyle:UIModalTransitionStyleCoverVertical];
     [self.modalNavigationController setModalPresentationStyle:UIModalPresentationFormSheet];
     [self.modalNavigationController.navigationBar setTintColor:[UIColor SCHRed2Color]];
