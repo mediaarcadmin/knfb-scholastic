@@ -16,6 +16,7 @@
 
 @interface SCHUpdateBooksViewController ()
 @property (nonatomic, retain) NSMutableDictionary *cellControllers;
+@property (nonatomic, retain) id<NSFetchedResultsSectionInfo> availableBookUpdates;
 @end
 
 @implementation SCHUpdateBooksViewController
@@ -25,6 +26,7 @@
 @synthesize estimatedDownloadTimeLabel;
 @synthesize bookUpdates;
 @synthesize cellControllers;
+@synthesize availableBookUpdates;
 
 - (void)releaseViewObjects
 {
@@ -87,6 +89,7 @@
         [tvc release];
     }
     
+    self.availableBookUpdates = [self.bookUpdates availableBookUpdates];
     [self.booksTable reloadData];
 }
 
@@ -99,18 +102,16 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return [[self.bookUpdates availableBookUpdates] numberOfObjects];
+    return [self.availableBookUpdates numberOfObjects];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     static NSString *const CellIdentifier = @"UpdateBooksCell";
 
-    id<NSFetchedResultsSectionInfo> updates = [self.bookUpdates availableBookUpdates];
-    SCHAppBook *book = [[updates objects] objectAtIndex:indexPath.row];
+    SCHAppBook *book = [[self.availableBookUpdates objects] objectAtIndex:indexPath.row];
     SCHBookIdentifier *bookIdentifier = [book bookIdentifier];
     SCHUpdateBooksTableViewCellController *tvc = [self.cellControllers objectForKey:bookIdentifier];
-    //NSAssert(tvc != nil, @"cell controller not found for book %@", bookIdentifier);
     
     tvc.cell = (SCHUpdateBooksTableViewCell *)[tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     if (!tvc.cell) {
@@ -144,6 +145,7 @@
     if (![self.bookUpdates areBookUpdatesAvailable]) {
         [self.navigationController popViewControllerAnimated:YES];
     } else {
+        self.availableBookUpdates = [self.bookUpdates availableBookUpdates];
         [self.booksTable reloadData];
     }
 }
