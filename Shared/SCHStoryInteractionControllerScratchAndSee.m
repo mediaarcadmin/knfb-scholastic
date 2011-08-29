@@ -249,6 +249,11 @@ enum ScratchState {
     return [[(SCHStoryInteractionScratchAndSee *)self.storyInteraction questions] objectAtIndex:currentQuestionIndex];
 }
 
+- (IBAction)questionButtonTouched:(UIButton *)sender
+{
+    self.controllerState = SCHStoryInteractionControllerStateInteractionReadingAnswerWithPause;    
+}
+
 - (IBAction)questionButtonTapped:(UIButton *)sender
 {
     self.simultaneousTapCount++;
@@ -276,8 +281,6 @@ enum ScratchState {
 
 - (void)correctAnswer:(NSInteger) selection
 {
-    self.controllerState = SCHStoryInteractionControllerStateInteractionReadingAnswerWithPause;
-    
     for (int i = 0; i < [self.answerButtons count]; i++) {
         if (i == selection) {
             [(UIButton *) [self.answerButtons objectAtIndex:i] setSelected:YES];

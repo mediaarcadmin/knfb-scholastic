@@ -14,6 +14,7 @@
 
 @property (nonatomic, retain) IBOutletCollection(UIButton) NSArray *answerButtons;
 
+- (IBAction)answerButtonTouched:(UIButton *)sender;
 - (IBAction)answerButtonTapped:(id)sender;
 
 @end

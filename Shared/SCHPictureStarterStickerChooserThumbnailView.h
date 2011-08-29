@@ -11,5 +11,6 @@
 @interface SCHPictureStarterStickerChooserThumbnailView : UIImageView {}
 
 @property (nonatomic, assign, getter=isSelected) BOOL selected;
+@property (nonatomic, assign) NSInteger stickerTag;
 
 @end

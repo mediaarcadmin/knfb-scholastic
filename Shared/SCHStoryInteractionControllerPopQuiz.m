@@ -129,6 +129,11 @@
     }
 }
 
+- (IBAction)answerButtonTouched:(id)sender
+{
+    self.controllerState = SCHStoryInteractionControllerStateInteractionReadingAnswerWithPause;
+}
+
 - (IBAction)answerButtonTapped:(id)sender
 {
     self.simultaneousTapCount++;
@@ -145,7 +150,6 @@
         return;
     }
     
-    self.controllerState = SCHStoryInteractionControllerStateInteractionReadingAnswerWithPause;
     NSInteger chosenAnswer = [self.answerButtons indexOfObject:sender];
     if (chosenAnswer == NSNotFound) {
         return;

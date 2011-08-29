@@ -134,6 +134,11 @@
     }
 }
 
+- (IBAction)answerButtonTouched:(UIButton *)sender
+{
+    self.controllerState = SCHStoryInteractionControllerStateInteractionReadingAnswerWithPause;    
+}
+
 - (IBAction)answerButtonTapped:(UIButton *)sender
 {
     self.simultaneousTapCount++;

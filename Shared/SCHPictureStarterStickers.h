@@ -11,6 +11,6 @@
 
 @interface SCHPictureStarterStickers : NSObject <SCHPictureStarterStickerChooserDataSource> {}
 
-@property (nonatomic, assign) NSInteger numberOfChoosers;
+- (id)initForChooserCount:(NSInteger)chooserCount;
 
 @end
