@@ -151,6 +151,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 
 - (void)setupOptionsViewForMode:(SCHReadingViewLayoutType)newLayoutType;
 - (void)setupOptionsViewForMode:(SCHReadingViewLayoutType)newLayoutType orientation:(UIInterfaceOrientation)orientation;
+- (void)updateFontSegmentStateForIndex:(NSInteger)index;
 
 - (void)positionCoverCornerViewForOrientation:(UIInterfaceOrientation)newOrientation;
 - (void)dismissCoverCornerViewWithAnimation:(BOOL)animated;
@@ -1783,6 +1784,22 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 
 #pragma mark - Font Size Toggle
 
+- (void)updateFontSegmentStateForIndex:(NSInteger)index
+{
+    if (index >= [self.readingView maximumFontIndex]) {
+        [self.fontSegmentedControl setEnabled:NO forSegmentAtIndex:1];
+    } else {
+        [self.fontSegmentedControl setEnabled:YES forSegmentAtIndex:1];
+    }
+    
+    if (index <= 0) {
+        [self.fontSegmentedControl setEnabled:NO forSegmentAtIndex:0];
+    } else {
+        [self.fontSegmentedControl setEnabled:YES forSegmentAtIndex:0];
+    }
+
+}
+
 - (void)setCurrentFontSizeIndex:(int)newFontSizeIndex
 {
     currentFontSizeIndex = newFontSizeIndex;
@@ -1799,6 +1816,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     [self.readingView setFontPointIndex:newFontSizeIndex];
     self.suppressToolbarToggle = NO; 
     
+    [self updateFontSegmentStateForIndex:newFontSizeIndex];
     [self updateScrubberValue];
 }
 
@@ -1821,13 +1839,9 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
         index++;
     }
     
-    if (index > [self.readingView maximumFontIndex]) {
-        index = [self.readingView maximumFontIndex];
-    }
+    index = MIN(MAX(index, 0), [self.readingView maximumFontIndex]);
     
-    if (index < 0) {
-        index = 0;
-    }
+    [self updateFontSegmentStateForIndex:index];
     
     self.currentFontSizeIndex = index;
 }
