@@ -144,6 +144,7 @@
     }
     
     self.hasShownHint = YES;
+    self.hintButton.hidden = YES;
     
     if ([self hasCorrectSolution]) {
         [self wordScrambleComplete];
