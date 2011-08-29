@@ -276,7 +276,7 @@ enum ScratchState {
         [self correctAnswer:selection];
     } else {
         [self wrongAnswer:selection];
-    }
+    }    
 }
 
 - (void)correctAnswer:(NSInteger) selection
@@ -381,6 +381,12 @@ enum ScratchState {
     self.progressImageView.frame = frame;
 }
 
+- (void)scratchViewWasScratched:(SCHStoryInteractionScratchView *)aScratchView
+{
+    if (![self playingAudio]) {
+        [self enqueueAudioWithPath:[(SCHStoryInteractionScratchAndSee *)self.storyInteraction scratchSoundEffectFilename] fromBundle:YES];
+    }
+}
 
 - (void)scratchView:(SCHStoryInteractionScratchView *)aScratchView uncoveredPoints:(NSInteger)points
 {
@@ -408,13 +414,8 @@ enum ScratchState {
               }];
     } else {
         [self setProgressViewForScratchCount:points];
-        
-        if (points % 10 == 0) {
-            if (![self playingAudio]) {
-                [self enqueueAudioWithPath:[(SCHStoryInteractionScratchAndSee *)self.storyInteraction scratchSoundEffectFilename] fromBundle:YES];
-            }
-        }
     }
+
 }
 
 #pragma mark - Override for SCHStoryInteractionControllerStateReactions

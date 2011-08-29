@@ -25,5 +25,5 @@
 
 @optional
 - (void)scratchView: (SCHStoryInteractionScratchView *) scratchView uncoveredPoints: (NSInteger) points;
-
+- (void)scratchViewWasScratched:(SCHStoryInteractionScratchView *)scratchView;
 @end
