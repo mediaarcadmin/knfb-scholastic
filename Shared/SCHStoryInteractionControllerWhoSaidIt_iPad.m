@@ -33,7 +33,7 @@ static CGPoint pointWithOffset(CGPoint p, CGPoint offset)
 
 @property (nonatomic, assign) CGPoint sourceCenterOffset;
 @property (nonatomic, assign) CGPoint targetCenterOffset;
-@property (nonatomic, retain) NSMutableSet *occupiedTargets;
+@property (nonatomic, retain) NSMutableDictionary *currentOccupants;
 
 @end
 
@@ -45,7 +45,7 @@ static CGPoint pointWithOffset(CGPoint p, CGPoint offset)
 @synthesize targets;
 @synthesize sourceCenterOffset;
 @synthesize targetCenterOffset;
-@synthesize occupiedTargets;
+@synthesize currentOccupants;
 
 - (void)dealloc
 {
@@ -53,7 +53,7 @@ static CGPoint pointWithOffset(CGPoint p, CGPoint offset)
     [statementLabels release];
     [sources release];
     [targets release];
-    [occupiedTargets release];
+    [currentOccupants release];
     [super dealloc];
 }
 
@@ -70,7 +70,7 @@ static CGPoint pointWithOffset(CGPoint p, CGPoint offset)
     // sort the arrays by vertical position to ensure the source labels and targets are ordered the same
     self.targets = [self.targets viewsSortedVertically];
     self.statementLabels = [self.statementLabels viewsSortedVertically];
-    self.occupiedTargets = [NSMutableSet set];
+    self.currentOccupants = [NSMutableDictionary dictionary];
     
     // set up the labels and tag the targets with the correct indices
     SCHStoryInteractionWhoSaidIt *whoSaidIt = (SCHStoryInteractionWhoSaidIt *)[self storyInteraction];
@@ -148,7 +148,7 @@ static CGPoint pointWithOffset(CGPoint p, CGPoint offset)
     [self playBundleAudioWithFilename:@"sfx_pickup.mp3" completion:nil];
     
     if (draggableView.tag >= 0) {
-        [self.occupiedTargets removeObject:[NSNumber numberWithInteger:draggableView.tag]];
+        [self.currentOccupants removeObjectForKey:[NSNumber numberWithInteger:draggableView.tag]];
     }
 }
 
@@ -157,12 +157,10 @@ static CGPoint pointWithOffset(CGPoint p, CGPoint offset)
     CGPoint sourceCenter = pointWithOffset(position, self.sourceCenterOffset);
     NSInteger targetIndex = 0;
     for (SCHStoryInteractionDraggableTargetView *target in self.targets) {
-        if (![self.occupiedTargets containsObject:[NSNumber numberWithInteger:targetIndex]]) {
-            CGPoint targetCenter = pointWithOffset(target.center, self.targetCenterOffset);
-            if (SCHCGPointDistanceSq(sourceCenter, targetCenter) < kSnapDistanceSq) {
-                *snapPosition = CGPointMake(targetCenter.x - self.sourceCenterOffset.x, targetCenter.y - self.sourceCenterOffset.y);
-                return YES;
-            }
+        CGPoint targetCenter = pointWithOffset(target.center, self.targetCenterOffset);
+        if (SCHCGPointDistanceSq(sourceCenter, targetCenter) < kSnapDistanceSq) {
+            *snapPosition = CGPointMake(targetCenter.x - self.sourceCenterOffset.x, targetCenter.y - self.sourceCenterOffset.y);
+            return YES;
         }
         targetIndex++;
     }
@@ -176,13 +174,15 @@ static CGPoint pointWithOffset(CGPoint p, CGPoint offset)
     CGPoint sourceCenter = pointWithOffset(position, self.sourceCenterOffset);
     NSInteger targetIndex = 0;
     for (SCHStoryInteractionDraggableTargetView *target in self.targets) {
-        if (![self.occupiedTargets containsObject:[NSNumber numberWithInteger:targetIndex]]) {
-            CGPoint targetCenter = pointWithOffset(target.center, self.targetCenterOffset);
-            if (SCHCGPointDistanceSq(sourceCenter, targetCenter) < kSnapDistanceSq) {
-                draggableView.tag = targetIndex;
-                [self.occupiedTargets addObject:[NSNumber numberWithInteger:targetIndex]];
-                break;
-            }
+        CGPoint targetCenter = pointWithOffset(target.center, self.targetCenterOffset);
+        if (SCHCGPointDistanceSq(sourceCenter, targetCenter) < kSnapDistanceSq) {
+            NSNumber *targetIndexObj = [NSNumber numberWithInteger:targetIndex];
+            SCHStoryInteractionDraggableView *currentOccupant = [self.currentOccupants objectForKey:targetIndexObj];
+            [currentOccupant moveToHomePosition];
+            currentOccupant.tag = -1;
+            draggableView.tag = targetIndex;
+            [self.currentOccupants setObject:draggableView forKey:targetIndexObj];
+            break;
         }
         targetIndex++;
     }
