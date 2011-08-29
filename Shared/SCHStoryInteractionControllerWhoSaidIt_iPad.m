@@ -136,6 +136,12 @@ static CGPoint pointWithOffset(CGPoint p, CGPoint offset)
             for (SCHStoryInteractionDraggableView *source in self.sources) {
                 UIImageView *imageView = (UIImageView *)[source viewWithTag:kSourceImageTag];
                 [imageView setHighlighted:NO];
+                
+                // send incorrect answers back to home position
+                if (source.tag >= 0 && [[self.targets objectAtIndex:source.tag] matchTag] != source.matchTag) {
+                    [source moveToHomePosition];
+                    source.tag = -1;
+                }
             }
         });
     }
