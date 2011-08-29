@@ -13,6 +13,8 @@
 #import "SCHGestureSmoother.h"
 
 #define kMinimumPinchOffset 20
+#define kPinchInProgressMinimumZoom 1.0f
+#define kEndOfPinchMinimumZoom 1.4f
 
 @interface SCHPictureStarterCanvas ()
 
@@ -29,7 +31,7 @@
 - (void)cancelCurrentDrawingInstruction;
 - (void)commitDrawingInstruction:(id<SCHPictureStarterDrawingInstruction>)instruction;
 - (CGContextRef)createPaintContext;
-- (CGFloat)updateZoom:(CGFloat)scale point:(CGPoint)point;
+- (CGFloat)updateZoom:(CGFloat)scale point:(CGPoint)point minimumZoom:(CGFloat)minimumZoom animated:(BOOL)animated;
 
 @end;
 
@@ -96,6 +98,7 @@
     CGContextRef context = CGBitmapContextCreate(NULL, CGRectGetWidth(self.bounds)*self.deviceScale, CGRectGetHeight(self.bounds)*self.deviceScale,
                                                  8, 4*CGRectGetWidth(self.bounds)*self.deviceScale, colorSpace, kCGImageAlphaPremultipliedLast);
     CGColorSpaceRelease(colorSpace);
+    CGContextSetShouldAntialias(context, YES);
     CGContextConcatCTM(context, CGAffineTransformMakeScale(self.deviceScale, self.deviceScale));
     CGContextSaveGState(context);
 
@@ -114,7 +117,8 @@
 
 - (CGPoint)touchPoint:(NSSet *)touches
 {
-    CGPoint p = [[touches anyObject] locationInView:self];
+    UITouch *touch = [[touches objectEnumerator] nextObject];
+    CGPoint p = [touch locationInView:self];
     return CGPointMake(p.x, CGRectGetHeight(self.bounds)-p.y);
 }
 
@@ -123,28 +127,24 @@
     // draw smaller on a smaller (i.e. iPhone) canvas
     const CGFloat sizeScale = (CGRectGetWidth(self.bounds) > 400) ? 1.0f : 2.0f;
     
-    if ([touches count] == 1) {
+    if ([touches count] == 1 && !self.currentInstruction) {
         // single touch = create new drawing instruction
         self.currentInstruction = [self.delegate drawingInstruction];
         [self.currentInstruction setScale:self.zoomScale*sizeScale];
         [self.currentInstruction updatePosition:[self touchPoint:touches]];
         self.liveLayer.delegate = self.currentInstruction;
         [self.liveLayer setNeedsDisplay];
-    } else {
-        [self cancelCurrentDrawingInstruction];
     }
 }
 
 - (void)touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event
 {
-    if ([touches count] == 1 && self.currentInstruction) {
+    if (self.currentInstruction) {
         [self.currentInstruction updatePosition:[self touchPoint:touches]];
         if ([self.currentInstruction shouldCommitInstantly]) {
             [self commitDrawingInstruction:self.currentInstruction];
         }
         [self.liveLayer setNeedsDisplay];
-    } else {
-        [self cancelCurrentDrawingInstruction];
     }
 }
 
@@ -176,22 +176,23 @@
 {
     switch ([pinch state]) {
         case UIGestureRecognizerStateBegan:
+            [self cancelCurrentDrawingInstruction];
             self.pinchPoint = [pinch locationInView:self];
             self.pinchSmoother = [SCHGestureSmoother smoother];
             [self.pinchSmoother addPoint:[pinch locationInView:self]];
             break;
         case UIGestureRecognizerStateChanged:
             [self.pinchSmoother addPoint:[pinch locationInView:self]];
-            [self updateZoom:pinch.scale point:[self.pinchSmoother smoothedPoint]];
+            [self updateZoom:pinch.scale point:[self.pinchSmoother smoothedPoint] minimumZoom:kPinchInProgressMinimumZoom animated:NO];
             break;
         case UIGestureRecognizerStateEnded:
             [self.pinchSmoother addPoint:[pinch locationInView:self]];
-            self.zoomScale = [self updateZoom:pinch.scale point:[self.pinchSmoother smoothedPoint]];
+            self.zoomScale = [self updateZoom:pinch.scale point:[self.pinchSmoother smoothedPoint] minimumZoom:kPinchInProgressMinimumZoom animated:NO];
             self.pinchSmoother = nil;
             break;
         case UIGestureRecognizerStateCancelled:
         case UIGestureRecognizerStateFailed:
-            [self updateZoom:self.zoomScale point:self.pinchPoint];
+            [self updateZoom:self.zoomScale point:self.pinchPoint minimumZoom:kEndOfPinchMinimumZoom animated:YES];
             self.pinchSmoother = nil;
             break;
         default:
@@ -201,11 +202,11 @@
 
 #pragma mark - Zoom
 
-- (CGFloat)updateZoom:(CGFloat)scale point:(CGPoint)point
+- (CGFloat)updateZoom:(CGFloat)scale point:(CGPoint)point minimumZoom:(CGFloat)minimumZoom animated:(BOOL)animated
 {
     CGFloat absoluteScale = MIN(10.0f, self.zoomScale*scale);
     CGPoint translatePoint;
-    if (absoluteScale < 1.0f) {
+    if (absoluteScale < minimumZoom) {
         absoluteScale = 1.0f;
         translatePoint = self.pinchPoint;
     } else {
@@ -215,7 +216,15 @@
     CGAffineTransform t1 = CGAffineTransformMakeTranslation(-self.pinchPoint.x, -self.pinchPoint.y);
     CGAffineTransform t2 = CGAffineTransformMakeScale(absoluteScale, absoluteScale);
     CGAffineTransform t3 = CGAffineTransformMakeTranslation(translatePoint.x, translatePoint.y);
-    self.transform = CGAffineTransformConcat(CGAffineTransformConcat(t1, t2), t3);
+    dispatch_block_t block = ^{
+        self.transform = CGAffineTransformConcat(CGAffineTransformConcat(t1, t2), t3);
+    };
+    
+    if (animated) {
+        [UIView animateWithDuration:0.2 animations:block];
+    } else {
+        block();
+    }
     
     return absoluteScale;
 }
