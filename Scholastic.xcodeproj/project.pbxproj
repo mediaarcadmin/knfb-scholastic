@@ -2264,12 +2264,6 @@
 		287D771913F55C7F00C76070 /* SCHStoryInteractionJigsawPieceView_iPad.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCHStoryInteractionJigsawPieceView_iPad.h; sourceTree = "<group>"; };
 		287D771A13F55C8000C76070 /* SCHStoryInteractionJigsawPieceView_iPad.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCHStoryInteractionJigsawPieceView_iPad.m; sourceTree = "<group>"; };
 		288765FC0DF74451002DB57D /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
-		2888571813FE714600289C4E /* storyinteraction-concentration-flips-button@2x~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "storyinteraction-concentration-flips-button@2x~iphone.png"; sourceTree = "<group>"; };
-		2888571913FE714600289C4E /* storyinteraction-concentration-flips-button~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "storyinteraction-concentration-flips-button~ipad.png"; sourceTree = "<group>"; };
-		2888571A13FE714600289C4E /* storyinteraction-concentration-flips-button~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "storyinteraction-concentration-flips-button~iphone.png"; sourceTree = "<group>"; };
-		2888571B13FE714600289C4E /* storyinteraction-concentration-startover-button@2x~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "storyinteraction-concentration-startover-button@2x~iphone.png"; sourceTree = "<group>"; };
-		2888571C13FE714600289C4E /* storyinteraction-concentration-startover-button~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "storyinteraction-concentration-startover-button~ipad.png"; sourceTree = "<group>"; };
-		2888571D13FE714600289C4E /* storyinteraction-concentration-startover-button~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "storyinteraction-concentration-startover-button~iphone.png"; sourceTree = "<group>"; };
 		2888FE7B13A61CD300FF2FA8 /* SCHStoryInteractionTitleTwister_iPhone.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SCHStoryInteractionTitleTwister_iPhone.xib; sourceTree = "<group>"; };
 		288A1C7E13E2E7EE009F56BA /* SCHStartingView~iphone.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "SCHStartingView~iphone.xib"; sourceTree = "<group>"; };
 		2891B71D13954355005FC4DD /* StoryInteractionMultipleChoiceText1.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = StoryInteractionMultipleChoiceText1.xml; sourceTree = "<group>"; };
@@ -4044,12 +4038,6 @@
 			isa = PBXGroup;
 			children = (
 				C9F17C2413FD3D1000C06DF6 /* Stickers */,
-				C92E732813FE7033005CE812 /* storyinteraction-concentration-startover-button~iphone.png */,
-				C92E732913FE7033005CE812 /* storyinteraction-concentration-flips-button~iphone.png */,
-				C92E732A13FE7033005CE812 /* storyinteraction-concentration-flips-button@2x~iphone.png */,
-				C92E732B13FE7033005CE812 /* storyinteraction-concentration-startover-button@2x~iphone.png */,
-				C92E732C13FE7033005CE812 /* storyinteraction-concentration-flips-button~ipad.png */,
-				C92E732D13FE7033005CE812 /* storyinteraction-concentration-startover-button~ipad.png */,
 				C9F17C2713FD412400C06DF6 /* storyinteraction-picturestarter-pallette-overlay~iphone.png */,
 				C9F17C2813FD412400C06DF6 /* storyinteraction-picturestarter-pallette-overlay@2x~iphone.png */,
 				C9F17C2913FD412400C06DF6 /* storyinteraction-picturestarter-scroller-overlay~iphone.png */,
@@ -4100,6 +4088,12 @@
 				5215349B13B08AB200131E37 /* storyinteraction-bg-older-notitle~iphone.png */,
 				5215349C13B08AB200131E37 /* storyinteraction-bg-older-notitle@2x~iphone.png */,
 				C9C1D29E13B0AD4C00441623 /* storyinteraction-bg-older-notitle~ipad.png */,
+				C92E732813FE7033005CE812 /* storyinteraction-concentration-startover-button~iphone.png */,
+				C92E732B13FE7033005CE812 /* storyinteraction-concentration-startover-button@2x~iphone.png */,
+				C92E732D13FE7033005CE812 /* storyinteraction-concentration-startover-button~ipad.png */,
+				C92E732913FE7033005CE812 /* storyinteraction-concentration-flips-button~iphone.png */,
+				C92E732A13FE7033005CE812 /* storyinteraction-concentration-flips-button@2x~iphone.png */,
+				C92E732C13FE7033005CE812 /* storyinteraction-concentration-flips-button~ipad.png */,
 				C91E9A0913F96717004F8062 /* storyinteraction-concentration-6-pairs-button~iphone.png */,
 				C91E9A0A13F96718004F8062 /* storyinteraction-concentration-6-pairs-button@2x~iphone.png */,
 				C91E9A0B13F96719004F8062 /* storyinteraction-concentration-9-pairs-button~iphone.png */,
@@ -4123,12 +4117,6 @@
 				C93113F213FBC83300355693 /* storyinteraction-concentration-tile-purple@2x~iphone.png */,
 				C93113F313FBC84600355693 /* storyinteraction-concentration-tile-blue@2x~iphone.png */,
 				C93113F413FBC85400355693 /* storyinteraction-concentration-tile-orange@2x~iphone.png */,
-				2888571813FE714600289C4E /* storyinteraction-concentration-flips-button@2x~iphone.png */,
-				2888571913FE714600289C4E /* storyinteraction-concentration-flips-button~ipad.png */,
-				2888571A13FE714600289C4E /* storyinteraction-concentration-flips-button~iphone.png */,
-				2888571B13FE714600289C4E /* storyinteraction-concentration-startover-button@2x~iphone.png */,
-				2888571C13FE714600289C4E /* storyinteraction-concentration-startover-button~ipad.png */,
-				2888571D13FE714600289C4E /* storyinteraction-concentration-startover-button~iphone.png */,
 				C9AC869313AFAF7B000ECDAE /* storyinteraction-wordmatch-target~ipad.png */,
 				C9AC869413AFAF7D000ECDAE /* storyinteraction-read-aloud~ipad.png */,
 				C9AC869513AFAF7F000ECDAE /* storyinteraction-draggable-top-circle~ipad.png */,

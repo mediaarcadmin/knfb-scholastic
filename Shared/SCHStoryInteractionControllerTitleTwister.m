@@ -332,6 +332,8 @@
     NSString *word = [self builtWordAsString];
     NSInteger length = [word length];
     
+    [self clearBuiltWord];
+    
     SCHStoryInteractionTitleTwister *titleTwister = (SCHStoryInteractionTitleTwister *)self.storyInteraction;
     if (length < 3 || ![titleTwister.words containsObject:word]) {
         [self playBundleAudioWithFilename:[titleTwister storyInteractionWrongAnswerSoundFilename] completion:nil];
