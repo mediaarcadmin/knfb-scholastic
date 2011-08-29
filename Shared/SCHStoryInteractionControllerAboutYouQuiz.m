@@ -218,13 +218,17 @@ typedef enum {
     [self presentNextView];
 }
 
+- (IBAction)questionButtonTouched:(UIButton *)sender
+{
+    self.controllerState = SCHStoryInteractionControllerStateInteractionReadingAnswerWithPause;        
+}
+
 - (IBAction)questionButtonTapped:(UIButton *)sender
 {
     NSLog(@"Question button tapped: %d", [self.answerButtons indexOfObject:sender]);
     self.simultaneousTapCount++;
     if (self.simultaneousTapCount == 1) {
         [sender setSelected:YES];
-        self.controllerState = SCHStoryInteractionControllerStateInteractionReadingAnswerWithPause;        
         [self performSelector:@selector(answerChosen:) withObject:sender afterDelay:kMinimumDistinguishedAnswerDelay];
     }
 }
@@ -235,7 +239,6 @@ typedef enum {
     self.simultaneousTapCount = 0;
     if (tapCount > 1) {
         [sender setSelected:NO];
-        self.controllerState = SCHStoryInteractionControllerStateInteractionInProgress;                
         return;
     }
 
