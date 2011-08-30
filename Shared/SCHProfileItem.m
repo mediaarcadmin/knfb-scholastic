@@ -297,7 +297,8 @@ NSString * const kSCHProfileItemDRM_QUALIFIER = @"DRM_QUALIFIER";
     SCHReadingStatsEntryItem *readingStatsEntryItem = nil;
     NSError *error = nil;
     
-    if (bookStatistics != nil && bookIdentifier != nil) {
+    if (bookStatistics != nil && [bookStatistics hasStatistics] == YES && 
+        bookIdentifier != nil) {
         NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
         
         [fetchRequest setEntity:[NSEntityDescription entityForName:kSCHReadingStatsDetailItem 
