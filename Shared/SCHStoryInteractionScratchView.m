@@ -132,10 +132,14 @@ static CGFloat distanceBetweenPoints(CGPoint pt1, CGPoint pt2)
                     tooClose = YES;
                 }
             }];
+            
+            if (self.delegate && [self.delegate respondsToSelector:@selector(scratchViewWasScratched:)]) {
+                [self.delegate scratchViewWasScratched:self];
+            }
              
-             if (tooClose) {
-                 return;
-             }
+            if (tooClose) {
+                return;
+            }
                     
             [self.pointsArray addObject:[NSValue valueWithCGPoint:touchLocation]];
             
