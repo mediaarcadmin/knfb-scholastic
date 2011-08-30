@@ -96,7 +96,6 @@
 {
     // ignore multiple taps
     NSInteger tapCount = self.simultaneousTapCount;
-    self.simultaneousTapCount = 0;
     if (tapCount > 1) {
         return;
     }
@@ -130,6 +129,7 @@
                   synchronizedEndBlock:^{
                       if (!questionsCompleted) {
                           self.controllerState = SCHStoryInteractionControllerStateInteractionInProgress;
+                          self.simultaneousTapCount = 0;
                       }
                   }];
             
@@ -159,9 +159,10 @@
                 synchronizedStartBlock:nil 
                   synchronizedEndBlock:^{
                       self.controllerState = SCHStoryInteractionControllerStateInteractionInProgress;
+                      self.simultaneousTapCount = 0;
                   }];
         }
-    }
+    }    
 }
 
 - (BOOL)questionsCompleted
