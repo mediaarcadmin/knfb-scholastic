@@ -101,19 +101,7 @@
         [self loadWord];
     }    
     
-//    NSMutableArray *toolbarButtons = [[NSMutableArray alloc] init];
-//    
-//    [toolbarButtons addObject:[[[UIBarButtonItem alloc] initWithCustomView:self.leftBarButtonItemContainer] autorelease]];
-//    [toolbarButtons addObjectsFromArray:self.topBar.items];
-//    
-//    self.topBar.items = [NSArray arrayWithArray:toolbarButtons];
-//    [toolbarButtons release];
-    
     [self.topBar setTintColor:[UIColor colorWithWhite:0.7f alpha:1.0f]];
-    
-    if (self.categoryMode == kSCHDictionaryYoungReader) {
-        [[SCHDictionaryAccessManager sharedAccessManager] speakYoungerWordDefinition:self.word];
-    }
 }
 
 - (void)viewWillDisappear:(BOOL)animated

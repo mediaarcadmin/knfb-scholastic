@@ -27,7 +27,7 @@
 @property (retain, nonatomic) SCHReadingStatsSyncComponent *readingStatsSyncComponent;
 @property (retain, nonatomic) SCHSettingsSyncComponent *settingsSyncComponent;
 
-- (void)populateFromImport;
+- (NSUInteger)populateFromImport;
 
 // for populating Sample Store
 - (void)populateSampleStore;

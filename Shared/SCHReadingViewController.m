@@ -746,15 +746,17 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 {
     if (self.bookIdentifier != nil) {
         SCHAppBook *book = [[SCHBookManager sharedBookManager] bookWithIdentifier:self.bookIdentifier inManagedObjectContext:self.managedObjectContext];
-        
-        NSTimeInterval readingDuration = [[NSDate date] timeIntervalSinceDate:self.bookStatisticsReadingStartTime];
-        [self.bookStatistics increaseReadingDurationBy:floor(readingDuration)];
-        self.bookStatisticsReadingStartTime = [NSDate date];
+
+        if ([self.bookStatistics hasStatistics] == YES) {
+            NSTimeInterval readingDuration = [[NSDate date] timeIntervalSinceDate:self.bookStatisticsReadingStartTime];
+            [self.bookStatistics increaseReadingDurationBy:floor(readingDuration)];
+            self.bookStatisticsReadingStartTime = [NSDate date];
+            [self.profile newStatistics:self.bookStatistics forBook:self.bookIdentifier];
+            self.bookStatistics = nil;
+        }
         
         [self saveLastPageLocation];
         
-        [self.profile newStatistics:self.bookStatistics forBook:self.bookIdentifier];
-        self.bookStatistics = nil;
         [[SCHSyncManager sharedSyncManager] closeDocument:book.ContentMetadataItem.UserContentItem 
                                                forProfile:self.profile.ID];
         
