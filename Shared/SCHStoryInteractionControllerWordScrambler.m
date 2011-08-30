@@ -24,7 +24,7 @@
 @property (nonatomic, assign) BOOL hasShownHint;
 
 - (NSInteger)letterPositionCloseToPoint:(CGPoint)point;
-- (void)swapLetterAtPosition:(NSInteger)position with:(SCHStoryInteractionDraggableView *)letterView;
+- (void)swapLetters:(NSArray *)swapViews;
 
 - (BOOL)hasCorrectSolution;
 - (void)wordScrambleComplete;
@@ -168,6 +168,8 @@
 
 - (BOOL)draggableView:(SCHStoryInteractionDraggableView *)draggableView shouldSnapFromPosition:(CGPoint)position toPosition:(CGPoint *)snapPosition
 {
+    [NSObject cancelPreviousPerformRequestsWithTarget:self];
+
     NSInteger letterPosition = [self letterPositionCloseToPoint:position];
     if (letterPosition == NSNotFound) {
         return NO;
@@ -177,14 +179,26 @@
         return NO;
     }
     
+    [self performSelector:@selector(swapLetters:)
+               withObject:[NSArray arrayWithObjects:draggableView, swapLetter, nil]
+               afterDelay:0.75];
+    
     // don't actually snap but set the homePosition so the letter falls there when the drag ends
     *snapPosition = position;
-    [self swapLetterAtPosition:letterPosition with:draggableView];
     return YES;
 }
 
 - (void)draggableView:(SCHStoryInteractionDraggableView *)draggableView didMoveToPosition:(CGPoint)position
 {
+    [NSObject cancelPreviousPerformRequestsWithTarget:self];
+    
+    NSInteger letterPosition = [self letterPositionCloseToPoint:position];
+    if (letterPosition != NSNotFound) {
+        SCHStoryInteractionDraggableLetterView *swapLetter = [self.lettersByPosition objectAtIndex:letterPosition];
+        if (swapLetter != draggableView && !(self.hasShownHint && [self.hintLetters containsObject:swapLetter])) {
+            [self swapLetters:[NSArray arrayWithObjects:draggableView, swapLetter, nil]];
+        }
+    }
     [draggableView moveToHomePosition];
     
     BOOL complete = [self hasCorrectSolution];
@@ -212,9 +226,11 @@
     return NSNotFound;
 }
 
-- (void)swapLetterAtPosition:(NSInteger)position with:(SCHStoryInteractionDraggableView *)letterView
+- (void)swapLetters:(NSArray *)swapViews
 {
-    SCHStoryInteractionDraggableLetterView *letterToSwap = [self.lettersByPosition objectAtIndex:position];
+    SCHStoryInteractionDraggableLetterView *letterView = [swapViews objectAtIndex:0];
+    SCHStoryInteractionDraggableLetterView *letterToSwap = [swapViews objectAtIndex:1];
+    
     [UIView animateWithDuration:0.25f 
                           delay:0
                         options:UIViewAnimationOptionAllowUserInteraction
@@ -222,7 +238,7 @@
                          letterToSwap.center = letterView.homePosition;
                      }
                      completion:nil];
-
+    
     CGPoint newHome = letterToSwap.homePosition;
     letterToSwap.homePosition = letterView.homePosition;
     letterView.homePosition = newHome;
