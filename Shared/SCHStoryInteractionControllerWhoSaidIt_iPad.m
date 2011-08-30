@@ -9,7 +9,7 @@
 #import <QuartzCore/QuartzCore.h>
 
 #import "SCHStoryInteractionControllerWhoSaidIt_iPad.h"
-#import "SCHStoryInteractionDraggableView.h"
+#import "SCHStoryInteractionWhoSaidItNameView.h"
 #import "SCHStoryInteractionDraggableTargetView.h"
 #import "SCHStoryInteractionWhoSaidIt.h"
 #import "NSArray+ViewSorting.h"
@@ -33,7 +33,6 @@ static CGPoint pointWithOffset(CGPoint p, CGPoint offset)
 
 @property (nonatomic, assign) CGPoint sourceCenterOffset;
 @property (nonatomic, assign) CGPoint targetCenterOffset;
-@property (nonatomic, retain) NSMutableDictionary *currentOccupants;
 
 @end
 
@@ -45,7 +44,6 @@ static CGPoint pointWithOffset(CGPoint p, CGPoint offset)
 @synthesize targets;
 @synthesize sourceCenterOffset;
 @synthesize targetCenterOffset;
-@synthesize currentOccupants;
 
 - (void)dealloc
 {
@@ -53,7 +51,6 @@ static CGPoint pointWithOffset(CGPoint p, CGPoint offset)
     [statementLabels release];
     [sources release];
     [targets release];
-    [currentOccupants release];
     [super dealloc];
 }
 
@@ -70,7 +67,6 @@ static CGPoint pointWithOffset(CGPoint p, CGPoint offset)
     // sort the arrays by vertical position to ensure the source labels and targets are ordered the same
     self.targets = [self.targets viewsSortedVertically];
     self.statementLabels = [self.statementLabels viewsSortedVertically];
-    self.currentOccupants = [NSMutableDictionary dictionary];
     
     // set up the labels and tag the targets with the correct indices
     SCHStoryInteractionWhoSaidIt *whoSaidIt = (SCHStoryInteractionWhoSaidIt *)[self storyInteraction];
@@ -87,11 +83,11 @@ static CGPoint pointWithOffset(CGPoint p, CGPoint offset)
     // jumble up the sources and tag with the correct indices
     NSArray *statements = [whoSaidIt.statements shuffled];
     NSInteger index = 0;
-    for (SCHStoryInteractionDraggableView *source in self.sources) {
+    for (SCHStoryInteractionWhoSaidItNameView *source in self.sources) {
         SCHStoryInteractionWhoSaidItStatement *statement = [statements objectAtIndex:index];
         UILabel *label = (UILabel *)[source viewWithTag:kSourceLabelTag];
         label.text = statement.source;
-        source.tag = -1;
+        source.attachedTarget = nil;
         source.matchTag = statement.questionIndex;
         source.delegate = self;
         source.homePosition = source.center;
@@ -102,13 +98,12 @@ static CGPoint pointWithOffset(CGPoint p, CGPoint offset)
 - (void)checkAnswers:(id)sender
 {
     NSInteger correctCount = 0;
-    for (SCHStoryInteractionDraggableView *source in self.sources) {
-        if (source.tag < 0) {
+    for (SCHStoryInteractionWhoSaidItNameView *source in self.sources) {
+        if (source.attachedTarget == nil) {
             continue;
         }
-        SCHStoryInteractionDraggableTargetView *target = [self.targets objectAtIndex:source.tag];
         NSString *imageName;
-        if (source.matchTag == target.matchTag) {
+        if ([source attachedToCorrectTarget]) {
             correctCount++;
             imageName = @"storyinteraction-draggable-green";
         } else {
@@ -133,18 +128,27 @@ static CGPoint pointWithOffset(CGPoint p, CGPoint offset)
         // remove the highlights after a short delay
         dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, 1.0 * NSEC_PER_SEC);
         dispatch_after(popTime, dispatch_get_main_queue(), ^{
-            for (SCHStoryInteractionDraggableView *source in self.sources) {
+            for (SCHStoryInteractionWhoSaidItNameView *source in self.sources) {
                 UIImageView *imageView = (UIImageView *)[source viewWithTag:kSourceImageTag];
                 [imageView setHighlighted:NO];
                 
                 // send incorrect answers back to home position
-                if (source.tag >= 0 && [[self.targets objectAtIndex:source.tag] matchTag] != source.matchTag) {
+                if (source.attachedTarget != nil && ![source attachedToCorrectTarget]) {
                     [source moveToHomePosition];
-                    source.tag = -1;
                 }
             }
         });
     }
+}
+
+- (SCHStoryInteractionWhoSaidItNameView *)nameViewOnTarget:(SCHStoryInteractionDraggableTargetView *)target
+{
+    for (SCHStoryInteractionWhoSaidItNameView *source in self.sources) {
+        if (source.attachedTarget == target) {
+            return source;
+        }
+    }
+    return nil;
 }
 
 #pragma mark - draggable view delegate
@@ -152,10 +156,6 @@ static CGPoint pointWithOffset(CGPoint p, CGPoint offset)
 - (void)draggableViewDidStartDrag:(SCHStoryInteractionDraggableView *)draggableView
 {
     [self playBundleAudioWithFilename:@"sfx_pickup.mp3" completion:nil];
-    
-    if (draggableView.tag >= 0) {
-        [self.currentOccupants removeObjectForKey:[NSNumber numberWithInteger:draggableView.tag]];
-    }
 }
 
 - (BOOL)draggableView:(SCHStoryInteractionDraggableView *)draggableView shouldSnapFromPosition:(CGPoint)position toPosition:(CGPoint *)snapPosition
@@ -175,27 +175,22 @@ static CGPoint pointWithOffset(CGPoint p, CGPoint offset)
 
 - (void)draggableView:(SCHStoryInteractionDraggableView *)draggableView didMoveToPosition:(CGPoint)position
 {
-    // if we've landed on a target, tag the source with that target's index for checkAnswers
-    draggableView.tag = -1;
+    SCHStoryInteractionWhoSaidItNameView *source = (SCHStoryInteractionWhoSaidItNameView *)draggableView;
+    
+    // if we've landed on a target, send any current occupant home then attach to the target
     CGPoint sourceCenter = pointWithOffset(position, self.sourceCenterOffset);
-    NSInteger targetIndex = 0;
     for (SCHStoryInteractionDraggableTargetView *target in self.targets) {
         CGPoint targetCenter = pointWithOffset(target.center, self.targetCenterOffset);
         if (SCHCGPointDistanceSq(sourceCenter, targetCenter) < kSnapDistanceSq) {
-            NSNumber *targetIndexObj = [NSNumber numberWithInteger:targetIndex];
-            SCHStoryInteractionDraggableView *currentOccupant = [self.currentOccupants objectForKey:targetIndexObj];
-            [currentOccupant moveToHomePosition];
-            currentOccupant.tag = -1;
-            draggableView.tag = targetIndex;
-            [self.currentOccupants setObject:draggableView forKey:targetIndexObj];
+            [[self nameViewOnTarget:target] moveToHomePosition];
+            source.attachedTarget = target;
             break;
         }
-        targetIndex++;
     }
 
     // if not attached to a target, move source back home
-    if (draggableView.tag < 0) {
-        [draggableView moveToHomePosition];
+    if (source.attachedTarget == nil) {
+        [source moveToHomePosition];
     }
     
     [self playBundleAudioWithFilename:@"sfx_dropOK.mp3" completion:nil];
