@@ -557,6 +557,9 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     [self.navigationToolbar setAudioItemHidden:audioButtonsHidden];
     self.cornerAudioButtonView.hidden = audioButtonsHidden;
     
+    // if the book has no story interactions disable the button
+    self.storyInteractionsListButton.enabled = [[self.bookStoryInteractions allStoryInteractionsExcludingInteractionWithPage:NO] count] > 0;
+        
     [self.view addSubview:self.navigationToolbar];
     
     // Set non-rotation specific graphics
