@@ -57,7 +57,15 @@ static SCHDictionaryAccessManager *sharedManager = nil;
 		sharedManager = [[SCHDictionaryAccessManager alloc] init];
         sharedManager.dictionaryAccessQueue = dispatch_queue_create("com.scholastic.DictionaryAccessQueue", NULL);
         [[NSNotificationCenter defaultCenter] addObserver:sharedManager selector:@selector(setAccessFromState) name:kSCHDictionaryStateChange object:nil];
-
+        
+        // stop speaking if we go into the background
+        [[NSNotificationCenter defaultCenter] addObserverForName:UIApplicationDidEnterBackgroundNotification
+                                                          object:nil 
+                                                           queue:[NSOperationQueue mainQueue] 
+                                                      usingBlock:^(NSNotification *notification) {
+                                                          NSLog(@"Dictionary speaking entering background!");
+                                                          [sharedManager stopAllSpeaking];
+                                                      }];
 	} 
 	
 	return sharedManager;
@@ -111,19 +119,19 @@ static SCHDictionaryAccessManager *sharedManager = nil;
                                                   encoding:NSUTF8StringEncoding 
                                                      error:nil];
     
-#if TARGET_IPHONE_SIMULATOR
-    
-    // prime the audio player - eliminates delay on playing of word
-    NSString *mp3Path = [NSString stringWithFormat:@"%@/Pronunciation/pron_a.mp3", 
-                         [[SCHDictionaryDownloadManager sharedDownloadManager] dictionaryDirectory]];
-    
-    NSURL *url = [NSURL fileURLWithPath:mp3Path];
-    
-    NSError *error;
-    self.player = [[AVAudioPlayer alloc] initWithContentsOfURL:url error:&error];
-    [self.player prepareToPlay];
-    self.player = nil;
-#endif
+//#if TARGET_IPHONE_SIMULATOR
+//    
+//    // prime the audio player - eliminates delay on playing of word
+//    NSString *mp3Path = [NSString stringWithFormat:@"%@/Pronunciation/pron_a.mp3", 
+//                         [[SCHDictionaryDownloadManager sharedDownloadManager] dictionaryDirectory]];
+//    
+//    NSURL *url = [NSURL fileURLWithPath:mp3Path];
+//    
+//    NSError *error;
+//    self.player = [[AVAudioPlayer alloc] initWithContentsOfURL:url error:&error];
+//    [self.player prepareToPlay];
+//    self.player = nil;
+//#endif
     
 }
 
@@ -527,6 +535,5 @@ static SCHDictionaryAccessManager *sharedManager = nil;
     [self.player stop];
     self.player = nil;
 }
-
 
 @end
