@@ -17,6 +17,7 @@ extern NSString * const SCHAuthenticationManagerDidFailNotification;
 extern NSString * const kSCHAuthenticationManagerAToken;
 extern NSString * const kSCHAuthenticationManagerOfflineMode;
 extern NSString * const SCHAuthenticationManagerDidDeregisterNotification;
+extern NSString * const SCHAuthenticationManagerDidClearAfterDeregisterNotification;
 extern NSString * const SCHAuthenticationManagerDidFailDeregistrationNotification;
 extern NSString * const kSCHAuthenticationManagerNSError;
 

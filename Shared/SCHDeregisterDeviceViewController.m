@@ -91,7 +91,7 @@ static const CGFloat kDeregisterContentHeightLandscape = 380;
     
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(authenticationManagerDidDeregister:)
-                                                 name:SCHAuthenticationManagerDidDeregisterNotification
+                                                 name:SCHAuthenticationManagerDidClearAfterDeregisterNotification
                                                object:nil];
     
     [[NSNotificationCenter defaultCenter] addObserver:self
