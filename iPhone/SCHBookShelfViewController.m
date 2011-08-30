@@ -126,6 +126,8 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 131;
 {
     [super viewDidLoad];
     
+    [self.listTableView setAlwaysBounceVertical:NO]; // For some reason this doesn't work when set from the nib
+    
     // because we're using iOS 4 and above, use UINib to cache access to the NIB
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
         self.listTableCellNib = [UINib nibWithNibName:@"SCHBookShelfTableViewCell_iPad" bundle:nil];

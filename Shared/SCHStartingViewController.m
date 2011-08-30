@@ -98,7 +98,9 @@ typedef enum {
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-
+    
+    [self.starterTableView setAlwaysBounceVertical:NO]; // For some reason this doesn't work when set from the nib
+    
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(willEnterForeground:)
                                                  name:UIApplicationWillEnterForegroundNotification
