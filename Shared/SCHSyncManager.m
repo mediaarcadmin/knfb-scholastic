@@ -229,12 +229,12 @@ static NSTimeInterval const kSCHLastFirstSyncInterval = -300.0;
 // after login or opening the app, also coming out of background
 - (void)firstSync:(BOOL)syncNow;
 {
-    if ([self shouldSync] == YES) {	
-        // reset if the date has been changed in a backward motion
-        if ([self.lastFirstSyncEnded compare:[NSDate date]] == NSOrderedDescending) {
-            self.lastFirstSyncEnded = nil;
-        }
-        
+    // reset if the date has been changed in a backward motion
+    if ([self.lastFirstSyncEnded compare:[NSDate date]] == NSOrderedDescending) {
+        self.lastFirstSyncEnded = nil;
+    }
+
+    if ([self shouldSync] == YES) {	        
         if (syncNow == YES || self.lastFirstSyncEnded == nil || 
             [self.lastFirstSyncEnded timeIntervalSinceNow] < kSCHLastFirstSyncInterval) {
             NSLog(@"Scheduling First Sync");
@@ -266,25 +266,30 @@ static NSTimeInterval const kSCHLastFirstSyncInterval = -300.0;
             
             [self kickQueue];	
         }
-    } else {
+    } else  {
+        BOOL importedBooks = NO;
+        
         if ([[SCHAppStateManager sharedAppStateManager] isSampleStore] == YES) {
             SCHPopulateDataStore *populateDataStore = [self populateDataStore];
             
-            [populateDataStore populateFromImport];
+            importedBooks = [populateDataStore populateFromImport] > 0;
         }
 
-        [[NSNotificationCenter defaultCenter] postNotificationName:SCHProfileSyncComponentDidCompleteNotification 
-                                                            object:self];		
-        [[NSNotificationCenter defaultCenter] postNotificationName:SCHContentSyncComponentDidCompleteNotification 
-                                                            object:self];		
-        [[NSNotificationCenter defaultCenter] postNotificationName:SCHBookshelfSyncComponentDidCompleteNotification 
-                                                            object:self];		
-        [[NSNotificationCenter defaultCenter] postNotificationName:SCHAnnotationSyncComponentDidCompleteNotification 
-                                                            object:self];		        
-        [[NSNotificationCenter defaultCenter] postNotificationName:SCHReadingStatsSyncComponentDidCompleteNotification
-                                                            object:nil];    
-        [[NSNotificationCenter defaultCenter] postNotificationName:SCHSettingsSyncComponentDidCompleteNotification
-                                                            object:nil];            
+        if (importedBooks || self.lastFirstSyncEnded == nil || [self.lastFirstSyncEnded timeIntervalSinceNow] < kSCHLastFirstSyncInterval) {
+            [[NSNotificationCenter defaultCenter] postNotificationName:SCHProfileSyncComponentDidCompleteNotification 
+                                                                object:self];		
+            [[NSNotificationCenter defaultCenter] postNotificationName:SCHContentSyncComponentDidCompleteNotification 
+                                                                object:self];		
+            [[NSNotificationCenter defaultCenter] postNotificationName:SCHBookshelfSyncComponentDidCompleteNotification 
+                                                                object:self];		
+            [[NSNotificationCenter defaultCenter] postNotificationName:SCHAnnotationSyncComponentDidCompleteNotification 
+                                                                object:self];		        
+            [[NSNotificationCenter defaultCenter] postNotificationName:SCHReadingStatsSyncComponentDidCompleteNotification
+                                                                object:nil];    
+            [[NSNotificationCenter defaultCenter] postNotificationName:SCHSettingsSyncComponentDidCompleteNotification
+                                                                object:nil];   
+            self.lastFirstSyncEnded = [NSDate date];
+        }
     }
 }
 

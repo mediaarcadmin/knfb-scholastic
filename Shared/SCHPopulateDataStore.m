@@ -45,7 +45,7 @@
                           drmQualifer:(SCHDRMQualifiers)drmQualifer
                            profileIDs:(NSArray *)profileIDs;
 - (NSArray *)listXPSFilesFrom:(NSString *)directory;
-- (void)populateBook:(NSString *)xpsFilePath profileIDs:(NSArray *)profileIDs;
+- (BOOL)populateBook:(NSString *)xpsFilePath profileIDs:(NSArray *)profileIDs;
 
 @end
 
@@ -208,26 +208,28 @@
     }
 }
 
-- (void)populateFromImport
+- (NSUInteger)populateFromImport
 {
     NSError *error = nil;
     NSArray *documentDirectorys = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
     NSString *documentDirectory = ([documentDirectorys count] > 0) ? [documentDirectorys objectAtIndex:0] : nil;
+    NSUInteger ret = 0;
     
     if (documentDirectory != nil) {
         for (NSString *xpsFilePath in [self listXPSFilesFrom:documentDirectory]) {
             // use the first profile which we expect to be profileID 1
-            [self populateBook:xpsFilePath profileIDs:[NSArray arrayWithObject:[NSNumber numberWithInteger:1]]];
+            if ([self populateBook:xpsFilePath profileIDs:[NSArray arrayWithObject:[NSNumber numberWithInteger:1]]] == YES) {
+                ret++;
+            }
         }
         
         if ([self.managedObjectContext save:&error] == NO) {
             NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
             abort();
-        }         
-        
-        // fire off processing
-        [[NSNotificationCenter defaultCenter] postNotificationName:SCHBookshelfSyncComponentDidCompleteNotification object:self];
+        }                 
     }
+    
+    return(ret);
 }
 
 - (NSArray *)listXPSFilesFrom:(NSString *)directory
@@ -410,8 +412,9 @@
     return(ret);    
 }
 
-- (void)populateBook:(NSString *)xpsFilePath profileIDs:(NSArray *)profileIDs
+- (BOOL)populateBook:(NSString *)xpsFilePath profileIDs:(NSArray *)profileIDs
 {
+    BOOL ret = YES;
     NSError *error = nil;
     NSString *title = nil;
     NSString *author = nil;
@@ -497,9 +500,12 @@
             newContentMetadataItem.AppBook.State = [NSNumber numberWithInt:SCHBookProcessingStateReadyForLicenseAcquisition];
         }
         else {
+            ret = NO;
             [xpsProvider release], xpsProvider = nil;
         }
     }
+    
+    return(ret);
 }
 
 @end
