@@ -41,6 +41,13 @@
     [super dealloc];
 }
 
+- (BOOL)hasStatistics
+{
+    return(self.pagesRead > 0 || 
+           self.storyInteractions > 0 ||
+           [self.dictionaryLookupsList count] > 0);
+}
+
 #pragma mark - Accessor methods
 
 - (void)increaseReadingDurationBy:(NSUInteger)durationInSeconds

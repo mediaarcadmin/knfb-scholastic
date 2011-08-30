@@ -19,6 +19,8 @@
 @property (nonatomic, assign, readonly) NSUInteger storyInteractions;
 @property (nonatomic, retain) NSMutableSet *dictionaryLookupsList;
 
+- (BOOL)hasStatistics;
+
 - (void)increaseReadingDurationBy:(NSUInteger)durationInSeconds;
 - (void)increasePagesReadBy:(NSUInteger)pages;
 - (void)increaseStoryInteractionsBy:(NSUInteger)newStoryInteractions;

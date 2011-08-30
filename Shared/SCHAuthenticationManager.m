@@ -28,6 +28,7 @@ NSString * const SCHAuthenticationManagerDidFailNotification = @"SCHAuthenticati
 NSString * const kSCHAuthenticationManagerAToken = @"aToken";
 NSString * const kSCHAuthenticationManagerOfflineMode = @"OfflineMode";
 NSString * const SCHAuthenticationManagerDidDeregisterNotification = @"SCHAuthenticationManagerDidDeregisterNotification";
+NSString * const SCHAuthenticationManagerDidClearAfterDeregisterNotification = @"SCHAuthenticationManagerDidClearAfterDeregisterNotification";
 NSString * const SCHAuthenticationManagerDidFailDeregistrationNotification = @"SCHAuthenticationManagerDidFailDeregistrationNotification";
 NSString * const kSCHAuthenticationManagerNSError = @"NSError";
 
@@ -490,6 +491,9 @@ typedef struct AuthenticateWithUserNameParameters AuthenticateWithUserNameParame
         [self clearOnMainThread];
         [self clearAppProcessingOnMainThread];
         [(AppDelegate_Shared *)[[UIApplication sharedApplication] delegate] clearUserDefaults];
+        [[NSNotificationCenter defaultCenter] postNotificationName:SCHAuthenticationManagerDidClearAfterDeregisterNotification
+                                                            object:self 
+                                                          userInfo:nil];		                
     }
     self.drmRegistrationSession = nil;
 }

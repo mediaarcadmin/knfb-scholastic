@@ -58,8 +58,7 @@
 		
 		self.connection = [NSURLConnection 
 						   connectionWithRequest:[NSURLRequest requestWithURL:
-                                                  //[NSURL URLWithString:@"http://iMac.local/~neil/dictionary/UpdateManifest.xml"]]
-                                                  [NSURL URLWithString:@"http://bits.blioreader.com/partners/Scholastic/SLInstall/QAStandard/UpdateManifest.xml"]]
+                                                  [NSURL URLWithString:@"http://reader.ebooks2.scholastic.com/reader/sch/UpdateManifest.xml"]]
 						   delegate:self];
 		
         [self startOp];
