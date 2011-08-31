@@ -269,10 +269,10 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 
 - (void)releaseViewObjects
 {
-    if (storyInteractionController != nil) {
-        [storyInteractionController removeFromHostView];
-    } else if (notesView != nil) {
-        [notesView removeFromView];
+    if (self.storyInteractionController != nil && [self.storyInteractionController shouldPresentInReadingView]) {
+        [self.storyInteractionController removeFromHostView];
+    } else if (self.notesView != nil) {
+        [self.notesView removeFromView];
     }
     
     [notesView release], notesView = nil;
