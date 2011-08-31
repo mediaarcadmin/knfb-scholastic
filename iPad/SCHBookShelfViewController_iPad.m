@@ -112,7 +112,7 @@ static NSTimeInterval const kSCHBookShelfViewControllerTopTenRefreshTime = -600.
     
     [containerView addSubview:themeButton];
     
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:containerView];
+    self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithCustomView:containerView] autorelease];
     [containerView release];
     
     if ([self.profileItem.BookshelfStyle intValue] == kSCHBookshelfStyleYoungChild) {
@@ -124,7 +124,7 @@ static NSTimeInterval const kSCHBookShelfViewControllerTopTenRefreshTime = -600.
         
         [containerView addSubview:homeButton];
         
-        self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:containerView];
+        self.navigationItem.leftBarButtonItem = [[[UIBarButtonItem alloc] initWithCustomView:containerView] autorelease];
         [containerView release];
     } else {
         self.sortButton = [SCHThemeButton buttonWithType:UIButtonTypeCustom];
@@ -154,7 +154,7 @@ static NSTimeInterval const kSCHBookShelfViewControllerTopTenRefreshTime = -600.
         
         [containerView addSubview:homeButton];
         
-        self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:containerView];
+        self.navigationItem.leftBarButtonItem = [[[UIBarButtonItem alloc] initWithCustomView:containerView] autorelease];
         [containerView release];
         
     }
@@ -243,7 +243,7 @@ static NSTimeInterval const kSCHBookShelfViewControllerTopTenRefreshTime = -600.
     popoverTable.title = @"Sort By";
     UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:popoverTable];
 
-    self.popover = [[UIPopoverController alloc] initWithContentViewController:navController];
+    self.popover = [[[UIPopoverController alloc] initWithContentViewController:navController] autorelease];
     self.popover.delegate = self;
     
     CGRect senderFrame = sender.superview.frame;
@@ -270,8 +270,7 @@ static NSTimeInterval const kSCHBookShelfViewControllerTopTenRefreshTime = -600.
     if (self.topFavoritesComponent == nil) {
         self.topTenBooks = nil;
         
-        self.topFavoritesComponent = [[SCHTopFavoritesComponent alloc] init];
-        [self.topFavoritesComponent release];
+        self.topFavoritesComponent = [[[SCHTopFavoritesComponent alloc] init] autorelease];
         self.topFavoritesComponent.delegate = self;
     }
 
@@ -293,7 +292,7 @@ static NSTimeInterval const kSCHBookShelfViewControllerTopTenRefreshTime = -600.
     popoverTable.title = @"Top Ten Books";
     UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:popoverTable];
     
-    self.popover = [[UIPopoverController alloc] initWithContentViewController:navController];
+    self.popover = [[[UIPopoverController alloc] initWithContentViewController:navController] autorelease];
     self.popover.delegate = self;
     
     CGRect senderFrame = sender.superview.frame;
@@ -316,7 +315,7 @@ static NSTimeInterval const kSCHBookShelfViewControllerTopTenRefreshTime = -600.
         self.popover = nil;
     }
     
-    self.popover = [[UIPopoverController alloc] initWithContentViewController:self.themePickerContainer];
+    self.popover = [[[UIPopoverController alloc] initWithContentViewController:self.themePickerContainer] autorelease];
     self.popover.delegate = self;
     
     CGRect senderFrame = sender.superview.frame;

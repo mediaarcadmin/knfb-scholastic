@@ -37,8 +37,8 @@
 {
     if ((self = [super init])) {
         
-        self.storyInteractionCurrentCount = [[NSMutableDictionary alloc] init];
-        self.storyInteractionsComplete = [[NSMutableDictionary alloc] init];
+        self.storyInteractionCurrentCount = [NSMutableDictionary dictionary];
+        self.storyInteractionsComplete = [NSMutableDictionary dictionary];
         
         // get the raw array of stories from the parser
         NSData *xml = [xpsProvider dataForComponentAtPath:KNFBXPSStoryInteractionsMetadataFile];

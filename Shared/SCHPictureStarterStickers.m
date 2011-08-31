@@ -223,6 +223,7 @@ static NSString *cacheDirectory()
     if (!thumbContext) {
         CGColorSpaceRef colorSpace = CGColorSpaceCreateDeviceRGB();
         thumbContext = CGBitmapContextCreate(NULL, thumbSize, thumbSize, 8, thumbSize*4, colorSpace, kCGImageAlphaPremultipliedLast);
+        CGColorSpaceRelease(colorSpace);
     }
     
     UIImage *image = [[UIImage alloc] initWithContentsOfFile:imagePath];

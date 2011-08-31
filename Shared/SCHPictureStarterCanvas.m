@@ -30,7 +30,7 @@
 
 - (void)cancelCurrentDrawingInstruction;
 - (void)commitDrawingInstruction:(id<SCHPictureStarterDrawingInstruction>)instruction;
-- (CGContextRef)createPaintContext;
+- (CGContextRef)newPaintContext;
 - (CGFloat)updateZoom:(CGFloat)scale point:(CGPoint)point minimumZoom:(CGFloat)minimumZoom animated:(BOOL)animated;
 
 @end;
@@ -86,13 +86,13 @@
         self.liveLayer.contentsScale = self.deviceScale;
         [self.layer addSublayer:self.liveLayer];
 
-        self.paintContext = [self createPaintContext];
+        self.paintContext = [self newPaintContext];
         self.paintedLayer.contents = nil;
     }
     return self;
 }
 
-- (CGContextRef)createPaintContext
+- (CGContextRef)newPaintContext
 {
     CGColorSpaceRef colorSpace = CGColorSpaceCreateDeviceRGB();
     CGContextRef context = CGBitmapContextCreate(NULL, CGRectGetWidth(self.bounds)*self.deviceScale, CGRectGetHeight(self.bounds)*self.deviceScale,
@@ -255,7 +255,7 @@
     self.liveLayer.delegate = nil;
     self.currentInstruction = nil;
     CGContextRelease(self.paintContext);
-    self.paintContext = [self createPaintContext];
+    self.paintContext = [self newPaintContext];
     self.paintedLayer.contents = nil;
     [self.liveLayer setNeedsDisplay];
     
@@ -264,7 +264,7 @@
 
 - (CGImageRef)image
 {
-    CGContextRef context = [self createPaintContext];
+    CGContextRef context = [self newPaintContext];
     
     CGImageRef backgroundImage = (CGImageRef)self.backgroundLayer.contents;
     if (backgroundImage != NULL) {

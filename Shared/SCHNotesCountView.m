@@ -30,7 +30,7 @@ static const CGFloat kSCHNotesCountViewMinHeight = 21;
     self = [super initWithImage:image];
     
     if (self) {
-        self.countLabel = [[UILabel alloc] init];
+        self.countLabel = [[[UILabel alloc] init] autorelease];
         self.countLabel.font = [UIFont boldSystemFontOfSize:12.0f];
         self.countLabel.textColor = [UIColor whiteColor];
         self.countLabel.backgroundColor = [UIColor clearColor];

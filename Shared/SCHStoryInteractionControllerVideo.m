@@ -80,7 +80,10 @@ static CGFloat const kSCHStoryInteractionControllerVideoBorderWidth = 4.0;
     }
     
     if (movieURL) {
-        self.moviePlayer = [[MPMoviePlayerController alloc] initWithContentURL:movieURL];
+        MPMoviePlayerController *player = [[MPMoviePlayerController alloc] initWithContentURL:movieURL];
+        self.moviePlayer = player;
+        [player release];
+        
         [[NSNotificationCenter defaultCenter] addObserver:self
                                                  selector:@selector(moviePlayerPlaybackStateDidChangeNotification:)
                                                      name:MPMoviePlayerPlaybackStateDidChangeNotification
@@ -91,8 +94,6 @@ static CGFloat const kSCHStoryInteractionControllerVideoBorderWidth = 4.0;
         self.moviePlayer.shouldAutoplay = NO;
         [self.moviePlayer.view setFrame:self.movieContainerView.bounds];
         [self.movieContainerView addSubview:self.moviePlayer.view];
-        [self.moviePlayer release];
-
     }
     
     // register for going into the background

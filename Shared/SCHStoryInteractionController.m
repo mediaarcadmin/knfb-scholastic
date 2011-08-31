@@ -257,7 +257,7 @@ static Class controllerClassForStoryInteraction(SCHStoryInteraction *storyIntera
             [self.containerView addSubview:self.readAloudButton];
         }
     } else {
-        [self.readAloudButton release];
+        [self.readAloudButton removeFromSuperview];
         self.readAloudButton = nil;
     }
     
