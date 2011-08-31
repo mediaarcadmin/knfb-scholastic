@@ -83,12 +83,6 @@ typedef enum
 // setup the title text
 - (void)setupTitle;
 
-// rotation about to occur
-- (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration;
-
-// rotation complete
-- (void)didRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation;
-
 // obtain a Controller for a StoryInteraction.
 + (SCHStoryInteractionController *)storyInteractionControllerForStoryInteraction:(SCHStoryInteraction *)storyInteraction;
 
@@ -179,8 +173,8 @@ typedef enum
 // the frame for the overlaid title view
 - (CGRect)overlaidTitleFrame;
 
-// YES if the story interaction should be presented as a subview of the reading view
-- (BOOL)shouldPresentInReadingView;
+// YES (default) if a snapshot of the reading view should be shown as a background to this SI
+- (BOOL)shouldShowSnapshotOfReadingViewInBackground;
 
 // most story interactions are presented in landscape; override to return YES if the SI should be
 // presented in portrait orientation

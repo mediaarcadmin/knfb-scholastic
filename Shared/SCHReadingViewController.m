@@ -269,9 +269,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 
 - (void)releaseViewObjects
 {
-    if (self.storyInteractionController != nil && [self.storyInteractionController shouldPresentInReadingView]) {
-        [self.storyInteractionController removeFromHostView];
-    } else if (self.notesView != nil) {
+    if (self.notesView != nil) {
         [self.notesView removeFromView];
     }
     
@@ -710,7 +708,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 // Override to allow orientations other than the default portrait orientation.
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation 
 {
-    if (self.storyInteractionController != nil && ![self.storyInteractionController shouldPresentInReadingView]) {
+    if (self.storyInteractionController != nil) {
         // Temporarily override this to force the reading view into the correct orientation before an SI appears
         // - see the dummy modal view controller trick in presentStoryInteraction
         return UIInterfaceOrientationIsPortrait(interfaceOrientation) == [self.storyInteractionController shouldPresentInPortraitOrientation];
@@ -728,9 +726,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     
     // Did we defer presenting an SI until the reading view was forced into the correct orientation?
     // - see the dummy modal view controller trick in presentStoryInteraction
-    if (self.storyInteractionController != nil
-        && ![self.storyInteractionController shouldPresentInReadingView]
-        && [self.navigationController topViewController] == self) {
+    if (self.storyInteractionController != nil && [self.navigationController topViewController] == self) {
         [self presentStoryInteraction:self.activeStoryInteraction];
     }
 
@@ -1460,30 +1456,30 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
         self.storyInteractionController.delegate = self;
         self.storyInteractionController.xpsProvider = self.xpsProvider;
         
-        if (![self.storyInteractionController shouldPresentInReadingView]) {
-            SCHStoryInteractionStandaloneViewController *standalone = [[SCHStoryInteractionStandaloneViewController alloc] init];
-            standalone.storyInteractionController = self.storyInteractionController;
-            
-            if ([self.storyInteractionController shouldPresentInPortraitOrientation] != UIInterfaceOrientationIsPortrait(self.interfaceOrientation)) {
-                // We're currently in the wrong orientation for this SI. Dummy-presenting a modal view controller like this
-                // causes a re-check of shouldAutorotateToInterfaceOrientation, which will override the default now that an
-                // SI controller is active, causing the view to rotate to the required orientation. didRotateFromInterfaceOrientation
-                // will look for a pending SI and call back here to finish the presentation.
-                [self presentModalViewController:standalone animated:NO];
-                [self dismissModalViewControllerAnimated:NO];
-                [standalone release];
-                return;
-            }
-            
-            [standalone setReadingViewSnapshot:[self currentPageSnapshot]];
-            [self.navigationController pushViewController:standalone animated:NO];
+        SCHStoryInteractionStandaloneViewController *standalone = [[SCHStoryInteractionStandaloneViewController alloc] init];
+        standalone.storyInteractionController = self.storyInteractionController;
+        
+        if ([self.storyInteractionController shouldPresentInPortraitOrientation] != UIInterfaceOrientationIsPortrait(self.interfaceOrientation)) {
+            // We're currently in the wrong orientation for this SI. Dummy-presenting a modal view controller like this
+            // causes a re-check of shouldAutorotateToInterfaceOrientation, which will override the default now that an
+            // SI controller is active, causing the view to rotate to the required orientation. didRotateFromInterfaceOrientation
+            // will look for a pending SI and call back here to finish the presentation.
+            [self presentModalViewController:standalone animated:NO];
+            [self dismissModalViewControllerAnimated:NO];
             [standalone release];
+            return;
         }
         
-        [self.storyInteractionController presentInHostView:self.navigationController.view
-                                  withInterfaceOrientation:[[self.navigationController topViewController] interfaceOrientation]];
+        if ([self.storyInteractionController shouldShowSnapshotOfReadingViewInBackground]) {
+            [standalone setReadingViewSnapshot:[self currentPageSnapshot]];
+        }
         
-         if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
+        [self.navigationController pushViewController:standalone animated:NO];
+        [self.storyInteractionController presentInHostView:self.navigationController.view
+                                  withInterfaceOrientation:standalone.interfaceOrientation];
+        [standalone release];
+
+        if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
             [self setupStoryInteractionButtonForCurrentPagesAnimated:YES];
             [self setToolbarVisibility:NO animated:YES];
         }
@@ -2658,7 +2654,6 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 
 - (CGAffineTransform)viewToPageTransformForLayoutPage:(NSInteger)layoutPage
 {
-    
     NSInteger pageIndex = layoutPage - 1;
     
     if (pageIndex >= 0) {
