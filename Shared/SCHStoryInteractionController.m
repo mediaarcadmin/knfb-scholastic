@@ -814,6 +814,11 @@ static Class controllerClassForStoryInteraction(SCHStoryInteraction *storyIntera
     return CGRectZero;
 }
 
+- (BOOL)shouldPresentInReadingView
+{
+    return NO;
+}
+
 - (BOOL)shouldPresentInPortraitOrientation
 {
     return NO;

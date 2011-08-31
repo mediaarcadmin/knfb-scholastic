@@ -50,6 +50,11 @@
     return SCHStoryInteractionTitleOverlaysContents;
 }
 
+- (BOOL)shouldPresentInReadingView
+{
+    return YES;
+}
+
 - (CGRect)overlaidTitleFrame
 {
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
