@@ -36,7 +36,7 @@
 
 - (void)clear
 {
-    self.libreAccessWebService = [[SCHLibreAccessWebService alloc] init];	
+    self.libreAccessWebService = [[[SCHLibreAccessWebService alloc] init] autorelease];	
     self.libreAccessWebService.delegate = self;    
 }
 

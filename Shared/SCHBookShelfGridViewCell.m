@@ -29,7 +29,7 @@
 - (id)initWithFrame:(CGRect)frame reuseIdentifier:(NSString *)aReuseIdentifier 
 {
 	if ((self = [super initWithFrame:frame reuseIdentifier:aReuseIdentifier])) {
-        self.bookCoverView = [[SCHBookCoverView alloc] initWithFrame:CGRectZero];
+        self.bookCoverView = [[[SCHBookCoverView alloc] initWithFrame:CGRectZero] autorelease];
         self.bookCoverView.frame = CGRectMake(0, 0, self.frame.size.width - 4, self.frame.size.height - 22);
 
         if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {

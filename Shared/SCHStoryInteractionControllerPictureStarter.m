@@ -409,6 +409,7 @@ enum SCHToolType {
                                                    }];
                               }
                           }];
+    [library release];
 }
 
 @end

@@ -18,7 +18,7 @@
 
 - (void)startElement:(const XML_Char *)name attributes:(const XML_Char **)attributes;
 - (void)endElement:(const XML_Char *)name;
-- (CGPathRef)parseXamlPath:(NSString *)pathString;
+- (CGPathRef)newPathFromXamlPath:(NSString *)pathString;
 - (CGPoint)parsePoint:(NSString *)pointString;
 
 @end
@@ -76,7 +76,7 @@ static void jigsawEndElementHandler(void *userData, const XML_Char *name)
     return (CGPathRef)[self.paths objectAtIndex:pathIndex];
 }
 
-- (CGImageRef)maskFromPathAtIndex:(NSInteger)pathIndex forPuzzleSize:(CGSize)size
+- (CGImageRef)newMaskFromPathAtIndex:(NSInteger)pathIndex forPuzzleSize:(CGSize)size
 {
     const size_t width = (size_t)ceil(size.width);
     const size_t height = (size_t)ceil(size.height);
@@ -127,7 +127,7 @@ static void jigsawEndElementHandler(void *userData, const XML_Char *name)
         for (int i = 0; attributes[i] != NULL; i += 2) {
             if (strcasecmp(attributes[i], "data") == 0) {
                 NSString *data = [[NSString stringWithUTF8String:attributes[i+1]] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
-                CGPathRef path = [self parseXamlPath:data];
+                CGPathRef path = [self newPathFromXamlPath:data];
                 [self.paths addObject:(id)path];
                 CGPathRelease(path);
             }
@@ -142,7 +142,7 @@ static void jigsawEndElementHandler(void *userData, const XML_Char *name)
     }
 }
 
-- (CGPathRef)parseXamlPath:(NSString *)pathString
+- (CGPathRef)newPathFromXamlPath:(NSString *)pathString
 {
     CGMutablePathRef path = CGPathCreateMutable();
     

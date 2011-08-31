@@ -479,7 +479,9 @@ static SCHDictionaryAccessManager *sharedManager = nil;
             self.player = nil;
         }
         
-        self.player = [[AVAudioPlayer alloc] initWithContentsOfURL:url error:&error];
+        AVAudioPlayer *newPlayer = [[AVAudioPlayer alloc] initWithContentsOfURL:url error:&error];
+        self.player = newPlayer;
+        [newPlayer release];
         
         if (self.player == nil) {
             NSLog(@"Error playing word text: %@", [error localizedDescription]);
@@ -520,7 +522,9 @@ static SCHDictionaryAccessManager *sharedManager = nil;
         self.player = nil;
     }
     
-    self.player = [[AVAudioPlayer alloc] initWithContentsOfURL:url error:&error];
+    AVAudioPlayer *newPlayer = [[AVAudioPlayer alloc] initWithContentsOfURL:url error:&error];
+    self.player = newPlayer;
+    [newPlayer release];
     
 	if (self.player == nil) {
 		NSLog(@"Error playing word definition: %@", [error localizedDescription]);

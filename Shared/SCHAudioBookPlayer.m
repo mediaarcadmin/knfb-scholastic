@@ -352,9 +352,10 @@ static NSUInteger const kSCHAudioBookPlayerNoAudioLoaded = NSUIntegerMax;
                 
                 // let the show begin
                 if (audioData != nil) {
-                    self.player = [[AVAudioPlayer alloc] initWithData:audioData error:&error];
+                    AVAudioPlayer *newPlayer = [[AVAudioPlayer alloc] initWithData:audioData error:&error];
+                    self.player = newPlayer;
+                    [newPlayer release];
                     if (self.player != nil) {
-                        [self.player release];
                         self.player.delegate = self;
                         if ([self.player prepareToPlay] == YES) {
                             ret = YES;

@@ -103,7 +103,7 @@ char * const kSCHDictionaryManifestEntryColumnSeparator = "\t";
 - (id)init
 {
 	if ((self = [super init])) {
-		self.dictionaryDownloadQueue = [[NSOperationQueue alloc] init];
+		self.dictionaryDownloadQueue = [[[NSOperationQueue alloc] init] autorelease];
 		[self.dictionaryDownloadQueue setMaxConcurrentOperationCount:1];
 		
 		self.wifiAvailable = YES;
@@ -991,6 +991,7 @@ static SCHDictionaryDownloadManager *sharedManager = nil;
         
         if (existingFile == NULL || updateFile == NULL) {
             NSLog(@"Warning: could not read a file in updateParseEntryTable..");
+            [context release];
             return;
         }
         
