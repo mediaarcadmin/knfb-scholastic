@@ -126,6 +126,7 @@
     self.contentSize = CGSizeMake(self.contentSize.width, MAX(self.contentSize.height, self.shelfHeight * self.minimumNumberOfShelves));
 }
 
+#if 0
 - (void)reloadData{
 	[self cleanupAfterCellDrop];
     
@@ -166,5 +167,6 @@
 	}
 	[self updateSize];
 }
+#endif
 
 @end
