@@ -547,14 +547,14 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
         }
     }
     
-    self.navigationToolbar = [[SCHReadingViewNavigationToolbar alloc] initWithStyle:style orientation:self.interfaceOrientation];
+    // if the book has no audio, hide the audio buttons
     SCHAppBook *book = [[SCHBookManager sharedBookManager] bookWithIdentifier:self.bookIdentifier inManagedObjectContext:self.managedObjectContext];
+    BOOL audioButtonsHidden = ![[book HasAudio] boolValue];
+    
+    self.navigationToolbar = [[SCHReadingViewNavigationToolbar alloc] initWithStyle:style audio:!audioButtonsHidden orientation:self.interfaceOrientation];
     [self.navigationToolbar setTitle:book.Title];
     [self.navigationToolbar setDelegate:self];
     
-    // if the book has no audio, hide the audio buttons
-    BOOL audioButtonsHidden = ![[book HasAudio] boolValue];
-    [self.navigationToolbar setAudioItemHidden:audioButtonsHidden];
     self.cornerAudioButtonView.hidden = audioButtonsHidden;
     
     // if the book has no story interactions disable the button

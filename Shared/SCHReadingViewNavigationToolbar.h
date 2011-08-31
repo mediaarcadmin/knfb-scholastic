@@ -36,9 +36,8 @@ typedef enum
 }
 
 @property (nonatomic, assign) id <SCHReadingViewNavigationToolbarDelegate> delegate;
-@property (nonatomic, assign) BOOL audioItemHidden;
 
-- (id)initWithStyle:(SCHReadingViewNavigationToolbarStyle)style orientation:(UIInterfaceOrientation)orientation;
+- (id)initWithStyle:(SCHReadingViewNavigationToolbarStyle)aStyle audio:(BOOL)hasAudio orientation:(UIInterfaceOrientation)orientation;
 
 - (void)setTitle:(NSString *)title;
 - (void)setAudioItemActive:(BOOL)active;
