@@ -500,7 +500,7 @@
     self.errorBadge.center = errorCenter;
 
     // resize and position the progress view
-    NSLog(@"Progress view frame: %@", NSStringFromCGRect(self.progressView.frame));
+//    NSLog(@"Progress view frame: %@", NSStringFromCGRect(self.progressView.frame));
     CGRect progressViewFrame = CGRectMake(coverFrame.origin.x + 10, self.newBadge.frame.origin.y - 10, coverFrame.size.width - 20, self.progressView.frame.size.height);
     self.progressView.frame = progressViewFrame;
     

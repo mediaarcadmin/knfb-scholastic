@@ -40,6 +40,8 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 131;
 @property (nonatomic, retain) SCHThemeButton *backButton;
 @property (nonatomic, assign) int moveToValue;
 @property (nonatomic, assign) BOOL updateShelfOnReturnToShelf;
+@property (nonatomic, assign) BOOL gridViewNeedsRefreshed;
+@property (nonatomic, assign) BOOL listViewNeedsRefreshed;
 @property (nonatomic, assign) int currentlyLoadingIndex;
 
 
@@ -85,6 +87,8 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 131;
 @synthesize managedObjectContext;
 @synthesize currentlyLoadingIndex;
 @synthesize backgroundView;
+@synthesize gridViewNeedsRefreshed;
+@synthesize listViewNeedsRefreshed;
 
 #pragma mark - Object lifecycle
 
@@ -125,6 +129,8 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 131;
 - (void)viewDidLoad 
 {
     [super viewDidLoad];
+    self.gridViewNeedsRefreshed = YES;
+    self.listViewNeedsRefreshed = YES;
     
     [self.listTableView setAlwaysBounceVertical:NO]; // For some reason this doesn't work when set from the nib
     
@@ -264,12 +270,17 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 131;
 
 - (void)reloadData
 {
-    NSLog(@"Calling reloadData on the grid view.");
     dispatch_async(dispatch_get_main_queue(), ^{
-        if (![self.listTableView isHidden]) {
+        
+        if (![self.listTableView isHidden] && self.listViewNeedsRefreshed) {
+            NSLog(@"Reloading the list view.");
+            self.listViewNeedsRefreshed = NO;
             [self.listTableView reloadData];
         }
-        if (![self.gridView isHidden]) {
+        
+        if (![self.gridView isHidden] && self.gridViewNeedsRefreshed) {
+            NSLog(@"Reloading the grid view.");
+            self.gridViewNeedsRefreshed = NO;
             [self.gridView reloadData];
         }
     });
@@ -384,6 +395,8 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 131;
 	[books release];
     books = newBooks;
     
+    self.gridViewNeedsRefreshed = YES;
+    self.listViewNeedsRefreshed = YES;
     [self reloadData];
 }
 
@@ -464,6 +477,8 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 131;
                 }
             }
             if (refreshTable == YES) {
+                self.gridViewNeedsRefreshed = YES;
+                self.listViewNeedsRefreshed = YES;
                 [self reloadData];
                 break;
             }
@@ -602,6 +617,9 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 131;
     } else {
         appContentProfileItem.IsTrashed = [NSNumber numberWithBool:YES];
     }
+    self.gridViewNeedsRefreshed = YES;
+    self.listViewNeedsRefreshed = YES;
+
     [self reloadData];
     [self save];
 }
@@ -625,6 +643,8 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 131;
     SCHAppContentProfileItem *appContentProfileItem = [self.profileItem appContentProfileItemForBookIdentifier:identifier];    
     if ([appContentProfileItem.IsTrashed boolValue]) {
         appContentProfileItem.IsTrashed = [NSNumber numberWithBool:NO];
+        self.gridViewNeedsRefreshed = YES;
+        self.listViewNeedsRefreshed = YES;
         [self reloadData];
         [self save];
         return;
@@ -677,6 +697,10 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 131;
 - (MRGridViewCell *)gridView:(MRGridView*)aGridView cellForGridIndex:(NSInteger)index 
 {
 	static NSString* cellIdentifier = @"ScholasticGridViewCell";
+
+//    SCHBookShelfGridView *bookshelfGridView = (SCHBookShelfGridView *)aGridView;
+//    SCHBookIdentifier *bookIdentifier = [self.books objectAtIndex:index];
+    
 	SCHBookShelfGridViewCell* gridCell = (SCHBookShelfGridViewCell *) [aGridView dequeueReusableCellWithIdentifier:cellIdentifier];
 	if (gridCell == nil) {
 		gridCell = [[[SCHBookShelfGridViewCell alloc] initWithFrame:[aGridView frameForCellAtGridIndex:index] reuseIdentifier:cellIdentifier] autorelease];
@@ -774,6 +798,8 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 131;
     SCHAppContentProfileItem *appContentProfileItem = [self.profileItem appContentProfileItemForBookIdentifier:identifier];    
     if ([appContentProfileItem.IsTrashed boolValue]) {
         appContentProfileItem.IsTrashed = [NSNumber numberWithBool:NO];
+        self.gridViewNeedsRefreshed = YES;
+        self.listViewNeedsRefreshed = YES;
         [self reloadData];
         [self save];
         return;
