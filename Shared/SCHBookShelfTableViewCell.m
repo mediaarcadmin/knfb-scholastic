@@ -120,7 +120,7 @@ static NSInteger const CELL_ACTIVITY_SPINNER = 203;
 {
     NSAssert([NSThread isMainThread], @"must refreshCell on main thread");
     
-    [self.bookCoverView refreshBookCoverView];
+//    [self.bookCoverView refreshBookCoverView];
     
     SCHBookManager *bookManager = [SCHBookManager sharedBookManager];
    	SCHAppBook *book = [bookManager bookWithIdentifier:self.identifier inManagedObjectContext:bookManager.mainThreadManagedObjectContext];    

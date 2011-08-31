@@ -126,4 +126,44 @@
     self.contentSize = CGSizeMake(self.contentSize.width, MAX(self.contentSize.height, self.shelfHeight * self.minimumNumberOfShelves));
 }
 
+- (void)reloadData{
+	[self cleanupAfterCellDrop];
+    
+    NSArray * cellIndexes = [self indexesForCellsInRect:[self bounds]];
+    NSMutableDictionary *existingCells = [NSMutableDictionary dictionary];
+    NSArray *currentCells = [self.cellIndices allValues];
+    
+	NSMutableArray * keys = [NSMutableArray array];
+	for (id key in self.cellIndices)
+	{
+        if ([cellIndexes containsObject:key]) {
+            [existingCells setObject:[self.cellIndices objectForKey:key] forKey:key];
+        } else {
+            [keys addObject:key];
+        }
+	}
+	for (int i = 0; i < [keys count];i++)
+	{
+		NSNumber * numberKey = [keys objectAtIndex:i];
+		[self removeCellAtIndex:[numberKey intValue]];
+		
+	}
+    
+    NSArray *allExistingCells = [existingCells allValues];
+	for (UIView *view in currentCells)
+	{
+        if (![allExistingCells containsObject:view]) {
+            [view removeFromSuperview];
+        }
+	}
+	
+    NSArray *allExistingCellIndices = [existingCells allKeys];
+	for (NSNumber* index in cellIndexes){
+        if (![allExistingCellIndices containsObject:index]) {
+            [self addCellAtIndex:[index intValue]];
+        }
+	}
+	[self updateSize];
+}
+
 @end
