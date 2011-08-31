@@ -7,7 +7,6 @@
 //
 
 #import "MRGridView.h"
-#import "SCHBookShelfGridViewCell.h"
 
 @interface SCHBookShelfGridView : MRGridView {
     
@@ -18,7 +17,5 @@
 @property (nonatomic, assign) CGSize  shelfInset;
 @property (nonatomic, retain) UIImage *shelfImage;
 @property (nonatomic, retain) UIView *toggleView;
-
-- (SCHBookShelfGridViewCell*)dequeueReusableCellWithCellIdentifier:(NSString *)cellIdentifier bookIdentifier:(SCHBookIdentifier *)bookIdentifier;
 
 @end
