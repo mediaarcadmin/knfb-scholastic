@@ -126,18 +126,18 @@
     self.contentSize = CGSizeMake(self.contentSize.width, MAX(self.contentSize.height, self.shelfHeight * self.minimumNumberOfShelves));
 }
 
-#if 0
 - (void)reloadData{
 	[self cleanupAfterCellDrop];
     
     NSArray * cellIndexes = [self indexesForCellsInRect:[self bounds]];
     NSMutableDictionary *existingCells = [NSMutableDictionary dictionary];
+    NSArray *currentCells = [self.cellIndices allValues];
     
 	NSMutableArray * keys = [NSMutableArray array];
 	for (id key in self.cellIndices)
 	{
         if ([cellIndexes containsObject:key]) {
-            [existingCells setObject:[cellIndices objectForKey:key] forKey:key];
+            [existingCells setObject:[self.cellIndices objectForKey:key] forKey:key];
         } else {
             [keys addObject:key];
         }
@@ -150,23 +150,20 @@
 	}
     
     NSArray *allExistingCells = [existingCells allValues];
-	for (UIView * view in [gridView subviews])
+	for (UIView *view in currentCells)
 	{
         if (![allExistingCells containsObject:view]) {
             [view removeFromSuperview];
         }
 	}
-    //	NSLog(@"self bounds: %f,%f,%f,%f",[self bounds].origin.x,[self bounds].origin.y,[self bounds].size.width,[self bounds].size.height);
 	
     NSArray *allExistingCellIndices = [existingCells allKeys];
 	for (NSNumber* index in cellIndexes){
-        //		NSLog(@"new cellIndexes: %i",[index intValue]);
         if (![allExistingCellIndices containsObject:index]) {
             [self addCellAtIndex:[index intValue]];
         }
 	}
 	[self updateSize];
 }
-#endif
 
 @end

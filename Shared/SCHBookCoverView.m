@@ -204,8 +204,8 @@
                                                  selector:@selector(checkForImageUpdateFromNotification:)
                                                      name:@"SCHBookStateUpdate"
                                                    object:nil];
-        self.coverImageView.image = nil;
-        self.coverImageView.hidden = YES;
+        //self.coverImageView.image = nil;
+        //self.coverImageView.hidden = YES;
         self.currentImageName = nil;
         
         [self refreshBookCoverView];
