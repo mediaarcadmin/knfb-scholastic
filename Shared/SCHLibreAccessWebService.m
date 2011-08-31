@@ -327,7 +327,9 @@ static NSInteger const kSCHLibreAccessWebServiceVaid = 33;
 		LibreAccessServiceSvc_SaveUserProfilesRequest *request = [LibreAccessServiceSvc_SaveUserProfilesRequest new];
 		
 		request.authtoken = [SCHAuthenticationManager sharedAuthenticationManager].aToken;
-		request.SaveProfileList = [[LibreAccessServiceSvc_SaveProfileList alloc] init];
+        id saveProfileList = [[LibreAccessServiceSvc_SaveProfileList alloc] init];
+		request.SaveProfileList = saveProfileList;
+        [saveProfileList release];
 		LibreAccessServiceSvc_SaveProfileItem *item = nil;
 		for (id profile in userProfiles) {
 			item = [[LibreAccessServiceSvc_SaveProfileItem alloc] init];
@@ -335,7 +337,6 @@ static NSInteger const kSCHLibreAccessWebServiceVaid = 33;
 			[request.SaveProfileList addSaveProfileItem:item];	
 			[item release], item = nil;
 		}	
-		[request.SaveProfileList release];
 		
 		[self.binding SaveUserProfilesAsyncUsingParameters:request delegate:self]; 
 		[[BITNetworkActivityManager sharedNetworkActivityManager] showNetworkActivityIndicator];
@@ -394,7 +395,9 @@ static NSInteger const kSCHLibreAccessWebServiceVaid = 33;
 		
 		request.authtoken = [SCHAuthenticationManager sharedAuthenticationManager].aToken;
 		request.count = [NSNumber numberWithInteger:(count < 1 ? 1 : count)];
-		request.TopFavoritesRequestList = [[LibreAccessServiceSvc_TopFavoritesRequestList alloc] init];
+        id topFavouritesRequestList = [[LibreAccessServiceSvc_TopFavoritesRequestList alloc] init];
+		request.TopFavoritesRequestList = topFavouritesRequestList;
+        [topFavouritesRequestList release];
 		LibreAccessServiceSvc_TopFavoritesRequestItem *item = nil;
 		for (id favorite in favorites) {
 			item = [[LibreAccessServiceSvc_TopFavoritesRequestItem alloc] init];
@@ -402,7 +405,6 @@ static NSInteger const kSCHLibreAccessWebServiceVaid = 33;
 			[request.TopFavoritesRequestList addTopFavoritesRequestItem:item];
 			[item release], item = nil;
 		}
-		[request.TopFavoritesRequestList release];
 		
 		[self.binding ListTopFavoritesAsyncUsingParameters:request delegate:self]; 
 		[[BITNetworkActivityManager sharedNetworkActivityManager] showNetworkActivityIndicator];
@@ -470,7 +472,9 @@ static NSInteger const kSCHLibreAccessWebServiceVaid = 33;
 		LibreAccessServiceSvc_SaveUserSettingsRequest *request = [LibreAccessServiceSvc_SaveUserSettingsRequest new];
 		
 		request.authtoken = [SCHAuthenticationManager sharedAuthenticationManager].aToken;
-		request.UserSettingsList = [[LibreAccessServiceSvc_UserSettingsList alloc] init];
+        id userSettingsList = [[LibreAccessServiceSvc_UserSettingsList alloc] init];
+		request.UserSettingsList = userSettingsList;
+        [userSettingsList release];
 		LibreAccessServiceSvc_UserSettingsItem *item = nil;
 		for (id setting in settings) {
 			item = [[LibreAccessServiceSvc_UserSettingsItem alloc] init];
@@ -478,7 +482,6 @@ static NSInteger const kSCHLibreAccessWebServiceVaid = 33;
 			[request.UserSettingsList addUserSettingsItem:item];	
 			[item release], item = nil;
 		}
-		[request.UserSettingsList release];
 		
 		[self.binding SaveUserSettingsAsyncUsingParameters:request delegate:self]; 
 		[[BITNetworkActivityManager sharedNetworkActivityManager] showNetworkActivityIndicator];
@@ -498,10 +501,16 @@ static NSInteger const kSCHLibreAccessWebServiceVaid = 33;
 		LibreAccessServiceSvc_ListProfileContentAnnotationsRequest *request = [LibreAccessServiceSvc_ListProfileContentAnnotationsRequest new];
 		
 		request.authtoken = [SCHAuthenticationManager sharedAuthenticationManager].aToken;
-		request.AnnotationsRequestList = [[LibreAccessServiceSvc_AnnotationsRequestList alloc] init];
+        id annotationsRequestList = [[LibreAccessServiceSvc_AnnotationsRequestList alloc] init];
+        id annotationsRequestItem = [[LibreAccessServiceSvc_AnnotationsRequestItem alloc] init];
+        id annotationsRequestContentList = [[LibreAccessServiceSvc_AnnotationsRequestContentList alloc] init];
+		request.AnnotationsRequestList = annotationsRequestList;
 		request.AnnotationsRequestList.profileID = profileID;
-		request.AnnotationsRequestList.AnnotationsRequestItem = [[LibreAccessServiceSvc_AnnotationsRequestItem alloc] init];
-		request.AnnotationsRequestList.AnnotationsRequestItem.AnnotationsRequestContentList = [[LibreAccessServiceSvc_AnnotationsRequestContentList alloc] init];
+		request.AnnotationsRequestList.AnnotationsRequestItem = annotationsRequestItem;
+		request.AnnotationsRequestList.AnnotationsRequestItem.AnnotationsRequestContentList = annotationsRequestContentList;
+        [annotationsRequestContentList release];
+        [annotationsRequestList release];
+        [annotationsRequestItem release];
 		
 		LibreAccessServiceSvc_AnnotationsRequestContentItem *item = nil;
 		for (id annotation in annotations) {
@@ -510,9 +519,6 @@ static NSInteger const kSCHLibreAccessWebServiceVaid = 33;
 			[request.AnnotationsRequestList.AnnotationsRequestItem.AnnotationsRequestContentList addAnnotationsRequestContentItem:item];
 			[item release], item = nil;
 		}
-		[request.AnnotationsRequestList.AnnotationsRequestItem.AnnotationsRequestContentList release];
-		[request.AnnotationsRequestList.AnnotationsRequestItem release];
-		[request.AnnotationsRequestList release];
 		
 		[self.binding ListProfileContentAnnotationsAsyncUsingParameters:request delegate:self]; 
 		[[BITNetworkActivityManager sharedNetworkActivityManager] showNetworkActivityIndicator];
@@ -532,7 +538,9 @@ static NSInteger const kSCHLibreAccessWebServiceVaid = 33;
 		LibreAccessServiceSvc_SaveProfileContentAnnotationsRequest *request = [LibreAccessServiceSvc_SaveProfileContentAnnotationsRequest new];
 		
 		request.authtoken = [SCHAuthenticationManager sharedAuthenticationManager].aToken;
-		request.AnnotationsList = [[LibreAccessServiceSvc_AnnotationsList alloc] init];
+        id annotationsList = [[LibreAccessServiceSvc_AnnotationsList alloc] init];
+		request.AnnotationsList = annotationsList;
+        [annotationsList release];
 		LibreAccessServiceSvc_AnnotationsItem *item = nil;
 		for (id annotation in annotations) {
 			item = [[LibreAccessServiceSvc_AnnotationsItem alloc] init];
@@ -540,7 +548,6 @@ static NSInteger const kSCHLibreAccessWebServiceVaid = 33;
 			[request.AnnotationsList addAnnotationsItem:item];
 			[item release], item = nil;
 		}
-		[request.AnnotationsList release];
 		
 		[self.binding SaveProfileContentAnnotationsAsyncUsingParameters:request delegate:self]; 
 		[[BITNetworkActivityManager sharedNetworkActivityManager] showNetworkActivityIndicator];
@@ -560,7 +567,10 @@ static NSInteger const kSCHLibreAccessWebServiceVaid = 33;
 		LibreAccessServiceSvc_SaveContentProfileAssignmentRequest *request = [LibreAccessServiceSvc_SaveContentProfileAssignmentRequest new];
 		
 		request.authtoken = [SCHAuthenticationManager sharedAuthenticationManager].aToken;
-		request.ContentProfileAssignmentList = [[LibreAccessServiceSvc_ContentProfileAssignmentList alloc] init];
+        id contentProfileAssignmentList = [[LibreAccessServiceSvc_ContentProfileAssignmentList alloc] init];
+		request.ContentProfileAssignmentList = contentProfileAssignmentList;
+        [contentProfileAssignmentList release];
+        
 		LibreAccessServiceSvc_ContentProfileAssignmentItem *item = nil;
 		for (id contentProfileAssignment in contentProfileAssignments) {
 			item = [[LibreAccessServiceSvc_ContentProfileAssignmentItem alloc] init];
@@ -568,7 +578,6 @@ static NSInteger const kSCHLibreAccessWebServiceVaid = 33;
 			[request.ContentProfileAssignmentList addContentProfileAssignmentItem:item];
 			[item release], item = nil;
 		}
-		[request.ContentProfileAssignmentList release];
 		
 		[self.binding SaveContentProfileAssignmentAsyncUsingParameters:request delegate:self]; 
 		[[BITNetworkActivityManager sharedNetworkActivityManager] showNetworkActivityIndicator];
@@ -588,7 +597,10 @@ static NSInteger const kSCHLibreAccessWebServiceVaid = 33;
 		LibreAccessServiceSvc_SaveReadingStatisticsDetailedRequest *request = [LibreAccessServiceSvc_SaveReadingStatisticsDetailedRequest new];
 		
 		request.authtoken = [SCHAuthenticationManager sharedAuthenticationManager].aToken;
-		request.ReadingStatsDetailList = [[LibreAccessServiceSvc_ReadingStatsDetailList alloc] init];
+        id newReadingStatsDetailList = [[LibreAccessServiceSvc_ReadingStatsDetailList alloc] init];
+		request.ReadingStatsDetailList = newReadingStatsDetailList;
+        [newReadingStatsDetailList release];
+        
 		LibreAccessServiceSvc_ReadingStatsDetailItem *item = nil;
 		for (id readingStatsDetail in readingStatsDetailList) {
 			item = [[LibreAccessServiceSvc_ReadingStatsDetailItem alloc] init];
@@ -596,7 +608,6 @@ static NSInteger const kSCHLibreAccessWebServiceVaid = 33;
 			[request.ReadingStatsDetailList addReadingStatsDetailItem:item];
 			[item release], item = nil;
 		}
-		[request.ReadingStatsDetailList release];
 		
 		[self.binding SaveReadingStatisticsDetailedAsyncUsingParameters:request delegate:self]; 
 		[[BITNetworkActivityManager sharedNetworkActivityManager] showNetworkActivityIndicator];
@@ -1589,9 +1600,10 @@ static NSInteger const kSCHLibreAccessWebServiceVaid = 33;
 		intoObject.ContentIdentifierType = [[object valueForKey:kSCHLibreAccessWebServiceContentIdentifierType] contentIdentifierTypeValue];
 		intoObject.drmqualifier = [[object valueForKey:kSCHLibreAccessWebServiceDRMQualifier] DRMQualifierValue];
 		intoObject.format = [self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceFormat]];
-		intoObject.PrivateAnnotationsRequest = [[LibreAccessServiceSvc_PrivateAnnotationsRequest alloc] init];
+        id privateAnnotationsRequest = [[LibreAccessServiceSvc_PrivateAnnotationsRequest alloc] init];
+		intoObject.PrivateAnnotationsRequest = privateAnnotationsRequest;
+        [privateAnnotationsRequest release];
 		[self fromObject:[object valueForKey:kSCHLibreAccessWebServicePrivateAnnotations] intoPrivateAnnotationsRequest:intoObject.PrivateAnnotationsRequest];
-		[intoObject.PrivateAnnotationsRequest release];
 	}
 }
 
@@ -1608,14 +1620,15 @@ static NSInteger const kSCHLibreAccessWebServiceVaid = 33;
 - (void)fromObject:(NSDictionary *)object intoAnnotationsItem:(LibreAccessServiceSvc_AnnotationsItem *)intoObject
 {
 	if (object != nil && intoObject != nil) {
-		intoObject.AnnotationsContentList = [[LibreAccessServiceSvc_AnnotationsContentList alloc] init];
+        id annotationsContentList = [[LibreAccessServiceSvc_AnnotationsContentList alloc] init];
+		intoObject.AnnotationsContentList = annotationsContentList;
+        [annotationsContentList release];
 		for (NSDictionary *item in [self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceAnnotationsContentItem]]) {
 			LibreAccessServiceSvc_AnnotationsContentItem *annotationsContentItem = [[LibreAccessServiceSvc_AnnotationsContentItem alloc] init];
 			[self fromObject:item intoAnnotationsContentItem:annotationsContentItem];
 			[intoObject.AnnotationsContentList addAnnotationsContentItem:annotationsContentItem];
 			[annotationsContentItem release];
 		}
-		[intoObject.AnnotationsContentList release];
 		intoObject.profileID = [self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceProfileID]];
 	}
 }												
@@ -1627,9 +1640,10 @@ static NSInteger const kSCHLibreAccessWebServiceVaid = 33;
 		intoObject.ContentIdentifierType = [[self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceContentIdentifierType]] contentIdentifierTypeValue];
 		intoObject.drmqualifier = [[self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceDRMQualifier]] DRMQualifierValue];		
 		intoObject.format = [self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceFormat]];
-		intoObject.PrivateAnnotations = [[LibreAccessServiceSvc_PrivateAnnotations alloc] init];
+        id privateAnnotations = [[LibreAccessServiceSvc_PrivateAnnotations alloc] init];
+		intoObject.PrivateAnnotations = privateAnnotations;
+        [privateAnnotations release];
 		[self fromObject:[object valueForKey:kSCHLibreAccessWebServicePrivateAnnotations] intoPrivateAnnotations:intoObject.PrivateAnnotations];
-		[intoObject.PrivateAnnotations release];
 	}
 }												
 
@@ -1637,7 +1651,9 @@ static NSInteger const kSCHLibreAccessWebServiceVaid = 33;
 - (void)fromObject:(NSDictionary *)object intoPrivateAnnotations:(LibreAccessServiceSvc_PrivateAnnotations *)intoObject
 {
 	if (object != nil && intoObject != nil) {
-		intoObject.Highlights = [[LibreAccessServiceSvc_Highlights alloc] init];
+        id highlights = [[LibreAccessServiceSvc_Highlights alloc] init];
+		intoObject.Highlights = highlights;
+        [highlights release];
 		for (NSDictionary *item in [self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceHighlights]]) {
 			if ([[self fromObjectTranslate:[item valueForKey:kSCHLibreAccessWebServiceAction]] saveActionValue] != kSCHSaveActionsNone) {
                 LibreAccessServiceSvc_Highlight *highlight = [[LibreAccessServiceSvc_Highlight alloc] init];
@@ -1646,9 +1662,10 @@ static NSInteger const kSCHLibreAccessWebServiceVaid = 33;
                 [highlight release], highlight = nil;
             }
 		}
-		[intoObject.Highlights release];
 		
-		intoObject.Notes = [[LibreAccessServiceSvc_Notes alloc] init];
+        id notes = [[LibreAccessServiceSvc_Notes alloc] init];
+		intoObject.Notes = notes;
+        [notes release];
 		for (NSDictionary *item in [self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceNotes]]) {
             if ([[self fromObjectTranslate:[item valueForKey:kSCHLibreAccessWebServiceAction]] saveActionValue] != kSCHSaveActionsNone) {
                 LibreAccessServiceSvc_Note *note = [[LibreAccessServiceSvc_Note alloc] init];
@@ -1656,10 +1673,11 @@ static NSInteger const kSCHLibreAccessWebServiceVaid = 33;
                 [intoObject.Notes addNote:note];
                 [note release], note = nil;
             }
-		}									
-		[intoObject.Notes release];
+		}
 		
-		intoObject.Bookmarks = [[LibreAccessServiceSvc_Bookmarks alloc] init];
+        id bookmarks = [[LibreAccessServiceSvc_Bookmarks alloc] init];
+		intoObject.Bookmarks = bookmarks;
+        [bookmarks release];
 		for (NSDictionary *item in [self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceBookmarks]]) {
             if ([[self fromObjectTranslate:[item valueForKey:kSCHLibreAccessWebServiceAction]] saveActionValue] != kSCHSaveActionsNone) {
                 LibreAccessServiceSvc_Bookmark *bookmark = [[LibreAccessServiceSvc_Bookmark alloc] init];
@@ -1667,12 +1685,12 @@ static NSInteger const kSCHLibreAccessWebServiceVaid = 33;
                 [intoObject.Bookmarks addBookmark:bookmark];
                 [bookmark release], bookmark = nil;
             }
-		}									
-		[intoObject.Bookmarks release];
-		
-		intoObject.LastPage = [[LibreAccessServiceSvc_LastPage alloc] init];
+		}
+        
+        id lastPage = [[LibreAccessServiceSvc_LastPage alloc] init];
+		intoObject.LastPage = lastPage;
+        [lastPage release];
 		[self fromObject:[self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceLastPage]] intoLastPage:intoObject.LastPage];
-		[intoObject.LastPage release];		
 	}
 }												
 
@@ -1683,10 +1701,11 @@ static NSInteger const kSCHLibreAccessWebServiceVaid = 33;
         if (intoObject.action != kSCHSaveActionsCreate) {
             intoObject.id_ = [self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceID]];
 		}
-		intoObject.color = [[object valueForKey:kSCHLibreAccessWebServiceColor] BIThexString];		
-		intoObject.location = [[LibreAccessServiceSvc_LocationText alloc] init];
+		intoObject.color = [[object valueForKey:kSCHLibreAccessWebServiceColor] BIThexString];	
+        id location = [[LibreAccessServiceSvc_LocationText alloc] init];
+		intoObject.location = location;
+        [location release];
 		[self fromObject:[self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceLocation]] intoLocationText:intoObject.location];
-		[intoObject.location release];
 		intoObject.endPage = [self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceEndPage]];		
 		intoObject.version = [self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceVersion]];				
 		intoObject.lastmodified = [self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceLastModified]];				
@@ -1697,9 +1716,10 @@ static NSInteger const kSCHLibreAccessWebServiceVaid = 33;
 {
 	if (object != nil && intoObject != nil) {
 		intoObject.page = [self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServicePage]];
-		intoObject.wordindex = [[LibreAccessServiceSvc_WordIndex alloc] init];		
+        id wordIndex = [[LibreAccessServiceSvc_WordIndex alloc] init];
+		intoObject.wordindex = wordIndex;
+        [wordIndex release];
 		[self fromObject:[self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceWordIndex]] intoWordIndex:intoObject.wordindex];
-		[intoObject.wordindex release];
 	}	
 }
 
@@ -1718,9 +1738,10 @@ static NSInteger const kSCHLibreAccessWebServiceVaid = 33;
         if (intoObject.action != kSCHSaveActionsCreate) {
             intoObject.id_ = [self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceID]];
 		}
-		intoObject.location = [[LibreAccessServiceSvc_LocationGraphics alloc] init];
+        id location = [[LibreAccessServiceSvc_LocationGraphics alloc] init];
+		intoObject.location = location;
+        [location release];
 		[self fromObject:[self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceLocation]] intoLocationGraphics:intoObject.location];
-		[intoObject.location release];
 		intoObject.color = [[object valueForKey:kSCHLibreAccessWebServiceColor] BIThexString];
 		intoObject.value = [self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceValue]];		
 		intoObject.version = [self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceVersion]];				
@@ -1732,8 +1753,9 @@ static NSInteger const kSCHLibreAccessWebServiceVaid = 33;
 {
 	if (object != nil && intoObject != nil) {
 		intoObject.page = [self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServicePage]];
-		intoObject.coords = [[LibreAccessServiceSvc_Coords alloc] init];
-		[intoObject.coords release];
+        id coords = [[LibreAccessServiceSvc_Coords alloc] init];
+		intoObject.coords = coords;
+		[coords release];
         // default values as Scholastic doesnt actually use these values
 		intoObject.coords.x = [NSNumber numberWithInteger:0];
         intoObject.coords.y = [NSNumber numberWithInteger:0];
@@ -1749,10 +1771,11 @@ static NSInteger const kSCHLibreAccessWebServiceVaid = 33;
             intoObject.id_ = [self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceID]];
 		}
 		intoObject.text = [self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceText]];
-		intoObject.disabled = [self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceDisabled]];		
-		intoObject.location = [[LibreAccessServiceSvc_LocationBookmark alloc] init];
+		intoObject.disabled = [self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceDisabled]];
+		id location = [[LibreAccessServiceSvc_LocationBookmark alloc] init];
+		intoObject.location = location;
+		[location release];
 		[self fromObject:[self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceLocation]] intoLocationBookmark:intoObject.location];
-		[intoObject.location release];
 		intoObject.version = [self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceVersion]];						
 		intoObject.lastmodified = [self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceLastModified]];				
 	}	
@@ -1782,14 +1805,15 @@ static NSInteger const kSCHLibreAccessWebServiceVaid = 33;
 		intoObject.ContentIdentifierType = [[self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceContentIdentifierType]] contentIdentifierTypeValue];
 		intoObject.drmqualifier = [[self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceDRMQualifier]] DRMQualifierValue];		
 		intoObject.format = [self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceFormat]];
-		intoObject.AssignedProfileList = [[LibreAccessServiceSvc_AssignedProfileList alloc] init];
+        id assignedProfileList = [[LibreAccessServiceSvc_AssignedProfileList alloc] init];
+		intoObject.AssignedProfileList = assignedProfileList;
+        [assignedProfileList release];
 		for (NSDictionary *item in [self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceAssignedProfileList]]) {
 			LibreAccessServiceSvc_AssignedProfileItem *contentProfileAssignmentItem = [[LibreAccessServiceSvc_AssignedProfileItem alloc] init];
 			[self fromObject:item intoAssignedProfileItem:contentProfileAssignmentItem];
 			[intoObject.AssignedProfileList addAssignedProfileItem:contentProfileAssignmentItem];
 			[contentProfileAssignmentItem release], contentProfileAssignmentItem = nil;
 		}
-		[intoObject.AssignedProfileList release];
 	}	
 }
 
@@ -1805,14 +1829,15 @@ static NSInteger const kSCHLibreAccessWebServiceVaid = 33;
 - (void)fromObject:(NSDictionary *)object intoReadingStatsDetailItem:(LibreAccessServiceSvc_ReadingStatsDetailItem *)intoObject
 {
 	if (object != nil && intoObject != nil) {
-		intoObject.ReadingStatsContentList = [[LibreAccessServiceSvc_ReadingStatsContentList alloc] init];
+        id readingStatsContentList = [[LibreAccessServiceSvc_ReadingStatsContentList alloc] init];
+		intoObject.ReadingStatsContentList = readingStatsContentList;
+        [readingStatsContentList release];
 		for (NSDictionary *item in [self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceReadingStatsContentItem]]) {
 			LibreAccessServiceSvc_ReadingStatsContentItem *readingStatsContentItem = [[LibreAccessServiceSvc_ReadingStatsContentItem alloc] init];
 			[self fromObject:item intoReadingStatsContentItem:readingStatsContentItem];
 			[intoObject.ReadingStatsContentList addReadingStatsContentItem:readingStatsContentItem];
 			[readingStatsContentItem release], readingStatsContentItem = nil;
 		}
-		[intoObject.ReadingStatsContentList release];
 		intoObject.profileID = [self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceProfileID]];
 	}	
 }
@@ -1824,14 +1849,15 @@ static NSInteger const kSCHLibreAccessWebServiceVaid = 33;
 		intoObject.contentIdentifier = [self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceContentIdentifier]];
 		intoObject.drmqualifier = [[self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceDRMQualifier]] DRMQualifierValue];		
 		intoObject.format = [self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceFormat]];
-		intoObject.ReadingStatsEntryList = [[LibreAccessServiceSvc_ReadingStatsEntryList alloc] init];
+        id readingStatsEntryList = [[LibreAccessServiceSvc_ReadingStatsEntryList alloc] init];
+		intoObject.ReadingStatsEntryList = readingStatsEntryList;
+        [readingStatsEntryList release];
 		for (NSDictionary *item in [self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceReadingStatsEntryItem]]) {
 			LibreAccessServiceSvc_ReadingStatsEntryItem *readingStatsEntryItem = [[LibreAccessServiceSvc_ReadingStatsEntryItem alloc] init];
 			[self fromObject:item intoReadingStatsEntryItem:readingStatsEntryItem];
 			[intoObject.ReadingStatsEntryList addReadingStatsEntryItem:readingStatsEntryItem];
 			[readingStatsEntryItem release], readingStatsEntryItem = nil;
 		}
-		[intoObject.ReadingStatsEntryList release];
 	}	
 }
 
@@ -1843,12 +1869,13 @@ static NSInteger const kSCHLibreAccessWebServiceVaid = 33;
 		intoObject.storyInteractions = [self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceStoryInteractions]];
 		intoObject.dictionaryLookups = [self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceDictionaryLookups]];
 		intoObject.deviceKey = [self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceDeviceKey]];
-		intoObject.timestamp = [self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceTimestamp]];				
-		intoObject.DictionaryLookupsList = [[LibreAccessServiceSvc_DictionaryLookupsList alloc] init];
+		intoObject.timestamp = [self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceTimestamp]];
+        id dictionaryLookupsList = [[LibreAccessServiceSvc_DictionaryLookupsList alloc] init];
+		intoObject.DictionaryLookupsList = dictionaryLookupsList;
+        [dictionaryLookupsList release];
 		for (NSString *item in [self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceDictionaryLookupsList]]) {
 			[intoObject.DictionaryLookupsList addDictionaryLookupsItem:item];
 		}
-		[intoObject.DictionaryLookupsList release];
 	}	
 }
 
