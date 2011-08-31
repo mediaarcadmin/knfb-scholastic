@@ -66,7 +66,7 @@
 	} else {
 		
 		self.localPath = [[SCHDictionaryDownloadManager sharedDownloadManager] dictionaryZipPath];
-        self.localFileManager = [[NSFileManager alloc] init];
+        self.localFileManager = [[[NSFileManager alloc] init] autorelease];
 
 		[self beginConnection];
 	}

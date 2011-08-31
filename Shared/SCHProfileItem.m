@@ -41,7 +41,7 @@ NSString * const kSCHProfileItemDRM_QUALIFIER = @"DRM_QUALIFIER";
 
 @interface SCHProfileItem ()
 
-- (SCHReadingStatsContentItem *)newReadingStatsContentItemForBook:(SCHBookIdentifier *)bookIdentifier;
+- (SCHReadingStatsContentItem *)makeReadingStatsContentItemForBook:(SCHBookIdentifier *)bookIdentifier;
 - (NSString *)MD5:(NSString *)string;
 - (NSString *)SHA1:(NSString *)string;
 
@@ -325,7 +325,7 @@ NSString * const kSCHProfileItemDRM_QUALIFIER = @"DRM_QUALIFIER";
         } 
         
         if (readingStatsContentItem == nil) {
-            readingStatsContentItem = [self newReadingStatsContentItemForBook:bookIdentifier];   
+            readingStatsContentItem = [self makeReadingStatsContentItemForBook:bookIdentifier];   
             readingStatsContentItem.ReadingStatsDetailItem = readingStatsDetailItem;                
         }
 
@@ -340,7 +340,7 @@ NSString * const kSCHProfileItemDRM_QUALIFIER = @"DRM_QUALIFIER";
     }
 }
 
-- (SCHReadingStatsContentItem *)newReadingStatsContentItemForBook:(SCHBookIdentifier *)bookIdentifier
+- (SCHReadingStatsContentItem *)makeReadingStatsContentItemForBook:(SCHBookIdentifier *)bookIdentifier
 {
     SCHReadingStatsContentItem *ret = nil;
     NSError *error = nil;
