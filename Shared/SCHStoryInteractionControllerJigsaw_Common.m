@@ -144,7 +144,7 @@ enum {
         CGImageRef pieceImage = CGImageCreateWithImageInRect(puzzleImage, pieceRect);
 
         // create a new piece image by clipping this to the piece mask
-        CGImageRef pieceMask = [paths maskFromPathAtIndex:pieceIndex forPuzzleSize:puzzleSize];
+        CGImageRef pieceMask = [paths newMaskFromPathAtIndex:pieceIndex forPuzzleSize:puzzleSize];
         CGImageRef maskedImage = CGImageCreateWithMask(pieceImage, pieceMask);
         CGImageRelease(pieceMask);
         CGImageRelease(pieceImage);
@@ -165,7 +165,7 @@ enum {
     return [preview autorelease];
 }
 
-- (CGImageRef)scaleImage:(CGImageRef)image toSize:(CGSize)size
+- (CGImageRef)newImageByScalingImage:(CGImageRef)image toSize:(CGSize)size
 {
     CGColorSpaceRef colorSpace = CGColorSpaceCreateDeviceRGB();
     CGContextRef context = CGBitmapContextCreate(NULL, size.width, size.height, 8, size.width*4, colorSpace, kCGImageAlphaPremultipliedLast);
@@ -190,7 +190,7 @@ enum {
         CGRect puzzleFrame = SCHAspectFitSizeInTargetRect(puzzleImage.size, self.puzzleBackground.frame);
         self.puzzleBackground.frame = puzzleFrame;
         
-        CGImageRef scaledPuzzleImage = [self scaleImage:[puzzleImage CGImage] toSize:puzzleFrame.size];
+        CGImageRef scaledPuzzleImage = [self newImageByScalingImage:[puzzleImage CGImage] toSize:puzzleFrame.size];
         NSMutableArray *pieces = [NSMutableArray arrayWithCapacity:self.numberOfPieces];
 
         [self generateJigsawPiecesFromImage:scaledPuzzleImage yieldBlock:^(CGImageRef pieceImage, CGRect frame) {

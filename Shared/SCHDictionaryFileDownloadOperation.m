@@ -29,6 +29,7 @@
 
 - (void)beginConnection;
 - (void)createPercentageUpdate;
+- (BOOL)fileSystemHasBytesAvailable:(unsigned long long)sizeInBytes;
 
 @end
 
@@ -65,7 +66,7 @@
 	} else {
 		
 		self.localPath = [[SCHDictionaryDownloadManager sharedDownloadManager] dictionaryZipPath];
-        self.localFileManager = [[NSFileManager alloc] init];
+        self.localFileManager = [[[NSFileManager alloc] init] autorelease];
 
 		[self beginConnection];
 	}
@@ -121,6 +122,19 @@
 #pragma mark -
 #pragma mark NSURLConnection delegate methods
 
+- (BOOL)fileSystemHasBytesAvailable:(unsigned long long)sizeInBytes
+{
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    NSString *docDirectory = [paths objectAtIndex:0];            
+    
+    NSDictionary* fsAttr = [self.localFileManager attributesOfFileSystemForPath:docDirectory error:NULL];
+    
+    unsigned long long freeSize = [(NSNumber*)[fsAttr objectForKey:NSFileSystemFreeSize] unsignedLongLongValue];
+    //NSLog(@"Freesize: %llu", freeSize);
+    
+    return (sizeInBytes <= freeSize);
+}
+
 - (void)connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response
 {
 	
@@ -147,20 +161,16 @@
         return;
 	}
     
-    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-    NSString *docDirectory = [paths objectAtIndex:0];            
-    
-    NSDictionary* fsAttr = [self.localFileManager attributesOfFileSystemForPath:docDirectory error:NULL];
-    
-    unsigned long long freeSize = [(NSNumber*)[fsAttr objectForKey:NSFileSystemFreeSize] unsignedLongLongValue];
-    NSLog(@"Freesize: %llu", freeSize);
-    
-    // if the response isn't "unknown length", which is a large number, then check to see if we can fit this onto the device
-    if (([response expectedContentLength] != NSURLResponseUnknownLength) && freeSize == 0 || freeSize < [response expectedContentLength]) {
-        [[SCHDictionaryDownloadManager sharedDownloadManager] threadSafeUpdateDictionaryState:SCHDictionaryProcessingStateNotEnoughFreeSpace];
-        [connection cancel];
-        [self cancel];
-        return;
+        
+    // if we cannot determine the expectedContentLength, then bail if the free space is 0
+    // oherwise bail if the the free space < expectedContentLength
+    if (([response expectedContentLength] != NSURLResponseUnknownLength)) {
+        if (![self fileSystemHasBytesAvailable:[response expectedContentLength]]) {
+            [[SCHDictionaryDownloadManager sharedDownloadManager] threadSafeUpdateDictionaryState:SCHDictionaryProcessingStateNotEnoughFreeSpace];
+            [connection cancel];
+            [self cancel];
+            return;
+        }
     }
 
 	self.expectedFileSize = [response expectedContentLength] + fileSize;
@@ -171,12 +181,18 @@
 
 - (void)connection:(NSURLConnection *)connection didReceiveData:(NSData *)data {
 	
-	@synchronized(self) {
-		NSFileHandle *handle = [NSFileHandle fileHandleForWritingAtPath:self.localPath];
-		[handle seekToEndOfFile];
-		[handle writeData:data];
-		[handle closeFile];
-	}
+    if (![self fileSystemHasBytesAvailable:[data length]]) {
+        [[SCHDictionaryDownloadManager sharedDownloadManager] threadSafeUpdateDictionaryState:SCHDictionaryProcessingStateNotEnoughFreeSpace];
+        [connection cancel];
+        [self cancel];
+    } else {
+        @synchronized(self) {
+            NSFileHandle *handle = [NSFileHandle fileHandleForWritingAtPath:self.localPath];
+            [handle seekToEndOfFile];
+            [handle writeData:data];
+            [handle closeFile];
+        }
+    }
 	
 	if ([self isCancelled]) {
 		[connection cancel];

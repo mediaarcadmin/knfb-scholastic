@@ -53,8 +53,8 @@
 		
 		NSLog(@"Starting operation..");
 		
-		self.connectionData = [[NSMutableData alloc] init];
-        self.manifestEntries = [[NSMutableArray alloc] init];
+		self.connectionData = [[[NSMutableData alloc] init] autorelease];
+        self.manifestEntries = [[[NSMutableArray alloc] init] autorelease];
 		
 		self.connection = [NSURLConnection 
 						   connectionWithRequest:[NSURLRequest requestWithURL:
@@ -78,7 +78,7 @@
 		if (!finished) {
             
             self.parsingDictionaryInfo = NO;
-            self.manifestParser = [[NSXMLParser alloc] initWithData:self.connectionData];
+            self.manifestParser = [[[NSXMLParser alloc] initWithData:self.connectionData] autorelease];
             [self.manifestParser setDelegate:self];
             [self.manifestParser parse];
             
@@ -136,7 +136,7 @@
 	else if (self.parsingDictionaryInfo) {
 		
 		if ( [elementName isEqualToString:@"UpdateEntry"] ) {
-            self.currentEntry = [[SCHDictionaryManifestEntry alloc] init];
+            self.currentEntry = [[[SCHDictionaryManifestEntry alloc] init] autorelease];
             
 			NSString * attributeStringValue = [attributeDict objectForKey:@"StartVersion"];
 			if (attributeStringValue) {

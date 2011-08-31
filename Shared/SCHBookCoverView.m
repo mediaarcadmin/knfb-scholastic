@@ -25,7 +25,7 @@
 @property (nonatomic, retain) NSString *currentImageName;
 @property (nonatomic, retain) UIProgressView *progressView;
 @property (nonatomic, retain) UIView *bookTintView;
-@property (nonatomic, retain) UIImageView *newBadge;
+@property (nonatomic, retain) UIImageView *isNewBadge;
 @property (nonatomic, retain) UIImageView *errorBadge;
 @property (nonatomic, retain) UIImageView *featureTab;
 @property (nonatomic, retain) UIActivityIndicatorView *activitySpinner;
@@ -46,7 +46,7 @@
 @synthesize currentImageName;
 @synthesize progressView;
 @synthesize bookTintView;
-@synthesize newBadge;
+@synthesize isNewBadge;
 @synthesize errorBadge;
 @synthesize trashed;
 @synthesize isNewBook;
@@ -68,7 +68,7 @@
     [coverImageView release], coverImageView = nil;
     [progressView release], progressView = nil;
     [bookTintView release], bookTintView = nil;
-    [newBadge release], newBadge = nil;
+    [isNewBadge release], isNewBadge = nil;
     [errorBadge release], errorBadge = nil;
     [featureTab release], featureTab = nil;
     
@@ -100,7 +100,7 @@
 - (void)initialiseView 
 {
     // add the image view
-    self.coverImageView = [[UIImageView alloc] initWithFrame:self.frame];
+    self.coverImageView = [[[UIImageView alloc] initWithFrame:self.frame] autorelease];
     self.coverImageView.layer.borderColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0.7].CGColor;
     
     if (self.contentScaleFactor > 1) {
@@ -116,43 +116,43 @@
     self.backgroundColor = [UIColor clearColor];
 
     // add the tint view
-    self.bookTintView = [[UIView alloc] initWithFrame:self.frame];
+    self.bookTintView = [[[UIView alloc] initWithFrame:self.frame] autorelease];
     [self.bookTintView setBackgroundColor:[UIColor colorWithRed:0.2f green:0.2f blue:0.2f alpha:0.6f]];
     [self addSubview:self.bookTintView];
     
     // add a progress view
-    self.progressView = [[UIProgressView alloc] initWithProgressViewStyle:UIProgressViewStyleDefault];
+    self.progressView = [[[UIProgressView alloc] initWithProgressViewStyle:UIProgressViewStyleDefault] autorelease];
     [self addSubview:self.progressView];
     self.progressView.hidden = YES;
 
     // feature tab - only for iPad!
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
-        self.featureTab = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"BookSampleTab"]];
+        self.featureTab = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"BookSampleTab"]] autorelease];
         self.featureTab.hidden = YES;
         self.featureTab.contentMode = UIViewContentModeRight;
         [self addSubview:self.featureTab];
     }
     
     // add the new graphic view
-    self.newBadge = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"BookShelfNewIcon"]];
-    [self addSubview:self.newBadge];
-    self.newBadge.hidden = YES;
+    self.isNewBadge = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"BookShelfNewIcon"]] autorelease];
+    [self addSubview:self.isNewBadge];
+    self.isNewBadge.hidden = YES;
     
     // placeholder
     self.showingPlaceholder = YES;
     
     // spinner
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
-        self.activitySpinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
+        self.activitySpinner = [[[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge] autorelease];
     } else {
-        self.activitySpinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite];
+        self.activitySpinner = [[[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite] autorelease];
     }
     self.activitySpinner.hidesWhenStopped = YES;
     [self.activitySpinner stopAnimating];
     [self addSubview:self.activitySpinner];
     
     // add the error badge - on top of everything else
-    self.errorBadge = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"BookShelfErrorIcon"]];
+    self.errorBadge = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"BookShelfErrorIcon"]] autorelease];
     [self addSubview:self.errorBadge];
     self.errorBadge.hidden = YES;
 }
@@ -371,6 +371,7 @@
         self.currentImageName = nil;
         self.showingPlaceholder = YES;
         self.needsRefresh = NO;
+        [localIdentifier release];
         return;
     }
     
@@ -479,14 +480,14 @@
                                     coverFrame.origin.y + coverFrame.size.height);
     
     if (self.coverViewMode == SCHBookCoverViewModeListView) {
-        newCenter.y = coverFrame.origin.y + coverFrame.size.height - ceilf(self.newBadge.frame.size.height / 2) + 5;
+        newCenter.y = coverFrame.origin.y + coverFrame.size.height - ceilf(self.isNewBadge.frame.size.height / 2) + 5;
     } else if (self.coverViewMode == SCHBookCoverViewModeGridView) {
-        newCenter.y = coverFrame.origin.y + coverFrame.size.height - ceilf(self.newBadge.frame.size.height / 4);
+        newCenter.y = coverFrame.origin.y + coverFrame.size.height - ceilf(self.isNewBadge.frame.size.height / 4);
     }
     
     // make sure the new badge isn't cut off
-    if (newCenter.x + (self.newBadge.frame.size.width / 2) > self.frame.size.width) {
-        float difference = newCenter.x + (self.newBadge.frame.size.width / 2) - self.frame.size.width;
+    if (newCenter.x + (self.isNewBadge.frame.size.width / 2) > self.frame.size.width) {
+        float difference = newCenter.x + (self.isNewBadge.frame.size.width / 2) - self.frame.size.width;
         newCenter.x = coverFrame.origin.x + coverFrame.size.width - difference;
     }
     
@@ -498,12 +499,12 @@
         errorCenter.x = coverFrame.origin.x + coverFrame.size.width - difference;
     }
     
-    self.newBadge.center = newCenter;
+    self.isNewBadge.center = newCenter;
     self.errorBadge.center = errorCenter;
 
     // resize and position the progress view
-//    NSLog(@"Progress view frame: %@", NSStringFromCGRect(self.progressView.frame));
-    CGRect progressViewFrame = CGRectMake(coverFrame.origin.x + 10, self.newBadge.frame.origin.y - 10, coverFrame.size.width - 20, self.progressView.frame.size.height);
+    NSLog(@"Progress view frame: %@", NSStringFromCGRect(self.progressView.frame));
+    CGRect progressViewFrame = CGRectMake(coverFrame.origin.x + 10, self.isNewBadge.frame.origin.y - 10, coverFrame.size.width - 20, self.progressView.frame.size.height);
     self.progressView.frame = progressViewFrame;
     
     
@@ -570,9 +571,9 @@
     
     
     if (self.isNewBook && !self.trashed && self.errorBadge.hidden == YES) {
-        self.newBadge.hidden = NO;
+        self.isNewBadge.hidden = NO;
     } else {
-        self.newBadge.hidden = YES;
+        self.isNewBadge.hidden = YES;
     }
     
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad 

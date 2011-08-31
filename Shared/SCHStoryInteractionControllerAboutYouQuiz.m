@@ -91,8 +91,7 @@ typedef enum {
     self.progressView.numberOfSteps = [[(SCHStoryInteractionAboutYouQuiz *)self.storyInteraction questions] count];
     
     NSInteger outcomes = [[(SCHStoryInteractionAboutYouQuiz *)self.storyInteraction outcomeMessages] count];
-    self.outcomeCounts = [[NSMutableArray alloc] initWithCapacity:outcomes];
-    [self.outcomeCounts release];
+    self.outcomeCounts = [NSMutableArray arrayWithCapacity:outcomes];
     for (NSInteger i = 0; i < outcomes; i++) {
         [self.outcomeCounts addObject:[NSNumber numberWithInt:0]];
     }

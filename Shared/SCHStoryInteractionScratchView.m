@@ -37,7 +37,7 @@ static const float kSCHScratchEraseSize = 24.0f;
     self = [super initWithCoder:aDecoder];
     if (self) {
         // Initialization code
-        self.pointsArray = [[NSMutableArray alloc] init];
+        self.pointsArray = [NSMutableArray array];
         self.interactionEnabled = YES;
         
         maskImageLayer = [[CALayer layer] retain];
