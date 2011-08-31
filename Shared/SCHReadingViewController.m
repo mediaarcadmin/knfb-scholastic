@@ -721,7 +721,6 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 {
     self.currentlyRotating = NO;
     [self.readingView didRotateFromInterfaceOrientation:fromInterfaceOrientation];
-    [self.storyInteractionController didRotateToInterfaceOrientation:self.interfaceOrientation];
     [self positionCoverCornerViewForOrientation:self.interfaceOrientation];
     
     // Did we defer presenting an SI until the reading view was forced into the correct orientation?
@@ -748,7 +747,6 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     [self dismissCoverCornerViewWithAnimation:NO];
     
     [self.readingView willRotateToInterfaceOrientation:toInterfaceOrientation duration:duration];
-    [self.storyInteractionController willRotateToInterfaceOrientation:toInterfaceOrientation duration:duration];
     
     if (self.popover) {
         [self.popover dismissPopoverAnimated:YES];

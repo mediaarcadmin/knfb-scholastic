@@ -146,13 +146,6 @@ typedef enum
 // set the title for the story interaction
 - (void)setTitle:(NSString *)title;
 
-// view is oriented in landscape as expected for story interactions?
-- (BOOL)isLandscape;
-
-// get an affine transform for the current interface orientation; this will translate points
-// in the current view to the expected landscape orientation for story interactions
-- (CGAffineTransform)affineTransformForCurrentOrientation;
-
 // Story interactions can use this to disable interactions
 // also disables superview user interactions, as interactions are passed through
 // with great power comes great responsibility - use carefully!
