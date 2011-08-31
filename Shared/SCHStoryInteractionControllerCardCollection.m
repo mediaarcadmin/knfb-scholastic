@@ -86,6 +86,7 @@ enum {
     CATransform3D sublayerTransform = CATransform3DIdentity;
     sublayerTransform.m34 = 1.0 / -2000;
     self.perspectiveView.layer.sublayerTransform = sublayerTransform;
+    self.scrollContentView.layer.sublayerTransform = sublayerTransform;
     
     for (NSInteger i = 0, n = MIN([self.cardViews count], [cardCollection numberOfCards]); i < n; ++i) {
         UIView *cardView = [self.cardViews objectAtIndex:i];
