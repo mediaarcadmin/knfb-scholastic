@@ -12,7 +12,7 @@
 #import "SCHGeometry.h"
 
 #define kLetterGap 3
-#define kSnapDistanceSq 400
+#define kSnapDistanceSq 1400
 
 @interface SCHStoryInteractionControllerWordScrambler ()
 
@@ -23,7 +23,7 @@
 @property (nonatomic, retain) NSArray *hintLetters;
 @property (nonatomic, assign) BOOL hasShownHint;
 
-- (NSInteger)letterPositionCloseToPoint:(CGPoint)point;
+- (void)withLetterPositionCloseToPoint:(CGPoint)point :(void(^)(NSInteger letterPosition, BOOL *stop))block;
 - (void)swapLetters:(NSArray *)swapViews;
 
 - (BOOL)hasCorrectSolution;
@@ -170,19 +170,16 @@
 {
     [NSObject cancelPreviousPerformRequestsWithTarget:self];
 
-    NSInteger letterPosition = [self letterPositionCloseToPoint:position];
-    if (letterPosition == NSNotFound) {
-        return NO;
-    }
-    SCHStoryInteractionDraggableLetterView *swapLetter = [self.lettersByPosition objectAtIndex:letterPosition];
-    if (swapLetter == draggableView || (self.hasShownHint && [self.hintLetters containsObject:swapLetter])) {
-        return NO;
-    }
-    
-    [self performSelector:@selector(swapLetters:)
-               withObject:[NSArray arrayWithObjects:draggableView, swapLetter, nil]
-               afterDelay:0.75];
-    
+    [self withLetterPositionCloseToPoint:position :^(NSInteger letterPosition, BOOL *stop) {
+        SCHStoryInteractionDraggableLetterView *swapLetter = [self.lettersByPosition objectAtIndex:letterPosition];
+        if (swapLetter != draggableView && !(self.hasShownHint && [self.hintLetters containsObject:swapLetter])) {
+            [self performSelector:@selector(swapLetters:)
+                       withObject:[NSArray arrayWithObjects:draggableView, swapLetter, nil]
+                       afterDelay:0.75];
+            *stop = YES;
+        }
+    }];
+        
     // don't actually snap but set the homePosition so the letter falls there when the drag ends
     *snapPosition = position;
     return YES;
@@ -192,13 +189,13 @@
 {
     [NSObject cancelPreviousPerformRequestsWithTarget:self];
     
-    NSInteger letterPosition = [self letterPositionCloseToPoint:position];
-    if (letterPosition != NSNotFound) {
+    [self withLetterPositionCloseToPoint:position :^(NSInteger letterPosition, BOOL *stop) {
         SCHStoryInteractionDraggableLetterView *swapLetter = [self.lettersByPosition objectAtIndex:letterPosition];
         if (swapLetter != draggableView && !(self.hasShownHint && [self.hintLetters containsObject:swapLetter])) {
             [self swapLetters:[NSArray arrayWithObjects:draggableView, swapLetter, nil]];
+            *stop = YES;
         }
-    }
+    }];
     [draggableView moveToHomePosition];
     
     BOOL complete = [self hasCorrectSolution];
@@ -215,15 +212,18 @@
                            }];
 }
 
-- (NSInteger)letterPositionCloseToPoint:(CGPoint)point
+- (void)withLetterPositionCloseToPoint:(CGPoint)point :(void(^)(NSInteger letterPosition, BOOL *stop))block
 {
     for (NSInteger i = 0, n = [self.letterPositions count]; i < n; ++i) {
         CGPoint letterPosition = [[self.letterPositions objectAtIndex:i] CGPointValue];
         if (SCHCGPointDistanceSq(point, letterPosition) < kSnapDistanceSq) {
-            return i;
+            BOOL stop = NO;
+            block(i, &stop);
+            if (stop) {
+                break;
+            }
         }
     }
-    return NSNotFound;
 }
 
 - (void)swapLetters:(NSArray *)swapViews
