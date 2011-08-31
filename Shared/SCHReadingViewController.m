@@ -950,8 +950,8 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
         NSLog(@"No PictureStarter found - button should be disabled");
         return;
     }
-    SCHStoryInteractionPictureStarter *pictureStarter = [storyInteractions lastObject];
-    [self presentStoryInteraction:pictureStarter];
+    self.activeStoryInteraction = [storyInteractions lastObject];
+    [self presentStoryInteraction:self.activeStoryInteraction];
 }
 
 - (IBAction)audioAction:(id)sender
