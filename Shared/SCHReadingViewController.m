@@ -710,6 +710,11 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 // Override to allow orientations other than the default portrait orientation.
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation 
 {
+    if (self.storyInteractionController != nil && ![self.storyInteractionController shouldPresentInReadingView]) {
+        // temporarily override this to force the reading view into the correct orientation before an SI appears
+        return UIInterfaceOrientationIsPortrait(interfaceOrientation) == [self.storyInteractionController shouldPresentInPortraitOrientation];
+    }
+    
     return YES;
 }
 
@@ -719,6 +724,13 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     [self.readingView didRotateFromInterfaceOrientation:fromInterfaceOrientation];
     [self.storyInteractionController didRotateToInterfaceOrientation:self.interfaceOrientation];
     [self positionCoverCornerViewForOrientation:self.interfaceOrientation];
+    
+    // do we have an SI awaiting presentation?
+    if (self.storyInteractionController != nil
+        && ![self.storyInteractionController shouldPresentInReadingView]
+        && [self.navigationController topViewController] == self) {
+        [self presentStoryInteraction:self.activeStoryInteraction];
+    }
 
     [super didRotateFromInterfaceOrientation:fromInterfaceOrientation];
 }
@@ -1449,6 +1461,16 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
         if (![self.storyInteractionController shouldPresentInReadingView]) {
             SCHStoryInteractionStandaloneViewController *standalone = [[SCHStoryInteractionStandaloneViewController alloc] init];
             standalone.storyInteractionController = self.storyInteractionController;
+            
+            if ([self.storyInteractionController shouldPresentInPortraitOrientation] != UIInterfaceOrientationIsPortrait(self.interfaceOrientation)) {
+                // dummy-present as a modal view controller to force the reading view into the appropriate
+                // orientation for the story interaction - we'll end up back here after the rotation
+                [self presentModalViewController:standalone animated:NO];
+                [self dismissModalViewControllerAnimated:NO];
+                [standalone release];
+                return;
+            }
+            
             [standalone setReadingViewSnapshot:[self currentPageSnapshot]];
             [self.navigationController pushViewController:standalone animated:NO];
             [standalone release];
