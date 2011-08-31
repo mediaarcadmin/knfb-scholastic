@@ -541,64 +541,6 @@ static Class controllerClassForStoryInteraction(SCHStoryInteraction *storyIntera
     return backgroundStretch;
 }
 
-#pragma mark - orientation
-
-- (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
-{
-    if (!self.containerView.superview) {
-        return;
-    }
-    
-    CGFloat superviewWidth = CGRectGetWidth(self.containerView.superview.bounds);
-    CGFloat superviewHeight = CGRectGetHeight(self.containerView.superview.bounds);
-    CGRect superviewBounds = CGRectMake(0, 0, MAX(superviewWidth, superviewHeight), MIN(superviewWidth, superviewHeight));
-    CGPoint superviewCenter = CGPointMake(floorf(CGRectGetMidX(superviewBounds)), floorf(CGRectGetMidY(superviewBounds)));
-    
-    [UIView animateWithDuration:duration
-                          delay:0
-                        options:UIViewAnimationOptionAllowUserInteraction
-                     animations:^{
-                         if (UIInterfaceOrientationIsPortrait(self.interfaceOrientation) && UIInterfaceOrientationIsLandscape(toInterfaceOrientation)) {
-                             self.containerView.transform = CGAffineTransformIdentity;
-                             self.containerView.center = superviewCenter;
-                         }
-                         if (UIInterfaceOrientationIsLandscape(self.interfaceOrientation) && UIInterfaceOrientationIsPortrait(toInterfaceOrientation)) {
-                             CGFloat portraitOffset = (superviewWidth - superviewHeight)/2;
-                             self.containerView.transform = CGAffineTransformMakeRotation(-M_PI/2);
-                             self.containerView.center = CGPointMake(superviewCenter.x-portraitOffset, superviewCenter.y+portraitOffset);
-                         }
-                         self.containerView.bounds = CGRectIntegral(superviewBounds);
-                         if ([self frameStyleForViewAtIndex:self.currentScreenIndex] != SCHStoryInteractionTitleOverlaysContents) {
-                             self.backgroundView.center = superviewCenter;
-                         }
-                     }
-                     completion:nil];
-}
-
-- (void)didRotateToInterfaceOrientation:(UIInterfaceOrientation)aToInterfaceOrientation
-{
-    self.interfaceOrientation = aToInterfaceOrientation;
-    if (!self.containerView.superview) {
-        return;
-    }
-    
-    [self setupGeometryForContentsView:self.contentsView contentsSize:self.contentsView.bounds.size];
-}
-
-- (BOOL)isLandscape
-{
-    return UIInterfaceOrientationIsLandscape(self.interfaceOrientation);
-}
-
-- (CGAffineTransform)affineTransformForCurrentOrientation
-{
-    if (UIInterfaceOrientationIsLandscape(self.interfaceOrientation)) {
-        return CGAffineTransformIdentity;
-    } else {
-        return CGAffineTransformTranslate(CGAffineTransformMakeRotation(-M_PI/2), -CGRectGetWidth(self.containerView.bounds), 0);
-    }
-}
-
 #pragma mark - actions
 
 - (void)closeButtonTapped:(id)sender
@@ -823,6 +765,11 @@ static Class controllerClassForStoryInteraction(SCHStoryInteraction *storyIntera
 - (CGRect)overlaidTitleFrame
 {
     return CGRectZero;
+}
+
+- (BOOL)shouldShowSnapshotOfReadingViewInBackground
+{
+    return YES;
 }
 
 - (BOOL)shouldPresentInPortraitOrientation

@@ -20,6 +20,6 @@
 - (BOOL)areBookUpdatesAvailable;
 
 // the set of SCHAppBooks that can be updated
-- (id<NSFetchedResultsSectionInfo>)availableBookUpdates;
+- (NSArray *)availableBookUpdates;
 
 @end

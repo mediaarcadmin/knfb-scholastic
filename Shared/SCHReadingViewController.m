@@ -31,6 +31,7 @@
 #import "SCHNotesCountView.h"
 #import "SCHBookStoryInteractions.h"
 #import "SCHStoryInteractionController.h"
+#import "SCHStoryInteractionStandaloneViewController.h"
 #import "SCHHighlight.h"
 #import "SCHStoryInteractionTypes.h"
 #import "SCHQueuedAudioPlayer.h"
@@ -104,6 +105,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 
 @property (nonatomic, retain) SCHBookStoryInteractions *bookStoryInteractions;
 @property (nonatomic, retain) SCHStoryInteractionController *storyInteractionController;
+@property (nonatomic, retain) SCHStoryInteraction *activeStoryInteraction;
 @property (nonatomic, assign) BOOL storyInteractionsCompleteOnCurrentPages;
 
 @property (nonatomic, retain) SCHQueuedAudioPlayer *queuedAudioPlayer;
@@ -220,6 +222,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 @synthesize audioBookPlayer;
 @synthesize bookStoryInteractions;
 @synthesize storyInteractionController;
+@synthesize activeStoryInteraction;
 @synthesize queuedAudioPlayer;
 @synthesize storyInteractionsCompleteOnCurrentPages;
 @synthesize lastPageInteractionSoundPlayedOn;
@@ -259,16 +262,15 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     
     storyInteractionController.delegate = nil; // we don't want callbacks
     [storyInteractionController release], storyInteractionController = nil;
+    [activeStoryInteraction release], activeStoryInteraction = nil;
     
     [super dealloc];
 }
 
 - (void)releaseViewObjects
 {
-    if (storyInteractionController != nil) {
-        [storyInteractionController removeFromHostView];
-    } else if (notesView != nil) {
-        [notesView removeFromView];
+    if (self.notesView != nil) {
+        [self.notesView removeFromView];
     }
     
     [notesView release], notesView = nil;
@@ -706,6 +708,12 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 // Override to allow orientations other than the default portrait orientation.
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation 
 {
+    if (self.storyInteractionController != nil) {
+        // Temporarily override this to force the reading view into the correct orientation before an SI appears
+        // - see the dummy modal view controller trick in presentStoryInteraction
+        return UIInterfaceOrientationIsPortrait(interfaceOrientation) == [self.storyInteractionController shouldPresentInPortraitOrientation];
+    }
+    
     return YES;
 }
 
@@ -713,8 +721,13 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 {
     self.currentlyRotating = NO;
     [self.readingView didRotateFromInterfaceOrientation:fromInterfaceOrientation];
-    [self.storyInteractionController didRotateToInterfaceOrientation:self.interfaceOrientation];
     [self positionCoverCornerViewForOrientation:self.interfaceOrientation];
+    
+    // Did we defer presenting an SI until the reading view was forced into the correct orientation?
+    // - see the dummy modal view controller trick in presentStoryInteraction
+    if (self.storyInteractionController != nil && [self.navigationController topViewController] == self) {
+        [self presentStoryInteraction:self.activeStoryInteraction];
+    }
 
     [super didRotateFromInterfaceOrientation:fromInterfaceOrientation];
 }
@@ -734,7 +747,6 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     [self dismissCoverCornerViewWithAnimation:NO];
     
     [self.readingView willRotateToInterfaceOrientation:toInterfaceOrientation duration:duration];
-    [self.storyInteractionController willRotateToInterfaceOrientation:toInterfaceOrientation duration:duration];
     
     if (self.popover) {
         [self.popover dismissPopoverAnimated:YES];
@@ -938,8 +950,8 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
         NSLog(@"No PictureStarter found - button should be disabled");
         return;
     }
-    SCHStoryInteractionPictureStarter *pictureStarter = [storyInteractions lastObject];
-    [self presentStoryInteraction:pictureStarter];
+    self.activeStoryInteraction = [storyInteractions lastObject];
+    [self presentStoryInteraction:self.activeStoryInteraction];
 }
 
 - (IBAction)audioAction:(id)sender
@@ -1188,12 +1200,13 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
                                                          excludingInteractionWithPage:excludeInteractionWithPage];
     
     if ([storyInteractions count]) {
-        SCHStoryInteraction *storyInteraction = [storyInteractions objectAtIndex:0];
-        [self presentStoryInteraction:storyInteraction];
+        self.activeStoryInteraction = [storyInteractions objectAtIndex:0];
+        [self presentStoryInteraction:self.activeStoryInteraction];
     }
 }
 
-- (IBAction)toggleToolbarButtonAction:(id)sender {
+- (IBAction)toggleToolbarButtonAction:(id)sender
+{
     // Setting highlight stops the flicker
     [self pauseAudioPlayback];
     
@@ -1209,9 +1222,16 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 
 - (void)setupStoryInteractionButtonForCurrentPagesAnimated:(BOOL)animated
 {     
-    // if the story interaction is open, hide the button
+    // if a story interaction is active, hide the button
     if (self.storyInteractionController != nil) {
         [self setStoryInteractionButtonVisible:NO animated:YES withSound:NO];
+        return;
+    }
+    
+    // if a story interaction has been selected but was pending page turn, present it now
+    if (self.activeStoryInteraction != nil && self.storyInteractionController == nil) {
+        // hack in a short delay to allow full-resolution page rendering before a snapshot is taken of the reading view
+        [self performSelector:@selector(presentStoryInteraction:) withObject:self.activeStoryInteraction afterDelay:0.5];
         return;
     }
     
@@ -1433,8 +1453,30 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
         self.storyInteractionController.bookIdentifier= self.bookIdentifier;
         self.storyInteractionController.delegate = self;
         self.storyInteractionController.xpsProvider = self.xpsProvider;
-        [self.storyInteractionController presentInHostView:self.navigationController.view withInterfaceOrientation:self.interfaceOrientation];
         
+        SCHStoryInteractionStandaloneViewController *standalone = [[SCHStoryInteractionStandaloneViewController alloc] init];
+        standalone.storyInteractionController = self.storyInteractionController;
+        
+        if ([self.storyInteractionController shouldPresentInPortraitOrientation] != UIInterfaceOrientationIsPortrait(self.interfaceOrientation)) {
+            // We're currently in the wrong orientation for this SI. Dummy-presenting a modal view controller like this
+            // causes a re-check of shouldAutorotateToInterfaceOrientation, which will override the default now that an
+            // SI controller is active, causing the view to rotate to the required orientation. didRotateFromInterfaceOrientation
+            // will look for a pending SI and call back here to finish the presentation.
+            [self presentModalViewController:standalone animated:NO];
+            [self dismissModalViewControllerAnimated:NO];
+            [standalone release];
+            return;
+        }
+        
+        if ([self.storyInteractionController shouldShowSnapshotOfReadingViewInBackground]) {
+            [standalone setReadingViewSnapshot:[self currentPageSnapshot]];
+        }
+        
+        [self.navigationController pushViewController:standalone animated:NO];
+        [self.storyInteractionController presentInHostView:self.navigationController.view
+                                  withInterfaceOrientation:standalone.interfaceOrientation];
+        [standalone release];
+
         if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
             [self setupStoryInteractionButtonForCurrentPagesAnimated:YES];
             [self setToolbarVisibility:NO animated:YES];
@@ -2554,10 +2596,12 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 
 - (void)readingInteractionsView:(SCHReadingInteractionsListController *)interactionsView didSelectInteraction:(NSInteger)interaction
 {    
-    SCHStoryInteraction *storyInteraction = [[self.bookStoryInteractions allStoryInteractionsExcludingInteractionWithPage:interactionsView.excludeInteractionWithPage] objectAtIndex:interaction];
-    [self presentStoryInteraction:storyInteraction];
+    // just set up the SI - it will be presented after the page turn
+    self.activeStoryInteraction = [[self.bookStoryInteractions allStoryInteractionsExcludingInteractionWithPage:interactionsView.excludeInteractionWithPage] objectAtIndex:interaction];
     
-    SCHBookPoint *notePoint = [self.readingView bookPointForLayoutPage:[storyInteraction documentPageNumber] pageWordOffset:0 includingFolioBlocks:YES];
+    SCHBookPoint *notePoint = [self.readingView bookPointForLayoutPage:[self.activeStoryInteraction documentPageNumber]
+                                                        pageWordOffset:0
+                                                  includingFolioBlocks:YES];
     [self.readingView jumpToBookPoint:notePoint animated:YES];
 }
 
@@ -2566,7 +2610,6 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 - (void)storyInteractionController:(SCHStoryInteractionController *)aStoryInteractionController willDismissWithSuccess:(BOOL)success 
 {
     if (success) {
-        
         NSInteger page = [self storyInteractionPageNumberFromPageIndex:[self firstPageIndexWithStoryInteractionsOnCurrentPages]];
         
         [self.bookStoryInteractions incrementStoryInteractionQuestionsCompletedForPage:page];
@@ -2580,7 +2623,11 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 - (void)storyInteractionControllerDidDismiss:(SCHStoryInteractionController *)aStoryInteractionController
 {
     if (aStoryInteractionController == self.storyInteractionController) {
+        if ([self.navigationController topViewController] != self) {
+            [self.navigationController popViewControllerAnimated:NO];
+        }
         self.storyInteractionController = nil;
+        self.activeStoryInteraction = nil;
     }
     
     [self setupStoryInteractionButtonForCurrentPagesAnimated:YES];
@@ -2605,7 +2652,6 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 
 - (CGAffineTransform)viewToPageTransformForLayoutPage:(NSInteger)layoutPage
 {
-    
     NSInteger pageIndex = layoutPage - 1;
     
     if (pageIndex >= 0) {

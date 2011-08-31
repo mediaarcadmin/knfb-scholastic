@@ -12,6 +12,8 @@
 #import "SCHBookManager.h"
 #import "SCHAppStateManager.h"
 
+#define DEBUG_FORCE_ENABLE_UPDATES 0
+
 @interface SCHBookUpdates ()
 @property (nonatomic, retain) NSFetchedResultsController *fetchedResultsController;
 @property (nonatomic, assign) BOOL refreshNeeded;
@@ -39,13 +41,17 @@
         [fetch setEntity:[NSEntityDescription entityForName:@"SCHAppBook" inManagedObjectContext:self.managedObjectContext]];
         [fetch setSortDescriptors:[NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:@"ContentMetadataItem.Title" ascending:YES]]];
         
-        NSPredicate *statePred = [NSPredicate predicateWithFormat:@"State = %d", SCHBookProcessingStateReadyToRead];
+        NSPredicate *statePred = [NSPredicate predicateWithFormat:@"State >= 0"];
         if ([[SCHAppStateManager sharedAppStateManager] canSync] == NO) {
             // show all books
             [fetch setPredicate:statePred];
         } else {
+#if DEBUG_FORCE_ENABLE_UPDATES
+            [fetch setPredicate:statePred];
+#else
             NSPredicate *versionPred = [NSPredicate predicateWithFormat:@"OnDiskVersion != ContentMetadataItem.Version"];
             [fetch setPredicate:[NSCompoundPredicate andPredicateWithSubpredicates:[NSArray arrayWithObjects:statePred, versionPred, nil]]];
+#endif
         }
         
         NSFetchedResultsController *frc = [[NSFetchedResultsController alloc] initWithFetchRequest:fetch
@@ -70,10 +76,10 @@
 
 - (BOOL)areBookUpdatesAvailable
 {
-    return [[self availableBookUpdates] numberOfObjects] > 0;
+    return [[self availableBookUpdates] count] > 0;
 }
 
-- (id<NSFetchedResultsSectionInfo>)availableBookUpdates
+- (NSArray *)availableBookUpdates
 {
     if (self.refreshNeeded) {
         [self refresh];
@@ -83,7 +89,7 @@
     if ([sections count] == 0) {
         return nil;
     }
-    return [sections objectAtIndex:0];
+    return [NSArray arrayWithArray:[[sections objectAtIndex:0] objects]];
 }
 
 - (void)refresh

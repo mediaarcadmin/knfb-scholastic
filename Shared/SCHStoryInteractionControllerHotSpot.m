@@ -18,9 +18,7 @@
 @property (nonatomic, retain) UIView *answerMarkerView;
 @property (nonatomic, copy) dispatch_block_t zoomCompletionHandler;
 @property (nonatomic, assign) CGAffineTransform viewToPageTransform;
-@property (nonatomic, assign) BOOL isPortraitWithLandscapePresentation;
 
-- (void)updateViewToPageTransform;
 - (void)incorrectTapAtPoint:(CGPoint)point;
 - (void)correctTapAtPoint:(CGPoint)point;
 
@@ -33,7 +31,6 @@
 @synthesize answerMarkerView;
 @synthesize zoomCompletionHandler;
 @synthesize viewToPageTransform;
-@synthesize isPortraitWithLandscapePresentation;
 
 - (void)dealloc
 {
@@ -48,6 +45,11 @@
 - (SCHFrameStyle)frameStyleForViewAtIndex:(NSInteger)viewIndex
 {
     return SCHStoryInteractionTitleOverlaysContents;
+}
+
+- (BOOL)shouldShowSnapshotOfReadingViewInBackground
+{
+    return NO;
 }
 
 - (CGRect)overlaidTitleFrame
@@ -73,18 +75,8 @@
 - (void)setupViewAtIndex:(NSInteger)screenIndex
 {
     [self setTitle:[[self currentQuestion] prompt]];
-    
-    // If presented in portrait, this SI initially shows the portrait book image. Once
-    // rotated to landscape the landscape book image is captured and the SI locks in
-    // landscaope mode thereafter.     
-    self.isPortraitWithLandscapePresentation = NO;
-    if ([self isLandscape]) {
-        self.pageImageView.image = [self.delegate currentPageSnapshot];
-    } else {
-        self.contentsView.backgroundColor = [UIColor clearColor];
-    }
-
-    [self updateViewToPageTransform];
+    self.pageImageView.image = [self.delegate currentPageSnapshot];
+    self.viewToPageTransform = [self.delegate viewToPageTransformForLayoutPage:self.storyInteraction.documentPageNumber];
 
     UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(imageTapped:)];
     [self.pageImageView addGestureRecognizer:tap];
@@ -93,64 +85,24 @@
     
 }
 
-
-- (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
+- (void)zoomOutAndCloseWithSuccess:(BOOL)success
 {
-    if (UIInterfaceOrientationIsPortrait(toInterfaceOrientation)) {
-        self.isPortraitWithLandscapePresentation = YES;
+    if (success) {
+        self.controllerState = SCHStoryInteractionControllerStateInteractionFinishedSuccessfully;
     }
-    [super willRotateToInterfaceOrientation:toInterfaceOrientation duration:duration];
-}
-
-- (void)didRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation
-{
-    if (UIInterfaceOrientationIsLandscape(toInterfaceOrientation)) {
-        self.isPortraitWithLandscapePresentation = NO;
-        [self updateViewToPageTransform];
-        if (self.pageImageView.image == nil) {
-            self.pageImageView.image = [self.delegate currentPageSnapshot];
-            self.contentsView.backgroundColor = [UIColor SCHBlackColor];
-        }
-    }
-    [super didRotateToInterfaceOrientation:toInterfaceOrientation];
-}
-
-- (void)simulateRotationBackToPortraitAndCloseWithSuccess:(BOOL)success
-{
-    self.zoomCompletionHandler = ^{
-       if (self.isPortraitWithLandscapePresentation) {
-            [UIView animateWithDuration:0.3
-                             animations:^{
-                                 // rotate and scale the left-hand page to fill screen
-                                 CGFloat scaleFactor = self.pageImageView.image.size.width / self.pageImageView.image.size.height;
-                                 CGAffineTransform scale = CGAffineTransformMakeScale(scaleFactor, scaleFactor);
-                                 CGAffineTransform translate = CGAffineTransformMakeTranslation(CGRectGetWidth(self.pageImageView.bounds)/4, 0);
-                                 CGAffineTransform rotate = CGAffineTransformMakeRotation(M_PI/2);
-                                 self.pageImageView.transform = CGAffineTransformConcat(CGAffineTransformConcat(scale, translate), rotate);
-                             }
-                             completion:^(BOOL finished) {
-                                 [self removeFromHostView];
-                             }];
-        } else {
-            [self removeFromHostView];
-        }
-    };
-    
     if (self.scrollView.zoomScale != 1.0f) {
+        self.zoomCompletionHandler = ^{
+            [self removeFromHostView];
+        };
         [self.scrollView setZoomScale:1.0f animated:YES];
     } else {
-        self.zoomCompletionHandler();
+        [self removeFromHostView];
     }
 }
 
 - (void)closeButtonTapped:(id)sender
 {
-    [self simulateRotationBackToPortraitAndCloseWithSuccess:NO];
-}
-
-- (void)updateViewToPageTransform
-{
-    self.viewToPageTransform = [self.delegate viewToPageTransformForLayoutPage:self.storyInteraction.documentPageNumber];
+    [self zoomOutAndCloseWithSuccess:NO];
 }
 
 #pragma mark - scroll view delegate
@@ -174,13 +126,7 @@
 
 - (CGPoint)viewToPage:(CGPoint)pointInView;
 {
-    CGAffineTransform currentViewToPage;
-    if (self.isPortraitWithLandscapePresentation) {
-        currentViewToPage = self.viewToPageTransform;
-    } else {
-        currentViewToPage = CGAffineTransformConcat([self affineTransformForCurrentOrientation], self.viewToPageTransform);
-    }
-    return CGPointApplyAffineTransform(pointInView, currentViewToPage);
+    return CGPointApplyAffineTransform(pointInView, self.viewToPageTransform);
 }
 
 - (void)imageTapped:(UITapGestureRecognizer *)tap
@@ -285,7 +231,7 @@
                          [stars makeObjectsPerformSelector:@selector(removeFromSuperview)];
                      }];
     
-    [self cancelQueuedAudio];
+    [self cancelQueuedAudioExecutingSynchronizedBlocksImmediately];
     [self enqueueAudioWithPath:[self.storyInteraction storyInteractionCorrectAnswerSoundFilename]
                     fromBundle:YES
                     startDelay:0
@@ -298,7 +244,7 @@
                     startDelay:0
         synchronizedStartBlock:nil
           synchronizedEndBlock:^{
-              [self simulateRotationBackToPortraitAndCloseWithSuccess:YES];
+              [self zoomOutAndCloseWithSuccess:YES];
           }];
     
     self.controllerState = SCHStoryInteractionControllerStateInteractionFinishedSuccessfully;

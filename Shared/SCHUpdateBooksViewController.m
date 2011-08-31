@@ -16,7 +16,7 @@
 
 @interface SCHUpdateBooksViewController ()
 @property (nonatomic, retain) NSMutableDictionary *cellControllers;
-@property (nonatomic, retain) id<NSFetchedResultsSectionInfo> availableBookUpdates;
+@property (nonatomic, retain) NSArray *availableBookUpdates;
 @end
 
 @implementation SCHUpdateBooksViewController
@@ -80,7 +80,9 @@
     [super viewWillAppear:animated];
 
     self.cellControllers = [NSMutableDictionary dictionary];
-    for (SCHAppBook *book in [[self.bookUpdates availableBookUpdates] objects]) {
+    self.availableBookUpdates = [self.bookUpdates availableBookUpdates];
+
+    for (SCHAppBook *book in self.availableBookUpdates) {
         SCHBookIdentifier *bookIdentifier = [book bookIdentifier];
         SCHUpdateBooksTableViewCellController *tvc = [[SCHUpdateBooksTableViewCellController alloc] initWithBookIdentifier:bookIdentifier
                                                                                                     inManagedObjectContext:self.bookUpdates.managedObjectContext];
@@ -89,7 +91,6 @@
         [tvc release];
     }
     
-    self.availableBookUpdates = [self.bookUpdates availableBookUpdates];
     [self.booksTable reloadData];
 }
 
@@ -102,14 +103,14 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return [self.availableBookUpdates numberOfObjects];
+    return [self.availableBookUpdates count];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     static NSString *const CellIdentifier = @"UpdateBooksCell";
 
-    SCHAppBook *book = [[self.availableBookUpdates objects] objectAtIndex:indexPath.row];
+    SCHAppBook *book = [self.availableBookUpdates objectAtIndex:indexPath.row];
     SCHBookIdentifier *bookIdentifier = [book bookIdentifier];
     SCHUpdateBooksTableViewCellController *tvc = [self.cellControllers objectForKey:bookIdentifier];
     
