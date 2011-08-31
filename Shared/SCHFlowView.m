@@ -469,4 +469,9 @@ static void sortedHighlightRangePredicateInit() {
     return self.frame;
 }
 
+- (UIImage *)pageSnapshot
+{
+    return [self.eucBookView.pageTurningView screenshot];
+}
+
 @end
