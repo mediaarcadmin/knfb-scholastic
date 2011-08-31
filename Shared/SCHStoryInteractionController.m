@@ -710,7 +710,19 @@ static Class controllerClassForStoryInteraction(SCHStoryInteraction *storyIntera
       synchronizedStartBlock:(dispatch_block_t)startBlock
         synchronizedEndBlock:(dispatch_block_t)endBlock
 {
-    [self.audioPlayer enqueueGap:startDelay];
+    [self enqueueAudioWithPath:path fromBundle:fromBundle startDelay:startDelay synchronizedStartBlock:startBlock synchronizedEndBlock:endBlock requiresEmptyQueue:NO];
+}
+
+- (void)enqueueAudioWithPath:(NSString *)path
+                  fromBundle:(BOOL)fromBundle
+                  startDelay:(NSTimeInterval)startDelay
+      synchronizedStartBlock:(dispatch_block_t)startBlock
+        synchronizedEndBlock:(dispatch_block_t)endBlock
+          requiresEmptyQueue:(BOOL)requiresEmpty;
+{
+    if (!requiresEmpty) {
+        [self.audioPlayer enqueueGap:startDelay];
+    }
     
     SCHQueuedAudioPlayerFetchBlock fetchBlock;
     if (fromBundle) {
@@ -729,14 +741,13 @@ static Class controllerClassForStoryInteraction(SCHStoryInteraction *storyIntera
         };
     }
     
-    [self.audioPlayer enqueueAudioTaskWithFetchBlock:fetchBlock synchronizedStartBlock:startBlock synchronizedEndBlock:endBlock];
+    [self.audioPlayer enqueueAudioTaskWithFetchBlock:fetchBlock synchronizedStartBlock:startBlock synchronizedEndBlock:endBlock requiresEmptyQueue:requiresEmpty];
 }
 
 - (void)enqueueAudioWithPath:(NSString *)path fromBundle:(BOOL)fromBundle
 {
-    [self enqueueAudioWithPath:path fromBundle:fromBundle startDelay:0 synchronizedStartBlock:nil synchronizedEndBlock:nil];
+    [self enqueueAudioWithPath:path fromBundle:fromBundle startDelay:0 synchronizedStartBlock:nil synchronizedEndBlock:nil requiresEmptyQueue:NO];
 }
-
 
 - (BOOL)playingAudio
 {

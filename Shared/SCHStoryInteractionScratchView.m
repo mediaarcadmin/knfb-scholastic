@@ -121,6 +121,7 @@ static CGFloat distanceBetweenPoints(CGPoint pt1, CGPoint pt2)
     if (self.interactionEnabled) {
         UITouch *touch = [touches anyObject];
         CGPoint touchLocation = [touch locationInView:self];
+
         if (touchLocation.x >= 0 && touchLocation.x <= self.frame.size.width
             && touchLocation.y >= 0 && touchLocation.y <= self.frame.size.height) {
             
