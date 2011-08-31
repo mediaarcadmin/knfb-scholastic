@@ -334,14 +334,16 @@
 
 - (void)deferredRefreshBookCoverView
 {
-    NSLog(@"Actual refresh for %@", self.identifier);
     // if no identifier has been set, then we don't need to refresh the image
     if (!self.identifier) {
+        NSLog(@"%p: Clearing identifier.", self);
         self.showingPlaceholder = YES;
         self.needsRefresh = NO;
         return;
     }
 
+    NSLog(@"%p:\tActual refresh for %@", self, self.identifier);
+    
     SCHBookIdentifier *localIdentifier = [self.identifier copy];
 
     // fetch book state and filename information
