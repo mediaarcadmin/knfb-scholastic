@@ -2241,6 +2241,8 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 {
     [self.readingView dismissSelector];
     
+    [self.optionsView removeFromSuperview];
+    
     if (self.currentPageIndex == NSUIntegerMax) {
         self.currentBookProgress = [slider value];
     } else {
