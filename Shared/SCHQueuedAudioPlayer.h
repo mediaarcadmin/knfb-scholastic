@@ -19,6 +19,11 @@ typedef NSData * (^SCHQueuedAudioPlayerFetchBlock)(void);
                 synchronizedStartBlock:(dispatch_block_t)startBlock
                   synchronizedEndBlock:(dispatch_block_t)endBlock;
 
+- (void)enqueueAudioTaskWithFetchBlock:(SCHQueuedAudioPlayerFetchBlock)fetchBlock
+                synchronizedStartBlock:(dispatch_block_t)startBlock
+                  synchronizedEndBlock:(dispatch_block_t)endBlock
+                    requiresEmptyQueue:(BOOL)requiresEmpty;
+
 - (void)enqueueGap:(NSTimeInterval)silenceInterval;
 
 - (void)cancelPlaybackExecutingSynchronizedBlocksImmediately:(BOOL)executeBlocks;

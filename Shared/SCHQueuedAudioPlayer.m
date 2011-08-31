@@ -116,6 +116,8 @@
     item.startBlock = startBlock;
     item.endBlock = endBlock;
     
+    
+    
     dispatch_async(self.audioDispatchQueue, ^{
         [self.audioQueue addObject:item];
         if (self.currentItem == nil && [self.audioQueue count] == 1) {
@@ -123,6 +125,39 @@
         }
     });
         
+    [item release];
+    self.gap = 0;
+}
+
+- (void)enqueueAudioTaskWithFetchBlock:(SCHQueuedAudioPlayerFetchBlock)fetchBlock
+                synchronizedStartBlock:(dispatch_block_t)startBlock
+                  synchronizedEndBlock:(dispatch_block_t)endBlock
+                    requiresEmptyQueue:(BOOL)requiresEmpty
+{
+    
+    AudioItem *item = [[AudioItem alloc] init];
+    item.startDelay = self.gap;
+    item.fetchBlock = fetchBlock;
+    item.startBlock = startBlock;
+    item.endBlock = endBlock;
+    
+    void (^enqueingBlock)(void) = ^{
+        [self.audioQueue addObject:item];
+        if (self.currentItem == nil && [self.audioQueue count] == 1) {
+            [self playNextItemInQueue];
+        }
+    };
+    
+    if (requiresEmpty) {
+        dispatch_async(self.audioDispatchQueue, ^{
+            if ([self.audioQueue count] == 0) {
+                enqueingBlock();
+            }
+        });
+    } else {
+        dispatch_async(self.audioDispatchQueue, enqueingBlock);
+    }
+    
     [item release];
     self.gap = 0;
 }

@@ -384,7 +384,7 @@ enum ScratchState {
 - (void)scratchViewWasScratched:(SCHStoryInteractionScratchView *)aScratchView
 {
     if (![self playingAudio]) {
-        [self enqueueAudioWithPath:[(SCHStoryInteractionScratchAndSee *)self.storyInteraction scratchSoundEffectFilename] fromBundle:YES];
+        [self enqueueAudioWithPath:[(SCHStoryInteractionScratchAndSee *)self.storyInteraction scratchSoundEffectFilename] fromBundle:YES startDelay:0 synchronizedStartBlock:nil synchronizedEndBlock:nil requiresEmptyQueue:YES];
     }
 }
 

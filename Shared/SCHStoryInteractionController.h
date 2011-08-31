@@ -128,6 +128,14 @@ typedef enum
                   fromBundle:(BOOL)fromBundle
                   startDelay:(NSTimeInterval)startDelay
       synchronizedStartBlock:(dispatch_block_t)startBlock
+        synchronizedEndBlock:(dispatch_block_t)endBlock
+          requiresEmptyQueue:(BOOL)requiresEmpty;
+
+// convenience version of above with requiresEmpty NO
+- (void)enqueueAudioWithPath:(NSString *)path
+                  fromBundle:(BOOL)fromBundle
+                  startDelay:(NSTimeInterval)startDelay
+      synchronizedStartBlock:(dispatch_block_t)startBlock
         synchronizedEndBlock:(dispatch_block_t)endBlock;
 
 // convenience version of above with no delay and no synchronized blocks

@@ -155,8 +155,9 @@
     unsigned long long freeSize = [(NSNumber*)[fsAttr objectForKey:NSFileSystemFreeSize] unsignedLongLongValue];
     NSLog(@"Freesize: %llu", freeSize);
     
-    // if the response isn't "unknown length", which is a large number, then check to see if we can fit this onto the device
-    if (([response expectedContentLength] != NSURLResponseUnknownLength) && freeSize == 0 || freeSize < [response expectedContentLength]) {
+    // if we cannot determine the expectedContentLength, then bail if the free space is 0
+    // oherwise bail if the the free space < expectedContentLength
+    if ((([response expectedContentLength] != NSURLResponseUnknownLength) && freeSize == 0) || freeSize < [response expectedContentLength]) {
         [[SCHDictionaryDownloadManager sharedDownloadManager] threadSafeUpdateDictionaryState:SCHDictionaryProcessingStateNotEnoughFreeSpace];
         [connection cancel];
         [self cancel];

@@ -7,13 +7,11 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "KNFBXPSConstants.h"
 
 @class SCHXPSProvider;
 @class SCHStoryInteraction;
 @class SCHBookStoryInteractions;
-
-// TODO: move to KNFBXPSConstants module
-extern NSString * const KNFBXPSStoryInteractionsDirectory;
 
 @interface SCHStoryInteractionQuestion : NSObject {}
 
