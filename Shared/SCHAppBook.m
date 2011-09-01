@@ -268,15 +268,17 @@ NSString * const kSCHAppBookEucalyptusCacheDir = @"libEucalyptusCache";
 
 - (NSString *)xpsPath
 {
-	return [NSString stringWithFormat:@"%@/%@-%@.xps", 
-			[self cacheDirectory], 
-			self.ContentMetadataItem.ContentIdentifier, self.ContentMetadataItem.Version];
+    NSString *cacheDir = [self cacheDirectory];
+    NSString *fullXPSPath = [cacheDir stringByAppendingPathComponent:[NSString stringWithFormat:@"%@-%@.xps", 
+                                                                        self.bookIdentifier, self.ContentMetadataItem.Version]];
+	return fullXPSPath;    
 }
 
 - (NSString *)coverImagePath
 {
-	NSString *cacheDir  = [self cacheDirectory];
-	NSString *fullImagePath = [cacheDir stringByAppendingPathComponent:[NSString stringWithFormat:@"%@.png", self.ContentIdentifier]];
+	NSString *cacheDir = [self cacheDirectory];
+	NSString *fullImagePath = [cacheDir stringByAppendingPathComponent:[NSString stringWithFormat:@"%@.png", 
+                                                                        self.bookIdentifier]];
     
 	return fullImagePath;
 }	
@@ -290,9 +292,9 @@ NSString * const kSCHAppBookEucalyptusCacheDir = @"libEucalyptusCache";
         scale = [[UIScreen mainScreen] scale];
     }
     
-    NSString *thumbPath = [cacheDir stringByAppendingPathComponent:[NSString stringWithFormat:@"%@_%d_%d.png", self.ContentIdentifier, (int)size.width, (int)size.height]];
+    NSString *thumbPath = [cacheDir stringByAppendingPathComponent:[NSString stringWithFormat:@"%@_%d_%d.png", self.bookIdentifier, (int)size.width, (int)size.height]];
     if (scale != 1) {
-        thumbPath = [cacheDir stringByAppendingPathComponent:[NSString stringWithFormat:@"%@_%d_%d@%dx.png", self.ContentIdentifier, (int)size.width, (int)size.height, (int) scale]];
+        thumbPath = [cacheDir stringByAppendingPathComponent:[NSString stringWithFormat:@"%@_%d_%d@%dx.png", self.bookIdentifier, (int)size.width, (int)size.height, (int) scale]];
     }    
 
 	return thumbPath;

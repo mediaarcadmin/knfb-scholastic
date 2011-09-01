@@ -97,10 +97,9 @@
         [self performWithBook:^(SCHAppBook *book) {
             cacheDir = [[book cacheDirectory] retain];
             contentIdentifier = [[book ContentIdentifier] retain];
+            self.localPath = [book coverImagePath];
             coverURL = [[book BookCoverURL] retain];
         }];
-        
-		self.localPath = [cacheDir stringByAppendingPathComponent:[NSString stringWithFormat:@"%@.png", contentIdentifier]];
 		
         if ([self stringBeginsWithHTTPScheme:coverURL] == NO) {
             [[NSFileManager defaultManager] copyItemAtPath:[self fullPathToBundledFile:coverURL]
