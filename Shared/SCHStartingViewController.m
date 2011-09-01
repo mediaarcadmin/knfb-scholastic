@@ -115,10 +115,6 @@ typedef enum {
                                              selector:@selector(authenticationManagerDidDeregister:)
                                                  name:SCHAuthenticationManagerDidDeregisterNotification
                                                object:nil];
-
-    UIImageView *logoImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"logo"]];
-    self.navigationItem.titleView = logoImageView;
-    [logoImageView release];
 }
 
 - (void)viewDidUnload
@@ -144,10 +140,13 @@ typedef enum {
 {
     const BOOL iPad = (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad);
     
+    CGFloat logoHeight = 44;
+    
     if (UIInterfaceOrientationIsLandscape(orientation)) {
         CGFloat offset = iPad ? kTableOffsetLandscape_iPad : kTableOffsetLandscape_iPhone;
         [self.backgroundView setImage:[UIImage imageNamed:@"plain-background-landscape.jpg"]];
         [self.starterTableView setContentInset:UIEdgeInsetsMake(offset, 0, 0, 0)];
+        logoHeight = iPad ? logoHeight : 32;
     } else {
         CGFloat offset = iPad ? kTableOffsetPortrait_iPad : kTableOffsetPortrait_iPhone;
         [self.backgroundView setImage:[UIImage imageNamed:@"plain-background-portrait.jpg"]];
@@ -155,6 +154,17 @@ typedef enum {
     }
     
     [(SCHCustomNavigationBar *)self.navigationController.navigationBar setBackgroundImage:[UIImage imageNamed:@"admin-iphone-landscape-top-toolbar.png"]];
+    
+    UIImageView *logoImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"logo"]];
+    logoImageView.contentMode = UIViewContentModeScaleAspectFit;
+    
+    CGRect logoFrame = CGRectZero;
+    logoFrame.size.width = 320;
+    logoFrame.size.height = logoHeight;
+    logoImageView.frame = logoFrame;
+    
+    self.navigationItem.titleView = logoImageView;
+    [logoImageView release];
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
