@@ -34,6 +34,7 @@
 - (void)dealloc
 {  
     [bookIdentifier release], bookIdentifier = nil;
+    [drmDecrypter release], drmDecrypter = nil;
     [super dealloc];
 }
 
@@ -46,7 +47,8 @@
     return self;
 }
 
-- (id<KNFBDrmBookDecrypter>)drmDecrypter {
+- (id<KNFBDrmBookDecrypter>)drmDecrypter
+{
 	if (!drmDecrypter ) {
 		drmDecrypter = [[SCHDrmDecryptionSession alloc] initWithBook:self.bookIdentifier]; 
 		if ([drmDecrypter bindToLicense]) { 
