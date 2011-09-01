@@ -263,6 +263,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     storyInteractionController.delegate = nil; // we don't want callbacks
     [storyInteractionController release], storyInteractionController = nil;
     [activeStoryInteraction release], activeStoryInteraction = nil;
+    [cornerCoverFadeTimer release], cornerCoverFadeTimer = nil;
     
     [super dealloc];
 }
