@@ -1474,6 +1474,10 @@
 		C923A27F12F06FE60054426F /* MRGridViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C923A27712F06FE60054426F /* MRGridViewController.m */; };
 		C9261FBF13970220009FF459 /* notes-count.png in Resources */ = {isa = PBXBuildFile; fileRef = C9261FBD13970220009FF459 /* notes-count.png */; };
 		C9261FC113970220009FF459 /* notes-count@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C9261FBE13970220009FF459 /* notes-count@2x.png */; };
+		C927973B140FA4AD0091B8B5 /* icon-audio-younger-small-landscape.png in Resources */ = {isa = PBXBuildFile; fileRef = C9279739140FA4AC0091B8B5 /* icon-audio-younger-small-landscape.png */; };
+		C927973C140FA4AD0091B8B5 /* icon-audio-younger-small-landscape.png in Resources */ = {isa = PBXBuildFile; fileRef = C9279739140FA4AC0091B8B5 /* icon-audio-younger-small-landscape.png */; };
+		C927973D140FA4AD0091B8B5 /* icon-audio-younger-small-landscape@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C927973A140FA4AD0091B8B5 /* icon-audio-younger-small-landscape@2x.png */; };
+		C927973E140FA4AD0091B8B5 /* icon-audio-younger-small-landscape@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C927973A140FA4AD0091B8B5 /* icon-audio-younger-small-landscape@2x.png */; };
 		C92E732E13FE7033005CE812 /* storyinteraction-concentration-startover-button~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = C92E732813FE7033005CE812 /* storyinteraction-concentration-startover-button~iphone.png */; };
 		C92E733013FE7033005CE812 /* storyinteraction-concentration-flips-button~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = C92E732913FE7033005CE812 /* storyinteraction-concentration-flips-button~iphone.png */; };
 		C92E733213FE7033005CE812 /* storyinteraction-concentration-flips-button@2x~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = C92E732A13FE7033005CE812 /* storyinteraction-concentration-flips-button@2x~iphone.png */; };
@@ -2985,6 +2989,8 @@
 		C923A27912F06FE60054426F /* MRGridViewDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MRGridViewDelegate.h; path = Shared/Libraries/MRGridView/MRGridViewDelegate.h; sourceTree = "<group>"; };
 		C9261FBD13970220009FF459 /* notes-count.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "notes-count.png"; path = "Resources/notes-count.png"; sourceTree = "<group>"; };
 		C9261FBE13970220009FF459 /* notes-count@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "notes-count@2x.png"; path = "Resources/notes-count@2x.png"; sourceTree = "<group>"; };
+		C9279739140FA4AC0091B8B5 /* icon-audio-younger-small-landscape.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "icon-audio-younger-small-landscape.png"; path = "Resources/icon-audio-younger-small-landscape.png"; sourceTree = "<group>"; };
+		C927973A140FA4AD0091B8B5 /* icon-audio-younger-small-landscape@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "icon-audio-younger-small-landscape@2x.png"; path = "Resources/icon-audio-younger-small-landscape@2x.png"; sourceTree = "<group>"; };
 		C92E732813FE7033005CE812 /* storyinteraction-concentration-startover-button~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "storyinteraction-concentration-startover-button~iphone.png"; sourceTree = "<group>"; };
 		C92E732913FE7033005CE812 /* storyinteraction-concentration-flips-button~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "storyinteraction-concentration-flips-button~iphone.png"; sourceTree = "<group>"; };
 		C92E732A13FE7033005CE812 /* storyinteraction-concentration-flips-button@2x~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "storyinteraction-concentration-flips-button@2x~iphone.png"; sourceTree = "<group>"; };
@@ -5228,6 +5234,8 @@
 				F83468071404FF2A00D09F0E /* show-tools.png */,
 				C9613DDB1405359A00AE1F8C /* icon-audio-younger-small.png */,
 				C9613DDC1405359A00AE1F8C /* icon-audio-younger-small@2x.png */,
+				C9279739140FA4AC0091B8B5 /* icon-audio-younger-small-landscape.png */,
+				C927973A140FA4AD0091B8B5 /* icon-audio-younger-small-landscape@2x.png */,
 			);
 			name = "Reading View Toolbar Icons";
 			sourceTree = "<group>";
@@ -7007,6 +7015,8 @@
 				C97F7F9D14078A91002BB9FB /* reading-samplesi@2x~iphone.png in Resources */,
 				C97F84031407B349002BB9FB /* storyinteraction-wordbird-BalloonPop.png in Resources */,
 				C944D2D11407D523008E04FF /* Scholastic_Sample.sqlite in Resources */,
+				C927973B140FA4AD0091B8B5 /* icon-audio-younger-small-landscape.png in Resources */,
+				C927973D140FA4AD0091B8B5 /* icon-audio-younger-small-landscape@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -7699,6 +7709,8 @@
 				282FE399140BB65D00CBB6AB /* storyinteraction-wordbird-BalloonPop.png in Resources */,
 				282FE39A140BB7E400CBB6AB /* popoverTickLight@2x.png in Resources */,
 				282FE39B140BB7E900CBB6AB /* popoverTick@2x.png in Resources */,
+				C927973C140FA4AD0091B8B5 /* icon-audio-younger-small-landscape.png in Resources */,
+				C927973E140FA4AD0091B8B5 /* icon-audio-younger-small-landscape@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
