@@ -364,7 +364,8 @@
     thumbPath = [book thumbPathForSize:thumbSize];
     
     if (bookState <= SCHBookProcessingStateNoCoverImage && 
-        bookState != SCHBookProcessingStateUnableToAcquireLicense) {
+        bookState != SCHBookProcessingStateUnableToAcquireLicense &&
+        [book.bookCoverExists boolValue] == NO) {
         // book does not have a cover image downloaded 
         self.coverImageView.image = nil;
         self.coverImageView.hidden = YES;

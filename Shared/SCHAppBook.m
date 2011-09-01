@@ -90,6 +90,7 @@ NSString * const kSCHAppBookEucalyptusCacheDir = @"libEucalyptusCache";
 @dynamic AudioBookReferences;
 @dynamic OnDiskVersion;
 @dynamic ForceProcess;
+@dynamic bookCoverExists;
 
 @synthesize diskVersionOutOfDate;
 
@@ -282,6 +283,24 @@ NSString * const kSCHAppBookEucalyptusCacheDir = @"libEucalyptusCache";
     
 	return fullImagePath;
 }	
+
+- (NSNumber *)bookCoverExists
+{
+    [self willAccessValueForKey:@"bookCoverExists"];
+    NSNumber *rawBookCoverExists = [self primitiveValueForKey:@"bookCoverExists"];
+    [self didAccessValueForKey:@"bookCoverExists"];
+    
+    if (rawBookCoverExists == nil || [rawBookCoverExists boolValue] == NO) {
+        NSFileManager *localFileManager = [[NSFileManager alloc] init];  
+        
+        rawBookCoverExists = [NSNumber numberWithBool:[localFileManager fileExistsAtPath:[self coverImagePath]]];
+        [self setPrimitiveValue:rawBookCoverExists forKey:@"bookCoverExists"];
+        
+        [localFileManager release], localFileManager = nil;        
+    }
+    
+    return(rawBookCoverExists);
+}
 
 - (NSString *)thumbPathForSize:(CGSize)size
 {
