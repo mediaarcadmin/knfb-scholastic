@@ -325,6 +325,10 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 131;
     // Addresses ticket #439
     [self.gridView setContentOffset:CGPointMake(curentOffset.x, curentOffset.y + 1) animated:NO];
     [self.gridView setContentOffset:CGPointMake(curentOffset.x, curentOffset.y) animated:NO];
+    
+    // reload the views next time we switch to accommodate rotation
+    self.gridViewNeedsRefreshed = YES;
+    self.listViewNeedsRefreshed = YES;
 }
 
 #pragma mark - Private methods
