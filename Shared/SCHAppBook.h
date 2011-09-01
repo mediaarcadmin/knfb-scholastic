@@ -106,6 +106,7 @@ typedef enum {
 @property (nonatomic, retain) NSArray *AudioBookReferences;
 @property (nonatomic, retain) NSString *OnDiskVersion;
 @property (nonatomic, retain) NSNumber *ForceProcess;
+@property (nonatomic, retain) NSNumber * bookCoverExists;
 
 // convenience variables from the SCHContentMetadataItem
 @property (nonatomic, readonly) NSString * ContentIdentifier;
