@@ -339,7 +339,7 @@ static SCHProcessingManager *sharedManager = nil;
 			bookURLOp.identifier = identifier;
 
 			// the book will be redispatched on completion
-			[bookURLOp setCompletionBlock:^{
+			[bookURLOp setNotCancelledCompletionBlock:^{
 				[self redispatchIdentifier:identifier];
 			}];
 
@@ -358,7 +358,7 @@ static SCHProcessingManager *sharedManager = nil;
             downloadImageOp.identifier = identifier;
             downloadImageOp.resume = NO;
             // the book will be redispatched on completion
-            [downloadImageOp setCompletionBlock:^{
+            [downloadImageOp setNotCancelledCompletionBlock:^{
                 [self redispatchIdentifier:identifier];
             }];
             // add the operation to the network download queue
@@ -378,7 +378,7 @@ static SCHProcessingManager *sharedManager = nil;
             [book setForcedProcessing:NO];
 			
 			// the book will be redispatched on completion
-			[bookDownloadOp setCompletionBlock:^{
+			[bookDownloadOp setNotCancelledCompletionBlock:^{
 				[self redispatchIdentifier:identifier];
 			}];
 			
@@ -396,7 +396,7 @@ static SCHProcessingManager *sharedManager = nil;
 			licenseOp.identifier = identifier;
 			
 			// the book will be redispatched on completion
-			[licenseOp setCompletionBlock:^{
+			[licenseOp setNotCancelledCompletionBlock:^{
 				[self redispatchIdentifier:identifier];
 			}];
 			
@@ -415,7 +415,7 @@ static SCHProcessingManager *sharedManager = nil;
 			rightsOp.identifier = identifier;
 			
 			// the book will be redispatched on completion
-			[rightsOp setCompletionBlock:^{
+			[rightsOp setNotCancelledCompletionBlock:^{
 				[self redispatchIdentifier:identifier];
 			}];
 			
@@ -434,7 +434,7 @@ static SCHProcessingManager *sharedManager = nil;
 			audioOp.identifier = identifier;
 			
 			// the book will be redispatched on completion
-			[audioOp setCompletionBlock:^{
+			[audioOp setNotCancelledCompletionBlock:^{
 				[self redispatchIdentifier:identifier];
 			}];
 			
@@ -453,7 +453,7 @@ static SCHProcessingManager *sharedManager = nil;
 			textflowOp.identifier = identifier;
 			
 			// the book will be redispatched on completion
-			[textflowOp setCompletionBlock:^{
+			[textflowOp setNotCancelledCompletionBlock:^{
 				[self redispatchIdentifier:identifier];
 			}];
 			
@@ -472,7 +472,7 @@ static SCHProcessingManager *sharedManager = nil;
 			smartzoomOp.identifier = identifier;
 			
 			// the book will be redispatched on completion
-			[smartzoomOp setCompletionBlock:^{
+			[smartzoomOp setNotCancelledCompletionBlock:^{
 				[self redispatchIdentifier:identifier];
 			}];
 			
@@ -491,7 +491,7 @@ static SCHProcessingManager *sharedManager = nil;
 			paginateOp.identifier = identifier;
 			
 			// the book will be redispatched on completion
-			[paginateOp setCompletionBlock:^{
+			[paginateOp setNotCancelledCompletionBlock:^{
 				[self redispatchIdentifier:identifier];
 			}];
 			
