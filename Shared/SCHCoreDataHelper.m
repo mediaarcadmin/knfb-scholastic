@@ -284,7 +284,8 @@ static NSString * const kSCHCoreDataHelperSampleStoreName = @"Scholastic_Sample.
     NSError *error = nil;
     
     if ([storeFileName isEqualToString:storeName] == NO) {
-        NSLog(@"Switching store from %@ to %@", storeFileName, storeName);        
+        NSLog(@"Switching store from %@ to %@", storeFileName, storeName);
+        [[SCHAuthenticationManager sharedAuthenticationManager] clearAppProcessing];
         [[self managedObjectContext] reset];
         [[self persistentStoreCoordinator] removePersistentStore:currentMainStore 
                                                            error:&error];  
