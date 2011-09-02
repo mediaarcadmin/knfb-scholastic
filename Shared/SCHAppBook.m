@@ -395,6 +395,9 @@ NSString * const kSCHAppBookEucalyptusCacheDir = @"libEucalyptusCache";
 		ret = YES;
 	} else if(error != NULL) {
         switch ([self.State intValue]) {
+            case SCHBookProcessingStateNonDRMBookWithDRM:
+                *error = [self errorWithCode:kSCHAppBookNonDRMBookWithDRMError];
+                break;                
             case SCHBookProcessingStateUnableToAcquireLicense:
                 *error = [self errorWithCode:kSCHAppBookUnableToAcquireLicenseError];
                 break;
@@ -453,6 +456,9 @@ NSString * const kSCHAppBookEucalyptusCacheDir = @"libEucalyptusCache";
         case kSCHAppBookStillBeingProcessedError:
             description = NSLocalizedString(@"The book is still being processed.", @"Still being processed error message from AppBook");
             break;
+        case kSCHAppBookNonDRMBookWithDRMError:
+            description = NSLocalizedString(@"There was a problem whilst acquiring DRM information for this book. If the problem persists please contact support.", @"Book has DRM when it should not error message from AppBook");
+            break;            
         case kSCHAppBookUnableToAcquireLicenseError:
             description = NSLocalizedString(@"It has not been possible to acquire a DRM license for this book. Please make sure this device is authorized and connected to the internet and try again.", @"Decryption not available error message from AppBook");
             break;
@@ -460,7 +466,7 @@ NSString * const kSCHAppBookEucalyptusCacheDir = @"libEucalyptusCache";
             description = NSLocalizedString(@"There was a problem whilst downloading this book. Please make sure this device is connected to the internet and try again.", @"Download failed error message from AppBook");
             break;
         case kSCHAppBookURLsNotPopulatedError:
-            description = NSLocalizedString(@"There was a problem whilst accessing the URLs for this book. Please make sure this device is connected to the internet and try again. if the problem persists please contact support.", @"URLs not populated error message from AppBook");
+            description = NSLocalizedString(@"There was a problem whilst accessing the URLs for this book. Please make sure this device is connected to the internet and try again. If the problem persists please contact support.", @"URLs not populated error message from AppBook");
             break;
         case kSCHAppBookUnspecifiedError:
         default:

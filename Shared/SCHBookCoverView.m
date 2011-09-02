@@ -364,6 +364,7 @@
     thumbPath = [book thumbPathForSize:thumbSize];
     
     if (bookState <= SCHBookProcessingStateNoCoverImage && 
+        bookState != SCHBookProcessingStateNonDRMBookWithDRM &&
         bookState != SCHBookProcessingStateUnableToAcquireLicense &&
         [book.bookCoverExists boolValue] == NO) {
         // book does not have a cover image downloaded 
@@ -552,6 +553,7 @@
             case SCHBookProcessingStateError:
             case SCHBookProcessingStateDownloadFailed:
             case SCHBookProcessingStateURLsNotPopulated:
+            case SCHBookProcessingStateNonDRMBookWithDRM:                
             case SCHBookProcessingStateUnableToAcquireLicense:
             case SCHBookProcessingStateBookVersionNotSupported:
                 self.progressView.alpha = 1.0f;

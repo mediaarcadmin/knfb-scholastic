@@ -508,6 +508,7 @@ static SCHProcessingManager *sharedManager = nil;
             return;
         }
         case SCHBookProcessingStateError:
+        case SCHBookProcessingStateNonDRMBookWithDRM:
         case SCHBookProcessingStateUnableToAcquireLicense:
         case SCHBookProcessingStateDownloadFailed:
         case SCHBookProcessingStateURLsNotPopulated:
@@ -660,7 +661,7 @@ static SCHProcessingManager *sharedManager = nil;
 
     if (book.processingState == SCHBookProcessingStateUnableToAcquireLicense) {
         book.ForceProcess = [NSNumber numberWithBool:YES];
-        [book setProcessingState:SCHBookProcessingStateReadyForBookFileDownload];
+        [book setProcessingState:SCHBookProcessingStateReadyForLicenseAcquisition];
         [self postBookStateUpdate:identifier];
         [self redispatchIdentifier:identifier];
     } else if (book.processingState == SCHBookProcessingStateError ||
