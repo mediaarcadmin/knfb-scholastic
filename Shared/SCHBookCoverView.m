@@ -409,13 +409,15 @@
             // dispatch the thumbnail operation
             dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
 
+                NSFileManager *queueLocalFileManager = [[[NSFileManager alloc] init] autorelease];
+
                 // if the identifier changes, don't process the thumbnail
                 if ([self.identifier isEqual:localIdentifier]) {
                     
                     UIImage *thumbImage = nil;
                     
                     // check if the thumb has been created while queued
-                    if ([threadLocalFileManager fileExistsAtPath:thumbPath]) {
+                    if ([queueLocalFileManager fileExistsAtPath:thumbPath]) {
                         thumbImage = [UIImage imageWithContentsOfFile:thumbPath];
                         self.currentImageName = thumbPath;
                     } else {
