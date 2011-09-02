@@ -26,6 +26,7 @@
 #import "NSNumber+ObjectTypes.h"
 #import "SCHProfileItem.h"
 #import "SCHUserDefaults.h"
+#import "SCHBookManager.h"
 
 enum {
     kTableSectionSamples = 0,
@@ -387,8 +388,7 @@ typedef enum {
 	if ([notification.name isEqualToString:SCHAuthenticationManagerDidSucceedNotification]) {
         [self firstLogin];
         
-        [[SCHURLManager sharedURLManager] clear];
-        [[SCHSyncManager sharedSyncManager] clear];
+        [[SCHAuthenticationManager sharedAuthenticationManager] clearAppProcessing];
         [[SCHSyncManager sharedSyncManager] firstSync:YES];
 	} else {
 		NSError *error = [notification.userInfo objectForKey:kSCHAuthenticationManagerNSError];

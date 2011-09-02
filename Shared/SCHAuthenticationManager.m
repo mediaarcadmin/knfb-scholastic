@@ -19,6 +19,7 @@
 #import "SCHSyncManager.h"
 #import "SCHAppStateManager.h"
 #import "AppDelegate_Shared.h"
+#import "SCHBookManager.h"
 
 #import "SCHNonDRMAuthenticationManager.h"
 
@@ -376,6 +377,7 @@ typedef struct AuthenticateWithUserNameParameters AuthenticateWithUserNameParame
 
 - (void)clearAppProcessingOnMainThread
 {
+    [[SCHBookManager sharedBookManager] clearBookIdentifierCache];
     [[SCHURLManager sharedURLManager] clear];
     [[SCHProcessingManager sharedProcessingManager] cancelAllOperations];                
     [[SCHSyncManager sharedSyncManager] clear];    
