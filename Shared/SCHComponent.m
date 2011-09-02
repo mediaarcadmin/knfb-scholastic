@@ -29,6 +29,7 @@
 
 - (void)dealloc
 {	
+    libreAccessWebService.delegate = nil;
 	[libreAccessWebService release], libreAccessWebService = nil;
 	
 	[super dealloc];
@@ -36,6 +37,7 @@
 
 - (void)clear
 {
+    self.libreAccessWebService.delegate = nil;
     self.libreAccessWebService = [[[SCHLibreAccessWebService alloc] init] autorelease];	
     self.libreAccessWebService.delegate = self;    
 }
