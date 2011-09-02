@@ -294,7 +294,7 @@
 - (void)letterGridTapped:(UITapGestureRecognizer *)tap
 {
     if (++self.tapCount == 3) {
-        [self enqueueAudioWithPath:[(SCHStoryInteractionWordSearch *)self.storyInteraction dragYourFingerAudioPath] fromBundle:NO];
+        [self enqueueAudioWithPath:[(SCHStoryInteractionWordSearch *)self.storyInteraction dragYourFingerAudioPath] fromBundle:YES];
         self.tapCount = 0;
     }
 }

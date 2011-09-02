@@ -89,8 +89,7 @@
 
 - (NSString *)dragYourFingerAudioPath
 {
-    // FIXME: no appropriate audio exists yet
-    return [KNFBXPSStoryInteractionsDirectory stringByAppendingPathComponent:@"gen_clickanddrag.mp3"];
+    return @"Interaction1_Relaxed.mp3";
 }
 
 @end

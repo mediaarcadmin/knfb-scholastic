@@ -1478,6 +1478,8 @@
 		C927973C140FA4AD0091B8B5 /* icon-audio-younger-small-landscape.png in Resources */ = {isa = PBXBuildFile; fileRef = C9279739140FA4AC0091B8B5 /* icon-audio-younger-small-landscape.png */; };
 		C927973D140FA4AD0091B8B5 /* icon-audio-younger-small-landscape@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C927973A140FA4AD0091B8B5 /* icon-audio-younger-small-landscape@2x.png */; };
 		C927973E140FA4AD0091B8B5 /* icon-audio-younger-small-landscape@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C927973A140FA4AD0091B8B5 /* icon-audio-younger-small-landscape@2x.png */; };
+		C92797AC1410C75A0091B8B5 /* Interaction1_Relaxed.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = C92797AB1410C75A0091B8B5 /* Interaction1_Relaxed.mp3 */; };
+		C92797AD1410C75A0091B8B5 /* Interaction1_Relaxed.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = C92797AB1410C75A0091B8B5 /* Interaction1_Relaxed.mp3 */; };
 		C92E732E13FE7033005CE812 /* storyinteraction-concentration-startover-button~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = C92E732813FE7033005CE812 /* storyinteraction-concentration-startover-button~iphone.png */; };
 		C92E733013FE7033005CE812 /* storyinteraction-concentration-flips-button~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = C92E732913FE7033005CE812 /* storyinteraction-concentration-flips-button~iphone.png */; };
 		C92E733213FE7033005CE812 /* storyinteraction-concentration-flips-button@2x~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = C92E732A13FE7033005CE812 /* storyinteraction-concentration-flips-button@2x~iphone.png */; };
@@ -2991,6 +2993,7 @@
 		C9261FBE13970220009FF459 /* notes-count@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "notes-count@2x.png"; path = "Resources/notes-count@2x.png"; sourceTree = "<group>"; };
 		C9279739140FA4AC0091B8B5 /* icon-audio-younger-small-landscape.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "icon-audio-younger-small-landscape.png"; path = "Resources/icon-audio-younger-small-landscape.png"; sourceTree = "<group>"; };
 		C927973A140FA4AD0091B8B5 /* icon-audio-younger-small-landscape@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "icon-audio-younger-small-landscape@2x.png"; path = "Resources/icon-audio-younger-small-landscape@2x.png"; sourceTree = "<group>"; };
+		C92797AB1410C75A0091B8B5 /* Interaction1_Relaxed.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = Interaction1_Relaxed.mp3; sourceTree = "<group>"; };
 		C92E732813FE7033005CE812 /* storyinteraction-concentration-startover-button~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "storyinteraction-concentration-startover-button~iphone.png"; sourceTree = "<group>"; };
 		C92E732913FE7033005CE812 /* storyinteraction-concentration-flips-button~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "storyinteraction-concentration-flips-button~iphone.png"; sourceTree = "<group>"; };
 		C92E732A13FE7033005CE812 /* storyinteraction-concentration-flips-button@2x~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "storyinteraction-concentration-flips-button@2x~iphone.png"; sourceTree = "<group>"; };
@@ -6013,6 +6016,7 @@
 				F86DEC2113A21F2600053999 /* sfx_win_y.mp3 */,
 				F86DEC2213A21F2600053999 /* sfx_winround.mp3 */,
 				F86DEC2313A21F2600053999 /* sfx_youReveal.mp3 */,
+				C92797AB1410C75A0091B8B5 /* Interaction1_Relaxed.mp3 */,
 			);
 			name = Sounds;
 			path = Resources/Sounds;
@@ -7017,6 +7021,7 @@
 				C944D2D11407D523008E04FF /* Scholastic_Sample.sqlite in Resources */,
 				C927973B140FA4AD0091B8B5 /* icon-audio-younger-small-landscape.png in Resources */,
 				C927973D140FA4AD0091B8B5 /* icon-audio-younger-small-landscape@2x.png in Resources */,
+				C92797AC1410C75A0091B8B5 /* Interaction1_Relaxed.mp3 in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -7711,6 +7716,7 @@
 				282FE39B140BB7E900CBB6AB /* popoverTick@2x.png in Resources */,
 				C927973C140FA4AD0091B8B5 /* icon-audio-younger-small-landscape.png in Resources */,
 				C927973E140FA4AD0091B8B5 /* icon-audio-younger-small-landscape@2x.png in Resources */,
+				C92797AD1410C75A0091B8B5 /* Interaction1_Relaxed.mp3 in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
