@@ -39,7 +39,9 @@ enum {
     kTableOffsetPortrait_iPad = 240,
     kTableOffsetLandscape_iPad = 120,
     kTableOffsetPortrait_iPhone = 0,
-    kTableOffsetLandscape_iPhone = 0
+    kTableOffsetLandscape_iPhone = 0,
+    kTableOffsetNoSamplesPortrait_iPhone = 80,
+    kTableOffsetNoSamplesLandscape_iPhone = 50
 };
 
 typedef enum {
@@ -140,15 +142,17 @@ typedef enum {
 {
     const BOOL iPad = (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad);
     
+    BOOL showSamples = ![[NSUserDefaults standardUserDefaults] boolForKey:kSCHUserDefaultsHasEverLoggedIn];
+    
     CGFloat logoHeight = 44;
     
     if (UIInterfaceOrientationIsLandscape(orientation)) {
-        CGFloat offset = iPad ? kTableOffsetLandscape_iPad : kTableOffsetLandscape_iPhone;
+        CGFloat offset = iPad ? kTableOffsetLandscape_iPad : (showSamples ? kTableOffsetLandscape_iPhone : kTableOffsetNoSamplesLandscape_iPhone);
         [self.backgroundView setImage:[UIImage imageNamed:@"plain-background-landscape.jpg"]];
         [self.starterTableView setContentInset:UIEdgeInsetsMake(offset, 0, 0, 0)];
         logoHeight = iPad ? logoHeight : 32;
     } else {
-        CGFloat offset = iPad ? kTableOffsetPortrait_iPad : kTableOffsetPortrait_iPhone;
+        CGFloat offset = iPad ? kTableOffsetPortrait_iPad : (showSamples ? kTableOffsetPortrait_iPhone : kTableOffsetNoSamplesPortrait_iPhone);
         [self.backgroundView setImage:[UIImage imageNamed:@"plain-background-portrait.jpg"]];
         [self.starterTableView setContentInset:UIEdgeInsetsMake(offset, 0, 0, 0)];
     }
