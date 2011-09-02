@@ -344,9 +344,24 @@ NSString * const kSCHAppBookEucalyptusCacheDir = @"libEucalyptusCache";
 {
 	NSString *status = @"Unknown!";
 	switch ([[self State] intValue]) {
+		case SCHBookProcessingStateURLsNotPopulated:
+			status = @"Error URLs not Populated";
+			break;
+		case SCHBookProcessingStateDownloadFailed:
+			status = @"Error Download Failed";
+			break;
+		case SCHBookProcessingStateNonDRMBookWithDRM:
+			status = @"Error NonDRm book with DRM";
+			break;
+		case SCHBookProcessingStateUnableToAcquireLicense:
+			status = @"Error Unable to Acquire License";
+			break;
 		case SCHBookProcessingStateError:
 			status = @"Error";
 			break;
+		case SCHBookProcessingStateBookVersionNotSupported:
+			status = @"Error Book Version Not Supported";
+			break;            
 		case SCHBookProcessingStateNoURLs:
 			status = @"URLs..";
 			break;
@@ -367,6 +382,9 @@ NSString * const kSCHAppBookEucalyptusCacheDir = @"libEucalyptusCache";
             break;
 		case SCHBookProcessingStateReadyForRightsParsing:
 			status = @"Rights...";
+			break;
+		case SCHBookProcessingStateReadyForAudioInfoParsing:
+			status = @"Audio...";
 			break;
         case SCHBookProcessingStateReadyForTextFlowPreParse:
 			status = @"Textflow...";
