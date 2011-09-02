@@ -18,6 +18,7 @@
 
 - (void)initialiseView;
 - (UIImage *)createImageWithSourcePath:(NSString *)sourcePath destinationPath:(NSString *)destinationPath;
+- (void)updateCachedImage:(UIImage *)thumbImage atPath:(NSString *)thumbPath forIdentifier:(SCHBookIdentifier *)localIdentifier;
 - (void)resizeElementsForThumbSize: (CGSize) thumbSize;
 - (void)deferredRefreshBookCoverView;
 
@@ -382,63 +383,20 @@
         // Using the correct image - just redo the user interface elements
         [self resizeElementsForThumbSize:self.coverImageView.frame.size];
     } else {
-        NSFileManager *threadLocalFileManager = [[[NSFileManager alloc] init] autorelease];
-        
-        // check to see if we have the thumb already cached
-        if ([threadLocalFileManager fileExistsAtPath:thumbPath]) {
-            // load the cached image
-            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-
-                UIImage *thumbImage = [UIImage imageWithContentsOfFile:thumbPath];
-                self.currentImageName = thumbPath;
                 
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    
-                    // check if identifier changed while the thumb was loading
-                    if ([self.identifier isEqual:localIdentifier]) {
-                        self.coverImageView.image = thumbImage;
-                        self.coverImageView.hidden = NO;
-                        self.showingPlaceholder = NO;
-                        [self resizeElementsForThumbSize:thumbImage.size];
-                    }
-                });
-                
-            });
-            
-        } else {
-            // dispatch the thumbnail operation
-            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-
-                NSFileManager *queueLocalFileManager = [[[NSFileManager alloc] init] autorelease];
-
-                // if the identifier changes, don't process the thumbnail
-                if ([self.identifier isEqual:localIdentifier]) {
-                    
-                    UIImage *thumbImage = nil;
-                    
-                    // check if the thumb has been created while queued
-                    if ([queueLocalFileManager fileExistsAtPath:thumbPath]) {
-                        thumbImage = [UIImage imageWithContentsOfFile:thumbPath];
-                        self.currentImageName = thumbPath;
-                    } else {
-                        thumbImage = [self createImageWithSourcePath:fullImagePath destinationPath:thumbPath];
-                        self.currentImageName = thumbPath;
-                    }
-                    
-                    dispatch_async(dispatch_get_main_queue(), ^{
-                        // set the thumbnail
+        dispatch_async([SCHProcessingManager sharedProcessingManager].thumbnailAccessQueue, ^{
                         
-                        // first check if the identifier has changed; if so, don't set the processed thumbnail
-                        if ([self.identifier isEqual:localIdentifier]) {
-                            self.coverImageView.image = thumbImage;
-                            self.coverImageView.hidden = NO;
-                            self.showingPlaceholder = NO;
-                            [self resizeElementsForThumbSize:thumbImage.size];
-                        }
-                    });
-                }
-            });
-        }
+            NSFileManager *threadLocalFileManager = [[[NSFileManager alloc] init] autorelease];
+            
+            // check to see if we have the thumb already cached
+            if ([threadLocalFileManager fileExistsAtPath:thumbPath]) {
+                UIImage *thumbImage = [UIImage imageWithContentsOfFile:thumbPath];
+                [self updateCachedImage:thumbImage atPath:thumbPath forIdentifier:localIdentifier];
+            } else {
+                UIImage *thumbImage = [self createImageWithSourcePath:fullImagePath destinationPath:thumbPath];
+                [self updateCachedImage:thumbImage atPath:thumbPath forIdentifier:localIdentifier];
+            }
+        });
     }
     
     [localIdentifier release];
@@ -675,74 +633,85 @@
 
 #pragma mark - Thumbnail Creation
 
-- (UIImage *)createImageWithSourcePath:(NSString *)sourcePath destinationPath:(NSString *)destinationPath 
+- (void)updateCachedImage:(UIImage *)thumbImage atPath:(NSString *)thumbPath forIdentifier:(SCHBookIdentifier *)localIdentifier
 {
-    __block UIImage *resizedImage = nil;
-    
-    dispatch_sync([SCHProcessingManager sharedProcessingManager].thumbnailAccessQueue, ^{
-    
-        // debug: make sure we're not running the image resizing on the main thread
-        NSAssert([NSThread currentThread] != [NSThread mainThread], @"Don't do image interpolation on the main thread!");
-        
-        NSURL *sourceURL = [NSURL fileURLWithPath:sourcePath];
-        
-        CGImageSourceRef src = CGImageSourceCreateWithURL((CFURLRef)sourceURL, NULL);
-        
-        if (src != nil) {
-            // get the main image properties without loading it into memory
-            CGFloat width = 0.0f, height = 0.0f;
-            CFDictionaryRef imageProperties = CGImageSourceCopyPropertiesAtIndex(src, 0, NULL);
-            if (imageProperties != NULL) {
-                CFNumberRef widthNum  = CFDictionaryGetValue(imageProperties, kCGImagePropertyPixelWidth);
-                if (widthNum != NULL) {
-                    CFNumberGetValue(widthNum, kCFNumberFloatType, &width);
-                }
-                
-                CFNumberRef heightNum = CFDictionaryGetValue(imageProperties, kCGImagePropertyPixelHeight);
-                if (heightNum != NULL) {
-                    CFNumberGetValue(heightNum, kCFNumberFloatType, &height);
-                }
-                
-                CFRelease(imageProperties);
-            }
-            
-            CGSize frameSizeWithInsets = CGSizeMake(self.frame.size.width - (self.leftRightInset * 2), 
-                                                    self.frame.size.height - self.topInset);
-            
-            CGFloat scale = 1.0f;
-            
-            if ([[UIScreen mainScreen] respondsToSelector:@selector(scale)]) {
-                scale = [[UIScreen mainScreen] scale];
-                frameSizeWithInsets = CGSizeApplyAffineTransform(frameSizeWithInsets, CGAffineTransformMakeScale(scale, scale));
-            }
-            
-            NSInteger maxDimension = frameSizeWithInsets.height;
-            
-            if (width >= height) {
-                maxDimension = frameSizeWithInsets.width;
-            }
-            
-            
-            NSDictionary* d = [NSDictionary dictionaryWithObjectsAndKeys:
-                               (id)kCFBooleanFalse, kCGImageSourceShouldAllowFloat,
-                               (id)kCFBooleanTrue, kCGImageSourceCreateThumbnailWithTransform,
-                               (id)kCFBooleanTrue, kCGImageSourceCreateThumbnailFromImageAlways,
-                               [NSNumber numberWithInt:maxDimension], kCGImageSourceThumbnailMaxPixelSize,
-                               nil];
-            
-            CGImageRef thumbnailRef = CGImageSourceCreateThumbnailAtIndex(src, 0, (CFDictionaryRef) d);
-            
-            resizedImage = [[UIImage alloc] initWithCGImage:thumbnailRef scale:scale orientation:UIImageOrientationUp];
-            
-            CGImageRelease(thumbnailRef);
-            CFRelease(src);
-            
-            if (resizedImage) {
-                NSData *pngData = UIImagePNGRepresentation(resizedImage);
-                [pngData writeToFile:destinationPath atomically:YES];
-            }
+    dispatch_async(dispatch_get_main_queue(), ^{        
+        // first check if the identifier has changed; if so, don't set the processed thumbnail
+        if ([self.identifier isEqual:localIdentifier]) {
+            self.currentImageName = thumbPath;
+            self.coverImageView.image = thumbImage;
+            self.coverImageView.hidden = NO;
+            self.showingPlaceholder = NO;
+            [self resizeElementsForThumbSize:thumbImage.size];
         }
     });
+}
+
+- (UIImage *)createImageWithSourcePath:(NSString *)sourcePath destinationPath:(NSString *)destinationPath 
+{
+    UIImage *resizedImage = nil;
+    
+    // debug: make sure we're not running the image resizing on the main thread
+    NSAssert([NSThread currentThread] != [NSThread mainThread], @"Don't do image interpolation on the main thread!");
+    
+    NSURL *sourceURL = [NSURL fileURLWithPath:sourcePath];
+    
+    CGImageSourceRef src = CGImageSourceCreateWithURL((CFURLRef)sourceURL, NULL);
+    
+    if (src != nil) {
+        // get the main image properties without loading it into memory
+        CGFloat width = 0.0f, height = 0.0f;
+        CFDictionaryRef imageProperties = CGImageSourceCopyPropertiesAtIndex(src, 0, NULL);
+        if (imageProperties != NULL) {
+            CFNumberRef widthNum  = CFDictionaryGetValue(imageProperties, kCGImagePropertyPixelWidth);
+            if (widthNum != NULL) {
+                CFNumberGetValue(widthNum, kCFNumberFloatType, &width);
+            }
+            
+            CFNumberRef heightNum = CFDictionaryGetValue(imageProperties, kCGImagePropertyPixelHeight);
+            if (heightNum != NULL) {
+                CFNumberGetValue(heightNum, kCFNumberFloatType, &height);
+            }
+            
+            CFRelease(imageProperties);
+        }
+        
+        CGSize frameSizeWithInsets = CGSizeMake(self.frame.size.width - (self.leftRightInset * 2), 
+                                                self.frame.size.height - self.topInset);
+        
+        CGFloat scale = 1.0f;
+        
+        if ([[UIScreen mainScreen] respondsToSelector:@selector(scale)]) {
+            scale = [[UIScreen mainScreen] scale];
+            frameSizeWithInsets = CGSizeApplyAffineTransform(frameSizeWithInsets, CGAffineTransformMakeScale(scale, scale));
+        }
+        
+        NSInteger maxDimension = frameSizeWithInsets.height;
+        
+        if (width >= height) {
+            maxDimension = frameSizeWithInsets.width;
+        }
+        
+        
+        NSDictionary* d = [NSDictionary dictionaryWithObjectsAndKeys:
+                           (id)kCFBooleanFalse, kCGImageSourceShouldAllowFloat,
+                           (id)kCFBooleanTrue, kCGImageSourceCreateThumbnailWithTransform,
+                           (id)kCFBooleanTrue, kCGImageSourceCreateThumbnailFromImageAlways,
+                           [NSNumber numberWithInt:maxDimension], kCGImageSourceThumbnailMaxPixelSize,
+                           nil];
+        
+        CGImageRef thumbnailRef = CGImageSourceCreateThumbnailAtIndex(src, 0, (CFDictionaryRef) d);
+        
+        resizedImage = [[UIImage alloc] initWithCGImage:thumbnailRef scale:scale orientation:UIImageOrientationUp];
+        
+        CGImageRelease(thumbnailRef);
+        CFRelease(src);
+        
+        if (resizedImage) {
+            NSData *pngData = UIImagePNGRepresentation(resizedImage);
+            [pngData writeToFile:destinationPath atomically:YES];
+        }
+    }
     
     return resizedImage;
 }
