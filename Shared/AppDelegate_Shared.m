@@ -15,6 +15,7 @@
 #import "SCHDictionaryDownloadManager.h"
 #import "SCHDictionaryAccessManager.h"
 #import <CoreText/CoreText.h>
+#import "SCHKIFTestController.h"
 
 static NSString* const wmModelCertFilename = @"devcerttemplate.dat";
 static NSString* const prModelCertFilename = @"iphonecert.dat";
@@ -92,7 +93,7 @@ static NSString* const prModelCertFilename = @"iphonecert.dat";
     dam.persistentStoreCoordinator = self.coreDataHelper.persistentStoreCoordinator;
 	
 	[self ensureCorrectCertsAvailable];
-	
+	    
 	return YES;
 }	
 
