@@ -669,21 +669,35 @@ static SCHProcessingManager *sharedManager = nil;
 	SCHAppBook *book = [[SCHBookManager sharedBookManager] bookWithIdentifier:identifier inManagedObjectContext:self.managedObjectContext];
 
     if (book != nil) {
-        if (book.processingState == SCHBookProcessingStateUnableToAcquireLicense) {
-            book.ForceProcess = [NSNumber numberWithBool:YES];
-            [book setProcessingState:SCHBookProcessingStateReadyForLicenseAcquisition];
-            [self postBookStateUpdate:identifier];
-            [self redispatchIdentifier:identifier];
-        } else if (book.processingState == SCHBookProcessingStateError ||
-                   book.processingState == SCHBookProcessingStateURLsNotPopulated ||
-                   book.processingState == SCHBookProcessingStateDownloadFailed) {
-            if (book.processingState == SCHBookProcessingStateError ||
-                book.processingState == SCHBookProcessingStateDownloadFailed) {
-                book.ForceProcess = [NSNumber numberWithBool:YES];
-            }
-            [book setProcessingState:SCHBookProcessingStateNoURLs];       
-            [self redispatchIdentifier:identifier];
+        switch (book.processingState) {
+            case SCHBookProcessingStateURLsNotPopulated:
+                [book setProcessingState:SCHBookProcessingStateNoURLs];
+                break;
+            case SCHBookProcessingStateDownloadFailed:
+                [book setProcessingState:SCHBookProcessingStateReadyForBookFileDownload];
+                break;
+            case SCHBookProcessingStateNonDRMBookWithDRM:
+            case SCHBookProcessingStateUnableToAcquireLicense:
+                [book setProcessingState:SCHBookProcessingStateReadyForLicenseAcquisition];
+                break;
+            case SCHBookProcessingStateBookVersionNotSupported:
+                [book setProcessingState:SCHBookProcessingStateReadyForRightsParsing];
+                break;
+            case SCHBookProcessingStateError:            
+            default:
+                if (book.BookCoverExists == NO) {
+                    [book setProcessingState:SCHBookProcessingStateNoURLs];
+                } else if (book.XPSExists == NO) { 
+                    [book setProcessingState:SCHBookProcessingStateReadyForBookFileDownload];
+                } else {
+                    [book setProcessingState:SCHBookProcessingStateReadyForLicenseAcquisition];                    
+                }
+                break;
         }
+        
+        book.ForceProcess = [NSNumber numberWithBool:YES];
+        [self postBookStateUpdate:identifier];
+        [self redispatchIdentifier:identifier];
     }
 }
 

@@ -281,9 +281,7 @@
 - (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error
 {
     // if there was an error may just have a partial file, so remove it
-	if (self.fileType == kSCHDownloadFileTypeCoverImage) {
-        [[NSFileManager defaultManager] removeItemAtPath:localPath error:nil];
-	}
+   [[NSFileManager defaultManager] removeItemAtPath:self.localPath error:nil];
 
     if ([self isCancelled] || [self processingState] == SCHBookProcessingStateDownloadPaused) {
 		[connection cancel];        

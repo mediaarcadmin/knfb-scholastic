@@ -364,7 +364,7 @@
     
     thumbPath = [book thumbPathForSize:thumbSize];
     
-    if ([book.bookCoverExists boolValue] == NO || (bookState <= SCHBookProcessingStateNoCoverImage && 
+    if ([book.BookCoverExists boolValue] == NO || (bookState <= SCHBookProcessingStateNoCoverImage && 
         bookState != SCHBookProcessingStateNonDRMBookWithDRM &&
         bookState != SCHBookProcessingStateUnableToAcquireLicense)) {
         // book does not have a cover image downloaded 

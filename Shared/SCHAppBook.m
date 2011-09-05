@@ -33,7 +33,8 @@ NSString * const kSCHAppBookTextFlowPageRanges = @"TextFlowPageRanges";
 NSString * const kSCHAppBookSmartZoomPageMarkers = @"SmartZoomPageMarkers";
 NSString * const kSCHAppBookLayoutPageEquivalentCount = @"LayoutPageEquivalentCount";
 NSString * const kSCHAppBookAudioBookReferences = @"AudioBookReferences";
-
+NSString * const kSCHAppBookBookCoverExists = @"BookCoverExists";
+NSString * const kSCHAppBookXPSExists = @"XPSExists";
 
 // Audio File keys
 NSString * const kSCHAppBookAudioFile = @"AudioFile";
@@ -90,7 +91,8 @@ NSString * const kSCHAppBookEucalyptusCacheDir = @"libEucalyptusCache";
 @dynamic AudioBookReferences;
 @dynamic OnDiskVersion;
 @dynamic ForceProcess;
-@dynamic bookCoverExists;
+@dynamic BookCoverExists;
+@dynamic XPSExists;
 
 @synthesize diskVersionOutOfDate;
 
@@ -284,22 +286,40 @@ NSString * const kSCHAppBookEucalyptusCacheDir = @"libEucalyptusCache";
 	return fullImagePath;
 }	
 
-- (NSNumber *)bookCoverExists
+- (NSNumber *)BookCoverExists
 {
-    [self willAccessValueForKey:@"bookCoverExists"];
-    NSNumber *rawBookCoverExists = [self primitiveValueForKey:@"bookCoverExists"];
-    [self didAccessValueForKey:@"bookCoverExists"];
+    [self willAccessValueForKey:kSCHAppBookBookCoverExists];
+    NSNumber *rawBookCoverExists = [self primitiveValueForKey:kSCHAppBookBookCoverExists];
+    [self didAccessValueForKey:kSCHAppBookBookCoverExists];
     
     if (rawBookCoverExists == nil || [rawBookCoverExists boolValue] == NO) {
         NSFileManager *localFileManager = [[NSFileManager alloc] init];  
         
         rawBookCoverExists = [NSNumber numberWithBool:[localFileManager fileExistsAtPath:[self coverImagePath]]];
-        [self setPrimitiveValue:rawBookCoverExists forKey:@"bookCoverExists"];
+        [self setPrimitiveValue:rawBookCoverExists forKey:kSCHAppBookBookCoverExists];
         
         [localFileManager release], localFileManager = nil;        
     }
     
     return(rawBookCoverExists);
+}
+
+- (NSNumber *)XPSExists
+{
+    [self willAccessValueForKey:kSCHAppBookXPSExists];
+    NSNumber *rawXPSExists = [self primitiveValueForKey:kSCHAppBookXPSExists];
+    [self didAccessValueForKey:kSCHAppBookXPSExists];
+    
+    if (rawXPSExists == nil || [rawXPSExists boolValue] == NO) {
+        NSFileManager *localFileManager = [[NSFileManager alloc] init];  
+        
+        rawXPSExists = [NSNumber numberWithBool:[localFileManager fileExistsAtPath:[self xpsPath]]];
+        [self setPrimitiveValue:rawXPSExists forKey:kSCHAppBookXPSExists];
+        
+        [localFileManager release], localFileManager = nil;        
+    }
+    
+    return(rawXPSExists);
 }
 
 - (NSString *)thumbPathForSize:(CGSize)size
