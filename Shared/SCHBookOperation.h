@@ -41,5 +41,6 @@
 
 // thread-safe setter for book Processing flag
 - (void)setIsProcessing:(BOOL)isProcessing;
+- (void)setNotCancelledCompletionBlock:(void (^)(void))block;
 
 @end

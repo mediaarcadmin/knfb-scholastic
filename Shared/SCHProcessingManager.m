@@ -88,7 +88,7 @@ NSString * const kSCHProcessingManagerConnectionBusy = @"SCHProcessingManagerCon
     [currentlyProcessingIdentifiers release], currentlyProcessingIdentifiers = nil;
     [managedObjectContext release], managedObjectContext = nil;
     dispatch_release(thumbnailAccessQueue);
-
+    
 	[super dealloc];
 }
 
@@ -109,7 +109,7 @@ NSString * const kSCHProcessingManagerConnectionBusy = @"SCHProcessingManagerCon
         self.firedFirstBusyIdleNotification = NO;
         
         self.thumbnailAccessQueue = dispatch_queue_create("com.scholastic.ThumbnailAccessQueue", NULL);
-
+        
         [[NSNotificationCenter defaultCenter] addObserver:self 
                                                  selector:@selector(coreDataHelperManagedObjectContextDidChangeNotification:) 
                                                      name:SCHCoreDataHelperManagedObjectContextDidChangeNotification 
@@ -213,11 +213,11 @@ static SCHProcessingManager *sharedManager = nil;
 	NSArray *allBooks = [[SCHBookManager sharedBookManager] allBookIdentifiersInManagedObjectContext:self.managedObjectContext];
 	
 	// FIXME: add prioritisation
-
+    
 	// get all the books independent of profile
 	for (SCHBookIdentifier *identifier in allBooks) {
 		SCHAppBook *book = [[SCHBookManager sharedBookManager] bookWithIdentifier:identifier inManagedObjectContext:self.managedObjectContext];
-
+        
         if (book != nil) {
             // if the book is currently processing, it will already be taken care of 
             // when it finishes processing, so no need to add it for consideration
@@ -235,10 +235,10 @@ static SCHProcessingManager *sharedManager = nil;
 - (BOOL)identifierNeedsProcessing:(SCHBookIdentifier *)identifier
 {
     NSAssert([NSThread isMainThread], @"ISBNNeedsProcessing must run on main thread");
-
+    
     BOOL needsProcessing = YES;
 	SCHAppBook *book = [[SCHBookManager sharedBookManager] bookWithIdentifier:identifier inManagedObjectContext:self.managedObjectContext];
-
+    
     if (book != nil) {
         BOOL spaceSaverMode = [self spaceSaverMode];
         
@@ -251,7 +251,7 @@ static SCHProcessingManager *sharedManager = nil;
     } else {
         needsProcessing = NO;
     }
-
+    
 	return needsProcessing;
 }
 
@@ -308,21 +308,21 @@ static SCHProcessingManager *sharedManager = nil;
                 break;
             }
         }
-
+        
         for (SCHBookOperation *bookOperation in [self.networkOperationQueue operations]) {
             if ([bookOperation.identifier isEqual:bookIdentifier] == YES) {
                 [bookOperation cancel];
                 break;
             }
         }
-
+        
         for (SCHBookOperation *bookOperation in [self.localProcessingQueue operations]) {
             if ([bookOperation.identifier isEqual:bookIdentifier] == YES) {
                 [bookOperation cancel];
                 break;
             }
         }
-
+        
         [self.currentlyProcessingIdentifiers removeObject:bookIdentifier];
     }
 }
@@ -346,7 +346,7 @@ static SCHProcessingManager *sharedManager = nil;
                 bookURLOp.identifier = identifier;
                 
                 // the book will be redispatched on completion
-                [bookURLOp setCompletionBlock:^{
+                [bookURLOp setNotCancelledCompletionBlock:^{
                     [self redispatchIdentifier:identifier];
                 }];
                 
@@ -365,7 +365,7 @@ static SCHProcessingManager *sharedManager = nil;
                 downloadImageOp.identifier = identifier;
                 downloadImageOp.resume = NO;
                 // the book will be redispatched on completion
-                [downloadImageOp setCompletionBlock:^{
+                [downloadImageOp setNotCancelledCompletionBlock:^{
                     [self redispatchIdentifier:identifier];
                 }];
                 // add the operation to the network download queue
@@ -385,7 +385,7 @@ static SCHProcessingManager *sharedManager = nil;
                 [book setForcedProcessing:NO];
                 
                 // the book will be redispatched on completion
-                [bookDownloadOp setCompletionBlock:^{
+                [bookDownloadOp setNotCancelledCompletionBlock:^{
                     [self redispatchIdentifier:identifier];
                 }];
                 
@@ -403,7 +403,7 @@ static SCHProcessingManager *sharedManager = nil;
                 licenseOp.identifier = identifier;
                 
                 // the book will be redispatched on completion
-                [licenseOp setCompletionBlock:^{
+                [licenseOp setNotCancelledCompletionBlock:^{
                     [self redispatchIdentifier:identifier];
                 }];
                 
@@ -422,7 +422,7 @@ static SCHProcessingManager *sharedManager = nil;
                 rightsOp.identifier = identifier;
                 
                 // the book will be redispatched on completion
-                [rightsOp setCompletionBlock:^{
+                [rightsOp setNotCancelledCompletionBlock:^{
                     [self redispatchIdentifier:identifier];
                 }];
                 
@@ -441,7 +441,7 @@ static SCHProcessingManager *sharedManager = nil;
                 audioOp.identifier = identifier;
                 
                 // the book will be redispatched on completion
-                [audioOp setCompletionBlock:^{
+                [audioOp setNotCancelledCompletionBlock:^{
                     [self redispatchIdentifier:identifier];
                 }];
                 
@@ -460,7 +460,7 @@ static SCHProcessingManager *sharedManager = nil;
                 textflowOp.identifier = identifier;
                 
                 // the book will be redispatched on completion
-                [textflowOp setCompletionBlock:^{
+                [textflowOp setNotCancelledCompletionBlock:^{
                     [self redispatchIdentifier:identifier];
                 }];
                 
@@ -479,7 +479,7 @@ static SCHProcessingManager *sharedManager = nil;
                 smartzoomOp.identifier = identifier;
                 
                 // the book will be redispatched on completion
-                [smartzoomOp setCompletionBlock:^{
+                [smartzoomOp setNotCancelledCompletionBlock:^{
                     [self redispatchIdentifier:identifier];
                 }];
                 
@@ -498,7 +498,7 @@ static SCHProcessingManager *sharedManager = nil;
                 paginateOp.identifier = identifier;
                 
                 // the book will be redispatched on completion
-                [paginateOp setCompletionBlock:^{
+                [paginateOp setNotCancelledCompletionBlock:^{
                     [self redispatchIdentifier:identifier];
                 }];
                 
@@ -535,7 +535,7 @@ static SCHProcessingManager *sharedManager = nil;
 - (void)redispatchIdentifier:(SCHBookIdentifier *)identifier
 {    
     dispatch_block_t redispatchBlock = ^{
-    
+        
         SCHAppBook *book = [[SCHBookManager sharedBookManager] bookWithIdentifier:identifier inManagedObjectContext:self.managedObjectContext];
         
         if (book != nil) {
@@ -584,8 +584,8 @@ static SCHProcessingManager *sharedManager = nil;
     NSAssert([NSThread isMainThread], @"checkIfProcessing must be called on main thread");
     
     // check to see if we're processing
-//	int totalOperations = [[self.networkOperationQueue operations] count] + 
-//	[[self.webServiceOperationQueue operations] count];
+    //	int totalOperations = [[self.networkOperationQueue operations] count] + 
+    //	[[self.webServiceOperationQueue operations] count];
     
     int totalBooksProcessing = 0;
     
@@ -611,8 +611,8 @@ static SCHProcessingManager *sharedManager = nil;
 		}
         
 #ifndef __OPTIMIZE__
-    // FIXME: remove this logging when we are satisfied we aren't failing to clean up the vended objects from the shared book manager
-    NSLog(@"Processing stopped. SharedBookManager: %@", [SCHBookManager sharedBookManager]);
+        // FIXME: remove this logging when we are satisfied we aren't failing to clean up the vended objects from the shared book manager
+        NSLog(@"Processing stopped. SharedBookManager: %@", [SCHBookManager sharedBookManager]);
 #endif
         
 	} else {
@@ -667,7 +667,7 @@ static SCHProcessingManager *sharedManager = nil;
     NSAssert([NSThread isMainThread], @"userRequestedRetryForBookWithIdentifier: must be called on main thread");
 	
 	SCHAppBook *book = [[SCHBookManager sharedBookManager] bookWithIdentifier:identifier inManagedObjectContext:self.managedObjectContext];
-
+    
     if (book != nil) {
         switch (book.processingState) {
             case SCHBookProcessingStateURLsNotPopulated:
