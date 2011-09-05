@@ -63,7 +63,7 @@ static const CGFloat kSCHNotesCountViewMinHeight = 21;
         newFrame.size.width = textSize.width + (kSCHNotesCountViewPaddingWidth * 2);
         newFrame.size.height = textSize.height + (kSCHNotesCountViewPaddingHeight * 2);
         
-        newFrame.origin.x = floor(CGRectGetWidth(self.superview.frame)) - newFrame.size.width - 10;
+        newFrame.origin.x = floor(CGRectGetWidth(self.superview.frame)) - newFrame.size.width + 10;
         newFrame.origin.y = 0;
 
         self.frame = newFrame;

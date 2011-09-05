@@ -26,6 +26,7 @@
 #import "NSNumber+ObjectTypes.h"
 #import "SCHProfileItem.h"
 #import "SCHUserDefaults.h"
+#import "SCHBookManager.h"
 #import "SCHKIFTestController.h"
 
 enum {
@@ -40,7 +41,9 @@ enum {
     kTableOffsetPortrait_iPad = 240,
     kTableOffsetLandscape_iPad = 120,
     kTableOffsetPortrait_iPhone = 0,
-    kTableOffsetLandscape_iPhone = 0
+    kTableOffsetLandscape_iPhone = 0,
+    kTableOffsetNoSamplesPortrait_iPhone = 80,
+    kTableOffsetNoSamplesLandscape_iPhone = 50
 };
 
 typedef enum {
@@ -116,10 +119,6 @@ typedef enum {
                                              selector:@selector(authenticationManagerDidDeregister:)
                                                  name:SCHAuthenticationManagerDidDeregisterNotification
                                                object:nil];
-
-    UIImageView *logoImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"logo"]];
-    self.navigationItem.titleView = logoImageView;
-    [logoImageView release];    
 }
 
 - (void)viewDidUnload
@@ -162,17 +161,33 @@ dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
 {
     const BOOL iPad = (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad);
     
+    BOOL showSamples = ![[NSUserDefaults standardUserDefaults] boolForKey:kSCHUserDefaultsHasEverLoggedIn];
+    
+    CGFloat logoHeight = 44;
+    
     if (UIInterfaceOrientationIsLandscape(orientation)) {
-        CGFloat offset = iPad ? kTableOffsetLandscape_iPad : kTableOffsetLandscape_iPhone;
+        CGFloat offset = iPad ? kTableOffsetLandscape_iPad : (showSamples ? kTableOffsetLandscape_iPhone : kTableOffsetNoSamplesLandscape_iPhone);
         [self.backgroundView setImage:[UIImage imageNamed:@"plain-background-landscape.jpg"]];
         [self.starterTableView setContentInset:UIEdgeInsetsMake(offset, 0, 0, 0)];
+        logoHeight = iPad ? logoHeight : 32;
     } else {
-        CGFloat offset = iPad ? kTableOffsetPortrait_iPad : kTableOffsetPortrait_iPhone;
+        CGFloat offset = iPad ? kTableOffsetPortrait_iPad : (showSamples ? kTableOffsetPortrait_iPhone : kTableOffsetNoSamplesPortrait_iPhone);
         [self.backgroundView setImage:[UIImage imageNamed:@"plain-background-portrait.jpg"]];
         [self.starterTableView setContentInset:UIEdgeInsetsMake(offset, 0, 0, 0)];
     }
     
     [(SCHCustomNavigationBar *)self.navigationController.navigationBar setBackgroundImage:[UIImage imageNamed:@"admin-iphone-landscape-top-toolbar.png"]];
+    
+    UIImageView *logoImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"logo"]];
+    logoImageView.contentMode = UIViewContentModeScaleAspectFit;
+    
+    CGRect logoFrame = CGRectZero;
+    logoFrame.size.width = 320;
+    logoFrame.size.height = logoHeight;
+    logoImageView.frame = logoFrame;
+    
+    self.navigationItem.titleView = logoImageView;
+    [logoImageView release];
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
@@ -391,8 +406,7 @@ dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
 	if ([notification.name isEqualToString:SCHAuthenticationManagerDidSucceedNotification]) {
         [self firstLogin];
         
-        [[SCHURLManager sharedURLManager] clear];
-        [[SCHSyncManager sharedSyncManager] clear];
+        [[SCHAuthenticationManager sharedAuthenticationManager] clearAppProcessing];
         [[SCHSyncManager sharedSyncManager] firstSync:YES];
 	} else {
 		NSError *error = [notification.userInfo objectForKey:kSCHAuthenticationManagerNSError];

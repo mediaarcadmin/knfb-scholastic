@@ -28,8 +28,10 @@
 
 - (void)dealloc
 {
-    [storyInteractions release];
-    [storyInteractionsByPage release];
+    [storyInteractions release], storyInteractions = nil;
+    [storyInteractionsByPage release], storyInteractionsByPage = nil;
+    [storyInteractionCurrentCount release], storyInteractionCurrentCount = nil;
+    [storyInteractionsComplete release], storyInteractionsComplete = nil;
     [super dealloc];
 }
 

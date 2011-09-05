@@ -188,6 +188,13 @@ static NSDictionary *featureCompatibilityDictionary = nil;
     }
 }
 
+- (void)clearBookIdentifierCache
+{
+    @synchronized(self.isbnManagedObjectCache) {
+        [self.isbnManagedObjectCache removeAllObjects];
+    }
+}
+
 - (NSArray *)allBookIdentifiersInManagedObjectContext:(NSManagedObjectContext *)managedObjectContext
 {
     NSMutableArray *ret = nil;

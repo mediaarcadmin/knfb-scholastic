@@ -186,5 +186,16 @@
     }];
 }
 
+- (void)setNotCancelledCompletionBlock:(void (^)(void))block
+{
+    __block NSOperation *selfPtr = self;
+    
+    [self setCompletionBlock:^{
+        if (![selfPtr isCancelled]) {
+            block();
+        }
+    }];
+}
+
 
 @end

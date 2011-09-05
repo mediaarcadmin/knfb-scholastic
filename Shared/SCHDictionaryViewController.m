@@ -35,6 +35,7 @@
 @synthesize bottomLabel;
 @synthesize activityIndicator;
 @synthesize leftBarButtonItemContainer;
+@synthesize audioButton;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -57,6 +58,7 @@
     [downloadProgressView release], downloadProgressView = nil;
     [progressBar release], progressBar = nil;
     [leftBarButtonItemContainer release], leftBarButtonItemContainer = nil;
+    [audioButton release], audioButton = nil;
     [notFoundView release], notFoundView = nil;
 }
 
@@ -123,6 +125,7 @@
     
     if (UIInterfaceOrientationIsPortrait(orientation) || UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
         [self.topBar setBackgroundImage:[UIImage imageNamed:@"reading-view-portrait-top-bar.png"]];
+        [self.audioButton setImage:[UIImage imageNamed:@"icon-audio-younger-small.png"] forState:UIControlStateNormal];
         
         CGRect barFrame = self.topBar.frame;
         if (barFrame.size.height == 34) {
@@ -136,7 +139,8 @@
         }
     } else {
         [self.topBar setBackgroundImage:[UIImage imageNamed:@"reading-view-landscape-top-bar.png"]];
-        
+        [self.audioButton setImage:[UIImage imageNamed:@"icon-audio-younger-small-landscape.png"] forState:UIControlStateNormal];
+
         CGRect barFrame = self.topBar.frame;
         if (barFrame.size.height == 44) {
             barFrame.size.height = 34;

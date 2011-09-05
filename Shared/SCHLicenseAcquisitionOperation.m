@@ -11,6 +11,7 @@
 #import "SCHAppBook.h"
 #import "SCHAuthenticationManager.h"
 #import "NSNumber+ObjectTypes.h"
+#import "SCHXPSProvider.h"
 
 @interface SCHLicenseAcquisitionOperation ()
 
@@ -54,7 +55,15 @@
             [self setIsProcessing:NO];
         }
     } else {
-        [self updateBookWithSuccess];
+        // we shouldnt have a nonDRM book with DRM information
+        SCHXPSProvider *xpsProvider = [[SCHBookManager sharedBookManager] threadSafeCheckOutXPSProviderForBookIdentifier:self.identifier];
+        if ([xpsProvider isEncrypted ] == YES) {
+            [self setProcessingState:SCHBookProcessingStateNonDRMBookWithDRM];
+            [self setIsProcessing:NO];
+            [self endOperation];
+        } else {
+            [self updateBookWithSuccess];
+        }
     }
 }
 
@@ -63,7 +72,7 @@
     __block BOOL useDRM = NO;
     
     [self performWithBook:^(SCHAppBook *book) {
-        useDRM = book.ContentMetadataItem.DRMQualifier == [NSNumber numberWithDRMQualifier:kSCHDRMQualifiersFullWithDRM];
+        useDRM = ([book.ContentMetadataItem.DRMQualifier isEqualToNumber:[NSNumber numberWithDRMQualifier:kSCHDRMQualifiersFullWithDRM]]);
     }];
     
     return(useDRM);

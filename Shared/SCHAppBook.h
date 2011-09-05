@@ -15,6 +15,7 @@ extern NSString * const kSCHAppBookErrorDomain;
 typedef enum 
 {
 	kSCHAppBookStillBeingProcessedError = 0,
+    kSCHAppBookNonDRMBookWithDRMError,
     kSCHAppBookUnableToAcquireLicenseError,
     kSCHAppBookDownloadFailedError,
     kSCHAppBookURLsNotPopulatedError,
@@ -106,6 +107,8 @@ typedef enum {
 @property (nonatomic, retain) NSArray *AudioBookReferences;
 @property (nonatomic, retain) NSString *OnDiskVersion;
 @property (nonatomic, retain) NSNumber *ForceProcess;
+@property (nonatomic, retain) NSNumber * BookCoverExists;
+@property (nonatomic, retain) NSNumber * XPSExists;
 
 // convenience variables from the SCHContentMetadataItem
 @property (nonatomic, readonly) NSString * ContentIdentifier;

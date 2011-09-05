@@ -33,7 +33,8 @@ NSString * const kSCHAppBookTextFlowPageRanges = @"TextFlowPageRanges";
 NSString * const kSCHAppBookSmartZoomPageMarkers = @"SmartZoomPageMarkers";
 NSString * const kSCHAppBookLayoutPageEquivalentCount = @"LayoutPageEquivalentCount";
 NSString * const kSCHAppBookAudioBookReferences = @"AudioBookReferences";
-
+NSString * const kSCHAppBookBookCoverExists = @"BookCoverExists";
+NSString * const kSCHAppBookXPSExists = @"XPSExists";
 
 // Audio File keys
 NSString * const kSCHAppBookAudioFile = @"AudioFile";
@@ -90,6 +91,8 @@ NSString * const kSCHAppBookEucalyptusCacheDir = @"libEucalyptusCache";
 @dynamic AudioBookReferences;
 @dynamic OnDiskVersion;
 @dynamic ForceProcess;
+@dynamic BookCoverExists;
+@dynamic XPSExists;
 
 @synthesize diskVersionOutOfDate;
 
@@ -268,18 +271,56 @@ NSString * const kSCHAppBookEucalyptusCacheDir = @"libEucalyptusCache";
 
 - (NSString *)xpsPath
 {
-	return [NSString stringWithFormat:@"%@/%@-%@.xps", 
-			[self cacheDirectory], 
-			self.ContentMetadataItem.ContentIdentifier, self.ContentMetadataItem.Version];
+    NSString *cacheDir = [self cacheDirectory];
+    NSString *fullXPSPath = [cacheDir stringByAppendingPathComponent:[NSString stringWithFormat:@"%@-%@.xps", 
+                                                                        self.bookIdentifier, self.ContentMetadataItem.Version]];
+	return fullXPSPath;    
 }
 
 - (NSString *)coverImagePath
 {
-	NSString *cacheDir  = [self cacheDirectory];
-	NSString *fullImagePath = [cacheDir stringByAppendingPathComponent:[NSString stringWithFormat:@"%@.png", self.ContentIdentifier]];
+	NSString *cacheDir = [self cacheDirectory];
+	NSString *fullImagePath = [cacheDir stringByAppendingPathComponent:[NSString stringWithFormat:@"%@.png", 
+                                                                        self.bookIdentifier]];
     
 	return fullImagePath;
 }	
+
+- (NSNumber *)BookCoverExists
+{
+    [self willAccessValueForKey:kSCHAppBookBookCoverExists];
+    NSNumber *rawBookCoverExists = [self primitiveValueForKey:kSCHAppBookBookCoverExists];
+    [self didAccessValueForKey:kSCHAppBookBookCoverExists];
+    
+    if (rawBookCoverExists == nil || [rawBookCoverExists boolValue] == NO) {
+        NSFileManager *localFileManager = [[NSFileManager alloc] init];  
+        
+        rawBookCoverExists = [NSNumber numberWithBool:[localFileManager fileExistsAtPath:[self coverImagePath]]];
+        [self setPrimitiveValue:rawBookCoverExists forKey:kSCHAppBookBookCoverExists];
+        
+        [localFileManager release], localFileManager = nil;        
+    }
+    
+    return(rawBookCoverExists);
+}
+
+- (NSNumber *)XPSExists
+{
+    [self willAccessValueForKey:kSCHAppBookXPSExists];
+    NSNumber *rawXPSExists = [self primitiveValueForKey:kSCHAppBookXPSExists];
+    [self didAccessValueForKey:kSCHAppBookXPSExists];
+    
+    if (rawXPSExists == nil || [rawXPSExists boolValue] == NO) {
+        NSFileManager *localFileManager = [[NSFileManager alloc] init];  
+        
+        rawXPSExists = [NSNumber numberWithBool:[localFileManager fileExistsAtPath:[self xpsPath]]];
+        [self setPrimitiveValue:rawXPSExists forKey:kSCHAppBookXPSExists];
+        
+        [localFileManager release], localFileManager = nil;        
+    }
+    
+    return(rawXPSExists);
+}
 
 - (NSString *)thumbPathForSize:(CGSize)size
 {
@@ -290,9 +331,9 @@ NSString * const kSCHAppBookEucalyptusCacheDir = @"libEucalyptusCache";
         scale = [[UIScreen mainScreen] scale];
     }
     
-    NSString *thumbPath = [cacheDir stringByAppendingPathComponent:[NSString stringWithFormat:@"%@_%d_%d.png", self.ContentIdentifier, (int)size.width, (int)size.height]];
+    NSString *thumbPath = [cacheDir stringByAppendingPathComponent:[NSString stringWithFormat:@"%@_%d_%d.png", self.bookIdentifier, (int)size.width, (int)size.height]];
     if (scale != 1) {
-        thumbPath = [cacheDir stringByAppendingPathComponent:[NSString stringWithFormat:@"%@_%d_%d@%dx.png", self.ContentIdentifier, (int)size.width, (int)size.height, (int) scale]];
+        thumbPath = [cacheDir stringByAppendingPathComponent:[NSString stringWithFormat:@"%@_%d_%d@%dx.png", self.bookIdentifier, (int)size.width, (int)size.height, (int) scale]];
     }    
 
 	return thumbPath;
@@ -323,9 +364,24 @@ NSString * const kSCHAppBookEucalyptusCacheDir = @"libEucalyptusCache";
 {
 	NSString *status = @"Unknown!";
 	switch ([[self State] intValue]) {
+		case SCHBookProcessingStateURLsNotPopulated:
+			status = @"Error URLs not Populated";
+			break;
+		case SCHBookProcessingStateDownloadFailed:
+			status = @"Error Download Failed";
+			break;
+		case SCHBookProcessingStateNonDRMBookWithDRM:
+			status = @"Error NonDRm book with DRM";
+			break;
+		case SCHBookProcessingStateUnableToAcquireLicense:
+			status = @"Error Unable to Acquire License";
+			break;
 		case SCHBookProcessingStateError:
 			status = @"Error";
 			break;
+		case SCHBookProcessingStateBookVersionNotSupported:
+			status = @"Error Book Version Not Supported";
+			break;            
 		case SCHBookProcessingStateNoURLs:
 			status = @"URLs..";
 			break;
@@ -346,6 +402,9 @@ NSString * const kSCHAppBookEucalyptusCacheDir = @"libEucalyptusCache";
             break;
 		case SCHBookProcessingStateReadyForRightsParsing:
 			status = @"Rights...";
+			break;
+		case SCHBookProcessingStateReadyForAudioInfoParsing:
+			status = @"Audio...";
 			break;
         case SCHBookProcessingStateReadyForTextFlowPreParse:
 			status = @"Textflow...";
@@ -374,6 +433,9 @@ NSString * const kSCHAppBookEucalyptusCacheDir = @"libEucalyptusCache";
 		ret = YES;
 	} else if(error != NULL) {
         switch ([self.State intValue]) {
+            case SCHBookProcessingStateNonDRMBookWithDRM:
+                *error = [self errorWithCode:kSCHAppBookNonDRMBookWithDRMError];
+                break;                
             case SCHBookProcessingStateUnableToAcquireLicense:
                 *error = [self errorWithCode:kSCHAppBookUnableToAcquireLicenseError];
                 break;
@@ -432,6 +494,9 @@ NSString * const kSCHAppBookEucalyptusCacheDir = @"libEucalyptusCache";
         case kSCHAppBookStillBeingProcessedError:
             description = NSLocalizedString(@"The book is still being processed.", @"Still being processed error message from AppBook");
             break;
+        case kSCHAppBookNonDRMBookWithDRMError:
+            description = NSLocalizedString(@"There was a problem whilst acquiring DRM information for this book. If the problem persists please contact support.", @"Book has DRM when it should not error message from AppBook");
+            break;            
         case kSCHAppBookUnableToAcquireLicenseError:
             description = NSLocalizedString(@"It has not been possible to acquire a DRM license for this book. Please make sure this device is authorized and connected to the internet and try again.", @"Decryption not available error message from AppBook");
             break;
@@ -439,7 +504,7 @@ NSString * const kSCHAppBookEucalyptusCacheDir = @"libEucalyptusCache";
             description = NSLocalizedString(@"There was a problem whilst downloading this book. Please make sure this device is connected to the internet and try again.", @"Download failed error message from AppBook");
             break;
         case kSCHAppBookURLsNotPopulatedError:
-            description = NSLocalizedString(@"There was a problem whilst accessing the URLs for this book. Please make sure this device is connected to the internet and try again. if the problem persists please contact support.", @"URLs not populated error message from AppBook");
+            description = NSLocalizedString(@"There was a problem whilst accessing the URLs for this book. Please make sure this device is connected to the internet and try again. If the problem persists please contact support.", @"URLs not populated error message from AppBook");
             break;
         case kSCHAppBookUnspecifiedError:
         default:

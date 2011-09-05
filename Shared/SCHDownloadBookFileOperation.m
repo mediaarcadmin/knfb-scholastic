@@ -97,10 +97,9 @@
         [self performWithBook:^(SCHAppBook *book) {
             cacheDir = [[book cacheDirectory] retain];
             contentIdentifier = [[book ContentIdentifier] retain];
+            self.localPath = [book coverImagePath];
             coverURL = [[book BookCoverURL] retain];
         }];
-        
-		self.localPath = [cacheDir stringByAppendingPathComponent:[NSString stringWithFormat:@"%@.png", contentIdentifier]];
 		
         if ([self stringBeginsWithHTTPScheme:coverURL] == NO) {
             [[NSFileManager defaultManager] copyItemAtPath:[self fullPathToBundledFile:coverURL]
@@ -282,9 +281,7 @@
 - (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error
 {
     // if there was an error may just have a partial file, so remove it
-	if (self.fileType == kSCHDownloadFileTypeCoverImage) {
-        [[NSFileManager defaultManager] removeItemAtPath:localPath error:nil];
-	}
+   [[NSFileManager defaultManager] removeItemAtPath:self.localPath error:nil];
 
     if ([self isCancelled] || [self processingState] == SCHBookProcessingStateDownloadPaused) {
 		[connection cancel];        

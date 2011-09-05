@@ -263,6 +263,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     storyInteractionController.delegate = nil; // we don't want callbacks
     [storyInteractionController release], storyInteractionController = nil;
     [activeStoryInteraction release], activeStoryInteraction = nil;
+    [cornerCoverFadeTimer release], cornerCoverFadeTimer = nil;
     
     [super dealloc];
 }
@@ -2604,7 +2605,12 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     SCHBookPoint *notePoint = [self.readingView bookPointForLayoutPage:[self.activeStoryInteraction documentPageNumber]
                                                         pageWordOffset:0
                                                   includingFolioBlocks:YES];
-    [self.readingView jumpToBookPoint:notePoint animated:YES];
+    
+    if ([[self.readingView currentBookPoint] isEqual:notePoint] == NO) {
+        [self.readingView jumpToBookPoint:notePoint animated:YES];
+    } else {
+        [self setupStoryInteractionButtonForCurrentPagesAnimated:YES];
+    }
 }
 
 #pragma mark - SCHStoryInteractionControllerDelegate methods
