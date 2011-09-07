@@ -10,12 +10,34 @@
 
 #import "KIFTestScenario+EXAdditions.h"
 
+@interface SCHKIFTestController ()
+
+- (void)initializeScenariosForiPhone;
+- (void)initializeScenariosForiPad;
+
+@end
+
 @implementation SCHKIFTestController
 
 - (void)initializeScenarios
 {
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
+        [self initializeScenariosForiPad];
+    } else if(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+        [self initializeScenariosForiPad];        
+    }
+}
+
+- (void)initializeScenariosForiPhone
+{
     [self addScenario:[KIFTestScenario scenarioToLogin]];
-    // Add additional scenarios you want to test here
+    [self addScenario:[KIFTestScenario scenarioToDeregister]];    
+}
+
+- (void)initializeScenariosForiPad
+{
+    [self addScenario:[KIFTestScenario scenarioToLogin]];
+    [self addScenario:[KIFTestScenario scenarioToDeregister]];    
 }
 
 @end

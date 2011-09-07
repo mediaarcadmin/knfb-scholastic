@@ -18,13 +18,23 @@
     KIFTestScenario *scenario = [KIFTestScenario scenarioWithDescription:@"Test that a user can successfully log in."];
     
     [scenario addStep:[KIFTestStep stepToReset]];
-    [scenario addStepsFromArray:[KIFTestStep stepsToGoToLoginPage]];
-    [scenario addStep:[KIFTestStep stepToEnterText:@"qa_knfbp_mf" intoViewWithAccessibilityLabel:@"Login User Name"]];
-    [scenario addStep:[KIFTestStep stepToEnterText:@"pass" intoViewWithAccessibilityLabel:@"Login Password"]];
-    [scenario addStep:[KIFTestStep stepToTapViewWithAccessibilityLabel:@"Login"]];
     
-//    // Verify that the login succeeded
-//    [scenario addStep:[KIFTestStep stepToWaitForTappableViewWithAccessibilityLabel:@"Welcome"]];
+    [scenario addStepsFromArray:[KIFTestStep stepsToLogin]];
+
+    [scenario addStep:[KIFTestStep stepToWaitForViewWithAccessibilityLabel:@"Dictionary Download View"]];
+    [scenario addStep:[KIFTestStep stepToTapViewWithAccessibilityLabel:@"Close Button"]];    
+
+    [scenario addStep:[KIFTestStep stepToTapViewWithAccessibilityLabel:@"Settings Button"]];
+    
+    
+    return(scenario);
+}
+
++ (id)scenarioToDeregister
+{
+    KIFTestScenario *scenario = [KIFTestScenario scenarioWithDescription:@"Test that a user can successfully deregister."];    
+
+    [scenario addStepsFromArray:[KIFTestStep stepsToGoToDeregistrationPage]];
     
     return(scenario);
 }

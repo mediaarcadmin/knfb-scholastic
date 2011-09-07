@@ -63,6 +63,7 @@
 										<int key="NSvFlags">274</int>
 										<string key="NSFrame">{{0, 4}, {480, 40}}</string>
 										<reference key="NSSuperview" ref="398520321"/>
+										<reference key="NSWindow"/>
 										<reference key="NSNextKeyView" ref="201541512"/>
 										<bool key="IBUIOpaque">NO</bool>
 										<bool key="IBUIClipsSubviews">YES</bool>
@@ -95,6 +96,7 @@
 								</object>
 								<string key="NSFrame">{{33, 0}, {480, 44}}</string>
 								<reference key="NSSuperview" ref="243002648"/>
+								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="34242593"/>
 								<object class="NSColor" key="IBUIBackgroundColor" id="703732805">
 									<int key="NSColorSpace">3</int>
@@ -105,6 +107,7 @@
 						</object>
 						<string key="NSFrameSize">{540, 44}</string>
 						<reference key="NSSuperview" ref="191373211"/>
+						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="398520321"/>
 						<bool key="IBUIOpaque">NO</bool>
 						<bool key="IBUIClearsContextBeforeDrawing">NO</bool>
@@ -162,6 +165,7 @@
 										<int key="NSvFlags">293</int>
 										<string key="NSFrame">{{156, 127}, {228, 51}}</string>
 										<reference key="NSSuperview" ref="135206302"/>
+										<reference key="NSWindow"/>
 										<reference key="NSNextKeyView" ref="597812096"/>
 										<reference key="IBUIBackgroundColor" ref="703732805"/>
 										<bool key="IBUIOpaque">NO</bool>
@@ -199,6 +203,7 @@
 										<int key="NSvFlags">293</int>
 										<string key="NSFrame">{{156, 187}, {228, 51}}</string>
 										<reference key="NSSuperview" ref="135206302"/>
+										<reference key="NSWindow"/>
 										<reference key="NSNextKeyView" ref="352382970"/>
 										<reference key="IBUIBackgroundColor" ref="703732805"/>
 										<bool key="IBUIOpaque">NO</bool>
@@ -230,6 +235,7 @@
 										<int key="NSvFlags">293</int>
 										<string key="NSFrame">{{20, 253}, {500, 22}}</string>
 										<reference key="NSSuperview" ref="135206302"/>
+										<reference key="NSWindow"/>
 										<reference key="NSNextKeyView" ref="262213976"/>
 										<bool key="IBUIOpaque">NO</bool>
 										<string key="targetRuntimeIdentifier">IBIPadFramework</string>
@@ -261,6 +267,7 @@
 										<int key="NSvFlags">293</int>
 										<string key="NSFrame">{{20, 277}, {500, 22}}</string>
 										<reference key="NSSuperview" ref="135206302"/>
+										<reference key="NSWindow"/>
 										<reference key="NSNextKeyView" ref="256814430"/>
 										<bool key="IBUIOpaque">NO</bool>
 										<string key="targetRuntimeIdentifier">IBIPadFramework</string>
@@ -285,6 +292,7 @@
 										<int key="NSvFlags">293</int>
 										<string key="NSFrame">{{217, 318}, {106, 48}}</string>
 										<reference key="NSSuperview" ref="135206302"/>
+										<reference key="NSWindow"/>
 										<reference key="NSNextKeyView" ref="662128954"/>
 										<bool key="IBUIOpaque">NO</bool>
 										<object class="IBUIAccessibilityConfiguration" key="IBUIAccessibilityConfiguration">
@@ -320,6 +328,7 @@
 										<int key="NSvFlags">292</int>
 										<string key="NSFrame">{{62, 42}, {416, 51}}</string>
 										<reference key="NSSuperview" ref="135206302"/>
+										<reference key="NSWindow"/>
 										<reference key="NSNextKeyView" ref="275680409"/>
 										<bool key="IBUIOpaque">NO</bool>
 										<bool key="IBUIClipsSubviews">YES</bool>
@@ -346,6 +355,7 @@
 										<int key="NSvFlags">-2147483347</int>
 										<string key="NSFrame">{{331, 323}, {37, 37}}</string>
 										<reference key="NSSuperview" ref="135206302"/>
+										<reference key="NSWindow"/>
 										<reference key="NSNextKeyView"/>
 										<bool key="IBUIOpaque">NO</bool>
 										<int key="IBUIContentMode">4</int>
@@ -355,6 +365,7 @@
 								</object>
 								<string key="NSFrameSize">{540, 576}</string>
 								<reference key="NSSuperview" ref="201541512"/>
+								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="1052003170"/>
 								<reference key="IBUIBackgroundColor" ref="703732805"/>
 								<bool key="IBUIClipsSubviews">YES</bool>
@@ -367,6 +378,7 @@
 						</object>
 						<string key="NSFrame">{{0, 44}, {540, 576}}</string>
 						<reference key="NSSuperview" ref="191373211"/>
+						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="135206302"/>
 						<object class="NSColor" key="IBUIBackgroundColor">
 							<int key="NSColorSpace">3</int>
@@ -386,11 +398,15 @@
 				</object>
 				<string key="NSFrameSize">{540, 620}</string>
 				<reference key="NSSuperview"/>
+				<reference key="NSWindow"/>
 				<reference key="NSNextKeyView" ref="243002648"/>
 				<object class="NSColor" key="IBUIBackgroundColor">
 					<int key="NSColorSpace">3</int>
 					<bytes key="NSWhite">MQA</bytes>
 					<reference key="NSCustomColorSpace" ref="257303451"/>
+				</object>
+				<object class="IBUIAccessibilityConfiguration" key="IBUIAccessibilityConfiguration">
+					<string key="IBUIAccessibilityLabel">Login View</string>
 				</object>
 				<string key="targetRuntimeIdentifier">IBIPadFramework</string>
 			</object>
@@ -754,7 +770,176 @@
 			<nil key="sourceID"/>
 			<int key="maxID">49</int>
 		</object>
-		<object class="IBClassDescriber" key="IBDocument.Classes"/>
+		<object class="IBClassDescriber" key="IBDocument.Classes">
+			<object class="NSMutableArray" key="referencedPartialClassDescriptions">
+				<bool key="EncodedWithXMLCoder">YES</bool>
+				<object class="IBPartialClassDescription">
+					<string key="className">SCHCustomToolbar</string>
+					<string key="superclassName">UIToolbar</string>
+					<object class="IBClassDescriptionSource" key="sourceIdentifier">
+						<string key="majorKey">IBProjectSource</string>
+						<string key="minorKey">./Classes/SCHCustomToolbar.h</string>
+					</object>
+				</object>
+				<object class="IBPartialClassDescription">
+					<string key="className">SCHLoginPasswordViewController</string>
+					<string key="superclassName">UIViewController</string>
+					<object class="NSMutableDictionary" key="actions">
+						<bool key="EncodedWithXMLCoder">YES</bool>
+						<object class="NSArray" key="dict.sortedKeys">
+							<bool key="EncodedWithXMLCoder">YES</bool>
+							<string>actionButtonAction:</string>
+							<string>cancelButtonAction:</string>
+							<string>openScholasticAccountURLInSafari:</string>
+							<string>openScholasticUsernamePasswordURLInSafari:</string>
+						</object>
+						<object class="NSMutableArray" key="dict.values">
+							<bool key="EncodedWithXMLCoder">YES</bool>
+							<string>id</string>
+							<string>id</string>
+							<string>id</string>
+							<string>id</string>
+						</object>
+					</object>
+					<object class="NSMutableDictionary" key="actionInfosByName">
+						<bool key="EncodedWithXMLCoder">YES</bool>
+						<object class="NSArray" key="dict.sortedKeys">
+							<bool key="EncodedWithXMLCoder">YES</bool>
+							<string>actionButtonAction:</string>
+							<string>cancelButtonAction:</string>
+							<string>openScholasticAccountURLInSafari:</string>
+							<string>openScholasticUsernamePasswordURLInSafari:</string>
+						</object>
+						<object class="NSMutableArray" key="dict.values">
+							<bool key="EncodedWithXMLCoder">YES</bool>
+							<object class="IBActionInfo">
+								<string key="name">actionButtonAction:</string>
+								<string key="candidateClassName">id</string>
+							</object>
+							<object class="IBActionInfo">
+								<string key="name">cancelButtonAction:</string>
+								<string key="candidateClassName">id</string>
+							</object>
+							<object class="IBActionInfo">
+								<string key="name">openScholasticAccountURLInSafari:</string>
+								<string key="candidateClassName">id</string>
+							</object>
+							<object class="IBActionInfo">
+								<string key="name">openScholasticUsernamePasswordURLInSafari:</string>
+								<string key="candidateClassName">id</string>
+							</object>
+						</object>
+					</object>
+					<object class="NSMutableDictionary" key="outlets">
+						<bool key="EncodedWithXMLCoder">YES</bool>
+						<object class="NSArray" key="dict.sortedKeys">
+							<bool key="EncodedWithXMLCoder">YES</bool>
+							<string>accountURL</string>
+							<string>barSpacer</string>
+							<string>bottomField</string>
+							<string>containerView</string>
+							<string>forgotUsernamePasswordURL</string>
+							<string>loginButton</string>
+							<string>profileLabel</string>
+							<string>scrollView</string>
+							<string>spinner</string>
+							<string>topBar</string>
+							<string>topField</string>
+						</object>
+						<object class="NSMutableArray" key="dict.values">
+							<bool key="EncodedWithXMLCoder">YES</bool>
+							<string>SCHUnderlinedButton</string>
+							<string>UIBarButtonItem</string>
+							<string>UITextField</string>
+							<string>UIView</string>
+							<string>SCHUnderlinedButton</string>
+							<string>UIButton</string>
+							<string>UILabel</string>
+							<string>UIScrollView</string>
+							<string>UIActivityIndicatorView</string>
+							<string>SCHCustomToolbar</string>
+							<string>UITextField</string>
+						</object>
+					</object>
+					<object class="NSMutableDictionary" key="toOneOutletInfosByName">
+						<bool key="EncodedWithXMLCoder">YES</bool>
+						<object class="NSArray" key="dict.sortedKeys">
+							<bool key="EncodedWithXMLCoder">YES</bool>
+							<string>accountURL</string>
+							<string>barSpacer</string>
+							<string>bottomField</string>
+							<string>containerView</string>
+							<string>forgotUsernamePasswordURL</string>
+							<string>loginButton</string>
+							<string>profileLabel</string>
+							<string>scrollView</string>
+							<string>spinner</string>
+							<string>topBar</string>
+							<string>topField</string>
+						</object>
+						<object class="NSMutableArray" key="dict.values">
+							<bool key="EncodedWithXMLCoder">YES</bool>
+							<object class="IBToOneOutletInfo">
+								<string key="name">accountURL</string>
+								<string key="candidateClassName">SCHUnderlinedButton</string>
+							</object>
+							<object class="IBToOneOutletInfo">
+								<string key="name">barSpacer</string>
+								<string key="candidateClassName">UIBarButtonItem</string>
+							</object>
+							<object class="IBToOneOutletInfo">
+								<string key="name">bottomField</string>
+								<string key="candidateClassName">UITextField</string>
+							</object>
+							<object class="IBToOneOutletInfo">
+								<string key="name">containerView</string>
+								<string key="candidateClassName">UIView</string>
+							</object>
+							<object class="IBToOneOutletInfo">
+								<string key="name">forgotUsernamePasswordURL</string>
+								<string key="candidateClassName">SCHUnderlinedButton</string>
+							</object>
+							<object class="IBToOneOutletInfo">
+								<string key="name">loginButton</string>
+								<string key="candidateClassName">UIButton</string>
+							</object>
+							<object class="IBToOneOutletInfo">
+								<string key="name">profileLabel</string>
+								<string key="candidateClassName">UILabel</string>
+							</object>
+							<object class="IBToOneOutletInfo">
+								<string key="name">scrollView</string>
+								<string key="candidateClassName">UIScrollView</string>
+							</object>
+							<object class="IBToOneOutletInfo">
+								<string key="name">spinner</string>
+								<string key="candidateClassName">UIActivityIndicatorView</string>
+							</object>
+							<object class="IBToOneOutletInfo">
+								<string key="name">topBar</string>
+								<string key="candidateClassName">SCHCustomToolbar</string>
+							</object>
+							<object class="IBToOneOutletInfo">
+								<string key="name">topField</string>
+								<string key="candidateClassName">UITextField</string>
+							</object>
+						</object>
+					</object>
+					<object class="IBClassDescriptionSource" key="sourceIdentifier">
+						<string key="majorKey">IBProjectSource</string>
+						<string key="minorKey">./Classes/SCHLoginPasswordViewController.h</string>
+					</object>
+				</object>
+				<object class="IBPartialClassDescription">
+					<string key="className">SCHUnderlinedButton</string>
+					<string key="superclassName">UIButton</string>
+					<object class="IBClassDescriptionSource" key="sourceIdentifier">
+						<string key="majorKey">IBProjectSource</string>
+						<string key="minorKey">./Classes/SCHUnderlinedButton.h</string>
+					</object>
+				</object>
+			</object>
+		</object>
 		<int key="IBDocument.localizationMode">0</int>
 		<string key="IBDocument.TargetRuntimeIdentifier">IBIPadFramework</string>
 		<object class="NSMutableDictionary" key="IBDocument.PluginDeclaredDevelopmentDependencies">

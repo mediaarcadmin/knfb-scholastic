@@ -28,19 +28,28 @@
 
 #pragma mark - Step Collections
 
-+ (NSArray *)stepsToGoToLoginPage;
++ (NSArray *)stepsToLogin
 {
     NSMutableArray *steps = [NSMutableArray array];
     
-    [steps addObject:[KIFTestStep stepToTapRowInTableViewWithAccessibilityLabel:@"Starting Tableview" atIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]]];
+    [steps addObject:[KIFTestStep stepToTapRowInTableViewWithAccessibilityLabel:@"Starting Tableview" atIndexPath:[NSIndexPath indexPathForRow:0 inSection:1]]];
     
-    // Dismiss the welcome message
-//    [steps addObject:[KIFTestStep stepToTapViewWithAccessibilityLabel:@"That's awesome!"]];
+    [steps addObject:[KIFTestStep stepToWaitForViewWithAccessibilityLabel:@"Login View"]];
     
-    // Tap the "I already have an account" button
-//    [steps addObject:[KIFTestStep stepToTapViewWithAccessibilityLabel:@"I already have an account."]];
+    [steps addObject:[KIFTestStep stepToEnterText:@"qa_knfbp_mf" intoViewWithAccessibilityLabel:@"Login User Name"]];
+    [steps addObject:[KIFTestStep stepToEnterText:@"pass" intoViewWithAccessibilityLabel:@"Login Password"]];
+    [steps addObject:[KIFTestStep stepToTapViewWithAccessibilityLabel:@"Login"]];
     
     return steps;
+}
+
++ (NSArray *)stepsToGoToDeregistrationPage
+{
+    NSMutableArray *steps = [NSMutableArray array];
+    
+//    [steps addObject:[KIFTestStep stepToTapRowInTableViewWithAccessibilityLabel:@"Starting Tableview" atIndexPath:[NSIndexPath indexPathForRow:0 inSection:1]]];
+    
+    return steps;    
 }
 
 @end

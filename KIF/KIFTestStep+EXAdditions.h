@@ -19,6 +19,7 @@
 // Step Collections
 
 // Assumes the application was reset and sitting at the welcome screen
-+ (NSArray *)stepsToGoToLoginPage;
++ (NSArray *)stepsToLogin;
++ (NSArray *)stepsToGoToDeregistrationPage;
 
 @end

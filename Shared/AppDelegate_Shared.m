@@ -94,6 +94,18 @@ static NSString* const prModelCertFilename = @"iphonecert.dat";
 	
 	[self ensureCorrectCertsAvailable];
 	    
+#if RUN_KIF_TESTS
+    double delayInSeconds = 0.5;
+    dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);
+    dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+        [[SCHKIFTestController sharedInstance] startTestingWithCompletionBlock:^{
+            // Exit after the tests complete so that CI knows we're done
+            exit([[SCHKIFTestController sharedInstance] failureCount]);
+        }];
+        
+    });
+#endif    
+
 	return YES;
 }	
 

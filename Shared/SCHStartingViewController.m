@@ -27,7 +27,6 @@
 #import "SCHProfileItem.h"
 #import "SCHUserDefaults.h"
 #import "SCHBookManager.h"
-#import "SCHKIFTestController.h"
 
 enum {
     kTableSectionSamples = 0,
@@ -105,6 +104,8 @@ typedef enum {
     
     [self.starterTableView setAlwaysBounceVertical:NO]; // For some reason this doesn't work when set from the nib
     
+    self.starterTableView.accessibilityLabel = @"Starting Tableview";
+    
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(willEnterForeground:)
                                                  name:UIApplicationWillEnterForegroundNotification
@@ -136,23 +137,6 @@ typedef enum {
     // if we logged in and deregistered then we will need to refresh so we 
     // don't show the Sample bookshelves
     [self.starterTableView reloadData];
-}
-
-- (void)viewDidAppear:(BOOL)animated
-{
-    [super viewDidAppear:animated];
-    
-#if RUN_KIF_TESTS
-    double delayInSeconds = 2.0;
-dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);
-dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
-    [[SCHKIFTestController sharedInstance] startTestingWithCompletionBlock:^{
-        // Exit after the tests complete so that CI knows we're done
-        exit([[SCHKIFTestController sharedInstance] failureCount]);
-    }];
-
-});
-#endif    
 }
 
 #pragma mark - Orientation methods

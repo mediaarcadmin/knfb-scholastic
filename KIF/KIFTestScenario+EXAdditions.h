@@ -13,5 +13,6 @@
 @interface KIFTestScenario (EXAdditions)
 
 + (id)scenarioToLogin;
++ (id)scenarioToDeregister;
 
 @end

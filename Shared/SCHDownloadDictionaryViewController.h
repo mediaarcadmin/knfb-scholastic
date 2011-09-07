@@ -13,6 +13,7 @@
 
 @property (nonatomic, retain) IBOutletCollection(UILabel) NSArray *labels;
 @property (nonatomic, retain) IBOutlet UIButton *downloadDictionaryButton;
+@property (nonatomic, retain) IBOutlet UIBarButtonItem *closeButton;
 
 - (IBAction)downloadDictionary:(id)sender;
 

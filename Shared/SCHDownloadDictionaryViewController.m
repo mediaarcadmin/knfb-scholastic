@@ -17,6 +17,7 @@
 
 @synthesize labels;
 @synthesize downloadDictionaryButton;
+@synthesize closeButton;
 
 - (void)dealloc
 {
@@ -29,6 +30,8 @@
 {
     [super viewDidLoad];
     [self setButtonBackground:self.downloadDictionaryButton];
+    
+    self.closeButton.accessibilityLabel = @"Close Button";
     
     self.labels = [self.labels sortedArrayUsingComparator:^NSComparisonResult(id obj1, id obj2) {
         return [(UIView *)obj1 tag] - [(UIView *)obj2 tag];

@@ -66,7 +66,7 @@ static const CGFloat kProfilePadTableOffsetLandscape = 220.0f;
     [self.settingsButton setImage:[UIImage imageNamed:@"settings-portrait.png"] 
                          forState:UIControlStateNormal];
     [self.settingsButton sizeToFit];
-    
+    self.settingsButton.accessibilityLabel = @"Settings Button";
     self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithCustomView:self.settingsButton] autorelease];
     
     self.tableView.tableHeaderView = self.headerView;
