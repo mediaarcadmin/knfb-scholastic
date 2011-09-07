@@ -216,39 +216,69 @@ NSString * const kSCHAppBookEucalyptusCacheDir = @"libEucalyptusCache";
     return (ret);
 }
 
-#pragma mark - Cache Directory for Current Book
+#pragma mark - Directory for Current Book
 
-+ (NSString *)rootCacheDirectory 
++ (NSString *)booksDirectory
 {
-    return [NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) lastObject];
-}
-
-- (NSString *)cacheDirectory 
-{
-    NSString *libraryCacheDirectory = [NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) lastObject];
-    NSString *bookCacheDirectory = [libraryCacheDirectory stringByAppendingPathComponent:self.ContentIdentifier];
+    NSString *applicationSupportDirectory = [NSSearchPathForDirectoriesInDomains(NSApplicationSupportDirectory, NSUserDomainMask, YES) lastObject];
+    NSString *ret = [applicationSupportDirectory stringByAppendingPathComponent:@"Books"];
     
     NSFileManager *localFileManager = [[NSFileManager alloc] init];
     NSError *error = nil;
     BOOL isDirectory = NO;
     
-    if (![localFileManager fileExistsAtPath:bookCacheDirectory isDirectory:&isDirectory]) {
-        [localFileManager createDirectoryAtPath:bookCacheDirectory withIntermediateDirectories:YES attributes:nil error:&error];
+    if (![localFileManager fileExistsAtPath:ret isDirectory:&isDirectory]) {
+        [localFileManager createDirectoryAtPath:ret withIntermediateDirectories:YES attributes:nil error:&error];
+        
+        if (error) {
+            NSLog(@"Warning: problem creating books directory. %@", [error localizedDescription]);
+        }
+    }
+    
+    [localFileManager release], localFileManager = nil;    
+    
+    return(ret);
+}
+
++ (void)clearBooksDirectory
+{
+    NSString *booksDirectory = [SCHAppBook booksDirectory];
+    NSError *error = nil;
+    
+    if (booksDirectory != nil) {
+        if ([[NSFileManager defaultManager] removeItemAtPath:booksDirectory 
+                                                       error:&error] == NO) {
+            NSLog(@"Error deleting XPS file: %@", [error localizedDescription]);                        
+        }                                                
+    }
+}
+
+- (NSString *)bookDirectory 
+{
+    NSString *booksDirectory = [SCHAppBook booksDirectory];
+    NSString *bookDirectory = [booksDirectory stringByAppendingPathComponent:self.ContentIdentifier];
+    
+    NSFileManager *localFileManager = [[NSFileManager alloc] init];
+    NSError *error = nil;
+    BOOL isDirectory = NO;
+    
+    if (![localFileManager fileExistsAtPath:bookDirectory isDirectory:&isDirectory]) {
+        [localFileManager createDirectoryAtPath:bookDirectory withIntermediateDirectories:YES attributes:nil error:&error];
 
         if (error) {
-            NSLog(@"Warning: problem creating book cache directory. %@", [error localizedDescription]);
+            NSLog(@"Warning: problem creating book directory. %@", [error localizedDescription]);
         }
     }
     
     [localFileManager release], localFileManager = nil;
     
-    return bookCacheDirectory;
+    return bookDirectory;
 }
 
 - (NSString *)libEucalyptusCache
 {
-    NSString *cacheDir = [self cacheDirectory];
-    NSString *libEucalyptusCacheDirectory = [cacheDir stringByAppendingPathComponent:@"libEucalyptusCache"];
+    NSString *bookDir = [self bookDirectory];
+    NSString *libEucalyptusCacheDirectory = [bookDir stringByAppendingPathComponent:@"libEucalyptusCache"];
     
     NSFileManager *localFileManager = [[NSFileManager alloc] init];
     NSError *error = nil;
@@ -271,16 +301,16 @@ NSString * const kSCHAppBookEucalyptusCacheDir = @"libEucalyptusCache";
 
 - (NSString *)xpsPath
 {
-    NSString *cacheDir = [self cacheDirectory];
-    NSString *fullXPSPath = [cacheDir stringByAppendingPathComponent:[NSString stringWithFormat:@"%@-%@.xps", 
+    NSString *bookDirectory = [self bookDirectory];
+    NSString *fullXPSPath = [bookDirectory stringByAppendingPathComponent:[NSString stringWithFormat:@"%@-%@.xps", 
                                                                         self.bookIdentifier, self.ContentMetadataItem.Version]];
 	return fullXPSPath;    
 }
 
 - (NSString *)coverImagePath
 {
-	NSString *cacheDir = [self cacheDirectory];
-	NSString *fullImagePath = [cacheDir stringByAppendingPathComponent:[NSString stringWithFormat:@"%@.png", 
+	NSString *bookDirectory = [self bookDirectory];
+	NSString *fullImagePath = [bookDirectory stringByAppendingPathComponent:[NSString stringWithFormat:@"%@.png", 
                                                                         self.bookIdentifier]];
     
 	return fullImagePath;
@@ -324,16 +354,16 @@ NSString * const kSCHAppBookEucalyptusCacheDir = @"libEucalyptusCache";
 
 - (NSString *)thumbPathForSize:(CGSize)size
 {
-	NSString *cacheDir  = [self cacheDirectory];
+	NSString *bookDirectory  = [self bookDirectory];
 
     float scale = 1.0f;
     if ([[UIScreen mainScreen] respondsToSelector:@selector(scale)]) {
         scale = [[UIScreen mainScreen] scale];
     }
     
-    NSString *thumbPath = [cacheDir stringByAppendingPathComponent:[NSString stringWithFormat:@"%@_%d_%d.png", self.bookIdentifier, (int)size.width, (int)size.height]];
+    NSString *thumbPath = [bookDirectory stringByAppendingPathComponent:[NSString stringWithFormat:@"%@_%d_%d.png", self.bookIdentifier, (int)size.width, (int)size.height]];
     if (scale != 1) {
-        thumbPath = [cacheDir stringByAppendingPathComponent:[NSString stringWithFormat:@"%@_%d_%d@%dx.png", self.bookIdentifier, (int)size.width, (int)size.height, (int) scale]];
+        thumbPath = [bookDirectory stringByAppendingPathComponent:[NSString stringWithFormat:@"%@_%d_%d@%dx.png", self.bookIdentifier, (int)size.width, (int)size.height, (int) scale]];
     }    
 
 	return thumbPath;

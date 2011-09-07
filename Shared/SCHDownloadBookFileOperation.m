@@ -91,11 +91,11 @@
         [bookFileURL release];
 	} else if (self.fileType == kSCHDownloadFileTypeCoverImage) {
 
-        __block NSString *cacheDir = nil;
+        __block NSString *bookDirectory = nil;
         __block NSString *contentIdentifier = nil;
         __block NSString *coverURL = nil;
         [self performWithBook:^(SCHAppBook *book) {
-            cacheDir = [[book cacheDirectory] retain];
+            bookDirectory = [[book bookDirectory] retain];
             contentIdentifier = [[book ContentIdentifier] retain];
             self.localPath = [book coverImagePath];
             coverURL = [[book BookCoverURL] retain];
@@ -110,7 +110,7 @@
             } 
             
             [self completedDownload];
-            [cacheDir release];
+            [bookDirectory release];
             [contentIdentifier release];
             [coverURL release];
             return;
@@ -119,7 +119,7 @@
             request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:coverURL]];
         }
         
-        [cacheDir release];
+        [bookDirectory release];
         [contentIdentifier release];
         [coverURL release];
 

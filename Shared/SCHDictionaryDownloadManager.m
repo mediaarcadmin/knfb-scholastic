@@ -555,8 +555,8 @@ static SCHDictionaryDownloadManager *sharedManager = nil;
 
 - (NSString *)dictionaryDirectory 
 {
-    NSString *libraryCacheDirectory = [NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) lastObject];
-    NSString *dictionaryDirectory = [libraryCacheDirectory stringByAppendingPathComponent:@"Dictionary"];
+    NSString *applicationSupportDirectory = [NSSearchPathForDirectoriesInDomains(NSApplicationSupportDirectory, NSUserDomainMask, YES) lastObject];
+    NSString *dictionaryDirectory = [applicationSupportDirectory stringByAppendingPathComponent:@"Dictionary"];
     
     NSFileManager *localFileManager = [[NSFileManager alloc] init];
     NSError *error = nil;
@@ -577,8 +577,8 @@ static SCHDictionaryDownloadManager *sharedManager = nil;
 
 - (NSString *)dictionaryTextFilesDirectory 
 {
-    NSString *libraryCacheDirectory = [NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) lastObject];
-    NSString *dictionaryDirectory = [libraryCacheDirectory stringByAppendingPathComponent:@"Dictionary/Current"];
+    NSString *applicationSupportDirectory = [NSSearchPathForDirectoriesInDomains(NSApplicationSupportDirectory, NSUserDomainMask, YES) lastObject];
+    NSString *dictionaryDirectory = [applicationSupportDirectory stringByAppendingPathComponent:@"Dictionary/Current"];
     
     NSFileManager *localFileManager = [[NSFileManager alloc] init];
     NSError *error = nil;
