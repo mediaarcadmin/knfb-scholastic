@@ -521,10 +521,12 @@ static SCHDictionaryDownloadManager *sharedManager = nil;
 			parseOp.manifestEntry = entry;
             
 			// when parsing is successful, delete the zip file
+            // note the filename as it will change once we have parsed and know the version number
+            NSString *dictionaryZipPath = [self dictionaryZipPath];
 			[parseOp setCompletionBlock:^{
                 self.dictionaryVersion = entry.toVersion;
                 NSFileManager *localFileManager = [[NSFileManager alloc] init];
-                [localFileManager removeItemAtPath:[self dictionaryZipPath] error:nil];
+                [localFileManager removeItemAtPath:dictionaryZipPath error:nil];
                 [localFileManager release];
 				[self processDictionary];
 			}];
