@@ -316,42 +316,6 @@ NSString * const kSCHAppBookEucalyptusCacheDir = @"libEucalyptusCache";
 	return fullImagePath;
 }	
 
-- (NSNumber *)BookCoverExists
-{
-    [self willAccessValueForKey:kSCHAppBookBookCoverExists];
-    NSNumber *rawBookCoverExists = [self primitiveValueForKey:kSCHAppBookBookCoverExists];
-    [self didAccessValueForKey:kSCHAppBookBookCoverExists];
-    
-    if (rawBookCoverExists == nil || [rawBookCoverExists boolValue] == NO) {
-        NSFileManager *localFileManager = [[NSFileManager alloc] init];  
-        
-        rawBookCoverExists = [NSNumber numberWithBool:[localFileManager fileExistsAtPath:[self coverImagePath]]];
-        [self setPrimitiveValue:rawBookCoverExists forKey:kSCHAppBookBookCoverExists];
-        
-        [localFileManager release], localFileManager = nil;        
-    }
-    
-    return(rawBookCoverExists);
-}
-
-- (NSNumber *)XPSExists
-{
-    [self willAccessValueForKey:kSCHAppBookXPSExists];
-    NSNumber *rawXPSExists = [self primitiveValueForKey:kSCHAppBookXPSExists];
-    [self didAccessValueForKey:kSCHAppBookXPSExists];
-    
-    if (rawXPSExists == nil || [rawXPSExists boolValue] == NO) {
-        NSFileManager *localFileManager = [[NSFileManager alloc] init];  
-        
-        rawXPSExists = [NSNumber numberWithBool:[localFileManager fileExistsAtPath:[self xpsPath]]];
-        [self setPrimitiveValue:rawXPSExists forKey:kSCHAppBookXPSExists];
-        
-        [localFileManager release], localFileManager = nil;        
-    }
-    
-    return(rawXPSExists);
-}
-
 - (NSString *)thumbPathForSize:(CGSize)size
 {
 	NSString *bookDirectory  = [self bookDirectory];
