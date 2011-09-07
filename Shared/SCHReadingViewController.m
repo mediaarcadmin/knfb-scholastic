@@ -313,6 +313,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 - (void)viewDidUnload 
 {
     [super viewDidUnload];
+    [self saveLastPageLocation]; // Needed in case the view unloads whilst a modal popover is being displayed
     [self releaseViewObjects];
 }
 
