@@ -82,6 +82,7 @@ managedObjectContext:(NSManagedObjectContext *)managedObjectContext
 
 - (void)jumpToProgressPositionInBook:(CGFloat)progress animated:(BOOL)animated;
 - (void)jumpToBookPoint:(SCHBookPoint *)bookPoint animated:(BOOL)animated;
+- (void)jumpToBookPoint:(SCHBookPoint *)bookPoint animated:(BOOL)animated withCompletionHandler:(dispatch_block_t)completion;
 
 - (void)setFontPointIndex:(NSUInteger)index;
 - (NSInteger)maximumFontIndex;

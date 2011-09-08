@@ -33,8 +33,10 @@
 
 @property (nonatomic, retain) UIImage *currentPageTexture;
 @property (nonatomic, assign) BOOL textureIsDark;
+@property (nonatomic, copy) dispatch_block_t jumpToPageCompletionHandler;
 
 - (void)updatePositionInBook;
+- (void)jumpToPageAtIndexPoint:(EucBookPageIndexPoint *)point animated:(BOOL)animated withCompletionHandler:(dispatch_block_t)completion;
 
 @end
 
@@ -46,6 +48,7 @@
 
 @synthesize currentPageTexture;
 @synthesize textureIsDark;
+@synthesize jumpToPageCompletionHandler;
 
 - (void)initialiseView
 {
@@ -76,6 +79,7 @@
     }
     
     [currentPageTexture release], currentPageTexture = nil;
+    [jumpToPageCompletionHandler release], jumpToPageCompletionHandler = nil;
 
     [super dealloc];
 }
@@ -193,6 +197,11 @@ managedObjectContext:(NSManagedObjectContext *)managedObjectContext
 
 - (void)jumpToBookPoint:(SCHBookPoint *)bookPoint animated:(BOOL)animated
 {
+    [self jumpToBookPoint:bookPoint animated:animated withCompletionHandler:nil];
+}
+
+- (void)jumpToBookPoint:(SCHBookPoint *)bookPoint animated:(BOOL)animated withCompletionHandler:(dispatch_block_t)completion
+{
     EucBookPageIndexPoint *point;
     if(bookPoint.layoutPage == 1 && bookPoint.blockOffset == 0 && 
        bookPoint.wordOffset == 0 && bookPoint.elementOffset == 0) {
@@ -203,18 +212,47 @@ managedObjectContext:(NSManagedObjectContext *)managedObjectContext
         point = [self.eucBook bookPageIndexPointFromBookPoint:bookPoint];
     }
 
-    [self.eucBookView goToIndexPoint:point animated:animated];
+    [self jumpToPageAtIndexPoint:point animated:animated withCompletionHandler:completion];
 }
 
-- (void)jumpToPageAtIndex:(NSUInteger)pageIndex animated: (BOOL) animated
-{                           
-    [self.eucBookView goToPageIndex:pageIndex animated:animated];
+- (void)jumpToPageAtIndex:(NSUInteger)pageIndex animated:(BOOL)animated
+{              
+    [self jumpToPageAtIndex:pageIndex animated:animated withCompletionHandler:nil];
+}
+
+- (void)jumpToPageAtIndex:(NSUInteger)pageIndex animated:(BOOL)animated withCompletionHandler:(dispatch_block_t)completion
+{
+    EucBookPageIndexPoint *point = [self.eucBookView indexPointForPageIndex:pageIndex];
+    [self jumpToPageAtIndexPoint:point animated:animated withCompletionHandler:completion];
 }
 
 - (void)jumpToProgressPositionInBook:(CGFloat)progress animated:(BOOL)animated
 {
     EucBookPageIndexPoint *point = [self.eucBook estimatedIndexPointForPercentage:progress];
+    [self jumpToPageAtIndexPoint:point animated:animated withCompletionHandler:nil];
+}
+
+- (void)jumpToPageAtIndexPoint:(EucBookPageIndexPoint *)point animated:(BOOL)animated withCompletionHandler:(dispatch_block_t)completion
+{
+    if (![NSThread isMainThread]) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self jumpToPageAtIndexPoint:point animated:animated withCompletionHandler:completion];
+        });
+        
+        return;
+    }
+    
+    if (animated) {
+        self.jumpToPageCompletionHandler = completion;
+    }
+    
     [self.eucBookView goToIndexPoint:point animated:animated];
+    
+    if (!animated) {
+        if (completion != nil) {
+            completion();
+        }
+    }
 }
 
 - (NSInteger) maximumFontIndex
@@ -259,6 +297,16 @@ managedObjectContext:(NSManagedObjectContext *)managedObjectContext
 - (void)bookViewPageTurnWillBegin:(EucBookView *)bookView
 {
     [self.delegate readingViewWillBeginTurning:self];
+}
+
+- (void)bookViewPageTurnDidEnd:(EucBookView *)bookView
+{
+    if (self.jumpToPageCompletionHandler != nil) {
+        dispatch_block_t handler = Block_copy(self.jumpToPageCompletionHandler);
+        self.jumpToPageCompletionHandler = nil;
+        handler();
+        Block_release(handler);
+    }
 }
 
 static NSPredicate *sSortedHighlightRangePredicate = nil;

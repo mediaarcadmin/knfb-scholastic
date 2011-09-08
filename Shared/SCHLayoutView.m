@@ -360,7 +360,12 @@ managedObjectContext:(NSManagedObjectContext *)managedObjectContext
 
 - (void)jumpToBookPoint:(SCHBookPoint *)bookPoint animated:(BOOL)animated
 {
-    [self jumpToPageAtIndex:bookPoint.layoutPage - 1 animated:animated];
+    [self jumpToBookPoint:bookPoint animated:animated withCompletionHandler:nil];
+}
+
+- (void)jumpToBookPoint:(SCHBookPoint *)bookPoint animated:(BOOL)animated withCompletionHandler:(dispatch_block_t)completion
+{
+    [self jumpToPageAtIndex:bookPoint.layoutPage - 1 animated:animated withCompletionHandler:completion];
 }
 
 - (void)jumpToPageAtIndex:(NSUInteger)pageIndex animated: (BOOL) animated
