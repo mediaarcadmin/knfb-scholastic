@@ -62,6 +62,7 @@ static NSString* const prModelCertFilename = @"iphonecert.dat";
     // You must clean the app from the simulator and uncomment the population 
     // method then break immediately afterwards. Whilst broken copy 
     // Scholastic.sqlite database to the project as Scholastic_Sample.sqlite
+//  [[SCHSyncManager sharedSyncManager] populateTestSampleStore];
 //  [[SCHSyncManager sharedSyncManager] populateSampleStore];
     
 	SCHURLManager *urlManager = [SCHURLManager sharedURLManager];

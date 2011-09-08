@@ -24,7 +24,6 @@
 
 @interface SCHPopulateDataStore ()
 
-- (void)populateWithTestInformation;
 - (void)addBook:(NSDictionary *)book forProfiles:(NSArray *)profileIDs;
 - (void)setAppStateForSample;
 - (NSDictionary *)profileItemWith:(NSInteger)profileID
@@ -76,9 +75,11 @@
 
 #pragma mark - Population methods
 
-- (void)populateWithTestInformation
+- (void)populateTestSampleStore
 {
     NSError *error = nil;
+    
+    [self setAppStateForSample];    
     
     // Younger bookshelf    
     NSDictionary *youngerProfileItem = [self profileItemWith:1

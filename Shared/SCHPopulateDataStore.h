@@ -30,6 +30,7 @@
 - (NSUInteger)populateFromImport;
 
 // for populating Sample Store
+- (void)populateTestSampleStore;
 - (void)populateSampleStore;
 
 @end
