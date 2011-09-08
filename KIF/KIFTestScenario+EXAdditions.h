@@ -12,6 +12,8 @@
 
 @interface KIFTestScenario (EXAdditions)
 
++ (id)scenarioToYoungerSampleShelf;
++ (id)scenarioToOlderSampleShelf;
 + (id)scenarioToLogin;
 + (id)scenarioToDeregister;
 

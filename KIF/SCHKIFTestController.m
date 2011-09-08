@@ -30,12 +30,18 @@
 
 - (void)initializeScenariosForiPhone
 {
+    [self addScenario:[KIFTestScenario scenarioToYoungerSampleShelf]];
+    [self addScenario:[KIFTestScenario scenarioToOlderSampleShelf]];    
+    
     [self addScenario:[KIFTestScenario scenarioToLogin]];
     [self addScenario:[KIFTestScenario scenarioToDeregister]];    
 }
 
 - (void)initializeScenariosForiPad
 {
+    [self addScenario:[KIFTestScenario scenarioToYoungerSampleShelf]];
+    [self addScenario:[KIFTestScenario scenarioToOlderSampleShelf]];    
+    
     [self addScenario:[KIFTestScenario scenarioToLogin]];
     [self addScenario:[KIFTestScenario scenarioToDeregister]];    
 }
