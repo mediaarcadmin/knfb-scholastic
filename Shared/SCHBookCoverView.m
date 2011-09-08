@@ -376,7 +376,6 @@
         self.needsRefresh = NO;
         if (bookState >= SCHBookProcessingStateNoCoverImage) {
             self.activitySpinner.center = [self.superview convertPoint:self.center toView:self];
-           // NSLog(@"%@", NSStringFromCGRect(self.center));
             [self.activitySpinner startAnimating];
             self.errorBadge.hidden = YES;
         } else {
