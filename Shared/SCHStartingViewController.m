@@ -27,6 +27,7 @@
 #import "SCHProfileItem.h"
 #import "SCHUserDefaults.h"
 #import "SCHBookManager.h"
+#import "SCHAppBook.h"
 
 enum {
     kTableSectionSamples = 0,
@@ -57,7 +58,6 @@ typedef enum {
 
 - (void)setupAssetsForOrientation:(UIInterfaceOrientation)orientation;
 - (void)firstLogin;
-- (void)clearCacheDirectory;
 - (NSString *)sampleBookshelfTitleAtIndex:(NSInteger)index;
 - (void)openSampleBookshelfAtIndex:(NSInteger)index;
 - (void)showSignInForm;
@@ -327,24 +327,7 @@ typedef enum {
     // remove data store
     [appDelegate.coreDataHelper removeSampleStore];
     // clear all books
-    [self clearCacheDirectory];
-}
-
-- (void)clearCacheDirectory
-{
-    dispatch_async(dispatch_get_main_queue(), ^{
-        NSString *libraryCacheDirectory = [NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) lastObject];        
-        NSError *error = nil;
-        
-        if (libraryCacheDirectory != nil) {
-            for (NSString *fileName in [[NSFileManager defaultManager] enumeratorAtPath:libraryCacheDirectory]) {
-                if ([[NSFileManager defaultManager] removeItemAtPath:[libraryCacheDirectory stringByAppendingPathComponent:fileName] 
-                                                               error:&error] == NO) {
-                    NSLog(@"Error deleting XPS file: %@", [error localizedDescription]);                        
-                }
-            }                                                
-        }
-    });    
+    [SCHAppBook clearBooksDirectory];
 }
 
 #pragma mark - Sign In

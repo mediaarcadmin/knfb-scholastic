@@ -136,10 +136,10 @@ typedef enum {
 - (NSString *)xpsPath;
 - (NSString *)coverImagePath;
 - (NSString *)thumbPathForSize:(CGSize)size;
-- (NSString *)cacheDirectory;
++ (NSString *)booksDirectory;
++ (void)clearBooksDirectory;
+- (NSString *)bookDirectory;
 - (NSString *)libEucalyptusCache;
-
-+ (NSString *)rootCacheDirectory;
 
 - (float)currentDownloadedPercentage;
 - (BOOL)haveURLs;
