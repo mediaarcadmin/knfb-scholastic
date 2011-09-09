@@ -54,7 +54,7 @@ static NSString *extractXmlAttribute(const XML_Char **atts, const char *key)
 {
     for (int i = 0; atts[i]; i += 2) {
         if (strcmp(atts[i], key) == 0) {
-            return [[NSString stringWithUTF8String:atts[i+1]] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+            return [[NSString stringWithUTF8String:atts[i+1]] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
         }
     }
     return nil;
