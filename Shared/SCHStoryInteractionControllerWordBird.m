@@ -36,6 +36,7 @@ enum {
 @property (nonatomic, retain) SCHAnimatedLayer *balloonsLayer;
 @property (nonatomic, retain) SCHAnimatedLayer *animationContainerLayer;
 @property (nonatomic, retain) NSArray *loseAnimationLayers;
+@property (nonatomic, assign) NSInteger simultaneousTapCount;
 
 - (void)setupAnswerView;
 - (void)setupLettersView;
@@ -63,6 +64,7 @@ enum {
 @synthesize balloonsLayer;
 @synthesize animationContainerLayer;
 @synthesize loseAnimationLayers;
+@synthesize simultaneousTapCount;
 
 - (void)dealloc
 {
@@ -160,6 +162,8 @@ enum {
         [letterView addTarget:self action:@selector(letterTapped:) forControlEvents:UIControlEventTouchUpInside];
         [self.lettersContainer addSubview:letterView];
     }
+    
+    self.simultaneousTapCount = 0;
 }
 
 - (void)setupAnimationView
@@ -258,6 +262,20 @@ enum {
 
 - (void)letterTapped:(SCHStoryInteractionWordBirdLetterView *)sender
 {
+    self.simultaneousTapCount++;
+    if (self.simultaneousTapCount == 1) {
+        [self performSelector:@selector(singleLetterTapped:) withObject:sender afterDelay:kMinimumDistinguishedAnswerDelay];
+    }
+}    
+
+- (void)singleLetterTapped:(SCHStoryInteractionWordBirdLetterView *)sender
+{
+    NSInteger tapCount = self.simultaneousTapCount;
+    self.simultaneousTapCount = 0;
+    if (tapCount > 1) {
+        return;
+    }
+
     unichar letter = sender.letter;    
     self.controllerState = SCHStoryInteractionControllerStateInteractionReadingAnswerWithPause;
     
@@ -276,7 +294,7 @@ enum {
           }];
     
     NSString *audioPath = (correct ? [self.storyInteraction storyInteractionCorrectAnswerSoundFilename]
-                           : [self.storyInteraction storyInteractionCorrectAnswerSoundFilename]);
+                           : [self.storyInteraction storyInteractionWrongAnswerSoundFilename]);
     [self enqueueAudioWithPath:audioPath
                     fromBundle:YES
                     startDelay:0
