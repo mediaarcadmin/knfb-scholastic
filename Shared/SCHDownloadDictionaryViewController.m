@@ -8,6 +8,7 @@
 
 #import "SCHDownloadDictionaryViewController.h"
 #import "SCHDictionaryDownloadManager.h"
+#import "SCHAppStateManager.h"
 
 @interface SCHDownloadDictionaryViewController ()
 - (void)layoutLabelsForOrientation:(UIInterfaceOrientation)orientation;
@@ -43,7 +44,9 @@
 
 - (void)closeSettings
 {
-    [[SCHDictionaryDownloadManager sharedDownloadManager] threadSafeUpdateDictionaryState:SCHDictionaryProcessingStateUserDeclined];
+    if ([[SCHAppStateManager sharedAppStateManager] isSampleStore] == NO) {
+        [[SCHDictionaryDownloadManager sharedDownloadManager] threadSafeUpdateDictionaryState:SCHDictionaryProcessingStateUserDeclined];
+    }
     [super closeSettings];
 }
 
