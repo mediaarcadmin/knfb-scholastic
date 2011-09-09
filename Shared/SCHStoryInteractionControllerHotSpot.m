@@ -83,6 +83,8 @@
     [self.pageImageView setUserInteractionEnabled:YES];
     [tap release];
     
+    // ensure taps in the title view don't go through to the background
+    self.titleView.superview.userInteractionEnabled = YES;
 }
 
 - (void)zoomOutAndCloseWithSuccess:(BOOL)success
