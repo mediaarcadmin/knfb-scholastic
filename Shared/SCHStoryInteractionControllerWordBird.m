@@ -278,7 +278,7 @@ enum {
     NSString *audioPath = (correct ? [self.storyInteraction storyInteractionCorrectAnswerSoundFilename]
                            : [self.storyInteraction storyInteractionCorrectAnswerSoundFilename]);
     [self enqueueAudioWithPath:audioPath
-                    fromBundle:NO
+                    fromBundle:YES
                     startDelay:0
         synchronizedStartBlock:nil
           synchronizedEndBlock:^{
@@ -362,7 +362,6 @@ enum {
         
         [self.animationContainerLayer addAnimation:move forKey:@"move"];
         self.animationContainerLayer.position = targetPosition;
-        [self enqueueAudioWithPath:[self.storyInteraction storyInteractionCorrectAnswerSoundFilename] fromBundle:YES];
     } else {
         self.happyPenguinLayer.hidden = NO;
         self.shockedPenguinLayer.hidden = YES;
