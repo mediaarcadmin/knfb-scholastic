@@ -179,6 +179,7 @@ enum SCHToolType {
         [chooser setChooserIndex:index++];
         [chooser setStickerDataSource:self.stickers];
         [chooser setStickerDelegate:self];
+        [chooser setBackgroundColor:[UIColor whiteColor]];
     }
     
     self.selectedStickerChooser = NSNotFound;

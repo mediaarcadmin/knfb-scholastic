@@ -12,6 +12,7 @@
 #import "SCHAuthenticationManagerProtected.h"
 #import "LambdaAlert.h"
 #import "SCHUnderlinedButton.h"
+#import "Reachability.h"
 
 static const CGFloat kDeregisterContentHeightLandscape = 380;
 
@@ -118,7 +119,16 @@ static const CGFloat kDeregisterContentHeightLandscape = 380;
 {
     [self.deregisterButton setEnabled:NO];
     
-    if ([[SCHAuthenticationManager sharedAuthenticationManager] validatePassword:self.passwordField.text]) {
+    if ([[Reachability reachabilityForInternetConnection] isReachable] == NO) {
+        LambdaAlert *alert = [[LambdaAlert alloc]
+                              initWithTitle:NSLocalizedString(@"Error", @"error alert title")
+                              message:NSLocalizedString(@"You must have internet access to deregister", @"")];
+        [alert addButtonWithTitle:NSLocalizedString(@"Try Again", @"try again button after no authentication") block:^{
+            [self.deregisterButton setEnabled:YES];
+        }];
+        [alert show];
+        [alert release];                
+    } else if ([[SCHAuthenticationManager sharedAuthenticationManager] validatePassword:self.passwordField.text]) {
         if ([[SCHAuthenticationManager sharedAuthenticationManager] isAuthenticated] == YES) {
             [self.spinner startAnimating];
             [self setEnablesBackButton:NO];
