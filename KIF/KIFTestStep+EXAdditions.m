@@ -8,6 +8,7 @@
 
 #import "KIFTestStep+EXAdditions.h"
 
+#import "SCHDictionaryDownloadManager.h"
 
 @implementation KIFTestStep (EXAdditions)
 
@@ -19,6 +20,7 @@
         BOOL successfulReset = YES;
         
         // Do the actual reset for your app. Set successfulReset = NO if it fails.
+        [[SCHDictionaryDownloadManager sharedDownloadManager] threadSafeUpdateDictionaryState:SCHDictionaryProcessingStateUserSetup];
         
         KIFTestCondition(successfulReset, error, @"Failed to reset some part of the application.");
         
