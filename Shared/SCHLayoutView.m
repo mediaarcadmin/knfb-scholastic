@@ -922,6 +922,11 @@ fastThumbnailUIImageForPageAtIndex:(NSUInteger)index
     return [self.pageTurningView screenshot];
 }
 
+- (void)waitForVisiblePagesRenderingToComplete
+{
+    // FIXME - find a way to wait for just the visible pages to render
+}
+
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
     
     [super observeValueForKeyPath:keyPath ofObject:object change:change context:context];

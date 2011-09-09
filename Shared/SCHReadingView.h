@@ -115,6 +115,7 @@ managedObjectContext:(NSManagedObjectContext *)managedObjectContext
 - (void)dismissSelector;
 
 - (void)unhandledTapAtPoint:(CGPoint)point;
+- (void)waitForVisiblePagesRenderingToComplete;
 
 - (EucSelectorRange *)selectorRangeFromBookRange:(SCHBookRange *)range;
 - (NSArray *)bookRangesFromSelectorRange:(EucSelectorRange *)selectorRange;

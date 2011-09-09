@@ -641,6 +641,8 @@ managedObjectContext:(NSManagedObjectContext *)managedObjectContext
     [self.selector setSelectedRange:nil];
 }
 
+- (void)waitForVisiblePagesRenderingToComplete {}
+
 #pragma mark - Touch handling
 
 - (void)unhandledTapAtPoint:(CGPoint)piont
@@ -687,6 +689,8 @@ managedObjectContext:(NSManagedObjectContext *)managedObjectContext
 {
     return nil;
 }
+
+- (void)waitForPageRenderingToComplete {}
 
 - (void)dismissReadingViewAdornments
 {
