@@ -169,6 +169,8 @@ enum {
         [self.draggingPiece setTransform:CGAffineTransformIdentity];
     }];
     
+    [self.puzzlePieceScroller setUserInteractionEnabled:NO];
+    
     [self enqueueAudioWithPath:@"sfx_pickup.mp3" fromBundle:YES];
 }
 
@@ -204,6 +206,8 @@ enum {
                              self.dragSourcePiece = nil;
                          }];
     }
+    
+    [self.puzzlePieceScroller setUserInteractionEnabled:YES];
 }
 
 - (void)coalescePiecesInScroller

@@ -122,6 +122,20 @@ enum {
 - (void)draggableView:(SCHStoryInteractionDraggableView *)draggableView didMoveToPosition:(CGPoint)position
 {
     SCHStoryInteractionJigsawPieceView_iPad *piece = (SCHStoryInteractionJigsawPieceView_iPad *)draggableView;
+    
+    // ensure we only play one drop sound at a time
+    [NSObject cancelPreviousPerformRequestsWithTarget:self];
+    [self performSelector:@selector(playDropSoundForPiece:) withObject:piece afterDelay:0.2];
+    
+    if ([piece isInCorrectPosition]) {
+        [piece setUserInteractionEnabled:NO];
+    } else {
+        [piece moveToHomePosition];
+    }
+}
+
+- (void)playDropSoundForPiece:(SCHStoryInteractionJigsawPieceView_iPad *)piece
+{
     if ([piece isInCorrectPosition]) {
         [self enqueueAudioWithPath:@"sfx_dropOK.mp3"
                         fromBundle:YES
@@ -131,8 +145,11 @@ enum {
                   [self checkForCompletion];
               }];
     } else {
-        [piece moveToHomePosition];
-        [self enqueueAudioWithPath:@"sfx_dropNo.mp3" fromBundle:YES];
+        [self enqueueAudioWithPath:@"sfx_dropNo.mp3"
+                        fromBundle:YES
+                        startDelay:0
+            synchronizedStartBlock:nil
+              synchronizedEndBlock:nil];
     }
 }
 
