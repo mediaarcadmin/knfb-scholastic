@@ -62,7 +62,6 @@ typedef enum {
 - (void)openSampleBookshelfAtIndex:(NSInteger)index;
 - (void)showSignInForm;
 - (void)advanceToNextSignInForm;
-- (void)dismissKeyboard;
 
 - (SCHProfileViewController_Shared *)profileViewController;
 - (void)pushProfileView;
@@ -419,10 +418,11 @@ typedef enum {
         if (self.modalViewController == nil) {
             [self.modalNavigationController setModalTransitionStyle:UIModalTransitionStyleCoverVertical];
             [self.modalNavigationController setModalPresentationStyle:UIModalPresentationFormSheet];
+            [self.modalNavigationController setViewControllers:[NSArray arrayWithObject:next]];
             [self presentModalViewController:self.modalNavigationController animated:YES];
+        } else {
+            [self.modalNavigationController pushViewController:next animated:YES];
         }
-        [self dismissKeyboard];
-        [self.modalNavigationController pushViewController:next animated:YES];
         [next release];
     } else {
         [self dismissSettingsForm];
@@ -433,19 +433,6 @@ typedef enum {
 {
     [self dismissModalViewControllerAnimated:YES];
     [self pushProfileView];
-}
-
-- (void)dismissKeyboard
-{
-    if ([[[UIDevice currentDevice] systemVersion] compare:@"4.3"] == NSOrderedAscending) {
-        // pre-4.3 only - we have to dismiss the modal form and represent it to get the
-        // keyboard to disappear; from 4.3-on the UINavigationController subclass takes
-        // care of this.
-        [CATransaction begin];
-        [self dismissModalViewControllerAnimated:NO];
-        [self presentModalViewController:self.modalNavigationController animated:NO];
-        [CATransaction commit];
-    }
 }
 
 #pragma mark - Profile view
