@@ -485,7 +485,9 @@
             NSData *imageData = [xpsProvider coverThumbData];
             if (imageData != nil) {   
                 NSData *pngData = UIImagePNGRepresentation([UIImage imageWithData:imageData]);
-                [pngData writeToFile:[newContentMetadataItem.AppBook coverImagePath] atomically:YES];
+                if (![pngData writeToFile:[newContentMetadataItem.AppBook coverImagePath] atomically:YES]) {
+                    NSLog(@"Error occurred whilst trying to write imported book cover image to disk");
+                }
             }
             // we need to unlock the file from XPS before we can move it
             [xpsProvider release], xpsProvider = nil;
@@ -498,6 +500,9 @@
                 NSLog(@"Error moving XPS file: %@, %@", error, [error userInfo]);
             }
             
+            [newContentMetadataItem.AppBook setXPSExists:[NSNumber numberWithBool:YES]];
+            [newContentMetadataItem.AppBook setBookCoverExists:[NSNumber numberWithBool:YES]];
+            [newContentMetadataItem.AppBook setForcedProcessing:YES];
             newContentMetadataItem.AppBook.State = [NSNumber numberWithInt:SCHBookProcessingStateReadyForLicenseAcquisition];
         }
         else {
