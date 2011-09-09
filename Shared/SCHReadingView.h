@@ -82,6 +82,7 @@ managedObjectContext:(NSManagedObjectContext *)managedObjectContext
 
 - (void)jumpToProgressPositionInBook:(CGFloat)progress animated:(BOOL)animated;
 - (void)jumpToBookPoint:(SCHBookPoint *)bookPoint animated:(BOOL)animated;
+- (void)jumpToBookPoint:(SCHBookPoint *)bookPoint animated:(BOOL)animated withCompletionHandler:(dispatch_block_t)completion;
 
 - (void)setFontPointIndex:(NSUInteger)index;
 - (NSInteger)maximumFontIndex;
@@ -114,6 +115,7 @@ managedObjectContext:(NSManagedObjectContext *)managedObjectContext
 - (void)dismissSelector;
 
 - (void)unhandledTapAtPoint:(CGPoint)point;
+- (void)waitForVisiblePagesRenderingToComplete;
 
 - (EucSelectorRange *)selectorRangeFromBookRange:(SCHBookRange *)range;
 - (NSArray *)bookRangesFromSelectorRange:(EucSelectorRange *)selectorRange;

@@ -112,8 +112,6 @@ static NSString *cacheDirectory()
         self.imagePaths = [NSArray arrayWithArray:imagePathsArray];
         self.thumbPaths = [NSArray arrayWithArray:thumbPathsArray];
         
-        NSLog(@"%d stickers found", [self.imagePaths count]);
-        
         [SCHPictureStarterStickers generateMissingThumbs:self.thumbPaths
                                               fromImages:self.imagePaths
                                          forChooserCount:self.numberOfChoosers];
@@ -234,8 +232,6 @@ static NSString *cacheDirectory()
         [image release];
         CGImageRef thumb = CGBitmapContextCreateImage(thumbContext);
         UIImage *thumbImage = [[UIImage alloc] initWithCGImage:thumb scale:[[UIScreen mainScreen] scale] orientation:UIImageOrientationUp];
-        
-        NSLog(@"create %@", thumbPath); 
 
         // dispatch any block waiting on this thumb
         void (^pendingBlock)(UIImage *) = [pendingThumbs objectForKey:thumbPath];

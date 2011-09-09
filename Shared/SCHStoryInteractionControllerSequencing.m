@@ -163,7 +163,10 @@ static CGFloat distanceSq(CGPoint imageCenter, CGPoint targetCenter)
 
 - (void)draggableViewDidStartDrag:(SCHStoryInteractionDraggableView *)draggableView
 {
-    [self playBundleAudioWithFilename:@"sfx_pickup.mp3" completion:nil];
+    self.controllerState = SCHStoryInteractionControllerStateInteractionInProgress;
+    [self cancelQueuedAudioExecutingSynchronizedBlocksImmediately];
+    [self enqueueAudioWithPath:@"sfx_pickup.mp3" fromBundle:YES];
+
     [self.attachedImages removeObjectForKey:[NSNumber numberWithInteger:draggableView.matchTag]];
     [self setView:[draggableView viewWithTag:kImageViewTag] borderColor:[UIColor blueColor]];
 }
@@ -191,15 +194,19 @@ static CGFloat distanceSq(CGPoint imageCenter, CGPoint targetCenter)
     
     if (!attachedTarget) {
         [draggableView moveToHomePosition];
-        [self playBundleAudioWithFilename:@"sfx_dropNo.mp3" completion:nil];
+        [self enqueueAudioWithPath:@"sfx_dropNo.mp3" fromBundle:YES];
         return;
     }
 
     [self.attachedImages setObject:attachedTarget forKey:[NSNumber numberWithInteger:draggableView.matchTag]];
     
-    [self playBundleAudioWithFilename:@"sfx_dropOK.mp3" completion:^{
-        [self checkForAllCorrectAnswers];
-    }];
+    [self enqueueAudioWithPath:@"sfx_dropOK.mp3"
+                    fromBundle:YES
+                    startDelay:0
+        synchronizedStartBlock:nil
+          synchronizedEndBlock:^{
+              [self checkForAllCorrectAnswers];
+          }];
 }
 
 #pragma mark - Override for SCHStoryInteractionControllerStateReactions

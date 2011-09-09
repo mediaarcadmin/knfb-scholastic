@@ -179,6 +179,7 @@ enum SCHToolType {
         [chooser setChooserIndex:index++];
         [chooser setStickerDataSource:self.stickers];
         [chooser setStickerDelegate:self];
+        [chooser setBackgroundColor:[UIColor whiteColor]];
     }
     
     self.selectedStickerChooser = NSNotFound;
@@ -205,7 +206,8 @@ enum SCHToolType {
 
 - (void)close
 {
-    self.controllerState = SCHStoryInteractionControllerStateInteractionFinishedSuccessfully;
+    // do not go to finished state, as this will cause progress to advance on any SI on the current reading page
+    self.controllerState = SCHStoryInteractionControllerStateInteractionInProgress;
     [self removeFromHostView];
 }
 

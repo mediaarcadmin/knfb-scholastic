@@ -360,7 +360,12 @@ managedObjectContext:(NSManagedObjectContext *)managedObjectContext
 
 - (void)jumpToBookPoint:(SCHBookPoint *)bookPoint animated:(BOOL)animated
 {
-    [self jumpToPageAtIndex:bookPoint.layoutPage - 1 animated:animated];
+    [self jumpToBookPoint:bookPoint animated:animated withCompletionHandler:nil];
+}
+
+- (void)jumpToBookPoint:(SCHBookPoint *)bookPoint animated:(BOOL)animated withCompletionHandler:(dispatch_block_t)completion
+{
+    [self jumpToPageAtIndex:bookPoint.layoutPage - 1 animated:animated withCompletionHandler:completion];
 }
 
 - (void)jumpToPageAtIndex:(NSUInteger)pageIndex animated: (BOOL) animated
@@ -915,6 +920,11 @@ fastThumbnailUIImageForPageAtIndex:(NSUInteger)index
 - (UIImage *)pageSnapshot
 {
     return [self.pageTurningView screenshot];
+}
+
+- (void)waitForVisiblePagesRenderingToComplete
+{
+    // FIXME - find a way to wait for just the visible pages to render
 }
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {

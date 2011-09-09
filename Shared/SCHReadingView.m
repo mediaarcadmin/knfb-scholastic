@@ -134,6 +134,11 @@ managedObjectContext:(NSManagedObjectContext *)managedObjectContext
     NSLog(@"WARNING: jumpToBookPoint:animated: not being overridden correctly.");
 }
 
+- (void)jumpToBookPoint:(SCHBookPoint *)bookPoint animated:(BOOL)animated withCompletionHandler:(dispatch_block_t)completion
+{
+    NSLog(@"WARNING: jumpToBookPoint:animated:withCompletionHandler: not being overridden correctly.");
+}
+
 - (void) setFontPointIndex: (NSUInteger) index
 {
     // Do nothing
@@ -636,6 +641,8 @@ managedObjectContext:(NSManagedObjectContext *)managedObjectContext
     [self.selector setSelectedRange:nil];
 }
 
+- (void)waitForVisiblePagesRenderingToComplete {}
+
 #pragma mark - Touch handling
 
 - (void)unhandledTapAtPoint:(CGPoint)piont
@@ -682,6 +689,8 @@ managedObjectContext:(NSManagedObjectContext *)managedObjectContext
 {
     return nil;
 }
+
+- (void)waitForPageRenderingToComplete {}
 
 - (void)dismissReadingViewAdornments
 {
