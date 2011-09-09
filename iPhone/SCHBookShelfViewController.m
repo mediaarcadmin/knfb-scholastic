@@ -30,6 +30,8 @@
 #import "SCHAppContentProfileItem.h"
 #import "SCHBookshelfSyncComponent.h"
 #import "SCHAppStateManager.h"
+#import "SCHBookAnnotations.h"
+#import "SCHLastPage.h"
 
 static NSInteger const kSCHBookShelfViewControllerGridCellHeightPortrait = 138;
 static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 131;
@@ -572,6 +574,10 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 131;
 
     cell.identifier = identifier;
     SCHAppContentProfileItem *appContentProfileItem = [self.profileItem appContentProfileItemForBookIdentifier:identifier];
+    SCHBookAnnotations *annotations = [self.profileItem annotationsForBook:identifier];
+    if ([appContentProfileItem.IsNew boolValue] == YES) {
+        appContentProfileItem.IsNew = [NSNumber numberWithBool:(annotations == nil ? YES : [annotations.lastPage.LastPageLocation integerValue] < 1)];
+    }
     cell.isNewBook = [appContentProfileItem.IsNew boolValue];
     cell.trashed = [appContentProfileItem.IsTrashed boolValue];
     
@@ -717,6 +723,10 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 131;
 	[gridCell setIdentifier:[self.books objectAtIndex:index]];
     SCHAppContentProfileItem *appContentProfileItem = [self.profileItem appContentProfileItemForBookIdentifier:[self.books objectAtIndex:index]];
     gridCell.trashed = [appContentProfileItem.IsTrashed boolValue];
+    SCHBookAnnotations *annotations = [self.profileItem annotationsForBook:[self.books objectAtIndex:index]];
+    if ([appContentProfileItem.IsNew boolValue] == YES) {
+        appContentProfileItem.IsNew = [NSNumber numberWithBool:(annotations == nil ? YES : [annotations.lastPage.LastPageLocation integerValue] < 1)];
+    }
     gridCell.isNewBook = [appContentProfileItem.IsNew boolValue];
 
     if (self.currentlyLoadingIndex == index) {
