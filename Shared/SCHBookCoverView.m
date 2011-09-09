@@ -374,15 +374,30 @@
         self.currentImageName = nil;
         self.showingPlaceholder = YES;
         self.needsRefresh = NO;
+        self.activitySpinner.center = [self.superview convertPoint:self.center toView:self];
+        self.errorBadge.center = [self.superview convertPoint:self.center toView:self];
+
+        self.errorBadge.hidden = YES;
+        
         if (bookState >= SCHBookProcessingStateNoCoverImage) {
-            self.activitySpinner.center = [self.superview convertPoint:self.center toView:self];
             [self.activitySpinner startAnimating];
-            self.errorBadge.hidden = YES;
-        } else {
-            [self.activitySpinner stopAnimating];
-            self.errorBadge.center = [self.superview convertPoint:self.center toView:self];
-            self.errorBadge.hidden = NO;
         }
+        
+        switch (bookState) {
+            case SCHBookProcessingStateURLsNotPopulated:
+            case SCHBookProcessingStateDownloadFailed:
+            case SCHBookProcessingStateNonDRMBookWithDRM:   
+            case SCHBookProcessingStateUnableToAcquireLicense:
+            case SCHBookProcessingStateError:
+            case SCHBookProcessingStateBookVersionNotSupported:
+                [self.activitySpinner stopAnimating];
+                self.errorBadge.hidden = NO;
+                break;
+                
+            default:
+                break;
+        }
+        
         [localIdentifier release];
         return;
     } else {
