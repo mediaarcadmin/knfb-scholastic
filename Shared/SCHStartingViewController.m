@@ -27,6 +27,7 @@
 #import "SCHProfileItem.h"
 #import "SCHUserDefaults.h"
 #import "SCHBookManager.h"
+#import "SCHAppBook.h"
 
 enum {
     kTableSectionSamples = 0,
@@ -57,12 +58,10 @@ typedef enum {
 
 - (void)setupAssetsForOrientation:(UIInterfaceOrientation)orientation;
 - (void)firstLogin;
-- (void)clearCacheDirectory;
 - (NSString *)sampleBookshelfTitleAtIndex:(NSInteger)index;
 - (void)openSampleBookshelfAtIndex:(NSInteger)index;
 - (void)showSignInForm;
 - (void)advanceToNextSignInForm;
-- (void)dismissKeyboard;
 
 - (SCHProfileViewController_Shared *)profileViewController;
 - (void)pushProfileView;
@@ -325,24 +324,7 @@ typedef enum {
     // remove data store
     [appDelegate.coreDataHelper removeSampleStore];
     // clear all books
-    [self clearCacheDirectory];
-}
-
-- (void)clearCacheDirectory
-{
-    dispatch_async(dispatch_get_main_queue(), ^{
-        NSString *libraryCacheDirectory = [NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) lastObject];        
-        NSError *error = nil;
-        
-        if (libraryCacheDirectory != nil) {
-            for (NSString *fileName in [[NSFileManager defaultManager] enumeratorAtPath:libraryCacheDirectory]) {
-                if ([[NSFileManager defaultManager] removeItemAtPath:[libraryCacheDirectory stringByAppendingPathComponent:fileName] 
-                                                               error:&error] == NO) {
-                    NSLog(@"Error deleting XPS file: %@", [error localizedDescription]);                        
-                }
-            }                                                
-        }
-    });    
+    [SCHAppBook clearBooksDirectory];
 }
 
 #pragma mark - Sign In
@@ -436,10 +418,11 @@ typedef enum {
         if (self.modalViewController == nil) {
             [self.modalNavigationController setModalTransitionStyle:UIModalTransitionStyleCoverVertical];
             [self.modalNavigationController setModalPresentationStyle:UIModalPresentationFormSheet];
+            [self.modalNavigationController setViewControllers:[NSArray arrayWithObject:next]];
             [self presentModalViewController:self.modalNavigationController animated:YES];
+        } else {
+            [self.modalNavigationController pushViewController:next animated:YES];
         }
-        [self dismissKeyboard];
-        [self.modalNavigationController pushViewController:next animated:YES];
         [next release];
     } else {
         [self dismissSettingsForm];
@@ -450,19 +433,6 @@ typedef enum {
 {
     [self dismissModalViewControllerAnimated:YES];
     [self pushProfileView];
-}
-
-- (void)dismissKeyboard
-{
-    if ([[[UIDevice currentDevice] systemVersion] compare:@"4.3"] == NSOrderedAscending) {
-        // pre-4.3 only - we have to dismiss the modal form and represent it to get the
-        // keyboard to disappear; from 4.3-on the UINavigationController subclass takes
-        // care of this.
-        [CATransaction begin];
-        [self dismissModalViewControllerAnimated:NO];
-        [self presentModalViewController:self.modalNavigationController animated:NO];
-        [CATransaction commit];
-    }
 }
 
 #pragma mark - Profile view

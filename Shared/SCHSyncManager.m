@@ -486,6 +486,13 @@ static NSTimeInterval const kSCHLastFirstSyncInterval = -300.0;
 
 #pragma mark - Population methods
 
+- (void)populateTestSampleStore
+{
+    SCHPopulateDataStore *populateDataStore = [self populateDataStore];
+    
+    [populateDataStore populateTestSampleStore];
+}
+
 - (void)populateSampleStore
 {
     SCHPopulateDataStore *populateDataStore = [self populateDataStore];

@@ -116,6 +116,8 @@ static const CGFloat kDeregisterContentHeightLandscape = 380;
 
 - (void)deregister:(id)sender
 {
+    [self.deregisterButton setEnabled:NO];
+    
     if ([[SCHAuthenticationManager sharedAuthenticationManager] validatePassword:self.passwordField.text]) {
         if ([[SCHAuthenticationManager sharedAuthenticationManager] isAuthenticated] == YES) {
             [self.spinner startAnimating];
@@ -128,7 +130,9 @@ static const CGFloat kDeregisterContentHeightLandscape = 380;
             LambdaAlert *alert = [[LambdaAlert alloc]
                                   initWithTitle:NSLocalizedString(@"Error", @"error alert title")
                                   message:NSLocalizedString(@"Waiting for the server, please try again in a moment. If this problem persists please contact support.", nil)];
-            [alert addButtonWithTitle:NSLocalizedString(@"Try Again", @"try again button after no authentication") block:^{}];
+            [alert addButtonWithTitle:NSLocalizedString(@"Try Again", @"try again button after no authentication") block:^{
+                [self.deregisterButton setEnabled:YES];
+            }];
             [alert show];
             [alert release];        
         }
@@ -136,7 +140,9 @@ static const CGFloat kDeregisterContentHeightLandscape = 380;
         LambdaAlert *alert = [[LambdaAlert alloc]
                               initWithTitle:NSLocalizedString(@"Error", @"error alert title")
                               message:NSLocalizedString(@"The password was incorrect", @"")];
-        [alert addButtonWithTitle:NSLocalizedString(@"Try Again", @"try again button after password failure") block:^{}];
+        [alert addButtonWithTitle:NSLocalizedString(@"Try Again", @"try again button after password failure") block:^{
+            [self.deregisterButton setEnabled:YES];
+        }];
         [alert show];
         [alert release];        
     }

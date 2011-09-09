@@ -205,7 +205,8 @@ enum SCHToolType {
 
 - (void)close
 {
-    self.controllerState = SCHStoryInteractionControllerStateInteractionFinishedSuccessfully;
+    // do not go to finished state, as this will cause progress to advance on any SI on the current reading page
+    self.controllerState = SCHStoryInteractionControllerStateInteractionInProgress;
     [self removeFromHostView];
 }
 

@@ -365,17 +365,28 @@
     thumbPath = [book thumbPathForSize:thumbSize];
     
     if ([book.BookCoverExists boolValue] == NO || (bookState <= SCHBookProcessingStateNoCoverImage && 
-                                                   bookState != SCHBookProcessingStateNonDRMBookWithDRM &&
-                                                   bookState != SCHBookProcessingStateUnableToAcquireLicense &&
-                                                   [book.BookCoverExists boolValue] == NO)) {
+                                                    bookState != SCHBookProcessingStateNonDRMBookWithDRM &&
+                                                    bookState != SCHBookProcessingStateUnableToAcquireLicense &&
+                                                    [book.BookCoverExists boolValue] == NO)) {
         // book does not have a cover image downloaded 
         self.coverImageView.image = nil;
         self.coverImageView.hidden = YES;
         self.currentImageName = nil;
         self.showingPlaceholder = YES;
         self.needsRefresh = NO;
+        if (bookState >= SCHBookProcessingStateNoCoverImage) {
+            self.activitySpinner.center = [self.superview convertPoint:self.center toView:self];
+            [self.activitySpinner startAnimating];
+            self.errorBadge.hidden = YES;
+        } else {
+            [self.activitySpinner stopAnimating];
+            self.errorBadge.center = [self.superview convertPoint:self.center toView:self];
+            self.errorBadge.hidden = NO;
+        }
         [localIdentifier release];
         return;
+    } else {
+        [self.activitySpinner stopAnimating];
     }
     
     // check to see if we're already using the right thumb image - if so, skip loading it
