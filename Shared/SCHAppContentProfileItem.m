@@ -22,7 +22,6 @@ NSString * const kSCHAppContentProfileItemOrder = @"Order";
 
 @dynamic DRMQualifier;
 @dynamic ISBN;
-@dynamic IsNew;
 @dynamic IsTrashed;
 @dynamic Order;
 @dynamic ProfileItem;

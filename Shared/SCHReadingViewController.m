@@ -591,8 +591,6 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     [self setDictionarySelectionMode];
     [self setupStoryInteractionButtonForCurrentPagesAnimated:NO];
     
-    SCHAppContentProfileItem *appContentProfileItem = [self.profile appContentProfileItemForBookIdentifier:self.bookIdentifier];
-    appContentProfileItem.IsNew = [NSNumber numberWithBool:NO];
     [self save];
     
     self.bookStatisticsReadingStartTime = [NSDate date];
