@@ -217,6 +217,8 @@ static NSTimeInterval const kSCHLastFirstSyncInterval = -300.0;
 	[self.readingStatsSyncComponent clear];	
 	[self.settingsSyncComponent clear];	
 	
+    self.lastFirstSyncEnded = nil;
+    
 	[[NSUserDefaults standardUserDefaults] setBool:NO 
                                             forKey:kSCHUserDefaultsPerformedFirstSyncUpToBooks];
 }
@@ -275,7 +277,9 @@ static NSTimeInterval const kSCHLastFirstSyncInterval = -300.0;
             importedBooks = [populateDataStore populateFromImport] > 0;
         }
 
-        if (importedBooks || self.lastFirstSyncEnded == nil || [self.lastFirstSyncEnded timeIntervalSinceNow] < kSCHLastFirstSyncInterval) {
+        if (importedBooks == YES || self.lastFirstSyncEnded == nil || [self.lastFirstSyncEnded timeIntervalSinceNow] < kSCHLastFirstSyncInterval) {
+            self.lastFirstSyncEnded = [NSDate date];
+            
             [[NSNotificationCenter defaultCenter] postNotificationName:SCHProfileSyncComponentDidCompleteNotification 
                                                                 object:self];		
             [[NSNotificationCenter defaultCenter] postNotificationName:SCHContentSyncComponentDidCompleteNotification 
@@ -288,7 +292,7 @@ static NSTimeInterval const kSCHLastFirstSyncInterval = -300.0;
                                                                 object:nil];    
             [[NSNotificationCenter defaultCenter] postNotificationName:SCHSettingsSyncComponentDidCompleteNotification
                                                                 object:nil];   
-            self.lastFirstSyncEnded = [NSDate date];
+
         }
     }
 }

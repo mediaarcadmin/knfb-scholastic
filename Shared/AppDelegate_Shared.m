@@ -47,9 +47,7 @@ static NSString* const prModelCertFilename = @"iphonecert.dat";
     
     if ([self createApplicationSupportDirectory] == NO) {
 		NSLog(@"Application Support directory could not be created.");
-	} else {
-        [self.coreDataHelper setupSampleStore];
-    }
+	}
     
     SCHBookManager *bookManager = [SCHBookManager sharedBookManager];
     bookManager.persistentStoreCoordinator = self.coreDataHelper.persistentStoreCoordinator;
@@ -104,7 +102,6 @@ static NSString* const prModelCertFilename = @"iphonecert.dat";
 								 [NSNumber numberWithBool:YES], kSCHUserDefaultsSpaceSaverMode,
 								 [NSNumber numberWithBool:YES], kSCHUserDefaultsYoungerHelpVideoFirstPlay,
                                  [NSNumber numberWithBool:YES], kSCHUserDefaultsOlderHelpVideoFirstPlay,
-                                 [NSNumber numberWithBool:NO], kSCHUserDefaultsHasEverLoggedIn,
                                  nil];
     
 	[[NSUserDefaults standardUserDefaults] registerDefaults:appDefaults];
@@ -112,11 +109,7 @@ static NSString* const prModelCertFilename = @"iphonecert.dat";
 
 - (void)clearUserDefaults
 {
-    BOOL persistHasEverLoggedIn = [[NSUserDefaults standardUserDefaults] boolForKey:kSCHUserDefaultsHasEverLoggedIn];
-    
-    [[NSUserDefaults standardUserDefaults] removePersistentDomainForName:[[NSBundle mainBundle] bundleIdentifier]];        
-    
-    [[NSUserDefaults standardUserDefaults] setBool:persistHasEverLoggedIn forKey:kSCHUserDefaultsHasEverLoggedIn];
+    [[NSUserDefaults standardUserDefaults] removePersistentDomainForName:[[NSBundle mainBundle] bundleIdentifier]];
 }
 
 /**

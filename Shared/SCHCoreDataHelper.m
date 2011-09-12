@@ -73,21 +73,18 @@ static NSString * const kSCHCoreDataHelperSampleStoreName = @"Scholastic_Sample.
 
 - (void)setupSampleStore
 {  
-    if ([[NSUserDefaults standardUserDefaults] boolForKey:kSCHUserDefaultsHasEverLoggedIn] == NO &&
-        [self storeExists:kSCHCoreDataHelperSampleStoreName] == NO) {
-        dispatch_async(dispatch_get_main_queue(), ^{
-            NSString *sourceSampleStorePath = [[[NSBundle mainBundle] bundlePath] stringByAppendingPathComponent:kSCHCoreDataHelperSampleStoreName];
-            NSURL *applicationSupportDocumentsDirectory = [[[NSFileManager defaultManager] URLsForDirectory:NSApplicationSupportDirectory inDomains:NSUserDomainMask] lastObject];
-            NSURL *destinationSampleStoreURL = [applicationSupportDocumentsDirectory URLByAppendingPathComponent:kSCHCoreDataHelperSampleStoreName];    
-            NSString *destinationSampleStorePath = [destinationSampleStoreURL path];
-            
-            NSError *error = nil;
-			if ([[NSFileManager defaultManager] copyItemAtPath:sourceSampleStorePath 
-                                                        toPath:destinationSampleStorePath
-                                                         error:&error] == NO) {
-                NSLog(@"Error copying Sample Data Store: %@, %@", error, [error userInfo]);
-            }            
-        });
+    if ([self storeExists:kSCHCoreDataHelperSampleStoreName] == NO) {
+        NSString *sourceSampleStorePath = [[[NSBundle mainBundle] bundlePath] stringByAppendingPathComponent:kSCHCoreDataHelperSampleStoreName];
+        NSURL *applicationSupportDocumentsDirectory = [[[NSFileManager defaultManager] URLsForDirectory:NSApplicationSupportDirectory inDomains:NSUserDomainMask] lastObject];
+        NSURL *destinationSampleStoreURL = [applicationSupportDocumentsDirectory URLByAppendingPathComponent:kSCHCoreDataHelperSampleStoreName];    
+        NSString *destinationSampleStorePath = [destinationSampleStoreURL path];
+        
+        NSError *error = nil;
+        if ([[NSFileManager defaultManager] copyItemAtPath:sourceSampleStorePath 
+                                                    toPath:destinationSampleStorePath
+                                                     error:&error] == NO) {
+            NSLog(@"Error copying Sample Data Store: %@, %@", error, [error userInfo]);
+        }            
     }
 }
              

@@ -41,9 +41,7 @@ enum {
     kTableOffsetPortrait_iPad = 240,
     kTableOffsetLandscape_iPad = 120,
     kTableOffsetPortrait_iPhone = 0,
-    kTableOffsetLandscape_iPhone = 0,
-    kTableOffsetNoSamplesPortrait_iPhone = 80,
-    kTableOffsetNoSamplesLandscape_iPhone = 50
+    kTableOffsetLandscape_iPhone = 0
 };
 
 typedef enum {
@@ -142,17 +140,15 @@ typedef enum {
 {
     const BOOL iPad = (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad);
     
-    BOOL showSamples = ![[NSUserDefaults standardUserDefaults] boolForKey:kSCHUserDefaultsHasEverLoggedIn];
-    
     CGFloat logoHeight = 44;
     
     if (UIInterfaceOrientationIsLandscape(orientation)) {
-        CGFloat offset = iPad ? kTableOffsetLandscape_iPad : (showSamples ? kTableOffsetLandscape_iPhone : kTableOffsetNoSamplesLandscape_iPhone);
+        CGFloat offset = iPad ? kTableOffsetLandscape_iPad : kTableOffsetLandscape_iPhone;
         [self.backgroundView setImage:[UIImage imageNamed:@"plain-background-landscape.jpg"]];
         [self.starterTableView setContentInset:UIEdgeInsetsMake(offset, 0, 0, 0)];
         logoHeight = iPad ? logoHeight : 32;
     } else {
-        CGFloat offset = iPad ? kTableOffsetPortrait_iPad : (showSamples ? kTableOffsetPortrait_iPhone : kTableOffsetNoSamplesPortrait_iPhone);
+        CGFloat offset = iPad ? kTableOffsetPortrait_iPad : kTableOffsetPortrait_iPhone;
         [self.backgroundView setImage:[UIImage imageNamed:@"plain-background-portrait.jpg"]];
         [self.starterTableView setContentInset:UIEdgeInsetsMake(offset, 0, 0, 0)];
     }
@@ -186,19 +182,11 @@ typedef enum {
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    if ([[NSUserDefaults standardUserDefaults] boolForKey:kSCHUserDefaultsHasEverLoggedIn] == YES) {
-        return kNumberOfTableSections - 1;
-    }
-    
     return kNumberOfTableSections;   
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    if ([[NSUserDefaults standardUserDefaults] boolForKey:kSCHUserDefaultsHasEverLoggedIn] == YES) {
-        section += kTableSectionSignIn;
-    }
-    
     switch (section) {
         case kTableSectionSamples:
             return kNumberOfSampleBookshelves;
@@ -210,10 +198,6 @@ typedef enum {
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
-    if ([[NSUserDefaults standardUserDefaults] boolForKey:kSCHUserDefaultsHasEverLoggedIn] == YES) {
-        section += kTableSectionSignIn;
-    }
-    
     switch (section) {
         case kTableSectionSamples:
             return CGRectGetHeight(self.samplesHeaderView.bounds);
@@ -225,10 +209,6 @@ typedef enum {
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 {
-    if ([[NSUserDefaults standardUserDefaults] boolForKey:kSCHUserDefaultsHasEverLoggedIn] == YES) {
-        section += kTableSectionSignIn;
-    }
-        
     switch (section) {
         case kTableSectionSamples:
             return self.samplesHeaderView;
@@ -250,9 +230,6 @@ typedef enum {
         cell.delegate = self;
     }
 
-    if ([[NSUserDefaults standardUserDefaults] boolForKey:kSCHUserDefaultsHasEverLoggedIn] == YES) {
-        section += kTableSectionSignIn;
-    }
     switch (section) {
         case kTableSectionSamples:
             [cell setTitle:[self sampleBookshelfTitleAtIndex:indexPath.row]];
@@ -270,9 +247,6 @@ typedef enum {
 {
     NSInteger section = indexPath.section;
 
-    if ([[NSUserDefaults standardUserDefaults] boolForKey:kSCHUserDefaultsHasEverLoggedIn] == YES) {
-        section += kTableSectionSignIn;
-    }
     switch (section) {
         case kTableSectionSamples:
             [self openSampleBookshelfAtIndex:indexPath.row];
@@ -301,6 +275,8 @@ typedef enum {
 {
     AppDelegate_Shared *appDelegate = (AppDelegate_Shared *)[[UIApplication sharedApplication] delegate];
 
+    [appDelegate.coreDataHelper setupSampleStore];            
+    
     switch (index) {
         case SCHStartingViewControllerYoungerBookshelf: 
             [appDelegate.coreDataHelper setStoreType:SCHCoreDataHelperSampleStore];
@@ -318,8 +294,6 @@ typedef enum {
 - (void)firstLogin
 {
     AppDelegate_Shared *appDelegate = (AppDelegate_Shared *)[[UIApplication sharedApplication] delegate];    
-    
-    [[NSUserDefaults standardUserDefaults] setBool:YES forKey:kSCHUserDefaultsHasEverLoggedIn];
     
     // remove data store
     [appDelegate.coreDataHelper removeSampleStore];

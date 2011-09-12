@@ -12,4 +12,3 @@ extern NSString * const kSCHUserDefaultsPerformedFirstSyncUpToBooks;
 extern NSString * const kSCHUserDefaultsSpaceSaverMode;
 extern NSString * const kSCHUserDefaultsYoungerHelpVideoFirstPlay;
 extern NSString * const kSCHUserDefaultsOlderHelpVideoFirstPlay;
-extern NSString * const kSCHUserDefaultsHasEverLoggedIn;

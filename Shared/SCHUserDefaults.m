@@ -13,4 +13,3 @@ NSString * const kSCHUserDefaultsPerformedFirstSyncUpToBooks = @"PerformedFirstS
 NSString * const kSCHUserDefaultsSpaceSaverMode = @"SpaceSaverMode";
 NSString * const kSCHUserDefaultsYoungerHelpVideoFirstPlay = @"UserDefaultsYoungerHelpVideoFirstPlay";
 NSString * const kSCHUserDefaultsOlderHelpVideoFirstPlay = @"UserDefaultsOlderHelpVideoFirstPlay";
-NSString * const kSCHUserDefaultsHasEverLoggedIn = @"UserDefaultsHasEverLoggedIn";
