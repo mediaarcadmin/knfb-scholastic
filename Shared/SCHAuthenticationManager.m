@@ -57,6 +57,7 @@ typedef struct AuthenticateWithUserNameParameters AuthenticateWithUserNameParame
 - (void)authenticateWithUserNameOnMainThread:(NSValue *)parameters;
 - (void)hasUsernameAndPasswordOnMainThread:(NSValue *)returnValue;
 - (void)deregisterOnMainThread:(NSString *)token;
+- (void)performPostDeregistration;
 
 @end
 
@@ -413,14 +414,20 @@ typedef struct AuthenticateWithUserNameParameters AuthenticateWithUserNameParame
 {
     if ([[SCHAppStateManager sharedAppStateManager] canAuthenticate] == YES && token != nil) {
         [self.drmRegistrationSession deregisterDevice:token];
-    } else {
-        [[NSNotificationCenter defaultCenter] postNotificationName:SCHAuthenticationManagerDidDeregisterNotification
-                                                            object:self 
-                                                          userInfo:nil];		        
-        [self clearOnMainThread];
-        [self clearAppProcessingOnMainThread];
-        [[NSUserDefaults standardUserDefaults] removePersistentDomainForName:[[NSBundle mainBundle] bundleIdentifier]];
     }
+}
+
+- (void)performPostDeregistration
+{
+    [[NSNotificationCenter defaultCenter] postNotificationName:SCHAuthenticationManagerDidDeregisterNotification
+                                                        object:self 
+                                                      userInfo:nil];		        
+    [self clearOnMainThread];
+    [self clearAppProcessingOnMainThread];
+    [(AppDelegate_Shared *)[[UIApplication sharedApplication] delegate] clearUserDefaults];
+    [[NSNotificationCenter defaultCenter] postNotificationName:SCHAuthenticationManagerDidClearAfterDeregisterNotification
+                                                        object:self 
+                                                      userInfo:nil];		                    
 }
 
 #pragma mark - BITAPIProxy Delegate methods
@@ -434,7 +441,7 @@ typedef struct AuthenticateWithUserNameParameters AuthenticateWithUserNameParame
         NSNumber *deviceIsDeregistered = [result objectForKey:kSCHLibreAccessWebServiceDeviceIsDeregistered];        
         if ([deviceIsDeregistered isKindOfClass:[NSNumber class]] == YES &&
             [[result objectForKey:kSCHLibreAccessWebServiceDeviceIsDeregistered] boolValue] == YES) {
-            [self deregisterOnMainThread:[result objectForKey:kSCHLibreAccessWebServiceAuthToken]];
+            [self performPostDeregistration];
         } else if (![[NSUserDefaults standardUserDefaults] stringForKey:kSCHAuthenticationManagerDeviceKey]) {
             [self.drmRegistrationSession registerDevice:[result objectForKey:kSCHLibreAccessWebServiceAuthToken]];
         }        
@@ -447,7 +454,7 @@ typedef struct AuthenticateWithUserNameParameters AuthenticateWithUserNameParame
         if ([method isEqualToString:kSCHLibreAccessWebServiceAuthenticateDevice] == YES &&
             [deviceIsDeregistered isKindOfClass:[NSNumber class]] == YES &&
             [[result objectForKey:kSCHLibreAccessWebServiceDeviceIsDeregistered] boolValue] == YES) {
-            [self deregisterOnMainThread:[result objectForKey:kSCHLibreAccessWebServiceAuthToken]];
+            [self performPostDeregistration];
             return;
         } else {
             self.aToken = [result objectForKey:kSCHLibreAccessWebServiceAuthToken];
@@ -487,15 +494,7 @@ typedef struct AuthenticateWithUserNameParameters AuthenticateWithUserNameParame
     } else {
         // Successful deregistration
         waitingOnResponse = NO;
-        [[NSNotificationCenter defaultCenter] postNotificationName:SCHAuthenticationManagerDidDeregisterNotification
-                                                            object:self 
-                                                          userInfo:nil];		        
-        [self clearOnMainThread];
-        [self clearAppProcessingOnMainThread];
-        [(AppDelegate_Shared *)[[UIApplication sharedApplication] delegate] clearUserDefaults];
-        [[NSNotificationCenter defaultCenter] postNotificationName:SCHAuthenticationManagerDidClearAfterDeregisterNotification
-                                                            object:self 
-                                                          userInfo:nil];		                
+        [self performPostDeregistration];
     }
     self.drmRegistrationSession = nil;
 }
