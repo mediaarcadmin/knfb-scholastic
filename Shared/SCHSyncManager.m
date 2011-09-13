@@ -30,6 +30,7 @@ static NSTimeInterval const kSCHLastFirstSyncInterval = -300.0;
 @interface SCHSyncManager ()
 
 @property (nonatomic, retain) NSDate *lastFirstSyncEnded;
+@property (nonatomic, assign) BOOL syncAfterDelay;
 
 - (NSMutableArray *)bookAnnotationsFromProfile:(SCHProfileItem *)profileItem;
 - (NSMutableDictionary *)annotationContentItemFromUserContentItem:(SCHUserContentItem *)userContentItem;
@@ -53,6 +54,7 @@ static NSTimeInterval const kSCHLastFirstSyncInterval = -300.0;
 @implementation SCHSyncManager
 
 @synthesize lastFirstSyncEnded;
+@synthesize syncAfterDelay;
 @synthesize timer;
 @synthesize queue;
 @synthesize managedObjectContext;
@@ -218,6 +220,7 @@ static NSTimeInterval const kSCHLastFirstSyncInterval = -300.0;
 	[self.settingsSyncComponent clear];	
 	
     self.lastFirstSyncEnded = nil;
+    self.syncAfterDelay = NO;
     
 	[[NSUserDefaults standardUserDefaults] setBool:NO 
                                             forKey:kSCHUserDefaultsPerformedFirstSyncUpToBooks];
@@ -240,6 +243,8 @@ static NSTimeInterval const kSCHLastFirstSyncInterval = -300.0;
         if (syncNow == YES || self.lastFirstSyncEnded == nil || 
             [self.lastFirstSyncEnded timeIntervalSinceNow] < kSCHLastFirstSyncInterval) {
             NSLog(@"Scheduling First Sync");
+            
+            self.syncAfterDelay = NO;
             
             [self addToQueue:self.profileSyncComponent];
             [self addToQueue:self.contentSyncComponent];
@@ -267,6 +272,8 @@ static NSTimeInterval const kSCHLastFirstSyncInterval = -300.0;
             [self addToQueue:self.settingsSyncComponent];
             
             [self kickQueue];	
+        } else {
+            self.syncAfterDelay = YES;
         }
     } else  {
         BOOL importedBooks = NO;
@@ -471,8 +478,9 @@ static NSTimeInterval const kSCHLastFirstSyncInterval = -300.0;
 	}  else {
         [[NSNotificationCenter defaultCenter] postNotificationName:SCHSyncManagerDidCompleteNotification 
                                                             object:self];        
-        
-        //		NSLog(@"Queue is empty");
+        if (self.syncAfterDelay == YES) {
+            [self firstSync:NO];   
+        }
 	}
 }
 
