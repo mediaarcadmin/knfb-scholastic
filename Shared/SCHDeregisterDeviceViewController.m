@@ -123,7 +123,7 @@ static const CGFloat kDeregisterContentHeightLandscape = 380;
         LambdaAlert *alert = [[LambdaAlert alloc]
                               initWithTitle:NSLocalizedString(@"Error", @"error alert title")
                               message:NSLocalizedString(@"You must have internet access to deregister", @"")];
-        [alert addButtonWithTitle:NSLocalizedString(@"Try Again", @"try again button after no authentication") block:^{
+        [alert addButtonWithTitle:NSLocalizedString(@"Done", @"done button after no authentication") block:^{
             [self.deregisterButton setEnabled:YES];
         }];
         [alert show];
