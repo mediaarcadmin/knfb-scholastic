@@ -108,7 +108,7 @@
 																</object>
 																<object class="NSCustomResource" key="IBUINormalImage">
 																	<string key="NSClassName">NSImage</string>
-																	<string key="NSResourceName">BookShelfModeListActive.png</string>
+																	<string key="NSResourceName">BookShelfModeListInactive.png</string>
 																</object>
 															</object>
 															<object class="IBUIButton" id="934073849">
@@ -134,7 +134,7 @@
 																<reference key="IBUINormalTitleShadowColor" ref="149495038"/>
 																<object class="NSCustomResource" key="IBUINormalImage">
 																	<string key="NSClassName">NSImage</string>
-																	<string key="NSResourceName">BookShelfModeGridInactive.png</string>
+																	<string key="NSResourceName">BookShelfModeGridActive.png</string>
 																</object>
 															</object>
 														</object>
@@ -236,6 +236,7 @@
 								<string key="NSFrame">{{11, 61}, {155, 21}}</string>
 								<reference key="NSSuperview" ref="222914230"/>
 								<reference key="NSWindow"/>
+								<reference key="NSNextKeyView"/>
 								<bool key="IBUIOpaque">NO</bool>
 								<bool key="IBUIClipsSubviews">YES</bool>
 								<int key="IBUIContentMode">7</int>
@@ -338,7 +339,7 @@
 				</object>
 			</object>
 			<object class="IBUIView" id="465884316">
-				<nil key="NSNextResponder"/>
+				<reference key="NSNextResponder"/>
 				<int key="NSvFlags">290</int>
 				<object class="NSMutableArray" key="NSSubviews">
 					<bool key="EncodedWithXMLCoder">YES</bool>
@@ -352,6 +353,8 @@
 								<int key="NSvFlags">313</int>
 								<string key="NSFrame">{{100, 3}, {72, 37}}</string>
 								<reference key="NSSuperview" ref="465401365"/>
+								<reference key="NSWindow"/>
+								<reference key="NSNextKeyView"/>
 								<bool key="IBUIOpaque">NO</bool>
 								<int key="IBUIContentMode">7</int>
 								<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
@@ -366,7 +369,7 @@
 								<reference key="IBUINormalTitleShadowColor" ref="149495038"/>
 								<object class="NSCustomResource" key="IBUINormalImage">
 									<string key="NSClassName">NSImage</string>
-									<string key="NSResourceName">BookShelfModeListInactive.png</string>
+									<string key="NSResourceName">BookShelfModeListActive.png</string>
 								</object>
 							</object>
 							<object class="IBUIButton" id="288569877">
@@ -374,6 +377,7 @@
 								<int key="NSvFlags">316</int>
 								<string key="NSFrame">{{28, 3}, {72, 37}}</string>
 								<reference key="NSSuperview" ref="465401365"/>
+								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="497810693"/>
 								<bool key="IBUIOpaque">NO</bool>
 								<int key="IBUIContentMode">8</int>
@@ -390,18 +394,21 @@
 								<reference key="IBUINormalTitleShadowColor" ref="149495038"/>
 								<object class="NSCustomResource" key="IBUINormalImage">
 									<string key="NSClassName">NSImage</string>
-									<string key="NSResourceName">BookShelfModeGridActive.png</string>
+									<string key="NSResourceName">BookShelfModeGridInactive.png</string>
 								</object>
 							</object>
 						</object>
 						<string key="NSFrame">{{60, 0}, {200, 44}}</string>
 						<reference key="NSSuperview" ref="465884316"/>
+						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="288569877"/>
 						<reference key="IBUIBackgroundColor" ref="672910984"/>
 						<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 					</object>
 				</object>
 				<string key="NSFrameSize">{320, 44}</string>
+				<reference key="NSSuperview"/>
+				<reference key="NSWindow"/>
 				<reference key="NSNextKeyView" ref="465401365"/>
 				<reference key="IBUIBackgroundColor" ref="672910984"/>
 				<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
@@ -750,6 +757,7 @@
 					<string>63.IBPluginDependency</string>
 					<string>64.IBPluginDependency</string>
 					<string>65.IBPluginDependency</string>
+					<string>65.IBUIButtonInspectorSelectedStateConfigurationMetadataKey</string>
 					<string>66.IBPluginDependency</string>
 					<string>66.IBUIButtonInspectorSelectedStateConfigurationMetadataKey</string>
 					<string>68.IBPluginDependency</string>
@@ -787,15 +795,16 @@
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
+					<real value="0.0"/>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
-					<real value="1"/>
+					<real value="0.0"/>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
-					<real value="1"/>
+					<real value="0.0"/>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
-					<real value="1"/>
+					<real value="0.0"/>
 					<string>UIImageView</string>
 					<string>{{439, 976}, {320, 398}}</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
