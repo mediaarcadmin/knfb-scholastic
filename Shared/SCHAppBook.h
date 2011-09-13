@@ -140,6 +140,7 @@ typedef enum {
 + (void)clearBooksDirectory;
 - (NSString *)bookDirectory;
 - (NSString *)libEucalyptusCache;
+- (void)clearToDefaultValues;
 
 - (float)currentDownloadedPercentage;
 - (BOOL)haveURLs;

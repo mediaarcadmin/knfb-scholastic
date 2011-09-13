@@ -130,10 +130,16 @@ NSString * const kSCHBookUpdatedSuccessfullyNotification = @"book-updated-succes
 {
     if (self.bookEnabledForUpdate) {
         SCHAppBook *book = [self book];
-        [book setForcedProcessing:YES];
-        [book setProcessingState:SCHBookProcessingStateReadyForBookFileDownload];
-        [[SCHProcessingManager sharedProcessingManager] userSelectedBookWithIdentifier:[book bookIdentifier]];
-        [self.cell enableSpinner:[self spinnerStateForProcessingState:[book processingState]]];
+        if (book != nil) {
+            // clear the current book
+            [book.ContentMetadataItem deleteAllFiles];
+            [book clearToDefaultValues];
+            
+            // start reprocessing the updated book
+            [book setProcessingState:SCHBookProcessingStateNoURLs];            
+            [[SCHProcessingManager sharedProcessingManager] userRequestedRetryForBookWithIdentifier:[book bookIdentifier]];
+            [self.cell enableSpinner:[self spinnerStateForProcessingState:[book processingState]]];
+        }
     }
 }
 

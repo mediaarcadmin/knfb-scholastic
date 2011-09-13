@@ -100,6 +100,7 @@ static NSString * const kSCHContentMetadataItemAnnotationsItemProfileID = @"Anno
 {
     NSError *error = nil;
     
+    [[SCHProcessingManager sharedProcessingManager] cancelAllOperationsForBookIndentifier:self.bookIdentifier];
     if ([[NSFileManager defaultManager] removeItemAtPath:self.AppBook.bookDirectory 
                                                    error:&error] == NO) {
         NSLog(@"Failed to delete files for %@, error: %@", 

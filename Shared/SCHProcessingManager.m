@@ -305,6 +305,7 @@ static SCHProcessingManager *sharedManager = nil;
         for (SCHBookOperation *bookOperation in [self.webServiceOperationQueue operations]) {
             if ([bookOperation.identifier isEqual:bookIdentifier] == YES) {
                 [bookOperation cancel];
+                [bookOperation waitUntilFinished];
                 break;
             }
         }
@@ -312,6 +313,7 @@ static SCHProcessingManager *sharedManager = nil;
         for (SCHBookOperation *bookOperation in [self.networkOperationQueue operations]) {
             if ([bookOperation.identifier isEqual:bookIdentifier] == YES) {
                 [bookOperation cancel];
+                [bookOperation waitUntilFinished];                
                 break;
             }
         }
@@ -319,6 +321,7 @@ static SCHProcessingManager *sharedManager = nil;
         for (SCHBookOperation *bookOperation in [self.localProcessingQueue operations]) {
             if ([bookOperation.identifier isEqual:bookIdentifier] == YES) {
                 [bookOperation cancel];
+                [bookOperation waitUntilFinished];                
                 break;
             }
         }
@@ -671,13 +674,14 @@ static SCHProcessingManager *sharedManager = nil;
     if (book != nil) {
         switch (book.processingState) {
             case SCHBookProcessingStateURLsNotPopulated:
+                book.ForceProcess = [NSNumber numberWithBool:YES];
                 [book setProcessingState:SCHBookProcessingStateNoURLs];
                 break;
             case SCHBookProcessingStateDownloadFailed:
+                book.ForceProcess = [NSNumber numberWithBool:YES];
                 if ([book.BookCoverExists boolValue] == NO) {
                     [book setProcessingState:SCHBookProcessingStateNoURLs];
                 } else { 
-                    book.ForceProcess = [NSNumber numberWithBool:YES];
                     [book setProcessingState:SCHBookProcessingStateReadyForBookFileDownload];
                 }
                 break;
@@ -691,8 +695,10 @@ static SCHProcessingManager *sharedManager = nil;
             case SCHBookProcessingStateError:            
             default:
                 if ([book.BookCoverExists boolValue] == NO) {
+                    book.ForceProcess = [NSNumber numberWithBool:YES];
                     [book setProcessingState:SCHBookProcessingStateNoURLs];
                 } else if ([book.XPSExists boolValue] == NO) { 
+                    book.ForceProcess = [NSNumber numberWithBool:YES];
                     [book setProcessingState:SCHBookProcessingStateReadyForBookFileDownload];
                 } else {
                     [book setProcessingState:SCHBookProcessingStateReadyForLicenseAcquisition];                    

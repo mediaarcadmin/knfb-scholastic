@@ -1924,7 +1924,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     if (annotations != nil) {
         SCHHighlight *newHighlight = [annotations createHighlightBetweenStartPage:startPage startWord:startWord endPage:endPage endWord:endWord color:[self highlightColor]];
         SCHAppBook *book = [[SCHBookManager sharedBookManager] bookWithIdentifier:self.bookIdentifier inManagedObjectContext:self.managedObjectContext];
-        newHighlight.Version = [NSNumber numberWithInteger:[book.Version integerValue]];
+        newHighlight.Version = [NSNumber numberWithInteger:[book.OnDiskVersion integerValue]];
     }
 }
 
@@ -2489,7 +2489,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     SCHBookAnnotations *annos = [self.profile annotationsForBook:self.bookIdentifier];
     SCHNote *newNote = [annos createEmptyNote];
     
-    newNote.Version = [NSNumber numberWithInteger:[book.Version integerValue]];
+    newNote.Version = [NSNumber numberWithInteger:[book.OnDiskVersion integerValue]];
     
     SCHBookPoint *currentPoint = [self.readingView currentBookPoint];
     

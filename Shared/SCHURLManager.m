@@ -16,6 +16,8 @@
 #import "SCHUserContentItem.h"
 #import "SCHBookIdentifier.h"
 #import "SCHCoreDataHelper.h"
+#import "SCHAppBook.h"
+#import "SCHBookManager.h"
 
 // Constants
 NSString * const kSCHURLManagerSuccess = @"URLManagerSuccess";
@@ -198,6 +200,20 @@ NSString * const kSCHURLManagerFailure = @"URLManagerFailure";
 		if ([list count] > 0) {
 			NSLog(@"Received URLs for %@", [[list objectAtIndex:0] 
 												   valueForKey:kSCHLibreAccessWebServiceContentIdentifier]);
+            
+            // if this is a different version then update the ContentMetadataItem
+            // this guarentees the OnDiskVersion will be set correctly
+            SCHAppBook *book = [[SCHBookManager sharedBookManager] bookWithIdentifier:[[[SCHBookIdentifier alloc] initWithObject:[list objectAtIndex:0]] autorelease] 
+                                                               inManagedObjectContext:self.managedObjectContext];
+
+            if (book != nil) {
+                NSString *resultVersion = [[list objectAtIndex:0] valueForKey:kSCHLibreAccessWebServiceVersion];
+                if (resultVersion != nil &&
+                    [book.ContentMetadataItem.Version isEqualToString:resultVersion] == NO) {
+                    book.ContentMetadataItem.Version = resultVersion;
+                }
+            }
+            
 			[[NSNotificationCenter defaultCenter] postNotificationName:kSCHURLManagerSuccess 
 																object:self userInfo:[list objectAtIndex:0]];				
 		}		

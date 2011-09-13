@@ -61,6 +61,8 @@ NSString * const kSCHAppBookFetchWithContentIdentifier = @"fetchAppBookWithConte
 
 NSString * const kSCHAppBookEucalyptusCacheDir = @"libEucalyptusCache";
 
+NSString * const kSCHAppBookFilenameSeparator = @"-";
+
 @interface SCHAppBook()
 
 - (NSError *)errorWithCode:(NSInteger)code;
@@ -302,16 +304,20 @@ NSString * const kSCHAppBookEucalyptusCacheDir = @"libEucalyptusCache";
 - (NSString *)xpsPath
 {
     NSString *bookDirectory = [self bookDirectory];
-    NSString *fullXPSPath = [bookDirectory stringByAppendingPathComponent:[NSString stringWithFormat:@"%@-%@.xps", 
-                                                                        self.bookIdentifier, self.ContentMetadataItem.Version]];
+    NSString *fullXPSPath = [bookDirectory stringByAppendingPathComponent:[NSString stringWithFormat:@"%@%@%@.xps", 
+                                                                           self.bookIdentifier.isbn, 
+                                                                           kSCHAppBookFilenameSeparator,
+                                                                           self.bookIdentifier.DRMQualifier]];
 	return fullXPSPath;    
 }
 
 - (NSString *)coverImagePath
 {
 	NSString *bookDirectory = [self bookDirectory];
-	NSString *fullImagePath = [bookDirectory stringByAppendingPathComponent:[NSString stringWithFormat:@"%@.png", 
-                                                                        self.bookIdentifier]];
+	NSString *fullImagePath = [bookDirectory stringByAppendingPathComponent:[NSString stringWithFormat:@"%@%@%@.png", 
+                                                                             self.bookIdentifier.isbn, 
+                                                                             kSCHAppBookFilenameSeparator,
+                                                                             self.bookIdentifier.DRMQualifier]];
     
 	return fullImagePath;
 }	
@@ -325,12 +331,60 @@ NSString * const kSCHAppBookEucalyptusCacheDir = @"libEucalyptusCache";
         scale = [[UIScreen mainScreen] scale];
     }
     
-    NSString *thumbPath = [bookDirectory stringByAppendingPathComponent:[NSString stringWithFormat:@"%@_%d_%d.png", self.bookIdentifier, (int)size.width, (int)size.height]];
+    NSString *thumbPath = [bookDirectory stringByAppendingPathComponent:[NSString stringWithFormat:@"%@%@%@%@%d%@%d.png", 
+                                                                         self.bookIdentifier.isbn, 
+                                                                         kSCHAppBookFilenameSeparator,
+                                                                         self.bookIdentifier.DRMQualifier, 
+                                                                         kSCHAppBookFilenameSeparator,                                                                         
+                                                                         (int)size.width, 
+                                                                         kSCHAppBookFilenameSeparator,
+                                                                         (int)size.height]];
     if (scale != 1) {
-        thumbPath = [bookDirectory stringByAppendingPathComponent:[NSString stringWithFormat:@"%@_%d_%d@%dx.png", self.bookIdentifier, (int)size.width, (int)size.height, (int) scale]];
+        thumbPath = [bookDirectory stringByAppendingPathComponent:[NSString stringWithFormat:@"%@%@%@%@%d%@%d@%dx.png", 
+                                                                   self.bookIdentifier.isbn, 
+                                                                   kSCHAppBookFilenameSeparator,
+                                                                   self.bookIdentifier.DRMQualifier, 
+                                                                   kSCHAppBookFilenameSeparator,                                                                         
+                                                                   (int)size.width, 
+                                                                   kSCHAppBookFilenameSeparator,
+                                                                   (int)size.height, 
+                                                                   (int)scale]];
     }    
 
 	return thumbPath;
+}
+
+- (void)clearToDefaultValues
+{
+    NSEntityDescription *entityDescription = [NSEntityDescription 
+                                              entityForName:kSCHAppBook
+                                              inManagedObjectContext:self.managedObjectContext];
+
+    NSDictionary *properties = [entityDescription propertiesByName];
+    
+    self.AudioBookReferences = [[properties valueForKey:@"AudioBookReferences"] defaultValue];
+    self.BookCoverExists = [[properties valueForKey:@"BookCoverExists"] defaultValue];
+    self.BookCoverHeight = [[properties valueForKey:@"BookCoverHeight"] defaultValue];
+    self.BookCoverURL = [[properties valueForKey:@"BookCoverURL"] defaultValue];
+    self.BookCoverWidth = [[properties valueForKey:@"BookCoverWidth"] defaultValue];
+    self.BookFileURL = [[properties valueForKey:@"BookFileURL"] defaultValue];
+    self.DRMVersion = [[properties valueForKey:@"DRMVersion"] defaultValue];
+    self.ForceProcess = [[properties valueForKey:@"ForceProcess"] defaultValue];
+    self.HasAudio = [[properties valueForKey:@"HasAudio"] defaultValue];
+    self.HasExtras = [[properties valueForKey:@"HasExtras"] defaultValue];
+    self.HasStoryInteractions = [[properties valueForKey:@"HasStoryInteractions"] defaultValue];
+    self.LayoutPageEquivalentCount = [[properties valueForKey:@"LayoutPageEquivalentCount"] defaultValue];
+    self.LayoutStartsOnLeftSide = [[properties valueForKey:@"LayoutStartsOnLeftSide"] defaultValue];
+    self.OnDiskVersion = [[properties valueForKey:@"OnDiskVersion"] defaultValue];
+    self.ReflowPermitted = [[properties valueForKey:@"ReflowPermitted"] defaultValue];
+    self.SmartZoomPageMarkers = [[properties valueForKey:@"SmartZoomPageMarkers"] defaultValue];
+    self.State = [[properties valueForKey:@"State"] defaultValue];
+    self.TextFlowPageRanges = [[properties valueForKey:@"TextFlowPageRanges"] defaultValue];
+    self.TTSPermitted = [[properties valueForKey:@"TTSPermitted"] defaultValue];
+    self.XPSAuthor = [[properties valueForKey:@"XPSAuthor"] defaultValue];
+    self.XPSCategory = [[properties valueForKey:@"XPSCategory"] defaultValue];
+    self.XPSExists = [[properties valueForKey:@"XPSExists"] defaultValue];
+    self.XPSTitle = [[properties valueForKey:@"XPSTitle"] defaultValue];
 }
 
 - (float)currentDownloadedPercentage
