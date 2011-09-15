@@ -169,8 +169,8 @@ NSString * const SCHProfileSyncComponentDidFailNotification = @"SCHProfileSyncCo
 
 - (void)syncProfiles:(NSArray *)profileList
 {		
-	NSMutableSet *deletePool = [NSMutableSet set];
-	NSMutableSet *creationPool = [NSMutableSet set];
+	NSMutableArray *deletePool = [NSMutableArray array];
+	NSMutableArray *creationPool = [NSMutableArray array];
 	
 	NSArray *webProfiles = [profileList sortedArrayUsingDescriptors:[NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:kSCHLibreAccessWebServiceID ascending:YES]]];		
 	NSArray *localProfiles = [self localProfiles];

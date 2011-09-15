@@ -363,7 +363,7 @@ NSString * const SCHAnnotationSyncComponentCompletedProfileIDs = @"SCHAnnotation
          withAnnotationContentList:(NSArray *)localAnnotationsContentList
                         insertInto:(SCHAnnotationsItem *)annotationsItem
 {
-	NSMutableSet *creationPool = [NSMutableSet set];
+	NSMutableArray *creationPool = [NSMutableArray array];
 	
 	webAnnotationsContentList = [webAnnotationsContentList sortedArrayUsingDescriptors:[NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:kSCHLibreAccessWebServiceContentIdentifier ascending:YES]]];		
 	localAnnotationsContentList = [localAnnotationsContentList sortedArrayUsingDescriptors:[NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:kSCHLibreAccessWebServiceContentIdentifier ascending:YES]]];
@@ -500,8 +500,8 @@ NSString * const SCHAnnotationSyncComponentCompletedProfileIDs = @"SCHAnnotation
         withHighlights:(NSSet *)localHighlights
             insertInto:(SCHPrivateAnnotations *)privateAnnotations
 {
-    NSMutableSet *deletePool = [NSMutableSet set];
-	NSMutableSet *creationPool = [NSMutableSet set];
+    NSMutableArray *deletePool = [NSMutableArray array];
+	NSMutableArray *creationPool = [NSMutableArray array];
 	
 	webHighlights = [webHighlights sortedArrayUsingDescriptors:[NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:kSCHLibreAccessWebServiceID ascending:YES]]];		
 	NSArray *localHighlightsArray = [localHighlights sortedArrayUsingDescriptors:[NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:kSCHLibreAccessWebServiceID ascending:YES]]];
@@ -655,8 +655,8 @@ NSString * const SCHAnnotationSyncComponentCompletedProfileIDs = @"SCHAnnotation
         withNotes:(NSSet *)localNotes
        insertInto:(SCHPrivateAnnotations *)privateAnnotations
 {
-    NSMutableSet *deletePool = [NSMutableSet set];
-	NSMutableSet *creationPool = [NSMutableSet set];
+    NSMutableArray *deletePool = [NSMutableArray array];
+	NSMutableArray *creationPool = [NSMutableArray array];
 	
 	webNotes = [webNotes sortedArrayUsingDescriptors:[NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:kSCHLibreAccessWebServiceID ascending:YES]]];		
 	NSArray *localNotesArray = [localNotes sortedArrayUsingDescriptors:[NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:kSCHLibreAccessWebServiceID ascending:YES]]];
@@ -784,8 +784,8 @@ NSString * const SCHAnnotationSyncComponentCompletedProfileIDs = @"SCHAnnotation
         withBookmarks:(NSSet *)localBookmarks
            insertInto:(SCHPrivateAnnotations *)privateAnnotations
 {
-    NSMutableSet *deletePool = [NSMutableSet set];
-	NSMutableSet *creationPool = [NSMutableSet set];
+    NSMutableArray *deletePool = [NSMutableArray array];
+	NSMutableArray *creationPool = [NSMutableArray array];
 	
 	webBookmarks = [webBookmarks sortedArrayUsingDescriptors:[NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:kSCHLibreAccessWebServiceID ascending:YES]]];		
 	NSArray *localBookmarksArray = [localBookmarks sortedArrayUsingDescriptors:[NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:kSCHLibreAccessWebServiceID ascending:YES]]];

@@ -208,8 +208,8 @@ NSString * const SCHBookshelfSyncComponentDidFailNotification = @"SCHBookshelfSy
 
 - (void)syncContentMetadataItems:(NSArray *)contentMetadataList
 {		
-	NSMutableSet *deletePool = [NSMutableSet set];    
-	NSMutableSet *creationPool = [NSMutableSet set];
+	NSMutableArray *deletePool = [NSMutableArray array];    
+	NSMutableArray *creationPool = [NSMutableArray array];
 	
 	NSArray *webProfiles = [contentMetadataList sortedArrayUsingDescriptors:
                             [NSArray arrayWithObjects:

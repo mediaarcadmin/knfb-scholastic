@@ -154,8 +154,8 @@ NSString * const SCHContentSyncComponentDidFailNotification = @"SCHContentSyncCo
 
 - (void)syncUserContentItems:(NSArray *)userContentList
 {		
-	NSMutableSet *deletePool = [NSMutableSet set];
-	NSMutableSet *creationPool = [NSMutableSet set];
+	NSMutableArray *deletePool = [NSMutableArray array];
+	NSMutableArray *creationPool = [NSMutableArray array];
 	
 	NSArray *webProfiles = [userContentList sortedArrayUsingDescriptors:[NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:kSCHLibreAccessWebServiceContentIdentifier ascending:YES]]];		
 	NSArray *localProfiles = [self localUserContentItems];
@@ -378,8 +378,8 @@ NSString * const SCHContentSyncComponentDidFailNotification = @"SCHContentSyncCo
             insertInto:(SCHUserContentItem *)userContentItem
 {		
 	NSArray *sortDescriptor = [NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:kSCHLibreAccessWebServiceOrderID ascending:YES]];
-	NSMutableSet *deletePool = [NSMutableSet set];
-	NSMutableSet *creationPool = [NSMutableSet set];
+	NSMutableArray *deletePool = [NSMutableArray array];
+	NSMutableArray *creationPool = [NSMutableArray array];
 	
 	NSArray *webProfiles = [webOrderList sortedArrayUsingDescriptors:sortDescriptor];		
 	NSArray *localProfiles = [localOrderList sortedArrayUsingDescriptors:sortDescriptor];
@@ -455,8 +455,8 @@ NSString * const SCHContentSyncComponentDidFailNotification = @"SCHContentSyncCo
 
 {		
 	NSArray *sortDescriptor = [NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:kSCHLibreAccessWebServiceProfileID ascending:YES]];
-	NSMutableSet *deletePool = [NSMutableSet set];
-	NSMutableSet *creationPool = [NSMutableSet set];
+	NSMutableArray *deletePool = [NSMutableArray array];
+	NSMutableArray *creationPool = [NSMutableArray array];
 	
 	NSArray *webProfiles = [webContentProfileList sortedArrayUsingDescriptors:sortDescriptor];		
 	NSArray *localProfiles = [localContentProfileList sortedArrayUsingDescriptors:sortDescriptor];
