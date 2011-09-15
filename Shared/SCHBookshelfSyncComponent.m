@@ -139,7 +139,10 @@ NSString * const SCHBookshelfSyncComponentDidFailNotification = @"SCHBookshelfSy
 	BOOL ret = YES;
 	
 	NSArray *results = [self localUserContentItems];
-	
+
+    // only update books we don't already have
+    results = [results filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"ContentMetadataItem.@count < 1"]];
+
 	requestCount = 0;
 	if([results count] > 0) {
 		if (self.useIndividualRequests == YES) {
@@ -197,7 +200,7 @@ NSString * const SCHBookshelfSyncComponentDidFailNotification = @"SCHBookshelfSy
                                       nil]];
 	
 	NSArray *ret = [self.managedObjectContext executeFetchRequest:fetchRequest error:nil];	
-	
+               
 	[fetchRequest release], fetchRequest = nil;
 	
 	return(ret);
