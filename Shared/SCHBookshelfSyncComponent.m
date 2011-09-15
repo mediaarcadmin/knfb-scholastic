@@ -166,6 +166,13 @@ NSString * const SCHBookshelfSyncComponentDidFailNotification = @"SCHBookshelfSy
 			}
 		}
 	} else {
+        [[NSNotificationCenter defaultCenter] postNotificationName:SCHBookshelfSyncComponentDidCompleteNotification 
+                                                            object:self];
+        
+        if([(id)self.delegate respondsToSelector:@selector(component:didCompleteWithResult:)]) {
+            [(id)self.delegate component:self didCompleteWithResult:nil];		
+        }	
+        
 		ret = NO;
 	}
 	
