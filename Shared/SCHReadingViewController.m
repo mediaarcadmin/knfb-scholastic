@@ -23,11 +23,9 @@
 #import "SCHLastPage.h"
 #import "SCHBookAnnotations.h"
 #import "SCHAudioBookPlayer.h"
-#import "SCHReadingNoteView.h"
 #import "SCHNote.h"
 #import "SCHDictionaryViewController.h"
 #import "SCHDictionaryAccessManager.h"
-#import "KNFBXPSConstants.h"
 #import "SCHNotesCountView.h"
 #import "SCHBookStoryInteractions.h"
 #import "SCHStoryInteractionController.h"
@@ -41,6 +39,8 @@
 #import "LambdaAlert.h"
 #import "SCHAppContentProfileItem.h"
 #import "SCHUserDefaults.h"
+#import "SCHContentProfileItem.h"
+#import "SCHUserContentItem.h"
 
 // constants
 NSString *const kSCHReadingViewErrorDomain  = @"com.knfb.scholastic.ReadingViewErrorDomain";
@@ -1923,8 +1923,11 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     
     if (annotations != nil) {
         SCHHighlight *newHighlight = [annotations createHighlightBetweenStartPage:startPage startWord:startWord endPage:endPage endWord:endWord color:[self highlightColor]];
-        SCHAppBook *book = [[SCHBookManager sharedBookManager] bookWithIdentifier:self.bookIdentifier inManagedObjectContext:self.managedObjectContext];
-        newHighlight.Version = [NSNumber numberWithInteger:[book.OnDiskVersion integerValue]];
+
+        SCHAppContentProfileItem *appContentProfileItem = [profile appContentProfileItemForBookIdentifier:self.bookIdentifier];
+        if (appContentProfileItem != nil) {
+            newHighlight.Version = [NSNumber numberWithInteger:[appContentProfileItem.ContentProfileItem.UserContentItem.Version integerValue]];
+        }
     }
 }
 
@@ -2485,11 +2488,13 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 - (void)readingNotesViewCreatingNewNote:(SCHReadingNotesListController *)readingNotesView
 {
     NSLog(@"Requesting a new note be created!");
-    SCHAppBook *book = [[SCHBookManager sharedBookManager] bookWithIdentifier:self.bookIdentifier inManagedObjectContext:self.managedObjectContext];
     SCHBookAnnotations *annos = [self.profile annotationsForBook:self.bookIdentifier];
     SCHNote *newNote = [annos createEmptyNote];
     
-    newNote.Version = [NSNumber numberWithInteger:[book.OnDiskVersion integerValue]];
+    SCHAppContentProfileItem *appContentProfileItem = [profile appContentProfileItemForBookIdentifier:self.bookIdentifier];
+    if (appContentProfileItem != nil) {
+        newNote.Version = [NSNumber numberWithInteger:[appContentProfileItem.ContentProfileItem.UserContentItem.Version integerValue]];
+    }
     
     SCHBookPoint *currentPoint = [self.readingView currentBookPoint];
     
