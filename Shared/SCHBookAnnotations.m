@@ -98,6 +98,11 @@
     return(self.sortedBookmarks);
 }
 
+- (NSUInteger)bookmarksCount
+{
+    return([self.privateAnnotations.Bookmarks count]);
+}
+
 - (void)deleteBookmark:(SCHBookmark *)bookmark
 {
     if ([[SCHAppStateManager sharedAppStateManager] canSync] == NO) {
@@ -175,6 +180,11 @@
     }
     
     return(self.sortedNotes);
+}
+
+- (NSUInteger)notesCount
+{
+    return([self.privateAnnotations.Notes count]);
 }
 
 - (void)deleteNote:(SCHNote *)note

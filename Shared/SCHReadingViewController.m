@@ -2479,7 +2479,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 
 - (void)updateNotesCounter
 {
-    NSInteger noteCount = [[[self.profile annotationsForBook:self.bookIdentifier] notes] count];
+    NSUInteger noteCount = [[self.profile annotationsForBook:self.bookIdentifier] notesCount];
     self.notesCountView.noteCount = noteCount;
 }
 

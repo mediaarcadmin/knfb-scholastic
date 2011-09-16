@@ -23,10 +23,12 @@
 - (void)refreshData;
 
 - (NSArray *)bookmarks;
+- (NSUInteger)bookmarksCount;
 - (void)deleteBookmark:(SCHBookmark *)bookmark;
 - (NSArray *)highlightsForPage:(NSUInteger)page;
 - (void)deleteHighlight:(SCHHighlight *)highlight;
 - (NSArray *)notes;
+- (NSUInteger)notesCount;
 - (void)deleteNote:(SCHNote *)note;
 - (SCHLastPage *)lastPage;
 
