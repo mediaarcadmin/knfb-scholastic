@@ -38,6 +38,7 @@ NSString * const SCHAnnotationSyncComponentCompletedProfileIDs = @"SCHAnnotation
 - (NSArray *)localModifiedAnnotationsItemForProfile:(NSNumber *)profileID;
 - (NSArray *)localAnnotationsItemForProfile:(NSNumber *)profileID;
 - (void)syncProfileContentAnnotations:(NSDictionary *)profileContentAnnotationList;
+- (void)syncProfileContentAnnotationsCompleted:(NSNumber *)profileID;
 - (void)syncAnnotationsContentList:(NSArray *)webAnnotationsContentList 
          withAnnotationContentList:(NSArray *)localAnnotationsContentList
                         insertInto:(SCHAnnotationsItem *)annotationsItem;
@@ -78,9 +79,11 @@ NSString * const SCHAnnotationSyncComponentCompletedProfileIDs = @"SCHAnnotation
 - (void)syncLastPage:(NSDictionary *)webLastPage 
         withLastPage:(SCHLastPage *)localLastPage;
 - (SCHLastPage *)lastPage:(NSDictionary *)lastPage;
+- (void)threadSafeSave:(BOOL)batch;
 
 @property (retain, nonatomic) NSMutableDictionary *annotations;
 @property (retain, nonatomic) NSMutableArray *createdAnnotations;
+@property (nonatomic, retain) NSManagedObjectContext *threadSafeManagedObjectContext;
 
 @end
 
@@ -88,6 +91,7 @@ NSString * const SCHAnnotationSyncComponentCompletedProfileIDs = @"SCHAnnotation
 
 @synthesize annotations;
 @synthesize createdAnnotations;
+@synthesize threadSafeManagedObjectContext;
 
 - (id)init
 {
@@ -199,17 +203,18 @@ NSString * const SCHAnnotationSyncComponentCompletedProfileIDs = @"SCHAnnotation
             [[SCHAuthenticationManager sharedAuthenticationManager] authenticate];				
         }        
     } else if([method compare:kSCHLibreAccessWebServiceListProfileContentAnnotations] == NSOrderedSame) {	    
-        [self syncProfileContentAnnotations:[result objectForKey:kSCHLibreAccessWebServiceListProfileContentAnnotations]];	
-        
-        if ([self.annotations count] < 1) {
-            [self setSyncDate:[NSDate date]];
-        }
-        [[NSNotificationCenter defaultCenter] postNotificationName:SCHAnnotationSyncComponentDidCompleteNotification 
-                                                            object:self 
-                                                          userInfo:[NSDictionary dictionaryWithObject:profileID 
-                                                                                               forKey:SCHAnnotationSyncComponentCompletedProfileIDs]];        
-        [self.annotations removeObjectForKey:profileID];
-        [super method:method didCompleteWithResult:nil];	
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+            self.threadSafeManagedObjectContext = [[[NSManagedObjectContext alloc] init] autorelease];
+            [self.threadSafeManagedObjectContext setPersistentStoreCoordinator:self.managedObjectContext.persistentStoreCoordinator];
+            
+            [self syncProfileContentAnnotations:[result objectForKey:kSCHLibreAccessWebServiceListProfileContentAnnotations]];	            
+            
+            self.threadSafeManagedObjectContext = nil;
+            
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [self syncProfileContentAnnotationsCompleted:profileID];
+            });                
+        });
     }
 }
 
@@ -313,7 +318,7 @@ NSString * const SCHAnnotationSyncComponentCompletedProfileIDs = @"SCHAnnotation
 {
     NSEntityDescription *entityDescription = [NSEntityDescription 
                                               entityForName:kSCHAnnotationsItem
-                                              inManagedObjectContext:self.managedObjectContext];
+                                              inManagedObjectContext:self.threadSafeManagedObjectContext];
     
     NSFetchRequest *fetchRequest = [entityDescription.managedObjectModel 
                                     fetchRequestFromTemplateWithName:kSCHAnnotationsItemfetchAnnotationItemForProfile 
@@ -321,7 +326,7 @@ NSString * const SCHAnnotationSyncComponentCompletedProfileIDs = @"SCHAnnotation
                                                            dictionaryWithObject:profileID 
                                                            forKey:kSCHAnnotationsItemPROFILE_ID]];
 	
-	return([self.managedObjectContext executeFetchRequest:fetchRequest error:nil]);
+	return([self.threadSafeManagedObjectContext executeFetchRequest:fetchRequest error:nil]);
 }
 
 - (void)syncProfileContentAnnotations:(NSDictionary *)profileContentAnnotationList
@@ -348,7 +353,7 @@ NSString * const SCHAnnotationSyncComponentCompletedProfileIDs = @"SCHAnnotation
             }
         } else {
             SCHAnnotationsItem *newAnnotationsItem = [NSEntityDescription insertNewObjectForEntityForName:kSCHAnnotationsItem 
-                                                                                   inManagedObjectContext:self.managedObjectContext];
+                                                                                   inManagedObjectContext:self.threadSafeManagedObjectContext];
             newAnnotationsItem.ProfileID = profileID;
             for (NSDictionary *annotationsContentItem in [annotationsItem objectForKey:kSCHLibreAccessWebServiceAnnotationsContentList]) {
                 [newAnnotationsItem addAnnotationsContentItemObject:[self annotationsContentItem:annotationsContentItem]];
@@ -356,7 +361,22 @@ NSString * const SCHAnnotationSyncComponentCompletedProfileIDs = @"SCHAnnotation
         }
     }
     
-	[self save];
+	[self threadSafeSave:NO];
+}
+
+- (void)syncProfileContentAnnotationsCompleted:(NSNumber *)profileID
+{
+    [[NSNotificationCenter defaultCenter] postNotificationName:SCHAnnotationSyncComponentDidCompleteNotification 
+                                                        object:self 
+                                                      userInfo:[NSDictionary dictionaryWithObject:profileID 
+                                                                                           forKey:SCHAnnotationSyncComponentCompletedProfileIDs]];        
+    [self.annotations removeObjectForKey:profileID];
+    if ([self.annotations count] < 1) {
+        [self setSyncDate:[NSDate date]];
+    }
+    if([(id)self.delegate respondsToSelector:@selector(component:didCompleteWithResult:)]) {
+        [(id)self.delegate component:self didCompleteWithResult:nil];		
+    }	
 }
 
 - (void)syncAnnotationsContentList:(NSArray *)webAnnotationsContentList 
@@ -393,6 +413,7 @@ NSString * const SCHAnnotationSyncComponentCompletedProfileIDs = @"SCHAnnotation
 		switch ([webItemID compare:localItemID]) {
 			case NSOrderedSame:
 				[self syncAnnotationsContentItem:webItem withAnnotationsContentItem:localItem];
+                [self threadSafeSave:YES];
 				webItem = nil;
 				localItem = nil;
 				break;
@@ -415,9 +436,10 @@ NSString * const SCHAnnotationSyncComponentCompletedProfileIDs = @"SCHAnnotation
     
 	for (NSDictionary *webItem in creationPool) {
         [annotationsItem addAnnotationsContentItemObject:[self annotationsContentItem:webItem]];
-	}
-	
-	[self save];
+        [self threadSafeSave:YES];
+    }
+    
+    [self threadSafeSave:NO];
 }
 
 - (void)syncAnnotationsContentItem:(NSDictionary *)webAnnotationsContentItem withAnnotationsContentItem:(SCHAnnotationsContentItem *)localAnnotationsContentItem
@@ -460,7 +482,7 @@ NSString * const SCHAnnotationSyncComponentCompletedProfileIDs = @"SCHAnnotation
 	
 	if (annotationsContentItem != nil) {
 		ret = [NSEntityDescription insertNewObjectForEntityForName:kSCHAnnotationsContentItem 
-                                            inManagedObjectContext:self.managedObjectContext];
+                                            inManagedObjectContext:self.threadSafeManagedObjectContext];
 		
 		ret.DRMQualifier = [self makeNullNil:[annotationsContentItem objectForKey:kSCHLibreAccessWebServiceDRMQualifier]];
 		ret.ContentIdentifierType = [self makeNullNil:[annotationsContentItem objectForKey:kSCHLibreAccessWebServiceContentIdentifierType]];
@@ -479,7 +501,7 @@ NSString * const SCHAnnotationSyncComponentCompletedProfileIDs = @"SCHAnnotation
 	
 	if (privateAnnotation != nil) {
 		ret = [NSEntityDescription insertNewObjectForEntityForName:kSCHPrivateAnnotations 
-                                            inManagedObjectContext:self.managedObjectContext];
+                                            inManagedObjectContext:self.threadSafeManagedObjectContext];
 		
 		for (NSDictionary *highlight in [privateAnnotation objectForKey:kSCHLibreAccessWebServiceHighlights]) { 
 			[ret addHighlightsObject:[self highlight:highlight]];
@@ -535,6 +557,7 @@ NSString * const SCHAnnotationSyncComponentCompletedProfileIDs = @"SCHAnnotation
 		switch ([webItemID compare:localItemID]) {
 			case NSOrderedSame:
 				[self syncHighlight:webItem withHighlight:localItem];
+                [self threadSafeSave:YES];
 				webItem = nil;
 				localItem = nil;
 				break;
@@ -557,14 +580,16 @@ NSString * const SCHAnnotationSyncComponentCompletedProfileIDs = @"SCHAnnotation
 	}
     
     for (SCHHighlight *localItem in deletePool) {
-		[self.managedObjectContext deleteObject:localItem];
+		[self.threadSafeManagedObjectContext deleteObject:localItem];
+        [self threadSafeSave:YES];
 	}
 
 	for (NSDictionary *webItem in creationPool) {
         [privateAnnotations addHighlightsObject:[self highlight:webItem]];
+        [self threadSafeSave:YES];
 	}
 	
-	[self save];        
+	[self threadSafeSave:NO];        
 }
 
 - (void)syncHighlight:(NSDictionary *)webHighlight
@@ -589,7 +614,7 @@ NSString * const SCHAnnotationSyncComponentCompletedProfileIDs = @"SCHAnnotation
 	
 	if (highlight != nil) {
 		ret = [NSEntityDescription insertNewObjectForEntityForName:kSCHHighlight 
-                                            inManagedObjectContext:self.managedObjectContext];
+                                            inManagedObjectContext:self.threadSafeManagedObjectContext];
 		
 		ret.LastModified = [self makeNullNil:[highlight objectForKey:kSCHLibreAccessWebServiceLastModified]];
         ret.State = [NSNumber numberWithStatus:kSCHStatusUnmodified];
@@ -620,7 +645,7 @@ NSString * const SCHAnnotationSyncComponentCompletedProfileIDs = @"SCHAnnotation
 	
 	if (locationText != nil) {
 		ret = [NSEntityDescription insertNewObjectForEntityForName:kSCHLocationText
-                                            inManagedObjectContext:self.managedObjectContext];
+                                            inManagedObjectContext:self.threadSafeManagedObjectContext];
 		
 		ret.Page = [self makeNullNil:[locationText objectForKey:kSCHLibreAccessWebServicePage]];
 		ret.WordIndex = [self wordIndex:[locationText objectForKey:kSCHLibreAccessWebServiceWordIndex]];        
@@ -642,7 +667,7 @@ NSString * const SCHAnnotationSyncComponentCompletedProfileIDs = @"SCHAnnotation
 	
 	if (wordIndex != nil) {
 		ret = [NSEntityDescription insertNewObjectForEntityForName:kSCHWordIndex
-                                            inManagedObjectContext:self.managedObjectContext];
+                                            inManagedObjectContext:self.threadSafeManagedObjectContext];
 		
 		ret.Start = [self makeNullNil:[wordIndex objectForKey:kSCHLibreAccessWebServiceStart]];
 		ret.End = [self makeNullNil:[wordIndex objectForKey:kSCHLibreAccessWebServiceEnd]];
@@ -690,6 +715,7 @@ NSString * const SCHAnnotationSyncComponentCompletedProfileIDs = @"SCHAnnotation
 		switch ([webItemID compare:localItemID]) {
 			case NSOrderedSame:
 				[self syncNote:webItem withNote:localItem];
+                [self threadSafeSave:YES];
 				webItem = nil;
 				localItem = nil;
 				break;
@@ -712,14 +738,16 @@ NSString * const SCHAnnotationSyncComponentCompletedProfileIDs = @"SCHAnnotation
 	}
 
     for (SCHNote *localItem in deletePool) {
-		[self.managedObjectContext deleteObject:localItem];
+		[self.threadSafeManagedObjectContext deleteObject:localItem];
+        [self threadSafeSave:YES];
 	}
 
 	for (NSDictionary *webItem in creationPool) {
         [privateAnnotations addNotesObject:[self note:webItem]];
+        [self threadSafeSave:YES];
 	}
 	
-	[self save];        
+	[self threadSafeSave:NO];        
 }
 
 - (void)syncNote:(NSDictionary *)webNote
@@ -744,7 +772,7 @@ NSString * const SCHAnnotationSyncComponentCompletedProfileIDs = @"SCHAnnotation
 	
 	if (note != nil) {
 		ret = [NSEntityDescription insertNewObjectForEntityForName:kSCHNote 
-                                            inManagedObjectContext:self.managedObjectContext];
+                                            inManagedObjectContext:self.threadSafeManagedObjectContext];
 		
 		ret.LastModified = [self makeNullNil:[note objectForKey:kSCHLibreAccessWebServiceLastModified]];
         ret.State = [NSNumber numberWithStatus:kSCHStatusUnmodified];
@@ -772,7 +800,7 @@ NSString * const SCHAnnotationSyncComponentCompletedProfileIDs = @"SCHAnnotation
 	
 	if (locationGraphics != nil) {
 		ret = [NSEntityDescription insertNewObjectForEntityForName:kSCHLocationGraphics 
-                                            inManagedObjectContext:self.managedObjectContext];
+                                            inManagedObjectContext:self.threadSafeManagedObjectContext];
 		
 		ret.Page = [self makeNullNil:[locationGraphics objectForKey:kSCHLibreAccessWebServicePage]];
 	}
@@ -819,6 +847,7 @@ NSString * const SCHAnnotationSyncComponentCompletedProfileIDs = @"SCHAnnotation
 		switch ([webItemID compare:localItemID]) {
 			case NSOrderedSame:
 				[self syncBookmark:webItem withBookmark:localItem];
+                [self threadSafeSave:YES];
 				webItem = nil;
 				localItem = nil;
 				break;
@@ -841,14 +870,16 @@ NSString * const SCHAnnotationSyncComponentCompletedProfileIDs = @"SCHAnnotation
 	}
     
     for (SCHBookmark *localItem in deletePool) {
-		[self.managedObjectContext deleteObject:localItem];
+		[self.threadSafeManagedObjectContext deleteObject:localItem];
+        [self threadSafeSave:YES];
 	}
 
 	for (NSDictionary *webItem in creationPool) {
         [privateAnnotations addBookmarksObject:[self bookmark:webItem]];
+        [self threadSafeSave:YES];
 	}
 	
-	[self save];    
+	[self threadSafeSave:NO];    
 }
 
 - (void)syncBookmark:(NSDictionary *)webBookmark 
@@ -873,7 +904,7 @@ NSString * const SCHAnnotationSyncComponentCompletedProfileIDs = @"SCHAnnotation
 	
 	if (bookmark != nil) {
 		ret = [NSEntityDescription insertNewObjectForEntityForName:kSCHBookmark 
-                                            inManagedObjectContext:self.managedObjectContext];
+                                            inManagedObjectContext:self.threadSafeManagedObjectContext];
 		
 		ret.LastModified = [self makeNullNil:[bookmark objectForKey:kSCHLibreAccessWebServiceLastModified]];
         ret.State = [NSNumber numberWithStatus:kSCHStatusUnmodified];
@@ -901,7 +932,7 @@ NSString * const SCHAnnotationSyncComponentCompletedProfileIDs = @"SCHAnnotation
 	
 	if (locationBookmark != nil) {
 		ret = [NSEntityDescription insertNewObjectForEntityForName:kSCHLocationBookmark 
-                                            inManagedObjectContext:self.managedObjectContext];
+                                            inManagedObjectContext:self.threadSafeManagedObjectContext];
 		
 		ret.Page = [self makeNullNil:[locationBookmark objectForKey:kSCHLibreAccessWebServicePage]];
 	}
@@ -925,7 +956,7 @@ NSString * const SCHAnnotationSyncComponentCompletedProfileIDs = @"SCHAnnotation
 	
 	if (lastPage != nil) {
 		ret = [NSEntityDescription insertNewObjectForEntityForName:kSCHLastPage 
-                                            inManagedObjectContext:self.managedObjectContext];
+                                            inManagedObjectContext:self.threadSafeManagedObjectContext];
 		
 		ret.LastModified = [self makeNullNil:[lastPage objectForKey:kSCHLibreAccessWebServiceLastModified]];
 		ret.State = [NSNumber numberWithStatus:kSCHStatusUnmodified];
@@ -936,6 +967,20 @@ NSString * const SCHAnnotationSyncComponentCompletedProfileIDs = @"SCHAnnotation
 	}
 	
 	return(ret);
+}
+
+- (void)threadSafeSave:(BOOL)batch
+{
+	NSError *error = nil;
+	static NSUInteger batchCount = 0;
+    
+    if (batch == NO || ++batchCount > 250) {
+        batchCount = 0;
+        if (![self.threadSafeManagedObjectContext save:&error]) {
+            NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
+            abort();
+        } 
+    }
 }
 
 @end

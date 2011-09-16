@@ -121,6 +121,7 @@ static NSString * const kSCHCoreDataHelperSampleStoreName = @"Scholastic_Sample.
     if (coordinator != nil) {
         managedObjectContext = [[NSManagedObjectContext alloc] init];
         [managedObjectContext setPersistentStoreCoordinator:coordinator];
+        [managedObjectContext setMergePolicy:NSMergeByPropertyObjectTrumpMergePolicy];
 		[[NSNotificationCenter defaultCenter] addObserver:self 
                                                  selector:@selector(mergeChangesFromContextDidSaveNotification:) 
                                                      name:NSManagedObjectContextDidSaveNotification 
