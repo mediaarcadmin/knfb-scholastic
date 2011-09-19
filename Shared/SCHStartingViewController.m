@@ -356,7 +356,6 @@ typedef enum {
                                   initWithTitle:NSLocalizedString(@"Login Error", @"Login Error") 
                                   message:localizedMessage];
             [alert addButtonWithTitle:NSLocalizedString(@"Cancel", @"Cancel") block:^{
-                [self dismissModalViewControllerAnimated:YES];
             }];
             [alert addButtonWithTitle:NSLocalizedString(@"Retry", @"Retry") block:^{
                 [[self.modalNavigationController topViewController] performSelector:@selector(actionButtonAction:) withObject:nil afterDelay:0.0];
