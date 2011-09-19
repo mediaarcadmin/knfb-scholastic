@@ -20,6 +20,7 @@
 #import "SCHAppStateManager.h"
 #import "SCHCoreDataHelper.h"
 #import "SCHPopulateDataStore.h"
+#import "SCHAppContentProfileItem.h"
 
 // Constants
 NSString * const SCHSyncManagerDidCompleteNotification = @"SCHSyncManagerDidCompleteNotification";
@@ -33,7 +34,8 @@ static NSTimeInterval const kSCHLastFirstSyncInterval = -300.0;
 @property (nonatomic, assign) BOOL syncAfterDelay;
 
 - (NSMutableArray *)bookAnnotationsFromProfile:(SCHProfileItem *)profileItem;
-- (NSMutableDictionary *)annotationContentItemFromUserContentItem:(SCHUserContentItem *)userContentItem;
+- (NSMutableDictionary *)annotationContentItemFromUserContentItem:(SCHUserContentItem *)userContentItem
+                                                       forProfile:(NSNumber *)profileID;
 - (void)addToQueue:(SCHSyncComponent *)component;
 - (void)kickQueue;
 - (BOOL)shouldSync;
@@ -337,16 +339,18 @@ static NSTimeInterval const kSCHLastFirstSyncInterval = -300.0;
 	NSMutableArray *ret = [NSMutableArray array];
 	
 	for (SCHContentProfileItem *contentProfileItem in profileItem.ContentProfileItem) {
-		[ret addObject:[self annotationContentItemFromUserContentItem:contentProfileItem.UserContentItem]];
+		[ret addObject:[self annotationContentItemFromUserContentItem:contentProfileItem.UserContentItem forProfile:profileItem.ID]];
 	}
 	
 	return(ret);
 }
 
-- (NSMutableDictionary *)annotationContentItemFromUserContentItem:(SCHUserContentItem *)userContentItem
+- (NSMutableDictionary *)annotationContentItemFromUserContentItem:(SCHUserContentItem *)userContentItem                                                        
+                                                       forProfile:(NSNumber *)profileID;
 {	
 	NSMutableDictionary *ret = [NSMutableDictionary dictionary];
-	
+	NSDate *date = nil;
+    
 	[ret setObject:[userContentItem valueForKey:kSCHLibreAccessWebServiceContentIdentifier] 
             forKey:kSCHLibreAccessWebServiceContentIdentifier];
 	[ret setObject:[userContentItem valueForKey:kSCHLibreAccessWebServiceContentIdentifierType] 
@@ -355,13 +359,27 @@ static NSTimeInterval const kSCHLastFirstSyncInterval = -300.0;
             forKey:kSCHLibreAccessWebServiceDRMQualifier];
 	[ret setObject:[userContentItem valueForKey:kSCHLibreAccessWebServiceFormat] 
             forKey:kSCHLibreAccessWebServiceFormat];
-	
-	NSMutableDictionary *privateAnnotation = [NSMutableDictionary dictionary];
-	NSDate *date = [self.annotationSyncComponent lastSyncDate];
-	
+	    
+    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+    NSEntityDescription *entity = [NSEntityDescription entityForName:kSCHProfileItem
+                                              inManagedObjectContext:self.managedObjectContext];
+    [fetchRequest setEntity:entity];
+    [fetchRequest setPredicate:[NSPredicate predicateWithFormat:@"ID == %@", profileID]];
+    
+    NSArray *profiles = [self.managedObjectContext executeFetchRequest:fetchRequest error:nil];
+    if ([profiles count] > 0) {
+        SCHProfileItem *profileItem = [profiles objectAtIndex:0];
+        SCHAppContentProfileItem *appContentProfileItem = [profileItem appContentProfileItemForBookIdentifier:
+                                                           [userContentItem valueForKey:kSCHLibreAccessWebServiceContentIdentifier]];
+        date = appContentProfileItem.LastAnnotationSync;
+    }
+    [fetchRequest release];
+    
     if (date == nil) {
         date = [NSDate distantPast];
     }
+    
+	NSMutableDictionary *privateAnnotation = [NSMutableDictionary dictionary];	
 
 	[privateAnnotation setObject:[userContentItem valueForKey:kSCHLibreAccessWebServiceVersion] 
                           forKey:kSCHLibreAccessWebServiceVersion];
@@ -386,7 +404,7 @@ static NSTimeInterval const kSCHLastFirstSyncInterval = -300.0;
         
         if (userContentItem != nil && profileID != nil) {
             [self.annotationSyncComponent addProfile:profileID 
-                                           withBooks:[NSMutableArray arrayWithObject:[self annotationContentItemFromUserContentItem:userContentItem]]];	
+                                           withBooks:[NSMutableArray arrayWithObject:[self annotationContentItemFromUserContentItem:userContentItem forProfile:profileID]]];	
             [self addToQueue:self.annotationSyncComponent];
             
             [self kickQueue];
@@ -408,7 +426,7 @@ static NSTimeInterval const kSCHLastFirstSyncInterval = -300.0;
         
         if (userContentItem != nil && profileID != nil) {
             [self.annotationSyncComponent addProfile:profileID 
-                                           withBooks:[NSMutableArray arrayWithObject:[self annotationContentItemFromUserContentItem:userContentItem]]];	
+                                           withBooks:[NSMutableArray arrayWithObject:[self annotationContentItemFromUserContentItem:userContentItem forProfile:profileID]]];	
             [self addToQueue:self.annotationSyncComponent];
             [self addToQueue:self.readingStatsSyncComponent];
             

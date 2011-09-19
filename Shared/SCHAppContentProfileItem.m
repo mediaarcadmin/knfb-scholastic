@@ -24,6 +24,7 @@ NSString * const kSCHAppContentProfileItemOrder = @"Order";
 @dynamic ISBN;
 @dynamic IsTrashed;
 @dynamic Order;
+@dynamic LastAnnotationSync;
 @dynamic ProfileItem;
 @dynamic ContentProfileItem;
 

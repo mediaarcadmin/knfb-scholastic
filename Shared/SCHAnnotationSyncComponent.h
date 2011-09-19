@@ -19,7 +19,6 @@ extern NSString * const SCHAnnotationSyncComponentCompletedProfileIDs;
 {
 }
 
-- (NSDate *)lastSyncDate;
 - (void)addProfile:(NSNumber *)profileID withBooks:(NSArray *)books;
 - (BOOL)haveProfiles;
 

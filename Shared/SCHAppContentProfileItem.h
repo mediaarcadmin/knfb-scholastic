@@ -27,6 +27,7 @@ extern NSString * const kSCHAppContentProfileItemOrder;
 @property (nonatomic, retain) NSString * ISBN;
 @property (nonatomic, retain) NSNumber * IsTrashed;
 @property (nonatomic, retain) NSNumber * Order;
+@property (nonatomic, retain) NSDate * LastAnnotationSync;
 @property (nonatomic, retain) SCHProfileItem * ProfileItem;
 @property (nonatomic, retain) SCHContentProfileItem * ContentProfileItem;
 

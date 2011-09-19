@@ -43,10 +43,7 @@ NSString * const SCHReadingStatsSyncComponentDidFailNotification = @"SCHReadingS
                 ret = NO;			
             }		            
         } else {
-            if([(id)self.delegate respondsToSelector:@selector(component:didCompleteWithResult:)]) {
-                [(id)self.delegate component:self didCompleteWithResult:nil];		
-            }	
-            
+            [super method:nil didCompleteWithResult:nil];		
         }
 	}
     [fetchRequest release], fetchRequest = nil;

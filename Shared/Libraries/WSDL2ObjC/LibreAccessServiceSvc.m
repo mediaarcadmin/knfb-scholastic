@@ -50544,61 +50544,64 @@ parameters:(LibreAccessServiceSvc_ListProfileContentAnnotationsRequest *)aParame
 {
 	if (responseData != nil && delegate != nil)
 	{
-		xmlDocPtr doc;
-		xmlNodePtr cur;
-		
-		if (binding.logXMLInOut) {
-			NSLog(@"ResponseBody:\n%@", [[[NSString alloc] initWithData:responseData encoding:NSUTF8StringEncoding] autorelease]);
-		}
-		
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+            xmlDocPtr doc;
+            xmlNodePtr cur;
+            
+            if (binding.logXMLInOut) {
+                NSLog(@"ResponseBody:\n%@", [[[NSString alloc] initWithData:responseData encoding:NSUTF8StringEncoding] autorelease]);
+            }
+            
 #if !TARGET_OS_IPHONE && (!defined(MAC_OS_X_VERSION_10_6) || MAC_OS_X_VERSION_MIN_REQUIRED < MAC_OS_X_VERSION_10_6)
-	// Not yet defined in 10.5 libxml
-	#define XML_PARSE_COMPACT 0
+            // Not yet defined in 10.5 libxml
+#define XML_PARSE_COMPACT 0
 #endif
-	doc = xmlReadMemory([responseData bytes], [responseData length], NULL, NULL, XML_PARSE_COMPACT | XML_PARSE_NOBLANKS);
-		
-		if (doc == NULL) {
-			NSDictionary *userInfo = [NSDictionary dictionaryWithObject:@"Errors while parsing returned XML" forKey:NSLocalizedDescriptionKey];
-			
-			response.error = [NSError errorWithDomain:@"LibreAccessServiceSoap11BindingResponseXML" code:1 userInfo:userInfo];
-			[delegate operation:self completedWithResponse:response];
-		} else {
-			cur = xmlDocGetRootElement(doc);
-			cur = cur->children;
-			
-			for( ; cur != NULL ; cur = cur->next) {
-				if(cur->type == XML_ELEMENT_NODE) {
-					
-					if(xmlStrEqual(cur->name, (const xmlChar *) "Body")) {
-						NSMutableArray *responseBodyParts = [NSMutableArray array];
-						
-						xmlNodePtr bodyNode;
-						for(bodyNode=cur->children ; bodyNode != NULL ; bodyNode = bodyNode->next) {
-							if(cur->type == XML_ELEMENT_NODE) {
-								if(xmlStrEqual(bodyNode->name, (const xmlChar *) "ListProfileContentAnnotationsResponse")) {
-									LibreAccessServiceSvc_ListProfileContentAnnotationsResponse *bodyObject = [LibreAccessServiceSvc_ListProfileContentAnnotationsResponse deserializeNode:bodyNode];
-									//NSAssert1(bodyObject != nil, @"Errors while parsing body %s", bodyNode->name);
-									if (bodyObject != nil) [responseBodyParts addObject:bodyObject];
-								}
-								if ((bodyNode->ns != nil && xmlStrEqual(bodyNode->ns->prefix, cur->ns->prefix)) && 
-									xmlStrEqual(bodyNode->name, (const xmlChar *) "Fault")) {
-									SOAPFault *bodyObject = [SOAPFault deserializeNode:bodyNode];
-									//NSAssert1(bodyObject != nil, @"Errors while parsing body %s", bodyNode->name);
-									if (bodyObject != nil) [responseBodyParts addObject:bodyObject];
-								}
-							}
-						}
-						
-						response.bodyParts = responseBodyParts;
-					}
-				}
-			}
-			
-			xmlFreeDoc(doc);
-		}
-		
-		xmlCleanupParser();
-		[delegate operation:self completedWithResponse:response];
+            doc = xmlReadMemory([responseData bytes], [responseData length], NULL, NULL, XML_PARSE_COMPACT | XML_PARSE_NOBLANKS);
+            
+            if (doc == NULL) {
+                NSDictionary *userInfo = [NSDictionary dictionaryWithObject:@"Errors while parsing returned XML" forKey:NSLocalizedDescriptionKey];
+                
+                response.error = [NSError errorWithDomain:@"LibreAccessServiceSoap11BindingResponseXML" code:1 userInfo:userInfo];
+            } else {
+                cur = xmlDocGetRootElement(doc);
+                cur = cur->children;
+                
+                for( ; cur != NULL ; cur = cur->next) {
+                    if(cur->type == XML_ELEMENT_NODE) {
+                        
+                        if(xmlStrEqual(cur->name, (const xmlChar *) "Body")) {
+                            NSMutableArray *responseBodyParts = [NSMutableArray array];
+                            
+                            xmlNodePtr bodyNode;
+                            for(bodyNode=cur->children ; bodyNode != NULL ; bodyNode = bodyNode->next) {
+                                if(cur->type == XML_ELEMENT_NODE) {
+                                    if(xmlStrEqual(bodyNode->name, (const xmlChar *) "ListProfileContentAnnotationsResponse")) {
+                                        LibreAccessServiceSvc_ListProfileContentAnnotationsResponse *bodyObject = [LibreAccessServiceSvc_ListProfileContentAnnotationsResponse deserializeNode:bodyNode];
+                                        //NSAssert1(bodyObject != nil, @"Errors while parsing body %s", bodyNode->name);
+                                        if (bodyObject != nil) [responseBodyParts addObject:bodyObject];
+                                    }
+                                    if ((bodyNode->ns != nil && xmlStrEqual(bodyNode->ns->prefix, cur->ns->prefix)) && 
+                                        xmlStrEqual(bodyNode->name, (const xmlChar *) "Fault")) {
+                                        SOAPFault *bodyObject = [SOAPFault deserializeNode:bodyNode];
+                                        //NSAssert1(bodyObject != nil, @"Errors while parsing body %s", bodyNode->name);
+                                        if (bodyObject != nil) [responseBodyParts addObject:bodyObject];
+                                    }
+                                }
+                            }
+                            
+                            response.bodyParts = responseBodyParts;
+                        }
+                    }
+                }
+                
+                xmlFreeDoc(doc);
+            }
+            
+            xmlCleanupParser();
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [delegate operation:self completedWithResponse:response];
+            });  
+        });
 	}
 }
 @end
@@ -50666,7 +50669,6 @@ body:(LibreAccessServiceSvc_ListUserContent *)aBody
 			NSDictionary *userInfo = [NSDictionary dictionaryWithObject:@"Errors while parsing returned XML" forKey:NSLocalizedDescriptionKey];
 			
 			response.error = [NSError errorWithDomain:@"LibreAccessServiceSoap11BindingResponseXML" code:1 userInfo:userInfo];
-			[delegate operation:self completedWithResponse:response];
 		} else {
 			cur = xmlDocGetRootElement(doc);
 			cur = cur->children;

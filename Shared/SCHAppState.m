@@ -15,7 +15,6 @@ NSString * const kSCHAppStatefetchAppState = @"fetchAppState";
 
 @implementation SCHAppState
 
-@dynamic LastAnnotationSync;
 @dynamic ShouldSync;
 @dynamic ShouldAuthenticate;
 @dynamic DataStoreType;
