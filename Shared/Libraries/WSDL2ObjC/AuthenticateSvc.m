@@ -656,8 +656,8 @@ parameters:(AuthenticateSvc_processRemote *)aParameters
 				xmlFreeDoc(doc);
 			}
 		
-			xmlCleanupParser();
 			dispatch_async(dispatch_get_main_queue(), ^{
+                xmlCleanupParser();
 				[delegate operation:self completedWithResponse:response];
 			});  
 		});

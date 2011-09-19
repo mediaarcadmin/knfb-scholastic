@@ -46196,8 +46196,8 @@ parameters:(LibreAccessServiceSvc_ValidateScreenNameRequest *)aParameters
 				xmlFreeDoc(doc);
 			}
 		
-			xmlCleanupParser();
 			dispatch_async(dispatch_get_main_queue(), ^{
+				xmlCleanupParser();
 				[delegate operation:self completedWithResponse:response];
 			});  
 		});
@@ -46304,8 +46304,8 @@ parameters:(LibreAccessServiceSvc_ValidateUserKeyRequest *)aParameters
 				xmlFreeDoc(doc);
 			}
 		
-			xmlCleanupParser();
 			dispatch_async(dispatch_get_main_queue(), ^{
+				xmlCleanupParser();
 				[delegate operation:self completedWithResponse:response];
 			});  
 		});
@@ -46412,8 +46412,8 @@ parameters:(LibreAccessServiceSvc_AcknowledgeLicenseRequest *)aParameters
 				xmlFreeDoc(doc);
 			}
 		
-			xmlCleanupParser();
 			dispatch_async(dispatch_get_main_queue(), ^{
+				xmlCleanupParser();
 				[delegate operation:self completedWithResponse:response];
 			});  
 		});
@@ -46520,8 +46520,8 @@ body:(LibreAccessServiceSvc_SharedTokenExchangeRequest *)aBody
 				xmlFreeDoc(doc);
 			}
 		
-			xmlCleanupParser();
 			dispatch_async(dispatch_get_main_queue(), ^{
+				xmlCleanupParser();
 				[delegate operation:self completedWithResponse:response];
 			});  
 		});
@@ -46628,8 +46628,8 @@ parameters:(LibreAccessServiceSvc_SaveUserCSRNotesRequest *)aParameters
 				xmlFreeDoc(doc);
 			}
 		
-			xmlCleanupParser();
 			dispatch_async(dispatch_get_main_queue(), ^{
+				xmlCleanupParser();
 				[delegate operation:self completedWithResponse:response];
 			});  
 		});
@@ -46727,8 +46727,8 @@ parameters:(LibreAccessServiceSvc_SaveUserCSRNotesRequest *)aParameters
 				xmlFreeDoc(doc);
 			}
 		
-			xmlCleanupParser();
 			dispatch_async(dispatch_get_main_queue(), ^{
+				xmlCleanupParser();
 				[delegate operation:self completedWithResponse:response];
 			});  
 		});
@@ -46835,8 +46835,8 @@ parameters:(LibreAccessServiceSvc_SaveNewDomainRequest *)aParameters
 				xmlFreeDoc(doc);
 			}
 		
-			xmlCleanupParser();
 			dispatch_async(dispatch_get_main_queue(), ^{
+				xmlCleanupParser();
 				[delegate operation:self completedWithResponse:response];
 			});  
 		});
@@ -46943,8 +46943,8 @@ parameters:(LibreAccessServiceSvc_ListDefaultBooksRequest *)aParameters
 				xmlFreeDoc(doc);
 			}
 		
-			xmlCleanupParser();
 			dispatch_async(dispatch_get_main_queue(), ^{
+				xmlCleanupParser();
 				[delegate operation:self completedWithResponse:response];
 			});  
 		});
@@ -47051,8 +47051,8 @@ parameters:(LibreAccessServiceSvc_ListReadingStatisticsDetailedRequest *)aParame
 				xmlFreeDoc(doc);
 			}
 		
-			xmlCleanupParser();
 			dispatch_async(dispatch_get_main_queue(), ^{
+				xmlCleanupParser();
 				[delegate operation:self completedWithResponse:response];
 			});  
 		});
@@ -47159,8 +47159,8 @@ parameters:(LibreAccessServiceSvc_DeviceCanJoinDomainRequest *)aParameters
 				xmlFreeDoc(doc);
 			}
 		
-			xmlCleanupParser();
 			dispatch_async(dispatch_get_main_queue(), ^{
+				xmlCleanupParser();
 				[delegate operation:self completedWithResponse:response];
 			});  
 		});
@@ -47267,8 +47267,8 @@ parameters:(LibreAccessServiceSvc_AssignBooksToAllUsersRequest *)aParameters
 				xmlFreeDoc(doc);
 			}
 		
-			xmlCleanupParser();
 			dispatch_async(dispatch_get_main_queue(), ^{
+				xmlCleanupParser();
 				[delegate operation:self completedWithResponse:response];
 			});  
 		});
@@ -47375,8 +47375,8 @@ parameters:(LibreAccessServiceSvc_GetLastPageLocationRequest *)aParameters
 				xmlFreeDoc(doc);
 			}
 		
-			xmlCleanupParser();
 			dispatch_async(dispatch_get_main_queue(), ^{
+				xmlCleanupParser();
 				[delegate operation:self completedWithResponse:response];
 			});  
 		});
@@ -47483,8 +47483,8 @@ parameters:(LibreAccessServiceSvc_SaveProfileContentAnnotationsRequest *)aParame
 				xmlFreeDoc(doc);
 			}
 		
-			xmlCleanupParser();
 			dispatch_async(dispatch_get_main_queue(), ^{
+				xmlCleanupParser();
 				[delegate operation:self completedWithResponse:response];
 			});  
 		});
@@ -47591,8 +47591,8 @@ parameters:(LibreAccessServiceSvc_RemoveDefaultBooksRequest *)aParameters
 				xmlFreeDoc(doc);
 			}
 		
-			xmlCleanupParser();
 			dispatch_async(dispatch_get_main_queue(), ^{
+				xmlCleanupParser();
 				[delegate operation:self completedWithResponse:response];
 			});  
 		});
@@ -47699,8 +47699,8 @@ parameters:(LibreAccessServiceSvc_GetLicensableStatusRequest *)aParameters
 				xmlFreeDoc(doc);
 			}
 		
-			xmlCleanupParser();
 			dispatch_async(dispatch_get_main_queue(), ^{
+				xmlCleanupParser();
 				[delegate operation:self completedWithResponse:response];
 			});  
 		});
@@ -47807,8 +47807,8 @@ parameters:(LibreAccessServiceSvc_SaveLastPageLocationRequest *)aParameters
 				xmlFreeDoc(doc);
 			}
 		
-			xmlCleanupParser();
 			dispatch_async(dispatch_get_main_queue(), ^{
+				xmlCleanupParser();
 				[delegate operation:self completedWithResponse:response];
 			});  
 		});
@@ -47915,8 +47915,8 @@ parameters:(LibreAccessServiceSvc_ListUserCSRNotesRequest *)aParameters
 				xmlFreeDoc(doc);
 			}
 		
-			xmlCleanupParser();
 			dispatch_async(dispatch_get_main_queue(), ^{
+				xmlCleanupParser();
 				[delegate operation:self completedWithResponse:response];
 			});  
 		});
@@ -48023,8 +48023,8 @@ body:(LibreAccessServiceSvc_RenewTokenRequest *)aBody
 				xmlFreeDoc(doc);
 			}
 		
-			xmlCleanupParser();
 			dispatch_async(dispatch_get_main_queue(), ^{
+				xmlCleanupParser();
 				[delegate operation:self completedWithResponse:response];
 			});  
 		});
@@ -48131,8 +48131,8 @@ parameters:(LibreAccessServiceSvc_SaveDeviceInfoRequest *)aParameters
 				xmlFreeDoc(doc);
 			}
 		
-			xmlCleanupParser();
 			dispatch_async(dispatch_get_main_queue(), ^{
+				xmlCleanupParser();
 				[delegate operation:self completedWithResponse:response];
 			});  
 		});
@@ -48239,8 +48239,8 @@ parameters:(LibreAccessServiceSvc_ListReadingStatisticsAggregateRequest *)aParam
 				xmlFreeDoc(doc);
 			}
 		
-			xmlCleanupParser();
 			dispatch_async(dispatch_get_main_queue(), ^{
+				xmlCleanupParser();
 				[delegate operation:self completedWithResponse:response];
 			});  
 		});
@@ -48347,8 +48347,8 @@ parameters:(LibreAccessServiceSvc_ListLastNWordsRequest *)aParameters
 				xmlFreeDoc(doc);
 			}
 		
-			xmlCleanupParser();
 			dispatch_async(dispatch_get_main_queue(), ^{
+				xmlCleanupParser();
 				[delegate operation:self completedWithResponse:response];
 			});  
 		});
@@ -48455,8 +48455,8 @@ body:(LibreAccessServiceSvc_TokenExchangeEx *)aBody
 				xmlFreeDoc(doc);
 			}
 		
-			xmlCleanupParser();
 			dispatch_async(dispatch_get_main_queue(), ^{
+				xmlCleanupParser();
 				[delegate operation:self completedWithResponse:response];
 			});  
 		});
@@ -48563,8 +48563,8 @@ parameters:(LibreAccessServiceSvc_DeviceLeftDomainRequest *)aParameters
 				xmlFreeDoc(doc);
 			}
 		
-			xmlCleanupParser();
 			dispatch_async(dispatch_get_main_queue(), ^{
+				xmlCleanupParser();
 				[delegate operation:self completedWithResponse:response];
 			});  
 		});
@@ -48671,8 +48671,8 @@ parameters:(LibreAccessServiceSvc_ListReadBooksRequest *)aParameters
 				xmlFreeDoc(doc);
 			}
 		
-			xmlCleanupParser();
 			dispatch_async(dispatch_get_main_queue(), ^{
+				xmlCleanupParser();
 				[delegate operation:self completedWithResponse:response];
 			});  
 		});
@@ -48779,8 +48779,8 @@ parameters:(LibreAccessServiceSvc_GetDeviceInfoRequest *)aParameters
 				xmlFreeDoc(doc);
 			}
 		
-			xmlCleanupParser();
 			dispatch_async(dispatch_get_main_queue(), ^{
+				xmlCleanupParser();
 				[delegate operation:self completedWithResponse:response];
 			});  
 		});
@@ -48887,8 +48887,8 @@ parameters:(LibreAccessServiceSvc_SaveReadingStatisticsDetailedRequest *)aParame
 				xmlFreeDoc(doc);
 			}
 		
-			xmlCleanupParser();
 			dispatch_async(dispatch_get_main_queue(), ^{
+				xmlCleanupParser();
 				[delegate operation:self completedWithResponse:response];
 			});  
 		});
@@ -48995,8 +48995,8 @@ parameters:(LibreAccessServiceSvc_SaveContentProfileAssignmentRequest *)aParamet
 				xmlFreeDoc(doc);
 			}
 		
-			xmlCleanupParser();
 			dispatch_async(dispatch_get_main_queue(), ^{
+				xmlCleanupParser();
 				[delegate operation:self completedWithResponse:response];
 			});  
 		});
@@ -49103,8 +49103,8 @@ body:(LibreAccessServiceSvc_TokenExchange *)aBody
 				xmlFreeDoc(doc);
 			}
 		
-			xmlCleanupParser();
 			dispatch_async(dispatch_get_main_queue(), ^{
+				xmlCleanupParser();
 				[delegate operation:self completedWithResponse:response];
 			});  
 		});
@@ -49211,8 +49211,8 @@ parameters:(LibreAccessServiceSvc_SetAccountPasswordRequiredRequest *)aParameter
 				xmlFreeDoc(doc);
 			}
 		
-			xmlCleanupParser();
 			dispatch_async(dispatch_get_main_queue(), ^{
+				xmlCleanupParser();
 				[delegate operation:self completedWithResponse:response];
 			});  
 		});
@@ -49319,8 +49319,8 @@ parameters:(LibreAccessServiceSvc_GetVersionRequest *)aParameters
 				xmlFreeDoc(doc);
 			}
 		
-			xmlCleanupParser();
 			dispatch_async(dispatch_get_main_queue(), ^{
+				xmlCleanupParser();
 				[delegate operation:self completedWithResponse:response];
 			});  
 		});
@@ -49427,8 +49427,8 @@ parameters:(LibreAccessServiceSvc_SaveUserSettingsRequest *)aParameters
 				xmlFreeDoc(doc);
 			}
 		
-			xmlCleanupParser();
 			dispatch_async(dispatch_get_main_queue(), ^{
+				xmlCleanupParser();
 				[delegate operation:self completedWithResponse:response];
 			});  
 		});
@@ -49535,8 +49535,8 @@ body:(LibreAccessServiceSvc_AuthenticateDeviceRequest *)aBody
 				xmlFreeDoc(doc);
 			}
 		
-			xmlCleanupParser();
 			dispatch_async(dispatch_get_main_queue(), ^{
+				xmlCleanupParser();
 				[delegate operation:self completedWithResponse:response];
 			});  
 		});
@@ -49643,8 +49643,8 @@ body:(LibreAccessServiceSvc_ListContentMetadata *)aBody
 				xmlFreeDoc(doc);
 			}
 		
-			xmlCleanupParser();
 			dispatch_async(dispatch_get_main_queue(), ^{
+				xmlCleanupParser();
 				[delegate operation:self completedWithResponse:response];
 			});  
 		});
@@ -49751,8 +49751,8 @@ parameters:(LibreAccessServiceSvc_ListApplicationSettingsRequest *)aParameters
 				xmlFreeDoc(doc);
 			}
 		
-			xmlCleanupParser();
 			dispatch_async(dispatch_get_main_queue(), ^{
+				xmlCleanupParser();
 				[delegate operation:self completedWithResponse:response];
 			});  
 		});
@@ -49859,8 +49859,8 @@ parameters:(LibreAccessServiceSvc_ListTopFavoritesRequest *)aParameters
 				xmlFreeDoc(doc);
 			}
 		
-			xmlCleanupParser();
 			dispatch_async(dispatch_get_main_queue(), ^{
+				xmlCleanupParser();
 				[delegate operation:self completedWithResponse:response];
 			});  
 		});
@@ -49967,8 +49967,8 @@ parameters:(LibreAccessServiceSvc_ListLastNProfileReadBooksRequest *)aParameters
 				xmlFreeDoc(doc);
 			}
 		
-			xmlCleanupParser();
 			dispatch_async(dispatch_get_main_queue(), ^{
+				xmlCleanupParser();
 				[delegate operation:self completedWithResponse:response];
 			});  
 		});
@@ -50075,8 +50075,8 @@ parameters:(LibreAccessServiceSvc_SaveUserProfilesRequest *)aParameters
 				xmlFreeDoc(doc);
 			}
 		
-			xmlCleanupParser();
 			dispatch_async(dispatch_get_main_queue(), ^{
+				xmlCleanupParser();
 				[delegate operation:self completedWithResponse:response];
 			});  
 		});
@@ -50183,8 +50183,8 @@ parameters:(LibreAccessServiceSvc_GetUserProfilesRequest *)aParameters
 				xmlFreeDoc(doc);
 			}
 		
-			xmlCleanupParser();
 			dispatch_async(dispatch_get_main_queue(), ^{
+				xmlCleanupParser();
 				[delegate operation:self completedWithResponse:response];
 			});  
 		});
@@ -50291,8 +50291,8 @@ parameters:(LibreAccessServiceSvc_DeleteBookShelfEntryRequest *)aParameters
 				xmlFreeDoc(doc);
 			}
 		
-			xmlCleanupParser();
 			dispatch_async(dispatch_get_main_queue(), ^{
+				xmlCleanupParser();
 				[delegate operation:self completedWithResponse:response];
 			});  
 		});
@@ -50399,8 +50399,8 @@ parameters:(LibreAccessServiceSvc_ListUserSettingsRequest *)aParameters
 				xmlFreeDoc(doc);
 			}
 		
-			xmlCleanupParser();
 			dispatch_async(dispatch_get_main_queue(), ^{
+				xmlCleanupParser();
 				[delegate operation:self completedWithResponse:response];
 			});  
 		});
@@ -50507,8 +50507,8 @@ parameters:(LibreAccessServiceSvc_EntitledToLicenceRequest *)aParameters
 				xmlFreeDoc(doc);
 			}
 		
-			xmlCleanupParser();
 			dispatch_async(dispatch_get_main_queue(), ^{
+				xmlCleanupParser();
 				[delegate operation:self completedWithResponse:response];
 			});  
 		});
@@ -50615,8 +50615,8 @@ parameters:(LibreAccessServiceSvc_RemoveOrderRequest *)aParameters
 				xmlFreeDoc(doc);
 			}
 		
-			xmlCleanupParser();
 			dispatch_async(dispatch_get_main_queue(), ^{
+				xmlCleanupParser();
 				[delegate operation:self completedWithResponse:response];
 			});  
 		});
@@ -50723,8 +50723,8 @@ parameters:(LibreAccessServiceSvc_ListProfileContentAnnotationsRequest *)aParame
 				xmlFreeDoc(doc);
 			}
 		
-			xmlCleanupParser();
 			dispatch_async(dispatch_get_main_queue(), ^{
+				xmlCleanupParser();
 				[delegate operation:self completedWithResponse:response];
 			});  
 		});
@@ -50831,8 +50831,8 @@ body:(LibreAccessServiceSvc_ListUserContent *)aBody
 				xmlFreeDoc(doc);
 			}
 		
-			xmlCleanupParser();
 			dispatch_async(dispatch_get_main_queue(), ^{
+				xmlCleanupParser();
 				[delegate operation:self completedWithResponse:response];
 			});  
 		});
@@ -50939,8 +50939,8 @@ parameters:(LibreAccessServiceSvc_ListFavoriteTypesRequest *)aParameters
 				xmlFreeDoc(doc);
 			}
 		
-			xmlCleanupParser();
 			dispatch_async(dispatch_get_main_queue(), ^{
+				xmlCleanupParser();
 				[delegate operation:self completedWithResponse:response];
 			});  
 		});
@@ -51047,8 +51047,8 @@ parameters:(LibreAccessServiceSvc_GetKeyIdRequest *)aParameters
 				xmlFreeDoc(doc);
 			}
 		
-			xmlCleanupParser();
 			dispatch_async(dispatch_get_main_queue(), ^{
+				xmlCleanupParser();
 				[delegate operation:self completedWithResponse:response];
 			});  
 		});
@@ -51155,8 +51155,8 @@ parameters:(LibreAccessServiceSvc_SaveDefaultBooksRequest *)aParameters
 				xmlFreeDoc(doc);
 			}
 		
-			xmlCleanupParser();
 			dispatch_async(dispatch_get_main_queue(), ^{
+				xmlCleanupParser();
 				[delegate operation:self completedWithResponse:response];
 			});  
 		});
@@ -51263,8 +51263,8 @@ parameters:(LibreAccessServiceSvc_SetAccountAutoAssignRequest *)aParameters
 				xmlFreeDoc(doc);
 			}
 		
-			xmlCleanupParser();
 			dispatch_async(dispatch_get_main_queue(), ^{
+				xmlCleanupParser();
 				[delegate operation:self completedWithResponse:response];
 			});  
 		});
