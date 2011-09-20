@@ -22,7 +22,7 @@
 @property (nonatomic, assign) NSInteger pointCount;
 @property (nonatomic, assign) NSInteger pointCapacity;
 @property (nonatomic, retain) UIColor *color;
-@property (nonatomic, assign) NSInteger size;
+@property (nonatomic, assign) CGFloat size;
 - (CGBlendMode)blendMode;
 @end
 
