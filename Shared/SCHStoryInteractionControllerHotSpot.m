@@ -246,9 +246,7 @@
           synchronizedEndBlock:^{
               [self zoomOutAndCloseWithSuccess:YES];
           }];
-    
-    self.controllerState = SCHStoryInteractionControllerStateInteractionFinishedSuccessfully;
-    
+        
 }
 
 #pragma mark - Override for SCHStoryInteractionControllerStateReactions
