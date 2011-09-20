@@ -77,14 +77,12 @@
     [self setTitle:[[self currentQuestion] prompt]];
     self.pageImageView.image = [self.delegate currentPageSnapshot];
     self.viewToPageTransform = [self.delegate viewToPageTransformForLayoutPage:self.storyInteraction.documentPageNumber];
-
+    
     UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(imageTapped:)];
+    [tap setDelegate:self];
     [self.pageImageView addGestureRecognizer:tap];
     [self.pageImageView setUserInteractionEnabled:YES];
     [tap release];
-    
-    // ensure taps in the title view don't go through to the background
-    self.titleView.superview.userInteractionEnabled = YES;
 }
 
 - (void)zoomOutAndCloseWithSuccess:(BOOL)success
@@ -149,6 +147,22 @@
     } else {
         [self incorrectTapAtPoint:pointInView];
     }
+}
+
+- (void)doNothing:(UITapGestureRecognizer *)tap
+{   
+    CGPoint pointInView = [tap locationInView:self.pageImageView];
+    CGPoint pointInPage = [self viewToPage:pointInView];
+    
+    NSLog(@"Do Nothing at %@!", NSStringFromCGPoint(pointInPage));
+}
+
+- (void)doNothing2:(UITapGestureRecognizer *)tap
+{   
+    CGPoint pointInView = [tap locationInView:self.pageImageView];
+    CGPoint pointInPage = [self viewToPage:pointInView];
+    
+    NSLog(@"Do Nothing2 at %@!", NSStringFromCGPoint(pointInPage));
 }
 
 - (void)incorrectTapAtPoint:(CGPoint)point
@@ -267,6 +281,9 @@
     [self.pageImageView setUserInteractionEnabled:YES];
 }
 
-
+- (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldReceiveTouch:(UITouch *)touch
+{
+    return !CGRectContainsPoint(self.titleView.bounds, [touch locationInView:self.titleView]);
+}
 
 @end

@@ -9,7 +9,7 @@
 #import <Foundation/Foundation.h>
 #import "SCHStoryInteractionController.h"
 
-@interface SCHStoryInteractionControllerHotSpot : SCHStoryInteractionController <UIScrollViewDelegate> {}
+@interface SCHStoryInteractionControllerHotSpot : SCHStoryInteractionController <UIScrollViewDelegate, UIGestureRecognizerDelegate> {}
 
 @property (nonatomic, retain) IBOutlet UIScrollView *scrollView;
 @property (nonatomic, retain) IBOutlet UIImageView *pageImageView;
