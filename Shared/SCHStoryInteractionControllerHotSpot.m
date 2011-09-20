@@ -149,22 +149,6 @@
     }
 }
 
-- (void)doNothing:(UITapGestureRecognizer *)tap
-{   
-    CGPoint pointInView = [tap locationInView:self.pageImageView];
-    CGPoint pointInPage = [self viewToPage:pointInView];
-    
-    NSLog(@"Do Nothing at %@!", NSStringFromCGPoint(pointInPage));
-}
-
-- (void)doNothing2:(UITapGestureRecognizer *)tap
-{   
-    CGPoint pointInView = [tap locationInView:self.pageImageView];
-    CGPoint pointInPage = [self viewToPage:pointInView];
-    
-    NSLog(@"Do Nothing2 at %@!", NSStringFromCGPoint(pointInPage));
-}
-
 - (void)incorrectTapAtPoint:(CGPoint)point
 {    
     CGFloat scale = 1.0f / self.scrollView.zoomScale;
