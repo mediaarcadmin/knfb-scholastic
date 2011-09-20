@@ -657,8 +657,9 @@ parameters:(AuthenticateSvc_processRemote *)aParameters
 			}
 		
 			dispatch_async(dispatch_get_main_queue(), ^{
-                xmlCleanupParser();
-				[delegate operation:self completedWithResponse:response];
+				if(delegate != nil && [delegate respondsToSelector:@selector(operation:completedWithResponse:)] == YES) {
+					[delegate operation:self completedWithResponse:response];
+				}
 			});  
 		});
 	}

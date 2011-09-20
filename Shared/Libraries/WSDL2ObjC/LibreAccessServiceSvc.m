@@ -46197,8 +46197,9 @@ parameters:(LibreAccessServiceSvc_ValidateScreenNameRequest *)aParameters
 			}
 		
 			dispatch_async(dispatch_get_main_queue(), ^{
-				xmlCleanupParser();
-				[delegate operation:self completedWithResponse:response];
+				if(delegate != nil && [delegate respondsToSelector:@selector(operation:completedWithResponse:)] == YES) {
+					[delegate operation:self completedWithResponse:response];
+				}
 			});  
 		});
 	}
@@ -46305,8 +46306,9 @@ parameters:(LibreAccessServiceSvc_ValidateUserKeyRequest *)aParameters
 			}
 		
 			dispatch_async(dispatch_get_main_queue(), ^{
-				xmlCleanupParser();
-				[delegate operation:self completedWithResponse:response];
+				if(delegate != nil && [delegate respondsToSelector:@selector(operation:completedWithResponse:)] == YES) {
+					[delegate operation:self completedWithResponse:response];
+				}
 			});  
 		});
 	}
@@ -46413,8 +46415,9 @@ parameters:(LibreAccessServiceSvc_AcknowledgeLicenseRequest *)aParameters
 			}
 		
 			dispatch_async(dispatch_get_main_queue(), ^{
-				xmlCleanupParser();
-				[delegate operation:self completedWithResponse:response];
+				if(delegate != nil && [delegate respondsToSelector:@selector(operation:completedWithResponse:)] == YES) {
+					[delegate operation:self completedWithResponse:response];
+				}
 			});  
 		});
 	}
@@ -46521,8 +46524,9 @@ body:(LibreAccessServiceSvc_SharedTokenExchangeRequest *)aBody
 			}
 		
 			dispatch_async(dispatch_get_main_queue(), ^{
-				xmlCleanupParser();
-				[delegate operation:self completedWithResponse:response];
+				if(delegate != nil && [delegate respondsToSelector:@selector(operation:completedWithResponse:)] == YES) {
+					[delegate operation:self completedWithResponse:response];
+				}
 			});  
 		});
 	}
@@ -46629,8 +46633,9 @@ parameters:(LibreAccessServiceSvc_SaveUserCSRNotesRequest *)aParameters
 			}
 		
 			dispatch_async(dispatch_get_main_queue(), ^{
-				xmlCleanupParser();
-				[delegate operation:self completedWithResponse:response];
+				if(delegate != nil && [delegate respondsToSelector:@selector(operation:completedWithResponse:)] == YES) {
+					[delegate operation:self completedWithResponse:response];
+				}
 			});  
 		});
 	}
@@ -46728,8 +46733,9 @@ parameters:(LibreAccessServiceSvc_SaveUserCSRNotesRequest *)aParameters
 			}
 		
 			dispatch_async(dispatch_get_main_queue(), ^{
-				xmlCleanupParser();
-				[delegate operation:self completedWithResponse:response];
+				if(delegate != nil && [delegate respondsToSelector:@selector(operation:completedWithResponse:)] == YES) {
+					[delegate operation:self completedWithResponse:response];
+				}
 			});  
 		});
 	}
@@ -46836,8 +46842,9 @@ parameters:(LibreAccessServiceSvc_SaveNewDomainRequest *)aParameters
 			}
 		
 			dispatch_async(dispatch_get_main_queue(), ^{
-				xmlCleanupParser();
-				[delegate operation:self completedWithResponse:response];
+				if(delegate != nil && [delegate respondsToSelector:@selector(operation:completedWithResponse:)] == YES) {
+					[delegate operation:self completedWithResponse:response];
+				}
 			});  
 		});
 	}
@@ -46944,8 +46951,9 @@ parameters:(LibreAccessServiceSvc_ListDefaultBooksRequest *)aParameters
 			}
 		
 			dispatch_async(dispatch_get_main_queue(), ^{
-				xmlCleanupParser();
-				[delegate operation:self completedWithResponse:response];
+				if(delegate != nil && [delegate respondsToSelector:@selector(operation:completedWithResponse:)] == YES) {
+					[delegate operation:self completedWithResponse:response];
+				}
 			});  
 		});
 	}
@@ -47052,8 +47060,9 @@ parameters:(LibreAccessServiceSvc_ListReadingStatisticsDetailedRequest *)aParame
 			}
 		
 			dispatch_async(dispatch_get_main_queue(), ^{
-				xmlCleanupParser();
-				[delegate operation:self completedWithResponse:response];
+				if(delegate != nil && [delegate respondsToSelector:@selector(operation:completedWithResponse:)] == YES) {
+					[delegate operation:self completedWithResponse:response];
+				}
 			});  
 		});
 	}
@@ -47160,8 +47169,9 @@ parameters:(LibreAccessServiceSvc_DeviceCanJoinDomainRequest *)aParameters
 			}
 		
 			dispatch_async(dispatch_get_main_queue(), ^{
-				xmlCleanupParser();
-				[delegate operation:self completedWithResponse:response];
+				if(delegate != nil && [delegate respondsToSelector:@selector(operation:completedWithResponse:)] == YES) {
+					[delegate operation:self completedWithResponse:response];
+				}
 			});  
 		});
 	}
@@ -47268,8 +47278,9 @@ parameters:(LibreAccessServiceSvc_AssignBooksToAllUsersRequest *)aParameters
 			}
 		
 			dispatch_async(dispatch_get_main_queue(), ^{
-				xmlCleanupParser();
-				[delegate operation:self completedWithResponse:response];
+				if(delegate != nil && [delegate respondsToSelector:@selector(operation:completedWithResponse:)] == YES) {
+					[delegate operation:self completedWithResponse:response];
+				}
 			});  
 		});
 	}
@@ -47376,8 +47387,9 @@ parameters:(LibreAccessServiceSvc_GetLastPageLocationRequest *)aParameters
 			}
 		
 			dispatch_async(dispatch_get_main_queue(), ^{
-				xmlCleanupParser();
-				[delegate operation:self completedWithResponse:response];
+				if(delegate != nil && [delegate respondsToSelector:@selector(operation:completedWithResponse:)] == YES) {
+					[delegate operation:self completedWithResponse:response];
+				}
 			});  
 		});
 	}
@@ -47484,8 +47496,9 @@ parameters:(LibreAccessServiceSvc_SaveProfileContentAnnotationsRequest *)aParame
 			}
 		
 			dispatch_async(dispatch_get_main_queue(), ^{
-				xmlCleanupParser();
-				[delegate operation:self completedWithResponse:response];
+				if(delegate != nil && [delegate respondsToSelector:@selector(operation:completedWithResponse:)] == YES) {
+					[delegate operation:self completedWithResponse:response];
+				}
 			});  
 		});
 	}
@@ -47592,8 +47605,9 @@ parameters:(LibreAccessServiceSvc_RemoveDefaultBooksRequest *)aParameters
 			}
 		
 			dispatch_async(dispatch_get_main_queue(), ^{
-				xmlCleanupParser();
-				[delegate operation:self completedWithResponse:response];
+				if(delegate != nil && [delegate respondsToSelector:@selector(operation:completedWithResponse:)] == YES) {
+					[delegate operation:self completedWithResponse:response];
+				}
 			});  
 		});
 	}
@@ -47700,8 +47714,9 @@ parameters:(LibreAccessServiceSvc_GetLicensableStatusRequest *)aParameters
 			}
 		
 			dispatch_async(dispatch_get_main_queue(), ^{
-				xmlCleanupParser();
-				[delegate operation:self completedWithResponse:response];
+				if(delegate != nil && [delegate respondsToSelector:@selector(operation:completedWithResponse:)] == YES) {
+					[delegate operation:self completedWithResponse:response];
+				}
 			});  
 		});
 	}
@@ -47808,8 +47823,9 @@ parameters:(LibreAccessServiceSvc_SaveLastPageLocationRequest *)aParameters
 			}
 		
 			dispatch_async(dispatch_get_main_queue(), ^{
-				xmlCleanupParser();
-				[delegate operation:self completedWithResponse:response];
+				if(delegate != nil && [delegate respondsToSelector:@selector(operation:completedWithResponse:)] == YES) {
+					[delegate operation:self completedWithResponse:response];
+				}
 			});  
 		});
 	}
@@ -47916,8 +47932,9 @@ parameters:(LibreAccessServiceSvc_ListUserCSRNotesRequest *)aParameters
 			}
 		
 			dispatch_async(dispatch_get_main_queue(), ^{
-				xmlCleanupParser();
-				[delegate operation:self completedWithResponse:response];
+				if(delegate != nil && [delegate respondsToSelector:@selector(operation:completedWithResponse:)] == YES) {
+					[delegate operation:self completedWithResponse:response];
+				}
 			});  
 		});
 	}
@@ -48024,8 +48041,9 @@ body:(LibreAccessServiceSvc_RenewTokenRequest *)aBody
 			}
 		
 			dispatch_async(dispatch_get_main_queue(), ^{
-				xmlCleanupParser();
-				[delegate operation:self completedWithResponse:response];
+				if(delegate != nil && [delegate respondsToSelector:@selector(operation:completedWithResponse:)] == YES) {
+					[delegate operation:self completedWithResponse:response];
+				}
 			});  
 		});
 	}
@@ -48132,8 +48150,9 @@ parameters:(LibreAccessServiceSvc_SaveDeviceInfoRequest *)aParameters
 			}
 		
 			dispatch_async(dispatch_get_main_queue(), ^{
-				xmlCleanupParser();
-				[delegate operation:self completedWithResponse:response];
+				if(delegate != nil && [delegate respondsToSelector:@selector(operation:completedWithResponse:)] == YES) {
+					[delegate operation:self completedWithResponse:response];
+				}
 			});  
 		});
 	}
@@ -48240,8 +48259,9 @@ parameters:(LibreAccessServiceSvc_ListReadingStatisticsAggregateRequest *)aParam
 			}
 		
 			dispatch_async(dispatch_get_main_queue(), ^{
-				xmlCleanupParser();
-				[delegate operation:self completedWithResponse:response];
+				if(delegate != nil && [delegate respondsToSelector:@selector(operation:completedWithResponse:)] == YES) {
+					[delegate operation:self completedWithResponse:response];
+				}
 			});  
 		});
 	}
@@ -48348,8 +48368,9 @@ parameters:(LibreAccessServiceSvc_ListLastNWordsRequest *)aParameters
 			}
 		
 			dispatch_async(dispatch_get_main_queue(), ^{
-				xmlCleanupParser();
-				[delegate operation:self completedWithResponse:response];
+				if(delegate != nil && [delegate respondsToSelector:@selector(operation:completedWithResponse:)] == YES) {
+					[delegate operation:self completedWithResponse:response];
+				}
 			});  
 		});
 	}
@@ -48456,8 +48477,9 @@ body:(LibreAccessServiceSvc_TokenExchangeEx *)aBody
 			}
 		
 			dispatch_async(dispatch_get_main_queue(), ^{
-				xmlCleanupParser();
-				[delegate operation:self completedWithResponse:response];
+				if(delegate != nil && [delegate respondsToSelector:@selector(operation:completedWithResponse:)] == YES) {
+					[delegate operation:self completedWithResponse:response];
+				}
 			});  
 		});
 	}
@@ -48564,8 +48586,9 @@ parameters:(LibreAccessServiceSvc_DeviceLeftDomainRequest *)aParameters
 			}
 		
 			dispatch_async(dispatch_get_main_queue(), ^{
-				xmlCleanupParser();
-				[delegate operation:self completedWithResponse:response];
+				if(delegate != nil && [delegate respondsToSelector:@selector(operation:completedWithResponse:)] == YES) {
+					[delegate operation:self completedWithResponse:response];
+				}
 			});  
 		});
 	}
@@ -48672,8 +48695,9 @@ parameters:(LibreAccessServiceSvc_ListReadBooksRequest *)aParameters
 			}
 		
 			dispatch_async(dispatch_get_main_queue(), ^{
-				xmlCleanupParser();
-				[delegate operation:self completedWithResponse:response];
+				if(delegate != nil && [delegate respondsToSelector:@selector(operation:completedWithResponse:)] == YES) {
+					[delegate operation:self completedWithResponse:response];
+				}
 			});  
 		});
 	}
@@ -48780,8 +48804,9 @@ parameters:(LibreAccessServiceSvc_GetDeviceInfoRequest *)aParameters
 			}
 		
 			dispatch_async(dispatch_get_main_queue(), ^{
-				xmlCleanupParser();
-				[delegate operation:self completedWithResponse:response];
+				if(delegate != nil && [delegate respondsToSelector:@selector(operation:completedWithResponse:)] == YES) {
+					[delegate operation:self completedWithResponse:response];
+				}
 			});  
 		});
 	}
@@ -48888,8 +48913,9 @@ parameters:(LibreAccessServiceSvc_SaveReadingStatisticsDetailedRequest *)aParame
 			}
 		
 			dispatch_async(dispatch_get_main_queue(), ^{
-				xmlCleanupParser();
-				[delegate operation:self completedWithResponse:response];
+				if(delegate != nil && [delegate respondsToSelector:@selector(operation:completedWithResponse:)] == YES) {
+					[delegate operation:self completedWithResponse:response];
+				}
 			});  
 		});
 	}
@@ -48996,8 +49022,9 @@ parameters:(LibreAccessServiceSvc_SaveContentProfileAssignmentRequest *)aParamet
 			}
 		
 			dispatch_async(dispatch_get_main_queue(), ^{
-				xmlCleanupParser();
-				[delegate operation:self completedWithResponse:response];
+				if(delegate != nil && [delegate respondsToSelector:@selector(operation:completedWithResponse:)] == YES) {
+					[delegate operation:self completedWithResponse:response];
+				}
 			});  
 		});
 	}
@@ -49104,8 +49131,9 @@ body:(LibreAccessServiceSvc_TokenExchange *)aBody
 			}
 		
 			dispatch_async(dispatch_get_main_queue(), ^{
-				xmlCleanupParser();
-				[delegate operation:self completedWithResponse:response];
+				if(delegate != nil && [delegate respondsToSelector:@selector(operation:completedWithResponse:)] == YES) {
+					[delegate operation:self completedWithResponse:response];
+				}
 			});  
 		});
 	}
@@ -49212,8 +49240,9 @@ parameters:(LibreAccessServiceSvc_SetAccountPasswordRequiredRequest *)aParameter
 			}
 		
 			dispatch_async(dispatch_get_main_queue(), ^{
-				xmlCleanupParser();
-				[delegate operation:self completedWithResponse:response];
+				if(delegate != nil && [delegate respondsToSelector:@selector(operation:completedWithResponse:)] == YES) {
+					[delegate operation:self completedWithResponse:response];
+				}
 			});  
 		});
 	}
@@ -49320,8 +49349,9 @@ parameters:(LibreAccessServiceSvc_GetVersionRequest *)aParameters
 			}
 		
 			dispatch_async(dispatch_get_main_queue(), ^{
-				xmlCleanupParser();
-				[delegate operation:self completedWithResponse:response];
+				if(delegate != nil && [delegate respondsToSelector:@selector(operation:completedWithResponse:)] == YES) {
+					[delegate operation:self completedWithResponse:response];
+				}
 			});  
 		});
 	}
@@ -49428,8 +49458,9 @@ parameters:(LibreAccessServiceSvc_SaveUserSettingsRequest *)aParameters
 			}
 		
 			dispatch_async(dispatch_get_main_queue(), ^{
-				xmlCleanupParser();
-				[delegate operation:self completedWithResponse:response];
+				if(delegate != nil && [delegate respondsToSelector:@selector(operation:completedWithResponse:)] == YES) {
+					[delegate operation:self completedWithResponse:response];
+				}
 			});  
 		});
 	}
@@ -49536,8 +49567,9 @@ body:(LibreAccessServiceSvc_AuthenticateDeviceRequest *)aBody
 			}
 		
 			dispatch_async(dispatch_get_main_queue(), ^{
-				xmlCleanupParser();
-				[delegate operation:self completedWithResponse:response];
+				if(delegate != nil && [delegate respondsToSelector:@selector(operation:completedWithResponse:)] == YES) {
+					[delegate operation:self completedWithResponse:response];
+				}
 			});  
 		});
 	}
@@ -49644,8 +49676,9 @@ body:(LibreAccessServiceSvc_ListContentMetadata *)aBody
 			}
 		
 			dispatch_async(dispatch_get_main_queue(), ^{
-				xmlCleanupParser();
-				[delegate operation:self completedWithResponse:response];
+				if(delegate != nil && [delegate respondsToSelector:@selector(operation:completedWithResponse:)] == YES) {
+					[delegate operation:self completedWithResponse:response];
+				}
 			});  
 		});
 	}
@@ -49752,8 +49785,9 @@ parameters:(LibreAccessServiceSvc_ListApplicationSettingsRequest *)aParameters
 			}
 		
 			dispatch_async(dispatch_get_main_queue(), ^{
-				xmlCleanupParser();
-				[delegate operation:self completedWithResponse:response];
+				if(delegate != nil && [delegate respondsToSelector:@selector(operation:completedWithResponse:)] == YES) {
+					[delegate operation:self completedWithResponse:response];
+				}
 			});  
 		});
 	}
@@ -49860,8 +49894,9 @@ parameters:(LibreAccessServiceSvc_ListTopFavoritesRequest *)aParameters
 			}
 		
 			dispatch_async(dispatch_get_main_queue(), ^{
-				xmlCleanupParser();
-				[delegate operation:self completedWithResponse:response];
+				if(delegate != nil && [delegate respondsToSelector:@selector(operation:completedWithResponse:)] == YES) {
+					[delegate operation:self completedWithResponse:response];
+				}
 			});  
 		});
 	}
@@ -49968,8 +50003,9 @@ parameters:(LibreAccessServiceSvc_ListLastNProfileReadBooksRequest *)aParameters
 			}
 		
 			dispatch_async(dispatch_get_main_queue(), ^{
-				xmlCleanupParser();
-				[delegate operation:self completedWithResponse:response];
+				if(delegate != nil && [delegate respondsToSelector:@selector(operation:completedWithResponse:)] == YES) {
+					[delegate operation:self completedWithResponse:response];
+				}
 			});  
 		});
 	}
@@ -50076,8 +50112,9 @@ parameters:(LibreAccessServiceSvc_SaveUserProfilesRequest *)aParameters
 			}
 		
 			dispatch_async(dispatch_get_main_queue(), ^{
-				xmlCleanupParser();
-				[delegate operation:self completedWithResponse:response];
+				if(delegate != nil && [delegate respondsToSelector:@selector(operation:completedWithResponse:)] == YES) {
+					[delegate operation:self completedWithResponse:response];
+				}
 			});  
 		});
 	}
@@ -50184,8 +50221,9 @@ parameters:(LibreAccessServiceSvc_GetUserProfilesRequest *)aParameters
 			}
 		
 			dispatch_async(dispatch_get_main_queue(), ^{
-				xmlCleanupParser();
-				[delegate operation:self completedWithResponse:response];
+				if(delegate != nil && [delegate respondsToSelector:@selector(operation:completedWithResponse:)] == YES) {
+					[delegate operation:self completedWithResponse:response];
+				}
 			});  
 		});
 	}
@@ -50292,8 +50330,9 @@ parameters:(LibreAccessServiceSvc_DeleteBookShelfEntryRequest *)aParameters
 			}
 		
 			dispatch_async(dispatch_get_main_queue(), ^{
-				xmlCleanupParser();
-				[delegate operation:self completedWithResponse:response];
+				if(delegate != nil && [delegate respondsToSelector:@selector(operation:completedWithResponse:)] == YES) {
+					[delegate operation:self completedWithResponse:response];
+				}
 			});  
 		});
 	}
@@ -50400,8 +50439,9 @@ parameters:(LibreAccessServiceSvc_ListUserSettingsRequest *)aParameters
 			}
 		
 			dispatch_async(dispatch_get_main_queue(), ^{
-				xmlCleanupParser();
-				[delegate operation:self completedWithResponse:response];
+				if(delegate != nil && [delegate respondsToSelector:@selector(operation:completedWithResponse:)] == YES) {
+					[delegate operation:self completedWithResponse:response];
+				}
 			});  
 		});
 	}
@@ -50508,8 +50548,9 @@ parameters:(LibreAccessServiceSvc_EntitledToLicenceRequest *)aParameters
 			}
 		
 			dispatch_async(dispatch_get_main_queue(), ^{
-				xmlCleanupParser();
-				[delegate operation:self completedWithResponse:response];
+				if(delegate != nil && [delegate respondsToSelector:@selector(operation:completedWithResponse:)] == YES) {
+					[delegate operation:self completedWithResponse:response];
+				}
 			});  
 		});
 	}
@@ -50616,8 +50657,9 @@ parameters:(LibreAccessServiceSvc_RemoveOrderRequest *)aParameters
 			}
 		
 			dispatch_async(dispatch_get_main_queue(), ^{
-				xmlCleanupParser();
-				[delegate operation:self completedWithResponse:response];
+				if(delegate != nil && [delegate respondsToSelector:@selector(operation:completedWithResponse:)] == YES) {
+					[delegate operation:self completedWithResponse:response];
+				}
 			});  
 		});
 	}
@@ -50724,8 +50766,9 @@ parameters:(LibreAccessServiceSvc_ListProfileContentAnnotationsRequest *)aParame
 			}
 		
 			dispatch_async(dispatch_get_main_queue(), ^{
-				xmlCleanupParser();
-				[delegate operation:self completedWithResponse:response];
+				if(delegate != nil && [delegate respondsToSelector:@selector(operation:completedWithResponse:)] == YES) {
+					[delegate operation:self completedWithResponse:response];
+				}
 			});  
 		});
 	}
@@ -50832,8 +50875,9 @@ body:(LibreAccessServiceSvc_ListUserContent *)aBody
 			}
 		
 			dispatch_async(dispatch_get_main_queue(), ^{
-				xmlCleanupParser();
-				[delegate operation:self completedWithResponse:response];
+				if(delegate != nil && [delegate respondsToSelector:@selector(operation:completedWithResponse:)] == YES) {
+					[delegate operation:self completedWithResponse:response];
+				}
 			});  
 		});
 	}
@@ -50940,8 +50984,9 @@ parameters:(LibreAccessServiceSvc_ListFavoriteTypesRequest *)aParameters
 			}
 		
 			dispatch_async(dispatch_get_main_queue(), ^{
-				xmlCleanupParser();
-				[delegate operation:self completedWithResponse:response];
+				if(delegate != nil && [delegate respondsToSelector:@selector(operation:completedWithResponse:)] == YES) {
+					[delegate operation:self completedWithResponse:response];
+				}
 			});  
 		});
 	}
@@ -51048,8 +51093,9 @@ parameters:(LibreAccessServiceSvc_GetKeyIdRequest *)aParameters
 			}
 		
 			dispatch_async(dispatch_get_main_queue(), ^{
-				xmlCleanupParser();
-				[delegate operation:self completedWithResponse:response];
+				if(delegate != nil && [delegate respondsToSelector:@selector(operation:completedWithResponse:)] == YES) {
+					[delegate operation:self completedWithResponse:response];
+				}
 			});  
 		});
 	}
@@ -51156,8 +51202,9 @@ parameters:(LibreAccessServiceSvc_SaveDefaultBooksRequest *)aParameters
 			}
 		
 			dispatch_async(dispatch_get_main_queue(), ^{
-				xmlCleanupParser();
-				[delegate operation:self completedWithResponse:response];
+				if(delegate != nil && [delegate respondsToSelector:@selector(operation:completedWithResponse:)] == YES) {
+					[delegate operation:self completedWithResponse:response];
+				}
 			});  
 		});
 	}
@@ -51264,8 +51311,9 @@ parameters:(LibreAccessServiceSvc_SetAccountAutoAssignRequest *)aParameters
 			}
 		
 			dispatch_async(dispatch_get_main_queue(), ^{
-				xmlCleanupParser();
-				[delegate operation:self completedWithResponse:response];
+				if(delegate != nil && [delegate respondsToSelector:@selector(operation:completedWithResponse:)] == YES) {
+					[delegate operation:self completedWithResponse:response];
+				}
 			});  
 		});
 	}
