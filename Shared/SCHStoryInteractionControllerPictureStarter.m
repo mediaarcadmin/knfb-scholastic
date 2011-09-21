@@ -135,6 +135,7 @@ enum SCHToolType {
     switch (screenIndex) {
         case 0 :
             [self setupOpeningScreen];
+            [self enqueueAudioWithPath:[(SCHStoryInteractionPictureStarter *)self.storyInteraction audioPathForIntroduction] fromBundle:NO];
             break;
         case 1:
             [self setupDrawingScreen];

@@ -12,6 +12,8 @@
 
 @property (nonatomic, retain) NSArray *introductions;
 
+- (NSString *)audioPathForIntroduction;
+
 - (NSString *)introductionAtIndex:(NSInteger)index;
 - (NSString *)audioPathAtIndex:(NSInteger)index;
 - (NSString *)imagePathAtIndex:(NSInteger)index;
@@ -20,9 +22,6 @@
 @end
 
 @interface SCHStoryInteractionPictureStarterCustom : SCHStoryInteractionPictureStarter {}
-
-- (NSString *)audioPathForChooseYourPicture;
-
 @end
 
 @interface SCHStoryInteractionPictureStarterNewEnding : SCHStoryInteractionPictureStarter {}
