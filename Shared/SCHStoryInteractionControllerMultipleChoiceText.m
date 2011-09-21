@@ -80,13 +80,11 @@
             [button setSelected:NO];
             [button setBackgroundImage:[(iPad == YES ? [UIImage imageNamed:@"answer-button-blue"] : [UIImage imageNamed:@"answer-button-yellow"]) stretchableImageWithLeftCapWidth:10 topCapHeight:0] forState:UIControlStateNormal];        
             [button setBackgroundImage:highlight forState:UIControlStateSelected];
-            if (iPad == YES) {
-                [button setImage:[UIImage imageNamed:@"answer-blank"] forState:UIControlStateNormal];
-                if (answerIndex == [self currentQuestion].correctAnswer) {
-                    [button setImage:[UIImage imageNamed:@"answer-tick"] forState:UIControlStateSelected];
-                } else {
-                    [button setImage:[UIImage imageNamed:@"answer-cross"] forState:UIControlStateSelected];
-                }
+            [button setImage:[UIImage imageNamed:@"answer-blank"] forState:UIControlStateNormal];
+            if (answerIndex == [self currentQuestion].correctAnswer) {
+                [button setImage:[UIImage imageNamed:@"answer-tick"] forState:UIControlStateSelected];
+            } else {
+                [button setImage:[UIImage imageNamed:@"answer-cross"] forState:UIControlStateSelected];
             }
         }
     }

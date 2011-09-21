@@ -301,6 +301,7 @@ enum ScratchState {
           synchronizedEndBlock:nil];
     
     [self enqueueAudioWithPath:[[self currentQuestion] audioPathForAnswerAtIndex:selection] fromBundle:NO];
+    [self enqueueAudioWithPath:[(SCHStoryInteractionScratchAndSee *)self.storyInteraction thatsRightAudioPath] fromBundle:NO];
     [self enqueueAudioWithPath:[[self currentQuestion] correctAnswerAudioPath]
                     fromBundle:NO
                     startDelay:0

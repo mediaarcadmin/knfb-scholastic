@@ -82,6 +82,7 @@ enum {
 
 - (void)levelButtonTapped:(id)sender
 {
+    [self cancelQueuedAudioExecutingSynchronizedBlocksImmediately];
     self.numberOfPairs = [(UIView *)sender tag];
     [self presentNextView];
 }
@@ -178,6 +179,7 @@ enum {
     
     self.numberOfPairsFound = 0;
     self.numberOfFlips = 0;
+    self.firstFlippedTile = nil;
 }
 
 - (UIImage *)tileBackground
@@ -228,15 +230,15 @@ enum {
         return;
     }
     
-    BOOL match = (self.firstFlippedTile != nil);
-    if (!match) {
+    BOOL pair = (self.firstFlippedTile != nil);
+    if (!pair) {
         self.firstFlippedTile = tile;
     }
     self.controllerState = SCHStoryInteractionControllerStateInteractionReadingAnswerWithPause;
     
     CAAnimation *flip = [self flipAnimationFrom:0 to:M_PI];
     flip.delegate = [SCHAnimationDelegate animationDelegateWithStopBlock:^(CAAnimation *animation, BOOL finished) {
-        if (match) {
+        if (pair) {
             [self matchTile:self.firstFlippedTile withTile:tile];
             self.firstFlippedTile = nil;
         } else {
@@ -258,6 +260,7 @@ enum {
         [tile1 setUserInteractionEnabled:NO];
         [tile2 setUserInteractionEnabled:NO];
         if (++self.numberOfPairsFound == self.numberOfPairs) {
+            [self enqueueAudioWithPath:@"sfx_win_y.mp3" fromBundle:YES];
             [self enqueueAudioWithPath:[(SCHStoryInteractionConcentration *)self.storyInteraction audioPathForYouWon]
                             fromBundle:NO
                             startDelay:0

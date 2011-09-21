@@ -107,6 +107,8 @@
         NSArray *views = [self.imageContainers sortedArrayUsingComparator:^NSComparisonResult(id obj1, id obj2) {
             return [(SCHStoryInteractionDraggableView *)obj1 matchTag] - [(SCHStoryInteractionDraggableView *)obj2 matchTag];
         }];
+
+        [self enqueueAudioWithPath:[self.storyInteraction storyInteractionCorrectAnswerSoundFilename] fromBundle:YES];
         
         // play 'that's right'
         SCHStoryInteractionSequencing *sequencing = (SCHStoryInteractionSequencing *)self.storyInteraction;
@@ -142,6 +144,9 @@
                            [draggable moveToHomePosition];
                            [self setView:[draggable viewWithTag:kImageViewTag] borderColor:[UIColor blueColor]];
                        }
+                       for (SCHStoryInteractionDraggableTargetView *target in self.targets) {
+                           target.alpha = 1;
+                       }
                        [self.attachedImages removeAllObjects];
                    }];
     }
@@ -167,18 +172,18 @@ static CGFloat distanceSq(CGPoint imageCenter, CGPoint targetCenter)
     [self cancelQueuedAudioExecutingSynchronizedBlocksImmediately];
     [self enqueueAudioWithPath:@"sfx_pickup.mp3" fromBundle:YES];
 
-    [self.attachedImages removeObjectForKey:[NSNumber numberWithInteger:draggableView.matchTag]];
+    NSNumber *matchKey = [NSNumber numberWithInteger:draggableView.matchTag];
+    SCHStoryInteractionDraggableTargetView *attachedTarget = [self.attachedImages objectForKey:matchKey];
+    if (attachedTarget) {
+        attachedTarget.alpha = 1;
+        [self.attachedImages removeObjectForKey:matchKey];
+    }
+    
     [self setView:[draggableView viewWithTag:kImageViewTag] borderColor:[UIColor blueColor]];
 }
 
 - (BOOL)draggableView:(SCHStoryInteractionDraggableView *)draggableView shouldSnapFromPosition:(CGPoint)position toPosition:(CGPoint *)snapPosition
 {
-    for (SCHStoryInteractionDraggableTargetView *target in self.targets) {
-        if (![self targetOccupied:target] && distanceSq(position, target.center) < kSnapDistanceSq) {
-            *snapPosition = CGPointMake(target.center.x + kOffsetX, target.center.y + kOffsetY);
-            return YES;
-        }
-    }
     return NO;
 }
 
@@ -188,6 +193,11 @@ static CGFloat distanceSq(CGPoint imageCenter, CGPoint targetCenter)
     for (SCHStoryInteractionDraggableTargetView *target in self.targets) {
         if (![self targetOccupied:target] && distanceSq(position, target.center) < kSnapDistanceSq) {
             attachedTarget = target;
+            CGPoint position = CGPointMake(target.center.x + kOffsetX, target.center.y + kOffsetY);
+            [UIView animateWithDuration:0.25f animations:^{
+                draggableView.center = position;
+                attachedTarget.alpha = 0;
+            }];
             break;
         }
     }
