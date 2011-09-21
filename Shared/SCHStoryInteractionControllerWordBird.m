@@ -280,18 +280,11 @@ enum {
     self.controllerState = SCHStoryInteractionControllerStateInteractionReadingAnswerWithPause;
     
     BOOL correct = [self checkForLetter:letter];
-    
-    [self enqueueAudioWithPath:[(SCHStoryInteractionWordBird *)self.storyInteraction audioPathForLetter:letter]
-                    fromBundle:NO
-                    startDelay:0
-        synchronizedStartBlock:nil
-          synchronizedEndBlock:^{
-              if (correct) {
-                  [sender setCorrectHighlight];
-              } else {
-                  [sender setIncorrectHighlight];
-              }
-          }];
+    if (correct) {
+        [sender setCorrectHighlight];
+    } else {
+        [sender setIncorrectHighlight];
+    }
     
     NSString *audioPath = (correct ? [self.storyInteraction storyInteractionCorrectAnswerSoundFilename]
                            : [self.storyInteraction storyInteractionWrongAnswerSoundFilename]);
