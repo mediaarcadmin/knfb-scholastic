@@ -196,7 +196,7 @@ NSString * const kSCHProfileItemDRM_QUALIFIER = @"DRM_QUALIFIER";
                     NSSet *orderItems = [[userContentItems objectAtIndex:0] OrderList];
                     if ([orderItems count] > 0) {
                         // use the latest date
-                        NSArray *sortedOrderItems = [[orderItems allObjects] sortedArrayUsingDescriptors:[NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:@"date" ascending:NO]]];
+                        NSArray *sortedOrderItems = [[orderItems allObjects] sortedArrayUsingDescriptors:[NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:@"OrderDate" ascending:NO]]];
                         SCHOrderItem *orderItem = [sortedOrderItems objectAtIndex:0];
                         date = [orderItem OrderDate];
                     }
