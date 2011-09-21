@@ -228,9 +228,8 @@
         
         
         [self cancelQueuedAudioExecutingSynchronizedBlocksImmediately];
-        [self enqueueAudioWithPath:[wordSearch storyInteractionCorrectAnswerSoundFilename]
-                        fromBundle:YES];
         if ([self.remainingWords count] == 0) {
+            [self enqueueAudioWithPath:@"sfx_win_y.mp3" fromBundle:YES];
             [self enqueueAudioWithPath:[wordSearch audioPathForYouFoundThemAll]
                             fromBundle:NO
                             startDelay:0
@@ -239,6 +238,7 @@
                       [self removeFromHostView];
                   }];
         } else {
+            [self enqueueAudioWithPath:[wordSearch storyInteractionCorrectAnswerSoundFilename] fromBundle:YES];
             [self enqueueAudioWithPath:[wordSearch audioPathForYouFound] fromBundle:NO];
             [self enqueueAudioWithPath:[wordSearch audioPathForWordAtIndex:index]
                             fromBundle:NO
