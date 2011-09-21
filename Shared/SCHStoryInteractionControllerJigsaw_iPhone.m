@@ -186,6 +186,7 @@ enum {
         self.dragSourcePiece.transform = CGAffineTransformIdentity;
         self.dragSourcePiece.center = self.dragSourcePiece.solutionPosition;
         self.dragSourcePiece.alpha = 1;
+        self.dragSourcePiece.userInteractionEnabled = NO;
         self.dragSourcePiece = nil;
         [self coalescePiecesInScroller];
         [self checkForCompletion];
