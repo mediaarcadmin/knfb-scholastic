@@ -8,6 +8,7 @@
 
 #import "SCHBookShelfGridView.h"
 #import "SCHBookShelfGridShelvesView.h"
+#import "SCHBookShelfGridViewDataSource.h"
 
 //static const NSInteger TOGGLE_OFFSET = -64;
 
@@ -161,6 +162,9 @@
 	for (NSNumber* index in cellIndexes){
         if (![allExistingCellIndices containsObject:index]) {
             [self addCellAtIndex:[index intValue]];
+        } else {
+            SCHBookShelfGridViewCell *gridCell = [existingCells objectForKey:index];
+            [(id<SCHBookShelfGridViewDataSource>)self.gridDataSource gridView:self configureCell:gridCell forGridIndex:[index intValue]];
         }
 	}
 	[self updateSize];

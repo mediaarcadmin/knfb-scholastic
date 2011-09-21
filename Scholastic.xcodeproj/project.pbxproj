@@ -3345,6 +3345,7 @@
 		C9B59BD113D048D000C7760D /* LambdaAlert.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LambdaAlert.m; sourceTree = "<group>"; };
 		C9B59BD213D048D000C7760D /* LambdaSheet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LambdaSheet.h; sourceTree = "<group>"; };
 		C9B59BD313D048D000C7760D /* LambdaSheet.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LambdaSheet.m; sourceTree = "<group>"; };
+		C9B785181429EAFB0070BEDE /* SCHBookShelfGridViewDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHBookShelfGridViewDataSource.h; path = Shared/SCHBookShelfGridViewDataSource.h; sourceTree = "<group>"; };
 		C9B7E90C13DC5D9D00BD5CB7 /* button-close@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "button-close@2x.png"; path = "Resources/UIAssets/button-close@2x.png"; sourceTree = "<group>"; };
 		C9B7E90D13DC5D9D00BD5CB7 /* button-close.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "button-close.png"; path = "Resources/UIAssets/button-close.png"; sourceTree = "<group>"; };
 		C9B7E91213DC620400BD5CB7 /* checkmark-on@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "checkmark-on@2x.png"; path = "Resources/UIAssets/checkmark-on@2x.png"; sourceTree = "<group>"; };
@@ -5309,6 +5310,7 @@
 				C95C7CBF135C3C8A00472AF6 /* SCHBookShelfGridView.h */,
 				C95C7CC0135C3C8A00472AF6 /* SCHBookShelfGridView.m */,
 				C95C7CC3135C3F1200472AF6 /* SCHBookShelfGridShelvesView.h */,
+				C9B785181429EAFB0070BEDE /* SCHBookShelfGridViewDataSource.h */,
 				C95C7CC4135C3F1300472AF6 /* SCHBookShelfGridShelvesView.m */,
 				F82D39D7131EA7D400289FF3 /* SCHBookShelfTableViewCell.h */,
 				F82D39D8131EA7D400289FF3 /* SCHBookShelfTableViewCell.m */,
