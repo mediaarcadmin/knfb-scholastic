@@ -30,4 +30,9 @@
     return @"Picture";
 }
 
+- (BOOL)isOlderStoryInteraction
+{
+    return YES;
+}
+
 @end
