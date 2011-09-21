@@ -184,7 +184,7 @@
     
     [self clearSelection];
     
-    if ((extentCols == 0 && extentRows == 0) || (extentCols > 0 && extentRows > 0)) {
+    if (extentCols != 0 && extentRows != 0) {
         return;
     }
     if (startCol < 0 || self.numberOfColumns <= startCol || startRow < 0 || self.numberOfRows <= startRow) {
@@ -201,7 +201,7 @@
         self.selectionLayer.startRow = startRow;
         self.selectionLayer.extent = MIN(-extentCols + 1, self.numberOfColumns-startCol);
         self.selectionLayer.isVertical = NO;
-    } else if (extentRows > 0) {
+    } else if (extentRows >= 0) {
         self.selectionLayer.startColumn = startCol;
         self.selectionLayer.startRow = startRow;
         self.selectionLayer.extent = MIN(extentRows + 1, self.numberOfRows-startRow);

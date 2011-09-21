@@ -96,6 +96,7 @@
 {
     // ignore multiple taps
     NSInteger tapCount = self.simultaneousTapCount;
+    self.simultaneousTapCount = 0;
     if (tapCount > 1) {
         return;
     }

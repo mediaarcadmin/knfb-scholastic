@@ -33,21 +33,27 @@ static CGPoint pointWithOffset(CGPoint p, CGPoint offset)
 
 @property (nonatomic, assign) CGPoint sourceCenterOffset;
 @property (nonatomic, assign) CGPoint targetCenterOffset;
+@property (nonatomic, assign) NSInteger checkAnswersCount;
+
+- (void)setCheckAnswersButtonEnabledState;
 
 @end
 
 @implementation SCHStoryInteractionControllerWhoSaidIt_iPad
 
 @synthesize checkAnswersButton;
+@synthesize winMessageLabel;
 @synthesize statementLabels;
 @synthesize sources;
 @synthesize targets;
 @synthesize sourceCenterOffset;
 @synthesize targetCenterOffset;
+@synthesize checkAnswersCount;
 
 - (void)dealloc
 {
     [checkAnswersButton release];
+    [winMessageLabel release];
     [statementLabels release];
     [sources release];
     [targets release];
@@ -72,6 +78,7 @@ static CGPoint pointWithOffset(CGPoint p, CGPoint offset)
     SCHStoryInteractionWhoSaidIt *whoSaidIt = (SCHStoryInteractionWhoSaidIt *)[self storyInteraction];
     NSInteger targetIndex = 0;
     for (SCHStoryInteractionWhoSaidItStatement *statement in whoSaidIt.statements) {
+        NSLog(@"%@ -> %@", statement.source, statement.text);
         if (statement.questionIndex != whoSaidIt.distracterIndex) {
             [[self.statementLabels objectAtIndex:targetIndex] setText:statement.text];
             SCHStoryInteractionDraggableTargetView *target = [self.targets objectAtIndex:targetIndex];
@@ -93,10 +100,16 @@ static CGPoint pointWithOffset(CGPoint p, CGPoint offset)
         source.homePosition = source.center;
         index++;
     }
+    
+    [self.checkAnswersButton setEnabled:NO];
+    self.checkAnswersCount = 0;
+    self.winMessageLabel.hidden = YES;
 }
 
 - (void)checkAnswers:(id)sender
 {
+    self.checkAnswersCount++;
+    
     NSInteger correctCount = 0;
     for (SCHStoryInteractionWhoSaidItNameView *source in self.sources) {
         if (source.attachedTarget == nil) {
@@ -116,12 +129,25 @@ static CGPoint pointWithOffset(CGPoint p, CGPoint offset)
     }
 
     if (correctCount == [self.targets count]) {
-        
+        for (SCHStoryInteractionWhoSaidItNameView *source in self.sources) {
+            if (![source attachedToCorrectTarget]) {
+                source.hidden = YES;
+            }
+        }
+        if (self.checkAnswersCount == 1) {
+            self.winMessageLabel.text = NSLocalizedString(@"You did it! You won on your first try!", @"");
+        } else {
+            self.winMessageLabel.text = [NSString stringWithFormat:NSLocalizedString(@"You did it! You won in %d tries.", @""), self.checkAnswersCount];
+        }
+        self.checkAnswersButton.hidden = YES;
+        self.winMessageLabel.hidden = NO;
         self.controllerState = SCHStoryInteractionControllerStateInteractionFinishedSuccessfully;
         
         [self playBundleAudioWithFilename:@"sfx_winround.mp3"
                                completion:^{
-                                   [self removeFromHostView];
+                                   dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 1.0*NSEC_PER_SEC), dispatch_get_main_queue(), ^{
+                                       [self removeFromHostView];
+                                   });
                                }];
     } else {
         [self playDefaultButtonAudio];
@@ -129,14 +155,17 @@ static CGPoint pointWithOffset(CGPoint p, CGPoint offset)
         dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, 1.0 * NSEC_PER_SEC);
         dispatch_after(popTime, dispatch_get_main_queue(), ^{
             for (SCHStoryInteractionWhoSaidItNameView *source in self.sources) {
-                UIImageView *imageView = (UIImageView *)[source viewWithTag:kSourceImageTag];
-                [imageView setHighlighted:NO];
-                
-                // send incorrect answers back to home position
-                if (source.attachedTarget != nil && ![source attachedToCorrectTarget]) {
+                if ([source attachedToCorrectTarget]) {
+                    // lock correct answers in place
+                    source.userInteractionEnabled = NO;
+                } else if (source.attachedTarget != nil) {
+                    // send incorrect answers back to home position
+                    UIImageView *imageView = (UIImageView *)[source viewWithTag:kSourceImageTag];
+                    [imageView setHighlighted:NO];
                     [source moveToHomePosition];
                 }
             }
+            [self setCheckAnswersButtonEnabledState];
         });
     }
 }
@@ -149,6 +178,18 @@ static CGPoint pointWithOffset(CGPoint p, CGPoint offset)
         }
     }
     return nil;
+}
+
+- (void)setCheckAnswersButtonEnabledState
+{
+    BOOL anyAnswersOnTargets = NO;
+    for (SCHStoryInteractionWhoSaidItNameView *source in self.sources) {
+        if (source.attachedTarget != nil) {
+            anyAnswersOnTargets = YES;
+            break;
+        }
+    }
+    self.checkAnswersButton.enabled = anyAnswersOnTargets;
 }
 
 #pragma mark - draggable view delegate
@@ -194,6 +235,7 @@ static CGPoint pointWithOffset(CGPoint p, CGPoint offset)
     }
     
     [self playBundleAudioWithFilename:@"sfx_dropOK.mp3" completion:nil];
+    [self setCheckAnswersButtonEnabledState];
 }
 
 #pragma mark - Override for SCHStoryInteractionControllerStateReactions

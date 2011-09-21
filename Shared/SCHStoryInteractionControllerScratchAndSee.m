@@ -136,13 +136,14 @@ enum ScratchState {
     CGFloat contentsHeight = scratching ? 282 : 380;
     dispatch_block_t adjustments = ^{
         if (scratching) {
-            [self setTitle:NSLocalizedString(@"Scratch away the question mark to see the picture.", @"")];
             if (self.scratchState == kScratchStateFirstScratch) {
                 UIImage *image = [self imageAtPath:[[self currentQuestion] imagePath]];
                 self.scratchView.answerImage = image;
                 [self setProgressViewForScratchCount:0];
+                [self setTitle:NSLocalizedString(@"Scratch away the question mark to see the picture.", @"")];
             } else {
                 [self setProgressViewForScratchCount:kFirstScratchPointTarget];
+                [self setTitle:NSLocalizedString(@"Keep Scratching!", @"")];
             }
             self.scratchView.interactionEnabled = YES;
             self.progressView.alpha = 1;
@@ -162,15 +163,6 @@ enum ScratchState {
             UIImage *highlight;
             UIButton *button = [self.answerButtons objectAtIndex:i];
             
-            if (iPad == YES) {
-                [button setImage:[UIImage imageNamed:@"answer-blank"] forState:UIControlStateNormal];
-                if (i == [self currentQuestion].correctAnswer) {
-                    [button setImage:[UIImage imageNamed:@"answer-tick"] forState:UIControlStateSelected];
-                } else {
-                    [button setImage:[UIImage imageNamed:@"answer-cross"] forState:UIControlStateSelected];
-                }
-            }
-            
             if (i == [self currentQuestion].correctAnswer) {
                 highlight = [[UIImage imageNamed:@"answer-button-green"] stretchableImageWithLeftCapWidth:10 topCapHeight:0];
             } else {
@@ -184,6 +176,14 @@ enum ScratchState {
             [button setSelected:NO];
             [button setAlpha:scratching ? 0 : 1];
             [button setBackgroundImage:highlight forState:UIControlStateSelected];
+
+            [button setImage:[UIImage imageNamed:@"answer-blank"] forState:UIControlStateNormal];
+            if (i == [self currentQuestion].correctAnswer) {
+                [button setImage:[UIImage imageNamed:@"answer-tick"] forState:UIControlStateSelected];
+            } else {
+                [button setImage:[UIImage imageNamed:@"answer-cross"] forState:UIControlStateSelected];
+            }
+            
             ++i;
         }
         for (; i < [self.answerButtons count]; ++i) {
