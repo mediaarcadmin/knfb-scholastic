@@ -162,15 +162,6 @@ enum ScratchState {
             UIImage *highlight;
             UIButton *button = [self.answerButtons objectAtIndex:i];
             
-            if (iPad == YES) {
-                [button setImage:[UIImage imageNamed:@"answer-blank"] forState:UIControlStateNormal];
-                if (i == [self currentQuestion].correctAnswer) {
-                    [button setImage:[UIImage imageNamed:@"answer-tick"] forState:UIControlStateSelected];
-                } else {
-                    [button setImage:[UIImage imageNamed:@"answer-cross"] forState:UIControlStateSelected];
-                }
-            }
-            
             if (i == [self currentQuestion].correctAnswer) {
                 highlight = [[UIImage imageNamed:@"answer-button-green"] stretchableImageWithLeftCapWidth:10 topCapHeight:0];
             } else {
@@ -184,6 +175,14 @@ enum ScratchState {
             [button setSelected:NO];
             [button setAlpha:scratching ? 0 : 1];
             [button setBackgroundImage:highlight forState:UIControlStateSelected];
+
+            [button setImage:[UIImage imageNamed:@"answer-blank"] forState:UIControlStateNormal];
+            if (i == [self currentQuestion].correctAnswer) {
+                [button setImage:[UIImage imageNamed:@"answer-tick"] forState:UIControlStateSelected];
+            } else {
+                [button setImage:[UIImage imageNamed:@"answer-cross"] forState:UIControlStateSelected];
+            }
+            
             ++i;
         }
         for (; i < [self.answerButtons count]; ++i) {
