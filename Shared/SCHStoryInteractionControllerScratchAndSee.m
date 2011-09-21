@@ -136,13 +136,14 @@ enum ScratchState {
     CGFloat contentsHeight = scratching ? 282 : 380;
     dispatch_block_t adjustments = ^{
         if (scratching) {
-            [self setTitle:NSLocalizedString(@"Scratch away the question mark to see the picture.", @"")];
             if (self.scratchState == kScratchStateFirstScratch) {
                 UIImage *image = [self imageAtPath:[[self currentQuestion] imagePath]];
                 self.scratchView.answerImage = image;
                 [self setProgressViewForScratchCount:0];
+                [self setTitle:NSLocalizedString(@"Scratch away the question mark to see the picture.", @"")];
             } else {
                 [self setProgressViewForScratchCount:kFirstScratchPointTarget];
+                [self setTitle:NSLocalizedString(@"Keep Scratching!", @"")];
             }
             self.scratchView.interactionEnabled = YES;
             self.progressView.alpha = 1;
