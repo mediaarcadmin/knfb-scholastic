@@ -230,19 +230,6 @@
         [self cancelQueuedAudioExecutingSynchronizedBlocksImmediately];
         [self enqueueAudioWithPath:[wordSearch storyInteractionCorrectAnswerSoundFilename]
                         fromBundle:YES];
-        [self enqueueAudioWithPath:[wordSearch audioPathForYouFound] fromBundle:NO];
-        [self enqueueAudioWithPath:[wordSearch audioPathForWordAtIndex:index]
-                        fromBundle:NO
-                        startDelay:0
-            synchronizedStartBlock:^{
-                [label setStrikedOut:YES];
-            }
-              synchronizedEndBlock:^{ 
-                  if ([self.remainingWords count] > 0) {
-                      self.controllerState = SCHStoryInteractionControllerStateInteractionInProgress;
-                  }
-              }];
-        
         if ([self.remainingWords count] == 0) {
             [self enqueueAudioWithPath:[wordSearch audioPathForYouFoundThemAll]
                             fromBundle:NO
@@ -250,6 +237,19 @@
                 synchronizedStartBlock:nil
                   synchronizedEndBlock:^{ 
                       [self removeFromHostView];
+                  }];
+        } else {
+            [self enqueueAudioWithPath:[wordSearch audioPathForYouFound] fromBundle:NO];
+            [self enqueueAudioWithPath:[wordSearch audioPathForWordAtIndex:index]
+                            fromBundle:NO
+                            startDelay:0
+                synchronizedStartBlock:^{
+                    [label setStrikedOut:YES];
+                }
+                  synchronizedEndBlock:^{ 
+                      if ([self.remainingWords count] > 0) {
+                          self.controllerState = SCHStoryInteractionControllerStateInteractionInProgress;
+                      }
                   }];
         }
     } else if (index == NSNotFound) {
