@@ -107,18 +107,22 @@
         if ([question isCorrect] == YES) {
             
             BOOL questionsCompleted = [self questionsCompleted];
-            
-            [self enqueueAudioWithPath:[self.storyInteraction storyInteractionCorrectAnswerSoundFilename] 
-                            fromBundle:YES 
-                            startDelay:0 
-                synchronizedStartBlock:^{ 
-                    if (questionsCompleted) {
-                        self.controllerState = SCHStoryInteractionControllerStateInteractionFinishedSuccessfully;
-                    } else {
+            if (questionsCompleted) {
+                [self enqueueAudioWithPath:@"sfx_win_y.mp3" fromBundle:YES
+                                startDelay:0
+                    synchronizedStartBlock:^{
+                          self.controllerState = SCHStoryInteractionControllerStateInteractionFinishedSuccessfully;
+                      }
+                      synchronizedEndBlock:nil];
+            } else {
+                [self enqueueAudioWithPath:[self.storyInteraction storyInteractionCorrectAnswerSoundFilename] 
+                                fromBundle:YES 
+                                startDelay:0 
+                    synchronizedStartBlock:^{ 
                         self.controllerState = SCHStoryInteractionControllerStateInteractionReadingAnswerWithoutPause;
                     }
-                }
-                  synchronizedEndBlock:nil];
+                      synchronizedEndBlock:nil];
+            }
             [self enqueueAudioWithPath:[(SCHStoryInteractionStartingLetter *)self.storyInteraction audioPathForThatsRight] fromBundle:NO];
             [self enqueueAudioWithPath:[question audioPath] fromBundle:NO];
             [self enqueueAudioWithPath:[(SCHStoryInteractionStartingLetter *)self.storyInteraction audioPathForStartsWith] fromBundle:NO];
