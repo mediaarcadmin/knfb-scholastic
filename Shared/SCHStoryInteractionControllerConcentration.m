@@ -249,6 +249,8 @@ enum {
     [tile.layer addAnimation:flip forKey:@"flip"];
     tile.layer.transform = CATransform3DMakeRotation(M_PI, 0, 1, 0);
 
+    [self enqueueAudioWithPath:@"sfx_dropOK.mp3" fromBundle:YES];
+
     self.numberOfFlips++;
 }
 
