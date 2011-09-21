@@ -205,7 +205,7 @@ enum {
 - (void)setNumberOfFlips:(NSInteger)newNumberOfFlips
 {
     numberOfFlips = newNumberOfFlips;
-    [self.flipCounterLabel setTitle:[NSString stringWithFormat:@"%d FLIPS", numberOfFlips] forState:UIControlStateNormal];
+    [self.flipCounterLabel setTitle:[NSString stringWithFormat:@"%d FLIP%s", numberOfFlips, (numberOfFlips == 1 ? "" : "S")] forState:UIControlStateNormal];
 }
 
 - (void)startOverTapped:(id)sender
@@ -272,18 +272,20 @@ enum {
         }
         self.controllerState = SCHStoryInteractionControllerStateInteractionInProgress;
     } else {
-        // flip the tiles back
-        [self enqueueAudioWithPath:[self.storyInteraction storyInteractionWrongAnswerSoundFilename]
-                        fromBundle:YES
-                        startDelay:0
-         synchronizedStartBlock:nil
-              synchronizedEndBlock:^{
-                  [tile1.layer addAnimation:[self flipAnimationFrom:M_PI to:0] forKey:@"flipBack"];
-                  [tile2.layer addAnimation:[self flipAnimationFrom:M_PI to:0] forKey:@"flipBack"];
-                  tile1.layer.transform = CATransform3DIdentity;
-                  tile2.layer.transform = CATransform3DIdentity;
-                  self.controllerState = SCHStoryInteractionControllerStateInteractionInProgress;
-              }];
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0.5*NSEC_PER_SEC), dispatch_get_main_queue(), ^{
+            // flip the tiles back
+            [tile1.layer addAnimation:[self flipAnimationFrom:M_PI to:0] forKey:@"flipBack"];
+            [tile2.layer addAnimation:[self flipAnimationFrom:M_PI to:0] forKey:@"flipBack"];
+            tile1.layer.transform = CATransform3DIdentity;
+            tile2.layer.transform = CATransform3DIdentity;
+            [self enqueueAudioWithPath:[self.storyInteraction storyInteractionWrongAnswerSoundFilename]
+                            fromBundle:YES
+                            startDelay:0
+                synchronizedStartBlock:nil
+                  synchronizedEndBlock:^{
+                      self.controllerState = SCHStoryInteractionControllerStateInteractionInProgress;
+                  }];
+        });
     }
 }
 
