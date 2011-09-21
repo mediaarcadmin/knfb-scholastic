@@ -42,11 +42,27 @@
         [self setPrimitiveState:[NSNumber numberWithStatus:kSCHStatusUnmodified]];
 	} else if (self.isInserted == NO && 
                [self.State isEqualToNumber:[NSNumber numberWithStatus:kSCHStatusDeleted]] == NO) {
-        // we made modifications, record the change
-        [self setPrimitiveLastModified:[NSDate date]];
-        // only change the state if we arnt already doing so
-        if ([[self changedValues] objectForKey:@"State"] == nil) {
-            [self setPrimitiveState:[NSNumber numberWithStatus:kSCHStatusModified]];	
+        
+        // Don't set the lastModified for any relationships
+        // Our sync model assumes that relationships don't trigger the lastModified date being set
+        NSArray *dictionaryNames = [[[self entity] relationshipsByName] allKeys];
+        NSArray *changedValues = [[self changedValues] allKeys];
+        __block BOOL setLastModified = NO;
+        
+        [changedValues enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+            if (![dictionaryNames containsObject:obj]) {
+                setLastModified = YES;
+                *stop = YES;
+            }
+        }];
+        
+        if (setLastModified) {
+            // we made modifications, record the change
+            [self setPrimitiveLastModified:[NSDate date]];
+            // only change the state if we arnt already doing so
+            if ([[self changedValues] objectForKey:@"State"] == nil) {
+                [self setPrimitiveState:[NSNumber numberWithStatus:kSCHStatusModified]];	
+            }
         }
     }
 }
