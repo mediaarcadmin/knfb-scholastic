@@ -358,8 +358,6 @@ enum {
         move.duration = 1.5;
         move.fillMode = kCAFillModeForwards;
         
-        [CATransaction begin];
-        [CATransaction setDisableActions:YES];
         self.happyPenguinLayer.hidden = NO;
         self.shockedPenguinLayer.hidden = YES;
         [self.happyPenguinLayer animateAllFramesWithDuration:1.5
@@ -370,7 +368,6 @@ enum {
         
         [self.animationContainerLayer addAnimation:move forKey:@"move"];
         self.animationContainerLayer.position = targetPosition;
-        [CATransaction commit];
     } else {
         self.happyPenguinLayer.hidden = NO;
         self.shockedPenguinLayer.hidden = YES;
@@ -583,24 +580,20 @@ enum {
                       [NSNumber numberWithInt:self.balloonsLayer.frameIndex],
                       nil];
         
-        SCHAnimationDelegate *balloonAnimationDelegate = [SCHAnimationDelegate animationDelegateWithStopBlock:^(CAAnimation *animation, BOOL finished) {
-            [CATransaction begin];
-            [CATransaction setDisableActions:YES];
-            self.happyPenguinLayer.hidden = YES;
-            self.shockedPenguinLayer.hidden = NO;
-            [self.shockedPenguinLayer animateAllFramesWithDuration:1.5
-                                                        frameOrder:nil
-                                                       autoreverse:NO
-                                                       repeatCount:1
-                                                          delegate:[self continueInteraction]];
-            [CATransaction commit];
-        }];
-            
         [self.balloonsLayer animateAllFramesWithDuration:1.5
                                               frameOrder:frameOrder
                                              autoreverse:NO
                                              repeatCount:1
-                                                delegate:balloonAnimationDelegate];
+                                                delegate:nil];
+
+        self.happyPenguinLayer.hidden = YES;
+        self.shockedPenguinLayer.hidden = NO;
+        [self.shockedPenguinLayer animateAllFramesWithDuration:1.5
+                                                    frameOrder:nil
+                                                   autoreverse:NO
+                                                   repeatCount:1
+                                                      delegate:[self continueInteraction]];
+        
         [self enqueueAudioWithPath:@"sfx_penguinpop.mp3" fromBundle:YES];
     }
     
