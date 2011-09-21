@@ -346,7 +346,6 @@ enum {
     if (self.correctLetterCount < [[self currentWord] length]) {
         
         CGFloat heightInset = self.animationContainer.frame.origin.y;
-        
         CGRect bounds = CGRectApplyAffineTransform(self.animationContainerLayer.bounds, self.animationContainerLayer.affineTransform);
         CGFloat ystep = (CGRectGetHeight(self.animationContainer.bounds) + heightInset - CGRectGetHeight(bounds))/([[self currentWord] length]-1);
         CGPoint targetPosition = CGPointMake(self.animationContainerLayer.position.x, 
@@ -356,23 +355,22 @@ enum {
         move.fromValue = [NSValue valueWithCGPoint:self.animationContainerLayer.position];
         move.toValue = [NSValue valueWithCGPoint:targetPosition];
         move.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
-        move.duration = 0.5;
+        move.duration = 1.5;
         move.fillMode = kCAFillModeForwards;
-        move.delegate = [SCHAnimationDelegate animationDelegateWithStopBlock:^(CAAnimation *animation, BOOL finished) {
-            [CATransaction begin];
-            [CATransaction setDisableActions:YES];
-            self.happyPenguinLayer.hidden = NO;
-            self.shockedPenguinLayer.hidden = YES;
-            [self.happyPenguinLayer animateAllFramesWithDuration:1.5
-                                                      frameOrder:nil
-                                                     autoreverse:NO
-                                                     repeatCount:1
-                                                        delegate:[self continueInteraction]];
-            [CATransaction commit];
-        }];
+        
+        [CATransaction begin];
+        [CATransaction setDisableActions:YES];
+        self.happyPenguinLayer.hidden = NO;
+        self.shockedPenguinLayer.hidden = YES;
+        [self.happyPenguinLayer animateAllFramesWithDuration:1.5
+                                                  frameOrder:nil
+                                                 autoreverse:NO
+                                                 repeatCount:1
+                                                    delegate:[self continueInteraction]];
         
         [self.animationContainerLayer addAnimation:move forKey:@"move"];
         self.animationContainerLayer.position = targetPosition;
+        [CATransaction commit];
     } else {
         self.happyPenguinLayer.hidden = NO;
         self.shockedPenguinLayer.hidden = YES;
