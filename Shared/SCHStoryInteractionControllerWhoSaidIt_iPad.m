@@ -133,11 +133,13 @@ static CGPoint pointWithOffset(CGPoint p, CGPoint offset)
         dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, 1.0 * NSEC_PER_SEC);
         dispatch_after(popTime, dispatch_get_main_queue(), ^{
             for (SCHStoryInteractionWhoSaidItNameView *source in self.sources) {
-                UIImageView *imageView = (UIImageView *)[source viewWithTag:kSourceImageTag];
-                [imageView setHighlighted:NO];
-                
-                // send incorrect answers back to home position
-                if (source.attachedTarget != nil && ![source attachedToCorrectTarget]) {
+                if ([source attachedToCorrectTarget]) {
+                    // lock correct answers in place
+                    source.userInteractionEnabled = NO;
+                } else if (source.attachedTarget != nil) {
+                    // send incorrect answers back to home position
+                    UIImageView *imageView = (UIImageView *)[source viewWithTag:kSourceImageTag];
+                    [imageView setHighlighted:NO];
                     [source moveToHomePosition];
                 }
             }
