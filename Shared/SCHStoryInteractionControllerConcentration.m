@@ -55,14 +55,18 @@ enum {
 
 - (BOOL)shouldPlayQuestionAudioForViewAtIndex:(NSInteger)screenIndex
 {
-    return screenIndex == 0;
+    return screenIndex == 1;
 }
 
 - (void)setupViewAtIndex:(NSInteger)index
 {
-    if (index == 1) {
-        [self setupPuzzleView];
-        [self enqueueAudioWithPath:[(SCHStoryInteractionConcentration *)self.storyInteraction audioPathForIntroduction] fromBundle:NO];
+    switch (index) {
+        case 0:
+            [self enqueueAudioWithPath:[(SCHStoryInteractionConcentration *)self.storyInteraction audioPathForIntroduction] fromBundle:NO];
+            break;
+        case 1:
+            [self setupPuzzleView];
+            break;
     }
 }
 
