@@ -24,6 +24,7 @@
 - (void)layoutWordViewsForPhone;
 - (void)letterGridTapped:(UITapGestureRecognizer *)tap;
 - (void)wordTapped:(UITapGestureRecognizer *)tap;
+- (void)highlightAndReadOutWord:(SCHStoryInteractionStrikeOutLabelView *)view;
 
 @end
 
@@ -176,22 +177,27 @@
     for (SCHStoryInteractionStrikeOutLabelView *wordView in self.wordViews) {
         wordView.layer.cornerRadius = 8;
         if (!wordView.strikedOut) {
-            [self enqueueAudioWithPath:[wordSearch audioPathForWordAtIndex:wordView.tag]
-                            fromBundle:NO
-                            startDelay:0.5
-                synchronizedStartBlock:^{
-                    [wordView setBackgroundColor:[UIColor SCHBlue2Color]];
-                    [wordView setTextColor:[UIColor whiteColor]];
-                }
-                  synchronizedEndBlock:^{
-                      [wordView setBackgroundColor:[UIColor clearColor]];
-                      [wordView setTextColor:[UIColor SCHDarkBlue1Color]];
-                      if (wordView == [self.wordViews lastObject]) {
-                          self.controllerState = SCHStoryInteractionControllerStateInteractionInProgress;
-                      }
-                  }];
+            [self highlightAndReadOutWord:wordView];
         }
     }
+}
+
+- (void)highlightAndReadOutWord:(SCHStoryInteractionStrikeOutLabelView *)wordView
+{
+    [self enqueueAudioWithPath:[(SCHStoryInteractionWordSearch *)self.storyInteraction audioPathForWordAtIndex:wordView.tag]
+                    fromBundle:NO
+                    startDelay:0.5
+        synchronizedStartBlock:^{
+            [wordView setBackgroundColor:[UIColor SCHBlue2Color]];
+            [wordView setTextColor:[UIColor whiteColor]];
+        }
+          synchronizedEndBlock:^{
+              [wordView setBackgroundColor:[UIColor clearColor]];
+              [wordView setTextColor:[UIColor SCHDarkBlue1Color]];
+              if (wordView == [self.wordViews lastObject]) {
+                  self.controllerState = SCHStoryInteractionControllerStateInteractionInProgress;
+              }
+          }];
 }
 
 
@@ -204,6 +210,11 @@
              vertically:(BOOL)vertical
 {    
     self.tapCount = 0;
+    
+    if (extent == 1) {
+        [containerView clearSelection];
+        return;
+    }
     
     SCHStoryInteractionWordSearch *wordSearch = (SCHStoryInteractionWordSearch *)self.storyInteraction;
     NSMutableString *selectedLetters = [NSMutableString string];
@@ -294,6 +305,7 @@
 - (void)letterGridTapped:(UITapGestureRecognizer *)tap
 {
     if (++self.tapCount == 3) {
+        [self cancelQueuedAudioExecutingSynchronizedBlocksImmediately];
         [self enqueueAudioWithPath:[(SCHStoryInteractionWordSearch *)self.storyInteraction dragYourFingerAudioPath] fromBundle:YES];
         self.tapCount = 0;
     }
@@ -301,8 +313,9 @@
 
 - (void)wordTapped:(UITapGestureRecognizer *)tap
 {
-    NSString *audioPath = [(SCHStoryInteractionWordSearch *)self.storyInteraction audioPathForWordAtIndex:tap.view.tag];
-    [self enqueueAudioWithPath:audioPath fromBundle:NO];
+    if (self.controllerState == SCHStoryInteractionControllerStateInteractionInProgress) {
+        [self highlightAndReadOutWord:(SCHStoryInteractionStrikeOutLabelView *)tap.view];
+    }
 }
 
 @end
