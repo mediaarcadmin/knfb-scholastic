@@ -32,7 +32,7 @@
 
 - (void)setupQuestion;
 - (SCHStoryInteractionWordMatchQuestion *)currentQuestion;
-- (BOOL)checkForCompletion;
+- (void)playWinSequenceAndClose;
 
 @end
 
@@ -114,18 +114,14 @@
     }
 }
 
-- (BOOL)checkForCompletion
+- (void)playWinSequenceAndClose
 {
-    if (self.numberOfCorrectItems == kNumberOfItems) {
-        self.controllerState = SCHStoryInteractionControllerStateInteractionFinishedSuccessfully;
-        SCHStoryInteractionWordMatch *wordMatch = (SCHStoryInteractionWordMatch *)self.storyInteraction;
-        [self playAudioAtPath:[wordMatch audioPathForGotThemAll]
-                   completion:^{
-                       [self removeFromHostView];
-                   }];
-        return YES;
-    }
-    return NO;
+    self.controllerState = SCHStoryInteractionControllerStateInteractionFinishedSuccessfully;
+    SCHStoryInteractionWordMatch *wordMatch = (SCHStoryInteractionWordMatch *)self.storyInteraction;
+    [self playAudioAtPath:[wordMatch audioPathForGotThemAll]
+               completion:^{
+                   [self removeFromHostView];
+               }];
 }
 
 #pragma mark - draggable view delegate
@@ -200,9 +196,12 @@
         [draggableView setLockedInPlace:YES];
         [draggableView setUserInteractionEnabled:NO];
         [self.occupiedTargets addObject:onTarget];
+        
+        BOOL allCorrect = (self.numberOfCorrectItems == kNumberOfItems);
+        NSString *sfxFile = allCorrect ? @"sfx_win_y.mp3" : [self.storyInteraction storyInteractionCorrectAnswerSoundFilename];
 
         SCHStoryInteractionWordMatchQuestionItem *item = [[[self currentQuestion] items] objectAtIndex:onTarget.matchTag];
-        [self enqueueAudioWithPath:[self.storyInteraction storyInteractionCorrectAnswerSoundFilename]
+        [self enqueueAudioWithPath:sfxFile
                         fromBundle:YES];
         [self enqueueAudioWithPath:[item audioPath]
                         fromBundle:NO];
@@ -211,7 +210,9 @@
                         startDelay:0
             synchronizedStartBlock:nil
               synchronizedEndBlock:^{
-                  if (![self checkForCompletion]) {
+                  if (allCorrect) {
+                      [self playWinSequenceAndClose];
+                  } else {
                       self.controllerState = SCHStoryInteractionControllerStateInteractionInProgress;
                   }
               }];
