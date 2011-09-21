@@ -11,7 +11,7 @@
 
 #import "SCHProfileItem.h"
 #import "MRGridViewDelegate.h"
-#import "MRGridViewDataSource.h"
+#import "SCHBookShelfGridViewDataSource.h"
 #import "SCHBookShelfTableViewCell.h"
 
 @class SCHBookShelfGridView;
@@ -21,7 +21,7 @@
 @class SCHReadingViewController;
 @class SCHBookIdentifier;
 
-@interface SCHBookShelfViewController : UIViewController <MRGridViewDelegate, MRGridViewDataSource, UITableViewDelegate, SCHBookShelfTableViewCellDelegate, UITableViewDataSource> 
+@interface SCHBookShelfViewController : UIViewController <MRGridViewDelegate, SCHBookShelfGridViewDataSource, UITableViewDelegate, SCHBookShelfTableViewCellDelegate, UITableViewDataSource> 
 {
 }
 
