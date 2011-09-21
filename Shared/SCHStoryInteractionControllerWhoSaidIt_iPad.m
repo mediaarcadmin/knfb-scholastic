@@ -34,6 +34,8 @@ static CGPoint pointWithOffset(CGPoint p, CGPoint offset)
 @property (nonatomic, assign) CGPoint sourceCenterOffset;
 @property (nonatomic, assign) CGPoint targetCenterOffset;
 
+- (void)setCheckAnswersButtonEnabledState;
+
 @end
 
 @implementation SCHStoryInteractionControllerWhoSaidIt_iPad
@@ -93,6 +95,8 @@ static CGPoint pointWithOffset(CGPoint p, CGPoint offset)
         source.homePosition = source.center;
         index++;
     }
+    
+    [self.checkAnswersButton setEnabled:NO];
 }
 
 - (void)checkAnswers:(id)sender
@@ -137,6 +141,7 @@ static CGPoint pointWithOffset(CGPoint p, CGPoint offset)
                     [source moveToHomePosition];
                 }
             }
+            [self setCheckAnswersButtonEnabledState];
         });
     }
 }
@@ -149,6 +154,18 @@ static CGPoint pointWithOffset(CGPoint p, CGPoint offset)
         }
     }
     return nil;
+}
+
+- (void)setCheckAnswersButtonEnabledState
+{
+    BOOL anyAnswersOnTargets = NO;
+    for (SCHStoryInteractionWhoSaidItNameView *source in self.sources) {
+        if (source.attachedTarget != nil) {
+            anyAnswersOnTargets = YES;
+            break;
+        }
+    }
+    self.checkAnswersButton.enabled = anyAnswersOnTargets;
 }
 
 #pragma mark - draggable view delegate
@@ -194,6 +211,7 @@ static CGPoint pointWithOffset(CGPoint p, CGPoint offset)
     }
     
     [self playBundleAudioWithFilename:@"sfx_dropOK.mp3" completion:nil];
+    [self setCheckAnswersButtonEnabledState];
 }
 
 #pragma mark - Override for SCHStoryInteractionControllerStateReactions
