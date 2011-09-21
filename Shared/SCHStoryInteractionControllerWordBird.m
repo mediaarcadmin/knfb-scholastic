@@ -46,8 +46,6 @@ enum {
 - (void)didComplete;
 - (void)movePenguinHigher;
 - (void)popBalloon;
-- (void)showPlayAgainButton;
-- (void)playAgainTapped:(id)sender;
 
 @end
 
@@ -410,7 +408,9 @@ enum {
         // not fitting in the maximum texture size
         // Actually they have been reduced in size so could be combined but the 3 stages lets a frameOrder to be specified for 2 out of 3 stages
         SCHAnimationDelegate *step2delegate = [SCHAnimationDelegate animationDelegateWithStopBlock:^(CAAnimation *animation, BOOL finished) {
-            [self showPlayAgainButton];
+            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 1.0*NSEC_PER_SEC), dispatch_get_main_queue(), ^{
+                [self removeFromHostView];
+            });
         }];
         SCHAnimationDelegate *step1delegate = [SCHAnimationDelegate animationDelegateWithStopBlock:^(CAAnimation *animation, BOOL finished) {
             [CATransaction begin];
@@ -600,33 +600,6 @@ enum {
     [CATransaction commit];
     
     self.remainingBalloonCount--;
-}
-
-- (void)showPlayAgainButton
-{
-    UIButton *playAgain = [UIButton buttonWithType:UIButtonTypeCustom];
-    playAgain.frame = self.contentsView.bounds;
-    [playAgain addTarget:self action:@selector(playAgainTapped:) forControlEvents:UIControlEventTouchUpInside];
-    [self.contentsView addSubview:playAgain];
-    self.controllerState = SCHStoryInteractionControllerStateInteractionInProgress;
-}
-
-- (void)playAgainTapped:(UIButton *)sender
-{
-    [sender removeFromSuperview];
-    for (SCHStoryInteractionWordBirdAnswerLetterView *answer in [self.answerContainer subviews]) {
-        answer.letter = ' ';
-    }
-    for (SCHStoryInteractionWordBirdLetterView *letter in [self.lettersContainer subviews]) {
-        [letter removeHighlight];
-        [letter setUserInteractionEnabled:YES];
-    }
-    
-    self.correctLetterCount = 0;
-    self.remainingBalloonCount = kNumberOfBalloons;
-
-    [self.animationContainerLayer removeFromSuperlayer];
-    [self setupAnimationView];
 }
 
 @end
