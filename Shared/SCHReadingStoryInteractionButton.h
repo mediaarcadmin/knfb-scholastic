@@ -19,6 +19,8 @@ typedef enum SCHReadingStoryInteractionButtonFillLevel {
     
 }
 
-- (void)setFillLevel:(SCHReadingStoryInteractionButtonFillLevel)level forYounger:(BOOL)younger animated:(BOOL)animated withSound:(BOOL)withSound;
+@property (nonatomic, readonly) SCHReadingStoryInteractionButtonFillLevel fillLevel;
+
+- (void)setFillLevel:(SCHReadingStoryInteractionButtonFillLevel)level forYounger:(BOOL)younger animated:(BOOL)animated;
 
 @end

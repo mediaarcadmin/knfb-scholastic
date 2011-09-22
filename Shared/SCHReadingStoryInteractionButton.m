@@ -8,11 +8,17 @@
 
 #import "SCHReadingStoryInteractionButton.h"
 
+@interface SCHReadingStoryInteractionButton()
+
+@property (nonatomic, assign) SCHReadingStoryInteractionButtonFillLevel fillLevel;
+
+@end
 
 @implementation SCHReadingStoryInteractionButton
 
+@synthesize fillLevel;
 
-- (void)setFillLevel:(SCHReadingStoryInteractionButtonFillLevel)level forYounger:(BOOL)younger animated:(BOOL)animated withSound:(BOOL)withSound
+- (void)setFillLevel:(SCHReadingStoryInteractionButtonFillLevel)level forYounger:(BOOL)younger animated:(BOOL)animated
 {
     NSString *imagePrefix;
     
@@ -22,33 +28,26 @@
         imagePrefix = @"old";
     }
     
-    NSUInteger fillLevel;
+    NSUInteger newFillLevel;
     
     switch (level) {
         case kSCHReadingStoryInteractionButtonFillLevelOneThird:
-            fillLevel = 1;
+            newFillLevel = 1;
             break;
         case kSCHReadingStoryInteractionButtonFillLevelTwoThirds:
-            fillLevel = 2;
+            newFillLevel = 2;
             break;
         case kSCHReadingStoryInteractionButtonFillLevelFull:
-            fillLevel = 3;
+            newFillLevel = 3;
             break;
         default:
-            fillLevel = 0;
+            newFillLevel = 0;
             break;
     }
+        
+    [self setImage:[UIImage imageNamed:[NSString stringWithFormat:@"%@-lightning-bolt-%d", imagePrefix, newFillLevel]] forState:UIControlStateNormal];
     
-    if (animated) {
-        [CATransaction begin];
-        [CATransaction setAnimationDuration:5];
-    }
-    
-    [self setImage:[UIImage imageNamed:[NSString stringWithFormat:@"%@-lightning-bolt-%d", imagePrefix, fillLevel]] forState:UIControlStateNormal];
-    
-    if (animated) {
-        [CATransaction commit];
-    }
+    fillLevel = newFillLevel;
 }
 
 @end

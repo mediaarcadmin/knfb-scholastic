@@ -1249,11 +1249,12 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     NSInteger interactionsDone = [self.bookStoryInteractions storyInteractionQuestionsCompletedForPage:page];
     
     // only play sounds if the appearance is animated
-    BOOL playSounds = animated;
+    BOOL playAppearanceSound = animated;
+    BOOL playFillSound = animated;
     
     // override this if we've already played a sound for this page
     if (self.lastPageInteractionSoundPlayedOn == page) {
-        playSounds = NO;
+        playAppearanceSound = NO;
     }
 
     self.lastPageInteractionSoundPlayedOn = page;
@@ -1264,14 +1265,15 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
         [self setStoryInteractionButtonVisible:NO animated:NO withSound:NO completion:nil];
     } else if (totalInteractionCount < 1) {
         // No interactions. Hiding button with animation
-        [self setStoryInteractionButtonVisible:NO animated:YES withSound:playSounds completion:nil];
+        [self setStoryInteractionButtonVisible:NO animated:YES withSound:playAppearanceSound completion:nil];
     } else {
         
         BOOL animated = YES;
         
         if (totalInteractionCount >= 1 && (self.audioBookPlayer && self.audioBookPlayer.playing)) {
             // Interactions while reading. Showing button without animation
-            playSounds = NO;
+            playAppearanceSound = NO;
+            playFillSound = NO;
             animated = NO;
         } // else Interactions while not reading. Showing button with animation
         
@@ -1299,9 +1301,25 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
             fillLevel = kSCHReadingStoryInteractionButtonFillLevelEmpty;                
         }
                 
-        [self setStoryInteractionButtonVisible:YES animated:animated withSound:playSounds completion:^(BOOL finished){
+        [self setStoryInteractionButtonVisible:YES animated:animated withSound:playAppearanceSound completion:^(BOOL finished){
             
-            [self.storyInteractionButton setFillLevel:fillLevel forYounger:self.youngerMode animated:animated withSound:playSounds];
+            if (self.storyInteractionButton.fillLevel != fillLevel) {
+                if (playFillSound) {
+                    NSString *audioFilename = @"sfx_si_fill";
+                    NSString *bundlePath = [[NSBundle mainBundle] pathForResource:audioFilename ofType:@"mp3"];
+                    
+                    [self.queuedAudioPlayer enqueueAudioTaskWithFetchBlock:^NSData*(void){
+                        return [NSData dataWithContentsOfFile:bundlePath
+                                                      options:NSDataReadingMapped
+                                                        error:nil];
+                    }
+                                                    synchronizedStartBlock:nil
+                                                      synchronizedEndBlock:nil];
+
+                }
+            }
+            
+            [self.storyInteractionButton setFillLevel:fillLevel forYounger:self.youngerMode animated:animated];
             
             CGRect buttonFrame = self.storyInteractionButtonView.frame;
             buttonFrame.size = [self.storyInteractionButton imageForState:UIControlStateNormal].size;
