@@ -218,11 +218,21 @@ NSString * const SCHAnnotationSyncComponentCompletedProfileIDs = @"SCHAnnotation
             managedObjectID = [self.createdAnnotations objectAtIndex:0];
             if (managedObjectID != nil) {
                 annotationManagedObject = [self.managedObjectContext objectWithID:managedObjectID];
-                [annotationManagedObject setValue:[annotation objectForKey:kSCHLibreAccessWebServiceID] forKey:kSCHLibreAccessWebServiceID];
+                if ([[[annotation objectForKey:kSCHLibreAccessWebServiceStatusMessage] objectForKey:kSCHLibreAccessWebServiceStatus] statusCodeValue] == kSCHStatusCodesSuccess) {
+                    NSNumber *annotationID = [self makeNullNil:[annotation objectForKey:kSCHLibreAccessWebServiceID]];
+                    if (annotationID != nil) {
+                        [annotationManagedObject setValue:annotationID forKey:kSCHLibreAccessWebServiceID];
+                    } else {
+                        [self.managedObjectContext deleteObject:annotationManagedObject];
+                    }
+                } else {
+                    [self.managedObjectContext deleteObject:annotationManagedObject];
+                }
             }
             [self.createdAnnotations removeObjectAtIndex:0];
         }
     }
+    [self save];
 }
 
 - (void)method:(NSString *)method didFailWithError:(NSError *)error 
