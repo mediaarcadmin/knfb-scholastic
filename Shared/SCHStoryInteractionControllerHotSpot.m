@@ -17,8 +17,9 @@
 
 @property (nonatomic, retain) UIView *answerMarkerView;
 @property (nonatomic, copy) dispatch_block_t zoomCompletionHandler;
-@property (nonatomic, assign) CGAffineTransform viewToPageTransform;
 
+- (CGAffineTransform)viewToPageTransform;
+- (SCHStoryInteractionHotSpotQuestion *)currentQuestion;
 - (void)incorrectTapAtPoint:(CGPoint)point;
 - (void)correctTapAtPoint:(CGPoint)point;
 
@@ -30,7 +31,6 @@
 @synthesize pageImageView;
 @synthesize answerMarkerView;
 @synthesize zoomCompletionHandler;
-@synthesize viewToPageTransform;
 
 - (void)dealloc
 {
@@ -42,14 +42,25 @@
     [super dealloc];
 }
 
-- (SCHFrameStyle)frameStyleForViewAtIndex:(NSInteger)viewIndex
-{
-    return SCHStoryInteractionTitleOverlaysContents;
-}
-
 - (BOOL)shouldShowSnapshotOfReadingViewInBackground
 {
     return NO;
+}
+
+- (CGAffineTransform)viewToPageTransform
+{
+    return [self.delegate viewToPageTransformForLayoutPage:self.storyInteraction.documentPageNumber];
+}
+
+- (SCHFrameStyle)frameStyleForViewAtIndex:(NSInteger)viewIndex
+{
+    CGRect frameInPageCoords = CGRectApplyAffineTransform([self overlaidTitleFrame], [self viewToPageTransform]);
+    CGRect hotspotRect = [self currentQuestion].hotSpotRect;
+    if (CGRectIntersectsRect(hotspotRect, frameInPageCoords)) {
+        return SCHStoryInteractionTitleOverlaysContentsAtBottom;
+    } else {
+        return SCHStoryInteractionTitleOverlaysContentsAtTop;
+    }
 }
 
 - (CGRect)overlaidTitleFrame
@@ -76,7 +87,6 @@
 {
     [self setTitle:[[self currentQuestion] prompt]];
     self.pageImageView.image = [self.delegate currentPageSnapshot];
-    self.viewToPageTransform = [self.delegate viewToPageTransformForLayoutPage:self.storyInteraction.documentPageNumber];
     
     UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(imageTapped:)];
     [tap setDelegate:self];
@@ -126,7 +136,7 @@
 
 - (CGPoint)viewToPage:(CGPoint)pointInView;
 {
-    return CGPointApplyAffineTransform(pointInView, self.viewToPageTransform);
+    return CGPointApplyAffineTransform(pointInView, [self viewToPageTransform]);
 }
 
 - (void)imageTapped:(UITapGestureRecognizer *)tap

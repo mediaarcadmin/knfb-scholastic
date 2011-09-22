@@ -1265,20 +1265,15 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
             imagePrefix = @"old";
         }
         
-        if (questionCount < 2) {
-            if (interactionsFinished) {
-                [self.storyInteractionButton setImage:[UIImage imageNamed:[NSString stringWithFormat:@"%@-lightning-bolt-3", imagePrefix]] forState:UIControlStateNormal];
+        if (interactionsFinished) {
+            [self.storyInteractionButton setImage:[UIImage imageNamed:[NSString stringWithFormat:@"%@-lightning-bolt-3", imagePrefix]] forState:UIControlStateNormal];
+        } else {
+            if (questionCount == 3) {
+                [self.storyInteractionButton setImage:[UIImage imageNamed:[NSString stringWithFormat:@"%@-lightning-bolt-%d", imagePrefix, interactionsDone]] forState:UIControlStateNormal];
             } else {
                 [self.storyInteractionButton setImage:[UIImage imageNamed:[NSString stringWithFormat:@"%@-lightning-bolt-0", imagePrefix]] forState:UIControlStateNormal];
             }
-        } else {
-            if (interactionsFinished && interactionsDone == questionCount) {
-                [self.storyInteractionButton setImage:[UIImage imageNamed:[NSString stringWithFormat:@"%@-lightning-bolt-3", imagePrefix]] forState:UIControlStateNormal];
-            } else {
-                [self.storyInteractionButton setImage:[UIImage imageNamed:[NSString stringWithFormat:@"%@-lightning-bolt-%d", imagePrefix, interactionsDone]] forState:UIControlStateNormal];
-            }
         }
-        
         
         CGRect buttonFrame = self.storyInteractionButtonView.frame;
         buttonFrame.size = [self.storyInteractionButton imageForState:UIControlStateNormal].size;
