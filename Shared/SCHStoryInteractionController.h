@@ -40,7 +40,8 @@ typedef enum
     SCHStoryInteractionTransparentTitle,
     SCHStoryInteractionNoTitle,
     SCHStoryInteractionFullScreen,
-    SCHStoryInteractionTitleOverlaysContents
+    SCHStoryInteractionTitleOverlaysContentsAtTop,
+    SCHStoryInteractionTitleOverlaysContentsAtBottom
 } SCHFrameStyle;
 
 // on SIs with multiple answer buttons, any selections within this

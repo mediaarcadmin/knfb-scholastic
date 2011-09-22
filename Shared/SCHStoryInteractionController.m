@@ -29,6 +29,7 @@
 @property (nonatomic, retain) SCHQueuedAudioPlayer *audioPlayer;
 @property (nonatomic, retain) UIView *shadeView;
 
+- (BOOL)currentFrameStyleOverlaysContents;
 - (void)setupGeometryForContentsView:(UIView *)contents contentsSize:(CGSize)contentsSize;
 - (CGSize)maximumContentsSize;
 - (UIImage *)backgroundImage;
@@ -204,7 +205,7 @@ static Class controllerClassForStoryInteraction(SCHStoryInteraction *storyIntera
 - (void)presentInHostView:(UIView *)hostView withInterfaceOrientation:(UIInterfaceOrientation)aInterfaceOrientation
 {
     // dim the host view
-    if ([self frameStyleForViewAtIndex:self.currentScreenIndex] != SCHStoryInteractionTitleOverlaysContents && self.shadeView == nil) {
+    if (![self currentFrameStyleOverlaysContents] && self.shadeView == nil) {
         UIView *shade = [[UIView alloc] initWithFrame:hostView.bounds];
         shade.backgroundColor = [UIColor colorWithWhite:0 alpha:0.5];
         shade.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
@@ -294,7 +295,7 @@ static Class controllerClassForStoryInteraction(SCHStoryInteraction *storyIntera
     
     if (self.contentsView != nil) {
         // if required, animate the transition between screens
-        NSAssert([self frameStyleForViewAtIndex:self.currentScreenIndex] != SCHStoryInteractionTitleOverlaysContents, @"can't have multiple views with SCHStoryInteractionTitleOverlaysContents");
+        NSAssert(![self currentFrameStyleOverlaysContents], @"can't have multiple views with SCHStoryInteractionTitleOverlaysContentsAtTop/Bottom");
         UIView *oldContentsView = self.contentsView;
         newContentsView.alpha = 0;
         newContentsView.transform = CGAffineTransformMakeScale(CGRectGetWidth(oldContentsView.bounds)/CGRectGetWidth(newContentsView.bounds),
@@ -314,7 +315,7 @@ static Class controllerClassForStoryInteraction(SCHStoryInteraction *storyIntera
         }
     } else {
         setupViews();
-        if ([self frameStyleForViewAtIndex:self.currentScreenIndex] == SCHStoryInteractionTitleOverlaysContents) {
+        if ([self currentFrameStyleOverlaysContents]) {
             [self.containerView addSubview:newContentsView];
             [self.backgroundView setUserInteractionEnabled:NO];
         } else {
@@ -445,7 +446,7 @@ static Class controllerClassForStoryInteraction(SCHStoryInteraction *storyIntera
     container.center = CGPointMake(floor(CGRectGetMidX(superviewBounds)), floor(CGRectGetMidY(superviewBounds)));
     
     CGFloat backgroundWidth, backgroundHeight;
-    switch ([self frameStyleForViewAtIndex:self.currentScreenIndex]) {
+    switch (currentFrameStyle) {
         case SCHStoryInteractionFullScreen: {
             CGSize size = [UIScreen mainScreen].bounds.size;  
             backgroundWidth = size.height;
@@ -467,7 +468,7 @@ static Class controllerClassForStoryInteraction(SCHStoryInteraction *storyIntera
             contents.center = CGPointMake(floorf(backgroundWidth/2), floorf((backgroundHeight-contentInsets.top-contentInsets.bottom)/2+contentInsets.top));
             break;
         }
-        case SCHStoryInteractionTitleOverlaysContents: {
+        case SCHStoryInteractionTitleOverlaysContentsAtTop: {
             CGRect titleFrame = [self overlaidTitleFrame];
             if (iPad) {
                 backgroundWidth = MAX(background.image.size.width, titleFrame.size.width);
@@ -485,14 +486,41 @@ static Class controllerClassForStoryInteraction(SCHStoryInteraction *storyIntera
             title.frame = UIEdgeInsetsInsetRect((CGRect){CGPointZero, titleFrame.size}, titleInsets);
             break;
         }
+        case SCHStoryInteractionTitleOverlaysContentsAtBottom: {
+            CGRect titleFrame = [self overlaidTitleFrame];
+            if (iPad) {
+                backgroundWidth = MAX(background.image.size.width, titleFrame.size.width);
+                backgroundHeight = MAX(background.image.size.height, titleFrame.size.height);
+                background.center = CGPointMake(floorf(CGRectGetMidX(titleFrame)), floorf(CGRectGetMidY(titleFrame)));
+            } else {
+                backgroundWidth = background.image.size.width;
+                backgroundHeight = background.image.size.height;
+                background.center = CGPointMake(floorf(CGRectGetMidX(container.bounds)), floorf(CGRectGetMidY(container.bounds)));
+                background.transform = CGAffineTransformMakeRotation(M_PI);
+            }
+            background.bounds = CGRectIntegral(CGRectMake(0, 0, backgroundWidth, backgroundHeight));
+            contents.bounds = container.bounds;
+            contents.center = CGPointMake(floorf(CGRectGetMidX(container.bounds)), floorf(CGRectGetMidY(container.bounds)));
+            titleInsets.top = titleInsets.bottom;
+            title.frame = UIEdgeInsetsInsetRect((CGRect){CGPointZero, titleFrame.size}, titleInsets);
+            title.transform = CGAffineTransformMakeRotation(M_PI);
+            break;
+        }
+    }
+
+    UIImage *closeImage = [close imageForState:UIControlStateNormal];
+
+    closePosition.x += background.frame.origin.x;
+    readAloudPosition.x += background.frame.origin.x;
+    
+    if (currentFrameStyle == SCHStoryInteractionTitleOverlaysContentsAtBottom) {
+        closePosition.y = CGRectGetMaxY(background.frame) - closePosition.y - closeImage.size.height;
+        readAloudPosition.y = CGRectGetMaxY(background.frame) - readAloudPosition.y - CGRectGetHeight(readAloud.bounds);
+    } else {
+        closePosition.y += background.frame.origin.y;
+        readAloudPosition.y += background.frame.origin.y;
     }
     
-    closePosition.x += background.frame.origin.x;
-    closePosition.y += background.frame.origin.y;
-    readAloudPosition.x += background.frame.origin.x;
-    readAloudPosition.y += background.frame.origin.y;
-    
-    UIImage *closeImage = [close imageForState:UIControlStateNormal];
     close.bounds = (CGRect){ CGPointZero, closeImage.size };
     close.center = CGPointMake(floorf(closePosition.x+closeImage.size.width/2), floorf(closePosition.y+closeImage.size.height/2));
     
@@ -526,7 +554,8 @@ static Class controllerClassForStoryInteraction(SCHStoryInteraction *storyIntera
         case SCHStoryInteractionTransparentTitle:
             suffix = @"-notitle";
             break;
-        case SCHStoryInteractionTitleOverlaysContents:
+        case SCHStoryInteractionTitleOverlaysContentsAtTop:
+        case SCHStoryInteractionTitleOverlaysContentsAtBottom:
             suffix = @"-titleonly";
             break;
         default:
@@ -539,6 +568,12 @@ static Class controllerClassForStoryInteraction(SCHStoryInteraction *storyIntera
     UIImage *backgroundStretch = [backgroundImage stretchableImageWithLeftCapWidth:backgroundImage.size.width/2-1
                                                                       topCapHeight:backgroundImage.size.height/2-1];
     return backgroundStretch;
+}
+
+- (BOOL)currentFrameStyleOverlaysContents
+{
+    SCHFrameStyle style = [self frameStyleForViewAtIndex:self.currentScreenIndex];
+    return (style == SCHStoryInteractionTitleOverlaysContentsAtTop || style == SCHStoryInteractionTitleOverlaysContentsAtBottom);
 }
 
 #pragma mark - actions
