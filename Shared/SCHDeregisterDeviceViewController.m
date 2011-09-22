@@ -227,11 +227,16 @@ static const CGFloat kDeregisterContentHeightLandscape = 380;
 
 - (void)authenticationManagerDidFailDeregistration:(NSNotification *)notification
 {
+    [self.spinner stopAnimating];
     NSError *error = [[notification userInfo] objectForKey:kSCHAuthenticationManagerNSError];
     LambdaAlert *alert = [[LambdaAlert alloc]
                           initWithTitle:NSLocalizedString(@"Error", @"Error") 
                           message:[error localizedDescription]];
-    [alert addButtonWithTitle:NSLocalizedString(@"OK", @"OK") block:^{}];
+    [alert addButtonWithTitle:NSLocalizedString(@"OK", @"OK") block:^{
+        [self setEnablesBackButton:YES];
+        self.forgotPasswordURL.enabled = YES;
+        [self.deregisterButton setEnabled:YES];        
+    }];
     [alert show];
     [alert release];
 }
