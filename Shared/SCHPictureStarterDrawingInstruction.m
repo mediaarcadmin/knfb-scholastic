@@ -41,7 +41,7 @@
 
 - (void)setScale:(CGFloat)scale
 {
-    self.size /= scale;
+    self.size = MAX(self.size / scale, 0.1f);
 }
 
 - (void)updatePosition:(CGPoint)point

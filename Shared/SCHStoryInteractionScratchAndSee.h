@@ -28,6 +28,9 @@
 // XPSProvider-relative path for "What do you see?"
 - (NSString *)whatDoYouSeeAudioPath;
 
+// XPSProvider-releative path for "That's right"
+- (NSString *)thatsRightAudioPath;
+
 // XPSProvider-relative path for "That's not it"
 - (NSString *)thatsNotItAudioPath;
 

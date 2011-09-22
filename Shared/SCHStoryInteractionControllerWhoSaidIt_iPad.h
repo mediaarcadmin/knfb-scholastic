@@ -18,6 +18,7 @@
 @property (nonatomic, retain) IBOutletCollection(SCHStoryInteractionDraggableView) NSArray *sources;
 @property (nonatomic, retain) IBOutletCollection(SCHStoryInteractionDraggableTargetView) NSArray *targets;
 @property (nonatomic, retain) IBOutlet UIButton *checkAnswersButton;
+@property (nonatomic, retain) IBOutlet UILabel *winMessageLabel;
 
 - (IBAction)checkAnswers:(id)sender;
 

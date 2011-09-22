@@ -35,6 +35,7 @@
 
 // override in subclasses
 - (void)setupOpeningScreen;
+- (void)setupDrawingScreen;
 - (UIImage *)drawingBackgroundImage;
 
 @end

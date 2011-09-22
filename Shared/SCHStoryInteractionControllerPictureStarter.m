@@ -39,7 +39,6 @@ enum SCHToolType {
 @property (nonatomic, retain) UIActionSheet *doneActionSheet;
 @property (nonatomic, assign) BOOL drawingChanged;
 
-- (void)setupDrawingScreen;
 - (void)savePicture:(void(^)(BOOL success))completionBlock;
 - (void)close;
 
@@ -135,6 +134,7 @@ enum SCHToolType {
     switch (screenIndex) {
         case 0 :
             [self setupOpeningScreen];
+            [self enqueueAudioWithPath:[(SCHStoryInteractionPictureStarter *)self.storyInteraction audioPathForIntroduction] fromBundle:NO];
             break;
         case 1:
             [self setupDrawingScreen];

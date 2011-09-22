@@ -10,18 +10,18 @@
 
 @interface SCHStoryInteractionPictureStarter : SCHStoryInteraction {}
 
-@property (nonatomic, retain) NSArray *introductions;
-
-- (NSString *)introductionAtIndex:(NSInteger)index;
-- (NSString *)audioPathAtIndex:(NSInteger)index;
-- (NSString *)imagePathAtIndex:(NSInteger)index;
+- (NSString *)audioPathForIntroduction;
 - (NSString *)audioPathForClearThisPicture;
 
 @end
 
 @interface SCHStoryInteractionPictureStarterCustom : SCHStoryInteractionPictureStarter {}
 
-- (NSString *)audioPathForChooseYourPicture;
+@property (nonatomic, retain) NSArray *introductions;
+
+- (NSString *)introductionAtIndex:(NSInteger)index;
+- (NSString *)audioPathAtIndex:(NSInteger)index;
+- (NSString *)imagePathAtIndex:(NSInteger)index;
 
 @end
 

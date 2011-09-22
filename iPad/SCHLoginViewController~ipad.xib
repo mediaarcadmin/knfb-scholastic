@@ -70,7 +70,7 @@
 										<int key="IBUIContentMode">7</int>
 										<bool key="IBUIUserInteractionEnabled">NO</bool>
 										<string key="targetRuntimeIdentifier">IBIPadFramework</string>
-										<string key="IBUIText">Welcome to the Scholastic eReader!</string>
+										<string key="IBUIText">Sign In</string>
 										<object class="NSFont" key="IBUIFont">
 											<string key="NSName">Arial-BoldMT</string>
 											<double key="NSSize">20</double>
@@ -201,7 +201,7 @@
 										<string key="NSFrame">{{156, 187}, {228, 51}}</string>
 										<reference key="NSSuperview" ref="135206302"/>
 										<reference key="NSWindow"/>
-										<reference key="NSNextKeyView" ref="352382970"/>
+										<reference key="NSNextKeyView"/>
 										<reference key="IBUIBackgroundColor" ref="703732805"/>
 										<bool key="IBUIOpaque">NO</bool>
 										<bool key="IBUIClipsSubviews">YES</bool>
@@ -224,67 +224,10 @@
 										<reference key="IBUIBackground" ref="214245478"/>
 										<int key="IBUIClearButtonMode">1</int>
 									</object>
-									<object class="IBUIButton" id="352382970">
-										<reference key="NSNextResponder" ref="135206302"/>
-										<int key="NSvFlags">293</int>
-										<string key="NSFrame">{{20, 253}, {500, 22}}</string>
-										<reference key="NSSuperview" ref="135206302"/>
-										<reference key="NSWindow"/>
-										<reference key="NSNextKeyView" ref="262213976"/>
-										<bool key="IBUIOpaque">NO</bool>
-										<string key="targetRuntimeIdentifier">IBIPadFramework</string>
-										<int key="IBUIContentHorizontalAlignment">0</int>
-										<int key="IBUIContentVerticalAlignment">0</int>
-										<object class="NSFont" key="IBUIFont" id="925582171">
-											<string key="NSName">ArialMT</string>
-											<double key="NSSize">14</double>
-											<int key="NSfFlags">16</int>
-										</object>
-										<bool key="IBUIAdjustsImageWhenHighlighted">NO</bool>
-										<bool key="IBUIAdjustsImageWhenDisabled">NO</bool>
-										<string key="IBUINormalTitle">Forgot your username or password?</string>
-										<object class="NSColor" key="IBUIHighlightedTitleColor">
-											<int key="NSColorSpace">2</int>
-											<bytes key="NSRGB">MCAwLjY4MjM1Mjk0MTIgMC45MzcyNTQ5MDIAA</bytes>
-										</object>
-										<object class="NSColor" key="IBUINormalTitleColor">
-											<int key="NSColorSpace">2</int>
-											<bytes key="NSRGB">MC4xMzMzMzMzNDAzIDAuNTYwNzg0MzM5OSAwLjgyMzUyOTQ4MTkAA</bytes>
-										</object>
-										<object class="NSColor" key="IBUINormalTitleShadowColor" id="231749632">
-											<int key="NSColorSpace">3</int>
-											<bytes key="NSWhite">MC41AA</bytes>
-										</object>
-									</object>
-									<object class="IBUIButton" id="262213976">
-										<reference key="NSNextResponder" ref="135206302"/>
-										<int key="NSvFlags">293</int>
-										<string key="NSFrame">{{20, 277}, {500, 22}}</string>
-										<reference key="NSSuperview" ref="135206302"/>
-										<reference key="NSWindow"/>
-										<reference key="NSNextKeyView" ref="256814430"/>
-										<bool key="IBUIOpaque">NO</bool>
-										<string key="targetRuntimeIdentifier">IBIPadFramework</string>
-										<int key="IBUIContentHorizontalAlignment">0</int>
-										<int key="IBUIContentVerticalAlignment">0</int>
-										<reference key="IBUIFont" ref="925582171"/>
-										<bool key="IBUIAdjustsImageWhenHighlighted">NO</bool>
-										<bool key="IBUIAdjustsImageWhenDisabled">NO</bool>
-										<string key="IBUINormalTitle">Don't have a Scholastic Book Club Account?</string>
-										<object class="NSColor" key="IBUIHighlightedTitleColor">
-											<int key="NSColorSpace">2</int>
-											<bytes key="NSRGB">MCAwLjY4MjM1Mjk0MTIgMC45MzcyNTQ5MDIAA</bytes>
-										</object>
-										<object class="NSColor" key="IBUINormalTitleColor">
-											<int key="NSColorSpace">2</int>
-											<bytes key="NSRGB">MC4xMzMzMzMzNDAzIDAuNTYwNzg0MzM5OSAwLjgyMzUyOTQ4MTkAA</bytes>
-										</object>
-										<reference key="IBUINormalTitleShadowColor" ref="231749632"/>
-									</object>
 									<object class="IBUIButton" id="256814430">
 										<reference key="NSNextResponder" ref="135206302"/>
 										<int key="NSvFlags">293</int>
-										<string key="NSFrame">{{217, 318}, {106, 48}}</string>
+										<string key="NSFrame">{{217, 283}, {106, 48}}</string>
 										<reference key="NSSuperview" ref="135206302"/>
 										<reference key="NSWindow"/>
 										<reference key="NSNextKeyView" ref="662128954"/>
@@ -308,7 +251,10 @@
 											<int key="NSColorSpace">1</int>
 											<bytes key="NSRGB">MSAxIDEAA</bytes>
 										</object>
-										<reference key="IBUINormalTitleShadowColor" ref="231749632"/>
+										<object class="NSColor" key="IBUINormalTitleShadowColor">
+											<int key="NSColorSpace">3</int>
+											<bytes key="NSWhite">MC41AA</bytes>
+										</object>
 										<object class="NSCustomResource" key="IBUINormalBackgroundImage">
 											<string key="NSClassName">NSImage</string>
 											<string key="NSResourceName">button-blue.png</string>
@@ -326,7 +272,7 @@
 										<int key="IBUIContentMode">7</int>
 										<bool key="IBUIUserInteractionEnabled">NO</bool>
 										<string key="targetRuntimeIdentifier">IBIPadFramework</string>
-										<string key="IBUIText">To start reading, enter your Scholastic Book Clubs User Name and Password.</string>
+										<string key="IBUIText">To start reading your eBooks, enter your Scholastic Book Clubs User Name and Password.</string>
 										<object class="NSFont" key="IBUIFont">
 											<string key="NSName">Arial-BoldMT</string>
 											<double key="NSSize">17</double>
@@ -340,11 +286,12 @@
 										<int key="IBUIBaselineAdjustment">1</int>
 										<float key="IBUIMinimumFontSize">10</float>
 										<int key="IBUINumberOfLines">2</int>
+										<int key="IBUITextAlignment">1</int>
 									</object>
 									<object class="IBUIActivityIndicatorView" id="662128954">
 										<reference key="NSNextResponder" ref="135206302"/>
 										<int key="NSvFlags">-2147483347</int>
-										<string key="NSFrame">{{331, 323}, {37, 37}}</string>
+										<string key="NSFrame">{{331, 288}, {37, 37}}</string>
 										<reference key="NSSuperview" ref="135206302"/>
 										<reference key="NSWindow"/>
 										<bool key="IBUIOpaque">NO</bool>
@@ -492,45 +439,11 @@
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBCocoaTouchEventConnection" key="connection">
-						<string key="label">openScholasticAccountURLInSafari:</string>
-						<reference key="source" ref="262213976"/>
-						<reference key="destination" ref="372490531"/>
-						<int key="IBEventType">7</int>
-					</object>
-					<int key="connectionID">42</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBCocoaTouchEventConnection" key="connection">
-						<string key="label">openScholasticUsernamePasswordURLInSafari:</string>
-						<reference key="source" ref="352382970"/>
-						<reference key="destination" ref="372490531"/>
-						<int key="IBEventType">7</int>
-					</object>
-					<int key="connectionID">43</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBCocoaTouchEventConnection" key="connection">
 						<string key="label">cancelButtonAction:</string>
 						<reference key="source" ref="466279034"/>
 						<reference key="destination" ref="372490531"/>
 					</object>
 					<int key="connectionID">47</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBCocoaTouchOutletConnection" key="connection">
-						<string key="label">forgotUsernamePasswordURL</string>
-						<reference key="source" ref="372490531"/>
-						<reference key="destination" ref="352382970"/>
-					</object>
-					<int key="connectionID">48</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBCocoaTouchOutletConnection" key="connection">
-						<string key="label">accountURL</string>
-						<reference key="source" ref="372490531"/>
-						<reference key="destination" ref="262213976"/>
-					</object>
-					<int key="connectionID">49</int>
 				</object>
 			</object>
 			<object class="IBMutableOrderedSet" key="objectRecords">
@@ -579,9 +492,7 @@
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<reference ref="275680409"/>
 							<reference ref="597812096"/>
-							<reference ref="352382970"/>
 							<reference ref="256814430"/>
-							<reference ref="262213976"/>
 							<reference ref="1052003170"/>
 							<reference ref="662128954"/>
 						</object>
@@ -601,11 +512,6 @@
 					<object class="IBObjectRecord">
 						<int key="objectID">9</int>
 						<reference key="object" ref="256814430"/>
-						<reference key="parent" ref="135206302"/>
-					</object>
-					<object class="IBObjectRecord">
-						<int key="objectID">8</int>
-						<reference key="object" ref="352382970"/>
 						<reference key="parent" ref="135206302"/>
 					</object>
 					<object class="IBObjectRecord">
@@ -661,11 +567,6 @@
 						<reference key="parent" ref="398520321"/>
 					</object>
 					<object class="IBObjectRecord">
-						<int key="objectID">39</int>
-						<reference key="object" ref="262213976"/>
-						<reference key="parent" ref="135206302"/>
-					</object>
-					<object class="IBObjectRecord">
 						<int key="objectID">44</int>
 						<reference key="object" ref="1052003170"/>
 						<reference key="parent" ref="135206302"/>
@@ -700,17 +601,11 @@
 					<string>24.IBPluginDependency</string>
 					<string>3.CustomClassName</string>
 					<string>3.IBPluginDependency</string>
-					<string>39.CustomClassName</string>
-					<string>39.IBPluginDependency</string>
-					<string>39.IBUIButtonInspectorSelectedStateConfigurationMetadataKey</string>
 					<string>4.IBEditorWindowLastContentRect</string>
 					<string>4.IBPluginDependency</string>
 					<string>44.IBPluginDependency</string>
 					<string>46.IBPluginDependency</string>
 					<string>7.IBPluginDependency</string>
-					<string>8.CustomClassName</string>
-					<string>8.IBPluginDependency</string>
-					<string>8.IBUIButtonInspectorSelectedStateConfigurationMetadataKey</string>
 					<string>9.IBPluginDependency</string>
 				</object>
 				<object class="NSMutableArray" key="dict.values">
@@ -729,17 +624,11 @@
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>SCHCustomToolbar</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
-					<string>SCHUnderlinedButton</string>
-					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
-					<real value="1"/>
 					<string>{{354, 412}, {320, 480}}</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
-					<string>SCHUnderlinedButton</string>
-					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
-					<real value="1"/>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				</object>
 			</object>

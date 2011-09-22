@@ -10,17 +10,32 @@
 
 @implementation SCHStoryInteractionPictureStarter
 
+- (NSString *)interactionViewTitle
+{
+    return @"Picture Starter";
+}
+
+- (NSString *)audioPathForClearThisPicture
+{
+    return [KNFBXPSStoryInteractionsDirectory stringByAppendingPathComponent:@"gen_clearpicture.mp3"];
+}
+
+- (NSString *)audioPathForIntroduction
+{
+    return nil;
+}
+
+@end
+
+
+@implementation SCHStoryInteractionPictureStarterCustom
+
 @synthesize introductions;
 
 - (void)dealloc
 {
     [introductions release], introductions = nil;
     [super dealloc];
-}
-
-- (NSString *)interactionViewTitle
-{
-    return @"Picture Starter";
 }
 
 - (NSString *)introductionAtIndex:(NSInteger)index
@@ -41,17 +56,8 @@
     return [KNFBXPSStoryInteractionsDirectory stringByAppendingPathComponent:filename];
 }
 
-- (NSString *)audioPathForClearThisPicture
-{
-    return [KNFBXPSStoryInteractionsDirectory stringByAppendingPathComponent:@"gen_clearpicture.mp3"];
-}
 
-@end
-
-
-@implementation SCHStoryInteractionPictureStarterCustom
-
-- (NSString *)audioPathForChooseYourPicture
+- (NSString *)audioPathForIntroduction
 {
     return [KNFBXPSStoryInteractionsDirectory stringByAppendingPathComponent:@"gen_chooseyourpicture.mp3"];
 }
@@ -59,7 +65,19 @@
 @end
 
 @implementation SCHStoryInteractionPictureStarterNewEnding
+
+- (NSString *)audioPathForIntroduction
+{
+    return [KNFBXPSStoryInteractionsDirectory stringByAppendingPathComponent:@"gen_newending.mp3"];
+}
+
 @end
 
 @implementation SCHStoryInteractionPictureStarterFavorite
+
+- (NSString *)audioPathForIntroduction
+{
+    return [KNFBXPSStoryInteractionsDirectory stringByAppendingPathComponent:@"gen_favoritepart.mp3"];
+}
+
 @end

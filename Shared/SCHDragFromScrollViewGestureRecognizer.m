@@ -9,6 +9,8 @@
 #import "SCHDragFromScrollViewGestureRecognizer.h"
 #import <UIKit/UIGestureRecognizerSubclass.h>
 
+#define kTouchAndHoldDelay 0.4f
+
 @interface SCHDragFromScrollViewGestureRecognizer ()
 
 @property (nonatomic, assign) CGPoint startPoint;
@@ -30,10 +32,15 @@
 {
     self.startPoint = [[touches anyObject] locationInView:self.dragContainerView];
     [super touchesBegan:touches withEvent:event];
+    
+    [NSObject cancelPreviousPerformRequestsWithTarget:self];
+    [self performSelector:@selector(didTouchAndHold) withObject:nil afterDelay:kTouchAndHoldDelay];
 }
 
 - (void)touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event
 {
+    [NSObject cancelPreviousPerformRequestsWithTarget:self];
+
     if (self.state == UIGestureRecognizerStateBegan || self.state == UIGestureRecognizerStateChanged) {
         [super touchesMoved:touches withEvent:event];
     } else {
@@ -47,6 +54,23 @@
             self.state = UIGestureRecognizerStateBegan;
         }
     }
+}
+
+- (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event
+{
+    [NSObject cancelPreviousPerformRequestsWithTarget:self];
+    [super touchesEnded:touches withEvent:event];
+}
+
+- (void)touchesCancelled:(NSSet *)touches withEvent:(UIEvent *)event
+{
+    [NSObject cancelPreviousPerformRequestsWithTarget:self];
+    [super touchesCancelled:touches withEvent:event];
+}
+
+- (void)didTouchAndHold
+{
+    self.state = UIGestureRecognizerStateBegan;
 }
 
 @end

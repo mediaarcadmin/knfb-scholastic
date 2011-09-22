@@ -62,6 +62,11 @@
     return [KNFBXPSStoryInteractionsDirectory stringByAppendingPathComponent:@"gen_whatdoyousee.mp3"];
 }
 
+- (NSString *)thatsRightAudioPath
+{
+    return [KNFBXPSStoryInteractionsDirectory stringByAppendingPathComponent:@"gen_thatsright.mp3"];
+}
+
 - (NSString *)thatsNotItAudioPath
 {
     return [KNFBXPSStoryInteractionsDirectory stringByAppendingPathComponent:@"gen_thatsnotit.mp3"];

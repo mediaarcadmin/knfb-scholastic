@@ -698,6 +698,27 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 131;
     });
 }
 
+#pragma mark - SCHBookShelfGridViewDataSource methods
+
+- (void)gridView:(MRGridView*)aGridView configureCell:(SCHBookShelfGridViewCell *)gridCell forGridIndex:(NSInteger)index
+{
+    [gridCell beginUpdates];
+    gridCell.frame = [aGridView frameForCellAtGridIndex:index];
+    
+	[gridCell setIdentifier:[self.books objectAtIndex:index]];
+    SCHAppContentProfileItem *appContentProfileItem = [self.profileItem appContentProfileItemForBookIdentifier:[self.books objectAtIndex:index]];
+    gridCell.trashed = [appContentProfileItem.IsTrashed boolValue];
+    SCHBookAnnotations *annotations = [self.profileItem annotationsForBook:[self.books objectAtIndex:index]];
+    gridCell.isNewBook = (annotations == nil ? YES : annotations.lastPage.LastPageLocation == nil);
+    
+    if (self.currentlyLoadingIndex == index) {
+        gridCell.loading = YES;
+    } else {
+        gridCell.loading = NO;
+    }
+    
+    [gridCell endUpdates];
+}
 
 #pragma mark - MRGridViewDataSource methods
 
@@ -712,25 +733,9 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 131;
 	if (gridCell == nil) {
 		gridCell = [[[SCHBookShelfGridViewCell alloc] initWithFrame:[aGridView frameForCellAtGridIndex:index] reuseIdentifier:cellIdentifier] autorelease];
 	}
-	else {
-		gridCell.frame = [aGridView frameForCellAtGridIndex:index];
-	}
-
-    [gridCell beginUpdates];
-	[gridCell setIdentifier:[self.books objectAtIndex:index]];
-    SCHAppContentProfileItem *appContentProfileItem = [self.profileItem appContentProfileItemForBookIdentifier:[self.books objectAtIndex:index]];
-    gridCell.trashed = [appContentProfileItem.IsTrashed boolValue];
-    SCHBookAnnotations *annotations = [self.profileItem annotationsForBook:[self.books objectAtIndex:index]];
-    gridCell.isNewBook = (annotations == nil ? YES : annotations.lastPage.LastPageLocation == nil);
-
-    if (self.currentlyLoadingIndex == index) {
-        gridCell.loading = YES;
-    } else {
-        gridCell.loading = NO;
-    }
-
-    [gridCell endUpdates];
-
+	
+    [self gridView:aGridView configureCell:gridCell forGridIndex:index];
+  
 	return(gridCell);
 }
 

@@ -46,8 +46,6 @@ enum {
 - (void)didComplete;
 - (void)movePenguinHigher;
 - (void)popBalloon;
-- (void)showPlayAgainButton;
-- (void)playAgainTapped:(id)sender;
 
 @end
 
@@ -280,18 +278,11 @@ enum {
     self.controllerState = SCHStoryInteractionControllerStateInteractionReadingAnswerWithPause;
     
     BOOL correct = [self checkForLetter:letter];
-    
-    [self enqueueAudioWithPath:[(SCHStoryInteractionWordBird *)self.storyInteraction audioPathForLetter:letter]
-                    fromBundle:NO
-                    startDelay:0
-        synchronizedStartBlock:nil
-          synchronizedEndBlock:^{
-              if (correct) {
-                  [sender setCorrectHighlight];
-              } else {
-                  [sender setIncorrectHighlight];
-              }
-          }];
+    if (correct) {
+        [sender setCorrectHighlight];
+    } else {
+        [sender setIncorrectHighlight];
+    }
     
     NSString *audioPath = (correct ? [self.storyInteraction storyInteractionCorrectAnswerSoundFilename]
                            : [self.storyInteraction storyInteractionWrongAnswerSoundFilename]);
@@ -353,7 +344,6 @@ enum {
     if (self.correctLetterCount < [[self currentWord] length]) {
         
         CGFloat heightInset = self.animationContainer.frame.origin.y;
-        
         CGRect bounds = CGRectApplyAffineTransform(self.animationContainerLayer.bounds, self.animationContainerLayer.affineTransform);
         CGFloat ystep = (CGRectGetHeight(self.animationContainer.bounds) + heightInset - CGRectGetHeight(bounds))/([[self currentWord] length]-1);
         CGPoint targetPosition = CGPointMake(self.animationContainerLayer.position.x, 
@@ -363,20 +353,16 @@ enum {
         move.fromValue = [NSValue valueWithCGPoint:self.animationContainerLayer.position];
         move.toValue = [NSValue valueWithCGPoint:targetPosition];
         move.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
-        move.duration = 0.5;
+        move.duration = 1.5;
         move.fillMode = kCAFillModeForwards;
-        move.delegate = [SCHAnimationDelegate animationDelegateWithStopBlock:^(CAAnimation *animation, BOOL finished) {
-            [CATransaction begin];
-            [CATransaction setDisableActions:YES];
-            self.happyPenguinLayer.hidden = NO;
-            self.shockedPenguinLayer.hidden = YES;
-            [self.happyPenguinLayer animateAllFramesWithDuration:1.5
-                                                      frameOrder:nil
-                                                     autoreverse:NO
-                                                     repeatCount:1
-                                                        delegate:[self continueInteraction]];
-            [CATransaction commit];
-        }];
+        
+        self.happyPenguinLayer.hidden = NO;
+        self.shockedPenguinLayer.hidden = YES;
+        [self.happyPenguinLayer animateAllFramesWithDuration:1.5
+                                                  frameOrder:nil
+                                                 autoreverse:NO
+                                                 repeatCount:1
+                                                    delegate:[self continueInteraction]];
         
         [self.animationContainerLayer addAnimation:move forKey:@"move"];
         self.animationContainerLayer.position = targetPosition;
@@ -422,7 +408,9 @@ enum {
         // not fitting in the maximum texture size
         // Actually they have been reduced in size so could be combined but the 3 stages lets a frameOrder to be specified for 2 out of 3 stages
         SCHAnimationDelegate *step2delegate = [SCHAnimationDelegate animationDelegateWithStopBlock:^(CAAnimation *animation, BOOL finished) {
-            [self showPlayAgainButton];
+            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 1.0*NSEC_PER_SEC), dispatch_get_main_queue(), ^{
+                [self removeFromHostView];
+            });
         }];
         SCHAnimationDelegate *step1delegate = [SCHAnimationDelegate animationDelegateWithStopBlock:^(CAAnimation *animation, BOOL finished) {
             [CATransaction begin];
@@ -592,57 +580,26 @@ enum {
                       [NSNumber numberWithInt:self.balloonsLayer.frameIndex],
                       nil];
         
-        SCHAnimationDelegate *balloonAnimationDelegate = [SCHAnimationDelegate animationDelegateWithStopBlock:^(CAAnimation *animation, BOOL finished) {
-            [CATransaction begin];
-            [CATransaction setDisableActions:YES];
-            self.happyPenguinLayer.hidden = YES;
-            self.shockedPenguinLayer.hidden = NO;
-            [self.shockedPenguinLayer animateAllFramesWithDuration:1.5
-                                                        frameOrder:nil
-                                                       autoreverse:NO
-                                                       repeatCount:1
-                                                          delegate:[self continueInteraction]];
-            [CATransaction commit];
-        }];
-            
         [self.balloonsLayer animateAllFramesWithDuration:1.5
                                               frameOrder:frameOrder
                                              autoreverse:NO
                                              repeatCount:1
-                                                delegate:balloonAnimationDelegate];
+                                                delegate:nil];
+
+        self.happyPenguinLayer.hidden = YES;
+        self.shockedPenguinLayer.hidden = NO;
+        [self.shockedPenguinLayer animateAllFramesWithDuration:1.5
+                                                    frameOrder:nil
+                                                   autoreverse:NO
+                                                   repeatCount:1
+                                                      delegate:[self continueInteraction]];
+        
         [self enqueueAudioWithPath:@"sfx_penguinpop.mp3" fromBundle:YES];
     }
     
     [CATransaction commit];
     
     self.remainingBalloonCount--;
-}
-
-- (void)showPlayAgainButton
-{
-    UIButton *playAgain = [UIButton buttonWithType:UIButtonTypeCustom];
-    playAgain.frame = self.contentsView.bounds;
-    [playAgain addTarget:self action:@selector(playAgainTapped:) forControlEvents:UIControlEventTouchUpInside];
-    [self.contentsView addSubview:playAgain];
-    self.controllerState = SCHStoryInteractionControllerStateInteractionInProgress;
-}
-
-- (void)playAgainTapped:(UIButton *)sender
-{
-    [sender removeFromSuperview];
-    for (SCHStoryInteractionWordBirdAnswerLetterView *answer in [self.answerContainer subviews]) {
-        answer.letter = ' ';
-    }
-    for (SCHStoryInteractionWordBirdLetterView *letter in [self.lettersContainer subviews]) {
-        [letter removeHighlight];
-        [letter setUserInteractionEnabled:YES];
-    }
-    
-    self.correctLetterCount = 0;
-    self.remainingBalloonCount = kNumberOfBalloons;
-
-    [self.animationContainerLayer removeFromSuperlayer];
-    [self setupAnimationView];
 }
 
 @end

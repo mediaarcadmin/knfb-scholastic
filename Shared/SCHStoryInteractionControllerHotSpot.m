@@ -77,14 +77,12 @@
     [self setTitle:[[self currentQuestion] prompt]];
     self.pageImageView.image = [self.delegate currentPageSnapshot];
     self.viewToPageTransform = [self.delegate viewToPageTransformForLayoutPage:self.storyInteraction.documentPageNumber];
-
+    
     UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(imageTapped:)];
+    [tap setDelegate:self];
     [self.pageImageView addGestureRecognizer:tap];
     [self.pageImageView setUserInteractionEnabled:YES];
     [tap release];
-    
-    // ensure taps in the title view don't go through to the background
-    self.titleView.superview.userInteractionEnabled = YES;
 }
 
 - (void)zoomOutAndCloseWithSuccess:(BOOL)success
@@ -248,9 +246,7 @@
           synchronizedEndBlock:^{
               [self zoomOutAndCloseWithSuccess:YES];
           }];
-    
-    self.controllerState = SCHStoryInteractionControllerStateInteractionFinishedSuccessfully;
-    
+        
 }
 
 #pragma mark - Override for SCHStoryInteractionControllerStateReactions
@@ -267,6 +263,9 @@
     [self.pageImageView setUserInteractionEnabled:YES];
 }
 
-
+- (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldReceiveTouch:(UITouch *)touch
+{
+    return !CGRectContainsPoint(self.titleView.bounds, [touch locationInView:self.titleView]);
+}
 
 @end

@@ -55,14 +55,18 @@ enum {
 
 - (BOOL)shouldPlayQuestionAudioForViewAtIndex:(NSInteger)screenIndex
 {
-    return screenIndex == 0;
+    return screenIndex == 1;
 }
 
 - (void)setupViewAtIndex:(NSInteger)index
 {
-    if (index == 1) {
-        [self setupPuzzleView];
-        [self enqueueAudioWithPath:[(SCHStoryInteractionConcentration *)self.storyInteraction audioPathForIntroduction] fromBundle:NO];
+    switch (index) {
+        case 0:
+            [self enqueueAudioWithPath:[(SCHStoryInteractionConcentration *)self.storyInteraction audioPathForIntroduction] fromBundle:NO];
+            break;
+        case 1:
+            [self setupPuzzleView];
+            break;
     }
 }
 
@@ -82,6 +86,7 @@ enum {
 
 - (void)levelButtonTapped:(id)sender
 {
+    [self cancelQueuedAudioExecutingSynchronizedBlocksImmediately];
     self.numberOfPairs = [(UIView *)sender tag];
     [self presentNextView];
 }
@@ -178,6 +183,7 @@ enum {
     
     self.numberOfPairsFound = 0;
     self.numberOfFlips = 0;
+    self.firstFlippedTile = nil;
 }
 
 - (UIImage *)tileBackground
@@ -203,7 +209,7 @@ enum {
 - (void)setNumberOfFlips:(NSInteger)newNumberOfFlips
 {
     numberOfFlips = newNumberOfFlips;
-    [self.flipCounterLabel setTitle:[NSString stringWithFormat:@"%d FLIPS", numberOfFlips] forState:UIControlStateNormal];
+    [self.flipCounterLabel setTitle:[NSString stringWithFormat:@"%d FLIP%s", numberOfFlips, (numberOfFlips == 1 ? "" : "S")] forState:UIControlStateNormal];
 }
 
 - (void)startOverTapped:(id)sender
@@ -228,15 +234,15 @@ enum {
         return;
     }
     
-    BOOL match = (self.firstFlippedTile != nil);
-    if (!match) {
+    BOOL pair = (self.firstFlippedTile != nil);
+    if (!pair) {
         self.firstFlippedTile = tile;
     }
     self.controllerState = SCHStoryInteractionControllerStateInteractionReadingAnswerWithPause;
     
     CAAnimation *flip = [self flipAnimationFrom:0 to:M_PI];
     flip.delegate = [SCHAnimationDelegate animationDelegateWithStopBlock:^(CAAnimation *animation, BOOL finished) {
-        if (match) {
+        if (pair) {
             [self matchTile:self.firstFlippedTile withTile:tile];
             self.firstFlippedTile = nil;
         } else {
@@ -246,6 +252,8 @@ enum {
     
     [tile.layer addAnimation:flip forKey:@"flip"];
     tile.layer.transform = CATransform3DMakeRotation(M_PI, 0, 1, 0);
+
+    [self enqueueAudioWithPath:@"sfx_dropOK.mp3" fromBundle:YES];
 
     self.numberOfFlips++;
 }
@@ -258,6 +266,7 @@ enum {
         [tile1 setUserInteractionEnabled:NO];
         [tile2 setUserInteractionEnabled:NO];
         if (++self.numberOfPairsFound == self.numberOfPairs) {
+            [self enqueueAudioWithPath:@"sfx_win_y.mp3" fromBundle:YES];
             [self enqueueAudioWithPath:[(SCHStoryInteractionConcentration *)self.storyInteraction audioPathForYouWon]
                             fromBundle:NO
                             startDelay:0
@@ -269,18 +278,20 @@ enum {
         }
         self.controllerState = SCHStoryInteractionControllerStateInteractionInProgress;
     } else {
-        // flip the tiles back
-        [self enqueueAudioWithPath:[self.storyInteraction storyInteractionWrongAnswerSoundFilename]
-                        fromBundle:YES
-                        startDelay:0
-         synchronizedStartBlock:nil
-              synchronizedEndBlock:^{
-                  [tile1.layer addAnimation:[self flipAnimationFrom:M_PI to:0] forKey:@"flipBack"];
-                  [tile2.layer addAnimation:[self flipAnimationFrom:M_PI to:0] forKey:@"flipBack"];
-                  tile1.layer.transform = CATransform3DIdentity;
-                  tile2.layer.transform = CATransform3DIdentity;
-                  self.controllerState = SCHStoryInteractionControllerStateInteractionInProgress;
-              }];
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0.5*NSEC_PER_SEC), dispatch_get_main_queue(), ^{
+            // flip the tiles back
+            [tile1.layer addAnimation:[self flipAnimationFrom:M_PI to:0] forKey:@"flipBack"];
+            [tile2.layer addAnimation:[self flipAnimationFrom:M_PI to:0] forKey:@"flipBack"];
+            tile1.layer.transform = CATransform3DIdentity;
+            tile2.layer.transform = CATransform3DIdentity;
+            [self enqueueAudioWithPath:[self.storyInteraction storyInteractionWrongAnswerSoundFilename]
+                            fromBundle:YES
+                            startDelay:0
+                synchronizedStartBlock:nil
+                  synchronizedEndBlock:^{
+                      self.controllerState = SCHStoryInteractionControllerStateInteractionInProgress;
+                  }];
+        });
     }
 }
 

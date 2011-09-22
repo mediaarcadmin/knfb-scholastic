@@ -11,7 +11,9 @@
 @interface SCHStoryInteractionControllerPictureStarterCustom : SCHStoryInteractionControllerPictureStarter
 
 @property (nonatomic, retain) IBOutletCollection(UIButton) NSArray *backgroundChooserButtons;
+@property (nonatomic, retain) IBOutlet UILabel *introductionLabel;
 
 - (IBAction)chooseBackground:(id)sender;
+- (IBAction)goTapped:(id)sender;
 
 @end
