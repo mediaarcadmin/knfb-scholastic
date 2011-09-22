@@ -72,6 +72,10 @@
 
 - (void)dealloc
 {
+    // In case the pageTurningView is kept around for texture generation completeion - nil dangling pointers
+    [pageTurningView setDelegate:nil]; 
+    [pageTurningView setIndexBasedDataSource:nil];
+
     [pageTurningView release], pageTurningView = nil;
     [pageCropsCache release], pageCropsCache = nil;
     [layoutCacheLock release], layoutCacheLock = nil;
