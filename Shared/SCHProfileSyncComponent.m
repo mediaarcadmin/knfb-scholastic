@@ -24,6 +24,7 @@ NSString * const SCHProfileSyncComponentDidFailNotification = @"SCHProfileSyncCo
 
 @property (retain, nonatomic) NSMutableArray *createdProfiles;
 
+- (void)processSaveUserProfilesWithResult:(NSDictionary *)result;
 - (BOOL)updateProfiles;
 - (void)syncProfiles:(NSArray *)profileList;
 - (void)syncProfile:(NSDictionary *)webProfile withProfile:(SCHProfileItem *)localProfile;
@@ -79,27 +80,7 @@ NSString * const SCHProfileSyncComponentDidFailNotification = @"SCHProfileSyncCo
 - (void)method:(NSString *)method didCompleteWithResult:(NSDictionary *)result
 {	
 	if([method compare:kSCHLibreAccessWebServiceSaveUserProfiles] == NSOrderedSame) {
-        
-        if ([self.createdProfiles count] > 0) {
-            NSManagedObjectID *managedObjectID = nil;
-            NSManagedObject *profileManagedObject = nil;
-            for (NSDictionary *profileStatusItem in [result objectForKey:kSCHLibreAccessWebServiceProfileStatusList]) {        
-                if ([[profileStatusItem objectForKey:kSCHLibreAccessWebServiceStatus] saveActionValue] == kSCHStatusCreated &&
-                    [self.createdProfiles count] > 0) {
-                    managedObjectID = [self.createdProfiles objectAtIndex:0];
-                    if (managedObjectID != nil) {
-                        profileManagedObject = [self.managedObjectContext objectWithID:managedObjectID];
-                        [profileManagedObject setValue:[profileStatusItem objectForKey:kSCHLibreAccessWebServiceID] forKey:kSCHLibreAccessWebServiceID];
-                    }
-                    [self.createdProfiles removeObjectAtIndex:0];
-                }
-            }
-        }
-        
-		self.isSynchronizing = [self.libreAccessWebService getUserProfiles];
-		if (self.isSynchronizing == NO) {
-			[[SCHAuthenticationManager sharedAuthenticationManager] authenticate];				
-		}		
+        [self processSaveUserProfilesWithResult:result];
 	} else if([method compare:kSCHLibreAccessWebServiceGetUserProfiles] == NSOrderedSame) {
 		[self syncProfiles:[result objectForKey:kSCHLibreAccessWebServiceProfileList]];
 		[[NSNotificationCenter defaultCenter] postNotificationName:SCHProfileSyncComponentDidCompleteNotification 
@@ -108,12 +89,43 @@ NSString * const SCHProfileSyncComponentDidFailNotification = @"SCHProfileSyncCo
 	}	
 }
 
-- (void)method:(NSString *)method didFailWithError:(NSError *)error requestInfo:(NSDictionary *)requestInfo
+- (void)processSaveUserProfilesWithResult:(NSDictionary *)result
 {
+    if ([self.createdProfiles count] > 0) {
+        NSManagedObjectID *managedObjectID = nil;
+        NSManagedObject *profileManagedObject = nil;
+        for (NSDictionary *profileStatusItem in [result objectForKey:kSCHLibreAccessWebServiceProfileStatusList]) {        
+            if ([[profileStatusItem objectForKey:kSCHLibreAccessWebServiceStatus] saveActionValue] == kSCHStatusCreated &&
+                [self.createdProfiles count] > 0) {
+                managedObjectID = [self.createdProfiles objectAtIndex:0];
+                if (managedObjectID != nil) {
+                    profileManagedObject = [self.managedObjectContext objectWithID:managedObjectID];
+                    [profileManagedObject setValue:[profileStatusItem objectForKey:kSCHLibreAccessWebServiceID] forKey:kSCHLibreAccessWebServiceID];
+                }
+                [self.createdProfiles removeObjectAtIndex:0];
+            }
+        }
+    }
+    
+    self.isSynchronizing = [self.libreAccessWebService getUserProfiles];
+    if (self.isSynchronizing == NO) {
+        [[SCHAuthenticationManager sharedAuthenticationManager] authenticate];				
+    }		    
+}
+
+- (void)method:(NSString *)method didFailWithError:(NSError *)error 
+   requestInfo:(NSDictionary *)requestInfo
+        result:(NSDictionary *)result
+{
+    // when saving we accept there could be errors and process anything that succeeds then continue
+    if(result != nil && [method compare:kSCHLibreAccessWebServiceSaveUserProfiles] == NSOrderedSame) {	    
+        [self processSaveUserProfilesWithResult:result];
+    } else {
+        [[NSNotificationCenter defaultCenter] postNotificationName:SCHProfileSyncComponentDidFailNotification 
+                                                            object:self];		    
+        [super method:method didFailWithError:error requestInfo:requestInfo result:result];
+    }
     [self.createdProfiles removeAllObjects];
-    [[NSNotificationCenter defaultCenter] postNotificationName:SCHProfileSyncComponentDidFailNotification 
-                                                        object:self];		    
-	[super method:method didFailWithError:error requestInfo:requestInfo];
 }
 
 - (BOOL)updateProfiles

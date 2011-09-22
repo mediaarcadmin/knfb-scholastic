@@ -628,9 +628,9 @@ static NSInteger const kSCHLibreAccessWebServiceVaid = 33;
 	NSString *methodName = [self methodNameFromObject:operation];
 	
 	if (operation.response.error != nil && 
-        [(id)self.delegate respondsToSelector:@selector(method:didFailWithError:requestInfo:)]) {
+        [(id)self.delegate respondsToSelector:@selector(method:didFailWithError:requestInfo:result:)]) {
 		[(id)self.delegate method:methodName didFailWithError:operation.response.error 
-                      requestInfo:[self requestInfoFromOperation:operation]];
+                      requestInfo:[self requestInfoFromOperation:operation] result:nil];
 	} else {
 		for (id bodyPart in response.bodyParts) {
 			if ([bodyPart isKindOfClass:[SOAPFault class]]) {
@@ -652,10 +652,11 @@ static NSInteger const kSCHLibreAccessWebServiceVaid = 33;
 				if(status != nil && 
 				   [status isKindOfClass:[LibreAccessServiceSvc_StatusHolder class]] == YES && 
 				   status.status != LibreAccessServiceSvc_statuscodes_SUCCESS &&
-				   [(id)self.delegate respondsToSelector:@selector(method:didFailWithError:requestInfo:)]) {
+				   [(id)self.delegate respondsToSelector:@selector(method:didFailWithError:requestInfo:result:)]) {
                     errorTriggered = YES;
 					[(id)self.delegate method:methodName didFailWithError:[self errorFromStatusMessage:status] 
-                                  requestInfo:[self requestInfoFromOperation:operation]];			
+                                  requestInfo:[self requestInfoFromOperation:operation]
+                                       result:[self objectFrom:bodyPart]];			
 				}
 			}
 			

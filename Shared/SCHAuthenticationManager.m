@@ -467,7 +467,9 @@ typedef struct AuthenticateWithUserNameParameters AuthenticateWithUserNameParame
     }
 }
 
-- (void)method:(NSString *)method didFailWithError:(NSError *)error requestInfo:(NSDictionary *)requestInfo
+- (void)method:(NSString *)method didFailWithError:(NSError *)error 
+   requestInfo:(NSDictionary *)requestInfo
+        result:(NSDictionary *)result
 {
     NSLog(@"AuthenticationManager:%@ %@", method, [error description]);
     if([method compare:kSCHLibreAccessWebServiceAuthenticateDevice] == NSOrderedSame) {

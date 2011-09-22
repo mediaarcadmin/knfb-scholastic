@@ -28,7 +28,8 @@
 		 [NSError errorWithDomain:kBITAPIErrorDomain 
 							 code:kBITAPIFaultError 
 						 userInfo:userInfo]
-                      requestInfo:requestInfo];
+                      requestInfo:requestInfo
+                           result:nil];
 	}
 }
 

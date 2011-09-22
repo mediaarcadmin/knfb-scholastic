@@ -46143,7 +46143,7 @@ parameters:(LibreAccessServiceSvc_ValidateScreenNameRequest *)aParameters
 {
 	if (responseData != nil && delegate != nil)
 	{
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
 			xmlDocPtr doc;
 			xmlNodePtr cur;
 		
@@ -46252,7 +46252,7 @@ parameters:(LibreAccessServiceSvc_ValidateUserKeyRequest *)aParameters
 {
 	if (responseData != nil && delegate != nil)
 	{
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
 			xmlDocPtr doc;
 			xmlNodePtr cur;
 		
@@ -46361,7 +46361,7 @@ parameters:(LibreAccessServiceSvc_AcknowledgeLicenseRequest *)aParameters
 {
 	if (responseData != nil && delegate != nil)
 	{
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
 			xmlDocPtr doc;
 			xmlNodePtr cur;
 		
@@ -46470,7 +46470,7 @@ body:(LibreAccessServiceSvc_SharedTokenExchangeRequest *)aBody
 {
 	if (responseData != nil && delegate != nil)
 	{
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
 			xmlDocPtr doc;
 			xmlNodePtr cur;
 		
@@ -46579,7 +46579,7 @@ parameters:(LibreAccessServiceSvc_SaveUserCSRNotesRequest *)aParameters
 {
 	if (responseData != nil && delegate != nil)
 	{
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
 			xmlDocPtr doc;
 			xmlNodePtr cur;
 		
@@ -46679,7 +46679,7 @@ parameters:(LibreAccessServiceSvc_SaveUserCSRNotesRequest *)aParameters
 {
 	if (responseData != nil && delegate != nil)
 	{
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
 			xmlDocPtr doc;
 			xmlNodePtr cur;
 		
@@ -46788,7 +46788,7 @@ parameters:(LibreAccessServiceSvc_SaveNewDomainRequest *)aParameters
 {
 	if (responseData != nil && delegate != nil)
 	{
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
 			xmlDocPtr doc;
 			xmlNodePtr cur;
 		
@@ -46897,7 +46897,7 @@ parameters:(LibreAccessServiceSvc_ListDefaultBooksRequest *)aParameters
 {
 	if (responseData != nil && delegate != nil)
 	{
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
 			xmlDocPtr doc;
 			xmlNodePtr cur;
 		
@@ -47006,7 +47006,7 @@ parameters:(LibreAccessServiceSvc_ListReadingStatisticsDetailedRequest *)aParame
 {
 	if (responseData != nil && delegate != nil)
 	{
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
 			xmlDocPtr doc;
 			xmlNodePtr cur;
 		
@@ -47115,7 +47115,7 @@ parameters:(LibreAccessServiceSvc_DeviceCanJoinDomainRequest *)aParameters
 {
 	if (responseData != nil && delegate != nil)
 	{
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
 			xmlDocPtr doc;
 			xmlNodePtr cur;
 		
@@ -47224,7 +47224,7 @@ parameters:(LibreAccessServiceSvc_AssignBooksToAllUsersRequest *)aParameters
 {
 	if (responseData != nil && delegate != nil)
 	{
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
 			xmlDocPtr doc;
 			xmlNodePtr cur;
 		
@@ -47333,7 +47333,7 @@ parameters:(LibreAccessServiceSvc_GetLastPageLocationRequest *)aParameters
 {
 	if (responseData != nil && delegate != nil)
 	{
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
 			xmlDocPtr doc;
 			xmlNodePtr cur;
 		
@@ -47442,7 +47442,7 @@ parameters:(LibreAccessServiceSvc_SaveProfileContentAnnotationsRequest *)aParame
 {
 	if (responseData != nil && delegate != nil)
 	{
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
 			xmlDocPtr doc;
 			xmlNodePtr cur;
 		
@@ -47551,7 +47551,7 @@ parameters:(LibreAccessServiceSvc_RemoveDefaultBooksRequest *)aParameters
 {
 	if (responseData != nil && delegate != nil)
 	{
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
 			xmlDocPtr doc;
 			xmlNodePtr cur;
 		
@@ -47660,7 +47660,7 @@ parameters:(LibreAccessServiceSvc_GetLicensableStatusRequest *)aParameters
 {
 	if (responseData != nil && delegate != nil)
 	{
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
 			xmlDocPtr doc;
 			xmlNodePtr cur;
 		
@@ -47769,7 +47769,7 @@ parameters:(LibreAccessServiceSvc_SaveLastPageLocationRequest *)aParameters
 {
 	if (responseData != nil && delegate != nil)
 	{
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
 			xmlDocPtr doc;
 			xmlNodePtr cur;
 		
@@ -47878,7 +47878,7 @@ parameters:(LibreAccessServiceSvc_ListUserCSRNotesRequest *)aParameters
 {
 	if (responseData != nil && delegate != nil)
 	{
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
 			xmlDocPtr doc;
 			xmlNodePtr cur;
 		
@@ -47987,7 +47987,7 @@ body:(LibreAccessServiceSvc_RenewTokenRequest *)aBody
 {
 	if (responseData != nil && delegate != nil)
 	{
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
 			xmlDocPtr doc;
 			xmlNodePtr cur;
 		
@@ -48096,7 +48096,7 @@ parameters:(LibreAccessServiceSvc_SaveDeviceInfoRequest *)aParameters
 {
 	if (responseData != nil && delegate != nil)
 	{
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
 			xmlDocPtr doc;
 			xmlNodePtr cur;
 		
@@ -48205,7 +48205,7 @@ parameters:(LibreAccessServiceSvc_ListReadingStatisticsAggregateRequest *)aParam
 {
 	if (responseData != nil && delegate != nil)
 	{
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
 			xmlDocPtr doc;
 			xmlNodePtr cur;
 		
@@ -48314,7 +48314,7 @@ parameters:(LibreAccessServiceSvc_ListLastNWordsRequest *)aParameters
 {
 	if (responseData != nil && delegate != nil)
 	{
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
 			xmlDocPtr doc;
 			xmlNodePtr cur;
 		
@@ -48423,7 +48423,7 @@ body:(LibreAccessServiceSvc_TokenExchangeEx *)aBody
 {
 	if (responseData != nil && delegate != nil)
 	{
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
 			xmlDocPtr doc;
 			xmlNodePtr cur;
 		
@@ -48532,7 +48532,7 @@ parameters:(LibreAccessServiceSvc_DeviceLeftDomainRequest *)aParameters
 {
 	if (responseData != nil && delegate != nil)
 	{
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
 			xmlDocPtr doc;
 			xmlNodePtr cur;
 		
@@ -48641,7 +48641,7 @@ parameters:(LibreAccessServiceSvc_ListReadBooksRequest *)aParameters
 {
 	if (responseData != nil && delegate != nil)
 	{
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
 			xmlDocPtr doc;
 			xmlNodePtr cur;
 		
@@ -48750,7 +48750,7 @@ parameters:(LibreAccessServiceSvc_GetDeviceInfoRequest *)aParameters
 {
 	if (responseData != nil && delegate != nil)
 	{
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
 			xmlDocPtr doc;
 			xmlNodePtr cur;
 		
@@ -48859,7 +48859,7 @@ parameters:(LibreAccessServiceSvc_SaveReadingStatisticsDetailedRequest *)aParame
 {
 	if (responseData != nil && delegate != nil)
 	{
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
 			xmlDocPtr doc;
 			xmlNodePtr cur;
 		
@@ -48968,7 +48968,7 @@ parameters:(LibreAccessServiceSvc_SaveContentProfileAssignmentRequest *)aParamet
 {
 	if (responseData != nil && delegate != nil)
 	{
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
 			xmlDocPtr doc;
 			xmlNodePtr cur;
 		
@@ -49077,7 +49077,7 @@ body:(LibreAccessServiceSvc_TokenExchange *)aBody
 {
 	if (responseData != nil && delegate != nil)
 	{
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
 			xmlDocPtr doc;
 			xmlNodePtr cur;
 		
@@ -49186,7 +49186,7 @@ parameters:(LibreAccessServiceSvc_SetAccountPasswordRequiredRequest *)aParameter
 {
 	if (responseData != nil && delegate != nil)
 	{
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
 			xmlDocPtr doc;
 			xmlNodePtr cur;
 		
@@ -49295,7 +49295,7 @@ parameters:(LibreAccessServiceSvc_GetVersionRequest *)aParameters
 {
 	if (responseData != nil && delegate != nil)
 	{
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
 			xmlDocPtr doc;
 			xmlNodePtr cur;
 		
@@ -49404,7 +49404,7 @@ parameters:(LibreAccessServiceSvc_SaveUserSettingsRequest *)aParameters
 {
 	if (responseData != nil && delegate != nil)
 	{
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
 			xmlDocPtr doc;
 			xmlNodePtr cur;
 		
@@ -49513,7 +49513,7 @@ body:(LibreAccessServiceSvc_AuthenticateDeviceRequest *)aBody
 {
 	if (responseData != nil && delegate != nil)
 	{
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
 			xmlDocPtr doc;
 			xmlNodePtr cur;
 		
@@ -49622,7 +49622,7 @@ body:(LibreAccessServiceSvc_ListContentMetadata *)aBody
 {
 	if (responseData != nil && delegate != nil)
 	{
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
 			xmlDocPtr doc;
 			xmlNodePtr cur;
 		
@@ -49731,7 +49731,7 @@ parameters:(LibreAccessServiceSvc_ListApplicationSettingsRequest *)aParameters
 {
 	if (responseData != nil && delegate != nil)
 	{
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
 			xmlDocPtr doc;
 			xmlNodePtr cur;
 		
@@ -49840,7 +49840,7 @@ parameters:(LibreAccessServiceSvc_ListTopFavoritesRequest *)aParameters
 {
 	if (responseData != nil && delegate != nil)
 	{
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
 			xmlDocPtr doc;
 			xmlNodePtr cur;
 		
@@ -49949,7 +49949,7 @@ parameters:(LibreAccessServiceSvc_ListLastNProfileReadBooksRequest *)aParameters
 {
 	if (responseData != nil && delegate != nil)
 	{
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
 			xmlDocPtr doc;
 			xmlNodePtr cur;
 		
@@ -50058,7 +50058,7 @@ parameters:(LibreAccessServiceSvc_SaveUserProfilesRequest *)aParameters
 {
 	if (responseData != nil && delegate != nil)
 	{
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
 			xmlDocPtr doc;
 			xmlNodePtr cur;
 		
@@ -50167,7 +50167,7 @@ parameters:(LibreAccessServiceSvc_GetUserProfilesRequest *)aParameters
 {
 	if (responseData != nil && delegate != nil)
 	{
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
 			xmlDocPtr doc;
 			xmlNodePtr cur;
 		
@@ -50276,7 +50276,7 @@ parameters:(LibreAccessServiceSvc_DeleteBookShelfEntryRequest *)aParameters
 {
 	if (responseData != nil && delegate != nil)
 	{
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
 			xmlDocPtr doc;
 			xmlNodePtr cur;
 		
@@ -50385,7 +50385,7 @@ parameters:(LibreAccessServiceSvc_ListUserSettingsRequest *)aParameters
 {
 	if (responseData != nil && delegate != nil)
 	{
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
 			xmlDocPtr doc;
 			xmlNodePtr cur;
 		
@@ -50494,7 +50494,7 @@ parameters:(LibreAccessServiceSvc_EntitledToLicenceRequest *)aParameters
 {
 	if (responseData != nil && delegate != nil)
 	{
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
 			xmlDocPtr doc;
 			xmlNodePtr cur;
 		
@@ -50603,7 +50603,7 @@ parameters:(LibreAccessServiceSvc_RemoveOrderRequest *)aParameters
 {
 	if (responseData != nil && delegate != nil)
 	{
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
 			xmlDocPtr doc;
 			xmlNodePtr cur;
 		
@@ -50712,7 +50712,7 @@ parameters:(LibreAccessServiceSvc_ListProfileContentAnnotationsRequest *)aParame
 {
 	if (responseData != nil && delegate != nil)
 	{
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
 			xmlDocPtr doc;
 			xmlNodePtr cur;
 		
@@ -50821,7 +50821,7 @@ body:(LibreAccessServiceSvc_ListUserContent *)aBody
 {
 	if (responseData != nil && delegate != nil)
 	{
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
 			xmlDocPtr doc;
 			xmlNodePtr cur;
 		
@@ -50930,7 +50930,7 @@ parameters:(LibreAccessServiceSvc_ListFavoriteTypesRequest *)aParameters
 {
 	if (responseData != nil && delegate != nil)
 	{
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
 			xmlDocPtr doc;
 			xmlNodePtr cur;
 		
@@ -51039,7 +51039,7 @@ parameters:(LibreAccessServiceSvc_GetKeyIdRequest *)aParameters
 {
 	if (responseData != nil && delegate != nil)
 	{
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
 			xmlDocPtr doc;
 			xmlNodePtr cur;
 		
@@ -51148,7 +51148,7 @@ parameters:(LibreAccessServiceSvc_SaveDefaultBooksRequest *)aParameters
 {
 	if (responseData != nil && delegate != nil)
 	{
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
 			xmlDocPtr doc;
 			xmlNodePtr cur;
 		
@@ -51257,7 +51257,7 @@ parameters:(LibreAccessServiceSvc_SetAccountAutoAssignRequest *)aParameters
 {
 	if (responseData != nil && delegate != nil)
 	{
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
 			xmlDocPtr doc;
 			xmlNodePtr cur;
 		
