@@ -1792,6 +1792,8 @@
 		C9B3766F13BC991200992A6E /* BookShelfModeGridActive~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = C9B3766813BC991100992A6E /* BookShelfModeGridActive~ipad.png */; };
 		C9B59BD413D048D000C7760D /* LambdaAlert.m in Sources */ = {isa = PBXBuildFile; fileRef = C9B59BD113D048D000C7760D /* LambdaAlert.m */; };
 		C9B59BD613D048D000C7760D /* LambdaSheet.m in Sources */ = {isa = PBXBuildFile; fileRef = C9B59BD313D048D000C7760D /* LambdaSheet.m */; };
+		C9B7851B142B7CD40070BEDE /* SCHReadingStoryInteractionButton.m in Sources */ = {isa = PBXBuildFile; fileRef = C9B7851A142B7CD40070BEDE /* SCHReadingStoryInteractionButton.m */; };
+		C9B7851C142B7CD40070BEDE /* SCHReadingStoryInteractionButton.m in Sources */ = {isa = PBXBuildFile; fileRef = C9B7851A142B7CD40070BEDE /* SCHReadingStoryInteractionButton.m */; };
 		C9B7E90E13DC5D9E00BD5CB7 /* button-close@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C9B7E90C13DC5D9D00BD5CB7 /* button-close@2x.png */; };
 		C9B7E91013DC5D9E00BD5CB7 /* button-close.png in Resources */ = {isa = PBXBuildFile; fileRef = C9B7E90D13DC5D9D00BD5CB7 /* button-close.png */; };
 		C9B7E91613DC620400BD5CB7 /* checkmark-on@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C9B7E91213DC620400BD5CB7 /* checkmark-on@2x.png */; };
@@ -3346,6 +3348,8 @@
 		C9B59BD213D048D000C7760D /* LambdaSheet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LambdaSheet.h; sourceTree = "<group>"; };
 		C9B59BD313D048D000C7760D /* LambdaSheet.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LambdaSheet.m; sourceTree = "<group>"; };
 		C9B785181429EAFB0070BEDE /* SCHBookShelfGridViewDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHBookShelfGridViewDataSource.h; path = Shared/SCHBookShelfGridViewDataSource.h; sourceTree = "<group>"; };
+		C9B78519142B7CD40070BEDE /* SCHReadingStoryInteractionButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHReadingStoryInteractionButton.h; path = Shared/SCHReadingStoryInteractionButton.h; sourceTree = "<group>"; };
+		C9B7851A142B7CD40070BEDE /* SCHReadingStoryInteractionButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHReadingStoryInteractionButton.m; path = Shared/SCHReadingStoryInteractionButton.m; sourceTree = "<group>"; };
 		C9B7E90C13DC5D9D00BD5CB7 /* button-close@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "button-close@2x.png"; path = "Resources/UIAssets/button-close@2x.png"; sourceTree = "<group>"; };
 		C9B7E90D13DC5D9D00BD5CB7 /* button-close.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "button-close.png"; path = "Resources/UIAssets/button-close.png"; sourceTree = "<group>"; };
 		C9B7E91213DC620400BD5CB7 /* checkmark-on@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "checkmark-on@2x.png"; path = "Resources/UIAssets/checkmark-on@2x.png"; sourceTree = "<group>"; };
@@ -6116,6 +6120,8 @@
 				F8DC567E138C150F00F27146 /* SCHDictionaryViewController.xib */,
 				F85C8CF51394FC42008DD042 /* SCHNotesCountView.h */,
 				F85C8CF61394FC42008DD042 /* SCHNotesCountView.m */,
+				C9B78519142B7CD40070BEDE /* SCHReadingStoryInteractionButton.h */,
+				C9B7851A142B7CD40070BEDE /* SCHReadingStoryInteractionButton.m */,
 			);
 			name = "Reading View Controllers";
 			sourceTree = "<group>";
@@ -8037,6 +8043,7 @@
 				28789AD51404FDA500910D31 /* SCHStoryInteractionControllerPictureStarterFavorite.m in Sources */,
 				28204BBC140CD715007D0935 /* SCHStoryInteractionWhoSaidItNameView.m in Sources */,
 				28211CD5140E160300872701 /* SCHStoryInteractionStandaloneViewController.m in Sources */,
+				C9B7851B142B7CD40070BEDE /* SCHReadingStoryInteractionButton.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -8383,6 +8390,7 @@
 				52488BDE1407990500DA9AFA /* SCHStoryInteractionControllerPictureStarterFavorite.m in Sources */,
 				28204BBD140CD715007D0935 /* SCHStoryInteractionWhoSaidItNameView.m in Sources */,
 				28211CD6140E160300872701 /* SCHStoryInteractionStandaloneViewController.m in Sources */,
+				C9B7851C142B7CD40070BEDE /* SCHReadingStoryInteractionButton.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
