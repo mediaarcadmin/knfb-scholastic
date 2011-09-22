@@ -80,8 +80,8 @@ static NSString * const kSCHScholasticWebServiceAttributeErrorDesc = @"errorDesc
 {	
 	[[BITNetworkActivityManager sharedNetworkActivityManager] hideNetworkActivityIndicator];
 	
-	if (operation.response.error != nil && [(id)self.delegate respondsToSelector:@selector(method:didFailWithError:requestInfo:)]) {
-		[(id)self.delegate method:kSCHScholasticWebServiceProcessRemote didFailWithError:operation.response.error requestInfo:nil];
+	if (operation.response.error != nil && [(id)self.delegate respondsToSelector:@selector(method:didFailWithError:requestInfo:result:)]) {
+		[(id)self.delegate method:kSCHScholasticWebServiceProcessRemote didFailWithError:operation.response.error requestInfo:nil result:nil];
 	} else {		
 		for (id bodyPart in response.bodyParts) {
 			if ([bodyPart isKindOfClass:[SOAPFault class]]) {
@@ -95,8 +95,10 @@ static NSString * const kSCHScholasticWebServiceAttributeErrorDesc = @"errorDesc
 				NSString *token = [self parseToken:processRemoteResponse.return_ error:&error];
 				
 				if (token == nil) {
-					if([(id)self.delegate respondsToSelector:@selector(method:didFailWithError:requestInfo:)]) {
-						[(id)self.delegate method:kSCHScholasticWebServiceProcessRemote didFailWithError:error requestInfo:nil];
+					if([(id)self.delegate respondsToSelector:@selector(method:didFailWithError:requestInfo:result:)]) {
+						[(id)self.delegate method:kSCHScholasticWebServiceProcessRemote didFailWithError:error 
+                                      requestInfo:nil 
+                                           result:nil];
 					}
 				} else if([(id)self.delegate respondsToSelector:@selector(method:didCompleteWithResult:)]) {					
 					[(id)self.delegate method:kSCHScholasticWebServiceProcessRemote didCompleteWithResult:

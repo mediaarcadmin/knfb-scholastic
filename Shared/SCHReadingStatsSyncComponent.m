@@ -72,12 +72,19 @@ NSString * const SCHReadingStatsSyncComponentDidFailNotification = @"SCHReadingS
     [super method:method didCompleteWithResult:nil];				    
 }
 
-- (void)method:(NSString *)method didFailWithError:(NSError *)error requestInfo:(NSDictionary *)requestInfo
+- (void)method:(NSString *)method didFailWithError:(NSError *)error 
+   requestInfo:(NSDictionary *)requestInfo
+        result:(NSDictionary *)result
 {
     [[NSNotificationCenter defaultCenter] postNotificationName:SCHReadingStatsSyncComponentDidFailNotification 
                                                         object:self];
     
-	[super method:method didFailWithError:error requestInfo:requestInfo];
+    // when saving we accept there could be errors and then continue
+    if (result != nil) {
+        [super method:method didCompleteWithResult:nil];				    
+    } else {
+        [super method:method didFailWithError:error requestInfo:requestInfo result:result];        
+    }
 }
 
 @end

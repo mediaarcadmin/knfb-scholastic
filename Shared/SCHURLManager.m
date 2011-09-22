@@ -227,7 +227,9 @@ NSString * const kSCHURLManagerFailure = @"URLManagerFailure";
 	}	
 }
 
-- (void)method:(NSString *)method didFailWithError:(NSError *)error requestInfo:(NSDictionary *)requestInfo
+- (void)method:(NSString *)method didFailWithError:(NSError *)error 
+   requestInfo:(NSDictionary *)requestInfo
+        result:(NSDictionary *)result
 {
 	requestCount--;
 	

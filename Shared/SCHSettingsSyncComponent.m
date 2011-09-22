@@ -63,12 +63,14 @@ NSString * const SCHSettingsSyncComponentDidFailNotification = @"SCHSettingsSync
 	[super method:method didCompleteWithResult:nil];	
 }
 
-- (void)method:(NSString *)method didFailWithError:(NSError *)error requestInfo:(NSDictionary *)requestInfo
+- (void)method:(NSString *)method didFailWithError:(NSError *)error 
+   requestInfo:(NSDictionary *)requestInfo
+        result:(NSDictionary *)result
 {
     [[NSNotificationCenter defaultCenter] postNotificationName:SCHSettingsSyncComponentDidFailNotification 
                                                         object:self];
     
-	[super method:method didFailWithError:error requestInfo:requestInfo];
+	[super method:method didFailWithError:error requestInfo:requestInfo result:result];
 }
 
 - (void)updateUserSettings:(NSArray *)settingsList

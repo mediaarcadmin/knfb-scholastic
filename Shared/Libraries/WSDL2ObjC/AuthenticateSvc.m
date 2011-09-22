@@ -603,7 +603,7 @@ parameters:(AuthenticateSvc_processRemote *)aParameters
 {
 	if (responseData != nil && delegate != nil)
 	{
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
 			xmlDocPtr doc;
 			xmlNodePtr cur;
 		
