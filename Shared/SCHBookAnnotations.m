@@ -218,7 +218,7 @@
 {
     SCHHighlight *newHighlight = [self createEmptyHighlight];
     newHighlight.EndPage = [NSNumber numberWithInteger:endPage];
-    newHighlight.Color = color;
+    newHighlight.HighlightColor = color;
     newHighlight.Location.Page = [NSNumber numberWithInteger:startPage];
     newHighlight.Location.WordIndex.Start = [NSNumber numberWithInteger:startWord];
     newHighlight.Location.WordIndex.End = [NSNumber numberWithInteger:endWord];
@@ -266,7 +266,7 @@
                                                                           inManagedObjectContext:self.privateAnnotations.managedObjectContext];
     
     note.PrivateAnnotations = self.privateAnnotations;
-    note.Color = [UIColor whiteColor];
+    note.NoteColor = [UIColor whiteColor];
     note.Location = locationGraphics;
     note.NoteText = @"";
     

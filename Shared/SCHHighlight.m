@@ -18,12 +18,6 @@
 // Constants
 NSString * const kSCHHighlight = @"SCHHighlight";
 
-@interface SCHHighlight (PrimitiveAccessors)
-
-@property (nonatomic, retain) NSString *primitiveColor;
-
-@end
-
 @implementation SCHHighlight 
 
 @dynamic Color;
@@ -31,19 +25,14 @@ NSString * const kSCHHighlight = @"SCHHighlight";
 @dynamic PrivateAnnotations;
 @dynamic Location;
 
-- (UIColor *)Color
+- (UIColor *)HighlightColor
 {
-    [self willAccessValueForKey:@"Color"];
-    UIColor *tmpValue = [UIColor BITcolorWithHexString:[self primitiveColor]];
-    [self didAccessValueForKey:@"Color"];
-    return(tmpValue);
+    return([UIColor BITcolorWithHexString:self.Color]);
 }
 
-- (void)setColor:(UIColor *)value
+- (void)setHighlightColor:(UIColor *)value
 {
-    [self willChangeValueForKey:@"Color"];
-    [self setPrimitiveColor:[value BIThexString]];
-    [self didChangeValueForKey:@"Color"];
+    self.Color = [value BIThexString];
 }
 
 - (NSUInteger)startLayoutPage
@@ -64,11 +53,6 @@ NSString * const kSCHHighlight = @"SCHHighlight";
 - (NSUInteger)endWordOffset
 {
     return [[[self.Location WordIndex] End] integerValue];
-}
-
-- (NSString *)description
-{
-    return [NSString stringWithFormat:@"<SCHHighlight: %p>", self];
 }
 
 @end

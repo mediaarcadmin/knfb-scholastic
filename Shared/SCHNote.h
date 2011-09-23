@@ -20,12 +20,13 @@ extern NSString * const kSCHNote;
 {
 }
 
-@property (nonatomic, retain) UIColor * Color;
+@property (nonatomic, retain) NSString * Color;
 @property (nonatomic, retain) NSString * Value;
 @property (nonatomic, retain) SCHLocationGraphics * Location;
 @property (nonatomic, retain) SCHPrivateAnnotations * PrivateAnnotations;
 
 // backed by convenience methods
+@property (nonatomic, retain) UIColor *NoteColor;
 @property (nonatomic, retain) NSString *NoteText;
 @property (nonatomic, assign) NSUInteger noteLayoutPage;
 

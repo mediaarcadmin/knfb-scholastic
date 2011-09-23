@@ -20,10 +20,13 @@ extern NSString * const kSCHHighlight;
 {
 }
 
-@property (nonatomic, retain) UIColor * Color;
+@property (nonatomic, retain) NSString * Color;
 @property (nonatomic, retain) NSNumber * EndPage;
 @property (nonatomic, retain) SCHPrivateAnnotations * PrivateAnnotations;
 @property (nonatomic, retain) SCHLocationText * Location;
+
+// backed by convenience methods
+@property (nonatomic, retain) UIColor *HighlightColor;
 
 - (NSUInteger)startLayoutPage;
 - (NSUInteger)startWordOffset;

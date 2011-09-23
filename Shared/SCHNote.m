@@ -16,12 +16,6 @@
 // Constants
 NSString * const kSCHNote = @"SCHNote";
 
-@interface SCHNote (PrimitiveAccessors)
-
-@property (nonatomic, retain) NSString *primitiveColor;
-
-@end
-
 @implementation SCHNote 
 
 @dynamic Color;
@@ -29,31 +23,16 @@ NSString * const kSCHNote = @"SCHNote";
 @dynamic Location;
 @dynamic PrivateAnnotations;
 
-- (UIColor *)Color
+- (UIColor *)NoteColor
 {
-    [self willAccessValueForKey:@"Color"];
-    UIColor *tmpValue = [UIColor BITcolorWithHexString:[self primitiveColor]];
-    [self didAccessValueForKey:@"Color"];
-    return(tmpValue);
+    return([UIColor BITcolorWithHexString:self.Color]);
 }
 
-- (void)setColor:(UIColor *)value
+- (void)setNoteColor:(UIColor *)value
 {
-    [self willChangeValueForKey:@"Color"];
-    [self setPrimitiveColor:[value BIThexString]];
-    [self didChangeValueForKey:@"Color"];
+    self.Color = [value BIThexString];
 }
 
-//- (NSNumber *)NotePageNumber
-//{
-//    return [self.LocationGraphics Page];
-//}
-//
-//- (void)setNotePageNumber:(NSNumber *)NotePageNumber
-//{
-//    self.LocationGraphics.Page = NotePageNumber;
-//}
-//
 - (NSString *)NoteText
 {
     return self.Value;
@@ -72,12 +51,6 @@ NSString * const kSCHNote = @"SCHNote";
 - (void)setNoteLayoutPage:(NSUInteger)layoutPage
 {
     self.Location.Page = [NSNumber numberWithInt:layoutPage];
-}
-
-// Overriding description because it doesn't like the UIColor primitive
-- (NSString *)description
-{
-    return [NSString stringWithFormat:@"<SCHNote: <%p> isDeleted: %d (entity: %@; id: %@)", self, ([self State] == [NSNumber numberWithStatus:kSCHStatusDeleted]), [[self entity] name], [self objectID]];
 }
 
 @end
