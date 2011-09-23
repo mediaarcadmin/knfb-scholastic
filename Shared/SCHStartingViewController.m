@@ -76,6 +76,16 @@ typedef enum {
 @synthesize profileViewController;
 @synthesize sampleBookshelf;
 
+- (void)awakeFromNib
+{
+    [super awakeFromNib];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(authenticationManagerDidDeregister:)
+                                                 name:SCHAuthenticationManagerDidDeregisterNotification
+                                               object:nil];
+}
+
 - (void)releaseViewObjects
 {
     [starterTableView release], starterTableView = nil;
@@ -111,10 +121,6 @@ typedef enum {
                                                  name:SCHProfileSyncComponentDidCompleteNotification
                                                object:nil];
     
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(authenticationManagerDidDeregister:)
-                                                 name:SCHAuthenticationManagerDidDeregisterNotification
-                                               object:nil];
 }
 
 - (void)viewDidUnload
