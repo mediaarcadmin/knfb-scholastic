@@ -41,6 +41,7 @@
 #import "SCHUserDefaults.h"
 #import "SCHContentProfileItem.h"
 #import "SCHUserContentItem.h"
+#import "SCHReadingStoryInteractionButton.h"
 
 // constants
 NSString *const kSCHReadingViewErrorDomain  = @"com.knfb.scholastic.ReadingViewErrorDomain";
@@ -146,7 +147,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 - (NSInteger)storyInteractionPageNumberFromPageIndex:(NSUInteger)pageIndex;
 - (NSUInteger)firstPageIndexWithStoryInteractionsOnCurrentPages;
 - (void)setupStoryInteractionButtonForCurrentPagesAnimated:(BOOL)animated;
-- (void)setStoryInteractionButtonVisible:(BOOL)visible animated:(BOOL)animated withSound:(BOOL)sound;
+- (void)setStoryInteractionButtonVisible:(BOOL)visible animated:(BOOL)animated withSound:(BOOL)sound completion:(void (^)(BOOL finished))completion;
 - (void)rotateAndPresentStoryInteraction:(SCHStoryInteraction *)storyInteraction;
 - (void)pushStoryInteractionController:(SCHStoryInteractionController *)storyInteractionController;
 - (void)save;
@@ -1227,7 +1228,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 {     
     // if a story interaction is active, hide the button
     if (self.storyInteractionController != nil) {
-        [self setStoryInteractionButtonVisible:NO animated:YES withSound:NO];
+        [self setStoryInteractionButtonVisible:NO animated:YES withSound:NO completion:nil];
         return;
     }
     
@@ -1248,58 +1249,87 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     NSInteger interactionsDone = [self.bookStoryInteractions storyInteractionQuestionsCompletedForPage:page];
     
     // only play sounds if the appearance is animated
-    BOOL playSounds = animated;
+    BOOL playAppearanceSound = animated;
+    BOOL playFillSound = animated;
     
     // override this if we've already played a sound for this page
     if (self.lastPageInteractionSoundPlayedOn == page) {
-        playSounds = NO;
+        playAppearanceSound = NO;
     }
 
     self.lastPageInteractionSoundPlayedOn = page;
-    void(^buttonImageSelectionBlock)(void) = ^{
-        NSString *imagePrefix = nil;
-        
-        if (self.youngerMode) {
-            imagePrefix = @"young";
-        } else {
-            imagePrefix = @"old";
-        }
-        
-        if (interactionsFinished) {
-            [self.storyInteractionButton setImage:[UIImage imageNamed:[NSString stringWithFormat:@"%@-lightning-bolt-3", imagePrefix]] forState:UIControlStateNormal];
-        } else {
-            if (questionCount == 3) {
-                [self.storyInteractionButton setImage:[UIImage imageNamed:[NSString stringWithFormat:@"%@-lightning-bolt-%d", imagePrefix, interactionsDone]] forState:UIControlStateNormal];
-            } else {
-                [self.storyInteractionButton setImage:[UIImage imageNamed:[NSString stringWithFormat:@"%@-lightning-bolt-0", imagePrefix]] forState:UIControlStateNormal];
-            }
-        }
-        
-        CGRect buttonFrame = self.storyInteractionButtonView.frame;
-        buttonFrame.size = [self.storyInteractionButton imageForState:UIControlStateNormal].size;
-        buttonFrame.origin.x = CGRectGetWidth(self.storyInteractionButtonView.superview.frame) - buttonFrame.size.width;
-        self.storyInteractionButtonView.frame = buttonFrame;
-    };
     
     // if the audio book is playing, hide the story interaction button
     if (totalInteractionCount < 1 && (self.audioBookPlayer && self.audioBookPlayer.playing)) {
         // No interactions, audio playing. Hiding button without animation
-        [self setStoryInteractionButtonVisible:NO animated:NO withSound:NO];
+        [self setStoryInteractionButtonVisible:NO animated:NO withSound:NO completion:nil];
     } else if (totalInteractionCount < 1) {
         // No interactions. Hiding button with animation
-        [self setStoryInteractionButtonVisible:NO animated:YES withSound:playSounds];
-    } else if (totalInteractionCount >= 1 && (self.audioBookPlayer && self.audioBookPlayer.playing)) {
-        // Interactions while reading. Showing button without animation
-        [self setStoryInteractionButtonVisible:YES animated:NO withSound:NO];
-        buttonImageSelectionBlock();
+        [self setStoryInteractionButtonVisible:NO animated:YES withSound:playAppearanceSound completion:nil];
     } else {
-        // Interactions while not reading. Showing button with animation
-        [self setStoryInteractionButtonVisible:YES animated:YES withSound:playSounds];
-        buttonImageSelectionBlock();
+        
+        BOOL animated = YES;
+        
+        if (totalInteractionCount >= 1 && (self.audioBookPlayer && self.audioBookPlayer.playing)) {
+            // Interactions while reading. Showing button without animation
+            playAppearanceSound = NO;
+            playFillSound = NO;
+            animated = NO;
+        } // else Interactions while not reading. Showing button with animation
+        
+        SCHReadingStoryInteractionButtonFillLevel fillLevel;
+        
+        if (interactionsFinished) {
+            fillLevel = kSCHReadingStoryInteractionButtonFillLevelFull;
+        } else if (questionCount == 3) {
+            
+            switch (interactionsDone) {
+                case 1:
+                    fillLevel = kSCHReadingStoryInteractionButtonFillLevelOneThird;
+                    break;
+                case 2:
+                    fillLevel = kSCHReadingStoryInteractionButtonFillLevelTwoThirds;
+                    break;
+                case 3:
+                    fillLevel = kSCHReadingStoryInteractionButtonFillLevelFull;
+                    break;
+                default:
+                    fillLevel = kSCHReadingStoryInteractionButtonFillLevelEmpty;
+                    break;
+            }
+        } else {
+            fillLevel = kSCHReadingStoryInteractionButtonFillLevelEmpty;                
+        }
+                
+        [self setStoryInteractionButtonVisible:YES animated:animated withSound:playAppearanceSound completion:^(BOOL finished){
+            
+            if (self.storyInteractionButton.fillLevel != fillLevel) {
+                if (playFillSound) {
+                    NSString *audioFilename = @"sfx_si_fill";
+                    NSString *bundlePath = [[NSBundle mainBundle] pathForResource:audioFilename ofType:@"mp3"];
+                    
+                    [self.queuedAudioPlayer enqueueAudioTaskWithFetchBlock:^NSData*(void){
+                        return [NSData dataWithContentsOfFile:bundlePath
+                                                      options:NSDataReadingMapped
+                                                        error:nil];
+                    }
+                                                    synchronizedStartBlock:nil
+                                                      synchronizedEndBlock:nil];
+
+                }
+            }
+            
+            [self.storyInteractionButton setFillLevel:fillLevel forYounger:self.youngerMode animated:animated];
+            
+            CGRect buttonFrame = self.storyInteractionButtonView.frame;
+            buttonFrame.size = [self.storyInteractionButton imageForState:UIControlStateNormal].size;
+            buttonFrame.origin.x = CGRectGetWidth(self.storyInteractionButtonView.superview.frame) - buttonFrame.size.width;
+            self.storyInteractionButtonView.frame = buttonFrame;
+        }];
     }
 }
 
-- (void)setStoryInteractionButtonVisible:(BOOL)visible animated:(BOOL)animated withSound:(BOOL)sound
+- (void)setStoryInteractionButtonVisible:(BOOL)visible animated:(BOOL)animated withSound:(BOOL)sound completion:(void (^)(BOOL finished))completionBlock
 {
     if (visible) {
         
@@ -1321,9 +1351,10 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
                                       delay:0
                                     options:UIViewAnimationOptionAllowUserInteraction
                                  animations:movementBlock
-                                 completion:nil];
+                                 completion:completionBlock];
             } else {
                 movementBlock();
+                completionBlock(YES);
             }
             
             // play the sound effect
@@ -1356,15 +1387,15 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
                                       delay:0
                                     options:UIViewAnimationOptionAllowUserInteraction
                                  animations:animationBlock
-                                 completion:nil];
+                                 completion:completionBlock];
             } else {
                 animationBlock();
+                completionBlock(YES);
             }
 
         }
     } else {
         // hide the button
-        // (hiding the button is acceptable in flow view)
         
         void (^movementBlock)(void) = ^{
             CGRect frame = self.storyInteractionButtonView.frame;
@@ -1378,9 +1409,10 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
                                   delay:0
                                 options:UIViewAnimationOptionAllowUserInteraction
                              animations:movementBlock
-                             completion:nil];
+                             completion:completionBlock];
         } else {
             movementBlock();
+            completionBlock(YES);
         }
     }
 }
@@ -1467,7 +1499,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     self.storyInteractionController.xpsProvider = self.xpsProvider;
     
     void (^presentStoryInteractionBlock)(void) = ^{        
-        [self setStoryInteractionButtonVisible:NO animated:YES withSound:NO];
+        [self setStoryInteractionButtonVisible:NO animated:YES withSound:NO completion:nil];
                         
         if ([self.storyInteractionController shouldPresentInPortraitOrientation] != UIInterfaceOrientationIsPortrait(self.interfaceOrientation)) {
             // We're currently in the wrong orientation for this SI. Dummy-presenting a modal view controller like this
@@ -1979,9 +2011,9 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     }
     
     if (self.audioBookPlayer && self.audioBookPlayer.playing) {
-        [self setStoryInteractionButtonVisible:NO animated:NO withSound:YES];
+        [self setStoryInteractionButtonVisible:NO animated:NO withSound:YES completion:nil];
     } else {
-        [self setStoryInteractionButtonVisible:NO animated:YES withSound:YES];
+        [self setStoryInteractionButtonVisible:NO animated:YES withSound:YES completion:nil];
     }
 }
 

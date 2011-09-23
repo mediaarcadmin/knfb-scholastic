@@ -355,16 +355,6 @@
 						<int key="NSvFlags">297</int>
 						<object class="NSMutableArray" key="NSSubviews">
 							<bool key="EncodedWithXMLCoder">YES</bool>
-							<object class="IBUIImageView" id="485447411">
-								<reference key="NSNextResponder" ref="509710694"/>
-								<int key="NSvFlags">274</int>
-								<string key="NSFrameSize">{60, 90}</string>
-								<reference key="NSSuperview" ref="509710694"/>
-								<reference key="NSWindow"/>
-								<reference key="NSNextKeyView" ref="926026406"/>
-								<bool key="IBUIUserInteractionEnabled">NO</bool>
-								<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
-							</object>
 							<object class="IBUIButton" id="926026406">
 								<reference key="NSNextResponder" ref="509710694"/>
 								<int key="NSvFlags">274</int>
@@ -388,7 +378,7 @@
 						<string key="NSFrame">{{260, 100}, {60, 90}}</string>
 						<reference key="NSSuperview" ref="191373211"/>
 						<reference key="NSWindow"/>
-						<reference key="NSNextKeyView" ref="485447411"/>
+						<reference key="NSNextKeyView" ref="926026406"/>
 						<reference key="IBUIBackgroundColor" ref="368037730"/>
 						<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 					</object>
@@ -1662,7 +1652,6 @@
 						<object class="NSMutableArray" key="children">
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<reference ref="926026406"/>
-							<reference ref="485447411"/>
 						</object>
 						<reference key="parent" ref="191373211"/>
 						<string key="objectName">Story Interactions View</string>
@@ -1671,11 +1660,7 @@
 						<int key="objectID">215</int>
 						<reference key="object" ref="926026406"/>
 						<reference key="parent" ref="509710694"/>
-					</object>
-					<object class="IBObjectRecord">
-						<int key="objectID">219</int>
-						<reference key="object" ref="485447411"/>
-						<reference key="parent" ref="509710694"/>
+						<string key="objectName">Button</string>
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">224</int>
@@ -1915,8 +1900,8 @@
 					<string>201.IBPluginDependency</string>
 					<string>202.IBPluginDependency</string>
 					<string>214.IBPluginDependency</string>
+					<string>215.CustomClassName</string>
 					<string>215.IBPluginDependency</string>
-					<string>219.IBPluginDependency</string>
 					<string>224.IBPluginDependency</string>
 					<string>226.IBPluginDependency</string>
 					<string>244.IBPluginDependency</string>
@@ -1994,7 +1979,7 @@
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
-					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
+					<string>SCHReadingStoryInteractionButton</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
@@ -2070,6 +2055,14 @@
 					<object class="IBClassDescriptionSource" key="sourceIdentifier">
 						<string key="majorKey">IBProjectSource</string>
 						<string key="minorKey">./Classes/SCHCustomToolbar.h</string>
+					</object>
+				</object>
+				<object class="IBPartialClassDescription">
+					<string key="className">SCHReadingStoryInteractionButton</string>
+					<string key="superclassName">UIButton</string>
+					<object class="IBClassDescriptionSource" key="sourceIdentifier">
+						<string key="majorKey">IBProjectSource</string>
+						<string key="minorKey">./Classes/SCHReadingStoryInteractionButton.h</string>
 					</object>
 				</object>
 				<object class="IBPartialClassDescription">

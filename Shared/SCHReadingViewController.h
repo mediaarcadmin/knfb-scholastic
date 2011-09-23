@@ -44,6 +44,7 @@ typedef enum
 @class SCHCustomToolbar;
 @class SCHProfileItem;
 @class SCHBookIdentifier;
+@class SCHReadingStoryInteractionButton;
 
 @interface SCHReadingViewController : UIViewController <SCHReadingViewDelegate, SCHReadingNotesListControllerDelegate, 
 SCHReadingNoteViewDelegate, SCHReadingInteractionsListControllerDelegate, SCHAudioBookPlayerDelegate, UIPopoverControllerDelegate,
@@ -81,7 +82,7 @@ UIImageView *optionsPhoneTopBackground;
 @property (nonatomic, retain) IBOutlet UISegmentedControl *paperTypeSegmentedControl;
 
 
-@property (nonatomic, retain) IBOutlet UIButton *storyInteractionButton;
+@property (nonatomic, retain) IBOutlet SCHReadingStoryInteractionButton *storyInteractionButton;
 @property (nonatomic, retain) IBOutlet UIView *storyInteractionButtonView;
 @property (nonatomic, retain) IBOutlet UIView *toolbarToggleView;
 @property (nonatomic, retain) IBOutlet UIView *cornerAudioButtonView;

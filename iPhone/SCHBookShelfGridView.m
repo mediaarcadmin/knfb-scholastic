@@ -164,7 +164,11 @@
             [self addCellAtIndex:[index intValue]];
         } else {
             SCHBookShelfGridViewCell *gridCell = [existingCells objectForKey:index];
-            [(id<SCHBookShelfGridViewDataSource>)self.gridDataSource gridView:self configureCell:gridCell forGridIndex:[index intValue]];
+            if ([index intValue] < [self.gridDataSource numberOfItemsInGridView:self]) {
+                [(id<SCHBookShelfGridViewDataSource>)self.gridDataSource gridView:self configureCell:gridCell forGridIndex:[index intValue]];
+            } else {
+                [self removeCellAtIndex:[index intValue]];
+            }
         }
 	}
 	[self updateSize];
