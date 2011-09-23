@@ -363,7 +363,7 @@ ErrorExit:
         {
 			if ( i==0 ) {
 				//NSLog(@"DRM error: attempting to leave domain when no domain has been joined.");
-				[self callFailureDelegate:[self drmError:kSCHDrmInitializationError 
+				[self callFailureDelegate:[self drmError:kSCHDrmDeregistrationError 
                                                  message:NSLocalizedString(@"Cannot deregister device because device is not registered.",@"DRM deregistration requires registration message")]];
 				return;
 			}

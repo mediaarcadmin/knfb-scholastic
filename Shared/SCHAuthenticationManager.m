@@ -298,7 +298,7 @@ typedef struct AuthenticateWithUserNameParameters AuthenticateWithUserNameParame
     NSString *storedPassword = [SFHFKeychainUtils getPasswordForUsername:storedUsername andServiceName:kSCHAuthenticationManagerServiceName error:nil];
     NSString *deviceKey = [[NSUserDefaults standardUserDefaults] stringForKey:kSCHAuthenticationManagerDeviceKey];	
     
-    NSLog(@"Authenticating %@ with %@", storedUsername, (deviceKey == nil ? @"no deviceKey" :deviceKey));        
+    NSLog(@"Authenticating %@ with %@", storedUsername, (deviceKey == nil ? @"no deviceKey" : deviceKey));        
     
     if([[SCHAppStateManager sharedAppStateManager] canAuthenticate] == YES) {
         if (waitingOnResponse == NO) {
@@ -442,11 +442,11 @@ typedef struct AuthenticateWithUserNameParameters AuthenticateWithUserNameParame
         if ([deviceIsDeregistered isKindOfClass:[NSNumber class]] == YES &&
             [[result objectForKey:kSCHLibreAccessWebServiceDeviceIsDeregistered] boolValue] == YES) {
             [self performPostDeregistration];
+            waitingOnResponse = NO;
         } else if (![[NSUserDefaults standardUserDefaults] stringForKey:kSCHAuthenticationManagerDeviceKey]) {
             [self.drmRegistrationSession registerDevice:[result objectForKey:kSCHLibreAccessWebServiceAuthToken]];
         }        
-	} else if([method compare:kSCHLibreAccessWebServiceAuthenticateDevice] == NSOrderedSame ||
-              [method compare:kSCHLibreAccessWebServiceRenewToken] == NSOrderedSame) {	
+	} else if([method compare:kSCHLibreAccessWebServiceAuthenticateDevice] == NSOrderedSame) {	
         self.aToken = nil;
         self.tokenExpires = nil;        
 
@@ -455,12 +455,18 @@ typedef struct AuthenticateWithUserNameParameters AuthenticateWithUserNameParame
             [deviceIsDeregistered isKindOfClass:[NSNumber class]] == YES &&
             [[result objectForKey:kSCHLibreAccessWebServiceDeviceIsDeregistered] boolValue] == YES) {
             [self performPostDeregistration];
-            return;
         } else {
             self.aToken = [result objectForKey:kSCHLibreAccessWebServiceAuthToken];
             NSInteger expiresIn = MAX(0, [[result objectForKey:kSCHLibreAccessWebServiceExpiresIn] integerValue] - 1);
             self.tokenExpires = [NSDate dateWithTimeIntervalSinceNow:expiresIn * kSCHAuthenticationManagerSecondsInAMinute];
+			[self postSuccessWithOfflineMode:NO];
         }
+        
+		waitingOnResponse = NO;        
+    } else if([method compare:kSCHLibreAccessWebServiceRenewToken] == NSOrderedSame) {	
+        self.aToken = [result objectForKey:kSCHLibreAccessWebServiceAuthToken];
+        NSInteger expiresIn = MAX(0, [[result objectForKey:kSCHLibreAccessWebServiceExpiresIn] integerValue] - 1);
+        self.tokenExpires = [NSDate dateWithTimeIntervalSinceNow:expiresIn * kSCHAuthenticationManagerSecondsInAMinute];
         
 		waitingOnResponse = NO;
 		[self postSuccessWithOfflineMode:NO];        
@@ -472,16 +478,32 @@ typedef struct AuthenticateWithUserNameParameters AuthenticateWithUserNameParame
         result:(NSDictionary *)result
 {
     NSLog(@"AuthenticationManager:%@ %@", method, [error description]);
-    if([method compare:kSCHLibreAccessWebServiceAuthenticateDevice] == NSOrderedSame) {
-        // TODO: we need to decide when to retry and when to re-register the device
+    waitingOnResponse = NO;
+    if([method compare:kSCHLibreAccessWebServiceTokenExchange] == NSOrderedSame) {	
+        NSNumber *deviceIsDeregistered = [result objectForKey:kSCHLibreAccessWebServiceDeviceIsDeregistered];        
+        if ([deviceIsDeregistered isKindOfClass:[NSNumber class]] == YES &&
+            [[result objectForKey:kSCHLibreAccessWebServiceDeviceIsDeregistered] boolValue] == YES) {
+            [self performPostDeregistration];
+            return;
+        }
+	} else if([method compare:kSCHLibreAccessWebServiceAuthenticateDevice] == NSOrderedSame) {	
         self.aToken = nil;
         self.tokenExpires = nil;        
+        
+        NSNumber *deviceIsDeregistered = [result objectForKey:kSCHLibreAccessWebServiceDeviceIsDeregistered];        
+        if ([method isEqualToString:kSCHLibreAccessWebServiceAuthenticateDevice] == YES &&
+            [deviceIsDeregistered isKindOfClass:[NSNumber class]] == YES &&
+            [[result objectForKey:kSCHLibreAccessWebServiceDeviceIsDeregistered] boolValue] == YES) {
+            [self performPostDeregistration];
+            return;
+        } else {
+            [[NSUserDefaults standardUserDefaults] removeObjectForKey:kSCHAuthenticationManagerDeviceKey];
+        }
     } else if([method compare:kSCHLibreAccessWebServiceRenewToken] == NSOrderedSame) {	
         self.aToken = nil;
         self.tokenExpires = nil;        
     }
 
-	waitingOnResponse = NO;
 	[self postFailureWithError:error];
 }
 
@@ -505,11 +527,19 @@ typedef struct AuthenticateWithUserNameParameters AuthenticateWithUserNameParame
 {
     NSLog(@"AuthenticationManager:DRM %@", [error description]);
 	waitingOnResponse = NO;
-    [[NSNotificationCenter defaultCenter] postNotificationName:SCHAuthenticationManagerDidFailDeregistrationNotification
-                                                        object:self 
-                                                      userInfo:[NSDictionary dictionaryWithObject:error forKey:kSCHAuthenticationManagerNSError]];		        
-	[self postFailureWithError:error];       
-    self.drmRegistrationSession = nil;
+	
+    // were we de-registered?
+    if ([error code] == kSCHDrmDeregistrationError) {
+        [self performPostDeregistration];        
+    } else {
+        [[NSNotificationCenter defaultCenter] postNotificationName:SCHAuthenticationManagerDidFailDeregistrationNotification
+                                                            object:self 
+                                                          userInfo:[NSDictionary dictionaryWithObject:error forKey:kSCHAuthenticationManagerNSError]];		        
+        
+        [self postFailureWithError:error];
+    }
+
+    self.drmRegistrationSession = nil;    
 }
 
 @end
