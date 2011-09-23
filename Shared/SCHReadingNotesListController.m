@@ -22,7 +22,6 @@ static NSInteger const CELL_ACTIVITY_INDICATOR_TAG = 999;
 @interface SCHReadingNotesListController ()
 
 @property (nonatomic, retain) UINib *noteCellNib;
-@property (nonatomic, retain) NSArray *notes;
 
 @property (nonatomic) BOOL editMode;
 
@@ -46,7 +45,6 @@ static NSInteger const CELL_ACTIVITY_INDICATOR_TAG = 999;
 @synthesize topShadow;
 @synthesize topBar;
 @synthesize bookIdentifier;
-@synthesize notes;
 @synthesize profile;
 @synthesize editMode;
 
@@ -63,7 +61,6 @@ static NSInteger const CELL_ACTIVITY_INDICATOR_TAG = 999;
     [noteCellNib release], noteCellNib = nil;
     [notesCell release], notesCell = nil;
     [profile release], profile = nil;
-    [notes release], notes = nil;
     
     [super dealloc];
 }
@@ -99,7 +96,7 @@ static NSInteger const CELL_ACTIVITY_INDICATOR_TAG = 999;
     
     if (self) {
         self.editMode = NO;
-    }
+    }    
     
     return self;
 }
@@ -118,10 +115,7 @@ static NSInteger const CELL_ACTIVITY_INDICATOR_TAG = 999;
     self.noteCellNib = [UINib nibWithNibName:@"SCHReadingPageListTableCell" bundle:nil];
     
     [self.topShadow setImage:[UIImage imageNamed:@"reading-view-top-shadow.png"]];
-
-    SCHBookAnnotations *annotations = [self.profile annotationsForBook:self.bookIdentifier];
-    self.notes = [annotations notes];
-    
+     
     [[NSNotificationCenter defaultCenter] addObserver:self 
                                              selector:@selector(annotationSyncComponentCompletedNotification:) 
                                                  name:SCHAnnotationSyncComponentDidCompleteNotification 
@@ -136,7 +130,7 @@ static NSInteger const CELL_ACTIVITY_INDICATOR_TAG = 999;
 
 - (void)updateEditButton
 {
-    self.editButton.enabled = ([self.notes count] > 0);
+    self.editButton.enabled = ([self.delegate countOfNotesForReadingNotesView:self] > 0);
 }
 
 #pragma mark - Rotation
@@ -200,8 +194,6 @@ static NSInteger const CELL_ACTIVITY_INDICATOR_TAG = 999;
     NSNumber *profileID = [notification.userInfo objectForKey:SCHAnnotationSyncComponentCompletedProfileIDs];
     
     if ([profileID isEqualToNumber:self.profile.ID] == YES) {
-        SCHBookAnnotations *annotations = [self.profile annotationsForBook:self.bookIdentifier];
-        self.notes = [annotations notes];
         [self.notesTableView reloadData];
     }
 }
@@ -290,20 +282,13 @@ static NSInteger const CELL_ACTIVITY_INDICATOR_TAG = 999;
         case 0:
         {
             return 1;
-            break;
         }   
         case 1:
         {
-            if (self.notes) {
-                return [self.notes count];
-            } else {
-                return 0;
-            }
-            break;
+            return [self.delegate countOfNotesForReadingNotesView:self];
         }   
         default:
             return 0;
-            break;
     }
 
 }
@@ -318,7 +303,7 @@ static NSInteger const CELL_ACTIVITY_INDICATOR_TAG = 999;
     if (self.editMode) {
         section++;
     }
-    
+        
     switch (section) {
         case 0:
         {   
@@ -357,10 +342,9 @@ static NSInteger const CELL_ACTIVITY_INDICATOR_TAG = 999;
             UIActivityIndicatorView *activityView = (UIActivityIndicatorView *) [cell viewWithTag:CELL_ACTIVITY_INDICATOR_TAG];
             UILabel *titleLabel = (UILabel *) [cell viewWithTag:CELL_TITLE_LABEL_TAG];
             UILabel *subTitleLabel = (UILabel *) [cell viewWithTag:CELL_PAGE_LABEL_TAG];
-            
-            SCHNote *note = [self.notes objectAtIndex:[indexPath row]];
+                        
+            SCHNote *note = [self.delegate readingNotesView:self noteAtIndex:[indexPath row]];
             titleLabel.text = note.Value;
-            
             SCHBookPoint *notePoint = [self.delegate bookPointForNote:note];
             
             if (notePoint) {
@@ -397,7 +381,10 @@ static NSInteger const CELL_ACTIVITY_INDICATOR_TAG = 999;
         case 1:
         {
             if (self.delegate && [delegate respondsToSelector:@selector(readingNotesView:didSelectNote:)]) {
-                [delegate readingNotesView:self didSelectNote:[self.notes objectAtIndex:[indexPath row]]];
+                SCHNote *note = [self.delegate readingNotesView:self noteAtIndex:[indexPath row]];
+                if (note) {
+                    [delegate readingNotesView:self didSelectNote:note];
+                }
             }
             break;
         }
@@ -414,35 +401,23 @@ static NSInteger const CELL_ACTIVITY_INDICATOR_TAG = 999;
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
 {
     
-    BOOL shouldCancelEditing = NO;
-
     if (editingStyle == UITableViewCellEditingStyleDelete) {
         NSLog(@"Deleting %d, row %d!", indexPath.section, indexPath.row);
-        
-        
-        if (self.delegate && [delegate respondsToSelector:@selector(readingNotesView:didDeleteNote:)]) {
-            [delegate readingNotesView:self didDeleteNote:[self.notes objectAtIndex:[indexPath row]]];
-        }
-        
-        [self.notesTableView beginUpdates];
 
-        SCHBookAnnotations *annotations = [self.profile annotationsForBook:self.bookIdentifier];
-        self.notes = [annotations notes];
-        
-        [self.notesTableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
-        
-        // cover the case where you swipe and remove the last row
-        if ([self.notes count] == 0) {
-            shouldCancelEditing = YES;
+        if (self.delegate && [delegate respondsToSelector:@selector(readingNotesView:didDeleteNote:)]) {
+            SCHNote *note = [self.delegate readingNotesView:self noteAtIndex:[indexPath row]];
+            if (note) {
+                [delegate readingNotesView:self didDeleteNote:note];
+            }
         }
-        
-        [self.notesTableView endUpdates];
-        
-        if (shouldCancelEditing) {
+                        
+        // cover the case where you swipe and remove the last row
+        if ([self.delegate countOfNotesForReadingNotesView:self] == 0) {
             [self setToolbarModeEditing:NO];
         }
         
         [self updateEditButton];
+        [self.notesTableView reloadData];
     }
 }
 

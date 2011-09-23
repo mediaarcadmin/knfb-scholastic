@@ -25,9 +25,9 @@
 @interface SCHBookAnnotations ()
 
 @property (nonatomic, retain) SCHPrivateAnnotations *privateAnnotations;
-@property (nonatomic, retain) NSArray *sortedBookmarks;
-@property (nonatomic, retain) NSArray *sortedHighlights;
-@property (nonatomic, retain) NSArray *sortedNotes;
+@property (nonatomic, retain, readonly) NSArray *sortedBookmarks;
+@property (nonatomic, retain, readonly) NSArray *sortedHighlights;
+@property (nonatomic, retain, readonly) NSArray *sortedNotes;
 
 @end
 
@@ -70,37 +70,78 @@
     NSNumber *profileID = [notification.userInfo objectForKey:SCHAnnotationSyncComponentCompletedProfileIDs];
     
     if ([profileID isEqualToNumber:self.privateAnnotations.AnnotationsContentItem.AnnotationsItem.ProfileID] == YES) {
-        [self refreshData];
+        [sortedBookmarks release], sortedBookmarks = nil;
+        [sortedHighlights release], sortedHighlights = nil;
+        [sortedNotes release], sortedNotes = nil;
     }
-}
-
-- (void)refreshData
-{
-    self.sortedBookmarks = nil;
-    self.sortedHighlights = nil;
-    self.sortedNotes = nil;
 }
 
 #pragma mark - Accessor methods
 
-- (NSArray *)bookmarks
+- (NSArray *)sortedBookmarks
 {
-    if (self.sortedBookmarks == nil) {
+    if (sortedBookmarks == nil) {
         NSSortDescriptor *sortDescriptor = [NSSortDescriptor sortDescriptorWithKey:kSCHLibreAccessWebServicePage ascending:YES];
-        self.sortedBookmarks = [self.privateAnnotations.Bookmarks sortedArrayUsingDescriptors:
-                           [NSArray arrayWithObject:sortDescriptor]];
+        NSArray *allBookmarks = [self.privateAnnotations.Bookmarks sortedArrayUsingDescriptors:
+                                [NSArray arrayWithObject:sortDescriptor]];
         
         // remove deleted objects
-        self.sortedBookmarks = [self.sortedHighlights filteredArrayUsingPredicate:
-                                 [NSPredicate predicateWithFormat:@"State != %@", [NSNumber numberWithStatus:kSCHStatusDeleted]]];                
+        sortedBookmarks = [[allBookmarks filteredArrayUsingPredicate:
+                                [NSPredicate predicateWithFormat:@"State != %@", [NSNumber numberWithStatus:kSCHStatusDeleted]]] retain];                
     }
 
-    return(self.sortedBookmarks);
+    return sortedBookmarks;
 }
+
+
+- (NSArray *)sortedHighlights
+{
+    if (sortedHighlights == nil) {
+        NSSortDescriptor *sortDescriptor1 = [NSSortDescriptor sortDescriptorWithKey:kSCHLibreAccessWebServiceLocationPage ascending:YES];
+        NSSortDescriptor *sortDescriptor2 = [NSSortDescriptor sortDescriptorWithKey:kSCHLibreAccessWebServiceEndPage ascending:YES];
+        
+        NSArray *allHighlights = [self.privateAnnotations.Highlights sortedArrayUsingDescriptors:
+                                 [NSArray arrayWithObjects:sortDescriptor1, sortDescriptor2, nil]];
+        
+        // remove deleted objects
+        sortedHighlights = [[allHighlights filteredArrayUsingPredicate:
+                                 [NSPredicate predicateWithFormat:@"State != %@", [NSNumber numberWithStatus:kSCHStatusDeleted]]] retain];        
+    }
+    
+    return sortedHighlights;
+}
+
+- (NSArray *)sortedNotes
+{
+    if (sortedNotes == nil) {
+        NSSortDescriptor *sortDescriptor1 = [NSSortDescriptor sortDescriptorWithKey:kSCHLibreAccessWebServiceLocationPage ascending:YES];
+        NSSortDescriptor *sortDescriptor2 = [NSSortDescriptor sortDescriptorWithKey:kSCHLibreAccessWebServiceLastModified ascending:YES];
+        
+        NSArray *allNotes = [self.privateAnnotations.Notes sortedArrayUsingDescriptors:
+                             [NSArray arrayWithObjects:sortDescriptor1, sortDescriptor2, nil]];
+        
+        // remove deleted objects
+        sortedNotes = [[allNotes filteredArrayUsingPredicate:
+                       [NSPredicate predicateWithFormat:@"State != %@", [NSNumber numberWithStatus:kSCHStatusDeleted]]] retain];        
+    }
+    
+    return sortedNotes;
+}
+
+#pragma mark - Bookmarks
 
 - (NSUInteger)bookmarksCount
 {
-    return([self.privateAnnotations.Bookmarks count]);
+    return [self.sortedBookmarks count];
+}
+
+- (SCHBookmark *)bookmarkAtIndex:(NSUInteger)index
+{
+    if (index < [self.sortedBookmarks count]) {
+        return [self.sortedBookmarks objectAtIndex:index];
+    } else {
+        return nil;
+    }
 }
 
 - (void)deleteBookmark:(SCHBookmark *)bookmark
@@ -112,6 +153,15 @@
             [bookmark syncDelete];    
         }
     }
+    
+    [sortedBookmarks release], sortedBookmarks = nil;
+}
+
+#pragma mark - Highlights
+
+- (NSUInteger)highlightsCount
+{
+    return [self.sortedHighlights count];
 }
 
 - (NSArray *)highlightsForPage:(NSUInteger)page
@@ -120,19 +170,8 @@
     __block BOOL found = NO;
     __block NSRange pageRange = NSMakeRange(0, 0);
 
-    if (self.sortedHighlights == nil) {
-        NSSortDescriptor *sortDescriptor1 = [NSSortDescriptor sortDescriptorWithKey:kSCHLibreAccessWebServiceLocationPage ascending:YES];
-        NSSortDescriptor *sortDescriptor2 = [NSSortDescriptor sortDescriptorWithKey:kSCHLibreAccessWebServiceEndPage ascending:YES];
-        self.sortedHighlights = [self.privateAnnotations.Highlights sortedArrayUsingDescriptors:
-                                 [NSArray arrayWithObjects:sortDescriptor1, sortDescriptor2, nil]];
-        
-        // remove deleted objects
-        self.sortedHighlights = [self.sortedHighlights filteredArrayUsingPredicate:
-                                 [NSPredicate predicateWithFormat:@"State != %@", [NSNumber numberWithStatus:kSCHStatusDeleted]]];        
-    }
-
     // search for page
-    [self.sortedHighlights enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+    [[self sortedHighlights] enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
         if (([obj startLayoutPage] <= page) &&
             ([obj endLayoutPage] >= page)) {
             if (found == NO) {
@@ -154,75 +193,10 @@
     return(ret);
 }
 
-- (void)deleteHighlight:(SCHHighlight *)highlight
-{
-    if ([[SCHAppStateManager sharedAppStateManager] canSync] == NO) {
-        [self.privateAnnotations removeHighlightsObject:highlight];
-    } else {
-        if (highlight.isDeleted == NO) {
-            [highlight syncDelete];
-        }
-    }
-}
-
-- (NSArray *)notes
-{
-    if (self.sortedNotes == nil) {
-        NSSortDescriptor *sortDescriptor1 = [NSSortDescriptor sortDescriptorWithKey:kSCHLibreAccessWebServiceLocationPage ascending:YES];
-        NSSortDescriptor *sortDescriptor2 = [NSSortDescriptor sortDescriptorWithKey:kSCHLibreAccessWebServiceLastModified ascending:YES];
-
-        self.sortedNotes = [self.privateAnnotations.Notes sortedArrayUsingDescriptors:
-                          [NSArray arrayWithObjects:sortDescriptor1, sortDescriptor2, nil]];
-        
-        // remove deleted objects
-        self.sortedNotes = [self.sortedNotes filteredArrayUsingPredicate:
-                                 [NSPredicate predicateWithFormat:@"State != %@", [NSNumber numberWithStatus:kSCHStatusDeleted]]];        
-    }
-    
-    return(self.sortedNotes);
-}
-
-- (NSUInteger)notesCount
-{
-    return([self.privateAnnotations.Notes count]);
-}
-
-- (void)deleteNote:(SCHNote *)note
-{
-    if ([[SCHAppStateManager sharedAppStateManager] canSync] == NO) {
-        [self.privateAnnotations removeNotesObject:note];
-    } else {
-        if (note.isDeleted == NO) {
-            [note syncDelete];
-        }
-    }
-}
-
-- (SCHLastPage *)lastPage
-{
-    return(self.privateAnnotations.LastPage);
-}
-
-- (SCHNote *)createEmptyNote
-{
-    SCHNote *note = [NSEntityDescription insertNewObjectForEntityForName:kSCHNote 
-                                            inManagedObjectContext:self.privateAnnotations.managedObjectContext];
-        
-    SCHLocationGraphics *locationGraphics = [NSEntityDescription insertNewObjectForEntityForName:kSCHLocationGraphics
-                                                                  inManagedObjectContext:self.privateAnnotations.managedObjectContext];
-                                     
-    note.PrivateAnnotations = self.privateAnnotations;
-    note.Color = [UIColor whiteColor];
-    note.Location = locationGraphics;
-    note.NoteText = @"";
-	
-	return note;
-}
-
 - (SCHHighlight *)createEmptyHighlight
 {
     SCHHighlight *highlight = [NSEntityDescription insertNewObjectForEntityForName:kSCHHighlight 
-                                                  inManagedObjectContext:self.privateAnnotations.managedObjectContext];
+                                                            inManagedObjectContext:self.privateAnnotations.managedObjectContext];
     
     SCHLocationText *locationText = [NSEntityDescription insertNewObjectForEntityForName:kSCHLocationText
                                                                   inManagedObjectContext:self.privateAnnotations.managedObjectContext];
@@ -234,6 +208,8 @@
     
     highlight.PrivateAnnotations = self.privateAnnotations;
     highlight.Location = locationText;
+    
+    [sortedHighlights release], sortedHighlights = nil;
 	
 	return highlight;
 }
@@ -247,7 +223,74 @@
     newHighlight.Location.WordIndex.Start = [NSNumber numberWithInteger:startWord];
     newHighlight.Location.WordIndex.End = [NSNumber numberWithInteger:endWord];
     
+    [sortedHighlights release], sortedHighlights = nil;
+        
     return newHighlight;
+}
+
+- (void)deleteHighlight:(SCHHighlight *)highlight
+{
+    if ([[SCHAppStateManager sharedAppStateManager] canSync] == NO) {
+        [self.privateAnnotations removeHighlightsObject:highlight];
+    } else {
+        if (highlight.isDeleted == NO) {
+            [highlight syncDelete];
+        }
+    }
+    
+    [sortedHighlights release], sortedHighlights = nil;
+}
+
+#pragma mark - Notes
+
+- (NSUInteger)notesCount
+{
+    return [self.sortedNotes count];
+}
+
+- (SCHNote *)noteAtIndex:(NSUInteger)index
+{
+    if (index < [self.sortedNotes count]) {
+        return [self.sortedNotes objectAtIndex:index];
+    } else {
+        return nil;
+    }
+}
+
+- (SCHNote *)createEmptyNote
+{
+    SCHNote *note = [NSEntityDescription insertNewObjectForEntityForName:kSCHNote 
+                                                  inManagedObjectContext:self.privateAnnotations.managedObjectContext];
+    
+    SCHLocationGraphics *locationGraphics = [NSEntityDescription insertNewObjectForEntityForName:kSCHLocationGraphics
+                                                                          inManagedObjectContext:self.privateAnnotations.managedObjectContext];
+    
+    note.PrivateAnnotations = self.privateAnnotations;
+    note.Color = [UIColor whiteColor];
+    note.Location = locationGraphics;
+    note.NoteText = @"";
+    
+    [sortedNotes release], sortedNotes = nil;
+	
+	return note;
+}
+
+- (void)deleteNote:(SCHNote *)note
+{
+    if ([[SCHAppStateManager sharedAppStateManager] canSync] == NO) {
+        [self.privateAnnotations removeNotesObject:note];
+    } else {
+        if (note.isDeleted == NO) {
+            [note syncDelete];
+        }
+    }
+    
+    [sortedNotes release], sortedNotes = nil;
+}
+
+- (SCHLastPage *)lastPage
+{
+    return self.privateAnnotations.LastPage;
 }
 
 @end

@@ -44,6 +44,9 @@
 @protocol SCHReadingNotesListControllerDelegate <NSObject>
 
 @required
+- (NSInteger)countOfNotesForReadingNotesView:(SCHReadingNotesListController *)readingNotesView;
+- (SCHNote *)readingNotesView:(SCHReadingNotesListController *)readingNotesView noteAtIndex:(NSUInteger)index;
+
 - (void)readingNotesView:(SCHReadingNotesListController *)readingNotesView didSelectNote:(SCHNote *)note;
 - (void)readingNotesView:(SCHReadingNotesListController *)readingNotesView didDeleteNote:(SCHNote *)note;
 - (void)readingNotesViewCreatingNewNote:(SCHReadingNotesListController *)readingNotesView;

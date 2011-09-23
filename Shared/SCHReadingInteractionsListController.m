@@ -25,8 +25,7 @@ static NSInteger const CELL_ACTIVITY_INDICATOR_TAG = 999;
 
 @interface SCHReadingInteractionsListController ()
 
-@property (nonatomic, retain) UINib *noteCellNib;
-@property (nonatomic, retain) NSArray *notes;
+@property (nonatomic, retain) UINib *cellNib;
 
 -(void)releaseViewObjects;
 -(void)setupAssetsForOrientation:(UIInterfaceOrientation)orientation;
@@ -40,13 +39,12 @@ static NSInteger const CELL_ACTIVITY_INDICATOR_TAG = 999;
 @synthesize bookStoryInteractions;
 @synthesize excludeInteractionWithPage;
 @synthesize delegate;
-@synthesize noteCellNib;
+@synthesize cellNib;
 @synthesize notesTableView;
 @synthesize notesCell;
 @synthesize topShadow;
 @synthesize topBar;
 @synthesize bookIdentifier;
-@synthesize notes;
 @synthesize profile;
 @synthesize readingView;
 
@@ -59,10 +57,9 @@ static NSInteger const CELL_ACTIVITY_INDICATOR_TAG = 999;
     
     [bookStoryInteractions release], bookStoryInteractions = nil;
     [bookIdentifier release], bookIdentifier = nil;
-    [noteCellNib release], noteCellNib = nil;
+    [cellNib release], cellNib = nil;
     [notesCell release], notesCell = nil;
     [profile release], profile = nil;
-    [notes release], notes = nil;
     readingView = nil;
     
     [super dealloc];
@@ -111,12 +108,9 @@ static NSInteger const CELL_ACTIVITY_INDICATOR_TAG = 999;
     [self setupAssetsForOrientation:self.interfaceOrientation];
     
     // because we're using iOS 4 and above, use UINib to cache access to the NIB
-    self.noteCellNib = [UINib nibWithNibName:@"SCHReadingPageListTableCell" bundle:nil];
+    self.cellNib = [UINib nibWithNibName:@"SCHReadingPageListTableCell" bundle:nil];
     
     [self.topShadow setImage:[UIImage imageNamed:@"reading-view-top-shadow.png"]];
-    
-    SCHBookAnnotations *annotations = [self.profile annotationsForBook:self.bookIdentifier];
-    self.notes = [annotations notes];
 }
 
 
@@ -213,8 +207,8 @@ static NSInteger const CELL_ACTIVITY_INDICATOR_TAG = 999;
     
     if (cell == nil) {
         
-        if (self.noteCellNib) {
-            [self.noteCellNib instantiateWithOwner:self options:nil];
+        if (self.cellNib) {
+            [self.cellNib instantiateWithOwner:self options:nil];
         }
         
         // when the nib loads, it places an instantiated version of the cell in self.notesCell

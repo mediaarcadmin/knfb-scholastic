@@ -58,6 +58,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 @property (nonatomic, retain) SCHBookIdentifier *bookIdentifier;
 
 @property (nonatomic, retain) SCHProfileItem *profile;
+@property (nonatomic, retain) SCHBookAnnotations *bookAnnotations;
 @property (nonatomic, retain) SCHBookStatistics *bookStatistics;
 @property (nonatomic, retain) NSDate *bookStatisticsReadingStartTime;
 
@@ -171,6 +172,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 @synthesize managedObjectContext;
 @synthesize bookIdentifier;
 @synthesize profile;
+@synthesize bookAnnotations;
 @synthesize bookStatistics;
 @synthesize bookStatisticsReadingStartTime;
 @synthesize readingView;
@@ -254,6 +256,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     [bookIdentifier release], bookIdentifier = nil;
     [popover release], popover = nil;
     [profile release], profile = nil;
+    [bookAnnotations release], bookAnnotations = nil;
     [bookStatistics release], bookStatistics = nil;
     [bookStatisticsReadingStartTime release], bookStatisticsReadingStartTime = nil;
     [audioBookPlayer release], audioBookPlayer = nil;
@@ -388,6 +391,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
         bookIdentifier = [aIdentifier retain];
         profile = [aProfile retain];
         bookStatistics = [[SCHBookStatistics alloc] init];
+        bookAnnotations = [[profile annotationsForBook:bookIdentifier] retain];
         
         currentlyRotating = NO;
         currentlyScrubbing = NO;
@@ -844,8 +848,11 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     NSNumber *profileID = [notification.userInfo objectForKey:SCHAnnotationSyncComponentCompletedProfileIDs];
     
     if ([profileID isEqualToNumber:self.profile.ID] == YES) {
-        [self updateNotesCounter];
-        [self.readingView refreshHighlightsForPageAtIndex:self.currentPageIndex];
+        // dispatch this onto the main thread to avoid a race condition with the notification going to the SCHBookAnnotations object
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self updateNotesCounter];
+            [self.readingView refreshHighlightsForPageAtIndex:self.currentPageIndex];
+        });
     }
 }
 
@@ -865,11 +872,9 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 
 - (void)saveLastPageLocation
 {
-    SCHBookAnnotations *annotations = [self.profile annotationsForBook:self.bookIdentifier];
-    
-    if (annotations != nil) {
+    if (self.bookAnnotations != nil) {
         SCHBookPoint *currentBookPoint = [self.readingView currentBookPoint];
-        SCHLastPage *lastPage = [annotations lastPage];
+        SCHLastPage *lastPage = [self.bookAnnotations lastPage];
         
         lastPage.LastPageLocation = [NSNumber numberWithInteger:currentBookPoint.layoutPage];
     }
@@ -877,10 +882,9 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 
 - (void)jumpToLastPageLocation
 {
-    SCHBookAnnotations *annotations = [self.profile annotationsForBook:self.bookIdentifier];
     SCHBookPoint *lastPoint = [[[SCHBookPoint alloc] init] autorelease];
     
-    NSNumber *lastPageLocation = [[annotations lastPage] LastPageLocation];
+    NSNumber *lastPageLocation = [[self.bookAnnotations lastPage] LastPageLocation];
     
     if (lastPageLocation) {
         lastPoint.layoutPage = MAX([lastPageLocation integerValue], 1);
@@ -1945,11 +1949,9 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 }
 
 - (void)addHighlightBetweenStartPage:(NSUInteger)startPage startWord:(NSUInteger)startWord endPage:(NSUInteger)endPage endWord:(NSUInteger)endWord;
-{
-    SCHBookAnnotations *annotations = [self.profile annotationsForBook:self.bookIdentifier];
-    
-    if (annotations != nil) {
-        SCHHighlight *newHighlight = [annotations createHighlightBetweenStartPage:startPage startWord:startWord endPage:endPage endWord:endWord color:[self highlightColor]];
+{    
+    if (self.bookAnnotations != nil) {
+        SCHHighlight *newHighlight = [self.bookAnnotations createHighlightBetweenStartPage:startPage startWord:startWord endPage:endPage endWord:endWord color:[self highlightColor]];
 
         SCHAppContentProfileItem *appContentProfileItem = [profile appContentProfileItemForBookIdentifier:self.bookIdentifier];
         if (appContentProfileItem != nil) {
@@ -1959,17 +1961,14 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 }
 
 - (void)deleteHighlightBetweenStartPage:(NSUInteger)startPage startWord:(NSUInteger)startWord endPage:(NSUInteger)endPage endWord:(NSUInteger)endWord;
-{
-    NSLog(@"Delete highlight");
-    SCHBookAnnotations *annotations = [self.profile annotationsForBook:self.bookIdentifier];
-    
+{    
     for (int page = startPage; page <= endPage; page++) {
-        for (SCHHighlight *highlight in [annotations highlightsForPage:page]) {
+        for (SCHHighlight *highlight in [self.bookAnnotations highlightsForPage:page]) {
             if (([highlight startLayoutPage] == startPage) &&
                 ([highlight startWordOffset] == startWord) &&
                 ([highlight endLayoutPage] == endPage) &&
                 ([highlight endWordOffset] == endWord)) {
-                [annotations deleteHighlight:highlight];
+                [self.bookAnnotations deleteHighlight:highlight];
             }
         }
     }
@@ -1978,9 +1977,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 
 - (NSArray *)highlightsForLayoutPage:(NSUInteger)page
 {
-    SCHBookAnnotations *annotations = [self.profile annotationsForBook:self.bookIdentifier];
-    
-    return [annotations highlightsForPage:page];    
+    return [self.bookAnnotations highlightsForPage:page];    
 }
 
 - (void)readingViewWillAppear: (SCHReadingView *) aReadingView
@@ -2506,17 +2503,26 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 
 - (void)updateNotesCounter
 {
-    NSUInteger noteCount = [[self.profile annotationsForBook:self.bookIdentifier] notesCount];
+    NSUInteger noteCount = [self.bookAnnotations notesCount];
     self.notesCountView.noteCount = noteCount;
 }
 
 #pragma mark - SCHReadingNotesListControllerDelegate methods
 
+- (NSInteger)countOfNotesForReadingNotesView:(SCHReadingNotesListController *)readingNotesView
+{
+    return [self.bookAnnotations notesCount];
+}
+
+- (SCHNote *)readingNotesView:(SCHReadingNotesListController *)readingNotesView noteAtIndex:(NSUInteger)index
+{
+    return [self.bookAnnotations noteAtIndex:index];
+}
+
 - (void)readingNotesViewCreatingNewNote:(SCHReadingNotesListController *)readingNotesView
 {
     NSLog(@"Requesting a new note be created!");
-    SCHBookAnnotations *annos = [self.profile annotationsForBook:self.bookIdentifier];
-    SCHNote *newNote = [annos createEmptyNote];
+    SCHNote *newNote = [self.bookAnnotations createEmptyNote];
     
     SCHAppContentProfileItem *appContentProfileItem = [profile appContentProfileItemForBookIdentifier:self.bookIdentifier];
     if (appContentProfileItem != nil) {
@@ -2562,11 +2568,8 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 }
 
 - (void)readingNotesView:(SCHReadingNotesListController *)readingNotesView didDeleteNote:(SCHNote *)note
-{
-    SCHBookAnnotations *bookAnnos = [self.profile annotationsForBook:self.bookIdentifier];
-    
-    NSLog(@"Deleting note...");
-    [bookAnnos deleteNote:note];
+{    
+    [self.bookAnnotations deleteNote:note];
     [self save];    
     [self updateNotesCounter];
 }
@@ -2603,12 +2606,10 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 }
 
 - (void)notesViewCancelled:(SCHReadingNoteView *)aNotesView
-{
-    SCHBookAnnotations *bookAnnos = [self.profile annotationsForBook:self.bookIdentifier];
-    
+{    
     // if we created the note but it's been cancelled, delete the note
     if (aNotesView.newNote) {
-        [bookAnnos deleteNote:aNotesView.note];
+        [self.bookAnnotations deleteNote:aNotesView.note];
         
         [self save];
     }

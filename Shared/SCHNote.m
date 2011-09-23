@@ -11,6 +11,7 @@
 #import "SCHLocationGraphics.h"
 #import "UIColor+Extensions.h"
 #import "SCHBookPoint.h"
+#import "NSNumber+ObjectTypes.h"
 
 // Constants
 NSString * const kSCHNote = @"SCHNote";
@@ -71,6 +72,12 @@ NSString * const kSCHNote = @"SCHNote";
 - (void)setNoteLayoutPage:(NSUInteger)layoutPage
 {
     self.Location.Page = [NSNumber numberWithInt:layoutPage];
+}
+
+// Overriding description because it doesn't like the UIColor primitive
+- (NSString *)description
+{
+    return [NSString stringWithFormat:@"<SCHNote: <%p> isDeleted: %d (entity: %@; id: %@)", self, ([self State] == [NSNumber numberWithStatus:kSCHStatusDeleted]), [[self entity] name], [self objectID]];
 }
 
 @end

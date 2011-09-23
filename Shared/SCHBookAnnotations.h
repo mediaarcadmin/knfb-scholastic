@@ -20,20 +20,22 @@
 }
 
 - (id)initWithPrivateAnnotations:(SCHPrivateAnnotations *)privateAnnotations;
-- (void)refreshData;
 
-- (NSArray *)bookmarks;
 - (NSUInteger)bookmarksCount;
+- (SCHBookmark *)bookmarkAtIndex:(NSUInteger)index;
 - (void)deleteBookmark:(SCHBookmark *)bookmark;
-- (NSArray *)highlightsForPage:(NSUInteger)page;
-- (void)deleteHighlight:(SCHHighlight *)highlight;
-- (NSArray *)notes;
-- (NSUInteger)notesCount;
-- (void)deleteNote:(SCHNote *)note;
-- (SCHLastPage *)lastPage;
 
+- (NSUInteger)notesCount;
+- (SCHNote *)noteAtIndex:(NSUInteger)index;
 - (SCHNote *)createEmptyNote;
+- (void)deleteNote:(SCHNote *)note;
+
+- (NSUInteger)highlightsCount;
+- (NSArray *)highlightsForPage:(NSUInteger)page;
 - (SCHHighlight *)createEmptyHighlight;
 - (SCHHighlight *)createHighlightBetweenStartPage:(NSUInteger)startPage startWord:(NSUInteger)startWord endPage:(NSUInteger)endPage endWord:(NSUInteger)endWord color:(UIColor *)color;
+- (void)deleteHighlight:(SCHHighlight *)highlight;
+
+- (SCHLastPage *)lastPage;
 
 @end

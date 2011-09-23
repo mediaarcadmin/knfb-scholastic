@@ -69,14 +69,22 @@
 
 - (void)syncDelete
 {
+    [self willChangeValueForKey:@"LastModified"];
+    [self willChangeValueForKey:@"State"];
 	[self setPrimitiveLastModified:[NSDate date]];
-	[self setPrimitiveState:[NSNumber numberWithStatus:kSCHStatusDeleted]];					
+	[self setPrimitiveState:[NSNumber numberWithStatus:kSCHStatusDeleted]];		
+    [self didChangeValueForKey:@"State"];
+    [self didChangeValueForKey:@"LastModified"];
 }
 
 - (void)syncReset
 {
+    [self willChangeValueForKey:@"LastModified"];
+    [self willChangeValueForKey:@"State"];
 	[self setPrimitiveLastModified:[NSDate date]];
-	[self setPrimitiveState:[NSNumber numberWithStatus:kSCHStatusUnmodified]];					
+	[self setPrimitiveState:[NSNumber numberWithStatus:kSCHStatusUnmodified]];	
+    [self didChangeValueForKey:@"State"];
+    [self didChangeValueForKey:@"LastModified"];
 }
 
 - (NSNumber *)Action
