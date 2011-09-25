@@ -740,7 +740,7 @@
         }
     }
     
-    return resizedImage;
+    return [resizedImage autorelease];
 }
 
 #pragma mark - Notification Methods
