@@ -266,8 +266,10 @@ static NSString *extractXmlAttribute(const XML_Char **atts, const char *key)
                 CGPathAddLineToPoint(path, NULL, x, y);
             }
         }
-        question.path = CGPathCreateCopy(path);
+        CGPathRef pathCopy = CGPathCreateCopy(path);
+        question.path = pathCopy;
         CGPathRelease(path);
+        CGPathRelease(pathCopy);
     } else {
         [super endElement:name parser:parser];
     }
