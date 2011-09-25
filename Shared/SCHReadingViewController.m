@@ -559,9 +559,13 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     SCHAppBook *book = [[SCHBookManager sharedBookManager] bookWithIdentifier:self.bookIdentifier inManagedObjectContext:self.managedObjectContext];
     BOOL audioButtonsHidden = ![[book HasAudio] boolValue];
     
-    self.navigationToolbar = [[SCHReadingViewNavigationToolbar alloc] initWithStyle:style audio:!audioButtonsHidden orientation:self.interfaceOrientation];
-    [self.navigationToolbar setTitle:book.Title];
-    [self.navigationToolbar setDelegate:self];
+    SCHReadingViewNavigationToolbar *aNavigationToolbar = [[SCHReadingViewNavigationToolbar alloc] initWithStyle:style audio:!audioButtonsHidden orientation:self.interfaceOrientation];
+    
+    [aNavigationToolbar setTitle:book.Title];
+    [aNavigationToolbar setDelegate:self];
+    
+    self.navigationToolbar = aNavigationToolbar;
+    [aNavigationToolbar release];
     
     self.cornerAudioButtonView.hidden = audioButtonsHidden;
     
@@ -588,7 +592,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     self.bottomShadow.frame = bottomShadowFrame;
     
     UIImage *bgImage = [UIImage imageNamed:@"notes-count"];
-    self.notesCountView = [[SCHNotesCountView alloc] initWithImage:[bgImage stretchableImageWithLeftCapWidth:10.0f topCapHeight:0]];
+    self.notesCountView = [[[SCHNotesCountView alloc] initWithImage:[bgImage stretchableImageWithLeftCapWidth:10.0f topCapHeight:0]] autorelease];
     [self.notesButton addSubview:self.notesCountView];
     
     [self updateNotesCounter];
