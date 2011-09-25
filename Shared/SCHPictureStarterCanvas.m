@@ -86,7 +86,10 @@
         self.liveLayer.contentsScale = self.deviceScale;
         [self.layer addSublayer:self.liveLayer];
 
-        self.paintContext = [self newPaintContext];
+        CGContextRef newContext = [self newPaintContext];
+        self.paintContext = newContext;
+        CGContextRelease(newContext);
+        
         self.paintedLayer.contents = nil;
     }
     return self;
@@ -248,14 +251,15 @@
 }
 
 - (void)clear
-{
+{    
     [CATransaction begin];
     [CATransaction setDisableActions:YES];
     
     self.liveLayer.delegate = nil;
     self.currentInstruction = nil;
-    CGContextRelease(self.paintContext);
-    self.paintContext = [self newPaintContext];
+    CGContextRef newPaintContext = [self newPaintContext];
+    self.paintContext = newPaintContext;
+    CGContextRelease(newPaintContext);
     self.paintedLayer.contents = nil;
     [self.liveLayer setNeedsDisplay];
     
