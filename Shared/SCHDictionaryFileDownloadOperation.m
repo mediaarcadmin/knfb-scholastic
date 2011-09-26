@@ -7,7 +7,6 @@
 //
 
 #import "SCHDictionaryFileDownloadOperation.h"
-#import "SCHAppBook.h"
 
 #pragma mark Class Extension
 
@@ -64,6 +63,13 @@
 	if ([self isCancelled]) {
 		NSLog(@"Cancelled.");
 	} else {
+        // Following Dave Dribins pattern 
+        // http://www.dribin.org/dave/blog/archives/2009/05/05/concurrent_operations/
+        if (![NSThread isMainThread])
+        {
+            [self performSelectorOnMainThread:@selector(start) withObject:nil waitUntilDone:NO];
+            return;
+        }
 		
 		self.localPath = [[SCHDictionaryDownloadManager sharedDownloadManager] dictionaryZipPath];
         self.localFileManager = [[[NSFileManager alloc] init] autorelease];
@@ -94,6 +100,7 @@
 		
 		if (error) {
 			NSLog(@"Error when reading file attributes. Stopping. (%@)", [error localizedDescription]);
+            [self cancel];
 			return;
 		}
 	}
@@ -107,16 +114,12 @@
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
 	
 	NSURLConnection *connection = [NSURLConnection connectionWithRequest:request delegate:self];
-	
-	[connection start];
-	
-	if (connection != nil) {
-		do {
-			[[NSRunLoop currentRunLoop] runMode:NSDefaultRunLoopMode beforeDate:[NSDate distantFuture]];
-		} while (!self.finished);
-	}
-	
-	return;
+
+	if (connection == nil) {
+        [self cancel];
+    } else {
+        [connection start];
+    }
 }
 
 #pragma mark -
@@ -137,7 +140,6 @@
 
 - (void)connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response
 {
-	
 	unsigned long long fileSize = 0;
 	NSError *error = nil;
 	
@@ -179,8 +181,8 @@
 	[self createPercentageUpdate];
 }
 
-- (void)connection:(NSURLConnection *)connection didReceiveData:(NSData *)data {
-	
+- (void)connection:(NSURLConnection *)connection didReceiveData:(NSData *)data
+{	
     if (![self fileSystemHasBytesAvailable:[data length]]) {
         [[SCHDictionaryDownloadManager sharedDownloadManager] threadSafeUpdateDictionaryState:SCHDictionaryProcessingStateNotEnoughFreeSpace];
         [connection cancel];
@@ -196,12 +198,7 @@
 	
 	if ([self isCancelled]) {
 		[connection cancel];
-        [self willChangeValueForKey:@"isExecuting"];
-        [self willChangeValueForKey:@"isFinished"];
-		self.executing = NO;
-		self.finished = YES;
-        [self didChangeValueForKey:@"isExecuting"];
-        [self didChangeValueForKey:@"isFinished"];
+        [self cancel];
 		return;
 	}
 
@@ -224,15 +221,7 @@
 	[[SCHDictionaryDownloadManager sharedDownloadManager] threadSafeUpdateDictionaryState:SCHDictionaryProcessingStateNeedsUnzip];
 //	[SCHDictionaryManager sharedDownloadManager].dictionaryState = SCHDictionaryProcessingStateNeedsUnzip;
 	
-    [self willChangeValueForKey:@"isExecuting"];
-    [self willChangeValueForKey:@"isFinished"];
-	self.executing = NO;
-	self.finished = YES;
-    [self didChangeValueForKey:@"isExecuting"];
-    [self didChangeValueForKey:@"isFinished"];
-
-	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
-	
+    [self cancel];
 }
 
 - (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error
@@ -242,20 +231,10 @@
     //	[[SCHDictionaryManager sharedDownloadManager] threadSafeUpdateDictionaryState:SCHDictionaryProcessingStateError];
 //	[SCHDictionaryManager sharedDownloadManager].dictionaryState = SCHDictionaryProcessingStateNeedsDownload;
 	
-    [self willChangeValueForKey:@"isExecuting"];
-    [self willChangeValueForKey:@"isFinished"];
-	self.executing = NO;
-	self.finished = YES;
-    [self didChangeValueForKey:@"isExecuting"];
-    [self didChangeValueForKey:@"isFinished"];
-
-	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
-
+    [self cancel];
 }
 
-
-#pragma mark -
-#pragma mark Percentage methods
+#pragma mark - Percentage methods
 
 - (void)createPercentageUpdate
 {
@@ -288,23 +267,25 @@
 	}
 }
 
-- (void)firePercentageUpdate: (NSDictionary *) userInfo
+- (void)firePercentageUpdate:(NSDictionary *)userInfo
 {
 	[[NSNotificationCenter defaultCenter] postNotificationName:kSCHDictionaryDownloadPercentageUpdate object:nil userInfo:userInfo];
 }
 
-#pragma mark -
-#pragma mark NSOperation methods
+#pragma mark - NSOperation methods
 
-- (BOOL)isConcurrent {
+- (BOOL)isConcurrent
+{
 	return YES;
 }
 
-- (BOOL)isExecuting {
+- (BOOL)isExecuting
+{
 	return self.executing;
 }
 
-- (BOOL)isFinished {
+- (BOOL)isFinished
+{
 	return self.finished;
 }
 

@@ -174,11 +174,11 @@
 	
 	NSURLConnection *connection = [NSURLConnection connectionWithRequest:request delegate:self];
 
-	[connection start];
-
 	if (connection == nil) {
         [self endOperation];
         [self setIsProcessing:NO];
+    } else {
+        [connection start];
     }
 }
 
@@ -205,8 +205,7 @@
     return(ret);
 }
 
-#pragma mark -
-#pragma mark Notification methods
+#pragma mark - Notification methods
 
 - (void)percentageUpdate:(NSDictionary *)userInfo
 {
@@ -222,8 +221,7 @@
 	}
 }
 
-#pragma mark -
-#pragma mark NSURLConnection delegate methods
+#pragma mark - NSURLConnection delegate methods
 
 - (void)connection:(NSURLConnection *)connection didReceiveData:(NSData *)data 
 {
