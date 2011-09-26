@@ -170,7 +170,7 @@ static NSUInteger const kSCHURLManagerMaxConnections = 6;
             // limit the amount of requests
             if (requestCount > kSCHURLManagerMaxConnections) {
                 NSLog(@"URL Manager connections maxed out, please wait...");
-                break;
+                continue;
             } else {
                 NSLog(@"URL Manager active connections %d", requestCount);
             }
