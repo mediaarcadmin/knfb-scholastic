@@ -36,8 +36,8 @@ NSString * const SCHAnnotationSyncComponentCompletedProfileIDs = @"SCHAnnotation
 - (BOOL)updateProfileContentAnnotations;
 - (void)processSaveProfileContentAnnotations:(NSNumber *)profileID 
                                       result:(NSDictionary *)result;
-- (void)applyAnnotationCreationID:(NSArray *)annotationsArray;
-- (void)trackAnnotationCreation:(NSSet *)annotationsArray;
+- (void)trackAnnotationSaves:(NSSet *)annotationsArray;
+- (void)applyAnnotationSaves:(NSArray *)annotationsArray;
 - (NSArray *)localModifiedAnnotationsItemForProfile:(NSNumber *)profileID;
 - (NSArray *)localAnnotationsItemForProfile:(NSNumber *)profileID;
 - (void)syncProfileContentAnnotations:(NSDictionary *)profileContentAnnotationList;
@@ -86,7 +86,7 @@ NSString * const SCHAnnotationSyncComponentCompletedProfileIDs = @"SCHAnnotation
 - (void)backgroundSave:(BOOL)batch;
 
 @property (retain, nonatomic) NSMutableDictionary *annotations;
-@property (retain, nonatomic) NSMutableArray *createdAnnotations;
+@property (retain, nonatomic) NSMutableArray *savedAnnotations;
 @property (nonatomic, retain) NSManagedObjectContext *backgroundThreadManagedObjectContext;
 
 @end
@@ -94,7 +94,7 @@ NSString * const SCHAnnotationSyncComponentCompletedProfileIDs = @"SCHAnnotation
 @implementation SCHAnnotationSyncComponent
 
 @synthesize annotations;
-@synthesize createdAnnotations;
+@synthesize savedAnnotations;
 @synthesize backgroundThreadManagedObjectContext;
 
 - (id)init
@@ -102,7 +102,7 @@ NSString * const SCHAnnotationSyncComponentCompletedProfileIDs = @"SCHAnnotation
 	self = [super init];
 	if (self != nil) {
 		annotations = [[NSMutableDictionary dictionary] retain];
-		createdAnnotations = [[NSMutableArray array] retain];
+		savedAnnotations = [[NSMutableArray array] retain];
 	}
 	
 	return(self);
@@ -111,7 +111,7 @@ NSString * const SCHAnnotationSyncComponentCompletedProfileIDs = @"SCHAnnotation
 - (void)dealloc
 {
 	[annotations release], annotations = nil;
-    [createdAnnotations release], createdAnnotations = nil;
+    [savedAnnotations release], savedAnnotations = nil;
 	[backgroundThreadManagedObjectContext release], backgroundThreadManagedObjectContext = nil;
     
 	[super dealloc];
@@ -188,14 +188,14 @@ NSString * const SCHAnnotationSyncComponentCompletedProfileIDs = @"SCHAnnotation
 {
     NSArray *books = [self.annotations objectForKey:profileID];
     
-    if (result != nil && [self.createdAnnotations count] > 0) {
+    if (result != nil && [self.savedAnnotations count] > 0) {
         for (NSDictionary *annotationStatusItem in [result objectForKey:kSCHLibreAccessWebServiceAnnotationStatusList]) {
             for (NSDictionary *annotationStatusContentItem in [annotationStatusItem objectForKey:kSCHLibreAccessWebServiceAnnotationStatusContentList]) {            
                 NSDictionary *privateAnnotationsStatus = [annotationStatusContentItem objectForKey:kSCHLibreAccessWebServicePrivateAnnotationsStatus];
-                
-                [self applyAnnotationCreationID:[privateAnnotationsStatus objectForKey:kSCHLibreAccessWebServiceHighlightsStatusList]];
-                [self applyAnnotationCreationID:[privateAnnotationsStatus objectForKey:kSCHLibreAccessWebServiceNotesStatusList]];
-                [self applyAnnotationCreationID:[privateAnnotationsStatus objectForKey:kSCHLibreAccessWebServiceBookmarksStatusList]];
+                                
+                [self applyAnnotationSaves:[privateAnnotationsStatus objectForKey:kSCHLibreAccessWebServiceHighlightsStatusList]];
+                [self applyAnnotationSaves:[privateAnnotationsStatus objectForKey:kSCHLibreAccessWebServiceNotesStatusList]];
+                [self applyAnnotationSaves:[privateAnnotationsStatus objectForKey:kSCHLibreAccessWebServiceBookmarksStatusList]];
             }
         }
     }
@@ -207,31 +207,68 @@ NSString * const SCHAnnotationSyncComponentCompletedProfileIDs = @"SCHAnnotation
     }            
 }
 
-- (void)applyAnnotationCreationID:(NSArray *)annotationsArray
+// track annotations that need to be saved
+- (void)trackAnnotationSaves:(NSSet *)annotationsArray
+{
+    for (SCHAnnotation *annotation in annotationsArray) {
+        if ([annotation.Action saveActionValue] != kSCHSaveActionsNone) {
+            [self.savedAnnotations addObject:[annotation objectID]];
+        }
+    }
+}
+
+- (void)applyAnnotationSaves:(NSArray *)annotationsArray
 {
     NSManagedObjectID *managedObjectID = nil;
     NSManagedObject *annotationManagedObject = nil;
     
     for (NSDictionary *annotation in annotationsArray) {
-        if ([[annotation objectForKey:kSCHLibreAccessWebServiceStatus] saveActionValue] == kSCHStatusCreated &&
-            [self.createdAnnotations count] > 0) {
-            managedObjectID = [self.createdAnnotations objectAtIndex:0];
+        if ([self.savedAnnotations count] > 0) {
+            managedObjectID = [self.savedAnnotations objectAtIndex:0];
             if (managedObjectID != nil) {
                 annotationManagedObject = [self.managedObjectContext objectWithID:managedObjectID];
-                if ([[[annotation objectForKey:kSCHLibreAccessWebServiceStatusMessage] objectForKey:kSCHLibreAccessWebServiceStatus] statusCodeValue] == kSCHStatusCodesSuccess) {
-                    NSNumber *annotationID = [self makeNullNil:[annotation objectForKey:kSCHLibreAccessWebServiceID]];
-                    if (annotationID != nil) {
-                        [annotationManagedObject setValue:annotationID forKey:kSCHLibreAccessWebServiceID];
-                    } else {
-                        [self.managedObjectContext deleteObject:annotationManagedObject];
+                
+                // check to see the 
+                if ([[[annotation objectForKey:kSCHLibreAccessWebServiceStatusMessage] 
+                      objectForKey:kSCHLibreAccessWebServiceStatus] statusCodeValue] == kSCHStatusCodesSuccess) {
+                    switch ([[annotation objectForKey:kSCHLibreAccessWebServiceStatus] saveActionValue]) {
+                        case kSCHSaveActionsCreate:
+                        {
+                            NSNumber *annotationID = [self makeNullNil:[annotation objectForKey:kSCHLibreAccessWebServiceID]];
+                            if (annotationID != nil) {
+                                [annotationManagedObject setValue:annotationID forKey:kSCHLibreAccessWebServiceID];
+                            } else {
+                                // if the server didnt give us an ID then we remove the annotation
+                                [self.managedObjectContext deleteObject:annotationManagedObject];
+                            }                                                    
+                        }
+                            break;
+                        case kSCHSaveActionsRemove:                            
+                        {
+                            [self.managedObjectContext deleteObject:annotationManagedObject];
+                        }
+                            break;
+
+                        default:
+                            //nop
+                            break;
                     }
                 } else {
+                    // if the server wasnt happy then we remove the annotation
                     [self.managedObjectContext deleteObject:annotationManagedObject];
                 }
+                                
+                // We've attempted to save changes, reset to unmodified and now 
+                // sync will update this with the truth from the server
+                if (annotationManagedObject.isDeleted == NO) {
+                    [annotationManagedObject setValue:[NSNumber numberWithStatus:kSCHStatusUnmodified] 
+                                               forKey:SCHSyncEntityState];
+                }
             }
-            [self.createdAnnotations removeObjectAtIndex:0];
+            [self.savedAnnotations removeObjectAtIndex:0];
         }
     }
+    
     [self save];
 }
 
@@ -251,7 +288,7 @@ NSString * const SCHAnnotationSyncComponentCompletedProfileIDs = @"SCHAnnotation
                                                                                                forKey:SCHAnnotationSyncComponentCompletedProfileIDs]];            
         [super method:method didFailWithError:error requestInfo:requestInfo result:result];
     }
-    [self.createdAnnotations removeAllObjects];
+    [self.savedAnnotations removeAllObjects];
 }
 
 - (BOOL)updateProfileContentAnnotations
@@ -261,15 +298,15 @@ NSString * const SCHAnnotationSyncComponentCompletedProfileIDs = @"SCHAnnotation
     NSNumber *profileID = [[[self.annotations allKeys] sortedArrayUsingSelector:@selector(compare:)] objectAtIndex:0];
     NSArray *books = [self.annotations objectForKey:profileID];
     
-	[self.createdAnnotations removeAllObjects];
+	[self.savedAnnotations removeAllObjects];
     NSArray *updatedAnnotations = [self localModifiedAnnotationsItemForProfile:profileID];
     if ([updatedAnnotations count] > 0) {
         
         for (SCHAnnotationsItem *annotionItem in updatedAnnotations) {
             for (SCHAnnotationsContentItem *annotationContentItem in annotionItem.AnnotationsContentItem) {
-                [self trackAnnotationCreation:annotationContentItem.PrivateAnnotations.Highlights];
-                [self trackAnnotationCreation:annotationContentItem.PrivateAnnotations.Notes];
-                [self trackAnnotationCreation:annotationContentItem.PrivateAnnotations.Bookmarks];
+                [self trackAnnotationSaves:annotationContentItem.PrivateAnnotations.Highlights];
+                [self trackAnnotationSaves:annotationContentItem.PrivateAnnotations.Notes];
+                [self trackAnnotationSaves:annotationContentItem.PrivateAnnotations.Bookmarks];
             }
         }
         
@@ -292,15 +329,6 @@ NSString * const SCHAnnotationSyncComponentCompletedProfileIDs = @"SCHAnnotation
 	return(ret);    
 }
 
-- (void)trackAnnotationCreation:(NSSet *)annotationsArray
-{
-    for (SCHAnnotation *annotation in annotationsArray) {
-        if ([annotation.State statusValue] == kSCHStatusCreated) {
-            [self.createdAnnotations addObject:[annotation objectID]];
-        }
-    }
-}
-
 - (NSArray *)localModifiedAnnotationsItemForProfile:(NSNumber *)profileID
 {	
     NSArray *ret = nil;
@@ -313,8 +341,8 @@ NSString * const SCHAnnotationSyncComponentCompletedProfileIDs = @"SCHAnnotation
                               [NSNumber numberWithStatus:kSCHStatusDeleted], nil];
     // we don't check all the annotations as if they have changed then the last page has also change
 	[fetchRequest setPredicate:[NSPredicate predicateWithFormat:
-                                @"ANY AnnotationsContentItem.PrivateAnnotations.LastPage.State IN %@", 
-                                changedStates, changedStates]];
+                                @"ProfileID == %@ AND ANY AnnotationsContentItem.PrivateAnnotations.LastPage.State IN %@", 
+                                profileID, changedStates]];
 	    
 	ret = [self.managedObjectContext executeFetchRequest:fetchRequest error:&error];
     
@@ -620,17 +648,19 @@ NSString * const SCHAnnotationSyncComponentCompletedProfileIDs = @"SCHAnnotation
 - (void)syncHighlight:(NSDictionary *)webHighlight
         withHighlight:(SCHHighlight *)localHighlight
 {
-	localHighlight.Color = [self makeNullNil:[webHighlight objectForKey:kSCHLibreAccessWebServiceColor]];
-    localHighlight.EndPage = [self makeNullNil:[webHighlight objectForKey:kSCHLibreAccessWebServiceEndPage]];
-    
-	localHighlight.ID = [self makeNullNil:[webHighlight objectForKey:kSCHLibreAccessWebServiceID]];
-    localHighlight.Version = [self makeNullNil:[webHighlight objectForKey:kSCHLibreAccessWebServiceVersion]];
-    
-	localHighlight.LastModified = [self makeNullNil:[webHighlight objectForKey:kSCHLibreAccessWebServiceLastModified]];
-	localHighlight.State = [NSNumber numberWithStatus:kSCHStatusSyncUpdate];				        
-    
-    [self syncLocationText:[self makeNullNil:[webHighlight objectForKey:kSCHLibreAccessWebServiceLocation]] 
-          withLocationText:localHighlight.Location];
+    if ([localHighlight.State statusValue] == kSCHStatusUnmodified) {
+        localHighlight.Color = [self makeNullNil:[webHighlight objectForKey:kSCHLibreAccessWebServiceColor]];
+        localHighlight.EndPage = [self makeNullNil:[webHighlight objectForKey:kSCHLibreAccessWebServiceEndPage]];
+        
+        localHighlight.ID = [self makeNullNil:[webHighlight objectForKey:kSCHLibreAccessWebServiceID]];
+        localHighlight.Version = [self makeNullNil:[webHighlight objectForKey:kSCHLibreAccessWebServiceVersion]];
+        
+        localHighlight.LastModified = [self makeNullNil:[webHighlight objectForKey:kSCHLibreAccessWebServiceLastModified]];
+        localHighlight.State = [NSNumber numberWithStatus:kSCHStatusSyncUpdate];				        
+        
+        [self syncLocationText:[self makeNullNil:[webHighlight objectForKey:kSCHLibreAccessWebServiceLocation]] 
+              withLocationText:localHighlight.Location];
+    }
 }
 
 - (SCHHighlight *)highlight:(NSDictionary *)highlight
@@ -782,17 +812,19 @@ NSString * const SCHAnnotationSyncComponentCompletedProfileIDs = @"SCHAnnotation
 - (void)syncNote:(NSDictionary *)webNote
         withNote:(SCHNote *)localNote
 {
-	localNote.Color = [self makeNullNil:[webNote objectForKey:kSCHLibreAccessWebServiceColor]];
-    localNote.Value = [self makeNullNil:[webNote objectForKey:kSCHLibreAccessWebServiceValue]];
-    
-	localNote.ID = [self makeNullNil:[webNote objectForKey:kSCHLibreAccessWebServiceID]];
-    localNote.Version = [self makeNullNil:[webNote objectForKey:kSCHLibreAccessWebServiceVersion]];
-    
-	localNote.LastModified = [self makeNullNil:[webNote objectForKey:kSCHLibreAccessWebServiceLastModified]];
-	localNote.State = [NSNumber numberWithStatus:kSCHStatusSyncUpdate];				        
-    
-    [self syncLocationGraphics:[self makeNullNil:[webNote objectForKey:kSCHLibreAccessWebServiceLocation]] 
-          withLocationGraphics:localNote.Location];
+    if ([localNote.State statusValue] == kSCHStatusUnmodified) {
+        localNote.Color = [self makeNullNil:[webNote objectForKey:kSCHLibreAccessWebServiceColor]];
+        localNote.Value = [self makeNullNil:[webNote objectForKey:kSCHLibreAccessWebServiceValue]];
+        
+        localNote.ID = [self makeNullNil:[webNote objectForKey:kSCHLibreAccessWebServiceID]];
+        localNote.Version = [self makeNullNil:[webNote objectForKey:kSCHLibreAccessWebServiceVersion]];
+        
+        localNote.LastModified = [self makeNullNil:[webNote objectForKey:kSCHLibreAccessWebServiceLastModified]];
+        localNote.State = [NSNumber numberWithStatus:kSCHStatusSyncUpdate];				        
+        
+        [self syncLocationGraphics:[self makeNullNil:[webNote objectForKey:kSCHLibreAccessWebServiceLocation]] 
+              withLocationGraphics:localNote.Location];
+    }
 }
 
 - (SCHNote *)note:(NSDictionary *)note
@@ -917,17 +949,19 @@ NSString * const SCHAnnotationSyncComponentCompletedProfileIDs = @"SCHAnnotation
 - (void)syncBookmark:(NSDictionary *)webBookmark 
         withBookmark:(SCHBookmark *)localBookmark
 {
-	localBookmark.Disabled = [self makeNullNil:[webBookmark objectForKey:kSCHLibreAccessWebServiceDisabled]];
-    localBookmark.Text = [self makeNullNil:[webBookmark objectForKey:kSCHLibreAccessWebServiceText]];
-    
-	localBookmark.ID = [self makeNullNil:[webBookmark objectForKey:kSCHLibreAccessWebServiceID]];
-    localBookmark.Version = [self makeNullNil:[webBookmark objectForKey:kSCHLibreAccessWebServiceVersion]];
-    
-	localBookmark.LastModified = [self makeNullNil:[webBookmark objectForKey:kSCHLibreAccessWebServiceLastModified]];
-	localBookmark.State = [NSNumber numberWithStatus:kSCHStatusSyncUpdate];				        
-    
-    [self syncLocationBookmark:[self makeNullNil:[webBookmark objectForKey:kSCHLibreAccessWebServiceLocation]] 
-          withLocationBookmark:localBookmark.Location];
+    if ([localBookmark.State statusValue] == kSCHStatusUnmodified) {
+        localBookmark.Disabled = [self makeNullNil:[webBookmark objectForKey:kSCHLibreAccessWebServiceDisabled]];
+        localBookmark.Text = [self makeNullNil:[webBookmark objectForKey:kSCHLibreAccessWebServiceText]];
+        
+        localBookmark.ID = [self makeNullNil:[webBookmark objectForKey:kSCHLibreAccessWebServiceID]];
+        localBookmark.Version = [self makeNullNil:[webBookmark objectForKey:kSCHLibreAccessWebServiceVersion]];
+        
+        localBookmark.LastModified = [self makeNullNil:[webBookmark objectForKey:kSCHLibreAccessWebServiceLastModified]];
+        localBookmark.State = [NSNumber numberWithStatus:kSCHStatusSyncUpdate];				        
+        
+        [self syncLocationBookmark:[self makeNullNil:[webBookmark objectForKey:kSCHLibreAccessWebServiceLocation]] 
+              withLocationBookmark:localBookmark.Location];
+    }
 }
 
 - (SCHBookmark *)bookmark:(NSDictionary *)bookmark

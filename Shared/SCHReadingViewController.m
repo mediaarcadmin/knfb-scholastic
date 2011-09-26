@@ -782,10 +782,10 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
         
         [self saveLastPageLocation];
         
+        [self save];
+        
         [[SCHSyncManager sharedSyncManager] closeDocument:book.ContentMetadataItem.UserContentItem 
                                                forProfile:self.profile.ID];
-        
-        [self save];
     }    
 }
 

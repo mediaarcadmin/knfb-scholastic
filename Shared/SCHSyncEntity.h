@@ -8,6 +8,9 @@
 
 #import <CoreData/CoreData.h>
 
+// Constants
+extern NSString * const SCHSyncEntityState;
+extern NSString * const SCHSyncEntityLastModified;
 
 @interface SCHSyncEntity :  NSManagedObject  
 {

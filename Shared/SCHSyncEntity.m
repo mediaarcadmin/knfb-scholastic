@@ -11,6 +11,10 @@
 #import "NSNumber+ObjectTypes.h"
 #import "SCHLibreAccessWebService.h"
 
+// Constants
+NSString * const SCHSyncEntityState = @"State";
+NSString * const SCHSyncEntityLastModified = @"LastModified";
+
 @interface SCHSyncEntity (CoreDataGeneratedPrimitiveAccessors)
 
 - (NSDate *)primitiveLastModified;
@@ -69,22 +73,22 @@
 
 - (void)syncDelete
 {
-    [self willChangeValueForKey:@"LastModified"];
-    [self willChangeValueForKey:@"State"];
+    [self willChangeValueForKey:SCHSyncEntityLastModified];
+    [self willChangeValueForKey:SCHSyncEntityState];
 	[self setPrimitiveLastModified:[NSDate date]];
 	[self setPrimitiveState:[NSNumber numberWithStatus:kSCHStatusDeleted]];		
-    [self didChangeValueForKey:@"State"];
-    [self didChangeValueForKey:@"LastModified"];
+    [self didChangeValueForKey:SCHSyncEntityState];
+    [self didChangeValueForKey:SCHSyncEntityLastModified];
 }
 
 - (void)syncReset
 {
-    [self willChangeValueForKey:@"LastModified"];
-    [self willChangeValueForKey:@"State"];
+    [self willChangeValueForKey:SCHSyncEntityLastModified];
+    [self willChangeValueForKey:SCHSyncEntityState];
 	[self setPrimitiveLastModified:[NSDate date]];
 	[self setPrimitiveState:[NSNumber numberWithStatus:kSCHStatusUnmodified]];	
-    [self didChangeValueForKey:@"State"];
-    [self didChangeValueForKey:@"LastModified"];
+    [self didChangeValueForKey:SCHSyncEntityState];
+    [self didChangeValueForKey:SCHSyncEntityLastModified];
 }
 
 - (NSNumber *)Action
