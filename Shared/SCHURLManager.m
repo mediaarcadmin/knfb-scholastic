@@ -22,6 +22,7 @@
 // Constants
 NSString * const kSCHURLManagerSuccess = @"URLManagerSuccess";
 NSString * const kSCHURLManagerFailure = @"URLManagerFailure";
+static NSUInteger const kSCHURLManagerMaxConnections = 6;
 
 @interface SCHURLManager ()
 
@@ -32,7 +33,7 @@ NSString * const kSCHURLManagerFailure = @"URLManagerFailure";
 @property (retain, nonatomic) NSMutableSet *table;
 @property (assign, nonatomic) UIBackgroundTaskIdentifier backgroundTaskIdentifier;
 @property (retain, nonatomic) SCHLibreAccessWebService *libreAccessWebService;
-@property (nonatomic, assign) NSInteger requestCount;
+@property (nonatomic, assign) NSUInteger requestCount;
 
 @end
 
@@ -166,6 +167,14 @@ NSString * const kSCHURLManagerFailure = @"URLManagerFailure";
 		}];
 		
 		for (SCHContentMetadataItem *contentMetaDataItem in table) {
+            // limit the amount of requests
+            if (requestCount > kSCHURLManagerMaxConnections) {
+                NSLog(@"URL Manager connections maxed out, please wait...");
+                break;
+            } else {
+                NSLog(@"URL Manager active connections %d", requestCount);
+            }
+
 			if ([self.libreAccessWebService listContentMetadata:[NSArray arrayWithObject:contentMetaDataItem] 
 													includeURLs:YES] == YES) {
 				NSLog(@"Requesting URLs for %@", [contentMetaDataItem 
@@ -225,6 +234,8 @@ NSString * const kSCHURLManagerFailure = @"URLManagerFailure";
 			self.backgroundTaskIdentifier = UIBackgroundTaskInvalid;			
 		}
 	}	
+    
+    [self shakeTable];
 }
 
 - (void)method:(NSString *)method didFailWithError:(NSError *)error 
@@ -247,7 +258,9 @@ NSString * const kSCHURLManagerFailure = @"URLManagerFailure";
 			[[UIApplication sharedApplication] endBackgroundTask:self.backgroundTaskIdentifier];
 			self.backgroundTaskIdentifier = UIBackgroundTaskInvalid;			
 		}
-	}		
+	}	
+	
+    [self shakeTable];
 }
 
 #pragma mark - Authentication Manager Notification methods
