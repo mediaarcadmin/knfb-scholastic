@@ -98,8 +98,8 @@
 	
     NSLog(@"SCHBookOperation: using default operation. Please override correctly!");
 
+    [self setIsProcessing:NO];    
     [self endOperation];
-    [self setIsProcessing:NO];
 }
 
 - (void)endOperation

@@ -94,8 +94,8 @@
 - (void)parser:(NSXMLParser *)parser didStartElement:(NSString *)elementName namespaceURI:(NSString *)namespaceURI qualifiedName:(NSString *)qName attributes:(NSDictionary *)attributeDict 
 {
     if (self.isCancelled) {
+        [self setIsProcessing:NO];        
         [self endOperation];
-        [self setIsProcessing:NO];
 		return;
 	}
 
@@ -118,8 +118,8 @@
 - (void)parserDidEndDocument:(NSXMLParser *)parser
 {
     if (self.isCancelled) {
+        [self setIsProcessing:NO];                
         [self endOperation];
-        [self setIsProcessing:NO];        
 		return;
 	}
 
@@ -142,8 +142,8 @@
 - (void)parser:(NSXMLParser *)parser parseErrorOccurred:(NSError *)parseError
 {
     if (self.isCancelled) {
+        [self setIsProcessing:NO];                
         [self endOperation];
-        [self setIsProcessing:NO];        
 		return;
 	}
 

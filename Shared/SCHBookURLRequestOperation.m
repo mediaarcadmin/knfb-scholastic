@@ -49,8 +49,8 @@
 
     if (haveContentURL == YES) {
         [self setProcessingState:SCHBookProcessingStateNoCoverImage];
+        [self setIsProcessing:NO];                
         [self endOperation];
-        [self setIsProcessing:NO];        
     } else {
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(urlSuccess:) name:kSCHURLManagerSuccess object:nil];
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(urlFailure:) name:kSCHURLManagerFailure object:nil];
@@ -65,8 +65,8 @@
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
     if (self.isCancelled) {
+        [self setIsProcessing:NO];        
         [self endOperation];
-        [self setIsProcessing:NO];
 		return;
 	}
 
@@ -106,16 +106,16 @@
             [self setProcessingState:SCHBookProcessingStateError];
         }
 	}
+    [self setIsProcessing:NO];        
     [self endOperation];
-    [self setIsProcessing:NO];    
 }
 
 - (void)urlFailure:(NSNotification *)notification
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
     if (self.isCancelled) {
+        [self setIsProcessing:NO];        
         [self endOperation];
-        [self setIsProcessing:NO];
 		return;
 	}
 
@@ -127,8 +127,8 @@
         NSLog(@"Warning: book URL request was missing cover and/or content URL: %@", userInfo);
         [self setProcessingState:SCHBookProcessingStateURLsNotPopulated];
 	}
+    [self setIsProcessing:NO];    
     [self endOperation];
-    [self setIsProcessing:NO];
 }
 
 @end

@@ -53,8 +53,8 @@
     if (self.identifier == nil) {
         NSLog(@"WARNING: tried to download a book without setting the ISBN");
         [self setProcessingState:SCHBookProcessingStateError];
-        [self endOperation];
         [self setIsProcessing:NO];                
+        [self endOperation];
         return;
     }
     
@@ -76,8 +76,8 @@
         if (self.localPath == nil || bookFileURL == nil || [bookFileURL compare:@""] == NSOrderedSame) {
             NSLog(@"WARNING: problem with SCHAppBook (ISBN: %@ localPath: %@ bookFileURL: %@", self.identifier, self.localPath, bookFileURL);
             [self setProcessingState:SCHBookProcessingStateError];
+            [self setIsProcessing:NO];                                
             [self endOperation];
-            [self setIsProcessing:NO];                    
             [bookFileURL release];            
             return;
         }
@@ -147,8 +147,8 @@
             NSError *error = nil;
 			if (![[NSFileManager defaultManager] removeItemAtPath:localPath error:&error]) {
 				NSLog(@"Error when deleting an existing file. Stopping. (%@)", [error localizedDescription]);
+                [self setIsProcessing:NO];                
                 [self endOperation];
-                [self setIsProcessing:NO];
 				return;
 			}
 		} else {
@@ -156,8 +156,8 @@
 			NSDictionary *attributes = [[NSFileManager defaultManager] attributesOfItemAtPath:localPath error:&error];
             if (!attributes) {
 				NSLog(@"Error when reading file attributes. Stopping. (%@)", [error localizedDescription]);
+                [self setIsProcessing:NO];                
                 [self endOperation];
-                [self setIsProcessing:NO];
 				return;
 			}
             fileSize = [attributes fileSize];
@@ -175,8 +175,8 @@
 	NSURLConnection *connection = [NSURLConnection connectionWithRequest:request delegate:self];
 
 	if (connection == nil) {
+        [self setIsProcessing:NO];        
         [self endOperation];
-        [self setIsProcessing:NO];
     } else {
         [connection start];
     }
@@ -210,8 +210,8 @@
 - (void)percentageUpdate:(NSDictionary *)userInfo
 {
 	if ([self isCancelled] || [self processingState] == SCHBookProcessingStateDownloadPaused) {
-        [self endOperation];
         [self setIsProcessing:NO];        
+        [self endOperation];
 		return;
 	}
     
@@ -227,8 +227,8 @@
 {
     if ([self isCancelled] || [self processingState] == SCHBookProcessingStateDownloadPaused) {
 		[connection cancel];
+        [self setIsProcessing:NO];        
         [self endOperation];
-        [self setIsProcessing:NO];
 		return;
 	}
 
@@ -289,8 +289,8 @@
 			break;
 	}
 	
-    [self endOperation];
     [self setIsProcessing:NO];        
+    [self endOperation];
 }
 
 - (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error
@@ -299,17 +299,17 @@
    [[NSFileManager defaultManager] removeItemAtPath:self.localPath error:nil];
 
     if ([self isCancelled] || [self processingState] == SCHBookProcessingStateDownloadPaused) {
-		[connection cancel];        
+		[connection cancel];
+        [self setIsProcessing:NO];        
         [self endOperation];
-        [self setIsProcessing:NO];
 		return;
 	}
 
 	NSLog(@"Error downloading file %@ (%@ : %@)", [self.localPath lastPathComponent], error, [error userInfo]);
 
     [self setProcessingState:SCHBookProcessingStateDownloadFailed];
+    [self setIsProcessing:NO];            
     [self endOperation];
-    [self setIsProcessing:NO];        
 }
 
 @end
