@@ -298,7 +298,11 @@ ErrorExit:
     }
     else
     {
-        ChkDR( dr );
+        ExamineDRValue(dr);
+        if ( DRM_FAILED(dr) )
+        {
+            goto ErrorExit;
+        } 
     }
 		
 	//NSLog(@"DRM join domain challenge: %s",(unsigned char*)pbChallenge);
@@ -368,13 +372,15 @@ ErrorExit:
 				return;
 			}
 			else if ( i== 1 ) {
-				dr = DRM_SUCCESS;
+				// Value stored to 'dr' is never used
+                //dr = DRM_SUCCESS;
 				break;
 			}
 			else {
 				// Not clear if this would be a failure.  Assume not for now.
 				NSLog(@"DRM warning: there's more than one domain certificate in the store.");
-				dr = DRM_SUCCESS;
+                // Value stored to 'dr' is never used
+				//dr = DRM_SUCCESS;
 				break;
 			}
         }
@@ -596,7 +602,11 @@ ErrorExit:
 	}
 	else
 	{
-		ChkDR( dr );
+		ExamineDRValue(dr);
+        if ( DRM_FAILED(dr) )
+        {
+            goto ErrorExit;
+        }        
 	}
 	
 	//NSLog(@"DRM license acknowledgment challenge: %s",(unsigned char*)pbChallenge);
@@ -704,7 +714,11 @@ ErrorExit:
     }
     else
     {
-        ChkDR( dr );
+        ExamineDRValue(dr);
+        if ( DRM_FAILED(dr) )
+        {
+            goto ErrorExit;
+        } 
     }
     
 	//NSLog(@"DRM license challenge: %s",(unsigned char*)pbChallenge);
