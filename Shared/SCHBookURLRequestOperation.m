@@ -34,7 +34,7 @@
         [self performSelectorOnMainThread:@selector(beginOperation) withObject:nil waitUntilDone:NO];
         return;
     }
-    NSLog(@"%@ YEAH %p", self.identifier, self);
+
     // sync call to find out if we have a contentURL
     [self performWithBook:^(SCHAppBook *book) {
         haveContentURL = book.ContentMetadataItem.ContentURL != nil;
