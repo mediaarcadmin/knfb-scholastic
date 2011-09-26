@@ -95,6 +95,7 @@
 {
     if (self.isCancelled) {
         [self endOperation];
+        [self setIsProcessing:NO];
 		return;
 	}
 
@@ -118,6 +119,7 @@
 {
     if (self.isCancelled) {
         [self endOperation];
+        [self setIsProcessing:NO];        
 		return;
 	}
 
@@ -141,6 +143,7 @@
 {
     if (self.isCancelled) {
         [self endOperation];
+        [self setIsProcessing:NO];        
 		return;
 	}
 
