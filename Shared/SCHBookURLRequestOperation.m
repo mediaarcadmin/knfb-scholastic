@@ -34,7 +34,7 @@
         [self performSelectorOnMainThread:@selector(beginOperation) withObject:nil waitUntilDone:NO];
         return;
     }
-
+    NSLog(@"%@ YEAH %p", self.identifier, self);
     // sync call to find out if we have a contentURL
     [self performWithBook:^(SCHAppBook *book) {
         haveContentURL = book.ContentMetadataItem.ContentURL != nil;
@@ -63,8 +63,8 @@
 
 - (void)urlSuccess:(NSNotification *)notification
 {
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
     if (self.isCancelled) {
+        [[NSNotificationCenter defaultCenter] removeObserver:self];        
         [self setIsProcessing:NO];        
         [self endOperation];
 		return;
@@ -105,15 +105,17 @@
             NSLog(@"Warning: book URL request was missing cover and/or content URL: %@", userInfo);
             [self setProcessingState:SCHBookProcessingStateError];
         }
+        
+        [[NSNotificationCenter defaultCenter] removeObserver:self];
+        [self setIsProcessing:NO];        
+        [self endOperation];        
 	}
-    [self setIsProcessing:NO];        
-    [self endOperation];
 }
 
 - (void)urlFailure:(NSNotification *)notification
 {
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
     if (self.isCancelled) {
+        [[NSNotificationCenter defaultCenter] removeObserver:self];        
         [self setIsProcessing:NO];        
         [self endOperation];
 		return;
@@ -126,9 +128,11 @@
     if ([completedBookIdentifier isEqual:self.identifier]) {
         NSLog(@"Warning: book URL request was missing cover and/or content URL: %@", userInfo);
         [self setProcessingState:SCHBookProcessingStateURLsNotPopulated];
+
+        [[NSNotificationCenter defaultCenter] removeObserver:self];
+        [self setIsProcessing:NO];    
+        [self endOperation];        
 	}
-    [self setIsProcessing:NO];    
-    [self endOperation];
 }
 
 @end
