@@ -6056,8 +6056,8 @@
 		F8899222132E15E8007EB541 /* Processing Operations */ = {
 			isa = PBXGroup;
 			children = (
-				C9722BE21393A9B9008605E8 /* SCHAudioPreParseOperation.m */,
 				C9722BE31393A9B9008605E8 /* SCHAudioPreParseOperation.h */,
+				C9722BE21393A9B9008605E8 /* SCHAudioPreParseOperation.m */,
 				F878D6A2134498FB00DDB98B /* SCHBookURLRequestOperation.h */,
 				F878D6A3134498FB00DDB98B /* SCHBookURLRequestOperation.m */,
 				F878D6A4134498FB00DDB98B /* SCHDownloadBookFileOperation.h */,

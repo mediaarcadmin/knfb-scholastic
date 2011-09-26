@@ -9,9 +9,7 @@
 #import "SCHBookURLRequestOperation.h"
 #import "SCHURLManager.h"
 #import "SCHLibreAccessWebService.h"
-#import "SCHProcessingManager.h"
 #import "SCHAppBook.h"
-#import "SCHBookManager.h"
 #import "SCHBookIdentifier.h"
 
 @implementation SCHBookURLRequestOperation
@@ -29,6 +27,14 @@
 {
     __block BOOL haveContentURL = NO;
 
+    // Following Dave Dribins pattern 
+    // http://www.dribin.org/dave/blog/archives/2009/05/05/concurrent_operations/
+    if (![NSThread isMainThread])
+    {
+        [self performSelectorOnMainThread:@selector(beginOperation) withObject:nil waitUntilDone:NO];
+        return;
+    }
+
     // sync call to find out if we have a contentURL
     [self performWithBook:^(SCHAppBook *book) {
         haveContentURL = book.ContentMetadataItem.ContentURL != nil;
@@ -44,27 +50,23 @@
     if (haveContentURL == YES) {
         [self setProcessingState:SCHBookProcessingStateNoCoverImage];
         [self endOperation];
+        [self setIsProcessing:NO];        
     } else {
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(urlSuccess:) name:kSCHURLManagerSuccess object:nil];
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(urlFailure:) name:kSCHURLManagerFailure object:nil];
         
         [[SCHURLManager sharedURLManager] requestURLForBook:self.identifier];
-        
-        do {
-            [[NSRunLoop currentRunLoop] runMode:NSDefaultRunLoopMode beforeDate:[NSDate distantFuture]];
-        } while (!self.finished);
-        
-        [[NSNotificationCenter defaultCenter] removeObserver:self];
-    }        
-    [self setIsProcessing:NO];
+    }
 }
 
 #pragma mark - SCHURLManager Notifications
 
 - (void)urlSuccess:(NSNotification *)notification
 {
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
     if (self.isCancelled) {
         [self endOperation];
+        [self setIsProcessing:NO];
 		return;
 	}
 
@@ -103,15 +105,17 @@
             NSLog(@"Warning: book URL request was missing cover and/or content URL: %@", userInfo);
             [self setProcessingState:SCHBookProcessingStateError];
         }
-		
-        [self endOperation];
 	}
+    [self endOperation];
+    [self setIsProcessing:NO];    
 }
 
 - (void)urlFailure:(NSNotification *)notification
 {
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
     if (self.isCancelled) {
         [self endOperation];
+        [self setIsProcessing:NO];
 		return;
 	}
 
@@ -122,8 +126,9 @@
     if ([completedBookIdentifier isEqual:self.identifier]) {
         NSLog(@"Warning: book URL request was missing cover and/or content URL: %@", userInfo);
         [self setProcessingState:SCHBookProcessingStateURLsNotPopulated];
-        [self endOperation];
 	}
+    [self endOperation];
+    [self setIsProcessing:NO];
 }
 
 @end
