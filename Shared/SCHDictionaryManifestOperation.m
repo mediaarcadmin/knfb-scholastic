@@ -13,10 +13,8 @@
 
 @property BOOL executing;
 @property BOOL finished;
-@property BOOL downloadComplete;
 @property BOOL parsingComplete;
 @property BOOL parsingDictionaryInfo;
-@property BOOL failure;
 
 @property (nonatomic, retain) NSURLConnection *connection;
 @property (nonatomic, retain) NSXMLParser *manifestParser;
@@ -24,18 +22,25 @@
 @property (nonatomic, retain) NSMutableArray *manifestEntries;
 @property (nonatomic, retain) SCHDictionaryManifestEntry *currentEntry;
 
-- (void) startOp;
-- (void) finishOp;
+- (void)startOp;
+- (void)finishOp;
 
 @end
 
 @implementation SCHDictionaryManifestOperation
 
-@synthesize executing, finished, downloadComplete, parsingComplete, parsingDictionaryInfo;
-@synthesize manifestParser, connection, connectionData, manifestEntries, currentEntry;
-@synthesize failure;
+@synthesize executing;
+@synthesize finished;
+@synthesize parsingComplete;
+@synthesize parsingDictionaryInfo;
+@synthesize manifestParser;
+@synthesize connection;
+@synthesize connectionData;
+@synthesize manifestEntries; 
+@synthesize currentEntry;
 
-- (void)dealloc {
+- (void)dealloc 
+{
 	self.connection = nil;
 	self.connectionData = nil;
 	self.manifestParser = nil;
@@ -45,12 +50,17 @@
 	[super dealloc];
 }
 
-- (void) start
+- (void)start
 {
 	if (![self isCancelled]) {
-        
-        self.failure = NO;
-		
+        // Following Dave Dribins pattern 
+        // http://www.dribin.org/dave/blog/archives/2009/05/05/concurrent_operations/
+        if (![NSThread isMainThread])
+        {
+            [self performSelectorOnMainThread:@selector(start) withObject:nil waitUntilDone:NO];
+            return;
+        }
+
 		NSLog(@"Starting operation..");
 		
 		self.connectionData = [[[NSMutableData alloc] init] autorelease];
@@ -61,43 +71,18 @@
                                                   [NSURL URLWithString:@"http://reader.ebooks2.scholastic.com/reader/sch/UpdateManifest.xml"]]
 						   delegate:self];
 		
-        [self startOp];
-        
-		if (self.connection) {
-			do {
-				[[NSRunLoop currentRunLoop] runMode:NSDefaultRunLoopMode beforeDate:[NSDate distantFuture]];
-			} while (!self.downloadComplete);
-		}
-        
-        if (failure) {
-            [self finishOp];
-            
-            return;
-        }
-		
-		if (!finished) {
-            
-            self.parsingDictionaryInfo = NO;
-            self.manifestParser = [[[NSXMLParser alloc] initWithData:self.connectionData] autorelease];
-            [self.manifestParser setDelegate:self];
-            [self.manifestParser parse];
-            
-            do {
-                [[NSRunLoop currentRunLoop] runMode:NSDefaultRunLoopMode beforeDate:[NSDate distantFuture]];
-            } while (self.parsingDictionaryInfo);
-            
-            [SCHDictionaryDownloadManager sharedDownloadManager].manifestUpdates = self.manifestEntries;
-            
-		}
-		
-        [self finishOp];
+        if (self.connection == nil) {
+            [self cancel];
+        } else {
+            [self startOp];
+        }        
 	}
 }
 
-#pragma mark -
-#pragma mark NSURLConnection delegate
+#pragma mark - NSURLConnection delegate
 
-- (void)connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response
+- (void)connection:(NSURLConnection *)connection 
+didReceiveResponse:(NSURLResponse *)response
 {
 	[self.connectionData setLength:0];
 }
@@ -111,21 +96,33 @@
 - (void)connectionDidFinishLoading:(NSURLConnection *)connection
 {
 	NSLog(@"finished download, starting parsing..");
-    self.failure = NO;
-	self.downloadComplete = YES;
+    
+    self.parsingDictionaryInfo = NO;
+    self.manifestParser = [[[NSXMLParser alloc] initWithData:self.connectionData] autorelease];
+    [self.manifestParser setDelegate:self];
+    [self.manifestParser parse];
+    
+    [SCHDictionaryDownloadManager sharedDownloadManager].manifestUpdates = self.manifestEntries;    
+    
+    [self cancel];
 }
 
-- (void) connection:(NSURLConnection *)connection didFailWithError:(NSError *)error
+- (void)connection:(NSURLConnection *)connection 
+  didFailWithError:(NSError *)error
 {
 	NSLog(@"failed download!");
-    self.failure = YES;
-	self.downloadComplete = YES;
+    
+    [self cancel];    
 }
 
-#pragma mark -
-#pragma mark NSXMLParserDelegate methods
+#pragma mark - NSXMLParserDelegate methods
 
-- (void)parser:(NSXMLParser *)parser didStartElement:(NSString *)elementName namespaceURI:(NSString *)namespaceURI qualifiedName:(NSString *)qName attributes:(NSDictionary *)attributeDict {
+- (void)parser:(NSXMLParser *)parser 
+didStartElement:(NSString *)elementName 
+  namespaceURI:(NSString *)namespaceURI 
+ qualifiedName:(NSString *)qName 
+    attributes:(NSDictionary *)attributeDict
+{
 //	NSLog(@"parsing element %@", elementName);
 	if ( [elementName isEqualToString:@"UpdateComponent"] ) {
 		NSString * attributeStringValue = [attributeDict objectForKey:@"Name"];
@@ -154,7 +151,10 @@
 	}
 }
 
-- (void) parser:(NSXMLParser *)parser didEndElement:(NSString *)elementName namespaceURI:(NSString *)namespaceURI qualifiedName:(NSString *)qName
+- (void)parser:(NSXMLParser *)parser 
+  didEndElement:(NSString *)elementName 
+   namespaceURI:(NSString *)namespaceURI 
+  qualifiedName:(NSString *)qName
 {
 	if ( [elementName isEqualToString:@"UpdateComponent"] ) {
 		self.parsingDictionaryInfo = NO;
@@ -174,7 +174,6 @@
     [SCHDictionaryDownloadManager sharedDownloadManager].isProcessing = NO;
 
 	self.parsingComplete = YES;
-
 }
 
 - (void)parser:(NSXMLParser *)parser parseErrorOccurred:(NSError *)parseError
@@ -186,14 +185,15 @@
 	self.parsingComplete = YES;
 }
 
+#pragma mark - NSOperation methods
 
-- (void) cancel
+- (void)cancel
 {
     [self finishOp];
 	[super cancel];
 }
 
-- (void) startOp
+- (void)startOp
 {
     [SCHDictionaryDownloadManager sharedDownloadManager].isProcessing = YES;
     [self willChangeValueForKey:@"isExecuting"];
@@ -202,10 +202,9 @@
     self.finished = NO;
     [self didChangeValueForKey:@"isExecuting"];
     [self didChangeValueForKey:@"isFinished"];
-    self.downloadComplete = NO;
 }
 
-- (void) finishOp
+- (void)finishOp
 {
     [self willChangeValueForKey:@"isExecuting"];
     [self willChangeValueForKey:@"isFinished"];
@@ -216,18 +215,19 @@
 	[SCHDictionaryDownloadManager sharedDownloadManager].isProcessing = NO;
 }
 
-- (BOOL)isConcurrent {
+- (BOOL)isConcurrent
+{
 	return YES;
 }
 
-- (BOOL)isExecuting {
+- (BOOL)isExecuting
+{
 	return self.executing;
 }
 
-- (BOOL)isFinished {
+- (BOOL)isFinished
+{
 	return self.finished;
 }
-
-
 
 @end
