@@ -306,7 +306,7 @@ static NSTimeInterval const kSCHLastFirstSyncInterval = -300.0;
     }
 }
 
-- (void)changeProfile
+- (void)profileSync
 {
     if ([self shouldSync] == YES) {	
         NSLog(@"Scheduling Change Profile");
@@ -320,7 +320,7 @@ static NSTimeInterval const kSCHLastFirstSyncInterval = -300.0;
     }
 }
 
-- (void)updateBookshelf
+- (void)bookshelfSync
 {
     if ([self shouldSync] == YES) {	
         NSLog(@"Scheduling Update Bookshelf");
@@ -396,7 +396,7 @@ static NSTimeInterval const kSCHLastFirstSyncInterval = -300.0;
 	return(ret);
 }
 
-- (void)openDocument:(SCHUserContentItem *)userContentItem 
+- (void)openDocumentSync:(SCHUserContentItem *)userContentItem 
           forProfile:(NSNumber *)profileID
 {
     if ([self shouldSync] == YES) {	
@@ -415,7 +415,7 @@ static NSTimeInterval const kSCHLastFirstSyncInterval = -300.0;
     }
 }
 
-- (void)closeDocument:(SCHUserContentItem *)userContentItem forProfile:(NSNumber *)profileID
+- (void)closeDocumentSync:(SCHUserContentItem *)userContentItem forProfile:(NSNumber *)profileID
 {
     // save any changes first
     NSError *error = nil;

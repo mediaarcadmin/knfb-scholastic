@@ -401,7 +401,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
         
         SCHAppBook *book = [[SCHBookManager sharedBookManager] bookWithIdentifier:aIdentifier inManagedObjectContext:self.managedObjectContext];        
         
-        [[SCHSyncManager sharedSyncManager] openDocument:book.ContentMetadataItem.UserContentItem 
+        [[SCHSyncManager sharedSyncManager] openDocumentSync:book.ContentMetadataItem.UserContentItem 
                                               forProfile:profile.ID];
         
         [[NSNotificationCenter defaultCenter] addObserver:self 
@@ -784,7 +784,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
         
         [self save];
         
-        [[SCHSyncManager sharedSyncManager] closeDocument:book.ContentMetadataItem.UserContentItem 
+        [[SCHSyncManager sharedSyncManager] closeDocumentSync:book.ContentMetadataItem.UserContentItem 
                                                forProfile:self.profile.ID];
     }    
 }

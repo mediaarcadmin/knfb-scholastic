@@ -18,6 +18,7 @@
 #import "SCHAppProfile.h"
 #import "SCHBookIdentifier.h"
 #import "SCHCoreDataHelper.h"
+#import "SCHSyncManager.h"
 
 @interface SCHProfileViewController_Shared()  
 
@@ -302,6 +303,9 @@
         if ([topFieldText isEqualToString:bottomFieldText]) {
             if ([topFieldText length] > 0) {
                 [profileItem setRawPassword:topFieldText];
+                if ([self.managedObjectContext save:nil] == YES) {
+                    [[SCHSyncManager sharedSyncManager] profileSync]; 
+                }
                 [SCHThemeManager sharedThemeManager].appProfile = profileItem.AppProfile;
                 [self pushBookshelvesControllerWithProfileItem:profileItem animated:YES];
                 [self dismissModalViewControllerAnimated:YES];
