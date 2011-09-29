@@ -22,8 +22,10 @@ NSString * const SCHProfileSyncComponentDidFailNotification = @"SCHProfileSyncCo
 
 @interface SCHProfileSyncComponent ()
 
-@property (retain, nonatomic) NSMutableArray *createdProfiles;
+@property (retain, nonatomic) NSMutableArray *savedProfiles;
 
+- (void)trackProfileSaves:(NSArray *)profilesArray;
+- (void)applyProfileSaves:(NSArray *)profilesArray;
 - (void)processSaveUserProfilesWithResult:(NSDictionary *)result;
 - (BOOL)updateProfiles;
 - (void)syncProfiles:(NSArray *)profileList;
@@ -33,20 +35,20 @@ NSString * const SCHProfileSyncComponentDidFailNotification = @"SCHProfileSyncCo
 
 @implementation SCHProfileSyncComponent
 
-@synthesize createdProfiles;
+@synthesize savedProfiles;
 
 - (id)init 
 {
     self = [super init];
     if (self) {
-        createdProfiles = [[NSMutableArray array] retain];
+        savedProfiles = [[NSMutableArray array] retain];
     }
     return self;
 }
 
 - (void)dealloc 
 {
-    [createdProfiles release], createdProfiles = nil;
+    [savedProfiles release], savedProfiles = nil;
     [super dealloc];
 }
 
@@ -89,23 +91,73 @@ NSString * const SCHProfileSyncComponentDidFailNotification = @"SCHProfileSyncCo
 	}	
 }
 
-- (void)processSaveUserProfilesWithResult:(NSDictionary *)result
+// track profiles that need to be saved
+- (void)trackProfileSaves:(NSArray *)profilesArray
 {
-    if ([self.createdProfiles count] > 0) {
-        NSManagedObjectID *managedObjectID = nil;
-        NSManagedObject *profileManagedObject = nil;
-        for (NSDictionary *profileStatusItem in [result objectForKey:kSCHLibreAccessWebServiceProfileStatusList]) {        
-            if ([[profileStatusItem objectForKey:kSCHLibreAccessWebServiceStatus] saveActionValue] == kSCHStatusCreated &&
-                [self.createdProfiles count] > 0) {
-                managedObjectID = [self.createdProfiles objectAtIndex:0];
-                if (managedObjectID != nil) {
-                    profileManagedObject = [self.managedObjectContext objectWithID:managedObjectID];
-                    [profileManagedObject setValue:[profileStatusItem objectForKey:kSCHLibreAccessWebServiceID] forKey:kSCHLibreAccessWebServiceID];
-                }
-                [self.createdProfiles removeObjectAtIndex:0];
-            }
+    for (SCHProfileItem *profile in profilesArray) {
+        if ([profile.Action saveActionValue] != kSCHSaveActionsNone) {
+            [self.savedProfiles addObject:[profile objectID]];
         }
     }
+}
+
+- (void)applyProfileSaves:(NSArray *)profilesArray
+{
+    NSManagedObjectID *managedObjectID = nil;
+    NSManagedObject *profileManagedObject = nil;
+    
+    for (NSDictionary *profile in profilesArray) {
+        if ([self.savedProfiles count] > 0) {
+            managedObjectID = [self.savedProfiles objectAtIndex:0];
+            if (managedObjectID != nil) {
+                profileManagedObject = [self.managedObjectContext objectWithID:managedObjectID];
+                
+                if ([[profile objectForKey:kSCHLibreAccessWebServiceStatus] statusCodeValue] == kSCHStatusCodesSuccess) {
+                    switch ([[profile objectForKey:kSCHLibreAccessWebServiceStatus] saveActionValue]) {
+                        case kSCHSaveActionsCreate:
+                        {
+                            NSNumber *profileID = [self makeNullNil:[profile objectForKey:kSCHLibreAccessWebServiceID]];
+                            if (profileID != nil) {
+                                [profileManagedObject setValue:profileID forKey:kSCHLibreAccessWebServiceID];
+                            } else {
+                                // if the server didnt give us an ID then we remove the profile
+                                [self.managedObjectContext deleteObject:profileManagedObject];
+                            }                                                    
+                        }
+                            break;
+                        case kSCHSaveActionsRemove:                            
+                        {
+                            [self.managedObjectContext deleteObject:profileManagedObject];
+                        }
+                            break;
+                            
+                        default:
+                            //nop
+                            break;
+                    }
+                } else {
+                    // if the server wasnt happy then we remove the profile
+                    [self.managedObjectContext deleteObject:profileManagedObject];
+                }
+                
+                // We've attempted to save changes, reset to unmodified and now 
+                // sync will update this with the truth from the server
+                if (profileManagedObject.isDeleted == NO) {
+                    [profileManagedObject setValue:[NSNumber numberWithStatus:kSCHStatusUnmodified] 
+                                               forKey:SCHSyncEntityState];
+                }
+            }
+            [self.savedProfiles removeObjectAtIndex:0];
+        }
+        [self save];
+    }
+}
+
+- (void)processSaveUserProfilesWithResult:(NSDictionary *)result
+{
+    if (result != nil && [self.savedProfiles count] > 0) {
+        [self applyProfileSaves:[result objectForKey:kSCHLibreAccessWebServiceProfileStatusList]];
+    }        
     
     self.isSynchronizing = [self.libreAccessWebService getUserProfiles];
     if (self.isSynchronizing == NO) {
@@ -125,7 +177,7 @@ NSString * const SCHProfileSyncComponentDidFailNotification = @"SCHProfileSyncCo
                                                             object:self];		    
         [super method:method didFailWithError:error requestInfo:requestInfo result:result];
     }
-    [self.createdProfiles removeAllObjects];
+    [self.savedProfiles removeAllObjects];
 }
 
 - (BOOL)updateProfiles
@@ -133,21 +185,17 @@ NSString * const SCHProfileSyncComponentDidFailNotification = @"SCHProfileSyncCo
 	BOOL ret = YES;
 	NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
 	
-    [self.createdProfiles removeAllObjects];
+    [self.savedProfiles removeAllObjects];
 	[fetchRequest setEntity:[NSEntityDescription entityForName:kSCHProfileItem inManagedObjectContext:self.managedObjectContext]];	
 	[fetchRequest setPredicate:[NSPredicate predicateWithFormat:@"State IN %@", 
 								[NSArray arrayWithObjects:[NSNumber numberWithStatus:kSCHStatusModified],
 								 [NSNumber numberWithStatus:kSCHStatusDeleted], nil]]];
-	NSArray *results = [self.managedObjectContext executeFetchRequest:fetchRequest error:nil];
-	if([results count] > 0) {
+	NSArray *updatedProfiles = [self.managedObjectContext executeFetchRequest:fetchRequest error:nil];
+	if([updatedProfiles count] > 0) {
         
-        for (SCHProfileItem *profileItem in results) {
-            if ([profileItem.State statusValue] == kSCHStatusCreated) {
-                [self.createdProfiles addObject:[profileItem objectID]];
-            }
-        }
+        [self trackProfileSaves:updatedProfiles];
         
-		self.isSynchronizing = [self.libreAccessWebService saveUserProfiles:results];
+		self.isSynchronizing = [self.libreAccessWebService saveUserProfiles:updatedProfiles];
 		if (self.isSynchronizing == NO) {
 			[[SCHAuthenticationManager sharedAuthenticationManager] authenticate];				
 			ret = NO;			
@@ -196,7 +244,9 @@ NSString * const SCHProfileSyncComponentDidFailNotification = @"SCHProfileSyncCo
 	while (webItem != nil || localItem != nil) {		
 		if (webItem == nil) {
 			while (localItem != nil) {
-				[deletePool addObject:localItem];
+                if ([localItem.State statusValue] == kSCHStatusUnmodified) {
+                    [deletePool addObject:localItem];
+                }
 				localItem = [localEnumerator nextObject];
 			} 
 			break;

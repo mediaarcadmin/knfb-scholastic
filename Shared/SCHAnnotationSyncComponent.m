@@ -228,7 +228,6 @@ NSString * const SCHAnnotationSyncComponentCompletedProfileIDs = @"SCHAnnotation
             if (managedObjectID != nil) {
                 annotationManagedObject = [self.managedObjectContext objectWithID:managedObjectID];
                 
-                // check to see the 
                 if ([[[annotation objectForKey:kSCHLibreAccessWebServiceStatusMessage] 
                       objectForKey:kSCHLibreAccessWebServiceStatus] statusCodeValue] == kSCHStatusCodesSuccess) {
                     switch ([[annotation objectForKey:kSCHLibreAccessWebServiceStatus] saveActionValue]) {
@@ -267,9 +266,8 @@ NSString * const SCHAnnotationSyncComponentCompletedProfileIDs = @"SCHAnnotation
             }
             [self.savedAnnotations removeObjectAtIndex:0];
         }
+        [self save];
     }
-    
-    [self save];
 }
 
 - (void)method:(NSString *)method didFailWithError:(NSError *)error 
@@ -590,7 +588,9 @@ NSString * const SCHAnnotationSyncComponentCompletedProfileIDs = @"SCHAnnotation
 	while (webItem != nil || localItem != nil) {		
 		if (webItem == nil) {
 			while (localItem != nil) {
-				[deletePool addObject:localItem];
+                if ([localItem.State statusValue] == kSCHStatusUnmodified) {
+                    [deletePool addObject:localItem];
+                }
 				localItem = [localEnumerator nextObject];
 			} 
 			break;
@@ -754,7 +754,9 @@ NSString * const SCHAnnotationSyncComponentCompletedProfileIDs = @"SCHAnnotation
 	while (webItem != nil || localItem != nil) {		
 		if (webItem == nil) {
 			while (localItem != nil) {
-				[deletePool addObject:localItem];
+                if ([localItem.State statusValue] == kSCHStatusUnmodified) {
+                    [deletePool addObject:localItem];
+                }
 				localItem = [localEnumerator nextObject];
 			} 
 			break;
@@ -891,7 +893,9 @@ NSString * const SCHAnnotationSyncComponentCompletedProfileIDs = @"SCHAnnotation
 	while (webItem != nil || localItem != nil) {		
 		if (webItem == nil) {
 			while (localItem != nil) {
-				[deletePool addObject:localItem];
+                if ([localItem.State statusValue] == kSCHStatusUnmodified) {
+                    [deletePool addObject:localItem];
+                }
 				localItem = [localEnumerator nextObject];
 			} 
 			break;
