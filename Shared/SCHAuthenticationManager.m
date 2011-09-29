@@ -479,29 +479,32 @@ typedef struct AuthenticateWithUserNameParameters AuthenticateWithUserNameParame
 {
     NSLog(@"AuthenticationManager:%@ %@", method, [error description]);
     waitingOnResponse = NO;
-    if([method compare:kSCHLibreAccessWebServiceTokenExchange] == NSOrderedSame) {	
-        NSNumber *deviceIsDeregistered = [result objectForKey:kSCHLibreAccessWebServiceDeviceIsDeregistered];        
-        if ([deviceIsDeregistered isKindOfClass:[NSNumber class]] == YES &&
-            [[result objectForKey:kSCHLibreAccessWebServiceDeviceIsDeregistered] boolValue] == YES) {
-            [self performPostDeregistration];
-            return;
+
+    if (result != nil) {
+        if([method compare:kSCHLibreAccessWebServiceTokenExchange] == NSOrderedSame) {	
+            NSNumber *deviceIsDeregistered = [result objectForKey:kSCHLibreAccessWebServiceDeviceIsDeregistered];        
+            if ([deviceIsDeregistered isKindOfClass:[NSNumber class]] == YES &&
+                [[result objectForKey:kSCHLibreAccessWebServiceDeviceIsDeregistered] boolValue] == YES) {
+                [self performPostDeregistration];
+                return;
+            }
+        } else if ([method compare:kSCHLibreAccessWebServiceAuthenticateDevice] == NSOrderedSame) {	
+            self.aToken = nil;
+            self.tokenExpires = nil;        
+            
+            NSNumber *deviceIsDeregistered = [result objectForKey:kSCHLibreAccessWebServiceDeviceIsDeregistered];        
+            if ([deviceIsDeregistered isKindOfClass:[NSNumber class]] == YES &&
+                [[result objectForKey:kSCHLibreAccessWebServiceDeviceIsDeregistered] boolValue] == YES) {
+                [self performPostDeregistration];
+                return;
+            } else {
+                // we only step back to authenticate if this was a server error
+                [[NSUserDefaults standardUserDefaults] removeObjectForKey:kSCHAuthenticationManagerDeviceKey];
+            }
+        } else if ([method compare:kSCHLibreAccessWebServiceRenewToken] == NSOrderedSame) {	
+            self.aToken = nil;
+            self.tokenExpires = nil;        
         }
-	} else if([method compare:kSCHLibreAccessWebServiceAuthenticateDevice] == NSOrderedSame) {	
-        self.aToken = nil;
-        self.tokenExpires = nil;        
-        
-        NSNumber *deviceIsDeregistered = [result objectForKey:kSCHLibreAccessWebServiceDeviceIsDeregistered];        
-        if ([method isEqualToString:kSCHLibreAccessWebServiceAuthenticateDevice] == YES &&
-            [deviceIsDeregistered isKindOfClass:[NSNumber class]] == YES &&
-            [[result objectForKey:kSCHLibreAccessWebServiceDeviceIsDeregistered] boolValue] == YES) {
-            [self performPostDeregistration];
-            return;
-        } else {
-            [[NSUserDefaults standardUserDefaults] removeObjectForKey:kSCHAuthenticationManagerDeviceKey];
-        }
-    } else if([method compare:kSCHLibreAccessWebServiceRenewToken] == NSOrderedSame) {	
-        self.aToken = nil;
-        self.tokenExpires = nil;        
     }
 
 	[self postFailureWithError:error];
@@ -509,7 +512,8 @@ typedef struct AuthenticateWithUserNameParameters AuthenticateWithUserNameParame
 
 #pragma mark - DRM Registration Session Delegate methods
 
-- (void)registrationSession:(SCHDrmRegistrationSession *)registrationSession didComplete:(NSString *)deviceKey
+- (void)registrationSession:(SCHDrmRegistrationSession *)registrationSession 
+                didComplete:(NSString *)deviceKey
 {
     if (deviceKey != nil) {
         [[NSUserDefaults standardUserDefaults] setObject:deviceKey 
@@ -523,7 +527,8 @@ typedef struct AuthenticateWithUserNameParameters AuthenticateWithUserNameParame
     self.drmRegistrationSession = nil;
 }
 
-- (void)registrationSession:(SCHDrmRegistrationSession *)registrationSession didFailWithError:(NSError *)error
+- (void)registrationSession:(SCHDrmRegistrationSession *)registrationSession 
+           didFailWithError:(NSError *)error
 {
     NSLog(@"AuthenticationManager:DRM %@", [error description]);
 	waitingOnResponse = NO;
