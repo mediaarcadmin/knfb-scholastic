@@ -1961,6 +1961,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
         if (appContentProfileItem != nil) {
             newHighlight.Version = [NSNumber numberWithInteger:[appContentProfileItem.ContentProfileItem.UserContentItem.Version integerValue]];
         }
+        [self save];
     }
 }
 
@@ -2532,6 +2533,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     if (appContentProfileItem != nil) {
         newNote.Version = [NSNumber numberWithInteger:[appContentProfileItem.ContentProfileItem.UserContentItem.Version integerValue]];
     }
+    [self save];
     
     SCHBookPoint *currentPoint = [self.readingView currentBookPoint];
     
