@@ -26,6 +26,8 @@ NSString * const kSCHDictionaryDownloadPercentageUpdate = @"SCHDictionaryDownloa
 
 NSString * const kSCHDictionaryStateChange = @"SCHDictionaryStateChange";
 
+static NSString * const kSCHDictionaryDownloadDirectoryName = @"Dictionary";
+
 int const kSCHDictionaryManifestEntryEntryTableBufferSize = 8192;
 int const kSCHDictionaryManifestEntryWordFormTableBufferSize = 1024;
 
@@ -556,7 +558,7 @@ static SCHDictionaryDownloadManager *sharedManager = nil;
 - (NSString *)dictionaryDirectory 
 {
     NSString *applicationSupportDirectory = [NSSearchPathForDirectoriesInDomains(NSApplicationSupportDirectory, NSUserDomainMask, YES) lastObject];
-    NSString *dictionaryDirectory = [applicationSupportDirectory stringByAppendingPathComponent:@"Dictionary"];
+    NSString *dictionaryDirectory = [applicationSupportDirectory stringByAppendingPathComponent:kSCHDictionaryDownloadDirectoryName];
     
     NSFileManager *localFileManager = [[NSFileManager alloc] init];
     NSError *error = nil;
@@ -573,6 +575,13 @@ static SCHDictionaryDownloadManager *sharedManager = nil;
     [localFileManager release];
     
     return dictionaryDirectory;
+}
+
+- (NSString *)dictionaryTmpDirectory 
+{
+    NSString *ret = [NSTemporaryDirectory() stringByAppendingPathComponent:kSCHDictionaryDownloadDirectoryName];  
+    
+    return(ret);
 }
 
 - (NSString *)dictionaryTextFilesDirectory 
@@ -721,27 +730,12 @@ static SCHDictionaryDownloadManager *sharedManager = nil;
         [context setPersistentStoreCoordinator:self.persistentStoreCoordinator];
         
         NSLog(@"Removing any existing %@ objects.", kSCHDictionaryEntry);
-        
-        NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
-        [fetchRequest setEntity:[NSEntityDescription entityForName:kSCHDictionaryEntry inManagedObjectContext:context]];
-        [fetchRequest setIncludesPropertyValues:NO]; //only fetch the managedObjectID
-        
+                
         NSError *error = nil;
-        NSArray *items = [context executeFetchRequest:fetchRequest error:&error];
-        [fetchRequest release];
-        
-        //error handling goes here
-        
+        [context BITemptyEntity:kSCHDictionaryEntry error:&error];
         if (error) {
-            NSLog(@"Error during processing; could not remove %@ objects. %@", kSCHDictionaryEntry, [error localizedDescription]);
-            
+            NSLog(@"Error during processing; could not remove %@ objects. %@", kSCHDictionaryEntry, [error localizedDescription]);            
         }
-        
-        for (NSManagedObject *item in items) {
-            [context deleteObject:item];
-        }
-        
-        [context save:&error];
         
         // begin processing
         
@@ -849,25 +843,11 @@ static SCHDictionaryDownloadManager *sharedManager = nil;
         
         NSLog(@"Removing any existing %@ objects.", kSCHDictionaryWordForm);
         
-        NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
-        [fetchRequest setEntity:[NSEntityDescription entityForName:kSCHDictionaryWordForm inManagedObjectContext:context]];
-        [fetchRequest setIncludesPropertyValues:NO]; //only fetch the managedObjectID
-        
         NSError *error = nil;
-        NSArray *items = [context executeFetchRequest:fetchRequest error:&error];
-        [fetchRequest release];
-        
-        //error handling goes here
-        
+        [context BITemptyEntity:kSCHDictionaryWordForm error:&error];
         if (error) {
-            NSLog(@"Error during processing; could not remove %@ objects. %@", kSCHDictionaryWordForm, [error localizedDescription]);
+            NSLog(@"Error during processing; could not remove %@ objects. %@", kSCHDictionaryWordForm, [error localizedDescription]);            
         }
-        
-        for (NSManagedObject *item in items) {
-            [context deleteObject:item];
-        }
-        
-        [context save:&error];
         
         // begin processing
         
@@ -1373,9 +1353,11 @@ static SCHDictionaryDownloadManager *sharedManager = nil;
             
             [self threadSafeUpdateDictionaryState:SCHDictionaryProcessingStateDeleting];
             
-            // remove dictionary files
+            // move the dictionary files to tmp and delete in the background 
+            NSString *dictionaryTmpDirectory = [self dictionaryTmpDirectory];
             NSError *error = nil;
-            if (![[NSFileManager defaultManager] removeItemAtPath:[self dictionaryDirectory] error:&error]) {
+            if (![[NSFileManager defaultManager] moveItemAtPath:[self dictionaryDirectory] 
+                                                         toPath:dictionaryTmpDirectory error:&error]) {
                 dispatch_async(dispatch_get_main_queue(), ^{
                     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error", @"error alert title")
                                                                     message:[error localizedDescription]
@@ -1385,20 +1367,32 @@ static SCHDictionaryDownloadManager *sharedManager = nil;
                     [alert show];
                     [alert release];
                 });
+            } else {
+                // remove dictionary files from tmp in the background
+                dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{
+                    [[NSFileManager defaultManager] removeItemAtPath:dictionaryTmpDirectory error:nil];
+                });
             }
             
-            // clear dictionary entries out of database
-            NSManagedObjectContext *managedObjectContext = [[NSManagedObjectContext alloc] init];
-            [managedObjectContext setPersistentStoreCoordinator:self.persistentStoreCoordinator];
-            
-            NSArray *entities = [NSArray arrayWithObjects:@"SCHDictionaryEntry", @"SCHDictionaryWordForm", @"SCHAppDictionaryState", nil];
-            for (NSString *entity in entities) {
-                if (![managedObjectContext BITemptyEntity:entity error:&error]) {
-                    NSLog(@"error removing %@: %@", entity, error);
+            // move the core data operation to the background, should this fail
+            // before it ends dictionary processing also makes sure that it is clear
+            // prior to import
+            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{
+                // clear dictionary entries out of database
+                NSManagedObjectContext *managedObjectContext = [[NSManagedObjectContext alloc] init];
+                [managedObjectContext setPersistentStoreCoordinator:self.persistentStoreCoordinator];
+                
+                NSError *error = nil;
+                NSArray *entities = [NSArray arrayWithObjects:kSCHAppDictionaryState, kSCHDictionaryEntry, kSCHDictionaryWordForm, nil];
+                for (NSString *entity in entities) {
+                    if (![managedObjectContext BITemptyEntity:entity error:&error]) {
+                        NSLog(@"error removing %@: %@", entity, error);
+                    }
                 }
-            }
+                
+                [managedObjectContext release];
+            });
             
-            [managedObjectContext release];
             [self threadSafeUpdateDictionaryState:SCHDictionaryProcessingStateUserDeclined];
         });
     }

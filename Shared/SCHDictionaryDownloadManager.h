@@ -62,6 +62,9 @@ typedef enum {
 // the local dictionary directory
 - (NSString *)dictionaryDirectory;
 
+// the local dictionary tmp directory
+- (NSString *)dictionaryTmpDirectory;
+
 // the location of the downloaded zip file
 - (NSString *)dictionaryZipPath;
 
