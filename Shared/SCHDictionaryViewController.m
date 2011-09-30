@@ -275,8 +275,9 @@
         {
             self.topLabel.text = @"Downloading";
             self.bottomLabel.text = @"The dictionary is currently downloading from the Internet. You can wait for it to finish, or look up your word later.";
-            [self.activityIndicator startAnimating];
-            self.progressBar.hidden = YES;
+            [self.activityIndicator stopAnimating];
+            self.progressBar.hidden = NO;
+            self.progressBar.progress = [SCHDictionaryDownloadManager sharedDownloadManager].currentDownloadPercentage;
             [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(downloadPercentageUpdate:) name:kSCHDictionaryDownloadPercentageUpdate object:nil];
             break;
         }

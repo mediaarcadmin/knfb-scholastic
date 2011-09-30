@@ -57,6 +57,8 @@ typedef enum {
 // dictionary is currently processing
 @property BOOL isProcessing;
 
+@property (readonly) float currentDownloadPercentage;
+
 + (SCHDictionaryDownloadManager *)sharedDownloadManager;
 
 // the local dictionary directory

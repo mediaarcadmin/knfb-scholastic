@@ -37,7 +37,9 @@ char * const kSCHDictionaryManifestEntryColumnSeparator = "\t";
 
 @implementation SCHDictionaryManifestEntry
 
-@synthesize fromVersion, toVersion, url;
+@synthesize fromVersion;
+@synthesize toVersion;
+@synthesize url;
 
 @end
 
@@ -56,6 +58,8 @@ char * const kSCHDictionaryManifestEntryColumnSeparator = "\t";
 
 // timer for preventing false starts
 @property (readwrite, retain) NSTimer *startTimer;
+
+@property (readwrite) float currentDownloadPercentage;
 
 // check current reachability state
 - (void) reachabilityCheck: (Reachability *) curReach;
@@ -80,12 +84,17 @@ char * const kSCHDictionaryManifestEntryColumnSeparator = "\t";
 
 @implementation SCHDictionaryDownloadManager
 
-@synthesize backgroundTask, dictionaryDownloadQueue;
-@synthesize wifiReach, startTimer, wifiAvailable, connectionIdle;
+@synthesize backgroundTask;
+@synthesize dictionaryDownloadQueue;
+@synthesize wifiReach;
+@synthesize startTimer;
+@synthesize wifiAvailable;
+@synthesize connectionIdle;
 @synthesize isProcessing;
 @synthesize manifestUpdates;
 @synthesize mainThreadManagedObjectContext;
 @synthesize persistentStoreCoordinator;
+@synthesize currentDownloadPercentage;
 
 #pragma mark -
 #pragma mark Object Lifecycle
@@ -116,7 +125,12 @@ char * const kSCHDictionaryManifestEntryColumnSeparator = "\t";
         [[NSNotificationCenter defaultCenter] addObserver:self 
                                                  selector:@selector(coreDataHelperManagedObjectContextDidChangeNotification:) 
                                                      name:SCHCoreDataHelperManagedObjectContextDidChangeNotification 
-                                                   object:nil];	        
+                                                   object:nil];	 
+        
+        [[NSNotificationCenter defaultCenter] addObserver:self 
+                                                 selector:@selector(dictionaryDownloadPercentageUpdate:) 
+                                                     name:kSCHDictionaryDownloadPercentageUpdate 
+                                                   object:nil];        
     }
 	
 	return self;
@@ -448,9 +462,11 @@ static SCHDictionaryDownloadManager *sharedManager = nil;
 			// create dictionary download operation
 			SCHDictionaryFileDownloadOperation *downloadOp = [[SCHDictionaryFileDownloadOperation alloc] init];
             downloadOp.manifestEntry = entry;
-			
+			self.currentDownloadPercentage = 0.0;
+            
 			// dictionary processing is redispatched on completion
 			[downloadOp setCompletionBlock:^{
+                self.currentDownloadPercentage = 100.0;
 				[self processDictionary];
 			}];
 			
@@ -663,6 +679,16 @@ static SCHDictionaryDownloadManager *sharedManager = nil;
 {
     SCHDictionaryProcessingState state = [self dictionaryProcessingState];
     return (state != SCHDictionaryProcessingStateUserSetup && state != SCHDictionaryProcessingStateUserDeclined);
+}
+
+- (void)dictionaryDownloadPercentageUpdate:(NSNotification *)note
+{
+    NSDictionary *userInfo = [note userInfo];
+    NSNumber *currentPercentage = [userInfo objectForKey:@"currentPercentage"];
+    
+    if (currentPercentage != nil) {
+        self.currentDownloadPercentage = [currentPercentage floatValue];
+    }
 }
 
 - (void)startDictionaryDownload
