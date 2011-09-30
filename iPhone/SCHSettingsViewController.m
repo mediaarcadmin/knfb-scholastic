@@ -145,8 +145,10 @@ extern NSString * const kSCHAuthenticationManagerDeviceKey;
     
     if (self.updateBooksButton.enabled == YES) {
         [self.updateBooksButton setTitle:@"Update my eBooks" forState:UIControlStateNormal];
+        [self.updateBooksButton setImage:[UIImage imageNamed:@"update-icon"] forState:UIControlStateNormal];
     } else {
         [self.updateBooksButton setTitle:@"No eBook updates available" forState:UIControlStateNormal];        
+        [self.updateBooksButton setImage:nil forState:UIControlStateNormal];        
     }
 }
 
