@@ -353,6 +353,7 @@ typedef enum {
         [[SCHAuthenticationManager sharedAuthenticationManager] clearAppProcessing];
         [[SCHSyncManager sharedSyncManager] firstSync:YES];
 	} else {
+        [[SCHAuthenticationManager sharedAuthenticationManager] clear];
 		NSError *error = [notification.userInfo objectForKey:kSCHAuthenticationManagerNSError];
 		if (error != nil) {
             NSString *localizedMessage = [NSString stringWithFormat:
