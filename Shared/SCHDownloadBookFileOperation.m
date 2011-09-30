@@ -60,7 +60,8 @@
     
     // check first to see if the file has been created
 	NSMutableURLRequest *request = nil;
-
+    NSFileManager *fileManager = [[[NSFileManager alloc] init] autorelease];
+    
     [self performWithBook:^(SCHAppBook *book) {
         self.bookFileSize = [book.FileSize unsignedLongValue];
     }];
@@ -83,7 +84,7 @@
         }
         
         if ([self stringBeginsWithHTTPScheme:bookFileURL] == NO) {
-            [[NSFileManager defaultManager] copyItemAtPath:[self fullPathToBundledFile:bookFileURL]
+            [fileManager copyItemAtPath:[self fullPathToBundledFile:bookFileURL]
                                                     toPath:self.localPath 
                                                      error:&error];        
             if (error != nil) {
@@ -112,7 +113,7 @@
         }];
 		
         if ([self stringBeginsWithHTTPScheme:coverURL] == NO) {
-            [[NSFileManager defaultManager] copyItemAtPath:[self fullPathToBundledFile:coverURL]
+            [fileManager copyItemAtPath:[self fullPathToBundledFile:coverURL]
                                                     toPath:self.localPath 
                                                      error:&error];        
             if (error != nil) {
@@ -139,13 +140,13 @@
 	
 	unsigned long long fileSize = 0;
 	
-	if ([[NSFileManager defaultManager] fileExistsAtPath:self.localPath]) {
+	if ([fileManager fileExistsAtPath:self.localPath]) {
 		// check to see how much of the file has been downloaded
 
 		if (!self.resume) {
 			// if we're not resuming, delete the existing file first
             NSError *error = nil;
-			if (![[NSFileManager defaultManager] removeItemAtPath:localPath error:&error]) {
+			if (![fileManager removeItemAtPath:localPath error:&error]) {
 				NSLog(@"Error when deleting an existing file. Stopping. (%@)", [error localizedDescription]);
                 [self setIsProcessing:NO];                
                 [self endOperation];
@@ -153,7 +154,7 @@
 			}
 		} else {
             NSError *error = nil;
-			NSDictionary *attributes = [[NSFileManager defaultManager] attributesOfItemAtPath:localPath error:&error];
+			NSDictionary *attributes = [fileManager attributesOfItemAtPath:localPath error:&error];
             if (!attributes) {
 				NSLog(@"Error when reading file attributes. Stopping. (%@)", [error localizedDescription]);
                 [self setIsProcessing:NO];                
@@ -168,7 +169,7 @@
         NSLog(@"Already have %llu bytes, need %llu bytes more.", fileSize, self.bookFileSize - fileSize);
 		[request setValue:[NSString stringWithFormat:@"bytes=%llu-", fileSize] forHTTPHeaderField:@"Range"];
 	} else {
-		[[NSFileManager defaultManager] createFileAtPath:self.localPath contents:nil attributes:nil];
+		[fileManager createFileAtPath:self.localPath contents:nil attributes:nil];
 	}
 
 	
@@ -241,7 +242,8 @@
 		
 	NSError *error = nil;
 	
-	unsigned long long fileSize = [[[NSFileManager defaultManager] attributesOfItemAtPath:self.localPath error:&error] fileSize];
+    NSFileManager *fileManager = [[[NSFileManager alloc] init] autorelease];
+	unsigned long long fileSize = [[fileManager attributesOfItemAtPath:self.localPath error:&error] fileSize];
 
 	if (error) {
 		NSLog(@"Warning: could not get filesize for %@. %@", self.localPath, [error localizedDescription]);
@@ -296,7 +298,8 @@
 - (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error
 {
     // if there was an error may just have a partial file, so remove it
-   [[NSFileManager defaultManager] removeItemAtPath:self.localPath error:nil];
+    NSFileManager *fileManager = [[[NSFileManager alloc] init] autorelease];
+   [fileManager removeItemAtPath:self.localPath error:nil];
 
     if ([self isCancelled] || [self processingState] == SCHBookProcessingStateDownloadPaused) {
 		[connection cancel];
