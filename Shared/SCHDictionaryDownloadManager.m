@@ -1349,18 +1349,18 @@ static SCHDictionaryDownloadManager *sharedManager = nil;
     SCHDictionaryProcessingState state = [self dictionaryProcessingState];
     if (state == SCHDictionaryProcessingStateReady) {
         
+        [self threadSafeUpdateDictionaryState:SCHDictionaryProcessingStateDeleting];
+        
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{
-            
-            [self threadSafeUpdateDictionaryState:SCHDictionaryProcessingStateDeleting];
-            
             // move the dictionary files to tmp and delete in the background 
             NSString *dictionaryTmpDirectory = [self dictionaryTmpDirectory];
             NSError *error = nil;
-            if (![[NSFileManager defaultManager] moveItemAtPath:[self dictionaryDirectory] 
-                                                         toPath:dictionaryTmpDirectory error:&error]) {
+            NSFileManager *fileManager = [[[NSFileManager alloc] init] autorelease];
+            if (![fileManager moveItemAtPath:[self dictionaryDirectory] 
+                                      toPath:dictionaryTmpDirectory error:&error]) {
                 dispatch_async(dispatch_get_main_queue(), ^{
                     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error", @"error alert title")
-                                                                    message:[error localizedDescription]
+                                                                    message:NSLocalizedString(@"Failed to remove dictionary", @"remove dictionary error message")
                                                                    delegate:nil
                                                           cancelButtonTitle:@"OK"
                                                           otherButtonTitles:nil];
@@ -1370,7 +1370,8 @@ static SCHDictionaryDownloadManager *sharedManager = nil;
             } else {
                 // remove dictionary files from tmp in the background
                 dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{
-                    [[NSFileManager defaultManager] removeItemAtPath:dictionaryTmpDirectory error:nil];
+                    NSFileManager *fileManager = [[[NSFileManager alloc] init] autorelease];
+                    [fileManager removeItemAtPath:dictionaryTmpDirectory error:nil];
                 });
             }
             
@@ -1391,9 +1392,11 @@ static SCHDictionaryDownloadManager *sharedManager = nil;
                 }
                 
                 [managedObjectContext release];
+                
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    [self threadSafeUpdateDictionaryState:SCHDictionaryProcessingStateUserDeclined];
+                });
             });
-            
-            [self threadSafeUpdateDictionaryState:SCHDictionaryProcessingStateUserDeclined];
         });
     }
 }

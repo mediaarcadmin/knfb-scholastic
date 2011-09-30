@@ -176,6 +176,10 @@ extern NSString * const kSCHAuthenticationManagerDeviceKey;
             [self.downloadDictionaryButton setTitle:NSLocalizedString(@"Processing Dictionary...", @"Processing dictionary button title")
                                            forState:UIControlStateNormal];
             break;
+        case SCHDictionaryProcessingStateDeleting:
+            [self.downloadDictionaryButton setTitle:NSLocalizedString(@"Deleting Dictionary...", @"Deleting dictionary button title")
+                                           forState:UIControlStateNormal];
+            break;            
         default:
             [self.downloadDictionaryButton setTitle:NSLocalizedString(@"Download Dictionary", @"download dictionary button title")
                                            forState:UIControlStateNormal];
