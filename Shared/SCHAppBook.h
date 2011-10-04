@@ -15,7 +15,6 @@ extern NSString * const kSCHAppBookErrorDomain;
 typedef enum 
 {
 	kSCHAppBookStillBeingProcessedError = 0,
-    kSCHAppBookNonDRMBookWithDRMError,
     kSCHAppBookUnableToAcquireLicenseError,
     kSCHAppBookDownloadFailedError,
     kSCHAppBookURLsNotPopulatedError,

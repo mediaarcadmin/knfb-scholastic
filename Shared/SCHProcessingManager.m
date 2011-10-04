@@ -518,7 +518,6 @@ static SCHProcessingManager *sharedManager = nil;
                 return;
             }
             case SCHBookProcessingStateError:
-            case SCHBookProcessingStateNonDRMBookWithDRM:
             case SCHBookProcessingStateUnableToAcquireLicense:
             case SCHBookProcessingStateDownloadFailed:
             case SCHBookProcessingStateURLsNotPopulated:
@@ -685,7 +684,6 @@ static SCHProcessingManager *sharedManager = nil;
                     [book setProcessingState:SCHBookProcessingStateReadyForBookFileDownload];
                 }
                 break;
-            case SCHBookProcessingStateNonDRMBookWithDRM:
             case SCHBookProcessingStateUnableToAcquireLicense:
                 [book setProcessingState:SCHBookProcessingStateReadyForLicenseAcquisition];
                 break;

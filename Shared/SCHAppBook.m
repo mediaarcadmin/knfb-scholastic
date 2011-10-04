@@ -418,9 +418,6 @@ NSString * const kSCHAppBookFilenameSeparator = @"-";
 		case SCHBookProcessingStateDownloadFailed:
 			status = @"Error Download Failed";
 			break;
-		case SCHBookProcessingStateNonDRMBookWithDRM:
-			status = @"Error NonDRm book with DRM";
-			break;
 		case SCHBookProcessingStateUnableToAcquireLicense:
 			status = @"Error Unable to Acquire License";
 			break;
@@ -481,9 +478,6 @@ NSString * const kSCHAppBookFilenameSeparator = @"-";
 		ret = YES;
 	} else if(error != NULL) {
         switch ([self.State intValue]) {
-            case SCHBookProcessingStateNonDRMBookWithDRM:
-                *error = [self errorWithCode:kSCHAppBookNonDRMBookWithDRMError];
-                break;                
             case SCHBookProcessingStateUnableToAcquireLicense:
                 *error = [self errorWithCode:kSCHAppBookUnableToAcquireLicenseError];
                 break;
@@ -542,9 +536,6 @@ NSString * const kSCHAppBookFilenameSeparator = @"-";
         case kSCHAppBookStillBeingProcessedError:
             description = NSLocalizedString(@"The book is still being processed.", @"Still being processed error message from AppBook");
             break;
-        case kSCHAppBookNonDRMBookWithDRMError:
-            description = NSLocalizedString(@"There was a problem whilst acquiring DRM information for this book. If the problem persists please contact support.", @"Book has DRM when it should not error message from AppBook");
-            break;            
         case kSCHAppBookUnableToAcquireLicenseError:
             description = NSLocalizedString(@"It has not been possible to acquire a DRM license for this book. Please make sure this device is authorized and connected to the internet and try again.", @"Decryption not available error message from AppBook");
             break;

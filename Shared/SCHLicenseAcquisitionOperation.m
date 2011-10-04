@@ -15,9 +15,10 @@
 
 @interface SCHLicenseAcquisitionOperation ()
 
-- (BOOL)useDRM;
 - (void) updateBookWithSuccess;
 - (void) updateBookWithFailure;
+
+@property (nonatomic, assign) NSNumber *useDRM;
 
 @end
 
@@ -29,9 +30,12 @@
 
 #pragma mark - Object Lifecycle
 
+@synthesize useDRM;
+
 - (void)dealloc 
 {
 	self.licenseAcquisitionSession = nil;
+    [useDRM release], useDRM = nil;
 	[super dealloc];
 }
 
@@ -39,7 +43,7 @@
 
 - (void)start
 {
-    if ([self useDRM] == YES) {
+    if ([[self useDRM] boolValue] == YES) {
         licenseAcquisitionSession = [[SCHDrmLicenseAcquisitionSession alloc] initWithBook:self.identifier];
         [licenseAcquisitionSession setDelegate:self];
     }
@@ -48,34 +52,28 @@
 
 - (void)beginOperation
 { 
-    if ([self useDRM] == YES) {
+    if ([[self useDRM] boolValue] == YES) {
         if ([SCHAuthenticationManager sharedAuthenticationManager].isAuthenticated == YES) {		
             [licenseAcquisitionSession acquireLicense:[[SCHAuthenticationManager sharedAuthenticationManager] aToken] bookID:self.identifier];
         } else {
             [self setIsProcessing:NO];
         }
     } else {
-        // we shouldnt have a nonDRM book with DRM information
-        SCHXPSProvider *xpsProvider = [[SCHBookManager sharedBookManager] threadSafeCheckOutXPSProviderForBookIdentifier:self.identifier];
-        if ([xpsProvider isEncrypted ] == YES) {
-            [self setProcessingState:SCHBookProcessingStateNonDRMBookWithDRM];
-            [self setIsProcessing:NO];
-            [self endOperation];
-        } else {
-            [self updateBookWithSuccess];
-        }
+        [self updateBookWithSuccess];
     }
 }
 
-- (BOOL)useDRM
+- (NSNumber *)useDRM
 {
-    __block BOOL useDRM = NO;
+    if (useDRM == nil) {
+        SCHXPSProvider *xpsProvider = [[SCHBookManager sharedBookManager] threadSafeCheckOutXPSProviderForBookIdentifier:self.identifier];
+        
+        useDRM = [[NSNumber numberWithBool:[xpsProvider isEncrypted]] retain];
+        
+        [[SCHBookManager sharedBookManager] checkInXPSProviderForBookIdentifier:self.identifier];
+    }
     
-    [self performWithBook:^(SCHAppBook *book) {
-        useDRM = ([book.ContentMetadataItem.DRMQualifier isEqualToNumber:[NSNumber numberWithDRMQualifier:kSCHDRMQualifiersFullWithDRM]]);
-    }];
-    
-    return(useDRM);
+    return useDRM;
 }
 
 #pragma mark - Book Updates
