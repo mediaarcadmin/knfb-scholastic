@@ -81,6 +81,8 @@ typedef enum {
 {
     [super awakeFromNib];
     
+    self.sampleBookshelf = SCHStartingViewControllerNoSampleBookshelf;
+    
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(authenticationManagerDidDeregister:)
                                                  name:SCHAuthenticationManagerDidDeregisterNotification
@@ -298,7 +300,7 @@ typedef enum {
     
     // if we were to actually login then a successful login would trigger a sync 
     // after which a profile complete notification would call 
-    // advanceToNextSignInFormwould to proceed, we are stepping over the login
+    // advanceToNextSignInForm would to proceed, we are stepping over the login
     [[SCHSyncManager sharedSyncManager] firstSync:YES];
 }
 
