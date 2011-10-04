@@ -17,6 +17,8 @@
 
 // a local file manager, for thread safety
 @property (nonatomic, retain) NSFileManager *localFileManager;
+@property (nonatomic, retain) NSFileHandle *fileHandle;
+@property (nonatomic, assign) unsigned long long currentFilesize;
 
 // the total file size reported by the HTTP header
 @property unsigned long long expectedFileSize;
@@ -43,6 +45,8 @@
 @synthesize localPath;
 @synthesize manifestEntry;
 @synthesize localFileManager;
+@synthesize fileHandle;
+@synthesize currentFilesize;
 
 #pragma mark -
 #pragma mark Memory Management
@@ -51,6 +55,8 @@
 {
 	[localPath release], localPath = nil;
     [localFileManager release], localFileManager = nil;
+    [fileHandle closeFile];
+    [fileHandle release], fileHandle = nil;
 	[super dealloc];
 }
 
@@ -91,12 +97,12 @@
     
 	request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:self.manifestEntry.url]];
 	
-	unsigned long long fileSize = 0;
+	self.currentFilesize = 0;
 	
 	if ([self.localFileManager fileExistsAtPath:self.localPath]) {
 		// check to see how much of the file has been downloaded
 		
-		fileSize = [[self.localFileManager attributesOfItemAtPath:self.localPath error:&error] fileSize];
+		self.currentFilesize = [[self.localFileManager attributesOfItemAtPath:self.localPath error:&error] fileSize];
 		
 		if (error) {
 			NSLog(@"Error when reading file attributes. Stopping. (%@)", [error localizedDescription]);
@@ -105,8 +111,8 @@
 		}
 	}
     
-	if (fileSize > 0) {
-		[request setValue:[NSString stringWithFormat:@"bytes=%llu-", fileSize] forHTTPHeaderField:@"Range"];
+	if (self.currentFilesize > 0) {
+		[request setValue:[NSString stringWithFormat:@"bytes=%llu-", self.currentFilesize] forHTTPHeaderField:@"Range"];
 	} else {
 		[self.localFileManager createFileAtPath:self.localPath contents:nil attributes:nil];
 	}
@@ -140,23 +146,9 @@
 
 - (void)connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response
 {
-	unsigned long long fileSize = 0;
-	NSError *error = nil;
-	
-	if ([self.localFileManager fileExistsAtPath:self.localPath]) {
-		// check to see how much of the file has been downloaded
-		
-		fileSize = [[self.localFileManager attributesOfItemAtPath:self.localPath error:&error] fileSize];
-		
-		if (error) {
-			NSLog(@"Error when reading file attributes. %@", [error localizedDescription]);
-		}
-	}
-	
+    NSLog(@"Filesize: %llu Expected: %llu", self.currentFilesize, [response expectedContentLength]);
     
-    NSLog(@"Filesize: %llu Expected: %llu", fileSize, [response expectedContentLength]);
-    
-	if (fileSize == [response expectedContentLength]) {
+	if (self.currentFilesize == [response expectedContentLength]) {
         [[SCHDictionaryDownloadManager sharedDownloadManager] threadSafeUpdateDictionaryState:SCHDictionaryProcessingStateNeedsUnzip];
         [connection cancel];
         [self cancel];
@@ -175,24 +167,25 @@
         }
     }
 
-	self.expectedFileSize = [response expectedContentLength] + fileSize;
+	self.expectedFileSize = [response expectedContentLength] + self.currentFilesize;
 	self.previousPercentage = -1;
 	
 	[self createPercentageUpdate];
+    self.fileHandle = [NSFileHandle fileHandleForWritingAtPath:self.localPath];
+    [self.fileHandle seekToEndOfFile];
 }
 
 - (void)connection:(NSURLConnection *)connection didReceiveData:(NSData *)data
 {	
-    if (![self fileSystemHasBytesAvailable:[data length]]) {
-        [[SCHDictionaryDownloadManager sharedDownloadManager] threadSafeUpdateDictionaryState:SCHDictionaryProcessingStateNotEnoughFreeSpace];
-        [connection cancel];
-        [self cancel];
-    } else {
-        @synchronized(self) {
-            NSFileHandle *handle = [NSFileHandle fileHandleForWritingAtPath:self.localPath];
-            [handle seekToEndOfFile];
-            [handle writeData:data];
-            [handle closeFile];
+    @synchronized(self) {
+        @try {
+            [self.fileHandle writeData:data];
+            self.currentFilesize += [data length];
+        }
+        @catch (NSException *exception) {
+            [[SCHDictionaryDownloadManager sharedDownloadManager] threadSafeUpdateDictionaryState:SCHDictionaryProcessingStateNotEnoughFreeSpace];
+            [connection cancel];
+            [self cancel];
         }
     }
 	
@@ -240,15 +233,13 @@
 {
 	NSError *error = nil;
 	
-	unsigned long long fileSize = [[self.localFileManager attributesOfItemAtPath:self.localPath error:&error] fileSize];
-	
 	if (error) {
 		NSLog(@"Warning: could not get filesize.");
 	}
 	
 	if (self.expectedFileSize != NSURLResponseUnknownLength) {
 		
-		float percentage = (float) ((float) fileSize/(float) self.expectedFileSize);
+		float percentage = (float)((float)self.currentFilesize / (float)self.expectedFileSize);
 		
 		if (percentage - self.previousPercentage > 0.001f) {
 			
@@ -260,7 +251,7 @@
 			
 			[self performSelectorOnMainThread:@selector(firePercentageUpdate:) 
 								   withObject:userInfo
-								waitUntilDone:YES];
+								waitUntilDone:NO];
 			
 			self.previousPercentage = percentage;
 		}
@@ -292,6 +283,8 @@
 - (void)cancel
 {
 	NSLog(@"%%%% cancelling download file operation");
+    [self.fileHandle closeFile];
+    self.fileHandle = nil;    
     [self willChangeValueForKey:@"isExecuting"];
     [self willChangeValueForKey:@"isFinished"];
 	self.finished = YES;

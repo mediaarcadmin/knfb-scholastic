@@ -16,6 +16,8 @@
 
 @property (nonatomic, copy) NSString *localPath;
 @property (nonatomic, assign) unsigned long bookFileSize;
+@property (nonatomic, retain) NSFileHandle *fileHandle;
+@property (nonatomic, assign) unsigned long long currentFilesize;
 
 - (BOOL)stringBeginsWithHTTPScheme:(NSString *)string;
 - (NSString *)fullPathToBundledFile:(NSString *)fileName;
@@ -29,10 +31,14 @@
 @synthesize localPath;
 @synthesize fileType;
 @synthesize bookFileSize;
+@synthesize fileHandle;
+@synthesize currentFilesize;
 
 - (void)dealloc 
 {
     [localPath release], localPath = nil;
+    [fileHandle closeFile];
+    [fileHandle release], fileHandle = nil;
 	[super dealloc];
 }
 
@@ -138,7 +144,7 @@
 		[NSException raise:@"SCHDownloadFileOperationUnknownFileType" format:@"Unknown file type for SCHDownloadFileOperation."];
 	}
 	
-	unsigned long long fileSize = 0;
+	self.currentFilesize = 0;
 	
 	if ([fileManager fileExistsAtPath:self.localPath]) {
 		// check to see how much of the file has been downloaded
@@ -161,13 +167,13 @@
                 [self endOperation];
 				return;
 			}
-            fileSize = [attributes fileSize];
+            self.currentFilesize = [attributes fileSize];
 		}
 	}
 		
-	if (fileSize > 0) {
-        NSLog(@"Already have %llu bytes, need %llu bytes more.", fileSize, self.bookFileSize - fileSize);
-		[request setValue:[NSString stringWithFormat:@"bytes=%llu-", fileSize] forHTTPHeaderField:@"Range"];
+	if (self.currentFilesize > 0) {
+        NSLog(@"Already have %llu bytes, need %llu bytes more.", self.currentFilesize, self.bookFileSize - self.currentFilesize);
+		[request setValue:[NSString stringWithFormat:@"bytes=%llu-", self.currentFilesize] forHTTPHeaderField:@"Range"];
 	} else {
 		[fileManager createFileAtPath:self.localPath contents:nil attributes:nil];
 	}
@@ -224,33 +230,39 @@
 
 #pragma mark - NSURLConnection delegate methods
 
+- (void)connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response
+{
+    self.fileHandle = [NSFileHandle fileHandleForWritingAtPath:self.localPath];
+    [self.fileHandle seekToEndOfFile];
+}
+
 - (void)connection:(NSURLConnection *)connection didReceiveData:(NSData *)data 
 {
     if ([self isCancelled] || [self processingState] == SCHBookProcessingStateDownloadPaused) {
 		[connection cancel];
+        [self.fileHandle closeFile];
+        self.fileHandle = nil;        
         [self setIsProcessing:NO];        
         [self endOperation];
 		return;
 	}
 
 	@synchronized(self) {
-		NSFileHandle *handle = [NSFileHandle fileHandleForWritingAtPath:self.localPath];
-		[handle seekToEndOfFile];
-		[handle writeData:data];
-		[handle closeFile];
+        @try {
+            [self.fileHandle writeData:data];
+            self.currentFilesize += [data length];            
+        }
+        @catch (NSException *exception) {
+            [self setProcessingState:SCHBookProcessingStateDownloadFailed];
+            [connection cancel];
+            [self.fileHandle closeFile];
+            self.fileHandle = nil;            
+            [self setIsProcessing:NO];        
+            [self endOperation];
+        }
 	}
-		
-	NSError *error = nil;
 	
-    NSFileManager *fileManager = [[[NSFileManager alloc] init] autorelease];
-	unsigned long long fileSize = [[fileManager attributesOfItemAtPath:self.localPath error:&error] fileSize];
-
-	if (error) {
-		NSLog(@"Warning: could not get filesize for %@. %@", self.localPath, [error localizedDescription]);
-	}
-	
-	
-	float percentage = (self.bookFileSize > 0 ? (float) ((float) fileSize/self.bookFileSize) : 0.0);
+	float percentage = (self.bookFileSize > 0 ? (float) ((float) self.currentFilesize/self.bookFileSize) : 0.0);
 	
 	NSDictionary *userInfo = [NSDictionary dictionaryWithObjectsAndKeys:
 							  [NSNumber numberWithFloat:percentage], @"currentPercentage",
@@ -261,7 +273,7 @@
 	
 	[self performSelectorOnMainThread:@selector(percentageUpdate:) 
 						   withObject:userInfo
-						waitUntilDone:YES];
+						waitUntilDone:NO];
 }
 
 - (void)connectionDidFinishLoading:(NSURLConnection *)connection
@@ -290,7 +302,9 @@
 		default:
 			break;
 	}
-	
+
+    [self.fileHandle closeFile];
+    self.fileHandle = nil;
     [self setIsProcessing:NO];        
     [self endOperation];
 }
@@ -310,6 +324,8 @@
 
 	NSLog(@"Error downloading file %@ (%@ : %@)", [self.localPath lastPathComponent], error, [error userInfo]);
 
+    [self.fileHandle closeFile];
+    self.fileHandle = nil;
     [self setProcessingState:SCHBookProcessingStateDownloadFailed];
     [self setIsProcessing:NO];            
     [self endOperation];

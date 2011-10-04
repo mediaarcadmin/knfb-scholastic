@@ -152,8 +152,6 @@ static SCHDictionaryDownloadManager *sharedManager = nil;
 {
 	if (sharedManager == nil) {
 		sharedManager = [[SCHDictionaryDownloadManager alloc] init];
-		
-		[sharedManager reachabilityCheck:sharedManager.wifiReach];
         
 		// notifications for changes in reachability
 		[[NSNotificationCenter defaultCenter] addObserver:sharedManager 
@@ -188,6 +186,7 @@ static SCHDictionaryDownloadManager *sharedManager = nil;
 												   object:nil];		
         
 		[sharedManager.wifiReach startNotifier];
+		[sharedManager reachabilityCheck:sharedManager.wifiReach];        
 	} 
 	
 	return sharedManager;
@@ -466,7 +465,6 @@ static SCHDictionaryDownloadManager *sharedManager = nil;
             
 			// dictionary processing is redispatched on completion
 			[downloadOp setCompletionBlock:^{
-                self.currentDownloadPercentage = 100.0;
 				[self processDictionary];
 			}];
 			
