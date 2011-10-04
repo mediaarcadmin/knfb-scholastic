@@ -55,7 +55,11 @@
     [liveLayer release], liveLayer = nil;
     [currentInstruction release], currentInstruction = nil;
     [pinchSmoother release], pinchSmoother = nil;
-    CGContextRelease(paintContext), paintContext = NULL;
+    
+    if (paintContext) {
+        CGContextRelease(paintContext), paintContext = NULL;
+    }
+
     [super dealloc];
 }
 
@@ -86,9 +90,7 @@
         self.liveLayer.contentsScale = self.deviceScale;
         [self.layer addSublayer:self.liveLayer];
 
-        CGContextRef newContext = [self newPaintContext];
-        self.paintContext = newContext;
-        CGContextRelease(newContext);
+        paintContext = [self newPaintContext];
         
         self.paintedLayer.contents = nil;
     }
@@ -257,9 +259,13 @@
     
     self.liveLayer.delegate = nil;
     self.currentInstruction = nil;
-    CGContextRef newPaintContext = [self newPaintContext];
-    self.paintContext = newPaintContext;
-    CGContextRelease(newPaintContext);
+    
+    if (paintContext) {
+        CGContextRelease(paintContext), paintContext = NULL;
+    }
+    
+    paintContext = [self newPaintContext];
+    
     self.paintedLayer.contents = nil;
     [self.liveLayer setNeedsDisplay];
     
