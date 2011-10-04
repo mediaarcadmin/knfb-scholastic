@@ -46,7 +46,8 @@ enum {
 
 typedef enum {
 	SCHStartingViewControllerYoungerBookshelf,
-    SCHStartingViewControllerOlderBookshelf
+    SCHStartingViewControllerOlderBookshelf,
+    SCHStartingViewControllerNoSampleBookshelf
 } SCHStartingViewControllerBookshelf;
 
 @interface SCHStartingViewController ()
@@ -259,6 +260,7 @@ typedef enum {
             break;
             
         case kTableSectionSignIn:
+			self.sampleBookshelf = SCHStartingViewControllerNoSampleBookshelf;
             [self showSignInForm];
             break;
     }
@@ -294,7 +296,10 @@ typedef enum {
             break;
     }
     
-    [self advanceToNextSignInForm];
+    // if we were to actually login then a successful login would trigger a sync 
+    // after which a profile complete notification would call 
+    // advanceToNextSignInFormwould to proceed, we are stepping over the login
+    [[SCHSyncManager sharedSyncManager] firstSync:YES];
 }
 
 - (void)firstLogin
@@ -476,7 +481,8 @@ typedef enum {
 - (void)profileSyncDidComplete:(NSNotification *)note
 {
     // we can get here directly from login screen...
-    if ([self.modalNavigationController.topViewController isKindOfClass:[SCHLoginPasswordViewController class]]) {
+    if (self.sampleBookshelf != SCHStartingViewControllerNoSampleBookshelf || 
+        [self.modalNavigationController.topViewController isKindOfClass:[SCHLoginPasswordViewController class]]) {
         [self advanceToNextSignInForm];
         return;
     }
