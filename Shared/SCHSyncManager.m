@@ -27,6 +27,7 @@ NSString * const SCHSyncManagerDidCompleteNotification = @"SCHSyncManagerDidComp
 
 static NSTimeInterval const kSCHSyncManagerHeartbeatInterval = 30.0;
 static NSTimeInterval const kSCHLastFirstSyncInterval = -300.0;
+static double const kSCHSyncManagerNoSyncNotificationDelay = 0.25 * NSEC_PER_SEC;
 
 @interface SCHSyncManager ()
 
@@ -286,22 +287,25 @@ static NSTimeInterval const kSCHLastFirstSyncInterval = -300.0;
             importedBooks = [populateDataStore populateFromImport] > 0;
         }
 
-        if (importedBooks == YES || self.lastFirstSyncEnded == nil || [self.lastFirstSyncEnded timeIntervalSinceNow] < kSCHLastFirstSyncInterval) {
+        if (syncNow == YES || importedBooks == YES || self.lastFirstSyncEnded == nil || 
+            [self.lastFirstSyncEnded timeIntervalSinceNow] < kSCHLastFirstSyncInterval) {
             self.lastFirstSyncEnded = [NSDate date];
-            
-            [[NSNotificationCenter defaultCenter] postNotificationName:SCHProfileSyncComponentDidCompleteNotification 
-                                                                object:self];		
-            [[NSNotificationCenter defaultCenter] postNotificationName:SCHContentSyncComponentDidCompleteNotification 
-                                                                object:self];		
-            [[NSNotificationCenter defaultCenter] postNotificationName:SCHBookshelfSyncComponentDidCompleteNotification 
-                                                                object:self];		
-            [[NSNotificationCenter defaultCenter] postNotificationName:SCHAnnotationSyncComponentDidCompleteNotification 
-                                                                object:self];		        
-            [[NSNotificationCenter defaultCenter] postNotificationName:SCHReadingStatsSyncComponentDidCompleteNotification
-                                                                object:nil];    
-            [[NSNotificationCenter defaultCenter] postNotificationName:SCHSettingsSyncComponentDidCompleteNotification
-                                                                object:nil];   
-
+    
+            dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, kSCHSyncManagerNoSyncNotificationDelay);
+            dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+                [[NSNotificationCenter defaultCenter] postNotificationName:SCHProfileSyncComponentDidCompleteNotification 
+                                                                    object:self];		
+                [[NSNotificationCenter defaultCenter] postNotificationName:SCHContentSyncComponentDidCompleteNotification 
+                                                                    object:self];		
+                [[NSNotificationCenter defaultCenter] postNotificationName:SCHBookshelfSyncComponentDidCompleteNotification 
+                                                                    object:self];		
+                [[NSNotificationCenter defaultCenter] postNotificationName:SCHAnnotationSyncComponentDidCompleteNotification 
+                                                                    object:self];		        
+                [[NSNotificationCenter defaultCenter] postNotificationName:SCHReadingStatsSyncComponentDidCompleteNotification
+                                                                    object:nil];    
+                [[NSNotificationCenter defaultCenter] postNotificationName:SCHSettingsSyncComponentDidCompleteNotification
+                                                                    object:nil];   
+            });
         }
     }
 }
@@ -315,8 +319,11 @@ static NSTimeInterval const kSCHLastFirstSyncInterval = -300.0;
         
         [self kickQueue];
     } else {
-        [[NSNotificationCenter defaultCenter] postNotificationName:SCHProfileSyncComponentDidCompleteNotification 
-                                                            object:self];		
+        dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, kSCHSyncManagerNoSyncNotificationDelay);
+        dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+            [[NSNotificationCenter defaultCenter] postNotificationName:SCHProfileSyncComponentDidCompleteNotification 
+                                                                object:self];		
+        });
     }
 }
 
@@ -329,8 +336,11 @@ static NSTimeInterval const kSCHLastFirstSyncInterval = -300.0;
         
         [self kickQueue];
     } else {
-        [[NSNotificationCenter defaultCenter] postNotificationName:SCHBookshelfSyncComponentDidCompleteNotification 
-                                                            object:self];		
+        dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, kSCHSyncManagerNoSyncNotificationDelay);
+        dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+            [[NSNotificationCenter defaultCenter] postNotificationName:SCHBookshelfSyncComponentDidCompleteNotification 
+                                                                object:self];		
+        });        
     }
 }
 
@@ -410,8 +420,11 @@ static NSTimeInterval const kSCHLastFirstSyncInterval = -300.0;
             [self kickQueue];
         }
     } else {
-        [[NSNotificationCenter defaultCenter] postNotificationName:SCHAnnotationSyncComponentDidCompleteNotification 
-                                                            object:self];		        
+        dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, kSCHSyncManagerNoSyncNotificationDelay);
+        dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+            [[NSNotificationCenter defaultCenter] postNotificationName:SCHAnnotationSyncComponentDidCompleteNotification 
+                                                                object:self];		        
+        });        
     }
 }
 
@@ -433,10 +446,13 @@ static NSTimeInterval const kSCHLastFirstSyncInterval = -300.0;
             [self kickQueue];	
         }
     } else {
-        [[NSNotificationCenter defaultCenter] postNotificationName:SCHAnnotationSyncComponentDidCompleteNotification 
-                                                            object:self];		        
-        [[NSNotificationCenter defaultCenter] postNotificationName:SCHReadingStatsSyncComponentDidCompleteNotification
-                                                            object:nil];    
+        dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, kSCHSyncManagerNoSyncNotificationDelay);
+        dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+            [[NSNotificationCenter defaultCenter] postNotificationName:SCHAnnotationSyncComponentDidCompleteNotification 
+                                                                object:self];		        
+            [[NSNotificationCenter defaultCenter] postNotificationName:SCHReadingStatsSyncComponentDidCompleteNotification
+                                                                object:nil];    
+        });        
     }
 }
 
