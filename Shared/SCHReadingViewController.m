@@ -1362,7 +1362,9 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
                                  completion:completionBlock];
             } else {
                 movementBlock();
-                completionBlock(YES);
+                if (completionBlock) {
+                    completionBlock(YES);
+                }
             }
             
             // play the sound effect
@@ -1398,7 +1400,9 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
                                  completion:completionBlock];
             } else {
                 animationBlock();
-                completionBlock(YES);
+                if (completionBlock) {
+                    completionBlock(YES);
+                }
             }
 
         }
@@ -1420,7 +1424,9 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
                              completion:completionBlock];
         } else {
             movementBlock();
-            completionBlock(YES);
+            if (completionBlock) {
+                completionBlock(YES);
+            }
         }
     }
 }
