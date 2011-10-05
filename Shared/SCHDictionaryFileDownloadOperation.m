@@ -7,6 +7,7 @@
 //
 
 #import "SCHDictionaryFileDownloadOperation.h"
+#import "BITNetworkActivityManager.h"
 
 #pragma mark Class Extension
 
@@ -117,14 +118,13 @@
 		[self.localFileManager createFileAtPath:self.localPath contents:nil attributes:nil];
 	}
 	
-	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
-	
 	NSURLConnection *connection = [NSURLConnection connectionWithRequest:request delegate:self];
 
 	if (connection == nil) {
         [self cancel];
     } else {
         [connection start];
+        [[BITNetworkActivityManager sharedNetworkActivityManager] showNetworkActivityIndicator];        
     }
 }
 
@@ -185,12 +185,14 @@
         @catch (NSException *exception) {
             [[SCHDictionaryDownloadManager sharedDownloadManager] threadSafeUpdateDictionaryState:SCHDictionaryProcessingStateNotEnoughFreeSpace];
             [connection cancel];
+            [[BITNetworkActivityManager sharedNetworkActivityManager] hideNetworkActivityIndicator];            
             [self cancel];
         }
     }
 	
 	if ([self isCancelled]) {
 		[connection cancel];
+        [[BITNetworkActivityManager sharedNetworkActivityManager] hideNetworkActivityIndicator];        
         [self cancel];
 		return;
 	}
@@ -202,6 +204,8 @@
 {
 	NSLog(@"Finished file %@.", [self.localPath lastPathComponent]);
 	
+    [[BITNetworkActivityManager sharedNetworkActivityManager] hideNetworkActivityIndicator];
+    
 	// fire a 100% notification
 	NSDictionary *userInfo = [NSDictionary dictionaryWithObjectsAndKeys:
 							  [NSNumber numberWithFloat:1.0f], @"currentPercentage",
@@ -221,6 +225,8 @@
 {
 	NSLog(@"Stopped downloading file - %@", [error localizedDescription]);
 	
+    [[BITNetworkActivityManager sharedNetworkActivityManager] hideNetworkActivityIndicator];
+    
     //	[[SCHDictionaryManager sharedDownloadManager] threadSafeUpdateDictionaryState:SCHDictionaryProcessingStateError];
 //	[SCHDictionaryManager sharedDownloadManager].dictionaryState = SCHDictionaryProcessingStateNeedsDownload;
 	
@@ -291,7 +297,6 @@
 	self.executing = NO;
     [self didChangeValueForKey:@"isExecuting"];
     [self didChangeValueForKey:@"isFinished"];
-	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
 
 	[super cancel];
 }

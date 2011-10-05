@@ -175,7 +175,7 @@ NSString * const kSCHAppBookFilenameSeparator = @"-";
     return([self.OnDiskVersion isEqualToString:self.ContentMetadataItem.Version] == NO);
 }
 
-- (SCHBookCurrentProcessingState) processingState
+- (SCHBookCurrentProcessingState)processingState
 {
 	return (SCHBookCurrentProcessingState) [self.State intValue];
 }

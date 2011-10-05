@@ -9,6 +9,7 @@
 #import "SCHDownloadBookFileOperation.h"
 
 #import "SCHAppBook.h"
+#import "BITNetworkActivityManager.h"
 
 #pragma mark - Class Extension
 
@@ -186,6 +187,7 @@
         [self endOperation];
     } else {
         [connection start];
+        [[BITNetworkActivityManager sharedNetworkActivityManager] showNetworkActivityIndicator];                
     }
 }
 
@@ -216,15 +218,11 @@
 
 - (void)percentageUpdate:(NSDictionary *)userInfo
 {
-	if ([self isCancelled] || [self processingState] == SCHBookProcessingStateDownloadPaused) {
-        [self setIsProcessing:NO];        
-        [self endOperation];
-		return;
-	}
-    
     //NSLog(@"Percentage update sent %@", userInfo);
 	if (self.fileType == kSCHDownloadFileTypeXPSBook) {
-		[[NSNotificationCenter defaultCenter] postNotificationName:@"SCHBookDownloadPercentageUpdate" object:nil userInfo:userInfo];
+		[[NSNotificationCenter defaultCenter] postNotificationName:@"SCHBookDownloadPercentageUpdate" 
+                                                            object:nil 
+                                                          userInfo:userInfo];
 	}
 }
 
@@ -240,6 +238,7 @@
 {
     if ([self isCancelled] || [self processingState] == SCHBookProcessingStateDownloadPaused) {
 		[connection cancel];
+        [[BITNetworkActivityManager sharedNetworkActivityManager] hideNetworkActivityIndicator];
         [self.fileHandle closeFile];
         self.fileHandle = nil;        
         [self setIsProcessing:NO];        
@@ -255,10 +254,12 @@
         @catch (NSException *exception) {
             [self setProcessingState:SCHBookProcessingStateDownloadFailed];
             [connection cancel];
+            [[BITNetworkActivityManager sharedNetworkActivityManager] hideNetworkActivityIndicator];            
             [self.fileHandle closeFile];
             self.fileHandle = nil;            
             [self setIsProcessing:NO];        
             [self endOperation];
+            return;
         }
 	}
 	
@@ -279,7 +280,7 @@
 - (void)connectionDidFinishLoading:(NSURLConnection *)connection
 {
 	NSLog(@"Finished file %@.", [self.localPath lastPathComponent]);
-    
+    [[BITNetworkActivityManager sharedNetworkActivityManager] hideNetworkActivityIndicator];
     [self completedDownload];
 }
 
@@ -311,22 +312,22 @@
 
 - (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error
 {
+    [[BITNetworkActivityManager sharedNetworkActivityManager] hideNetworkActivityIndicator];
+    
     // if there was an error may just have a partial file, so remove it
     NSFileManager *fileManager = [[[NSFileManager alloc] init] autorelease];
    [fileManager removeItemAtPath:self.localPath error:nil];
 
     if ([self isCancelled] || [self processingState] == SCHBookProcessingStateDownloadPaused) {
 		[connection cancel];
-        [self setIsProcessing:NO];        
-        [self endOperation];
-		return;
-	}
-
+	} else {
+        [self setProcessingState:SCHBookProcessingStateDownloadFailed];        
+    }
+    
 	NSLog(@"Error downloading file %@ (%@ : %@)", [self.localPath lastPathComponent], error, [error userInfo]);
 
     [self.fileHandle closeFile];
     self.fileHandle = nil;
-    [self setProcessingState:SCHBookProcessingStateDownloadFailed];
     [self setIsProcessing:NO];            
     [self endOperation];
 }
