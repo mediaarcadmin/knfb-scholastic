@@ -157,7 +157,7 @@
         }
     } 
 
-    NSLog(@"Dictionary Filesize: %llu Expected: %llu", self.currentFilesize, [response expectedContentLength]);
+    NSLog(@"Dictionary Filesize receiving:%llu expected:%llu", self.currentFilesize, [response expectedContentLength]);
     
 	if (self.currentFilesize == [response expectedContentLength]) {
         [[SCHDictionaryDownloadManager sharedDownloadManager] threadSafeUpdateDictionaryState:SCHDictionaryProcessingStateNeedsUnzip];

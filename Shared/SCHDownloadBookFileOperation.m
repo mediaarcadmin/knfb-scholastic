@@ -307,8 +307,13 @@
 
 - (void)connectionDidFinishLoading:(NSURLConnection *)connection
 {
-	NSLog(@"Finished file %@. [downloaded: %llu expected:%lu]", [self.localPath lastPathComponent], 
-          self.currentFilesize, self.bookFileSize);
+    if (self.fileType == kSCHDownloadFileTypeXPSBook) {
+        NSLog(@"Finished file %@. [downloaded: %llu expected:%lu]", [self.localPath lastPathComponent], 
+              self.currentFilesize, self.bookFileSize);
+    } else {
+        NSLog(@"Finished file %@. [downloaded: %llu]", [self.localPath lastPathComponent], 
+              self.currentFilesize);        
+    }
     
     [[BITNetworkActivityManager sharedNetworkActivityManager] hideNetworkActivityIndicator];
     [self completedDownload];
