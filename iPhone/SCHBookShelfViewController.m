@@ -155,6 +155,7 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 131;
     [self.backButton setThemeIcon:kSCHThemeManagerHomeIcon iPadQualifier:kSCHThemeManagerPadQualifierSuffix];
     [self.backButton sizeToFit];    
     [self.backButton addTarget:self action:@selector(back) forControlEvents:UIControlEventTouchUpInside];    
+    self.backButton.accessibilityLabel = @"Back To Bookshelves Button";
     self.navigationItem.leftBarButtonItem = [[[UIBarButtonItem alloc] initWithCustomView:self.backButton] autorelease];
     
     [(SCHCustomNavigationBar *)self.navigationController.navigationBar setTheme:kSCHThemeManagerNavigationBarImage];

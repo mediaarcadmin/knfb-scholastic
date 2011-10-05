@@ -114,6 +114,8 @@ typedef enum {
     
     [self.starterTableView setAlwaysBounceVertical:NO]; // For some reason this doesn't work when set from the nib
     
+    self.starterTableView.accessibilityLabel = @"Starting Tableview";
+    
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(willEnterForeground:)
                                                  name:UIApplicationWillEnterForegroundNotification

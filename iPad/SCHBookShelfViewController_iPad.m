@@ -87,6 +87,7 @@ static NSTimeInterval const kSCHBookShelfViewControllerTopTenRefreshTime = -600.
     [homeButton setThemeIcon:kSCHThemeManagerHomeIcon iPadQualifier:kSCHThemeManagerPadQualifierSuffix];
     [homeButton sizeToFit];    
     [homeButton addTarget:self action:@selector(back) forControlEvents:UIControlEventTouchUpInside];    
+    homeButton.accessibilityLabel = @"Back To Bookshelves Button";
     
     if ([[SCHAppStateManager sharedAppStateManager] canAuthenticate] == YES) {
         self.topTenPicksButton = [SCHThemeButton buttonWithType:UIButtonTypeCustom];

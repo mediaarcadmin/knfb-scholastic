@@ -116,6 +116,7 @@ static const CGFloat kProfilePhoneTableOffsetLandscape = 20.0f;
         [self.settingsButton setImage:[UIImage imageNamed:@"settings-landscape.png"] 
                              forState:UIControlStateNormal];
         [self.settingsButton sizeToFit];
+        self.settingsButton.accessibilityLabel = @"Settings Button";
         [self.barSpacer setWidth:CGRectGetWidth(self.settingsButton.frame) + 7];
         [self.tableView setContentInset:UIEdgeInsetsMake(kProfilePhoneTableOffsetLandscape, 0, 0, 0)];
         [self.logoContainer setFrame:CGRectMake(0, 0, 260, 32)];

@@ -15,6 +15,7 @@
 #import "SCHDictionaryDownloadManager.h"
 #import "SCHDictionaryAccessManager.h"
 #import <CoreText/CoreText.h>
+#import "SCHKIFTestController.h"
 
 static NSString* const wmModelCertFilename = @"devcerttemplate.dat";
 static NSString* const prModelCertFilename = @"iphonecert.dat";
@@ -91,7 +92,19 @@ static NSString* const prModelCertFilename = @"iphonecert.dat";
     dam.persistentStoreCoordinator = self.coreDataHelper.persistentStoreCoordinator;
 	
 	[self ensureCorrectCertsAvailable];
-	
+	    
+#if RUN_KIF_TESTS
+    double delayInSeconds = 0.5;
+    dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);
+    dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+        [[SCHKIFTestController sharedInstance] startTestingWithCompletionBlock:^{
+            // Exit after the tests complete so that CI knows we're done
+            exit([[SCHKIFTestController sharedInstance] failureCount]);
+        }];
+        
+    });
+#endif    
+
 	return YES;
 }	
 
