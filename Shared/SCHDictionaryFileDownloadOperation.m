@@ -157,7 +157,7 @@
         }
     } 
 
-    NSLog(@"Filesize: %llu Expected: %llu", self.currentFilesize, [response expectedContentLength]);
+    NSLog(@"Dictionary Filesize: %llu Expected: %llu", self.currentFilesize, [response expectedContentLength]);
     
 	if (self.currentFilesize == [response expectedContentLength]) {
         [[SCHDictionaryDownloadManager sharedDownloadManager] threadSafeUpdateDictionaryState:SCHDictionaryProcessingStateNeedsUnzip];
@@ -257,7 +257,7 @@
 	
 	if (self.expectedFileSize != NSURLResponseUnknownLength) {
 		
-		float percentage = (float)((float)self.currentFilesize / (float)self.expectedFileSize);
+		float percentage = (self.expectedFileSize > 0 ? (float)((float)self.currentFilesize / (float)self.expectedFileSize) : 0.0);
 		
 		if (percentage - self.previousPercentage > 0.001f) {
 			
@@ -278,6 +278,7 @@
 
 - (void)firePercentageUpdate:(NSDictionary *)userInfo
 {
+    NSAssert(userInfo != nil, @"firePercentageUpdate is incorrectly being called with no userInfo");
 	[[NSNotificationCenter defaultCenter] postNotificationName:kSCHDictionaryDownloadPercentageUpdate object:nil userInfo:userInfo];
 }
 

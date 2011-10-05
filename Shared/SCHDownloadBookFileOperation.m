@@ -20,6 +20,9 @@
 @property (nonatomic, retain) NSFileHandle *fileHandle;
 @property (nonatomic, assign) unsigned long long currentFilesize;
 
+// the previous percentage reported - used to limit percentage notifications
+@property float previousPercentage;
+
 - (BOOL)stringBeginsWithHTTPScheme:(NSString *)string;
 - (NSString *)fullPathToBundledFile:(NSString *)fileName;
 - (void)completedDownload;
@@ -34,6 +37,7 @@
 @synthesize bookFileSize;
 @synthesize fileHandle;
 @synthesize currentFilesize;
+@synthesize previousPercentage;
 
 - (void)dealloc 
 {
@@ -146,6 +150,7 @@
 	}
 	
 	self.currentFilesize = 0;
+    self.previousPercentage = -1;
 	
 	if ([fileManager fileExistsAtPath:self.localPath]) {
 		// check to see how much of the file has been downloaded
@@ -216,14 +221,31 @@
 
 #pragma mark - Notification methods
 
-- (void)percentageUpdate:(NSDictionary *)userInfo
-{
-    //NSLog(@"Percentage update sent %@", userInfo);
-	if (self.fileType == kSCHDownloadFileTypeXPSBook) {
-		[[NSNotificationCenter defaultCenter] postNotificationName:@"SCHBookDownloadPercentageUpdate" 
-                                                            object:nil 
-                                                          userInfo:userInfo];
+- (void)createPercentageUpdate
+{    
+    float percentage = (self.bookFileSize > 0 ? (float) ((float)self.currentFilesize / self.bookFileSize) : 0.0);
+    
+    if (percentage - self.previousPercentage > 0.001f) {
+        
+        NSDictionary *userInfo = [NSDictionary dictionaryWithObjectsAndKeys:
+                                  [NSNumber numberWithFloat:percentage], @"currentPercentage",
+                                  self.identifier, @"bookIdentifier",
+                                  nil];
+        
+        [self performSelectorOnMainThread:@selector(firePercentageUpdate:) 
+                               withObject:userInfo
+                            waitUntilDone:NO];
+        
+        self.previousPercentage = percentage;
 	}
+}
+
+- (void)firePercentageUpdate:(NSDictionary *)userInfo
+{
+    NSAssert(userInfo != nil, @"firePercentageUpdate is incorrectly being called with no userInfo");
+	[[NSNotificationCenter defaultCenter] postNotificationName:@"SCHBookDownloadPercentageUpdate" 
+                                                        object:nil 
+                                                      userInfo:userInfo];
 }
 
 #pragma mark - NSURLConnection delegate methods
@@ -242,6 +264,8 @@
             return;
         }
     } 
+    
+    NSLog(@"Filesize receiving:%llu expected:%llu", self.currentFilesize, [response expectedContentLength]);
     
     self.fileHandle = [NSFileHandle fileHandleForWritingAtPath:self.localPath];
     [self.fileHandle seekToEndOfFile];
@@ -275,24 +299,17 @@
             return;
         }
 	}
-	
-	float percentage = (self.bookFileSize > 0 ? (float) ((float) self.currentFilesize/self.bookFileSize) : 0.0);
-	
-	NSDictionary *userInfo = [NSDictionary dictionaryWithObjectsAndKeys:
-							  [NSNumber numberWithFloat:percentage], @"currentPercentage",
-							  self.identifier, @"bookIdentifier",
-							  nil];
-	
-	//NSLog(@"percentage for %@: %2.2f%%", self.bookInfo.contentMetadata.Title, percentage * 100);
-	
-	[self performSelectorOnMainThread:@selector(percentageUpdate:) 
-						   withObject:userInfo
-						waitUntilDone:NO];
+
+    if (self.fileType == kSCHDownloadFileTypeXPSBook) {
+        [self createPercentageUpdate];
+    }
 }
 
 - (void)connectionDidFinishLoading:(NSURLConnection *)connection
 {
-	NSLog(@"Finished file %@.", [self.localPath lastPathComponent]);
+	NSLog(@"Finished file %@. [downloaded: %llu expected:%lu]", [self.localPath lastPathComponent], 
+          self.currentFilesize, self.bookFileSize);
+    
     [[BITNetworkActivityManager sharedNetworkActivityManager] hideNetworkActivityIndicator];
     [self completedDownload];
 }
@@ -301,11 +318,22 @@
 {
 	switch (self.fileType) {
 		case kSCHDownloadFileTypeXPSBook:
+        {
             [self performWithBookAndSave:^(SCHAppBook *book) {
                 book.OnDiskVersion = book.Version;
                 book.XPSExists = [NSNumber numberWithBool:YES];
             }];
+            
             [self setProcessingState:SCHBookProcessingStateReadyForLicenseAcquisition];
+            NSDictionary *userInfo = [NSDictionary dictionaryWithObjectsAndKeys:
+                                      [NSNumber numberWithFloat:1.0], @"currentPercentage",
+                                      self.identifier, @"bookIdentifier",
+                                      nil];
+            
+            [self performSelectorOnMainThread:@selector(firePercentageUpdate:) 
+                                   withObject:userInfo
+                                waitUntilDone:YES];            
+        }
 			break;
 		case kSCHDownloadFileTypeCoverImage:
             [self performWithBookAndSave:^(SCHAppBook *book) {
