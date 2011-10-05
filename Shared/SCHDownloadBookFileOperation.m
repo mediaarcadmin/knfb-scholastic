@@ -230,6 +230,19 @@
 
 - (void)connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response
 {
+    if ([response isKindOfClass:[NSHTTPURLResponse class]] == YES) {
+        if ([(NSHTTPURLResponse *)response statusCode] != 200 && 
+            [(NSHTTPURLResponse *)response statusCode] != 206) {
+            [connection cancel];
+            [self setProcessingState:SCHBookProcessingStateDownloadFailed];            
+            [[BITNetworkActivityManager sharedNetworkActivityManager] hideNetworkActivityIndicator];
+            NSLog(@"Error downloading file, errorCode: %d", [(NSHTTPURLResponse *)response statusCode]);
+            [self setIsProcessing:NO];        
+            [self endOperation];
+            return;
+        }
+    } 
+    
     self.fileHandle = [NSFileHandle fileHandleForWritingAtPath:self.localPath];
     [self.fileHandle seekToEndOfFile];
 }
@@ -252,9 +265,9 @@
             self.currentFilesize += [data length];            
         }
         @catch (NSException *exception) {
-            [self setProcessingState:SCHBookProcessingStateDownloadFailed];
             [connection cancel];
-            [[BITNetworkActivityManager sharedNetworkActivityManager] hideNetworkActivityIndicator];            
+            [[BITNetworkActivityManager sharedNetworkActivityManager] hideNetworkActivityIndicator];                        
+            [self setProcessingState:SCHBookProcessingStateDownloadFailed];            
             [self.fileHandle closeFile];
             self.fileHandle = nil;            
             [self setIsProcessing:NO];        

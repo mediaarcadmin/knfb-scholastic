@@ -146,22 +146,34 @@
 
 - (void)connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response
 {
+    if ([response isKindOfClass:[NSHTTPURLResponse class]] == YES) {
+        if ([(NSHTTPURLResponse *)response statusCode] != 200 && 
+            [(NSHTTPURLResponse *)response statusCode] != 206) {
+            [connection cancel];
+            [[BITNetworkActivityManager sharedNetworkActivityManager] hideNetworkActivityIndicator];
+            NSLog(@"Error downloading file, errorCode: %d", [(NSHTTPURLResponse *)response statusCode]);
+            [self cancel];
+            return;
+        }
+    } 
+
     NSLog(@"Filesize: %llu Expected: %llu", self.currentFilesize, [response expectedContentLength]);
     
 	if (self.currentFilesize == [response expectedContentLength]) {
         [[SCHDictionaryDownloadManager sharedDownloadManager] threadSafeUpdateDictionaryState:SCHDictionaryProcessingStateNeedsUnzip];
         [connection cancel];
+        [[BITNetworkActivityManager sharedNetworkActivityManager] hideNetworkActivityIndicator];        
         [self cancel];
         return;
 	}
     
-        
     // if we cannot determine the expectedContentLength, then bail if the free space is 0
     // oherwise bail if the the free space < expectedContentLength
     if (([response expectedContentLength] != NSURLResponseUnknownLength)) {
         if (![self fileSystemHasBytesAvailable:[response expectedContentLength]]) {
             [[SCHDictionaryDownloadManager sharedDownloadManager] threadSafeUpdateDictionaryState:SCHDictionaryProcessingStateNotEnoughFreeSpace];
             [connection cancel];
+            [[BITNetworkActivityManager sharedNetworkActivityManager] hideNetworkActivityIndicator];            
             [self cancel];
             return;
         }
