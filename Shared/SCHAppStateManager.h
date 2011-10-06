@@ -23,6 +23,7 @@
 - (SCHAppState *)appState;
 - (void)createAppStateIfNeeded;
 - (BOOL)canSync;
+- (BOOL)canSyncNotes;
 - (BOOL)canAuthenticate;
 - (BOOL)isStandardStore;
 - (BOOL)isSampleStore;

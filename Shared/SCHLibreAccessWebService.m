@@ -14,6 +14,7 @@
 #import "SCHAuthenticationManager.h"
 #import "BITNetworkActivityManager.h"
 #import "UIColor+Extensions.h"
+#import "SCHAppStateManager.h"
 
 // Method Constants
 NSString * const kSCHLibreAccessWebServiceTokenExchange = @"TokenExchange";
@@ -1096,7 +1097,9 @@ static NSInteger const kSCHLibreAccessWebServiceVaid = 33;
 		NSMutableDictionary *objects = [NSMutableDictionary dictionary];
 		
 		[objects setObject:[self objectFromTranslate:[anObject.Highlights Highlight]] forKey:kSCHLibreAccessWebServiceHighlights];
-		[objects setObject:[self objectFromTranslate:[anObject.Notes Note]] forKey:kSCHLibreAccessWebServiceNotes];
+        if ([[SCHAppStateManager sharedAppStateManager] canSyncNotes] == YES) {
+            [objects setObject:[self objectFromTranslate:[anObject.Notes Note]] forKey:kSCHLibreAccessWebServiceNotes];
+        }
 		[objects setObject:[self objectFromTranslate:[anObject.Bookmarks Bookmark]] forKey:kSCHLibreAccessWebServiceBookmarks];
 		[objects setObject:[self objectFromLastPage:anObject.LastPage] forKey:kSCHLibreAccessWebServiceLastPage];
         
@@ -1667,12 +1670,14 @@ static NSInteger const kSCHLibreAccessWebServiceVaid = 33;
         id notes = [[LibreAccessServiceSvc_Notes alloc] init];
 		intoObject.Notes = notes;
         [notes release];
-		for (NSDictionary *item in [self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceNotes]]) {
-            if ([[self fromObjectTranslate:[item valueForKey:kSCHLibreAccessWebServiceAction]] saveActionValue] != kSCHSaveActionsNone) {
-                LibreAccessServiceSvc_Note *note = [[LibreAccessServiceSvc_Note alloc] init];
-                [self fromObject:item intoNote:note];
-                [intoObject.Notes addNote:note];
-                [note release], note = nil;
+        if ([[SCHAppStateManager sharedAppStateManager] canSyncNotes] == YES) {
+            for (NSDictionary *item in [self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceNotes]]) {
+                if ([[self fromObjectTranslate:[item valueForKey:kSCHLibreAccessWebServiceAction]] saveActionValue] != kSCHSaveActionsNone) {
+                    LibreAccessServiceSvc_Note *note = [[LibreAccessServiceSvc_Note alloc] init];
+                    [self fromObject:item intoNote:note];
+                    [intoObject.Notes addNote:note];
+                    [note release], note = nil;
+                }
             }
 		}
 		
