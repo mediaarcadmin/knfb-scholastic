@@ -15,7 +15,9 @@
 #import "SCHDictionaryDownloadManager.h"
 #import "SCHDictionaryAccessManager.h"
 #import <CoreText/CoreText.h>
+#if RUN_KIF_TESTS
 #import "SCHKIFTestController.h"
+#endif
 
 static NSString* const wmModelCertFilename = @"devcerttemplate.dat";
 static NSString* const prModelCertFilename = @"iphonecert.dat";

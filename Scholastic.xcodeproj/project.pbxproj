@@ -1295,9 +1295,7 @@
 		526FEB5F140FD93900638712 /* Icon-Small@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C908D867133F93FA00661718 /* Icon-Small@2x.png */; };
 		526FEB60140FD93900638712 /* Icon-Small.png in Resources */ = {isa = PBXBuildFile; fileRef = C908D868133F93FA00661718 /* Icon-Small.png */; };
 		526FEB61140FD93900638712 /* Icon-Small-50.png in Resources */ = {isa = PBXBuildFile; fileRef = C908D869133F93FA00661718 /* Icon-Small-50.png */; };
-		526FEB62140FD93900638712 /* PlaceholderBook.png in Resources */ = {isa = PBXBuildFile; fileRef = C908D87F133F941100661718 /* PlaceholderBook.png */; };
 		526FEB63140FD93900638712 /* paper-white.png in Resources */ = {isa = PBXBuildFile; fileRef = C908D880133F941100661718 /* paper-white.png */; };
-		526FEB64140FD93900638712 /* booktexture-nocover.png in Resources */ = {isa = PBXBuildFile; fileRef = C908D881133F941100661718 /* booktexture-nocover.png */; };
 		526FEB65140FD93900638712 /* iPodLikeSliderBlueLeftCap.png in Resources */ = {isa = PBXBuildFile; fileRef = C93ECA2E134B5EF9003B99FD /* iPodLikeSliderBlueLeftCap.png */; };
 		526FEB66140FD93900638712 /* iPodLikeSliderBlueLeftCap@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C93ECA2F134B5EF9003B99FD /* iPodLikeSliderBlueLeftCap@2x.png */; };
 		526FEB67140FD93900638712 /* iPodLikeSliderKnob-Small.png in Resources */ = {isa = PBXBuildFile; fileRef = C93ECA30134B5EF9003B99FD /* iPodLikeSliderKnob-Small.png */; };
@@ -3559,7 +3557,7 @@
 		526A8A501385143000101A96 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		526A8A5E1385182100101A96 /* CoreMedia.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMedia.framework; path = System/Library/Frameworks/CoreMedia.framework; sourceTree = SDKROOT; };
 		526FEB41140FD83A00638712 /* KIF.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = KIF.xcodeproj; path = Shared/Libraries/Submodules/KIF/KIF.xcodeproj; sourceTree = "<group>"; };
-		526FEF2F140FD93900638712 /* KIF Local Samples Scholastic.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "KIF Local Samples Scholastic.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		526FEF2F140FD93900638712 /* Scholastic (Integration Tests).app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Scholastic (Integration Tests).app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		527BBADD13A011D4000B407C /* SCHStoryInteractionControllerImage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCHStoryInteractionControllerImage.h; sourceTree = "<group>"; };
 		527BBADE13A011D4000B407C /* SCHStoryInteractionControllerImage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCHStoryInteractionControllerImage.m; sourceTree = "<group>"; };
 		527BBADF13A011D4000B407C /* SCHStoryInteractionImage_iPhone.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SCHStoryInteractionImage_iPhone.xib; sourceTree = "<group>"; };
@@ -4780,7 +4778,7 @@
 				1D6058910D05DD3D006BFB54 /* Scholastic.app */,
 				28A08CFB13952CB4006FD008 /* UnitTests.octest */,
 				52488C051407990500DA9AFA /* Scholastic.app */,
-				526FEF2F140FD93900638712 /* KIF Local Samples Scholastic.app */,
+				526FEF2F140FD93900638712 /* Scholastic (Integration Tests).app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -7289,9 +7287,9 @@
 			productReference = 52488C051407990500DA9AFA /* Scholastic.app */;
 			productType = "com.apple.product-type.application";
 		};
-		526FEB53140FD93900638712 /* KIF Local Samples Scholastic */ = {
+		526FEB53140FD93900638712 /* Integration Tests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 526FEF2B140FD93900638712 /* Build configuration list for PBXNativeTarget "KIF Local Samples Scholastic" */;
+			buildConfigurationList = 526FEF2B140FD93900638712 /* Build configuration list for PBXNativeTarget "Integration Tests" */;
 			buildPhases = (
 				526FEB56140FD93900638712 /* Resources */,
 				526FEDE4140FD93900638712 /* Sources */,
@@ -7302,9 +7300,9 @@
 			dependencies = (
 				526FEB54140FD93900638712 /* PBXTargetDependency */,
 			);
-			name = "KIF Local Samples Scholastic";
+			name = "Integration Tests";
 			productName = Scholastic;
-			productReference = 526FEF2F140FD93900638712 /* KIF Local Samples Scholastic.app */;
+			productReference = 526FEF2F140FD93900638712 /* Scholastic (Integration Tests).app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -7338,7 +7336,7 @@
 			targets = (
 				1D6058900D05DD3D006BFB54 /* Scholastic */,
 				524888251407990500DA9AFA /* Local Samples Scholastic */,
-				526FEB53140FD93900638712 /* KIF Local Samples Scholastic */,
+				526FEB53140FD93900638712 /* Integration Tests */,
 				28A08CFA13952CB4006FD008 /* UnitTests */,
 			);
 		};
@@ -8806,9 +8804,7 @@
 				526FEB5F140FD93900638712 /* Icon-Small@2x.png in Resources */,
 				526FEB60140FD93900638712 /* Icon-Small.png in Resources */,
 				526FEB61140FD93900638712 /* Icon-Small-50.png in Resources */,
-				526FEB62140FD93900638712 /* PlaceholderBook.png in Resources */,
 				526FEB63140FD93900638712 /* paper-white.png in Resources */,
-				526FEB64140FD93900638712 /* booktexture-nocover.png in Resources */,
 				526FEB65140FD93900638712 /* iPodLikeSliderBlueLeftCap.png in Resources */,
 				526FEB66140FD93900638712 /* iPodLikeSliderBlueLeftCap@2x.png in Resources */,
 				526FEB67140FD93900638712 /* iPodLikeSliderKnob-Small.png in Resources */,
@@ -10701,7 +10697,7 @@
 					"\"$(SRCROOT)\"",
 				);
 				OTHER_CFLAGS = "-I/usr/include/libxml2";
-				PRODUCT_NAME = "KIF Local Samples Scholastic";
+				PRODUCT_NAME = "Scholastic (Integration Tests)";
 			};
 			name = Debug;
 		};
@@ -10738,7 +10734,7 @@
 					"-I/usr/include/libxml2",
 					"-DNS_BLOCK_ASSERTIONS=1",
 				);
-				PRODUCT_NAME = "KIF Local Samples Scholastic";
+				PRODUCT_NAME = "Scholastic (Integration Tests)";
 				VALIDATE_PRODUCT = YES;
 			};
 			name = "Ad Hoc";
@@ -10776,7 +10772,7 @@
 					"-I/usr/include/libxml2",
 					"-DNS_BLOCK_ASSERTIONS=1",
 				);
-				PRODUCT_NAME = "KIF Local Samples Scholastic";
+				PRODUCT_NAME = "Scholastic (Integration Tests)";
 				VALIDATE_PRODUCT = YES;
 			};
 			name = Release;
@@ -10942,7 +10938,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		526FEF2B140FD93900638712 /* Build configuration list for PBXNativeTarget "KIF Local Samples Scholastic" */ = {
+		526FEF2B140FD93900638712 /* Build configuration list for PBXNativeTarget "Integration Tests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				526FEF2C140FD93900638712 /* Debug */,
