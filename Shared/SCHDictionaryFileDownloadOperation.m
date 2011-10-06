@@ -7,6 +7,7 @@
 //
 
 #import "SCHDictionaryFileDownloadOperation.h"
+#import "BITNetworkActivityManager.h"
 
 #pragma mark Class Extension
 
@@ -117,14 +118,13 @@
 		[self.localFileManager createFileAtPath:self.localPath contents:nil attributes:nil];
 	}
 	
-	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
-	
 	NSURLConnection *connection = [NSURLConnection connectionWithRequest:request delegate:self];
 
 	if (connection == nil) {
         [self cancel];
     } else {
         [connection start];
+        [[BITNetworkActivityManager sharedNetworkActivityManager] showNetworkActivityIndicator];        
     }
 }
 
@@ -146,22 +146,34 @@
 
 - (void)connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response
 {
-    NSLog(@"Filesize: %llu Expected: %llu", self.currentFilesize, [response expectedContentLength]);
+    if ([response isKindOfClass:[NSHTTPURLResponse class]] == YES) {
+        if ([(NSHTTPURLResponse *)response statusCode] != 200 && 
+            [(NSHTTPURLResponse *)response statusCode] != 206) {
+            [connection cancel];
+            [[BITNetworkActivityManager sharedNetworkActivityManager] hideNetworkActivityIndicator];
+            NSLog(@"Error downloading file, errorCode: %d", [(NSHTTPURLResponse *)response statusCode]);
+            [self cancel];
+            return;
+        }
+    } 
+
+    NSLog(@"Dictionary Filesize receiving:%llu expected:%llu", self.currentFilesize, [response expectedContentLength]);
     
 	if (self.currentFilesize == [response expectedContentLength]) {
         [[SCHDictionaryDownloadManager sharedDownloadManager] threadSafeUpdateDictionaryState:SCHDictionaryProcessingStateNeedsUnzip];
         [connection cancel];
+        [[BITNetworkActivityManager sharedNetworkActivityManager] hideNetworkActivityIndicator];        
         [self cancel];
         return;
 	}
     
-        
     // if we cannot determine the expectedContentLength, then bail if the free space is 0
     // oherwise bail if the the free space < expectedContentLength
     if (([response expectedContentLength] != NSURLResponseUnknownLength)) {
         if (![self fileSystemHasBytesAvailable:[response expectedContentLength]]) {
             [[SCHDictionaryDownloadManager sharedDownloadManager] threadSafeUpdateDictionaryState:SCHDictionaryProcessingStateNotEnoughFreeSpace];
             [connection cancel];
+            [[BITNetworkActivityManager sharedNetworkActivityManager] hideNetworkActivityIndicator];            
             [self cancel];
             return;
         }
@@ -185,12 +197,14 @@
         @catch (NSException *exception) {
             [[SCHDictionaryDownloadManager sharedDownloadManager] threadSafeUpdateDictionaryState:SCHDictionaryProcessingStateNotEnoughFreeSpace];
             [connection cancel];
+            [[BITNetworkActivityManager sharedNetworkActivityManager] hideNetworkActivityIndicator];            
             [self cancel];
         }
     }
 	
 	if ([self isCancelled]) {
 		[connection cancel];
+        [[BITNetworkActivityManager sharedNetworkActivityManager] hideNetworkActivityIndicator];        
         [self cancel];
 		return;
 	}
@@ -202,6 +216,8 @@
 {
 	NSLog(@"Finished file %@.", [self.localPath lastPathComponent]);
 	
+    [[BITNetworkActivityManager sharedNetworkActivityManager] hideNetworkActivityIndicator];
+    
 	// fire a 100% notification
 	NSDictionary *userInfo = [NSDictionary dictionaryWithObjectsAndKeys:
 							  [NSNumber numberWithFloat:1.0f], @"currentPercentage",
@@ -221,6 +237,8 @@
 {
 	NSLog(@"Stopped downloading file - %@", [error localizedDescription]);
 	
+    [[BITNetworkActivityManager sharedNetworkActivityManager] hideNetworkActivityIndicator];
+    
     //	[[SCHDictionaryManager sharedDownloadManager] threadSafeUpdateDictionaryState:SCHDictionaryProcessingStateError];
 //	[SCHDictionaryManager sharedDownloadManager].dictionaryState = SCHDictionaryProcessingStateNeedsDownload;
 	
@@ -239,7 +257,7 @@
 	
 	if (self.expectedFileSize != NSURLResponseUnknownLength) {
 		
-		float percentage = (float)((float)self.currentFilesize / (float)self.expectedFileSize);
+		float percentage = (self.expectedFileSize > 0 ? (float)((float)self.currentFilesize / (float)self.expectedFileSize) : 0.0);
 		
 		if (percentage - self.previousPercentage > 0.001f) {
 			
@@ -260,6 +278,7 @@
 
 - (void)firePercentageUpdate:(NSDictionary *)userInfo
 {
+    NSAssert(userInfo != nil, @"firePercentageUpdate is incorrectly being called with no userInfo");
 	[[NSNotificationCenter defaultCenter] postNotificationName:kSCHDictionaryDownloadPercentageUpdate object:nil userInfo:userInfo];
 }
 
@@ -291,7 +310,6 @@
 	self.executing = NO;
     [self didChangeValueForKey:@"isExecuting"];
     [self didChangeValueForKey:@"isFinished"];
-	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
 
 	[super cancel];
 }

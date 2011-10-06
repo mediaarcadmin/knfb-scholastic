@@ -41,11 +41,11 @@
 
 - (void)dealloc 
 {
-	self.connection = nil;
-	self.connectionData = nil;
-	self.manifestParser = nil;
-    self.manifestEntries = nil;
-    self.currentEntry = nil;
+	[connection release], connection = nil;
+	[connectionData release], connectionData = nil;
+	[manifestParser release], manifestParser = nil;
+    [manifestEntries release], manifestEntries = nil;
+    [currentEntry release], currentEntry = nil;
 	
 	[super dealloc];
 }
@@ -72,6 +72,7 @@
 						   delegate:self];
 		
         if (self.connection == nil) {
+            [[SCHDictionaryDownloadManager sharedDownloadManager] threadSafeUpdateDictionaryState:SCHDictionaryProcessingStateError];
             [self cancel];
         } else {
             [self startOp];
@@ -81,9 +82,19 @@
 
 #pragma mark - NSURLConnection delegate
 
-- (void)connection:(NSURLConnection *)connection 
+- (void)connection:(NSURLConnection *)conn 
 didReceiveResponse:(NSURLResponse *)response
 {
+    if ([response isKindOfClass:[NSHTTPURLResponse class]] == YES) {
+        if ([(NSHTTPURLResponse *)response statusCode] != 200) {
+            [conn cancel];
+            NSLog(@"Error downloading file, errorCode: %d", [(NSHTTPURLResponse *)response statusCode]);
+            [[SCHDictionaryDownloadManager sharedDownloadManager] threadSafeUpdateDictionaryState:SCHDictionaryProcessingStateError];
+            [self cancel];
+            return;
+        }
+    }
+    
 	[self.connectionData setLength:0];
 }
 
@@ -111,7 +122,7 @@ didReceiveResponse:(NSURLResponse *)response
   didFailWithError:(NSError *)error
 {
 	NSLog(@"failed download!");
-    
+    [[SCHDictionaryDownloadManager sharedDownloadManager] threadSafeUpdateDictionaryState:SCHDictionaryProcessingStateError];
     [self cancel];    
 }
 
