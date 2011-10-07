@@ -132,10 +132,18 @@ NSString * const SCHBookshelfSyncComponentDidFailNotification = @"SCHBookshelfSy
 	if (self.useIndividualRequests == YES) {
 		requestCount--;
 	}
-    [[NSNotificationCenter defaultCenter] postNotificationName:SCHBookshelfSyncComponentDidFailNotification 
-                                                        object:self];
-
-	[super method:method didFailWithError:error requestInfo:requestInfo result:result];
+    
+    // a valid error otherwise server error 
+    if (result == nil) {
+        [[NSNotificationCenter defaultCenter] postNotificationName:SCHBookshelfSyncComponentDidFailNotification 
+                                                            object:self];
+        
+        [super method:method didFailWithError:error requestInfo:requestInfo result:result];
+    } else {
+        [[NSNotificationCenter defaultCenter] postNotificationName:SCHBookshelfSyncComponentDidCompleteNotification 
+                                                            object:self];
+        [super method:method didCompleteWithResult:nil];				        
+    }
 }
 
 - (BOOL)updateContentMetadataItems

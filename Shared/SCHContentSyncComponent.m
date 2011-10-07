@@ -105,14 +105,16 @@ NSString * const SCHContentSyncComponentDidFailNotification = @"SCHContentSyncCo
    requestInfo:(NSDictionary *)requestInfo
         result:(NSDictionary *)result
 {
-    [[NSNotificationCenter defaultCenter] postNotificationName:SCHContentSyncComponentDidFailNotification 
-                                                        object:self];            
-
-    // when saving we accept there could be errors and then continue
-    if (result != nil) {
-        [super method:method didCompleteWithResult:nil];				    
-    } else {
+	// a valid error otherwise server error
+    if (result == nil) {
+        [[NSNotificationCenter defaultCenter] postNotificationName:SCHContentSyncComponentDidFailNotification 
+                                                            object:self];            
+        
         [super method:method didFailWithError:error requestInfo:requestInfo result:result];        
+    } else {
+		[[NSNotificationCenter defaultCenter] postNotificationName:SCHContentSyncComponentDidCompleteNotification 
+                                                            object:self];        
+        [super method:method didCompleteWithResult:nil];				    
     }
 }
 
