@@ -37,6 +37,7 @@ NSString * const kSCHAuthenticationManagerErrorDomain = @"AuthenticationManagerE
 NSInteger const kSCHAuthenticationManagerGeneralError = 2000;
 NSInteger const kSCHAuthenticationManagerLoginError = 2001;
 
+NSString * const kSCHAuthenticationManagerUserKey = @"AuthenticationManager.UserKey";
 NSString * const kSCHAuthenticationManagerDeviceKey = @"AuthenticationManager.DeviceKey";
 
 NSString * const kSCHAuthenticationManagerUsername = @"AuthenticationManager.Username";
@@ -260,6 +261,7 @@ typedef struct AuthenticateWithUserNameParameters AuthenticateWithUserNameParame
                                   forServiceName:kSCHAuthenticationManagerServiceName 
                                   updateExisting:YES 
                                            error:nil];
+                [[NSUserDefaults standardUserDefaults] removeObjectForKey:kSCHAuthenticationManagerUserKey];
                 [self authenticate];
             } else {
                 NSError *error = [NSError errorWithDomain:kSCHAuthenticationManagerErrorDomain 
@@ -285,6 +287,7 @@ typedef struct AuthenticateWithUserNameParameters AuthenticateWithUserNameParame
                           forServiceName:kSCHAuthenticationManagerServiceName 
                           updateExisting:YES 
                                    error:nil];
+        [[NSUserDefaults standardUserDefaults] removeObjectForKey:kSCHAuthenticationManagerUserKey];        
         self.aToken = @"";
         self.tokenExpires = [NSDate distantFuture];        
         
@@ -373,6 +376,7 @@ typedef struct AuthenticateWithUserNameParameters AuthenticateWithUserNameParame
         [SFHFKeychainUtils deleteItemForUsername:username andServiceName:kSCHAuthenticationManagerServiceName error:nil];
     }
     [[NSUserDefaults standardUserDefaults] removeObjectForKey:kSCHAuthenticationManagerUsername];
+    [[NSUserDefaults standardUserDefaults] removeObjectForKey:kSCHAuthenticationManagerUserKey];    
     [[NSUserDefaults standardUserDefaults] synchronize];
 }
 
@@ -434,10 +438,13 @@ typedef struct AuthenticateWithUserNameParameters AuthenticateWithUserNameParame
 
 - (void)method:(NSString *)method didCompleteWithResult:(NSDictionary *)result
 {	
-	if([method compare:kSCHScholasticWebServiceProcessRemote] == NSOrderedSame) {	
+	if([method compare:kSCHScholasticWebServiceProcessRemote] == NSOrderedSame) {
 		[self.libreAccessWebService tokenExchange:[result objectForKey:kSCHScholasticWebServicePToken] 
                                      forUser:[[NSUserDefaults standardUserDefaults] stringForKey:kSCHAuthenticationManagerUsername]];
-	} else if([method compare:kSCHLibreAccessWebServiceTokenExchange] == NSOrderedSame) {	
+	} else if([method compare:kSCHLibreAccessWebServiceTokenExchange] == NSOrderedSame) {
+        id userKey = [result objectForKey:kSCHLibreAccessWebServiceUserKey];
+        [[NSUserDefaults standardUserDefaults] setObject:(userKey == [NSNull null] ? nil : userKey) 
+                                                  forKey:kSCHAuthenticationManagerUserKey];
         NSNumber *deviceIsDeregistered = [result objectForKey:kSCHLibreAccessWebServiceDeviceIsDeregistered];        
         if ([deviceIsDeregistered isKindOfClass:[NSNumber class]] == YES &&
             [[result objectForKey:kSCHLibreAccessWebServiceDeviceIsDeregistered] boolValue] == YES) {

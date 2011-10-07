@@ -111,6 +111,18 @@
     return(ret);
 }
 
+- (BOOL)canSyncNotes
+{
+    BOOL ret = NO;
+    SCHAppState *appState = [self appState];
+    
+    if (appState != nil) {
+        ret = [appState.ShouldSyncNotes boolValue];
+    }
+    
+    return(ret);
+}
+
 - (BOOL)canAuthenticate
 {
     BOOL ret = NO;

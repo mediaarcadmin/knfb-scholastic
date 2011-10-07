@@ -50,7 +50,7 @@ NSString * const SCHBookshelfSyncComponentDidFailNotification = @"SCHBookshelfSy
 {
 	self = [super init];
 	if (self != nil) {
-		self.useIndividualRequests = YES;	
+		self.useIndividualRequests = NO;	
 		self.requestCount = 0;
 	}
 	return(self);
@@ -149,7 +149,7 @@ NSString * const SCHBookshelfSyncComponentDidFailNotification = @"SCHBookshelfSy
 	if([results count] > 0) {
 		if (self.useIndividualRequests == YES) {
 			for (NSDictionary *ISBN in results) {				
-				self.isSynchronizing = [self.libreAccessWebService listContentMetadata:[NSArray arrayWithObject:ISBN] includeURLs:NO];
+				self.isSynchronizing = [self.libreAccessWebService listContentMetadata:[NSArray arrayWithObject:ISBN] includeURLs:YES];
 				if (self.isSynchronizing == NO) {
 					[[SCHAuthenticationManager sharedAuthenticationManager] authenticate];				
 					ret = NO;			

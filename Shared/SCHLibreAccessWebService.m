@@ -14,6 +14,7 @@
 #import "SCHAuthenticationManager.h"
 #import "BITNetworkActivityManager.h"
 #import "UIColor+Extensions.h"
+#import "SCHAppStateManager.h"
 
 // Method Constants
 NSString * const kSCHLibreAccessWebServiceTokenExchange = @"TokenExchange";
@@ -170,7 +171,7 @@ static NSInteger const kSCHLibreAccessWebServiceVaid = 33;
 - (NSString *)methodNameFromObject:(id)anObject;
 - (NSDictionary *)requestInfoFromOperation:(LibreAccessServiceSoap11BindingOperation *)operation;
 
-- (NSDictionary *)objectFromTokenExchange:(LibreAccessServiceSvc_TokenExchangeResponse *)anObject;
+- (NSDictionary *)objectFromTokenExchange:(LibreAccessServiceSvc_TokenExchangeExResponse *)anObject;
 - (NSDictionary *)objectFromAuthenticateDevice:(LibreAccessServiceSvc_AuthenticateDeviceResponse *)anObject;
 - (NSDictionary *)objectFromRenewToken:(LibreAccessServiceSvc_RenewTokenResponse *)anObject;
 - (NSDictionary *)objectFromProfileItem:(LibreAccessServiceSvc_ProfileItem *)anObject;
@@ -260,7 +261,7 @@ static NSInteger const kSCHLibreAccessWebServiceVaid = 33;
 
 - (void)tokenExchange:(NSString *)pToken forUser:(NSString *)userName
 {
-	LibreAccessServiceSvc_TokenExchange *request = [LibreAccessServiceSvc_TokenExchange new];
+	LibreAccessServiceSvc_TokenExchangeEx *request = [LibreAccessServiceSvc_TokenExchangeEx new];
 
 	request.ptoken = pToken;
 	request.vaid = [NSNumber numberWithInt:kSCHLibreAccessWebServiceVaid];
@@ -268,7 +269,7 @@ static NSInteger const kSCHLibreAccessWebServiceVaid = 33;
 	request.impersonationkey = @"";
 	request.UserName = userName;
 	
-	[self.binding TokenExchangeAsyncUsingBody:request delegate:self]; 
+	[self.binding TokenExchangeExAsyncUsingBody:request delegate:self]; 
 	[[BITNetworkActivityManager sharedNetworkActivityManager] showNetworkActivityIndicator];
 	
 	[request release], request = nil;
@@ -692,9 +693,9 @@ static NSInteger const kSCHLibreAccessWebServiceVaid = 33;
 	NSString *ret = kSCHLibreAccessWebServiceUndefinedMethod;
 	
 	if (anObject != nil) {
-		if([anObject isKindOfClass:[LibreAccessServiceSvc_TokenExchange class]] == YES ||
-		   [anObject isKindOfClass:[LibreAccessServiceSvc_TokenExchangeResponse class]] == YES ||		   
-		   [anObject isKindOfClass:[LibreAccessServiceSoap11Binding_TokenExchange class]] == YES) {
+		if([anObject isKindOfClass:[LibreAccessServiceSvc_TokenExchangeEx class]] == YES ||
+		   [anObject isKindOfClass:[LibreAccessServiceSvc_TokenExchangeExResponse class]] == YES ||		   
+		   [anObject isKindOfClass:[LibreAccessServiceSoap11Binding_TokenExchangeEx class]] == YES) {
 			ret = kSCHLibreAccessWebServiceTokenExchange;	
 		} else if([anObject isKindOfClass:[LibreAccessServiceSvc_AuthenticateDeviceRequest class]] == YES ||
 				  [anObject isKindOfClass:[LibreAccessServiceSvc_AuthenticateDeviceResponse class]] == YES ||
@@ -784,7 +785,7 @@ static NSInteger const kSCHLibreAccessWebServiceVaid = 33;
 	NSDictionary *ret = nil;
 	
 	if (anObject != nil) {
-		if ([anObject isKindOfClass:[LibreAccessServiceSvc_TokenExchangeResponse class]] == YES) {
+		if ([anObject isKindOfClass:[LibreAccessServiceSvc_TokenExchangeExResponse class]] == YES) {
 			ret = [self objectFromTokenExchange:anObject];
 		} else if ([anObject isKindOfClass:[LibreAccessServiceSvc_AuthenticateDeviceResponse class]] == YES) {
 			ret = [self objectFromAuthenticateDevice:anObject];
@@ -852,7 +853,7 @@ static NSInteger const kSCHLibreAccessWebServiceVaid = 33;
 #pragma mark -
 #pragma mark ObjectMapper objectFrom: converter methods 
 
-- (NSDictionary *)objectFromTokenExchange:(LibreAccessServiceSvc_TokenExchangeResponse *)anObject
+- (NSDictionary *)objectFromTokenExchange:(LibreAccessServiceSvc_TokenExchangeExResponse *)anObject
 {
 	NSDictionary *ret = nil;
 	
@@ -861,6 +862,7 @@ static NSInteger const kSCHLibreAccessWebServiceVaid = 33;
 		
 		[objects setObject:[self objectFromTranslate:anObject.authtoken] forKey:kSCHLibreAccessWebServiceAuthToken];
 		[objects setObject:[self objectFromTranslate:anObject.expiresIn] forKey:kSCHLibreAccessWebServiceExpiresIn];
+        [objects setObject:[self objectFromTranslate:anObject.userKey] forKey:kSCHLibreAccessWebServiceUserKey];
 		[objects setObject:[self objectFromTranslate:anObject.deviceIsDeregistered] forKey:kSCHLibreAccessWebServiceDeviceIsDeregistered];
 				
 		ret = objects;				
@@ -1096,7 +1098,9 @@ static NSInteger const kSCHLibreAccessWebServiceVaid = 33;
 		NSMutableDictionary *objects = [NSMutableDictionary dictionary];
 		
 		[objects setObject:[self objectFromTranslate:[anObject.Highlights Highlight]] forKey:kSCHLibreAccessWebServiceHighlights];
-		[objects setObject:[self objectFromTranslate:[anObject.Notes Note]] forKey:kSCHLibreAccessWebServiceNotes];
+        if ([[SCHAppStateManager sharedAppStateManager] canSyncNotes] == YES) {
+            [objects setObject:[self objectFromTranslate:[anObject.Notes Note]] forKey:kSCHLibreAccessWebServiceNotes];
+        }
 		[objects setObject:[self objectFromTranslate:[anObject.Bookmarks Bookmark]] forKey:kSCHLibreAccessWebServiceBookmarks];
 		[objects setObject:[self objectFromLastPage:anObject.LastPage] forKey:kSCHLibreAccessWebServiceLastPage];
         
@@ -1667,12 +1671,14 @@ static NSInteger const kSCHLibreAccessWebServiceVaid = 33;
         id notes = [[LibreAccessServiceSvc_Notes alloc] init];
 		intoObject.Notes = notes;
         [notes release];
-		for (NSDictionary *item in [self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceNotes]]) {
-            if ([[self fromObjectTranslate:[item valueForKey:kSCHLibreAccessWebServiceAction]] saveActionValue] != kSCHSaveActionsNone) {
-                LibreAccessServiceSvc_Note *note = [[LibreAccessServiceSvc_Note alloc] init];
-                [self fromObject:item intoNote:note];
-                [intoObject.Notes addNote:note];
-                [note release], note = nil;
+        if ([[SCHAppStateManager sharedAppStateManager] canSyncNotes] == YES) {
+            for (NSDictionary *item in [self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceNotes]]) {
+                if ([[self fromObjectTranslate:[item valueForKey:kSCHLibreAccessWebServiceAction]] saveActionValue] != kSCHSaveActionsNone) {
+                    LibreAccessServiceSvc_Note *note = [[LibreAccessServiceSvc_Note alloc] init];
+                    [self fromObject:item intoNote:note];
+                    [intoObject.Notes addNote:note];
+                    [note release], note = nil;
+                }
             }
 		}
 		

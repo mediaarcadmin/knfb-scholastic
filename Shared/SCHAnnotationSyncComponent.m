@@ -187,14 +187,18 @@ NSString * const SCHAnnotationSyncComponentCompletedProfileIDs = @"SCHAnnotation
                                       result:(NSDictionary *)result
 {
     NSArray *books = [self.annotations objectForKey:profileID];
+    BOOL shouldSyncNotes = NO;
     
     if (result != nil && [self.savedAnnotations count] > 0) {
+        shouldSyncNotes = [[SCHAppStateManager sharedAppStateManager] canSyncNotes];
         for (NSDictionary *annotationStatusItem in [result objectForKey:kSCHLibreAccessWebServiceAnnotationStatusList]) {
             for (NSDictionary *annotationStatusContentItem in [annotationStatusItem objectForKey:kSCHLibreAccessWebServiceAnnotationStatusContentList]) {            
                 NSDictionary *privateAnnotationsStatus = [annotationStatusContentItem objectForKey:kSCHLibreAccessWebServicePrivateAnnotationsStatus];
                                 
                 [self applyAnnotationSaves:[privateAnnotationsStatus objectForKey:kSCHLibreAccessWebServiceHighlightsStatusList]];
-                [self applyAnnotationSaves:[privateAnnotationsStatus objectForKey:kSCHLibreAccessWebServiceNotesStatusList]];
+                if (shouldSyncNotes == YES) {
+                    [self applyAnnotationSaves:[privateAnnotationsStatus objectForKey:kSCHLibreAccessWebServiceNotesStatusList]];
+                }
                 [self applyAnnotationSaves:[privateAnnotationsStatus objectForKey:kSCHLibreAccessWebServiceBookmarksStatusList]];
             }
         }
@@ -292,6 +296,7 @@ NSString * const SCHAnnotationSyncComponentCompletedProfileIDs = @"SCHAnnotation
 - (BOOL)updateProfileContentAnnotations
 {
 	BOOL ret = YES;
+    BOOL shouldSyncNotes = NO;
 	
     NSNumber *profileID = [[[self.annotations allKeys] sortedArrayUsingSelector:@selector(compare:)] objectAtIndex:0];
     NSArray *books = [self.annotations objectForKey:profileID];
@@ -299,11 +304,13 @@ NSString * const SCHAnnotationSyncComponentCompletedProfileIDs = @"SCHAnnotation
 	[self.savedAnnotations removeAllObjects];
     NSArray *updatedAnnotations = [self localModifiedAnnotationsItemForProfile:profileID];
     if ([updatedAnnotations count] > 0) {
-        
+        shouldSyncNotes = [[SCHAppStateManager sharedAppStateManager] canSyncNotes];
         for (SCHAnnotationsItem *annotionItem in updatedAnnotations) {
             for (SCHAnnotationsContentItem *annotationContentItem in annotionItem.AnnotationsContentItem) {
                 [self trackAnnotationSaves:annotationContentItem.PrivateAnnotations.Highlights];
-                [self trackAnnotationSaves:annotationContentItem.PrivateAnnotations.Notes];
+                if (shouldSyncNotes == YES) {
+                    [self trackAnnotationSaves:annotationContentItem.PrivateAnnotations.Notes];
+                }
                 [self trackAnnotationSaves:annotationContentItem.PrivateAnnotations.Bookmarks];
             }
         }
@@ -507,11 +514,13 @@ NSString * const SCHAnnotationSyncComponentCompletedProfileIDs = @"SCHAnnotation
                   withHighlights:localAnnotationsContentItem.PrivateAnnotations.Highlights 
                       insertInto:localAnnotationsContentItem.PrivateAnnotations];
         }
-        annotation = [self makeNullNil:[privateAnnotations objectForKey:kSCHLibreAccessWebServiceNotes]];
-        if (annotation != nil) {        
-            [self syncNotes:annotation
-                  withNotes:localAnnotationsContentItem.PrivateAnnotations.Notes 
-                 insertInto:localAnnotationsContentItem.PrivateAnnotations];
+        if ([[SCHAppStateManager sharedAppStateManager] canSyncNotes] == YES) {
+            annotation = [self makeNullNil:[privateAnnotations objectForKey:kSCHLibreAccessWebServiceNotes]];
+            if (annotation != nil) {        
+                [self syncNotes:annotation
+                      withNotes:localAnnotationsContentItem.PrivateAnnotations.Notes 
+                     insertInto:localAnnotationsContentItem.PrivateAnnotations];
+            }
         }
         annotation = [self makeNullNil:[privateAnnotations objectForKey:kSCHLibreAccessWebServiceBookmarks]] ;
         if (annotation != nil) {                
