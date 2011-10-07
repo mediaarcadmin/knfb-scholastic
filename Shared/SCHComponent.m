@@ -37,9 +37,7 @@
 
 - (void)clear
 {
-    self.libreAccessWebService.delegate = nil;
-    self.libreAccessWebService = [[[SCHLibreAccessWebService alloc] init] autorelease];	
-    self.libreAccessWebService.delegate = self;    
+    [self.libreAccessWebService clear];
 }
 
 #pragma mark - Delegate methods

@@ -256,6 +256,12 @@ static NSInteger const kSCHLibreAccessWebServiceVaid = 33;
 	[super dealloc];
 }
 
+- (void)clear
+{
+    self.binding = [LibreAccessServiceSvc LibreAccessServiceSoap11Binding];
+    binding.logXMLInOut = NO;		
+}
+
 #pragma mark -
 #pragma mark API Proxy methods
 
@@ -626,46 +632,49 @@ static NSInteger const kSCHLibreAccessWebServiceVaid = 33;
 {	
 	[[BITNetworkActivityManager sharedNetworkActivityManager] hideNetworkActivityIndicator];
 	
-	NSString *methodName = [self methodNameFromObject:operation];
-	
-	if (operation.response.error != nil && 
-        [(id)self.delegate respondsToSelector:@selector(method:didFailWithError:requestInfo:result:)]) {
-		[(id)self.delegate method:methodName didFailWithError:operation.response.error 
-                      requestInfo:[self requestInfoFromOperation:operation] result:nil];
-	} else {
-		for (id bodyPart in response.bodyParts) {
-			if ([bodyPart isKindOfClass:[SOAPFault class]]) {
-				[self reportFault:(SOAPFault *)bodyPart forMethod:methodName 
-                      requestInfo:[self requestInfoFromOperation:operation]];
-				continue;
-			}
-			
-			LibreAccessServiceSvc_StatusHolder *status = nil;
-            BOOL errorTriggered = NO;
-			@try {
-				status = (LibreAccessServiceSvc_StatusHolder *)[bodyPart valueForKey:kSCHLibreAccessWebServiceStatusHolderStatusMessage];
-			}
-			@catch (NSException * e) {
-				// everything has a status message however be defensive
-				status = nil;
-			}
-			@finally {
-				if(status != nil && 
-				   [status isKindOfClass:[LibreAccessServiceSvc_StatusHolder class]] == YES && 
-				   status.status != LibreAccessServiceSvc_statuscodes_SUCCESS &&
-				   [(id)self.delegate respondsToSelector:@selector(method:didFailWithError:requestInfo:result:)]) {
-                    errorTriggered = YES;
-					[(id)self.delegate method:methodName didFailWithError:[self errorFromStatusMessage:status] 
-                                  requestInfo:[self requestInfoFromOperation:operation]
-                                       result:[self objectFrom:bodyPart]];			
-				}
-			}
-			
-			if(errorTriggered == NO && [(id)self.delegate respondsToSelector:@selector(method:didCompleteWithResult:)]) {
-				[(id)self.delegate method:methodName didCompleteWithResult:[self objectFrom:bodyPart]];									
-			}
-		}		
-	}
+	// just in case we have a stray operation make sure it's bound to the current binding
+    if (self.binding == operation.binding ) {
+        NSString *methodName = [self methodNameFromObject:operation];
+        
+        if (operation.response.error != nil && 
+            [(id)self.delegate respondsToSelector:@selector(method:didFailWithError:requestInfo:result:)]) {
+            [(id)self.delegate method:methodName didFailWithError:operation.response.error 
+                          requestInfo:[self requestInfoFromOperation:operation] result:nil];
+        } else {
+            for (id bodyPart in response.bodyParts) {
+                if ([bodyPart isKindOfClass:[SOAPFault class]]) {
+                    [self reportFault:(SOAPFault *)bodyPart forMethod:methodName 
+                          requestInfo:[self requestInfoFromOperation:operation]];
+                    continue;
+                }
+                
+                LibreAccessServiceSvc_StatusHolder *status = nil;
+                BOOL errorTriggered = NO;
+                @try {
+                    status = (LibreAccessServiceSvc_StatusHolder *)[bodyPart valueForKey:kSCHLibreAccessWebServiceStatusHolderStatusMessage];
+                }
+                @catch (NSException * e) {
+                    // everything has a status message however be defensive
+                    status = nil;
+                }
+                @finally {
+                    if(status != nil && 
+                       [status isKindOfClass:[LibreAccessServiceSvc_StatusHolder class]] == YES && 
+                       status.status != LibreAccessServiceSvc_statuscodes_SUCCESS &&
+                       [(id)self.delegate respondsToSelector:@selector(method:didFailWithError:requestInfo:result:)]) {
+                        errorTriggered = YES;
+                        [(id)self.delegate method:methodName didFailWithError:[self errorFromStatusMessage:status] 
+                                      requestInfo:[self requestInfoFromOperation:operation]
+                                           result:[self objectFrom:bodyPart]];			
+                    }
+                }
+                
+                if(errorTriggered == NO && [(id)self.delegate respondsToSelector:@selector(method:didCompleteWithResult:)]) {
+                    [(id)self.delegate method:methodName didCompleteWithResult:[self objectFrom:bodyPart]];									
+                }
+            }		
+        }
+    }
 }
 
 #pragma mark -

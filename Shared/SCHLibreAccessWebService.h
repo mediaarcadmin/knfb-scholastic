@@ -155,6 +155,8 @@ extern NSString * const kSCHLibreAccessWebServiceeReaderCategories;
 {
 }
 
+- (void)clear;
+
 - (void)tokenExchange:(NSString *)pToken forUser:(NSString *)userName;
 - (void)authenticateDevice:(NSString *)deviceKey forUserKey:(NSString *)userKey;
 - (void)renewToken:(NSString *)aToken;

@@ -73,6 +73,8 @@ NSString * const SCHProfileSyncComponentDidFailNotification = @"SCHProfileSyncCo
     [super clear];
 	NSError *error = nil;
 	
+    [self.savedProfiles removeAllObjects];
+    
 	if (![self.managedObjectContext BITemptyEntity:kSCHProfileItem error:&error]) {
 		NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
 		abort();
