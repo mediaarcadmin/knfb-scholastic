@@ -9,7 +9,7 @@
 #import "SCHSyncEntity.h"
 
 #import "NSNumber+ObjectTypes.h"
-#import "SCHLibreAccessWebService.h"
+#import "SCHLibreAccessConstants.h"
 
 // Constants
 NSString * const SCHSyncEntityState = @"State";

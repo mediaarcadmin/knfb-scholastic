@@ -8,7 +8,7 @@
 
 #import "SCHBookURLRequestOperation.h"
 #import "SCHURLManager.h"
-#import "SCHLibreAccessWebService.h"
+#import "SCHLibreAccessConstants.h"
 #import "SCHAppBook.h"
 #import "SCHBookIdentifier.h"
 

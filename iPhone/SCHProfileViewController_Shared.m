@@ -10,7 +10,7 @@
 #import "SCHSettingsViewController.h"
 #import "SCHBookShelfViewController.h"
 #import "SCHLoginPasswordViewController.h"
-#import "SCHLibreAccessWebService.h"
+#import "SCHLibreAccessConstants.h"
 #import "SCHProfileItem.h"
 #import "SCHAuthenticationManager.h"
 #import "SCHThemeManager.h"

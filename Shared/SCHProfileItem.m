@@ -17,7 +17,7 @@
 #import "SCHUserContentItem.h"
 #import "SCHBookManager.h"
 #import "USAdditions.h"
-#import "SCHLibreAccessWebService.h"
+#import "SCHLibreAccessConstants.h"
 #import "SCHAppBook.h"
 #import "SCHPrivateAnnotations.h"
 #import "SCHBookAnnotations.h"

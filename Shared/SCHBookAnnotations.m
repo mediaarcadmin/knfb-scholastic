@@ -9,7 +9,7 @@
 #import "SCHBookAnnotations.h"
 
 #import "SCHPrivateAnnotations.h"
-#import "SCHLibreAccessWebService.h"
+#import "SCHLibreAccessConstants.h"
 #import "SCHAnnotationSyncComponent.h"
 #import "SCHAnnotationsContentItem.h"
 #import "SCHAnnotationsItem.h"

@@ -266,6 +266,9 @@
 		5204B860135C1FC500FCBD90 /* SCHThemeButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 5204B85F135C1FC500FCBD90 /* SCHThemeButton.m */; };
 		5206FF2513744E7000FCE07C /* SCHAppProfile.m in Sources */ = {isa = PBXBuildFile; fileRef = 5206FF2413744E7000FCE07C /* SCHAppProfile.m */; };
 		520CD295139F84530018EA7E /* SCHStoryInteractionMultipleChoiceText_iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 520CD294139F84530018EA7E /* SCHStoryInteractionMultipleChoiceText_iPad.xib */; };
+		520FE8A1143F3B15002AB30B /* SCHLibreAccessConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = 520FE8A0143F3B14002AB30B /* SCHLibreAccessConstants.m */; };
+		520FE8A2143F3B15002AB30B /* SCHLibreAccessConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = 520FE8A0143F3B14002AB30B /* SCHLibreAccessConstants.m */; };
+		520FE8A3143F3B15002AB30B /* SCHLibreAccessConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = 520FE8A0143F3B14002AB30B /* SCHLibreAccessConstants.m */; };
 		521399F013717BB10081FD3D /* SCHLocationBookmark.m in Sources */ = {isa = PBXBuildFile; fileRef = 521399EF13717BB10081FD3D /* SCHLocationBookmark.m */; };
 		5215871E13A61F8300496572 /* SCHStoryInteractionStartingLetter_iPhone.xib in Resources */ = {isa = PBXBuildFile; fileRef = F86DEBFD13A21B6800053999 /* SCHStoryInteractionStartingLetter_iPhone.xib */; };
 		5215872013A61F8700496572 /* SCHStoryInteractionStartingLetter_iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = F86DEBFC13A21B6800053999 /* SCHStoryInteractionStartingLetter_iPad.xib */; };
@@ -2485,6 +2488,8 @@
 		5206FF2313744E7000FCE07C /* SCHAppProfile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHAppProfile.h; path = Shared/SCHAppProfile.h; sourceTree = "<group>"; };
 		5206FF2413744E7000FCE07C /* SCHAppProfile.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHAppProfile.m; path = Shared/SCHAppProfile.m; sourceTree = "<group>"; };
 		520CD294139F84530018EA7E /* SCHStoryInteractionMultipleChoiceText_iPad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SCHStoryInteractionMultipleChoiceText_iPad.xib; sourceTree = "<group>"; };
+		520FE89F143F3B14002AB30B /* SCHLibreAccessConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHLibreAccessConstants.h; path = Shared/SCHLibreAccessConstants.h; sourceTree = "<group>"; };
+		520FE8A0143F3B14002AB30B /* SCHLibreAccessConstants.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHLibreAccessConstants.m; path = Shared/SCHLibreAccessConstants.m; sourceTree = "<group>"; };
 		521399EE13717BB10081FD3D /* SCHLocationBookmark.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHLocationBookmark.h; path = Shared/SCHLocationBookmark.h; sourceTree = "<group>"; };
 		521399EF13717BB10081FD3D /* SCHLocationBookmark.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHLocationBookmark.m; path = Shared/SCHLocationBookmark.m; sourceTree = "<group>"; };
 		5215349B13B08AB200131E37 /* storyinteraction-bg-older-notitle~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "storyinteraction-bg-older-notitle~iphone.png"; sourceTree = "<group>"; };
@@ -4925,6 +4930,8 @@
 				5293872F12DF43D200045B44 /* SCHScholasticWebService.m */,
 				5293872B12DF43CB00045B44 /* SCHLibreAccessWebService.h */,
 				5293872C12DF43CB00045B44 /* SCHLibreAccessWebService.m */,
+				520FE89F143F3B14002AB30B /* SCHLibreAccessConstants.h */,
+				520FE8A0143F3B14002AB30B /* SCHLibreAccessConstants.m */,
 				52322C32132693F500BB071D /* SCHURLManager.h */,
 				52322C33132693F500BB071D /* SCHURLManager.m */,
 				5266D38213007D15004E3AC6 /* SCHComponent.h */,
@@ -8073,6 +8080,7 @@
 				28204BBC140CD715007D0935 /* SCHStoryInteractionWhoSaidItNameView.m in Sources */,
 				28211CD5140E160300872701 /* SCHStoryInteractionStandaloneViewController.m in Sources */,
 				C9B7851B142B7CD40070BEDE /* SCHReadingStoryInteractionButton.m in Sources */,
+				520FE8A1143F3B15002AB30B /* SCHLibreAccessConstants.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -8120,6 +8128,7 @@
 				2866311813F00DB80092A5DE /* SCHStoryInteractionConcentration.m in Sources */,
 				2898A0B513F435C600618172 /* SCHStoryInteractionJigsawPathTests.m in Sources */,
 				2895A9B013F4373800D75448 /* SCHStoryInteractionJigsawPaths.m in Sources */,
+				520FE8A3143F3B15002AB30B /* SCHLibreAccessConstants.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -8420,6 +8429,7 @@
 				28204BBD140CD715007D0935 /* SCHStoryInteractionWhoSaidItNameView.m in Sources */,
 				28211CD6140E160300872701 /* SCHStoryInteractionStandaloneViewController.m in Sources */,
 				C9B7851C142B7CD40070BEDE /* SCHReadingStoryInteractionButton.m in Sources */,
+				520FE8A2143F3B15002AB30B /* SCHLibreAccessConstants.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

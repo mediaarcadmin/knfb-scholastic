@@ -7,7 +7,7 @@
 //
 
 #import "SCHBookIdentifier.h"
-#import "SCHLibreAccessWebService.h"
+#import "SCHLibreAccessConstants.h"
 
 // Constants
 NSString * const kSCHBookIdentifierBookIdentifier = @"BookIdentifier";

@@ -10,7 +10,7 @@
 #import "SCHSyncComponentProtected.h"
 #import "NSManagedObjectContext+Extensions.h"
 
-#import "SCHLibreAccessWebService.h"
+#import "SCHLibreAccessConstants.h"
 #import "SCHContentMetadataItem.h"
 #import "SCHUserContentItem.h"
 #import "SCHAppBook.h"
