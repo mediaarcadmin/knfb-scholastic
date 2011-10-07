@@ -22,6 +22,7 @@ static const CGFloat kContentHeightLandscape = 380;
 - (void)releaseViewObjects;
 - (void)setupAssetsForOrientation:(UIInterfaceOrientation)orientation;
 - (void)setupContentSizeForOrientation:(UIInterfaceOrientation)orientation;
+- (void)setupAccessibility;
 - (void)makeVisibleTextField:(UITextField *)textField;
 
 @end
@@ -146,6 +147,8 @@ static const CGFloat kContentHeightLandscape = 380;
         cellBGImage = [bgImage stretchableImageWithLeftCapWidth:11 topCapHeight:0];
         [self.loginButton setBackgroundImage:cellBGImage forState:UIControlStateNormal];
     }
+    
+    [self setupAccessibility];
 }
 
 - (void)viewWillAppear:(BOOL)animated 
@@ -193,6 +196,22 @@ static const CGFloat kContentHeightLandscape = 380;
 {
     [self.view endEditing:YES];
     [self setupContentSizeForOrientation:self.interfaceOrientation];
+}
+
+- (void)setupAccessibility
+{
+    switch (self.controllerType) {
+        case kSCHControllerParentToolsView:
+            self.scrollView.accessibilityLabel = @"ParentTools View";
+            break;
+        case kSCHControllerLoginView:
+            self.scrollView.accessibilityLabel = @"Login View";
+            self.loginButton.accessibilityLabel = @"Login View Sign In Button";
+            break;
+        default:
+            self.scrollView.accessibilityLabel = nil;
+            break;
+    }
 }
 
 - (void)setupContentSizeForOrientation:(UIInterfaceOrientation)orientation;
