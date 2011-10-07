@@ -123,6 +123,15 @@
             coverURL = [[book BookCoverURL] retain];
         }];
 		
+        if (self.localPath == nil || coverURL == nil || [coverURL compare:@""] == NSOrderedSame) {
+            NSLog(@"WARNING: problem with SCHAppBook (ISBN: %@ localPath: %@ coverURL: %@", self.identifier, self.localPath, coverURL);
+            [self setProcessingState:SCHBookProcessingStateError];
+            [self setIsProcessing:NO];                                
+            [self endOperation];
+            [coverURL release];            
+            return;
+        }
+
         if ([self stringBeginsWithHTTPScheme:coverURL] == NO) {
             [fileManager copyItemAtPath:[self fullPathToBundledFile:coverURL]
                                                     toPath:self.localPath 
