@@ -487,12 +487,7 @@ typedef enum {
     // we can get here directly from login screen...
     if (self.sampleBookshelf != SCHStartingViewControllerNoSampleBookshelf || 
         [self.modalNavigationController.topViewController isKindOfClass:[SCHLoginPasswordViewController class]]) {
-        // These checks don't work, they assume that the view is on screen which is not the case
-        // FIXME: This is a workaround - please fix properly. See ticket 909
-        if (self.modalNavigationController.topViewController.view.window) {
-            [self advanceToNextSignInForm];
-        }
-        return;
+        [self advanceToNextSignInForm];
     }
     
     // ... or from the setupBookshelves screen following a sync initiated by returning from background
