@@ -120,10 +120,11 @@ static const CGFloat kDeregisterContentHeightLandscape = 380;
     [self.deregisterButton setEnabled:NO];
     
     if ([[Reachability reachabilityForInternetConnection] isReachable] == NO) {
+        
         LambdaAlert *alert = [[LambdaAlert alloc]
-                              initWithTitle:NSLocalizedString(@"Error", @"error alert title")
-                              message:NSLocalizedString(@"You must have internet access to deregister", @"")];
-        [alert addButtonWithTitle:NSLocalizedString(@"Done", @"done button after no authentication") block:^{
+                              initWithTitle:NSLocalizedString(@"No Internet Connection", @"")
+                              message:NSLocalizedString(@"This function requires an Internet connection. Please connect to the internet and then try again.", @"")];
+        [alert addButtonWithTitle:NSLocalizedString(@"OK", @"") block:^{
             [self.deregisterButton setEnabled:YES];
         }];
         [alert show];
