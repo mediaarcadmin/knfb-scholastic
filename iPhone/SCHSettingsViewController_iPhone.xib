@@ -193,7 +193,6 @@
 										<string key="NSFrame">{{20, 161}, {280, 48}}</string>
 										<reference key="NSSuperview" ref="46868495"/>
 										<reference key="NSWindow"/>
-										<reference key="NSNextKeyView"/>
 										<bool key="IBUIOpaque">NO</bool>
 										<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 										<int key="IBUIContentHorizontalAlignment">0</int>
@@ -235,7 +234,6 @@
 										<string key="NSFrame">{{20, 273}, {280, 48}}</string>
 										<reference key="NSSuperview" ref="46868495"/>
 										<reference key="NSWindow"/>
-										<reference key="NSNextKeyView"/>
 										<bool key="IBUIOpaque">NO</bool>
 										<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 										<int key="IBUIContentHorizontalAlignment">0</int>
@@ -272,7 +270,6 @@
 										<string key="NSFrame">{{20, 329}, {280, 48}}</string>
 										<reference key="NSSuperview" ref="46868495"/>
 										<reference key="NSWindow"/>
-										<reference key="NSNextKeyView"/>
 										<bool key="IBUIOpaque">NO</bool>
 										<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 										<int key="IBUIContentHorizontalAlignment">0</int>
@@ -411,7 +408,6 @@
 										<string key="NSFrame">{{20, 51}, {280, 60}}</string>
 										<reference key="NSSuperview" ref="46868495"/>
 										<reference key="NSWindow"/>
-										<reference key="NSNextKeyView"/>
 										<bool key="IBUIOpaque">NO</bool>
 										<bool key="IBUIClipsSubviews">YES</bool>
 										<int key="IBUIContentMode">7</int>
@@ -639,24 +635,6 @@
 						<reference key="destination" ref="735682413"/>
 					</object>
 					<int key="connectionID">73</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBCocoaTouchEventConnection" key="connection">
-						<string key="label">updateBooks:</string>
-						<reference key="source" ref="690309699"/>
-						<reference key="destination" ref="372490531"/>
-						<int key="IBEventType">7</int>
-					</object>
-					<int key="connectionID">82</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBCocoaTouchEventConnection" key="connection">
-						<string key="label">downloadDictionary:</string>
-						<reference key="source" ref="268983753"/>
-						<reference key="destination" ref="372490531"/>
-						<int key="IBEventType">7</int>
-					</object>
-					<int key="connectionID">84</int>
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBCocoaTouchOutletConnection" key="connection">
