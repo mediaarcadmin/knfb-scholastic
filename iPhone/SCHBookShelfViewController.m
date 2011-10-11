@@ -521,11 +521,13 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 131;
 - (void)bookshelfSyncComponentDidComplete:(NSNotification *)notification
 {
     [self showLoadingView:NO];
+    [self reloadData];
 }
 
 - (void)bookshelfSyncComponentDidFail:(NSNotification *)notification
 {
     [self showLoadingView:NO];    
+    [self reloadData];
     LambdaAlert *alert = [[LambdaAlert alloc]
                           initWithTitle:NSLocalizedString(@"Retrieving Bookshelf Failed", @"Retrieving Bookshelf Failed") 
                           message:NSLocalizedString(@"Failed to retrieve the bookshelf, we will try again soon.", @"") ];
