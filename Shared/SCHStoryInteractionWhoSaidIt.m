@@ -40,7 +40,7 @@
 
 - (NSString *)title
 {
-    return @"Who Said It";
+    return @"Who Said It?";
 }
 
 @end
