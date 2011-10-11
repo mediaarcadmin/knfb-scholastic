@@ -171,9 +171,9 @@ extern NSString * const kSCHAuthenticationManagerDeviceKey;
     NSNumber *spaceSaver = [[NSUserDefaults standardUserDefaults] objectForKey:kSCHUserDefaultsSpaceSaverMode];
     
     if ([spaceSaver boolValue] == YES) {
-        [self.spaceSaverButton setTitle:NSLocalizedString(@"Disable Space Saver", @"Disable Space Saver") forState:UIControlStateNormal];
+        [self.spaceSaverButton setTitle:NSLocalizedString(@"Turn Off Space Saver", @"Turn Off Space Saver") forState:UIControlStateNormal];
     } else {
-        [self.spaceSaverButton setTitle:NSLocalizedString(@"Enable Space Saver", @"Enable Space Saver") forState:UIControlStateNormal];        
+        [self.spaceSaverButton setTitle:NSLocalizedString(@"Turn On Space Saver", @"Turn On Space Saver") forState:UIControlStateNormal];        
     }
 }
 
@@ -354,11 +354,30 @@ extern NSString * const kSCHAuthenticationManagerDeviceKey;
 - (IBAction)toggleSpaceSaverMode:(id)sender
 {
     NSNumber *spaceSaver = [[NSUserDefaults standardUserDefaults] objectForKey:kSCHUserDefaultsSpaceSaverMode];
+    BOOL toggledSpaceSaver = ![spaceSaver boolValue];
         
-    [[NSUserDefaults standardUserDefaults] setBool:![spaceSaver boolValue] forKey:kSCHUserDefaultsSpaceSaverMode];
+    [[NSUserDefaults standardUserDefaults] setBool:toggledSpaceSaver forKey:kSCHUserDefaultsSpaceSaverMode];
     [[NSUserDefaults standardUserDefaults] synchronize];
     
-    [self updateSpaceSaverButton];    
+    if (toggledSpaceSaver) {
+        LambdaAlert *alert = [[LambdaAlert alloc]
+                              initWithTitle:NSLocalizedString(@"Space Saver On", @"")
+                              message:NSLocalizedString(@"New eBooks will not be downloaded until someone chooses to read them. This can save storage space on your device.", @"")];
+        [alert addButtonWithTitle:NSLocalizedString(@"OK", @"") block:^{
+            [self updateSpaceSaverButton];
+        }];
+        [alert show];
+        [alert release]; 
+    } else {
+        LambdaAlert *alert = [[LambdaAlert alloc]
+                              initWithTitle:NSLocalizedString(@"Space Saver Off", @"")
+                              message:NSLocalizedString(@"New eBooks will be downloaded immediately when they are assigned to a bookshelf.", @"")];
+        [alert addButtonWithTitle:NSLocalizedString(@"OK", @"") block:^{
+            [self updateSpaceSaverButton];
+        }];
+        [alert show];
+        [alert release]; 
+    }
 }
 
 - (IBAction)downloadDictionary:(id)sender

@@ -343,7 +343,6 @@
 						<string key="NSFrame">{{382, 588}, {144, 25}}</string>
 						<reference key="NSSuperview" ref="715934819"/>
 						<reference key="NSWindow"/>
-						<reference key="NSNextKeyView"/>
 						<bool key="IBUIOpaque">NO</bool>
 						<string key="targetRuntimeIdentifier">IBIPadFramework</string>
 						<int key="IBUIContentHorizontalAlignment">0</int>
@@ -395,7 +394,7 @@
 						<int key="IBUIContentVerticalAlignment">0</int>
 						<reference key="IBUIFont" ref="128120762"/>
 						<string key="IBUITitleShadowOffset">{0, -1}</string>
-						<string key="IBUINormalTitle">Enable Space Saver</string>
+						<string key="IBUINormalTitle">Turn On Space Saver</string>
 						<reference key="IBUIHighlightedTitleColor" ref="154479267"/>
 						<reference key="IBUINormalTitleColor" ref="652926956"/>
 						<reference key="IBUINormalTitleShadowColor" ref="578724973"/>
@@ -408,6 +407,7 @@
 						<reference key="NSSuperview" ref="715934819"/>
 						<reference key="NSWindow"/>
 						<reference key="IBUIBackgroundColor" ref="82788531"/>
+						<bool key="IBUIUserInteractionEnabled">NO</bool>
 						<string key="targetRuntimeIdentifier">IBIPadFramework</string>
 					</object>
 				</array>
