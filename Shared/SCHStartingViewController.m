@@ -28,6 +28,7 @@
 #import "SCHUserDefaults.h"
 #import "SCHBookManager.h"
 #import "SCHAppBook.h"
+#import "SCHDrmSession.h"
 
 enum {
     kTableSectionSamples = 0,
@@ -365,9 +366,16 @@ typedef enum {
         [[SCHAuthenticationManager sharedAuthenticationManager] clear];
 		NSError *error = [notification.userInfo objectForKey:kSCHAuthenticationManagerNSError];
 		if (error != nil) {
-            NSString *localizedMessage = [NSString stringWithFormat:
+            NSString *localizedMessage = nil;
+            
+            if ([error code] == kSCHDrmDeviceLimitError) {
+                localizedMessage = NSLocalizedString(@"The Scholastic eReader is already installed on five devices, which is the maximum allowed. Before installing it on this device, you to need to deregister the eReader on one of your current devices.", nil);
+            } else {
+                localizedMessage = [NSString stringWithFormat:
                                           NSLocalizedString(@"A problem occured. If this problem persists please contact support.\n\n '%@'", nil), 
-                                          [error localizedDescription]];                      
+                                          [error localizedDescription]];   
+            }
+            
             LambdaAlert *alert = [[LambdaAlert alloc]
                                   initWithTitle:NSLocalizedString(@"Login Error", @"Login Error") 
                                   message:localizedMessage];
