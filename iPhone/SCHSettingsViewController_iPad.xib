@@ -277,7 +277,7 @@
 						<int key="IBUIContentVerticalAlignment">0</int>
 						<reference key="IBUIFont" ref="128120762"/>
 						<string key="IBUITitleShadowOffset">{0, -1}</string>
-						<string key="IBUINormalTitle">Deregister Device</string>
+						<string key="IBUINormalTitle">Deregister this Device</string>
 						<reference key="IBUIHighlightedTitleColor" ref="154479267"/>
 						<reference key="IBUINormalTitleColor" ref="652926956"/>
 						<reference key="IBUINormalTitleShadowColor" ref="578724973"/>
