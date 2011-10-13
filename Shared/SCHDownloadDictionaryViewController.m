@@ -17,14 +17,28 @@
 @implementation SCHDownloadDictionaryViewController
 
 @synthesize labels;
+@synthesize downloadSizeLabel;
 @synthesize downloadDictionaryButton;
 @synthesize closeButton;
 
-- (void)dealloc
+- (void)releaseViewObjects
 {
     [downloadDictionaryButton release], downloadDictionaryButton = nil;
     [labels release], labels = nil;
+    [closeButton release], closeButton = nil;
+    [downloadSizeLabel release], downloadSizeLabel = nil;
+}
+
+- (void)dealloc
+{
+    [self releaseViewObjects];
     [super dealloc];
+}
+
+- (void)viewDidUnload
+{
+    [self releaseViewObjects];
+    [super viewDidUnload];
 }
 
 - (void)viewDidLoad
@@ -34,6 +48,10 @@
     
     self.closeButton.accessibilityLabel = @"Close Button";
     
+    if ([[SCHAppStateManager sharedAppStateManager] isSampleStore]) {
+        self.downloadSizeLabel.text = NSLocalizedString(@"This download is about 400MB.", @"");
+    }
+
     self.labels = [self.labels sortedArrayUsingComparator:^NSComparisonResult(id obj1, id obj2) {
         return [(UIView *)obj1 tag] - [(UIView *)obj2 tag];
     }];

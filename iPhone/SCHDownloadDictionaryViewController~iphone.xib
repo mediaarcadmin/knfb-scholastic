@@ -418,6 +418,14 @@
 					</object>
 					<int key="connectionID">46</int>
 				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBCocoaTouchOutletConnection" key="connection">
+						<string key="label">downloadSizeLabel</string>
+						<reference key="source" ref="372490531"/>
+						<reference key="destination" ref="363073880"/>
+					</object>
+					<int key="connectionID">47</int>
+				</object>
 			</object>
 			<object class="IBMutableOrderedSet" key="objectRecords">
 				<object class="NSArray" key="orderedObjects">
@@ -612,7 +620,7 @@
 				<reference key="dict.values" ref="0"/>
 			</object>
 			<nil key="sourceID"/>
-			<int key="maxID">46</int>
+			<int key="maxID">47</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<object class="NSMutableArray" key="referencedPartialClassDescriptions">
@@ -731,11 +739,13 @@
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<string>closeButton</string>
 							<string>downloadDictionaryButton</string>
+							<string>downloadSizeLabel</string>
 						</object>
 						<object class="NSMutableArray" key="dict.values">
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<string>UIBarButtonItem</string>
 							<string>UIButton</string>
+							<string>UILabel</string>
 						</object>
 					</object>
 					<object class="NSMutableDictionary" key="toOneOutletInfosByName">
@@ -744,6 +754,7 @@
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<string>closeButton</string>
 							<string>downloadDictionaryButton</string>
+							<string>downloadSizeLabel</string>
 						</object>
 						<object class="NSMutableArray" key="dict.values">
 							<bool key="EncodedWithXMLCoder">YES</bool>
@@ -754,6 +765,10 @@
 							<object class="IBToOneOutletInfo">
 								<string key="name">downloadDictionaryButton</string>
 								<string key="candidateClassName">UIButton</string>
+							</object>
+							<object class="IBToOneOutletInfo">
+								<string key="name">downloadSizeLabel</string>
+								<string key="candidateClassName">UILabel</string>
 							</object>
 						</object>
 					</object>
