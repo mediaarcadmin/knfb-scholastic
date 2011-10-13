@@ -29,7 +29,6 @@ static const CGFloat kDeregisterContentHeightLandscape = 380;
 
 @synthesize promptLabel;
 @synthesize passwordField;
-@synthesize forgotPasswordURL;
 @synthesize deregisterButton;
 @synthesize spinner;
 @synthesize scrollView;
@@ -43,7 +42,6 @@ static const CGFloat kDeregisterContentHeightLandscape = 380;
     
     [promptLabel release], promptLabel = nil;
     [passwordField release], passwordField = nil;
-    [forgotPasswordURL release], forgotPasswordURL = nil;
     [deregisterButton release], deregisterButton = nil;
     [scrollView release], scrollView = nil;
     [spinner release], spinner = nil;
@@ -133,7 +131,6 @@ static const CGFloat kDeregisterContentHeightLandscape = 380;
         if ([[SCHAuthenticationManager sharedAuthenticationManager] isAuthenticated] == YES) {
             [self.spinner startAnimating];
             [self setEnablesBackButton:NO];
-            self.forgotPasswordURL.enabled = NO;
             [[SCHAuthenticationManager sharedAuthenticationManager] deregister];            
 
         } else {
@@ -156,13 +153,6 @@ static const CGFloat kDeregisterContentHeightLandscape = 380;
         }];
         [alert show];
         [alert release];        
-    }
-}
-
-- (void)forgotPassword:(id)sender
-{
-    if (((SCHUnderlinedButton *)sender).enabled == YES) {
-        [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"https://my.scholastic.com/sps_my_account/pwmgmt/ForgotPassword.jsp?AppType=COOL"]];
     }
 }
 
@@ -222,7 +212,6 @@ static const CGFloat kDeregisterContentHeightLandscape = 380;
 {
     [self.spinner stopAnimating];
     [self setEnablesBackButton:YES];
-    self.forgotPasswordURL.enabled = YES;
     [self.setupDelegate dismissSettingsForm];
 }
 
@@ -235,7 +224,6 @@ static const CGFloat kDeregisterContentHeightLandscape = 380;
                           message:[error localizedDescription]];
     [alert addButtonWithTitle:NSLocalizedString(@"OK", @"OK") block:^{
         [self setEnablesBackButton:YES];
-        self.forgotPasswordURL.enabled = YES;
         [self.deregisterButton setEnabled:YES];        
     }];
     [alert show];
