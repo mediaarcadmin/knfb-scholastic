@@ -30,5 +30,6 @@
 - (IBAction)closeSettings;
 
 - (void)releaseViewObjects;
+- (void)setupAssetsForOrientation:(UIInterfaceOrientation)toInterfaceOrientation;
 
 @end

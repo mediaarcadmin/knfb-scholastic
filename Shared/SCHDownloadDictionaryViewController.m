@@ -45,6 +45,19 @@
     [self layoutLabelsForOrientation:self.interfaceOrientation];
 }
 
+- (void)setupAssetsForOrientation:(UIInterfaceOrientation)toInterfaceOrientation
+{
+    [super setupAssetsForOrientation:(UIInterfaceOrientation)toInterfaceOrientation];
+    
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
+        if (UIInterfaceOrientationIsLandscape(toInterfaceOrientation)) {
+            self.barSpacer.width = 68;
+        } else {
+            self.barSpacer.width = 0;
+        }
+    }
+}
+
 - (void)closeSettings
 {
     if ([[SCHAppStateManager sharedAppStateManager] isSampleStore] == NO) {
