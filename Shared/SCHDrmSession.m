@@ -528,10 +528,19 @@ ErrorExit:
 	}
     // Errors that require specific description.
     NSString* priorityErr = [self getPriorityError:dr2];
-    if (!priorityErr)
+    DRM_RESULT errorResult = dr2;
+    
+    if (!priorityErr) {
         priorityErr = [self getPriorityError:dr];
+        errorResult = dr;
+    }
     if (priorityErr) {
-		[self callFailureDelegate:[self drmError:kSCHDrmRegistrationError 
+        NSInteger errCode = kSCHDrmRegistrationError;
+        if (errorResult==DRM_E_SERVER_COMPUTER_LIMIT_REACHED || errorResult==DRM_E_SERVER_DEVICE_LIMIT_REACHED) {
+            errCode = kSCHDrmDeviceLimitError;
+        }
+        
+		[self callFailureDelegate:[self drmError:errCode 
                                          message:priorityErr]];
         return;
     }
@@ -777,7 +786,12 @@ ErrorExit:
     // Errors that require specific description.
     NSString* priorityErr = [self getPriorityError:dr];
     if (priorityErr) {
-		[self callFailureDelegate:[self drmError:kSCHDrmLicenseAcquisitionError 
+        NSInteger errCode = kSCHDrmLicenseAcquisitionError;
+        if (dr==DRM_E_SERVER_COMPUTER_LIMIT_REACHED || dr==DRM_E_SERVER_DEVICE_LIMIT_REACHED) {
+            errCode = kSCHDrmDeviceLimitError;
+        }
+        
+		[self callFailureDelegate:[self drmError:errCode 
                                          message:priorityErr]];
         return;
     }

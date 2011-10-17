@@ -25,6 +25,9 @@
 // Constants
 NSString * const SCHContentSyncComponentWillDeleteNotification = @"SCHContentSyncComponentWillDeleteNotification";
 NSString * const SCHContentSyncComponentDeletedBookIdentifiers = @"SCHContentSyncComponentDeletedBookIdentifiers";
+NSString * const SCHContentSyncComponentDidAddBookToProfileNotification = @"SCHContentSyncComponentDidAddBookToProfileNotification";
+NSString * const SCHContentSyncComponentAddedBookIdentifier = @"SCHContentSyncComponentAddedBookIdentifier";
+NSString * const SCHContentSyncComponentAddedProfileIdentifier = @"SCHContentSyncComponentAddedProfileIdentifier";
 NSString * const SCHContentSyncComponentDidCompleteNotification = @"SCHContentSyncComponentDidCompleteNotification";
 NSString * const SCHContentSyncComponentDidFailNotification = @"SCHContentSyncComponentDidFailNotification";
 
@@ -235,9 +238,9 @@ NSString * const SCHContentSyncComponentDidFailNotification = @"SCHContentSyncCo
         }
     }
     
-	for (NSDictionary *webItem in creationPool) {
-		[self addUserContentItem:webItem];
-	}
+    for (NSDictionary *webItem in creationPool) {
+        [self addUserContentItem:webItem];
+    }
 	
 	[self save];
 }
@@ -267,7 +270,7 @@ NSString * const SCHContentSyncComponentDidFailNotification = @"SCHContentSyncCo
 	}
     	
 	newUserContentItem.LastModified = [self makeNullNil:[webUserContentItem objectForKey:kSCHLibreAccessWebServiceLastModified]];
-	newUserContentItem.State = [NSNumber numberWithStatus:kSCHStatusUnmodified];				
+	newUserContentItem.State = [NSNumber numberWithStatus:kSCHStatusUnmodified];	
 }
 
 - (void)addAnnotationStructure:(SCHUserContentItem *)userContentItem forProfile:(SCHContentProfileItem *)contentProfileItem
@@ -355,7 +358,14 @@ NSString * const SCHContentSyncComponentDidFailNotification = @"SCHContentSyncCo
         NSArray *results = [self.managedObjectContext executeFetchRequest:fetchRequest error:nil];
         [fetchRequest release];
         if([results count] > 0) {
-            newAppContentProfileItem.ProfileItem = [results objectAtIndex:0];      
+            newAppContentProfileItem.ProfileItem = [results objectAtIndex:0];    
+            
+            NSArray *dictionaryObjects = [NSArray arrayWithObjects:[newAppContentProfileItem bookIdentifier], ret.ProfileID, nil];
+            NSArray *dictionaryKeys    = [NSArray arrayWithObjects:SCHContentSyncComponentAddedBookIdentifier, SCHContentSyncComponentAddedProfileIdentifier, nil];
+
+            [[NSNotificationCenter defaultCenter] postNotificationName:SCHContentSyncComponentDidAddBookToProfileNotification 
+                                                                object:self 
+                                                              userInfo:[NSDictionary dictionaryWithObjects:dictionaryObjects forKeys:dictionaryKeys]];   
         }
 	}
 	

@@ -17,9 +17,13 @@
 #import "SCHBookUpdates.h"
 #import "SCHUpdateBooksViewController.h"
 #import "SCHBookshelfSyncComponent.h"
+#import "SCHContentSyncComponent.h"
 #import "SCHCoreDataHelper.h"
 #import "SCHUserDefaults.h"
 #import "SCHAppStateManager.h"
+#import "SCHSyncManager.h"
+#import "Reachability.h"
+#import "LambdaAlert.h"
 
 extern NSString * const kSCHAuthenticationManagerDeviceKey;
 
@@ -27,36 +31,45 @@ extern NSString * const kSCHAuthenticationManagerDeviceKey;
 
 @property (nonatomic, retain) SCHBookUpdates *bookUpdates;
 @property (nonatomic, retain) SCHUpdateBooksViewController *updateBooksViewController;
+@property (nonatomic, retain) LambdaAlert *checkBooksAlert;
 
+- (void)updateSpaceSaverButton;
 - (void)updateUpdateBooksButton;
 - (void)updateDictionaryButton;
 - (void)releaseViewObjects;
+- (void)replaceCheckBooksAlertWithAlert:(LambdaAlert *)alert;
 
 @end
 
 @implementation SCHSettingsViewController
 
 @synthesize scrollView;
+@synthesize manageBooksGroupView;
+@synthesize checkBooksButton;
 @synthesize manageBooksButton;
 @synthesize updateBooksButton;
 @synthesize deregisterDeviceButton;
 @synthesize downloadDictionaryButton;
-@synthesize spaceSaverSwitch;
+@synthesize spaceSaverButton;
 @synthesize bookUpdates;
 @synthesize updateBooksViewController;
 @synthesize managedObjectContext;
+@synthesize checkBooksAlert;
 
 #pragma mark - Object lifecycle
 
 - (void)releaseViewObjects
 {
     [scrollView release], scrollView = nil;
+    [manageBooksGroupView release], manageBooksGroupView = nil;
+    [checkBooksButton release], checkBooksButton = nil;
     [manageBooksButton release], manageBooksButton = nil;
     [updateBooksButton release], updateBooksButton = nil;
     [deregisterDeviceButton release], deregisterDeviceButton = nil;
     [downloadDictionaryButton release], downloadDictionaryButton = nil;
-    [spaceSaverSwitch release], spaceSaverSwitch = nil;
+    [spaceSaverButton release], spaceSaverButton = nil;
     [updateBooksViewController release], updateBooksViewController = nil;
+    [checkBooksAlert release], checkBooksAlert = nil;
     [super releaseViewObjects];
 }
 
@@ -85,9 +98,15 @@ extern NSString * const kSCHAuthenticationManagerDeviceKey;
     updateBooksViewController.bookUpdates = bookUpdates;
 
     [self.scrollView setContentSize:CGSizeMake(320, 416)];
-
+    [self.manageBooksGroupView.layer setBorderColor:[UIColor SCHGray2Color].CGColor];
+    [self.manageBooksGroupView.layer setBorderWidth:2];
+    [self.manageBooksGroupView.layer setCornerRadius:15];
+    [self.manageBooksGroupView.layer setOpacity:0.66f];
+    
+    [self setButtonBackground:self.checkBooksButton];
     [self setButtonBackground:self.manageBooksButton];
     [self setButtonBackground:self.updateBooksButton];
+    [self setButtonBackground:self.spaceSaverButton];
     [self setButtonBackground:self.downloadDictionaryButton];
     [self setButtonBackground:self.deregisterDeviceButton];
     
@@ -111,12 +130,23 @@ extern NSString * const kSCHAuthenticationManagerDeviceKey;
                                                object:nil];
     
     [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(didUpdateAccountDuringSync:)
+                                                 name:SCHContentSyncComponentDidAddBookToProfileNotification
+                                               object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(didFailSync:)
+                                                 name:SCHBookshelfSyncComponentDidFailNotification
+                                               object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(dictionaryStateChanged:)
                                                  name:kSCHDictionaryStateChange
                                                object:nil];
     
     if ([[SCHAppStateManager sharedAppStateManager] canAuthenticate] == NO) {
         [self.manageBooksButton setEnabled:NO];
+        [self.checkBooksButton setEnabled:NO];
     }
 }
 
@@ -128,26 +158,34 @@ extern NSString * const kSCHAuthenticationManagerDeviceKey;
 
 - (void)viewWillAppear:(BOOL)animated 
 {
-    [super viewWillAppear:animated];
-    
-    NSNumber *spaceSaver = [[NSUserDefaults standardUserDefaults] objectForKey:kSCHUserDefaultsSpaceSaverMode];
-    self.spaceSaverSwitch.selected = [spaceSaver boolValue];
-    
+    [super viewWillAppear:animated];    
+    [self updateSpaceSaverButton];
     [self updateUpdateBooksButton];
     [self updateDictionaryButton];
 }
 
 #pragma mark - Button states
 
+- (void)updateSpaceSaverButton
+{
+    NSNumber *spaceSaver = [[NSUserDefaults standardUserDefaults] objectForKey:kSCHUserDefaultsSpaceSaverMode];
+    
+    if ([spaceSaver boolValue] == YES) {
+        [self.spaceSaverButton setTitle:NSLocalizedString(@"Turn Off Space Saver", @"Turn Off Space Saver") forState:UIControlStateNormal];
+    } else {
+        [self.spaceSaverButton setTitle:NSLocalizedString(@"Turn On Space Saver", @"Turn On Space Saver") forState:UIControlStateNormal];        
+    }
+}
+
 - (void)updateUpdateBooksButton
 {
     self.updateBooksButton.enabled = [self.bookUpdates areBookUpdatesAvailable];
     
     if (self.updateBooksButton.enabled == YES) {
-        [self.updateBooksButton setTitle:@"Update my eBooks" forState:UIControlStateNormal];
+        [self.updateBooksButton setTitle:NSLocalizedString(@"Update my Current eBooks", @"Update my Current eBooks") forState:UIControlStateNormal];
         [self.updateBooksButton setImage:[UIImage imageNamed:@"update-icon"] forState:UIControlStateNormal];
     } else {
-        [self.updateBooksButton setTitle:@"No eBook updates available" forState:UIControlStateNormal];        
+        [self.updateBooksButton setTitle:NSLocalizedString(@"No eBook Updates Available", @"No eBook Updates Available") forState:UIControlStateNormal];        
         [self.updateBooksButton setImage:nil forState:UIControlStateNormal];        
     }
 }
@@ -192,9 +230,7 @@ extern NSString * const kSCHAuthenticationManagerDeviceKey;
 
 - (IBAction)dismissModalSettingsController:(id)sender
 {
-    [[NSUserDefaults standardUserDefaults] setBool:self.spaceSaverSwitch.selected forKey:kSCHUserDefaultsSpaceSaverMode];
-    [[NSUserDefaults standardUserDefaults] synchronize];
-    [super closeSettings];
+    [self closeSettings];
 }
 
 #pragma mark - Actions
@@ -282,9 +318,66 @@ extern NSString * const kSCHAuthenticationManagerDeviceKey;
     [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"http://www.scholastic.com"]];
 }
 
+- (IBAction)checkBooks:(id)sender
+{
+    
+    [self.checkBooksButton setEnabled:NO];
+    
+    if ([[Reachability reachabilityForInternetConnection] isReachable] == NO) {
+        LambdaAlert *alert = [[LambdaAlert alloc]
+                              initWithTitle:NSLocalizedString(@"No Internet Connection", @"")
+                              message:NSLocalizedString(@"This function requires an Internet connection. Please connect to the internet and then try again.", @"")];
+        [alert addButtonWithTitle:NSLocalizedString(@"OK", @"") block:^{
+            if ([[SCHAppStateManager sharedAppStateManager] canAuthenticate] != NO) {
+                [self.checkBooksButton setEnabled:YES];
+            }
+        }];
+        [alert show];
+        [alert release];                
+    } else {
+        checkBooksAlert = [[LambdaAlert alloc]
+                              initWithTitle:NSLocalizedString(@"Syncing with Your Account", @"")
+                              message:@"\n"];
+        [checkBooksAlert setSpinnerHidden:NO];
+        [checkBooksAlert show];
+
+        [[SCHSyncManager sharedSyncManager] firstSync:YES];      
+    }
+    
+}
+
 - (IBAction)updateBooks:(id)sender
 {
     [self.navigationController pushViewController:updateBooksViewController animated:YES];
+}
+
+- (IBAction)toggleSpaceSaverMode:(id)sender
+{
+    NSNumber *spaceSaver = [[NSUserDefaults standardUserDefaults] objectForKey:kSCHUserDefaultsSpaceSaverMode];
+    BOOL toggledSpaceSaver = ![spaceSaver boolValue];
+        
+    [[NSUserDefaults standardUserDefaults] setBool:toggledSpaceSaver forKey:kSCHUserDefaultsSpaceSaverMode];
+    [[NSUserDefaults standardUserDefaults] synchronize];
+    
+    if (toggledSpaceSaver) {
+        LambdaAlert *alert = [[LambdaAlert alloc]
+                              initWithTitle:NSLocalizedString(@"Space Saver On", @"")
+                              message:NSLocalizedString(@"New eBooks will not be downloaded until someone chooses to read them. This can save storage space on your device.", @"")];
+        [alert addButtonWithTitle:NSLocalizedString(@"OK", @"") block:^{
+            [self updateSpaceSaverButton];
+        }];
+        [alert show];
+        [alert release]; 
+    } else {
+        LambdaAlert *alert = [[LambdaAlert alloc]
+                              initWithTitle:NSLocalizedString(@"Space Saver Off", @"")
+                              message:NSLocalizedString(@"New eBooks will be downloaded immediately when they are assigned to a bookshelf.", @"")];
+        [alert addButtonWithTitle:NSLocalizedString(@"OK", @"") block:^{
+            [self updateSpaceSaverButton];
+        }];
+        [alert show];
+        [alert release]; 
+    }
 }
 
 - (IBAction)downloadDictionary:(id)sender
@@ -298,6 +391,21 @@ extern NSString * const kSCHAuthenticationManagerDeviceKey;
     }
 }
 
+- (void)replaceCheckBooksAlertWithAlert:(LambdaAlert *)alert
+{
+    [CATransaction begin];
+    [CATransaction setDisableActions:YES];
+    
+    [self.checkBooksAlert setSpinnerHidden:YES];
+    [self.checkBooksAlert dismissAnimated:NO];
+    self.checkBooksAlert = nil;
+    
+    [alert show];
+    
+    [CATransaction commit];
+
+}
+
 #pragma mark - notifications
 
 - (void)dictionaryStateChanged:(NSNotification *)note
@@ -305,9 +413,71 @@ extern NSString * const kSCHAuthenticationManagerDeviceKey;
     [self updateDictionaryButton];
 }
 
+- (void)didUpdateAccountDuringSync:(NSNotification *)note
+{
+    if (self.checkBooksAlert) {
+        LambdaAlert *alert = [[LambdaAlert alloc]
+                              initWithTitle:NSLocalizedString(@"Sync Complete", @"")
+                              message:NSLocalizedString(@"You have new eBooks! Go to your bookshelves to download and read the new eBooks.", @"")];
+        [alert addButtonWithTitle:NSLocalizedString(@"OK", @"") block:^{
+            if ([[SCHAppStateManager sharedAppStateManager] canAuthenticate] != NO) {
+                [self.checkBooksButton setEnabled:YES];
+            }
+        }];
+        
+        [self replaceCheckBooksAlertWithAlert:alert];
+        [alert release];  
+    } else {
+        if ([[SCHAppStateManager sharedAppStateManager] canAuthenticate] != NO) {
+            [self.checkBooksButton setEnabled:YES];
+        }
+    }
+}
+
+- (void)didFailSync:(NSNotification *)note
+{
+    if (self.checkBooksAlert) {
+        LambdaAlert *alert = [[LambdaAlert alloc]
+                              initWithTitle:NSLocalizedString(@"Sync Failed", @"")
+                              message:NSLocalizedString(@"There was a problem whilst checking for new eBooks. Please try again.", @"")];
+        [alert addButtonWithTitle:NSLocalizedString(@"OK", @"") block:^{
+            if ([[SCHAppStateManager sharedAppStateManager] canAuthenticate] != NO) {
+                [self.checkBooksButton setEnabled:YES];
+            }
+        }];
+        
+        [self replaceCheckBooksAlertWithAlert:alert];
+        [alert release];  
+    } else {
+        if ([[SCHAppStateManager sharedAppStateManager] canAuthenticate] != NO) {
+            [self.checkBooksButton setEnabled:YES];
+        }
+    }
+}
+
 - (void)didCompleteSync:(NSNotification *)note
 {
     [self updateUpdateBooksButton];
+    
+    if (self.checkBooksAlert) {
+                
+        LambdaAlert *alert = [[LambdaAlert alloc]
+                              initWithTitle:NSLocalizedString(@"Sync Complete", @"")
+                              message:NSLocalizedString(@"No new eBooks have been assigned to any of your bookshelves.", @"")];
+        [alert addButtonWithTitle:NSLocalizedString(@"OK", @"") block:^{
+            if ([[SCHAppStateManager sharedAppStateManager] canAuthenticate] != NO) {
+                [self.checkBooksButton setEnabled:YES];
+            }
+        }];
+        
+        [self replaceCheckBooksAlertWithAlert:alert];
+        [alert release];   
+        
+    } else {
+        if ([[SCHAppStateManager sharedAppStateManager] canAuthenticate] != NO) {
+            [self.checkBooksButton setEnabled:YES];
+        }
+    }
 }
 
 @end

@@ -166,7 +166,7 @@
 										<int key="IBUIContentMode">7</int>
 										<bool key="IBUIUserInteractionEnabled">NO</bool>
 										<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
-										<string key="IBUIText">Deregistering this device means it can no longer be used to read your Scholastic eBooks. It will also no longer count against the maximum number of five devices you can use for reading. All books and settings will be removed.</string>
+										<string key="IBUIText">Deregistering this device means it can no longer be used to read your Scholastic eBooks. It will also no longer count against the maximum number of five devices you can use for reading.</string>
 										<object class="NSFont" key="IBUIFont">
 											<string key="NSName">Arial-BoldMT</string>
 											<double key="NSSize">15</double>
@@ -209,7 +209,7 @@
 											<int key="NSColorSpace">1</int>
 											<bytes key="NSRGB">MSAxIDEAA</bytes>
 										</object>
-										<object class="NSColor" key="IBUINormalTitleShadowColor" id="217679131">
+										<object class="NSColor" key="IBUINormalTitleShadowColor">
 											<int key="NSColorSpace">3</int>
 											<bytes key="NSWhite">MC41AA</bytes>
 										</object>
@@ -230,7 +230,7 @@
 										<int key="IBUIContentMode">7</int>
 										<bool key="IBUIUserInteractionEnabled">NO</bool>
 										<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
-										<string key="IBUIText">To confirm, enter your Scholastic Book Clubs password for user %@</string>
+										<string key="IBUIText">To confirm, enter your Scholastic Book Clubs password for %@:</string>
 										<object class="NSFont" key="IBUIFont">
 											<string key="NSName">ArialMT</string>
 											<double key="NSSize">13</double>
@@ -280,41 +280,13 @@
 										</object>
 										<int key="IBUIClearButtonMode">1</int>
 									</object>
-									<object class="IBUIButton" id="579452240">
-										<reference key="NSNextResponder" ref="627749786"/>
-										<int key="NSvFlags">293</int>
-										<string key="NSFrame">{{20, 354}, {280, 22}}</string>
-										<reference key="NSSuperview" ref="627749786"/>
-										<reference key="NSWindow"/>
-										<bool key="IBUIOpaque">NO</bool>
-										<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
-										<int key="IBUIContentHorizontalAlignment">0</int>
-										<int key="IBUIContentVerticalAlignment">0</int>
-										<object class="NSFont" key="IBUIFont">
-											<string key="NSName">ArialMT</string>
-											<double key="NSSize">14</double>
-											<int key="NSfFlags">16</int>
-										</object>
-										<bool key="IBUIAdjustsImageWhenHighlighted">NO</bool>
-										<bool key="IBUIAdjustsImageWhenDisabled">NO</bool>
-										<string key="IBUINormalTitle">Forgot your password?</string>
-										<object class="NSColor" key="IBUIHighlightedTitleColor">
-											<int key="NSColorSpace">2</int>
-											<bytes key="NSRGB">MCAwLjY4MjM1Mjk0MTIgMC45MzcyNTQ5MDIAA</bytes>
-										</object>
-										<object class="NSColor" key="IBUINormalTitleColor">
-											<int key="NSColorSpace">2</int>
-											<bytes key="NSRGB">MC4xMzMzMzMzNDAzIDAuNTYwNzg0MzM5OSAwLjgyMzUyOTQ4MTkAA</bytes>
-										</object>
-										<reference key="IBUINormalTitleShadowColor" ref="217679131"/>
-									</object>
 									<object class="IBUIActivityIndicatorView" id="288453423">
 										<reference key="NSNextResponder" ref="627749786"/>
 										<int key="NSvFlags">-2147483355</int>
 										<string key="NSFrame">{{248, 308}, {20, 20}}</string>
 										<reference key="NSSuperview" ref="627749786"/>
 										<reference key="NSWindow"/>
-										<reference key="NSNextKeyView" ref="579452240"/>
+										<reference key="NSNextKeyView"/>
 										<bool key="IBUIOpaque">NO</bool>
 										<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 										<int key="IBUIStyle">2</int>
@@ -434,15 +406,6 @@
 					<int key="connectionID">23</int>
 				</object>
 				<object class="IBConnectionRecord">
-					<object class="IBCocoaTouchEventConnection" key="connection">
-						<string key="label">forgotPassword:</string>
-						<reference key="source" ref="579452240"/>
-						<reference key="destination" ref="372490531"/>
-						<int key="IBEventType">7</int>
-					</object>
-					<int key="connectionID">24</int>
-				</object>
-				<object class="IBConnectionRecord">
 					<object class="IBCocoaTouchOutletConnection" key="connection">
 						<string key="label">scrollView</string>
 						<reference key="source" ref="372490531"/>
@@ -497,14 +460,6 @@
 						<reference key="destination" ref="712834072"/>
 					</object>
 					<int key="connectionID">53</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBCocoaTouchOutletConnection" key="connection">
-						<string key="label">forgotPasswordURL</string>
-						<reference key="source" ref="372490531"/>
-						<reference key="destination" ref="579452240"/>
-					</object>
-					<int key="connectionID">54</int>
 				</object>
 			</object>
 			<object class="IBMutableOrderedSet" key="objectRecords">
@@ -615,7 +570,6 @@
 							<reference ref="688531652"/>
 							<reference ref="155635484"/>
 							<reference ref="483998964"/>
-							<reference ref="579452240"/>
 							<reference ref="288453423"/>
 						</object>
 						<reference key="parent" ref="550636432"/>
@@ -628,11 +582,6 @@
 					<object class="IBObjectRecord">
 						<int key="objectID">13</int>
 						<reference key="object" ref="1022055281"/>
-						<reference key="parent" ref="627749786"/>
-					</object>
-					<object class="IBObjectRecord">
-						<int key="objectID">19</int>
-						<reference key="object" ref="579452240"/>
 						<reference key="parent" ref="627749786"/>
 					</object>
 					<object class="IBObjectRecord">
@@ -674,9 +623,6 @@
 					<string>13.IBPluginDependency</string>
 					<string>17.IBPluginDependency</string>
 					<string>18.IBPluginDependency</string>
-					<string>19.CustomClassName</string>
-					<string>19.IBPluginDependency</string>
-					<string>19.IBUIButtonInspectorSelectedStateConfigurationMetadataKey</string>
 					<string>20.IBPluginDependency</string>
 					<string>35.IBPluginDependency</string>
 					<string>38.CustomClassName</string>
@@ -701,9 +647,6 @@
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
-					<string>SCHUnderlinedButton</string>
-					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
-					<real value="1"/>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>SCHCustomToolbar</string>

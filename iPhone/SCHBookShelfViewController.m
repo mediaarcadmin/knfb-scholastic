@@ -215,7 +215,9 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 131;
         [self showLoadingView:NO];
 	}
     
-    self.navigationItem.title = [self.profileItem bookshelfName:YES];
+    if (![[SCHAppStateManager sharedAppStateManager] isSampleStore]) {
+        self.navigationItem.title = [self.profileItem bookshelfName:YES];
+    }
 
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateTheme) name:kSCHThemeManagerThemeChangeNotification object:nil];              
     
@@ -388,7 +390,9 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 131;
 	[profileItem release];
     profileItem = newProfileItem;
     
-    self.navigationItem.title = [self.profileItem bookshelfName:YES];
+    if (![[SCHAppStateManager sharedAppStateManager] isSampleStore]) {
+        self.navigationItem.title = [self.profileItem bookshelfName:YES];
+    }
     
 	self.books = [self.profileItem allBookIdentifiers];
         
@@ -470,7 +474,9 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 131;
     // update the bookshelf name with the change
     for (SCHProfileItem *object in [[notification userInfo] objectForKey:NSUpdatedObjectsKey]) {
         if (object == self.profileItem) {
-            self.navigationItem.title = [object bookshelfName:YES];
+            if (![[SCHAppStateManager sharedAppStateManager] isSampleStore]) {
+                self.navigationItem.title = [object bookshelfName:YES];
+            }
         }
     }
     
@@ -521,11 +527,13 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 131;
 - (void)bookshelfSyncComponentDidComplete:(NSNotification *)notification
 {
     [self showLoadingView:NO];
+    [self reloadData];
 }
 
 - (void)bookshelfSyncComponentDidFail:(NSNotification *)notification
 {
     [self showLoadingView:NO];    
+    [self reloadData];
     LambdaAlert *alert = [[LambdaAlert alloc]
                           initWithTitle:NSLocalizedString(@"Retrieving Bookshelf Failed", @"Retrieving Bookshelf Failed") 
                           message:NSLocalizedString(@"Failed to retrieve the bookshelf, we will try again soon.", @"") ];

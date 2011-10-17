@@ -135,7 +135,7 @@ static NSInteger const CELL_ACTIVITY_INDICATOR_TAG = 999;
 -(void)setupAssetsForOrientation:(UIInterfaceOrientation)orientation
 {    
     if (UIInterfaceOrientationIsPortrait(orientation) || UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
-        [self.topBar setBackgroundImage:[UIImage imageNamed:@"reading-view-portrait-top-bar.png"]];
+        [self.topBar setBackgroundImage:[UIImage imageNamed:@"reading-view-bottom-bar.png"]];
         
         CGRect barFrame = self.topBar.frame;
         if (barFrame.size.height == 34) {
@@ -148,7 +148,7 @@ static NSInteger const CELL_ACTIVITY_INDICATOR_TAG = 999;
             self.notesTableView.frame = tableFrame;
         }
     } else {
-        [self.topBar setBackgroundImage:[UIImage imageNamed:@"reading-view-landscape-top-bar.png"]];
+        [self.topBar setBackgroundImage:[UIImage imageNamed:@"reading-view-bottom-bar.png"]];
         
         CGRect barFrame = self.topBar.frame;
         if (barFrame.size.height == 44) {

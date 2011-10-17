@@ -27,7 +27,7 @@
 
 - (NSString *)title
 {
-    return @"Picture";
+    return @"Graphic";
 }
 
 - (BOOL)isOlderStoryInteraction

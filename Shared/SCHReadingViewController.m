@@ -2249,8 +2249,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     if (self.currentPageIndex != NSUIntegerMax) {
         [self.pageLabel setText:[self.readingView pageLabelForPageAtIndex:self.currentPageIndex]];
     } else {
-        NSString *localisedText = NSLocalizedString(@"%d%% of book", @"%d%% of book");
-        [self.pageLabel setText:[NSString stringWithFormat:localisedText, MAX((NSUInteger)(self.currentBookProgress * 100), 1)]];
+        [self.pageLabel setText:nil];
     }  
     
     if (self.layoutType == SCHReadingViewLayoutTypeFixed) {
@@ -2262,6 +2261,12 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
         }
     } else {
         self.scrubberThumbImage.image = nil;
+    }
+    
+    if (self.pageLabel.text == nil && self.scrubberThumbImage.image == nil) {
+        self.scrubberInfoView.hidden = YES;
+    } else {
+        self.scrubberInfoView.hidden = NO;
     }
 
 }

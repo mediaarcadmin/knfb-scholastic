@@ -3,10 +3,12 @@
 @interface LambdaAlert () <UIAlertViewDelegate>
 @property(retain) UIAlertView *alert;
 @property(retain) NSMutableArray *blocks;
+@property(nonatomic, retain) UIActivityIndicatorView *spinner;
 @end
 
 @implementation LambdaAlert
 @synthesize alert, blocks;
+@synthesize spinner;
 
 - (id) initWithTitle: (NSString*) title message: (NSString*) message
 {
@@ -21,6 +23,7 @@
 {
     [alert release];
     [blocks release];
+    [spinner release];
     [super dealloc];
 }
 
@@ -44,6 +47,32 @@
         block();
     }
     [self release];
+}
+
+- (void)dismissAnimated:(BOOL)animated
+{
+    [alert dismissWithClickedButtonIndex:-1 animated:animated];
+}
+
+- (UIActivityIndicatorView *)spinner
+{
+    if (!spinner) {
+        spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
+        [alert addSubview:spinner];
+        [spinner setCenter:CGPointMake(CGRectGetMidX(alert.frame), CGRectGetMidY(alert.frame))];
+        [spinner setAutoresizingMask:UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin];
+    }
+    
+    return spinner;
+}
+
+- (void)setSpinnerHidden:(BOOL)hidden
+{
+    if (hidden) {
+        [self.spinner stopAnimating];
+    } else {
+        [self.spinner startAnimating];
+    }
 }
 
 @end

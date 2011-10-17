@@ -11,10 +11,6 @@
 #import "SCHCustomToolbar.h"
 #import "SCHSetupDelegate.h"
 
-@interface SCHBaseSetupViewController ()
-- (void)setupAssetsForOrientation:(UIInterfaceOrientation)toInterfaceOrientation;
-@end
-
 @implementation SCHBaseSetupViewController
 
 @synthesize setupDelegate;

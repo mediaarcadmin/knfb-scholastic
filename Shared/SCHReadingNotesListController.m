@@ -154,7 +154,7 @@ static NSInteger const CELL_ACTIVITY_INDICATOR_TAG = 999;
 -(void)setupAssetsForOrientation:(UIInterfaceOrientation)orientation
 {    
     if (UIInterfaceOrientationIsPortrait(orientation) || UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
-        [self.topBar setBackgroundImage:[UIImage imageNamed:@"reading-view-portrait-top-bar.png"]];
+        [self.topBar setBackgroundImage:[UIImage imageNamed:@"reading-view-bottom-bar.png"]];
 
         CGRect barFrame = self.topBar.frame;
         if (barFrame.size.height == 34) {
@@ -167,7 +167,7 @@ static NSInteger const CELL_ACTIVITY_INDICATOR_TAG = 999;
             self.notesTableView.frame = tableFrame;
         }
     } else {
-        [self.topBar setBackgroundImage:[UIImage imageNamed:@"reading-view-landscape-top-bar.png"]];
+        [self.topBar setBackgroundImage:[UIImage imageNamed:@"reading-view-bottom-bar.png"]];
         
         CGRect barFrame = self.topBar.frame;
         if (barFrame.size.height == 44) {
@@ -219,10 +219,10 @@ static NSInteger const CELL_ACTIVITY_INDICATOR_TAG = 999;
 - (void) setToolbarModeEditing: (BOOL) editing
 {
     UIBarButtonItem *newBBI = nil;
-    int width = 14;
+    int width = 43;
     
     if (!editing) {
-        newBBI = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemEdit target:self action:@selector(editNotesButtonAction:)];
+        newBBI = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Delete Notes", @"") style:UIBarButtonItemStyleBordered target:self action:@selector(editNotesButtonAction:)];        
         self.editButton = newBBI;
 
         if (self.editMode) {
@@ -233,7 +233,7 @@ static NSInteger const CELL_ACTIVITY_INDICATOR_TAG = 999;
             [self.notesTableView endUpdates];
         }
         
-        width = 14;
+        width = 43;
     } else {
         newBBI = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(editNotesButtonAction:)];
         if (!self.editMode) {
@@ -243,7 +243,7 @@ static NSInteger const CELL_ACTIVITY_INDICATOR_TAG = 999;
             [self.notesTableView deleteSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationBottom];
             [self.notesTableView endUpdates];
         }
-        width = 7;
+        width = 0;
     }
     
     if (newBBI) {
@@ -252,7 +252,7 @@ static NSInteger const CELL_ACTIVITY_INDICATOR_TAG = 999;
         [newBBI release];
         
         // adjust the width of the fixed space to keep the title centred
-        UIBarButtonItem *fixedSpace = (UIBarButtonItem *) [currentItems objectAtIndex:1];
+        UIBarButtonItem *fixedSpace = (UIBarButtonItem *) [currentItems objectAtIndex:5];
         fixedSpace.width = width;
         
         self.topBar.items = [NSArray arrayWithArray:currentItems];
