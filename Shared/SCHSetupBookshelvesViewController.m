@@ -8,6 +8,8 @@
 
 #import "SCHSetupBookshelvesViewController.h"
 #import "SCHSetupDelegate.h"
+#import "SCHParentalToolsWebViewController.h"
+#import "SCHAuthenticationManager.h"
 
 @implementation SCHSetupBookshelvesViewController
 
@@ -47,10 +49,10 @@
 }
 
 - (void)setupBookshelves:(id)sender
-{
-    // TODO: URL
-    //[[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"http://www.scholastic.com"]];
-    [self.setupDelegate dismissSettingsForm];
+{    
+    SCHParentalToolsWebViewController *parentalToolsWebViewController = [[[SCHParentalToolsWebViewController alloc] init] autorelease];
+
+    [self.navigationController pushViewController:parentalToolsWebViewController animated:YES];
 }
 
 - (void)showActivity:(BOOL)activity

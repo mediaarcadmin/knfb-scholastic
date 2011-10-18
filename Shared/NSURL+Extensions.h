@@ -8,6 +8,8 @@
 
 #import <Foundation/Foundation.h>
 
-@interface NSURL_Extensions : NSObject
+@interface NSURL (NSURLExtensions) 
+
+- (NSDictionary *)queryParameters;
 
 @end

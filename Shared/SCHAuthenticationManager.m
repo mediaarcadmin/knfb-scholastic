@@ -19,6 +19,7 @@
 #import "SCHSyncManager.h"
 #import "SCHAppStateManager.h"
 #import "AppDelegate_Shared.h"
+#import "SCHAccountValidation.h"
 #import "SCHBookManager.h"
 
 #import "SCHNonDRMAuthenticationManager.h"
@@ -55,6 +56,8 @@ typedef struct AuthenticateWithUserNameParameters AuthenticateWithUserNameParame
 @interface SCHAuthenticationManager ()
 
 - (void)aTokenOnMainThread;
+- (void)hasValidPTokenOnMainThread:(NSValue *)returnValue;
+- (void)webParentToolURLOnMainThread:(NSMutableDictionary *)returnValue;
 - (void)authenticateWithUserNameOnMainThread:(NSValue *)parameters;
 - (void)hasUsernameAndPasswordOnMainThread:(NSValue *)returnValue;
 - (void)deregisterOnMainThread:(NSString *)token;
@@ -76,6 +79,7 @@ typedef struct AuthenticateWithUserNameParameters AuthenticateWithUserNameParame
 @synthesize tokenExpires;
 @synthesize waitingOnResponse;
 @synthesize scholasticWebService;
+@synthesize accountValidation;
 @synthesize libreAccessWebService;
 @synthesize drmRegistrationSession;
 
@@ -107,8 +111,7 @@ typedef struct AuthenticateWithUserNameParameters AuthenticateWithUserNameParame
 		tokenExpires = nil;
 		waitingOnResponse = NO;
 		
-		scholasticWebService = [[SCHScholasticWebService alloc] init];
-		scholasticWebService.delegate = self;
+		accountValidation = [[SCHAccountValidation alloc] init];
 		
 		libreAccessWebService = [[SCHLibreAccessWebService alloc] init];	
 		libreAccessWebService.delegate = self;
@@ -120,7 +123,7 @@ typedef struct AuthenticateWithUserNameParameters AuthenticateWithUserNameParame
 {
     [aToken release], aToken = nil;
     [tokenExpires release], tokenExpires = nil;
-    [scholasticWebService release], scholasticWebService = nil;
+    [accountValidation release], accountValidation = nil;
     [libreAccessWebService release], libreAccessWebService = nil;
     [drmRegistrationSession release], drmRegistrationSession = nil;
     
@@ -206,6 +209,31 @@ typedef struct AuthenticateWithUserNameParameters AuthenticateWithUserNameParame
                            withObject:self.aToken 
                         waitUntilDone:YES];
 }
+    
+- (BOOL)hasValidPToken
+{
+    BOOL ret = NO;
+    NSValue *resultValue = [NSValue valueWithPointer:&ret];
+    
+    // we block until the selector completes to make sure we always have the return object before use
+    [self performSelectorOnMainThread: @selector(hasValidPTokenOnMainThread:) 
+                           withObject:resultValue 
+                        waitUntilDone:YES];  
+    
+    return(ret);    
+}
+
+- (NSURL *)webParentToolURL
+{
+    NSMutableDictionary *returnValue = [NSMutableDictionary dictionary];
+
+    // we block until the selector completes to make sure we always have the return object before use
+    [self performSelectorOnMainThread: @selector(webParentToolURLOnMainThread:) 
+                           withObject:returnValue 
+                        waitUntilDone:YES];
+    
+    return([returnValue objectForKey:@"returnValue"]);
+}
 
 #pragma mark - Accessor methods
 
@@ -243,6 +271,34 @@ typedef struct AuthenticateWithUserNameParameters AuthenticateWithUserNameParame
     }
 }
 
+- (void)hasValidPTokenOnMainThread:(NSValue *)returnValue
+{
+    *(BOOL *)returnValue.pointerValue = (self.accountValidation.pToken != nil);
+}
+
+- (void)webParentToolURLOnMainThread:(NSMutableDictionary *)returnValue
+{    
+    NSMutableArray *appln = [NSMutableArray array];
+    
+    [appln addObject:@"eReader"];
+    
+    if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {
+        [appln addObject:@"iPad"];                   
+    } else if([[[UIDevice currentDevice] model] hasPrefix:@"iPod"] == YES) {
+        [appln addObject:@"iPod"];
+    } else {
+        [appln addObject:@"iPhone"];        
+    }
+    
+    [appln addObject:@"ns"];            
+    
+    [returnValue setValue:[NSURL URLWithString:[[NSString stringWithFormat:@"https://ebooks2.scholastic.com/wpt/auth?tk=%@&appln=%@&spsId=%@", 
+                                                 self.accountValidation.pToken, 
+                                                 [appln componentsJoinedByString:@"|"], 
+                                                 [[NSUserDefaults standardUserDefaults] stringForKey:kSCHAuthenticationManagerUserKey]] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]]
+                   forKey:@"returnValue"];
+}
+
 - (void)authenticateWithUserNameOnMainThread:(NSValue *)parameters
 {	
     AuthenticateWithUserNameParameters *authenticateWithUserNameParameters = parameters.pointerValue;
@@ -261,8 +317,7 @@ typedef struct AuthenticateWithUserNameParameters AuthenticateWithUserNameParame
                                   forServiceName:kSCHAuthenticationManagerServiceName 
                                   updateExisting:YES 
                                            error:nil];
-                [[NSUserDefaults standardUserDefaults] removeObjectForKey:kSCHAuthenticationManagerUserKey];
-                [self authenticate];
+                [self authenticateOnMainThread];
             } else {
                 NSError *error = [NSError errorWithDomain:kSCHAuthenticationManagerErrorDomain 
                                                      code:kSCHAuthenticationManagerLoginError 
@@ -287,6 +342,7 @@ typedef struct AuthenticateWithUserNameParameters AuthenticateWithUserNameParame
                           forServiceName:kSCHAuthenticationManagerServiceName 
                           updateExisting:YES 
                                    error:nil];
+        [[NSUserDefaults standardUserDefaults] removeObjectForKey:kSCHAuthenticationManagerDeviceKey];                        
         [[NSUserDefaults standardUserDefaults] removeObjectForKey:kSCHAuthenticationManagerUserKey];        
         self.aToken = @"";
         self.tokenExpires = [NSDate distantFuture];        
@@ -304,20 +360,29 @@ typedef struct AuthenticateWithUserNameParameters AuthenticateWithUserNameParame
     NSLog(@"Authenticating %@ with %@", storedUsername, (deviceKey == nil ? @"no deviceKey" : deviceKey));        
     
     if([[SCHAppStateManager sharedAppStateManager] canAuthenticate] == YES) {
-        if (waitingOnResponse == NO) {
+        if (self.waitingOnResponse == NO) {
             if ([[Reachability reachabilityForInternetConnection] isReachable] == YES) {
                 if (self.aToken != nil && [[self.aToken stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]] length] > 0) {
                     [self.libreAccessWebService renewToken:self.aToken];
-                    waitingOnResponse = YES;                
+                    self.waitingOnResponse = YES;                
                 } else if (deviceKey != nil && [[deviceKey stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]] length] > 0) {
                     [self.libreAccessWebService authenticateDevice:deviceKey forUserKey:nil];
-                    waitingOnResponse = YES;                                
+                    self.waitingOnResponse = YES;                                
                 } else if (storedUsername != nil &&
                            [[storedUsername stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]] length] > 0 &&
                            storedPassword != nil &&
                            [[storedPassword stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]] length] > 0) {
-                    [self.scholasticWebService authenticateUserName:storedUsername withPassword:storedPassword];
-                    waitingOnResponse = YES;         
+                    __block SCHAuthenticationManager *weakSelf = self;
+                    [self.accountValidation validateWithUserName:storedUsername withPassword:storedPassword validateBlock:^(NSString *pToken, NSError *error) {
+                        if (error != nil) {
+                            weakSelf.waitingOnResponse = NO;
+                            [weakSelf postFailureWithError:error];                            
+                        } else {
+                            [weakSelf.libreAccessWebService tokenExchange:pToken 
+                                                              forUser:[[NSUserDefaults standardUserDefaults] stringForKey:kSCHAuthenticationManagerUsername]];                            
+                        }
+                    }];
+                    self.waitingOnResponse = YES;         
                 } else {
                     NSError *error = [NSError errorWithDomain:kSCHAuthenticationManagerErrorDomain 
                                                          code:kSCHAuthenticationManagerLoginError 
@@ -438,10 +503,7 @@ typedef struct AuthenticateWithUserNameParameters AuthenticateWithUserNameParame
 
 - (void)method:(NSString *)method didCompleteWithResult:(NSDictionary *)result
 {	
-	if([method compare:kSCHScholasticWebServiceProcessRemote] == NSOrderedSame) {
-		[self.libreAccessWebService tokenExchange:[result objectForKey:kSCHScholasticWebServicePToken] 
-                                     forUser:[[NSUserDefaults standardUserDefaults] stringForKey:kSCHAuthenticationManagerUsername]];
-	} else if([method compare:kSCHLibreAccessWebServiceTokenExchange] == NSOrderedSame) {
+	if([method compare:kSCHLibreAccessWebServiceTokenExchange] == NSOrderedSame) {
         id userKey = [result objectForKey:kSCHLibreAccessWebServiceUserKey];
         [[NSUserDefaults standardUserDefaults] setObject:(userKey == [NSNull null] ? nil : userKey) 
                                                   forKey:kSCHAuthenticationManagerUserKey];
@@ -449,7 +511,7 @@ typedef struct AuthenticateWithUserNameParameters AuthenticateWithUserNameParame
         if ([deviceIsDeregistered isKindOfClass:[NSNumber class]] == YES &&
             [[result objectForKey:kSCHLibreAccessWebServiceDeviceIsDeregistered] boolValue] == YES) {
             [self performPostDeregistration];
-            waitingOnResponse = NO;
+            self.waitingOnResponse = NO;
         } else if (![[NSUserDefaults standardUserDefaults] stringForKey:kSCHAuthenticationManagerDeviceKey]) {
             [self.drmRegistrationSession registerDevice:[result objectForKey:kSCHLibreAccessWebServiceAuthToken]];
         }        
@@ -469,13 +531,13 @@ typedef struct AuthenticateWithUserNameParameters AuthenticateWithUserNameParame
 			[self postSuccessWithOfflineMode:NO];
         }
         
-		waitingOnResponse = NO;        
+		self.waitingOnResponse = NO;        
     } else if([method compare:kSCHLibreAccessWebServiceRenewToken] == NSOrderedSame) {	
         self.aToken = [result objectForKey:kSCHLibreAccessWebServiceAuthToken];
         NSInteger expiresIn = MAX(0, [[result objectForKey:kSCHLibreAccessWebServiceExpiresIn] integerValue] - 1);
         self.tokenExpires = [NSDate dateWithTimeIntervalSinceNow:expiresIn * kSCHAuthenticationManagerSecondsInAMinute];
         
-		waitingOnResponse = NO;
+		self.waitingOnResponse = NO;
 		[self postSuccessWithOfflineMode:NO];        
     }
 }
@@ -485,7 +547,7 @@ typedef struct AuthenticateWithUserNameParameters AuthenticateWithUserNameParame
         result:(NSDictionary *)result
 {
     NSLog(@"AuthenticationManager:%@ %@", method, [error description]);
-    waitingOnResponse = NO;
+    self.waitingOnResponse = NO;
 
     if (result != nil) {
         if([method compare:kSCHLibreAccessWebServiceTokenExchange] == NSOrderedSame) {	
@@ -528,7 +590,7 @@ typedef struct AuthenticateWithUserNameParameters AuthenticateWithUserNameParame
         [libreAccessWebService authenticateDevice:deviceKey forUserKey:nil];
     } else {
         // Successful deregistration
-        waitingOnResponse = NO;
+        self.waitingOnResponse = NO;
         [self performPostDeregistration];
     }
     self.drmRegistrationSession = nil;
@@ -538,7 +600,7 @@ typedef struct AuthenticateWithUserNameParameters AuthenticateWithUserNameParame
            didFailWithError:(NSError *)error
 {
     NSLog(@"AuthenticationManager:DRM %@", [error description]);
-	waitingOnResponse = NO;
+	self.waitingOnResponse = NO;
 	
     // were we de-registered?
     if ([error code] == kSCHDrmDeregistrationError) {

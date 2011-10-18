@@ -8,6 +8,8 @@
 
 #import <UIKit/UIKit.h>
 
-@interface SCHParentalToolsWebViewController : UIViewController
+#import "SCHBaseTextViewController.h"
+
+@interface SCHParentalToolsWebViewController : SCHBaseTextViewController <UIWebViewDelegate>
 
 @end

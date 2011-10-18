@@ -24,6 +24,9 @@
 #import "SCHSyncManager.h"
 #import "Reachability.h"
 #import "LambdaAlert.h"
+#import "SCHParentalToolsWebViewController.h"
+#import "SCHAuthenticationManager.h"
+#import "SCHAccountValidationViewController.h"
 
 extern NSString * const kSCHAuthenticationManagerDeviceKey;
 
@@ -314,8 +317,13 @@ extern NSString * const kSCHAuthenticationManagerDeviceKey;
 
 - (IBAction)manageBooks:(id)sender
 {
-    // TODO correct URL
-    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"http://www.scholastic.com"]];
+    if ([[SCHAuthenticationManager sharedAuthenticationManager] hasValidPToken] == YES) {
+        SCHParentalToolsWebViewController *parentalToolsWebViewController = [[[SCHParentalToolsWebViewController alloc] init] autorelease];
+        [self.navigationController pushViewController:parentalToolsWebViewController animated:YES];
+    } else {
+        SCHAccountValidationViewController *accountValidationViewController = [[[SCHAccountValidationViewController alloc] init] autorelease];
+        [self.navigationController pushViewController:accountValidationViewController animated:YES];        
+    }
 }
 
 - (IBAction)checkBooks:(id)sender

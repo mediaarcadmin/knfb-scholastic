@@ -8,44 +8,45 @@
 
 #import "SCHParentalToolsWebViewController.h"
 
+#import "SCHAuthenticationManager.h"
+#import "NSURL+Extensions.h"
+
 @implementation SCHParentalToolsWebViewController
-
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
-{
-    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
-    if (self) {
-        // Custom initialization
-    }
-    return self;
-}
-
-- (void)didReceiveMemoryWarning
-{
-    // Releases the view if it doesn't have a superview.
-    [super didReceiveMemoryWarning];
-    
-    // Release any cached data, images, etc that aren't in use.
-}
 
 #pragma mark - View lifecycle
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    // Do any additional setup after loading the view from its nib.
+
+    self.title = NSLocalizedString(@"Web Parent Tools", @"\"Parental Tools\" view controller title.");        
+
+    NSURL *webParentToolURL = [[SCHAuthenticationManager sharedAuthenticationManager] webParentToolURL];
+    NSLog(@"Attempting to access Web Parent Tools using: %@", webParentToolURL);
+    
+    self.textView.delegate = self;
+    [self.textView loadRequest:[NSURLRequest requestWithURL:webParentToolURL]];
+    [self.textView setScalesPageToFit:YES];    
 }
 
-- (void)viewDidUnload
-{
-    [super viewDidUnload];
-    // Release any retained subviews of the main view.
-    // e.g. self.myOutlet = nil;
-}
+#pragma mark - UIWebView delegate methods
 
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
+- (BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request 
+ navigationType:(UIWebViewNavigationType)navigationType
 {
-    // Return YES for supported orientations
-	return YES;
+    BOOL ret = YES;
+    
+//    if (navigationType == UIWebViewNavigationTypeLinkClicked) {
+//        NSDictionary *parameters = [[request URL] queryParameters];
+//        NSString *cmd = [parameters objectForKey:@"cmd"];
+//        
+//        if ([cmd isEqualToString:@"bookshelfSetupDidCompleteWithSuccess"] == YES) {
+//            ret = NO;
+//            [self.setupDelegate dismissSettingsForm];
+//        }
+//    }
+    
+    return(ret);
 }
 
 @end

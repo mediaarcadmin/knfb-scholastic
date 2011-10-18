@@ -7,6 +7,7 @@
 //
 
 @class SCHScholasticWebService;
+@class SCHAccountValidation;
 @class SCHLibreAccessWebService;
 @class SCHDrmRegistrationSession;
 
@@ -21,6 +22,7 @@ extern NSTimeInterval const kSCHAuthenticationManagerSecondsInAMinute;
 @property (nonatomic, retain) NSDate *tokenExpires;
 @property (nonatomic, assign) BOOL waitingOnResponse;
 @property (nonatomic, retain) SCHScholasticWebService *scholasticWebService;
+@property (nonatomic, retain) SCHAccountValidation *accountValidation;
 @property (nonatomic, retain) SCHLibreAccessWebService *libreAccessWebService;
 @property (nonatomic, retain) SCHDrmRegistrationSession *drmRegistrationSession;
 
