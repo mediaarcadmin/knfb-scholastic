@@ -13,7 +13,25 @@
 
 @implementation SCHParentalToolsWebViewController
 
+@synthesize pToken;
+
 #pragma mark - View lifecycle
+
+- (void)dealloc 
+{
+    [self releaseViewObjects];
+    [pToken release], pToken = nil;
+    
+    [super dealloc];
+}
+
+- (void)releaseViewObjects
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self 
+                                                    name:UIApplicationDidBecomeActiveNotification 
+                                                  object:nil];
+    [super releaseViewObjects];
+}
 
 - (void)viewDidLoad
 {
@@ -21,12 +39,32 @@
 
     self.title = NSLocalizedString(@"Web Parent Tools", @"\"Parental Tools\" view controller title.");        
 
-    NSURL *webParentToolURL = [[SCHAuthenticationManager sharedAuthenticationManager] webParentToolURL];
+    NSURL *webParentToolURL = [[SCHAuthenticationManager sharedAuthenticationManager] webParentToolURL:pToken];
     NSLog(@"Attempting to access Web Parent Tools using: %@", webParentToolURL);
     
     self.textView.delegate = self;
     [self.textView loadRequest:[NSURLRequest requestWithURL:webParentToolURL]];
-    [self.textView setScalesPageToFit:YES];    
+    [self.textView setScalesPageToFit:YES];  
+    
+    // register for going into the background
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(willResignActiveNotification:)
+                                                 name:UIApplicationWillResignActiveNotification
+                                               object:nil];            
+}
+
+- (void)viewDidUnload
+{
+    [super viewDidUnload];
+    
+    [self releaseViewObjects];
+}
+
+#pragma mark - Notification methods
+
+- (void)willResignActiveNotification:(NSNotification *)notification
+{
+    [self back:nil];
 }
 
 #pragma mark - UIWebView delegate methods

@@ -9,9 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "SCHBaseSetupViewController.h"
 
-@protocol SCHSetupDelegate;
-
-@class SCHUnderlinedButton;
+@protocol SCHSetupDelegete;
 
 @interface SCHAccountValidationViewController : SCHBaseSetupViewController <UITextFieldDelegate> {}
 

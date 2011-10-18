@@ -12,4 +12,6 @@
 
 @interface SCHParentalToolsWebViewController : SCHBaseTextViewController <UIWebViewDelegate>
 
+@property (nonatomic, copy) NSString *pToken;
+
 @end

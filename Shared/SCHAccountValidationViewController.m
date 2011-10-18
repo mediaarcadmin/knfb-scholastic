@@ -10,13 +10,15 @@
 #import "SCHAuthenticationManager.h"
 #import "SCHSetupDelegate.h"
 #import "LambdaAlert.h"
-#import "SCHUnderlinedButton.h"
 #import "Reachability.h"
+#import "SCHAccountValidation.h"
+#import "SCHParentalToolsWebViewController.h"
 
 static const CGFloat kDeregisterContentHeightLandscape = 380;
 
 @interface SCHAccountValidationViewController ()
 
+@property (nonatomic, retain) SCHAccountValidation *accountValidation;
 @property (nonatomic, retain) UITextField *activeTextField;
 
 - (void)setupContentSizeForOrientation:(UIInterfaceOrientation)orientation;
@@ -26,6 +28,7 @@ static const CGFloat kDeregisterContentHeightLandscape = 380;
 
 @implementation SCHAccountValidationViewController
 
+@synthesize accountValidation;
 @synthesize promptLabel;
 @synthesize passwordField;
 @synthesize validateButton;
@@ -52,6 +55,7 @@ static const CGFloat kDeregisterContentHeightLandscape = 380;
 - (void)dealloc
 {
     [self releaseViewObjects];
+    [accountValidation release], accountValidation = nil;
     [super dealloc];
 }
 
@@ -100,48 +104,54 @@ static const CGFloat kDeregisterContentHeightLandscape = 380;
     [self releaseViewObjects];
 }
 
+#pragma mark - Accessor methods
+
+- (SCHAccountValidation *)accountValidation
+{
+    if (accountValidation == nil) {
+        accountValidation = [[SCHAccountValidation alloc] init];
+    }
+    
+    return(accountValidation);
+}
+
 #pragma mark - Actions
 
 - (void)validate:(id)sender
 {
-    [self.validateButton setEnabled:NO];
-    
     if ([[Reachability reachabilityForInternetConnection] isReachable] == NO) {
-        
         LambdaAlert *alert = [[LambdaAlert alloc]
                               initWithTitle:NSLocalizedString(@"No Internet Connection", @"")
                               message:NSLocalizedString(@"This function requires an Internet connection. Please connect to the internet and then try again.", @"")];
-        [alert addButtonWithTitle:NSLocalizedString(@"OK", @"") block:^{
-            [self.validateButton setEnabled:YES];
-        }];
+        [alert addButtonWithTitle:NSLocalizedString(@"OK", @"") block:nil];
         [alert show];
         [alert release];                
-    } else if ([[SCHAuthenticationManager sharedAuthenticationManager] validatePassword:self.passwordField.text]) {
-        if ([[SCHAuthenticationManager sharedAuthenticationManager] isAuthenticated] == YES) {
-            [self.spinner startAnimating];
-            [self setEnablesBackButton:NO];
-            [[SCHAuthenticationManager sharedAuthenticationManager] deregister];            
-
-        } else {
-            [[SCHAuthenticationManager sharedAuthenticationManager] authenticate];
-            LambdaAlert *alert = [[LambdaAlert alloc]
-                                  initWithTitle:NSLocalizedString(@"Error", @"error alert title")
-                                  message:NSLocalizedString(@"Waiting for the server, please try again in a moment. If this problem persists please contact support.", nil)];
-            [alert addButtonWithTitle:NSLocalizedString(@"Try Again", @"try again button after no authentication") block:^{
-                [self.validateButton setEnabled:YES];
-            }];
-            [alert show];
-            [alert release];        
-        }
     } else {
-        LambdaAlert *alert = [[LambdaAlert alloc]
-                              initWithTitle:NSLocalizedString(@"Error", @"error alert title")
-                              message:NSLocalizedString(@"The password was incorrect", @"")];
-        [alert addButtonWithTitle:NSLocalizedString(@"Try Again", @"try again button after password failure") block:^{
-            [self.validateButton setEnabled:YES];
+        [self.spinner startAnimating];
+        [self setEnablesBackButton:NO];
+        [self.validateButton setEnabled:NO];
+        
+        __block SCHAccountValidationViewController *weakSelf = self;
+        NSString *storedUsername = [[NSUserDefaults standardUserDefaults] stringForKey:kSCHAuthenticationManagerUsername];
+        [self.accountValidation validateWithUserName:storedUsername withPassword:passwordField.text validateBlock:^(NSString *pToken, NSError *error) {
+            if (error != nil) {
+                LambdaAlert *alert = [[LambdaAlert alloc]
+                                      initWithTitle:NSLocalizedString(@"Error", @"error alert title")
+                                      message:[error localizedDescription]];
+                [alert addButtonWithTitle:NSLocalizedString(@"OK", @"") block:nil];
+                [alert show];
+                [alert release];        
+            } else {
+                weakSelf.passwordField.text = @"";
+                SCHParentalToolsWebViewController *parentalToolsWebViewController = [[[SCHParentalToolsWebViewController alloc] init] autorelease];
+                parentalToolsWebViewController.pToken = pToken;
+                [weakSelf.navigationController pushViewController:parentalToolsWebViewController animated:YES];                
+            }
+            
+            [weakSelf.spinner stopAnimating];
+            [weakSelf setEnablesBackButton:YES];
+            [weakSelf.validateButton setEnabled:YES];            
         }];
-        [alert show];
-        [alert release];        
     }
 }
 
@@ -195,45 +205,21 @@ static const CGFloat kDeregisterContentHeightLandscape = 380;
     }    
 }
 
-#pragma mark - Deregistration Notification methods
-
-//- (void)authenticationManagerDidDeregister:(NSNotification *)notification
-//{
-//    [self.spinner stopAnimating];
-//    [self setEnablesBackButton:YES];
-//    [self.setupDelegate dismissSettingsForm];
-//}
-//
-//- (void)authenticationManagerDidFailDeregistration:(NSNotification *)notification
-//{
-//    [self.spinner stopAnimating];
-//    NSError *error = [[notification userInfo] objectForKey:kSCHAuthenticationManagerNSError];
-//    LambdaAlert *alert = [[LambdaAlert alloc]
-//                          initWithTitle:NSLocalizedString(@"Error", @"Error") 
-//                          message:[error localizedDescription]];
-//    [alert addButtonWithTitle:NSLocalizedString(@"OK", @"OK") block:^{
-//        [self setEnablesBackButton:YES];
-//        [self.validateButton setEnabled:YES];        
-//    }];
-//    [alert show];
-//    [alert release];
-//}
-
 #pragma mark - UIKeyboard Notifications
 
-- (void)keyboardDidShow:(NSNotification *) notification
+- (void)keyboardDidShow:(NSNotification *)notification
 {
     if (self.activeTextField) {
         [self makeVisibleTextField:self.activeTextField];
     }
 }
 
-- (void)keyboardWillShow:(NSNotification *) notification
+- (void)keyboardWillShow:(NSNotification *)notification
 {
     [self.scrollView setContentSize:CGSizeMake(self.scrollView.contentSize.width, MAX(self.containerView.frame.size.height, self.scrollView.contentSize.height) * 1.5f)];
 }
 
-- (void)keyboardWillHide:(NSNotification *) notification
+- (void)keyboardWillHide:(NSNotification *)notification
 {
     self.activeTextField = nil;
     [self setupContentSizeForOrientation:self.interfaceOrientation];

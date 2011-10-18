@@ -16,6 +16,8 @@
 @property (nonatomic, retain) IBOutlet UIWebView *textView;
 @property (nonatomic, retain) IBOutlet SCHCustomToolbar *topToolbar;
 
+- (void)releaseViewObjects;
+
 - (IBAction)back:(id)sender;
 
 @end

@@ -56,8 +56,6 @@ typedef struct AuthenticateWithUserNameParameters AuthenticateWithUserNameParame
 @interface SCHAuthenticationManager ()
 
 - (void)aTokenOnMainThread;
-- (void)hasValidPTokenOnMainThread:(NSValue *)returnValue;
-- (void)webParentToolURLOnMainThread:(NSMutableDictionary *)returnValue;
 - (void)authenticateWithUserNameOnMainThread:(NSValue *)parameters;
 - (void)hasUsernameAndPasswordOnMainThread:(NSValue *)returnValue;
 - (void)deregisterOnMainThread:(NSString *)token;
@@ -212,27 +210,29 @@ typedef struct AuthenticateWithUserNameParameters AuthenticateWithUserNameParame
     
 - (BOOL)hasValidPToken
 {
-    BOOL ret = NO;
-    NSValue *resultValue = [NSValue valueWithPointer:&ret];
-    
-    // we block until the selector completes to make sure we always have the return object before use
-    [self performSelectorOnMainThread: @selector(hasValidPTokenOnMainThread:) 
-                           withObject:resultValue 
-                        waitUntilDone:YES];  
-    
-    return(ret);    
+    return(self.accountValidation.pToken != nil);    
 }
 
-- (NSURL *)webParentToolURL
-{
-    NSMutableDictionary *returnValue = [NSMutableDictionary dictionary];
-
-    // we block until the selector completes to make sure we always have the return object before use
-    [self performSelectorOnMainThread: @selector(webParentToolURLOnMainThread:) 
-                           withObject:returnValue 
-                        waitUntilDone:YES];
+- (NSURL *)webParentToolURL:(NSString *)pToken
+{    
+    NSMutableArray *appln = [NSMutableArray array];
     
-    return([returnValue objectForKey:@"returnValue"]);
+    [appln addObject:@"eReader"];
+    
+    if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {
+        [appln addObject:@"iPad"];                   
+    } else if([[[UIDevice currentDevice] model] hasPrefix:@"iPod"] == YES) {
+        [appln addObject:@"iPod"];
+    } else {
+        [appln addObject:@"iPhone"];        
+    }
+    
+    [appln addObject:@"ns"];            
+    
+    return([NSURL URLWithString:[[NSString stringWithFormat:@"https://ebooks2.scholastic.com/wpt/auth?tk=%@&appln=%@&spsId=%@", 
+                                  (pToken == nil ? self.accountValidation.pToken : pToken), 
+                                  [appln componentsJoinedByString:@"|"], 
+                                  [[NSUserDefaults standardUserDefaults] stringForKey:kSCHAuthenticationManagerUserKey]] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]]);
 }
 
 #pragma mark - Accessor methods
@@ -269,34 +269,6 @@ typedef struct AuthenticateWithUserNameParameters AuthenticateWithUserNameParame
         [aToken release], aToken = nil;
         self.tokenExpires = nil;        
     }
-}
-
-- (void)hasValidPTokenOnMainThread:(NSValue *)returnValue
-{
-    *(BOOL *)returnValue.pointerValue = (self.accountValidation.pToken != nil);
-}
-
-- (void)webParentToolURLOnMainThread:(NSMutableDictionary *)returnValue
-{    
-    NSMutableArray *appln = [NSMutableArray array];
-    
-    [appln addObject:@"eReader"];
-    
-    if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {
-        [appln addObject:@"iPad"];                   
-    } else if([[[UIDevice currentDevice] model] hasPrefix:@"iPod"] == YES) {
-        [appln addObject:@"iPod"];
-    } else {
-        [appln addObject:@"iPhone"];        
-    }
-    
-    [appln addObject:@"ns"];            
-    
-    [returnValue setValue:[NSURL URLWithString:[[NSString stringWithFormat:@"https://ebooks2.scholastic.com/wpt/auth?tk=%@&appln=%@&spsId=%@", 
-                                                 self.accountValidation.pToken, 
-                                                 [appln componentsJoinedByString:@"|"], 
-                                                 [[NSUserDefaults standardUserDefaults] stringForKey:kSCHAuthenticationManagerUserKey]] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]]
-                   forKey:@"returnValue"];
 }
 
 - (void)authenticateWithUserNameOnMainThread:(NSValue *)parameters

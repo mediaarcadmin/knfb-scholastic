@@ -49,10 +49,14 @@
 }
 
 - (void)setupBookshelves:(id)sender
-{    
-    SCHParentalToolsWebViewController *parentalToolsWebViewController = [[[SCHParentalToolsWebViewController alloc] init] autorelease];
+{
+    // TODO: URL
+    //[[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"http://www.scholastic.com"]];
+    [self.setupDelegate dismissSettingsForm];
 
-    [self.navigationController pushViewController:parentalToolsWebViewController animated:YES];
+    // SCHParentalToolsWebViewController *parentalToolsWebViewController = [[[SCHParentalToolsWebViewController alloc] init] autorelease];
+
+    // [self.navigationController pushViewController:parentalToolsWebViewController animated:YES];
 }
 
 - (void)showActivity:(BOOL)activity

@@ -48,7 +48,7 @@ extern NSString * const kSCHAuthenticationManagerUsername;
 - (void)clear;
 - (void)clearAppProcessing;
 - (BOOL)hasValidPToken;
-// always make sure you have a valid pToken before calling
-- (NSURL *)webParentToolURL;
+// the auth pToken will be used if pToken is nil
+- (NSURL *)webParentToolURL:(NSString *)pToken;
 
 @end
