@@ -24,6 +24,7 @@
 - (void)releaseViewObjects
 {
     self.titleLabel = nil;
+    self.textView.delegate = nil;
     self.textView = nil;
     self.topToolbar = nil;
 }
