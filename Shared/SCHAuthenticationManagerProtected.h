@@ -11,7 +11,6 @@
 @class SCHDrmRegistrationSession;
 
 // Constants
-extern NSString * const kSCHAuthenticationManagerUsername;
 extern NSString * const kSCHAuthenticationManagerServiceName;
 
 extern NSTimeInterval const kSCHAuthenticationManagerSecondsInAMinute;
