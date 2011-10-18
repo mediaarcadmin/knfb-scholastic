@@ -25,6 +25,9 @@
 @property (nonatomic, retain) IBOutlet SCHPlayButton *playButton;
 @property (nonatomic, retain) IBOutlet UIButton *closeButton;
 
+@property (nonatomic, retain) IBOutlet UIView *loadingView;
+@property (nonatomic, retain) IBOutlet UIProgressView *progressView;
+
 @property (nonatomic, assign) id <SCHHelpViewControllerDelegate> delegate;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil 

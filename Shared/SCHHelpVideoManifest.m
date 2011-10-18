@@ -45,7 +45,7 @@
     NSMutableDictionary *returnedItems = [[[NSMutableDictionary alloc] init] autorelease];
     
     for (NSString *item in [manifestURLs allKeys]) {
-        NSRange range = [item rangeOfString:searchFor];
+        NSRange range = [item rangeOfString:searchFor options:NSCaseInsensitiveSearch];
         if (range.location != NSNotFound) {
             [returnedItems setValue:[manifestURLs objectForKey:item] forKey:item];
         }

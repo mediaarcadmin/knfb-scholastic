@@ -660,6 +660,13 @@ static SCHDictionaryDownloadManager *sharedManager = nil;
     return dictionaryDirectory;
 }
 
+- (BOOL)haveHelpVideosDownloaded
+{
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    NSString *helpVideoVersion = [defaults objectForKey:@"helpVideoCurrentCompletedVersion"];
+    return (helpVideoVersion?YES:NO);
+}
+
 - (NSString *)helpVideoDirectory
 {
     NSString *applicationSupportDirectory = [NSSearchPathForDirectoriesInDomains(NSApplicationSupportDirectory, NSUserDomainMask, YES) lastObject];

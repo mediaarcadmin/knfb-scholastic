@@ -99,6 +99,7 @@
 	NSError *error = nil;
 	
     // check in here for available device space
+	self.previousPercentage = -1;
     
 	// check first to see if the file has been created
 	NSMutableURLRequest *request = nil;
@@ -257,6 +258,14 @@
     self.currentFileIndex++;
     
     if (self.currentFileIndex >= [self.downloadList count]) {
+        // we've successfully downloaded all files
+        // set the defaults version string to 1.0 (hardcoded at present)
+        NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+        [defaults setValue:@"1.0" forKey:@"helpVideoCurrentCompletedVersion"];
+        [defaults setValue:downloadList forKey:@"helpVideoURLDictionary"];
+        [defaults synchronize];
+        
+
         // fire a 100% notification
         NSDictionary *userInfo = [NSDictionary dictionaryWithObjectsAndKeys:
                                   [NSNumber numberWithFloat:1.0f], @"currentPercentage",
@@ -266,13 +275,7 @@
                                withObject:userInfo
                             waitUntilDone:YES];
         
-        // we've successfully downloaded all files
-        // set the defaults version string to 1.0 (hardcoded at present)
-        NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-        [defaults setValue:@"1.0" forKey:@"helpVideoCurrentCompletedVersion"];
-        [defaults setValue:downloadList forKey:@"helpVideoURLDictionary"];
-        [defaults synchronize];
-        
+
         SCHDictionaryUserRequestState userRequestState = [[SCHDictionaryDownloadManager sharedDownloadManager] userRequestState];
         
         if (userRequestState == SCHDictionaryUserDeclined) {
@@ -304,12 +307,12 @@
 		
 		float currentFilePercentage = (self.expectedFileSize > 0 ? (float)((float)self.currentFilesize / (float)self.expectedFileSize) : 0.0);
 		
-		if (currentFilePercentage - self.previousPercentage > 0.001f) {
-            
-            float fileTotalPercentage = 1/(float)[self.downloadList count];
-            
-            float currentPercentage = (fileTotalPercentage * (self.currentFileIndex)) + (currentFilePercentage * fileTotalPercentage);
+        float fileTotalPercentage = 1/(float)[self.downloadList count];
+        
+        float currentPercentage = (fileTotalPercentage * (self.currentFileIndex)) + (currentFilePercentage * fileTotalPercentage);
 			
+		if (currentPercentage - self.previousPercentage > 0.001f) {
+            
 			NSDictionary *userInfo = [NSDictionary dictionaryWithObjectsAndKeys:
 									  [NSNumber numberWithFloat:currentPercentage], @"currentPercentage",
 									  nil];

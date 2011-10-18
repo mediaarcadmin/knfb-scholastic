@@ -74,6 +74,9 @@ typedef enum {
 
 + (SCHDictionaryDownloadManager *)sharedDownloadManager;
 
+// have the help videos been downloaded?
+- (BOOL)haveHelpVideosDownloaded;
+
 // the local help videos directory
 - (NSString *)helpVideoDirectory;
 

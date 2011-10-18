@@ -64,7 +64,7 @@
 		
 		self.connection = [NSURLConnection 
 						   connectionWithRequest:[NSURLRequest requestWithURL:
-                                                  [NSURL URLWithString:@"http://localhost/~gordon/helpvideos/HelpVideoManifest.xml"]]
+                                                  [NSURL URLWithString:@"http://bitwink.com/private/helpvideos/HelpVideoManifest.xml"]]
 						   delegate:self];
 		
         if (self.connection == nil) {
