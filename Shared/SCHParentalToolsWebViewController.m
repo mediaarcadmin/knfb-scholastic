@@ -10,6 +10,8 @@
 
 #import "SCHAuthenticationManager.h"
 #import "NSURL+Extensions.h"
+#import "SCHAccountValidationViewController.h"
+#import "SCHSyncManager.h"
 
 @implementation SCHParentalToolsWebViewController
 
@@ -60,11 +62,32 @@
     [self releaseViewObjects];
 }
 
+#pragma mark - Action methods
+
+- (void)back:(id)sender
+{
+    // if the parent view is for account validation then by pass it as we move back
+    NSUInteger viewControllerCount = [self.navigationController.viewControllers count];
+    if (viewControllerCount >= 2 &&
+        [[self.navigationController.viewControllers objectAtIndex:viewControllerCount - 2] 
+         isKindOfClass:[SCHAccountValidationViewController class]] == YES) {
+        NSMutableArray *viewControllers = [NSMutableArray arrayWithArray:self.navigationController.viewControllers];
+        [viewControllers removeObjectAtIndex:viewControllerCount - 2];
+        self.navigationController.viewControllers = [NSArray arrayWithArray:viewControllers];
+    }
+
+    // trigger a sync to grab any changes
+    [[SCHSyncManager sharedSyncManager] firstSync:YES];
+
+    [super back:nil];
+}
+
 #pragma mark - Notification methods
 
 - (void)willResignActiveNotification:(NSNotification *)notification
 {
-    [self back:nil];
+    // make sure we DO NOT by pass any account validation view
+    [super back:nil];
 }
 
 #pragma mark - UIWebView delegate methods
