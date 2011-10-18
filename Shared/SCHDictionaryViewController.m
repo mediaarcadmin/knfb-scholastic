@@ -226,6 +226,8 @@
         self.progressBar.hidden = YES;
         return;
     }
+    
+    BOOL willDownloadAfterHelpVideo = ([[SCHDictionaryDownloadManager sharedDownloadManager] userRequestState] == SCHDictionaryUserAccepted);
 
     switch (state) {
         case SCHDictionaryProcessingStateUserSetup:
@@ -262,11 +264,19 @@
             self.progressBar.hidden = YES;
             break;
         }
+        case SCHDictionaryProcessingStateHelpVideoManifest:
+        case SCHDictionaryProcessingStateDownloadingHelpVideos:
         case SCHDictionaryProcessingStateManifestVersionCheck:
         case SCHDictionaryProcessingStateNeedsManifest:
         {
-            self.topLabel.text = @"Downloading";
-            self.bottomLabel.text = @"The dictionary is currently downloading from the Internet. You can wait for it to finish, or look up your word later.";
+            if (willDownloadAfterHelpVideo) {
+                self.topLabel.text = @"Downloading";
+                self.bottomLabel.text = @"The dictionary is currently downloading from the Internet. You can wait for it to finish, or look up your word later.";
+            } else {
+                self.topLabel.text = @"No Dictionary";
+                self.bottomLabel.text = @"The dictionary needs to be downloaded before it can be used. To download the dictionary go to Parent Tools.";
+            }
+
             [self.activityIndicator startAnimating];
             self.progressBar.hidden = YES;
             break;
@@ -277,7 +287,7 @@
             self.bottomLabel.text = @"The dictionary is currently downloading from the Internet. You can wait for it to finish, or look up your word later.";
             [self.activityIndicator stopAnimating];
             self.progressBar.hidden = NO;
-            self.progressBar.progress = [SCHDictionaryDownloadManager sharedDownloadManager].currentDownloadPercentage;
+            self.progressBar.progress = [SCHDictionaryDownloadManager sharedDownloadManager].currentDictionaryDownloadPercentage;
             [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(downloadPercentageUpdate:) name:kSCHDictionaryDownloadPercentageUpdate object:nil];
             break;
         }

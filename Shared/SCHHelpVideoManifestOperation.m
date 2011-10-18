@@ -1,51 +1,47 @@
 //
-//  SCHDictionaryManifestOperation.m
+//  SCHHelpVideoManifestOperation.m
 //  Scholastic
 //
-//  Created by Gordon Christie on 17/03/2011.
-//  Copyright 2011 BitWink. All rights reserved.
+//  Created by Gordon Christie on 18/10/2011.
+//  Copyright (c) 2011 BitWink. All rights reserved.
 //
 
-#import "SCHDictionaryManifestOperation.h"
+#import "SCHHelpVideoManifestOperation.h"
 #import "SCHDictionaryDownloadManager.h"
 
-@interface SCHDictionaryManifestOperation ()
+@interface SCHHelpVideoManifestOperation ()
 
 @property BOOL executing;
 @property BOOL finished;
 @property BOOL parsingComplete;
-@property BOOL parsingDictionaryInfo;
+@property BOOL parsingVideoFiles;
 
 @property (nonatomic, retain) NSURLConnection *connection;
 @property (nonatomic, retain) NSXMLParser *manifestParser;
 @property (nonatomic, retain) NSMutableData *connectionData;
-@property (nonatomic, retain) NSMutableArray *manifestEntries;
-@property (nonatomic, retain) SCHDictionaryManifestEntry *currentEntry;
 
 - (void)startOp;
 - (void)finishOp;
 
 @end
 
-@implementation SCHDictionaryManifestOperation
+@implementation SCHHelpVideoManifestOperation
 
 @synthesize executing;
 @synthesize finished;
 @synthesize parsingComplete;
-@synthesize parsingDictionaryInfo;
+@synthesize parsingVideoFiles;
 @synthesize manifestParser;
 @synthesize connection;
 @synthesize connectionData;
-@synthesize manifestEntries; 
-@synthesize currentEntry;
+@synthesize manifestItem; 
 
 - (void)dealloc 
 {
 	[connection release], connection = nil;
 	[connectionData release], connectionData = nil;
 	[manifestParser release], manifestParser = nil;
-    [manifestEntries release], manifestEntries = nil;
-    [currentEntry release], currentEntry = nil;
+    [manifestItem release], manifestItem = nil;
 	
 	[super dealloc];
 }
@@ -60,16 +56,15 @@
             [self performSelectorOnMainThread:@selector(start) withObject:nil waitUntilDone:NO];
             return;
         }
-
+        
 		NSLog(@"Starting operation..");
 		
 		self.connectionData = [[[NSMutableData alloc] init] autorelease];
-        self.manifestEntries = [[[NSMutableArray alloc] init] autorelease];
+        self.manifestItem = [[[SCHHelpVideoManifest alloc] init] autorelease];
 		
 		self.connection = [NSURLConnection 
 						   connectionWithRequest:[NSURLRequest requestWithURL:
-//                                                  [NSURL URLWithString:@"http://reader.ebooks2.scholastic.com/reader/sch/UpdateManifest.xml"]]
-                                                  [NSURL URLWithString:@"http://localhost/~gordon/dictionary/UpdateManifest.xml"]]
+                                                  [NSURL URLWithString:@"http://localhost/~gordon/helpvideos/HelpVideoManifest.xml"]]
 						   delegate:self];
 		
         if (self.connection == nil) {
@@ -109,12 +104,12 @@ didReceiveResponse:(NSURLResponse *)response
 {
 	NSLog(@"finished download, starting parsing..");
     
-    self.parsingDictionaryInfo = NO;
+    self.parsingVideoFiles = NO;
     self.manifestParser = [[[NSXMLParser alloc] initWithData:self.connectionData] autorelease];
     [self.manifestParser setDelegate:self];
     [self.manifestParser parse];
     
-    [SCHDictionaryDownloadManager sharedDownloadManager].manifestUpdates = self.manifestEntries;    
+    [SCHDictionaryDownloadManager sharedDownloadManager].helpVideoManifest = self.manifestItem;    
     
     [self cancel];
 }
@@ -135,56 +130,38 @@ didStartElement:(NSString *)elementName
  qualifiedName:(NSString *)qName 
     attributes:(NSDictionary *)attributeDict
 {
-//	NSLog(@"parsing element %@", elementName);
-	if ( [elementName isEqualToString:@"UpdateComponent"] ) {
-		NSString * attributeStringValue = [attributeDict objectForKey:@"Name"];
-		if (attributeStringValue && [attributeStringValue isEqualToString:@"Dictionary"]) {
-			self.parsingDictionaryInfo = YES;
-		}
+    //	NSLog(@"parsing element %@", elementName);
+	if ( [elementName isEqualToString:@"HelpVideoManifest"] ) {
+			self.parsingVideoFiles = YES;
 	}
-	else if (self.parsingDictionaryInfo) {
+	else if (self.parsingVideoFiles) {
 		
-		if ( [elementName isEqualToString:@"UpdateEntry"] ) {
-            self.currentEntry = [[[SCHDictionaryManifestEntry alloc] init] autorelease];
-            
-			NSString * attributeStringValue = [attributeDict objectForKey:@"StartVersion"];
-			if (attributeStringValue) {
-				self.currentEntry.fromVersion = attributeStringValue;
-			}
-			attributeStringValue = [attributeDict objectForKey:@"EndVersion"];
-			if (attributeStringValue) {
-                self.currentEntry.toVersion = attributeStringValue;
-			}
-			attributeStringValue = [attributeDict objectForKey:@"href"];
-			if (attributeStringValue) {
-                self.currentEntry.url = attributeStringValue;
-			}
+		if ( [elementName isEqualToString:@"HelpVideo"] ) {
+			NSString *typeValue = [attributeDict objectForKey:@"Type"];
+			NSString *urlValue = [attributeDict objectForKey:@"href"];
+			if (typeValue && urlValue) {
+                NSLog(@"Setting %@ for %@", urlValue, typeValue);
+                [self.manifestItem.manifestURLs setValue:urlValue forKey:typeValue];
+            }
 		}
 	}
 }
 
 - (void)parser:(NSXMLParser *)parser 
-  didEndElement:(NSString *)elementName 
-   namespaceURI:(NSString *)namespaceURI 
-  qualifiedName:(NSString *)qName
+ didEndElement:(NSString *)elementName 
+  namespaceURI:(NSString *)namespaceURI 
+ qualifiedName:(NSString *)qName
 {
-	if ( [elementName isEqualToString:@"UpdateComponent"] ) {
-		self.parsingDictionaryInfo = NO;
+	if ( [elementName isEqualToString:@"HelpVideoManifest"] ) {
+		self.parsingVideoFiles = NO;
 	}
-    
-	if (self.parsingDictionaryInfo && [elementName isEqualToString:@"UpdateEntry"] ) {
-        if (self.currentEntry) {
-            [self.manifestEntries addObject:self.currentEntry];
-            self.currentEntry = nil;
-        }
-    }
 }
 
 - (void)parserDidEndDocument:(NSXMLParser *)parser
 {
-    [[SCHDictionaryDownloadManager sharedDownloadManager] threadSafeUpdateDictionaryState:SCHDictionaryProcessingStateManifestVersionCheck];
+    [[SCHDictionaryDownloadManager sharedDownloadManager] threadSafeUpdateDictionaryState:SCHDictionaryProcessingStateDownloadingHelpVideos];
     [SCHDictionaryDownloadManager sharedDownloadManager].isProcessing = NO;
-
+    
 	self.parsingComplete = YES;
 }
 

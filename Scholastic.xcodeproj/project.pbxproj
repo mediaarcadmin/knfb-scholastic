@@ -1922,6 +1922,12 @@
 		F85C9D8C13E19CA8006F0546 /* BookShelfErrorIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = F85C9D8A13E19CA8006F0546 /* BookShelfErrorIcon.png */; };
 		F85C9D8E13E19CA8006F0546 /* BookShelfErrorIcon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F85C9D8B13E19CA8006F0546 /* BookShelfErrorIcon@2x.png */; };
 		F85E0309134F59E800E81D58 /* SCHCustomToolbar.m in Sources */ = {isa = PBXBuildFile; fileRef = F85E0308134F59E700E81D58 /* SCHCustomToolbar.m */; };
+		F8615B19144D69F100D0D265 /* SCHHelpVideoManifestOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = F8615B18144D69F100D0D265 /* SCHHelpVideoManifestOperation.m */; };
+		F8615B1A144D69F100D0D265 /* SCHHelpVideoManifestOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = F8615B18144D69F100D0D265 /* SCHHelpVideoManifestOperation.m */; };
+		F8615B1D144D6E7000D0D265 /* SCHHelpVideoFileDownloadOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = F8615B1C144D6E7000D0D265 /* SCHHelpVideoFileDownloadOperation.m */; };
+		F8615B1E144D6E7000D0D265 /* SCHHelpVideoFileDownloadOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = F8615B1C144D6E7000D0D265 /* SCHHelpVideoFileDownloadOperation.m */; };
+		F8615B21144D712400D0D265 /* SCHHelpVideoManifest.m in Sources */ = {isa = PBXBuildFile; fileRef = F8615B20144D712400D0D265 /* SCHHelpVideoManifest.m */; };
+		F8615B22144D712400D0D265 /* SCHHelpVideoManifest.m in Sources */ = {isa = PBXBuildFile; fileRef = F8615B20144D712400D0D265 /* SCHHelpVideoManifest.m */; };
 		F864333713813B0100BEB8EB /* SCHBookShelfViewController_iPad.m in Sources */ = {isa = PBXBuildFile; fileRef = F864333613813B0100BEB8EB /* SCHBookShelfViewController_iPad.m */; };
 		F8687ED613BA234100B59987 /* BookShelfNewIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = F8687ED513BA234100B59987 /* BookShelfNewIcon.png */; };
 		F86DEBFE13A21B6800053999 /* SCHStoryInteractionControllerStartingLetter.m in Sources */ = {isa = PBXBuildFile; fileRef = F86DEBFB13A21B6800053999 /* SCHStoryInteractionControllerStartingLetter.m */; };
@@ -3512,6 +3518,12 @@
 		F85C9D8B13E19CA8006F0546 /* BookShelfErrorIcon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "BookShelfErrorIcon@2x.png"; path = "Resources/BookShelfErrorIcon@2x.png"; sourceTree = "<group>"; };
 		F85E0307134F59E700E81D58 /* SCHCustomToolbar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHCustomToolbar.h; path = Shared/SCHCustomToolbar.h; sourceTree = "<group>"; };
 		F85E0308134F59E700E81D58 /* SCHCustomToolbar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHCustomToolbar.m; path = Shared/SCHCustomToolbar.m; sourceTree = "<group>"; };
+		F8615B17144D69F100D0D265 /* SCHHelpVideoManifestOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHHelpVideoManifestOperation.h; path = Shared/SCHHelpVideoManifestOperation.h; sourceTree = "<group>"; };
+		F8615B18144D69F100D0D265 /* SCHHelpVideoManifestOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHHelpVideoManifestOperation.m; path = Shared/SCHHelpVideoManifestOperation.m; sourceTree = "<group>"; };
+		F8615B1B144D6E7000D0D265 /* SCHHelpVideoFileDownloadOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHHelpVideoFileDownloadOperation.h; path = Shared/SCHHelpVideoFileDownloadOperation.h; sourceTree = "<group>"; };
+		F8615B1C144D6E7000D0D265 /* SCHHelpVideoFileDownloadOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHHelpVideoFileDownloadOperation.m; path = Shared/SCHHelpVideoFileDownloadOperation.m; sourceTree = "<group>"; };
+		F8615B1F144D712400D0D265 /* SCHHelpVideoManifest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHHelpVideoManifest.h; path = Shared/SCHHelpVideoManifest.h; sourceTree = "<group>"; };
+		F8615B20144D712400D0D265 /* SCHHelpVideoManifest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHHelpVideoManifest.m; path = Shared/SCHHelpVideoManifest.m; sourceTree = "<group>"; };
 		F864333513813B0100BEB8EB /* SCHBookShelfViewController_iPad.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHBookShelfViewController_iPad.h; path = iPad/SCHBookShelfViewController_iPad.h; sourceTree = "<group>"; };
 		F864333613813B0100BEB8EB /* SCHBookShelfViewController_iPad.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHBookShelfViewController_iPad.m; path = iPad/SCHBookShelfViewController_iPad.m; sourceTree = "<group>"; };
 		F86666A013AF8C370050979F /* SCHBookShelfTableViewCell_iPad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = SCHBookShelfTableViewCell_iPad.xib; path = iPad/SCHBookShelfTableViewCell_iPad.xib; sourceTree = "<group>"; };
@@ -6023,6 +6035,7 @@
 		F867904B1332346C001FDB2F /* Dictionary Processing */ = {
 			isa = PBXGroup;
 			children = (
+				F8B30455144D8C9B0037708F /* Help Video Operations */,
 				F8C4C41913325A150057420E /* Dictionary Operations */,
 				F8C4C3F91332594A0057420E /* SCHDictionaryDownloadManager.h */,
 				F8C4C3FA1332594A0057420E /* SCHDictionaryDownloadManager.m */,
@@ -6114,6 +6127,19 @@
 				F81B4BF91356E9FE00C0DAF4 /* SCHLicenseAcquisitionOperation.m */,
 			);
 			name = "Processing Operations";
+			sourceTree = "<group>";
+		};
+		F8B30455144D8C9B0037708F /* Help Video Operations */ = {
+			isa = PBXGroup;
+			children = (
+				F8615B17144D69F100D0D265 /* SCHHelpVideoManifestOperation.h */,
+				F8615B18144D69F100D0D265 /* SCHHelpVideoManifestOperation.m */,
+				F8615B1B144D6E7000D0D265 /* SCHHelpVideoFileDownloadOperation.h */,
+				F8615B1C144D6E7000D0D265 /* SCHHelpVideoFileDownloadOperation.m */,
+				F8615B1F144D712400D0D265 /* SCHHelpVideoManifest.h */,
+				F8615B20144D712400D0D265 /* SCHHelpVideoManifest.m */,
+			);
+			name = "Help Video Operations";
 			sourceTree = "<group>";
 		};
 		F8B55E42134B577A0028534A /* ZipArchive */ = {
@@ -8081,6 +8107,9 @@
 				28211CD5140E160300872701 /* SCHStoryInteractionStandaloneViewController.m in Sources */,
 				C9B7851B142B7CD40070BEDE /* SCHReadingStoryInteractionButton.m in Sources */,
 				520FE8A1143F3B15002AB30B /* SCHLibreAccessConstants.m in Sources */,
+				F8615B19144D69F100D0D265 /* SCHHelpVideoManifestOperation.m in Sources */,
+				F8615B1D144D6E7000D0D265 /* SCHHelpVideoFileDownloadOperation.m in Sources */,
+				F8615B21144D712400D0D265 /* SCHHelpVideoManifest.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -8430,6 +8459,9 @@
 				28211CD6140E160300872701 /* SCHStoryInteractionStandaloneViewController.m in Sources */,
 				C9B7851C142B7CD40070BEDE /* SCHReadingStoryInteractionButton.m in Sources */,
 				520FE8A2143F3B15002AB30B /* SCHLibreAccessConstants.m in Sources */,
+				F8615B1A144D69F100D0D265 /* SCHHelpVideoManifestOperation.m in Sources */,
+				F8615B1E144D6E7000D0D265 /* SCHHelpVideoFileDownloadOperation.m in Sources */,
+				F8615B22144D712400D0D265 /* SCHHelpVideoManifest.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
