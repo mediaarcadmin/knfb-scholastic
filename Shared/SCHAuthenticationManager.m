@@ -9,7 +9,6 @@
 #import "SCHAuthenticationManager.h"
 #import "SCHAuthenticationManagerProtected.h"
 
-#import "SCHScholasticWebService.h"
 #import "SCHLibreAccessWebService.h"
 #import "SFHFKeychainUtils.h"
 #import "Reachability.h"
@@ -76,7 +75,6 @@ typedef struct AuthenticateWithUserNameParameters AuthenticateWithUserNameParame
 @synthesize isAuthenticated;
 @synthesize tokenExpires;
 @synthesize waitingOnResponse;
-@synthesize scholasticWebService;
 @synthesize accountValidation;
 @synthesize libreAccessWebService;
 @synthesize drmRegistrationSession;
