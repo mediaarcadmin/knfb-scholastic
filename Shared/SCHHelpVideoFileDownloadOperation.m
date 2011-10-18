@@ -72,7 +72,7 @@
 #pragma mark Startup
 - (void)start
 {
-    NSAssert(self.videoManifest != nil, @"File URL cannot be nil for SCHHelpVideoFileDownloadOperation.");
+    NSAssert(self.videoManifest != nil, @"videoManifest cannot be nil for SCHHelpVideoFileDownloadOperation.");
     
 	if ([self isCancelled]) {
 		NSLog(@"Cancelled.");
@@ -175,7 +175,7 @@
         }
     } 
     
-    NSLog(@"Dictionary Filesize receiving:%llu expected:%llu", self.currentFilesize, [response expectedContentLength]);
+    NSLog(@"Help Video Filesize receiving:%llu expected:%llu", self.currentFilesize, [response expectedContentLength]);
     
 	if (self.currentFilesize == [response expectedContentLength]) {
         [connection cancel];
