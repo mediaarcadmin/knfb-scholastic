@@ -2435,7 +2435,7 @@
 		28C7415D13D8A09B00EEAB36 /* SCHBaseTextViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = SCHBaseTextViewController.xib; path = iPhone/SCHBaseTextViewController.xib; sourceTree = "<group>"; };
 		28C7416013D8A4E700EEAB36 /* SCHDeregisterDeviceViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHDeregisterDeviceViewController.h; path = Shared/SCHDeregisterDeviceViewController.h; sourceTree = "<group>"; };
 		28C7416113D8A4E700EEAB36 /* SCHDeregisterDeviceViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHDeregisterDeviceViewController.m; path = Shared/SCHDeregisterDeviceViewController.m; sourceTree = "<group>"; };
-		28C7416813D8A6F400EEAB36 /* SCHSetupDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHSetupDelegate.h; path = Shared/SCHSetupDelegate.h; sourceTree = "<group>"; };
+		28C7416813D8A6F400EEAB36 /* SCHSettingsDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHSettingsDelegate.h; path = Shared/SCHSettingsDelegate.h; sourceTree = "<group>"; };
 		28CC9856139CD550001F560F /* SCHStoryInteractionDraggableTargetView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCHStoryInteractionDraggableTargetView.h; sourceTree = "<group>"; };
 		28CC9857139CD550001F560F /* SCHStoryInteractionDraggableTargetView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCHStoryInteractionDraggableTargetView.m; sourceTree = "<group>"; };
 		28CC9858139CD550001F560F /* SCHStoryInteractionDraggableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCHStoryInteractionDraggableView.h; sourceTree = "<group>"; };
@@ -5596,7 +5596,7 @@
 			children = (
 				528465ED144DB5F7009DBADD /* SCHAccountValidationViewController.h */,
 				528465EE144DB5F7009DBADD /* SCHAccountValidationViewController.m */,
-				28C7416813D8A6F400EEAB36 /* SCHSetupDelegate.h */,
+				28C7416813D8A6F400EEAB36 /* SCHSettingsDelegate.h */,
 				28E6BCEF13D72C7500A5C9E3 /* SCHBaseSetupViewController.h */,
 				28E6BCF013D72C7500A5C9E3 /* SCHBaseSetupViewController.m */,
 				529385B212DF231800045B44 /* SCHSettingsViewController.h */,

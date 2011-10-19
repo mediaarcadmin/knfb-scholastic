@@ -8,7 +8,7 @@
 
 #import "SCHAccountValidationViewController.h"
 #import "SCHAuthenticationManager.h"
-#import "SCHSetupDelegate.h"
+#import "SCHSettingsDelegate.h"
 #import "LambdaAlert.h"
 #import "Reachability.h"
 #import "SCHAccountValidation.h"

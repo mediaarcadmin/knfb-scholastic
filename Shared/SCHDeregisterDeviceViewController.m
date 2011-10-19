@@ -8,7 +8,7 @@
 
 #import "SCHDeregisterDeviceViewController.h"
 #import "SCHAuthenticationManager.h"
-#import "SCHSetupDelegate.h"
+#import "SCHSettingsDelegate.h"
 #import "LambdaAlert.h"
 #import "SCHUnderlinedButton.h"
 #import "Reachability.h"
@@ -212,16 +212,17 @@ static const CGFloat kDeregisterContentHeightLandscape = 380;
     [self.spinner stopAnimating];
     [self setEnablesBackButton:YES];
     
-    LambdaAlert *alert = [[LambdaAlert alloc]
-                          initWithTitle:NSLocalizedString(@"Device Deregistered", @"Device Deregistered") 
-                          message:NSLocalizedString(@"This device has been deregistered. To read books, please register this device again.", @"") ];
-    [alert addButtonWithTitle:NSLocalizedString(@"OK", @"OK") block:^{}];    
-    
-    [self.setupDelegate dismissSettingsWithCompletionHandler:^{
+    [self.setupDelegate popToRootViewControllerAnimated:YES withCompletionHandler:^{
+                
+        LambdaAlert *alert = [[LambdaAlert alloc]
+                              initWithTitle:NSLocalizedString(@"Device Deregistered", @"Device Deregistered") 
+                              message:NSLocalizedString(@"This device has been deregistered. To read books, please register this device again.", @"") ];
+        [alert addButtonWithTitle:NSLocalizedString(@"OK", @"OK") block:^{}];   
         [alert show];
+        [alert release];
     }];
     
-    [alert release]; 
+    
 }
 
 - (void)authenticationManagerDidFailDeregistration:(NSNotification *)notification

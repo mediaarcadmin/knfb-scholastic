@@ -384,21 +384,34 @@
 
 #pragma mark - settings
 
-- (void)dismissSettingsWithCompletionHandler:(dispatch_block_t)completion;
+- (void)dismissSettingsAnimated:(BOOL)animated withCompletionHandler:(dispatch_block_t)completion;
 {
-
-    // check for deregistration
-    if ([[SCHAuthenticationManager sharedAuthenticationManager] hasUsernameAndPassword] == NO) {
-        [self dismissModalViewControllerAnimated:YES];
-        [self.navigationController popViewControllerAnimated:NO];
-    } else {
-        [self dismissModalViewControllerAnimated:YES];
+    if (self.modalViewController) {
+        [self dismissModalViewControllerAnimated:animated];
     }
     
     // This is an inelegant solution but there isn't a straightforward way to perform the animation and then 
     // fire the completion when it is finished
     if (completion) {
-        double delayInSeconds = 0.3;
+        double delayInSeconds = animated ? 0.3 : 0.0;
+        dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);
+        dispatch_after(popTime, dispatch_get_main_queue(), completion);
+    }
+}
+
+- (void)popToRootViewControllerAnimated:(BOOL)animated withCompletionHandler:(dispatch_block_t)completion
+{
+    if (self.modalViewController) {
+        [self dismissModalViewControllerAnimated:animated];
+        [self.navigationController popViewControllerAnimated:NO];
+    } else {
+        [self.navigationController popViewControllerAnimated:animated];
+    }
+    
+    // This is an inelegant solution but there isn't a straightforward way to perform the animation and then 
+    // fire the completion when it is finished
+    if (completion) {
+        double delayInSeconds = animated ? 0.3 : 0.0;
         dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);
         dispatch_after(popTime, dispatch_get_main_queue(), completion);
     }

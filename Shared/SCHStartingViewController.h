@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "SCHStartingViewCell.h"
-#import "SCHSetupDelegate.h"
+#import "SCHSettingsDelegate.h"
 
 @class SCHLoginPasswordViewController;
 @class SCHSetupBookshelvesViewController;

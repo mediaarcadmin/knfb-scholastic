@@ -7,7 +7,7 @@
 //
 
 #import "SCHSetupBookshelvesViewController.h"
-#import "SCHSetupDelegate.h"
+#import "SCHSettingsDelegate.h"
 #import "SCHParentalToolsWebViewController.h"
 #import "SCHAuthenticationManager.h"
 
@@ -52,7 +52,7 @@
 {
     // TODO: URL
     //[[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"http://www.scholastic.com"]];
-    [self.setupDelegate dismissSettingsWithCompletionHandler:nil];
+    [self.setupDelegate dismissSettingsAnimated:YES withCompletionHandler:nil];
 
     // SCHParentalToolsWebViewController *parentalToolsWebViewController = [[[SCHParentalToolsWebViewController alloc] init] autorelease];
 

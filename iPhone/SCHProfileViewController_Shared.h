@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 #import <CoreData/CoreData.h>
 #import "SCHProfileViewCell.h"
-#import "SCHSetupDelegate.h"
+#import "SCHSettingsDelegate.h"
 
 @class SCHSettingsViewController;
 @class SCHProfileItem;

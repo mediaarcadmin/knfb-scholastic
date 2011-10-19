@@ -10,6 +10,7 @@
 
 @protocol SCHSettingsDelegate <NSObject>
 
-- (void)dismissSettingsWithCompletionHandler:(dispatch_block_t)completion;
+- (void)dismissSettingsAnimated:(BOOL)animated withCompletionHandler:(dispatch_block_t)completion;
+- (void)popToRootViewControllerAnimated:(BOOL)animated withCompletionHandler:(dispatch_block_t)completion;
 
 @end

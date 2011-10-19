@@ -423,22 +423,31 @@ typedef enum {
         }
         [next release];
     } else {
-        [self dismissSettingsWithCompletionHandler:nil];
+        [self dismissSettingsAnimated:YES withCompletionHandler:nil];
     }
 }
 
-- (void)dismissSettingsWithCompletionHandler:(dispatch_block_t)completion
+- (void)dismissSettingsAnimated:(BOOL)animated withCompletionHandler:(dispatch_block_t)completion;
 {
-    [self dismissModalViewControllerAnimated:YES];
+    if (self.modalViewController) {
+        [self dismissModalViewControllerAnimated:animated];
+    }
+    
     [self pushProfileView];
     
     // This is an inelegant solution but there isn't a straightforward way to perform the animation and then 
     // fire the completion when it is finished
     if (completion) {
-        double delayInSeconds = 0.3;
+        double delayInSeconds = animated ? 0.3 : 0.0;
         dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);
         dispatch_after(popTime, dispatch_get_main_queue(), completion);
     }
+}
+
+- (void)popToRootViewControllerAnimated:(BOOL)animated withCompletionHandler:(dispatch_block_t)completion
+{
+    // Already at root so just call dismiss settings
+    [self dismissSettingsAnimated:animated withCompletionHandler:completion];
 }
 
 #pragma mark - Profile view

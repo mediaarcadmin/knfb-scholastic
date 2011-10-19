@@ -9,7 +9,7 @@
 #import <QuartzCore/QuartzCore.h>
 #import "SCHBaseSetupViewController.h"
 #import "SCHCustomToolbar.h"
-#import "SCHSetupDelegate.h"
+#import "SCHSettingsDelegate.h"
 
 @implementation SCHBaseSetupViewController
 
@@ -103,7 +103,7 @@
 
 - (void)closeSettings
 {
-    [self.setupDelegate dismissSettingsWithCompletionHandler:nil];
+    [self.setupDelegate dismissSettingsAnimated:YES withCompletionHandler:nil];
 }
 
 @end
