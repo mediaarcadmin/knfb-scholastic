@@ -423,23 +423,21 @@ typedef enum {
         }
         [next release];
     } else {
-        [self dismissSettingsFormWithAlert:nil];
+        [self dismissSettingsWithCompletionHandler:nil];
     }
 }
 
-- (void)dismissSettingsFormWithAlert:(LambdaAlert *)alert;
+- (void)dismissSettingsWithCompletionHandler:(dispatch_block_t)completion
 {
     [self dismissModalViewControllerAnimated:YES];
     [self pushProfileView];
     
-    // This is not the most elegant solution but there isn't a straightforward way to get the pop/push to animate and then 
-    // show the alert when it is complete
-    if (alert) {
+    // This is an inelegant solution but there isn't a straightforward way to perform the animation and then 
+    // fire the completion when it is finished
+    if (completion) {
         double delayInSeconds = 0.3;
         dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);
-        dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
-            [alert show];
-        });
+        dispatch_after(popTime, dispatch_get_main_queue(), completion);
     }
 }
 

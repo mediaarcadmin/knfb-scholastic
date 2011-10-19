@@ -103,7 +103,7 @@
 
 - (void)closeSettings
 {
-    [self.setupDelegate dismissSettingsFormWithAlert:nil];
+    [self.setupDelegate dismissSettingsWithCompletionHandler:nil];
 }
 
 @end

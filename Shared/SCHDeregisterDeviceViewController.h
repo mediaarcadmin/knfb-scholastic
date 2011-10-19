@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "SCHBaseSetupViewController.h"
 
-@protocol SCHSetupDelegate;
+@protocol SCHSettingsDelegate;
 
 @class SCHUnderlinedButton;
 

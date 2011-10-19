@@ -217,7 +217,9 @@ static const CGFloat kDeregisterContentHeightLandscape = 380;
                           message:NSLocalizedString(@"This device has been deregistered. To read books, please register this device again.", @"") ];
     [alert addButtonWithTitle:NSLocalizedString(@"OK", @"OK") block:^{}];    
     
-    [self.setupDelegate dismissSettingsFormWithAlert:alert];
+    [self.setupDelegate dismissSettingsWithCompletionHandler:^{
+        [alert show];
+    }];
     
     [alert release]; 
 }

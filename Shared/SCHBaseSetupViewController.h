@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 
 @class SCHCustomToolbar;
-@protocol SCHSetupDelegate; 
+@protocol SCHSettingsDelegate; 
 
 @interface SCHBaseSetupViewController : UIViewController {}
 
@@ -17,7 +17,7 @@
 @property (nonatomic, retain) IBOutlet UIView *containerView;
 @property (nonatomic, retain) IBOutlet UIImageView *backgroundView;
 @property (nonatomic, retain) IBOutlet UIBarButtonItem *barSpacer;
-@property (nonatomic, assign) id<SCHSetupDelegate> setupDelegate;
+@property (nonatomic, assign) id<SCHSettingsDelegate> setupDelegate;
 
 // set the appropriate button background for a setup screen button
 - (void)setButtonBackground:(UIButton *)button;

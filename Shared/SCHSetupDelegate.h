@@ -7,10 +7,9 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "LambdaAlert.h"
 
-@protocol SCHSetupDelegate <NSObject>
+@protocol SCHSettingsDelegate <NSObject>
 
-- (void)dismissSettingsFormWithAlert:(LambdaAlert *)alert;
+- (void)dismissSettingsWithCompletionHandler:(dispatch_block_t)completion;
 
 @end

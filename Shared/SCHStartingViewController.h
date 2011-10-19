@@ -14,7 +14,7 @@
 @class SCHSetupBookshelvesViewController;
 @class SCHDownloadDictionaryViewController;
 
-@interface SCHStartingViewController : UIViewController <UITableViewDelegate, UITableViewDataSource, SCHStartingViewCellDelegate, SCHSetupDelegate> {}
+@interface SCHStartingViewController : UIViewController <UITableViewDelegate, UITableViewDataSource, SCHStartingViewCellDelegate, SCHSettingsDelegate> {}
 
 @property (nonatomic, retain) IBOutlet UITableView *starterTableView;
 @property (nonatomic, retain) IBOutlet UIImageView *backgroundView;
