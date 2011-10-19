@@ -431,7 +431,16 @@ typedef enum {
 {
     [self dismissModalViewControllerAnimated:YES];
     [self pushProfileView];
-    [alert show];
+    
+    // This is not the most elegant solution but there isn't a straightforward way to get the pop/push to animate and then 
+    // show the alert when it is complete
+    if (alert) {
+        double delayInSeconds = 0.3;
+        dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);
+        dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+            [alert show];
+        });
+    }
 }
 
 #pragma mark - Profile view
