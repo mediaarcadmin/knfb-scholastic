@@ -13,6 +13,7 @@
 #define UATSERVER 1 // Setting 0 points to the production server - BitWink employees should NOT use this!
 #define NONDRMAUTHENTICATION 0
 #define DICTIONARY_DOWNLOAD_DISABLED 0
+#define FLOW_VIEW_ENABLED 0
 
 // Stops all NSLog() functions executing under release builds
 #ifdef __OPTIMIZE__
