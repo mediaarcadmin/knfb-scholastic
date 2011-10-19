@@ -407,7 +407,11 @@ typedef enum {
         }
     }
 
-    if (next == nil && [[SCHDictionaryDownloadManager sharedDownloadManager] dictionaryProcessingState] == SCHDictionaryProcessingStateUserSetup) {
+    BOOL needsToBeAsked = 
+    ([[SCHDictionaryDownloadManager sharedDownloadManager] userRequestState] == SCHDictionaryUserNotYetAsked) 
+    || ([[SCHDictionaryDownloadManager sharedDownloadManager] dictionaryProcessingState] == SCHDictionaryProcessingStateUserSetup);
+    
+    if (next == nil && needsToBeAsked) {
         SCHDownloadDictionaryViewController *downloadDictionary = [[SCHDownloadDictionaryViewController alloc] init];
         downloadDictionary.setupDelegate = self;
         next = downloadDictionary;

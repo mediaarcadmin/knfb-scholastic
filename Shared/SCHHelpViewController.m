@@ -13,6 +13,7 @@
 #import "SCHPlayButton.h"
 #import "UIColor+Scholastic.h"
 #import "SCHUserDefaults.h"
+#import "SCHDictionaryDownloadManager.h"
 
 // Constants
 static NSString * const kSCHHelpViewControllerYoungerVideo = @"youngerHelpVideo";
@@ -29,9 +30,9 @@ static CGFloat const kSCHStoryInteractionControllerCloseBorderWidth = 1.5;
 
 @property (nonatomic, retain) MPMoviePlayerController *moviePlayer;
 @property (nonatomic, assign) BOOL youngerMode;
-@property (nonatomic, assign) BOOL firstPlay;
 @property (nonatomic, assign) BOOL statusBarHiddenOnEntry;
 
+- (void)loadVideo;
 - (void)releaseViewObjects;
 - (void)pause;
 - (void)play;
@@ -42,14 +43,14 @@ static CGFloat const kSCHStoryInteractionControllerCloseBorderWidth = 1.5;
 @implementation SCHHelpViewController
 
 @synthesize movieContainerView;
-@synthesize borderView;
 @synthesize playButton;
 @synthesize closeButton;
 @synthesize moviePlayer;
 @synthesize youngerMode;
-@synthesize firstPlay;
 @synthesize statusBarHiddenOnEntry;
 @synthesize delegate;
+@synthesize loadingView;
+@synthesize progressView;
 
 #pragma mark - Object lifecycle
 
@@ -60,13 +61,6 @@ static CGFloat const kSCHStoryInteractionControllerCloseBorderWidth = 1.5;
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
         youngerMode = aYoungerMode;
-        if (youngerMode == YES) {
-            firstPlay = [[NSUserDefaults standardUserDefaults] boolForKey:kSCHUserDefaultsYoungerHelpVideoFirstPlay];
-            [[NSUserDefaults standardUserDefaults] setBool:NO forKey:kSCHUserDefaultsYoungerHelpVideoFirstPlay];
-        } else {
-            firstPlay = [[NSUserDefaults standardUserDefaults] boolForKey:kSCHUserDefaultsOlderHelpVideoFirstPlay];
-            [[NSUserDefaults standardUserDefaults] setBool:NO forKey:kSCHUserDefaultsOlderHelpVideoFirstPlay];            
-        }
     }
     return(self);
 }
@@ -75,8 +69,9 @@ static CGFloat const kSCHStoryInteractionControllerCloseBorderWidth = 1.5;
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
     
+    [loadingView release], loadingView = nil;
+    [progressView release], progressView = nil;
     [movieContainerView release], movieContainerView = nil;
-    [borderView release], borderView = nil;
     [moviePlayer stop];
     [moviePlayer release], moviePlayer = nil;
     [playButton release], playButton = nil;
@@ -98,27 +93,16 @@ static CGFloat const kSCHStoryInteractionControllerCloseBorderWidth = 1.5;
     // Do any additional setup after loading the view from its nib.
         
     self.closeButton.alpha = 0.4f;
+    self.wantsFullScreenLayout = YES;
     
-    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
-        self.wantsFullScreenLayout = YES;
-    } else {
+    BOOL iPad = (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad);
+    
+    if (iPad) {
         self.closeButton.layer.cornerRadius = kSCHStoryInteractionControllerCloseCornerRadius;  
         self.closeButton.layer.borderWidth = kSCHStoryInteractionControllerCloseBorderWidth;
         self.closeButton.layer.borderColor = [[UIColor whiteColor] CGColor];
     }
-    
-    self.borderView.layer.cornerRadius = kSCHStoryInteractionControllerVideoCornerRadius;  
-    self.borderView.layer.borderWidth = kSCHStoryInteractionControllerVideoBorderWidth;
         
-    if (self.youngerMode == NO) {
-        self.borderView.layer.borderColor = [[UIColor SCHPurple1Color] CGColor];    
-    } else {
-        self.borderView.layer.borderColor = [[UIColor SCHBlue2Color] CGColor];    
-    }                
-    
-    if (self.firstPlay == YES) {
-        self.playButton.hidden = YES;
-    }
     self.playButton.icon = SCHPlayButtonIconNone;
     
     self.playButton.actionBlock = ^(SCHPlayButton *button) {
@@ -129,13 +113,43 @@ static CGFloat const kSCHStoryInteractionControllerCloseBorderWidth = 1.5;
         }
     };
     
-    NSURL *movieURL = nil;
-    if (self.youngerMode == YES) {
-        movieURL = [[NSBundle mainBundle] URLForResource:kSCHHelpViewControllerYoungerVideo 
-                                           withExtension:kSCHHelpViewControllerVideoExtension];   
+    if ([[SCHDictionaryDownloadManager sharedDownloadManager] haveHelpVideosDownloaded]) {
+        self.loadingView.hidden = YES;
+        [self loadVideo];
     } else {
-        movieURL = [[NSBundle mainBundle] URLForResource:kSCHHelpViewControllerOlderVideo 
-                                           withExtension:kSCHHelpViewControllerVideoExtension];
+        self.loadingView.hidden = NO;
+        self.progressView.progress = [[SCHDictionaryDownloadManager sharedDownloadManager] currentHelpVideoDownloadPercentage];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(helpVideoDownloadPercentageUpdate:) name:kSCHHelpVideoDownloadPercentageUpdate object:nil];
+    }
+    
+}
+
+
+- (void)loadVideo
+{
+    BOOL iPad = (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad);
+
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    NSDictionary *helpVideoDictionary = [defaults objectForKey:@"helpVideoURLDictionary"];
+    
+    NSURL *movieURL = nil;
+    
+    if (helpVideoDictionary) {
+        NSString *ageSearch = (self.youngerMode?@"Young":@"Old");
+        NSString *deviceSearch = (iPad?@"iPad":@"iPhone");
+        
+        for (NSString *key in [helpVideoDictionary allKeys]) {
+            if ([key rangeOfString:ageSearch options:NSCaseInsensitiveSearch].location != NSNotFound) {
+                if ([key rangeOfString:deviceSearch options:NSCaseInsensitiveSearch].location != NSNotFound) {
+                    NSString *fileURL = [helpVideoDictionary objectForKey:key];
+                    NSString *filename = [fileURL lastPathComponent];
+                    NSString *filePath = [[SCHDictionaryDownloadManager sharedDownloadManager] helpVideoDirectory];
+                    movieURL = [NSURL fileURLWithPath:[NSString stringWithFormat:@"%@/%@", filePath, filename]];
+                    break;
+                }
+            }
+        }
+        
     }
     
     if (movieURL) {
@@ -164,23 +178,19 @@ static CGFloat const kSCHStoryInteractionControllerCloseBorderWidth = 1.5;
                                              selector:@selector(willResignActiveNotification:)
                                                  name:UIApplicationWillResignActiveNotification
                                                object:nil];    
-}
 
+}
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
     
-    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
-        self.statusBarHiddenOnEntry = [[UIApplication sharedApplication] isStatusBarHidden];
-        [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationFade];
-    }
+    self.statusBarHiddenOnEntry = [[UIApplication sharedApplication] isStatusBarHidden];
+    [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationFade];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
 {
-    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
-        [[UIApplication sharedApplication] setStatusBarHidden:self.statusBarHiddenOnEntry];
-    }
+    [[UIApplication sharedApplication] setStatusBarHidden:self.statusBarHiddenOnEntry];
 }
 
 - (void)viewDidUnload
@@ -235,11 +245,7 @@ static CGFloat const kSCHStoryInteractionControllerCloseBorderWidth = 1.5;
             case MPMoviePlaybackStatePaused:
                 self.playButton.play = NO;
                 if (self.moviePlayer.currentPlaybackTime >= self.moviePlayer.duration) {
-                    if (self.firstPlay == YES) {
-                        [self dismiss];
-                    } else {
-                        self.playButton.icon = SCHPlayButtonIconPlay;  
-                    }
+                    self.playButton.icon = SCHPlayButtonIconPlay;  
                 }
                 break;
             case MPMoviePlaybackStatePlaying:
@@ -255,6 +261,21 @@ static CGFloat const kSCHStoryInteractionControllerCloseBorderWidth = 1.5;
 - (void)willResignActiveNotification:(NSNotification *)notification
 {
     [self pause];
+}
+
+- (void)helpVideoDownloadPercentageUpdate:(NSNotification *)note
+{
+    NSDictionary *userInfo = [note userInfo];
+    NSNumber *currentPercentage = [userInfo objectForKey:@"currentPercentage"];
+    
+    if (currentPercentage != nil) {
+        if ([currentPercentage floatValue] == 1) {
+            self.loadingView.hidden = YES;
+            [self loadVideo];
+        } else {
+            self.progressView.progress = [currentPercentage floatValue];
+        }
+    }
 }
 
 @end
