@@ -384,7 +384,7 @@
 
 #pragma mark - settings
 
-- (void)dismissSettingsForm
+- (void)dismissSettingsFormWithAlert:(LambdaAlert *)alert;
 {
     // check for deregistration
     if ([[SCHAuthenticationManager sharedAuthenticationManager] hasUsernameAndPassword] == NO) {
@@ -393,6 +393,8 @@
     } else {
         [self dismissModalViewControllerAnimated:YES];
     }
+    
+    [alert show];
 }
 
 - (void)pushSettingsController

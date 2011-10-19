@@ -211,7 +211,15 @@ static const CGFloat kDeregisterContentHeightLandscape = 380;
 {
     [self.spinner stopAnimating];
     [self setEnablesBackButton:YES];
-    [self.setupDelegate dismissSettingsForm];
+    
+    LambdaAlert *alert = [[LambdaAlert alloc]
+                          initWithTitle:NSLocalizedString(@"Device Deregistered", @"Device Deregistered") 
+                          message:NSLocalizedString(@"This device has been deregistered. To read books, please register this device again.", @"") ];
+    [alert addButtonWithTitle:NSLocalizedString(@"OK", @"OK") block:^{}];    
+    
+    [self.setupDelegate dismissSettingsFormWithAlert:alert];
+    
+    [alert release]; 
 }
 
 - (void)authenticationManagerDidFailDeregistration:(NSNotification *)notification

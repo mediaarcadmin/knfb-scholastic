@@ -52,7 +52,7 @@
 {
     // TODO: URL
     //[[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"http://www.scholastic.com"]];
-    [self.setupDelegate dismissSettingsForm];
+    [self.setupDelegate dismissSettingsFormWithAlert:nil];
 
     // SCHParentalToolsWebViewController *parentalToolsWebViewController = [[[SCHParentalToolsWebViewController alloc] init] autorelease];
 

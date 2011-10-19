@@ -46,15 +46,21 @@ enum {
 };
 
 typedef enum {
+	kSCHStartingViewControllerStateInitial = 0,
+    kSCHStartingViewControllerStateWaitingForLogin
+} SCHStartingViewControllerState;
+
+typedef enum {
+    SCHStartingViewControllerNoSampleBookshelf = 0,
 	SCHStartingViewControllerYoungerBookshelf,
-    SCHStartingViewControllerOlderBookshelf,
-    SCHStartingViewControllerNoSampleBookshelf
+    SCHStartingViewControllerOlderBookshelf
 } SCHStartingViewControllerBookshelf;
 
 @interface SCHStartingViewController ()
 
 @property (nonatomic, retain) SCHProfileViewController_Shared *profileViewController;
 @property (nonatomic, assign) SCHStartingViewControllerBookshelf sampleBookshelf;
+@property (nonatomic, assign) SCHStartingViewControllerState *state;
 
 - (void)setupAssetsForOrientation:(UIInterfaceOrientation)orientation;
 - (void)firstLogin;
@@ -77,18 +83,7 @@ typedef enum {
 @synthesize modalNavigationController;
 @synthesize profileViewController;
 @synthesize sampleBookshelf;
-
-- (void)awakeFromNib
-{
-    [super awakeFromNib];
-    
-    self.sampleBookshelf = SCHStartingViewControllerNoSampleBookshelf;
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(authenticationManagerDidDeregister:)
-                                                 name:SCHAuthenticationManagerDidDeregisterNotification
-                                               object:nil];
-}
+@synthesize state;
 
 - (void)releaseViewObjects
 {
@@ -428,14 +423,15 @@ typedef enum {
         }
         [next release];
     } else {
-        [self dismissSettingsForm];
+        [self dismissSettingsFormWithAlert:nil];
     }
 }
 
-- (void)dismissSettingsForm
+- (void)dismissSettingsFormWithAlert:(LambdaAlert *)alert;
 {
     [self dismissModalViewControllerAnimated:YES];
     [self pushProfileView];
+    [alert show];
 }
 
 #pragma mark - Profile view
@@ -508,22 +504,6 @@ typedef enum {
         [vc showActivity:NO];
         [self advanceToNextSignInForm];
     }
-}
-
-- (void)authenticationManagerDidDeregister:(NSNotification *)notification
-{
-    if (self.modalViewController != nil) {
-        [self.modalViewController dismissModalViewControllerAnimated:NO];
-    }
-    
-    [self.navigationController popToRootViewControllerAnimated:NO];   
-    
-    LambdaAlert *alert = [[LambdaAlert alloc]
-                          initWithTitle:NSLocalizedString(@"Device Deregistered", @"Device Deregistered") 
-                          message:NSLocalizedString(@"This device has been deregistered. To read books, please register this device again.", @"") ];
-    [alert addButtonWithTitle:NSLocalizedString(@"OK", @"OK") block:^{}];
-    [alert show];
-    [alert release];    
 }
 
 @end
