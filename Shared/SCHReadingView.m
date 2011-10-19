@@ -284,10 +284,16 @@ managedObjectContext:(NSManagedObjectContext *)managedObjectContext
     switch (self.selectionMode) {
         case SCHReadingViewSelectionModeYoungerDictionary: {
 
-            EucMenuItem *dictionaryItem = [[[EucMenuItem alloc] initWithTitle:NSLocalizedString(@"Look Up", "Younger Reader iPhone and iPad Look Up option in popup menu")
-                                                                       action:@selector(selectYoungerWord:)] autorelease];
-            
-            ret = [NSArray arrayWithObjects:dictionaryItem, nil];
+            NSString *word = [self wordFromSelection:[selector selectedRange]];
+            if (word) {
+                
+                if ([[SCHDictionaryAccessManager sharedAccessManager] dictionaryContainsWord:word forCategory:kSCHDictionaryYoungReader]) {
+                    EucMenuItem *dictionaryItem = [[[EucMenuItem alloc] initWithTitle:NSLocalizedString(@"Look Up", "Younger Reader iPhone and iPad Look Up option in popup menu")
+                                                                               action:@selector(selectYoungerWord:)] autorelease];
+                    
+                    ret = [NSArray arrayWithObjects:dictionaryItem, nil];
+                }
+            }
         } break;
         case SCHReadingViewSelectionModeHighlights: {
             if ([self.selector selectedRangeIsHighlight]) {

@@ -37,5 +37,7 @@ extern NSString* const kSCHDictionaryOlderReader;
 // stop all speaking
 - (void)stopAllSpeaking;
 
+// does the dictionary have a definition for the word in question?
+- (BOOL)dictionaryContainsWord:(NSString *)word forCategory:(NSString*)category;
 
 @end
