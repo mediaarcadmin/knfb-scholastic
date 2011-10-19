@@ -30,7 +30,6 @@ static CGFloat const kSCHStoryInteractionControllerCloseBorderWidth = 1.5;
 
 @property (nonatomic, retain) MPMoviePlayerController *moviePlayer;
 @property (nonatomic, assign) BOOL youngerMode;
-@property (nonatomic, assign) BOOL firstPlay;
 @property (nonatomic, assign) BOOL statusBarHiddenOnEntry;
 
 - (void)loadVideo;
@@ -48,7 +47,6 @@ static CGFloat const kSCHStoryInteractionControllerCloseBorderWidth = 1.5;
 @synthesize closeButton;
 @synthesize moviePlayer;
 @synthesize youngerMode;
-@synthesize firstPlay;
 @synthesize statusBarHiddenOnEntry;
 @synthesize delegate;
 @synthesize loadingView;
@@ -63,13 +61,6 @@ static CGFloat const kSCHStoryInteractionControllerCloseBorderWidth = 1.5;
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
         youngerMode = aYoungerMode;
-        if (youngerMode == YES) {
-            firstPlay = [[NSUserDefaults standardUserDefaults] boolForKey:kSCHUserDefaultsYoungerHelpVideoFirstPlay];
-            [[NSUserDefaults standardUserDefaults] setBool:NO forKey:kSCHUserDefaultsYoungerHelpVideoFirstPlay];
-        } else {
-            firstPlay = [[NSUserDefaults standardUserDefaults] boolForKey:kSCHUserDefaultsOlderHelpVideoFirstPlay];
-            [[NSUserDefaults standardUserDefaults] setBool:NO forKey:kSCHUserDefaultsOlderHelpVideoFirstPlay];            
-        }
     }
     return(self);
 }
@@ -112,9 +103,6 @@ static CGFloat const kSCHStoryInteractionControllerCloseBorderWidth = 1.5;
         self.closeButton.layer.borderColor = [[UIColor whiteColor] CGColor];
     }
         
-    if (self.firstPlay == YES) {
-        self.playButton.hidden = YES;
-    }
     self.playButton.icon = SCHPlayButtonIconNone;
     
     self.playButton.actionBlock = ^(SCHPlayButton *button) {
@@ -257,11 +245,7 @@ static CGFloat const kSCHStoryInteractionControllerCloseBorderWidth = 1.5;
             case MPMoviePlaybackStatePaused:
                 self.playButton.play = NO;
                 if (self.moviePlayer.currentPlaybackTime >= self.moviePlayer.duration) {
-                    if (self.firstPlay == YES) {
-                        [self dismiss];
-                    } else {
-                        self.playButton.icon = SCHPlayButtonIconPlay;  
-                    }
+                    self.playButton.icon = SCHPlayButtonIconPlay;  
                 }
                 break;
             case MPMoviePlaybackStatePlaying:

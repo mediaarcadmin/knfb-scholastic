@@ -622,21 +622,6 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 {
 	[super viewWillAppear:animated];
     [self setupAssetsForOrientation:self.interfaceOrientation];
-    
-    if ([[SCHDictionaryDownloadManager sharedDownloadManager] haveHelpVideosDownloaded]) {
-        if (youngerMode == YES) {
-            if ([[NSUserDefaults standardUserDefaults] boolForKey:kSCHUserDefaultsYoungerHelpVideoFirstPlay] == YES) {
-                self.firstTimePlayForHelpController = YES;
-                [self presentHelpAnimated:NO];
-            }
-        } else {
-            if ([[NSUserDefaults standardUserDefaults] boolForKey:kSCHUserDefaultsOlderHelpVideoFirstPlay] == YES) {
-                self.firstTimePlayForHelpController = YES;
-                [self presentHelpAnimated:NO];
-                
-            }
-        }
-    }
 }
 
 - (void)viewDidAppear:(BOOL)animated
