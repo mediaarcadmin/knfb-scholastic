@@ -12,10 +12,7 @@
 @interface SCHSetupBookshelvesViewController : SCHBaseModalViewController {}
 
 @property (nonatomic, retain) IBOutlet UIButton *setupBookshelvesButton;
-@property (nonatomic, retain) IBOutlet UIActivityIndicatorView *spinner;
 
 - (IBAction)setupBookshelves:(id)sender;
-
-- (void)showActivity:(BOOL)activity;
 
 @end

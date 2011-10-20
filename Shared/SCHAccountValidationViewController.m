@@ -153,6 +153,10 @@ static const CGFloat kDeregisterContentHeightLandscape = 380;
                 SCHParentalToolsWebViewController *parentalToolsWebViewController = [[[SCHParentalToolsWebViewController alloc] init] autorelease];
                 parentalToolsWebViewController.pToken = pToken;
                 [weakSelf.navigationController pushViewController:parentalToolsWebViewController animated:YES];                
+                // remove us from the view hiearachy - now we're no longer needed
+                NSMutableArray *viewControllers = [NSMutableArray arrayWithArray:weakSelf.navigationController.viewControllers];
+                [viewControllers removeObject:weakSelf];     
+                self.navigationController.viewControllers = [NSArray arrayWithArray:viewControllers];
             }
             
             [weakSelf.spinner stopAnimating];

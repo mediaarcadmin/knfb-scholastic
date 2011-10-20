@@ -12,22 +12,29 @@
 #import "SCHAuthenticationManager.h"
 #import "SCHAccountValidationViewController.h"
 
+@interface SCHSetupBookshelvesViewController ()
+
+@property (nonatomic, retain) NSTimer *moveToWebParentToolsTimer;
+           
+@end 
+
 @implementation SCHSetupBookshelvesViewController
 
 @synthesize setupBookshelvesButton;
-@synthesize spinner;
 @synthesize topToolbar;
+@synthesize moveToWebParentToolsTimer;
 
 - (void)releaseViewObjects
 {
     [setupBookshelvesButton release], setupBookshelvesButton = nil;
-    [spinner release], spinner = nil;
     [super releaseViewObjects];
 }
 
 - (void)dealloc
 {
     [self releaseViewObjects];
+    [moveToWebParentToolsTimer release], moveToWebParentToolsTimer = nil;
+    
     [super dealloc];
 }
 
@@ -46,7 +53,12 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    [self showActivity:NO];
+    
+    self.moveToWebParentToolsTimer = [NSTimer scheduledTimerWithTimeInterval:300.0 
+                                                                      target:self 
+                                                                    selector:@selector(moveToWebParentTools:) 
+                                                                    userInfo:nil 
+                                                                     repeats:NO];    
 }
 
 - (void)viewDidUnload
@@ -57,28 +69,21 @@
 
 - (void)setupBookshelves:(id)sender
 {
-    // This is where the view should do the necessary steps to present the WPT wizard, authenticatingif required
-    // As a placeholder the spinner just starts
-    [self showActivity:YES];
+    [self.moveToWebParentToolsTimer invalidate];
+    self.moveToWebParentToolsTimer = nil;
     
-//    if ([[SCHAuthenticationManager sharedAuthenticationManager] hasValidPToken] == YES) {
-//        SCHParentalToolsWebViewController *parentalToolsWebViewController = [[[SCHParentalToolsWebViewController alloc] init] autorelease];
-//        [self.navigationController pushViewController:parentalToolsWebViewController animated:YES];
-//    } else {
-//        SCHAccountValidationViewController *accountValidationViewController = [[[SCHAccountValidationViewController alloc] init] autorelease];
-//        [self.navigationController pushViewController:accountValidationViewController animated:YES];        
-//    }    
+    if ([[SCHAuthenticationManager sharedAuthenticationManager] hasValidPToken] == YES) {
+        SCHParentalToolsWebViewController *parentalToolsWebViewController = [[[SCHParentalToolsWebViewController alloc] init] autorelease];
+        [self.navigationController pushViewController:parentalToolsWebViewController animated:YES];
+    } else {
+        SCHAccountValidationViewController *accountValidationViewController = [[[SCHAccountValidationViewController alloc] init] autorelease];
+        [self.navigationController pushViewController:accountValidationViewController animated:YES];        
+    }    
 }
 
-- (void)showActivity:(BOOL)activity
+- (void)moveToWebParentTools:(NSTimer *)theTimer
 {
-    [self view]; // ensure the view is loaded
-    
-    if (activity) {
-        [self.spinner startAnimating];
-    } else {
-        [self.spinner stopAnimating];
-    }
+    [self setupBookshelves:nil];
 }
 
 @end

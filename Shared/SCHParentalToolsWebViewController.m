@@ -66,28 +66,28 @@
 
 - (void)back:(id)sender
 {
-    // if the parent view is for account validation then by pass it as we move back
-    NSUInteger viewControllerCount = [self.navigationController.viewControllers count];
-    if (viewControllerCount >= 2 &&
-        [[self.navigationController.viewControllers objectAtIndex:viewControllerCount - 2] 
-         isKindOfClass:[SCHAccountValidationViewController class]] == YES) {
-        NSMutableArray *viewControllers = [NSMutableArray arrayWithArray:self.navigationController.viewControllers];
-        [viewControllers removeObjectAtIndex:viewControllerCount - 2];
-        self.navigationController.viewControllers = [NSArray arrayWithArray:viewControllers];
-    }
-
     // trigger a sync to grab any changes
     [[SCHSyncManager sharedSyncManager] firstSync:YES];
 
     [super back:nil];
 }
 
+- (void)requestPassword
+{
+    SCHAccountValidationViewController *accountValidationViewController = [[[SCHAccountValidationViewController alloc] init] autorelease];
+    NSMutableArray *viewControllers = [NSMutableArray arrayWithArray:self.navigationController.viewControllers];
+    
+    [viewControllers insertObject:accountValidationViewController atIndex:[viewControllers indexOfObject:self]];     
+    self.navigationController.viewControllers = [NSArray arrayWithArray:viewControllers];
+    
+    [self back:nil];
+}
+
 #pragma mark - Notification methods
 
 - (void)willResignActiveNotification:(NSNotification *)notification
 {
-    // make sure we DO NOT by pass any account validation view
-    [super back:nil];
+    [self requestPassword];
 }
 
 #pragma mark - UIWebView delegate methods
@@ -97,15 +97,16 @@
 {
     BOOL ret = YES;
     
-//    if (navigationType == UIWebViewNavigationTypeLinkClicked) {
+    if (navigationType == UIWebViewNavigationTypeLinkClicked) {
 //        NSDictionary *parameters = [[request URL] queryParameters];
 //        NSString *cmd = [parameters objectForKey:@"cmd"];
 //        
 //        if ([cmd isEqualToString:@"bookshelfSetupDidCompleteWithSuccess"] == YES) {
-//            ret = NO;
-//            [self.setupDelegate dismissSettingsForm];
-//        }
-//    }
+        if ([[[request URL] absoluteString] isEqualToString:@"http://reader.sch.libredigital.com/reader/sch/ScholasticReader.exe"] == YES) {
+            ret = NO;
+            //[self.setupDelegate dismissSettingsForm];
+        }
+    }
     
     return(ret);
 }
