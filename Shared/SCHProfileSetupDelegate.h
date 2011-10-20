@@ -10,7 +10,7 @@
 
 @protocol SCHProfileSetupDelegate <SCHModalPresenterDelegate>
 
-- (void)showCurrentSamples;
-- (void)showCurrentProfile;
+- (void)showCurrentSamplesAnimated:(BOOL)animated;
+- (void)showCurrentProfileAnimated:(BOOL)animated;
 
 @end

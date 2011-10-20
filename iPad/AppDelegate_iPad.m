@@ -27,16 +27,13 @@ static NSTimeInterval const kAppDelegate_iPadSyncManagerWakeDelay = 5.0;
 {    
 	[super application:application didFinishLaunchingWithOptions:launchOptions];
 	
-    if ([[SCHAuthenticationManager sharedAuthenticationManager] hasUsernameAndPassword]) {
-        // skip the starter screen if already authenticated
-        SCHProfileViewController_iPad *profileViewController = [[SCHProfileViewController_iPad alloc] initWithNibName:@"SCHProfileViewController_iPad" bundle:nil];
-        profileViewController.managedObjectContext = self.coreDataHelper.managedObjectContext;
-        [self.navigationController pushViewController:profileViewController animated:NO];
-        [profileViewController release];
-    }
-    
     [self.window addSubview:navigationController.view];
     [self.window makeKeyAndVisible];
+    
+    if ([[SCHAuthenticationManager sharedAuthenticationManager] hasUsernameAndPassword]) {
+        // skip the starter screen if already authenticated
+        [self.startingViewController pushAuthenticatedProfile];
+    }
     
     return(YES);
 }

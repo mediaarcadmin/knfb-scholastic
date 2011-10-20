@@ -94,7 +94,7 @@
     [tap release];
  
     self.settingsViewController.settingsDelegate = self;
-    self.settingsViewController.managedObjectContext = self.managedObjectContext;
+    self.settingsViewController.managedObjectContext = self.managedObjectContext; 
 }  
 
 - (void)viewDidUnload
@@ -441,7 +441,7 @@
 
 - (void)showUpdatesBubble:(BOOL)show
 {
-    [UIView animateWithDuration:0.5
+    [UIView animateWithDuration:0.1
                           delay:0
                         options:UIViewAnimationOptionAllowUserInteraction
                      animations:^{

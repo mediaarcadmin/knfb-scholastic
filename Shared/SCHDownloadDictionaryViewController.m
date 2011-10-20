@@ -81,9 +81,9 @@
     if ([[SCHAppStateManager sharedAppStateManager] isSampleStore] == NO) {
         [[SCHDictionaryDownloadManager sharedDownloadManager] threadSafeUpdateDictionaryState:SCHDictionaryProcessingStateUserDeclined];
         [SCHDictionaryDownloadManager sharedDownloadManager].userRequestState = SCHDictionaryUserDeclined;
-        [self.profileSetupDelegate showCurrentProfile];
+        [self.profileSetupDelegate showCurrentProfileAnimated:YES];
     } else {
-        [self.profileSetupDelegate showCurrentSamples];
+        [self.profileSetupDelegate showCurrentSamplesAnimated:YES];
     }
 }
 
@@ -92,9 +92,9 @@
     [[SCHDictionaryDownloadManager sharedDownloadManager] beginDictionaryDownload];
     
     if ([[SCHAppStateManager sharedAppStateManager] isSampleStore] == NO) {
-        [self.profileSetupDelegate showCurrentProfile];
+        [self.profileSetupDelegate showCurrentProfileAnimated:YES];
     } else {
-        [self.profileSetupDelegate showCurrentSamples];
+        [self.profileSetupDelegate showCurrentSamplesAnimated:YES];
     }
 }
 

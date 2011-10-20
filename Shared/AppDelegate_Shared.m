@@ -33,6 +33,7 @@ static NSString* const prModelCertFilename = @"iphonecert.dat";
 @implementation AppDelegate_Shared
 
 @synthesize window;
+@synthesize startingViewController;
 @synthesize coreDataHelper;
 
 #pragma mark - Application lifecycle
@@ -40,6 +41,7 @@ static NSString* const prModelCertFilename = @"iphonecert.dat";
 - (void)dealloc 
 {    
     [coreDataHelper release], coreDataHelper = nil;
+    [startingViewController release], startingViewController = nil;
     [window release], window = nil;
     [super dealloc];
 }

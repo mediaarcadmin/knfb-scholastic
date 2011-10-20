@@ -46,17 +46,17 @@ enum {
 };
 
 typedef enum {
+    SCHStartingViewControllerNoSampleBookshelf = 0,
+	SCHStartingViewControllerYoungerBookshelf,
+    SCHStartingViewControllerOlderBookshelf
+} SCHStartingViewControllerBookshelf;
+
+typedef enum {
 	kSCHStartingViewControllerProfileSyncStateNone = 0,
     kSCHStartingViewControllerProfileSyncStateWaitingForLoginToComplete,
     kSCHStartingViewControllerProfileSyncStateWaitingForBookshelves,
     kSCHStartingViewControllerProfileSyncStateSamplesSync
 } SCHStartingViewControllerProfileSyncState;
-
-typedef enum {
-    SCHStartingViewControllerNoSampleBookshelf = 0,
-	SCHStartingViewControllerYoungerBookshelf,
-    SCHStartingViewControllerOlderBookshelf
-} SCHStartingViewControllerBookshelf;
 
 @interface SCHStartingViewController ()
 
@@ -72,8 +72,8 @@ typedef enum {
 - (BOOL)dictionaryDownloadRequired;
 - (BOOL)bookshelfSetupRequired;
 - (void)checkDictionaryDownloadForSamples;
-- (void)checkBookshelvesAndDictionaryDownloadForProfile;
 - (void)recheckBookshelvesForProfile;
+- (void)checkBookshelvesAndDictionaryDownloadForProfile;
 - (void)checkBookshelvesAndDictionaryDownloadForProfile:(BOOL)rechecking;
 
 - (SCHProfileViewController_Shared *)profileViewController;
@@ -130,7 +130,6 @@ typedef enum {
                                              selector:@selector(profileSyncDidComplete:)
                                                  name:SCHProfileSyncComponentDidCompleteNotification
                                                object:nil];
-    
 }
 
 - (void)viewDidUnload
@@ -427,14 +426,12 @@ typedef enum {
         [self presentModalViewController:self.modalNavigationController animated:YES];
         [downloadDictionary release];
     } else {
-        [self showCurrentSamples];
+        [self showCurrentSamplesAnimated:YES];
     }
 }
 
-- (void)checkBookshelvesAndDictionaryDownloadForProfile:(BOOL)rechecking
-{
-    BOOL animated = !rechecking;
-    
+- (void)checkBookshelvesAndDictionaryDownloadForProfile:(BOOL)animated
+{    
     UIViewController *next = nil;
     
     if ([self bookshelfSetupRequired]) {
@@ -453,20 +450,36 @@ typedef enum {
      
     if (next) {
         [self.modalNavigationController setViewControllers:[NSArray arrayWithObject:next] animated:animated];
+        
+        if (!self.modalViewController) {
+            [self presentModalViewController:self.modalNavigationController animated:animated];
+        }
+        
         [next release];
     } else {
-        [self showCurrentProfile];
+        [self showCurrentProfileAnimated:YES];
     }
 }
 
 - (void)checkBookshelvesAndDictionaryDownloadForProfile
 {
-    [self checkBookshelvesAndDictionaryDownloadForProfile:NO];
+    [self checkBookshelvesAndDictionaryDownloadForProfile:YES];
 }
 
 - (void)recheckBookshelvesForProfile
 {
-    [self checkBookshelvesAndDictionaryDownloadForProfile:YES];
+    [self checkBookshelvesAndDictionaryDownloadForProfile:NO];
+}
+
+- (void)pushAuthenticatedProfile
+{
+    if ([self bookshelfSetupRequired]) {
+        // Force the view to load from the nib without requiring the run loop to complete
+        [self view];
+        [self checkBookshelvesAndDictionaryDownloadForProfile:NO];
+    } else {
+        [self showCurrentProfileAnimated:NO];
+    }
 }
 
 #pragma mark - SCHProfileSetupDelegate
@@ -492,11 +505,11 @@ typedef enum {
     [self dismissModalViewControllerAnimated:animated withCompletionHandler:completion];
 }
 
-- (void)showCurrentSamples
+- (void)showCurrentSamplesAnimated:(BOOL)animated
 {   
     // TODO: refactor this so there is no implicit knowledge of which we are pushing
     
-    BOOL shouldAnimatePush = YES;
+    BOOL shouldAnimatePush = animated;
     
     if (self.modalViewController) {
         [self dismissModalViewControllerAnimated:YES];
@@ -523,9 +536,9 @@ typedef enum {
     }
 }
 
-- (void)showCurrentProfile
+- (void)showCurrentProfileAnimated:(BOOL)animated
 {   
-    BOOL shouldAnimatePush = YES;
+    BOOL shouldAnimatePush = animated;
 
     if (self.modalViewController) {
         [self dismissModalViewControllerAnimated:YES];

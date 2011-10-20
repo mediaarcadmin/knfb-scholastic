@@ -22,4 +22,6 @@
 @property (nonatomic, retain) IBOutlet UIView *signInHeaderView;
 @property (nonatomic, retain) IBOutlet UINavigationController *modalNavigationController;
 
+- (void)pushAuthenticatedProfile;
+
 @end
