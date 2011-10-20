@@ -145,7 +145,7 @@
 						<int key="IBUIContentMode">7</int>
 						<bool key="IBUIUserInteractionEnabled">NO</bool>
 						<string key="targetRuntimeIdentifier">IBIPadFramework</string>
-						<string key="IBUIText">Visit the Scholastic Book Club Web site to create bookshelves for your kids, assign books to bookshelves, or view reading reports.</string>
+						<string key="IBUIText">Visit the Scholastic Book Clubs Web site to create bookshelves for your kids, assign books to bookshelves, or view reading reports.</string>
 						<object class="NSFont" key="IBUIFont">
 							<string key="NSName">ArialMT</string>
 							<double key="NSSize">13</double>
@@ -784,19 +784,19 @@
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<array class="NSMutableArray" key="referencedPartialClassDescriptions">
 				<object class="IBPartialClassDescription">
-					<string key="className">SCHBaseSetupViewController</string>
+					<string key="className">SCHBaseModalViewController</string>
 					<string key="superclassName">UIViewController</string>
 					<dictionary class="NSMutableDictionary" key="actions">
 						<string key="back:">id</string>
-						<string key="closeSettings">id</string>
+						<string key="close">id</string>
 					</dictionary>
 					<dictionary class="NSMutableDictionary" key="actionInfosByName">
 						<object class="IBActionInfo" key="back:">
 							<string key="name">back:</string>
 							<string key="candidateClassName">id</string>
 						</object>
-						<object class="IBActionInfo" key="closeSettings">
-							<string key="name">closeSettings</string>
+						<object class="IBActionInfo" key="close">
+							<string key="name">close</string>
 							<string key="candidateClassName">id</string>
 						</object>
 					</dictionary>
@@ -826,7 +826,7 @@
 					</dictionary>
 					<object class="IBClassDescriptionSource" key="sourceIdentifier">
 						<string key="majorKey">IBProjectSource</string>
-						<string key="minorKey">./Classes/SCHBaseSetupViewController.h</string>
+						<string key="minorKey">./Classes/SCHBaseModalViewController.h</string>
 					</object>
 				</object>
 				<object class="IBPartialClassDescription">
@@ -839,7 +839,7 @@
 				</object>
 				<object class="IBPartialClassDescription">
 					<string key="className">SCHSettingsViewController</string>
-					<string key="superclassName">SCHBaseSetupViewController</string>
+					<string key="superclassName">SCHBaseModalViewController</string>
 					<dictionary class="NSMutableDictionary" key="actions">
 						<string key="checkBooks:">id</string>
 						<string key="contactCustomerSupport:">id</string>
