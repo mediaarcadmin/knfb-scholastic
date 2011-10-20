@@ -401,6 +401,8 @@ static SCHDictionaryDownloadManager *sharedManager = nil;
                 return;
                 break;
             } else {
+                // if the help videos have already been downloaded, choose our next processing state 
+                // based on the user request state
                 SCHDictionaryUserRequestState userRequestState = [self userRequestState];
                 
                 if (userRequestState == SCHDictionaryUserDeclined) {
@@ -1556,6 +1558,7 @@ static SCHDictionaryDownloadManager *sharedManager = nil;
                 [managedObjectContext release];
                 
                 dispatch_async(dispatch_get_main_queue(), ^{
+                    [self setUserRequestState:SCHDictionaryUserDeclined];
                     [self threadSafeUpdateDictionaryState:SCHDictionaryProcessingStateUserDeclined];
                 });
             });
