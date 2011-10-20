@@ -8,9 +8,10 @@
 
 #import <Foundation/Foundation.h>
 #import "SCHDictionaryDownloadManager.h"
+#import "ZipArchive.h"
 
 
-@interface SCHDictionaryFileUnzipOperation : NSOperation {
+@interface SCHDictionaryFileUnzipOperation : NSOperation <ZipArchiveDelegate> {
     
 }
 
