@@ -4762,14 +4762,6 @@
 			name = AudioBookPlayer;
 			sourceTree = "<group>";
 		};
-		527DDC5C144C69BD004D4FE3 /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				527DDC60144C69BD004D4FE3 /* libKIF.a */,
-			);
-			name = Products;
-			sourceTree = "<group>";
-		};
 		528A2CCE12CCDC380053A343 /* Audio */ = {
 			isa = PBXGroup;
 			children = (

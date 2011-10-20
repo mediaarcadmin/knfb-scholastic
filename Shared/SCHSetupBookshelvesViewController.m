@@ -43,6 +43,11 @@
     
 }
 
+- (void)viewWillAppear:(BOOL)animated
+{
+    [self showActivity:NO];
+}
+
 - (void)viewDidUnload
 {
     [super viewDidUnload];
@@ -51,7 +56,9 @@
 
 - (void)setupBookshelves:(id)sender
 {
-    [self.profileSetupDelegate showCurrentProfile];
+    // This is where the view should do the necessary steps to present the WPT wizard, authenticatingif required
+    // As a placeholder the spinner just starts
+    [self showActivity:YES];
     
 //    if ([[SCHAuthenticationManager sharedAuthenticationManager] hasValidPToken] == YES) {
 //        SCHParentalToolsWebViewController *parentalToolsWebViewController = [[[SCHParentalToolsWebViewController alloc] init] autorelease];

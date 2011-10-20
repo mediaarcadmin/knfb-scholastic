@@ -48,6 +48,7 @@ enum {
 typedef enum {
 	kSCHStartingViewControllerProfileSyncStateNone = 0,
     kSCHStartingViewControllerProfileSyncStateWaitingForLoginToComplete,
+    kSCHStartingViewControllerProfileSyncStateWaitingForBookshelves,
     kSCHStartingViewControllerProfileSyncStateSamplesSync
 } SCHStartingViewControllerProfileSyncState;
 
@@ -68,7 +69,12 @@ typedef enum {
 - (NSString *)sampleBookshelfTitleAtIndex:(NSInteger)index;
 - (void)openSampleBookshelfAtIndex:(NSInteger)index;
 - (void)showSignInForm;
-- (void)advanceToNextSignInForm;
+- (BOOL)dictionaryDownloadRequired;
+- (BOOL)bookshelfSetupRequired;
+- (void)checkDictionaryDownloadForSamples;
+- (void)checkBookshelvesAndDictionaryDownloadForProfile;
+- (void)recheckBookshelvesForProfile;
+- (void)checkBookshelvesAndDictionaryDownloadForProfile:(BOOL)rechecking;
 
 - (SCHProfileViewController_Shared *)profileViewController;
 
@@ -112,6 +118,9 @@ typedef enum {
     
     self.starterTableView.accessibilityLabel = @"Starting Tableview";
     
+    [self.modalNavigationController setModalTransitionStyle:UIModalTransitionStyleCoverVertical];
+    [self.modalNavigationController setModalPresentationStyle:UIModalPresentationFormSheet];
+
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(willEnterForeground:)
                                                  name:UIApplicationWillEnterForegroundNotification
@@ -297,8 +306,7 @@ typedef enum {
     }
     
     // if we were to actually login then a successful login would trigger a sync 
-    // after which a profile complete notification would call 
-    // advanceToNextSignInForm would to proceed, we are stepping over the login
+    // after which a profile complete notification would handled. This code fakes that 
     self.profileSyncState = kSCHStartingViewControllerProfileSyncStateSamplesSync;
     [[SCHSyncManager sharedSyncManager] firstSync:YES];
 }
@@ -342,8 +350,6 @@ typedef enum {
         }
     };
     
-    [self.modalNavigationController setModalTransitionStyle:UIModalTransitionStyleCoverVertical];
-    [self.modalNavigationController setModalPresentationStyle:UIModalPresentationFormSheet];
     [self.modalNavigationController setViewControllers:[NSArray arrayWithObject:login]];
     [self presentModalViewController:self.modalNavigationController animated:YES];
     
@@ -380,6 +386,7 @@ typedef enum {
             [alert addButtonWithTitle:NSLocalizedString(@"Cancel", @"Cancel") block:^{
             }];
             [alert addButtonWithTitle:NSLocalizedString(@"Retry", @"Retry") block:^{
+                // FIXME: this is not an acceptably robust way to do this
                 [[self.modalNavigationController topViewController] performSelector:@selector(actionButtonAction:) withObject:nil afterDelay:0.0];
             }];
             [alert show];
@@ -391,43 +398,75 @@ typedef enum {
 	}
 }
 
-- (void)advanceToNextSignInForm
+- (BOOL)dictionaryDownloadRequired
 {
-    UIViewController *next = nil;
-    
-    if ([[SCHAppStateManager sharedAppStateManager] isSampleStore] == NO) {
-        SCHProfileViewController_Shared *profile = [self profileViewController];
-        if ([[profile.fetchedResultsController sections] count] == 0 
-            || [[[profile.fetchedResultsController sections] objectAtIndex:0] numberOfObjects] == 0) {
-            SCHSetupBookshelvesViewController *setupBookshelves = [[SCHSetupBookshelvesViewController alloc] init];
-            setupBookshelves.profileSetupDelegate = self;
-            next = setupBookshelves;
-        }
-    }
-
-    BOOL needsToBeAsked = 
+    BOOL downloadRequired = 
     ([[SCHDictionaryDownloadManager sharedDownloadManager] userRequestState] == SCHDictionaryUserNotYetAsked) 
     || ([[SCHDictionaryDownloadManager sharedDownloadManager] dictionaryProcessingState] == SCHDictionaryProcessingStateUserSetup);
+
+    return downloadRequired;
+}
+
+- (BOOL)bookshelfSetupRequired;
+{
+    SCHProfileViewController_Shared *profile = [self profileViewController];
+    BOOL setupRequired = (([[profile.fetchedResultsController sections] count] == 0) ||
+                          ([[[profile.fetchedResultsController sections] objectAtIndex:0] numberOfObjects] == 0));
     
-    if (next == nil && needsToBeAsked) {
-        SCHDownloadDictionaryViewController *downloadDictionary = [[SCHDownloadDictionaryViewController alloc] init];
+    return setupRequired;
+}
+
+- (void)checkDictionaryDownloadForSamples
+{
+    SCHDownloadDictionaryViewController *downloadDictionary = nil;
+        
+    if ([self dictionaryDownloadRequired]) {
+        downloadDictionary = [[SCHDownloadDictionaryViewController alloc] init];
         downloadDictionary.profileSetupDelegate = self;
-        next = downloadDictionary;
-    }
-    
-    if (next) {
-        if (self.modalViewController == nil) {
-            [self.modalNavigationController setModalTransitionStyle:UIModalTransitionStyleCoverVertical];
-            [self.modalNavigationController setModalPresentationStyle:UIModalPresentationFormSheet];
-            [self.modalNavigationController setViewControllers:[NSArray arrayWithObject:next]];
-            [self presentModalViewController:self.modalNavigationController animated:YES];
-        } else {
-            [self.modalNavigationController pushViewController:next animated:YES];
-        }
-        [next release];
+        [self.modalNavigationController setViewControllers:[NSArray arrayWithObject:downloadDictionary]];
+        [self presentModalViewController:self.modalNavigationController animated:YES];
+        [downloadDictionary release];
     } else {
         [self showCurrentSamples];
     }
+}
+
+- (void)checkBookshelvesAndDictionaryDownloadForProfile:(BOOL)rechecking
+{
+    BOOL animated = !rechecking;
+    
+    UIViewController *next = nil;
+    
+    if ([self bookshelfSetupRequired]) {
+        SCHSetupBookshelvesViewController *setupBookshelves = [[SCHSetupBookshelvesViewController alloc] init];
+        setupBookshelves.profileSetupDelegate = self;
+        next = setupBookshelves;
+        self.profileSyncState = kSCHStartingViewControllerProfileSyncStateWaitingForBookshelves;
+    }
+
+    if (!next && [self dictionaryDownloadRequired]) {
+        SCHDownloadDictionaryViewController *downloadDictionary = [[SCHDownloadDictionaryViewController alloc] init];
+        downloadDictionary.profileSetupDelegate = self;
+        next = downloadDictionary;
+        animated = YES;
+    }
+     
+    if (next) {
+        [self.modalNavigationController setViewControllers:[NSArray arrayWithObject:next] animated:animated];
+        [next release];
+    } else {
+        [self showCurrentProfile];
+    }
+}
+
+- (void)checkBookshelvesAndDictionaryDownloadForProfile
+{
+    [self checkBookshelvesAndDictionaryDownloadForProfile:NO];
+}
+
+- (void)recheckBookshelvesForProfile
+{
+    [self checkBookshelvesAndDictionaryDownloadForProfile:YES];
 }
 
 #pragma mark - SCHProfileSetupDelegate
@@ -532,9 +571,7 @@ typedef enum {
 // when we come back, kick off a sync to pick up the new profiles
 - (void)willEnterForeground:(NSNotification *)note
 {
-    if ([self.modalNavigationController.topViewController isKindOfClass:[SCHSetupBookshelvesViewController class]]) {
-        SCHSetupBookshelvesViewController *vc = (SCHSetupBookshelvesViewController *)self.modalNavigationController.topViewController;
-        [vc showActivity:YES];
+    if (self.profileSyncState == kSCHStartingViewControllerProfileSyncStateWaitingForBookshelves) {
         [[SCHSyncManager sharedSyncManager] firstSync:YES];
     }
 }
@@ -546,25 +583,16 @@ typedef enum {
     
     switch (currentSyncState) {
         case kSCHStartingViewControllerProfileSyncStateWaitingForLoginToComplete:
+            [self checkBookshelvesAndDictionaryDownloadForProfile];
+            break;
+        case kSCHStartingViewControllerProfileSyncStateWaitingForBookshelves:
+            [self recheckBookshelvesForProfile];
+            break;
         case kSCHStartingViewControllerProfileSyncStateSamplesSync:
-            [self advanceToNextSignInForm];
-            return;
-            //break;
-            
+            [self checkDictionaryDownloadForSamples];
+            break;
         default:
             break;
-    }
-//    // we can get here directly from login screen...
-//    if (self.sampleBookshelf != SCHStartingViewControllerNoSampleBookshelf || 
-//        [self.modalNavigationController.topViewController isKindOfClass:[SCHLoginPasswordViewController class]]) {
-//        [self advanceToNextSignInForm];
-//    }
-    
-    // ... or from the setupBookshelves screen following a sync initiated by returning from background
-    if ([self.modalNavigationController.topViewController isKindOfClass:[SCHSetupBookshelvesViewController class]]) {
-        SCHSetupBookshelvesViewController *vc = (SCHSetupBookshelvesViewController *)self.modalNavigationController.topViewController;
-        [vc showActivity:NO];
-        [self advanceToNextSignInForm];
     }
 }
 
