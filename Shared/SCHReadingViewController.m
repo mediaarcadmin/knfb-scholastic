@@ -827,7 +827,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 
 - (void)bookDeleted:(NSNotification *)notification
 {
-    NSArray *bookIdentifiers = [notification.userInfo objectForKey:SCHContentSyncComponentDeletedBookIdentifiers];
+    NSArray *bookIdentifiers = [notification.userInfo objectForKey:self.profile.ID];
     
     for (SCHBookIdentifier *bookId in bookIdentifiers) {
         if ([bookId isEqual:self.bookIdentifier] == YES) {
