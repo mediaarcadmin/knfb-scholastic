@@ -12,6 +12,7 @@
 // Constants
 extern NSString * const kSCHDictionaryDownloadPercentageUpdate;
 extern NSString * const kSCHHelpVideoDownloadPercentageUpdate;
+extern NSString * const kSCHDictionaryProcessingPercentageUpdate;
 
 extern NSString * const kSCHDictionaryStateChange;
 
@@ -69,6 +70,7 @@ typedef enum {
 
 @property (readonly) float currentDictionaryDownloadPercentage;
 @property (readonly) float currentHelpVideoDownloadPercentage;
+@property (readonly) float currentDictionaryProcessingPercentage;
 
 @property (nonatomic, assign) SCHDictionaryUserRequestState userRequestState;
 

@@ -28,7 +28,6 @@
 @property (nonatomic, retain) IBOutlet UIView *downloadProgressView;
 
 @property (nonatomic, retain) IBOutlet UIProgressView *progressBar;
-@property (nonatomic, retain) IBOutlet UILabel *topLabel;
 @property (nonatomic, retain) IBOutlet UILabel *bottomLabel;
 @property (nonatomic, retain) IBOutlet UIActivityIndicatorView *activityIndicator;
 @property (nonatomic, retain) IBOutlet UIView *leftBarButtonItemContainer;

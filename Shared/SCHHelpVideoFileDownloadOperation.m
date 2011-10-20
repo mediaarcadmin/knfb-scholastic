@@ -165,7 +165,23 @@
 
 - (void)connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response
 {
+    
+    NSArray *keys = [self.downloadList allKeys];
+    NSString *downloadURL = (NSString *) [self.downloadList objectForKey:[keys objectAtIndex:self.currentFileIndex]];
+    NSString *fileName = [downloadURL lastPathComponent];
+    NSString *localPath = [NSString stringWithFormat:@"%@/%@", self.localDirectory, fileName];
+
     if ([response isKindOfClass:[NSHTTPURLResponse class]] == YES) {
+        
+        if ([(NSHTTPURLResponse *)response statusCode] == 416) {
+            // this is a range exception - some servers return this instead of giving 200
+            // skip this file (which is complete) and move to the next one
+            [connection cancel];
+            [[BITNetworkActivityManager sharedNetworkActivityManager] hideNetworkActivityIndicator];        
+            [self checkForNextDownload];
+            return;
+        }
+        
         if ([(NSHTTPURLResponse *)response statusCode] != 200 && 
             [(NSHTTPURLResponse *)response statusCode] != 206) {
             [connection cancel];
@@ -201,11 +217,6 @@
 	self.previousPercentage = -1;
 	
 	[self createPercentageUpdate];
-    
-    NSArray *keys = [self.downloadList allKeys];
-    NSString *downloadURL = (NSString *) [self.downloadList objectForKey:[keys objectAtIndex:self.currentFileIndex]];
-    NSString *fileName = [downloadURL lastPathComponent];
-    NSString *localPath = [NSString stringWithFormat:@"%@/%@", self.localDirectory, fileName];
     
     self.fileHandle = [NSFileHandle fileHandleForWritingAtPath:localPath];
     [self.fileHandle seekToEndOfFile];

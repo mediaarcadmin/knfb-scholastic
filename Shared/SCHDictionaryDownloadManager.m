@@ -25,6 +25,7 @@
 
 // Constants
 NSString * const kSCHDictionaryDownloadPercentageUpdate = @"SCHDictionaryDownloadPercentageUpdate";
+NSString * const kSCHDictionaryProcessingPercentageUpdate = @"SCHDictionaryProcessingPercentageUpdate";
 NSString * const kSCHHelpVideoDownloadPercentageUpdate = @"SCHHelpVideoDownloadPercentageUpdate";
 
 NSString * const kSCHDictionaryStateChange = @"SCHDictionaryStateChange";
@@ -64,6 +65,7 @@ char * const kSCHDictionaryManifestEntryColumnSeparator = "\t";
 @property (readwrite, retain) NSTimer *startTimer;
 
 @property (readwrite) float currentDictionaryDownloadPercentage;
+@property (readwrite) float currentDictionaryProcessingPercentage;
 @property (readwrite) float currentHelpVideoDownloadPercentage;
 
 // check current reachability state
@@ -100,6 +102,7 @@ char * const kSCHDictionaryManifestEntryColumnSeparator = "\t";
 @synthesize mainThreadManagedObjectContext;
 @synthesize persistentStoreCoordinator;
 @synthesize currentDictionaryDownloadPercentage;
+@synthesize currentDictionaryProcessingPercentage;
 @synthesize currentHelpVideoDownloadPercentage;
 @synthesize helpVideoManifest;
 
@@ -137,6 +140,11 @@ char * const kSCHDictionaryManifestEntryColumnSeparator = "\t";
         [[NSNotificationCenter defaultCenter] addObserver:self 
                                                  selector:@selector(dictionaryDownloadPercentageUpdate:) 
                                                      name:kSCHDictionaryDownloadPercentageUpdate 
+                                                   object:nil];    
+        
+        [[NSNotificationCenter defaultCenter] addObserver:self 
+                                                 selector:@selector(dictionaryProcessingPercentageUpdate:) 
+                                                     name:kSCHDictionaryProcessingPercentageUpdate 
                                                    object:nil];    
         
         [[NSNotificationCenter defaultCenter] addObserver:self 
@@ -560,6 +568,8 @@ static SCHDictionaryDownloadManager *sharedManager = nil;
 			NSLog(@"needs unzip...");
 			// create unzip operation
             
+            self.currentDictionaryProcessingPercentage = 0.0;
+            
 			SCHDictionaryFileUnzipOperation *unzipOp = [[SCHDictionaryFileUnzipOperation alloc] init];
             
 			// on completion, we need to check if we are on the first download, or subsequent downloads
@@ -602,6 +612,8 @@ static SCHDictionaryDownloadManager *sharedManager = nil;
 		case SCHDictionaryProcessingStateNeedsParse:
 		{
 			NSLog(@"needs parse...");
+            
+            self.currentDictionaryProcessingPercentage = 0.5;
 
             // if there's no manifest set, restart the process
             // this prevents double processing in the event of interruptions during parsing
@@ -799,6 +811,16 @@ static SCHDictionaryDownloadManager *sharedManager = nil;
     }
 }
 
+- (void)dictionaryProcessingPercentageUpdate:(NSNotification *)note
+{
+    NSDictionary *userInfo = [note userInfo];
+    NSNumber *currentPercentage = [userInfo objectForKey:@"currentPercentage"];
+    
+    if (currentPercentage != nil) {
+        self.currentDictionaryProcessingPercentage = [currentPercentage floatValue];
+    }
+}
+
 - (void)helpVideoDownloadPercentageUpdate:(NSNotification *)note
 {
     NSDictionary *userInfo = [note userInfo];
@@ -984,6 +1006,17 @@ static SCHDictionaryDownloadManager *sharedManager = nil;
                 NSLog(@"Error: could not save word entries. %@", [error localizedDescription]);
             } else {
                 NSLog(@"Added %d entries to base words.", savedItems);
+                
+                // fire a notification - this one is 75%
+                dispatch_sync(dispatch_get_main_queue(), ^{
+                
+                    NSDictionary *userInfo = [NSDictionary dictionaryWithObjectsAndKeys:
+                                              [NSNumber numberWithFloat:0.75], @"currentPercentage",
+                                              nil];
+                    
+                    [[NSNotificationCenter defaultCenter] postNotificationName:kSCHDictionaryProcessingPercentageUpdate object:nil userInfo:userInfo];
+                    
+                });
             }
         }
         [context release];            
@@ -1099,6 +1132,18 @@ static SCHDictionaryDownloadManager *sharedManager = nil;
                 NSLog(@"Error: could not save word entries. %@", [error localizedDescription]);
             } else {
                 NSLog(@"Added %d entries to word entries.", savedItems);
+                
+                // fire a notification - this one is 100%
+                dispatch_sync(dispatch_get_main_queue(), ^{
+                    
+                    NSDictionary *userInfo = [NSDictionary dictionaryWithObjectsAndKeys:
+                                              [NSNumber numberWithFloat:1], @"currentPercentage",
+                                              nil];
+                    
+                    [[NSNotificationCenter defaultCenter] postNotificationName:kSCHDictionaryProcessingPercentageUpdate object:nil userInfo:userInfo];
+                    
+                });
+
             }
         }
         [context release];            
@@ -1267,6 +1312,18 @@ static SCHDictionaryDownloadManager *sharedManager = nil;
             NSLog(@"Error while deleting entry table update file: %@", [error localizedDescription]);
         }
         
+        // fire a notification - this one is 75%
+        dispatch_sync(dispatch_get_main_queue(), ^{
+            
+            NSDictionary *userInfo = [NSDictionary dictionaryWithObjectsAndKeys:
+                                      [NSNumber numberWithFloat:0.75], @"currentPercentage",
+                                      nil];
+            
+            [[NSNotificationCenter defaultCenter] postNotificationName:kSCHDictionaryProcessingPercentageUpdate object:nil userInfo:userInfo];
+            
+        });
+
+        
         [localFileManager release];
         [context release];
         
@@ -1422,6 +1479,17 @@ static SCHDictionaryDownloadManager *sharedManager = nil;
             
             NSLog(@"total word form items added or updated: %d", updatedTotal);
             
+            // fire a notification - this one is 100%
+            dispatch_sync(dispatch_get_main_queue(), ^{
+                
+                NSDictionary *userInfo = [NSDictionary dictionaryWithObjectsAndKeys:
+                                          [NSNumber numberWithFloat:1], @"currentPercentage",
+                                          nil];
+                
+                [[NSNotificationCenter defaultCenter] postNotificationName:kSCHDictionaryProcessingPercentageUpdate object:nil userInfo:userInfo];
+                
+            });
+
             error = nil;
             NSFileManager *localFileManager = [[NSFileManager alloc] init];
             [localFileManager removeItemAtPath:filePath error:&error];

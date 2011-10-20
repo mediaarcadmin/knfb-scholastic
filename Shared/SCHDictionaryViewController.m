@@ -10,6 +10,7 @@
 #import "SCHDictionaryDownloadManager.h"
 #import "SCHDictionaryAccessManager.h"
 #import "SCHCustomToolbar.h"
+#import "SCHAppStateManager.h"
 
 @interface SCHDictionaryViewController ()
 
@@ -31,7 +32,6 @@
 @synthesize webView;
 @synthesize downloadProgressView;
 @synthesize progressBar;
-@synthesize topLabel;
 @synthesize bottomLabel;
 @synthesize activityIndicator;
 @synthesize leftBarButtonItemContainer;
@@ -50,7 +50,6 @@
 {
     [topShadow release], topShadow = nil;
     [topBar release], topBar = nil;
-    [topLabel release], topLabel = nil;
     [bottomLabel release], bottomLabel = nil;
     [activityIndicator release], activityIndicator = nil;
     [contentView release], contentView = nil;
@@ -205,6 +204,7 @@
 - (void)setUserInterfaceFromState
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self name:kSCHDictionaryDownloadPercentageUpdate object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:kSCHDictionaryProcessingPercentageUpdate object:nil];
 
     SCHDictionaryProcessingState state = [[SCHDictionaryDownloadManager sharedDownloadManager] dictionaryProcessingState];
     
@@ -214,13 +214,11 @@
     self.leftBarButtonItemContainer.hidden = YES;
     
     if (!wifiAvailable) {
-        self.topLabel.text = @"Wifi Connection Needed";
         self.bottomLabel.text = @"We need a Wifi connection to download the dictionary. Please connect to a Wifi network.";
         [self.activityIndicator stopAnimating];
         self.progressBar.hidden = YES;
         return;
     } else if (!connectionIdle) {
-        self.topLabel.text = @"Books Downloading";
         self.bottomLabel.text = @"Books are currently downloading. You can wait for them to finish, or look up your word later.";
         [self.activityIndicator startAnimating];
         self.progressBar.hidden = YES;
@@ -228,20 +226,24 @@
     }
     
     BOOL willDownloadAfterHelpVideo = ([[SCHDictionaryDownloadManager sharedDownloadManager] userRequestState] == SCHDictionaryUserAccepted);
+    BOOL isSampleStore = [[SCHAppStateManager sharedAppStateManager] isSampleStore];
 
+    
     switch (state) {
         case SCHDictionaryProcessingStateUserSetup:
         case SCHDictionaryProcessingStateUserDeclined:
         {
-            self.topLabel.text = @"No Dictionary";
-            self.bottomLabel.text = @"The dictionary needs to be downloaded before it can be used. To download the dictionary go to Parent Tools.";
+            if (isSampleStore) {
+                self.bottomLabel.text = @"You have not yet downloaded the Scholastic dictionary.";
+            } else {
+                self.bottomLabel.text = @"You have not yet downloaded the Scholastic dictionary. To download the dictionary, go to parent tools on the eReader sign-in screen.";
+            }
             [self.activityIndicator stopAnimating];
             self.progressBar.hidden = YES;            
             break;
         }
         case SCHDictionaryProcessingStateNotEnoughFreeSpace:
         {
-            self.topLabel.text = @"Error";
             self.bottomLabel.text = @"There is not enough free space on the device. Please clear some space and try again.";
             [self.activityIndicator stopAnimating];
             self.progressBar.hidden = YES;
@@ -249,8 +251,7 @@
         }
         case SCHDictionaryProcessingStateError:
         {
-            self.topLabel.text = @"Error";
-            self.bottomLabel.text = @"There was an error downloading the dictionary. Please try again later.";
+            self.bottomLabel.text = @"There was an error downloading the Scholastic dictionary. Please try again later.";
             [self.activityIndicator stopAnimating];
             self.progressBar.hidden = YES;
             break;
@@ -258,10 +259,11 @@
         case SCHDictionaryProcessingStateNeedsUnzip:
         case SCHDictionaryProcessingStateNeedsParse:
         {
-            self.topLabel.text = @"Processing";
-            self.bottomLabel.text = @"The dictionary will be ready shortly. Please wait.";
-            [self.activityIndicator startAnimating];
-            self.progressBar.hidden = YES;
+            [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(processingPercentageUpdate:) name:kSCHDictionaryProcessingPercentageUpdate object:nil];
+            self.bottomLabel.text = @"The dictionary will be ready soon. Please wait.";
+            [self.activityIndicator stopAnimating];
+            self.progressBar.progress = [[SCHDictionaryDownloadManager sharedDownloadManager] currentDictionaryProcessingPercentage];
+            self.progressBar.hidden = NO;
             break;
         }
         case SCHDictionaryProcessingStateHelpVideoManifest:
@@ -270,11 +272,13 @@
         case SCHDictionaryProcessingStateNeedsManifest:
         {
             if (willDownloadAfterHelpVideo) {
-                self.topLabel.text = @"Downloading";
-                self.bottomLabel.text = @"The dictionary is currently downloading from the Internet. You can wait for it to finish, or look up your word later.";
+                if (isSampleStore) {
+                    self.bottomLabel.text = @"You have not yet downloaded the Scholastic dictionary.";
+                } else {
+                    self.bottomLabel.text = @"You have not yet downloaded the Scholastic dictionary. To download the dictionary, go to parent tools on the eReader sign-in screen.";
+                }
             } else {
-                self.topLabel.text = @"No Dictionary";
-                self.bottomLabel.text = @"The dictionary needs to be downloaded before it can be used. To download the dictionary go to Parent Tools.";
+                self.bottomLabel.text = @"You have not yet downloaded the Scholastic dictionary. To download the dictionary, go to parent tools on the eReader sign-in screen.";
             }
 
             [self.activityIndicator startAnimating];
@@ -283,8 +287,7 @@
         }
         case SCHDictionaryProcessingStateNeedsDownload:
         {
-            self.topLabel.text = @"Downloading";
-            self.bottomLabel.text = @"The dictionary is currently downloading from the Internet. You can wait for it to finish, or look up your word later.";
+            self.bottomLabel.text = @"The dictionary is downloading from the Internet. You can wait for it to finish, or look up your word later.";
             [self.activityIndicator stopAnimating];
             self.progressBar.hidden = NO;
             self.progressBar.progress = [SCHDictionaryDownloadManager sharedDownloadManager].currentDictionaryDownloadPercentage;
@@ -309,7 +312,20 @@
         [self.activityIndicator stopAnimating];
         self.progressBar.hidden = NO;
     }
+    
+    NSDictionary *userInfo = [note userInfo];
+    float percentage = [[userInfo objectForKey:@"currentPercentage"] floatValue];
+    
+    [self.progressBar setProgress:percentage];
+}
 
+- (void)processingPercentageUpdate:(NSNotification *)note {
+    
+    if (self.progressBar.hidden) {
+        [self.activityIndicator stopAnimating];
+        self.progressBar.hidden = NO;
+    }
+    
     NSDictionary *userInfo = [note userInfo];
     float percentage = [[userInfo objectForKey:@"currentPercentage"] floatValue];
     
