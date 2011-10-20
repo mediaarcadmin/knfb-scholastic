@@ -119,7 +119,14 @@ static const CGFloat kDeregisterContentHeightLandscape = 380;
 
 - (void)validate:(id)sender
 {
-    if ([[Reachability reachabilityForInternetConnection] isReachable] == NO) {
+    if ([[passwordField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]] length] < 1) {
+        LambdaAlert *alert = [[LambdaAlert alloc]
+                              initWithTitle:NSLocalizedString(@"Error", @"error alert title")
+                              message:NSLocalizedString(@"Incorrect password", @"error alert title")];
+        [alert addButtonWithTitle:NSLocalizedString(@"OK", @"") block:nil];
+        [alert show];
+        [alert release];                
+    } else if ([[Reachability reachabilityForInternetConnection] isReachable] == NO) {
         LambdaAlert *alert = [[LambdaAlert alloc]
                               initWithTitle:NSLocalizedString(@"No Internet Connection", @"")
                               message:NSLocalizedString(@"This function requires an Internet connection. Please connect to the internet and then try again.", @"")];
@@ -133,7 +140,7 @@ static const CGFloat kDeregisterContentHeightLandscape = 380;
         
         __block SCHAccountValidationViewController *weakSelf = self;
         NSString *storedUsername = [[NSUserDefaults standardUserDefaults] stringForKey:kSCHAuthenticationManagerUsername];
-        [self.accountValidation validateWithUserName:storedUsername withPassword:passwordField.text validateBlock:^(NSString *pToken, NSError *error) {
+        if ([self.accountValidation validateWithUserName:storedUsername withPassword:passwordField.text validateBlock:^(NSString *pToken, NSError *error) {
             if (error != nil) {
                 LambdaAlert *alert = [[LambdaAlert alloc]
                                       initWithTitle:NSLocalizedString(@"Error", @"error alert title")
@@ -151,7 +158,17 @@ static const CGFloat kDeregisterContentHeightLandscape = 380;
             [weakSelf.spinner stopAnimating];
             [weakSelf setEnablesBackButton:YES];
             [weakSelf.validateButton setEnabled:YES];            
-        }];
+        }] == NO) {
+            LambdaAlert *alert = [[LambdaAlert alloc]
+                                  initWithTitle:NSLocalizedString(@"Password authentication unavailable", @"")
+                                  message:NSLocalizedString(@"Please try again in a moment.", @"")];
+            [alert addButtonWithTitle:NSLocalizedString(@"OK", @"") block:nil];
+            [alert show];
+            [alert release];                
+            [self.spinner stopAnimating];
+            [self setEnablesBackButton:YES];
+            [self.validateButton setEnabled:YES];                        
+        };
     }
 }
 

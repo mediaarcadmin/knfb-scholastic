@@ -21,9 +21,9 @@
         param = [parameter componentsSeparatedByString:@"="];
         if([param count] == 2) {
             key = [[param objectAtIndex:0] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
-            value = [[param objectAtIndex:1] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
             
             if ([key length] > 0) {
+                value = [[param objectAtIndex:1] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
                 [ret setObject:([value length] > 0 ? (id)value : [NSNull null]) forKey:key];
             }
         }
