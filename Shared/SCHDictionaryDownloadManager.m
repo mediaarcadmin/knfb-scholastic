@@ -401,7 +401,17 @@ static SCHDictionaryDownloadManager *sharedManager = nil;
                 return;
                 break;
             } else {
+                SCHDictionaryUserRequestState userRequestState = [self userRequestState];
                 
+                if (userRequestState == SCHDictionaryUserDeclined) {
+                    [self threadSafeUpdateDictionaryState:SCHDictionaryProcessingStateUserDeclined];
+                } else if (userRequestState == SCHDictionaryUserNotYetAsked) {
+                    [self threadSafeUpdateDictionaryState:SCHDictionaryProcessingStateUserSetup];
+                } else {
+                    [self threadSafeUpdateDictionaryState:SCHDictionaryProcessingStateNeedsManifest];
+                }
+                
+                [self processDictionary];
             }
         }
         case SCHDictionaryProcessingStateDownloadingHelpVideos:
