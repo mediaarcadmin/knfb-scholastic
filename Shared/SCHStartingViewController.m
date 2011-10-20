@@ -46,9 +46,10 @@ enum {
 };
 
 typedef enum {
-	kSCHStartingViewControllerStateInitial = 0,
-    kSCHStartingViewControllerStateWaitingForLogin
-} SCHStartingViewControllerState;
+	kSCHStartingViewControllerProfileSyncStateNone = 0,
+    kSCHStartingViewControllerProfileSyncStateWaitingForLoginToComplete,
+    kSCHStartingViewControllerProfileSyncStateSamplesSync
+} SCHStartingViewControllerProfileSyncState;
 
 typedef enum {
     SCHStartingViewControllerNoSampleBookshelf = 0,
@@ -60,7 +61,7 @@ typedef enum {
 
 @property (nonatomic, retain) SCHProfileViewController_Shared *profileViewController;
 @property (nonatomic, assign) SCHStartingViewControllerBookshelf sampleBookshelf;
-@property (nonatomic, assign) SCHStartingViewControllerState *state;
+@property (nonatomic, assign) SCHStartingViewControllerProfileSyncState profileSyncState;
 
 - (void)setupAssetsForOrientation:(UIInterfaceOrientation)orientation;
 - (void)firstLogin;
@@ -82,7 +83,7 @@ typedef enum {
 @synthesize modalNavigationController;
 @synthesize profileViewController;
 @synthesize sampleBookshelf;
-@synthesize state;
+@synthesize profileSyncState;
 
 - (void)releaseViewObjects
 {
@@ -298,6 +299,7 @@ typedef enum {
     // if we were to actually login then a successful login would trigger a sync 
     // after which a profile complete notification would call 
     // advanceToNextSignInForm would to proceed, we are stepping over the login
+    self.profileSyncState = kSCHStartingViewControllerProfileSyncStateSamplesSync;
     [[SCHSyncManager sharedSyncManager] firstSync:YES];
 }
 
@@ -326,6 +328,8 @@ typedef enum {
     };
     
     login.retainLoopSafeActionBlock = ^BOOL(NSString *username, NSString *password) {
+        self.profileSyncState = kSCHStartingViewControllerProfileSyncStateWaitingForLoginToComplete;
+        
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(authenticationManager:) name:SCHAuthenticationManagerDidSucceedNotification object:nil];			
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(authenticationManager:) name:SCHAuthenticationManagerDidFailNotification object:nil];					
         
@@ -537,11 +541,24 @@ typedef enum {
 
 - (void)profileSyncDidComplete:(NSNotification *)note
 {
-    // we can get here directly from login screen...
-    if (self.sampleBookshelf != SCHStartingViewControllerNoSampleBookshelf || 
-        [self.modalNavigationController.topViewController isKindOfClass:[SCHLoginPasswordViewController class]]) {
-        [self advanceToNextSignInForm];
+    SCHStartingViewControllerProfileSyncState currentSyncState = self.profileSyncState;
+    self.profileSyncState = kSCHStartingViewControllerProfileSyncStateNone;
+    
+    switch (currentSyncState) {
+        case kSCHStartingViewControllerProfileSyncStateWaitingForLoginToComplete:
+        case kSCHStartingViewControllerProfileSyncStateSamplesSync:
+            [self advanceToNextSignInForm];
+            return;
+            //break;
+            
+        default:
+            break;
     }
+//    // we can get here directly from login screen...
+//    if (self.sampleBookshelf != SCHStartingViewControllerNoSampleBookshelf || 
+//        [self.modalNavigationController.topViewController isKindOfClass:[SCHLoginPasswordViewController class]]) {
+//        [self advanceToNextSignInForm];
+//    }
     
     // ... or from the setupBookshelves screen following a sync initiated by returning from background
     if ([self.modalNavigationController.topViewController isKindOfClass:[SCHSetupBookshelvesViewController class]]) {
