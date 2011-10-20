@@ -171,13 +171,17 @@ NSString * const SCHProfileSyncComponentDidFailNotification = @"SCHProfileSyncCo
    requestInfo:(NSDictionary *)requestInfo
         result:(NSDictionary *)result
 {
-    // when saving we accept there could be errors and process anything that succeeds then continue
-    if(result != nil && [method compare:kSCHLibreAccessWebServiceSaveUserProfiles] == NSOrderedSame) {	    
-        [self processSaveUserProfilesWithResult:result];
-    } else {
+    // a valid error otherwise server error
+    if (result == nil) {
         [[NSNotificationCenter defaultCenter] postNotificationName:SCHProfileSyncComponentDidFailNotification 
                                                             object:self];		    
         [super method:method didFailWithError:error requestInfo:requestInfo result:result];
+    } else if ([method compare:kSCHLibreAccessWebServiceSaveUserProfiles] == NSOrderedSame) {
+        [self processSaveUserProfilesWithResult:result];
+    } else {
+        [[NSNotificationCenter defaultCenter] postNotificationName:SCHProfileSyncComponentDidCompleteNotification 
+                                                            object:self];		            
+        [super method:method didCompleteWithResult:nil];
     }
     [self.savedProfiles removeAllObjects];
 }

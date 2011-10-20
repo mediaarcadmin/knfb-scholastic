@@ -9,7 +9,6 @@
 #import "SCHDeregisterDeviceViewController.h"
 #import "SCHAuthenticationManager.h"
 #import "SCHSetupDelegate.h"
-#import "SCHAuthenticationManagerProtected.h"
 #import "LambdaAlert.h"
 #import "SCHUnderlinedButton.h"
 #import "Reachability.h"

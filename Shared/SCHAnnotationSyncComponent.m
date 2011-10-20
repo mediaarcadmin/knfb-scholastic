@@ -283,15 +283,23 @@ NSString * const SCHAnnotationSyncComponentCompletedProfileIDs = @"SCHAnnotation
 {
     NSNumber *profileID = [[[self.annotations allKeys] sortedArrayUsingSelector:@selector(compare:)] objectAtIndex:0];
     
-    // when saving we accept there could be errors and process anything that succeeds then continue
-    if(result != nil && [method compare:kSCHLibreAccessWebServiceSaveProfileContentAnnotations] == NSOrderedSame) {	    
-        [self processSaveProfileContentAnnotations:profileID result:result];
-    } else {
+    // a valid error otherwise server error
+    if (result == nil) {
         [[NSNotificationCenter defaultCenter] postNotificationName:SCHAnnotationSyncComponentDidFailNotification 
                                                             object:self 
                                                           userInfo:[NSDictionary dictionaryWithObject:profileID 
                                                                                                forKey:SCHAnnotationSyncComponentCompletedProfileIDs]];            
         [super method:method didFailWithError:error requestInfo:requestInfo result:result];
+    } else if ([method compare:kSCHLibreAccessWebServiceSaveProfileContentAnnotations] == NSOrderedSame) {	            
+        [self processSaveProfileContentAnnotations:profileID result:result];
+    } else {
+        [[NSNotificationCenter defaultCenter] postNotificationName:SCHAnnotationSyncComponentDidCompleteNotification 
+                                                            object:self 
+                                                          userInfo:[NSDictionary dictionaryWithObject:profileID 
+                                                                                               forKey:SCHAnnotationSyncComponentCompletedProfileIDs]];        
+        [self.annotations removeObjectForKey:profileID];
+        
+        [super method:method didCompleteWithResult:nil];
     }
     [self.savedAnnotations removeAllObjects];
 }
@@ -331,6 +339,12 @@ NSString * const SCHAnnotationSyncComponentCompletedProfileIDs = @"SCHAnnotation
             ret = NO;
         }
     } else {
+        [[NSNotificationCenter defaultCenter] postNotificationName:SCHAnnotationSyncComponentDidCompleteNotification 
+                                                            object:self 
+                                                          userInfo:[NSDictionary dictionaryWithObject:profileID 
+                                                                                               forKey:SCHAnnotationSyncComponentCompletedProfileIDs]];        
+        [self.annotations removeObjectForKey:profileID];
+        
         [super method:nil didCompleteWithResult:nil];
     }
 	
