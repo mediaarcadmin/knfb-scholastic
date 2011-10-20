@@ -93,7 +93,7 @@
     [self.updatesBubble addGestureRecognizer:tap];
     [tap release];
  
-    self.settingsViewController.setupDelegate = self;
+    self.settingsViewController.settingsDelegate = self;
     self.settingsViewController.managedObjectContext = self.managedObjectContext;
 }  
 
@@ -382,19 +382,6 @@
     abort();
 }
 
-#pragma mark - settings
-
-- (void)dismissSettingsForm
-{
-    // check for deregistration
-    if ([[SCHAuthenticationManager sharedAuthenticationManager] hasUsernameAndPassword] == NO) {
-        [self dismissModalViewControllerAnimated:YES];
-        [self.navigationController popViewControllerAnimated:NO];
-    } else {
-        [self dismissModalViewControllerAnimated:YES];
-    }
-}
-
 - (void)pushSettingsController
 {
     [self.modalNavigationController setViewControllers:[NSArray arrayWithObject:self.settingsViewController]];
@@ -403,6 +390,41 @@
     [self.modalNavigationController.navigationBar setTintColor:[UIColor SCHRed2Color]];
     [self presentModalViewController:self.modalNavigationController animated:YES];
     [self showUpdatesBubble:NO];
+}
+
+#pragma mark - SCHSettingsDelegate
+
+- (void)dismissModalViewControllerAnimated:(BOOL)animated withCompletionHandler:(dispatch_block_t)completion;
+{
+    if (self.modalViewController) {
+        [self dismissModalViewControllerAnimated:animated];
+    }
+    
+    // This is an inelegant solution but there isn't a straightforward way to perform the animation and then 
+    // fire the completion when it is finished
+    if (completion) {
+        double delayInSeconds = animated ? 0.3 : 0.0;
+        dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);
+        dispatch_after(popTime, dispatch_get_main_queue(), completion);
+    }
+}
+
+- (void)popToRootViewControllerAnimated:(BOOL)animated withCompletionHandler:(dispatch_block_t)completion
+{
+    if (self.modalViewController) {
+        [self dismissModalViewControllerAnimated:animated];
+        [self.navigationController popToRootViewControllerAnimated:NO];
+    } else {
+        [self.navigationController popToRootViewControllerAnimated:animated];
+    }
+    
+    // This is an inelegant solution but there isn't a straightforward way to perform the animation and then 
+    // fire the completion when it is finished
+    if (completion) {
+        double delayInSeconds = animated ? 0.3 : 0.0;
+        dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);
+        dispatch_after(popTime, dispatch_get_main_queue(), completion);
+    }
 }
 
 #pragma mark - Book updates

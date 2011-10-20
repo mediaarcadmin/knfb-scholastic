@@ -7,7 +7,10 @@
 //
 
 #import "SCHSetupBookshelvesViewController.h"
-#import "SCHSetupDelegate.h"
+#import "SCHSettingsDelegate.h"
+#import "SCHParentalToolsWebViewController.h"
+#import "SCHAuthenticationManager.h"
+#import "SCHAccountValidationViewController.h"
 
 @implementation SCHSetupBookshelvesViewController
 
@@ -48,9 +51,15 @@
 
 - (void)setupBookshelves:(id)sender
 {
-    // TODO: URL
-    //[[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"http://www.scholastic.com"]];
-    [self.setupDelegate dismissSettingsForm];
+    [self.profileSetupDelegate showCurrentProfile];
+    
+//    if ([[SCHAuthenticationManager sharedAuthenticationManager] hasValidPToken] == YES) {
+//        SCHParentalToolsWebViewController *parentalToolsWebViewController = [[[SCHParentalToolsWebViewController alloc] init] autorelease];
+//        [self.navigationController pushViewController:parentalToolsWebViewController animated:YES];
+//    } else {
+//        SCHAccountValidationViewController *accountValidationViewController = [[[SCHAccountValidationViewController alloc] init] autorelease];
+//        [self.navigationController pushViewController:accountValidationViewController animated:YES];        
+//    }    
 }
 
 - (void)showActivity:(BOOL)activity

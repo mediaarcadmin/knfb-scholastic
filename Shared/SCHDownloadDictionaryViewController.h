@@ -7,9 +7,10 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "SCHBaseSetupViewController.h"
+#import "SCHBaseModalViewController.h"
+#import "SCHProfileSetupDelegate.h"
 
-@interface SCHDownloadDictionaryViewController : SCHBaseSetupViewController {}
+@interface SCHDownloadDictionaryViewController : SCHBaseModalViewController {}
 
 @property (nonatomic, retain) IBOutletCollection(UILabel) NSArray *labels;
 @property (nonatomic, retain) IBOutlet UILabel *downloadSizeLabel;

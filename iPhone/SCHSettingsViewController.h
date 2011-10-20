@@ -8,13 +8,13 @@
 
 #import <UIKit/UIKit.h>
 #import <MessageUI/MessageUI.h>
-#import "SCHBaseSetupViewController.h"
+#import "SCHBaseModalViewController.h"
 
 @class SCHCustomToolbar;
 @class SCHCheckbox;
 @class SCHUpdateBooksViewController;
 
-@interface SCHSettingsViewController : SCHBaseSetupViewController <UIAlertViewDelegate, MFMailComposeViewControllerDelegate>  
+@interface SCHSettingsViewController : SCHBaseModalViewController <UIAlertViewDelegate, MFMailComposeViewControllerDelegate>  
 {}
 
 @property (nonatomic, retain) IBOutlet UIScrollView *scrollView; // iPhone only

@@ -8,13 +8,13 @@
 
 #import <UIKit/UIKit.h>
 #import "SCHStartingViewCell.h"
-#import "SCHSetupDelegate.h"
+#import "SCHProfileSetupDelegate.h"
 
 @class SCHLoginPasswordViewController;
 @class SCHSetupBookshelvesViewController;
 @class SCHDownloadDictionaryViewController;
 
-@interface SCHStartingViewController : UIViewController <UITableViewDelegate, UITableViewDataSource, SCHStartingViewCellDelegate, SCHSetupDelegate> {}
+@interface SCHStartingViewController : UIViewController <UITableViewDelegate, UITableViewDataSource, SCHStartingViewCellDelegate, SCHProfileSetupDelegate> {}
 
 @property (nonatomic, retain) IBOutlet UITableView *starterTableView;
 @property (nonatomic, retain) IBOutlet UIImageView *backgroundView;

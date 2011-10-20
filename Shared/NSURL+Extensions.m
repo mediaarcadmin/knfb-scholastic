@@ -8,6 +8,28 @@
 
 #import "NSURL+Extensions.h"
 
-@implementation NSURL_Extensions
+@implementation NSURL (NSURLExtensions) 
+
+- (NSDictionary *)queryParameters
+{
+	NSMutableDictionary *ret = [NSMutableDictionary dictionary];
+	NSArray *param = nil;
+	NSString *key = nil;
+	NSString *value = nil;
+	
+    for(NSString *parameter in [[self query] componentsSeparatedByString:@"&"]) {
+        param = [parameter componentsSeparatedByString:@"="];
+        if([param count] == 2) {
+            key = [[param objectAtIndex:0] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+            
+            if ([key length] > 0) {
+                value = [[param objectAtIndex:1] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+                [ret setObject:([value length] > 0 ? (id)value : [NSNull null]) forKey:key];
+            }
+        }
+    }
+    
+    return(ret);
+}
 
 @end

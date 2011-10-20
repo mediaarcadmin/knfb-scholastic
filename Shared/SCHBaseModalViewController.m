@@ -7,13 +7,21 @@
 //
 
 #import <QuartzCore/QuartzCore.h>
-#import "SCHBaseSetupViewController.h"
+#import "SCHBaseModalViewController.h"
 #import "SCHCustomToolbar.h"
-#import "SCHSetupDelegate.h"
+#import "SCHSettingsDelegate.h"
 
-@implementation SCHBaseSetupViewController
+@interface SCHBaseModalViewController()
 
-@synthesize setupDelegate;
+@property (nonatomic, assign) id<SCHModalPresenterDelegate> modalPresenterDelegate;
+
+@end
+
+@implementation SCHBaseModalViewController
+
+@synthesize modalPresenterDelegate;
+@synthesize settingsDelegate;
+@synthesize profileSetupDelegate;
 @synthesize topToolbar;
 @synthesize containerView;
 @synthesize backgroundView;
@@ -21,6 +29,9 @@
 
 - (void)dealloc
 {
+    modalPresenterDelegate = nil;
+    settingsDelegate = nil;
+    profileSetupDelegate = nil;
     [super dealloc];
 }
 
@@ -101,9 +112,23 @@
     }
 }
 
-- (void)closeSettings
+- (void)setProfileSetupDelegate:(id<SCHProfileSetupDelegate>)newProfileSetupDelegate
 {
-    [self.setupDelegate dismissSettingsForm];
+    profileSetupDelegate = newProfileSetupDelegate;
+    modalPresenterDelegate = profileSetupDelegate;
+    settingsDelegate = nil;
+}
+
+- (void)setSettingsDelegate:(id<SCHSettingsDelegate>)newSettingsDelegate
+{
+    settingsDelegate = newSettingsDelegate;
+    modalPresenterDelegate = settingsDelegate;
+    profileSetupDelegate = nil;
+}
+
+- (void)close
+{
+    [self.modalPresenterDelegate dismissModalViewControllerAnimated:YES withCompletionHandler:nil];
 }
 
 @end

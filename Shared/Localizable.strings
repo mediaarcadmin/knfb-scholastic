@@ -45,3 +45,5 @@
 "This device has been deregistered. To read books, please register this device again." = "This device has been deregistered. To read books, please register this device again.";
 "Waiting for the server, please try again in a moment. If this problem persists please contact support." = "Waiting for the server, please try again in a moment. If this problem persists please contact support.";
 "Failed to remove dictionary" = "Failed to remove dictionary";
+"Password authentication unavailable" = "Password authentication unavailable";
+"Please try again in a moment" = "Please try again in a moment";

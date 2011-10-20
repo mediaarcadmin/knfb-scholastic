@@ -8,6 +8,20 @@
 
 #import <Foundation/Foundation.h>
 
-@interface SCHAccountValidation : NSObject
+#import "BITAPIProxyDelegate.h"
+
+// Constants
+extern NSString * const kSCHAccountValidationErrorDomain;
+extern NSInteger const kSCHAccountValidationPTokenError;
+
+typedef void (^ValidateBlock)(NSString *pToken, NSError *error);
+
+@interface SCHAccountValidation : NSObject <BITAPIProxyDelegate>
+
+@property (nonatomic, copy, readonly) NSString *pToken;
+
+- (BOOL)validateWithUserName:(NSString *)username 
+                withPassword:(NSString *)password 
+               validateBlock:(ValidateBlock)validateBlock;
 
 @end

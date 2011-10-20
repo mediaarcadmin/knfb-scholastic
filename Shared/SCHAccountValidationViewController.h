@@ -1,5 +1,5 @@
 //
-//  SCHDeregisterDeviceViewController.h
+//  SCHAccountValidationViewController.h
 //  Scholastic
 //
 //  Created by Neil Gall on 21/07/2011.
@@ -9,18 +9,16 @@
 #import <UIKit/UIKit.h>
 #import "SCHBaseModalViewController.h"
 
-@protocol SCHSettingsDelegate;
+@protocol SCHSetupDelegete;
 
-@class SCHUnderlinedButton;
-
-@interface SCHDeregisterDeviceViewController : SCHBaseModalViewController <UITextFieldDelegate> {}
+@interface SCHAccountValidationViewController : SCHBaseModalViewController <UITextFieldDelegate> {}
 
 @property (nonatomic, retain) IBOutlet UILabel *promptLabel;
 @property (nonatomic, retain) IBOutlet UITextField *passwordField;
-@property (nonatomic, retain) IBOutlet UIButton *deregisterButton;
+@property (nonatomic, retain) IBOutlet UIButton *validateButton;
 @property (nonatomic, retain) IBOutlet UIActivityIndicatorView *spinner;
 @property (nonatomic, retain) IBOutlet UIScrollView *scrollView; // iPhone only
 
-- (IBAction)deregister:(id)sender;
+- (IBAction)validate:(id)sender;
 
 @end

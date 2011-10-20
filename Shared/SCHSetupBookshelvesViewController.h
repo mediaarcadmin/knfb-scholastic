@@ -7,9 +7,9 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "SCHBaseSetupViewController.h"
+#import "SCHBaseModalViewController.h"
 
-@interface SCHSetupBookshelvesViewController : SCHBaseSetupViewController {}
+@interface SCHSetupBookshelvesViewController : SCHBaseModalViewController {}
 
 @property (nonatomic, retain) IBOutlet UIButton *setupBookshelvesButton;
 @property (nonatomic, retain) IBOutlet UIActivityIndicatorView *spinner;

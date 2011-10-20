@@ -24,6 +24,8 @@
 #import "SCHSyncManager.h"
 #import "Reachability.h"
 #import "LambdaAlert.h"
+#import "SCHParentalToolsWebViewController.h"
+#import "SCHAccountValidationViewController.h"
 
 extern NSString * const kSCHAuthenticationManagerDeviceKey;
 
@@ -230,7 +232,7 @@ extern NSString * const kSCHAuthenticationManagerDeviceKey;
 
 - (IBAction)dismissModalSettingsController:(id)sender
 {
-    [self closeSettings];
+    [self close];
 }
 
 #pragma mark - Actions
@@ -238,7 +240,7 @@ extern NSString * const kSCHAuthenticationManagerDeviceKey;
 - (IBAction)deregisterDevice:(id)sender 
 {
     SCHDeregisterDeviceViewController *vc = [[SCHDeregisterDeviceViewController alloc] init];
-    vc.setupDelegate = self.setupDelegate;
+    vc.settingsDelegate = self.settingsDelegate;
     [self.navigationController pushViewController:vc animated:YES];
     [vc release];
 }
@@ -314,8 +316,9 @@ extern NSString * const kSCHAuthenticationManagerDeviceKey;
 
 - (IBAction)manageBooks:(id)sender
 {
-    // TODO correct URL
-    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"http://www.scholastic.com"]];
+    // we always ask for the password before showing parent tools from settings
+    SCHAccountValidationViewController *accountValidationViewController = [[[SCHAccountValidationViewController alloc] init] autorelease];
+    [self.navigationController pushViewController:accountValidationViewController animated:YES];        
 }
 
 - (IBAction)checkBooks:(id)sender

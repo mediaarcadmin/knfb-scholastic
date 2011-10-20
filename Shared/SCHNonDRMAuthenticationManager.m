@@ -9,10 +9,10 @@
 #import "SCHNonDRMAuthenticationManager.h"
 #import "SCHAuthenticationManagerProtected.h"
 
-#import "SCHScholasticWebService.h"
 #import "SCHLibreAccessWebService.h"
 #import "SFHFKeychainUtils.h"
 #import "Reachability.h"
+#import "SCHAccountValidation.h"
 
 @implementation SCHNonDRMAuthenticationManager
 
@@ -30,9 +30,19 @@
                 storedPassword != nil &&
                 [[storedPassword stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]] length] > 0) {
                 self.aToken = nil;
-                self.tokenExpires = nil;
+                self.tokenExpires = nil;                
+                
+                __block SCHAuthenticationManager *weakSelf = self;
+                [self.accountValidation validateWithUserName:storedUsername withPassword:storedPassword validateBlock:^(NSString *pToken, NSError *error) {
+                    if (error != nil) {
+                        weakSelf.waitingOnResponse = NO;
+                        [weakSelf postFailureWithError:error];                            
+                    } else {
+                        [weakSelf.libreAccessWebService tokenExchange:pToken 
+                                                              forUser:[[NSUserDefaults standardUserDefaults] stringForKey:kSCHAuthenticationManagerUsername]];                            
+                    }
+                }];
 
-                [self.scholasticWebService authenticateUserName:storedUsername withPassword:storedPassword];
                 self.waitingOnResponse = YES;         
             } else {
                 NSError *error = [NSError errorWithDomain:kSCHAuthenticationManagerErrorDomain 
@@ -60,10 +70,7 @@
 
 - (void)method:(NSString *)method didCompleteWithResult:(NSDictionary *)result
 {
-	if([method compare:kSCHScholasticWebServiceProcessRemote] == NSOrderedSame) {	
-		[self.libreAccessWebService tokenExchange:[result objectForKey:kSCHScholasticWebServicePToken] 
-                                     forUser:[[NSUserDefaults standardUserDefaults] stringForKey:kSCHAuthenticationManagerUsername]];
-	} else if([method compare:kSCHLibreAccessWebServiceTokenExchange] == NSOrderedSame) {	
+	if([method compare:kSCHLibreAccessWebServiceTokenExchange] == NSOrderedSame) {	
         self.aToken = nil;
         self.tokenExpires = nil;        
         

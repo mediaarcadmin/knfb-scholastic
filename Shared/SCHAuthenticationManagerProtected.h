@@ -6,7 +6,7 @@
 //  Copyright 2011 BitWink. All rights reserved.
 //
 
-@class SCHScholasticWebService;
+@class SCHAccountValidation;
 @class SCHLibreAccessWebService;
 @class SCHDrmRegistrationSession;
 
@@ -20,7 +20,7 @@ extern NSTimeInterval const kSCHAuthenticationManagerSecondsInAMinute;
 @property (nonatomic, copy, readwrite) NSString *aToken;
 @property (nonatomic, retain) NSDate *tokenExpires;
 @property (nonatomic, assign) BOOL waitingOnResponse;
-@property (nonatomic, retain) SCHScholasticWebService *scholasticWebService;
+@property (nonatomic, retain) SCHAccountValidation *accountValidation;
 @property (nonatomic, retain) SCHLibreAccessWebService *libreAccessWebService;
 @property (nonatomic, retain) SCHDrmRegistrationSession *drmRegistrationSession;
 
