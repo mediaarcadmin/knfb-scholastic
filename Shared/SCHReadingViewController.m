@@ -26,6 +26,7 @@
 #import "SCHNote.h"
 #import "SCHDictionaryViewController.h"
 #import "SCHDictionaryAccessManager.h"
+#import "SCHDictionaryDownloadManager.h"
 #import "SCHNotesCountView.h"
 #import "SCHBookStoryInteractions.h"
 #import "SCHStoryInteractionController.h"
@@ -621,19 +622,6 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 {
 	[super viewWillAppear:animated];
     [self setupAssetsForOrientation:self.interfaceOrientation];
-    
-    if (youngerMode == YES) {
-        if ([[NSUserDefaults standardUserDefaults] boolForKey:kSCHUserDefaultsYoungerHelpVideoFirstPlay] == YES) {
-            self.firstTimePlayForHelpController = YES;
-            [self presentHelpAnimated:NO];
-        }
-    } else {
-        if ([[NSUserDefaults standardUserDefaults] boolForKey:kSCHUserDefaultsOlderHelpVideoFirstPlay] == YES) {
-            self.firstTimePlayForHelpController = YES;
-            [self presentHelpAnimated:NO];
-            
-        }
-    }
 }
 
 - (void)viewDidAppear:(BOOL)animated

@@ -80,6 +80,7 @@
 {
     if ([[SCHAppStateManager sharedAppStateManager] isSampleStore] == NO) {
         [[SCHDictionaryDownloadManager sharedDownloadManager] threadSafeUpdateDictionaryState:SCHDictionaryProcessingStateUserDeclined];
+        [SCHDictionaryDownloadManager sharedDownloadManager].userRequestState = SCHDictionaryUserDeclined;
     }
     [super closeSettings];
 }
