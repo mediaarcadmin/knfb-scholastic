@@ -411,6 +411,20 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 131;
     [self reloadData];
 }
 
+- (BOOL)isBookOnShelf:(SCHBookIdentifier *)aBookIdentifier
+{
+    BOOL ret = NO;
+    
+    for (SCHBookIdentifier *bookIdentifier in self.books) {
+        if ([aBookIdentifier isEqual:bookIdentifier] == YES) {
+            ret = YES;
+            break;
+        }
+    }
+    
+    return(ret);
+}
+
 #pragma mark - View Type Toggle methods
 
 - (IBAction)changeToGridView:(UIButton *)sender
