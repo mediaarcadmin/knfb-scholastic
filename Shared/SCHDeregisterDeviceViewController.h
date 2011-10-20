@@ -7,13 +7,13 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "SCHBaseSetupViewController.h"
+#import "SCHBaseModalViewController.h"
 
 @protocol SCHSettingsDelegate;
 
 @class SCHUnderlinedButton;
 
-@interface SCHDeregisterDeviceViewController : SCHBaseSetupViewController <UITextFieldDelegate> {}
+@interface SCHDeregisterDeviceViewController : SCHBaseModalViewController <UITextFieldDelegate> {}
 
 @property (nonatomic, retain) IBOutlet UILabel *promptLabel;
 @property (nonatomic, retain) IBOutlet UITextField *passwordField;

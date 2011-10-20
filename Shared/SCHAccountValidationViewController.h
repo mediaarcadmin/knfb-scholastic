@@ -7,11 +7,11 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "SCHBaseSetupViewController.h"
+#import "SCHBaseModalViewController.h"
 
 @protocol SCHSetupDelegete;
 
-@interface SCHAccountValidationViewController : SCHBaseSetupViewController <UITextFieldDelegate> {}
+@interface SCHAccountValidationViewController : SCHBaseModalViewController <UITextFieldDelegate> {}
 
 @property (nonatomic, retain) IBOutlet UILabel *promptLabel;
 @property (nonatomic, retain) IBOutlet UITextField *passwordField;

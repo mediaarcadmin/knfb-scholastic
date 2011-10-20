@@ -76,19 +76,26 @@
     }
 }
 
-- (void)closeSettings
+- (void)close
 {
     if ([[SCHAppStateManager sharedAppStateManager] isSampleStore] == NO) {
         [[SCHDictionaryDownloadManager sharedDownloadManager] threadSafeUpdateDictionaryState:SCHDictionaryProcessingStateUserDeclined];
         [SCHDictionaryDownloadManager sharedDownloadManager].userRequestState = SCHDictionaryUserDeclined;
+        [self.profileSetupDelegate showCurrentProfile];
+    } else {
+        [self.profileSetupDelegate showCurrentSamples];
     }
-    [super closeSettings];
 }
 
 - (void)downloadDictionary:(id)sender
 {
     [[SCHDictionaryDownloadManager sharedDownloadManager] beginDictionaryDownload];
-    [super closeSettings];
+    
+    if ([[SCHAppStateManager sharedAppStateManager] isSampleStore] == NO) {
+        [self.profileSetupDelegate showCurrentProfile];
+    } else {
+        [self.profileSetupDelegate showCurrentSamples];
+    }
 }
 
 - (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration

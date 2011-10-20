@@ -7,9 +7,9 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "SCHBaseSetupViewController.h"
+#import "SCHBaseModalViewController.h"
 
-@interface SCHRemoveDictionaryViewController : SCHBaseSetupViewController {}
+@interface SCHRemoveDictionaryViewController : SCHBaseModalViewController {}
 
 @property (nonatomic, retain) IBOutlet UIButton *removeDictionaryButton;
 @property (nonatomic, retain) IBOutletCollection(UILabel) NSArray *labels;

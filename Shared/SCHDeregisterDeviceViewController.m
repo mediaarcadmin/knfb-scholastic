@@ -212,7 +212,7 @@ static const CGFloat kDeregisterContentHeightLandscape = 380;
     [self.spinner stopAnimating];
     [self setEnablesBackButton:YES];
     
-    [self.setupDelegate popToRootViewControllerAnimated:YES withCompletionHandler:^{
+    [self.settingsDelegate popToRootViewControllerAnimated:YES withCompletionHandler:^{
                 
         LambdaAlert *alert = [[LambdaAlert alloc]
                               initWithTitle:NSLocalizedString(@"Device Deregistered", @"Device Deregistered") 

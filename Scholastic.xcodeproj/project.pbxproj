@@ -248,7 +248,7 @@
 		28DAC0E913E945AA00C0A97D /* SCHStoryInteractionControllerCardCollection.m in Sources */ = {isa = PBXBuildFile; fileRef = 28DAC0E813E945AA00C0A97D /* SCHStoryInteractionControllerCardCollection.m */; };
 		28DAC0EC13E945C800C0A97D /* SCHStoryInteractionCardCollection_iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 28DAC0EB13E945C800C0A97D /* SCHStoryInteractionCardCollection_iPad.xib */; };
 		28DAC0F913E98C0500C0A97D /* SCHAnimationDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 28DAC0F813E98C0500C0A97D /* SCHAnimationDelegate.m */; };
-		28E6BCF113D72C7500A5C9E3 /* SCHBaseSetupViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 28E6BCF013D72C7500A5C9E3 /* SCHBaseSetupViewController.m */; };
+		28E6BCF113D72C7500A5C9E3 /* SCHBaseModalViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 28E6BCF013D72C7500A5C9E3 /* SCHBaseModalViewController.m */; };
 		28E9B97D13A0D51A0056874F /* SCHStoryInteractionTitleTwister_iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 28E9B97C13A0D51A0056874F /* SCHStoryInteractionTitleTwister_iPad.xib */; };
 		28E9B98213A0EBF60056874F /* SCHStoryInteractionDraggableLetterView.m in Sources */ = {isa = PBXBuildFile; fileRef = 28E9B98113A0EBF60056874F /* SCHStoryInteractionDraggableLetterView.m */; };
 		28E9B98613A0F6730056874F /* SCHStoryInteractionWordSearchTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 28E9B98513A0F6730056874F /* SCHStoryInteractionWordSearchTests.m */; };
@@ -1182,7 +1182,7 @@
 		52488BA41407990500DA9AFA /* LambdaSheet.m in Sources */ = {isa = PBXBuildFile; fileRef = C9B59BD313D048D000C7760D /* LambdaSheet.m */; };
 		52488BA51407990500DA9AFA /* SCHSetupBookshelvesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 28BF26EE13D5A15400535A82 /* SCHSetupBookshelvesViewController.m */; };
 		52488BA61407990500DA9AFA /* SCHDownloadDictionaryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 28D2AA0D13D6E8F700BEB359 /* SCHDownloadDictionaryViewController.m */; };
-		52488BA71407990500DA9AFA /* SCHBaseSetupViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 28E6BCF013D72C7500A5C9E3 /* SCHBaseSetupViewController.m */; };
+		52488BA71407990500DA9AFA /* SCHBaseModalViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 28E6BCF013D72C7500A5C9E3 /* SCHBaseModalViewController.m */; };
 		52488BA81407990500DA9AFA /* SCHNavigationControllerForModalForm.m in Sources */ = {isa = PBXBuildFile; fileRef = 2830DAC113D822B6001366D9 /* SCHNavigationControllerForModalForm.m */; };
 		52488BA91407990500DA9AFA /* SCHBookCoverView.m in Sources */ = {isa = PBXBuildFile; fileRef = F80060FA13D88924001CA881 /* SCHBookCoverView.m */; };
 		52488BAA1407990500DA9AFA /* SCHBaseTextViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 28C7415A13D8A06700EEAB36 /* SCHBaseTextViewController.m */; };
@@ -2435,7 +2435,7 @@
 		28C7415D13D8A09B00EEAB36 /* SCHBaseTextViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = SCHBaseTextViewController.xib; path = iPhone/SCHBaseTextViewController.xib; sourceTree = "<group>"; };
 		28C7416013D8A4E700EEAB36 /* SCHDeregisterDeviceViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHDeregisterDeviceViewController.h; path = Shared/SCHDeregisterDeviceViewController.h; sourceTree = "<group>"; };
 		28C7416113D8A4E700EEAB36 /* SCHDeregisterDeviceViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHDeregisterDeviceViewController.m; path = Shared/SCHDeregisterDeviceViewController.m; sourceTree = "<group>"; };
-		28C7416813D8A6F400EEAB36 /* SCHSettingsDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHSettingsDelegate.h; path = Shared/SCHSettingsDelegate.h; sourceTree = "<group>"; };
+		28C7416813D8A6F400EEAB36 /* SCHModalPresenterDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHModalPresenterDelegate.h; path = Shared/SCHModalPresenterDelegate.h; sourceTree = "<group>"; };
 		28CC9856139CD550001F560F /* SCHStoryInteractionDraggableTargetView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCHStoryInteractionDraggableTargetView.h; sourceTree = "<group>"; };
 		28CC9857139CD550001F560F /* SCHStoryInteractionDraggableTargetView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCHStoryInteractionDraggableTargetView.m; sourceTree = "<group>"; };
 		28CC9858139CD550001F560F /* SCHStoryInteractionDraggableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCHStoryInteractionDraggableView.h; sourceTree = "<group>"; };
@@ -2475,8 +2475,8 @@
 		28DAC0EB13E945C800C0A97D /* SCHStoryInteractionCardCollection_iPad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SCHStoryInteractionCardCollection_iPad.xib; sourceTree = "<group>"; };
 		28DAC0F713E98C0500C0A97D /* SCHAnimationDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCHAnimationDelegate.h; sourceTree = "<group>"; };
 		28DAC0F813E98C0500C0A97D /* SCHAnimationDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCHAnimationDelegate.m; sourceTree = "<group>"; };
-		28E6BCEF13D72C7500A5C9E3 /* SCHBaseSetupViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHBaseSetupViewController.h; path = Shared/SCHBaseSetupViewController.h; sourceTree = "<group>"; };
-		28E6BCF013D72C7500A5C9E3 /* SCHBaseSetupViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHBaseSetupViewController.m; path = Shared/SCHBaseSetupViewController.m; sourceTree = "<group>"; };
+		28E6BCEF13D72C7500A5C9E3 /* SCHBaseModalViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHBaseModalViewController.h; path = Shared/SCHBaseModalViewController.h; sourceTree = "<group>"; };
+		28E6BCF013D72C7500A5C9E3 /* SCHBaseModalViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHBaseModalViewController.m; path = Shared/SCHBaseModalViewController.m; sourceTree = "<group>"; };
 		28E9B97C13A0D51A0056874F /* SCHStoryInteractionTitleTwister_iPad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SCHStoryInteractionTitleTwister_iPad.xib; sourceTree = "<group>"; };
 		28E9B98013A0EBF60056874F /* SCHStoryInteractionDraggableLetterView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCHStoryInteractionDraggableLetterView.h; sourceTree = "<group>"; };
 		28E9B98113A0EBF60056874F /* SCHStoryInteractionDraggableLetterView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCHStoryInteractionDraggableLetterView.m; sourceTree = "<group>"; };
@@ -2943,6 +2943,8 @@
 		C908D8B0133F945300661718 /* SCHFlowView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHFlowView.m; path = Shared/SCHFlowView.m; sourceTree = "<group>"; };
 		C90AB9A4135495C5009DC49D /* SCHSmartZoomPreParseOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHSmartZoomPreParseOperation.h; path = Shared/SCHSmartZoomPreParseOperation.h; sourceTree = "<group>"; };
 		C90AB9A5135495C5009DC49D /* SCHSmartZoomPreParseOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHSmartZoomPreParseOperation.m; path = Shared/SCHSmartZoomPreParseOperation.m; sourceTree = "<group>"; };
+		C9185122144F207500585C6A /* SCHProfileSetupDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHProfileSetupDelegate.h; path = Shared/SCHProfileSetupDelegate.h; sourceTree = "<group>"; };
+		C9185123144F217900585C6A /* SCHSettingsDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHSettingsDelegate.h; path = Shared/SCHSettingsDelegate.h; sourceTree = "<group>"; };
 		C91E99B313F930F8004F8062 /* storyinteraction-card-collection-flip~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "storyinteraction-card-collection-flip~ipad.png"; sourceTree = "<group>"; };
 		C91E99B413F930F8004F8062 /* storyinteraction-card-collection-zoom-out~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "storyinteraction-card-collection-zoom-out~ipad.png"; sourceTree = "<group>"; };
 		C91E99B513F930F8004F8062 /* storyinteraction-card-collection-zoom-in~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "storyinteraction-card-collection-zoom-in~ipad.png"; sourceTree = "<group>"; };
@@ -5596,9 +5598,11 @@
 			children = (
 				528465ED144DB5F7009DBADD /* SCHAccountValidationViewController.h */,
 				528465EE144DB5F7009DBADD /* SCHAccountValidationViewController.m */,
-				28C7416813D8A6F400EEAB36 /* SCHSettingsDelegate.h */,
-				28E6BCEF13D72C7500A5C9E3 /* SCHBaseSetupViewController.h */,
-				28E6BCF013D72C7500A5C9E3 /* SCHBaseSetupViewController.m */,
+				28C7416813D8A6F400EEAB36 /* SCHModalPresenterDelegate.h */,
+				C9185122144F207500585C6A /* SCHProfileSetupDelegate.h */,
+				C9185123144F217900585C6A /* SCHSettingsDelegate.h */,
+				28E6BCEF13D72C7500A5C9E3 /* SCHBaseModalViewController.h */,
+				28E6BCF013D72C7500A5C9E3 /* SCHBaseModalViewController.m */,
 				529385B212DF231800045B44 /* SCHSettingsViewController.h */,
 				529385B312DF231800045B44 /* SCHSettingsViewController.m */,
 				28BF26ED13D5A15400535A82 /* SCHSetupBookshelvesViewController.h */,
@@ -8077,7 +8081,7 @@
 				C9B59BD613D048D000C7760D /* LambdaSheet.m in Sources */,
 				28BF26F013D5A15400535A82 /* SCHSetupBookshelvesViewController.m in Sources */,
 				28D2AA0E13D6E8F700BEB359 /* SCHDownloadDictionaryViewController.m in Sources */,
-				28E6BCF113D72C7500A5C9E3 /* SCHBaseSetupViewController.m in Sources */,
+				28E6BCF113D72C7500A5C9E3 /* SCHBaseModalViewController.m in Sources */,
 				2830DAC213D822B6001366D9 /* SCHNavigationControllerForModalForm.m in Sources */,
 				F80060FB13D8892D001CA881 /* SCHBookCoverView.m in Sources */,
 				28C7415B13D8A06700EEAB36 /* SCHBaseTextViewController.m in Sources */,
@@ -8433,7 +8437,7 @@
 				52488BA41407990500DA9AFA /* LambdaSheet.m in Sources */,
 				52488BA51407990500DA9AFA /* SCHSetupBookshelvesViewController.m in Sources */,
 				52488BA61407990500DA9AFA /* SCHDownloadDictionaryViewController.m in Sources */,
-				52488BA71407990500DA9AFA /* SCHBaseSetupViewController.m in Sources */,
+				52488BA71407990500DA9AFA /* SCHBaseModalViewController.m in Sources */,
 				52488BA81407990500DA9AFA /* SCHNavigationControllerForModalForm.m in Sources */,
 				52488BA91407990500DA9AFA /* SCHBookCoverView.m in Sources */,
 				52488BAA1407990500DA9AFA /* SCHBaseTextViewController.m in Sources */,

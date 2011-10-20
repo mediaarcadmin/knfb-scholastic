@@ -7,17 +7,21 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "SCHSettingsDelegate.h"
+#import "SCHProfileSetupDelegate.h"
 
 @class SCHCustomToolbar;
-@protocol SCHSettingsDelegate; 
+@protocol SCHModalPresenterDelegate; 
 
-@interface SCHBaseSetupViewController : UIViewController {}
+@interface SCHBaseModalViewController : UIViewController {}
 
 @property (nonatomic, retain) IBOutlet SCHCustomToolbar *topToolbar;
 @property (nonatomic, retain) IBOutlet UIView *containerView;
 @property (nonatomic, retain) IBOutlet UIImageView *backgroundView;
 @property (nonatomic, retain) IBOutlet UIBarButtonItem *barSpacer;
-@property (nonatomic, assign) id<SCHSettingsDelegate> setupDelegate;
+@property (nonatomic, assign) id<SCHSettingsDelegate> settingsDelegate; // Mutually excludes profileSetupDelegate. Both cannot be set.
+@property (nonatomic, assign) id<SCHProfileSetupDelegate> profileSetupDelegate; // Mutually excludes settingsDelegate. Both cannot be set.
+
 
 // set the appropriate button background for a setup screen button
 - (void)setButtonBackground:(UIButton *)button;
@@ -27,7 +31,7 @@
 - (void)setEnablesBackButton:(BOOL)enablesBackButton;
 
 // close the entire settings dialog
-- (IBAction)closeSettings;
+- (IBAction)close;
 
 - (void)releaseViewObjects;
 - (void)setupAssetsForOrientation:(UIInterfaceOrientation)toInterfaceOrientation;

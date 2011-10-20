@@ -1,5 +1,5 @@
 //
-//  SCHSettingsDelegate.h
+//  SCHProfileSetupDelegate.h
 //  Scholastic
 //
 //  Created by Matt Farrugia on 19/10/2011.
@@ -8,6 +8,9 @@
 
 #import "SCHModalPresenterDelegate.h"
 
-@protocol SCHSettingsDelegate <SCHModalPresenterDelegate>
+@protocol SCHProfileSetupDelegate <SCHModalPresenterDelegate>
+
+- (void)showCurrentSamples;
+- (void)showCurrentProfile;
 
 @end

@@ -93,7 +93,7 @@
     [self.updatesBubble addGestureRecognizer:tap];
     [tap release];
  
-    self.settingsViewController.setupDelegate = self;
+    self.settingsViewController.settingsDelegate = self;
     self.settingsViewController.managedObjectContext = self.managedObjectContext;
 }  
 
@@ -382,9 +382,19 @@
     abort();
 }
 
-#pragma mark - settings
+- (void)pushSettingsController
+{
+    [self.modalNavigationController setViewControllers:[NSArray arrayWithObject:self.settingsViewController]];
+    [self.modalNavigationController setModalTransitionStyle:UIModalTransitionStyleCoverVertical];
+    [self.modalNavigationController setModalPresentationStyle:UIModalPresentationFormSheet];
+    [self.modalNavigationController.navigationBar setTintColor:[UIColor SCHRed2Color]];
+    [self presentModalViewController:self.modalNavigationController animated:YES];
+    [self showUpdatesBubble:NO];
+}
 
-- (void)dismissSettingsAnimated:(BOOL)animated withCompletionHandler:(dispatch_block_t)completion;
+#pragma mark - SCHSettingsDelegate
+
+- (void)dismissModalViewControllerAnimated:(BOOL)animated withCompletionHandler:(dispatch_block_t)completion;
 {
     if (self.modalViewController) {
         [self dismissModalViewControllerAnimated:animated];
@@ -403,9 +413,9 @@
 {
     if (self.modalViewController) {
         [self dismissModalViewControllerAnimated:animated];
-        [self.navigationController popViewControllerAnimated:NO];
+        [self.navigationController popToRootViewControllerAnimated:NO];
     } else {
-        [self.navigationController popViewControllerAnimated:animated];
+        [self.navigationController popToRootViewControllerAnimated:animated];
     }
     
     // This is an inelegant solution but there isn't a straightforward way to perform the animation and then 
@@ -415,16 +425,6 @@
         dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);
         dispatch_after(popTime, dispatch_get_main_queue(), completion);
     }
-}
-
-- (void)pushSettingsController
-{
-    [self.modalNavigationController setViewControllers:[NSArray arrayWithObject:self.settingsViewController]];
-    [self.modalNavigationController setModalTransitionStyle:UIModalTransitionStyleCoverVertical];
-    [self.modalNavigationController setModalPresentationStyle:UIModalPresentationFormSheet];
-    [self.modalNavigationController.navigationBar setTintColor:[UIColor SCHRed2Color]];
-    [self presentModalViewController:self.modalNavigationController animated:YES];
-    [self showUpdatesBubble:NO];
 }
 
 #pragma mark - Book updates

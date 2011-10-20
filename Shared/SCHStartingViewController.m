@@ -70,7 +70,6 @@ typedef enum {
 - (void)advanceToNextSignInForm;
 
 - (SCHProfileViewController_Shared *)profileViewController;
-- (void)pushProfileView;
 
 @end
 
@@ -397,7 +396,7 @@ typedef enum {
         if ([[profile.fetchedResultsController sections] count] == 0 
             || [[[profile.fetchedResultsController sections] objectAtIndex:0] numberOfObjects] == 0) {
             SCHSetupBookshelvesViewController *setupBookshelves = [[SCHSetupBookshelvesViewController alloc] init];
-            setupBookshelves.setupDelegate = self;
+            setupBookshelves.profileSetupDelegate = self;
             next = setupBookshelves;
         }
     }
@@ -408,7 +407,7 @@ typedef enum {
     
     if (next == nil && needsToBeAsked) {
         SCHDownloadDictionaryViewController *downloadDictionary = [[SCHDownloadDictionaryViewController alloc] init];
-        downloadDictionary.setupDelegate = self;
+        downloadDictionary.profileSetupDelegate = self;
         next = downloadDictionary;
     }
     
@@ -423,17 +422,17 @@ typedef enum {
         }
         [next release];
     } else {
-        [self dismissSettingsAnimated:YES withCompletionHandler:nil];
+        [self showCurrentSamples];
     }
 }
 
-- (void)dismissSettingsAnimated:(BOOL)animated withCompletionHandler:(dispatch_block_t)completion;
+#pragma mark - SCHProfileSetupDelegate
+
+- (void)dismissModalViewControllerAnimated:(BOOL)animated withCompletionHandler:(dispatch_block_t)completion;
 {
     if (self.modalViewController) {
         [self dismissModalViewControllerAnimated:animated];
     }
-    
-    [self pushProfileView];
     
     // This is an inelegant solution but there isn't a straightforward way to perform the animation and then 
     // fire the completion when it is finished
@@ -447,7 +446,61 @@ typedef enum {
 - (void)popToRootViewControllerAnimated:(BOOL)animated withCompletionHandler:(dispatch_block_t)completion
 {
     // Already at root so just call dismiss settings
-    [self dismissSettingsAnimated:animated withCompletionHandler:completion];
+    [self dismissModalViewControllerAnimated:animated withCompletionHandler:completion];
+}
+
+- (void)showCurrentSamples
+{   
+    // TODO: refactor this so there is no implicit knowledge of which we are pushing
+    
+    BOOL shouldAnimatePush = YES;
+    
+    if (self.modalViewController) {
+        [self dismissModalViewControllerAnimated:YES];
+        shouldAnimatePush = NO;
+    }
+    
+    BOOL alreadyInUse = NO;
+    SCHProfileViewController_Shared *profile = [self profileViewController];
+    
+    for (UIViewController *vc in self.navigationController.viewControllers) {
+        if (vc == profile) {
+            alreadyInUse = YES;
+            break;
+        }
+    }
+    if (alreadyInUse == NO) {
+        [self.navigationController pushViewController:profile animated:NO];
+    }
+    for (SCHProfileItem *item in [profile.fetchedResultsController fetchedObjects]) {
+        if ([item.ID integerValue] == sampleBookshelf + 1) {    // added 1 to convert from index to profileID
+            [profile pushBookshelvesControllerWithProfileItem:item animated:shouldAnimatePush];
+            break;
+        }
+    }
+}
+
+- (void)showCurrentProfile
+{   
+    BOOL shouldAnimatePush = YES;
+
+    if (self.modalViewController) {
+        [self dismissModalViewControllerAnimated:YES];
+        shouldAnimatePush = NO;
+    }
+    
+    BOOL alreadyInUse = NO;
+    SCHProfileViewController_Shared *profile = [self profileViewController];
+    
+    for (UIViewController *vc in self.navigationController.viewControllers) {
+        if (vc == profile) {
+            alreadyInUse = YES;
+            break;
+        }
+    }
+    if (alreadyInUse == NO) {
+        [self.navigationController pushViewController:profile animated:shouldAnimatePush];
+    }
 }
 
 #pragma mark - Profile view
@@ -467,30 +520,6 @@ typedef enum {
         profileViewController.managedObjectContext = appDelegate.coreDataHelper.managedObjectContext;
 }
     return profileViewController;
-}
-
-- (void)pushProfileView
-{   
-    BOOL alreadyInUse = NO;
-    SCHProfileViewController_Shared *profile = [self profileViewController];
-    
-    for (UIViewController *vc in self.navigationController.viewControllers) {
-        if (vc == profile) {
-            alreadyInUse = YES;
-            break;
-        }
-    }
-    if (alreadyInUse == NO) {
-        [self.navigationController pushViewController:profile animated:NO];
-    }
-    if ([[SCHAppStateManager sharedAppStateManager] isSampleStore] == YES) {
-        for (SCHProfileItem *item in [profile.fetchedResultsController fetchedObjects]) {
-            if ([item.ID integerValue] == sampleBookshelf + 1) {    // added 1 to convert from index to profileID
-                [profile pushBookshelvesControllerWithProfileItem:item animated:YES];
-                break;
-            }
-        }    
-    }
 }
 
 #pragma mark - notifications

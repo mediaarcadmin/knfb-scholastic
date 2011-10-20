@@ -233,7 +233,7 @@ extern NSString * const kSCHAuthenticationManagerDeviceKey;
 
 - (IBAction)dismissModalSettingsController:(id)sender
 {
-    [self closeSettings];
+    [self close];
 }
 
 #pragma mark - Actions
@@ -241,7 +241,7 @@ extern NSString * const kSCHAuthenticationManagerDeviceKey;
 - (IBAction)deregisterDevice:(id)sender 
 {
     SCHDeregisterDeviceViewController *vc = [[SCHDeregisterDeviceViewController alloc] init];
-    vc.setupDelegate = self.setupDelegate;
+    vc.settingsDelegate = self.settingsDelegate;
     [self.navigationController pushViewController:vc animated:YES];
     [vc release];
 }

@@ -7,11 +7,11 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "SCHBaseSetupViewController.h"
+#import "SCHBaseModalViewController.h"
 
 @class SCHBookUpdates;
 
-@interface SCHUpdateBooksViewController : SCHBaseSetupViewController <UITableViewDataSource, UITableViewDelegate> {}
+@interface SCHUpdateBooksViewController : SCHBaseModalViewController <UITableViewDataSource, UITableViewDelegate> {}
 
 @property (nonatomic, retain) IBOutlet UITableView *booksTable;
 @property (nonatomic, retain) IBOutlet UIButton *updateBooksButton;
