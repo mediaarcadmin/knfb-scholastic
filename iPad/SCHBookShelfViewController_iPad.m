@@ -116,49 +116,36 @@ static NSTimeInterval const kSCHBookShelfViewControllerTopTenRefreshTime = -600.
     self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithCustomView:containerView] autorelease];
     [containerView release];
     
-    if ([self.profileItem.BookshelfStyle intValue] == kSCHBookshelfStyleYoungChild) {
-        containerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth(homeButton.frame) + kSCHBookShelfEdgePadding, CGRectGetHeight(homeButton.frame))];
-        
-        CGRect frame = homeButton.frame;
-        frame.origin.x = kSCHBookShelfEdgePadding;
-        homeButton.frame = frame;
-        
-        [containerView addSubview:homeButton];
-        
-        self.navigationItem.leftBarButtonItem = [[[UIBarButtonItem alloc] initWithCustomView:containerView] autorelease];
-        [containerView release];
-    } else {
-        self.sortButton = [SCHThemeButton buttonWithType:UIButtonTypeCustom];
-        [self.sortButton setFrame:CGRectMake(0, 3, 120, 30)];
-        [self.sortButton setTitle:NSLocalizedString(@"Sort", @"") forState:UIControlStateNormal];
-        [self.sortButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-        [self.sortButton setTitleColor:[UIColor colorWithWhite:1 alpha:0.5f] forState:UIControlStateHighlighted];
-        [self.sortButton setReversesTitleShadowWhenHighlighted:YES];
-        
-        self.sortButton.titleLabel.font = [UIFont boldSystemFontOfSize:14];
-        self.sortButton.titleLabel.shadowOffset = CGSizeMake(0, -1);
-        
-        [self.sortButton setThemeButton:kSCHThemeManagerButtonImage leftCapWidth:7 topCapHeight:0];
-        [self.sortButton addTarget:self action:@selector(sortAction:) forControlEvents:UIControlEventTouchUpInside];   
-        
-        containerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth(homeButton.frame) + kSCHBookShelfButtonPadding + CGRectGetWidth(self.sortButton.frame) + kSCHBookShelfButtonPadding, CGRectGetHeight(homeButton.frame))];
-        
-        [containerView addSubview:self.sortButton];
-        
-        CGRect sortFrame = self.sortButton.frame;
-        sortFrame.origin.x = kSCHBookShelfEdgePadding + CGRectGetWidth(homeButton.frame) + kSCHBookShelfButtonPadding;
-        self.sortButton.frame = sortFrame;
-        
-        sortFrame = homeButton.frame;
-        sortFrame.origin.x = kSCHBookShelfEdgePadding;
-        homeButton.frame = sortFrame;
-        
-        [containerView addSubview:homeButton];
-        
-        self.navigationItem.leftBarButtonItem = [[[UIBarButtonItem alloc] initWithCustomView:containerView] autorelease];
-        [containerView release];
-        
-    }
+    self.sortButton = [SCHThemeButton buttonWithType:UIButtonTypeCustom];
+    [self.sortButton setFrame:CGRectMake(0, 3, 120, 30)];
+    [self.sortButton setTitle:NSLocalizedString(@"Sort", @"") forState:UIControlStateNormal];
+    [self.sortButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    [self.sortButton setTitleColor:[UIColor colorWithWhite:1 alpha:0.5f] forState:UIControlStateHighlighted];
+    [self.sortButton setReversesTitleShadowWhenHighlighted:YES];
+    
+    self.sortButton.titleLabel.font = [UIFont boldSystemFontOfSize:14];
+    self.sortButton.titleLabel.shadowOffset = CGSizeMake(0, -1);
+    
+    [self.sortButton setThemeButton:kSCHThemeManagerButtonImage leftCapWidth:7 topCapHeight:0];
+    [self.sortButton addTarget:self action:@selector(sortAction:) forControlEvents:UIControlEventTouchUpInside];   
+    
+    containerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth(homeButton.frame) + kSCHBookShelfButtonPadding + CGRectGetWidth(self.sortButton.frame) + kSCHBookShelfButtonPadding, CGRectGetHeight(homeButton.frame))];
+    
+    [containerView addSubview:self.sortButton];
+    
+    CGRect sortFrame = self.sortButton.frame;
+    sortFrame.origin.x = kSCHBookShelfEdgePadding + CGRectGetWidth(homeButton.frame) + kSCHBookShelfButtonPadding;
+    self.sortButton.frame = sortFrame;
+    
+    sortFrame = homeButton.frame;
+    sortFrame.origin.x = kSCHBookShelfEdgePadding;
+    homeButton.frame = sortFrame;
+    
+    [containerView addSubview:homeButton];
+    
+    self.navigationItem.leftBarButtonItem = [[[UIBarButtonItem alloc] initWithCustomView:containerView] autorelease];
+    [containerView release];
+    
 }
 
 - (void)setEditing:(BOOL)editing animated:(BOOL)animated

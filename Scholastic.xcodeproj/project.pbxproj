@@ -2045,7 +2045,7 @@
 			remoteGlobalIDString = D2AAC07D0554694100DB518D;
 			remoteInfo = libEucalyptusIOSUI;
 		};
-		527DDC5F144C69BD004D4FE3 /* PBXContainerItemProxy */ = {
+		52E13ED514501A3C00911D43 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 526FEB41140FD83A00638712 /* KIF.xcodeproj */;
 			proxyType = 2;
@@ -5036,6 +5036,14 @@
 			name = Views;
 			sourceTree = "<group>";
 		};
+		52E13ED214501A3B00911D43 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				52E13ED614501A3C00911D43 /* libKIF.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 		52EF579412EDBE6E00E374F7 /* security */ = {
 			isa = PBXGroup;
 			children = (
@@ -6357,7 +6365,7 @@
 			projectDirPath = "";
 			projectReferences = (
 				{
-					ProductGroup = 527DDC5C144C69BD004D4FE3 /* Products */;
+					ProductGroup = 52E13ED214501A3B00911D43 /* Products */;
 					ProjectRef = 526FEB41140FD83A00638712 /* KIF.xcodeproj */;
 				},
 				{
@@ -6375,11 +6383,11 @@
 /* End PBXProject section */
 
 /* Begin PBXReferenceProxy section */
-		527DDC60144C69BD004D4FE3 /* libKIF.a */ = {
+		52E13ED614501A3C00911D43 /* libKIF.a */ = {
 			isa = PBXReferenceProxy;
 			fileType = archive.ar;
 			path = libKIF.a;
-			remoteRef = 527DDC5F144C69BD004D4FE3 /* PBXContainerItemProxy */;
+			remoteRef = 52E13ED514501A3C00911D43 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		7D3F30F3140698D800C6F445 /* libEucalyptusModel.a */ = {
