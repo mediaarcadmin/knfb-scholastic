@@ -26,6 +26,7 @@
 #import "SCHNote.h"
 #import "SCHDictionaryViewController.h"
 #import "SCHDictionaryAccessManager.h"
+#import "SCHDictionaryDownloadManager.h"
 #import "SCHNotesCountView.h"
 #import "SCHBookStoryInteractions.h"
 #import "SCHStoryInteractionController.h"
@@ -477,6 +478,8 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     // Older reader defaults: fixed view for iPad, flow view for iPhone
     // Younger reader defaults: always fixed, no need to save
     
+#if FLOW_VIEW_ENABLED == 1
+    
     if (self.youngerMode) {
         self.layoutType = SCHReadingViewLayoutTypeFixed;
         self.paperType = SCHReadingViewPaperTypeWhite;
@@ -513,6 +516,11 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
             [[self.profile AppProfile] setPaperType:[NSNumber numberWithInt:SCHReadingViewPaperTypeWhite]];
         }
     }  
+#else
+    // If Flow View is disabled, always use fixed view white paper
+    self.layoutType = SCHReadingViewLayoutTypeFixed;
+    self.paperType = SCHReadingViewPaperTypeWhite;
+#endif
     
     [self.paperTypeSegmentedControl setSelectedSegmentIndex:self.paperType];
     
@@ -615,25 +623,21 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     [CATransaction commit];
     
     [self setToolbarVisibility:NO animated:NO];
+    
+#if FLOW_VIEW_ENABLED == 0
+    // if flow view is disabled, then remove the options button
+    NSMutableArray *toolbarArray = [[NSMutableArray alloc] initWithArray:self.olderBottomToolbar.items];
+    [toolbarArray removeObjectsAtIndexes:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(6, 2)]];
+    self.olderBottomToolbar.items = [NSArray arrayWithArray:toolbarArray];
+    [toolbarArray release];
+#endif
+    
 }
 
 - (void)viewWillAppear:(BOOL)animated
 {
 	[super viewWillAppear:animated];
     [self setupAssetsForOrientation:self.interfaceOrientation];
-    
-    if (youngerMode == YES) {
-        if ([[NSUserDefaults standardUserDefaults] boolForKey:kSCHUserDefaultsYoungerHelpVideoFirstPlay] == YES) {
-            self.firstTimePlayForHelpController = YES;
-            [self presentHelpAnimated:NO];
-        }
-    } else {
-        if ([[NSUserDefaults standardUserDefaults] boolForKey:kSCHUserDefaultsOlderHelpVideoFirstPlay] == YES) {
-            self.firstTimePlayForHelpController = YES;
-            [self presentHelpAnimated:NO];
-            
-        }
-    }
 }
 
 - (void)viewDidAppear:(BOOL)animated

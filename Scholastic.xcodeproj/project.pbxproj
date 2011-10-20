@@ -816,8 +816,6 @@
 		52488A271407990500DA9AFA /* BookSITabHorizontal~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = F81CA38013FAB230006EF9D6 /* BookSITabHorizontal~ipad.png */; };
 		52488A281407990500DA9AFA /* BookSampleTabHorizontal~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = F81CA38113FAB230006EF9D6 /* BookSampleTabHorizontal~ipad.png */; };
 		52488A291407990500DA9AFA /* SCHHelpViewController~ipad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 528C615E13FAA56F00D033F8 /* SCHHelpViewController~ipad.xib */; };
-		52488A2A1407990500DA9AFA /* olderHelpVideo~ipad.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = C93113DF13FBB55B00355693 /* olderHelpVideo~ipad.mp4 */; };
-		52488A2B1407990500DA9AFA /* youngerHelpVideo~ipad.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = C93113E013FBB55B00355693 /* youngerHelpVideo~ipad.mp4 */; };
 		52488A2C1407990500DA9AFA /* BookSITab~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = F82E3BBC13F9289A000B67A4 /* BookSITab~ipad.png */; };
 		52488A2D1407990500DA9AFA /* BookSISampleTab~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = F82E3BBB13F9289A000B67A4 /* BookSISampleTab~ipad.png */; };
 		52488A2E1407990500DA9AFA /* BookShelfErrorIcon~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = F82E3BBA13F9289A000B67A4 /* BookShelfErrorIcon~ipad.png */; };
@@ -841,8 +839,6 @@
 		52488A491407990500DA9AFA /* OptionsOriginalButtonActive@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F8EB729313FD504900FE2410 /* OptionsOriginalButtonActive@2x.png */; };
 		52488A4A1407990500DA9AFA /* OptionsOriginalButtonInactive.png in Resources */ = {isa = PBXBuildFile; fileRef = F8EB729413FD504900FE2410 /* OptionsOriginalButtonInactive.png */; };
 		52488A4B1407990500DA9AFA /* OptionsOriginalButtonInactive@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F8EB729513FD504900FE2410 /* OptionsOriginalButtonInactive@2x.png */; };
-		52488A4C1407990500DA9AFA /* olderHelpVideo~iphone.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = 5256958F13FD00B600799BFC /* olderHelpVideo~iphone.mp4 */; };
-		52488A4D1407990500DA9AFA /* youngerHelpVideo~iphone.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = 5256959013FD00B600799BFC /* youngerHelpVideo~iphone.mp4 */; };
 		52488A4E1407990500DA9AFA /* SCHHelpViewController~iphone.xib in Resources */ = {isa = PBXBuildFile; fileRef = C9F17C2113FD185700C06DF6 /* SCHHelpViewController~iphone.xib */; };
 		52488A4F1407990500DA9AFA /* storyinteraction-wordbird-Pen_Lose_0.png in Resources */ = {isa = PBXBuildFile; fileRef = 28974E2513FD4EE10082120E /* storyinteraction-wordbird-Pen_Lose_0.png */; };
 		52488A501407990500DA9AFA /* storyinteraction-wordbird-Pen_Lose_1.png in Resources */ = {isa = PBXBuildFile; fileRef = 28974E2613FD4EE10082120E /* storyinteraction-wordbird-Pen_Lose_1.png */; };
@@ -1278,8 +1274,6 @@
 		5248E10C13C4858900FA2CDC /* SCHReadingStatsContentItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 5248E10B13C4858900FA2CDC /* SCHReadingStatsContentItem.m */; };
 		5248E11013C4858900FA2CDC /* SCHReadingStatsDetailItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 5248E10F13C4858900FA2CDC /* SCHReadingStatsDetailItem.m */; };
 		5248E11413C4858900FA2CDC /* SCHReadingStatsEntryItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 5248E11313C4858900FA2CDC /* SCHReadingStatsEntryItem.m */; };
-		5256959113FD00B600799BFC /* olderHelpVideo~iphone.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = 5256958F13FD00B600799BFC /* olderHelpVideo~iphone.mp4 */; };
-		5256959313FD00B600799BFC /* youngerHelpVideo~iphone.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = 5256959013FD00B600799BFC /* youngerHelpVideo~iphone.mp4 */; };
 		525E82D3138FFFF7006A6775 /* SCHAudioInfoProcessor.m in Sources */ = {isa = PBXBuildFile; fileRef = 525E82D2138FFFF7006A6775 /* SCHAudioInfoProcessor.m */; };
 		525E82D713938548006A6775 /* SCHAudioInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 525E82D613938548006A6775 /* SCHAudioInfo.m */; };
 		5264FAC713A7555200D4F659 /* SCHBookShelfTopTenPopoverTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5264FAC513A7555200D4F659 /* SCHBookShelfTopTenPopoverTableView.m */; };
@@ -1508,8 +1502,6 @@
 		C92FA7CD1355B8B7001BAA6B /* KNFBSmartZoomBlockSource.m in Sources */ = {isa = PBXBuildFile; fileRef = C92FA7CC1355B8B7001BAA6B /* KNFBSmartZoomBlockSource.m */; };
 		C92FA7D21355BE20001BAA6B /* SCHSmartZoomBlockSource.m in Sources */ = {isa = PBXBuildFile; fileRef = C92FA7D11355BE20001BAA6B /* SCHSmartZoomBlockSource.m */; };
 		C92FA7E81355E8F4001BAA6B /* KNFBSmartZoomBlock.m in Sources */ = {isa = PBXBuildFile; fileRef = C92FA7E71355E8F2001BAA6B /* KNFBSmartZoomBlock.m */; };
-		C93113E113FBB55B00355693 /* olderHelpVideo~ipad.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = C93113DF13FBB55B00355693 /* olderHelpVideo~ipad.mp4 */; };
-		C93113E313FBB55B00355693 /* youngerHelpVideo~ipad.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = C93113E013FBB55B00355693 /* youngerHelpVideo~ipad.mp4 */; };
 		C93113E813FBBE7C00355693 /* storyinteraction-jigsaw-you-won~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = C93113E513FBBE7C00355693 /* storyinteraction-jigsaw-you-won~iphone.png */; };
 		C93113EA13FBBE7C00355693 /* storyinteraction-jigsaw-you-won@2x~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = C93113E613FBBE7C00355693 /* storyinteraction-jigsaw-you-won@2x~iphone.png */; };
 		C93113EC13FBBE7C00355693 /* storyinteraction-jigsaw-you-won~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = C93113E713FBBE7C00355693 /* storyinteraction-jigsaw-you-won~ipad.png */; };
@@ -1922,6 +1914,12 @@
 		F85C9D8C13E19CA8006F0546 /* BookShelfErrorIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = F85C9D8A13E19CA8006F0546 /* BookShelfErrorIcon.png */; };
 		F85C9D8E13E19CA8006F0546 /* BookShelfErrorIcon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F85C9D8B13E19CA8006F0546 /* BookShelfErrorIcon@2x.png */; };
 		F85E0309134F59E800E81D58 /* SCHCustomToolbar.m in Sources */ = {isa = PBXBuildFile; fileRef = F85E0308134F59E700E81D58 /* SCHCustomToolbar.m */; };
+		F8615B19144D69F100D0D265 /* SCHHelpVideoManifestOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = F8615B18144D69F100D0D265 /* SCHHelpVideoManifestOperation.m */; };
+		F8615B1A144D69F100D0D265 /* SCHHelpVideoManifestOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = F8615B18144D69F100D0D265 /* SCHHelpVideoManifestOperation.m */; };
+		F8615B1D144D6E7000D0D265 /* SCHHelpVideoFileDownloadOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = F8615B1C144D6E7000D0D265 /* SCHHelpVideoFileDownloadOperation.m */; };
+		F8615B1E144D6E7000D0D265 /* SCHHelpVideoFileDownloadOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = F8615B1C144D6E7000D0D265 /* SCHHelpVideoFileDownloadOperation.m */; };
+		F8615B21144D712400D0D265 /* SCHHelpVideoManifest.m in Sources */ = {isa = PBXBuildFile; fileRef = F8615B20144D712400D0D265 /* SCHHelpVideoManifest.m */; };
+		F8615B22144D712400D0D265 /* SCHHelpVideoManifest.m in Sources */ = {isa = PBXBuildFile; fileRef = F8615B20144D712400D0D265 /* SCHHelpVideoManifest.m */; };
 		F864333713813B0100BEB8EB /* SCHBookShelfViewController_iPad.m in Sources */ = {isa = PBXBuildFile; fileRef = F864333613813B0100BEB8EB /* SCHBookShelfViewController_iPad.m */; };
 		F8687ED613BA234100B59987 /* BookShelfNewIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = F8687ED513BA234100B59987 /* BookShelfNewIcon.png */; };
 		F86DEBFE13A21B6800053999 /* SCHStoryInteractionControllerStartingLetter.m in Sources */ = {isa = PBXBuildFile; fileRef = F86DEBFB13A21B6800053999 /* SCHStoryInteractionControllerStartingLetter.m */; };
@@ -2558,8 +2556,6 @@
 		5248E10F13C4858900FA2CDC /* SCHReadingStatsDetailItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHReadingStatsDetailItem.m; path = Shared/SCHReadingStatsDetailItem.m; sourceTree = "<group>"; };
 		5248E11213C4858900FA2CDC /* SCHReadingStatsEntryItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHReadingStatsEntryItem.h; path = Shared/SCHReadingStatsEntryItem.h; sourceTree = "<group>"; };
 		5248E11313C4858900FA2CDC /* SCHReadingStatsEntryItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHReadingStatsEntryItem.m; path = Shared/SCHReadingStatsEntryItem.m; sourceTree = "<group>"; };
-		5256958F13FD00B600799BFC /* olderHelpVideo~iphone.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; name = "olderHelpVideo~iphone.mp4"; path = "Resources/Videos/olderHelpVideo~iphone.mp4"; sourceTree = "<group>"; };
-		5256959013FD00B600799BFC /* youngerHelpVideo~iphone.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; name = "youngerHelpVideo~iphone.mp4"; path = "Resources/Videos/youngerHelpVideo~iphone.mp4"; sourceTree = "<group>"; };
 		525E82D1138FFFF6006A6775 /* SCHAudioInfoProcessor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHAudioInfoProcessor.h; path = Shared/SCHAudioInfoProcessor.h; sourceTree = "<group>"; };
 		525E82D2138FFFF7006A6775 /* SCHAudioInfoProcessor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHAudioInfoProcessor.m; path = Shared/SCHAudioInfoProcessor.m; sourceTree = "<group>"; };
 		525E82D513938547006A6775 /* SCHAudioInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHAudioInfo.h; path = Shared/SCHAudioInfo.h; sourceTree = "<group>"; };
@@ -3040,8 +3036,6 @@
 		C92FA7D11355BE20001BAA6B /* SCHSmartZoomBlockSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHSmartZoomBlockSource.m; path = Shared/SCHSmartZoomBlockSource.m; sourceTree = "<group>"; };
 		C92FA7E61355E8F1001BAA6B /* KNFBSmartZoomBlock.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = KNFBSmartZoomBlock.h; path = SmartZoom/KNFBSmartZoomBlock.h; sourceTree = "<group>"; };
 		C92FA7E71355E8F2001BAA6B /* KNFBSmartZoomBlock.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = KNFBSmartZoomBlock.m; path = SmartZoom/KNFBSmartZoomBlock.m; sourceTree = "<group>"; };
-		C93113DF13FBB55B00355693 /* olderHelpVideo~ipad.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; name = "olderHelpVideo~ipad.mp4"; path = "Resources/Videos/olderHelpVideo~ipad.mp4"; sourceTree = "<group>"; };
-		C93113E013FBB55B00355693 /* youngerHelpVideo~ipad.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; name = "youngerHelpVideo~ipad.mp4"; path = "Resources/Videos/youngerHelpVideo~ipad.mp4"; sourceTree = "<group>"; };
 		C93113E513FBBE7C00355693 /* storyinteraction-jigsaw-you-won~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "storyinteraction-jigsaw-you-won~iphone.png"; sourceTree = "<group>"; };
 		C93113E613FBBE7C00355693 /* storyinteraction-jigsaw-you-won@2x~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "storyinteraction-jigsaw-you-won@2x~iphone.png"; sourceTree = "<group>"; };
 		C93113E713FBBE7C00355693 /* storyinteraction-jigsaw-you-won~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "storyinteraction-jigsaw-you-won~ipad.png"; sourceTree = "<group>"; };
@@ -3512,6 +3506,12 @@
 		F85C9D8B13E19CA8006F0546 /* BookShelfErrorIcon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "BookShelfErrorIcon@2x.png"; path = "Resources/BookShelfErrorIcon@2x.png"; sourceTree = "<group>"; };
 		F85E0307134F59E700E81D58 /* SCHCustomToolbar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHCustomToolbar.h; path = Shared/SCHCustomToolbar.h; sourceTree = "<group>"; };
 		F85E0308134F59E700E81D58 /* SCHCustomToolbar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHCustomToolbar.m; path = Shared/SCHCustomToolbar.m; sourceTree = "<group>"; };
+		F8615B17144D69F100D0D265 /* SCHHelpVideoManifestOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHHelpVideoManifestOperation.h; path = Shared/SCHHelpVideoManifestOperation.h; sourceTree = "<group>"; };
+		F8615B18144D69F100D0D265 /* SCHHelpVideoManifestOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHHelpVideoManifestOperation.m; path = Shared/SCHHelpVideoManifestOperation.m; sourceTree = "<group>"; };
+		F8615B1B144D6E7000D0D265 /* SCHHelpVideoFileDownloadOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHHelpVideoFileDownloadOperation.h; path = Shared/SCHHelpVideoFileDownloadOperation.h; sourceTree = "<group>"; };
+		F8615B1C144D6E7000D0D265 /* SCHHelpVideoFileDownloadOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHHelpVideoFileDownloadOperation.m; path = Shared/SCHHelpVideoFileDownloadOperation.m; sourceTree = "<group>"; };
+		F8615B1F144D712400D0D265 /* SCHHelpVideoManifest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHHelpVideoManifest.h; path = Shared/SCHHelpVideoManifest.h; sourceTree = "<group>"; };
+		F8615B20144D712400D0D265 /* SCHHelpVideoManifest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHHelpVideoManifest.m; path = Shared/SCHHelpVideoManifest.m; sourceTree = "<group>"; };
 		F864333513813B0100BEB8EB /* SCHBookShelfViewController_iPad.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHBookShelfViewController_iPad.h; path = iPad/SCHBookShelfViewController_iPad.h; sourceTree = "<group>"; };
 		F864333613813B0100BEB8EB /* SCHBookShelfViewController_iPad.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHBookShelfViewController_iPad.m; path = iPad/SCHBookShelfViewController_iPad.m; sourceTree = "<group>"; };
 		F86666A013AF8C370050979F /* SCHBookShelfTableViewCell_iPad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = SCHBookShelfTableViewCell_iPad.xib; path = iPad/SCHBookShelfTableViewCell_iPad.xib; sourceTree = "<group>"; };
@@ -4746,7 +4746,6 @@
 				C944D2CA1407D4CA008E04FF /* Sample DBs */,
 				F8509E7512F0620D00197EB5 /* Debug Books */,
 				F806563013FEAFF200DFAE43 /* Options View */,
-				528C616413FAAA9D00D033F8 /* Help */,
 				F837018D13BB322F009B280D /* List View Icons */,
 				F86DEC0813A21F2600053999 /* Sounds */,
 				F8FF8D7F139513B000CD7B73 /* OldDictionary-additions.css */,
@@ -4826,17 +4825,6 @@
 				528C615D13FAA56C00D033F8 /* SCHHelpViewController.m */,
 				528C615E13FAA56F00D033F8 /* SCHHelpViewController~ipad.xib */,
 				C9F17C2113FD185700C06DF6 /* SCHHelpViewController~iphone.xib */,
-			);
-			name = Help;
-			sourceTree = "<group>";
-		};
-		528C616413FAAA9D00D033F8 /* Help */ = {
-			isa = PBXGroup;
-			children = (
-				5256959013FD00B600799BFC /* youngerHelpVideo~iphone.mp4 */,
-				C93113E013FBB55B00355693 /* youngerHelpVideo~ipad.mp4 */,
-				5256958F13FD00B600799BFC /* olderHelpVideo~iphone.mp4 */,
-				C93113DF13FBB55B00355693 /* olderHelpVideo~ipad.mp4 */,
 			);
 			name = Help;
 			sourceTree = "<group>";
@@ -6023,6 +6011,7 @@
 		F867904B1332346C001FDB2F /* Dictionary Processing */ = {
 			isa = PBXGroup;
 			children = (
+				F8B30455144D8C9B0037708F /* Help Video Operations */,
 				F8C4C41913325A150057420E /* Dictionary Operations */,
 				F8C4C3F91332594A0057420E /* SCHDictionaryDownloadManager.h */,
 				F8C4C3FA1332594A0057420E /* SCHDictionaryDownloadManager.m */,
@@ -6114,6 +6103,19 @@
 				F81B4BF91356E9FE00C0DAF4 /* SCHLicenseAcquisitionOperation.m */,
 			);
 			name = "Processing Operations";
+			sourceTree = "<group>";
+		};
+		F8B30455144D8C9B0037708F /* Help Video Operations */ = {
+			isa = PBXGroup;
+			children = (
+				F8615B17144D69F100D0D265 /* SCHHelpVideoManifestOperation.h */,
+				F8615B18144D69F100D0D265 /* SCHHelpVideoManifestOperation.m */,
+				F8615B1B144D6E7000D0D265 /* SCHHelpVideoFileDownloadOperation.h */,
+				F8615B1C144D6E7000D0D265 /* SCHHelpVideoFileDownloadOperation.m */,
+				F8615B1F144D712400D0D265 /* SCHHelpVideoManifest.h */,
+				F8615B20144D712400D0D265 /* SCHHelpVideoManifest.m */,
+			);
+			name = "Help Video Operations";
 			sourceTree = "<group>";
 		};
 		F8B55E42134B577A0028534A /* ZipArchive */ = {
@@ -6935,8 +6937,6 @@
 				F81CA38413FAB230006EF9D6 /* BookSITabHorizontal~ipad.png in Resources */,
 				F81CA38613FAB230006EF9D6 /* BookSampleTabHorizontal~ipad.png in Resources */,
 				528C616113FAA57200D033F8 /* SCHHelpViewController~ipad.xib in Resources */,
-				C93113E113FBB55B00355693 /* olderHelpVideo~ipad.mp4 in Resources */,
-				C93113E313FBB55B00355693 /* youngerHelpVideo~ipad.mp4 in Resources */,
 				F8EB725A13FBD81F00FE2410 /* BookSITab~ipad.png in Resources */,
 				F8EB725C13FBD82700FE2410 /* BookSISampleTab~ipad.png in Resources */,
 				F8EB725E13FBD82E00FE2410 /* BookShelfErrorIcon~ipad.png in Resources */,
@@ -6960,8 +6960,6 @@
 				F8EB72A013FD504900FE2410 /* OptionsOriginalButtonActive@2x.png in Resources */,
 				F8EB72A213FD504900FE2410 /* OptionsOriginalButtonInactive.png in Resources */,
 				F8EB72A413FD504900FE2410 /* OptionsOriginalButtonInactive@2x.png in Resources */,
-				5256959113FD00B600799BFC /* olderHelpVideo~iphone.mp4 in Resources */,
-				5256959313FD00B600799BFC /* youngerHelpVideo~iphone.mp4 in Resources */,
 				C9F17C2213FD185700C06DF6 /* SCHHelpViewController~iphone.xib in Resources */,
 				28974E2813FD4EE10082120E /* storyinteraction-wordbird-Pen_Lose_0.png in Resources */,
 				28974E2A13FD4EE10082120E /* storyinteraction-wordbird-Pen_Lose_1.png in Resources */,
@@ -7618,8 +7616,6 @@
 				52488A271407990500DA9AFA /* BookSITabHorizontal~ipad.png in Resources */,
 				52488A281407990500DA9AFA /* BookSampleTabHorizontal~ipad.png in Resources */,
 				52488A291407990500DA9AFA /* SCHHelpViewController~ipad.xib in Resources */,
-				52488A2A1407990500DA9AFA /* olderHelpVideo~ipad.mp4 in Resources */,
-				52488A2B1407990500DA9AFA /* youngerHelpVideo~ipad.mp4 in Resources */,
 				52488A2C1407990500DA9AFA /* BookSITab~ipad.png in Resources */,
 				52488A2D1407990500DA9AFA /* BookSISampleTab~ipad.png in Resources */,
 				52488A2E1407990500DA9AFA /* BookShelfErrorIcon~ipad.png in Resources */,
@@ -7643,8 +7639,6 @@
 				52488A491407990500DA9AFA /* OptionsOriginalButtonActive@2x.png in Resources */,
 				52488A4A1407990500DA9AFA /* OptionsOriginalButtonInactive.png in Resources */,
 				52488A4B1407990500DA9AFA /* OptionsOriginalButtonInactive@2x.png in Resources */,
-				52488A4C1407990500DA9AFA /* olderHelpVideo~iphone.mp4 in Resources */,
-				52488A4D1407990500DA9AFA /* youngerHelpVideo~iphone.mp4 in Resources */,
 				52488A4E1407990500DA9AFA /* SCHHelpViewController~iphone.xib in Resources */,
 				52488A4F1407990500DA9AFA /* storyinteraction-wordbird-Pen_Lose_0.png in Resources */,
 				52488A501407990500DA9AFA /* storyinteraction-wordbird-Pen_Lose_1.png in Resources */,
@@ -8081,6 +8075,9 @@
 				28211CD5140E160300872701 /* SCHStoryInteractionStandaloneViewController.m in Sources */,
 				C9B7851B142B7CD40070BEDE /* SCHReadingStoryInteractionButton.m in Sources */,
 				520FE8A1143F3B15002AB30B /* SCHLibreAccessConstants.m in Sources */,
+				F8615B19144D69F100D0D265 /* SCHHelpVideoManifestOperation.m in Sources */,
+				F8615B1D144D6E7000D0D265 /* SCHHelpVideoFileDownloadOperation.m in Sources */,
+				F8615B21144D712400D0D265 /* SCHHelpVideoManifest.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -8430,6 +8427,9 @@
 				28211CD6140E160300872701 /* SCHStoryInteractionStandaloneViewController.m in Sources */,
 				C9B7851C142B7CD40070BEDE /* SCHReadingStoryInteractionButton.m in Sources */,
 				520FE8A2143F3B15002AB30B /* SCHLibreAccessConstants.m in Sources */,
+				F8615B1A144D69F100D0D265 /* SCHHelpVideoManifestOperation.m in Sources */,
+				F8615B1E144D6E7000D0D265 /* SCHHelpVideoFileDownloadOperation.m in Sources */,
+				F8615B22144D712400D0D265 /* SCHHelpVideoManifest.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

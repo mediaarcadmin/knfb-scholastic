@@ -227,10 +227,7 @@ static NSInteger const CELL_ACTIVITY_INDICATOR_TAG = 999;
 
         if (self.editMode) {
             [self.notesTableView setEditing:NO animated:NO];
-            [self.notesTableView beginUpdates];
             self.editMode = NO;
-            [self.notesTableView insertSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationTop];
-            [self.notesTableView endUpdates];
         }
         
         width = 43;
@@ -238,10 +235,7 @@ static NSInteger const CELL_ACTIVITY_INDICATOR_TAG = 999;
         newBBI = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(editNotesButtonAction:)];
         if (!self.editMode) {
             [self.notesTableView setEditing:YES animated:NO];
-            [self.notesTableView beginUpdates];
             self.editMode = YES;
-            [self.notesTableView deleteSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationBottom];
-            [self.notesTableView endUpdates];
         }
         width = 0;
     }
@@ -257,6 +251,8 @@ static NSInteger const CELL_ACTIVITY_INDICATOR_TAG = 999;
         
         self.topBar.items = [NSArray arrayWithArray:currentItems];
     }
+    
+    [self.notesTableView reloadData];
  
 }
 

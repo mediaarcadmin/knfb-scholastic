@@ -7,9 +7,11 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "SCHHelpVideoManifest.h"
 
 // Constants
 extern NSString * const kSCHDictionaryDownloadPercentageUpdate;
+extern NSString * const kSCHHelpVideoDownloadPercentageUpdate;
 
 extern NSString * const kSCHDictionaryStateChange;
 
@@ -20,6 +22,8 @@ extern char * const kSCHDictionaryManifestEntryColumnSeparator;
 
 typedef enum {
 	SCHDictionaryProcessingStateError = 0,
+    SCHDictionaryProcessingStateHelpVideoManifest,
+    SCHDictionaryProcessingStateDownloadingHelpVideos,
     SCHDictionaryProcessingStateUserSetup,
     SCHDictionaryProcessingStateUserDeclined,
 	SCHDictionaryProcessingStateNotEnoughFreeSpace,
@@ -32,6 +36,11 @@ typedef enum {
     SCHDictionaryProcessingStateDeleting,
 } SCHDictionaryProcessingState;
 
+typedef enum {
+    SCHDictionaryUserNotYetAsked = 0,
+    SCHDictionaryUserDeclined,
+    SCHDictionaryUserAccepted
+} SCHDictionaryUserRequestState;
 
 @interface SCHDictionaryManifestEntry : NSObject 
     
@@ -50,6 +59,7 @@ typedef enum {
 @property (nonatomic, retain) NSManagedObjectContext *mainThreadManagedObjectContext;
 @property (nonatomic, retain) NSPersistentStoreCoordinator *persistentStoreCoordinator;
 @property (nonatomic, retain) NSMutableArray *manifestUpdates;
+@property (nonatomic, retain) SCHHelpVideoManifest *helpVideoManifest;
 
 // the current dictionary version
 @property (readwrite, retain) NSString *dictionaryVersion;
@@ -57,9 +67,18 @@ typedef enum {
 // dictionary is currently processing
 @property BOOL isProcessing;
 
-@property (readonly) float currentDownloadPercentage;
+@property (readonly) float currentDictionaryDownloadPercentage;
+@property (readonly) float currentHelpVideoDownloadPercentage;
+
+@property (nonatomic, assign) SCHDictionaryUserRequestState userRequestState;
 
 + (SCHDictionaryDownloadManager *)sharedDownloadManager;
+
+// have the help videos been downloaded?
+- (BOOL)haveHelpVideosDownloaded;
+
+// the local help videos directory
+- (NSString *)helpVideoDirectory;
 
 // the local dictionary directory
 - (NSString *)dictionaryDirectory;

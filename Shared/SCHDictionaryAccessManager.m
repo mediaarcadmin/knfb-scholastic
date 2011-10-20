@@ -540,4 +540,21 @@ static SCHDictionaryAccessManager *sharedManager = nil;
     self.player = nil;
 }
 
+- (BOOL)dictionaryContainsWord:(NSString *)word forCategory:(NSString*)category
+{
+    if ([[SCHDictionaryDownloadManager sharedDownloadManager] dictionaryProcessingState] != SCHDictionaryProcessingStateReady) {
+        NSLog(@"Dictionary is not ready yet!");
+        return NO;
+    }
+
+    SCHDictionaryEntry *entry = [self entryForWord:word category:category];
+    
+    // if no result is returned, don't try
+    if (!entry) {
+        return NO;
+    }
+
+    return YES;
+}
+
 @end
