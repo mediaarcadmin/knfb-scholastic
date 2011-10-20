@@ -24,7 +24,6 @@
 
 // Constants
 NSString * const SCHContentSyncComponentWillDeleteNotification = @"SCHContentSyncComponentWillDeleteNotification";
-NSString * const SCHContentSyncComponentDeletedBookIdentifiers = @"SCHContentSyncComponentDeletedBookIdentifiers";
 NSString * const SCHContentSyncComponentDidAddBookToProfileNotification = @"SCHContentSyncComponentDidAddBookToProfileNotification";
 NSString * const SCHContentSyncComponentAddedBookIdentifier = @"SCHContentSyncComponentAddedBookIdentifier";
 NSString * const SCHContentSyncComponentAddedProfileIdentifier = @"SCHContentSyncComponentAddedProfileIdentifier";
@@ -223,21 +222,16 @@ NSString * const SCHContentSyncComponentDidFailNotification = @"SCHContentSyncCo
 		}		
 	}
 	
-    if ([deletePool count] > 0) {
-        NSMutableArray *deletedBookIdentifiers = [NSMutableArray array];        
-        for (SCHUserContentItem *userContentItem in deletePool) {
-            [deletedBookIdentifiers addObject:[userContentItem bookIdentifier]];            
+    for (SCHUserContentItem *userContentItem in deletePool) {
+        for (SCHContentProfileItem *contentProfileItem in userContentItem.ProfileList) {
+            [[NSNotificationCenter defaultCenter] postNotificationName:SCHContentSyncComponentWillDeleteNotification 
+                                                                object:self 
+                                                              userInfo:[NSDictionary dictionaryWithObject:[NSArray arrayWithObject:[userContentItem bookIdentifier]]
+                                                                                                   forKey:[contentProfileItem ProfileID]]];
         }
-        [[NSNotificationCenter defaultCenter] postNotificationName:SCHContentSyncComponentWillDeleteNotification 
-                                                            object:self 
-                                                          userInfo:[NSDictionary dictionaryWithObject:deletedBookIdentifiers 
-                                                                                               forKey:SCHContentSyncComponentDeletedBookIdentifiers]];        
-
-        for (SCHUserContentItem *userContentItem in deletePool) {
-            [self.managedObjectContext deleteObject:userContentItem];
-        }
+        [self.managedObjectContext deleteObject:userContentItem];
     }
-    
+            
     for (NSDictionary *webItem in creationPool) {
         [self addUserContentItem:webItem];
     }
@@ -531,10 +525,14 @@ NSString * const SCHContentSyncComponentDidFailNotification = @"SCHContentSyncCo
 		}		
 	}
 	
-	for (SCHContentProfileItem *localItem in deletePool) {
-		[self.managedObjectContext deleteObject:localItem];
-	}
-	
+    for (SCHContentProfileItem *contentProfileItem in deletePool) {
+        [[NSNotificationCenter defaultCenter] postNotificationName:SCHContentSyncComponentWillDeleteNotification 
+                                                            object:self 
+                                                          userInfo:[NSDictionary dictionaryWithObject:[NSArray arrayWithObject:[contentProfileItem.UserContentItem bookIdentifier]]
+                                                                                               forKey:[contentProfileItem ProfileID]]];
+        [self.managedObjectContext deleteObject:contentProfileItem];            
+    }
+
 	for (NSDictionary *webItem in creationPool) {
 		[userContentItem addProfileListObject:[self addContentProfileItem:webItem
                                                                   forBook:userContentItem.bookIdentifier]];
