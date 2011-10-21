@@ -588,11 +588,13 @@ enum {
 
         self.happyPenguinLayer.hidden = YES;
         self.shockedPenguinLayer.hidden = NO;
-        [self.shockedPenguinLayer animateAllFramesWithDuration:1.5
-                                                    frameOrder:nil
-                                                   autoreverse:NO
-                                                   repeatCount:1
-                                                      delegate:[self continueInteraction]];
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0.4*NSEC_PER_SEC), dispatch_get_main_queue(), ^{
+            [self.shockedPenguinLayer animateAllFramesWithDuration:1.5
+                                                        frameOrder:nil
+                                                       autoreverse:NO
+                                                       repeatCount:1
+                                                          delegate:[self continueInteraction]];
+        });
         
         [self enqueueAudioWithPath:@"sfx_penguinpop.mp3" fromBundle:YES];
     }
