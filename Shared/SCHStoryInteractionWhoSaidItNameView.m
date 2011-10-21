@@ -13,9 +13,9 @@
 
 @synthesize attachedTarget;
 
-- (void)moveToHomePosition
+- (void)moveToHomePositionWithCompletionHandler:(dispatch_block_t)completion
 {
-    [super moveToHomePosition];
+    [super moveToHomePositionWithCompletionHandler:completion];
     self.attachedTarget = nil;
 }
 

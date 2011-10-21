@@ -85,13 +85,28 @@ enum DragState {
 
 - (void)moveToHomePosition
 {
-    [UIView animateWithDuration:0.25f 
-                          delay:0
-                        options:UIViewAnimationOptionAllowUserInteraction
-                     animations:^{
-                         self.center = self.homePosition;
-                     }
-                     completion:nil];
+    [self moveToHomePositionWithCompletionHandler:nil];
+}
+
+- (void)moveToHomePositionWithCompletionHandler:(dispatch_block_t)completion
+{
+    if (CGPointEqualToPoint(self.center, self.homePosition)) {
+        if (completion) {
+            completion();
+        }
+    } else {
+        [UIView animateWithDuration:0.25f 
+                              delay:0
+                            options:UIViewAnimationOptionAllowUserInteraction
+                         animations:^{
+                             self.center = self.homePosition;
+                         }
+                         completion:^(BOOL finished) {
+                             if (completion) {
+                                 completion();
+                             }
+                         }];
+    }
 }
 
 #pragma mark - touch support

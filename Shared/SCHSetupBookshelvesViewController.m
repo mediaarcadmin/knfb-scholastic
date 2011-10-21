@@ -43,7 +43,7 @@
     [super viewDidLoad];
     [self setButtonBackground:self.setupBookshelvesButton];
     
-#if 1 // force a way out of this screen
+#if 0 // force a way out of this screen
     [self.setupBookshelvesButton setTitle:@"EXIT" forState:UIControlStateNormal];
     [self.setupBookshelvesButton addTarget:self.profileSetupDelegate action:@selector(showCurrentSamplesAnimated:) forControlEvents:UIControlEventTouchDown];
 #endif
@@ -72,11 +72,15 @@
     [self.moveToWebParentToolsTimer invalidate];
     self.moveToWebParentToolsTimer = nil;
     
-    if ([[SCHAuthenticationManager sharedAuthenticationManager] hasValidPToken] == YES) {
+    NSString *pToken = [SCHAuthenticationManager sharedAuthenticationManager].pToken;
+    if (pToken != nil) {
         SCHParentalToolsWebViewController *parentalToolsWebViewController = [[[SCHParentalToolsWebViewController alloc] init] autorelease];
+        parentalToolsWebViewController.profileSetupDelegate = self.profileSetupDelegate;
+        parentalToolsWebViewController.pToken = pToken;
         [self.navigationController pushViewController:parentalToolsWebViewController animated:YES];
     } else {
         SCHAccountValidationViewController *accountValidationViewController = [[[SCHAccountValidationViewController alloc] init] autorelease];
+        accountValidationViewController.profileSetupDelegate = self.profileSetupDelegate;        
         [self.navigationController pushViewController:accountValidationViewController animated:YES];        
     }    
 }

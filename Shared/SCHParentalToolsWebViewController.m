@@ -16,6 +16,7 @@
 @implementation SCHParentalToolsWebViewController
 
 @synthesize pToken;
+@synthesize profileSetupDelegate;
 
 #pragma mark - View lifecycle
 
@@ -23,7 +24,7 @@
 {
     [self releaseViewObjects];
     [pToken release], pToken = nil;
-    
+    profileSetupDelegate = nil;   
     [super dealloc];
 }
 
@@ -52,7 +53,9 @@
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(willResignActiveNotification:)
                                                  name:UIApplicationWillResignActiveNotification
-                                               object:nil];            
+                                               object:nil];    
+        
+    [self.profileSetupDelegate waitingForWebParentToolsToComplete];
 }
 
 - (void)viewDidUnload
@@ -76,6 +79,8 @@
 {
     SCHAccountValidationViewController *accountValidationViewController = [[[SCHAccountValidationViewController alloc] init] autorelease];
     NSMutableArray *viewControllers = [NSMutableArray arrayWithArray:self.navigationController.viewControllers];
+    
+    accountValidationViewController.profileSetupDelegate = self.profileSetupDelegate;
     
     [viewControllers insertObject:accountValidationViewController atIndex:[viewControllers indexOfObject:self]];     
     self.navigationController.viewControllers = [NSArray arrayWithArray:viewControllers];
@@ -104,7 +109,8 @@
 //        if ([cmd isEqualToString:@"bookshelfSetupDidCompleteWithSuccess"] == YES) {
         if ([[[request URL] absoluteString] isEqualToString:@"http://reader.sch.libredigital.com/reader/sch/ScholasticReader.exe"] == YES) {
             ret = NO;
-            //[self.setupDelegate dismissSettingsForm];
+            
+            [self.profileSetupDelegate webParentToolsCompleted];
         }
     }
     

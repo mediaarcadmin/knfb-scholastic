@@ -1069,7 +1069,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     }
     
     BOOL excludeInteractionWithPage = NO;
-    if ([self.readingView isKindOfClass:[SCHFlowView class]]) {
+    if (self.layoutType == SCHReadingViewLayoutTypeFlow) {
         excludeInteractionWithPage = YES;
     }
         
@@ -1209,7 +1209,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     NSInteger page = [self storyInteractionPageNumberFromPageIndex:[self firstPageIndexWithStoryInteractionsOnCurrentPages]];
     
     BOOL excludeInteractionWithPage = NO;
-    if ([self.readingView isKindOfClass:[SCHFlowView class]]) {
+    if (self.layoutType == SCHReadingViewLayoutTypeFlow) {
         excludeInteractionWithPage = YES;
     }
     
@@ -1247,7 +1247,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     NSInteger page = [self storyInteractionPageNumberFromPageIndex:[self firstPageIndexWithStoryInteractionsOnCurrentPages]];
     
     BOOL excludeInteractionWithPage = NO;
-    if ([self.readingView isKindOfClass:[SCHFlowView class]]) {
+    if (self.layoutType == SCHReadingViewLayoutTypeFlow) {
         excludeInteractionWithPage = YES;
     }
     
@@ -1454,13 +1454,13 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     NSRange pageIndices = NSMakeRange(0, 0);
     BOOL excludeInteractionWithPage = NO;
     
-    if ([self.readingView isKindOfClass:[SCHLayoutView class]]) {
+    if (self.layoutType == SCHReadingViewLayoutTypeFixed) {
         if (self.currentPageIndices.location != NSNotFound) {
             pageIndices = self.currentPageIndices;
         } else {
             pageIndices = NSMakeRange(self.currentPageIndex, 1);
         }
-    } else if ([self.readingView isKindOfClass:[SCHFlowView class]]) {
+    } else if (self.layoutType == SCHReadingViewLayoutTypeFlow) {
         // If pagination isn't complete bail out
         if (self.currentPageIndex == NSUIntegerMax) {
             return NSUIntegerMax;
@@ -1535,9 +1535,9 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
         }   
     };
     
-    if ([self.readingView isKindOfClass:[SCHLayoutView class]]) {
+    if (self.layoutType == SCHReadingViewLayoutTypeFixed) {
         [(SCHLayoutView *)self.readingView zoomOutToCurrentPageWithCompletionHandler:presentStoryInteractionBlock];
-    } else if ([self.readingView isKindOfClass:[SCHFlowView class]]) {
+    } else if (self.layoutType == SCHReadingViewLayoutTypeFlow) {
         presentStoryInteractionBlock();
     }
 
@@ -2682,9 +2682,9 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
         });
     };
     
-    if ([self.readingView isKindOfClass:[SCHLayoutView class]]) {
+    if (self.layoutType == SCHReadingViewLayoutTypeFixed) {
         [(SCHLayoutView *)self.readingView zoomOutToCurrentPageWithCompletionHandler:jumpToPageRotateAndPresentStoryInteractionBlock];
-    } else if ([self.readingView isKindOfClass:[SCHFlowView class]]) {
+    } else if (self.layoutType == SCHReadingViewLayoutTypeFlow) {
         jumpToPageRotateAndPresentStoryInteractionBlock();
     }
 }

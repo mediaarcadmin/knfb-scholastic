@@ -17,5 +17,6 @@
 @property (nonatomic, retain) IBOutletCollection(SCHStoryInteractionDraggableView) NSArray *imageContainers;
 @property (nonatomic, retain) IBOutletCollection(UIImageView) NSArray *imageViews;
 @property (nonatomic, retain) IBOutletCollection(SCHStoryInteractionDraggableTargetView) NSArray *targets;
+@property (nonatomic, retain) IBOutletCollection(UILabel) NSArray *targetLabels;
 
 @end
