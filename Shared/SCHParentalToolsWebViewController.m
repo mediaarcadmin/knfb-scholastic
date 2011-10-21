@@ -102,7 +102,8 @@
 {
     BOOL ret = YES;
     
-    if (navigationType == UIWebViewNavigationTypeLinkClicked) {
+    if (self.profileSetupDelegate != nil &&
+        navigationType == UIWebViewNavigationTypeLinkClicked) {
 //        NSDictionary *parameters = [[request URL] queryParameters];
 //        NSString *cmd = [parameters objectForKey:@"cmd"];
 //        
