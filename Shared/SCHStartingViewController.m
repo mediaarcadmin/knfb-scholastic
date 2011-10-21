@@ -55,6 +55,8 @@ typedef enum {
 	kSCHStartingViewControllerProfileSyncStateNone = 0,
     kSCHStartingViewControllerProfileSyncStateWaitingForLoginToComplete,
     kSCHStartingViewControllerProfileSyncStateWaitingForBookshelves,
+    kSCHStartingViewControllerProfileSyncStateWaitingForPassword,
+    kSCHStartingViewControllerProfileSyncStateWaitingForWebParentToolsToComplete,
     kSCHStartingViewControllerProfileSyncStateSamplesSync
 } SCHStartingViewControllerProfileSyncState;
 
@@ -63,6 +65,7 @@ typedef enum {
 @property (nonatomic, retain) SCHProfileViewController_Shared *profileViewController;
 @property (nonatomic, assign) SCHStartingViewControllerBookshelf sampleBookshelf;
 @property (nonatomic, assign) SCHStartingViewControllerProfileSyncState profileSyncState;
+@property (nonatomic, retain) LambdaAlert *checkProfilesAlert;
 
 - (void)setupAssetsForOrientation:(UIInterfaceOrientation)orientation;
 - (void)firstLogin;
@@ -82,6 +85,7 @@ typedef enum {
 
 @implementation SCHStartingViewController
 
+@synthesize checkProfilesAlert;
 @synthesize starterTableView;
 @synthesize backgroundView;
 @synthesize samplesHeaderView;
@@ -93,6 +97,14 @@ typedef enum {
 
 - (void)releaseViewObjects
 {
+    [[NSNotificationCenter defaultCenter] removeObserver:self 
+                                                    name:SCHProfileSyncComponentDidCompleteNotification 
+                                                  object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self 
+                                                    name:SCHProfileSyncComponentDidFailNotification 
+                                                  object:nil];
+
+    [checkProfilesAlert release], checkProfilesAlert = nil;
     [starterTableView release], starterTableView = nil;
     [backgroundView release], backgroundView = nil;
     [samplesHeaderView release], samplesHeaderView = nil;
@@ -130,6 +142,11 @@ typedef enum {
                                              selector:@selector(profileSyncDidComplete:)
                                                  name:SCHProfileSyncComponentDidCompleteNotification
                                                object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(profileSyncDidFail:)
+                                                 name:SCHProfileSyncComponentDidFailNotification
+                                               object:nil];    
 }
 
 - (void)viewDidUnload
@@ -559,6 +576,29 @@ typedef enum {
     }
 }
 
+- (void)waitingForPassword
+{
+    self.profileSyncState = kSCHStartingViewControllerProfileSyncStateWaitingForPassword;
+}
+
+- (void)waitingForWebParentToolsToComplete
+{
+    self.profileSyncState = kSCHStartingViewControllerProfileSyncStateWaitingForWebParentToolsToComplete;
+}
+
+- (void)webParentToolsCompleted
+{
+    self.profileSyncState = kSCHStartingViewControllerProfileSyncStateWaitingForBookshelves;
+    
+    [[SCHSyncManager sharedSyncManager] firstSync:YES];      
+    
+    self.checkProfilesAlert = [[[LambdaAlert alloc]
+                                initWithTitle:NSLocalizedString(@"Syncing with Your Account", @"")
+                                message:@"\n"] autorelease];
+    [self.checkProfilesAlert setSpinnerHidden:NO];
+    [self.checkProfilesAlert show];
+}
+
 #pragma mark - Profile view
 
 - (SCHProfileViewController_Shared *)profileViewController
@@ -594,6 +634,11 @@ typedef enum {
     SCHStartingViewControllerProfileSyncState currentSyncState = self.profileSyncState;
     self.profileSyncState = kSCHStartingViewControllerProfileSyncStateNone;
     
+    if (self.checkProfilesAlert) {
+        [self.checkProfilesAlert dismissAnimated:YES];
+        self.checkProfilesAlert = nil;
+    }
+    
     switch (currentSyncState) {
         case kSCHStartingViewControllerProfileSyncStateWaitingForLoginToComplete:
             [self checkBookshelvesAndDictionaryDownloadForProfile];
@@ -606,6 +651,14 @@ typedef enum {
             break;
         default:
             break;
+    }
+}
+
+- (void)profileSyncDidFail:(NSNotification *)note
+{
+    if (self.checkProfilesAlert) {
+        [self.checkProfilesAlert dismissAnimated:YES];
+        self.checkProfilesAlert = nil;
     }
 }
 

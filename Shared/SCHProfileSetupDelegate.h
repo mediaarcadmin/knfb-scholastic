@@ -13,4 +13,9 @@
 - (void)showCurrentSamplesAnimated:(BOOL)animated;
 - (void)showCurrentProfileAnimated:(BOOL)animated;
 
+// Web Parent Tools methods
+- (void)waitingForPassword;
+- (void)waitingForWebParentToolsToComplete;
+- (void)webParentToolsCompleted;
+
 @end
