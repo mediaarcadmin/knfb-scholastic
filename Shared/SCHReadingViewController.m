@@ -820,7 +820,8 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     [self updateBookState];
         
     [self.readingView dismissFollowAlongHighlighter];  
-    self.audioBookPlayer = nil;
+//    self.audioBookPlayer = nil;
+    [self pauseAudioPlayback];
 }
 
 - (void)willTerminateNotification:(NSNotification *)notification
