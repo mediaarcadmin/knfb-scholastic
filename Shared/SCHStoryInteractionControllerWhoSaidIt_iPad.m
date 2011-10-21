@@ -112,6 +112,7 @@ static CGPoint pointWithOffset(CGPoint p, CGPoint offset)
     
     NSInteger correctCount = 0;
     for (SCHStoryInteractionWhoSaidItNameView *source in self.sources) {
+        source.userInteractionEnabled = NO;
         if (source.attachedTarget == nil) {
             continue;
         }
@@ -154,15 +155,17 @@ static CGPoint pointWithOffset(CGPoint p, CGPoint offset)
         // remove the highlights after a short delay
         dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, 1.0 * NSEC_PER_SEC);
         dispatch_after(popTime, dispatch_get_main_queue(), ^{
+            // leave correct answers locked in place, send others home
             for (SCHStoryInteractionWhoSaidItNameView *source in self.sources) {
                 if ([source attachedToCorrectTarget]) {
-                    // lock correct answers in place
-                    source.userInteractionEnabled = NO;
-                } else if (source.attachedTarget != nil) {
+                    source.lockedInPlace = YES;
+                } else {
                     // send incorrect answers back to home position
                     UIImageView *imageView = (UIImageView *)[source viewWithTag:kSourceImageTag];
                     [imageView setHighlighted:NO];
-                    [source moveToHomePosition];
+                    [source moveToHomePositionWithCompletionHandler:^{
+                        source.userInteractionEnabled = YES;
+                    }];
                 }
             }
             [self setCheckAnswersButtonEnabledState];
@@ -184,7 +187,7 @@ static CGPoint pointWithOffset(CGPoint p, CGPoint offset)
 {
     BOOL anyAnswersOnTargets = NO;
     for (SCHStoryInteractionWhoSaidItNameView *source in self.sources) {
-        if (source.attachedTarget != nil) {
+        if (source.attachedTarget != nil && !source.lockedInPlace) {
             anyAnswersOnTargets = YES;
             break;
         }

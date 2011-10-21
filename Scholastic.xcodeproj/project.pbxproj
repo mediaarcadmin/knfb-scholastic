@@ -2026,6 +2026,13 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		28D6D4C91451717E0094F144 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 526FEB41140FD83A00638712 /* KIF.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = AAB07268139719AC008AF393;
+			remoteInfo = KIF;
+		};
 		524888271407990500DA9AFA /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = C947D55D133B9C0000FB4404 /* libEucalyptus.xcodeproj */;
@@ -4455,6 +4462,14 @@
 			name = "About Views";
 			sourceTree = "<group>";
 		};
+		28D6D4C61451717E0094F144 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				28D6D4CA1451717E0094F144 /* libKIF.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 		28D81EE413E840E100A2B25F /* Picture Starter */ = {
 			isa = PBXGroup;
 			children = (
@@ -6306,6 +6321,10 @@
 			projectDirPath = "";
 			projectReferences = (
 				{
+					ProductGroup = 28D6D4C61451717E0094F144 /* Products */;
+					ProjectRef = 526FEB41140FD83A00638712 /* KIF.xcodeproj */;
+				},
+				{
 					ProductGroup = C947D55E133B9C0000FB4404 /* Products */;
 					ProjectRef = C947D55D133B9C0000FB4404 /* libEucalyptus.xcodeproj */;
 				},
@@ -6320,6 +6339,13 @@
 /* End PBXProject section */
 
 /* Begin PBXReferenceProxy section */
+		28D6D4CA1451717E0094F144 /* libKIF.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libKIF.a;
+			remoteRef = 28D6D4C91451717E0094F144 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
 		7D3F30F3140698D800C6F445 /* libEucalyptusModel.a */ = {
 			isa = PBXReferenceProxy;
 			fileType = archive.ar;
