@@ -266,13 +266,14 @@ enum {
         [tile1 setUserInteractionEnabled:NO];
         [tile2 setUserInteractionEnabled:NO];
         if (++self.numberOfPairsFound == self.numberOfPairs) {
+            self.controllerState = SCHStoryInteractionControllerStateInteractionFinishedSuccessfully;
+            [self setUserInteractionsEnabled:NO];
             [self enqueueAudioWithPath:@"sfx_win_y.mp3" fromBundle:YES];
             [self enqueueAudioWithPath:[(SCHStoryInteractionConcentration *)self.storyInteraction audioPathForYouWon]
                             fromBundle:NO
                             startDelay:0
                 synchronizedStartBlock:nil
                   synchronizedEndBlock:^{
-                      self.controllerState = SCHStoryInteractionControllerStateInteractionFinishedSuccessfully;
                       [self removeFromHostView];
                   }];
         }

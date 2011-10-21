@@ -2052,13 +2052,6 @@
 			remoteGlobalIDString = D2AAC07D0554694100DB518D;
 			remoteInfo = libEucalyptusIOSUI;
 		};
-		52E13ED514501A3C00911D43 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 526FEB41140FD83A00638712 /* KIF.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = AAB07268139719AC008AF393;
-			remoteInfo = KIF;
-		};
 		7D3F30F2140698D800C6F445 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = C947D55D133B9C0000FB4404 /* libEucalyptus.xcodeproj */;
@@ -5041,14 +5034,6 @@
 				C923B14612F6AFE10054426F /* Bookshelves */,
 			);
 			name = Views;
-			sourceTree = "<group>";
-		};
-		52E13ED214501A3B00911D43 /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				52E13ED614501A3C00911D43 /* libKIF.a */,
-			);
-			name = Products;
 			sourceTree = "<group>";
 		};
 		52EF579412EDBE6E00E374F7 /* security */ = {
