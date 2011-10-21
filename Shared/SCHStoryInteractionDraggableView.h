@@ -40,7 +40,11 @@
 // the correct position has been reached for this item - lock it in place
 @property (nonatomic, assign) BOOL lockedInPlace;
 
+// animate this draggable back to its home position
 - (void)moveToHomePosition;
+
+// animate this draggable back to its home position with a completion handler after the animation
+- (void)moveToHomePositionWithCompletionHandler:(dispatch_block_t)completion;
 
 // can be overridden in subclasses, but ensure super is called
 - (void)beginDrag;
