@@ -309,7 +309,6 @@ typedef struct AuthenticateWithUserNameParameters AuthenticateWithUserNameParame
     } else {
         [[NSUserDefaults standardUserDefaults] setObject:authenticateWithUserNameParameters->username 
                                                   forKey:kSCHAuthenticationManagerUsername];
-        [[NSUserDefaults standardUserDefaults] synchronize];
 
         [SFHFKeychainUtils storeUsername:authenticateWithUserNameParameters->username 
                              andPassword:authenticateWithUserNameParameters->password 
@@ -317,7 +316,9 @@ typedef struct AuthenticateWithUserNameParameters AuthenticateWithUserNameParame
                           updateExisting:YES 
                                    error:nil];
         [[NSUserDefaults standardUserDefaults] removeObjectForKey:kSCHAuthenticationManagerDeviceKey];                        
-        [[NSUserDefaults standardUserDefaults] removeObjectForKey:kSCHAuthenticationManagerUserKey];        
+        [[NSUserDefaults standardUserDefaults] removeObjectForKey:kSCHAuthenticationManagerUserKey];   
+        [[NSUserDefaults standardUserDefaults] synchronize];
+        
         self.aToken = @"";
         self.tokenExpires = [NSDate distantFuture];        
         
@@ -543,6 +544,7 @@ typedef struct AuthenticateWithUserNameParameters AuthenticateWithUserNameParame
             } else {
                 // we only step back to authenticate if this was a server error
                 [[NSUserDefaults standardUserDefaults] removeObjectForKey:kSCHAuthenticationManagerDeviceKey];
+                [[NSUserDefaults standardUserDefaults] synchronize];
             }
         } else if ([method compare:kSCHLibreAccessWebServiceRenewToken] == NSOrderedSame) {	
             self.aToken = nil;
@@ -561,6 +563,7 @@ typedef struct AuthenticateWithUserNameParameters AuthenticateWithUserNameParame
     if (deviceKey != nil) {
         [[NSUserDefaults standardUserDefaults] setObject:deviceKey 
                                                   forKey:kSCHAuthenticationManagerDeviceKey];
+        [[NSUserDefaults standardUserDefaults] synchronize];
         [libreAccessWebService authenticateDevice:deviceKey forUserKey:nil];
     } else {
         // Successful deregistration

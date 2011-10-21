@@ -226,6 +226,8 @@ static NSTimeInterval const kSCHLastFirstSyncInterval = -300.0;
     
 	[[NSUserDefaults standardUserDefaults] setBool:NO 
                                             forKey:kSCHUserDefaultsPerformedFirstSyncUpToBooks];
+    [[NSUserDefaults standardUserDefaults] synchronize];
+
 }
 
 - (BOOL)havePerformedFirstSyncUpToBooks
@@ -457,6 +459,7 @@ static NSTimeInterval const kSCHLastFirstSyncInterval = -300.0;
 	if ([component isKindOfClass:[SCHBookshelfSyncComponent class]] == YES) {
 		[[NSUserDefaults standardUserDefaults] setBool:YES 
                                                 forKey:kSCHUserDefaultsPerformedFirstSyncUpToBooks];
+        [[NSUserDefaults standardUserDefaults] synchronize];
 	}
 	
 	if ([component isKindOfClass:[SCHAnnotationSyncComponent class]] == YES && 

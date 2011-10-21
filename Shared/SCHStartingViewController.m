@@ -46,9 +46,9 @@ enum {
 };
 
 typedef enum {
-    SCHStartingViewControllerNoSampleBookshelf = 0,
 	SCHStartingViewControllerYoungerBookshelf,
-    SCHStartingViewControllerOlderBookshelf
+    SCHStartingViewControllerOlderBookshelf,
+    SCHStartingViewControllerNoSampleBookshelf
 } SCHStartingViewControllerBookshelf;
 
 typedef enum {
