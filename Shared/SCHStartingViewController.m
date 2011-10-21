@@ -78,6 +78,7 @@ typedef enum {
 - (void)recheckBookshelvesForProfile;
 - (void)checkBookshelvesAndDictionaryDownloadForProfile;
 - (void)checkBookshelvesAndDictionaryDownloadForProfile:(BOOL)rechecking;
+- (void)replaceCheckProfilesAlertWithAlert:(LambdaAlert *)alert;
 
 - (SCHProfileViewController_Shared *)profileViewController;
 
@@ -618,6 +619,20 @@ typedef enum {
     return profileViewController;
 }
 
+- (void)replaceCheckProfilesAlertWithAlert:(LambdaAlert *)alert
+{
+    [CATransaction begin];
+    [CATransaction setDisableActions:YES];
+    
+    [self.checkProfilesAlert setSpinnerHidden:YES];
+    [self.checkProfilesAlert dismissAnimated:NO];
+    self.checkProfilesAlert = nil;
+    
+    [alert show];
+    
+    [CATransaction commit];
+}
+
 #pragma mark - notifications
 
 // at the 'setup bookshelves' stage we punt the user over to Safari to set up their account;
@@ -657,8 +672,21 @@ typedef enum {
 - (void)profileSyncDidFail:(NSNotification *)note
 {
     if (self.checkProfilesAlert) {
-        [self.checkProfilesAlert dismissAnimated:YES];
-        self.checkProfilesAlert = nil;
+        if (self.profileSyncState == kSCHStartingViewControllerProfileSyncStateWaitingForBookshelves) {
+            [self recheckBookshelvesForProfile];
+            
+            LambdaAlert *alert = [[LambdaAlert alloc]
+                                  initWithTitle:NSLocalizedString(@"Sync Failed", @"")
+                                  message:NSLocalizedString(@"There was a problem whilst checking for new profiles. Please try again.", @"")];
+            [alert addButtonWithTitle:NSLocalizedString(@"OK", @"") block:^{
+            }];
+
+            [self replaceCheckProfilesAlertWithAlert:alert];
+            [alert release];  
+        } else { 
+            [self.checkProfilesAlert dismissAnimated:YES];
+            self.checkProfilesAlert = nil;
+        }
     }
 }
 
