@@ -111,7 +111,7 @@
             return [(SCHStoryInteractionDraggableView *)obj1 matchTag] - [(SCHStoryInteractionDraggableView *)obj2 matchTag];
         }];
 
-        [self enqueueAudioWithPath:[self.storyInteraction storyInteractionCorrectAnswerSoundFilename] fromBundle:YES];
+        [self enqueueAudioWithPath:@"sfx_win_y.mp3" fromBundle:YES];
         
         // play 'that's right'
         SCHStoryInteractionSequencing *sequencing = (SCHStoryInteractionSequencing *)self.storyInteraction;
