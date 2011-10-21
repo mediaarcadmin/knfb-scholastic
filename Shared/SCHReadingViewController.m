@@ -118,6 +118,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 @property (nonatomic, assign) BOOL firstTimePlayForHelpController;
 
 @property (nonatomic, assign) BOOL presentStoryInteractionAfterRotation;
+@property (nonatomic, retain) UIView *rotationPromptView;
 
 - (void)updateNotesCounter;
 - (id)failureWithErrorCode:(NSInteger)code error:(NSError **)error;
@@ -161,6 +162,9 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 - (void)positionCoverCornerViewForOrientation:(UIInterfaceOrientation)newOrientation;
 - (void)dismissCoverCornerViewWithAnimation:(BOOL)animated;
 - (void)checkCornerAudioButtonVisibilityWithAnimation:(BOOL)animated;
+
+- (void)promptUserToRotateDeviceToOrientation:(UIDeviceOrientation)orientation;
+- (void)hideRotationPrompt;
 
 @end
 
@@ -239,6 +243,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 @synthesize cornerCoverFadeTimer;
 @synthesize firstTimePlayForHelpController;
 @synthesize presentStoryInteractionAfterRotation;
+@synthesize rotationPromptView;
 
 #pragma mark - Dealloc and View Teardown
 
@@ -309,6 +314,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     [sampleSICoverMarker release], sampleSICoverMarker = nil;
     [highlightsInfoButton release], highlightsInfoButton = nil;
     [highlightsCancelButton release], highlightsCancelButton = nil;
+    [rotationPromptView release], rotationPromptView = nil;
     
     [readingView release], readingView = nil;
     [navigationToolbar release], navigationToolbar = nil;
@@ -737,7 +743,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     self.currentlyRotating = NO;
     [self.readingView didRotateFromInterfaceOrientation:fromInterfaceOrientation];
     [self positionCoverCornerViewForOrientation:self.interfaceOrientation];
-    
+
     // Did we defer presenting an SI until the reading view was forced into the correct orientation?
     // - see the dummy modal view controller trick in presentStoryInteraction
     if (self.presentStoryInteractionAfterRotation && self.storyInteractionController) {
@@ -756,6 +762,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     self.currentlyScrubbing = NO;
     [self.pageSlider cancelTrackingWithEvent:nil];
     [self.scrubberInfoView removeFromSuperview];
+    [self hideRotationPrompt];
     
     self.currentlyRotating = YES;
     
@@ -791,6 +798,46 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
         [[SCHSyncManager sharedSyncManager] closeDocumentSync:book.ContentMetadataItem.UserContentItem 
                                                forProfile:self.profile.ID];
     }    
+}
+
+- (void)promptUserToRotateDeviceToOrientation:(UIDeviceOrientation)orientation
+{
+    self.presentStoryInteractionAfterRotation = YES;
+    
+    UILabel *rotateLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 300, 200)];
+    rotateLabel.center = CGPointMake(CGRectGetMidX(self.view.bounds), CGRectGetMidY(self.view.bounds));
+    rotateLabel.autoresizingMask = UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleLeftMargin;
+    rotateLabel.backgroundColor = [UIColor colorWithWhite:0 alpha:0.7];
+    rotateLabel.textColor = [UIColor whiteColor];
+    rotateLabel.textAlignment = UITextAlignmentCenter;
+    rotateLabel.font = [UIFont boldSystemFontOfSize:22];
+    rotateLabel.text = UIDeviceOrientationIsPortrait(orientation) ? @"Rotate to portrait" : @"Rotate to landscape";
+    rotateLabel.layer.cornerRadius = 12;
+    rotateLabel.alpha = 0;
+    [self.view addSubview:rotateLabel];
+    self.rotationPromptView = rotateLabel;
+    
+    [UIView animateWithDuration:0.25
+                     animations:^{
+                         rotateLabel.alpha = 1;
+                     }];
+    
+    [rotateLabel release];
+}
+
+- (void)hideRotationPrompt
+{
+    if (self.rotationPromptView == nil) {
+        return;
+    }
+    [UIView animateWithDuration:0.25
+                     animations:^{
+                         self.rotationPromptView.alpha = 0;
+                     }
+                     completion:^(BOOL finished) {
+                         [self.rotationPromptView removeFromSuperview];
+                         self.rotationPromptView = nil;
+                     }];
 }
 
 #pragma mark -
@@ -1043,6 +1090,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     [self cancelInitialTimer];
     [self.readingView dismissSelector];
     [self pauseAudioPlayback];
+    [self hideRotationPrompt];
 }
 
 - (void)presentHelpAnimated:(BOOL)animated
@@ -1519,17 +1567,10 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     void (^presentStoryInteractionBlock)(void) = ^{        
         [self setStoryInteractionButtonVisible:NO animated:YES withSound:NO completion:nil];
                         
-        if ([self.storyInteractionController shouldPresentInPortraitOrientation] != UIInterfaceOrientationIsPortrait(self.interfaceOrientation)) {
-            // We're currently in the wrong orientation for this SI. Dummy-presenting a modal view controller like this
-            // causes a re-check of shouldAutorotateToInterfaceOrientation, which will override the default now that an
-            // SI controller is active, causing the view to rotate to the required orientation. didRotateFromInterfaceOrientation
-            // will look for a pending SI and call back here to finish the presentation.            
-            self.presentStoryInteractionAfterRotation = YES;
-            
-            SCHStoryInteractionStandaloneViewController *standalone = [[SCHStoryInteractionStandaloneViewController alloc] init];
-            [self presentModalViewController:standalone animated:NO];
-            [self dismissModalViewControllerAnimated:NO];
-            [standalone release];
+        BOOL needsPortrait = [self.storyInteractionController shouldPresentInPortraitOrientation];
+        if (needsPortrait != UIInterfaceOrientationIsPortrait(self.interfaceOrientation)) {
+            // We're currently in the wrong orientation for this SI. Prompt the user to rotate their device.
+            [self promptUserToRotateDeviceToOrientation:(needsPortrait ? UIDeviceOrientationPortrait : UIDeviceOrientationLandscapeLeft)];
         } else {
             [self pushStoryInteractionController:self.storyInteractionController];
         }   
