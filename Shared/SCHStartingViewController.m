@@ -55,6 +55,8 @@ typedef enum {
 	kSCHStartingViewControllerProfileSyncStateNone = 0,
     kSCHStartingViewControllerProfileSyncStateWaitingForLoginToComplete,
     kSCHStartingViewControllerProfileSyncStateWaitingForBookshelves,
+    kSCHStartingViewControllerProfileSyncStateWaitingForPassword,
+    kSCHStartingViewControllerProfileSyncStateWaitingForWebParentToolsToComplete,
     kSCHStartingViewControllerProfileSyncStateSamplesSync
 } SCHStartingViewControllerProfileSyncState;
 
@@ -63,6 +65,7 @@ typedef enum {
 @property (nonatomic, retain) SCHProfileViewController_Shared *profileViewController;
 @property (nonatomic, assign) SCHStartingViewControllerBookshelf sampleBookshelf;
 @property (nonatomic, assign) SCHStartingViewControllerProfileSyncState profileSyncState;
+@property (nonatomic, retain) LambdaAlert *checkProfilesAlert;
 
 - (void)setupAssetsForOrientation:(UIInterfaceOrientation)orientation;
 - (void)firstLogin;
@@ -75,6 +78,7 @@ typedef enum {
 - (void)recheckBookshelvesForProfile;
 - (void)checkBookshelvesAndDictionaryDownloadForProfile;
 - (void)checkBookshelvesAndDictionaryDownloadForProfile:(BOOL)rechecking;
+- (void)replaceCheckProfilesAlertWithAlert:(LambdaAlert *)alert;
 
 - (SCHProfileViewController_Shared *)profileViewController;
 
@@ -82,6 +86,7 @@ typedef enum {
 
 @implementation SCHStartingViewController
 
+@synthesize checkProfilesAlert;
 @synthesize starterTableView;
 @synthesize backgroundView;
 @synthesize samplesHeaderView;
@@ -93,6 +98,14 @@ typedef enum {
 
 - (void)releaseViewObjects
 {
+    [[NSNotificationCenter defaultCenter] removeObserver:self 
+                                                    name:SCHProfileSyncComponentDidCompleteNotification 
+                                                  object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self 
+                                                    name:SCHProfileSyncComponentDidFailNotification 
+                                                  object:nil];
+
+    [checkProfilesAlert release], checkProfilesAlert = nil;
     [starterTableView release], starterTableView = nil;
     [backgroundView release], backgroundView = nil;
     [samplesHeaderView release], samplesHeaderView = nil;
@@ -130,6 +143,11 @@ typedef enum {
                                              selector:@selector(profileSyncDidComplete:)
                                                  name:SCHProfileSyncComponentDidCompleteNotification
                                                object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(profileSyncDidFail:)
+                                                 name:SCHProfileSyncComponentDidFailNotification
+                                               object:nil];    
 }
 
 - (void)viewDidUnload
@@ -559,6 +577,29 @@ typedef enum {
     }
 }
 
+- (void)waitingForPassword
+{
+    self.profileSyncState = kSCHStartingViewControllerProfileSyncStateWaitingForPassword;
+}
+
+- (void)waitingForWebParentToolsToComplete
+{
+    self.profileSyncState = kSCHStartingViewControllerProfileSyncStateWaitingForWebParentToolsToComplete;
+}
+
+- (void)webParentToolsCompleted
+{
+    self.profileSyncState = kSCHStartingViewControllerProfileSyncStateWaitingForBookshelves;
+    
+    [[SCHSyncManager sharedSyncManager] firstSync:YES];      
+    
+    self.checkProfilesAlert = [[[LambdaAlert alloc]
+                                initWithTitle:NSLocalizedString(@"Syncing with Your Account", @"")
+                                message:@"\n"] autorelease];
+    [self.checkProfilesAlert setSpinnerHidden:NO];
+    [self.checkProfilesAlert show];
+}
+
 #pragma mark - Profile view
 
 - (SCHProfileViewController_Shared *)profileViewController
@@ -578,6 +619,20 @@ typedef enum {
     return profileViewController;
 }
 
+- (void)replaceCheckProfilesAlertWithAlert:(LambdaAlert *)alert
+{
+    [CATransaction begin];
+    [CATransaction setDisableActions:YES];
+    
+    [self.checkProfilesAlert setSpinnerHidden:YES];
+    [self.checkProfilesAlert dismissAnimated:NO];
+    self.checkProfilesAlert = nil;
+    
+    [alert show];
+    
+    [CATransaction commit];
+}
+
 #pragma mark - notifications
 
 // at the 'setup bookshelves' stage we punt the user over to Safari to set up their account;
@@ -594,6 +649,11 @@ typedef enum {
     SCHStartingViewControllerProfileSyncState currentSyncState = self.profileSyncState;
     self.profileSyncState = kSCHStartingViewControllerProfileSyncStateNone;
     
+    if (self.checkProfilesAlert) {
+        [self.checkProfilesAlert dismissAnimated:YES];
+        self.checkProfilesAlert = nil;
+    }
+    
     switch (currentSyncState) {
         case kSCHStartingViewControllerProfileSyncStateWaitingForLoginToComplete:
             [self checkBookshelvesAndDictionaryDownloadForProfile];
@@ -606,6 +666,27 @@ typedef enum {
             break;
         default:
             break;
+    }
+}
+
+- (void)profileSyncDidFail:(NSNotification *)note
+{
+    if (self.checkProfilesAlert) {
+        if (self.profileSyncState == kSCHStartingViewControllerProfileSyncStateWaitingForBookshelves) {
+            [self recheckBookshelvesForProfile];
+            
+            LambdaAlert *alert = [[LambdaAlert alloc]
+                                  initWithTitle:NSLocalizedString(@"Sync Failed", @"")
+                                  message:NSLocalizedString(@"There was a problem whilst checking for new profiles. Please try again.", @"")];
+            [alert addButtonWithTitle:NSLocalizedString(@"OK", @"") block:^{
+            }];
+
+            [self replaceCheckProfilesAlertWithAlert:alert];
+            [alert release];  
+        } else { 
+            [self.checkProfilesAlert dismissAnimated:YES];
+            self.checkProfilesAlert = nil;
+        }
     }
 }
 

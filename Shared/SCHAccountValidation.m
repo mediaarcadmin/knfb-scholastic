@@ -17,6 +17,7 @@ NSInteger const kSCHAccountValidationPTokenError = 2000;
 @interface SCHAccountValidation ()
 
 @property (nonatomic, copy, readwrite) NSString *pToken;
+@property (nonatomic, retain) NSDate *pTokenRequested;
 @property (nonatomic, assign) BOOL waitingOnResponse;
 @property (nonatomic, retain) SCHScholasticWebService *scholasticWebService;
 @property (nonatomic, copy) ValidateBlock validateBlock;
@@ -26,6 +27,7 @@ NSInteger const kSCHAccountValidationPTokenError = 2000;
 @implementation SCHAccountValidation
 
 @synthesize pToken;
+@synthesize pTokenRequested;
 @synthesize waitingOnResponse;
 @synthesize scholasticWebService;
 @synthesize validateBlock;
@@ -40,13 +42,22 @@ NSInteger const kSCHAccountValidationPTokenError = 2000;
 		waitingOnResponse = NO;
 
 		scholasticWebService = [[SCHScholasticWebService alloc] init];
-		scholasticWebService.delegate = self;		
+		scholasticWebService.delegate = self;	
+        
+		[[NSNotificationCenter defaultCenter] addObserver:self 
+												 selector:@selector(applicationDidEnterBackground) 
+													 name:UIApplicationDidEnterBackgroundNotification 
+												   object:nil];			        
 	}
-	return(self);
+	return self;
 }
 
 - (void)dealloc 
 {
+    [[NSNotificationCenter defaultCenter] removeObserver:self 
+                                                    name:UIApplicationDidEnterBackgroundNotification 
+                                                  object:nil];
+
     [pToken release], pToken = nil;
     scholasticWebService.delegate = nil;
     [scholasticWebService release], scholasticWebService = nil;
@@ -72,7 +83,35 @@ NSInteger const kSCHAccountValidationPTokenError = 2000;
         ret = YES; 
     }
     
-    return(ret);
+    return ret;
+}
+
+#pragma mark - Accessor methods
+
+- (void)setPToken:(NSString *)aPToken
+{
+    if (pToken != aPToken) {
+        [pToken release];
+        pToken = [aPToken copy];
+        self.pTokenRequested = (pToken == nil ? nil : [NSDate dateWithTimeIntervalSinceNow:360.0]);
+    }
+}
+
+- (NSString *)pToken
+{
+    if (pToken != nil && 
+        [self.pTokenRequested earlierDate:[NSDate date]] == self.pTokenRequested) {
+        self.pToken = nil;
+    }
+    
+    return pToken;
+}
+
+#pragma mark - Notification methods
+
+- (void)applicationDidEnterBackground
+{
+    self.pToken = nil;
 }
 
 #pragma mark - BITAPIProxy Delegate methods

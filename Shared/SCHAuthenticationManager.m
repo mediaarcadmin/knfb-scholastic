@@ -206,9 +206,9 @@ typedef struct AuthenticateWithUserNameParameters AuthenticateWithUserNameParame
                         waitUntilDone:YES];
 }
     
-- (BOOL)hasValidPToken
+- (NSString *)pToken
 {
-    return(self.accountValidation.pToken != nil);    
+    return(self.accountValidation.pToken);    
 }
 
 - (NSURL *)webParentToolURL:(NSString *)pToken

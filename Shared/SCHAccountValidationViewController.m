@@ -90,6 +90,8 @@ static const CGFloat kDeregisterContentHeightLandscape = 380;
                                                      name:UIKeyboardWillHideNotification
                                                    object:nil];
     }
+    
+    [self.profileSetupDelegate waitingForPassword];
 }
 
 - (void)viewWillAppear:(BOOL)animated 
@@ -151,6 +153,7 @@ static const CGFloat kDeregisterContentHeightLandscape = 380;
             } else {
                 weakSelf.passwordField.text = @"";
                 SCHParentalToolsWebViewController *parentalToolsWebViewController = [[[SCHParentalToolsWebViewController alloc] init] autorelease];
+                parentalToolsWebViewController.profileSetupDelegate = weakSelf.profileSetupDelegate;
                 parentalToolsWebViewController.pToken = pToken;
                 [weakSelf.navigationController pushViewController:parentalToolsWebViewController animated:YES];                
                 // remove us from the view hiearachy - now we're no longer needed

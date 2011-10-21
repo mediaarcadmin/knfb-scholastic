@@ -9,9 +9,11 @@
 #import <UIKit/UIKit.h>
 
 #import "SCHBaseTextViewController.h"
+#import "SCHProfileSetupDelegate.h"
 
 @interface SCHParentalToolsWebViewController : SCHBaseTextViewController <UIWebViewDelegate>
 
 @property (nonatomic, copy) NSString *pToken;
+@property (nonatomic, assign) id<SCHProfileSetupDelegate> profileSetupDelegate;
 
 @end
