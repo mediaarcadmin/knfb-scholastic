@@ -153,6 +153,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 - (void)setStoryInteractionButtonVisible:(BOOL)visible animated:(BOOL)animated withSound:(BOOL)sound completion:(void (^)(BOOL finished))completion;
 - (void)rotateAndPresentStoryInteraction:(SCHStoryInteraction *)storyInteraction;
 - (void)pushStoryInteractionController:(SCHStoryInteractionController *)storyInteractionController;
+- (void)cancelStoryInteractionPendingRotation;
 - (void)save;
 
 - (void)setupOptionsViewForMode:(SCHReadingViewLayoutType)newLayoutType;
@@ -163,7 +164,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 - (void)dismissCoverCornerViewWithAnimation:(BOOL)animated;
 - (void)checkCornerAudioButtonVisibilityWithAnimation:(BOOL)animated;
 
-- (void)promptUserToRotateDeviceToOrientation:(UIDeviceOrientation)orientation;
+- (void)promptUserToRotateDevice;
 - (void)hideRotationPrompt;
 
 @end
@@ -800,29 +801,39 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     }    
 }
 
-- (void)promptUserToRotateDeviceToOrientation:(UIDeviceOrientation)orientation
+- (void)promptUserToRotateDevice
 {
-    self.presentStoryInteractionAfterRotation = YES;
+    if (self.rotationPromptView != nil) {
+        return;
+    }
     
-    UILabel *rotateLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 300, 200)];
-    rotateLabel.center = CGPointMake(CGRectGetMidX(self.view.bounds), CGRectGetMidY(self.view.bounds));
-    rotateLabel.autoresizingMask = UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleLeftMargin;
-    rotateLabel.backgroundColor = [UIColor colorWithWhite:0 alpha:0.7];
-    rotateLabel.textColor = [UIColor whiteColor];
-    rotateLabel.textAlignment = UITextAlignmentCenter;
-    rotateLabel.font = [UIFont boldSystemFontOfSize:22];
-    rotateLabel.text = UIDeviceOrientationIsPortrait(orientation) ? @"Rotate to portrait" : @"Rotate to landscape";
-    rotateLabel.layer.cornerRadius = 12;
-    rotateLabel.alpha = 0;
-    [self.view addSubview:rotateLabel];
-    self.rotationPromptView = rotateLabel;
+    UIImageView *rotateView;
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+        rotateView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 220, 220)];
+        rotateView.image = [UIImage imageNamed:@"rotation@2x.png"];
+    } else {
+        rotateView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 110, 110)];
+        rotateView.image = [UIImage imageNamed:@"rotation"];
+    }
+    rotateView.contentMode = UIViewContentModeCenter;
+    rotateView.center = CGPointMake(CGRectGetMidX(self.view.bounds), CGRectGetMidY(self.view.bounds));
+    rotateView.autoresizingMask = UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleLeftMargin;
+    rotateView.backgroundColor = [UIColor colorWithWhite:0 alpha:0.7];
+    rotateView.layer.cornerRadius = 16;
+    rotateView.layer.shadowColor = [[UIColor blackColor] CGColor];
+    rotateView.layer.shadowOpacity = 0.8;
+    rotateView.layer.shadowOffset = CGSizeMake(0, 3);
+    rotateView.layer.shadowRadius = 8;
+    rotateView.alpha = 0;
+    [self.view addSubview:rotateView];
+    self.rotationPromptView = rotateView;
     
     [UIView animateWithDuration:0.25
                      animations:^{
-                         rotateLabel.alpha = 1;
+                         rotateView.alpha = 1;
                      }];
     
-    [rotateLabel release];
+    [rotateView release];
 }
 
 - (void)hideRotationPrompt
@@ -830,14 +841,15 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     if (self.rotationPromptView == nil) {
         return;
     }
+    UIView *rotateView = self.rotationPromptView;
     [UIView animateWithDuration:0.25
                      animations:^{
-                         self.rotationPromptView.alpha = 0;
+                         rotateView.alpha = 0;
                      }
                      completion:^(BOOL finished) {
-                         [self.rotationPromptView removeFromSuperview];
-                         self.rotationPromptView = nil;
+                         [rotateView removeFromSuperview];
                      }];
+    self.rotationPromptView = nil;
 }
 
 #pragma mark -
@@ -1007,6 +1019,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 
 - (void)pictureStarterAction:(id)sender
 {
+    [self cancelStoryInteractionPendingRotation];
     [self toolbarButtonPressed];
     
     NSArray *storyInteractions = [self.bookStoryInteractions storyInteractionsOfClass:[SCHStoryInteractionPictureStarter class]];
@@ -1091,6 +1104,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     [self.readingView dismissSelector];
     [self pauseAudioPlayback];
     [self hideRotationPrompt];
+    [self cancelStoryInteractionPendingRotation];
 }
 
 - (void)presentHelpAnimated:(BOOL)animated
@@ -1271,6 +1285,9 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 
 - (IBAction)toggleToolbarButtonAction:(id)sender
 {
+    [self hideRotationPrompt];
+    [self cancelStoryInteractionPendingRotation];
+    
     // Setting highlight stops the flicker
     [self pauseAudioPlayback];
     
@@ -1570,7 +1587,8 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
         BOOL needsPortrait = [self.storyInteractionController shouldPresentInPortraitOrientation];
         if (needsPortrait != UIInterfaceOrientationIsPortrait(self.interfaceOrientation)) {
             // We're currently in the wrong orientation for this SI. Prompt the user to rotate their device.
-            [self promptUserToRotateDeviceToOrientation:(needsPortrait ? UIDeviceOrientationPortrait : UIDeviceOrientationLandscapeLeft)];
+            [self promptUserToRotateDevice];
+            self.presentStoryInteractionAfterRotation = YES;
         } else {
             [self pushStoryInteractionController:self.storyInteractionController];
         }   
@@ -1581,7 +1599,12 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     } else if (self.layoutType == SCHReadingViewLayoutTypeFlow) {
         presentStoryInteractionBlock();
     }
+}
 
+- (void)cancelStoryInteractionPendingRotation
+{
+    self.storyInteractionController = nil;
+    self.presentStoryInteractionAfterRotation = NO;
 }
 
 #pragma mark - Audio Control
@@ -2043,6 +2066,9 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 
 - (void)readingViewWillBeginTurning:(SCHReadingView *)readingView
 {
+    [self hideRotationPrompt];
+    [self cancelStoryInteractionPendingRotation];
+    
     if (self.layoutType == SCHReadingViewLayoutTypeFixed) {
         if (self.pauseAudioOnNextPageTurn) {
             [self pauseAudioPlayback];
@@ -2072,6 +2098,9 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 
 - (void)readingViewWillBeginUserInitiatedZooming:(SCHReadingView *)readingView
 {
+    [self hideRotationPrompt];
+    [self cancelStoryInteractionPendingRotation];
+
     if (self.layoutType == SCHReadingViewLayoutTypeFixed) {
         [self pauseAudioPlayback];
     }
@@ -2173,6 +2202,9 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 
 - (void)readingView:(SCHReadingView *)readingView hasSelectedWordForSpeaking:(NSString *)word
 {
+    [self hideRotationPrompt];
+    [self cancelStoryInteractionPendingRotation];
+
     [self pauseAudioPlayback];
     
     if (word) {

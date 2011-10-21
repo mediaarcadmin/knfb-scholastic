@@ -242,6 +242,10 @@
 		28D2AA0E13D6E8F700BEB359 /* SCHDownloadDictionaryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 28D2AA0D13D6E8F700BEB359 /* SCHDownloadDictionaryViewController.m */; };
 		28D67DEB13D9B28700F715CD /* SCHRemoveDictionaryViewController~iphone.xib in Resources */ = {isa = PBXBuildFile; fileRef = 28D67DEA13D9B28700F715CD /* SCHRemoveDictionaryViewController~iphone.xib */; };
 		28D67DF013D9B30500F715CD /* SCHRemoveDictionaryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 28D67DEE13D9B30500F715CD /* SCHRemoveDictionaryViewController.m */; };
+		28D6D5D01451DD6E0094F144 /* rotation.png in Resources */ = {isa = PBXBuildFile; fileRef = 28D6D5CE1451DD6E0094F144 /* rotation.png */; };
+		28D6D5D11451DD6E0094F144 /* rotation.png in Resources */ = {isa = PBXBuildFile; fileRef = 28D6D5CE1451DD6E0094F144 /* rotation.png */; };
+		28D6D5D21451DD6E0094F144 /* rotation@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 28D6D5CF1451DD6E0094F144 /* rotation@2x.png */; };
+		28D6D5D31451DD6E0094F144 /* rotation@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 28D6D5CF1451DD6E0094F144 /* rotation@2x.png */; };
 		28D81EE713E8413B00A2B25F /* SCHStoryInteractionPictureStarter.m in Sources */ = {isa = PBXBuildFile; fileRef = 28D81EE613E8413B00A2B25F /* SCHStoryInteractionPictureStarter.m */; };
 		28D81EEC13E846CE00A2B25F /* SCHStoryInteractionCardCollection.m in Sources */ = {isa = PBXBuildFile; fileRef = 28D81EEB13E846CD00A2B25F /* SCHStoryInteractionCardCollection.m */; };
 		28D8F15813F9896000A9EAC3 /* SCHStoryInteractionJigsaw_iPhone.xib in Resources */ = {isa = PBXBuildFile; fileRef = 286000F813F9561D005C6AEB /* SCHStoryInteractionJigsaw_iPhone.xib */; };
@@ -2466,6 +2470,8 @@
 		28D67DEA13D9B28700F715CD /* SCHRemoveDictionaryViewController~iphone.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "SCHRemoveDictionaryViewController~iphone.xib"; sourceTree = "<group>"; };
 		28D67DED13D9B30500F715CD /* SCHRemoveDictionaryViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHRemoveDictionaryViewController.h; path = Shared/SCHRemoveDictionaryViewController.h; sourceTree = "<group>"; };
 		28D67DEE13D9B30500F715CD /* SCHRemoveDictionaryViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHRemoveDictionaryViewController.m; path = Shared/SCHRemoveDictionaryViewController.m; sourceTree = "<group>"; };
+		28D6D5CE1451DD6E0094F144 /* rotation.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = rotation.png; sourceTree = "<group>"; };
+		28D6D5CF1451DD6E0094F144 /* rotation@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "rotation@2x.png"; sourceTree = "<group>"; };
 		28D81EE513E8413B00A2B25F /* SCHStoryInteractionPictureStarter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCHStoryInteractionPictureStarter.h; sourceTree = "<group>"; };
 		28D81EE613E8413B00A2B25F /* SCHStoryInteractionPictureStarter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCHStoryInteractionPictureStarter.m; sourceTree = "<group>"; };
 		28D81EEA13E846CD00A2B25F /* SCHStoryInteractionCardCollection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCHStoryInteractionCardCollection.h; sourceTree = "<group>"; };
@@ -5692,6 +5698,8 @@
 				C9722BF91393AA80008605E8 /* thumbImage.png */,
 				C9261FBD13970220009FF459 /* notes-count.png */,
 				C9261FBE13970220009FF459 /* notes-count@2x.png */,
+				28D6D5CE1451DD6E0094F144 /* rotation.png */,
+				28D6D5CF1451DD6E0094F144 /* rotation@2x.png */,
 			);
 			name = UIAssets;
 			sourceTree = "<group>";
@@ -7130,6 +7138,8 @@
 				C92797AC1410C75A0091B8B5 /* Interaction1_Relaxed.mp3 in Resources */,
 				528465F2144DB64D009DBADD /* SCHAccountValidationViewController~iphone.xib in Resources */,
 				528465F5144DB679009DBADD /* SCHAccountValidationViewController~ipad.xib in Resources */,
+				28D6D5D01451DD6E0094F144 /* rotation.png in Resources */,
+				28D6D5D21451DD6E0094F144 /* rotation@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -7821,6 +7831,8 @@
 				C92797AD1410C75A0091B8B5 /* Interaction1_Relaxed.mp3 in Resources */,
 				528465F3144DB64D009DBADD /* SCHAccountValidationViewController~iphone.xib in Resources */,
 				528465F6144DB679009DBADD /* SCHAccountValidationViewController~ipad.xib in Resources */,
+				28D6D5D11451DD6E0094F144 /* rotation.png in Resources */,
+				28D6D5D31451DD6E0094F144 /* rotation@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
