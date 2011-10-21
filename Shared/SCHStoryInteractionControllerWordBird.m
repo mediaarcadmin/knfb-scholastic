@@ -103,12 +103,12 @@ enum {
     }
 }
 
-- (NSString *)currentWord
+- (SCHStoryInteractionWordBirdQuestion *)currentQuestion
 {
     NSInteger currentQuestion = [self.delegate currentQuestionForStoryInteraction];
     SCHStoryInteractionWordBird *wordBird = (SCHStoryInteractionWordBird *)self.storyInteraction;
     SCHStoryInteractionWordBirdQuestion *question = [wordBird.questions objectAtIndex:currentQuestion];
-    return question.word;
+    return question;
 }
 
 - (void)setupAnswerView
@@ -120,7 +120,7 @@ enum {
     self.answerContainer.layer.cornerRadius = 15;
     self.answerContainer.layer.masksToBounds = YES;
 
-    NSInteger letterCount = [[self currentWord] length];
+    NSInteger letterCount = [[[self currentQuestion] word] length];
     NSMutableArray *letters = [NSMutableArray arrayWithCapacity:letterCount];
 
     CGFloat letterWidth = floorf(MIN(kAnswerLetterWidth, (CGRectGetWidth(self.answerContainer.bounds)-kAnswerLetterGap*2)/letterCount-kAnswerLetterGap));
@@ -138,7 +138,7 @@ enum {
         [letterView release];
     }
     
-    NSLog(@"setup Word Bird '%@'", [self currentWord]);
+    NSLog(@"setup Word Bird '%@'", [[self currentQuestion] word]);
 }
 
 - (void)setupLettersView
@@ -305,13 +305,13 @@ enum {
 - (BOOL)checkForLetter:(unichar)letter
 {
     NSString *letterString = [NSString stringWithCharacters:&letter length:1];
-    NSString *word = [self currentWord];
+    NSString *word = [[self currentQuestion] word];
     return [word rangeOfString:letterString].location != NSNotFound;
 }
 
 - (void)revealLetterInAnswer:(unichar)letter
 {
-    NSString *word = [self currentWord];
+    NSString *word = [[self currentQuestion] word];
     NSInteger letterCount = [word length];
     for (NSInteger letterIndex = 0; letterIndex < letterCount; ++letterIndex) {
         if ([word characterAtIndex:letterIndex] == letter) {
@@ -336,61 +336,81 @@ enum {
 
 #pragma mark - animations
 
-- (void)movePenguinHigher
+- (void)movePenguinOneStepHigher
 {
     [CATransaction begin];
     [CATransaction setDisableActions:YES];
-    
-    if (self.correctLetterCount < [[self currentWord] length]) {
-        
-        CGFloat heightInset = self.animationContainer.frame.origin.y;
-        CGRect bounds = CGRectApplyAffineTransform(self.animationContainerLayer.bounds, self.animationContainerLayer.affineTransform);
-        CGFloat ystep = (CGRectGetHeight(self.animationContainer.bounds) + heightInset - CGRectGetHeight(bounds))/([[self currentWord] length]-1);
-        CGPoint targetPosition = CGPointMake(self.animationContainerLayer.position.x, 
-                                             CGRectGetMaxY(self.animationContainer.bounds)-CGRectGetMidY(bounds)-ystep*self.correctLetterCount);
-        
-        CABasicAnimation *move = [CABasicAnimation animationWithKeyPath:@"position"];
-        move.fromValue = [NSValue valueWithCGPoint:self.animationContainerLayer.position];
-        move.toValue = [NSValue valueWithCGPoint:targetPosition];
-        move.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
-        move.duration = 1.5;
-        move.fillMode = kCAFillModeForwards;
-        
-        self.happyPenguinLayer.hidden = NO;
-        self.shockedPenguinLayer.hidden = YES;
-        [self.happyPenguinLayer animateAllFramesWithDuration:1.5
-                                                  frameOrder:nil
-                                                 autoreverse:NO
-                                                 repeatCount:1
-                                                    delegate:[self continueInteraction]];
-        
-        [self.animationContainerLayer addAnimation:move forKey:@"move"];
-        self.animationContainerLayer.position = targetPosition;
-    } else {
-        self.happyPenguinLayer.hidden = NO;
-        self.shockedPenguinLayer.hidden = YES;
-        self.happyPenguinLayer.frameIndex = 0;
-        [self.happyPenguinLayer setNeedsDisplay];
-        [self.happyPenguinLayer animateAllFramesWithDuration:1.5
-                                                  frameOrder:nil
-                                                 autoreverse:NO
-                                                 repeatCount:3
-                                                    delegate:nil];
 
-        CGPoint targetPosition = CGPointMake(self.animationContainerLayer.position.x, -300);
-        CABasicAnimation *move = [CABasicAnimation animationWithKeyPath:@"position"];
-        move.fromValue = [NSValue valueWithCGPoint:self.animationContainerLayer.position];
-        move.toValue = [NSValue valueWithCGPoint:targetPosition];
-        move.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseIn];
-        move.duration = 4.5;
-        [self.animationContainerLayer addAnimation:move forKey:@"move"];
-        self.animationContainerLayer.position = targetPosition;
-        
-        [self enqueueAudioWithPath:@"sfx_penguinwin.mp3" fromBundle:YES];
-        [self didComplete];
-    }
+    CGFloat heightInset = self.animationContainer.frame.origin.y;
+    CGRect bounds = CGRectApplyAffineTransform(self.animationContainerLayer.bounds, self.animationContainerLayer.affineTransform);
+    CGFloat ystep = (CGRectGetHeight(self.animationContainer.bounds) + heightInset - CGRectGetHeight(bounds))/([[[self currentQuestion] word] length]-1);
+    CGPoint targetPosition = CGPointMake(self.animationContainerLayer.position.x, 
+                                         CGRectGetMaxY(self.animationContainer.bounds)-CGRectGetMidY(bounds)-ystep*self.correctLetterCount);
     
+    CABasicAnimation *move = [CABasicAnimation animationWithKeyPath:@"position"];
+    move.fromValue = [NSValue valueWithCGPoint:self.animationContainerLayer.position];
+    move.toValue = [NSValue valueWithCGPoint:targetPosition];
+    move.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
+    move.duration = 1.5;
+    move.fillMode = kCAFillModeForwards;
+    
+    self.happyPenguinLayer.hidden = NO;
+    self.shockedPenguinLayer.hidden = YES;
+    [self.happyPenguinLayer animateAllFramesWithDuration:1.5
+                                              frameOrder:nil
+                                             autoreverse:NO
+                                             repeatCount:1
+                                                delegate:[self continueInteraction]];
+    
+    [self.animationContainerLayer addAnimation:move forKey:@"move"];
+    self.animationContainerLayer.position = targetPosition;
+
     [CATransaction commit];
+}
+
+- (void)movePenguinToTop
+{
+    [self enqueueAudioWithPath:[[self currentQuestion] audioPathForWord]
+                    fromBundle:NO
+                    startDelay:0
+        synchronizedStartBlock:nil
+          synchronizedEndBlock:^{
+              [CATransaction begin];
+              [CATransaction setDisableActions:YES];
+              
+              self.happyPenguinLayer.hidden = NO;
+              self.shockedPenguinLayer.hidden = YES;
+              self.happyPenguinLayer.frameIndex = 0;
+              [self.happyPenguinLayer setNeedsDisplay];
+              [self.happyPenguinLayer animateAllFramesWithDuration:1.5
+                                                        frameOrder:nil
+                                                       autoreverse:NO
+                                                       repeatCount:3
+                                                          delegate:nil];
+              
+              CGPoint targetPosition = CGPointMake(self.animationContainerLayer.position.x, -300);
+              CABasicAnimation *move = [CABasicAnimation animationWithKeyPath:@"position"];
+              move.fromValue = [NSValue valueWithCGPoint:self.animationContainerLayer.position];
+              move.toValue = [NSValue valueWithCGPoint:targetPosition];
+              move.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseIn];
+              move.duration = 4.5;
+              [self.animationContainerLayer addAnimation:move forKey:@"move"];
+              self.animationContainerLayer.position = targetPosition;
+              
+              [self enqueueAudioWithPath:@"sfx_penguinwin.mp3" fromBundle:YES];
+              [self didComplete];
+              
+              [CATransaction commit];
+          }];
+}
+
+- (void)movePenguinHigher
+{
+    if (self.correctLetterCount < [[[self currentQuestion] word] length]) {
+        [self movePenguinOneStepHigher];
+    } else {
+        [self movePenguinToTop];
+    }
 }
 
 - (void)popBalloon
