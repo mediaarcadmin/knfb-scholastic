@@ -120,11 +120,13 @@ static NSString* const prModelCertFilename = @"iphonecert.dat";
                                  nil];
     
 	[[NSUserDefaults standardUserDefaults] registerDefaults:appDefaults];
+    [[NSUserDefaults standardUserDefaults] synchronize];
 }
 
 - (void)clearUserDefaults
 {
     [[NSUserDefaults standardUserDefaults] removePersistentDomainForName:[[NSBundle mainBundle] bundleIdentifier]];
+    [[NSUserDefaults standardUserDefaults] synchronize];
 }
 
 /**
