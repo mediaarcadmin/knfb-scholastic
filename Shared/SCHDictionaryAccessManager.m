@@ -301,78 +301,92 @@ static SCHDictionaryAccessManager *sharedManager = nil;
     }
     
     SCHDictionaryEntry *entry = [self entryForWord:dictionaryWord category:category];
+    __block NSString *result = nil;
+    BOOL skipLookup = NO;
     
     if (!entry) {
-        return nil;
+        if ([category compare:kSCHDictionaryYoungReader] == NSOrderedSame) {
+            return nil;
+        } else {
+            result = @"<html><head></head><body><div class=\"entry OD\"><span class=\"hw\">replacewordhere</span><table class=\"OD\"><tr><td><span class=\"sense\"><span class=\"def\"><span class=\"deftext\">This word is not in the dictionary.</span></span></span></td></tr></table></div></body></html>";
+            
+            NSString *trimmedWord = [dictionaryWord stringByTrimmingCharactersInSet:
+                                     [NSCharacterSet whitespaceAndNewlineCharacterSet]];
+            trimmedWord = [trimmedWord stringByTrimmingCharactersInSet:
+                           [NSCharacterSet punctuationCharacterSet]];
+            
+            result = [result stringByReplacingOccurrencesOfString:@"replacewordhere" withString:trimmedWord];
+            skipLookup = YES;
+        }
     }
     
-    // use the offset to fetch the HTML from entry table
-    long offset = [entry.fileOffset longValue];
-    
-    __block NSString *result = nil;
-    
-    NSString *filePath = [[[SCHDictionaryDownloadManager sharedDownloadManager] dictionaryTextFilesDirectory] stringByAppendingPathComponent:@"EntryTable.txt"];
-    
-    dispatch_sync(self.dictionaryAccessQueue, ^{
-        FILE *file = fopen([filePath UTF8String], "r");
+    if (!skipLookup) {
+        // use the offset to fetch the HTML from entry table
+        long offset = [entry.fileOffset longValue];
         
-        char line[kSCHDictionaryManifestEntryEntryTableBufferSize];
-        char *completeLine, *start, *entryID, *headword, *level, *entryXML;
-        NSMutableData *collectLine = nil;   
-        NSString *tmpCompleteLine = nil;
-        size_t strLength = 0;
+        NSString *filePath = [[[SCHDictionaryDownloadManager sharedDownloadManager] dictionaryTextFilesDirectory] stringByAppendingPathComponent:@"EntryTable.txt"];
         
-        //NSLog(@"Seeking to offset %ld", offset);
-        
-        if (file != NULL) {
-            setlinebuf(file);
-            fseek(file, offset, 0);
-            while (fgets(line, kSCHDictionaryManifestEntryEntryTableBufferSize, file) != NULL) {
-                if (strLength = strlen(line), strLength > 0 && line[strLength-1] == '\n') {        
-                    
-                    if (collectLine == nil) {
-                        completeLine = line;
-                    } else {
-                        [collectLine appendBytes:line length:strlen(line)];                                        
-                        [collectLine appendBytes:(char []){'\0'} length:1];
-                        [tmpCompleteLine release];
-                        tmpCompleteLine = [[NSString alloc] initWithData:collectLine encoding:NSUTF8StringEncoding];
-                        completeLine = (char *)[tmpCompleteLine UTF8String];
-                        [collectLine release], collectLine = nil;
-                    }
-                    
-                    start = strtok(completeLine, kSCHDictionaryManifestEntryColumnSeparator);
-                    if (start != NULL) {
-                        entryID = strtok(NULL, kSCHDictionaryManifestEntryColumnSeparator);                    // MATCH
-                        if (entryID != NULL) {
-                            headword = strtok(NULL, kSCHDictionaryManifestEntryColumnSeparator);
-                            if (headword != NULL) {
-                                level = strtok(NULL, kSCHDictionaryManifestEntryColumnSeparator);              // MATCH YD/OD
-                                if (level != NULL) {
-                                    entryXML = strtok(NULL, kSCHDictionaryManifestEntryColumnSeparator);
-                                    if (entryXML != NULL) {
-                                        entryXML[strlen(entryXML)-1] = '\0';    // remove the line end
-                                        result = [[NSString stringWithUTF8String:entryXML] retain];
-                                        break;
+        dispatch_sync(self.dictionaryAccessQueue, ^{
+            FILE *file = fopen([filePath UTF8String], "r");
+            
+            char line[kSCHDictionaryManifestEntryEntryTableBufferSize];
+            char *completeLine, *start, *entryID, *headword, *level, *entryXML;
+            NSMutableData *collectLine = nil;   
+            NSString *tmpCompleteLine = nil;
+            size_t strLength = 0;
+            
+            //NSLog(@"Seeking to offset %ld", offset);
+            
+            if (file != NULL) {
+                setlinebuf(file);
+                fseek(file, offset, 0);
+                while (fgets(line, kSCHDictionaryManifestEntryEntryTableBufferSize, file) != NULL) {
+                    if (strLength = strlen(line), strLength > 0 && line[strLength-1] == '\n') {        
+                        
+                        if (collectLine == nil) {
+                            completeLine = line;
+                        } else {
+                            [collectLine appendBytes:line length:strlen(line)];                                        
+                            [collectLine appendBytes:(char []){'\0'} length:1];
+                            [tmpCompleteLine release];
+                            tmpCompleteLine = [[NSString alloc] initWithData:collectLine encoding:NSUTF8StringEncoding];
+                            completeLine = (char *)[tmpCompleteLine UTF8String];
+                            [collectLine release], collectLine = nil;
+                        }
+                        
+                        start = strtok(completeLine, kSCHDictionaryManifestEntryColumnSeparator);
+                        if (start != NULL) {
+                            entryID = strtok(NULL, kSCHDictionaryManifestEntryColumnSeparator);                    // MATCH
+                            if (entryID != NULL) {
+                                headword = strtok(NULL, kSCHDictionaryManifestEntryColumnSeparator);
+                                if (headword != NULL) {
+                                    level = strtok(NULL, kSCHDictionaryManifestEntryColumnSeparator);              // MATCH YD/OD
+                                    if (level != NULL) {
+                                        entryXML = strtok(NULL, kSCHDictionaryManifestEntryColumnSeparator);
+                                        if (entryXML != NULL) {
+                                            entryXML[strlen(entryXML)-1] = '\0';    // remove the line end
+                                            result = [[NSString stringWithUTF8String:entryXML] retain];
+                                            break;
+                                        }
                                     }
                                 }
                             }
                         }
-                    }
-                } else {
-                    if (collectLine == nil) {
-                        collectLine = [[NSMutableData alloc] initWithBytes:line length:strlen(line)];
                     } else {
-                        [collectLine appendBytes:line length:strlen(line)];
+                        if (collectLine == nil) {
+                            collectLine = [[NSMutableData alloc] initWithBytes:line length:strlen(line)];
+                        } else {
+                            [collectLine appendBytes:line length:strlen(line)];
+                        }
                     }
                 }
+                [collectLine release], collectLine = nil;
+                [tmpCompleteLine release], tmpCompleteLine = nil;
+                
+                fclose(file);
             }
-            [collectLine release], collectLine = nil;
-            [tmpCompleteLine release], tmpCompleteLine = nil;
-            
-            fclose(file);
-        }
-    });
+        });
+    }
     
     // write HEAD from YoungDictionary.css/OldDictionary.css
     // remove existing head from string

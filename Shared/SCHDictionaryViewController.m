@@ -173,6 +173,10 @@
 
 - (void)loadWord
 {
+    if (![[SCHDictionaryAccessManager sharedAccessManager] dictionaryContainsWord:self.word forCategory:self.categoryMode]) {
+        self.audioButton.hidden = YES;
+    }
+    
     NSString *htmlString = [[SCHDictionaryAccessManager sharedAccessManager] HTMLForWord:self.word category:self.categoryMode];
     
     if (!htmlString) {
