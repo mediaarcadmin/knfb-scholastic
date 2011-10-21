@@ -49,7 +49,7 @@ NSInteger const kSCHAccountValidationPTokenError = 2000;
 													 name:UIApplicationDidEnterBackgroundNotification 
 												   object:nil];			        
 	}
-	return(self);
+	return self;
 }
 
 - (void)dealloc 
@@ -83,7 +83,7 @@ NSInteger const kSCHAccountValidationPTokenError = 2000;
         ret = YES; 
     }
     
-    return(ret);
+    return ret;
 }
 
 #pragma mark - Accessor methods
@@ -93,18 +93,18 @@ NSInteger const kSCHAccountValidationPTokenError = 2000;
     if (pToken != aPToken) {
         [pToken release];
         pToken = [aPToken copy];
-        pTokenRequested = (pToken == nil ? nil : [NSDate dateWithTimeIntervalSinceNow:360.0]);
+        self.pTokenRequested = (pToken == nil ? nil : [NSDate dateWithTimeIntervalSinceNow:360.0]);
     }
 }
 
 - (NSString *)pToken
 {
     if (pToken != nil && 
-        [pTokenRequested earlierDate:[NSDate date]] == pTokenRequested) {
+        [self.pTokenRequested earlierDate:[NSDate date]] == self.pTokenRequested) {
         self.pToken = nil;
     }
     
-    return(pToken);
+    return pToken;
 }
 
 #pragma mark - Notification methods
