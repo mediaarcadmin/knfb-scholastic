@@ -302,14 +302,26 @@
     passwordController.retainLoopSafeActionBlock = ^BOOL(NSString *topFieldText, NSString *bottomFieldText) {
         if ([topFieldText isEqualToString:bottomFieldText]) {
             if ([topFieldText length] > 0) {
-                [profileItem setRawPassword:topFieldText];
-                if ([self.managedObjectContext save:nil] == YES) {
-                    [[SCHSyncManager sharedSyncManager] profileSync]; 
+                
+                if (![[topFieldText substringToIndex:1] isEqualToString:@" "]) {
+                    [profileItem setRawPassword:topFieldText];
+                    if ([self.managedObjectContext save:nil] == YES) {
+                        [[SCHSyncManager sharedSyncManager] profileSync]; 
+                    }
+                    [SCHThemeManager sharedThemeManager].appProfile = profileItem.AppProfile;
+                    [self pushBookshelvesControllerWithProfileItem:profileItem animated:YES];
+                    [self dismissModalViewControllerAnimated:YES];
+                    return YES;
+                } else {
+                    UIAlertView *errorAlert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error", @"Error") 
+                                                                         message:NSLocalizedString(@"You cannot use spaces at the beginning of your password.", nil)
+                                                                        delegate:nil 
+                                                               cancelButtonTitle:NSLocalizedString(@"OK", @"OK")
+                                                               otherButtonTitles:nil]; 
+                    [errorAlert show];
+                    [errorAlert release];
+                    return NO;
                 }
-                [SCHThemeManager sharedThemeManager].appProfile = profileItem.AppProfile;
-                [self pushBookshelvesControllerWithProfileItem:profileItem animated:YES];
-                [self dismissModalViewControllerAnimated:YES];
-                return YES;
             } else {
                 UIAlertView *errorAlert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error", @"Error") 
                                                                      message:NSLocalizedString(@"The password cannot be blank.", nil)
