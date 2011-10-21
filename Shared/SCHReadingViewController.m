@@ -161,6 +161,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 - (void)positionCoverCornerViewForOrientation:(UIInterfaceOrientation)newOrientation;
 - (void)dismissCoverCornerViewWithAnimation:(BOOL)animated;
 - (void)checkCornerAudioButtonVisibilityWithAnimation:(BOOL)animated;
+- (void)positionCornerAudioButtonForOrientation:(UIInterfaceOrientation)newOrientation;
 
 @end
 
@@ -575,8 +576,6 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     self.navigationToolbar = aNavigationToolbar;
     [aNavigationToolbar release];
     
-    self.cornerAudioButtonView.hidden = audioButtonsHidden;
-    
     // if the book has no story interactions disable the button
     self.storyInteractionsListButton.enabled = [[self.bookStoryInteractions allStoryInteractionsExcludingInteractionWithPage:NO] count] > 0;
         
@@ -644,6 +643,11 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 {
     if (!self.firstTimePlayForHelpController) {
         [self positionCoverCornerViewForOrientation:self.interfaceOrientation];
+        [self positionCornerAudioButtonForOrientation:self.interfaceOrientation];
+
+        SCHAppBook *book = [[SCHBookManager sharedBookManager] bookWithIdentifier:self.bookIdentifier inManagedObjectContext:self.managedObjectContext];
+        BOOL audioButtonsHidden = ![[book HasAudio] boolValue];
+        self.cornerAudioButtonView.hidden = audioButtonsHidden;
         [self startFadeTimer];
     }
 }
@@ -745,6 +749,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     }
     
     self.presentStoryInteractionAfterRotation = NO;
+    [self positionCornerAudioButtonForOrientation:self.interfaceOrientation];
 
     [super didRotateFromInterfaceOrientation:fromInterfaceOrientation];
 }
@@ -758,10 +763,11 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     [self.scrubberInfoView removeFromSuperview];
     
     self.currentlyRotating = YES;
-    
+
     [self setupAssetsForOrientation:toInterfaceOrientation];
 
     [self dismissCoverCornerViewWithAnimation:NO];
+    self.cornerAudioButtonView.alpha = 0;
     
     [self.readingView willRotateToInterfaceOrientation:toInterfaceOrientation duration:duration];
     
@@ -769,6 +775,11 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
         [self.popover dismissPopoverAnimated:YES];
         self.popover = nil;
     }
+    
+//    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0.1*NSEC_PER_SEC), dispatch_get_main_queue(), ^{
+//        [self positionCornerAudioButtonForOrientation:toInterfaceOrientation];
+//    });
+    
 }
 
 - (void)updateBookState
@@ -2051,6 +2062,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
         [self setToolbarVisibility:NO animated:YES];
     }
     
+    [self positionCornerAudioButtonForOrientation:self.interfaceOrientation];
     [self checkCornerAudioButtonVisibilityWithAnimation:YES];
 }
 
@@ -2906,6 +2918,19 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
                              completion:nil];
         }
     }
+}
+
+- (void)positionCornerAudioButtonForOrientation:(UIInterfaceOrientation)newOrientation
+{
+    CGRect bookCoverFrame = [self.readingView pageRect];
+    
+    CGRect frame = self.cornerAudioButtonView.frame;
+    
+    // offsets are to accommodate borders in the images
+    frame.origin.x = bookCoverFrame.origin.x + 5;
+    frame.origin.y = ceilf(bookCoverFrame.size.height - frame.size.height) - 5;
+    
+    self.cornerAudioButtonView.frame = frame;
 }
 
 #pragma mark - Help View Delegate
