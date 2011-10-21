@@ -36,6 +36,7 @@
 @synthesize imageViews;
 @synthesize targets;
 @synthesize attachedImages;
+@synthesize targetLabels;
 
 - (void)dealloc
 {
@@ -43,6 +44,7 @@
     [imageViews release];
     [targets release];
     [attachedImages release];
+    [targetLabels release];
     [super dealloc];
 }
 
@@ -54,6 +56,7 @@
     self.imageContainers = [self.imageContainers viewsSortedHorizontally];
     self.imageViews = [self.imageViews viewsSortedHorizontally];
     self.targets = [self.targets viewsSortedHorizontally];
+    self.targetLabels = [self.targetLabels viewsSortedHorizontally];
     
     NSArray *shuffledImages = [self.imageViews shuffled];
     for (NSInteger i = 0; i < kNumberOfImages; ++i) {
@@ -127,6 +130,10 @@
                             startDelay:0.5
                 synchronizedStartBlock:^{
                     [self setView:[[views objectAtIndex:index] viewWithTag:kImageViewTag] borderColor:[UIColor greenColor]];
+                    UILabel *label = [self.targetLabels objectAtIndex:index];
+                    label.textColor = [UIColor SCHGrayColor];
+                    label.backgroundColor = [UIColor SCHBlue2Color];
+                    label.layer.cornerRadius = 8;
                 }
                   synchronizedEndBlock:^{
                       if (index == kNumberOfImages-1) {
