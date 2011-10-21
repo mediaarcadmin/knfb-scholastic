@@ -29,18 +29,15 @@ static NSTimeInterval const kAppDelegate_iPhoneSyncManagerWakeDelay = 5.0;
 {    
 	[super application:application didFinishLaunchingWithOptions:launchOptions];
 
-    if ([[SCHAuthenticationManager sharedAuthenticationManager] hasUsernameAndPassword]) {
-        // skip the starter screen if already authenticated
-        SCHProfileViewController_iPhone *profileViewController = [[SCHProfileViewController_iPhone alloc] initWithNibName:@"SCHProfileViewController_iPhone" bundle:nil];
-        profileViewController.managedObjectContext = self.coreDataHelper.managedObjectContext;
-        [self.navigationController pushViewController:profileViewController animated:NO];
-        [profileViewController release];
-    }
-
     [self.window addSubview:navigationController.view];
     [self.window makeKeyAndVisible];
     
     [customNavigationBar setTheme:kSCHThemeManagerNavigationBarImage];
+    
+    if ([[SCHAuthenticationManager sharedAuthenticationManager] hasUsernameAndPassword]) {
+        // skip the starter screen if already authenticated
+        [self.startingViewController pushAuthenticatedProfile];
+    }
     
     return(YES);
 }

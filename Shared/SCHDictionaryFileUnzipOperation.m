@@ -7,12 +7,12 @@
 //
 
 #import "SCHDictionaryFileUnzipOperation.h"
-#import "ZipArchive.h"
 
 @interface SCHDictionaryFileUnzipOperation ()
 
 @property BOOL executing;
 @property BOOL finished;
+@property float previousPercentage;
 
 - (void) unzipDictionaryFileWithZipDelete: (BOOL) deleteAfterUnzip;
 
@@ -21,6 +21,7 @@
 @implementation SCHDictionaryFileUnzipOperation
 
 @synthesize executing, finished;
+@synthesize previousPercentage;
 
 - (void) dealloc
 {
@@ -37,6 +38,7 @@
         SCHDictionaryDownloadManager *dictManager = [SCHDictionaryDownloadManager sharedDownloadManager];
         
 		dictManager.isProcessing = YES;
+        self.previousPercentage = 0.0;
 		
         [self willChangeValueForKey:@"isExecuting"];
         [self willChangeValueForKey:@"isFinished"];
@@ -68,6 +70,7 @@
 {
     SCHDictionaryDownloadManager *dictManager = [SCHDictionaryDownloadManager sharedDownloadManager];
     ZipArchive *zipArchive = [[ZipArchive alloc] init];
+    zipArchive.delegate = self;
     
     bool zipSuccess = YES;
     
@@ -88,6 +91,15 @@
         NSLog(@"Unsuccessful unzip. boo.");
     }
     
+    NSDictionary *userInfo = [NSDictionary dictionaryWithObjectsAndKeys:
+                              [NSNumber numberWithFloat:0.5], @"currentPercentage",
+                              nil];
+    
+    [self performSelectorOnMainThread:@selector(firePercentageUpdate:) 
+                           withObject:userInfo
+                        waitUntilDone:NO];
+
+    
     NSFileManager *localFileManager = [[NSFileManager alloc] init];
 
     if (deleteAfterUnzip) {
@@ -95,6 +107,36 @@
     }
     
     [localFileManager release];
+}
+
+-(void) UnzipProgress:(uLong)myCurrentFileIndex total:(uLong)myTotalFileCount
+{
+    float percentage = 0;
+    
+    if (myTotalFileCount > 0) {
+        percentage = (float)((float)myCurrentFileIndex / (float)myTotalFileCount) * 0.5;
+    }
+    
+    if (percentage - self.previousPercentage > 0.001f) {
+        
+        NSDictionary *userInfo = [NSDictionary dictionaryWithObjectsAndKeys:
+                                  [NSNumber numberWithFloat:percentage], @"currentPercentage",
+                                  nil];
+        
+        NSLog(@"percentage for unzip: %2.4f%%", percentage * 100);
+        
+        [self performSelectorOnMainThread:@selector(firePercentageUpdate:) 
+                               withObject:userInfo
+                            waitUntilDone:NO];
+        
+        self.previousPercentage = percentage;
+    }
+}
+
+- (void)firePercentageUpdate:(NSDictionary *)userInfo
+{
+    NSAssert(userInfo != nil, @"firePercentageUpdate is incorrectly being called with no userInfo");
+	[[NSNotificationCenter defaultCenter] postNotificationName:kSCHDictionaryProcessingPercentageUpdate object:nil userInfo:userInfo];
 }
 
 - (BOOL)isConcurrent {

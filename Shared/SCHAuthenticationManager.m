@@ -282,6 +282,8 @@ typedef struct AuthenticateWithUserNameParameters AuthenticateWithUserNameParame
                 [self clearOnMainThread];
                 [[NSUserDefaults standardUserDefaults] setObject:authenticateWithUserNameParameters->username 
                                                           forKey:kSCHAuthenticationManagerUsername];
+                [[NSUserDefaults standardUserDefaults] synchronize];
+                
                 [SFHFKeychainUtils storeUsername:authenticateWithUserNameParameters->username 
                                      andPassword:authenticateWithUserNameParameters->password 
                                   forServiceName:kSCHAuthenticationManagerServiceName 
@@ -307,6 +309,8 @@ typedef struct AuthenticateWithUserNameParameters AuthenticateWithUserNameParame
     } else {
         [[NSUserDefaults standardUserDefaults] setObject:authenticateWithUserNameParameters->username 
                                                   forKey:kSCHAuthenticationManagerUsername];
+        [[NSUserDefaults standardUserDefaults] synchronize];
+
         [SFHFKeychainUtils storeUsername:authenticateWithUserNameParameters->username 
                              andPassword:authenticateWithUserNameParameters->password 
                           forServiceName:kSCHAuthenticationManagerServiceName 

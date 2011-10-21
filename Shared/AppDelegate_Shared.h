@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import <CoreData/CoreData.h>
+#import "SCHStartingViewController.h"
 
 @class SCHCoreDataHelper;
 
@@ -16,6 +17,7 @@
 }
 
 @property (nonatomic, retain) IBOutlet UIWindow *window;
+@property (nonatomic, retain) IBOutlet SCHStartingViewController *startingViewController;
 @property (nonatomic, readonly) SCHCoreDataHelper *coreDataHelper;
 
 - (NSURL *)applicationDocumentsDirectory;
