@@ -43,6 +43,7 @@
 #import "SCHContentProfileItem.h"
 #import "SCHUserContentItem.h"
 #import "SCHReadingStoryInteractionButton.h"
+#import "SCHProfileSyncComponent.h"
 
 // constants
 NSString *const kSCHReadingViewErrorDomain  = @"com.knfb.scholastic.ReadingViewErrorDomain";
@@ -436,6 +437,10 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
                                                      name:SCHAnnotationSyncComponentDidCompleteNotification
                                                    object:nil];
         
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(profileDeleted:)
+                                                     name:SCHProfileSyncComponentWillDeleteNotification
+                                                   object:nil];
         
         
         self.lastPageInteractionSoundPlayedOn = -1;
@@ -838,7 +843,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 #pragma mark - Sync Propagation methods
 
 - (void)bookDeleted:(NSNotification *)notification
-{
+{    
     NSArray *bookIdentifiers = [notification.userInfo objectForKey:self.profile.ID];
     
     for (SCHBookIdentifier *bookId in bookIdentifiers) {
@@ -863,8 +868,26 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     }
 }
 
-- (void)annotationChanges:(NSNotification *)notification
+- (void)profileDeleted:(NSNotification *)notification
 {
+    // Immediately deregister for any more book related notifications so we don't try to handle following annotationChanges or bookDeleted notifications
+    // The bookshelf view controller will actually tear us down and push back to the root when it receives the same notification
+    NSArray *profileIDs = [notification.userInfo objectForKey:SCHProfileSyncComponentDeletedProfileIDs];
+    
+    for (NSNumber *profileID in profileIDs) {
+        if ([profileID isEqualToNumber:self.profile.ID] == YES) {
+            [[NSNotificationCenter defaultCenter] removeObserver:self
+                                                            name:SCHContentSyncComponentWillDeleteNotification
+                                                          object:nil];
+            [[NSNotificationCenter defaultCenter] removeObserver:self
+                                                            name:SCHAnnotationSyncComponentDidCompleteNotification
+                                                          object:nil];
+        }
+    }
+}
+
+- (void)annotationChanges:(NSNotification *)notification
+{    
     NSNumber *profileID = [notification.userInfo objectForKey:SCHAnnotationSyncComponentCompletedProfileIDs];
     
     if ([profileID isEqualToNumber:self.profile.ID] == YES) {

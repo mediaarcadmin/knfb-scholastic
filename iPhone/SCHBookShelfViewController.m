@@ -117,6 +117,21 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 131;
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
+- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
+{
+    if ((self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil])) {
+        // Note that this needs to be registered outside viewDidLoad because when a readingViewController is pushed directly on from the profile view controller
+        // The bookshelf view does not actually get loaded
+        // but we want the bookshelfviewcontroller to orchestrate popping back to the root if it's profile is deleted
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(profileDeleted:)
+                                                     name:SCHProfileSyncComponentWillDeleteNotification
+                                                   object:nil];
+    }
+    
+    return self;
+}
+
 - (void)dealloc 
 {    
     [books release], books = nil;
@@ -182,10 +197,10 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 131;
 	
 //    [customNavigationBar setTheme:kSCHThemeManagerNavigationBarImage];
 		
-	[[NSNotificationCenter defaultCenter] addObserver:self
-											 selector:@selector(profileDeleted:)
-												 name:SCHProfileSyncComponentWillDeleteNotification
-											   object:nil];
+//	[[NSNotificationCenter defaultCenter] addObserver:self
+//											 selector:@selector(profileDeleted:)
+//												 name:SCHProfileSyncComponentWillDeleteNotification
+//											   object:nil];
 	
 	[[NSNotificationCenter defaultCenter] addObserver:self
 											 selector:@selector(managedObjectContextDidSaveNotification:)

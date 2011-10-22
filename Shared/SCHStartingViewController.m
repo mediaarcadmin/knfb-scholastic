@@ -159,8 +159,11 @@ typedef enum {
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    [self setupAssetsForOrientation:self.interfaceOrientation];
+
     [self.navigationController.navigationBar setAlpha:1.0f];
+    [self.navigationController.navigationBar setBarStyle:UIBarStyleBlackOpaque]; // For the title text
+    [self.navigationController setNavigationBarHidden:NO];
+    [self setupAssetsForOrientation:self.interfaceOrientation];
 
     // if we logged in and deregistered then we will need to refresh so we 
     // don't show the Sample bookshelves
