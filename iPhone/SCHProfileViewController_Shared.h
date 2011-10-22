@@ -10,6 +10,7 @@
 #import <CoreData/CoreData.h>
 #import "SCHProfileViewCell.h"
 #import "SCHSettingsDelegate.h"
+#import "SCHProfileSetupDelegate.h"
 
 @class SCHSettingsViewController;
 @class SCHProfileItem;
@@ -26,6 +27,7 @@
 
 @property (nonatomic, retain) NSManagedObjectContext *managedObjectContext;
 @property (nonatomic, retain) NSFetchedResultsController *fetchedResultsController;
+@property (nonatomic, assign) id<SCHProfileSetupDelegate> profileSetupDelegate;
 
 // for use by subclass
 - (void)releaseViewObjects;

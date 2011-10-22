@@ -11,7 +11,6 @@
 #import "SCHBookShelfGridView.h"
 #import "SCHCustomNavigationBar.h"
 #import "SCHThemeManager.h"
-#import "SCHProfileViewController_iPad.h"
 #import "SCHBookManager.h"
 #import "SCHThemeButton.h"
 #import "SCHBookShelfSortPopoverTableView.h"
@@ -47,7 +46,6 @@ static NSTimeInterval const kSCHBookShelfViewControllerTopTenRefreshTime = -600.
 
 @implementation SCHBookShelfViewController_iPad
 
-@synthesize profileViewController;
 @synthesize topFavoritesComponent;
 @synthesize topTenBooks;
 @synthesize lastTopTenBookRetrieval;
@@ -63,7 +61,6 @@ static NSTimeInterval const kSCHBookShelfViewControllerTopTenRefreshTime = -600.
     [topTenBooks release], topTenBooks = nil;
     [lastTopTenBookRetrieval release], lastTopTenBookRetrieval = nil;
     [popover release], popover = nil;
-    [profileViewController release], profileViewController = nil;
     [super dealloc];
 }
 

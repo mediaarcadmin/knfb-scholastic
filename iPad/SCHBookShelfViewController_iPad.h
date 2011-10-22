@@ -17,6 +17,4 @@
 {    
 }
 
-@property (nonatomic, retain) SCHProfileViewController_iPad *profileViewController;
-
 @end

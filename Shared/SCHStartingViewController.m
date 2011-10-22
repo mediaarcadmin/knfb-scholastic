@@ -489,14 +489,28 @@ typedef enum {
     [self checkBookshelvesAndDictionaryDownloadForProfile:NO];
 }
 
-- (void)pushAuthenticatedProfile
+- (void)pushAuthenticatedProfileAnimated:(BOOL)animated
 {
     if ([self bookshelfSetupRequired]) {
         // Force the view to load from the nib without requiring the run loop to complete
         [self view];
-        [self checkBookshelvesAndDictionaryDownloadForProfile:NO];
+        [self checkBookshelvesAndDictionaryDownloadForProfile:animated];
     } else {
-        [self showCurrentProfileAnimated:NO];
+        [self showCurrentProfileAnimated:animated];
+    }
+}
+
+- (void)popToAuthenticatedProfileAnimated:(BOOL)animated
+{
+    if (self.modalViewController) {
+        [self dismissModalViewControllerAnimated:animated];
+    }
+    
+    if ([self bookshelfSetupRequired]) {
+        [self.navigationController setViewControllers:[NSArray arrayWithObject:self] animated:animated];
+        [self checkBookshelvesAndDictionaryDownloadForProfile:animated];
+    } else {
+        [self.navigationController setViewControllers:[NSArray arrayWithObjects:self, [self profileViewController], nil] animated:animated];
     }
 }
 
@@ -520,7 +534,20 @@ typedef enum {
 - (void)popToRootViewControllerAnimated:(BOOL)animated withCompletionHandler:(dispatch_block_t)completion
 {
     // Already at root so just call dismiss settings
-    [self dismissModalViewControllerAnimated:animated withCompletionHandler:completion];
+    if (self.modalViewController) {
+        [self dismissModalViewControllerAnimated:animated];
+        [self.navigationController popToRootViewControllerAnimated:NO];
+    } else {
+        [self.navigationController popToRootViewControllerAnimated:animated];
+    }
+    
+    // This is an inelegant solution but there isn't a straightforward way to perform the animation and then 
+    // fire the completion when it is finished
+    if (completion) {
+        double delayInSeconds = animated ? 0.3 : 0.0;
+        dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);
+        dispatch_after(popTime, dispatch_get_main_queue(), completion);
+    }
 }
 
 - (void)showCurrentSamplesAnimated:(BOOL)animated
@@ -615,6 +642,7 @@ typedef enum {
         // want to use the same database any more
         AppDelegate_Shared *appDelegate = (AppDelegate_Shared *)[[UIApplication sharedApplication] delegate];
         profileViewController.managedObjectContext = appDelegate.coreDataHelper.managedObjectContext;
+        profileViewController.profileSetupDelegate = self;
 }
     return profileViewController;
 }

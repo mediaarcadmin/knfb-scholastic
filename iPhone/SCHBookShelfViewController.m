@@ -91,6 +91,7 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 131;
 @synthesize backgroundView;
 @synthesize gridViewNeedsRefreshed;
 @synthesize listViewNeedsRefreshed;
+@synthesize profileSetupDelegate;
 
 #pragma mark - Object lifecycle
 
@@ -121,6 +122,7 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 131;
     [books release], books = nil;
     [profileItem release], profileItem = nil;
     [managedObjectContext release], managedObjectContext = nil;
+    profileSetupDelegate = nil;
     
     [self releaseViewObjects];   
     [super dealloc];
@@ -270,7 +272,7 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 131;
     if (self.updateShelfOnReturnToShelf == YES) {
         self.updateShelfOnReturnToShelf = NO;
         self.books = [self.profileItem allBookIdentifiers];
-    }
+    }    
 }
 
 - (void)reloadData
@@ -457,23 +459,24 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 131;
     
     for (NSNumber *profileID in profileIDs) {
         if ([profileID isEqualToNumber:self.profileItem.ID] == YES) {
+            
+            if (self.modalViewController != nil) {
+                [self.modalViewController dismissModalViewControllerAnimated:NO];
+            }
+            
             NSString *localizedMessage = [NSString stringWithFormat:
-                                          NSLocalizedString(@"%@ has been removed", nil), [self.profileItem bookshelfName:YES]];            
+                                          NSLocalizedString(@"%@ has been removed", nil), [self.profileItem bookshelfName:YES]];  
             LambdaAlert *alert = [[LambdaAlert alloc]
                                   initWithTitle:NSLocalizedString(@"Bookshelf Removed", @"Bookshelf Removed") 
                                   message:localizedMessage];
-            [alert addButtonWithTitle:NSLocalizedString(@"OK", @"OK") block:^{}];
+            [alert addButtonWithTitle:NSLocalizedString(@"OK", @"OK") block:^{
+                [self.profileSetupDelegate popToAuthenticatedProfileAnimated:YES];
+            }];
+                
+            self.profileItem = nil;
+                
             [alert show];
             [alert release];
-            self.profileItem = nil;
-            if (self.modalViewController != nil) {
-                [self.modalViewController dismissModalViewControllerAnimated:NO];
-            }            
-            // we could be viewing another controller so let's go to the profile view
-            if ([self.navigationController.viewControllers count] > 1) {
-                [self.navigationController popToViewController:[self.navigationController.viewControllers objectAtIndex:1] 
-                                                                animated:NO];   
-            }
             break;
         }
     }

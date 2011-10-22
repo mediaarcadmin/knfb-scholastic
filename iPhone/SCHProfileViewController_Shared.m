@@ -43,6 +43,7 @@
 @synthesize settingsViewController;
 @synthesize bookUpdates;
 @synthesize updatesBubble;
+@synthesize profileSetupDelegate;
 
 #pragma mark - Object lifecycle
 
@@ -77,6 +78,7 @@
     [fetchedResultsController_ release], fetchedResultsController_ = nil;
     [managedObjectContext_ release], managedObjectContext_ = nil;
     [bookUpdates release], bookUpdates = nil;
+    profileSetupDelegate = nil;
     
     [super dealloc];
 }
@@ -358,6 +360,7 @@
 	SCHBookShelfViewController *bookShelfViewController = [self newBookShelfViewController];
     bookShelfViewController.profileItem = profileItem;
     bookShelfViewController.managedObjectContext = self.managedObjectContext;
+    bookShelfViewController.profileSetupDelegate = self.profileSetupDelegate;
     
     SCHBookIdentifier *bookIdentifier = nil;
     if (profileItem.AppProfile.AutomaticallyLaunchBook != nil) {
