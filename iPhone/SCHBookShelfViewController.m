@@ -113,8 +113,18 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 131;
     [listTableCellNib release], listTableCellNib = nil;
     [gridViewToggleView release], gridViewToggleView = nil;
     [backgroundView release], backgroundView = nil;
+            
+    [[NSNotificationCenter defaultCenter] removeObserver:self
+												 name:SCHBookshelfSyncComponentDidCompleteNotification
+											   object:nil];
     
-	[[NSNotificationCenter defaultCenter] removeObserver:self];
+    [[NSNotificationCenter defaultCenter] removeObserver:self
+												 name:SCHBookshelfSyncComponentDidFailNotification
+											   object:nil];
+    
+    [[NSNotificationCenter defaultCenter] removeObserver:self
+												 name:SCHSyncManagerDidCompleteNotification
+											   object:nil];
 }
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
@@ -127,6 +137,11 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 131;
                                                  selector:@selector(profileDeleted:)
                                                      name:SCHProfileSyncComponentWillDeleteNotification
                                                    object:nil];
+        
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(managedObjectContextDidSaveNotification:)
+                                                     name:NSManagedObjectContextDidSaveNotification
+                                                   object:nil];
     }
     
     return self;
@@ -134,12 +149,21 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 131;
 
 - (void)dealloc 
 {    
+    [self releaseViewObjects];
+    
+    [[NSNotificationCenter defaultCenter] removeObserver:self
+                                                    name:SCHProfileSyncComponentWillDeleteNotification
+                                                  object:nil];
+    
+    [[NSNotificationCenter defaultCenter] removeObserver:self
+                                                    name:NSManagedObjectContextDidSaveNotification
+                                                  object:nil];
+    
     [books release], books = nil;
     [profileItem release], profileItem = nil;
     [managedObjectContext release], managedObjectContext = nil;
     profileSetupDelegate = nil;
     
-    [self releaseViewObjects];   
     [super dealloc];
 }
 
@@ -195,19 +219,6 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 131;
 	self.componentCache = aCache;
 	[aCache release], aCache = nil;
 	
-//    [customNavigationBar setTheme:kSCHThemeManagerNavigationBarImage];
-		
-//	[[NSNotificationCenter defaultCenter] addObserver:self
-//											 selector:@selector(profileDeleted:)
-//												 name:SCHProfileSyncComponentWillDeleteNotification
-//											   object:nil];
-	
-	[[NSNotificationCenter defaultCenter] addObserver:self
-											 selector:@selector(managedObjectContextDidSaveNotification:)
-												 name:NSManagedObjectContextDidSaveNotification
-											   object:nil];
-	
-
     [[NSNotificationCenter defaultCenter] addObserver:self
 											 selector:@selector(bookshelfSyncComponentDidComplete:)
 												 name:SCHBookshelfSyncComponentDidCompleteNotification
