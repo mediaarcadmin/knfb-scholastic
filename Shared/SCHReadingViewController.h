@@ -37,8 +37,9 @@ typedef enum
 
 typedef enum 
 {
-	SCHReadingViewLayoutTypeFlow = 0,
-	SCHReadingViewLayoutTypeFixed,
+    SCHReadingViewLayoutTypeUnspecified = 0,
+	SCHReadingViewLayoutTypeFlow,
+	SCHReadingViewLayoutTypeFixed
 } SCHReadingViewLayoutType;
 
 @class SCHCustomToolbar;

@@ -271,6 +271,10 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     [storyInteractionController release], storyInteractionController = nil;
     [cornerCoverFadeTimer release], cornerCoverFadeTimer = nil;
     
+    // Ideally the readingView would be release it viewDidUnload but it contains 
+    // logic that this view controller uses whilst it is potentially off-screen (e.g. when a story interaction is being shown)
+    [readingView release], readingView = nil;
+    
     [super dealloc];
 }
 
@@ -312,7 +316,6 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     [highlightsInfoButton release], highlightsInfoButton = nil;
     [highlightsCancelButton release], highlightsCancelButton = nil;
     
-    [readingView release], readingView = nil;
     [navigationToolbar release], navigationToolbar = nil;
 }
 
@@ -478,8 +481,11 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     self.wantsFullScreenLayout = YES;
     [self.navigationController setNavigationBarHidden:YES];
     
-    [self.view addSubview:self.readingView];
-    [self.view sendSubviewToBack:self.readingView];
+    if (self.readingView) {
+        [self.readingView setFrame:self.view.bounds];
+        [self.view addSubview:self.readingView];
+        [self.view sendSubviewToBack:self.readingView];
+    }
 
     // Older reader defaults: fixed view for iPad, flow view for iPhone
     // Younger reader defaults: always fixed, no need to save
@@ -1796,72 +1802,75 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 
 - (void)setLayoutType:(SCHReadingViewLayoutType)newLayoutType
 {
-    layoutType = newLayoutType;
-    
-    SCHReadingViewSelectionMode currentMode = [self.readingView selectionMode];
-    
-    NSNumber *savedLayoutType = [[self.profile AppProfile] LayoutType];
-
-    if (!savedLayoutType || [savedLayoutType intValue] != newLayoutType) {
-        savedLayoutType = [NSNumber numberWithInt:newLayoutType];
-        [[self.profile AppProfile] setLayoutType:savedLayoutType];
-    }
-    
-    BOOL useSavedFontAndPaperSettings = NO;
-    
-    [self.readingView removeFromSuperview];
-    
-    switch (newLayoutType) {
-        case SCHReadingViewLayoutTypeFlow: {
-            SCHFlowView *flowView = [[SCHFlowView alloc] initWithFrame:self.view.bounds 
-                                                        bookIdentifier:self.bookIdentifier 
-                                                  managedObjectContext:self.managedObjectContext 
-                                                              delegate:self];
-            self.readingView = flowView;
-            [self setDictionarySelectionMode];
-
-            [flowView release];
-            
-            [self.fontSegmentedControl setEnabled:YES forSegmentAtIndex:0];
-            [self.fontSegmentedControl setEnabled:YES forSegmentAtIndex:1];
-            
-            useSavedFontAndPaperSettings = YES;
-
-            break;
-        }
-        case SCHReadingViewLayoutTypeFixed: 
-        default: {
-            SCHLayoutView *layoutView = [[SCHLayoutView alloc] initWithFrame:self.view.bounds 
-                                                              bookIdentifier:self.bookIdentifier 
-                                                        managedObjectContext:self.managedObjectContext                                          
-                                                                    delegate:self];
-            self.readingView = layoutView;
-            
-            [self setDictionarySelectionMode];
-                        
-            [self.fontSegmentedControl setEnabled:NO forSegmentAtIndex:0];
-            [self.fontSegmentedControl setEnabled:NO forSegmentAtIndex:1];
-
-            [layoutView release];
-            
-            break;
-        }
-    }
-    
-    self.readingView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-    
-    [self.readingView setSelectionMode:currentMode];
-    [self.view addSubview:self.readingView];
-    [self.view sendSubviewToBack:self.readingView];
-    
-    if (useSavedFontAndPaperSettings) {
-        NSNumber *savedPaperType = [[self.profile AppProfile] PaperType];
-        self.paperType = [savedPaperType intValue];
+    if (newLayoutType != layoutType) {
+        layoutType = newLayoutType;
         
-        NSNumber *savedFontSizeIndex = [[self.profile AppProfile] FontIndex];
-        self.currentFontSizeIndex = [savedFontSizeIndex intValue];
-    } else {
-        self.paperType = SCHReadingViewPaperTypeWhite;
+        SCHReadingViewSelectionMode currentMode = [self.readingView selectionMode];
+        
+        NSNumber *savedLayoutType = [[self.profile AppProfile] LayoutType];
+        
+        if (!savedLayoutType || [savedLayoutType intValue] != newLayoutType) {
+            savedLayoutType = [NSNumber numberWithInt:newLayoutType];
+            [[self.profile AppProfile] setLayoutType:savedLayoutType];
+        }
+        
+        BOOL useSavedFontAndPaperSettings = NO;
+        
+        [self.readingView removeFromSuperview];
+        self.readingView = nil;
+        
+        switch (newLayoutType) {
+            case SCHReadingViewLayoutTypeFlow: {
+                SCHFlowView *flowView = [[SCHFlowView alloc] initWithFrame:self.view.bounds 
+                                                            bookIdentifier:self.bookIdentifier 
+                                                      managedObjectContext:self.managedObjectContext 
+                                                                  delegate:self];
+                self.readingView = flowView;
+                [self setDictionarySelectionMode];
+                
+                [flowView release];
+                
+                [self.fontSegmentedControl setEnabled:YES forSegmentAtIndex:0];
+                [self.fontSegmentedControl setEnabled:YES forSegmentAtIndex:1];
+                
+                useSavedFontAndPaperSettings = YES;
+                
+                break;
+            }
+            case SCHReadingViewLayoutTypeFixed: 
+            default: {
+                SCHLayoutView *layoutView = [[SCHLayoutView alloc] initWithFrame:self.view.bounds 
+                                                                  bookIdentifier:self.bookIdentifier 
+                                                            managedObjectContext:self.managedObjectContext                                          
+                                                                        delegate:self];
+                self.readingView = layoutView;
+                
+                [self setDictionarySelectionMode];
+                
+                [self.fontSegmentedControl setEnabled:NO forSegmentAtIndex:0];
+                [self.fontSegmentedControl setEnabled:NO forSegmentAtIndex:1];
+                
+                [layoutView release];
+                
+                break;
+            }
+        }
+        
+        self.readingView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+        
+        [self.readingView setSelectionMode:currentMode];
+        [self.view addSubview:self.readingView];
+        [self.view sendSubviewToBack:self.readingView];
+        
+        if (useSavedFontAndPaperSettings) {
+            NSNumber *savedPaperType = [[self.profile AppProfile] PaperType];
+            self.paperType = [savedPaperType intValue];
+            
+            NSNumber *savedFontSizeIndex = [[self.profile AppProfile] FontIndex];
+            self.currentFontSizeIndex = [savedFontSizeIndex intValue];
+        } else {
+            self.paperType = SCHReadingViewPaperTypeWhite;
+        }
     }
 }
 
