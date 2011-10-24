@@ -369,7 +369,8 @@
 
 - (void)clearButtonTapped:(id)sender
 {
-    [self playDefaultButtonAudio];
+    [self cancelQueuedAudioExecutingSynchronizedBlocksImmediately];
+    [self enqueueAudioWithPath:@"sfx_delete.mp3" fromBundle:YES];
     [self clearBuiltWord];
 }
 
