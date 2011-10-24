@@ -491,13 +491,13 @@ static Class controllerClassForStoryInteraction(SCHStoryInteraction *storyIntera
             if (iPad) {
                 backgroundWidth = MAX(background.image.size.width, titleFrame.size.width);
                 backgroundHeight = MAX(background.image.size.height, titleFrame.size.height);
-                background.center = CGPointMake(floorf(CGRectGetMidX(titleFrame)), floorf(CGRectGetMidY(titleFrame)));
+                background.center = CGPointMake(floorf(CGRectGetMidX(titleFrame)), floorf(CGRectGetHeight(container.bounds)-CGRectGetMidY(titleFrame)));
             } else {
                 backgroundWidth = background.image.size.width;
                 backgroundHeight = background.image.size.height;
                 background.center = CGPointMake(floorf(CGRectGetMidX(container.bounds)), floorf(CGRectGetMidY(container.bounds)));
-                background.transform = CGAffineTransformMakeRotation(M_PI);
             }
+            background.transform = CGAffineTransformMakeRotation(M_PI);
             background.bounds = CGRectIntegral(CGRectMake(0, 0, backgroundWidth, backgroundHeight));
             contents.bounds = container.bounds;
             contents.center = CGPointMake(floorf(CGRectGetMidX(container.bounds)), floorf(CGRectGetMidY(container.bounds)));
