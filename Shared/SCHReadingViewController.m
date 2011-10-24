@@ -340,7 +340,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
             description = NSLocalizedString(@"An unexpected error occured (XPS checkout failed). Please try again.", @"XPS Checkout failed error message from ReadingViewController");
             break;
         case kSCHReadingViewDecryptionUnavailableError:
-            description = NSLocalizedString(@"It has not been possible to acquire a DRM license for this book. Please make sure this device is authorized and connected to the internet and try again.", @"Decryption not available error message from ReadingViewController");
+            description = NSLocalizedString(@"It has not been possible to acquire a DRM license for this eBook. Please make sure this device is authorized and connected to the internet and try again.", @"Decryption not available error message from ReadingViewController");
             break;
         case kSCHReadingViewUnspecifiedError:
         default:
@@ -616,6 +616,8 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     [self updateNotesCounter];
     
     [self setDictionarySelectionMode];
+
+    [self.storyInteractionButton setIsYounger:self.youngerMode];
     [self setupStoryInteractionButtonForCurrentPagesAnimated:NO];
     
     [self save];
@@ -1330,30 +1332,13 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
             animated = NO;
         } // else Interactions while not reading. Showing button with animation
         
-        SCHReadingStoryInteractionButtonFillLevel fillLevel;
-        
+        float fillLevel;
         if (interactionsFinished) {
-            fillLevel = kSCHReadingStoryInteractionButtonFillLevelFull;
-        } else if (questionCount == 3) {
-            
-            switch (interactionsDone) {
-                case 1:
-                    fillLevel = kSCHReadingStoryInteractionButtonFillLevelOneThird;
-                    break;
-                case 2:
-                    fillLevel = kSCHReadingStoryInteractionButtonFillLevelTwoThirds;
-                    break;
-                case 3:
-                    fillLevel = kSCHReadingStoryInteractionButtonFillLevelFull;
-                    break;
-                default:
-                    fillLevel = kSCHReadingStoryInteractionButtonFillLevelEmpty;
-                    break;
-            }
+            fillLevel = 1.0f;
         } else {
-            fillLevel = kSCHReadingStoryInteractionButtonFillLevelEmpty;                
+            fillLevel = (float)interactionsDone / questionCount;
         }
-                
+
         [self setStoryInteractionButtonVisible:YES animated:animated withSound:playAppearanceSound completion:^(BOOL finished){
             
             if (self.storyInteractionButton.fillLevel != fillLevel) {
@@ -1372,7 +1357,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
                 }
             }
             
-            [self.storyInteractionButton setFillLevel:fillLevel forYounger:self.youngerMode animated:animated];
+            [self.storyInteractionButton setFillLevel:fillLevel animated:animated];
             
             CGRect buttonFrame = self.storyInteractionButtonView.frame;
             buttonFrame.size = [self.storyInteractionButton imageForState:UIControlStateNormal].size;

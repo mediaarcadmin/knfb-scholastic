@@ -165,7 +165,8 @@
 
 - (void)playAgainButtonTapped:(id)sender
 {
-    [self playDefaultButtonAudio];
+    [self cancelQueuedAudioExecutingSynchronizedBlocksImmediately];
+    [self enqueueAudioWithPath:@"sfx_siopen_y.mp3" fromBundle:YES];
     [self presentNextView];
 }
 

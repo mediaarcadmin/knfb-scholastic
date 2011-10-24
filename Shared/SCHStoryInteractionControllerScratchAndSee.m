@@ -11,8 +11,8 @@
 #import "SCHBookStoryInteractions.h"
 #import "SCHStoryInteractionControllerDelegate.h"
 
-static const NSInteger kFirstScratchPointTarget = 180;
-static const NSInteger kSecondScratchPointTarget = 270;
+static const NSInteger kFirstScratchPointTarget = 60;
+static const NSInteger kSecondScratchPointTarget = 100;
 
 enum ScratchState {
     kScratchStateFirstScratch,

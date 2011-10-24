@@ -378,7 +378,7 @@
                                         [NSArray arrayWithObjects:bookShelfViewController, readingViewController, nil]];
             [self.navigationController setViewControllers:(NSArray *)viewControllers animated:animated];
         } else {
-            UIAlertView *errorAlert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"This Book Could Not Be Opened", @"Could not open book") 
+            UIAlertView *errorAlert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"This eBook Could Not Be Opened", @"Could not open eBook") 
                                                                  message:[error localizedDescription]
                                                                 delegate:nil 
                                                        cancelButtonTitle:NSLocalizedString(@"OK", @"OK")

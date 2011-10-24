@@ -139,7 +139,7 @@
                   }];
             
             if (questionsCompleted) {
-                [self enqueueAudioWithPath:[(SCHStoryInteractionStartingLetter *)self.storyInteraction audioPathForYouFoundThemAll]
+                [self enqueueAudioWithPath:[self audioPathForYouFoundThemAll]
                                 fromBundle:NO
                                 startDelay:0
                     synchronizedStartBlock:nil

@@ -171,7 +171,7 @@ ErrorExit:
         return NSLocalizedString(@"You are at your limit of five registered devices.  You must deregister another device before you can register this one.",@"Device limit message.");
 	}
 	else if (result==DRM_E_LICEVAL_LICENSE_REVOKED) { 
-		return NSLocalizedString(@"The license for one your books has been revoked.",@"License revocation message.");
+		return NSLocalizedString(@"The license for one your eBooks has been revoked.",@"License revocation message.");
 	}
 	else if (result==DRM_E_CERTIFICATE_REVOKED) {
 		return NSLocalizedString(@"A certificate on your device has been revoked.",@"Certificate revocation message.");
@@ -180,10 +180,10 @@ ErrorExit:
 		return NSLocalizedString(@"Your device certificate has been revoked.",@"Device certificate revocation message.");
 	}
 	else if (result==DRM_E_LICENSEEXPIRED) {
-		return NSLocalizedString(@"The license for this book has expired.",@"Expired license message.");
+		return NSLocalizedString(@"The license for this eBook has expired.",@"Expired license message.");
 	}
 	else if (result==DRM_E_LICENSENOTFOUND) {
-		return NSLocalizedString(@"This book is not licensed.",@"Missing license message.");
+		return NSLocalizedString(@"This eBook is not licensed.",@"Missing license message.");
 	}
     else if (result==DRM_E_XMLNOTFOUND) {
         return [self getTagValue:self.serverResponse xmlTag:@"Message"];
