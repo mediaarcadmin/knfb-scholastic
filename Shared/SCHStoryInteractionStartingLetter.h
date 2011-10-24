@@ -44,7 +44,4 @@
 // XPS-relative path for 'doesnt start with'
 - (NSString *)audioPathForDoesntStartWith;
 
-// XPS-relative path for 'you found them all'
-- (NSString *)audioPathForYouFoundThemAll;
-
 @end

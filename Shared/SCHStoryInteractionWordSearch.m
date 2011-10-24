@@ -82,11 +82,6 @@
     return [KNFBXPSStoryInteractionsDirectory stringByAppendingPathComponent:@"gen_tryagain.mp3"];
 }
 
-- (NSString *)audioPathForYouFoundThemAll
-{
-    return [KNFBXPSStoryInteractionsDirectory stringByAppendingPathComponent:@"gen_gotthemall.mp3"];
-}
-
 - (NSString *)dragYourFingerAudioPath
 {
     return @"Interaction1_Relaxed.mp3";

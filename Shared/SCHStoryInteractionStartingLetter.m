@@ -81,9 +81,5 @@
     return [KNFBXPSStoryInteractionsDirectory stringByAppendingPathComponent:@"gen_doesntstartwith.mp3"];
 }
 
-- (NSString *)audioPathForYouFoundThemAll
-{
-    return [KNFBXPSStoryInteractionsDirectory stringByAppendingPathComponent:@"gen_gotthemall.mp3"];
-}
 
 @end

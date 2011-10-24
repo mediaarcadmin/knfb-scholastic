@@ -152,6 +152,9 @@ typedef enum
 // get an image from the XPS provider
 - (UIImage *)imageAtPath:(NSString *)path;
 
+// audio path for "you found them all" - this appears to vary per XPS
+- (NSString *)audioPathForYouFoundThemAll;
+
 // set the title for the story interaction
 - (void)setTitle:(NSString *)title;
 

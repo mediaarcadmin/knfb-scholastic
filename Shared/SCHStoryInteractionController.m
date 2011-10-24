@@ -751,6 +751,18 @@ static Class controllerClassForStoryInteraction(SCHStoryInteraction *storyIntera
     return image;
 }
 
+- (NSString *)audioPathForYouFoundThemAll
+{
+    NSArray *filenames = [NSArray arrayWithObjects:@"gen_gotthemall.mp3", @"gen_gotthemal.mp3", nil];
+    for (NSString *filename in filenames) {
+        NSString *path = [KNFBXPSStoryInteractionsDirectory stringByAppendingPathComponent:filename];
+        if ([self.xpsProvider componentExistsAtPath:path]) {
+            return path;
+        }
+    }
+    return nil;
+}
+
 #pragma mark - Story Interaction accessors
 
 - (void)setTitle:(NSString *)title
