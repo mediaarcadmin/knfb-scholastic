@@ -277,27 +277,22 @@ enum {
     unichar letter = sender.letter;    
     self.controllerState = SCHStoryInteractionControllerStateInteractionReadingAnswerWithPause;
     
-    BOOL correct = [self checkForLetter:letter];
-    if (correct) {
+    if ([self checkForLetter:letter]) {
         [sender setCorrectHighlight];
+        [self enqueueAudioWithPath:[self.storyInteraction storyInteractionCorrectAnswerSoundFilename] fromBundle:YES];
+        [self revealLetterInAnswer:letter];
+        [self movePenguinHigher];
     } else {
         [sender setIncorrectHighlight];
-    }
-    
-    NSString *audioPath = (correct ? [self.storyInteraction storyInteractionCorrectAnswerSoundFilename]
-                           : [self.storyInteraction storyInteractionWrongAnswerSoundFilename]);
-    [self enqueueAudioWithPath:audioPath
-                    fromBundle:YES
-                    startDelay:0
-        synchronizedStartBlock:nil
-          synchronizedEndBlock:^{
-              [self revealLetterInAnswer:letter];
-              if (correct) {
-                  [self movePenguinHigher];
-              } else {
+        [self enqueueAudioWithPath:[self.storyInteraction storyInteractionWrongAnswerSoundFilename]
+                        fromBundle:YES
+                        startDelay:0
+            synchronizedStartBlock:nil
+              synchronizedEndBlock:^{
+                  [self revealLetterInAnswer:letter];
                   [self popBalloon];
-              }
-          }];
+              }];
+    }
 
     [sender setUserInteractionEnabled:NO];
 }
