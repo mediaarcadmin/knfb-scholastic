@@ -12,7 +12,7 @@
 
 - (NSString *)title
 {
-    return @"Sequencing";
+    return @"Put the story in order of what happened first, next, and last.";
 }
 
 -(NSInteger)numberOfImages
