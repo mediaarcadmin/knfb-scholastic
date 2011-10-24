@@ -25,6 +25,7 @@
 #import "SCHAppStateManager.h"
 #import "SCHProfileItem.h"
 #import "SCHAppContentProfileItem.h"
+#import "SCHBookIdentifier.h"
 
 // Constants
 NSString * const SCHAnnotationSyncComponentDidCompleteNotification = @"SCHAnnotationSyncComponentDidCompleteNotification";
@@ -457,8 +458,12 @@ NSString * const SCHAnnotationSyncComponentCompletedProfileIDs = @"SCHAnnotation
 {
 	NSMutableArray *creationPool = [NSMutableArray array];
 	
-	webAnnotationsContentList = [webAnnotationsContentList sortedArrayUsingDescriptors:[NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:kSCHLibreAccessWebServiceContentIdentifier ascending:YES]]];		
-	localAnnotationsContentList = [localAnnotationsContentList sortedArrayUsingDescriptors:[NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:kSCHLibreAccessWebServiceContentIdentifier ascending:YES]]];
+	webAnnotationsContentList = [webAnnotationsContentList sortedArrayUsingDescriptors:[NSArray arrayWithObjects:[NSSortDescriptor sortDescriptorWithKey:kSCHLibreAccessWebServiceContentIdentifier ascending:YES],
+                                                                                        [NSSortDescriptor sortDescriptorWithKey:kSCHLibreAccessWebServiceDRMQualifier ascending:YES],                                                                             
+                                                                                        nil]];		
+	localAnnotationsContentList = [localAnnotationsContentList sortedArrayUsingDescriptors:[NSArray arrayWithObjects:[NSSortDescriptor sortDescriptorWithKey:kSCHLibreAccessWebServiceContentIdentifier ascending:YES],
+                                                                                            [NSSortDescriptor sortDescriptorWithKey:kSCHLibreAccessWebServiceDRMQualifier ascending:YES],                                                                             
+                                                                                            nil]];
     
 	NSEnumerator *webEnumerator = [webAnnotationsContentList objectEnumerator];			  
 	NSEnumerator *localEnumerator = [localAnnotationsContentList objectEnumerator];			  			  
@@ -478,11 +483,11 @@ NSString * const SCHAnnotationSyncComponentCompletedProfileIDs = @"SCHAnnotation
 			} 
 			break;			
 		}
-		
-		id webItemID = [webItem valueForKey:kSCHLibreAccessWebServiceContentIdentifier];
-		id localItemID = [localItem valueForKey:kSCHLibreAccessWebServiceContentIdentifier];
-		
-		switch ([webItemID compare:localItemID]) {
+				
+        SCHBookIdentifier *webBookIdentifier = [[SCHBookIdentifier alloc] initWithObject:webItem];
+        SCHBookIdentifier *localBookIdentifier = [[SCHBookIdentifier alloc] initWithObject:localItem];
+        
+		switch ([webBookIdentifier compare:localBookIdentifier]) {
 			case NSOrderedSame:
 				[self syncAnnotationsContentItem:webItem withAnnotationsContentItem:localItem];
                 [self backgroundSave:YES];
@@ -497,7 +502,10 @@ NSString * const SCHAnnotationSyncComponentCompletedProfileIDs = @"SCHAnnotation
 				localItem = nil;
 				break;			
 		}		
-		
+        
+		[webBookIdentifier release], webBookIdentifier = nil;
+		[localBookIdentifier release], localBookIdentifier = nil;
+        
 		if (webItem == nil) {
 			webItem = [webEnumerator nextObject];
 		}

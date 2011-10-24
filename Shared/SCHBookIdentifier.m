@@ -40,8 +40,8 @@ NSString * const kSCHBookIdentifierBookIdentifier = @"BookIdentifier";
     SCHBookIdentifier *ret = nil;
     
     if (object != nil) {
-        NSString *aIsbn = [object objectForKey:kSCHLibreAccessWebServiceContentIdentifier];
-        NSNumber *aDRMQualifier = [object objectForKey:kSCHLibreAccessWebServiceDRMQualifier];
+        NSString *aIsbn = [object valueForKey:kSCHLibreAccessWebServiceContentIdentifier];
+        NSNumber *aDRMQualifier = [object valueForKey:kSCHLibreAccessWebServiceDRMQualifier];
         
         if (aIsbn != nil && aDRMQualifier != nil) {
             ret = [[SCHBookIdentifier alloc] initWithISBN:aIsbn DRMQualifier:aDRMQualifier];
@@ -93,6 +93,17 @@ NSString * const kSCHBookIdentifierBookIdentifier = @"BookIdentifier";
     }
     SCHBookIdentifier *other = (SCHBookIdentifier *)object;
     return ([self.DRMQualifier isEqual:other.DRMQualifier] && [self.isbn isEqual:other.isbn]);
+}
+
+- (NSComparisonResult)compare:(SCHBookIdentifier *)aBookIdentifier
+{
+    NSComparisonResult ret = [self.isbn compare:aBookIdentifier.isbn];
+    
+    if (ret == NSOrderedSame) {
+        ret = [self.DRMQualifier compare:aBookIdentifier.DRMQualifier];
+    }
+    
+    return ret;
 }
 
 - (NSString *)description

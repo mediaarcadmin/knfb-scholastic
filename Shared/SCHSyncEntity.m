@@ -22,6 +22,9 @@ NSString * const SCHSyncEntityLastModified = @"LastModified";
 - (NSNumber *)primitiveState;
 - (void)setPrimitiveState:(NSNumber *)newState;
 
+- (BOOL)shouldResetStateFromSync;
+- (BOOL)shouldSetAsModified;
+
 @end
 
 @implementation SCHSyncEntity 
@@ -40,35 +43,58 @@ NSString * const SCHSyncEntityLastModified = @"LastModified";
 - (void)willSave
 {
 	[super willSave];
-
-	if ([self.State isEqualToNumber:[NSNumber numberWithStatus:kSCHStatusSyncUpdate]] == YES) {
-        // sync update modifications, don't record the change        
+    
+	if ([self shouldResetStateFromSync] == YES) {
+        // the sync has made changes reset the state for use
         [self setPrimitiveState:[NSNumber numberWithStatus:kSCHStatusUnmodified]];
-	} else if (self.isInserted == NO && 
-               [self.State isEqualToNumber:[NSNumber numberWithStatus:kSCHStatusDeleted]] == NO) {
-        
-        // Don't set the lastModified for any relationships
-        // Our sync model assumes that relationships don't trigger the lastModified date being set
-        NSArray *dictionaryNames = [[[self entity] relationshipsByName] allKeys];
-        NSArray *changedValues = [[self changedValues] allKeys];
-        __block BOOL setLastModified = NO;
-        
-        [changedValues enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
-            if (![dictionaryNames containsObject:obj]) {
-                setLastModified = YES;
-                *stop = YES;
-            }
-        }];
-        
-        if (setLastModified) {
-            // we made modifications, record the change
-            [self setPrimitiveLastModified:[NSDate date]];
-            // only change the state if we arnt already doing so
-            if ([[self changedValues] objectForKey:@"State"] == nil) {
-                [self setPrimitiveState:[NSNumber numberWithStatus:kSCHStatusModified]];	
-            }
+	} else if ([self shouldSetAsModified] == YES) {
+        // record user changes were made by setting lastModified and State
+        [self setPrimitiveLastModified:[NSDate date]];
+        // never change the state from CREATED as the sync would never inform
+        // the server to create it and do not stamp on an existing State change
+        if ([self.State isEqualToNumber:[NSNumber numberWithStatus:kSCHStatusCreated]] == NO &&
+            [[self changedValues] objectForKey:@"State"] == nil) {
+            [self setPrimitiveState:[NSNumber numberWithStatus:kSCHStatusModified]];	
+        }        
+    }
+}
+
+- (BOOL)shouldResetStateFromSync
+{
+    return [self.State isEqualToNumber:[NSNumber numberWithStatus:kSCHStatusSyncUpdate]] == YES;
+}
+
+- (BOOL)shouldSetAsModified
+{
+    BOOL ret = YES;
+    
+    if (self.isInserted == YES) {
+        // It's just been created so no need to set to modified
+        ret = NO;
+    } else if ([self.State isEqualToNumber:[NSNumber numberWithStatus:kSCHStatusDeleted]] == YES) {
+        // It's being deleted so no need to set to modified
+        ret = NO;
+    } else {
+        // If there are only relationship changes no need to set to modified
+        // If we did we'd signal unnecessary syncing
+        if ([[self changedValues] count] > 0) {
+            NSArray *changedValues = [[self changedValues] allKeys];
+            NSArray *dictionaryNames = [[[self entity] relationshipsByName] allKeys];    
+            __block BOOL setLastModified = NO;
+            [changedValues enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+                if (![dictionaryNames containsObject:obj]) {
+                    setLastModified = YES;
+                    *stop = YES;
+                }
+            }];
+            ret = setLastModified;   
+        } else {
+            // If a value was changed but to the same value it does not appear in changedValues
+            ret = YES;
         }
     }
+    
+    return ret;
 }
 
 - (void)syncDelete
@@ -110,7 +136,7 @@ NSString * const SCHSyncEntityLastModified = @"LastModified";
 			break;
 	}
 	
-	return(ret);
+	return ret;
 }
 
 @end

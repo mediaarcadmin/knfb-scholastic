@@ -258,19 +258,10 @@ NSString * const SCHBookshelfSyncComponentDidFailNotification = @"SCHBookshelfSy
 			break;			
 		}
 		
-		id webItemID = [webItem valueForKey:kSCHLibreAccessWebServiceContentIdentifier];
-		id localItemID = [localItem valueForKey:kSCHLibreAccessWebServiceContentIdentifier];
-		
-        // secondary compare for multiple books with differing DRM
-        NSComparisonResult compareContentMetadataItems = [webItemID compare:localItemID];
-        if (compareContentMetadataItems == NSOrderedSame) {
-            id webItemDRM = [webItem valueForKey:kSCHLibreAccessWebServiceDRMQualifier];
-            id localItemDRM = [localItem valueForKey:kSCHLibreAccessWebServiceDRMQualifier];
-            
-            compareContentMetadataItems = [webItemDRM compare:localItemDRM];            
-        }
+        SCHBookIdentifier *webBookIdentifier = [[SCHBookIdentifier alloc] initWithObject:webItem];
+        SCHBookIdentifier *localBookIdentifier = [[SCHBookIdentifier alloc] initWithObject:localItem];
         
-		switch (compareContentMetadataItems) {
+		switch ([webBookIdentifier compare:localBookIdentifier]) {
 			case NSOrderedSame:
 				[self syncContentMetadataItem:webItem withContentMetadataItem:localItem];
 				webItem = nil;
@@ -286,6 +277,9 @@ NSString * const SCHBookshelfSyncComponentDidFailNotification = @"SCHBookshelfSy
 				break;			
 		}		
 		
+        [webBookIdentifier release], webBookIdentifier = nil;
+		[localBookIdentifier release], localBookIdentifier = nil;
+
 		if (webItem == nil) {
 			webItem = [webEnumerator nextObject];
 		}
