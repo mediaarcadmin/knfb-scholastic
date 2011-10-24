@@ -242,18 +242,18 @@
 		28D2AA0E13D6E8F700BEB359 /* SCHDownloadDictionaryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 28D2AA0D13D6E8F700BEB359 /* SCHDownloadDictionaryViewController.m */; };
 		28D67DEB13D9B28700F715CD /* SCHRemoveDictionaryViewController~iphone.xib in Resources */ = {isa = PBXBuildFile; fileRef = 28D67DEA13D9B28700F715CD /* SCHRemoveDictionaryViewController~iphone.xib */; };
 		28D67DF013D9B30500F715CD /* SCHRemoveDictionaryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 28D67DEE13D9B30500F715CD /* SCHRemoveDictionaryViewController.m */; };
-		28D6D626145572AE0094F144 /* young-lightning-bolt-fill@2x~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = 28D6D623145572AE0094F144 /* young-lightning-bolt-fill@2x~iphone.png */; };
-		28D6D627145572AE0094F144 /* young-lightning-bolt-fill@2x~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = 28D6D623145572AE0094F144 /* young-lightning-bolt-fill@2x~iphone.png */; };
-		28D6D628145572AE0094F144 /* young-lightning-bolt-fill~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = 28D6D624145572AE0094F144 /* young-lightning-bolt-fill~ipad.png */; };
-		28D6D629145572AE0094F144 /* young-lightning-bolt-fill~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = 28D6D624145572AE0094F144 /* young-lightning-bolt-fill~ipad.png */; };
-		28D6D62A145572AE0094F144 /* young-lightning-bolt-fill~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = 28D6D625145572AE0094F144 /* young-lightning-bolt-fill~iphone.png */; };
-		28D6D62B145572AE0094F144 /* young-lightning-bolt-fill~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = 28D6D625145572AE0094F144 /* young-lightning-bolt-fill~iphone.png */; };
-		28D6D62F145575AB0094F144 /* old-lightning-bolt-fill@2x~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = 28D6D62C145575AB0094F144 /* old-lightning-bolt-fill@2x~iphone.png */; };
-		28D6D630145575AB0094F144 /* old-lightning-bolt-fill@2x~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = 28D6D62C145575AB0094F144 /* old-lightning-bolt-fill@2x~iphone.png */; };
-		28D6D631145575AB0094F144 /* old-lightning-bolt-fill~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = 28D6D62D145575AB0094F144 /* old-lightning-bolt-fill~ipad.png */; };
-		28D6D632145575AB0094F144 /* old-lightning-bolt-fill~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = 28D6D62D145575AB0094F144 /* old-lightning-bolt-fill~ipad.png */; };
-		28D6D633145575AB0094F144 /* old-lightning-bolt-fill~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = 28D6D62E145575AB0094F144 /* old-lightning-bolt-fill~iphone.png */; };
-		28D6D634145575AB0094F144 /* old-lightning-bolt-fill~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = 28D6D62E145575AB0094F144 /* old-lightning-bolt-fill~iphone.png */; };
+		28D6D638145579CC0094F144 /* old-lightning-bolt-3@2x~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = 28D6D635145579CC0094F144 /* old-lightning-bolt-3@2x~iphone.png */; };
+		28D6D639145579CC0094F144 /* old-lightning-bolt-3@2x~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = 28D6D635145579CC0094F144 /* old-lightning-bolt-3@2x~iphone.png */; };
+		28D6D63A145579CC0094F144 /* old-lightning-bolt-3~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = 28D6D636145579CC0094F144 /* old-lightning-bolt-3~ipad.png */; };
+		28D6D63B145579CC0094F144 /* old-lightning-bolt-3~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = 28D6D636145579CC0094F144 /* old-lightning-bolt-3~ipad.png */; };
+		28D6D63C145579CC0094F144 /* old-lightning-bolt-3~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = 28D6D637145579CC0094F144 /* old-lightning-bolt-3~iphone.png */; };
+		28D6D63D145579CC0094F144 /* old-lightning-bolt-3~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = 28D6D637145579CC0094F144 /* old-lightning-bolt-3~iphone.png */; };
+		28D6D641145579E60094F144 /* young-lightning-bolt-3@2x~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = 28D6D63E145579E60094F144 /* young-lightning-bolt-3@2x~iphone.png */; };
+		28D6D642145579E60094F144 /* young-lightning-bolt-3@2x~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = 28D6D63E145579E60094F144 /* young-lightning-bolt-3@2x~iphone.png */; };
+		28D6D643145579E60094F144 /* young-lightning-bolt-3~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = 28D6D63F145579E60094F144 /* young-lightning-bolt-3~ipad.png */; };
+		28D6D644145579E60094F144 /* young-lightning-bolt-3~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = 28D6D63F145579E60094F144 /* young-lightning-bolt-3~ipad.png */; };
+		28D6D645145579E60094F144 /* young-lightning-bolt-3~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = 28D6D640145579E60094F144 /* young-lightning-bolt-3~iphone.png */; };
+		28D6D646145579E60094F144 /* young-lightning-bolt-3~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = 28D6D640145579E60094F144 /* young-lightning-bolt-3~iphone.png */; };
 		28D81EE713E8413B00A2B25F /* SCHStoryInteractionPictureStarter.m in Sources */ = {isa = PBXBuildFile; fileRef = 28D81EE613E8413B00A2B25F /* SCHStoryInteractionPictureStarter.m */; };
 		28D81EEC13E846CE00A2B25F /* SCHStoryInteractionCardCollection.m in Sources */ = {isa = PBXBuildFile; fileRef = 28D81EEB13E846CD00A2B25F /* SCHStoryInteractionCardCollection.m */; };
 		28D8F15813F9896000A9EAC3 /* SCHStoryInteractionJigsaw_iPhone.xib in Resources */ = {isa = PBXBuildFile; fileRef = 286000F813F9561D005C6AEB /* SCHStoryInteractionJigsaw_iPhone.xib */; };
@@ -2442,12 +2442,12 @@
 		28D67DEA13D9B28700F715CD /* SCHRemoveDictionaryViewController~iphone.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "SCHRemoveDictionaryViewController~iphone.xib"; sourceTree = "<group>"; };
 		28D67DED13D9B30500F715CD /* SCHRemoveDictionaryViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHRemoveDictionaryViewController.h; path = Shared/SCHRemoveDictionaryViewController.h; sourceTree = "<group>"; };
 		28D67DEE13D9B30500F715CD /* SCHRemoveDictionaryViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHRemoveDictionaryViewController.m; path = Shared/SCHRemoveDictionaryViewController.m; sourceTree = "<group>"; };
-		28D6D623145572AE0094F144 /* young-lightning-bolt-fill@2x~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "young-lightning-bolt-fill@2x~iphone.png"; sourceTree = "<group>"; };
-		28D6D624145572AE0094F144 /* young-lightning-bolt-fill~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "young-lightning-bolt-fill~ipad.png"; sourceTree = "<group>"; };
-		28D6D625145572AE0094F144 /* young-lightning-bolt-fill~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "young-lightning-bolt-fill~iphone.png"; sourceTree = "<group>"; };
-		28D6D62C145575AB0094F144 /* old-lightning-bolt-fill@2x~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "old-lightning-bolt-fill@2x~iphone.png"; sourceTree = "<group>"; };
-		28D6D62D145575AB0094F144 /* old-lightning-bolt-fill~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "old-lightning-bolt-fill~ipad.png"; sourceTree = "<group>"; };
-		28D6D62E145575AB0094F144 /* old-lightning-bolt-fill~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "old-lightning-bolt-fill~iphone.png"; sourceTree = "<group>"; };
+		28D6D635145579CC0094F144 /* old-lightning-bolt-3@2x~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "old-lightning-bolt-3@2x~iphone.png"; sourceTree = "<group>"; };
+		28D6D636145579CC0094F144 /* old-lightning-bolt-3~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "old-lightning-bolt-3~ipad.png"; sourceTree = "<group>"; };
+		28D6D637145579CC0094F144 /* old-lightning-bolt-3~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "old-lightning-bolt-3~iphone.png"; sourceTree = "<group>"; };
+		28D6D63E145579E60094F144 /* young-lightning-bolt-3@2x~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "young-lightning-bolt-3@2x~iphone.png"; sourceTree = "<group>"; };
+		28D6D63F145579E60094F144 /* young-lightning-bolt-3~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "young-lightning-bolt-3~ipad.png"; sourceTree = "<group>"; };
+		28D6D640145579E60094F144 /* young-lightning-bolt-3~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "young-lightning-bolt-3~iphone.png"; sourceTree = "<group>"; };
 		28D81EE513E8413B00A2B25F /* SCHStoryInteractionPictureStarter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCHStoryInteractionPictureStarter.h; sourceTree = "<group>"; };
 		28D81EE613E8413B00A2B25F /* SCHStoryInteractionPictureStarter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCHStoryInteractionPictureStarter.m; sourceTree = "<group>"; };
 		28D81EEA13E846CD00A2B25F /* SCHStoryInteractionCardCollection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCHStoryInteractionCardCollection.h; sourceTree = "<group>"; };
@@ -4160,15 +4160,15 @@
 				C9AC857713AD08B6000ECDAE /* young-lightning-bolt-0~ipad.png */,
 				C9AC857E13AD08BF000ECDAE /* young-lightning-bolt-0~iphone.png */,
 				C9AC857F13AD08C4000ECDAE /* young-lightning-bolt-0@2x~iphone.png */,
-				28D6D623145572AE0094F144 /* young-lightning-bolt-fill@2x~iphone.png */,
-				28D6D624145572AE0094F144 /* young-lightning-bolt-fill~ipad.png */,
-				28D6D625145572AE0094F144 /* young-lightning-bolt-fill~iphone.png */,
+				28D6D63E145579E60094F144 /* young-lightning-bolt-3@2x~iphone.png */,
+				28D6D63F145579E60094F144 /* young-lightning-bolt-3~ipad.png */,
+				28D6D640145579E60094F144 /* young-lightning-bolt-3~iphone.png */,
 				C9AC854713ACE175000ECDAE /* old-lightning-bolt-0~ipad.png */,
 				C9AC856213ACE76F000ECDAE /* old-lightning-bolt-0@2x~iphone.png */,
 				C9AC854A13ACE6CA000ECDAE /* old-lightning-bolt-0~iphone.png */,
-				28D6D62C145575AB0094F144 /* old-lightning-bolt-fill@2x~iphone.png */,
-				28D6D62D145575AB0094F144 /* old-lightning-bolt-fill~ipad.png */,
-				28D6D62E145575AB0094F144 /* old-lightning-bolt-fill~iphone.png */,
+				28D6D635145579CC0094F144 /* old-lightning-bolt-3@2x~iphone.png */,
+				28D6D636145579CC0094F144 /* old-lightning-bolt-3~ipad.png */,
+				28D6D637145579CC0094F144 /* old-lightning-bolt-3~iphone.png */,
 				C9B3765313BC929F00992A6E /* storyinteraction-video-play~iphone.png */,
 				C9B3765413BC929F00992A6E /* storyinteraction-video-play@2x~iphone.png */,
 				C9B3765513BC929F00992A6E /* storyinteraction-video-pause~iphone.png */,
@@ -7064,12 +7064,12 @@
 				C92797AC1410C75A0091B8B5 /* Interaction1_Relaxed.mp3 in Resources */,
 				528465F2144DB64D009DBADD /* SCHAccountValidationViewController~iphone.xib in Resources */,
 				528465F5144DB679009DBADD /* SCHAccountValidationViewController~ipad.xib in Resources */,
-				28D6D626145572AE0094F144 /* young-lightning-bolt-fill@2x~iphone.png in Resources */,
-				28D6D628145572AE0094F144 /* young-lightning-bolt-fill~ipad.png in Resources */,
-				28D6D62A145572AE0094F144 /* young-lightning-bolt-fill~iphone.png in Resources */,
-				28D6D62F145575AB0094F144 /* old-lightning-bolt-fill@2x~iphone.png in Resources */,
-				28D6D631145575AB0094F144 /* old-lightning-bolt-fill~ipad.png in Resources */,
-				28D6D633145575AB0094F144 /* old-lightning-bolt-fill~iphone.png in Resources */,
+				28D6D638145579CC0094F144 /* old-lightning-bolt-3@2x~iphone.png in Resources */,
+				28D6D63A145579CC0094F144 /* old-lightning-bolt-3~ipad.png in Resources */,
+				28D6D63C145579CC0094F144 /* old-lightning-bolt-3~iphone.png in Resources */,
+				28D6D641145579E60094F144 /* young-lightning-bolt-3@2x~iphone.png in Resources */,
+				28D6D643145579E60094F144 /* young-lightning-bolt-3~ipad.png in Resources */,
+				28D6D645145579E60094F144 /* young-lightning-bolt-3~iphone.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -7743,12 +7743,12 @@
 				C92797AD1410C75A0091B8B5 /* Interaction1_Relaxed.mp3 in Resources */,
 				528465F3144DB64D009DBADD /* SCHAccountValidationViewController~iphone.xib in Resources */,
 				528465F6144DB679009DBADD /* SCHAccountValidationViewController~ipad.xib in Resources */,
-				28D6D627145572AE0094F144 /* young-lightning-bolt-fill@2x~iphone.png in Resources */,
-				28D6D629145572AE0094F144 /* young-lightning-bolt-fill~ipad.png in Resources */,
-				28D6D62B145572AE0094F144 /* young-lightning-bolt-fill~iphone.png in Resources */,
-				28D6D630145575AB0094F144 /* old-lightning-bolt-fill@2x~iphone.png in Resources */,
-				28D6D632145575AB0094F144 /* old-lightning-bolt-fill~ipad.png in Resources */,
-				28D6D634145575AB0094F144 /* old-lightning-bolt-fill~iphone.png in Resources */,
+				28D6D639145579CC0094F144 /* old-lightning-bolt-3@2x~iphone.png in Resources */,
+				28D6D63B145579CC0094F144 /* old-lightning-bolt-3~ipad.png in Resources */,
+				28D6D63D145579CC0094F144 /* old-lightning-bolt-3~iphone.png in Resources */,
+				28D6D642145579E60094F144 /* young-lightning-bolt-3@2x~iphone.png in Resources */,
+				28D6D644145579E60094F144 /* young-lightning-bolt-3~ipad.png in Resources */,
+				28D6D646145579E60094F144 /* young-lightning-bolt-3~iphone.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

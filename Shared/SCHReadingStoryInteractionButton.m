@@ -9,12 +9,12 @@
 #import "SCHReadingStoryInteractionButton.h"
 #import "SCHAnimationDelegate.h"
 
-@interface FillLayer : CALayer
+@interface SCHReadingStoryInteractionButtonFillLayer : CALayer
 @property (nonatomic, assign) float fillLevel;
 @property (nonatomic, assign) CGImageRef fillImage;
 @end
 
-@implementation FillLayer
+@implementation SCHReadingStoryInteractionButtonFillLayer
 
 @synthesize fillLevel;
 @synthesize fillImage;
@@ -59,7 +59,7 @@
 @end
 
 @interface SCHReadingStoryInteractionButton ()
-@property (nonatomic, retain) FillLayer *fillLayer;
+@property (nonatomic, retain) SCHReadingStoryInteractionButtonFillLayer *fillLayer;
 @end
 
 @implementation SCHReadingStoryInteractionButton
@@ -81,7 +81,7 @@
     UIImage *backgroundImage = [UIImage imageNamed:[NSString stringWithFormat:@"%@-lightning-bolt-0", imagePrefix]];
     [self setImage:backgroundImage forState:UIControlStateNormal];
     
-    UIImage *fillImage = [UIImage imageNamed:[NSString stringWithFormat:@"%@-lightning-bolt-fill", imagePrefix]];
+    UIImage *fillImage = [UIImage imageNamed:[NSString stringWithFormat:@"%@-lightning-bolt-3", imagePrefix]];
     [self.fillLayer setFillImage:[fillImage CGImage]];
     self.fillLayer.bounds = (CGRect){CGPointZero, fillImage.size};
     self.fillLayer.position = CGPointMake(floorf(fillImage.size.width/2), floorf(fillImage.size.height/2));
@@ -105,10 +105,10 @@
     fillLevel = level;
 }
 
-- (FillLayer *)fillLayer
+- (SCHReadingStoryInteractionButtonFillLayer *)fillLayer
 {
     if (fillLayer == nil) {
-        self.fillLayer = [FillLayer layer];
+        self.fillLayer = [SCHReadingStoryInteractionButtonFillLayer layer];
         self.fillLayer.fillLevel = self.fillLevel;
         [self.imageView.layer addSublayer:self.fillLayer];
     }
