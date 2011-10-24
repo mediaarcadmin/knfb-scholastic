@@ -60,9 +60,7 @@
 }
 
 - (void)releaseViewObjects
-{
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
-    
+{    
     [tableView release], tableView = nil;
     [backgroundView release], backgroundView = nil;
     [headerView release], headerView = nil;
@@ -73,6 +71,8 @@
 
 - (void)dealloc 
 {    
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+
     [self releaseViewObjects];
     
     [fetchedResultsController_ release], fetchedResultsController_ = nil;
@@ -88,6 +88,8 @@
 - (void)viewDidLoad 
 {
     [super viewDidLoad];
+    
+    [self.tableView setAlwaysBounceVertical:NO];
     
     [self.updatesBubble setAlpha:0];
     [self.updatesBubble setUserInteractionEnabled:YES];
