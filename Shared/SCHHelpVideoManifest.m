@@ -19,7 +19,7 @@
     self = [super init];
     
     if (self) {
-        self.manifestURLs = [[NSMutableDictionary alloc] init];
+        self.manifestURLs = [[[NSMutableDictionary alloc] init] autorelease];
     }
     
     return self;
