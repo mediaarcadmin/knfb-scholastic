@@ -60,9 +60,7 @@
 }
 
 - (void)releaseViewObjects
-{
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
-    
+{    
     [tableView release], tableView = nil;
     [backgroundView release], backgroundView = nil;
     [headerView release], headerView = nil;
@@ -73,6 +71,8 @@
 
 - (void)dealloc 
 {    
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+
     [self releaseViewObjects];
     
     [fetchedResultsController_ release], fetchedResultsController_ = nil;
@@ -88,6 +88,8 @@
 - (void)viewDidLoad 
 {
     [super viewDidLoad];
+    
+    [self.tableView setAlwaysBounceVertical:NO];
     
     [self.updatesBubble setAlpha:0];
     [self.updatesBubble setUserInteractionEnabled:YES];
@@ -376,7 +378,7 @@
                                         [NSArray arrayWithObjects:bookShelfViewController, readingViewController, nil]];
             [self.navigationController setViewControllers:(NSArray *)viewControllers animated:animated];
         } else {
-            UIAlertView *errorAlert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"This Book Could Not Be Opened", @"Could not open book") 
+            UIAlertView *errorAlert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"This eBook Could Not Be Opened", @"Could not open eBook") 
                                                                  message:[error localizedDescription]
                                                                 delegate:nil 
                                                        cancelButtonTitle:NSLocalizedString(@"OK", @"OK")
