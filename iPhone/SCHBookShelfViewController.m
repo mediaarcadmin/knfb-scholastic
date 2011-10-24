@@ -91,6 +91,7 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 131;
 @synthesize backgroundView;
 @synthesize gridViewNeedsRefreshed;
 @synthesize listViewNeedsRefreshed;
+@synthesize profileSetupDelegate;
 
 #pragma mark - Object lifecycle
 
@@ -112,17 +113,57 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 131;
     [listTableCellNib release], listTableCellNib = nil;
     [gridViewToggleView release], gridViewToggleView = nil;
     [backgroundView release], backgroundView = nil;
+            
+    [[NSNotificationCenter defaultCenter] removeObserver:self
+												 name:SCHBookshelfSyncComponentDidCompleteNotification
+											   object:nil];
     
-	[[NSNotificationCenter defaultCenter] removeObserver:self];
+    [[NSNotificationCenter defaultCenter] removeObserver:self
+												 name:SCHBookshelfSyncComponentDidFailNotification
+											   object:nil];
+    
+    [[NSNotificationCenter defaultCenter] removeObserver:self
+												 name:SCHSyncManagerDidCompleteNotification
+											   object:nil];
+}
+
+- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
+{
+    if ((self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil])) {
+        // Note that this needs to be registered outside viewDidLoad because when a readingViewController is pushed directly on from the profile view controller
+        // The bookshelf view does not actually get loaded
+        // but we want the bookshelfviewcontroller to orchestrate popping back to the root if it's profile is deleted
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(profileDeleted:)
+                                                     name:SCHProfileSyncComponentWillDeleteNotification
+                                                   object:nil];
+        
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(managedObjectContextDidSaveNotification:)
+                                                     name:NSManagedObjectContextDidSaveNotification
+                                                   object:nil];
+    }
+    
+    return self;
 }
 
 - (void)dealloc 
 {    
+    [self releaseViewObjects];
+    
+    [[NSNotificationCenter defaultCenter] removeObserver:self
+                                                    name:SCHProfileSyncComponentWillDeleteNotification
+                                                  object:nil];
+    
+    [[NSNotificationCenter defaultCenter] removeObserver:self
+                                                    name:NSManagedObjectContextDidSaveNotification
+                                                  object:nil];
+    
     [books release], books = nil;
     [profileItem release], profileItem = nil;
     [managedObjectContext release], managedObjectContext = nil;
+    profileSetupDelegate = nil;
     
-    [self releaseViewObjects];   
     [super dealloc];
 }
 
@@ -178,19 +219,6 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 131;
 	self.componentCache = aCache;
 	[aCache release], aCache = nil;
 	
-//    [customNavigationBar setTheme:kSCHThemeManagerNavigationBarImage];
-		
-	[[NSNotificationCenter defaultCenter] addObserver:self
-											 selector:@selector(profileDeleted:)
-												 name:SCHProfileSyncComponentWillDeleteNotification
-											   object:nil];
-	
-	[[NSNotificationCenter defaultCenter] addObserver:self
-											 selector:@selector(managedObjectContextDidSaveNotification:)
-												 name:NSManagedObjectContextDidSaveNotification
-											   object:nil];
-	
-
     [[NSNotificationCenter defaultCenter] addObserver:self
 											 selector:@selector(bookshelfSyncComponentDidComplete:)
 												 name:SCHBookshelfSyncComponentDidCompleteNotification
@@ -270,7 +298,7 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 131;
     if (self.updateShelfOnReturnToShelf == YES) {
         self.updateShelfOnReturnToShelf = NO;
         self.books = [self.profileItem allBookIdentifiers];
-    }
+    }    
 }
 
 - (void)reloadData
@@ -457,23 +485,24 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 131;
     
     for (NSNumber *profileID in profileIDs) {
         if ([profileID isEqualToNumber:self.profileItem.ID] == YES) {
+            
+            if (self.modalViewController != nil) {
+                [self.modalViewController dismissModalViewControllerAnimated:NO];
+            }
+            
             NSString *localizedMessage = [NSString stringWithFormat:
-                                          NSLocalizedString(@"%@ has been removed", nil), [self.profileItem bookshelfName:YES]];            
+                                          NSLocalizedString(@"%@ has been removed", nil), [self.profileItem bookshelfName:YES]];  
             LambdaAlert *alert = [[LambdaAlert alloc]
                                   initWithTitle:NSLocalizedString(@"Bookshelf Removed", @"Bookshelf Removed") 
                                   message:localizedMessage];
-            [alert addButtonWithTitle:NSLocalizedString(@"OK", @"OK") block:^{}];
+            [alert addButtonWithTitle:NSLocalizedString(@"OK", @"OK") block:^{
+                [self.profileSetupDelegate popToAuthenticatedProfileAnimated:YES];
+            }];
+                
+            self.profileItem = nil;
+                
             [alert show];
             [alert release];
-            self.profileItem = nil;
-            if (self.modalViewController != nil) {
-                [self.modalViewController dismissModalViewControllerAnimated:NO];
-            }            
-            // we could be viewing another controller so let's go to the profile view
-            if ([self.navigationController.viewControllers count] > 1) {
-                [self.navigationController popToViewController:[self.navigationController.viewControllers objectAtIndex:1] 
-                                                                animated:NO];   
-            }
             break;
         }
     }
@@ -703,7 +732,7 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 131;
         } else {
             if (error && !([[error domain] isEqualToString:kSCHAppBookErrorDomain] && ([error code] == kSCHAppBookStillBeingProcessedError))) {
                 LambdaAlert *alert = [[LambdaAlert alloc]
-                                      initWithTitle:NSLocalizedString(@"This Book Could Not Be Opened", @"Could not open book")
+                                      initWithTitle:NSLocalizedString(@"This eBook Could Not Be Opened", @"Could not open eBook")
                                       message:[error localizedDescription]];
                 [alert addButtonWithTitle:@"Cancel" block:^{}];
                 [alert addButtonWithTitle:@"Retry" block:^{
@@ -863,7 +892,7 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 131;
         } else {
             if (error && !([[error domain] isEqualToString:kSCHAppBookErrorDomain] && ([error code] == kSCHAppBookStillBeingProcessedError))) {
                 LambdaAlert *alert = [[LambdaAlert alloc]
-                                      initWithTitle:NSLocalizedString(@"This Book Could Not Be Opened", @"Could not open book")
+                                      initWithTitle:NSLocalizedString(@"This eBook Could Not Be Opened", @"Could not open eBook")
                                       message:[error localizedDescription]];
                 [alert addButtonWithTitle:@"Cancel" block:^{}];
                 [alert addButtonWithTitle:@"Retry" block:^{

@@ -116,9 +116,7 @@
 
 - (void)playWinSequenceAndClose
 {
-    self.controllerState = SCHStoryInteractionControllerStateInteractionFinishedSuccessfully;
-    SCHStoryInteractionWordMatch *wordMatch = (SCHStoryInteractionWordMatch *)self.storyInteraction;
-    [self playAudioAtPath:[wordMatch audioPathForGotThemAll]
+    [self playAudioAtPath:[self audioPathForYouFoundThemAll]
                completion:^{
                    [self removeFromHostView];
                }];
@@ -198,6 +196,10 @@
         [self.occupiedTargets addObject:onTarget];
         
         BOOL allCorrect = (self.numberOfCorrectItems == kNumberOfItems);
+        if (allCorrect) {
+            self.controllerState = SCHStoryInteractionControllerStateInteractionFinishedSuccessfully;
+        }
+        
         NSString *sfxFile = allCorrect ? @"sfx_win_y.mp3" : [self.storyInteraction storyInteractionCorrectAnswerSoundFilename];
 
         SCHStoryInteractionWordMatchQuestionItem *item = [[[self currentQuestion] items] objectAtIndex:onTarget.matchTag];

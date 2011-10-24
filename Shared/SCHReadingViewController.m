@@ -43,6 +43,7 @@
 #import "SCHContentProfileItem.h"
 #import "SCHUserContentItem.h"
 #import "SCHReadingStoryInteractionButton.h"
+#import "SCHProfileSyncComponent.h"
 
 // constants
 NSString *const kSCHReadingViewErrorDomain  = @"com.knfb.scholastic.ReadingViewErrorDomain";
@@ -161,6 +162,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 - (void)positionCoverCornerViewForOrientation:(UIInterfaceOrientation)newOrientation;
 - (void)dismissCoverCornerViewWithAnimation:(BOOL)animated;
 - (void)checkCornerAudioButtonVisibilityWithAnimation:(BOOL)animated;
+- (void)positionCornerAudioButtonForOrientation:(UIInterfaceOrientation)newOrientation;
 
 @end
 
@@ -269,6 +271,10 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     [storyInteractionController release], storyInteractionController = nil;
     [cornerCoverFadeTimer release], cornerCoverFadeTimer = nil;
     
+    // Ideally the readingView would be release it viewDidUnload but it contains 
+    // logic that this view controller uses whilst it is potentially off-screen (e.g. when a story interaction is being shown)
+    [readingView release], readingView = nil;
+    
     [super dealloc];
 }
 
@@ -310,7 +316,6 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     [highlightsInfoButton release], highlightsInfoButton = nil;
     [highlightsCancelButton release], highlightsCancelButton = nil;
     
-    [readingView release], readingView = nil;
     [navigationToolbar release], navigationToolbar = nil;
 }
 
@@ -335,7 +340,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
             description = NSLocalizedString(@"An unexpected error occured (XPS checkout failed). Please try again.", @"XPS Checkout failed error message from ReadingViewController");
             break;
         case kSCHReadingViewDecryptionUnavailableError:
-            description = NSLocalizedString(@"It has not been possible to acquire a DRM license for this book. Please make sure this device is authorized and connected to the internet and try again.", @"Decryption not available error message from ReadingViewController");
+            description = NSLocalizedString(@"It has not been possible to acquire a DRM license for this eBook. Please make sure this device is authorized and connected to the internet and try again.", @"Decryption not available error message from ReadingViewController");
             break;
         case kSCHReadingViewUnspecifiedError:
         default:
@@ -435,6 +440,10 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
                                                      name:SCHAnnotationSyncComponentDidCompleteNotification
                                                    object:nil];
         
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(profileDeleted:)
+                                                     name:SCHProfileSyncComponentWillDeleteNotification
+                                                   object:nil];
         
         
         self.lastPageInteractionSoundPlayedOn = -1;
@@ -472,8 +481,11 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     self.wantsFullScreenLayout = YES;
     [self.navigationController setNavigationBarHidden:YES];
     
-    [self.view addSubview:self.readingView];
-    [self.view sendSubviewToBack:self.readingView];
+    if (self.readingView) {
+        [self.readingView setFrame:self.view.bounds];
+        [self.view addSubview:self.readingView];
+        [self.view sendSubviewToBack:self.readingView];
+    }
 
     // Older reader defaults: fixed view for iPad, flow view for iPhone
     // Younger reader defaults: always fixed, no need to save
@@ -575,8 +587,6 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     self.navigationToolbar = aNavigationToolbar;
     [aNavigationToolbar release];
     
-    self.cornerAudioButtonView.hidden = audioButtonsHidden;
-    
     // if the book has no story interactions disable the button
     self.storyInteractionsListButton.enabled = [[self.bookStoryInteractions allStoryInteractionsExcludingInteractionWithPage:NO] count] > 0;
         
@@ -606,6 +616,8 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     [self updateNotesCounter];
     
     [self setDictionarySelectionMode];
+
+    [self.storyInteractionButton setIsYounger:self.youngerMode];
     [self setupStoryInteractionButtonForCurrentPagesAnimated:NO];
     
     [self save];
@@ -644,6 +656,11 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 {
     if (!self.firstTimePlayForHelpController) {
         [self positionCoverCornerViewForOrientation:self.interfaceOrientation];
+        [self positionCornerAudioButtonForOrientation:self.interfaceOrientation];
+
+        SCHAppBook *book = [[SCHBookManager sharedBookManager] bookWithIdentifier:self.bookIdentifier inManagedObjectContext:self.managedObjectContext];
+        BOOL audioButtonsHidden = ![[book HasAudio] boolValue];
+        self.cornerAudioButtonView.hidden = audioButtonsHidden;
         [self startFadeTimer];
     }
 }
@@ -745,6 +762,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     }
     
     self.presentStoryInteractionAfterRotation = NO;
+    [self positionCornerAudioButtonForOrientation:self.interfaceOrientation];
 
     [super didRotateFromInterfaceOrientation:fromInterfaceOrientation];
 }
@@ -758,10 +776,11 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     [self.scrubberInfoView removeFromSuperview];
     
     self.currentlyRotating = YES;
-    
+
     [self setupAssetsForOrientation:toInterfaceOrientation];
 
     [self dismissCoverCornerViewWithAnimation:NO];
+    self.cornerAudioButtonView.alpha = 0;
     
     [self.readingView willRotateToInterfaceOrientation:toInterfaceOrientation duration:duration];
     
@@ -769,6 +788,11 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
         [self.popover dismissPopoverAnimated:YES];
         self.popover = nil;
     }
+    
+//    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0.1*NSEC_PER_SEC), dispatch_get_main_queue(), ^{
+//        [self positionCornerAudioButtonForOrientation:toInterfaceOrientation];
+//    });
+    
 }
 
 - (void)updateBookState
@@ -809,7 +833,8 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     [self updateBookState];
         
     [self.readingView dismissFollowAlongHighlighter];  
-    self.audioBookPlayer = nil;
+//    self.audioBookPlayer = nil;
+    [self pauseAudioPlayback];
 }
 
 - (void)willTerminateNotification:(NSNotification *)notification
@@ -826,7 +851,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 #pragma mark - Sync Propagation methods
 
 - (void)bookDeleted:(NSNotification *)notification
-{
+{    
     NSArray *bookIdentifiers = [notification.userInfo objectForKey:self.profile.ID];
     
     for (SCHBookIdentifier *bookId in bookIdentifiers) {
@@ -851,8 +876,26 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     }
 }
 
-- (void)annotationChanges:(NSNotification *)notification
+- (void)profileDeleted:(NSNotification *)notification
 {
+    // Immediately deregister for any more book related notifications so we don't try to handle following annotationChanges or bookDeleted notifications
+    // The bookshelf view controller will actually tear us down and push back to the root when it receives the same notification
+    NSArray *profileIDs = [notification.userInfo objectForKey:SCHProfileSyncComponentDeletedProfileIDs];
+    
+    for (NSNumber *profileID in profileIDs) {
+        if ([profileID isEqualToNumber:self.profile.ID] == YES) {
+            [[NSNotificationCenter defaultCenter] removeObserver:self
+                                                            name:SCHContentSyncComponentWillDeleteNotification
+                                                          object:nil];
+            [[NSNotificationCenter defaultCenter] removeObserver:self
+                                                            name:SCHAnnotationSyncComponentDidCompleteNotification
+                                                          object:nil];
+        }
+    }
+}
+
+- (void)annotationChanges:(NSNotification *)notification
+{    
     NSNumber *profileID = [notification.userInfo objectForKey:SCHAnnotationSyncComponentCompletedProfileIDs];
     
     if ([profileID isEqualToNumber:self.profile.ID] == YES) {
@@ -1289,30 +1332,13 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
             animated = NO;
         } // else Interactions while not reading. Showing button with animation
         
-        SCHReadingStoryInteractionButtonFillLevel fillLevel;
-        
+        float fillLevel;
         if (interactionsFinished) {
-            fillLevel = kSCHReadingStoryInteractionButtonFillLevelFull;
-        } else if (questionCount == 3) {
-            
-            switch (interactionsDone) {
-                case 1:
-                    fillLevel = kSCHReadingStoryInteractionButtonFillLevelOneThird;
-                    break;
-                case 2:
-                    fillLevel = kSCHReadingStoryInteractionButtonFillLevelTwoThirds;
-                    break;
-                case 3:
-                    fillLevel = kSCHReadingStoryInteractionButtonFillLevelFull;
-                    break;
-                default:
-                    fillLevel = kSCHReadingStoryInteractionButtonFillLevelEmpty;
-                    break;
-            }
+            fillLevel = 1.0f;
         } else {
-            fillLevel = kSCHReadingStoryInteractionButtonFillLevelEmpty;                
+            fillLevel = (float)interactionsDone / questionCount;
         }
-                
+
         [self setStoryInteractionButtonVisible:YES animated:animated withSound:playAppearanceSound completion:^(BOOL finished){
             
             if (self.storyInteractionButton.fillLevel != fillLevel) {
@@ -1331,7 +1357,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
                 }
             }
             
-            [self.storyInteractionButton setFillLevel:fillLevel forYounger:self.youngerMode animated:animated];
+            [self.storyInteractionButton setFillLevel:fillLevel animated:animated];
             
             CGRect buttonFrame = self.storyInteractionButtonView.frame;
             buttonFrame.size = [self.storyInteractionButton imageForState:UIControlStateNormal].size;
@@ -1761,72 +1787,75 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 
 - (void)setLayoutType:(SCHReadingViewLayoutType)newLayoutType
 {
-    layoutType = newLayoutType;
-    
-    SCHReadingViewSelectionMode currentMode = [self.readingView selectionMode];
-    
-    NSNumber *savedLayoutType = [[self.profile AppProfile] LayoutType];
-
-    if (!savedLayoutType || [savedLayoutType intValue] != newLayoutType) {
-        savedLayoutType = [NSNumber numberWithInt:newLayoutType];
-        [[self.profile AppProfile] setLayoutType:savedLayoutType];
-    }
-    
-    BOOL useSavedFontAndPaperSettings = NO;
-    
-    [self.readingView removeFromSuperview];
-    
-    switch (newLayoutType) {
-        case SCHReadingViewLayoutTypeFlow: {
-            SCHFlowView *flowView = [[SCHFlowView alloc] initWithFrame:self.view.bounds 
-                                                        bookIdentifier:self.bookIdentifier 
-                                                  managedObjectContext:self.managedObjectContext 
-                                                              delegate:self];
-            self.readingView = flowView;
-            [self setDictionarySelectionMode];
-
-            [flowView release];
-            
-            [self.fontSegmentedControl setEnabled:YES forSegmentAtIndex:0];
-            [self.fontSegmentedControl setEnabled:YES forSegmentAtIndex:1];
-            
-            useSavedFontAndPaperSettings = YES;
-
-            break;
-        }
-        case SCHReadingViewLayoutTypeFixed: 
-        default: {
-            SCHLayoutView *layoutView = [[SCHLayoutView alloc] initWithFrame:self.view.bounds 
-                                                              bookIdentifier:self.bookIdentifier 
-                                                        managedObjectContext:self.managedObjectContext                                          
-                                                                    delegate:self];
-            self.readingView = layoutView;
-            
-            [self setDictionarySelectionMode];
-                        
-            [self.fontSegmentedControl setEnabled:NO forSegmentAtIndex:0];
-            [self.fontSegmentedControl setEnabled:NO forSegmentAtIndex:1];
-
-            [layoutView release];
-            
-            break;
-        }
-    }
-    
-    self.readingView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-    
-    [self.readingView setSelectionMode:currentMode];
-    [self.view addSubview:self.readingView];
-    [self.view sendSubviewToBack:self.readingView];
-    
-    if (useSavedFontAndPaperSettings) {
-        NSNumber *savedPaperType = [[self.profile AppProfile] PaperType];
-        self.paperType = [savedPaperType intValue];
+    if (newLayoutType != layoutType) {
+        layoutType = newLayoutType;
         
-        NSNumber *savedFontSizeIndex = [[self.profile AppProfile] FontIndex];
-        self.currentFontSizeIndex = [savedFontSizeIndex intValue];
-    } else {
-        self.paperType = SCHReadingViewPaperTypeWhite;
+        SCHReadingViewSelectionMode currentMode = [self.readingView selectionMode];
+        
+        NSNumber *savedLayoutType = [[self.profile AppProfile] LayoutType];
+        
+        if (!savedLayoutType || [savedLayoutType intValue] != newLayoutType) {
+            savedLayoutType = [NSNumber numberWithInt:newLayoutType];
+            [[self.profile AppProfile] setLayoutType:savedLayoutType];
+        }
+        
+        BOOL useSavedFontAndPaperSettings = NO;
+        
+        [self.readingView removeFromSuperview];
+        self.readingView = nil;
+        
+        switch (newLayoutType) {
+            case SCHReadingViewLayoutTypeFlow: {
+                SCHFlowView *flowView = [[SCHFlowView alloc] initWithFrame:self.view.bounds 
+                                                            bookIdentifier:self.bookIdentifier 
+                                                      managedObjectContext:self.managedObjectContext 
+                                                                  delegate:self];
+                self.readingView = flowView;
+                [self setDictionarySelectionMode];
+                
+                [flowView release];
+                
+                [self.fontSegmentedControl setEnabled:YES forSegmentAtIndex:0];
+                [self.fontSegmentedControl setEnabled:YES forSegmentAtIndex:1];
+                
+                useSavedFontAndPaperSettings = YES;
+                
+                break;
+            }
+            case SCHReadingViewLayoutTypeFixed: 
+            default: {
+                SCHLayoutView *layoutView = [[SCHLayoutView alloc] initWithFrame:self.view.bounds 
+                                                                  bookIdentifier:self.bookIdentifier 
+                                                            managedObjectContext:self.managedObjectContext                                          
+                                                                        delegate:self];
+                self.readingView = layoutView;
+                
+                [self setDictionarySelectionMode];
+                
+                [self.fontSegmentedControl setEnabled:NO forSegmentAtIndex:0];
+                [self.fontSegmentedControl setEnabled:NO forSegmentAtIndex:1];
+                
+                [layoutView release];
+                
+                break;
+            }
+        }
+        
+        self.readingView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+        
+        [self.readingView setSelectionMode:currentMode];
+        [self.view addSubview:self.readingView];
+        [self.view sendSubviewToBack:self.readingView];
+        
+        if (useSavedFontAndPaperSettings) {
+            NSNumber *savedPaperType = [[self.profile AppProfile] PaperType];
+            self.paperType = [savedPaperType intValue];
+            
+            NSNumber *savedFontSizeIndex = [[self.profile AppProfile] FontIndex];
+            self.currentFontSizeIndex = [savedFontSizeIndex intValue];
+        } else {
+            self.paperType = SCHReadingViewPaperTypeWhite;
+        }
     }
 }
 
@@ -2051,6 +2080,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
         [self setToolbarVisibility:NO animated:YES];
     }
     
+    [self positionCornerAudioButtonForOrientation:self.interfaceOrientation];
     [self checkCornerAudioButtonVisibilityWithAnimation:YES];
 }
 
@@ -2906,6 +2936,19 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
                              completion:nil];
         }
     }
+}
+
+- (void)positionCornerAudioButtonForOrientation:(UIInterfaceOrientation)newOrientation
+{
+    CGRect bookCoverFrame = [self.readingView pageRect];
+    
+    CGRect frame = self.cornerAudioButtonView.frame;
+    
+    // offsets are to accommodate borders in the images
+    frame.origin.x = bookCoverFrame.origin.x + 5;
+    frame.origin.y = ceilf(bookCoverFrame.size.height - frame.size.height) - 5;
+    
+    self.cornerAudioButtonView.frame = frame;
 }
 
 #pragma mark - Help View Delegate

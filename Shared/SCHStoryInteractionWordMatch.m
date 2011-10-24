@@ -86,9 +86,4 @@
     return [KNFBXPSStoryInteractionsDirectory stringByAppendingPathComponent:@"gen_matchthewords.mp3"];
 }
 
-- (NSString *)audioPathForGotThemAll
-{
-    return [KNFBXPSStoryInteractionsDirectory stringByAppendingPathComponent:@"gen_gotthemall.mp3"];
-}
-
 @end

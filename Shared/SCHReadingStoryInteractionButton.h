@@ -8,19 +8,11 @@
 
 #import <Foundation/Foundation.h>
 
-typedef enum SCHReadingStoryInteractionButtonFillLevel {
-    kSCHReadingStoryInteractionButtonFillLevelEmpty = 0,
-    kSCHReadingStoryInteractionButtonFillLevelOneThird,
-    kSCHReadingStoryInteractionButtonFillLevelTwoThirds,
-    kSCHReadingStoryInteractionButtonFillLevelFull
-} SCHReadingStoryInteractionButtonFillLevel; 
+@interface SCHReadingStoryInteractionButton : UIButton
 
-@interface SCHReadingStoryInteractionButton : UIButton {
-    
-}
+@property (nonatomic, assign) BOOL isYounger;
+@property (nonatomic, assign) float fillLevel;
 
-@property (nonatomic, readonly) SCHReadingStoryInteractionButtonFillLevel fillLevel;
-
-- (void)setFillLevel:(SCHReadingStoryInteractionButtonFillLevel)level forYounger:(BOOL)younger animated:(BOOL)animated;
+- (void)setFillLevel:(float)fillLevel animated:(BOOL)animated;
 
 @end

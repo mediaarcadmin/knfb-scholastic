@@ -423,6 +423,7 @@ static SCHDictionaryDownloadManager *sharedManager = nil;
                 
                 [self processDictionary];
             }
+            break;
         }
         case SCHDictionaryProcessingStateDownloadingHelpVideos:
         {

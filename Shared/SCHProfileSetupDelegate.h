@@ -10,6 +10,9 @@
 
 @protocol SCHProfileSetupDelegate <SCHModalPresenterDelegate>
 
+- (void)pushAuthenticatedProfileAnimated:(BOOL)animated;
+- (void)popToAuthenticatedProfileAnimated:(BOOL)animated;
+
 - (void)showCurrentSamplesAnimated:(BOOL)animated;
 - (void)showCurrentProfileAnimated:(BOOL)animated;
 

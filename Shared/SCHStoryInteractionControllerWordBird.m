@@ -36,12 +36,12 @@ enum {
 @property (nonatomic, retain) SCHAnimatedLayer *balloonsLayer;
 @property (nonatomic, retain) SCHAnimatedLayer *animationContainerLayer;
 @property (nonatomic, retain) NSArray *loseAnimationLayers;
-@property (nonatomic, assign) NSInteger simultaneousTapCount;
+@property (nonatomic, assign) unichar tappedLetter;
 
 - (void)setupAnswerView;
 - (void)setupLettersView;
 - (void)setupAnimationView;
-- (BOOL)checkForLetter:(unichar)letter;
+- (BOOL)wordContainsLetter:(unichar)letter;
 - (void)revealLetterInAnswer:(unichar)letter;
 - (void)didComplete;
 - (void)movePenguinHigher;
@@ -62,7 +62,7 @@ enum {
 @synthesize balloonsLayer;
 @synthesize animationContainerLayer;
 @synthesize loseAnimationLayers;
-@synthesize simultaneousTapCount;
+@synthesize tappedLetter;
 
 - (void)dealloc
 {
@@ -157,11 +157,13 @@ enum {
         SCHStoryInteractionWordBirdLetterView *letterView = [SCHStoryInteractionWordBirdLetterView letter];
         letterView.frame = CGRectMake(left+(size+kTileLetterGap)*(letter-firstInRow), top, size, size);
         letterView.letter = letter;
+        [letterView addTarget:self action:@selector(letterTouched:) forControlEvents:UIControlEventTouchDown];
         [letterView addTarget:self action:@selector(letterTapped:) forControlEvents:UIControlEventTouchUpInside];
+        [letterView addTarget:self action:@selector(letterTapCancelled:) forControlEvents:UIControlEventTouchUpOutside];
         [self.lettersContainer addSubview:letterView];
     }
     
-    self.simultaneousTapCount = 0;
+    self.tappedLetter = 0;
 }
 
 - (void)setupAnimationView
@@ -249,6 +251,7 @@ enum {
 {
     return [SCHAnimationDelegate animationDelegateWithStopBlock:^(CAAnimation *animation, BOOL finished) {
         self.controllerState = SCHStoryInteractionControllerStateInteractionInProgress;
+        self.tappedLetter = 0;
     }];
 }
 
@@ -258,51 +261,52 @@ enum {
     [self presentNextView];
 }
 
+- (void)letterTouched:(SCHStoryInteractionWordBirdLetterView *)sender
+{
+    if (self.tappedLetter == 0) {
+        self.controllerState = SCHStoryInteractionControllerStateInteractionReadingAnswerWithPause;
+        self.tappedLetter = sender.letter;
+    }
+}
+
+- (void)letterTapCancelled:(SCHStoryInteractionWordBirdLetterView *)sender
+{
+    if (self.tappedLetter == sender.letter) {
+        self.controllerState = SCHStoryInteractionControllerStateInteractionInProgress;
+        self.tappedLetter = 0;
+    }
+}
+
+
 - (void)letterTapped:(SCHStoryInteractionWordBirdLetterView *)sender
 {
-    self.simultaneousTapCount++;
-    if (self.simultaneousTapCount == 1) {
-        [self performSelector:@selector(singleLetterTapped:) withObject:sender afterDelay:kMinimumDistinguishedAnswerDelay];
-    }
-}    
-
-- (void)singleLetterTapped:(SCHStoryInteractionWordBirdLetterView *)sender
-{
-    NSInteger tapCount = self.simultaneousTapCount;
-    self.simultaneousTapCount = 0;
-    if (tapCount > 1) {
+    unichar letter = sender.letter;    
+    
+    // ignore any other simultaneous taps
+    if (letter != self.tappedLetter) {
         return;
     }
-
-    unichar letter = sender.letter;    
-    self.controllerState = SCHStoryInteractionControllerStateInteractionReadingAnswerWithPause;
     
-    BOOL correct = [self checkForLetter:letter];
-    if (correct) {
+    if ([self wordContainsLetter:letter]) {
         [sender setCorrectHighlight];
+        [self enqueueAudioWithPath:[self.storyInteraction storyInteractionCorrectAnswerSoundFilename] fromBundle:YES];
+        [self revealLetterInAnswer:letter];
+        [self movePenguinHigher];
     } else {
         [sender setIncorrectHighlight];
-    }
-    
-    NSString *audioPath = (correct ? [self.storyInteraction storyInteractionCorrectAnswerSoundFilename]
-                           : [self.storyInteraction storyInteractionWrongAnswerSoundFilename]);
-    [self enqueueAudioWithPath:audioPath
-                    fromBundle:YES
-                    startDelay:0
-        synchronizedStartBlock:nil
-          synchronizedEndBlock:^{
-              [self revealLetterInAnswer:letter];
-              if (correct) {
-                  [self movePenguinHigher];
-              } else {
+        [self enqueueAudioWithPath:[self.storyInteraction storyInteractionWrongAnswerSoundFilename]
+                        fromBundle:YES
+                        startDelay:0
+            synchronizedStartBlock:nil
+              synchronizedEndBlock:^{
                   [self popBalloon];
-              }
-          }];
+              }];
+    }
 
     [sender setUserInteractionEnabled:NO];
 }
 
-- (BOOL)checkForLetter:(unichar)letter
+- (BOOL)wordContainsLetter:(unichar)letter
 {
     NSString *letterString = [NSString stringWithCharacters:&letter length:1];
     NSString *word = [self currentWord];
@@ -588,11 +592,13 @@ enum {
 
         self.happyPenguinLayer.hidden = YES;
         self.shockedPenguinLayer.hidden = NO;
-        [self.shockedPenguinLayer animateAllFramesWithDuration:1.5
-                                                    frameOrder:nil
-                                                   autoreverse:NO
-                                                   repeatCount:1
-                                                      delegate:[self continueInteraction]];
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0.4*NSEC_PER_SEC), dispatch_get_main_queue(), ^{
+            [self.shockedPenguinLayer animateAllFramesWithDuration:1.5
+                                                        frameOrder:nil
+                                                       autoreverse:NO
+                                                       repeatCount:1
+                                                          delegate:[self continueInteraction]];
+        });
         
         [self enqueueAudioWithPath:@"sfx_penguinpop.mp3" fromBundle:YES];
     }

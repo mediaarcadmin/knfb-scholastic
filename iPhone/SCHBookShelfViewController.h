@@ -13,6 +13,7 @@
 #import "MRGridViewDelegate.h"
 #import "SCHBookShelfGridViewDataSource.h"
 #import "SCHBookShelfTableViewCell.h"
+#import "SCHProfileSetupDelegate.h"
 
 @class SCHBookShelfGridView;
 @class SCHCustomNavigationBar;
@@ -36,8 +37,7 @@
 @property (nonatomic, retain) IBOutlet UIView *listToggleView;
 @property (nonatomic, retain) IBOutlet UIView *gridViewToggleView;
 @property (nonatomic, retain) IBOutlet UIImageView *backgroundView;
-
-
+@property (nonatomic, assign) id<SCHProfileSetupDelegate> profileSetupDelegate;
 
 @property (nonatomic, retain) IBOutlet SCHBookShelfTableViewCell *listViewCell;
 

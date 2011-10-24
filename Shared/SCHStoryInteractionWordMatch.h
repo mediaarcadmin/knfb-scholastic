@@ -40,6 +40,4 @@
 // array of SCHStoryInteractionWordMatchQuestion
 @property (nonatomic, retain) NSArray *questions;
 
-- (NSString *)audioPathForGotThemAll;
-
 @end

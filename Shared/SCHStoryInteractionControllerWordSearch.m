@@ -241,7 +241,7 @@
         [self cancelQueuedAudioExecutingSynchronizedBlocksImmediately];
         if ([self.remainingWords count] == 0) {
             [self enqueueAudioWithPath:@"sfx_win_y.mp3" fromBundle:YES];
-            [self enqueueAudioWithPath:[wordSearch audioPathForYouFoundThemAll]
+            [self enqueueAudioWithPath:[self audioPathForYouFoundThemAll]
                             fromBundle:NO
                             startDelay:0
                 synchronizedStartBlock:nil

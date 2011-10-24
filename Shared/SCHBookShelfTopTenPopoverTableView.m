@@ -81,9 +81,7 @@
 {
     if (books != newBooks) {
         [books release];
-        books = [[newBooks sortedArrayUsingDescriptors:
-                  [NSArray arrayWithObject:
-                   [NSSortDescriptor sortDescriptorWithKey:@"Title" ascending:YES]]] retain];
+        books = [newBooks retain];
 
         [self.topTenTableView reloadData];
     }

@@ -43,6 +43,7 @@
 @synthesize settingsViewController;
 @synthesize bookUpdates;
 @synthesize updatesBubble;
+@synthesize profileSetupDelegate;
 
 #pragma mark - Object lifecycle
 
@@ -59,9 +60,7 @@
 }
 
 - (void)releaseViewObjects
-{
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
-    
+{    
     [tableView release], tableView = nil;
     [backgroundView release], backgroundView = nil;
     [headerView release], headerView = nil;
@@ -72,11 +71,14 @@
 
 - (void)dealloc 
 {    
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+
     [self releaseViewObjects];
     
     [fetchedResultsController_ release], fetchedResultsController_ = nil;
     [managedObjectContext_ release], managedObjectContext_ = nil;
     [bookUpdates release], bookUpdates = nil;
+    profileSetupDelegate = nil;
     
     [super dealloc];
 }
@@ -86,6 +88,8 @@
 - (void)viewDidLoad 
 {
     [super viewDidLoad];
+    
+    [self.tableView setAlwaysBounceVertical:NO];
     
     [self.updatesBubble setAlpha:0];
     [self.updatesBubble setUserInteractionEnabled:YES];
@@ -302,14 +306,26 @@
     passwordController.retainLoopSafeActionBlock = ^BOOL(NSString *topFieldText, NSString *bottomFieldText) {
         if ([topFieldText isEqualToString:bottomFieldText]) {
             if ([topFieldText length] > 0) {
-                [profileItem setRawPassword:topFieldText];
-                if ([self.managedObjectContext save:nil] == YES) {
-                    [[SCHSyncManager sharedSyncManager] profileSync]; 
+                
+                if (![[topFieldText substringToIndex:1] isEqualToString:@" "]) {
+                    [profileItem setRawPassword:topFieldText];
+                    if ([self.managedObjectContext save:nil] == YES) {
+                        [[SCHSyncManager sharedSyncManager] profileSync]; 
+                    }
+                    [SCHThemeManager sharedThemeManager].appProfile = profileItem.AppProfile;
+                    [self pushBookshelvesControllerWithProfileItem:profileItem animated:YES];
+                    [self dismissModalViewControllerAnimated:YES];
+                    return YES;
+                } else {
+                    UIAlertView *errorAlert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error", @"Error") 
+                                                                         message:NSLocalizedString(@"You cannot use spaces at the beginning of your password.", nil)
+                                                                        delegate:nil 
+                                                               cancelButtonTitle:NSLocalizedString(@"OK", @"OK")
+                                                               otherButtonTitles:nil]; 
+                    [errorAlert show];
+                    [errorAlert release];
+                    return NO;
                 }
-                [SCHThemeManager sharedThemeManager].appProfile = profileItem.AppProfile;
-                [self pushBookshelvesControllerWithProfileItem:profileItem animated:YES];
-                [self dismissModalViewControllerAnimated:YES];
-                return YES;
             } else {
                 UIAlertView *errorAlert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error", @"Error") 
                                                                      message:NSLocalizedString(@"The password cannot be blank.", nil)
@@ -346,6 +362,7 @@
 	SCHBookShelfViewController *bookShelfViewController = [self newBookShelfViewController];
     bookShelfViewController.profileItem = profileItem;
     bookShelfViewController.managedObjectContext = self.managedObjectContext;
+    bookShelfViewController.profileSetupDelegate = self.profileSetupDelegate;
     
     SCHBookIdentifier *bookIdentifier = nil;
     if (profileItem.AppProfile.AutomaticallyLaunchBook != nil) {
@@ -361,7 +378,7 @@
                                         [NSArray arrayWithObjects:bookShelfViewController, readingViewController, nil]];
             [self.navigationController setViewControllers:(NSArray *)viewControllers animated:animated];
         } else {
-            UIAlertView *errorAlert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"This Book Could Not Be Opened", @"Could not open book") 
+            UIAlertView *errorAlert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"This eBook Could Not Be Opened", @"Could not open eBook") 
                                                                  message:[error localizedDescription]
                                                                 delegate:nil 
                                                        cancelButtonTitle:NSLocalizedString(@"OK", @"OK")

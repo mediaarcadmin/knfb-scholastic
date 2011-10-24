@@ -263,6 +263,8 @@
 
 - (void)wordScrambleComplete
 {
+    self.hintButton.hidden = YES;
+    
     for (SCHStoryInteractionDraggableLetterView *letter in self.letterViews) {
         letter.letterColor = [UIColor SCHYellowColor];
     }

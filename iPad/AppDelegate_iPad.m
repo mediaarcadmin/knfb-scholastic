@@ -32,7 +32,7 @@ static NSTimeInterval const kAppDelegate_iPadSyncManagerWakeDelay = 5.0;
     
     if ([[SCHAuthenticationManager sharedAuthenticationManager] hasUsernameAndPassword]) {
         // skip the starter screen if already authenticated
-        [self.startingViewController pushAuthenticatedProfile];
+        [self.startingViewController pushAuthenticatedProfileAnimated:NO];
     }
     
     return(YES);

@@ -15,10 +15,9 @@
 
 @interface SCHStoryInteractionControllerStartingLetter ()
 
-@property (nonatomic, assign) NSInteger simultaneousTapCount;
-
 - (void)shuffleImageButtons;
 - (SCHStoryInteractionStartingLetterQuestion *)questionAtIndex:(NSUInteger)index;
+- (void)answerChosen:(SCHImageButton *)imageButton;
 - (BOOL)questionsCompleted;
 
 @end
@@ -26,7 +25,6 @@
 @implementation SCHStoryInteractionControllerStartingLetter
 
 @synthesize imageButtons;
-@synthesize simultaneousTapCount;
 
 - (void)dealloc
 {
@@ -58,7 +56,6 @@
 - (void)setupViewAtIndex:(NSInteger)screenIndex
 {
     [self setTitle:[(SCHStoryInteractionStartingLetter *)self.storyInteraction prompt]];
-    self.simultaneousTapCount = 0;
     
     [self shuffleImageButtons];
     for (SCHImageButton *imageButton in self.imageButtons) {
@@ -72,10 +69,7 @@
             imageButton.normalColor = [UIColor SCHBlue2Color];
             imageButton.selectedColor = ([question isCorrect] == NO ? [UIColor SCHScholasticRedColor] : [UIColor SCHGreen1Color]);                        
             imageButton.actionBlock = ^(SCHImageButton *imageButton) {
-                self.simultaneousTapCount++;
-                if (self.simultaneousTapCount == 1) {
-                    [self performSelector:@selector(answerChosen:) withObject:imageButton afterDelay:kMinimumDistinguishedAnswerDelay];
-                }
+                [self answerChosen:imageButton];
             };
         }
     }
@@ -95,34 +89,23 @@
 - (void)answerChosen:(SCHImageButton *)imageButton
 {
     // ignore multiple taps
-    NSInteger tapCount = self.simultaneousTapCount;
-    self.simultaneousTapCount = 0;
-    if (tapCount > 1) {
+    if (self.controllerState != SCHStoryInteractionControllerStateInteractionInProgress) {
         return;
     }
+    
+    [self cancelQueuedAudio];
+    self.controllerState = SCHStoryInteractionControllerStateInteractionReadingAnswerWithPause;
     
     imageButton.selected = YES;
     SCHStoryInteractionStartingLetterQuestion *question = [self questionAtIndex:imageButton.tag - 1]; 
     if (question != nil) {
-        [self cancelQueuedAudioExecutingSynchronizedBlocksImmediately];
         if ([question isCorrect] == YES) {
-            
             BOOL questionsCompleted = [self questionsCompleted];
             if (questionsCompleted) {
-                [self enqueueAudioWithPath:@"sfx_win_y.mp3" fromBundle:YES
-                                startDelay:0
-                    synchronizedStartBlock:^{
-                          self.controllerState = SCHStoryInteractionControllerStateInteractionFinishedSuccessfully;
-                      }
-                      synchronizedEndBlock:nil];
+                [self enqueueAudioWithPath:@"sfx_win_y.mp3" fromBundle:YES];
+                self.controllerState = SCHStoryInteractionControllerStateInteractionFinishedSuccessfully;
             } else {
-                [self enqueueAudioWithPath:[self.storyInteraction storyInteractionCorrectAnswerSoundFilename] 
-                                fromBundle:YES 
-                                startDelay:0 
-                    synchronizedStartBlock:^{ 
-                        self.controllerState = SCHStoryInteractionControllerStateInteractionReadingAnswerWithoutPause;
-                    }
-                      synchronizedEndBlock:nil];
+                [self enqueueAudioWithPath:[self.storyInteraction storyInteractionCorrectAnswerSoundFilename] fromBundle:YES];
             }
             [self enqueueAudioWithPath:[(SCHStoryInteractionStartingLetter *)self.storyInteraction audioPathForThatsRight] fromBundle:NO];
             [self enqueueAudioWithPath:[question audioPath] fromBundle:NO];
@@ -134,12 +117,11 @@
                   synchronizedEndBlock:^{
                       if (!questionsCompleted) {
                           self.controllerState = SCHStoryInteractionControllerStateInteractionInProgress;
-                          self.simultaneousTapCount = 0;
                       }
                   }];
             
             if (questionsCompleted) {
-                [self enqueueAudioWithPath:[(SCHStoryInteractionStartingLetter *)self.storyInteraction audioPathForYouFoundThemAll]
+                [self enqueueAudioWithPath:[self audioPathForYouFoundThemAll]
                                 fromBundle:NO
                                 startDelay:0
                     synchronizedStartBlock:nil
@@ -148,13 +130,7 @@
                       }];
             };
         } else {
-            [self enqueueAudioWithPath:[self.storyInteraction storyInteractionWrongAnswerSoundFilename] 
-                            fromBundle:YES 
-                            startDelay:0 
-                synchronizedStartBlock:^{ 
-                    self.controllerState = SCHStoryInteractionControllerStateInteractionReadingAnswerWithoutPause;
-                }
-                  synchronizedEndBlock:nil];
+            [self enqueueAudioWithPath:[self.storyInteraction storyInteractionWrongAnswerSoundFilename] fromBundle:YES];
             [self enqueueAudioWithPath:[question audioPath] fromBundle:NO];
             [self enqueueAudioWithPath:[(SCHStoryInteractionStartingLetter *)self.storyInteraction audioPathForDoesntStartWith] fromBundle:NO];
             [self enqueueAudioWithPath:[(SCHStoryInteractionStartingLetter *)self.storyInteraction audioPathForLetter] fromBundle:NO];
@@ -164,7 +140,6 @@
                 synchronizedStartBlock:nil 
                   synchronizedEndBlock:^{
                       self.controllerState = SCHStoryInteractionControllerStateInteractionInProgress;
-                      self.simultaneousTapCount = 0;
                   }];
         }
     }    
