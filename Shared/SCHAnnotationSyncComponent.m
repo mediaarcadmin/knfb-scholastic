@@ -482,7 +482,16 @@ NSString * const SCHAnnotationSyncComponentCompletedProfileIDs = @"SCHAnnotation
 		id webItemID = [webItem valueForKey:kSCHLibreAccessWebServiceContentIdentifier];
 		id localItemID = [localItem valueForKey:kSCHLibreAccessWebServiceContentIdentifier];
 		
-		switch ([webItemID compare:localItemID]) {
+        // secondary compare for multiple books with differing DRM
+        NSComparisonResult compareContentMetadataItems = [webItemID compare:localItemID];
+        if (compareContentMetadataItems == NSOrderedSame) {
+            id webItemDRM = [webItem valueForKey:kSCHLibreAccessWebServiceDRMQualifier];
+            id localItemDRM = [localItem valueForKey:kSCHLibreAccessWebServiceDRMQualifier];
+            
+            compareContentMetadataItems = [webItemDRM compare:localItemDRM];            
+        }
+
+		switch (compareContentMetadataItems) {
 			case NSOrderedSame:
 				[self syncAnnotationsContentItem:webItem withAnnotationsContentItem:localItem];
                 [self backgroundSave:YES];
