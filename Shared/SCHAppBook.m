@@ -534,16 +534,16 @@ NSString * const kSCHAppBookFilenameSeparator = @"-";
     
     switch (code) {
         case kSCHAppBookStillBeingProcessedError:
-            description = NSLocalizedString(@"The book is still being processed.", @"Still being processed error message from AppBook");
+            description = NSLocalizedString(@"The eBook is still being processed.", @"Still being processed error message from AppBook");
             break;
         case kSCHAppBookUnableToAcquireLicenseError:
-            description = NSLocalizedString(@"It has not been possible to acquire a DRM license for this book. Please make sure this device is authorized and connected to the internet and try again.", @"Decryption not available error message from AppBook");
+            description = NSLocalizedString(@"It has not been possible to acquire a DRM license for this eBook. Please make sure this device is authorized and connected to the internet and try again.", @"Decryption not available error message from AppBook");
             break;
         case kSCHAppBookDownloadFailedError:
-            description = NSLocalizedString(@"There was a problem whilst downloading this book. Please make sure this device is connected to the internet and try again.", @"Download failed error message from AppBook");
+            description = NSLocalizedString(@"There was a problem whilst downloading this eBook. Please make sure this device is connected to the internet and try again.", @"Download failed error message from AppBook");
             break;
         case kSCHAppBookURLsNotPopulatedError:
-            description = NSLocalizedString(@"There was a problem whilst accessing the URLs for this book. Please make sure this device is connected to the internet and try again. If the problem persists please contact support.", @"URLs not populated error message from AppBook");
+            description = NSLocalizedString(@"There was a problem whilst accessing the URLs for this eBook. Please make sure this device is connected to the internet and try again. If the problem persists please contact support.", @"URLs not populated error message from AppBook");
             break;
         case kSCHAppBookUnspecifiedError:
         default:
