@@ -94,6 +94,8 @@ static const CGFloat kContentHeightLandscape = 380;
 {
     [super viewDidLoad];
     
+    [self.scrollView setAlwaysBounceVertical:NO];
+    
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
         [[NSNotificationCenter defaultCenter] addObserver:self 
                                                  selector:@selector(keyboardWillShow:) 
