@@ -732,7 +732,7 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 131;
         } else {
             if (error && !([[error domain] isEqualToString:kSCHAppBookErrorDomain] && ([error code] == kSCHAppBookStillBeingProcessedError))) {
                 LambdaAlert *alert = [[LambdaAlert alloc]
-                                      initWithTitle:NSLocalizedString(@"This Book Could Not Be Opened", @"Could not open book")
+                                      initWithTitle:NSLocalizedString(@"This eBook Could Not Be Opened", @"Could not open eBook")
                                       message:[error localizedDescription]];
                 [alert addButtonWithTitle:@"Cancel" block:^{}];
                 [alert addButtonWithTitle:@"Retry" block:^{
@@ -892,7 +892,7 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 131;
         } else {
             if (error && !([[error domain] isEqualToString:kSCHAppBookErrorDomain] && ([error code] == kSCHAppBookStillBeingProcessedError))) {
                 LambdaAlert *alert = [[LambdaAlert alloc]
-                                      initWithTitle:NSLocalizedString(@"This Book Could Not Be Opened", @"Could not open book")
+                                      initWithTitle:NSLocalizedString(@"This eBook Could Not Be Opened", @"Could not open eBook")
                                       message:[error localizedDescription]];
                 [alert addButtonWithTitle:@"Cancel" block:^{}];
                 [alert addButtonWithTitle:@"Retry" block:^{

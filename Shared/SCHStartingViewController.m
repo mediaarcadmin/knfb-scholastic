@@ -536,7 +536,6 @@ typedef enum {
 
 - (void)popToRootViewControllerAnimated:(BOOL)animated withCompletionHandler:(dispatch_block_t)completion
 {
-    // Already at root so just call dismiss settings
     if (self.modalViewController) {
         [self dismissModalViewControllerAnimated:animated];
         [self.navigationController popToRootViewControllerAnimated:NO];
