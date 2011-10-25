@@ -21,10 +21,12 @@
 #import "TouchXML.h"
 #import "SCHBookManager.h"
 #import "SCHBookIdentifier.h"
+#import "SCHSampleBooksImporter.h"
 
 @interface SCHPopulateDataStore ()
 
 - (void)addBook:(NSDictionary *)book forProfiles:(NSArray *)profileIDs;
+- (void)addSampleEntries:(NSArray *)entries forProfiles:(NSArray *)profileIDs;
 - (void)setAppStateForSample;
 - (NSDictionary *)profileItemWith:(NSInteger)profileID
                             title:(NSString *)title 
@@ -209,6 +211,37 @@
     }
 }
 
+- (void)addSampleEntries:(NSArray *)entries forProfiles:(NSArray *)profileIDs
+{
+    if ([entries count] && [profileIDs count]) {
+        
+        NSMutableArray *userContentItems =     [NSMutableArray arrayWithCapacity:[entries count] * [profileIDs count]];
+        NSMutableArray *contentMetadataItems = [NSMutableArray arrayWithCapacity:[entries count]];
+
+        for (NSDictionary *entry in entries) {
+            for (NSNumber *profileID in profileIDs) {
+                [userContentItems addObject:[self userContentItemWith:[entry objectForKey:@"Isbn13"]
+                                                          drmQualifer:kSCHDRMQualifiersNone
+                                                           profileIDs:profileIDs]];
+            }
+            
+            [contentMetadataItems addObject:[self contentMetaDataItemWith:[entry objectForKey:@"Isbn13"]
+                                                                    title:[entry objectForKey:@"Title"]
+                                                                   author:[entry objectForKey:@"Title"]
+                                                               pageNumber:0
+                                                                 fileSize:0
+                                                              drmQualifer:kSCHDRMQualifiersNone
+                                                                 coverURL:[entry objectForKey:@"CoverUrl"]
+                                                               contentURL:[entry objectForKey:@"DownloadUrl"]
+                                                                 enhanced:NO]];
+  
+        }
+        
+        [self.contentSyncComponent syncUserContentItems:userContentItems];
+        [self.bookshelfSyncComponent syncContentMetadataItems:contentMetadataItems];        
+    }
+}
+
 - (NSUInteger)populateFromImport
 {
     NSError *error = nil;
@@ -253,6 +286,25 @@
 }
 
 #pragma mark - Sample bookshelf population methods
+
+- (BOOL)populateSampleStoreFromManifestEntries:(NSArray *)entries
+{
+    NSError *error = nil;
+    BOOL success = YES;
+    
+    [self setAppStateForSample];    
+    
+    NSArray *sampleProfileIDs = [NSArray arrayWithObject:[NSNumber numberWithInt:1]];
+    [self addSampleEntries:entries forProfiles:sampleProfileIDs];
+    
+    if (![self.managedObjectContext save:&error]) {
+        NSLog(@"Unresolved error whilst populating sample store from Manifest Entries %@, %@", error, [error userInfo]);
+        success = NO;
+    }
+    
+    return success;
+    
+}
 
 - (void)populateSampleStore
 {
