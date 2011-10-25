@@ -12,22 +12,22 @@ extern NSString * const kSCHSampleBooksManifestURL;
 
 typedef void (^SCHSampleBooksProcessingFailureBlock)(NSString * failureReason);
 
-@protocol SCHSampleBooksProcessingDelegate <NSObject>
+@protocol SCHSampleBooksImporterDelegate <NSObject>
 
 - (void)setCompletedWithSuccess:(BOOL)success failureReason:(NSString *)reason;
 
 @end
 
-@interface SCHSampleBooksManager : NSObject <SCHSampleBooksProcessingDelegate> {
+@interface SCHSampleBooksImporter : NSObject <SCHSampleBooksImporterDelegate> {
     
 }
 
 @property (nonatomic, retain) NSManagedObjectContext *mainThreadManagedObjectContext;
 @property (nonatomic, retain) NSPersistentStoreCoordinator *persistentStoreCoordinator;
 
-- (void)updateSampleBooksFromManifestURL:(NSURL *)url failureBlock:(SCHSampleBooksProcessingFailureBlock)failureBlock;
+- (void)importSampleBooksFromManifestURL:(NSURL *)url failureBlock:(SCHSampleBooksProcessingFailureBlock)failureBlock;
 - (void)cancel;
 
-+ (SCHSampleBooksManager *)sharedManager;
++ (SCHSampleBooksImporter *)sharedImporter;
 
 @end

@@ -6,7 +6,7 @@
 //  Copyright 2011 BitWink. All rights reserved.
 //
 
-#import "SCHSampleBooksManager.h"
+#import "SCHSampleBooksImporter.h"
 #import "Reachability.h"
 #import "SCHCoreDataHelper.h"
 #import "SCHSampleBooksManifestOperation.h"
@@ -19,7 +19,7 @@ typedef enum {
     kSCHSampleBooksProcessingStateInProgress
 } SCHSampleBooksProcessingState;
 
-@interface SCHSampleBooksManager()
+@interface SCHSampleBooksImporter()
 
 @property (nonatomic, assign) UIBackgroundTaskIdentifier backgroundTask;
 @property (nonatomic, assign) SCHSampleBooksProcessingState processingState;
@@ -41,7 +41,7 @@ typedef enum {
 
 @end
 
-@implementation SCHSampleBooksManager
+@implementation SCHSampleBooksImporter
 
 @synthesize mainThreadManagedObjectContext;
 @synthesize persistentStoreCoordinator;
@@ -115,7 +115,7 @@ typedef enum {
 	return self;
 }
 
-- (void)updateSampleBooksFromManifestURL:(NSURL *)url failureBlock:(SCHSampleBooksProcessingFailureBlock)aFailureBlock
+- (void)importSampleBooksFromManifestURL:(NSURL *)url failureBlock:(SCHSampleBooksProcessingFailureBlock)aFailureBlock
 {
     [self cancel];
     
@@ -127,7 +127,7 @@ typedef enum {
 
 - (void)checkState
 {
-	if ([self isConnected] && [SCHSampleBooksManager stateIsReadyToBegin:self.processingState] && self.manifestURL) {
+	if ([self isConnected] && [SCHSampleBooksImporter stateIsReadyToBegin:self.processingState] && self.manifestURL) {
         [self start];
 	} else {
 		[self.processingQueue cancelAllOperations];
@@ -294,10 +294,10 @@ typedef enum {
                                
 #pragma mark - Singleton Instance method
 
-+ (SCHSampleBooksManager *)sharedManager
++ (SCHSampleBooksImporter *)sharedImporter
 {
     static dispatch_once_t pred;
-    static SCHSampleBooksManager *sharedManager = nil;
+    static SCHSampleBooksImporter *sharedManager = nil;
     
     dispatch_once(&pred, ^{
         sharedManager = [[super allocWithZone:NULL] init];

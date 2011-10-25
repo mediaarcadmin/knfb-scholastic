@@ -1799,8 +1799,8 @@
 		C9C1D2D713B0AF5B00441623 /* storyinteraction-bg-younger-notitle~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = C9C1D29D13B0AD4B00441623 /* storyinteraction-bg-younger-notitle~ipad.png */; };
 		C9C1D2D813B0AF5B00441623 /* storyinteraction-bg-older-notitle~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = C9C1D29E13B0AD4C00441623 /* storyinteraction-bg-older-notitle~ipad.png */; };
 		C9C27CB913AA536C00332229 /* Arial Black.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C9C27CB813AA536A00332229 /* Arial Black.ttf */; };
-		C9C9096B1455A06B00548DDE /* SCHSampleBooksManager.m in Sources */ = {isa = PBXBuildFile; fileRef = C9C9096A1455A06B00548DDE /* SCHSampleBooksManager.m */; };
-		C9C9096C1455A06B00548DDE /* SCHSampleBooksManager.m in Sources */ = {isa = PBXBuildFile; fileRef = C9C9096A1455A06B00548DDE /* SCHSampleBooksManager.m */; };
+		C9C9096B1455A06B00548DDE /* SCHSampleBooksImporter.m in Sources */ = {isa = PBXBuildFile; fileRef = C9C9096A1455A06B00548DDE /* SCHSampleBooksImporter.m */; };
+		C9C9096C1455A06B00548DDE /* SCHSampleBooksImporter.m in Sources */ = {isa = PBXBuildFile; fileRef = C9C9096A1455A06B00548DDE /* SCHSampleBooksImporter.m */; };
 		C9D4F6281345FFE8007F86E3 /* SCHTextFlow.m in Sources */ = {isa = PBXBuildFile; fileRef = C9D4F6271345FFE7007F86E3 /* SCHTextFlow.m */; };
 		C9E89A4B1369B87A00E7ED53 /* levenshtein_distance.c in Sources */ = {isa = PBXBuildFile; fileRef = C9E89A491369B87A00E7ED53 /* levenshtein_distance.c */; };
 		C9EB4CE114026C7900DBC3BD /* icon-help-older~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = C9EB4CD714026C7900DBC3BD /* icon-help-older~ipad.png */; };
@@ -3375,8 +3375,8 @@
 		C9C1D29D13B0AD4B00441623 /* storyinteraction-bg-younger-notitle~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "storyinteraction-bg-younger-notitle~ipad.png"; sourceTree = "<group>"; };
 		C9C1D29E13B0AD4C00441623 /* storyinteraction-bg-older-notitle~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "storyinteraction-bg-older-notitle~ipad.png"; sourceTree = "<group>"; };
 		C9C27CB813AA536A00332229 /* Arial Black.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Arial Black.ttf"; sourceTree = "<group>"; };
-		C9C909691455A06B00548DDE /* SCHSampleBooksManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHSampleBooksManager.h; path = Shared/SCHSampleBooksManager.h; sourceTree = "<group>"; };
-		C9C9096A1455A06B00548DDE /* SCHSampleBooksManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHSampleBooksManager.m; path = Shared/SCHSampleBooksManager.m; sourceTree = "<group>"; };
+		C9C909691455A06B00548DDE /* SCHSampleBooksImporter.h */ = {isa = PBXFileReference; fileEncoding = 4; name = SCHSampleBooksImporter.h; path = Shared/SCHSampleBooksImporter.h; sourceTree = "<group>"; };
+		C9C9096A1455A06B00548DDE /* SCHSampleBooksImporter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHSampleBooksImporter.m; path = Shared/SCHSampleBooksImporter.m; sourceTree = "<group>"; };
 		C9D4F6261345FFE7007F86E3 /* SCHTextFlow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHTextFlow.h; path = Shared/SCHTextFlow.h; sourceTree = "<group>"; };
 		C9D4F6271345FFE7007F86E3 /* SCHTextFlow.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHTextFlow.m; path = Shared/SCHTextFlow.m; sourceTree = "<group>"; };
 		C9E89A491369B87A00E7ED53 /* levenshtein_distance.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = levenshtein_distance.c; sourceTree = "<group>"; };
@@ -5736,8 +5736,8 @@
 		C9C909681455A02100548DDE /* Sample Books Processing */ = {
 			isa = PBXGroup;
 			children = (
-				C9C909691455A06B00548DDE /* SCHSampleBooksManager.h */,
-				C9C9096A1455A06B00548DDE /* SCHSampleBooksManager.m */,
+				C9C909691455A06B00548DDE /* SCHSampleBooksImporter.h */,
+				C9C9096A1455A06B00548DDE /* SCHSampleBooksImporter.m */,
 				C9045C571456038D009A3133 /* SCHSampleBooksManifestOperation.h */,
 				C9045C581456038D009A3133 /* SCHSampleBooksManifestOperation.m */,
 			);
@@ -8096,7 +8096,7 @@
 				F8615B19144D69F100D0D265 /* SCHHelpVideoManifestOperation.m in Sources */,
 				F8615B1D144D6E7000D0D265 /* SCHHelpVideoFileDownloadOperation.m in Sources */,
 				F8615B21144D712400D0D265 /* SCHHelpVideoManifest.m in Sources */,
-				C9C9096B1455A06B00548DDE /* SCHSampleBooksManager.m in Sources */,
+				C9C9096B1455A06B00548DDE /* SCHSampleBooksImporter.m in Sources */,
 				C9045C591456038D009A3133 /* SCHSampleBooksManifestOperation.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -8454,7 +8454,7 @@
 				F8615B1A144D69F100D0D265 /* SCHHelpVideoManifestOperation.m in Sources */,
 				F8615B1E144D6E7000D0D265 /* SCHHelpVideoFileDownloadOperation.m in Sources */,
 				F8615B22144D712400D0D265 /* SCHHelpVideoManifest.m in Sources */,
-				C9C9096C1455A06B00548DDE /* SCHSampleBooksManager.m in Sources */,
+				C9C9096C1455A06B00548DDE /* SCHSampleBooksImporter.m in Sources */,
 				C9045C5A1456038D009A3133 /* SCHSampleBooksManifestOperation.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

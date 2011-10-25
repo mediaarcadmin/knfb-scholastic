@@ -259,7 +259,7 @@ NSString * const SCHBookshelfSyncComponentDidFailNotification = @"SCHBookshelfSy
 		}
 		
         SCHBookIdentifier *webBookIdentifier = [[SCHBookIdentifier alloc] initWithObject:webItem];
-        SCHBookIdentifier *localBookIdentifier = [[SCHBookIdentifier alloc] initWithObject:localItem];
+        SCHBookIdentifier *localBookIdentifier = localItem.bookIdentifier;
         
 		switch ([webBookIdentifier compare:localBookIdentifier]) {
 			case NSOrderedSame:
@@ -278,7 +278,6 @@ NSString * const SCHBookshelfSyncComponentDidFailNotification = @"SCHBookshelfSy
 		}		
 		
         [webBookIdentifier release], webBookIdentifier = nil;
-		[localBookIdentifier release], localBookIdentifier = nil;
 
 		if (webItem == nil) {
 			webItem = [webEnumerator nextObject];
