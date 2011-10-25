@@ -116,13 +116,19 @@
         animation.removedOnCompletion = NO;
         animation.fillMode = kCAFillModeForwards;
         animation.delegate = [SCHAnimationDelegate animationDelegateWithStopBlock:^(CAAnimation *animation, BOOL finished) {
+            [CATransaction begin];
+            [CATransaction setDisableActions:YES];
             self.fillLayer.fillLevel = fillLevel;
             [self.fillLayer removeAllAnimations];
+            [CATransaction commit];
         }];
         [self.fillLayer addAnimation:animation forKey:@"fillAnimation"];
     } else {
+        [CATransaction begin];
+        [CATransaction setDisableActions:YES];
         self.fillLayer.fillLevel = level;
         [self.fillLayer setNeedsDisplay];
+        [CATransaction commit];
     }
     fillLevel = level;
 }
