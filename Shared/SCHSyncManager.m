@@ -543,6 +543,18 @@ static NSTimeInterval const kSCHLastFirstSyncInterval = -300.0;
     [populateDataStore populateSampleStore];
 }
 
+- (BOOL)populateSampleStoreFromManifestEntries:(NSArray *)entries;
+{
+    SCHPopulateDataStore *populateDataStore = [self populateDataStore];
+    BOOL success = [populateDataStore populateSampleStoreFromManifestEntries:entries];
+    
+    if (success) {
+        [self firstSync:YES];
+    }
+    
+    return success;
+}
+
 - (SCHPopulateDataStore *)populateDataStore
 {
     SCHPopulateDataStore *ret = [[SCHPopulateDataStore alloc] init];

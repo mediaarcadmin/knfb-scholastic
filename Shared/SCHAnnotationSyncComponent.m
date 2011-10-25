@@ -124,9 +124,26 @@ NSString * const SCHAnnotationSyncComponentCompletedProfileIDs = @"SCHAnnotation
 	if (profileID != nil && books != nil && [books count] > 0) {
         NSMutableArray *profileBooks = [self.annotations objectForKey:profileID]; 
         if (profileBooks != nil) {
-            [profileBooks addObjectsFromArray:books];
+            // Only add books that do not already exist
+            for (NSDictionary *book in books) {
+                SCHBookIdentifier *bookIdentifier = [[SCHBookIdentifier alloc] initWithObject:book];
+                __block BOOL bookAlreadyExists = NO;
+                [profileBooks enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+                    SCHBookIdentifier *profileBookIdentifier = [[SCHBookIdentifier alloc] initWithObject:obj];
+                    if ([bookIdentifier isEqual:profileBookIdentifier] == YES) {
+                        bookAlreadyExists = YES;
+                        *stop = YES;
+                    }
+                    [profileBookIdentifier release], profileBookIdentifier = nil;                    
+                }];
+                [bookIdentifier release], bookIdentifier = nil;
+                
+                if (bookAlreadyExists == NO) {
+                    [profileBooks addObject:book];
+                }
+            }
         } else {
-            [self.annotations setObject:books forKey:profileID];		
+            [self.annotations setObject:[NSMutableArray arrayWithArray:books] forKey:profileID];		
         }
 	}
 }

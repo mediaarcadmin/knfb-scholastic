@@ -24,5 +24,6 @@ extern NSString * const SCHContentSyncComponentDidFailNotification;
 
 - (NSArray *)localUserContentItems;
 - (void)addUserContentItem:(NSDictionary *)webUserContentItem;
+- (void)syncUserContentItems:(NSArray *)userContentList;
 
 @end
