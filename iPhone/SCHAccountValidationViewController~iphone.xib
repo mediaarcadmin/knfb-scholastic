@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <archive type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="7.10">
 	<data>
-		<int key="IBDocument.SystemTarget">1280</int>
+		<int key="IBDocument.SystemTarget">1056</int>
 		<string key="IBDocument.SystemVersion">10K549</string>
-		<string key="IBDocument.InterfaceBuilderVersion">1938</string>
+		<string key="IBDocument.InterfaceBuilderVersion">1306</string>
 		<string key="IBDocument.AppKitVersion">1038.36</string>
 		<string key="IBDocument.HIToolboxVersion">461.00</string>
 		<object class="NSMutableDictionary" key="IBDocument.PluginVersions">
 			<string key="NS.key.0">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
-			<string key="NS.object.0">933</string>
+			<string key="NS.object.0">301</string>
 		</object>
 		<object class="NSArray" key="IBDocument.IntegratedClassDependencies">
 			<bool key="EncodedWithXMLCoder">YES</bool>
@@ -154,7 +154,7 @@
 									<object class="IBUIButton" id="1022055281">
 										<reference key="NSNextResponder" ref="627749786"/>
 										<int key="NSvFlags">293</int>
-										<string key="NSFrame">{{80, 130}, {160, 48}}</string>
+										<string key="NSFrame">{{80, 184}, {160, 48}}</string>
 										<reference key="NSSuperview" ref="627749786"/>
 										<reference key="NSWindow"/>
 										<reference key="NSNextKeyView" ref="288453423"/>
@@ -162,6 +162,11 @@
 										<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 										<int key="IBUIContentHorizontalAlignment">0</int>
 										<int key="IBUIContentVerticalAlignment">0</int>
+										<object class="NSFont" key="IBUIFont">
+											<string key="NSName">Arial-BoldMT</string>
+											<double key="NSSize">18</double>
+											<int key="NSfFlags">16</int>
+										</object>
 										<string key="IBUITitleShadowOffset">{0, -1}</string>
 										<string key="IBUINormalTitle">Confirm</string>
 										<object class="NSColor" key="IBUIHighlightedTitleColor">
@@ -180,22 +185,11 @@
 											<string key="NSClassName">NSImage</string>
 											<string key="NSResourceName">button-login-red.png</string>
 										</object>
-										<object class="IBUIFontDescription" key="IBUIFontDescription">
-											<string key="name">Arial-BoldMT</string>
-											<string key="family">Arial</string>
-											<int key="traits">2</int>
-											<double key="pointSize">18</double>
-										</object>
-										<object class="NSFont" key="IBUIFont">
-											<string key="NSName">Arial-BoldMT</string>
-											<double key="NSSize">18</double>
-											<int key="NSfFlags">16</int>
-										</object>
 									</object>
 									<object class="IBUILabel" id="155635484">
 										<reference key="NSNextResponder" ref="627749786"/>
 										<int key="NSvFlags">293</int>
-										<string key="NSFrame">{{20, 20}, {280, 43}}</string>
+										<string key="NSFrame">{{20, 50}, {280, 43}}</string>
 										<reference key="NSSuperview" ref="627749786"/>
 										<reference key="NSWindow"/>
 										<reference key="NSNextKeyView" ref="688531652"/>
@@ -205,6 +199,11 @@
 										<bool key="IBUIUserInteractionEnabled">NO</bool>
 										<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 										<string key="IBUIText">Please confirm your Scholastic Book Clubs password for %@:</string>
+										<object class="NSFont" key="IBUIFont">
+											<string key="NSName">ArialMT</string>
+											<double key="NSSize">13</double>
+											<int key="NSfFlags">16</int>
+										</object>
 										<object class="NSColor" key="IBUITextColor">
 											<int key="NSColorSpace">3</int>
 											<bytes key="NSWhite">MC4zMzMzMzMzMzMzAA</bytes>
@@ -215,22 +214,11 @@
 										<float key="IBUIMinimumFontSize">10</float>
 										<int key="IBUINumberOfLines">0</int>
 										<int key="IBUITextAlignment">1</int>
-										<object class="IBUIFontDescription" key="IBUIFontDescription">
-											<string key="name">ArialMT</string>
-											<string key="family">Arial</string>
-											<int key="traits">0</int>
-											<double key="pointSize">13</double>
-										</object>
-										<object class="NSFont" key="IBUIFont">
-											<string key="NSName">ArialMT</string>
-											<double key="NSSize">13</double>
-											<int key="NSfFlags">16</int>
-										</object>
 									</object>
 									<object class="IBUITextField" id="688531652">
 										<reference key="NSNextResponder" ref="627749786"/>
 										<int key="NSvFlags">293</int>
-										<string key="NSFrame">{{46, 71}, {228, 51}}</string>
+										<string key="NSFrame">{{46, 109}, {228, 51}}</string>
 										<reference key="NSSuperview" ref="627749786"/>
 										<reference key="NSWindow"/>
 										<reference key="NSNextKeyView" ref="1022055281"/>
@@ -245,6 +233,11 @@
 											<int key="NSColorSpace">2</int>
 											<bytes key="NSRGB">MCAwLjY4MjM1Mjk0MTIgMC45MzcyNTQ5MDIAA</bytes>
 										</object>
+										<object class="NSFont" key="IBUIFont">
+											<string key="NSName">ArialMT</string>
+											<double key="NSSize">18</double>
+											<int key="NSfFlags">16</int>
+										</object>
 										<bool key="IBUIAdjustsFontSizeToFit">YES</bool>
 										<float key="IBUIMinimumFontSize">17</float>
 										<object class="IBUITextInputTraits" key="IBUITextInputTraits">
@@ -257,22 +250,11 @@
 											<string key="NSResourceName">button-field-red.png</string>
 										</object>
 										<int key="IBUIClearButtonMode">1</int>
-										<object class="IBUIFontDescription" key="IBUIFontDescription">
-											<string key="name">ArialMT</string>
-											<string key="family">Arial</string>
-											<int key="traits">0</int>
-											<double key="pointSize">18</double>
-										</object>
-										<object class="NSFont" key="IBUIFont">
-											<string key="NSName">ArialMT</string>
-											<double key="NSSize">18</double>
-											<int key="NSfFlags">16</int>
-										</object>
 									</object>
 									<object class="IBUIActivityIndicatorView" id="288453423">
 										<reference key="NSNextResponder" ref="627749786"/>
 										<int key="NSvFlags">-2147483355</int>
-										<string key="NSFrame">{{248, 144}, {20, 20}}</string>
+										<string key="NSFrame">{{248, 198}, {20, 20}}</string>
 										<reference key="NSSuperview" ref="627749786"/>
 										<reference key="NSWindow"/>
 										<reference key="NSNextKeyView" ref="655061707"/>
@@ -300,7 +282,6 @@
 								<string key="NSFrameSize">{320, 7}</string>
 								<reference key="NSSuperview" ref="550636432"/>
 								<reference key="NSWindow"/>
-								<reference key="NSNextKeyView"/>
 								<object class="NSColor" key="IBUIBackgroundColor">
 									<int key="NSColorSpace">3</int>
 									<bytes key="NSWhite">MSAwAA</bytes>
@@ -387,6 +368,22 @@
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBCocoaTouchOutletConnection" key="connection">
+						<string key="label">delegate</string>
+						<reference key="source" ref="688531652"/>
+						<reference key="destination" ref="372490531"/>
+					</object>
+					<int key="connectionID">37</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBCocoaTouchEventConnection" key="connection">
+						<string key="label">back:</string>
+						<reference key="source" ref="543923478"/>
+						<reference key="destination" ref="372490531"/>
+					</object>
+					<int key="connectionID">46</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBCocoaTouchOutletConnection" key="connection">
 						<string key="label">backgroundView</string>
 						<reference key="source" ref="372490531"/>
 						<reference key="destination" ref="318415363"/>
@@ -433,22 +430,6 @@
 						<int key="IBEventType">7</int>
 					</object>
 					<int key="connectionID">56</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBCocoaTouchOutletConnection" key="connection">
-						<string key="label">delegate</string>
-						<reference key="source" ref="688531652"/>
-						<reference key="destination" ref="372490531"/>
-					</object>
-					<int key="connectionID">37</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBCocoaTouchEventConnection" key="connection">
-						<string key="label">back:</string>
-						<reference key="source" ref="543923478"/>
-						<reference key="destination" ref="372490531"/>
-					</object>
-					<int key="connectionID">46</int>
 				</object>
 			</object>
 			<object class="IBMutableOrderedSet" key="objectRecords">
@@ -668,7 +649,7 @@
 				<bool key="EncodedWithXMLCoder">YES</bool>
 				<object class="IBPartialClassDescription">
 					<string key="className">SCHAccountValidationViewController</string>
-					<string key="superclassName">SCHBaseSetupViewController</string>
+					<string key="superclassName">SCHBaseModalViewController</string>
 					<object class="NSMutableDictionary" key="actions">
 						<string key="NS.key.0">validate:</string>
 						<string key="NS.object.0">id</string>
@@ -739,14 +720,14 @@
 					</object>
 				</object>
 				<object class="IBPartialClassDescription">
-					<string key="className">SCHBaseSetupViewController</string>
+					<string key="className">SCHBaseModalViewController</string>
 					<string key="superclassName">UIViewController</string>
 					<object class="NSMutableDictionary" key="actions">
 						<bool key="EncodedWithXMLCoder">YES</bool>
 						<object class="NSArray" key="dict.sortedKeys">
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<string>back:</string>
-							<string>closeSettings</string>
+							<string>close</string>
 						</object>
 						<object class="NSMutableArray" key="dict.values">
 							<bool key="EncodedWithXMLCoder">YES</bool>
@@ -759,7 +740,7 @@
 						<object class="NSArray" key="dict.sortedKeys">
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<string>back:</string>
-							<string>closeSettings</string>
+							<string>close</string>
 						</object>
 						<object class="NSMutableArray" key="dict.values">
 							<bool key="EncodedWithXMLCoder">YES</bool>
@@ -768,7 +749,7 @@
 								<string key="candidateClassName">id</string>
 							</object>
 							<object class="IBActionInfo">
-								<string key="name">closeSettings</string>
+								<string key="name">close</string>
 								<string key="candidateClassName">id</string>
 							</object>
 						</object>
@@ -821,7 +802,7 @@
 					</object>
 					<object class="IBClassDescriptionSource" key="sourceIdentifier">
 						<string key="majorKey">IBProjectSource</string>
-						<string key="minorKey">./Classes/SCHBaseSetupViewController.h</string>
+						<string key="minorKey">./Classes/SCHBaseModalViewController.h</string>
 					</object>
 				</object>
 				<object class="IBPartialClassDescription">
@@ -861,6 +842,6 @@
 				<string>{293, 46}</string>
 			</object>
 		</object>
-		<string key="IBCocoaTouchPluginVersion">933</string>
+		<string key="IBCocoaTouchPluginVersion">301</string>
 	</data>
 </archive>
