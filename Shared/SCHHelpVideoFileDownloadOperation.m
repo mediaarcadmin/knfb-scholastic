@@ -61,6 +61,8 @@
         return;
 	}
 
+    [self willChangeValueForKey:@"isExecuting"];
+
     self.localFileManager = [[[NSFileManager alloc] init] autorelease];
     
     NSString *localDirectory = [[SCHDictionaryDownloadManager sharedDownloadManager] helpVideoDirectory];
@@ -93,7 +95,6 @@
         [httpOperation release];
     }
     
-    [self willChangeValueForKey:@"isExecuting"];
     [self didChangeValueForKey:@"isExecuting"];
     
     [[BITNetworkActivityManager sharedNetworkActivityManager] showNetworkActivityIndicator];
