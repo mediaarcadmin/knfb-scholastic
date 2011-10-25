@@ -29,7 +29,7 @@
 #import "SCHBookManager.h"
 #import "SCHAppBook.h"
 #import "SCHDrmSession.h"
-#import "SCHSampleBooksManager.h"
+#import "SCHSampleBooksImporter.h"
 
 enum {
     kTableSectionSamples = 0,
@@ -326,7 +326,7 @@ typedef enum {
             break;
     }
     
-    [[SCHSampleBooksManager sharedManager] updateSampleBooksFromManifestURL:[NSURL URLWithString:kSCHSampleBooksManifestURL] failureBlock:^(NSString * failureReason){
+    [[SCHSampleBooksImporter sharedImporter] importSampleBooksFromManifestURL:[NSURL URLWithString:kSCHSampleBooksManifestURL] failureBlock:^(NSString * failureReason){
         LambdaAlert *alert = [[LambdaAlert alloc]
                               initWithTitle:NSLocalizedString(@"Unable To Retrieve all Samples", @"")
                               message:[NSString stringWithFormat:NSLocalizedString(@"There was a problem whilst checking for the sample eBooks. %@. Please try again.", @""), failureReason]];
