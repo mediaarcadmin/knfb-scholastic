@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-#define STORY_INTERACTIONS_SUPPORT_AUTO_ROTATION 0
+#define STORY_INTERACTIONS_SUPPORT_AUTO_ROTATION 1
 
 @class SCHStoryInteractionController;
 
