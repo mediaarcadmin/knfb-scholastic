@@ -22,6 +22,7 @@
 #import "SCHBookManager.h"
 #import "SCHBookIdentifier.h"
 #import "SCHSampleBooksImporter.h"
+#import "LambdaAlert.h"
 
 @interface SCHPopulateDataStore ()
 
@@ -242,6 +243,8 @@
     }
 }
 
+#pragma mark - Import
+
 - (NSUInteger)populateFromImport
 {
     NSError *error = nil;
@@ -250,17 +253,30 @@
     NSUInteger ret = 0;
     
     if (documentDirectory != nil) {
-        for (NSString *xpsFilePath in [self listXPSFilesFrom:documentDirectory]) {
-            // use the first profile which we expect to be profileID 1
-            if ([self populateBook:xpsFilePath profileIDs:[NSArray arrayWithObject:[NSNumber numberWithInteger:1]]] == YES) {
-                ret++;
-            }
-        }
         
-        if ([self.managedObjectContext save:&error] == NO) {
-            NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
-            abort();
-        }                 
+        NSArray *xpsFiles = [self listXPSFilesFrom:documentDirectory];
+        
+        if ([xpsFiles count]) {
+            
+            for (NSString *xpsFilePath in [self listXPSFilesFrom:documentDirectory]) {
+                // use the first profile which we expect to be profileID 1
+                if ([self populateBook:xpsFilePath profileIDs:[NSArray arrayWithObject:[NSNumber numberWithInteger:1]]] == YES) {
+                    ret++;
+                }
+            }
+            
+            if ([self.managedObjectContext save:&error] == NO) {
+                NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
+                abort();
+            }
+
+            LambdaAlert *doneAlert = [[LambdaAlert alloc]
+                                  initWithTitle:NSLocalizedString(@"Import Complete", @"")
+                                      message:[NSString stringWithFormat:@"You imported %d book(s). Imported book(s) will be erased if you exit this bookshelf",[xpsFiles count]]];
+            [doneAlert addButtonWithTitle:NSLocalizedString(@"OK", @"") block:^{}];          
+            [doneAlert show];
+            [doneAlert release];
+        }
     }
     
     return(ret);

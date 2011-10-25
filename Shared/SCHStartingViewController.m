@@ -326,6 +326,8 @@ typedef enum {
             break;
     }
     
+    self.profileSyncState = kSCHStartingViewControllerProfileSyncStateSamplesSync;
+
     NSString *localManifest = [[NSBundle mainBundle] pathForResource:kSCHSampleBooksLocalManifestFile ofType:nil];
     NSURL *localManifestURL = localManifest ? [NSURL fileURLWithPath:localManifest] : nil;
     
@@ -341,11 +343,6 @@ typedef enum {
         [alert show]; 
         [alert release];  
     }];
-    
-    // if we were to actually login then a successful login would trigger a sync 
-    // after which a profile complete notification would handled. This code fakes that
-    self.profileSyncState = kSCHStartingViewControllerProfileSyncStateSamplesSync;
-    [[SCHSyncManager sharedSyncManager] firstSync:YES];
 }
 
 - (void)firstLogin
