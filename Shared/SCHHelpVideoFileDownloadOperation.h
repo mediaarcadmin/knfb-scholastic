@@ -7,12 +7,10 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "SCHDictionaryDownloadManager.h"
 #import "SCHHelpVideoManifest.h"
+#import "QHTTPOperation.h"
 
-@interface SCHHelpVideoFileDownloadOperation : NSOperation {
-    
-}
+@interface SCHHelpVideoFileDownloadOperation : NSOperation <QHTTPOperationDelegate>
 
 @property (nonatomic, retain) SCHHelpVideoManifest *videoManifest;
 @end
