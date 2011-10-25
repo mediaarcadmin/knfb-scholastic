@@ -7,6 +7,7 @@
 //
 
 #import "SCHSampleBooksManifestOperation.h"
+#import "SCHSyncManager.h"
 
 @interface SCHSampleBooksManifestOperation()
 
@@ -23,6 +24,7 @@
 - (void)startOp;
 - (void)finishOp;
 - (void)setCompletedWithSuccess:(BOOL)success failureReason:(NSString *)reason;
+- (BOOL)populateSampleStoreWithEntries:(NSArray *)entries;
 
 @end
 
@@ -91,6 +93,12 @@
     [self cancel];
 }
 
+
+- (BOOL)populateSampleStoreWithEntries:(NSArray *)entries
+{
+    return [[SCHSyncManager sharedSyncManager] populateSampleStoreFromManifestEntries:self.sampleEntries];
+}
+
 #pragma mark - NSURLConnection delegate
 
 - (void)connection:(NSURLConnection *)conn 
@@ -120,7 +128,15 @@ didReceiveResponse:(NSURLResponse *)response
     [aParser release];
     
     [self.manifestParser setDelegate:self];
-    [self.manifestParser parse];
+    if ([self.manifestParser parse]) {
+        if ([self populateSampleStoreWithEntries:self.sampleEntries]) {
+            [self setCompletedWithSuccess:YES failureReason:nil];
+        } else {
+            [self setCompletedWithSuccess:NO failureReason:NSLocalizedString(@"Unable to populate the store with the sample eBooks", @"")];
+        }
+    } else {
+        [self setCompletedWithSuccess:NO failureReason:NSLocalizedString(@"Unable to parse the sample eBooks URL", @"")];
+    }
 }
 
 - (void)connection:(NSURLConnection *)connection 
@@ -168,16 +184,6 @@ didStartElement:(NSString *)elementName
     }
     
     [self.currentStringValue appendString:[string stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]]];
-}
-
-- (void)parserDidEndDocument:(NSXMLParser *)parser
-{
-    [self setCompletedWithSuccess:YES failureReason:nil];
-}
-
-- (void)parser:(NSXMLParser *)parser parseErrorOccurred:(NSError *)parseError
-{
-    [self setCompletedWithSuccess:NO failureReason:NSLocalizedString(@"Unable to parse the sample eBooks URL", @"")];
 }
 
 #pragma mark - NSOperation methods
