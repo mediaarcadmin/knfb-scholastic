@@ -7,11 +7,11 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "SCHSampleBooksManager.h"
+#import "SCHSampleBooksImporter.h"
 
 @interface SCHSampleBooksManifestOperation : NSOperation  <NSXMLParserDelegate> {}
 
-@property (nonatomic, assign) id<SCHSampleBooksProcessingDelegate> processingDelegate;
+@property (nonatomic, assign) id<SCHSampleBooksImporterDelegate> processingDelegate;
 @property (nonatomic, copy) NSURL *manifestURL;
 
 @end
