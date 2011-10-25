@@ -8,13 +8,14 @@
 
 #import <Foundation/Foundation.h>
 
-extern NSString * const kSCHSampleBooksManifestURL;
+extern NSString * const kSCHSampleBooksRemoteManifestURL;
+extern NSString * const kSCHSampleBooksLocalManifestFile;
 
 typedef void (^SCHSampleBooksProcessingFailureBlock)(NSString * failureReason);
 
 @protocol SCHSampleBooksImporterDelegate <NSObject>
 
-- (void)setCompletedWithSuccess:(BOOL)success failureReason:(NSString *)reason;
+- (void)importFailedWithReason:(NSString *)reason;
 
 @end
 
@@ -22,10 +23,7 @@ typedef void (^SCHSampleBooksProcessingFailureBlock)(NSString * failureReason);
     
 }
 
-@property (nonatomic, retain) NSManagedObjectContext *mainThreadManagedObjectContext;
-@property (nonatomic, retain) NSPersistentStoreCoordinator *persistentStoreCoordinator;
-
-- (void)importSampleBooksFromManifestURL:(NSURL *)url failureBlock:(SCHSampleBooksProcessingFailureBlock)failureBlock;
+- (void)importSampleBooksFromRemoteManifest:(NSURL *)remote localManifest:(NSURL *)local failureBlock:(SCHSampleBooksProcessingFailureBlock)failureBlock;
 - (void)cancel;
 
 + (SCHSampleBooksImporter *)sharedImporter;

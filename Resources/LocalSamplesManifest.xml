@@ -1,0 +1,51 @@
+<SampleManifest>
+	<Book>
+		<Isbn13>9780545287012</Isbn13>
+		<Title>Scholastic Reader Level 1: Clifford and the Halloween Parade</Title>
+		<Author>Norman Bridwell</Author>
+		<CoverUrl>9780545287012_r1.HalloweenParade.jpg</CoverUrl>
+		<DownloadUrl>9780545287012_r1.HalloweenParade.xps</DownloadUrl>
+	</Book>
+	<Book>
+		<Isbn13>9780545289726</Isbn13>
+		<Title>Ollie's New Tricks</Title>
+		<Author>by True Kelley, illustrated by True Kelley</Author>
+		<CoverUrl>9780545289726_r1.OlliesNewTricks.jpg</CoverUrl>
+		<DownloadUrl>9780545289726_r1.OlliesNewTricks.xps</DownloadUrl>
+	</Book>
+	<Book>
+		<Isbn13>9780545345019</Isbn13>
+		<Title>llie Finkle's Rules for Girls: Moving Day</Title>
+		<Author>Meg Cabot</Author>
+		<CoverUrl>9780545345019_r1.AllieFinkleMovingDay.jpg</CoverUrl>
+		<DownloadUrl>9780545345019_r1.AllieFinkleMovingDay.xps</DownloadUrl>
+	</Book>
+	<Book>
+		<Isbn13>9780545327619</Isbn13>
+		<Title>Who Will Carve the Turkey This Thanksgiving?</Title>
+		<Author>by Jerry Pallotta, illustrated by David Biedrzycki</Author>
+		<CoverUrl>9780545327619_r1.WhoWillCarveTheTurkey.jpg</CoverUrl>
+		<DownloadUrl>9780545327619_r1.WhoWillCarveTheTurkey.xps</DownloadUrl>
+	</Book>
+    <Book>
+		<Isbn13>9780545366779</Isbn13>
+		<Title>The 39 Clues Book 1: The Maze of Bones</Title>
+		<Author>Rick Riordan</Author>
+		<CoverUrl>9780545366779.2.MazeOfBones.jpg</CoverUrl>
+		<DownloadUrl>9780545366779.2.MazeOfBones.xps</DownloadUrl>
+	</Book>
+    <Book>
+		<Isbn13>9780545308656</Isbn13>
+		<Title>Scholastic Reader Level 3: Stablemates: Patch</Title>
+		<Author>by Kristin Earhart, illustrated by Lisa Papp</Author>
+		<CoverUrl>9780545308656.6.StableMatesPatch.jpg</CoverUrl>
+		<DownloadUrl>9780545308656.6.StableMatesPatch.xps</DownloadUrl>
+	</Book>
+    <Book>
+		<Isbn13>9780545368896</Isbn13>
+		<Title>The Secrets of Droon #1: The Hidden Stairs and the Magic Carpet</Title>
+		<Author>by Tony Abbott, illustrated by Tim Jessell</Author>
+		<CoverUrl>9780545368896_r1.TheHiddenStairs.jpg</CoverUrl>
+		<DownloadUrl>9780545368896_r1.TheHiddenStairs.xp</DownloadUrl>
+	</Book>
+</SampleManifest>

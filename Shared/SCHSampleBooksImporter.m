@@ -10,13 +10,17 @@
 #import "Reachability.h"
 #import "SCHCoreDataHelper.h"
 #import "SCHSampleBooksManifestOperation.h"
+#import "SCHSyncManager.h"
 
-NSString * const kSCHSampleBooksManifestURL = @"http://bits.blioreader.com/partners/Scholastic/SampleBookshelf/SampleManifest.xml";
+NSString * const kSCHSampleBooksRemoteManifestURL = @"http://bits.blioreader.com/partners/Scholastic/SampleBookshelf/SampleManifest.xml";
+NSString * const kSCHSampleBooksLocalManifestFile = @"LocalSamplesManifest.xml";
 
 typedef enum {
 	kSCHSampleBooksProcessingStateError = 0,
     kSCHSampleBooksProcessingStateNotStarted,
-    kSCHSampleBooksProcessingStateInProgress
+    kSCHSampleBooksProcessingStateLocalManifestInProgress,
+    kSCHSampleBooksProcessingStateLocalManifestComplete,
+    kSCHSampleBooksProcessingStateRemoteManifestInProgress
 } SCHSampleBooksProcessingState;
 
 @interface SCHSampleBooksImporter()
@@ -25,17 +29,19 @@ typedef enum {
 @property (nonatomic, assign) SCHSampleBooksProcessingState processingState;
 @property (nonatomic, retain) NSOperationQueue *processingQueue;
 @property (nonatomic, retain) Reachability *reachabilityNotifier;
-@property (nonatomic, copy) NSURL *manifestURL;
+@property (nonatomic, copy) NSURL *remoteManifestURL;
+@property (nonatomic, copy) NSURL *localManifestURL;
 @property (nonatomic, copy) SCHSampleBooksProcessingFailureBlock failureBlock;
+@property (nonatomic, retain) NSMutableArray *sampleEntries;
 
-- (void)checkState;
 - (BOOL)isConnected;
-- (void)coreDataHelperManagedObjectContextDidChangeNotification:(NSNotification *)note;
 - (void)enterBackground:(NSNotification *)note;
 - (void)enterForeground:(NSNotification *)note;
-- (BOOL)save:(NSError **)error;
-- (void)start;
+- (void)checkRemoteState;
+- (void)startLocal;
+- (void)startRemote;
 - (void)reset;
+- (void)populateSampleStore;
 - (void)perfomFailureBlockOnMainThreadWithReason:(NSString *)failureReason;
 + (BOOL)stateIsReadyToBegin:(SCHSampleBooksProcessingState)state;
 
@@ -43,15 +49,14 @@ typedef enum {
 
 @implementation SCHSampleBooksImporter
 
-@synthesize mainThreadManagedObjectContext;
-@synthesize persistentStoreCoordinator;
-
 @synthesize backgroundTask;
 @synthesize processingState;
 @synthesize processingQueue;
 @synthesize reachabilityNotifier;
-@synthesize manifestURL;
+@synthesize remoteManifestURL;
+@synthesize localManifestURL;
 @synthesize failureBlock;
+@synthesize sampleEntries;
 
 - (void)dealloc
 {
@@ -60,10 +65,6 @@ typedef enum {
 
     [processingQueue cancelAllOperations];
     [processingQueue release], processingQueue = nil;
-    
-    [[NSNotificationCenter defaultCenter] removeObserver:self 
-                                                 name:SCHCoreDataHelperManagedObjectContextDidChangeNotification 
-                                               object:nil];	 
     
     [[NSNotificationCenter defaultCenter] removeObserver:self 
                                                  name:kReachabilityChangedNotification 
@@ -77,10 +78,10 @@ typedef enum {
                                                  name:UIApplicationWillEnterForegroundNotification 
                                                object:nil];
     
-    [mainThreadManagedObjectContext release], mainThreadManagedObjectContext = nil;
-    [persistentStoreCoordinator release], persistentStoreCoordinator = nil;
-    [manifestURL release], manifestURL = nil;
+    [remoteManifestURL release], remoteManifestURL = nil;
+    [localManifestURL release], localManifestURL = nil;
     [failureBlock release], failureBlock = nil;
+    [sampleEntries release], sampleEntries = nil;
 
     [super dealloc];
 }
@@ -90,11 +91,6 @@ typedef enum {
 	if ((self = [super init])) {
 		processingQueue = [[NSOperationQueue alloc] init];
 		[processingQueue setMaxConcurrentOperationCount:1];
-	        
-        [[NSNotificationCenter defaultCenter] addObserver:self 
-                                                 selector:@selector(coreDataHelperManagedObjectContextDidChangeNotification:) 
-                                                     name:SCHCoreDataHelperManagedObjectContextDidChangeNotification 
-                                                   object:nil];
         
         [[NSNotificationCenter defaultCenter] addObserver:self 
 												 selector:@selector(reachabilityNotification:) 
@@ -115,20 +111,28 @@ typedef enum {
 	return self;
 }
 
-- (void)importSampleBooksFromManifestURL:(NSURL *)url failureBlock:(SCHSampleBooksProcessingFailureBlock)aFailureBlock
+- (void)importSampleBooksFromRemoteManifest:(NSURL *)remote localManifest:(NSURL *)local failureBlock:(SCHSampleBooksProcessingFailureBlock)aFailureBlock;
 {
     [self cancel];
     
-    self.manifestURL = url;
+    self.remoteManifestURL = remote;
+    self.localManifestURL = local;
     self.failureBlock = aFailureBlock;
+    self.sampleEntries = [NSMutableArray array];
     
-    [self start];
+    if (self.localManifestURL) {
+        [self startLocal];
+    } else if (self.remoteManifestURL) {
+        [self checkRemoteState];
+    }    
 }
 
-- (void)checkState
+- (void)checkRemoteState
 {
-	if ([self isConnected] && [SCHSampleBooksImporter stateIsReadyToBegin:self.processingState] && self.manifestURL) {
-        [self start];
+    self.reachabilityNotifier = [Reachability reachabilityForInternetConnection];
+
+	if ([self isConnected] && [SCHSampleBooksImporter stateIsReadyToBegin:self.processingState]) {
+        [self startRemote];
 	} else {
 		[self.processingQueue cancelAllOperations];
 	}
@@ -147,28 +151,74 @@ typedef enum {
     [self.reachabilityNotifier stopNotifier];
     self.reachabilityNotifier = nil;
     
-    self.manifestURL = nil;
-    self.failureBlock = nil;  
+    self.remoteManifestURL = nil;
+    self.localManifestURL = nil;
+    self.failureBlock = nil;
+    self.sampleEntries = nil;
+}
+        
+- (void)startLocal
+{
+    self.processingState = kSCHSampleBooksProcessingStateLocalManifestInProgress;
+    
+    SCHSampleBooksManifestOperation *manifestOp = [[SCHSampleBooksManifestOperation alloc] init];
+    manifestOp.manifestURL = self.localManifestURL;
+    manifestOp.processingDelegate = self;
+    
+    __block SCHSampleBooksManifestOperation *opPtr = manifestOp;
+    
+    [manifestOp setCompletionBlock:^{
+        if (![opPtr isCancelled]) {
+            dispatch_sync(dispatch_get_main_queue(), ^{
+                [self.sampleEntries addObjectsFromArray:opPtr.sampleEntries];
+                self.processingState = kSCHSampleBooksProcessingStateLocalManifestComplete;
+                
+                self.reachabilityNotifier = [Reachability reachabilityForInternetConnection];
+
+                if ([self isConnected]) {
+                    [self startRemote];
+                } else {
+                    [self populateSampleStore];
+                    [self reset];
+                }
+            });
+        }
+    }];
+    
+    [self.processingQueue addOperation:manifestOp];
+    [manifestOp release];      
 }
 
-- (void)start
-{
-    switch (self.processingState) {
-        case kSCHSampleBooksProcessingStateError:
-        case kSCHSampleBooksProcessingStateNotStarted:
-        {
-            self.reachabilityNotifier = [Reachability reachabilityForInternetConnection];
-            
-            SCHSampleBooksManifestOperation *manifestOp = [[SCHSampleBooksManifestOperation alloc] init];
-            manifestOp.manifestURL = self.manifestURL;
-            manifestOp.processingDelegate = self;
-            [self.processingQueue addOperation:manifestOp];
-            [manifestOp release];
-            break;
-
+- (void)startRemote
+{    
+    SCHSampleBooksManifestOperation *manifestOp = [[SCHSampleBooksManifestOperation alloc] init];
+    manifestOp.manifestURL = self.remoteManifestURL;
+    manifestOp.processingDelegate = self;
+    
+    __block SCHSampleBooksManifestOperation *opPtr = manifestOp;
+    
+    [manifestOp setCompletionBlock:^{
+        if (![opPtr isCancelled]) {
+            dispatch_sync(dispatch_get_main_queue(), ^{
+                [self.sampleEntries addObjectsFromArray:opPtr.sampleEntries];
+                [self populateSampleStore];
+                [self reset];
+            });
         }
-        default:
-            break;
+    }];
+
+    
+    [self.processingQueue addOperation:manifestOp];
+    [manifestOp release];
+}
+                          
+- (void)populateSampleStore {
+    if ([self.sampleEntries count]) {
+        if (![[SCHSyncManager sharedSyncManager] populateSampleStoreFromManifestEntries:self.sampleEntries]) {
+            [self importFailedWithReason:NSLocalizedString(@"Unable to populate the store with the sample eBooks", @"")];
+        }
+    } else {
+        [self importFailedWithReason:NSLocalizedString(@"No sample eBooks were found", @"")];
     }
 }
 
@@ -186,13 +236,10 @@ typedef enum {
     }
 }
 
-- (void)setCompletedWithSuccess:(BOOL)success failureReason:(NSString *)reason
+- (void)importFailedWithReason:(NSString *)reason
 {
-    if (success) {
-        [self reset];
-    } else {
-        [self perfomFailureBlockOnMainThreadWithReason:reason];
-    }
+    [self cancel];
+    [self perfomFailureBlockOnMainThreadWithReason:reason];
 }
 
 - (void)enterBackground:(NSNotification *)note
@@ -236,19 +283,7 @@ typedef enum {
 		self.backgroundTask = UIBackgroundTaskInvalid;
 	}		
 	
-	[self checkState];
-}
-
-- (BOOL)save:(NSError **)error
-{
-    __block BOOL rtn;
-    dispatch_sync(dispatch_get_main_queue(), ^{
-        NSError *localError = nil;
-        rtn = [self.mainThreadManagedObjectContext save:&localError];
-        *error = [localError retain];
-    });
-    [*error autorelease];
-    return rtn;
+	[self checkRemoteState];
 }
 
 #pragma mark -
@@ -257,9 +292,7 @@ typedef enum {
 - (void)reachabilityNotification:(NSNotification *)note
 {
     if (self.reachabilityNotifier == [note object]) {
-        if ([self isConnected]) {
-            [self checkState];
-        }
+        [self checkRemoteState];
     }
 }
 
@@ -289,7 +322,7 @@ typedef enum {
   
 + (BOOL)stateIsReadyToBegin:(SCHSampleBooksProcessingState)state
 {
-    return (state == kSCHSampleBooksProcessingStateError) || (state == kSCHSampleBooksProcessingStateNotStarted);
+    return (state == kSCHSampleBooksProcessingStateError) || (state == kSCHSampleBooksProcessingStateNotStarted) || (state == kSCHSampleBooksProcessingStateLocalManifestComplete);
 }
                                
 #pragma mark - Singleton Instance method
@@ -304,14 +337,6 @@ typedef enum {
     });
 	
     return sharedManager;
-}
-
-#pragma mark - NSManagedObjectContext Changed Notification
-
-- (void)coreDataHelperManagedObjectContextDidChangeNotification:(NSNotification *)notification
-{
-    [self.processingQueue cancelAllOperations];
-    self.mainThreadManagedObjectContext = [[notification userInfo] objectForKey:SCHCoreDataHelperManagedObjectContext];
 }
 
 @end

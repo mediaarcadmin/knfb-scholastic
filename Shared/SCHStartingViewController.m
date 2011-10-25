@@ -326,7 +326,12 @@ typedef enum {
             break;
     }
     
-    [[SCHSampleBooksImporter sharedImporter] importSampleBooksFromManifestURL:[NSURL URLWithString:kSCHSampleBooksManifestURL] failureBlock:^(NSString * failureReason){
+    NSString *localManifest = [[NSBundle mainBundle] pathForResource:kSCHSampleBooksLocalManifestFile ofType:nil];
+    NSURL *localManifestURL = localManifest ? [NSURL fileURLWithPath:localManifest] : nil;
+    
+    [[SCHSampleBooksImporter sharedImporter] importSampleBooksFromRemoteManifest:[NSURL URLWithString:kSCHSampleBooksRemoteManifestURL] 
+                                                                   localManifest:localManifestURL
+                                                                    failureBlock:^(NSString * failureReason){
         LambdaAlert *alert = [[LambdaAlert alloc]
                               initWithTitle:NSLocalizedString(@"Unable To Retrieve all Samples", @"")
                               message:[NSString stringWithFormat:NSLocalizedString(@"There was a problem whilst checking for the sample eBooks. %@. Please try again.", @""), failureReason]];

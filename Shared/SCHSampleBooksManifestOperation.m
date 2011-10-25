@@ -7,7 +7,6 @@
 //
 
 #import "SCHSampleBooksManifestOperation.h"
-#import "SCHSyncManager.h"
 
 @interface SCHSampleBooksManifestOperation()
 
@@ -17,14 +16,13 @@
 @property (nonatomic, retain) NSURLConnection *connection;
 @property (nonatomic, retain) NSXMLParser *manifestParser;
 @property (nonatomic, retain) NSMutableData *connectionData;
-@property (nonatomic, retain) NSMutableArray *sampleEntries;
+@property (nonatomic, retain) NSMutableArray *sampleManifestEntries;
 @property (nonatomic, retain) NSMutableDictionary *currentEntry;
 @property (nonatomic, retain) NSMutableString *currentStringValue;
 
 - (void)startOp;
 - (void)finishOp;
-- (void)setCompletedWithSuccess:(BOOL)success failureReason:(NSString *)reason;
-- (BOOL)populateSampleStoreWithEntries:(NSArray *)entries;
+- (void)importFailedWithReason:(NSString *)reason;
 
 @end
 
@@ -37,7 +35,7 @@
 @synthesize manifestParser;
 @synthesize connection;
 @synthesize connectionData;
-@synthesize sampleEntries;
+@synthesize sampleManifestEntries;
 @synthesize currentEntry;
 @synthesize currentStringValue;
 
@@ -48,7 +46,7 @@
 	[connection release], connection = nil;
 	[connectionData release], connectionData = nil;
 	[manifestParser release], manifestParser = nil;
-    [sampleEntries release], sampleEntries = nil;
+    [sampleManifestEntries release], sampleManifestEntries = nil;
     [currentEntry release], currentEntry = nil;
     [currentStringValue release], currentStringValue = nil;
 	
@@ -67,7 +65,7 @@
         }
         
         if (self.manifestURL == nil ) {
-            [self setCompletedWithSuccess:NO failureReason:NSLocalizedString(@"No sample eBooks URL was supplied", @"")];
+            [self importFailedWithReason:NSLocalizedString(@"No sample eBooks URL was supplied", @"")];
         } else {
             
             self.connectionData = [[[NSMutableData alloc] init] autorelease];
@@ -77,26 +75,24 @@
                                delegate:self];
             
             if (self.connection == nil ) {
-                [self setCompletedWithSuccess:NO failureReason:NSLocalizedString(@"Unable to create a connection for the sample eBooks download", @"")];
+                [self importFailedWithReason:NSLocalizedString(@"Unable to create a connection for the sample eBooks download", @"")];
             } else {
-                self.sampleEntries = [NSMutableArray array];
+                self.sampleManifestEntries = [NSMutableArray array];
                 [self startOp];
             }    
         }
 	}
 }
 
-- (void)setCompletedWithSuccess:(BOOL)success failureReason:(NSString *)reason
+- (NSArray *)sampleEntries
 {
-    NSLog(@"Parsed out the samples manifest: %@", self.sampleEntries);
-    [self.processingDelegate setCompletedWithSuccess:success failureReason:reason];
-    [self cancel];
+    return self.sampleManifestEntries;
 }
 
-
-- (BOOL)populateSampleStoreWithEntries:(NSArray *)entries
+- (void)importFailedWithReason:(NSString *)reason
 {
-    return [[SCHSyncManager sharedSyncManager] populateSampleStoreFromManifestEntries:self.sampleEntries];
+    [self cancel];
+    [self.processingDelegate importFailedWithReason:reason];
 }
 
 #pragma mark - NSURLConnection delegate
@@ -108,7 +104,7 @@ didReceiveResponse:(NSURLResponse *)response
         if ([(NSHTTPURLResponse *)response statusCode] != 200) {
             [conn cancel];
             NSLog(@"Error downloading file, errorCode: %d", [(NSHTTPURLResponse *)response statusCode]);
-            [self setCompletedWithSuccess:NO failureReason:NSLocalizedString(@"No response from the sample eBooks URL", @"")];
+            [self importFailedWithReason:NSLocalizedString(@"No response from the sample eBooks URL", @"")];
             return;
         }
     }
@@ -129,20 +125,16 @@ didReceiveResponse:(NSURLResponse *)response
     
     [self.manifestParser setDelegate:self];
     if ([self.manifestParser parse]) {
-        if ([self populateSampleStoreWithEntries:self.sampleEntries]) {
-            [self setCompletedWithSuccess:YES failureReason:nil];
-        } else {
-            [self setCompletedWithSuccess:NO failureReason:NSLocalizedString(@"Unable to populate the store with the sample eBooks", @"")];
-        }
+        [self finishOp];
     } else {
-        [self setCompletedWithSuccess:NO failureReason:NSLocalizedString(@"Unable to parse the sample eBooks URL", @"")];
+        [self importFailedWithReason:NSLocalizedString(@"Unable to parse the sample eBooks URL", @"")];
     }
 }
 
 - (void)connection:(NSURLConnection *)connection 
   didFailWithError:(NSError *)error
 {
-    [self setCompletedWithSuccess:NO failureReason:NSLocalizedString(@"Unable to download from the sample eBooks URL", @"")];   
+    [self importFailedWithReason:NSLocalizedString(@"Unable to download from the sample eBooks URL", @"")];   
 }
 
 #pragma mark - NSXMLParserDelegate methods
@@ -164,7 +156,7 @@ didStartElement:(NSString *)elementName
  qualifiedName:(NSString *)qName
 {
 	if ([elementName isEqualToString:@"Book"]) {
-        [self.sampleEntries addObject:self.currentEntry];
+        [self.sampleManifestEntries addObject:self.currentEntry];
 		self.currentEntry = nil;
 	} else if ([elementName isEqualToString:@"Isbn13"] ||
                [elementName isEqualToString:@"Title"] ||
