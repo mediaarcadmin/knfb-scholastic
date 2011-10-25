@@ -8,11 +8,9 @@
 
 #import <Foundation/Foundation.h>
 #import "SCHDictionaryDownloadManager.h"
+#import "QHTTPOperation.h"
 
-
-@interface SCHDictionaryFileDownloadOperation : NSOperation {
-
-}
+@interface SCHDictionaryFileDownloadOperation : NSOperation <QHTTPOperationDelegate>
 
 @property (nonatomic, retain) SCHDictionaryManifestEntry *manifestEntry;
 @end

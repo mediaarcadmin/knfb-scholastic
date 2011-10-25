@@ -13,24 +13,18 @@
 
 @interface SCHDictionaryFileDownloadOperation ()
 
-@property BOOL executing;
-@property BOOL finished;
-
 // a local file manager, for thread safety
 @property (nonatomic, retain) NSFileManager *localFileManager;
-@property (nonatomic, retain) NSFileHandle *fileHandle;
-@property (nonatomic, assign) unsigned long long currentFilesize;
+@property (nonatomic, retain) QHTTPOperation *downloadOperation;
 
 // the total file size reported by the HTTP header
 @property unsigned long long expectedFileSize;
 
 // the previous percentage reported - used to limit percentage notifications
-@property float previousPercentage;
+@property NSInteger previousPercentage;
 
-@property (readwrite, retain) NSString *localPath;
-
-- (void)beginConnection;
-- (void)createPercentageUpdate;
+- (void)fireProgressUpdate:(float)progress;
+- (void)finishedDownload;
 - (BOOL)fileSystemHasBytesAvailable:(unsigned long long)sizeInBytes;
 
 @end
@@ -39,97 +33,71 @@
 
 @implementation SCHDictionaryFileDownloadOperation
 
-@synthesize executing;
-@synthesize finished;
 @synthesize expectedFileSize;
 @synthesize previousPercentage;
-@synthesize localPath;
 @synthesize manifestEntry;
 @synthesize localFileManager;
-@synthesize fileHandle;
-@synthesize currentFilesize;
+@synthesize downloadOperation;
 
-#pragma mark -
-#pragma mark Memory Management
+#pragma mark - Memory Management
 
 - (void)dealloc
 {
-	[localPath release], localPath = nil;
     [localFileManager release], localFileManager = nil;
-    [fileHandle closeFile];
-    [fileHandle release], fileHandle = nil;
+    [downloadOperation release], downloadOperation = nil;
 	[super dealloc];
 }
 
-#pragma mark -
-#pragma mark Startup
+#pragma mark - Startup
+
 - (void)start
 {
     NSAssert(self.manifestEntry != nil, @"File URL cannot be nil for SCHDictionaryFileDownloadOperation.");
 
 	if ([self isCancelled]) {
 		NSLog(@"Cancelled.");
-	} else {
-        // Following Dave Dribins pattern 
-        // http://www.dribin.org/dave/blog/archives/2009/05/05/concurrent_operations/
-        if (![NSThread isMainThread])
-        {
-            [self performSelectorOnMainThread:@selector(start) withObject:nil waitUntilDone:NO];
-            return;
-        }
-		
-		self.localPath = [[SCHDictionaryDownloadManager sharedDownloadManager] dictionaryZipPath];
-        self.localFileManager = [[[NSFileManager alloc] init] autorelease];
-
-		[self beginConnection];
+        return;
 	}
-}
 
-- (void)beginConnection
-{
-	NSError *error = nil;
-	
-    // check in here for available device space
+    [self willChangeValueForKey:@"isExecuting"];
     
-	// check first to see if the file has been created
-	NSMutableURLRequest *request = nil;
-	
-    NSLog(@"trying to download file with URL %@", self.manifestEntry.url);
+    NSString *localPath = [[SCHDictionaryDownloadManager sharedDownloadManager] dictionaryZipPath];
+    BOOL append = NO;
+
+    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:self.manifestEntry.url]];
     
-	request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:self.manifestEntry.url]];
-	
-	self.currentFilesize = 0;
-	
-	if ([self.localFileManager fileExistsAtPath:self.localPath]) {
+    self.localFileManager = [[[NSFileManager alloc] init] autorelease];
+	if ([self.localFileManager fileExistsAtPath:localPath]) {
 		// check to see how much of the file has been downloaded
-		
-		self.currentFilesize = [[self.localFileManager attributesOfItemAtPath:self.localPath error:&error] fileSize];
-		
+        NSError *error = nil;
+		unsigned long long currentFilesize = [[self.localFileManager attributesOfItemAtPath:localPath error:&error] fileSize];
 		if (error) {
 			NSLog(@"Error when reading file attributes. Stopping. (%@)", [error localizedDescription]);
             [self cancel];
 			return;
 		}
-	}
-    
-	if (self.currentFilesize > 0) {
-		[request setValue:[NSString stringWithFormat:@"bytes=%llu-", self.currentFilesize] forHTTPHeaderField:@"Range"];
-	} else {
-		[self.localFileManager createFileAtPath:self.localPath contents:nil attributes:nil];
-	}
-	
-	NSURLConnection *connection = [NSURLConnection connectionWithRequest:request delegate:self];
-
-	if (connection == nil) {
-        [self cancel];
-    } else {
-        [connection start];
-        [[BITNetworkActivityManager sharedNetworkActivityManager] showNetworkActivityIndicator];        
+        
+        if (currentFilesize > 0) {
+            [request setValue:[NSString stringWithFormat:@"bytes=%llu-", currentFilesize] forHTTPHeaderField:@"Range"];
+            append = YES;
+        }
     }
-}
 
-#pragma mark -
-#pragma mark NSURLConnection delegate methods
+    self.downloadOperation = [[QHTTPOperation alloc] initWithRequest:request];
+    self.downloadOperation.responseOutputStream = [NSOutputStream outputStreamToFileAtPath:localPath append:append];
+    self.downloadOperation.delegate = self;
+    
+    __block SCHDictionaryFileDownloadOperation *unretained_self = self;
+    self.downloadOperation.completionBlock = ^{
+        [unretained_self finishedDownload];
+    };
+
+    [self didChangeValueForKey:@"isExecuting"];
+    
+    [[BITNetworkActivityManager sharedNetworkActivityManager] showNetworkActivityIndicator];
+    
+    [self.downloadOperation start];
+}
 
 - (BOOL)fileSystemHasBytesAvailable:(unsigned long long)sizeInBytes
 {
@@ -144,142 +112,78 @@
     return (sizeInBytes <= freeSize);
 }
 
-- (void)connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response
+- (void)finishedDownload
 {
-    if ([response isKindOfClass:[NSHTTPURLResponse class]] == YES) {
-        if ([(NSHTTPURLResponse *)response statusCode] != 200 && 
-            [(NSHTTPURLResponse *)response statusCode] != 206) {
-            [connection cancel];
-            [[BITNetworkActivityManager sharedNetworkActivityManager] hideNetworkActivityIndicator];
-            NSLog(@"Error downloading file, errorCode: %d", [(NSHTTPURLResponse *)response statusCode]);
-            [self cancel];
-            return;
-        }
-    } 
+    [self.downloadOperation waitUntilFinished];
 
-    NSLog(@"Dictionary Filesize receiving:%llu expected:%llu", self.currentFilesize, [response expectedContentLength]);
+    [self willChangeValueForKey:@"isExecuting"];
+    [self willChangeValueForKey:@"isFinished"];
+    self.downloadOperation = nil;
+    [self didChangeValueForKey:@"isFinished"];
+    [self didChangeValueForKey:@"isExecuting"];
     
-	if (self.currentFilesize == [response expectedContentLength]) {
+    [[BITNetworkActivityManager sharedNetworkActivityManager] hideNetworkActivityIndicator];
+    
+    if (![self isCancelled]) {
+        // fire a 100% notification
+        [self fireProgressUpdate:1.0f];
         [[SCHDictionaryDownloadManager sharedDownloadManager] threadSafeUpdateDictionaryState:SCHDictionaryProcessingStateNeedsUnzip];
-        [connection cancel];
-        [[BITNetworkActivityManager sharedNetworkActivityManager] hideNetworkActivityIndicator];        
+    }
+}
+
+#pragma mark - QHTTPOperationDelegate
+
+- (void)httpOperation:(QHTTPOperation *)operation startedDownloadingDataSize:(long long)expectedDataSize
+{
+    BOOL sufficientSpace;
+    if (expectedDataSize == NSURLResponseUnknownLength) {
+        sufficientSpace = [self fileSystemHasBytesAvailable:1];
+    } else {
+        sufficientSpace = [self fileSystemHasBytesAvailable:expectedDataSize];
+    }
+    
+    if (!sufficientSpace) {
+        [[SCHDictionaryDownloadManager sharedDownloadManager] threadSafeUpdateDictionaryState:SCHDictionaryProcessingStateNotEnoughFreeSpace];
+        [operation cancel];
+        [[BITNetworkActivityManager sharedNetworkActivityManager] hideNetworkActivityIndicator];            
         [self cancel];
         return;
-	}
-    
-    // if we cannot determine the expectedContentLength, then bail if the free space is 0
-    // oherwise bail if the the free space < expectedContentLength
-    if (([response expectedContentLength] != NSURLResponseUnknownLength)) {
-        if (![self fileSystemHasBytesAvailable:[response expectedContentLength]]) {
-            [[SCHDictionaryDownloadManager sharedDownloadManager] threadSafeUpdateDictionaryState:SCHDictionaryProcessingStateNotEnoughFreeSpace];
-            [connection cancel];
-            [[BITNetworkActivityManager sharedNetworkActivityManager] hideNetworkActivityIndicator];            
-            [self cancel];
-            return;
-        }
     }
-
-	self.expectedFileSize = [response expectedContentLength] + self.currentFilesize;
-	self.previousPercentage = -1;
-	
-	[self createPercentageUpdate];
-    self.fileHandle = [NSFileHandle fileHandleForWritingAtPath:self.localPath];
-    [self.fileHandle seekToEndOfFile];
+    
+    NSLog(@"start downloading dictionary size = %llu", expectedDataSize);
+    self.expectedFileSize = expectedDataSize;
 }
 
-- (void)connection:(NSURLConnection *)connection didReceiveData:(NSData *)data
-{	
-    @synchronized(self) {
-        @try {
-            [self.fileHandle writeData:data];
-            self.currentFilesize += [data length];
-        }
-        @catch (NSException *exception) {
-            [[SCHDictionaryDownloadManager sharedDownloadManager] threadSafeUpdateDictionaryState:SCHDictionaryProcessingStateNotEnoughFreeSpace];
-            [connection cancel];
-            [[BITNetworkActivityManager sharedNetworkActivityManager] hideNetworkActivityIndicator];            
-            [self cancel];
-        }
+- (void)httpOperation:(QHTTPOperation *)operation updatedDownloadSize:(long long)downloadedSize
+{
+    if (self.expectedFileSize == NSURLResponseUnknownLength) {
+        return;
     }
-	
-	if ([self isCancelled]) {
-		[connection cancel];
-        [[BITNetworkActivityManager sharedNetworkActivityManager] hideNetworkActivityIndicator];        
-        [self cancel];
-		return;
-	}
-
-	[self createPercentageUpdate];
-}
-
-- (void)connectionDidFinishLoading:(NSURLConnection *)connection
-{
-	NSLog(@"Finished file %@.", [self.localPath lastPathComponent]);
-	
-    [[BITNetworkActivityManager sharedNetworkActivityManager] hideNetworkActivityIndicator];
     
-	// fire a 100% notification
-	NSDictionary *userInfo = [NSDictionary dictionaryWithObjectsAndKeys:
-							  [NSNumber numberWithFloat:1.0f], @"currentPercentage",
-							  nil];
-	
-	[self performSelectorOnMainThread:@selector(firePercentageUpdate:) 
-						   withObject:userInfo
-						waitUntilDone:YES];
-	
-	[[SCHDictionaryDownloadManager sharedDownloadManager] threadSafeUpdateDictionaryState:SCHDictionaryProcessingStateNeedsUnzip];
-//	[SCHDictionaryManager sharedDownloadManager].dictionaryState = SCHDictionaryProcessingStateNeedsUnzip;
-	
-    [self cancel];
+    float progress = (float)downloadedSize / self.expectedFileSize;
+    NSInteger percentage = (NSInteger)(100*progress);
+    if (percentage != self.previousPercentage) {
+        [self fireProgressUpdate:progress];
+        self.previousPercentage = percentage;
+    }
 }
 
-- (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error
+#pragma mark - progress
+
+- (void)fireProgressUpdate:(float)progress
 {
-	NSLog(@"Stopped downloading file - %@", [error localizedDescription]);
-	
-    [[BITNetworkActivityManager sharedNetworkActivityManager] hideNetworkActivityIndicator];
+	NSAssert(self.expectedFileSize != NSURLResponseUnknownLength, @"can't send progress updates for unknown file size");
+
+    NSLog(@"percentage for dictionary: %2.4f%%", progress * 100);
     
-    //	[[SCHDictionaryManager sharedDownloadManager] threadSafeUpdateDictionaryState:SCHDictionaryProcessingStateError];
-//	[SCHDictionaryManager sharedDownloadManager].dictionaryState = SCHDictionaryProcessingStateNeedsDownload;
-	
-    [self cancel];
-}
-
-#pragma mark - Percentage methods
-
-- (void)createPercentageUpdate
-{
-	NSError *error = nil;
-	
-	if (error) {
-		NSLog(@"Warning: could not get filesize.");
-	}
-	
-	if (self.expectedFileSize != NSURLResponseUnknownLength) {
-		
-		float percentage = (self.expectedFileSize > 0 ? (float)((float)self.currentFilesize / (float)self.expectedFileSize) : 0.0);
-		
-		if (percentage - self.previousPercentage > 0.001f) {
-			
-			NSDictionary *userInfo = [NSDictionary dictionaryWithObjectsAndKeys:
-									  [NSNumber numberWithFloat:percentage], @"currentPercentage",
-									  nil];
-			
-			NSLog(@"percentage for dictionary: %2.4f%%", percentage * 100);
-			
-			[self performSelectorOnMainThread:@selector(firePercentageUpdate:) 
-								   withObject:userInfo
-								waitUntilDone:NO];
-			
-			self.previousPercentage = percentage;
-		}
-	}
-}
-
-- (void)firePercentageUpdate:(NSDictionary *)userInfo
-{
-    NSAssert(userInfo != nil, @"firePercentageUpdate is incorrectly being called with no userInfo");
-	[[NSNotificationCenter defaultCenter] postNotificationName:kSCHDictionaryDownloadPercentageUpdate object:nil userInfo:userInfo];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        NSDictionary *userInfo = [NSDictionary dictionaryWithObjectsAndKeys:
+                                  [NSNumber numberWithFloat:progress], @"currentPercentage",
+                                  nil];
+        [[NSNotificationCenter defaultCenter] postNotificationName:kSCHDictionaryDownloadPercentageUpdate
+                                                            object:self
+                                                          userInfo:userInfo];
+    });
 }
 
 #pragma mark - NSOperation methods
@@ -291,26 +195,17 @@
 
 - (BOOL)isExecuting
 {
-	return self.executing;
+    return [self.downloadOperation isExecuting];
 }
 
 - (BOOL)isFinished
 {
-	return self.finished;
+	return self.downloadOperation == nil;
 }
 
 - (void)cancel
 {
-	NSLog(@"%%%% cancelling download file operation");
-    [self.fileHandle closeFile];
-    self.fileHandle = nil;    
-    [self willChangeValueForKey:@"isExecuting"];
-    [self willChangeValueForKey:@"isFinished"];
-	self.finished = YES;
-	self.executing = NO;
-    [self didChangeValueForKey:@"isExecuting"];
-    [self didChangeValueForKey:@"isFinished"];
-
+    [self.downloadOperation cancel];
 	[super cancel];
 }
 	
