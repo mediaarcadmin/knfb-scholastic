@@ -299,6 +299,8 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 131;
         self.updateShelfOnReturnToShelf = NO;
         self.books = [self.profileItem allBookIdentifiers];
     }    
+    
+    [self reloadData];
 }
 
 - (void)reloadData

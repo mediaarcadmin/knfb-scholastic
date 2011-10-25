@@ -38,19 +38,13 @@ enum {
 };
 
 enum {
-    kNumberOfSampleBookshelves = 2,
+    kNumberOfSampleBookshelves = 1,
     
     kTableOffsetPortrait_iPad = 240,
     kTableOffsetLandscape_iPad = 120,
-    kTableOffsetPortrait_iPhone = 0,
+    kTableOffsetPortrait_iPhone = 20,
     kTableOffsetLandscape_iPhone = 0
 };
-
-typedef enum {
-	SCHStartingViewControllerYoungerBookshelf,
-    SCHStartingViewControllerOlderBookshelf,
-    SCHStartingViewControllerNoSampleBookshelf
-} SCHStartingViewControllerBookshelf;
 
 typedef enum {
 	kSCHStartingViewControllerProfileSyncStateNone = 0,
@@ -64,14 +58,12 @@ typedef enum {
 @interface SCHStartingViewController ()
 
 @property (nonatomic, retain) SCHProfileViewController_Shared *profileViewController;
-@property (nonatomic, assign) SCHStartingViewControllerBookshelf sampleBookshelf;
 @property (nonatomic, assign) SCHStartingViewControllerProfileSyncState profileSyncState;
 @property (nonatomic, retain) LambdaAlert *checkProfilesAlert;
 
 - (void)setupAssetsForOrientation:(UIInterfaceOrientation)orientation;
 - (void)firstLogin;
-- (NSString *)sampleBookshelfTitleAtIndex:(NSInteger)index;
-- (void)openSampleBookshelfAtIndex:(NSInteger)index;
+- (void)openSampleBookshelf;
 - (void)showSignInForm;
 - (BOOL)dictionaryDownloadRequired;
 - (BOOL)bookshelfSetupRequired;
@@ -94,7 +86,6 @@ typedef enum {
 @synthesize signInHeaderView;
 @synthesize modalNavigationController;
 @synthesize profileViewController;
-@synthesize sampleBookshelf;
 @synthesize profileSyncState;
 
 - (void)releaseViewObjects
@@ -269,7 +260,7 @@ typedef enum {
 
     switch (section) {
         case kTableSectionSamples:
-            [cell setTitle:[self sampleBookshelfTitleAtIndex:indexPath.row]];
+            [cell setTitle: NSLocalizedString(@"Sample Bookshelf", @"")];
             break;
         case kTableSectionSignIn:
             [cell setTitle:NSLocalizedString(@"Sign In", @"starter view sign in button title")];
@@ -286,11 +277,10 @@ typedef enum {
 
     switch (section) {
         case kTableSectionSamples:
-            [self openSampleBookshelfAtIndex:indexPath.row];
+            [self openSampleBookshelf];
             break;
             
         case kTableSectionSignIn:
-			self.sampleBookshelf = SCHStartingViewControllerNoSampleBookshelf;
             [self showSignInForm];
             break;
     }
@@ -298,33 +288,12 @@ typedef enum {
 
 #pragma mark - Sample bookshelves
 
-- (NSString *)sampleBookshelfTitleAtIndex:(NSInteger)index
-{
-    switch (index) {
-        case SCHStartingViewControllerYoungerBookshelf: 
-            return NSLocalizedString(@"Younger kids' bookshelf (3-6)", @"younger kids sample bookshelf name");
-        case SCHStartingViewControllerOlderBookshelf: 
-            return NSLocalizedString(@"Older kids' bookshelf (7+)", @"older kids sample bookshelf name");
-    }
-    return nil;
-}
-
-- (void)openSampleBookshelfAtIndex:(NSInteger)index
+- (void)openSampleBookshelf
 {
     AppDelegate_Shared *appDelegate = (AppDelegate_Shared *)[[UIApplication sharedApplication] delegate];
 
     [appDelegate.coreDataHelper setupSampleStore];            
-    
-    switch (index) {
-        case SCHStartingViewControllerYoungerBookshelf: 
-            [appDelegate.coreDataHelper setStoreType:SCHCoreDataHelperSampleStore];
-            self.sampleBookshelf = SCHStartingViewControllerYoungerBookshelf;
-            break;
-        case SCHStartingViewControllerOlderBookshelf: 
-            [appDelegate.coreDataHelper setStoreType:SCHCoreDataHelperSampleStore];
-            self.sampleBookshelf = SCHStartingViewControllerOlderBookshelf;
-            break;
-    }
+    [appDelegate.coreDataHelper setStoreType:SCHCoreDataHelperSampleStore];
     
     self.profileSyncState = kSCHStartingViewControllerProfileSyncStateSamplesSync;
 
@@ -589,12 +558,14 @@ typedef enum {
     if (alreadyInUse == NO) {
         [self.navigationController pushViewController:profile animated:NO];
     }
+    
     for (SCHProfileItem *item in [profile.fetchedResultsController fetchedObjects]) {
-        if ([item.ID integerValue] == sampleBookshelf + 1) {    // added 1 to convert from index to profileID
+        if ([item.ID integerValue] == 1) {
             [profile pushBookshelvesControllerWithProfileItem:item animated:shouldAnimatePush];
             break;
         }
     }
+    
 }
 
 - (void)showCurrentProfileAnimated:(BOOL)animated
