@@ -12,12 +12,14 @@
 #import "LambdaAlert.h"
 #import "SCHUnderlinedButton.h"
 #import "Reachability.h"
+#import "SCHAccountValidation.h"
 
 static const CGFloat kDeregisterContentHeightLandscape = 380;
 
 @interface SCHDeregisterDeviceViewController ()
 
 @property (nonatomic, retain) UITextField *activeTextField;
+@property (nonatomic, retain) SCHAccountValidation *accountValidation;
 
 - (void)setupContentSizeForOrientation:(UIInterfaceOrientation)orientation;
 - (void)makeVisibleTextField:(UITextField *)textField;
@@ -32,6 +34,7 @@ static const CGFloat kDeregisterContentHeightLandscape = 380;
 @synthesize spinner;
 @synthesize scrollView;
 @synthesize activeTextField;
+@synthesize accountValidation;
 
 - (void)releaseViewObjects
 {
@@ -52,6 +55,7 @@ static const CGFloat kDeregisterContentHeightLandscape = 380;
 - (void)dealloc
 {
     [self releaseViewObjects];
+    [accountValidation release], accountValidation = nil;
     [super dealloc];
 }
 
@@ -110,14 +114,33 @@ static const CGFloat kDeregisterContentHeightLandscape = 380;
     [self releaseViewObjects];
 }
 
+#pragma mark - Accessor methods
+
+- (SCHAccountValidation *)accountValidation
+{
+    if (accountValidation == nil) {
+        accountValidation = [[SCHAccountValidation alloc] init];
+    }
+    
+    return(accountValidation);
+}
+
 #pragma mark - Actions
 
 - (void)deregister:(id)sender
 {
     [self.deregisterButton setEnabled:NO];
     
-    if ([[Reachability reachabilityForInternetConnection] isReachable] == NO) {
-        
+    if ([[self.passwordField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]] length] < 1) {
+        LambdaAlert *alert = [[LambdaAlert alloc]
+                              initWithTitle:NSLocalizedString(@"Error", @"error alert title")
+                              message:NSLocalizedString(@"Incorrect password", @"error alert title")];
+        [alert addButtonWithTitle:NSLocalizedString(@"OK", @"") block:^{
+            [self.deregisterButton setEnabled:YES];
+        }];
+        [alert show];
+        [alert release];                
+    } else if ([[Reachability reachabilityForInternetConnection] isReachable] == NO) {
         LambdaAlert *alert = [[LambdaAlert alloc]
                               initWithTitle:NSLocalizedString(@"No Internet Connection", @"")
                               message:NSLocalizedString(@"This function requires an Internet connection. Please connect to the internet and then try again.", @"")];
@@ -126,32 +149,52 @@ static const CGFloat kDeregisterContentHeightLandscape = 380;
         }];
         [alert show];
         [alert release];                
-    } else if ([[SCHAuthenticationManager sharedAuthenticationManager] validatePassword:self.passwordField.text]) {
-        if ([[SCHAuthenticationManager sharedAuthenticationManager] isAuthenticated] == YES) {
-            [self.spinner startAnimating];
-            [self setEnablesBackButton:NO];
-            [[SCHAuthenticationManager sharedAuthenticationManager] deregister];            
-
-        } else {
-            [[SCHAuthenticationManager sharedAuthenticationManager] authenticate];
+    } else {
+        __block SCHDeregisterDeviceViewController *weakSelf = self;
+        NSString *storedUsername = [[NSUserDefaults standardUserDefaults] stringForKey:kSCHAuthenticationManagerUsername];
+        [self.spinner startAnimating];
+        [self setEnablesBackButton:NO];
+        if ([self.accountValidation validateWithUserName:storedUsername withPassword:self.passwordField.text validateBlock:^(NSString *pToken, NSError *error) {
+            if (error != nil) {
+                LambdaAlert *alert = [[LambdaAlert alloc]
+                                      initWithTitle:NSLocalizedString(@"Error", @"error alert title")
+                                      message:[error localizedDescription]];
+                [alert addButtonWithTitle:NSLocalizedString(@"OK", @"") block:^{
+                    [weakSelf.deregisterButton setEnabled:YES];
+                    [weakSelf.spinner stopAnimating];
+                    [weakSelf setEnablesBackButton:YES];                                    
+                }];
+                [alert show];
+                [alert release]; 
+            } else {
+                if ([[SCHAuthenticationManager sharedAuthenticationManager] isAuthenticated] == YES) {
+                    [[SCHAuthenticationManager sharedAuthenticationManager] deregister];            
+                } else {
+                    [[SCHAuthenticationManager sharedAuthenticationManager] authenticate];
+                    LambdaAlert *alert = [[LambdaAlert alloc]
+                                          initWithTitle:NSLocalizedString(@"Error", @"error alert title")
+                                          message:NSLocalizedString(@"Waiting for the server, please try again in a moment. If this problem persists please contact support.", nil)];
+                    [alert addButtonWithTitle:NSLocalizedString(@"Try Again", @"try again button after no authentication") block:^{
+                        [weakSelf.deregisterButton setEnabled:YES];
+                        [weakSelf.spinner stopAnimating];
+                        [weakSelf setEnablesBackButton:YES];                                            
+                    }];
+                    [alert show];
+                    [alert release];        
+                }                
+            }    
+        }] == NO) {
             LambdaAlert *alert = [[LambdaAlert alloc]
-                                  initWithTitle:NSLocalizedString(@"Error", @"error alert title")
-                                  message:NSLocalizedString(@"Waiting for the server, please try again in a moment. If this problem persists please contact support.", nil)];
-            [alert addButtonWithTitle:NSLocalizedString(@"Try Again", @"try again button after no authentication") block:^{
+                                  initWithTitle:NSLocalizedString(@"Password authentication unavailable", @"")
+                                  message:NSLocalizedString(@"Please try again in a moment.", @"")];
+            [alert addButtonWithTitle:NSLocalizedString(@"OK", @"") block:^{
                 [self.deregisterButton setEnabled:YES];
+                [self.spinner stopAnimating];
+                [self setEnablesBackButton:YES];                                
             }];
             [alert show];
-            [alert release];        
-        }
-    } else {
-        LambdaAlert *alert = [[LambdaAlert alloc]
-                              initWithTitle:NSLocalizedString(@"Error", @"error alert title")
-                              message:NSLocalizedString(@"The password was incorrect", @"")];
-        [alert addButtonWithTitle:NSLocalizedString(@"Try Again", @"try again button after password failure") block:^{
-            [self.deregisterButton setEnabled:YES];
-        }];
-        [alert show];
-        [alert release];        
+            [alert release];                
+        };
     }
 }
 

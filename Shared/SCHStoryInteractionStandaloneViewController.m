@@ -60,11 +60,29 @@
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
+#if STORY_INTERACTIONS_SUPPORT_AUTO_ROTATION
+    return YES;
+#else
     if ([self.storyInteractionController shouldPresentInPortraitOrientation]) {
         return UIInterfaceOrientationIsPortrait(interfaceOrientation);
     } else {
         return UIInterfaceOrientationIsLandscape(interfaceOrientation);
     }
+#endif
+}
+
+- (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
+{
+#if STORY_INTERACTIONS_SUPPORT_AUTO_ROTATION
+    [self.storyInteractionController willRotateToInterfaceOrientation:toInterfaceOrientation duration:duration];
+#endif
+}
+
+- (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation
+{
+#if STORY_INTERACTIONS_SUPPORT_AUTO_ROTATION
+    [self.storyInteractionController didRotateFromInterfaceOrientation:fromInterfaceOrientation];
+#endif
 }
 
 - (void)setReadingViewSnapshot:(UIImage *)image
