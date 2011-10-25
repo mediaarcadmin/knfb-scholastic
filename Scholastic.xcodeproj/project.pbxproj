@@ -696,7 +696,6 @@
 		524889B11407990500DA9AFA /* admin-updates-available@2x~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = C9B7EAC113DEF29200BD5CB7 /* admin-updates-available@2x~iphone.png */; };
 		524889B21407990500DA9AFA /* admin-updates-available~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = C9B7EAC213DEF29300BD5CB7 /* admin-updates-available~iphone.png */; };
 		524889B31407990500DA9AFA /* admin-updates-available~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = C9B7EAC313DEF29300BD5CB7 /* admin-updates-available~ipad.png */; };
-		524889B41407990500DA9AFA /* 9780545283502.NightOfTheLivingDummy.xps in Resources */ = {isa = PBXBuildFile; fileRef = A33477FA13DF206000768DC6 /* 9780545283502.NightOfTheLivingDummy.xps */; };
 		524889B51407990500DA9AFA /* 9780545287012_r1.HalloweenParade.xps in Resources */ = {isa = PBXBuildFile; fileRef = A33477FB13DF206000768DC6 /* 9780545287012_r1.HalloweenParade.xps */; };
 		524889B61407990500DA9AFA /* 9780545308656.6.StableMatesPatch.xps in Resources */ = {isa = PBXBuildFile; fileRef = A33477FD13DF206000768DC6 /* 9780545308656.6.StableMatesPatch.xps */; };
 		524889B71407990500DA9AFA /* 9780545327619_r1.WhoWillCarveTheTurkey.xps in Resources */ = {isa = PBXBuildFile; fileRef = A33477FE13DF206000768DC6 /* 9780545327619_r1.WhoWillCarveTheTurkey.xps */; };
@@ -870,7 +869,6 @@
 		52488A6C1407990500DA9AFA /* SCHStoryInteractionPictureStarterCustom~ipad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 28F8B3D913FEA46200BE0B47 /* SCHStoryInteractionPictureStarterCustom~ipad.xib */; };
 		52488A6D1407990500DA9AFA /* OptionsViewTopBackground.png in Resources */ = {isa = PBXBuildFile; fileRef = F806563113FEB00900DFAE43 /* OptionsViewTopBackground.png */; };
 		52488A6E1407990500DA9AFA /* OptionsViewTopBackground@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F806563213FEB00900DFAE43 /* OptionsViewTopBackground@2x.png */; };
-		52488A6F1407990500DA9AFA /* 9780545283502.NightOfTheLivingDummy.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 5296F99613FE7B4F009532F3 /* 9780545283502.NightOfTheLivingDummy.jpg */; };
 		52488A701407990500DA9AFA /* 9780545287012_r1.HalloweenParade.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 5296F99713FE7B4F009532F3 /* 9780545287012_r1.HalloweenParade.jpg */; };
 		52488A711407990500DA9AFA /* 9780545289726_r1.OlliesNewTricks.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 5296F99813FE7B4F009532F3 /* 9780545289726_r1.OlliesNewTricks.jpg */; };
 		52488A721407990500DA9AFA /* 9780545308656.6.StableMatesPatch.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 5296F99913FE7B4F009532F3 /* 9780545308656.6.StableMatesPatch.jpg */; };
@@ -1669,6 +1667,7 @@
 		C979C6A8138C237C00581F7F /* button-field.png in Resources */ = {isa = PBXBuildFile; fileRef = C979C6A6138C237C00581F7F /* button-field.png */; };
 		C979C6AA138C237C00581F7F /* button-field@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C979C6A7138C237C00581F7F /* button-field@2x.png */; };
 		C979D88A138C2D9100581F7F /* SCHGradientView.m in Sources */ = {isa = PBXBuildFile; fileRef = C979D889138C2D9100581F7F /* SCHGradientView.m */; };
+		C97B05661456DD670090950F /* LocalSamplesManifest.xml in Resources */ = {isa = PBXBuildFile; fileRef = C97B05641456DD670090950F /* LocalSamplesManifest.xml */; };
 		C97D6DA313696D7B0017974B /* SCHBookPoint.m in Sources */ = {isa = PBXBuildFile; fileRef = C97D6DA213696D7B0017974B /* SCHBookPoint.m */; };
 		C97F7F9314078A91002BB9FB /* reading-si~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = C97F7F8D14078A91002BB9FB /* reading-si~iphone.png */; };
 		C97F7F9514078A91002BB9FB /* reading-si@2x~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = C97F7F8E14078A91002BB9FB /* reading-si@2x~iphone.png */; };
@@ -2658,7 +2657,6 @@
 		5293883012E03CD000045B44 /* SCHBookShelfViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHBookShelfViewController.h; path = iPhone/SCHBookShelfViewController.h; sourceTree = "<group>"; };
 		5293883112E03CD000045B44 /* SCHBookShelfViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHBookShelfViewController.m; path = iPhone/SCHBookShelfViewController.m; sourceTree = "<group>"; };
 		5293883212E03CD000045B44 /* SCHBookShelfViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = SCHBookShelfViewController.xib; path = iPhone/SCHBookShelfViewController.xib; sourceTree = "<group>"; };
-		5296F99613FE7B4F009532F3 /* 9780545283502.NightOfTheLivingDummy.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = 9780545283502.NightOfTheLivingDummy.jpg; path = "Shared/Debug Books/9780545283502.NightOfTheLivingDummy.jpg"; sourceTree = "<group>"; };
 		5296F99713FE7B4F009532F3 /* 9780545287012_r1.HalloweenParade.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = 9780545287012_r1.HalloweenParade.jpg; path = "Shared/Debug Books/9780545287012_r1.HalloweenParade.jpg"; sourceTree = "<group>"; };
 		5296F99813FE7B4F009532F3 /* 9780545289726_r1.OlliesNewTricks.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = 9780545289726_r1.OlliesNewTricks.jpg; path = "Shared/Debug Books/9780545289726_r1.OlliesNewTricks.jpg"; sourceTree = "<group>"; };
 		5296F99913FE7B4F009532F3 /* 9780545308656.6.StableMatesPatch.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = 9780545308656.6.StableMatesPatch.jpg; path = "Shared/Debug Books/9780545308656.6.StableMatesPatch.jpg"; sourceTree = "<group>"; };
@@ -2734,7 +2732,6 @@
 		52F15A1D1371A2CA0073941E /* SCHBookAnnotations.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHBookAnnotations.h; path = Shared/SCHBookAnnotations.h; sourceTree = "<group>"; };
 		52F15A1E1371A2CA0073941E /* SCHBookAnnotations.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHBookAnnotations.m; path = Shared/SCHBookAnnotations.m; sourceTree = "<group>"; };
 		8D1107310486CEB800E47090 /* Scholastic-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Scholastic-Info.plist"; plistStructureDefinitionIdentifier = "com.apple.xcode.plist.structure-definition.iphone.info-plist"; sourceTree = "<group>"; };
-		A33477FA13DF206000768DC6 /* 9780545283502.NightOfTheLivingDummy.xps */ = {isa = PBXFileReference; lastKnownFileType = file; name = 9780545283502.NightOfTheLivingDummy.xps; path = "Shared/Debug Books/9780545283502.NightOfTheLivingDummy.xps"; sourceTree = "<group>"; };
 		A33477FB13DF206000768DC6 /* 9780545287012_r1.HalloweenParade.xps */ = {isa = PBXFileReference; lastKnownFileType = file; name = 9780545287012_r1.HalloweenParade.xps; path = "Shared/Debug Books/9780545287012_r1.HalloweenParade.xps"; sourceTree = "<group>"; };
 		A33477FC13DF206000768DC6 /* 9780545289726_r1.OlliesNewTricks.xps */ = {isa = PBXFileReference; lastKnownFileType = file; name = 9780545289726_r1.OlliesNewTricks.xps; path = "Shared/Debug Books/9780545289726_r1.OlliesNewTricks.xps"; sourceTree = "<group>"; };
 		A33477FD13DF206000768DC6 /* 9780545308656.6.StableMatesPatch.xps */ = {isa = PBXFileReference; lastKnownFileType = file; name = 9780545308656.6.StableMatesPatch.xps; path = "Shared/Debug Books/9780545308656.6.StableMatesPatch.xps"; sourceTree = "<group>"; };
@@ -3230,6 +3227,7 @@
 		C979C6A7138C237C00581F7F /* button-field@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "button-field@2x.png"; path = "Resources/UIAssets/button-field@2x.png"; sourceTree = "<group>"; };
 		C979D888138C2D9100581F7F /* SCHGradientView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHGradientView.h; path = Shared/SCHGradientView.h; sourceTree = "<group>"; };
 		C979D889138C2D9100581F7F /* SCHGradientView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHGradientView.m; path = Shared/SCHGradientView.m; sourceTree = "<group>"; };
+		C97B05641456DD670090950F /* LocalSamplesManifest.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; name = LocalSamplesManifest.xml; path = Resources/LocalSamplesManifest.xml; sourceTree = "<group>"; };
 		C97D6DA113696D7B0017974B /* SCHBookPoint.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHBookPoint.h; path = Shared/SCHBookPoint.h; sourceTree = "<group>"; };
 		C97D6DA213696D7B0017974B /* SCHBookPoint.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHBookPoint.m; path = Shared/SCHBookPoint.m; sourceTree = "<group>"; };
 		C97F7F8D14078A91002BB9FB /* reading-si~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "reading-si~iphone.png"; path = "Resources/UIAssets/reading-si~iphone.png"; sourceTree = "<group>"; };
@@ -5502,6 +5500,7 @@
 		C944D2CC1407D4DD008E04FF /* Local Samples */ = {
 			isa = PBXGroup;
 			children = (
+				C97B05641456DD670090950F /* LocalSamplesManifest.xml */,
 				C944D2CD1407D518008E04FF /* Scholastic_Sample.sqlite */,
 			);
 			name = "Local Samples";
@@ -5967,8 +5966,6 @@
 		F8509E7512F0620D00197EB5 /* Debug Books */ = {
 			isa = PBXGroup;
 			children = (
-				5296F99613FE7B4F009532F3 /* 9780545283502.NightOfTheLivingDummy.jpg */,
-				A33477FA13DF206000768DC6 /* 9780545283502.NightOfTheLivingDummy.xps */,
 				5296F99713FE7B4F009532F3 /* 9780545287012_r1.HalloweenParade.jpg */,
 				A33477FB13DF206000768DC6 /* 9780545287012_r1.HalloweenParade.xps */,
 				5296F99813FE7B4F009532F3 /* 9780545289726_r1.OlliesNewTricks.jpg */,
@@ -7524,7 +7521,6 @@
 				524889B11407990500DA9AFA /* admin-updates-available@2x~iphone.png in Resources */,
 				524889B21407990500DA9AFA /* admin-updates-available~iphone.png in Resources */,
 				524889B31407990500DA9AFA /* admin-updates-available~ipad.png in Resources */,
-				524889B41407990500DA9AFA /* 9780545283502.NightOfTheLivingDummy.xps in Resources */,
 				524889B51407990500DA9AFA /* 9780545287012_r1.HalloweenParade.xps in Resources */,
 				524889B61407990500DA9AFA /* 9780545308656.6.StableMatesPatch.xps in Resources */,
 				524889B71407990500DA9AFA /* 9780545327619_r1.WhoWillCarveTheTurkey.xps in Resources */,
@@ -7698,7 +7694,6 @@
 				52488A6C1407990500DA9AFA /* SCHStoryInteractionPictureStarterCustom~ipad.xib in Resources */,
 				52488A6D1407990500DA9AFA /* OptionsViewTopBackground.png in Resources */,
 				52488A6E1407990500DA9AFA /* OptionsViewTopBackground@2x.png in Resources */,
-				52488A6F1407990500DA9AFA /* 9780545283502.NightOfTheLivingDummy.jpg in Resources */,
 				52488A701407990500DA9AFA /* 9780545287012_r1.HalloweenParade.jpg in Resources */,
 				52488A711407990500DA9AFA /* 9780545289726_r1.OlliesNewTricks.jpg in Resources */,
 				52488A721407990500DA9AFA /* 9780545308656.6.StableMatesPatch.jpg in Resources */,
@@ -7789,6 +7784,7 @@
 				28D6D642145579E60094F144 /* young-lightning-bolt-3@2x~iphone.png in Resources */,
 				28D6D644145579E60094F144 /* young-lightning-bolt-3~ipad.png in Resources */,
 				28D6D646145579E60094F144 /* young-lightning-bolt-3~iphone.png in Resources */,
+				C97B05661456DD670090950F /* LocalSamplesManifest.xml in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
