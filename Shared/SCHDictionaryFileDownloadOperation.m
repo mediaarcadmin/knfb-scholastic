@@ -20,6 +20,9 @@
 // the total file size reported by the HTTP header
 @property unsigned long long expectedFileSize;
 
+// the size already downloaded when this operation started
+@property unsigned long long alreadyDownloadedSize;
+
 // the previous percentage reported - used to limit percentage notifications
 @property NSInteger previousPercentage;
 
@@ -34,6 +37,7 @@
 @implementation SCHDictionaryFileDownloadOperation
 
 @synthesize expectedFileSize;
+@synthesize alreadyDownloadedSize;
 @synthesize previousPercentage;
 @synthesize manifestEntry;
 @synthesize localFileManager;
@@ -66,7 +70,9 @@
 
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:self.manifestEntry.url]];
     
+    self.alreadyDownloadedSize = 0;
     self.localFileManager = [[[NSFileManager alloc] init] autorelease];
+
 	if ([self.localFileManager fileExistsAtPath:localPath]) {
 		// check to see how much of the file has been downloaded
         NSError *error = nil;
@@ -80,6 +86,9 @@
         if (currentFilesize > 0) {
             [request setValue:[NSString stringWithFormat:@"bytes=%llu-", currentFilesize] forHTTPHeaderField:@"Range"];
             append = YES;
+            self.alreadyDownloadedSize = currentFilesize;
+            
+            NSLog(@"resuming dictionary download from offset %llu", currentFilesize);
         }
     }
 
@@ -115,12 +124,6 @@
 - (void)finishedDownload
 {
     [self.downloadOperation waitUntilFinished];
-
-    [self willChangeValueForKey:@"isExecuting"];
-    [self willChangeValueForKey:@"isFinished"];
-    self.downloadOperation = nil;
-    [self didChangeValueForKey:@"isFinished"];
-    [self didChangeValueForKey:@"isExecuting"];
     
     [[BITNetworkActivityManager sharedNetworkActivityManager] hideNetworkActivityIndicator];
     
@@ -129,6 +132,12 @@
         [self fireProgressUpdate:1.0f];
         [[SCHDictionaryDownloadManager sharedDownloadManager] threadSafeUpdateDictionaryState:SCHDictionaryProcessingStateNeedsUnzip];
     }
+
+    [self willChangeValueForKey:@"isExecuting"];
+    [self willChangeValueForKey:@"isFinished"];
+    self.downloadOperation = nil;
+    [self didChangeValueForKey:@"isFinished"];
+    [self didChangeValueForKey:@"isExecuting"];
 }
 
 #pragma mark - QHTTPOperationDelegate
@@ -152,6 +161,7 @@
     
     NSLog(@"start downloading dictionary size = %llu", expectedDataSize);
     self.expectedFileSize = expectedDataSize;
+    self.previousPercentage = -1;
 }
 
 - (void)httpOperation:(QHTTPOperation *)operation updatedDownloadSize:(long long)downloadedSize
@@ -160,7 +170,7 @@
         return;
     }
     
-    float progress = (float)downloadedSize / self.expectedFileSize;
+    float progress = (float)(self.alreadyDownloadedSize + downloadedSize) / self.expectedFileSize;
     NSInteger percentage = (NSInteger)(100*progress);
     if (percentage != self.previousPercentage) {
         [self fireProgressUpdate:progress];
@@ -181,7 +191,7 @@
                                   [NSNumber numberWithFloat:progress], @"currentPercentage",
                                   nil];
         [[NSNotificationCenter defaultCenter] postNotificationName:kSCHDictionaryDownloadPercentageUpdate
-                                                            object:self
+                                                            object:nil
                                                           userInfo:userInfo];
     });
 }
