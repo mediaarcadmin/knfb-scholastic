@@ -27,6 +27,7 @@
 #import "SCHAppContentProfileItem.h"
 #import "SCHBookIdentifier.h"
 
+
 // Constants
 NSString * const SCHAnnotationSyncComponentDidCompleteNotification = @"SCHAnnotationSyncComponentDidCompleteNotification";
 NSString * const SCHAnnotationSyncComponentDidFailNotification = @"SCHAnnotationSyncComponentDidFailNotification";
@@ -485,7 +486,7 @@ NSString * const SCHAnnotationSyncComponentCompletedProfileIDs = @"SCHAnnotation
 		}
 				
         SCHBookIdentifier *webBookIdentifier = [[SCHBookIdentifier alloc] initWithObject:webItem];
-        SCHBookIdentifier *localBookIdentifier = [[SCHBookIdentifier alloc] initWithObject:localItem];
+        SCHBookIdentifier *localBookIdentifier = localItem.bookIdentifier;
         
 		switch ([webBookIdentifier compare:localBookIdentifier]) {
 			case NSOrderedSame:
@@ -504,7 +505,6 @@ NSString * const SCHAnnotationSyncComponentCompletedProfileIDs = @"SCHAnnotation
 		}		
         
 		[webBookIdentifier release], webBookIdentifier = nil;
-		[localBookIdentifier release], localBookIdentifier = nil;
         
 		if (webItem == nil) {
 			webItem = [webEnumerator nextObject];

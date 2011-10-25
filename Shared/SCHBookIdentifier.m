@@ -40,8 +40,8 @@ NSString * const kSCHBookIdentifierBookIdentifier = @"BookIdentifier";
     SCHBookIdentifier *ret = nil;
     
     if (object != nil) {
-        NSString *aIsbn = [object valueForKey:kSCHLibreAccessWebServiceContentIdentifier];
-        NSNumber *aDRMQualifier = [object valueForKey:kSCHLibreAccessWebServiceDRMQualifier];
+        NSString *aIsbn = [object objectForKey:kSCHLibreAccessWebServiceContentIdentifier];
+        NSNumber *aDRMQualifier = [object objectForKey:kSCHLibreAccessWebServiceDRMQualifier];
         
         if (aIsbn != nil && aDRMQualifier != nil) {
             ret = [[SCHBookIdentifier alloc] initWithISBN:aIsbn DRMQualifier:aDRMQualifier];
