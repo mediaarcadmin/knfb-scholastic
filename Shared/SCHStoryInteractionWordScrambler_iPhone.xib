@@ -43,7 +43,7 @@
 					<object class="IBUILabel" id="924888056">
 						<reference key="NSNextResponder" ref="191373211"/>
 						<int key="NSvFlags">290</int>
-						<string key="NSFrame">{{20, 10}, {430, 21}}</string>
+						<string key="NSFrame">{{20, 5}, {430, 21}}</string>
 						<reference key="NSSuperview" ref="191373211"/>
 						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="273800243"/>
@@ -76,9 +76,10 @@
 					<object class="IBUIButton" id="870762544">
 						<reference key="NSNextResponder" ref="191373211"/>
 						<int key="NSvFlags">269</int>
-						<string key="NSFrame">{{170, 199}, {130, 37}}</string>
+						<string key="NSFrame">{{170, 204}, {130, 37}}</string>
 						<reference key="NSSuperview" ref="191373211"/>
 						<reference key="NSWindow"/>
+						<reference key="NSNextKeyView"/>
 						<bool key="IBUIOpaque">NO</bool>
 						<string key="targetRuntimeIdentifier">IBIPadFramework</string>
 						<int key="IBUIContentHorizontalAlignment">0</int>
@@ -116,10 +117,10 @@
 					<object class="IBUIView" id="273800243">
 						<reference key="NSNextResponder" ref="191373211"/>
 						<int key="NSvFlags">290</int>
-						<string key="NSFrame">{{20, 39}, {430, 120}}</string>
+						<string key="NSFrame">{{20, 35}, {430, 135}}</string>
 						<reference key="NSSuperview" ref="191373211"/>
 						<reference key="NSWindow"/>
-						<reference key="NSNextKeyView" ref="870762544"/>
+						<reference key="NSNextKeyView" ref="405632725"/>
 						<object class="NSColor" key="IBUIBackgroundColor" id="329639498">
 							<int key="NSColorSpace">3</int>
 							<bytes key="NSWhite">MCAwAA</bytes>
@@ -129,9 +130,10 @@
 					<object class="IBUILabel" id="405632725">
 						<reference key="NSNextResponder" ref="191373211"/>
 						<int key="NSvFlags">292</int>
-						<string key="NSFrame">{{6, 170}, {459, 21}}</string>
+						<string key="NSFrame">{{6, 178}, {459, 21}}</string>
 						<reference key="NSSuperview" ref="191373211"/>
 						<reference key="NSWindow"/>
+						<reference key="NSNextKeyView" ref="870762544"/>
 						<bool key="IBUIOpaque">NO</bool>
 						<bool key="IBUIClipsSubviews">YES</bool>
 						<int key="IBUIContentMode">7</int>
