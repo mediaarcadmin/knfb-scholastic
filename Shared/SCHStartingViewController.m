@@ -29,6 +29,7 @@
 #import "SCHBookManager.h"
 #import "SCHAppBook.h"
 #import "SCHDrmSession.h"
+#import "SCHSampleBooksManager.h"
 
 enum {
     kTableSectionSamples = 0,
@@ -325,8 +326,19 @@ typedef enum {
             break;
     }
     
+    [[SCHSampleBooksManager sharedManager] updateSampleBooksFromManifestURL:[NSURL URLWithString:kSCHSampleBooksManifestURL] failureBlock:^(NSString * failureReason){
+        LambdaAlert *alert = [[LambdaAlert alloc]
+                              initWithTitle:NSLocalizedString(@"Unable To Retrieve all Samples", @"")
+                              message:[NSString stringWithFormat:NSLocalizedString(@"There was a problem whilst checking for the sample eBooks. %@. Please try again.", @""), failureReason]];
+        [alert addButtonWithTitle:NSLocalizedString(@"OK", @"") block:^{
+        }];
+        
+        [alert show]; 
+        [alert release];  
+    }];
+    
     // if we were to actually login then a successful login would trigger a sync 
-    // after which a profile complete notification would handled. This code fakes that 
+    // after which a profile complete notification would handled. This code fakes that
     self.profileSyncState = kSCHStartingViewControllerProfileSyncStateSamplesSync;
     [[SCHSyncManager sharedSyncManager] firstSync:YES];
 }

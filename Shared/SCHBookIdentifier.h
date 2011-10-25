@@ -20,6 +20,8 @@ extern NSString * const kSCHBookIdentifierBookIdentifier;
 - (id)initWithISBN:(NSString *)isbn DRMQualifier:(NSNumber *)DRMQualifier;
 - (id)initWithObject:(NSDictionary *)object;
 
+- (NSComparisonResult)compare:(SCHBookIdentifier *)aBookIdentifier;
+
 - (id)initWithEncodedString:(NSString *)string;
 - (NSString *)encodeAsString;
 

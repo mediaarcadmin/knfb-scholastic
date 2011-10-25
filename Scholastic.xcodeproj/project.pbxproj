@@ -1391,6 +1391,8 @@
 		C901114E1361FD84006694B3 /* settings-landscape.png in Resources */ = {isa = PBXBuildFile; fileRef = C901114D1361FD83006694B3 /* settings-landscape.png */; };
 		C90111581362DD72006694B3 /* admin-iphone-top-shadow.png in Resources */ = {isa = PBXBuildFile; fileRef = C90111561362DD70006694B3 /* admin-iphone-top-shadow.png */; };
 		C901115A1362DD72006694B3 /* admin-iphone-top-shadow@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C90111571362DD71006694B3 /* admin-iphone-top-shadow@2x.png */; };
+		C9045C591456038D009A3133 /* SCHSampleBooksManifestOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = C9045C581456038D009A3133 /* SCHSampleBooksManifestOperation.m */; };
+		C9045C5A1456038D009A3133 /* SCHSampleBooksManifestOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = C9045C581456038D009A3133 /* SCHSampleBooksManifestOperation.m */; };
 		C908D85D133F91FA00661718 /* SCHLayoutView.m in Sources */ = {isa = PBXBuildFile; fileRef = C908D857133F91FA00661718 /* SCHLayoutView.m */; };
 		C908D85F133F91FA00661718 /* SCHReadingView.m in Sources */ = {isa = PBXBuildFile; fileRef = C908D859133F91FA00661718 /* SCHReadingView.m */; };
 		C908D86F133F93FA00661718 /* Icon.png in Resources */ = {isa = PBXBuildFile; fileRef = C908D866133F93FA00661718 /* Icon.png */; };
@@ -1797,6 +1799,8 @@
 		C9C1D2D713B0AF5B00441623 /* storyinteraction-bg-younger-notitle~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = C9C1D29D13B0AD4B00441623 /* storyinteraction-bg-younger-notitle~ipad.png */; };
 		C9C1D2D813B0AF5B00441623 /* storyinteraction-bg-older-notitle~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = C9C1D29E13B0AD4C00441623 /* storyinteraction-bg-older-notitle~ipad.png */; };
 		C9C27CB913AA536C00332229 /* Arial Black.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C9C27CB813AA536A00332229 /* Arial Black.ttf */; };
+		C9C9096B1455A06B00548DDE /* SCHSampleBooksManager.m in Sources */ = {isa = PBXBuildFile; fileRef = C9C9096A1455A06B00548DDE /* SCHSampleBooksManager.m */; };
+		C9C9096C1455A06B00548DDE /* SCHSampleBooksManager.m in Sources */ = {isa = PBXBuildFile; fileRef = C9C9096A1455A06B00548DDE /* SCHSampleBooksManager.m */; };
 		C9D4F6281345FFE8007F86E3 /* SCHTextFlow.m in Sources */ = {isa = PBXBuildFile; fileRef = C9D4F6271345FFE7007F86E3 /* SCHTextFlow.m */; };
 		C9E89A4B1369B87A00E7ED53 /* levenshtein_distance.c in Sources */ = {isa = PBXBuildFile; fileRef = C9E89A491369B87A00E7ED53 /* levenshtein_distance.c */; };
 		C9EB4CE114026C7900DBC3BD /* icon-help-older~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = C9EB4CD714026C7900DBC3BD /* icon-help-older~ipad.png */; };
@@ -2912,6 +2916,8 @@
 		C901114D1361FD83006694B3 /* settings-landscape.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "settings-landscape.png"; path = "Resources/UIAssets/settings-landscape.png"; sourceTree = "<group>"; };
 		C90111561362DD70006694B3 /* admin-iphone-top-shadow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "admin-iphone-top-shadow.png"; path = "Resources/UIAssets/admin-iphone-top-shadow.png"; sourceTree = "<group>"; };
 		C90111571362DD71006694B3 /* admin-iphone-top-shadow@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "admin-iphone-top-shadow@2x.png"; path = "Resources/UIAssets/admin-iphone-top-shadow@2x.png"; sourceTree = "<group>"; };
+		C9045C571456038D009A3133 /* SCHSampleBooksManifestOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHSampleBooksManifestOperation.h; path = Shared/SCHSampleBooksManifestOperation.h; sourceTree = "<group>"; };
+		C9045C581456038D009A3133 /* SCHSampleBooksManifestOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHSampleBooksManifestOperation.m; path = Shared/SCHSampleBooksManifestOperation.m; sourceTree = "<group>"; };
 		C908D856133F91FA00661718 /* SCHLayoutView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHLayoutView.h; path = Shared/SCHLayoutView.h; sourceTree = "<group>"; };
 		C908D857133F91FA00661718 /* SCHLayoutView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHLayoutView.m; path = Shared/SCHLayoutView.m; sourceTree = "<group>"; };
 		C908D858133F91FA00661718 /* SCHReadingView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHReadingView.h; path = Shared/SCHReadingView.h; sourceTree = "<group>"; };
@@ -3369,6 +3375,8 @@
 		C9C1D29D13B0AD4B00441623 /* storyinteraction-bg-younger-notitle~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "storyinteraction-bg-younger-notitle~ipad.png"; sourceTree = "<group>"; };
 		C9C1D29E13B0AD4C00441623 /* storyinteraction-bg-older-notitle~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "storyinteraction-bg-older-notitle~ipad.png"; sourceTree = "<group>"; };
 		C9C27CB813AA536A00332229 /* Arial Black.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Arial Black.ttf"; sourceTree = "<group>"; };
+		C9C909691455A06B00548DDE /* SCHSampleBooksManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHSampleBooksManager.h; path = Shared/SCHSampleBooksManager.h; sourceTree = "<group>"; };
+		C9C9096A1455A06B00548DDE /* SCHSampleBooksManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHSampleBooksManager.m; path = Shared/SCHSampleBooksManager.m; sourceTree = "<group>"; };
 		C9D4F6261345FFE7007F86E3 /* SCHTextFlow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHTextFlow.h; path = Shared/SCHTextFlow.h; sourceTree = "<group>"; };
 		C9D4F6271345FFE7007F86E3 /* SCHTextFlow.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHTextFlow.m; path = Shared/SCHTextFlow.m; sourceTree = "<group>"; };
 		C9E89A491369B87A00E7ED53 /* levenshtein_distance.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = levenshtein_distance.c; sourceTree = "<group>"; };
@@ -4516,6 +4524,7 @@
 				F8509E8A12F0621E00197EB5 /* XPS Provider */,
 				52EF594712EECA7200E374F7 /* Extensions */,
 				52D19C681338A57B00A68D75 /* Views */,
+				C9C909681455A02100548DDE /* Sample Books Processing */,
 				F867904B1332346C001FDB2F /* Dictionary Processing */,
 				F8899217132E15A5007EB541 /* Processing Manager */,
 				F8DE53E2130A8C0300691CBA /* Book Data */,
@@ -5722,6 +5731,17 @@
 			);
 			name = LambdaAlert;
 			path = Shared/Libraries/LambdaAlert;
+			sourceTree = "<group>";
+		};
+		C9C909681455A02100548DDE /* Sample Books Processing */ = {
+			isa = PBXGroup;
+			children = (
+				C9C909691455A06B00548DDE /* SCHSampleBooksManager.h */,
+				C9C9096A1455A06B00548DDE /* SCHSampleBooksManager.m */,
+				C9045C571456038D009A3133 /* SCHSampleBooksManifestOperation.h */,
+				C9045C581456038D009A3133 /* SCHSampleBooksManifestOperation.m */,
+			);
+			name = "Sample Books Processing";
 			sourceTree = "<group>";
 		};
 		C9CEF2F11339F77200FB5BE0 /* Submodules */ = {
@@ -8076,6 +8096,8 @@
 				F8615B19144D69F100D0D265 /* SCHHelpVideoManifestOperation.m in Sources */,
 				F8615B1D144D6E7000D0D265 /* SCHHelpVideoFileDownloadOperation.m in Sources */,
 				F8615B21144D712400D0D265 /* SCHHelpVideoManifest.m in Sources */,
+				C9C9096B1455A06B00548DDE /* SCHSampleBooksManager.m in Sources */,
+				C9045C591456038D009A3133 /* SCHSampleBooksManifestOperation.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -8432,6 +8454,8 @@
 				F8615B1A144D69F100D0D265 /* SCHHelpVideoManifestOperation.m in Sources */,
 				F8615B1E144D6E7000D0D265 /* SCHHelpVideoFileDownloadOperation.m in Sources */,
 				F8615B22144D712400D0D265 /* SCHHelpVideoManifest.m in Sources */,
+				C9C9096C1455A06B00548DDE /* SCHSampleBooksManager.m in Sources */,
+				C9045C5A1456038D009A3133 /* SCHSampleBooksManifestOperation.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -155,7 +155,9 @@ NSString * const SCHContentSyncComponentDidFailNotification = @"SCHContentSyncCo
 	NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
 	
 	[fetchRequest setEntity:[NSEntityDescription entityForName:kSCHUserContentItem inManagedObjectContext:self.managedObjectContext]];	
-	[fetchRequest setSortDescriptors:[NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:kSCHLibreAccessWebServiceContentIdentifier ascending:YES]]];
+	[fetchRequest setSortDescriptors:[NSArray arrayWithObjects:[NSSortDescriptor sortDescriptorWithKey:kSCHLibreAccessWebServiceContentIdentifier ascending:YES],
+                                      [NSSortDescriptor sortDescriptorWithKey:kSCHLibreAccessWebServiceDRMQualifier ascending:YES],
+                                      nil]];
 	
 	NSArray *ret = [self.managedObjectContext executeFetchRequest:fetchRequest error:nil];	
 	
@@ -169,7 +171,9 @@ NSString * const SCHContentSyncComponentDidFailNotification = @"SCHContentSyncCo
 	NSMutableArray *deletePool = [NSMutableArray array];
 	NSMutableArray *creationPool = [NSMutableArray array];
 	
-	NSArray *webProfiles = [userContentList sortedArrayUsingDescriptors:[NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:kSCHLibreAccessWebServiceContentIdentifier ascending:YES]]];		
+	NSArray *webProfiles = [userContentList sortedArrayUsingDescriptors:[NSArray arrayWithObjects:[NSSortDescriptor sortDescriptorWithKey:kSCHLibreAccessWebServiceContentIdentifier ascending:YES],
+                                                                         [NSSortDescriptor sortDescriptorWithKey:kSCHLibreAccessWebServiceDRMQualifier ascending:YES],                                                                             
+                                                                         nil]];	
 	NSArray *localProfiles = [self localUserContentItems];
 	
 	NSEnumerator *webEnumerator = [webProfiles objectEnumerator];			  
@@ -195,19 +199,10 @@ NSString * const SCHContentSyncComponentDidFailNotification = @"SCHContentSyncCo
 			break;			
 		}
 		
-		id webItemID = [webItem valueForKey:kSCHLibreAccessWebServiceContentIdentifier];
-		id localItemID = [localItem valueForKey:kSCHLibreAccessWebServiceContentIdentifier];
-		
-        // secondary compare for multiple books with differing DRM
-        NSComparisonResult compareContentMetadataItems = [webItemID compare:localItemID];
-        if (compareContentMetadataItems == NSOrderedSame) {
-            id webItemDRM = [webItem valueForKey:kSCHLibreAccessWebServiceDRMQualifier];
-            id localItemDRM = [localItem valueForKey:kSCHLibreAccessWebServiceDRMQualifier];
-            
-            compareContentMetadataItems = [webItemDRM compare:localItemDRM];            
-        }
-
-		switch (compareContentMetadataItems) {
+        SCHBookIdentifier *webBookIdentifier = [[SCHBookIdentifier alloc] initWithObject:webItem];
+        SCHBookIdentifier *localBookIdentifier = [[SCHBookIdentifier alloc] initWithObject:localItem];
+        
+		switch ([webBookIdentifier compare:localBookIdentifier]) {
 			case NSOrderedSame:
 				[self syncUserContentItem:webItem withUserContentItem:localItem];
 				webItem = nil;
@@ -223,6 +218,9 @@ NSString * const SCHContentSyncComponentDidFailNotification = @"SCHContentSyncCo
 				break;			
 		}		
 		
+        [webBookIdentifier release], webBookIdentifier = nil;
+		[localBookIdentifier release], localBookIdentifier = nil;
+
 		if (webItem == nil) {
 			webItem = [webEnumerator nextObject];
 		}
