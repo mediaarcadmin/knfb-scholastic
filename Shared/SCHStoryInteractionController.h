@@ -92,6 +92,12 @@ typedef enum
 // present the story interaction centered in the host view
 - (void)presentInHostView:(UIView *)hostView withInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation;
 
+// call before autorotatiopn
+- (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration;
+
+// call after autorotation
+- (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation;
+
 // action when tapping the close button
 - (void)closeButtonTapped:(id)sender;
 

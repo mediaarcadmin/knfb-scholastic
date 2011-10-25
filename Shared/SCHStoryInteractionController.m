@@ -10,6 +10,7 @@
 #import <objc/runtime.h>
 
 #import "SCHStoryInteractionController.h"
+#import "SCHStoryInteractionStandaloneViewController.h"
 #import "SCHStoryInteractionTypes.h"
 #import "SCHStoryInteractionControllerMultipleChoiceText.h"
 #import "SCHStoryInteractionControllerDelegate.h"
@@ -225,9 +226,13 @@ static Class controllerClassForStoryInteraction(SCHStoryInteraction *storyIntera
         // to the underlying view; this effectively makes the story interaction modal
         UIView *container = [[UIView alloc] initWithFrame:hostView.bounds];
         container.userInteractionEnabled = YES;
+        container.autoresizingMask = (UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin
+                                      | UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin);
         
         UIImageView *background = [[UIImageView alloc] initWithFrame:CGRectZero];
         background.contentMode = UIViewContentModeScaleToFill;
+        background.autoresizingMask = (UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin |
+                                       UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin);
         [container addSubview:background];
         
         if ([self frameStyleForViewAtIndex:self.currentScreenIndex] != SCHStoryInteractionNoTitle) {
@@ -251,11 +256,12 @@ static Class controllerClassForStoryInteraction(SCHStoryInteraction *storyIntera
         if (!self.readAloudButton) {
             UIImage *readAloudImage = [UIImage imageNamed:@"storyinteraction-read-aloud"];
             self.readAloudButton = [UIButton buttonWithType:UIButtonTypeCustom];
+            self.readAloudButton.autoresizingMask = 0;
             self.readAloudButton.bounds = (CGRect){ CGPointZero, readAloudImage.size };
             [self.readAloudButton setImage:readAloudImage forState:UIControlStateNormal];
             [self.readAloudButton setImage:readAloudImage forState:UIControlStateDisabled];
             [self.readAloudButton addTarget:self action:@selector(playAudioButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
-            [self.containerView addSubview:self.readAloudButton];
+            [self.backgroundView addSubview:self.readAloudButton];
         }
     } else {
         [self.readAloudButton removeFromSuperview];
@@ -267,9 +273,10 @@ static Class controllerClassForStoryInteraction(SCHStoryInteraction *storyIntera
             NSString *age = [self.storyInteraction isOlderStoryInteraction] ? @"older" : @"younger";
             UIImage *closeImage = [UIImage imageNamed:[NSString stringWithFormat:@"storyinteraction-bolt-%@", age]];
             self.closeButton = [UIButton buttonWithType:UIButtonTypeCustom];
+            self.closeButton.autoresizingMask = 0;
             [self.closeButton setImage:closeImage forState:UIControlStateNormal];
             [self.closeButton addTarget:self action:@selector(closeButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
-            [self.containerView addSubview:self.closeButton];
+            [self.backgroundView addSubview:self.closeButton];
         }
     } else {
         [self.closeButton removeFromSuperview];
@@ -325,8 +332,8 @@ static Class controllerClassForStoryInteraction(SCHStoryInteraction *storyIntera
     }
     
     [self.containerView bringSubviewToFront:self.backgroundView];
-    [self.containerView bringSubviewToFront:self.closeButton];
-    [self.containerView bringSubviewToFront:self.readAloudButton];
+    [self.backgroundView bringSubviewToFront:self.closeButton];
+    [self.backgroundView bringSubviewToFront:self.readAloudButton];
     
     self.contentsView = newContentsView;
     
@@ -431,9 +438,13 @@ static Class controllerClassForStoryInteraction(SCHStoryInteraction *storyIntera
         readAloudPosition = CGPointMake(-13, 15);
     }
     
+#if STORY_INTERACTIONS_SUPPORT_AUTO_ROTATION
+    const BOOL shouldRotate = NO;
+#else
     const BOOL shouldRotate = ([self shouldPresentInPortraitOrientation]
                                ? UIInterfaceOrientationIsLandscape(self.interfaceOrientation)
                                : UIInterfaceOrientationIsPortrait(self.interfaceOrientation));
+#endif
     
     CGRect superviewBounds = container.superview.bounds;
     if (shouldRotate) {
@@ -510,15 +521,9 @@ static Class controllerClassForStoryInteraction(SCHStoryInteraction *storyIntera
 
     UIImage *closeImage = [close imageForState:UIControlStateNormal];
 
-    closePosition.x += background.frame.origin.x;
-    readAloudPosition.x += background.frame.origin.x;
-    
     if (currentFrameStyle == SCHStoryInteractionTitleOverlaysContentsAtBottom) {
-        closePosition.y = CGRectGetMaxY(background.frame) - closePosition.y - closeImage.size.height;
-        readAloudPosition.y = CGRectGetMaxY(background.frame) - readAloudPosition.y - CGRectGetHeight(readAloud.bounds);
-    } else {
-        closePosition.y += background.frame.origin.y;
-        readAloudPosition.y += background.frame.origin.y;
+        closePosition.y = CGRectGetMaxY(background.bounds) - closePosition.y - closeImage.size.height;
+        readAloudPosition.y = CGRectGetMaxY(background.bounds) - readAloudPosition.y - CGRectGetHeight(readAloud.bounds);
     }
     
     close.bounds = (CGRect){ CGPointZero, closeImage.size };
@@ -526,6 +531,18 @@ static Class controllerClassForStoryInteraction(SCHStoryInteraction *storyIntera
     
     readAloud.center = CGPointMake(floorf(backgroundWidth+readAloudPosition.x-CGRectGetMidX(readAloud.bounds)),
                                    floorf(readAloudPosition.y+CGRectGetMidX(readAloud.bounds)));
+}
+
+- (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
+{
+    self.interfaceOrientation = toInterfaceOrientation;
+}
+
+- (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation
+{
+    [UIView animateWithDuration:0.25 animations:^{
+        [self setupGeometryForContentsView:self.contentsView contentsSize:self.contentsView.bounds.size];
+    }];
 }
 
 - (CGSize)maximumContentsSize

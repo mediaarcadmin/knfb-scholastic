@@ -8,6 +8,8 @@
 
 #import <UIKit/UIKit.h>
 
+#define STORY_INTERACTIONS_SUPPORT_AUTO_ROTATION 0
+
 @class SCHStoryInteractionController;
 
 @interface SCHStoryInteractionStandaloneViewController : UIViewController
