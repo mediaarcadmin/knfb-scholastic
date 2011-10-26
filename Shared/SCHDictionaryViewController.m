@@ -231,7 +231,6 @@
     
     BOOL willDownloadAfterHelpVideo = ([[SCHDictionaryDownloadManager sharedDownloadManager] userRequestState] == SCHDictionaryUserAccepted);
     BOOL isSampleStore = [[SCHAppStateManager sharedAppStateManager] isSampleStore];
-
     
     switch (state) {
         case SCHDictionaryProcessingStateUserSetup:
@@ -242,6 +241,7 @@
             } else {
                 self.bottomLabel.text = @"You have not yet downloaded the Scholastic dictionary. To download the dictionary, go to parent tools on the eReader sign-in screen.";
             }
+            
             [self.activityIndicator stopAnimating];
             self.progressBar.hidden = YES;            
             break;
@@ -275,14 +275,14 @@
         case SCHDictionaryProcessingStateManifestVersionCheck:
         case SCHDictionaryProcessingStateNeedsManifest:
         {
-            if (willDownloadAfterHelpVideo) {
+            if (!willDownloadAfterHelpVideo) {
                 if (isSampleStore) {
                     self.bottomLabel.text = @"You have not yet downloaded the Scholastic dictionary.";
                 } else {
                     self.bottomLabel.text = @"You have not yet downloaded the Scholastic dictionary. To download the dictionary, go to parent tools on the eReader sign-in screen.";
                 }
             } else {
-                self.bottomLabel.text = @"You have not yet downloaded the Scholastic dictionary. To download the dictionary, go to parent tools on the eReader sign-in screen.";
+                self.bottomLabel.text = @"The dictionary is downloading from the Internet. You can wait for it to finish, or look up your word later.";
             }
 
             [self.activityIndicator startAnimating];
