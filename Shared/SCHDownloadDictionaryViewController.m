@@ -83,7 +83,7 @@
         [SCHDictionaryDownloadManager sharedDownloadManager].userRequestState = SCHDictionaryUserDeclined;
         [self.profileSetupDelegate showCurrentProfileAnimated:YES];
     } else {
-        [self.profileSetupDelegate showCurrentSamplesAnimated:YES];
+        [self.profileSetupDelegate pushSamplesAnimated:YES];
     }
 }
 
@@ -94,7 +94,7 @@
     if ([[SCHAppStateManager sharedAppStateManager] isSampleStore] == NO) {
         [self.profileSetupDelegate showCurrentProfileAnimated:YES];
     } else {
-        [self.profileSetupDelegate showCurrentSamplesAnimated:YES];
+        [self.profileSetupDelegate pushSamplesAnimated:YES];
     }
 }
 

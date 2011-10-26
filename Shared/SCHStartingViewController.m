@@ -33,13 +33,10 @@
 
 enum {
     kTableSectionSamples = 0,
-    kTableSectionSignIn,
-    kNumberOfTableSections,
+    kTableSectionSignIn
 };
 
 enum {
-    kNumberOfSampleBookshelves = 1,
-    
     kTableOffsetPortrait_iPad = 240,
     kTableOffsetLandscape_iPad = 120,
     kTableOffsetPortrait_iPhone = 20,
@@ -210,18 +207,12 @@ typedef enum {
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    return kNumberOfTableSections;   
+    return 2;   
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    switch (section) {
-        case kTableSectionSamples:
-            return kNumberOfSampleBookshelves;
-        case kTableSectionSignIn:
-            return 1;
-    }
-    return 0;
+    return 1;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
@@ -430,7 +421,7 @@ typedef enum {
         [self presentModalViewController:self.modalNavigationController animated:YES];
         [downloadDictionary release];
     } else {
-        [self showCurrentSamplesAnimated:YES];
+        [self pushSamplesAnimated:YES];
     }
 }
 
@@ -535,37 +526,29 @@ typedef enum {
     }
 }
 
-- (void)showCurrentSamplesAnimated:(BOOL)animated
-{   
-    // TODO: refactor this so there is no implicit knowledge of which we are pushing
-    
-    BOOL shouldAnimatePush = animated;
-    
+- (void)pushSamplesAnimated:(BOOL)animated
+{       
     if (self.modalViewController) {
         [self dismissModalViewControllerAnimated:YES];
-        shouldAnimatePush = NO;
     }
     
-    BOOL alreadyInUse = NO;
     SCHProfileViewController_Shared *profile = [self profileViewController];
+    SCHProfileItem *profileItem = [[profile profileItems] lastObject]; // Only one sample bookshelf so any result will do
     
-    for (UIViewController *vc in self.navigationController.viewControllers) {
-        if (vc == profile) {
-            alreadyInUse = YES;
-            break;
-        }
+    if (profileItem) {
+        NSMutableArray *viewControllers = [NSMutableArray arrayWithObjects:self, profile, nil];
+        [viewControllers addObjectsFromArray:[profile viewControllersForProfileItem:profileItem]];
+        [self.navigationController setViewControllers:viewControllers animated:animated];
+    } else {
+        LambdaAlert *alert = [[LambdaAlert alloc]
+                              initWithTitle:NSLocalizedString(@"Unable To Open the Sample Bookshelf", @"")
+                              message:NSLocalizedString(@"There was a problem whilst opening the sample bookshelf. Please try again.", @"")];
+        [alert addButtonWithTitle:NSLocalizedString(@"OK", @"") block:^{
+        }];
+        
+        [alert show]; 
+        [alert release]; 
     }
-    if (alreadyInUse == NO) {
-        [self.navigationController pushViewController:profile animated:NO];
-    }
-    
-    for (SCHProfileItem *item in [profile.fetchedResultsController fetchedObjects]) {
-        if ([item.ID integerValue] == 1) {
-            [profile pushBookshelvesControllerWithProfileItem:item animated:shouldAnimatePush];
-            break;
-        }
-    }
-    
 }
 
 - (void)showCurrentProfileAnimated:(BOOL)animated
