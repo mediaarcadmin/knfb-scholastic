@@ -28,7 +28,6 @@ NSString * const SCHProfileSyncComponentDidFailNotification = @"SCHProfileSyncCo
 - (void)applyProfileSaves:(NSArray *)profilesArray;
 - (void)processSaveUserProfilesWithResult:(NSDictionary *)result;
 - (BOOL)updateProfiles;
-- (void)syncProfiles:(NSArray *)profileList;
 - (void)syncProfile:(NSDictionary *)webProfile withProfile:(SCHProfileItem *)localProfile;
 
 @end

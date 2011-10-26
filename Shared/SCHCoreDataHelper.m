@@ -74,7 +74,7 @@ static NSString * const kSCHCoreDataHelperSampleStoreName = @"Scholastic_Sample.
 - (void)setupSampleStore
 {  
     if ([self storeExists:kSCHCoreDataHelperSampleStoreName] == NO) {
-        NSString *sourceSampleStorePath = [[[NSBundle mainBundle] bundlePath] stringByAppendingPathComponent:kSCHCoreDataHelperSampleStoreName];
+        NSString *sourceSampleStorePath = [[[NSBundle mainBundle] bundlePath] stringByAppendingPathComponent:kSCHCoreDataHelperStandardStoreName];
         NSURL *applicationSupportDocumentsDirectory = [[[NSFileManager defaultManager] URLsForDirectory:NSApplicationSupportDirectory inDomains:NSUserDomainMask] lastObject];
         NSURL *destinationSampleStoreURL = [applicationSupportDocumentsDirectory URLByAppendingPathComponent:kSCHCoreDataHelperSampleStoreName];    
         NSString *destinationSampleStorePath = [destinationSampleStoreURL path];
