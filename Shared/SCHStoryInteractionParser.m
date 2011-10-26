@@ -807,7 +807,11 @@ static NSString *extractXmlAttribute(const XML_Char **atts, const char *key)
         NSCharacterSet *whitespaceAndNewline = [NSCharacterSet whitespaceAndNewlineCharacterSet];
         NSArray *letters = [row componentsSeparatedByString:@","];
         for (NSString *letterString in letters) {
-            [parser.array addObject:[[letterString stringByTrimmingCharactersInSet:whitespaceAndNewline] substringToIndex:1]];
+            // Temp fix for missing first letter
+            NSString *firstLetter = [[letterString stringByTrimmingCharactersInSet:whitespaceAndNewline] substringToIndex:1];
+            if (firstLetter) {
+                [parser.array addObject:firstLetter];
+            }
         }
         if (isFirstRow) {
             self.matrixColumns = [letters count];
