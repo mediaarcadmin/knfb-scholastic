@@ -50,6 +50,19 @@
 - (void)parseComplete:(SCHStoryInteractionParser *)parser;
 @end
 
+@interface NSString (Parse)
+- (void)BIT_enumerateCharactersWithBlock:(void(^)(unichar character))block;
+@end
+
+@implementation NSString (Parse)
+- (void)BIT_enumerateCharactersWithBlock:(void (^)(unichar))block
+{
+    for (NSInteger charIndex = 0, charCount = [self length]; charIndex < charCount; ++charIndex) {
+        block([self characterAtIndex:charIndex]);
+    }
+}
+@end
+
 static NSString *extractXmlAttribute(const XML_Char **atts, const char *key)
 {
     for (int i = 0; atts[i]; i += 2) {
@@ -149,20 +162,13 @@ static NSString *extractXmlAttribute(const XML_Char **atts, const char *key)
         [parser.array addObject:outcomeMessage];
     } else if (strcmp(name, "TiebreakOrder") == 0) {
         NSString *orderString = extractXmlAttribute(attributes, "Transcript");
-        
         NSMutableArray *convertedOrder = [NSMutableArray array];
-        
-        NSArray *items = [orderString componentsSeparatedByString:@","];
-        
-        for (NSString *item in items) {
-            if (item && [item length] > 0) {
-                NSInteger charValue = [item UTF8String] [0] - 65;
-                [convertedOrder addObject:[NSNumber numberWithInt:charValue]];
+        [orderString BIT_enumerateCharactersWithBlock:^(unichar character) {
+            if ('A' <= character && character <= 'Z') {
+                [convertedOrder addObject:[NSNumber numberWithInt:(character-'A')]];
             }
-        }
-
+        }];
         self.tiebreakOrder = [NSArray arrayWithArray:convertedOrder];
-        
     } else {
         [super startElement:name attributes:attributes parser:parser];
     }
@@ -805,17 +811,16 @@ static NSString *extractXmlAttribute(const XML_Char **atts, const char *key)
     } else if (strcmp(name, "Row") == 0) {
         NSString *row = extractXmlAttribute(attributes, "Letters");
         BOOL isFirstRow = ([parser.array count] == 0);
-        NSInteger letterCount = 0;
+        __block NSInteger letterCount = 0;
         // string is ostensibly comma-separated but bad forms exist so just extract
         // the meaningful characters
-        for (NSInteger charIndex = 0, charCount = [row length]; charIndex < charCount; ++charIndex) {
-            unichar character = [row characterAtIndex:charIndex];
+        [row BIT_enumerateCharactersWithBlock:^(unichar character) {
             if ('A' <= character && character <= 'Z') {
                 NSString *letterString = [NSString stringWithCharacters:&character length:1];
                 [parser.array addObject:letterString];
                 letterCount++;
             }
-        }
+        }];
         if (isFirstRow) {
             self.matrixColumns = letterCount;
         } else {
