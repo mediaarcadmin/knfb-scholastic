@@ -808,9 +808,9 @@ static NSString *extractXmlAttribute(const XML_Char **atts, const char *key)
         NSArray *letters = [row componentsSeparatedByString:@","];
         for (NSString *letterString in letters) {
             // Temp fix for missing first letter
-            NSString *firstLetter = [[letterString stringByTrimmingCharactersInSet:whitespaceAndNewline] substringToIndex:1];
-            if (firstLetter) {
-                [parser.array addObject:firstLetter];
+            NSString *letters = [letterString stringByTrimmingCharactersInSet:whitespaceAndNewline];
+            if ([letters length]) {
+                [parser.array addObject:[letters substringToIndex:1]];
             }
         }
         if (isFirstRow) {
