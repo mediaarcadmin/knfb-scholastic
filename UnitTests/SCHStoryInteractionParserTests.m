@@ -12,6 +12,9 @@
 #import "SCHStoryInteractionTypes.h"
 #import "SCHGeometry.h"
 
+NSString * const KNFBXPSStoryInteractionsMetadataFile = @"/Documents/1/Other/KNFB/Interactions/Interactions.xml";
+NSString * const KNFBXPSStoryInteractionsDirectory = @"/Documents/1/Other/KNFB/Interactions";
+
 @interface SCHStoryInteractionParserTests : SenTestCase {}
 @property (nonatomic, retain) SCHStoryInteractionParser *parser;
 @end

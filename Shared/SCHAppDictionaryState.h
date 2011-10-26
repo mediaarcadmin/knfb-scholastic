@@ -12,6 +12,8 @@
 // Constants
 extern NSString * const kSCHAppDictionaryState;
 
+@class SCHAppDictionaryManifestEntry;
+
 @interface SCHAppDictionaryState : NSManagedObject {
 
 }
@@ -20,5 +22,6 @@ extern NSString * const kSCHAppDictionaryState;
 @property (nonatomic, retain) NSNumber * State;
 @property (nonatomic, retain) NSString * Version;
 @property (nonatomic, retain) NSNumber * InitialDictionaryProcessed;
+@property (nonatomic, retain) SCHAppDictionaryManifestEntry *appDictionaryManifestEntry;
 
 @end

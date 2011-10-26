@@ -22,6 +22,7 @@
 #import "SCHDictionaryAccessManager.h"
 #import "NSManagedObjectContext+Extensions.h"
 #import "SCHCoreDataHelper.h"
+#import "SCHAppDictionaryManifestEntry.h"
 
 // Constants
 NSString * const kSCHDictionaryDownloadPercentageUpdate = @"SCHDictionaryDownloadPercentageUpdate";
@@ -84,6 +85,11 @@ char * const kSCHDictionaryManifestEntryColumnSeparator = "\t";
 
 // Core Data Save method
 - (BOOL)save:(NSError **)error;
+
+// Cache the current manifest entry in core data
+- (void)storeManifestEntryInDatabase:(SCHDictionaryManifestEntry *)manifestEntry;
+- (SCHDictionaryManifestEntry *)manifestEntryFromDatabase;
+- (void)removeManifestEntryFromDatabase;
 
 @end
 
@@ -616,15 +622,22 @@ static SCHDictionaryDownloadManager *sharedManager = nil;
             
             self.currentDictionaryProcessingPercentage = 0.5;
 
-            // if there's no manifest set, restart the process
-            // this prevents double processing in the event of interruptions during parsing
-            if (self.manifestUpdates == nil) {
-                [self threadSafeUpdateDictionaryState:SCHDictionaryProcessingStateNeedsManifest];
-                [self processDictionary];
-                return;
+            // to cope with resuming the app in this state, the manifest entry being processed
+            // is cached in the database
+            SCHDictionaryManifestEntry *entry;
+            if (self.manifestUpdates != nil) {
+                entry = [self.manifestUpdates objectAtIndex:0];
+                [self storeManifestEntryInDatabase:entry];
+            } else {
+                entry = [self manifestEntryFromDatabase];
+                if (entry == nil) {
+                    // if there's no manifest set, restart the process
+                    // this prevents double processing in the event of interruptions during parsing
+                    [self threadSafeUpdateDictionaryState:SCHDictionaryProcessingStateNeedsManifest];
+                    [self processDictionary];
+                    return;
+                }
             }
-
-            SCHDictionaryManifestEntry *entry = [self.manifestUpdates objectAtIndex:0];
 
 			// create dictionary parse operation
 			SCHDictionaryParseOperation *parseOp = [[SCHDictionaryParseOperation alloc] init];
@@ -638,6 +651,7 @@ static SCHDictionaryDownloadManager *sharedManager = nil;
                 NSFileManager *localFileManager = [[NSFileManager alloc] init];
                 [localFileManager removeItemAtPath:dictionaryZipPath error:nil];
                 [localFileManager release];
+                [self removeManifestEntryFromDatabase];
 				[self processDictionary];
 			}];
 			
@@ -656,8 +670,49 @@ static SCHDictionaryDownloadManager *sharedManager = nil;
 		default:
 			break;
 	}
-	
-	
+}
+
+- (void)storeManifestEntryInDatabase:(SCHDictionaryManifestEntry *)manifestEntry
+{
+    NSAssert([self manifestEntryFromDatabase] == nil, @"attempt to overwrite manifest entry in database");
+    
+    [self withAppDictionaryStatePerform:^(SCHAppDictionaryState *state) {
+        SCHAppDictionaryManifestEntry *entry = [NSEntityDescription insertNewObjectForEntityForName:@"SCHAppDictionaryManifestEntry"
+                                                                          inManagedObjectContext:self.mainThreadManagedObjectContext];
+        entry.fromVersion = manifestEntry.fromVersion;
+        entry.toVersion = manifestEntry.toVersion;
+        entry.url = manifestEntry.url;
+        state.appDictionaryManifestEntry = entry;
+    }];
+    
+    NSError *error = nil;
+    if (![self save:&error]) {
+        NSLog(@"failed to save after updating database manifest entry: %@", error);
+    }
+}
+
+- (SCHDictionaryManifestEntry *)manifestEntryFromDatabase
+{
+    __block SCHDictionaryManifestEntry *manifestEntry = nil;
+    [self withAppDictionaryStatePerform:^(SCHAppDictionaryState *state) {
+        if (state.appDictionaryManifestEntry != nil) {
+            manifestEntry = [[SCHDictionaryManifestEntry alloc] init];
+            manifestEntry.fromVersion = state.appDictionaryManifestEntry.fromVersion;
+            manifestEntry.toVersion = state.appDictionaryManifestEntry.toVersion;
+            manifestEntry.url = state.appDictionaryManifestEntry.url;
+        }
+    }];
+    return [manifestEntry autorelease];
+}
+
+- (void)removeManifestEntryFromDatabase
+{
+    [self withAppDictionaryStatePerform:^(SCHAppDictionaryState *state) {
+        if (state.appDictionaryManifestEntry) {
+            [self.mainThreadManagedObjectContext deleteObject:state.appDictionaryManifestEntry];
+            state.appDictionaryManifestEntry = nil;
+        }
+    }];
 }
 
 #pragma mark -
@@ -1538,7 +1593,7 @@ static SCHDictionaryDownloadManager *sharedManager = nil;
         block(state);
         
         if ([self.mainThreadManagedObjectContext hasChanges] && ![self.mainThreadManagedObjectContext save:&error]) {
-            NSLog(@"Error while saving app dictionary state: %@", [error localizedDescription]);
+            NSLog(@"Error while saving app dictionary state: %@", error);
         }
     };
     
@@ -1552,11 +1607,17 @@ static SCHDictionaryDownloadManager *sharedManager = nil;
 - (BOOL)save:(NSError **)error
 {
     __block BOOL rtn;
-    dispatch_sync(dispatch_get_main_queue(), ^{
+    dispatch_block_t saveBlock = ^{
         NSError *localError = nil;
         rtn = [self.mainThreadManagedObjectContext save:&localError];
         *error = [localError retain];
-    });
+    };
+    if ([NSThread isMainThread]) {
+        saveBlock();
+    } else {
+        dispatch_sync(dispatch_get_main_queue(), saveBlock);
+    }
+    
     [*error autorelease];
     return rtn;
 }

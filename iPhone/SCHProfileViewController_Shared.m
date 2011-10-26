@@ -118,6 +118,8 @@
     UIView *empty = [[UIView alloc] initWithFrame:CGRectZero];
     self.navigationItem.leftBarButtonItem = [[[UIBarButtonItem alloc] initWithCustomView:empty] autorelease];
     [empty release];
+    
+    [self checkForBookUpdates];
 }
 
 #pragma mark - NSManagedObjectContext Changed Notification

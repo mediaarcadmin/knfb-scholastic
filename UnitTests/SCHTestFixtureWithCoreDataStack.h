@@ -7,12 +7,13 @@
 //
 
 #import <CoreData/CoreData.h>
-#import <SenTestingKit/SenTestingKit.h>
 
-@interface SCHTestClassWithCoreDataStack : SenTestCase {}
+@interface SCHTestFixtureWithCoreDataStack : NSObject {}
 
 @property (nonatomic, retain) NSManagedObjectModel *managedObjectModel;
 @property (nonatomic, retain) NSManagedObjectContext *managedObjectContext;
 @property (nonatomic, retain) NSPersistentStoreCoordinator *persistentStoreCoordinator;
+
+- (id)initWithPersistentStoreConfiguration:(NSString *)configuration;
 
 @end
