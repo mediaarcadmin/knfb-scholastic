@@ -967,13 +967,43 @@ static NSInteger const kSCHLibreAccessWebServiceVaid = 33;
 	
 	if (anObject != nil) {
 		NSMutableDictionary *objects = [NSMutableDictionary dictionary];
-		
-		[objects setObject:[self objectFromTranslate:[anObject.Highlights Highlight]] forKey:kSCHLibreAccessWebServiceHighlights];
+        
         if ([[SCHAppStateManager sharedAppStateManager] canSyncNotes] == YES) {
-            [objects setObject:[self objectFromTranslate:[anObject.Notes Note]] forKey:kSCHLibreAccessWebServiceNotes];
+            id notesObject = [self objectFromTranslate:[anObject.Notes Note]];
+            if (notesObject) {
+                [objects setObject:notesObject forKey:kSCHLibreAccessWebServiceNotes];
+            } else {
+                [objects setObject:[NSNull null] forKey:kSCHLibreAccessWebServiceNotes];
+            }
         }
-		[objects setObject:[self objectFromTranslate:[anObject.Bookmarks Bookmark]] forKey:kSCHLibreAccessWebServiceBookmarks];
-		[objects setObject:[self objectFromLastPage:anObject.LastPage] forKey:kSCHLibreAccessWebServiceLastPage];
+		
+        id highlightsObject = [self objectFromTranslate:[anObject.Highlights Highlight]];
+        if (highlightsObject) {
+            [objects setObject:highlightsObject forKey:kSCHLibreAccessWebServiceHighlights];
+        } else {
+            [objects setObject:[NSNull null] forKey:kSCHLibreAccessWebServiceHighlights];
+        }
+        
+        id bookmarksObject = [self objectFromTranslate:[anObject.Bookmarks Bookmark]];
+        if (bookmarksObject) {
+            [objects setObject:bookmarksObject forKey:kSCHLibreAccessWebServiceBookmarks];
+        } else {
+            [objects setObject:[NSNull null] forKey:kSCHLibreAccessWebServiceBookmarks];
+        }
+        
+        NSDictionary *lastPageDict = [self objectFromLastPage:anObject.LastPage];
+        if (lastPageDict) {
+            [objects setObject:lastPageDict forKey:kSCHLibreAccessWebServiceLastPage];
+        } else {
+            NSMutableDictionary *emptyLastPage = [NSMutableDictionary dictionary];
+            
+            [emptyLastPage setObject:[NSNull null] forKey:kSCHLibreAccessWebServiceLastPageLocation];
+            [emptyLastPage setObject:[NSNull null] forKey:kSCHLibreAccessWebServicePercentage];
+            [emptyLastPage setObject:[NSNull null] forKey:kSCHLibreAccessWebServiceComponent];
+            [emptyLastPage setObject:[NSDate date] forKey:kSCHLibreAccessWebServiceLastModified];
+            
+            [objects setObject:emptyLastPage forKey:kSCHLibreAccessWebServiceLastPage];
+        }
         
 		ret = objects;					
 	}
