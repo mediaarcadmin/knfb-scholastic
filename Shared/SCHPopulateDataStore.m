@@ -218,6 +218,7 @@
         
         NSMutableArray *userContentItems =     [NSMutableArray arrayWithCapacity:[entries count] * [profileIDs count]];
         NSMutableArray *contentMetadataItems = [NSMutableArray arrayWithCapacity:[entries count]];
+        NSMutableArray *profileItems         = [NSMutableArray arrayWithCapacity:[entries count]];
 
         for (NSDictionary *entry in entries) {
             for (NSNumber *profileID in profileIDs) {
@@ -238,6 +239,15 @@
   
         }
         
+        for (NSNumber *profileID in profileIDs) {
+            [profileItems addObject:[self profileItemWith:[profileID intValue]
+                                                    title:NSLocalizedString(@"Sample Bookshelf", nil) 
+                                                 password:@"pass"                                 
+                                                      age:10 
+                                                bookshelf:kSCHBookshelfStyleOlderChild]];
+        }
+
+        [self.profileSyncComponent syncProfiles:profileItems];
         [self.contentSyncComponent syncUserContentItems:userContentItems];
         [self.bookshelfSyncComponent syncContentMetadataItems:contentMetadataItems];        
     }
