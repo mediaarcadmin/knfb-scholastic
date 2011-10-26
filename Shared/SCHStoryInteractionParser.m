@@ -87,6 +87,7 @@ static NSString *extractXmlAttribute(const XML_Char **atts, const char *key)
 {
     if (strcmp(name, "DocumentPageNumber") == 0) {
         self.documentPageNumber = [parser.text integerValue];
+        NSLog(@"page number = %d", self.documentPageNumber);
     }
     else if (strcmp(name, "Position") == 0) {
         NSArray *parts = [parser.text componentsSeparatedByString:@","];
@@ -804,15 +805,21 @@ static NSString *extractXmlAttribute(const XML_Char **atts, const char *key)
     } else if (strcmp(name, "Row") == 0) {
         NSString *row = extractXmlAttribute(attributes, "Letters");
         BOOL isFirstRow = ([parser.array count] == 0);
-        NSCharacterSet *whitespaceAndNewline = [NSCharacterSet whitespaceAndNewlineCharacterSet];
-        NSArray *letters = [row componentsSeparatedByString:@","];
-        for (NSString *letterString in letters) {
-            [parser.array addObject:[[letterString stringByTrimmingCharactersInSet:whitespaceAndNewline] substringToIndex:1]];
+        NSInteger letterCount = 0;
+        // string is ostensibly comma-separated but bad forms exist so just extract
+        // the meaningful characters
+        for (NSInteger charIndex = 0, charCount = [row length]; charIndex < charCount; ++charIndex) {
+            unichar character = [row characterAtIndex:charIndex];
+            if ('A' <= character && character <= 'Z') {
+                NSString *letterString = [NSString stringWithCharacters:&character length:1];
+                [parser.array addObject:letterString];
+                letterCount++;
+            }
         }
         if (isFirstRow) {
-            self.matrixColumns = [letters count];
+            self.matrixColumns = letterCount;
         } else {
-            if ([letters count] != self.matrixColumns) {
+            if (letterCount != self.matrixColumns) {
                 NSLog(@"expected %d letters in WordSearch rows '%@'", self.matrixColumns, row);
             }
         }
