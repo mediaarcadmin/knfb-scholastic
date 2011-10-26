@@ -377,6 +377,7 @@
     SCHAppState *appState = [SCHAppStateManager sharedAppStateManager].appState;
     
     appState.ShouldSync = [NSNumber numberWithBool:NO];
+    appState.ShouldSyncNotes = [NSNumber numberWithBool:NO];
     appState.ShouldAuthenticate = [NSNumber numberWithBool:NO];
     appState.DataStoreType = [NSNumber numberWithDataStoreType:kSCHDataStoreTypesSample];
 }

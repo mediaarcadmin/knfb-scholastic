@@ -8582,6 +8582,7 @@
 					"-all_load",
 				);
 				PRODUCT_NAME = Scholastic;
+				TARGETED_DEVICE_FAMILY = 2;
 			};
 			name = Debug;
 		};
@@ -8610,6 +8611,7 @@
 					"-all_load",
 				);
 				PRODUCT_NAME = Scholastic;
+				TARGETED_DEVICE_FAMILY = 2;
 				VALIDATE_PRODUCT = YES;
 			};
 			name = Release;
@@ -8831,6 +8833,7 @@
 					"-all_load",
 				);
 				PRODUCT_NAME = Scholastic;
+				TARGETED_DEVICE_FAMILY = 2;
 				VALIDATE_PRODUCT = YES;
 			};
 			name = "Ad Hoc";
