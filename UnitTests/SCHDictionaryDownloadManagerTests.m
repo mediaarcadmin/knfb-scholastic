@@ -226,6 +226,42 @@ static NSString * const kSCHCoreDataHelperDictionaryStoreConfiguration = @"Dicti
     [helpVideoManifest release];
 }
 
+- (void)testVideoManifestErrorState
+{
+    [self processDictionary];
+    STAssertTrue([lastCreatedOperation isKindOfClass:[SCHHelpVideoManifestOperation class]], @"processing from initial state should have created SCHHelpVideoManifestOperation");
+
+    [self finishLastCreatedOperation:SCHDictionaryProcessingStateError];
+    STAssertNil(lastCreatedOperation, @"processing should end with error state");
+}
+
+- (void)testVideoDownloadIdleState:(SCHDictionaryProcessingState)state
+{
+    SCHHelpVideoManifest *helpVideoManifest = [[SCHHelpVideoManifest alloc] init];
+    dictionaryDownloadManager.helpVideoManifest = helpVideoManifest;
+    [dictionaryDownloadManager threadSafeUpdateDictionaryState:SCHDictionaryProcessingStateDownloadingHelpVideos];
+    [self processDictionary];
+    STAssertTrue([lastCreatedOperation isKindOfClass:[SCHHelpVideoFileDownloadOperation class]], @"should have created SCHHelpVideoFileDownloadOperation: %@", lastCreatedOperation);
+
+    [self finishLastCreatedOperation:state];
+    STAssertNil(lastCreatedOperation, @"processing should end with error state");
+}
+
+- (void)testVideoDownloadErrorState
+{
+    [self testVideoDownloadIdleState:SCHDictionaryProcessingStateError];
+}
+
+- (void)testVideoDownloadUserSetupState
+{
+    [self testVideoDownloadIdleState:SCHDictionaryProcessingStateUserSetup];
+}
+
+- (void)testVideoDownloadUserDeclinedState
+{
+    [self testVideoDownloadIdleState:SCHDictionaryProcessingStateUserDeclined];
+}
+
 - (void)testDictionaryManifestNoUpdates
 {
     dictionaryDownloadManager.dictionaryVersion = @"1.0";
@@ -287,8 +323,35 @@ static NSString * const kSCHCoreDataHelperDictionaryStoreConfiguration = @"Dicti
     [manifestEntry release];
 }
 
-- (void)testDictionaryDownloadStateMachineFlow
+- (void)testDictionaryManifestError
 {
+    dictionaryDownloadManager.dictionaryVersion = @"1.0";
+    [dictionaryDownloadManager threadSafeUpdateDictionaryState:SCHDictionaryProcessingStateNeedsManifest];
+    [self processDictionary];
+    STAssertTrue([lastCreatedOperation isKindOfClass:[SCHDictionaryManifestOperation class]], @"should have created SCHDictionaryManifestOperation");
+
+    [self finishLastCreatedOperation:SCHDictionaryProcessingStateError];
+    STAssertNil(lastCreatedOperation, @"manifest error should end processing");
+}
+
+- (void)testDictionaryDownloadNotEnoughFreeSpace
+{
+    SCHDictionaryManifestEntry *manifestEntry = [[SCHDictionaryManifestEntry alloc] init];
+    manifestEntry.toVersion = @"1.1";
+    dictionaryDownloadManager.manifestUpdates = [NSMutableArray arrayWithObject:manifestEntry];
+    [dictionaryDownloadManager threadSafeUpdateDictionaryState:SCHDictionaryProcessingStateNeedsDownload];
+    [self processDictionary];
+    
+    STAssertTrue([lastCreatedOperation isKindOfClass:[SCHDictionaryFileDownloadOperation class]], @"should have created SCHDictionaryFileDownloadOperation: %@", lastCreatedOperation);
+    STAssertEquals([(SCHDictionaryFileDownloadOperation *)lastCreatedOperation manifestEntry], manifestEntry, @"SCHDictionaryFileDownloadOperation should have been initialised with manifestEntry");
+    
+    [self finishLastCreatedOperation:SCHDictionaryProcessingStateNotEnoughFreeSpace];
+    STAssertNil(lastCreatedOperation, @"notEnoughFreeSpace should end processing");
+}
+
+- (void)testResumeFromDownloadState
+{
+    dictionaryDownloadManager.dictionaryVersion = @"1.0";
     [dictionaryDownloadManager threadSafeUpdateDictionaryState:SCHDictionaryProcessingStateNeedsDownload];
     [self processDictionary];
 
@@ -296,6 +359,7 @@ static NSString * const kSCHCoreDataHelperDictionaryStoreConfiguration = @"Dicti
     STAssertTrue([lastCreatedOperation isKindOfClass:[SCHDictionaryManifestOperation class]], @"should have created SCHDictionaryManifestOperation");
     
     SCHDictionaryManifestEntry *manifestEntry = [[SCHDictionaryManifestEntry alloc] init];
+    manifestEntry.fromVersion = @"1.0";
     manifestEntry.toVersion = @"1.1";
     dictionaryDownloadManager.manifestUpdates = [NSMutableArray arrayWithObject:manifestEntry];
     [self finishLastCreatedOperation:SCHDictionaryProcessingStateManifestVersionCheck];
@@ -344,6 +408,47 @@ static NSString * const kSCHCoreDataHelperDictionaryStoreConfiguration = @"Dicti
     
     STAssertNil(lastCreatedOperation, @"finishing SCHDictionaryParseOperation with no updates should end processing");
     STAssertEquals([dictionaryDownloadManager dictionaryProcessingState], SCHDictionaryProcessingStateReady, @"should be in dictionary ready state");
+}
+
+- (void)testMultipleManifestEntries
+{
+    SCHDictionaryManifestEntry *manifestEntry1 = [[SCHDictionaryManifestEntry alloc] init];
+    manifestEntry1.fromVersion = @"1.0";
+    manifestEntry1.toVersion = @"1.1";
+    
+    SCHDictionaryManifestEntry *manifestEntry2 = [[SCHDictionaryManifestEntry alloc] init];
+    manifestEntry2.fromVersion = @"1.1";
+    manifestEntry2.toVersion = @"1.2";
+    
+    dictionaryDownloadManager.manifestUpdates = [NSMutableArray arrayWithObjects:manifestEntry1, manifestEntry2, nil];
+    [dictionaryDownloadManager threadSafeUpdateDictionaryState:SCHDictionaryProcessingStateManifestVersionCheck];
+    [self processDictionary];
+    
+    STAssertTrue([lastCreatedOperation isKindOfClass:[SCHDictionaryFileDownloadOperation class]], @"should have created SCHDictionaryFileDownloadOperation: %@", lastCreatedOperation);
+    STAssertEquals([(SCHDictionaryFileDownloadOperation *)lastCreatedOperation manifestEntry], manifestEntry1, @"SCHDictionaryFileDownloadOperation should have been initialised with manifestEntry1");
+    [self finishLastCreatedOperation:SCHDictionaryProcessingStateNeedsUnzip];
+    
+    STAssertTrue([lastCreatedOperation isKindOfClass:[SCHDictionaryFileUnzipOperation class]], @"should have created SCHDictionaryFileUnzipOperation: %@", lastCreatedOperation);
+    [self finishLastCreatedOperation:SCHDictionaryProcessingStateNeedsParse];
+
+    STAssertTrue([lastCreatedOperation isKindOfClass:[SCHDictionaryParseOperation class]], @"should have created SCHDictionaryFileParseOperation: %@", lastCreatedOperation);
+    [self finishLastCreatedOperation:SCHDictionaryProcessingStateManifestVersionCheck];
+
+    STAssertTrue([lastCreatedOperation isKindOfClass:[SCHDictionaryFileDownloadOperation class]], @"should have created SCHDictionaryFileDownloadOperation: %@", lastCreatedOperation);
+    STAssertEquals([(SCHDictionaryFileDownloadOperation *)lastCreatedOperation manifestEntry], manifestEntry2, @"SCHDictionaryFileDownloadOperation should have been initialised with manifestEntry2");
+    [self finishLastCreatedOperation:SCHDictionaryProcessingStateNeedsUnzip];
+    
+    STAssertTrue([lastCreatedOperation isKindOfClass:[SCHDictionaryFileUnzipOperation class]], @"should have created SCHDictionaryFileUnzipOperation: %@", lastCreatedOperation);
+    [self finishLastCreatedOperation:SCHDictionaryProcessingStateNeedsParse];
+    
+    STAssertTrue([lastCreatedOperation isKindOfClass:[SCHDictionaryParseOperation class]], @"should have created SCHDictionaryFileParseOperation: %@", lastCreatedOperation);
+    [self finishLastCreatedOperation:SCHDictionaryProcessingStateManifestVersionCheck];
+
+    STAssertNil(lastCreatedOperation, @"finishing SCHDictionaryParseOperation with no updates should end processing");
+    STAssertEquals([dictionaryDownloadManager dictionaryProcessingState], SCHDictionaryProcessingStateReady, @"should be in dictionary ready state");
+    
+    [manifestEntry1 release];
+    [manifestEntry2 release];
 }
 
 @end
