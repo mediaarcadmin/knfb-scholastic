@@ -35,6 +35,21 @@
 		2815719F13EFEB880071B73C /* SCHStoryInteractionPictureStarter.m in Sources */ = {isa = PBXBuildFile; fileRef = 28D81EE613E8413B00A2B25F /* SCHStoryInteractionPictureStarter.m */; };
 		2819307D112F81BE00ECF9B4 /* Scholastic.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 2819307C112F81BE00ECF9B4 /* Scholastic.xcdatamodeld */; };
 		281B74B013DEED4900BA157C /* SCHBookUpdates.m in Sources */ = {isa = PBXBuildFile; fileRef = 281B74AF13DEED4900BA157C /* SCHBookUpdates.m */; };
+		281CC4031457FB030049F736 /* SCHDictionaryDownloadManagerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 281CC4021457FB030049F736 /* SCHDictionaryDownloadManagerTests.m */; };
+		281CC4061457FE170049F736 /* libexpat.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C947D57B133B9C0100FB4404 /* libexpat.a */; };
+		281CC4071457FF7C0049F736 /* SCHDictionaryDownloadManager.m in Sources */ = {isa = PBXBuildFile; fileRef = F8C4C3FA1332594A0057420E /* SCHDictionaryDownloadManager.m */; };
+		281CC4081457FF9F0049F736 /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = 529386B912DF3A4900045B44 /* Reachability.m */; };
+		281CC4091457FFE50049F736 /* SCHCoreDataHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = F8DCE5C313EC415F00100B6A /* SCHCoreDataHelper.m */; };
+		281CC40A1457FFF70049F736 /* SCHAppDictionaryState.m in Sources */ = {isa = PBXBuildFile; fileRef = 528433EA133382EA0010BAAB /* SCHAppDictionaryState.m */; };
+		281CC40B145800010049F736 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 529386C412DF3A9000045B44 /* SystemConfiguration.framework */; };
+		281CC40C145800100049F736 /* SCHAppStateManager.m in Sources */ = {isa = PBXBuildFile; fileRef = F8FAF2F213F12F20009C7E9F /* SCHAppStateManager.m */; };
+		281CC40D145800190049F736 /* SCHAppState.m in Sources */ = {isa = PBXBuildFile; fileRef = 52C7F8711377DEE800DB08C9 /* SCHAppState.m */; };
+		281CC40E145800220049F736 /* SCHDictionaryEntry.m in Sources */ = {isa = PBXBuildFile; fileRef = F8B55E3F134B530C0028534A /* SCHDictionaryEntry.m */; };
+		281CC40F1458002C0049F736 /* SCHDictionaryWordForm.m in Sources */ = {isa = PBXBuildFile; fileRef = F8C5DC6E134B5DF30020D610 /* SCHDictionaryWordForm.m */; };
+		281CC414145806F80049F736 /* SCHHelpVideoManifest.m in Sources */ = {isa = PBXBuildFile; fileRef = F8615B20144D712400D0D265 /* SCHHelpVideoManifest.m */; };
+		281CC41714581D570049F736 /* SCHAppDictionaryManifestEntry.m in Sources */ = {isa = PBXBuildFile; fileRef = 281CC41614581D560049F736 /* SCHAppDictionaryManifestEntry.m */; };
+		281CC41814581D570049F736 /* SCHAppDictionaryManifestEntry.m in Sources */ = {isa = PBXBuildFile; fileRef = 281CC41614581D560049F736 /* SCHAppDictionaryManifestEntry.m */; };
+		281CC41914581D570049F736 /* SCHAppDictionaryManifestEntry.m in Sources */ = {isa = PBXBuildFile; fileRef = 281CC41614581D560049F736 /* SCHAppDictionaryManifestEntry.m */; };
 		28204BBC140CD715007D0935 /* SCHStoryInteractionWhoSaidItNameView.m in Sources */ = {isa = PBXBuildFile; fileRef = 28204BBB140CD715007D0935 /* SCHStoryInteractionWhoSaidItNameView.m */; };
 		28204BBD140CD715007D0935 /* SCHStoryInteractionWhoSaidItNameView.m in Sources */ = {isa = PBXBuildFile; fileRef = 28204BBB140CD715007D0935 /* SCHStoryInteractionWhoSaidItNameView.m */; };
 		28211CD5140E160300872701 /* SCHStoryInteractionStandaloneViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 28211CD4140E160300872701 /* SCHStoryInteractionStandaloneViewController.m */; };
@@ -77,7 +92,7 @@
 		2866312013F01C700092A5DE /* SCHStoryInteractionControllerConcentration.m in Sources */ = {isa = PBXBuildFile; fileRef = 2866311F13F01C700092A5DE /* SCHStoryInteractionControllerConcentration.m */; };
 		2866312313F01D0E0092A5DE /* SCHStoryInteractionConcentration_iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2866312213F01D0E0092A5DE /* SCHStoryInteractionConcentration_iPad.xib */; };
 		2866313E13F02ABA0092A5DE /* storyinteraction-concentration-tile-orange~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = 2866313D13F02ABA0092A5DE /* storyinteraction-concentration-tile-orange~ipad.png */; };
-		2868A45213BA13F1000110D5 /* SCHTestClassWithCoreDataStack.m in Sources */ = {isa = PBXBuildFile; fileRef = 2868A45113BA13F1000110D5 /* SCHTestClassWithCoreDataStack.m */; };
+		2868A45213BA13F1000110D5 /* SCHTestFixtureWithCoreDataStack.m in Sources */ = {isa = PBXBuildFile; fileRef = 2868A45113BA13F1000110D5 /* SCHTestFixtureWithCoreDataStack.m */; };
 		2868A45713BA14CB000110D5 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 28EEBFDC1118E19E00187D67 /* CoreData.framework */; };
 		2868A45913BA1B62000110D5 /* SCHAppBook.m in Sources */ = {isa = PBXBuildFile; fileRef = F8BEE8AE1334FD44008B40DA /* SCHAppBook.m */; };
 		2868A45F13BA1C36000110D5 /* SCHProcessingManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 2868A45E13BA1C36000110D5 /* SCHProcessingManager.m */; };
@@ -2021,6 +2036,13 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		281CC4041457FE100049F736 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = C947D55D133B9C0000FB4404 /* libEucalyptus.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 7D5171BC1028B6AE005F3C46;
+			remoteInfo = expat;
+		};
 		28D6D4C91451717E0094F144 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 526FEB41140FD83A00638712 /* KIF.xcodeproj */;
@@ -2180,6 +2202,9 @@
 		28194A6B13C1BF2600E3DBE2 /* AppDelegate_Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AppDelegate_Private.h; path = Shared/AppDelegate_Private.h; sourceTree = "<group>"; };
 		281B74AE13DEED4900BA157C /* SCHBookUpdates.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHBookUpdates.h; path = Shared/SCHBookUpdates.h; sourceTree = "<group>"; };
 		281B74AF13DEED4900BA157C /* SCHBookUpdates.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHBookUpdates.m; path = Shared/SCHBookUpdates.m; sourceTree = "<group>"; };
+		281CC4021457FB030049F736 /* SCHDictionaryDownloadManagerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCHDictionaryDownloadManagerTests.m; sourceTree = "<group>"; };
+		281CC41514581D560049F736 /* SCHAppDictionaryManifestEntry.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHAppDictionaryManifestEntry.h; path = Shared/SCHAppDictionaryManifestEntry.h; sourceTree = "<group>"; };
+		281CC41614581D560049F736 /* SCHAppDictionaryManifestEntry.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHAppDictionaryManifestEntry.m; path = Shared/SCHAppDictionaryManifestEntry.m; sourceTree = "<group>"; };
 		28204BBA140CD715007D0935 /* SCHStoryInteractionWhoSaidItNameView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCHStoryInteractionWhoSaidItNameView.h; sourceTree = "<group>"; };
 		28204BBB140CD715007D0935 /* SCHStoryInteractionWhoSaidItNameView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCHStoryInteractionWhoSaidItNameView.m; sourceTree = "<group>"; };
 		28211CD3140E160300872701 /* SCHStoryInteractionStandaloneViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCHStoryInteractionStandaloneViewController.h; sourceTree = "<group>"; };
@@ -2238,8 +2263,8 @@
 		2866313D13F02ABA0092A5DE /* storyinteraction-concentration-tile-orange~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "storyinteraction-concentration-tile-orange~ipad.png"; sourceTree = "<group>"; };
 		2866314213F03C130092A5DE /* SCH3DView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCH3DView.h; sourceTree = "<group>"; };
 		2866314313F03C140092A5DE /* SCH3DView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCH3DView.m; sourceTree = "<group>"; };
-		2868A45013BA13F1000110D5 /* SCHTestClassWithCoreDataStack.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCHTestClassWithCoreDataStack.h; sourceTree = "<group>"; };
-		2868A45113BA13F1000110D5 /* SCHTestClassWithCoreDataStack.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCHTestClassWithCoreDataStack.m; sourceTree = "<group>"; };
+		2868A45013BA13F1000110D5 /* SCHTestFixtureWithCoreDataStack.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCHTestFixtureWithCoreDataStack.h; sourceTree = "<group>"; };
+		2868A45113BA13F1000110D5 /* SCHTestFixtureWithCoreDataStack.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCHTestFixtureWithCoreDataStack.m; sourceTree = "<group>"; };
 		2868A45D13BA1C36000110D5 /* SCHProcessingManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCHProcessingManager.h; sourceTree = "<group>"; };
 		2868A45E13BA1C36000110D5 /* SCHProcessingManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCHProcessingManager.m; sourceTree = "<group>"; };
 		2869896D13B723C300C08908 /* SCHSemaphoreGroup.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCHSemaphoreGroup.h; sourceTree = "<group>"; };
@@ -3709,12 +3734,14 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				281CC4061457FE170049F736 /* libexpat.a in Frameworks */,
 				28A08CFC13952CB4006FD008 /* UIKit.framework in Frameworks */,
 				28A08CFD13952CB4006FD008 /* Foundation.framework in Frameworks */,
 				28A08CFE13952CB4006FD008 /* CoreGraphics.framework in Frameworks */,
 				286E21B313AC954900CB4232 /* AVFoundation.framework in Frameworks */,
 				2894E81513B0A68B00AEAD79 /* libxml2.dylib in Frameworks */,
 				2868A45713BA14CB000110D5 /* CoreData.framework in Frameworks */,
+				281CC40B145800010049F736 /* SystemConfiguration.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3987,8 +4014,8 @@
 		28A08CFF13952CB4006FD008 /* UnitTests */ = {
 			isa = PBXGroup;
 			children = (
-				2868A45013BA13F1000110D5 /* SCHTestClassWithCoreDataStack.h */,
-				2868A45113BA13F1000110D5 /* SCHTestClassWithCoreDataStack.m */,
+				2868A45013BA13F1000110D5 /* SCHTestFixtureWithCoreDataStack.h */,
+				2868A45113BA13F1000110D5 /* SCHTestFixtureWithCoreDataStack.m */,
 				2869896D13B723C300C08908 /* SCHSemaphoreGroup.h */,
 				2869896E13B723C300C08908 /* SCHSemaphoreGroup.m */,
 				28A08D0813952CB4006FD008 /* SCHStoryInteractionParserTests.m */,
@@ -3997,6 +4024,7 @@
 				286E21A813AC851700CB4232 /* SCHQueuedAudioPlayerTests.m */,
 				2898A0B313F435C600618172 /* SCHStoryInteractionJigsawPathTests.h */,
 				2898A0B413F435C600618172 /* SCHStoryInteractionJigsawPathTests.m */,
+				281CC4021457FB030049F736 /* SCHDictionaryDownloadManagerTests.m */,
 				286E21AA13AC88E100CB4232 /* Dummy Implementations */,
 				28A08D0013952CB4006FD008 /* Supporting Files */,
 			);
@@ -4664,6 +4692,8 @@
 				F8BEE8AE1334FD44008B40DA /* SCHAppBook.m */,
 				5243545613337BAC00282B53 /* SCHAppContentProfileItem.h */,
 				5243545713337BAC00282B53 /* SCHAppContentProfileItem.m */,
+				281CC41514581D560049F736 /* SCHAppDictionaryManifestEntry.h */,
+				281CC41614581D560049F736 /* SCHAppDictionaryManifestEntry.m */,
 				528433E9133382EA0010BAAB /* SCHAppDictionaryState.h */,
 				528433EA133382EA0010BAAB /* SCHAppDictionaryState.m */,
 				5206FF2313744E7000FCE07C /* SCHAppProfile.h */,
@@ -6299,6 +6329,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				281CC4051457FE100049F736 /* PBXTargetDependency */,
 			);
 			name = UnitTests;
 			productName = UnitTests;
@@ -8116,6 +8147,7 @@
 				C9045C591456038D009A3133 /* SCHSampleBooksManifestOperation.m in Sources */,
 				2808E21E1456BDFD004EA40E /* QHTTPOperation.m in Sources */,
 				2808E2201456BDFD004EA40E /* QRunLoopOperation.m in Sources */,
+				281CC41714581D570049F736 /* SCHAppDictionaryManifestEntry.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -8150,7 +8182,7 @@
 				2894E81413B0A67B00AEAD79 /* USAdditions.m in Sources */,
 				2807DEFC13B0BA5C007C8F41 /* SCHGeometry.m in Sources */,
 				2869896F13B723C300C08908 /* SCHSemaphoreGroup.m in Sources */,
-				2868A45213BA13F1000110D5 /* SCHTestClassWithCoreDataStack.m in Sources */,
+				2868A45213BA13F1000110D5 /* SCHTestFixtureWithCoreDataStack.m in Sources */,
 				2868A45913BA1B62000110D5 /* SCHAppBook.m in Sources */,
 				2868A45F13BA1C36000110D5 /* SCHProcessingManager.m in Sources */,
 				52162DA713DD763500D257C5 /* BITAPIError.m in Sources */,
@@ -8164,6 +8196,17 @@
 				2898A0B513F435C600618172 /* SCHStoryInteractionJigsawPathTests.m in Sources */,
 				2895A9B013F4373800D75448 /* SCHStoryInteractionJigsawPaths.m in Sources */,
 				520FE8A3143F3B15002AB30B /* SCHLibreAccessConstants.m in Sources */,
+				281CC4031457FB030049F736 /* SCHDictionaryDownloadManagerTests.m in Sources */,
+				281CC4071457FF7C0049F736 /* SCHDictionaryDownloadManager.m in Sources */,
+				281CC4081457FF9F0049F736 /* Reachability.m in Sources */,
+				281CC4091457FFE50049F736 /* SCHCoreDataHelper.m in Sources */,
+				281CC40A1457FFF70049F736 /* SCHAppDictionaryState.m in Sources */,
+				281CC40C145800100049F736 /* SCHAppStateManager.m in Sources */,
+				281CC40D145800190049F736 /* SCHAppState.m in Sources */,
+				281CC40E145800220049F736 /* SCHDictionaryEntry.m in Sources */,
+				281CC40F1458002C0049F736 /* SCHDictionaryWordForm.m in Sources */,
+				281CC414145806F80049F736 /* SCHHelpVideoManifest.m in Sources */,
+				281CC41914581D570049F736 /* SCHAppDictionaryManifestEntry.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -8476,12 +8519,18 @@
 				C9045C5A1456038D009A3133 /* SCHSampleBooksManifestOperation.m in Sources */,
 				2808E21F1456BDFD004EA40E /* QHTTPOperation.m in Sources */,
 				2808E2211456BDFD004EA40E /* QRunLoopOperation.m in Sources */,
+				281CC41814581D570049F736 /* SCHAppDictionaryManifestEntry.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		281CC4051457FE100049F736 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = expat;
+			targetProxy = 281CC4041457FE100049F736 /* PBXContainerItemProxy */;
+		};
 		524888261407990500DA9AFA /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			name = libEucalyptusIOSUI;
