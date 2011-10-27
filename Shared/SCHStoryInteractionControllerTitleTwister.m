@@ -48,6 +48,8 @@
 @implementation SCHStoryInteractionControllerTitleTwister
 
 @synthesize openingScreenTitleLabel;
+@synthesize mainInteractionContainerView;
+@synthesize resultsContainerView;
 @synthesize letterContainerView;
 @synthesize answerBuildTarget;
 @synthesize answerHeadingCounts;
@@ -63,6 +65,8 @@
 - (void)dealloc
 {
     [openingScreenTitleLabel release];
+    [mainInteractionContainerView release];
+    [resultsContainerView release];
     [letterContainerView release];
     [answerBuildTarget release];
     [answerHeadingCounts release];
@@ -116,6 +120,25 @@
     }
 }
 
+- (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
+{
+    [super willRotateToInterfaceOrientation:toInterfaceOrientation duration:duration];
+
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+        return;
+    }
+
+    // set the size and position in the current frame geometry such that the autoresizing
+    // will leave the view in the right place after rotation
+    [UIView animateWithDuration:duration
+                     animations:^{
+                         CGSize resultsSize = UIInterfaceOrientationIsPortrait(toInterfaceOrientation) ? CGSizeMake(300, 150) : CGSizeMake(140, 230);
+                         self.resultsContainerView.bounds = (CGRect) { CGPointZero, resultsSize };
+                         self.resultsContainerView.center = CGPointMake(CGRectGetMaxX(self.contentsView.bounds)-5-resultsSize.width/2,
+                                                                        CGRectGetMaxY(self.contentsView.bounds)-10-resultsSize.height/2);
+                     }];
+}
+
 - (void)setupDraggableTilesForTitleTwister:(SCHStoryInteractionTitleTwister *)titleTwister
 {
     [self.letterViews makeObjectsPerformSelector:@selector(removeFromSuperview)];
@@ -141,7 +164,7 @@
                               wordGap:wordGap
                       allowSplitWords:YES];
     }
-        
+    
     NSInteger height = [letterRows count]*self.letterTileSize.height + ([letterRows count]-1)*kLetterGap;
     NSInteger y = (CGRectGetHeight(self.letterContainerView.bounds)-height)/2 + self.letterTileSize.height/2;
     for (NSString *letterRow in letterRows) {
@@ -459,14 +482,22 @@
     return MAX(0, MIN(letterPosition, [self.builtWord count]));
 }
 
+- (NSInteger)leftmostLetterPosition
+{
+    NSInteger numberOfPositions = (CGRectGetWidth(self.answerBuildTarget.bounds)-kLetterGap) / (self.letterTileSize.width+kLetterGap);
+    return (CGRectGetWidth(self.answerBuildTarget.bounds) - numberOfPositions*(self.letterTileSize.width+kLetterGap))/2;
+}
+
 - (NSInteger)letterPositionForPointInTarget:(CGPoint)point
 {
-    return (point.x - kLetterGap) / (self.letterTileSize.width + kLetterGap);
+    NSInteger leftOffset = [self leftmostLetterPosition];
+    return (point.x - leftOffset) / (self.letterTileSize.width + kLetterGap);
 }
 
 - (CGPoint)pointInTargetForLetterPosition:(NSInteger)letterPosition
 {
-    return CGPointMake(kLetterGap + self.letterTileSize.width/2 + (self.letterTileSize.width + kLetterGap) * letterPosition,
+    NSInteger leftOffset = [self leftmostLetterPosition];
+    return CGPointMake(leftOffset + self.letterTileSize.width/2 + (self.letterTileSize.width + kLetterGap) * letterPosition,
                        CGRectGetMidY(self.answerBuildTarget.bounds));
 }
 
