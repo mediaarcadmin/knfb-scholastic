@@ -20,6 +20,12 @@
     [super dealloc];
 }
 
+- (NSString *)audioPathForWord
+{
+    NSString *filename = [NSString stringWithFormat:@"%@_%@.mp3", self.storyInteraction.ID, self.suffix];
+    return [KNFBXPSStoryInteractionsDirectory stringByAppendingPathComponent:filename];
+}
+
 @end
 
 @implementation SCHStoryInteractionWordBird
