@@ -50,7 +50,7 @@ NSString * const SCHBookshelfSyncComponentDidFailNotification = @"SCHBookshelfSy
 {
 	self = [super init];
 	if (self != nil) {
-		self.useIndividualRequests = NO;	
+		self.useIndividualRequests = YES;	
 		self.requestCount = 0;
 	}
 	return(self);
