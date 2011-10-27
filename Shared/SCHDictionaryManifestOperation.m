@@ -115,7 +115,7 @@ didReceiveResponse:(NSURLResponse *)response
     
     [SCHDictionaryDownloadManager sharedDownloadManager].manifestUpdates = self.manifestEntries;    
     
-    [self cancel];
+    [self finishOp];
 }
 
 - (void)connection:(NSURLConnection *)connection 
