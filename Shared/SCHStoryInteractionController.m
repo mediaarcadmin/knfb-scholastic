@@ -261,7 +261,6 @@ static Class controllerClassForStoryInteraction(SCHStoryInteraction *storyIntera
             [self.readAloudButton setImage:readAloudImage forState:UIControlStateNormal];
             [self.readAloudButton setImage:readAloudImage forState:UIControlStateDisabled];
             [self.readAloudButton addTarget:self action:@selector(playAudioButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
-            [self.backgroundView addSubview:self.readAloudButton];
         }
     } else {
         [self.readAloudButton removeFromSuperview];
@@ -276,7 +275,6 @@ static Class controllerClassForStoryInteraction(SCHStoryInteraction *storyIntera
             self.closeButton.autoresizingMask = 0;
             [self.closeButton setImage:closeImage forState:UIControlStateNormal];
             [self.closeButton addTarget:self action:@selector(closeButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
-            [self.backgroundView addSubview:self.closeButton];
         }
     } else {
         [self.closeButton removeFromSuperview];
@@ -321,19 +319,23 @@ static Class controllerClassForStoryInteraction(SCHStoryInteraction *storyIntera
             [oldContentsView removeFromSuperview];
         }
     } else {
-        setupViews();
         if ([self currentFrameStyleOverlaysContents]) {
             [self.containerView addSubview:newContentsView];
+            [self.containerView addSubview:self.readAloudButton];
+            [self.containerView addSubview:self.closeButton];
             [self.backgroundView setUserInteractionEnabled:NO];
         } else {
             [self.backgroundView addSubview:newContentsView];
+            [self.backgroundView addSubview:self.readAloudButton];
+            [self.backgroundView addSubview:self.closeButton];
             [self.backgroundView setUserInteractionEnabled:YES];
         }
+        setupViews();
     }
     
     [self.containerView bringSubviewToFront:self.backgroundView];
-    [self.backgroundView bringSubviewToFront:self.closeButton];
-    [self.backgroundView bringSubviewToFront:self.readAloudButton];
+    [self.closeButton.superview bringSubviewToFront:self.closeButton];
+    [self.readAloudButton.superview bringSubviewToFront:self.readAloudButton];
     
     self.contentsView = newContentsView;
     
@@ -437,23 +439,9 @@ static Class controllerClassForStoryInteraction(SCHStoryInteraction *storyIntera
         closePosition = CGPointMake(10, 7);
         readAloudPosition = CGPointMake(-13, 15);
     }
-    
-#if STORY_INTERACTIONS_SUPPORT_AUTO_ROTATION
-    const BOOL shouldRotate = NO;
-#else
-    const BOOL shouldRotate = ([self shouldPresentInPortraitOrientation]
-                               ? UIInterfaceOrientationIsLandscape(self.interfaceOrientation)
-                               : UIInterfaceOrientationIsPortrait(self.interfaceOrientation));
-#endif
-    
+
     CGRect superviewBounds = container.superview.bounds;
-    if (shouldRotate) {
-        container.transform = CGAffineTransformMakeRotation(-M_PI/2);
-        container.bounds = CGRectIntegral(CGRectMake(0, 0, CGRectGetHeight(superviewBounds), CGRectGetWidth(superviewBounds)));
-    } else {
-        container.transform = CGAffineTransformIdentity;
-        container.bounds = CGRectIntegral(superviewBounds);
-    }
+    container.bounds = CGRectIntegral(superviewBounds);
     container.center = CGPointMake(floor(CGRectGetMidX(superviewBounds)), floor(CGRectGetMidY(superviewBounds)));
     
     CGFloat backgroundWidth, backgroundHeight;
@@ -526,11 +514,14 @@ static Class controllerClassForStoryInteraction(SCHStoryInteraction *storyIntera
         readAloudPosition.y = CGRectGetMaxY(background.bounds) - readAloudPosition.y - CGRectGetHeight(readAloud.bounds);
     }
     
+    CGPoint closeCenterInBackgroundView = CGPointMake(floorf(closePosition.x+closeImage.size.width/2),
+                                                      floorf(closePosition.y+closeImage.size.height/2));
+    close.center = [self.backgroundView convertPoint:closeCenterInBackgroundView toView:close.superview];
     close.bounds = (CGRect){ CGPointZero, closeImage.size };
-    close.center = CGPointMake(floorf(closePosition.x+closeImage.size.width/2), floorf(closePosition.y+closeImage.size.height/2));
     
-    readAloud.center = CGPointMake(floorf(backgroundWidth+readAloudPosition.x-CGRectGetMidX(readAloud.bounds)),
-                                   floorf(readAloudPosition.y+CGRectGetMidX(readAloud.bounds)));
+    CGPoint readAloudCenterInBackgroundView = CGPointMake(floorf(backgroundWidth+readAloudPosition.x-CGRectGetMidX(readAloud.bounds)),
+                                                          floorf(readAloudPosition.y+CGRectGetMidX(readAloud.bounds)));
+    readAloud.center = [self.backgroundView convertPoint:readAloudCenterInBackgroundView toView:readAloudButton.superview];
 }
 
 - (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
@@ -540,9 +531,6 @@ static Class controllerClassForStoryInteraction(SCHStoryInteraction *storyIntera
 
 - (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation
 {
-    [UIView animateWithDuration:0.25 animations:^{
-        [self setupGeometryForContentsView:self.contentsView contentsSize:self.contentsView.bounds.size];
-    }];
 }
 
 - (CGSize)maximumContentsSize
@@ -836,8 +824,14 @@ static Class controllerClassForStoryInteraction(SCHStoryInteraction *storyIntera
     return YES;
 }
 
+- (BOOL)supportsAutoRotation
+{
+    return YES;
+}
+
 - (BOOL)shouldPresentInPortraitOrientation
 {
+    // only meaningful if supportsAutoRotation is NO
     return NO;
 }
 

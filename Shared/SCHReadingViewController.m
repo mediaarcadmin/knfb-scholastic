@@ -1600,19 +1600,17 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     void (^presentStoryInteractionBlock)(void) = ^{        
         [self setStoryInteractionButtonVisible:NO animated:YES withSound:NO completion:nil];
 
-#if STORY_INTERACTIONS_SUPPORT_AUTO_ROTATION
-        [self pushStoryInteractionController:self.storyInteractionController];
-#else
-        if ([self.storyInteractionController shouldPresentInPortraitOrientation] != UIInterfaceOrientationIsPortrait(self.interfaceOrientation)) {
+        if (![self.storyInteractionController supportsAutoRotation]
+            && [self.storyInteractionController shouldPresentInPortraitOrientation] != UIInterfaceOrientationIsPortrait(self.interfaceOrientation)) {
             // We're currently in the wrong orientation for this SI. Dummy-presenting a modal view controller like this
             // causes a re-check of shouldAutorotateToInterfaceOrientation, which will override the default now that an
             // SI controller is active, causing the view to rotate to the required orientation. didRotateFromInterfaceOrientation
             // will look for a pending SI and call back here to finish the presentation.            
             self.presentStoryInteractionAfterRotation = YES;
+            [self promptUserToRotateDevice];
         } else {
             [self pushStoryInteractionController:self.storyInteractionController];
         }   
-#endif
     };
     
     if (self.layoutType == SCHReadingViewLayoutTypeFixed) {
