@@ -205,6 +205,8 @@ static Class controllerClassForStoryInteraction(SCHStoryInteraction *storyIntera
 
 - (void)presentInHostView:(UIView *)hostView withInterfaceOrientation:(UIInterfaceOrientation)aInterfaceOrientation
 {
+    const BOOL iPad = (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad);
+
     // dim the host view
     if (![self currentFrameStyleOverlaysContents] && self.shadeView == nil) {
         UIView *shade = [[UIView alloc] initWithFrame:hostView.bounds];
@@ -226,23 +228,37 @@ static Class controllerClassForStoryInteraction(SCHStoryInteraction *storyIntera
         // to the underlying view; this effectively makes the story interaction modal
         UIView *container = [[UIView alloc] initWithFrame:hostView.bounds];
         container.userInteractionEnabled = YES;
-        container.autoresizingMask = (UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin
+        container.autoresizingMask = (UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight
+                                      | UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin
                                       | UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin);
         
         UIImageView *background = [[UIImageView alloc] initWithFrame:CGRectZero];
         background.contentMode = UIViewContentModeScaleToFill;
-        background.autoresizingMask = (UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin |
-                                       UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin);
         [container addSubview:background];
+        
+        if (iPad) {
+            background.autoresizingMask = (UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin
+                                           | UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin);
+        } else {
+            background.autoresizingMask = (UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight
+                                           | UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin
+                                           | UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin);
+        }
         
         if ([self frameStyleForViewAtIndex:self.currentScreenIndex] != SCHStoryInteractionNoTitle) {
             UILabel *title = [[UILabel alloc] initWithFrame:CGRectZero];
+            title.autoresizingMask = UIViewAutoresizingFlexibleWidth;
             title.backgroundColor = [UIColor clearColor];            
             self.titleView = title;
             [self setupTitle];
             [background addSubview:title];
             [title release];   
         }
+
+#ifdef debug_layout
+        container.backgroundColor = [UIColor colorWithRed:1 green:1 blue:0 alpha:0.5];
+        background.backgroundColor = [UIColor colorWithRed:0 green:1 blue:1 alpha:0.5];
+#endif
         
         self.containerView = container;
         self.backgroundView = background;
@@ -285,10 +301,6 @@ static Class controllerClassForStoryInteraction(SCHStoryInteraction *storyIntera
 
     // put multiple views at the top-level in the nib for multi-screen interactions
     UIView *newContentsView = [self.nibObjects objectAtIndex:self.currentScreenIndex];
-    CGSize maxContentsSize = [self maximumContentsSize];
-    if (CGRectGetWidth(newContentsView.bounds) > maxContentsSize.height || CGRectGetHeight(newContentsView.bounds) > maxContentsSize.width) {
-        NSLog(@"contentView %d is too large: %@", self.currentScreenIndex, NSStringFromCGRect(newContentsView.bounds));
-    }
     
     dispatch_block_t setupViews = ^{
         self.backgroundView.image = [self backgroundImage];
@@ -444,6 +456,10 @@ static Class controllerClassForStoryInteraction(SCHStoryInteraction *storyIntera
     container.bounds = CGRectIntegral(superviewBounds);
     container.center = CGPointMake(floor(CGRectGetMidX(superviewBounds)), floor(CGRectGetMidY(superviewBounds)));
     
+    if (!iPad) {
+        contentsSize = [self maximumContentsSize];
+    }
+
     CGFloat backgroundWidth, backgroundHeight;
     switch (currentFrameStyle) {
         case SCHStoryInteractionFullScreen: {
@@ -541,11 +557,11 @@ static Class controllerClassForStoryInteraction(SCHStoryInteraction *storyIntera
     }
     switch (currentFrameStyle) {
         case SCHStoryInteractionNoTitle:
-            return CGSizeMake(315.0, 470.0);
+            return (UIInterfaceOrientationIsPortrait(self.interfaceOrientation) ? CGSizeMake(315.0, 470.0) : CGSizeMake(470.0, 315.0));
         case SCHStoryInteractionTitle:
         case SCHStoryInteractionTransparentTitle:                
         default:
-            return CGSizeMake(250.0, 470.0);
+            return (UIInterfaceOrientationIsPortrait(self.interfaceOrientation) ? CGSizeMake(310.0, 410.0) : CGSizeMake(470.0, 250.0));
     }
 }
 

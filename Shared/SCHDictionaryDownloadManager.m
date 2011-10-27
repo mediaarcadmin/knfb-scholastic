@@ -23,6 +23,7 @@
 #import "NSManagedObjectContext+Extensions.h"
 #import "SCHCoreDataHelper.h"
 #import "SCHAppDictionaryManifestEntry.h"
+#import "SCHDictionaryOperation.h"
 
 // Constants
 NSString * const kSCHDictionaryDownloadPercentageUpdate = @"SCHDictionaryDownloadPercentageUpdate";
@@ -400,12 +401,12 @@ static SCHDictionaryDownloadManager *sharedManager = nil;
             // this could be changed to a version check - if the version 
             // in the manifest is higher, redownload the videos
             if (!lastPrefUpdate) {
-                NSLog(@"needs manifest...");
+                NSLog(@"needs help video manifest...");
                 // create manifest processing operation
                 SCHHelpVideoManifestOperation *manifestOp = [[SCHHelpVideoManifestOperation alloc] init];
                 
                 // dictionary processing is redispatched on completion
-                [manifestOp setCompletionBlock:^{
+                [manifestOp setNotCancelledCompletionBlock:^{
                     [self processDictionary];
                 }];
                 
@@ -448,7 +449,7 @@ static SCHDictionaryDownloadManager *sharedManager = nil;
             self.currentDictionaryDownloadPercentage = 0.0;
 
 			// dictionary processing is redispatched on completion
-			[downloadOp setCompletionBlock:^{
+			[downloadOp setNotCancelledCompletionBlock:^{
 				[self processDictionary];
 			}];
 			
@@ -462,12 +463,14 @@ static SCHDictionaryDownloadManager *sharedManager = nil;
         }
 		case SCHDictionaryProcessingStateNeedsManifest:
 		{
-			NSLog(@"needs manifest...");
+			NSLog(@"needs dictionary manifest...");
 			// create manifest processing operation
 			SCHDictionaryManifestOperation *manifestOp = [[SCHDictionaryManifestOperation alloc] init];
+            
+            NSLog(@"Manifest op: %@", manifestOp);
 			
 			// dictionary processing is redispatched on completion
-			[manifestOp setCompletionBlock:^{
+			[manifestOp setNotCancelledCompletionBlock:^{
 				[self processDictionary];
 			}];
 			
@@ -560,7 +563,7 @@ static SCHDictionaryDownloadManager *sharedManager = nil;
 			self.currentDictionaryDownloadPercentage = 0.0;
             
 			// dictionary processing is redispatched on completion
-			[downloadOp setCompletionBlock:^{
+			[downloadOp setNotCancelledCompletionBlock:^{
 				[self processDictionary];
 			}];
 			
@@ -580,7 +583,7 @@ static SCHDictionaryDownloadManager *sharedManager = nil;
 			SCHDictionaryFileUnzipOperation *unzipOp = [[SCHDictionaryFileUnzipOperation alloc] init];
             
 			// on completion, we need to check if we are on the first download, or subsequent downloads
-			[unzipOp setCompletionBlock:^{
+			[unzipOp setNotCancelledCompletionBlock:^{
                 
                 // if this is the first download, move the two text files into the current directory
                 // otherwise we leave them where they are - the update text files are deleted at the end of the update parse
@@ -646,7 +649,7 @@ static SCHDictionaryDownloadManager *sharedManager = nil;
 			// when parsing is successful, delete the zip file
             // note the filename as it will change once we have parsed and know the version number
             NSString *dictionaryZipPath = [self dictionaryZipPath];
-			[parseOp setCompletionBlock:^{
+			[parseOp setNotCancelledCompletionBlock:^{
                 self.dictionaryVersion = entry.toVersion;
                 NSFileManager *localFileManager = [[NSFileManager alloc] init];
                 [localFileManager removeItemAtPath:dictionaryZipPath error:nil];

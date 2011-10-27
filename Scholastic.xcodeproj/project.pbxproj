@@ -1899,6 +1899,8 @@
 		F81CA38613FAB230006EF9D6 /* BookSampleTabHorizontal~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = F81CA38113FAB230006EF9D6 /* BookSampleTabHorizontal~ipad.png */; };
 		F82D39C5131EA79100289FF3 /* SCHBookContents.m in Sources */ = {isa = PBXBuildFile; fileRef = F82D39B4131EA79100289FF3 /* SCHBookContents.m */; };
 		F82D39DA131EA7D400289FF3 /* SCHBookShelfTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F82D39D8131EA7D400289FF3 /* SCHBookShelfTableViewCell.m */; };
+		F82F913E145943B000F609F9 /* SCHDictionaryOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = F82F913D145943B000F609F9 /* SCHDictionaryOperation.m */; };
+		F82F913F145943B000F609F9 /* SCHDictionaryOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = F82F913D145943B000F609F9 /* SCHDictionaryOperation.m */; };
 		F83468081404FF2E00D09F0E /* show-tools@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F83468061404FF2600D09F0E /* show-tools@2x.png */; };
 		F834680A1404FF2E00D09F0E /* show-tools.png in Resources */ = {isa = PBXBuildFile; fileRef = F83468071404FF2A00D09F0E /* show-tools.png */; };
 		F837018513BB2B7A009B280D /* SCHBookShelfTableViewCell_iPhone.xib in Resources */ = {isa = PBXBuildFile; fileRef = F837018413BB2B7A009B280D /* SCHBookShelfTableViewCell_iPhone.xib */; };
@@ -3511,6 +3513,8 @@
 		F82E3BBA13F9289A000B67A4 /* BookShelfErrorIcon~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "BookShelfErrorIcon~ipad.png"; path = "Resources/BookShelfErrorIcon~ipad.png"; sourceTree = "<group>"; };
 		F82E3BBB13F9289A000B67A4 /* BookSISampleTab~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "BookSISampleTab~ipad.png"; path = "Resources/BookSISampleTab~ipad.png"; sourceTree = "<group>"; };
 		F82E3BBC13F9289A000B67A4 /* BookSITab~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "BookSITab~ipad.png"; path = "Resources/BookSITab~ipad.png"; sourceTree = "<group>"; };
+		F82F913C145943B000F609F9 /* SCHDictionaryOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHDictionaryOperation.h; path = Shared/SCHDictionaryOperation.h; sourceTree = "<group>"; };
+		F82F913D145943B000F609F9 /* SCHDictionaryOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHDictionaryOperation.m; path = Shared/SCHDictionaryOperation.m; sourceTree = "<group>"; };
 		F83468061404FF2600D09F0E /* show-tools@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "show-tools@2x.png"; path = "Resources/show-tools@2x.png"; sourceTree = "<group>"; };
 		F83468071404FF2A00D09F0E /* show-tools.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "show-tools.png"; path = "Resources/show-tools.png"; sourceTree = "<group>"; };
 		F837018413BB2B7A009B280D /* SCHBookShelfTableViewCell_iPhone.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = SCHBookShelfTableViewCell_iPhone.xib; path = Shared/SCHBookShelfTableViewCell_iPhone.xib; sourceTree = "<group>"; };
@@ -6216,6 +6220,8 @@
 				F8B55E06134B190B0028534A /* SCHDictionaryFileUnzipOperation.m */,
 				F8B55E36134B2A190028534A /* SCHDictionaryParseOperation.h */,
 				F8B55E37134B2A190028534A /* SCHDictionaryParseOperation.m */,
+				F82F913C145943B000F609F9 /* SCHDictionaryOperation.h */,
+				F82F913D145943B000F609F9 /* SCHDictionaryOperation.m */,
 			);
 			name = "Dictionary Operations";
 			sourceTree = "<group>";
@@ -8160,6 +8166,7 @@
 				2808E21E1456BDFD004EA40E /* QHTTPOperation.m in Sources */,
 				2808E2201456BDFD004EA40E /* QRunLoopOperation.m in Sources */,
 				281CC41714581D570049F736 /* SCHAppDictionaryManifestEntry.m in Sources */,
+				F82F913E145943B000F609F9 /* SCHDictionaryOperation.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -8532,6 +8539,7 @@
 				2808E21F1456BDFD004EA40E /* QHTTPOperation.m in Sources */,
 				2808E2211456BDFD004EA40E /* QRunLoopOperation.m in Sources */,
 				281CC41814581D570049F736 /* SCHAppDictionaryManifestEntry.m in Sources */,
+				F82F913F145943B000F609F9 /* SCHDictionaryOperation.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

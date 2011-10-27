@@ -8,8 +8,9 @@
 
 #import <Foundation/Foundation.h>
 #import "SCHHelpVideoManifest.h"
+#import "SCHDictionaryOperation.h"
 
-@interface SCHHelpVideoManifestOperation : NSOperation <NSXMLParserDelegate> {}
+@interface SCHHelpVideoManifestOperation : SCHDictionaryOperation <NSXMLParserDelegate> {}
 
 @property (nonatomic, retain) SCHHelpVideoManifest *manifestItem;
 

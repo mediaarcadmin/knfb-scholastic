@@ -9,6 +9,7 @@
 #import "SCHStoryInteractionControllerAboutYouQuiz.h"
 #import "SCHStoryInteractionProgressView.h"
 #import "SCHStoryInteractionAboutYouQuiz.h"
+#import "SCHStretchableImageButton.h"
     
 typedef enum {
 	SCHStoryInteractionOpeningScreen,
@@ -89,6 +90,10 @@ typedef enum {
                           [NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:@"tag" ascending:YES]]];
     self.currentQuestionIndex = 0;
     self.progressView.numberOfSteps = [[(SCHStoryInteractionAboutYouQuiz *)self.storyInteraction questions] count];
+        
+    for (SCHStretchableImageButton *button in self.answerButtons) {
+        button.customTopCap = 10;
+    }
     
     NSInteger outcomes = [[(SCHStoryInteractionAboutYouQuiz *)self.storyInteraction outcomeMessages] count];
     self.outcomeCounts = [NSMutableArray arrayWithCapacity:outcomes];
