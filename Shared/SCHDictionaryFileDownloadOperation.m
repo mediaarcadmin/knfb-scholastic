@@ -127,7 +127,7 @@
     
     [[BITNetworkActivityManager sharedNetworkActivityManager] hideNetworkActivityIndicator];
     
-    if (![self isCancelled]) {
+    if (![self isFinished]) {
         // fire a 100% notification
         [self fireProgressUpdate:1.0f];
         [[SCHDictionaryDownloadManager sharedDownloadManager] threadSafeUpdateDictionaryState:SCHDictionaryProcessingStateNeedsUnzip];

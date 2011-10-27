@@ -8,8 +8,9 @@
 
 #import <Foundation/Foundation.h>
 #import "SCHDictionaryDownloadManager.h"
+#import "SCHDictionaryOperation.h"
 
-@interface SCHDictionaryParseOperation : NSOperation {
+@interface SCHDictionaryParseOperation : SCHDictionaryOperation {
     
 }
 
