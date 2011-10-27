@@ -12,6 +12,7 @@
 
 #import "SCHLibreAccessWebService.h"
 #import "SCHUserSettingsItem.h"
+#import "BITAPIError.h"
 
 // Constants
 NSString * const SCHSettingsSyncComponentDidCompleteNotification = @"SCHSettingsSyncComponentDidCompleteNotification";
@@ -68,7 +69,7 @@ NSString * const SCHSettingsSyncComponentDidFailNotification = @"SCHSettingsSync
         result:(NSDictionary *)result
 {
     // a valid error otherwise server error
-    if (result == nil) {
+    if ([error domain] != kBITAPIErrorDomain) {
         [[NSNotificationCenter defaultCenter] postNotificationName:SCHSettingsSyncComponentDidFailNotification 
                                                             object:self];
         
