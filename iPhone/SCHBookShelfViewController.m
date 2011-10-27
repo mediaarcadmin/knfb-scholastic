@@ -394,13 +394,14 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 131;
 
 - (IBAction)back
 {
+    self.profileItem.AppProfile.ShowListView = [NSNumber numberWithBool:self.listTableView.hidden == NO];
+
     if ([[SCHAppStateManager sharedAppStateManager] isSampleStore] == YES) {
         [self.navigationController popToRootViewControllerAnimated:YES];        
     } else {
         [self.navigationController popViewControllerAnimated:YES];
     }
     
-    self.profileItem.AppProfile.ShowListView = [NSNumber numberWithBool:self.listTableView.hidden == NO];
 }
 
 - (BOOL)gestureRecognizerShouldBegin:(UIGestureRecognizer *)gestureRecognizer 

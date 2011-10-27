@@ -416,7 +416,18 @@
 - (void)pushBookshelvesControllerWithProfileItem:(SCHProfileItem *)profileItem 
                                         animated:(BOOL)animated
 {
-    [self.navigationController setViewControllers:[self viewControllersForProfileItem:profileItem] animated:animated];
+    NSMutableArray *viewControllers = [NSMutableArray array];
+    
+    if (self.profileSetupDelegate) {
+        [viewControllers addObject:self.profileSetupDelegate];
+    }
+    
+    NSArray *profileControllers = [self viewControllersForProfileItem:profileItem];
+    if (profileControllers) {
+        [viewControllers addObjectsFromArray:profileControllers];
+    }
+    
+    [self.navigationController setViewControllers:viewControllers animated:animated];
 }
 
 - (SCHBookShelfViewController *)newBookShelfViewController
