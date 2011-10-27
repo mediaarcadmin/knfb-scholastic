@@ -9,6 +9,7 @@
 #import "SCHStoryInteractionControllerPopQuiz.h"
 #import "SCHStoryInteractionPopQuiz.h"
 #import "SCHStoryInteractionProgressView.h"
+#import "SCHStretchableImageButton.h"
 
 @interface SCHStoryInteractionControllerPopQuiz ()
 
@@ -118,9 +119,10 @@
         } else {
             highlight = [UIImage imageNamed:@"answer-button-red"];
         }
-        UIButton *button = [self.answerButtons objectAtIndex:i];
+        SCHStretchableImageButton *button = [self.answerButtons objectAtIndex:i];
         [button setTitle:answer forState:UIControlStateNormal];
         [button setHidden:NO];
+        [button setCustomTopCap:10];
         [button setBackgroundImage:highlight forState:UIControlStateSelected];
         ++i;
     }

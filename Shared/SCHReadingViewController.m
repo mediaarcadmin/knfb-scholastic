@@ -747,14 +747,6 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 // Override to allow orientations other than the default portrait orientation.
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation 
 {
-#if !STORY_INTERACTIONS_SUPPORT_AUTO_ROTATION
-    if (self.presentStoryInteractionAfterRotation && self.storyInteractionController) {
-        // Temporarily override this to force the reading view into the correct orientation before an SI appears
-        // - see the dummy modal view controller trick in presentStoryInteraction
-        return UIInterfaceOrientationIsPortrait(interfaceOrientation) == [self.storyInteractionController shouldPresentInPortraitOrientation];
-    }
-#endif
-    
     return YES;
 }
 

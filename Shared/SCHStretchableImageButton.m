@@ -8,10 +8,32 @@
 
 #import "SCHStretchableImageButton.h"
 
+@interface SCHStretchableImageButton ()
+
+@property (nonatomic, retain) NSMutableDictionary *unstretchedImages;
+
+- (UIImage *)stretchImageForControlState:(UIControlState)controlState;
+- (void)stretchAll;
+
+@end
+
 @implementation SCHStretchableImageButton
+
+@synthesize customLeftCap;
+@synthesize customTopCap;
+@synthesize unstretchedImages;
+
+- (void)dealloc
+{
+    [unstretchedImages release], unstretchedImages = nil;
+    [super dealloc];
+}
 
 - (NSInteger)leftCapForImage:(UIImage *)image
 {
+    if (customLeftCap > 0) {
+        return customLeftCap;
+    }
     if (image.size.width >= CGRectGetWidth(self.bounds)) {
         return 0;
     }
@@ -20,6 +42,9 @@
 
 - (NSInteger)topCapForImage:(UIImage *)image
 {
+    if (customTopCap > 0) {
+        return customTopCap;
+    }
     if (image.size.height >= CGRectGetHeight(self.bounds)) {
         return 0;
     }
@@ -29,28 +54,42 @@
 - (id)initWithCoder:(NSCoder *)aDecoder
 {
     if ((self = [super initWithCoder:aDecoder])) {
-        UIImage *normalBackgroundImage = [self backgroundImageForState:UIControlStateNormal];
-        if (normalBackgroundImage) {
-            UIImage *stretchable = [normalBackgroundImage stretchableImageWithLeftCapWidth:[self leftCapForImage:normalBackgroundImage]
-                                                                              topCapHeight:[self topCapForImage:normalBackgroundImage]];
-            [self setBackgroundImage:stretchable forState:UIControlStateNormal];
+        self.unstretchedImages = [NSMutableDictionary dictionary];
+        
+        UIImage *unstretchedBackgroundImage = [self backgroundImageForState:UIControlStateNormal];
+        if (unstretchedBackgroundImage) {
+            [self.unstretchedImages setObject:unstretchedBackgroundImage forKey:[NSNumber numberWithInteger:UIControlStateNormal]];
+            UIImage *stretchedNormalBackground = [self stretchImageForControlState:UIControlStateNormal];
             
             static const UIControlState states[] = {
                 UIControlStateHighlighted,
                 UIControlStateDisabled,
                 UIControlStateSelected
             };
-            for (int i = 0; i < sizeof(states)/sizeof(states[0]); ++i) {
+            static const size_t stateCount = sizeof(states)/sizeof(states[0]);
+            
+            for (int i = 0; i < stateCount; ++i) {
                 UIImage *image = [self backgroundImageForState:states[i]];
-                if (image != nil && [image CGImage] != [stretchable CGImage]) {
-                    [self setBackgroundImage:[image stretchableImageWithLeftCapWidth:[self leftCapForImage:image]
-                                                                        topCapHeight:[self topCapForImage:image]]
-                                    forState:states[i]];
+                if (image != nil && [image CGImage] != [stretchedNormalBackground CGImage]) {
+                    [self.unstretchedImages setObject:image forKey:[NSNumber numberWithInteger:states[i]]];
+                    [self stretchImageForControlState:states[i]];
                 }
             }
         }
     }
     return self;
+}
+
+- (void)setCustomTopCap:(NSInteger)cap
+{
+    customTopCap = cap;
+    [self stretchAll];
+}
+
+- (void)setCustomLeftCap:(NSInteger)cap
+{
+    customLeftCap = cap;
+    [self stretchAll];
 }
 
 - (void)setImage:(UIImage *)image forState:(UIControlState)state
@@ -62,10 +101,27 @@
 
 - (void)setBackgroundImage:(UIImage *)image forState:(UIControlState)state
 {
-    UIImage *stretchable = [image stretchableImageWithLeftCapWidth:[self leftCapForImage:image]
-                                                      topCapHeight:[self topCapForImage:image]];
-    [super setBackgroundImage:stretchable forState:state];
+    [self.unstretchedImages setObject:image forKey:[NSNumber numberWithInteger:state]];
+    [self stretchImageForControlState:state];
 }
 
+- (UIImage *)stretchImageForControlState:(UIControlState)controlState
+{
+    UIImage *unstretched = [self.unstretchedImages objectForKey:[NSNumber numberWithInteger:controlState]];
+    if (!unstretched) {
+        return nil;
+    }
+    UIImage *stretchable = [unstretched stretchableImageWithLeftCapWidth:[self leftCapForImage:unstretched]
+                                                            topCapHeight:[self topCapForImage:unstretched]];
+    [super setBackgroundImage:stretchable forState:controlState];
+    return stretchable;
+}
+
+- (void)stretchAll
+{
+    for (NSNumber *controlState in [self.unstretchedImages allKeys]) {
+        [self stretchImageForControlState:[controlState integerValue]];
+    }
+}
 
 @end
