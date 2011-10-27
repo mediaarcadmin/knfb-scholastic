@@ -13,6 +13,7 @@
 #import "SCHProfileItem.h"
 #import "SCHAppProfile.h"
 #import "SCHAnnotationsItem.h"
+#import "BITAPIError.h"
 
 // Constants
 NSString * const SCHProfileSyncComponentWillDeleteNotification = @"SCHProfileSyncComponentWillDeleteNotification";
@@ -171,7 +172,7 @@ NSString * const SCHProfileSyncComponentDidFailNotification = @"SCHProfileSyncCo
         result:(NSDictionary *)result
 {
     // a valid error otherwise server error
-    if (result == nil) {
+    if ([error domain] != kBITAPIErrorDomain) {
         [[NSNotificationCenter defaultCenter] postNotificationName:SCHProfileSyncComponentDidFailNotification 
                                                             object:self];		    
         [super method:method didFailWithError:error requestInfo:requestInfo result:result];

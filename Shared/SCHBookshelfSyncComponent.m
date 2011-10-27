@@ -17,6 +17,7 @@
 #import "SCHAnnotationsContentItem.h"
 #import "SCHBookIdentifier.h"
 #import "SCHReadingStatsContentItem.h"
+#import "BITAPIError.h"
 
 // Constants
 NSString * const SCHBookshelfSyncComponentWillDeleteNotification = @"SCHBookshelfSyncComponentWillDeleteNotification";
@@ -133,7 +134,7 @@ NSString * const SCHBookshelfSyncComponentDidFailNotification = @"SCHBookshelfSy
 	}
     
     // a valid error otherwise server error 
-    if (result == nil) {
+    if ([error domain] != kBITAPIErrorDomain) {
         [[NSNotificationCenter defaultCenter] postNotificationName:SCHBookshelfSyncComponentDidFailNotification 
                                                             object:self];
         

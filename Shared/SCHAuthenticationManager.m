@@ -20,6 +20,7 @@
 #import "AppDelegate_Shared.h"
 #import "SCHAccountValidation.h"
 #import "SCHBookManager.h"
+#import "BITAPIError.h"
 
 #import "SCHNonDRMAuthenticationManager.h"
 
@@ -524,7 +525,7 @@ typedef struct AuthenticateWithUserNameParameters AuthenticateWithUserNameParame
     NSLog(@"AuthenticationManager:%@ %@", method, [error description]);
     self.waitingOnResponse = NO;
 
-    if (result != nil) {
+    if ([error domain] != kBITAPIErrorDomain) {
         if([method compare:kSCHLibreAccessWebServiceTokenExchange] == NSOrderedSame) {	
             NSNumber *deviceIsDeregistered = [result objectForKey:kSCHLibreAccessWebServiceDeviceIsDeregistered];        
             if ([deviceIsDeregistered isKindOfClass:[NSNumber class]] == YES &&

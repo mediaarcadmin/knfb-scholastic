@@ -26,7 +26,7 @@
 #import "SCHProfileItem.h"
 #import "SCHAppContentProfileItem.h"
 #import "SCHBookIdentifier.h"
-
+#import "BITAPIError.h"
 
 // Constants
 NSString * const SCHAnnotationSyncComponentDidCompleteNotification = @"SCHAnnotationSyncComponentDidCompleteNotification";
@@ -303,7 +303,7 @@ NSString * const SCHAnnotationSyncComponentCompletedProfileIDs = @"SCHAnnotation
     NSNumber *profileID = [[[self.annotations allKeys] sortedArrayUsingSelector:@selector(compare:)] objectAtIndex:0];
     
     // a valid error otherwise server error
-    if (result == nil) {
+    if ([error domain] != kBITAPIErrorDomain) {
         [[NSNotificationCenter defaultCenter] postNotificationName:SCHAnnotationSyncComponentDidFailNotification 
                                                             object:self 
                                                           userInfo:[NSDictionary dictionaryWithObject:profileID 
@@ -460,7 +460,8 @@ NSString * const SCHAnnotationSyncComponentCompletedProfileIDs = @"SCHAnnotation
         }
     }
     [fetchRequest release];
-
+    [self.managedObjectContext save:nil];
+    
     [[NSNotificationCenter defaultCenter] postNotificationName:SCHAnnotationSyncComponentDidCompleteNotification 
                                                         object:self 
                                                       userInfo:[NSDictionary dictionaryWithObject:profileID 
