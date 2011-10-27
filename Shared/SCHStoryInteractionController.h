@@ -187,7 +187,10 @@ typedef enum
 // YES (default) if a snapshot of the reading view should be shown as a background to this SI
 - (BOOL)shouldShowSnapshotOfReadingViewInBackground;
 
-// most story interactions are presented in landscape; override to return YES if the SI should be
+// return NO if the SI requires a specific device orientation
+- (BOOL)supportsAutoRotation;
+
+// if supportsAutoRotation returns YES, override this to return YES if the SI should be
 // presented in portrait orientation
 - (BOOL)shouldPresentInPortraitOrientation;
 

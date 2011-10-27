@@ -47,6 +47,16 @@
     return NO;
 }
 
+- (BOOL)supportsAutoRotation
+{
+    return NO;
+}
+
+- (BOOL)shouldPresentInPortraitOrientation
+{
+    return NO;
+}
+
 - (CGAffineTransform)viewToPageTransform
 {
     return [self.delegate viewToPageTransformForLayoutPage:self.storyInteraction.documentPageNumber];

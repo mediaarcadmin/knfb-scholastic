@@ -119,6 +119,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 @property (nonatomic, assign) BOOL firstTimePlayForHelpController;
 
 @property (nonatomic, assign) BOOL presentStoryInteractionAfterRotation;
+@property (nonatomic, retain) UIView *rotationPromptView;
 
 - (void)updateNotesCounter;
 - (id)failureWithErrorCode:(NSInteger)code error:(NSError **)error;
@@ -153,6 +154,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 - (void)setStoryInteractionButtonVisible:(BOOL)visible animated:(BOOL)animated withSound:(BOOL)sound completion:(void (^)(BOOL finished))completion;
 - (void)rotateAndPresentStoryInteraction:(SCHStoryInteraction *)storyInteraction;
 - (void)pushStoryInteractionController:(SCHStoryInteractionController *)storyInteractionController;
+- (void)cancelStoryInteractionPendingRotation;
 - (void)save;
 
 - (void)setupOptionsViewForMode:(SCHReadingViewLayoutType)newLayoutType;
@@ -163,6 +165,9 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 - (void)dismissCoverCornerViewWithAnimation:(BOOL)animated;
 - (void)checkCornerAudioButtonVisibilityWithAnimation:(BOOL)animated;
 - (void)positionCornerAudioButtonForOrientation:(UIInterfaceOrientation)newOrientation;
+
+- (void)promptUserToRotateDevice;
+- (void)hideRotationPrompt;
 
 @end
 
@@ -241,6 +246,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 @synthesize cornerCoverFadeTimer;
 @synthesize firstTimePlayForHelpController;
 @synthesize presentStoryInteractionAfterRotation;
+@synthesize rotationPromptView;
 
 #pragma mark - Dealloc and View Teardown
 
@@ -315,6 +321,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     [sampleSICoverMarker release], sampleSICoverMarker = nil;
     [highlightsInfoButton release], highlightsInfoButton = nil;
     [highlightsCancelButton release], highlightsCancelButton = nil;
+    [rotationPromptView release], rotationPromptView = nil;
     
     [navigationToolbar release], navigationToolbar = nil;
 }
@@ -756,7 +763,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     self.currentlyRotating = NO;
     [self.readingView didRotateFromInterfaceOrientation:fromInterfaceOrientation];
     [self positionCoverCornerViewForOrientation:self.interfaceOrientation];
-    
+
     // Did we defer presenting an SI until the reading view was forced into the correct orientation?
     // - see the dummy modal view controller trick in presentStoryInteraction
     if (self.presentStoryInteractionAfterRotation && self.storyInteractionController) {
@@ -776,6 +783,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     self.currentlyScrubbing = NO;
     [self.pageSlider cancelTrackingWithEvent:nil];
     [self.scrubberInfoView removeFromSuperview];
+    [self hideRotationPrompt];
     
     self.currentlyRotating = YES;
 
@@ -817,6 +825,57 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
         [[SCHSyncManager sharedSyncManager] closeDocumentSync:book.ContentMetadataItem.UserContentItem 
                                                forProfile:self.profile.ID];
     }    
+}
+
+- (void)promptUserToRotateDevice
+{
+    if (self.rotationPromptView != nil) {
+        return;
+    }
+    
+    UIImageView *rotateView;
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+        rotateView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 220, 220)];
+        rotateView.image = [UIImage imageNamed:@"rotation@2x.png"];
+    } else {
+        rotateView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 110, 110)];
+        rotateView.image = [UIImage imageNamed:@"rotation"];
+    }
+    rotateView.contentMode = UIViewContentModeCenter;
+    rotateView.center = CGPointMake(CGRectGetMidX(self.view.bounds), CGRectGetMidY(self.view.bounds));
+    rotateView.autoresizingMask = UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleLeftMargin;
+    rotateView.backgroundColor = [UIColor colorWithWhite:0 alpha:0.7];
+    rotateView.layer.cornerRadius = 16;
+    rotateView.layer.shadowColor = [[UIColor blackColor] CGColor];
+    rotateView.layer.shadowOpacity = 0.8;
+    rotateView.layer.shadowOffset = CGSizeMake(0, 3);
+    rotateView.layer.shadowRadius = 8;
+    rotateView.alpha = 0;
+    [self.view addSubview:rotateView];
+    self.rotationPromptView = rotateView;
+    
+    [UIView animateWithDuration:0.25
+                     animations:^{
+                         rotateView.alpha = 1;
+                     }];
+    
+    [rotateView release];
+}
+
+- (void)hideRotationPrompt
+{
+    if (self.rotationPromptView == nil) {
+        return;
+    }
+    UIView *rotateView = self.rotationPromptView;
+    [UIView animateWithDuration:0.25
+                     animations:^{
+                         rotateView.alpha = 0;
+                     }
+                     completion:^(BOOL finished) {
+                         [rotateView removeFromSuperview];
+                     }];
+    self.rotationPromptView = nil;
 }
 
 #pragma mark -
@@ -1005,6 +1064,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 
 - (void)pictureStarterAction:(id)sender
 {
+    [self cancelStoryInteractionPendingRotation];
     [self toolbarButtonPressed];
     
     NSArray *storyInteractions = [self.bookStoryInteractions storyInteractionsOfClass:[SCHStoryInteractionPictureStarter class]];
@@ -1088,6 +1148,8 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     [self cancelInitialTimer];
     [self.readingView dismissSelector];
     [self pauseAudioPlayback];
+    [self hideRotationPrompt];
+    [self cancelStoryInteractionPendingRotation];
 }
 
 - (void)presentHelpAnimated:(BOOL)animated
@@ -1268,6 +1330,9 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 
 - (IBAction)toggleToolbarButtonAction:(id)sender
 {
+    [self hideRotationPrompt];
+    [self cancelStoryInteractionPendingRotation];
+    
     // Setting highlight stops the flicker
     [self pauseAudioPlayback];
     
@@ -1535,24 +1600,17 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     void (^presentStoryInteractionBlock)(void) = ^{        
         [self setStoryInteractionButtonVisible:NO animated:YES withSound:NO completion:nil];
 
-#if STORY_INTERACTIONS_SUPPORT_AUTO_ROTATION
-        [self pushStoryInteractionController:self.storyInteractionController];
-#else
-        if ([self.storyInteractionController shouldPresentInPortraitOrientation] != UIInterfaceOrientationIsPortrait(self.interfaceOrientation)) {
+        if (![self.storyInteractionController supportsAutoRotation]
+            && [self.storyInteractionController shouldPresentInPortraitOrientation] != UIInterfaceOrientationIsPortrait(self.interfaceOrientation)) {
             // We're currently in the wrong orientation for this SI. Dummy-presenting a modal view controller like this
             // causes a re-check of shouldAutorotateToInterfaceOrientation, which will override the default now that an
             // SI controller is active, causing the view to rotate to the required orientation. didRotateFromInterfaceOrientation
             // will look for a pending SI and call back here to finish the presentation.            
             self.presentStoryInteractionAfterRotation = YES;
-            
-            SCHStoryInteractionStandaloneViewController *standalone = [[SCHStoryInteractionStandaloneViewController alloc] init];
-            [self presentModalViewController:standalone animated:NO];
-            [self dismissModalViewControllerAnimated:NO];
-            [standalone release];
+            [self promptUserToRotateDevice];
         } else {
             [self pushStoryInteractionController:self.storyInteractionController];
         }   
-#endif
     };
     
     if (self.layoutType == SCHReadingViewLayoutTypeFixed) {
@@ -1560,7 +1618,12 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     } else if (self.layoutType == SCHReadingViewLayoutTypeFlow) {
         presentStoryInteractionBlock();
     }
+}
 
+- (void)cancelStoryInteractionPendingRotation
+{
+    self.storyInteractionController = nil;
+    self.presentStoryInteractionAfterRotation = NO;
 }
 
 #pragma mark - Audio Control
@@ -2025,6 +2088,9 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 
 - (void)readingViewWillBeginTurning:(SCHReadingView *)readingView
 {
+    [self hideRotationPrompt];
+    [self cancelStoryInteractionPendingRotation];
+    
     if (self.layoutType == SCHReadingViewLayoutTypeFixed) {
         if (self.pauseAudioOnNextPageTurn) {
             [self pauseAudioPlayback];
@@ -2054,6 +2120,9 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 
 - (void)readingViewWillBeginUserInitiatedZooming:(SCHReadingView *)readingView
 {
+    [self hideRotationPrompt];
+    [self cancelStoryInteractionPendingRotation];
+
     if (self.layoutType == SCHReadingViewLayoutTypeFixed) {
         [self pauseAudioPlayback];
     }
@@ -2156,6 +2225,9 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 
 - (void)readingView:(SCHReadingView *)readingView hasSelectedWordForSpeaking:(NSString *)word
 {
+    [self hideRotationPrompt];
+    [self cancelStoryInteractionPendingRotation];
+
     [self pauseAudioPlayback];
     
     if (word) {
