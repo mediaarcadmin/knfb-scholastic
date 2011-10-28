@@ -141,6 +141,8 @@ NSInteger const kSCHAccountValidationPTokenError = 2000;
    requestInfo:(NSDictionary *)requestInfo
         result:(NSDictionary *)result
 {
+    NSLog(@"%@:didFailWithError\n%@", method, error);
+    
     self.validateBlock(nil, error);
     self.validateBlock = nil;    
     self.waitingOnResponse = NO;    
