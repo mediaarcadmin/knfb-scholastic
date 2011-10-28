@@ -53,15 +53,25 @@ NSString * const SCHSettingsSyncComponentDidFailNotification = @"SCHSettingsSync
 	
 	if (![self.managedObjectContext BITemptyEntity:kSCHUserSettingsItem error:&error]) {
 		NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
-		abort();
 	}	
 }
 
 - (void)method:(NSString *)method didCompleteWithResult:(NSDictionary *)result
 {	
-	[self updateUserSettings:[result objectForKey:kSCHLibreAccessWebServiceUserSettingsList]];
-	[[NSNotificationCenter defaultCenter] postNotificationName:SCHSettingsSyncComponentDidCompleteNotification object:self];			
-	[super method:method didCompleteWithResult:nil];	
+    @try {
+        [self updateUserSettings:[result objectForKey:kSCHLibreAccessWebServiceUserSettingsList]];
+        [[NSNotificationCenter defaultCenter] postNotificationName:SCHSettingsSyncComponentDidCompleteNotification object:self];			
+        [super method:method didCompleteWithResult:nil];	
+    }
+    @catch (NSException *exception) {
+        [[NSNotificationCenter defaultCenter] postNotificationName:SCHSettingsSyncComponentDidFailNotification 
+                                                            object:self];        
+        NSError *error = [NSError errorWithDomain:kBITAPIErrorDomain 
+                                             code:kBITAPIExceptionError 
+                                         userInfo:[NSDictionary dictionaryWithObject:[exception reason]
+                                                                              forKey:NSLocalizedDescriptionKey]];
+        [super method:method didFailWithError:error requestInfo:nil result:result];
+    }
 }
 
 - (void)method:(NSString *)method didFailWithError:(NSError *)error 
@@ -73,8 +83,7 @@ NSString * const SCHSettingsSyncComponentDidFailNotification = @"SCHSettingsSync
     // a valid error otherwise server error
     if ([error domain] != kBITAPIErrorDomain) {
         [[NSNotificationCenter defaultCenter] postNotificationName:SCHSettingsSyncComponentDidFailNotification 
-                                                            object:self];
-        
+                                                            object:self];        
         [super method:method didFailWithError:error requestInfo:requestInfo result:result];
     } else {
         [[NSNotificationCenter defaultCenter] postNotificationName:SCHSettingsSyncComponentDidCompleteNotification object:self];			

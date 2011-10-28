@@ -56,16 +56,26 @@ NSString * const SCHReadingStatsSyncComponentDidFailNotification = @"SCHReadingS
 	
 	if (![self.managedObjectContext BITemptyEntity:kSCHReadingStatsDetailItem error:&error]) {
 		NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
-		abort();
 	}		
 }
 
 - (void)method:(NSString *)method didCompleteWithResult:(NSDictionary *)result
 {
-    [self clear];
-    [[NSNotificationCenter defaultCenter] postNotificationName:SCHReadingStatsSyncComponentDidCompleteNotification 
-                                                        object:self];
-    [super method:method didCompleteWithResult:nil];				    
+    @try {
+        [self clear];
+        [[NSNotificationCenter defaultCenter] postNotificationName:SCHReadingStatsSyncComponentDidCompleteNotification 
+                                                            object:self];
+        [super method:method didCompleteWithResult:nil];				    
+    }
+    @catch (NSException *exception) {
+        [[NSNotificationCenter defaultCenter] postNotificationName:SCHReadingStatsSyncComponentDidFailNotification 
+                                                            object:self];
+        NSError *error = [NSError errorWithDomain:kBITAPIErrorDomain 
+                                             code:kBITAPIExceptionError 
+                                         userInfo:[NSDictionary dictionaryWithObject:[exception reason]
+                                                                              forKey:NSLocalizedDescriptionKey]];
+        [super method:method didFailWithError:error requestInfo:nil result:result];
+    }
 }
 
 - (void)method:(NSString *)method didFailWithError:(NSError *)error 
@@ -78,7 +88,6 @@ NSString * const SCHReadingStatsSyncComponentDidFailNotification = @"SCHReadingS
     if ([error domain] != kBITAPIErrorDomain) {
         [[NSNotificationCenter defaultCenter] postNotificationName:SCHReadingStatsSyncComponentDidFailNotification 
                                                             object:self];
-        
         [super method:method didFailWithError:error requestInfo:requestInfo result:result];
     } else {
         [self clear];        
