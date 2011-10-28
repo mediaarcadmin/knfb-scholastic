@@ -144,12 +144,15 @@ static CGPoint pointWithOffset(CGPoint p, CGPoint offset)
         self.winMessageLabel.hidden = NO;
         self.controllerState = SCHStoryInteractionControllerStateInteractionFinishedSuccessfully;
         
-        [self playBundleAudioWithFilename:@"sfx_winround.mp3"
-                               completion:^{
-                                   dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 1.0*NSEC_PER_SEC), dispatch_get_main_queue(), ^{
-                                       [self removeFromHostView];
-                                   });
-                               }];
+        [self enqueueAudioWithPath:@"sfx_winround.mp3"
+                        fromBundle:YES
+                        startDelay:0
+            synchronizedStartBlock:nil
+              synchronizedEndBlock:^{
+                  dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 1.0*NSEC_PER_SEC), dispatch_get_main_queue(), ^{
+                      [self removeFromHostView];
+                  });
+              }];
     } else {
         [self playDefaultButtonAudio];
         // remove the highlights after a short delay
@@ -199,7 +202,7 @@ static CGPoint pointWithOffset(CGPoint p, CGPoint offset)
 
 - (void)draggableViewDidStartDrag:(SCHStoryInteractionDraggableView *)draggableView
 {
-    [self playBundleAudioWithFilename:@"sfx_pickup.mp3" completion:nil];
+    [self enqueueAudioWithPath:@"sfx_pickup.mp3" fromBundle:YES];
 }
 
 - (BOOL)draggableView:(SCHStoryInteractionDraggableView *)draggableView shouldSnapFromPosition:(CGPoint)position toPosition:(CGPoint *)snapPosition
@@ -237,7 +240,7 @@ static CGPoint pointWithOffset(CGPoint p, CGPoint offset)
         [source moveToHomePosition];
     }
     
-    [self playBundleAudioWithFilename:@"sfx_dropOK.mp3" completion:nil];
+    [self enqueueAudioWithPath:@"sfx_dropOK.mp3" fromBundle:YES];
     [self setCheckAnswersButtonEnabledState];
 }
 

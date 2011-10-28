@@ -693,18 +693,6 @@ static Class controllerClassForStoryInteraction(SCHStoryInteraction *storyIntera
     [self enqueueAudioWithPath:[self.storyInteraction storyInteractionRevealSoundFilename] fromBundle:YES];
 }
 
-- (void)playAudioAtPath:(NSString *)path completion:(void (^)(void))completion
-{
-    [self.audioPlayer cancelPlaybackExecutingSynchronizedBlocksImmediately:NO];
-    [self enqueueAudioWithPath:path fromBundle:NO startDelay:0 synchronizedStartBlock:nil synchronizedEndBlock:completion];
-}
-
-- (void)playBundleAudioWithFilename:(NSString *)filename completion:(void (^)(void))completion
-{
-    [self.audioPlayer cancelPlaybackExecutingSynchronizedBlocksImmediately:NO];
-    [self enqueueAudioWithPath:filename fromBundle:YES startDelay:0 synchronizedStartBlock:nil synchronizedEndBlock:completion];
-}
-
 - (void)enqueueAudioWithPath:(NSString *)path
                   fromBundle:(BOOL)fromBundle
                   startDelay:(NSTimeInterval)startDelay

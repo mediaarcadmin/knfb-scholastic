@@ -75,7 +75,6 @@
     self.progressView.numberOfSteps = [[(SCHStoryInteractionPopQuiz *)self.storyInteraction questions] count];
     [self setupQuestion];
 
-    [self playBundleAudioWithFilename:[self.storyInteraction storyInteractionOpeningSoundFilename] completion:nil];
     self.controllerState = SCHStoryInteractionControllerStateInteractionInProgress;
 }
 
@@ -92,7 +91,7 @@
         self.scoreSublabel.text = popQuiz.scoreResponseHigh;
         self.controllerState = SCHStoryInteractionControllerStateInteractionFinishedSuccessfully;
     }
-    [self playBundleAudioWithFilename:[self.storyInteraction storyInteractionRevealSoundFilename] completion:nil];
+    [self enqueueAudioWithPath:[self.storyInteraction storyInteractionRevealSoundFilename] fromBundle:YES];
 }
 
 - (void)nextQuestion
@@ -167,18 +166,17 @@
     });
     
     if (chosenAnswer == [self currentQuestion].correctAnswer) {
-        [self playBundleAudioWithFilename:[self.storyInteraction storyInteractionCorrectAnswerSoundFilename]
-                               completion:nil];
+        [self enqueueAudioWithPath:[self.storyInteraction storyInteractionCorrectAnswerSoundFilename] fromBundle:YES];
         self.score++;
     
     } else {
-        [self playBundleAudioWithFilename:[self.storyInteraction storyInteractionWrongAnswerSoundFilename]
-                               completion:nil];
+        [self enqueueAudioWithPath:[self.storyInteraction storyInteractionWrongAnswerSoundFilename] fromBundle:YES];
     }
 }
 
 - (void)playAgainButtonTapped:(id)sender
 {
+    [self enqueueAudioWithPath:[self.storyInteraction storyInteractionOpeningSoundFilename] fromBundle:YES];
     [self presentNextView];
 }
 
