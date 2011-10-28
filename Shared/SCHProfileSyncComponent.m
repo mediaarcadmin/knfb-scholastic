@@ -77,20 +77,31 @@ NSString * const SCHProfileSyncComponentDidFailNotification = @"SCHProfileSyncCo
     
 	if (![self.managedObjectContext BITemptyEntity:kSCHProfileItem error:&error]) {
 		NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
-		abort();
 	}		
 }
 
 - (void)method:(NSString *)method didCompleteWithResult:(NSDictionary *)result
 {	
-	if([method compare:kSCHLibreAccessWebServiceSaveUserProfiles] == NSOrderedSame) {
-        [self processSaveUserProfilesWithResult:result];
-	} else if([method compare:kSCHLibreAccessWebServiceGetUserProfiles] == NSOrderedSame) {
-		[self syncProfiles:[result objectForKey:kSCHLibreAccessWebServiceProfileList]];
-		[[NSNotificationCenter defaultCenter] postNotificationName:SCHProfileSyncComponentDidCompleteNotification 
-                                                            object:self];		
-		[super method:method didCompleteWithResult:nil];	
-	}	
+    @try {
+        if([method compare:kSCHLibreAccessWebServiceSaveUserProfiles] == NSOrderedSame) {
+            [self processSaveUserProfilesWithResult:result];
+        } else if([method compare:kSCHLibreAccessWebServiceGetUserProfiles] == NSOrderedSame) {
+            [self syncProfiles:[result objectForKey:kSCHLibreAccessWebServiceProfileList]];
+            [[NSNotificationCenter defaultCenter] postNotificationName:SCHProfileSyncComponentDidCompleteNotification 
+                                                                object:self];		
+            [super method:method didCompleteWithResult:nil];	
+        }
+    }
+    @catch (NSException *exception) {
+        [[NSNotificationCenter defaultCenter] postNotificationName:SCHProfileSyncComponentDidFailNotification 
+                                                            object:self];		    
+        NSError *error = [NSError errorWithDomain:kBITAPIErrorDomain 
+                                             code:kBITAPIExceptionError 
+                                         userInfo:[NSDictionary dictionaryWithObject:[exception reason]
+                                                                              forKey:NSLocalizedDescriptionKey]];
+        [super method:method didFailWithError:error requestInfo:nil result:result];
+        [self.savedProfiles removeAllObjects];        
+    }
 }
 
 // track profiles that need to be saved

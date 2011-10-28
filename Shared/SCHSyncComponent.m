@@ -76,7 +76,6 @@
 	
 	if (![self.managedObjectContext save:&error]) {
 		NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
-		abort();
 	} 
 }
 
