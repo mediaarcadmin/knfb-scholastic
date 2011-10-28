@@ -368,7 +368,7 @@ static Class controllerClassForStoryInteraction(SCHStoryInteraction *storyIntera
     }
     
     // force a relayout for the current orientation
-    [self willRotateToInterfaceOrientation:self.interfaceOrientation duration:0];
+    [self willRotateToInterfaceOrientation:aInterfaceOrientation duration:0];
     [self didRotateFromInterfaceOrientation:self.interfaceOrientation];
 }
 

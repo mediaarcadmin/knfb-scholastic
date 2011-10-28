@@ -21,12 +21,15 @@
 
 - (void)nextQuestion;
 - (void)setupQuestion;
+- (void)setupAnswerButtons;
+
 
 @end
 
 @implementation SCHStoryInteractionControllerWhoSaidIt_iPhone
 
 @synthesize statementLabel;
+@synthesize answerButtonContainerView;
 @synthesize answerButtons;
 @synthesize scoreLabel;
 @synthesize tryAgainButton;
@@ -50,6 +53,7 @@
 {
     dispatch_release(buttonAccessQueue);
     [statementLabel release];
+    [answerButtonContainerView release];
     [answerButtons release];
     [scoreLabel release];
     [tryAgainButton release];
@@ -66,6 +70,38 @@
             [self setupScoreView];
             break;
     }
+}
+
+- (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
+{
+    const NSInteger columns = UIInterfaceOrientationIsLandscape(toInterfaceOrientation) ? 3 : 2;
+    const NSInteger rows = 6/columns;
+    const CGSize buttonSize = [[self.answerButtons objectAtIndex:0] bounds].size;
+    const CGFloat horizontalGap = (CGRectGetWidth(self.answerButtonContainerView.bounds)-(buttonSize.width*columns)) / (columns-1);
+    const CGFloat verticalGap = (CGRectGetHeight(self.answerButtonContainerView.bounds)-(buttonSize.height*rows)) / (rows-1);
+    for (NSInteger i = 0; i < 6; ++i) {
+        NSInteger row = (i / columns);
+        NSInteger col = (i % columns);
+        UIView *button = [self.answerButtons objectAtIndex:i];
+        button.center = CGPointMake(col*(buttonSize.width+horizontalGap)+buttonSize.width/2,
+                                    row*(buttonSize.height+verticalGap)+buttonSize.height/2);
+        NSInteger resizing = 0;
+        if (col != 0) resizing |= UIViewAutoresizingFlexibleLeftMargin;
+        if (col != columns-1) resizing |= UIViewAutoresizingFlexibleRightMargin;
+        if (row != 0) resizing |= UIViewAutoresizingFlexibleTopMargin;
+        if (row != rows-1) resizing |= UIViewAutoresizingFlexibleBottomMargin;
+        button.autoresizingMask = resizing;
+    }
+    
+    [super willRotateToInterfaceOrientation:toInterfaceOrientation duration:duration];
+}
+
+- (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation
+{
+    if (self.currentStatement >= 0) {
+        [self setupQuestion];
+    }
+    [super didRotateFromInterfaceOrientation:fromInterfaceOrientation];
 }
 
 - (void)setupQuestionView
@@ -89,6 +125,7 @@
     self.currentStatement = 0;
     self.score = 0;
     [self setupQuestion];
+    [self setupAnswerButtons];
 }
 
 - (void)setupScoreView
@@ -98,6 +135,7 @@
     self.scoreLabel.text = [NSString stringWithFormat:@"You got %d out of %d right!", self.score, maxScore];
     // FIXME: only successful if you get top marks? 
     self.controllerState = SCHStoryInteractionControllerStateInteractionFinishedSuccessfully;
+    self.currentStatement = -1;
 }
 
 - (void)setupQuestion
@@ -112,7 +150,10 @@
     self.statementLabel.frame = CGRectMake(CGRectGetMinX(maxRect) + (CGRectGetWidth(maxRect) - textSize.width)/2,
                                            CGRectGetMinY(maxRect) + (CGRectGetHeight(maxRect) - textSize.height)/2,
                                            textSize.width, textSize.height);
+}
 
+- (void)setupAnswerButtons
+{
     for (UIButton *button in self.answerButtons) {
         [button setBackgroundImage:[UIImage imageNamed:@"answer-button-yellow"] forState:UIControlStateNormal];
     }
@@ -129,6 +170,7 @@
     
     if (self.currentStatement < [whoSaidIt.statements count]) {
         [self setupQuestion];
+        [self setupAnswerButtons];
     } else {
         self.controllerState = SCHStoryInteractionControllerStateInteractionInProgress;
         [self presentNextView];
