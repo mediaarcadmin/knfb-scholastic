@@ -21,6 +21,8 @@ extern NSString * const kSCHLastPage;
 @property (nonatomic, retain) NSNumber * Percentage;
 @property (nonatomic, retain) NSManagedObject * PrivateAnnotations;
 
+- (void)setInitialValues;
+
 @end
 
 
