@@ -16,5 +16,9 @@ NSString * const kSCHLocationBookmark = @"SCHLocationBookmark";
 @dynamic Page;
 @dynamic Bookmark;
 
+- (void)setInitialValues
+{
+    self.Page = [NSNumber numberWithInteger:0];
+}
 
 @end

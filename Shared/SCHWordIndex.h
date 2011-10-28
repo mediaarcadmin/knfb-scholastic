@@ -21,6 +21,8 @@ extern NSString * const kSCHWordIndex;
 @property (nonatomic, retain) NSNumber * End;
 @property (nonatomic, retain) SCHLocationText * LocationText;
 
+- (void)setInitialValues;
+
 @end
 
 
