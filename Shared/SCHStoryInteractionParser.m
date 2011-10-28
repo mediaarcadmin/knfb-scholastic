@@ -960,14 +960,24 @@ static void storyInteractionCharacterDataHandler(void *userData, const XML_Char 
 - (NSArray *)parseStoryInteractionsFromData:(NSData *)xml
 {
     self.stories = [NSMutableArray array];
-    
-    XML_Parser xmlParser = XML_ParserCreate("UTF-8");
-    XML_SetElementHandler(xmlParser, storyInteractionStartElementHandler, storyInteractionEndElementHandler);
-    XML_SetCharacterDataHandler(xmlParser, storyInteractionCharacterDataHandler);
-    XML_SetUserData(xmlParser, (void *)self);    
-    XML_Parse(xmlParser, [xml bytes], [xml length], XML_TRUE);
-    XML_ParserFree(xmlParser);
-    
+
+    XML_Parser xmlParser = NULL;
+    @try {
+        xmlParser = XML_ParserCreate("UTF-8");
+        XML_SetElementHandler(xmlParser, storyInteractionStartElementHandler, storyInteractionEndElementHandler);
+        XML_SetCharacterDataHandler(xmlParser, storyInteractionCharacterDataHandler);
+        XML_SetUserData(xmlParser, (void *)self);    
+        XML_Parse(xmlParser, [xml bytes], [xml length], XML_TRUE);
+    }
+    @catch (NSException *ex) {
+        NSLog(@"Failed to parse StoryInteractions XML: %@", ex);
+    }
+    @finally {
+        if (xmlParser != NULL) {
+            XML_ParserFree(xmlParser);
+        }
+    }
+
     return self.stories;
 }
 
