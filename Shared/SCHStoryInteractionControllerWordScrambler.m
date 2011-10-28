@@ -163,7 +163,7 @@
 
 - (void)draggableViewDidStartDrag:(SCHStoryInteractionDraggableView *)draggableView
 {
-    [self playBundleAudioWithFilename:@"sfx_pickup.mp3" completion:nil];
+    [self enqueueAudioWithPath:@"sfx_pickup.mp3" fromBundle:YES];
 }
 
 - (BOOL)draggableView:(SCHStoryInteractionDraggableView *)draggableView shouldSnapFromPosition:(CGPoint)position toPosition:(CGPoint *)snapPosition
@@ -203,13 +203,16 @@
     if (complete) {
         self.controllerState = SCHStoryInteractionControllerStateInteractionFinishedSuccessfully;
     }
-
-    [self playBundleAudioWithFilename:@"sfx_dropOK.mp3"
-                           completion:^{
-                               if (complete) {
-                                   [self wordScrambleComplete];
-                               }
-                           }];
+    
+    [self enqueueAudioWithPath:@"sfx_dropOK.mp3"
+                    fromBundle:YES
+                    startDelay:0
+        synchronizedStartBlock:nil
+          synchronizedEndBlock:^{
+              if (complete) {
+                  [self wordScrambleComplete];
+              }
+          }];
 }
 
 - (void)withLetterPositionCloseToPoint:(CGPoint)point :(void(^)(NSInteger letterPosition, BOOL *stop))block
@@ -268,11 +271,14 @@
     for (SCHStoryInteractionDraggableLetterView *letter in self.letterViews) {
         letter.letterColor = [UIColor SCHYellowColor];
     }
-    
-    [self playBundleAudioWithFilename:@"sfx_winround.mp3"
-                           completion:^{
-                               [self removeFromHostView];
-                           }];
+
+    [self enqueueAudioWithPath:@"sfx_winround.mp3"
+                    fromBundle:YES
+                    startDelay:0
+        synchronizedStartBlock:nil
+          synchronizedEndBlock:^{
+              [self removeFromHostView];
+          }];
 }
 
 #pragma mark - Override for SCHStoryInteractionControllerStateReactions

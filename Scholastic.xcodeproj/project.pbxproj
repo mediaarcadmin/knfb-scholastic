@@ -25,6 +25,8 @@
 		280B01B4139E35540068661C /* SCHStoryInteractionMultipleChoiceWithAnswerPictures.m in Sources */ = {isa = PBXBuildFile; fileRef = 280B01B0139E336C0068661C /* SCHStoryInteractionMultipleChoiceWithAnswerPictures.m */; };
 		280C99C71397C65E00381C31 /* SCHStoryInteractionProgressView.m in Sources */ = {isa = PBXBuildFile; fileRef = 280C99C61397C65E00381C31 /* SCHStoryInteractionProgressView.m */; };
 		280D6A1813B1D6180032085D /* SCHStarView.m in Sources */ = {isa = PBXBuildFile; fileRef = 280D6A1713B1D6180032085D /* SCHStarView.m */; };
+		280DA9D2145AB3C300583695 /* SCHUnqueuedAudioPlayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 280DA9D1145AB3C300583695 /* SCHUnqueuedAudioPlayer.m */; };
+		280DA9D3145AB3C300583695 /* SCHUnqueuedAudioPlayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 280DA9D1145AB3C300583695 /* SCHUnqueuedAudioPlayer.m */; };
 		2811879113D9C490001522FE /* SCHRemoveDictionaryViewController~ipad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2811879013D9C490001522FE /* SCHRemoveDictionaryViewController~ipad.xib */; };
 		2815719113EFDDC30071B73C /* SCHStoryInteractionJigsaw.m in Sources */ = {isa = PBXBuildFile; fileRef = 2815719013EFDDC30071B73C /* SCHStoryInteractionJigsaw.m */; };
 		2815719613EFDE120071B73C /* SCHStoryInteractionWordBird.m in Sources */ = {isa = PBXBuildFile; fileRef = 2815719513EFDE120071B73C /* SCHStoryInteractionWordBird.m */; };
@@ -2199,6 +2201,8 @@
 		280C99C91397EA1900381C31 /* SCHStoryInteractionControllerDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCHStoryInteractionControllerDelegate.h; sourceTree = "<group>"; };
 		280D6A1613B1D6180032085D /* SCHStarView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCHStarView.h; sourceTree = "<group>"; };
 		280D6A1713B1D6180032085D /* SCHStarView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCHStarView.m; sourceTree = "<group>"; };
+		280DA9D0145AB3C300583695 /* SCHUnqueuedAudioPlayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHUnqueuedAudioPlayer.h; path = Shared/SCHUnqueuedAudioPlayer.h; sourceTree = "<group>"; };
+		280DA9D1145AB3C300583695 /* SCHUnqueuedAudioPlayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHUnqueuedAudioPlayer.m; path = Shared/SCHUnqueuedAudioPlayer.m; sourceTree = "<group>"; };
 		2811879013D9C490001522FE /* SCHRemoveDictionaryViewController~ipad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = "SCHRemoveDictionaryViewController~ipad.xib"; path = "iPad/SCHRemoveDictionaryViewController~ipad.xib"; sourceTree = "<group>"; };
 		2815718F13EFDDC30071B73C /* SCHStoryInteractionJigsaw.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCHStoryInteractionJigsaw.h; sourceTree = "<group>"; };
 		2815719013EFDDC30071B73C /* SCHStoryInteractionJigsaw.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCHStoryInteractionJigsaw.m; sourceTree = "<group>"; };
@@ -4793,6 +4797,8 @@
 			children = (
 				286E21A313ABF8BD00CB4232 /* SCHQueuedAudioPlayer.h */,
 				286E21A413ABF8BD00CB4232 /* SCHQueuedAudioPlayer.m */,
+				280DA9D0145AB3C300583695 /* SCHUnqueuedAudioPlayer.h */,
+				280DA9D1145AB3C300583695 /* SCHUnqueuedAudioPlayer.m */,
 			);
 			name = Audio;
 			sourceTree = "<group>";
@@ -8167,6 +8173,7 @@
 				2808E2201456BDFD004EA40E /* QRunLoopOperation.m in Sources */,
 				281CC41714581D570049F736 /* SCHAppDictionaryManifestEntry.m in Sources */,
 				F82F913E145943B000F609F9 /* SCHDictionaryOperation.m in Sources */,
+				280DA9D2145AB3C300583695 /* SCHUnqueuedAudioPlayer.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -8540,6 +8547,7 @@
 				2808E2211456BDFD004EA40E /* QRunLoopOperation.m in Sources */,
 				281CC41814581D570049F736 /* SCHAppDictionaryManifestEntry.m in Sources */,
 				F82F913F145943B000F609F9 /* SCHDictionaryOperation.m in Sources */,
+				280DA9D3145AB3C300583695 /* SCHUnqueuedAudioPlayer.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -143,19 +143,22 @@
         }
     } else {
         self.controllerState = SCHStoryInteractionControllerStateInteractionReadingAnswerWithoutPause;
-        [self playAudioAtPath:[self.storyInteraction audioPathForTryAgain]
-                   completion:^{
-                       self.controllerState = SCHStoryInteractionControllerStateInteractionInProgress;
-                       // move all images back to start
-                       for (SCHStoryInteractionDraggableView *draggable in self.imageContainers) {
-                           [draggable moveToHomePosition];
-                           [self setView:[draggable viewWithTag:kImageViewTag] borderColor:[UIColor blueColor]];
-                       }
-                       for (SCHStoryInteractionDraggableTargetView *target in self.targets) {
-                           target.alpha = 1;
-                       }
-                       [self.attachedImages removeAllObjects];
-                   }];
+        [self enqueueAudioWithPath:[self.storyInteraction audioPathForTryAgain]
+                        fromBundle:NO
+                        startDelay:0
+            synchronizedStartBlock:nil
+              synchronizedEndBlock:^{
+                  self.controllerState = SCHStoryInteractionControllerStateInteractionInProgress;
+                  // move all images back to start
+                  for (SCHStoryInteractionDraggableView *draggable in self.imageContainers) {
+                      [draggable moveToHomePosition];
+                      [self setView:[draggable viewWithTag:kImageViewTag] borderColor:[UIColor blueColor]];
+                  }
+                  for (SCHStoryInteractionDraggableTargetView *target in self.targets) {
+                      target.alpha = 1;
+                  }
+                  [self.attachedImages removeAllObjects];
+              }];
     }
 }
 

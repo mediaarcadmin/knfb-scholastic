@@ -123,12 +123,6 @@ typedef enum
 // play the audio for revealing an answer (About Me)
 - (void)playRevealAudio;
 
-// play an audio file from the XPS provider and invoke a completion block when the playback is complete
-- (void)playAudioAtPath:(NSString *)path completion:(void(^)(void))completion;
-
-// playing audio files from the app bundle
-- (void)playBundleAudioWithFilename:(NSString *)path completion:(void (^)(void))completion;
-
 // currently playing audio?
 - (BOOL)playingAudio;
 

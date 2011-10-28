@@ -108,7 +108,7 @@ static CGFloat const kSCHStoryInteractionControllerVideoBorderWidth = 4.0;
     NSString *path = [self.storyInteraction audioPathForQuestion];
     if (path != nil) {
         [self pause];
-        [self playAudioAtPath:path completion:nil];
+        [self enqueueAudioWithPath:path fromBundle:NO];
     }   
 }
 

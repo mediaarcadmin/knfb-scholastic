@@ -11,6 +11,7 @@
 #import "SCHStoryInteractionDraggableLetterView.h"
 #import "SCHStoryInteractionDraggableTargetView.h"
 #import "NSArray+ViewSorting.h"
+#import "SCHUnqueuedAudioPlayer.h"
 
 #define kLetterGap 2
 
@@ -359,7 +360,7 @@
     
     SCHStoryInteractionTitleTwister *titleTwister = (SCHStoryInteractionTitleTwister *)self.storyInteraction;
     if (length < 3 || ![titleTwister.words containsObject:word]) {
-        [self playBundleAudioWithFilename:[titleTwister storyInteractionWrongAnswerSoundFilename] completion:nil];
+        [[SCHUnqueuedAudioPlayer sharedAudioPlayer] playAudioFromMainBundle:[titleTwister storyInteractionWrongAnswerSoundFilename]];
         return;
     }
 
@@ -375,11 +376,11 @@
     
     NSMutableArray *answers = [self.answersByLength objectForKey:answerKey];
     if ([answers containsObject:word]) {
-        [self playBundleAudioWithFilename:[titleTwister storyInteractionCorrectAnswerSoundFilename] completion:nil];
+        [[SCHUnqueuedAudioPlayer sharedAudioPlayer] playAudioFromMainBundle:[titleTwister storyInteractionCorrectAnswerSoundFilename]];
         return;
     }
 
-    [self playBundleAudioWithFilename:[titleTwister storyInteractionCorrectAnswerSoundFilename] completion:nil];
+    [[SCHUnqueuedAudioPlayer sharedAudioPlayer] playAudioFromMainBundle:[titleTwister storyInteractionCorrectAnswerSoundFilename]];
     [answers addObject:word];
     [answerTable reloadData];
     [self updateAnswerTableHeadings];
@@ -404,19 +405,14 @@
     if ([self.builtWord containsObject:draggableView]) {
         [self.builtWord removeObject:draggableView];
         [draggableView moveToHomePosition];
-        [self repositionLettersInBuiltWord];
-        [self playBundleAudioWithFilename:@"sfx_dropOK.mp3" completion:nil];
+    } else if (![self buildTargetIsFull]) {
+        self.gapPosition = NSNotFound;
+        [self.builtWord addObject:draggableView];
+    } else {
         return;
     }
-
-    if ([self buildTargetIsFull]) {
-        return;
-    }
-
-    self.gapPosition = NSNotFound;
-    [self.builtWord addObject:draggableView];
     [self repositionLettersInBuiltWord];
-    [self playBundleAudioWithFilename:@"sfx_dropOK.mp3" completion:nil];
+    [[SCHUnqueuedAudioPlayer sharedAudioPlayer] playAudioFromMainBundle:@"sfx_dropOK.mp3"];
 }
 
 - (void)draggableViewDidStartDrag:(SCHStoryInteractionDraggableView *)draggableView
@@ -427,7 +423,7 @@
         self.gapPosition = letterPosition;
     }
         
-    [self playBundleAudioWithFilename:@"sfx_pickup.mp3" completion:nil];
+    [[SCHUnqueuedAudioPlayer sharedAudioPlayer] playAudioFromMainBundle:@"sfx_pickup.mp3"];
 }
 
 - (BOOL)draggableView:(SCHStoryInteractionDraggableView *)draggableView shouldSnapFromPosition:(CGPoint)position toPosition:(CGPoint *)snapPosition
@@ -449,7 +445,7 @@
 {
     NSInteger letterPosition = [self letterPositionForPointInContentsView:position];
     if (letterPosition == NSNotFound || [self buildTargetIsFull]) {
-        [self playBundleAudioWithFilename:@"sfx_dropNo.mp3" completion:nil];
+        [[SCHUnqueuedAudioPlayer sharedAudioPlayer] playAudioFromMainBundle:@"sfx_dropNo.mp3"];
         [UIView animateWithDuration:0.25f 
                               delay:0
                             options:UIViewAnimationOptionAllowUserInteraction
@@ -458,7 +454,7 @@
                          }
                          completion:nil];
     } else {
-        [self playBundleAudioWithFilename:@"sfx_dropOK.mp3" completion:nil];
+        [self enqueueAudioWithPath:@"sfx_dropOK.mp3" fromBundle:YES];
         // allow for the fact that the gap position isn't really in the array
         if (letterPosition > self.gapPosition) {
             letterPosition--;

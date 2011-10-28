@@ -149,11 +149,11 @@
         UIButton *button = (UIButton *)sender;
         if (button.tag == self.currentStatement) {
             [button setBackgroundImage:[UIImage imageNamed:@"answer-button-green"] forState:UIControlStateNormal];
-            [self playBundleAudioWithFilename:[self.storyInteraction storyInteractionCorrectAnswerSoundFilename] completion:nil];
+            [self enqueueAudioWithPath:[self.storyInteraction storyInteractionCorrectAnswerSoundFilename] fromBundle:YES];
             self.score++;
         } else {
             [button setBackgroundImage:[UIImage imageNamed:@"answer-button-red"] forState:UIControlStateNormal];
-            [self playBundleAudioWithFilename:[self.storyInteraction storyInteractionWrongAnswerSoundFilename] completion:nil];
+            [self enqueueAudioWithPath:[self.storyInteraction storyInteractionWrongAnswerSoundFilename] fromBundle:YES];
         }
         
         dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, 1.0 * NSEC_PER_SEC);
