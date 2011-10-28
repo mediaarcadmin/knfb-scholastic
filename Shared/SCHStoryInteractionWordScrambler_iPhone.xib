@@ -42,8 +42,8 @@
 					<bool key="EncodedWithXMLCoder">YES</bool>
 					<object class="IBUILabel" id="924888056">
 						<reference key="NSNextResponder" ref="191373211"/>
-						<int key="NSvFlags">290</int>
-						<string key="NSFrame">{{20, 5}, {430, 21}}</string>
+						<int key="NSvFlags">306</int>
+						<string key="NSFrame">{{20, 5}, {430, 40}}</string>
 						<reference key="NSSuperview" ref="191373211"/>
 						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="273800243"/>
@@ -60,6 +60,7 @@
 						<nil key="IBUIHighlightedColor"/>
 						<int key="IBUIBaselineAdjustment">1</int>
 						<float key="IBUIMinimumFontSize">10</float>
+						<int key="IBUINumberOfLines">0</int>
 						<int key="IBUITextAlignment">1</int>
 						<object class="IBUIFontDescription" key="IBUIFontDescription">
 							<string key="name">Helvetica-Bold</string>
@@ -116,8 +117,8 @@
 					</object>
 					<object class="IBUIView" id="273800243">
 						<reference key="NSNextResponder" ref="191373211"/>
-						<int key="NSvFlags">290</int>
-						<string key="NSFrame">{{20, 35}, {430, 135}}</string>
+						<int key="NSvFlags">314</int>
+						<string key="NSFrame">{{6, 45}, {459, 125}}</string>
 						<reference key="NSSuperview" ref="191373211"/>
 						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="405632725"/>
@@ -129,7 +130,7 @@
 					</object>
 					<object class="IBUILabel" id="405632725">
 						<reference key="NSNextResponder" ref="191373211"/>
-						<int key="NSvFlags">292</int>
+						<int key="NSvFlags">266</int>
 						<string key="NSFrame">{{6, 178}, {459, 21}}</string>
 						<reference key="NSSuperview" ref="191373211"/>
 						<reference key="NSWindow"/>
@@ -223,9 +224,9 @@
 						<object class="NSMutableArray" key="children">
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<reference ref="924888056"/>
-							<reference ref="273800243"/>
 							<reference ref="870762544"/>
 							<reference ref="405632725"/>
+							<reference ref="273800243"/>
 						</object>
 						<reference key="parent" ref="0"/>
 					</object>
