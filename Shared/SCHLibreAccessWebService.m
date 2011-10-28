@@ -953,7 +953,7 @@ static NSInteger const kSCHLibreAccessWebServiceVaid = 33;
 		[objects setObject:[NSNumber numberWithContentIdentifierType:anObject.ContentIdentifierType] forKey:kSCHLibreAccessWebServiceContentIdentifierType];
 		[objects setObject:[NSNumber numberWithDRMQualifier:anObject.drmqualifier] forKey:kSCHLibreAccessWebServiceDRMQualifier];
 		[objects setObject:[self objectFromTranslate:anObject.format] forKey:kSCHLibreAccessWebServiceFormat];
-		[objects setObject:[self objectFromPrivateAnnotations:anObject.PrivateAnnotations] forKey:kSCHLibreAccessWebServicePrivateAnnotations];
+		[objects setObject:[self objectFromTranslate:anObject.PrivateAnnotations] forKey:kSCHLibreAccessWebServicePrivateAnnotations];
 		
 		ret = objects;					
 	}
@@ -967,43 +967,14 @@ static NSInteger const kSCHLibreAccessWebServiceVaid = 33;
 	
 	if (anObject != nil) {
 		NSMutableDictionary *objects = [NSMutableDictionary dictionary];
-        
+                
+		[objects setObject:[self objectFromTranslate:[anObject.Highlights Highlight]] forKey:kSCHLibreAccessWebServiceHighlights];
         if ([[SCHAppStateManager sharedAppStateManager] canSyncNotes] == YES) {
-            id notesObject = [self objectFromTranslate:[anObject.Notes Note]];
-            if (notesObject) {
-                [objects setObject:notesObject forKey:kSCHLibreAccessWebServiceNotes];
-            } else {
-                [objects setObject:[NSNull null] forKey:kSCHLibreAccessWebServiceNotes];
-            }
+            [objects setObject:[self objectFromTranslate:[anObject.Notes Note]] forKey:kSCHLibreAccessWebServiceNotes];
         }
-		
-        id highlightsObject = [self objectFromTranslate:[anObject.Highlights Highlight]];
-        if (highlightsObject) {
-            [objects setObject:highlightsObject forKey:kSCHLibreAccessWebServiceHighlights];
-        } else {
-            [objects setObject:[NSNull null] forKey:kSCHLibreAccessWebServiceHighlights];
-        }
-        
-        id bookmarksObject = [self objectFromTranslate:[anObject.Bookmarks Bookmark]];
-        if (bookmarksObject) {
-            [objects setObject:bookmarksObject forKey:kSCHLibreAccessWebServiceBookmarks];
-        } else {
-            [objects setObject:[NSNull null] forKey:kSCHLibreAccessWebServiceBookmarks];
-        }
-        
-        NSDictionary *lastPageDict = [self objectFromLastPage:anObject.LastPage];
-        if (lastPageDict) {
-            [objects setObject:lastPageDict forKey:kSCHLibreAccessWebServiceLastPage];
-        } else {
-            NSMutableDictionary *emptyLastPage = [NSMutableDictionary dictionary];
-            
-            [emptyLastPage setObject:[NSNull null] forKey:kSCHLibreAccessWebServiceLastPageLocation];
-            [emptyLastPage setObject:[NSNull null] forKey:kSCHLibreAccessWebServicePercentage];
-            [emptyLastPage setObject:[NSNull null] forKey:kSCHLibreAccessWebServiceComponent];
-            [emptyLastPage setObject:[NSDate date] forKey:kSCHLibreAccessWebServiceLastModified];
-            
-            [objects setObject:emptyLastPage forKey:kSCHLibreAccessWebServiceLastPage];
-        }
+		[objects setObject:[self objectFromTranslate:[anObject.Bookmarks Bookmark]] forKey:kSCHLibreAccessWebServiceBookmarks];
+
+		[objects setObject:[self objectFromTranslate:anObject.LastPage] forKey:kSCHLibreAccessWebServiceLastPage];
         
 		ret = objects;					
 	}
@@ -1021,7 +992,7 @@ static NSInteger const kSCHLibreAccessWebServiceVaid = 33;
 		[objects setObject:[self objectFromTranslate:anObject.id_] forKey:kSCHLibreAccessWebServiceID];
 		[objects setObject:[NSNumber numberWithSaveAction:anObject.action] forKey:kSCHLibreAccessWebServiceAction];
 		[objects setObject:[self objectFromTranslate:anObject.color] forKey:kSCHLibreAccessWebServiceColor];
-		[objects setObject:[self objectFromLocationText:anObject.location] forKey:kSCHLibreAccessWebServiceLocation];
+		[objects setObject:[self objectFromTranslate:anObject.location] forKey:kSCHLibreAccessWebServiceLocation];
 		[objects setObject:[self objectFromTranslate:anObject.endPage] forKey:kSCHLibreAccessWebServiceEndPage];
 		[objects setObject:[self objectFromTranslate:anObject.version] forKey:kSCHLibreAccessWebServiceVersion];		
 		[objects setObject:[self objectFromTranslate:anObject.lastmodified] forKey:kSCHLibreAccessWebServiceLastModified];
@@ -1040,7 +1011,7 @@ static NSInteger const kSCHLibreAccessWebServiceVaid = 33;
 		NSMutableDictionary *objects = [NSMutableDictionary dictionary];
 		
 		[objects setObject:[self objectFromTranslate:anObject.page] forKey:kSCHLibreAccessWebServicePage];
-		[objects setObject:[self objectFromWordIndex:anObject.wordindex] forKey:kSCHLibreAccessWebServiceWordIndex];
+		[objects setObject:[self objectFromTranslate:anObject.wordindex] forKey:kSCHLibreAccessWebServiceWordIndex];
 		
 		ret = objects;					
 	}
@@ -1073,7 +1044,7 @@ static NSInteger const kSCHLibreAccessWebServiceVaid = 33;
 		
 		[objects setObject:[self objectFromTranslate:anObject.id_] forKey:kSCHLibreAccessWebServiceID];
 		[objects setObject:[NSNumber numberWithSaveAction:anObject.action] forKey:kSCHLibreAccessWebServiceAction];
-		[objects setObject:[self objectFromLocationGraphics:anObject.location] forKey:kSCHLibreAccessWebServiceLocation];
+		[objects setObject:[self objectFromTranslate:anObject.location] forKey:kSCHLibreAccessWebServiceLocation];
 		[objects setObject:[self objectFromTranslate:anObject.color] forKey:kSCHLibreAccessWebServiceColor];
 		[objects setObject:[self objectFromTranslate:anObject.value] forKey:kSCHLibreAccessWebServiceValue];
 		[objects setObject:[self objectFromTranslate:anObject.version] forKey:kSCHLibreAccessWebServiceVersion];
@@ -1111,7 +1082,7 @@ static NSInteger const kSCHLibreAccessWebServiceVaid = 33;
 		[objects setObject:[NSNumber numberWithSaveAction:anObject.action] forKey:kSCHLibreAccessWebServiceAction];
 		[objects setObject:[self objectFromTranslate:anObject.text] forKey:kSCHLibreAccessWebServiceText];
 		[objects setObject:[self objectFromTranslate:anObject.disabled] forKey:kSCHLibreAccessWebServiceDisabled];
-		[objects setObject:[self objectFromLocationBookmark:anObject.location] forKey:kSCHLibreAccessWebServiceLocation];
+		[objects setObject:[self objectFromTranslate:anObject.location] forKey:kSCHLibreAccessWebServiceLocation];
 		[objects setObject:[self objectFromTranslate:anObject.version] forKey:kSCHLibreAccessWebServiceVersion];
 		[objects setObject:[self objectFromTranslate:anObject.lastmodified] forKey:kSCHLibreAccessWebServiceLastModified];
 		
@@ -1445,6 +1416,18 @@ static NSInteger const kSCHLibreAccessWebServiceVaid = 33;
         ret = [self objectFromPrivateAnnotationsStatus:anObject];	
     } else if ([anObject isKindOfClass:[LibreAccessServiceSvc_AnnotationTypeStatusItem class]] == YES) {
         ret = [self objectFromAnnotationTypeStatusItem:anObject];	
+    } else if ([anObject isKindOfClass:[LibreAccessServiceSvc_PrivateAnnotations class]] == YES) {
+        ret = [self objectFromPrivateAnnotations:anObject];	                        
+    } else if ([anObject isKindOfClass:[LibreAccessServiceSvc_LocationText class]] == YES) {
+        ret = [self objectFromLocationText:anObject];	                
+    } else if ([anObject isKindOfClass:[LibreAccessServiceSvc_WordIndex class]] == YES) {
+        ret = [self objectFromWordIndex:anObject];	                        
+    } else if ([anObject isKindOfClass:[LibreAccessServiceSvc_LocationGraphics class]] == YES) {
+        ret = [self objectFromLocationGraphics:anObject];	                        
+    } else if ([anObject isKindOfClass:[LibreAccessServiceSvc_LocationBookmark class]] == YES) {
+        ret = [self objectFromLocationBookmark:anObject];	                        
+    } else if ([anObject isKindOfClass:[LibreAccessServiceSvc_LastPage class]] == YES) {
+        ret = [self objectFromLastPage:anObject];
 	} else {
 		ret = anObject;
 	}
