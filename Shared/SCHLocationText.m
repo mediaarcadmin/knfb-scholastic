@@ -20,4 +20,9 @@ NSString * const kSCHLocationText = @"SCHLocationText";
 @dynamic WordIndex;
 @dynamic Highlight;
 
+- (void)setInitialValues
+{
+    self.Page = [NSNumber numberWithInteger:0];
+}
+
 @end

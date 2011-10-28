@@ -21,4 +21,6 @@ extern NSString * const kSCHLocationBookmark;
 @property (nonatomic, retain) NSNumber * Page;
 @property (nonatomic, retain) SCHBookmark * Bookmark;
 
+- (void)setInitialValues;
+
 @end

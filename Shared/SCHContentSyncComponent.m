@@ -37,6 +37,8 @@ NSString * const SCHContentSyncComponentDidFailNotification = @"SCHContentSyncCo
 
 - (void)addAnnotationStructure:(SCHUserContentItem *)userContentItem 
                     forProfile:(SCHContentProfileItem *)contentProfileItem;
+- (void)removeAnnotationStructure:(SCHUserContentItem *)userContentItem 
+                       forProfile:(SCHContentProfileItem *)contentProfileItem;
 - (SCHOrderItem *)addOrderItem:(NSDictionary *)orderItem;
 - (SCHContentProfileItem *)addContentProfileItem:(NSDictionary *)contentProfileItem
                                          forBook:(SCHBookIdentifier *)bookIdentifier;
@@ -232,6 +234,7 @@ NSString * const SCHContentSyncComponentDidFailNotification = @"SCHContentSyncCo
 	
     for (SCHUserContentItem *userContentItem in deletePool) {
         for (SCHContentProfileItem *contentProfileItem in userContentItem.ProfileList) {
+            [self removeAnnotationStructure:userContentItem forProfile:contentProfileItem];        
             [[NSNotificationCenter defaultCenter] postNotificationName:SCHContentSyncComponentWillDeleteNotification 
                                                                 object:self 
                                                               userInfo:[NSDictionary dictionaryWithObject:[NSArray arrayWithObject:[userContentItem bookIdentifier]]
@@ -267,15 +270,18 @@ NSString * const SCHContentSyncComponentDidFailNotification = @"SCHContentSyncCo
 	for (NSDictionary *profileItem in profileList) {     
         SCHContentProfileItem *contentProfileItem = [self addContentProfileItem:profileItem
                                                                         forBook:newUserContentItem.bookIdentifier];
-		[newUserContentItem addProfileListObject:contentProfileItem];
-        [self addAnnotationStructure:newUserContentItem forProfile:contentProfileItem];
+        if (contentProfileItem != nil) {
+            [newUserContentItem addProfileListObject:contentProfileItem];
+            [self addAnnotationStructure:newUserContentItem forProfile:contentProfileItem];
+        }
 	}
     	
 	newUserContentItem.LastModified = [self makeNullNil:[webUserContentItem objectForKey:kSCHLibreAccessWebServiceLastModified]];
 	newUserContentItem.State = [NSNumber numberWithStatus:kSCHStatusUnmodified];	
 }
 
-- (void)addAnnotationStructure:(SCHUserContentItem *)userContentItem forProfile:(SCHContentProfileItem *)contentProfileItem
+- (void)addAnnotationStructure:(SCHUserContentItem *)userContentItem 
+                    forProfile:(SCHContentProfileItem *)contentProfileItem
 {
     if (userContentItem != nil && contentProfileItem != nil) {
         NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
@@ -288,16 +294,9 @@ NSString * const SCHContentSyncComponentDidFailNotification = @"SCHContentSyncCo
         [fetchRequest release], fetchRequest = nil;
         
         if([annotationsItems count] > 0) {
-            NSDate *date = [NSDate date];
-            
             SCHLastPage *newLastPage = [NSEntityDescription insertNewObjectForEntityForName:kSCHLastPage 
                                                                      inManagedObjectContext:self.managedObjectContext];
-            newLastPage.LastModified = date;
-            // the server will have this created already
-            newLastPage.State = [NSNumber numberWithStatus:kSCHStatusModified];
-            newLastPage.LastPageLocation = [NSNumber numberWithInteger:0];
-            newLastPage.Percentage = [NSNumber numberWithFloat:0.0];
-            newLastPage.Component = @"";
+            [newLastPage setInitialValues];
             
             SCHPrivateAnnotations *newPrivateAnnotations = [NSEntityDescription insertNewObjectForEntityForName:kSCHPrivateAnnotations 
                                                                                          inManagedObjectContext:self.managedObjectContext];
@@ -313,6 +312,29 @@ NSString * const SCHContentSyncComponentDidFailNotification = @"SCHContentSyncCo
             newAnnotationsContentItem.PrivateAnnotations = newPrivateAnnotations;
         }
     }
+}
+
+- (void)removeAnnotationStructure:(SCHUserContentItem *)userContentItem 
+                       forProfile:(SCHContentProfileItem *)contentProfileItem
+{
+    if (userContentItem != nil && contentProfileItem != nil) {
+        NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+        
+        [fetchRequest setEntity:[NSEntityDescription entityForName:kSCHAnnotationsItem inManagedObjectContext:self.managedObjectContext]];	
+        [fetchRequest setPredicate:[NSPredicate predicateWithFormat:@"ProfileID == %@", contentProfileItem.ProfileID]];
+        
+        NSArray *annotationsItems = [self.managedObjectContext executeFetchRequest:fetchRequest error:nil];	
+        
+        [fetchRequest release], fetchRequest = nil;
+
+        if ([annotationsItems count] > 0) {
+            SCHBookIdentifier *bookIdentifier = userContentItem.bookIdentifier;
+            for (SCHAnnotationsContentItem *item in [[annotationsItems objectAtIndex:0] AnnotationsContentItem]) {
+                if ([bookIdentifier isEqual:item.bookIdentifier] == YES)
+                    [self.managedObjectContext deleteObject:item];
+            }        
+        }
+    }    
 }
 
 - (SCHOrderItem *)addOrderItem:(NSDictionary *)orderItem
@@ -376,23 +398,25 @@ NSString * const SCHContentSyncComponentDidFailNotification = @"SCHContentSyncCo
 
 - (void)syncUserContentItem:(NSDictionary *)webUserContentItem withUserContentItem:(SCHUserContentItem *)localUserContentItem
 {
-	localUserContentItem.DRMQualifier = [self makeNullNil:[webUserContentItem objectForKey:kSCHLibreAccessWebServiceDRMQualifier]];
-	localUserContentItem.Version = [self makeNullNil:[webUserContentItem objectForKey:kSCHLibreAccessWebServiceVersion]];
-	localUserContentItem.ContentIdentifier = [self makeNullNil:[webUserContentItem objectForKey:kSCHLibreAccessWebServiceContentIdentifier]];
-	localUserContentItem.Format = [self makeNullNil:[webUserContentItem objectForKey:kSCHLibreAccessWebServiceFormat]];		
-	localUserContentItem.DefaultAssignment = [self makeNullNil:[webUserContentItem objectForKey:kSCHLibreAccessWebServiceDefaultAssignment]];		
-	localUserContentItem.ContentIdentifierType = [self makeNullNil:[webUserContentItem objectForKey:kSCHLibreAccessWebServiceContentIdentifierType]];				
-	
-	[self syncOrderItems:[self makeNullNil:[webUserContentItem objectForKey:kSCHLibreAccessWebServiceOrderList]] 
-          localOrderList:localUserContentItem.OrderList
-              insertInto:localUserContentItem];
-
-	[self syncContentProfileItems:[self makeNullNil:[webUserContentItem objectForKey:kSCHLibreAccessWebServiceProfileList]] 
-          localContentProfileList:localUserContentItem.ProfileList
-     insertInto:localUserContentItem];
-	
-	localUserContentItem.LastModified = [self makeNullNil:[webUserContentItem objectForKey:kSCHLibreAccessWebServiceLastModified]];
-	localUserContentItem.State = [NSNumber numberWithStatus:kSCHStatusSyncUpdate];				
+    if (webUserContentItem != nil) {
+        localUserContentItem.DRMQualifier = [self makeNullNil:[webUserContentItem objectForKey:kSCHLibreAccessWebServiceDRMQualifier]];
+        localUserContentItem.Version = [self makeNullNil:[webUserContentItem objectForKey:kSCHLibreAccessWebServiceVersion]];
+        localUserContentItem.ContentIdentifier = [self makeNullNil:[webUserContentItem objectForKey:kSCHLibreAccessWebServiceContentIdentifier]];
+        localUserContentItem.Format = [self makeNullNil:[webUserContentItem objectForKey:kSCHLibreAccessWebServiceFormat]];		
+        localUserContentItem.DefaultAssignment = [self makeNullNil:[webUserContentItem objectForKey:kSCHLibreAccessWebServiceDefaultAssignment]];		
+        localUserContentItem.ContentIdentifierType = [self makeNullNil:[webUserContentItem objectForKey:kSCHLibreAccessWebServiceContentIdentifierType]];				
+        
+        [self syncOrderItems:[self makeNullNil:[webUserContentItem objectForKey:kSCHLibreAccessWebServiceOrderList]] 
+              localOrderList:localUserContentItem.OrderList
+                  insertInto:localUserContentItem];
+        
+        [self syncContentProfileItems:[self makeNullNil:[webUserContentItem objectForKey:kSCHLibreAccessWebServiceProfileList]] 
+              localContentProfileList:localUserContentItem.ProfileList
+                           insertInto:localUserContentItem];
+        
+        localUserContentItem.LastModified = [self makeNullNil:[webUserContentItem objectForKey:kSCHLibreAccessWebServiceLastModified]];
+        localUserContentItem.State = [NSNumber numberWithStatus:kSCHStatusSyncUpdate];				
+    }
 }
 
 - (void)syncOrderItems:(NSArray *)webOrderList 
@@ -467,8 +491,10 @@ NSString * const SCHContentSyncComponentDidFailNotification = @"SCHContentSyncCo
 
 - (void)syncOrderItem:(NSDictionary *)webOrderItem withOrderItem:(SCHOrderItem *)localOrderItem
 {
-	localOrderItem.OrderID = [self makeNullNil:[webOrderItem objectForKey:kSCHLibreAccessWebServiceOrderID]];
-	localOrderItem.OrderDate = [self makeNullNil:[webOrderItem objectForKey:kSCHLibreAccessWebServiceOrderDate]];
+    if (webOrderItem != nil) {
+        localOrderItem.OrderID = [self makeNullNil:[webOrderItem objectForKey:kSCHLibreAccessWebServiceOrderID]];
+        localOrderItem.OrderDate = [self makeNullNil:[webOrderItem objectForKey:kSCHLibreAccessWebServiceOrderDate]];
+    }
 }
 
 - (void)syncContentProfileItems:(NSArray *)webContentProfileList 
@@ -542,20 +568,26 @@ NSString * const SCHContentSyncComponentDidFailNotification = @"SCHContentSyncCo
     }
 
 	for (NSDictionary *webItem in creationPool) {
-		[userContentItem addProfileListObject:[self addContentProfileItem:webItem
-                                                                  forBook:userContentItem.bookIdentifier]];
+        SCHContentProfileItem *item = [self addContentProfileItem:webItem
+                                                          forBook:userContentItem.bookIdentifier];
+
+        if (item != nil) {
+            [userContentItem addProfileListObject:item];
+        }
 	}
 }
 
 - (void)syncContentProfileItem:(NSDictionary *)webContentProfileItem withContentProfileItem:(SCHContentProfileItem *)localContentProfileItem
 {
-	localContentProfileItem.LastModified = [self makeNullNil:[webContentProfileItem objectForKey:kSCHLibreAccessWebServiceLastModified]];
-    localContentProfileItem.State = [NSNumber numberWithStatus:kSCHStatusSyncUpdate];
-	
-	localContentProfileItem.IsFavorite = [self makeNullNil:[webContentProfileItem objectForKey:kSCHLibreAccessWebServiceIsFavorite]];
-	
-	localContentProfileItem.ProfileID = [self makeNullNil:[webContentProfileItem objectForKey:kSCHLibreAccessWebServiceProfileID]];
-	localContentProfileItem.LastPageLocation = [self makeNullNil:[webContentProfileItem objectForKey:kSCHLibreAccessWebServiceLastPageLocation]];
+    if (webContentProfileItem != nil) {
+        localContentProfileItem.LastModified = [self makeNullNil:[webContentProfileItem objectForKey:kSCHLibreAccessWebServiceLastModified]];
+        localContentProfileItem.State = [NSNumber numberWithStatus:kSCHStatusSyncUpdate];
+        
+        localContentProfileItem.IsFavorite = [self makeNullNil:[webContentProfileItem objectForKey:kSCHLibreAccessWebServiceIsFavorite]];
+        
+        localContentProfileItem.ProfileID = [self makeNullNil:[webContentProfileItem objectForKey:kSCHLibreAccessWebServiceProfileID]];
+        localContentProfileItem.LastPageLocation = [self makeNullNil:[webContentProfileItem objectForKey:kSCHLibreAccessWebServiceLastPageLocation]];
+    }
 }
 
 @end
