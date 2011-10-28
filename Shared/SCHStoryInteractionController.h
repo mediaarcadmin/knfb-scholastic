@@ -81,6 +81,9 @@ typedef enum
 
 @property (nonatomic, retain) UILabel *titleView;
 
+// the current interface orientation
+@property (nonatomic, assign) UIInterfaceOrientation interfaceOrientation;
+
 // setup the title text
 - (void)setupTitle;
 

@@ -100,15 +100,14 @@
 - (BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request 
  navigationType:(UIWebViewNavigationType)navigationType
 {
+    //NSLog(@"Request: %@",request);
     BOOL ret = YES;
     
-    if (self.profileSetupDelegate != nil &&
-        navigationType == UIWebViewNavigationTypeLinkClicked) {
-//        NSDictionary *parameters = [[request URL] queryParameters];
-//        NSString *cmd = [parameters objectForKey:@"cmd"];
-//        
-//        if ([cmd isEqualToString:@"bookshelfSetupDidCompleteWithSuccess"] == YES) {
-        if ([[[request URL] absoluteString] isEqualToString:@"http://reader.sch.libredigital.com/reader/sch/ScholasticReader.exe"] == YES) {
+    if (self.profileSetupDelegate != nil) {
+        NSDictionary *parameters = [[request URL] queryParameters];
+        NSString *cmd = [parameters objectForKey:@"cmd"];
+        
+        if ([cmd isEqualToString:@"bookshelfSetupDidCompleteWithSuccess"] == YES) {
             ret = NO;
             
             [self.profileSetupDelegate webParentToolsCompleted];

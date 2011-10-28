@@ -21,7 +21,6 @@
 
 @interface SCHStoryInteractionController ()
 
-@property (nonatomic, assign) UIInterfaceOrientation interfaceOrientation;
 @property (nonatomic, retain) NSArray *nibObjects;
 @property (nonatomic, assign) NSInteger currentScreenIndex;
 @property (nonatomic, retain) UIButton *closeButton;
@@ -367,6 +366,10 @@ static Class controllerClassForStoryInteraction(SCHStoryInteraction *storyIntera
     } else {
         self.controllerState = SCHStoryInteractionControllerStateInteractionInProgress;
     }
+    
+    // force a relayout for the current orientation
+    [self willRotateToInterfaceOrientation:self.interfaceOrientation duration:0];
+    [self didRotateFromInterfaceOrientation:self.interfaceOrientation];
 }
 
 - (void)setupTitle
