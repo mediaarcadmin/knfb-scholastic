@@ -43,7 +43,7 @@
     [super viewDidLoad];
     [self setButtonBackground:self.setupBookshelvesButton];
     
-#if 0 // force a way out of this screen
+#if 1 // force a way out of this screen
     [self.setupBookshelvesButton setTitle:@"EXIT" forState:UIControlStateNormal];
     
     if ([self.profileSetupDelegate respondsToSelector:@selector(showCurrentProfileAnimated:)]) {

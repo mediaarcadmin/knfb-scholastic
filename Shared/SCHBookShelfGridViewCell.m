@@ -29,8 +29,7 @@
 - (id)initWithFrame:(CGRect)frame reuseIdentifier:(NSString *)aReuseIdentifier 
 {
 	if ((self = [super initWithFrame:frame reuseIdentifier:aReuseIdentifier])) {
-        self.bookCoverView = [[[SCHBookCoverView alloc] initWithFrame:CGRectZero] autorelease];
-        self.bookCoverView.frame = CGRectMake(0, 0, self.frame.size.width - 4, self.frame.size.height - 22);
+        self.bookCoverView = [[[SCHBookCoverView alloc] initWithFrame:CGRectMake(0, 0, self.frame.size.width - 4, self.frame.size.height - 22)] autorelease];
 
         if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
             self.bookCoverView.topInset = 0;
@@ -42,6 +41,7 @@
         
         self.bookCoverView.coverViewMode = SCHBookCoverViewModeGridView;
         
+        [self.deleteButton setShowsTouchWhenHighlighted:NO]; // Needed to remove a "puff" visual glitch when pushing directly into the samples shelf
         [self.contentView addSubview:self.bookCoverView];
     }
 	

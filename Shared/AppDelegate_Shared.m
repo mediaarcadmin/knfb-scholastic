@@ -114,6 +114,10 @@ static NSString* const prModelCertFilename = @"iphonecert.dat";
         case kSCHStoreTypeStandardStore:
             if ([[SCHAppStateManager sharedAppStateManager] isSampleStore]) {
                 [self.coreDataHelper resetStore];
+                SCHPopulateDataStore *populator = [[SCHPopulateDataStore alloc] init];
+                [populator setManagedObjectContext:self.coreDataHelper.managedObjectContext];
+                [populator setAppStateForStandard];
+                [populator release];
             }
             break;
         case kSCHStoreTypeSampleStore:

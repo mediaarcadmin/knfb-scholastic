@@ -422,6 +422,8 @@
         [viewControllers addObject:self.profileSetupDelegate];
     }
     
+    [viewControllers addObject:self];
+    
     NSArray *profileControllers = [self viewControllersForProfileItem:profileItem];
     if (profileControllers) {
         [viewControllers addObjectsFromArray:profileControllers];

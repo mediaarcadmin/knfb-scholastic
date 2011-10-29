@@ -394,6 +394,20 @@
     }  
 }
 
+- (void)setAppStateForStandard
+{
+    SCHAppState *appState = [SCHAppStateManager sharedAppStateManager].appState;
+    
+    appState.ShouldSync = [NSNumber numberWithBool:YES];
+    appState.ShouldSyncNotes = [NSNumber numberWithBool:NO];
+    appState.ShouldAuthenticate = [NSNumber numberWithBool:YES];
+    appState.DataStoreType = [NSNumber numberWithDataStoreType:kSCHDataStoreTypesStandard];
+    
+    NSError *error;
+    if ([self.managedObjectContext save:&error] == NO) {
+        NSLog(@"Unable to save the state for the sample store %@, %@", error, [error userInfo]);
+    }  
+}
 #pragma mark - Core Data population methods
 
 - (NSDictionary *)profileItemWith:(NSInteger)profileID

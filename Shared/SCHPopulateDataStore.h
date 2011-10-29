@@ -34,5 +34,6 @@
 - (void)populateSampleStore;
 - (BOOL)populateSampleStoreFromManifestEntries:(NSArray *)entries;
 - (void)setAppStateForSample;
+- (void)setAppStateForStandard;
 
 @end

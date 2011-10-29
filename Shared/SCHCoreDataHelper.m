@@ -25,19 +25,16 @@ static NSString * const kSCHCoreDataHelperDictionaryStoreConfiguration = @"Dicti
 static NSString * const kSCHCoreDataHelperStandardStoreName = @"Scholastic.sqlite";
 static NSString * const kSCHCoreDataHelperDictionaryStoreName = @"Scholastic_Dictionary.sqlite";
 
-static NSString * const kSCHCoreDataHelperSampleStoreName = @"Scholastic_Sample.sqlite";
-
 @interface SCHCoreDataHelper ()
 
 @property (nonatomic, retain) NSManagedObjectContext *managedObjectContext;
 
-//- (BOOL)storeExists:(NSString *)storeName;
 - (void)addPersistentStore:(NSPersistentStoreCoordinator *)aPersistentStoreCoordinator 
              configuration:(NSString *)configuration 
                        url:(NSURL *)url;
 - (NSURL *)storeURL:(NSString *)storeName;
-//- (BOOL)switchPersistentStore:(NSString *)storeName;
 - (NSPersistentStore *)currentMainPersistentStore;
+- (void)removeStoreAtURL:(NSURL *)storeURL;
 
 @end
 
@@ -69,6 +66,8 @@ static NSString * const kSCHCoreDataHelperSampleStoreName = @"Scholastic_Sample.
     [[self managedObjectContext] reset];
     [[self persistentStoreCoordinator] removePersistentStore:currentMainStore 
                                                        error:&error];  
+    [self removeStoreAtURL:[self storeURL:kSCHCoreDataHelperStandardStoreName]];
+    
     self.managedObjectContext = nil;
     
     if ([[self persistentStoreCoordinator] addPersistentStoreWithType:NSSQLiteStoreType 
@@ -114,22 +113,18 @@ static NSString * const kSCHCoreDataHelperSampleStoreName = @"Scholastic_Sample.
 //    }
 //}
 //             
-//- (void)removeSampleStore
-//{
-//    if ([self storeExists:kSCHCoreDataHelperSampleStoreName] == YES) {
-//        dispatch_async(dispatch_get_main_queue(), ^{
-//            NSURL *applicationSupportDocumentsDirectory = [[[NSFileManager defaultManager] URLsForDirectory:NSApplicationSupportDirectory inDomains:NSUserDomainMask] lastObject];
-//            NSURL *sampleStoreURL = [applicationSupportDocumentsDirectory URLByAppendingPathComponent:kSCHCoreDataHelperSampleStoreName];    
-//            NSString *sampleStorePath = [sampleStoreURL path];
-//            
-//            NSError *error = nil;
-//			if ([[NSFileManager defaultManager] removeItemAtPath:sampleStorePath
-//                                                         error:&error] == NO) {
-//                NSLog(@"Error removing Sample Data Store: %@, %@", error, [error userInfo]);
-//            }            
-//        });
-//    }    
-//}
+- (void)removeStoreAtURL:(NSURL *)storeURL
+{
+    NSString *storePath = [storeURL path];
+    NSFileManager *threadSafeFileManager = [[[NSFileManager alloc] init] autorelease];
+    
+    NSError *error = nil;
+    if ([threadSafeFileManager fileExistsAtPath:storePath]) {
+        if (![threadSafeFileManager removeItemAtPath:storePath error:&error]) {
+            NSLog(@"Error removing Store: %@, %@", error, [error userInfo]);
+        }            
+    }
+}
 
 #pragma mark - Core Data stack
 

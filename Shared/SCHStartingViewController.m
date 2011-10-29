@@ -58,7 +58,7 @@ typedef enum {
 @property (nonatomic, retain) LambdaAlert *checkProfilesAlert;
 
 - (void)setupAssetsForOrientation:(UIInterfaceOrientation)orientation;
-- (void)firstLogin;
+- (void)setStandardStore;
 - (void)openSampleBookshelf;
 - (void)showSignInForm;
 - (BOOL)dictionaryDownloadRequired;
@@ -303,7 +303,7 @@ typedef enum {
     }];
 }
 
-- (void)firstLogin
+- (void)setStandardStore
 {
     AppDelegate_Shared *appDelegate = (AppDelegate_Shared *)[[UIApplication sharedApplication] delegate];
     [appDelegate setStoreType:kSCHStoreTypeStandardStore];
@@ -324,6 +324,8 @@ typedef enum {
     };
     
     login.retainLoopSafeActionBlock = ^BOOL(NSString *username, NSString *password) {
+        [self setStandardStore];
+        
         self.profileSyncState = kSCHStartingViewControllerProfileSyncStateWaitingForLoginToComplete;
         
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(authenticationManager:) name:SCHAuthenticationManagerDidSucceedNotification object:nil];			
@@ -349,9 +351,7 @@ typedef enum {
     [[NSNotificationCenter defaultCenter] removeObserver:self name:SCHAuthenticationManagerDidSucceedNotification object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:SCHAuthenticationManagerDidFailNotification object:nil];
 	
-	if ([notification.name isEqualToString:SCHAuthenticationManagerDidSucceedNotification]) {
-        [self firstLogin];
-        
+	if ([notification.name isEqualToString:SCHAuthenticationManagerDidSucceedNotification]) {        
         [[SCHAuthenticationManager sharedAuthenticationManager] clearAppProcessing];
         [[SCHSyncManager sharedSyncManager] firstSync:YES];
 	} else {
@@ -544,6 +544,33 @@ typedef enum {
         [alert release]; 
     }
 }
+
+//- (void)pushProfileAnimated:(BOOL)animated
+//{
+//    if (self.modalViewController) {
+//        [self dismissModalViewControllerAnimated:YES];
+//    }
+//    
+//    SCHProfileViewController_Shared *profile = [self profileViewController];
+//    SCHProfileItem *profileItem = [[profile profileItems] lastObject]; // Only one sample bookshelf so any result will do
+//    
+//    if (profileItem) {
+//        NSMutableArray *viewControllers = [NSMutableArray arrayWithObjects:self, profile, nil];
+//        [viewControllers addObjectsFromArray:[profile viewControllersForProfileItem:profileItem]];
+//        [self.navigationController setViewControllers:viewControllers animated:animated];
+//    } else {
+//        LambdaAlert *alert = [[LambdaAlert alloc]
+//                              initWithTitle:NSLocalizedString(@"Unable To Open the Sample Bookshelf", @"")
+//                              message:NSLocalizedString(@"There was a problem whilst opening the sample bookshelf. Please try again.", @"")];
+//        [alert addButtonWithTitle:NSLocalizedString(@"OK", @"") block:^{
+//        }];
+//        
+//        [alert show]; 
+//        [alert release]; 
+//    }
+//
+//}
+
 
 - (void)showCurrentProfileAnimated:(BOOL)animated
 {   
