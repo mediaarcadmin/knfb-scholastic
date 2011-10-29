@@ -9,6 +9,7 @@
 #import "SCHStoryInteractionControllerPopQuiz.h"
 #import "SCHStoryInteractionPopQuiz.h"
 #import "SCHStoryInteractionProgressView.h"
+#import "SCHStretchableImageButton.h"
 
 @interface SCHStoryInteractionControllerPopQuiz ()
 
@@ -74,7 +75,6 @@
     self.progressView.numberOfSteps = [[(SCHStoryInteractionPopQuiz *)self.storyInteraction questions] count];
     [self setupQuestion];
 
-    [self playBundleAudioWithFilename:[self.storyInteraction storyInteractionOpeningSoundFilename] completion:nil];
     self.controllerState = SCHStoryInteractionControllerStateInteractionInProgress;
 }
 
@@ -91,7 +91,7 @@
         self.scoreSublabel.text = popQuiz.scoreResponseHigh;
         self.controllerState = SCHStoryInteractionControllerStateInteractionFinishedSuccessfully;
     }
-    [self playBundleAudioWithFilename:[self.storyInteraction storyInteractionRevealSoundFilename] completion:nil];
+    [self enqueueAudioWithPath:[self.storyInteraction storyInteractionRevealSoundFilename] fromBundle:YES];
 }
 
 - (void)nextQuestion
@@ -118,9 +118,10 @@
         } else {
             highlight = [UIImage imageNamed:@"answer-button-red"];
         }
-        UIButton *button = [self.answerButtons objectAtIndex:i];
+        SCHStretchableImageButton *button = [self.answerButtons objectAtIndex:i];
         [button setTitle:answer forState:UIControlStateNormal];
         [button setHidden:NO];
+        [button setCustomTopCap:10];
         [button setBackgroundImage:highlight forState:UIControlStateSelected];
         ++i;
     }
@@ -165,18 +166,17 @@
     });
     
     if (chosenAnswer == [self currentQuestion].correctAnswer) {
-        [self playBundleAudioWithFilename:[self.storyInteraction storyInteractionCorrectAnswerSoundFilename]
-                               completion:nil];
+        [self enqueueAudioWithPath:[self.storyInteraction storyInteractionCorrectAnswerSoundFilename] fromBundle:YES];
         self.score++;
     
     } else {
-        [self playBundleAudioWithFilename:[self.storyInteraction storyInteractionWrongAnswerSoundFilename]
-                               completion:nil];
+        [self enqueueAudioWithPath:[self.storyInteraction storyInteractionWrongAnswerSoundFilename] fromBundle:YES];
     }
 }
 
 - (void)playAgainButtonTapped:(id)sender
 {
+    [self enqueueAudioWithPath:[self.storyInteraction storyInteractionOpeningSoundFilename] fromBundle:YES];
     [self presentNextView];
 }
 

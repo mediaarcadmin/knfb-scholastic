@@ -7,6 +7,7 @@
 //
 
 #import "SCHLastPage.h"
+#import "NSNumber+ObjectTypes.h"
 
 // Constants
 NSString * const kSCHLastPage = @"SCHLastPage";
@@ -17,5 +18,15 @@ NSString * const kSCHLastPage = @"SCHLastPage";
 @dynamic Component;
 @dynamic Percentage;
 @dynamic PrivateAnnotations;
+
+- (void)setInitialValues
+{
+    self.LastPageLocation = [NSNumber numberWithInteger:0];
+    self.Component = @"";
+    self.Percentage = [NSNumber numberWithFloat:0.0];
+ 
+    self.LastModified = [NSDate date];
+    self.State = [NSNumber numberWithStatus:kSCHStatusUnmodified];    
+}
 
 @end

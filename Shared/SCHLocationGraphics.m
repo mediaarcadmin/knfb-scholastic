@@ -18,4 +18,9 @@ NSString * const kSCHLocationGraphics = @"SCHLocationGraphics";
 @dynamic Page;
 @dynamic Note;
 
+- (void)setInitialValues
+{
+    self.Page = [NSNumber numberWithInteger:0];
+}
+
 @end

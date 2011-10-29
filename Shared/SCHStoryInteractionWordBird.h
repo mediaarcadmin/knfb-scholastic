@@ -13,6 +13,8 @@
 @property (nonatomic, retain) NSString *word;
 @property (nonatomic, retain) NSString *suffix;
 
+- (NSString *)audioPathForWord;
+
 @end
 
 @interface SCHStoryInteractionWordBird : SCHStoryInteraction {}

@@ -8,6 +8,7 @@
 
 #import "SCHStoryInteractionDraggableLetterView.h"
 
+#define kTileTag 122
 #define kLabelTag 123
 
 @implementation SCHStoryInteractionDraggableLetterView
@@ -19,6 +20,7 @@
     if ((self = [super initWithFrame:CGRectMake(0, 0, tileImage.size.width, tileImage.size.height)])) {
         UIImageView *iv = [[UIImageView alloc] initWithImage:tileImage];
         iv.frame = self.bounds;
+        iv.tag = kTileTag;
         [self addSubview:iv];
         [iv release];
         UILabel *label = [[UILabel alloc] initWithFrame:self.bounds];
@@ -49,6 +51,13 @@
 - (UIColor *)letterColor
 {
     return [(UILabel *)[self viewWithTag:kLabelTag] textColor];
+}
+
+- (void)setTileImage:(UIImage *)tileImage
+{
+    UIImageView *iv = (UIImageView *)[self viewWithTag:kTileTag];
+    iv.image = tileImage;
+    self.bounds = (CGRect){ CGPointZero, tileImage.size };
 }
 
 @end

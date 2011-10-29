@@ -25,6 +25,8 @@
 		280B01B4139E35540068661C /* SCHStoryInteractionMultipleChoiceWithAnswerPictures.m in Sources */ = {isa = PBXBuildFile; fileRef = 280B01B0139E336C0068661C /* SCHStoryInteractionMultipleChoiceWithAnswerPictures.m */; };
 		280C99C71397C65E00381C31 /* SCHStoryInteractionProgressView.m in Sources */ = {isa = PBXBuildFile; fileRef = 280C99C61397C65E00381C31 /* SCHStoryInteractionProgressView.m */; };
 		280D6A1813B1D6180032085D /* SCHStarView.m in Sources */ = {isa = PBXBuildFile; fileRef = 280D6A1713B1D6180032085D /* SCHStarView.m */; };
+		280DA9D2145AB3C300583695 /* SCHUnqueuedAudioPlayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 280DA9D1145AB3C300583695 /* SCHUnqueuedAudioPlayer.m */; };
+		280DA9D3145AB3C300583695 /* SCHUnqueuedAudioPlayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 280DA9D1145AB3C300583695 /* SCHUnqueuedAudioPlayer.m */; };
 		2811879113D9C490001522FE /* SCHRemoveDictionaryViewController~ipad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2811879013D9C490001522FE /* SCHRemoveDictionaryViewController~ipad.xib */; };
 		2815719113EFDDC30071B73C /* SCHStoryInteractionJigsaw.m in Sources */ = {isa = PBXBuildFile; fileRef = 2815719013EFDDC30071B73C /* SCHStoryInteractionJigsaw.m */; };
 		2815719613EFDE120071B73C /* SCHStoryInteractionWordBird.m in Sources */ = {isa = PBXBuildFile; fileRef = 2815719513EFDE120071B73C /* SCHStoryInteractionWordBird.m */; };
@@ -261,6 +263,10 @@
 		28D2AA0E13D6E8F700BEB359 /* SCHDownloadDictionaryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 28D2AA0D13D6E8F700BEB359 /* SCHDownloadDictionaryViewController.m */; };
 		28D67DEB13D9B28700F715CD /* SCHRemoveDictionaryViewController~iphone.xib in Resources */ = {isa = PBXBuildFile; fileRef = 28D67DEA13D9B28700F715CD /* SCHRemoveDictionaryViewController~iphone.xib */; };
 		28D67DF013D9B30500F715CD /* SCHRemoveDictionaryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 28D67DEE13D9B30500F715CD /* SCHRemoveDictionaryViewController.m */; };
+		28D6D5D01451DD6E0094F144 /* rotation.png in Resources */ = {isa = PBXBuildFile; fileRef = 28D6D5CE1451DD6E0094F144 /* rotation.png */; };
+		28D6D5D11451DD6E0094F144 /* rotation.png in Resources */ = {isa = PBXBuildFile; fileRef = 28D6D5CE1451DD6E0094F144 /* rotation.png */; };
+		28D6D5D21451DD6E0094F144 /* rotation@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 28D6D5CF1451DD6E0094F144 /* rotation@2x.png */; };
+		28D6D5D31451DD6E0094F144 /* rotation@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 28D6D5CF1451DD6E0094F144 /* rotation@2x.png */; };
 		28D6D638145579CC0094F144 /* old-lightning-bolt-3@2x~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = 28D6D635145579CC0094F144 /* old-lightning-bolt-3@2x~iphone.png */; };
 		28D6D639145579CC0094F144 /* old-lightning-bolt-3@2x~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = 28D6D635145579CC0094F144 /* old-lightning-bolt-3@2x~iphone.png */; };
 		28D6D63A145579CC0094F144 /* old-lightning-bolt-3~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = 28D6D636145579CC0094F144 /* old-lightning-bolt-3~ipad.png */; };
@@ -1895,6 +1901,8 @@
 		F81CA38613FAB230006EF9D6 /* BookSampleTabHorizontal~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = F81CA38113FAB230006EF9D6 /* BookSampleTabHorizontal~ipad.png */; };
 		F82D39C5131EA79100289FF3 /* SCHBookContents.m in Sources */ = {isa = PBXBuildFile; fileRef = F82D39B4131EA79100289FF3 /* SCHBookContents.m */; };
 		F82D39DA131EA7D400289FF3 /* SCHBookShelfTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F82D39D8131EA7D400289FF3 /* SCHBookShelfTableViewCell.m */; };
+		F82F913E145943B000F609F9 /* SCHDictionaryOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = F82F913D145943B000F609F9 /* SCHDictionaryOperation.m */; };
+		F82F913F145943B000F609F9 /* SCHDictionaryOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = F82F913D145943B000F609F9 /* SCHDictionaryOperation.m */; };
 		F83468081404FF2E00D09F0E /* show-tools@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F83468061404FF2600D09F0E /* show-tools@2x.png */; };
 		F834680A1404FF2E00D09F0E /* show-tools.png in Resources */ = {isa = PBXBuildFile; fileRef = F83468071404FF2A00D09F0E /* show-tools.png */; };
 		F837018513BB2B7A009B280D /* SCHBookShelfTableViewCell_iPhone.xib in Resources */ = {isa = PBXBuildFile; fileRef = F837018413BB2B7A009B280D /* SCHBookShelfTableViewCell_iPhone.xib */; };
@@ -2193,6 +2201,8 @@
 		280C99C91397EA1900381C31 /* SCHStoryInteractionControllerDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCHStoryInteractionControllerDelegate.h; sourceTree = "<group>"; };
 		280D6A1613B1D6180032085D /* SCHStarView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCHStarView.h; sourceTree = "<group>"; };
 		280D6A1713B1D6180032085D /* SCHStarView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCHStarView.m; sourceTree = "<group>"; };
+		280DA9D0145AB3C300583695 /* SCHUnqueuedAudioPlayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHUnqueuedAudioPlayer.h; path = Shared/SCHUnqueuedAudioPlayer.h; sourceTree = "<group>"; };
+		280DA9D1145AB3C300583695 /* SCHUnqueuedAudioPlayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHUnqueuedAudioPlayer.m; path = Shared/SCHUnqueuedAudioPlayer.m; sourceTree = "<group>"; };
 		2811879013D9C490001522FE /* SCHRemoveDictionaryViewController~ipad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = "SCHRemoveDictionaryViewController~ipad.xib"; path = "iPad/SCHRemoveDictionaryViewController~ipad.xib"; sourceTree = "<group>"; };
 		2815718F13EFDDC30071B73C /* SCHStoryInteractionJigsaw.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCHStoryInteractionJigsaw.h; sourceTree = "<group>"; };
 		2815719013EFDDC30071B73C /* SCHStoryInteractionJigsaw.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCHStoryInteractionJigsaw.m; sourceTree = "<group>"; };
@@ -2478,6 +2488,8 @@
 		28D67DEA13D9B28700F715CD /* SCHRemoveDictionaryViewController~iphone.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "SCHRemoveDictionaryViewController~iphone.xib"; sourceTree = "<group>"; };
 		28D67DED13D9B30500F715CD /* SCHRemoveDictionaryViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHRemoveDictionaryViewController.h; path = Shared/SCHRemoveDictionaryViewController.h; sourceTree = "<group>"; };
 		28D67DEE13D9B30500F715CD /* SCHRemoveDictionaryViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHRemoveDictionaryViewController.m; path = Shared/SCHRemoveDictionaryViewController.m; sourceTree = "<group>"; };
+		28D6D5CE1451DD6E0094F144 /* rotation.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = rotation.png; sourceTree = "<group>"; };
+		28D6D5CF1451DD6E0094F144 /* rotation@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "rotation@2x.png"; sourceTree = "<group>"; };
 		28D6D635145579CC0094F144 /* old-lightning-bolt-3@2x~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "old-lightning-bolt-3@2x~iphone.png"; sourceTree = "<group>"; };
 		28D6D636145579CC0094F144 /* old-lightning-bolt-3~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "old-lightning-bolt-3~ipad.png"; sourceTree = "<group>"; };
 		28D6D637145579CC0094F144 /* old-lightning-bolt-3~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "old-lightning-bolt-3~iphone.png"; sourceTree = "<group>"; };
@@ -3505,6 +3517,8 @@
 		F82E3BBA13F9289A000B67A4 /* BookShelfErrorIcon~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "BookShelfErrorIcon~ipad.png"; path = "Resources/BookShelfErrorIcon~ipad.png"; sourceTree = "<group>"; };
 		F82E3BBB13F9289A000B67A4 /* BookSISampleTab~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "BookSISampleTab~ipad.png"; path = "Resources/BookSISampleTab~ipad.png"; sourceTree = "<group>"; };
 		F82E3BBC13F9289A000B67A4 /* BookSITab~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "BookSITab~ipad.png"; path = "Resources/BookSITab~ipad.png"; sourceTree = "<group>"; };
+		F82F913C145943B000F609F9 /* SCHDictionaryOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHDictionaryOperation.h; path = Shared/SCHDictionaryOperation.h; sourceTree = "<group>"; };
+		F82F913D145943B000F609F9 /* SCHDictionaryOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHDictionaryOperation.m; path = Shared/SCHDictionaryOperation.m; sourceTree = "<group>"; };
 		F83468061404FF2600D09F0E /* show-tools@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "show-tools@2x.png"; path = "Resources/show-tools@2x.png"; sourceTree = "<group>"; };
 		F83468071404FF2A00D09F0E /* show-tools.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "show-tools.png"; path = "Resources/show-tools.png"; sourceTree = "<group>"; };
 		F837018413BB2B7A009B280D /* SCHBookShelfTableViewCell_iPhone.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = SCHBookShelfTableViewCell_iPhone.xib; path = Shared/SCHBookShelfTableViewCell_iPhone.xib; sourceTree = "<group>"; };
@@ -4783,6 +4797,8 @@
 			children = (
 				286E21A313ABF8BD00CB4232 /* SCHQueuedAudioPlayer.h */,
 				286E21A413ABF8BD00CB4232 /* SCHQueuedAudioPlayer.m */,
+				280DA9D0145AB3C300583695 /* SCHUnqueuedAudioPlayer.h */,
+				280DA9D1145AB3C300583695 /* SCHUnqueuedAudioPlayer.m */,
 			);
 			name = Audio;
 			sourceTree = "<group>";
@@ -5702,6 +5718,8 @@
 				C9722BF91393AA80008605E8 /* thumbImage.png */,
 				C9261FBD13970220009FF459 /* notes-count.png */,
 				C9261FBE13970220009FF459 /* notes-count@2x.png */,
+				28D6D5CE1451DD6E0094F144 /* rotation.png */,
+				28D6D5CF1451DD6E0094F144 /* rotation@2x.png */,
 			);
 			name = UIAssets;
 			sourceTree = "<group>";
@@ -6208,6 +6226,8 @@
 				F8B55E06134B190B0028534A /* SCHDictionaryFileUnzipOperation.m */,
 				F8B55E36134B2A190028534A /* SCHDictionaryParseOperation.h */,
 				F8B55E37134B2A190028534A /* SCHDictionaryParseOperation.m */,
+				F82F913C145943B000F609F9 /* SCHDictionaryOperation.h */,
+				F82F913D145943B000F609F9 /* SCHDictionaryOperation.m */,
 			);
 			name = "Dictionary Operations";
 			sourceTree = "<group>";
@@ -7132,6 +7152,8 @@
 				C92797AC1410C75A0091B8B5 /* Interaction1_Relaxed.mp3 in Resources */,
 				528465F2144DB64D009DBADD /* SCHAccountValidationViewController~iphone.xib in Resources */,
 				528465F5144DB679009DBADD /* SCHAccountValidationViewController~ipad.xib in Resources */,
+				28D6D5D01451DD6E0094F144 /* rotation.png in Resources */,
+				28D6D5D21451DD6E0094F144 /* rotation@2x.png in Resources */,
 				28D6D638145579CC0094F144 /* old-lightning-bolt-3@2x~iphone.png in Resources */,
 				28D6D63A145579CC0094F144 /* old-lightning-bolt-3~ipad.png in Resources */,
 				28D6D63C145579CC0094F144 /* old-lightning-bolt-3~iphone.png in Resources */,
@@ -7809,6 +7831,8 @@
 				C92797AD1410C75A0091B8B5 /* Interaction1_Relaxed.mp3 in Resources */,
 				528465F3144DB64D009DBADD /* SCHAccountValidationViewController~iphone.xib in Resources */,
 				528465F6144DB679009DBADD /* SCHAccountValidationViewController~ipad.xib in Resources */,
+				28D6D5D11451DD6E0094F144 /* rotation.png in Resources */,
+				28D6D5D31451DD6E0094F144 /* rotation@2x.png in Resources */,
 				28D6D639145579CC0094F144 /* old-lightning-bolt-3@2x~iphone.png in Resources */,
 				28D6D63B145579CC0094F144 /* old-lightning-bolt-3~ipad.png in Resources */,
 				28D6D63D145579CC0094F144 /* old-lightning-bolt-3~iphone.png in Resources */,
@@ -8148,6 +8172,8 @@
 				2808E21E1456BDFD004EA40E /* QHTTPOperation.m in Sources */,
 				2808E2201456BDFD004EA40E /* QRunLoopOperation.m in Sources */,
 				281CC41714581D570049F736 /* SCHAppDictionaryManifestEntry.m in Sources */,
+				F82F913E145943B000F609F9 /* SCHDictionaryOperation.m in Sources */,
+				280DA9D2145AB3C300583695 /* SCHUnqueuedAudioPlayer.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -8520,6 +8546,8 @@
 				2808E21F1456BDFD004EA40E /* QHTTPOperation.m in Sources */,
 				2808E2211456BDFD004EA40E /* QRunLoopOperation.m in Sources */,
 				281CC41814581D570049F736 /* SCHAppDictionaryManifestEntry.m in Sources */,
+				F82F913F145943B000F609F9 /* SCHDictionaryOperation.m in Sources */,
+				280DA9D3145AB3C300583695 /* SCHUnqueuedAudioPlayer.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

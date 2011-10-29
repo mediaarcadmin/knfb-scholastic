@@ -12,6 +12,7 @@
 
 #import "SCHLibreAccessWebService.h"
 #import "SCHReadingStatsDetailItem.h"
+#import "BITAPIError.h"
 
 // Constants
 NSString * const SCHReadingStatsSyncComponentDidCompleteNotification = @"SCHReadingStatsSyncComponentDidCompleteNotification";
@@ -33,10 +34,7 @@ NSString * const SCHReadingStatsSyncComponentDidFailNotification = @"SCHReadingS
 		
         [fetchRequest setEntity:[NSEntityDescription entityForName:kSCHReadingStatsDetailItem inManagedObjectContext:self.managedObjectContext]];	
        	NSArray *readingStats = [self.managedObjectContext executeFetchRequest:fetchRequest error:&error];
-        if (readingStats == nil) {
-            NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
-            abort();            
-        } else if ([readingStats count] > 0) {
+        if ([readingStats count] > 0) {
             self.isSynchronizing = [self.libreAccessWebService saveReadingStatisticsDetailed:readingStats];
             if (self.isSynchronizing == NO) {
                 [[SCHAuthenticationManager sharedAuthenticationManager] authenticate];				
@@ -58,29 +56,41 @@ NSString * const SCHReadingStatsSyncComponentDidFailNotification = @"SCHReadingS
 	
 	if (![self.managedObjectContext BITemptyEntity:kSCHReadingStatsDetailItem error:&error]) {
 		NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
-		abort();
 	}		
 }
 
 - (void)method:(NSString *)method didCompleteWithResult:(NSDictionary *)result
 {
-    [self clear];
-    [[NSNotificationCenter defaultCenter] postNotificationName:SCHReadingStatsSyncComponentDidCompleteNotification 
-                                                        object:self];
-    [super method:method didCompleteWithResult:nil];				    
+    @try {
+        [self clear];
+        [[NSNotificationCenter defaultCenter] postNotificationName:SCHReadingStatsSyncComponentDidCompleteNotification 
+                                                            object:self];
+        [super method:method didCompleteWithResult:nil];				    
+    }
+    @catch (NSException *exception) {
+        [[NSNotificationCenter defaultCenter] postNotificationName:SCHReadingStatsSyncComponentDidFailNotification 
+                                                            object:self];
+        NSError *error = [NSError errorWithDomain:kBITAPIErrorDomain 
+                                             code:kBITAPIExceptionError 
+                                         userInfo:[NSDictionary dictionaryWithObject:[exception reason]
+                                                                              forKey:NSLocalizedDescriptionKey]];
+        [super method:method didFailWithError:error requestInfo:nil result:result];
+    }
 }
 
 - (void)method:(NSString *)method didFailWithError:(NSError *)error 
    requestInfo:(NSDictionary *)requestInfo
         result:(NSDictionary *)result
 {
+    NSLog(@"%@:didFailWithError\n%@", method, error);
+    
     // a valid error otherwise server error
-    if (result == nil) {
+    if ([error domain] != kBITAPIErrorDomain) {
         [[NSNotificationCenter defaultCenter] postNotificationName:SCHReadingStatsSyncComponentDidFailNotification 
                                                             object:self];
-        
         [super method:method didFailWithError:error requestInfo:requestInfo result:result];
     } else {
+        [self clear];        
         [[NSNotificationCenter defaultCenter] postNotificationName:SCHReadingStatsSyncComponentDidCompleteNotification object:self];			
         [super method:method didCompleteWithResult:nil];	
     }    

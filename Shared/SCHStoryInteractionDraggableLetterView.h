@@ -19,4 +19,6 @@
 // init with standard letter tile
 - (id)initWithLetter:(unichar)letter;
 
+- (void)setTileImage:(UIImage *)tileImage;
+
 @end

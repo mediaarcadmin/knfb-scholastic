@@ -19,4 +19,10 @@ NSString * const kSCHWordIndex = @"SCHWordIndex";
 @dynamic End;
 @dynamic LocationText;
 
+- (void)setInitialValues
+{
+    self.Start = [NSNumber numberWithInteger:0];
+    self.End = [NSNumber numberWithInteger:0];    
+}
+
 @end

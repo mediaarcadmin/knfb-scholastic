@@ -9,8 +9,12 @@
 #import <Foundation/Foundation.h>
 
 
-@interface SCHStretchableImageButton : UIButton {
-    
-}
+@interface SCHStretchableImageButton : UIButton
+
+// default value of 0 means the left cap is calculated from the image size
+@property (nonatomic, assign) NSInteger customLeftCap;
+
+// default value of 0 means the top cap is calculated from the image size
+@property (nonatomic, assign) NSInteger customTopCap;
 
 @end

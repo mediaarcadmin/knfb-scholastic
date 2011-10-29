@@ -12,6 +12,7 @@
 @interface SCHStoryInteractionControllerWhoSaidIt_iPhone : SCHStoryInteractionController {}
 
 @property (nonatomic, retain) IBOutlet UILabel *statementLabel;
+@property (nonatomic, retain) IBOutlet UIView *answerButtonContainerView;
 @property (nonatomic, retain) IBOutletCollection(UIButton) NSArray *answerButtons;
 
 @property (nonatomic, retain) IBOutlet UILabel *scoreLabel;

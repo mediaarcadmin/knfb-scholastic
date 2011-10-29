@@ -20,6 +20,8 @@ extern NSString * const kSCHLocationGraphics;
 @property (nonatomic, retain) NSNumber * Page;
 @property (nonatomic, retain) SCHNote * Note;
 
+- (void)setInitialValues;
+
 @end
 
 

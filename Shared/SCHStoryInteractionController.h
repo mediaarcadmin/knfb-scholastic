@@ -81,6 +81,9 @@ typedef enum
 
 @property (nonatomic, retain) UILabel *titleView;
 
+// the current interface orientation
+@property (nonatomic, assign) UIInterfaceOrientation interfaceOrientation;
+
 // setup the title text
 - (void)setupTitle;
 
@@ -119,12 +122,6 @@ typedef enum
 
 // play the audio for revealing an answer (About Me)
 - (void)playRevealAudio;
-
-// play an audio file from the XPS provider and invoke a completion block when the playback is complete
-- (void)playAudioAtPath:(NSString *)path completion:(void(^)(void))completion;
-
-// playing audio files from the app bundle
-- (void)playBundleAudioWithFilename:(NSString *)path completion:(void (^)(void))completion;
 
 // currently playing audio?
 - (BOOL)playingAudio;
@@ -187,7 +184,10 @@ typedef enum
 // YES (default) if a snapshot of the reading view should be shown as a background to this SI
 - (BOOL)shouldShowSnapshotOfReadingViewInBackground;
 
-// most story interactions are presented in landscape; override to return YES if the SI should be
+// return NO if the SI requires a specific device orientation
+- (BOOL)supportsAutoRotation;
+
+// if supportsAutoRotation returns YES, override this to return YES if the SI should be
 // presented in portrait orientation
 - (BOOL)shouldPresentInPortraitOrientation;
 

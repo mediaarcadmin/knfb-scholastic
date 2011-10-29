@@ -20,6 +20,7 @@
 #import "AppDelegate_Shared.h"
 #import "SCHAccountValidation.h"
 #import "SCHBookManager.h"
+#import "BITAPIError.h"
 
 #import "SCHNonDRMAuthenticationManager.h"
 
@@ -227,7 +228,7 @@ typedef struct AuthenticateWithUserNameParameters AuthenticateWithUserNameParame
     
     [appln addObject:@"ns"];            
     
-    return([NSURL URLWithString:[[NSString stringWithFormat:@"https://ebooks2.scholastic.com/wpt/auth?tk=%@&appln=%@&spsId=%@", 
+    return([NSURL URLWithString:[[NSString stringWithFormat:@"https://ebooks2uat.scholastic.com/wpt/auth?tk=%@&appln=%@&spsId=%@", 
                                   (pToken == nil ? self.accountValidation.pToken : pToken), 
                                   [appln componentsJoinedByString:@"|"], 
                                   [[NSUserDefaults standardUserDefaults] stringForKey:kSCHAuthenticationManagerUserKey]] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]]);
@@ -524,7 +525,7 @@ typedef struct AuthenticateWithUserNameParameters AuthenticateWithUserNameParame
     NSLog(@"AuthenticationManager:%@ %@", method, [error description]);
     self.waitingOnResponse = NO;
 
-    if (result != nil) {
+    if ([error domain] != kBITAPIErrorDomain) {
         if([method compare:kSCHLibreAccessWebServiceTokenExchange] == NSOrderedSame) {	
             NSNumber *deviceIsDeregistered = [result objectForKey:kSCHLibreAccessWebServiceDeviceIsDeregistered];        
             if ([deviceIsDeregistered isKindOfClass:[NSNumber class]] == YES &&

@@ -11,6 +11,7 @@
 #import "SCHStoryInteractionDraggableLetterView.h"
 #import "SCHStoryInteractionDraggableTargetView.h"
 #import "NSArray+ViewSorting.h"
+#import "SCHUnqueuedAudioPlayer.h"
 
 #define kLetterGap 2
 
@@ -48,6 +49,8 @@
 @implementation SCHStoryInteractionControllerTitleTwister
 
 @synthesize openingScreenTitleLabel;
+@synthesize mainInteractionContainerView;
+@synthesize resultsContainerView;
 @synthesize letterContainerView;
 @synthesize answerBuildTarget;
 @synthesize answerHeadingCounts;
@@ -63,6 +66,8 @@
 - (void)dealloc
 {
     [openingScreenTitleLabel release];
+    [mainInteractionContainerView release];
+    [resultsContainerView release];
     [letterContainerView release];
     [answerBuildTarget release];
     [answerHeadingCounts release];
@@ -116,6 +121,25 @@
     }
 }
 
+- (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
+{
+    [super willRotateToInterfaceOrientation:toInterfaceOrientation duration:duration];
+
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+        return;
+    }
+
+    // set the size and position in the current frame geometry such that the autoresizing
+    // will leave the view in the right place after rotation
+    [UIView animateWithDuration:duration
+                     animations:^{
+                         CGSize resultsSize = UIInterfaceOrientationIsPortrait(toInterfaceOrientation) ? CGSizeMake(300, 150) : CGSizeMake(140, 230);
+                         self.resultsContainerView.bounds = (CGRect) { CGPointZero, resultsSize };
+                         self.resultsContainerView.center = CGPointMake(CGRectGetMaxX(self.contentsView.bounds)-5-resultsSize.width/2,
+                                                                        CGRectGetMaxY(self.contentsView.bounds)-10-resultsSize.height/2);
+                     }];
+}
+
 - (void)setupDraggableTilesForTitleTwister:(SCHStoryInteractionTitleTwister *)titleTwister
 {
     [self.letterViews makeObjectsPerformSelector:@selector(removeFromSuperview)];
@@ -141,7 +165,7 @@
                               wordGap:wordGap
                       allowSplitWords:YES];
     }
-        
+    
     NSInteger height = [letterRows count]*self.letterTileSize.height + ([letterRows count]-1)*kLetterGap;
     NSInteger y = (CGRectGetHeight(self.letterContainerView.bounds)-height)/2 + self.letterTileSize.height/2;
     for (NSString *letterRow in letterRows) {
@@ -336,7 +360,7 @@
     
     SCHStoryInteractionTitleTwister *titleTwister = (SCHStoryInteractionTitleTwister *)self.storyInteraction;
     if (length < 3 || ![titleTwister.words containsObject:word]) {
-        [self playBundleAudioWithFilename:[titleTwister storyInteractionWrongAnswerSoundFilename] completion:nil];
+        [[SCHUnqueuedAudioPlayer sharedAudioPlayer] playAudioFromMainBundle:[titleTwister storyInteractionWrongAnswerSoundFilename]];
         return;
     }
 
@@ -352,11 +376,11 @@
     
     NSMutableArray *answers = [self.answersByLength objectForKey:answerKey];
     if ([answers containsObject:word]) {
-        [self playBundleAudioWithFilename:[titleTwister storyInteractionCorrectAnswerSoundFilename] completion:nil];
+        [[SCHUnqueuedAudioPlayer sharedAudioPlayer] playAudioFromMainBundle:[titleTwister storyInteractionCorrectAnswerSoundFilename]];
         return;
     }
 
-    [self playBundleAudioWithFilename:[titleTwister storyInteractionCorrectAnswerSoundFilename] completion:nil];
+    [[SCHUnqueuedAudioPlayer sharedAudioPlayer] playAudioFromMainBundle:[titleTwister storyInteractionCorrectAnswerSoundFilename]];
     [answers addObject:word];
     [answerTable reloadData];
     [self updateAnswerTableHeadings];
@@ -381,19 +405,14 @@
     if ([self.builtWord containsObject:draggableView]) {
         [self.builtWord removeObject:draggableView];
         [draggableView moveToHomePosition];
-        [self repositionLettersInBuiltWord];
-        [self playBundleAudioWithFilename:@"sfx_dropOK.mp3" completion:nil];
+    } else if (![self buildTargetIsFull]) {
+        self.gapPosition = NSNotFound;
+        [self.builtWord addObject:draggableView];
+    } else {
         return;
     }
-
-    if ([self buildTargetIsFull]) {
-        return;
-    }
-
-    self.gapPosition = NSNotFound;
-    [self.builtWord addObject:draggableView];
     [self repositionLettersInBuiltWord];
-    [self playBundleAudioWithFilename:@"sfx_dropOK.mp3" completion:nil];
+    [[SCHUnqueuedAudioPlayer sharedAudioPlayer] playAudioFromMainBundle:@"sfx_dropOK.mp3"];
 }
 
 - (void)draggableViewDidStartDrag:(SCHStoryInteractionDraggableView *)draggableView
@@ -404,7 +423,7 @@
         self.gapPosition = letterPosition;
     }
         
-    [self playBundleAudioWithFilename:@"sfx_pickup.mp3" completion:nil];
+    [[SCHUnqueuedAudioPlayer sharedAudioPlayer] playAudioFromMainBundle:@"sfx_pickup.mp3"];
 }
 
 - (BOOL)draggableView:(SCHStoryInteractionDraggableView *)draggableView shouldSnapFromPosition:(CGPoint)position toPosition:(CGPoint *)snapPosition
@@ -426,7 +445,7 @@
 {
     NSInteger letterPosition = [self letterPositionForPointInContentsView:position];
     if (letterPosition == NSNotFound || [self buildTargetIsFull]) {
-        [self playBundleAudioWithFilename:@"sfx_dropNo.mp3" completion:nil];
+        [[SCHUnqueuedAudioPlayer sharedAudioPlayer] playAudioFromMainBundle:@"sfx_dropNo.mp3"];
         [UIView animateWithDuration:0.25f 
                               delay:0
                             options:UIViewAnimationOptionAllowUserInteraction
@@ -435,7 +454,7 @@
                          }
                          completion:nil];
     } else {
-        [self playBundleAudioWithFilename:@"sfx_dropOK.mp3" completion:nil];
+        [self enqueueAudioWithPath:@"sfx_dropOK.mp3" fromBundle:YES];
         // allow for the fact that the gap position isn't really in the array
         if (letterPosition > self.gapPosition) {
             letterPosition--;
@@ -459,14 +478,22 @@
     return MAX(0, MIN(letterPosition, [self.builtWord count]));
 }
 
+- (NSInteger)leftmostLetterPosition
+{
+    NSInteger numberOfPositions = (CGRectGetWidth(self.answerBuildTarget.bounds)-kLetterGap) / (self.letterTileSize.width+kLetterGap);
+    return (CGRectGetWidth(self.answerBuildTarget.bounds) - numberOfPositions*(self.letterTileSize.width+kLetterGap))/2;
+}
+
 - (NSInteger)letterPositionForPointInTarget:(CGPoint)point
 {
-    return (point.x - kLetterGap) / (self.letterTileSize.width + kLetterGap);
+    NSInteger leftOffset = [self leftmostLetterPosition];
+    return (point.x - leftOffset) / (self.letterTileSize.width + kLetterGap);
 }
 
 - (CGPoint)pointInTargetForLetterPosition:(NSInteger)letterPosition
 {
-    return CGPointMake(kLetterGap + self.letterTileSize.width/2 + (self.letterTileSize.width + kLetterGap) * letterPosition,
+    NSInteger leftOffset = [self leftmostLetterPosition];
+    return CGPointMake(leftOffset + self.letterTileSize.width/2 + (self.letterTileSize.width + kLetterGap) * letterPosition,
                        CGRectGetMidY(self.answerBuildTarget.bounds));
 }
 

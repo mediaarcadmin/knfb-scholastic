@@ -13,3 +13,4 @@ extern NSString * const kBITAPIErrorDomain;
 // Codes Constants
 extern NSInteger const kBITAPIGeneralError;
 extern NSInteger const kBITAPIFaultError;
+extern NSInteger const kBITAPIExceptionError;

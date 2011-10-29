@@ -15,7 +15,9 @@
 @interface SCHStoryInteractionControllerTitleTwister : SCHStoryInteractionController <UITableViewDataSource, SCHStoryInteractionDraggableViewDelegate> {}
 
 @property (nonatomic, retain) IBOutlet UILabel *openingScreenTitleLabel;
+@property (nonatomic, retain) IBOutlet UIView *mainInteractionContainerView;
 @property (nonatomic, retain) IBOutlet UIView *letterContainerView;
+@property (nonatomic, retain) IBOutlet UIView *resultsContainerView;
 @property (nonatomic, retain) IBOutlet SCHStoryInteractionDraggableTargetView *answerBuildTarget;
 @property (nonatomic, retain) IBOutletCollection(UILabel) NSArray *answerHeadingCounts;
 @property (nonatomic, retain) IBOutletCollection(UITableView) NSArray *answerTables;

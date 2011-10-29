@@ -116,10 +116,13 @@
 
 - (void)playWinSequenceAndClose
 {
-    [self playAudioAtPath:[self audioPathForYouFoundThemAll]
-               completion:^{
-                   [self removeFromHostView];
-               }];
+    [self enqueueAudioWithPath:[self audioPathForYouFoundThemAll]
+                    fromBundle:NO
+                    startDelay:0
+        synchronizedStartBlock:nil
+          synchronizedEndBlock:^{
+              [self removeFromHostView];
+          }];
 }
 
 #pragma mark - draggable view delegate
@@ -194,7 +197,10 @@
         [draggableView setLockedInPlace:YES];
         [draggableView setUserInteractionEnabled:NO];
         [self.occupiedTargets addObject:onTarget];
-        
+
+        // get the current item before any state changes, as this may advance currentQuestion
+        SCHStoryInteractionWordMatchQuestionItem *item = [[[self currentQuestion] items] objectAtIndex:onTarget.matchTag];
+
         BOOL allCorrect = (self.numberOfCorrectItems == kNumberOfItems);
         if (allCorrect) {
             self.controllerState = SCHStoryInteractionControllerStateInteractionFinishedSuccessfully;
@@ -202,7 +208,6 @@
         
         NSString *sfxFile = allCorrect ? @"sfx_win_y.mp3" : [self.storyInteraction storyInteractionCorrectAnswerSoundFilename];
 
-        SCHStoryInteractionWordMatchQuestionItem *item = [[[self currentQuestion] items] objectAtIndex:onTarget.matchTag];
         [self enqueueAudioWithPath:sfxFile
                         fromBundle:YES];
         [self enqueueAudioWithPath:[item audioPath]

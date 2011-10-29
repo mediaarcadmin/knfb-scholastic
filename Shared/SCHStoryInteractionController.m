@@ -21,7 +21,6 @@
 
 @interface SCHStoryInteractionController ()
 
-@property (nonatomic, assign) UIInterfaceOrientation interfaceOrientation;
 @property (nonatomic, retain) NSArray *nibObjects;
 @property (nonatomic, assign) NSInteger currentScreenIndex;
 @property (nonatomic, retain) UIButton *closeButton;
@@ -205,6 +204,8 @@ static Class controllerClassForStoryInteraction(SCHStoryInteraction *storyIntera
 
 - (void)presentInHostView:(UIView *)hostView withInterfaceOrientation:(UIInterfaceOrientation)aInterfaceOrientation
 {
+    const BOOL iPad = (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad);
+
     // dim the host view
     if (![self currentFrameStyleOverlaysContents] && self.shadeView == nil) {
         UIView *shade = [[UIView alloc] initWithFrame:hostView.bounds];
@@ -226,23 +227,37 @@ static Class controllerClassForStoryInteraction(SCHStoryInteraction *storyIntera
         // to the underlying view; this effectively makes the story interaction modal
         UIView *container = [[UIView alloc] initWithFrame:hostView.bounds];
         container.userInteractionEnabled = YES;
-        container.autoresizingMask = (UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin
+        container.autoresizingMask = (UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight
+                                      | UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin
                                       | UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin);
         
         UIImageView *background = [[UIImageView alloc] initWithFrame:CGRectZero];
         background.contentMode = UIViewContentModeScaleToFill;
-        background.autoresizingMask = (UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin |
-                                       UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin);
         [container addSubview:background];
+        
+        if (iPad) {
+            background.autoresizingMask = (UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin
+                                           | UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin);
+        } else {
+            background.autoresizingMask = (UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight
+                                           | UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin
+                                           | UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin);
+        }
         
         if ([self frameStyleForViewAtIndex:self.currentScreenIndex] != SCHStoryInteractionNoTitle) {
             UILabel *title = [[UILabel alloc] initWithFrame:CGRectZero];
+            title.autoresizingMask = UIViewAutoresizingFlexibleWidth;
             title.backgroundColor = [UIColor clearColor];            
             self.titleView = title;
             [self setupTitle];
             [background addSubview:title];
             [title release];   
         }
+
+#ifdef debug_layout
+        container.backgroundColor = [UIColor colorWithRed:1 green:1 blue:0 alpha:0.5];
+        background.backgroundColor = [UIColor colorWithRed:0 green:1 blue:1 alpha:0.5];
+#endif
         
         self.containerView = container;
         self.backgroundView = background;
@@ -261,7 +276,6 @@ static Class controllerClassForStoryInteraction(SCHStoryInteraction *storyIntera
             [self.readAloudButton setImage:readAloudImage forState:UIControlStateNormal];
             [self.readAloudButton setImage:readAloudImage forState:UIControlStateDisabled];
             [self.readAloudButton addTarget:self action:@selector(playAudioButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
-            [self.backgroundView addSubview:self.readAloudButton];
         }
     } else {
         [self.readAloudButton removeFromSuperview];
@@ -276,7 +290,6 @@ static Class controllerClassForStoryInteraction(SCHStoryInteraction *storyIntera
             self.closeButton.autoresizingMask = 0;
             [self.closeButton setImage:closeImage forState:UIControlStateNormal];
             [self.closeButton addTarget:self action:@selector(closeButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
-            [self.backgroundView addSubview:self.closeButton];
         }
     } else {
         [self.closeButton removeFromSuperview];
@@ -287,10 +300,6 @@ static Class controllerClassForStoryInteraction(SCHStoryInteraction *storyIntera
 
     // put multiple views at the top-level in the nib for multi-screen interactions
     UIView *newContentsView = [self.nibObjects objectAtIndex:self.currentScreenIndex];
-    CGSize maxContentsSize = [self maximumContentsSize];
-    if (CGRectGetWidth(newContentsView.bounds) > maxContentsSize.height || CGRectGetHeight(newContentsView.bounds) > maxContentsSize.width) {
-        NSLog(@"contentView %d is too large: %@", self.currentScreenIndex, NSStringFromCGRect(newContentsView.bounds));
-    }
     
     dispatch_block_t setupViews = ^{
         self.backgroundView.image = [self backgroundImage];
@@ -321,19 +330,23 @@ static Class controllerClassForStoryInteraction(SCHStoryInteraction *storyIntera
             [oldContentsView removeFromSuperview];
         }
     } else {
-        setupViews();
         if ([self currentFrameStyleOverlaysContents]) {
             [self.containerView addSubview:newContentsView];
+            [self.containerView addSubview:self.readAloudButton];
+            [self.containerView addSubview:self.closeButton];
             [self.backgroundView setUserInteractionEnabled:NO];
         } else {
             [self.backgroundView addSubview:newContentsView];
+            [self.backgroundView addSubview:self.readAloudButton];
+            [self.backgroundView addSubview:self.closeButton];
             [self.backgroundView setUserInteractionEnabled:YES];
         }
+        setupViews();
     }
     
     [self.containerView bringSubviewToFront:self.backgroundView];
-    [self.backgroundView bringSubviewToFront:self.closeButton];
-    [self.backgroundView bringSubviewToFront:self.readAloudButton];
+    [self.closeButton.superview bringSubviewToFront:self.closeButton];
+    [self.readAloudButton.superview bringSubviewToFront:self.readAloudButton];
     
     self.contentsView = newContentsView;
     
@@ -353,6 +366,10 @@ static Class controllerClassForStoryInteraction(SCHStoryInteraction *storyIntera
     } else {
         self.controllerState = SCHStoryInteractionControllerStateInteractionInProgress;
     }
+    
+    // force a relayout for the current orientation
+    [self willRotateToInterfaceOrientation:aInterfaceOrientation duration:0];
+    [self didRotateFromInterfaceOrientation:self.interfaceOrientation];
 }
 
 - (void)setupTitle
@@ -437,25 +454,15 @@ static Class controllerClassForStoryInteraction(SCHStoryInteraction *storyIntera
         closePosition = CGPointMake(10, 7);
         readAloudPosition = CGPointMake(-13, 15);
     }
-    
-#if STORY_INTERACTIONS_SUPPORT_AUTO_ROTATION
-    const BOOL shouldRotate = NO;
-#else
-    const BOOL shouldRotate = ([self shouldPresentInPortraitOrientation]
-                               ? UIInterfaceOrientationIsLandscape(self.interfaceOrientation)
-                               : UIInterfaceOrientationIsPortrait(self.interfaceOrientation));
-#endif
-    
+
     CGRect superviewBounds = container.superview.bounds;
-    if (shouldRotate) {
-        container.transform = CGAffineTransformMakeRotation(-M_PI/2);
-        container.bounds = CGRectIntegral(CGRectMake(0, 0, CGRectGetHeight(superviewBounds), CGRectGetWidth(superviewBounds)));
-    } else {
-        container.transform = CGAffineTransformIdentity;
-        container.bounds = CGRectIntegral(superviewBounds);
-    }
+    container.bounds = CGRectIntegral(superviewBounds);
     container.center = CGPointMake(floor(CGRectGetMidX(superviewBounds)), floor(CGRectGetMidY(superviewBounds)));
     
+    if (!iPad) {
+        contentsSize = [self maximumContentsSize];
+    }
+
     CGFloat backgroundWidth, backgroundHeight;
     switch (currentFrameStyle) {
         case SCHStoryInteractionFullScreen: {
@@ -526,11 +533,14 @@ static Class controllerClassForStoryInteraction(SCHStoryInteraction *storyIntera
         readAloudPosition.y = CGRectGetMaxY(background.bounds) - readAloudPosition.y - CGRectGetHeight(readAloud.bounds);
     }
     
+    CGPoint closeCenterInBackgroundView = CGPointMake(floorf(closePosition.x+closeImage.size.width/2),
+                                                      floorf(closePosition.y+closeImage.size.height/2));
+    close.center = [self.backgroundView convertPoint:closeCenterInBackgroundView toView:close.superview];
     close.bounds = (CGRect){ CGPointZero, closeImage.size };
-    close.center = CGPointMake(floorf(closePosition.x+closeImage.size.width/2), floorf(closePosition.y+closeImage.size.height/2));
     
-    readAloud.center = CGPointMake(floorf(backgroundWidth+readAloudPosition.x-CGRectGetMidX(readAloud.bounds)),
-                                   floorf(readAloudPosition.y+CGRectGetMidX(readAloud.bounds)));
+    CGPoint readAloudCenterInBackgroundView = CGPointMake(floorf(backgroundWidth+readAloudPosition.x-CGRectGetMidX(readAloud.bounds)),
+                                                          floorf(readAloudPosition.y+CGRectGetMidX(readAloud.bounds)));
+    readAloud.center = [self.backgroundView convertPoint:readAloudCenterInBackgroundView toView:readAloudButton.superview];
 }
 
 - (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
@@ -540,9 +550,6 @@ static Class controllerClassForStoryInteraction(SCHStoryInteraction *storyIntera
 
 - (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation
 {
-    [UIView animateWithDuration:0.25 animations:^{
-        [self setupGeometryForContentsView:self.contentsView contentsSize:self.contentsView.bounds.size];
-    }];
 }
 
 - (CGSize)maximumContentsSize
@@ -553,11 +560,11 @@ static Class controllerClassForStoryInteraction(SCHStoryInteraction *storyIntera
     }
     switch (currentFrameStyle) {
         case SCHStoryInteractionNoTitle:
-            return CGSizeMake(315.0, 470.0);
+            return (UIInterfaceOrientationIsPortrait(self.interfaceOrientation) ? CGSizeMake(315.0, 470.0) : CGSizeMake(470.0, 315.0));
         case SCHStoryInteractionTitle:
         case SCHStoryInteractionTransparentTitle:                
         default:
-            return CGSizeMake(250.0, 470.0);
+            return (UIInterfaceOrientationIsPortrait(self.interfaceOrientation) ? CGSizeMake(310.0, 410.0) : CGSizeMake(470.0, 250.0));
     }
 }
 
@@ -684,18 +691,6 @@ static Class controllerClassForStoryInteraction(SCHStoryInteraction *storyIntera
 {
     [self cancelQueuedAudioExecutingSynchronizedBlocksImmediately];
     [self enqueueAudioWithPath:[self.storyInteraction storyInteractionRevealSoundFilename] fromBundle:YES];
-}
-
-- (void)playAudioAtPath:(NSString *)path completion:(void (^)(void))completion
-{
-    [self.audioPlayer cancelPlaybackExecutingSynchronizedBlocksImmediately:NO];
-    [self enqueueAudioWithPath:path fromBundle:NO startDelay:0 synchronizedStartBlock:nil synchronizedEndBlock:completion];
-}
-
-- (void)playBundleAudioWithFilename:(NSString *)filename completion:(void (^)(void))completion
-{
-    [self.audioPlayer cancelPlaybackExecutingSynchronizedBlocksImmediately:NO];
-    [self enqueueAudioWithPath:filename fromBundle:YES startDelay:0 synchronizedStartBlock:nil synchronizedEndBlock:completion];
 }
 
 - (void)enqueueAudioWithPath:(NSString *)path
@@ -836,8 +831,14 @@ static Class controllerClassForStoryInteraction(SCHStoryInteraction *storyIntera
     return YES;
 }
 
+- (BOOL)supportsAutoRotation
+{
+    return YES;
+}
+
 - (BOOL)shouldPresentInPortraitOrientation
 {
+    // only meaningful if supportsAutoRotation is NO
     return NO;
 }
 
