@@ -48,8 +48,7 @@ typedef enum {
     kSCHStartingViewControllerProfileSyncStateWaitingForLoginToComplete,
     kSCHStartingViewControllerProfileSyncStateWaitingForBookshelves,
     kSCHStartingViewControllerProfileSyncStateWaitingForPassword,
-    kSCHStartingViewControllerProfileSyncStateWaitingForWebParentToolsToComplete,
-    kSCHStartingViewControllerProfileSyncStateSamplesSync
+    kSCHStartingViewControllerProfileSyncStateWaitingForWebParentToolsToComplete
 } SCHStartingViewControllerProfileSyncState;
 
 @interface SCHStartingViewController ()
@@ -286,13 +285,14 @@ typedef enum {
     [appDelegate.coreDataHelper setupSampleStore];            
     [appDelegate.coreDataHelper setStoreType:SCHCoreDataHelperSampleStore];
     
-    self.profileSyncState = kSCHStartingViewControllerProfileSyncStateSamplesSync;
-
     NSString *localManifest = [[NSBundle mainBundle] pathForResource:kSCHSampleBooksLocalManifestFile ofType:nil];
     NSURL *localManifestURL = localManifest ? [NSURL fileURLWithPath:localManifest] : nil;
     
     [[SCHSampleBooksImporter sharedImporter] importSampleBooksFromRemoteManifest:[NSURL URLWithString:kSCHSampleBooksRemoteManifestURL] 
                                                                    localManifest:localManifestURL
+                                                                    successBlock:^{
+                                                                        [self checkDictionaryDownloadForSamples];
+                                                                    }
                                                                     failureBlock:^(NSString * failureReason){
         LambdaAlert *alert = [[LambdaAlert alloc]
                               initWithTitle:NSLocalizedString(@"Unable To Retrieve all Samples", @"")
@@ -658,9 +658,6 @@ typedef enum {
             break;
         case kSCHStartingViewControllerProfileSyncStateWaitingForBookshelves:
             [self recheckBookshelvesForProfile];
-            break;
-        case kSCHStartingViewControllerProfileSyncStateSamplesSync:
-            [self checkDictionaryDownloadForSamples];
             break;
         default:
             break;

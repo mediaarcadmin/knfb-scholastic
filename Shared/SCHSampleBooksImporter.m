@@ -31,6 +31,7 @@ typedef enum {
 @property (nonatomic, retain) Reachability *reachabilityNotifier;
 @property (nonatomic, copy) NSURL *remoteManifestURL;
 @property (nonatomic, copy) NSURL *localManifestURL;
+@property (nonatomic, copy) SCHSampleBooksProcessingSuccessBlock successBlock;
 @property (nonatomic, copy) SCHSampleBooksProcessingFailureBlock failureBlock;
 @property (nonatomic, retain) NSMutableArray *sampleEntries;
 
@@ -42,6 +43,7 @@ typedef enum {
 - (void)startRemote;
 - (void)reset;
 - (void)populateSampleStore;
+- (void)perfomSuccessBlockOnMainThread;
 - (void)perfomFailureBlockOnMainThreadWithReason:(NSString *)failureReason;
 + (BOOL)stateIsReadyToBegin:(SCHSampleBooksProcessingState)state;
 
@@ -55,6 +57,7 @@ typedef enum {
 @synthesize reachabilityNotifier;
 @synthesize remoteManifestURL;
 @synthesize localManifestURL;
+@synthesize successBlock;
 @synthesize failureBlock;
 @synthesize sampleEntries;
 
@@ -80,6 +83,7 @@ typedef enum {
     
     [remoteManifestURL release], remoteManifestURL = nil;
     [localManifestURL release], localManifestURL = nil;
+    [successBlock release], successBlock = nil;
     [failureBlock release], failureBlock = nil;
     [sampleEntries release], sampleEntries = nil;
 
@@ -111,20 +115,33 @@ typedef enum {
 	return self;
 }
 
-- (void)importSampleBooksFromRemoteManifest:(NSURL *)remote localManifest:(NSURL *)local failureBlock:(SCHSampleBooksProcessingFailureBlock)aFailureBlock;
+- (void)importSampleBooksFromRemoteManifest:(NSURL *)remote 
+                              localManifest:(NSURL *)local 
+                               successBlock:(SCHSampleBooksProcessingSuccessBlock)aSuccessBlock
+                               failureBlock:(SCHSampleBooksProcessingFailureBlock)aFailureBlock 
 {
     [self cancel];
     
     self.remoteManifestURL = remote;
     self.localManifestURL = local;
+    self.successBlock = aSuccessBlock;
     self.failureBlock = aFailureBlock;
     self.sampleEntries = [NSMutableArray array];
     
     if (self.localManifestURL) {
         [self startLocal];
     } else if (self.remoteManifestURL) {
-        [self checkRemoteState];
-    }    
+        self.reachabilityNotifier = [Reachability reachabilityForInternetConnection];
+        
+        if ([self isConnected] && [SCHSampleBooksImporter stateIsReadyToBegin:self.processingState]) {
+            [self startRemote];
+        } else {
+            [self perfomFailureBlockOnMainThreadWithReason:NSLocalizedString(@"You must be connected to the internet to retrieve the sample eBooks", @"")];
+        }
+        
+    } else {
+        [self perfomFailureBlockOnMainThreadWithReason:NSLocalizedString(@"No sample eBooks were found", @"")];
+    }
 }
 
 - (void)checkRemoteState
@@ -214,11 +231,25 @@ typedef enum {
                           
 - (void)populateSampleStore {
     if ([self.sampleEntries count]) {
-        if (![[SCHSyncManager sharedSyncManager] populateSampleStoreFromManifestEntries:self.sampleEntries]) {
+        if ([[SCHSyncManager sharedSyncManager] populateSampleStoreFromManifestEntries:self.sampleEntries]) {
+            [self perfomSuccessBlockOnMainThread];
+        } else {
             [self importFailedWithReason:NSLocalizedString(@"Unable to populate the store with the sample eBooks", @"")];
         }
     } else {
         [self importFailedWithReason:NSLocalizedString(@"No sample eBooks were found", @"")];
+    }
+}
+
+- (void)perfomSuccessBlockOnMainThread
+{    
+    if (self.successBlock != nil) {
+        SCHSampleBooksProcessingSuccessBlock handler = Block_copy(self.successBlock);
+        self.successBlock = nil;
+        dispatch_async(dispatch_get_main_queue(), ^{
+            handler();
+        });
+        Block_release(handler);
     }
 }
 
@@ -238,8 +269,16 @@ typedef enum {
 
 - (void)importFailedWithReason:(NSString *)reason
 {
-    [self cancel];
-    [self perfomFailureBlockOnMainThreadWithReason:reason];
+    [self.processingQueue cancelAllOperations];
+    
+    if ([self.sampleEntries count]) {
+        // We have some samples, we might as well use them
+        [self populateSampleStore];
+    } else {
+        [self perfomFailureBlockOnMainThreadWithReason:reason];
+    }
+    
+    [self reset];
 }
 
 - (void)enterBackground:(NSNotification *)note

@@ -70,14 +70,20 @@
     if ([state count] > 0) {
         ret = [state objectAtIndex:0];
     } else {
-        [self createAppStateIfNeeded];
+        ret = [self createAppStateIfNeeded];
+    }
+    
+    if (!ret) {
+        NSLog(@"WARNING!!! App state is nil. This will lead to unexpected behaviour.");
     }
     
     return(ret);    
 }
 
-- (void)createAppStateIfNeeded
+- (SCHAppState *)createAppStateIfNeeded
 {
+    SCHAppState *ret = nil;
+    
     NSError *error = nil;
     
     NSEntityDescription *entityDescription = [NSEntityDescription 
@@ -89,14 +95,18 @@
     NSArray *state = [self.managedObjectContext executeFetchRequest:fetchRequest error:nil];	
     
     if ([state count] < 1) {
-        [NSEntityDescription insertNewObjectForEntityForName:kSCHAppState 
+        ret = [NSEntityDescription insertNewObjectForEntityForName:kSCHAppState 
                                       inManagedObjectContext:self.managedObjectContext];
         
         if ([self.managedObjectContext save:&error] == NO) {
             NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
             abort();
         }     
+    } else {
+        ret = [state objectAtIndex:0];
     }
+    
+    return ret;
 }
 
 - (BOOL)canSync

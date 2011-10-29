@@ -11,6 +11,7 @@
 extern NSString * const kSCHSampleBooksRemoteManifestURL;
 extern NSString * const kSCHSampleBooksLocalManifestFile;
 
+typedef void (^SCHSampleBooksProcessingSuccessBlock)(void);
 typedef void (^SCHSampleBooksProcessingFailureBlock)(NSString * failureReason);
 
 @protocol SCHSampleBooksImporterDelegate <NSObject>
@@ -23,7 +24,10 @@ typedef void (^SCHSampleBooksProcessingFailureBlock)(NSString * failureReason);
     
 }
 
-- (void)importSampleBooksFromRemoteManifest:(NSURL *)remote localManifest:(NSURL *)local failureBlock:(SCHSampleBooksProcessingFailureBlock)failureBlock;
+- (void)importSampleBooksFromRemoteManifest:(NSURL *)remote 
+                              localManifest:(NSURL *)local 
+                               successBlock:(SCHSampleBooksProcessingSuccessBlock)successBlock
+                               failureBlock:(SCHSampleBooksProcessingFailureBlock)failureBlock;
 - (void)cancel;
 
 + (SCHSampleBooksImporter *)sharedImporter;
