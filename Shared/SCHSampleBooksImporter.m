@@ -11,6 +11,7 @@
 #import "SCHCoreDataHelper.h"
 #import "SCHSampleBooksManifestOperation.h"
 #import "SCHSyncManager.h"
+#import "LambdaAlert.h"
 
 NSString * const kSCHSampleBooksRemoteManifestURL = @"http://bits.blioreader.com/partners/Scholastic/SampleBookshelf/SampleBookshelfManifest_v2.xml";
 NSString * const kSCHSampleBooksLocalManifestFile = @"LocalSamplesManifest.xml";
@@ -34,6 +35,7 @@ typedef enum {
 @property (nonatomic, copy) SCHSampleBooksProcessingSuccessBlock successBlock;
 @property (nonatomic, copy) SCHSampleBooksProcessingFailureBlock failureBlock;
 @property (nonatomic, retain) NSMutableArray *sampleEntries;
+@property (nonatomic, retain) LambdaAlert *remoteSamplesAlert;
 
 - (BOOL)isConnected;
 - (void)enterBackground:(NSNotification *)note;
@@ -60,6 +62,7 @@ typedef enum {
 @synthesize successBlock;
 @synthesize failureBlock;
 @synthesize sampleEntries;
+@synthesize remoteSamplesAlert;
 
 - (void)dealloc
 {
@@ -86,6 +89,7 @@ typedef enum {
     [successBlock release], successBlock = nil;
     [failureBlock release], failureBlock = nil;
     [sampleEntries release], sampleEntries = nil;
+    [remoteSamplesAlert release], remoteSamplesAlert = nil;
 
     [super dealloc];
 }
@@ -136,7 +140,7 @@ typedef enum {
         if ([self isConnected] && [SCHSampleBooksImporter stateIsReadyToBegin:self.processingState]) {
             [self startRemote];
         } else {
-            [self perfomFailureBlockOnMainThreadWithReason:NSLocalizedString(@"You must be connected to the internet to retrieve the sample eBooks", @"")];
+            [self perfomFailureBlockOnMainThreadWithReason:NSLocalizedString(@"You must be connected to the internet", @"")];
         }
         
     } else {
@@ -208,6 +212,12 @@ typedef enum {
 
 - (void)startRemote
 {    
+    self.remoteSamplesAlert = [[[LambdaAlert alloc]
+                       initWithTitle:NSLocalizedString(@"Updating Sample eBooks", @"")
+                       message:@"\n"] autorelease];
+    [self.remoteSamplesAlert setSpinnerHidden:NO];
+    [self.remoteSamplesAlert show];
+    
     SCHSampleBooksManifestOperation *manifestOp = [[SCHSampleBooksManifestOperation alloc] init];
     manifestOp.manifestURL = self.remoteManifestURL;
     manifestOp.processingDelegate = self;
@@ -243,6 +253,9 @@ typedef enum {
 
 - (void)perfomSuccessBlockOnMainThread
 {    
+    [self.remoteSamplesAlert dismissAnimated:NO];
+    self.remoteSamplesAlert = nil;
+    
     if (self.successBlock != nil) {
         SCHSampleBooksProcessingSuccessBlock handler = Block_copy(self.successBlock);
         self.successBlock = nil;
@@ -255,6 +268,9 @@ typedef enum {
 
 - (void)perfomFailureBlockOnMainThreadWithReason:(NSString *)failureReason
 {
+    [self.remoteSamplesAlert dismissAnimated:NO];
+    self.remoteSamplesAlert = nil;
+    
     self.processingState = kSCHSampleBooksProcessingStateError;
 
     if (self.failureBlock != nil) {

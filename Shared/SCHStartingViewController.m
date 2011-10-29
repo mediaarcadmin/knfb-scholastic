@@ -295,8 +295,8 @@ typedef enum {
                                                                     }
                                                                     failureBlock:^(NSString * failureReason){
         LambdaAlert *alert = [[LambdaAlert alloc]
-                              initWithTitle:NSLocalizedString(@"Unable To Retrieve all Samples", @"")
-                              message:[NSString stringWithFormat:NSLocalizedString(@"There was a problem whilst checking for the sample eBooks. %@. Please try again.", @""), failureReason]];
+                              initWithTitle:NSLocalizedString(@"Unable To Update Sample eBooks", @"")
+                              message:[NSString stringWithFormat:NSLocalizedString(@"There was a problem whilst updating the sample eBooks. %@. Please try again.", @""), failureReason]];
         [alert addButtonWithTitle:NSLocalizedString(@"OK", @"") block:^{
         }];
         
