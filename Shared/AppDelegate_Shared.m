@@ -15,6 +15,8 @@
 #import "SCHDictionaryDownloadManager.h"
 #import "SCHDictionaryAccessManager.h"
 #import <CoreText/CoreText.h>
+#import "SCHPopulateDataStore.h"
+#import "SCHAppStateManager.h"
 #if RUN_KIF_TESTS
 #import "SCHKIFTestController.h"
 #endif
@@ -61,13 +63,7 @@ static NSString* const prModelCertFilename = @"iphonecert.dat";
     SCHSyncManager *syncManager = [SCHSyncManager sharedSyncManager];
 	syncManager.managedObjectContext = self.coreDataHelper.managedObjectContext;
 	[syncManager start];
-	
-    // You must clean the app from the simulator and uncomment the population 
-    // method then break immediately afterwards. Whilst broken copy 
-    // Scholastic.sqlite database to the project as Scholastic_Sample.sqlite
-//  [[SCHSyncManager sharedSyncManager] populateTestSampleStore];
-//  [[SCHSyncManager sharedSyncManager] populateSampleStore];
-    
+	    
 	SCHURLManager *urlManager = [SCHURLManager sharedURLManager];
 	urlManager.managedObjectContext = self.coreDataHelper.managedObjectContext;
     
@@ -110,7 +106,27 @@ static NSString* const prModelCertFilename = @"iphonecert.dat";
 #endif    
 
 	return YES;
-}	
+}
+
+- (void)setStoreType:(SCHStoreType)storeType
+{
+    switch (storeType) {
+        case kSCHStoreTypeStandardStore:
+            if ([[SCHAppStateManager sharedAppStateManager] isSampleStore]) {
+                [self.coreDataHelper resetStore];
+            }
+            break;
+        case kSCHStoreTypeSampleStore:
+            if ([[SCHAppStateManager sharedAppStateManager] isStandardStore]) {
+                [self.coreDataHelper resetStore];
+                SCHPopulateDataStore *populator = [[SCHPopulateDataStore alloc] init];
+                [populator setManagedObjectContext:self.coreDataHelper.managedObjectContext];
+                [populator setAppStateForSample];
+                [populator release];
+            }
+            break; 
+    }
+}
 
 - (void)setupUserDefaults
 {

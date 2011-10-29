@@ -281,9 +281,7 @@ typedef enum {
 - (void)openSampleBookshelf
 {
     AppDelegate_Shared *appDelegate = (AppDelegate_Shared *)[[UIApplication sharedApplication] delegate];
-
-    [appDelegate.coreDataHelper setupSampleStore];            
-    [appDelegate.coreDataHelper setStoreType:SCHCoreDataHelperSampleStore];
+    [appDelegate setStoreType:kSCHStoreTypeSampleStore];
     
     NSString *localManifest = [[NSBundle mainBundle] pathForResource:kSCHSampleBooksLocalManifestFile ofType:nil];
     NSURL *localManifestURL = localManifest ? [NSURL fileURLWithPath:localManifest] : nil;
@@ -307,10 +305,9 @@ typedef enum {
 
 - (void)firstLogin
 {
-    AppDelegate_Shared *appDelegate = (AppDelegate_Shared *)[[UIApplication sharedApplication] delegate];    
+    AppDelegate_Shared *appDelegate = (AppDelegate_Shared *)[[UIApplication sharedApplication] delegate];
+    [appDelegate setStoreType:kSCHStoreTypeStandardStore];
     
-    // remove data store
-    [appDelegate.coreDataHelper removeSampleStore];
     // clear all books
     [SCHAppBook clearBooksDirectory];
 }
@@ -319,9 +316,6 @@ typedef enum {
 
 - (void)showSignInForm
 {
-    AppDelegate_Shared *appDelegate = (AppDelegate_Shared *)[[UIApplication sharedApplication] delegate];
-    [appDelegate.coreDataHelper setStoreType:SCHCoreDataHelperStandardStore];
-
     SCHLoginPasswordViewController *login = [[SCHLoginPasswordViewController alloc] initWithNibName:@"SCHLoginViewController" bundle:nil];
     login.controllerType = kSCHControllerLoginView;
     

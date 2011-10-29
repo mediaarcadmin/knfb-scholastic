@@ -28,7 +28,6 @@
 
 - (void)addBook:(NSDictionary *)book forProfiles:(NSArray *)profileIDs;
 - (void)addSampleEntries:(NSArray *)entries forProfiles:(NSArray *)profileIDs;
-- (void)setAppStateForSample;
 - (NSDictionary *)profileItemWith:(NSInteger)profileID
                             title:(NSString *)title 
                          password:(NSString *)password
@@ -318,8 +317,6 @@
     NSError *error = nil;
     BOOL success = YES;
     
-    [self setAppStateForSample];    
-    
     NSArray *sampleProfileIDs = [NSArray arrayWithObject:[NSNumber numberWithInt:1]];
     [self addSampleEntries:entries forProfiles:sampleProfileIDs];
     
@@ -390,6 +387,11 @@
     appState.ShouldSyncNotes = [NSNumber numberWithBool:NO];
     appState.ShouldAuthenticate = [NSNumber numberWithBool:NO];
     appState.DataStoreType = [NSNumber numberWithDataStoreType:kSCHDataStoreTypesSample];
+    
+    NSError *error;
+    if ([self.managedObjectContext save:&error] == NO) {
+        NSLog(@"Unable to save the state for the sample store %@, %@", error, [error userInfo]);
+    }  
 }
 
 #pragma mark - Core Data population methods

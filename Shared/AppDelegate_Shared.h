@@ -10,6 +10,11 @@
 #import <CoreData/CoreData.h>
 #import "SCHStartingViewController.h"
 
+typedef enum {
+	kSCHStoreTypeStandardStore,
+    kSCHStoreTypeSampleStore,
+} SCHStoreType;
+
 @class SCHCoreDataHelper;
 
 @interface AppDelegate_Shared : NSObject <UIApplicationDelegate> 
@@ -24,6 +29,7 @@
 - (NSURL *)applicationSupportDocumentsDirectory;
 
 - (void)clearUserDefaults;
+- (void)setStoreType:(SCHStoreType)storeType;
 
 @end
 

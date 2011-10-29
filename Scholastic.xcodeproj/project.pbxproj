@@ -1612,8 +1612,6 @@
 		C93ECB33134B64B1003B99FD /* TextFlowFlow.css in Resources */ = {isa = PBXBuildFile; fileRef = C93ECB2C134B64B1003B99FD /* TextFlowFlow.css */; };
 		C93ECB35134B64B1003B99FD /* TextFlowXAML.css in Resources */ = {isa = PBXBuildFile; fileRef = C93ECB2D134B64B1003B99FD /* TextFlowXAML.css */; };
 		C93ECB37134B64B1003B99FD /* TextFlowXAMLOverrides.css in Resources */ = {isa = PBXBuildFile; fileRef = C93ECB2E134B64B1003B99FD /* TextFlowXAMLOverrides.css */; };
-		C944D2CF1407D518008E04FF /* Scholastic_Sample.sqlite in Resources */ = {isa = PBXBuildFile; fileRef = C944D2CD1407D518008E04FF /* Scholastic_Sample.sqlite */; };
-		C944D2D11407D523008E04FF /* Scholastic_Sample.sqlite in Resources */ = {isa = PBXBuildFile; fileRef = C944D2D01407D523008E04FF /* Scholastic_Sample.sqlite */; };
 		C94735F91377F482005B2B1D /* icon-font-increase@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C94735F51377F482005B2B1D /* icon-font-increase@2x.png */; };
 		C94735FB1377F482005B2B1D /* icon-font-increase.png in Resources */ = {isa = PBXBuildFile; fileRef = C94735F61377F482005B2B1D /* icon-font-increase.png */; };
 		C94735FD1377F482005B2B1D /* icon-font-decrease@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C94735F71377F482005B2B1D /* icon-font-decrease@2x.png */; };
@@ -3178,8 +3176,6 @@
 		C93ECB2C134B64B1003B99FD /* TextFlowFlow.css */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.css; path = TextFlowFlow.css; sourceTree = "<group>"; };
 		C93ECB2D134B64B1003B99FD /* TextFlowXAML.css */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.css; path = TextFlowXAML.css; sourceTree = "<group>"; };
 		C93ECB2E134B64B1003B99FD /* TextFlowXAMLOverrides.css */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.css; path = TextFlowXAMLOverrides.css; sourceTree = "<group>"; };
-		C944D2CD1407D518008E04FF /* Scholastic_Sample.sqlite */ = {isa = PBXFileReference; lastKnownFileType = file; name = Scholastic_Sample.sqlite; path = Resources/SampleDataStores/Local/Scholastic_Sample.sqlite; sourceTree = "<group>"; };
-		C944D2D01407D523008E04FF /* Scholastic_Sample.sqlite */ = {isa = PBXFileReference; lastKnownFileType = file; name = Scholastic_Sample.sqlite; path = Resources/SampleDataStores/Scholastic_Sample.sqlite; sourceTree = "<group>"; };
 		C94735F51377F482005B2B1D /* icon-font-increase@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "icon-font-increase@2x.png"; path = "Resources/UIAssets/icon-font-increase@2x.png"; sourceTree = "<group>"; };
 		C94735F61377F482005B2B1D /* icon-font-increase.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "icon-font-increase.png"; path = "Resources/UIAssets/icon-font-increase.png"; sourceTree = "<group>"; };
 		C94735F71377F482005B2B1D /* icon-font-decrease@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "icon-font-decrease@2x.png"; path = "Resources/UIAssets/icon-font-decrease@2x.png"; sourceTree = "<group>"; };
@@ -4806,7 +4802,7 @@
 		528A2CCF12CCDC400053A343 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				C944D2CA1407D4CA008E04FF /* Sample DBs */,
+				C944D2CA1407D4CA008E04FF /* Sample Books */,
 				F8509E7512F0620D00197EB5 /* Debug Books */,
 				F806563013FEAFF200DFAE43 /* Options View */,
 				F837018D13BB322F009B280D /* List View Icons */,
@@ -5526,19 +5522,18 @@
 			path = "Shared/Libraries/Submodules/libKNFBReader/libKNFBReader Resources";
 			sourceTree = "<group>";
 		};
-		C944D2CA1407D4CA008E04FF /* Sample DBs */ = {
+		C944D2CA1407D4CA008E04FF /* Sample Books */ = {
 			isa = PBXGroup;
 			children = (
 				C944D2CC1407D4DD008E04FF /* Local Samples */,
 				C944D2CB1407D4D8008E04FF /* Scholastic Samples */,
 			);
-			name = "Sample DBs";
+			name = "Sample Books";
 			sourceTree = "<group>";
 		};
 		C944D2CB1407D4D8008E04FF /* Scholastic Samples */ = {
 			isa = PBXGroup;
 			children = (
-				C944D2D01407D523008E04FF /* Scholastic_Sample.sqlite */,
 			);
 			name = "Scholastic Samples";
 			sourceTree = "<group>";
@@ -5547,7 +5542,6 @@
 			isa = PBXGroup;
 			children = (
 				C97B05641456DD670090950F /* LocalSamplesManifest.xml */,
-				C944D2CD1407D518008E04FF /* Scholastic_Sample.sqlite */,
 			);
 			name = "Local Samples";
 			sourceTree = "<group>";
@@ -7146,7 +7140,6 @@
 				C97F7F9B14078A91002BB9FB /* reading-samplesi~iphone.png in Resources */,
 				C97F7F9D14078A91002BB9FB /* reading-samplesi@2x~iphone.png in Resources */,
 				C97F84031407B349002BB9FB /* storyinteraction-wordbird-BalloonPop.png in Resources */,
-				C944D2D11407D523008E04FF /* Scholastic_Sample.sqlite in Resources */,
 				C927973B140FA4AD0091B8B5 /* icon-audio-younger-small-landscape.png in Resources */,
 				C927973D140FA4AD0091B8B5 /* icon-audio-younger-small-landscape@2x.png in Resources */,
 				C92797AC1410C75A0091B8B5 /* Interaction1_Relaxed.mp3 in Resources */,
@@ -7822,7 +7815,6 @@
 				52488AB91407990500DA9AFA /* reading-sample@2x~iphone.png in Resources */,
 				52488ABA1407990500DA9AFA /* reading-samplesi~iphone.png in Resources */,
 				52488ABB1407990500DA9AFA /* reading-samplesi@2x~iphone.png in Resources */,
-				C944D2CF1407D518008E04FF /* Scholastic_Sample.sqlite in Resources */,
 				282FE399140BB65D00CBB6AB /* storyinteraction-wordbird-BalloonPop.png in Resources */,
 				282FE39A140BB7E400CBB6AB /* popoverTickLight@2x.png in Resources */,
 				282FE39B140BB7E900CBB6AB /* popoverTick@2x.png in Resources */,

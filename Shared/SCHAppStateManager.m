@@ -12,6 +12,12 @@
 #import "SCHCoreDataHelper.h"
 #import "NSNumber+ObjectTypes.h"
 
+@interface SCHAppStateManager()
+
+- (SCHAppState *)createAppStateIfNeeded;
+
+@end
+
 @implementation SCHAppStateManager
 
 @synthesize managedObjectContext;
