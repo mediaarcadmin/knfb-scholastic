@@ -231,11 +231,11 @@
                                                                     title:[entry objectForKey:@"Title"]
                                                                    author:[entry objectForKey:@"Title"]
                                                                pageNumber:0
-                                                                 fileSize:0
+                                                                 fileSize:[[entry objectForKey:@"FileSize"] intValue]
                                                               drmQualifer:kSCHDRMQualifiersNone
                                                                  coverURL:[entry objectForKey:@"CoverUrl"]
                                                                contentURL:[entry objectForKey:@"DownloadUrl"]
-                                                                 enhanced:NO]];
+                                                                 enhanced:[[entry objectForKey:@"IsEnhanced"] boolValue]]];
   
         }
         

@@ -168,7 +168,10 @@ didStartElement:(NSString *)elementName
                [elementName isEqualToString:@"Author"] ||
                [elementName isEqualToString:@"Category"] ||
                [elementName isEqualToString:@"CoverUrl"] ||
-               [elementName isEqualToString:@"DownloadUrl"]) {
+               [elementName isEqualToString:@"DownloadUrl"] ||
+               [elementName isEqualToString:@"Version"] ||
+               [elementName isEqualToString:@"IsEnhanced"] ||
+               [elementName isEqualToString:@"FileSize"]) {
         [self.currentEntry setValue:self.currentStringValue forKey:elementName];
     }
     

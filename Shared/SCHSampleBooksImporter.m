@@ -12,7 +12,7 @@
 #import "SCHSampleBooksManifestOperation.h"
 #import "SCHSyncManager.h"
 
-NSString * const kSCHSampleBooksRemoteManifestURL = @"http://bits.blioreader.com/partners/Scholastic/SampleBookshelf/SampleManifest.xml";
+NSString * const kSCHSampleBooksRemoteManifestURL = @"http://bits.blioreader.com/partners/Scholastic/SampleBookshelf/SampleBookshelfManifest_v2.xml";
 NSString * const kSCHSampleBooksLocalManifestFile = @"LocalSamplesManifest.xml";
 
 typedef enum {
