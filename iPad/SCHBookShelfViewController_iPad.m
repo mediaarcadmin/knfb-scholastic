@@ -7,6 +7,7 @@
 //
 
 #import "SCHBookShelfViewController_iPad.h"
+#import "SCHBookShelfViewControllerProtected.h"
 #import <QuartzCore/QuartzCore.h>
 #import "SCHBookShelfGridView.h"
 #import "SCHCustomNavigationBar.h"
@@ -339,7 +340,7 @@ static NSTimeInterval const kSCHBookShelfViewControllerTopTenRefreshTime = -600.
     [[self.profileItem AppProfile] setSortType:[NSNumber numberWithInt:newType]];
 
     self.books = [self.profileItem allBookIdentifiers];
-	self.loadingView.hidden = YES;
+    [self dismissLoadingView];
 
     [self.popover dismissPopoverAnimated:YES];
     self.popover = nil;
