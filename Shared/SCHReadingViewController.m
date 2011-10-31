@@ -1360,14 +1360,8 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     return fillLevel;
 }
 
-- (void)setupStoryInteractionButtonForCurrentPagesAnimated:(BOOL)animated
-{     
-    // if a story interaction is active, hide the button
-    if (self.storyInteractionController != nil) {
-        [self setStoryInteractionButtonVisible:NO animated:YES withSound:NO completion:nil];
-        return;
-    }
-    
+- (NSInteger)numberOfStoryInteractionsOnCurrentPages
+{
     NSInteger page = [self storyInteractionPageNumberFromPageIndex:[self firstPageIndexWithStoryInteractionsOnCurrentPages]];
     
     BOOL excludeInteractionWithPage = NO;
@@ -1377,13 +1371,25 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     
     NSArray *storyInteractions = [self.bookStoryInteractions storyInteractionsForPage:page
                                                          excludingInteractionWithPage:excludeInteractionWithPage];
-    int totalInteractionCount = [storyInteractions count];
+    return [storyInteractions count];
+}
+
+- (void)setupStoryInteractionButtonForCurrentPagesAnimated:(BOOL)animated
+{     
+    // if a story interaction is active, hide the button
+    if (self.storyInteractionController != nil) {
+        [self setStoryInteractionButtonVisible:NO animated:YES withSound:NO completion:nil];
+        return;
+    }
+    
+    NSInteger totalInteractionCount = [self numberOfStoryInteractionsOnCurrentPages];
     
     // only play sounds if the appearance is animated
     BOOL playAppearanceSound = animated;
     BOOL playFillSound = animated;
     
     // override this if we've already played a sound for this page
+    NSInteger page = [self storyInteractionPageNumberFromPageIndex:[self firstPageIndexWithStoryInteractionsOnCurrentPages]];
     if (self.lastPageInteractionSoundPlayedOn == page) {
         playAppearanceSound = NO;
     }
@@ -2816,7 +2822,9 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
         self.storyInteractionViewController = nil;
     }
     
-    [self setStoryInteractionButtonVisible:YES animated:NO withSound:NO completion:nil];
+    if ([self numberOfStoryInteractionsOnCurrentPages] > 0) {
+        [self setStoryInteractionButtonVisible:YES animated:NO withSound:NO completion:nil];
+    }
     
     NSData * (^audioData)(void) = ^NSData*(void){
         NSString *audioFilename = @"sfx_si_fill";

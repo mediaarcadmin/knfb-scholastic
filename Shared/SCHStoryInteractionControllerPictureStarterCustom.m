@@ -36,7 +36,9 @@
 - (void)setupOpeningScreen
 {
     self.pictureStarterCustomViews = [[NSBundle mainBundle] loadNibNamed:@"SCHStoryInteractionPictureStarterCustom" owner:self options:nil];
-    [self.contentsView addSubview:[self.pictureStarterCustomViews objectAtIndex:0]];
+    UIView *view = [self.pictureStarterCustomViews objectAtIndex:0];
+    [self.contentsView addSubview:view];
+    [self resizeCurrentViewToSize:view.bounds.size withAdditionalAdjustments:nil animated:NO];
     
     SCHStoryInteractionPictureStarterCustom *pictureStarter = (SCHStoryInteractionPictureStarterCustom *)self.storyInteraction;
     for (UIButton *button in self.backgroundChooserButtons) {
