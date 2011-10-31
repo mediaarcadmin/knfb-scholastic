@@ -10,3 +10,7 @@
 // Constants
 extern NSString * const kSCHUserDefaultsPerformedFirstSyncUpToBooks;
 extern NSString * const kSCHUserDefaultsSpaceSaverMode;
+
+extern NSString * const kSCHAuthenticationManagerUserKey;
+extern NSString * const kSCHAuthenticationManagerDeviceKey;
+extern NSString * const kSCHAuthenticationManagerUsername;

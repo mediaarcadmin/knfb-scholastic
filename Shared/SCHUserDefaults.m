@@ -1,5 +1,5 @@
 // 
-//  SCHUserDefaults.h
+//  SCHUserDefaults.m
 //  Scholastic
 //
 //  Created by John S. Eddie on 31/01/2011.
@@ -11,3 +11,7 @@
 // Constants
 NSString * const kSCHUserDefaultsPerformedFirstSyncUpToBooks = @"PerformedFirstSyncUpToBooks";
 NSString * const kSCHUserDefaultsSpaceSaverMode = @"SpaceSaverMode";
+
+NSString * const kSCHAuthenticationManagerUserKey = @"AuthenticationManager.UserKey";
+NSString * const kSCHAuthenticationManagerDeviceKey = @"AuthenticationManager.DeviceKey";
+NSString * const kSCHAuthenticationManagerUsername = @"AuthenticationManager.Username";

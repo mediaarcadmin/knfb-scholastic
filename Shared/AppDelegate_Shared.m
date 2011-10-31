@@ -123,9 +123,24 @@ static NSString* const prModelCertFilename = @"iphonecert.dat";
     [[NSUserDefaults standardUserDefaults] synchronize];
 }
 
+// Add any UserDefaults that can be cleared here, 
+// this is generally performed after de-registration
+- (NSArray *)clearableUserDefaults
+{
+    return [NSArray arrayWithObjects:kSCHUserDefaultsPerformedFirstSyncUpToBooks,
+            kSCHAuthenticationManagerUserKey,
+            kSCHAuthenticationManagerDeviceKey,
+            kSCHAuthenticationManagerUsername,
+            nil];    
+}
+
 - (void)clearUserDefaults
 {
-    [[NSUserDefaults standardUserDefaults] removePersistentDomainForName:[[NSBundle mainBundle] bundleIdentifier]];
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    
+    for (NSString *defaultKey in [self clearableUserDefaults]) {
+        [defaults removeObjectForKey:defaultKey];
+    }
     [[NSUserDefaults standardUserDefaults] synchronize];
 }
 
