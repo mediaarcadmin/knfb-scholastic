@@ -2689,9 +2689,9 @@
 		5293872C12DF43CB00045B44 /* SCHLibreAccessWebService.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHLibreAccessWebService.m; path = Shared/SCHLibreAccessWebService.m; sourceTree = "<group>"; };
 		5293872E12DF43D200045B44 /* SCHScholasticWebService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHScholasticWebService.h; path = Shared/SCHScholasticWebService.h; sourceTree = "<group>"; };
 		5293872F12DF43D200045B44 /* SCHScholasticWebService.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHScholasticWebService.m; path = Shared/SCHScholasticWebService.m; sourceTree = "<group>"; };
-		5293883012E03CD000045B44 /* SCHBookShelfViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHBookShelfViewController.h; path = iPhone/SCHBookShelfViewController.h; sourceTree = "<group>"; };
-		5293883112E03CD000045B44 /* SCHBookShelfViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHBookShelfViewController.m; path = iPhone/SCHBookShelfViewController.m; sourceTree = "<group>"; };
-		5293883212E03CD000045B44 /* SCHBookShelfViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = SCHBookShelfViewController.xib; path = iPhone/SCHBookShelfViewController.xib; sourceTree = "<group>"; };
+		5293883012E03CD000045B44 /* SCHBookShelfViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHBookShelfViewController.h; path = Shared/SCHBookShelfViewController.h; sourceTree = "<group>"; };
+		5293883112E03CD000045B44 /* SCHBookShelfViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHBookShelfViewController.m; path = Shared/SCHBookShelfViewController.m; sourceTree = "<group>"; };
+		5293883212E03CD000045B44 /* SCHBookShelfViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = SCHBookShelfViewController.xib; path = Shared/SCHBookShelfViewController.xib; sourceTree = "<group>"; };
 		5296F99713FE7B4F009532F3 /* 9780545287012_r1.HalloweenParade.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = 9780545287012_r1.HalloweenParade.jpg; path = "Shared/Debug Books/9780545287012_r1.HalloweenParade.jpg"; sourceTree = "<group>"; };
 		5296F99813FE7B4F009532F3 /* 9780545289726_r1.OlliesNewTricks.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = 9780545289726_r1.OlliesNewTricks.jpg; path = "Shared/Debug Books/9780545289726_r1.OlliesNewTricks.jpg"; sourceTree = "<group>"; };
 		5296F99913FE7B4F009532F3 /* 9780545308656.6.StableMatesPatch.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = 9780545308656.6.StableMatesPatch.jpg; path = "Shared/Debug Books/9780545308656.6.StableMatesPatch.jpg"; sourceTree = "<group>"; };
@@ -2744,6 +2744,7 @@
 		52DAE4FA13ABA3DD0003560E /* popoverTickLight.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = popoverTickLight.png; path = Resources/popoverTickLight.png; sourceTree = "<group>"; };
 		52DAE4FD13ABA51A0003560E /* popoverTick@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "popoverTick@2x.png"; path = "Resources/popoverTick@2x.png"; sourceTree = "<group>"; };
 		52DAE4FE13ABA51A0003560E /* popoverTickLight@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "popoverTickLight@2x.png"; path = "Resources/popoverTickLight@2x.png"; sourceTree = "<group>"; };
+		52DF002F145EB73A00D38A84 /* SCHBookShelfViewControllerProtected.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHBookShelfViewControllerProtected.h; path = Shared/SCHBookShelfViewControllerProtected.h; sourceTree = "<group>"; };
 		52E334F41303049B002F3011 /* SCHTopPicksBookShelfViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHTopPicksBookShelfViewController.h; path = iPhone/SCHTopPicksBookShelfViewController.h; sourceTree = "<group>"; };
 		52E334F51303049B002F3011 /* SCHTopPicksBookShelfViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHTopPicksBookShelfViewController.m; path = iPhone/SCHTopPicksBookShelfViewController.m; sourceTree = "<group>"; };
 		52E3355A1303F71F002F3011 /* SCHComponentDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHComponentDelegate.h; path = Shared/SCHComponentDelegate.h; sourceTree = "<group>"; };
@@ -5379,6 +5380,7 @@
 			isa = PBXGroup;
 			children = (
 				5293883012E03CD000045B44 /* SCHBookShelfViewController.h */,
+				52DF002F145EB73A00D38A84 /* SCHBookShelfViewControllerProtected.h */,
 				5293883112E03CD000045B44 /* SCHBookShelfViewController.m */,
 				5293883212E03CD000045B44 /* SCHBookShelfViewController.xib */,
 				C9703A8D13E986690003C4D8 /* SCHBookShelfShadowsView.h */,

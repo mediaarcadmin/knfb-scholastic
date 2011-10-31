@@ -7,6 +7,7 @@
 //
 
 #import "SCHBookShelfViewController.h"
+#import "SCHBookShelfViewControllerProtected.h"
 
 #import <QuartzCore/QuartzCore.h>
 #import "SCHReadingViewController.h"
@@ -45,17 +46,15 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 131;
 @property (nonatomic, assign) BOOL gridViewNeedsRefreshed;
 @property (nonatomic, assign) BOOL listViewNeedsRefreshed;
 @property (nonatomic, assign) int currentlyLoadingIndex;
-
+@property (nonatomic, retain) LambdaAlert *loadingView;
 
 - (void)setupAssetsForOrientation:(UIInterfaceOrientation)orientation;
 - (void)updateTheme;
-- (void)showLoadingView:(BOOL)show;
 - (CGSize)cellSize;
 - (CGFloat)cellBorderSize;
 - (void)reloadData;
 - (void)save;
 - (BOOL)canOpenBook:(SCHBookIdentifier *)identifier;
-
 
 - (IBAction)changeToListView:(UIButton *)sender;
 - (IBAction)changeToGridView:(UIButton *)sender;
@@ -72,7 +71,6 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 131;
 @synthesize listTableView;
 @synthesize listTableCellNib;
 @synthesize gridView;
-@synthesize loadingView;
 @synthesize themePickerContainer;
 @synthesize customNavigationBar;
 @synthesize gridButton;
@@ -92,13 +90,13 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 131;
 @synthesize gridViewNeedsRefreshed;
 @synthesize listViewNeedsRefreshed;
 @synthesize profileSetupDelegate;
+@synthesize loadingView;
 
 #pragma mark - Object lifecycle
 
 - (void)releaseViewObjects 
 {
     [gridView release], gridView = nil;
-    [loadingView release], loadingView = nil;
     [themePickerContainer release], themePickerContainer = nil;
     [customNavigationBar release], customNavigationBar = nil;
     
@@ -113,7 +111,8 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 131;
     [listTableCellNib release], listTableCellNib = nil;
     [gridViewToggleView release], gridViewToggleView = nil;
     [backgroundView release], backgroundView = nil;
-            
+    [loadingView release], loadingView = nil;
+    
     [[NSNotificationCenter defaultCenter] removeObserver:self
 												 name:SCHBookshelfSyncComponentDidCompleteNotification
 											   object:nil];
@@ -233,14 +232,16 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 131;
 											 selector:@selector(bookshelfSyncComponentDidComplete:)
 												 name:SCHSyncManagerDidCompleteNotification
 											   object:nil];
-    
-	self.loadingView.layer.cornerRadius = 5.0f;
-	[self.view bringSubviewToFront:self.loadingView];
     	
 	if (![[SCHSyncManager sharedSyncManager] havePerformedFirstSyncUpToBooks] && [[SCHSyncManager sharedSyncManager] isSynchronizing]) {
-        [self showLoadingView:YES];
+        self.loadingView = [[LambdaAlert alloc]
+                            initWithTitle:NSLocalizedString(@"Loading...", @"")
+                            message:@"\n"];
+        [self.loadingView setSpinnerHidden:NO];
+        [self.loadingView show];
+        [self.loadingView release];
 	} else {
-        [self showLoadingView:NO];
+        [self dismissLoadingView];
 	}
     
     if (![[SCHAppStateManager sharedAppStateManager] isSampleStore]) {
@@ -383,11 +384,27 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 131;
 	[self presentModalViewController:self.themePickerContainer animated:YES];		
 }
 
-- (void)showLoadingView:(BOOL)show
+- (void)dismissLoadingView
 {
-    self.loadingView.hidden = !show;
-    self.listTableView.userInteractionEnabled = !show;
-    self.gridView.userInteractionEnabled = !show;
+    if (self.loadingView != nil) {
+        [self.loadingView setSpinnerHidden:YES];        
+        [self.loadingView dismissAnimated:NO];        
+        self.loadingView = nil;
+    }
+}
+
+- (void)replaceLoadingAlertWithAlert:(LambdaAlert *)alert
+{
+    [CATransaction begin];
+    [CATransaction setDisableActions:YES];
+    
+    [self.loadingView setSpinnerHidden:YES];
+    [self.loadingView dismissAnimated:NO];
+    self.loadingView = nil;
+    
+    [alert show];
+    
+    [CATransaction commit];
 }
 
 #pragma mark - Action methods
@@ -566,25 +583,24 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 131;
     
     if (refreshBooks == YES) {
         self.books = [self.profileItem allBookIdentifiers];
-        [self showLoadingView:NO];        
+        [self dismissLoadingView];        
     }   
 }
 
 - (void)bookshelfSyncComponentDidComplete:(NSNotification *)notification
 {
-    [self showLoadingView:NO];
+    [self dismissLoadingView];
     [self reloadData];
 }
 
 - (void)bookshelfSyncComponentDidFail:(NSNotification *)notification
 {
-    [self showLoadingView:NO];    
     [self reloadData];
     LambdaAlert *alert = [[LambdaAlert alloc]
                           initWithTitle:NSLocalizedString(@"Retrieving Bookshelf Failed", @"Retrieving Bookshelf Failed") 
                           message:NSLocalizedString(@"Failed to retrieve the bookshelf, we will try again soon.", @"") ];
     [alert addButtonWithTitle:NSLocalizedString(@"OK", @"OK") block:^{}];
-    [alert show];
+    [self replaceLoadingAlertWithAlert:alert];
     [alert release];
 }
 
@@ -649,7 +665,7 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 131;
     return cell;
 }
 
-- (NSInteger) tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     if (section == 0 && ![tableView isHidden]) {
         return [self.books count];
@@ -658,7 +674,7 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 131;
     }
 }
 
-- (float) tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+- (float)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
         return 100;
