@@ -14,6 +14,7 @@
 
 @property (nonatomic, retain) SCHStoryInteractionController *storyInteractionController;
 
-- (void)setReadingViewSnapshot:(UIImage *)image;
+- (void)attachBackgroundView:(UIView *)backgroundView;
+- (UIView *)detachBackgroundView;
 
 @end

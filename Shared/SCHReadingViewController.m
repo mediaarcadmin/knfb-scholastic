@@ -106,6 +106,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 
 @property (nonatomic, retain) SCHBookStoryInteractions *bookStoryInteractions;
 @property (nonatomic, retain) SCHStoryInteractionController *storyInteractionController;
+@property (nonatomic, retain) SCHStoryInteractionStandaloneViewController *storyInteractionViewController;
 @property (nonatomic, assign) BOOL storyInteractionsCompleteOnCurrentPages;
 
 @property (nonatomic, retain) SCHQueuedAudioPlayer *queuedAudioPlayer;
@@ -233,6 +234,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 @synthesize audioBookPlayer;
 @synthesize bookStoryInteractions;
 @synthesize storyInteractionController;
+@synthesize storyInteractionViewController;
 @synthesize queuedAudioPlayer;
 @synthesize storyInteractionsCompleteOnCurrentPages;
 @synthesize lastPageInteractionSoundPlayedOn;
@@ -275,6 +277,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     
     storyInteractionController.delegate = nil; // we don't want callbacks
     [storyInteractionController release], storyInteractionController = nil;
+    [storyInteractionViewController release], storyInteractionViewController = nil;
     [cornerCoverFadeTimer release], cornerCoverFadeTimer = nil;
     
     // Ideally the readingView would be release it viewDidUnload but it contains 
@@ -1564,14 +1567,16 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     
     SCHStoryInteractionStandaloneViewController *standalone = [[SCHStoryInteractionStandaloneViewController alloc] init];
     standalone.storyInteractionController = aStoryInteractionController;
-    
+
     if ([aStoryInteractionController shouldShowSnapshotOfReadingViewInBackground]) {
-        [standalone setReadingViewSnapshot:[self currentPageSnapshot]];
+        [standalone attachBackgroundView:self.readingView];
     }
     
     [self.navigationController pushViewController:standalone animated:NO];
     [aStoryInteractionController presentInHostView:self.navigationController.view
                               withInterfaceOrientation:standalone.interfaceOrientation];
+
+    self.storyInteractionViewController = standalone;
     [standalone release];
     
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
@@ -2075,7 +2080,10 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 
 - (void)readingViewWillAppear: (SCHReadingView *) aReadingView
 {
-    [self jumpToLastPageLocation];
+    // ignore while the reading view is attached to the SI view controller
+    if (aReadingView.superview == self.view) {
+        [self jumpToLastPageLocation];
+    }
 }
 
 - (void)readingViewWillBeginTurning:(SCHReadingView *)readingView
@@ -2781,6 +2789,12 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 
 - (void)storyInteractionController:(SCHStoryInteractionController *)aStoryInteractionController willDismissWithSuccess:(BOOL)success 
 {
+    // if the current reading view was attached to the SI view controller as a background, get it back
+    UIView *view = [self.storyInteractionViewController detachBackgroundView];
+    if (view) {
+        [self.view insertSubview:view atIndex:0];
+    }
+    
     if (success) {
         NSInteger page = [self storyInteractionPageNumberFromPageIndex:[self firstPageIndexWithStoryInteractionsOnCurrentPages]];
         
@@ -2799,6 +2813,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
             [self.navigationController popViewControllerAnimated:NO];
         }
         self.storyInteractionController = nil;
+        self.storyInteractionViewController = nil;
     }
     
     [self setStoryInteractionButtonVisible:YES animated:NO withSound:NO completion:nil];

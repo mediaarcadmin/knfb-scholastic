@@ -180,11 +180,6 @@ static Class controllerClassForStoryInteraction(SCHStoryInteraction *storyIntera
         case SCHStoryInteractionControllerStateInteractionFinishedSuccessfully:
         {
             self.readAloudButton.enabled = NO;
-            
-            // report success so that the reading view can keep track of it properly
-            if (delegate && [delegate respondsToSelector:@selector(storyInteractionController:willDismissWithSuccess:)]) {
-                [delegate storyInteractionController:self willDismissWithSuccess:YES];
-            }
             [self storyInteractionDisableUserInteraction];
             break;
         }   
@@ -622,6 +617,12 @@ static Class controllerClassForStoryInteraction(SCHStoryInteraction *storyIntera
 
 - (void)removeFromHostView
 {
+    // report success so that the reading view can keep track of it properly
+    if (delegate && [delegate respondsToSelector:@selector(storyInteractionController:willDismissWithSuccess:)]) {
+        BOOL success = (self.controllerState == SCHStoryInteractionControllerStateInteractionFinishedSuccessfully);
+        [delegate storyInteractionController:self willDismissWithSuccess:success];
+    }
+
     [self cancelQueuedAudio];
     
     [[SCHBookManager sharedBookManager] checkInXPSProviderForBookIdentifier:self.bookIdentifier];
@@ -828,7 +829,8 @@ static Class controllerClassForStoryInteraction(SCHStoryInteraction *storyIntera
 
 - (BOOL)shouldShowSnapshotOfReadingViewInBackground
 {
-    return YES;
+    // iPhone SIs are full screen so only required on iPad
+    return (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad);
 }
 
 - (BOOL)supportsAutoRotation

@@ -9,22 +9,32 @@
 #import "SCHStoryInteractionStandaloneViewController.h"
 #import "SCHStoryInteractionController.h"
 
+struct BackgroundViewState {
+    CGPoint center;
+    CGRect bounds;
+    CGAffineTransform transform;
+};
+
 @interface SCHStoryInteractionStandaloneViewController ()
-@property (nonatomic, retain) UIImageView *readingViewSnapshotView;
+@property (nonatomic, retain) UIView *backgroundView;
+@property (nonatomic, assign) struct BackgroundViewState backgroundViewState;
 @end
 
 @implementation SCHStoryInteractionStandaloneViewController
 
 @synthesize storyInteractionController;
-@synthesize readingViewSnapshotView;
+@synthesize backgroundView;
+@synthesize backgroundViewState;
 
 - (void)releaseViewObjects
 {
-    [readingViewSnapshotView release], readingViewSnapshotView = nil;    
+    [backgroundView release], backgroundView = nil;    
 }
 
 - (void)dealloc
 {
+    NSAssert(backgroundView == nil, @"unmatched attach/detachBackgroundView");
+    
     [storyInteractionController release], storyInteractionController = nil;
     [self releaseViewObjects];
     [super dealloc];
@@ -39,11 +49,13 @@
 
 - (void)viewDidLoad
 {
-    UIImageView *snapshotView = [[UIImageView alloc] initWithFrame:self.view.bounds];
-    snapshotView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-    self.readingViewSnapshotView = snapshotView;
-    [self.view addSubview:self.readingViewSnapshotView];
-    [snapshotView release];
+    [super viewDidLoad];
+
+    [self.backgroundView removeFromSuperview];
+    self.backgroundView.center = CGPointMake(CGRectGetMidX(self.view.bounds), CGRectGetMidY(self.view.bounds));
+    self.backgroundView.bounds = self.view.bounds;
+    self.backgroundView.transform = CGAffineTransformIdentity;
+    [self.view insertSubview:self.backgroundView atIndex:0];
 }
 
 - (void)viewDidUnload
@@ -55,7 +67,6 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    self.view.frame = self.view.superview.bounds;
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
@@ -83,11 +94,24 @@
     }
 }
 
-- (void)setReadingViewSnapshot:(UIImage *)image
+#pragma mark - Background view
+
+- (void)attachBackgroundView:(UIView *)view
 {
-    // ensure view is setup
-    [self view];
-    self.readingViewSnapshotView.image = image;
+    backgroundViewState.center = view.center;
+    backgroundViewState.bounds = view.bounds;
+    backgroundViewState.transform = view.transform;
+    self.backgroundView = view;
+}
+
+- (UIView *)detachBackgroundView
+{
+    UIView *view = [self.backgroundView retain];
+    self.backgroundView = nil;
+    view.center = backgroundViewState.center;
+    view.bounds = backgroundViewState.bounds;
+    view.transform = backgroundViewState.transform;
+    return [view autorelease];
 }
 
 @end
