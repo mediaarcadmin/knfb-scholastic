@@ -29,7 +29,6 @@
 // interface builder
 @property (nonatomic, retain) IBOutlet UITableView *listTableView;
 @property (nonatomic, retain) IBOutlet SCHBookShelfGridView *gridView;
-@property (nonatomic, retain) IBOutlet UIView *loadingView;
 @property (nonatomic, retain) IBOutlet UINavigationController *themePickerContainer;
 @property (nonatomic, retain) IBOutlet SCHCustomNavigationBar *customNavigationBar;
 @property (nonatomic, retain) IBOutlet UIButton *gridButton;
