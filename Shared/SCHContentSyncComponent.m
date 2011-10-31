@@ -84,25 +84,36 @@ NSString * const SCHContentSyncComponentDidFailNotification = @"SCHContentSyncCo
 		![self.managedObjectContext BITemptyEntity:kSCHOrderItem error:&error] ||
 		![self.managedObjectContext BITemptyEntity:kSCHContentProfileItem error:&error]) {
 		NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
-		abort();
 	}		
 }
 
 - (void)method:(NSString *)method didCompleteWithResult:(NSDictionary *)result
 {	
-	if([method compare:kSCHLibreAccessWebServiceSaveContentProfileAssignment] == NSOrderedSame) {	
-		self.isSynchronizing = [self.libreAccessWebService listUserContent];
-		if (self.isSynchronizing == NO) {
-			[[SCHAuthenticationManager sharedAuthenticationManager] authenticate];				
-		}
-	} else if([method compare:kSCHLibreAccessWebServiceListUserContent] == NSOrderedSame) {
-		NSArray *content = [result objectForKey:kSCHLibreAccessWebServiceUserContentList];
-		
-		[self syncUserContentItems:content];
-		[[NSNotificationCenter defaultCenter] postNotificationName:SCHContentSyncComponentDidCompleteNotification 
-                                                            object:self];
-		[super method:method didCompleteWithResult:nil];				
-	}
+    @try {
+        if([method compare:kSCHLibreAccessWebServiceSaveContentProfileAssignment] == NSOrderedSame) {	
+            self.isSynchronizing = [self.libreAccessWebService listUserContent];
+            if (self.isSynchronizing == NO) {
+                [[SCHAuthenticationManager sharedAuthenticationManager] authenticate];				
+            }
+        } else if([method compare:kSCHLibreAccessWebServiceListUserContent] == NSOrderedSame) {
+            NSArray *content = [result objectForKey:kSCHLibreAccessWebServiceUserContentList];
+            
+            [self syncUserContentItems:content];
+            [[NSNotificationCenter defaultCenter] postNotificationName:SCHContentSyncComponentDidCompleteNotification 
+                                                                object:self];
+            [super method:method didCompleteWithResult:nil];				
+        }
+    }
+    @catch (NSException *exception) {
+        [[NSNotificationCenter defaultCenter] postNotificationName:SCHContentSyncComponentDidFailNotification 
+                                                            object:self];            
+        
+        NSError *error = [NSError errorWithDomain:kBITAPIErrorDomain 
+                                             code:kBITAPIExceptionError 
+                                         userInfo:[NSDictionary dictionaryWithObject:[exception reason]
+                                                                              forKey:NSLocalizedDescriptionKey]];
+        [super method:method didFailWithError:error requestInfo:nil result:result];
+    }
 }
 
 - (void)method:(NSString *)method didFailWithError:(NSError *)error 

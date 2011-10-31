@@ -28,7 +28,6 @@
 
 - (void)addBook:(NSDictionary *)book forProfiles:(NSArray *)profileIDs;
 - (void)addSampleEntries:(NSArray *)entries forProfiles:(NSArray *)profileIDs;
-- (void)setAppStateForSample;
 - (NSDictionary *)profileItemWith:(NSInteger)profileID
                             title:(NSString *)title 
                          password:(NSString *)password
@@ -231,11 +230,11 @@
                                                                     title:[entry objectForKey:@"Title"]
                                                                    author:[entry objectForKey:@"Title"]
                                                                pageNumber:0
-                                                                 fileSize:0
+                                                                 fileSize:[[entry objectForKey:@"FileSize"] intValue]
                                                               drmQualifer:kSCHDRMQualifiersNone
                                                                  coverURL:[entry objectForKey:@"CoverUrl"]
                                                                contentURL:[entry objectForKey:@"DownloadUrl"]
-                                                                 enhanced:NO]];
+                                                                 enhanced:[[entry objectForKey:@"IsEnhanced"] boolValue]]];
   
         }
         
@@ -318,8 +317,6 @@
     NSError *error = nil;
     BOOL success = YES;
     
-    [self setAppStateForSample];    
-    
     NSArray *sampleProfileIDs = [NSArray arrayWithObject:[NSNumber numberWithInt:1]];
     [self addSampleEntries:entries forProfiles:sampleProfileIDs];
     
@@ -390,8 +387,27 @@
     appState.ShouldSyncNotes = [NSNumber numberWithBool:NO];
     appState.ShouldAuthenticate = [NSNumber numberWithBool:NO];
     appState.DataStoreType = [NSNumber numberWithDataStoreType:kSCHDataStoreTypesSample];
+    
+    NSError *error;
+    if ([self.managedObjectContext save:&error] == NO) {
+        NSLog(@"Unable to save the state for the sample store %@, %@", error, [error userInfo]);
+    }  
 }
 
+- (void)setAppStateForStandard
+{
+    SCHAppState *appState = [SCHAppStateManager sharedAppStateManager].appState;
+    
+    appState.ShouldSync = [NSNumber numberWithBool:YES];
+    appState.ShouldSyncNotes = [NSNumber numberWithBool:NO];
+    appState.ShouldAuthenticate = [NSNumber numberWithBool:YES];
+    appState.DataStoreType = [NSNumber numberWithDataStoreType:kSCHDataStoreTypesStandard];
+    
+    NSError *error;
+    if ([self.managedObjectContext save:&error] == NO) {
+        NSLog(@"Unable to save the state for the sample store %@, %@", error, [error userInfo]);
+    }  
+}
 #pragma mark - Core Data population methods
 
 - (NSDictionary *)profileItemWith:(NSInteger)profileID

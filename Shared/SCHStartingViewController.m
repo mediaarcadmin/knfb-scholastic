@@ -33,13 +33,10 @@
 
 enum {
     kTableSectionSamples = 0,
-    kTableSectionSignIn,
-    kNumberOfTableSections,
+    kTableSectionSignIn
 };
 
 enum {
-    kNumberOfSampleBookshelves = 1,
-    
     kTableOffsetPortrait_iPad = 240,
     kTableOffsetLandscape_iPad = 120,
     kTableOffsetPortrait_iPhone = 20,
@@ -51,8 +48,7 @@ typedef enum {
     kSCHStartingViewControllerProfileSyncStateWaitingForLoginToComplete,
     kSCHStartingViewControllerProfileSyncStateWaitingForBookshelves,
     kSCHStartingViewControllerProfileSyncStateWaitingForPassword,
-    kSCHStartingViewControllerProfileSyncStateWaitingForWebParentToolsToComplete,
-    kSCHStartingViewControllerProfileSyncStateSamplesSync
+    kSCHStartingViewControllerProfileSyncStateWaitingForWebParentToolsToComplete
 } SCHStartingViewControllerProfileSyncState;
 
 @interface SCHStartingViewController ()
@@ -62,7 +58,7 @@ typedef enum {
 @property (nonatomic, retain) LambdaAlert *checkProfilesAlert;
 
 - (void)setupAssetsForOrientation:(UIInterfaceOrientation)orientation;
-- (void)firstLogin;
+- (void)setStandardStore;
 - (void)openSampleBookshelf;
 - (void)showSignInForm;
 - (BOOL)dictionaryDownloadRequired;
@@ -210,18 +206,12 @@ typedef enum {
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    return kNumberOfTableSections;   
+    return 2;   
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    switch (section) {
-        case kTableSectionSamples:
-            return kNumberOfSampleBookshelves;
-        case kTableSectionSignIn:
-            return 1;
-    }
-    return 0;
+    return 1;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
@@ -291,21 +281,20 @@ typedef enum {
 - (void)openSampleBookshelf
 {
     AppDelegate_Shared *appDelegate = (AppDelegate_Shared *)[[UIApplication sharedApplication] delegate];
-
-    [appDelegate.coreDataHelper setupSampleStore];            
-    [appDelegate.coreDataHelper setStoreType:SCHCoreDataHelperSampleStore];
+    [appDelegate setStoreType:kSCHStoreTypeSampleStore];
     
-    self.profileSyncState = kSCHStartingViewControllerProfileSyncStateSamplesSync;
-
     NSString *localManifest = [[NSBundle mainBundle] pathForResource:kSCHSampleBooksLocalManifestFile ofType:nil];
     NSURL *localManifestURL = localManifest ? [NSURL fileURLWithPath:localManifest] : nil;
     
     [[SCHSampleBooksImporter sharedImporter] importSampleBooksFromRemoteManifest:[NSURL URLWithString:kSCHSampleBooksRemoteManifestURL] 
                                                                    localManifest:localManifestURL
+                                                                    successBlock:^{
+                                                                        [self checkDictionaryDownloadForSamples];
+                                                                    }
                                                                     failureBlock:^(NSString * failureReason){
         LambdaAlert *alert = [[LambdaAlert alloc]
-                              initWithTitle:NSLocalizedString(@"Unable To Retrieve all Samples", @"")
-                              message:[NSString stringWithFormat:NSLocalizedString(@"There was a problem whilst checking for the sample eBooks. %@. Please try again.", @""), failureReason]];
+                              initWithTitle:NSLocalizedString(@"Unable To Update Sample eBooks", @"")
+                              message:[NSString stringWithFormat:NSLocalizedString(@"There was a problem whilst updating the sample eBooks. %@. Please try again.", @""), failureReason]];
         [alert addButtonWithTitle:NSLocalizedString(@"OK", @"") block:^{
         }];
         
@@ -314,12 +303,11 @@ typedef enum {
     }];
 }
 
-- (void)firstLogin
+- (void)setStandardStore
 {
-    AppDelegate_Shared *appDelegate = (AppDelegate_Shared *)[[UIApplication sharedApplication] delegate];    
+    AppDelegate_Shared *appDelegate = (AppDelegate_Shared *)[[UIApplication sharedApplication] delegate];
+    [appDelegate setStoreType:kSCHStoreTypeStandardStore];
     
-    // remove data store
-    [appDelegate.coreDataHelper removeSampleStore];
     // clear all books
     [SCHAppBook clearBooksDirectory];
 }
@@ -328,9 +316,6 @@ typedef enum {
 
 - (void)showSignInForm
 {
-    AppDelegate_Shared *appDelegate = (AppDelegate_Shared *)[[UIApplication sharedApplication] delegate];
-    [appDelegate.coreDataHelper setStoreType:SCHCoreDataHelperStandardStore];
-
     SCHLoginPasswordViewController *login = [[SCHLoginPasswordViewController alloc] initWithNibName:@"SCHLoginViewController" bundle:nil];
     login.controllerType = kSCHControllerLoginView;
     
@@ -339,6 +324,8 @@ typedef enum {
     };
     
     login.retainLoopSafeActionBlock = ^BOOL(NSString *username, NSString *password) {
+        [self setStandardStore];
+        
         self.profileSyncState = kSCHStartingViewControllerProfileSyncStateWaitingForLoginToComplete;
         
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(authenticationManager:) name:SCHAuthenticationManagerDidSucceedNotification object:nil];			
@@ -364,9 +351,7 @@ typedef enum {
     [[NSNotificationCenter defaultCenter] removeObserver:self name:SCHAuthenticationManagerDidSucceedNotification object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:SCHAuthenticationManagerDidFailNotification object:nil];
 	
-	if ([notification.name isEqualToString:SCHAuthenticationManagerDidSucceedNotification]) {
-        [self firstLogin];
-        
+	if ([notification.name isEqualToString:SCHAuthenticationManagerDidSucceedNotification]) {        
         [[SCHAuthenticationManager sharedAuthenticationManager] clearAppProcessing];
         [[SCHSyncManager sharedSyncManager] firstSync:YES];
 	} else {
@@ -430,7 +415,7 @@ typedef enum {
         [self presentModalViewController:self.modalNavigationController animated:YES];
         [downloadDictionary release];
     } else {
-        [self showCurrentSamplesAnimated:YES];
+        [self pushSamplesAnimated:YES];
     }
 }
 
@@ -535,38 +520,57 @@ typedef enum {
     }
 }
 
-- (void)showCurrentSamplesAnimated:(BOOL)animated
-{   
-    // TODO: refactor this so there is no implicit knowledge of which we are pushing
-    
-    BOOL shouldAnimatePush = animated;
-    
+- (void)pushSamplesAnimated:(BOOL)animated
+{       
     if (self.modalViewController) {
         [self dismissModalViewControllerAnimated:YES];
-        shouldAnimatePush = NO;
     }
     
-    BOOL alreadyInUse = NO;
     SCHProfileViewController_Shared *profile = [self profileViewController];
+    SCHProfileItem *profileItem = [[profile profileItems] lastObject]; // Only one sample bookshelf so any result will do
     
-    for (UIViewController *vc in self.navigationController.viewControllers) {
-        if (vc == profile) {
-            alreadyInUse = YES;
-            break;
-        }
+    if (profileItem) {
+        NSMutableArray *viewControllers = [NSMutableArray arrayWithObjects:self, profile, nil];
+        [viewControllers addObjectsFromArray:[profile viewControllersForProfileItem:profileItem]];
+        [self.navigationController setViewControllers:viewControllers animated:animated];
+    } else {
+        LambdaAlert *alert = [[LambdaAlert alloc]
+                              initWithTitle:NSLocalizedString(@"Unable To Open the Sample Bookshelf", @"")
+                              message:NSLocalizedString(@"There was a problem whilst opening the sample bookshelf. Please try again.", @"")];
+        [alert addButtonWithTitle:NSLocalizedString(@"OK", @"") block:^{
+        }];
+        
+        [alert show]; 
+        [alert release]; 
     }
-    if (alreadyInUse == NO) {
-        [self.navigationController pushViewController:profile animated:NO];
-    }
-    
-    for (SCHProfileItem *item in [profile.fetchedResultsController fetchedObjects]) {
-        if ([item.ID integerValue] == 1) {
-            [profile pushBookshelvesControllerWithProfileItem:item animated:shouldAnimatePush];
-            break;
-        }
-    }
-    
 }
+
+//- (void)pushProfileAnimated:(BOOL)animated
+//{
+//    if (self.modalViewController) {
+//        [self dismissModalViewControllerAnimated:YES];
+//    }
+//    
+//    SCHProfileViewController_Shared *profile = [self profileViewController];
+//    SCHProfileItem *profileItem = [[profile profileItems] lastObject]; // Only one sample bookshelf so any result will do
+//    
+//    if (profileItem) {
+//        NSMutableArray *viewControllers = [NSMutableArray arrayWithObjects:self, profile, nil];
+//        [viewControllers addObjectsFromArray:[profile viewControllersForProfileItem:profileItem]];
+//        [self.navigationController setViewControllers:viewControllers animated:animated];
+//    } else {
+//        LambdaAlert *alert = [[LambdaAlert alloc]
+//                              initWithTitle:NSLocalizedString(@"Unable To Open the Sample Bookshelf", @"")
+//                              message:NSLocalizedString(@"There was a problem whilst opening the sample bookshelf. Please try again.", @"")];
+//        [alert addButtonWithTitle:NSLocalizedString(@"OK", @"") block:^{
+//        }];
+//        
+//        [alert show]; 
+//        [alert release]; 
+//    }
+//
+//}
+
 
 - (void)showCurrentProfileAnimated:(BOOL)animated
 {   
@@ -675,9 +679,6 @@ typedef enum {
             break;
         case kSCHStartingViewControllerProfileSyncStateWaitingForBookshelves:
             [self recheckBookshelvesForProfile];
-            break;
-        case kSCHStartingViewControllerProfileSyncStateSamplesSync:
-            [self checkDictionaryDownloadForSamples];
             break;
         default:
             break;

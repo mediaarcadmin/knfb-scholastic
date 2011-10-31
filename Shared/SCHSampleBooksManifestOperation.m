@@ -100,16 +100,21 @@
 - (void)connection:(NSURLConnection *)conn 
 didReceiveResponse:(NSURLResponse *)response
 {
+    BOOL success = YES;
+    
     if ([response isKindOfClass:[NSHTTPURLResponse class]] == YES) {
-        if ([(NSHTTPURLResponse *)response statusCode] != 200) {
-            [conn cancel];
+        if (![(NSHTTPURLResponse *)response statusCode] == 200) {
+            success = NO;
             NSLog(@"Error downloading file, errorCode: %d", [(NSHTTPURLResponse *)response statusCode]);
-            [self importFailedWithReason:NSLocalizedString(@"No response from the sample eBooks URL", @"")];
-            return;
         }
     }
     
-	[self.connectionData setLength:0];
+    if (!success) {
+        [conn cancel];
+        [self importFailedWithReason:NSLocalizedString(@"No response from the sample eBooks URL", @"")];
+    } else {
+        [self.connectionData setLength:0];
+    }
 }
 
 - (void)connection:(NSURLConnection *)connection didReceiveData:(NSData *)data
@@ -163,7 +168,10 @@ didStartElement:(NSString *)elementName
                [elementName isEqualToString:@"Author"] ||
                [elementName isEqualToString:@"Category"] ||
                [elementName isEqualToString:@"CoverUrl"] ||
-               [elementName isEqualToString:@"DownloadUrl"]) {
+               [elementName isEqualToString:@"DownloadUrl"] ||
+               [elementName isEqualToString:@"Version"] ||
+               [elementName isEqualToString:@"IsEnhanced"] ||
+               [elementName isEqualToString:@"FileSize"]) {
         [self.currentEntry setValue:self.currentStringValue forKey:elementName];
     }
     

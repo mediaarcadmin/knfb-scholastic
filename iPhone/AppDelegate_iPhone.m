@@ -13,6 +13,7 @@
 #import "SCHSyncManager.h"
 #import "SCHAuthenticationManager.h"
 #import "SCHThemeManager.h"
+#import "SCHAppStateManager.h"
 
 extern NSString * const kSCHAuthenticationManagerDeviceKey;
 
@@ -37,6 +38,8 @@ static NSTimeInterval const kAppDelegate_iPhoneSyncManagerWakeDelay = 5.0;
     if ([[SCHAuthenticationManager sharedAuthenticationManager] hasUsernameAndPassword]) {
         // skip the starter screen if already authenticated
         [self.startingViewController pushAuthenticatedProfileAnimated:NO];
+    } else if ([[SCHAppStateManager sharedAppStateManager] isSampleStore]) {
+        [self.startingViewController pushSamplesAnimated:NO];
     }
     
     return(YES);

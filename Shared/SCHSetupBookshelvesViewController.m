@@ -43,9 +43,12 @@
     [super viewDidLoad];
     [self setButtonBackground:self.setupBookshelvesButton];
     
-#if 0 // force a way out of this screen
+#if 1 // force a way out of this screen
     [self.setupBookshelvesButton setTitle:@"EXIT" forState:UIControlStateNormal];
-    [self.setupBookshelvesButton addTarget:self.profileSetupDelegate action:@selector(showCurrentSamplesAnimated:) forControlEvents:UIControlEventTouchDown];
+    
+    if ([self.profileSetupDelegate respondsToSelector:@selector(showCurrentProfileAnimated:)]) {
+        [self.setupBookshelvesButton addTarget:self.profileSetupDelegate action:@selector(showCurrentProfileAnimated:) forControlEvents:UIControlEventTouchDown];
+    }
 #endif
     
 }

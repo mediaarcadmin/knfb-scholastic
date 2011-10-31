@@ -21,7 +21,6 @@
 + (SCHAppStateManager *)sharedAppStateManager;
 
 - (SCHAppState *)appState;
-- (void)createAppStateIfNeeded;
 - (BOOL)canSync;
 - (BOOL)canSyncNotes;
 - (BOOL)canAuthenticate;

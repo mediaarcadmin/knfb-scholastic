@@ -13,6 +13,7 @@
 #import "Reachability.h"
 #import "SCHAccountValidation.h"
 #import "SCHParentalToolsWebViewController.h"
+#import "SCHUserDefaults.h"
 
 static const CGFloat kDeregisterContentHeightLandscape = 380;
 

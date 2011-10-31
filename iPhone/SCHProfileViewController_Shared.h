@@ -29,12 +29,13 @@
 @property (nonatomic, retain) NSFetchedResultsController *fetchedResultsController;
 @property (nonatomic, assign) id<SCHProfileSetupDelegate> profileSetupDelegate;
 
+- (NSArray *)profileItems;
+- (NSArray *)viewControllersForProfileItem:(SCHProfileItem *)profileItem;
+
 // for use by subclass
 - (void)releaseViewObjects;
 - (void)pushSettingsController;
 
 - (SCHBookShelfViewController *)newBookShelfViewController;
-- (void)pushBookshelvesControllerWithProfileItem:(SCHProfileItem *)profileItem 
-                                        animated:(BOOL)animated;
 
 @end

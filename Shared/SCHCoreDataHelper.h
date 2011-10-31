@@ -15,11 +15,6 @@
 extern NSString * const SCHCoreDataHelperManagedObjectContextDidChangeNotification;
 extern NSString * const SCHCoreDataHelperManagedObjectContext;
 
-typedef enum {
-	SCHCoreDataHelperStandardStore,
-    SCHCoreDataHelperSampleStore,
-} SCHCoreDataHelperStoreType;
-
 @interface SCHCoreDataHelper : NSObject 
 {
 }
@@ -28,10 +23,7 @@ typedef enum {
 @property (nonatomic, readonly) NSManagedObjectModel *managedObjectModel;
 @property (nonatomic, readonly) NSPersistentStoreCoordinator *persistentStoreCoordinator;
 
-- (void)setupSampleStore;
-- (void)removeSampleStore;
-- (void)setStoreType:(SCHCoreDataHelperStoreType)storeType;
-
 - (void)saveContext;
+- (void)resetStore;
 
 @end

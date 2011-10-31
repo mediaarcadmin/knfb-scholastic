@@ -179,30 +179,43 @@ NSString * const SCHAnnotationSyncComponentCompletedProfileIDs = @"SCHAnnotation
     
 	if (![self.managedObjectContext BITemptyEntity:kSCHAnnotationsItem error:&error]) {
 		NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
-		abort();
 	}	
 }
 
 - (void)method:(NSString *)method didCompleteWithResult:(NSDictionary *)result
-{	
+{
     NSNumber *profileID = [[[self.annotations allKeys] sortedArrayUsingSelector:@selector(compare:)] objectAtIndex:0];
     
-	if([method compare:kSCHLibreAccessWebServiceSaveProfileContentAnnotations] == NSOrderedSame) {
-        [self processSaveProfileContentAnnotations:profileID result:result];
-    } else if([method compare:kSCHLibreAccessWebServiceListProfileContentAnnotations] == NSOrderedSame) {	    
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{
-            self.backgroundThreadManagedObjectContext = [[[NSManagedObjectContext alloc] init] autorelease];
-            [self.backgroundThreadManagedObjectContext setPersistentStoreCoordinator:self.managedObjectContext.persistentStoreCoordinator];
-            
-            [self syncProfileContentAnnotations:[result objectForKey:kSCHLibreAccessWebServiceListProfileContentAnnotations]];	            
-            
-            self.backgroundThreadManagedObjectContext = nil;
-            
-            dispatch_async(dispatch_get_main_queue(), ^{
-                [self syncProfileContentAnnotationsCompleted:profileID usingMethod:method];
-            });                
-        });
+    @try {
+        if([method compare:kSCHLibreAccessWebServiceSaveProfileContentAnnotations] == NSOrderedSame) {
+            [self processSaveProfileContentAnnotations:profileID result:result];
+        } else if([method compare:kSCHLibreAccessWebServiceListProfileContentAnnotations] == NSOrderedSame) {	    
+            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{
+                self.backgroundThreadManagedObjectContext = [[[NSManagedObjectContext alloc] init] autorelease];
+                [self.backgroundThreadManagedObjectContext setPersistentStoreCoordinator:self.managedObjectContext.persistentStoreCoordinator];
+                
+                [self syncProfileContentAnnotations:[result objectForKey:kSCHLibreAccessWebServiceListProfileContentAnnotations]];	            
+                
+                self.backgroundThreadManagedObjectContext = nil;
+                
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    [self syncProfileContentAnnotationsCompleted:profileID usingMethod:method];
+                });                
+            });
+        }
     }
+    @catch (NSException *exception) {
+        [[NSNotificationCenter defaultCenter] postNotificationName:SCHAnnotationSyncComponentDidFailNotification 
+                                                            object:self 
+                                                          userInfo:[NSDictionary dictionaryWithObject:profileID 
+                                                                                               forKey:SCHAnnotationSyncComponentCompletedProfileIDs]];            
+        NSError *error = [NSError errorWithDomain:kBITAPIErrorDomain 
+                                             code:kBITAPIExceptionError 
+                                         userInfo:[NSDictionary dictionaryWithObject:[exception reason]
+                                                                              forKey:NSLocalizedDescriptionKey]];
+        [super method:method didFailWithError:error requestInfo:nil result:result];
+        [self.savedAnnotations removeAllObjects];
+    }    
 }
 
 - (void)processSaveProfileContentAnnotations:(NSNumber *)profileID 
@@ -1120,7 +1133,6 @@ NSString * const SCHAnnotationSyncComponentCompletedProfileIDs = @"SCHAnnotation
         batchCount = 0;
         if (![self.backgroundThreadManagedObjectContext save:&error]) {
             NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
-            abort();
         } 
     }
 }

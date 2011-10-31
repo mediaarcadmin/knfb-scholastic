@@ -29,6 +29,9 @@
 - (void)updatesBubbleTapped:(UIGestureRecognizer *)gr;
 - (void)obtainPasswordThenPushBookshelvesControllerWithProfileItem:(SCHProfileItem *)profileItem;
 - (void)queryPasswordBeforePushingBookshelvesControllerWithProfileItem:(SCHProfileItem *)profileItem;
+- (SCHBookIdentifier *)bookToLaunchForBookbookShelfViewController:(SCHBookShelfViewController *)bookShelfViewController;
+- (void)pushBookshelvesControllerWithProfileItem:(SCHProfileItem *)profileItem 
+                                        animated:(BOOL)animated;
 
 @end
 
@@ -356,43 +359,77 @@
     [passwordController release];
 }
 
+- (NSArray *)profileItems
+{
+    return [self.fetchedResultsController fetchedObjects];
+}
+
 #pragma mark - Push bookshelves controller
 
-- (void)pushBookshelvesControllerWithProfileItem:(SCHProfileItem *)profileItem 
-                                        animated:(BOOL)animated
+- (SCHBookIdentifier *)bookToLaunchForBookbookShelfViewController:(SCHBookShelfViewController *)bookShelfViewController
 {
-	SCHBookShelfViewController *bookShelfViewController = [self newBookShelfViewController];
+    SCHBookIdentifier *bookIdentifier = nil;
+    SCHProfileItem *profileItem = bookShelfViewController.profileItem;
+    
+    if (profileItem.AppProfile.AutomaticallyLaunchBook != nil) {
+        bookIdentifier = [[SCHBookIdentifier alloc] initWithEncodedString:profileItem.AppProfile.AutomaticallyLaunchBook];
+    }
+    
+    if (bookIdentifier && [bookShelfViewController isBookOnShelf:bookIdentifier]) {
+        return bookIdentifier;
+    } else {
+        return nil;
+    }
+
+}
+
+- (NSArray *)viewControllersForProfileItem:(SCHProfileItem *)profileItem
+{
+    NSMutableArray *viewControllers = [NSMutableArray array];
+    
+    SCHBookShelfViewController *bookShelfViewController = [[self newBookShelfViewController] autorelease];
     bookShelfViewController.profileItem = profileItem;
     bookShelfViewController.managedObjectContext = self.managedObjectContext;
     bookShelfViewController.profileSetupDelegate = self.profileSetupDelegate;
     
-    SCHBookIdentifier *bookIdentifier = nil;
-    if (profileItem.AppProfile.AutomaticallyLaunchBook != nil) {
-        bookIdentifier = [[SCHBookIdentifier alloc] initWithEncodedString:profileItem.AppProfile.AutomaticallyLaunchBook];
-    }
-    if (bookIdentifier && [bookShelfViewController isBookOnShelf:bookIdentifier] == YES) {        
+    [viewControllers addObject:bookShelfViewController];
+    
+    SCHBookIdentifier *bookIdentifier = [self bookToLaunchForBookbookShelfViewController:bookShelfViewController];
+    
+    if (bookIdentifier) {        
         NSError *error;
         SCHReadingViewController *readingViewController = [bookShelfViewController openBook:bookIdentifier error:&error];
         [bookIdentifier release];
         
         if (readingViewController) {
-            NSArray *viewControllers = [self.navigationController.viewControllers arrayByAddingObjectsFromArray:
-                                        [NSArray arrayWithObjects:bookShelfViewController, readingViewController, nil]];
-            [self.navigationController setViewControllers:(NSArray *)viewControllers animated:animated];
+            [viewControllers addObject:readingViewController];
         } else {
-            UIAlertView *errorAlert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"This eBook Could Not Be Opened", @"Could not open eBook") 
-                                                                 message:[error localizedDescription]
-                                                                delegate:nil 
-                                                       cancelButtonTitle:NSLocalizedString(@"OK", @"OK")
-                                                       otherButtonTitles:nil]; 
-            [errorAlert show]; 
-            [errorAlert release];
+            NSLog(@"Failed to automatically launch an eBook with error: %@ : %@", error, [error localizedDescription]);
         }
-        profileItem.AppProfile.AutomaticallyLaunchBook = nil;        
-    } else {
-        [self.navigationController pushViewController:bookShelfViewController animated:animated];
+        
+        profileItem.AppProfile.AutomaticallyLaunchBook = nil;
     }
-	[bookShelfViewController release], bookShelfViewController = nil;
+
+    return viewControllers;
+}
+
+- (void)pushBookshelvesControllerWithProfileItem:(SCHProfileItem *)profileItem 
+                                        animated:(BOOL)animated
+{
+    NSMutableArray *viewControllers = [NSMutableArray array];
+    
+    if (self.profileSetupDelegate) {
+        [viewControllers addObject:self.profileSetupDelegate];
+    }
+    
+    [viewControllers addObject:self];
+    
+    NSArray *profileControllers = [self viewControllersForProfileItem:profileItem];
+    if (profileControllers) {
+        [viewControllers addObjectsFromArray:profileControllers];
+    }
+    
+    [self.navigationController setViewControllers:viewControllers animated:animated];
 }
 
 - (SCHBookShelfViewController *)newBookShelfViewController

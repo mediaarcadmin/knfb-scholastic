@@ -11,8 +11,9 @@
 #import "SCHCoreDataHelper.h"
 #import "SCHSampleBooksManifestOperation.h"
 #import "SCHSyncManager.h"
+#import "LambdaAlert.h"
 
-NSString * const kSCHSampleBooksRemoteManifestURL = @"http://bits.blioreader.com/partners/Scholastic/SampleBookshelf/SampleManifest.xml";
+NSString * const kSCHSampleBooksRemoteManifestURL = @"http://bits.blioreader.com/partners/Scholastic/SampleBookshelf/SampleBookshelfManifest_v2.xml";
 NSString * const kSCHSampleBooksLocalManifestFile = @"LocalSamplesManifest.xml";
 
 typedef enum {
@@ -31,8 +32,10 @@ typedef enum {
 @property (nonatomic, retain) Reachability *reachabilityNotifier;
 @property (nonatomic, copy) NSURL *remoteManifestURL;
 @property (nonatomic, copy) NSURL *localManifestURL;
+@property (nonatomic, copy) SCHSampleBooksProcessingSuccessBlock successBlock;
 @property (nonatomic, copy) SCHSampleBooksProcessingFailureBlock failureBlock;
 @property (nonatomic, retain) NSMutableArray *sampleEntries;
+@property (nonatomic, retain) LambdaAlert *remoteSamplesAlert;
 
 - (BOOL)isConnected;
 - (void)enterBackground:(NSNotification *)note;
@@ -42,6 +45,7 @@ typedef enum {
 - (void)startRemote;
 - (void)reset;
 - (void)populateSampleStore;
+- (void)perfomSuccessBlockOnMainThread;
 - (void)perfomFailureBlockOnMainThreadWithReason:(NSString *)failureReason;
 + (BOOL)stateIsReadyToBegin:(SCHSampleBooksProcessingState)state;
 
@@ -55,8 +59,10 @@ typedef enum {
 @synthesize reachabilityNotifier;
 @synthesize remoteManifestURL;
 @synthesize localManifestURL;
+@synthesize successBlock;
 @synthesize failureBlock;
 @synthesize sampleEntries;
+@synthesize remoteSamplesAlert;
 
 - (void)dealloc
 {
@@ -80,8 +86,10 @@ typedef enum {
     
     [remoteManifestURL release], remoteManifestURL = nil;
     [localManifestURL release], localManifestURL = nil;
+    [successBlock release], successBlock = nil;
     [failureBlock release], failureBlock = nil;
     [sampleEntries release], sampleEntries = nil;
+    [remoteSamplesAlert release], remoteSamplesAlert = nil;
 
     [super dealloc];
 }
@@ -111,20 +119,33 @@ typedef enum {
 	return self;
 }
 
-- (void)importSampleBooksFromRemoteManifest:(NSURL *)remote localManifest:(NSURL *)local failureBlock:(SCHSampleBooksProcessingFailureBlock)aFailureBlock;
+- (void)importSampleBooksFromRemoteManifest:(NSURL *)remote 
+                              localManifest:(NSURL *)local 
+                               successBlock:(SCHSampleBooksProcessingSuccessBlock)aSuccessBlock
+                               failureBlock:(SCHSampleBooksProcessingFailureBlock)aFailureBlock 
 {
     [self cancel];
     
     self.remoteManifestURL = remote;
     self.localManifestURL = local;
+    self.successBlock = aSuccessBlock;
     self.failureBlock = aFailureBlock;
     self.sampleEntries = [NSMutableArray array];
     
     if (self.localManifestURL) {
         [self startLocal];
     } else if (self.remoteManifestURL) {
-        [self checkRemoteState];
-    }    
+        self.reachabilityNotifier = [Reachability reachabilityForInternetConnection];
+        
+        if ([self isConnected] && [SCHSampleBooksImporter stateIsReadyToBegin:self.processingState]) {
+            [self startRemote];
+        } else {
+            [self perfomFailureBlockOnMainThreadWithReason:NSLocalizedString(@"You must be connected to the internet", @"")];
+        }
+        
+    } else {
+        [self perfomFailureBlockOnMainThreadWithReason:NSLocalizedString(@"No sample eBooks were found", @"")];
+    }
 }
 
 - (void)checkRemoteState
@@ -191,6 +212,12 @@ typedef enum {
 
 - (void)startRemote
 {    
+    self.remoteSamplesAlert = [[[LambdaAlert alloc]
+                       initWithTitle:NSLocalizedString(@"Updating Sample eBooks", @"")
+                       message:@"\n"] autorelease];
+    [self.remoteSamplesAlert setSpinnerHidden:NO];
+    [self.remoteSamplesAlert show];
+    
     SCHSampleBooksManifestOperation *manifestOp = [[SCHSampleBooksManifestOperation alloc] init];
     manifestOp.manifestURL = self.remoteManifestURL;
     manifestOp.processingDelegate = self;
@@ -214,7 +241,9 @@ typedef enum {
                           
 - (void)populateSampleStore {
     if ([self.sampleEntries count]) {
-        if (![[SCHSyncManager sharedSyncManager] populateSampleStoreFromManifestEntries:self.sampleEntries]) {
+        if ([[SCHSyncManager sharedSyncManager] populateSampleStoreFromManifestEntries:self.sampleEntries]) {
+            [self perfomSuccessBlockOnMainThread];
+        } else {
             [self importFailedWithReason:NSLocalizedString(@"Unable to populate the store with the sample eBooks", @"")];
         }
     } else {
@@ -222,8 +251,26 @@ typedef enum {
     }
 }
 
+- (void)perfomSuccessBlockOnMainThread
+{    
+    [self.remoteSamplesAlert dismissAnimated:NO];
+    self.remoteSamplesAlert = nil;
+    
+    if (self.successBlock != nil) {
+        SCHSampleBooksProcessingSuccessBlock handler = Block_copy(self.successBlock);
+        self.successBlock = nil;
+        dispatch_async(dispatch_get_main_queue(), ^{
+            handler();
+        });
+        Block_release(handler);
+    }
+}
+
 - (void)perfomFailureBlockOnMainThreadWithReason:(NSString *)failureReason
 {
+    [self.remoteSamplesAlert dismissAnimated:NO];
+    self.remoteSamplesAlert = nil;
+    
     self.processingState = kSCHSampleBooksProcessingStateError;
 
     if (self.failureBlock != nil) {
@@ -238,8 +285,16 @@ typedef enum {
 
 - (void)importFailedWithReason:(NSString *)reason
 {
-    [self cancel];
-    [self perfomFailureBlockOnMainThreadWithReason:reason];
+    [self.processingQueue cancelAllOperations];
+    
+    if ([self.sampleEntries count]) {
+        // We have some samples, we might as well use them
+        [self populateSampleStore];
+    } else {
+        [self perfomFailureBlockOnMainThreadWithReason:reason];
+    }
+    
+    [self reset];
 }
 
 - (void)enterBackground:(NSNotification *)note
