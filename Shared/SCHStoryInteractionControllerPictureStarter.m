@@ -229,6 +229,12 @@ enum SCHToolType {
         [chooser setStickerDelegate:self];
     }
     
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+        UIImageView *stickerChooserOverlay = (UIImageView *)[self.stickerChoosersContainer viewWithTag:123];
+        UIImage *stretchable = [stickerChooserOverlay.image stretchableImageWithLeftCapWidth:0 topCapHeight:133];
+        stickerChooserOverlay.image = stretchable;
+    }
+    
     self.selectedStickerChooser = NSNotFound;
     self.selectedStickerIndex = NSNotFound;
     self.toolType = SCHToolTypePaint;
