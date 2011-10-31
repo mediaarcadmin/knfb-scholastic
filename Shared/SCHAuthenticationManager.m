@@ -21,6 +21,7 @@
 #import "SCHAccountValidation.h"
 #import "SCHBookManager.h"
 #import "BITAPIError.h"
+#import "SCHUserDefaults.h"
 
 #import "SCHNonDRMAuthenticationManager.h"
 
@@ -38,10 +39,6 @@ NSString * const kSCHAuthenticationManagerErrorDomain = @"AuthenticationManagerE
 NSInteger const kSCHAuthenticationManagerGeneralError = 2000;
 NSInteger const kSCHAuthenticationManagerLoginError = 2001;
 
-NSString * const kSCHAuthenticationManagerUserKey = @"AuthenticationManager.UserKey";
-NSString * const kSCHAuthenticationManagerDeviceKey = @"AuthenticationManager.DeviceKey";
-
-NSString * const kSCHAuthenticationManagerUsername = @"AuthenticationManager.Username";
 NSString * const kSCHAuthenticationManagerServiceName = @"Scholastic";
 
 NSTimeInterval const kSCHAuthenticationManagerSecondsInAMinute = 60.0;

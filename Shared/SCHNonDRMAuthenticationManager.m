@@ -13,6 +13,7 @@
 #import "SFHFKeychainUtils.h"
 #import "Reachability.h"
 #import "SCHAccountValidation.h"
+#import "SCHUserDefaults.h"
 
 @implementation SCHNonDRMAuthenticationManager
 

@@ -13,6 +13,7 @@
 #import "SCHUnderlinedButton.h"
 #import "Reachability.h"
 #import "SCHAccountValidation.h"
+#import "SCHUserDefaults.h"
 
 static const CGFloat kDeregisterContentHeightLandscape = 380;
 
