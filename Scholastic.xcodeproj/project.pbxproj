@@ -2478,6 +2478,7 @@
 		28CD431313F41A5B00919F18 /* SCHStoryInteractionWordBird_iPhone.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SCHStoryInteractionWordBird_iPhone.xib; sourceTree = "<group>"; };
 		28CD431613F41FAF00919F18 /* storyinteraction-lettertile-green~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "storyinteraction-lettertile-green~iphone.png"; sourceTree = "<group>"; };
 		28CD431713F41FAF00919F18 /* storyinteraction-lettertile-red~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "storyinteraction-lettertile-red~iphone.png"; sourceTree = "<group>"; };
+		28CE5898145ED36A00685190 /* SCHStoryInteractionPictureStarter_iPad_Portrait.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SCHStoryInteractionPictureStarter_iPad_Portrait.xib; sourceTree = "<group>"; };
 		28D050AD139CE93400D0C602 /* SCHStoryInteractionWhoSaidIt_iPhone.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SCHStoryInteractionWhoSaidIt_iPhone.xib; sourceTree = "<group>"; };
 		28D2AA0913D6E80D00BEB359 /* SCHDownloadDictionaryViewController~ipad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = "SCHDownloadDictionaryViewController~ipad.xib"; path = "iPad/SCHDownloadDictionaryViewController~ipad.xib"; sourceTree = "<group>"; };
 		28D2AA0C13D6E8F700BEB359 /* SCHDownloadDictionaryViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHDownloadDictionaryViewController.h; path = Shared/SCHDownloadDictionaryViewController.h; sourceTree = "<group>"; };
@@ -4524,6 +4525,7 @@
 				28789AD31404FDA400910D31 /* SCHStoryInteractionControllerPictureStarterFavorite.h */,
 				28789AD41404FDA400910D31 /* SCHStoryInteractionControllerPictureStarterFavorite.m */,
 				287186BC14027CCF000A3761 /* SCHStoryInteractionPictureStarter_iPad.xib */,
+				28CE5898145ED36A00685190 /* SCHStoryInteractionPictureStarter_iPad_Portrait.xib */,
 				28789ACD1404FC6100910D31 /* SCHStoryInteractionPictureStarter_iPhone.xib */,
 				28F8B3D913FEA46200BE0B47 /* SCHStoryInteractionPictureStarterCustom~ipad.xib */,
 				28789ADD1404FFA600910D31 /* SCHStoryInteractionPictureStarterCustom~iphone.xib */,

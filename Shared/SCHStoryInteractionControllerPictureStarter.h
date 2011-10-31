@@ -21,6 +21,7 @@
 @property (nonatomic, retain) IBOutlet SCHPictureStarterCanvas *drawingCanvas;
 @property (nonatomic, retain) IBOutlet SCHPictureStarterColorChooser *colorChooser;
 @property (nonatomic, retain) IBOutlet SCHPictureStarterSizeChooser *sizeChooser;
+@property (nonatomic, retain) IBOutlet UIView *stickerChoosersContainer;
 @property (nonatomic, retain) IBOutletCollection(SCHPictureStarterStickerChooser) NSArray *stickerChoosers;
 @property (nonatomic, retain) IBOutlet SCHStretchableImageButton *doneButton;
 @property (nonatomic, retain) IBOutlet SCHStretchableImageButton *clearButton;
