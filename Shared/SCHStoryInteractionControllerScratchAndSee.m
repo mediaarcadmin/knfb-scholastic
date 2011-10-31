@@ -193,7 +193,8 @@ enum ScratchState {
 
     if (iPad) {
         [self resizeCurrentViewToSize:CGSizeMake(self.contentsView.bounds.size.width, contentsHeight)
-             withAdditionalAdjustments:adjustments animated:animated];
+                    animationDuration:(animated ? 0.3 : 0)
+             withAdditionalAdjustments:adjustments];
     } else {
         adjustments();
     }

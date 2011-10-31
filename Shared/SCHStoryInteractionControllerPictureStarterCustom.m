@@ -35,10 +35,12 @@
 
 - (void)setupOpeningScreen
 {
+    const BOOL iPad = (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad);
+
     self.pictureStarterCustomViews = [[NSBundle mainBundle] loadNibNamed:@"SCHStoryInteractionPictureStarterCustom" owner:self options:nil];
     UIView *view = [self.pictureStarterCustomViews objectAtIndex:0];
     [self.contentsView addSubview:view];
-    [self resizeCurrentViewToSize:view.bounds.size withAdditionalAdjustments:nil animated:NO];
+    [self resizeCurrentViewToSize:view.bounds.size animationDuration:0 withAdditionalAdjustments:nil];
     
     SCHStoryInteractionPictureStarterCustom *pictureStarter = (SCHStoryInteractionPictureStarterCustom *)self.storyInteraction;
     for (UIButton *button in self.backgroundChooserButtons) {
@@ -46,7 +48,7 @@
         [button setBackgroundImage:[self imageAtPath:path] forState:UIControlStateNormal];
     }
     
-    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
+    if (!iPad) {
         [self setTitle:NSLocalizedString(@"To get started, choose a picture below.", @"Picture Starter custom opening screen title, iPhone")];
     }
 }
@@ -59,6 +61,10 @@
         SCHStoryInteractionPictureStarterCustom *pictureStarter = (SCHStoryInteractionPictureStarterCustom *)self.storyInteraction;
         
         UIView *introView = [self.pictureStarterCustomViews objectAtIndex:1];
+        if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone && UIInterfaceOrientationIsPortrait(self.interfaceOrientation)) {
+            introView.bounds = CGRectMake(0, 0, introView.bounds.size.height, introView.bounds.size.width);
+        }
+        
         self.introductionLabel.text = [pictureStarter introductionAtIndex:self.chosenBackgroundIndex];
         [self.containerView addSubview:introView];
         introView.center = CGPointMake(CGRectGetMidX(self.containerView.bounds), CGRectGetMidY(self.containerView.bounds));

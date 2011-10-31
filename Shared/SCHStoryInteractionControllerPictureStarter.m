@@ -150,43 +150,61 @@ enum SCHToolType {
 
 #pragma mark - rotation
 
-- (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
+- (CGSize)iPadContentsSizeForOrientation:(UIInterfaceOrientation)orientation
 {
     if (inDrawingScreen) {
-        [UIView animateWithDuration:duration
-                         animations:^{
-                             if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
-                                 if (UIInterfaceOrientationIsLandscape(toInterfaceOrientation)) {
-                                     [self resizeCurrentViewToSize:CGSizeMake(950, 700)
-                                         withAdditionalAdjustments:^{
-                                             self.drawingCanvas.superview.frame = CGRectMake(0, 0, 692, 615);
-                                             self.savingLabel.frame = CGRectMake(240, 320, 310, 60);
-                                             self.doneButton.frame = CGRectMake(43, 643, 210, 37);
-                                             self.clearButton.frame = CGRectMake(261, 643, 210, 37);
-                                             self.saveButton.frame = CGRectMake(479, 643, 210, 37);
-                                             self.colorChooser.frame = CGRectMake(720, 20, 210, 222);
-                                             self.sizeChooser.frame = CGRectMake(720, 250, 210, 50);
-                                             self.stickerChoosersContainer.frame = CGRectMake(720, 308, 210, 372);
-                                         }
-                                                          animated:NO];
-                                 } else {
-                                     [self resizeCurrentViewToSize:CGSizeMake(692, 885)
-                                         withAdditionalAdjustments:^{
-                                             self.drawingCanvas.superview.frame = CGRectMake(10, 20, 672, 615);
-                                             self.savingLabel.frame = CGRectMake(192, 298, 310, 60);
-                                             self.stickerChoosersContainer.frame = CGRectMake(10, 643, 210, 222);
-                                             self.colorChooser.frame = CGRectMake(241, 643, 210, 222);
-                                             self.sizeChooser.frame = CGRectMake(472, 643, 210, 50);
-                                             self.doneButton.frame = CGRectMake(472, 735, 210, 37);
-                                             self.clearButton.frame = CGRectMake(472, 783, 210, 37);
-                                             self.saveButton.frame = CGRectMake(472, 828, 210, 37);
-                                         }
-                                                          animated:NO];
-                                 }
-                             }  
-                         }];
+        if (UIInterfaceOrientationIsLandscape(orientation)) {
+            return CGSizeMake(950, 700);
+        } else {
+            return CGSizeMake(692, 885);
+        }
+    } else {
+        return [super iPadContentsSizeForOrientation:orientation];
     }
-    [super willRotateToInterfaceOrientation:toInterfaceOrientation duration:duration];
+}
+
+- (void)rotateToOrientation:(UIInterfaceOrientation)orientation
+{
+    if (inDrawingScreen) {
+        if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+            if (UIInterfaceOrientationIsLandscape(orientation)) {
+                self.drawingCanvas.superview.frame = CGRectMake(0, 0, 692, 615);
+                self.savingLabel.frame = CGRectMake(240, 320, 310, 60);
+                self.doneButton.frame = CGRectMake(43, 643, 210, 37);
+                self.clearButton.frame = CGRectMake(261, 643, 210, 37);
+                self.saveButton.frame = CGRectMake(479, 643, 210, 37);
+                self.colorChooser.frame = CGRectMake(720, 20, 210, 222);
+                self.sizeChooser.frame = CGRectMake(720, 250, 210, 50);
+                self.stickerChoosersContainer.frame = CGRectMake(720, 308, 210, 372);
+            } else {
+                self.drawingCanvas.superview.frame = CGRectMake(10, 20, 672, 615);
+                self.savingLabel.frame = CGRectMake(192, 298, 310, 60);
+                self.stickerChoosersContainer.frame = CGRectMake(10, 643, 210, 222);
+                self.colorChooser.frame = CGRectMake(241, 643, 210, 222);
+                self.sizeChooser.frame = CGRectMake(472, 643, 210, 50);
+                self.doneButton.frame = CGRectMake(472, 735, 210, 37);
+                self.clearButton.frame = CGRectMake(472, 783, 210, 37);
+                self.saveButton.frame = CGRectMake(472, 828, 210, 37);
+            }
+        } else {
+            if (UIInterfaceOrientationIsLandscape(orientation)) {
+                self.drawingCanvas.superview.frame = CGRectMake(10, 10, 339, 245);
+                self.doneButton.frame = CGRectMake(21, 263, 100, 37);
+                self.clearButton.frame = CGRectMake(129, 263, 100, 37);
+                self.saveButton.frame = CGRectMake(237, 263, 100, 37);
+                self.colorChooser.superview.frame = CGRectMake(357, 10, 103, 110);
+                self.stickerChoosersContainer.frame = CGRectMake(357, 127, 103, 173);
+            } else {
+                self.drawingCanvas.superview.frame = CGRectMake(10, 10, 295, 269);
+                self.savingLabel.frame = CGRectMake(25, 115, 260, 60);
+                self.colorChooser.superview.frame = CGRectMake(10, 287, 103, 173);
+                self.stickerChoosersContainer.frame = CGRectMake(121, 287, 103, 173);
+                self.doneButton.frame = CGRectMake(232, 333, 68, 37);
+                self.clearButton.frame = CGRectMake(232, 378, 68, 37);
+                self.saveButton.frame = CGRectMake(232, 423, 68, 37);
+            }
+        }
+    }
 }
 
 #pragma mark - subclass overrides

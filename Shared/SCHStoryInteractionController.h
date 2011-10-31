@@ -115,7 +115,7 @@ typedef enum
 - (void)presentNextView;
 
 // resize the existing content view
-- (void)resizeCurrentViewToSize:(CGSize)newSize withAdditionalAdjustments:(dispatch_block_t)adjustmentBlock animated:(BOOL)animated;
+- (void)resizeCurrentViewToSize:(CGSize)newSize animationDuration:(NSTimeInterval)animationDuration withAdditionalAdjustments:(dispatch_block_t)adjustmentBlock;
 
 // play the default audio sound for a button tap
 - (void)playDefaultButtonAudio;
@@ -212,5 +212,13 @@ typedef enum
 // The user tapped the play audio button in the top right corner; default behaviour is
 // to repeat the question defined by [self audioPathForQuestion].
 - (IBAction)playAudioButtonTapped:(id)sender;
+
+// Override this for a simpler alternative to willRotateToInterfaceOrientation:duration;
+// This method is called in the rotation animation block so any adjustments will automatically
+// be animated with the rotation.
+- (void)rotateToOrientation:(UIInterfaceOrientation)orientation;
+
+// Override to specify custom iPad contents size for a given orientation
+- (CGSize)iPadContentsSizeForOrientation:(UIInterfaceOrientation)orientation;
 
 @end

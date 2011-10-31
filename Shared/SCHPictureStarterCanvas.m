@@ -75,26 +75,44 @@
         self.deviceScale = [[UIScreen mainScreen] scale];
 
         self.backgroundLayer = [CALayer layer];
-        self.backgroundLayer.frame = self.bounds;
-        self.backgroundLayer.position = CGPointMake(CGRectGetMidX(self.bounds), CGRectGetMidY(self.bounds));
+        self.backgroundLayer.contentsGravity = kCAGravityResize;
         [self.layer addSublayer:self.backgroundLayer];
         
         self.paintedLayer = [CALayer layer];
-        self.paintedLayer.frame = self.backgroundLayer.bounds;
-        self.paintedLayer.position = self.backgroundLayer.position;
+        self.paintedLayer.contentsGravity = kCAGravityResize;
         [self.layer addSublayer:self.paintedLayer];
         
         self.liveLayer = [CALayer layer];
-        self.liveLayer.frame = self.backgroundLayer.bounds;
-        self.liveLayer.position = self.backgroundLayer.position;
         self.liveLayer.contentsScale = self.deviceScale;
+        self.liveLayer.contentsGravity = kCAGravityResize;
         [self.layer addSublayer:self.liveLayer];
+        
+        [self layoutSubviews];
 
         paintContext = [self newPaintContext];
-        
         self.paintedLayer.contents = nil;
     }
     return self;
+}
+
+- (void)layoutSubviews
+{
+    [super layoutSubviews];
+
+    self.backgroundLayer.bounds = self.bounds;
+    self.backgroundLayer.position = CGPointMake(CGRectGetMidX(self.bounds), CGRectGetMidY(self.bounds));
+    self.paintedLayer.bounds = self.backgroundLayer.bounds;
+    self.paintedLayer.position = self.backgroundLayer.position;
+    self.liveLayer.bounds = self.backgroundLayer.bounds;
+    self.liveLayer.position = self.backgroundLayer.position;
+
+    if (paintContext) {
+        // grab the current image and redraw into the resized context
+        CGImageRef currentContents = CGBitmapContextCreateImage(self.paintContext);
+        paintContext = [self newPaintContext];
+        CGContextDrawImage(paintContext, self.bounds, currentContents);
+        CGImageRelease(currentContents);
+    }
 }
 
 - (CGContextRef)newPaintContext

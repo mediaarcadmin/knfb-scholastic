@@ -1579,7 +1579,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     }
     
     [self.navigationController pushViewController:standalone animated:NO];
-    [aStoryInteractionController presentInHostView:self.navigationController.view
+    [aStoryInteractionController presentInHostView:standalone.view
                               withInterfaceOrientation:standalone.interfaceOrientation];
 
     self.storyInteractionViewController = standalone;

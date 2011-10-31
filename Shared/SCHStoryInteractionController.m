@@ -234,8 +234,8 @@ static Class controllerClassForStoryInteraction(SCHStoryInteraction *storyIntera
             background.autoresizingMask = (UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin
                                            | UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin);
         } else {
-            background.autoresizingMask = (UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight
-                                           | UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin
+            background.autoresizingMask = (/*UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight
+                                           | */UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin
                                            | UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin);
         }
         
@@ -403,25 +403,18 @@ static Class controllerClassForStoryInteraction(SCHStoryInteraction *storyIntera
     }
 }
 
-- (void)resizeCurrentViewToSize:(CGSize)newSize withAdditionalAdjustments:(dispatch_block_t)adjustmentBlock animated:(BOOL)animated
+- (void)resizeCurrentViewToSize:(CGSize)newSize animationDuration:(NSTimeInterval)animationDuration withAdditionalAdjustments:(dispatch_block_t)adjustmentBlock
 {
-    dispatch_block_t setupViews = ^{
-        [self setupGeometryForContentsView:self.contentsView contentsSize:newSize];
-       
-        if (adjustmentBlock) {
-            adjustmentBlock();
-        }
-    };
-    
-    if (animated) {
-        [UIView animateWithDuration:0.3
-                              delay:0
-                            options:UIViewAnimationOptionCurveEaseInOut | UIViewAnimationOptionBeginFromCurrentState
-                         animations:setupViews
-                         completion:nil];
-    } else {
-        setupViews();
-    }
+    [UIView animateWithDuration:animationDuration
+                          delay:0
+                        options:UIViewAnimationOptionCurveEaseInOut | UIViewAnimationOptionBeginFromCurrentState
+                     animations:^{
+                         [self setupGeometryForContentsView:self.contentsView contentsSize:newSize];
+                         if (adjustmentBlock) {
+                             adjustmentBlock();
+                         }
+                     }
+                     completion:nil];
 }
 
 - (void)setupGeometryForContentsView:(UIView *)contents contentsSize:(CGSize)contentsSize
@@ -454,10 +447,6 @@ static Class controllerClassForStoryInteraction(SCHStoryInteraction *storyIntera
     container.bounds = CGRectIntegral(superviewBounds);
     container.center = CGPointMake(floor(CGRectGetMidX(superviewBounds)), floor(CGRectGetMidY(superviewBounds)));
     
-    if (!iPad) {
-        contentsSize = [self maximumContentsSize];
-    }
-
     CGFloat backgroundWidth, backgroundHeight;
     switch (currentFrameStyle) {
         case SCHStoryInteractionFullScreen: {
@@ -541,6 +530,13 @@ static Class controllerClassForStoryInteraction(SCHStoryInteraction *storyIntera
 - (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
 {
     self.interfaceOrientation = toInterfaceOrientation;
+    
+    CGSize size = (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone ? [self maximumContentsSize] : [self iPadContentsSizeForOrientation:toInterfaceOrientation]);
+    [self resizeCurrentViewToSize:size
+                animationDuration:duration
+        withAdditionalAdjustments:^{
+            [self rotateToOrientation:toInterfaceOrientation];
+        }];
 }
 
 - (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation
@@ -852,6 +848,15 @@ static Class controllerClassForStoryInteraction(SCHStoryInteraction *storyIntera
 - (BOOL)shouldAnimateTransitionBetweenViews
 {
     return (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad);
+}
+
+- (void)rotateToOrientation:(UIInterfaceOrientation)orientation
+{
+}
+
+- (CGSize)iPadContentsSizeForOrientation:(UIInterfaceOrientation)orientation
+{
+    return self.contentsView.bounds.size;
 }
 
 @end
