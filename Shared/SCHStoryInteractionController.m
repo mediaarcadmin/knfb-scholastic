@@ -599,7 +599,9 @@ static Class controllerClassForStoryInteraction(SCHStoryInteraction *storyIntera
 
 - (void)removeFromHostView
 {
-    void (^teardownBlock)(void) = ^{ 
+    [self setUserInteractionsEnabled:NO];
+    
+    void (^teardownBlock)(BOOL) = ^(BOOL success){ 
         
         [self cancelQueuedAudio];
         
@@ -607,7 +609,6 @@ static Class controllerClassForStoryInteraction(SCHStoryInteraction *storyIntera
         
         // report success so that the reading view can keep track of it properly
         if (delegate && [delegate respondsToSelector:@selector(storyInteractionController:willDismissWithSuccess:)]) {
-            BOOL success = (self.controllerState == SCHStoryInteractionControllerStateInteractionFinishedSuccessfully);
             [delegate storyInteractionController:self willDismissWithSuccess:success];
         }
         
@@ -627,10 +628,10 @@ static Class controllerClassForStoryInteraction(SCHStoryInteraction *storyIntera
         double delayInSeconds = 0.75;
         dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);
         dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
-            teardownBlock();
+            teardownBlock(YES);
         });
     } else {
-        teardownBlock();
+        teardownBlock(NO);
     }
 }
 
