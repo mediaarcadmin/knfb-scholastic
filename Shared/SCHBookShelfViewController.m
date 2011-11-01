@@ -222,7 +222,12 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 131;
 											 selector:@selector(bookshelfSyncComponentDidComplete:)
 												 name:SCHBookshelfSyncComponentDidCompleteNotification
 											   object:nil];
-
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+											 selector:@selector(bookshelfSyncComponentBooksReceived:)
+												 name:SCHBookshelfSyncComponentBookReceivedNotification
+											   object:nil];
+    
     [[NSNotificationCenter defaultCenter] addObserver:self
 											 selector:@selector(bookshelfSyncComponentDidFail:)
 												 name:SCHBookshelfSyncComponentDidFailNotification
@@ -592,9 +597,30 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 131;
     }   
 }
 
+- (void)bookshelfSyncComponentBooksReceived:(NSNotification*)notification
+{
+    NSArray *identifiers = [[notification userInfo] objectForKey:@"bookIdentifiers"];
+    NSArray *currentBooks = [self.profileItem allBookIdentifiers];
+    
+    BOOL updateBookshelf = NO;
+    
+    for (SCHBookIdentifier *identifier in identifiers) {
+        if ([currentBooks containsObject:identifier]) {
+            updateBookshelf = YES;
+            break;
+        }
+    }
+    
+    if (updateBookshelf) {
+        self.books = [self.profileItem allBookIdentifiers];
+        [self reloadData];
+    }
+}
+
 - (void)bookshelfSyncComponentDidComplete:(NSNotification *)notification
 {
     [self dismissLoadingView];
+    self.books = [self.profileItem allBookIdentifiers];
     [self reloadData];
 }
 
