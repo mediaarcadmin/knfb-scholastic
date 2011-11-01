@@ -168,23 +168,27 @@ enum SCHToolType {
     if (inDrawingScreen) {
         if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
             if (UIInterfaceOrientationIsLandscape(orientation)) {
-                self.drawingCanvas.superview.frame = CGRectMake(0, 0, 692, 615);
-                self.savingLabel.frame = CGRectMake(240, 320, 310, 60);
-                self.doneButton.frame = CGRectMake(43, 643, 210, 37);
-                self.clearButton.frame = CGRectMake(261, 643, 210, 37);
-                self.saveButton.frame = CGRectMake(479, 643, 210, 37);
-                self.colorChooser.frame = CGRectMake(720, 20, 210, 222);
-                self.sizeChooser.frame = CGRectMake(720, 250, 210, 50);
-                self.stickerChoosersContainer.frame = CGRectMake(720, 308, 210, 372);
+                self.drawingCanvas.superview.frame = CGRectMake(10, 10, 692, 615);
+                self.savingLabel.frame = CGRectMake(250, 330, 310, 60);
+                self.doneButton.frame = CGRectMake(53, 653, 210, 37);
+                self.clearButton.frame = CGRectMake(271, 653, 210, 37);
+                self.saveButton.frame = CGRectMake(489, 653, 210, 37);
+                self.colorChooser.frame = CGRectMake(730, 10, 210, 222);
+                self.sizeChooser.center = CGPointMake(835, 275);
+                self.sizeChooser.bounds = CGRectMake(0, 0, 210, 50);
+                self.sizeChooser.transform = CGAffineTransformIdentity;
+                self.stickerChoosersContainer.frame = CGRectMake(730, 318, 210, 372);
             } else {
                 self.drawingCanvas.superview.frame = CGRectMake(10, 20, 672, 615);
                 self.savingLabel.frame = CGRectMake(192, 298, 310, 60);
-                self.stickerChoosersContainer.frame = CGRectMake(10, 643, 210, 222);
-                self.colorChooser.frame = CGRectMake(241, 643, 210, 222);
-                self.sizeChooser.frame = CGRectMake(472, 643, 210, 50);
-                self.doneButton.frame = CGRectMake(472, 735, 210, 37);
-                self.clearButton.frame = CGRectMake(472, 783, 210, 37);
-                self.saveButton.frame = CGRectMake(472, 828, 210, 37);
+                self.stickerChoosersContainer.frame = CGRectMake(472, 643, 210, 222);
+                self.colorChooser.frame = CGRectMake(180, 643, 210, 222);
+                self.sizeChooser.center = CGPointMake(430, 754);
+                self.sizeChooser.bounds = CGRectMake(0, 0, 222, 50);
+                self.sizeChooser.transform = CGAffineTransformMakeRotation(M_PI_2);
+                self.doneButton.frame = CGRectMake(10, 735, 155, 37);
+                self.clearButton.frame = CGRectMake(10, 783, 155, 37);
+                self.saveButton.frame = CGRectMake(10, 828, 155, 37);
             }
         } else {
             if (UIInterfaceOrientationIsLandscape(orientation)) {
