@@ -274,6 +274,7 @@ static Class controllerClassForStoryInteraction(SCHStoryInteraction *storyIntera
             UIImage *closeImage = [UIImage imageNamed:[NSString stringWithFormat:@"storyinteraction-bolt-%@", age]];
             self.closeButton = [UIButton buttonWithType:UIButtonTypeCustom];
             self.closeButton.autoresizingMask = 0;
+            self.closeButton.bounds = (CGRect){ CGPointZero, closeImage.size };
             [self.closeButton setImage:closeImage forState:UIControlStateNormal];
             [self.closeButton addTarget:self action:@selector(closeButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
         }
@@ -322,8 +323,7 @@ static Class controllerClassForStoryInteraction(SCHStoryInteraction *storyIntera
             [self.containerView addSubview:self.closeButton];
             [self.backgroundView setUserInteractionEnabled:NO];
             if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
-                // we set the background frame explicitly on iPad
-                self.backgroundView.autoresizingMask = 0;
+                self.backgroundView.autoresizingMask &= ~UIViewAutoresizingFlexibleLeftMargin;
             }
         } else {
             [self.backgroundView addSubview:newContentsView];
@@ -463,30 +463,47 @@ static Class controllerClassForStoryInteraction(SCHStoryInteraction *storyIntera
             title.frame = UIEdgeInsetsInsetRect(CGRectMake(0, 0, backgroundWidth, contentInsets.top), titleInsets);
             contents.bounds = CGRectMake(0, 0, contentsSize.width, contentsSize.height);
             contents.center = CGPointMake(floorf(backgroundWidth/2), floorf((backgroundHeight-contentInsets.top-contentInsets.bottom)/2+contentInsets.top));
+            close.center = CGPointMake(closePosition.x+CGRectGetWidth(close.bounds)/2, closePosition.y+CGRectGetHeight(close.bounds)/2);
+            readAloud.center = CGPointMake(backgroundWidth+readAloudPosition.x-CGRectGetWidth(readAloud.bounds)/2,
+                                           readAloudPosition.y+CGRectGetHeight(readAloud.bounds)/2);
             break;
         }
         case SCHStoryInteractionTitleOverlaysContentsAtTop: {
             CGRect titleFrame = [self overlaidTitleFrame];
             backgroundWidth = MAX(background.image.size.width, titleFrame.size.width);
             backgroundHeight = MAX(background.image.size.height, titleFrame.size.height);
-            background.center = CGPointMake(floorf(CGRectGetMidX(titleFrame)), floorf(CGRectGetMidY(titleFrame)));
+            if (iPad) {
+                background.center = CGPointMake(floorf(CGRectGetMidX(titleFrame)), floorf(CGRectGetMidY(titleFrame)));
+            } else {
+                background.center = CGPointMake(CGRectGetMidX(container.bounds), CGRectGetMidY(container.bounds));
+            }
             background.bounds = CGRectIntegral(CGRectMake(0, 0, backgroundWidth, backgroundHeight));
             contents.bounds = container.bounds;
             contents.center = CGPointMake(floorf(CGRectGetMidX(container.bounds)), floorf(CGRectGetMidY(container.bounds)));
             titleInsets.top = titleInsets.bottom;
             title.frame = UIEdgeInsetsInsetRect((CGRect){CGPointZero, titleFrame.size}, titleInsets);
+            close.center = CGPointMake(background.center.x-backgroundWidth/2+closePosition.x+CGRectGetWidth(close.bounds)/2,
+                                       background.center.y-backgroundHeight/2+closePosition.y+CGRectGetHeight(close.bounds)/2);
+            readAloud.center = CGPointMake(background.center.x+backgroundWidth/2+readAloudPosition.x-CGRectGetWidth(readAloud.bounds)/2,
+                                           background.center.y-backgroundHeight/2+readAloudPosition.y+CGRectGetHeight(readAloud.bounds)/2);
             break;
         }
         case SCHStoryInteractionTitleOverlaysContentsAtBottom: {
             CGRect titleFrame = [self overlaidTitleFrame];
+            backgroundWidth = MAX(background.image.size.width, titleFrame.size.width);
+            backgroundHeight = MAX(background.image.size.height, titleFrame.size.height);
             if (iPad) {
-                backgroundWidth = MAX(background.image.size.width, titleFrame.size.width);
-                backgroundHeight = MAX(background.image.size.height, titleFrame.size.height);
                 background.center = CGPointMake(floorf(CGRectGetMidX(titleFrame)), floorf(CGRectGetHeight(container.bounds)-CGRectGetMidY(titleFrame)));
+                close.center = CGPointMake(background.center.x-backgroundWidth/2+closePosition.x+CGRectGetWidth(close.bounds)/2,
+                                           background.center.y-backgroundHeight*2+closePosition.y+CGRectGetHeight(close.bounds)/2);
+                readAloud.center = CGPointMake(background.center.x+backgroundWidth/2+readAloudPosition.x-CGRectGetWidth(readAloud.bounds)/2,
+                                               background.center.y-backgroundHeight*2+readAloudPosition.y+CGRectGetHeight(readAloud.bounds)/2);
             } else {
-                backgroundWidth = background.image.size.width;
-                backgroundHeight = background.image.size.height;
-                background.center = CGPointMake(floorf(CGRectGetMidX(container.bounds)), floorf(CGRectGetMidY(container.bounds)));
+                background.center = CGPointMake(CGRectGetMidX(container.bounds), CGRectGetMidY(container.bounds));
+                close.center = CGPointMake(background.center.x-backgroundWidth/2+closePosition.x+CGRectGetWidth(close.bounds)/2,
+                                           background.center.y+backgroundHeight/2-closePosition.y-CGRectGetHeight(close.bounds)/2);
+                readAloud.center = CGPointMake(background.center.x+backgroundWidth/2+readAloudPosition.x-CGRectGetWidth(readAloud.bounds)/2,
+                                               background.center.y+backgroundHeight/2-readAloudPosition.y-CGRectGetHeight(readAloud.bounds)/2);
             }
             background.transform = CGAffineTransformMakeRotation(M_PI);
             background.bounds = CGRectIntegral(CGRectMake(0, 0, backgroundWidth, backgroundHeight));
@@ -498,22 +515,6 @@ static Class controllerClassForStoryInteraction(SCHStoryInteraction *storyIntera
             break;
         }
     }
-
-    UIImage *closeImage = [close imageForState:UIControlStateNormal];
-
-    if (currentFrameStyle == SCHStoryInteractionTitleOverlaysContentsAtBottom) {
-        closePosition.y = CGRectGetMaxY(background.bounds) - closePosition.y - closeImage.size.height;
-        readAloudPosition.y = CGRectGetMaxY(background.bounds) - readAloudPosition.y - CGRectGetHeight(readAloud.bounds);
-    }
-    
-    CGPoint closeCenterInBackgroundView = CGPointMake(floorf(closePosition.x+closeImage.size.width/2),
-                                                      floorf(closePosition.y+closeImage.size.height/2));
-    close.center = [self.backgroundView convertPoint:closeCenterInBackgroundView toView:close.superview];
-    close.bounds = (CGRect){ CGPointZero, closeImage.size };
-    
-    CGPoint readAloudCenterInBackgroundView = CGPointMake(floorf(backgroundWidth+readAloudPosition.x-CGRectGetMidX(readAloud.bounds)),
-                                                          floorf(readAloudPosition.y+CGRectGetMidX(readAloud.bounds)));
-    readAloud.center = [self.backgroundView convertPoint:readAloudCenterInBackgroundView toView:readAloudButton.superview];
 }
 
 - (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
