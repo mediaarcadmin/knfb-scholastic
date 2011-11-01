@@ -114,6 +114,10 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 131;
     [loadingView release], loadingView = nil;
     
     [[NSNotificationCenter defaultCenter] removeObserver:self
+                                                    name:SCHBookshelfSyncComponentBookReceivedNotification
+                                                  object:nil];
+
+    [[NSNotificationCenter defaultCenter] removeObserver:self
 												 name:SCHBookshelfSyncComponentDidCompleteNotification
 											   object:nil];
     
@@ -218,6 +222,11 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 131;
 	self.componentCache = aCache;
 	[aCache release], aCache = nil;
 	
+    [[NSNotificationCenter defaultCenter] addObserver:self
+											 selector:@selector(bookshelfSyncComponentBookReceived:)
+												 name:SCHBookshelfSyncComponentBookReceivedNotification
+											   object:nil];
+
     [[NSNotificationCenter defaultCenter] addObserver:self
 											 selector:@selector(bookshelfSyncComponentDidComplete:)
 												 name:SCHBookshelfSyncComponentDidCompleteNotification
@@ -590,6 +599,32 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 131;
         self.books = [self.profileItem allBookIdentifiers];
         [self dismissLoadingView];        
     }   
+}
+
+- (void)bookshelfSyncComponentBookReceived:(NSNotification *)notification
+{
+    NSArray *recievedBookIdentifiers = [[notification userInfo] objectForKey:@"bookIdentifiers"];
+    
+    if ([recievedBookIdentifiers count] > 0) {
+        NSArray *profileBooks = [self.profileItem bookIdentifiersAssignedToProfile];
+        
+        for (SCHBookIdentifier *recievedBook in recievedBookIdentifiers) {
+            BOOL foundBook = NO;
+            for (SCHBookIdentifier *profileBook in profileBooks) {
+                if ([recievedBook isEqual:profileBook] == YES) {
+                    foundBook = YES;
+                    break;
+                }
+            }
+        
+            if (foundBook == YES) {
+                self.gridViewNeedsRefreshed = YES;
+                self.listViewNeedsRefreshed = YES;
+                [self reloadData];            
+                break;
+            }
+        }
+    }
 }
 
 - (void)bookshelfSyncComponentDidComplete:(NSNotification *)notification
