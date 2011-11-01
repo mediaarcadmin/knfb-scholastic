@@ -51,6 +51,10 @@ struct BackgroundViewState {
 {
     [super viewDidLoad];
 
+    self.view.autoresizingMask = (UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight
+                                  | UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin
+                                  | UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin);
+    
     [self.backgroundView removeFromSuperview];
     self.backgroundView.center = CGPointMake(CGRectGetMidX(self.view.bounds), CGRectGetMidY(self.view.bounds));
     self.backgroundView.bounds = self.view.bounds;

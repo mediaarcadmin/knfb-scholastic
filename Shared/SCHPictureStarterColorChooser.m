@@ -66,6 +66,12 @@ enum {
     return self;
 }
 
+- (void)setBounds:(CGRect)bounds
+{
+    [super setBounds:bounds];
+    [self setNeedsDisplay];
+}
+
 - (UIColor *)selectedColor
 {
     if (self.selectedColorIndex == NSNotFound) {

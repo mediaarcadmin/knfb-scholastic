@@ -55,7 +55,7 @@
             self.scrollView.zoomScale = widthScale;
         }
     } else {
-        [self resizeCurrentViewToSize:self.imageView.image.size withAdditionalAdjustments:nil animated:NO];
+        [self resizeCurrentViewToSize:self.imageView.image.size animationDuration:0 withAdditionalAdjustments:nil];
         self.scrollView.hidden = YES;
     } 
     
