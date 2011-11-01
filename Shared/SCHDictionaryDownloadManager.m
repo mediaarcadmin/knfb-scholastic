@@ -393,10 +393,8 @@ static SCHDictionaryDownloadManager *sharedManager = nil;
         }
         case SCHDictionaryProcessingStateHelpVideoManifest:
         {
-            NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-            
             // check to see if we need to download help videos
-            NSString *lastPrefUpdate = [defaults stringForKey:@"helpVideoCurrentCompletedVersion"];
+            NSString *lastPrefUpdate = [self helpVideoVersion];
             
             // this could be changed to a version check - if the version 
             // in the manifest is higher, redownload the videos
@@ -745,8 +743,7 @@ static SCHDictionaryDownloadManager *sharedManager = nil;
 
 - (BOOL)haveHelpVideosDownloaded
 {
-    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    NSString *helpVideoVersion = [defaults objectForKey:@"helpVideoCurrentCompletedVersion"];
+    NSString *helpVideoVersion = [self helpVideoVersion];
     return (helpVideoVersion?YES:NO);
 }
 
@@ -812,6 +809,45 @@ static SCHDictionaryDownloadManager *sharedManager = nil;
                                                 [self dictionaryVersion]]];
     }
 }
+
+#pragma mark - Help Video Version
+
+- (NSString *)helpVideoVersion
+{
+    __block NSString *helpVideoVersion;
+    [self withAppDictionaryStatePerform:^(SCHAppDictionaryState *state) {
+        helpVideoVersion = [[state helpVideoVersion] retain];
+    }];
+    return [helpVideoVersion autorelease];
+}
+
+- (NSString *)helpVideoOlderURL
+{
+    __block NSString *helpVideoURL;
+    [self withAppDictionaryStatePerform:^(SCHAppDictionaryState *state) {
+        helpVideoURL = [[state helpVideoOlderURL] retain];
+    }];
+    return [helpVideoURL autorelease];
+}
+
+- (NSString *)helpVideoYoungerURL
+{
+    __block NSString *helpVideoURL;
+    [self withAppDictionaryStatePerform:^(SCHAppDictionaryState *state) {
+        helpVideoURL = [[state helpVideoYoungerURL] retain];
+    }];
+    return [helpVideoURL autorelease];
+}
+
+- (void)setHelpVideoVersion:(NSString *)newVersion olderURL:(NSString *)olderURL youngerURL:(NSString*)youngerURL
+{
+    [self withAppDictionaryStatePerform:^(SCHAppDictionaryState *state) {
+        state.helpVideoVersion = newVersion;
+        state.helpVideoOlderURL = olderURL;
+        state.helpVideoYoungerURL = youngerURL;
+    }];	
+}
+
 
 #pragma mark -
 #pragma mark Dictionary Version
