@@ -140,6 +140,11 @@ static SCHProcessingManager *sharedManager = nil;
 												   object:nil];			
 		
 		[[NSNotificationCenter defaultCenter] addObserver:sharedManager 
+												 selector:@selector(checkStateForBook:) 
+													 name:SCHBookshelfSyncComponentBookReceivedNotification 
+												   object:nil];			
+		
+		[[NSNotificationCenter defaultCenter] addObserver:sharedManager 
 												 selector:@selector(enterBackground) 
 													 name:UIApplicationDidEnterBackgroundNotification 
 												   object:nil];			
@@ -205,6 +210,26 @@ static SCHProcessingManager *sharedManager = nil;
 }
 
 #pragma mark - Books State Check
+
+- (void)checkStateForBook: (NSNotification *)notification
+{
+    NSAssert([NSThread isMainThread], @"checkStateForBook must run on main thread");
+
+    SCHBookIdentifier *identifier = [[notification userInfo] objectForKey:@"bookIdentifier"];
+
+    SCHAppBook *book = [[SCHBookManager sharedBookManager] bookWithIdentifier:identifier inManagedObjectContext:self.managedObjectContext];
+    
+    if (book != nil) {
+        // if the book is currently processing, it will already be taken care of 
+        // when it finishes processing, so no need to add it for consideration
+        if (![book isProcessing] && [self identifierNeedsProcessing:identifier]) {
+            [self processIdentifier:identifier];
+        }
+    }
+
+    [self checkIfProcessing];
+}
+
 
 - (void)checkStateForAllBooks
 {
