@@ -28,6 +28,7 @@ NSString * const SCHBookshelfSyncComponentDidFailNotification = @"SCHBookshelfSy
 
 @interface SCHBookshelfSyncComponent ()
 
+- (void)postBookshelfSyncComponentBookReceivedNotification:(NSArray *)contentMetadataItems;
 - (BOOL)updateContentMetadataItems;
 
 - (NSArray *)localContentMetadataItems;
@@ -101,21 +102,7 @@ NSString * const SCHBookshelfSyncComponentDidFailNotification = @"SCHBookshelfSy
             
             if (self.useIndividualRequests == YES) {
                 if ([list count] > 0) {
-                    NSString *ISBN = [[list objectAtIndex:0] valueForKey:kSCHLibreAccessWebServiceContentIdentifier];
-                    NSString *DRMQualifier = [[list objectAtIndex:0] valueForKey:kSCHLibreAccessWebServiceDRMQualifier];                
-                    NSMutableDictionary *userInfo = [NSMutableDictionary dictionary];
-                    if (ISBN != nil) {
-                        [userInfo setObject:ISBN forKey:kSCHLibreAccessWebServiceContentIdentifier];
-                    }
-                    if (DRMQualifier != nil) {
-                        [userInfo setObject:DRMQualifier forKey:kSCHLibreAccessWebServiceDRMQualifier];
-                    }
-                    NSLog(@"%@ Book information received", ISBN);
-                    [[NSNotificationCenter defaultCenter] postNotificationName:SCHBookshelfSyncComponentBookReceivedNotification 
-                                                                        object:self 
-                                                                      userInfo:userInfo];				
-                } else {
-                    NSLog(@"Book information received");				
+                    [self postBookshelfSyncComponentBookReceivedNotification:[NSArray arrayWithObject:[list objectAtIndex:0]]];
                 }
                 
                 self.didReceiveSuccessfulResponse = YES;                
@@ -125,7 +112,8 @@ NSString * const SCHBookshelfSyncComponentDidFailNotification = @"SCHBookshelfSy
                     [super method:method didCompleteWithResult:nil];				
                 }
             } else {
-                NSLog(@"Book information received");		
+                [self postBookshelfSyncComponentBookReceivedNotification:list];
+                
                 [[NSNotificationCenter defaultCenter] postNotificationName:SCHBookshelfSyncComponentDidCompleteNotification 
                                                                     object:self];
                 [super method:method didCompleteWithResult:nil];				
@@ -147,6 +135,31 @@ NSString * const SCHBookshelfSyncComponentDidFailNotification = @"SCHBookshelfSy
                                                                 object:self];
             [super method:method didCompleteWithResult:nil];				        
         }
+    }
+}
+
+- (void)postBookshelfSyncComponentBookReceivedNotification:(NSArray *)contentMetadataItems
+{
+    NSMutableArray *bookIdentifiers = [NSMutableArray arrayWithCapacity:[contentMetadataItems count]];
+    
+    for (NSDictionary *book in contentMetadataItems) {
+        @try {
+            [bookIdentifiers addObject:[[[SCHBookIdentifier alloc] initWithObject:book] autorelease]];
+        }
+        @catch (NSException *exception) {
+            NSLog(@"%@", exception);
+        }
+        @finally {
+            // if any of the responses do not have the book identifier 
+            // information then we just ignore them and continue
+        }
+    }
+    
+    if ([bookIdentifiers count] > 0) {
+        NSLog(@"Book information received:\n%@", bookIdentifiers);
+        [[NSNotificationCenter defaultCenter] postNotificationName:SCHBookshelfSyncComponentBookReceivedNotification 
+                                                            object:self 
+                                                          userInfo:[NSDictionary dictionaryWithObject:bookIdentifiers forKey:@"bookIdentifiers"]];				
     }
 }
 
