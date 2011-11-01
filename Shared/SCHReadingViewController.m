@@ -1578,6 +1578,9 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
         [standalone attachBackgroundView:self.readingView];
     }
     
+    // ensure the hosting view is the correct size before laying out the SI view
+    standalone.view.frame = self.navigationController.view.bounds;
+    
     [self.navigationController pushViewController:standalone animated:NO];
     [aStoryInteractionController presentInHostView:standalone.view
                               withInterfaceOrientation:standalone.interfaceOrientation];

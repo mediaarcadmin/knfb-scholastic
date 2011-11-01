@@ -17,7 +17,7 @@ struct BackgroundViewState {
 
 @interface SCHStoryInteractionStandaloneViewController ()
 @property (nonatomic, retain) UIView *backgroundView;
-@property (nonatomic, assign) struct BackgroundViewState backgroundViewState;
+@property (nonatomic, assign) struct BackgroundViewState backgroundViewState;     
 @end
 
 @implementation SCHStoryInteractionStandaloneViewController
@@ -50,7 +50,7 @@ struct BackgroundViewState {
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-
+    
     self.view.autoresizingMask = (UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight
                                   | UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin
                                   | UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin);
@@ -66,11 +66,6 @@ struct BackgroundViewState {
 {
     [self releaseViewObjects];
     [super viewDidUnload];
-}
-
-- (void)viewWillAppear:(BOOL)animated
-{
-    [super viewWillAppear:animated];
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
