@@ -46,14 +46,14 @@ NSString * const kSCHBookIdentifierBookIdentifier = @"BookIdentifier";
         if (aIsbn != nil && aDRMQualifier != nil) {
             ret = [[SCHBookIdentifier alloc] initWithISBN:aIsbn DRMQualifier:aDRMQualifier];
         } else {
-            [NSException exceptionWithName:NSInvalidArgumentException 
-                                    reason:@"missing contentIdentifer and/or DRMQualifer passed to initWithObject:" 
-                                  userInfo:nil];            
+            @throw [NSException exceptionWithName:NSInvalidArgumentException 
+                                           reason:@"missing contentIdentifer and/or DRMQualifer passed to initWithObject:" 
+                                         userInfo:nil];            
         }
     } else {
-        [NSException exceptionWithName:NSInvalidArgumentException 
-                                reason:@"null object passed to initWithObject:" 
-                              userInfo:nil];
+        @throw [NSException exceptionWithName:NSInvalidArgumentException 
+                                       reason:@"null object passed to initWithObject:" 
+                                     userInfo:nil];
     }
     
     return(ret);
