@@ -378,7 +378,7 @@
 
         self.errorBadge.hidden = YES;
         
-        if (bookState >= SCHBookProcessingStateNoCoverImage) {
+        if (bookState >= SCHBookProcessingStateNoURLs) {
             [self.activitySpinner startAnimating];
         }
         

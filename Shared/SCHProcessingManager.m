@@ -215,15 +215,18 @@ static SCHProcessingManager *sharedManager = nil;
 {
     NSAssert([NSThread isMainThread], @"checkStateForBook must run on main thread");
 
-    SCHBookIdentifier *identifier = [[notification userInfo] objectForKey:@"bookIdentifier"];
+    NSArray *identifiers = [[notification userInfo] objectForKey:@"bookIdentifiers"];
 
-    SCHAppBook *book = [[SCHBookManager sharedBookManager] bookWithIdentifier:identifier inManagedObjectContext:self.managedObjectContext];
+    for (SCHBookIdentifier *identifier in identifiers) {
     
-    if (book != nil) {
-        // if the book is currently processing, it will already be taken care of 
-        // when it finishes processing, so no need to add it for consideration
-        if (![book isProcessing] && [self identifierNeedsProcessing:identifier]) {
-            [self processIdentifier:identifier];
+        SCHAppBook *book = [[SCHBookManager sharedBookManager] bookWithIdentifier:identifier inManagedObjectContext:self.managedObjectContext];
+        
+        if (book != nil) {
+            // if the book is currently processing, it will already be taken care of 
+            // when it finishes processing, so no need to add it for consideration
+            if (![book isProcessing] && [self identifierNeedsProcessing:identifier]) {
+                [self processIdentifier:identifier];
+            }
         }
     }
 

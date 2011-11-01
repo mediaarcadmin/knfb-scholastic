@@ -121,20 +121,32 @@ NSString * const SCHBookshelfSyncComponentDidFailNotification = @"SCHBookshelfSy
         }
     }
     @catch (NSException *exception) {
-        if (self.requestCount < 1 && self.didReceiveSuccessfulResponse == NO) {
+        if (self.useIndividualRequests == YES) {
+            if (self.requestCount < 1) {
+                if (self.didReceiveSuccessfulResponse == NO) {
+                    [[NSNotificationCenter defaultCenter] postNotificationName:SCHBookshelfSyncComponentDidFailNotification 
+                                                                        object:self];
+                    
+                    NSError *error = [NSError errorWithDomain:kBITAPIErrorDomain 
+                                                         code:kBITAPIExceptionError 
+                                                     userInfo:[NSDictionary dictionaryWithObject:[exception reason]
+                                                                                          forKey:NSLocalizedDescriptionKey]];
+                    [super method:method didFailWithError:error requestInfo:nil result:result];
+                } else {
+                    [[NSNotificationCenter defaultCenter] postNotificationName:SCHBookshelfSyncComponentDidCompleteNotification 
+                                                                        object:self];
+                    [super method:method didCompleteWithResult:nil];				        
+                }
+            }
+        } else {
             [[NSNotificationCenter defaultCenter] postNotificationName:SCHBookshelfSyncComponentDidFailNotification 
-                                                                object:self];
-            
+                                                                object:self];        
             NSError *error = [NSError errorWithDomain:kBITAPIErrorDomain 
                                                  code:kBITAPIExceptionError 
                                              userInfo:[NSDictionary dictionaryWithObject:[exception reason]
                                                                                   forKey:NSLocalizedDescriptionKey]];
-            [super method:method didFailWithError:error requestInfo:nil result:result];
-        } else {
-            [[NSNotificationCenter defaultCenter] postNotificationName:SCHBookshelfSyncComponentDidCompleteNotification 
-                                                                object:self];
-            [super method:method didCompleteWithResult:nil];				        
-        }
+            [super method:method didFailWithError:error requestInfo:nil result:result];            
+        }            
     }
 }
 
@@ -172,9 +184,8 @@ NSString * const SCHBookshelfSyncComponentDidFailNotification = @"SCHBookshelfSy
 	if (self.useIndividualRequests == YES) {
 		self.requestCount--;
         
-        if (self.requestCount < 1 && self.didReceiveSuccessfulResponse == NO) {
-            // a valid error otherwise server error 
-            if ([error domain] != kBITAPIErrorDomain) {
+        if (self.requestCount < 1) {
+            if (self.didReceiveSuccessfulResponse == NO) {
                 [[NSNotificationCenter defaultCenter] postNotificationName:SCHBookshelfSyncComponentDidFailNotification 
                                                                     object:self];
                 
@@ -186,11 +197,18 @@ NSString * const SCHBookshelfSyncComponentDidFailNotification = @"SCHBookshelfSy
             }
         }
     } else {
-        [[NSNotificationCenter defaultCenter] postNotificationName:SCHBookshelfSyncComponentDidFailNotification 
-                                                            object:self];
-        
-        [super method:method didFailWithError:error requestInfo:requestInfo result:result];
-    }    
+        // a valid error otherwise server error 
+        if ([error domain] != kBITAPIErrorDomain) {
+            [[NSNotificationCenter defaultCenter] postNotificationName:SCHBookshelfSyncComponentDidFailNotification 
+                                                                object:self];
+            
+            [super method:method didFailWithError:error requestInfo:requestInfo result:result];
+        } else {
+            [[NSNotificationCenter defaultCenter] postNotificationName:SCHBookshelfSyncComponentDidCompleteNotification 
+                                                                object:self];
+            [super method:method didCompleteWithResult:nil];				        
+        }
+    }
 }
 
 - (BOOL)updateContentMetadataItems
