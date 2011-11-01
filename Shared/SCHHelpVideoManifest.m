@@ -10,6 +10,12 @@
 
 #pragma mark Help Videos Manifest Class
 
+@interface SCHHelpVideoManifest ()
+
+- (NSString *)currentDeviceForAgeString: (NSString *)ageSearch;
+
+@end
+
 @implementation SCHHelpVideoManifest
 
 @synthesize manifestURLs;
@@ -52,6 +58,37 @@
     }
         
     return [NSDictionary dictionaryWithDictionary:returnedItems];
+}
+
+- (NSString *)olderURLForCurrentDevice
+{
+    return [self currentDeviceForAgeString:@"Old"];
+}
+
+- (NSString *)youngerURLForCurrentDevice
+{
+    return [self currentDeviceForAgeString:@"Young"];
+}
+
+- (NSString *)currentDeviceForAgeString: (NSString *)ageSearch
+{
+    BOOL iPad = (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad);
+    
+    NSString *deviceSearch = @"iPhone";
+    
+    if (iPad) {
+        deviceSearch = @"iPad";
+    }
+    
+    for (NSString *key in [manifestURLs allKeys]) {
+        if ([key rangeOfString:ageSearch options:NSCaseInsensitiveSearch].location != NSNotFound) {
+            if ([key rangeOfString:deviceSearch options:NSCaseInsensitiveSearch].location != NSNotFound) {
+                return [self.manifestURLs objectForKey:key];
+            }
+        }
+    }
+    
+    return nil;
 }
 
 @end

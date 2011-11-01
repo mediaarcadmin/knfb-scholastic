@@ -130,11 +130,10 @@
     [[BITNetworkActivityManager sharedNetworkActivityManager] hideNetworkActivityIndicator];
 
     // we've successfully downloaded all files
-    // set the defaults version string to 1.0 (hardcoded at present)
-    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    [defaults setValue:@"1.0" forKey:@"helpVideoCurrentCompletedVersion"];
-    [defaults setValue:[self.videoManifest itemsForCurrentDevice] forKey:@"helpVideoURLDictionary"];
-    [defaults synchronize];
+    // set the version string to 1.0 (hardcoded at present)
+    [[SCHDictionaryDownloadManager sharedDownloadManager] setHelpVideoVersion:@"1.0" 
+                                                                     olderURL:[self.videoManifest olderURLForCurrentDevice] 
+                                                                   youngerURL:[self.videoManifest youngerURLForCurrentDevice]];
     
     [self fireProgressUpdate:1.0f];
     
