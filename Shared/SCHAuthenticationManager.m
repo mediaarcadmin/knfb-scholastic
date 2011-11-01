@@ -53,6 +53,7 @@ typedef struct AuthenticateWithUserNameParameters AuthenticateWithUserNameParame
 @interface SCHAuthenticationManager ()
 
 - (void)aTokenOnMainThread;
+- (void)isAuthenticatedOnMainThread:(NSValue *)returnValue;
 - (void)authenticateWithUserNameOnMainThread:(NSValue *)parameters;
 - (void)hasUsernameAndPasswordOnMainThread:(NSValue *)returnValue;
 - (void)deregisterOnMainThread:(NSString *)token;
@@ -237,7 +238,7 @@ typedef struct AuthenticateWithUserNameParameters AuthenticateWithUserNameParame
 {
     // we block until the selector completes to make sure we always have the 
     // return object before use
-    [self performSelectorOnMainThread: @selector(aTokenOnMainThread) 
+    [self performSelectorOnMainThread:@selector(aTokenOnMainThread) 
                            withObject:nil 
                         waitUntilDone:YES];
     
@@ -246,13 +247,13 @@ typedef struct AuthenticateWithUserNameParameters AuthenticateWithUserNameParame
 
 - (BOOL)isAuthenticated
 {
-    BOOL ret = YES;
+    BOOL ret = NO;
+    NSValue *resultValue = [NSValue valueWithPointer:&ret];
     
-    if([[SCHAppStateManager sharedAppStateManager] canAuthenticate] == YES) {
-        ret = (self.aToken != nil && 
-               [[self.aToken stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]] length] > 0);
-        
-    }
+    // we block until the selector completes to make sure we always have the return object before use
+    [self performSelectorOnMainThread:@selector(isAuthenticatedOnMainThread:) 
+                           withObject:resultValue 
+                        waitUntilDone:YES];
     
     return(ret);
 }
@@ -264,6 +265,17 @@ typedef struct AuthenticateWithUserNameParameters AuthenticateWithUserNameParame
     if([tokenExpires compare:[NSDate date]] == NSOrderedAscending) {
         [aToken release], aToken = nil;
         self.tokenExpires = nil;        
+    }
+}
+
+- (void)isAuthenticatedOnMainThread:(NSValue *)returnValue
+{
+    *(BOOL *)returnValue.pointerValue = YES;
+    
+    if([[SCHAppStateManager sharedAppStateManager] canAuthenticate] == YES) {
+        *(BOOL *)returnValue.pointerValue = (self.aToken != nil && 
+               [[self.aToken stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]] length] > 0);
+        
     }
 }
 
