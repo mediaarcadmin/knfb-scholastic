@@ -80,7 +80,7 @@ NSString * const kSCHProfileItemDRM_QUALIFIER = @"DRM_QUALIFIER";
                                                                error:nil];
     [fetchRequest release], fetchRequest = nil;
 
-    return((result == nil ? [NSSet set] : [NSSet setWithArray:result]));
+    return (result == nil ? [NSSet set] : [NSSet setWithArray:result]);
 }
 
 - (SCHAppContentProfileItem *)appContentProfileItemForBookIdentifier:(SCHBookIdentifier *)bookIdentifier
@@ -94,11 +94,25 @@ NSString * const kSCHProfileItemDRM_QUALIFIER = @"DRM_QUALIFIER";
         }
     }
     
-    return(ret);
+    return ret;
 }
 
 #pragma mark - methods
 
+// all book identifiers for the profile
+- (NSMutableArray *)bookIdentifiersAssignedToProfile
+{
+    NSSet *contentProfileItem = [self ContentProfileItem];
+    NSMutableArray *ret = [NSMutableArray arrayWithCapacity:[contentProfileItem count]];
+                           
+    for(SCHContentProfileItem *item in contentProfileItem) {
+        [ret addObject:item.UserContentItem.bookIdentifier];
+    }
+    
+    return ret;
+}
+
+// all book identifiers available for use, i.e. we have the metadata information
 - (NSMutableArray *)allBookIdentifiers
 {
     NSNumber *sortTypeObj = [[self AppProfile] SortType];

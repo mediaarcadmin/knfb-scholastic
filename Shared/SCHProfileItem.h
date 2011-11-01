@@ -60,6 +60,7 @@ typedef enum {
 @property (nonatomic, readonly) NSUInteger age;
 
 - (SCHAppContentProfileItem *)appContentProfileItemForBookIdentifier:(SCHBookIdentifier *)bookIdentifier;
+- (NSMutableArray *)bookIdentifiersAssignedToProfile;
 - (NSMutableArray *)allBookIdentifiers;
 - (SCHBookAnnotations *)annotationsForBook:(SCHBookIdentifier *)bookIdentifier;
 - (void)newStatistics:(SCHBookStatistics *)bookStatistics forBook:(SCHBookIdentifier *)bookIdentifier;
