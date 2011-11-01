@@ -114,6 +114,10 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 131;
     [loadingView release], loadingView = nil;
     
     [[NSNotificationCenter defaultCenter] removeObserver:self
+                                                    name:SCHBookshelfSyncComponentBookReceivedNotification
+                                                  object:nil];
+
+    [[NSNotificationCenter defaultCenter] removeObserver:self
 												 name:SCHBookshelfSyncComponentDidCompleteNotification
 											   object:nil];
     
@@ -219,13 +223,13 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 131;
 	[aCache release], aCache = nil;
 	
     [[NSNotificationCenter defaultCenter] addObserver:self
+											 selector:@selector(bookshelfSyncComponentBookReceived:)
+												 name:SCHBookshelfSyncComponentBookReceivedNotification
+											   object:nil];
+
+    [[NSNotificationCenter defaultCenter] addObserver:self
 											 selector:@selector(bookshelfSyncComponentDidComplete:)
 												 name:SCHBookshelfSyncComponentDidCompleteNotification
-											   object:nil];
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self
-											 selector:@selector(bookshelfSyncComponentBooksReceived:)
-												 name:SCHBookshelfSyncComponentBookReceivedNotification
 											   object:nil];
     
     [[NSNotificationCenter defaultCenter] addObserver:self
@@ -597,23 +601,22 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 131;
     }   
 }
 
-- (void)bookshelfSyncComponentBooksReceived:(NSNotification*)notification
+- (void)bookshelfSyncComponentBookReceived:(NSNotification *)notification
 {
-    NSArray *identifiers = [[notification userInfo] objectForKey:@"bookIdentifiers"];
-    NSArray *currentBooks = [self.profileItem allBookIdentifiers];
+    NSArray *recievedBookIdentifiers = [[notification userInfo] objectForKey:@"bookIdentifiers"];
     
-    BOOL updateBookshelf = NO;
-    
-    for (SCHBookIdentifier *identifier in identifiers) {
-        if ([currentBooks containsObject:identifier]) {
-            updateBookshelf = YES;
-            break;
+    if ([recievedBookIdentifiers count] > 0) {
+        NSArray *profileBooks = [self.profileItem bookIdentifiersAssignedToProfile];
+        
+        for (SCHBookIdentifier *recievedBook in recievedBookIdentifiers) {
+            if ([profileBooks containsObject:recievedBook] == YES) {
+                self.gridViewNeedsRefreshed = YES;
+                self.listViewNeedsRefreshed = YES;
+                self.books = [self.profileItem allBookIdentifiers];
+                [self reloadData];            
+                break;
+            }
         }
-    }
-    
-    if (updateBookshelf) {
-        self.books = [self.profileItem allBookIdentifiers];
-        [self reloadData];
     }
 }
 

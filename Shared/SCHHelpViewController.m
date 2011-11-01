@@ -127,30 +127,18 @@ static CGFloat const kSCHStoryInteractionControllerCloseBorderWidth = 1.5;
 
 - (void)loadVideo
 {
-    BOOL iPad = (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad);
-
-    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    NSDictionary *helpVideoDictionary = [defaults objectForKey:@"helpVideoURLDictionary"];
-    
     NSURL *movieURL = nil;
+    NSString *fileURL = nil;
     
-    if (helpVideoDictionary) {
-        NSString *ageSearch = (self.youngerMode?@"Young":@"Old");
-        NSString *deviceSearch = (iPad?@"iPad":@"iPhone");
-        
-        for (NSString *key in [helpVideoDictionary allKeys]) {
-            if ([key rangeOfString:ageSearch options:NSCaseInsensitiveSearch].location != NSNotFound) {
-                if ([key rangeOfString:deviceSearch options:NSCaseInsensitiveSearch].location != NSNotFound) {
-                    NSString *fileURL = [helpVideoDictionary objectForKey:key];
-                    NSString *filename = [fileURL lastPathComponent];
-                    NSString *filePath = [[SCHDictionaryDownloadManager sharedDownloadManager] helpVideoDirectory];
-                    movieURL = [NSURL fileURLWithPath:[NSString stringWithFormat:@"%@/%@", filePath, filename]];
-                    break;
-                }
-            }
-        }
-        
+    if (self.youngerMode) {
+        fileURL = [[SCHDictionaryDownloadManager sharedDownloadManager] helpVideoYoungerURL];
+    } else {
+        fileURL = [[SCHDictionaryDownloadManager sharedDownloadManager] helpVideoOlderURL];
     }
+    
+    NSString *filename = [fileURL lastPathComponent];
+    NSString *filePath = [[SCHDictionaryDownloadManager sharedDownloadManager] helpVideoDirectory];
+    movieURL = [NSURL fileURLWithPath:[NSString stringWithFormat:@"%@/%@", filePath, filename]];
     
     if (movieURL) {
         MPMoviePlayerController *player = [[MPMoviePlayerController alloc] initWithContentURL:movieURL];

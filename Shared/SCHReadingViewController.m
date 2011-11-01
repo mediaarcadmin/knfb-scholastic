@@ -766,7 +766,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     }
     
     self.presentStoryInteractionAfterRotation = NO;
-    [self positionCornerAudioButtonForOrientation:self.interfaceOrientation];
+//    [self positionCornerAudioButtonForOrientation:self.interfaceOrientation];
 
     [super didRotateFromInterfaceOrientation:fromInterfaceOrientation];
 }
@@ -3046,9 +3046,10 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     
     // offsets are to accommodate borders in the images
     frame.origin.x = bookCoverFrame.origin.x + 5;
-    frame.origin.y = ceilf(bookCoverFrame.size.height - frame.size.height) - 5;
+    frame.origin.y = bookCoverFrame.origin.y + ceilf(bookCoverFrame.size.height - frame.size.height) - 5;
     
     self.cornerAudioButtonView.frame = frame;
+    
 }
 
 #pragma mark - Help View Delegate

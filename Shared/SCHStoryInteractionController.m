@@ -599,17 +599,18 @@ static Class controllerClassForStoryInteraction(SCHStoryInteraction *storyIntera
 
 - (void)removeFromHostView
 {
-    // report success so that the reading view can keep track of it properly
-    if (delegate && [delegate respondsToSelector:@selector(storyInteractionController:willDismissWithSuccess:)]) {
-        BOOL success = (self.controllerState == SCHStoryInteractionControllerStateInteractionFinishedSuccessfully);
-        [delegate storyInteractionController:self willDismissWithSuccess:success];
-    }
-
-    [self cancelQueuedAudio];
-    
-    [[SCHBookManager sharedBookManager] checkInXPSProviderForBookIdentifier:self.bookIdentifier];
-    
     void (^teardownBlock)(void) = ^{ 
+        
+        [self cancelQueuedAudio];
+        
+        [[SCHBookManager sharedBookManager] checkInXPSProviderForBookIdentifier:self.bookIdentifier];
+        
+        // report success so that the reading view can keep track of it properly
+        if (delegate && [delegate respondsToSelector:@selector(storyInteractionController:willDismissWithSuccess:)]) {
+            BOOL success = (self.controllerState == SCHStoryInteractionControllerStateInteractionFinishedSuccessfully);
+            [delegate storyInteractionController:self willDismissWithSuccess:success];
+        }
+        
         // always, always re-enable user interactions for the superview...
         [self setUserInteractionsEnabled:YES];
         

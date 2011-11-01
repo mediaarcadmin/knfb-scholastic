@@ -12,6 +12,8 @@
 
 @property (nonatomic, retain) NSMutableDictionary *manifestURLs;
 
+- (NSString *)olderURLForCurrentDevice;
+- (NSString *)youngerURLForCurrentDevice;
 - (NSDictionary*)itemsForCurrentDevice;
 
 @end

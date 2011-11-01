@@ -65,6 +65,11 @@ typedef enum {
 // the current dictionary version
 @property (readwrite, retain) NSString *dictionaryVersion;
 
+// the current help video version
+@property (readonly) NSString *helpVideoVersion;
+@property (readonly) NSString *helpVideoOlderURL;
+@property (readonly) NSString *helpVideoYoungerURL;
+
 // dictionary is currently processing
 @property BOOL isProcessing;
 
@@ -116,5 +121,8 @@ typedef enum {
 // dictionary download control
 - (void)beginDictionaryDownload;
 - (void)deleteDictionary;
+
+// this sets the help video information in core data in a thread safe way
+- (void)setHelpVideoVersion:(NSString *)newVersion olderURL:(NSString *)olderURL youngerURL:(NSString*)youngerURL;
 
 @end
