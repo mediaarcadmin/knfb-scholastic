@@ -96,8 +96,6 @@
 
 - (void)playQuestionAudioAndHighlightAnswersWithIntroduction:(BOOL)withIntroduction
 {
-//    [self cancelQueuedAudioExecutingSynchronizedBlocksImmediately];
-
     if (withIntroduction) {
         [self enqueueAudioWithPath:[self.storyInteraction audioPathForQuestion] 
                         fromBundle:NO];
@@ -153,16 +151,18 @@
     if (answersTapped > 1) {
         return;
     }
-    
+
+    [self cancelQueuedAudioExecutingSynchronizedBlocksImmediately];
+
     NSUInteger chosenAnswer = sender.tag - 1;
     if (chosenAnswer >= [[self currentQuestion].answers count]) {
         return;
     }
-    
+
     [sender setSelected:YES];
+    [self setUserInteractionsEnabled:NO];
+
     if (chosenAnswer == [self currentQuestion].correctAnswer) {
-        self.controllerState = SCHStoryInteractionControllerStateInteractionFinishedSuccessfully;
-        [self cancelQueuedAudio];
         [self enqueueAudioWithPath:[self.storyInteraction storyInteractionCorrectAnswerSoundFilename] fromBundle:YES];
         [self enqueueAudioWithPath:[[self currentQuestion] audioPathForAnswerAtIndex:chosenAnswer] fromBundle:NO];
         [self enqueueAudioWithPath:[(SCHStoryInteractionMultipleChoiceText *)self.storyInteraction audioPathForThatsRight] fromBundle:NO];
@@ -171,11 +171,10 @@
                         startDelay:0
             synchronizedStartBlock:nil
               synchronizedEndBlock:^{
+                  self.controllerState = SCHStoryInteractionControllerStateInteractionFinishedSuccessfully;
                   [self removeFromHostView];
               }];
     } else {
-        self.controllerState = SCHStoryInteractionControllerStateInteractionReadingAnswerWithPause;
-        [self cancelQueuedAudio];
         [self enqueueAudioWithPath:[self.storyInteraction storyInteractionWrongAnswerSoundFilename]
                         fromBundle:YES];
         [self enqueueAudioWithPath:[[self currentQuestion] audioPathForAnswerAtIndex:chosenAnswer]
@@ -186,7 +185,7 @@
             synchronizedStartBlock:nil
               synchronizedEndBlock:^{
                   [sender setSelected:NO];
-                  self.controllerState = SCHStoryInteractionControllerStateInteractionInProgress;
+                  [self setUserInteractionsEnabled:YES];
               }];
     }
 }
