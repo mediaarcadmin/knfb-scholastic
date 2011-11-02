@@ -60,6 +60,7 @@ static NSUInteger const kSCHURLManagerMaxConnections = 6;
     static SCHURLManager *sharedURLManager = nil;
     
     dispatch_once(&pred, ^{
+        NSAssert([NSThread isMainThread] == YES, @"SCHURLManager:sharedURLManager MUST be executed on the main thread");
         sharedURLManager = [[super allocWithZone:NULL] init];		
     });
 	
@@ -128,6 +129,8 @@ static NSUInteger const kSCHURLManagerMaxConnections = 6;
 
 - (void)requestURLForBookOnMainThread:(SCHBookIdentifier *)bookIdentifier
 {	
+    NSAssert([NSThread isMainThread] == YES, @"SCHURLManager:requestURLForBookOnMainThread MUST be executed on the main thread");
+
 	if (bookIdentifier != nil) {
         NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
         
@@ -154,7 +157,9 @@ static NSUInteger const kSCHURLManagerMaxConnections = 6;
 
 - (void)clearOnMainThread
 {
-	[table removeAllObjects];
+    NSAssert([NSThread isMainThread] == YES, @"SCHURLManager:clearOnMainThread MUST be executed on the main thread");
+	
+    [table removeAllObjects];
 }
 
 - (void)shakeTable
@@ -177,8 +182,7 @@ static NSUInteger const kSCHURLManagerMaxConnections = 6;
 
 			if ([self.libreAccessWebService listContentMetadata:[NSArray arrayWithObject:contentMetaDataItem] 
 													includeURLs:YES] == YES) {
-				NSLog(@"Requesting URLs for %@", [contentMetaDataItem 
-												valueForKey:kSCHLibreAccessWebServiceContentIdentifier]);
+				NSLog(@"Requesting URLs for %@", contentMetaDataItem.bookIdentifier);
 				
 				requestCount++;
 				[removeFromTable addObject:contentMetaDataItem];
@@ -207,12 +211,12 @@ static NSUInteger const kSCHURLManagerMaxConnections = 6;
 		NSArray *list = [result objectForKey:kSCHLibreAccessWebServiceContentMetadataList];
 		
 		if ([list count] > 0) {
-			NSLog(@"Received URLs for %@", [[list objectAtIndex:0] 
-												   valueForKey:kSCHLibreAccessWebServiceContentIdentifier]);
+            SCHBookIdentifier *bookIdentifier = [[[SCHBookIdentifier alloc] initWithObject:[list objectAtIndex:0]] autorelease];
+			NSLog(@"Received URLs for %@", bookIdentifier);
             
             // if this is a different version then update the ContentMetadataItem
             // this guarentees the OnDiskVersion will be set correctly
-            SCHAppBook *book = [[SCHBookManager sharedBookManager] bookWithIdentifier:[[[SCHBookIdentifier alloc] initWithObject:[list objectAtIndex:0]] autorelease] 
+            SCHAppBook *book = [[SCHBookManager sharedBookManager] bookWithIdentifier:bookIdentifier 
                                                                inManagedObjectContext:self.managedObjectContext];
 
             if (book != nil) {
@@ -247,9 +251,12 @@ static NSUInteger const kSCHURLManagerMaxConnections = 6;
     NSArray *list = [requestInfo objectForKey:kSCHLibreAccessWebServiceListContentMetadata];
     
     if ([list count] > 0) {
+        SCHBookIdentifier *bookIdentifier = [[[SCHBookIdentifier alloc] initWithObject:[list objectAtIndex:0]] autorelease];
+        NSLog(@"Failed URLs for %@", bookIdentifier);
+
         [[NSNotificationCenter defaultCenter] postNotificationName:kSCHURLManagerFailure 
                                                             object:self 
-                                                          userInfo:[NSDictionary dictionaryWithObject:[[[SCHBookIdentifier alloc] initWithObject:[list objectAtIndex:0]] autorelease]
+                                                          userInfo:[NSDictionary dictionaryWithObject:bookIdentifier
                                                                                                forKey:kSCHBookIdentifierBookIdentifier]];	
 	}
     
