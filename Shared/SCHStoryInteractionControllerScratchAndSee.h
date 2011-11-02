@@ -10,13 +10,11 @@
 #import "SCHStoryInteractionController.h"
 #import "SCHStoryInteractionScratchView.h"
 
-@interface SCHStoryInteractionControllerScratchAndSee : SCHStoryInteractionController <SCHStoryInteractionScratchViewDelegate> {
-}
+@interface SCHStoryInteractionControllerScratchAndSee : SCHStoryInteractionController <SCHStoryInteractionScratchViewDelegate>
 
 @property (nonatomic, retain) IBOutlet SCHStoryInteractionScratchView *scratchView;
-@property (nonatomic, retain) IBOutlet UIButton *answerButton1;
-@property (nonatomic, retain) IBOutlet UIButton *answerButton2;
-@property (nonatomic, retain) IBOutlet UIButton *answerButton3;
+@property (nonatomic, retain) IBOutlet UIView *buttonContainerView;
+@property (nonatomic, retain) IBOutletCollection(UIButton) NSArray *answerButtons;
 @property (nonatomic, retain) IBOutlet UIImageView *progressImageView;
 @property (nonatomic, retain) IBOutlet UIImageView *progressCoverImageView;
 @property (nonatomic, retain) IBOutlet UIView *progressView;
