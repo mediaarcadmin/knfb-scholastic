@@ -215,6 +215,9 @@
 
 - (void)correctTapAtPoint:(CGPoint)point
 {
+    self.controllerState = SCHStoryInteractionControllerStateInteractionFinishedSuccessfully;
+    [self setUserInteractionsEnabled:NO];
+    
     CGFloat scale = 1.0f / self.scrollView.zoomScale;
     UIColor *fillColors[3] = {
         [UIColor SCHGreen2Color],
@@ -252,13 +255,7 @@
                      }];
     
     [self cancelQueuedAudioExecutingSynchronizedBlocksImmediately];
-    [self enqueueAudioWithPath:[self.storyInteraction storyInteractionCorrectAnswerSoundFilename]
-                    fromBundle:YES
-                    startDelay:0
-        synchronizedStartBlock:^{
-            self.controllerState = SCHStoryInteractionControllerStateInteractionReadingAnswerWithPause;
-        }
-          synchronizedEndBlock:nil];
+    [self enqueueAudioWithPath:[self.storyInteraction storyInteractionCorrectAnswerSoundFilename] fromBundle:YES];
     [self enqueueAudioWithPath:[[self currentQuestion] audioPathForCorrectAnswer]
                     fromBundle:NO
                     startDelay:0

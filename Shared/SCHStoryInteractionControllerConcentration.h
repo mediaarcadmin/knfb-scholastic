@@ -10,7 +10,9 @@
 
 @interface SCHStoryInteractionControllerConcentration : SCHStoryInteractionController {}
 
+@property (nonatomic, retain) IBOutlet UILabel *chooseYourLevelLabel;
 @property (nonatomic, retain) IBOutletCollection(UIButton) NSArray *levelButtons;
+@property (nonatomic, retain) IBOutletCollection(UIView) NSArray *levelButtonContainers;
 @property (nonatomic, retain) IBOutlet UIView *flipContainer;
 @property (nonatomic, retain) IBOutlet UIButton *startOverButton;
 @property (nonatomic, retain) IBOutlet UIButton *flipCounterLabel;

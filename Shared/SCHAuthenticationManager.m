@@ -86,6 +86,7 @@ typedef struct AuthenticateWithUserNameParameters AuthenticateWithUserNameParame
     static SCHAuthenticationManager *sharedAuthenticationManager = nil;
     
     dispatch_once(&pred, ^{
+        NSAssert([NSThread isMainThread] == YES, @"SCHAuthenticationManager:sharedAuthenticationManager MUST be executed on the main thread");
 #if NONDRMAUTHENTICATION
         sharedAuthenticationManager = [[SCHNonDRMAuthenticationManager allocWithZone:NULL] init];
 #else
@@ -262,6 +263,8 @@ typedef struct AuthenticateWithUserNameParameters AuthenticateWithUserNameParame
 
 - (void)aTokenOnMainThread
 {
+    NSAssert([NSThread isMainThread] == YES, @"SCHAuthenticationManager::aTokenOnMainThread MUST be executed on the main thread");
+    
     if([tokenExpires compare:[NSDate date]] == NSOrderedAscending) {
         [aToken release], aToken = nil;
         self.tokenExpires = nil;        
@@ -270,6 +273,8 @@ typedef struct AuthenticateWithUserNameParameters AuthenticateWithUserNameParame
 
 - (void)isAuthenticatedOnMainThread:(NSValue *)returnValue
 {
+    NSAssert([NSThread isMainThread] == YES, @"SCHAuthenticationManager::isAuthenticatedOnMainThread MUST be executed on the main thread");
+
     *(BOOL *)returnValue.pointerValue = YES;
     
     if([[SCHAppStateManager sharedAppStateManager] canAuthenticate] == YES) {
@@ -281,6 +286,8 @@ typedef struct AuthenticateWithUserNameParameters AuthenticateWithUserNameParame
 
 - (void)authenticateWithUserNameOnMainThread:(NSValue *)parameters
 {	
+    NSAssert([NSThread isMainThread] == YES, @"SCHAuthenticationManager::authenticateWithUserNameOnMainThread MUST be executed on the main thread");
+    
     AuthenticateWithUserNameParameters *authenticateWithUserNameParameters = parameters.pointerValue;
     
     if([[SCHAppStateManager sharedAppStateManager] canAuthenticate] == YES) {
@@ -338,6 +345,8 @@ typedef struct AuthenticateWithUserNameParameters AuthenticateWithUserNameParame
 
 - (void)authenticateOnMainThread
 {    
+    NSAssert([NSThread isMainThread] == YES, @"SCHAuthenticationManager::authenticateOnMainThread MUST be executed on the main thread");
+    
     NSString *storedUsername = [[NSUserDefaults standardUserDefaults] stringForKey:kSCHAuthenticationManagerUsername];
     NSString *storedPassword = [SFHFKeychainUtils getPasswordForUsername:storedUsername andServiceName:kSCHAuthenticationManagerServiceName error:nil];
     NSString *deviceKey = [[NSUserDefaults standardUserDefaults] stringForKey:kSCHAuthenticationManagerDeviceKey];	
@@ -398,6 +407,8 @@ typedef struct AuthenticateWithUserNameParameters AuthenticateWithUserNameParame
 
 - (void)hasUsernameAndPasswordOnMainThread:(NSValue *)returnValue
 {
+    NSAssert([NSThread isMainThread] == YES, @"SCHAuthenticationManager::hasUsernameAndPasswordOnMainThread MUST be executed on the main thread");
+    
     NSString *username = [[NSUserDefaults standardUserDefaults] stringForKey:kSCHAuthenticationManagerUsername];
     NSString *password = nil;
     
@@ -414,6 +425,8 @@ typedef struct AuthenticateWithUserNameParameters AuthenticateWithUserNameParame
 // make sure you have de-registered prior to calling this 
 - (void)clearOnMainThread
 {
+    NSAssert([NSThread isMainThread] == YES, @"SCHAuthenticationManager::clearOnMainThread MUST be executed on the main thread");
+    
     NSString *username = [[NSUserDefaults standardUserDefaults] stringForKey:kSCHAuthenticationManagerUsername];	
     
     self.aToken = nil;
@@ -432,6 +445,8 @@ typedef struct AuthenticateWithUserNameParameters AuthenticateWithUserNameParame
 
 - (void)clearAppProcessingOnMainThread
 {
+    NSAssert([NSThread isMainThread] == YES, @"SCHAuthenticationManager::clearAppProcessingOnMainThread MUST be executed on the main thread");
+    
     [[SCHBookManager sharedBookManager] clearBookIdentifierCache];
     [[SCHURLManager sharedURLManager] clear];
     [[SCHProcessingManager sharedProcessingManager] cancelAllOperations];                
@@ -466,6 +481,8 @@ typedef struct AuthenticateWithUserNameParameters AuthenticateWithUserNameParame
 
 - (void)deregisterOnMainThread:(NSString *)token
 {
+    NSAssert([NSThread isMainThread] == YES, @"SCHAuthenticationManager::deregisterOnMainThread MUST be executed on the main thread");
+    
     if ([[SCHAppStateManager sharedAppStateManager] canAuthenticate] == YES && token != nil) {
         [self.drmRegistrationSession deregisterDevice:token];
     }

@@ -12,6 +12,7 @@
 #import "SCH3DView.h"
 #import "UIColor+Scholastic.h"
 #import "NSArray+Shuffling.h"
+#import "NSArray+ViewSorting.h"
 
 enum {
     kTileGap = 5,
@@ -26,15 +27,19 @@ enum {
 @property (nonatomic, assign) NSInteger numberOfFlips;
 @property (nonatomic, assign) UIView *firstFlippedTile;
 
+- (void)setupChooseLevelView;
 - (void)setupPuzzleView;
 - (UIImage *)tileBackground;
 - (UIColor *)tileBorderColor;
 - (void)matchTile:(UIView *)tile withTile:(UIView *)tile;
+- (void)layoutTiles;
 
 @end
 
 @implementation SCHStoryInteractionControllerConcentration
 
+@synthesize chooseYourLevelLabel;
+@synthesize levelButtonContainers;
 @synthesize levelButtons;
 @synthesize flipContainer;
 @synthesize flipCounterLabel;
@@ -46,6 +51,8 @@ enum {
 
 - (void)dealloc
 {
+    [chooseYourLevelLabel release], chooseYourLevelLabel = nil;
+    [levelButtonContainers release], levelButtonContainers = nil;
     [levelButtons release], levelButtons = nil;
     [flipContainer release], flipContainer = nil;
     [flipCounterLabel release], flipCounterLabel = nil;
@@ -62,7 +69,7 @@ enum {
 {
     switch (index) {
         case 0:
-            [self enqueueAudioWithPath:[(SCHStoryInteractionConcentration *)self.storyInteraction audioPathForIntroduction] fromBundle:NO];
+            [self setupChooseLevelView];
             break;
         case 1:
             [self setupPuzzleView];
@@ -82,7 +89,58 @@ enum {
     self.startOverButton.userInteractionEnabled = YES;
 }
 
-#pragma mark - Difficulty selection
+#pragma mark - Rotation
+
+- (void)rotateToOrientation:(UIInterfaceOrientation)orientation
+{
+    static NSInteger kContainerGap = 10;
+    
+    CGSize levelContainerSize = [[self.levelButtonContainers objectAtIndex:0] bounds].size;
+    NSInteger count = [self.levelButtonContainers count];
+    CGFloat top = CGRectGetMaxY(self.chooseYourLevelLabel.frame);
+    
+    if (CGRectGetWidth(self.contentsView.bounds)/count > (levelContainerSize.width+kContainerGap)) {
+        // layout horizontally
+        levelContainerSize.height = 203; 
+        CGFloat x = floorf((CGRectGetWidth(self.contentsView.bounds)-count*(levelContainerSize.width+kContainerGap)-kContainerGap)/2+levelContainerSize.width/2);
+        CGFloat y = top+floorf(CGRectGetHeight(self.contentsView.bounds)-top)/2;
+        for (UIView *view in self.levelButtonContainers) {
+            view.center = CGPointMake(x, y);
+            view.bounds = (CGRect){CGPointZero, levelContainerSize};
+            x += levelContainerSize.width+kContainerGap;
+        }
+    } else {
+        // layout vertically
+        levelContainerSize.height = floorf((CGRectGetHeight(self.contentsView.bounds)-top)/count-kContainerGap);
+        CGFloat x = floorf(CGRectGetMidX(self.contentsView.bounds));
+        CGFloat y = top+kContainerGap+floorf((CGRectGetHeight(self.contentsView.bounds)-top-count*(levelContainerSize.height+kContainerGap)-kContainerGap)/2+levelContainerSize.height/2);
+        for (UIView *view in self.levelButtonContainers) {
+            view.center = CGPointMake(x, y);
+            view.bounds = (CGRect){CGPointZero, levelContainerSize};
+            y += levelContainerSize.height+kContainerGap;
+        }
+    }
+    
+    CGFloat buttonWidth = MIN(152, CGRectGetWidth(self.contentsView.bounds)/2-10);
+    CGFloat buttonHeight = CGRectGetHeight(self.startOverButton.bounds);
+    CGFloat buttonY = CGRectGetMinY(self.flipContainer.frame)/2;
+    self.startOverButton.center = CGPointMake(floorf(CGRectGetMidX(self.contentsView.bounds)-5-buttonWidth/2), buttonY);
+    self.startOverButton.bounds = CGRectMake(0, 0, buttonWidth, buttonHeight);
+    self.flipCounterLabel.center = CGPointMake(floorf(CGRectGetMidX(self.contentsView.bounds)+5+buttonWidth/2), buttonY);
+    self.flipCounterLabel.bounds = self.startOverButton.bounds;
+    
+    [self layoutTiles];
+}
+
+#pragma mark - Choose level view
+
+- (void)setupChooseLevelView
+{
+    [self enqueueAudioWithPath:[(SCHStoryInteractionConcentration *)self.storyInteraction audioPathForIntroduction] fromBundle:NO];
+
+    // views are horizontally arranged in nib, even if they will be vertically presented
+    self.levelButtonContainers = [self.levelButtonContainers viewsSortedHorizontally];
+}
 
 - (void)levelButtonTapped:(id)sender
 {
@@ -184,6 +242,62 @@ enum {
     self.numberOfPairsFound = 0;
     self.numberOfFlips = 0;
     self.firstFlippedTile = nil;
+}
+
+- (void)layoutTiles
+{
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad || [self.flipContainer.subviews count] == 0) {
+        return;
+    }
+    
+    static const NSInteger tilesPerRow_6pairs_landscape[] = { 4, 4, 4 };
+    static const NSInteger tilesPerRow_6pairs_portrait[]  = { 3, 3, 3, 3 };
+    static const NSInteger tilesPerRow_9pairs_landscape[] = { 6, 6, 6 };
+    static const NSInteger tilesPerRow_9pairs_portrait[]  = { 4, 4, 4, 4, 2 };
+
+    const NSInteger *tilesPerRow;
+    NSInteger rows, cols;
+    if (UIInterfaceOrientationIsPortrait(self.interfaceOrientation)) {
+        if (self.numberOfPairs == 6) {
+            tilesPerRow = tilesPerRow_6pairs_portrait;
+            rows = 4;
+            cols = 3;
+        } else {
+            tilesPerRow = tilesPerRow_9pairs_portrait;
+            rows = 5;
+            cols = 4;
+        }
+    } else {
+        if (self.numberOfPairs == 6) {
+            tilesPerRow = tilesPerRow_6pairs_landscape;
+            rows = 3;
+            cols = 4;
+        } else {
+            tilesPerRow = tilesPerRow_9pairs_landscape;
+            rows = 3;
+            cols = 6;
+        }
+    }
+
+    CGSize tileSize = [[self.flipContainer.subviews objectAtIndex:0] bounds].size;
+    CGSize layoutSize = CGSizeMake(tileSize.width*cols + kTileGap*(cols-1),
+                                   tileSize.height*rows + kTileGap*(rows-1));
+    CGSize containerSize = self.flipContainer.bounds.size;
+    CGFloat left = (containerSize.width-layoutSize.width)/2;
+    CGFloat top = (containerSize.height-layoutSize.height)/2;
+
+    NSInteger row = 0;
+    NSInteger col = 0;
+    NSInteger columnOffset = 0;
+    for (UIView *tile in self.flipContainer.subviews) {
+        tile.center = CGPointMake(floorf(left+(tileSize.width+kTileGap)*(col+columnOffset)+tileSize.width/2),
+                                  floorf(top+(tileSize.height+kTileGap)*row+tileSize.height/2));
+        if (++col == tilesPerRow[row]) {
+            ++row;
+            col = 0;
+            columnOffset = (cols-tilesPerRow[row])/2;
+        }
+    }
 }
 
 - (UIImage *)tileBackground
