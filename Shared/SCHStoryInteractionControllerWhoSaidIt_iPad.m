@@ -154,25 +154,26 @@ static CGPoint pointWithOffset(CGPoint p, CGPoint offset)
                   });
               }];
     } else {
-        [self playDefaultButtonAudio];
-        // remove the highlights after a short delay
-        dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, 1.0 * NSEC_PER_SEC);
-        dispatch_after(popTime, dispatch_get_main_queue(), ^{
-            // leave correct answers locked in place, send others home
-            for (SCHStoryInteractionWhoSaidItNameView *source in self.sources) {
-                if ([source attachedToCorrectTarget]) {
-                    source.lockedInPlace = YES;
-                } else {
-                    // send incorrect answers back to home position
-                    UIImageView *imageView = (UIImageView *)[source viewWithTag:kSourceImageTag];
-                    [imageView setHighlighted:NO];
-                    [source moveToHomePositionWithCompletionHandler:^{
-                        source.userInteractionEnabled = YES;
-                    }];
+        [self cancelQueuedAudioExecutingSynchronizedBlocksBefore:^{
+            // remove the highlights after a short delay
+            [self enqueueAudioWithPath:[self.storyInteraction storyInteractionCorrectAnswerSoundFilename] fromBundle:YES];
+            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 1.0 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
+                // leave correct answers locked in place, send others home
+                for (SCHStoryInteractionWhoSaidItNameView *source in self.sources) {
+                    if ([source attachedToCorrectTarget]) {
+                        source.lockedInPlace = YES;
+                    } else {
+                        // send incorrect answers back to home position
+                        UIImageView *imageView = (UIImageView *)[source viewWithTag:kSourceImageTag];
+                        [imageView setHighlighted:NO];
+                        [source moveToHomePositionWithCompletionHandler:^{
+                            source.userInteractionEnabled = YES;
+                        }];
+                    }
                 }
-            }
-            [self setCheckAnswersButtonEnabledState];
-        });
+                [self setCheckAnswersButtonEnabledState];
+            });
+        }];
     }
 }
 

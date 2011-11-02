@@ -49,8 +49,9 @@
 
 - (IBAction)playAudioButtonTapped:(id)sender
 {
-    [self cancelQueuedAudioExecutingSynchronizedBlocksImmediately];
-    [self playCurrentQuestionAudio];
+    [self cancelQueuedAudioExecutingSynchronizedBlocksBefore:^{
+        [self playCurrentQuestionAudio];
+    }];
 }
 
 - (void)setupViewAtIndex:(NSInteger)screenIndex
@@ -120,31 +121,31 @@
     imageButton.selected = YES;
     NSUInteger chosenAnswer = imageButton.tag - 1;
     
-    [self cancelQueuedAudio];
-    if (chosenAnswer == [self currentQuestion].correctAnswer) {
-        self.controllerState = SCHStoryInteractionControllerStateInteractionFinishedSuccessfully;
-        [self enqueueAudioWithPath:[self.storyInteraction storyInteractionCorrectAnswerSoundFilename] fromBundle:YES];
-        [self enqueueAudioWithPath:[self.storyInteraction audioPathForThatsRight] fromBundle:NO];
-        [self enqueueAudioWithPath:[[self currentQuestion] audioPathForCorrectAnswer]
-                        fromBundle:NO
-                        startDelay:0.5
-            synchronizedStartBlock:nil
-              synchronizedEndBlock:^{
-                  [self removeFromHostView];
-              }];
-    } else {
-        self.controllerState = SCHStoryInteractionControllerStateInteractionReadingAnswerWithPause;
-        [self cancelQueuedAudio];
-
-        [self enqueueAudioWithPath:[self.storyInteraction storyInteractionWrongAnswerSoundFilename]
-                        fromBundle:YES];
-        [self enqueueAudioWithPath:[[self currentQuestion] audioPathForIncorrectAnswer] fromBundle:NO 
-                        startDelay:0.0
-            synchronizedStartBlock:nil
-              synchronizedEndBlock:^{
-                  self.controllerState = SCHStoryInteractionControllerStateInteractionInProgress;
-              }];
-    }
+    [self cancelQueuedAudioExecutingSynchronizedBlocksBefore:^{
+        if (chosenAnswer == [self currentQuestion].correctAnswer) {
+            self.controllerState = SCHStoryInteractionControllerStateInteractionFinishedSuccessfully;
+            [self enqueueAudioWithPath:[self.storyInteraction storyInteractionCorrectAnswerSoundFilename] fromBundle:YES];
+            [self enqueueAudioWithPath:[self.storyInteraction audioPathForThatsRight] fromBundle:NO];
+            [self enqueueAudioWithPath:[[self currentQuestion] audioPathForCorrectAnswer]
+                            fromBundle:NO
+                            startDelay:0.5
+                synchronizedStartBlock:nil
+                  synchronizedEndBlock:^{
+                      [self removeFromHostView];
+                  }];
+        } else {
+            self.controllerState = SCHStoryInteractionControllerStateInteractionReadingAnswerWithPause;
+            
+            [self enqueueAudioWithPath:[self.storyInteraction storyInteractionWrongAnswerSoundFilename]
+                            fromBundle:YES];
+            [self enqueueAudioWithPath:[[self currentQuestion] audioPathForIncorrectAnswer] fromBundle:NO 
+                            startDelay:0.0
+                synchronizedStartBlock:nil
+                  synchronizedEndBlock:^{
+                      self.controllerState = SCHStoryInteractionControllerStateInteractionInProgress;
+                  }];
+        }
+    }];
 }
 
 #pragma mark - Override for SCHStoryInteractionControllerStateReactions

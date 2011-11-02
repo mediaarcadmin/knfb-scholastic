@@ -155,7 +155,7 @@ typedef enum {
 {
     self.currentQuestionIndex++;
     if (self.currentQuestionIndex == self.progressView.numberOfSteps) {
-        [self playRevealAudio];
+        [self enqueueAudioWithPath:[self.storyInteraction storyInteractionRevealSoundFilename] fromBundle:YES];
         self.controllerState = SCHStoryInteractionControllerStateInteractionFinishedSuccessfully;
         [self presentNextView];
     } else {
@@ -218,8 +218,10 @@ typedef enum {
 
 - (IBAction)startButtonTapped:(id)sender
 {
-    [self playDefaultButtonAudio];
-    [self presentNextView];
+    [self cancelQueuedAudioExecutingSynchronizedBlocksBefore:^{
+        [self enqueueAudioWithPath:[self.storyInteraction storyInteractionCorrectAnswerSoundFilename] fromBundle:YES];
+        [self presentNextView];
+    }];
 }
 
 - (IBAction)questionButtonTouched:(UIButton *)sender
@@ -246,12 +248,13 @@ typedef enum {
         return;
     }
 
-    [self playDefaultButtonAudio];
-
-    [sender setSelected:YES];
-    
-    [self performSelector:@selector(unhighlightAndMoveOn:) withObject:sender afterDelay:1.0];
-
+    [self cancelQueuedAudioExecutingSynchronizedBlocksBefore:^{
+        [self enqueueAudioWithPath:[self.storyInteraction storyInteractionCorrectAnswerSoundFilename] fromBundle:YES];
+        
+        [sender setSelected:YES];
+        
+        [self performSelector:@selector(unhighlightAndMoveOn:) withObject:sender afterDelay:1.0];
+    }];
 }
 
 - (void)unhighlightAndMoveOn:(UIButton *) sender
@@ -270,8 +273,10 @@ typedef enum {
 
 - (IBAction)doneButtonTapped:(id)sender
 {
-    [self playDefaultButtonAudio];    
-    [self performSelector:@selector(removeFromHostView) withObject:nil afterDelay:0.5];
+    [self cancelQueuedAudioExecutingSynchronizedBlocksBefore:^{
+        [self enqueueAudioWithPath:[self.storyInteraction storyInteractionCorrectAnswerSoundFilename] fromBundle:YES];
+        [self performSelector:@selector(removeFromHostView) withObject:nil afterDelay:0.5];
+    }];
 }
 
 #pragma mark - Override for SCHStoryInteractionControllerStateReactions

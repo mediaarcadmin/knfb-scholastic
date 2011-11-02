@@ -119,8 +119,9 @@ enum ScratchState {
     switch (self.scratchState) {
         case kScratchStateFirstQuestionAttempt:
         case kScratchStateSecondQuestionAttempt:
-            [self cancelQueuedAudioExecutingSynchronizedBlocksImmediately];
-            [self askQuestion];
+            [self cancelQueuedAudioExecutingSynchronizedBlocksBefore:^{
+                [self askQuestion];
+            }];
             break;
         default:
             [super playAudioButtonTapped:sender];
@@ -292,24 +293,25 @@ enum ScratchState {
         
     [self.scratchView setShowFullImage:YES];
     
-    [self cancelQueuedAudioExecutingSynchronizedBlocksImmediately];
-    [self enqueueAudioWithPath:[self.storyInteraction storyInteractionCorrectAnswerSoundFilename] 
-                    fromBundle:YES 
-                    startDelay:0 
-        synchronizedStartBlock:^{
-            self.controllerState = SCHStoryInteractionControllerStateInteractionFinishedSuccessfully;
-        }
-          synchronizedEndBlock:nil];
-    
-    [self enqueueAudioWithPath:[[self currentQuestion] audioPathForAnswerAtIndex:selection] fromBundle:NO];
-    [self enqueueAudioWithPath:[(SCHStoryInteractionScratchAndSee *)self.storyInteraction thatsRightAudioPath] fromBundle:NO];
-    [self enqueueAudioWithPath:[[self currentQuestion] correctAnswerAudioPath]
-                    fromBundle:NO
-                    startDelay:0
-        synchronizedStartBlock:nil
-          synchronizedEndBlock:^{
-              [self nextQuestion];
-          }];
+    [self cancelQueuedAudioExecutingSynchronizedBlocksBefore:^{
+        [self enqueueAudioWithPath:[self.storyInteraction storyInteractionCorrectAnswerSoundFilename] 
+                        fromBundle:YES 
+                        startDelay:0 
+            synchronizedStartBlock:^{
+                self.controllerState = SCHStoryInteractionControllerStateInteractionFinishedSuccessfully;
+            }
+              synchronizedEndBlock:nil];
+        
+        [self enqueueAudioWithPath:[[self currentQuestion] audioPathForAnswerAtIndex:selection] fromBundle:NO];
+        [self enqueueAudioWithPath:[(SCHStoryInteractionScratchAndSee *)self.storyInteraction thatsRightAudioPath] fromBundle:NO];
+        [self enqueueAudioWithPath:[[self currentQuestion] correctAnswerAudioPath]
+                        fromBundle:NO
+                        startDelay:0
+            synchronizedStartBlock:nil
+              synchronizedEndBlock:^{
+                  [self nextQuestion];
+              }];
+    }];
 }
 
 - (void)wrongAnswer:(NSInteger) selection
@@ -319,49 +321,50 @@ enum ScratchState {
     UIButton *button = (UIButton *) [self.answerButtons objectAtIndex:selection];
     [button setSelected:YES];
     
-    [self cancelQueuedAudioExecutingSynchronizedBlocksImmediately];
-    [self enqueueAudioWithPath:[scratchAndSee storyInteractionWrongAnswerSoundFilename] 
-                    fromBundle:YES 
-                    startDelay:0 
-        synchronizedStartBlock:^{
-            self.controllerState = SCHStoryInteractionControllerStateInteractionReadingAnswerWithPause;
+    [self cancelQueuedAudioExecutingSynchronizedBlocksBefore:^{
+        [self enqueueAudioWithPath:[scratchAndSee storyInteractionWrongAnswerSoundFilename] 
+                        fromBundle:YES 
+                        startDelay:0 
+            synchronizedStartBlock:^{
+                self.controllerState = SCHStoryInteractionControllerStateInteractionReadingAnswerWithPause;
+            }
+              synchronizedEndBlock:nil
+         ];
+        [self enqueueAudioWithPath:[[self currentQuestion] audioPathForAnswerAtIndex:selection] fromBundle:NO];
+        
+        switch (self.scratchState) {
+            case kScratchStateFirstQuestionAttempt: {
+                [self enqueueAudioWithPath:[scratchAndSee thatsNotItAudioPath] fromBundle:NO];
+                [self enqueueAudioWithPath:[scratchAndSee keepScratchingAudioPath]
+                                fromBundle:NO
+                                startDelay:0
+                    synchronizedStartBlock:nil
+                      synchronizedEndBlock:^{
+                          [button setSelected:NO];
+                          self.scratchState = kScratchStateSecondScratch;
+                          self.controllerState = SCHStoryInteractionControllerStateInteractionInProgress;
+                          [self setupQuestionAnimated:YES];
+                      }];
+                break;
+            }
+            case kScratchStateSecondQuestionAttempt:
+            case kScratchStateKeepTrying: {
+                [self enqueueAudioWithPath:[scratchAndSee audioPathForTryAgain]
+                                fromBundle:NO
+                                startDelay:0
+                    synchronizedStartBlock:nil
+                      synchronizedEndBlock:^{
+                          [button setSelected:NO];
+                          self.scratchState = kScratchStateKeepTrying;
+                          self.controllerState = SCHStoryInteractionControllerStateInteractionInProgress;
+                          [self setupQuestionAnimated:YES];
+                      }];
+                break;
+            }
+            default:
+                break;
         }
-          synchronizedEndBlock:nil
-     ];
-    [self enqueueAudioWithPath:[[self currentQuestion] audioPathForAnswerAtIndex:selection] fromBundle:NO];
-    
-    switch (self.scratchState) {
-        case kScratchStateFirstQuestionAttempt: {
-            [self enqueueAudioWithPath:[scratchAndSee thatsNotItAudioPath] fromBundle:NO];
-            [self enqueueAudioWithPath:[scratchAndSee keepScratchingAudioPath]
-                            fromBundle:NO
-                            startDelay:0
-                synchronizedStartBlock:nil
-                  synchronizedEndBlock:^{
-                      [button setSelected:NO];
-                      self.scratchState = kScratchStateSecondScratch;
-                      self.controllerState = SCHStoryInteractionControllerStateInteractionInProgress;
-                      [self setupQuestionAnimated:YES];
-                  }];
-            break;
-        }
-        case kScratchStateSecondQuestionAttempt:
-        case kScratchStateKeepTrying: {
-            [self enqueueAudioWithPath:[scratchAndSee audioPathForTryAgain]
-                            fromBundle:NO
-                            startDelay:0
-                synchronizedStartBlock:nil
-                  synchronizedEndBlock:^{
-                      [button setSelected:NO];
-                      self.scratchState = kScratchStateKeepTrying;
-                      self.controllerState = SCHStoryInteractionControllerStateInteractionInProgress;
-                      [self setupQuestionAnimated:YES];
-                  }];
-            break;
-        }
-        default:
-            break;
-    }
+    }];
 }
 
 - (void)setProgressViewForScratchCount: (NSInteger) scratchCount
@@ -404,16 +407,17 @@ enum ScratchState {
 
         aScratchView.interactionEnabled = NO;
 
-        [self cancelQueuedAudioExecutingSynchronizedBlocksImmediately];
-        [self enqueueAudioWithPath:[(SCHStoryInteractionScratchAndSee *)self.storyInteraction scratchingCompleteSoundEffectFilename]
-                        fromBundle:YES
-                        startDelay:0
-            synchronizedStartBlock:^{
-                self.controllerState = SCHStoryInteractionControllerStateInteractionReadingAnswerWithPause;
-            }
-              synchronizedEndBlock:^{
-                  [self askQuestion];
-              }];
+        [self cancelQueuedAudioExecutingSynchronizedBlocksBefore:^{
+            [self enqueueAudioWithPath:[(SCHStoryInteractionScratchAndSee *)self.storyInteraction scratchingCompleteSoundEffectFilename]
+                            fromBundle:YES
+                            startDelay:0
+                synchronizedStartBlock:^{
+                    self.controllerState = SCHStoryInteractionControllerStateInteractionReadingAnswerWithPause;
+                }
+                  synchronizedEndBlock:^{
+                      [self askQuestion];
+                  }];
+        }];
     } else {
         [self setProgressViewForScratchCount:points];
     }

@@ -1302,7 +1302,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     NSLog(@"Pressed story interaction button");
     
     [self pauseAudioPlayback];
-    [self.queuedAudioPlayer cancelPlaybackExecutingSynchronizedBlocksImmediately:YES];
+    [self.queuedAudioPlayer cancelPlaybackExecutingSynchronizedBlocks:YES beforeCompletionHandler:nil];
     
     if (self.optionsView.superview) {
         [self.optionsView removeFromSuperview];
@@ -1462,7 +1462,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
                 NSString *audioFilename = self.youngerMode ? @"sfx_siappears_y2B" : @"sfx_siappears_o";
                 NSString *bundlePath = [[NSBundle mainBundle] pathForResource:audioFilename ofType:@"mp3"];
                 
-                [self.queuedAudioPlayer cancelPlaybackExecutingSynchronizedBlocksImmediately:NO];
+                [self.queuedAudioPlayer cancelPlaybackExecutingSynchronizedBlocks:NO beforeCompletionHandler:nil];
                 [self.queuedAudioPlayer enqueueAudioTaskWithFetchBlock:^NSData*(void){
                     return [NSData dataWithContentsOfFile:bundlePath
                                                   options:NSDataReadingMapped
@@ -2104,7 +2104,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
         if (self.pauseAudioOnNextPageTurn) {
             [self pauseAudioPlayback];
         }
-        [self.queuedAudioPlayer cancelPlaybackExecutingSynchronizedBlocksImmediately:NO];
+        [self.queuedAudioPlayer cancelPlaybackExecutingSynchronizedBlocks:NO beforeCompletionHandler:nil];
     }
 
     // hide the toolbar if it's showing

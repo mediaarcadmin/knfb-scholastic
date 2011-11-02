@@ -70,15 +70,17 @@
             NSString *answer = [[self currentQuestion].answers objectAtIndex:answerIndex];
             UIImage *highlight = nil;
             if (answerIndex == [self currentQuestion].correctAnswer) {
-                highlight = [[UIImage imageNamed:@"answer-button-green"] stretchableImageWithLeftCapWidth:10 topCapHeight:0];
+                highlight = [[UIImage imageNamed:@"answer-button-green"] stretchableImageWithLeftCapWidth:10 topCapHeight:10];
             } else {
-                highlight = [[UIImage imageNamed:@"answer-button-red"] stretchableImageWithLeftCapWidth:10 topCapHeight:0];    
+                highlight = [[UIImage imageNamed:@"answer-button-red"] stretchableImageWithLeftCapWidth:10 topCapHeight:10];    
             }
+            [button.titleLabel setNumberOfLines:0];
+            [button.titleLabel setTextAlignment:UITextAlignmentCenter];
             [button setTitle:answer forState:UIControlStateNormal];
             [button setTitleColor:(iPad ? [UIColor whiteColor] : [UIColor SCHBlue2Color]) forState:UIControlStateNormal];
             [button setHidden:NO];
             [button setSelected:NO];
-            [button setBackgroundImage:[(iPad == YES ? [UIImage imageNamed:@"answer-button-blue"] : [UIImage imageNamed:@"answer-button-yellow"]) stretchableImageWithLeftCapWidth:10 topCapHeight:0] forState:UIControlStateNormal];        
+            [button setBackgroundImage:[(iPad == YES ? [UIImage imageNamed:@"answer-button-blue"] : [UIImage imageNamed:@"answer-button-yellow"]) stretchableImageWithLeftCapWidth:10 topCapHeight:10] forState:UIControlStateNormal];        
             [button setBackgroundImage:highlight forState:UIControlStateSelected];
             [button setImage:[UIImage imageNamed:@"answer-blank"] forState:UIControlStateNormal];
             if (answerIndex == [self currentQuestion].correctAnswer) {
@@ -92,6 +94,15 @@
     // play intro audio on first question only
     self.controllerState = SCHStoryInteractionControllerStateAskingOpeningQuestion; 
     [self playQuestionAudioAndHighlightAnswersWithIntroduction:(self.currentQuestionIndex == 0)];
+}
+
+- (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation
+{
+    UIEdgeInsets imageInsets = UIEdgeInsetsMake(0, CGRectGetWidth([[self.answerButtons objectAtIndex:0] bounds])-40, 0, 0);
+    for (UIButton *button in self.answerButtons) {
+        [button setImageEdgeInsets:imageInsets];
+    }
+    [super didRotateFromInterfaceOrientation:fromInterfaceOrientation];
 }
 
 - (void)playQuestionAudioAndHighlightAnswersWithIntroduction:(BOOL)withIntroduction
@@ -152,42 +163,42 @@
         return;
     }
 
-    [self cancelQueuedAudioExecutingSynchronizedBlocksImmediately];
-
-    NSUInteger chosenAnswer = sender.tag - 1;
-    if (chosenAnswer >= [[self currentQuestion].answers count]) {
-        return;
-    }
-
-    [sender setSelected:YES];
-    [self setUserInteractionsEnabled:NO];
-
-    if (chosenAnswer == [self currentQuestion].correctAnswer) {
-        [self enqueueAudioWithPath:[self.storyInteraction storyInteractionCorrectAnswerSoundFilename] fromBundle:YES];
-        [self enqueueAudioWithPath:[[self currentQuestion] audioPathForAnswerAtIndex:chosenAnswer] fromBundle:NO];
-        [self enqueueAudioWithPath:[(SCHStoryInteractionMultipleChoiceText *)self.storyInteraction audioPathForThatsRight] fromBundle:NO];
-        [self enqueueAudioWithPath:[[self currentQuestion] audioPathForCorrectAnswer]
-                        fromBundle:NO
-                        startDelay:0
-            synchronizedStartBlock:nil
-              synchronizedEndBlock:^{
-                  self.controllerState = SCHStoryInteractionControllerStateInteractionFinishedSuccessfully;
-                  [self removeFromHostView];
-              }];
-    } else {
-        [self enqueueAudioWithPath:[self.storyInteraction storyInteractionWrongAnswerSoundFilename]
-                        fromBundle:YES];
-        [self enqueueAudioWithPath:[[self currentQuestion] audioPathForAnswerAtIndex:chosenAnswer]
-                        fromBundle:NO];
-        [self enqueueAudioWithPath:[[self currentQuestion] audioPathForIncorrectAnswer]
-                        fromBundle:NO
-                        startDelay:0
-            synchronizedStartBlock:nil
-              synchronizedEndBlock:^{
-                  [sender setSelected:NO];
-                  [self setUserInteractionsEnabled:YES];
-              }];
-    }
+    [self cancelQueuedAudioExecutingSynchronizedBlocksBefore:^{
+        NSUInteger chosenAnswer = sender.tag - 1;
+        if (chosenAnswer >= [[self currentQuestion].answers count]) {
+            return;
+        }
+        
+        [sender setSelected:YES];
+        self.controllerState = SCHStoryInteractionControllerStateInteractionReadingAnswerWithPause;
+        
+        if (chosenAnswer == [self currentQuestion].correctAnswer) {
+            [self enqueueAudioWithPath:[self.storyInteraction storyInteractionCorrectAnswerSoundFilename] fromBundle:YES];
+            [self enqueueAudioWithPath:[[self currentQuestion] audioPathForAnswerAtIndex:chosenAnswer] fromBundle:NO];
+            [self enqueueAudioWithPath:[(SCHStoryInteractionMultipleChoiceText *)self.storyInteraction audioPathForThatsRight] fromBundle:NO];
+            [self enqueueAudioWithPath:[[self currentQuestion] audioPathForCorrectAnswer]
+                            fromBundle:NO
+                            startDelay:0
+                synchronizedStartBlock:nil
+                  synchronizedEndBlock:^{
+                      self.controllerState = SCHStoryInteractionControllerStateInteractionFinishedSuccessfully;
+                      [self removeFromHostView];
+                  }];
+        } else {
+            [self enqueueAudioWithPath:[self.storyInteraction storyInteractionWrongAnswerSoundFilename]
+                            fromBundle:YES];
+            [self enqueueAudioWithPath:[[self currentQuestion] audioPathForAnswerAtIndex:chosenAnswer]
+                            fromBundle:NO];
+            [self enqueueAudioWithPath:[[self currentQuestion] audioPathForIncorrectAnswer]
+                            fromBundle:NO
+                            startDelay:0
+                synchronizedStartBlock:nil
+                  synchronizedEndBlock:^{
+                      [sender setSelected:NO];
+                      self.controllerState = SCHStoryInteractionControllerStateInteractionInProgress;
+                  }];
+        }
+    }];
 }
 
 - (NSString *)audioPathForQuestion

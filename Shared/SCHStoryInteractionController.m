@@ -33,6 +33,7 @@
 - (void)setupGeometryForContentsView:(UIView *)contents contentsSize:(CGSize)contentsSize;
 - (CGSize)maximumContentsSize;
 - (UIImage *)backgroundImage;
+- (void)cancelQueuedAudio;
 
 @end
 
@@ -382,7 +383,7 @@ static Class controllerClassForStoryInteraction(SCHStoryInteraction *storyIntera
     }
 
     UIFont *font;
-    for (; fontSize > 12; fontSize -= 2) {
+    for (; fontSize > 10; fontSize -= 2) {
         font = [UIFont fontWithName:fontName size:fontSize];
         CGSize size = [self.titleView.text sizeWithFont:font
                                       constrainedToSize:CGSizeMake(CGRectGetWidth(self.titleView.bounds), CGFLOAT_MAX)
@@ -668,7 +669,7 @@ static Class controllerClassForStoryInteraction(SCHStoryInteraction *storyIntera
     if (![self.audioPlayer isPlaying]) { 
         NSString *path = [self audioPathForQuestion];
         if (path != nil) {
-            [self cancelQueuedAudioExecutingSynchronizedBlocksImmediately];
+            [self cancelQueuedAudioExecutingSynchronizedBlocksBefore:nil];
             [self enqueueAudioWithPath:path 
                             fromBundle:NO 
                             startDelay:0 
@@ -683,18 +684,6 @@ static Class controllerClassForStoryInteraction(SCHStoryInteraction *storyIntera
 
         }   
     }
-}
-
-- (void)playDefaultButtonAudio
-{
-    [self cancelQueuedAudioExecutingSynchronizedBlocksImmediately];
-    [self enqueueAudioWithPath:[self.storyInteraction storyInteractionCorrectAnswerSoundFilename] fromBundle:YES];
-}
-
-- (void)playRevealAudio
-{
-    [self cancelQueuedAudioExecutingSynchronizedBlocksImmediately];
-    [self enqueueAudioWithPath:[self.storyInteraction storyInteractionRevealSoundFilename] fromBundle:YES];
 }
 
 - (void)enqueueAudioWithPath:(NSString *)path
@@ -749,12 +738,12 @@ static Class controllerClassForStoryInteraction(SCHStoryInteraction *storyIntera
 
 - (void)cancelQueuedAudio
 {
-    [self.audioPlayer cancelPlaybackExecutingSynchronizedBlocksImmediately:NO];
+    [self.audioPlayer cancelPlaybackExecutingSynchronizedBlocks:NO beforeCompletionHandler:nil];
 }
 
-- (void)cancelQueuedAudioExecutingSynchronizedBlocksImmediately
+- (void)cancelQueuedAudioExecutingSynchronizedBlocksBefore:(dispatch_block_t)completion
 {
-    [self.audioPlayer cancelPlaybackExecutingSynchronizedBlocksImmediately:YES];
+    [self.audioPlayer cancelPlaybackExecutingSynchronizedBlocks:YES beforeCompletionHandler:completion];
 }
 
 

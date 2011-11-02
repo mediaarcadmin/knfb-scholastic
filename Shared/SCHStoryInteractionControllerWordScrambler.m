@@ -247,31 +247,34 @@
 
 - (void)hintButtonTapped:(id)sender
 {
-    [self playDefaultButtonAudio];
-    for (SCHStoryInteractionDraggableLetterView *hintLetter in self.hintLetters) {
-        NSInteger hintPosition = [self.letterViews indexOfObject:hintLetter];
-        NSInteger hintLetterCurrentPosition = [self.lettersByPosition indexOfObject:hintLetter];
-        if (hintLetterCurrentPosition != hintPosition) {
-            SCHStoryInteractionDraggableLetterView *letterAtHintPosition = [self.lettersByPosition objectAtIndex:hintPosition];
-            [self.lettersByPosition replaceObjectAtIndex:hintPosition withObject:hintLetter];
-            [self.lettersByPosition replaceObjectAtIndex:hintLetterCurrentPosition withObject:letterAtHintPosition];
+    [self cancelQueuedAudioExecutingSynchronizedBlocksBefore:^{
+        [self enqueueAudioWithPath:[self.storyInteraction storyInteractionCorrectAnswerSoundFilename] fromBundle:YES];
 
-            letterAtHintPosition.homePosition = hintLetter.center;
-            hintLetter.homePosition = letterAtHintPosition.center;
-            [letterAtHintPosition moveToHomePosition];
-            [hintLetter moveToHomePosition];
-            hintLetter.lockedInPlace = YES;
+        for (SCHStoryInteractionDraggableLetterView *hintLetter in self.hintLetters) {
+            NSInteger hintPosition = [self.letterViews indexOfObject:hintLetter];
+            NSInteger hintLetterCurrentPosition = [self.lettersByPosition indexOfObject:hintLetter];
+            if (hintLetterCurrentPosition != hintPosition) {
+                SCHStoryInteractionDraggableLetterView *letterAtHintPosition = [self.lettersByPosition objectAtIndex:hintPosition];
+                [self.lettersByPosition replaceObjectAtIndex:hintPosition withObject:hintLetter];
+                [self.lettersByPosition replaceObjectAtIndex:hintLetterCurrentPosition withObject:letterAtHintPosition];
+                
+                letterAtHintPosition.homePosition = hintLetter.center;
+                hintLetter.homePosition = letterAtHintPosition.center;
+                [letterAtHintPosition moveToHomePosition];
+                [hintLetter moveToHomePosition];
+                hintLetter.lockedInPlace = YES;
+            }
+            
+            [hintLetter setLetterColor:[UIColor SCHYellowColor]];
         }
-
-        [hintLetter setLetterColor:[UIColor SCHYellowColor]];
-    }
-    
-    self.hasShownHint = YES;
-    self.hintButton.hidden = YES;
-    
-    if ([self hasCorrectSolution]) {
-        [self wordScrambleComplete];
-    }
+        
+        self.hasShownHint = YES;
+        self.hintButton.hidden = YES;
+        
+        if ([self hasCorrectSolution]) {
+            [self wordScrambleComplete];
+        }
+    }];
 }
 
 #pragma mark - draggable delegate

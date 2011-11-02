@@ -207,9 +207,10 @@
 
 - (void)playAgainButtonTapped:(id)sender
 {
-    [self cancelQueuedAudioExecutingSynchronizedBlocksImmediately];
-    [self enqueueAudioWithPath:@"sfx_siopen_y.mp3" fromBundle:YES];
-    [self presentNextView];
+    [self cancelQueuedAudioExecutingSynchronizedBlocksBefore:^{
+        [self enqueueAudioWithPath:@"sfx_siopen_y.mp3" fromBundle:YES];
+        [self presentNextView];
+    }];
 }
 
 #pragma mark - Override for SCHStoryInteractionControllerStateReactions

@@ -86,8 +86,9 @@
 - (void)chooseBackground:(UIButton *)sender
 {
     self.chosenBackgroundIndex = sender.tag;
-    [self cancelQueuedAudioExecutingSynchronizedBlocksImmediately];
-    [self presentNextView];
+    [self cancelQueuedAudioExecutingSynchronizedBlocksBefore:^{
+        [self presentNextView];
+    }];
 }
 
 - (void)goTapped:(id)sender
@@ -98,9 +99,10 @@
                          introView.alpha = 0;
                      }
                      completion:^(BOOL finished) {
-                         [self cancelQueuedAudioExecutingSynchronizedBlocksImmediately];
-                         [introView removeFromSuperview];
-                         self.contentsView.userInteractionEnabled = YES;
+                         [self cancelQueuedAudioExecutingSynchronizedBlocksBefore:^{
+                             [introView removeFromSuperview];
+                             self.contentsView.userInteractionEnabled = YES;
+                         }];
                      }];
 }
 

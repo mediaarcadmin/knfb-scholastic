@@ -177,31 +177,32 @@
     cross.transform = CGAffineTransformMakeScale(scale, scale);
     
     [self.pageImageView addSubview:cross];
-    [self cancelQueuedAudio];
-    [self enqueueAudioWithPath:[self.storyInteraction storyInteractionWrongAnswerSoundFilename]
-                    fromBundle:YES
-                    startDelay:0
-        synchronizedStartBlock:^{
-            self.controllerState = SCHStoryInteractionControllerStateInteractionReadingAnswerWithPause;
-        }
-          synchronizedEndBlock:nil];
-    [self enqueueAudioWithPath:[self.storyInteraction audioPathForTryAgain]
-                    fromBundle:NO
-                    startDelay:0
-        synchronizedStartBlock:nil
-          synchronizedEndBlock:^{
-              [UIView animateWithDuration:0.25
-                                    delay:0
-                                  options:UIViewAnimationOptionAllowUserInteraction
-                               animations:^{ cross.alpha = 0; }
-                               completion:^(BOOL finished) { 
-                                   self.controllerState = SCHStoryInteractionControllerStateInteractionInProgress;
-                                   [cross removeFromSuperview]; 
-                               }];
-          }];
-    
-    self.answerMarkerView = cross;
-    [cross release];
+    [self cancelQueuedAudioExecutingSynchronizedBlocksBefore:^{
+        [self enqueueAudioWithPath:[self.storyInteraction storyInteractionWrongAnswerSoundFilename]
+                        fromBundle:YES
+                        startDelay:0
+            synchronizedStartBlock:^{
+                self.controllerState = SCHStoryInteractionControllerStateInteractionReadingAnswerWithPause;
+            }
+              synchronizedEndBlock:nil];
+        [self enqueueAudioWithPath:[self.storyInteraction audioPathForTryAgain]
+                        fromBundle:NO
+                        startDelay:0
+            synchronizedStartBlock:nil
+              synchronizedEndBlock:^{
+                  [UIView animateWithDuration:0.25
+                                        delay:0
+                                      options:UIViewAnimationOptionAllowUserInteraction
+                                   animations:^{ cross.alpha = 0; }
+                                   completion:^(BOOL finished) { 
+                                       self.controllerState = SCHStoryInteractionControllerStateInteractionInProgress;
+                                       [cross removeFromSuperview]; 
+                                   }];
+              }];
+        
+        self.answerMarkerView = cross;
+        [cross release];
+    }];
 }
 
 - (CGPoint)starsImageCenterForPoint:(CGPoint)point
@@ -254,15 +255,16 @@
                          [stars makeObjectsPerformSelector:@selector(removeFromSuperview)];
                      }];
     
-    [self cancelQueuedAudioExecutingSynchronizedBlocksImmediately];
-    [self enqueueAudioWithPath:[self.storyInteraction storyInteractionCorrectAnswerSoundFilename] fromBundle:YES];
-    [self enqueueAudioWithPath:[[self currentQuestion] audioPathForCorrectAnswer]
-                    fromBundle:NO
-                    startDelay:0
-        synchronizedStartBlock:nil
-          synchronizedEndBlock:^{
-              [self zoomOutAndCloseWithSuccess:YES];
-          }];
+    [self cancelQueuedAudioExecutingSynchronizedBlocksBefore:^{
+        [self enqueueAudioWithPath:[self.storyInteraction storyInteractionCorrectAnswerSoundFilename] fromBundle:YES];
+        [self enqueueAudioWithPath:[[self currentQuestion] audioPathForCorrectAnswer]
+                        fromBundle:NO
+                        startDelay:0
+            synchronizedStartBlock:nil
+              synchronizedEndBlock:^{
+                  [self zoomOutAndCloseWithSuccess:YES];
+              }];
+    }];
         
 }
 

@@ -257,8 +257,9 @@ enum {
 
 - (void)playTapped:(id)sender
 {
-    [self cancelQueuedAudioExecutingSynchronizedBlocksImmediately];
-    [self presentNextView];
+    [self cancelQueuedAudioExecutingSynchronizedBlocksBefore:^{
+        [self presentNextView];
+    }];
 }
 
 - (void)letterTouched:(SCHStoryInteractionWordBirdLetterView *)sender

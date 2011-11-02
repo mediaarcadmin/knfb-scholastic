@@ -117,12 +117,6 @@ typedef enum
 // resize the existing content view
 - (void)resizeCurrentViewToSize:(CGSize)newSize animationDuration:(NSTimeInterval)animationDuration withAdditionalAdjustments:(dispatch_block_t)adjustmentBlock;
 
-// play the default audio sound for a button tap
-- (void)playDefaultButtonAudio;
-
-// play the audio for revealing an answer (About Me)
-- (void)playRevealAudio;
-
 // currently playing audio?
 - (BOOL)playingAudio;
 
@@ -145,12 +139,10 @@ typedef enum
 // convenience version of above with no delay and no synchronized blocks
 - (void)enqueueAudioWithPath:(NSString *)path fromBundle:(BOOL)fromBundle;
 
-// cancel any playing or queued audio
-- (void)cancelQueuedAudio;
-
 // cancel any playing or queued audio, but still execute the synchronized blocks for any
-// pending audio items; the blocks will be executed synchronously and immediately
-- (void)cancelQueuedAudioExecutingSynchronizedBlocksImmediately;
+// pending audio items; the blocks are executed asynchronously, but before the supplied
+// (and optional) completion handler;
+- (void)cancelQueuedAudioExecutingSynchronizedBlocksBefore:(dispatch_block_t)completion;
 
 // get an image from the XPS provider
 - (UIImage *)imageAtPath:(NSString *)path;
