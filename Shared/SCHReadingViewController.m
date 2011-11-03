@@ -2860,7 +2860,6 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 
 - (UIImage *)currentPageSnapshot
 {
-    [self.readingView waitForVisiblePagesRenderingToComplete];
     return [self.readingView pageSnapshot];
 }
 

@@ -522,10 +522,4 @@ static void sortedHighlightRangePredicateInit() {
     return [self.eucBookView.pageTurningView screenshot];
 }
 
-- (void)waitForVisiblePagesRenderingToComplete
-{
-    [self.eucBookView.pageTurningView waitForAllPageImagesToBeAvailable];
-}
-
-
 @end
