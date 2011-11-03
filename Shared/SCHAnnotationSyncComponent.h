@@ -21,5 +21,6 @@ extern NSString * const SCHAnnotationSyncComponentCompletedProfileIDs;
 
 - (void)addProfile:(NSNumber *)profileID withBooks:(NSArray *)books;
 - (BOOL)haveProfiles;
+- (BOOL)nextProfile;
 
 @end

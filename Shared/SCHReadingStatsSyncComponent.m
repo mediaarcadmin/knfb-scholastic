@@ -84,16 +84,13 @@ NSString * const SCHReadingStatsSyncComponentDidFailNotification = @"SCHReadingS
 {
     NSLog(@"%@:didFailWithError\n%@", method, error);
     
-    // a valid error otherwise server error
-    if ([error domain] != kBITAPIErrorDomain) {
-        [[NSNotificationCenter defaultCenter] postNotificationName:SCHReadingStatsSyncComponentDidFailNotification 
-                                                            object:self];
-        [super method:method didFailWithError:error requestInfo:requestInfo result:result];
-    } else {
+    // server error so clear the stats
+    if ([error domain] == kBITAPIErrorDomain) {
         [self clear];        
-        [[NSNotificationCenter defaultCenter] postNotificationName:SCHReadingStatsSyncComponentDidCompleteNotification object:self];			
-        [super method:method didCompleteWithResult:nil];	
     }    
+    [[NSNotificationCenter defaultCenter] postNotificationName:SCHReadingStatsSyncComponentDidFailNotification 
+                                                        object:self];
+    [super method:method didFailWithError:error requestInfo:requestInfo result:result];    
 }
 
 @end

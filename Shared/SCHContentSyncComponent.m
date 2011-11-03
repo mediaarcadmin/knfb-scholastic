@@ -122,17 +122,10 @@ NSString * const SCHContentSyncComponentDidFailNotification = @"SCHContentSyncCo
 {
     NSLog(@"%@:didFailWithError\n%@", method, error);
     
-	// a valid error otherwise server error
-    if ([error domain] != kBITAPIErrorDomain) {
-        [[NSNotificationCenter defaultCenter] postNotificationName:SCHContentSyncComponentDidFailNotification 
-                                                            object:self];            
-        
-        [super method:method didFailWithError:error requestInfo:requestInfo result:result];        
-    } else {
-		[[NSNotificationCenter defaultCenter] postNotificationName:SCHContentSyncComponentDidCompleteNotification 
-                                                            object:self];        
-        [super method:method didCompleteWithResult:nil];				    
-    }
+    [[NSNotificationCenter defaultCenter] postNotificationName:SCHContentSyncComponentDidFailNotification 
+                                                        object:self];            
+    
+    [super method:method didFailWithError:error requestInfo:requestInfo result:result];        
 }
 
 - (BOOL)updateUserContentItems

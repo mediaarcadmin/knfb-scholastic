@@ -184,17 +184,14 @@ NSString * const SCHProfileSyncComponentDidFailNotification = @"SCHProfileSyncCo
 {
     NSLog(@"%@:didFailWithError\n%@", method, error);
     
-    // a valid error otherwise server error
-    if ([error domain] != kBITAPIErrorDomain) {
+    // server error so process the result
+    if ([error domain] == kBITAPIErrorDomain && 
+        [method compare:kSCHLibreAccessWebServiceSaveUserProfiles] == NSOrderedSame) {
+        [self processSaveUserProfilesWithResult:result];
+    } else {
         [[NSNotificationCenter defaultCenter] postNotificationName:SCHProfileSyncComponentDidFailNotification 
                                                             object:self];		    
         [super method:method didFailWithError:error requestInfo:requestInfo result:result];
-    } else if ([method compare:kSCHLibreAccessWebServiceSaveUserProfiles] == NSOrderedSame) {
-        [self processSaveUserProfilesWithResult:result];
-    } else {
-        [[NSNotificationCenter defaultCenter] postNotificationName:SCHProfileSyncComponentDidCompleteNotification 
-                                                            object:self];		            
-        [super method:method didCompleteWithResult:nil];
     }
     [self.savedProfiles removeAllObjects];
 }

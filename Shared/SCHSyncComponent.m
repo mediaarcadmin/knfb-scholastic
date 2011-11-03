@@ -9,12 +9,18 @@
 #import "SCHSyncComponent.h"
 #import "SCHSyncComponentProtected.h"
 
+@interface SCHSyncComponent ()
+ 
+@property (assign, nonatomic) NSUInteger failureCount;
+
+@end
 
 @implementation SCHSyncComponent
 
 @synthesize isSynchronizing;
 @synthesize managedObjectContext;
 @synthesize backgroundTaskIdentifier;
+@synthesize failureCount;
 
 #pragma mark - Object lifecycle
 
@@ -52,6 +58,8 @@
 	}
 	self.isSynchronizing = NO;
 	
+    self.failureCount = 0;
+    
 	[super method:method didCompleteWithResult:nil];	
 }
 
@@ -65,7 +73,14 @@
 	}
 	self.isSynchronizing = NO;
 	
+    self.failureCount = self.failureCount + 1;
+    
 	[super method:method didFailWithError:error requestInfo:requestInfo result:result];
+}
+
+- (void)clearFailures
+{
+    self.failureCount = 0;
 }
 
 #pragma mark - Private methods

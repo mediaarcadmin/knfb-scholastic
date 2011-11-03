@@ -19,6 +19,9 @@
 @property (assign, nonatomic) BOOL isSynchronizing;
 @property (retain, nonatomic) NSManagedObjectContext *managedObjectContext;
 
+@property (readonly, nonatomic) NSUInteger failureCount;
+
 - (BOOL)synchronize;
+- (void)clearFailures;
 
 @end
