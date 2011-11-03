@@ -13,6 +13,8 @@
 #import "SCHStoryInteractionControllerDelegate.h"
 #import "NSArray+ViewSorting.h"
 
+#define debug_layout 0
+
 @interface SCHStoryInteractionControllerMultipleChoiceText ()
 
 @property (nonatomic, assign) NSInteger currentQuestionIndex;
@@ -20,6 +22,7 @@
 
 - (void)setupQuestion;
 - (void)playQuestionAudioAndHighlightAnswersWithIntroduction:(BOOL)withIntroduction;
+- (void)adjustButtonsFont;
 
 @end
 
@@ -38,6 +41,21 @@
 - (SCHStoryInteractionMultipleChoiceTextQuestion *)currentQuestion
 {
     return [[(SCHStoryInteractionMultipleChoiceText *)self.storyInteraction questions] objectAtIndex:currentQuestionIndex];
+}
+
+- (NSString *)currentQuestionAnswerOptionAtIndex:(NSInteger)index
+{
+#if debug_layout
+    // use various lengths of strings to force the text layout code to do some work
+    switch (index) {
+        case 0: return @"Space is big. Really big. You just won't believe how vastly, hugely, mind-bogglingly big it is. I mean, you may think it's a long way down the street to the chemist, but that's just peanuts to space.";
+        case 1: return @"The Babel Fish is small, yellow, leech-like and probably the oddest thing in the universe.";
+        case 2: return @"Forty two";
+        default: return @"Don't panic";
+    }
+#else
+    return [[self currentQuestion].answers objectAtIndex:index];    
+#endif
 }
 
 - (BOOL)shouldPlayQuestionAudioForViewAtIndex:(NSInteger)screenIndex
@@ -67,7 +85,7 @@
     for (UIButton *button in self.answerButtons) {
         NSUInteger answerIndex = button.tag - 1;
         if (answerIndex < [[self currentQuestion].answers count]) {
-            NSString *answer = [[self currentQuestion].answers objectAtIndex:answerIndex];
+            NSString *answer = [self currentQuestionAnswerOptionAtIndex:answerIndex];
             UIImage *highlight = nil;
             if (answerIndex == [self currentQuestion].correctAnswer) {
                 highlight = [[UIImage imageNamed:@"answer-button-green"] stretchableImageWithLeftCapWidth:10 topCapHeight:10];
@@ -91,6 +109,8 @@
         }
     }
     
+    [self adjustButtonsFont];
+    
     // play intro audio on first question only
     self.controllerState = SCHStoryInteractionControllerStateAskingOpeningQuestion; 
     [self playQuestionAudioAndHighlightAnswersWithIntroduction:(self.currentQuestionIndex == 0)];
@@ -102,7 +122,36 @@
     for (UIButton *button in self.answerButtons) {
         [button setImageEdgeInsets:imageInsets];
     }
+    [self adjustButtonsFont];
     [super didRotateFromInterfaceOrientation:fromInterfaceOrientation];
+}
+
+- (void)adjustButtonsFont
+{
+    NSString *fontName = [[[[self.answerButtons objectAtIndex:0] titleLabel] font] fontName];
+    CGFloat fontSize = 16;
+    BOOL tooBig;
+    do {
+        tooBig = NO;
+        for (UIButton *button in self.answerButtons) {
+            CGSize maximumSize = UIEdgeInsetsInsetRect(button.bounds, button.titleEdgeInsets).size;
+            NSString *text = [button titleForState:UIControlStateNormal];
+            CGSize constraintSize = CGSizeMake(maximumSize.width, CGFLOAT_MAX);
+            CGSize size = [text sizeWithFont:[UIFont fontWithName:fontName size:fontSize]
+                           constrainedToSize:constraintSize
+                               lineBreakMode:button.titleLabel.lineBreakMode];
+            if (size.height > maximumSize.height) {
+                tooBig = YES;
+                fontSize -= 2;
+                break;
+            }
+        }
+    } while (tooBig && fontSize > 10);
+    
+    UIFont *font = [UIFont fontWithName:fontName size:fontSize];
+    for (UIButton *button in self.answerButtons) {
+        button.titleLabel.font = font;
+    }
 }
 
 - (void)playQuestionAudioAndHighlightAnswersWithIntroduction:(BOOL)withIntroduction
