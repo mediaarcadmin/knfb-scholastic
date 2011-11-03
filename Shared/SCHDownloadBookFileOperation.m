@@ -19,6 +19,7 @@
 @property (nonatomic, assign) unsigned long bookFileSize;
 @property (nonatomic, retain) NSFileHandle *fileHandle;
 @property (nonatomic, assign) unsigned long long currentFilesize;
+@property (nonatomic, assign) unsigned long long expectedImageFileSize;
 
 // the previous percentage reported - used to limit percentage notifications
 @property float previousPercentage;
@@ -38,6 +39,7 @@
 @synthesize fileHandle;
 @synthesize currentFilesize;
 @synthesize previousPercentage;
+@synthesize expectedImageFileSize;
 
 - (void)dealloc 
 {
@@ -160,7 +162,8 @@
 	
 	self.currentFilesize = 0;
     self.previousPercentage = -1;
-	
+	self.expectedImageFileSize = 0;
+    
 	if ([fileManager fileExistsAtPath:self.localPath]) {
 		// check to see how much of the file has been downloaded
 
@@ -272,6 +275,10 @@
             [self endOperation];
             return;
         }
+        
+        if (self.fileType == kSCHDownloadFileTypeCoverImage) {
+            self.expectedImageFileSize = [response expectedContentLength]; 
+        }
     } 
     
     NSLog(@"Filesize receiving:%llu expected:%llu", self.currentFilesize, [response expectedContentLength]);
@@ -350,10 +357,23 @@
         }
 			break;
 		case kSCHDownloadFileTypeCoverImage:
-            [self performWithBookAndSave:^(SCHAppBook *book) {
-                book.BookCoverExists = [NSNumber numberWithBool:YES];
-            }];            
-            [self setProcessingState:SCHBookProcessingStateReadyForBookFileDownload];
+            if (self.expectedImageFileSize != self.currentFilesize) {
+                [[BITNetworkActivityManager sharedNetworkActivityManager] hideNetworkActivityIndicator];
+                
+                // if there was an error may just have a partial file, so remove it
+                NSFileManager *fileManager = [[[NSFileManager alloc] init] autorelease];
+                [fileManager removeItemAtPath:self.localPath error:nil];
+                
+                [self setProcessingState:SCHBookProcessingStateDownloadFailed];        
+                
+                NSLog(@"Error downloading file %@ (image filesize did not match)", [self.localPath lastPathComponent]);
+                
+            } else {
+                [self performWithBookAndSave:^(SCHAppBook *book) {
+                    book.BookCoverExists = [NSNumber numberWithBool:YES];
+                }];            
+                [self setProcessingState:SCHBookProcessingStateReadyForBookFileDownload];
+            }
 			break;
 		default:
 			break;
