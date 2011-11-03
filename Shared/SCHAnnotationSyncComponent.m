@@ -35,6 +35,7 @@ NSString * const SCHAnnotationSyncComponentCompletedProfileIDs = @"SCHAnnotation
 
 @interface SCHAnnotationSyncComponent ()
 
+- (NSNumber *)currentProfile;
 - (BOOL)updateProfileContentAnnotations;
 - (void)processSaveProfileContentAnnotations:(NSNumber *)profileID 
                                       result:(NSDictionary *)result;
@@ -153,6 +154,29 @@ NSString * const SCHAnnotationSyncComponentCompletedProfileIDs = @"SCHAnnotation
 	return([self.annotations count ] > 0);
 }
 
+- (NSNumber *)currentProfile
+{
+    NSNumber *ret = nil;
+    
+    if ([self haveProfiles] == YES) {
+        ret = [[[self.annotations allKeys] sortedArrayUsingSelector:@selector(compare:)] objectAtIndex:0];    
+    }
+    
+    return ret;
+}
+
+- (BOOL)nextProfile
+{
+    NSNumber *currentProfile = [self currentProfile];
+   
+    if (currentProfile != nil) {
+        [self.annotations removeObjectForKey:currentProfile];    
+    }
+    [self clearFailures];
+    
+    return [self haveProfiles];
+}
+
 - (BOOL)synchronize
 {
 	BOOL ret = YES;
@@ -184,7 +208,7 @@ NSString * const SCHAnnotationSyncComponentCompletedProfileIDs = @"SCHAnnotation
 
 - (void)method:(NSString *)method didCompleteWithResult:(NSDictionary *)result
 {
-    NSNumber *profileID = [[[self.annotations allKeys] sortedArrayUsingSelector:@selector(compare:)] objectAtIndex:0];
+    NSNumber *profileID = [self currentProfile];
     
     @try {
         if([method compare:kSCHLibreAccessWebServiceSaveProfileContentAnnotations] == NSOrderedSame) {
@@ -314,25 +338,18 @@ NSString * const SCHAnnotationSyncComponentCompletedProfileIDs = @"SCHAnnotation
         result:(NSDictionary *)result
 {
     NSLog(@"%@:didFailWithError\n%@", method, error);
-    NSNumber *profileID = [[[self.annotations allKeys] sortedArrayUsingSelector:@selector(compare:)] objectAtIndex:0];
+    NSNumber *profileID = [self currentProfile];
     
-    // a valid error otherwise server error
-    if ([error domain] != kBITAPIErrorDomain) {
+    // server error so process the result
+    if ([error domain] == kBITAPIErrorDomain &&
+        [method compare:kSCHLibreAccessWebServiceSaveProfileContentAnnotations] == NSOrderedSame) {	            
+        [self processSaveProfileContentAnnotations:profileID result:result];
+    } else {
         [[NSNotificationCenter defaultCenter] postNotificationName:SCHAnnotationSyncComponentDidFailNotification 
                                                             object:self 
                                                           userInfo:[NSDictionary dictionaryWithObject:profileID 
                                                                                                forKey:SCHAnnotationSyncComponentCompletedProfileIDs]];            
         [super method:method didFailWithError:error requestInfo:requestInfo result:result];
-    } else if ([method compare:kSCHLibreAccessWebServiceSaveProfileContentAnnotations] == NSOrderedSame) {	            
-        [self processSaveProfileContentAnnotations:profileID result:result];
-    } else {
-        [[NSNotificationCenter defaultCenter] postNotificationName:SCHAnnotationSyncComponentDidCompleteNotification 
-                                                            object:self 
-                                                          userInfo:[NSDictionary dictionaryWithObject:profileID 
-                                                                                               forKey:SCHAnnotationSyncComponentCompletedProfileIDs]];        
-        [self.annotations removeObjectForKey:profileID];
-        
-        [super method:method didCompleteWithResult:nil];
     }
     [self.savedAnnotations removeAllObjects];
 }
@@ -342,7 +359,7 @@ NSString * const SCHAnnotationSyncComponentCompletedProfileIDs = @"SCHAnnotation
 	BOOL ret = YES;
     BOOL shouldSyncNotes = NO;
 	
-    NSNumber *profileID = [[[self.annotations allKeys] sortedArrayUsingSelector:@selector(compare:)] objectAtIndex:0];
+    NSNumber *profileID = [self currentProfile];
     NSArray *books = [self.annotations objectForKey:profileID];
     
 	[self.savedAnnotations removeAllObjects];

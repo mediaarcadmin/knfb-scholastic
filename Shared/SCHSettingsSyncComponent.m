@@ -80,15 +80,9 @@ NSString * const SCHSettingsSyncComponentDidFailNotification = @"SCHSettingsSync
 {
     NSLog(@"%@:didFailWithError\n%@", method, error);
     
-    // a valid error otherwise server error
-    if ([error domain] != kBITAPIErrorDomain) {
-        [[NSNotificationCenter defaultCenter] postNotificationName:SCHSettingsSyncComponentDidFailNotification 
-                                                            object:self];        
-        [super method:method didFailWithError:error requestInfo:requestInfo result:result];
-    } else {
-        [[NSNotificationCenter defaultCenter] postNotificationName:SCHSettingsSyncComponentDidCompleteNotification object:self];			
-        [super method:method didCompleteWithResult:nil];	
-    }
+    [[NSNotificationCenter defaultCenter] postNotificationName:SCHSettingsSyncComponentDidFailNotification 
+                                                        object:self];        
+    [super method:method didFailWithError:error requestInfo:requestInfo result:result];
 }
 
 - (void)updateUserSettings:(NSArray *)settingsList

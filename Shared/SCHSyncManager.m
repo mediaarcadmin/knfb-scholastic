@@ -28,6 +28,8 @@ NSString * const SCHSyncManagerDidCompleteNotification = @"SCHSyncManagerDidComp
 static NSTimeInterval const kSCHSyncManagerHeartbeatInterval = 30.0;
 static NSTimeInterval const kSCHLastFirstSyncInterval = -300.0;
 
+static NSUInteger const kSCHSyncManagerMaximumFailureRetries = 3;
+
 @interface SCHSyncManager ()
 
 @property (nonatomic, retain) NSDate *lastFirstSyncEnded;
@@ -37,6 +39,9 @@ static NSTimeInterval const kSCHLastFirstSyncInterval = -300.0;
 - (NSMutableDictionary *)annotationContentItemFromUserContentItem:(SCHUserContentItem *)userContentItem
                                                        forProfile:(NSNumber *)profileID;
 - (void)addToQueue:(SCHSyncComponent *)component;
+- (void)moveToEndOfQueue:(SCHSyncComponent *)component;
+- (void)removeFromQueue:(SCHSyncComponent *)component 
+      includeDependants:(BOOL)includeDependants;
 - (void)kickQueue;
 - (BOOL)shouldSync;
 
@@ -462,13 +467,7 @@ static NSTimeInterval const kSCHLastFirstSyncInterval = -300.0;
         [[NSUserDefaults standardUserDefaults] synchronize];
 	}
 	
-	if ([component isKindOfClass:[SCHAnnotationSyncComponent class]] == YES && 
-        [(SCHAnnotationSyncComponent *)component haveProfiles] == YES) {
-		NSLog(@"Next annotation profile");
-	} else {
-		NSLog(@"Removing %@ from the sync manager queue", [component class]);
-		[self.queue removeObject:component];
-	}
+    [self removeFromQueue:(SCHSyncComponent *)component includeDependants:NO];
 
     // the settings sync is the last component in the firstSync so signal it is complete
     if ([component isKindOfClass:[SCHSettingsSyncComponent class]] == YES) {
@@ -480,7 +479,33 @@ static NSTimeInterval const kSCHLastFirstSyncInterval = -300.0;
 
 - (void)component:(SCHComponent *)component didFailWithError:(NSError *)error
 {
-	// leave a retry to the heartbeat, give the error time to correct itself
+    SCHSyncComponent *syncComponent = (SCHSyncComponent *)component;
+    
+    // push to the end of the queue to retry
+    if (syncComponent.failureCount <= kSCHSyncManagerMaximumFailureRetries) {
+        NSLog(@"%@ failed, moving to the end of the sync manager queue", [component class]);
+        [self moveToEndOfQueue:syncComponent];
+    } else {
+        if ([component isKindOfClass:[SCHAnnotationSyncComponent class]] && 
+            [(SCHAnnotationSyncComponent *)component nextProfile] == YES) {
+            // try the next profile
+            NSLog(@"%@ failed %d times, removing the current profile from the sync", 
+                  [syncComponent class],
+                  kSCHSyncManagerMaximumFailureRetries);            
+        } else {
+            // remove from the queue when we have exhausted the retries
+            NSLog(@"%@ failed %d times, removing from the sync manager queue", 
+                  [syncComponent class],
+                  kSCHSyncManagerMaximumFailureRetries);
+            [self removeFromQueue:syncComponent includeDependants:YES];
+        }
+    }
+    
+    // Kick the queue to continue but leave the heartbeat to trigger if it's the 
+    // failed component
+    if ([self.queue count] > 0 && [self.queue objectAtIndex:0] != component) {
+        [self kickQueue];
+    }
 }
 
 #pragma mark - Sync methods
@@ -489,7 +514,62 @@ static NSTimeInterval const kSCHLastFirstSyncInterval = -300.0;
 {
 	if ([self.queue containsObject:component] == NO) {
 		NSLog(@"Adding %@ to the sync manager queue", [component class]);
+        [component clearFailures];
 		[self.queue addObject:component];
+	}
+}
+
+- (void)moveToEndOfQueue:(SCHSyncComponent *)component
+{
+	if ([self.queue containsObject:component] == YES) {
+		NSLog(@"Moving %@ to the end of the sync manager queue", [component class]);
+        [self.queue removeObject:component];
+        [self.queue addObject:component];
+        
+        NSMutableArray *moveToEndOfQueue = [NSMutableArray array];
+        if ([component isKindOfClass:[SCHProfileSyncComponent class]] == YES) {            
+            // if we have a content sync make sure it's performed after the profile sync
+            for (SCHComponent *comp in self.queue) {
+                if ([comp isKindOfClass:[SCHContentSyncComponent class]] == YES) {
+                    [moveToEndOfQueue addObject:comp]; 
+                    break;
+                }
+            }
+            // also move the bookshelf sync make sure it's performed after the content sync            
+            for (SCHComponent *comp in self.queue) {
+                if ([comp isKindOfClass:[SCHBookshelfSyncComponent class]] == YES) {
+                    [moveToEndOfQueue addObject:comp]; 
+                    break;
+                }
+            }
+            [self.queue removeObjectsInArray:moveToEndOfQueue];
+            [self.queue addObjectsFromArray:moveToEndOfQueue];
+        }        
+	}
+}
+
+- (void)removeFromQueue:(SCHSyncComponent *)component includeDependants:(BOOL)includeDependants
+{
+    if ([component isKindOfClass:[SCHAnnotationSyncComponent class]] == YES && 
+        [(SCHAnnotationSyncComponent *)component haveProfiles] == YES) {
+        NSLog(@"Next annotation profile");
+    } else if ([self.queue containsObject:component] == YES) {
+		NSLog(@"Removing %@ from the sync manager queue", [component class]);
+        [self.queue removeObject:component];
+        
+        if (includeDependants) {
+            NSMutableArray *removeFromQueue = [NSMutableArray array];
+            // if we have a content sync make then remove it too as it's dependant
+            if ([component isKindOfClass:[SCHProfileSyncComponent class]] == YES) {            
+                for (SCHComponent *comp in self.queue) {
+                    if ([comp isKindOfClass:[SCHContentSyncComponent class]] == YES) {
+                        [removeFromQueue addObject:comp];
+                        break;
+                    }
+                }
+                [self.queue removeObjectsInArray:removeFromQueue];
+            }
+        }
 	}
 }
 
