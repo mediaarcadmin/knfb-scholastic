@@ -10,6 +10,6 @@
 
 @interface SCHDictionaryOperation : NSOperation
 
-- (void)setNotCancelledCompletionBlock:(void (^)(void))block;
+@property (nonatomic, assign) dispatch_block_t notCancelledCompletionBlock;
 
 @end

@@ -13,13 +13,14 @@
 #import "SCHDictionaryDownloadManager.h"
 #import "SCHAppDictionaryState.h"
 #import "SCHAppDictionaryManifestEntry.h"
+#import "SCHDictionaryOperation.h"
 
 #pragma mark - Dummy implementations of operation classes
 
 @class SCHDummyOperation;
-static SCHDummyOperation *lastCreatedOperation;
+static void setLastCreatedOperation(SCHDummyOperation *operation);
 
-@interface SCHDummyOperation : NSOperation
+@interface SCHDummyOperation : SCHDictionaryOperation
 @property dispatch_semaphore_t sem;
 @end
 
@@ -30,7 +31,7 @@ static SCHDummyOperation *lastCreatedOperation;
 - (id)init
 {
     if ((self = [super init])) {
-        lastCreatedOperation = [self retain];
+        setLastCreatedOperation(self);
         sem = dispatch_semaphore_create(0);
     }
     return self;
@@ -53,6 +54,12 @@ static SCHDummyOperation *lastCreatedOperation;
 }
 
 @end
+
+static SCHDummyOperation *lastCreatedOperation;
+static void setLastCreatedOperation(SCHDummyOperation *op)
+{
+    lastCreatedOperation = [op retain];
+}
 
 @interface SCHHelpVideoManifestOperation : SCHDummyOperation
 @end
@@ -151,7 +158,7 @@ static NSString * const kSCHCoreDataHelperDictionaryStoreConfiguration = @"Dicti
 
 - (void)cancelLastCreatedOperation
 {
-    lastCreatedOperation.completionBlock = nil;
+    lastCreatedOperation.notCancelledCompletionBlock = nil;
     [lastCreatedOperation allowToExit];
     [lastCreatedOperation waitUntilFinished];
     [lastCreatedOperation release], lastCreatedOperation = nil;
@@ -163,8 +170,8 @@ static NSString * const kSCHCoreDataHelperDictionaryStoreConfiguration = @"Dicti
     
     // to maintain the synchronous test flow, we have to pull out the operation's completion
     // block and invoke it synchronously on the main thread
-    dispatch_block_t completionBlock = Block_copy(lastCreatedOperation.completionBlock);
-    lastCreatedOperation.completionBlock = nil;
+    dispatch_block_t completionBlock = Block_copy(lastCreatedOperation.notCancelledCompletionBlock);
+    lastCreatedOperation.notCancelledCompletionBlock = nil;
     
     [lastCreatedOperation allowToExit];
     [lastCreatedOperation waitUntilFinished];

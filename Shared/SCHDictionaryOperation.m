@@ -10,17 +10,33 @@
 
 @implementation SCHDictionaryOperation
 
+@synthesize notCancelledCompletionBlock;
+
+- (void)dealloc
+{
+    Block_release(notCancelledCompletionBlock), notCancelledCompletionBlock = nil;
+    [super dealloc];
+}
+
 #pragma mark - Operation Methods
 
-- (void)setNotCancelledCompletionBlock:(void (^)(void))block
+- (void)setNotCancelledCompletionBlock:(dispatch_block_t)block
 {
     __block NSOperation *selfPtr = self;
+
+    Block_release(notCancelledCompletionBlock);
     
-    [self setCompletionBlock:^{
-        if (![selfPtr isCancelled]) {
-            block();
-        }
-    }];
+    if (block == nil) {
+        notCancelledCompletionBlock = nil;
+        self.completionBlock = nil;
+    } else {
+        notCancelledCompletionBlock = Block_copy(block);
+        self.completionBlock = ^{
+            if (![selfPtr isCancelled]) {
+                notCancelledCompletionBlock();
+            }
+        };
+    }
 }
 
 @end
