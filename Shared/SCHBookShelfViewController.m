@@ -244,7 +244,7 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 131;
     	
 	if (![[SCHSyncManager sharedSyncManager] havePerformedFirstSyncUpToBooks] && [[SCHSyncManager sharedSyncManager] isSynchronizing]) {
         self.loadingView = [[LambdaAlert alloc]
-                            initWithTitle:NSLocalizedString(@"Syncing...", @"")
+                            initWithTitle:NSLocalizedString(@"Syncing", @"")
                             message:@"\n\n\n"];
         __block SCHBookShelfViewController *weakSelf = self;
         [self.loadingView addButtonWithTitle:NSLocalizedString(@"Back", @"") block:^{
