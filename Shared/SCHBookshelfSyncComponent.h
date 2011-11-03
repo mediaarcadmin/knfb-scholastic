@@ -27,5 +27,7 @@ extern NSString * const SCHBookshelfSyncComponentDidFailNotification;
 
 - (SCHContentMetadataItem *)addContentMetadataItem:(NSDictionary *)webContentMetadataItem;
 - (void)syncContentMetadataItems:(NSArray *)contentMetadataList;
+- (void)syncContentMetadataItem:(NSDictionary *)webContentMetadataItem
+        withContentMetadataItem:(SCHContentMetadataItem *)localContentMetadataItem;
 
 @end

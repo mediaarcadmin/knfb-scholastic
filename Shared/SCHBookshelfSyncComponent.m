@@ -33,8 +33,6 @@ NSString * const SCHBookshelfSyncComponentDidFailNotification = @"SCHBookshelfSy
 
 - (NSArray *)localContentMetadataItems;
 - (NSArray *)localUserContentItems;
-- (void)syncContentMetadataItem:(NSDictionary *)webContentMetadataItem
-        withContentMetadataItem:(SCHContentMetadataItem *)localContentMetadataItem;
 - (void)deleteAnnotationsForBook:(SCHBookIdentifier *)identifier;
 - (void)deleteStatisticsForBook:(SCHBookIdentifier *)identifier;
 
@@ -197,11 +195,18 @@ NSString * const SCHBookshelfSyncComponentDidFailNotification = @"SCHBookshelfSy
 - (BOOL)updateContentMetadataItems
 {		
 	BOOL ret = YES;
-	
-	NSArray *results = [self localUserContentItems];
 
-    // only update books we don't already have
-    results = [results filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"ContentMetadataItem.@count < 1"]];
+	NSMutableArray *results = [NSMutableArray array];
+
+    // only update books we don't already have unless there is a Version change
+    [[self localUserContentItems] enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+        NSSet *contentMetadataItems = (NSSet *)[obj ContentMetadataItem];
+        
+        if ([contentMetadataItems count] < 1 || 
+            [[[contentMetadataItems anyObject] Version] integerValue] != [[obj Version] integerValue]) {
+            [results addObject:obj];
+        }
+    }];
 
 	self.requestCount = 0;
     self.didReceiveFailedResponse = NO;
