@@ -631,8 +631,8 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 131;
 {
     [self reloadData];
     LambdaAlert *alert = [[LambdaAlert alloc]
-                          initWithTitle:NSLocalizedString(@"Retrieving Bookshelf Failed", @"Retrieving Bookshelf Failed") 
-                          message:NSLocalizedString(@"Failed to retrieve the bookshelf, we will try again soon.", @"") ];
+                          initWithTitle:NSLocalizedString(@"Unable to Retrieve all eBooks", @"Unable to Retrieve all eBooks") 
+                          message:NSLocalizedString(@"There was a problem retrieving all eBooks on this bookshelf. Please try again.", @"") ];
     [alert addButtonWithTitle:NSLocalizedString(@"OK", @"OK") block:^{}];
     [self replaceLoadingAlertWithAlert:alert];
     [alert release];
