@@ -34,6 +34,7 @@ static NSUInteger const kSCHSyncManagerMaximumFailureRetries = 3;
 
 @property (nonatomic, retain) NSDate *lastFirstSyncEnded;
 @property (nonatomic, assign) BOOL syncAfterDelay;
+@property (nonatomic , assign) UIBackgroundTaskIdentifier backgroundTaskIdentifier;
 
 - (NSMutableArray *)bookAnnotationsFromProfile:(SCHProfileItem *)profileItem;
 - (NSMutableDictionary *)annotationContentItemFromUserContentItem:(SCHUserContentItem *)userContentItem
@@ -71,6 +72,7 @@ static NSUInteger const kSCHSyncManagerMaximumFailureRetries = 3;
 @synthesize annotationSyncComponent;
 @synthesize readingStatsSyncComponent;
 @synthesize settingsSyncComponent;
+@synthesize backgroundTaskIdentifier;
 
 #pragma mark - Singleton Instance methods
 
@@ -83,7 +85,7 @@ static NSUInteger const kSCHSyncManagerMaximumFailureRetries = 3;
         sharedSyncManager = [[super allocWithZone:NULL] init];		
     });
 	
-    return(sharedSyncManager);
+    return sharedSyncManager;
 }
 
 #pragma mark methods
@@ -107,6 +109,8 @@ static NSUInteger const kSCHSyncManagerMaximumFailureRetries = 3;
 		settingsSyncComponent = [[SCHSettingsSyncComponent alloc] init];		
 		settingsSyncComponent.delegate = self;	
 		
+        backgroundTaskIdentifier = UIBackgroundTaskInvalid;
+        
 		[[NSNotificationCenter defaultCenter] addObserver:self 
                                                  selector:@selector(authenticationManager:) 
                                                      name:SCHAuthenticationManagerDidSucceedNotification 
@@ -119,13 +123,17 @@ static NSUInteger const kSCHSyncManagerMaximumFailureRetries = 3;
         
 	}
 	
-	return(self);
+	return self;
 }
 
 - (void)dealloc
 {
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
 	
+    if (self.backgroundTaskIdentifier != UIBackgroundTaskInvalid) {
+        [[UIApplication sharedApplication] endBackgroundTask:self.backgroundTaskIdentifier];
+    }    
+
     [lastFirstSyncEnded release], lastFirstSyncEnded = nil;
 	[timer release], timer = nil;
 	[queue release], queue = nil;
@@ -164,12 +172,12 @@ static NSUInteger const kSCHSyncManagerMaximumFailureRetries = 3;
 			ret = [syncComponent isSynchronizing];
 		}
 	}		
-	return(ret);
+	return ret;
 }
 
 - (BOOL)isQueueEmpty
 {
-	return([self.queue count] < 1);
+	return [self.queue count] < 1;
 }
 
 #pragma mark - NSManagedObjectContext Changed Notification
@@ -229,6 +237,12 @@ static NSUInteger const kSCHSyncManagerMaximumFailureRetries = 3;
     self.lastFirstSyncEnded = nil;
     self.syncAfterDelay = NO;
     
+    if (self.backgroundTaskIdentifier != UIBackgroundTaskInvalid) {
+        [[UIApplication sharedApplication] endBackgroundTask:self.backgroundTaskIdentifier];
+        self.backgroundTaskIdentifier = UIBackgroundTaskInvalid;			
+    }    
+
+    
 	[[NSUserDefaults standardUserDefaults] setBool:NO 
                                             forKey:kSCHUserDefaultsPerformedFirstSyncUpToBooks];
     [[NSUserDefaults standardUserDefaults] synchronize];
@@ -237,7 +251,7 @@ static NSUInteger const kSCHSyncManagerMaximumFailureRetries = 3;
 
 - (BOOL)havePerformedFirstSyncUpToBooks
 {
-	return([[NSUserDefaults standardUserDefaults] boolForKey:kSCHUserDefaultsPerformedFirstSyncUpToBooks]);
+	return [[NSUserDefaults standardUserDefaults] boolForKey:kSCHUserDefaultsPerformedFirstSyncUpToBooks];
 }
 
 // after login or opening the app, also coming out of background
@@ -355,7 +369,7 @@ static NSUInteger const kSCHSyncManagerMaximumFailureRetries = 3;
 		[ret addObject:[self annotationContentItemFromUserContentItem:contentProfileItem.UserContentItem forProfile:profileItem.ID]];
 	}
 	
-	return(ret);
+	return ret;
 }
 
 - (NSMutableDictionary *)annotationContentItemFromUserContentItem:(SCHUserContentItem *)userContentItem                                                        
@@ -406,7 +420,7 @@ static NSUInteger const kSCHSyncManagerMaximumFailureRetries = 3;
 	[ret setObject:privateAnnotation 
             forKey:kSCHLibreAccessWebServicePrivateAnnotations];
 
-	return(ret);
+	return ret;
 }
 
 - (void)openDocumentSync:(SCHUserContentItem *)userContentItem 
@@ -512,6 +526,12 @@ static NSUInteger const kSCHSyncManagerMaximumFailureRetries = 3;
 
 - (void)addToQueue:(SCHSyncComponent *)component
 {
+    if (self.backgroundTaskIdentifier == UIBackgroundTaskInvalid) {
+        self.backgroundTaskIdentifier = [[UIApplication sharedApplication] beginBackgroundTaskWithExpirationHandler:^{ 
+            self.backgroundTaskIdentifier = UIBackgroundTaskInvalid;
+        }];			
+    }
+
 	if ([self.queue containsObject:component] == NO) {
 		NSLog(@"Adding %@ to the sync manager queue", [component class]);
         [component clearFailures];
@@ -571,12 +591,16 @@ static NSUInteger const kSCHSyncManagerMaximumFailureRetries = 3;
             }
         }
 	}
+    
+	if ([self.queue count] < 1 && self.backgroundTaskIdentifier != UIBackgroundTaskInvalid) {
+		[[UIApplication sharedApplication] endBackgroundTask:self.backgroundTaskIdentifier];
+		self.backgroundTaskIdentifier = UIBackgroundTaskInvalid;			
+	}    
 }
 
 - (void)kickQueue
 {
-	if ([self.queue count] > 0 && 
-        [UIApplication sharedApplication].applicationState == UIApplicationStateActive) {
+	if ([self.queue count] > 0) {
 		SCHSyncComponent *syncComponent = [self.queue objectAtIndex:0];
 		NSLog(@"Sync component is %@", syncComponent);
 		if (syncComponent != nil && [syncComponent isSynchronizing] == NO) {
@@ -587,6 +611,11 @@ static NSUInteger const kSCHSyncManagerMaximumFailureRetries = 3;
 			NSLog(@"Kicked but already syncing %@", [syncComponent class]);
 		}
 	}  else {
+        if ([self.queue count] < 1 && self.backgroundTaskIdentifier != UIBackgroundTaskInvalid) {
+            [[UIApplication sharedApplication] endBackgroundTask:self.backgroundTaskIdentifier];
+            self.backgroundTaskIdentifier = UIBackgroundTaskInvalid;			
+        }    
+        
         [[NSNotificationCenter defaultCenter] postNotificationName:SCHSyncManagerDidCompleteNotification 
                                                             object:self];        
         if (self.syncAfterDelay == YES) {
@@ -604,7 +633,7 @@ static NSUInteger const kSCHSyncManagerMaximumFailureRetries = 3;
         ret = [appState.ShouldSync boolValue];        
     }
     
-    return(ret);    
+    return ret;    
 }
 
 #pragma mark - Population methods
@@ -641,7 +670,7 @@ static NSUInteger const kSCHSyncManagerMaximumFailureRetries = 3;
     ret.readingStatsSyncComponent = self.readingStatsSyncComponent;
     ret.settingsSyncComponent = self.settingsSyncComponent;
     
-    return([ret autorelease]);
+    return [ret autorelease];
 }
 
 @end

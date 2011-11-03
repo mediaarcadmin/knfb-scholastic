@@ -29,6 +29,7 @@
 	self = [super init];
 	if (self != nil) {
 		isSynchronizing = NO;
+        backgroundTaskIdentifier = UIBackgroundTaskInvalid;
 	}
 	
 	return(self);
