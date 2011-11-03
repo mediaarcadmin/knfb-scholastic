@@ -62,7 +62,7 @@
         
         [[NSNotificationCenter defaultCenter] addObserver:self 
                                                  selector:@selector(deviceDeregistered:)
-                                                     name:SCHAuthenticationManagerDidDeregisterNotification
+                                                     name:SCHAuthenticationManagerDidClearAfterDeregisterNotification
                                                    object:nil];
     }
     return(self);
@@ -85,7 +85,7 @@
                                                object:nil];	
     
     [[NSNotificationCenter defaultCenter] removeObserver:self 
-                                                 name:SCHAuthenticationManagerDidDeregisterNotification
+                                                 name:SCHAuthenticationManagerDidClearAfterDeregisterNotification
                                                object:nil];
 
     [self releaseViewObjects];
@@ -530,8 +530,8 @@
     }
     
     LambdaAlert *alert = [[LambdaAlert alloc]
-                          initWithTitle:NSLocalizedString(@"This Device has Been Deregistered", @"") 
-                          message:NSLocalizedString(@"You will be returned to the sign-in screen", nil)];
+                          initWithTitle:NSLocalizedString(@"Device Deregistered", @"Device Deregistered") 
+                          message:NSLocalizedString(@"This device has been deregistered. To read books, please register this device again.", @"") ];
     [alert addButtonWithTitle:NSLocalizedString(@"OK", @"OK") block:^{
         [self.profileSetupDelegate popToRootViewControllerAnimated:YES withCompletionHandler:nil];
     }];

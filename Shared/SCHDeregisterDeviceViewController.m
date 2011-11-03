@@ -93,11 +93,6 @@ static const CGFloat kDeregisterContentHeightLandscape = 380;
     }
     
     [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(authenticationManagerDidDeregister:)
-                                                 name:SCHAuthenticationManagerDidClearAfterDeregisterNotification
-                                               object:nil];
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(authenticationManagerDidFailDeregistration:)
                                                  name:SCHAuthenticationManagerDidFailDeregistrationNotification
                                                object:nil];
@@ -250,24 +245,6 @@ static const CGFloat kDeregisterContentHeightLandscape = 380;
 }
 
 #pragma mark - Deregistration Notification methods
-
-- (void)authenticationManagerDidDeregister:(NSNotification *)notification
-{
-    [self.spinner stopAnimating];
-    [self setEnablesBackButton:YES];
-    
-    [self.settingsDelegate popToRootViewControllerAnimated:YES withCompletionHandler:^{
-                
-        LambdaAlert *alert = [[LambdaAlert alloc]
-                              initWithTitle:NSLocalizedString(@"Device Deregistered", @"Device Deregistered") 
-                              message:NSLocalizedString(@"This device has been deregistered. To read books, please register this device again.", @"") ];
-        [alert addButtonWithTitle:NSLocalizedString(@"OK", @"OK") block:^{}];   
-        [alert show];
-        [alert release];
-    }];
-    
-    
-}
 
 - (void)authenticationManagerDidFailDeregistration:(NSNotification *)notification
 {

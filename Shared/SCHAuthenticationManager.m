@@ -486,6 +486,7 @@ typedef struct AuthenticateWithUserNameParameters AuthenticateWithUserNameParame
     NSAssert([NSThread isMainThread] == YES, @"SCHAuthenticationManager::deregisterOnMainThread MUST be executed on the main thread");
     
     if ([[SCHAppStateManager sharedAppStateManager] canAuthenticate] == YES && token != nil) {
+        self.waitingOnResponse = YES;
         [self.drmRegistrationSession deregisterDevice:token];
     }
 }
@@ -498,6 +499,8 @@ typedef struct AuthenticateWithUserNameParameters AuthenticateWithUserNameParame
     }
     
     NSString *authToken = token == [NSNull null] ? nil : token;
+    
+    self.waitingOnResponse = NO;
     
     if (authToken) {
         [self.drmRegistrationSession deregisterDevice:authToken];
@@ -634,8 +637,15 @@ typedef struct AuthenticateWithUserNameParameters AuthenticateWithUserNameParame
             self.tokenExpires = nil;        
         }
     }
+    
+    id returnedToken = [result objectForKey:kSCHLibreAccessWebServiceAuthToken];
+    NSString *authToken = returnedToken == [NSNull null] ? nil : returnedToken;
 
-	[self postFailureWithError:error];
+    if (!authToken) {
+        [self performForcedDeregistrationWithToken:nil];
+    } else {
+        [self postFailureWithError:error];
+    }
 }
 
 #pragma mark - DRM Registration Session Delegate methods
