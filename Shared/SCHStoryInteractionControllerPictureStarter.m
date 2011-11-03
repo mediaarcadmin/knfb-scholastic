@@ -361,38 +361,40 @@ enum SCHToolType {
 
 - (void)actionSheet:(UIActionSheet *)actionSheet didDismissWithButtonIndex:(NSInteger)buttonIndex
 {
-    [self cancelQueuedAudioExecutingSynchronizedBlocksImmediately];
-    if (actionSheet == self.clearActionSheet) {
-        if (buttonIndex == actionSheet.destructiveButtonIndex) {
-            [self.drawingCanvas clear];
-            self.drawingChanged = NO;
+    [self cancelQueuedAudioExecutingSynchronizedBlocksBefore:^{
+        if (actionSheet == self.clearActionSheet) {
+            if (buttonIndex == actionSheet.destructiveButtonIndex) {
+                [self.drawingCanvas clear];
+                self.drawingChanged = NO;
+            }
+            self.clearActionSheet = nil;
         }
-        self.clearActionSheet = nil;
-    }
-    if (actionSheet == self.doneActionSheet) {
-        if (buttonIndex == actionSheet.destructiveButtonIndex) {
-            [self close];
+        if (actionSheet == self.doneActionSheet) {
+            if (buttonIndex == actionSheet.destructiveButtonIndex) {
+                [self close];
+            }
+            else if (buttonIndex != actionSheet.cancelButtonIndex) {
+                [self savePicture:^(BOOL success) {
+                    if (success) {
+                        [self close];
+                    }
+                }];
+            }
+            self.doneActionSheet = nil;
         }
-        else if (buttonIndex != actionSheet.cancelButtonIndex) {
-            [self savePicture:^(BOOL success) {
-                if (success) {
-                    [self close];
-                }
-            }];
-        }
-        self.doneActionSheet = nil;
-    }
+    }];
 }
 
 - (void)actionSheetCancel:(UIActionSheet *)actionSheet
 {
-    [self cancelQueuedAudioExecutingSynchronizedBlocksImmediately];
-    if (actionSheet == self.clearActionSheet) {
-        self.clearActionSheet = nil;
-    }
-    if (actionSheet == self.doneActionSheet) {
-        self.doneActionSheet = nil;
-    }
+    [self cancelQueuedAudioExecutingSynchronizedBlocksBefore:^{
+        if (actionSheet == self.clearActionSheet) {
+            self.clearActionSheet = nil;
+        }
+        if (actionSheet == self.doneActionSheet) {
+            self.doneActionSheet = nil;
+        }
+    }];
 }
 
 - (void)colorSelected:(id)sender

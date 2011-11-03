@@ -167,7 +167,7 @@
     self.gap += silenceInterval;
 }
 
-- (void)cancelPlaybackExecutingSynchronizedBlocksImmediately:(BOOL)executeBlocks
+- (void)cancelPlaybackExecutingSynchronizedBlocks:(BOOL)executeBlocks beforeCompletionHandler:(dispatch_block_t)completion
 {
     dispatch_async(self.audioDispatchQueue, ^{
         [self.audioPlayer pause];
@@ -185,6 +185,10 @@
             self.currentItem = nil;
             [self.audioPlayer pause];
             self.audioPlayer = nil;
+        }
+        
+        if (completion) {
+            dispatch_async(dispatch_get_main_queue(), completion);
         }
     });
 }

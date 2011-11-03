@@ -144,9 +144,10 @@ enum {
 
 - (void)levelButtonTapped:(id)sender
 {
-    [self cancelQueuedAudioExecutingSynchronizedBlocksImmediately];
-    self.numberOfPairs = [(UIView *)sender tag];
-    [self presentNextView];
+    [self cancelQueuedAudioExecutingSynchronizedBlocksBefore:^{
+        self.numberOfPairs = [(UIView *)sender tag];
+        [self presentNextView];
+    }];
 }
 
 #pragma mark - Puzzle view

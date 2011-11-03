@@ -93,56 +93,57 @@
         return;
     }
     
-    [self cancelQueuedAudio];
-    self.controllerState = SCHStoryInteractionControllerStateInteractionReadingAnswerWithPause;
-    
-    imageButton.selected = YES;
-    SCHStoryInteractionStartingLetterQuestion *question = [self questionAtIndex:imageButton.tag - 1]; 
-    if (question != nil) {
-        if ([question isCorrect] == YES) {
-            BOOL questionsCompleted = [self questionsCompleted];
-            if (questionsCompleted) {
-                [self enqueueAudioWithPath:@"sfx_win_y.mp3" fromBundle:YES];
-                self.controllerState = SCHStoryInteractionControllerStateInteractionFinishedSuccessfully;
-            } else {
-                [self enqueueAudioWithPath:[self.storyInteraction storyInteractionCorrectAnswerSoundFilename] fromBundle:YES];
-            }
-            [self enqueueAudioWithPath:[(SCHStoryInteractionStartingLetter *)self.storyInteraction audioPathForThatsRight] fromBundle:NO];
-            [self enqueueAudioWithPath:[question audioPath] fromBundle:NO];
-            [self enqueueAudioWithPath:[(SCHStoryInteractionStartingLetter *)self.storyInteraction audioPathForStartsWith] fromBundle:NO];
-            [self enqueueAudioWithPath:[(SCHStoryInteractionStartingLetter *)self.storyInteraction audioPathForLetter] 
-                            fromBundle:NO 
-                            startDelay:0
-                synchronizedStartBlock:nil
-                  synchronizedEndBlock:^{
-                      if (!questionsCompleted) {
-                          self.controllerState = SCHStoryInteractionControllerStateInteractionInProgress;
-                      }
-                  }];
-            
-            if (questionsCompleted) {
-                [self enqueueAudioWithPath:[self audioPathForYouFoundThemAll]
-                                fromBundle:NO
+    [self cancelQueuedAudioExecutingSynchronizedBlocksBefore:^{
+        self.controllerState = SCHStoryInteractionControllerStateInteractionReadingAnswerWithPause;
+        
+        imageButton.selected = YES;
+        SCHStoryInteractionStartingLetterQuestion *question = [self questionAtIndex:imageButton.tag - 1]; 
+        if (question != nil) {
+            if ([question isCorrect] == YES) {
+                BOOL questionsCompleted = [self questionsCompleted];
+                if (questionsCompleted) {
+                    [self enqueueAudioWithPath:@"sfx_win_y.mp3" fromBundle:YES];
+                    self.controllerState = SCHStoryInteractionControllerStateInteractionFinishedSuccessfully;
+                } else {
+                    [self enqueueAudioWithPath:[self.storyInteraction storyInteractionCorrectAnswerSoundFilename] fromBundle:YES];
+                }
+                [self enqueueAudioWithPath:[(SCHStoryInteractionStartingLetter *)self.storyInteraction audioPathForThatsRight] fromBundle:NO];
+                [self enqueueAudioWithPath:[question audioPath] fromBundle:NO];
+                [self enqueueAudioWithPath:[(SCHStoryInteractionStartingLetter *)self.storyInteraction audioPathForStartsWith] fromBundle:NO];
+                [self enqueueAudioWithPath:[(SCHStoryInteractionStartingLetter *)self.storyInteraction audioPathForLetter] 
+                                fromBundle:NO 
                                 startDelay:0
                     synchronizedStartBlock:nil
                       synchronizedEndBlock:^{
-                          [self removeFromHostView];
+                          if (!questionsCompleted) {
+                              self.controllerState = SCHStoryInteractionControllerStateInteractionInProgress;
+                          }
                       }];
-            };
-        } else {
-            [self enqueueAudioWithPath:[self.storyInteraction storyInteractionWrongAnswerSoundFilename] fromBundle:YES];
-            [self enqueueAudioWithPath:[question audioPath] fromBundle:NO];
-            [self enqueueAudioWithPath:[(SCHStoryInteractionStartingLetter *)self.storyInteraction audioPathForDoesntStartWith] fromBundle:NO];
-            [self enqueueAudioWithPath:[(SCHStoryInteractionStartingLetter *)self.storyInteraction audioPathForLetter] fromBundle:NO];
-            [self enqueueAudioWithPath:[(SCHStoryInteractionStartingLetter *)self.storyInteraction audioPathForTryAgain] 
-                            fromBundle:NO 
-                            startDelay:0 
-                synchronizedStartBlock:nil 
-                  synchronizedEndBlock:^{
-                      self.controllerState = SCHStoryInteractionControllerStateInteractionInProgress;
-                  }];
-        }
-    }    
+                
+                if (questionsCompleted) {
+                    [self enqueueAudioWithPath:[self audioPathForYouFoundThemAll]
+                                    fromBundle:NO
+                                    startDelay:0
+                        synchronizedStartBlock:nil
+                          synchronizedEndBlock:^{
+                              [self removeFromHostView];
+                          }];
+                };
+            } else {
+                [self enqueueAudioWithPath:[self.storyInteraction storyInteractionWrongAnswerSoundFilename] fromBundle:YES];
+                [self enqueueAudioWithPath:[question audioPath] fromBundle:NO];
+                [self enqueueAudioWithPath:[(SCHStoryInteractionStartingLetter *)self.storyInteraction audioPathForDoesntStartWith] fromBundle:NO];
+                [self enqueueAudioWithPath:[(SCHStoryInteractionStartingLetter *)self.storyInteraction audioPathForLetter] fromBundle:NO];
+                [self enqueueAudioWithPath:[(SCHStoryInteractionStartingLetter *)self.storyInteraction audioPathForTryAgain] 
+                                fromBundle:NO 
+                                startDelay:0 
+                    synchronizedStartBlock:nil 
+                      synchronizedEndBlock:^{
+                          self.controllerState = SCHStoryInteractionControllerStateInteractionInProgress;
+                      }];
+            }
+        }    
+    }];
 }
 
 - (BOOL)questionsCompleted

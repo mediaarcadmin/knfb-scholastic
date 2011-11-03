@@ -89,9 +89,10 @@ enum {
 
 - (void)choosePuzzle:(UIButton *)sender
 {
-    self.numberOfPieces = sender.tag;
-    [self presentNextView];
-    [self cancelQueuedAudio];
+    [self cancelQueuedAudioExecutingSynchronizedBlocksBefore:^{
+        self.numberOfPieces = sender.tag;
+        [self presentNextView];
+    }];
 }
 
 #pragma mark - preview View
