@@ -11,6 +11,7 @@
 #import "SCHLibreAccessConstants.h"
 #import "SCHAppBook.h"
 #import "SCHBookIdentifier.h"
+#import "SCHBookshelfSyncComponent.h"
 
 @implementation SCHBookURLRequestOperation
 
@@ -71,39 +72,28 @@
 	}
 
 	NSAssert([NSThread currentThread] == [NSThread mainThread], @"Notification is not fired on the main thread!");
+
 	NSDictionary *userInfo = [notification userInfo];
+    SCHBookIdentifier *bookIdentifier = [[[SCHBookIdentifier alloc] initWithObject:userInfo] autorelease];
 	
-	NSString *completedISBN = [userInfo valueForKey:kSCHLibreAccessWebServiceContentIdentifier];
-
-    if ([completedISBN isEqual:self.identifier.isbn]) {
+    if ([bookIdentifier isEqual:self.identifier]) {
         
-        BOOL success = YES;
-        
-        if (![[userInfo valueForKey:kSCHLibreAccessWebServiceCoverURL] isEqual:[NSNull null]]) {
-	
-            [self performWithBook:^(SCHAppBook *book) {
-                [book setValue:[userInfo valueForKey:kSCHLibreAccessWebServiceCoverURL] forKey:kSCHAppBookCoverURL];
-            }];
-                
-        } else {
-            success = NO;
-        }
-        
-        if (![[userInfo valueForKey:kSCHLibreAccessWebServiceContentURL] isEqual:[NSNull null]]) {
-
-            [self performWithBook:^(SCHAppBook *book) {
-                [book setValue:[userInfo valueForKey:kSCHLibreAccessWebServiceContentURL] forKey:kSCHAppBookFileURL];
-            }];
-        } else {
-            success = NO;
-        }
-        
-        if (success) {
-            NSLog(@"Successful URL retrieval for %@!", completedISBN);
-            [self setProcessingState:SCHBookProcessingStateNoCoverImage];
-        } else {
+        if ([[userInfo valueForKey:kSCHLibreAccessWebServiceCoverURL] isEqual:[NSNull null]] || 
+            [[userInfo valueForKey:kSCHLibreAccessWebServiceContentURL] isEqual:[NSNull null]]) {
             NSLog(@"Warning: book URL request was missing cover and/or content URL: %@", userInfo);
             [self setProcessingState:SCHBookProcessingStateError];
+        } else {
+            
+            [self performWithBookAndSave:^(SCHAppBook *book) {
+                SCHBookshelfSyncComponent *localComponent = [[SCHBookshelfSyncComponent alloc] init];
+                [localComponent syncContentMetadataItem:userInfo withContentMetadataItem:book.ContentMetadataItem];
+                [book setValue:[userInfo valueForKey:kSCHLibreAccessWebServiceCoverURL] forKey:kSCHAppBookCoverURL];
+                [book setValue:[userInfo valueForKey:kSCHLibreAccessWebServiceContentURL] forKey:kSCHAppBookFileURL];
+                [localComponent release];
+            }];
+
+            NSLog(@"Successful URL retrieval for %@!", bookIdentifier);
+            [self setProcessingState:SCHBookProcessingStateNoCoverImage];
         }
         
         [[NSNotificationCenter defaultCenter] removeObserver:self];
