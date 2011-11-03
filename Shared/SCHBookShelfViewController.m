@@ -141,11 +141,6 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 131;
                                                      name:SCHProfileSyncComponentWillDeleteNotification
                                                    object:nil];
         
-        [[NSNotificationCenter defaultCenter] addObserver:self 
-                                                 selector:@selector(deviceDeregistered:)
-                                                     name:SCHAuthenticationManagerDidDeregisterNotification
-                                                   object:nil];
-        
         [[NSNotificationCenter defaultCenter] addObserver:self
                                                  selector:@selector(managedObjectContextDidSaveNotification:)
                                                      name:NSManagedObjectContextDidSaveNotification
@@ -162,11 +157,7 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 131;
     [[NSNotificationCenter defaultCenter] removeObserver:self
                                                     name:SCHProfileSyncComponentWillDeleteNotification
                                                   object:nil];
-    
-    [[NSNotificationCenter defaultCenter] removeObserver:self 
-                                                 name:SCHAuthenticationManagerDidDeregisterNotification
-                                               object:nil];
-    
+     
     [[NSNotificationCenter defaultCenter] removeObserver:self
                                                     name:NSManagedObjectContextDidSaveNotification
                                                   object:nil];
@@ -549,25 +540,6 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 131;
             break;
         }
     }
-}
-
-- (void)deviceDeregistered:(NSNotification *)notification
-{
-    if (self.modalViewController != nil) {
-        [self.modalViewController dismissModalViewControllerAnimated:NO];
-    }
-    
-    LambdaAlert *alert = [[LambdaAlert alloc]
-                          initWithTitle:NSLocalizedString(@"This Device has Been Deregistered", @"") 
-                          message:NSLocalizedString(@"You will be returned to the sign-in screen", nil)];
-    [alert addButtonWithTitle:NSLocalizedString(@"OK", @"OK") block:^{
-        [self.profileSetupDelegate popToRootViewControllerAnimated:YES withCompletionHandler:nil];
-    }];
-    
-    self.profileItem = nil;
-    
-    [alert show];
-    [alert release];
 }
 
 // detect any changes to the data

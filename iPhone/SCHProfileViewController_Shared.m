@@ -19,6 +19,7 @@
 #import "SCHBookIdentifier.h"
 #import "SCHCoreDataHelper.h"
 #import "SCHSyncManager.h"
+#import "LambdaAlert.h"
 
 @interface SCHProfileViewController_Shared()  
 
@@ -58,6 +59,11 @@
                                                  selector:@selector(coreDataHelperManagedObjectContextDidChangeNotification:) 
                                                      name:SCHCoreDataHelperManagedObjectContextDidChangeNotification 
                                                    object:nil];	
+        
+        [[NSNotificationCenter defaultCenter] addObserver:self 
+                                                 selector:@selector(deviceDeregistered:)
+                                                     name:SCHAuthenticationManagerDidDeregisterNotification
+                                                   object:nil];
     }
     return(self);
 }
@@ -74,7 +80,13 @@
 
 - (void)dealloc 
 {    
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
+    [[NSNotificationCenter defaultCenter] removeObserver:self 
+                                                 name:SCHCoreDataHelperManagedObjectContextDidChangeNotification 
+                                               object:nil];	
+    
+    [[NSNotificationCenter defaultCenter] removeObserver:self 
+                                                 name:SCHAuthenticationManagerDidDeregisterNotification
+                                               object:nil];
 
     [self releaseViewObjects];
     
@@ -509,6 +521,23 @@
 - (void)updatesBubbleTapped:(UIGestureRecognizer *)gr
 {
     [self pushSettingsController];
+}
+
+- (void)deviceDeregistered:(NSNotification *)notification
+{
+    if (self.modalViewController != nil) {
+        [self.modalViewController dismissModalViewControllerAnimated:NO];
+    }
+    
+    LambdaAlert *alert = [[LambdaAlert alloc]
+                          initWithTitle:NSLocalizedString(@"This Device has Been Deregistered", @"") 
+                          message:NSLocalizedString(@"You will be returned to the sign-in screen", nil)];
+    [alert addButtonWithTitle:NSLocalizedString(@"OK", @"OK") block:^{
+        [self.profileSetupDelegate popToRootViewControllerAnimated:YES withCompletionHandler:nil];
+    }];
+    
+    [alert show];
+    [alert release];
 }
 
 @end

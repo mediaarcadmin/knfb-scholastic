@@ -58,6 +58,8 @@ typedef struct AuthenticateWithUserNameParameters AuthenticateWithUserNameParame
 - (void)hasUsernameAndPasswordOnMainThread:(NSValue *)returnValue;
 - (void)deregisterOnMainThread:(NSString *)token;
 - (void)performPostDeregistration;
+- (void)performForcedDeregistrationWithToken:(id)token;
+- (void)setLastKnownAuthToken:(NSString *)token;
 
 @end
 
@@ -488,6 +490,32 @@ typedef struct AuthenticateWithUserNameParameters AuthenticateWithUserNameParame
     }
 }
 
+- (void)performForcedDeregistrationWithToken:(id)token
+{
+    if (![NSThread isMainThread]) {
+        [self performSelectorOnMainThread:@selector(performForcedDeregistrationWithToken:) withObject:token waitUntilDone:YES];
+        return;
+    }
+    
+    NSString *authToken = token == [NSNull null] ? nil : token;
+    
+    if (authToken) {
+        [self.drmRegistrationSession deregisterDevice:authToken];
+    } else {
+        NSLog(@"Warning: an attempt was made to force deregisteration without a returned token. Using last known auth token");
+        SCHAppState *appState = [SCHAppStateManager sharedAppStateManager].appState;
+        NSString *lastToken = appState.LastKnownAuthToken;
+        
+        if (lastToken) {
+            [self.drmRegistrationSession deregisterDevice:lastToken];
+        } else {
+            NSLog(@"Warning: no previous auth token was available.");
+        }
+    }
+    
+    [self performPostDeregistration];
+}
+
 - (void)performPostDeregistration
 {
     [[NSNotificationCenter defaultCenter] postNotificationName:SCHAuthenticationManagerDidDeregisterNotification
@@ -501,46 +529,72 @@ typedef struct AuthenticateWithUserNameParameters AuthenticateWithUserNameParame
                                                       userInfo:nil];		                    
 }
 
+- (void)setLastKnownAuthToken:(NSString *)token
+{
+    if (token) {
+        SCHAppState *appState = [SCHAppStateManager sharedAppStateManager].appState;
+        appState.LastKnownAuthToken = token;
+        
+        NSError *error;
+        if ([appState.managedObjectContext save:&error] == NO) {
+            NSLog(@"Unable to save the LastKnownAuthToken (%@) in the app state %@, %@", token, error, [error userInfo]);
+        }
+    }
+}
+
 #pragma mark - BITAPIProxy Delegate methods
 
 - (void)method:(NSString *)method didCompleteWithResult:(NSDictionary *)result
 {	
 	if([method compare:kSCHLibreAccessWebServiceTokenExchange] == NSOrderedSame) {
         id userKey = [result objectForKey:kSCHLibreAccessWebServiceUserKey];
+        id deviceIsDeregistered = [result objectForKey:kSCHLibreAccessWebServiceDeviceIsDeregistered]; 
+        id returnedToken = [result objectForKey:kSCHLibreAccessWebServiceAuthToken];
+
         [[NSUserDefaults standardUserDefaults] setObject:(userKey == [NSNull null] ? nil : userKey) 
                                                   forKey:kSCHAuthenticationManagerUserKey];
-        NSNumber *deviceIsDeregistered = [result objectForKey:kSCHLibreAccessWebServiceDeviceIsDeregistered];        
-        if ([deviceIsDeregistered isKindOfClass:[NSNumber class]] == YES &&
-            [[result objectForKey:kSCHLibreAccessWebServiceDeviceIsDeregistered] boolValue] == YES) {
-            [self performPostDeregistration];
+
+        
+        if ([deviceIsDeregistered isKindOfClass:[NSNumber class]] &&
+            [deviceIsDeregistered boolValue] == YES) {
+            [self performForcedDeregistrationWithToken:returnedToken];
             self.waitingOnResponse = NO;
         } else if (![[NSUserDefaults standardUserDefaults] stringForKey:kSCHAuthenticationManagerDeviceKey]) {
-            [self.drmRegistrationSession registerDevice:[result objectForKey:kSCHLibreAccessWebServiceAuthToken]];
+            [self.drmRegistrationSession registerDevice:returnedToken];
         }        
-	} else if([method compare:kSCHLibreAccessWebServiceAuthenticateDevice] == NSOrderedSame) {	
+	} else if (([method compare:kSCHLibreAccessWebServiceAuthenticateDevice] == NSOrderedSame) ||
+               ([method compare:kSCHLibreAccessWebServiceRenewToken] == NSOrderedSame)) {
+        
+                   
         self.aToken = nil;
         self.tokenExpires = nil;        
 
-        NSNumber *deviceIsDeregistered = [result objectForKey:kSCHLibreAccessWebServiceDeviceIsDeregistered];        
-        if ([method isEqualToString:kSCHLibreAccessWebServiceAuthenticateDevice] == YES &&
-            [deviceIsDeregistered isKindOfClass:[NSNumber class]] == YES &&
-            [[result objectForKey:kSCHLibreAccessWebServiceDeviceIsDeregistered] boolValue] == YES) {
-            [self performPostDeregistration];
+        id deviceIsDeregistered = [result objectForKey:kSCHLibreAccessWebServiceDeviceIsDeregistered]; 
+        id returnedToken = [result objectForKey:kSCHLibreAccessWebServiceAuthToken];
+        id expiresIn = [result objectForKey:kSCHLibreAccessWebServiceExpiresIn];
+        
+        if ([method isEqualToString:kSCHLibreAccessWebServiceAuthenticateDevice] &&
+            [deviceIsDeregistered isKindOfClass:[NSNumber class]] &&
+            [deviceIsDeregistered boolValue] == YES) {
+            [self performForcedDeregistrationWithToken:returnedToken];
         } else {
-            self.aToken = [result objectForKey:kSCHLibreAccessWebServiceAuthToken];
-            NSInteger expiresIn = MAX(0, [[result objectForKey:kSCHLibreAccessWebServiceExpiresIn] integerValue] - 1);
-            self.tokenExpires = [NSDate dateWithTimeIntervalSinceNow:expiresIn * kSCHAuthenticationManagerSecondsInAMinute];
-			[self postSuccessWithOfflineMode:NO];
+            
+            NSString *authToken = returnedToken == [NSNull null] ? nil : returnedToken;
+            NSInteger expires = expiresIn == [NSNull null] ? 30 : [expiresIn integerValue];
+            
+            if (authToken) {
+                self.aToken = authToken;
+                [self setLastKnownAuthToken:authToken];
+                
+                expires = MAX(0, expires - 1);
+                self.tokenExpires = [NSDate dateWithTimeIntervalSinceNow:expires * kSCHAuthenticationManagerSecondsInAMinute];
+                [self postSuccessWithOfflineMode:NO];
+            } else {
+                [self performForcedDeregistrationWithToken:returnedToken];
+            }
         }
         
 		self.waitingOnResponse = NO;        
-    } else if([method compare:kSCHLibreAccessWebServiceRenewToken] == NSOrderedSame) {	
-        self.aToken = [result objectForKey:kSCHLibreAccessWebServiceAuthToken];
-        NSInteger expiresIn = MAX(0, [[result objectForKey:kSCHLibreAccessWebServiceExpiresIn] integerValue] - 1);
-        self.tokenExpires = [NSDate dateWithTimeIntervalSinceNow:expiresIn * kSCHAuthenticationManagerSecondsInAMinute];
-        
-		self.waitingOnResponse = NO;
-		[self postSuccessWithOfflineMode:NO];        
     }
 }
 
@@ -556,7 +610,8 @@ typedef struct AuthenticateWithUserNameParameters AuthenticateWithUserNameParame
             NSNumber *deviceIsDeregistered = [result objectForKey:kSCHLibreAccessWebServiceDeviceIsDeregistered];        
             if ([deviceIsDeregistered isKindOfClass:[NSNumber class]] == YES &&
                 [[result objectForKey:kSCHLibreAccessWebServiceDeviceIsDeregistered] boolValue] == YES) {
-                [self performPostDeregistration];
+                NSString *returnedToken = [result objectForKey:kSCHLibreAccessWebServiceAuthToken];
+                [self performForcedDeregistrationWithToken:returnedToken];
                 return;
             }
         } else if ([method compare:kSCHLibreAccessWebServiceAuthenticateDevice] == NSOrderedSame) {	
@@ -566,7 +621,8 @@ typedef struct AuthenticateWithUserNameParameters AuthenticateWithUserNameParame
             NSNumber *deviceIsDeregistered = [result objectForKey:kSCHLibreAccessWebServiceDeviceIsDeregistered];        
             if ([deviceIsDeregistered isKindOfClass:[NSNumber class]] == YES &&
                 [[result objectForKey:kSCHLibreAccessWebServiceDeviceIsDeregistered] boolValue] == YES) {
-                [self performPostDeregistration];
+                NSString *returnedToken = [result objectForKey:kSCHLibreAccessWebServiceAuthToken];
+                [self performForcedDeregistrationWithToken:returnedToken];
                 return;
             } else {
                 // we only step back to authenticate if this was a server error
@@ -594,8 +650,10 @@ typedef struct AuthenticateWithUserNameParameters AuthenticateWithUserNameParame
         [libreAccessWebService authenticateDevice:deviceKey forUserKey:nil];
     } else {
         // Successful deregistration
-        self.waitingOnResponse = NO;
-        [self performPostDeregistration];
+        if (self.waitingOnResponse) {
+            self.waitingOnResponse = NO;
+            [self performPostDeregistration];
+        }
     }
     self.drmRegistrationSession = nil;
 }
