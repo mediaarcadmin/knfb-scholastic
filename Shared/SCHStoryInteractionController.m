@@ -56,6 +56,7 @@
 @synthesize audioPlayer;
 @synthesize shadeView;
 @synthesize controllerState;
+@synthesize pageAssociation;
 
 static Class controllerClassForStoryInteraction(SCHStoryInteraction *storyInteraction)
 {
@@ -824,17 +825,6 @@ static Class controllerClassForStoryInteraction(SCHStoryInteraction *storyIntera
 {
     // iPhone SIs are full screen so only required on iPad
     return (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad);
-}
-
-- (BOOL)supportsAutoRotation
-{
-    return YES;
-}
-
-- (BOOL)shouldPresentInPortraitOrientation
-{
-    // only meaningful if supportsAutoRotation is NO
-    return NO;
 }
 
 - (BOOL)shouldShowCloseButtonForViewAtIndex:(NSInteger)screenIndex

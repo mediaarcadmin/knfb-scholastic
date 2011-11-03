@@ -36,6 +36,23 @@
     }
 }
 
+- (BOOL)hasPageAssociation:(enum SCHStoryInteractionQuestionPageAssociation)pageAssociation
+{
+    CGRect pageRect;
+    switch (pageAssociation) {
+        case SCHStoryInteractionQuestionOnBothPages:
+            pageRect = CGRectMake(0, 0, originalBookSize.width, originalBookSize.height);
+            break;
+        case SCHStoryInteractionQuestionOnLeftPage:
+            pageRect = CGRectMake(0, 0, originalBookSize.width/2, originalBookSize.height);
+            break;
+        case SCHStoryInteractionQuestionOnRightPage:
+            pageRect = CGRectMake(originalBookSize.width/2, 0, originalBookSize.width/2, originalBookSize.height);
+            break;
+    }
+    return CGRectIntersectsRect(pageRect, hotSpotRect);
+}
+
 - (NSString *)audioPathForQuestion
 {
     NSString *filename = [NSString stringWithFormat:@"%@_q%d.mp3", self.storyInteraction.ID, self.questionIndex+1];
@@ -72,9 +89,21 @@
     return YES;
 }
 
-- (NSInteger)questionCount
+- (NSInteger)numberOfQuestionsWithPageAssociation:(enum SCHStoryInteractionQuestionPageAssociation)pageAssociation
 {
-    return [self.questions count];
+    return [[self questionsWithPageAssociation:pageAssociation] count];
 }
+
+- (NSArray *)questionsWithPageAssociation:(enum SCHStoryInteractionQuestionPageAssociation)pageAssociation
+{
+    NSMutableArray *result = [NSMutableArray array];
+    for (SCHStoryInteractionHotSpotQuestion *question in self.questions) {
+        if ([question hasPageAssociation:pageAssociation]) {
+            [result addObject:question];
+        }
+    }
+    return [NSArray arrayWithArray:result];
+}
+
 
 @end

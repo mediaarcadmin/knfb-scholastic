@@ -7,8 +7,8 @@
 //
 
 #import <Foundation/Foundation.h>
-
 #import <AVFoundation/AVAudioPlayer.h>
+#import "SCHStoryInteraction.h"
 
 @class SCHXPSProvider;
 @class SCHStoryInteraction;
@@ -67,6 +67,9 @@ typedef enum
 // the delegate for this controller; should probably be the UIViewController of the
 // hosting view
 @property (nonatomic, assign) id<SCHStoryInteractionControllerDelegate> delegate;
+
+// assuming the SI is associated with a pair of adjacent pages, which ones are currently visible
+@property (nonatomic, assign) enum SCHStoryInteractionQuestionPageAssociation pageAssociation;
 
 // the current mode of the story interaction
 @property (nonatomic, assign) SCHStoryInteractionControllerState controllerState;
@@ -175,13 +178,6 @@ typedef enum
 
 // YES (default) if a snapshot of the reading view should be shown as a background to this SI
 - (BOOL)shouldShowSnapshotOfReadingViewInBackground;
-
-// return NO if the SI requires a specific device orientation
-- (BOOL)supportsAutoRotation;
-
-// if supportsAutoRotation returns YES, override this to return YES if the SI should be
-// presented in portrait orientation
-- (BOOL)shouldPresentInPortraitOrientation;
 
 // should the transition between successive views be animated? defaults to YES on iPad, NO on iPhone
 - (BOOL)shouldAnimateTransitionBetweenViews;

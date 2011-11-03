@@ -8,6 +8,13 @@
 
 #import "SCHBookStoryInteractions.h"
 
+@class SCHXPSProvider;
+
+// The methods dependent on SCHXPSProvider are placed in this category to break
+// this dependency for the unit test target.
+
 @interface SCHBookStoryInteractions (XPS)
+
+- (id)initWithXPSProvider:(SCHXPSProvider *)xpsProvider oddPagesOnLeft:(BOOL)oddPagesOnLeft;
 
 @end

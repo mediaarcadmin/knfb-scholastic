@@ -17,6 +17,7 @@
 
 @property (nonatomic, retain) UIView *answerMarkerView;
 @property (nonatomic, copy) dispatch_block_t zoomCompletionHandler;
+@property (nonatomic, retain) NSArray *questions;
 
 - (CGAffineTransform)viewToPageTransform;
 - (SCHStoryInteractionHotSpotQuestion *)currentQuestion;
@@ -31,6 +32,7 @@
 @synthesize pageImageView;
 @synthesize answerMarkerView;
 @synthesize zoomCompletionHandler;
+@synthesize questions;
 
 - (void)dealloc
 {
@@ -43,16 +45,6 @@
 }
 
 - (BOOL)shouldShowSnapshotOfReadingViewInBackground
-{
-    return NO;
-}
-
-- (BOOL)supportsAutoRotation
-{
-    return NO;
-}
-
-- (BOOL)shouldPresentInPortraitOrientation
 {
     return NO;
 }
@@ -84,8 +76,11 @@
 
 - (SCHStoryInteractionHotSpotQuestion *)currentQuestion
 {
+    if (questions == nil) {
+        self.questions = [(SCHStoryInteractionHotSpot *)self.storyInteraction questionsWithPageAssociation:self.pageAssociation];
+    }
     NSInteger currentQuestionIndex = [self.delegate currentQuestionForStoryInteraction];
-    return [[(SCHStoryInteractionHotSpot *)self.storyInteraction questions] objectAtIndex:currentQuestionIndex];
+    return [questions objectAtIndex:currentQuestionIndex];
 }
 
 - (NSString *)audioPathForQuestion

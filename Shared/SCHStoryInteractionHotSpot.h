@@ -30,4 +30,6 @@
 // array of SCHStoryInteractionHotSpotQuestion
 @property (nonatomic, retain) NSArray *questions;
 
+- (NSArray *)questionsWithPageAssociation:(enum SCHStoryInteractionQuestionPageAssociation)pageAssociation;
+
 @end

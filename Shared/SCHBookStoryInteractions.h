@@ -8,26 +8,34 @@
 
 #import <Foundation/Foundation.h>
 
-@class SCHXPSProvider;
+@class SCHStoryInteraction;
 
 @interface SCHBookStoryInteractions : NSObject {}
 
-- (id)initWithXPSProvider:(SCHXPSProvider *)xpsProvider;
+- (id)initWithStoryInteractions:(NSArray *)storyInteractions oddPagesOnLeft:(BOOL)oddPagesOnLeft;
 
 - (NSArray *)allStoryInteractionsExcludingInteractionWithPage:(BOOL)excludeInteractionWithPage;
 
-- (NSArray *)storyInteractionsForPage:(NSInteger)pageNumber
-         excludingInteractionWithPage:(BOOL)excludeInteractionWithPage;
+- (NSArray *)storyInteractionsForPageIndices:(NSRange)pageIndices
+                excludingInteractionWithPage:(BOOL)excludeInteractionWithPage;
 
 - (NSArray *)storyInteractionsOfClass:(Class)storyInteractionClass;
 
-- (NSInteger)storyInteractionQuestionCountForPage:(NSInteger)pageNumber;
+- (NSInteger)storyInteractionQuestionCountForPageIndices:(NSRange)pageIndices;
 
-// the total number of questions completed for a page
-- (NSInteger)storyInteractionQuestionsCompletedForPage:(NSInteger)page;
-- (void)incrementStoryInteractionQuestionsCompletedForPage:(NSInteger)page;
+// the total number of questions completed for a page range
+- (NSInteger)storyInteractionQuestionsCompletedForPageIndices:(NSRange)pageIndices;
 
-- (BOOL)storyInteractionsFinishedOnPage:(NSInteger)page;
-- (void)setStoryInteractionsFinishedForPage:(NSInteger)page;
+// increment the completed count for a story interaction; when all the questions have been
+// completed, this wraps to 0 and allQuestionsCompletedForStoryInteraction will subsequently
+// return YES
+- (void)incrementQuestionsCompletedForStoryInteraction:(SCHStoryInteraction *)storyInteraction
+                                           pageIndices:(NSRange)pageIndices;
+
+// have all questions in the story interactions in this page range been completed at least once?
+- (BOOL)allQuestionsCompletedForPageIndices:(NSRange)pageIndices;
+
+// have all the questions been completed for a given story interaction
+- (BOOL)allQuestionsCompletedForStoryInteraction:(SCHStoryInteraction *)storyInteraction;
 
 @end

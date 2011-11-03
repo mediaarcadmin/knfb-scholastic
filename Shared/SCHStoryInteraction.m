@@ -49,6 +49,11 @@
     return NO;
 }
 
+- (NSInteger)numberOfQuestionsWithPageAssociation:(enum SCHStoryInteractionQuestionPageAssociation)pageAssociation
+{
+    return [self questionCount];
+}
+
 - (NSInteger)questionCount
 {
     return 1;
