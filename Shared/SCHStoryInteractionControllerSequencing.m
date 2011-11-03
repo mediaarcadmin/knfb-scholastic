@@ -179,17 +179,18 @@ static CGFloat distanceSq(CGPoint imageCenter, CGPoint targetCenter)
 - (void)draggableViewDidStartDrag:(SCHStoryInteractionDraggableView *)draggableView
 {
     self.controllerState = SCHStoryInteractionControllerStateInteractionInProgress;
-    [self cancelQueuedAudioExecutingSynchronizedBlocksImmediately];
-    [self enqueueAudioWithPath:@"sfx_pickup.mp3" fromBundle:YES];
-
-    NSNumber *matchKey = [NSNumber numberWithInteger:draggableView.matchTag];
-    SCHStoryInteractionDraggableTargetView *attachedTarget = [self.attachedImages objectForKey:matchKey];
-    if (attachedTarget) {
-        attachedTarget.alpha = 1;
-        [self.attachedImages removeObjectForKey:matchKey];
-    }
-    
-    [self setView:[draggableView viewWithTag:kImageViewTag] borderColor:[UIColor blueColor]];
+    [self cancelQueuedAudioExecutingSynchronizedBlocksBefore:^{
+        [self enqueueAudioWithPath:@"sfx_pickup.mp3" fromBundle:YES];
+        
+        NSNumber *matchKey = [NSNumber numberWithInteger:draggableView.matchTag];
+        SCHStoryInteractionDraggableTargetView *attachedTarget = [self.attachedImages objectForKey:matchKey];
+        if (attachedTarget) {
+            attachedTarget.alpha = 1;
+            [self.attachedImages removeObjectForKey:matchKey];
+        }
+        
+        [self setView:[draggableView viewWithTag:kImageViewTag] borderColor:[UIColor blueColor]];
+    }];
 }
 
 - (BOOL)draggableView:(SCHStoryInteractionDraggableView *)draggableView shouldSnapFromPosition:(CGPoint)position toPosition:(CGPoint *)snapPosition

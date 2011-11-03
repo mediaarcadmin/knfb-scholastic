@@ -393,9 +393,10 @@
 
 - (void)clearButtonTapped:(id)sender
 {
-    [self cancelQueuedAudioExecutingSynchronizedBlocksImmediately];
-    [self enqueueAudioWithPath:@"sfx_delete.mp3" fromBundle:YES];
-    [self clearBuiltWord];
+    [self cancelQueuedAudioExecutingSynchronizedBlocksBefore:^{
+        [self enqueueAudioWithPath:@"sfx_delete.mp3" fromBundle:YES];
+        [self clearBuiltWord];
+    }];
 }
 
 #pragma mark - Draggable view delegate

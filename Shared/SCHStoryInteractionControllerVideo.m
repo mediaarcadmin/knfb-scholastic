@@ -119,8 +119,9 @@ static CGFloat const kSCHStoryInteractionControllerVideoBorderWidth = 4.0;
 
 - (void)play
 {
-    [self cancelQueuedAudioExecutingSynchronizedBlocksImmediately];
-    [self.moviePlayer play];
+    [self cancelQueuedAudioExecutingSynchronizedBlocksBefore:^{
+        [self.moviePlayer play];
+    }];
 }
 
 #pragma mark - Notification methods

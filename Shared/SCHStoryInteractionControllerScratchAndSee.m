@@ -10,6 +10,7 @@
 #import "SCHStoryInteractionScratchAndSee.h"
 #import "SCHBookStoryInteractions.h"
 #import "SCHStoryInteractionControllerDelegate.h"
+#import "NSArray+ViewSorting.h"
 
 static const NSInteger kFirstScratchPointTarget = 60;
 static const NSInteger kSecondScratchPointTarget = 100;
@@ -24,7 +25,6 @@ enum ScratchState {
 
 @interface SCHStoryInteractionControllerScratchAndSee ()
 
-@property (nonatomic, retain) NSArray *answerButtons;
 @property (nonatomic, assign) NSInteger currentQuestionIndex;
 @property (nonatomic, assign) NSInteger simultaneousTapCount;
 @property (nonatomic, assign) enum ScratchState scratchState;
@@ -46,9 +46,8 @@ enum ScratchState {
 @implementation SCHStoryInteractionControllerScratchAndSee
 
 @synthesize scratchView;
-@synthesize answerButton1;
-@synthesize answerButton2;
-@synthesize answerButton3;
+@synthesize buttonContainerView;
+@synthesize answerButtons;
 @synthesize progressImageView;
 @synthesize progressCoverImageView;
 @synthesize progressView;
@@ -59,13 +58,10 @@ enum ScratchState {
 @synthesize simultaneousTapCount;
 @synthesize scratchState;
 
-@synthesize answerButtons;
-
 - (void)dealloc
 {
-    [answerButton1 release], answerButton1 = nil;
-    [answerButton2 release], answerButton2 = nil;
-    [answerButton3 release], answerButton3 = nil;
+    [buttonContainerView release], buttonContainerView = nil;
+    [answerButtons release], answerButtons = nil;
     [scratchView release], scratchView = nil;
     [answerButtons release], answerButtons = nil;
     [progressImageView release], progressImageView = nil;
@@ -79,7 +75,7 @@ enum ScratchState {
 
 - (void)setupViewAtIndex:(NSInteger)screenIndex
 {
-    self.answerButtons = [NSArray arrayWithObjects:self.answerButton1, self.answerButton2, self.answerButton3, nil];
+    self.answerButtons = [self.answerButtons viewsInRowMajorOrder];
     self.scratchView.delegate = self;
     
     for (UIButton *button in answerButtons) {
@@ -108,6 +104,72 @@ enum ScratchState {
     [self setupQuestionAnimated:NO];
 }
 
+- (void)rotateToOrientation:(UIInterfaceOrientation)orientation
+{
+    static const CGFloat kButtonGap = 7;
+    static const CGFloat kMinimumFontSize = 12;
+    static const CGFloat kLabelInset = 40;
+    
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
+        if (self.scratchState == kScratchStateFirstScratch || self.scratchState == kScratchStateSecondScratch) {
+            CGPoint center = CGPointMake(CGRectGetMidX(self.contentsView.bounds), CGRectGetMidY(self.contentsView.bounds));
+            CGFloat gap = UIInterfaceOrientationIsLandscape(orientation) ? 10 : 20;
+            CGFloat height = CGRectGetHeight(self.scratchView.bounds)+gap+CGRectGetHeight(self.progressView.bounds);
+            CGFloat scratchOffset = height/2-CGRectGetMidY(self.scratchView.bounds);
+            CGFloat progressOffset = (height-CGRectGetMidY(self.progressView.bounds))-height/2;
+            self.scratchView.center = CGPointMake(center.x, center.y-scratchOffset);
+            self.progressView.center = CGPointMake(center.x, center.y+progressOffset);
+        } else {
+            self.scratchView.center = CGPointMake(CGRectGetMidX(self.contentsView.bounds), CGRectGetMinY(self.buttonContainerView.frame)/2);
+            CGFloat fontSize = 15;
+            NSString *fontName = @"Arial-BoldMT";
+            if (UIInterfaceOrientationIsLandscape(orientation)) {
+                // lay out buttons horizontally
+                CGFloat width = (CGRectGetWidth(self.buttonContainerView.bounds)-kButtonGap)/[self.answerButtons count] - kButtonGap;
+                CGFloat x = kButtonGap+width/2;
+                CGFloat y = CGRectGetMidY(self.buttonContainerView.bounds);
+                for (UIButton *button in self.answerButtons) {
+                    button.center = CGPointMake(x, y);
+                    button.bounds = CGRectMake(0, 0, width, CGRectGetHeight(button.bounds));
+                    button.imageEdgeInsets = UIEdgeInsetsMake(0, width-30, 0, 0);
+                    NSString *title = [button titleForState:UIControlStateNormal];
+                    [title sizeWithFont:[UIFont fontWithName:fontName size:fontSize]
+                            minFontSize:kMinimumFontSize
+                         actualFontSize:&fontSize
+                               forWidth:width-kLabelInset
+                          lineBreakMode:UILineBreakModeWordWrap];
+                    x += kButtonGap+width;
+                }
+            } else {
+                // lay out buttons vertically
+                CGFloat width = CGRectGetWidth(self.buttonContainerView.bounds)-kButtonGap*2;
+                CGFloat height = CGRectGetHeight([[self.answerButtons objectAtIndex:0] bounds]);
+                CGFloat x = CGRectGetMidX(self.buttonContainerView.bounds);
+                CGFloat spacing = CGRectGetHeight(self.buttonContainerView.bounds)/[self.answerButtons count];
+                CGFloat y = spacing/2;
+                for (UIButton *button in self.answerButtons) {
+                    button.center = CGPointMake(x, y);
+                    button.bounds = CGRectMake(0, 0, width, height);
+                    button.imageEdgeInsets = UIEdgeInsetsMake(0, width-30, 0, 0);
+                    NSString *title = [button titleForState:UIControlStateNormal];
+                    [title sizeWithFont:[UIFont fontWithName:fontName size:fontSize]
+                            minFontSize:kMinimumFontSize
+                         actualFontSize:&fontSize
+                               forWidth:width-kLabelInset
+                          lineBreakMode:UILineBreakModeWordWrap];
+                    y += spacing;
+                }
+            }
+            
+            UIFont *font = [UIFont fontWithName:fontName size:fontSize];
+            for (UIButton *button in self.answerButtons) {
+                [button.titleLabel setFont:font];
+                
+            }
+        }
+    }
+}
+
 - (BOOL)shouldPlayQuestionAudioForViewAtIndex:(NSInteger)screenIndex
 {
     BOOL completed = [self.storyInteraction.bookStoryInteractions storyInteractionsFinishedOnPage:self.storyInteraction.documentPageNumber];
@@ -119,8 +181,9 @@ enum ScratchState {
     switch (self.scratchState) {
         case kScratchStateFirstQuestionAttempt:
         case kScratchStateSecondQuestionAttempt:
-            [self cancelQueuedAudioExecutingSynchronizedBlocksImmediately];
-            [self askQuestion];
+            [self cancelQueuedAudioExecutingSynchronizedBlocksBefore:^{
+                [self askQuestion];
+            }];
             break;
         default:
             [super playAudioButtonTapped:sender];
@@ -189,11 +252,13 @@ enum ScratchState {
         for (; i < [self.answerButtons count]; ++i) {
             [[self.answerButtons objectAtIndex:i] setAlpha:0];
         }
+
+        [self rotateToOrientation:self.interfaceOrientation];
     };
 
     if (iPad) {
         [self resizeCurrentViewToSize:CGSizeMake(self.contentsView.bounds.size.width, contentsHeight)
-                    animationDuration:(animated ? 0.3 : 0)
+                    animationDuration:(animated ? 0.5 : 0)
              withAdditionalAdjustments:adjustments];
     } else {
         adjustments();
@@ -292,24 +357,25 @@ enum ScratchState {
         
     [self.scratchView setShowFullImage:YES];
     
-    [self cancelQueuedAudioExecutingSynchronizedBlocksImmediately];
-    [self enqueueAudioWithPath:[self.storyInteraction storyInteractionCorrectAnswerSoundFilename] 
-                    fromBundle:YES 
-                    startDelay:0 
-        synchronizedStartBlock:^{
-            self.controllerState = SCHStoryInteractionControllerStateInteractionFinishedSuccessfully;
-        }
-          synchronizedEndBlock:nil];
-    
-    [self enqueueAudioWithPath:[[self currentQuestion] audioPathForAnswerAtIndex:selection] fromBundle:NO];
-    [self enqueueAudioWithPath:[(SCHStoryInteractionScratchAndSee *)self.storyInteraction thatsRightAudioPath] fromBundle:NO];
-    [self enqueueAudioWithPath:[[self currentQuestion] correctAnswerAudioPath]
-                    fromBundle:NO
-                    startDelay:0
-        synchronizedStartBlock:nil
-          synchronizedEndBlock:^{
-              [self nextQuestion];
-          }];
+    [self cancelQueuedAudioExecutingSynchronizedBlocksBefore:^{
+        [self enqueueAudioWithPath:[self.storyInteraction storyInteractionCorrectAnswerSoundFilename] 
+                        fromBundle:YES 
+                        startDelay:0 
+            synchronizedStartBlock:^{
+                self.controllerState = SCHStoryInteractionControllerStateInteractionFinishedSuccessfully;
+            }
+              synchronizedEndBlock:nil];
+        
+        [self enqueueAudioWithPath:[[self currentQuestion] audioPathForAnswerAtIndex:selection] fromBundle:NO];
+        [self enqueueAudioWithPath:[(SCHStoryInteractionScratchAndSee *)self.storyInteraction thatsRightAudioPath] fromBundle:NO];
+        [self enqueueAudioWithPath:[[self currentQuestion] correctAnswerAudioPath]
+                        fromBundle:NO
+                        startDelay:0
+            synchronizedStartBlock:nil
+              synchronizedEndBlock:^{
+                  [self nextQuestion];
+              }];
+    }];
 }
 
 - (void)wrongAnswer:(NSInteger) selection
@@ -319,49 +385,50 @@ enum ScratchState {
     UIButton *button = (UIButton *) [self.answerButtons objectAtIndex:selection];
     [button setSelected:YES];
     
-    [self cancelQueuedAudioExecutingSynchronizedBlocksImmediately];
-    [self enqueueAudioWithPath:[scratchAndSee storyInteractionWrongAnswerSoundFilename] 
-                    fromBundle:YES 
-                    startDelay:0 
-        synchronizedStartBlock:^{
-            self.controllerState = SCHStoryInteractionControllerStateInteractionReadingAnswerWithPause;
+    [self cancelQueuedAudioExecutingSynchronizedBlocksBefore:^{
+        [self enqueueAudioWithPath:[scratchAndSee storyInteractionWrongAnswerSoundFilename] 
+                        fromBundle:YES 
+                        startDelay:0 
+            synchronizedStartBlock:^{
+                self.controllerState = SCHStoryInteractionControllerStateInteractionReadingAnswerWithPause;
+            }
+              synchronizedEndBlock:nil
+         ];
+        [self enqueueAudioWithPath:[[self currentQuestion] audioPathForAnswerAtIndex:selection] fromBundle:NO];
+        
+        switch (self.scratchState) {
+            case kScratchStateFirstQuestionAttempt: {
+                [self enqueueAudioWithPath:[scratchAndSee thatsNotItAudioPath] fromBundle:NO];
+                [self enqueueAudioWithPath:[scratchAndSee keepScratchingAudioPath]
+                                fromBundle:NO
+                                startDelay:0
+                    synchronizedStartBlock:nil
+                      synchronizedEndBlock:^{
+                          [button setSelected:NO];
+                          self.scratchState = kScratchStateSecondScratch;
+                          self.controllerState = SCHStoryInteractionControllerStateInteractionInProgress;
+                          [self setupQuestionAnimated:YES];
+                      }];
+                break;
+            }
+            case kScratchStateSecondQuestionAttempt:
+            case kScratchStateKeepTrying: {
+                [self enqueueAudioWithPath:[scratchAndSee audioPathForTryAgain]
+                                fromBundle:NO
+                                startDelay:0
+                    synchronizedStartBlock:nil
+                      synchronizedEndBlock:^{
+                          [button setSelected:NO];
+                          self.scratchState = kScratchStateKeepTrying;
+                          self.controllerState = SCHStoryInteractionControllerStateInteractionInProgress;
+                          [self setupQuestionAnimated:YES];
+                      }];
+                break;
+            }
+            default:
+                break;
         }
-          synchronizedEndBlock:nil
-     ];
-    [self enqueueAudioWithPath:[[self currentQuestion] audioPathForAnswerAtIndex:selection] fromBundle:NO];
-    
-    switch (self.scratchState) {
-        case kScratchStateFirstQuestionAttempt: {
-            [self enqueueAudioWithPath:[scratchAndSee thatsNotItAudioPath] fromBundle:NO];
-            [self enqueueAudioWithPath:[scratchAndSee keepScratchingAudioPath]
-                            fromBundle:NO
-                            startDelay:0
-                synchronizedStartBlock:nil
-                  synchronizedEndBlock:^{
-                      [button setSelected:NO];
-                      self.scratchState = kScratchStateSecondScratch;
-                      self.controllerState = SCHStoryInteractionControllerStateInteractionInProgress;
-                      [self setupQuestionAnimated:YES];
-                  }];
-            break;
-        }
-        case kScratchStateSecondQuestionAttempt:
-        case kScratchStateKeepTrying: {
-            [self enqueueAudioWithPath:[scratchAndSee audioPathForTryAgain]
-                            fromBundle:NO
-                            startDelay:0
-                synchronizedStartBlock:nil
-                  synchronizedEndBlock:^{
-                      [button setSelected:NO];
-                      self.scratchState = kScratchStateKeepTrying;
-                      self.controllerState = SCHStoryInteractionControllerStateInteractionInProgress;
-                      [self setupQuestionAnimated:YES];
-                  }];
-            break;
-        }
-        default:
-            break;
-    }
+    }];
 }
 
 - (void)setProgressViewForScratchCount: (NSInteger) scratchCount
@@ -404,16 +471,17 @@ enum ScratchState {
 
         aScratchView.interactionEnabled = NO;
 
-        [self cancelQueuedAudioExecutingSynchronizedBlocksImmediately];
-        [self enqueueAudioWithPath:[(SCHStoryInteractionScratchAndSee *)self.storyInteraction scratchingCompleteSoundEffectFilename]
-                        fromBundle:YES
-                        startDelay:0
-            synchronizedStartBlock:^{
-                self.controllerState = SCHStoryInteractionControllerStateInteractionReadingAnswerWithPause;
-            }
-              synchronizedEndBlock:^{
-                  [self askQuestion];
-              }];
+        [self cancelQueuedAudioExecutingSynchronizedBlocksBefore:^{
+            [self enqueueAudioWithPath:[(SCHStoryInteractionScratchAndSee *)self.storyInteraction scratchingCompleteSoundEffectFilename]
+                            fromBundle:YES
+                            startDelay:0
+                synchronizedStartBlock:^{
+                    self.controllerState = SCHStoryInteractionControllerStateInteractionReadingAnswerWithPause;
+                }
+                  synchronizedEndBlock:^{
+                      [self askQuestion];
+                  }];
+        }];
     } else {
         [self setProgressViewForScratchCount:points];
     }

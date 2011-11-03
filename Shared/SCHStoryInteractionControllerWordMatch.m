@@ -129,8 +129,9 @@
 
 - (void)draggableViewDidStartDrag:(SCHStoryInteractionDraggableView *)draggableView
 {
-    [self cancelQueuedAudioExecutingSynchronizedBlocksImmediately];
-    [self enqueueAudioWithPath:@"sfx_pickup.mp3" fromBundle:YES];
+    [self cancelQueuedAudioExecutingSynchronizedBlocksBefore:^{
+        [self enqueueAudioWithPath:@"sfx_pickup.mp3" fromBundle:YES];
+    }];
 }
 
 - (BOOL)draggableView:(SCHStoryInteractionDraggableView *)draggableView shouldSnapFromPosition:(CGPoint)position toPosition:(CGPoint *)snapPosition
@@ -164,66 +165,67 @@
     
     UIImageView *imageView = (UIImageView *)[draggableView viewWithTag:kImageViewTag];
 
-    [self cancelQueuedAudioExecutingSynchronizedBlocksImmediately];
-    if (!onTarget) {
-        [draggableView moveToHomePosition];
-        [self enqueueAudioWithPath:@"sfx_dropNo.mp3" fromBundle:YES];        
-    } else if (onTarget.matchTag != draggableView.matchTag) {
-        self.controllerState = SCHStoryInteractionControllerStateInteractionReadingAnswerWithoutPause;
-        [self.occupiedTargets addObject:onTarget];
-        UIImage* oldImage = [imageView.image retain];
-        [imageView setImage:[UIImage imageNamed:@"storyinteraction-draggable-red"]];
-
-        SCHStoryInteractionWordMatchQuestionItem *item = [[[self currentQuestion] items] objectAtIndex:draggableView.matchTag];
-        [self enqueueAudioWithPath:[self.storyInteraction storyInteractionWrongAnswerSoundFilename]
-                        fromBundle:YES];
-        [self enqueueAudioWithPath:[item audioPath]
-                        fromBundle:NO];
-        [self enqueueAudioWithPath:[self.storyInteraction audioPathForTryAgain]
-                        fromBundle:NO
-                        startDelay:0
-            synchronizedStartBlock:nil
-            synchronizedEndBlock:^{
-                [imageView setImage:oldImage];
-                [draggableView moveToHomePosition];
-                [self.occupiedTargets removeObject:onTarget];
-                self.controllerState = SCHStoryInteractionControllerStateInteractionInProgress;
-            }];
-        [oldImage release];
-    } else {
-        self.controllerState = SCHStoryInteractionControllerStateInteractionReadingAnswerWithoutPause;
-        self.numberOfCorrectItems++;
-        [imageView setImage:[UIImage imageNamed:@"storyinteraction-draggable-green"]];
-        [draggableView setLockedInPlace:YES];
-        [draggableView setUserInteractionEnabled:NO];
-        [self.occupiedTargets addObject:onTarget];
-
-        // get the current item before any state changes, as this may advance currentQuestion
-        SCHStoryInteractionWordMatchQuestionItem *item = [[[self currentQuestion] items] objectAtIndex:onTarget.matchTag];
-
-        BOOL allCorrect = (self.numberOfCorrectItems == kNumberOfItems);
-        if (allCorrect) {
-            self.controllerState = SCHStoryInteractionControllerStateInteractionFinishedSuccessfully;
-        }
-        
-        NSString *sfxFile = allCorrect ? @"sfx_win_y.mp3" : [self.storyInteraction storyInteractionCorrectAnswerSoundFilename];
-
-        [self enqueueAudioWithPath:sfxFile
-                        fromBundle:YES];
-        [self enqueueAudioWithPath:[item audioPath]
-                        fromBundle:NO];
-        [self enqueueAudioWithPath:[self.storyInteraction audioPathForThatsRight]
-                        fromBundle:NO
-                        startDelay:0
-            synchronizedStartBlock:nil
-              synchronizedEndBlock:^{
-                  if (allCorrect) {
-                      [self playWinSequenceAndClose];
-                  } else {
+    [self cancelQueuedAudioExecutingSynchronizedBlocksBefore:^{
+        if (!onTarget) {
+            [draggableView moveToHomePosition];
+            [self enqueueAudioWithPath:@"sfx_dropNo.mp3" fromBundle:YES];        
+        } else if (onTarget.matchTag != draggableView.matchTag) {
+            self.controllerState = SCHStoryInteractionControllerStateInteractionReadingAnswerWithoutPause;
+            [self.occupiedTargets addObject:onTarget];
+            UIImage* oldImage = [imageView.image retain];
+            [imageView setImage:[UIImage imageNamed:@"storyinteraction-draggable-red"]];
+            
+            SCHStoryInteractionWordMatchQuestionItem *item = [[[self currentQuestion] items] objectAtIndex:draggableView.matchTag];
+            [self enqueueAudioWithPath:[self.storyInteraction storyInteractionWrongAnswerSoundFilename]
+                            fromBundle:YES];
+            [self enqueueAudioWithPath:[item audioPath]
+                            fromBundle:NO];
+            [self enqueueAudioWithPath:[self.storyInteraction audioPathForTryAgain]
+                            fromBundle:NO
+                            startDelay:0
+                synchronizedStartBlock:nil
+                  synchronizedEndBlock:^{
+                      [imageView setImage:oldImage];
+                      [draggableView moveToHomePosition];
+                      [self.occupiedTargets removeObject:onTarget];
                       self.controllerState = SCHStoryInteractionControllerStateInteractionInProgress;
-                  }
-              }];
-    }
+                  }];
+            [oldImage release];
+        } else {
+            self.controllerState = SCHStoryInteractionControllerStateInteractionReadingAnswerWithoutPause;
+            self.numberOfCorrectItems++;
+            [imageView setImage:[UIImage imageNamed:@"storyinteraction-draggable-green"]];
+            [draggableView setLockedInPlace:YES];
+            [draggableView setUserInteractionEnabled:NO];
+            [self.occupiedTargets addObject:onTarget];
+            
+            // get the current item before any state changes, as this may advance currentQuestion
+            SCHStoryInteractionWordMatchQuestionItem *item = [[[self currentQuestion] items] objectAtIndex:onTarget.matchTag];
+            
+            BOOL allCorrect = (self.numberOfCorrectItems == kNumberOfItems);
+            if (allCorrect) {
+                self.controllerState = SCHStoryInteractionControllerStateInteractionFinishedSuccessfully;
+            }
+            
+            NSString *sfxFile = allCorrect ? @"sfx_win_y.mp3" : [self.storyInteraction storyInteractionCorrectAnswerSoundFilename];
+            
+            [self enqueueAudioWithPath:sfxFile
+                            fromBundle:YES];
+            [self enqueueAudioWithPath:[item audioPath]
+                            fromBundle:NO];
+            [self enqueueAudioWithPath:[self.storyInteraction audioPathForThatsRight]
+                            fromBundle:NO
+                            startDelay:0
+                synchronizedStartBlock:nil
+                  synchronizedEndBlock:^{
+                      if (allCorrect) {
+                          [self playWinSequenceAndClose];
+                      } else {
+                          self.controllerState = SCHStoryInteractionControllerStateInteractionInProgress;
+                      }
+                  }];
+        }
+    }];
 }
 
 #pragma mark - Override for SCHStoryInteractionControllerStateReactions

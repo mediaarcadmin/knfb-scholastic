@@ -33,6 +33,7 @@
 - (void)setupGeometryForContentsView:(UIView *)contents contentsSize:(CGSize)contentsSize;
 - (CGSize)maximumContentsSize;
 - (UIImage *)backgroundImage;
+- (void)cancelQueuedAudio;
 
 @end
 
@@ -233,9 +234,11 @@ static Class controllerClassForStoryInteraction(SCHStoryInteraction *storyIntera
         if ([self frameStyleForViewAtIndex:self.currentScreenIndex] != SCHStoryInteractionNoTitle) {
             UILabel *title = [[UILabel alloc] initWithFrame:CGRectZero];
             title.autoresizingMask = UIViewAutoresizingFlexibleWidth;
-            title.backgroundColor = [UIColor clearColor];            
+            title.backgroundColor = [UIColor clearColor];
+            title.textAlignment = UITextAlignmentCenter;
+            title.numberOfLines = 0;
+            title.lineBreakMode = UILineBreakModeWordWrap;
             self.titleView = title;
-            [self setupTitle];
             [background addSubview:title];
             [title release];   
         }
@@ -365,23 +368,39 @@ static Class controllerClassForStoryInteraction(SCHStoryInteraction *storyIntera
 - (void)setupTitle
 {
     BOOL iPad = (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad);
-    BOOL hasShadow = NO;
-    
+
+    BOOL hasShadow;
+    NSString *fontName;
+    CGFloat fontSize;
     if ([self.storyInteraction isOlderStoryInteraction]) {
         hasShadow = YES;
-        self.titleView.font = [UIFont fontWithName:@"Arial Black" size:(iPad ? 30 : 25)];
+        fontName = @"Arial Black";
+        fontSize = (iPad ? 30 : 25);
     } else {
-        self.titleView.font = [UIFont fontWithName:@"Arial-BoldMT" size:(iPad ? 22 : 17)];
+        hasShadow = NO;
+        fontName = @"Arial-BoldMT";
+        fontSize = (iPad ? 22 : 17);
+    }
+
+    UIFont *font;
+    for (; fontSize > 10; fontSize -= 2) {
+        font = [UIFont fontWithName:fontName size:fontSize];
+        CGSize size = [self.titleView.text sizeWithFont:font
+                                      constrainedToSize:CGSizeMake(CGRectGetWidth(self.titleView.bounds), CGFLOAT_MAX)
+                                          lineBreakMode:self.titleView.lineBreakMode];
+        if (size.height <= CGRectGetHeight(self.titleView.bounds)) {
+            break;
+        }
     }
     
-    self.titleView.textAlignment = UITextAlignmentCenter;
+    self.titleView.font = font;
     self.titleView.textColor = [self.storyInteraction isOlderStoryInteraction] ? [UIColor whiteColor] : [UIColor SCHBlue2Color];
-    self.titleView.adjustsFontSizeToFitWidth = YES;
-    self.titleView.numberOfLines = 2;
     if (hasShadow) {
         self.titleView.layer.shadowOpacity = 0.7f;
         self.titleView.layer.shadowRadius = 2;
         self.titleView.layer.shadowOffset = CGSizeZero;
+    } else {
+        self.titleView.layer.shadowRadius = 0;
     }
 }
 
@@ -405,6 +424,7 @@ static Class controllerClassForStoryInteraction(SCHStoryInteraction *storyIntera
                         options:UIViewAnimationOptionCurveEaseInOut | UIViewAnimationOptionBeginFromCurrentState
                      animations:^{
                          [self setupGeometryForContentsView:self.contentsView contentsSize:newSize];
+                         [self setupTitle];
                          if (adjustmentBlock) {
                              adjustmentBlock();
                          }
@@ -649,7 +669,7 @@ static Class controllerClassForStoryInteraction(SCHStoryInteraction *storyIntera
     if (![self.audioPlayer isPlaying]) { 
         NSString *path = [self audioPathForQuestion];
         if (path != nil) {
-            [self cancelQueuedAudioExecutingSynchronizedBlocksImmediately];
+            [self cancelQueuedAudioExecutingSynchronizedBlocksBefore:nil];
             [self enqueueAudioWithPath:path 
                             fromBundle:NO 
                             startDelay:0 
@@ -664,18 +684,6 @@ static Class controllerClassForStoryInteraction(SCHStoryInteraction *storyIntera
 
         }   
     }
-}
-
-- (void)playDefaultButtonAudio
-{
-    [self cancelQueuedAudioExecutingSynchronizedBlocksImmediately];
-    [self enqueueAudioWithPath:[self.storyInteraction storyInteractionCorrectAnswerSoundFilename] fromBundle:YES];
-}
-
-- (void)playRevealAudio
-{
-    [self cancelQueuedAudioExecutingSynchronizedBlocksImmediately];
-    [self enqueueAudioWithPath:[self.storyInteraction storyInteractionRevealSoundFilename] fromBundle:YES];
 }
 
 - (void)enqueueAudioWithPath:(NSString *)path
@@ -730,12 +738,12 @@ static Class controllerClassForStoryInteraction(SCHStoryInteraction *storyIntera
 
 - (void)cancelQueuedAudio
 {
-    [self.audioPlayer cancelPlaybackExecutingSynchronizedBlocksImmediately:NO];
+    [self.audioPlayer cancelPlaybackExecutingSynchronizedBlocks:NO beforeCompletionHandler:nil];
 }
 
-- (void)cancelQueuedAudioExecutingSynchronizedBlocksImmediately
+- (void)cancelQueuedAudioExecutingSynchronizedBlocksBefore:(dispatch_block_t)completion
 {
-    [self.audioPlayer cancelPlaybackExecutingSynchronizedBlocksImmediately:YES];
+    [self.audioPlayer cancelPlaybackExecutingSynchronizedBlocks:YES beforeCompletionHandler:completion];
 }
 
 
@@ -765,6 +773,7 @@ static Class controllerClassForStoryInteraction(SCHStoryInteraction *storyIntera
 - (void)setTitle:(NSString *)title
 {
     self.titleView.text = title;
+    [self setupTitle];
 }
 
 #pragma mark - SCHStoryInteractionControllerStateReactions - MUST BE OVERRIDDEN IN SUBCLASS
