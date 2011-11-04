@@ -37,7 +37,11 @@ NSString * const SCHReadingStatsSyncComponentDidFailNotification = @"SCHReadingS
         if ([readingStats count] > 0) {
             self.isSynchronizing = [self.libreAccessWebService saveReadingStatisticsDetailed:readingStats];
             if (self.isSynchronizing == NO) {
-                [[SCHAuthenticationManager sharedAuthenticationManager] authenticate];				
+                [[SCHAuthenticationManager sharedAuthenticationManager] authenticateWithSuccessBlock:^(BOOL offlineMode){
+                    if (!offlineMode) {
+                        [self.delegate authenticationDidSucceed];
+                    }
+                } failureBlock:nil];			
                 ret = NO;			
             }		            
         } else {

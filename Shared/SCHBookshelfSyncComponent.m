@@ -215,7 +215,11 @@ NSString * const SCHBookshelfSyncComponentDidFailNotification = @"SCHBookshelfSy
 			for (NSDictionary *ISBN in results) {				
 				self.isSynchronizing = [self.libreAccessWebService listContentMetadata:[NSArray arrayWithObject:ISBN] includeURLs:NO];
 				if (self.isSynchronizing == NO) {
-					[[SCHAuthenticationManager sharedAuthenticationManager] authenticate];				
+					[[SCHAuthenticationManager sharedAuthenticationManager] authenticateWithSuccessBlock:^(BOOL offlineMode){
+                        if (!offlineMode) {
+                            [self.delegate authenticationDidSucceed];
+                        }
+                    } failureBlock:nil];				
 					ret = NO;			
 				} else {
 					requestCount++;
@@ -225,7 +229,11 @@ NSString * const SCHBookshelfSyncComponentDidFailNotification = @"SCHBookshelfSy
 		} else {			
 			self.isSynchronizing = [self.libreAccessWebService listContentMetadata:results includeURLs:NO];
 			if (self.isSynchronizing == NO) {
-				[[SCHAuthenticationManager sharedAuthenticationManager] authenticate];				
+				[[SCHAuthenticationManager sharedAuthenticationManager] authenticateWithSuccessBlock:^(BOOL offlineMode){
+                    if (!offlineMode) {
+                        [self.delegate authenticationDidSucceed];
+                    }
+                } failureBlock:nil];			
 				ret = NO;			
 			} else {
 				NSLog(@"Requesting ALL Book information");
