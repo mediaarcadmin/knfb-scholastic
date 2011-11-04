@@ -549,48 +549,48 @@ typedef struct AuthenticateWithUserNameParameters AuthenticateWithUserNameParame
 
 - (void)method:(NSString *)method didCompleteWithResult:(NSDictionary *)result
 {	
+    id userKeyValue = [result objectForKey:kSCHLibreAccessWebServiceUserKey];
+    id deviceIsDeregisteredValue = [result objectForKey:kSCHLibreAccessWebServiceDeviceIsDeregistered]; 
+    id returnedTokenValue = [result objectForKey:kSCHLibreAccessWebServiceAuthToken];
+    id expiresInValue = [result objectForKey:kSCHLibreAccessWebServiceExpiresIn];
+    
+    NSString *userKey         = userKeyValue == [NSNull null] ? nil : userKeyValue;
+    BOOL deviceIsDeregistered = deviceIsDeregisteredValue == [NSNull null] ? NO : [deviceIsDeregisteredValue boolValue];
+    NSString *returnedToken   = returnedTokenValue == [NSNull null] ? nil : returnedTokenValue;
+    NSInteger expiresIn       = expiresInValue == [NSNull null] ? 30 : [expiresInValue integerValue];
+    
 	if([method compare:kSCHLibreAccessWebServiceTokenExchange] == NSOrderedSame) {
-        id userKey = [result objectForKey:kSCHLibreAccessWebServiceUserKey];
-        id deviceIsDeregistered = [result objectForKey:kSCHLibreAccessWebServiceDeviceIsDeregistered]; 
-        id returnedToken = [result objectForKey:kSCHLibreAccessWebServiceAuthToken];
-
-        [[NSUserDefaults standardUserDefaults] setObject:(userKey == [NSNull null] ? nil : userKey) 
-                                                  forKey:kSCHAuthenticationManagerUserKey];
-
         
-        if ([deviceIsDeregistered isKindOfClass:[NSNumber class]] &&
-            [deviceIsDeregistered boolValue] == YES) {
+        if (userKey) {
+            [[NSUserDefaults standardUserDefaults] setObject:userKey forKey:kSCHAuthenticationManagerUserKey];
+        } else {
+            [[NSUserDefaults standardUserDefaults] removeObjectForKey:kSCHAuthenticationManagerUserKey];   
+        }
+        
+        [[NSUserDefaults standardUserDefaults] synchronize];
+        
+        if (deviceIsDeregistered) {
             [self performForcedDeregistrationWithToken:returnedToken];
             self.waitingOnResponse = NO;
         } else if (![[NSUserDefaults standardUserDefaults] stringForKey:kSCHAuthenticationManagerDeviceKey]) {
             [self.drmRegistrationSession registerDevice:returnedToken];
-        }        
+        }  
+        
 	} else if (([method compare:kSCHLibreAccessWebServiceAuthenticateDevice] == NSOrderedSame) ||
                ([method compare:kSCHLibreAccessWebServiceRenewToken] == NSOrderedSame)) {
-        
-                   
+                  
         self.aToken = nil;
-        self.tokenExpires = nil;        
-
-        id deviceIsDeregistered = [result objectForKey:kSCHLibreAccessWebServiceDeviceIsDeregistered]; 
-        id returnedToken = [result objectForKey:kSCHLibreAccessWebServiceAuthToken];
-        id expiresIn = [result objectForKey:kSCHLibreAccessWebServiceExpiresIn];
+        self.tokenExpires = nil;
         
-        if ([method isEqualToString:kSCHLibreAccessWebServiceAuthenticateDevice] &&
-            [deviceIsDeregistered isKindOfClass:[NSNumber class]] &&
-            [deviceIsDeregistered boolValue] == YES) {
+        if ([method isEqualToString:kSCHLibreAccessWebServiceAuthenticateDevice] && deviceIsDeregistered) {
             [self performForcedDeregistrationWithToken:returnedToken];
         } else {
-            
-            NSString *authToken = returnedToken == [NSNull null] ? nil : returnedToken;
-            NSInteger expires = expiresIn == [NSNull null] ? 30 : [expiresIn integerValue];
-            
-            if (authToken) {
-                self.aToken = authToken;
-                [self setLastKnownAuthToken:authToken];
+            if (returnedToken) {
+                self.aToken = returnedToken;
+                [self setLastKnownAuthToken:returnedToken];
                 
-                expires = MAX(0, expires - 1);
-                self.tokenExpires = [NSDate dateWithTimeIntervalSinceNow:expires * kSCHAuthenticationManagerSecondsInAMinute];
+                expiresIn = MAX(0, expiresIn - 1);
+                self.tokenExpires = [NSDate dateWithTimeIntervalSinceNow:expiresIn * kSCHAuthenticationManagerSecondsInAMinute];
                 [self postSuccessWithOfflineMode:NO];
             } else {
                 [self performForcedDeregistrationWithToken:returnedToken];
