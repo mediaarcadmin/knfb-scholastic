@@ -671,18 +671,20 @@ typedef struct AuthenticateWithUserNameParameters AuthenticateWithUserNameParame
 - (void)registrationSession:(SCHDrmRegistrationSession *)registrationSession 
            didFailWithError:(NSError *)error
 {
-    NSLog(@"AuthenticationManager:DRM %@", [error description]);
-	self.waitingOnResponse = NO;
-	
-    // were we de-registered?
-    if ([error code] == kSCHDrmDeregistrationError) {
-        [self performPostDeregistration];        
-    } else {
-        [[NSNotificationCenter defaultCenter] postNotificationName:SCHAuthenticationManagerDidFailDeregistrationNotification
-                                                            object:self 
-                                                          userInfo:[NSDictionary dictionaryWithObject:error forKey:kSCHAuthenticationManagerNSError]];		        
+    if (self.waitingOnResponse) {
+        NSLog(@"AuthenticationManager:DRM %@", [error description]);
+        self.waitingOnResponse = NO;
         
-        [self postFailureWithError:error];
+        // were we de-registered?
+        if ([error code] == kSCHDrmDeregistrationError) {
+            [self performPostDeregistration];        
+        } else {
+            [[NSNotificationCenter defaultCenter] postNotificationName:SCHAuthenticationManagerDidFailDeregistrationNotification
+                                                                object:self 
+                                                              userInfo:[NSDictionary dictionaryWithObject:error forKey:kSCHAuthenticationManagerNSError]];		        
+            
+            [self postFailureWithError:error];
+        }
     }
 
     self.drmRegistrationSession = nil;    
