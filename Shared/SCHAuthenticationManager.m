@@ -653,14 +653,14 @@ typedef struct AuthenticateWithUserNameParameters AuthenticateWithUserNameParame
 - (void)registrationSession:(SCHDrmRegistrationSession *)registrationSession 
                 didComplete:(NSString *)deviceKey
 {
-    if (deviceKey != nil) {
-        [[NSUserDefaults standardUserDefaults] setObject:deviceKey 
-                                                  forKey:kSCHAuthenticationManagerDeviceKey];
-        [[NSUserDefaults standardUserDefaults] synchronize];
-        [libreAccessWebService authenticateDevice:deviceKey forUserKey:nil];
-    } else {
-        // Successful deregistration
-        if (self.waitingOnResponse) {
+    if (self.waitingOnResponse) {
+        if (deviceKey != nil) {
+            [[NSUserDefaults standardUserDefaults] setObject:deviceKey 
+                                                      forKey:kSCHAuthenticationManagerDeviceKey];
+            [[NSUserDefaults standardUserDefaults] synchronize];
+            [libreAccessWebService authenticateDevice:deviceKey forUserKey:nil];
+        } else {
+            // Successful deregistration
             self.waitingOnResponse = NO;
             [self performPostDeregistration];
         }
