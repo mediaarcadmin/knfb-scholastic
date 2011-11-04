@@ -555,7 +555,6 @@ typedef struct AuthenticateWithUserNameParameters AuthenticateWithUserNameParame
     id returnedTokenValue = [result objectForKey:kSCHLibreAccessWebServiceAuthToken];
     id expiresInValue = [result objectForKey:kSCHLibreAccessWebServiceExpiresIn];
     
-    NSString *userKey         = userKeyValue == [NSNull null] ? nil : userKeyValue;
     BOOL deviceIsDeregistered = deviceIsDeregisteredValue == [NSNull null] ? NO : [deviceIsDeregisteredValue boolValue];
     NSString *returnedToken   = returnedTokenValue == [NSNull null] ? nil : returnedTokenValue;
     NSInteger expiresIn       = expiresInValue == [NSNull null] ? 30 : [expiresInValue integerValue];
@@ -563,7 +562,7 @@ typedef struct AuthenticateWithUserNameParameters AuthenticateWithUserNameParame
     
 	if([method compare:kSCHLibreAccessWebServiceTokenExchange] == NSOrderedSame) {
         
-        [[NSUserDefaults standardUserDefaults] setObject:userKey forKey:kSCHAuthenticationManagerUserKey];
+        [[NSUserDefaults standardUserDefaults] setObject:userKeyValue forKey:kSCHAuthenticationManagerUserKey];
         
         if (deviceIsDeregistered) {
             [self performForcedDeregistrationWithToken:returnedToken];
