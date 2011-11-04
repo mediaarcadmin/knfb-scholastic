@@ -155,18 +155,6 @@ typedef struct AuthenticateWithUserNameParameters AuthenticateWithUserNameParame
                         waitUntilDone:YES];
 }
 
-- (BOOL)validatePassword:(NSString *)password
-{
-    BOOL ret = YES;
-    
-    NSString *storedUsername = [[NSUserDefaults standardUserDefaults] stringForKey:kSCHAuthenticationManagerUsername];
-    NSString *storedPassword = [SFHFKeychainUtils getPasswordForUsername:storedUsername andServiceName:kSCHAuthenticationManagerServiceName error:nil];
-        
-    ret = ([password isEqualToString:storedPassword] == YES);
-    
-    return(ret);
-}
-
 - (void)authenticate
 {
     [self performSelectorOnMainThread:@selector(authenticateOnMainThread) 
@@ -665,6 +653,7 @@ typedef struct AuthenticateWithUserNameParameters AuthenticateWithUserNameParame
             [self performPostDeregistration];
         }
     }
+    
     self.drmRegistrationSession = nil;
 }
 
