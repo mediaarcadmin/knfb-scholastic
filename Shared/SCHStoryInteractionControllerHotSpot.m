@@ -51,7 +51,7 @@
 
 - (CGAffineTransform)viewToPageTransform
 {
-    return [self.delegate viewToPageTransformForPageIndex:self.storyInteraction.documentPageNumber];
+    return [self.delegate viewToPageTransformForPageIndex:self.storyInteraction.documentPageNumber-1];
 }
 
 - (SCHFrameStyle)frameStyleForViewAtIndex:(NSInteger)viewIndex

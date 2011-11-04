@@ -70,7 +70,7 @@
 
 - (NSArray *)pageKeysForStoryInteraction:(SCHStoryInteraction *)storyInteraction
 {
-    NSInteger pageIndex = storyInteraction.documentPageNumber;
+    NSInteger pageIndex = storyInteraction.documentPageNumber-1;
     CGSize pageSize = delegate ? [delegate sizeOfPageAtIndex:pageIndex] : CGSizeZero;
     NSInteger questionsOnLeft = [storyInteraction numberOfQuestionsWithPageAssociation:SCHStoryInteractionQuestionOnLeftPage withPageSize:pageSize];
     NSInteger questionsOnRight = [storyInteraction numberOfQuestionsWithPageAssociation:SCHStoryInteractionQuestionOnRightPage withPageSize:pageSize];

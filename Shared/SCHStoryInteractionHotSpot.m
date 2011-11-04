@@ -51,7 +51,6 @@
             pageRect = CGRectMake(pageSize.width, 0, pageSize.width, pageSize.height);
             break;
     }
-    NSLog(@"page=%@ hotSpot=%@ intersects=%d", NSStringFromCGRect(pageRect), NSStringFromCGRect(hotSpotRect), CGRectIntersectsRect(pageRect,hotSpotRect));
     return CGRectIntersectsRect(pageRect, hotSpotRect);
 }
 

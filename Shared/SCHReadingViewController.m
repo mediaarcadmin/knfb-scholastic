@@ -461,7 +461,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 {
     if (bookStoryInteractions == nil) {
         bookStoryInteractions = [[SCHBookStoryInteractions alloc] initWithXPSProvider:self.xpsProvider
-                                                                       oddPagesOnLeft:NO
+                                                                       oddPagesOnLeft:YES
                                                                              delegate:self];
     }
     return bookStoryInteractions;
@@ -1496,7 +1496,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     if (pageIndices.length == 2) {
         self.storyInteractionController.pageAssociation = SCHStoryInteractionQuestionOnBothPages;
     } else {
-        self.storyInteractionController.pageAssociation = (pageIndices.location & 1) ? SCHStoryInteractionQuestionOnRightPage : SCHStoryInteractionQuestionOnLeftPage;
+        self.storyInteractionController.pageAssociation = (pageIndices.location & 1) ? SCHStoryInteractionQuestionOnLeftPage : SCHStoryInteractionQuestionOnRightPage;
     }
     
     void (^presentStoryInteractionBlock)(void) = ^{        
@@ -2755,8 +2755,6 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     CGRect viewRect = [self.readingView pageRect];
     CGAffineTransform viewToPage = [self viewToPageTransformForPageIndex:pageIndex];
     CGRect pageRect = CGRectApplyAffineTransform(viewRect, viewToPage);
-    
-    NSLog(@"viewRect=%@ transform=%@ pageRect=%@", NSStringFromCGRect(viewRect), NSStringFromCGAffineTransform(viewToPage), NSStringFromCGRect(pageRect));
     
     return pageRect.size;
 }

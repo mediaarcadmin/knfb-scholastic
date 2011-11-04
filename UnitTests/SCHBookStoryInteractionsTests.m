@@ -17,7 +17,7 @@
 @property (nonatomic, assign) NSInteger questionCountOnLeft;
 @property (nonatomic, assign) NSInteger questionCountOnRight;
 
-+ (TestStoryInteraction *)storyInteractionWithPageNumber:(NSInteger)pageNumber;
++ (TestStoryInteraction *)storyInteractionWithPageIndex:(NSInteger)pageNumber;
 
 @end
 
@@ -28,10 +28,10 @@
 @synthesize questionCountOnLeft;
 @synthesize questionCountOnRight;
 
-+ (TestStoryInteraction *)storyInteractionWithPageNumber:(NSInteger)pageNumber
++ (TestStoryInteraction *)storyInteractionWithPageIndex:(NSInteger)pageIndex
 {
     TestStoryInteraction *tsi = [[TestStoryInteraction alloc] init];
-    tsi.documentPageNumber = pageNumber;
+    tsi.documentPageNumber = pageIndex+1;
     tsi.interactsWithPage = NO;
     tsi.questionCount = 2;
     tsi.questionCountOnLeft = 2;
@@ -78,9 +78,9 @@
 {
     if ((self = [super init])) {
         testStoryInteractions = [[NSArray alloc] initWithObjects:
-                                 [TestStoryInteraction storyInteractionWithPageNumber:4],
-                                 [TestStoryInteraction storyInteractionWithPageNumber:6],
-                                 [TestStoryInteraction storyInteractionWithPageNumber:8],
+                                 [TestStoryInteraction storyInteractionWithPageIndex:4],
+                                 [TestStoryInteraction storyInteractionWithPageIndex:6],
+                                 [TestStoryInteraction storyInteractionWithPageIndex:8],
                                  nil];
         oddPagesOnLeft = NO;
     }
