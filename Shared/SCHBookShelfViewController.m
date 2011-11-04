@@ -942,6 +942,9 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 131;
 
             [self.navigationController pushViewController:readingController animated:YES]; 
             self.currentlyLoadingIndex = -1;
+
+            SCHBookShelfGridViewCell *cell = (SCHBookShelfGridViewCell *) [aGridView cellAtGridIndex:index];
+            [cell setLoading:NO];
         } else {
             if (error && !([[error domain] isEqualToString:kSCHAppBookErrorDomain] && ([error code] == kSCHAppBookStillBeingProcessedError))) {
                 LambdaAlert *alert = [[LambdaAlert alloc]
@@ -954,13 +957,14 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 131;
                 }];
                 [alert show];
                 [alert release];
+
+                self.currentlyLoadingIndex = -1;
+                
+                SCHBookShelfGridViewCell *cell = (SCHBookShelfGridViewCell *) [aGridView cellAtGridIndex:index];
+                [cell setLoading:NO];
             }
         }
         
-        self.currentlyLoadingIndex = -1;
-        
-        SCHBookShelfGridViewCell *cell = (SCHBookShelfGridViewCell *) [aGridView cellAtGridIndex:index];
-        [cell setLoading:NO];
     });
 }
 
