@@ -266,7 +266,11 @@ NSString * const SCHAnnotationSyncComponentCompletedProfileIDs = @"SCHAnnotation
     self.isSynchronizing = [self.libreAccessWebService listProfileContentAnnotations:books 
                                                                           forProfile:profileID];
     if (self.isSynchronizing == NO) {
-        [[SCHAuthenticationManager sharedAuthenticationManager] authenticate];				
+        [[SCHAuthenticationManager sharedAuthenticationManager] authenticateWithSuccessBlock:^(BOOL offlineMode){
+            if (!offlineMode) {
+                [self.delegate authenticationDidSucceed];
+            }
+        } failureBlock:nil];
     }            
 }
 
@@ -378,14 +382,22 @@ NSString * const SCHAnnotationSyncComponentCompletedProfileIDs = @"SCHAnnotation
         
         self.isSynchronizing = [self.libreAccessWebService saveProfileContentAnnotations:updatedAnnotations];
         if (self.isSynchronizing == NO) {
-            [[SCHAuthenticationManager sharedAuthenticationManager] authenticate];				
+            [[SCHAuthenticationManager sharedAuthenticationManager] authenticateWithSuccessBlock:^(BOOL offlineMode){
+                if (!offlineMode) {
+                    [self.delegate authenticationDidSucceed];
+                }
+            } failureBlock:nil];				
             ret = NO;
         }
     } else if ([self.annotations count] > 0) {
         self.isSynchronizing = [self.libreAccessWebService listProfileContentAnnotations:books 
                                                                               forProfile:profileID];
         if (self.isSynchronizing == NO) {
-            [[SCHAuthenticationManager sharedAuthenticationManager] authenticate];				
+            [[SCHAuthenticationManager sharedAuthenticationManager] authenticateWithSuccessBlock:^(BOOL offlineMode){
+                if (!offlineMode) {
+                    [self.delegate authenticationDidSucceed];
+                }
+            } failureBlock:nil];				
             ret = NO;
         }
     } else {

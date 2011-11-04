@@ -19,18 +19,6 @@ static NSString * const kSCHTopFavoritesComponentCategoryYoungAdults = @"Young A
 
 @implementation SCHTopFavoritesComponent
 
-- (BOOL)listFavoriteTypes
-{
-	BOOL ret = YES;
-		
-	if ([self.libreAccessWebService listFavoriteTypes] == NO) {
-		[[SCHAuthenticationManager sharedAuthenticationManager] authenticate];				
-		ret = NO;
-	}
-	
-	return(ret);
-}
-
 - (BOOL)topFavoritesForAge:(NSUInteger)ageInYears
 {
 	BOOL ret = YES;
@@ -54,7 +42,11 @@ static NSString * const kSCHTopFavoritesComponentCategoryYoungAdults = @"Young A
     }
 	
 	if ([self.libreAccessWebService listTopFavorites:[NSArray arrayWithObject:favoriteItem] withCount:kSCHTopFavoritesComponentTopCount] == NO) {
-		[[SCHAuthenticationManager sharedAuthenticationManager] authenticate];				
+		[[SCHAuthenticationManager sharedAuthenticationManager] authenticateWithSuccessBlock:^(BOOL offlineMode){
+            if (!offlineMode) {
+                [self.delegate authenticationDidSucceed];
+            }
+        } failureBlock:nil];			
 		ret = NO;
 	}
 	

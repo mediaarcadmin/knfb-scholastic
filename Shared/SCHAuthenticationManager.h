@@ -11,9 +11,9 @@
 #import "BITAPIProxyDelegate.h"
 #import "SCHDrmRegistrationSessionDelegate.h"
 
-// Constants
-extern NSString * const SCHAuthenticationManagerDidSucceedNotification;
-extern NSString * const SCHAuthenticationManagerDidFailNotification;
+typedef void (^SCHAuthenticationSuccessBlock)(BOOL offlineMode);
+typedef void (^SCHAuthenticationFailureBlock)(NSError * error);
+
 extern NSString * const kSCHAuthenticationManagerAToken;
 extern NSString * const kSCHAuthenticationManagerOfflineMode;
 extern NSString * const SCHAuthenticationManagerDidDeregisterNotification;
@@ -35,13 +35,20 @@ extern NSInteger const kSCHAuthenticationManagerLoginError;
 
 + (SCHAuthenticationManager *)sharedAuthenticationManager;
 
-- (void)authenticateWithUserName:(NSString *)userName withPassword:(NSString *)password;
-- (void)authenticate;
 - (BOOL)hasUsernameAndPassword;
-- (void)deregister;
-- (void)clear;
-- (void)clearAppProcessing;
 - (NSString *)pToken;
 - (NSURL *)webParentToolURL:(NSString *)pToken;
+- (void)clear;
+- (void)clearAppProcessing;
 
+- (void)authenticateWithUser:(NSString *)userName 
+                    password:(NSString *)password
+                successBlock:(SCHAuthenticationSuccessBlock)successBlock
+                failureBlock:(SCHAuthenticationFailureBlock)failureBlock;
+
+- (void)authenticateWithSuccessBlock:(SCHAuthenticationSuccessBlock)successBlock
+                        failureBlock:(SCHAuthenticationFailureBlock)failureBlock;
+
+// Should have completion blocks
+- (void)deregister;
 @end

@@ -81,12 +81,6 @@ static NSUInteger const kSCHURLManagerMaxConnections = 6;
 		libreAccessWebService.delegate = self;
 		
 		self.requestCount = 0;
-		
-		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(authenticationManager:) 
-													 name:SCHAuthenticationManagerDidSucceedNotification object:nil];					
-
-		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(authenticationManager:) 
-													 name:SCHAuthenticationManagerDidFailNotification object:nil];							
         
         [[NSNotificationCenter defaultCenter] addObserver:self 
                                                  selector:@selector(coreDataHelperManagedObjectContextDidChangeNotification:) 
@@ -192,7 +186,11 @@ static NSUInteger const kSCHURLManagerMaxConnections = 6;
 					self.backgroundTaskIdentifier = UIBackgroundTaskInvalid;			
 				}
 				
-				[[SCHAuthenticationManager sharedAuthenticationManager] authenticate];							
+				[[SCHAuthenticationManager sharedAuthenticationManager] authenticateWithSuccessBlock:^(BOOL offlineMode){
+                    if (!offlineMode) {
+                        [self shakeTable];
+                    }
+                } failureBlock:nil];							
 				break;
 			}
 		}
@@ -268,19 +266,6 @@ static NSUInteger const kSCHURLManagerMaxConnections = 6;
 	}	
 	
     [self shakeTable];
-}
-
-#pragma mark - Authentication Manager Notification methods
-
-- (void)authenticationManager:(NSNotification *)notification
-{
-	NSDictionary *userInfo = [notification userInfo];
-	
-    NSNumber *offlineMode = [userInfo valueForKey:kSCHAuthenticationManagerOfflineMode];
-    
-    if (offlineMode != nil && [offlineMode boolValue] == NO) {
-		[self shakeTable];	
-	}
 }
 
 @end
