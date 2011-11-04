@@ -16,4 +16,6 @@
 @property (nonatomic, copy) NSString *pToken;
 @property (nonatomic, assign) id<SCHProfileSetupDelegate> profileSetupDelegate;
 
+- (void)backWithNoSync;
+
 @end

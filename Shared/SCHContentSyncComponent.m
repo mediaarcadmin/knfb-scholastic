@@ -93,7 +93,11 @@ NSString * const SCHContentSyncComponentDidFailNotification = @"SCHContentSyncCo
         if([method compare:kSCHLibreAccessWebServiceSaveContentProfileAssignment] == NSOrderedSame) {	
             self.isSynchronizing = [self.libreAccessWebService listUserContent];
             if (self.isSynchronizing == NO) {
-                [[SCHAuthenticationManager sharedAuthenticationManager] authenticate];				
+                [[SCHAuthenticationManager sharedAuthenticationManager] authenticateWithSuccessBlock:^(BOOL offlineMode){
+                    if (!offlineMode) {
+                        [self.delegate authenticationDidSucceed];
+                    }
+                } failureBlock:nil];				
             }
         } else if([method compare:kSCHLibreAccessWebServiceListUserContent] == NSOrderedSame) {
             NSArray *content = [result objectForKey:kSCHLibreAccessWebServiceUserContentList];
@@ -143,13 +147,21 @@ NSString * const SCHContentSyncComponentDidFailNotification = @"SCHContentSyncCo
 	if ([results count] > 0) {
 		self.isSynchronizing = [self.libreAccessWebService saveContentProfileAssignment:results];
 		if (self.isSynchronizing == NO) {
-			[[SCHAuthenticationManager sharedAuthenticationManager] authenticate];				
+			[[SCHAuthenticationManager sharedAuthenticationManager] authenticateWithSuccessBlock:^(BOOL offlineMode){
+                if (!offlineMode) {
+                    [self.delegate authenticationDidSucceed];
+                }
+            } failureBlock:nil];				
 			ret = NO;			
 		}		
 	} else {
 		self.isSynchronizing = [self.libreAccessWebService listUserContent];
 		if (self.isSynchronizing == NO) {
-			[[SCHAuthenticationManager sharedAuthenticationManager] authenticate];				
+			[[SCHAuthenticationManager sharedAuthenticationManager] authenticateWithSuccessBlock:^(BOOL offlineMode){
+                if (!offlineMode) {
+                    [self.delegate authenticationDidSucceed];
+                }
+            } failureBlock:nil];				
 			ret = NO;
 		}
 	}

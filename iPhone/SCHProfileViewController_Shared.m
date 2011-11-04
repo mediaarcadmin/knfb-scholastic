@@ -19,6 +19,7 @@
 #import "SCHBookIdentifier.h"
 #import "SCHCoreDataHelper.h"
 #import "SCHSyncManager.h"
+#import "LambdaAlert.h"
 
 @interface SCHProfileViewController_Shared()  
 
@@ -58,6 +59,11 @@
                                                  selector:@selector(coreDataHelperManagedObjectContextDidChangeNotification:) 
                                                      name:SCHCoreDataHelperManagedObjectContextDidChangeNotification 
                                                    object:nil];	
+        
+        [[NSNotificationCenter defaultCenter] addObserver:self 
+                                                 selector:@selector(deviceDeregistered:)
+                                                     name:SCHAuthenticationManagerDidClearAfterDeregisterNotification
+                                                   object:nil];
     }
     return(self);
 }
@@ -74,7 +80,13 @@
 
 - (void)dealloc 
 {    
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
+    [[NSNotificationCenter defaultCenter] removeObserver:self 
+                                                 name:SCHCoreDataHelperManagedObjectContextDidChangeNotification 
+                                               object:nil];	
+    
+    [[NSNotificationCenter defaultCenter] removeObserver:self 
+                                                 name:SCHAuthenticationManagerDidClearAfterDeregisterNotification
+                                               object:nil];
 
     [self releaseViewObjects];
     
@@ -509,6 +521,23 @@
 - (void)updatesBubbleTapped:(UIGestureRecognizer *)gr
 {
     [self pushSettingsController];
+}
+
+- (void)deviceDeregistered:(NSNotification *)notification
+{
+    if (self.modalViewController != nil) {
+        [self.modalViewController dismissModalViewControllerAnimated:NO];
+    }
+    
+    LambdaAlert *alert = [[LambdaAlert alloc]
+                          initWithTitle:NSLocalizedString(@"Device Deregistered", @"Device Deregistered") 
+                          message:NSLocalizedString(@"This device has been deregistered. To read books, please register this device again.", @"") ];
+    [alert addButtonWithTitle:NSLocalizedString(@"OK", @"OK") block:^{
+        [self.profileSetupDelegate popToRootViewControllerAnimated:YES withCompletionHandler:nil];
+    }];
+    
+    [alert show];
+    [alert release];
 }
 
 @end

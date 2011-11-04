@@ -93,11 +93,6 @@ static const CGFloat kDeregisterContentHeightLandscape = 380;
     }
     
     [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(authenticationManagerDidDeregister:)
-                                                 name:SCHAuthenticationManagerDidClearAfterDeregisterNotification
-                                               object:nil];
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(authenticationManagerDidFailDeregistration:)
                                                  name:SCHAuthenticationManagerDidFailDeregistrationNotification
                                                object:nil];
@@ -155,7 +150,7 @@ static const CGFloat kDeregisterContentHeightLandscape = 380;
         NSString *storedUsername = [[NSUserDefaults standardUserDefaults] stringForKey:kSCHAuthenticationManagerUsername];
         [self.spinner startAnimating];
         [self setEnablesBackButton:NO];
-        if ([self.accountValidation validateWithUserName:storedUsername withPassword:self.passwordField.text validateBlock:^(NSString *pToken, NSError *error) {
+        [self.accountValidation validateWithUserName:storedUsername withPassword:self.passwordField.text validateBlock:^(NSString *pToken, NSError *error) {
             if (error != nil) {
                 LambdaAlert *alert = [[LambdaAlert alloc]
                                       initWithTitle:NSLocalizedString(@"Error", @"error alert title")
@@ -171,31 +166,23 @@ static const CGFloat kDeregisterContentHeightLandscape = 380;
                 if ([[SCHAuthenticationManager sharedAuthenticationManager] isAuthenticated] == YES) {
                     [[SCHAuthenticationManager sharedAuthenticationManager] deregister];            
                 } else {
-                    [[SCHAuthenticationManager sharedAuthenticationManager] authenticate];
-                    LambdaAlert *alert = [[LambdaAlert alloc]
-                                          initWithTitle:NSLocalizedString(@"Error", @"error alert title")
-                                          message:NSLocalizedString(@"Waiting for the server, please try again in a moment. If this problem persists please contact support.", nil)];
-                    [alert addButtonWithTitle:NSLocalizedString(@"Try Again", @"try again button after no authentication") block:^{
-                        [weakSelf.deregisterButton setEnabled:YES];
-                        [weakSelf.spinner stopAnimating];
-                        [weakSelf setEnablesBackButton:YES];                                            
+                    [[SCHAuthenticationManager sharedAuthenticationManager] authenticateWithSuccessBlock:^(BOOL offlineMode){
+                        [[SCHAuthenticationManager sharedAuthenticationManager] deregister];
+                    } failureBlock:^(NSError *error){
+                        LambdaAlert *alert = [[LambdaAlert alloc]
+                                              initWithTitle:NSLocalizedString(@"Unable To Authenticate", @"")
+                                              message:[NSString stringWithFormat:NSLocalizedString(@"We are not able to authenticate your account with the server (%@). Please try again later.", nil), [error localizedDescription]]];
+                        [alert addButtonWithTitle:NSLocalizedString(@"OK", @"") block:^{
+                            [weakSelf.deregisterButton setEnabled:YES];
+                            [weakSelf.spinner stopAnimating];
+                            [weakSelf setEnablesBackButton:YES];                                            
+                        }];
+                        [alert show];
+                        [alert release];
                     }];
-                    [alert show];
-                    [alert release];        
                 }                
             }    
-        }] == NO) {
-            LambdaAlert *alert = [[LambdaAlert alloc]
-                                  initWithTitle:NSLocalizedString(@"Password authentication unavailable", @"")
-                                  message:NSLocalizedString(@"Please try again in a moment.", @"")];
-            [alert addButtonWithTitle:NSLocalizedString(@"OK", @"") block:^{
-                [self.deregisterButton setEnabled:YES];
-                [self.spinner stopAnimating];
-                [self setEnablesBackButton:YES];                                
-            }];
-            [alert show];
-            [alert release];                
-        };
+        }];
     }
 }
 
@@ -250,24 +237,6 @@ static const CGFloat kDeregisterContentHeightLandscape = 380;
 }
 
 #pragma mark - Deregistration Notification methods
-
-- (void)authenticationManagerDidDeregister:(NSNotification *)notification
-{
-    [self.spinner stopAnimating];
-    [self setEnablesBackButton:YES];
-    
-    [self.settingsDelegate popToRootViewControllerAnimated:YES withCompletionHandler:^{
-                
-        LambdaAlert *alert = [[LambdaAlert alloc]
-                              initWithTitle:NSLocalizedString(@"Device Deregistered", @"Device Deregistered") 
-                              message:NSLocalizedString(@"This device has been deregistered. To read books, please register this device again.", @"") ];
-        [alert addButtonWithTitle:NSLocalizedString(@"OK", @"OK") block:^{}];   
-        [alert show];
-        [alert release];
-    }];
-    
-    
-}
 
 - (void)authenticationManagerDidFailDeregistration:(NSNotification *)notification
 {
