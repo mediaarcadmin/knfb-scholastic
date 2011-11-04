@@ -95,20 +95,22 @@
     NSInteger pageIndex = storyInteraction.documentPageNumber-1;
     CGSize pageSize = delegate ? [delegate sizeOfPageAtIndex:pageIndex] : CGSizeZero;
 
-    NSMutableArray *pageKeys = [NSMutableArray arrayWithCapacity:2];
+    BOOL hasQuestionsOnLeftPage = [storyInteraction hasQuestionsOnLeftPageForPageSize:pageSize];
+    BOOL hasQuestionsOnRightPage = [storyInteraction hasQuestionsOnRightPageForPageSize:pageSize];
+    if (!hasQuestionsOnLeftPage && !hasQuestionsOnRightPage) {
+        // if the story interaction doesn't declare questions explicitly on the left/right pages,
+        // they must all be on the declared page
+        return [NSArray arrayWithObject:[self pageKeyForPageIndex:pageIndex]];
+    }
     
-    if ([storyInteraction hasQuestionsOnLeftPageForPageSize:pageSize]) {
+    NSMutableArray *pageKeys = [NSMutableArray arrayWithCapacity:2];
+
+    if (hasQuestionsOnLeftPage) {
         [pageKeys addObject:[self leftPageKeyForPageIndex:pageIndex]];
     }
-    if ([storyInteraction hasQuestionsOnRightPageForPageSize:pageSize]) {
+    if (hasQuestionsOnRightPage) {
         [pageKeys addObject:[self rightPageKeyForPageIndex:pageIndex]];
     }
-    // if the story interaction doesn't declare questions explicitly on the left/right pages,
-    // they must all be on the declared page
-    if ([pageKeys count] == 0) {
-        [pageKeys addObject:[self pageKeyForPageIndex:pageIndex]];
-    }
-    
     return [NSArray arrayWithArray:pageKeys];
 }
 
