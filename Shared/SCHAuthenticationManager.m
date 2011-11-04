@@ -155,18 +155,6 @@ typedef struct AuthenticateWithUserNameParameters AuthenticateWithUserNameParame
                         waitUntilDone:YES];
 }
 
-- (BOOL)validatePassword:(NSString *)password
-{
-    BOOL ret = YES;
-    
-    NSString *storedUsername = [[NSUserDefaults standardUserDefaults] stringForKey:kSCHAuthenticationManagerUsername];
-    NSString *storedPassword = [SFHFKeychainUtils getPasswordForUsername:storedUsername andServiceName:kSCHAuthenticationManagerServiceName error:nil];
-        
-    ret = ([password isEqualToString:storedPassword] == YES);
-    
-    return(ret);
-}
-
 - (void)authenticate
 {
     [self performSelectorOnMainThread:@selector(authenticateOnMainThread) 
@@ -653,36 +641,39 @@ typedef struct AuthenticateWithUserNameParameters AuthenticateWithUserNameParame
 - (void)registrationSession:(SCHDrmRegistrationSession *)registrationSession 
                 didComplete:(NSString *)deviceKey
 {
-    if (deviceKey != nil) {
-        [[NSUserDefaults standardUserDefaults] setObject:deviceKey 
-                                                  forKey:kSCHAuthenticationManagerDeviceKey];
-        [[NSUserDefaults standardUserDefaults] synchronize];
-        [libreAccessWebService authenticateDevice:deviceKey forUserKey:nil];
-    } else {
-        // Successful deregistration
-        if (self.waitingOnResponse) {
+    if (self.waitingOnResponse) {
+        if (deviceKey != nil) {
+            [[NSUserDefaults standardUserDefaults] setObject:deviceKey 
+                                                      forKey:kSCHAuthenticationManagerDeviceKey];
+            [[NSUserDefaults standardUserDefaults] synchronize];
+            [libreAccessWebService authenticateDevice:deviceKey forUserKey:nil];
+        } else {
+            // Successful deregistration
             self.waitingOnResponse = NO;
             [self performPostDeregistration];
         }
     }
+    
     self.drmRegistrationSession = nil;
 }
 
 - (void)registrationSession:(SCHDrmRegistrationSession *)registrationSession 
            didFailWithError:(NSError *)error
 {
-    NSLog(@"AuthenticationManager:DRM %@", [error description]);
-	self.waitingOnResponse = NO;
-	
-    // were we de-registered?
-    if ([error code] == kSCHDrmDeregistrationError) {
-        [self performPostDeregistration];        
-    } else {
-        [[NSNotificationCenter defaultCenter] postNotificationName:SCHAuthenticationManagerDidFailDeregistrationNotification
-                                                            object:self 
-                                                          userInfo:[NSDictionary dictionaryWithObject:error forKey:kSCHAuthenticationManagerNSError]];		        
+    if (self.waitingOnResponse) {
+        NSLog(@"AuthenticationManager:DRM %@", [error description]);
+        self.waitingOnResponse = NO;
         
-        [self postFailureWithError:error];
+        // were we de-registered?
+        if ([error code] == kSCHDrmDeregistrationError) {
+            [self performPostDeregistration];        
+        } else {
+            [[NSNotificationCenter defaultCenter] postNotificationName:SCHAuthenticationManagerDidFailDeregistrationNotification
+                                                                object:self 
+                                                              userInfo:[NSDictionary dictionaryWithObject:error forKey:kSCHAuthenticationManagerNSError]];		        
+            
+            [self postFailureWithError:error];
+        }
     }
 
     self.drmRegistrationSession = nil;    

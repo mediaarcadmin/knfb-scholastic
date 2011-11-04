@@ -36,7 +36,6 @@ extern NSInteger const kSCHAuthenticationManagerLoginError;
 + (SCHAuthenticationManager *)sharedAuthenticationManager;
 
 - (void)authenticateWithUserName:(NSString *)userName withPassword:(NSString *)password;
-- (BOOL)validatePassword:(NSString *)password;
 - (void)authenticate;
 - (BOOL)hasUsernameAndPassword;
 - (void)deregister;
