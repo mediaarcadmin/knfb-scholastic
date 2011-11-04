@@ -56,7 +56,7 @@ struct SCHDrmIVars;
     NSMutableData *connectionData;
 }
 
-@property (nonatomic, retain) id<SCHDrmRegistrationSessionDelegate> delegate;
+@property (nonatomic, assign) id<SCHDrmRegistrationSessionDelegate> delegate;
 
 - (void)registerDevice:(NSString *)token;
 - (void)deregisterDevice:(NSString *)token;

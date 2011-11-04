@@ -30,7 +30,7 @@ extern NSTimeInterval const kSCHAuthenticationManagerSecondsInAMinute;
 - (void)clearOnMainThread;
 - (void)clearAppProcessingOnMainThread;
 
-- (void)authenticationDidSucceed:(BOOL)offline;
+- (void)authenticationDidSucceedWithOfflineMode:(BOOL)offlineMode;
 - (void)authenticationDidFailWithError:(NSError *)error;
 
 @end

@@ -69,7 +69,7 @@
             }
         } else if (storedUsername != nil &&
                    [[storedUsername stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]] length] > 0) {            
-            [self authenticationDidSucceed:YES];
+            [self authenticationDidSucceedWithOfflineMode:YES];
         } else {
             NSError *error = [NSError errorWithDomain:kSCHAuthenticationManagerErrorDomain 
                                                  code:kSCHAuthenticationManagerLoginError 
@@ -93,7 +93,7 @@
 		NSInteger expiresIn = MAX(0, [[result objectForKey:kSCHLibreAccessWebServiceExpiresIn] integerValue] - 1);
 		self.tokenExpires = [NSDate dateWithTimeIntervalSinceNow:expiresIn * kSCHAuthenticationManagerSecondsInAMinute];
 		self.waitingOnResponse = NO;
-		[self authenticationDidSucceed:NO];
+		[self authenticationDidSucceedWithOfflineMode:NO];
 	}
 }
 
