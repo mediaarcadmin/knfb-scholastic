@@ -44,6 +44,8 @@
                                                  selector:@selector(bookStateDidUpdate:)
                                                      name:@"SCHBookStateUpdate"
                                                    object:nil];
+
+        self.results = [NSMutableArray array];
     }
     
     return self;
@@ -56,7 +58,7 @@
 
 - (NSArray *)availableBookUpdates
 {
-    if (self.refreshNeeded) {
+    if (self.refreshNeeded || [self.results count] == 0) {
         [self refresh];
     }
     
@@ -70,7 +72,7 @@
 {
     NSError *error = nil;
     
-    self.results = [[NSMutableArray alloc] init];
+    [self.results removeAllObjects];
     
     NSFetchRequest *fetch = [[NSFetchRequest alloc] init];
     [fetch setEntity:[NSEntityDescription entityForName:@"SCHAppBook" inManagedObjectContext:self.managedObjectContext]];
