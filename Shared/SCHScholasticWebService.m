@@ -80,8 +80,11 @@ static NSString * const kSCHScholasticWebServiceAttributeErrorDesc = @"errorDesc
 {	
 	[[BITNetworkActivityManager sharedNetworkActivityManager] hideNetworkActivityIndicator];
 	
-	if (operation.response.error != nil && [(id)self.delegate respondsToSelector:@selector(method:didFailWithError:requestInfo:result:)]) {
-		[(id)self.delegate method:kSCHScholasticWebServiceProcessRemote didFailWithError:operation.response.error requestInfo:nil result:nil];
+	if (operation.response.error != nil) {
+        if ([(id)self.delegate respondsToSelector:@selector(method:didFailWithError:requestInfo:result:)]) {
+            [(id)self.delegate method:kSCHScholasticWebServiceProcessRemote didFailWithError:[self confirmErrorDomain:operation.response.error] 
+                          requestInfo:nil result:nil];
+        }
 	} else {		
 		for (id bodyPart in response.bodyParts) {
 			if ([bodyPart isKindOfClass:[SOAPFault class]]) {

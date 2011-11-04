@@ -21,5 +21,6 @@
 - (void)reportFault:(SOAPFault *)fault 
           forMethod:(NSString *)method 
         requestInfo:(NSDictionary *)requestInfo;
+- (NSError *)confirmErrorDomain:(NSError *)error;
 
 @end

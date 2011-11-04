@@ -498,10 +498,11 @@ static NSInteger const kSCHLibreAccessWebServiceVaid = 33;
     if (self.binding == operation.binding ) {
         NSString *methodName = [self methodNameFromObject:operation];
         
-        if (operation.response.error != nil && 
-            [(id)self.delegate respondsToSelector:@selector(method:didFailWithError:requestInfo:result:)]) {
-            [(id)self.delegate method:methodName didFailWithError:operation.response.error 
-                          requestInfo:[self requestInfoFromOperation:operation] result:nil];
+        if (operation.response.error != nil) {
+            if ([(id)self.delegate respondsToSelector:@selector(method:didFailWithError:requestInfo:result:)]) {
+                [(id)self.delegate method:methodName didFailWithError:[self confirmErrorDomain:operation.response.error]
+                              requestInfo:[self requestInfoFromOperation:operation] result:nil];
+            }
         } else {
             for (id bodyPart in response.bodyParts) {
                 if ([bodyPart isKindOfClass:[SOAPFault class]]) {
