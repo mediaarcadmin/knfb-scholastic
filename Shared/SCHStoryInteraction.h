@@ -56,12 +56,16 @@
 - (NSString *)storyInteractionRevealSoundFilename;
 
 // returns the number of questions contained within the interaction
+// - should be overidden in subclasses
 - (NSInteger)questionCount;
 
-// returns the number of questions contained within the interaction on the specified pages;
-// by default story interactions do not distinguish the left and right pages so this returns
-// the same value as -questionCount.
-- (NSInteger)numberOfQuestionsWithPageAssociation:(enum SCHStoryInteractionQuestionPageAssociation)pageAssociation
-                                     withPageSize:(CGSize)pageSize;
+// where questions are split across pages, the page associated with each question index
+// - should be overidden in subclasses
+- (enum SCHStoryInteractionQuestionPageAssociation)pageAssociationForQuestionAtIndex:(NSInteger)questionIndex
+                                                                        withPageSize:(CGSize)pageSize;
+
+- (BOOL)hasQuestionsOnLeftPageForPageSize:(CGSize)pageSize;
+- (BOOL)hasQuestionsOnRightPageForPageSize:(CGSize)pageSize;
+- (NSInteger)numberOfQuestionsWithPageAssociation:(enum SCHStoryInteractionQuestionPageAssociation)pageAssociation withPageSize:(CGSize)pageSize;
 
 @end

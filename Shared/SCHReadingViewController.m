@@ -2711,7 +2711,10 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 
 - (NSInteger)currentQuestionForStoryInteraction
 {
-    return [self.bookStoryInteractions storyInteractionQuestionsCompletedForPageIndices:[self storyInteractionPageIndices]];
+    NSRange pageIndices = [self storyInteractionPageIndices];
+    NSInteger completed = [self.bookStoryInteractions storyInteractionQuestionsCompletedForPageIndices:pageIndices];
+    NSInteger count = [self.bookStoryInteractions storyInteractionQuestionCountForPageIndices:pageIndices];
+    return count > 0 ? completed % count : 0;
 }
 
 - (BOOL)storyInteractionFinished

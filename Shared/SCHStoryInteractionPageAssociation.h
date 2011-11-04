@@ -7,8 +7,8 @@
 //
 
 enum SCHStoryInteractionQuestionPageAssociation {
-    SCHStoryInteractionQuestionOnLeftPage = 1 << 0,
-    SCHStoryInteractionQuestionOnRightPage = 1 << 1,
-    SCHStoryInteractionQuestionOnBothPages = (SCHStoryInteractionQuestionOnLeftPage | SCHStoryInteractionQuestionOnRightPage)
+    SCHStoryInteractionQuestionOnLeftPage,
+    SCHStoryInteractionQuestionOnRightPage,
+    SCHStoryInteractionQuestionOnBothPages
 };
 

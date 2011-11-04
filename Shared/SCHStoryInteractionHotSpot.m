@@ -36,22 +36,14 @@
     }
 }
 
-- (BOOL)hasPageAssociation:(enum SCHStoryInteractionQuestionPageAssociation)pageAssociation
-              withPageSize:(CGSize)pageSize
+- (enum SCHStoryInteractionQuestionPageAssociation)pageAssociationForPageSize:(CGSize)pageSize
 {
-    CGRect pageRect;
-    switch (pageAssociation) {
-        case SCHStoryInteractionQuestionOnBothPages:
-            pageRect = CGRectMake(0, 0, pageSize.width*2, pageSize.height);
-            break;
-        case SCHStoryInteractionQuestionOnLeftPage:
-            pageRect = (CGRect){ CGPointZero, pageSize };
-            break;
-        case SCHStoryInteractionQuestionOnRightPage:
-            pageRect = CGRectMake(pageSize.width, 0, pageSize.width, pageSize.height);
-            break;
+    CGRect leftPageRect = (CGRect){ CGPointZero, pageSize };
+    if (CGRectIntersectsRect(leftPageRect, hotSpotRect)) {
+        return SCHStoryInteractionQuestionOnLeftPage;
+    } else {
+        return SCHStoryInteractionQuestionOnRightPage;
     }
-    return CGRectIntersectsRect(pageRect, hotSpotRect);
 }
 
 - (NSString *)audioPathForQuestion
@@ -90,10 +82,9 @@
     return YES;
 }
 
-- (NSInteger)numberOfQuestionsWithPageAssociation:(enum SCHStoryInteractionQuestionPageAssociation)pageAssociation
-                                     withPageSize:(CGSize)pageSize
+- (NSInteger)questionCount
 {
-    return [[self questionsWithPageAssociation:pageAssociation pageSize:pageSize] count];
+    return [self.questions count];
 }
 
 - (NSArray *)questionsWithPageAssociation:(enum SCHStoryInteractionQuestionPageAssociation)pageAssociation
@@ -101,11 +92,18 @@
 {
     NSMutableArray *result = [NSMutableArray array];
     for (SCHStoryInteractionHotSpotQuestion *question in self.questions) {
-        if ([question hasPageAssociation:pageAssociation withPageSize:pageSize]) {
+        if (pageAssociation == SCHStoryInteractionQuestionOnBothPages || pageAssociation == [question pageAssociationForPageSize:pageSize]) {
             [result addObject:question];
         }
     }
     return [NSArray arrayWithArray:result];
+}
+
+- (enum SCHStoryInteractionQuestionPageAssociation)pageAssociationForQuestionAtIndex:(NSInteger)questionIndex
+                                                                        withPageSize:(CGSize)pageSize
+{
+    SCHStoryInteractionHotSpotQuestion *question = [self.questions objectAtIndex:questionIndex];
+    return [question pageAssociationForPageSize:pageSize];
 }
 
 
