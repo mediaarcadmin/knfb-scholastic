@@ -33,6 +33,19 @@
 	}
 }
 
+- (NSError *)confirmErrorDomain:(NSError *)error
+{
+    // if this is a SOAP error domain  and not a connectivity error domain 
+    // change the domain to BITAPIError
+    if ([[error domain] isEqualToString:@"LibreAccessServiceSoap11BindingResponseHTTP"] == YES) {
+        error = [NSError errorWithDomain:kBITAPIErrorDomain 
+                                    code:[error code] 
+                                userInfo:[error userInfo]];
+    }
+    
+    return error;
+}
+
 #pragma mark -
 #pragma mark API Proxy methods
 
