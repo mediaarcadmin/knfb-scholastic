@@ -281,7 +281,7 @@
 
     } else if (pageIndices.length > 1) {
         // work out which page the last question was on, and update the score on that page only
-        NSInteger questionIndex = [self storyInteractionQuestionsCompletedForPageIndices:pageIndices];
+        NSInteger questionIndex = [self storyInteractionQuestionsCompletedForPageIndices:pageIndices] % [storyInteraction questionCount];
         CGSize pageSize = delegate ? [delegate sizeOfPageAtIndex:pageIndices.location] : CGSizeZero;
         enum SCHStoryInteractionQuestionPageAssociation pageAssociation = [storyInteraction pageAssociationForQuestionAtIndex:questionIndex withPageSize:pageSize];
         id pageKey = (pageAssociation == SCHStoryInteractionQuestionOnLeftPage) ? [self leftPageKeyForPageIndex:pageIndices.location] : [self rightPageKeyForPageIndex:pageIndices.location];

@@ -51,7 +51,7 @@
 
 - (CGAffineTransform)viewToPageTransform
 {
-    return [self.delegate viewToPageTransformForPageIndex:self.storyInteraction.documentPageNumber-1];
+    return [self.delegate viewToPageTransform];
 }
 
 - (SCHFrameStyle)frameStyleForViewAtIndex:(NSInteger)viewIndex
@@ -143,6 +143,11 @@
 
 - (CGPoint)viewToPage:(CGPoint)pointInView;
 {
+    // if presented on right page only, translate the tapped point as if the left page was present
+    if (self.pageAssociation == SCHStoryInteractionQuestionOnRightPage) {
+        pointInView.x += CGRectGetWidth(self.hostView.bounds);
+    }
+    
     return CGPointApplyAffineTransform(pointInView, [self viewToPageTransform]);
 }
 

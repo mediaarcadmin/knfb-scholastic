@@ -2727,17 +2727,14 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     return [self.readingView pageSnapshot];
 }
 
-- (CGAffineTransform)viewToPageTransformForPageIndex:(NSInteger)pageIndex
+- (CGAffineTransform)viewToPageTransform
 {
-    if (pageIndex < 0) {
-        NSLog(@"WARNING: viewToPageTransformForPageIndex requested for page %d", pageIndex);
-        return CGAffineTransformIdentity;
-    }
     if (self.layoutType != SCHReadingViewLayoutTypeFixed) {
         NSLog(@"WARNING: viewToPageTransformForPageIndex requested in flow view");
         return CGAffineTransformIdentity;
     }
 
+    NSInteger pageIndex = [self storyInteractionPageIndices].location;
     CGAffineTransform pageToView = [(SCHLayoutView *)self.readingView pageTurningViewTransformForPageAtIndex:pageIndex];
     return CGAffineTransformInvert(pageToView);
 }
@@ -2756,7 +2753,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     }
     
     CGRect viewRect = [self.readingView pageRect];
-    CGAffineTransform viewToPage = [self viewToPageTransformForPageIndex:pageIndex];
+    CGAffineTransform viewToPage = [self viewToPageTransform];
     CGRect pageRect = CGRectApplyAffineTransform(viewRect, viewToPage);
     
     return pageRect.size;
