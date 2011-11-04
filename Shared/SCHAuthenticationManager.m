@@ -202,25 +202,33 @@ typedef struct AuthenticateWithUserNameParameters AuthenticateWithUserNameParame
 }
 
 - (NSURL *)webParentToolURL:(NSString *)pToken
-{    
-    NSMutableArray *appln = [NSMutableArray array];
+{   
+    NSURL *ret = nil;
     
-    [appln addObject:@"eReader"];
-    
-    if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {
-        [appln addObject:@"iPad"];                   
-    } else if([[[UIDevice currentDevice] model] hasPrefix:@"iPod"] == YES) {
-        [appln addObject:@"iPod"];
+    if ([[NSUserDefaults standardUserDefaults] stringForKey:kSCHAuthenticationManagerUserKey] == nil) {
+        ret = nil;
     } else {
-        [appln addObject:@"iPhone"];        
+        NSMutableArray *appln = [NSMutableArray array];
+        
+        [appln addObject:@"eReader"];
+        
+        if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {
+            [appln addObject:@"iPad"];                   
+        } else if([[[UIDevice currentDevice] model] hasPrefix:@"iPod"] == YES) {
+            [appln addObject:@"iPod"];
+        } else {
+            [appln addObject:@"iPhone"];        
+        }
+        
+        [appln addObject:@"ns"];            
+        
+        ret = [NSURL URLWithString:[[NSString stringWithFormat:@"https://ebooks2uat.scholastic.com/wpt/auth?tk=%@&appln=%@&spsId=%@", 
+                                     (pToken == nil ? self.accountValidation.pToken : pToken), 
+                                     [appln componentsJoinedByString:@"|"], 
+                                     [[NSUserDefaults standardUserDefaults] stringForKey:kSCHAuthenticationManagerUserKey]] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
     }
     
-    [appln addObject:@"ns"];            
-    
-    return([NSURL URLWithString:[[NSString stringWithFormat:@"https://ebooks2uat.scholastic.com/wpt/auth?tk=%@&appln=%@&spsId=%@", 
-                                  (pToken == nil ? self.accountValidation.pToken : pToken), 
-                                  [appln componentsJoinedByString:@"|"], 
-                                  [[NSUserDefaults standardUserDefaults] stringForKey:kSCHAuthenticationManagerUserKey]] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]]);
+    return ret;
 }
 
 #pragma mark - Accessor methods
