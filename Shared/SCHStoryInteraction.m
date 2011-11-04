@@ -50,6 +50,7 @@
 }
 
 - (NSInteger)numberOfQuestionsWithPageAssociation:(enum SCHStoryInteractionQuestionPageAssociation)pageAssociation
+                                     withPageSize:(CGSize)pageSize
 {
     return [self questionCount];
 }

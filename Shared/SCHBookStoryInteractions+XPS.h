@@ -15,6 +15,8 @@
 
 @interface SCHBookStoryInteractions (XPS)
 
-- (id)initWithXPSProvider:(SCHXPSProvider *)xpsProvider oddPagesOnLeft:(BOOL)oddPagesOnLeft;
+- (id)initWithXPSProvider:(SCHXPSProvider *)xpsProvider
+           oddPagesOnLeft:(BOOL)oddPagesOnLeft
+                 delegate:(id<SCHBookStoryInteractionsDelegate>)delegate;
 
 @end

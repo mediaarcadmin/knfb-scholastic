@@ -61,6 +61,7 @@
 // returns the number of questions contained within the interaction on the specified pages;
 // by default story interactions do not distinguish the left and right pages so this returns
 // the same value as -questionCount.
-- (NSInteger)numberOfQuestionsWithPageAssociation:(enum SCHStoryInteractionQuestionPageAssociation)pageAssociation;
+- (NSInteger)numberOfQuestionsWithPageAssociation:(enum SCHStoryInteractionQuestionPageAssociation)pageAssociation
+                                     withPageSize:(CGSize)pageSize;
 
 @end

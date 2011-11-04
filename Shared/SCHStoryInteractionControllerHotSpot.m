@@ -51,7 +51,7 @@
 
 - (CGAffineTransform)viewToPageTransform
 {
-    return [self.delegate viewToPageTransformForLayoutPage:self.storyInteraction.documentPageNumber];
+    return [self.delegate viewToPageTransformForPageIndex:self.storyInteraction.documentPageNumber];
 }
 
 - (SCHFrameStyle)frameStyleForViewAtIndex:(NSInteger)viewIndex
@@ -77,7 +77,9 @@
 - (SCHStoryInteractionHotSpotQuestion *)currentQuestion
 {
     if (questions == nil) {
-        self.questions = [(SCHStoryInteractionHotSpot *)self.storyInteraction questionsWithPageAssociation:self.pageAssociation];
+        CGSize pageSize = CGRectApplyAffineTransform([self hostView].bounds, [self viewToPageTransform]).size;
+        self.questions = [(SCHStoryInteractionHotSpot *)self.storyInteraction questionsWithPageAssociation:self.pageAssociation
+                                                                                                  pageSize:pageSize];
     }
     NSInteger currentQuestionIndex = [self.delegate currentQuestionForStoryInteraction];
     return [questions objectAtIndex:currentQuestionIndex];

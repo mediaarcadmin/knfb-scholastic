@@ -9,5 +9,9 @@
 #import <Foundation/Foundation.h>
 
 @protocol SCHBookStoryInteractionsDelegate <NSObject>
+@required
+
+// size in page coordinates of the page at the specified index
+- (CGSize)sizeOfPageAtIndex:(NSInteger)pageIndex;
 
 @end

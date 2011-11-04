@@ -37,19 +37,21 @@
 }
 
 - (BOOL)hasPageAssociation:(enum SCHStoryInteractionQuestionPageAssociation)pageAssociation
+              withPageSize:(CGSize)pageSize
 {
     CGRect pageRect;
     switch (pageAssociation) {
         case SCHStoryInteractionQuestionOnBothPages:
-            pageRect = CGRectMake(0, 0, originalBookSize.width, originalBookSize.height);
+            pageRect = CGRectMake(0, 0, pageSize.width*2, pageSize.height);
             break;
         case SCHStoryInteractionQuestionOnLeftPage:
-            pageRect = CGRectMake(0, 0, originalBookSize.width/2, originalBookSize.height);
+            pageRect = (CGRect){ CGPointZero, pageSize };
             break;
         case SCHStoryInteractionQuestionOnRightPage:
-            pageRect = CGRectMake(originalBookSize.width/2, 0, originalBookSize.width/2, originalBookSize.height);
+            pageRect = CGRectMake(pageSize.width, 0, pageSize.width, pageSize.height);
             break;
     }
+    NSLog(@"page=%@ hotSpot=%@ intersects=%d", NSStringFromCGRect(pageRect), NSStringFromCGRect(hotSpotRect), CGRectIntersectsRect(pageRect,hotSpotRect));
     return CGRectIntersectsRect(pageRect, hotSpotRect);
 }
 
@@ -90,15 +92,17 @@
 }
 
 - (NSInteger)numberOfQuestionsWithPageAssociation:(enum SCHStoryInteractionQuestionPageAssociation)pageAssociation
+                                     withPageSize:(CGSize)pageSize
 {
-    return [[self questionsWithPageAssociation:pageAssociation] count];
+    return [[self questionsWithPageAssociation:pageAssociation pageSize:pageSize] count];
 }
 
 - (NSArray *)questionsWithPageAssociation:(enum SCHStoryInteractionQuestionPageAssociation)pageAssociation
+                                 pageSize:(CGSize)pageSize
 {
     NSMutableArray *result = [NSMutableArray array];
     for (SCHStoryInteractionHotSpotQuestion *question in self.questions) {
-        if ([question hasPageAssociation:pageAssociation]) {
+        if ([question hasPageAssociation:pageAssociation withPageSize:pageSize]) {
             [result addObject:question];
         }
     }

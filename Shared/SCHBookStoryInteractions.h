@@ -7,12 +7,15 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "SCHBookStoryInteractionsDelegate.h"
 
 @class SCHStoryInteraction;
 
 @interface SCHBookStoryInteractions : NSObject {}
 
-- (id)initWithStoryInteractions:(NSArray *)storyInteractions oddPagesOnLeft:(BOOL)oddPagesOnLeft;
+@property (nonatomic, assign) BOOL oddPageIndicesAreLeftPages;
+@property (nonatomic, retain) NSArray *storyInteractions;
+@property (nonatomic, assign) id<SCHBookStoryInteractionsDelegate> delegate;
 
 - (NSArray *)allStoryInteractionsExcludingInteractionWithPage:(BOOL)excludeInteractionWithPage;
 

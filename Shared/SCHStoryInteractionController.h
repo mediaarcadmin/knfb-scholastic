@@ -87,6 +87,9 @@ typedef enum
 // the current interface orientation
 @property (nonatomic, assign) UIInterfaceOrientation interfaceOrientation;
 
+// the view containing this Story Interaction
+- (UIView *)hostView;
+
 // setup the title text
 - (void)setupTitle;
 

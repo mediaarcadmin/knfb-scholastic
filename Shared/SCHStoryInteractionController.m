@@ -21,6 +21,7 @@
 
 @interface SCHStoryInteractionController ()
 
+@property (nonatomic, retain) UIView *hostView;
 @property (nonatomic, retain) NSArray *nibObjects;
 @property (nonatomic, assign) NSInteger currentScreenIndex;
 @property (nonatomic, retain) UIButton *closeButton;
@@ -45,6 +46,7 @@
 @synthesize titleView;
 @synthesize closeButton;
 @synthesize readAloudButton;
+@synthesize hostView;
 @synthesize nibObjects;
 @synthesize currentScreenIndex;
 @synthesize contentsView;
@@ -199,15 +201,17 @@ static Class controllerClassForStoryInteraction(SCHStoryInteraction *storyIntera
     }
 }
 
-- (void)presentInHostView:(UIView *)hostView withInterfaceOrientation:(UIInterfaceOrientation)aInterfaceOrientation
+- (void)presentInHostView:(UIView *)aHostView withInterfaceOrientation:(UIInterfaceOrientation)aInterfaceOrientation
 {
+    self.hostView = aHostView;
+
     // dim the host view
     if (![self currentFrameStyleOverlaysContents] && self.shadeView == nil) {
-        UIView *shade = [[UIView alloc] initWithFrame:hostView.bounds];
+        UIView *shade = [[UIView alloc] initWithFrame:aHostView.bounds];
         shade.backgroundColor = [UIColor colorWithWhite:0 alpha:0.5];
         shade.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
         self.shadeView = shade;
-        [hostView addSubview:shade];
+        [aHostView addSubview:shade];
         [shade release];
     }
 
@@ -254,7 +258,7 @@ static Class controllerClassForStoryInteraction(SCHStoryInteraction *storyIntera
         [container release];
         [background release];
         
-        [hostView addSubview:self.containerView];
+        [aHostView addSubview:self.containerView];
     }
 
     if (questionAudioPath) {

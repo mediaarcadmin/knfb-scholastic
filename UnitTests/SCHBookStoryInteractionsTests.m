@@ -31,7 +31,7 @@
 + (TestStoryInteraction *)storyInteractionWithPageNumber:(NSInteger)pageNumber
 {
     TestStoryInteraction *tsi = [[TestStoryInteraction alloc] init];
-    tsi.documentPageNumber = pageNumber+1;
+    tsi.documentPageNumber = pageNumber;
     tsi.interactsWithPage = NO;
     tsi.questionCount = 2;
     tsi.questionCountOnLeft = 2;
@@ -40,6 +40,7 @@
 }
 
 - (NSInteger)numberOfQuestionsWithPageAssociation:(enum SCHStoryInteractionQuestionPageAssociation)aPageAssociation
+                                     withPageSize:(CGSize)pageSize
 {
     switch (aPageAssociation) {
         case SCHStoryInteractionQuestionOnLeftPage:
@@ -97,7 +98,9 @@
 {
     // lazily init, allowing per-test modifications to the test fixture first
     if (book == nil) {
-        book = [[SCHBookStoryInteractions alloc] initWithStoryInteractions:testStoryInteractions oddPagesOnLeft:self.oddPagesOnLeft];
+        book = [[SCHBookStoryInteractions alloc] init];
+        book.oddPageIndicesAreLeftPages = self.oddPagesOnLeft;
+        book.storyInteractions = self.testStoryInteractions;
     }
     return book;
 }
@@ -179,7 +182,7 @@
     // set the first SI to have 1 question on page 4 and 2 on page 5
     [fixture storyInteractionAtIndex:0].questionCount = 3;
     [fixture storyInteractionAtIndex:0].questionCountOnLeft = 1;
-    [fixture storyInteractionAtIndex:1].questionCountOnRight = 2;
+    [fixture storyInteractionAtIndex:0].questionCountOnRight = 2;
     
     NSArray *page4 = [fixture.book storyInteractionsForPageIndices:NSMakeRange(4, 1) excludingInteractionWithPage:NO];
     STAssertEquals([page4 count], 1U, @"expect 1 SI on page 4");
@@ -198,7 +201,7 @@
     // set the first SI to have 1 question on page 3 and 2 on page 4
     [fixture storyInteractionAtIndex:0].questionCount = 3;
     [fixture storyInteractionAtIndex:0].questionCountOnLeft = 1;
-    [fixture storyInteractionAtIndex:1].questionCountOnRight = 2;
+    [fixture storyInteractionAtIndex:0].questionCountOnRight = 2;
     fixture.oddPagesOnLeft = YES;
     
     NSArray *page3 = [fixture.book storyInteractionsForPageIndices:NSMakeRange(3, 1) excludingInteractionWithPage:NO];
@@ -250,16 +253,16 @@
     [fixture storyInteractionAtIndex:2].questionCountOnLeft = 1;
     [fixture storyInteractionAtIndex:2].questionCountOnRight = 3;
     
-    STAssertEquals([fixture.book storyInteractionQuestionCountForPageIndices:NSMakeRange(4, 1)], 1, @"expect 2 questions on page 4");
-    STAssertEquals([fixture.book storyInteractionQuestionCountForPageIndices:NSMakeRange(5, 1)], 1, @"expect 0 questions on page 5");
+    STAssertEquals([fixture.book storyInteractionQuestionCountForPageIndices:NSMakeRange(4, 1)], 1, @"expect 1 questions on page 4");
+    STAssertEquals([fixture.book storyInteractionQuestionCountForPageIndices:NSMakeRange(5, 1)], 1, @"expect 1 questions on page 5");
     STAssertEquals([fixture.book storyInteractionQuestionCountForPageIndices:NSMakeRange(4, 2)], 2, @"expect 2 questions on page 4-5");
     
-    STAssertEquals([fixture.book storyInteractionQuestionCountForPageIndices:NSMakeRange(6, 1)], 1, @"expect 3 questions on page 6");
-    STAssertEquals([fixture.book storyInteractionQuestionCountForPageIndices:NSMakeRange(7, 1)], 2, @"expect 0 questions on page 7");
+    STAssertEquals([fixture.book storyInteractionQuestionCountForPageIndices:NSMakeRange(6, 1)], 1, @"expect 1 questions on page 6");
+    STAssertEquals([fixture.book storyInteractionQuestionCountForPageIndices:NSMakeRange(7, 1)], 2, @"expect 2 questions on page 7");
     STAssertEquals([fixture.book storyInteractionQuestionCountForPageIndices:NSMakeRange(6, 2)], 3, @"expect 3 questions on page 6-7");
     
-    STAssertEquals([fixture.book storyInteractionQuestionCountForPageIndices:NSMakeRange(8, 1)], 1, @"expect 4 questions on page 8");
-    STAssertEquals([fixture.book storyInteractionQuestionCountForPageIndices:NSMakeRange(9, 1)], 3, @"expect 0 questions on page 9");
+    STAssertEquals([fixture.book storyInteractionQuestionCountForPageIndices:NSMakeRange(8, 1)], 1, @"expect 1 questions on page 8");
+    STAssertEquals([fixture.book storyInteractionQuestionCountForPageIndices:NSMakeRange(9, 1)], 3, @"expect 3 questions on page 9");
     STAssertEquals([fixture.book storyInteractionQuestionCountForPageIndices:NSMakeRange(8, 2)], 4, @"expect 4 questions on page 8-9");
 }
 
@@ -276,16 +279,16 @@
     [fixture storyInteractionAtIndex:2].questionCountOnLeft = 1;
     [fixture storyInteractionAtIndex:2].questionCountOnRight = 3;
     
-    STAssertEquals([fixture.book storyInteractionQuestionCountForPageIndices:NSMakeRange(3, 1)], 1, @"expect 2 questions on page 3");
-    STAssertEquals([fixture.book storyInteractionQuestionCountForPageIndices:NSMakeRange(4, 1)], 1, @"expect 0 questions on page 4");
+    STAssertEquals([fixture.book storyInteractionQuestionCountForPageIndices:NSMakeRange(3, 1)], 1, @"expect 1 questions on page 3");
+    STAssertEquals([fixture.book storyInteractionQuestionCountForPageIndices:NSMakeRange(4, 1)], 1, @"expect 1 questions on page 4");
     STAssertEquals([fixture.book storyInteractionQuestionCountForPageIndices:NSMakeRange(3, 2)], 2, @"expect 2 questions on page 3-4");
     
-    STAssertEquals([fixture.book storyInteractionQuestionCountForPageIndices:NSMakeRange(5, 1)], 1, @"expect 3 questions on page 5");
-    STAssertEquals([fixture.book storyInteractionQuestionCountForPageIndices:NSMakeRange(6, 1)], 2, @"expect 0 questions on page 6");
+    STAssertEquals([fixture.book storyInteractionQuestionCountForPageIndices:NSMakeRange(5, 1)], 1, @"expect 1 questions on page 5");
+    STAssertEquals([fixture.book storyInteractionQuestionCountForPageIndices:NSMakeRange(6, 1)], 2, @"expect 2 questions on page 6");
     STAssertEquals([fixture.book storyInteractionQuestionCountForPageIndices:NSMakeRange(5, 2)], 3, @"expect 3 questions on page 5-6");
     
-    STAssertEquals([fixture.book storyInteractionQuestionCountForPageIndices:NSMakeRange(7, 1)], 1, @"expect 4 questions on page 7");
-    STAssertEquals([fixture.book storyInteractionQuestionCountForPageIndices:NSMakeRange(8, 1)], 3, @"expect 0 questions on page 8");
+    STAssertEquals([fixture.book storyInteractionQuestionCountForPageIndices:NSMakeRange(7, 1)], 1, @"expect 1 questions on page 7");
+    STAssertEquals([fixture.book storyInteractionQuestionCountForPageIndices:NSMakeRange(8, 1)], 3, @"expect 3 questions on page 8");
     STAssertEquals([fixture.book storyInteractionQuestionCountForPageIndices:NSMakeRange(7, 2)], 4, @"expect 4 questions on page 7-8");
 }
 
@@ -374,12 +377,54 @@
 
     [fixture.book incrementQuestionsCompletedForStoryInteraction:[fixture storyInteractionAtIndex:0] pageIndices:NSMakeRange(4, 1)];
     
-    STAssertEquals([fixture.book storyInteractionQuestionsCompletedForPageIndices:NSMakeRange(4, 1)], 2, @"expect 0 questions completed on page 4");
-    STAssertEquals([fixture.book storyInteractionQuestionsCompletedForPageIndices:NSMakeRange(5, 1)], 1, @"expect 0 questions completed on page 5");
-    STAssertEquals([fixture.book storyInteractionQuestionsCompletedForPageIndices:NSMakeRange(4, 2)], 3, @"expect 0 questions completed on pages 4-5");
+    STAssertEquals([fixture.book storyInteractionQuestionsCompletedForPageIndices:NSMakeRange(4, 1)], 2, @"expect 2 questions completed on page 4");
+    STAssertEquals([fixture.book storyInteractionQuestionsCompletedForPageIndices:NSMakeRange(5, 1)], 1, @"expect 1 questions completed on page 5");
+    STAssertEquals([fixture.book storyInteractionQuestionsCompletedForPageIndices:NSMakeRange(4, 2)], 3, @"expect 3 questions completed on pages 4-5");
     STAssertTrue([fixture.book allQuestionsCompletedForPageIndices:NSMakeRange(4, 1)], @"expect complete on page 4");
     STAssertTrue([fixture.book allQuestionsCompletedForPageIndices:NSMakeRange(5, 1)], @"expect complete on page 5");
     STAssertTrue([fixture.book allQuestionsCompletedForPageIndices:NSMakeRange(4, 2)], @"expect complete on pages 4-5");
+}
+
+- (void)testIncrementstoryInteractionCompletedQuestionCountForStoryInteractionSplitOverTwoPages_OddPagesOnLeft
+{
+    fixture.oddPagesOnLeft = YES;
+    [fixture storyInteractionAtIndex:0].questionCount = 3;
+    [fixture storyInteractionAtIndex:0].questionCountOnLeft = 2;
+    [fixture storyInteractionAtIndex:0].questionCountOnRight = 1;
+    
+    STAssertEquals([fixture.book storyInteractionQuestionsCompletedForPageIndices:NSMakeRange(3, 1)], 0, @"expect 0 questions completed on page 3");
+    STAssertEquals([fixture.book storyInteractionQuestionsCompletedForPageIndices:NSMakeRange(4, 1)], 0, @"expect 0 questions completed on page 4");
+    STAssertEquals([fixture.book storyInteractionQuestionsCompletedForPageIndices:NSMakeRange(3, 2)], 0, @"expect 0 questions completed on pages 3-4");
+    STAssertFalse([fixture.book allQuestionsCompletedForPageIndices:NSMakeRange(3, 1)], @"expect not complete on page 3");
+    STAssertFalse([fixture.book allQuestionsCompletedForPageIndices:NSMakeRange(4, 1)], @"expect not complete on page 4");
+    STAssertFalse([fixture.book allQuestionsCompletedForPageIndices:NSMakeRange(3, 2)], @"expect not complete on pages 3-4");
+    
+    [fixture.book incrementQuestionsCompletedForStoryInteraction:[fixture storyInteractionAtIndex:0] pageIndices:NSMakeRange(3, 1)];
+    
+    STAssertEquals([fixture.book storyInteractionQuestionsCompletedForPageIndices:NSMakeRange(3, 1)], 1, @"expect 1 questions completed on page 3");
+    STAssertEquals([fixture.book storyInteractionQuestionsCompletedForPageIndices:NSMakeRange(4, 1)], 0, @"expect 0 questions completed on page 4");
+    STAssertEquals([fixture.book storyInteractionQuestionsCompletedForPageIndices:NSMakeRange(3, 2)], 1, @"expect 1 questions completed on pages 3-4");
+    STAssertFalse([fixture.book allQuestionsCompletedForPageIndices:NSMakeRange(3, 1)], @"expect not complete on page 3");
+    STAssertFalse([fixture.book allQuestionsCompletedForPageIndices:NSMakeRange(4, 1)], @"expect not complete on page 4");
+    STAssertFalse([fixture.book allQuestionsCompletedForPageIndices:NSMakeRange(3, 2)], @"expect not complete on pages 3-4");
+    
+    [fixture.book incrementQuestionsCompletedForStoryInteraction:[fixture storyInteractionAtIndex:0] pageIndices:NSMakeRange(4, 1)];
+    
+    STAssertEquals([fixture.book storyInteractionQuestionsCompletedForPageIndices:NSMakeRange(3, 1)], 1, @"expect 1 questions completed on page 3");
+    STAssertEquals([fixture.book storyInteractionQuestionsCompletedForPageIndices:NSMakeRange(4, 1)], 1, @"expect 1 questions completed on page 4");
+    STAssertEquals([fixture.book storyInteractionQuestionsCompletedForPageIndices:NSMakeRange(3, 2)], 2, @"expect 2 questions completed on pages 3-4");
+    STAssertFalse([fixture.book allQuestionsCompletedForPageIndices:NSMakeRange(3, 1)], @"expect not complete on page 4");
+    STAssertTrue([fixture.book allQuestionsCompletedForPageIndices:NSMakeRange(4, 1)], @"expect complete on page 5");
+    STAssertFalse([fixture.book allQuestionsCompletedForPageIndices:NSMakeRange(3, 2)], @"expect not complete on pages 4-5");
+    
+    [fixture.book incrementQuestionsCompletedForStoryInteraction:[fixture storyInteractionAtIndex:0] pageIndices:NSMakeRange(3, 1)];
+    
+    STAssertEquals([fixture.book storyInteractionQuestionsCompletedForPageIndices:NSMakeRange(3, 1)], 2, @"expect 2 questions completed on page 3");
+    STAssertEquals([fixture.book storyInteractionQuestionsCompletedForPageIndices:NSMakeRange(4, 1)], 1, @"expect 1 questions completed on page 4");
+    STAssertEquals([fixture.book storyInteractionQuestionsCompletedForPageIndices:NSMakeRange(3, 2)], 3, @"expect 3 questions completed on pages 3-4");
+    STAssertTrue([fixture.book allQuestionsCompletedForPageIndices:NSMakeRange(3, 1)], @"expect complete on page 3");
+    STAssertTrue([fixture.book allQuestionsCompletedForPageIndices:NSMakeRange(4, 1)], @"expect complete on page 4");
+    STAssertTrue([fixture.book allQuestionsCompletedForPageIndices:NSMakeRange(3, 2)], @"expect complete on pages 3-4");
 }
 
 @end

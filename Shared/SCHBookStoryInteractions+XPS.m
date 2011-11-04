@@ -14,13 +14,20 @@
 
 @implementation SCHBookStoryInteractions (XPS)
 
-- (id)initWithXPSProvider:(SCHXPSProvider *)xpsProvider oddPagesOnLeft:(BOOL)oddPagesOnLeft
+- (id)initWithXPSProvider:(SCHXPSProvider *)xpsProvider
+           oddPagesOnLeft:(BOOL)oddPagesOnLeft
+                 delegate:(id<SCHBookStoryInteractionsDelegate>)aDelegate
 {
-    // get the raw array of stories from the parser
-    NSData *xml = [xpsProvider dataForComponentAtPath:KNFBXPSStoryInteractionsMetadataFile];
-    SCHStoryInteractionParser *parser = [[SCHStoryInteractionParser alloc] init];
-    self = [self initWithStoryInteractions:[parser parseStoryInteractionsFromData:xml] oddPagesOnLeft:oddPagesOnLeft];
-    [parser release];
+    if ((self = [super init])) {
+        self.oddPageIndicesAreLeftPages = oddPagesOnLeft;
+        self.delegate = aDelegate;
+        
+        // get the raw array of stories from the parser
+        NSData *xml = [xpsProvider dataForComponentAtPath:KNFBXPSStoryInteractionsMetadataFile];
+        SCHStoryInteractionParser *parser = [[SCHStoryInteractionParser alloc] init];
+        self.storyInteractions = [parser parseStoryInteractionsFromData:xml];
+        [parser release];
+    }
     return self;
 }
 

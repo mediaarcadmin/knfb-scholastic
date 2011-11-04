@@ -460,7 +460,9 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 - (SCHBookStoryInteractions *)bookStoryInteractions
 {
     if (bookStoryInteractions == nil) {
-        bookStoryInteractions = [[SCHBookStoryInteractions alloc] initWithXPSProvider:self.xpsProvider oddPagesOnLeft:NO];
+        bookStoryInteractions = [[SCHBookStoryInteractions alloc] initWithXPSProvider:self.xpsProvider
+                                                                       oddPagesOnLeft:NO
+                                                                             delegate:self];
     }
     return bookStoryInteractions;
 }
@@ -2722,17 +2724,41 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     return [self.readingView pageSnapshot];
 }
 
-- (CGAffineTransform)viewToPageTransformForLayoutPage:(NSInteger)layoutPage
+- (CGAffineTransform)viewToPageTransformForPageIndex:(NSInteger)pageIndex
 {
-    NSInteger pageIndex = layoutPage - 1;
-    
-    if (pageIndex >= 0) {
-        CGAffineTransform pageToView = [(SCHLayoutView *)self.readingView pageTurningViewTransformForPageAtIndex:layoutPage - 1];
-        return CGAffineTransformInvert(pageToView);
-    } else {
-        NSLog(@"WARNING: viewToPageTransformForLayoutPage requested for pageIndex < 0");
+    if (pageIndex < 0) {
+        NSLog(@"WARNING: viewToPageTransformForPageIndex requested for page %d", pageIndex);
         return CGAffineTransformIdentity;
     }
+    if (self.layoutType != SCHReadingViewLayoutTypeFixed) {
+        NSLog(@"WARNING: viewToPageTransformForPageIndex requested in flow view");
+        return CGAffineTransformIdentity;
+    }
+
+    CGAffineTransform pageToView = [(SCHLayoutView *)self.readingView pageTurningViewTransformForPageAtIndex:pageIndex];
+    return CGAffineTransformInvert(pageToView);
+}
+
+#pragma mark - SCHBookStoryInteractionsDelegate
+
+- (CGSize)sizeOfPageAtIndex:(NSInteger)pageIndex
+{
+    if (pageIndex < 0) {
+        NSLog(@"WARNING: sizeOfPageAtIndex requested for page %d", pageIndex);
+        return CGSizeZero;
+    }
+    if (self.layoutType != SCHReadingViewLayoutTypeFixed) {
+        NSLog(@"WARNING: sizeOfPageAtIndex requested in flow view");
+        return CGSizeZero;
+    }
+    
+    CGRect viewRect = [self.readingView pageRect];
+    CGAffineTransform viewToPage = [self viewToPageTransformForPageIndex:pageIndex];
+    CGRect pageRect = CGRectApplyAffineTransform(viewRect, viewToPage);
+    
+    NSLog(@"viewRect=%@ transform=%@ pageRect=%@", NSStringFromCGRect(viewRect), NSStringFromCGAffineTransform(viewToPage), NSStringFromCGRect(pageRect));
+    
+    return pageRect.size;
 }
 
 #pragma mark - UIPopoverControllerDelegate methods

@@ -2211,6 +2211,7 @@
 		2815719413EFDE120071B73C /* SCHStoryInteractionWordBird.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCHStoryInteractionWordBird.h; sourceTree = "<group>"; };
 		2815719513EFDE120071B73C /* SCHStoryInteractionWordBird.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCHStoryInteractionWordBird.m; sourceTree = "<group>"; };
 		2815719913EFE95C0071B73C /* StoryInteractionWordBird1.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = StoryInteractionWordBird1.xml; sourceTree = "<group>"; };
+		2816F4E314633B760087785E /* SCHBookStoryInteractionsDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCHBookStoryInteractionsDelegate.h; sourceTree = "<group>"; };
 		28194A6B13C1BF2600E3DBE2 /* AppDelegate_Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AppDelegate_Private.h; path = Shared/AppDelegate_Private.h; sourceTree = "<group>"; };
 		281B74AE13DEED4900BA157C /* SCHBookUpdates.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHBookUpdates.h; path = Shared/SCHBookUpdates.h; sourceTree = "<group>"; };
 		281B74AF13DEED4900BA157C /* SCHBookUpdates.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHBookUpdates.m; path = Shared/SCHBookUpdates.m; sourceTree = "<group>"; };
@@ -3823,6 +3824,7 @@
 			isa = PBXGroup;
 			children = (
 				28EF28061462E15600DD1939 /* SCHStoryInteractionPageAssociation.h */,
+				2816F4E314633B760087785E /* SCHBookStoryInteractionsDelegate.h */,
 				28A60F5813968B8B0090853E /* SCHBookStoryInteractions.h */,
 				28A60F5913968B8C0090853E /* SCHBookStoryInteractions.m */,
 				28EF28011462D51000DD1939 /* SCHBookStoryInteractions+XPS.h */,
