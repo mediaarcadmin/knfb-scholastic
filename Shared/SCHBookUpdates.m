@@ -35,6 +35,20 @@
     [super dealloc];
 }
 
+- (id)init
+{
+    self = [super init];
+    
+    if (self) {
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(bookStateDidUpdate:)
+                                                     name:@"SCHBookStateUpdate"
+                                                   object:nil];
+    }
+    
+    return self;
+}
+
 - (BOOL)areBookUpdatesAvailable
 {
     return [[self availableBookUpdates] count] > 0;
