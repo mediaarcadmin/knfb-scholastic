@@ -549,20 +549,25 @@ typedef struct AuthenticateWithUserNameParameters AuthenticateWithUserNameParame
 
 - (void)method:(NSString *)method didCompleteWithResult:(NSDictionary *)result
 {	
-    
     id userKeyValue = [result objectForKey:kSCHLibreAccessWebServiceUserKey];
     id deviceIsDeregisteredValue = [result objectForKey:kSCHLibreAccessWebServiceDeviceIsDeregistered]; 
     id returnedTokenValue = [result objectForKey:kSCHLibreAccessWebServiceAuthToken];
     id expiresInValue = [result objectForKey:kSCHLibreAccessWebServiceExpiresIn];
     
+    NSString *userKey         = userKeyValue == [NSNull null] ? nil : userKeyValue;
     BOOL deviceIsDeregistered = deviceIsDeregisteredValue == [NSNull null] ? NO : [deviceIsDeregisteredValue boolValue];
     NSString *returnedToken   = returnedTokenValue == [NSNull null] ? nil : returnedTokenValue;
     NSInteger expiresIn       = expiresInValue == [NSNull null] ? 30 : [expiresInValue integerValue];
     
-    
 	if([method compare:kSCHLibreAccessWebServiceTokenExchange] == NSOrderedSame) {
         
-        [[NSUserDefaults standardUserDefaults] setObject:userKeyValue forKey:kSCHAuthenticationManagerUserKey];
+        if (userKey) {
+            [[NSUserDefaults standardUserDefaults] setObject:userKey forKey:kSCHAuthenticationManagerUserKey];
+        } else {
+            [[NSUserDefaults standardUserDefaults] removeObjectForKey:kSCHAuthenticationManagerUserKey];   
+        }
+        
+        [[NSUserDefaults standardUserDefaults] synchronize];
         
         if (deviceIsDeregistered) {
             [self performForcedDeregistrationWithToken:returnedToken];
