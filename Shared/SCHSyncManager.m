@@ -109,12 +109,7 @@ static NSUInteger const kSCHSyncManagerMaximumFailureRetries = 3;
 		settingsSyncComponent = [[SCHSettingsSyncComponent alloc] init];		
 		settingsSyncComponent.delegate = self;	
 		
-        backgroundTaskIdentifier = UIBackgroundTaskInvalid;
-        
-		[[NSNotificationCenter defaultCenter] addObserver:self 
-                                                 selector:@selector(authenticationManager:) 
-                                                     name:SCHAuthenticationManagerDidSucceedNotification 
-                                                   object:nil];		
+        backgroundTaskIdentifier = UIBackgroundTaskInvalid;	
         
         [[NSNotificationCenter defaultCenter] addObserver:self 
                                                  selector:@selector(coreDataHelperManagedObjectContextDidChangeNotification:) 
@@ -210,15 +205,6 @@ static NSUInteger const kSCHSyncManagerMaximumFailureRetries = 3;
 	//NSLog(@"Background Sync Heartbeat!");
 
 	[self kickQueue];
-}
-
-- (void)authenticationManager:(NSNotification *)notification
-{
-	NSDictionary *userInfo = [notification userInfo];
-	
-	if ([[userInfo valueForKey:kSCHAuthenticationManagerOfflineMode] boolValue] == NO) {		
-		[self kickQueue];	
-	}
 }
 
 #pragma mark - Sync methods
@@ -472,6 +458,11 @@ static NSUInteger const kSCHSyncManagerMaximumFailureRetries = 3;
 }
 
 #pragma mark - SCHComponent Delegate methods
+
+- (void)authenticationDidSucceed
+{
+    [self kickQueue];
+}
 
 - (void)component:(SCHComponent *)component didCompleteWithResult:(NSDictionary *)result
 {

@@ -26,8 +26,6 @@
 #import "SCHNonDRMAuthenticationManager.h"
 
 // Constants
-NSString * const SCHAuthenticationManagerDidSucceedNotification = @"SCHAuthenticationManagerDidSucceedNotification";
-NSString * const SCHAuthenticationManagerDidFailNotification = @"SCHAuthenticationManagerDidFailNotification";
 NSString * const kSCHAuthenticationManagerAToken = @"aToken";
 NSString * const kSCHAuthenticationManagerOfflineMode = @"OfflineMode";
 NSString * const SCHAuthenticationManagerDidDeregisterNotification = @"SCHAuthenticationManagerDidDeregisterNotification";
@@ -43,18 +41,10 @@ NSString * const kSCHAuthenticationManagerServiceName = @"Scholastic";
 
 NSTimeInterval const kSCHAuthenticationManagerSecondsInAMinute = 60.0;
 
-struct AuthenticateWithUserNameParameters 
-{
-    NSString *username;
-    NSString *password;
-};
-typedef struct AuthenticateWithUserNameParameters AuthenticateWithUserNameParameters;
-
 @interface SCHAuthenticationManager ()
 
 - (void)aTokenOnMainThread;
 - (void)isAuthenticatedOnMainThread:(NSValue *)returnValue;
-- (void)authenticateWithUserNameOnMainThread:(NSValue *)parameters;
 - (void)hasUsernameAndPasswordOnMainThread:(NSValue *)returnValue;
 - (void)deregisterOnMainThread:(NSString *)token;
 - (void)performPostDeregistration;
@@ -79,6 +69,8 @@ typedef struct AuthenticateWithUserNameParameters AuthenticateWithUserNameParame
 @synthesize accountValidation;
 @synthesize libreAccessWebService;
 @synthesize drmRegistrationSession;
+@synthesize authenticationSuccessBlock;
+@synthesize authenticationFailureBlock;
 
 #pragma mark - Singleton instance methods
 
@@ -124,6 +116,8 @@ typedef struct AuthenticateWithUserNameParameters AuthenticateWithUserNameParame
     [accountValidation release], accountValidation = nil;
     [libreAccessWebService release], libreAccessWebService = nil;
     [drmRegistrationSession release], drmRegistrationSession = nil;
+    [authenticationSuccessBlock release], authenticationSuccessBlock = nil;
+    [authenticationFailureBlock release], authenticationFailureBlock = nil;
     
     [super dealloc];
 }
@@ -142,24 +136,99 @@ typedef struct AuthenticateWithUserNameParameters AuthenticateWithUserNameParame
 
 #pragma mark - methods
 
-- (void)authenticateWithUserName:(NSString *)username withPassword:(NSString *)password
+- (void)authenticateWithUser:(NSString *)userName 
+                    password:(NSString *)password
+                successBlock:(SCHAuthenticationSuccessBlock)successBlock
+                failureBlock:(SCHAuthenticationFailureBlock)failureBlock
 {
-    AuthenticateWithUserNameParameters authenticateWithUserNameParameters;
     
-    authenticateWithUserNameParameters.username = username;
-    authenticateWithUserNameParameters.password = password;
+    if (![NSThread isMainThread]) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self authenticateWithUser:userName 
+                              password:password 
+                          successBlock:successBlock 
+                          failureBlock:failureBlock];
+        });
+        return;
+    }
     
-    // we block until the selector completes to make sure the parameters don't get freed up
-    [self performSelectorOnMainThread:@selector(authenticateWithUserNameOnMainThread:) 
-                           withObject:[NSValue valueWithPointer:&authenticateWithUserNameParameters]
-                        waitUntilDone:YES];
-}
-
-- (void)authenticate
-{
-    [self performSelectorOnMainThread:@selector(authenticateOnMainThread) 
-                           withObject:nil 
-                        waitUntilDone:NO];
+    NSAssert([NSThread isMainThread] == YES, @"SCHAuthenticationManager::authenticateWithUserNameOnMainThread MUST be executed on the main thread");
+    
+    self.authenticationSuccessBlock = ^(BOOL offlineMode){
+        [[SCHAuthenticationManager sharedAuthenticationManager] clearAppProcessing];
+        
+        if (successBlock) {
+            successBlock(offlineMode);
+        }
+    };
+    
+    self.authenticationFailureBlock = ^(NSError * error){
+        [[SCHAuthenticationManager sharedAuthenticationManager] clear];
+        
+        if (failureBlock) {
+            failureBlock(error);
+        }
+    };
+    
+    if([[SCHAppStateManager sharedAppStateManager] canAuthenticate] == YES) {
+        if ([[Reachability reachabilityForInternetConnection] isReachable] == YES) {
+            if (([[userName stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]] length] > 0) &&
+                ([[password stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]] length] > 0)) {
+                
+                [self clearOnMainThread];
+                
+                [[NSUserDefaults standardUserDefaults] setObject:userName forKey:kSCHAuthenticationManagerUsername];
+                [[NSUserDefaults standardUserDefaults] synchronize];
+                
+                [SFHFKeychainUtils storeUsername:userName 
+                                     andPassword:password 
+                                  forServiceName:kSCHAuthenticationManagerServiceName 
+                                  updateExisting:YES 
+                                           error:nil];
+                
+                [self authenticateWithSuccessBlock:self.authenticationSuccessBlock
+                                      failureBlock:self.authenticationFailureBlock];
+                
+            } else {
+                NSError *error = [NSError errorWithDomain:kSCHAuthenticationManagerErrorDomain 
+                                                     code:kSCHAuthenticationManagerLoginError 
+                                                 userInfo:[NSDictionary dictionaryWithObject:NSLocalizedString(@"You must enter a username and password", @"") 
+                                                                                      forKey:NSLocalizedDescriptionKey]];
+                
+                
+                [self authenticationDidFailWithError:error];
+            }
+        } else {
+            NSError *error = [NSError errorWithDomain:kSCHAuthenticationManagerErrorDomain 
+                                                 code:kSCHAuthenticationManagerLoginError 
+                                             userInfo:[NSDictionary dictionaryWithObject:NSLocalizedString(@"You must have internet access to login", @"") 
+                                                                                  forKey:NSLocalizedDescriptionKey]];
+            
+            [self authenticationDidFailWithError:error];
+        }
+    } else {
+        [[NSUserDefaults standardUserDefaults] setObject:userName forKey:kSCHAuthenticationManagerUsername];
+        
+        [SFHFKeychainUtils storeUsername:userName 
+                             andPassword:password 
+                          forServiceName:kSCHAuthenticationManagerServiceName 
+                          updateExisting:YES 
+                                   error:nil];
+        
+        [[NSUserDefaults standardUserDefaults] removeObjectForKey:kSCHAuthenticationManagerDeviceKey];                        
+        [[NSUserDefaults standardUserDefaults] removeObjectForKey:kSCHAuthenticationManagerUserKey];   
+        [[NSUserDefaults standardUserDefaults] synchronize];
+        
+        self.aToken = @"";
+        self.tokenExpires = [NSDate distantFuture];
+        
+        // TODO: Why does this need to be delayed?
+        double delayInSeconds = 0.1;
+        dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);
+        dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+            [self authenticationDidSucceed:NO];
+        });
+    }
 }
 
 - (BOOL)hasUsernameAndPassword
@@ -282,68 +351,22 @@ typedef struct AuthenticateWithUserNameParameters AuthenticateWithUserNameParame
     }
 }
 
-- (void)authenticateWithUserNameOnMainThread:(NSValue *)parameters
-{	
-    NSAssert([NSThread isMainThread] == YES, @"SCHAuthenticationManager::authenticateWithUserNameOnMainThread MUST be executed on the main thread");
-    
-    AuthenticateWithUserNameParameters *authenticateWithUserNameParameters = parameters.pointerValue;
-    
-    if([[SCHAppStateManager sharedAppStateManager] canAuthenticate] == YES) {
-        if ([[Reachability reachabilityForInternetConnection] isReachable] == YES) {
-            if (authenticateWithUserNameParameters->username != nil &&
-                [[authenticateWithUserNameParameters->username stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]] length] > 0 &&
-                authenticateWithUserNameParameters->password != nil &&
-                [[authenticateWithUserNameParameters->password stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]] length] > 0) {
-                [self clearOnMainThread];
-                [[NSUserDefaults standardUserDefaults] setObject:authenticateWithUserNameParameters->username 
-                                                          forKey:kSCHAuthenticationManagerUsername];
-                [[NSUserDefaults standardUserDefaults] synchronize];
-                
-                [SFHFKeychainUtils storeUsername:authenticateWithUserNameParameters->username 
-                                     andPassword:authenticateWithUserNameParameters->password 
-                                  forServiceName:kSCHAuthenticationManagerServiceName 
-                                  updateExisting:YES 
-                                           error:nil];
-                [self authenticateOnMainThread];
-            } else {
-                NSError *error = [NSError errorWithDomain:kSCHAuthenticationManagerErrorDomain 
-                                                     code:kSCHAuthenticationManagerLoginError 
-                                                 userInfo:[NSDictionary dictionaryWithObject:NSLocalizedString(@"You must enter a username and password", @"") 
-                                                                                      forKey:NSLocalizedDescriptionKey]];
-                
-                [self postFailureWithError:error];
-            }
-        } else {
-            NSError *error = [NSError errorWithDomain:kSCHAuthenticationManagerErrorDomain 
-                                                 code:kSCHAuthenticationManagerLoginError 
-                                             userInfo:[NSDictionary dictionaryWithObject:NSLocalizedString(@"You must have internet access to login", @"") 
-                                                                                  forKey:NSLocalizedDescriptionKey]];
-            
-            [self postFailureWithError:error];	
-        }
-    } else {
-        [[NSUserDefaults standardUserDefaults] setObject:authenticateWithUserNameParameters->username 
-                                                  forKey:kSCHAuthenticationManagerUsername];
-
-        [SFHFKeychainUtils storeUsername:authenticateWithUserNameParameters->username 
-                             andPassword:authenticateWithUserNameParameters->password 
-                          forServiceName:kSCHAuthenticationManagerServiceName 
-                          updateExisting:YES 
-                                   error:nil];
-        [[NSUserDefaults standardUserDefaults] removeObjectForKey:kSCHAuthenticationManagerDeviceKey];                        
-        [[NSUserDefaults standardUserDefaults] removeObjectForKey:kSCHAuthenticationManagerUserKey];   
-        [[NSUserDefaults standardUserDefaults] synchronize];
-        
-        self.aToken = @"";
-        self.tokenExpires = [NSDate distantFuture];        
-        
-        [self performSelector:@selector(postSuccessWithOfflineMode:) withObject:[NSNumber numberWithBool:NO] afterDelay:0.1];
-    }
-}
-
-- (void)authenticateOnMainThread
+- (void)authenticateWithSuccessBlock:(SCHAuthenticationSuccessBlock)successBlock
+                        failureBlock:(SCHAuthenticationFailureBlock)failureBlock;
 {    
+    
+    if (![NSThread isMainThread]) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self authenticateWithSuccessBlock:successBlock
+                                  failureBlock:failureBlock];
+        });
+        return;
+    }
+    
     NSAssert([NSThread isMainThread] == YES, @"SCHAuthenticationManager::authenticateOnMainThread MUST be executed on the main thread");
+    
+    self.authenticationSuccessBlock = successBlock;
+    self.authenticationFailureBlock = failureBlock;
     
     NSString *storedUsername = [[NSUserDefaults standardUserDefaults] stringForKey:kSCHAuthenticationManagerUsername];
     NSString *storedPassword = [SFHFKeychainUtils getPasswordForUsername:storedUsername andServiceName:kSCHAuthenticationManagerServiceName error:nil];
@@ -368,7 +391,7 @@ typedef struct AuthenticateWithUserNameParameters AuthenticateWithUserNameParame
                     [self.accountValidation validateWithUserName:storedUsername withPassword:storedPassword validateBlock:^(NSString *pToken, NSError *error) {
                         if (error != nil) {
                             weakSelf.waitingOnResponse = NO;
-                            [weakSelf postFailureWithError:error];                            
+                            [weakSelf authenticationDidFailWithError:error];                            
                         } else {
                             [weakSelf.libreAccessWebService tokenExchange:pToken 
                                                               forUser:[[NSUserDefaults standardUserDefaults] stringForKey:kSCHAuthenticationManagerUsername]];                            
@@ -381,25 +404,29 @@ typedef struct AuthenticateWithUserNameParameters AuthenticateWithUserNameParame
                                                      userInfo:[NSDictionary dictionaryWithObject:NSLocalizedString(@"You must enter a username and password", @"") 
                                                                                           forKey:NSLocalizedDescriptionKey]];
                     
-                    [self postFailureWithError:error];            
+                    [self authenticationDidFailWithError:error];            
                 }
-            } else if (storedUsername != nil &&
-                       [[storedUsername stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]] length] > 0) {            
-                [self postSuccessWithOfflineMode:YES];
+            } else if ([[storedUsername stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]] length] > 0) {            
+                [self authenticationDidSucceed:YES];
             } else {
                 NSError *error = [NSError errorWithDomain:kSCHAuthenticationManagerErrorDomain 
                                                      code:kSCHAuthenticationManagerLoginError 
                                                  userInfo:[NSDictionary dictionaryWithObject:NSLocalizedString(@"You must enter a username and password", @"") 
                                                                                       forKey:NSLocalizedDescriptionKey]];
                 
-                [self postFailureWithError:error];
+                [self authenticationDidFailWithError:error]; 
             }
         } 
     } else {
         self.aToken = @"";
         self.tokenExpires = [NSDate distantFuture];        
         
-        [self performSelector:@selector(postSuccessWithOfflineMode:) withObject:[NSNumber numberWithBool:NO] afterDelay:0.1];
+        // TODO: Why does this need to be delayed?
+        double delayInSeconds = 0.1;
+        dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);
+        dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+            [self authenticationDidSucceed:NO];
+        });
     }
 }
 
@@ -452,30 +479,6 @@ typedef struct AuthenticateWithUserNameParameters AuthenticateWithUserNameParame
 }
 
 #pragma mark - Private methods
-
-- (void)postSuccessWithOfflineMode:(BOOL)offlineMode
-{
-	NSMutableDictionary *userInfo = [NSMutableDictionary dictionary];
-	
-	[userInfo setObject:(aToken == nil ? (id)[NSNull null] : aToken) 
-                 forKey:kSCHAuthenticationManagerAToken];
-	[userInfo setObject:[NSNumber numberWithBool:offlineMode] 
-                 forKey:kSCHAuthenticationManagerOfflineMode];
-	
-    NSLog(@"Authentication: %@", (offlineMode == YES ? @" offline" : @"successful!"));
-    
-	[[NSNotificationCenter defaultCenter] postNotificationName:SCHAuthenticationManagerDidSucceedNotification 
-														object:self 
-													  userInfo:userInfo];				
-}
-
-- (void)postFailureWithError:(NSError *)error
-{
-	[[NSNotificationCenter defaultCenter] postNotificationName:SCHAuthenticationManagerDidFailNotification
-														object:self 
-													  userInfo:[NSDictionary dictionaryWithObject:error
-                                                                                           forKey:kSCHAuthenticationManagerNSError]];		
-}
 
 - (void)deregisterOnMainThread:(NSString *)token
 {
@@ -587,7 +590,7 @@ typedef struct AuthenticateWithUserNameParameters AuthenticateWithUserNameParame
                 
                 expiresIn = MAX(0, expiresIn - 1);
                 self.tokenExpires = [NSDate dateWithTimeIntervalSinceNow:expiresIn * kSCHAuthenticationManagerSecondsInAMinute];
-                [self postSuccessWithOfflineMode:NO];
+                [self authenticationDidSucceed:NO];
             } else {
                 [self performForcedDeregistrationWithToken:returnedToken];
             }
@@ -640,8 +643,38 @@ typedef struct AuthenticateWithUserNameParameters AuthenticateWithUserNameParame
     if (!authToken) {
         [self performForcedDeregistrationWithToken:nil];
     } else {
-        [self postFailureWithError:error];
+        [self authenticationDidFailWithError:error];
     }
+}
+
+#pragma mark - Authentication Outcomes
+
+- (void)authenticationDidSucceed:(BOOL)offlineMode
+{
+    if (self.authenticationSuccessBlock) {
+        SCHAuthenticationSuccessBlock handler = Block_copy(self.authenticationSuccessBlock);
+        self.authenticationSuccessBlock = nil;
+        dispatch_async(dispatch_get_main_queue(), ^{
+            handler(offlineMode);
+        });
+        Block_release(handler);
+    }
+    
+    self.authenticationFailureBlock = nil;
+}
+
+- (void)authenticationDidFailWithError:(NSError *)error
+{
+    if (self.authenticationFailureBlock) {
+        SCHAuthenticationFailureBlock handler = Block_copy(self.authenticationFailureBlock);
+        self.authenticationFailureBlock = nil;
+        dispatch_async(dispatch_get_main_queue(), ^{
+            handler(error);
+        });
+        Block_release(handler);
+    }
+    
+    self.authenticationSuccessBlock = nil;
 }
 
 #pragma mark - DRM Registration Session Delegate methods
@@ -680,7 +713,7 @@ typedef struct AuthenticateWithUserNameParameters AuthenticateWithUserNameParame
                                                                 object:self 
                                                               userInfo:[NSDictionary dictionaryWithObject:error forKey:kSCHAuthenticationManagerNSError]];		        
             
-            [self postFailureWithError:error];
+            [self authenticationDidFailWithError:error];
         }
     }
 

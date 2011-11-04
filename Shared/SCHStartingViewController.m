@@ -68,7 +68,8 @@ typedef enum {
 - (void)checkBookshelvesAndDictionaryDownloadForProfile;
 - (void)checkBookshelvesAndDictionaryDownloadForProfile:(BOOL)rechecking;
 - (void)replaceCheckProfilesAlertWithAlert:(LambdaAlert *)alert;
-
+- (void)signInSucceeded;
+- (void)signInFailedWithError:(NSError *)error;
 - (SCHProfileViewController_Shared *)profileViewController;
 
 @end
@@ -328,12 +329,16 @@ typedef enum {
         
         self.profileSyncState = kSCHStartingViewControllerProfileSyncStateWaitingForLoginToComplete;
         
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(authenticationManager:) name:SCHAuthenticationManagerDidSucceedNotification object:nil];			
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(authenticationManager:) name:SCHAuthenticationManagerDidFailNotification object:nil];					
-        
         if ([[username stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]] length] > 0 &&
             [[password stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]] length] > 0) {      
-            [[SCHAuthenticationManager sharedAuthenticationManager] authenticateWithUserName:username withPassword:password];
+            [[SCHAuthenticationManager sharedAuthenticationManager] authenticateWithUser:username 
+                                                                                password:password
+                                                                            successBlock:^(BOOL offlineMode){
+                                                                                [self signInSucceeded];
+                                                                            }
+                                                                            failureBlock:^(NSError * error){
+                                                                                [self signInFailedWithError:error];
+                                                                            }];            
             return(YES);
         } else {
             return(NO);
@@ -346,44 +351,39 @@ typedef enum {
     [login release];
 }
 
-- (void)authenticationManager:(NSNotification *)notification
+- (void)signInSucceeded
 {
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:SCHAuthenticationManagerDidSucceedNotification object:nil];
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:SCHAuthenticationManagerDidFailNotification object:nil];
-	
-	if ([notification.name isEqualToString:SCHAuthenticationManagerDidSucceedNotification]) {        
-        [[SCHAuthenticationManager sharedAuthenticationManager] clearAppProcessing];
-        [[SCHSyncManager sharedSyncManager] firstSync:YES];
-	} else {
-        [[SCHAuthenticationManager sharedAuthenticationManager] clear];
-		NSError *error = [notification.userInfo objectForKey:kSCHAuthenticationManagerNSError];
-		if (error != nil) {
-            NSString *localizedMessage = nil;
-            
-            if ([error code] == kSCHDrmDeviceLimitError) {
-                localizedMessage = NSLocalizedString(@"The Scholastic eReader is already installed on five devices, which is the maximum allowed. Before installing it on this device, you to need to deregister the eReader on one of your current devices.", nil);
-            } else {
-                localizedMessage = [NSString stringWithFormat:
-                                          NSLocalizedString(@"A problem occured. If this problem persists please contact support.\n\n '%@'", nil), 
-                                          [error localizedDescription]];   
-            }
-            
-            LambdaAlert *alert = [[LambdaAlert alloc]
-                                  initWithTitle:NSLocalizedString(@"Login Error", @"Login Error") 
-                                  message:localizedMessage];
-            [alert addButtonWithTitle:NSLocalizedString(@"Cancel", @"Cancel") block:^{
-            }];
-            [alert addButtonWithTitle:NSLocalizedString(@"Retry", @"Retry") block:^{
-                // FIXME: this is not an acceptably robust way to do this
-                [[self.modalNavigationController topViewController] performSelector:@selector(actionButtonAction:) withObject:nil afterDelay:0.0];
-            }];
-            [alert show];
-            [alert release];
-        }	
+    [[SCHSyncManager sharedSyncManager] firstSync:YES];
+}
+
+- (void)signInFailedWithError:(NSError *)error
+{    
+    if (error != nil) {
+        NSString *localizedMessage = nil;
         
-        SCHLoginPasswordViewController *login = (SCHLoginPasswordViewController *)[self.modalNavigationController topViewController];
-        [login stopShowingProgress];
-	}
+        if ([error code] == kSCHDrmDeviceLimitError) {
+            localizedMessage = NSLocalizedString(@"The Scholastic eReader is already installed on five devices, which is the maximum allowed. Before installing it on this device, you to need to deregister the eReader on one of your current devices.", nil);
+        } else {
+            localizedMessage = [NSString stringWithFormat:
+                                NSLocalizedString(@"A problem occured. If this problem persists please contact support.\n\n '%@'", nil), 
+                                [error localizedDescription]];   
+        }
+        
+        LambdaAlert *alert = [[LambdaAlert alloc]
+                              initWithTitle:NSLocalizedString(@"Login Error", @"Login Error") 
+                              message:localizedMessage];
+        [alert addButtonWithTitle:NSLocalizedString(@"Cancel", @"Cancel") block:^{
+        }];
+        [alert addButtonWithTitle:NSLocalizedString(@"Retry", @"Retry") block:^{
+            // FIXME: this is not an acceptably robust way to do this
+            [[self.modalNavigationController topViewController] performSelector:@selector(actionButtonAction:) withObject:nil afterDelay:0.0];
+        }];
+        [alert show];
+        [alert release];
+    }	
+    
+    SCHLoginPasswordViewController *login = (SCHLoginPasswordViewController *)[self.modalNavigationController topViewController];
+    [login stopShowingProgress];
 }
 
 - (BOOL)dictionaryDownloadRequired

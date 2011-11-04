@@ -174,7 +174,11 @@ NSString * const SCHProfileSyncComponentDidFailNotification = @"SCHProfileSyncCo
     
     self.isSynchronizing = [self.libreAccessWebService getUserProfiles];
     if (self.isSynchronizing == NO) {
-        [[SCHAuthenticationManager sharedAuthenticationManager] authenticate];				
+        [[SCHAuthenticationManager sharedAuthenticationManager] authenticateWithSuccessBlock:^(BOOL offlineMode){
+            if (!offlineMode) {
+                [self.delegate authenticationDidSucceed];
+            }
+        } failureBlock:nil];				
     }		    
 }
 
@@ -213,14 +217,22 @@ NSString * const SCHProfileSyncComponentDidFailNotification = @"SCHProfileSyncCo
         
 		self.isSynchronizing = [self.libreAccessWebService saveUserProfiles:updatedProfiles];
 		if (self.isSynchronizing == NO) {
-			[[SCHAuthenticationManager sharedAuthenticationManager] authenticate];				
+			[[SCHAuthenticationManager sharedAuthenticationManager] authenticateWithSuccessBlock:^(BOOL offlineMode){
+                if (!offlineMode) {
+                    [self.delegate authenticationDidSucceed];
+                }
+            } failureBlock:nil];			
 			ret = NO;			
 		}		
 	} else {
 		
 		self.isSynchronizing = [self.libreAccessWebService getUserProfiles];
 		if (self.isSynchronizing == NO) {
-			[[SCHAuthenticationManager sharedAuthenticationManager] authenticate];				
+			[[SCHAuthenticationManager sharedAuthenticationManager] authenticateWithSuccessBlock:^(BOOL offlineMode){
+                if (!offlineMode) {
+                    [self.delegate authenticationDidSucceed];
+                }
+            } failureBlock:nil];				
 			ret = NO;
 		}
 	}

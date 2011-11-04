@@ -314,7 +314,7 @@ NSString * const kSCHAppBookFilenameSeparator = @"-";
 - (NSString *)coverImagePath
 {
 	NSString *bookDirectory = [self bookDirectory];
-	NSString *fullImagePath = [bookDirectory stringByAppendingPathComponent:[NSString stringWithFormat:@"%@%@%@.png", 
+	NSString *fullImagePath = [bookDirectory stringByAppendingPathComponent:[NSString stringWithFormat:@"%@%@%@.jpg", 
                                                                              self.bookIdentifier.isbn, 
                                                                              kSCHAppBookFilenameSeparator,
                                                                              self.bookIdentifier.DRMQualifier]];
