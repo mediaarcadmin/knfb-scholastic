@@ -20,6 +20,7 @@
 @property (nonatomic, retain) NSFileHandle *fileHandle;
 @property (nonatomic, assign) unsigned long long currentFilesize;
 @property (nonatomic, assign) unsigned long long expectedImageFileSize;
+@property (nonatomic, retain) NSData *lastTwoBytes;
 
 // the previous percentage reported - used to limit percentage notifications
 @property float previousPercentage;
@@ -40,9 +41,11 @@
 @synthesize currentFilesize;
 @synthesize previousPercentage;
 @synthesize expectedImageFileSize;
+@synthesize lastTwoBytes;
 
 - (void)dealloc 
 {
+    [lastTwoBytes release], lastTwoBytes = nil;
     [localPath release], localPath = nil;
     [fileHandle closeFile];
     [fileHandle release], fileHandle = nil;
@@ -302,7 +305,11 @@
 	@synchronized(self) {
         @try {
             [self.fileHandle writeData:data];
-            self.currentFilesize += [data length];            
+            self.currentFilesize += [data length]; 
+            
+            // keep a record of the last two bytes for validity checking
+            NSRange lastRange = NSMakeRange([data length] - 2, 2);
+            self.lastTwoBytes = [data subdataWithRange:lastRange];
         }
         @catch (NSException *exception) {
             [connection cancel];
@@ -354,19 +361,53 @@
             [self performSelectorOnMainThread:@selector(firePercentageUpdate:) 
                                    withObject:userInfo
                                 waitUntilDone:YES];            
-        }
 			break;
+        }
 		case kSCHDownloadFileTypeCoverImage:
+        {
+            BOOL validImage = YES;
+            
+            // first, check the file size - does it match what the server said?
+            // if not, it has likely become corrupt
             if (self.expectedImageFileSize != self.currentFilesize) {
+                NSLog(@"Error downloading file %@ (image filesize did not match)", [self.localPath lastPathComponent]);
+                validImage = NO;
+            } 
+            
+            // if there has been no data received, then the image is invalid
+            if (!self.lastTwoBytes) {
+                NSLog(@"Error downloading file %@ (no image data)", [self.localPath lastPathComponent]);
+                validImage = NO;
+            }
+            
+            // these two bytes are the JPEG End Of Image Marker (EOI)
+            // reference: http://www.fileformat.info/format/jpeg/egff.htm
+            const char bytes[] = "\xff\xd9";
+            // string literals have implicit trailing '\0'
+            size_t length = (sizeof bytes) - 1; 
+            
+            // create a NSData matching the bytes
+            NSData *jpegEOF = [NSData dataWithBytes:bytes length:length];
+            
+            // if the last two bytes don't match the EOI marker, the image is invalid
+            if (![jpegEOF isEqualToData:self.lastTwoBytes]) {
+                NSLog(@"Error downloading file %@ (invalid JPEG End Of Image marker)", [self.localPath lastPathComponent]);
+                validImage = NO;
+            }
+            
+            // NOTE: this could be expanded to verify PNG images too
+            // IEND Image Trailer is 73 69 78 68 (decimal)
+            // reference: http://www.w3.org/TR/PNG/#11IEND
+
+            
+            if (!validImage) {
                 [[BITNetworkActivityManager sharedNetworkActivityManager] hideNetworkActivityIndicator];
                 
-                // if there was an error may just have a partial file, so remove it
+                // if there was an error, the file is invalid and is removed
                 NSFileManager *fileManager = [[[NSFileManager alloc] init] autorelease];
                 [fileManager removeItemAtPath:self.localPath error:nil];
                 
                 [self setProcessingState:SCHBookProcessingStateDownloadFailed];        
-                
-                NSLog(@"Error downloading file %@ (image filesize did not match)", [self.localPath lastPathComponent]);
                 
             } else {
                 [self performWithBookAndSave:^(SCHAppBook *book) {
@@ -374,9 +415,14 @@
                 }];            
                 [self setProcessingState:SCHBookProcessingStateReadyForBookFileDownload];
             }
+            
+            self.lastTwoBytes = nil;
 			break;
+        }
 		default:
+        {
 			break;
+        }
 	}
 
     [self.fileHandle closeFile];
@@ -401,6 +447,7 @@
     
 	NSLog(@"Error downloading file %@ (%@ : %@)", [self.localPath lastPathComponent], error, [error userInfo]);
 
+    self.lastTwoBytes = nil;
     [self.fileHandle closeFile];
     self.fileHandle = nil;
     [self setIsProcessing:NO];            
