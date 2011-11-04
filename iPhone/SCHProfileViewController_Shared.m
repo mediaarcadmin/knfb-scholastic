@@ -62,7 +62,7 @@
         
         [[NSNotificationCenter defaultCenter] addObserver:self 
                                                  selector:@selector(deviceDeregistered:)
-                                                     name:SCHAuthenticationManagerDidClearAfterDeregisterNotification
+                                                     name:SCHAuthenticationManagerReceivedServerDeregistrationNotification
                                                    object:nil];
     }
     return(self);
@@ -85,7 +85,7 @@
                                                object:nil];	
     
     [[NSNotificationCenter defaultCenter] removeObserver:self 
-                                                 name:SCHAuthenticationManagerDidClearAfterDeregisterNotification
+                                                 name:SCHAuthenticationManagerReceivedServerDeregistrationNotification
                                                object:nil];
 
     [self releaseViewObjects];
@@ -529,15 +529,14 @@
         [self.modalViewController dismissModalViewControllerAnimated:NO];
     }
     
-    LambdaAlert *alert = [[LambdaAlert alloc]
-                          initWithTitle:NSLocalizedString(@"Device Deregistered", @"Device Deregistered") 
-                          message:NSLocalizedString(@"This device has been deregistered. To read books, please register this device again.", @"") ];
-    [alert addButtonWithTitle:NSLocalizedString(@"OK", @"OK") block:^{
-        [self.profileSetupDelegate popToRootViewControllerAnimated:YES withCompletionHandler:nil];
-    }];
-    
-    [alert show];
-    [alert release];
+    [self.profileSetupDelegate popToRootViewControllerAnimated:YES withCompletionHandler:^{
+        LambdaAlert *alert = [[LambdaAlert alloc]
+                              initWithTitle:NSLocalizedString(@"Device Deregistered", @"Device Deregistered") 
+                              message:NSLocalizedString(@"This device has been deregistered. To read eBooks, please register this device again.", @"") ];
+        [alert addButtonWithTitle:NSLocalizedString(@"OK", @"OK") block:nil];
+        [alert show];
+        [alert release];
+    }];  
 }
 
 @end

@@ -26,7 +26,7 @@
 #import "SCHNonDRMAuthenticationManager.h"
 
 // Constants
-NSString * const SCHAuthenticationManagerDidClearAfterDeregisterNotification = @"SCHAuthenticationManagerDidClearAfterDeregisterNotification";
+NSString * const SCHAuthenticationManagerReceivedServerDeregistrationNotification = @"SCHAuthenticationManagerReceivedServerDeregistrationNotification";
 NSString * const kSCHAuthenticationManagerNSError = @"NSError";
 
 NSString * const kSCHAuthenticationManagerErrorDomain = @"AuthenticationManagerErrorDomain";
@@ -43,7 +43,6 @@ NSTimeInterval const kSCHAuthenticationManagerSecondsInAMinute = 60.0;
 - (void)isAuthenticatedOnMainThread:(NSValue *)returnValue;
 - (void)hasUsernameAndPasswordOnMainThread:(NSValue *)returnValue;
 - (void)performPostDeregistration;
-- (void)performForcedDeregistrationWithToken:(NSString *)token;
 - (void)setLastKnownAuthToken:(NSString *)token;
 
 @property (nonatomic, copy) SCHDrmRegistrationSuccessBlock registrationSuccessBlock;
@@ -159,9 +158,7 @@ NSTimeInterval const kSCHAuthenticationManagerSecondsInAMinute = 60.0;
         });
         return;
     }
-    
-    NSAssert([NSThread isMainThread] == YES, @"SCHAuthenticationManager::authenticateWithUserNameOnMainThread MUST be executed on the main thread");
-    
+        
     self.authenticationSuccessBlock = ^(BOOL offlineMode){
         [[SCHAuthenticationManager sharedAuthenticationManager] clearAppProcessing];
         
@@ -282,7 +279,23 @@ NSTimeInterval const kSCHAuthenticationManagerSecondsInAMinute = 60.0;
         }
     };
     
-    [self performForcedDeregistrationWithToken:self.aToken];
+    self.waitingOnResponse = NO;
+    
+    NSString *authToken = self.aToken;
+    
+    if (!authToken) {
+        NSLog(@"Warning: an attempt was made to force deregisteration without a current auth token. Using last known auth token");
+        SCHAppState *appState = [SCHAppStateManager sharedAppStateManager].appState;
+        authToken = appState.LastKnownAuthToken;
+    }
+    
+    if (authToken) {
+        [self.drmRegistrationSession deregisterDevice:authToken];
+    } else {
+        NSLog(@"Warning: no previous auth token was available. Completing deregistration without Leaving the DRM Domain.");
+        [self registrationSession:nil deregistrationDidComplete:nil];
+    }    
+
 }
 
 - (void)deregisterWithSuccessBlock:(SCHDrmDeregistrationSuccessBlock)successBlock
@@ -302,7 +315,13 @@ NSTimeInterval const kSCHAuthenticationManagerSecondsInAMinute = 60.0;
     if ([[SCHAppStateManager sharedAppStateManager] canAuthenticate] && self.aToken) {
         [self.drmRegistrationSession deregisterDevice:self.aToken];
     } else {
-        [self performForcedDeregistrationWithToken:self.aToken];
+        // This fall-through case is only if we have tried to deregister but the app state says we should not authenticate 
+        // or we don't have a current auth token. In either case we should allow the user to deregister
+        [self forceDeregistrationWithCompletionBlock:^{
+            if (successBlock) {
+                successBlock();
+            }
+        }];
     }
 }
     
@@ -528,29 +547,6 @@ NSTimeInterval const kSCHAuthenticationManagerSecondsInAMinute = 60.0;
 
 #pragma mark - Private methods
 
-- (void)performForcedDeregistrationWithToken:(NSString *)authToken
-{
-    if (![NSThread isMainThread]) {
-        [self performSelectorOnMainThread:@selector(performForcedDeregistrationWithToken:) withObject:authToken waitUntilDone:YES];
-        return;
-    }
-        
-    self.waitingOnResponse = NO;
-    
-    if (!authToken) {
-        NSLog(@"Warning: an attempt was made to force deregisteration without a returned token. Using last known auth token");
-        SCHAppState *appState = [SCHAppStateManager sharedAppStateManager].appState;
-        authToken = appState.LastKnownAuthToken;
-    }
-    
-    if (authToken) {
-        [self.drmRegistrationSession deregisterDevice:authToken];
-    } else {
-        NSLog(@"Warning: no previous auth token was available. Completing deregistration without Leaving the DRM Domain.");
-        [self registrationSession:nil deregistrationDidComplete:nil];
-    }    
-}
-
 - (void)performPostDeregistration
 {	        
     [self clearOnMainThread];
@@ -561,11 +557,7 @@ NSTimeInterval const kSCHAuthenticationManagerSecondsInAMinute = 60.0;
     self.authenticationFailureBlock = nil;
     self.deregistrationSuccessBlock = nil;
     self.deregistrationFailureBlock = nil;
-    self.drmRegistrationSession = nil; 
-    
-    [[NSNotificationCenter defaultCenter] postNotificationName:SCHAuthenticationManagerDidClearAfterDeregisterNotification
-                                                        object:self 
-                                                      userInfo:nil];		                    
+    self.drmRegistrationSession = nil;
 }
 
 - (void)setLastKnownAuthToken:(NSString *)token
@@ -608,8 +600,14 @@ NSTimeInterval const kSCHAuthenticationManagerSecondsInAMinute = 60.0;
         NSString *deviceKey = [[NSUserDefaults standardUserDefaults] stringForKey:kSCHAuthenticationManagerDeviceKey];
         
         if (deviceIsDeregistered) {
-            
-            [self performForcedDeregistrationWithToken:returnedToken];
+            self.aToken = returnedToken;
+
+            [self forceDeregistrationWithCompletionBlock:^{
+                [[NSNotificationCenter defaultCenter] postNotificationName:SCHAuthenticationManagerReceivedServerDeregistrationNotification
+                                                                    object:self 
+                                                                  userInfo:nil];
+            }];
+             
             self.waitingOnResponse = NO;
         } else if (deviceKey) {
             
@@ -636,7 +634,15 @@ NSTimeInterval const kSCHAuthenticationManagerSecondsInAMinute = 60.0;
         self.tokenExpires = nil;
         
         if ([method isEqualToString:kSCHLibreAccessWebServiceAuthenticateDevice] && deviceIsDeregistered) {
-            [self performForcedDeregistrationWithToken:returnedToken];
+            
+            self.aToken = returnedToken;
+            
+            [self forceDeregistrationWithCompletionBlock:^{
+                [[NSNotificationCenter defaultCenter] postNotificationName:SCHAuthenticationManagerReceivedServerDeregistrationNotification
+                                                                    object:self 
+                                                                  userInfo:nil];
+            }];
+             
         } else {
             if (returnedToken) {
                 self.aToken = returnedToken;
@@ -660,42 +666,54 @@ NSTimeInterval const kSCHAuthenticationManagerSecondsInAMinute = 60.0;
 {
     NSLog(@"AuthenticationManager:%@ %@", method, [error description]);
     self.waitingOnResponse = NO;
+    
+    id deviceIsDeregisteredValue = [result objectForKey:kSCHLibreAccessWebServiceDeviceIsDeregistered]; 
+    id returnedTokenValue = [result objectForKey:kSCHLibreAccessWebServiceAuthToken];
+    
+    BOOL deviceIsDeregistered = deviceIsDeregisteredValue == [NSNull null] ? NO : [deviceIsDeregisteredValue boolValue];
+    NSString *returnedToken   = returnedTokenValue == [NSNull null] ? nil : returnedTokenValue;
 
     if ([error domain] != kBITAPIErrorDomain) {
         if([method compare:kSCHLibreAccessWebServiceTokenExchange] == NSOrderedSame) {	
-            NSNumber *deviceIsDeregistered = [result objectForKey:kSCHLibreAccessWebServiceDeviceIsDeregistered];        
-            if ([deviceIsDeregistered isKindOfClass:[NSNumber class]] == YES &&
-                [[result objectForKey:kSCHLibreAccessWebServiceDeviceIsDeregistered] boolValue] == YES) {
-                NSString *returnedToken = [result objectForKey:kSCHLibreAccessWebServiceAuthToken];
-                [self performForcedDeregistrationWithToken:returnedToken];
-                return;
-            }
-        } else if ([method compare:kSCHLibreAccessWebServiceAuthenticateDevice] == NSOrderedSame) {	
-            self.aToken = nil;
-            self.tokenExpires = nil;        
-            
-            NSNumber *deviceIsDeregistered = [result objectForKey:kSCHLibreAccessWebServiceDeviceIsDeregistered];        
-            if ([deviceIsDeregistered isKindOfClass:[NSNumber class]] == YES &&
-                [[result objectForKey:kSCHLibreAccessWebServiceDeviceIsDeregistered] boolValue] == YES) {
-                NSString *returnedToken = [result objectForKey:kSCHLibreAccessWebServiceAuthToken];
-                [self performForcedDeregistrationWithToken:returnedToken];
-                return;
+            if (deviceIsDeregistered) {
+                
+                self.aToken = returnedToken;
+                
+                [self forceDeregistrationWithCompletionBlock:^{
+                    [[NSNotificationCenter defaultCenter] postNotificationName:SCHAuthenticationManagerReceivedServerDeregistrationNotification
+                                                                        object:self 
+                                                                      userInfo:nil];
+                }];
             } else {
-                // we only step back to authenticate if this was a server error
+                [self authenticationDidFailWithError:error];
+            }
+        } else if ([method compare:kSCHLibreAccessWebServiceAuthenticateDevice] == NSOrderedSame) {
+                
+            self.aToken = nil;
+            self.tokenExpires = nil;     
+            
+            if (deviceIsDeregistered) {
+                
+                self.aToken = returnedToken;
+                
+                [self forceDeregistrationWithCompletionBlock:^{
+                    [[NSNotificationCenter defaultCenter] postNotificationName:SCHAuthenticationManagerReceivedServerDeregistrationNotification
+                                                                        object:self 
+                                                                      userInfo:nil];
+                }];
+            } else {
+                // This must have been a server error so go into offline mode
                 [[NSUserDefaults standardUserDefaults] removeObjectForKey:kSCHAuthenticationManagerDeviceKey];
                 [[NSUserDefaults standardUserDefaults] synchronize];
+                
+                [self authenticationDidSucceedWithOfflineMode:YES];
             }
         } else if ([method compare:kSCHLibreAccessWebServiceRenewToken] == NSOrderedSame) {	
             self.aToken = nil;
-            self.tokenExpires = nil;        
+            self.tokenExpires = nil;
+            
+            [self authenticationDidSucceedWithOfflineMode:YES];
         }
-    }
-    
-    id returnedToken = [result objectForKey:kSCHLibreAccessWebServiceAuthToken];
-    NSString *authToken = returnedToken == [NSNull null] ? nil : returnedToken;
-
-    if (!authToken) {
-        [self performForcedDeregistrationWithToken:nil];
     } else {
         [self authenticationDidFailWithError:error];
     }
@@ -705,6 +723,8 @@ NSTimeInterval const kSCHAuthenticationManagerSecondsInAMinute = 60.0;
 
 - (void)authenticationDidSucceedWithOfflineMode:(BOOL)offlineMode
 {
+    self.waitingOnResponse = NO;
+    
     if (self.authenticationSuccessBlock) {
         SCHAuthenticationSuccessBlock handler = Block_copy(self.authenticationSuccessBlock);
         self.authenticationSuccessBlock = nil;
@@ -719,6 +739,8 @@ NSTimeInterval const kSCHAuthenticationManagerSecondsInAMinute = 60.0;
 
 - (void)authenticationDidFailWithError:(NSError *)error
 {
+    self.waitingOnResponse = NO;
+    
     if (self.authenticationFailureBlock) {
         SCHAuthenticationFailureBlock handler = Block_copy(self.authenticationFailureBlock);
         self.authenticationFailureBlock = nil;
