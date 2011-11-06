@@ -41,7 +41,7 @@
 {
     [super viewDidLoad];
 
-    self.title = NSLocalizedString(@"Web Parent Tools", @"\"Parental Tools\" view controller title.");        
+    self.title = NSLocalizedString(@"Manage eBooks", @"\"Manage eBooks\" view controller title.");        
 
     NSURL *webParentToolURL = [[SCHAuthenticationManager sharedAuthenticationManager] webParentToolURL:pToken];
     if (webParentToolURL != nil) {
