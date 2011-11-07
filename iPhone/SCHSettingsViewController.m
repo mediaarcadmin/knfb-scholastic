@@ -72,6 +72,7 @@ extern NSString * const kSCHAuthenticationManagerDeviceKey;
     [spaceSaverButton release], spaceSaverButton = nil;
     [updateBooksViewController release], updateBooksViewController = nil;
     [checkBooksAlert release], checkBooksAlert = nil;
+    
     [super releaseViewObjects];
 }
 
@@ -164,6 +165,15 @@ extern NSString * const kSCHAuthenticationManagerDeviceKey;
     [self updateSpaceSaverButton];
     [self updateUpdateBooksButton];
     [self updateDictionaryButton];
+}
+
+- (void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
+    
+    if (self.checkBooksAlert) {
+        [self.checkBooksAlert dismissAnimated:NO];
+    }
 }
 
 #pragma mark - Button states
