@@ -84,9 +84,12 @@
     NSArray *allAppBooks = [self.managedObjectContext executeFetchRequest:fetch error:&error];
     
     [allAppBooks enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
-        SCHContentMetadataItem *contentMetadataItem = [obj ContentMetadataItem];
+        SCHContentMetadataItem *contentMetadataItem = [(SCHAppBook*) obj ContentMetadataItem];
         
-        if ([[contentMetadataItem Version] integerValue] != [[[contentMetadataItem UserContentItem] Version] integerValue]) {
+        NSString *onDiskversion = [(SCHAppBook*) obj OnDiskVersion];
+        BOOL validOnDiskVersion = (onDiskversion != nil);
+        
+        if (validOnDiskVersion && ([[contentMetadataItem Version] integerValue] > [onDiskversion integerValue])) {
             [self.results addObject:obj];
         }
     }];
