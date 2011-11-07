@@ -45,6 +45,8 @@ extern NSInteger const kSCHAuthenticationManagerLoginError;
                 successBlock:(SCHAuthenticationSuccessBlock)successBlock
                 failureBlock:(SCHAuthenticationFailureBlock)failureBlock;
 
+// authenticateWithSuccessBlock:failureBlock: is effectively re-entrant
+// success and failure blocks are nested if authentication is already taking place
 - (void)authenticateWithSuccessBlock:(SCHAuthenticationSuccessBlock)successBlock
                         failureBlock:(SCHAuthenticationFailureBlock)failureBlock;
 

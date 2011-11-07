@@ -64,7 +64,6 @@ NSTimeInterval const kSCHAuthenticationManagerSecondsInAMinute = 60.0;
 @synthesize aToken;
 @synthesize isAuthenticated;
 @synthesize tokenExpires;
-@synthesize waitingOnResponse;
 @synthesize accountValidation;
 @synthesize libreAccessWebService;
 @synthesize drmRegistrationSession;
@@ -74,6 +73,7 @@ NSTimeInterval const kSCHAuthenticationManagerSecondsInAMinute = 60.0;
 @synthesize registrationFailureBlock;
 @synthesize deregistrationSuccessBlock;
 @synthesize deregistrationFailureBlock;
+@synthesize authenticating;
 
 #pragma mark - Singleton instance methods
 
@@ -102,7 +102,6 @@ NSTimeInterval const kSCHAuthenticationManagerSecondsInAMinute = 60.0;
 	if (self != nil) {
 		aToken = nil;
 		tokenExpires = nil;
-		waitingOnResponse = NO;
 		
 		accountValidation = [[SCHAccountValidation alloc] init];
 		
@@ -159,7 +158,7 @@ NSTimeInterval const kSCHAuthenticationManagerSecondsInAMinute = 60.0;
         return;
     }
         
-    self.authenticationSuccessBlock = ^(BOOL offlineMode){
+    SCHAuthenticationSuccessBlock aSuccessBlock = ^(BOOL offlineMode){
         [[SCHAuthenticationManager sharedAuthenticationManager] clearAppProcessing];
         
         if (successBlock) {
@@ -167,7 +166,7 @@ NSTimeInterval const kSCHAuthenticationManagerSecondsInAMinute = 60.0;
         }
     };
     
-    self.authenticationFailureBlock = ^(NSError * error){
+    SCHAuthenticationFailureBlock aFailureBlock = ^(NSError * error){
         [[SCHAuthenticationManager sharedAuthenticationManager] clear];
         
         if (failureBlock) {
@@ -191,8 +190,8 @@ NSTimeInterval const kSCHAuthenticationManagerSecondsInAMinute = 60.0;
                                   updateExisting:YES 
                                            error:nil];
                 
-                [self authenticateWithSuccessBlock:self.authenticationSuccessBlock
-                                      failureBlock:self.authenticationFailureBlock];
+                [self authenticateWithSuccessBlock:aSuccessBlock
+                                      failureBlock:aFailureBlock];
                 
             } else {
                 NSError *error = [NSError errorWithDomain:kSCHAuthenticationManagerErrorDomain 
@@ -226,6 +225,7 @@ NSTimeInterval const kSCHAuthenticationManagerSecondsInAMinute = 60.0;
         
         self.aToken = @"";
         self.tokenExpires = [NSDate distantFuture];
+        self.authenticationSuccessBlock = aSuccessBlock;
         
         // TODO: Why does this need to be delayed?
         double delayInSeconds = 0.1;
@@ -278,9 +278,7 @@ NSTimeInterval const kSCHAuthenticationManagerSecondsInAMinute = 60.0;
             completionBlock();
         }
     };
-    
-    self.waitingOnResponse = NO;
-    
+        
     NSString *authToken = self.aToken;
     
     if (!authToken) {
@@ -290,12 +288,13 @@ NSTimeInterval const kSCHAuthenticationManagerSecondsInAMinute = 60.0;
     }
     
     if (authToken) {
-        [self.drmRegistrationSession deregisterDevice:authToken];
+        [authToken retain];
+        [self expireToken];
+        [self.drmRegistrationSession deregisterDevice:[authToken autorelease]];
     } else {
         NSLog(@"Warning: no previous auth token was available. Completing deregistration without Leaving the DRM Domain.");
         [self registrationSession:nil deregistrationDidComplete:nil];
-    }    
-
+    }
 }
 
 - (void)deregisterWithSuccessBlock:(SCHDrmDeregistrationSuccessBlock)successBlock
@@ -439,6 +438,12 @@ NSTimeInterval const kSCHAuthenticationManagerSecondsInAMinute = 60.0;
     self.authenticationSuccessBlock = successBlock;
     self.authenticationFailureBlock = failureBlock;
     
+    if (self.isAuthenticating) {
+        return;
+    }
+    
+    self.authenticating = YES;
+        
     NSString *storedUsername = [[NSUserDefaults standardUserDefaults] stringForKey:kSCHAuthenticationManagerUsername];
     NSString *storedPassword = [SFHFKeychainUtils getPasswordForUsername:storedUsername andServiceName:kSCHAuthenticationManagerServiceName error:nil];
     NSString *deviceKey = [[NSUserDefaults standardUserDefaults] stringForKey:kSCHAuthenticationManagerDeviceKey];	
@@ -446,57 +451,49 @@ NSTimeInterval const kSCHAuthenticationManagerSecondsInAMinute = 60.0;
     NSLog(@"Authenticating %@ with %@", storedUsername, (deviceKey == nil ? @"no deviceKey" : deviceKey));        
     
     if([[SCHAppStateManager sharedAppStateManager] canAuthenticate]) {
-        if (self.waitingOnResponse == NO) {
-            if ([[Reachability reachabilityForInternetConnection] isReachable]) {
+        if ([[Reachability reachabilityForInternetConnection] isReachable]) {
+            
+            if (self.aToken != nil && [[self.aToken stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]] length] > 0) {
+                [self.libreAccessWebService renewToken:self.aToken];
+            } else if (deviceKey != nil && [[deviceKey stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]] length] > 0) {
+                [self.libreAccessWebService authenticateDevice:deviceKey forUserKey:nil];
+            } else if ([[storedUsername stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]] length] > 0 &&
+                       [[storedPassword stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]] length] > 0) {
                 
-                if (self.aToken != nil && [[self.aToken stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]] length] > 0) {
-                    
-                    [self.libreAccessWebService renewToken:self.aToken];
-                    self.waitingOnResponse = YES;                
-                } else if (deviceKey != nil && [[deviceKey stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]] length] > 0) {
-                    
-                    [self.libreAccessWebService authenticateDevice:deviceKey forUserKey:nil];
-                    self.waitingOnResponse = YES;                                
-                } else if ([[storedUsername stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]] length] > 0 &&
-                           [[storedPassword stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]] length] > 0) {
-                    
-                    __block SCHAuthenticationManager *weakSelf = self;
-                    
-                    [self.accountValidation validateWithUserName:storedUsername withPassword:storedPassword validateBlock:^(NSString *pToken, NSError *error) {
-                        if (error != nil) {
-                            weakSelf.waitingOnResponse = NO;
-                            [weakSelf authenticationDidFailWithError:error];                            
-                        } else {
-                            [weakSelf.libreAccessWebService tokenExchange:pToken 
+                __block SCHAuthenticationManager *weakSelf = self;
+                
+                [self.accountValidation validateWithUserName:storedUsername withPassword:storedPassword validateBlock:^(NSString *pToken, NSError *error) {
+                    if (error != nil) {
+                        [weakSelf authenticationDidFailWithError:error];                            
+                    } else {
+                        [weakSelf.libreAccessWebService tokenExchange:pToken 
                                                               forUser:[[NSUserDefaults standardUserDefaults] stringForKey:kSCHAuthenticationManagerUsername]];                            
-                        }
-                    }];
-                    
-                    self.waitingOnResponse = YES;         
-                } else {
-                    
-                    NSError *error = [NSError errorWithDomain:kSCHAuthenticationManagerErrorDomain 
-                                                         code:kSCHAuthenticationManagerLoginError 
-                                                     userInfo:[NSDictionary dictionaryWithObject:NSLocalizedString(@"You must enter a username and password", @"") 
-                                                                                          forKey:NSLocalizedDescriptionKey]];
-                    
-                    [self authenticationDidFailWithError:error];            
-                }
+                    }
+                }];
+                
             } else {
                 
-                if ([[storedUsername stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]] length] > 0) {     
-                
-                    [self authenticationDidSucceedWithOfflineMode:YES];
-                } else {
-                    NSError *error = [NSError errorWithDomain:kSCHAuthenticationManagerErrorDomain 
+                NSError *error = [NSError errorWithDomain:kSCHAuthenticationManagerErrorDomain 
                                                      code:kSCHAuthenticationManagerLoginError 
                                                  userInfo:[NSDictionary dictionaryWithObject:NSLocalizedString(@"You must enter a username and password", @"") 
                                                                                       forKey:NSLocalizedDescriptionKey]];
                 
-                    [self authenticationDidFailWithError:error]; 
-                }
+                [self authenticationDidFailWithError:error];            
             }
-        } 
+        } else {
+            
+            if ([[storedUsername stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]] length] > 0) {     
+                
+                [self authenticationDidSucceedWithOfflineMode:YES];
+            } else {
+                NSError *error = [NSError errorWithDomain:kSCHAuthenticationManagerErrorDomain 
+                                                     code:kSCHAuthenticationManagerLoginError 
+                                                 userInfo:[NSDictionary dictionaryWithObject:NSLocalizedString(@"You must enter a username and password", @"") 
+                                                                                      forKey:NSLocalizedDescriptionKey]];
+                
+                [self authenticationDidFailWithError:error]; 
+            }
+        }
     } else {
         self.aToken = @"";
         self.tokenExpires = [NSDate distantFuture];        
@@ -569,7 +566,7 @@ NSTimeInterval const kSCHAuthenticationManagerSecondsInAMinute = 60.0;
     self.authenticationFailureBlock = nil;
     self.deregistrationSuccessBlock = nil;
     self.deregistrationFailureBlock = nil;
-    self.drmRegistrationSession = nil;
+    self.drmRegistrationSession = nil;    
 }
 
 - (void)setLastKnownAuthToken:(NSString *)token
@@ -620,7 +617,6 @@ NSTimeInterval const kSCHAuthenticationManagerSecondsInAMinute = 60.0;
                                                                   userInfo:nil];
             }];
              
-            self.waitingOnResponse = NO;
         } else if (deviceKey) {
             
             [self authenticationDidSucceedWithOfflineMode:NO];
@@ -667,7 +663,6 @@ NSTimeInterval const kSCHAuthenticationManagerSecondsInAMinute = 60.0;
             }
         }
         
-		self.waitingOnResponse = NO;        
     }
 }
 
@@ -676,7 +671,6 @@ NSTimeInterval const kSCHAuthenticationManagerSecondsInAMinute = 60.0;
         result:(NSDictionary *)result
 {
     NSLog(@"AuthenticationManager:%@ %@", method, [error description]);
-    self.waitingOnResponse = NO;
     
     id deviceIsDeregisteredValue = [result objectForKey:kSCHLibreAccessWebServiceDeviceIsDeregistered]; 
     id returnedTokenValue = [result objectForKey:kSCHLibreAccessWebServiceAuthToken];
@@ -732,7 +726,7 @@ NSTimeInterval const kSCHAuthenticationManagerSecondsInAMinute = 60.0;
 
 - (void)authenticationDidSucceedWithOfflineMode:(BOOL)offlineMode
 {
-    self.waitingOnResponse = NO;
+    self.authenticating = NO;
     
     if (self.authenticationSuccessBlock) {
         SCHAuthenticationSuccessBlock handler = Block_copy(self.authenticationSuccessBlock);
@@ -748,7 +742,7 @@ NSTimeInterval const kSCHAuthenticationManagerSecondsInAMinute = 60.0;
 
 - (void)authenticationDidFailWithError:(NSError *)error
 {
-    self.waitingOnResponse = NO;
+    self.authenticating = NO;
     
     if (self.authenticationFailureBlock) {
         SCHAuthenticationFailureBlock handler = Block_copy(self.authenticationFailureBlock);
@@ -810,7 +804,8 @@ NSTimeInterval const kSCHAuthenticationManagerSecondsInAMinute = 60.0;
     
     self.deregistrationFailureBlock = nil;
     self.drmRegistrationSession = nil;
-    
+    self.authenticating = NO;
+
     [self performPostDeregistration];
 }
 
@@ -827,7 +822,69 @@ deregistrationDidFailWithError:(NSError *)error
     }
     
     self.deregistrationSuccessBlock = nil;
-    self.drmRegistrationSession = nil;    
+    self.drmRegistrationSession = nil;   
+    self.authenticating = NO;
+}
+
+- (void)setAuthenticationSuccessBlock:(SCHAuthenticationSuccessBlock)newBlock
+{
+    if (newBlock) {
+        if (authenticationSuccessBlock) {
+            if (authenticationSuccessBlock != newBlock) {
+                
+                SCHAuthenticationSuccessBlock existingBlock = Block_copy(authenticationSuccessBlock);
+                
+                Block_release(authenticationSuccessBlock);
+                
+                SCHAuthenticationSuccessBlock combinedBlock = ^(BOOL offlineMode){
+                    existingBlock(offlineMode);
+                    newBlock(offlineMode);
+                };
+                
+                authenticationSuccessBlock = Block_copy(combinedBlock);
+                Block_release(existingBlock);
+            }
+        } else {
+            authenticationSuccessBlock = Block_copy(newBlock);
+        }
+    } else {
+        
+        if (authenticationSuccessBlock) {
+            Block_release(authenticationSuccessBlock);
+        }
+        
+        authenticationSuccessBlock = nil;
+    }
+}
+
+- (void)setAuthenticationFailureBlock:(SCHAuthenticationFailureBlock)newBlock
+{
+    if (newBlock) {
+        if (authenticationFailureBlock) {
+            if (authenticationFailureBlock != newBlock) {
+                SCHAuthenticationFailureBlock existingBlock = Block_copy(authenticationFailureBlock);
+                
+                Block_release(authenticationFailureBlock);
+                
+                SCHAuthenticationFailureBlock combinedBlock = ^(NSError *error){
+                    existingBlock(error);
+                    newBlock(error);
+                };
+                
+                authenticationFailureBlock = Block_copy(combinedBlock);
+                Block_release(existingBlock);
+            }
+        } else {
+            authenticationFailureBlock = Block_copy(newBlock);
+        }
+    } else {
+        
+        if (authenticationFailureBlock) {
+            Block_release(authenticationFailureBlock);
+        }
+        
+        authenticationFailureBlock = nil;
+    }
 }
 
 @end
