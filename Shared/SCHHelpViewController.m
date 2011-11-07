@@ -150,6 +150,11 @@ static CGFloat const kSCHStoryInteractionControllerCloseBorderWidth = 1.5;
                                                      name:MPMoviePlayerPlaybackStateDidChangeNotification
                                                    object:nil];
         
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(moviePlayerPlaybackStateDidFinishNotification:)
+                                                     name:MPMoviePlayerPlaybackDidFinishNotification
+                                                   object:nil];
+        
         [self.moviePlayer prepareToPlay];
         self.moviePlayer.controlStyle = MPMovieControlStyleNone;
         self.moviePlayer.shouldAutoplay = YES;
@@ -196,13 +201,12 @@ static CGFloat const kSCHStoryInteractionControllerCloseBorderWidth = 1.5;
 
 - (IBAction)closeAction:(id)sender
 {
-    [self dismiss];
+    self.playButton.actionBlock = nil;
+    [self.moviePlayer stop]; // The moviePlayerPlaybackStateDidFinishNotification will call dismiss
 }
 
 - (void)dismiss
 {
-    self.playButton.actionBlock = nil;
-    [self.moviePlayer stop];
     [self dismissModalViewControllerAnimated:YES];   
     
     if (self.delegate && [self.delegate respondsToSelector:@selector(helpViewWillClose:)]) {
@@ -245,6 +249,16 @@ static CGFloat const kSCHStoryInteractionControllerCloseBorderWidth = 1.5;
         }
     }
 }
+
+- (void)moviePlayerPlaybackStateDidFinishNotification:(NSNotification *)notification
+{
+    NSNumber *reason = [[notification userInfo] objectForKey:MPMoviePlayerPlaybackDidFinishReasonUserInfoKey];
+    
+    if (reason && ([reason intValue] == MPMovieFinishReasonPlaybackEnded)) {
+        [self dismiss];
+    }
+}
+
 
 - (void)willResignActiveNotification:(NSNotification *)notification
 {
