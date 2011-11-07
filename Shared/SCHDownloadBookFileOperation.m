@@ -10,6 +10,7 @@
 
 #import "SCHAppBook.h"
 #import "BITNetworkActivityManager.h"
+#import "SCHUserContentItem.h"
 
 #pragma mark - Class Extension
 
@@ -362,7 +363,15 @@
 		case kSCHDownloadFileTypeXPSBook:
         {
             [self performWithBookAndSave:^(SCHAppBook *book) {
-                book.OnDiskVersion = book.Version;
+                
+                int contentMetadataVersion = [[[book ContentMetadataItem] Version] intValue];
+                int userContentVersion = [[[[book ContentMetadataItem] UserContentItem] Version] intValue];
+                
+                if (contentMetadataVersion > userContentVersion) {
+                    book.OnDiskVersion = [[book ContentMetadataItem] Version];
+                } else {
+                    book.OnDiskVersion = [[[book ContentMetadataItem] UserContentItem] Version];
+                }
                 book.XPSExists = [NSNumber numberWithBool:YES];
             }];
             
