@@ -127,6 +127,25 @@ extern NSString * const kSCHAuthenticationManagerDeviceKey;
         [logoImageView release];
     }
     
+    if ([[SCHAppStateManager sharedAppStateManager] canAuthenticate] == NO) {
+        [self.manageBooksButton setEnabled:NO];
+        [self.checkBooksButton setEnabled:NO];
+    }
+}
+
+- (void)viewDidUnload 
+{
+    [super viewDidUnload];
+    [self releaseViewObjects];
+}
+
+- (void)viewWillAppear:(BOOL)animated 
+{
+    [super viewWillAppear:animated];    
+    [self updateSpaceSaverButton];
+    [self updateUpdateBooksButton];
+    [self updateDictionaryButton];
+    
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(didCompleteSync:)
                                                  name:SCHBookshelfSyncComponentDidCompleteNotification
@@ -146,35 +165,21 @@ extern NSString * const kSCHAuthenticationManagerDeviceKey;
                                              selector:@selector(dictionaryStateChanged:)
                                                  name:kSCHDictionaryStateChange
                                                object:nil];
-    
-    if ([[SCHAppStateManager sharedAppStateManager] canAuthenticate] == NO) {
-        [self.manageBooksButton setEnabled:NO];
-        [self.checkBooksButton setEnabled:NO];
-    }
-}
-
-- (void)viewDidUnload 
-{
-    [super viewDidUnload];
-    [self releaseViewObjects];
-}
-
-- (void)viewWillAppear:(BOOL)animated 
-{
-    [super viewWillAppear:animated];    
-    [self updateSpaceSaverButton];
-    [self updateUpdateBooksButton];
-    [self updateDictionaryButton];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
     
+    // This method should not be required - there is a retain loop somewhere
     if (self.checkBooksAlert) {
         [self.checkBooksAlert dismissAnimated:NO];
     }
+    
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
+
+- (void)registerObje
 
 #pragma mark - Button states
 
