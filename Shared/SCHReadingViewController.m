@@ -906,6 +906,11 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
         SCHLastPage *lastPage = [self.bookAnnotations lastPage];
         
         lastPage.LastPageLocation = [NSNumber numberWithInteger:currentBookPoint.layoutPage];
+
+        SCHAppContentProfileItem *appContentProfileItem = [self.profile appContentProfileItemForBookIdentifier:self.bookIdentifier];
+        if ([appContentProfileItem.IsNewBook boolValue] == YES) {
+            appContentProfileItem.IsNewBook = [NSNumber numberWithBool:NO];
+        }
     }
 }
 
