@@ -126,11 +126,6 @@ extern NSString * const kSCHAuthenticationManagerDeviceKey;
         self.navigationItem.titleView = logoImageView;
         [logoImageView release];
     }
-    
-    if ([[SCHAppStateManager sharedAppStateManager] canAuthenticate] == NO) {
-        [self.manageBooksButton setEnabled:NO];
-        [self.checkBooksButton setEnabled:NO];
-    }
 }
 
 - (void)viewDidUnload 
@@ -145,6 +140,13 @@ extern NSString * const kSCHAuthenticationManagerDeviceKey;
     [self updateSpaceSaverButton];
     [self updateUpdateBooksButton];
     [self updateDictionaryButton];
+    
+    if ([[SCHAppStateManager sharedAppStateManager] canAuthenticate] == NO) {
+        [self.manageBooksButton setEnabled:NO];
+        [self.checkBooksButton setEnabled:NO];
+    }
+    
+    // Notifications must be added and removed in viewWillAppear/viewDidAppear because this view gets cached after fist being loaded
     
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(didCompleteSync:)
@@ -171,7 +173,6 @@ extern NSString * const kSCHAuthenticationManagerDeviceKey;
 {
     [super viewWillDisappear:animated];
     
-    // This method should not be required - there is a retain loop somewhere
     if (self.checkBooksAlert) {
         [self.checkBooksAlert dismissAnimated:NO];
     }
