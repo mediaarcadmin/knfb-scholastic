@@ -906,15 +906,30 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
         SCHLastPage *lastPage = [self.bookAnnotations lastPage];
         
         lastPage.LastPageLocation = [NSNumber numberWithInteger:currentBookPoint.layoutPage];
+
+        SCHAppContentProfileItem *appContentProfileItem = [self.profile appContentProfileItemForBookIdentifier:self.bookIdentifier];
+        if ([appContentProfileItem.IsNewBook boolValue] == YES) {
+            appContentProfileItem.IsNewBook = [NSNumber numberWithBool:NO];
+        }
     }
 }
 
 - (void)jumpToLastPageLocation
-{
+{        
+    SCHAppContentProfileItem *appContentProfileItem = [self.profile appContentProfileItemForBookIdentifier:self.bookIdentifier];
+    SCHContentProfileItem *contentProfileItem = appContentProfileItem.ContentProfileItem;
+    SCHLastPage *annotationsLastPage = [self.bookAnnotations lastPage];
+    
+    NSNumber *lastPageLocation = nil;
+    
+    if ([[contentProfileItem LastModified] compare:[annotationsLastPage LastModified]] == NSOrderedDescending) {
+        lastPageLocation = [contentProfileItem LastPageLocation];
+    } else {
+        lastPageLocation = [annotationsLastPage LastPageLocation];
+    }
+    
     SCHBookPoint *lastPoint = [[[SCHBookPoint alloc] init] autorelease];
-    
-    NSNumber *lastPageLocation = [[self.bookAnnotations lastPage] LastPageLocation];
-    
+
     if (lastPageLocation) {
         lastPoint.layoutPage = MAX([lastPageLocation integerValue], 1);
     } else {
