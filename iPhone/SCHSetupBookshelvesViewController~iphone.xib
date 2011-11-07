@@ -154,7 +154,7 @@
 							<object class="IBUILabel" id="550381626">
 								<reference key="NSNextResponder" ref="1019933755"/>
 								<int key="NSvFlags">293</int>
-								<string key="NSFrame">{{24, 38}, {272, 66}}</string>
+								<string key="NSFrame">{{24, 38}, {272, 77}}</string>
 								<reference key="NSSuperview" ref="1019933755"/>
 								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="969998580"/>
@@ -163,7 +163,7 @@
 								<int key="IBUIContentMode">7</int>
 								<bool key="IBUIUserInteractionEnabled">NO</bool>
 								<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
-								<string key="IBUIText">Before you start reading, please visit the Scholastic Book Clubs Web site to set up bookshelves for your kids.</string>
+								<string key="IBUIText">Before you start reading, please sign in to your Scholastic account online to set up bookshelves for your children.</string>
 								<object class="NSColor" key="IBUITextColor">
 									<int key="NSColorSpace">3</int>
 									<bytes key="NSWhite">MC4zMzMzMzMzMzMzAA</bytes>
@@ -189,9 +189,10 @@
 							<object class="IBUIButton" id="969998580">
 								<reference key="NSNextResponder" ref="1019933755"/>
 								<int key="NSvFlags">293</int>
-								<string key="NSFrame">{{110, 130}, {100, 48}}</string>
+								<string key="NSFrame">{{110, 138}, {100, 48}}</string>
 								<reference key="NSSuperview" ref="1019933755"/>
 								<reference key="NSWindow"/>
+								<reference key="NSNextKeyView"/>
 								<bool key="IBUIOpaque">NO</bool>
 								<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 								<int key="IBUIContentHorizontalAlignment">0</int>
