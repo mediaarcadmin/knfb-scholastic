@@ -218,8 +218,12 @@ NSString * const SCHBookshelfSyncComponentDidFailNotification = @"SCHBookshelfSy
 					[[SCHAuthenticationManager sharedAuthenticationManager] authenticateWithSuccessBlock:^(BOOL offlineMode){
                         if (!offlineMode) {
                             [self.delegate authenticationDidSucceed];
+                        } else {
+                            self.isSynchronizing = NO;
                         }
-                    } failureBlock:nil];				
+                    } failureBlock:^(NSError *error){
+                        self.isSynchronizing = NO;
+                    }];					
 					ret = NO;			
 				} else {
 					requestCount++;
@@ -232,8 +236,12 @@ NSString * const SCHBookshelfSyncComponentDidFailNotification = @"SCHBookshelfSy
 				[[SCHAuthenticationManager sharedAuthenticationManager] authenticateWithSuccessBlock:^(BOOL offlineMode){
                     if (!offlineMode) {
                         [self.delegate authenticationDidSucceed];
+                    } else {
+                        self.isSynchronizing = NO;
                     }
-                } failureBlock:nil];			
+                } failureBlock:^(NSError *error){
+                    self.isSynchronizing = NO;
+                }];				
 				ret = NO;			
 			} else {
 				NSLog(@"Requesting ALL Book information");

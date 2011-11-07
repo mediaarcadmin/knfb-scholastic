@@ -96,8 +96,12 @@ NSString * const SCHContentSyncComponentDidFailNotification = @"SCHContentSyncCo
                 [[SCHAuthenticationManager sharedAuthenticationManager] authenticateWithSuccessBlock:^(BOOL offlineMode){
                     if (!offlineMode) {
                         [self.delegate authenticationDidSucceed];
+                    } else {
+                        self.isSynchronizing = NO;
                     }
-                } failureBlock:nil];				
+                } failureBlock:^(NSError *error){
+                    self.isSynchronizing = NO;
+                }];				
             }
         } else if([method compare:kSCHLibreAccessWebServiceListUserContent] == NSOrderedSame) {
             NSArray *content = [result objectForKey:kSCHLibreAccessWebServiceUserContentList];
@@ -150,8 +154,12 @@ NSString * const SCHContentSyncComponentDidFailNotification = @"SCHContentSyncCo
 			[[SCHAuthenticationManager sharedAuthenticationManager] authenticateWithSuccessBlock:^(BOOL offlineMode){
                 if (!offlineMode) {
                     [self.delegate authenticationDidSucceed];
+                } else {
+                    self.isSynchronizing = NO;
                 }
-            } failureBlock:nil];				
+            } failureBlock:^(NSError *error){
+                self.isSynchronizing = NO;
+            }];					
 			ret = NO;			
 		}		
 	} else {
@@ -160,8 +168,12 @@ NSString * const SCHContentSyncComponentDidFailNotification = @"SCHContentSyncCo
 			[[SCHAuthenticationManager sharedAuthenticationManager] authenticateWithSuccessBlock:^(BOOL offlineMode){
                 if (!offlineMode) {
                     [self.delegate authenticationDidSucceed];
+                } else {
+                    self.isSynchronizing = NO;
                 }
-            } failureBlock:nil];				
+            } failureBlock:^(NSError *error){
+                self.isSynchronizing = NO;
+            }];				
 			ret = NO;
 		}
 	}
