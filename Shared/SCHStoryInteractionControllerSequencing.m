@@ -26,7 +26,6 @@
 @property (nonatomic, retain) NSMutableDictionary *attachedImages;
 
 - (void)setView:(UIView *)view borderColor:(UIColor *)color;
-- (void)checkForAllCorrectAnswers;
 
 @end
 
@@ -90,76 +89,80 @@
     view.layer.masksToBounds = YES;
 }
 
-- (void)checkForAllCorrectAnswers
+- (BOOL)allAnswersAreCorrect
 {
     if ([self.attachedImages count] != kNumberOfImages) {
-        return;
+        return NO;
     }
     
-    BOOL allCorrect = YES;
     for (SCHStoryInteractionDraggableView *draggable in self.imageContainers) {
         SCHStoryInteractionDraggableTargetView *target = [self.attachedImages objectForKey:[NSNumber numberWithInteger:draggable.matchTag]];
         if (target.matchTag != draggable.matchTag) {
-            allCorrect = NO;
-            break;
+            return NO;
         }
     }
     
-    if (allCorrect) {
-        // get image views in answer order
-        NSArray *views = [self.imageContainers sortedArrayUsingComparator:^NSComparisonResult(id obj1, id obj2) {
-            return [(SCHStoryInteractionDraggableView *)obj1 matchTag] - [(SCHStoryInteractionDraggableView *)obj2 matchTag];
-        }];
+    return YES;
+}
 
-        [self enqueueAudioWithPath:@"sfx_win_y.mp3" fromBundle:YES];
-        
-        // play 'that's right'
-        SCHStoryInteractionSequencing *sequencing = (SCHStoryInteractionSequencing *)self.storyInteraction;
-        [self enqueueAudioWithPath:[sequencing audioPathForThatsRight]
-                        fromBundle:NO
-                        startDelay:0
-            synchronizedStartBlock:^{
-                self.controllerState = SCHStoryInteractionControllerStateInteractionFinishedSuccessfully;
-            }
-              synchronizedEndBlock:nil];
-        
-        // play all the answer audio files in turn
-        for (NSInteger index = 0; index < kNumberOfImages; ++index) {
-            [self enqueueAudioWithPath:[sequencing audioPathForCorrectAnswerAtIndex:index]
-                            fromBundle:NO
-                            startDelay:0.5
-                synchronizedStartBlock:^{
-                    [self setView:[[views objectAtIndex:index] viewWithTag:kImageViewTag] borderColor:[UIColor greenColor]];
-                    UILabel *label = [self.targetLabels objectAtIndex:index];
-                    label.textColor = [UIColor SCHGrayColor];
-                    label.backgroundColor = [UIColor SCHBlue2Color];
-                    label.layer.cornerRadius = 8;
-                }
-                  synchronizedEndBlock:^{
-                      if (index == kNumberOfImages-1) {
-                          [self removeFromHostView];
-                      }
-                  }];
+- (void)playCorrectAnswerSequence
+{
+    // get image views in answer order
+    NSArray *views = [self.imageContainers sortedArrayUsingComparator:^NSComparisonResult(id obj1, id obj2) {
+        return [(SCHStoryInteractionDraggableView *)obj1 matchTag] - [(SCHStoryInteractionDraggableView *)obj2 matchTag];
+    }];
+    
+    [self enqueueAudioWithPath:@"sfx_win_y.mp3" fromBundle:YES];
+    
+    // play 'that's right'
+    SCHStoryInteractionSequencing *sequencing = (SCHStoryInteractionSequencing *)self.storyInteraction;
+    [self enqueueAudioWithPath:[sequencing audioPathForThatsRight]
+                    fromBundle:NO
+                    startDelay:0
+        synchronizedStartBlock:^{
+            self.controllerState = SCHStoryInteractionControllerStateInteractionFinishedSuccessfully;
         }
-    } else {
-        self.controllerState = SCHStoryInteractionControllerStateInteractionReadingAnswerWithoutPause;
-        [self enqueueAudioWithPath:[self.storyInteraction audioPathForTryAgain]
+          synchronizedEndBlock:nil];
+    
+    // play all the answer audio files in turn
+    for (NSInteger index = 0; index < kNumberOfImages; ++index) {
+        [self enqueueAudioWithPath:[sequencing audioPathForCorrectAnswerAtIndex:index]
                         fromBundle:NO
-                        startDelay:0
-            synchronizedStartBlock:nil
+                        startDelay:0.5
+            synchronizedStartBlock:^{
+                [self setView:[[views objectAtIndex:index] viewWithTag:kImageViewTag] borderColor:[UIColor greenColor]];
+                UILabel *label = [self.targetLabels objectAtIndex:index];
+                label.textColor = [UIColor SCHGrayColor];
+                label.backgroundColor = [UIColor SCHBlue2Color];
+                label.layer.cornerRadius = 8;
+            }
               synchronizedEndBlock:^{
-                  self.controllerState = SCHStoryInteractionControllerStateInteractionInProgress;
-                  // move all images back to start
-                  for (SCHStoryInteractionDraggableView *draggable in self.imageContainers) {
-                      [draggable moveToHomePosition];
-                      [self setView:[draggable viewWithTag:kImageViewTag] borderColor:[UIColor blueColor]];
+                  if (index == kNumberOfImages-1) {
+                      [self removeFromHostView];
                   }
-                  for (SCHStoryInteractionDraggableTargetView *target in self.targets) {
-                      target.alpha = 1;
-                  }
-                  [self.attachedImages removeAllObjects];
               }];
     }
+}
+
+- (void)playIncorrectAnswerSequence
+{
+    self.controllerState = SCHStoryInteractionControllerStateInteractionReadingAnswerWithoutPause;
+    [self enqueueAudioWithPath:[self.storyInteraction audioPathForTryAgain]
+                    fromBundle:NO
+                    startDelay:0
+        synchronizedStartBlock:nil
+          synchronizedEndBlock:^{
+              self.controllerState = SCHStoryInteractionControllerStateInteractionInProgress;
+              // move all images back to start
+              for (SCHStoryInteractionDraggableView *draggable in self.imageContainers) {
+                  [draggable moveToHomePosition];
+                  [self setView:[draggable viewWithTag:kImageViewTag] borderColor:[UIColor blueColor]];
+              }
+              for (SCHStoryInteractionDraggableTargetView *target in self.targets) {
+                  target.alpha = 1;
+              }
+              [self.attachedImages removeAllObjects];
+          }];
 }
 
 #pragma mark - draggable view delegate
@@ -220,13 +223,22 @@ static CGFloat distanceSq(CGPoint imageCenter, CGPoint targetCenter)
     }
 
     [self.attachedImages setObject:attachedTarget forKey:[NSNumber numberWithInteger:draggableView.matchTag]];
+    BOOL allCorrect = [self allAnswersAreCorrect];
+    
+    self.controllerState = SCHStoryInteractionControllerStateInteractionReadingAnswerWithPause;
     
     [self enqueueAudioWithPath:@"sfx_dropOK.mp3"
                     fromBundle:YES
                     startDelay:0
         synchronizedStartBlock:nil
           synchronizedEndBlock:^{
-              [self checkForAllCorrectAnswers];
+              if (allCorrect) {
+                  [self playCorrectAnswerSequence];
+              } else if ([self.attachedImages count] == 3) {
+                  [self playIncorrectAnswerSequence];
+              } else {
+                  self.controllerState = SCHStoryInteractionControllerStateInteractionInProgress;
+              }
           }];
 }
 
@@ -247,7 +259,5 @@ static CGFloat distanceSq(CGPoint imageCenter, CGPoint targetCenter)
         [item setUserInteractionEnabled:YES];
     }
 }
-
-
 
 @end
