@@ -39,7 +39,14 @@
 - (enum SCHStoryInteractionQuestionPageAssociation)pageAssociationForPageSize:(CGSize)pageSize
 {
     CGRect leftPageRect = (CGRect){ CGPointZero, pageSize };
-    if (CGRectIntersectsRect(leftPageRect, hotSpotRect)) {
+    CGRect rightPageRect = CGRectMake(pageSize.width, 0, pageSize.width, pageSize.height);
+    
+    CGRect leftPageIntersection = CGRectIntersection(leftPageRect, hotSpotRect);
+    CGRect rightPageIntersection = CGRectIntersection(rightPageRect, hotSpotRect);
+    CGFloat leftPageIntersectionArea = CGRectGetWidth(leftPageIntersection)*CGRectGetHeight(leftPageIntersection);
+    CGFloat rightPageIntersectionArea = CGRectGetWidth(rightPageIntersection)*CGRectGetHeight(rightPageIntersection);
+    
+    if (leftPageIntersectionArea > rightPageIntersectionArea) {
         return SCHStoryInteractionQuestionOnLeftPage;
     } else {
         return SCHStoryInteractionQuestionOnRightPage;
