@@ -53,4 +53,6 @@ extern NSInteger const kSCHAuthenticationManagerLoginError;
 
 - (void)forceDeregistrationWithCompletionBlock:(SCHDrmDeregistrationSuccessBlock)completionBlock;
 
+- (void)expireToken;
+
 @end
