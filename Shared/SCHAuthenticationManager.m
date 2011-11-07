@@ -393,9 +393,22 @@ NSTimeInterval const kSCHAuthenticationManagerSecondsInAMinute = 60.0;
     NSAssert([NSThread isMainThread] == YES, @"SCHAuthenticationManager::aTokenOnMainThread MUST be executed on the main thread");
     
     if([tokenExpires compare:[NSDate date]] == NSOrderedAscending) {
-        [aToken release], aToken = nil;
-        self.tokenExpires = nil;        
+        [self expireToken];
     }
+}
+
+- (void)expireToken
+{
+    
+    if (![NSThread isMainThread]) {
+        dispatch_sync(dispatch_get_main_queue(), ^{
+            [self expireToken];
+        });
+        return;
+    }
+    
+    self.tokenExpires = nil;
+    self.aToken = nil;
 }
 
 - (void)isAuthenticatedOnMainThread:(NSValue *)returnValue
@@ -521,8 +534,7 @@ NSTimeInterval const kSCHAuthenticationManagerSecondsInAMinute = 60.0;
     
     NSString *username = [[NSUserDefaults standardUserDefaults] stringForKey:kSCHAuthenticationManagerUsername];	
     
-    self.aToken = nil;
-    self.tokenExpires = nil;        
+    [self expireToken];       
 
     [[NSUserDefaults standardUserDefaults] removeObjectForKey:kSCHAuthenticationManagerDeviceKey];
 
@@ -630,8 +642,7 @@ NSTimeInterval const kSCHAuthenticationManagerSecondsInAMinute = 60.0;
 	} else if (([method compare:kSCHLibreAccessWebServiceAuthenticateDevice] == NSOrderedSame) ||
                ([method compare:kSCHLibreAccessWebServiceRenewToken] == NSOrderedSame)) {
                   
-        self.aToken = nil;
-        self.tokenExpires = nil;
+        [self expireToken];
         
         if ([method isEqualToString:kSCHLibreAccessWebServiceAuthenticateDevice] && deviceIsDeregistered) {
             
@@ -689,8 +700,7 @@ NSTimeInterval const kSCHAuthenticationManagerSecondsInAMinute = 60.0;
             }
         } else if ([method compare:kSCHLibreAccessWebServiceAuthenticateDevice] == NSOrderedSame) {
                 
-            self.aToken = nil;
-            self.tokenExpires = nil;     
+            [self expireToken];     
             
             if (deviceIsDeregistered) {
                 
@@ -709,8 +719,7 @@ NSTimeInterval const kSCHAuthenticationManagerSecondsInAMinute = 60.0;
                 [self authenticationDidSucceedWithOfflineMode:YES];
             }
         } else if ([method compare:kSCHLibreAccessWebServiceRenewToken] == NSOrderedSame) {	
-            self.aToken = nil;
-            self.tokenExpires = nil;
+            [self expireToken];
             
             [self authenticationDidSucceedWithOfflineMode:YES];
         }
