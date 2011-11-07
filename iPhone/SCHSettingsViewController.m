@@ -179,8 +179,6 @@ extern NSString * const kSCHAuthenticationManagerDeviceKey;
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
-- (void)registerObje
-
 #pragma mark - Button states
 
 - (void)updateSpaceSaverButton
