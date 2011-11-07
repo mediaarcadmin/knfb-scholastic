@@ -293,6 +293,10 @@
 		28EAA5FE13F986D00040EF3A /* storyinteraction-jigsaw-scroller-overlay~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = 28EAA5FB13F986D00040EF3A /* storyinteraction-jigsaw-scroller-overlay~iphone.png */; };
 		28EEBFDD1118E19E00187D67 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 28EEBFDC1118E19E00187D67 /* CoreData.framework */; };
 		28EEC04B1118E28000187D67 /* AppDelegate_Shared.m in Sources */ = {isa = PBXBuildFile; fileRef = 28EEC04A1118E28000187D67 /* AppDelegate_Shared.m */; };
+		28EF28001462D40800DD1939 /* SCHBookStoryInteractionsTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 28EF27FF1462D40800DD1939 /* SCHBookStoryInteractionsTests.m */; };
+		28EF28031462D51100DD1939 /* SCHBookStoryInteractions+XPS.m in Sources */ = {isa = PBXBuildFile; fileRef = 28EF28021462D51000DD1939 /* SCHBookStoryInteractions+XPS.m */; };
+		28EF28041462D51100DD1939 /* SCHBookStoryInteractions+XPS.m in Sources */ = {isa = PBXBuildFile; fileRef = 28EF28021462D51000DD1939 /* SCHBookStoryInteractions+XPS.m */; };
+		28EF28051462D76100DD1939 /* SCHDictionaryOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = F82F913D145943B000F609F9 /* SCHDictionaryOperation.m */; };
 		28F689C713B0E616008A9BF9 /* SCHStoryInteractionHotSpot_iPhone.xib in Resources */ = {isa = PBXBuildFile; fileRef = 28F689C613B0E616008A9BF9 /* SCHStoryInteractionHotSpot_iPhone.xib */; };
 		28F689CB13B0F305008A9BF9 /* storyinteraction-bg-younger-titleonly~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = 28F689C913B0F305008A9BF9 /* storyinteraction-bg-younger-titleonly~iphone.png */; };
 		28F689CD13B0F305008A9BF9 /* storyinteraction-bg-younger-titleonly@2x~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = 28F689CA13B0F305008A9BF9 /* storyinteraction-bg-younger-titleonly@2x~iphone.png */; };
@@ -2207,6 +2211,7 @@
 		2815719413EFDE120071B73C /* SCHStoryInteractionWordBird.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCHStoryInteractionWordBird.h; sourceTree = "<group>"; };
 		2815719513EFDE120071B73C /* SCHStoryInteractionWordBird.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCHStoryInteractionWordBird.m; sourceTree = "<group>"; };
 		2815719913EFE95C0071B73C /* StoryInteractionWordBird1.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = StoryInteractionWordBird1.xml; sourceTree = "<group>"; };
+		2816F4E314633B760087785E /* SCHBookStoryInteractionsDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCHBookStoryInteractionsDelegate.h; sourceTree = "<group>"; };
 		28194A6B13C1BF2600E3DBE2 /* AppDelegate_Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AppDelegate_Private.h; path = Shared/AppDelegate_Private.h; sourceTree = "<group>"; };
 		281B74AE13DEED4900BA157C /* SCHBookUpdates.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHBookUpdates.h; path = Shared/SCHBookUpdates.h; sourceTree = "<group>"; };
 		281B74AF13DEED4900BA157C /* SCHBookUpdates.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHBookUpdates.m; path = Shared/SCHBookUpdates.m; sourceTree = "<group>"; };
@@ -2516,6 +2521,10 @@
 		28EEBFDC1118E19E00187D67 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
 		28EEC0491118E28000187D67 /* AppDelegate_Shared.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AppDelegate_Shared.h; path = Shared/AppDelegate_Shared.h; sourceTree = "<group>"; };
 		28EEC04A1118E28000187D67 /* AppDelegate_Shared.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AppDelegate_Shared.m; path = Shared/AppDelegate_Shared.m; sourceTree = "<group>"; };
+		28EF27FF1462D40800DD1939 /* SCHBookStoryInteractionsTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCHBookStoryInteractionsTests.m; sourceTree = "<group>"; };
+		28EF28011462D51000DD1939 /* SCHBookStoryInteractions+XPS.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "SCHBookStoryInteractions+XPS.h"; sourceTree = "<group>"; };
+		28EF28021462D51000DD1939 /* SCHBookStoryInteractions+XPS.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "SCHBookStoryInteractions+XPS.m"; sourceTree = "<group>"; };
+		28EF28061462E15600DD1939 /* SCHStoryInteractionPageAssociation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCHStoryInteractionPageAssociation.h; sourceTree = "<group>"; };
 		28F689C613B0E616008A9BF9 /* SCHStoryInteractionHotSpot_iPhone.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SCHStoryInteractionHotSpot_iPhone.xib; sourceTree = "<group>"; };
 		28F689C913B0F305008A9BF9 /* storyinteraction-bg-younger-titleonly~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "storyinteraction-bg-younger-titleonly~iphone.png"; sourceTree = "<group>"; };
 		28F689CA13B0F305008A9BF9 /* storyinteraction-bg-younger-titleonly@2x~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "storyinteraction-bg-younger-titleonly@2x~iphone.png"; sourceTree = "<group>"; };
@@ -3814,8 +3823,12 @@
 		28024769139F7F3500B73703 /* Common */ = {
 			isa = PBXGroup;
 			children = (
+				28EF28061462E15600DD1939 /* SCHStoryInteractionPageAssociation.h */,
+				2816F4E314633B760087785E /* SCHBookStoryInteractionsDelegate.h */,
 				28A60F5813968B8B0090853E /* SCHBookStoryInteractions.h */,
 				28A60F5913968B8C0090853E /* SCHBookStoryInteractions.m */,
+				28EF28011462D51000DD1939 /* SCHBookStoryInteractions+XPS.h */,
+				28EF28021462D51000DD1939 /* SCHBookStoryInteractions+XPS.m */,
 				28A08CC613950C01006FD008 /* SCHStoryInteraction.h */,
 				28A08CC713950C01006FD008 /* SCHStoryInteraction.m */,
 				28A08CCC13950C01006FD008 /* SCHStoryInteractionParser.h */,
@@ -4032,6 +4045,7 @@
 				2869896D13B723C300C08908 /* SCHSemaphoreGroup.h */,
 				2869896E13B723C300C08908 /* SCHSemaphoreGroup.m */,
 				28A08D0813952CB4006FD008 /* SCHStoryInteractionParserTests.m */,
+				28EF27FF1462D40800DD1939 /* SCHBookStoryInteractionsTests.m */,
 				28A60F1A139676180090853E /* SCHStoryInteractionFullExampleTests.m */,
 				28E9B98513A0F6730056874F /* SCHStoryInteractionWordSearchTests.m */,
 				286E21A813AC851700CB4232 /* SCHQueuedAudioPlayerTests.m */,
@@ -8172,6 +8186,7 @@
 				281CC41714581D570049F736 /* SCHAppDictionaryManifestEntry.m in Sources */,
 				F82F913E145943B000F609F9 /* SCHDictionaryOperation.m in Sources */,
 				280DA9D2145AB3C300583695 /* SCHUnqueuedAudioPlayer.m in Sources */,
+				28EF28031462D51100DD1939 /* SCHBookStoryInteractions+XPS.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -8231,6 +8246,8 @@
 				281CC40F1458002C0049F736 /* SCHDictionaryWordForm.m in Sources */,
 				281CC414145806F80049F736 /* SCHHelpVideoManifest.m in Sources */,
 				281CC41914581D570049F736 /* SCHAppDictionaryManifestEntry.m in Sources */,
+				28EF28001462D40800DD1939 /* SCHBookStoryInteractionsTests.m in Sources */,
+				28EF28051462D76100DD1939 /* SCHDictionaryOperation.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -8546,6 +8563,7 @@
 				281CC41814581D570049F736 /* SCHAppDictionaryManifestEntry.m in Sources */,
 				F82F913F145943B000F609F9 /* SCHDictionaryOperation.m in Sources */,
 				280DA9D3145AB3C300583695 /* SCHUnqueuedAudioPlayer.m in Sources */,
+				28EF28041462D51100DD1939 /* SCHBookStoryInteractions+XPS.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

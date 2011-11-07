@@ -17,6 +17,7 @@
 
 @property (nonatomic, retain) UIView *answerMarkerView;
 @property (nonatomic, copy) dispatch_block_t zoomCompletionHandler;
+@property (nonatomic, retain) NSArray *questions;
 
 - (CGAffineTransform)viewToPageTransform;
 - (SCHStoryInteractionHotSpotQuestion *)currentQuestion;
@@ -31,6 +32,7 @@
 @synthesize pageImageView;
 @synthesize answerMarkerView;
 @synthesize zoomCompletionHandler;
+@synthesize questions;
 
 - (void)dealloc
 {
@@ -52,14 +54,9 @@
     return NO;
 }
 
-- (BOOL)shouldPresentInPortraitOrientation
-{
-    return NO;
-}
-
 - (CGAffineTransform)viewToPageTransform
 {
-    return [self.delegate viewToPageTransformForLayoutPage:self.storyInteraction.documentPageNumber];
+    return [self.delegate viewToPageTransform];
 }
 
 - (SCHFrameStyle)frameStyleForViewAtIndex:(NSInteger)viewIndex
@@ -75,17 +72,24 @@
 
 - (CGRect)overlaidTitleFrame
 {
+    const BOOL landscape = UIInterfaceOrientationIsLandscape(self.interfaceOrientation);
+    
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
-        return CGRectMake(172, 40, 680, 152);
+        return CGRectMake(landscape ? 172 : 44, 40, 680, 152);
     } else {
-        return CGRectMake(0, 0, 480, 64);
+        return CGRectMake(0, 0, landscape ? 480 : 320, 64);
     }
 }
 
 - (SCHStoryInteractionHotSpotQuestion *)currentQuestion
 {
+    if (questions == nil) {
+        CGSize pageSize = CGRectApplyAffineTransform([self hostView].bounds, [self viewToPageTransform]).size;
+        self.questions = [(SCHStoryInteractionHotSpot *)self.storyInteraction questionsWithPageAssociation:self.pageAssociation
+                                                                                                  pageSize:pageSize];
+    }
     NSInteger currentQuestionIndex = [self.delegate currentQuestionForStoryInteraction];
-    return [[(SCHStoryInteractionHotSpot *)self.storyInteraction questions] objectAtIndex:currentQuestionIndex];
+    return [questions objectAtIndex:currentQuestionIndex];
 }
 
 - (NSString *)audioPathForQuestion
@@ -146,6 +150,11 @@
 
 - (CGPoint)viewToPage:(CGPoint)pointInView;
 {
+    // if presented on right page only, translate the tapped point as if the left page was present
+    if (self.pageAssociation == SCHStoryInteractionQuestionOnRightPage) {
+        pointInView.x += CGRectGetWidth(self.hostView.bounds);
+    }
+    
     return CGPointApplyAffineTransform(pointInView, [self viewToPageTransform]);
 }
 

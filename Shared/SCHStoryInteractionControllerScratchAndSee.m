@@ -172,7 +172,7 @@ enum ScratchState {
 
 - (BOOL)shouldPlayQuestionAudioForViewAtIndex:(NSInteger)screenIndex
 {
-    BOOL completed = [self.storyInteraction.bookStoryInteractions storyInteractionsFinishedOnPage:self.storyInteraction.documentPageNumber];
+    BOOL completed = [self.storyInteraction.bookStoryInteractions allQuestionsCompletedForStoryInteraction:self.storyInteraction];
     return !completed && self.currentQuestionIndex == 0;
 }
 

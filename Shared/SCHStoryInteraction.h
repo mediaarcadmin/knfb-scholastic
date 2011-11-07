@@ -7,6 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "SCHStoryInteractionPageAssociation.h"
 #import "KNFBXPSConstants.h"
 
 @class SCHXPSProvider;
@@ -55,7 +56,16 @@
 - (NSString *)storyInteractionRevealSoundFilename;
 
 // returns the number of questions contained within the interaction
-// overridden in SCHStoryInteractionMultipleChoice subclass; this class returns 1.
+// - should be overidden in subclasses
 - (NSInteger)questionCount;
+
+// where questions are split across pages, the page associated with each question index
+// - should be overidden in subclasses
+- (enum SCHStoryInteractionQuestionPageAssociation)pageAssociationForQuestionAtIndex:(NSInteger)questionIndex
+                                                                        withPageSize:(CGSize)pageSize;
+
+- (BOOL)hasQuestionsOnLeftPageForPageSize:(CGSize)pageSize;
+- (BOOL)hasQuestionsOnRightPageForPageSize:(CGSize)pageSize;
+- (NSInteger)numberOfQuestionsWithPageAssociation:(enum SCHStoryInteractionQuestionPageAssociation)pageAssociation withPageSize:(CGSize)pageSize;
 
 @end

@@ -36,6 +36,16 @@
     }
 }
 
+- (enum SCHStoryInteractionQuestionPageAssociation)pageAssociationForPageSize:(CGSize)pageSize
+{
+    CGRect leftPageRect = (CGRect){ CGPointZero, pageSize };
+    if (CGRectIntersectsRect(leftPageRect, hotSpotRect)) {
+        return SCHStoryInteractionQuestionOnLeftPage;
+    } else {
+        return SCHStoryInteractionQuestionOnRightPage;
+    }
+}
+
 - (NSString *)audioPathForQuestion
 {
     NSString *filename = [NSString stringWithFormat:@"%@_q%d.mp3", self.storyInteraction.ID, self.questionIndex+1];
@@ -76,5 +86,25 @@
 {
     return [self.questions count];
 }
+
+- (NSArray *)questionsWithPageAssociation:(enum SCHStoryInteractionQuestionPageAssociation)pageAssociation
+                                 pageSize:(CGSize)pageSize
+{
+    NSMutableArray *result = [NSMutableArray array];
+    for (SCHStoryInteractionHotSpotQuestion *question in self.questions) {
+        if (pageAssociation == SCHStoryInteractionQuestionOnBothPages || pageAssociation == [question pageAssociationForPageSize:pageSize]) {
+            [result addObject:question];
+        }
+    }
+    return [NSArray arrayWithArray:result];
+}
+
+- (enum SCHStoryInteractionQuestionPageAssociation)pageAssociationForQuestionAtIndex:(NSInteger)questionIndex
+                                                                        withPageSize:(CGSize)pageSize
+{
+    SCHStoryInteractionHotSpotQuestion *question = [self.questions objectAtIndex:questionIndex];
+    return [question pageAssociationForPageSize:pageSize];
+}
+
 
 @end

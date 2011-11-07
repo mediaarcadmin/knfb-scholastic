@@ -49,6 +49,12 @@
     return NO;
 }
 
+- (enum SCHStoryInteractionQuestionPageAssociation)pageAssociationForQuestionAtIndex:(NSInteger)questionIndex
+                                                                        withPageSize:(CGSize)pageSize
+{
+    return SCHStoryInteractionQuestionOnBothPages;
+}
+
 - (NSInteger)questionCount
 {
     return 1;
@@ -110,5 +116,38 @@
     return @"sfx_youReveal.mp3";
 }
 
+- (BOOL)hasQuestionsOnLeftPageForPageSize:(CGSize)pageSize
+{
+    NSInteger questionCount = [self questionCount];
+    for (NSInteger questionIndex = 0; questionIndex < questionCount; ++questionIndex) {
+        if ([self pageAssociationForQuestionAtIndex:questionIndex withPageSize:pageSize] == SCHStoryInteractionQuestionOnLeftPage) {
+            return YES;
+        }
+    }
+    return NO;
+}
+
+- (BOOL)hasQuestionsOnRightPageForPageSize:(CGSize)pageSize
+{
+    NSInteger questionCount = [self questionCount];
+    for (NSInteger questionIndex = 0; questionIndex < questionCount; ++questionIndex) {
+        if ([self pageAssociationForQuestionAtIndex:questionIndex withPageSize:pageSize] == SCHStoryInteractionQuestionOnRightPage) {
+            return YES;
+        }
+    }
+    return NO;
+}
+
+- (NSInteger)numberOfQuestionsWithPageAssociation:(enum SCHStoryInteractionQuestionPageAssociation)pageAssociation withPageSize:(CGSize)pageSize
+{
+    NSInteger count = 0;
+    NSInteger questionCount = [self questionCount];
+    for (NSInteger questionIndex = 0; questionIndex < questionCount; ++questionIndex) {
+        if ([self pageAssociationForQuestionAtIndex:questionIndex withPageSize:pageSize] == pageAssociation) {
+            count++;
+        }
+    }
+    return count;
+}
 
 @end

@@ -21,6 +21,7 @@
 
 @interface SCHStoryInteractionController ()
 
+@property (nonatomic, retain) UIView *hostView;
 @property (nonatomic, retain) NSArray *nibObjects;
 @property (nonatomic, assign) NSInteger currentScreenIndex;
 @property (nonatomic, retain) UIButton *closeButton;
@@ -45,6 +46,7 @@
 @synthesize titleView;
 @synthesize closeButton;
 @synthesize readAloudButton;
+@synthesize hostView;
 @synthesize nibObjects;
 @synthesize currentScreenIndex;
 @synthesize contentsView;
@@ -56,6 +58,7 @@
 @synthesize audioPlayer;
 @synthesize shadeView;
 @synthesize controllerState;
+@synthesize pageAssociation;
 
 static Class controllerClassForStoryInteraction(SCHStoryInteraction *storyInteraction)
 {
@@ -198,15 +201,17 @@ static Class controllerClassForStoryInteraction(SCHStoryInteraction *storyIntera
     }
 }
 
-- (void)presentInHostView:(UIView *)hostView withInterfaceOrientation:(UIInterfaceOrientation)aInterfaceOrientation
+- (void)presentInHostView:(UIView *)aHostView withInterfaceOrientation:(UIInterfaceOrientation)aInterfaceOrientation
 {
+    self.hostView = aHostView;
+
     // dim the host view
     if (![self currentFrameStyleOverlaysContents] && self.shadeView == nil) {
-        UIView *shade = [[UIView alloc] initWithFrame:hostView.bounds];
+        UIView *shade = [[UIView alloc] initWithFrame:aHostView.bounds];
         shade.backgroundColor = [UIColor colorWithWhite:0 alpha:0.5];
         shade.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
         self.shadeView = shade;
-        [hostView addSubview:shade];
+        [aHostView addSubview:shade];
         [shade release];
     }
 
@@ -253,7 +258,7 @@ static Class controllerClassForStoryInteraction(SCHStoryInteraction *storyIntera
         [container release];
         [background release];
         
-        [hostView addSubview:self.containerView];
+        [aHostView addSubview:self.containerView];
     }
 
     if (questionAudioPath) {
@@ -491,10 +496,11 @@ static Class controllerClassForStoryInteraction(SCHStoryInteraction *storyIntera
         case SCHStoryInteractionTitleOverlaysContentsAtTop: {
             CGRect titleFrame = [self overlaidTitleFrame];
             backgroundWidth = MAX(background.image.size.width, titleFrame.size.width);
-            backgroundHeight = MAX(background.image.size.height, titleFrame.size.height);
             if (iPad) {
+                backgroundHeight = MAX(background.image.size.height, titleFrame.size.height);
                 background.center = CGPointMake(floorf(CGRectGetMidX(titleFrame)), floorf(CGRectGetMidY(titleFrame)));
             } else {
+                backgroundHeight = CGRectGetHeight(container.bounds);
                 background.center = CGPointMake(CGRectGetMidX(container.bounds), CGRectGetMidY(container.bounds));
             }
             background.bounds = CGRectIntegral(CGRectMake(0, 0, backgroundWidth, backgroundHeight));
@@ -511,10 +517,11 @@ static Class controllerClassForStoryInteraction(SCHStoryInteraction *storyIntera
         case SCHStoryInteractionTitleOverlaysContentsAtBottom: {
             CGRect titleFrame = [self overlaidTitleFrame];
             backgroundWidth = MAX(background.image.size.width, titleFrame.size.width);
-            backgroundHeight = MAX(background.image.size.height, titleFrame.size.height);
             if (iPad) {
+                backgroundHeight = MAX(background.image.size.height, titleFrame.size.height);
                 background.center = CGPointMake(floorf(CGRectGetMidX(titleFrame)), floorf(CGRectGetHeight(container.bounds)-CGRectGetMidY(titleFrame)));
             } else {
+                backgroundHeight = CGRectGetHeight(container.bounds);
                 background.center = CGPointMake(CGRectGetMidX(container.bounds), CGRectGetMidY(container.bounds));
             }
             background.transform = CGAffineTransformMakeRotation(M_PI);
@@ -826,17 +833,6 @@ static Class controllerClassForStoryInteraction(SCHStoryInteraction *storyIntera
     return (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad);
 }
 
-- (BOOL)supportsAutoRotation
-{
-    return YES;
-}
-
-- (BOOL)shouldPresentInPortraitOrientation
-{
-    // only meaningful if supportsAutoRotation is NO
-    return NO;
-}
-
 - (BOOL)shouldShowCloseButtonForViewAtIndex:(NSInteger)screenIndex
 {
     return YES;
@@ -845,6 +841,11 @@ static Class controllerClassForStoryInteraction(SCHStoryInteraction *storyIntera
 - (BOOL)shouldAnimateTransitionBetweenViews
 {
     return (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad);
+}
+
+- (BOOL)supportsAutoRotation
+{
+    return YES;
 }
 
 - (void)rotateToOrientation:(UIInterfaceOrientation)orientation
