@@ -203,7 +203,12 @@ managedObjectContext:(NSManagedObjectContext *)managedObjectContext
 {
     if (!newSuperview) {
         [self detachSelector];
-    } else {
+    }
+}
+
+- (void)didMoveToSuperview
+{
+    if (self.superview) {
         [self.delegate readingViewWillAppear:self];
     }
 }

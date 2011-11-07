@@ -512,7 +512,7 @@
                 break;
             case SCHBookProcessingStateDownloadPaused:
                 NSLog(@"Setting paused.");
-                self.progressView.alpha = 0.75f;
+                self.progressView.alpha = 0.0f;
                 self.bookTintView.hidden = NO;
                 self.progressView.hidden = NO;
                 self.errorBadge.hidden = YES;

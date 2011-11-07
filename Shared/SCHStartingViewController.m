@@ -465,6 +465,10 @@ typedef enum {
     if ([self bookshelfSetupRequired]) {
         // Force the view to load from the nib without requiring the run loop to complete
         [self view];
+        
+        // Start the sync in case they have been set up since last sync
+        [[SCHSyncManager sharedSyncManager] firstSync:YES];
+        
         [self checkBookshelvesAndDictionaryDownloadForProfile:animated];
     } else {
         [self showCurrentProfileAnimated:animated];

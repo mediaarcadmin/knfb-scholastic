@@ -96,8 +96,12 @@ NSString * const SCHContentSyncComponentDidFailNotification = @"SCHContentSyncCo
                 [[SCHAuthenticationManager sharedAuthenticationManager] authenticateWithSuccessBlock:^(BOOL offlineMode){
                     if (!offlineMode) {
                         [self.delegate authenticationDidSucceed];
+                    } else {
+                        self.isSynchronizing = NO;
                     }
-                } failureBlock:nil];				
+                } failureBlock:^(NSError *error){
+                    self.isSynchronizing = NO;
+                }];				
             }
         } else if([method compare:kSCHLibreAccessWebServiceListUserContent] == NSOrderedSame) {
             NSArray *content = [result objectForKey:kSCHLibreAccessWebServiceUserContentList];
@@ -150,8 +154,12 @@ NSString * const SCHContentSyncComponentDidFailNotification = @"SCHContentSyncCo
 			[[SCHAuthenticationManager sharedAuthenticationManager] authenticateWithSuccessBlock:^(BOOL offlineMode){
                 if (!offlineMode) {
                     [self.delegate authenticationDidSucceed];
+                } else {
+                    self.isSynchronizing = NO;
                 }
-            } failureBlock:nil];				
+            } failureBlock:^(NSError *error){
+                self.isSynchronizing = NO;
+            }];					
 			ret = NO;			
 		}		
 	} else {
@@ -160,8 +168,12 @@ NSString * const SCHContentSyncComponentDidFailNotification = @"SCHContentSyncCo
 			[[SCHAuthenticationManager sharedAuthenticationManager] authenticateWithSuccessBlock:^(BOOL offlineMode){
                 if (!offlineMode) {
                     [self.delegate authenticationDidSucceed];
+                } else {
+                    self.isSynchronizing = NO;
                 }
-            } failureBlock:nil];				
+            } failureBlock:^(NSError *error){
+                self.isSynchronizing = NO;
+            }];				
 			ret = NO;
 		}
 	}
@@ -390,7 +402,10 @@ NSString * const SCHContentSyncComponentDidFailNotification = @"SCHContentSyncCo
         newAppContentProfileItem.ISBN = bookIdentifier.isbn;       
         newAppContentProfileItem.DRMQualifier = bookIdentifier.DRMQualifier;
         newAppContentProfileItem.ContentProfileItem = ret;
-        
+        if ([ret.LastPageLocation integerValue] > 0) {
+            newAppContentProfileItem.IsNewBook = [NSNumber numberWithBool:NO];
+        }
+
         NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
         [fetchRequest setEntity:[NSEntityDescription entityForName:kSCHProfileItem 
                                             inManagedObjectContext:self.managedObjectContext]];	
@@ -603,6 +618,10 @@ NSString * const SCHContentSyncComponentDidFailNotification = @"SCHContentSyncCo
         
         localContentProfileItem.ProfileID = [self makeNullNil:[webContentProfileItem objectForKey:kSCHLibreAccessWebServiceProfileID]];
         localContentProfileItem.LastPageLocation = [self makeNullNil:[webContentProfileItem objectForKey:kSCHLibreAccessWebServiceLastPageLocation]];
+        if ([localContentProfileItem.AppContentProfileItem.IsNewBook boolValue] == YES &&
+            [localContentProfileItem.LastPageLocation integerValue] > 0) {
+            localContentProfileItem.AppContentProfileItem.IsNewBook = [NSNumber numberWithBool:NO];
+        }
     }
 }
 

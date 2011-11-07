@@ -272,8 +272,12 @@ NSString * const SCHAnnotationSyncComponentCompletedProfileIDs = @"SCHAnnotation
         [[SCHAuthenticationManager sharedAuthenticationManager] authenticateWithSuccessBlock:^(BOOL offlineMode){
             if (!offlineMode) {
                 [self.delegate authenticationDidSucceed];
+            } else {
+                self.isSynchronizing = NO;
             }
-        } failureBlock:nil];
+        } failureBlock:^(NSError *error){
+            self.isSynchronizing = NO;
+        }];	
     }            
 }
 
@@ -388,8 +392,12 @@ NSString * const SCHAnnotationSyncComponentCompletedProfileIDs = @"SCHAnnotation
             [[SCHAuthenticationManager sharedAuthenticationManager] authenticateWithSuccessBlock:^(BOOL offlineMode){
                 if (!offlineMode) {
                     [self.delegate authenticationDidSucceed];
+                } else {
+                    self.isSynchronizing = NO;
                 }
-            } failureBlock:nil];				
+            } failureBlock:^(NSError *error){
+                self.isSynchronizing = NO;
+            }];				
             ret = NO;
         }
     } else if ([self.annotations count] > 0) {
@@ -399,8 +407,12 @@ NSString * const SCHAnnotationSyncComponentCompletedProfileIDs = @"SCHAnnotation
             [[SCHAuthenticationManager sharedAuthenticationManager] authenticateWithSuccessBlock:^(BOOL offlineMode){
                 if (!offlineMode) {
                     [self.delegate authenticationDidSucceed];
+                } else {
+                    self.isSynchronizing = NO;
                 }
-            } failureBlock:nil];				
+            } failureBlock:^(NSError *error){
+                self.isSynchronizing = NO;
+            }];					
             ret = NO;
         }
     } else {
