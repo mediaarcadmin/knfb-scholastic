@@ -906,6 +906,11 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
         SCHLastPage *lastPage = [self.bookAnnotations lastPage];
         
         lastPage.LastPageLocation = [NSNumber numberWithInteger:currentBookPoint.layoutPage];
+
+        SCHAppContentProfileItem *appContentProfileItem = [self.profile appContentProfileItemForBookIdentifier:self.bookIdentifier];
+        if ([appContentProfileItem.IsNewBook boolValue] == YES) {
+            appContentProfileItem.IsNewBook = [NSNumber numberWithBool:NO];
+        }
     }
 }
 
@@ -1978,7 +1983,9 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 
 - (void)readingViewWillAppear: (SCHReadingView *) aReadingView
 {
-    if (aReadingView.superview == self.view) {
+    // ignore while the reading view is attached to the SI view controller
+    // TODO: need to investigate further first run when superview is nil
+    if ((self.storyInteractionController == nil && aReadingView.superview == nil) || aReadingView.superview == self.view) {
         [self jumpToLastPageLocation];
     }
 }
@@ -2647,8 +2654,8 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
                                                         pageWordOffset:0
                                                   includingFolioBlocks:YES];
     
-    void (^presentStoryInteractionBlock)(void) = ^{
-        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, NSEC_PER_SEC * 0.1), dispatch_get_main_queue(), ^{
+    void (^presentStoryInteractionAfterDelay)(NSTimeInterval) = ^(NSTimeInterval delay) {
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, NSEC_PER_SEC * delay), dispatch_get_main_queue(), ^{
             [self presentStoryInteraction:storyInteraction];
         });
     };
@@ -2656,9 +2663,11 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     void (^jumpToPageAndPresentStoryInteractionBlock)(void) = ^{
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, NSEC_PER_SEC * 0.1), dispatch_get_main_queue(), ^{
             if ([[self.readingView currentBookPoint] isEqual:notePoint] == NO) {
-                [self.readingView jumpToBookPoint:notePoint animated:YES withCompletionHandler:presentStoryInteractionBlock];
+                [self.readingView jumpToBookPoint:notePoint animated:YES withCompletionHandler:^{
+                    presentStoryInteractionAfterDelay(1.2);
+                }];
             } else {
-                presentStoryInteractionBlock();
+                presentStoryInteractionAfterDelay(0.1);
             }
         });
     };

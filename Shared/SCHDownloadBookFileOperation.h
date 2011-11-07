@@ -8,15 +8,14 @@
 
 #import <Foundation/Foundation.h>
 #import "SCHBookOperation.h"
+#import "QHTTPOperation.h"
 
 typedef enum {
 	kSCHDownloadFileTypeXPSBook = 0,
 	kSCHDownloadFileTypeCoverImage
 } kSCHDownloadFileType;
 
-@interface SCHDownloadBookFileOperation : SCHBookOperation {
-
-}
+@interface SCHDownloadBookFileOperation : SCHBookOperation <QHTTPOperationDelegate>
 
 @property BOOL resume;
 @property kSCHDownloadFileType fileType;
