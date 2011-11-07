@@ -28,6 +28,7 @@
 - (BOOL)stringBeginsWithHTTPScheme:(NSString *)string;
 - (NSString *)fullPathToBundledFile:(NSString *)fileName;
 - (void)completedDownload;
+- (NSData *)jpegEOF;
 
 @end
 
@@ -106,7 +107,7 @@
             if (error != nil) {
                 NSLog(@"Error copying XPS file from bundle: %@, %@", error, [error userInfo]);
             } 
-            
+                        
             [self completedDownload];	
             [bookFileURL release];            
             return;
@@ -145,6 +146,8 @@
                 NSLog(@"Error copying cover file from bundle: %@, %@", error, [error userInfo]);
             } 
             
+            self.lastTwoBytes = [self jpegEOF];
+
             [self completedDownload];
             [bookDirectory release];
             [contentIdentifier release];
@@ -284,8 +287,19 @@
         }
     } 
     
-    NSLog(@"Filesize receiving:%llu expected:%llu", self.currentFilesize, [response expectedContentLength]);
+    NSLog(@"Filesize receiving:%llu expected:%llu for file %@", self.currentFilesize, [response expectedContentLength], self.localPath);
     
+    NSFileManager *manager = [[NSFileManager alloc] init];
+    
+    if ([manager fileExistsAtPath:self.localPath]) {
+        if ([[[manager attributesOfItemAtPath:[self localPath] error:nil] valueForKey:@"NSFileSize"] intValue] > 0) {
+            if ([(NSHTTPURLResponse *)response statusCode] != 206) {
+                NSLog(@"WOOOOOOOOOOOAAAAAAAAHHHHHH DUUUUUUUUDE! We already have a partial file there");
+            }
+        }
+    }
+    [manager release];
+
     self.fileHandle = [NSFileHandle fileHandleForWritingAtPath:self.localPath];
     [self.fileHandle seekToEndOfFile];
 }
@@ -380,14 +394,7 @@
                 validImage = NO;
             }
             
-            // these two bytes are the JPEG End Of Image Marker (EOI)
-            // reference: http://www.fileformat.info/format/jpeg/egff.htm
-            const char bytes[] = "\xff\xd9";
-            // string literals have implicit trailing '\0'
-            size_t length = (sizeof bytes) - 1; 
-            
-            // create a NSData matching the bytes
-            NSData *jpegEOF = [NSData dataWithBytes:bytes length:length];
+            NSData *jpegEOF = [self jpegEOF];
             
             // if the last two bytes don't match the EOI marker, the image is invalid
             if (![jpegEOF isEqualToData:self.lastTwoBytes]) {
@@ -452,6 +459,18 @@
     self.fileHandle = nil;
     [self setIsProcessing:NO];            
     [self endOperation];
+}
+
+- (NSData *)jpegEOF
+{
+    // these two bytes are the JPEG End Of Image Marker (EOI)
+    // reference: http://www.fileformat.info/format/jpeg/egff.htm
+    const char bytes[] = "\xff\xd9";
+    // string literals have implicit trailing '\0'
+    size_t length = (sizeof bytes) - 1; 
+    
+    // create a NSData matching the bytes
+    return [NSData dataWithBytes:bytes length:length];
 }
 
 @end
