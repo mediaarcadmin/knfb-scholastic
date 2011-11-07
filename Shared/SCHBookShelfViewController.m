@@ -941,7 +941,6 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 131;
             self.updateShelfOnReturnToShelf = YES;
 
             [self.navigationController pushViewController:readingController animated:YES]; 
-            self.currentlyLoadingIndex = -1;
 
             SCHBookShelfGridViewCell *cell = (SCHBookShelfGridViewCell *) [aGridView cellAtGridIndex:index];
             [cell setLoading:NO];
@@ -958,13 +957,13 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 131;
                 [alert show];
                 [alert release];
 
-                self.currentlyLoadingIndex = -1;
                 
                 SCHBookShelfGridViewCell *cell = (SCHBookShelfGridViewCell *) [aGridView cellAtGridIndex:index];
                 [cell setLoading:NO];
             }
         }
         
+        self.currentlyLoadingIndex = -1;
     });
 }
 
