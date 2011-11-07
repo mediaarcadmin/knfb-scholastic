@@ -21,6 +21,7 @@
 #import "SCHCoreDataHelper.h"
 #import "SCHPopulateDataStore.h"
 #import "SCHAppContentProfileItem.h"
+#import "SCHAuthenticationManager.h"
 
 // Constants
 NSString * const SCHSyncManagerDidCompleteNotification = @"SCHSyncManagerDidCompleteNotification";
@@ -252,12 +253,15 @@ static NSUInteger const kSCHSyncManagerMaximumFailureRetries = 3;
 	return [[NSUserDefaults standardUserDefaults] boolForKey:kSCHUserDefaultsPerformedFirstSyncUpToBooks];
 }
 
-// after login or opening the app, also coming out of background
-- (void)firstSync:(BOOL)syncNow
+- (void)firstSync:(BOOL)syncNow requireDeviceAuthentication:(BOOL)requireAuthentication
 {
     // reset if the date has been changed in a backward motion
     if ([self.lastFirstSyncEnded compare:[NSDate date]] == NSOrderedDescending) {
         self.lastFirstSyncEnded = nil;
+    }
+    
+    if (requireAuthentication) {
+        [[SCHAuthenticationManager sharedAuthenticationManager] expireToken];
     }
 
     if ([self shouldSync] == YES) {	        
@@ -641,7 +645,7 @@ static NSUInteger const kSCHSyncManagerMaximumFailureRetries = 3;
         [[NSNotificationCenter defaultCenter] postNotificationName:SCHSyncManagerDidCompleteNotification 
                                                             object:self];        
         if (self.syncAfterDelay == YES) {
-            [self firstSync:NO];   
+            [self firstSync:NO requireDeviceAuthentication:NO];   
         }
 	}
 }

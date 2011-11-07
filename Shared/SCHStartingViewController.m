@@ -353,7 +353,7 @@ typedef enum {
 
 - (void)signInSucceeded
 {
-    [[SCHSyncManager sharedSyncManager] firstSync:YES];
+    [[SCHSyncManager sharedSyncManager] firstSync:YES requireDeviceAuthentication:NO];
 }
 
 - (void)signInFailedWithError:(NSError *)error
@@ -467,7 +467,7 @@ typedef enum {
         [self view];
         
         // Start the sync in case they have been set up since last sync
-        [[SCHSyncManager sharedSyncManager] firstSync:YES];
+        [[SCHSyncManager sharedSyncManager] firstSync:YES requireDeviceAuthentication:NO];
         
         [self checkBookshelvesAndDictionaryDownloadForProfile:animated];
     } else {
@@ -613,7 +613,7 @@ typedef enum {
 {
     self.profileSyncState = kSCHStartingViewControllerProfileSyncStateWaitingForBookshelves;
     
-    [[SCHSyncManager sharedSyncManager] firstSync:YES];      
+    [[SCHSyncManager sharedSyncManager] firstSync:YES requireDeviceAuthentication:YES];      
     
     self.checkProfilesAlert = [[[LambdaAlert alloc]
                                 initWithTitle:NSLocalizedString(@"Syncing with Your Account", @"")
@@ -663,7 +663,7 @@ typedef enum {
 - (void)willEnterForeground:(NSNotification *)note
 {
     if (self.profileSyncState == kSCHStartingViewControllerProfileSyncStateWaitingForBookshelves) {
-        [[SCHSyncManager sharedSyncManager] firstSync:YES];
+        [[SCHSyncManager sharedSyncManager] firstSync:YES requireDeviceAuthentication:NO];
     }
 }
 

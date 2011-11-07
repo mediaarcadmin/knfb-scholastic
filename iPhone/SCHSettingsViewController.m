@@ -357,7 +357,7 @@ extern NSString * const kSCHAuthenticationManagerDeviceKey;
         [checkBooksAlert setSpinnerHidden:NO];
         [checkBooksAlert show];
 
-        [[SCHSyncManager sharedSyncManager] firstSync:YES];      
+        [[SCHSyncManager sharedSyncManager] firstSync:YES requireDeviceAuthentication:YES];      
     }
     
 }

@@ -32,7 +32,7 @@ extern NSString * const SCHSyncManagerDidCompleteNotification;
 - (void)clear;
 - (BOOL)havePerformedFirstSyncUpToBooks;
 
-- (void)firstSync:(BOOL)syncNow;
+- (void)firstSync:(BOOL)syncNow requireDeviceAuthentication:(BOOL)requireAuthentication;
 - (void)profileSync;
 - (void)bookshelfSync;
 - (void)openDocumentSync:(SCHUserContentItem *)userContentItem forProfile:(NSNumber *)profileID;

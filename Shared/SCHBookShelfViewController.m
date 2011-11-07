@@ -291,7 +291,7 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 131;
     }
     
     if ([[SCHSyncManager sharedSyncManager] isSynchronizing] == NO) {
-        [[SCHSyncManager sharedSyncManager] firstSync:NO];
+        [[SCHSyncManager sharedSyncManager] firstSync:NO requireDeviceAuthentication:NO];
     }
     
 }

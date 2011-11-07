@@ -88,7 +88,7 @@
 - (void)back:(id)sender
 {
     // trigger a sync to grab any changes
-    [[SCHSyncManager sharedSyncManager] firstSync:YES];
+    [[SCHSyncManager sharedSyncManager] firstSync:YES requireDeviceAuthentication:YES];
 
     [super back:nil];
 }
