@@ -103,6 +103,7 @@
     }    
     
     [self.topBar setTintColor:[UIColor colorWithWhite:0.7f alpha:1.0f]];
+    [self setupAssetsForOrientation:self.interfaceOrientation];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
