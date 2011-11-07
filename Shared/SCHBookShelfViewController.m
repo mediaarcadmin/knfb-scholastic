@@ -678,7 +678,7 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 131;
 
     cell.identifier = identifier;
     SCHAppContentProfileItem *appContentProfileItem = [self.profileItem appContentProfileItemForBookIdentifier:identifier];
-    cell.isNewBook = ([appContentProfileItem.ContentProfileItem.LastPageLocation integerValue] < 1);
+    cell.isNewBook = [appContentProfileItem.IsNewBook boolValue];
     cell.trashed = [appContentProfileItem.IsTrashed boolValue];
     
     if ([identifier isEqual:[self.books lastObject]]) {
@@ -811,7 +811,7 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 131;
 	[gridCell setIdentifier:[self.books objectAtIndex:index]];
     SCHAppContentProfileItem *appContentProfileItem = [self.profileItem appContentProfileItemForBookIdentifier:[self.books objectAtIndex:index]];
     gridCell.trashed = [appContentProfileItem.IsTrashed boolValue];
-    gridCell.isNewBook = ([appContentProfileItem.ContentProfileItem.LastPageLocation integerValue] < 1);
+    gridCell.isNewBook = [appContentProfileItem.IsNewBook boolValue];
     
     if (self.currentlyLoadingIndex == index) {
         gridCell.loading = YES;
