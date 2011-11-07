@@ -381,7 +381,9 @@ static NSUInteger const kSCHSyncManagerMaximumFailureRetries = 3;
 	NSMutableArray *ret = [NSMutableArray array];
 	
 	for (SCHContentProfileItem *contentProfileItem in profileItem.ContentProfileItem) {
-		[ret addObject:[self annotationContentItemFromUserContentItem:contentProfileItem.UserContentItem forProfile:profileItem.ID]];
+        if (contentProfileItem.UserContentItem) {
+            [ret addObject:[self annotationContentItemFromUserContentItem:contentProfileItem.UserContentItem forProfile:profileItem.ID]];
+        }
 	}
 	
 	return ret;
