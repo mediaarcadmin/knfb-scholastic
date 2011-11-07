@@ -67,10 +67,12 @@
 
 - (CGRect)overlaidTitleFrame
 {
+    const BOOL landscape = UIInterfaceOrientationIsLandscape(self.interfaceOrientation);
+    
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
-        return CGRectMake(172, 40, 680, 152);
+        return CGRectMake(landscape ? 172 : 44, 40, 680, 152);
     } else {
-        return CGRectMake(0, 0, 480, 64);
+        return CGRectMake(0, 0, landscape ? 480 : 320, 64);
     }
 }
 

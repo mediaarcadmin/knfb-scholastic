@@ -496,10 +496,11 @@ static Class controllerClassForStoryInteraction(SCHStoryInteraction *storyIntera
         case SCHStoryInteractionTitleOverlaysContentsAtTop: {
             CGRect titleFrame = [self overlaidTitleFrame];
             backgroundWidth = MAX(background.image.size.width, titleFrame.size.width);
-            backgroundHeight = MAX(background.image.size.height, titleFrame.size.height);
             if (iPad) {
+                backgroundHeight = MAX(background.image.size.height, titleFrame.size.height);
                 background.center = CGPointMake(floorf(CGRectGetMidX(titleFrame)), floorf(CGRectGetMidY(titleFrame)));
             } else {
+                backgroundHeight = CGRectGetHeight(container.bounds);
                 background.center = CGPointMake(CGRectGetMidX(container.bounds), CGRectGetMidY(container.bounds));
             }
             background.bounds = CGRectIntegral(CGRectMake(0, 0, backgroundWidth, backgroundHeight));
@@ -516,10 +517,11 @@ static Class controllerClassForStoryInteraction(SCHStoryInteraction *storyIntera
         case SCHStoryInteractionTitleOverlaysContentsAtBottom: {
             CGRect titleFrame = [self overlaidTitleFrame];
             backgroundWidth = MAX(background.image.size.width, titleFrame.size.width);
-            backgroundHeight = MAX(background.image.size.height, titleFrame.size.height);
             if (iPad) {
+                backgroundHeight = MAX(background.image.size.height, titleFrame.size.height);
                 background.center = CGPointMake(floorf(CGRectGetMidX(titleFrame)), floorf(CGRectGetHeight(container.bounds)-CGRectGetMidY(titleFrame)));
             } else {
+                backgroundHeight = CGRectGetHeight(container.bounds);
                 background.center = CGPointMake(CGRectGetMidX(container.bounds), CGRectGetMidY(container.bounds));
             }
             background.transform = CGAffineTransformMakeRotation(M_PI);
