@@ -36,6 +36,8 @@ static NSUInteger const kSCHSyncManagerMaximumFailureRetries = 3;
 @property (nonatomic, assign) BOOL syncAfterDelay;
 @property (nonatomic , assign) UIBackgroundTaskIdentifier backgroundTaskIdentifier;
 
+- (void)updateAnnotationSync;
+- (void)addAllProfilesToAnnotationSync;
 - (NSMutableArray *)bookAnnotationsFromProfile:(SCHProfileItem *)profileItem;
 - (NSMutableDictionary *)annotationContentItemFromUserContentItem:(SCHUserContentItem *)userContentItem
                                                        forProfile:(NSNumber *)profileID;
@@ -114,6 +116,16 @@ static NSUInteger const kSCHSyncManagerMaximumFailureRetries = 3;
         [[NSNotificationCenter defaultCenter] addObserver:self 
                                                  selector:@selector(coreDataHelperManagedObjectContextDidChangeNotification:) 
                                                      name:SCHCoreDataHelperManagedObjectContextDidChangeNotification 
+                                                   object:nil];	
+
+        [[NSNotificationCenter defaultCenter] addObserver:self 
+                                                 selector:@selector(updateAnnotationSync) 
+                                                     name:SCHProfileSyncComponentDidCompleteNotification 
+                                                   object:nil];	
+
+        [[NSNotificationCenter defaultCenter] addObserver:self 
+                                                 selector:@selector(updateAnnotationSync) 
+                                                     name:SCHContentSyncComponentDidCompleteNotification 
                                                    object:nil];	
         
 	}
@@ -241,7 +253,7 @@ static NSUInteger const kSCHSyncManagerMaximumFailureRetries = 3;
 }
 
 // after login or opening the app, also coming out of background
-- (void)firstSync:(BOOL)syncNow;
+- (void)firstSync:(BOOL)syncNow
 {
     // reset if the date has been changed in a backward motion
     if ([self.lastFirstSyncEnded compare:[NSDate date]] == NSOrderedDescending) {
@@ -258,21 +270,8 @@ static NSUInteger const kSCHSyncManagerMaximumFailureRetries = 3;
             [self addToQueue:self.profileSyncComponent];
             [self addToQueue:self.contentSyncComponent];
             [self addToQueue:self.bookshelfSyncComponent];
-            
-            NSEntityDescription *entityDescription = [NSEntityDescription entityForName:kSCHProfileItem 
-                                                                 inManagedObjectContext:self.managedObjectContext];
-            NSFetchRequest *request = [[NSFetchRequest alloc] init];
-            [request setEntity:entityDescription];
-            
-            NSError *error = nil;				
-            NSArray *profiles = [self.managedObjectContext executeFetchRequest:request error:&error];
-            for (SCHProfileItem *profileItem in profiles) {	
-                [self.annotationSyncComponent addProfile:[profileItem 
-                                                          valueForKey:kSCHLibreAccessWebServiceID] 
-                                               withBooks:[self bookAnnotationsFromProfile:profileItem]];	
-            }
-            [request release], request = nil;
-            
+                        
+            [self addAllProfilesToAnnotationSync];
             if ([self.annotationSyncComponent haveProfiles] == YES) {
                 [self addToQueue:self.annotationSyncComponent];		
             }
@@ -313,6 +312,36 @@ static NSUInteger const kSCHSyncManagerMaximumFailureRetries = 3;
             });
         }
     }
+}
+
+// guarentee the annotation sync contains any new profiles or books
+- (void)updateAnnotationSync
+{
+    if ([self shouldSync] == YES) {	    
+        [self addAllProfilesToAnnotationSync];
+        if ([self.queue containsObject:self.annotationSyncComponent] == NO &&
+            [self.annotationSyncComponent haveProfiles] == YES) {
+            [self addToQueue:self.annotationSyncComponent];		
+            [self kickQueue];	            
+        }
+    }
+}
+
+- (void)addAllProfilesToAnnotationSync
+{
+    NSEntityDescription *entityDescription = [NSEntityDescription entityForName:kSCHProfileItem 
+                                                         inManagedObjectContext:self.managedObjectContext];
+    NSFetchRequest *request = [[NSFetchRequest alloc] init];
+    [request setEntity:entityDescription];
+    
+    NSError *error = nil;				
+    NSArray *profiles = [self.managedObjectContext executeFetchRequest:request error:&error];
+    for (SCHProfileItem *profileItem in profiles) {	
+        [self.annotationSyncComponent addProfile:[profileItem 
+                                                  valueForKey:kSCHLibreAccessWebServiceID] 
+                                       withBooks:[self bookAnnotationsFromProfile:profileItem]];	
+    }
+    [request release], request = nil;
 }
 
 - (void)profileSync
