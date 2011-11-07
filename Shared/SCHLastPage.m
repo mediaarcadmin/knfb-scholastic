@@ -25,7 +25,7 @@ NSString * const kSCHLastPage = @"SCHLastPage";
     self.Component = @"";
     self.Percentage = [NSNumber numberWithFloat:0.0];
  
-    self.LastModified = [NSDate date];
+    self.LastModified = [NSDate distantPast];
     self.State = [NSNumber numberWithStatus:kSCHStatusUnmodified];    
 }
 
