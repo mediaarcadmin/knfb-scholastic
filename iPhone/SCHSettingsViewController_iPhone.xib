@@ -457,7 +457,7 @@
 									<object class="IBUILabel" id="766409856">
 										<reference key="NSNextResponder" ref="46868495"/>
 										<int key="NSvFlags">293</int>
-										<string key="NSFrame">{{20, 51}, {280, 60}}</string>
+										<string key="NSFrame">{{20, 54}, {280, 49}}</string>
 										<reference key="NSSuperview" ref="46868495"/>
 										<reference key="NSWindow"/>
 										<reference key="NSNextKeyView" ref="690309699"/>
@@ -466,7 +466,7 @@
 										<int key="IBUIContentMode">7</int>
 										<bool key="IBUIUserInteractionEnabled">NO</bool>
 										<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
-										<string key="IBUIText">Visit the Scholastic Book Clubs Web site to create bookshelves for your kids, assign books to bookshelves, or view reading reports.</string>
+										<string key="IBUIText">Create bookshelves for your children, assign eBooks to bookshelves, and view reading reports.</string>
 										<reference key="IBUITextColor" ref="208363841"/>
 										<nil key="IBUIHighlightedColor"/>
 										<int key="IBUIBaselineAdjustment">1</int>
@@ -493,6 +493,7 @@
 								<string key="NSFrameSize">{320, 7}</string>
 								<reference key="NSSuperview" ref="1058300801"/>
 								<reference key="NSWindow"/>
+								<reference key="NSNextKeyView"/>
 								<object class="NSColor" key="IBUIBackgroundColor">
 									<int key="NSColorSpace">3</int>
 									<bytes key="NSWhite">MSAwAA</bytes>
