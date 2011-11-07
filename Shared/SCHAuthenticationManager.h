@@ -12,14 +12,13 @@
 #import "SCHDrmRegistrationSessionDelegate.h"
 
 typedef void (^SCHAuthenticationSuccessBlock)(BOOL offlineMode);
-typedef void (^SCHAuthenticationFailureBlock)(NSError * error);
+typedef void (^SCHAuthenticationFailureBlock)(NSError *error);
+typedef void (^SCHDrmRegistrationSuccessBlock)(NSString *deviceKey);
+typedef void (^SCHDrmRegistrationFailureBlock)(NSError *error);
+typedef void (^SCHDrmDeregistrationSuccessBlock)(void);
+typedef void (^SCHDrmDeregistrationFailureBlock)(NSError *error);
 
-extern NSString * const kSCHAuthenticationManagerAToken;
-extern NSString * const kSCHAuthenticationManagerOfflineMode;
-extern NSString * const SCHAuthenticationManagerDidDeregisterNotification;
-extern NSString * const SCHAuthenticationManagerDidClearAfterDeregisterNotification;
-extern NSString * const SCHAuthenticationManagerDidFailDeregistrationNotification;
-extern NSString * const kSCHAuthenticationManagerNSError;
+extern NSString * const SCHAuthenticationManagerReceivedServerDeregistrationNotification;
 
 extern NSString * const kSCHAuthenticationManagerErrorDomain;
 extern NSInteger const kSCHAuthenticationManagerGeneralError;
@@ -49,6 +48,9 @@ extern NSInteger const kSCHAuthenticationManagerLoginError;
 - (void)authenticateWithSuccessBlock:(SCHAuthenticationSuccessBlock)successBlock
                         failureBlock:(SCHAuthenticationFailureBlock)failureBlock;
 
-// Should have completion blocks
-- (void)deregister;
+- (void)deregisterWithSuccessBlock:(SCHDrmDeregistrationSuccessBlock)successBlock
+                      failureBlock:(SCHDrmDeregistrationFailureBlock)failureBlock;
+
+- (void)forceDeregistrationWithCompletionBlock:(SCHDrmDeregistrationSuccessBlock)completionBlock;
+
 @end

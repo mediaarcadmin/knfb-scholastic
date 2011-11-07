@@ -186,7 +186,7 @@
 										<int key="IBUIContentHorizontalAlignment">0</int>
 										<int key="IBUIContentVerticalAlignment">0</int>
 										<string key="IBUITitleShadowOffset">{0, -1}</string>
-										<string key="IBUINormalTitle">Manage my eBooks</string>
+										<string key="IBUINormalTitle">Manage eBooks</string>
 										<object class="NSColor" key="IBUIHighlightedTitleColor" id="829918602">
 											<int key="NSColorSpace">3</int>
 											<bytes key="NSWhite">MQA</bytes>
@@ -493,7 +493,6 @@
 								<string key="NSFrameSize">{320, 7}</string>
 								<reference key="NSSuperview" ref="1058300801"/>
 								<reference key="NSWindow"/>
-								<reference key="NSNextKeyView"/>
 								<object class="NSColor" key="IBUIBackgroundColor">
 									<int key="NSColorSpace">3</int>
 									<bytes key="NSWhite">MSAwAA</bytes>

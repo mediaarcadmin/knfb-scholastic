@@ -271,7 +271,6 @@ static NSTimeInterval const kSCHBookShelfViewControllerTopTenRefreshTime = -600.
     SCHBookShelfTopTenPopoverTableView *popoverTable = [[SCHBookShelfTopTenPopoverTableView alloc] initWithNibName:nil bundle:nil];
     popoverTable.books = self.topTenBooks;
 
-    popoverTable.title = @"Top Ten eBooks";
     UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:popoverTable];
     
     self.popover = [[[UIPopoverController alloc] initWithContentViewController:navController] autorelease];
