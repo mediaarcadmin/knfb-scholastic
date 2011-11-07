@@ -58,9 +58,7 @@
         eucBookView.vibratesOnInvalidTurn = NO;
         eucBookView.allowsTapTurn = NO;
         [eucBookView setPageTexture:self.currentPageTexture isDark:self.textureIsDark];
-        [self addSubview:eucBookView];  
-        
-        [self.delegate readingViewWillAppear:self];
+        [self addSubview:eucBookView];          
     }
 }
 
@@ -161,6 +159,7 @@ managedObjectContext:(NSManagedObjectContext *)managedObjectContext
     [super didMoveToWindow];
     
     if (self.window) {
+        [self.delegate readingViewWillAppear:self];
         // This needs to be done here to add the observer after the willMoveToWindow code in
         // eucBookView which sets the page count
         [self.eucBookView addObserver:self forKeyPath:@"currentPageIndexPoint" options:NSKeyValueObservingOptionInitial context:NULL];
