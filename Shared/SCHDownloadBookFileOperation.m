@@ -47,6 +47,7 @@
 
 - (void)dealloc 
 {
+    [downloadOperation release], downloadOperation = nil;
     [localPath release], localPath = nil;
 	[super dealloc];
 }
