@@ -70,7 +70,11 @@ struct BackgroundViewState {
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
-    return YES;
+    if ([self.storyInteractionController supportsAutoRotation]) {
+        return YES;
+    } else {
+        return interfaceOrientation == self.storyInteractionController.interfaceOrientation;
+    }
 }
 
 - (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration

@@ -843,6 +843,11 @@ static Class controllerClassForStoryInteraction(SCHStoryInteraction *storyIntera
     return (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad);
 }
 
+- (BOOL)supportsAutoRotation
+{
+    return YES;
+}
+
 - (void)rotateToOrientation:(UIInterfaceOrientation)orientation
 {
 }

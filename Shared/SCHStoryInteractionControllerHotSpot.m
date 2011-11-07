@@ -49,6 +49,11 @@
     return NO;
 }
 
+- (BOOL)supportsAutoRotation
+{
+    return NO;
+}
+
 - (CGAffineTransform)viewToPageTransform
 {
     return [self.delegate viewToPageTransform];
