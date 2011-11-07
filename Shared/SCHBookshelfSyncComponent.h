@@ -14,7 +14,7 @@
 
 // Constants
 extern NSString * const SCHBookshelfSyncComponentWillDeleteNotification;
-extern NSString * const SCHBookshelfSyncComponentDeletedBookIdentifiers;
+extern NSString * const SCHBookshelfSyncComponentBookIdentifiers;
 extern NSString * const SCHBookshelfSyncComponentBookReceivedNotification;
 extern NSString * const SCHBookshelfSyncComponentDidCompleteNotification;
 extern NSString * const SCHBookshelfSyncComponentDidFailNotification;

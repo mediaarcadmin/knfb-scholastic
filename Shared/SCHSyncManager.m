@@ -121,11 +121,6 @@ static NSUInteger const kSCHSyncManagerMaximumFailureRetries = 3;
 
         [[NSNotificationCenter defaultCenter] addObserver:self 
                                                  selector:@selector(updateAnnotationSync) 
-                                                     name:SCHProfileSyncComponentDidCompleteNotification 
-                                                   object:nil];	
-
-        [[NSNotificationCenter defaultCenter] addObserver:self 
-                                                 selector:@selector(updateAnnotationSync) 
                                                      name:SCHContentSyncComponentDidCompleteNotification 
                                                    object:nil];	
         
