@@ -480,6 +480,12 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     self.wantsFullScreenLayout = YES;
     [self.navigationController setNavigationBarHidden:YES];
     
+    // The story interaction button setup causes a layoutSubviews to be triggered so we perform
+    // this before the readingView is added to the hierarchy to prevent
+    // an inefficient double-layout in that view (also fixes a visual glitch)
+    [self.storyInteractionButton setIsYounger:self.youngerMode];
+    [self setupStoryInteractionButtonForCurrentPagesAnimated:NO];
+
     if (self.readingView) {
         [self.readingView setFrame:self.view.bounds];
         [self.view addSubview:self.readingView];
@@ -615,9 +621,6 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     [self updateNotesCounter];
     
     [self setDictionarySelectionMode];
-
-    [self.storyInteractionButton setIsYounger:self.youngerMode];
-    [self setupStoryInteractionButtonForCurrentPagesAnimated:NO];
     
     [self save];
     
