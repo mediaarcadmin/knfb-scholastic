@@ -1984,8 +1984,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 - (void)readingViewWillAppear: (SCHReadingView *) aReadingView
 {
     // ignore while the reading view is attached to the SI view controller
-    // TODO: need to investigate further first run when superview is nil
-    if (self.storyInteractionController && aReadingView.superview == self.view) {
+    if (self.storyInteractionController == nil && aReadingView.superview == self.view) {
         [self jumpToLastPageLocation];
     }
 }
