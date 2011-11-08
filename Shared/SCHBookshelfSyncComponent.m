@@ -39,7 +39,7 @@ NSString * const SCHBookshelfSyncComponentDidFailNotification = @"SCHBookshelfSy
 - (void)deleteStatisticsForBook:(SCHBookIdentifier *)identifier;
 
 @property (nonatomic, assign) NSInteger requestCount;
-@property (nonatomic, assign) BOOL didReceiveFailedResponse;
+@property (nonatomic, retain) NSMutableArray *didReceiveFailedResponseBooks;
 
 @end
 
@@ -47,17 +47,24 @@ NSString * const SCHBookshelfSyncComponentDidFailNotification = @"SCHBookshelfSy
 
 @synthesize useIndividualRequests;
 @synthesize requestCount;
-@synthesize didReceiveFailedResponse;
+@synthesize didReceiveFailedResponseBooks;
 
 - (id)init
 {
 	self = [super init];
 	if (self != nil) {
-		self.useIndividualRequests = YES;	
-		self.requestCount = 0;
-        self.didReceiveFailedResponse = NO;
+		useIndividualRequests = YES;	
+		requestCount = 0;
+        didReceiveFailedResponseBooks = [[NSMutableArray alloc] init];
 	}
 	return(self);
+}
+
+- (void)dealloc
+{
+    [didReceiveFailedResponseBooks release], didReceiveFailedResponseBooks = nil;
+    
+    [super dealloc];
 }
 
 - (BOOL)synchronize
@@ -82,7 +89,7 @@ NSString * const SCHBookshelfSyncComponentDidFailNotification = @"SCHBookshelfSy
 	NSError *error = nil;
     
     self.requestCount = 0;
-    self.didReceiveFailedResponse = NO;
+    [self.didReceiveFailedResponseBooks removeAllObjects];
     
 	if (![self.managedObjectContext BITemptyEntity:kSCHContentMetadataItem error:&error]) {
 		NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
@@ -120,12 +127,17 @@ NSString * const SCHBookshelfSyncComponentDidFailNotification = @"SCHBookshelfSy
         }
     }
     @catch (NSException *exception) {
+        NSArray *bookIdentifiers = [self bookIdentifiersFromRequestInfo:[result objectForKey:kSCHLibreAccessWebServiceContentMetadataList]];
+        
         if (self.useIndividualRequests == YES) {
-            self.didReceiveFailedResponse = YES;
+            [self.didReceiveFailedResponseBooks addObjectsFromArray:bookIdentifiers];
             
             if (self.requestCount < 1) {
                 [[NSNotificationCenter defaultCenter] postNotificationName:SCHBookshelfSyncComponentDidFailNotification 
-                                                                    object:self];
+                                                                    object:self
+                                                                  userInfo:[NSDictionary dictionaryWithObject:self.didReceiveFailedResponseBooks 
+                                                                                                       forKey:SCHBookshelfSyncComponentBookIdentifiers]];
+
                 
                 NSError *error = [NSError errorWithDomain:kBITAPIErrorDomain 
                                                      code:kBITAPIExceptionError 
@@ -135,7 +147,10 @@ NSString * const SCHBookshelfSyncComponentDidFailNotification = @"SCHBookshelfSy
             }
         } else {
             [[NSNotificationCenter defaultCenter] postNotificationName:SCHBookshelfSyncComponentDidFailNotification 
-                                                                object:self];        
+                                                                object:self
+                                                              userInfo:[NSDictionary dictionaryWithObject:bookIdentifiers 
+                                                                                                   forKey:SCHBookshelfSyncComponentBookIdentifiers]];
+
             NSError *error = [NSError errorWithDomain:kBITAPIErrorDomain 
                                                  code:kBITAPIExceptionError 
                                              userInfo:[NSDictionary dictionaryWithObject:[exception reason]
@@ -175,17 +190,16 @@ NSString * const SCHBookshelfSyncComponentDidFailNotification = @"SCHBookshelfSy
         result:(NSDictionary *)result
 {
     NSLog(@"%@:didFailWithError\n%@", method, error);
-    NSArray *userInfo = [self bookIdentifiersFromRequestInfo:[requestInfo objectForKey:kSCHLibreAccessWebServiceListContentMetadata]];    
-    
+    NSArray *bookIdentifiers = [self bookIdentifiersFromRequestInfo:[requestInfo objectForKey:kSCHLibreAccessWebServiceListContentMetadata]];    
     
 	if (self.useIndividualRequests == YES) {
 		self.requestCount--;
-        self.didReceiveFailedResponse = YES;
+        [self.didReceiveFailedResponseBooks addObjectsFromArray:bookIdentifiers];
         
         if (self.requestCount < 1) {            
             [[NSNotificationCenter defaultCenter] postNotificationName:SCHBookshelfSyncComponentDidFailNotification 
                                                                 object:self 
-                                                              userInfo:[NSDictionary dictionaryWithObject:userInfo 
+                                                              userInfo:[NSDictionary dictionaryWithObject:self.didReceiveFailedResponseBooks 
                                                                                                    forKey:SCHBookshelfSyncComponentBookIdentifiers]];
             
             [super method:method didFailWithError:error requestInfo:requestInfo result:result];
@@ -195,7 +209,7 @@ NSString * const SCHBookshelfSyncComponentDidFailNotification = @"SCHBookshelfSy
         
         [[NSNotificationCenter defaultCenter] postNotificationName:SCHBookshelfSyncComponentDidFailNotification 
                                                             object:self
-                                                          userInfo:[NSDictionary dictionaryWithObject:userInfo 
+                                                          userInfo:[NSDictionary dictionaryWithObject:bookIdentifiers 
                                                                                                forKey:SCHBookshelfSyncComponentBookIdentifiers]];
         
         [super method:method didFailWithError:error requestInfo:requestInfo result:result];
@@ -232,7 +246,7 @@ NSString * const SCHBookshelfSyncComponentDidFailNotification = @"SCHBookshelfSy
     }];
 
 	self.requestCount = 0;
-    self.didReceiveFailedResponse = NO;
+    [self.didReceiveFailedResponseBooks removeAllObjects];
 	if([results count] > 0) {
 		if (self.useIndividualRequests == YES) {
 			for (NSDictionary *ISBN in results) {				
