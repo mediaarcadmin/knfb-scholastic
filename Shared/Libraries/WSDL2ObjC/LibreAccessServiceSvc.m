@@ -45332,6 +45332,7 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
 @synthesize customHeaders;
 @synthesize authUsername;
 @synthesize authPassword;
+@synthesize operationPointers;
 + (NSTimeInterval)defaultTimeout
 {
 	return 10;
@@ -45345,6 +45346,7 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
 		timeout = [[self class] defaultTimeout];
 		logXMLInOut = NO;
 		synchronousOperationComplete = NO;
+        operationPointers = [[NSMutableArray alloc] init];
 	}
 	
 	return self;
@@ -45993,13 +45995,36 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
 	operation.urlConnection = connection;
 	[connection release];
 }
+- (void) addPointerForOperation:(LibreAccessServiceSoap11BindingOperation *)operation
+{
+    NSValue *pointerValue = [NSValue valueWithNonretainedObject:operation];
+    [self.operationPointers addObject:pointerValue];
+}
+- (void) removePointerForOperation:(LibreAccessServiceSoap11BindingOperation *)operation
+{
+    NSIndexSet *matches = [self.operationPointers indexesOfObjectsPassingTest:^BOOL (id el, NSUInteger i, BOOL *stop) {
+                               LibreAccessServiceSoap11BindingOperation *op = [el nonretainedObjectValue];
+                               return [op isEqual:operation];
+                           }];
+
+    [self.operationPointers removeObjectsAtIndexes:matches];
+}
+- (void) clearBindingOperations
+{
+    for (NSValue *pointerValue in self.operationPointers) {
+        LibreAccessServiceSoap11BindingOperation *operation = [pointerValue nonretainedObjectValue];
+        [operation clear];
+    }
+}
 - (void) dealloc
 {
+    [self clearBindingOperations];
 	[address release];
 	[cookies release];
 	[customHeaders release];
 	[authUsername release];
 	[authPassword release];
+    [operationPointers release];
 	[super dealloc];
 }
 @end
@@ -46013,6 +46038,7 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
 {
 	if ((self = [super init])) {
 		self.binding = aBinding;
+        [self.binding addPointerForOperation:self];
 		response = nil;
 		self.delegate = aDelegate;
 		self.responseData = nil;
@@ -46087,6 +46113,7 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
 }
 - (void)dealloc
 {
+    [binding removePointerForOperation:self];
 	[binding release];
 	[response release];
 	delegate = nil;
@@ -46094,6 +46121,11 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
 	[urlConnection release];
 	
 	[super dealloc];
+}
+- (void)clear
+{
+    self.delegate = nil;
+    [self.urlConnection cancel];
 }
 @end
 @implementation LibreAccessServiceSoap11Binding_ValidateScreenName

@@ -4522,6 +4522,7 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
 	BOOL synchronousOperationComplete;
 	NSString *authUsername;
 	NSString *authPassword;
+    NSMutableArray *operationPointers;
 }
 @property (nonatomic, copy) NSURL *address;
 @property (nonatomic) BOOL logXMLInOut;
@@ -4530,6 +4531,7 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
 @property (nonatomic, retain) NSMutableDictionary *customHeaders;
 @property (nonatomic, retain) NSString *authUsername;
 @property (nonatomic, retain) NSString *authPassword;
+@property (nonatomic, retain) NSMutableArray *operationPointers;
 + (NSTimeInterval) defaultTimeout;
 - (id)initWithAddress:(NSString *)anAddress;
 - (void)sendHTTPCallUsingBody:(NSString *)body soapAction:(NSString *)soapAction forOperation:(LibreAccessServiceSoap11BindingOperation *)operation;
@@ -4631,6 +4633,9 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
 - (void)SaveDefaultBooksAsyncUsingParameters:(LibreAccessServiceSvc_SaveDefaultBooksRequest *)aParameters  delegate:(id<LibreAccessServiceSoap11BindingResponseDelegate>)responseDelegate;
 - (LibreAccessServiceSoap11BindingResponse *)SetAccountAutoAssignUsingParameters:(LibreAccessServiceSvc_SetAccountAutoAssignRequest *)aParameters ;
 - (void)SetAccountAutoAssignAsyncUsingParameters:(LibreAccessServiceSvc_SetAccountAutoAssignRequest *)aParameters  delegate:(id<LibreAccessServiceSoap11BindingResponseDelegate>)responseDelegate;
+- (void)addPointerForOperation:(LibreAccessServiceSoap11BindingOperation *)operation;
+- (void)removePointerForOperation:(LibreAccessServiceSoap11BindingOperation *)operation;
+- (void)clearBindingOperations;
 @end
 @interface LibreAccessServiceSoap11BindingOperation : NSOperation {
 	LibreAccessServiceSoap11Binding *binding;
@@ -4646,6 +4651,7 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
 @property (nonatomic, retain) NSURLConnection *urlConnection;
 - (id)initWithBinding:(LibreAccessServiceSoap11Binding *)aBinding delegate:(id<LibreAccessServiceSoap11BindingResponseDelegate>)aDelegate;
 - (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error;
+- (void)clear;
 @end
 @interface LibreAccessServiceSoap11Binding_ValidateScreenName : LibreAccessServiceSoap11BindingOperation {
 	LibreAccessServiceSvc_ValidateScreenNameRequest * parameters;
