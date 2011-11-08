@@ -308,6 +308,10 @@
 
 - (void)httpOperation:(QHTTPOperation *)operation didFailWithError:(NSError *)error
 {
+    if ([error.domain isEqualToString:NSCocoaErrorDomain] && error.code == NSUserCancelledError) {
+        return;
+    }
+    
     NSLog(@"book download operation failed with error: %@", error);
 
     [[BITNetworkActivityManager sharedNetworkActivityManager] hideNetworkActivityIndicator];
