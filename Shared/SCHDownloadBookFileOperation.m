@@ -407,7 +407,7 @@
 - (NSData *)lastTwoBytes
 {
     NSData *downloadedFile = [NSData dataWithContentsOfMappedFile:self.localPath];
-    if (!downloadedFile) {
+    if ([downloadedFile length] < 2) {
         return nil;
     }
     return [downloadedFile subdataWithRange:NSMakeRange([downloadedFile length]-2, 2)];
