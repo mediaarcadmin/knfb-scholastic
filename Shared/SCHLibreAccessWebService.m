@@ -113,6 +113,7 @@ static NSInteger const kSCHLibreAccessWebServiceVaid = 33;
 
 - (void)dealloc
 {
+    [binding clearBindingOperations]; // Will invalidate the delegate on any underway operations
 	[binding release], binding = nil;
 	
 	[super dealloc];
