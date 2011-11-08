@@ -413,7 +413,7 @@ static NSUInteger const kSCHSyncManagerMaximumFailureRetries = 3;
     if ([profiles count] > 0) {
         SCHProfileItem *profileItem = [profiles objectAtIndex:0];
         SCHAppContentProfileItem *appContentProfileItem = [profileItem appContentProfileItemForBookIdentifier:
-                                                           [userContentItem valueForKey:kSCHLibreAccessWebServiceContentIdentifier]];
+                                                           [userContentItem bookIdentifier]];
         date = appContentProfileItem.LastAnnotationSync;
     }
     [fetchRequest release];
