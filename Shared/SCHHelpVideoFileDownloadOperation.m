@@ -218,6 +218,13 @@
     }
 }
 
+- (void)httpOperation:(QHTTPOperation *)operation didFailWithError:(NSError *)error
+{
+    NSLog(@"help video download failed with error: %@", error);
+
+    // TODO: do something about this
+}
+
 #pragma mark - NSOperation overrides
 
 - (BOOL)isConcurrent

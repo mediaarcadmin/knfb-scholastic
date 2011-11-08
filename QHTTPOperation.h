@@ -236,6 +236,7 @@
 @required
 - (void)httpOperation:(QHTTPOperation *)operation startedDownloadingDataSize:(long long)expectedDataSize;
 - (void)httpOperation:(QHTTPOperation *)operation updatedDownloadSize:(long long)downloadedSize;
+- (void)httpOperation:(QHTTPOperation *)operation didFailWithError:(NSError *)error;
 @end
 
 extern NSString * kQHTTPOperationErrorDomain;
@@ -249,5 +250,6 @@ extern NSString * kQHTTPOperationErrorDomain;
 enum {
     kQHTTPOperationErrorResponseTooLarge = -1, 
     kQHTTPOperationErrorOnOutputStream   = -2, 
-    kQHTTPOperationErrorBadContentType   = -3
+    kQHTTPOperationErrorBadContentType   = -3,
+    kQHTTPOperationErrorBadResponseType  = -4
 };

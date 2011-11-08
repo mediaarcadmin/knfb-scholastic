@@ -197,8 +197,12 @@
 	} else {
 		[fileManager createFileAtPath:self.localPath contents:nil attributes:nil];
 	}
+    
+    NSMutableIndexSet *acceptableStatusCodes = [NSMutableIndexSet indexSetWithIndex:200];
+    [acceptableStatusCodes addIndex:206];
 
     self.downloadOperation = [[QHTTPOperation alloc] initWithRequest:request];
+    self.downloadOperation.acceptableStatusCodes = acceptableStatusCodes;
     self.downloadOperation.responseOutputStream = [NSOutputStream outputStreamToFileAtPath:self.localPath append:append];
     self.downloadOperation.delegate = self;
 	
@@ -300,6 +304,22 @@
     if (self.fileType == kSCHDownloadFileTypeXPSBook) {
         [self createPercentageUpdate];
     }
+}
+
+- (void)httpOperation:(QHTTPOperation *)operation didFailWithError:(NSError *)error
+{
+    NSLog(@"book download operation failed with error: %@", error);
+
+    [[BITNetworkActivityManager sharedNetworkActivityManager] hideNetworkActivityIndicator];
+
+    // allow the operation to complete but change the completion handling
+    __block SCHDownloadBookFileOperation *unretained_self = self;
+    operation.completionBlock = ^{
+        self.downloadOperation = nil;
+        [unretained_self setIsProcessing:NO];
+        [unretained_self setProcessingState:SCHBookProcessingStateError];
+        [unretained_self endOperation];
+    };
 }
 
 - (void)completedDownload
