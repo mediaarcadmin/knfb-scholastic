@@ -137,7 +137,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 - (void)readingViewHasMoved;
 - (void)saveLastPageLocation;
 - (void)updateBookState;
-- (void)jumpToLastPageLocation;
+- (SCHBookPoint *)lastPageLocation;
 - (void)jumpToBookPoint:(SCHBookPoint *)bookPoint animated:(BOOL)animated; 
 - (void)jumpToCurrentPlaceInBookAnimated:(BOOL)animated;
 
@@ -914,7 +914,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     }
 }
 
-- (void)jumpToLastPageLocation
+- (SCHBookPoint *)lastPageLocation
 {        
     SCHAppContentProfileItem *appContentProfileItem = [self.profile appContentProfileItemForBookIdentifier:self.bookIdentifier];
     SCHContentProfileItem *contentProfileItem = appContentProfileItem.ContentProfileItem;
@@ -939,7 +939,8 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     if (lastPoint.layoutPage != 1) {
         self.coverMarkerShouldAppear = NO;
     }
-    [self jumpToBookPoint:lastPoint animated:NO];
+    
+    return lastPoint;
 }
 
 - (void)jumpToBookPoint:(SCHBookPoint *)bookPoint animated:(BOOL)animated 
@@ -1761,12 +1762,15 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
         [self.readingView removeFromSuperview];
         self.readingView = nil;
         
+        SCHBookPoint *openingPoint = [self lastPageLocation];
+        
         switch (newLayoutType) {
             case SCHReadingViewLayoutTypeFlow: {
                 SCHFlowView *flowView = [[SCHFlowView alloc] initWithFrame:self.view.bounds 
                                                             bookIdentifier:self.bookIdentifier 
                                                       managedObjectContext:self.managedObjectContext 
-                                                                  delegate:self];
+                                                                  delegate:self
+                                                                     point:openingPoint];
                 self.readingView = flowView;
                 [self setDictionarySelectionMode];
                 
@@ -1784,7 +1788,8 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
                 SCHLayoutView *layoutView = [[SCHLayoutView alloc] initWithFrame:self.view.bounds 
                                                                   bookIdentifier:self.bookIdentifier 
                                                             managedObjectContext:self.managedObjectContext                                          
-                                                                        delegate:self];
+                                                                        delegate:self
+                                                                           point:openingPoint];
                 self.readingView = layoutView;
                 
                 [self setDictionarySelectionMode];
@@ -1979,14 +1984,6 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 - (NSArray *)highlightsForLayoutPage:(NSUInteger)page
 {
     return [self.bookAnnotations highlightsForPage:page];    
-}
-
-- (void)readingViewWillAppear: (SCHReadingView *) aReadingView
-{
-    // ignore while the reading view is attached to the SI view controller
-    if (self.storyInteractionController == nil && aReadingView.superview == self.view) {
-        [self jumpToLastPageLocation];
-    }
 }
 
 - (void)readingViewWillBeginTurning:(SCHReadingView *)readingView

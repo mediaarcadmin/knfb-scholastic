@@ -74,6 +74,7 @@
 - (id)initWithFrame:(CGRect)frame bookIdentifier:(SCHBookIdentifier *)bookIdentifier 
 managedObjectContext:(NSManagedObjectContext *)managedObjectContext 
            delegate:(id<SCHReadingViewDelegate>)newDelegate
+              point:(SCHBookPoint *)point
 {
     self = [super initWithFrame:frame];
     if (self) {
