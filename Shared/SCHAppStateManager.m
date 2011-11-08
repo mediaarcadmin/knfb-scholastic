@@ -63,6 +63,7 @@
 
 - (SCHAppState *)appState
 {
+    NSAssert([NSThread isMainThread] == YES, @"appState SHOULD be executed on the main thread");
     SCHAppState *ret = nil;
     
     NSEntityDescription *entityDescription = [NSEntityDescription 
@@ -88,6 +89,7 @@
 
 - (SCHAppState *)createAppStateIfNeeded
 {
+    NSAssert([NSThread isMainThread] == YES, @"createAppStateIfNeeded SHOULD be executed on the main thread");
     SCHAppState *ret = nil;
     
     NSError *error = nil;
@@ -106,7 +108,6 @@
         
         if ([self.managedObjectContext save:&error] == NO) {
             NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
-            abort();
         }     
     } else {
         ret = [state objectAtIndex:0];
