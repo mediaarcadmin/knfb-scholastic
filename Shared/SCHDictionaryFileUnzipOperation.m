@@ -114,7 +114,7 @@
     float percentage = 0;
     
     if (myTotalFileCount > 0) {
-        percentage = (float)((float)myCurrentFileIndex / (float)myTotalFileCount) * 0.5;
+        percentage = (float)((float)myCurrentFileIndex / (float)myTotalFileCount);
     }
     
     if (percentage - self.previousPercentage > 0.001f) {

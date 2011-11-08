@@ -1102,11 +1102,11 @@ static SCHDictionaryDownloadManager *sharedManager = nil;
             } else {
                 NSLog(@"Added %d entries to base words.", savedItems);
                 
-                // fire a notification - this one is 75%
+                // fire a notification - this one is 50%
                 dispatch_sync(dispatch_get_main_queue(), ^{
                 
                     NSDictionary *userInfo = [NSDictionary dictionaryWithObjectsAndKeys:
-                                              [NSNumber numberWithFloat:0.75], @"currentPercentage",
+                                              [NSNumber numberWithFloat:0.5], @"currentPercentage",
                                               nil];
                     
                     [[NSNotificationCenter defaultCenter] postNotificationName:kSCHDictionaryProcessingPercentageUpdate object:nil userInfo:userInfo];
@@ -1407,11 +1407,11 @@ static SCHDictionaryDownloadManager *sharedManager = nil;
             NSLog(@"Error while deleting entry table update file: %@", [error localizedDescription]);
         }
         
-        // fire a notification - this one is 75%
+        // fire a notification - this one is 50%
         dispatch_sync(dispatch_get_main_queue(), ^{
             
             NSDictionary *userInfo = [NSDictionary dictionaryWithObjectsAndKeys:
-                                      [NSNumber numberWithFloat:0.75], @"currentPercentage",
+                                      [NSNumber numberWithFloat:0.5], @"currentPercentage",
                                       nil];
             
             [[NSNotificationCenter defaultCenter] postNotificationName:kSCHDictionaryProcessingPercentageUpdate object:nil userInfo:userInfo];
