@@ -389,6 +389,15 @@ static SCHProcessingManager *sharedManager = nil;
                 // *** Book has no full sized cover image ***
             case SCHBookProcessingStateNoCoverImage:
             {	
+                // check first for URL expiry
+                if ([book bookCoverURLHasExpired]) {
+                    // if expired, get the URLs again - this won't loop because we check in 
+                    // the URL request operation for expired URLs from the service.
+                    [book setProcessingState:SCHBookProcessingStateNoURLs];
+                    [self redispatchIdentifier:identifier];
+                    return;
+                }
+                
                 // create cover image download operation
                 SCHDownloadBookFileOperation *downloadImageOp = [[SCHDownloadBookFileOperation alloc] init];
                 [downloadImageOp setMainThreadManagedObjectContext:self.managedObjectContext];
@@ -407,6 +416,14 @@ static SCHProcessingManager *sharedManager = nil;
                 // *** Book file needs downloading ***
             case SCHBookProcessingStateDownloadStarted:
             {
+                // check first for URL expiry
+                if ([book bookFileURLHasExpired]) {
+                    // if expired, get the URLs again and force download
+                    [book setProcessingState:SCHBookProcessingStateURLsNotPopulated];
+                    [self userRequestedRetryForBookWithIdentifier:identifier];
+                    return;
+                }
+                
                 // create book file download operation
                 SCHDownloadBookFileOperation *bookDownloadOp = [[SCHDownloadBookFileOperation alloc] init];
                 [bookDownloadOp setMainThreadManagedObjectContext:self.managedObjectContext];

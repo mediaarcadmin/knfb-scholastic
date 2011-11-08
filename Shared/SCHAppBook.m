@@ -9,6 +9,7 @@
 #import "SCHAppBook.h"
 #import "SCHBookIdentifier.h"
 #import "NSURL+Extensions.h"
+#import "SCHAppStateManager.h"
 
 // Constants
 NSString * const kSCHAppBookErrorDomain  = @"com.knfb.scholastic.AppBookErrorDomain";
@@ -155,7 +156,9 @@ NSString * const kSCHAppBookFilenameSeparator = @"-";
 {
     BOOL ret = YES;
     
-    if (self.BookCoverURL != nil) {
+    if ([[SCHAppStateManager sharedAppStateManager] isSampleStore]) {
+        ret = NO;
+    } else if (self.BookCoverURL != nil) {
         NSURL *url = [NSURL URLWithString:self.BookCoverURL];
         NSString *expires = [[url queryParameters] objectForKey:@"Expires"];
         if (expires != nil) {
@@ -174,7 +177,9 @@ NSString * const kSCHAppBookFilenameSeparator = @"-";
 {
     BOOL ret = YES;
     
-    if (self.BookFileURL != nil) {
+    if ([[SCHAppStateManager sharedAppStateManager] isSampleStore]) {
+        ret = NO;
+    } else if (self.BookFileURL != nil) {
         NSURL *url = [NSURL URLWithString:self.BookFileURL];
         NSString *expires = [[url queryParameters] objectForKey:@"Expires"];
         if (expires != nil) {
