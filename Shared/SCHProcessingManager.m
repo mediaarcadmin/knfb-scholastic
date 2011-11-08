@@ -696,6 +696,12 @@ static SCHProcessingManager *sharedManager = nil;
 {
     NSAssert([NSThread isMainThread], @"userRequestedRetryForBookWithIdentifier: must be called on main thread");
 	
+    // if the book is already processing as a result of action taken while the retry was being offered,
+    // return - the book will process and update the status of cells etc. 
+    if ([self identifierIsProcessing:identifier]) {
+        return;
+    }
+    
 	SCHAppBook *book = [[SCHBookManager sharedBookManager] bookWithIdentifier:identifier inManagedObjectContext:self.managedObjectContext];
     
     if (book != nil) {
