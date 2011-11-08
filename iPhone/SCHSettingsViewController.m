@@ -144,6 +144,9 @@ extern NSString * const kSCHAuthenticationManagerDeviceKey;
     if ([[SCHAppStateManager sharedAppStateManager] canAuthenticate] == NO) {
         [self.manageBooksButton setEnabled:NO];
         [self.checkBooksButton setEnabled:NO];
+    } else {
+        [self.manageBooksButton setEnabled:YES];
+        [self.checkBooksButton setEnabled:YES];
     }
     
     // Notifications must be added and removed in viewWillAppear/viewDidAppear because this view gets cached after fist being loaded
