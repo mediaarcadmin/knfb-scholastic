@@ -125,10 +125,6 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 131;
     [[NSNotificationCenter defaultCenter] removeObserver:self
 												 name:SCHBookshelfSyncComponentDidFailNotification
 											   object:nil];
-    
-    [[NSNotificationCenter defaultCenter] removeObserver:self
-												 name:SCHSyncManagerDidCompleteNotification
-											   object:nil];
 }
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
@@ -237,11 +233,6 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 131;
     [[NSNotificationCenter defaultCenter] addObserver:self
 											 selector:@selector(bookshelfSyncComponentDidFail:)
 												 name:SCHBookshelfSyncComponentDidFailNotification
-											   object:nil];
-
-    [[NSNotificationCenter defaultCenter] addObserver:self
-											 selector:@selector(bookshelfSyncComponentDidComplete:)
-												 name:SCHSyncManagerDidCompleteNotification
 											   object:nil];
     	
 	if (![[SCHSyncManager sharedSyncManager] havePerformedFirstSyncUpToBooks] && [[SCHSyncManager sharedSyncManager] isSynchronizing]) {
@@ -626,8 +617,6 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 131;
 {
     self.shouldShowBookshelfFailedErrorMessage = YES;
     [self dismissLoadingView];
-    self.books = [self.profileItem allBookIdentifiers];
-    [self reloadData];
 }
 
 - (void)bookshelfSyncComponentDidFail:(NSNotification *)notification
