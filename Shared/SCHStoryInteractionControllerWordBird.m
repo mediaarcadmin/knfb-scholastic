@@ -21,7 +21,7 @@ enum {
     kAnswerLetterGap = 5,
     kTileLetterWidth = 25,
     kTileLetterHeight = 25,
-    kTileLetterGap = 5,
+    kTileLetterGap = 3,
     kNumberOfBalloons = 10
     
 };
@@ -39,7 +39,8 @@ enum {
 @property (nonatomic, assign) unichar tappedLetter;
 
 - (void)setupAnswerView;
-- (void)setupLettersView;
+- (void)setupLetterViews;
+- (void)layoutLetterViews;
 - (void)setupAnimationView;
 - (BOOL)wordContainsLetter:(unichar)letter;
 - (void)revealLetterInAnswer:(unichar)letter;
@@ -97,7 +98,7 @@ enum {
 {
     if (screenIndex == 1) {
         [self setupAnswerView];
-        [self setupLettersView];
+        [self setupLetterViews];
         [self setupAnimationView];
         self.correctLetterCount = 0;
     }
@@ -141,26 +142,37 @@ enum {
     NSLog(@"setup Word Bird '%@'", [[self currentQuestion] word]);
 }
 
-- (void)setupLettersView
+- (void)setupLetterViews
 {
-    CGFloat size = (CGRectGetWidth(self.lettersContainer.bounds)-kTileLetterGap)/9 - kTileLetterGap;
-    CGFloat left = size/2; // top row offset by half a tile
-    CGFloat top = (CGRectGetHeight(self.lettersContainer.bounds)-size*3-kTileLetterGap*2) / 2;
-    unichar firstInRow = L'A';
-    
     for (unichar letter = L'A'; letter <= L'Z'; ++letter) {
-        if (letter == L'I' || letter == L'R') {
-            left = 0;
-            top += size+kTileLetterGap;
-            firstInRow = letter;
-        }
         SCHStoryInteractionWordBirdLetterView *letterView = [SCHStoryInteractionWordBirdLetterView letter];
-        letterView.frame = CGRectMake(left+(size+kTileLetterGap)*(letter-firstInRow), top, size, size);
         letterView.letter = letter;
         [letterView addTarget:self action:@selector(letterTouched:) forControlEvents:UIControlEventTouchDown];
         [letterView addTarget:self action:@selector(letterTapped:) forControlEvents:UIControlEventTouchUpInside];
         [letterView addTarget:self action:@selector(letterTapCancelled:) forControlEvents:UIControlEventTouchUpOutside];
         [self.lettersContainer addSubview:letterView];
+    }  
+    [self layoutLetterViews];
+}
+
+- (void)layoutLetterViews
+{
+    CGFloat size = (CGRectGetWidth(self.lettersContainer.bounds)-kTileLetterGap)/9 - kTileLetterGap;
+    CGFloat leftInset = (CGRectGetWidth(self.lettersContainer.bounds)-(size+kTileLetterGap)*9+kTileLetterGap)/2;
+    CGFloat left = leftInset+size/2; // top row offset by half a tile
+    CGFloat top = (CGRectGetHeight(self.lettersContainer.bounds)-size*3-kTileLetterGap*2) / 2;
+    unichar firstInRow = L'A';
+    
+    NSArray *letterViews = [self.lettersContainer subviews];
+    
+    for (unichar letter = L'A'; letter <= L'Z'; ++letter) {
+        if (letter == L'I' || letter == L'R') {
+            left = leftInset;
+            top += size+kTileLetterGap;
+            firstInRow = letter;
+        }
+        SCHStoryInteractionWordBirdLetterView *letterView = [letterViews objectAtIndex:(letter-L'A')];
+        letterView.frame = CGRectMake(left+(size+kTileLetterGap)*(letter-firstInRow), top, size, size);
     }
     
     self.tappedLetter = 0;
@@ -245,6 +257,25 @@ enum {
     self.loseAnimationLayers = [NSArray arrayWithArray:loseLayers];
     
     self.remainingBalloonCount = kNumberOfBalloons;
+}
+
+- (void)rotateToOrientation:(UIInterfaceOrientation)orientation
+{
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+        return;
+    }
+    if (UIInterfaceOrientationIsLandscape(orientation)) {
+        self.animationContainer.frame = CGRectMake(32, -65, 130, 305);
+        self.answerContainer.frame = CGRectMake(160, 10, 300, 115);
+        self.lettersContainer.frame = CGRectMake(150, 125, 320, 125);
+    } else {
+        self.animationContainer.frame = CGRectMake(95, -65, 130, 305);
+        self.answerContainer.frame = CGRectMake(10, 240, 290, 60);
+        self.lettersContainer.frame = CGRectMake(10, 300, 290, 110);
+    }
+    if ([[self.lettersContainer subviews] count] > 0) {
+        [self layoutLetterViews];
+    }
 }
 
 - (SCHAnimationDelegate *)continueInteraction
