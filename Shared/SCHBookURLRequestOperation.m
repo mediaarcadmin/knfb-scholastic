@@ -84,16 +84,28 @@
             [self setProcessingState:SCHBookProcessingStateError];
         } else {
             
+            __block BOOL urlsAlreadyExpired = NO;
+            
             [self performWithBookAndSave:^(SCHAppBook *book) {
                 SCHBookshelfSyncComponent *localComponent = [[SCHBookshelfSyncComponent alloc] init];
                 [localComponent syncContentMetadataItem:userInfo withContentMetadataItem:book.ContentMetadataItem];
                 [book setValue:[userInfo valueForKey:kSCHLibreAccessWebServiceCoverURL] forKey:kSCHAppBookCoverURL];
                 [book setValue:[userInfo valueForKey:kSCHLibreAccessWebServiceContentURL] forKey:kSCHAppBookFileURL];
                 [localComponent release];
+                
+                if ([book bookCoverURLHasExpired] || [book bookFileURLHasExpired]) {
+                    urlsAlreadyExpired = YES;
+                }
             }];
-
-            NSLog(@"Successful URL retrieval for %@!", bookIdentifier);
-            [self setProcessingState:SCHBookProcessingStateNoCoverImage];
+            
+            // check here for expiry
+            if (urlsAlreadyExpired) {
+                NSLog(@"Warning: URLs from the server have already expired for %@!", bookIdentifier);
+                [self setProcessingState:SCHBookProcessingStateError];
+            } else {
+                NSLog(@"Successful URL retrieval for %@!", bookIdentifier);
+                [self setProcessingState:SCHBookProcessingStateNoCoverImage];
+            }
         }
         
         [[NSNotificationCenter defaultCenter] removeObserver:self];
