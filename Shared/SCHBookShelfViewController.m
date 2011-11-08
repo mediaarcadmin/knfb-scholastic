@@ -46,6 +46,7 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 131;
 @property (nonatomic, assign) BOOL listViewNeedsRefreshed;
 @property (nonatomic, assign) int currentlyLoadingIndex;
 @property (nonatomic, retain) LambdaAlert *loadingView;
+@property (nonatomic, assign) BOOL shouldShowBookshelfFailedErrorMessage;
 
 - (void)setupAssetsForOrientation:(UIInterfaceOrientation)orientation;
 - (void)updateTheme;
@@ -90,6 +91,7 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 131;
 @synthesize listViewNeedsRefreshed;
 @synthesize profileSetupDelegate;
 @synthesize loadingView;
+@synthesize shouldShowBookshelfFailedErrorMessage;
 
 #pragma mark - Object lifecycle
 
@@ -176,6 +178,7 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 131;
     [super viewDidLoad];
     self.gridViewNeedsRefreshed = YES;
     self.listViewNeedsRefreshed = YES;
+    self.shouldShowBookshelfFailedErrorMessage = YES;
     
     [self.listTableView setAlwaysBounceVertical:NO]; // For some reason this doesn't work when set from the nib
     
@@ -621,6 +624,7 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 131;
 
 - (void)bookshelfSyncComponentDidComplete:(NSNotification *)notification
 {
+    self.shouldShowBookshelfFailedErrorMessage = YES;
     [self dismissLoadingView];
     self.books = [self.profileItem allBookIdentifiers];
     [self reloadData];
@@ -628,13 +632,17 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 131;
 
 - (void)bookshelfSyncComponentDidFail:(NSNotification *)notification
 {
-    [self reloadData];
-    LambdaAlert *alert = [[LambdaAlert alloc]
-                          initWithTitle:NSLocalizedString(@"Unable to Retrieve all eBooks", @"Unable to Retrieve all eBooks") 
-                          message:NSLocalizedString(@"There was a problem retrieving all eBooks on this bookshelf. Please try again.", @"") ];
-    [alert addButtonWithTitle:NSLocalizedString(@"OK", @"OK") block:^{}];
-    [self replaceLoadingAlertWithAlert:alert];
-    [alert release];
+    if (self.shouldShowBookshelfFailedErrorMessage == YES &&
+        [self.books firstObjectCommonWithArray:[[notification userInfo] objectForKey:SCHBookshelfSyncComponentBookIdentifiers]] != nil) {
+        self.shouldShowBookshelfFailedErrorMessage = NO;
+        [self reloadData];
+        LambdaAlert *alert = [[LambdaAlert alloc]
+                              initWithTitle:NSLocalizedString(@"Unable to Retrieve all eBooks", @"Unable to Retrieve all eBooks") 
+                              message:NSLocalizedString(@"There was a problem retrieving all eBooks on this bookshelf. Please try again.", @"") ];
+        [alert addButtonWithTitle:NSLocalizedString(@"OK", @"OK") block:^{}];
+        [self replaceLoadingAlertWithAlert:alert];
+        [alert release];
+    }
 }
 
 #pragma mark - Core Data Table View Methods

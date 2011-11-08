@@ -34,6 +34,7 @@
 @property (nonatomic, retain) UIImage *currentPageTexture;
 @property (nonatomic, assign) BOOL textureIsDark;
 @property (nonatomic, copy) dispatch_block_t jumpToPageCompletionHandler;
+@property (nonatomic, retain) SCHBookPoint *openingPoint;
 
 - (void)updatePositionInBook;
 - (void)jumpToPageAtIndexPoint:(EucBookPageIndexPoint *)point animated:(BOOL)animated withCompletionHandler:(dispatch_block_t)completion;
@@ -49,6 +50,7 @@
 @synthesize currentPageTexture;
 @synthesize textureIsDark;
 @synthesize jumpToPageCompletionHandler;
+@synthesize openingPoint;
 
 - (void)initialiseView
 {
@@ -58,6 +60,12 @@
         eucBookView.vibratesOnInvalidTurn = NO;
         eucBookView.allowsTapTurn = NO;
         [eucBookView setPageTexture:self.currentPageTexture isDark:self.textureIsDark];
+        
+        if (self.openingPoint) {
+            [self jumpToBookPoint:self.openingPoint animated:NO];
+            self.openingPoint = nil;
+        }
+        
         [self addSubview:eucBookView];          
     }
 }
@@ -78,6 +86,7 @@
     
     [currentPageTexture release], currentPageTexture = nil;
     [jumpToPageCompletionHandler release], jumpToPageCompletionHandler = nil;
+    [openingPoint release], openingPoint = nil;
 
     [super dealloc];
 }
@@ -85,17 +94,21 @@
 - (id)initWithFrame:(CGRect)frame bookIdentifier:(SCHBookIdentifier *)bookIdentifier 
 managedObjectContext:(NSManagedObjectContext *)managedObjectContext 
            delegate:(id<SCHReadingViewDelegate>)delegate
+              point:(SCHBookPoint *)point
 {
     self = [super initWithFrame:frame 
                  bookIdentifier:bookIdentifier 
-           managedObjectContext:managedObjectContext             
-                       delegate:delegate];
+           managedObjectContext:managedObjectContext
+                       delegate:delegate
+                          point:point];
     if (self) {        
         self.opaque = YES;
         
         SCHBookManager *bookManager = [SCHBookManager sharedBookManager];
         eucBook = [[bookManager checkOutEucBookForBookIdentifier:self.identifier inManagedObjectContext:managedObjectContext] retain];
         paragraphSource = [[bookManager checkOutParagraphSourceForBookIdentifier:self.identifier inManagedObjectContext:managedObjectContext] retain];
+        
+        openingPoint = [point retain];
     }
     return self;
 }
@@ -159,7 +172,6 @@ managedObjectContext:(NSManagedObjectContext *)managedObjectContext
     [super didMoveToWindow];
     
     if (self.window) {
-        [self.delegate readingViewWillAppear:self];
         // This needs to be done here to add the observer after the willMoveToWindow code in
         // eucBookView which sets the page count
         [self.eucBookView addObserver:self forKeyPath:@"currentPageIndexPoint" options:NSKeyValueObservingOptionInitial context:NULL];
