@@ -75,8 +75,9 @@ enum {
     CGFloat maxPieceWidth = 0, maxPieceHeight = 0;
     for (SCHStoryInteractionJigsawPieceView_iPhone *piece in self.jigsawPieceViews) {
         CGPoint center = piece.center;
-        piece.center = CGPointMake(center.x+CGRectGetMinX(self.puzzleBackground.frame), center.y+CGRectGetMinY(self.puzzleBackground.frame));
         piece.solutionPosition = piece.center;
+        piece.puzzleFrame = self.puzzleBackground.frame;
+        piece.center = CGPointMake(center.x+CGRectGetMinX(self.puzzleBackground.frame), center.y+CGRectGetMinY(self.puzzleBackground.frame));
         piece.homePosition = [[homePositions objectAtIndex:pieceIndex] CGPointValue];
         piece.transform = CGAffineTransformIdentity;
         [self.contentsView addSubview:piece];
@@ -136,7 +137,7 @@ enum {
             CGPoint point = [drag locationInView:drag.dragContainerView];
             self.draggingPiece.center = CGPointMake(point.x + self.dragOffset.x, point.y + self.dragOffset.y);
             if ([self.draggingPiece isInCorrectPosition]) {
-                self.draggingPiece.center = self.draggingPiece.solutionPosition;
+                self.draggingPiece.center = [self.draggingPiece correctPosition];
             }
             break;
         }
@@ -159,6 +160,7 @@ enum {
     self.draggingPiece.transform = sourceView.transform;
     self.draggingPiece.image = sourceView.image;
     self.draggingPiece.solutionPosition = sourceView.solutionPosition;
+    self.draggingPiece.puzzleFrame = sourceView.puzzleFrame;
     self.draggingPiece.homePosition = self.draggingPiece.center;
     self.dragOffset = CGPointMake(self.draggingPiece.center.x - point.x, self.draggingPiece.center.y - point.y);
     [self.contentsView addSubview:self.draggingPiece];
@@ -184,7 +186,7 @@ enum {
         [self.dragSourcePiece removeFromSuperview];
         [self.contentsView addSubview:self.dragSourcePiece];
         self.dragSourcePiece.transform = CGAffineTransformIdentity;
-        self.dragSourcePiece.center = self.dragSourcePiece.solutionPosition;
+        self.dragSourcePiece.center = [self.dragSourcePiece correctPosition];
         self.dragSourcePiece.alpha = 1;
         self.dragSourcePiece.userInteractionEnabled = NO;
         self.dragSourcePiece = nil;

@@ -12,7 +12,10 @@
 
 @property (nonatomic, assign) CGImageRef image;
 @property (nonatomic, assign) CGPoint solutionPosition;
+@property (nonatomic, assign) CGRect puzzleFrame;
 
+- (CGPoint)correctPosition;
 - (BOOL)isInCorrectPosition;
+- (BOOL)isLockedInCorrectPosition;
 
 @end

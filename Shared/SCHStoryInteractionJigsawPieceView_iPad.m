@@ -13,6 +13,7 @@
 
 @synthesize image;
 @synthesize solutionPosition;
+@synthesize puzzleFrame;
 
 - (void)dealloc
 {
@@ -39,10 +40,20 @@
     }
 }
 
+- (CGPoint)correctPosition
+{
+    return CGPointMake(self.puzzleFrame.origin.x+self.solutionPosition.x, self.puzzleFrame.origin.y+self.solutionPosition.y);
+}
+
 - (BOOL)isInCorrectPosition
 {
     static const CGFloat kSnapDistanceSq = 900;
-    return SCHCGPointDistanceSq(self.center, self.solutionPosition) < kSnapDistanceSq;
+    return SCHCGPointDistanceSq(self.center, [self correctPosition]) < kSnapDistanceSq;
+}
+
+- (BOOL)isLockedInCorrectPosition
+{
+    return ![self isUserInteractionEnabled];
 }
 
 - (void)beginDrag

@@ -150,7 +150,7 @@ enum SCHToolType {
 
 #pragma mark - rotation
 
-- (CGSize)iPadContentsSizeForOrientation:(UIInterfaceOrientation)orientation
+- (CGSize)iPadContentsSizeForViewAtIndex:(NSInteger)viewIndex forOrientation:(UIInterfaceOrientation)orientation
 {
     if (inDrawingScreen) {
         if (UIInterfaceOrientationIsLandscape(orientation)) {
@@ -159,7 +159,7 @@ enum SCHToolType {
             return CGSizeMake(692, 885);
         }
     } else {
-        return [super iPadContentsSizeForOrientation:orientation];
+        return [super iPadContentsSizeForViewAtIndex:viewIndex forOrientation:orientation];
     }
 }
 
