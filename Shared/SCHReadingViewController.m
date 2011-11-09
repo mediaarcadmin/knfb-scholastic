@@ -2656,10 +2656,12 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     void (^presentStoryInteractionAfterDelay)(NSTimeInterval) = ^(NSTimeInterval delay) {
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, NSEC_PER_SEC * delay), dispatch_get_main_queue(), ^{
             [self presentStoryInteraction:storyInteraction];
+            self.readingView.userInteractionEnabled = YES;
         });
     };
     
     void (^jumpToPageAndPresentStoryInteractionBlock)(void) = ^{
+        self.readingView.userInteractionEnabled = NO;
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, NSEC_PER_SEC * 0.1), dispatch_get_main_queue(), ^{
             if ([[self.readingView currentBookPoint] isEqual:notePoint] == NO) {
                 [self.readingView jumpToBookPoint:notePoint animated:YES withCompletionHandler:^{
