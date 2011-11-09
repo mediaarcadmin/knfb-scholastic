@@ -61,7 +61,7 @@
     
     if (self.identifier == nil) {
         NSLog(@"WARNING: tried to download a book without setting the ISBN");
-        [self setProcessingState:SCHBookProcessingStateError];
+        [self setProcessingState:SCHBookProcessingStateDownloadFailed];
         [self setIsProcessing:NO];                
         [self endOperation];
         return;
@@ -321,7 +321,7 @@
     operation.completionBlock = ^{
         self.downloadOperation = nil;
         [unretained_self setIsProcessing:NO];
-        [unretained_self setProcessingState:SCHBookProcessingStateError];
+        [unretained_self setProcessingState:SCHBookProcessingStateDownloadFailed];
         [unretained_self endOperation];
     };
 }

@@ -323,7 +323,6 @@
 								<string key="NSFrameSize">{320, 7}</string>
 								<reference key="NSSuperview" ref="489633664"/>
 								<reference key="NSWindow"/>
-								<reference key="NSNextKeyView"/>
 								<reference key="IBUIBackgroundColor" ref="764302899"/>
 								<bool key="IBUIOpaque">NO</bool>
 								<bool key="IBUIUserInteractionEnabled">NO</bool>
@@ -515,6 +514,14 @@
 						<reference key="destination" ref="275472151"/>
 					</object>
 					<int key="connectionID">183</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBCocoaTouchOutletConnection" key="connection">
+						<string key="label">closeButton</string>
+						<reference key="source" ref="372490531"/>
+						<reference key="destination" ref="671515870"/>
+					</object>
+					<int key="connectionID">187</int>
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBCocoaTouchOutletConnection" key="connection">
@@ -786,7 +793,7 @@
 				<reference key="dict.values" ref="0"/>
 			</object>
 			<nil key="sourceID"/>
-			<int key="maxID">186</int>
+			<int key="maxID">187</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<object class="NSMutableArray" key="referencedPartialClassDescriptions">
@@ -855,6 +862,7 @@
 							<string>accountURL</string>
 							<string>barSpacer</string>
 							<string>bottomField</string>
+							<string>closeButton</string>
 							<string>containerView</string>
 							<string>forgotUsernamePasswordURL</string>
 							<string>loginButton</string>
@@ -869,6 +877,7 @@
 							<string>SCHUnderlinedButton</string>
 							<string>UIBarButtonItem</string>
 							<string>UITextField</string>
+							<string>UIBarButtonItem</string>
 							<string>UIView</string>
 							<string>SCHUnderlinedButton</string>
 							<string>UIButton</string>
@@ -886,6 +895,7 @@
 							<string>accountURL</string>
 							<string>barSpacer</string>
 							<string>bottomField</string>
+							<string>closeButton</string>
 							<string>containerView</string>
 							<string>forgotUsernamePasswordURL</string>
 							<string>loginButton</string>
@@ -908,6 +918,10 @@
 							<object class="IBToOneOutletInfo">
 								<string key="name">bottomField</string>
 								<string key="candidateClassName">UITextField</string>
+							</object>
+							<object class="IBToOneOutletInfo">
+								<string key="name">closeButton</string>
+								<string key="candidateClassName">UIBarButtonItem</string>
 							</object>
 							<object class="IBToOneOutletInfo">
 								<string key="name">containerView</string>
