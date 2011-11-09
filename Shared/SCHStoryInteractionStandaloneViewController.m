@@ -28,7 +28,7 @@ struct BackgroundViewState {
 
 - (void)releaseViewObjects
 {
-    [backgroundView release], backgroundView = nil;    
+    // can't release backgroundView here as it doesn't really belong to this controller
 }
 
 - (void)dealloc
