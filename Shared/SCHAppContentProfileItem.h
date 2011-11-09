@@ -25,6 +25,7 @@ extern NSString * const kSCHAppContentProfileItemOrder;
 }
 @property (nonatomic, retain) NSNumber * DRMQualifier;
 @property (nonatomic, retain) NSString * ISBN;
+@property (nonatomic, retain) NSNumber * IsNewBook;
 @property (nonatomic, retain) NSNumber * IsTrashed;
 @property (nonatomic, retain) NSNumber * Order;
 @property (nonatomic, retain) NSDate * LastAnnotationSync;

@@ -1,0 +1,11 @@
+<SampleManifest>
+	<Book>
+		<Isbn13>9780545324328</Isbn13>
+		<Title>The Mixed-up Alphabet</Title>
+		<Author>by Steve Metzger, illustrated by Jonnie Ho</Author>
+		<CoverUrl>9780545324328.1103.MixedUpAlphabet.jpg</CoverUrl>
+		<DownloadUrl>9780545324328.1103.MixedUpAlphabet.xps</DownloadUrl>
+        <Version>1</Version>
+        <IsEnhanced>false</IsEnhanced>
+	</Book>
+</SampleManifest>

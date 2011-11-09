@@ -489,7 +489,7 @@
     self.errorBadge.center = errorCenter;
 
     // resize and position the progress view
-    NSLog(@"Progress view frame: %@", NSStringFromCGRect(self.progressView.frame));
+//    NSLog(@"Progress view frame: %@", NSStringFromCGRect(self.progressView.frame));
     CGRect progressViewFrame = CGRectMake(coverFrame.origin.x + 10, self.isNewBadge.frame.origin.y - 10, coverFrame.size.width - 20, self.progressView.frame.size.height);
     self.progressView.frame = progressViewFrame;
     
@@ -512,7 +512,7 @@
                 break;
             case SCHBookProcessingStateDownloadPaused:
                 NSLog(@"Setting paused.");
-                self.progressView.alpha = 0.75f;
+                self.progressView.alpha = 0.0f;
                 self.bookTintView.hidden = NO;
                 self.progressView.hidden = NO;
                 self.errorBadge.hidden = YES;

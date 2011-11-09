@@ -17,6 +17,7 @@
 #import <AVFoundation/AVAudioPlayer.h>
 #import "SCHReadingViewNavigationToolbar.h"
 #import "SCHHelpViewController.h"
+#import "SCHBookStoryInteractionsDelegate.h"
 
 extern NSString * const kSCHReadingViewErrorDomain;
 
@@ -49,7 +50,8 @@ typedef enum
 
 @interface SCHReadingViewController : UIViewController <SCHReadingViewDelegate, SCHReadingNotesListControllerDelegate, 
 SCHReadingNoteViewDelegate, SCHReadingInteractionsListControllerDelegate, SCHAudioBookPlayerDelegate, UIPopoverControllerDelegate,
-SCHStoryInteractionControllerDelegate, SCHReadingViewNavigationToolbarDelegate, SCHHelpViewControllerDelegate> 
+SCHStoryInteractionControllerDelegate, SCHReadingViewNavigationToolbarDelegate, SCHHelpViewControllerDelegate,
+SCHBookStoryInteractionsDelegate> 
 {}
 UIImageView *optionsPhoneTopBackground;
 

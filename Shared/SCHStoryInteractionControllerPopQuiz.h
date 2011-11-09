@@ -21,6 +21,9 @@
 @property (nonatomic, retain) IBOutlet UILabel *scoreSublabel;
 
 - (IBAction)answerButtonTapped:(id)sender;
+- (IBAction)answerButtonTouched:(id)sender;
+- (IBAction)answerButtonTapCancelled:(id)sender;
+
 - (IBAction)playAgainButtonTapped:(id)sender;
 
 @end

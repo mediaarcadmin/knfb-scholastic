@@ -231,7 +231,11 @@
         if ([self.remainingWords containsObject:selectedLetters]) {
             [self.remainingWords removeObject:selectedLetters];
             SCHStoryInteractionStrikeOutLabelView *label = [self.wordViews objectAtIndex:index];
-            [containerView addPermanentHighlightFromCurrentSelectionWithColor:label.strikeOutColor];
+            [containerView addPermanentHighlightFromStartRow:startRow
+                                                 startColumn:startColumn
+                                                      extent:extent
+                                                    vertical:vertical
+                                                   withColor:label.strikeOutColor];
             [containerView clearSelection];
             
             if ([self.remainingWords count] == 0) {
@@ -242,6 +246,7 @@
             
             
             if ([self.remainingWords count] == 0) {
+                [label setStrikedOut:YES];
                 [self enqueueAudioWithPath:@"sfx_win_y.mp3" fromBundle:YES];
                 [self enqueueAudioWithPath:[self audioPathForYouFoundThemAll]
                                 fromBundle:NO

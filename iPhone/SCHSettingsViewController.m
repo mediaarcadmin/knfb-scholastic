@@ -40,6 +40,8 @@ extern NSString * const kSCHAuthenticationManagerDeviceKey;
 - (void)updateDictionaryButton;
 - (void)releaseViewObjects;
 - (void)replaceCheckBooksAlertWithAlert:(LambdaAlert *)alert;
+- (void)registerForSyncNotifications;
+- (void)deregisterForSyncNotifications;
 
 @end
 
@@ -62,6 +64,8 @@ extern NSString * const kSCHAuthenticationManagerDeviceKey;
 
 - (void)releaseViewObjects
 {
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+
     [scrollView release], scrollView = nil;
     [manageBooksGroupView release], manageBooksGroupView = nil;
     [checkBooksButton release], checkBooksButton = nil;
@@ -72,13 +76,12 @@ extern NSString * const kSCHAuthenticationManagerDeviceKey;
     [spaceSaverButton release], spaceSaverButton = nil;
     [updateBooksViewController release], updateBooksViewController = nil;
     [checkBooksAlert release], checkBooksAlert = nil;
+    
     [super releaseViewObjects];
 }
 
 - (void)dealloc 
-{
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
-    
+{    
     [bookUpdates release], bookUpdates = nil;
 	[managedObjectContext release], managedObjectContext = nil;
     
@@ -127,29 +130,9 @@ extern NSString * const kSCHAuthenticationManagerDeviceKey;
     }
     
     [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(didCompleteSync:)
-                                                 name:SCHBookshelfSyncComponentDidCompleteNotification
-                                               object:nil];
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(didUpdateAccountDuringSync:)
-                                                 name:SCHContentSyncComponentDidAddBookToProfileNotification
-                                               object:nil];
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(didFailSync:)
-                                                 name:SCHBookshelfSyncComponentDidFailNotification
-                                               object:nil];
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(dictionaryStateChanged:)
                                                  name:kSCHDictionaryStateChange
                                                object:nil];
-    
-    if ([[SCHAppStateManager sharedAppStateManager] canAuthenticate] == NO) {
-        [self.manageBooksButton setEnabled:NO];
-        [self.checkBooksButton setEnabled:NO];
-    }
 }
 
 - (void)viewDidUnload 
@@ -164,6 +147,23 @@ extern NSString * const kSCHAuthenticationManagerDeviceKey;
     [self updateSpaceSaverButton];
     [self updateUpdateBooksButton];
     [self updateDictionaryButton];
+    
+    if ([[SCHAppStateManager sharedAppStateManager] canAuthenticate] == NO) {
+        [self.manageBooksButton setEnabled:NO];
+        [self.checkBooksButton setEnabled:NO];
+    } else {
+        [self.manageBooksButton setEnabled:YES];
+        [self.checkBooksButton setEnabled:YES];
+    }
+}
+
+- (void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
+    
+    if (self.checkBooksAlert) {
+        [self.checkBooksAlert dismissAnimated:NO];
+    }
 }
 
 #pragma mark - Button states
@@ -343,8 +343,10 @@ extern NSString * const kSCHAuthenticationManagerDeviceKey;
                               message:@"\n"];
         [checkBooksAlert setSpinnerHidden:NO];
         [checkBooksAlert show];
-
-        [[SCHSyncManager sharedSyncManager] firstSync:YES];      
+        
+        [self registerForSyncNotifications];
+        
+        [[SCHSyncManager sharedSyncManager] firstSync:YES requireDeviceAuthentication:YES];      
     }
     
 }
@@ -411,6 +413,39 @@ extern NSString * const kSCHAuthenticationManagerDeviceKey;
 
 #pragma mark - notifications
 
+- (void)registerForSyncNotifications
+{
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(didCompleteSync:)
+                                                 name:SCHBookshelfSyncComponentDidCompleteNotification
+                                               object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(didUpdateAccountDuringSync:)
+                                                 name:SCHContentSyncComponentDidAddBookToProfileNotification
+                                               object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(didFailSync:)
+                                                 name:SCHBookshelfSyncComponentDidFailNotification
+                                               object:nil];
+}
+
+- (void)deregisterForSyncNotifications
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self
+                                                 name:SCHBookshelfSyncComponentDidCompleteNotification
+                                               object:nil];
+    
+    [[NSNotificationCenter defaultCenter] removeObserver:self
+                                                 name:SCHContentSyncComponentDidAddBookToProfileNotification
+                                               object:nil];
+    
+    [[NSNotificationCenter defaultCenter] removeObserver:self
+                                                 name:SCHBookshelfSyncComponentDidFailNotification
+                                               object:nil];
+}
+
 - (void)dictionaryStateChanged:(NSNotification *)note
 {
     [self updateDictionaryButton];
@@ -418,6 +453,8 @@ extern NSString * const kSCHAuthenticationManagerDeviceKey;
 
 - (void)didUpdateAccountDuringSync:(NSNotification *)note
 {
+    [self deregisterForSyncNotifications];
+    
     if (self.checkBooksAlert) {
         LambdaAlert *alert = [[LambdaAlert alloc]
                               initWithTitle:NSLocalizedString(@"Sync Complete", @"")
@@ -435,10 +472,14 @@ extern NSString * const kSCHAuthenticationManagerDeviceKey;
             [self.checkBooksButton setEnabled:YES];
         }
     }
+    
+    [self deregisterForSyncNotifications];
 }
 
 - (void)didFailSync:(NSNotification *)note
 {
+    [self deregisterForSyncNotifications];
+    
     if (self.checkBooksAlert) {
         LambdaAlert *alert = [[LambdaAlert alloc]
                               initWithTitle:NSLocalizedString(@"Sync Failed", @"")
@@ -460,6 +501,8 @@ extern NSString * const kSCHAuthenticationManagerDeviceKey;
 
 - (void)didCompleteSync:(NSNotification *)note
 {
+    [self deregisterForSyncNotifications];
+    
     [self updateUpdateBooksButton];
     
     if (self.checkBooksAlert) {

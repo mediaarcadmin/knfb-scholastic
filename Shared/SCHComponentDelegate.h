@@ -14,5 +14,6 @@
 
 - (void)component:(SCHComponent *)component didCompleteWithResult:(NSDictionary *)result;
 - (void)component:(SCHComponent *)component didFailWithError:(NSError *)error;
+- (void)authenticationDidSucceed;
 
 @end

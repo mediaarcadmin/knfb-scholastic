@@ -178,6 +178,15 @@
     }
 }
 
+- (void)httpOperation:(QHTTPOperation *)operation didFailWithError:(NSError *)error
+{
+    NSLog(@"dictionary download failed with error: %@", error);
+    
+    operation.completionBlock = nil;
+    [[SCHDictionaryDownloadManager sharedDownloadManager] threadSafeUpdateDictionaryState:SCHDictionaryProcessingStateError];
+    [[BITNetworkActivityManager sharedNetworkActivityManager] hideNetworkActivityIndicator];            
+}
+
 #pragma mark - progress
 
 - (void)fireProgressUpdate:(float)progress

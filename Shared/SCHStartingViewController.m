@@ -30,6 +30,7 @@
 #import "SCHAppBook.h"
 #import "SCHDrmSession.h"
 #import "SCHSampleBooksImporter.h"
+#import "SCHAccountValidation.h"
 
 enum {
     kTableSectionSamples = 0,
@@ -68,7 +69,8 @@ typedef enum {
 - (void)checkBookshelvesAndDictionaryDownloadForProfile;
 - (void)checkBookshelvesAndDictionaryDownloadForProfile:(BOOL)rechecking;
 - (void)replaceCheckProfilesAlertWithAlert:(LambdaAlert *)alert;
-
+- (void)signInSucceededForLoginController:(SCHLoginPasswordViewController *)login;
+- (void)signInFailedForLoginController:(SCHLoginPasswordViewController *)login withError:(NSError *)error;
 - (SCHProfileViewController_Shared *)profileViewController;
 
 @end
@@ -328,12 +330,16 @@ typedef enum {
         
         self.profileSyncState = kSCHStartingViewControllerProfileSyncStateWaitingForLoginToComplete;
         
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(authenticationManager:) name:SCHAuthenticationManagerDidSucceedNotification object:nil];			
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(authenticationManager:) name:SCHAuthenticationManagerDidFailNotification object:nil];					
-        
         if ([[username stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]] length] > 0 &&
             [[password stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]] length] > 0) {      
-            [[SCHAuthenticationManager sharedAuthenticationManager] authenticateWithUserName:username withPassword:password];
+            [[SCHAuthenticationManager sharedAuthenticationManager] authenticateWithUser:username 
+                                                                                password:password
+                                                                            successBlock:^(BOOL offlineMode){
+                                                                                [self signInSucceededForLoginController:login];
+                                                                            }
+                                                                            failureBlock:^(NSError * error){
+                                                                                [self signInFailedForLoginController:login withError:error];
+                                                                            }];            
             return(YES);
         } else {
             return(NO);
@@ -346,26 +352,32 @@ typedef enum {
     [login release];
 }
 
-- (void)authenticationManager:(NSNotification *)notification
+- (void)signInSucceededForLoginController:(SCHLoginPasswordViewController *)login
 {
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:SCHAuthenticationManagerDidSucceedNotification object:nil];
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:SCHAuthenticationManagerDidFailNotification object:nil];
-	
-	if ([notification.name isEqualToString:SCHAuthenticationManagerDidSucceedNotification]) {        
-        [[SCHAuthenticationManager sharedAuthenticationManager] clearAppProcessing];
-        [[SCHSyncManager sharedSyncManager] firstSync:YES];
-	} else {
-        [[SCHAuthenticationManager sharedAuthenticationManager] clear];
-		NSError *error = [notification.userInfo objectForKey:kSCHAuthenticationManagerNSError];
-		if (error != nil) {
+    [login setDisplayIncorrectCredentialsWarning:NO];
+    [[SCHSyncManager sharedSyncManager] firstSync:YES requireDeviceAuthentication:NO];
+}
+
+- (void)signInFailedForLoginController:(SCHLoginPasswordViewController *)login withError:(NSError *)error
+{    
+    if (error != nil) {
+        
+        if ([error code] == kSCHAccountValidationCredentialsError) {
+            [login clearBottomField];
+            [login setDisplayIncorrectCredentialsWarning:YES]; 
+        } else {
+            
             NSString *localizedMessage = nil;
             
             if ([error code] == kSCHDrmDeviceLimitError) {
                 localizedMessage = NSLocalizedString(@"The Scholastic eReader is already installed on five devices, which is the maximum allowed. Before installing it on this device, you to need to deregister the eReader on one of your current devices.", nil);
+            } else if (([error code] == kSCHDrmDeviceRegisteredToAnotherDevice) || 
+                       ([error code] == kSCHDrmDeviceUnableToAssign)) {
+                localizedMessage = NSLocalizedString(@"This device is registered to another Scholastic account. The owner of that account needs to deregister this device before it can be registered to a new account.", nil);
             } else {
                 localizedMessage = [NSString stringWithFormat:
-                                          NSLocalizedString(@"A problem occured. If this problem persists please contact support.\n\n '%@'", nil), 
-                                          [error localizedDescription]];   
+                                    NSLocalizedString(@"A problem occured. If this problem persists please contact support.\n\n '%@'", nil), 
+                                    [error localizedDescription]];   
             }
             
             LambdaAlert *alert = [[LambdaAlert alloc]
@@ -379,11 +391,12 @@ typedef enum {
             }];
             [alert show];
             [alert release];
-        }	
-        
-        SCHLoginPasswordViewController *login = (SCHLoginPasswordViewController *)[self.modalNavigationController topViewController];
-        [login stopShowingProgress];
-	}
+            
+            [login setDisplayIncorrectCredentialsWarning:NO]; 
+        }
+    }	
+    
+    [login stopShowingProgress];
 }
 
 - (BOOL)dictionaryDownloadRequired
@@ -465,6 +478,10 @@ typedef enum {
     if ([self bookshelfSetupRequired]) {
         // Force the view to load from the nib without requiring the run loop to complete
         [self view];
+        
+        // Start the sync in case they have been set up since last sync
+        [[SCHSyncManager sharedSyncManager] firstSync:YES requireDeviceAuthentication:NO];
+        
         [self checkBookshelvesAndDictionaryDownloadForProfile:animated];
     } else {
         [self showCurrentProfileAnimated:animated];
@@ -609,7 +626,7 @@ typedef enum {
 {
     self.profileSyncState = kSCHStartingViewControllerProfileSyncStateWaitingForBookshelves;
     
-    [[SCHSyncManager sharedSyncManager] firstSync:YES];      
+    [[SCHSyncManager sharedSyncManager] firstSync:YES requireDeviceAuthentication:YES];      
     
     self.checkProfilesAlert = [[[LambdaAlert alloc]
                                 initWithTitle:NSLocalizedString(@"Syncing with Your Account", @"")
@@ -659,7 +676,7 @@ typedef enum {
 - (void)willEnterForeground:(NSNotification *)note
 {
     if (self.profileSyncState == kSCHStartingViewControllerProfileSyncStateWaitingForBookshelves) {
-        [[SCHSyncManager sharedSyncManager] firstSync:YES];
+        [[SCHSyncManager sharedSyncManager] firstSync:YES requireDeviceAuthentication:NO];
     }
 }
 

@@ -36,19 +36,21 @@
         return;
     }
 
+    __block BOOL expiredURLs = NO;
     // sync call to find out if we have a contentURL
     [self performWithBook:^(SCHAppBook *book) {
         haveContentURL = book.ContentMetadataItem.ContentURL != nil;
+        expiredURLs = [book bookCoverURLHasExpired] || [book bookFileURLHasExpired];
     }];
 
     [self performWithBookAndSave:^(SCHAppBook *book) {
-        if (haveContentURL == YES) {
+        if (haveContentURL == YES && !expiredURLs) {
             [book setValue:book.ContentMetadataItem.CoverURL forKey:kSCHAppBookCoverURL];
             [book setValue:book.ContentMetadataItem.ContentURL forKey:kSCHAppBookFileURL];                    
         }
     }];
 
-    if (haveContentURL == YES) {
+    if (haveContentURL == YES && !expiredURLs) {
         [self setProcessingState:SCHBookProcessingStateNoCoverImage];
         [self setIsProcessing:NO];                
         [self endOperation];
@@ -81,8 +83,10 @@
         if ([[userInfo valueForKey:kSCHLibreAccessWebServiceCoverURL] isEqual:[NSNull null]] || 
             [[userInfo valueForKey:kSCHLibreAccessWebServiceContentURL] isEqual:[NSNull null]]) {
             NSLog(@"Warning: book URL request was missing cover and/or content URL: %@", userInfo);
-            [self setProcessingState:SCHBookProcessingStateError];
+            [self setProcessingState:SCHBookProcessingStateURLsNotPopulated];
         } else {
+            
+            __block BOOL urlsAlreadyExpired = NO;
             
             [self performWithBookAndSave:^(SCHAppBook *book) {
                 SCHBookshelfSyncComponent *localComponent = [[SCHBookshelfSyncComponent alloc] init];
@@ -90,10 +94,20 @@
                 [book setValue:[userInfo valueForKey:kSCHLibreAccessWebServiceCoverURL] forKey:kSCHAppBookCoverURL];
                 [book setValue:[userInfo valueForKey:kSCHLibreAccessWebServiceContentURL] forKey:kSCHAppBookFileURL];
                 [localComponent release];
+                
+                if ([book bookCoverURLHasExpired] || [book bookFileURLHasExpired]) {
+                    urlsAlreadyExpired = YES;
+                }
             }];
-
-            NSLog(@"Successful URL retrieval for %@!", bookIdentifier);
-            [self setProcessingState:SCHBookProcessingStateNoCoverImage];
+            
+            // check here for expiry
+            if (urlsAlreadyExpired) {
+                NSLog(@"Warning: URLs from the server have already expired for %@!", bookIdentifier);
+                [self setProcessingState:SCHBookProcessingStateURLsNotPopulated];
+            } else {
+                NSLog(@"Successful URL retrieval for %@!", bookIdentifier);
+                [self setProcessingState:SCHBookProcessingStateNoCoverImage];
+            }
         }
         
         [[NSNotificationCenter defaultCenter] removeObserver:self];

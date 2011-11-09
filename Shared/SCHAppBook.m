@@ -8,6 +8,8 @@
 
 #import "SCHAppBook.h"
 #import "SCHBookIdentifier.h"
+#import "NSURL+Extensions.h"
+#import "SCHAppStateManager.h"
 
 // Constants
 NSString * const kSCHAppBookErrorDomain  = @"com.knfb.scholastic.AppBookErrorDomain";
@@ -150,6 +152,48 @@ NSString * const kSCHAppBookFilenameSeparator = @"-";
     return(self.ContentMetadataItem.bookIdentifier);
 }
             
+- (BOOL)bookCoverURLHasExpired
+{
+    BOOL ret = YES;
+    
+    if ([[SCHAppStateManager sharedAppStateManager] isSampleStore]) {
+        ret = NO;
+    } else if (self.BookCoverURL != nil) {
+        NSURL *url = [NSURL URLWithString:self.BookCoverURL];
+        NSString *expires = [[url queryParameters] objectForKey:@"Expires"];
+        if (expires != nil) {
+            NSDate *expiresDate = [NSDate dateWithTimeIntervalSince1970:[expires integerValue]];
+            
+            if ([expiresDate earlierDate:[[NSDate date] dateByAddingTimeInterval:60]] != expiresDate) {
+                ret = NO;
+            }
+        }
+    }
+    
+    return ret;
+}
+
+- (BOOL)bookFileURLHasExpired
+{
+    BOOL ret = YES;
+    
+    if ([[SCHAppStateManager sharedAppStateManager] isSampleStore]) {
+        ret = NO;
+    } else if (self.BookFileURL != nil) {
+        NSURL *url = [NSURL URLWithString:self.BookFileURL];
+        NSString *expires = [[url queryParameters] objectForKey:@"Expires"];
+        if (expires != nil) {
+            NSDate *expiresDate = [NSDate dateWithTimeIntervalSince1970:[expires integerValue]];
+            
+            if ([expiresDate earlierDate:[[NSDate date] dateByAddingTimeInterval:60]] != expiresDate) {
+                ret = NO;
+            }
+        }
+    }
+    
+    return ret;
+}
+
 - (NSNumber *)HasStoryInteractions
 {
     NSNumber *ret = NO;
@@ -314,7 +358,7 @@ NSString * const kSCHAppBookFilenameSeparator = @"-";
 - (NSString *)coverImagePath
 {
 	NSString *bookDirectory = [self bookDirectory];
-	NSString *fullImagePath = [bookDirectory stringByAppendingPathComponent:[NSString stringWithFormat:@"%@%@%@.png", 
+	NSString *fullImagePath = [bookDirectory stringByAppendingPathComponent:[NSString stringWithFormat:@"%@%@%@.jpg", 
                                                                              self.bookIdentifier.isbn, 
                                                                              kSCHAppBookFilenameSeparator,
                                                                              self.bookIdentifier.DRMQualifier]];

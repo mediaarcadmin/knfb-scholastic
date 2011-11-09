@@ -195,13 +195,10 @@ ErrorExit:
 
 @interface SCHDrmRegistrationSession ()
 
-- (void)callSuccessDelegate:(NSString *)deviceKey;
-- (void)callFailureDelegate:(NSError *)error;
-
-@end
-
-
-@interface SCHDrmRegistrationSession()
+- (void)registrationCallSuccessDelegate:(NSString *)deviceID;
+- (void)registrationCallFailureDelegate:(NSError *)error;
+- (void)deregistrationCallSuccessDelegate:(NSString *)deviceID;
+- (void)deregistrationCallFailureDelegate:(NSError *)error;
 
 @property (nonatomic, assign) BOOL isJoining;
 @property (nonatomic, retain) NSURLConnection *urlConnection;
@@ -237,17 +234,17 @@ ErrorExit:
     DRM_DOMAIN_ID domainID;
     DRM_DWORD cbChallenge = 0;
     DRM_BYTE *pbChallenge = NULL;
-	 
+    	 
 	if ( !self.sessionInitialized ) {
         //NSLog(@"DRM error: cannot join domain because DRM is not initialized.");
-		[self callFailureDelegate:[self drmError:kSCHDrmInitializationError 
+		[self registrationCallFailureDelegate:[self drmError:kSCHDrmInitializationError 
 										 message:NSLocalizedString(@"Cannot register device because DRM is not initialized.",@"DRM initialization error message")]];
         return;
     }
 	
 	if ( token == nil ) {
 		//NSLog(@"DRM error attempting to join domain outside login session.");
-		[self callFailureDelegate:[self drmError:kSCHDrmInitializationError 
+		[self registrationCallFailureDelegate:[self drmError:kSCHDrmInitializationError 
 										 message:NSLocalizedString(@"Cannot register device because login is required.",@"DRM login requirement message")]];
 		return;
 	}
@@ -315,7 +312,7 @@ ErrorExit:
 	if (!self.urlConnection)
 	{
 		//NSLog(@"Failed to created url connection for join domain request.");
-		[self callFailureDelegate:[self drmError:kSCHDrmNetworkError 
+		[self registrationCallFailureDelegate:[self drmError:kSCHDrmNetworkError 
 										 message:NSLocalizedString(@"Cannot register device because connection can't be created.",@"DRM connection error message")]];
 		return;
 	}
@@ -326,7 +323,7 @@ ErrorExit:
 		Oem_MemFree(pbChallenge);    
 	if ( !DRM_SUCCEEDED(dr)  ) {
 		//NSLog(@"DRM error joining domain: %08X", dr);
-		[self callFailureDelegate:[self drmError:kSCHDrmRegistrationError 
+		[self registrationCallFailureDelegate:[self drmError:kSCHDrmRegistrationError 
                                          message:[NSString stringWithFormat:NSLocalizedString(@"Cannot register device because of DRM error: %08X",@"Generic registration error message"),dr]]];
 	}
  
@@ -340,17 +337,17 @@ ErrorExit:
 	DRM_DOMAIN_CERT_ENUM_CONTEXT  oDomainCertEnumContext = { 0 };
     DRM_DOMAINCERT_INFO           oDomainCertInfo        = { 0 };
     DRM_DWORD                     cchDomainCert          = 0;
-	
+    	
 	if ( !self.sessionInitialized ) {
         //NSLog(@"DRM error: cannot leave domain because DRM is not initialized.");
-		[self callFailureDelegate:[self drmError:kSCHDrmInitializationError 
+		[self deregistrationCallFailureDelegate:[self drmError:kSCHDrmInitializationError 
                                         message:NSLocalizedString(@"Cannot deregister device because DRM is not initialized.",@"DRM initialization error message")]];
         return;
     }
 	
 	if ( token == nil ) {
 		//NSLog(@"DRM error: attempting to leave domain outside login session.");
-		[self callFailureDelegate:[self drmError:kSCHDrmInitializationError 
+		[self deregistrationCallFailureDelegate:[self drmError:kSCHDrmInitializationError 
 										 message:NSLocalizedString(@"Cannot deregister device because login is required.",@"DRM login requirement message")]];
 		return;
 	}
@@ -367,7 +364,7 @@ ErrorExit:
         {
 			if ( i==0 ) {
 				//NSLog(@"DRM error: attempting to leave domain when no domain has been joined.");
-				[self callFailureDelegate:[self drmError:kSCHDrmDeregistrationError 
+				[self deregistrationCallFailureDelegate:[self drmError:kSCHDrmDeregistrationError 
                                                  message:NSLocalizedString(@"Cannot deregister device because device is not registered.",@"DRM deregistration requires registration message")]];
 				return;
 			}
@@ -433,7 +430,7 @@ ErrorExit:
 	self.urlConnection = [[[NSURLConnection alloc] initWithRequest:request delegate:self] autorelease];
 	if (!self.urlConnection)
 	{
-		[self callFailureDelegate:[self drmError:kSCHDrmNetworkError 
+		[self deregistrationCallFailureDelegate:[self drmError:kSCHDrmNetworkError 
 										 message:NSLocalizedString(@"Cannot deregister device because connection can't be created.",@"DRM connection error message")]];
 		return;
 	}
@@ -445,15 +442,21 @@ ErrorExit:
 		Oem_MemFree(pbChallenge);
 	if ( !DRM_SUCCEEDED(dr)  ) {
 		//NSLog(@"DRM error leaving domain: %08X", dr);
-		[self callFailureDelegate:[self drmError:kSCHDrmRegistrationError 
+		[self deregistrationCallFailureDelegate:[self drmError:kSCHDrmRegistrationError 
 										 message:[NSString stringWithFormat:NSLocalizedString(@"Cannot deregister device because of DRM error: %08X",@"Generic deregistration error message"),dr]]];
 	}
 }
 
-- (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error
+- (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)anError
 {
-	[self callFailureDelegate:[self drmError:kSCHDrmNetworkError 
-											  message:[error localizedDescription]]];
+    NSError *error = [self drmError:kSCHDrmNetworkError message:[anError localizedDescription]];
+    
+    if (self.isJoining) {
+        [self registrationCallFailureDelegate:error];
+    } else {
+        [self deregistrationCallFailureDelegate:error];
+    }
+	
 }
 
 - (void)connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)aResponse
@@ -461,8 +464,15 @@ ErrorExit:
 	if ([aResponse expectedContentLength] < 0)
 	{
 		[self.urlConnection cancel];
-		[self callFailureDelegate:[self drmError:kSCHDrmNetworkError 
-										message:NSLocalizedString(@"Cannot register device because URL is invalid.",@"DRM invalid url message")]];
+        
+        NSError *error = [self drmError:kSCHDrmNetworkError 
+                                message:NSLocalizedString(@"Cannot register device because URL is invalid.",@"DRM invalid url message")];
+        
+        if (self.isJoining) {
+            [self registrationCallFailureDelegate:error];
+        } else {
+            [self deregistrationCallFailureDelegate:error];
+        }
 	}
 }
 
@@ -482,8 +492,14 @@ ErrorExit:
 	NSData *drmResponse = self.connectionData;
 	if (drmResponse == nil) {
 		// This would be weird.
-		[self callFailureDelegate:[self drmError:kSCHDrmRegistrationError 
-										 message:NSLocalizedString(@"Cannot register device because the server did not respond.",@"Unresponsive license server message.")]];
+        NSError *error = [self drmError:kSCHDrmRegistrationError 
+                                message:NSLocalizedString(@"Cannot register device because the server did not respond.",@"Unresponsive license server message.")];
+        
+        if (self.isJoining) {
+            [self registrationCallFailureDelegate:error];
+        } else {
+            [self deregistrationCallFailureDelegate:error];
+        }
 		return;
 	} 
 	else {
@@ -515,15 +531,18 @@ ErrorExit:
 ErrorExit:
 	if ( DRM_SUCCEEDED(dr)  ) {		
 		NSLog(@"Success message from DRM server: %08X", dr2);
+                
 		if (self.isJoining) {
 			// Retrieve the device ID.
-			NSString* deviceID = [self getTagValue:self.serverResponse  //[NSString stringWithCString:(const char*)pbResponse encoding:NSUTF8StringEncoding]
+			NSString *deviceID = [self getTagValue:self.serverResponse  //[NSString stringWithCString:(const char*)pbResponse encoding:NSUTF8StringEncoding]
 										xmlTag:@"ClientId"];
-			[self callSuccessDelegate:deviceID];
+            
+			[self registrationCallSuccessDelegate:deviceID];
+		} else {
+			[self deregistrationCallSuccessDelegate:nil];
 		}
-		else {
-			[self callSuccessDelegate:nil];
-		}
+        
+        
         return;
 	}
     // Errors that require specific description.
@@ -538,39 +557,63 @@ ErrorExit:
         NSInteger errCode = kSCHDrmRegistrationError;
         if (errorResult==DRM_E_SERVER_COMPUTER_LIMIT_REACHED || errorResult==DRM_E_SERVER_DEVICE_LIMIT_REACHED) {
             errCode = kSCHDrmDeviceLimitError;
+        } else if (errorResult==DRM_E_XMLNOTFOUND) {
+            NSString *code = [self getTagValue:self.serverResponse xmlTag:@"Code"];
+            if (code) {
+                errCode = [code intValue];
+            }
         }
         
-		[self callFailureDelegate:[self drmError:errCode 
-                                         message:priorityErr]];
+        NSError *error = [self drmError:errCode 
+                                message:priorityErr];
+        
+        if (self.isJoining) {
+            [self registrationCallFailureDelegate:error];
+        } else {
+            [self deregistrationCallFailureDelegate:error];
+        }
         return;
     }
+    
     // Errors for which we only report a code.
 	if (self.isJoining) {
 		//NSLog(@"DRM error joining domain: %08X", dr);
-		[self callFailureDelegate:[self drmError:kSCHDrmRegistrationError 
+		[self registrationCallFailureDelegate:[self drmError:kSCHDrmRegistrationError 
                                          message:[NSString stringWithFormat:NSLocalizedString(@"Cannot register device because of DRM error: %08X",@"Generic registration error message"),dr]]];
 	}
 	else {
 		//NSLog(@"DRM error leaving domain: %08X", dr);
-		[self callFailureDelegate:[self drmError:kSCHDrmRegistrationError 
+		[self deregistrationCallFailureDelegate:[self drmError:kSCHDrmRegistrationError 
                                          message:[NSString stringWithFormat:NSLocalizedString(@"Cannot deregister device because of DRM error: %08X",@"Generic deregistration error message"),dr]]];
 	}
 	
 }
-
-- (void)callSuccessDelegate:(NSString *)deviceKey
+- (void)registrationCallSuccessDelegate:(NSString *)deviceID
 {
-    if([(id)delegate respondsToSelector:@selector(registrationSession:didComplete:)] == YES) {
-		[(id)delegate registrationSession:self didComplete:deviceKey];
-
-    }        
+    if([(id)delegate respondsToSelector:@selector(registrationSession:registrationDidComplete:)] == YES) {
+		[(id)delegate registrationSession:self registrationDidComplete:deviceID];
+    } 
 }
 
-- (void)callFailureDelegate:(NSError *)error
+- (void)registrationCallFailureDelegate:(NSError *)error
 {
-    if([(id)delegate respondsToSelector:@selector(registrationSession:didFailWithError:)] == YES) {
-        [(id)delegate registrationSession:self didFailWithError:error];		
-    }	    
+    if([(id)delegate respondsToSelector:@selector(registrationSession:registrationDidFailWithError:)] == YES) {
+        [(id)delegate registrationSession:self registrationDidFailWithError:error];		
+    }
+}
+
+- (void)deregistrationCallSuccessDelegate:(NSString *)deviceID
+{
+    if([(id)delegate respondsToSelector:@selector(registrationSession:deregistrationDidComplete:)] == YES) {
+		[(id)delegate registrationSession:self deregistrationDidComplete:deviceID];
+    } 
+}
+
+- (void)deregistrationCallFailureDelegate:(NSError *)error
+{
+    if([(id)delegate respondsToSelector:@selector(registrationSession:deregistrationDidFailWithError:)] == YES) {
+        [(id)delegate registrationSession:self deregistrationDidFailWithError:error];		
+    }
 }
 
 @end

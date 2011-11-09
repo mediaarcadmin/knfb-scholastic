@@ -30,7 +30,7 @@
 // get a snapshot of the current page
 - (UIImage *)currentPageSnapshot;
 
-// transform to convert view coordinates to page coordinates on the layout page
-- (CGAffineTransform)viewToPageTransformForLayoutPage:(NSInteger)layoutPage;
+// transform to convert view coordinates to page coordinates
+- (CGAffineTransform)viewToPageTransform;
 
 @end

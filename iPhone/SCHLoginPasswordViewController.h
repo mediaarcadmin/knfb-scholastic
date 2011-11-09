@@ -52,6 +52,9 @@ typedef void(^SCHActionBlock)(void);
 
 // clears the text fields
 - (void)clearFields;
+- (void)clearBottomField;
+
+- (void)setDisplayIncorrectCredentialsWarning:(BOOL)showWarning;
 
 // username and password accessors
 // consistent access over different modes
@@ -63,10 +66,12 @@ typedef void(^SCHActionBlock)(void);
 // Interface Builder
 @property (nonatomic, retain) IBOutlet SCHCustomToolbar *topBar;
 @property (nonatomic, retain) IBOutlet UIBarButtonItem *barSpacer;
+@property (nonatomic, retain) IBOutlet UIBarButtonItem *closeButton;
 @property (nonatomic, retain) IBOutlet UILabel *profileLabel;
 @property (nonatomic, retain) IBOutlet UIActivityIndicatorView *spinner;
 @property (nonatomic, retain) IBOutlet UIView *containerView;
 @property (nonatomic, retain) IBOutlet UIScrollView *scrollView;
+@property (nonatomic, retain) IBOutlet UILabel *promptLabel;
 
 @property (nonatomic, retain) IBOutlet UITextField *topField;
 @property (nonatomic, retain) IBOutlet UITextField *bottomField;

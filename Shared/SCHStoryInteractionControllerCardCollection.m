@@ -66,11 +66,6 @@ enum {
 }
 
 
-- (BOOL)shouldPresentInPortraitOrientation
-{
-    return (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone);
-}
-
 - (void)setupViewAtIndex:(NSInteger)screenIndex
 {
     SCHStoryInteractionCardCollection *cardCollection = (SCHStoryInteractionCardCollection *)self.storyInteraction;

@@ -61,6 +61,6 @@ extern NSString * const kSCHThemeManagerColorForListBackground;
 - (UIImage *)imageForHomeIcon:(UIInterfaceOrientation)orientation;
 - (UIImage *)imageForThemeIcon:(UIInterfaceOrientation)orientation;
 - (UIColor *)colorForListBackground;
-
+- (BOOL)gridTextColorIsDark;
 
 @end

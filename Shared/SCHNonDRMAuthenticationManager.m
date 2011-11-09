@@ -19,51 +19,67 @@
 
 #pragma - methods
 
-- (void)authenticateOnMainThread
+- (void)authenticateWithSuccessBlock:(SCHAuthenticationSuccessBlock)successBlock
+                        failureBlock:(SCHAuthenticationFailureBlock)failureBlock;
 {    
+    if (![NSThread isMainThread]) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self authenticateWithSuccessBlock:successBlock
+                                  failureBlock:failureBlock];
+        });
+        return;
+    }
+    
+    NSAssert([NSThread isMainThread] == YES, @"SCHAuthenticationManager::authenticateOnMainThread MUST be executed on the main thread");
+    
+    self.authenticationSuccessBlock = successBlock;
+    self.authenticationFailureBlock = failureBlock;
+    
+    if (self.isAuthenticating) {
+        return;
+    }
+    
+    self.authenticating = YES;
+    
     NSString *storedUsername = [[NSUserDefaults standardUserDefaults] stringForKey:kSCHAuthenticationManagerUsername];
     NSString *storedPassword = [SFHFKeychainUtils getPasswordForUsername:storedUsername andServiceName:kSCHAuthenticationManagerServiceName error:nil];
     
-    if (self.waitingOnResponse == NO) {
-        if ([[Reachability reachabilityForInternetConnection] isReachable] == YES) {
-            if (storedUsername != nil &&
-                [[storedUsername stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]] length] > 0 &&
-                storedPassword != nil &&
-                [[storedPassword stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]] length] > 0) {
-                self.aToken = nil;
-                self.tokenExpires = nil;                
-                
-                __block SCHAuthenticationManager *weakSelf = self;
-                [self.accountValidation validateWithUserName:storedUsername withPassword:storedPassword validateBlock:^(NSString *pToken, NSError *error) {
-                    if (error != nil) {
-                        weakSelf.waitingOnResponse = NO;
-                        [weakSelf postFailureWithError:error];                            
-                    } else {
-                        [weakSelf.libreAccessWebService tokenExchange:pToken 
-                                                              forUser:[[NSUserDefaults standardUserDefaults] stringForKey:kSCHAuthenticationManagerUsername]];                            
-                    }
-                }];
-
-                self.waitingOnResponse = YES;         
-            } else {
-                NSError *error = [NSError errorWithDomain:kSCHAuthenticationManagerErrorDomain 
-                                                     code:kSCHAuthenticationManagerLoginError 
-                                                 userInfo:[NSDictionary dictionaryWithObject:NSLocalizedString(@"You must enter a username and password", @"") 
-                                                                                      forKey:NSLocalizedDescriptionKey]];
-                
-                [self postFailureWithError:error];            
-            }
-        } else if (storedUsername != nil &&
-                   [[storedUsername stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]] length] > 0) {            
-            [self postSuccessWithOfflineMode:YES];
+    if ([[Reachability reachabilityForInternetConnection] isReachable] == YES) {
+        if (storedUsername != nil &&
+            [[storedUsername stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]] length] > 0 &&
+            storedPassword != nil &&
+            [[storedPassword stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]] length] > 0) {
+            self.aToken = nil;
+            self.tokenExpires = nil;                
+            
+            __block SCHAuthenticationManager *weakSelf = self;
+            [self.accountValidation validateWithUserName:storedUsername withPassword:storedPassword validateBlock:^(NSString *pToken, NSError *error) {
+                if (error != nil) {
+                    [weakSelf authenticationDidFailWithError:error];                            
+                } else {
+                    [weakSelf.libreAccessWebService tokenExchange:pToken 
+                                                          forUser:[[NSUserDefaults standardUserDefaults] stringForKey:kSCHAuthenticationManagerUsername]];                            
+                }
+            }];
+            
         } else {
             NSError *error = [NSError errorWithDomain:kSCHAuthenticationManagerErrorDomain 
                                                  code:kSCHAuthenticationManagerLoginError 
                                              userInfo:[NSDictionary dictionaryWithObject:NSLocalizedString(@"You must enter a username and password", @"") 
                                                                                   forKey:NSLocalizedDescriptionKey]];
             
-            [self postFailureWithError:error];
+            [self authenticationDidFailWithError:error];            
         }
+    } else if (storedUsername != nil &&
+               [[storedUsername stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]] length] > 0) {            
+        [self authenticationDidSucceedWithOfflineMode:YES];
+    } else {
+        NSError *error = [NSError errorWithDomain:kSCHAuthenticationManagerErrorDomain 
+                                             code:kSCHAuthenticationManagerLoginError 
+                                         userInfo:[NSDictionary dictionaryWithObject:NSLocalizedString(@"You must enter a username and password", @"") 
+                                                                              forKey:NSLocalizedDescriptionKey]];
+        
+        [self authenticationDidFailWithError:error];
     }
 }
 
@@ -78,8 +94,7 @@
         self.aToken = [result objectForKey:kSCHLibreAccessWebServiceAuthToken];
 		NSInteger expiresIn = MAX(0, [[result objectForKey:kSCHLibreAccessWebServiceExpiresIn] integerValue] - 1);
 		self.tokenExpires = [NSDate dateWithTimeIntervalSinceNow:expiresIn * kSCHAuthenticationManagerSecondsInAMinute];
-		self.waitingOnResponse = NO;
-		[self postSuccessWithOfflineMode:NO];
+		[self authenticationDidSucceedWithOfflineMode:NO];
 	}
 }
 
@@ -87,8 +102,7 @@
 {
     NSLog(@"AuthenticationManager:%@ %@", method, [error description]);
     [self clearOnMainThread];
-	self.waitingOnResponse = NO;
-	[self postFailureWithError:error];
+	[self authenticationDidFailWithError:error];
 }
 
 @end

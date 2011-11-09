@@ -36,6 +36,7 @@
 @property (nonatomic, copy) dispatch_block_t zoomCompletionHandler;
 @property (nonatomic, copy) dispatch_block_t jumpToPageCompletionHandler;
 @property (nonatomic, assign) BOOL suppressZoomingCallback;
+@property (nonatomic, retain) SCHBookPoint *openingPoint;
 
 - (void)initialiseView;
 
@@ -69,6 +70,7 @@
 @synthesize zoomCompletionHandler;
 @synthesize jumpToPageCompletionHandler;
 @synthesize suppressZoomingCallback;
+@synthesize openingPoint;
 
 - (void)dealloc
 {
@@ -83,6 +85,7 @@
     [currentSelectorRange release], currentSelectorRange = nil;
     [zoomCompletionHandler release], zoomCompletionHandler = nil;
     [jumpToPageCompletionHandler release], jumpToPageCompletionHandler = nil;
+    [openingPoint release], openingPoint = nil;
     
     [super dealloc];
 }
@@ -124,7 +127,10 @@
         
         [self addSubview:pageTurningView];
         
-        [pageTurningView turnToPageAtIndex:0 animated:NO];
+        if (self.openingPoint) {
+            [self jumpToBookPoint:self.openingPoint animated:NO];
+            self.openingPoint = nil;
+        }
                 
         [self attachSelector];
     }    
@@ -157,12 +163,15 @@
      bookIdentifier:(SCHBookIdentifier *)bookIdentifier 
 managedObjectContext:(NSManagedObjectContext *)managedObjectContext 
            delegate:(id<SCHReadingViewDelegate>)delegate
+              point:(SCHBookPoint *)point
 {
     self = [super initWithFrame:frame 
                  bookIdentifier:bookIdentifier 
            managedObjectContext:managedObjectContext
-                       delegate:delegate];
+                       delegate:delegate
+                          point:point];
     if (self) {        
+        openingPoint = [point retain];
         [self initialiseView];
     }
     return self;
@@ -203,8 +212,6 @@ managedObjectContext:(NSManagedObjectContext *)managedObjectContext
 {
     if (!newSuperview) {
         [self detachSelector];
-    } else {
-        [self.delegate readingViewWillAppear:self];
     }
 }
 

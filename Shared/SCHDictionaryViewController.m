@@ -103,6 +103,7 @@
     }    
     
     [self.topBar setTintColor:[UIColor colorWithWhite:0.7f alpha:1.0f]];
+    [self setupAssetsForOrientation:self.interfaceOrientation];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -261,12 +262,20 @@
             break;
         }
         case SCHDictionaryProcessingStateNeedsUnzip:
+        {
+            [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(processingPercentageUpdate:) name:kSCHDictionaryProcessingPercentageUpdate object:nil];
+            self.bottomLabel.text = @"The dictionary will be ready soon. Please wait.";
+            [self.activityIndicator stopAnimating];
+            self.progressBar.progress = 0.8;
+            self.progressBar.hidden = NO;
+            break;
+        }
         case SCHDictionaryProcessingStateNeedsParse:
         {
             [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(processingPercentageUpdate:) name:kSCHDictionaryProcessingPercentageUpdate object:nil];
             self.bottomLabel.text = @"The dictionary will be ready soon. Please wait.";
             [self.activityIndicator stopAnimating];
-            self.progressBar.progress = [[SCHDictionaryDownloadManager sharedDownloadManager] currentDictionaryProcessingPercentage];
+            self.progressBar.progress = 0.9;
             self.progressBar.hidden = NO;
             break;
         }
@@ -320,7 +329,7 @@
     NSDictionary *userInfo = [note userInfo];
     float percentage = [[userInfo objectForKey:@"currentPercentage"] floatValue];
     
-    [self.progressBar setProgress:percentage];
+    [self.progressBar setProgress:percentage * 0.8];
 }
 
 - (void)processingPercentageUpdate:(NSNotification *)note {
@@ -332,8 +341,20 @@
     
     NSDictionary *userInfo = [note userInfo];
     float percentage = [[userInfo objectForKey:@"currentPercentage"] floatValue];
+
+    SCHDictionaryProcessingState state = [[SCHDictionaryDownloadManager sharedDownloadManager] dictionaryProcessingState];
     
-    [self.progressBar setProgress:percentage];
+    switch (state) {
+        case SCHDictionaryProcessingStateNeedsUnzip:
+            [self.progressBar setProgress:0.8 + (percentage * 0.1)];
+            break;
+        case SCHDictionaryProcessingStateNeedsParse:
+            [self.progressBar setProgress:0.9 + (percentage * 0.1)];
+            break;
+        default:
+            NSLog(@"Warning: receiving dictionary percentage updates when not in a processing state.");
+            break;
+    } 
 }
 
 @end

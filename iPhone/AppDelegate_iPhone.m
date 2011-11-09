@@ -47,7 +47,6 @@ static NSTimeInterval const kAppDelegate_iPhoneSyncManagerWakeDelay = 5.0;
 
 - (void)applicationDidBecomeActive:(UIApplication *)application 
 {
-    SCHSyncManager *syncManager = [SCHSyncManager sharedSyncManager];
 #if NONDRMAUTHENTICATION
 	SCHAuthenticationManager *authenticationManager = [SCHAuthenticationManager sharedAuthenticationManager];
 	if ([authenticationManager isAuthenticated] == YES) {
@@ -56,7 +55,11 @@ static NSTimeInterval const kAppDelegate_iPhoneSyncManagerWakeDelay = 5.0;
     if (deviceKey != nil &&
         [[deviceKey stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]] length] > 0) {   
 #endif
-        [syncManager performSelector:@selector(firstSync:) withObject:[NSNumber numberWithBool:NO] afterDelay:kAppDelegate_iPhoneSyncManagerWakeDelay];
+        double delayInSeconds = kAppDelegate_iPhoneSyncManagerWakeDelay;
+        dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);
+        dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+            [[SCHSyncManager sharedSyncManager] firstSync:NO requireDeviceAuthentication:NO];
+        });
     }
 }
 

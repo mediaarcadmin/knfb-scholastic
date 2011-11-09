@@ -12,6 +12,7 @@
 #import "NSURL+Extensions.h"
 #import "SCHAccountValidationViewController.h"
 #import "SCHSyncManager.h"
+#import "LambdaAlert.h"
 
 @implementation SCHParentalToolsWebViewController
 
@@ -40,22 +41,34 @@
 {
     [super viewDidLoad];
 
-    self.title = NSLocalizedString(@"Web Parent Tools", @"\"Parental Tools\" view controller title.");        
+    self.title = NSLocalizedString(@"Manage eBooks", @"\"Manage eBooks\" view controller title.");        
 
     NSURL *webParentToolURL = [[SCHAuthenticationManager sharedAuthenticationManager] webParentToolURL:pToken];
-    NSLog(@"Attempting to access Web Parent Tools using: %@", webParentToolURL);
-    
-    self.textView.delegate = self;
-    [self.textView loadRequest:[NSURLRequest requestWithURL:webParentToolURL]];
-    [self.textView setScalesPageToFit:YES];  
-    
-    // register for going into the background
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(willResignActiveNotification:)
-                                                 name:UIApplicationWillResignActiveNotification
-                                               object:nil];    
+    if (webParentToolURL != nil) {
+        NSLog(@"Attempting to access Web Parent Tools using: %@", webParentToolURL);
         
-    [self.profileSetupDelegate waitingForWebParentToolsToComplete];
+        self.textView.delegate = self;
+        [self.textView loadRequest:[NSURLRequest requestWithURL:webParentToolURL]];
+        [self.textView setScalesPageToFit:YES];  
+        
+        // register for going into the background
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(willResignActiveNotification:)
+                                                     name:UIApplicationWillResignActiveNotification
+                                                   object:nil];    
+        
+        [self.profileSetupDelegate waitingForWebParentToolsToComplete];
+    } else {
+        SCHParentalToolsWebViewController *weakSelf = self;
+        LambdaAlert *lambdaAlert = [[LambdaAlert alloc]
+                            initWithTitle:NSLocalizedString(@"Error", @"")
+                            message:NSLocalizedString(@"A problem occured accessing web parent tools with your account. Please contact support.", @"")];
+        [lambdaAlert addButtonWithTitle:NSLocalizedString(@"OK", @"") block:^{
+            [weakSelf backWithNoSync];
+        }];
+        [lambdaAlert show];
+        [lambdaAlert release], lambdaAlert = nil;
+	}
 }
 
 - (void)viewDidUnload
@@ -67,10 +80,15 @@
 
 #pragma mark - Action methods
 
+- (void)backWithNoSync
+{    
+    [super back:nil];
+}
+
 - (void)back:(id)sender
 {
     // trigger a sync to grab any changes
-    [[SCHSyncManager sharedSyncManager] firstSync:YES];
+    [[SCHSyncManager sharedSyncManager] firstSync:YES requireDeviceAuthentication:YES];
 
     [super back:nil];
 }

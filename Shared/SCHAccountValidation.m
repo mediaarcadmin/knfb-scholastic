@@ -13,6 +13,7 @@
 // Constants
 NSString * const kSCHAccountValidationErrorDomain = @"AccountValidationErrorDomain";
 NSInteger const kSCHAccountValidationPTokenError = 2000;
+NSInteger const kSCHAccountValidationCredentialsError = 200;
 
 @interface SCHAccountValidation ()
 

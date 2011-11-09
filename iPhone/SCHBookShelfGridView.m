@@ -10,11 +10,16 @@
 #import "SCHBookShelfGridShelvesView.h"
 #import "SCHBookShelfGridViewDataSource.h"
 
-//static const NSInteger TOGGLE_OFFSET = -64;
+static const CGFloat kSCHBookShelfGridViewFooterHeight = 60;
 
 @interface SCHBookShelfGridView()
 
 @property (nonatomic, retain) SCHBookShelfGridShelvesView *bookShelvesView;
+@property (nonatomic, retain) UILabel *footer;
+
+- (CGFloat)heightForFooter;
+- (void)positionFooter;
+- (void)createBookShelves;
 
 @end
 
@@ -23,10 +28,13 @@
 @synthesize bookShelvesView;
 @synthesize minimumNumberOfShelves;
 @synthesize toggleView;
+@synthesize footer;
 
 - (void)dealloc
 {
     [bookShelvesView release], bookShelvesView = nil;
+    [toggleView release], toggleView = nil;
+    [footer release], footer = nil;
     [super dealloc];
 }
 
@@ -124,7 +132,8 @@
 - (void)updateSize
 {
     [super updateSize];
-    self.contentSize = CGSizeMake(self.contentSize.width, MAX(self.contentSize.height, self.shelfHeight * self.minimumNumberOfShelves));
+    self.contentSize = CGSizeMake(self.contentSize.width, MAX(self.contentSize.height, self.shelfHeight * self.minimumNumberOfShelves) + [self heightForFooter]);
+    [self positionFooter];
 }
 
 - (void)reloadData{
@@ -172,6 +181,73 @@
         }
 	}
 	[self updateSize];
+}
+
+#pragma mark - Footer
+
+- (UILabel *)footer 
+{
+    if (!footer) {
+        
+        CGFloat fontSize;
+        CGFloat inset;
+        
+        if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+            fontSize = 17;
+            inset = 40;
+        } else {
+            fontSize = 13;
+            inset = 10;
+        }
+        
+        CGRect footerBounds = CGRectInset(self.bounds, inset, 0);
+        footerBounds.origin = CGPointZero;
+        footerBounds.size.height = kSCHBookShelfGridViewFooterHeight;
+        footer = [[UILabel alloc] initWithFrame:footerBounds];
+        footer.backgroundColor = [UIColor clearColor];
+        footer.font = [UIFont fontWithName:@"Arial" size:fontSize];
+        footer.shadowOffset = CGSizeMake(0, -1);
+        footer.textAlignment = UITextAlignmentCenter;
+        footer.adjustsFontSizeToFitWidth = YES;
+        footer.numberOfLines = 3;
+        footer.autoresizingMask = UIViewAutoresizingFlexibleWidth;
+        footer.shadowColor = [UIColor colorWithWhite:0 alpha:0.8f];
+        [self setFooterTextIsDark:NO];
+        
+        [self addSubview:footer];
+    }
+    
+    return footer;
+}
+
+- (CGFloat)heightForFooter
+{
+    if (footer) {
+        return CGRectGetHeight(footer.bounds);
+    } else {
+        return 0;
+    }
+}
+
+- (void)positionFooter
+{
+    if (footer) {
+        footer.center = CGPointMake(ceilf(CGRectGetWidth(self.bounds)/2.0f), self.contentSize.height - ceilf(kSCHBookShelfGridViewFooterHeight/2.0f));
+    }
+}
+
+- (void)setFooterText:(NSString *)text
+{
+    self.footer.text = text;
+}
+
+- (void)setFooterTextIsDark:(BOOL)isDark
+{
+    if (isDark) {
+        self.footer.textColor = [UIColor colorWithWhite:1 alpha:0.3f];
+    } else {
+        self.footer.textColor = [UIColor colorWithWhite:0.9f alpha:0.6f];
+    }
 }
 
 @end

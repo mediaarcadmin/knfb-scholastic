@@ -93,7 +93,15 @@ NSString * const SCHContentSyncComponentDidFailNotification = @"SCHContentSyncCo
         if([method compare:kSCHLibreAccessWebServiceSaveContentProfileAssignment] == NSOrderedSame) {	
             self.isSynchronizing = [self.libreAccessWebService listUserContent];
             if (self.isSynchronizing == NO) {
-                [[SCHAuthenticationManager sharedAuthenticationManager] authenticate];				
+                [[SCHAuthenticationManager sharedAuthenticationManager] authenticateWithSuccessBlock:^(BOOL offlineMode){
+                    if (!offlineMode) {
+                        [self.delegate authenticationDidSucceed];
+                    } else {
+                        self.isSynchronizing = NO;
+                    }
+                } failureBlock:^(NSError *error){
+                    self.isSynchronizing = NO;
+                }];				
             }
         } else if([method compare:kSCHLibreAccessWebServiceListUserContent] == NSOrderedSame) {
             NSArray *content = [result objectForKey:kSCHLibreAccessWebServiceUserContentList];
@@ -143,13 +151,29 @@ NSString * const SCHContentSyncComponentDidFailNotification = @"SCHContentSyncCo
 	if ([results count] > 0) {
 		self.isSynchronizing = [self.libreAccessWebService saveContentProfileAssignment:results];
 		if (self.isSynchronizing == NO) {
-			[[SCHAuthenticationManager sharedAuthenticationManager] authenticate];				
+			[[SCHAuthenticationManager sharedAuthenticationManager] authenticateWithSuccessBlock:^(BOOL offlineMode){
+                if (!offlineMode) {
+                    [self.delegate authenticationDidSucceed];
+                } else {
+                    self.isSynchronizing = NO;
+                }
+            } failureBlock:^(NSError *error){
+                self.isSynchronizing = NO;
+            }];					
 			ret = NO;			
 		}		
 	} else {
 		self.isSynchronizing = [self.libreAccessWebService listUserContent];
 		if (self.isSynchronizing == NO) {
-			[[SCHAuthenticationManager sharedAuthenticationManager] authenticate];				
+			[[SCHAuthenticationManager sharedAuthenticationManager] authenticateWithSuccessBlock:^(BOOL offlineMode){
+                if (!offlineMode) {
+                    [self.delegate authenticationDidSucceed];
+                } else {
+                    self.isSynchronizing = NO;
+                }
+            } failureBlock:^(NSError *error){
+                self.isSynchronizing = NO;
+            }];				
 			ret = NO;
 		}
 	}
@@ -378,7 +402,10 @@ NSString * const SCHContentSyncComponentDidFailNotification = @"SCHContentSyncCo
         newAppContentProfileItem.ISBN = bookIdentifier.isbn;       
         newAppContentProfileItem.DRMQualifier = bookIdentifier.DRMQualifier;
         newAppContentProfileItem.ContentProfileItem = ret;
-        
+        if ([ret.LastPageLocation integerValue] > 0) {
+            newAppContentProfileItem.IsNewBook = [NSNumber numberWithBool:NO];
+        }
+
         NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
         [fetchRequest setEntity:[NSEntityDescription entityForName:kSCHProfileItem 
                                             inManagedObjectContext:self.managedObjectContext]];	
@@ -591,6 +618,10 @@ NSString * const SCHContentSyncComponentDidFailNotification = @"SCHContentSyncCo
         
         localContentProfileItem.ProfileID = [self makeNullNil:[webContentProfileItem objectForKey:kSCHLibreAccessWebServiceProfileID]];
         localContentProfileItem.LastPageLocation = [self makeNullNil:[webContentProfileItem objectForKey:kSCHLibreAccessWebServiceLastPageLocation]];
+        if ([localContentProfileItem.AppContentProfileItem.IsNewBook boolValue] == YES &&
+            [localContentProfileItem.LastPageLocation integerValue] > 0) {
+            localContentProfileItem.AppContentProfileItem.IsNewBook = [NSNumber numberWithBool:NO];
+        }
     }
 }
 

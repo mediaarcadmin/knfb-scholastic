@@ -21,6 +21,7 @@
 #import "SCHCoreDataHelper.h"
 #import "SCHPopulateDataStore.h"
 #import "SCHAppContentProfileItem.h"
+#import "SCHAuthenticationManager.h"
 
 // Constants
 NSString * const SCHSyncManagerDidCompleteNotification = @"SCHSyncManagerDidCompleteNotification";
@@ -36,6 +37,8 @@ static NSUInteger const kSCHSyncManagerMaximumFailureRetries = 3;
 @property (nonatomic, assign) BOOL syncAfterDelay;
 @property (nonatomic , assign) UIBackgroundTaskIdentifier backgroundTaskIdentifier;
 
+- (void)updateAnnotationSync;
+- (void)addAllProfilesToAnnotationSync;
 - (NSMutableArray *)bookAnnotationsFromProfile:(SCHProfileItem *)profileItem;
 - (NSMutableDictionary *)annotationContentItemFromUserContentItem:(SCHUserContentItem *)userContentItem
                                                        forProfile:(NSNumber *)profileID;
@@ -109,16 +112,16 @@ static NSUInteger const kSCHSyncManagerMaximumFailureRetries = 3;
 		settingsSyncComponent = [[SCHSettingsSyncComponent alloc] init];		
 		settingsSyncComponent.delegate = self;	
 		
-        backgroundTaskIdentifier = UIBackgroundTaskInvalid;
-        
-		[[NSNotificationCenter defaultCenter] addObserver:self 
-                                                 selector:@selector(authenticationManager:) 
-                                                     name:SCHAuthenticationManagerDidSucceedNotification 
-                                                   object:nil];		
+        backgroundTaskIdentifier = UIBackgroundTaskInvalid;	
         
         [[NSNotificationCenter defaultCenter] addObserver:self 
                                                  selector:@selector(coreDataHelperManagedObjectContextDidChangeNotification:) 
                                                      name:SCHCoreDataHelperManagedObjectContextDidChangeNotification 
+                                                   object:nil];	
+
+        [[NSNotificationCenter defaultCenter] addObserver:self 
+                                                 selector:@selector(updateAnnotationSync) 
+                                                     name:SCHContentSyncComponentDidCompleteNotification 
                                                    object:nil];	
         
 	}
@@ -212,15 +215,6 @@ static NSUInteger const kSCHSyncManagerMaximumFailureRetries = 3;
 	[self kickQueue];
 }
 
-- (void)authenticationManager:(NSNotification *)notification
-{
-	NSDictionary *userInfo = [notification userInfo];
-	
-	if ([[userInfo valueForKey:kSCHAuthenticationManagerOfflineMode] boolValue] == NO) {		
-		[self kickQueue];	
-	}
-}
-
 #pragma mark - Sync methods
 
 - (void)clear
@@ -254,12 +248,15 @@ static NSUInteger const kSCHSyncManagerMaximumFailureRetries = 3;
 	return [[NSUserDefaults standardUserDefaults] boolForKey:kSCHUserDefaultsPerformedFirstSyncUpToBooks];
 }
 
-// after login or opening the app, also coming out of background
-- (void)firstSync:(BOOL)syncNow;
+- (void)firstSync:(BOOL)syncNow requireDeviceAuthentication:(BOOL)requireAuthentication
 {
     // reset if the date has been changed in a backward motion
     if ([self.lastFirstSyncEnded compare:[NSDate date]] == NSOrderedDescending) {
         self.lastFirstSyncEnded = nil;
+    }
+    
+    if (requireAuthentication) {
+        [[SCHAuthenticationManager sharedAuthenticationManager] expireToken];
     }
 
     if ([self shouldSync] == YES) {	        
@@ -272,21 +269,8 @@ static NSUInteger const kSCHSyncManagerMaximumFailureRetries = 3;
             [self addToQueue:self.profileSyncComponent];
             [self addToQueue:self.contentSyncComponent];
             [self addToQueue:self.bookshelfSyncComponent];
-            
-            NSEntityDescription *entityDescription = [NSEntityDescription entityForName:kSCHProfileItem 
-                                                                 inManagedObjectContext:self.managedObjectContext];
-            NSFetchRequest *request = [[NSFetchRequest alloc] init];
-            [request setEntity:entityDescription];
-            
-            NSError *error = nil;				
-            NSArray *profiles = [self.managedObjectContext executeFetchRequest:request error:&error];
-            for (SCHProfileItem *profileItem in profiles) {	
-                [self.annotationSyncComponent addProfile:[profileItem 
-                                                          valueForKey:kSCHLibreAccessWebServiceID] 
-                                               withBooks:[self bookAnnotationsFromProfile:profileItem]];	
-            }
-            [request release], request = nil;
-            
+                        
+            [self addAllProfilesToAnnotationSync];
             if ([self.annotationSyncComponent haveProfiles] == YES) {
                 [self addToQueue:self.annotationSyncComponent];		
             }
@@ -329,6 +313,36 @@ static NSUInteger const kSCHSyncManagerMaximumFailureRetries = 3;
     }
 }
 
+// guarentee the annotation sync contains any new profiles or books
+- (void)updateAnnotationSync
+{
+    if ([self shouldSync] == YES) {	    
+        [self addAllProfilesToAnnotationSync];
+        if ([self.queue containsObject:self.annotationSyncComponent] == NO &&
+            [self.annotationSyncComponent haveProfiles] == YES) {
+            [self addToQueue:self.annotationSyncComponent];		
+            [self kickQueue];	            
+        }
+    }
+}
+
+- (void)addAllProfilesToAnnotationSync
+{
+    NSEntityDescription *entityDescription = [NSEntityDescription entityForName:kSCHProfileItem 
+                                                         inManagedObjectContext:self.managedObjectContext];
+    NSFetchRequest *request = [[NSFetchRequest alloc] init];
+    [request setEntity:entityDescription];
+    
+    NSError *error = nil;				
+    NSArray *profiles = [self.managedObjectContext executeFetchRequest:request error:&error];
+    for (SCHProfileItem *profileItem in profiles) {	
+        [self.annotationSyncComponent addProfile:[profileItem 
+                                                  valueForKey:kSCHLibreAccessWebServiceID] 
+                                       withBooks:[self bookAnnotationsFromProfile:profileItem]];	
+    }
+    [request release], request = nil;
+}
+
 - (void)profileSync
 {
     if ([self shouldSync] == YES) {	
@@ -366,7 +380,9 @@ static NSUInteger const kSCHSyncManagerMaximumFailureRetries = 3;
 	NSMutableArray *ret = [NSMutableArray array];
 	
 	for (SCHContentProfileItem *contentProfileItem in profileItem.ContentProfileItem) {
-		[ret addObject:[self annotationContentItemFromUserContentItem:contentProfileItem.UserContentItem forProfile:profileItem.ID]];
+        if (contentProfileItem.UserContentItem) {
+            [ret addObject:[self annotationContentItemFromUserContentItem:contentProfileItem.UserContentItem forProfile:profileItem.ID]];
+        }
 	}
 	
 	return ret;
@@ -397,7 +413,7 @@ static NSUInteger const kSCHSyncManagerMaximumFailureRetries = 3;
     if ([profiles count] > 0) {
         SCHProfileItem *profileItem = [profiles objectAtIndex:0];
         SCHAppContentProfileItem *appContentProfileItem = [profileItem appContentProfileItemForBookIdentifier:
-                                                           [userContentItem valueForKey:kSCHLibreAccessWebServiceContentIdentifier]];
+                                                           [userContentItem bookIdentifier]];
         date = appContentProfileItem.LastAnnotationSync;
     }
     [fetchRequest release];
@@ -472,6 +488,11 @@ static NSUInteger const kSCHSyncManagerMaximumFailureRetries = 3;
 }
 
 #pragma mark - SCHComponent Delegate methods
+
+- (void)authenticationDidSucceed
+{
+    [self kickQueue];
+}
 
 - (void)component:(SCHComponent *)component didCompleteWithResult:(NSDictionary *)result
 {
@@ -619,7 +640,7 @@ static NSUInteger const kSCHSyncManagerMaximumFailureRetries = 3;
         [[NSNotificationCenter defaultCenter] postNotificationName:SCHSyncManagerDidCompleteNotification 
                                                             object:self];        
         if (self.syncAfterDelay == YES) {
-            [self firstSync:NO];   
+            [self firstSync:NO requireDeviceAuthentication:NO];   
         }
 	}
 }

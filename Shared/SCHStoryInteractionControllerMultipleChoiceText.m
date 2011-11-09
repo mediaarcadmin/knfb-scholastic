@@ -222,6 +222,7 @@
         self.controllerState = SCHStoryInteractionControllerStateInteractionReadingAnswerWithPause;
         
         if (chosenAnswer == [self currentQuestion].correctAnswer) {
+            self.controllerState = SCHStoryInteractionControllerStateInteractionFinishedSuccessfully;
             [self enqueueAudioWithPath:[self.storyInteraction storyInteractionCorrectAnswerSoundFilename] fromBundle:YES];
             [self enqueueAudioWithPath:[[self currentQuestion] audioPathForAnswerAtIndex:chosenAnswer] fromBundle:NO];
             [self enqueueAudioWithPath:[(SCHStoryInteractionMultipleChoiceText *)self.storyInteraction audioPathForThatsRight] fromBundle:NO];
@@ -230,7 +231,6 @@
                             startDelay:0
                 synchronizedStartBlock:nil
                   synchronizedEndBlock:^{
-                      self.controllerState = SCHStoryInteractionControllerStateInteractionFinishedSuccessfully;
                       [self removeFromHostView];
                   }];
         } else {

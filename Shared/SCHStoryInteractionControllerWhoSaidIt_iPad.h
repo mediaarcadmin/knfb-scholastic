@@ -17,6 +17,7 @@
 @property (nonatomic, retain) IBOutletCollection(UILabel) NSArray *statementLabels;
 @property (nonatomic, retain) IBOutletCollection(SCHStoryInteractionDraggableView) NSArray *sources;
 @property (nonatomic, retain) IBOutletCollection(SCHStoryInteractionDraggableTargetView) NSArray *targets;
+@property (nonatomic, retain) IBOutlet UIView *sourceContainer;
 @property (nonatomic, retain) IBOutlet UIButton *checkAnswersButton;
 @property (nonatomic, retain) IBOutlet UILabel *winMessageLabel;
 

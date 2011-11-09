@@ -123,6 +123,8 @@ typedef enum {
 @property (nonatomic, readonly) NSString *categoryType;
 @property (nonatomic, readonly) BOOL diskVersionOutOfDate;
 
+- (BOOL)bookCoverURLHasExpired;
+- (BOOL)bookFileURLHasExpired;
 
 - (SCHBookCurrentProcessingState)processingState;
 - (void)setProcessingState:(SCHBookCurrentProcessingState)processingState;

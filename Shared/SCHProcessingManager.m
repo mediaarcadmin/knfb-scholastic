@@ -273,7 +273,7 @@ static SCHProcessingManager *sharedManager = nil;
         if (book.processingState == SCHBookProcessingStateReadyToRead) {
             needsProcessing = NO;
         } else if (book.processingState == SCHBookProcessingStateReadyForBookFileDownload
-                   && spaceSaverMode == YES && [book.ForceProcess boolValue] == NO) {
+                   && spaceSaverMode == YES) {
             needsProcessing = NO;
         }
     } else {
@@ -389,6 +389,15 @@ static SCHProcessingManager *sharedManager = nil;
                 // *** Book has no full sized cover image ***
             case SCHBookProcessingStateNoCoverImage:
             {	
+                // check first for URL expiry
+                if ([book bookCoverURLHasExpired]) {
+                    // if expired, get the URLs again - this won't loop because we check in 
+                    // the URL request operation for expired URLs from the service.
+                    [book setProcessingState:SCHBookProcessingStateNoURLs];
+                    [self redispatchIdentifier:identifier];
+                    return;
+                }
+                
                 // create cover image download operation
                 SCHDownloadBookFileOperation *downloadImageOp = [[SCHDownloadBookFileOperation alloc] init];
                 [downloadImageOp setMainThreadManagedObjectContext:self.managedObjectContext];
@@ -407,6 +416,15 @@ static SCHProcessingManager *sharedManager = nil;
                 // *** Book file needs downloading ***
             case SCHBookProcessingStateDownloadStarted:
             {
+                // check first for URL expiry
+                if ([book bookFileURLHasExpired]) {
+                    // if expired, get the URLs again and force download
+                    book.ForceProcess = [NSNumber numberWithBool:YES];
+                    [book setProcessingState:SCHBookProcessingStateNoURLs];
+                    [self redispatchIdentifier:identifier];
+                    return;
+                }
+                
                 // create book file download operation
                 SCHDownloadBookFileOperation *bookDownloadOp = [[SCHDownloadBookFileOperation alloc] init];
                 [bookDownloadOp setMainThreadManagedObjectContext:self.managedObjectContext];
@@ -589,7 +607,7 @@ static SCHProcessingManager *sharedManager = nil;
                     // if space saver mode is off, bump the book to the download state and start download
                 case SCHBookProcessingStateDownloadPaused:
                 case SCHBookProcessingStateReadyForBookFileDownload:
-                    if (!spaceSaverMode || [book.ForceProcess boolValue] == YES) {
+                    if (!spaceSaverMode || [[book ForceProcess] boolValue]) {
                         [book setProcessingState:SCHBookProcessingStateDownloadStarted];
                         [self processIdentifier:identifier];
                     }
@@ -696,6 +714,12 @@ static SCHProcessingManager *sharedManager = nil;
 {
     NSAssert([NSThread isMainThread], @"userRequestedRetryForBookWithIdentifier: must be called on main thread");
 	
+    // if the book is already processing as a result of action taken while the retry was being offered,
+    // return - the book will process and update the status of cells etc. 
+    if ([self identifierIsProcessing:identifier]) {
+        return;
+    }
+    
 	SCHAppBook *book = [[SCHBookManager sharedBookManager] bookWithIdentifier:identifier inManagedObjectContext:self.managedObjectContext];
     
     if (book != nil) {

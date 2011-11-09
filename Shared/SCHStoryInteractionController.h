@@ -7,8 +7,8 @@
 //
 
 #import <Foundation/Foundation.h>
-
 #import <AVFoundation/AVAudioPlayer.h>
+#import "SCHStoryInteraction.h"
 
 @class SCHXPSProvider;
 @class SCHStoryInteraction;
@@ -68,6 +68,9 @@ typedef enum
 // hosting view
 @property (nonatomic, assign) id<SCHStoryInteractionControllerDelegate> delegate;
 
+// assuming the SI is associated with a pair of adjacent pages, which ones are currently visible
+@property (nonatomic, assign) enum SCHStoryInteractionQuestionPageAssociation pageAssociation;
+
 // the current mode of the story interaction
 @property (nonatomic, assign) SCHStoryInteractionControllerState controllerState;
 
@@ -83,6 +86,9 @@ typedef enum
 
 // the current interface orientation
 @property (nonatomic, assign) UIInterfaceOrientation interfaceOrientation;
+
+// the view containing this Story Interaction
+- (UIView *)hostView;
 
 // setup the title text
 - (void)setupTitle;
@@ -111,8 +117,11 @@ typedef enum
 // the delegate
 - (void)removeFromHostView;
 
-// switch to the next view in the NIB
+// switch to the next view in the NIB with animation (deprecated; use presentNextViewAnimated:)
 - (void)presentNextView;
+
+// switch to the next view in the NIB
+- (void)presentNextViewAnimated:(BOOL)animated;
 
 // resize the existing content view
 - (void)resizeCurrentViewToSize:(CGSize)newSize animationDuration:(NSTimeInterval)animationDuration withAdditionalAdjustments:(dispatch_block_t)adjustmentBlock;
@@ -176,15 +185,11 @@ typedef enum
 // YES (default) if a snapshot of the reading view should be shown as a background to this SI
 - (BOOL)shouldShowSnapshotOfReadingViewInBackground;
 
-// return NO if the SI requires a specific device orientation
-- (BOOL)supportsAutoRotation;
-
-// if supportsAutoRotation returns YES, override this to return YES if the SI should be
-// presented in portrait orientation
-- (BOOL)shouldPresentInPortraitOrientation;
-
 // should the transition between successive views be animated? defaults to YES on iPad, NO on iPhone
 - (BOOL)shouldAnimateTransitionBetweenViews;
+
+// YES by default; override to return NO if the SI should be locked in its initial orientation
+- (BOOL)supportsAutoRotation;
 
 // send then the nib is loaded and its view objects are attached to the container; similar
 // to viewDidLoad, but used a separate message name to avoid confusion.
@@ -211,6 +216,6 @@ typedef enum
 - (void)rotateToOrientation:(UIInterfaceOrientation)orientation;
 
 // Override to specify custom iPad contents size for a given orientation
-- (CGSize)iPadContentsSizeForOrientation:(UIInterfaceOrientation)orientation;
+- (CGSize)iPadContentsSizeForViewAtIndex:(NSInteger)viewIndex forOrientation:(UIInterfaceOrientation)orientation;
 
 @end

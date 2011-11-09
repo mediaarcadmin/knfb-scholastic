@@ -28,7 +28,7 @@ struct BackgroundViewState {
 
 - (void)releaseViewObjects
 {
-    [backgroundView release], backgroundView = nil;    
+    // can't release backgroundView here as it doesn't really belong to this controller
 }
 
 - (void)dealloc
@@ -72,25 +72,19 @@ struct BackgroundViewState {
 {
     if ([self.storyInteractionController supportsAutoRotation]) {
         return YES;
-    } else if ([self.storyInteractionController shouldPresentInPortraitOrientation]) {
-        return UIInterfaceOrientationIsPortrait(interfaceOrientation);
     } else {
-        return UIInterfaceOrientationIsLandscape(interfaceOrientation);
+        return interfaceOrientation == self.storyInteractionController.interfaceOrientation;
     }
 }
 
 - (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
 {
-    if ([self.storyInteractionController supportsAutoRotation]) {
-        [self.storyInteractionController willRotateToInterfaceOrientation:toInterfaceOrientation duration:duration];
-    }
+    [self.storyInteractionController willRotateToInterfaceOrientation:toInterfaceOrientation duration:duration];
 }
 
 - (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation
 {
-    if ([self.storyInteractionController supportsAutoRotation]) {
-        [self.storyInteractionController didRotateFromInterfaceOrientation:fromInterfaceOrientation];
-    }
+    [self.storyInteractionController didRotateFromInterfaceOrientation:fromInterfaceOrientation];
 }
 
 #pragma mark - Background view

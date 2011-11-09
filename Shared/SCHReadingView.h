@@ -43,8 +43,6 @@ typedef enum
 - (void)readingView:(SCHReadingView *)readingView hasMovedToPageIndicesInRange:(NSRange)pageIndicesRange withFocusedPageIndex:(NSUInteger)pageIndex;
 - (void)readingView:(SCHReadingView *)readingView hasMovedToProgressPositionInBook:(CGFloat)progress;
 
-- (void)readingViewWillAppear: (SCHReadingView *) readingView;
-
 - (void)readingView:(SCHReadingView *)readingView hasSelectedWordForSpeaking:(NSString *)word;
 - (void)requestDictionaryForWord:(NSString *)word mode:(SCHReadingViewSelectionMode) mode;
 
@@ -66,7 +64,8 @@ typedef enum
 - (id)initWithFrame:(CGRect)frame 
      bookIdentifier:(SCHBookIdentifier *)bookIdentifier 
 managedObjectContext:(NSManagedObjectContext *)managedObjectContext 
-           delegate:(id<SCHReadingViewDelegate>)delegate;
+           delegate:(id<SCHReadingViewDelegate>)delegate
+              point:(SCHBookPoint *)point;
 
 // Overridden methods
 // FIXME: change these to a protocol

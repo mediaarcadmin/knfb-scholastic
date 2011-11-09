@@ -16,4 +16,6 @@
 @property (nonatomic, retain) SCHStoryInteractionJigsawPaths *paths;
 @property (nonatomic, retain) UIColor *edgeColor;
 
+- (CGRect)puzzleBounds;
+
 @end

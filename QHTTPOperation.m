@@ -406,6 +406,10 @@
         } 
     #endif
 
+    if (error != nil) {
+        [self.delegate httpOperation:self didFailWithError:error];
+    }
+    
     [super finishWithError:error];
 }
 

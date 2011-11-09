@@ -19,16 +19,18 @@ extern NSTimeInterval const kSCHAuthenticationManagerSecondsInAMinute;
 
 @property (nonatomic, copy, readwrite) NSString *aToken;
 @property (nonatomic, retain) NSDate *tokenExpires;
-@property (nonatomic, assign) BOOL waitingOnResponse;
 @property (nonatomic, retain) SCHAccountValidation *accountValidation;
 @property (nonatomic, retain) SCHLibreAccessWebService *libreAccessWebService;
 @property (nonatomic, retain) SCHDrmRegistrationSession *drmRegistrationSession;
 
-- (void)authenticateOnMainThread;
+@property (nonatomic, copy) SCHAuthenticationSuccessBlock authenticationSuccessBlock;
+@property (nonatomic, copy) SCHAuthenticationFailureBlock authenticationFailureBlock;
+@property (nonatomic, assign, getter=isAuthenticating) BOOL authenticating;
+
 - (void)clearOnMainThread;
 - (void)clearAppProcessingOnMainThread;
 
-- (void)postSuccessWithOfflineMode:(BOOL)offlineMode;
-- (void)postFailureWithError:(NSError *)error;
+- (void)authenticationDidSucceedWithOfflineMode:(BOOL)offlineMode;
+- (void)authenticationDidFailWithError:(NSError *)error;
 
 @end

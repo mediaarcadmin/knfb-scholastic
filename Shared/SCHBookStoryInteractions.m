@@ -8,81 +8,127 @@
 
 #import "SCHBookStoryInteractions.h"
 #import "SCHStoryInteraction.h"
-#import "SCHStoryInteractionParser.h"
-#import "SCHXPSProvider.h"
-#import "KNFBXPSConstants.h"
 
 @interface SCHBookStoryInteractions ()
-@property (nonatomic, retain) NSArray *storyInteractions;
-@property (nonatomic, retain) NSDictionary *storyInteractionsByPage;
-@property (nonatomic, retain) NSMutableDictionary *storyInteractionCurrentCount;
+
+@property (nonatomic, retain) NSMutableDictionary *storyInteractionsQuestionsCompletedCount;
 @property (nonatomic, retain) NSMutableDictionary *storyInteractionsComplete;
+
+- (id)pageKeyForPageIndex:(NSInteger)pageIndex;
+- (id)leftPageKeyForPageIndex:(NSInteger)pageIndex;
+- (id)rightPageKeyForPageIndex:(NSInteger)pageIndex;
+- (NSArray *)pageKeysForPageIndices:(NSRange)pageIndices;
+- (NSArray *)pageKeysForStoryInteraction:(SCHStoryInteraction *)storyInteraction;
+- (void)incrementQuestionsCompletedForPageKey:(id)pageKey questionCount:(NSInteger)questionCount;
+
 @end
 
 @implementation SCHBookStoryInteractions
 
+@synthesize delegate;
 @synthesize storyInteractions;
-@synthesize storyInteractionsByPage;
-@synthesize storyInteractionCurrentCount;
+@synthesize storyInteractionsQuestionsCompletedCount;
 @synthesize storyInteractionsComplete;
+@synthesize oddPageIndicesAreLeftPages;
 
 - (void)dealloc
 {
     [storyInteractions release], storyInteractions = nil;
-    [storyInteractionsByPage release], storyInteractionsByPage = nil;
-    [storyInteractionCurrentCount release], storyInteractionCurrentCount = nil;
+    [storyInteractionsQuestionsCompletedCount release], storyInteractionsQuestionsCompletedCount = nil;
     [storyInteractionsComplete release], storyInteractionsComplete = nil;
     [super dealloc];
 }
 
-- (id)initWithXPSProvider:(SCHXPSProvider *)xpsProvider
+- (void)setStoryInteractions:(NSArray *)aStoryInteractions
 {
-    if ((self = [super init])) {
-        
-        self.storyInteractionCurrentCount = [NSMutableDictionary dictionary];
-        self.storyInteractionsComplete = [NSMutableDictionary dictionary];
-        
-        // get the raw array of stories from the parser
-        NSData *xml = [xpsProvider dataForComponentAtPath:KNFBXPSStoryInteractionsMetadataFile];
-        SCHStoryInteractionParser *parser = [[SCHStoryInteractionParser alloc] init];
-        NSArray *all = [parser parseStoryInteractionsFromData:xml];
-        [parser release];
-        
-        // only use valid story interactions
-        all = [all filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"isValid == YES"]];
-        
-        self.storyInteractions = [all sortedArrayUsingComparator:^NSComparisonResult(id obj1, id obj2) {
-            return [(SCHStoryInteraction *)obj1 documentPageNumber] - [(SCHStoryInteraction *)obj2 documentPageNumber];
-        }];
-        
-        // add reference to the Book Story Interactions object
-        for (SCHStoryInteraction *interaction in self.storyInteractions) {
-            interaction.bookStoryInteractions = self;
-        }
-        
-        // organise by page
-        NSMutableDictionary *byPage = [[NSMutableDictionary alloc] init];
-        for (SCHStoryInteraction *story in self.storyInteractions) {
-            NSNumber *page = [NSNumber numberWithInteger:story.documentPageNumber];
-            NSMutableArray *pageArray = [byPage objectForKey:page];
-            if (!pageArray) {
-                pageArray = [NSMutableArray array];
-                [byPage setObject:pageArray forKey:page];
-            }
-            [pageArray addObject:story];
-            
-            // set the current answered question count
-            NSNumber *currentCount = [NSNumber numberWithInteger:0];
-            [self.storyInteractionCurrentCount setObject:currentCount forKey:page];
-            
-            // set the complete flag to NO
-            [self.storyInteractionsComplete setObject:[NSNumber numberWithBool:NO] forKey:page];
-        }
-        
-        self.storyInteractionsByPage = [NSDictionary dictionaryWithDictionary:byPage];
-        [byPage release];
+    if (aStoryInteractions == storyInteractions) {
+        return;
     }
-    return self;
+    [storyInteractions release];
+    
+    self.storyInteractionsQuestionsCompletedCount = [NSMutableDictionary dictionary];
+    self.storyInteractionsComplete = [NSMutableDictionary dictionary];
+    
+    // only use valid story interactions
+    NSArray *validStoryInteractions = [aStoryInteractions filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"isValid == YES"]];
+    
+    storyInteractions = [[validStoryInteractions sortedArrayUsingComparator:^NSComparisonResult(id obj1, id obj2) {
+        return [(SCHStoryInteraction *)obj1 documentPageNumber] - [(SCHStoryInteraction *)obj2 documentPageNumber];
+    }] retain];
+    
+    // add reference to the Book Story Interactions object
+    for (SCHStoryInteraction *interaction in self.storyInteractions) {
+        interaction.bookStoryInteractions = self;
+    }
+}
+
+- (BOOL)isLeftPageIndex:(NSInteger)pageIndex
+{
+    return self.oddPageIndicesAreLeftPages == ((pageIndex & 1) == 1);
+}
+
+- (id)pageKeyForPageIndex:(NSInteger)pageIndex
+{
+    return [NSNumber numberWithInteger:pageIndex];
+}
+
+- (id)leftPageKeyForPageIndex:(NSInteger)pageIndex
+{
+    if (self.oddPageIndicesAreLeftPages) {
+        return [self pageKeyForPageIndex:((pageIndex-1) | 1)];
+    } else {
+        return [self pageKeyForPageIndex:(pageIndex & ~1)];
+    }
+}
+
+- (id)rightPageKeyForPageIndex:(NSInteger)pageIndex
+{
+    if (self.oddPageIndicesAreLeftPages) {
+        return [self pageKeyForPageIndex:((pageIndex+1) & ~1)];
+    } else {
+        return [self pageKeyForPageIndex:(pageIndex | 1)];
+    }
+}
+
+- (NSArray *)pageKeysForStoryInteraction:(SCHStoryInteraction *)storyInteraction
+{
+    NSInteger pageIndex = storyInteraction.documentPageNumber-1;
+    CGSize pageSize = delegate ? [delegate sizeOfPageAtIndex:pageIndex] : CGSizeZero;
+
+    if (pageIndex < 0) {
+        return nil;
+    }
+    
+    BOOL hasQuestionsOnLeftPage = [storyInteraction hasQuestionsOnLeftPageForPageSize:pageSize];
+    BOOL hasQuestionsOnRightPage = [storyInteraction hasQuestionsOnRightPageForPageSize:pageSize];
+    if (!hasQuestionsOnLeftPage && !hasQuestionsOnRightPage) {
+        // if the story interaction doesn't declare questions explicitly on the left/right pages,
+        // they must all be on the declared page
+        return [NSArray arrayWithObject:[self pageKeyForPageIndex:pageIndex]];
+    }
+    
+    NSMutableArray *pageKeys = [NSMutableArray arrayWithCapacity:2];
+
+    if (hasQuestionsOnLeftPage) {
+        [pageKeys addObject:[self leftPageKeyForPageIndex:pageIndex]];
+    }
+    if (hasQuestionsOnRightPage) {
+        [pageKeys addObject:[self rightPageKeyForPageIndex:pageIndex]];
+    }
+    return [NSArray arrayWithArray:pageKeys];
+}
+
+- (NSArray *)pageKeysForPageIndices:(NSRange)pageIndices
+{
+    if (pageIndices.length == 1) {
+        return [NSArray arrayWithObject:[self pageKeyForPageIndex:pageIndices.location]];
+    } else {
+        NSMutableArray *pageKeys = [NSMutableArray arrayWithCapacity:pageIndices.length];
+        for (NSInteger pageIndex = pageIndices.location, end = pageIndices.location+pageIndices.length; pageIndex < end; ++pageIndex) {
+            [pageKeys addObject:[self pageKeyForPageIndex:pageIndex]];
+        };
+        return [NSArray arrayWithArray:pageKeys];
+    }
 }
 
 - (NSArray *)allStoryInteractionsExcludingInteractionWithPage:(BOOL)excludeInteractionWithPage
@@ -94,28 +140,35 @@
     
     NSMutableArray *filtered = [NSMutableArray arrayWithCapacity:[unfiltered count]];
     for (SCHStoryInteraction *si in unfiltered) {
-        if (![si requiresInteractionWithPage]) {
+        if (![si requiresInteractionWithPage] && ![filtered containsObject:si]) {
             [filtered addObject:si];
         }
     }
     return filtered;
 }
 
-- (NSArray *)storyInteractionsForPage:(NSInteger)pageNumber
+- (NSArray *)storyInteractionsForPageIndices:(NSRange)pageIndices
          excludingInteractionWithPage:(BOOL)excludeInteractionWithPage
 {
-    NSArray *unfiltered = [self.storyInteractionsByPage objectForKey:[NSNumber numberWithInteger:pageNumber]];
-    if (!excludeInteractionWithPage) {
-        return unfiltered;
-    }
+    NSMutableArray *found = [NSMutableArray array];
+    NSArray *requestedPageKeys = [self pageKeysForPageIndices:pageIndices];
     
-    NSMutableArray *filtered = [NSMutableArray arrayWithCapacity:[unfiltered count]];
-    for (SCHStoryInteraction *si in unfiltered) {
-        if (![si requiresInteractionWithPage]) {
-            [filtered addObject:si];
+    for (SCHStoryInteraction *storyInteraction in self.storyInteractions) {
+        if (excludeInteractionWithPage && [storyInteraction requiresInteractionWithPage]) {
+            continue;
+        }
+        if ([found containsObject:storyInteraction]) {
+            continue;
+        }
+        for (id pageKey in [self pageKeysForStoryInteraction:storyInteraction]) {
+            if ([requestedPageKeys containsObject:pageKey]) {
+                [found addObject:storyInteraction];
+                break;
+            }
         }
     }
-    return filtered;
+    
+    return [NSArray arrayWithArray:found];
 }
 
 - (NSArray *)storyInteractionsOfClass:(Class)storyInteractionClass
@@ -129,72 +182,150 @@
     return [NSArray arrayWithArray:result];
 }
 
-- (NSInteger)storyInteractionQuestionCountForPage:(NSInteger)pageNumber
+- (NSInteger)storyInteractionQuestionCountForPageIndices:(NSRange)pageIndices
 {
-    SCHStoryInteraction *interaction = [[self storyInteractionsForPage:pageNumber excludingInteractionWithPage:NO] objectAtIndex:0];
+    NSInteger count = 0;
     
-    if (interaction) {
-        return [interaction questionCount];
-    } else {
-        return 0;
+    NSArray *storyInteractionsOnPage = [self storyInteractionsForPageIndices:pageIndices excludingInteractionWithPage:NO];
+    for (SCHStoryInteraction *storyInteraction in storyInteractionsOnPage) {
+        NSInteger questionCount = [storyInteraction questionCount];
+        if (pageIndices.length > 1) {
+            count += questionCount;
+        } else {
+            CGSize pageSize = delegate ? [delegate sizeOfPageAtIndex:pageIndices.location] : CGSizeZero;
+            for (NSInteger questionIndex = 0; questionIndex < questionCount; ++questionIndex) {
+                switch ([storyInteraction pageAssociationForQuestionAtIndex:questionIndex withPageSize:pageSize]) {
+                    case SCHStoryInteractionQuestionOnBothPages:
+                        count++;
+                        break;
+                    case SCHStoryInteractionQuestionOnLeftPage:
+                        if ([self isLeftPageIndex:pageIndices.location]) {
+                            count++;
+                        }
+                        break;
+                    case SCHStoryInteractionQuestionOnRightPage:
+                        if (![self isLeftPageIndex:pageIndices.location]) {
+                            count++;
+                        }
+                        break;
+                }
+            }
+        }
     }
+    
+    return count;
 }
 
 #pragma mark - Interactions Complete methods
 
-- (NSInteger)storyInteractionQuestionsCompletedForPage:(NSInteger)page
+- (NSInteger)storyInteractionQuestionsCompletedForPageIndices:(NSRange)pageIndices
 {
-    int result = -1;
+    NSInteger count = 0;
     
-    NSNumber *count = [self.storyInteractionCurrentCount objectForKey:[NSNumber numberWithInteger:page]];
-    
-    if (count) {
-        result = [count intValue];
+    for (id pageKey in [self pageKeysForPageIndices:pageIndices]) {
+        NSNumber *countForPage = [self.storyInteractionsQuestionsCompletedCount objectForKey:pageKey];
+        if (countForPage) {
+            count += [countForPage integerValue];
+        }
     }
     
-    //NSLog(@"Completed %d interactions for page %d", result, page);
-    
-    return result;
+    return count;
 }
 
-- (void)incrementStoryInteractionQuestionsCompletedForPage:(NSInteger)page
+- (NSInteger)questionsCompletedForStoryInteraction:(SCHStoryInteraction *)storyInteraction
 {
-    NSNumber *count = [self.storyInteractionCurrentCount objectForKey:[NSNumber numberWithInteger:page]];
+    NSInteger count = 0;
     
-    if (!count) {
-        NSLog(@"Warning: trying to increment count for a page that doesn't exist (%d).", page);
+    for (id pageKey in [self pageKeysForStoryInteraction:storyInteraction]) {
+        NSNumber *countForPage = [self.storyInteractionsQuestionsCompletedCount objectForKey:pageKey];
+        if (countForPage) {
+            count += [countForPage integerValue];
+        }
+    }
+    
+    return count;
+}
+
+- (BOOL)allQuestionsCompletedForPageIndices:(NSRange)pageIndices
+{
+    for (id pageKey in [self pageKeysForPageIndices:pageIndices]) {
+        // ignore pages with no SIs
+        if ([[self storyInteractionsForPageIndices:NSMakeRange([pageKey integerValue], 1) excludingInteractionWithPage:NO] count] == 0) {
+            continue;
+        }
+        NSNumber *complete = [self.storyInteractionsComplete objectForKey:pageKey];
+        if (!complete || ![complete boolValue]) {
+            return NO;
+        }
+    }
+    
+    return YES;
+}
+
+- (BOOL)allQuestionsCompletedForStoryInteraction:(SCHStoryInteraction *)storyInteraction
+{
+    for (id pageKey in [self pageKeysForStoryInteraction:storyInteraction]) {
+        NSNumber *complete = [self.storyInteractionsComplete objectForKey:pageKey];
+        if (!complete || ![complete boolValue]) {
+            return NO;
+        }
+    }
+    return YES;
+}
+
+- (void)incrementQuestionsCompletedForStoryInteraction:(SCHStoryInteraction *)storyInteraction
+                                           pageIndices:(NSRange)pageIndices
+{
+    NSArray *storyInteractionPageKeys = [self pageKeysForStoryInteraction:storyInteraction];
+    
+    if ([storyInteractionPageKeys count] == 0) {
+        // story interaction is not page-associated
         return;
     }
     
-    SCHStoryInteraction *interaction = [self.storyInteractionsByPage objectForKey:[NSNumber numberWithInteger:page]];
-    
-    if (!interaction) {
-        NSLog(@"Warning: story interaction does not exist for page %d", page);
-        return;
+    if ([storyInteractionPageKeys count] == 1) {
+        // easy case, all this SI's questions are on one page
+        [self incrementQuestionsCompletedForPageKey:[storyInteractionPageKeys objectAtIndex:0]
+                                      questionCount:[storyInteraction questionCount]];
+
+    } else if (pageIndices.length > 1) {
+        // work out which page the last question was on, and update the score on that page only
+        NSInteger questionIndex = [self storyInteractionQuestionsCompletedForPageIndices:pageIndices] % [storyInteraction questionCount];
+        CGSize pageSize = delegate ? [delegate sizeOfPageAtIndex:pageIndices.location] : CGSizeZero;
+        enum SCHStoryInteractionQuestionPageAssociation pageAssociation = [storyInteraction pageAssociationForQuestionAtIndex:questionIndex withPageSize:pageSize];
+        id pageKey = (pageAssociation == SCHStoryInteractionQuestionOnLeftPage) ? [self leftPageKeyForPageIndex:pageIndices.location] : [self rightPageKeyForPageIndex:pageIndices.location];
+        NSInteger questionCount = [storyInteraction numberOfQuestionsWithPageAssociation:pageAssociation withPageSize:pageSize];
+        [self incrementQuestionsCompletedForPageKey:pageKey questionCount:questionCount];
+
+    } else {
+        // single out the questions only on this page
+        CGSize pageSize = delegate ? [delegate sizeOfPageAtIndex:pageIndices.location] : CGSizeZero;
+        enum SCHStoryInteractionQuestionPageAssociation pageAssociation = ([self isLeftPageIndex:pageIndices.location]
+                                                                           ? SCHStoryInteractionQuestionOnLeftPage
+                                                                           : SCHStoryInteractionQuestionOnRightPage);
+        NSInteger questionCount = [storyInteraction numberOfQuestionsWithPageAssociation:pageAssociation withPageSize:pageSize];
+        id pageKey = [self pageKeyForPageIndex:pageIndices.location];
+        [self incrementQuestionsCompletedForPageKey:pageKey questionCount:questionCount];
     }
-    
-    int questionCount = [[[self storyInteractionsForPage:page excludingInteractionWithPage:NO] objectAtIndex:0] questionCount];
-    
-    count = [NSNumber numberWithInteger:[count intValue] + 1];
+}
+
+- (void)incrementQuestionsCompletedForPageKey:(id)pageKey questionCount:(NSInteger)questionCount
+{
+    NSNumber *count = [self.storyInteractionsQuestionsCompletedCount objectForKey:pageKey];
+    if (count == nil) {
+        count = [NSNumber numberWithInteger:1];
+    } else {
+        count = [NSNumber numberWithInteger:[count integerValue]+1];
+    }
     
     // if we've answered all the questions, set the interaction as complete
-    if ([count intValue] >= questionCount) {
-        count = [NSNumber numberWithInteger:0];
-        [self.storyInteractionsComplete setObject:[NSNumber numberWithBool:YES] forKey:[NSNumber numberWithInt:page]];
+    if ([count integerValue] == questionCount) {
+        [self.storyInteractionsComplete setObject:[NSNumber numberWithBool:YES] forKey:pageKey];
     }
     
-    [self.storyInteractionCurrentCount setObject:count forKey:[NSNumber numberWithInteger:page]];
-    NSLog(@"Now completed %d interactions for page %d", [count intValue], page);
-}
-
-- (BOOL)storyInteractionsFinishedOnPage:(NSInteger)page
-{
-    return [[self.storyInteractionsComplete objectForKey:[NSNumber numberWithInt:page]] boolValue];
-}
-
-- (void)setStoryInteractionsFinishedForPage:(NSInteger)page
-{
-    [self.storyInteractionsComplete setObject:[NSNumber numberWithBool:YES] forKey:[NSNumber numberWithInt:page]];
+    [self.storyInteractionsQuestionsCompletedCount setObject:count forKey:pageKey];
+    
+    NSLog(@"Now completed %d of %d interactions for page %@", [count intValue], questionCount, pageKey);
 }
 
 

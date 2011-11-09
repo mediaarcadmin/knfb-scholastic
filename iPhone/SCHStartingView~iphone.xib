@@ -166,13 +166,14 @@
 								<string key="NSFrame">{{21, 28}, {278, 61}}</string>
 								<reference key="NSSuperview" ref="985864168"/>
 								<reference key="NSWindow"/>
+								<reference key="NSNextKeyView"/>
 								<reference key="IBUIBackgroundColor" ref="137200320"/>
 								<bool key="IBUIOpaque">NO</bool>
 								<bool key="IBUIClipsSubviews">YES</bool>
 								<int key="IBUIContentMode">7</int>
 								<bool key="IBUIUserInteractionEnabled">NO</bool>
 								<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
-								<string key="IBUIText">If you have a Scholastic Book Clubs user name and password, sign in here to buy eBooks or read eBooks you have already purchased.</string>
+								<string key="IBUIText">If you have a Scholastic user name and password, sign in here to buy eBooks or read eBooks you have already purchased.</string>
 								<reference key="IBUITextColor" ref="273679192"/>
 								<nil key="IBUIHighlightedColor"/>
 								<int key="IBUIBaselineAdjustment">1</int>
@@ -245,6 +246,7 @@
 								<string key="NSFrame">{{21, 28}, {278, 48}}</string>
 								<reference key="NSSuperview" ref="508741388"/>
 								<reference key="NSWindow"/>
+								<reference key="NSNextKeyView"/>
 								<reference key="IBUIBackgroundColor" ref="137200320"/>
 								<bool key="IBUIOpaque">NO</bool>
 								<bool key="IBUIClipsSubviews">YES</bool>

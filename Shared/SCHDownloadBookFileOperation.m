@@ -10,6 +10,7 @@
 
 #import "SCHAppBook.h"
 #import "BITNetworkActivityManager.h"
+#import "SCHUserContentItem.h"
 
 #pragma mark - Class Extension
 
@@ -17,9 +18,10 @@
 
 @property (nonatomic, copy) NSString *localPath;
 @property (nonatomic, assign) unsigned long bookFileSize;
-@property (nonatomic, retain) NSFileHandle *fileHandle;
-@property (nonatomic, assign) unsigned long long currentFilesize;
 @property (nonatomic, assign) unsigned long long expectedImageFileSize;
+@property (nonatomic, retain) QHTTPOperation *downloadOperation;
+@property (nonatomic, assign) unsigned long long alreadyDownloadedSize;
+@property (nonatomic, assign) unsigned long long currentDownloadedSize;
 
 // the previous percentage reported - used to limit percentage notifications
 @property float previousPercentage;
@@ -27,6 +29,8 @@
 - (BOOL)stringBeginsWithHTTPScheme:(NSString *)string;
 - (NSString *)fullPathToBundledFile:(NSString *)fileName;
 - (void)completedDownload;
+- (NSData *)lastTwoBytes;
+- (NSData *)jpegEOF;
 
 @end
 
@@ -36,16 +40,16 @@
 @synthesize localPath;
 @synthesize fileType;
 @synthesize bookFileSize;
-@synthesize fileHandle;
-@synthesize currentFilesize;
 @synthesize previousPercentage;
 @synthesize expectedImageFileSize;
+@synthesize downloadOperation;
+@synthesize alreadyDownloadedSize;
+@synthesize currentDownloadedSize;
 
 - (void)dealloc 
 {
+    [downloadOperation release], downloadOperation = nil;
     [localPath release], localPath = nil;
-    [fileHandle closeFile];
-    [fileHandle release], fileHandle = nil;
 	[super dealloc];
 }
 
@@ -55,17 +59,9 @@
 {
     NSError *error = nil;
     
-    // Following Dave Dribins pattern 
-    // http://www.dribin.org/dave/blog/archives/2009/05/05/concurrent_operations/
-    if (![NSThread isMainThread])
-    {
-        [self performSelectorOnMainThread:@selector(beginOperation) withObject:nil waitUntilDone:NO];
-        return;
-    }
-    
     if (self.identifier == nil) {
         NSLog(@"WARNING: tried to download a book without setting the ISBN");
-        [self setProcessingState:SCHBookProcessingStateError];
+        [self setProcessingState:SCHBookProcessingStateDownloadFailed];
         [self setIsProcessing:NO];                
         [self endOperation];
         return;
@@ -74,6 +70,7 @@
     // check first to see if the file has been created
 	NSMutableURLRequest *request = nil;
     NSFileManager *fileManager = [[[NSFileManager alloc] init] autorelease];
+    BOOL append = NO;
     
     [self performWithBook:^(SCHAppBook *book) {
         self.bookFileSize = [book.FileSize unsignedLongValue];
@@ -103,7 +100,7 @@
             if (error != nil) {
                 NSLog(@"Error copying XPS file from bundle: %@, %@", error, [error userInfo]);
             } 
-            
+                        
             [self completedDownload];	
             [bookFileURL release];            
             return;
@@ -159,10 +156,13 @@
 	} else {
 		[NSException raise:@"SCHDownloadFileOperationUnknownFileType" format:@"Unknown file type for SCHDownloadFileOperation."];
 	}
+    
+    [self willChangeValueForKey:@"isExecuting"];
 	
-	self.currentFilesize = 0;
+	unsigned long long currentFilesize = 0;
     self.previousPercentage = -1;
 	self.expectedImageFileSize = 0;
+    self.alreadyDownloadedSize = 0;
     
 	if ([fileManager fileExistsAtPath:self.localPath]) {
 		// check to see how much of the file has been downloaded
@@ -185,27 +185,44 @@
                 [self endOperation];
 				return;
 			}
-            self.currentFilesize = [attributes fileSize];
+            currentFilesize = [attributes fileSize];
 		}
 	}
 		
-	if (self.currentFilesize > 0) {
-        NSLog(@"Already have %llu bytes, need %llu bytes more.", self.currentFilesize, self.bookFileSize - self.currentFilesize);
-		[request setValue:[NSString stringWithFormat:@"bytes=%llu-", self.currentFilesize] forHTTPHeaderField:@"Range"];
+	if (currentFilesize > 0) {
+        NSLog(@"Already have %llu bytes, need %llu bytes more.", currentFilesize, self.bookFileSize - currentFilesize);
+		[request setValue:[NSString stringWithFormat:@"bytes=%llu-", currentFilesize] forHTTPHeaderField:@"Range"];
+        self.alreadyDownloadedSize = currentFilesize;
+        append = YES;
 	} else {
 		[fileManager createFileAtPath:self.localPath contents:nil attributes:nil];
 	}
+    
+    NSMutableIndexSet *acceptableStatusCodes = [NSMutableIndexSet indexSetWithIndex:200];
+    [acceptableStatusCodes addIndex:206];
 
+    self.downloadOperation = [[QHTTPOperation alloc] initWithRequest:request];
+    self.downloadOperation.acceptableStatusCodes = acceptableStatusCodes;
+    self.downloadOperation.responseOutputStream = [NSOutputStream outputStreamToFileAtPath:self.localPath append:append];
+    self.downloadOperation.delegate = self;
 	
-	NSURLConnection *connection = [NSURLConnection connectionWithRequest:request delegate:self];
-
-	if (connection == nil) {
-        [self setIsProcessing:NO];        
-        [self endOperation];
-    } else {
-        [connection start];
-        [[BITNetworkActivityManager sharedNetworkActivityManager] showNetworkActivityIndicator];                
-    }
+    __block SCHDownloadBookFileOperation *unretained_self = self;
+    self.downloadOperation.completionBlock = ^{
+        if (unretained_self.fileType == kSCHDownloadFileTypeXPSBook) {
+            NSLog(@"Finished file %@. [downloaded: %llu expected:%lu]", [unretained_self.localPath lastPathComponent], 
+                  currentFilesize, unretained_self.bookFileSize);
+        } else {
+            NSLog(@"Finished file %@. [downloaded: %llu]", [unretained_self.localPath lastPathComponent], currentFilesize);        
+        }
+        
+        [[BITNetworkActivityManager sharedNetworkActivityManager] hideNetworkActivityIndicator];
+        [unretained_self completedDownload];
+    };
+        
+    [[BITNetworkActivityManager sharedNetworkActivityManager] showNetworkActivityIndicator];                
+    
+    [self.downloadOperation start];
+    [self didChangeValueForKey:@"isExecuting"];
 }
 
 - (BOOL)stringBeginsWithHTTPScheme:(NSString *)string
@@ -235,7 +252,8 @@
 
 - (void)createPercentageUpdate
 {    
-    float percentage = (self.bookFileSize > 0 ? (float) ((float)self.currentFilesize / self.bookFileSize) : 0.0);
+    float totalDownloadedSize = self.alreadyDownloadedSize + self.currentDownloadedSize;
+    float percentage = (self.bookFileSize > 0 ? (totalDownloadedSize / self.bookFileSize) : 0.0);
     
     if (percentage - self.previousPercentage > 0.001f) {
         
@@ -260,79 +278,52 @@
                                                       userInfo:userInfo];
 }
 
-#pragma mark - NSURLConnection delegate methods
+#pragma mark - QHTTPOperationDelegate methods
 
-- (void)connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response
+- (void)httpOperation:(QHTTPOperation *)operation startedDownloadingDataSize:(long long)expectedDataSize
 {
-    if ([response isKindOfClass:[NSHTTPURLResponse class]] == YES) {
-        if ([(NSHTTPURLResponse *)response statusCode] != 200 && 
-            [(NSHTTPURLResponse *)response statusCode] != 206) {
-            [connection cancel];
-            [self setProcessingState:SCHBookProcessingStateDownloadFailed];            
-            [[BITNetworkActivityManager sharedNetworkActivityManager] hideNetworkActivityIndicator];
-            NSLog(@"Error downloading file, errorCode: %d", [(NSHTTPURLResponse *)response statusCode]);
-            [self setIsProcessing:NO];        
-            [self endOperation];
-            return;
-        }
-        
-        if (self.fileType == kSCHDownloadFileTypeCoverImage) {
-            self.expectedImageFileSize = [response expectedContentLength]; 
-        }
+    if (self.fileType == kSCHDownloadFileTypeCoverImage) {
+        self.expectedImageFileSize = expectedDataSize;
     } 
     
-    NSLog(@"Filesize receiving:%llu expected:%llu", self.currentFilesize, [response expectedContentLength]);
-    
-    self.fileHandle = [NSFileHandle fileHandleForWritingAtPath:self.localPath];
-    [self.fileHandle seekToEndOfFile];
+    NSLog(@"Filesize receiving:%llu for file %@", expectedDataSize, self.localPath);
 }
 
-- (void)connection:(NSURLConnection *)connection didReceiveData:(NSData *)data 
+- (void)httpOperation:(QHTTPOperation *)operation updatedDownloadSize:(long long)downloadedSize
 {
     if ([self isCancelled] || [self processingState] == SCHBookProcessingStateDownloadPaused) {
-		[connection cancel];
+        operation.completionBlock = nil;
+		[operation cancel];
         [[BITNetworkActivityManager sharedNetworkActivityManager] hideNetworkActivityIndicator];
-        [self.fileHandle closeFile];
-        self.fileHandle = nil;        
         [self setIsProcessing:NO];        
         [self endOperation];
 		return;
-	}
-
-	@synchronized(self) {
-        @try {
-            [self.fileHandle writeData:data];
-            self.currentFilesize += [data length];            
-        }
-        @catch (NSException *exception) {
-            [connection cancel];
-            [[BITNetworkActivityManager sharedNetworkActivityManager] hideNetworkActivityIndicator];                        
-            [self setProcessingState:SCHBookProcessingStateDownloadFailed];            
-            [self.fileHandle closeFile];
-            self.fileHandle = nil;            
-            [self setIsProcessing:NO];        
-            [self endOperation];
-            return;
-        }
-	}
-
+    }
+    
+    self.currentDownloadedSize = downloadedSize;
     if (self.fileType == kSCHDownloadFileTypeXPSBook) {
         [self createPercentageUpdate];
     }
 }
 
-- (void)connectionDidFinishLoading:(NSURLConnection *)connection
+- (void)httpOperation:(QHTTPOperation *)operation didFailWithError:(NSError *)error
 {
-    if (self.fileType == kSCHDownloadFileTypeXPSBook) {
-        NSLog(@"Finished file %@. [downloaded: %llu expected:%lu]", [self.localPath lastPathComponent], 
-              self.currentFilesize, self.bookFileSize);
-    } else {
-        NSLog(@"Finished file %@. [downloaded: %llu]", [self.localPath lastPathComponent], 
-              self.currentFilesize);        
+    if ([error.domain isEqualToString:NSCocoaErrorDomain] && error.code == NSUserCancelledError) {
+        return;
     }
     
+    NSLog(@"book download operation failed with error: %@", error);
+
     [[BITNetworkActivityManager sharedNetworkActivityManager] hideNetworkActivityIndicator];
-    [self completedDownload];
+
+    // allow the operation to complete but change the completion handling
+    __block SCHDownloadBookFileOperation *unretained_self = self;
+    operation.completionBlock = ^{
+        self.downloadOperation = nil;
+        [unretained_self setIsProcessing:NO];
+        [unretained_self setProcessingState:SCHBookProcessingStateDownloadFailed];
+        [unretained_self endOperation];
+    };
 }
 
 - (void)completedDownload
@@ -341,7 +332,15 @@
 		case kSCHDownloadFileTypeXPSBook:
         {
             [self performWithBookAndSave:^(SCHAppBook *book) {
-                book.OnDiskVersion = book.Version;
+                
+                int contentMetadataVersion = [[[book ContentMetadataItem] Version] intValue];
+                int userContentVersion = [[[[book ContentMetadataItem] UserContentItem] Version] intValue];
+                
+                if (contentMetadataVersion > userContentVersion) {
+                    book.OnDiskVersion = [[book ContentMetadataItem] Version];
+                } else {
+                    book.OnDiskVersion = [[[book ContentMetadataItem] UserContentItem] Version];
+                }
                 book.XPSExists = [NSNumber numberWithBool:YES];
             }];
             
@@ -354,19 +353,49 @@
             [self performSelectorOnMainThread:@selector(firePercentageUpdate:) 
                                    withObject:userInfo
                                 waitUntilDone:YES];            
-        }
 			break;
+        }
 		case kSCHDownloadFileTypeCoverImage:
-            if (self.expectedImageFileSize != self.currentFilesize) {
+        {
+            BOOL validImage = YES;
+            
+            // first, check the file size - does it match what the server said?
+            // if not, it has likely become corrupt
+            unsigned long long totalDownloadedSize = self.alreadyDownloadedSize + self.currentDownloadedSize;
+            if (self.expectedImageFileSize != totalDownloadedSize) {
+                NSLog(@"Error downloading file %@ (image filesize did not match)", [self.localPath lastPathComponent]);
+                validImage = NO;
+            } 
+            
+            // if there has been no data received, then the image is invalid
+            if (!self.lastTwoBytes) {
+                NSLog(@"Error downloading file %@ (no image data)", [self.localPath lastPathComponent]);
+                validImage = NO;
+            }
+            
+            // ignore validity check for books copied from a local file
+            if (self.downloadOperation != nil) {
+                NSData *jpegEOF = [self jpegEOF];
+                
+                // if the last two bytes don't match the EOI marker, the image is invalid
+                if (![jpegEOF isEqualToData:self.lastTwoBytes]) {
+                    NSLog(@"Error downloading file %@ (invalid JPEG End Of Image marker)", [self.localPath lastPathComponent]);
+                    validImage = NO;
+                }
+                
+                // NOTE: this could be expanded to verify PNG images too
+                // IEND Image Trailer is 73 69 78 68 (decimal)
+                // reference: http://www.w3.org/TR/PNG/#11IEND
+            }
+            
+            if (!validImage) {
                 [[BITNetworkActivityManager sharedNetworkActivityManager] hideNetworkActivityIndicator];
                 
-                // if there was an error may just have a partial file, so remove it
+                // if there was an error, the file is invalid and is removed
                 NSFileManager *fileManager = [[[NSFileManager alloc] init] autorelease];
                 [fileManager removeItemAtPath:self.localPath error:nil];
                 
                 [self setProcessingState:SCHBookProcessingStateDownloadFailed];        
-                
-                NSLog(@"Error downloading file %@ (image filesize did not match)", [self.localPath lastPathComponent]);
                 
             } else {
                 [self performWithBookAndSave:^(SCHAppBook *book) {
@@ -375,36 +404,42 @@
                 [self setProcessingState:SCHBookProcessingStateReadyForBookFileDownload];
             }
 			break;
+        }
 		default:
+        {
 			break;
+        }
 	}
 
-    [self.fileHandle closeFile];
-    self.fileHandle = nil;
+    self.downloadOperation = nil;
     [self setIsProcessing:NO];        
     [self endOperation];
 }
 
-- (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error
+- (NSData *)jpegEOF
 {
-    [[BITNetworkActivityManager sharedNetworkActivityManager] hideNetworkActivityIndicator];
+    // these two bytes are the JPEG End Of Image Marker (EOI)
+    // reference: http://www.fileformat.info/format/jpeg/egff.htm
+    const char bytes[] = "\xff\xd9";
+    // string literals have implicit trailing '\0'
+    size_t length = (sizeof bytes) - 1; 
     
-    // if there was an error may just have a partial file, so remove it
-    NSFileManager *fileManager = [[[NSFileManager alloc] init] autorelease];
-   [fileManager removeItemAtPath:self.localPath error:nil];
+    // create a NSData matching the bytes
+    return [NSData dataWithBytes:bytes length:length];
+}
 
-    if ([self isCancelled] || [self processingState] == SCHBookProcessingStateDownloadPaused) {
-		[connection cancel];
-	} else {
-        [self setProcessingState:SCHBookProcessingStateDownloadFailed];        
+- (NSData *)lastTwoBytes
+{
+    NSData *downloadedFile = [NSData dataWithContentsOfMappedFile:self.localPath];
+    if ([downloadedFile length] < 2) {
+        return nil;
     }
-    
-	NSLog(@"Error downloading file %@ (%@ : %@)", [self.localPath lastPathComponent], error, [error userInfo]);
+    return [downloadedFile subdataWithRange:NSMakeRange([downloadedFile length]-2, 2)];
+}
 
-    [self.fileHandle closeFile];
-    self.fileHandle = nil;
-    [self setIsProcessing:NO];            
-    [self endOperation];
+- (BOOL)isExecuting
+{
+    return self.downloadOperation != nil && [self.downloadOperation isExecuting];
 }
 
 @end

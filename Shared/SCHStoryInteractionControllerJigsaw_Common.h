@@ -27,4 +27,6 @@
 - (void)setupPuzzlePiecesForInteractionFromPreview:(SCHStoryInteractionJigsawPreviewView *)preview;
 - (void)checkForCompletion;
 
+- (BOOL)puzzleIsInteractive;
+
 @end

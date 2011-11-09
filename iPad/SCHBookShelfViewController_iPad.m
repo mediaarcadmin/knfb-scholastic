@@ -263,19 +263,14 @@ static NSTimeInterval const kSCHBookShelfViewControllerTopTenRefreshTime = -600.
     if (self.lastTopTenBookRetrieval == nil || 
         [self.lastTopTenBookRetrieval timeIntervalSinceNow] <= kSCHBookShelfViewControllerTopTenRefreshTime || 
         [self.topTenBooks count] < 1) {
-        if ([self.topFavoritesComponent topFavoritesForAge:self.profileItem.age] == NO) {
-            // if we need to authenticate then try again once we are
-            [[NSNotificationCenter defaultCenter] addObserver:self 
-                                                     selector:@selector(authenticationManager:) 
-                                                         name:SCHAuthenticationManagerDidSucceedNotification 
-                                                       object:nil];					            
-        }
+        
+        [self.topFavoritesComponent topFavoritesForAge:self.profileItem.age];
+        
     }
     
     SCHBookShelfTopTenPopoverTableView *popoverTable = [[SCHBookShelfTopTenPopoverTableView alloc] initWithNibName:nil bundle:nil];
     popoverTable.books = self.topTenBooks;
 
-    popoverTable.title = @"Top Ten eBooks";
     UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:popoverTable];
     
     self.popover = [[[UIPopoverController alloc] initWithContentViewController:navController] autorelease];
@@ -321,7 +316,8 @@ static NSTimeInterval const kSCHBookShelfViewControllerTopTenRefreshTime = -600.
         [self.popover dismissPopoverAnimated:YES];
         self.popover = nil;
     }
-    [self setupAssetsForOrientation:self.interfaceOrientation];
+
+    [super updateTheme];
 }
 
 
@@ -344,19 +340,6 @@ static NSTimeInterval const kSCHBookShelfViewControllerTopTenRefreshTime = -600.
 
     [self.popover dismissPopoverAnimated:YES];
     self.popover = nil;
-}
-
-#pragma mark - Authentication Manager Delegate
-
-- (void)authenticationManager:(NSNotification *)notification
-{
-	NSDictionary *userInfo = [notification userInfo];
-	
-	if ([[userInfo valueForKey:kSCHAuthenticationManagerOfflineMode] boolValue] == NO) {
-        if ([self.topFavoritesComponent topFavoritesForAge:self.profileItem.age] == YES) {
-            [[NSNotificationCenter defaultCenter] removeObserver:self];
-        }
-	}
 }
 
 #pragma mark - SCHComponent Delegate
@@ -385,6 +368,12 @@ static NSTimeInterval const kSCHBookShelfViewControllerTopTenRefreshTime = -600.
 - (void)component:(SCHComponent *)component didFailWithError:(NSError *)error
 {
     
+}
+
+- (void)authenticationDidSucceed
+{
+    // Re-call top favorites for age now we have authenticated
+    [self.topFavoritesComponent topFavoritesForAge:self.profileItem.age];
 }
 
 @end

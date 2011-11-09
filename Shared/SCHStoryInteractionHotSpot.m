@@ -36,6 +36,23 @@
     }
 }
 
+- (enum SCHStoryInteractionQuestionPageAssociation)pageAssociationForPageSize:(CGSize)pageSize
+{
+    CGRect leftPageRect = (CGRect){ CGPointZero, pageSize };
+    CGRect rightPageRect = CGRectMake(pageSize.width, 0, pageSize.width, pageSize.height);
+    
+    CGRect leftPageIntersection = CGRectIntersection(leftPageRect, hotSpotRect);
+    CGRect rightPageIntersection = CGRectIntersection(rightPageRect, hotSpotRect);
+    CGFloat leftPageIntersectionArea = CGRectGetWidth(leftPageIntersection)*CGRectGetHeight(leftPageIntersection);
+    CGFloat rightPageIntersectionArea = CGRectGetWidth(rightPageIntersection)*CGRectGetHeight(rightPageIntersection);
+    
+    if (leftPageIntersectionArea > rightPageIntersectionArea) {
+        return SCHStoryInteractionQuestionOnLeftPage;
+    } else {
+        return SCHStoryInteractionQuestionOnRightPage;
+    }
+}
+
 - (NSString *)audioPathForQuestion
 {
     NSString *filename = [NSString stringWithFormat:@"%@_q%d.mp3", self.storyInteraction.ID, self.questionIndex+1];
@@ -76,5 +93,25 @@
 {
     return [self.questions count];
 }
+
+- (NSArray *)questionsWithPageAssociation:(enum SCHStoryInteractionQuestionPageAssociation)pageAssociation
+                                 pageSize:(CGSize)pageSize
+{
+    NSMutableArray *result = [NSMutableArray array];
+    for (SCHStoryInteractionHotSpotQuestion *question in self.questions) {
+        if (pageAssociation == SCHStoryInteractionQuestionOnBothPages || pageAssociation == [question pageAssociationForPageSize:pageSize]) {
+            [result addObject:question];
+        }
+    }
+    return [NSArray arrayWithArray:result];
+}
+
+- (enum SCHStoryInteractionQuestionPageAssociation)pageAssociationForQuestionAtIndex:(NSInteger)questionIndex
+                                                                        withPageSize:(CGSize)pageSize
+{
+    SCHStoryInteractionHotSpotQuestion *question = [self.questions objectAtIndex:questionIndex];
+    return [question pageAssociationForPageSize:pageSize];
+}
+
 
 @end

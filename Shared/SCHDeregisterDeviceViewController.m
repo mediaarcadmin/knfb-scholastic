@@ -14,6 +14,7 @@
 #import "Reachability.h"
 #import "SCHAccountValidation.h"
 #import "SCHUserDefaults.h"
+#import "SCHDrmSession.h"
 
 static const CGFloat kDeregisterContentHeightLandscape = 380;
 
@@ -24,6 +25,7 @@ static const CGFloat kDeregisterContentHeightLandscape = 380;
 
 - (void)setupContentSizeForOrientation:(UIInterfaceOrientation)orientation;
 - (void)makeVisibleTextField:(UITextField *)textField;
+- (void)deregisterAfterSuccessfulAuthentication;
 
 @end
 
@@ -91,11 +93,6 @@ static const CGFloat kDeregisterContentHeightLandscape = 380;
                                                      name:UIKeyboardWillHideNotification
                                                    object:nil];
     }
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(authenticationManagerDidFailDeregistration:)
-                                                 name:SCHAuthenticationManagerDidFailDeregistrationNotification
-                                               object:nil];
 }
 
 - (void)viewWillAppear:(BOOL)animated 
@@ -129,8 +126,8 @@ static const CGFloat kDeregisterContentHeightLandscape = 380;
     
     if ([[self.passwordField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]] length] < 1) {
         LambdaAlert *alert = [[LambdaAlert alloc]
-                              initWithTitle:NSLocalizedString(@"Error", @"error alert title")
-                              message:NSLocalizedString(@"Incorrect password", @"error alert title")];
+                              initWithTitle:NSLocalizedString(@"Incorrect Password", @"")
+                              message:NSLocalizedString(@"Incorrect password for deregistration", @"")];
         [alert addButtonWithTitle:NSLocalizedString(@"OK", @"") block:^{
             [self.deregisterButton setEnabled:YES];
         }];
@@ -150,7 +147,7 @@ static const CGFloat kDeregisterContentHeightLandscape = 380;
         NSString *storedUsername = [[NSUserDefaults standardUserDefaults] stringForKey:kSCHAuthenticationManagerUsername];
         [self.spinner startAnimating];
         [self setEnablesBackButton:NO];
-        if ([self.accountValidation validateWithUserName:storedUsername withPassword:self.passwordField.text validateBlock:^(NSString *pToken, NSError *error) {
+        [self.accountValidation validateWithUserName:storedUsername withPassword:self.passwordField.text validateBlock:^(NSString *pToken, NSError *error) {
             if (error != nil) {
                 LambdaAlert *alert = [[LambdaAlert alloc]
                                       initWithTitle:NSLocalizedString(@"Error", @"error alert title")
@@ -164,34 +161,63 @@ static const CGFloat kDeregisterContentHeightLandscape = 380;
                 [alert release]; 
             } else {
                 if ([[SCHAuthenticationManager sharedAuthenticationManager] isAuthenticated] == YES) {
-                    [[SCHAuthenticationManager sharedAuthenticationManager] deregister];            
+                    [self deregisterAfterSuccessfulAuthentication];
                 } else {
-                    [[SCHAuthenticationManager sharedAuthenticationManager] authenticate];
-                    LambdaAlert *alert = [[LambdaAlert alloc]
-                                          initWithTitle:NSLocalizedString(@"Error", @"error alert title")
-                                          message:NSLocalizedString(@"Waiting for the server, please try again in a moment. If this problem persists please contact support.", nil)];
-                    [alert addButtonWithTitle:NSLocalizedString(@"Try Again", @"try again button after no authentication") block:^{
-                        [weakSelf.deregisterButton setEnabled:YES];
-                        [weakSelf.spinner stopAnimating];
-                        [weakSelf setEnablesBackButton:YES];                                            
+                    [[SCHAuthenticationManager sharedAuthenticationManager] authenticateWithSuccessBlock:^(BOOL offlineMode){
+                        [self deregisterAfterSuccessfulAuthentication];
+                    } failureBlock:^(NSError *error){
+                        LambdaAlert *alert = [[LambdaAlert alloc]
+                                              initWithTitle:NSLocalizedString(@"Unable To Authenticate", @"")
+                                              message:[NSString stringWithFormat:NSLocalizedString(@"We are not able to authenticate your account with the server (%@). Please try again later.", nil), [error localizedDescription]]];
+                        [alert addButtonWithTitle:NSLocalizedString(@"OK", @"") block:^{
+                            [weakSelf.deregisterButton setEnabled:YES];
+                            [weakSelf.spinner stopAnimating];
+                            [weakSelf setEnablesBackButton:YES];                                            
+                        }];
+                        [alert show];
+                        [alert release];
                     }];
-                    [alert show];
-                    [alert release];        
                 }                
             }    
-        }] == NO) {
+        }];
+    }
+}
+
+- (void)deregisterAfterSuccessfulAuthentication
+{
+    
+    SCHDrmDeregistrationSuccessBlock deregistrationCompletionBlock = ^{
+        [self.settingsDelegate popToRootViewControllerAnimated:YES withCompletionHandler:^{
             LambdaAlert *alert = [[LambdaAlert alloc]
-                                  initWithTitle:NSLocalizedString(@"Password authentication unavailable", @"")
-                                  message:NSLocalizedString(@"Please try again in a moment.", @"")];
-            [alert addButtonWithTitle:NSLocalizedString(@"OK", @"") block:^{
-                [self.deregisterButton setEnabled:YES];
-                [self.spinner stopAnimating];
-                [self setEnablesBackButton:YES];                                
+                                  initWithTitle:NSLocalizedString(@"Device Deregistered", @"Device Deregistered") 
+                                  message:NSLocalizedString(@"This device has been deregistered. To read eBooks, please register this device again.", @"") ];
+            [alert addButtonWithTitle:NSLocalizedString(@"OK", @"OK") block:nil];
+            [alert show];
+            [alert release];
+        }];  
+    };
+    
+    [[SCHAuthenticationManager sharedAuthenticationManager] deregisterWithSuccessBlock:^{
+        deregistrationCompletionBlock();
+    } failureBlock:^(NSError *error){
+        if (([error code] == kSCHDrmDeregistrationError) ||
+            ([error code] == kSCHDrmInitializationError)) {
+            // We were already de-registered or did not have drm initialized. Force deregistration.
+            [[SCHAuthenticationManager sharedAuthenticationManager]  forceDeregistrationWithCompletionBlock:deregistrationCompletionBlock];
+        } else {
+            [self.spinner stopAnimating];
+            
+            LambdaAlert *alert = [[LambdaAlert alloc]
+                                  initWithTitle:NSLocalizedString(@"Unable to Deregister Device", @"") 
+                                  message:[error localizedDescription]];
+            [alert addButtonWithTitle:NSLocalizedString(@"OK", @"OK") block:^{
+                [self setEnablesBackButton:YES];
+                [self.deregisterButton setEnabled:YES];        
             }];
             [alert show];
-            [alert release];                
-        };
-    }
+            [alert release];
+        }
+    }];
 }
 
 - (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation
@@ -242,23 +268,6 @@ static const CGFloat kDeregisterContentHeightLandscape = 380;
     } else {
         self.scrollView.contentSize = CGSizeZero;
     }    
-}
-
-#pragma mark - Deregistration Notification methods
-
-- (void)authenticationManagerDidFailDeregistration:(NSNotification *)notification
-{
-    [self.spinner stopAnimating];
-    NSError *error = [[notification userInfo] objectForKey:kSCHAuthenticationManagerNSError];
-    LambdaAlert *alert = [[LambdaAlert alloc]
-                          initWithTitle:NSLocalizedString(@"Error", @"Error") 
-                          message:[error localizedDescription]];
-    [alert addButtonWithTitle:NSLocalizedString(@"OK", @"OK") block:^{
-        [self setEnablesBackButton:YES];
-        [self.deregisterButton setEnabled:YES];        
-    }];
-    [alert show];
-    [alert release];
 }
 
 #pragma mark - UIKeyboard Notifications

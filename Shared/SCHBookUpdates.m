@@ -11,67 +11,44 @@
 #import "SCHBookIdentifier.h"
 #import "SCHBookManager.h"
 #import "SCHAppStateManager.h"
+#import "SCHContentMetadataItem.h"
 
 #define DEBUG_FORCE_ENABLE_UPDATES 0
 
 @interface SCHBookUpdates ()
-@property (nonatomic, retain) NSFetchedResultsController *fetchedResultsController;
 @property (nonatomic, assign) BOOL refreshNeeded;
+@property (nonatomic, retain) NSMutableArray *results;
+
 @end
 
 @implementation SCHBookUpdates
 
 @synthesize managedObjectContext;
-@synthesize fetchedResultsController;
+@synthesize results;
 @synthesize refreshNeeded;
 
 - (void)dealloc
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
     
-    [managedObjectContext release], managedObjectContext = nil;
-    [fetchedResultsController release], fetchedResultsController = nil;
+    [results release], results = nil;
     [super dealloc];
 }
 
-- (NSFetchedResultsController *)fetchedResultsController
+- (id)init
 {
-    if (fetchedResultsController == nil && self.managedObjectContext != nil) {
-        NSFetchRequest *fetch = [[NSFetchRequest alloc] init];
-        [fetch setEntity:[NSEntityDescription entityForName:@"SCHAppBook" inManagedObjectContext:self.managedObjectContext]];
-        [fetch setSortDescriptors:[NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:@"ContentMetadataItem.Title" ascending:YES]]];
-        
-        NSPredicate *statePred = [NSPredicate predicateWithFormat:@"State >= 0"];
-        if ([[SCHAppStateManager sharedAppStateManager] canSync] == NO) {
-            // show all books
-            [fetch setPredicate:statePred];
-        } else {
-#if DEBUG_FORCE_ENABLE_UPDATES
-            [fetch setPredicate:statePred];
-#else
-            NSPredicate *versionPred = [NSPredicate predicateWithFormat:@"OnDiskVersion != ContentMetadataItem.Version"];
-            [fetch setPredicate:[NSCompoundPredicate andPredicateWithSubpredicates:[NSArray arrayWithObjects:statePred, versionPred, nil]]];
-#endif
-        }
-        
-        NSFetchedResultsController *frc = [[NSFetchedResultsController alloc] initWithFetchRequest:fetch
-                                                                              managedObjectContext:self.managedObjectContext
-                                                                                sectionNameKeyPath:nil
-                                                                                         cacheName:@"booksForUpdate"];
-        
-        self.fetchedResultsController = frc;
-        
-        [fetch release];
-        [frc release];
-        
-        [self refresh];
-        
+    self = [super init];
+    
+    if (self) {
         [[NSNotificationCenter defaultCenter] addObserver:self
                                                  selector:@selector(bookStateDidUpdate:)
                                                      name:@"SCHBookStateUpdate"
                                                    object:nil];
+
+        self.results = [NSMutableArray array];
     }
-    return fetchedResultsController;
+    
+    return self;
 }
 
 - (BOOL)areBookUpdatesAvailable
@@ -81,23 +58,42 @@
 
 - (NSArray *)availableBookUpdates
 {
-    if (self.refreshNeeded) {
+    if (self.refreshNeeded || [self.results count] == 0) {
         [self refresh];
     }
     
-    NSArray *sections = [self.fetchedResultsController sections];
-    if ([sections count] == 0) {
+    if ([self.results count] == 0) {
         return nil;
     }
-    return [NSArray arrayWithArray:[[sections objectAtIndex:0] objects]];
+    return [NSArray arrayWithArray:results];
 }
 
 - (void)refresh
 {
     NSError *error = nil;
-    if (![self.fetchedResultsController performFetch:&error]) {
-        NSLog(@"unable to refresh SCHBookUpdates: %@", error);
-    }
+    
+    [self.results removeAllObjects];
+    
+    NSFetchRequest *fetch = [[NSFetchRequest alloc] init];
+    [fetch setEntity:[NSEntityDescription entityForName:@"SCHAppBook" inManagedObjectContext:self.managedObjectContext]];
+    [fetch setSortDescriptors:[NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:@"ContentMetadataItem.Title" ascending:YES]]];
+    
+    NSPredicate *statePred = [NSPredicate predicateWithFormat:@"State >= 0"];
+    [fetch setPredicate:statePred];
+    
+    NSArray *allAppBooks = [self.managedObjectContext executeFetchRequest:fetch error:&error];
+    
+    [allAppBooks enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+        SCHContentMetadataItem *contentMetadataItem = [(SCHAppBook*) obj ContentMetadataItem];
+        
+        NSString *onDiskversion = [(SCHAppBook*) obj OnDiskVersion];
+        BOOL validOnDiskVersion = (onDiskversion != nil);
+        
+        if (validOnDiskVersion && ([[contentMetadataItem Version] integerValue] > [onDiskversion integerValue])) {
+            [self.results addObject:obj];
+        }
+    }];
+    
     self.refreshNeeded = NO;
 }
 

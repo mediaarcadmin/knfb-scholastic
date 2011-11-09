@@ -41,6 +41,7 @@ static const CGFloat kContentHeightLandscape = 380;
 @synthesize spinner;
 @synthesize topBar;
 @synthesize barSpacer;
+@synthesize closeButton;
 @synthesize profileLabel;
 @synthesize containerView;
 @synthesize scrollView;
@@ -48,6 +49,7 @@ static const CGFloat kContentHeightLandscape = 380;
 @synthesize accountURL;
 @synthesize loginButton;
 @synthesize activeTextField;
+@synthesize promptLabel;
 
 #pragma mark - Object Lifecycle
 
@@ -62,6 +64,7 @@ static const CGFloat kContentHeightLandscape = 380;
 	[spinner release], spinner = nil;
     [topBar release], topBar = nil;
     [barSpacer release], barSpacer = nil;
+    [closeButton release], closeButton = nil;
     [profileLabel release], profileLabel = nil;
     [containerView release], containerView = nil;
     [scrollView release], scrollView = nil;
@@ -69,6 +72,7 @@ static const CGFloat kContentHeightLandscape = 380;
     [accountURL release], accountURL = nil;
     [loginButton release], loginButton = nil;
     [activeTextField release], activeTextField = nil;
+    [promptLabel release], promptLabel = nil;
 }
 
 - (void)dealloc 
@@ -160,6 +164,7 @@ static const CGFloat kContentHeightLandscape = 380;
     [self setupAssetsForOrientation:self.interfaceOrientation];
     [self setupContentSizeForOrientation:self.interfaceOrientation];
     [self clearFields];
+    [self setDisplayIncorrectCredentialsWarning:NO];
 
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
         UIColor *borderColor;
@@ -314,6 +319,7 @@ static const CGFloat kContentHeightLandscape = 380;
     self.forgotUsernamePasswordURL.enabled = NO;
     self.accountURL.enabled = NO;
     self.loginButton.enabled = NO;
+    self.closeButton.enabled = NO;
 }
 
 - (void)stopShowingProgress
@@ -324,6 +330,7 @@ static const CGFloat kContentHeightLandscape = 380;
     self.forgotUsernamePasswordURL.enabled = YES;
     self.accountURL.enabled = YES;    
     self.loginButton.enabled = YES;
+    self.closeButton.enabled = YES;
 }
 
 - (void)clearFields
@@ -331,6 +338,20 @@ static const CGFloat kContentHeightLandscape = 380;
     self.topField.text = @"";
     self.bottomField.text = @"";
     [self.loginButton setEnabled:YES];
+}
+
+- (void)clearBottomField
+{
+    self.bottomField.text = @"";
+}
+
+- (void)setDisplayIncorrectCredentialsWarning:(BOOL)showWarning
+{
+    if (showWarning) {
+        self.promptLabel.text = NSLocalizedString(@"Your User Name or Password was not recognized. Please try again.", @"");
+    } else {
+        self.promptLabel.text = NSLocalizedString(@"To start reading your eBooks, enter your Scholastic User Name and Password.", @"");
+    }
 }
 
 #pragma mark - Button Actions

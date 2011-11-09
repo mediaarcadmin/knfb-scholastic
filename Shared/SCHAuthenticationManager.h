@@ -11,15 +11,14 @@
 #import "BITAPIProxyDelegate.h"
 #import "SCHDrmRegistrationSessionDelegate.h"
 
-// Constants
-extern NSString * const SCHAuthenticationManagerDidSucceedNotification;
-extern NSString * const SCHAuthenticationManagerDidFailNotification;
-extern NSString * const kSCHAuthenticationManagerAToken;
-extern NSString * const kSCHAuthenticationManagerOfflineMode;
-extern NSString * const SCHAuthenticationManagerDidDeregisterNotification;
-extern NSString * const SCHAuthenticationManagerDidClearAfterDeregisterNotification;
-extern NSString * const SCHAuthenticationManagerDidFailDeregistrationNotification;
-extern NSString * const kSCHAuthenticationManagerNSError;
+typedef void (^SCHAuthenticationSuccessBlock)(BOOL offlineMode);
+typedef void (^SCHAuthenticationFailureBlock)(NSError *error);
+typedef void (^SCHDrmRegistrationSuccessBlock)(NSString *deviceKey);
+typedef void (^SCHDrmRegistrationFailureBlock)(NSError *error);
+typedef void (^SCHDrmDeregistrationSuccessBlock)(void);
+typedef void (^SCHDrmDeregistrationFailureBlock)(NSError *error);
+
+extern NSString * const SCHAuthenticationManagerReceivedServerDeregistrationNotification;
 
 extern NSString * const kSCHAuthenticationManagerErrorDomain;
 extern NSInteger const kSCHAuthenticationManagerGeneralError;
@@ -35,14 +34,27 @@ extern NSInteger const kSCHAuthenticationManagerLoginError;
 
 + (SCHAuthenticationManager *)sharedAuthenticationManager;
 
-- (void)authenticateWithUserName:(NSString *)userName withPassword:(NSString *)password;
-- (BOOL)validatePassword:(NSString *)password;
-- (void)authenticate;
 - (BOOL)hasUsernameAndPassword;
-- (void)deregister;
-- (void)clear;
-- (void)clearAppProcessing;
 - (NSString *)pToken;
 - (NSURL *)webParentToolURL:(NSString *)pToken;
+- (void)clear;
+- (void)clearAppProcessing;
+
+- (void)authenticateWithUser:(NSString *)userName 
+                    password:(NSString *)password
+                successBlock:(SCHAuthenticationSuccessBlock)successBlock
+                failureBlock:(SCHAuthenticationFailureBlock)failureBlock;
+
+// authenticateWithSuccessBlock:failureBlock: is effectively re-entrant
+// success and failure blocks are nested if authentication is already taking place
+- (void)authenticateWithSuccessBlock:(SCHAuthenticationSuccessBlock)successBlock
+                        failureBlock:(SCHAuthenticationFailureBlock)failureBlock;
+
+- (void)deregisterWithSuccessBlock:(SCHDrmDeregistrationSuccessBlock)successBlock
+                      failureBlock:(SCHDrmDeregistrationFailureBlock)failureBlock;
+
+- (void)forceDeregistrationWithCompletionBlock:(SCHDrmDeregistrationSuccessBlock)completionBlock;
+
+- (void)expireToken;
 
 @end

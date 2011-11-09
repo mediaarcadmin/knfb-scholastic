@@ -49,15 +49,22 @@ static CGPoint pointWithOffset(CGPoint p, CGPoint offset)
 @synthesize sourceCenterOffset;
 @synthesize targetCenterOffset;
 @synthesize checkAnswersCount;
+@synthesize sourceContainer;
 
 - (void)dealloc
 {
+    [sourceContainer release];
     [checkAnswersButton release];
     [winMessageLabel release];
     [statementLabels release];
     [sources release];
     [targets release];
     [super dealloc];
+}
+
+- (CGSize)iPadContentsSizeForViewAtIndex:(NSInteger)viewIndex forOrientation:(UIInterfaceOrientation)orientation
+{
+    return (UIInterfaceOrientationIsLandscape(orientation)) ? CGSizeMake(848, 510) : CGSizeMake(690, 800);
 }
 
 - (void)setupViewAtIndex:(NSInteger)screenIndex
@@ -86,24 +93,69 @@ static CGPoint pointWithOffset(CGPoint p, CGPoint offset)
             targetIndex++;
         }
     }
-
+    
     // jumble up the sources and tag with the correct indices
     NSArray *statements = [whoSaidIt.statements shuffled];
     NSInteger index = 0;
     for (SCHStoryInteractionWhoSaidItNameView *source in self.sources) {
+        
+        // move sources to contentsView so they can be moved around freely
+        CGPoint center = [self.sourceContainer convertPoint:source.center toView:self.contentsView];
+        [source removeFromSuperview];
+        [self.contentsView addSubview:source];
+        source.center = center;
+        
         SCHStoryInteractionWhoSaidItStatement *statement = [statements objectAtIndex:index];
         UILabel *label = (UILabel *)[source viewWithTag:kSourceLabelTag];
         label.text = statement.source;
         source.attachedTarget = nil;
         source.matchTag = statement.questionIndex;
         source.delegate = self;
-        source.homePosition = source.center;
+        source.homePosition = center;
         index++;
     }
     
     [self.checkAnswersButton setEnabled:NO];
     self.checkAnswersCount = 0;
     self.winMessageLabel.hidden = YES;
+}
+
+- (void)rotateToOrientation:(UIInterfaceOrientation)orientation
+{
+    static const CGFloat kMinimumSourceGap = 5;
+    static const CGFloat kMaximumSourceGap = 25;
+    
+    NSInteger sourceCount = [self.sources count];
+    CGSize sourceSize = [[self.sources objectAtIndex:0] bounds].size;
+    CGSize containerSize = self.sourceContainer.bounds.size;
+
+    NSInteger sourceRows = 1;
+    CGFloat sourceVerticalGap = 0;
+    if ((sourceSize.width+kMinimumSourceGap)*sourceCount > containerSize.width) {
+        sourceRows = 2;
+        sourceVerticalGap = MAX(kMinimumSourceGap, containerSize.height-2*sourceSize.height);
+    }
+
+    NSInteger sourcesPerRow = sourceCount / sourceRows;
+    CGFloat sourceHorizontalGap = MIN(kMaximumSourceGap, (containerSize.width-sourcesPerRow*sourceSize.width)/(sourcesPerRow-1));
+    CGFloat sourceLeftInset = CGRectGetMinX(self.sourceContainer.frame) + (containerSize.width-sourcesPerRow*sourceSize.width-(sourcesPerRow-1)*sourceHorizontalGap)/2;
+    CGFloat sourceTopInset = CGRectGetMinY(self.sourceContainer.frame);    
+    
+    NSInteger sourceIndex = 0;
+    for (SCHStoryInteractionWhoSaidItNameView *source in self.sources) {
+        NSInteger row = sourceIndex % sourceRows;
+        NSInteger col = sourceIndex / sourceRows;
+        CGPoint center = CGPointMake(sourceSize.width/2 + sourceLeftInset + col*(sourceSize.width+sourceHorizontalGap),
+                                     sourceSize.height/2 + sourceTopInset + row*(sourceSize.height+sourceVerticalGap));
+        source.homePosition = center;
+        if (source.attachedTarget != nil) {
+            CGPoint targetCenter = [source.attachedTarget.superview convertPoint:pointWithOffset(source.attachedTarget.center, self.targetCenterOffset) toView:self.contentsView];
+            source.center = CGPointMake(targetCenter.x - self.sourceCenterOffset.x, targetCenter.y - self.sourceCenterOffset.y);
+        } else {
+            source.center = center;
+        }
+        sourceIndex++;
+    }
 }
 
 - (void)checkAnswers:(id)sender
@@ -211,7 +263,7 @@ static CGPoint pointWithOffset(CGPoint p, CGPoint offset)
     CGPoint sourceCenter = pointWithOffset(position, self.sourceCenterOffset);
     NSInteger targetIndex = 0;
     for (SCHStoryInteractionDraggableTargetView *target in self.targets) {
-        CGPoint targetCenter = pointWithOffset(target.center, self.targetCenterOffset);
+        CGPoint targetCenter = [target.superview convertPoint:pointWithOffset(target.center, self.targetCenterOffset) toView:self.contentsView];
         if (SCHCGPointDistanceSq(sourceCenter, targetCenter) < kSnapDistanceSq) {
             *snapPosition = CGPointMake(targetCenter.x - self.sourceCenterOffset.x, targetCenter.y - self.sourceCenterOffset.y);
             return YES;
@@ -228,7 +280,7 @@ static CGPoint pointWithOffset(CGPoint p, CGPoint offset)
     // if we've landed on a target, send any current occupant home then attach to the target
     CGPoint sourceCenter = pointWithOffset(position, self.sourceCenterOffset);
     for (SCHStoryInteractionDraggableTargetView *target in self.targets) {
-        CGPoint targetCenter = pointWithOffset(target.center, self.targetCenterOffset);
+        CGPoint targetCenter = [target.superview convertPoint:pointWithOffset(target.center, self.targetCenterOffset) toView:self.contentsView];
         if (SCHCGPointDistanceSq(sourceCenter, targetCenter) < kSnapDistanceSq) {
             [[self nameViewOnTarget:target] moveToHomePosition];
             source.attachedTarget = target;

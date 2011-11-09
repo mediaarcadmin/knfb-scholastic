@@ -18,16 +18,18 @@
 #import "SCHBookIdentifier.h"
 #import "SCHReadingStatsContentItem.h"
 #import "BITAPIError.h"
+#import "SCHBookIdentifier.h"
 
 // Constants
 NSString * const SCHBookshelfSyncComponentWillDeleteNotification = @"SCHBookshelfSyncComponentWillDeleteNotification";
-NSString * const SCHBookshelfSyncComponentDeletedBookIdentifiers = @"SCHBookshelfSyncComponentDeletedBookIdentifiers";
+NSString * const SCHBookshelfSyncComponentBookIdentifiers = @"SCHBookshelfSyncComponentBookIdentifiers";
 NSString * const SCHBookshelfSyncComponentBookReceivedNotification = @"SCHBookshelfSyncComponentBookReceivedNotification";
 NSString * const SCHBookshelfSyncComponentDidCompleteNotification = @"SCHBookshelfSyncComponentDidCompleteNotification";
 NSString * const SCHBookshelfSyncComponentDidFailNotification = @"SCHBookshelfSyncComponentDidFailNotification";
 
 @interface SCHBookshelfSyncComponent ()
 
+- (NSArray *)bookIdentifiersFromRequestInfo:(NSArray *)contentMetadataItems;
 - (void)postBookshelfSyncComponentBookReceivedNotification:(NSArray *)contentMetadataItems;
 - (BOOL)updateContentMetadataItems;
 
@@ -37,7 +39,7 @@ NSString * const SCHBookshelfSyncComponentDidFailNotification = @"SCHBookshelfSy
 - (void)deleteStatisticsForBook:(SCHBookIdentifier *)identifier;
 
 @property (nonatomic, assign) NSInteger requestCount;
-@property (nonatomic, assign) BOOL didReceiveFailedResponse;
+@property (nonatomic, retain) NSMutableArray *didReceiveFailedResponseBooks;
 
 @end
 
@@ -45,17 +47,24 @@ NSString * const SCHBookshelfSyncComponentDidFailNotification = @"SCHBookshelfSy
 
 @synthesize useIndividualRequests;
 @synthesize requestCount;
-@synthesize didReceiveFailedResponse;
+@synthesize didReceiveFailedResponseBooks;
 
 - (id)init
 {
 	self = [super init];
 	if (self != nil) {
-		self.useIndividualRequests = YES;	
-		self.requestCount = 0;
-        self.didReceiveFailedResponse = NO;
+		useIndividualRequests = YES;	
+		requestCount = 0;
+        didReceiveFailedResponseBooks = [[NSMutableArray alloc] init];
 	}
 	return(self);
+}
+
+- (void)dealloc
+{
+    [didReceiveFailedResponseBooks release], didReceiveFailedResponseBooks = nil;
+    
+    [super dealloc];
 }
 
 - (BOOL)synchronize
@@ -80,7 +89,7 @@ NSString * const SCHBookshelfSyncComponentDidFailNotification = @"SCHBookshelfSy
 	NSError *error = nil;
     
     self.requestCount = 0;
-    self.didReceiveFailedResponse = NO;
+    [self.didReceiveFailedResponseBooks removeAllObjects];
     
 	if (![self.managedObjectContext BITemptyEntity:kSCHContentMetadataItem error:&error]) {
 		NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
@@ -118,12 +127,17 @@ NSString * const SCHBookshelfSyncComponentDidFailNotification = @"SCHBookshelfSy
         }
     }
     @catch (NSException *exception) {
+        NSArray *bookIdentifiers = [self bookIdentifiersFromRequestInfo:[result objectForKey:kSCHLibreAccessWebServiceContentMetadataList]];
+        
         if (self.useIndividualRequests == YES) {
-            self.didReceiveFailedResponse = YES;
+            [self.didReceiveFailedResponseBooks addObjectsFromArray:bookIdentifiers];
             
             if (self.requestCount < 1) {
                 [[NSNotificationCenter defaultCenter] postNotificationName:SCHBookshelfSyncComponentDidFailNotification 
-                                                                    object:self];
+                                                                    object:self
+                                                                  userInfo:[NSDictionary dictionaryWithObject:self.didReceiveFailedResponseBooks 
+                                                                                                       forKey:SCHBookshelfSyncComponentBookIdentifiers]];
+
                 
                 NSError *error = [NSError errorWithDomain:kBITAPIErrorDomain 
                                                      code:kBITAPIExceptionError 
@@ -133,7 +147,10 @@ NSString * const SCHBookshelfSyncComponentDidFailNotification = @"SCHBookshelfSy
             }
         } else {
             [[NSNotificationCenter defaultCenter] postNotificationName:SCHBookshelfSyncComponentDidFailNotification 
-                                                                object:self];        
+                                                                object:self
+                                                              userInfo:[NSDictionary dictionaryWithObject:bookIdentifiers 
+                                                                                                   forKey:SCHBookshelfSyncComponentBookIdentifiers]];
+
             NSError *error = [NSError errorWithDomain:kBITAPIErrorDomain 
                                                  code:kBITAPIExceptionError 
                                              userInfo:[NSDictionary dictionaryWithObject:[exception reason]
@@ -173,23 +190,43 @@ NSString * const SCHBookshelfSyncComponentDidFailNotification = @"SCHBookshelfSy
         result:(NSDictionary *)result
 {
     NSLog(@"%@:didFailWithError\n%@", method, error);
+    NSArray *bookIdentifiers = [self bookIdentifiersFromRequestInfo:[requestInfo objectForKey:kSCHLibreAccessWebServiceListContentMetadata]];    
     
 	if (self.useIndividualRequests == YES) {
 		self.requestCount--;
-        self.didReceiveFailedResponse = YES;
+        [self.didReceiveFailedResponseBooks addObjectsFromArray:bookIdentifiers];
         
-        if (self.requestCount < 1) {
+        if (self.requestCount < 1) {            
             [[NSNotificationCenter defaultCenter] postNotificationName:SCHBookshelfSyncComponentDidFailNotification 
-                                                                object:self];
+                                                                object:self 
+                                                              userInfo:[NSDictionary dictionaryWithObject:self.didReceiveFailedResponseBooks 
+                                                                                                   forKey:SCHBookshelfSyncComponentBookIdentifiers]];
             
             [super method:method didFailWithError:error requestInfo:requestInfo result:result];
         }
     } else {
+        
+        
         [[NSNotificationCenter defaultCenter] postNotificationName:SCHBookshelfSyncComponentDidFailNotification 
-                                                            object:self];
+                                                            object:self
+                                                          userInfo:[NSDictionary dictionaryWithObject:bookIdentifiers 
+                                                                                               forKey:SCHBookshelfSyncComponentBookIdentifiers]];
         
         [super method:method didFailWithError:error requestInfo:requestInfo result:result];
     }
+}
+
+- (NSArray *)bookIdentifiersFromRequestInfo:(NSArray *)contentMetadataItems
+{
+    NSMutableArray *ret = [NSMutableArray arrayWithCapacity:[contentMetadataItems count]];
+
+    if (contentMetadataItems != nil) {
+        for (NSDictionary *contentMetadataItem in contentMetadataItems) {
+            [ret addObject:[[SCHBookIdentifier alloc] initWithObject:contentMetadataItem]];
+        }        
+    }
+    
+    return ret;
 }
 
 - (BOOL)updateContentMetadataItems
@@ -209,13 +246,21 @@ NSString * const SCHBookshelfSyncComponentDidFailNotification = @"SCHBookshelfSy
     }];
 
 	self.requestCount = 0;
-    self.didReceiveFailedResponse = NO;
+    [self.didReceiveFailedResponseBooks removeAllObjects];
 	if([results count] > 0) {
 		if (self.useIndividualRequests == YES) {
 			for (NSDictionary *ISBN in results) {				
 				self.isSynchronizing = [self.libreAccessWebService listContentMetadata:[NSArray arrayWithObject:ISBN] includeURLs:NO];
 				if (self.isSynchronizing == NO) {
-					[[SCHAuthenticationManager sharedAuthenticationManager] authenticate];				
+					[[SCHAuthenticationManager sharedAuthenticationManager] authenticateWithSuccessBlock:^(BOOL offlineMode){
+                        if (!offlineMode) {
+                            [self.delegate authenticationDidSucceed];
+                        } else {
+                            self.isSynchronizing = NO;
+                        }
+                    } failureBlock:^(NSError *error){
+                        self.isSynchronizing = NO;
+                    }];					
 					ret = NO;			
 				} else {
 					requestCount++;
@@ -225,7 +270,15 @@ NSString * const SCHBookshelfSyncComponentDidFailNotification = @"SCHBookshelfSy
 		} else {			
 			self.isSynchronizing = [self.libreAccessWebService listContentMetadata:results includeURLs:NO];
 			if (self.isSynchronizing == NO) {
-				[[SCHAuthenticationManager sharedAuthenticationManager] authenticate];				
+				[[SCHAuthenticationManager sharedAuthenticationManager] authenticateWithSuccessBlock:^(BOOL offlineMode){
+                    if (!offlineMode) {
+                        [self.delegate authenticationDidSucceed];
+                    } else {
+                        self.isSynchronizing = NO;
+                    }
+                } failureBlock:^(NSError *error){
+                    self.isSynchronizing = NO;
+                }];				
 				ret = NO;			
 			} else {
 				NSLog(@"Requesting ALL Book information");
@@ -352,7 +405,7 @@ NSString * const SCHBookshelfSyncComponentDidFailNotification = @"SCHBookshelfSy
         [[NSNotificationCenter defaultCenter] postNotificationName:SCHBookshelfSyncComponentWillDeleteNotification 
                                                             object:self 
                                                           userInfo:[NSDictionary dictionaryWithObject:deletedBookIdentifiers 
-                                                                                               forKey:SCHBookshelfSyncComponentDeletedBookIdentifiers]];        
+                                                                                               forKey:SCHBookshelfSyncComponentBookIdentifiers]];        
         
         for (SCHContentMetadataItem *contentMetadataItem in deletePool) {
             [self deleteStatisticsForBook:[contentMetadataItem bookIdentifier]];

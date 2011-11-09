@@ -32,7 +32,6 @@
 #import "SCHBookshelfSyncComponent.h"
 #import "SCHAppStateManager.h"
 #import "SCHBookAnnotations.h"
-#import "SCHLastPage.h"
 
 static NSInteger const kSCHBookShelfViewControllerGridCellHeightPortrait = 138;
 static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 131;
@@ -47,6 +46,7 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 131;
 @property (nonatomic, assign) BOOL listViewNeedsRefreshed;
 @property (nonatomic, assign) int currentlyLoadingIndex;
 @property (nonatomic, retain) LambdaAlert *loadingView;
+@property (nonatomic, assign) BOOL shouldShowBookshelfFailedErrorMessage;
 
 - (void)setupAssetsForOrientation:(UIInterfaceOrientation)orientation;
 - (void)updateTheme;
@@ -91,6 +91,7 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 131;
 @synthesize listViewNeedsRefreshed;
 @synthesize profileSetupDelegate;
 @synthesize loadingView;
+@synthesize shouldShowBookshelfFailedErrorMessage;
 
 #pragma mark - Object lifecycle
 
@@ -123,10 +124,6 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 131;
     
     [[NSNotificationCenter defaultCenter] removeObserver:self
 												 name:SCHBookshelfSyncComponentDidFailNotification
-											   object:nil];
-    
-    [[NSNotificationCenter defaultCenter] removeObserver:self
-												 name:SCHSyncManagerDidCompleteNotification
 											   object:nil];
 }
 
@@ -177,6 +174,7 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 131;
     [super viewDidLoad];
     self.gridViewNeedsRefreshed = YES;
     self.listViewNeedsRefreshed = YES;
+    self.shouldShowBookshelfFailedErrorMessage = YES;
     
     [self.listTableView setAlwaysBounceVertical:NO]; // For some reason this doesn't work when set from the nib
     
@@ -209,6 +207,11 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 131;
     
     [self.gridView setBackgroundColor:[UIColor clearColor]];
     
+    if ([[SCHAppStateManager sharedAppStateManager] isSampleStore]) {
+        [self.gridView setFooterText:NSLocalizedString(@"Notes and highlights made to sample books will be lost when you upgrade to the full version of the eReader", @"")];
+        [self.gridView setFooterTextIsDark:[[SCHThemeManager sharedThemeManager] gridTextColorIsDark]];
+    }
+    
     UILongPressGestureRecognizer *longPress = [[UILongPressGestureRecognizer alloc] initWithTarget:nil action:nil];
     longPress.delaysTouchesBegan = YES;
     longPress.delegate = self;
@@ -237,11 +240,6 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 131;
 												 name:SCHBookshelfSyncComponentDidFailNotification
 											   object:nil];
 
-    [[NSNotificationCenter defaultCenter] addObserver:self
-											 selector:@selector(bookshelfSyncComponentDidComplete:)
-												 name:SCHSyncManagerDidCompleteNotification
-											   object:nil];
-    	
 	if (![[SCHSyncManager sharedSyncManager] havePerformedFirstSyncUpToBooks] && [[SCHSyncManager sharedSyncManager] isSynchronizing]) {
         self.loadingView = [[LambdaAlert alloc]
                             initWithTitle:NSLocalizedString(@"Syncing", @"")
@@ -292,7 +290,7 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 131;
     }
     
     if ([[SCHSyncManager sharedSyncManager] isSynchronizing] == NO) {
-        [[SCHSyncManager sharedSyncManager] firstSync:NO];
+        [[SCHSyncManager sharedSyncManager] firstSync:NO requireDeviceAuthentication:NO];
     }
     
 }
@@ -381,13 +379,17 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 131;
     self.listViewNeedsRefreshed = YES;
 }
 
-#pragma mark - Private methods
-
-// Note: this is overridden in the iPad controller
+// Note: this is subclassed in the iPad controller
 - (void)updateTheme
 {
     [self setupAssetsForOrientation:self.interfaceOrientation];
+    
+    if ([[SCHAppStateManager sharedAppStateManager] isSampleStore]) {
+        [self.gridView setFooterTextIsDark:[[SCHThemeManager sharedThemeManager] gridTextColorIsDark]];
+    }
 }
+
+#pragma mark - Private methods
 
 - (void)changeTheme
 {
@@ -622,20 +624,23 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 131;
 
 - (void)bookshelfSyncComponentDidComplete:(NSNotification *)notification
 {
+    self.shouldShowBookshelfFailedErrorMessage = YES;
     [self dismissLoadingView];
-    self.books = [self.profileItem allBookIdentifiers];
-    [self reloadData];
 }
 
 - (void)bookshelfSyncComponentDidFail:(NSNotification *)notification
 {
-    [self reloadData];
-    LambdaAlert *alert = [[LambdaAlert alloc]
-                          initWithTitle:NSLocalizedString(@"Unable to Retrieve all eBooks", @"Unable to Retrieve all eBooks") 
-                          message:NSLocalizedString(@"There was a problem retrieving all eBooks on this bookshelf. Please try again.", @"") ];
-    [alert addButtonWithTitle:NSLocalizedString(@"OK", @"OK") block:^{}];
-    [self replaceLoadingAlertWithAlert:alert];
-    [alert release];
+    if (self.shouldShowBookshelfFailedErrorMessage == YES &&
+        [self.books firstObjectCommonWithArray:[[notification userInfo] objectForKey:SCHBookshelfSyncComponentBookIdentifiers]] != nil) {
+        self.shouldShowBookshelfFailedErrorMessage = NO;
+        [self reloadData];
+        LambdaAlert *alert = [[LambdaAlert alloc]
+                              initWithTitle:NSLocalizedString(@"Unable to Retrieve all eBooks", @"Unable to Retrieve all eBooks") 
+                              message:NSLocalizedString(@"There was a problem retrieving all eBooks on this bookshelf. Please try again.", @"") ];
+        [alert addButtonWithTitle:NSLocalizedString(@"OK", @"OK") block:^{}];
+        [self replaceLoadingAlertWithAlert:alert];
+        [alert release];
+    }
 }
 
 #pragma mark - Core Data Table View Methods
@@ -679,8 +684,7 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 131;
 
     cell.identifier = identifier;
     SCHAppContentProfileItem *appContentProfileItem = [self.profileItem appContentProfileItemForBookIdentifier:identifier];
-    SCHBookAnnotations *annotations = [self.profileItem annotationsForBook:identifier];
-    cell.isNewBook = (annotations == nil ? YES : !(annotations.lastPage.LastPageLocation > 0));
+    cell.isNewBook = [appContentProfileItem.IsNewBook boolValue];
     cell.trashed = [appContentProfileItem.IsTrashed boolValue];
     
     if ([identifier isEqual:[self.books lastObject]]) {
@@ -813,8 +817,7 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 131;
 	[gridCell setIdentifier:[self.books objectAtIndex:index]];
     SCHAppContentProfileItem *appContentProfileItem = [self.profileItem appContentProfileItemForBookIdentifier:[self.books objectAtIndex:index]];
     gridCell.trashed = [appContentProfileItem.IsTrashed boolValue];
-    SCHBookAnnotations *annotations = [self.profileItem annotationsForBook:[self.books objectAtIndex:index]];
-    gridCell.isNewBook = (annotations == nil ? YES : !(annotations.lastPage.LastPageLocation > 0));
+    gridCell.isNewBook = [appContentProfileItem.IsNewBook boolValue];
     
     if (self.currentlyLoadingIndex == index) {
         gridCell.loading = YES;
@@ -941,7 +944,9 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 131;
             self.updateShelfOnReturnToShelf = YES;
 
             [self.navigationController pushViewController:readingController animated:YES]; 
-            self.currentlyLoadingIndex = -1;
+
+            SCHBookShelfGridViewCell *cell = (SCHBookShelfGridViewCell *) [aGridView cellAtGridIndex:index];
+            [cell setLoading:NO];
         } else {
             if (error && !([[error domain] isEqualToString:kSCHAppBookErrorDomain] && ([error code] == kSCHAppBookStillBeingProcessedError))) {
                 LambdaAlert *alert = [[LambdaAlert alloc]
@@ -954,13 +959,14 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 131;
                 }];
                 [alert show];
                 [alert release];
+
+                
+                SCHBookShelfGridViewCell *cell = (SCHBookShelfGridViewCell *) [aGridView cellAtGridIndex:index];
+                [cell setLoading:NO];
             }
         }
         
         self.currentlyLoadingIndex = -1;
-        
-        SCHBookShelfGridViewCell *cell = (SCHBookShelfGridViewCell *) [aGridView cellAtGridIndex:index];
-        [cell setLoading:NO];
     });
 }
 
