@@ -277,6 +277,7 @@ NSTimeInterval const kSCHAuthenticationManagerSecondsInAMinute = 60.0;
         if (completionBlock) {
             completionBlock();
         }
+        [self performPostDeregistration];
     };
         
     NSString *authToken = self.aToken;

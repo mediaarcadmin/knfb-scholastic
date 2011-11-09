@@ -200,8 +200,9 @@ static const CGFloat kDeregisterContentHeightLandscape = 380;
     [[SCHAuthenticationManager sharedAuthenticationManager] deregisterWithSuccessBlock:^{
         deregistrationCompletionBlock();
     } failureBlock:^(NSError *error){
-        if ([error code] == kSCHDrmDeregistrationError) {
-            // We were already de-registered. Force deregistration.
+        if (([error code] == kSCHDrmDeregistrationError) ||
+            ([error code] == kSCHDrmInitializationError)) {
+            // We were already de-registered or did not have drm initialized. Force deregistration.
             [[SCHAuthenticationManager sharedAuthenticationManager]  forceDeregistrationWithCompletionBlock:deregistrationCompletionBlock];
         } else {
             [self.spinner stopAnimating];

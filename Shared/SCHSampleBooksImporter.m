@@ -50,6 +50,8 @@ typedef enum {
 - (void)perfomSuccessBlockOnMainThread;
 - (void)perfomFailureBlockOnMainThreadWithReason:(NSString *)failureReason;
 - (SCHBookIdentifier *)identifierForSampleEntry:(NSDictionary *)sampleEntry;
+- (void)registerForNotifications;
+- (void)deregisterForNotifications;
 + (BOOL)stateIsReadyToBegin:(SCHSampleBooksProcessingState)state;
 
 @end
@@ -75,18 +77,8 @@ typedef enum {
     [processingQueue cancelAllOperations];
     [processingQueue release], processingQueue = nil;
     
-    [[NSNotificationCenter defaultCenter] removeObserver:self 
-                                                 name:kReachabilityChangedNotification 
-                                               object:nil];
-    
-    [[NSNotificationCenter defaultCenter] removeObserver:self 
-                                                 name:UIApplicationDidEnterBackgroundNotification 
-                                               object:nil];			
-    
-    [[NSNotificationCenter defaultCenter] removeObserver:self 
-                                                 name:UIApplicationWillEnterForegroundNotification 
-                                               object:nil];
-    
+    [self deregisterForNotifications];
+
     [remoteManifestURL release], remoteManifestURL = nil;
     [localManifestURL release], localManifestURL = nil;
     [successBlock release], successBlock = nil;
@@ -102,21 +94,6 @@ typedef enum {
 	if ((self = [super init])) {
 		processingQueue = [[NSOperationQueue alloc] init];
 		[processingQueue setMaxConcurrentOperationCount:1];
-        
-        [[NSNotificationCenter defaultCenter] addObserver:self 
-												 selector:@selector(reachabilityNotification:) 
-													 name:kReachabilityChangedNotification 
-												   object:nil];
-        
-        [[NSNotificationCenter defaultCenter] addObserver:self 
-												 selector:@selector(enterBackground:) 
-													 name:UIApplicationDidEnterBackgroundNotification 
-												   object:nil];			
-		
-		[[NSNotificationCenter defaultCenter] addObserver:self 
-												 selector:@selector(enterForeground:) 
-													 name:UIApplicationWillEnterForegroundNotification 
-												   object:nil];
     }
 	
 	return self;
@@ -128,6 +105,7 @@ typedef enum {
                                failureBlock:(SCHSampleBooksProcessingFailureBlock)aFailureBlock 
 {
     [self cancel];
+    [self registerForNotifications];
     
     self.remoteManifestURL = remote;
     self.localManifestURL = local;
@@ -170,6 +148,7 @@ typedef enum {
 
 - (void)reset
 {
+    [self deregisterForNotifications];
     self.processingState = kSCHSampleBooksProcessingStateNotStarted;
     
     [self.reachabilityNotifier stopNotifier];
@@ -452,6 +431,41 @@ typedef enum {
     });
 	
     return sharedManager;
+}
+
+#pragma mark - Notification registration
+
+- (void)registerForNotifications
+{
+    [[NSNotificationCenter defaultCenter] addObserver:self 
+                                             selector:@selector(reachabilityNotification:) 
+                                                 name:kReachabilityChangedNotification 
+                                               object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self 
+                                             selector:@selector(enterBackground:) 
+                                                 name:UIApplicationDidEnterBackgroundNotification 
+                                               object:nil];			
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self 
+                                             selector:@selector(enterForeground:) 
+                                                 name:UIApplicationWillEnterForegroundNotification 
+                                               object:nil];
+}
+
+- (void)deregisterForNotifications
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self 
+                                                    name:kReachabilityChangedNotification 
+                                                  object:nil];
+    
+    [[NSNotificationCenter defaultCenter] removeObserver:self 
+                                                    name:UIApplicationDidEnterBackgroundNotification 
+                                                  object:nil];			
+    
+    [[NSNotificationCenter defaultCenter] removeObserver:self 
+                                                    name:UIApplicationWillEnterForegroundNotification 
+                                                  object:nil];
 }
 
 @end
