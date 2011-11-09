@@ -419,8 +419,9 @@ static SCHProcessingManager *sharedManager = nil;
                 // check first for URL expiry
                 if ([book bookFileURLHasExpired]) {
                     // if expired, get the URLs again and force download
-                    [book setProcessingState:SCHBookProcessingStateURLsNotPopulated];
-                    [self userRequestedRetryForBookWithIdentifier:identifier];
+                    book.ForceProcess = [NSNumber numberWithBool:YES];
+                    [book setProcessingState:SCHBookProcessingStateNoURLs];
+                    [self redispatchIdentifier:identifier];
                     return;
                 }
                 
@@ -606,7 +607,7 @@ static SCHProcessingManager *sharedManager = nil;
                     // if space saver mode is off, bump the book to the download state and start download
                 case SCHBookProcessingStateDownloadPaused:
                 case SCHBookProcessingStateReadyForBookFileDownload:
-                    if (!spaceSaverMode) {
+                    if (!spaceSaverMode || [[book ForceProcess] boolValue]) {
                         [book setProcessingState:SCHBookProcessingStateDownloadStarted];
                         [self processIdentifier:identifier];
                     }
