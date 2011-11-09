@@ -26,6 +26,7 @@
 @synthesize containerView;
 @synthesize backgroundView;
 @synthesize barSpacer;
+@synthesize backButton;
 
 - (void)dealloc
 {
@@ -41,6 +42,7 @@
     [containerView release], containerView = nil;
     [backgroundView release], backgroundView = nil;
     [barSpacer release], barSpacer = nil;
+    [backButton release], backButton = nil;
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -105,11 +107,7 @@
 
 - (void)setEnablesBackButton:(BOOL)enablesBackButton
 {
-    UIBarButtonItem *item = (UIBarButtonItem *)[self.topToolbar.items objectAtIndex:0];
-    
-    if (item != nil) {
-        item.enabled = enablesBackButton;
-    }
+    self.backButton.enabled = enablesBackButton;
 }
 
 - (void)setProfileSetupDelegate:(id<SCHProfileSetupDelegate>)newProfileSetupDelegate
