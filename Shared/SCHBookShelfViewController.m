@@ -207,6 +207,11 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 131;
     
     [self.gridView setBackgroundColor:[UIColor clearColor]];
     
+    if ([[SCHAppStateManager sharedAppStateManager] isSampleStore]) {
+        [self.gridView setFooterText:NSLocalizedString(@"Notes and highlights made to sample books will be lost when you upgrade to the full version of the eReader", @"")];
+        [self.gridView setFooterTextIsDark:[[SCHThemeManager sharedThemeManager] gridTextColorIsDark]];
+    }
+    
     UILongPressGestureRecognizer *longPress = [[UILongPressGestureRecognizer alloc] initWithTarget:nil action:nil];
     longPress.delaysTouchesBegan = YES;
     longPress.delegate = self;
@@ -234,7 +239,7 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 131;
 											 selector:@selector(bookshelfSyncComponentDidFail:)
 												 name:SCHBookshelfSyncComponentDidFailNotification
 											   object:nil];
-    	
+
 	if (![[SCHSyncManager sharedSyncManager] havePerformedFirstSyncUpToBooks] && [[SCHSyncManager sharedSyncManager] isSynchronizing]) {
         self.loadingView = [[LambdaAlert alloc]
                             initWithTitle:NSLocalizedString(@"Syncing", @"")
@@ -374,13 +379,17 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 131;
     self.listViewNeedsRefreshed = YES;
 }
 
-#pragma mark - Private methods
-
-// Note: this is overridden in the iPad controller
+// Note: this is subclassed in the iPad controller
 - (void)updateTheme
 {
     [self setupAssetsForOrientation:self.interfaceOrientation];
+    
+    if ([[SCHAppStateManager sharedAppStateManager] isSampleStore]) {
+        [self.gridView setFooterTextIsDark:[[SCHThemeManager sharedThemeManager] gridTextColorIsDark]];
+    }
 }
+
+#pragma mark - Private methods
 
 - (void)changeTheme
 {

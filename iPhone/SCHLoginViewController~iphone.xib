@@ -525,6 +525,14 @@
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBCocoaTouchOutletConnection" key="connection">
+						<string key="label">promptLabel</string>
+						<reference key="source" ref="372490531"/>
+						<reference key="destination" ref="618785432"/>
+					</object>
+					<int key="connectionID">188</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBCocoaTouchOutletConnection" key="connection">
 						<string key="label">delegate</string>
 						<reference key="source" ref="355416621"/>
 						<reference key="destination" ref="372490531"/>
@@ -793,7 +801,7 @@
 				<reference key="dict.values" ref="0"/>
 			</object>
 			<nil key="sourceID"/>
-			<int key="maxID">187</int>
+			<int key="maxID">188</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<object class="NSMutableArray" key="referencedPartialClassDescriptions">
@@ -867,6 +875,7 @@
 							<string>forgotUsernamePasswordURL</string>
 							<string>loginButton</string>
 							<string>profileLabel</string>
+							<string>promptLabel</string>
 							<string>scrollView</string>
 							<string>spinner</string>
 							<string>topBar</string>
@@ -881,6 +890,7 @@
 							<string>UIView</string>
 							<string>SCHUnderlinedButton</string>
 							<string>UIButton</string>
+							<string>UILabel</string>
 							<string>UILabel</string>
 							<string>UIScrollView</string>
 							<string>UIActivityIndicatorView</string>
@@ -900,6 +910,7 @@
 							<string>forgotUsernamePasswordURL</string>
 							<string>loginButton</string>
 							<string>profileLabel</string>
+							<string>promptLabel</string>
 							<string>scrollView</string>
 							<string>spinner</string>
 							<string>topBar</string>
@@ -937,6 +948,10 @@
 							</object>
 							<object class="IBToOneOutletInfo">
 								<string key="name">profileLabel</string>
+								<string key="candidateClassName">UILabel</string>
+							</object>
+							<object class="IBToOneOutletInfo">
+								<string key="name">promptLabel</string>
 								<string key="candidateClassName">UILabel</string>
 							</object>
 							<object class="IBToOneOutletInfo">

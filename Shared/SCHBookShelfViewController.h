@@ -50,5 +50,6 @@
 
 - (BOOL)isBookOnShelf:(SCHBookIdentifier *)aBookIdentifier;
 - (SCHReadingViewController *)openBook:(SCHBookIdentifier *)identifier error:(NSError **)error;
+- (void)updateTheme;
 
 @end

@@ -316,7 +316,8 @@ static NSTimeInterval const kSCHBookShelfViewControllerTopTenRefreshTime = -600.
         [self.popover dismissPopoverAnimated:YES];
         self.popover = nil;
     }
-    [self setupAssetsForOrientation:self.interfaceOrientation];
+
+    [super updateTheme];
 }
 
 

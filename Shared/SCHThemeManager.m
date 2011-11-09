@@ -28,6 +28,7 @@ NSString * const kSCHThemeManagerShelfImage = @"ShelfImage";
 NSString * const kSCHThemeManagerHomeIcon = @"HomeIcon";
 NSString * const kSCHThemeManagerThemeIcon = @"ThemeIcon";
 NSString * const kSCHThemeManagerColorForListBackground = @"ListBackgroundColor";
+NSString * const kSCHThemeManagerGridTextColorIsDark = @"GridTextColorIsDark";
 
 static NSString * const kSCHThemeManagerDirectory = @"Themes";
 static NSString * const kSCHThemeManagerLandscapePostFix = @"-Landscape";
@@ -257,6 +258,11 @@ static NSString * const kSCHThemeManagerName = @"Name";
 - (UIColor *)colorForListBackground
 {
     return ([UIColor BITcolorWithHexString:[self.selectedTheme objectForKey:kSCHThemeManagerColorForListBackground]]);
+}
+
+- (BOOL)gridTextColorIsDark
+{
+    return [[self.selectedTheme objectForKey:kSCHThemeManagerGridTextColorIsDark] boolValue];
 }
 
 #pragma mark - Private methods

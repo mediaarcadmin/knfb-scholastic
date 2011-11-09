@@ -18,4 +18,7 @@
 @property (nonatomic, retain) UIImage *shelfImage;
 @property (nonatomic, retain) UIView *toggleView;
 
+- (void)setFooterText:(NSString *)text;
+- (void)setFooterTextIsDark:(BOOL)isDark;
+
 @end
