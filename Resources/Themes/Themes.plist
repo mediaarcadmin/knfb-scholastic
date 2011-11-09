@@ -27,6 +27,8 @@
 		<string>Blue/bookshelf-shelf</string>
 		<key>ThemeIcon</key>
 		<string>Shared/icon-theme</string>
+		<key>GridTextColorIsDark</key>
+		<false/>
 	</dict>
 	<dict>
 		<key>BackgroundImage</key>
@@ -51,6 +53,8 @@
 		<string>Snake Skin/bookshelf-shelf</string>
 		<key>ThemeIcon</key>
 		<string>Shared/icon-theme</string>
+		<key>GridTextColorIsDark</key>
+		<true/>
 	</dict>
 	<dict>
 		<key>BackgroundImage</key>
@@ -75,6 +79,8 @@
 		<string>Waterdrops/bookshelf-shelf</string>
 		<key>ThemeIcon</key>
 		<string>Shared/icon-theme</string>
+		<key>GridTextColorIsDark</key>
+		<true/>
 	</dict>
 	<dict>
 		<key>BackgroundImage</key>
@@ -99,6 +105,8 @@
 		<string>Starry Night/bookshelf-shelf</string>
 		<key>ThemeIcon</key>
 		<string>Shared/icon-theme</string>
+		<key>GridTextColorIsDark</key>
+		<false/>
 	</dict>
 	<dict>
 		<key>BackgroundImage</key>
@@ -123,6 +131,8 @@
 		<string>Fence/bookshelf-shelf</string>
 		<key>ThemeIcon</key>
 		<string>Shared/icon-theme</string>
+		<key>GridTextColorIsDark</key>
+		<true/>
 	</dict>
 	<dict>
 		<key>BackgroundImage</key>
@@ -147,6 +157,8 @@
 		<string>Grid/bookshelf-shelf</string>
 		<key>ThemeIcon</key>
 		<string>Shared/icon-theme</string>
+		<key>GridTextColorIsDark</key>
+		<true/>
 	</dict>
 	<dict>
 		<key>BackgroundImage</key>
@@ -171,6 +183,8 @@
 		<string>Dots/bookshelf-shelf</string>
 		<key>ThemeIcon</key>
 		<string>Shared/icon-theme</string>
+		<key>GridTextColorIsDark</key>
+		<true/>
 	</dict>
 </array>
 </plist>
