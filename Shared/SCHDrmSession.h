@@ -16,6 +16,8 @@ static NSInteger const kSCHDrmRegistrationError = 2002;
 static NSInteger const kSCHDrmDeregistrationError = 2003;
 static NSInteger const kSCHDrmLicenseAcquisitionError = 2004;
 static NSInteger const kSCHDrmDeviceLimitError = 2005;
+static NSInteger const kSCHDrmDeviceRegisteredToAnotherDevice = 50;
+static NSInteger const kSCHDrmDeviceUnableToAssign = 144;
 
 #if UATSERVER
 static NSString* const drmServerUrl = @"http://plr.uat.cld.libredigital.com/rightsmanager.asmx";
