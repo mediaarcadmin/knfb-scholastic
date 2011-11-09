@@ -12,6 +12,8 @@
 #import "SCHSampleBooksManifestOperation.h"
 #import "SCHSyncManager.h"
 #import "LambdaAlert.h"
+#import "NSNumber+ObjectTypes.h"
+#import "SCHBookIdentifier.h"
 
 NSString * const kSCHSampleBooksRemoteManifestURL = @"http://bits.blioreader.com/partners/Scholastic/SampleBookshelf/SampleBookshelfManifest_v2.xml";
 NSString * const kSCHSampleBooksLocalManifestFile = @"LocalSamplesManifest.xml";
@@ -47,6 +49,7 @@ typedef enum {
 - (void)populateSampleStore;
 - (void)perfomSuccessBlockOnMainThread;
 - (void)perfomFailureBlockOnMainThreadWithReason:(NSString *)failureReason;
+- (SCHBookIdentifier *)identifierForSampleEntry:(NSDictionary *)sampleEntry;
 + (BOOL)stateIsReadyToBegin:(SCHSampleBooksProcessingState)state;
 
 @end
@@ -238,9 +241,66 @@ typedef enum {
     [self.processingQueue addOperation:manifestOp];
     [manifestOp release];
 }
+
+- (SCHBookIdentifier *)identifierForSampleEntry:(NSDictionary *)sampleEntry
+{
+    NSString *isbn = [sampleEntry valueForKey:@"Isbn13"];
+    NSNumber *drmQualifier = [NSNumber numberWithInt:kSCHDRMQualifiersNone];
+    
+    SCHBookIdentifier *sampleIdentifier = nil;
+    
+    if (isbn && drmQualifier) {
+        sampleIdentifier = [[[SCHBookIdentifier alloc] initWithISBN:isbn DRMQualifier:drmQualifier] autorelease];
+    }
+
+    return sampleIdentifier;
+}
                           
 - (void)populateSampleStore {
     if ([self.sampleEntries count]) {
+        
+        // Remove duplicates from samples, newest version trumps
+        NSMutableArray *uniqueSamples = [NSMutableArray array];
+        
+        [self.sampleEntries enumerateObjectsUsingBlock:^(id sampleObj, NSUInteger sampleIdx, BOOL *sampleStop) {
+            SCHBookIdentifier *sampleIdentifier = [self identifierForSampleEntry:(NSDictionary *)sampleObj];
+                        
+            if (sampleIdentifier) {
+                
+                __block id sampleToBeRemoved = nil;
+                __block id sampleToBeAdded = sampleObj;
+                
+                [uniqueSamples enumerateObjectsUsingBlock:^(id existingObj, NSUInteger exampleIdx, BOOL *existingStop) {       
+                    
+                    SCHBookIdentifier *existingIdentifier = [self identifierForSampleEntry:(NSDictionary *)existingObj];
+                    
+                    if ([existingIdentifier isEqual:sampleIdentifier]) {
+                        
+                        NSInteger existingVersion = [[(NSDictionary *)existingObj valueForKey:@"Version"] intValue];
+                        NSInteger sampleVersion = [[(NSDictionary *)sampleObj valueForKey:@"Version"] intValue];
+                        
+                        if (existingVersion >= sampleVersion) {
+                            sampleToBeAdded = nil;
+                        } else {
+                            sampleToBeRemoved = existingObj;
+                        }
+                        
+                        *existingStop = YES;
+                    }
+                }];
+                
+                if (sampleToBeRemoved) {
+                    [uniqueSamples removeObject:sampleToBeRemoved];
+                }
+                
+                if (sampleToBeAdded) {
+                    [uniqueSamples addObject:sampleToBeAdded];
+                }
+            }
+        }];
+        
+        self.sampleEntries = uniqueSamples;
+        
         if ([[SCHSyncManager sharedSyncManager] populateSampleStoreFromManifestEntries:self.sampleEntries]) {
             [self perfomSuccessBlockOnMainThread];
         } else {

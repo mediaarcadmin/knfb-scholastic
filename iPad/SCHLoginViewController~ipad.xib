@@ -195,7 +195,7 @@
 											<string key="NSResourceName">button-field.png</string>
 										</object>
 										<int key="IBUIClearButtonMode">1</int>
-										<object class="IBUIFontDescription" key="IBUIFontDescription" id="1058877903">
+										<object class="IBUIFontDescription" key="IBUIFontDescription" id="192877845">
 											<string key="name">ArialMT</string>
 											<string key="family">Arial</string>
 											<int key="traits">0</int>
@@ -237,7 +237,7 @@
 										</object>
 										<reference key="IBUIBackground" ref="214245478"/>
 										<int key="IBUIClearButtonMode">1</int>
-										<reference key="IBUIFontDescription" ref="1058877903"/>
+										<reference key="IBUIFontDescription" ref="192877845"/>
 										<reference key="IBUIFont" ref="71860719"/>
 									</object>
 									<object class="IBUIButton" id="256814430">
@@ -322,14 +322,14 @@
 									<object class="IBUIActivityIndicatorView" id="662128954">
 										<reference key="NSNextResponder" ref="135206302"/>
 										<int key="NSvFlags">-2147483347</int>
-										<string key="NSFrame">{{331, 288}, {37, 37}}</string>
+										<string key="NSFrame">{{340, 296}, {20, 20}}</string>
 										<reference key="NSSuperview" ref="135206302"/>
 										<reference key="NSWindow"/>
 										<reference key="NSNextKeyView"/>
 										<bool key="IBUIOpaque">NO</bool>
 										<int key="IBUIContentMode">4</int>
 										<string key="targetRuntimeIdentifier">IBIPadFramework</string>
-										<int key="IBUIStyle">0</int>
+										<int key="IBUIStyle">2</int>
 									</object>
 								</object>
 								<string key="NSFrameSize">{540, 576}</string>

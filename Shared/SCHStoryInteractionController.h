@@ -117,8 +117,11 @@ typedef enum
 // the delegate
 - (void)removeFromHostView;
 
-// switch to the next view in the NIB
+// switch to the next view in the NIB with animation (deprecated; use presentNextViewAnimated:)
 - (void)presentNextView;
+
+// switch to the next view in the NIB
+- (void)presentNextViewAnimated:(BOOL)animated;
 
 // resize the existing content view
 - (void)resizeCurrentViewToSize:(CGSize)newSize animationDuration:(NSTimeInterval)animationDuration withAdditionalAdjustments:(dispatch_block_t)adjustmentBlock;
@@ -213,6 +216,6 @@ typedef enum
 - (void)rotateToOrientation:(UIInterfaceOrientation)orientation;
 
 // Override to specify custom iPad contents size for a given orientation
-- (CGSize)iPadContentsSizeForOrientation:(UIInterfaceOrientation)orientation;
+- (CGSize)iPadContentsSizeForViewAtIndex:(NSInteger)viewIndex forOrientation:(UIInterfaceOrientation)orientation;
 
 @end

@@ -32,6 +32,7 @@
 
 - (BOOL)currentFrameStyleOverlaysContents;
 - (void)setupGeometryForContentsView:(UIView *)contents contentsSize:(CGSize)contentsSize;
+- (CGSize)contentsSizeForViewAtIndex:(NSInteger)viewIndex orientation:(UIInterfaceOrientation)orientation;
 - (CGSize)maximumContentsSize;
 - (UIImage *)backgroundImage;
 - (void)cancelQueuedAudio;
@@ -295,6 +296,7 @@ static Class controllerClassForStoryInteraction(SCHStoryInteraction *storyIntera
 
     // put multiple views at the top-level in the nib for multi-screen interactions
     UIView *newContentsView = [self.nibObjects objectAtIndex:self.currentScreenIndex];
+    newContentsView.bounds = (CGRect) { CGPointZero, [self contentsSizeForViewAtIndex:self.currentScreenIndex orientation:aInterfaceOrientation] };
     
     dispatch_block_t setupViews = ^{
         self.backgroundView.image = [self backgroundImage];
@@ -309,8 +311,9 @@ static Class controllerClassForStoryInteraction(SCHStoryInteraction *storyIntera
         NSAssert(![self currentFrameStyleOverlaysContents], @"can't have multiple views with SCHStoryInteractionTitleOverlaysContentsAtTop/Bottom");
         UIView *oldContentsView = self.contentsView;
         newContentsView.alpha = 0;
-        newContentsView.transform = CGAffineTransformMakeScale(CGRectGetWidth(oldContentsView.bounds)/CGRectGetWidth(newContentsView.bounds),
-                                                               CGRectGetHeight(oldContentsView.bounds)/CGRectGetHeight(newContentsView.bounds));
+        CGFloat scale = MIN(CGRectGetWidth(oldContentsView.bounds)/CGRectGetWidth(newContentsView.bounds),
+                            CGRectGetHeight(oldContentsView.bounds)/CGRectGetHeight(newContentsView.bounds));
+        newContentsView.transform = CGAffineTransformMakeScale(scale, scale);
         newContentsView.center = oldContentsView.center;
         [self.backgroundView addSubview:newContentsView];
         
@@ -411,6 +414,17 @@ static Class controllerClassForStoryInteraction(SCHStoryInteraction *storyIntera
 
 - (void)presentNextView
 {
+    [self presentNextViewAnimated:YES];
+}
+
+- (void)presentNextViewAnimated:(BOOL)animated
+{
+    if (!animated) {
+        // clearing contentsView prevents animation in presentInHostView
+        [self.contentsView removeFromSuperview];
+        self.contentsView = nil;
+    }
+    
     UIView *host = [self.containerView superview];
     self.currentScreenIndex = (self.currentScreenIndex + 1) % [self.nibObjects count];
     [self presentInHostView:host withInterfaceOrientation:self.interfaceOrientation];
@@ -544,8 +558,7 @@ static Class controllerClassForStoryInteraction(SCHStoryInteraction *storyIntera
 {
     self.interfaceOrientation = toInterfaceOrientation;
     
-    CGSize size = (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone ? [self maximumContentsSize] : [self iPadContentsSizeForOrientation:toInterfaceOrientation]);
-    [self resizeCurrentViewToSize:size
+    [self resizeCurrentViewToSize:[self contentsSizeForViewAtIndex:self.currentScreenIndex orientation:toInterfaceOrientation]
                 animationDuration:duration
         withAdditionalAdjustments:^{
             [self rotateToOrientation:toInterfaceOrientation];
@@ -554,6 +567,14 @@ static Class controllerClassForStoryInteraction(SCHStoryInteraction *storyIntera
 
 - (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation
 {
+}
+
+- (CGSize)contentsSizeForViewAtIndex:(NSInteger)viewIndex orientation:(UIInterfaceOrientation)orientation
+{
+    CGSize size = (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone
+                   ? [self maximumContentsSize]
+                   : [self iPadContentsSizeForViewAtIndex:viewIndex forOrientation:orientation]);
+    return size;
 }
 
 - (CGSize)maximumContentsSize
@@ -852,7 +873,7 @@ static Class controllerClassForStoryInteraction(SCHStoryInteraction *storyIntera
 {
 }
 
-- (CGSize)iPadContentsSizeForOrientation:(UIInterfaceOrientation)orientation
+- (CGSize)iPadContentsSizeForViewAtIndex:(NSInteger)viewIndex forOrientation:(UIInterfaceOrientation)orientation
 {
     return self.contentsView.bounds.size;
 }

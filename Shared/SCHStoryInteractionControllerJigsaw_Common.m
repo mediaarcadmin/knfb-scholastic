@@ -91,7 +91,7 @@ enum {
 {
     [self cancelQueuedAudioExecutingSynchronizedBlocksBefore:^{
         self.numberOfPieces = sender.tag;
-        [self presentNextView];
+        [self presentNextViewAnimated:NO];
     }];
 }
 
@@ -160,6 +160,10 @@ enum {
 - (SCHStoryInteractionJigsawPreviewView *)puzzlePreviewWithFrame:(CGRect)frame;
 {
     SCHStoryInteractionJigsawPreviewView *preview = [[SCHStoryInteractionJigsawPreviewView alloc] initWithFrame:frame];
+    preview.autoresizingMask = (UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight
+                                | UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin
+                                | UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin);
+    preview.backgroundColor = [UIColor clearColor];
     preview.image = [self puzzleImage];
     preview.edgeColor = [UIColor whiteColor];
     preview.tag = kPreviewImageTag;
@@ -188,8 +192,12 @@ enum {
         
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{
         UIImage *puzzleImage = [self puzzleImage];
-        CGRect puzzleFrame = SCHAspectFitSizeInTargetRect(puzzleImage.size, self.puzzleBackground.frame);
-        self.puzzleBackground.frame = puzzleFrame;
+        
+        __block CGRect puzzleFrame;
+        dispatch_sync(dispatch_get_main_queue(), ^{
+            puzzleFrame = SCHAspectFitSizeInTargetRect(puzzleImage.size, self.puzzleBackground.frame);
+            self.puzzleBackground.frame = puzzleFrame;
+        });
         
         CGImageRef scaledPuzzleImage = [self newImageByScalingImage:[puzzleImage CGImage] toSize:puzzleFrame.size];
         NSMutableArray *pieces = [NSMutableArray arrayWithCapacity:self.numberOfPieces];
@@ -200,6 +208,7 @@ enum {
                 // create an image view for this image and frame it within the target puzzle frame
                 UIView *pieceView = [self newPieceViewForImage:pieceImage];
                 pieceView.frame = frame;
+                NSLog(@"create piece position = %@", NSStringFromCGPoint(pieceView.center));
                 [pieces addObject:pieceView];
                 [pieceView release];
                 CGImageRelease(pieceImage);
@@ -232,6 +241,12 @@ enum {
     [preview removeFromSuperview];
 }
 
+- (BOOL)puzzleIsInteractive
+{
+    // YES if the preview view has been removed
+    return [self.contentsView viewWithTag:kPreviewImageTag] == nil;
+}
+
 - (void)checkForCompletion
 {
     NSInteger correctPieces = 0;
@@ -243,7 +258,7 @@ enum {
     if (correctPieces == [self.jigsawPieceViews count]) {
         [self enqueueAudioWithPath:@"sfx_winround.mp3" fromBundle:YES];
 
-        CGRect frame = self.puzzleBackground.frame;
+        CGRect frame = [self.puzzleBackground convertRect:[self.puzzleBackground puzzleBounds] toView:self.contentsView];
         [self.jigsawPieceViews makeObjectsPerformSelector:@selector(removeFromSuperview)];
         self.jigsawPieceViews = nil;
 
@@ -255,7 +270,7 @@ enum {
                          }];
         
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 1.5*NSEC_PER_SEC), dispatch_get_main_queue(), ^{
-            [self presentNextView];
+            [self presentNextViewAnimated:NO];
         });
     }
 }
