@@ -363,6 +363,9 @@ typedef enum {
         
         if ([error code] == kSCHDrmDeviceLimitError) {
             localizedMessage = NSLocalizedString(@"The Scholastic eReader is already installed on five devices, which is the maximum allowed. Before installing it on this device, you to need to deregister the eReader on one of your current devices.", nil);
+        } else if (([error code] == kSCHDrmDeviceRegisteredToAnotherDevice) || 
+                   ([error code] == kSCHDrmDeviceUnableToAssign)) {
+            localizedMessage = NSLocalizedString(@"This device is registered to another Scholastic account. The owner of that account needs to deregister this device before it can be registered to a new account.", nil);
         } else {
             localizedMessage = [NSString stringWithFormat:
                                 NSLocalizedString(@"A problem occured. If this problem persists please contact support.\n\n '%@'", nil), 

@@ -557,6 +557,11 @@ ErrorExit:
         NSInteger errCode = kSCHDrmRegistrationError;
         if (errorResult==DRM_E_SERVER_COMPUTER_LIMIT_REACHED || errorResult==DRM_E_SERVER_DEVICE_LIMIT_REACHED) {
             errCode = kSCHDrmDeviceLimitError;
+        } else if (errorResult==DRM_E_XMLNOTFOUND) {
+            NSString *code = [self getTagValue:self.serverResponse xmlTag:@"Code"];
+            if (code) {
+                errCode = [code intValue];
+            }
         }
         
         NSError *error = [self drmError:errCode 
