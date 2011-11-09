@@ -242,6 +242,7 @@
             
             
             if ([self.remainingWords count] == 0) {
+                [label setStrikedOut:YES];
                 [self enqueueAudioWithPath:@"sfx_win_y.mp3" fromBundle:YES];
                 [self enqueueAudioWithPath:[self audioPathForYouFoundThemAll]
                                 fromBundle:NO
