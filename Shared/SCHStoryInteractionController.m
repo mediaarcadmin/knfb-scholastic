@@ -296,7 +296,10 @@ static Class controllerClassForStoryInteraction(SCHStoryInteraction *storyIntera
 
     // put multiple views at the top-level in the nib for multi-screen interactions
     UIView *newContentsView = [self.nibObjects objectAtIndex:self.currentScreenIndex];
-    newContentsView.bounds = (CGRect) { CGPointZero, [self contentsSizeForViewAtIndex:self.currentScreenIndex orientation:aInterfaceOrientation] };
+    CGSize contentsSize = [self contentsSizeForViewAtIndex:self.currentScreenIndex orientation:aInterfaceOrientation];
+    if (!CGSizeEqualToSize(contentsSize, CGSizeZero)) {
+        newContentsView.bounds = (CGRect) { CGPointZero, contentsSize };
+    }
     
     dispatch_block_t setupViews = ^{
         self.backgroundView.image = [self backgroundImage];
@@ -875,7 +878,7 @@ static Class controllerClassForStoryInteraction(SCHStoryInteraction *storyIntera
 
 - (CGSize)iPadContentsSizeForViewAtIndex:(NSInteger)viewIndex forOrientation:(UIInterfaceOrientation)orientation
 {
-    return self.contentsView.bounds.size;
+    return self.contentsView ? self.contentsView.bounds.size : CGSizeZero;
 }
 
 @end
