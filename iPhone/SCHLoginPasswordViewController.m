@@ -41,6 +41,7 @@ static const CGFloat kContentHeightLandscape = 380;
 @synthesize spinner;
 @synthesize topBar;
 @synthesize barSpacer;
+@synthesize closeButton;
 @synthesize profileLabel;
 @synthesize containerView;
 @synthesize scrollView;
@@ -62,6 +63,7 @@ static const CGFloat kContentHeightLandscape = 380;
 	[spinner release], spinner = nil;
     [topBar release], topBar = nil;
     [barSpacer release], barSpacer = nil;
+    [closeButton release], closeButton = nil;
     [profileLabel release], profileLabel = nil;
     [containerView release], containerView = nil;
     [scrollView release], scrollView = nil;
@@ -314,6 +316,7 @@ static const CGFloat kContentHeightLandscape = 380;
     self.forgotUsernamePasswordURL.enabled = NO;
     self.accountURL.enabled = NO;
     self.loginButton.enabled = NO;
+    self.closeButton.enabled = NO;
 }
 
 - (void)stopShowingProgress
@@ -324,6 +327,7 @@ static const CGFloat kContentHeightLandscape = 380;
     self.forgotUsernamePasswordURL.enabled = YES;
     self.accountURL.enabled = YES;    
     self.loginButton.enabled = YES;
+    self.closeButton.enabled = YES;
 }
 
 - (void)clearFields
