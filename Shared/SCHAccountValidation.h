@@ -13,6 +13,7 @@
 // Constants
 extern NSString * const kSCHAccountValidationErrorDomain;
 extern NSInteger const kSCHAccountValidationPTokenError;
+extern NSInteger const kSCHAccountValidationCredentialsError;
 
 typedef void (^ValidateBlock)(NSString *pToken, NSError *error);
 
