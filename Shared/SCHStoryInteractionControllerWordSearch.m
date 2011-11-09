@@ -231,7 +231,11 @@
         if ([self.remainingWords containsObject:selectedLetters]) {
             [self.remainingWords removeObject:selectedLetters];
             SCHStoryInteractionStrikeOutLabelView *label = [self.wordViews objectAtIndex:index];
-            [containerView addPermanentHighlightFromCurrentSelectionWithColor:label.strikeOutColor];
+            [containerView addPermanentHighlightFromStartRow:startRow
+                                                 startColumn:startColumn
+                                                      extent:extent
+                                                    vertical:vertical
+                                                   withColor:label.strikeOutColor];
             [containerView clearSelection];
             
             if ([self.remainingWords count] == 0) {

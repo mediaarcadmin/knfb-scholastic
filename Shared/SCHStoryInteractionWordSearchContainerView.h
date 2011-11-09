@@ -27,6 +27,10 @@
 
 - (void)populateFromWordSearchModel:(SCHStoryInteractionWordSearch *)wordSearch;
 - (void)clearSelection;
-- (void)addPermanentHighlightFromCurrentSelectionWithColor:(UIColor *)color;
+- (void)addPermanentHighlightFromStartRow:(NSInteger)startRow
+                              startColumn:(NSInteger)startColumn
+                                   extent:(NSInteger)extent
+                                 vertical:(BOOL)isVertical
+                                withColor:(UIColor *)color;
 
 @end

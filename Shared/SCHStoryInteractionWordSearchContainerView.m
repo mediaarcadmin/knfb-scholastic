@@ -137,7 +137,7 @@
     self.selectionLayer.extent = 0;
 }
 
-- (void)addPermanentHighlightFromCurrentSelectionWithColor:(UIColor *)color
+- (void)addPermanentHighlightFromStartRow:(NSInteger)startRow startColumn:(NSInteger)startColumn extent:(NSInteger)extent vertical:(BOOL)isVertical withColor:(UIColor *)color
 {
     SelectionLayer *highlight = [SelectionLayer layer];
     highlight.bounds = self.selectionLayer.bounds;
@@ -145,10 +145,10 @@
     highlight.letterSize = self.letterSize;
     highlight.letterGap = self.letterGap;
     highlight.color = color;
-    highlight.startColumn = self.selectionLayer.startColumn;
-    highlight.startRow = self.selectionLayer.startRow;
-    highlight.extent = self.selectionLayer.extent;
-    highlight.isVertical = self.selectionLayer.isVertical;
+    highlight.startColumn = startColumn;
+    highlight.startRow = startRow;
+    highlight.extent = extent;
+    highlight.isVertical = isVertical;
     highlight.phase = -1;
     [self.layer addSublayer:highlight];
     [highlight setNeedsDisplay];
