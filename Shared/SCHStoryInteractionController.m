@@ -294,31 +294,32 @@ static Class controllerClassForStoryInteraction(SCHStoryInteraction *storyIntera
     
     self.interfaceOrientation = aInterfaceOrientation;
 
+    UIView *oldContentsView = [self.contentsView retain];
+    
     // put multiple views at the top-level in the nib for multi-screen interactions
-    UIView *newContentsView = [self.nibObjects objectAtIndex:self.currentScreenIndex];
+    self.contentsView = [self.nibObjects objectAtIndex:self.currentScreenIndex];
     CGSize contentsSize = [self contentsSizeForViewAtIndex:self.currentScreenIndex orientation:aInterfaceOrientation];
     if (!CGSizeEqualToSize(contentsSize, CGSizeZero)) {
-        newContentsView.bounds = (CGRect) { CGPointZero, contentsSize };
+        self.contentsView.bounds = (CGRect) { CGPointZero, contentsSize };
     }
     
     dispatch_block_t setupViews = ^{
         self.backgroundView.image = [self backgroundImage];
-        [self setupGeometryForContentsView:newContentsView contentsSize:newContentsView.bounds.size];
-        self.contentsView.alpha = 0;
-        newContentsView.alpha = 1;
-        newContentsView.transform = CGAffineTransformIdentity;
+        [self setupGeometryForContentsView:self.contentsView contentsSize:self.contentsView.bounds.size];
+        oldContentsView.alpha = 0;
+        self.contentsView.alpha = 1;
+        self.contentsView.transform = CGAffineTransformIdentity;
     };
     
-    if (self.contentsView != nil) {
+    if (oldContentsView != nil) {
         // if required, animate the transition between screens
         NSAssert(![self currentFrameStyleOverlaysContents], @"can't have multiple views with SCHStoryInteractionTitleOverlaysContentsAtTop/Bottom");
-        UIView *oldContentsView = self.contentsView;
-        newContentsView.alpha = 0;
-        CGFloat scale = MIN(CGRectGetWidth(oldContentsView.bounds)/CGRectGetWidth(newContentsView.bounds),
-                            CGRectGetHeight(oldContentsView.bounds)/CGRectGetHeight(newContentsView.bounds));
-        newContentsView.transform = CGAffineTransformMakeScale(scale, scale);
-        newContentsView.center = oldContentsView.center;
-        [self.backgroundView addSubview:newContentsView];
+        self.contentsView.alpha = 0;
+        CGFloat scale = MIN(CGRectGetWidth(oldContentsView.bounds)/CGRectGetWidth(self.contentsView.bounds),
+                            CGRectGetHeight(oldContentsView.bounds)/CGRectGetHeight(self.contentsView.bounds));
+        self.contentsView.transform = CGAffineTransformMakeScale(scale, scale);
+        self.contentsView.center = oldContentsView.center;
+        [self.backgroundView addSubview:self.contentsView];
         
         if ([self shouldAnimateTransitionBetweenViews]) {
             [UIView animateWithDuration:0.3
@@ -332,7 +333,7 @@ static Class controllerClassForStoryInteraction(SCHStoryInteraction *storyIntera
         }
     } else {
         if ([self currentFrameStyleOverlaysContents]) {
-            [self.containerView addSubview:newContentsView];
+            [self.containerView addSubview:self.contentsView];
             [self.containerView addSubview:self.readAloudButton];
             [self.containerView addSubview:self.closeButton];
             [self.backgroundView setUserInteractionEnabled:NO];
@@ -340,7 +341,7 @@ static Class controllerClassForStoryInteraction(SCHStoryInteraction *storyIntera
                 self.backgroundView.autoresizingMask &= ~UIViewAutoresizingFlexibleLeftMargin;
             }
         } else {
-            [self.backgroundView addSubview:newContentsView];
+            [self.backgroundView addSubview:self.contentsView];
             [self.backgroundView addSubview:self.readAloudButton];
             [self.backgroundView addSubview:self.closeButton];
             [self.backgroundView setUserInteractionEnabled:YES];
@@ -352,10 +353,10 @@ static Class controllerClassForStoryInteraction(SCHStoryInteraction *storyIntera
     [self.closeButton.superview bringSubviewToFront:self.closeButton];
     [self.readAloudButton.superview bringSubviewToFront:self.readAloudButton];
     
-    self.contentsView = newContentsView;
-    
     [self setTitle:[self.storyInteraction interactionViewTitle]];
     [self setupViewAtIndex:self.currentScreenIndex];
+    
+    [oldContentsView release];
 
     if (questionAudioPath && [self shouldPlayQuestionAudioForViewAtIndex:self.currentScreenIndex]) {
         [self enqueueAudioWithPath:questionAudioPath
@@ -561,11 +562,14 @@ static Class controllerClassForStoryInteraction(SCHStoryInteraction *storyIntera
 {
     self.interfaceOrientation = toInterfaceOrientation;
     
-    [self resizeCurrentViewToSize:[self contentsSizeForViewAtIndex:self.currentScreenIndex orientation:toInterfaceOrientation]
-                animationDuration:duration
-        withAdditionalAdjustments:^{
-            [self rotateToOrientation:toInterfaceOrientation];
-        }];
+    CGSize newSize = [self contentsSizeForViewAtIndex:self.currentScreenIndex orientation:toInterfaceOrientation];
+    if (!CGSizeEqualToSize(newSize, CGSizeZero)) {
+        [self resizeCurrentViewToSize:newSize
+                    animationDuration:duration
+            withAdditionalAdjustments:^{
+                [self rotateToOrientation:toInterfaceOrientation];
+            }];
+    }
 }
 
 - (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation
