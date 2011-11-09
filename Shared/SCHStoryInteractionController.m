@@ -391,7 +391,7 @@ static Class controllerClassForStoryInteraction(SCHStoryInteraction *storyIntera
     } else {
         hasShadow = NO;
         fontName = @"Arial-BoldMT";
-        fontSize = (iPad ? 22 : 17);
+        fontSize = (iPad ? 30 : 17);
     }
 
     UIFont *font;

@@ -2708,22 +2708,22 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     
     if ([self numberOfStoryInteractionsOnCurrentPages] > 0) {
         [self setStoryInteractionButtonVisible:YES animated:NO withSound:NO completion:nil];
-    }
     
-    NSData * (^audioData)(void) = ^NSData*(void){
-        NSString *audioFilename = @"sfx_si_fill";
-        NSString *bundlePath = [[NSBundle mainBundle] pathForResource:audioFilename ofType:@"mp3"];
-        return [NSData dataWithContentsOfFile:bundlePath
-                                      options:NSDataReadingMapped
-                                        error:nil];
-    };
-    float fillLevel = [self storyInteractionButtonFillLevelForCurrentPage];
-    if (fillLevel != self.storyInteractionButton.fillLevel) {
-        [self.queuedAudioPlayer enqueueAudioTaskWithFetchBlock:audioData
-                                        synchronizedStartBlock:^{
-                                            [self.storyInteractionButton setFillLevel:fillLevel animated:YES];
-                                        }
-                                          synchronizedEndBlock:nil];
+        NSData * (^audioData)(void) = ^NSData*(void){
+            NSString *audioFilename = @"sfx_si_fill";
+            NSString *bundlePath = [[NSBundle mainBundle] pathForResource:audioFilename ofType:@"mp3"];
+            return [NSData dataWithContentsOfFile:bundlePath
+                                          options:NSDataReadingMapped
+                                            error:nil];
+        };
+        float fillLevel = [self storyInteractionButtonFillLevelForCurrentPage];
+        if (fillLevel != self.storyInteractionButton.fillLevel) {
+            [self.queuedAudioPlayer enqueueAudioTaskWithFetchBlock:audioData
+                                            synchronizedStartBlock:^{
+                                                [self.storyInteractionButton setFillLevel:fillLevel animated:YES];
+                                            }
+                                              synchronizedEndBlock:nil];
+        }
     }
 }
 
