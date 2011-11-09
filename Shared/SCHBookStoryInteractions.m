@@ -95,6 +95,10 @@
     NSInteger pageIndex = storyInteraction.documentPageNumber-1;
     CGSize pageSize = delegate ? [delegate sizeOfPageAtIndex:pageIndex] : CGSizeZero;
 
+    if (pageIndex < 0) {
+        return nil;
+    }
+    
     BOOL hasQuestionsOnLeftPage = [storyInteraction hasQuestionsOnLeftPageForPageSize:pageSize];
     BOOL hasQuestionsOnRightPage = [storyInteraction hasQuestionsOnRightPageForPageSize:pageSize];
     if (!hasQuestionsOnLeftPage && !hasQuestionsOnRightPage) {
@@ -273,6 +277,11 @@
                                            pageIndices:(NSRange)pageIndices
 {
     NSArray *storyInteractionPageKeys = [self pageKeysForStoryInteraction:storyInteraction];
+    
+    if ([storyInteractionPageKeys count] == 0) {
+        // story interaction is not page-associated
+        return;
+    }
     
     if ([storyInteractionPageKeys count] == 1) {
         // easy case, all this SI's questions are on one page

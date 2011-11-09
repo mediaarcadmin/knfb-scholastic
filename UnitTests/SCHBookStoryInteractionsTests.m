@@ -495,4 +495,40 @@
     STAssertTrue([fixture.book allQuestionsCompletedForPageIndices:NSMakeRange(3, 2)], @"expect complete on pages 3-4");    
 }
 
+- (void)testIncrementStoryInteractionCompletedQuestionCountFoStoryInteractionNotOnSpecificPages
+{
+    [fixture storyInteractionAtIndex:0].documentPageNumber = 0;
+    [fixture storyInteractionAtIndex:0].questionCount = 0;
+    
+    // e.g. Picture Starter can be invoked with arbitrary page numbers
+    [fixture.book incrementQuestionsCompletedForStoryInteraction:[fixture storyInteractionAtIndex:0] pageIndices:NSMakeRange(17, 2)];
+
+    STAssertEquals([fixture.book storyInteractionQuestionsCompletedForPageIndices:NSMakeRange(17, 2)], 0, @"expect no progress");
+    STAssertEquals([fixture.book storyInteractionQuestionsCompletedForPageIndices:NSMakeRange(17, 1)], 0, @"expect no progress");
+    STAssertEquals([fixture.book storyInteractionQuestionsCompletedForPageIndices:NSMakeRange(18, 1)], 0, @"expect no progress");
+    STAssertEquals([fixture.book storyInteractionQuestionsCompletedForPageIndices:NSMakeRange(0, 1)], 0, @"expect no progress");
+    STAssertEquals([fixture.book storyInteractionQuestionsCompletedForPageIndices:NSMakeRange(0, 2)], 0, @"expect no progress");
+    
+    // these are actually true because there are no SIs on the requested pages
+    STAssertTrue([fixture.book allQuestionsCompletedForPageIndices:NSMakeRange(17, 2)], @"expect not complete on page 17-18");
+    STAssertTrue([fixture.book allQuestionsCompletedForPageIndices:NSMakeRange(17, 1)], @"expect not complete on page 17");
+    STAssertTrue([fixture.book allQuestionsCompletedForPageIndices:NSMakeRange(18, 1)], @"expect not complete on page 18");
+    STAssertTrue([fixture.book allQuestionsCompletedForPageIndices:NSMakeRange(0, 1)], @"expect not complete on page 0");
+    STAssertTrue([fixture.book allQuestionsCompletedForPageIndices:NSMakeRange(0, 2)], @"expect not complete on page 0-1");
+}
+
+- (void)testIncrementStoryInteractionCompletedQuestionCountForStoryInteractionNotOnSpecificPagesAndStoryInteractionOnCurrentPage
+{
+    [fixture storyInteractionAtIndex:0].documentPageNumber = 0;
+    [fixture storyInteractionAtIndex:0].questionCount = 0;
+    [fixture storyInteractionAtIndex:1].documentPageNumber = 6;
+    [fixture storyInteractionAtIndex:1].questionCount = 2;
+    
+    // e.g. Picture Starter can be invoked with arbitrary page numbers
+    [fixture.book incrementQuestionsCompletedForStoryInteraction:[fixture storyInteractionAtIndex:0] pageIndices:NSMakeRange(6, 1)];
+
+    STAssertEquals([fixture.book storyInteractionQuestionsCompletedForPageIndices:NSMakeRange(6, 1)], 0, @"expect no progress");
+    STAssertTrue([fixture.book allQuestionsCompletedForPageIndices:NSMakeRange(6, 1)], @"expect not complete on page 6");
+}
+   
 @end
