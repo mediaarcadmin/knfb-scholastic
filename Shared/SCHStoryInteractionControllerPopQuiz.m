@@ -135,6 +135,11 @@
     self.controllerState = SCHStoryInteractionControllerStateInteractionReadingAnswerWithPause;
 }
 
+- (IBAction)answerButtonTapCancelled:(id)sender
+{
+    self.controllerState = SCHStoryInteractionControllerStateInteractionInProgress;
+}
+
 - (IBAction)answerButtonTapped:(id)sender
 {
     self.simultaneousTapCount++;

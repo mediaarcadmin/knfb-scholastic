@@ -229,6 +229,11 @@ typedef enum {
     self.controllerState = SCHStoryInteractionControllerStateInteractionReadingAnswerWithPause;        
 }
 
+- (IBAction)questionButtonTapCancelled:(id)sender
+{
+    self.controllerState = SCHStoryInteractionControllerStateInteractionInProgress;
+}
+
 - (IBAction)questionButtonTapped:(UIButton *)sender
 {
     NSLog(@"Question button tapped: %d", [self.answerButtons indexOfObject:sender]);

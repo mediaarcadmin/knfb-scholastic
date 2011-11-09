@@ -28,6 +28,7 @@
 - (IBAction)startButtonTapped:(id)sender;
 - (IBAction)questionButtonTouched:(UIButton *)sender;
 - (IBAction)questionButtonTapped:(id)sender;
+- (IBAction)questionButtonTapCancelled:(id)sender;
 - (IBAction)doneButtonTapped:(id)sender;
 
 @end
