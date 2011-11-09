@@ -36,19 +36,21 @@
         return;
     }
 
+    __block BOOL expiredURLs = NO;
     // sync call to find out if we have a contentURL
     [self performWithBook:^(SCHAppBook *book) {
         haveContentURL = book.ContentMetadataItem.ContentURL != nil;
+        expiredURLs = [book bookCoverURLHasExpired] || [book bookFileURLHasExpired];
     }];
 
     [self performWithBookAndSave:^(SCHAppBook *book) {
-        if (haveContentURL == YES) {
+        if (haveContentURL == YES && !expiredURLs) {
             [book setValue:book.ContentMetadataItem.CoverURL forKey:kSCHAppBookCoverURL];
             [book setValue:book.ContentMetadataItem.ContentURL forKey:kSCHAppBookFileURL];                    
         }
     }];
 
-    if (haveContentURL == YES) {
+    if (haveContentURL == YES && !expiredURLs) {
         [self setProcessingState:SCHBookProcessingStateNoCoverImage];
         [self setIsProcessing:NO];                
         [self endOperation];
