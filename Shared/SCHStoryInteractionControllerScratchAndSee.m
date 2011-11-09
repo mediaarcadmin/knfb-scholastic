@@ -32,7 +32,6 @@ enum ScratchState {
 - (SCHStoryInteractionScratchAndSeeQuestion *)currentQuestion;
 - (NSInteger)scratchPointTarget;
 
-- (void)nextQuestion;
 - (void)setupQuestionAnimated:(BOOL)animated;
 - (void)correctAnswer:(NSInteger) selection;
 - (void)wrongAnswer:(NSInteger) selection;
@@ -305,11 +304,6 @@ enum ScratchState {
     }
 }
 
-- (void)nextQuestion
-{
-    [self removeFromHostView];
-}
-
 - (SCHStoryInteractionScratchAndSeeQuestion *)currentQuestion
 {
     return [[(SCHStoryInteractionScratchAndSee *)self.storyInteraction questions] objectAtIndex:currentQuestionIndex];
@@ -358,14 +352,8 @@ enum ScratchState {
     [self.scratchView setShowFullImage:YES];
     
     [self cancelQueuedAudioExecutingSynchronizedBlocksBefore:^{
-        [self enqueueAudioWithPath:[self.storyInteraction storyInteractionCorrectAnswerSoundFilename] 
-                        fromBundle:YES 
-                        startDelay:0 
-            synchronizedStartBlock:^{
-                self.controllerState = SCHStoryInteractionControllerStateInteractionFinishedSuccessfully;
-            }
-              synchronizedEndBlock:nil];
-        
+        self.controllerState = SCHStoryInteractionControllerStateInteractionFinishedSuccessfully;
+        [self enqueueAudioWithPath:[self.storyInteraction storyInteractionCorrectAnswerSoundFilename] fromBundle:YES];
         [self enqueueAudioWithPath:[[self currentQuestion] audioPathForAnswerAtIndex:selection] fromBundle:NO];
         [self enqueueAudioWithPath:[(SCHStoryInteractionScratchAndSee *)self.storyInteraction thatsRightAudioPath] fromBundle:NO];
         [self enqueueAudioWithPath:[[self currentQuestion] correctAnswerAudioPath]
@@ -373,7 +361,7 @@ enum ScratchState {
                         startDelay:0
             synchronizedStartBlock:nil
               synchronizedEndBlock:^{
-                  [self nextQuestion];
+                  [self removeFromHostView];
               }];
     }];
 }
