@@ -83,7 +83,7 @@
         if ([[userInfo valueForKey:kSCHLibreAccessWebServiceCoverURL] isEqual:[NSNull null]] || 
             [[userInfo valueForKey:kSCHLibreAccessWebServiceContentURL] isEqual:[NSNull null]]) {
             NSLog(@"Warning: book URL request was missing cover and/or content URL: %@", userInfo);
-            [self setProcessingState:SCHBookProcessingStateError];
+            [self setProcessingState:SCHBookProcessingStateURLsNotPopulated];
         } else {
             
             __block BOOL urlsAlreadyExpired = NO;
@@ -103,7 +103,7 @@
             // check here for expiry
             if (urlsAlreadyExpired) {
                 NSLog(@"Warning: URLs from the server have already expired for %@!", bookIdentifier);
-                [self setProcessingState:SCHBookProcessingStateError];
+                [self setProcessingState:SCHBookProcessingStateURLsNotPopulated];
             } else {
                 NSLog(@"Successful URL retrieval for %@!", bookIdentifier);
                 [self setProcessingState:SCHBookProcessingStateNoCoverImage];
