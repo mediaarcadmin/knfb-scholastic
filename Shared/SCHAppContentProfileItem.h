@@ -28,7 +28,9 @@ extern NSString * const kSCHAppContentProfileItemOrder;
 @property (nonatomic, retain) NSNumber * IsNewBook;
 @property (nonatomic, retain) NSNumber * IsTrashed;
 @property (nonatomic, retain) NSNumber * Order;
-@property (nonatomic, retain) NSDate * LastAnnotationSync;
+@property (nonatomic, retain) NSDate * LastBookmarkAnnotationSync;
+@property (nonatomic, retain) NSDate * LastHighlightAnnotationSync;
+@property (nonatomic, retain) NSDate * LastNoteAnnotationSync;
 @property (nonatomic, retain) SCHProfileItem * ProfileItem;
 @property (nonatomic, retain) SCHContentProfileItem * ContentProfileItem;
 

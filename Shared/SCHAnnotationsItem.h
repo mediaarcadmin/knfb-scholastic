@@ -9,6 +9,7 @@
 #import <CoreData/CoreData.h>
 
 @class SCHAnnotationsContentItem;
+@class SCHProfileItem;
 
 // Constants
 extern NSString * const kSCHAnnotationsItem;
@@ -22,6 +23,8 @@ extern NSString * const kSCHAnnotationsItemPROFILE_ID;
 
 @property (nonatomic, retain) NSNumber * ProfileID;
 @property (nonatomic, retain) NSSet* AnnotationsContentItem;
+
+- (SCHProfileItem *)profileItem;
 
 @end
 
