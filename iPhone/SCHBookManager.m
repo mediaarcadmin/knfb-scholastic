@@ -214,12 +214,9 @@ static NSDictionary *featureCompatibilityDictionary = nil;
         ret = [NSMutableArray arrayWithCapacity:[allBooks count]];
         for (SCHContentMetadataItem *contentMetadataItem in allBooks) {
             
-            // defensive : only add the book if it actually has an ISBN
-            if (contentMetadataItem.ContentIdentifier) {
-                SCHBookIdentifier *identifier = [[SCHBookIdentifier alloc] initWithISBN:contentMetadataItem.ContentIdentifier
-                                                                           DRMQualifier:contentMetadataItem.DRMQualifier];
-                [ret addObject:identifier];
-                [identifier release];
+            // defensive : only add the book if it actually has an ISBN & DRM Qualifier
+            if (contentMetadataItem.ContentIdentifier && contentMetadataItem.DRMQualifier) {
+                [ret addObject:[contentMetadataItem bookIdentifier]];
             }
         }
     }
