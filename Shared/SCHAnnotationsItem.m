@@ -9,6 +9,7 @@
 #import "SCHAnnotationsItem.h"
 
 #import "SCHAnnotationsContentItem.h"
+#import "SCHProfileItem.h"
 
 // Constants
 NSString * const kSCHAnnotationsItem = @"SCHAnnotationsItem";
@@ -20,5 +21,27 @@ NSString * const kSCHAnnotationsItemPROFILE_ID = @"PROFILE_ID";
 
 @dynamic ProfileID;
 @dynamic AnnotationsContentItem;
+
+- (SCHProfileItem *)profileItem
+{
+    SCHProfileItem *ret = nil;
+    
+    if (self.ProfileID != nil) {
+        NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+        
+        [fetchRequest setEntity:[NSEntityDescription entityForName:kSCHProfileItem
+                                            inManagedObjectContext:self.managedObjectContext]];
+        [fetchRequest setPredicate:[NSPredicate predicateWithFormat:@"ID == %@", self.ProfileID]];
+        
+        NSArray *profiles = [self.managedObjectContext executeFetchRequest:fetchRequest error:nil];
+        [fetchRequest release];
+        
+        if ([profiles count] > 0) {
+            ret = [profiles objectAtIndex:0];                
+        }
+    }
+    
+    return ret;
+}
 
 @end

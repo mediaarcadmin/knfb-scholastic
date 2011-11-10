@@ -90,6 +90,7 @@ NSString * const SCHAnnotationSyncComponentCompletedProfileIDs = @"SCHAnnotation
         withLastPage:(SCHLastPage *)localLastPage;
 - (SCHLastPage *)lastPage:(NSDictionary *)lastPage;
 - (void)backgroundSave:(BOOL)batch;
+- (NSDate *)latestDate:(NSArray *)items;
 
 @property (retain, nonatomic) NSMutableDictionary *annotations;
 @property (retain, nonatomic) NSMutableArray *savedAnnotations;
@@ -509,24 +510,9 @@ NSString * const SCHAnnotationSyncComponentCompletedProfileIDs = @"SCHAnnotation
 	[self backgroundSave:NO];
 }
 
-- (void)syncProfileContentAnnotationsCompleted:(NSNumber *)profileID usingMethod:(NSString *)method
+- (void)syncProfileContentAnnotationsCompleted:(NSNumber *)profileID 
+                                   usingMethod:(NSString *)method
 {
-    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
-    NSEntityDescription *entity = [NSEntityDescription entityForName:kSCHProfileItem
-                                              inManagedObjectContext:self.managedObjectContext];
-    [fetchRequest setEntity:entity];
-    [fetchRequest setPredicate:[NSPredicate predicateWithFormat:@"ID == %@", profileID]];
-    
-    NSArray *profiles = [self.managedObjectContext executeFetchRequest:fetchRequest error:nil];
-    if ([profiles count] > 0) {
-        SCHProfileItem *profileItem = [profiles objectAtIndex:0];
-        for (SCHAppContentProfileItem *appContentProfileItem in profileItem.AppContentProfileItem) {
-            appContentProfileItem.LastAnnotationSync = [NSDate date];
-        }
-    }
-    [fetchRequest release];
-    [self.managedObjectContext save:nil];
-    
     [[NSNotificationCenter defaultCenter] postNotificationName:SCHAnnotationSyncComponentDidCompleteNotification 
                                                         object:self 
                                                       userInfo:[NSDictionary dictionaryWithObject:profileID 
@@ -766,6 +752,15 @@ NSString * const SCHAnnotationSyncComponentCompletedProfileIDs = @"SCHAnnotation
         [privateAnnotations addHighlightsObject:[self highlight:webItem]];
         [self backgroundSave:YES];
 	}
+
+    SCHAppContentProfileItem *appContentProfileItem = [[privateAnnotations.AnnotationsContentItem.AnnotationsItem profileItem] 
+                                                       appContentProfileItemForBookIdentifier:[privateAnnotations.AnnotationsContentItem bookIdentifier]];
+    if (appContentProfileItem != nil) {
+        NSDate *date = [self latestDate:webHighlights];
+        if (date != nil) {
+            appContentProfileItem.LastHighlightAnnotationSync = date;
+        }
+    }
 	
 	[self backgroundSave:NO];        
 }
@@ -937,6 +932,15 @@ NSString * const SCHAnnotationSyncComponentCompletedProfileIDs = @"SCHAnnotation
         [privateAnnotations addNotesObject:[self note:webItem]];
         [self backgroundSave:YES];
 	}
+    
+    SCHAppContentProfileItem *appContentProfileItem = [[privateAnnotations.AnnotationsContentItem.AnnotationsItem profileItem] 
+                                                       appContentProfileItemForBookIdentifier:[privateAnnotations.AnnotationsContentItem bookIdentifier]];
+    if (appContentProfileItem != nil) {
+        NSDate *date = [self latestDate:webNotes];
+        if (date != nil) {
+            appContentProfileItem.LastNoteAnnotationSync = date;
+        }
+    }
 	
 	[self backgroundSave:NO];        
 }
@@ -1079,6 +1083,15 @@ NSString * const SCHAnnotationSyncComponentCompletedProfileIDs = @"SCHAnnotation
         [self backgroundSave:YES];
 	}
 	
+    SCHAppContentProfileItem *appContentProfileItem = [[privateAnnotations.AnnotationsContentItem.AnnotationsItem profileItem] 
+                                                       appContentProfileItemForBookIdentifier:[privateAnnotations.AnnotationsContentItem bookIdentifier]];
+    if (appContentProfileItem != nil) {
+        NSDate *date = [self latestDate:webBookmarks];
+        if (date != nil) {
+            appContentProfileItem.LastBookmarkAnnotationSync = date;
+        }
+    }    
+    
 	[self backgroundSave:NO];    
 }
 
@@ -1191,6 +1204,21 @@ NSString * const SCHAnnotationSyncComponentCompletedProfileIDs = @"SCHAnnotation
             NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
         } 
     }
+}
+
+- (NSDate *)latestDate:(NSArray *)items
+{
+    NSDate *ret = nil;
+    
+    for (NSDictionary *item in items) {
+        NSDate *date = [self makeNullNil:[item objectForKey:kSCHLibreAccessWebServiceLastModified]];
+        
+        if (date != nil) {
+            ret = (ret == nil? date : [date laterDate:ret]);
+        }
+    }
+    
+    return ret;
 }
 
 @end

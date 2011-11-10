@@ -381,7 +381,10 @@ static NSUInteger const kSCHSyncManagerMaximumFailureRetries = 3;
 	
 	for (SCHContentProfileItem *contentProfileItem in profileItem.ContentProfileItem) {
         if (contentProfileItem.UserContentItem) {
-            [ret addObject:[self annotationContentItemFromUserContentItem:contentProfileItem.UserContentItem forProfile:profileItem.ID]];
+            NSDictionary *annotationContentItem = [self annotationContentItemFromUserContentItem:contentProfileItem.UserContentItem forProfile:profileItem.ID];
+            if (annotationContentItem != nil) {
+                [ret addObject:annotationContentItem];
+            }
         }
 	}
 	
@@ -391,51 +394,55 @@ static NSUInteger const kSCHSyncManagerMaximumFailureRetries = 3;
 - (NSMutableDictionary *)annotationContentItemFromUserContentItem:(SCHUserContentItem *)userContentItem                                                        
                                                        forProfile:(NSNumber *)profileID;
 {	
-	NSMutableDictionary *ret = [NSMutableDictionary dictionary];
-	NSDate *date = nil;
+	NSMutableDictionary *ret = nil;
     
-	[ret setObject:[userContentItem valueForKey:kSCHLibreAccessWebServiceContentIdentifier] 
-            forKey:kSCHLibreAccessWebServiceContentIdentifier];
-	[ret setObject:[userContentItem valueForKey:kSCHLibreAccessWebServiceContentIdentifierType] 
-            forKey:kSCHLibreAccessWebServiceContentIdentifierType];
-	[ret setObject:[userContentItem valueForKey:kSCHLibreAccessWebServiceDRMQualifier] 
-            forKey:kSCHLibreAccessWebServiceDRMQualifier];
-	[ret setObject:[userContentItem valueForKey:kSCHLibreAccessWebServiceFormat] 
-            forKey:kSCHLibreAccessWebServiceFormat];
-	    
-    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
-    NSEntityDescription *entity = [NSEntityDescription entityForName:kSCHProfileItem
-                                              inManagedObjectContext:self.managedObjectContext];
-    [fetchRequest setEntity:entity];
-    [fetchRequest setPredicate:[NSPredicate predicateWithFormat:@"ID == %@", profileID]];
-    
-    NSArray *profiles = [self.managedObjectContext executeFetchRequest:fetchRequest error:nil];
-    if ([profiles count] > 0) {
-        SCHProfileItem *profileItem = [profiles objectAtIndex:0];
-        SCHAppContentProfileItem *appContentProfileItem = [profileItem appContentProfileItemForBookIdentifier:
-                                                           [userContentItem bookIdentifier]];
-        date = appContentProfileItem.LastAnnotationSync;
+    if (userContentItem != nil && profileID != nil) {
+        NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+        
+        [fetchRequest setEntity:[NSEntityDescription entityForName:kSCHProfileItem
+                                            inManagedObjectContext:self.managedObjectContext]];
+        [fetchRequest setPredicate:[NSPredicate predicateWithFormat:@"ID == %@", profileID]];
+        
+        NSArray *profiles = [self.managedObjectContext executeFetchRequest:fetchRequest error:nil];
+        [fetchRequest release];
+        
+        if ([profiles count] > 0) {
+            SCHAppContentProfileItem *appContentProfileItem = [[profiles objectAtIndex:0] appContentProfileItemForBookIdentifier:
+                                                               [userContentItem bookIdentifier]];        
+            
+            if (appContentProfileItem != nil) {
+                ret = [NSMutableDictionary dictionary];
+                
+                [ret setObject:[userContentItem valueForKey:kSCHLibreAccessWebServiceContentIdentifier] 
+                        forKey:kSCHLibreAccessWebServiceContentIdentifier];
+                [ret setObject:[userContentItem valueForKey:kSCHLibreAccessWebServiceContentIdentifierType] 
+                        forKey:kSCHLibreAccessWebServiceContentIdentifierType];
+                [ret setObject:[userContentItem valueForKey:kSCHLibreAccessWebServiceDRMQualifier] 
+                        forKey:kSCHLibreAccessWebServiceDRMQualifier];
+                [ret setObject:[userContentItem valueForKey:kSCHLibreAccessWebServiceFormat] 
+                        forKey:kSCHLibreAccessWebServiceFormat];
+                
+                NSMutableDictionary *privateAnnotation = [NSMutableDictionary dictionary];	
+                
+                NSDate *highlightsAfter = appContentProfileItem.LastHighlightAnnotationSync;
+                NSDate *notesAfter = appContentProfileItem.LastNoteAnnotationSync;
+                NSDate *bookmarksAfter = appContentProfileItem.LastBookmarkAnnotationSync;
+                
+                [privateAnnotation setObject:[userContentItem valueForKey:kSCHLibreAccessWebServiceVersion] 
+                                      forKey:kSCHLibreAccessWebServiceVersion];
+                [privateAnnotation setObject:(highlightsAfter == nil ? [NSDate distantPast] : highlightsAfter)
+                                      forKey:kSCHLibreAccessWebServiceHighlightsAfter];
+                [privateAnnotation setObject:(notesAfter == nil ? [NSDate distantPast] : notesAfter)
+                                      forKey:kSCHLibreAccessWebServiceNotesAfter];
+                [privateAnnotation setObject:(bookmarksAfter == nil ? [NSDate distantPast] : bookmarksAfter)
+                                      forKey:kSCHLibreAccessWebServiceBookmarksAfter];
+                
+                [ret setObject:privateAnnotation 
+                        forKey:kSCHLibreAccessWebServicePrivateAnnotations];            
+            }
+        }
     }
-    [fetchRequest release];
     
-    if (date == nil) {
-        date = [NSDate distantPast];
-    }
-    
-	NSMutableDictionary *privateAnnotation = [NSMutableDictionary dictionary];	
-
-	[privateAnnotation setObject:[userContentItem valueForKey:kSCHLibreAccessWebServiceVersion] 
-                          forKey:kSCHLibreAccessWebServiceVersion];
-	[privateAnnotation setObject:date 
-                          forKey:kSCHLibreAccessWebServiceHighlightsAfter];
-	[privateAnnotation setObject:date 
-                          forKey:kSCHLibreAccessWebServiceNotesAfter];
-	[privateAnnotation setObject:date 
-                          forKey:kSCHLibreAccessWebServiceBookmarksAfter];
-	
-	[ret setObject:privateAnnotation 
-            forKey:kSCHLibreAccessWebServicePrivateAnnotations];
-
 	return ret;
 }
 
@@ -446,11 +453,14 @@ static NSUInteger const kSCHSyncManagerMaximumFailureRetries = 3;
         NSLog(@"Scheduling Open Document");
         
         if (userContentItem != nil && profileID != nil) {
-            [self.annotationSyncComponent addProfile:profileID 
-                                           withBooks:[NSMutableArray arrayWithObject:[self annotationContentItemFromUserContentItem:userContentItem forProfile:profileID]]];	
-            [self addToQueue:self.annotationSyncComponent];
-            
-            [self kickQueue];
+            NSDictionary *annotationContentItem = [self annotationContentItemFromUserContentItem:userContentItem forProfile:profileID];
+            if (annotationContentItem != nil) {
+                [self.annotationSyncComponent addProfile:profileID 
+                                               withBooks:[NSMutableArray arrayWithObject:annotationContentItem]];	
+                [self addToQueue:self.annotationSyncComponent];
+                
+                [self kickQueue];
+            }
         }
     } else {
         dispatch_async(dispatch_get_main_queue(), ^(void) {
