@@ -19,6 +19,6 @@
 // Web Parent Tools methods
 - (void)waitingForPassword;
 - (void)waitingForWebParentToolsToComplete;
-- (void)webParentToolsCompleted;
+- (void)webParentToolsCompletedWithSuccess:(BOOL)success;
 
 @end

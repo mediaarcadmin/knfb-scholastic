@@ -53,8 +53,8 @@
         
         // register for going into the background
         [[NSNotificationCenter defaultCenter] addObserver:self
-                                                 selector:@selector(willResignActiveNotification:)
-                                                     name:UIApplicationWillResignActiveNotification
+                                                 selector:@selector(didEnterBackground:)
+                                                     name:UIApplicationDidEnterBackgroundNotification
                                                    object:nil];    
         
         [self.profileSetupDelegate waitingForWebParentToolsToComplete];
@@ -87,8 +87,13 @@
 
 - (void)back:(id)sender
 {
-    // trigger a sync to grab any changes
-    [[SCHSyncManager sharedSyncManager] firstSync:YES requireDeviceAuthentication:YES];
+    // trigger a sync to grab any changes if we are in non-wizard mode, otherwise trigger web parent tools completed
+    if (self.profileSetupDelegate != nil) {
+        [self.profileSetupDelegate webParentToolsCompletedWithSuccess:NO];
+    } else {
+        [[SCHSyncManager sharedSyncManager] firstSync:YES requireDeviceAuthentication:YES];
+    }
+    
 
     [super back:nil];
 }
@@ -103,12 +108,14 @@
     [viewControllers insertObject:accountValidationViewController atIndex:[viewControllers indexOfObject:self]];     
     self.navigationController.viewControllers = [NSArray arrayWithArray:viewControllers];
     
-    [self back:nil];
+    [self.profileSetupDelegate waitingForPassword];
+    
+    [super back:nil];
 }
 
 #pragma mark - Notification methods
 
-- (void)willResignActiveNotification:(NSNotification *)notification
+- (void)didEnterBackground:(NSNotification *)notification
 {
     [self requestPassword];
 }
@@ -128,7 +135,7 @@
         if ([cmd isEqualToString:@"bookshelfSetupDidCompleteWithSuccess"] == YES) {
             ret = NO;
             
-            [self.profileSetupDelegate webParentToolsCompleted];
+            [self.profileSetupDelegate webParentToolsCompletedWithSuccess:YES];
         }
     }
     

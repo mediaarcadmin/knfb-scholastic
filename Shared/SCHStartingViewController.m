@@ -620,9 +620,13 @@ typedef enum {
 - (void)waitingForWebParentToolsToComplete
 {
     self.profileSyncState = kSCHStartingViewControllerProfileSyncStateWaitingForWebParentToolsToComplete;
+    
+    // Need to also sync here in case the user has has set up a bookshelf in WPT outside teh app
+    // We never want to enter WPT not in wizard mode as there is no close button
+    [[SCHSyncManager sharedSyncManager] firstSync:YES requireDeviceAuthentication:YES];
 }
 
-- (void)webParentToolsCompleted
+- (void)webParentToolsCompletedWithSuccess:(BOOL)success
 {
     self.profileSyncState = kSCHStartingViewControllerProfileSyncStateWaitingForBookshelves;
     
@@ -671,12 +675,12 @@ typedef enum {
 
 #pragma mark - notifications
 
-// at the 'setup bookshelves' stage we punt the user over to Safari to set up their account;
-// when we come back, kick off a sync to pick up the new profiles
 - (void)willEnterForeground:(NSNotification *)note
 {
-    if (self.profileSyncState == kSCHStartingViewControllerProfileSyncStateWaitingForBookshelves) {
-        [[SCHSyncManager sharedSyncManager] firstSync:YES requireDeviceAuthentication:NO];
+    if ((self.profileSyncState == kSCHStartingViewControllerProfileSyncStateWaitingForBookshelves) ||
+        (self.profileSyncState == kSCHStartingViewControllerProfileSyncStateWaitingForPassword) ||
+        (self.profileSyncState == kSCHStartingViewControllerProfileSyncStateWaitingForWebParentToolsToComplete)) {
+        [[SCHSyncManager sharedSyncManager] firstSync:YES requireDeviceAuthentication:YES];
     }
 }
 
@@ -696,6 +700,20 @@ typedef enum {
             break;
         case kSCHStartingViewControllerProfileSyncStateWaitingForBookshelves:
             [self recheckBookshelvesForProfile];
+            break;
+        case kSCHStartingViewControllerProfileSyncStateWaitingForPassword:
+            if (![self bookshelfSetupRequired]) {
+                [self recheckBookshelvesForProfile];
+            } else {
+                self.profileSyncState = kSCHStartingViewControllerProfileSyncStateWaitingForPassword;
+            }
+            break;
+        case kSCHStartingViewControllerProfileSyncStateWaitingForWebParentToolsToComplete:
+            if (![self bookshelfSetupRequired]) {
+                [self recheckBookshelvesForProfile];
+            } else {
+                self.profileSyncState = kSCHStartingViewControllerProfileSyncStateWaitingForWebParentToolsToComplete;
+            }
             break;
         default:
             break;

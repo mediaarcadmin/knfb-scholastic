@@ -14,6 +14,7 @@
 #import "SCHAccountValidation.h"
 #import "SCHParentalToolsWebViewController.h"
 #import "SCHUserDefaults.h"
+#import "SCHSyncManager.h"
 
 static const CGFloat kDeregisterContentHeightLandscape = 380;
 
@@ -105,6 +106,12 @@ static const CGFloat kDeregisterContentHeightLandscape = 380;
 {
     [super viewDidUnload];
     [self releaseViewObjects];
+}
+
+- (void)back:(id)sender
+{
+    [self.profileSetupDelegate webParentToolsCompletedWithSuccess:NO];
+    [super back:nil];
 }
 
 #pragma mark - Accessor methods
