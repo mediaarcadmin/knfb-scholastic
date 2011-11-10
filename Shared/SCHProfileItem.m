@@ -326,8 +326,7 @@ NSString * const kSCHProfileItemDRM_QUALIFIER = @"DRM_QUALIFIER";
         if ([result count] > 0) {
             readingStatsDetailItem = [result objectAtIndex:0];
             for (SCHReadingStatsContentItem *contentItem in readingStatsDetailItem.ReadingStatsContentItem) {
-                if ([contentItem.ContentIdentifier isEqualToString:bookIdentifier.isbn] == YES &&
-                    [contentItem.DRMQualifier isEqualToNumber:bookIdentifier.DRMQualifier] == YES) {
+                if ([[contentItem bookIdentifier] isEqual:bookIdentifier] == YES) {
                     readingStatsContentItem = contentItem;
                     break;
                 }
