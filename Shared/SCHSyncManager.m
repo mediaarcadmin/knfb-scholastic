@@ -40,7 +40,7 @@ static NSUInteger const kSCHSyncManagerMaximumFailureRetries = 3;
 - (void)updateAnnotationSync;
 - (void)addAllProfilesToAnnotationSync;
 - (NSMutableArray *)bookAnnotationsFromProfile:(SCHProfileItem *)profileItem;
-- (NSMutableDictionary *)annotationContentItemFromUserContentItem:(SCHUserContentItem *)userContentItem
+- (NSDictionary *)annotationContentItemFromUserContentItem:(SCHUserContentItem *)userContentItem
                                                        forProfile:(NSNumber *)profileID;
 - (void)addToQueue:(SCHSyncComponent *)component;
 - (void)moveToEndOfQueue:(SCHSyncComponent *)component;
@@ -391,8 +391,8 @@ static NSUInteger const kSCHSyncManagerMaximumFailureRetries = 3;
 	return ret;
 }
 
-- (NSMutableDictionary *)annotationContentItemFromUserContentItem:(SCHUserContentItem *)userContentItem                                                        
-                                                       forProfile:(NSNumber *)profileID;
+- (NSDictionary *)annotationContentItemFromUserContentItem:(SCHUserContentItem *)userContentItem                                                        
+                                                forProfile:(NSNumber *)profileID;
 {	
 	NSMutableDictionary *ret = nil;
     
@@ -410,17 +410,21 @@ static NSUInteger const kSCHSyncManagerMaximumFailureRetries = 3;
             SCHAppContentProfileItem *appContentProfileItem = [[profiles objectAtIndex:0] appContentProfileItemForBookIdentifier:
                                                                [userContentItem bookIdentifier]];        
             
-            if (appContentProfileItem != nil) {
+            id contentIdentifier = [userContentItem valueForKey:kSCHLibreAccessWebServiceContentIdentifier];
+            id contentIdentifierType = [userContentItem valueForKey:kSCHLibreAccessWebServiceContentIdentifierType];
+            id DRMQualifier = [userContentItem valueForKey:kSCHLibreAccessWebServiceDRMQualifier];
+            id format = [userContentItem valueForKey:kSCHLibreAccessWebServiceFormat];
+            id version = [userContentItem valueForKey:kSCHLibreAccessWebServiceVersion];
+            
+            if (appContentProfileItem != nil && contentIdentifier != [NSNull null] && 
+                contentIdentifierType != [NSNull null] && DRMQualifier != [NSNull null] &&
+                format != [NSNull null] && version != [NSNull null]) {
                 ret = [NSMutableDictionary dictionary];
                 
-                [ret setObject:[userContentItem valueForKey:kSCHLibreAccessWebServiceContentIdentifier] 
-                        forKey:kSCHLibreAccessWebServiceContentIdentifier];
-                [ret setObject:[userContentItem valueForKey:kSCHLibreAccessWebServiceContentIdentifierType] 
-                        forKey:kSCHLibreAccessWebServiceContentIdentifierType];
-                [ret setObject:[userContentItem valueForKey:kSCHLibreAccessWebServiceDRMQualifier] 
-                        forKey:kSCHLibreAccessWebServiceDRMQualifier];
-                [ret setObject:[userContentItem valueForKey:kSCHLibreAccessWebServiceFormat] 
-                        forKey:kSCHLibreAccessWebServiceFormat];
+                [ret setObject:contentIdentifier forKey:kSCHLibreAccessWebServiceContentIdentifier];
+                [ret setObject:contentIdentifierType forKey:kSCHLibreAccessWebServiceContentIdentifierType];
+                [ret setObject:DRMQualifier forKey:kSCHLibreAccessWebServiceDRMQualifier];
+                [ret setObject:format forKey:kSCHLibreAccessWebServiceFormat];
                 
                 NSMutableDictionary *privateAnnotation = [NSMutableDictionary dictionary];	
                 
@@ -428,8 +432,7 @@ static NSUInteger const kSCHSyncManagerMaximumFailureRetries = 3;
                 NSDate *notesAfter = appContentProfileItem.LastNoteAnnotationSync;
                 NSDate *bookmarksAfter = appContentProfileItem.LastBookmarkAnnotationSync;
                 
-                [privateAnnotation setObject:[userContentItem valueForKey:kSCHLibreAccessWebServiceVersion] 
-                                      forKey:kSCHLibreAccessWebServiceVersion];
+                [privateAnnotation setObject:version forKey:kSCHLibreAccessWebServiceVersion];
                 [privateAnnotation setObject:(highlightsAfter == nil ? [NSDate distantPast] : highlightsAfter)
                                       forKey:kSCHLibreAccessWebServiceHighlightsAfter];
                 [privateAnnotation setObject:(notesAfter == nil ? [NSDate distantPast] : notesAfter)
@@ -480,12 +483,15 @@ static NSUInteger const kSCHSyncManagerMaximumFailureRetries = 3;
         NSLog(@"Scheduling Close Document");
         
         if (userContentItem != nil && profileID != nil) {
-            [self.annotationSyncComponent addProfile:profileID 
-                                           withBooks:[NSMutableArray arrayWithObject:[self annotationContentItemFromUserContentItem:userContentItem forProfile:profileID]]];	
-            [self addToQueue:self.annotationSyncComponent];
-            [self addToQueue:self.readingStatsSyncComponent];
-            
-            [self kickQueue];	
+            NSDictionary *annotationContentItem = [self annotationContentItemFromUserContentItem:userContentItem forProfile:profileID];
+            if (annotationContentItem != nil) {
+                [self.annotationSyncComponent addProfile:profileID 
+                                               withBooks:[NSMutableArray arrayWithObject:annotationContentItem]];	
+                [self addToQueue:self.annotationSyncComponent];
+                [self addToQueue:self.readingStatsSyncComponent];
+                
+                [self kickQueue];	
+            }
         }
     } else {
         dispatch_async(dispatch_get_main_queue(), ^(void) {
