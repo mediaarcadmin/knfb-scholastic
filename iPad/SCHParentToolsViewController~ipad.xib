@@ -683,6 +683,7 @@
 							<string>forgotUsernamePasswordURL</string>
 							<string>loginButton</string>
 							<string>profileLabel</string>
+							<string>promptLabel</string>
 							<string>scrollView</string>
 							<string>spinner</string>
 							<string>topBar</string>
@@ -697,6 +698,7 @@
 							<string>UIView</string>
 							<string>SCHUnderlinedButton</string>
 							<string>UIButton</string>
+							<string>UILabel</string>
 							<string>UILabel</string>
 							<string>UIScrollView</string>
 							<string>UIActivityIndicatorView</string>
@@ -716,6 +718,7 @@
 							<string>forgotUsernamePasswordURL</string>
 							<string>loginButton</string>
 							<string>profileLabel</string>
+							<string>promptLabel</string>
 							<string>scrollView</string>
 							<string>spinner</string>
 							<string>topBar</string>
@@ -753,6 +756,10 @@
 							</object>
 							<object class="IBToOneOutletInfo">
 								<string key="name">profileLabel</string>
+								<string key="candidateClassName">UILabel</string>
+							</object>
+							<object class="IBToOneOutletInfo">
+								<string key="name">promptLabel</string>
 								<string key="candidateClassName">UILabel</string>
 							</object>
 							<object class="IBToOneOutletInfo">

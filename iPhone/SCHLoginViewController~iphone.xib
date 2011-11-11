@@ -158,7 +158,7 @@
 										<string key="NSFrame">{{46, 208}, {228, 51}}</string>
 										<reference key="NSSuperview" ref="627327703"/>
 										<reference key="NSWindow"/>
-										<reference key="NSNextKeyView" ref="935261733"/>
+										<reference key="NSNextKeyView" ref="648995602"/>
 										<reference key="IBUIBackgroundColor" ref="764302899"/>
 										<bool key="IBUIOpaque">NO</bool>
 										<bool key="IBUIClipsSubviews">YES</bool>
@@ -188,7 +188,7 @@
 									<object class="IBUIButton" id="935261733">
 										<reference key="NSNextResponder" ref="627327703"/>
 										<int key="NSvFlags">293</int>
-										<string key="NSFrame">{{107, 305}, {106, 48}}</string>
+										<string key="NSFrame">{{107, 311}, {106, 48}}</string>
 										<reference key="NSSuperview" ref="627327703"/>
 										<reference key="NSWindow"/>
 										<reference key="NSNextKeyView" ref="328416546"/>
@@ -264,7 +264,7 @@
 									<object class="IBUIActivityIndicatorView" id="328416546">
 										<reference key="NSNextResponder" ref="627327703"/>
 										<int key="NSvFlags">-2147483355</int>
-										<string key="NSFrame">{{221, 319}, {20, 20}}</string>
+										<string key="NSFrame">{{221, 325}, {20, 20}}</string>
 										<reference key="NSSuperview" ref="627327703"/>
 										<reference key="NSWindow"/>
 										<reference key="NSNextKeyView" ref="894831626"/>
@@ -276,15 +276,16 @@
 									<object class="IBUILabel" id="648995602">
 										<reference key="NSNextResponder" ref="627327703"/>
 										<int key="NSvFlags">293</int>
-										<string key="NSFrame">{{68, 267}, {185, 21}}</string>
+										<string key="NSFrame">{{22, 275}, {277, 21}}</string>
 										<reference key="NSSuperview" ref="627327703"/>
 										<reference key="NSWindow"/>
+										<reference key="NSNextKeyView" ref="935261733"/>
 										<bool key="IBUIOpaque">NO</bool>
 										<bool key="IBUIClipsSubviews">YES</bool>
 										<int key="IBUIContentMode">7</int>
 										<bool key="IBUIUserInteractionEnabled">NO</bool>
 										<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
-										<string key="IBUIText">Passwords are case sensitive</string>
+										<string key="IBUIText">User name and password are case-sensitive</string>
 										<object class="NSColor" key="IBUITextColor">
 											<int key="NSColorSpace">2</int>
 											<bytes key="NSRGB">MC4xMzMzMzMzNDAzIDAuNTYwNzg0MzM5OSAwLjgyMzUyOTQ4MTkAA</bytes>
@@ -323,6 +324,7 @@
 								<string key="NSFrameSize">{320, 7}</string>
 								<reference key="NSSuperview" ref="489633664"/>
 								<reference key="NSWindow"/>
+								<reference key="NSNextKeyView"/>
 								<reference key="IBUIBackgroundColor" ref="764302899"/>
 								<bool key="IBUIOpaque">NO</bool>
 								<bool key="IBUIUserInteractionEnabled">NO</bool>
