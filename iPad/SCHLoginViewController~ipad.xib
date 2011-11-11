@@ -256,7 +256,7 @@
 										<int key="IBUIContentVerticalAlignment">0</int>
 										<int key="IBUIButtonType">1</int>
 										<string key="IBUITitleShadowOffset">{0, -1}</string>
-										<string key="IBUINormalTitle">Login</string>
+										<string key="IBUINormalTitle">Sign In</string>
 										<object class="NSColor" key="IBUIHighlightedTitleColor">
 											<int key="NSColorSpace">3</int>
 											<bytes key="NSWhite">MQA</bytes>
