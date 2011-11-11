@@ -104,6 +104,7 @@
     NSMutableArray *viewControllers = [NSMutableArray arrayWithArray:self.navigationController.viewControllers];
     
     accountValidationViewController.profileSetupDelegate = self.profileSetupDelegate;
+    accountValidationViewController.validatedControllerShouldHideCloseButton = YES;
     
     [viewControllers insertObject:accountValidationViewController atIndex:[viewControllers indexOfObject:self]];     
     self.navigationController.viewControllers = [NSArray arrayWithArray:viewControllers];

@@ -19,6 +19,8 @@
 @property (nonatomic, retain) IBOutlet UIActivityIndicatorView *spinner;
 @property (nonatomic, retain) IBOutlet UIScrollView *scrollView; // iPhone only
 
+@property (nonatomic, assign) BOOL validatedControllerShouldHideCloseButton;
+
 - (IBAction)validate:(id)sender;
 
 @end

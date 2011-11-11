@@ -15,6 +15,10 @@
 @property (nonatomic, retain) IBOutlet UILabel *titleLabel;
 @property (nonatomic, retain) IBOutlet UIWebView *textView;
 @property (nonatomic, retain) IBOutlet SCHCustomToolbar *topToolbar;
+@property (nonatomic, retain) IBOutlet UIBarButtonItem *closeButton;
+@property (nonatomic, retain) IBOutlet UIBarButtonItem *spacer;
+
+@property (nonatomic, assign) BOOL shouldHideCloseButton;
 
 - (void)releaseViewObjects;
 

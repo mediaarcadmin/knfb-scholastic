@@ -9,11 +9,20 @@
 #import "SCHBaseTextViewController.h"
 #import "SCHCustomToolbar.h"
 
+@interface SCHBaseTextViewController()
+
+- (void)setCloseButtonHidden:(BOOL)hidden;
+
+@end
+
 @implementation SCHBaseTextViewController
 
 @synthesize titleLabel;
 @synthesize textView;
 @synthesize topToolbar;
+@synthesize closeButton;
+@synthesize spacer;
+@synthesize shouldHideCloseButton;
 
 - (id)init
 {
@@ -27,6 +36,8 @@
     self.textView.delegate = nil;
     self.textView = nil;
     self.topToolbar = nil;
+    self.closeButton = nil;
+    self.spacer = nil;
 }
 
 - (void)dealloc
@@ -57,6 +68,32 @@
 {
     [super viewWillAppear:animated];
     self.titleLabel.text = self.title;
+    
+    [self setCloseButtonHidden:self.shouldHideCloseButton];
+}
+
+- (void)setCloseButtonHidden:(BOOL)hidden
+{    
+    NSAssert(self.closeButton, @"closeButton outlet must be set before shouldHideCloseButton is called");
+    NSAssert(self.spacer, @"spacer outlet must be set before shouldHideCloseButton is called");
+
+    NSMutableArray *items = [[[self.topToolbar items] mutableCopy] autorelease];
+    
+    if (hidden) {
+        if ([items containsObject:self.closeButton] && 
+            [items containsObject:self.spacer]) {
+            [items removeObject:self.spacer];
+            [items removeObject:self.closeButton];
+        }
+    } else {
+        if (![items containsObject:self.closeButton] && 
+            ![items containsObject:self.spacer]) {
+            [items insertObject:self.closeButton atIndex:0];
+            [items addObject:self.spacer];
+        }
+    }
+    
+    [self.topToolbar setItems:items animated:NO];
 }
 
 - (void)back:(id)sender

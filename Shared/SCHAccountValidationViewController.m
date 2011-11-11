@@ -37,6 +37,7 @@ static const CGFloat kDeregisterContentHeightLandscape = 380;
 @synthesize spinner;
 @synthesize scrollView;
 @synthesize activeTextField;
+@synthesize validatedControllerShouldHideCloseButton;
 
 - (void)releaseViewObjects
 {
@@ -163,6 +164,7 @@ static const CGFloat kDeregisterContentHeightLandscape = 380;
                 SCHParentalToolsWebViewController *parentalToolsWebViewController = [[[SCHParentalToolsWebViewController alloc] init] autorelease];
                 parentalToolsWebViewController.profileSetupDelegate = weakSelf.profileSetupDelegate;
                 parentalToolsWebViewController.pToken = pToken;
+                parentalToolsWebViewController.shouldHideCloseButton = self.validatedControllerShouldHideCloseButton;
                 [weakSelf.navigationController pushViewController:parentalToolsWebViewController animated:YES];                
                 // remove us from the view hiearachy - now we're no longer needed
                 NSMutableArray *viewControllers = [NSMutableArray arrayWithArray:weakSelf.navigationController.viewControllers];

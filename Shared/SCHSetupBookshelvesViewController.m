@@ -80,10 +80,12 @@
         SCHParentalToolsWebViewController *parentalToolsWebViewController = [[[SCHParentalToolsWebViewController alloc] init] autorelease];
         parentalToolsWebViewController.profileSetupDelegate = self.profileSetupDelegate;
         parentalToolsWebViewController.pToken = pToken;
+        parentalToolsWebViewController.shouldHideCloseButton = YES;
         [self.navigationController pushViewController:parentalToolsWebViewController animated:YES];
     } else {
         SCHAccountValidationViewController *accountValidationViewController = [[[SCHAccountValidationViewController alloc] init] autorelease];
         accountValidationViewController.profileSetupDelegate = self.profileSetupDelegate;        
+        accountValidationViewController.validatedControllerShouldHideCloseButton = YES;
         [self.navigationController pushViewController:accountValidationViewController animated:YES];        
     }    
 }
