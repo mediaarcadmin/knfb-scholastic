@@ -31,6 +31,7 @@
 #import "SCHDrmSession.h"
 #import "SCHSampleBooksImporter.h"
 #import "SCHAccountValidation.h"
+#import "Reachability.h"
 
 enum {
     kTableSectionSamples = 0,
@@ -318,38 +319,47 @@ typedef enum {
 
 - (void)showSignInForm
 {
-    SCHLoginPasswordViewController *login = [[SCHLoginPasswordViewController alloc] initWithNibName:@"SCHLoginViewController" bundle:nil];
-    login.controllerType = kSCHControllerLoginView;
-    
-    login.cancelBlock = ^{
-        [self dismissModalViewControllerAnimated:YES];
-    };
-    
-    login.retainLoopSafeActionBlock = ^BOOL(NSString *username, NSString *password) {
-        [self setStandardStore];
+    if ([[Reachability reachabilityForInternetConnection] isReachable] == NO) {
+        LambdaAlert *alert = [[LambdaAlert alloc]
+                              initWithTitle:NSLocalizedString(@"No Internet Connection", @"")
+                              message:NSLocalizedString(@"An Internet connection is required to sign into your account.", @"")];
+        [alert addButtonWithTitle:NSLocalizedString(@"OK", @"") block:nil];
+        [alert show];
+        [alert release];
+    } else {
+        SCHLoginPasswordViewController *login = [[SCHLoginPasswordViewController alloc] initWithNibName:@"SCHLoginViewController" bundle:nil];
+        login.controllerType = kSCHControllerLoginView;
         
-        self.profileSyncState = kSCHStartingViewControllerProfileSyncStateWaitingForLoginToComplete;
+        login.cancelBlock = ^{
+            [self dismissModalViewControllerAnimated:YES];
+        };
         
-        if ([[username stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]] length] > 0 &&
-            [[password stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]] length] > 0) {      
-            [[SCHAuthenticationManager sharedAuthenticationManager] authenticateWithUser:username 
-                                                                                password:password
-                                                                            successBlock:^(BOOL offlineMode){
-                                                                                [self signInSucceededForLoginController:login];
-                                                                            }
-                                                                            failureBlock:^(NSError * error){
-                                                                                [self signInFailedForLoginController:login withError:error];
-                                                                            }];            
-            return(YES);
-        } else {
-            return(NO);
-        }
-    };
-    
-    [self.modalNavigationController setViewControllers:[NSArray arrayWithObject:login]];
-    [self presentModalViewController:self.modalNavigationController animated:YES];
-    
-    [login release];
+        login.retainLoopSafeActionBlock = ^BOOL(NSString *username, NSString *password) {
+            [self setStandardStore];
+            
+            self.profileSyncState = kSCHStartingViewControllerProfileSyncStateWaitingForLoginToComplete;
+            
+            if ([[username stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]] length] > 0 &&
+                [[password stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]] length] > 0) {      
+                [[SCHAuthenticationManager sharedAuthenticationManager] authenticateWithUser:username 
+                                                                                    password:password
+                                                                                successBlock:^(BOOL offlineMode){
+                                                                                    [self signInSucceededForLoginController:login];
+                                                                                }
+                                                                                failureBlock:^(NSError * error){
+                                                                                    [self signInFailedForLoginController:login withError:error];
+                                                                                }];            
+                return(YES);
+            } else {
+                return(NO);
+            }
+        };
+        
+        [self.modalNavigationController setViewControllers:[NSArray arrayWithObject:login]];
+        [self presentModalViewController:self.modalNavigationController animated:YES];
+        
+        [login release];
+    }
 }
 
 - (void)signInSucceededForLoginController:(SCHLoginPasswordViewController *)login
