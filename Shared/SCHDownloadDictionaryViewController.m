@@ -45,6 +45,7 @@
 {
     [super viewDidLoad];
     [self setButtonBackground:self.downloadDictionaryButton];
+    [self setButtonBackground:self.closeButton];
     
     self.closeButton.accessibilityLabel = @"Close Button";
     
@@ -61,19 +62,6 @@
 {
     [super viewWillAppear:animated];
     [self layoutLabelsForOrientation:self.interfaceOrientation];
-}
-
-- (void)setupAssetsForOrientation:(UIInterfaceOrientation)toInterfaceOrientation
-{
-    [super setupAssetsForOrientation:(UIInterfaceOrientation)toInterfaceOrientation];
-    
-    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
-        if (UIInterfaceOrientationIsLandscape(toInterfaceOrientation)) {
-            self.barSpacer.width = 68;
-        } else {
-            self.barSpacer.width = 0;
-        }
-    }
 }
 
 - (void)close
@@ -109,11 +97,14 @@
 - (void)layoutLabelsForOrientation:(UIInterfaceOrientation)orientation
 {
    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
-       CGFloat width = UIInterfaceOrientationIsLandscape(orientation) ? 440 : 280;
-       CGFloat gap = UIInterfaceOrientationIsLandscape(orientation) ? 8 : 18;
-       CGFloat yOffset = UIInterfaceOrientationIsLandscape(orientation) ? 16 : 30;
-       CGFloat buttonOffset = UIInterfaceOrientationIsLandscape(orientation) ? 0 : 16;
-       
+       CGFloat width = UIInterfaceOrientationIsLandscape(orientation) ? 460 : 280;
+       CGFloat gap = UIInterfaceOrientationIsLandscape(orientation) ? 6 : 18;
+       CGFloat yOffset = UIInterfaceOrientationIsLandscape(orientation) ? 12 : 24;
+       CGFloat downloadButtonXOrigin = UIInterfaceOrientationIsLandscape(orientation) ? 30 : 20;
+       CGFloat closeButtonYOffset = UIInterfaceOrientationIsLandscape(orientation) ? 0 : 54;
+       CGFloat closeButtonXOrigin = UIInterfaceOrientationIsLandscape(orientation) ? 240 : 20;
+       CGFloat buttonWidth = UIInterfaceOrientationIsLandscape(orientation) ? 200 : 280;
+
        CGFloat y = yOffset;
        for (UILabel *label in self.labels) {
            CGSize size = [label.text sizeWithFont:label.font
@@ -122,10 +113,21 @@
            label.center = CGPointMake(label.center.x, floorf(y+size.height/2));
            y += size.height + gap;
        }
+              
+       CGRect dictionaryButtonFrame = self.downloadDictionaryButton.frame;
+
+       dictionaryButtonFrame.origin.x = downloadButtonXOrigin;
+       dictionaryButtonFrame.origin.y = y;
+       dictionaryButtonFrame.size.width = buttonWidth;
        
-       y += buttonOffset;
+       CGRect closeButtonFrame = self.closeButton.frame;
+       closeButtonFrame.origin.x = closeButtonXOrigin;
+       closeButtonFrame.origin.y = y + closeButtonYOffset;
+       closeButtonFrame.size.width = buttonWidth;
+
        
-       self.downloadDictionaryButton.center = CGPointMake(self.downloadDictionaryButton.center.x, floorf(y+CGRectGetHeight(self.downloadDictionaryButton.bounds)/2));
+       self.downloadDictionaryButton.frame = dictionaryButtonFrame;
+       self.closeButton.frame = closeButtonFrame;
    }
 }
 
