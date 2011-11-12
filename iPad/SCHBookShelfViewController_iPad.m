@@ -199,7 +199,7 @@ static NSTimeInterval const kSCHBookShelfViewControllerTopTenRefreshTime = -600.
         self.popover = nil;
     }
     
-    [self setupAssetsForOrientation:toInterfaceOrientation];
+    [super willRotateToInterfaceOrientation:toInterfaceOrientation duration:duration];    
 }
 
 #pragma mark - Grid View Cell Dimensions
