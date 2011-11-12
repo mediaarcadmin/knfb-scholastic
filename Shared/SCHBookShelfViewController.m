@@ -208,7 +208,7 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 131;
     [self.gridView setBackgroundColor:[UIColor clearColor]];
     
     if ([[SCHAppStateManager sharedAppStateManager] isSampleStore]) {
-        [self.gridView setFooterText:NSLocalizedString(@"Notes and highlights made to sample books will be lost when you upgrade to the full version of the eReader", @"")];
+        [self.gridView setFooterText:NSLocalizedString(@"Notes and highlights made to sample eBooks will be lost when you sign in to your Scholastic account.", @"")];
         [self.gridView setFooterTextIsDark:[[SCHThemeManager sharedThemeManager] gridTextColorIsDark]];
     }
     
