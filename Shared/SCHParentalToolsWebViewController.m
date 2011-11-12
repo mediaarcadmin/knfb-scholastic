@@ -41,8 +41,6 @@
 {
     [super viewDidLoad];
 
-    self.title = NSLocalizedString(@"Manage eBooks", @"\"Manage eBooks\" view controller title.");        
-
     NSURL *webParentToolURL = [[SCHAuthenticationManager sharedAuthenticationManager] webParentToolURL:pToken];
     if (webParentToolURL != nil) {
         NSLog(@"Attempting to access Web Parent Tools using: %@", webParentToolURL);
@@ -105,6 +103,7 @@
     
     accountValidationViewController.profileSetupDelegate = self.profileSetupDelegate;
     accountValidationViewController.validatedControllerShouldHideCloseButton = YES;
+    accountValidationViewController.title = self.title;
     
     [viewControllers insertObject:accountValidationViewController atIndex:[viewControllers indexOfObject:self]];     
     self.navigationController.viewControllers = [NSArray arrayWithArray:viewControllers];

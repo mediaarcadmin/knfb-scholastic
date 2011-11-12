@@ -38,6 +38,7 @@ static const CGFloat kDeregisterContentHeightLandscape = 380;
 @synthesize scrollView;
 @synthesize activeTextField;
 @synthesize validatedControllerShouldHideCloseButton;
+@synthesize titleLabel;
 
 - (void)releaseViewObjects
 {
@@ -51,6 +52,7 @@ static const CGFloat kDeregisterContentHeightLandscape = 380;
     [scrollView release], scrollView = nil;
     [spinner release], spinner = nil;
     [activeTextField release], activeTextField = nil;
+    [titleLabel release], titleLabel = nil;
     
     [super releaseViewObjects];
 }
@@ -100,6 +102,8 @@ static const CGFloat kDeregisterContentHeightLandscape = 380;
 - (void)viewWillAppear:(BOOL)animated 
 {
     [super viewWillAppear:animated];
+    
+    self.titleLabel.text = self.title;
     [self setupContentSizeForOrientation:self.interfaceOrientation];
 }
 
@@ -162,6 +166,7 @@ static const CGFloat kDeregisterContentHeightLandscape = 380;
             } else {
                 weakSelf.passwordField.text = @"";
                 SCHParentalToolsWebViewController *parentalToolsWebViewController = [[[SCHParentalToolsWebViewController alloc] init] autorelease];
+                parentalToolsWebViewController.title = self.title;
                 parentalToolsWebViewController.profileSetupDelegate = weakSelf.profileSetupDelegate;
                 parentalToolsWebViewController.pToken = pToken;
                 parentalToolsWebViewController.shouldHideCloseButton = self.validatedControllerShouldHideCloseButton;

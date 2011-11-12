@@ -20,6 +20,7 @@
 @property (nonatomic, retain) IBOutlet UIImageView *backgroundView;
 @property (nonatomic, retain) IBOutlet UIBarButtonItem *barSpacer;
 @property (nonatomic, retain) IBOutlet UIBarButtonItem *backButton;
+
 @property (nonatomic, assign) id<SCHSettingsDelegate> settingsDelegate; // Mutually excludes profileSetupDelegate. Both cannot be set.
 @property (nonatomic, assign) id<SCHProfileSetupDelegate> profileSetupDelegate; // Mutually excludes settingsDelegate. Both cannot be set.
 

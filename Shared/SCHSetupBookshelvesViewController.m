@@ -43,6 +43,8 @@
     [super viewDidLoad];
     [self setButtonBackground:self.setupBookshelvesButton];
     
+    self.title = NSLocalizedString(@"Set Up Your Bookshelves", @"");
+    
 #if 0 // force a way out of this screen
     [self.setupBookshelvesButton setTitle:@"EXIT" forState:UIControlStateNormal];
     
@@ -78,6 +80,7 @@
     NSString *pToken = [SCHAuthenticationManager sharedAuthenticationManager].pToken;
     if (pToken != nil) {
         SCHParentalToolsWebViewController *parentalToolsWebViewController = [[[SCHParentalToolsWebViewController alloc] init] autorelease];
+        parentalToolsWebViewController.title = self.title;   
         parentalToolsWebViewController.profileSetupDelegate = self.profileSetupDelegate;
         parentalToolsWebViewController.pToken = pToken;
         parentalToolsWebViewController.shouldHideCloseButton = YES;
@@ -86,6 +89,7 @@
         SCHAccountValidationViewController *accountValidationViewController = [[[SCHAccountValidationViewController alloc] init] autorelease];
         accountValidationViewController.profileSetupDelegate = self.profileSetupDelegate;        
         accountValidationViewController.validatedControllerShouldHideCloseButton = YES;
+        accountValidationViewController.title = self.title;
         [self.navigationController pushViewController:accountValidationViewController animated:YES];        
     }    
 }

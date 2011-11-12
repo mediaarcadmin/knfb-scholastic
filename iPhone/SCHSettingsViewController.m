@@ -24,7 +24,6 @@
 #import "SCHSyncManager.h"
 #import "Reachability.h"
 #import "LambdaAlert.h"
-#import "SCHParentalToolsWebViewController.h"
 #import "SCHAccountValidationViewController.h"
 
 extern NSString * const kSCHAuthenticationManagerDeviceKey;
@@ -318,6 +317,7 @@ extern NSString * const kSCHAuthenticationManagerDeviceKey;
 {
     // we always ask for the password before showing parent tools from settings
     SCHAccountValidationViewController *accountValidationViewController = [[[SCHAccountValidationViewController alloc] init] autorelease];
+    accountValidationViewController.title = NSLocalizedString(@"Manage eBooks", @"Manage eBooks");
     [self.navigationController pushViewController:accountValidationViewController animated:YES];        
 }
 

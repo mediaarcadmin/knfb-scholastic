@@ -107,7 +107,7 @@
 										<int key="IBUIContentMode">7</int>
 										<bool key="IBUIUserInteractionEnabled">NO</bool>
 										<string key="targetRuntimeIdentifier">IBIPadFramework</string>
-										<string key="IBUIText">Manage eBooks</string>
+										<string key="IBUIText">title</string>
 										<object class="NSColor" key="IBUITextColor">
 											<int key="NSColorSpace">1</int>
 											<bytes key="NSRGB">MSAxIDEAA</bytes>
@@ -280,7 +280,7 @@
 						<string key="targetRuntimeIdentifier">IBIPadFramework</string>
 						<int key="IBUIStyle">2</int>
 					</object>
-					<object class="IBUILabel" id="126782898">
+					<object class="IBUILabel" id="123787639">
 						<reference key="NSNextResponder" ref="191373211"/>
 						<int key="NSvFlags">293</int>
 						<string key="NSFrame">{{175, 255}, {190, 21}}</string>
@@ -387,6 +387,14 @@
 					<int key="connectionID">31</int>
 				</object>
 				<object class="IBConnectionRecord">
+					<object class="IBCocoaTouchOutletConnection" key="connection">
+						<string key="label">titleLabel</string>
+						<reference key="source" ref="372490531"/>
+						<reference key="destination" ref="42834867"/>
+					</object>
+					<int key="connectionID">33</int>
+				</object>
+				<object class="IBConnectionRecord">
 					<object class="IBCocoaTouchEventConnection" key="connection">
 						<string key="label">validate:</string>
 						<reference key="source" ref="429076329"/>
@@ -433,7 +441,7 @@
 							<reference ref="515875019"/>
 							<reference ref="477926586"/>
 							<reference ref="1044032869"/>
-							<reference ref="126782898"/>
+							<reference ref="123787639"/>
 						</object>
 						<reference key="parent" ref="0"/>
 					</object>
@@ -527,7 +535,7 @@
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">32</int>
-						<reference key="object" ref="126782898"/>
+						<reference key="object" ref="123787639"/>
 						<reference key="parent" ref="191373211"/>
 					</object>
 				</object>
@@ -591,7 +599,7 @@
 				<reference key="dict.values" ref="0"/>
 			</object>
 			<nil key="sourceID"/>
-			<int key="maxID">32</int>
+			<int key="maxID">33</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<object class="NSMutableArray" key="referencedPartialClassDescriptions">
@@ -711,6 +719,7 @@
 							<string>backgroundView</string>
 							<string>barSpacer</string>
 							<string>containerView</string>
+							<string>titleLabel</string>
 							<string>topToolbar</string>
 						</object>
 						<object class="NSMutableArray" key="dict.values">
@@ -719,6 +728,7 @@
 							<string>UIImageView</string>
 							<string>UIBarButtonItem</string>
 							<string>UIView</string>
+							<string>UILabel</string>
 							<string>SCHCustomToolbar</string>
 						</object>
 					</object>
@@ -730,6 +740,7 @@
 							<string>backgroundView</string>
 							<string>barSpacer</string>
 							<string>containerView</string>
+							<string>titleLabel</string>
 							<string>topToolbar</string>
 						</object>
 						<object class="NSMutableArray" key="dict.values">
@@ -749,6 +760,10 @@
 							<object class="IBToOneOutletInfo">
 								<string key="name">containerView</string>
 								<string key="candidateClassName">UIView</string>
+							</object>
+							<object class="IBToOneOutletInfo">
+								<string key="name">titleLabel</string>
+								<string key="candidateClassName">UILabel</string>
 							</object>
 							<object class="IBToOneOutletInfo">
 								<string key="name">topToolbar</string>

@@ -13,6 +13,7 @@
 
 @interface SCHAccountValidationViewController : SCHBaseModalViewController <UITextFieldDelegate> {}
 
+@property (nonatomic, retain) IBOutlet UILabel *titleLabel;
 @property (nonatomic, retain) IBOutlet UILabel *promptLabel;
 @property (nonatomic, retain) IBOutlet UITextField *passwordField;
 @property (nonatomic, retain) IBOutlet UIButton *validateButton;
