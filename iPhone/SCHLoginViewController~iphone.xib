@@ -276,7 +276,7 @@
 									<object class="IBUILabel" id="648995602">
 										<reference key="NSNextResponder" ref="627327703"/>
 										<int key="NSvFlags">293</int>
-										<string key="NSFrame">{{22, 275}, {277, 21}}</string>
+										<string key="NSFrame">{{22, 267}, {277, 21}}</string>
 										<reference key="NSSuperview" ref="627327703"/>
 										<reference key="NSWindow"/>
 										<reference key="NSNextKeyView" ref="935261733"/>
@@ -285,7 +285,7 @@
 										<int key="IBUIContentMode">7</int>
 										<bool key="IBUIUserInteractionEnabled">NO</bool>
 										<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
-										<string key="IBUIText">User name and password are case-sensitive</string>
+										<string key="IBUIText">Passwords are case-sensitive.</string>
 										<object class="NSColor" key="IBUITextColor">
 											<int key="NSColorSpace">2</int>
 											<bytes key="NSRGB">MC4xMzMzMzMzNDAzIDAuNTYwNzg0MzM5OSAwLjgyMzUyOTQ4MTkAA</bytes>
@@ -666,8 +666,8 @@
 							<reference ref="355416621"/>
 							<reference ref="618785432"/>
 							<reference ref="633725175"/>
-							<reference ref="648995602"/>
 							<reference ref="935261733"/>
+							<reference ref="648995602"/>
 							<reference ref="328416546"/>
 						</object>
 						<reference key="parent" ref="489633664"/>

@@ -213,7 +213,7 @@
 										<string key="NSFrame">{{156, 187}, {228, 51}}</string>
 										<reference key="NSSuperview" ref="135206302"/>
 										<reference key="NSWindow"/>
-										<reference key="NSNextKeyView" ref="256814430"/>
+										<reference key="NSNextKeyView" ref="47598591"/>
 										<reference key="IBUIBackgroundColor" ref="703732805"/>
 										<bool key="IBUIOpaque">NO</bool>
 										<bool key="IBUIClipsSubviews">YES</bool>
@@ -243,7 +243,7 @@
 									<object class="IBUIButton" id="256814430">
 										<reference key="NSNextResponder" ref="135206302"/>
 										<int key="NSvFlags">293</int>
-										<string key="NSFrame">{{217, 299}, {106, 48}}</string>
+										<string key="NSFrame">{{217, 290}, {106, 48}}</string>
 										<reference key="NSSuperview" ref="135206302"/>
 										<reference key="NSWindow"/>
 										<reference key="NSNextKeyView" ref="662128954"/>
@@ -322,9 +322,10 @@
 									<object class="IBUIActivityIndicatorView" id="662128954">
 										<reference key="NSNextResponder" ref="135206302"/>
 										<int key="NSvFlags">-2147483347</int>
-										<string key="NSFrame">{{340, 312}, {20, 20}}</string>
+										<string key="NSFrame">{{340, 303}, {20, 20}}</string>
 										<reference key="NSSuperview" ref="135206302"/>
 										<reference key="NSWindow"/>
+										<reference key="NSNextKeyView"/>
 										<bool key="IBUIOpaque">NO</bool>
 										<int key="IBUIContentMode">4</int>
 										<string key="targetRuntimeIdentifier">IBIPadFramework</string>
@@ -333,15 +334,16 @@
 									<object class="IBUILabel" id="47598591">
 										<reference key="NSNextResponder" ref="135206302"/>
 										<int key="NSvFlags">293</int>
-										<string key="NSFrame">{{132, 258}, {277, 21}}</string>
+										<string key="NSFrame">{{132, 246}, {277, 21}}</string>
 										<reference key="NSSuperview" ref="135206302"/>
 										<reference key="NSWindow"/>
+										<reference key="NSNextKeyView" ref="256814430"/>
 										<bool key="IBUIOpaque">NO</bool>
 										<bool key="IBUIClipsSubviews">YES</bool>
 										<int key="IBUIContentMode">7</int>
 										<bool key="IBUIUserInteractionEnabled">NO</bool>
 										<string key="targetRuntimeIdentifier">IBIPadFramework</string>
-										<string key="IBUIText">User name and password are case-sensitive</string>
+										<string key="IBUIText">Passwords are case-sensitive.</string>
 										<object class="NSColor" key="IBUITextColor">
 											<int key="NSColorSpace">2</int>
 											<bytes key="NSRGB">MC4xMzMzMzMzNDAzIDAuNTYwNzg0MzM5OSAwLjgyMzUyOTQ4MTkAA</bytes>
