@@ -239,7 +239,7 @@
 										<int key="IBUIContentMode">7</int>
 										<bool key="IBUIUserInteractionEnabled">NO</bool>
 										<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
-										<string key="IBUIText">To confirm, enter your Scholastic password for %@:</string>
+										<string key="IBUIText">Please enter the password for Scholastic user name %@.</string>
 										<reference key="IBUITextColor" ref="18532674"/>
 										<nil key="IBUIHighlightedColor"/>
 										<int key="IBUIBaselineAdjustment">1</int>
@@ -259,7 +259,7 @@
 											<int key="NSfFlags">16</int>
 										</object>
 									</object>
-									<object class="IBUILabel" id="1014537443">
+									<object class="IBUILabel" id="664214227">
 										<reference key="NSNextResponder" ref="627749786"/>
 										<int key="NSvFlags">293</int>
 										<string key="NSFrame">{{67, 285}, {190, 21}}</string>
@@ -633,7 +633,7 @@
 							<reference ref="155635484"/>
 							<reference ref="483998964"/>
 							<reference ref="288453423"/>
-							<reference ref="1014537443"/>
+							<reference ref="664214227"/>
 						</object>
 						<reference key="parent" ref="550636432"/>
 					</object>
@@ -674,7 +674,7 @@
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">56</int>
-						<reference key="object" ref="1014537443"/>
+						<reference key="object" ref="664214227"/>
 						<reference key="parent" ref="627749786"/>
 					</object>
 				</object>
