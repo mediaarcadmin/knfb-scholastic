@@ -41,6 +41,7 @@ enum SCHToolType {
 @property (nonatomic, assign) BOOL drawingChanged;
 
 - (void)savePicture:(void(^)(BOOL success))completionBlock;
+- (BOOL)shouldAutoSaveWhenDone;
 - (void)close;
 
 @end
@@ -93,6 +94,11 @@ enum SCHToolType {
         default:
             return SCHStoryInteractionNoTitle;
     }
+}
+
+- (BOOL)shouldAutoSaveWhenDone
+{
+    return YES;
 }
 
 - (BOOL)shouldShowCloseButtonForViewAtIndex:(NSInteger)screenIndex
@@ -341,22 +347,27 @@ enum SCHToolType {
 {
     if (!self.drawingChanged) {
         [self close];
-        return;
-    }
-    
-    UIActionSheet *sheet = [[UIActionSheet alloc] initWithTitle:NSLocalizedString(@"Do you want to save this picture?", @"picture starter save prompt")
-                                                       delegate:self
-                                              cancelButtonTitle:NSLocalizedString(@"Cancel", @"Cancel")
-                                         destructiveButtonTitle:NSLocalizedString(@"Don't Save", @"Don't Save")
-                                              otherButtonTitles:NSLocalizedString(@"Save", @"Save"), nil];
-    sheet.actionSheetStyle = UIActionSheetStyleBlackTranslucent;
-    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
-        [sheet showFromRect:self.doneButton.frame inView:self.contentsView animated:YES];
     } else {
-        [sheet showInView:self.contentsView];
+        if ([self shouldAutoSaveWhenDone]) {
+            [self savePicture:^(BOOL success) {
+                [self close];
+            }];
+        } else {
+            UIActionSheet *sheet = [[UIActionSheet alloc] initWithTitle:NSLocalizedString(@"Do you want to save this picture?", @"picture starter save prompt")
+                                                               delegate:self
+                                                      cancelButtonTitle:NSLocalizedString(@"Cancel", @"Cancel")
+                                                 destructiveButtonTitle:NSLocalizedString(@"Don't Save", @"Don't Save")
+                                                      otherButtonTitles:NSLocalizedString(@"Save", @"Save"), nil];
+            sheet.actionSheetStyle = UIActionSheetStyleBlackTranslucent;
+            if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+                [sheet showFromRect:self.doneButton.frame inView:self.contentsView animated:YES];
+            } else {
+                [sheet showInView:self.contentsView];
+            }
+            self.doneActionSheet = sheet;
+            [sheet release];
+        }
     }
-    self.doneActionSheet = sheet;
-    [sheet release];
 }
 
 - (void)actionSheet:(UIActionSheet *)actionSheet didDismissWithButtonIndex:(NSInteger)buttonIndex
