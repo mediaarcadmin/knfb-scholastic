@@ -366,8 +366,8 @@ extern NSString * const kSCHAuthenticationManagerDeviceKey;
     
     if (toggledSpaceSaver) {
         LambdaAlert *alert = [[LambdaAlert alloc]
-                              initWithTitle:NSLocalizedString(@"Space Saver On", @"")
-                              message:NSLocalizedString(@"New eBooks will not be downloaded until someone chooses to read them. This can save storage space on your device.", @"")];
+                              initWithTitle:NSLocalizedString(@"Space Saver is On", @"")
+                              message:NSLocalizedString(@"New eBooks will not be downloaded until someone chooses to read them. This can save storage space on your device and data transfer if using a mobile data plan.", @"")];
         [alert addButtonWithTitle:NSLocalizedString(@"OK", @"") block:^{
             [self updateSpaceSaverButton];
         }];
@@ -375,7 +375,7 @@ extern NSString * const kSCHAuthenticationManagerDeviceKey;
         [alert release]; 
     } else {
         LambdaAlert *alert = [[LambdaAlert alloc]
-                              initWithTitle:NSLocalizedString(@"Space Saver Off", @"")
+                              initWithTitle:NSLocalizedString(@"Space Saver is Off", @"")
                               message:NSLocalizedString(@"New eBooks will be downloaded immediately when they are assigned to a bookshelf.", @"")];
         [alert addButtonWithTitle:NSLocalizedString(@"OK", @"") block:^{
             [self updateSpaceSaverButton];
