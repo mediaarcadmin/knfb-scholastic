@@ -49,7 +49,6 @@
 @synthesize bookTintView;
 @synthesize isNewBadge;
 @synthesize errorBadge;
-@synthesize trashed;
 @synthesize isNewBook;
 @synthesize coalesceRefreshes;
 @synthesize needsRefresh;
@@ -219,12 +218,6 @@
 - (void)setNeedsDisplay
 {
     [super setNeedsDisplay];
-}
-
-- (void)setTrashed:(BOOL)newTrashed
-{
-    trashed = newTrashed;
-    [self refreshBookCoverView];
 }
 
 - (void)setIsNewBook:(BOOL)newIsNewBook
@@ -497,66 +490,62 @@
 	[self setNeedsDisplay];
     
 	// book status
-    if (self.trashed) {
-        self.bookTintView.hidden = NO;
-        self.progressView.hidden = YES;
-    } else {
-        switch ([book processingState]) {
-            case SCHBookProcessingStateDownloadStarted:
-                NSLog(@"Setting started.");
-                self.progressView.alpha = 1.0f;
-                self.bookTintView.hidden = NO;
-                self.progressView.hidden = NO;
-                self.errorBadge.hidden = YES;
-                [self.progressView setProgress:[book currentDownloadedPercentage] * 0.8];            
-                break;
-            case SCHBookProcessingStateDownloadPaused:
-                NSLog(@"Setting paused.");
-                self.progressView.alpha = 0.0f;
-                self.bookTintView.hidden = NO;
-                self.progressView.hidden = NO;
-                self.errorBadge.hidden = YES;
-                [self.progressView setProgress:[book currentDownloadedPercentage] * 0.8];            
-                break;
-            case SCHBookProcessingStateReadyForLicenseAcquisition:
-            case SCHBookProcessingStateReadyForRightsParsing:
-            case SCHBookProcessingStateReadyForAudioInfoParsing:
-            case SCHBookProcessingStateReadyForTextFlowPreParse:
-                self.progressView.alpha = 1.0f;
-                self.bookTintView.hidden = NO;
-                self.progressView.hidden = NO;
-                self.errorBadge.hidden = YES;
-                [self.progressView setProgress:0.8];            
-                break;
-            case SCHBookProcessingStateReadyToRead:
-                self.progressView.alpha = 1.0f;
-                self.bookTintView.hidden = YES;
-                self.progressView.hidden = YES;
-                self.errorBadge.hidden = YES;
-                break;
-            case SCHBookProcessingStateError:
-            case SCHBookProcessingStateDownloadFailed:
-            case SCHBookProcessingStateURLsNotPopulated:
-            case SCHBookProcessingStateUnableToAcquireLicense:
-            case SCHBookProcessingStateBookVersionNotSupported:
-                self.progressView.alpha = 1.0f;
-                self.bookTintView.hidden = NO;
-                self.progressView.hidden = YES;
-                self.errorBadge.hidden = NO;
-                break;
-            case SCHBookProcessingStateReadyForSmartZoomPreParse:
-            case SCHBookProcessingStateReadyForPagination:
-            default:
-                self.progressView.alpha = 1.0f;
-                self.bookTintView.hidden = NO;
-                self.progressView.hidden = YES;
-                self.errorBadge.hidden = YES;
-                break;
-        }
-    }	
+    switch ([book processingState]) {
+        case SCHBookProcessingStateDownloadStarted:
+            NSLog(@"Setting started.");
+            self.progressView.alpha = 1.0f;
+            self.bookTintView.hidden = NO;
+            self.progressView.hidden = NO;
+            self.errorBadge.hidden = YES;
+            [self.progressView setProgress:[book currentDownloadedPercentage] * 0.8];            
+            break;
+        case SCHBookProcessingStateDownloadPaused:
+            NSLog(@"Setting paused.");
+            self.progressView.alpha = 0.0f;
+            self.bookTintView.hidden = NO;
+            self.progressView.hidden = NO;
+            self.errorBadge.hidden = YES;
+            [self.progressView setProgress:[book currentDownloadedPercentage] * 0.8];            
+            break;
+        case SCHBookProcessingStateReadyForLicenseAcquisition:
+        case SCHBookProcessingStateReadyForRightsParsing:
+        case SCHBookProcessingStateReadyForAudioInfoParsing:
+        case SCHBookProcessingStateReadyForTextFlowPreParse:
+            self.progressView.alpha = 1.0f;
+            self.bookTintView.hidden = NO;
+            self.progressView.hidden = NO;
+            self.errorBadge.hidden = YES;
+            [self.progressView setProgress:0.8];            
+            break;
+        case SCHBookProcessingStateReadyToRead:
+            self.progressView.alpha = 1.0f;
+            self.bookTintView.hidden = YES;
+            self.progressView.hidden = YES;
+            self.errorBadge.hidden = YES;
+            break;
+        case SCHBookProcessingStateError:
+        case SCHBookProcessingStateDownloadFailed:
+        case SCHBookProcessingStateURLsNotPopulated:
+        case SCHBookProcessingStateUnableToAcquireLicense:
+        case SCHBookProcessingStateBookVersionNotSupported:
+            self.progressView.alpha = 1.0f;
+            self.bookTintView.hidden = NO;
+            self.progressView.hidden = YES;
+            self.errorBadge.hidden = NO;
+            break;
+        case SCHBookProcessingStateReadyForSmartZoomPreParse:
+        case SCHBookProcessingStateReadyForPagination:
+        default:
+            self.progressView.alpha = 1.0f;
+            self.bookTintView.hidden = NO;
+            self.progressView.hidden = YES;
+            self.errorBadge.hidden = YES;
+            break;
+    }
+
     
     
-    if (self.isNewBook && !self.trashed && self.errorBadge.hidden == YES) {
+    if (self.isNewBook && self.errorBadge.hidden == YES) {
         self.isNewBadge.hidden = NO;
     } else {
         self.isNewBadge.hidden = YES;

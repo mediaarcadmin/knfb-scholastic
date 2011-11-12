@@ -180,6 +180,7 @@ static NSTimeInterval const kSCHBookShelfViewControllerTopTenRefreshTime = -600.
     self.listTableView.backgroundColor = [[SCHThemeManager sharedThemeManager] colorForListBackground];
     self.listToggleView.backgroundColor = [[SCHThemeManager sharedThemeManager] colorForListBackground]; 
 
+
     CGFloat inset = 86;
 
     if (UIInterfaceOrientationIsLandscape(interfaceOrientation)) {

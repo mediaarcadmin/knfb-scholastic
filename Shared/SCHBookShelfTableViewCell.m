@@ -20,7 +20,6 @@ static NSInteger const CELL_BOOK_COVER_VIEW_TAG = 101;
 static NSInteger const CELL_NEW_INDICATOR_TAG = 102;
 static NSInteger const CELL_SAMPLE_SI_INDICATOR_TAG = 103;
 static NSInteger const CELL_BOOK_TINT_VIEW_TAG = 104;
-static NSInteger const CELL_DELETE_BUTTON = 105;
 static NSInteger const CELL_BACKGROUND_VIEW = 200;
 static NSInteger const CELL_THUMB_BACKGROUND_VIEW = 201;
 static NSInteger const CELL_RULE_IMAGE_VIEW = 202;
@@ -32,7 +31,6 @@ static NSInteger const CELL_ACTIVITY_SPINNER = 203;
 @property (readonly) SCHBookCoverView *bookCoverView;
 @property (readonly) UIImageView *sampleAndSIIndicatorIcon;
 @property (readonly) UIView *backgroundView;
-@property (readonly) UIButton *deleteButton;
 @property (readonly) UIView *thumbBackgroundView;
 @property (readonly) UIImageView *ruleImageView;
 @property (nonatomic, assign) BOOL coalesceRefreshes;
@@ -48,9 +46,7 @@ static NSInteger const CELL_ACTIVITY_SPINNER = 203;
 @implementation SCHBookShelfTableViewCell
 
 @synthesize identifier;
-@synthesize delegate;
 @synthesize isNewBook;
-@synthesize trashed;
 @synthesize lastCell;
 @synthesize loading;
 @synthesize coalesceRefreshes;
@@ -64,7 +60,6 @@ static NSInteger const CELL_ACTIVITY_SPINNER = 203;
         self.textLabel.backgroundColor = [UIColor clearColor];
         self.textLabel.text = [[[NSAttributedString alloc] initWithString:@""] autorelease];
         [self updateTheme];
-        [self.deleteButton addTarget:self action:@selector(pressedDeleteButton:) forControlEvents:UIControlEventTouchUpInside];
         self.ruleImageView.image = [[UIImage imageNamed:@"ListViewRule"] stretchableImageWithLeftCapWidth:6 topCapHeight:0];
         self.lastCell = NO;
         
@@ -125,15 +120,8 @@ static NSInteger const CELL_ACTIVITY_SPINNER = 203;
     SCHBookManager *bookManager = [SCHBookManager sharedBookManager];
    	SCHAppBook *book = [bookManager bookWithIdentifier:self.identifier inManagedObjectContext:bookManager.mainThreadManagedObjectContext];    
     
-    if (self.trashed) {
-        self.textLabel.alpha = 0.5f;
-        self.deleteButton.hidden = YES;
-        self.sampleAndSIIndicatorIcon.hidden = YES;
-    } else {
-        self.textLabel.alpha = 1.0f;
-        self.deleteButton.hidden = NO;
-        self.sampleAndSIIndicatorIcon.hidden = NO;
-    }
+    self.textLabel.alpha = 1.0f;
+    self.sampleAndSIIndicatorIcon.hidden = NO;
 
     [self setNeedsDisplay];
 
@@ -267,13 +255,6 @@ static NSInteger const CELL_ACTIVITY_SPINNER = 203;
 	}
 }
 
-- (void)setTrashed:(BOOL)newTrashed
-{
-    trashed = newTrashed;
-    [self.bookCoverView setTrashed:newTrashed];
-    [self refreshCell];
-}
-
 - (void)setLoading:(BOOL)aLoading
 {
     loading = aLoading;
@@ -286,17 +267,6 @@ static NSInteger const CELL_ACTIVITY_SPINNER = 203;
     isNewBook = newIsNewBook;
     [self.bookCoverView setIsNewBook:newIsNewBook];
     [self refreshCell];
-}
-
-#pragma mark - Delete Button
-
-- (void)pressedDeleteButton:(UIButton *) sender
-{
-    NSLog(@"Pressed delete button!");
-    
-    if (self.delegate && [self.delegate respondsToSelector:@selector(bookShelfTableViewCellSelectedDeleteForIdentifier:)]) {
-        [self.delegate bookShelfTableViewCellSelectedDeleteForIdentifier:self.identifier];
-    }
 }
 
 #pragma mark - Private methods
@@ -333,11 +303,6 @@ static NSInteger const CELL_ACTIVITY_SPINNER = 203;
 - (UIView *)thumbBackgroundView
 {
     return (UIView *)[self.contentView viewWithTag:CELL_THUMB_BACKGROUND_VIEW];
-}
-
-- (UIButton *)deleteButton
-{
-    return (UIButton *)[self.contentView viewWithTag:CELL_DELETE_BUTTON];
 }
 
 - (UIImageView *)ruleImageView

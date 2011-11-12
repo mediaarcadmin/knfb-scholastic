@@ -22,7 +22,6 @@ typedef enum {
 @property (nonatomic, assign) CGFloat topInset;
 @property (nonatomic, assign) CGFloat leftRightInset;
 @property (nonatomic, retain) SCHBookIdentifier *identifier;
-@property (nonatomic, assign) BOOL trashed;
 @property (nonatomic, assign) BOOL isNewBook;
 @property (nonatomic, assign) BOOL loading;
 @property (nonatomic, assign) SCHBookCoverViewMode coverViewMode;

@@ -20,7 +20,6 @@
 
 @synthesize bookCoverView;
 @synthesize identifier;
-@synthesize trashed;
 @synthesize isNewBook;
 @synthesize loading;
 
@@ -85,12 +84,6 @@
     
     [self.bookCoverView setIdentifier:self.identifier];
     [self.bookCoverView refreshBookCoverView];
-}
-
-- (void)setTrashed:(BOOL)newTrashed
-{
-    trashed = newTrashed;
-    self.bookCoverView.trashed = newTrashed;
 }
 
 - (void)setIsNewBook:(BOOL)newIsNewBook
