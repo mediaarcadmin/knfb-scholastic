@@ -40,9 +40,9 @@ enum {
 
 enum {
     kTableOffsetPortrait_iPad = 240,
-    kTableOffsetLandscape_iPad = 120,
-    kTableOffsetPortrait_iPhone = 20,
-    kTableOffsetLandscape_iPhone = 0
+    kTableOffsetLandscape_iPad = 160,
+    kTableOffsetPortrait_iPhone = 44,
+    kTableOffsetLandscape_iPhone = 20
 };
 
 typedef enum {

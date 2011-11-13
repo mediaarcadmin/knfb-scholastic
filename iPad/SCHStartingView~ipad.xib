@@ -87,6 +87,7 @@
 						<string key="NSFrameSize">{768, 7}</string>
 						<reference key="NSSuperview" ref="766721923"/>
 						<reference key="NSWindow"/>
+						<reference key="NSNextKeyView"/>
 						<object class="NSColor" key="IBUIBackgroundColor">
 							<int key="NSColorSpace">3</int>
 							<bytes key="NSWhite">MSAwAA</bytes>
@@ -148,7 +149,7 @@
 								<int key="IBUIContentMode">7</int>
 								<bool key="IBUIUserInteractionEnabled">NO</bool>
 								<string key="targetRuntimeIdentifier">IBIPadFramework</string>
-								<string key="IBUIText">Try it now!</string>
+								<string key="IBUIText">Preview the eReading Experience</string>
 								<object class="NSColor" key="IBUITextColor" id="414531536">
 									<int key="NSColorSpace">3</int>
 									<bytes key="NSWhite">MC4zMzMzMzMzMzMzAA</bytes>
@@ -175,13 +176,14 @@
 								<string key="NSFrame">{{0, 26}, {440, 52}}</string>
 								<reference key="NSSuperview" ref="684671453"/>
 								<reference key="NSWindow"/>
+								<reference key="NSNextKeyView"/>
 								<reference key="IBUIBackgroundColor" ref="1007080006"/>
 								<bool key="IBUIOpaque">NO</bool>
 								<bool key="IBUIClipsSubviews">YES</bool>
 								<int key="IBUIContentMode">7</int>
 								<bool key="IBUIUserInteractionEnabled">NO</bool>
 								<string key="targetRuntimeIdentifier">IBIPadFramework</string>
-								<string key="IBUIText">Experience the best eReading experience for kids right now by choosing the sample bookshelf below.</string>
+								<string key="IBUIText">Take a tour of everything the Scholastic eReader has to offer now-without creating an account.</string>
 								<reference key="IBUITextColor" ref="414531536"/>
 								<nil key="IBUIHighlightedColor"/>
 								<int key="IBUIBaselineAdjustment">1</int>
@@ -201,7 +203,7 @@
 								</object>
 							</object>
 						</object>
-						<string key="NSFrame">{{164, 0}, {440, 98}}</string>
+						<string key="NSFrame">{{164, 0}, {440, 100}}</string>
 						<reference key="NSSuperview" ref="712199625"/>
 						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="453518469"/>
@@ -212,7 +214,7 @@
 						<string key="targetRuntimeIdentifier">IBIPadFramework</string>
 					</object>
 				</object>
-				<string key="NSFrameSize">{768, 98}</string>
+				<string key="NSFrameSize">{768, 100}</string>
 				<reference key="NSSuperview"/>
 				<reference key="NSWindow"/>
 				<reference key="NSNextKeyView" ref="684671453"/>
@@ -242,7 +244,7 @@
 								<int key="IBUIContentMode">7</int>
 								<bool key="IBUIUserInteractionEnabled">NO</bool>
 								<string key="targetRuntimeIdentifier">IBIPadFramework</string>
-								<string key="IBUIText">Sign in</string>
+								<string key="IBUIText">Sign In to the Scholastic eReader</string>
 								<reference key="IBUITextColor" ref="414531536"/>
 								<nil key="IBUIHighlightedColor"/>
 								<int key="IBUIBaselineAdjustment">1</int>
@@ -254,16 +256,17 @@
 							<object class="IBUILabel" id="188485885">
 								<reference key="NSNextResponder" ref="617002111"/>
 								<int key="NSvFlags">290</int>
-								<string key="NSFrame">{{0, 26}, {440, 80}}</string>
+								<string key="NSFrame">{{0, 26}, {440, 52}}</string>
 								<reference key="NSSuperview" ref="617002111"/>
 								<reference key="NSWindow"/>
+								<reference key="NSNextKeyView"/>
 								<reference key="IBUIBackgroundColor" ref="1007080006"/>
 								<bool key="IBUIOpaque">NO</bool>
 								<bool key="IBUIClipsSubviews">YES</bool>
 								<int key="IBUIContentMode">7</int>
 								<bool key="IBUIUserInteractionEnabled">NO</bool>
 								<string key="targetRuntimeIdentifier">IBIPadFramework</string>
-								<string key="IBUIText">If you have a Scholastic user name and password, sign in here to buy eBooks or read eBooks you have already purchased.</string>
+								<string key="IBUIText">Read, manage, and assign eBooks purchased through your account.</string>
 								<reference key="IBUITextColor" ref="414531536"/>
 								<nil key="IBUIHighlightedColor"/>
 								<int key="IBUIBaselineAdjustment">1</int>
@@ -274,7 +277,7 @@
 								<reference key="IBUIFont" ref="12554104"/>
 							</object>
 						</object>
-						<string key="NSFrame">{{164, 28}, {440, 148}}</string>
+						<string key="NSFrame">{{164, 20}, {440, 100}}</string>
 						<reference key="NSSuperview" ref="771371832"/>
 						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="513097889"/>
@@ -282,7 +285,7 @@
 						<string key="targetRuntimeIdentifier">IBIPadFramework</string>
 					</object>
 				</object>
-				<string key="NSFrameSize">{768, 154}</string>
+				<string key="NSFrameSize">{768, 120}</string>
 				<reference key="NSSuperview"/>
 				<reference key="NSWindow"/>
 				<reference key="NSNextKeyView" ref="617002111"/>

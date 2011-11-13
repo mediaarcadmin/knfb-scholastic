@@ -140,7 +140,7 @@
 								<int key="IBUIContentMode">7</int>
 								<bool key="IBUIUserInteractionEnabled">NO</bool>
 								<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
-								<string key="IBUIText">Sign in</string>
+								<string key="IBUIText">Sign In to the Scholastic eReader</string>
 								<object class="NSColor" key="IBUITextColor" id="273679192">
 									<int key="NSColorSpace">3</int>
 									<bytes key="NSWhite">MC4zMzMzMzMzMzMzAA</bytes>
@@ -148,13 +148,13 @@
 								<nil key="IBUIHighlightedColor"/>
 								<int key="IBUIBaselineAdjustment">1</int>
 								<float key="IBUIMinimumFontSize">10</float>
-								<object class="IBUIFontDescription" key="IBUIFontDescription" id="804776985">
+								<object class="IBUIFontDescription" key="IBUIFontDescription">
 									<string key="name">Arial-BoldMT</string>
 									<string key="family">Arial</string>
 									<int key="traits">2</int>
 									<double key="pointSize">18</double>
 								</object>
-								<object class="NSFont" key="IBUIFont" id="974499367">
+								<object class="NSFont" key="IBUIFont">
 									<string key="NSName">Arial-BoldMT</string>
 									<double key="NSSize">18</double>
 									<int key="NSfFlags">16</int>
@@ -163,7 +163,7 @@
 							<object class="IBUILabel" id="924107216">
 								<reference key="NSNextResponder" ref="985864168"/>
 								<int key="NSvFlags">290</int>
-								<string key="NSFrame">{{21, 28}, {278, 61}}</string>
+								<string key="NSFrame">{{21, 29}, {278, 32}}</string>
 								<reference key="NSSuperview" ref="985864168"/>
 								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView"/>
@@ -173,7 +173,7 @@
 								<int key="IBUIContentMode">7</int>
 								<bool key="IBUIUserInteractionEnabled">NO</bool>
 								<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
-								<string key="IBUIText">If you have a Scholastic user name and password, sign in here to buy eBooks or read eBooks you have already purchased.</string>
+								<string key="IBUIText">Read, manage, and assign eBooks purchased through your account.</string>
 								<reference key="IBUITextColor" ref="273679192"/>
 								<nil key="IBUIHighlightedColor"/>
 								<int key="IBUIBaselineAdjustment">1</int>
@@ -193,7 +193,7 @@
 								</object>
 							</object>
 						</object>
-						<string key="NSFrame">{{0, 6}, {320, 96}}</string>
+						<string key="NSFrame">{{0, 4}, {320, 76}}</string>
 						<reference key="NSSuperview" ref="66067528"/>
 						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="577572629"/>
@@ -201,7 +201,7 @@
 						<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 					</object>
 				</object>
-				<string key="NSFrameSize">{320, 102}</string>
+				<string key="NSFrameSize">{320, 80}</string>
 				<reference key="NSSuperview"/>
 				<reference key="NSWindow"/>
 				<reference key="NSNextKeyView" ref="985864168"/>
@@ -231,14 +231,23 @@
 								<int key="IBUIContentMode">7</int>
 								<bool key="IBUIUserInteractionEnabled">NO</bool>
 								<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
-								<string key="IBUIText">Try it now!</string>
+								<string key="IBUIText">Preview the eReading Experience</string>
 								<reference key="IBUITextColor" ref="273679192"/>
 								<nil key="IBUIHighlightedColor"/>
 								<int key="IBUIBaselineAdjustment">1</int>
 								<bool key="IBUIAdjustsFontSizeToFit">NO</bool>
 								<float key="IBUIMinimumFontSize">10</float>
-								<reference key="IBUIFontDescription" ref="804776985"/>
-								<reference key="IBUIFont" ref="974499367"/>
+								<object class="IBUIFontDescription" key="IBUIFontDescription">
+									<string key="name">Arial-BoldMT</string>
+									<string key="family">Arial</string>
+									<int key="traits">2</int>
+									<double key="pointSize">17</double>
+								</object>
+								<object class="NSFont" key="IBUIFont">
+									<string key="NSName">Arial-BoldMT</string>
+									<double key="NSSize">17</double>
+									<int key="NSfFlags">16</int>
+								</object>
 							</object>
 							<object class="IBUILabel" id="802664168">
 								<reference key="NSNextResponder" ref="508741388"/>
@@ -253,7 +262,7 @@
 								<int key="IBUIContentMode">7</int>
 								<bool key="IBUIUserInteractionEnabled">NO</bool>
 								<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
-								<string key="IBUIText">Experience the best eReading experience for kids right now by choosing the sample bookshelf below.</string>
+								<string key="IBUIText">Take a tour of everything the Scholastic eReader has to offer now-without creating an account.</string>
 								<reference key="IBUITextColor" ref="273679192"/>
 								<nil key="IBUIHighlightedColor"/>
 								<int key="IBUIBaselineAdjustment">1</int>
@@ -264,7 +273,7 @@
 								<reference key="IBUIFont" ref="550123845"/>
 							</object>
 						</object>
-						<string key="NSFrame">{{0, 18}, {320, 84}}</string>
+						<string key="NSFrameSize">{320, 90}</string>
 						<reference key="NSSuperview" ref="492192361"/>
 						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="948312762"/>
@@ -272,7 +281,7 @@
 						<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 					</object>
 				</object>
-				<string key="NSFrameSize">{320, 102}</string>
+				<string key="NSFrameSize">{320, 90}</string>
 				<reference key="NSSuperview"/>
 				<reference key="NSWindow"/>
 				<reference key="NSNextKeyView" ref="508741388"/>
