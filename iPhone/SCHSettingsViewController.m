@@ -27,6 +27,7 @@
 #import "SCHAccountValidationViewController.h"
 
 extern NSString * const kSCHAuthenticationManagerDeviceKey;
+extern NSString * const kSCHUserDefaultsSpaceSaverModeSetOffNotification;
 
 @interface SCHSettingsViewController()
 
@@ -386,7 +387,7 @@ extern NSString * const kSCHAuthenticationManagerDeviceKey;
             [self updateSpaceSaverButton];
         }];
         [alert show];
-        [alert release]; 
+        [alert release];         
     } else {
         LambdaAlert *alert = [[LambdaAlert alloc]
                               initWithTitle:NSLocalizedString(@"Space Saver is Off", @"")
@@ -396,6 +397,8 @@ extern NSString * const kSCHAuthenticationManagerDeviceKey;
         }];
         [alert show];
         [alert release]; 
+        
+        [[NSNotificationCenter defaultCenter] postNotificationName:kSCHUserDefaultsSpaceSaverModeSetOffNotification object:nil userInfo:nil];
     }
 }
 

@@ -11,6 +11,7 @@
 // Constants
 NSString * const kSCHUserDefaultsPerformedFirstSyncUpToBooks = @"PerformedFirstSyncUpToBooks";
 NSString * const kSCHUserDefaultsSpaceSaverMode = @"SpaceSaverMode";
+NSString * const kSCHUserDefaultsSpaceSaverModeSetOffNotification = @"SpaceSaverModeSetOffNotification";
 
 NSString * const kSCHAuthenticationManagerUserKey = @"AuthenticationManager.UserKey";
 NSString * const kSCHAuthenticationManagerDeviceKey = @"AuthenticationManager.DeviceKey";

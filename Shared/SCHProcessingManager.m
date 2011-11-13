@@ -28,6 +28,8 @@
 NSString * const kSCHProcessingManagerConnectionIdle = @"SCHProcessingManagerConnectionIdle";
 NSString * const kSCHProcessingManagerConnectionBusy = @"SCHProcessingManagerConnectionBusy";
 
+extern NSString * const kSCHUserDefaultsSpaceSaverModeSetOffNotification;
+
 #pragma mark - Class Extension
 
 @interface SCHProcessingManager()
@@ -142,7 +144,12 @@ static SCHProcessingManager *sharedManager = nil;
 		[[NSNotificationCenter defaultCenter] addObserver:sharedManager 
 												 selector:@selector(checkStateForBook:) 
 													 name:SCHBookshelfSyncComponentBookReceivedNotification 
-												   object:nil];			
+												   object:nil];
+		
+        [[NSNotificationCenter defaultCenter] addObserver:sharedManager 
+												 selector:@selector(checkStateForBook:) 
+													 name:kSCHUserDefaultsSpaceSaverModeSetOffNotification 
+												   object:nil];
 		
 		[[NSNotificationCenter defaultCenter] addObserver:sharedManager 
 												 selector:@selector(enterBackground) 
