@@ -174,7 +174,7 @@ static const CGFloat kDeregisterContentHeightLandscape = 380;
                 // remove us from the view hiearachy - now we're no longer needed
                 NSMutableArray *viewControllers = [NSMutableArray arrayWithArray:weakSelf.navigationController.viewControllers];
                 [viewControllers removeObject:weakSelf];     
-                self.navigationController.viewControllers = [NSArray arrayWithArray:viewControllers];
+                weakSelf.navigationController.viewControllers = [NSArray arrayWithArray:viewControllers];
             }
             
             [weakSelf.spinner stopAnimating];
