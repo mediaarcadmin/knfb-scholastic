@@ -18,6 +18,12 @@
 NSString * const SCHReadingStatsSyncComponentDidCompleteNotification = @"SCHReadingStatsSyncComponentDidCompleteNotification";
 NSString * const SCHReadingStatsSyncComponentDidFailNotification = @"SCHReadingStatsSyncComponentDidFailNotification";
 
+@interface SCHReadingStatsSyncComponent ()
+
+- (void)clearStatistics;
+
+@end
+
 @implementation SCHReadingStatsSyncComponent
 
 - (BOOL)synchronize
@@ -60,6 +66,11 @@ NSString * const SCHReadingStatsSyncComponentDidFailNotification = @"SCHReadingS
 - (void)clear
 {
     [super clear];
+    [self clearStatistics];
+}
+
+- (void)clearStatistics
+{
 	NSError *error = nil;
 	
 	if (![self.managedObjectContext BITemptyEntity:kSCHReadingStatsDetailItem error:&error]) {
@@ -70,7 +81,7 @@ NSString * const SCHReadingStatsSyncComponentDidFailNotification = @"SCHReadingS
 - (void)method:(NSString *)method didCompleteWithResult:(NSDictionary *)result
 {
     @try {
-        [self clear];
+        [self clearStatistics];
         [[NSNotificationCenter defaultCenter] postNotificationName:SCHReadingStatsSyncComponentDidCompleteNotification 
                                                             object:self];
         [super method:method didCompleteWithResult:nil];				    
@@ -94,7 +105,7 @@ NSString * const SCHReadingStatsSyncComponentDidFailNotification = @"SCHReadingS
     
     // server error so clear the stats
     if ([error domain] == kBITAPIErrorDomain) {
-        [self clear];        
+        [self clearStatistics];        
     }    
     [[NSNotificationCenter defaultCenter] postNotificationName:SCHReadingStatsSyncComponentDidFailNotification 
                                                         object:self];

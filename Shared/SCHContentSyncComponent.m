@@ -22,6 +22,7 @@
 #import "SCHAppContentProfileItem.h"
 #import "SCHBookIdentifier.h"
 #import "BITAPIError.h"
+#import "SCHContentMetadataItem.h"
 
 // Constants
 NSString * const SCHContentSyncComponentWillDeleteNotification = @"SCHContentSyncComponentWillDeleteNotification";
@@ -54,6 +55,7 @@ NSString * const SCHContentSyncComponentDidFailNotification = @"SCHContentSyncCo
                      insertInto:(SCHUserContentItem *)userContentItem;
 - (void)syncContentProfileItem:(NSDictionary *)webContentProfileItem 
         withContentProfileItem:(SCHContentProfileItem *)localContentProfileItem;
+- (void)deleteUnusedContentMetadataItems;
 
 @end
 
@@ -276,6 +278,8 @@ NSString * const SCHContentSyncComponentDidFailNotification = @"SCHContentSyncCo
     }
 	
 	[self save];
+    
+    [self deleteUnusedContentMetadataItems];
 }
 
 - (void)addUserContentItem:(NSDictionary *)webUserContentItem
@@ -623,6 +627,28 @@ NSString * const SCHContentSyncComponentDidFailNotification = @"SCHContentSyncCo
             localContentProfileItem.AppContentProfileItem.IsNewBook = [NSNumber numberWithBool:NO];
         }
     }
+}
+
+// if a book does not belong on at least one bookshelf then we remove it and thus
+// any of the on disk files
+- (void)deleteUnusedContentMetadataItems
+{
+    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init]; 
+    [fetchRequest setEntity:[NSEntityDescription entityForName:kSCHUserContentItem
+                                        inManagedObjectContext:self.managedObjectContext]];	                                                                            
+    [fetchRequest setPredicate:[NSPredicate predicateWithFormat:@"ProfileList.@count < 1"]];    
+    
+    NSArray *userContent = [self.managedObjectContext executeFetchRequest:fetchRequest 
+                                                                error:nil];
+    [fetchRequest release], fetchRequest = nil;
+    
+    for (SCHUserContentItem *userContentItem in userContent) {
+        for (SCHContentMetadataItem *item in [userContentItem ContentMetadataItem]) {
+            [self.managedObjectContext deleteObject:item];
+        }
+    }   
+    
+    [self save];
 }
 
 @end
