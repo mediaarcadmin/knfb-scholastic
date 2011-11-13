@@ -41,6 +41,7 @@ extern NSString * const kSCHAuthenticationManagerDeviceKey;
 - (void)replaceCheckBooksAlertWithAlert:(LambdaAlert *)alert;
 - (void)registerForSyncNotifications;
 - (void)deregisterForSyncNotifications;
+- (BOOL)connectionIsReachable;
 
 @end
 
@@ -238,10 +239,12 @@ extern NSString * const kSCHAuthenticationManagerDeviceKey;
 
 - (IBAction)deregisterDevice:(id)sender 
 {
-    SCHDeregisterDeviceViewController *vc = [[SCHDeregisterDeviceViewController alloc] init];
-    vc.settingsDelegate = self.settingsDelegate;
-    [self.navigationController pushViewController:vc animated:YES];
-    [vc release];
+    if ([self connectionIsReachable]) {
+        SCHDeregisterDeviceViewController *vc = [[SCHDeregisterDeviceViewController alloc] init];
+        vc.settingsDelegate = self.settingsDelegate;
+        [self.navigationController pushViewController:vc animated:YES];
+        [vc release];
+    }
 }
 
 - (IBAction)showPrivacyPolicy:(id)sender
@@ -313,31 +316,37 @@ extern NSString * const kSCHAuthenticationManagerDeviceKey;
     [alert release];
 }
 
+- (BOOL)connectionIsReachable
+{
+    BOOL reachable = [[Reachability reachabilityForInternetConnection] isReachable];
+    
+    if (reachable == NO) {
+        LambdaAlert *alert = [[LambdaAlert alloc]
+                              initWithTitle:NSLocalizedString(@"No Internet Connection", @"")
+                              message:NSLocalizedString(@"This function requires an Internet connection. Please connect to the internet and then try again.", @"")];
+        [alert addButtonWithTitle:NSLocalizedString(@"OK", @"") block:nil];
+        [alert show];
+        [alert release];   
+    }
+    
+    return reachable;
+}
+
 - (IBAction)manageBooks:(id)sender
 {
-    // we always ask for the password before showing parent tools from settings
-    SCHAccountValidationViewController *accountValidationViewController = [[[SCHAccountValidationViewController alloc] init] autorelease];
-    accountValidationViewController.title = NSLocalizedString(@"Manage eBooks", @"Manage eBooks");
-    [self.navigationController pushViewController:accountValidationViewController animated:YES];        
+    if ([self connectionIsReachable]) {
+        // we always ask for the password before showing parent tools from settings
+        SCHAccountValidationViewController *accountValidationViewController = [[[SCHAccountValidationViewController alloc] init] autorelease];
+        accountValidationViewController.title = NSLocalizedString(@"Manage eBooks", @"Manage eBooks");
+        [self.navigationController pushViewController:accountValidationViewController animated:YES];   
+    }
 }
 
 - (IBAction)checkBooks:(id)sender
 {
+    if ([self connectionIsReachable]) {
+        [self.checkBooksButton setEnabled:NO];
     
-    [self.checkBooksButton setEnabled:NO];
-    
-    if ([[Reachability reachabilityForInternetConnection] isReachable] == NO) {
-        LambdaAlert *alert = [[LambdaAlert alloc]
-                              initWithTitle:NSLocalizedString(@"No Internet Connection", @"")
-                              message:NSLocalizedString(@"This function requires an Internet connection. Please connect to the internet and then try again.", @"")];
-        [alert addButtonWithTitle:NSLocalizedString(@"OK", @"") block:^{
-            if ([[SCHAppStateManager sharedAppStateManager] canAuthenticate] != NO) {
-                [self.checkBooksButton setEnabled:YES];
-            }
-        }];
-        [alert show];
-        [alert release];                
-    } else {
         checkBooksAlert = [[LambdaAlert alloc]
                               initWithTitle:NSLocalizedString(@"Syncing with Your Account", @"")
                               message:@"\n"];
