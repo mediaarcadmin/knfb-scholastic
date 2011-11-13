@@ -35,7 +35,6 @@ extern NSString * const kSCHAuthenticationManagerDeviceKey;
 @property (nonatomic, retain) LambdaAlert *checkBooksAlert;
 
 - (void)updateSpaceSaverButton;
-- (void)updateUpdateBooksButton;
 - (void)updateDictionaryButton;
 - (void)releaseViewObjects;
 - (void)replaceCheckBooksAlertWithAlert:(LambdaAlert *)alert;
@@ -51,7 +50,6 @@ extern NSString * const kSCHAuthenticationManagerDeviceKey;
 @synthesize manageBooksGroupView;
 @synthesize checkBooksButton;
 @synthesize manageBooksButton;
-@synthesize updateBooksButton;
 @synthesize deregisterDeviceButton;
 @synthesize downloadDictionaryButton;
 @synthesize spaceSaverButton;
@@ -70,7 +68,6 @@ extern NSString * const kSCHAuthenticationManagerDeviceKey;
     [manageBooksGroupView release], manageBooksGroupView = nil;
     [checkBooksButton release], checkBooksButton = nil;
     [manageBooksButton release], manageBooksButton = nil;
-    [updateBooksButton release], updateBooksButton = nil;
     [deregisterDeviceButton release], deregisterDeviceButton = nil;
     [downloadDictionaryButton release], downloadDictionaryButton = nil;
     [spaceSaverButton release], spaceSaverButton = nil;
@@ -95,13 +92,6 @@ extern NSString * const kSCHAuthenticationManagerDeviceKey;
 {
     [super viewDidLoad];
     
-    NSAssert(self.managedObjectContext != nil, @"must set managedObjectContext before loading view");
-    bookUpdates = [[SCHBookUpdates alloc] init];
-    bookUpdates.managedObjectContext = self.managedObjectContext;
-    
-    updateBooksViewController = [[SCHUpdateBooksViewController alloc] init];
-    updateBooksViewController.bookUpdates = bookUpdates;
-
     [self.scrollView setContentSize:CGSizeMake(320, 416)];
     [self.manageBooksGroupView.layer setBorderColor:[UIColor SCHGray2Color].CGColor];
     [self.manageBooksGroupView.layer setBorderWidth:2];
@@ -110,7 +100,6 @@ extern NSString * const kSCHAuthenticationManagerDeviceKey;
     
     [self setButtonBackground:self.checkBooksButton];
     [self setButtonBackground:self.manageBooksButton];
-    [self setButtonBackground:self.updateBooksButton];
     [self setButtonBackground:self.spaceSaverButton];
     [self setButtonBackground:self.downloadDictionaryButton];
     [self setButtonBackground:self.deregisterDeviceButton];
@@ -135,6 +124,41 @@ extern NSString * const kSCHAuthenticationManagerDeviceKey;
                                                object:nil];
 }
 
+- (NSArray *)currentSettingsViewControllers
+{
+    NSArray *viewControllers = nil;
+    
+    if ([self.bookUpdates areBookUpdatesAvailable] &&
+        [[Reachability reachabilityForInternetConnection] isReachable]) {
+        viewControllers = [NSArray arrayWithObjects:self, self.updateBooksViewController, nil];
+    } else {
+        viewControllers = [NSArray arrayWithObject:self];
+    }
+    
+    return viewControllers;
+}
+
+- (SCHBookUpdates *)bookUpdates
+{
+    if (bookUpdates) {
+        NSAssert(self.managedObjectContext != nil, @"must set managedObjectContext before accessing bookUpdates");
+        bookUpdates = [[SCHBookUpdates alloc] init];
+        bookUpdates.managedObjectContext = self.managedObjectContext;
+    }
+    
+    return bookUpdates;
+}
+
+- (SCHUpdateBooksViewController *)updateBooksViewController
+{
+    if (!updateBooksViewController) {
+        updateBooksViewController = [[SCHUpdateBooksViewController alloc] init];
+        updateBooksViewController.bookUpdates = self.bookUpdates;
+    }
+    
+    return updateBooksViewController;
+}
+
 - (void)viewDidUnload 
 {
     [super viewDidUnload];
@@ -145,7 +169,6 @@ extern NSString * const kSCHAuthenticationManagerDeviceKey;
 {
     [super viewWillAppear:animated];    
     [self updateSpaceSaverButton];
-    [self updateUpdateBooksButton];
     [self updateDictionaryButton];
     
     if ([[SCHAppStateManager sharedAppStateManager] canAuthenticate] == NO) {
@@ -176,19 +199,6 @@ extern NSString * const kSCHAuthenticationManagerDeviceKey;
         [self.spaceSaverButton setTitle:NSLocalizedString(@"Turn Off Space Saver", @"Turn Off Space Saver") forState:UIControlStateNormal];
     } else {
         [self.spaceSaverButton setTitle:NSLocalizedString(@"Turn On Space Saver", @"Turn On Space Saver") forState:UIControlStateNormal];        
-    }
-}
-
-- (void)updateUpdateBooksButton
-{
-    self.updateBooksButton.enabled = [self.bookUpdates areBookUpdatesAvailable];
-    
-    if (self.updateBooksButton.enabled == YES) {
-        [self.updateBooksButton setTitle:NSLocalizedString(@"Update my Current eBooks", @"Update my Current eBooks") forState:UIControlStateNormal];
-        [self.updateBooksButton setImage:[UIImage imageNamed:@"update-icon"] forState:UIControlStateNormal];
-    } else {
-        [self.updateBooksButton setTitle:NSLocalizedString(@"No eBook Updates Available", @"No eBook Updates Available") forState:UIControlStateNormal];        
-        [self.updateBooksButton setImage:nil forState:UIControlStateNormal];        
     }
 }
 
@@ -360,11 +370,6 @@ extern NSString * const kSCHAuthenticationManagerDeviceKey;
     
 }
 
-- (IBAction)updateBooks:(id)sender
-{
-    [self.navigationController pushViewController:updateBooksViewController animated:YES];
-}
-
 - (IBAction)toggleSpaceSaverMode:(id)sender
 {
     NSNumber *spaceSaver = [[NSUserDefaults standardUserDefaults] objectForKey:kSCHUserDefaultsSpaceSaverMode];
@@ -511,9 +516,7 @@ extern NSString * const kSCHAuthenticationManagerDeviceKey;
 - (void)didCompleteSync:(NSNotification *)note
 {
     [self deregisterForSyncNotifications];
-    
-    [self updateUpdateBooksButton];
-    
+        
     if (self.checkBooksAlert) {
                 
         LambdaAlert *alert = [[LambdaAlert alloc]

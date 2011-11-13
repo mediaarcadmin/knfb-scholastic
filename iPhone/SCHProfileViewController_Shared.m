@@ -20,6 +20,7 @@
 #import "SCHCoreDataHelper.h"
 #import "SCHSyncManager.h"
 #import "LambdaAlert.h"
+#import "Reachability.h"
 
 @interface SCHProfileViewController_Shared()  
 
@@ -452,7 +453,8 @@
 
 - (void)pushSettingsController
 {
-    [self.modalNavigationController setViewControllers:[NSArray arrayWithObject:self.settingsViewController]];
+    NSArray *viewControllers = [self.settingsViewController currentSettingsViewControllers];
+    [self.modalNavigationController setViewControllers:viewControllers];
     [self.modalNavigationController setModalTransitionStyle:UIModalTransitionStyleCoverVertical];
     [self.modalNavigationController setModalPresentationStyle:UIModalPresentationFormSheet];
     [self.modalNavigationController.navigationBar setTintColor:[UIColor SCHRed2Color]];
@@ -504,7 +506,10 @@
         self.bookUpdates.managedObjectContext = self.managedObjectContext;
     }
     
-    [self showUpdatesBubble:[self.bookUpdates areBookUpdatesAvailable]];
+    BOOL shouldShowUpdates = [self.bookUpdates areBookUpdatesAvailable] && 
+                             [[Reachability reachabilityForInternetConnection] isReachable];
+    
+    [self showUpdatesBubble:shouldShowUpdates];
 }
 
 - (void)showUpdatesBubble:(BOOL)show
