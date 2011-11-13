@@ -26,7 +26,7 @@
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
-        sortTypeArray = [[NSArray arrayWithObjects:@"Manual", @"Title", @"Author", @"Newest", @"Last Read", nil] retain];
+        sortTypeArray = [[NSArray arrayWithObjects:@"Title", @"Author", @"Newest", @"Last Read", nil] retain];
     }
     return self;
 }
@@ -106,18 +106,15 @@
     
     switch ([indexPath row]) {
         case 0:
-            newSortType = kSCHBookSortTypeUser;
-            break;
-        case 1:
             newSortType = kSCHBookSortTypeTitle;
             break;
-        case 2:
+        case 1:
             newSortType = kSCHBookSortTypeAuthor;
             break;
-        case 3:
+        case 2:
            newSortType = kSCHBookSortTypeNewest;
             break;
-        case 4:
+        case 3:
             newSortType = kSCHBookSortTypeLastRead;
             break;
         default:

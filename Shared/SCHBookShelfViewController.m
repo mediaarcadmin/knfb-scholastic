@@ -439,9 +439,8 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 131;
 
 - (BOOL)gestureRecognizerShouldBegin:(UIGestureRecognizer *)gestureRecognizer 
 {
-    if (self.sortType == kSCHBookSortTypeUser) {
-        [self.gridView setEditing:YES animated:YES];
-    }
+    [self.gridView setEditing:YES animated:YES];
+    self.sortType = kSCHBookSortTypeUser;
     
     return NO;
 }

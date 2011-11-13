@@ -28,11 +28,11 @@ extern NSString * const kSCHProfileItemCONTENT_IDENTIFIER;
 extern NSString * const kSCHProfileItemDRM_QUALIFIER;
 
 typedef enum {
-    kSCHBookSortTypeUser,
     kSCHBookSortTypeTitle,
     kSCHBookSortTypeAuthor,
     kSCHBookSortTypeNewest,
     kSCHBookSortTypeLastRead,
+    kSCHBookSortTypeUser
 } SCHBookSortType;
 
 @interface SCHProfileItem : SCHSyncEntity 
