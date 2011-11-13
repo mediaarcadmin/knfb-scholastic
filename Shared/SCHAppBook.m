@@ -68,6 +68,7 @@ NSString * const kSCHAppBookFilenameSeparator = @"-";
 @interface SCHAppBook()
 
 - (NSError *)errorWithCode:(NSInteger)code;
+- (BOOL)urlHasExpired:(NSString *)urlString;
 
 @end
 
@@ -151,42 +152,39 @@ NSString * const kSCHAppBookFilenameSeparator = @"-";
 {
     return(self.ContentMetadataItem.bookIdentifier);
 }
-            
-- (BOOL)bookCoverURLHasExpired
+
+- (BOOL)bookCoverURLIsValid
 {
-    BOOL ret = YES;
-    
-    if ([[SCHAppStateManager sharedAppStateManager] isSampleStore]) {
-        ret = NO;
-    } else if (self.BookCoverURL != nil) {
-        NSURL *url = [NSURL URLWithString:self.BookCoverURL];
-        NSString *expires = [[url queryParameters] objectForKey:@"Expires"];
-        if (expires != nil) {
-            NSDate *expiresDate = [NSDate dateWithTimeIntervalSince1970:[expires integerValue]];
-            
-            if ([expiresDate earlierDate:[[NSDate date] dateByAddingTimeInterval:60]] != expiresDate) {
-                ret = NO;
-            }
-        }
-    }
-    
-    return ret;
+    return (self.BookCoverURL && ![self urlHasExpired:self.BookCoverURL]);
 }
 
-- (BOOL)bookFileURLHasExpired
+- (BOOL)bookFileURLIsValid
 {
-    BOOL ret = YES;
+    return (self.BookFileURL && ![self urlHasExpired:self.BookFileURL]);
+}
+
+- (BOOL)contentMetadataCoverURLIsValid
+{
+    return (self.ContentMetadataItem.CoverURL && ![self urlHasExpired:self.ContentMetadataItem.CoverURL]);
+}
+
+- (BOOL)contentMetadataFileURLIsValid
+{
+    return (self.ContentMetadataItem.ContentURL && ![self urlHasExpired:self.ContentMetadataItem.ContentURL]);
+}
+            
+- (BOOL)urlHasExpired:(NSString *)urlString
+{
+    BOOL ret = NO;
     
-    if ([[SCHAppStateManager sharedAppStateManager] isSampleStore]) {
-        ret = NO;
-    } else if (self.BookFileURL != nil) {
-        NSURL *url = [NSURL URLWithString:self.BookFileURL];
+    if (urlString) {
+        NSURL *url = [NSURL URLWithString:urlString];
         NSString *expires = [[url queryParameters] objectForKey:@"Expires"];
-        if (expires != nil) {
+        if (expires) {
             NSDate *expiresDate = [NSDate dateWithTimeIntervalSince1970:[expires integerValue]];
             
-            if ([expiresDate earlierDate:[[NSDate date] dateByAddingTimeInterval:60]] != expiresDate) {
-                ret = NO;
+            if ([expiresDate earlierDate:[[NSDate date] dateByAddingTimeInterval:60]] == expiresDate) {
+                ret = YES;
             }
         }
     }

@@ -36,21 +36,21 @@
         return;
     }
 
-    __block BOOL expiredURLs = NO;
-    // sync call to find out if we have a contentURL
+    __block BOOL validContentMetadataURLs = NO;
+    
+    // sync call to find out if we have valid contentMetadata URLs
     [self performWithBook:^(SCHAppBook *book) {
-        haveContentURL = book.ContentMetadataItem.ContentURL != nil;
-        expiredURLs = [book bookCoverURLHasExpired] || [book bookFileURLHasExpired];
+        validContentMetadataURLs = [book contentMetadataCoverURLIsValid] && [book contentMetadataFileURLIsValid];
     }];
 
-    [self performWithBookAndSave:^(SCHAppBook *book) {
-        if (haveContentURL == YES && !expiredURLs) {
+    if (validContentMetadataURLs) {
+        [self performWithBookAndSave:^(SCHAppBook *book) {
             [book setValue:book.ContentMetadataItem.CoverURL forKey:kSCHAppBookCoverURL];
             [book setValue:book.ContentMetadataItem.ContentURL forKey:kSCHAppBookFileURL];                    
-        }
-    }];
+        }];
+    }
 
-    if (haveContentURL == YES && !expiredURLs) {
+    if (validContentMetadataURLs) {
         [self setProcessingState:SCHBookProcessingStateNoCoverImage];
         [self setIsProcessing:NO];                
         [self endOperation];
@@ -86,23 +86,24 @@
             [self setProcessingState:SCHBookProcessingStateURLsNotPopulated];
         } else {
             
-            __block BOOL urlsAlreadyExpired = NO;
+            __block BOOL urlsValid = NO;
             
             [self performWithBookAndSave:^(SCHAppBook *book) {
                 SCHBookshelfSyncComponent *localComponent = [[SCHBookshelfSyncComponent alloc] init];
                 [localComponent syncContentMetadataItem:userInfo withContentMetadataItem:book.ContentMetadataItem];
-                [book setValue:[userInfo valueForKey:kSCHLibreAccessWebServiceCoverURL] forKey:kSCHAppBookCoverURL];
-                [book setValue:[userInfo valueForKey:kSCHLibreAccessWebServiceContentURL] forKey:kSCHAppBookFileURL];
+                
+                if (([book contentMetadataCoverURLIsValid] && [book contentMetadataFileURLIsValid])) {
+                    [book setValue:[userInfo valueForKey:kSCHLibreAccessWebServiceCoverURL] forKey:kSCHAppBookCoverURL];
+                    [book setValue:[userInfo valueForKey:kSCHLibreAccessWebServiceContentURL] forKey:kSCHAppBookFileURL];
+                    urlsValid = YES;
+                }
                 [localComponent release];
                 
-                if ([book bookCoverURLHasExpired] || [book bookFileURLHasExpired]) {
-                    urlsAlreadyExpired = YES;
-                }
             }];
             
-            // check here for expiry
-            if (urlsAlreadyExpired) {
-                NSLog(@"Warning: URLs from the server have already expired for %@!", bookIdentifier);
+            // check here for invalidity
+            if (!urlsValid) {
+                NSLog(@"Warning: URLs from the server were already invalid for %@!", bookIdentifier);
                 [self setProcessingState:SCHBookProcessingStateURLsNotPopulated];
             } else {
                 NSLog(@"Successful URL retrieval for %@!", bookIdentifier);

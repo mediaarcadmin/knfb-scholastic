@@ -390,7 +390,7 @@ static SCHProcessingManager *sharedManager = nil;
             case SCHBookProcessingStateNoCoverImage:
             {	
                 // check first for URL expiry
-                if ([book bookCoverURLHasExpired]) {
+                if (![book bookCoverURLIsValid]) {
                     // if expired, get the URLs again - this won't loop because we check in 
                     // the URL request operation for expired URLs from the service.
                     [book setProcessingState:SCHBookProcessingStateNoURLs];
@@ -417,7 +417,7 @@ static SCHProcessingManager *sharedManager = nil;
             case SCHBookProcessingStateDownloadStarted:
             {
                 // check first for URL expiry
-                if ([book bookFileURLHasExpired]) {
+                if (![book bookFileURLIsValid]) {
                     // if expired, get the URLs again and force download
                     book.ForceProcess = [NSNumber numberWithBool:YES];
                     [book setProcessingState:SCHBookProcessingStateNoURLs];
