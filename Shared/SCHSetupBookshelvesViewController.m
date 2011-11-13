@@ -33,6 +33,7 @@
 - (void)dealloc
 {
     [self releaseViewObjects];
+    [moveToWebParentToolsTimer invalidate];
     [moveToWebParentToolsTimer release], moveToWebParentToolsTimer = nil;
     
     [super dealloc];
@@ -64,6 +65,13 @@
                                                                     selector:@selector(moveToWebParentTools:) 
                                                                     userInfo:nil 
                                                                      repeats:NO];    
+}
+
+- (void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
+    [self.moveToWebParentToolsTimer invalidate];
+    self.moveToWebParentToolsTimer = nil;
 }
 
 - (void)viewDidUnload

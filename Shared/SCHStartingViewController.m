@@ -444,20 +444,31 @@ typedef enum {
 
 - (void)checkBookshelvesAndDictionaryDownloadForProfile:(BOOL)animated
 {    
-    UIViewController *next = nil;
-    
-    if ([self bookshelfSetupRequired]) {
-        SCHSetupBookshelvesViewController *setupBookshelves = [[SCHSetupBookshelvesViewController alloc] init];
-        setupBookshelves.profileSetupDelegate = self;
-        next = setupBookshelves;
-        self.profileSyncState = kSCHStartingViewControllerProfileSyncStateWaitingForBookshelves;
-    }
+    NSArray *currentViewControllers = [self.modalNavigationController viewControllers];
+    UIViewController *current = ([currentViewControllers count] == 1) ? [currentViewControllers objectAtIndex:0] : nil;
 
-    if (!next && [self dictionaryDownloadRequired]) {
-        SCHDownloadDictionaryViewController *downloadDictionary = [[SCHDownloadDictionaryViewController alloc] init];
-        downloadDictionary.profileSetupDelegate = self;
-        next = downloadDictionary;
-        animated = YES;
+    UIViewController *next = nil;
+        
+    if ([self bookshelfSetupRequired]) {
+        self.profileSyncState = kSCHStartingViewControllerProfileSyncStateWaitingForBookshelves;
+        if ([current isKindOfClass:NSClassFromString(@"SCHSetupBookshelvesViewController")]) {
+            // Do nothing, we are trying to push the same thing on
+            return;
+        } else {
+            SCHSetupBookshelvesViewController *setupBookshelves = [[[SCHSetupBookshelvesViewController alloc] init] autorelease];
+            setupBookshelves.profileSetupDelegate = self;
+            next = setupBookshelves;
+        }
+    } else if ([self dictionaryDownloadRequired]) {
+        if ([current isKindOfClass:NSClassFromString(@"SCHDownloadDictionaryViewController")]) {
+            // Do nothing, we are trying to push the same thing on
+            return;
+        } else {
+            SCHDownloadDictionaryViewController *downloadDictionary = [[[SCHDownloadDictionaryViewController alloc] init] autorelease];
+            downloadDictionary.profileSetupDelegate = self;
+            next = downloadDictionary;
+            animated = YES;
+        }
     }
      
     if (next) {
@@ -465,9 +476,7 @@ typedef enum {
         
         if (!self.modalViewController) {
             [self presentModalViewController:self.modalNavigationController animated:animated];
-        }
-        
-        [next release];
+        }        
     } else {
         [self showCurrentProfileAnimated:YES];
     }
