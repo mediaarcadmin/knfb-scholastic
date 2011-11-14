@@ -115,7 +115,7 @@ NSString * const kSCHProfileItemDRM_QUALIFIER = @"DRM_QUALIFIER";
         [fetchRequest setEntity:[NSEntityDescription entityForName:kSCHAnnotationsItem 
                                             inManagedObjectContext:self.managedObjectContext]];	                                                                            
         [fetchRequest setPredicate:
-         [NSPredicate predicateWithFormat:@"ID == %@", self.ID]];    
+         [NSPredicate predicateWithFormat:@"ProfileID == %@", self.ID]];    
         
         NSArray *profiles = [self.managedObjectContext executeFetchRequest:fetchRequest 
                                                                   error:nil];
@@ -134,7 +134,7 @@ NSString * const kSCHProfileItemDRM_QUALIFIER = @"DRM_QUALIFIER";
         [fetchRequest setEntity:[NSEntityDescription entityForName:kSCHReadingStatsDetailItem 
                                             inManagedObjectContext:self.managedObjectContext]];	                                                                            
         [fetchRequest setPredicate:
-         [NSPredicate predicateWithFormat:@"ID == %@", self.ID]];    
+         [NSPredicate predicateWithFormat:@"ProfileID == %@", self.ID]];    
         
         NSArray *profiles = [self.managedObjectContext executeFetchRequest:fetchRequest 
                                                                   error:nil];
