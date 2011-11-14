@@ -21,5 +21,6 @@
 @property (nonatomic, retain) IBOutlet UIView *samplesHeaderView;
 @property (nonatomic, retain) IBOutlet UIView *signInHeaderView;
 @property (nonatomic, retain) IBOutlet UINavigationController *modalNavigationController;
+@property (nonatomic, retain) IBOutlet UILabel *versionLabel;
 
 @end

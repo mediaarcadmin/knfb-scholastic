@@ -86,6 +86,7 @@ typedef enum {
 @synthesize modalNavigationController;
 @synthesize profileViewController;
 @synthesize profileSyncState;
+@synthesize versionLabel;
 
 - (void)releaseViewObjects
 {
@@ -102,6 +103,7 @@ typedef enum {
     [samplesHeaderView release], samplesHeaderView = nil;
     [signInHeaderView release], signInHeaderView = nil;
     [modalNavigationController release], modalNavigationController = nil;
+    [versionLabel release], versionLabel = nil;
 }
 
 - (void)dealloc
@@ -124,6 +126,20 @@ typedef enum {
     
     [self.modalNavigationController setModalTransitionStyle:UIModalTransitionStyleCoverVertical];
     [self.modalNavigationController setModalPresentationStyle:UIModalPresentationFormSheet];
+    
+    // Get the marketing version from Info.plist.
+    NSString* version = (NSString*)[[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"]; 
+    NSString* buildnum = (NSString*)[[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"];
+    
+    if (version && buildnum) {
+        if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+            self.versionLabel.text = [NSString stringWithFormat:@"Version %@ (%@)", version, buildnum];
+        } else {
+            self.versionLabel.text = [NSString stringWithFormat:@"v%@ (%@)", version, buildnum];
+        }
+    } else {
+        self.versionLabel.alpha = 0;
+    }
 
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(willEnterForeground:)
