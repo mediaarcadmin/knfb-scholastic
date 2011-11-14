@@ -9,6 +9,8 @@
 #import "SCHDownloadDictionaryViewController.h"
 #import "SCHDictionaryDownloadManager.h"
 #import "SCHAppStateManager.h"
+#import "Reachability.h"
+#import "LambdaAlert.h"
 
 @interface SCHDownloadDictionaryViewController ()
 - (void)layoutLabelsForOrientation:(UIInterfaceOrientation)orientation;
@@ -79,10 +81,25 @@
 {
     [[SCHDictionaryDownloadManager sharedDownloadManager] beginDictionaryDownload];
     
-    if ([[SCHAppStateManager sharedAppStateManager] isSampleStore] == NO) {
-        [self.profileSetupDelegate showCurrentProfileAnimated:YES];
+    dispatch_block_t afterDownload = ^{
+        if ([[SCHAppStateManager sharedAppStateManager] isSampleStore] == NO) {
+            [self.profileSetupDelegate showCurrentProfileAnimated:YES];
+        } else {
+            [self.profileSetupDelegate pushSamplesAnimated:YES];
+        }
+    };
+    
+    BOOL reachable = [[Reachability reachabilityForLocalWiFi] isReachable];
+    
+    if (reachable == NO) {
+        LambdaAlert *alert = [[LambdaAlert alloc]
+                              initWithTitle:NSLocalizedString(@"No WiFi Connection", @"")
+                              message:NSLocalizedString(@"The dictionary will only download over a WiFi connection. When you are connected to WiFi, the download will begin.", @"")];
+        [alert addButtonWithTitle:NSLocalizedString(@"OK", @"") block:afterDownload];
+        [alert show];
+        [alert release];   
     } else {
-        [self.profileSetupDelegate pushSamplesAnimated:YES];
+        afterDownload();
     }
 }
 
