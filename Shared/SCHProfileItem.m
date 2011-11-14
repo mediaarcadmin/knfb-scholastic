@@ -30,6 +30,7 @@
 #import "SCHReadingStatsContentItem.h"
 #import "SCHReadingStatsEntryItem.h"
 #import "SCHBookshelfSyncComponent.h"
+#import "SCHAnnotationsItem.h"
 
 // Constants
 NSString * const kSCHProfileItem = @"SCHProfileItem";
@@ -41,6 +42,8 @@ NSString * const kSCHProfileItemDRM_QUALIFIER = @"DRM_QUALIFIER";
 
 @interface SCHProfileItem ()
 
+- (void)deleteAnnotations;
+- (void)deleteStatistics;
 - (SCHReadingStatsContentItem *)makeReadingStatsContentItemForBook:(SCHBookIdentifier *)bookIdentifier;
 - (NSString *)MD5:(NSString *)string;
 - (NSString *)SHA1:(NSString *)string;
@@ -95,6 +98,52 @@ NSString * const kSCHProfileItemDRM_QUALIFIER = @"DRM_QUALIFIER";
     }
     
     return ret;
+}
+
+- (void)prepareForDeletion
+{
+    [super prepareForDeletion];
+    
+    [self deleteStatistics];    
+    [self deleteAnnotations];
+}
+
+- (void)deleteAnnotations
+{
+    if (self.ID != nil) {
+        NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init]; 
+        [fetchRequest setEntity:[NSEntityDescription entityForName:kSCHAnnotationsItem 
+                                            inManagedObjectContext:self.managedObjectContext]];	                                                                            
+        [fetchRequest setPredicate:
+         [NSPredicate predicateWithFormat:@"ProfileID == %@", self.ID]];    
+        
+        NSArray *profiles = [self.managedObjectContext executeFetchRequest:fetchRequest 
+                                                                  error:nil];
+        [fetchRequest release], fetchRequest = nil;
+        
+        if ([profiles count] > 0) {
+            [self.managedObjectContext deleteObject:[profiles objectAtIndex:0]];
+        }
+    }    
+}
+
+- (void)deleteStatistics
+{
+    if (self.ID != nil) {
+        NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init]; 
+        [fetchRequest setEntity:[NSEntityDescription entityForName:kSCHReadingStatsDetailItem 
+                                            inManagedObjectContext:self.managedObjectContext]];	                                                                            
+        [fetchRequest setPredicate:
+         [NSPredicate predicateWithFormat:@"ProfileID == %@", self.ID]];    
+        
+        NSArray *profiles = [self.managedObjectContext executeFetchRequest:fetchRequest 
+                                                                  error:nil];
+        [fetchRequest release], fetchRequest = nil;
+        
+        if ([profiles count] > 0) {
+            [self.managedObjectContext deleteObject:[profiles objectAtIndex:0]];
+        }
+    }
 }
 
 #pragma mark - methods

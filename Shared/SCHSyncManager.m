@@ -120,10 +120,14 @@ static NSUInteger const kSCHSyncManagerMaximumFailureRetries = 3;
                                                    object:nil];	
 
         [[NSNotificationCenter defaultCenter] addObserver:self 
+                                                 selector:@selector(contentSyncComponentWillDelete:) 
+                                                     name:SCHContentSyncComponentWillDeleteNotification 
+                                                   object:nil];	        
+
+        [[NSNotificationCenter defaultCenter] addObserver:self 
                                                  selector:@selector(updateAnnotationSync) 
                                                      name:SCHContentSyncComponentDidCompleteNotification 
-                                                   object:nil];	
-        
+                                                   object:nil];	        
 	}
 	
 	return self;
@@ -313,7 +317,25 @@ static NSUInteger const kSCHSyncManagerMaximumFailureRetries = 3;
     }
 }
 
-// guarentee the annotation sync contains any new profiles or books
+// make sure we do not sync any profile books that have been removed
+- (void)contentSyncComponentWillDelete:(NSNotification *)notification
+{
+    if ([self shouldSync] == YES) {
+        NSDictionary *userInfo = [notification userInfo];
+        
+        if (userInfo != nil ) {
+            for (NSNumber *profileID in [userInfo allKeys]) {
+                [self.annotationSyncComponent removeProfile:profileID withBooks:[userInfo objectForKey:profileID]];
+            }
+            
+            if ([self.annotationSyncComponent haveProfiles] == NO) {
+                [self removeFromQueue:self.annotationSyncComponent includeDependants:YES];
+            }        
+        }
+    }
+}
+
+// guarantee the annotation sync contains any new profiles or books
 - (void)updateAnnotationSync
 {
     if ([self shouldSync] == YES) {	    
