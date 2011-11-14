@@ -153,6 +153,33 @@ NSString * const SCHAnnotationSyncComponentCompletedProfileIDs = @"SCHAnnotation
 	}
 }
 
+// books is an array of BookIdentifiers
+- (void)removeProfile:(NSNumber *)profileID withBooks:(NSArray *)books
+{
+	if (self.isSynchronizing == NO && profileID != nil && [books count] > 0) {
+        NSMutableArray *profileBooks = [self.annotations objectForKey:profileID];
+        if (profileBooks != nil) {
+            for (SCHBookIdentifier *bookIdentifier in books) {
+                __block NSUInteger removeBook = NSUIntegerMax;
+                [profileBooks enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+                    SCHBookIdentifier *profileBookIdentifier = [[SCHBookIdentifier alloc] initWithObject:obj];
+                    if ([bookIdentifier isEqual:profileBookIdentifier] == YES) {
+                        removeBook = idx;
+                        *stop = YES;
+                    }
+                    [profileBookIdentifier release], profileBookIdentifier = nil;                    
+                }];
+                if (removeBook != NSUIntegerMax) {
+                    [profileBooks removeObjectAtIndex:removeBook];   
+                }
+            }
+            if ([profileBooks count] < 1) {
+                [self.annotations removeObjectForKey:profileID];
+            }
+        }
+	}
+}
+
 - (BOOL)haveProfiles
 {
 	return([self.annotations count ] > 0);
