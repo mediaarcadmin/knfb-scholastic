@@ -219,8 +219,13 @@ extern NSString * const kSCHUserDefaultsSpaceSaverModeSetOffNotification;
         case SCHDictionaryProcessingStateNeedsManifest:
         case SCHDictionaryProcessingStateManifestVersionCheck:
         case SCHDictionaryProcessingStateNeedsDownload:
-            [self.downloadDictionaryButton setTitle:NSLocalizedString(@"Downloading Dictionary...", @"Downloading dictionary button title")
-                                           forState:UIControlStateNormal];
+            if ([[SCHDictionaryDownloadManager sharedDownloadManager] wifiAvailable]) {
+                [self.downloadDictionaryButton setTitle:NSLocalizedString(@"Downloading Dictionary...", @"Downloading dictionary button title")
+                                               forState:UIControlStateNormal];
+            } else {
+                [self.downloadDictionaryButton setTitle:NSLocalizedString(@"Waiting for WiFi...", @"Waiting for WiFi dictionary button title")
+                                               forState:UIControlStateNormal];
+            }
             break;
         case SCHDictionaryProcessingStateNeedsUnzip:
         case SCHDictionaryProcessingStateNeedsParse:
