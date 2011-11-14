@@ -167,7 +167,7 @@ static NSString * const kSCHContentMetadataItemAnnotationsItemProfileID = @"Anno
         NSRange firstComma = [author rangeOfString:@","];
         if (NSEqualRanges(firstComma, notFoundRange) == NO && 
             [names count] > 3) {
-            author = [author substringFromIndex:firstComma.location];
+            author = [author substringToIndex:firstComma.location];
             names = [NSMutableArray array];
             [[author componentsSeparatedByString:@" "] enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
                 if ([[obj stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]] length] > 0) {
