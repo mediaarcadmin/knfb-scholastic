@@ -26,8 +26,6 @@
 
 - (void)beginOperation
 {
-    __block BOOL haveContentURL = NO;
-
     // Following Dave Dribins pattern 
     // http://www.dribin.org/dave/blog/archives/2009/05/05/concurrent_operations/
     if (![NSThread isMainThread])
