@@ -69,13 +69,6 @@
 	}
 }
 
-- (void)cancel
-{
-    // if super is called after endOperation then isCancelled does not get set
-	[super cancel];
-    [self endOperation];
-}
-
 - (BOOL)isConcurrent 
 {
 	return YES;

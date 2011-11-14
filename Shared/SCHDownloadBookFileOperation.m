@@ -31,6 +31,7 @@
 - (void)completedDownload;
 - (NSData *)lastTwoBytes;
 - (NSData *)jpegEOF;
+- (void)cancelOperationAndSuboperations;
 
 @end
 
@@ -291,39 +292,35 @@
 
 - (void)httpOperation:(QHTTPOperation *)operation updatedDownloadSize:(long long)downloadedSize
 {
-    if ([self isCancelled] || [self processingState] == SCHBookProcessingStateDownloadPaused) {
-        operation.completionBlock = nil;
-		[operation cancel];
-        [[BITNetworkActivityManager sharedNetworkActivityManager] hideNetworkActivityIndicator];
-        [self setIsProcessing:NO];        
-        [self endOperation];
-		return;
-    }
-    
-    self.currentDownloadedSize = downloadedSize;
-    if (self.fileType == kSCHDownloadFileTypeXPSBook) {
-        [self createPercentageUpdate];
+    if ([self processingState] == SCHBookProcessingStateDownloadPaused) {
+        [self cancelOperationAndSuboperations];
+    } else {
+        self.currentDownloadedSize = downloadedSize;
+        if (self.fileType == kSCHDownloadFileTypeXPSBook) {
+            [self createPercentageUpdate];
+        }
     }
 }
 
 - (void)httpOperation:(QHTTPOperation *)operation didFailWithError:(NSError *)error
 {
     if ([error.domain isEqualToString:NSCocoaErrorDomain] && error.code == NSUserCancelledError) {
-        return;
-    }
-    
-    NSLog(@"book download operation failed with error: %@", error);
-
-    [[BITNetworkActivityManager sharedNetworkActivityManager] hideNetworkActivityIndicator];
-
-    // allow the operation to complete but change the completion handling
-    __block SCHDownloadBookFileOperation *unretained_self = self;
-    operation.completionBlock = ^{
-        self.downloadOperation = nil;
-        [unretained_self setIsProcessing:NO];
-        [unretained_self setProcessingState:SCHBookProcessingStateDownloadFailed];
-        [unretained_self endOperation];
-    };
+        [self setIsProcessing:NO];        
+        [self endOperation];
+    } else {
+        NSLog(@"book download operation failed with error: %@", error);
+        
+        [[BITNetworkActivityManager sharedNetworkActivityManager] hideNetworkActivityIndicator];
+        
+        // allow the operation to complete but change the completion handling
+        __block SCHDownloadBookFileOperation *unretained_self = self;
+        operation.completionBlock = ^{
+            self.downloadOperation = nil;
+            [unretained_self setIsProcessing:NO];
+            [unretained_self setProcessingState:SCHBookProcessingStateDownloadFailed];
+            [unretained_self endOperation];
+        };        
+    }    
 }
 
 - (void)completedDownload
@@ -435,6 +432,20 @@
         return nil;
     }
     return [downloadedFile subdataWithRange:NSMakeRange([downloadedFile length]-2, 2)];
+}
+
+- (void)cancelOperationAndSuboperations
+{
+    [super cancel];
+    [self.downloadOperation setCompletionBlock:nil];
+    [self.downloadOperation cancel];
+
+    [[BITNetworkActivityManager sharedNetworkActivityManager] hideNetworkActivityIndicator];
+}
+
+- (void)cancel
+{
+    [self cancelOperationAndSuboperations];
 }
 
 - (BOOL)isExecuting
