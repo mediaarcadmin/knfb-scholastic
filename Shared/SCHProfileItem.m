@@ -234,7 +234,7 @@ NSString * const kSCHProfileItemDRM_QUALIFIER = @"DRM_QUALIFIER";
         }
         case kSCHBookSortTypeAuthor:
         {
-            [bookObjects sortUsingDescriptors:[NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:@"Author" ascending:YES]]];
+            [bookObjects sortUsingSelector:@selector(compare:)];
             break;
         }
         case kSCHBookSortTypeNewest:

@@ -20,6 +20,19 @@ NSString * const kSCHContentMetadataItem = @"SCHContentMetadataItem";
 
 static NSString * const kSCHContentMetadataItemAnnotationsItemProfileID = @"AnnotationsItem.ProfileID";
 
+@interface SCHContentMetadataItem (CoreDataGeneratedPrimitiveAccessors)
+
+- (NSString *)primitiveFormatAuthorString;
+- (void)setPrimitiveFormatAuthorString:(NSString *)newFormatAuthorString;
+
+@end
+
+@interface SCHContentMetadataItem ()
+
+- (NSString *)formatSingleAuthor:(NSString *)author;
+
+@end
+
 @implementation SCHContentMetadataItem
 
 @dynamic Author;
@@ -34,6 +47,7 @@ static NSString * const kSCHContentMetadataItemAnnotationsItemProfileID = @"Anno
 @dynamic FileName;
 @dynamic AppBook;
 @dynamic eReaderCategories;
+@dynamic FormatAuthorString;
 
 - (NSSet *)AnnotationsContentItem
 {
@@ -75,6 +89,122 @@ static NSString * const kSCHContentMetadataItemAnnotationsItemProfileID = @"Anno
     return(ret);
 }
 
+- (NSComparisonResult)compare:(SCHContentMetadataItem *)contentMetadataItem
+{
+    NSComparisonResult ret;
+    
+    if (self.Author == nil || 
+        [[self.Author stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]] length] < 1) {
+        ret = NSOrderedDescending;
+    } else if (contentMetadataItem.Author == nil || 
+               [[contentMetadataItem.Author stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]] length] < 1) {
+        ret = NSOrderedAscending;
+    } else {
+        ret = [self.FormatAuthorString compare:contentMetadataItem.FormatAuthorString];
+    }
+    
+    return ret;
+}
+
+- (NSString *)FormatAuthorString
+{
+    [self willAccessValueForKey:@"FormatAuthorString"];
+    NSString *formatAuthorString = [self primitiveFormatAuthorString];
+    [self didAccessValueForKey:@"FormatAuthorString"];
+    if (formatAuthorString == nil)
+    {
+        NSString *author = self.Author;
+        NSMutableString *builder = [NSMutableString stringWithCapacity:[author length]];
+        
+        if (author == nil ||
+            [[author stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]] length] < 1) {
+            return author;
+        } 
+        
+        NSMutableArray *authors = [NSMutableArray array];
+        [[author componentsSeparatedByString:@"&"] enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+            if ([[obj stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]] length] > 0) {
+                [authors addObject:obj];
+            }
+        }];
+        for (int i = 0; i < [authors count]; i++) {
+            [builder appendString:[self formatSingleAuthor:[authors objectAtIndex:i]]];
+            if (i + 1 < [authors count]) {
+                [builder appendString:@"; "];
+            }             
+        }
+
+        formatAuthorString = [NSString stringWithString:builder];
+        NSLog(@"%@", formatAuthorString);
+        [self setPrimitiveFormatAuthorString:formatAuthorString];
+    }
+
+    return formatAuthorString;
+}
+
+- (NSString *)formatSingleAuthor:(NSString *)author
+{
+    NSMutableString *builder = [NSMutableString stringWithCapacity:[author length]];
+    NSRange notFoundRange = NSMakeRange(NSNotFound, 0);
+    
+    if (author != nil && 
+        [[author stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]] length] > 0) {
+        
+        //2-9-2011, rferris. Noted that some Scholastic books were coming in as:
+        //      "by True Kelley, illustrated by True Kelley"
+        if ([[author lowercaseString] hasPrefix:@"by "] == YES) {
+            author = [author substringFromIndex:3];
+        }
+        
+        NSMutableArray *names = [NSMutableArray array];
+        [[author componentsSeparatedByString:@" "] enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+            if ([[obj stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]] length] > 0) {
+                [names addObject:obj];
+            }
+        }];
+        
+        //2-9-2011 rferris #2
+        NSRange firstComma = [author rangeOfString:@","];
+        if (NSEqualRanges(firstComma, notFoundRange) == NO && 
+            [names count] > 3) {
+            author = [author substringToIndex:firstComma.location];
+            names = [NSMutableArray array];
+            [[author componentsSeparatedByString:@" "] enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+                if ([[obj stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]] length] > 0) {
+                    [names addObject:obj];
+                }
+            }];
+        }
+        
+        // TODO If the author's name contains a comma and three or fewer words, we assume it's already last name first.
+        // This doesn't handle cases in which the author's name has more than 3 parts (a middle name and a suffix, for example)
+        // because we can't differentiate between that and two authors (eg: "John Doe, Jill Doe")
+        firstComma = [author rangeOfString:@","];
+        if (NSEqualRanges(firstComma, notFoundRange) == NO &&
+            [names count] < 4) {
+            return author;
+        }
+        
+        if ([names count] >= 2 && [names count] < 4) {
+            [builder appendString:[names lastObject]];
+            [builder appendString:@", "];
+            
+            for (int i = 0; i < [names count] - 1; i++) {
+                [builder appendString:[names objectAtIndex:i]];
+                
+                if (i + 1 < [names count] - 1) {
+                    [builder appendString:@" "];
+                }
+            }
+        }
+        else {
+            return author;
+        }
+    }
+    
+    return [NSString stringWithString:builder];    
+}
+             
 - (NSArray *)annotationsContentForProfile:(NSNumber *)profileID
 {
 	NSMutableArray *annotations = [NSMutableArray array];
