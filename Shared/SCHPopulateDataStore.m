@@ -228,7 +228,7 @@
             
             [contentMetadataItems addObject:[self contentMetaDataItemWith:[entry objectForKey:@"Isbn13"]
                                                                     title:[entry objectForKey:@"Title"]
-                                                                   author:[entry objectForKey:@"Title"]
+                                                                   author:[entry objectForKey:@"Author"]
                                                                pageNumber:0
                                                                  fileSize:[[entry objectForKey:@"FileSize"] intValue]
                                                               drmQualifer:kSCHDRMQualifiersNone
