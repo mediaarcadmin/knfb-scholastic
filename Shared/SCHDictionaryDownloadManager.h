@@ -118,6 +118,9 @@ typedef enum {
 
 - (void)checkIfUpdateNeeded;
 
+// Video download control
+- (void)retryVideoDownload;
+
 // dictionary download control
 - (void)beginDictionaryDownload;
 - (void)deleteDictionary;

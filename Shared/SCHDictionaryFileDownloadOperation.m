@@ -29,6 +29,7 @@
 - (void)fireProgressUpdate:(float)progress;
 - (void)finishedDownload;
 - (BOOL)fileSystemHasBytesAvailable:(unsigned long long)sizeInBytes;
+- (void)cancelOperationAndSuboperations;
 
 @end
 
@@ -62,7 +63,8 @@
 		NSLog(@"Cancelled.");
         return;
 	}
-
+    
+    [SCHDictionaryDownloadManager sharedDownloadManager].isProcessing = YES;
     [self willChangeValueForKey:@"isExecuting"];
     
     NSString *localPath = [[SCHDictionaryDownloadManager sharedDownloadManager] dictionaryZipPath];
@@ -138,6 +140,7 @@
     self.downloadOperation = nil;
     [self didChangeValueForKey:@"isFinished"];
     [self didChangeValueForKey:@"isExecuting"];
+    [SCHDictionaryDownloadManager sharedDownloadManager].isProcessing = NO;
 }
 
 #pragma mark - QHTTPOperationDelegate
@@ -170,7 +173,7 @@
         return;
     }
     
-    float progress = (float)(self.alreadyDownloadedSize + downloadedSize) / self.expectedFileSize;
+    float progress = (float)(self.alreadyDownloadedSize + downloadedSize) / (self.alreadyDownloadedSize + self.expectedFileSize);
     NSInteger percentage = (NSInteger)(100*progress);
     if (percentage != self.previousPercentage) {
         [self fireProgressUpdate:progress];
@@ -182,9 +185,18 @@
 {
     NSLog(@"dictionary download failed with error: %@", error);
     
-    operation.completionBlock = nil;
-    [[SCHDictionaryDownloadManager sharedDownloadManager] threadSafeUpdateDictionaryState:SCHDictionaryProcessingStateError];
-    [[BITNetworkActivityManager sharedNetworkActivityManager] hideNetworkActivityIndicator];            
+    if (!([error.domain isEqualToString:NSCocoaErrorDomain] && error.code == NSUserCancelledError)) {
+        operation.completionBlock = nil;
+        [[SCHDictionaryDownloadManager sharedDownloadManager] threadSafeUpdateDictionaryState:SCHDictionaryProcessingStateError];
+        [[BITNetworkActivityManager sharedNetworkActivityManager] hideNetworkActivityIndicator];
+    }
+    
+    [self willChangeValueForKey:@"isExecuting"];
+    [self willChangeValueForKey:@"isFinished"];
+    self.downloadOperation = nil;
+    [self didChangeValueForKey:@"isFinished"];
+    [self didChangeValueForKey:@"isExecuting"];
+    [SCHDictionaryDownloadManager sharedDownloadManager].isProcessing = NO;
 }
 
 #pragma mark - progress
@@ -222,10 +234,18 @@
 	return self.downloadOperation == nil;
 }
 
+- (void)cancelOperationAndSuboperations
+{
+    [super cancel];
+    [self.downloadOperation setCompletionBlock:nil];
+    [self.downloadOperation cancel];
+    
+    [[BITNetworkActivityManager sharedNetworkActivityManager] hideNetworkActivityIndicator];
+}
+
 - (void)cancel
 {
-    [self.downloadOperation cancel];
-	[super cancel];
+    [self cancelOperationAndSuboperations];
 }
 	
 @end

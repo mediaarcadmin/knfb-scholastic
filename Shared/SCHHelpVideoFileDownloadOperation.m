@@ -25,6 +25,7 @@
 - (void)finishedAllDownloads;
 - (void)terminateOperation;
 - (void)fireProgressUpdate:(float)progress;
+- (void)cancelOperationAndSuboperations;
 
 @end
 
@@ -61,6 +62,7 @@
         return;
 	}
 
+    [SCHDictionaryDownloadManager sharedDownloadManager].isProcessing = YES;
     [self willChangeValueForKey:@"isExecuting"];
 
     self.localFileManager = [[[NSFileManager alloc] init] autorelease];
@@ -163,6 +165,7 @@
     
     [self didChangeValueForKey:@"isExecuting"];
     [self didChangeValueForKey:@"isFinished"];
+    [SCHDictionaryDownloadManager sharedDownloadManager].isProcessing = NO;
 }
 
 - (BOOL)fileSystemHasBytesAvailable:(unsigned long long)sizeInBytes
@@ -222,7 +225,30 @@
 {
     NSLog(@"help video download failed with error: %@", error);
 
-    // TODO: do something about this
+    // N.B. Do not call terminateOperation directly as that waits for completion (which will lead to deadlock)
+    if ([error.domain isEqualToString:kQHTTPOperationErrorDomain] && error.code == 416) {
+        // There was a problem with the range. Delete the files on the disk        
+        NSString *localDirectory = [[SCHDictionaryDownloadManager sharedDownloadManager] helpVideoDirectory];
+
+        for (NSString *downloadURL in [[self.videoManifest itemsForCurrentDevice] allValues]) {
+            NSString *fileName = [downloadURL lastPathComponent];
+            NSString *localPath = [NSString stringWithFormat:@"%@/%@", localDirectory, fileName];
+            if ([self.localFileManager fileExistsAtPath:localPath]) {
+                [self.localFileManager removeItemAtPath:localPath error:nil];
+            }
+        }
+        [[BITNetworkActivityManager sharedNetworkActivityManager] hideNetworkActivityIndicator];
+    } else if (!([error.domain isEqualToString:NSCocoaErrorDomain] && error.code == NSUserCancelledError)) {
+        [[SCHDictionaryDownloadManager sharedDownloadManager] threadSafeUpdateDictionaryState:SCHDictionaryProcessingStateError];
+        [[BITNetworkActivityManager sharedNetworkActivityManager] hideNetworkActivityIndicator];
+    } else {
+        // Error due to cancellation. 
+        NSLog(@"SCHHelpVideoFileDownload cancelled");
+    }
+              
+    operation.completionBlock = ^{
+        [self terminateOperation];
+    };
 }
 
 #pragma mark - NSOperation overrides
@@ -232,10 +258,18 @@
     return YES;
 }
 
+- (void)cancelOperationAndSuboperations
+{
+    [super cancel];
+    [self.currentOperation setCompletionBlock:nil];
+    [self.currentOperation cancel];
+    
+    [[BITNetworkActivityManager sharedNetworkActivityManager] hideNetworkActivityIndicator];
+}
+
 - (void)cancel
 {
-    [self.currentOperation cancel];
-    [super cancel];
+    [self cancelOperationAndSuboperations];
 }
 
 - (BOOL)isExecuting

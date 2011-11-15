@@ -104,14 +104,18 @@ didReceiveResponse:(NSURLResponse *)response
 {
 	NSLog(@"finished download, starting parsing..");
     
-    self.parsingVideoFiles = NO;
-    self.manifestParser = [[[NSXMLParser alloc] initWithData:self.connectionData] autorelease];
-    [self.manifestParser setDelegate:self];
-    [self.manifestParser parse];
+     if (![self isCancelled]) {
+         self.parsingVideoFiles = NO;
+         self.manifestParser = [[[NSXMLParser alloc] initWithData:self.connectionData] autorelease];
+         [self.manifestParser setDelegate:self];
+         [self.manifestParser parse];
     
-    [SCHDictionaryDownloadManager sharedDownloadManager].helpVideoManifest = self.manifestItem;    
+         [SCHDictionaryDownloadManager sharedDownloadManager].helpVideoManifest = self.manifestItem; 
+     } else {
+         NSLog(@"VideoManifestOperation was cancelled");
+     }
     
-    [self cancel];
+    [self finishOp];
 }
 
 - (void)connection:(NSURLConnection *)connection 
@@ -178,8 +182,8 @@ didStartElement:(NSString *)elementName
 
 - (void)cancel
 {
-    [self finishOp];
-	[super cancel];
+    [super cancel];
+    [self.connection cancel];
 }
 
 - (void)startOp

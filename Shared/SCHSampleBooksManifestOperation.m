@@ -91,8 +91,8 @@
 
 - (void)importFailedWithReason:(NSString *)reason
 {
-    [self cancel];
     [self.processingDelegate importFailedWithReason:reason];
+    [self finishOp];
 }
 
 #pragma mark - NSURLConnection delegate
@@ -110,7 +110,7 @@ didReceiveResponse:(NSURLResponse *)response
     }
     
     if (!success) {
-        [conn cancel];
+        [self cancel];
         [self importFailedWithReason:NSLocalizedString(@"No response from the sample eBooks URL", @"")];
     } else {
         [self.connectionData setLength:0];
@@ -124,15 +124,21 @@ didReceiveResponse:(NSURLResponse *)response
 
 - (void)connectionDidFinishLoading:(NSURLConnection *)connection
 {    
-    NSXMLParser *aParser = [[NSXMLParser alloc] initWithData:self.connectionData];
-    self.manifestParser = aParser;
-    [aParser release];
-    
-    [self.manifestParser setDelegate:self];
-    if ([self.manifestParser parse]) {
-        [self finishOp];
+        
+    if (![self isCancelled]) {
+        NSXMLParser *aParser = [[NSXMLParser alloc] initWithData:self.connectionData];
+        self.manifestParser = aParser;
+        [aParser release];
+        
+        [self.manifestParser setDelegate:self];
+        if ([self.manifestParser parse]) {
+            [self finishOp];
+        } else {
+            [self importFailedWithReason:NSLocalizedString(@"Unable to parse the sample eBooks URL", @"")];
+        }
     } else {
-        [self importFailedWithReason:NSLocalizedString(@"Unable to parse the sample eBooks URL", @"")];
+        NSLog(@"SampleBooksManifestOperation was cancelled");
+        [self finishOp];
     }
 }
 
@@ -191,7 +197,6 @@ didStartElement:(NSString *)elementName
 - (void)cancel
 {
     [self.connection cancel];
-    [self finishOp];
 	[super cancel];
 }
 

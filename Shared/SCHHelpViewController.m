@@ -14,6 +14,7 @@
 #import "UIColor+Scholastic.h"
 #import "SCHUserDefaults.h"
 #import "SCHDictionaryDownloadManager.h"
+#import "Reachability.h"
 
 // Constants
 static NSString * const kSCHHelpViewControllerYoungerVideo = @"youngerHelpVideo";
@@ -37,6 +38,7 @@ static CGFloat const kSCHStoryInteractionControllerCloseBorderWidth = 1.5;
 - (void)pause;
 - (void)play;
 - (void)dismiss;
+- (void)checkVideoDownload;
 
 @end
 
@@ -51,6 +53,7 @@ static CGFloat const kSCHStoryInteractionControllerCloseBorderWidth = 1.5;
 @synthesize delegate;
 @synthesize loadingView;
 @synthesize progressView;
+@synthesize wifiView;
 
 #pragma mark - Object lifecycle
 
@@ -75,6 +78,7 @@ static CGFloat const kSCHStoryInteractionControllerCloseBorderWidth = 1.5;
     [moviePlayer stop];
     [moviePlayer release], moviePlayer = nil;
     [playButton release], playButton = nil;
+    [wifiView release], wifiView = nil;
 }
 
 - (void)dealloc
@@ -113,15 +117,7 @@ static CGFloat const kSCHStoryInteractionControllerCloseBorderWidth = 1.5;
         }
     };
     
-    if ([[SCHDictionaryDownloadManager sharedDownloadManager] haveHelpVideosDownloaded]) {
-        self.loadingView.hidden = YES;
-        [self loadVideo];
-    } else {
-        self.loadingView.hidden = NO;
-        self.progressView.progress = [[SCHDictionaryDownloadManager sharedDownloadManager] currentHelpVideoDownloadPercentage];
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(helpVideoDownloadPercentageUpdate:) name:kSCHHelpVideoDownloadPercentageUpdate object:nil];
-    }
-    
+    [self checkVideoDownload];
 }
 
 
@@ -202,7 +198,12 @@ static CGFloat const kSCHStoryInteractionControllerCloseBorderWidth = 1.5;
 - (IBAction)closeAction:(id)sender
 {
     self.playButton.actionBlock = nil;
-    [self.moviePlayer stop]; // The moviePlayerPlaybackStateDidFinishNotification will call dismiss
+    
+    if (self.moviePlayer.playbackState != MPMoviePlaybackStateStopped) {
+        [self.moviePlayer stop]; // The moviePlayerPlaybackStateDidFinishNotification will call dismiss
+    } else {
+        [self dismiss];
+    }
 }
 
 - (void)dismiss
@@ -273,11 +274,57 @@ static CGFloat const kSCHStoryInteractionControllerCloseBorderWidth = 1.5;
     if (currentPercentage != nil) {
         if ([currentPercentage floatValue] == 1) {
             self.loadingView.hidden = YES;
+            self.wifiView.hidden = YES;
+            self.playButton.userInteractionEnabled = YES;
             [self loadVideo];
         } else {
             self.progressView.progress = [currentPercentage floatValue];
         }
     }
+}
+
+- (void)checkVideoDownload
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self 
+                                                    name:kReachabilityChangedNotification 
+                                                  object:nil];
+    
+    if ([[SCHDictionaryDownloadManager sharedDownloadManager] haveHelpVideosDownloaded]) {
+        self.loadingView.hidden = YES;
+        self.wifiView.hidden = YES;
+        self.playButton.userInteractionEnabled = YES;
+        [self loadVideo];
+        
+    } else {
+        [[NSNotificationCenter defaultCenter] addObserver:self 
+                                                 selector:@selector(reachabilityNotification:) 
+                                                     name:kReachabilityChangedNotification 
+                                                   object:nil];
+        
+        self.playButton.userInteractionEnabled = NO;
+        
+        BOOL reachable = [[Reachability reachabilityForLocalWiFi] isReachable];
+        
+        if (reachable) {
+            self.wifiView.hidden = YES;
+            self.loadingView.hidden = NO;
+            [[SCHDictionaryDownloadManager sharedDownloadManager] retryVideoDownload];
+            self.progressView.progress = [[SCHDictionaryDownloadManager sharedDownloadManager] currentHelpVideoDownloadPercentage];
+            [[NSNotificationCenter defaultCenter] removeObserver:self name:kSCHHelpVideoDownloadPercentageUpdate object:nil];
+            [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(helpVideoDownloadPercentageUpdate:) name:kSCHHelpVideoDownloadPercentageUpdate object:nil];
+        } else {
+            self.wifiView.hidden = NO;
+            self.loadingView.hidden = YES;
+        }        
+    }
+}
+
+- (void)reachabilityNotification:(NSNotification *)note
+{
+	Reachability* curReach = [note object];
+	NSParameterAssert([curReach isKindOfClass: [Reachability class]]);
+
+    [self checkVideoDownload];
 }
 
 @end

@@ -206,9 +206,31 @@ extern NSString * const kSCHUserDefaultsSpaceSaverModeSetOffNotification;
 - (void)updateDictionaryButton
 {
     SCHDictionaryProcessingState state = [[SCHDictionaryDownloadManager sharedDownloadManager] dictionaryProcessingState];
-    self.downloadDictionaryButton.enabled = (state == SCHDictionaryProcessingStateUserSetup
-                                             || state == SCHDictionaryProcessingStateUserDeclined
-                                             || state == SCHDictionaryProcessingStateReady);
+    
+    BOOL enabled = NO;
+    
+    // Specifically enumerating without a default so we catch any new cases at compile time
+    switch (state) {
+        case SCHDictionaryProcessingStateReady:
+        case SCHDictionaryProcessingStateUserSetup:
+        case SCHDictionaryProcessingStateUserDeclined:
+        case SCHDictionaryProcessingStateError:
+            enabled = YES;
+            break;
+        case SCHDictionaryProcessingStateHelpVideoManifest:
+        case SCHDictionaryProcessingStateDownloadingHelpVideos:
+        case SCHDictionaryProcessingStateNotEnoughFreeSpace:
+        case SCHDictionaryProcessingStateNeedsManifest:
+        case SCHDictionaryProcessingStateManifestVersionCheck:
+        case SCHDictionaryProcessingStateNeedsDownload:
+        case SCHDictionaryProcessingStateNeedsUnzip:
+        case SCHDictionaryProcessingStateNeedsParse:
+        case SCHDictionaryProcessingStateDeleting:
+            enabled = NO;
+            break;
+    }
+    
+    self.downloadDictionaryButton.enabled = enabled;
     
     switch (state) {
         case SCHDictionaryProcessingStateReady:

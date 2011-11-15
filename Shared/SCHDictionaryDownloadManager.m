@@ -81,7 +81,7 @@ char * const kSCHDictionaryManifestEntryColumnSeparator = "\t";
 // checks to see if we're on wifi and the processing manager is idle
 // if so, spawn a timer to begin processing
 // the timer prevents rapid starting and stopping of the dictionary download/processing
-- (void) checkOperatingState;
+- (void) checkOperatingStateImmediately:(BOOL)immediately;
 - (void) processDictionary;
 
 // Core Data Save method
@@ -300,7 +300,7 @@ static SCHDictionaryDownloadManager *sharedManager = nil;
 		}
     }
 	
-	[self checkOperatingState];
+	[self checkOperatingStateImmediately:NO];
 }
 
 #pragma mark -
@@ -311,7 +311,7 @@ static SCHDictionaryDownloadManager *sharedManager = nil;
 	NSAssert([NSThread currentThread] == [NSThread mainThread], @"Not on main thread!");
 	NSLog(@"****************** Processing manager became idle! ******************");
 	self.connectionIdle = YES;
-	[self checkOperatingState];
+	[self checkOperatingStateImmediately:NO];
 }
 
 - (void)connectionBecameBusy:(NSNotification *)notification
@@ -319,13 +319,13 @@ static SCHDictionaryDownloadManager *sharedManager = nil;
 	NSAssert([NSThread currentThread] == [NSThread mainThread], @"Not on main thread!");
 	NSLog(@"****************** Processing manager became busy! ******************");
 	self.connectionIdle = NO;
-	[self checkOperatingState];
+	[self checkOperatingStateImmediately:NO];
 }
 
 #pragma mark -
 #pragma mark Check Operating State
 
-- (void)checkOperatingState
+- (void)checkOperatingStateImmediately:(BOOL)immediately
 {
     // Dictionary can be disabled using preprocessor flag
 #if DICTIONARY_DOWNLOAD_DISABLED
@@ -347,11 +347,15 @@ static SCHDictionaryDownloadManager *sharedManager = nil;
 		} 
 
 		NSLog(@"********* Starting timer...");
-		self.startTimer = [NSTimer scheduledTimerWithTimeInterval:10
-														   target:self
-														 selector:@selector(processDictionary)
-														 userInfo:nil
-														  repeats:NO];
+        if (immediately) {
+            [self processDictionary];
+        } else {
+            self.startTimer = [NSTimer scheduledTimerWithTimeInterval:10
+                                                               target:self
+                                                             selector:@selector(processDictionary)
+                                                             userInfo:nil
+                                                              repeats:NO];
+        }
 	} else {
 		// otherwise, cancel work in progress
 		NSLog(@"Cancelling operations etc.");
@@ -360,6 +364,8 @@ static SCHDictionaryDownloadManager *sharedManager = nil;
 			self.startTimer = nil; 
 		}
 		[self.dictionaryDownloadQueue cancelAllOperations];
+        [self.dictionaryDownloadQueue waitUntilAllOperationsAreFinished];
+        self.isProcessing = NO;
 	}
     
     [[NSNotificationCenter defaultCenter] postNotificationName:kSCHDictionaryStateChange object:nil userInfo:nil];
@@ -1663,6 +1669,17 @@ static SCHDictionaryDownloadManager *sharedManager = nil;
 
 #pragma mark - user control
 
+- (void)retryVideoDownload
+{
+    if (!self.isProcessing) {
+        if (!((self.dictionaryProcessingState == SCHDictionaryProcessingStateHelpVideoManifest) ||
+              (self.dictionaryProcessingState == SCHDictionaryProcessingStateDownloadingHelpVideos))) {
+            [self threadSafeUpdateDictionaryState:SCHDictionaryProcessingStateHelpVideoManifest];
+            [self checkOperatingStateImmediately:YES];
+        }
+    }
+}
+
 - (void)beginDictionaryDownload
 {
     SCHDictionaryProcessingState state = [self dictionaryProcessingState];
@@ -1671,7 +1688,7 @@ static SCHDictionaryDownloadManager *sharedManager = nil;
 
     if (!self.isProcessing && (state == SCHDictionaryProcessingStateUserSetup || state == SCHDictionaryProcessingStateUserDeclined)) {
         [self threadSafeUpdateDictionaryState:SCHDictionaryProcessingStateNeedsManifest];
-        [self checkOperatingState];
+        [self checkOperatingStateImmediately:YES];
     }
     
     NSLog(@"Set user request state to %d", self.userRequestState);

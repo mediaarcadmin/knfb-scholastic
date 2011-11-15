@@ -108,12 +108,16 @@ didReceiveResponse:(NSURLResponse *)response
 {
 	NSLog(@"finished download, starting parsing..");
     
-    self.parsingDictionaryInfo = NO;
-    self.manifestParser = [[[NSXMLParser alloc] initWithData:self.connectionData] autorelease];
-    [self.manifestParser setDelegate:self];
-    [self.manifestParser parse];
+    if (![self isCancelled]) {
+        self.parsingDictionaryInfo = NO;
+        self.manifestParser = [[[NSXMLParser alloc] initWithData:self.connectionData] autorelease];
+        [self.manifestParser setDelegate:self];
+        [self.manifestParser parse];
     
-    [SCHDictionaryDownloadManager sharedDownloadManager].manifestUpdates = self.manifestEntries;    
+        [SCHDictionaryDownloadManager sharedDownloadManager].manifestUpdates = self.manifestEntries;    
+    } else {
+        NSLog(@"DictionaryManifestOperation was cancelled");
+    }
     
     [self finishOp];
 }
@@ -200,8 +204,8 @@ didStartElement:(NSString *)elementName
 
 - (void)cancel
 {
-    [self finishOp];
-	[super cancel];
+    [super cancel];
+    [self.connection cancel];
 }
 
 - (void)startOp
