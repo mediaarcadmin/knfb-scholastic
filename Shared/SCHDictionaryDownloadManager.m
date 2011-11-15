@@ -364,7 +364,6 @@ static SCHDictionaryDownloadManager *sharedManager = nil;
 			self.startTimer = nil; 
 		}
 		[self.dictionaryDownloadQueue cancelAllOperations];
-        [self.dictionaryDownloadQueue waitUntilAllOperationsAreFinished];
         self.isProcessing = NO;
 	}
     
