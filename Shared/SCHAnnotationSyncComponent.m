@@ -41,6 +41,7 @@ NSString * const SCHAnnotationSyncComponentCompletedProfileIDs = @"SCHAnnotation
                                       result:(NSDictionary *)result;
 - (void)trackAnnotationSaves:(NSSet *)annotationsArray;
 - (void)applyAnnotationSaves:(NSArray *)annotationsArray;
+- (BOOL)annotationIDIsValid:(NSNumber *)annotationID;
 - (NSArray *)localModifiedAnnotationsItemForProfile:(NSNumber *)profileID;
 - (NSArray *)localAnnotationsItemForProfile:(NSNumber *)profileID;
 - (void)syncProfileContentAnnotations:(NSDictionary *)profileContentAnnotationList 
@@ -91,10 +92,12 @@ NSString * const SCHAnnotationSyncComponentCompletedProfileIDs = @"SCHAnnotation
 - (SCHLastPage *)lastPage:(NSDictionary *)lastPage;
 - (void)backgroundSave:(BOOL)batch;
 - (NSDate *)latestDate:(NSArray *)items;
+- (NSArray *)removeNewlyCreatedAndSavedAnnotations:(NSArray *)annotationArray;
 
 @property (retain, nonatomic) NSMutableDictionary *annotations;
 @property (retain, nonatomic) NSMutableArray *savedAnnotations;
 @property (nonatomic, retain) NSManagedObjectContext *backgroundThreadManagedObjectContext;
+@property (nonatomic, retain) NSDate *lastSyncSaveCalled;
 
 @end
 
@@ -103,6 +106,7 @@ NSString * const SCHAnnotationSyncComponentCompletedProfileIDs = @"SCHAnnotation
 @synthesize annotations;
 @synthesize savedAnnotations;
 @synthesize backgroundThreadManagedObjectContext;
+@synthesize lastSyncSaveCalled;
 
 - (id)init
 {
@@ -324,6 +328,10 @@ NSString * const SCHAnnotationSyncComponentCompletedProfileIDs = @"SCHAnnotation
     }
 }
 
+// apply annotations changes by checking the server response
+// confirmed deletions are deleted, confirmed creation ID's are applied
+// any issues such as missing ID will be removed by removeNewlyCreatedAndSavedAnnotations
+// the next list annotation will then resolve the issue
 - (void)applyAnnotationSaves:(NSArray *)annotationsArray
 {
     NSManagedObjectID *managedObjectID = nil;
@@ -333,6 +341,7 @@ NSString * const SCHAnnotationSyncComponentCompletedProfileIDs = @"SCHAnnotation
         if ([self.savedAnnotations count] > 0) {
             managedObjectID = [self.savedAnnotations objectAtIndex:0];
             if (managedObjectID != nil) {
+                BOOL updatedID = NO;
                 annotationManagedObject = [self.managedObjectContext objectWithID:managedObjectID];
                 
                 if ([[[annotation objectForKey:kSCHLibreAccessWebServiceStatusMessage] 
@@ -341,12 +350,10 @@ NSString * const SCHAnnotationSyncComponentCompletedProfileIDs = @"SCHAnnotation
                         case kSCHSaveActionsCreate:
                         {
                             NSNumber *annotationID = [self makeNullNil:[annotation objectForKey:kSCHLibreAccessWebServiceID]];
-                            if (annotationID != nil) {
+                            if ([self annotationIDIsValid:annotationID] == YES) {
+                                updatedID = YES;
                                 [annotationManagedObject setValue:annotationID forKey:kSCHLibreAccessWebServiceID];
-                            } else {
-                                // if the server didnt give us an ID then we remove the annotation
-                                [self.managedObjectContext deleteObject:annotationManagedObject];
-                            }                                                    
+                            }                                                   
                         }
                             break;
                         case kSCHSaveActionsRemove:                            
@@ -359,14 +366,11 @@ NSString * const SCHAnnotationSyncComponentCompletedProfileIDs = @"SCHAnnotation
                             //nop
                             break;
                     }
-                } else {
-                    // if the server wasnt happy then we remove the annotation
-                    [self.managedObjectContext deleteObject:annotationManagedObject];
                 }
                                 
                 // We've attempted to save changes, reset to unmodified and now 
                 // sync will update this with the truth from the server
-                if (annotationManagedObject.isDeleted == NO) {
+                if (updatedID == YES && annotationManagedObject.isDeleted == NO) {
                     [annotationManagedObject setValue:[NSNumber numberWithStatus:kSCHStatusUnmodified] 
                                                forKey:SCHSyncEntityState];
                 }
@@ -375,6 +379,17 @@ NSString * const SCHAnnotationSyncComponentCompletedProfileIDs = @"SCHAnnotation
         }
         [self save];
     }
+}
+
+- (BOOL)annotationIDIsValid:(NSNumber *)annotationID
+{
+    BOOL ret = NO;
+    
+    if ([annotationID integerValue] > 0) {
+        ret = YES;
+    }
+    
+    return ret;
 }
 
 - (void)method:(NSString *)method didFailWithError:(NSError *)error 
@@ -432,6 +447,8 @@ NSString * const SCHAnnotationSyncComponentCompletedProfileIDs = @"SCHAnnotation
                 self.isSynchronizing = NO;
             }];				
             ret = NO;
+        } else {
+            self.lastSyncSaveCalled = [NSDate date];
         }
     } else if ([self.annotations count] > 0) {
         self.isSynchronizing = [self.libreAccessWebService listProfileContentAnnotations:books 
@@ -711,11 +728,11 @@ NSString * const SCHAnnotationSyncComponentCompletedProfileIDs = @"SCHAnnotation
             insertInto:(SCHPrivateAnnotations *)privateAnnotations
 {
     NSAssert([NSThread isMainThread] == NO, @"syncHighlights MUST NOT be executed on the main thread");
-    NSMutableArray *deletePool = [NSMutableArray array];
 	NSMutableArray *creationPool = [NSMutableArray array];
 	
 	webHighlights = [webHighlights sortedArrayUsingDescriptors:[NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:kSCHLibreAccessWebServiceID ascending:YES]]];		
 	NSArray *localHighlightsArray = [localHighlights sortedArrayUsingDescriptors:[NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:kSCHLibreAccessWebServiceID ascending:YES]]];
+    localHighlightsArray = [self removeNewlyCreatedAndSavedAnnotations:localHighlightsArray];
     
 	NSEnumerator *webEnumerator = [webHighlights objectEnumerator];			  
 	NSEnumerator *localEnumerator = [localHighlightsArray objectEnumerator];			  			  
@@ -725,12 +742,6 @@ NSString * const SCHAnnotationSyncComponentCompletedProfileIDs = @"SCHAnnotation
 	
 	while (webItem != nil || localItem != nil) {		
 		if (webItem == nil) {
-			while (localItem != nil) {
-                if ([localItem.State statusValue] == kSCHStatusUnmodified) {
-                    [deletePool addObject:localItem];
-                }
-				localItem = [localEnumerator nextObject];
-			} 
 			break;
 		}
 		
@@ -757,7 +768,6 @@ NSString * const SCHAnnotationSyncComponentCompletedProfileIDs = @"SCHAnnotation
 				webItem = nil;
 				break;
 			case NSOrderedDescending:
-				[deletePool addObject:localItem];
 				localItem = nil;
 				break;			
 		}		
@@ -770,11 +780,6 @@ NSString * const SCHAnnotationSyncComponentCompletedProfileIDs = @"SCHAnnotation
 		}		
 	}
     
-    for (SCHHighlight *localItem in deletePool) {
-		[self.backgroundThreadManagedObjectContext deleteObject:localItem];
-        [self backgroundSave:YES];
-	}
-
 	for (NSDictionary *webItem in creationPool) {
         [privateAnnotations addHighlightsObject:[self highlight:webItem]];
         [self backgroundSave:YES];
@@ -891,11 +896,11 @@ NSString * const SCHAnnotationSyncComponentCompletedProfileIDs = @"SCHAnnotation
        insertInto:(SCHPrivateAnnotations *)privateAnnotations
 {
     NSAssert([NSThread isMainThread] == NO, @"syncNotes MUST NOT be executed on the main thread");
-    NSMutableArray *deletePool = [NSMutableArray array];
 	NSMutableArray *creationPool = [NSMutableArray array];
 	
 	webNotes = [webNotes sortedArrayUsingDescriptors:[NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:kSCHLibreAccessWebServiceID ascending:YES]]];		
 	NSArray *localNotesArray = [localNotes sortedArrayUsingDescriptors:[NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:kSCHLibreAccessWebServiceID ascending:YES]]];
+    localNotesArray = [self removeNewlyCreatedAndSavedAnnotations:localNotesArray];
     
 	NSEnumerator *webEnumerator = [webNotes objectEnumerator];			  
 	NSEnumerator *localEnumerator = [localNotesArray objectEnumerator];			  			  
@@ -905,12 +910,6 @@ NSString * const SCHAnnotationSyncComponentCompletedProfileIDs = @"SCHAnnotation
 	
 	while (webItem != nil || localItem != nil) {		
 		if (webItem == nil) {
-			while (localItem != nil) {
-                if ([localItem.State statusValue] == kSCHStatusUnmodified) {
-                    [deletePool addObject:localItem];
-                }
-				localItem = [localEnumerator nextObject];
-			} 
 			break;
 		}
 		
@@ -937,7 +936,6 @@ NSString * const SCHAnnotationSyncComponentCompletedProfileIDs = @"SCHAnnotation
 				webItem = nil;
 				break;
 			case NSOrderedDescending:
-				[deletePool addObject:localItem];
 				localItem = nil;
 				break;			
 		}		
@@ -948,11 +946,6 @@ NSString * const SCHAnnotationSyncComponentCompletedProfileIDs = @"SCHAnnotation
 		if (localItem == nil) {
 			localItem = [localEnumerator nextObject];
 		}		
-	}
-
-    for (SCHNote *localItem in deletePool) {
-		[self.backgroundThreadManagedObjectContext deleteObject:localItem];
-        [self backgroundSave:YES];
 	}
 
 	for (NSDictionary *webItem in creationPool) {
@@ -1041,11 +1034,11 @@ NSString * const SCHAnnotationSyncComponentCompletedProfileIDs = @"SCHAnnotation
            insertInto:(SCHPrivateAnnotations *)privateAnnotations
 {
     NSAssert([NSThread isMainThread] == NO, @"syncBookmarks MUST NOT be executed on the main thread");
-    NSMutableArray *deletePool = [NSMutableArray array];
 	NSMutableArray *creationPool = [NSMutableArray array];
 	
 	webBookmarks = [webBookmarks sortedArrayUsingDescriptors:[NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:kSCHLibreAccessWebServiceID ascending:YES]]];		
 	NSArray *localBookmarksArray = [localBookmarks sortedArrayUsingDescriptors:[NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:kSCHLibreAccessWebServiceID ascending:YES]]];
+    localBookmarksArray = [self removeNewlyCreatedAndSavedAnnotations:localBookmarksArray];
     
 	NSEnumerator *webEnumerator = [webBookmarks objectEnumerator];			  
 	NSEnumerator *localEnumerator = [localBookmarksArray objectEnumerator];			  			  
@@ -1053,14 +1046,8 @@ NSString * const SCHAnnotationSyncComponentCompletedProfileIDs = @"SCHAnnotation
 	NSDictionary *webItem = [webEnumerator nextObject];
 	SCHBookmark *localItem = [localEnumerator nextObject];
 	
-	while (webItem != nil || localItem != nil) {		
-		if (webItem == nil) {
-			while (localItem != nil) {
-                if ([localItem.State statusValue] == kSCHStatusUnmodified) {
-                    [deletePool addObject:localItem];
-                }
-				localItem = [localEnumerator nextObject];
-			} 
+	while (webItem != nil || localItem != nil) {		            
+        if (webItem == nil) {
 			break;
 		}
 		
@@ -1087,7 +1074,6 @@ NSString * const SCHAnnotationSyncComponentCompletedProfileIDs = @"SCHAnnotation
 				webItem = nil;
 				break;
 			case NSOrderedDescending:
-                [deletePool addObject:localItem];
 				localItem = nil;
 				break;			
 		}		
@@ -1100,11 +1086,6 @@ NSString * const SCHAnnotationSyncComponentCompletedProfileIDs = @"SCHAnnotation
 		}		
 	}
     
-    for (SCHBookmark *localItem in deletePool) {
-		[self.backgroundThreadManagedObjectContext deleteObject:localItem];
-        [self backgroundSave:YES];
-	}
-
 	for (NSDictionary *webItem in creationPool) {
         [privateAnnotations addBookmarksObject:[self bookmark:webItem]];
         [self backgroundSave:YES];
@@ -1248,4 +1229,31 @@ NSString * const SCHAnnotationSyncComponentCompletedProfileIDs = @"SCHAnnotation
     return ret;
 }
 
+- (NSArray *)removeNewlyCreatedAndSavedAnnotations:(NSArray *)annotationArray
+{
+    NSAssert([NSThread isMainThread] == NO, @"removeNewlyCreatedAndSavedAnnotations MUST NOT be executed on the main thread");
+    NSMutableArray *ret = nil;
+    
+    if (self.lastSyncSaveCalled == nil) {
+        return annotationArray;
+    } else {
+        ret = [NSMutableArray arrayWithCapacity:[annotationArray count]];
+        
+        [annotationArray enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+            SCHStatus status = [[obj State] statusValue];
+            NSDate *lastModified = [obj LastModified];
+            if ((status == kSCHStatusCreated || status == kSCHStatusDeleted) &&
+                [lastModified earlierDate:self.lastSyncSaveCalled] == lastModified) {
+                [self.backgroundThreadManagedObjectContext deleteObject:obj];
+            } else {
+                [ret addObject:obj];
+            }
+        }];
+        
+        [self backgroundSave:YES];
+    }
+    
+    return ret;
+}
+        
 @end
