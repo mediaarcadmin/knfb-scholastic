@@ -1557,6 +1557,9 @@
 		C931140113FBC85900355693 /* storyinteraction-concentration-tile-orange@2x~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = C93113F413FBC85400355693 /* storyinteraction-concentration-tile-orange@2x~iphone.png */; };
 		C935BC7914698D5B00244A38 /* 9780545324328.1103.MixedUpAlphabet.xps in Resources */ = {isa = PBXBuildFile; fileRef = C935BC7714698D5B00244A38 /* 9780545324328.1103.MixedUpAlphabet.xps */; };
 		C935BC7A14698D5B00244A38 /* 9780545324328.1103.MixedUpAlphabet.jpg in Resources */ = {isa = PBXBuildFile; fileRef = C935BC7814698D5B00244A38 /* 9780545324328.1103.MixedUpAlphabet.jpg */; };
+		C9367BD81472E89A0033A2EB /* KNFBXMLParserLock.m in Sources */ = {isa = PBXBuildFile; fileRef = C9367BD71472E89A0033A2EB /* KNFBXMLParserLock.m */; };
+		C9367BD91472E89A0033A2EB /* KNFBXMLParserLock.m in Sources */ = {isa = PBXBuildFile; fileRef = C9367BD71472E89A0033A2EB /* KNFBXMLParserLock.m */; };
+		C9367BDA1472E89A0033A2EB /* KNFBXMLParserLock.m in Sources */ = {isa = PBXBuildFile; fileRef = C9367BD71472E89A0033A2EB /* KNFBXMLParserLock.m */; };
 		C93EBDFD13462883003B99FD /* SCHBookRange.m in Sources */ = {isa = PBXBuildFile; fileRef = C93EBDFC13462883003B99FD /* SCHBookRange.m */; };
 		C93EBEAF13472FED003B99FD /* SCHTextFlowParagraphSource.m in Sources */ = {isa = PBXBuildFile; fileRef = C93EBEAE13472FEC003B99FD /* SCHTextFlowParagraphSource.m */; };
 		C93ECA77134B5EFA003B99FD /* iPodLikeSliderBlueLeftCap.png in Resources */ = {isa = PBXBuildFile; fileRef = C93ECA2E134B5EF9003B99FD /* iPodLikeSliderBlueLeftCap.png */; };
@@ -3133,6 +3136,8 @@
 		C93113F413FBC85400355693 /* storyinteraction-concentration-tile-orange@2x~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "storyinteraction-concentration-tile-orange@2x~iphone.png"; sourceTree = "<group>"; };
 		C935BC7714698D5B00244A38 /* 9780545324328.1103.MixedUpAlphabet.xps */ = {isa = PBXFileReference; lastKnownFileType = file; name = 9780545324328.1103.MixedUpAlphabet.xps; path = "Shared/Debug Books/9780545324328.1103.MixedUpAlphabet.xps"; sourceTree = "<group>"; };
 		C935BC7814698D5B00244A38 /* 9780545324328.1103.MixedUpAlphabet.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = 9780545324328.1103.MixedUpAlphabet.jpg; path = "Shared/Debug Books/9780545324328.1103.MixedUpAlphabet.jpg"; sourceTree = "<group>"; };
+		C9367BD61472E89A0033A2EB /* KNFBXMLParserLock.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = KNFBXMLParserLock.h; path = XPS/KNFBXMLParserLock.h; sourceTree = "<group>"; };
+		C9367BD71472E89A0033A2EB /* KNFBXMLParserLock.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = KNFBXMLParserLock.m; path = XPS/KNFBXMLParserLock.m; sourceTree = "<group>"; };
 		C93EBDFB13462882003B99FD /* SCHBookRange.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHBookRange.h; path = Shared/SCHBookRange.h; sourceTree = "<group>"; };
 		C93EBDFC13462883003B99FD /* SCHBookRange.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHBookRange.m; path = Shared/SCHBookRange.m; sourceTree = "<group>"; };
 		C93EBEAD13472FEC003B99FD /* SCHTextFlowParagraphSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHTextFlowParagraphSource.h; path = Shared/SCHTextFlowParagraphSource.h; sourceTree = "<group>"; };
@@ -5927,6 +5932,8 @@
 				C9EFB183134F4C9F00ADF905 /* KNFBLayoutHyperlink.h */,
 				C9EFB184134F4C9F00ADF905 /* KNFBLayoutDataSource.h */,
 				C9EFB185134F4C9F00ADF905 /* KNFBDrmBookDecrypter.h */,
+				C9367BD61472E89A0033A2EB /* KNFBXMLParserLock.h */,
+				C9367BD71472E89A0033A2EB /* KNFBXMLParserLock.m */,
 			);
 			name = XPS;
 			sourceTree = "<group>";
@@ -8219,6 +8226,7 @@
 				F82F913E145943B000F609F9 /* SCHDictionaryOperation.m in Sources */,
 				280DA9D2145AB3C300583695 /* SCHUnqueuedAudioPlayer.m in Sources */,
 				28EF28031462D51100DD1939 /* SCHBookStoryInteractions+XPS.m in Sources */,
+				C9367BD81472E89A0033A2EB /* KNFBXMLParserLock.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -8280,6 +8288,7 @@
 				281CC41914581D570049F736 /* SCHAppDictionaryManifestEntry.m in Sources */,
 				28EF28001462D40800DD1939 /* SCHBookStoryInteractionsTests.m in Sources */,
 				28EF28051462D76100DD1939 /* SCHDictionaryOperation.m in Sources */,
+				C9367BDA1472E89A0033A2EB /* KNFBXMLParserLock.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -8596,6 +8605,7 @@
 				F82F913F145943B000F609F9 /* SCHDictionaryOperation.m in Sources */,
 				280DA9D3145AB3C300583695 /* SCHUnqueuedAudioPlayer.m in Sources */,
 				28EF28041462D51100DD1939 /* SCHBookStoryInteractions+XPS.m in Sources */,
+				C9367BD91472E89A0033A2EB /* KNFBXMLParserLock.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
