@@ -346,7 +346,7 @@ NSString * const SCHAnnotationSyncComponentCompletedProfileIDs = @"SCHAnnotation
                 
                 if ([[[annotation objectForKey:kSCHLibreAccessWebServiceStatusMessage] 
                       objectForKey:kSCHLibreAccessWebServiceStatus] statusCodeValue] == kSCHStatusCodesSuccess) {
-                    switch ([[annotation objectForKey:kSCHLibreAccessWebServiceStatus] saveActionValue]) {
+                    switch ([[annotation objectForKey:kSCHLibreAccessWebServiceAction] saveActionValue]) {
                         case kSCHSaveActionsCreate:
                         {
                             NSNumber *annotationID = [self makeNullNil:[annotation objectForKey:kSCHLibreAccessWebServiceID]];
