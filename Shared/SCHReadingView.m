@@ -115,6 +115,12 @@ managedObjectContext:(NSManagedObjectContext *)managedObjectContext
     return [self currentBookPoint];
 }
 
+- (CGFloat)currentProgressPosition
+{
+    NSLog(@"WARNING: currentProgressPosition not being overridden correctly.");
+    return 0;
+}
+
 - (void)jumpToPageAtIndex:(NSUInteger)page animated:(BOOL)animated
 {
     NSLog(@"WARNING: jumpToPage:animated: not being overridden correctly.");

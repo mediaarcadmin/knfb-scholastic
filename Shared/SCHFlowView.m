@@ -206,6 +206,11 @@ managedObjectContext:(NSManagedObjectContext *)managedObjectContext
     return pageRange;
 }
 
+- (CGFloat)currentProgressPosition
+{
+    return [self.eucBook estimatedPercentageForIndexPoint:self.eucBookView.currentPageIndexPoint];
+}
+
 - (void)jumpToBookPoint:(SCHBookPoint *)bookPoint animated:(BOOL)animated
 {
     [self jumpToBookPoint:bookPoint animated:animated withCompletionHandler:nil];

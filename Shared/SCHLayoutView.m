@@ -369,6 +369,11 @@ managedObjectContext:(NSManagedObjectContext *)managedObjectContext
     return [self currentBookPointIgnoringMultipleDisplayPages:YES];
 }
 
+- (CGFloat)currentProgressPosition
+{
+    return (self.currentPageIndex + 1)/(CGFloat)MAX([self pageCount], 1);
+}
+
 - (void)jumpToBookPoint:(SCHBookPoint *)bookPoint animated:(BOOL)animated
 {
     [self jumpToBookPoint:bookPoint animated:animated withCompletionHandler:nil];

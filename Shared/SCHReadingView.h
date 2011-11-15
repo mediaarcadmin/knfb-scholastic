@@ -73,6 +73,7 @@ managedObjectContext:(NSManagedObjectContext *)managedObjectContext
 - (SCHBookPoint *)currentBookPoint;
 - (SCHBookPoint *)currentBookPointIgnoringMultipleDisplayPages:(BOOL)ignoreMultipleDisplayPages;
 - (SCHBookRange *)currentBookRange;
+- (CGFloat)currentProgressPosition;
 
 - (void)currentLayoutPage:(NSUInteger *)layoutPage pageWordOffset:(NSUInteger *)pageWordOffset;
 

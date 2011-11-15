@@ -909,6 +909,10 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
         SCHLastPage *lastPage = [self.bookAnnotations lastPage];
         
         lastPage.LastPageLocation = [NSNumber numberWithInteger:currentBookPoint.layoutPage];
+        
+        // Progress should not be exactly 0 once a book is opened so always set a min of 0.001f and a max of 1.0f
+        CGFloat progress = MIN(MAX([self.readingView currentProgressPosition], 0.001f), 1.0f);
+        lastPage.Percentage = [NSNumber numberWithFloat:progress];
 
         SCHAppContentProfileItem *appContentProfileItem = [self.profile appContentProfileItemForBookIdentifier:self.bookIdentifier];
         if ([appContentProfileItem.IsNewBook boolValue] == YES) {
