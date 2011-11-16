@@ -1560,6 +1560,9 @@
 		C9367BD81472E89A0033A2EB /* KNFBXMLParserLock.m in Sources */ = {isa = PBXBuildFile; fileRef = C9367BD71472E89A0033A2EB /* KNFBXMLParserLock.m */; };
 		C9367BD91472E89A0033A2EB /* KNFBXMLParserLock.m in Sources */ = {isa = PBXBuildFile; fileRef = C9367BD71472E89A0033A2EB /* KNFBXMLParserLock.m */; };
 		C9367BDA1472E89A0033A2EB /* KNFBXMLParserLock.m in Sources */ = {isa = PBXBuildFile; fileRef = C9367BD71472E89A0033A2EB /* KNFBXMLParserLock.m */; };
+		C9367BE114731A8B0033A2EB /* SCHParentalToolsWebViewController_iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = C9367BE014731A8B0033A2EB /* SCHParentalToolsWebViewController_iPad.xib */; };
+		C9367BE214731A8B0033A2EB /* SCHParentalToolsWebViewController_iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = C9367BE014731A8B0033A2EB /* SCHParentalToolsWebViewController_iPad.xib */; };
+		C9367BE314731A8B0033A2EB /* SCHParentalToolsWebViewController_iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = C9367BE014731A8B0033A2EB /* SCHParentalToolsWebViewController_iPad.xib */; };
 		C93EBDFD13462883003B99FD /* SCHBookRange.m in Sources */ = {isa = PBXBuildFile; fileRef = C93EBDFC13462883003B99FD /* SCHBookRange.m */; };
 		C93EBEAF13472FED003B99FD /* SCHTextFlowParagraphSource.m in Sources */ = {isa = PBXBuildFile; fileRef = C93EBEAE13472FEC003B99FD /* SCHTextFlowParagraphSource.m */; };
 		C93ECA77134B5EFA003B99FD /* iPodLikeSliderBlueLeftCap.png in Resources */ = {isa = PBXBuildFile; fileRef = C93ECA2E134B5EF9003B99FD /* iPodLikeSliderBlueLeftCap.png */; };
@@ -3138,6 +3141,7 @@
 		C935BC7814698D5B00244A38 /* 9780545324328.1103.MixedUpAlphabet.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = 9780545324328.1103.MixedUpAlphabet.jpg; path = "Shared/Debug Books/9780545324328.1103.MixedUpAlphabet.jpg"; sourceTree = "<group>"; };
 		C9367BD61472E89A0033A2EB /* KNFBXMLParserLock.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = KNFBXMLParserLock.h; path = XPS/KNFBXMLParserLock.h; sourceTree = "<group>"; };
 		C9367BD71472E89A0033A2EB /* KNFBXMLParserLock.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = KNFBXMLParserLock.m; path = XPS/KNFBXMLParserLock.m; sourceTree = "<group>"; };
+		C9367BE014731A8B0033A2EB /* SCHParentalToolsWebViewController_iPad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = SCHParentalToolsWebViewController_iPad.xib; path = iPad/SCHParentalToolsWebViewController_iPad.xib; sourceTree = "<group>"; };
 		C93EBDFB13462882003B99FD /* SCHBookRange.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHBookRange.h; path = Shared/SCHBookRange.h; sourceTree = "<group>"; };
 		C93EBDFC13462883003B99FD /* SCHBookRange.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHBookRange.m; path = Shared/SCHBookRange.m; sourceTree = "<group>"; };
 		C93EBEAD13472FEC003B99FD /* SCHTextFlowParagraphSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHTextFlowParagraphSource.h; path = Shared/SCHTextFlowParagraphSource.h; sourceTree = "<group>"; };
@@ -5669,6 +5673,7 @@
 				2811879013D9C490001522FE /* SCHRemoveDictionaryViewController~ipad.xib */,
 				284DE1E813D96924009FE14E /* SCHDeregisterDeviceViewController~ipad.xib */,
 				28986DF113DD7DD80011B148 /* SCHUpdateBooksViewController~ipad.xib */,
+				C9367BE014731A8B0033A2EB /* SCHParentalToolsWebViewController_iPad.xib */,
 			);
 			name = "Settings Controller";
 			sourceTree = "<group>";
@@ -7209,6 +7214,7 @@
 				C935BC7914698D5B00244A38 /* 9780545324328.1103.MixedUpAlphabet.xps in Resources */,
 				C935BC7A14698D5B00244A38 /* 9780545324328.1103.MixedUpAlphabet.jpg in Resources */,
 				C9951725146D694600EA7337 /* LocalSamplesManifest.xml in Resources */,
+				C9367BE114731A8B0033A2EB /* SCHParentalToolsWebViewController_iPad.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -7241,6 +7247,7 @@
 				2866311B13F00F290092A5DE /* StoryInteractionConcentration1.xml in Resources */,
 				2866311D13F010990092A5DE /* StoryInteractionCardCollection1.xml in Resources */,
 				2898A0B713F436B100618172 /* Puzzle-6pc.xaml in Resources */,
+				C9367BE314731A8B0033A2EB /* SCHParentalToolsWebViewController_iPad.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -7891,6 +7898,7 @@
 				A3A19362146AC94F00938888 /* openfont-license.html in Resources */,
 				A3A19364146AC94F00938888 /* sfhf-license.html in Resources */,
 				C9951722146D693600EA7337 /* LocalSamplesManifest.xml in Resources */,
+				C9367BE214731A8B0033A2EB /* SCHParentalToolsWebViewController_iPad.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

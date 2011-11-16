@@ -19,6 +19,7 @@
 #import "SCHBookIdentifier.h"
 #import "SCHCoreDataHelper.h"
 #import "SCHSyncManager.h"
+#import "SCHParentalToolsWebViewController.h"
 #import "LambdaAlert.h"
 #import "Reachability.h"
 
@@ -495,6 +496,50 @@
         dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);
         dispatch_after(popTime, dispatch_get_main_queue(), completion);
     }
+}
+
+- (void)presentWebParentToolsModallyWithToken:(NSString *)token 
+                                        title:(NSString *)title 
+                                   modalStyle:(UIModalPresentationStyle)style 
+                        shouldHideCloseButton:(BOOL)shouldHide 
+{
+    if (self.modalViewController) {
+        [self dismissModalViewControllerAnimated:NO];
+    }
+    
+    SCHParentalToolsWebViewController *parentalToolsWebViewController = [[[SCHParentalToolsWebViewController alloc] init] autorelease];
+    parentalToolsWebViewController.title = title;
+    parentalToolsWebViewController.modalPresenterDelegate = self;
+    parentalToolsWebViewController.pToken = token;
+    parentalToolsWebViewController.shouldHideCloseButton = shouldHide;
+    parentalToolsWebViewController.modalPresentationStyle = style;
+    
+    [self presentModalViewController:parentalToolsWebViewController animated:NO];
+}
+
+- (void)dismissModalWebParentToolsWithSync:(BOOL)shouldSync showValidation:(BOOL)showValidation
+{
+    if (self.modalViewController) {
+        [self dismissModalViewControllerAnimated:NO];
+    }
+    
+    if (!showValidation) {
+        NSMutableArray *viewControllers = [[self.modalNavigationController viewControllers] mutableCopy];
+        [viewControllers removeLastObject];
+        [self.modalNavigationController setViewControllers:viewControllers];
+        [viewControllers release];
+    }
+    
+    [self presentModalViewController:self.modalNavigationController animated:NO];
+    
+    if (shouldSync) {
+        [[SCHSyncManager sharedSyncManager] firstSync:YES requireDeviceAuthentication:YES];
+    } 
+}
+
+- (void)waitingForWebParentToolsToComplete
+{
+    // Do nothing
 }
 
 #pragma mark - Book updates

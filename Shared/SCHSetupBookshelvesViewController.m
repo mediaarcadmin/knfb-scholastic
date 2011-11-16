@@ -87,12 +87,10 @@
     
     NSString *pToken = [SCHAuthenticationManager sharedAuthenticationManager].pToken;
     if (pToken != nil) {
-        SCHParentalToolsWebViewController *parentalToolsWebViewController = [[[SCHParentalToolsWebViewController alloc] init] autorelease];
-        parentalToolsWebViewController.title = self.title;   
-        parentalToolsWebViewController.profileSetupDelegate = self.profileSetupDelegate;
-        parentalToolsWebViewController.pToken = pToken;
-        parentalToolsWebViewController.shouldHideCloseButton = YES;
-        [self.navigationController pushViewController:parentalToolsWebViewController animated:YES];
+        [self.profileSetupDelegate presentWebParentToolsModallyWithToken:pToken 
+                                                                   title:self.title 
+                                                              modalStyle:UIModalPresentationFullScreen 
+                                                   shouldHideCloseButton:YES];
     } else {
         SCHAccountValidationViewController *accountValidationViewController = [[[SCHAccountValidationViewController alloc] init] autorelease];
         accountValidationViewController.profileSetupDelegate = self.profileSetupDelegate;        

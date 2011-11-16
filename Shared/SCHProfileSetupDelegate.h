@@ -16,9 +16,6 @@
 - (void)pushSamplesAnimated:(BOOL)animated;
 - (void)showCurrentProfileAnimated:(BOOL)animated;
 
-// Web Parent Tools methods
 - (void)waitingForPassword;
-- (void)waitingForWebParentToolsToComplete;
-- (void)webParentToolsCompletedWithSuccess:(BOOL)success;
 
 @end

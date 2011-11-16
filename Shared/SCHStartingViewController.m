@@ -31,6 +31,7 @@
 #import "SCHDrmSession.h"
 #import "SCHSampleBooksImporter.h"
 #import "SCHAccountValidation.h"
+#import "SCHParentalToolsWebViewController.h"
 #import "Reachability.h"
 
 enum {
@@ -647,6 +648,55 @@ typedef enum {
     }
 }
 
+- (void)presentWebParentToolsModallyWithToken:(NSString *)token 
+                                        title:(NSString *)title 
+                                   modalStyle:(UIModalPresentationStyle)style 
+                        shouldHideCloseButton:(BOOL)shouldHide 
+{
+    if (self.modalViewController) {
+        [self dismissModalViewControllerAnimated:NO];
+    }
+    
+    SCHParentalToolsWebViewController *parentalToolsWebViewController = [[[SCHParentalToolsWebViewController alloc] init] autorelease];
+    parentalToolsWebViewController.title = title;
+    parentalToolsWebViewController.modalPresenterDelegate = self;
+    parentalToolsWebViewController.pToken = token;
+    parentalToolsWebViewController.shouldHideCloseButton = shouldHide;
+    parentalToolsWebViewController.shouldHideToolbarSettingsImageView = YES;
+    parentalToolsWebViewController.modalPresentationStyle = style;
+    
+    [self presentModalViewController:parentalToolsWebViewController animated:NO];
+}
+
+- (void)dismissModalWebParentToolsWithSync:(BOOL)shouldSync showValidation:(BOOL)showValidation
+{
+    if (self.modalViewController) {
+        [self dismissModalViewControllerAnimated:NO];
+    }
+
+    if (showValidation) {
+        self.profileSyncState = kSCHStartingViewControllerProfileSyncStateWaitingForPassword;
+    } else {
+        self.profileSyncState = kSCHStartingViewControllerProfileSyncStateWaitingForBookshelves;
+
+        NSMutableArray *viewControllers = [[self.modalNavigationController viewControllers] mutableCopy];
+        [viewControllers removeLastObject];
+        [self.modalNavigationController setViewControllers:viewControllers];
+        [viewControllers release];
+    }
+    
+    [self presentModalViewController:self.modalNavigationController animated:NO];
+    
+    if (shouldSync) {
+        [[SCHSyncManager sharedSyncManager] firstSync:YES requireDeviceAuthentication:YES];
+        self.checkProfilesAlert = [[[LambdaAlert alloc]
+                                    initWithTitle:NSLocalizedString(@"Syncing with Your Account", @"")
+                                    message:@"\n"] autorelease];
+        [self.checkProfilesAlert setSpinnerHidden:NO];
+        [self.checkProfilesAlert show];
+    }    
+}
+
 - (void)waitingForPassword
 {
     self.profileSyncState = kSCHStartingViewControllerProfileSyncStateWaitingForPassword;
@@ -659,19 +709,6 @@ typedef enum {
     // Need to also sync here in case the user has has set up a bookshelf in WPT outside teh app
     // We never want to enter WPT not in wizard mode as there is no close button
     [[SCHSyncManager sharedSyncManager] firstSync:YES requireDeviceAuthentication:YES];
-}
-
-- (void)webParentToolsCompletedWithSuccess:(BOOL)success
-{
-    self.profileSyncState = kSCHStartingViewControllerProfileSyncStateWaitingForBookshelves;
-    
-    [[SCHSyncManager sharedSyncManager] firstSync:YES requireDeviceAuthentication:YES];      
-    
-    self.checkProfilesAlert = [[[LambdaAlert alloc]
-                                initWithTitle:NSLocalizedString(@"Syncing with Your Account", @"")
-                                message:@"\n"] autorelease];
-    [self.checkProfilesAlert setSpinnerHidden:NO];
-    [self.checkProfilesAlert show];
 }
 
 #pragma mark - Profile view

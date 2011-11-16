@@ -376,6 +376,7 @@ extern NSString * const kSCHUserDefaultsSpaceSaverModeSetOffNotification;
         // we always ask for the password before showing parent tools from settings
         SCHAccountValidationViewController *accountValidationViewController = [[[SCHAccountValidationViewController alloc] init] autorelease];
         accountValidationViewController.title = NSLocalizedString(@"Manage eBooks", @"Manage eBooks");
+        accountValidationViewController.settingsDelegate = self.settingsDelegate;
         [self.navigationController pushViewController:accountValidationViewController animated:YES];   
     }
 }

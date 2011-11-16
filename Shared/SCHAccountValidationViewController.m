@@ -96,7 +96,9 @@ static const CGFloat kDeregisterContentHeightLandscape = 380;
                                                    object:nil];
     }
     
-    [self.profileSetupDelegate waitingForPassword];
+    if (self.profileSetupDelegate) {
+        [self.profileSetupDelegate waitingForPassword];
+    }
 }
 
 - (void)viewWillAppear:(BOOL)animated 
@@ -115,7 +117,9 @@ static const CGFloat kDeregisterContentHeightLandscape = 380;
 
 - (void)back:(id)sender
 {
-    [self.profileSetupDelegate webParentToolsCompletedWithSuccess:NO];
+    if (self.profileSetupDelegate) {
+        [[SCHSyncManager sharedSyncManager] firstSync:YES requireDeviceAuthentication:YES];
+    }
     [super back:nil];
 }
 
@@ -165,16 +169,18 @@ static const CGFloat kDeregisterContentHeightLandscape = 380;
                 [alert release];        
             } else {
                 weakSelf.passwordField.text = @"";
-                SCHParentalToolsWebViewController *parentalToolsWebViewController = [[[SCHParentalToolsWebViewController alloc] init] autorelease];
-                parentalToolsWebViewController.title = self.title;
-                parentalToolsWebViewController.profileSetupDelegate = weakSelf.profileSetupDelegate;
-                parentalToolsWebViewController.pToken = pToken;
-                parentalToolsWebViewController.shouldHideCloseButton = self.validatedControllerShouldHideCloseButton;
-                [weakSelf.navigationController pushViewController:parentalToolsWebViewController animated:YES];                
-                // remove us from the view hiearachy - now we're no longer needed
-                NSMutableArray *viewControllers = [NSMutableArray arrayWithArray:weakSelf.navigationController.viewControllers];
-                [viewControllers removeObject:weakSelf];     
-                weakSelf.navigationController.viewControllers = [NSArray arrayWithArray:viewControllers];
+                
+                id<SCHModalPresenterDelegate> targetDelegate = nil;
+                if (weakSelf.profileSetupDelegate) {
+                    targetDelegate = weakSelf.profileSetupDelegate;
+                } else if (weakSelf.settingsDelegate) {
+                    targetDelegate = weakSelf.settingsDelegate;
+                }
+                
+                [targetDelegate presentWebParentToolsModallyWithToken:pToken 
+                                                                title:self.title 
+                                                           modalStyle:UIModalPresentationFullScreen 
+                                                    shouldHideCloseButton:self.validatedControllerShouldHideCloseButton];
             }
             
             [weakSelf.spinner stopAnimating];

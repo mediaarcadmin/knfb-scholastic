@@ -16,16 +16,31 @@
 
 @implementation SCHParentalToolsWebViewController
 
+@synthesize contentView;
+@synthesize backgroundToolbar;
+@synthesize toolbarSettingsImageView;
 @synthesize pToken;
-@synthesize profileSetupDelegate;
+@synthesize modalPresenterDelegate;
+@synthesize shouldHideToolbarSettingsImageView;
 
 #pragma mark - View lifecycle
+
+- (id)init
+{
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+        self = [super initWithNibName:@"SCHParentalToolsWebViewController_iPad" bundle:nil];
+    } else {
+        self = [super init];
+    }
+    
+    return self;
+}
 
 - (void)dealloc 
 {
     [self releaseViewObjects];
     [pToken release], pToken = nil;
-    profileSetupDelegate = nil;   
+    modalPresenterDelegate = nil;  
     [super dealloc];
 }
 
@@ -34,12 +49,27 @@
     [[NSNotificationCenter defaultCenter] removeObserver:self 
                                                     name:UIApplicationDidEnterBackgroundNotification 
                                                   object:nil];
+    [contentView release], contentView = nil;
+    [backgroundToolbar release], backgroundToolbar = nil;
+    [toolbarSettingsImageView release], toolbarSettingsImageView = nil;
     [super releaseViewObjects];
 }
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+        [self.contentView.layer setShadowRadius:20];
+        [self.contentView.layer setShadowOpacity:1];
+        [self.contentView.layer setShadowOffset:CGSizeZero];
+        [self.contentView.layer setCornerRadius:8];
+        [self.contentView.layer setMasksToBounds:YES];
+        [self.contentView.layer setBorderColor:[UIColor SCHRed3Color].CGColor];
+        [self.contentView.layer setBorderWidth:2.0f];
+        [self.backgroundToolbar setBackgroundImage:[UIImage imageNamed:@"settings-ipad-top-toolbar.png"]];
+        [self.toolbarSettingsImageView setHidden:self.shouldHideToolbarSettingsImageView];
+    }
 
     NSURL *webParentToolURL = [[SCHAuthenticationManager sharedAuthenticationManager] webParentToolURL:pToken];
     if (webParentToolURL != nil) {
@@ -55,14 +85,14 @@
                                                      name:UIApplicationDidEnterBackgroundNotification
                                                    object:nil];    
         
-        [self.profileSetupDelegate waitingForWebParentToolsToComplete];
+        [self.modalPresenterDelegate waitingForWebParentToolsToComplete];
     } else {
         SCHParentalToolsWebViewController *weakSelf = self;
         LambdaAlert *lambdaAlert = [[LambdaAlert alloc]
                             initWithTitle:NSLocalizedString(@"Error", @"")
                             message:NSLocalizedString(@"A problem occured accessing web parent tools with your account. Please contact support.", @"")];
         [lambdaAlert addButtonWithTitle:NSLocalizedString(@"OK", @"") block:^{
-            [weakSelf backWithNoSync];
+            [weakSelf.modalPresenterDelegate dismissModalWebParentToolsWithSync:NO showValidation:NO];
         }];
         [lambdaAlert show];
         [lambdaAlert release], lambdaAlert = nil;
@@ -78,39 +108,14 @@
 
 #pragma mark - Action methods
 
-- (void)backWithNoSync
-{    
-    [super back:nil];
-}
-
 - (void)back:(id)sender
 {
-    // trigger a sync to grab any changes if we are in non-wizard mode, otherwise trigger web parent tools completed
-    if (self.profileSetupDelegate != nil) {
-        [self.profileSetupDelegate webParentToolsCompletedWithSuccess:NO];
-    } else {
-        [[SCHSyncManager sharedSyncManager] firstSync:YES requireDeviceAuthentication:YES];
-    }
-    
-
-    [super back:nil];
+    [self.modalPresenterDelegate dismissModalWebParentToolsWithSync:YES showValidation:NO];
 }
 
 - (void)requestPassword
 {
-    SCHAccountValidationViewController *accountValidationViewController = [[[SCHAccountValidationViewController alloc] init] autorelease];
-    NSMutableArray *viewControllers = [NSMutableArray arrayWithArray:self.navigationController.viewControllers];
-    
-    accountValidationViewController.profileSetupDelegate = self.profileSetupDelegate;
-    accountValidationViewController.validatedControllerShouldHideCloseButton = YES;
-    accountValidationViewController.title = self.title;
-    
-    [viewControllers insertObject:accountValidationViewController atIndex:[viewControllers indexOfObject:self]];     
-    self.navigationController.viewControllers = [NSArray arrayWithArray:viewControllers];
-    
-    [self.profileSetupDelegate waitingForPassword];
-    
-    [super back:nil];
+    [self.modalPresenterDelegate dismissModalWebParentToolsWithSync:NO showValidation:YES];
 }
 
 #pragma mark - Notification methods
@@ -128,14 +133,14 @@
     //NSLog(@"Request: %@",request);
     BOOL ret = YES;
     
-    if (self.profileSetupDelegate != nil) {
+    if (self.modalPresenterDelegate != nil) {
         NSDictionary *parameters = [[request URL] queryParameters];
         NSString *cmd = [parameters objectForKey:@"cmd"];
         
         if ([cmd isEqualToString:@"bookshelfSetupDidCompleteWithSuccess"] == YES) {
             ret = NO;
             
-            [self.profileSetupDelegate webParentToolsCompletedWithSuccess:YES];
+            [self.modalPresenterDelegate dismissModalWebParentToolsWithSync:YES showValidation:NO];
         }
     }
     

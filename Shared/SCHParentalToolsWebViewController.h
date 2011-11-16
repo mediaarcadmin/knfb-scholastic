@@ -9,13 +9,16 @@
 #import <UIKit/UIKit.h>
 
 #import "SCHBaseTextViewController.h"
-#import "SCHProfileSetupDelegate.h"
+#import "SCHModalPresenterDelegate.h"
 
 @interface SCHParentalToolsWebViewController : SCHBaseTextViewController <UIWebViewDelegate>
 
-@property (nonatomic, copy) NSString *pToken;
-@property (nonatomic, assign) id<SCHProfileSetupDelegate> profileSetupDelegate;
+@property (nonatomic, retain) IBOutlet UIView *contentView;
+@property (nonatomic, retain) IBOutlet SCHCustomToolbar *backgroundToolbar;
+@property (nonatomic, retain) IBOutlet UIImageView *toolbarSettingsImageView;
 
-- (void)backWithNoSync;
+@property (nonatomic, copy) NSString *pToken;
+@property (nonatomic, assign) id<SCHModalPresenterDelegate> modalPresenterDelegate;
+@property (nonatomic, assign) BOOL shouldHideToolbarSettingsImageView;
 
 @end
