@@ -421,6 +421,7 @@ NSString * const SCHAnnotationSyncComponentCompletedProfileIDs = @"SCHAnnotation
     NSNumber *profileID = [self currentProfile];
     NSArray *books = [self.annotations objectForKey:profileID];
     
+    self.lastSyncSaveCalled = nil;
 	[self.savedAnnotations removeAllObjects];
     NSArray *updatedAnnotations = [self localModifiedAnnotationsItemForProfile:profileID];
     if ([updatedAnnotations count] > 0) {
