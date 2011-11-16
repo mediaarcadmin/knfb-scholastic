@@ -68,7 +68,7 @@
 		
 		self.connection = [NSURLConnection 
 						   connectionWithRequest:[NSURLRequest requestWithURL:
-                                                  [NSURL URLWithString:@"http://reader.ebooks2.scholastic.com/reader/sch/UpdateManifest.xml"]]
+                                                  [NSURL URLWithString:UPDATE_MANIFEST]]
 						   delegate:self];
 		
         if (self.connection == nil) {

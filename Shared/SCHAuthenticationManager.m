@@ -84,7 +84,7 @@ NSTimeInterval const kSCHAuthenticationManagerSecondsInAMinute = 60.0;
     
     dispatch_once(&pred, ^{
         NSAssert([NSThread isMainThread] == YES, @"SCHAuthenticationManager:sharedAuthenticationManager MUST be executed on the main thread");
-#if NONDRMAUTHENTICATION
+#if NON_DRM_AUTHENTICATION
         sharedAuthenticationManager = [[SCHNonDRMAuthenticationManager allocWithZone:NULL] init];
 #else
         sharedAuthenticationManager = [[super allocWithZone:NULL] init];

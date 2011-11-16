@@ -15,7 +15,7 @@
 #import "NSNumber+ObjectTypes.h"
 #import "SCHBookIdentifier.h"
 
-NSString * const kSCHSampleBooksRemoteManifestURL = @"http://bits.blioreader.com/partners/Scholastic/SampleBookshelf/SampleBookshelfManifest_v2.xml";
+NSString * const kSCHSampleBooksRemoteManifestURL = FREE_MANIFEST;
 NSString * const kSCHSampleBooksLocalManifestFile = @"LocalSamplesManifest.xml";
 
 typedef enum {

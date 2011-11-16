@@ -335,15 +335,8 @@
 }
 + (AuthenticateSoap11Binding *)AuthenticateSoap11Binding
 {
-    
-     #if UATSERVER
-     NSLog(@"SOAP using: %@", @"https://esvcsqa.scholastic.com/SchWS/services/SPS/Authenticate.AuthenticateHttpsSoap11Endpoint/");
-     return [[[AuthenticateSoap11Binding alloc] initWithAddress:@"https://esvcsqa.scholastic.com/SchWS/services/SPS/Authenticate.AuthenticateHttpsSoap11Endpoint/"] autorelease];
-     #else
-     NSLog(@"SOAP using: %@", @"https://esvcs.scholastic.com/SchWS/services/SPS/Authenticate.AuthenticateHttpsSoap11Endpoint/");    
-     return [[[AuthenticateSoap11Binding alloc] initWithAddress:@"https://esvcs.scholastic.com/SchWS/services/SPS/Authenticate.AuthenticateHttpsSoap11Endpoint/"] autorelease];
-     #endif
-     
+     NSLog(@"SOAP using: %@", AUTHENTICATION_SERVER_ENDPOINT);
+     return [[[AuthenticateSoap11Binding alloc] initWithAddress:AUTHENTICATION_SERVER_ENDPOINT] autorelease];     
 }
 @end
 @implementation AuthenticateSoap11Binding

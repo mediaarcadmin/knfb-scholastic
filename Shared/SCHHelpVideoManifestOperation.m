@@ -64,7 +64,7 @@
 		
 		self.connection = [NSURLConnection 
 						   connectionWithRequest:[NSURLRequest requestWithURL:
-                                                  [NSURL URLWithString:@"http://bitwink.com/private/helpvideos/HelpVideoManifest.xml"]]
+                                                  [NSURL URLWithString:VIDEO_MANIFEST]]
 						   delegate:self];
 		
         if (self.connection == nil) {

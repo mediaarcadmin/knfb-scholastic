@@ -51,7 +51,7 @@ static NSTimeInterval const kAppDelegate_iPadSyncManagerWakeDelay = 5.0;
 
 
 - (void)applicationDidBecomeActive:(UIApplication *)application {
-#if NONDRMAUTHENTICATION
+#if NON_DRM_AUTHENTICATION
 	SCHAuthenticationManager *authenticationManager = [SCHAuthenticationManager sharedAuthenticationManager];
 	if ([authenticationManager isAuthenticated] == YES) {
 #else
