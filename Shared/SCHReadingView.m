@@ -50,6 +50,7 @@
 @synthesize currentSelectorRange;
 @synthesize singleWordSelectorRange;
 @synthesize createHighlightFromSelection;
+@synthesize fontSizeIndex;
 
 - (void) dealloc
 {
@@ -144,11 +145,6 @@ managedObjectContext:(NSManagedObjectContext *)managedObjectContext
 - (void)jumpToBookPoint:(SCHBookPoint *)bookPoint animated:(BOOL)animated withCompletionHandler:(dispatch_block_t)completion
 {
     NSLog(@"WARNING: jumpToBookPoint:animated:withCompletionHandler: not being overridden correctly.");
-}
-
-- (void) setFontPointIndex: (NSUInteger) index
-{
-    // Do nothing
 }
 
 - (NSInteger) maximumFontIndex

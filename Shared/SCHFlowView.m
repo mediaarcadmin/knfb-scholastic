@@ -176,6 +176,7 @@ managedObjectContext:(NSManagedObjectContext *)managedObjectContext
         // eucBookView which sets the page count
         [self.eucBookView addObserver:self forKeyPath:@"currentPageIndexPoint" options:NSKeyValueObservingOptionInitial context:NULL];
         [self.eucBookView addObserver:self forKeyPath:@"pageCount" options:NSKeyValueObservingOptionInitial context:NULL];
+
         [self attachSelector];
     }
 }
@@ -281,9 +282,13 @@ managedObjectContext:(NSManagedObjectContext *)managedObjectContext
 {
     [super observeValueForKeyPath:keyPath ofObject:object change:change context:context];
     
-    if (([keyPath isEqualToString:@"currentPageIndexPoint"]) ||
-        ([keyPath isEqualToString:@"pageCount"])) {
+    if ([keyPath isEqualToString:@"currentPageIndexPoint"]) {
         [self updatePositionInBook];
+    } else if ([keyPath isEqualToString:@"pageCount"]) {
+        [self updatePositionInBook];
+        
+        // The page count changes when we set the font size (it explicitly uses a KVO willChange/didChange on pageCount
+        [self.delegate readingView:self hasChangedFontPointToSizeAtIndex:[self fontSizeIndex]];
     }
 
 }
@@ -480,7 +485,29 @@ static void sortedHighlightRangePredicateInit() {
     [self.eucBookView setNeedsDisplay];
 }
 
-- (void)setFontPointIndex:(NSUInteger)index
+- (NSUInteger)fontSizeIndex
+{
+    // N.B. It should be possible to read actualFontSize from self.eucBookView.fontPointSize but it doesn't get updated on a pinch
+    // FIXME: once that is fixed remove this hardcoded userDefault lookup
+
+    CGFloat actualFontSize = [[NSUserDefaults standardUserDefaults] floatForKey:@"gs.ingsmadeoutofotherthin.th.libEucalyptus.fontPointSize"];
+    CGFloat bestDifference = CGFLOAT_MAX;
+    NSUInteger bestFontSizeIndex = 0;
+    NSArray *fontSizeNumbers = [EucConfiguration objectForKey:EucConfigurationFontSizesKey];
+    
+    NSUInteger fontSizeCount = fontSizeNumbers.count;
+    for(NSUInteger i = 0; i < fontSizeCount; ++i) {
+        CGFloat thisDifference = fabsf(((NSNumber *)[fontSizeNumbers objectAtIndex:i]).floatValue - actualFontSize);
+        if(thisDifference < bestDifference) {
+            bestDifference = thisDifference;
+            bestFontSizeIndex = i;
+        }
+    }
+    
+    return bestFontSizeIndex;
+}
+
+- (void)setFontSizeIndex:(NSUInteger)index
 {
     NSArray *eucFontSizeNumbers = [EucConfiguration objectForKey:EucConfigurationFontSizesKey];
     

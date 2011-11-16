@@ -43,6 +43,8 @@ typedef enum
 - (void)readingView:(SCHReadingView *)readingView hasMovedToPageIndicesInRange:(NSRange)pageIndicesRange withFocusedPageIndex:(NSUInteger)pageIndex;
 - (void)readingView:(SCHReadingView *)readingView hasMovedToProgressPositionInBook:(CGFloat)progress;
 
+- (void)readingView:(SCHReadingView *)readingView hasChangedFontPointToSizeAtIndex:(NSUInteger)fontSizeIndex;
+
 - (void)readingView:(SCHReadingView *)readingView hasSelectedWordForSpeaking:(NSString *)word;
 - (void)requestDictionaryForWord:(NSString *)word mode:(SCHReadingViewSelectionMode) mode;
 
@@ -60,6 +62,7 @@ typedef enum
 @property (nonatomic, retain) SCHTextFlow *textFlow;
 @property (nonatomic, assign) SCHReadingViewSelectionMode selectionMode;
 @property (nonatomic, retain, readonly) EucSelector *selector;
+@property (nonatomic, assign) NSUInteger fontSizeIndex;
 
 - (id)initWithFrame:(CGRect)frame 
      bookIdentifier:(SCHBookIdentifier *)bookIdentifier 
@@ -84,7 +87,6 @@ managedObjectContext:(NSManagedObjectContext *)managedObjectContext
 - (void)jumpToBookPoint:(SCHBookPoint *)bookPoint animated:(BOOL)animated;
 - (void)jumpToBookPoint:(SCHBookPoint *)bookPoint animated:(BOOL)animated withCompletionHandler:(dispatch_block_t)completion;
 
-- (void)setFontPointIndex:(NSUInteger)index;
 - (NSInteger)maximumFontIndex;
 - (NSInteger)pageCount;
 

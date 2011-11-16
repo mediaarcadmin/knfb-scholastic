@@ -1903,16 +1903,9 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 {
     currentFontSizeIndex = newFontSizeIndex;
     
-    NSNumber *savedFontSizeIndex = [[self.profile AppProfile] FontIndex];
-    
-    if (!savedFontSizeIndex || [savedFontSizeIndex intValue] != newFontSizeIndex) {
-        savedFontSizeIndex = [NSNumber numberWithInt:newFontSizeIndex];
-        [[self.profile AppProfile] setFontIndex:savedFontSizeIndex];
-    }
-    
     // Suppress toolbar toggle (setting font size will cause the moveToPage callbackto fire and hide the toolbars)
     self.suppressToolbarToggle = YES; 
-    [self.readingView setFontPointIndex:newFontSizeIndex];
+    [self.readingView setFontSizeIndex:newFontSizeIndex];
     self.suppressToolbarToggle = NO; 
     
     [self updateFontSegmentStateForIndex:newFontSizeIndex];
@@ -2124,6 +2117,18 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     self.currentPageIndices = NSMakeRange(NSNotFound, 0);
     
     [self readingViewHasMoved];
+}
+
+- (void)readingView:(SCHReadingView *)readingView hasChangedFontPointToSizeAtIndex:(NSUInteger)fontSizeIndex
+{
+    NSNumber *savedFontSizeIndex = [[self.profile AppProfile] FontIndex];
+    NSNumber *newFontSizeIndex = [NSNumber numberWithInt:fontSizeIndex];
+    
+    if (newFontSizeIndex && ![savedFontSizeIndex isEqualToNumber:newFontSizeIndex]) {
+        [self updateFontSegmentStateForIndex:[newFontSizeIndex intValue]];
+        [[self.profile AppProfile] setFontIndex:newFontSizeIndex];
+        //NSLog(@"Saving fontSizeIndex as %@", newFontSizeIndex);
+    }
 }
 
 - (void)readingView:(SCHReadingView *)readingView hasSelectedWordForSpeaking:(NSString *)word
