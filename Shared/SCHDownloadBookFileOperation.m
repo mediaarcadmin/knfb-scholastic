@@ -202,7 +202,7 @@
     NSMutableIndexSet *acceptableStatusCodes = [NSMutableIndexSet indexSetWithIndex:200];
     [acceptableStatusCodes addIndex:206];
 
-    self.downloadOperation = [[QHTTPOperation alloc] initWithRequest:request];
+    self.downloadOperation = [[[QHTTPOperation alloc] initWithRequest:request] autorelease];
     self.downloadOperation.acceptableStatusCodes = acceptableStatusCodes;
     self.downloadOperation.responseOutputStream = [NSOutputStream outputStreamToFileAtPath:self.localPath append:append];
     self.downloadOperation.delegate = self;

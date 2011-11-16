@@ -63,6 +63,7 @@
 	BOOL synchronousOperationComplete;
 	NSString *authUsername;
 	NSString *authPassword;
+    NSMutableArray *operationPointers;
 }
 @property (nonatomic, copy) NSURL *address;
 @property (nonatomic) BOOL logXMLInOut;
@@ -71,6 +72,7 @@
 @property (nonatomic, retain) NSMutableDictionary *customHeaders;
 @property (nonatomic, retain) NSString *authUsername;
 @property (nonatomic, retain) NSString *authPassword;
+@property (nonatomic, retain) NSMutableArray *operationPointers;
 + (NSTimeInterval) defaultTimeout;
 - (id)initWithAddress:(NSString *)anAddress;
 - (void)sendHTTPCallUsingBody:(NSString *)body soapAction:(NSString *)soapAction forOperation:(AuthenticateSoap11BindingOperation *)operation;
@@ -78,6 +80,9 @@
 - (NSString *)MIMEType;
 - (AuthenticateSoap11BindingResponse *)processRemoteUsingParameters:(AuthenticateSvc_processRemote *)aParameters ;
 - (void)processRemoteAsyncUsingParameters:(AuthenticateSvc_processRemote *)aParameters  delegate:(id<AuthenticateSoap11BindingResponseDelegate>)responseDelegate;
+- (void)addPointerForOperation:(LibreAccessServiceSoap11BindingOperation *)operation;
+- (void)removePointerForOperation:(LibreAccessServiceSoap11BindingOperation *)operation;
+- (void)clearBindingOperations;
 @end
 @interface AuthenticateSoap11BindingOperation : NSOperation {
 	AuthenticateSoap11Binding *binding;
@@ -93,6 +98,7 @@
 @property (nonatomic, retain) NSURLConnection *urlConnection;
 - (id)initWithBinding:(AuthenticateSoap11Binding *)aBinding delegate:(id<AuthenticateSoap11BindingResponseDelegate>)aDelegate;
 - (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error;
+- (void)clear;
 @end
 @interface AuthenticateSoap11Binding_processRemote : AuthenticateSoap11BindingOperation {
 	AuthenticateSvc_processRemote * parameters;

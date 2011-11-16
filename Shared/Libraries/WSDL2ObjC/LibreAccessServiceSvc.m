@@ -46002,7 +46002,6 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
                                LibreAccessServiceSoap11BindingOperation *op = [el nonretainedObjectValue];
                                return [op isEqual:operation];
                            }];
-
     [self.operationPointers removeObjectsAtIndexes:matches];
 }
 - (void) clearBindingOperations

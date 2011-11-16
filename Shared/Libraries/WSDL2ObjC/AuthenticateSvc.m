@@ -347,6 +347,7 @@
 @synthesize customHeaders;
 @synthesize authUsername;
 @synthesize authPassword;
+@synthesize operationPointers;
 + (NSTimeInterval)defaultTimeout
 {
 	return 10;
@@ -360,6 +361,7 @@
 		timeout = [[self class] defaultTimeout];
 		logXMLInOut = NO;
 		synchronousOperationComplete = NO;
+        operationPointers = [[NSMutableArray alloc] init];
 	}
 	
 	return self;
@@ -446,13 +448,35 @@
 	operation.urlConnection = connection;
 	[connection release];
 }
+- (void) addPointerForOperation:(LibreAccessServiceSoap11BindingOperation *)operation
+{
+    NSValue *pointerValue = [NSValue valueWithNonretainedObject:operation];
+    [self.operationPointers addObject:pointerValue];
+}
+- (void) removePointerForOperation:(LibreAccessServiceSoap11BindingOperation *)operation
+{
+    NSIndexSet *matches = [self.operationPointers indexesOfObjectsPassingTest:^BOOL (id el, NSUInteger i, BOOL *stop) {
+                               LibreAccessServiceSoap11BindingOperation *op = [el nonretainedObjectValue];
+                               return [op isEqual:operation];
+                           }];
+    [self.operationPointers removeObjectsAtIndexes:matches];
+}
+- (void) clearBindingOperations
+{
+    for (NSValue *pointerValue in self.operationPointers) {
+        LibreAccessServiceSoap11BindingOperation *operation = [pointerValue nonretainedObjectValue];
+        [operation clear];
+    }
+}
 - (void) dealloc
 {
+    [self clearBindingOperations];
 	[address release];
 	[cookies release];
 	[customHeaders release];
 	[authUsername release];
 	[authPassword release];
+    [operationPointers release];
 	[super dealloc];
 }
 @end
@@ -466,6 +490,7 @@
 {
 	if ((self = [super init])) {
 		self.binding = aBinding;
+        [self.binding addPointerForOperation:self];
 		response = nil;
 		self.delegate = aDelegate;
 		self.responseData = nil;
@@ -540,6 +565,7 @@
 }
 - (void)dealloc
 {
+    [binding removePointerForOperation:self];
 	[binding release];
 	[response release];
 	delegate = nil;
@@ -547,6 +573,11 @@
 	[urlConnection release];
 	
 	[super dealloc];
+}
+- (void)clear
+{
+    self.delegate = nil;
+    [self.urlConnection cancel];
 }
 @end
 @implementation AuthenticateSoap11Binding_processRemote
@@ -608,7 +639,7 @@ parameters:(AuthenticateSvc_processRemote *)aParameters
 	// Not yet defined in 10.5 libxml
 	#define XML_PARSE_COMPACT 0
 #endif
-            doc = xmlReadMemory([responseData bytes], [responseData length], NULL, NULL, XML_PARSE_COMPACT | XML_PARSE_NOBLANKS);
+			doc = xmlReadMemory([responseData bytes], [responseData length], NULL, NULL, XML_PARSE_COMPACT | XML_PARSE_NOBLANKS);
 		
 			if (doc == NULL) {
 				NSDictionary *userInfo = [NSDictionary dictionaryWithObject:@"Errors while parsing returned XML" forKey:NSLocalizedDescriptionKey];
@@ -648,12 +679,11 @@ parameters:(AuthenticateSvc_processRemote *)aParameters
 			
 				xmlFreeDoc(doc);
 			}
-		
-			dispatch_async(dispatch_get_main_queue(), ^{
-				if(delegate != nil && [delegate respondsToSelector:@selector(operation:completedWithResponse:)] == YES) {
+			if(delegate != nil && [delegate respondsToSelector:@selector(operation:completedWithResponse:)] == YES) {
+				dispatch_async(dispatch_get_main_queue(), ^{
 					[delegate operation:self completedWithResponse:response];
-				}
-			});  
+				});
+			}
 		});
 	}
 }

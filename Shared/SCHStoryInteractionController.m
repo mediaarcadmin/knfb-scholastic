@@ -394,7 +394,7 @@ static Class controllerClassForStoryInteraction(SCHStoryInteraction *storyIntera
         fontSize = (iPad ? 30 : 17);
     }
 
-    UIFont *font;
+    UIFont *font = [UIFont fontWithName:fontName size:fontSize];
     for (; fontSize > 10; fontSize -= 2) {
         font = [UIFont fontWithName:fontName size:fontSize];
         CGSize size = [self.titleView.text sizeWithFont:font
