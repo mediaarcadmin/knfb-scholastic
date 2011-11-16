@@ -131,13 +131,15 @@
             [self jumpToBookPoint:self.openingPoint animated:NO];
             self.openingPoint = nil;
         }
-                
-        [self attachSelector];
     }    
 }
 
 - (void)attachSelector
 {
+    if (selector) {
+        [self detachSelector];
+    }
+    
     selector = [[EucSelector alloc] init];
     selector.dataSource = self;
     selector.delegate =  self;
@@ -149,10 +151,10 @@
 }
 
 - (void)detachSelector
-{
-    [super detachSelector];
-    
+{    
     if (selector) {
+        [super detachSelector];
+
         [selector removeObserver:self forKeyPath:@"tracking"];
         [selector detatch];
         [selector release], selector = nil;
@@ -212,6 +214,8 @@ managedObjectContext:(NSManagedObjectContext *)managedObjectContext
 {
     if (!newSuperview) {
         [self detachSelector];
+    } else {
+        [self attachSelector];
     }
 }
 
