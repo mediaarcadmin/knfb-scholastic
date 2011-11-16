@@ -528,7 +528,7 @@ extern NSString * const kSCHUserDefaultsSpaceSaverModeSetOffNotification;
     if (self.checkBooksAlert) {
         LambdaAlert *alert = [[LambdaAlert alloc]
                               initWithTitle:NSLocalizedString(@"Sync Failed", @"")
-                              message:NSLocalizedString(@"There was a problem whilst checking for new eBooks. Please try again.", @"")];
+                              message:NSLocalizedString(@"There was a problem while checking for new eBooks. Please try again.", @"")];
         [alert addButtonWithTitle:NSLocalizedString(@"OK", @"") block:^{
             if ([[SCHAppStateManager sharedAppStateManager] canAuthenticate] != NO) {
                 [self.checkBooksButton setEnabled:YES];

@@ -321,7 +321,7 @@
     [self addSampleEntries:entries forProfiles:sampleProfileIDs];
     
     if (![self.managedObjectContext save:&error]) {
-        NSLog(@"Unresolved error whilst populating sample store from Manifest Entries %@, %@", error, [error userInfo]);
+        NSLog(@"Unresolved error while populating sample store from Manifest Entries %@, %@", error, [error userInfo]);
         success = NO;
     }
     
@@ -581,7 +581,7 @@
             if (imageData != nil) {   
                 NSData *pngData = UIImagePNGRepresentation([UIImage imageWithData:imageData]);
                 if (![pngData writeToFile:[newContentMetadataItem.AppBook coverImagePath] atomically:YES]) {
-                    NSLog(@"Error occurred whilst trying to write imported book cover image to disk");
+                    NSLog(@"Error occurred while trying to write imported book cover image to disk");
                 }
             }
             // we need to unlock the file from XPS before we can move it

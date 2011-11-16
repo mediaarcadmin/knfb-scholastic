@@ -314,7 +314,7 @@ typedef enum {
                                                                     failureBlock:^(NSString * failureReason){
         LambdaAlert *alert = [[LambdaAlert alloc]
                               initWithTitle:NSLocalizedString(@"Unable To Update Sample eBooks", @"")
-                              message:[NSString stringWithFormat:NSLocalizedString(@"There was a problem whilst updating the sample eBooks. %@. Please try again.", @""), failureReason]];
+                              message:[NSString stringWithFormat:NSLocalizedString(@"There was a problem while updating the sample eBooks. %@. Please try again.", @""), failureReason]];
         [alert addButtonWithTitle:NSLocalizedString(@"OK", @"") block:^{
         }];
         
@@ -589,7 +589,7 @@ typedef enum {
     } else {
         LambdaAlert *alert = [[LambdaAlert alloc]
                               initWithTitle:NSLocalizedString(@"Unable To Open the Sample Bookshelf", @"")
-                              message:NSLocalizedString(@"There was a problem whilst opening the sample bookshelf. Please try again.", @"")];
+                              message:NSLocalizedString(@"There was a problem while opening the sample bookshelf. Please try again.", @"")];
         [alert addButtonWithTitle:NSLocalizedString(@"OK", @"") block:^{
         }];
         
@@ -597,33 +597,6 @@ typedef enum {
         [alert release]; 
     }
 }
-
-//- (void)pushProfileAnimated:(BOOL)animated
-//{
-//    if (self.modalViewController) {
-//        [self dismissModalViewControllerAnimated:YES];
-//    }
-//    
-//    SCHProfileViewController_Shared *profile = [self profileViewController];
-//    SCHProfileItem *profileItem = [[profile profileItems] lastObject]; // Only one sample bookshelf so any result will do
-//    
-//    if (profileItem) {
-//        NSMutableArray *viewControllers = [NSMutableArray arrayWithObjects:self, profile, nil];
-//        [viewControllers addObjectsFromArray:[profile viewControllersForProfileItem:profileItem]];
-//        [self.navigationController setViewControllers:viewControllers animated:animated];
-//    } else {
-//        LambdaAlert *alert = [[LambdaAlert alloc]
-//                              initWithTitle:NSLocalizedString(@"Unable To Open the Sample Bookshelf", @"")
-//                              message:NSLocalizedString(@"There was a problem whilst opening the sample bookshelf. Please try again.", @"")];
-//        [alert addButtonWithTitle:NSLocalizedString(@"OK", @"") block:^{
-//        }];
-//        
-//        [alert show]; 
-//        [alert release]; 
-//    }
-//
-//}
-
 
 - (void)showCurrentProfileAnimated:(BOOL)animated
 {   
@@ -800,7 +773,7 @@ typedef enum {
             
             LambdaAlert *alert = [[LambdaAlert alloc]
                                   initWithTitle:NSLocalizedString(@"Sync Failed", @"")
-                                  message:NSLocalizedString(@"There was a problem whilst checking for new profiles. Please try again.", @"")];
+                                  message:NSLocalizedString(@"There was a problem while checking for new profiles. Please try again.", @"")];
             [alert addButtonWithTitle:NSLocalizedString(@"OK", @"") block:^{
             }];
 

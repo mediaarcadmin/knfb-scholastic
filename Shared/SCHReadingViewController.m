@@ -271,7 +271,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     [cornerCoverFadeTimer release], cornerCoverFadeTimer = nil;
     
     // Ideally the readingView would be release it viewDidUnload but it contains 
-    // logic that this view controller uses whilst it is potentially off-screen (e.g. when a story interaction is being shown)
+    // logic that this view controller uses while it is potentially off-screen (e.g. when a story interaction is being shown)
     [readingView release], readingView = nil;
     
     [super dealloc];
@@ -321,7 +321,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 - (void)viewDidUnload 
 {
     [super viewDidUnload];
-    [self saveLastPageLocation]; // Needed in case the view unloads whilst a modal popover is being displayed
+    [self saveLastPageLocation]; // Needed in case the view unloads while a modal popover is being displayed
     [self releaseViewObjects];
 }
 
