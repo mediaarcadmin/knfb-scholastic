@@ -106,11 +106,12 @@ enum {
     [self enqueueAudioWithPath:@"sfx_breakpuzzle.mp3" fromBundle:YES];
     
     // scale the pieces down to fit in the margins around the puzzle background
-    CGFloat scale;
+    CGFloat scale = 0.33;
     switch (self.numberOfPieces) {
         case 6: scale = 0.28; break;
         case 12: scale = 0.33; break;
         case 20: scale = 0.33; break;
+        default: scale = 0.33; break;
     }
     CGAffineTransform pieceTransform = CGAffineTransformMakeScale(scale, scale);
     [self.puzzleBackground setTransform:puzzleTransform];

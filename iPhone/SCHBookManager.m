@@ -64,7 +64,7 @@ static NSDictionary *featureCompatibilityDictionary = nil;
     // are made anyway.
     if(!sSharedBookManager) {
         sSharedBookManager = [[self alloc] init];
-		sSharedBookManager.threadSafeMutationLock = [[NSLock alloc] init];
+		sSharedBookManager.threadSafeMutationLock = [[[NSLock alloc] init] autorelease];
 
     }
     return sSharedBookManager;

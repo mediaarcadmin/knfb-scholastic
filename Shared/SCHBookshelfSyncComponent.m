@@ -222,7 +222,11 @@ NSString * const SCHBookshelfSyncComponentDidFailNotification = @"SCHBookshelfSy
 
     if (contentMetadataItems != nil) {
         for (NSDictionary *contentMetadataItem in contentMetadataItems) {
-            [ret addObject:[[SCHBookIdentifier alloc] initWithObject:contentMetadataItem]];
+            SCHBookIdentifier *bookIdentifier = [[SCHBookIdentifier alloc] initWithObject:contentMetadataItem];
+            if (bookIdentifier != nil) {
+                [ret addObject:bookIdentifier];
+                [bookIdentifier release];
+            }
         }        
     }
     
