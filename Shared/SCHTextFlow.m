@@ -14,6 +14,9 @@
 #import "SCHBookRange.h"
 #import "KNFBTextFlowBlock.h"
 #import "KNFBXPSConstants.h"
+#import "KNFBTOCEntry.h"
+#import <libEucalyptus/THPair.h>
+#import <libEucalyptus/EucChapterNameFormatting.h>
 
 @interface SCHTextFlow()
 
@@ -162,6 +165,19 @@
     NSData *data = [self.xpsProvider dataForComponentAtPath:KNFBXPSTextFlowSectionsFile];
 
     return data;
+}
+
+- (THPair *)presentationNameAndSubTitleForSectionUuid:(NSString *)sectionUuid
+{
+    THPair *ret = nil;
+    
+    KNFBTOCEntry *tocEntry = [self tocEntryForSectionUuid:sectionUuid];
+    NSString *sectionName = tocEntry.name;
+    if (sectionName) {
+        ret = [sectionName splitAndFormattedChapterName];
+    }
+    
+    return ret;
 }
 
 @end

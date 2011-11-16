@@ -515,32 +515,61 @@ managedObjectContext:(NSManagedObjectContext *)managedObjectContext
     return pageStr;
 }
 
-- (NSString *)pageLabelForPageAtIndex:(NSUInteger)pageIndex
+- (NSString *)pageLabelForPageAtIndex:(NSUInteger)pageIndex showChapters:(BOOL)showChapters
 {
-    NSString *pageStr = [self displayPageNumberForPageAtIndex:pageIndex];  
-    NSString *chapterName = nil;
-    
-    // Ignore chapter names if we have less than 2 sections in the TOC - it will never change!
-    if ([[self.textFlow tableOfContents] count] > 1) {
-        NSString *uuid = [self.textFlow sectionUuidForPageIndex:pageIndex];
-        chapterName = [self.textFlow contentsTableViewController:nil presentationNameAndSubTitleForSectionUuid:uuid].first;
+    if (pageIndex == 0) {
+        return NSLocalizedString(@"Cover", @"Override page label for page index 0 in Layout view");
     }
+
+    NSString *displayPageStr = [self displayPageNumberForPageAtIndex:pageIndex];
+    
+    NSString *chapterPrefix = NSLocalizedString(@"Chapter ", @"Scrubber label chapter prefix for layout view");
+    NSString *pagePrefix = NSLocalizedString(@"Page ", @"Scrubber label page prefix for layout view");
+    NSString *chapterPageSeparator = NSLocalizedString(@" │ ", @"Scrubber label chapter page separator for layout view");
     
     NSString *pageLabel = nil;
     
-    if (chapterName) {
-        if ([pageStr length]) {
-            pageLabel = [NSString stringWithFormat:NSLocalizedString(@"Page %@ \u2013 %@",@"Page label with page number and chapter (layout view)"), pageStr, chapterName];
-        } else {
-            pageLabel = [NSString stringWithFormat:@"%@", chapterName];
+    if (showChapters) {
+        NSString *chapterName = nil;
+        
+        // Ignore chapter names if we have less than 2 sections in the TOC - it will never change!
+        if ([[self.textFlow tableOfContents] count] > 1) {
+            NSString *uuid = [self.textFlow sectionUuidForPageIndex:pageIndex];
+            chapterName = [self.textFlow contentsTableViewController:nil presentationNameAndSubTitleForSectionUuid:uuid].first;
+        }
+        
+        if (chapterName) {
+            
+            NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
+            [formatter setAllowsFloats:NO];
+            
+            if(![formatter numberFromString:chapterName]) {
+                chapterPrefix = @"";
+            }
+            
+            if ([displayPageStr length]) {
+                pageLabel = [NSString stringWithFormat:NSLocalizedString(@"%@%@%@%@%@",@"Page label with page number and chapter (layout view)"), chapterPrefix, chapterName, chapterPageSeparator, pagePrefix, displayPageStr];
+            } else {
+                pageLabel = [NSString stringWithFormat:@"%@%@", chapterPrefix, chapterName];
+            }
         }
     }
     
     if (!pageLabel) {
-        if (!pageStr) {
-            pageStr = [self.textFlow contentsTableViewController:nil displayPageNumberForPageIndex:pageIndex];
+        NSString *lastPageStr = [self displayPageNumberForPageAtIndex:[self pageCount] - 1];
+        
+        if ([displayPageStr isEqualToString:@""]) {
+            // This is the case for empty values in the mapping - we don't want a label in this case
+            pageLabel = nil;
+        } else if (displayPageStr && lastPageStr) {
+             pageLabel = [NSString stringWithFormat:NSLocalizedString(@"Page %@ of %@",@"Page label X of Y (display page number (string) of display last page) (layout view)"), displayPageStr, lastPageStr];
+        } else if (displayPageStr) {
+            // We cannot mix and match a mapped display string and an actual end page count so just drop this
+            pageLabel = [NSString stringWithFormat:NSLocalizedString(@"Page %@",@"Page label X (page number (string)) (layout view)"), displayPageStr];
+        } else {
+            // Just show the display page number for the page number
+            pageLabel = [NSString stringWithFormat:NSLocalizedString(@"Page %@",@"Page label X (page number (string)) (layout view)"), [self.textFlow contentsTableViewController:nil displayPageNumberForPageIndex:pageIndex]];
         }
-        pageLabel = [NSString stringWithFormat:NSLocalizedString(@"Page %@ of %lu",@"Page label X of Y (page number (string) of page count) (layout view)"), pageStr, (unsigned long)self.pageCount];
     }     
     
     return pageLabel;

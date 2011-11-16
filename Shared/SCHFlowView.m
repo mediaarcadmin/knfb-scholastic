@@ -426,27 +426,39 @@ static void sortedHighlightRangePredicateInit() {
     return [self.eucBookView displayPageNumberForPageIndex:[self.eucBookView pageIndexForIndexPoint:[self.eucBook bookPageIndexPointFromBookPoint:bookPoint]]];
 }
 
-- (NSString *)pageLabelForPageAtIndex:(NSUInteger)pageIndex
+- (NSString *)pageLabelForPageAtIndex:(NSUInteger)pageIndex showChapters:(BOOL)showChapters
 {
+    // In Flow View page labels run from index 0 to pageCount - 1, with index 0 being handled as a special case for the cover)
     NSString *pageStr = [self.eucBookView displayPageNumberForPageIndex:pageIndex];    
-    
     EucBookPageIndexPoint *indexPoint = [self.eucBookView indexPointForPageIndex:pageIndex];
-    NSString *chapterName = [self.eucBookView presentationNameAndSubTitleForIndexPoint:indexPoint].first;
     
+    NSString *chapterPrefix = NSLocalizedString(@"Chapter ", @"Scrubber label chapter prefix for flow view");
+    NSString *pagePrefix = NSLocalizedString(@"Page ", @"Scrubber label page prefix for flow view");
+    NSString *chapterPageSeparator = NSLocalizedString(@" │ ", @"Scrubber label chapter page separator for flow view");
+
     NSString *pageLabel = nil;
     
-    if (chapterName) {
-        if (pageStr) {
-            pageLabel = [NSString stringWithFormat:NSLocalizedString(@"Page %@ \u2013 %@",@"Page label with page number and chapter (flow view)"), pageStr, chapterName];
-        } else {
-            pageLabel = [NSString stringWithFormat:@"%@", chapterName];
+    if (showChapters) {
+        NSString *chapterName = [self.eucBookView presentationNameAndSubTitleForIndexPoint:indexPoint].first;
+        
+        NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
+        [formatter setAllowsFloats:NO];
+        
+        if(![formatter numberFromString:chapterName]) {
+            chapterPrefix = @"";
         }
-    } else {
-        if (pageStr) {
-            pageLabel = [NSString stringWithFormat:NSLocalizedString(@"Page %@ of %lu",@"Page label X of Y (page number (string) of page count) (flow view)"), pageStr, (unsigned long)self.pageCount];
-        } else {
-            pageLabel = [NSString stringWithFormat:NSLocalizedString(@"Page %lu of %lu",@"Page label X of Y (page number (int) of page count) (flow view)"), pageIndex + 1, (unsigned long)self.pageCount];
+               
+        if (chapterName) {
+            if (pageStr) {
+                pageLabel = [NSString stringWithFormat:NSLocalizedString(@"%@%@%@%@%@",@"Page label with page number and chapter (flow view)"), chapterPrefix, chapterName, chapterPageSeparator, pagePrefix, pageStr];
+            } else {
+                pageLabel = [NSString stringWithFormat:@"%@%@", chapterPrefix, chapterName];
+            }
         }
+    }
+    
+    if (!pageLabel) {
+        pageLabel = [self.eucBookView  pageDescriptionForPageIndex:pageIndex];
     }     
     
     return pageLabel;

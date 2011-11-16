@@ -260,6 +260,22 @@ NSString * const kSCHAppBookFilenameSeparator = @"-";
     return (ret);
 }
 
+- (BOOL)shouldShowChapters
+{
+    BOOL ret = NO;
+    
+    if ([self.XPSCategory caseInsensitiveCompare:kSCHAppBookOldReader] == NSOrderedSame ||
+        [self.XPSCategory caseInsensitiveCompare:kSCHAppBookCategoryChapterBook] == NSOrderedSame ||
+        [self.XPSCategory caseInsensitiveCompare:kSCHAppBookCategoryNovelMiddleGrade] == NSOrderedSame ||
+        [self.XPSCategory caseInsensitiveCompare:kSCHAppBookCategoryNovelYoungAdult] == NSOrderedSame ||
+        [self.XPSCategory caseInsensitiveCompare:kSCHAppBookCategoryReference] == NSOrderedSame ||
+        [self.XPSCategory caseInsensitiveCompare:kSCHAppBookCategoryNonFictionAdvanced] == NSOrderedSame) {
+        ret = YES;
+    }    
+    
+    return ret;
+}
+
 #pragma mark - Directory for Current Book
 
 + (NSString *)booksDirectory
