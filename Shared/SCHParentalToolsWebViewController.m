@@ -17,6 +17,7 @@
 @implementation SCHParentalToolsWebViewController
 
 @synthesize contentView;
+@synthesize contentShadowMask;
 @synthesize backgroundToolbar;
 @synthesize toolbarSettingsImageView;
 @synthesize pToken;
@@ -50,6 +51,7 @@
                                                     name:UIApplicationDidEnterBackgroundNotification 
                                                   object:nil];
     [contentView release], contentView = nil;
+    [contentShadowMask release], contentShadowMask = nil;
     [backgroundToolbar release], backgroundToolbar = nil;
     [toolbarSettingsImageView release], toolbarSettingsImageView = nil;
     [super releaseViewObjects];
@@ -60,9 +62,11 @@
     [super viewDidLoad];
     
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
-        [self.contentView.layer setShadowRadius:20];
-        [self.contentView.layer setShadowOpacity:1];
-        [self.contentView.layer setShadowOffset:CGSizeZero];
+        [self.contentShadowMask.layer setShadowRadius:8];
+        [self.contentShadowMask.layer setShadowOpacity:0.5f];
+        [self.contentShadowMask.layer setShadowOffset:CGSizeZero];
+        [self.contentShadowMask.layer setCornerRadius:8];
+        
         [self.contentView.layer setCornerRadius:8];
         [self.contentView.layer setMasksToBounds:YES];
         [self.contentView.layer setBorderColor:[UIColor SCHRed3Color].CGColor];

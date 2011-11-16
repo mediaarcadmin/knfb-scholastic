@@ -14,6 +14,7 @@
 @interface SCHParentalToolsWebViewController : SCHBaseTextViewController <UIWebViewDelegate>
 
 @property (nonatomic, retain) IBOutlet UIView *contentView;
+@property (nonatomic, retain) IBOutlet UIView *contentShadowMask;
 @property (nonatomic, retain) IBOutlet SCHCustomToolbar *backgroundToolbar;
 @property (nonatomic, retain) IBOutlet UIImageView *toolbarSettingsImageView;
 
