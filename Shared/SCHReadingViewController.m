@@ -115,6 +115,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 @property (nonatomic, retain) UIImageView *sampleSICoverMarker;
 @property (nonatomic, assign) BOOL coverMarkerShouldAppear;
 @property (nonatomic, assign) BOOL shouldShowChapters;
+@property (nonatomic, assign) NSNumber *forceOpenToCover;
 
 @property (nonatomic, assign) BOOL highlightsModeEnabled;
 @property (nonatomic, assign) BOOL firstTimePlayForHelpController;
@@ -234,6 +235,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 @synthesize sampleSICoverMarker;
 @synthesize coverMarkerShouldAppear;
 @synthesize shouldShowChapters;
+@synthesize forceOpenToCover;
 @synthesize highlightsModeEnabled;
 @synthesize highlightsInfoButton;
 @synthesize highlightsCancelButton;
@@ -269,6 +271,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     [storyInteractionController release], storyInteractionController = nil;
     [storyInteractionViewController release], storyInteractionViewController = nil;
     [cornerCoverFadeTimer release], cornerCoverFadeTimer = nil;
+    [forceOpenToCover release], forceOpenToCover = nil;
     
     // Ideally the readingView would be release it viewDidUnload but it contains 
     // logic that this view controller uses while it is potentially off-screen (e.g. when a story interaction is being shown)
@@ -407,6 +410,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
         SCHAppBook *book = [[SCHBookManager sharedBookManager] bookWithIdentifier:aIdentifier inManagedObjectContext:self.managedObjectContext];       
         
         self.shouldShowChapters = book.shouldShowChapters;
+        self.forceOpenToCover = [NSNumber numberWithBool:book.alwaysOpenToCover];
         
         [[SCHSyncManager sharedSyncManager] openDocumentSync:book.ContentMetadataItem.UserContentItem 
                                               forProfile:profile.ID];
@@ -1756,6 +1760,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 - (void)setLayoutType:(SCHReadingViewLayoutType)newLayoutType
 {
     if (newLayoutType != layoutType) {
+                
         layoutType = newLayoutType;
         
         SCHReadingViewSelectionMode currentMode = [self.readingView selectionMode];
@@ -1772,7 +1777,15 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
         [self.readingView removeFromSuperview];
         self.readingView = nil;
         
-        SCHBookPoint *openingPoint = [self lastPageLocation];
+        SCHBookPoint *openingPoint = nil;
+        
+        if ([self.forceOpenToCover boolValue]) {
+            self.forceOpenToCover = nil;
+            openingPoint = [[[SCHBookPoint alloc] init] autorelease];
+            openingPoint.layoutPage = 1;
+        } else {
+            openingPoint = [self lastPageLocation];
+        }
         
         switch (newLayoutType) {
             case SCHReadingViewLayoutTypeFlow: {

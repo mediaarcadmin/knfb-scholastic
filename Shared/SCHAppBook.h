@@ -122,6 +122,7 @@ typedef enum {
 @property (nonatomic, readonly) SCHBookIdentifier *bookIdentifier;
 @property (nonatomic, readonly) NSString *categoryType;
 @property (nonatomic, readonly) BOOL shouldShowChapters;
+@property (nonatomic, readonly) BOOL alwaysOpenToCover;
 @property (nonatomic, readonly) BOOL diskVersionOutOfDate;
 
 - (BOOL)bookCoverURLIsValid;

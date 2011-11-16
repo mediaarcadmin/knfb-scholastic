@@ -276,6 +276,18 @@ NSString * const kSCHAppBookFilenameSeparator = @"-";
     return ret;
 }
 
+- (BOOL)alwaysOpenToCover
+{
+    BOOL ret = NO;
+    
+    if ([self.XPSCategory caseInsensitiveCompare:kSCHAppBookCategoryPictureBook] == NSOrderedSame) {
+        ret = YES;
+    }    
+    
+    return ret;
+}
+
+
 #pragma mark - Directory for Current Book
 
 + (NSString *)booksDirectory
