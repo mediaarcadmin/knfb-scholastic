@@ -456,7 +456,7 @@
 - (void) removePointerForOperation:(AuthenticateSoap11BindingOperation *)operation
 {
     NSIndexSet *matches = [self.operationPointers indexesOfObjectsPassingTest:^BOOL (id el, NSUInteger i, BOOL *stop) {
-                               LibreAccessServiceSoap11BindingOperation *op = [el nonretainedObjectValue];
+                               AuthenticateSoap11BindingOperation *op = [el nonretainedObjectValue];
                                return [op isEqual:operation];
                            }];
     [self.operationPointers removeObjectsAtIndexes:matches];
@@ -464,7 +464,7 @@
 - (void) clearBindingOperations
 {
     for (NSValue *pointerValue in self.operationPointers) {
-        LibreAccessServiceSoap11BindingOperation *operation = [pointerValue nonretainedObjectValue];
+        AuthenticateSoap11BindingOperation *operation = [pointerValue nonretainedObjectValue];
         [operation clear];
     }
 }
