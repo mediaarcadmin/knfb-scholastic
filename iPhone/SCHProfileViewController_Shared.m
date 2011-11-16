@@ -386,7 +386,7 @@
     SCHProfileItem *profileItem = bookShelfViewController.profileItem;
     
     if (profileItem.AppProfile.AutomaticallyLaunchBook != nil) {
-        bookIdentifier = [[SCHBookIdentifier alloc] initWithEncodedString:profileItem.AppProfile.AutomaticallyLaunchBook];
+        bookIdentifier = [[[SCHBookIdentifier alloc] initWithEncodedString:profileItem.AppProfile.AutomaticallyLaunchBook] autorelease];
     }
     
     if (bookIdentifier && [bookShelfViewController isBookOnShelf:bookIdentifier]) {
@@ -413,7 +413,6 @@
     if (bookIdentifier) {        
         NSError *error;
         SCHReadingViewController *readingViewController = [bookShelfViewController openBook:bookIdentifier error:&error];
-        [bookIdentifier release];
         
         if (readingViewController) {
             [viewControllers addObject:readingViewController];

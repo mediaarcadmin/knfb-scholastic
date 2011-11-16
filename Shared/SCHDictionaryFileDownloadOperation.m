@@ -94,7 +94,7 @@
         }
     }
 
-    self.downloadOperation = [[QHTTPOperation alloc] initWithRequest:request];
+    self.downloadOperation = [[[QHTTPOperation alloc] initWithRequest:request] autorelease];
     self.downloadOperation.responseOutputStream = [NSOutputStream outputStreamToFileAtPath:localPath append:append];
     self.downloadOperation.delegate = self;
     

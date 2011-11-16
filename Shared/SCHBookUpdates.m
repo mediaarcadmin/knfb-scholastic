@@ -82,6 +82,7 @@
     [fetch setPredicate:statePred];
     
     NSArray *allAppBooks = [self.managedObjectContext executeFetchRequest:fetch error:&error];
+    [fetch release], fetch = nil;
     
     [allAppBooks enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
         SCHContentMetadataItem *contentMetadataItem = [(SCHAppBook*) obj ContentMetadataItem];
