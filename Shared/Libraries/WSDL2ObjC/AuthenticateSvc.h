@@ -80,8 +80,8 @@
 - (NSString *)MIMEType;
 - (AuthenticateSoap11BindingResponse *)processRemoteUsingParameters:(AuthenticateSvc_processRemote *)aParameters ;
 - (void)processRemoteAsyncUsingParameters:(AuthenticateSvc_processRemote *)aParameters  delegate:(id<AuthenticateSoap11BindingResponseDelegate>)responseDelegate;
-- (void)addPointerForOperation:(LibreAccessServiceSoap11BindingOperation *)operation;
-- (void)removePointerForOperation:(LibreAccessServiceSoap11BindingOperation *)operation;
+- (void)addPointerForOperation:(AuthenticateSoap11BindingOperation *)operation;
+- (void)removePointerForOperation:(AuthenticateSoap11BindingOperation *)operation;
 - (void)clearBindingOperations;
 @end
 @interface AuthenticateSoap11BindingOperation : NSOperation {

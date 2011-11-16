@@ -448,12 +448,12 @@
 	operation.urlConnection = connection;
 	[connection release];
 }
-- (void) addPointerForOperation:(LibreAccessServiceSoap11BindingOperation *)operation
+- (void) addPointerForOperation:(AuthenticateSoap11BindingOperation *)operation
 {
     NSValue *pointerValue = [NSValue valueWithNonretainedObject:operation];
     [self.operationPointers addObject:pointerValue];
 }
-- (void) removePointerForOperation:(LibreAccessServiceSoap11BindingOperation *)operation
+- (void) removePointerForOperation:(AuthenticateSoap11BindingOperation *)operation
 {
     NSIndexSet *matches = [self.operationPointers indexesOfObjectsPassingTest:^BOOL (id el, NSUInteger i, BOOL *stop) {
                                LibreAccessServiceSoap11BindingOperation *op = [el nonretainedObjectValue];
