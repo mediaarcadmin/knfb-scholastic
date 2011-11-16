@@ -163,7 +163,7 @@ managedObjectContext:(NSManagedObjectContext *)managedObjectContext
     return 0;
 }
 
-- (NSString *)pageLabelForPageAtIndex:(NSUInteger)pageIndex
+- (NSString *)pageLabelForPageAtIndex:(NSUInteger)pageIndex showChapters:(BOOL)showChapters
 {
     return nil;
 }

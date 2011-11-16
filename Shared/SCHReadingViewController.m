@@ -114,6 +114,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 
 @property (nonatomic, retain) UIImageView *sampleSICoverMarker;
 @property (nonatomic, assign) BOOL coverMarkerShouldAppear;
+@property (nonatomic, assign) BOOL shouldShowChapters;
 
 @property (nonatomic, assign) BOOL highlightsModeEnabled;
 @property (nonatomic, assign) BOOL firstTimePlayForHelpController;
@@ -232,6 +233,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 
 @synthesize sampleSICoverMarker;
 @synthesize coverMarkerShouldAppear;
+@synthesize shouldShowChapters;
 @synthesize highlightsModeEnabled;
 @synthesize highlightsInfoButton;
 @synthesize highlightsCancelButton;
@@ -402,7 +404,9 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
         
         managedObjectContext = [moc retain];
         
-        SCHAppBook *book = [[SCHBookManager sharedBookManager] bookWithIdentifier:aIdentifier inManagedObjectContext:self.managedObjectContext];        
+        SCHAppBook *book = [[SCHBookManager sharedBookManager] bookWithIdentifier:aIdentifier inManagedObjectContext:self.managedObjectContext];       
+        
+        self.shouldShowChapters = book.shouldShowChapters;
         
         [[SCHSyncManager sharedSyncManager] openDocumentSync:book.ContentMetadataItem.UserContentItem 
                                               forProfile:profile.ID];
@@ -2243,7 +2247,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 - (void)updateScrubberLabel
 {
     if (self.currentPageIndex != NSUIntegerMax) {
-        [self.pageLabel setText:[self.readingView pageLabelForPageAtIndex:self.currentPageIndex]];
+        [self.pageLabel setText:[self.readingView pageLabelForPageAtIndex:self.currentPageIndex showChapters:self.shouldShowChapters]];
     } else {
         [self.pageLabel setText:nil];
     }  
@@ -2769,7 +2773,6 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
         return CGSizeZero;
     }
     if (self.layoutType != SCHReadingViewLayoutTypeFixed) {
-        NSLog(@"WARNING: sizeOfPageAtIndex requested in flow view");
         return CGSizeZero;
     }
     
