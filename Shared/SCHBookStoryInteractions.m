@@ -93,11 +93,14 @@
 - (NSArray *)pageKeysForStoryInteraction:(SCHStoryInteraction *)storyInteraction
 {
     NSInteger pageIndex = storyInteraction.documentPageNumber-1;
-    CGSize pageSize = delegate ? [delegate sizeOfPageAtIndex:pageIndex] : CGSizeZero;
 
+    // If there isn't a valid page associated with this story interaction (e.g. for PictureStarter) return nil for this array
+    // before going any further
     if (pageIndex < 0) {
         return nil;
     }
+    
+    CGSize pageSize = delegate ? [delegate sizeOfPageAtIndex:pageIndex] : CGSizeZero;
     
     BOOL hasQuestionsOnLeftPage = [storyInteraction hasQuestionsOnLeftPageForPageSize:pageSize];
     BOOL hasQuestionsOnRightPage = [storyInteraction hasQuestionsOnRightPageForPageSize:pageSize];
