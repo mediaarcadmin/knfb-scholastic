@@ -16,6 +16,7 @@
 @interface SCHDeregisterDeviceViewController : SCHBaseModalViewController <UITextFieldDelegate> {}
 
 @property (nonatomic, retain) IBOutlet UILabel *promptLabel;
+@property (nonatomic, retain) IBOutlet UILabel *passwordHintLabel;
 @property (nonatomic, retain) IBOutlet UITextField *passwordField;
 @property (nonatomic, retain) IBOutlet UIButton *deregisterButton;
 @property (nonatomic, retain) IBOutlet UIActivityIndicatorView *spinner;

@@ -38,6 +38,7 @@ static const CGFloat kDeregisterContentHeightLandscape = 380;
 @synthesize scrollView;
 @synthesize activeTextField;
 @synthesize accountValidation;
+@synthesize passwordHintLabel;
 
 - (void)releaseViewObjects
 {
@@ -51,6 +52,7 @@ static const CGFloat kDeregisterContentHeightLandscape = 380;
     [scrollView release], scrollView = nil;
     [spinner release], spinner = nil;
     [activeTextField release], activeTextField = nil;
+    [passwordHintLabel release], passwordHintLabel = nil;
     
     [super releaseViewObjects];
 }
@@ -75,7 +77,15 @@ static const CGFloat kDeregisterContentHeightLandscape = 380;
     [fillerView release];
 
     NSString *username = [[NSUserDefaults standardUserDefaults] objectForKey:kSCHAuthenticationManagerUsername];
-    self.promptLabel.text = [NSString stringWithFormat:self.promptLabel.text, username];
+    
+    if (username) {
+        self.promptLabel.text = [NSString stringWithFormat:self.promptLabel.text, username];
+    } else {
+        // Something has gone wrong - we don't know the username. We should hide the authentication controls and allow a forced deregister
+        self.promptLabel.hidden = YES;
+        self.passwordField.hidden = YES;
+        self.passwordHintLabel.hidden = YES;
+    }
     
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
         [[NSNotificationCenter defaultCenter] addObserver:self 
@@ -124,7 +134,12 @@ static const CGFloat kDeregisterContentHeightLandscape = 380;
 {
     [self.deregisterButton setEnabled:NO];
     
-    if ([[self.passwordField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]] length] < 1) {
+    NSString *username = [[NSUserDefaults standardUserDefaults] objectForKey:kSCHAuthenticationManagerUsername];
+    
+    if (!username) {
+        // Something has gone wrong - we don't know the username. Perform a non-authenticated deregister
+        [self deregisterAfterSuccessfulAuthentication];
+    } else if ([[self.passwordField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]] length] < 1) {
         LambdaAlert *alert = [[LambdaAlert alloc]
                               initWithTitle:NSLocalizedString(@"Incorrect Password", @"")
                               message:NSLocalizedString(@"Incorrect password for deregistration", @"")];
