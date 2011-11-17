@@ -471,7 +471,11 @@ static Class controllerClassForStoryInteraction(SCHStoryInteraction *storyIntera
     CGPoint readAloudPosition; // relative to top-right corner
     if (iPad) {
         contentInsets = UIEdgeInsetsMake((currentFrameStyle == SCHStoryInteractionNoTitle ? 40 : 130), 40, 40, 40);
-        titleInsets = UIEdgeInsetsMake(45, 65, 21, 65);
+        if ([self currentFrameStyleOverlaysContents]) {
+            titleInsets = UIEdgeInsetsMake(41, 65, 41, 65);
+        } else {
+            titleInsets = UIEdgeInsetsMake(45, 65, 21, 65);
+        }
         closePosition = [self.storyInteraction isOlderStoryInteraction] ? CGPointMake(3, -8) : CGPointMake(9, -17);
         readAloudPosition = CGPointMake(-5, 5);
     } else {
@@ -517,7 +521,6 @@ static Class controllerClassForStoryInteraction(SCHStoryInteraction *storyIntera
             if (iPad) {
                 backgroundHeight = MAX(background.image.size.height, titleFrame.size.height);
                 background.center = CGPointMake(floorf(CGRectGetMidX(titleFrame)), floorf(CGRectGetMidY(titleFrame)));
-                titleInsets.bottom += 20;
             } else {
                 backgroundHeight = CGRectGetHeight(container.bounds);
                 background.center = CGPointMake(CGRectGetMidX(container.bounds), CGRectGetMidY(container.bounds));
@@ -525,7 +528,6 @@ static Class controllerClassForStoryInteraction(SCHStoryInteraction *storyIntera
             background.bounds = CGRectIntegral(CGRectMake(0, 0, backgroundWidth, backgroundHeight));
             contents.bounds = container.bounds;
             contents.center = CGPointMake(floorf(CGRectGetMidX(container.bounds)), floorf(CGRectGetMidY(container.bounds)));
-            titleInsets.top = titleInsets.bottom;
             title.frame = UIEdgeInsetsInsetRect((CGRect){CGPointZero, titleFrame.size}, titleInsets);
             close.center = CGPointMake(background.center.x-backgroundWidth/2+closePosition.x+CGRectGetWidth(close.bounds)/2,
                                        background.center.y-backgroundHeight/2+closePosition.y+CGRectGetHeight(close.bounds)/2);
@@ -539,7 +541,6 @@ static Class controllerClassForStoryInteraction(SCHStoryInteraction *storyIntera
             if (iPad) {
                 backgroundHeight = MAX(background.image.size.height, titleFrame.size.height);
                 background.center = CGPointMake(floorf(CGRectGetMidX(titleFrame)), floorf(CGRectGetHeight(container.bounds)-CGRectGetMidY(titleFrame)));
-                titleInsets.bottom += 20;
             } else {
                 backgroundHeight = CGRectGetHeight(container.bounds);
                 background.center = CGPointMake(CGRectGetMidX(container.bounds), CGRectGetMidY(container.bounds));
@@ -548,7 +549,6 @@ static Class controllerClassForStoryInteraction(SCHStoryInteraction *storyIntera
             background.bounds = CGRectIntegral(CGRectMake(0, 0, backgroundWidth, backgroundHeight));
             contents.bounds = container.bounds;
             contents.center = CGPointMake(floorf(CGRectGetMidX(container.bounds)), floorf(CGRectGetMidY(container.bounds)));
-            titleInsets.top = titleInsets.bottom;
             title.frame = UIEdgeInsetsInsetRect((CGRect){CGPointZero, titleFrame.size}, titleInsets);
             title.transform = CGAffineTransformMakeRotation(M_PI);
             close.center = CGPointMake(background.center.x-backgroundWidth/2+closePosition.x+CGRectGetWidth(close.bounds)/2,
