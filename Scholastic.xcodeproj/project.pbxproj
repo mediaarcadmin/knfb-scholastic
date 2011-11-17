@@ -1437,6 +1437,8 @@
 		C908D888133F941100661718 /* paper-white.png in Resources */ = {isa = PBXBuildFile; fileRef = C908D880133F941100661718 /* paper-white.png */; };
 		C908D8B1133F945300661718 /* SCHFlowView.m in Sources */ = {isa = PBXBuildFile; fileRef = C908D8B0133F945300661718 /* SCHFlowView.m */; };
 		C90AB9A6135495C5009DC49D /* SCHSmartZoomPreParseOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = C90AB9A5135495C5009DC49D /* SCHSmartZoomPreParseOperation.m */; };
+		C91CD8C51475422200226814 /* sbsd-license.html in Resources */ = {isa = PBXBuildFile; fileRef = C91CD8C41475422200226814 /* sbsd-license.html */; };
+		C91CD8C61475422200226814 /* sbsd-license.html in Resources */ = {isa = PBXBuildFile; fileRef = C91CD8C41475422200226814 /* sbsd-license.html */; };
 		C91E99C113F930F8004F8062 /* storyinteraction-card-collection-flip~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = C91E99B313F930F8004F8062 /* storyinteraction-card-collection-flip~ipad.png */; };
 		C91E99C313F930F8004F8062 /* storyinteraction-card-collection-zoom-out~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = C91E99B413F930F8004F8062 /* storyinteraction-card-collection-zoom-out~ipad.png */; };
 		C91E99C513F930F8004F8062 /* storyinteraction-card-collection-zoom-in~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = C91E99B513F930F8004F8062 /* storyinteraction-card-collection-zoom-in~ipad.png */; };
@@ -3005,6 +3007,7 @@
 		C90AB9A5135495C5009DC49D /* SCHSmartZoomPreParseOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHSmartZoomPreParseOperation.m; path = Shared/SCHSmartZoomPreParseOperation.m; sourceTree = "<group>"; };
 		C9185122144F207500585C6A /* SCHProfileSetupDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHProfileSetupDelegate.h; path = Shared/SCHProfileSetupDelegate.h; sourceTree = "<group>"; };
 		C9185123144F217900585C6A /* SCHSettingsDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHSettingsDelegate.h; path = Shared/SCHSettingsDelegate.h; sourceTree = "<group>"; };
+		C91CD8C41475422200226814 /* sbsd-license.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; name = "sbsd-license.html"; path = "Resources/sbsd-license.html"; sourceTree = "<group>"; };
 		C91E99B313F930F8004F8062 /* storyinteraction-card-collection-flip~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "storyinteraction-card-collection-flip~ipad.png"; sourceTree = "<group>"; };
 		C91E99B413F930F8004F8062 /* storyinteraction-card-collection-zoom-out~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "storyinteraction-card-collection-zoom-out~ipad.png"; sourceTree = "<group>"; };
 		C91E99B513F930F8004F8062 /* storyinteraction-card-collection-zoom-in~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "storyinteraction-card-collection-zoom-in~ipad.png"; sourceTree = "<group>"; };
@@ -4851,6 +4854,7 @@
 				A3A19358146AC94F00938888 /* mit-license.html */,
 				A3A19359146AC94F00938888 /* openfont-license.html */,
 				A3A1935A146AC94F00938888 /* sfhf-license.html */,
+				C91CD8C41475422200226814 /* sbsd-license.html */,
 				F8509E7512F0620D00197EB5 /* Debug Books */,
 				F806563013FEAFF200DFAE43 /* Options View */,
 				F837018D13BB322F009B280D /* List View Icons */,
@@ -7215,6 +7219,7 @@
 				C935BC7A14698D5B00244A38 /* 9780545324328.1103.MixedUpAlphabet.jpg in Resources */,
 				C9951725146D694600EA7337 /* LocalSamplesManifest.xml in Resources */,
 				C9367BE114731A8B0033A2EB /* SCHParentalToolsWebViewController_iPad.xib in Resources */,
+				C91CD8C51475422200226814 /* sbsd-license.html in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -7899,6 +7904,7 @@
 				A3A19364146AC94F00938888 /* sfhf-license.html in Resources */,
 				C9951722146D693600EA7337 /* LocalSamplesManifest.xml in Resources */,
 				C9367BE214731A8B0033A2EB /* SCHParentalToolsWebViewController_iPad.xib in Resources */,
+				C91CD8C61475422200226814 /* sbsd-license.html in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
