@@ -91,12 +91,12 @@
         
         [self.modalPresenterDelegate waitingForWebParentToolsToComplete];
     } else {
-        SCHParentalToolsWebViewController *weakSelf = self;
         LambdaAlert *lambdaAlert = [[LambdaAlert alloc]
                             initWithTitle:NSLocalizedString(@"Error", @"")
                             message:NSLocalizedString(@"A problem occured accessing web parent tools with your account. Please contact support.", @"")];
         [lambdaAlert addButtonWithTitle:NSLocalizedString(@"OK", @"") block:^{
-            [weakSelf.modalPresenterDelegate dismissModalWebParentToolsWithSync:NO showValidation:NO];
+            [self.modalPresenterDelegate dismissModalWebParentToolsWithSync:NO 
+                                                             showValidation:NO];
         }];
         [lambdaAlert show];
         [lambdaAlert release], lambdaAlert = nil;

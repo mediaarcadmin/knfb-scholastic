@@ -161,10 +161,10 @@ static const CGFloat kDeregisterContentHeightLandscape = 380;
                 [alert release]; 
             } else {
                 if ([[SCHAuthenticationManager sharedAuthenticationManager] isAuthenticated] == YES) {
-                    [self deregisterAfterSuccessfulAuthentication];
+                    [weakSelf deregisterAfterSuccessfulAuthentication];
                 } else {
                     [[SCHAuthenticationManager sharedAuthenticationManager] authenticateWithSuccessBlock:^(BOOL offlineMode){
-                        [self deregisterAfterSuccessfulAuthentication];
+                        [weakSelf deregisterAfterSuccessfulAuthentication];
                     } failureBlock:^(NSError *error){
                         LambdaAlert *alert = [[LambdaAlert alloc]
                                               initWithTitle:NSLocalizedString(@"Unable To Authenticate", @"")

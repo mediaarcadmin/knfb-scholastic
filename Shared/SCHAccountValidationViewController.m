@@ -178,9 +178,9 @@ static const CGFloat kDeregisterContentHeightLandscape = 380;
                 }
                 
                 [targetDelegate presentWebParentToolsModallyWithToken:pToken 
-                                                                title:self.title 
+                                                                title:weakSelf.title 
                                                            modalStyle:UIModalPresentationFullScreen 
-                                                    shouldHideCloseButton:self.validatedControllerShouldHideCloseButton];
+                                                    shouldHideCloseButton:weakSelf.validatedControllerShouldHideCloseButton];
             }
             
             [weakSelf.spinner stopAnimating];
