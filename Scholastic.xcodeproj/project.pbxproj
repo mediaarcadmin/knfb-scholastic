@@ -4914,20 +4914,12 @@
 				529386F912DF3ED800045B44 /* SyncEngine */,
 				529386FE12DF3EDF00045B44 /* WebAPI */,
 				52EF579412EDBE6E00E374F7 /* security */,
-				528A2CFF12CD026F0053A343 /* BlioLib */,
 				F8E2D3CE13B9CB55001E207B /* TTTAttributedLabel */,
 				C9E89A481369B87A00E7ED53 /* LevenshteinDistance */,
 				F8B55E42134B577A0028534A /* ZipArchive */,
 				C9B59BCF13D048D000C7760D /* LambdaAlert */,
 			);
 			name = Libraries;
-			sourceTree = "<group>";
-		};
-		528A2CFF12CD026F0053A343 /* BlioLib */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			name = BlioLib;
 			sourceTree = "<group>";
 		};
 		528C616313FAA5D300D033F8 /* Help */ = {
