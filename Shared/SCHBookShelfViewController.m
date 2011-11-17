@@ -244,9 +244,10 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 131;
         self.loadingView = [[LambdaAlert alloc]
                             initWithTitle:NSLocalizedString(@"Syncing", @"")
                             message:@"\n\n\n"];
+        __block SCHBookShelfViewController *weakSelf = self;
         [self.loadingView addButtonWithTitle:NSLocalizedString(@"Back", @"") block:^{
-            [self dismissLoadingView];
-            [self performSelector:@selector(back)];
+            [weakSelf dismissLoadingView];
+            [weakSelf performSelector:@selector(back)];
         }];
         [self.loadingView setSpinnerHidden:NO];
         [self.loadingView show];
