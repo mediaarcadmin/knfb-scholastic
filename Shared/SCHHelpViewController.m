@@ -321,9 +321,6 @@ static CGFloat const kSCHStoryInteractionControllerCloseBorderWidth = 1.5;
 
 - (void)reachabilityNotification:(NSNotification *)note
 {
-	Reachability* curReach = [note object];
-	NSParameterAssert([curReach isKindOfClass: [Reachability class]]);
-
     [self checkVideoDownload];
 }
 
