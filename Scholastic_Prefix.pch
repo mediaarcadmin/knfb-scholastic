@@ -17,6 +17,7 @@
 #define AUTHENTICATION_SERVER_ENDPOINT AUTHENTICATION_SERVER_ENDPOINT_QA
 #define LIBREDIGITAL_SERVER_ENDPOINT LIBREDIGITAL_SERVER_ENDPOINT_UAT
 #define DRM_RIGHTSMANAGER_SERVER DRM_RIGHTSMANAGER_SERVER_UAT
+#define WEB_PARENT_TOOLS_SERVER WEB_PARENT_TOOLS_SERVER_UAT
 
 #define UPDATE_MANIFEST UPDATE_MANIFEST_PRODUCTION
 #define VIDEO_MANIFEST  VIDEO_MANIFEST_PRODUCTION
@@ -35,6 +36,10 @@
 #define DRM_RIGHTSMANAGER_SERVER_DEVINT @"http://plr.devint.cld.libredigital.com/rightsmanager.asmx"
 #define DRM_RIGHTSMANAGER_SERVER_UAT @"http://plr.uat.cld.libredigital.com/rightsmanager.asmx"
 #define DRM_RIGHTSMANAGER_SERVER_PRODUCTION @"http://plr.cld.libredigital.com/rightsmanager.asmx"
+
+// Web Parent Tools server
+#define WEB_PARENT_TOOLS_SERVER_UAT @"https://ebooks2uat.scholastic.com/wpt/auth"
+#define WEB_PARENT_TOOLS_SERVER_PRODUCTION @"https://ebooks2.scholastic.com/wpt/auth"
 
 // Dictionary manifest location
 #define UPDATE_MANIFEST_TEST @"http://bits.blioreader.com/partners/Scholastic/SLInstall/QAStandard/UpdateManifest.xml"

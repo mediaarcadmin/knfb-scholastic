@@ -351,7 +351,8 @@ NSTimeInterval const kSCHAuthenticationManagerSecondsInAMinute = 60.0;
         
         [appln addObject:@"ns"];            
         
-        ret = [NSURL URLWithString:[[NSString stringWithFormat:@"https://ebooks2uat.scholastic.com/wpt/auth?tk=%@&appln=%@&spsId=%@", 
+        ret = [NSURL URLWithString:[[NSString stringWithFormat:@"%@?tk=%@&appln=%@&spsId=%@",
+                                     WEB_PARENT_TOOLS_SERVER,
                                      (pToken == nil ? self.accountValidation.pToken : pToken), 
                                      [appln componentsJoinedByString:@"|"], 
                                      [[NSUserDefaults standardUserDefaults] stringForKey:kSCHAuthenticationManagerUserKey]] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
