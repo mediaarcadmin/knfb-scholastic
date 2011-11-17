@@ -1515,6 +1515,8 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 
 - (void)presentStoryInteraction:(SCHStoryInteraction *)storyInteraction
 {
+    [[UIApplication sharedApplication] beginIgnoringInteractionEvents];
+
     [self.readingView dismissReadingViewAdornments];
         
     self.storyInteractionController = [SCHStoryInteractionController storyInteractionControllerForStoryInteraction:storyInteraction];
@@ -1532,6 +1534,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     void (^presentStoryInteractionBlock)(void) = ^{        
         [self setStoryInteractionButtonVisible:NO animated:YES withSound:NO completion:nil];
         [self pushStoryInteractionController:self.storyInteractionController];
+        [[UIApplication sharedApplication] endIgnoringInteractionEvents];
     };
     
     if (self.layoutType == SCHReadingViewLayoutTypeFixed) {
@@ -2681,12 +2684,12 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     void (^presentStoryInteractionAfterDelay)(NSTimeInterval) = ^(NSTimeInterval delay) {
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, NSEC_PER_SEC * delay), dispatch_get_main_queue(), ^{
             [self presentStoryInteraction:storyInteraction];
-            self.readingView.userInteractionEnabled = YES;
+            [[UIApplication sharedApplication] endIgnoringInteractionEvents];
         });
     };
     
     void (^jumpToPageAndPresentStoryInteractionBlock)(void) = ^{
-        self.readingView.userInteractionEnabled = NO;
+        [[UIApplication sharedApplication] beginIgnoringInteractionEvents];
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, NSEC_PER_SEC * 0.1), dispatch_get_main_queue(), ^{
             if ([[self.readingView currentBookPoint] isEqual:notePoint] == NO) {
                 [self.readingView jumpToBookPoint:notePoint animated:YES withCompletionHandler:^{
