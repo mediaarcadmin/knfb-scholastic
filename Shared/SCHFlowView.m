@@ -452,6 +452,8 @@ static void sortedHighlightRangePredicateInit() {
         if(![formatter numberFromString:chapterName]) {
             chapterPrefix = @"";
         }
+        
+        [formatter release];
                
         if (chapterName) {
             if (pageStr) {

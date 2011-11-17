@@ -551,6 +551,8 @@ managedObjectContext:(NSManagedObjectContext *)managedObjectContext
                 chapterPrefix = @"";
             }
             
+            [formatter release];
+            
             if ([displayPageStr length]) {
                 pageLabel = [NSString stringWithFormat:NSLocalizedString(@"%@%@%@%@%@",@"Page label with page number and chapter (layout view)"), chapterPrefix, chapterName, chapterPageSeparator, pagePrefix, displayPageStr];
             } else {
