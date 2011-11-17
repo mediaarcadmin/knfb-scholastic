@@ -365,6 +365,7 @@
         self.coverImageView.hidden = YES;
         self.currentImageName = nil;
         self.showingPlaceholder = YES;
+        self.featureTab.hidden = YES;
         self.needsRefresh = NO;
         self.activitySpinner.center = [self.superview convertPoint:self.center toView:self];
         self.errorBadge.center = [self.superview convertPoint:self.center toView:self];
