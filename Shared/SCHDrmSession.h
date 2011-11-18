@@ -69,7 +69,7 @@ struct SCHDrmIVars;
     id<SCHDrmLicenseAcquisitionSessionDelegate> delegate;
 }
 
-@property (nonatomic, retain) id<SCHDrmLicenseAcquisitionSessionDelegate> delegate;
+@property (nonatomic, assign) id<SCHDrmLicenseAcquisitionSessionDelegate> delegate;
 
 - (void)acquireLicense:(NSString *)token bookID:(SCHBookIdentifier *)identifier;
 

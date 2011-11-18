@@ -8,17 +8,15 @@
 
 #import "SCHLicenseAcquisitionOperation.h"
 #import "SCHBookManager.h"
-#import "SCHAppBook.h"
 #import "SCHAuthenticationManager.h"
-#import "NSNumber+ObjectTypes.h"
 #import "SCHXPSProvider.h"
 
 @interface SCHLicenseAcquisitionOperation ()
 
-- (void) updateBookWithSuccess;
-- (void) updateBookWithFailure;
+- (void)updateBookWithSuccess;
+- (void)updateBookWithFailure;
 
-@property (nonatomic, assign) NSNumber *useDRM;
+@property (nonatomic, retain) NSNumber *useDRM;
 
 @end
 
@@ -27,41 +25,37 @@
 @implementation SCHLicenseAcquisitionOperation
 
 @synthesize licenseAcquisitionSession;
+@synthesize useDRM;
 
 #pragma mark - Object Lifecycle
 
-@synthesize useDRM;
-
 - (void)dealloc 
 {
-	self.licenseAcquisitionSession = nil;
+	[licenseAcquisitionSession release], licenseAcquisitionSession = nil;
     [useDRM release], useDRM = nil;
 	[super dealloc];
 }
 
 #pragma mark - Book Operation Methods
 
-- (void)start
-{
-    if ([[self useDRM] boolValue] == YES) {
-        licenseAcquisitionSession = [[SCHDrmLicenseAcquisitionSession alloc] initWithBook:self.identifier];
-        [licenseAcquisitionSession setDelegate:self];
-    }
-    [super start];
-}
-
 - (void)beginOperation
 { 
-    if ([[self useDRM] boolValue] == YES) {
+    if ([self.useDRM boolValue] == YES) {
         if ([SCHAuthenticationManager sharedAuthenticationManager].isAuthenticated == YES) {		
-            [licenseAcquisitionSession acquireLicense:[[SCHAuthenticationManager sharedAuthenticationManager] aToken] bookID:self.identifier];
+            self.licenseAcquisitionSession = [[[SCHDrmLicenseAcquisitionSession alloc] initWithBook:self.identifier] autorelease];
+            [self.licenseAcquisitionSession setDelegate:self];            
+            [self.licenseAcquisitionSession acquireLicense:[[SCHAuthenticationManager sharedAuthenticationManager] aToken] bookID:self.identifier];
+            self.licenseAcquisitionSession = nil;
         } else {
             [self setIsProcessing:NO];
+            [self endOperation];
         }
     } else {
         [self updateBookWithSuccess];
     }
 }
+
+#pragma mark - Accessor methods
 
 - (NSNumber *)useDRM
 {
@@ -102,10 +96,7 @@
     [self endOperation];
 }
 
-
-
-#pragma mark -
-#pragma mark DRM License Acquisition Session Delegate methods
+#pragma mark - DRM License Acquisition Session Delegate methods
 
 - (void)licenseAcquisitionSession:(SCHDrmLicenseAcquisitionSession *)licenseAcquisitionSession didComplete:(id)result
 {

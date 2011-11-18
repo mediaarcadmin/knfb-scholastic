@@ -534,4 +534,12 @@ NSString * const kSCHProfileItemDRM_QUALIFIER = @"DRM_QUALIFIER";
 @synthesize item;
 @synthesize date;
 
+- (void)dealloc 
+{
+    [item release], item = nil;
+    [date release], date = nil;
+    
+    [super dealloc];
+}
+
 @end

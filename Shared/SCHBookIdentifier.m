@@ -44,7 +44,7 @@ NSString * const kSCHBookIdentifierBookIdentifier = @"BookIdentifier";
         NSNumber *aDRMQualifier = [object objectForKey:kSCHLibreAccessWebServiceDRMQualifier];
         
         if (aIsbn != nil && aDRMQualifier != nil) {
-            ret = [[SCHBookIdentifier alloc] initWithISBN:aIsbn DRMQualifier:aDRMQualifier];
+            ret = [self initWithISBN:aIsbn DRMQualifier:aDRMQualifier];
         } else {
             @throw [NSException exceptionWithName:NSInvalidArgumentException 
                                            reason:@"missing contentIdentifer and/or DRMQualifer passed to initWithObject:" 

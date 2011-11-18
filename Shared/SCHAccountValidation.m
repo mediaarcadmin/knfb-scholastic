@@ -60,6 +60,7 @@ NSInteger const kSCHAccountValidationCredentialsError = 200;
                                                   object:nil];
 
     [pToken release], pToken = nil;
+    [pTokenRequested release], pTokenRequested = nil;
     scholasticWebService.delegate = nil;
     [scholasticWebService release], scholasticWebService = nil;
     [validateBlock release], validateBlock = nil;
