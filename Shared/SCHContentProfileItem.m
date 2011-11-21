@@ -47,6 +47,8 @@ NSString * const kSCHContentProfileItem = @"SCHContentProfileItem";
 {
     if (self.ProfileID != nil && bookIdentifier != nil) {
         NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init]; 
+        NSError *error = nil;
+        
         [fetchRequest setEntity:[NSEntityDescription entityForName:kSCHAnnotationsContentItem 
                                             inManagedObjectContext:self.managedObjectContext]];	                                                                            
         [fetchRequest setPredicate:
@@ -54,9 +56,12 @@ NSString * const kSCHContentProfileItem = @"SCHContentProfileItem";
           bookIdentifier.isbn, bookIdentifier.DRMQualifier, self.ProfileID]];    
         
         NSArray *books = [self.managedObjectContext executeFetchRequest:fetchRequest 
-                                                                  error:nil];
+                                                                  error:&error];
         [fetchRequest release], fetchRequest = nil;
-        
+        if (books == nil) {
+            NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
+        }
+
         if ([books count] > 0) {
             [self.managedObjectContext deleteObject:[books objectAtIndex:0]];
         }
@@ -67,6 +72,8 @@ NSString * const kSCHContentProfileItem = @"SCHContentProfileItem";
 {
     if (self.ProfileID != nil && bookIdentifier != nil) {
         NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init]; 
+        NSError *error = nil;
+        
         [fetchRequest setEntity:[NSEntityDescription entityForName:kSCHReadingStatsContentItem 
                                             inManagedObjectContext:self.managedObjectContext]];	                                                                            
         [fetchRequest setPredicate:
@@ -74,9 +81,12 @@ NSString * const kSCHContentProfileItem = @"SCHContentProfileItem";
           bookIdentifier.isbn, bookIdentifier.DRMQualifier, self.ProfileID]];    
         
         NSArray *books = [self.managedObjectContext executeFetchRequest:fetchRequest 
-                                                                  error:nil];
+                                                                  error:&error];
         [fetchRequest release], fetchRequest = nil;
-        
+        if (books == nil) {
+            NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
+        }
+
         if ([books count] > 0) {
             [self.managedObjectContext deleteObject:[books objectAtIndex:0]];
         }

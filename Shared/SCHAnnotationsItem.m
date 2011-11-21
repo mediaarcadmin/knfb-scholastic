@@ -25,6 +25,7 @@ NSString * const kSCHAnnotationsItemPROFILE_ID = @"PROFILE_ID";
 - (SCHProfileItem *)profileItem
 {
     SCHProfileItem *ret = nil;
+    NSError *error = nil;
     
     if (self.ProfileID != nil) {
         NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
@@ -33,9 +34,11 @@ NSString * const kSCHAnnotationsItemPROFILE_ID = @"PROFILE_ID";
                                             inManagedObjectContext:self.managedObjectContext]];
         [fetchRequest setPredicate:[NSPredicate predicateWithFormat:@"ID == %@", self.ProfileID]];
         
-        NSArray *profiles = [self.managedObjectContext executeFetchRequest:fetchRequest error:nil];
+        NSArray *profiles = [self.managedObjectContext executeFetchRequest:fetchRequest error:&error];
         [fetchRequest release];
-        
+        if (profiles == nil) {
+            NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
+        }
         if ([profiles count] > 0) {
             ret = [profiles objectAtIndex:0];                
         }

@@ -495,8 +495,10 @@ NSString * const SCHAnnotationSyncComponentCompletedProfileIDs = @"SCHAnnotation
                                 profileID, changedStates]];
 	    
 	ret = [self.managedObjectContext executeFetchRequest:fetchRequest error:&error];
-    
-	[fetchRequest release], fetchRequest = nil;
+    [fetchRequest release], fetchRequest = nil;
+    if (ret == nil) {
+        NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
+    }
 	
 	return(ret);	
 }
@@ -504,6 +506,8 @@ NSString * const SCHAnnotationSyncComponentCompletedProfileIDs = @"SCHAnnotation
 - (NSArray *)localAnnotationsItemForProfile:(NSNumber *)profileID
 {
     NSAssert([NSThread isMainThread] == NO, @"localAnnotationsItemForProfile MUST NOT be executed on the main thread");
+    NSArray *ret = nil;
+    NSError *error = nil;
     NSEntityDescription *entityDescription = [NSEntityDescription 
                                               entityForName:kSCHAnnotationsItem
                                               inManagedObjectContext:self.backgroundThreadManagedObjectContext];
@@ -514,7 +518,12 @@ NSString * const SCHAnnotationSyncComponentCompletedProfileIDs = @"SCHAnnotation
                                                            dictionaryWithObject:profileID 
                                                            forKey:kSCHAnnotationsItemPROFILE_ID]];
 	
-	return([self.backgroundThreadManagedObjectContext executeFetchRequest:fetchRequest error:nil]);
+	ret = [self.backgroundThreadManagedObjectContext executeFetchRequest:fetchRequest error:&error];
+    if (ret == nil) {
+        NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
+    }
+    
+	return ret;
 }
 
 - (void)syncProfileContentAnnotations:(NSDictionary *)profileContentAnnotationList 

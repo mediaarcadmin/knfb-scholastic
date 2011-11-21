@@ -74,14 +74,18 @@ NSString * const kSCHProfileItemDRM_QUALIFIER = @"DRM_QUALIFIER";
 - (NSSet *)ContentProfileItem
 {
     NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+    NSError *error = nil; 
     
     [fetchRequest setEntity:[NSEntityDescription entityForName:kSCHContentProfileItem 
                                         inManagedObjectContext:self.managedObjectContext]];	
     [fetchRequest setPredicate:[NSPredicate predicateWithFormat:@"ProfileID == %@", self.ID]];
     
     NSArray *result = [self.managedObjectContext executeFetchRequest:fetchRequest 
-                                                               error:nil];
+                                                               error:&error];
     [fetchRequest release], fetchRequest = nil;
+    if (result == nil) {
+        NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
+    }
 
     return (result == nil ? [NSSet set] : [NSSet setWithArray:result]);
 }
@@ -112,15 +116,19 @@ NSString * const kSCHProfileItemDRM_QUALIFIER = @"DRM_QUALIFIER";
 {
     if (self.ID != nil) {
         NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init]; 
+        NSError *error = nil;
         [fetchRequest setEntity:[NSEntityDescription entityForName:kSCHAnnotationsItem 
                                             inManagedObjectContext:self.managedObjectContext]];	                                                                            
         [fetchRequest setPredicate:
          [NSPredicate predicateWithFormat:@"ProfileID == %@", self.ID]];    
         
         NSArray *profiles = [self.managedObjectContext executeFetchRequest:fetchRequest 
-                                                                  error:nil];
+                                                                  error:&error];
         [fetchRequest release], fetchRequest = nil;
-        
+        if (profiles == nil) {
+            NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
+        }
+
         if ([profiles count] > 0) {
             [self.managedObjectContext deleteObject:[profiles objectAtIndex:0]];
         }
@@ -131,14 +139,18 @@ NSString * const kSCHProfileItemDRM_QUALIFIER = @"DRM_QUALIFIER";
 {
     if (self.ID != nil) {
         NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init]; 
+        NSError *error = nil;
         [fetchRequest setEntity:[NSEntityDescription entityForName:kSCHReadingStatsDetailItem 
                                             inManagedObjectContext:self.managedObjectContext]];	                                                                            
         [fetchRequest setPredicate:
          [NSPredicate predicateWithFormat:@"ProfileID == %@", self.ID]];    
         
         NSArray *profiles = [self.managedObjectContext executeFetchRequest:fetchRequest 
-                                                                  error:nil];
+                                                                  error:&error];
         [fetchRequest release], fetchRequest = nil;
+        if (profiles == nil) {
+            NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
+        }
         
         if ([profiles count] > 0) {
             [self.managedObjectContext deleteObject:[profiles objectAtIndex:0]];
@@ -245,6 +257,7 @@ NSString * const kSCHProfileItemDRM_QUALIFIER = @"DRM_QUALIFIER";
                                                       inManagedObjectContext:self.managedObjectContext];
 
             for (SCHContentMetadataItem *book in bookObjects) {
+                NSError *error = nil;
                 NSFetchRequest *fetchRequest = [entityDescription.managedObjectModel
                                                 fetchRequestFromTemplateWithName:kSCHUserContentItemFetchWithContentIdentifier
                                                 substitutionVariables:[NSDictionary dictionaryWithObjectsAndKeys:
@@ -253,7 +266,11 @@ NSString * const kSCHProfileItemDRM_QUALIFIER = @"DRM_QUALIFIER";
                                                                        nil]];
                 [fetchRequest setFetchLimit:1];
                 
-                NSArray *userContentItems = [self.managedObjectContext executeFetchRequest:fetchRequest error:nil];	
+                NSArray *userContentItems = [self.managedObjectContext executeFetchRequest:fetchRequest error:&error];	
+                if (userContentItems == nil) {
+                    NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
+                }
+                
                 NSDate *date = [NSDate distantPast];
                 if (userContentItems != nil && [userContentItems count] > 0) {
                     NSSet *orderItems = [[userContentItems objectAtIndex:0] OrderList];
@@ -344,6 +361,7 @@ NSString * const kSCHProfileItemDRM_QUALIFIER = @"DRM_QUALIFIER";
 - (SCHBookAnnotations *)annotationsForBook:(SCHBookIdentifier *)bookIdentifier
 {
     SCHBookAnnotations *ret = nil;
+    NSError *error = nil;
     
     if (bookIdentifier != nil) {
         NSEntityDescription *entityDescription = [NSEntityDescription 
@@ -355,7 +373,11 @@ NSString * const kSCHProfileItemDRM_QUALIFIER = @"DRM_QUALIFIER";
                                                                                                                kSCHProfileItemCONTENT_IDENTIFIER, bookIdentifier.DRMQualifier, 
                                                                                                                kSCHProfileItemDRM_QUALIFIER, nil]];
         
-        NSArray *results = [self.managedObjectContext executeFetchRequest:fetchRequest error:nil];
+        NSArray *results = [self.managedObjectContext executeFetchRequest:fetchRequest error:&error];
+        if (results == nil) {
+            NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
+        }
+
         if ([results count] > 0) {
             ret = [[[SCHBookAnnotations alloc] initWithPrivateAnnotations:[results objectAtIndex:0]] autorelease];
         }    
@@ -383,6 +405,10 @@ NSString * const kSCHProfileItemDRM_QUALIFIER = @"DRM_QUALIFIER";
         NSArray *result = [self.managedObjectContext executeFetchRequest:fetchRequest 
                                                                    error:&error];
         [fetchRequest release], fetchRequest = nil;
+        if (result == nil) {
+            NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
+        }
+        
         if ([result count] > 0) {
             readingStatsDetailItem = [result objectAtIndex:0];
             for (SCHReadingStatsContentItem *contentItem in readingStatsDetailItem.ReadingStatsContentItem) {
@@ -429,6 +455,10 @@ NSString * const kSCHProfileItemDRM_QUALIFIER = @"DRM_QUALIFIER";
     [fetchRequest setFetchLimit:1];
     
     NSArray *userContentItems = [self.managedObjectContext executeFetchRequest:fetchRequest error:&error];	
+    if (userContentItems == nil) {
+        NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
+    }
+    
     if ([userContentItems count] > 0) {
         SCHUserContentItem *userContentItem = [userContentItems objectAtIndex:0];
         ret = [NSEntityDescription insertNewObjectForEntityForName:kSCHReadingStatsContentItem 

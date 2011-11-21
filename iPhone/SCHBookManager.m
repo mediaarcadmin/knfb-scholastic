@@ -207,8 +207,10 @@ static NSDictionary *featureCompatibilityDictionary = nil;
 	
 	NSError *error = nil;				
 	NSArray *allBooks = [managedObjectContext executeFetchRequest:fetchRequest error:&error];
-	
 	[fetchRequest release];
+    if (allBooks == nil) {
+        NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
+    }    
 	
     if ([allBooks count] > 0) {
         ret = [NSMutableArray arrayWithCapacity:[allBooks count]];

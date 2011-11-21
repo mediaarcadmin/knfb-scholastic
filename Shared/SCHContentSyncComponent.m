@@ -142,14 +142,18 @@ NSString * const SCHContentSyncComponentDidFailNotification = @"SCHContentSyncCo
 {		
 	BOOL ret = YES;
 	NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
-	
+    NSError *error = nil;
+    
 	[fetchRequest setEntity:[NSEntityDescription entityForName:kSCHUserContentItem inManagedObjectContext:self.managedObjectContext]];	
 	NSArray *changedStates = [NSArray arrayWithObjects:[NSNumber numberWithStatus:kSCHStatusModified],
 					   [NSNumber numberWithStatus:kSCHStatusDeleted], nil];
 	[fetchRequest setPredicate:[NSPredicate predicateWithFormat:@"ANY ProfileList.State IN %@", changedStates]];
 	
-	NSArray *results = [self.managedObjectContext executeFetchRequest:fetchRequest error:nil];
-		
+	NSArray *results = [self.managedObjectContext executeFetchRequest:fetchRequest error:&error];
+    if (results == nil) {
+        NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
+    }
+	
 	if ([results count] > 0) {
 		self.isSynchronizing = [self.libreAccessWebService saveContentProfileAssignment:results];
 		if (self.isSynchronizing == NO) {
@@ -187,15 +191,18 @@ NSString * const SCHContentSyncComponentDidFailNotification = @"SCHContentSyncCo
 - (NSArray *)localUserContentItems
 {
 	NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
-	
+    NSError *error = nil;
+    
 	[fetchRequest setEntity:[NSEntityDescription entityForName:kSCHUserContentItem inManagedObjectContext:self.managedObjectContext]];	
 	[fetchRequest setSortDescriptors:[NSArray arrayWithObjects:[NSSortDescriptor sortDescriptorWithKey:kSCHLibreAccessWebServiceContentIdentifier ascending:YES],
                                       [NSSortDescriptor sortDescriptorWithKey:kSCHLibreAccessWebServiceDRMQualifier ascending:YES],
                                       nil]];
 	
-	NSArray *ret = [self.managedObjectContext executeFetchRequest:fetchRequest error:nil];	
-	
+	NSArray *ret = [self.managedObjectContext executeFetchRequest:fetchRequest error:&error];	
 	[fetchRequest release], fetchRequest = nil;
+    if (ret == nil) {
+        NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
+    }
 	
 	return(ret);
 }
@@ -317,14 +324,17 @@ NSString * const SCHContentSyncComponentDidFailNotification = @"SCHContentSyncCo
 {
     if (userContentItem != nil && contentProfileItem != nil) {
         NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+        NSError *error = nil;
         
         [fetchRequest setEntity:[NSEntityDescription entityForName:kSCHAnnotationsItem inManagedObjectContext:self.managedObjectContext]];	
         [fetchRequest setPredicate:[NSPredicate predicateWithFormat:@"ProfileID == %@", contentProfileItem.ProfileID]];
         
-        NSArray *annotationsItems = [self.managedObjectContext executeFetchRequest:fetchRequest error:nil];	
-        
+        NSArray *annotationsItems = [self.managedObjectContext executeFetchRequest:fetchRequest error:&error];	
         [fetchRequest release], fetchRequest = nil;
-        
+        if (annotationsItems == nil) {
+            NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
+        }
+
         if([annotationsItems count] > 0) {
             SCHLastPage *newLastPage = [NSEntityDescription insertNewObjectForEntityForName:kSCHLastPage 
                                                                      inManagedObjectContext:self.managedObjectContext];
@@ -351,13 +361,16 @@ NSString * const SCHContentSyncComponentDidFailNotification = @"SCHContentSyncCo
 {
     if (userContentItem != nil && contentProfileItem != nil) {
         NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+        NSError *error = nil;
         
         [fetchRequest setEntity:[NSEntityDescription entityForName:kSCHAnnotationsItem inManagedObjectContext:self.managedObjectContext]];	
         [fetchRequest setPredicate:[NSPredicate predicateWithFormat:@"ProfileID == %@", contentProfileItem.ProfileID]];
         
-        NSArray *annotationsItems = [self.managedObjectContext executeFetchRequest:fetchRequest error:nil];	
-        
+        NSArray *annotationsItems = [self.managedObjectContext executeFetchRequest:fetchRequest error:&error];	
         [fetchRequest release], fetchRequest = nil;
+        if (annotationsItems == nil) {
+            NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
+        }
 
         if ([annotationsItems count] > 0) {
             SCHBookIdentifier *bookIdentifier = userContentItem.bookIdentifier;
@@ -387,7 +400,8 @@ NSString * const SCHContentSyncComponentDidFailNotification = @"SCHContentSyncCo
                                          forBook:(SCHBookIdentifier *)bookIdentifier;
 {
 	SCHContentProfileItem *ret = nil;
-	
+    NSError *error = nil;
+    
 	if (contentProfileItem != nil) {		
 		ret = [NSEntityDescription insertNewObjectForEntityForName:kSCHContentProfileItem 
                                             inManagedObjectContext:self.managedObjectContext];			
@@ -414,8 +428,12 @@ NSString * const SCHContentSyncComponentDidFailNotification = @"SCHContentSyncCo
         [fetchRequest setEntity:[NSEntityDescription entityForName:kSCHProfileItem 
                                             inManagedObjectContext:self.managedObjectContext]];	
         [fetchRequest setPredicate:[NSPredicate predicateWithFormat:@"ID == %@", ret.ProfileID]];
-        NSArray *results = [self.managedObjectContext executeFetchRequest:fetchRequest error:nil];
+        NSArray *results = [self.managedObjectContext executeFetchRequest:fetchRequest error:&error];
         [fetchRequest release];
+        if (results == nil) {
+            NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
+        }
+ 
         if([results count] > 0) {
             newAppContentProfileItem.ProfileItem = [results objectAtIndex:0];    
             
@@ -634,13 +652,17 @@ NSString * const SCHContentSyncComponentDidFailNotification = @"SCHContentSyncCo
 - (void)deleteUnusedContentMetadataItems
 {
     NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init]; 
+    NSError *error = nil;    
     [fetchRequest setEntity:[NSEntityDescription entityForName:kSCHUserContentItem
                                         inManagedObjectContext:self.managedObjectContext]];	                                                                            
     [fetchRequest setPredicate:[NSPredicate predicateWithFormat:@"ProfileList.@count < 1"]];    
     
     NSArray *userContent = [self.managedObjectContext executeFetchRequest:fetchRequest 
-                                                                error:nil];
+                                                                error:&error];
     [fetchRequest release], fetchRequest = nil;
+    if (userContent == nil) {
+        NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
+    }
     
     for (SCHUserContentItem *userContentItem in userContent) {
         for (SCHContentMetadataItem *item in [userContentItem ContentMetadataItem]) {

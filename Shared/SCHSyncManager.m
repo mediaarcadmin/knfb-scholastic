@@ -357,6 +357,10 @@ static NSUInteger const kSCHSyncManagerMaximumFailureRetries = 3;
     
     NSError *error = nil;				
     NSArray *profiles = [self.managedObjectContext executeFetchRequest:request error:&error];
+    if (profiles == nil) {
+        NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
+    }
+    
     for (SCHProfileItem *profileItem in profiles) {	
         [self.annotationSyncComponent addProfile:[profileItem 
                                                   valueForKey:kSCHLibreAccessWebServiceID] 
@@ -420,13 +424,17 @@ static NSUInteger const kSCHSyncManagerMaximumFailureRetries = 3;
     
     if (userContentItem != nil && profileID != nil) {
         NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+        NSError *error = nil;
         
         [fetchRequest setEntity:[NSEntityDescription entityForName:kSCHProfileItem
                                             inManagedObjectContext:self.managedObjectContext]];
         [fetchRequest setPredicate:[NSPredicate predicateWithFormat:@"ID == %@", profileID]];
         
-        NSArray *profiles = [self.managedObjectContext executeFetchRequest:fetchRequest error:nil];
+        NSArray *profiles = [self.managedObjectContext executeFetchRequest:fetchRequest error:&error];
         [fetchRequest release];
+        if (profiles == nil) {
+            NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
+        }
         
         if ([profiles count] > 0) {
             SCHAppContentProfileItem *appContentProfileItem = [[profiles objectAtIndex:0] appContentProfileItemForBookIdentifier:

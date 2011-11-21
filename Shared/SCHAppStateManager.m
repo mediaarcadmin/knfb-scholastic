@@ -65,6 +65,7 @@
 {
     NSAssert([NSThread isMainThread] == YES, @"appState SHOULD be executed on the main thread");
     SCHAppState *ret = nil;
+    NSError *error = nil;
     
     NSEntityDescription *entityDescription = [NSEntityDescription 
                                               entityForName:kSCHAppState
@@ -72,8 +73,11 @@
     NSFetchRequest *fetchRequest = [entityDescription.managedObjectModel 
                                     fetchRequestTemplateForName:kSCHAppStatefetchAppState];
     
-    NSArray *state = [self.managedObjectContext executeFetchRequest:fetchRequest error:nil];	
-    
+    NSArray *state = [self.managedObjectContext executeFetchRequest:fetchRequest error:&error];	
+    if (state == nil) {
+        NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
+    }
+
     if ([state count] > 0) {
         ret = [state objectAtIndex:0];
     } else {
@@ -100,8 +104,11 @@
     NSFetchRequest *fetchRequest = [entityDescription.managedObjectModel 
                                     fetchRequestTemplateForName:kSCHAppStatefetchAppState];
     
-    NSArray *state = [self.managedObjectContext executeFetchRequest:fetchRequest error:nil];	
-    
+    NSArray *state = [self.managedObjectContext executeFetchRequest:fetchRequest error:&error];	
+    if (state == nil) {
+        NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
+    }
+
     if ([state count] < 1) {
         ret = [NSEntityDescription insertNewObjectForEntityForName:kSCHAppState 
                                       inManagedObjectContext:self.managedObjectContext];

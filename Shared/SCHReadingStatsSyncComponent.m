@@ -40,6 +40,10 @@ NSString * const SCHReadingStatsSyncComponentDidFailNotification = @"SCHReadingS
 		
         [fetchRequest setEntity:[NSEntityDescription entityForName:kSCHReadingStatsDetailItem inManagedObjectContext:self.managedObjectContext]];	
        	NSArray *readingStats = [self.managedObjectContext executeFetchRequest:fetchRequest error:&error];
+        if (readingStats == nil) {
+            NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
+        }
+        
         if ([readingStats count] > 0) {
             self.isSynchronizing = [self.libreAccessWebService saveReadingStatisticsDetailed:readingStats];
             if (self.isSynchronizing == NO) {

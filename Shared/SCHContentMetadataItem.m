@@ -52,6 +52,7 @@ static NSString * const kSCHContentMetadataItemAnnotationsItemProfileID = @"Anno
 - (NSSet *)AnnotationsContentItem
 {
     NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+    NSError *error = nil;
     
     [fetchRequest setEntity:[NSEntityDescription entityForName:kSCHAnnotationsContentItem 
                                         inManagedObjectContext:self.managedObjectContext]];	
@@ -59,9 +60,12 @@ static NSString * const kSCHContentMetadataItemAnnotationsItemProfileID = @"Anno
                                 self.ContentIdentifier, self.DRMQualifier]];
     
     NSArray *result = [self.managedObjectContext executeFetchRequest:fetchRequest 
-                                                               error:nil];
+                                                               error:&error];
     [fetchRequest release], fetchRequest = nil;
-    
+    if (result == nil) {
+        NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
+    }
+
     return((result == nil ? [NSSet set] : [NSSet setWithArray:result]));
 }
 
@@ -70,6 +74,7 @@ static NSString * const kSCHContentMetadataItemAnnotationsItemProfileID = @"Anno
     SCHUserContentItem *ret = nil;
     
     NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+    NSError *error = nil;
     
     [fetchRequest setEntity:[NSEntityDescription entityForName:kSCHUserContentItem
                                         inManagedObjectContext:self.managedObjectContext]];	
@@ -78,8 +83,11 @@ static NSString * const kSCHContentMetadataItemAnnotationsItemProfileID = @"Anno
 
     
     NSArray *result = [self.managedObjectContext executeFetchRequest:fetchRequest 
-                                                               error:nil];
+                                                               error:&error];
     [fetchRequest release], fetchRequest = nil;
+    if (result == nil) {
+        NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
+    }
 
     // there should only ever be a single matching user content item
     if ([result count] > 0) {

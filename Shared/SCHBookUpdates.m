@@ -83,7 +83,10 @@
     
     NSArray *allAppBooks = [self.managedObjectContext executeFetchRequest:fetch error:&error];
     [fetch release], fetch = nil;
-    
+    if (allAppBooks == nil) {
+        NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
+    }
+
     [allAppBooks enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
         SCHContentMetadataItem *contentMetadataItem = [(SCHAppBook*) obj ContentMetadataItem];
         

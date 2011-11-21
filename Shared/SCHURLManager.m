@@ -127,15 +127,18 @@ static NSUInteger const kSCHURLManagerMaxConnections = 6;
 
 	if (bookIdentifier != nil) {
         NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+        NSError *error = nil;
         
         [fetchRequest setEntity:[NSEntityDescription entityForName:kSCHContentMetadataItem 
                                             inManagedObjectContext:self.managedObjectContext]];	
         [fetchRequest setPredicate:[NSPredicate predicateWithFormat:@"ContentIdentifier == %@ AND DRMQualifier == %@", 
                                     bookIdentifier.isbn, bookIdentifier.DRMQualifier]];
         
-		NSArray *book = [self.managedObjectContext executeFetchRequest:fetchRequest error:nil];	
-        
+		NSArray *book = [self.managedObjectContext executeFetchRequest:fetchRequest error:&error];	
         [fetchRequest release], fetchRequest = nil;
+        if (book == nil) {
+            NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
+        }
 		
 		if ([book count] > 0) {
 			[table addObject:[book objectAtIndex:0]];

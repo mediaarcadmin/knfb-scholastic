@@ -303,23 +303,27 @@ NSString * const SCHBookshelfSyncComponentDidFailNotification = @"SCHBookshelfSy
 - (NSArray *)localContentMetadataItems
 {
 	NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
-	
+    NSError *error = nil;
+    
 	[fetchRequest setEntity:[NSEntityDescription entityForName:kSCHContentMetadataItem inManagedObjectContext:self.managedObjectContext]];	
 	[fetchRequest setSortDescriptors:[NSArray arrayWithObjects:
                                       [NSSortDescriptor sortDescriptorWithKey:kSCHLibreAccessWebServiceContentIdentifier ascending:YES],
                                       [NSSortDescriptor sortDescriptorWithKey:kSCHLibreAccessWebServiceDRMQualifier ascending:YES],
                                       nil]];
 	
-	NSArray *ret = [self.managedObjectContext executeFetchRequest:fetchRequest error:nil];	
-	
+	NSArray *ret = [self.managedObjectContext executeFetchRequest:fetchRequest error:&error];	
 	[fetchRequest release], fetchRequest = nil;
-	
+    if (ret == nil) {
+        NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
+    }
+
 	return(ret);
 }
 
 - (NSArray *)localUserContentItems
 {
 	NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+    NSError *error = nil;
 	
 	[fetchRequest setEntity:[NSEntityDescription entityForName:kSCHUserContentItem inManagedObjectContext:self.managedObjectContext]];	
     // we only want books that are on a bookshelf
@@ -329,9 +333,11 @@ NSString * const SCHBookshelfSyncComponentDidFailNotification = @"SCHBookshelfSy
                                       [NSSortDescriptor sortDescriptorWithKey:kSCHLibreAccessWebServiceDRMQualifier ascending:YES],
                                       nil]];
 	
-	NSArray *ret = [self.managedObjectContext executeFetchRequest:fetchRequest error:nil];	
-               
+	NSArray *ret = [self.managedObjectContext executeFetchRequest:fetchRequest error:&error];	
 	[fetchRequest release], fetchRequest = nil;
+    if (ret == nil) {
+        NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
+    }
 	
 	return(ret);
 }
@@ -490,7 +496,10 @@ NSString * const SCHBookshelfSyncComponentDidFailNotification = @"SCHBookshelfSy
                                                                identifier.DRMQualifier, kSCHAppBookDRM_QUALIFIER,
                                                                nil]];
         NSArray *bookArray = [self.managedObjectContext executeFetchRequest:fetchRequest error:&error];
-        
+        if (bookArray == nil) {
+            NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
+        }
+
         if ([bookArray count] > 0) {
             [self.managedObjectContext deleteObject:[bookArray objectAtIndex:0]];
         }
@@ -514,7 +523,10 @@ NSString * const SCHBookshelfSyncComponentDidFailNotification = @"SCHBookshelfSy
                                                                identifier.DRMQualifier, kSCHReadingStatsContentItemDRM_QUALIFIER,
                                                                nil]];
         NSArray *bookArray = [self.managedObjectContext executeFetchRequest:fetchRequest error:&error];
-        
+        if (bookArray == nil) {
+            NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
+        }
+
         if ([bookArray count] > 0) {
             [self.managedObjectContext deleteObject:[bookArray objectAtIndex:0]];
         }

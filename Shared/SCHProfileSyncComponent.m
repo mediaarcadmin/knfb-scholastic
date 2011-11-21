@@ -208,13 +208,18 @@ NSString * const SCHProfileSyncComponentDidFailNotification = @"SCHProfileSyncCo
 {
 	BOOL ret = YES;
 	NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
-	
+    NSError *error = nil;
+    
     [self.savedProfiles removeAllObjects];
 	[fetchRequest setEntity:[NSEntityDescription entityForName:kSCHProfileItem inManagedObjectContext:self.managedObjectContext]];	
 	[fetchRequest setPredicate:[NSPredicate predicateWithFormat:@"State IN %@", 
 								[NSArray arrayWithObjects:[NSNumber numberWithStatus:kSCHStatusModified],
 								 [NSNumber numberWithStatus:kSCHStatusDeleted], nil]]];
-	NSArray *updatedProfiles = [self.managedObjectContext executeFetchRequest:fetchRequest error:nil];
+	NSArray *updatedProfiles = [self.managedObjectContext executeFetchRequest:fetchRequest error:&error];
+    if (updatedProfiles == nil) {
+        NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
+    }
+    
 	if([updatedProfiles count] > 0) {
         
         [self trackProfileSaves:updatedProfiles];
@@ -256,13 +261,16 @@ NSString * const SCHProfileSyncComponentDidFailNotification = @"SCHProfileSyncCo
 - (NSArray *)localProfiles
 {
 	NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+    NSError *error = nil;
 	
 	[fetchRequest setEntity:[NSEntityDescription entityForName:kSCHProfileItem inManagedObjectContext:self.managedObjectContext]];	
 	[fetchRequest setSortDescriptors:[NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:kSCHLibreAccessWebServiceID ascending:YES]]];
 	
-	NSArray *ret = [self.managedObjectContext executeFetchRequest:fetchRequest error:nil];	
-	
+	NSArray *ret = [self.managedObjectContext executeFetchRequest:fetchRequest error:&error];	
 	[fetchRequest release], fetchRequest = nil;
+    if (ret == nil) {
+        NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
+    }
 	
 	return(ret);
 }
