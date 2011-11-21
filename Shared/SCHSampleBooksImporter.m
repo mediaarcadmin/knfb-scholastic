@@ -45,6 +45,7 @@ typedef enum {
 - (void)checkRemoteState;
 - (void)startLocal;
 - (void)startRemote;
+- (NSString *)lastRemoteSampleBooksFilePath;
 - (void)reset;
 - (void)populateSampleStore;
 - (void)perfomSuccessBlockOnMainThread;
@@ -178,12 +179,7 @@ typedef enum {
                 
                 self.reachabilityNotifier = [Reachability reachabilityForInternetConnection];
 
-                if ([self isConnected]) {
-                    [self startRemote];
-                } else {
-                    [self populateSampleStore];
-                    [self reset];
-                }
+                [self startRemote];
             });
         }
     }];
@@ -200,25 +196,42 @@ typedef enum {
     [self.remoteSamplesAlert setSpinnerHidden:NO];
     [self.remoteSamplesAlert show];
     
-    SCHSampleBooksManifestOperation *manifestOp = [[SCHSampleBooksManifestOperation alloc] init];
-    manifestOp.manifestURL = self.remoteManifestURL;
-    manifestOp.processingDelegate = self;
-    
-    __block SCHSampleBooksManifestOperation *opPtr = manifestOp;
-    
-    [manifestOp setCompletionBlock:^{
-        if (![opPtr isCancelled]) {
-            dispatch_sync(dispatch_get_main_queue(), ^{
-                [self.sampleEntries addObjectsFromArray:opPtr.sampleEntries];
-                [self populateSampleStore];
-                [self reset];
-            });
+    if ([self isConnected]) {
+        SCHSampleBooksManifestOperation *manifestOp = [[SCHSampleBooksManifestOperation alloc] init];
+        manifestOp.manifestURL = self.remoteManifestURL;
+        manifestOp.processingDelegate = self;
+        
+        __block SCHSampleBooksManifestOperation *opPtr = manifestOp;
+        
+        [manifestOp setCompletionBlock:^{
+            if (![opPtr isCancelled]) {
+                dispatch_sync(dispatch_get_main_queue(), ^{
+                    [opPtr.sampleEntries writeToFile:[self lastRemoteSampleBooksFilePath] atomically:YES];
+                    [self.sampleEntries addObjectsFromArray:opPtr.sampleEntries];
+                    [self populateSampleStore];
+                    [self reset];
+                });
+            }
+        }];
+        
+        
+        [self.processingQueue addOperation:manifestOp];
+        [manifestOp release];
+    } else {
+        NSArray *lastRemoteSampleBooks = [NSArray arrayWithContentsOfFile:[self lastRemoteSampleBooksFilePath]];
+        if (lastRemoteSampleBooks != nil) {
+            [self.sampleEntries addObjectsFromArray:lastRemoteSampleBooks];
         }
-    }];
+        [self populateSampleStore];
+        [self reset];
+    }
+}
 
+- (NSString *)lastRemoteSampleBooksFilePath
+{
+    NSString *applicationSupportDirectory = [NSSearchPathForDirectoriesInDomains(NSApplicationSupportDirectory, NSUserDomainMask, YES) lastObject];
     
-    [self.processingQueue addOperation:manifestOp];
-    [manifestOp release];
+    return [applicationSupportDirectory stringByAppendingPathComponent:@"LastRemoteSampleBooks.plist"];
 }
 
 - (SCHBookIdentifier *)identifierForSampleEntry:(NSDictionary *)sampleEntry

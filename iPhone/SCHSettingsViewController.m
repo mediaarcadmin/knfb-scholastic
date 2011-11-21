@@ -436,7 +436,7 @@ extern NSString * const kSCHUserDefaultsSpaceSaverModeSetOffNotification;
         SCHRemoveDictionaryViewController *vc = [[SCHRemoveDictionaryViewController alloc] init];
         [self.navigationController pushViewController:vc animated:YES];
         [vc release];
-    } else {
+    } else if ([self connectionIsReachable] == YES) {
         [[SCHDictionaryDownloadManager sharedDownloadManager] beginDictionaryDownload];
     }
 }
