@@ -291,18 +291,29 @@ NSString * const kSCHProfileItemDRM_QUALIFIER = @"DRM_QUALIFIER";
 
             for (SCHContentMetadataItem *item in bookObjects) {
                 SCHPrivateAnnotations *privAnnotations = [(SCHAnnotationsContentItem *)[[item annotationsContentForProfile:self.ID] objectAtIndex:0] PrivateAnnotations];
-                    
+                SCHAppContentProfileItem *appContentProfileItem = [self appContentProfileItemForBookIdentifier:item.bookIdentifier];
+                SCHContentProfileItem *contentProfileItem = appContentProfileItem.ContentProfileItem;
+                
                 SCHProfileItemSortObject *sortObj = [[SCHProfileItemSortObject alloc] init];
-                sortObj.date = privAnnotations.LastPage.LastModified;
+                // If we havnt yet received the annotations from the sync then use the contentprofileitem
+                // lastModified date, see SCHReadingView:lastPageLocation where we do the same for the last page
+                if ([[contentProfileItem LastModified] compare:privAnnotations.LastPage.LastModified] == NSOrderedDescending) {
+                    sortObj.date = [contentProfileItem LastModified];
+                } else {
+                    sortObj.date = privAnnotations.LastPage.LastModified;
+                }
                 sortObj.item = item;
+                sortObj.isNewBook = [privAnnotations.LastPage.LastPageLocation integerValue] > 0;
                 
                 [sortArray addObject:sortObj];
                 [sortObj release];
 
             }
             
-            [sortArray sortUsingDescriptors:[NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:@"date" ascending:NO]]];
-            
+            [sortArray sortUsingDescriptors:[NSArray arrayWithObjects:[NSSortDescriptor sortDescriptorWithKey:@"isNewBook" ascending:NO], 
+                                             [NSSortDescriptor sortDescriptorWithKey:@"date" ascending:NO], nil]];
+
+
             [bookObjects removeAllObjects];
             
             for (SCHProfileItemSortObject *sortObj in sortArray) {
@@ -533,6 +544,7 @@ NSString * const kSCHProfileItemDRM_QUALIFIER = @"DRM_QUALIFIER";
 
 @synthesize item;
 @synthesize date;
+@synthesize isNewBook;
 
 - (void)dealloc 
 {

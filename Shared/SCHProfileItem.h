@@ -86,5 +86,6 @@ typedef enum {
 
 @property (nonatomic, retain) SCHContentMetadataItem *item;
 @property (nonatomic, retain) NSDate *date;
+@property (nonatomic, assign) BOOL isNewBook;
 
 @end

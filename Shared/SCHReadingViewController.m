@@ -936,6 +936,8 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     
     NSNumber *lastPageLocation = nil;
     
+    // If we havnt yet received the annotations from the sync then use the contentprofileitem
+    // lastpage, see SCHProfileItem:allBookIdentifiers where we do the same for the last modified date
     if ([[contentProfileItem LastModified] compare:[annotationsLastPage LastModified]] == NSOrderedDescending) {
         lastPageLocation = [contentProfileItem LastPageLocation];
     } else {
