@@ -27,9 +27,7 @@
 @property (nonatomic, assign) NSInteger documentPageNumber;
 @property (nonatomic, assign) CGPoint position;
 @property (nonatomic, assign) SCHBookStoryInteractions *bookStoryInteractions;
-
-// YES if this is an interaction for older readers
-- (BOOL)isOlderStoryInteraction;
+@property (nonatomic, assign, getter=isOlderStoryInteraction) BOOL olderStoryInteraction;
 
 // YES if this story interaction has all the necessary properties to be used
 - (BOOL)isValid;

@@ -30,9 +30,4 @@
     return @"Graphic";
 }
 
-- (BOOL)isOlderStoryInteraction
-{
-    return YES;
-}
-
 @end

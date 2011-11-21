@@ -33,4 +33,7 @@
 // transform to convert view coordinates to page coordinates
 - (CGAffineTransform)viewToPageTransform;
 
+// should this be displayed as an older story interaction
+- (BOOL)isOlderStoryInteraction;
+
 @end

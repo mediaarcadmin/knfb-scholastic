@@ -22,11 +22,7 @@
 @synthesize documentPageNumber;
 @synthesize position;
 @synthesize bookStoryInteractions;
-
-- (BOOL)isOlderStoryInteraction
-{
-    return NO;
-}
+@synthesize olderStoryInteraction;
 
 - (BOOL)isValid
 {

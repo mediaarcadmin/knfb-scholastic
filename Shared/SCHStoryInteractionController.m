@@ -205,6 +205,9 @@ static Class controllerClassForStoryInteraction(SCHStoryInteraction *storyIntera
 - (void)presentInHostView:(UIView *)aHostView withInterfaceOrientation:(UIInterfaceOrientation)aInterfaceOrientation
 {
     self.hostView = aHostView;
+    
+    // Determine if we are in an older or younger book
+    self.storyInteraction.olderStoryInteraction = [self.delegate isOlderStoryInteraction];
 
     // dim the host view
     if (![self currentFrameStyleOverlaysContents] && self.shadeView == nil) {
@@ -380,12 +383,13 @@ static Class controllerClassForStoryInteraction(SCHStoryInteraction *storyIntera
 - (void)setupTitle
 {
     BOOL iPad = (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad);
-
+    BOOL transparentTitle = [self frameStyleForViewAtIndex:self.currentScreenIndex] == SCHStoryInteractionTransparentTitle;
+    
     BOOL hasShadow;
     NSString *fontName;
     CGFloat fontSize;
     if ([self.storyInteraction isOlderStoryInteraction]) {
-        hasShadow = YES;
+        hasShadow = transparentTitle ? NO : YES;
         fontName = @"Arial Black";
         fontSize = (iPad ? 30 : 25);
     } else {
@@ -406,7 +410,13 @@ static Class controllerClassForStoryInteraction(SCHStoryInteraction *storyIntera
     }
     
     self.titleView.font = font;
-    self.titleView.textColor = [self.storyInteraction isOlderStoryInteraction] ? [UIColor whiteColor] : [UIColor SCHBlue2Color];
+    
+    if ([self.storyInteraction isOlderStoryInteraction] && !transparentTitle) {
+        self.titleView.textColor = [UIColor whiteColor];
+    } else {
+        self.titleView.textColor = [UIColor SCHBlue2Color];
+    }
+    
     if (hasShadow) {
         self.titleView.layer.shadowOpacity = 0.7f;
         self.titleView.layer.shadowRadius = 2;

@@ -20,11 +20,6 @@
     return @"Jigsaw";
 }
 
-- (BOOL)isOlderStoryInteraction
-{
-    return NO;
-}
-
 - (NSString *)imagePathForEasyPuzzle
 {
     NSString *filename = [NSString stringWithFormat:@"%@_easy.png", self.ID];
