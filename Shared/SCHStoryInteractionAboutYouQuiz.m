@@ -43,9 +43,4 @@
     return @"About You...";
 }
 
-- (BOOL)isOlderStoryInteraction
-{
-    return YES;
-}
-
 @end

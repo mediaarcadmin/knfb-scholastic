@@ -26,9 +26,4 @@
     return @"Word Twister";
 }
 
-- (BOOL)isOlderStoryInteraction
-{
-    return YES;
-}
-
 @end

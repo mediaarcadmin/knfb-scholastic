@@ -102,7 +102,6 @@ NSString * const KNFBXPSStoryInteractionsDirectory = @"/Documents/1/Other/KNFB/I
     SCHStoryInteractionCardCollection *story = [stories lastObject];
     STAssertEquals(story.documentPageNumber, 228, @"incorrect documentPageNumber");
     STAssertEqualObjects([[story imagePathForHeader] lastPathComponent], @"cc_header.png", @"incorrect header filename");
-    STAssertTrue([story isOlderStoryInteraction], @"should be an older SI");
     STAssertEqualObjects([story title], @"Card Collection", @"incorrect title");
     
     STAssertEquals([story numberOfCards], 8, @"incorrect number of cards");
@@ -125,7 +124,6 @@ NSString * const KNFBXPSStoryInteractionsDirectory = @"/Documents/1/Other/KNFB/I
     STAssertEqualObjects(story.introduction, @"Match the words with the pictures!", @"incorrect introduction");
     STAssertEqualObjects([[story audioPathForQuestion] lastPathComponent], @"cn1_intro.mp3", @"incorrect introduction audio");
     STAssertEquals([story numberOfPairs], 12, @"incorrect number of pairs");
-    STAssertFalse([story isOlderStoryInteraction], @"should be a younger SI");
     STAssertEqualObjects([story title], @"Memory Match", @"incorrect title");
     
     for (NSInteger i = 0; i < [story numberOfPairs]; ++i) {

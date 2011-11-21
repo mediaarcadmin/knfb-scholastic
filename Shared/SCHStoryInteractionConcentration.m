@@ -18,11 +18,6 @@
     [super dealloc];
 }
 
-- (BOOL)isOlderStoryInteraction
-{
-    return NO;
-}
-
 - (NSString *)title
 {
     return @"Memory Match";

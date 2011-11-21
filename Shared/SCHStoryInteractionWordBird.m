@@ -48,11 +48,6 @@
     return @"Word Bird";
 }
 
-- (BOOL)isOlderStoryInteraction
-{
-    return NO;
-}
-
 - (NSString *)audioPathForQuestion
 {
     return [KNFBXPSStoryInteractionsDirectory stringByAppendingPathComponent:@"gen_penguinfly.mp3"];

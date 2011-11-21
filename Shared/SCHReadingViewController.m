@@ -2768,6 +2768,11 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     return [self.bookStoryInteractions allQuestionsCompletedForPageIndices:[self storyInteractionPageIndices]];
 }
 
+- (BOOL)isOlderStoryInteraction
+{
+    return !self.youngerMode;
+}
+
 - (UIImage *)currentPageSnapshot
 {
     return [self.readingView pageSnapshot];

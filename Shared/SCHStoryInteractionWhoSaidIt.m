@@ -33,11 +33,6 @@
     [super dealloc];
 }
 
-- (BOOL)isOlderStoryInteraction
-{
-    return YES;
-}
-
 - (NSString *)title
 {
     return @"Who Said It?";
