@@ -21,6 +21,7 @@
 @property (nonatomic, retain) IBOutlet UITableView *tableView;
 @property (nonatomic, retain) IBOutlet UIImageView *backgroundView;
 @property (nonatomic, retain) IBOutlet UIView *headerView;
+@property (nonatomic, retain) IBOutlet UILabel *headerLabel;
 @property (nonatomic, retain) IBOutlet UINavigationController *modalNavigationController;
 @property (nonatomic, retain) IBOutlet SCHSettingsViewController *settingsViewController;
 @property (nonatomic, retain) IBOutlet UIImageView *updatesBubble;
