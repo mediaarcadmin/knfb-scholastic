@@ -36,9 +36,13 @@
 
 - (NSString *)audioPathForQuestion
 {
-    NSUInteger videoIndex = [[self.bookStoryInteractions storyInteractionsOfClass:[self class]] indexOfObject:self];
-    NSString *filename = [NSString stringWithFormat:@"%@_intro%lu.mp3", self.ID, videoIndex + 1];
-    return [KNFBXPSStoryInteractionsDirectory stringByAppendingPathComponent:filename];
+    if ([self isOlderStoryInteraction] == YES) {
+        return nil;
+    } else {
+        NSUInteger videoIndex = [[self.bookStoryInteractions storyInteractionsOfClass:[self class]] indexOfObject:self];
+        NSString *filename = [NSString stringWithFormat:@"%@_intro%lu.mp3", self.ID, videoIndex + 1];
+        return [KNFBXPSStoryInteractionsDirectory stringByAppendingPathComponent:filename];
+    }
 }
 
 - (NSString *)videoPath
