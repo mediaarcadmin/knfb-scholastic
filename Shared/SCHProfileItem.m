@@ -320,16 +320,15 @@ NSString * const kSCHProfileItemDRM_QUALIFIER = @"DRM_QUALIFIER";
                     sortObj.date = privAnnotations.LastPage.LastModified;
                 }
                 sortObj.item = item;
-                sortObj.isNewBook = [privAnnotations.LastPage.LastPageLocation integerValue] > 0;
+                sortObj.isNewBook = [appContentProfileItem.IsNewBook boolValue];
                 
                 [sortArray addObject:sortObj];
                 [sortObj release];
 
             }
             
-            [sortArray sortUsingDescriptors:[NSArray arrayWithObjects:[NSSortDescriptor sortDescriptorWithKey:@"isNewBook" ascending:NO], 
+            [sortArray sortUsingDescriptors:[NSArray arrayWithObjects:[NSSortDescriptor sortDescriptorWithKey:@"isNewBook" ascending:YES], 
                                              [NSSortDescriptor sortDescriptorWithKey:@"date" ascending:NO], nil]];
-
 
             [bookObjects removeAllObjects];
             
