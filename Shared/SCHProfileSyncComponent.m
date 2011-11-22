@@ -182,6 +182,8 @@ NSString * const SCHProfileSyncComponentDidFailNotification = @"SCHProfileSyncCo
             }
         } failureBlock:^(NSError *error){
             self.isSynchronizing = NO;
+            [[NSNotificationCenter defaultCenter] postNotificationName:SCHSyncComponentDidFailAuthenticationNotification
+                                                                object:self];            
         }];				
     }		    
 }
@@ -234,6 +236,8 @@ NSString * const SCHProfileSyncComponentDidFailNotification = @"SCHProfileSyncCo
                 }
             } failureBlock:^(NSError *error){
                 self.isSynchronizing = NO;
+                [[NSNotificationCenter defaultCenter] postNotificationName:SCHSyncComponentDidFailAuthenticationNotification
+                                                                    object:self];                
             }];				
 			ret = NO;			
 		}		
@@ -249,6 +253,8 @@ NSString * const SCHProfileSyncComponentDidFailNotification = @"SCHProfileSyncCo
                 }
             } failureBlock:^(NSError *error){
                 self.isSynchronizing = NO;
+                [[NSNotificationCenter defaultCenter] postNotificationName:SCHSyncComponentDidFailAuthenticationNotification
+                                                                    object:self];                
             }];					
 			ret = NO;
 		}

@@ -314,6 +314,8 @@ NSString * const SCHAnnotationSyncComponentCompletedProfileIDs = @"SCHAnnotation
             }
         } failureBlock:^(NSError *error){
             self.isSynchronizing = NO;
+            [[NSNotificationCenter defaultCenter] postNotificationName:SCHSyncComponentDidFailAuthenticationNotification
+                                                                object:self];
         }];	
     }            
 }
@@ -446,6 +448,8 @@ NSString * const SCHAnnotationSyncComponentCompletedProfileIDs = @"SCHAnnotation
                 }
             } failureBlock:^(NSError *error){
                 self.isSynchronizing = NO;
+                [[NSNotificationCenter defaultCenter] postNotificationName:SCHSyncComponentDidFailAuthenticationNotification
+                                                                    object:self];                
             }];				
             ret = NO;
         } else {
@@ -463,6 +467,8 @@ NSString * const SCHAnnotationSyncComponentCompletedProfileIDs = @"SCHAnnotation
                 }
             } failureBlock:^(NSError *error){
                 self.isSynchronizing = NO;
+                [[NSNotificationCenter defaultCenter] postNotificationName:SCHSyncComponentDidFailAuthenticationNotification
+                                                                    object:self];                
             }];					
             ret = NO;
         }

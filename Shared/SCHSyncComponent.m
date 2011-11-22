@@ -9,6 +9,9 @@
 #import "SCHSyncComponent.h"
 #import "SCHSyncComponentProtected.h"
 
+// Constants
+NSString * const SCHSyncComponentDidFailAuthenticationNotification = @"SCHSyncComponentDidFailAuthenticationNotification";
+
 @interface SCHSyncComponent ()
  
 @property (assign, nonatomic) NSUInteger failureCount;

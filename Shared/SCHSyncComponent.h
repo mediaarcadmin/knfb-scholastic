@@ -12,6 +12,9 @@
 #import "SCHComponent.h"
 #import "NSNumber+ObjectTypes.h"
 
+// Constants
+extern NSString * const SCHSyncComponentDidFailAuthenticationNotification;
+
 @interface SCHSyncComponent : SCHComponent
 {
 }
