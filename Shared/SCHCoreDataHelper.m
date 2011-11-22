@@ -156,7 +156,12 @@ static NSString * const kSCHCoreDataHelperDictionaryStoreName = @"Scholastic_Dic
 {
     if (notification.object != self.managedObjectContext) {
         dispatch_async(dispatch_get_main_queue(), ^{
+            NSError *error = nil;
+            
             [[self managedObjectContext] mergeChangesFromContextDidSaveNotification:notification];
+            if ([[self managedObjectContext] save:&error] == NO) {
+                NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
+            }
         });
     }
 }

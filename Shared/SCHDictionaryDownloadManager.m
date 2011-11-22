@@ -1717,35 +1717,28 @@ static SCHDictionaryDownloadManager *sharedManager = nil;
                     [alert release];
                 });
             } else {
-                // remove dictionary files from tmp in the background
-                dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{
-                    NSFileManager *fileManager = [[[NSFileManager alloc] init] autorelease];
-                    [fileManager removeItemAtPath:dictionaryTmpDirectory error:nil];
-                });
+                // remove dictionary files from tmp
+                [fileManager removeItemAtPath:dictionaryTmpDirectory error:nil];
             }
             
-            // move the core data operation to the background, should this fail
+            // clear dictionary entries out of database, should this fail
             // before it ends dictionary processing also makes sure that it is clear
             // prior to import
-            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{
-                // clear dictionary entries out of database
-                NSManagedObjectContext *managedObjectContext = [[NSManagedObjectContext alloc] init];
-                [managedObjectContext setPersistentStoreCoordinator:self.persistentStoreCoordinator];
-                
-                NSError *error = nil;
-                NSArray *entities = [NSArray arrayWithObjects:kSCHAppDictionaryState, kSCHDictionaryEntry, kSCHDictionaryWordForm, nil];
-                for (NSString *entity in entities) {
-                    if (![managedObjectContext BITemptyEntity:entity error:&error]) {
-                        NSLog(@"error removing %@: %@", entity, error);
-                    }
+            NSManagedObjectContext *managedObjectContext = [[NSManagedObjectContext alloc] init];
+            [managedObjectContext setPersistentStoreCoordinator:self.persistentStoreCoordinator];
+            
+            NSArray *entities = [NSArray arrayWithObjects:kSCHAppDictionaryState, kSCHDictionaryEntry, kSCHDictionaryWordForm, nil];
+            for (NSString *entity in entities) {
+                if (![managedObjectContext BITemptyEntity:entity error:&error]) {
+                    NSLog(@"error removing %@: %@", entity, error);
                 }
-                
-                [managedObjectContext release];
-                
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    [self setUserRequestState:SCHDictionaryUserDeclined];
-                    [self threadSafeUpdateDictionaryState:SCHDictionaryProcessingStateUserDeclined];
-                });
+            }
+            
+            [managedObjectContext release];
+            
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [self setUserRequestState:SCHDictionaryUserDeclined];
+                [self threadSafeUpdateDictionaryState:SCHDictionaryProcessingStateUserDeclined];
             });
         });
     }
