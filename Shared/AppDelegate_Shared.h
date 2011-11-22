@@ -30,6 +30,7 @@ typedef enum {
 
 - (void)clearUserDefaults;
 - (void)setStoreType:(SCHStoreType)storeType;
+- (void)resetDictionaryStore;
 
 @end
 

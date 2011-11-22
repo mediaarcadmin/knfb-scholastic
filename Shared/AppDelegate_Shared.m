@@ -113,7 +113,7 @@ static NSString* const prModelCertFilename = @"iphonecert.dat";
     switch (storeType) {
         case kSCHStoreTypeStandardStore:
             if ([[SCHAppStateManager sharedAppStateManager] isSampleStore]) {
-                [self.coreDataHelper resetStore];
+                [self.coreDataHelper resetMainStore];
                 SCHPopulateDataStore *populator = [[SCHPopulateDataStore alloc] init];
                 [populator setManagedObjectContext:self.coreDataHelper.managedObjectContext];
                 [populator setAppStateForStandard];
@@ -122,7 +122,7 @@ static NSString* const prModelCertFilename = @"iphonecert.dat";
             break;
         case kSCHStoreTypeSampleStore:
             if ([[SCHAppStateManager sharedAppStateManager] isStandardStore]) {
-                [self.coreDataHelper resetStore];
+                [self.coreDataHelper resetMainStore];
                 SCHPopulateDataStore *populator = [[SCHPopulateDataStore alloc] init];
                 [populator setManagedObjectContext:self.coreDataHelper.managedObjectContext];
                 [populator setAppStateForSample];
@@ -130,6 +130,11 @@ static NSString* const prModelCertFilename = @"iphonecert.dat";
             }
             break; 
     }
+}
+
+- (void)resetDictionaryStore
+{
+    [self.coreDataHelper resetDictionaryStore];
 }
 
 - (void)setupUserDefaults

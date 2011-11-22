@@ -34,6 +34,7 @@ static NSString * const kSCHCoreDataHelperDictionaryStoreName = @"Scholastic_Dic
                        url:(NSURL *)url;
 - (NSURL *)storeURL:(NSString *)storeName;
 - (NSPersistentStore *)currentMainPersistentStore;
+- (NSPersistentStore *)currentDictionaryPersistentStore;
 - (void)removeStoreAtURL:(NSURL *)storeURL;
 
 @end
@@ -57,7 +58,7 @@ static NSString * const kSCHCoreDataHelperDictionaryStoreName = @"Scholastic_Dic
     [super dealloc];
 }
 
-- (void)resetStore
+- (void)resetMainStore
 {
     NSPersistentStore *currentMainStore = [self currentMainPersistentStore];
     NSError *error = nil;
@@ -73,6 +74,33 @@ static NSString * const kSCHCoreDataHelperDictionaryStoreName = @"Scholastic_Dic
     if ([[self persistentStoreCoordinator] addPersistentStoreWithType:NSSQLiteStoreType 
                                                         configuration:kSCHCoreDataHelperMainStoreConfiguration 
                                                                   URL:[self storeURL:kSCHCoreDataHelperStandardStoreName] 
+                                                              options:nil 
+                                                                error:&error] == nil){   
+        NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
+        abort();
+    }
+    
+    [[NSNotificationCenter defaultCenter] postNotificationName:SCHCoreDataHelperManagedObjectContextDidChangeNotification 
+                                                        object:self 
+                                                      userInfo:[NSDictionary dictionaryWithObject:[self managedObjectContext] 
+                                                                                           forKey:SCHCoreDataHelperManagedObjectContext]];
+}
+
+- (void)resetDictionaryStore
+{
+    NSPersistentStore *currentDictionaryStore = [self currentDictionaryPersistentStore];
+    NSError *error = nil;
+    
+    [[self managedObjectContext] reset];
+    [[self persistentStoreCoordinator] removePersistentStore:currentDictionaryStore 
+                                                       error:&error];  
+    [self removeStoreAtURL:[self storeURL:kSCHCoreDataHelperDictionaryStoreName]];
+    
+    self.managedObjectContext = nil;
+    
+    if ([[self persistentStoreCoordinator] addPersistentStoreWithType:NSSQLiteStoreType 
+                                                        configuration:kSCHCoreDataHelperDictionaryStoreConfiguration 
+                                                                  URL:[self storeURL:kSCHCoreDataHelperDictionaryStoreName] 
                                                               options:nil 
                                                                 error:&error] == nil){   
         NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
@@ -157,7 +185,6 @@ static NSString * const kSCHCoreDataHelperDictionaryStoreName = @"Scholastic_Dic
     if (notification.object != self.managedObjectContext) {
         dispatch_async(dispatch_get_main_queue(), ^{
             NSError *error = nil;
-            
             [[self managedObjectContext] mergeChangesFromContextDidSaveNotification:notification];
             if ([[self managedObjectContext] save:&error] == NO) {
                 NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
@@ -339,6 +366,22 @@ static NSString * const kSCHCoreDataHelperDictionaryStoreName = @"Scholastic_Dic
     if ([self persistentStoreCoordinator] != nil) {
         for (NSPersistentStore *store in [[self persistentStoreCoordinator] persistentStores]) {
             if ([store.URL isEqual:[self storeURL:kSCHCoreDataHelperStandardStoreName]]) {
+                ret = store;
+                break;
+            }
+        }
+    }
+    
+    return(ret);
+}
+
+- (NSPersistentStore *)currentDictionaryPersistentStore
+{
+    NSPersistentStore *ret = nil;
+    
+    if ([self persistentStoreCoordinator] != nil) {
+        for (NSPersistentStore *store in [[self persistentStoreCoordinator] persistentStores]) {
+            if ([store.URL isEqual:[self storeURL:kSCHCoreDataHelperDictionaryStoreName]]) {
                 ret = store;
                 break;
             }

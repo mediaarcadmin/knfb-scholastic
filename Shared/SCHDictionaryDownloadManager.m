@@ -24,6 +24,7 @@
 #import "SCHCoreDataHelper.h"
 #import "SCHAppDictionaryManifestEntry.h"
 #import "SCHDictionaryOperation.h"
+#import "AppDelegate_Shared.h"
 
 // Constants
 NSString * const kSCHDictionaryDownloadPercentageUpdate = @"SCHDictionaryDownloadPercentageUpdate";
@@ -777,7 +778,6 @@ static SCHDictionaryDownloadManager *sharedManager = nil;
 - (NSString *)dictionaryTmpDirectory 
 {
     NSString *ret = [NSTemporaryDirectory() stringByAppendingPathComponent:kSCHDictionaryDownloadDirectoryName];  
-    
     return(ret);
 }
 
@@ -1698,8 +1698,10 @@ static SCHDictionaryDownloadManager *sharedManager = nil;
     SCHDictionaryProcessingState state = [self dictionaryProcessingState];
     if (state == SCHDictionaryProcessingStateReady) {
         
-        [self threadSafeUpdateDictionaryState:SCHDictionaryProcessingStateDeleting];
+        [(AppDelegate_Shared *)[[UIApplication sharedApplication] delegate] resetDictionaryStore];
         
+        [self threadSafeUpdateDictionaryState:SCHDictionaryProcessingStateDeleting];
+
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{
             // move the dictionary files to tmp and delete in the background 
             NSString *dictionaryTmpDirectory = [self dictionaryTmpDirectory];
@@ -1707,34 +1709,11 @@ static SCHDictionaryDownloadManager *sharedManager = nil;
             NSFileManager *fileManager = [[[NSFileManager alloc] init] autorelease];
             if (![fileManager moveItemAtPath:[self dictionaryDirectory] 
                                       toPath:dictionaryTmpDirectory error:&error]) {
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error", @"error alert title")
-                                                                    message:NSLocalizedString(@"Failed to remove dictionary", @"remove dictionary error message")
-                                                                   delegate:nil
-                                                          cancelButtonTitle:@"OK"
-                                                          otherButtonTitles:nil];
-                    [alert show];
-                    [alert release];
-                });
+                NSLog(@"Failed to remove dictionary %@ : %@", error, [error userInfo]);
             } else {
                 // remove dictionary files from tmp
                 [fileManager removeItemAtPath:dictionaryTmpDirectory error:nil];
             }
-            
-            // clear dictionary entries out of database, should this fail
-            // before it ends dictionary processing also makes sure that it is clear
-            // prior to import
-            NSManagedObjectContext *managedObjectContext = [[NSManagedObjectContext alloc] init];
-            [managedObjectContext setPersistentStoreCoordinator:self.persistentStoreCoordinator];
-            
-            NSArray *entities = [NSArray arrayWithObjects:kSCHAppDictionaryState, kSCHDictionaryEntry, kSCHDictionaryWordForm, nil];
-            for (NSString *entity in entities) {
-                if (![managedObjectContext BITemptyEntity:entity error:&error]) {
-                    NSLog(@"error removing %@: %@", entity, error);
-                }
-            }
-            
-            [managedObjectContext release];
             
             dispatch_async(dispatch_get_main_queue(), ^{
                 [self setUserRequestState:SCHDictionaryUserDeclined];
