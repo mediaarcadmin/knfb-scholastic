@@ -22,6 +22,7 @@
 #import "SCHParentalToolsWebViewController.h"
 #import "LambdaAlert.h"
 #import "Reachability.h"
+#import "SCHProfileSyncComponent.h"
 
 @interface SCHProfileViewController_Shared()  
 
@@ -43,6 +44,7 @@
 @synthesize tableView;
 @synthesize backgroundView;
 @synthesize headerView;
+@synthesize headerLabel;
 @synthesize fetchedResultsController=fetchedResultsController_;
 @synthesize managedObjectContext=managedObjectContext_;
 @synthesize modalNavigationController;
@@ -66,6 +68,11 @@
                                                  selector:@selector(deviceDeregistered:)
                                                      name:SCHAuthenticationManagerReceivedServerDeregistrationNotification
                                                    object:nil];
+        
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(profileSyncDidComplete:)
+                                                     name:SCHProfileSyncComponentDidCompleteNotification
+                                                   object:nil];
     }
     return(self);
 }
@@ -75,6 +82,7 @@
     [tableView release], tableView = nil;
     [backgroundView release], backgroundView = nil;
     [headerView release], headerView = nil;
+    [headerLabel release], headerLabel = nil;
     [modalNavigationController release], modalNavigationController = nil;
     [settingsViewController release], settingsViewController = nil;
     [updatesBubble release], updatesBubble = nil;
@@ -90,6 +98,10 @@
                                                  name:SCHAuthenticationManagerReceivedServerDeregistrationNotification
                                                object:nil];
 
+    [[NSNotificationCenter defaultCenter] removeObserver:self 
+                                                    name:SCHProfileSyncComponentDidCompleteNotification
+                                                  object:nil];
+    
     [self releaseViewObjects];
     
     [fetchedResultsController_ release], fetchedResultsController_ = nil;
@@ -265,6 +277,14 @@
     NSError *error = nil;
     if (![fetchedResultsController_ performFetch:&error]) {
         NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
+    }
+    
+    if ([[fetchedResultsController_ fetchedObjects] count] > 0) {
+        [self.headerLabel setText:NSLocalizedString(@"Choose Your Bookshelf", @"Profile header text for > 0 bookshelves")];
+        [self.headerLabel setNumberOfLines:1];
+    } else {
+        [self.headerLabel setText:NSLocalizedString(@"Please go to Parent Tools to create bookshelves.", @"Profile header text for 0 bookshelves")];
+        [self.headerLabel setNumberOfLines:2];
     }
     
     return fetchedResultsController_;
@@ -586,6 +606,12 @@
         [alert show];
         [alert release];
     }];  
+}
+
+- (void)profileSyncDidComplete:(NSNotification *)notification
+{
+    self.fetchedResultsController = nil;
+    [self.tableView reloadData];
 }
 
 @end
