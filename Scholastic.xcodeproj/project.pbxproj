@@ -8660,7 +8660,6 @@
 				GCC_PREFIX_HEADER = Scholastic_Prefix.pch;
 				GCC_PREPROCESSOR_DEFINITIONS = "";
 				INFOPLIST_FILE = "Scholastic-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 4.0;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)\"",
@@ -8689,7 +8688,6 @@
 				GCC_PREFIX_HEADER = Scholastic_Prefix.pch;
 				GCC_PREPROCESSOR_DEFINITIONS = "";
 				INFOPLIST_FILE = "Scholastic-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 4.0;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)\"",
@@ -8797,7 +8795,6 @@
 				GCC_PREFIX_HEADER = Scholastic_Prefix.pch;
 				GCC_PREPROCESSOR_DEFINITIONS = "";
 				INFOPLIST_FILE = "Scholastic-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 4.0;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/Shared/Libraries/Submodules/libKNFBReader/Pagemark\"",
@@ -8821,7 +8818,6 @@
 				GCC_PREFIX_HEADER = Scholastic_Prefix.pch;
 				GCC_PREPROCESSOR_DEFINITIONS = "";
 				INFOPLIST_FILE = "Scholastic-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 4.0;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/Shared/Libraries/Submodules/libKNFBReader/Pagemark\"",
@@ -8849,7 +8845,6 @@
 				GCC_PREFIX_HEADER = Scholastic_Prefix.pch;
 				GCC_PREPROCESSOR_DEFINITIONS = "";
 				INFOPLIST_FILE = "Scholastic-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 4.0;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/Shared/Libraries/Submodules/libKNFBReader/Pagemark\"",
@@ -8883,6 +8878,7 @@
 					"\"$(DSTROOT)/usr/local/lib/include\"",
 					"\"$(OBJROOT)/UninstalledProducts/include\"",
 				);
+				IPHONEOS_DEPLOYMENT_TARGET = 4.0;
 				LIBRARY_SEARCH_PATHS = "\"$(SRCROOT)/Shared/Libraries/DRM\"";
 				OTHER_CFLAGS = (
 					"-I/usr/include/libxml2",
@@ -8894,7 +8890,7 @@
 				);
 				PREBINDING = NO;
 				SDKROOT = iphoneos;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 2;
 				USER_HEADER_SEARCH_PATHS = "$PROJECT_ROOT/Shared/**";
 				VERSIONING_SYSTEM = "apple-generic";
 			};
@@ -8913,7 +8909,6 @@
 				GCC_PREFIX_HEADER = Scholastic_Prefix.pch;
 				GCC_PREPROCESSOR_DEFINITIONS = "";
 				INFOPLIST_FILE = "Scholastic-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 4.0;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)\"",
@@ -8951,6 +8946,7 @@
 					"\"$(OBJROOT)/UninstalledProducts/include\"",
 					"\"$(SDKROOT)/usr/include/libxml2\"",
 				);
+				IPHONEOS_DEPLOYMENT_TARGET = 4.0;
 				LIBRARY_SEARCH_PATHS = "\"$(SRCROOT)/Shared/Libraries/DRM\"";
 				OTHER_CFLAGS = "-I/usr/include/libxml2";
 				OTHER_LDFLAGS = (
@@ -8959,7 +8955,7 @@
 				);
 				PREBINDING = NO;
 				SDKROOT = iphoneos;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 2;
 				USER_HEADER_SEARCH_PATHS = "$PROJECT_ROOT/Shared/**";
 				VERSIONING_SYSTEM = "apple-generic";
 			};
@@ -8982,6 +8978,7 @@
 					"\"$(DSTROOT)/usr/local/lib/include\"",
 					"\"$(OBJROOT)/UninstalledProducts/include\"",
 				);
+				IPHONEOS_DEPLOYMENT_TARGET = 4.0;
 				LIBRARY_SEARCH_PATHS = "\"$(SRCROOT)/Shared/Libraries/DRM\"";
 				OTHER_CFLAGS = (
 					"-I/usr/include/libxml2",
@@ -8993,7 +8990,7 @@
 				);
 				PREBINDING = NO;
 				SDKROOT = iphoneos;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 2;
 				USER_HEADER_SEARCH_PATHS = "$PROJECT_ROOT/Shared/**";
 				VERSIONING_SYSTEM = "apple-generic";
 			};
