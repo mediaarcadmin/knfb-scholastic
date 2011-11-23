@@ -3,6 +3,7 @@
 #if TARGET_OS_IPHONE
 #import <CFNetwork/CFNetwork.h>
 #endif
+#ifndef __clang_analyzer__
 LibreAccessServiceSvc_statuscodes LibreAccessServiceSvc_statuscodes_enumFromString(NSString *string)
 {
 	if([string isEqualToString:@"SUCCESS"]) {
@@ -51384,3 +51385,4 @@ static LibreAccessServiceSoap11Binding_envelope *LibreAccessServiceSoap11Binding
 	[super dealloc];
 }
 @end
+#endif
