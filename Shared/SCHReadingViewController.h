@@ -53,9 +53,6 @@ SCHReadingNoteViewDelegate, SCHReadingInteractionsListControllerDelegate, SCHAud
 SCHStoryInteractionControllerDelegate, SCHReadingViewNavigationToolbarDelegate, SCHHelpViewControllerDelegate,
 SCHBookStoryInteractionsDelegate> 
 {}
-UIImageView *optionsPhoneTopBackground;
-
-
 
 @property (nonatomic, assign) BOOL youngerMode;
 
