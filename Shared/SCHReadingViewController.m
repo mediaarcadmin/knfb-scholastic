@@ -1324,7 +1324,6 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     
     // only play sounds if the appearance is animated
     BOOL playAppearanceSound = animated;
-    BOOL playFillSound = animated;
     
     // override this if we've already played a sound for this page
     if (self.lastPageInteractionSoundPlayedOn == [self storyInteractionPageIndices].location) {
@@ -1344,7 +1343,6 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
         if (totalInteractionCount >= 1 && (self.audioBookPlayer && self.audioBookPlayer.playing)) {
             // Interactions while reading. Showing button without animation
             playAppearanceSound = NO;
-            playFillSound = NO;
             animated = NO;
         } // else Interactions while not reading. Showing button with animation
         
