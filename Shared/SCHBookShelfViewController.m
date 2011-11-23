@@ -241,17 +241,18 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 131;
 											   object:nil];
 
 	if (![[SCHSyncManager sharedSyncManager] havePerformedFirstSyncUpToBooks] && [[SCHSyncManager sharedSyncManager] isSynchronizing]) {
-        self.loadingView = [[LambdaAlert alloc]
+        LambdaAlert *alert = [[LambdaAlert alloc]
                             initWithTitle:NSLocalizedString(@"Syncing", @"")
                             message:@"\n\n\n"];
         __block SCHBookShelfViewController *weakSelf = self;
-        [self.loadingView addButtonWithTitle:NSLocalizedString(@"Back", @"") block:^{
+        [alert addButtonWithTitle:NSLocalizedString(@"Back", @"") block:^{
             [weakSelf dismissLoadingView];
             [weakSelf performSelector:@selector(back)];
         }];
-        [self.loadingView setSpinnerHidden:NO];
-        [self.loadingView show];
-        [self.loadingView release];
+        [alert setSpinnerHidden:NO];
+        [alert show];
+        self.loadingView = alert;
+        [alert release];
 	} else {
         [self dismissLoadingView];
 	}
