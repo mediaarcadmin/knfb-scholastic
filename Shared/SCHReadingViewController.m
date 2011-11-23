@@ -2884,7 +2884,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
         
         if (imageName) {
             NSLog(@"Loading image: %@", imageName);
-            self.sampleSICoverMarker = [[UIImageView alloc] initWithImage:[UIImage imageNamed:imageName]];
+            self.sampleSICoverMarker = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:imageName]] autorelease];
             
             // put it in the top right corner of the book
             CGRect bookCoverFrame = [self.readingView pageRect];
