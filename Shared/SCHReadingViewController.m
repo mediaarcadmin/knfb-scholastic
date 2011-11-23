@@ -1228,7 +1228,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
             self.popover = nil;
         } else {
 
-            UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:self.popoverOptionsViewController];
+            UINavigationController *navController = [[[UINavigationController alloc] initWithRootViewController:self.popoverOptionsViewController] autorelease];
             self.popoverOptionsViewController.navigationItem.titleView = self.popoverNavigationTitleLabel;
 
             self.popover = [[[UIPopoverController alloc] initWithContentViewController:navController] autorelease];
