@@ -264,6 +264,8 @@ NSString * const SCHBookshelfSyncComponentDidFailNotification = @"SCHBookshelfSy
                         }
                     } failureBlock:^(NSError *error){
                         self.isSynchronizing = NO;
+                        [[NSNotificationCenter defaultCenter] postNotificationName:SCHSyncComponentDidFailAuthenticationNotification
+                                                                            object:self];
                     }];					
 					ret = NO;			
 				} else {
@@ -282,6 +284,8 @@ NSString * const SCHBookshelfSyncComponentDidFailNotification = @"SCHBookshelfSy
                     }
                 } failureBlock:^(NSError *error){
                     self.isSynchronizing = NO;
+                    [[NSNotificationCenter defaultCenter] postNotificationName:SCHSyncComponentDidFailAuthenticationNotification
+                                                                        object:self];                    
                 }];				
 				ret = NO;			
 			} else {

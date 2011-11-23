@@ -474,6 +474,11 @@ extern NSString * const kSCHUserDefaultsSpaceSaverModeSetOffNotification;
                                              selector:@selector(didFailSync:)
                                                  name:SCHBookshelfSyncComponentDidFailNotification
                                                object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(didFailSync:)
+                                                 name:SCHSyncComponentDidFailAuthenticationNotification
+                                               object:nil];    
 }
 
 - (void)deregisterForSyncNotifications
@@ -489,6 +494,10 @@ extern NSString * const kSCHUserDefaultsSpaceSaverModeSetOffNotification;
     [[NSNotificationCenter defaultCenter] removeObserver:self
                                                  name:SCHBookshelfSyncComponentDidFailNotification
                                                object:nil];
+    
+    [[NSNotificationCenter defaultCenter] removeObserver:self
+                                                    name:SCHSyncComponentDidFailAuthenticationNotification
+                                                  object:nil];    
 }
 
 - (void)dictionaryStateChanged:(NSNotification *)note

@@ -103,6 +103,8 @@ NSString * const SCHContentSyncComponentDidFailNotification = @"SCHContentSyncCo
                     }
                 } failureBlock:^(NSError *error){
                     self.isSynchronizing = NO;
+                    [[NSNotificationCenter defaultCenter] postNotificationName:SCHSyncComponentDidFailAuthenticationNotification
+                                                                        object:self];                    
                 }];				
             }
         } else if([method compare:kSCHLibreAccessWebServiceListUserContent] == NSOrderedSame) {
@@ -165,6 +167,8 @@ NSString * const SCHContentSyncComponentDidFailNotification = @"SCHContentSyncCo
                 }
             } failureBlock:^(NSError *error){
                 self.isSynchronizing = NO;
+                [[NSNotificationCenter defaultCenter] postNotificationName:SCHSyncComponentDidFailAuthenticationNotification
+                                                                    object:self];                
             }];					
 			ret = NO;			
 		}		
@@ -179,6 +183,8 @@ NSString * const SCHContentSyncComponentDidFailNotification = @"SCHContentSyncCo
                 }
             } failureBlock:^(NSError *error){
                 self.isSynchronizing = NO;
+                [[NSNotificationCenter defaultCenter] postNotificationName:SCHSyncComponentDidFailAuthenticationNotification
+                                                                    object:self];                
             }];				
 			ret = NO;
 		}
