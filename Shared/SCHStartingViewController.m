@@ -368,6 +368,8 @@ typedef enum {
                                                                                 }];            
                 return(YES);
             } else {
+                [login setDisplayIncorrectCredentialsWarning:YES];
+                
                 return(NO);
             }
         };

@@ -359,15 +359,15 @@ static const CGFloat kContentHeightLandscape = 380;
 - (IBAction)actionButtonAction:(id)sender
 {
     NSAssert(self.actionBlock != nil || self.retainLoopSafeActionBlock != nil, @"Action block must be set!");
-
-    [self.view endEditing:YES];
     
     if (self.actionBlock) {
+        [self.view endEditing:YES];
         self.actionBlock();
     } else if (self.retainLoopSafeActionBlock) {
         BOOL good = self.retainLoopSafeActionBlock(self.topField ? [NSString stringWithString:self.topField.text] : nil,
                                                     self.bottomField ? [NSString stringWithString:self.bottomField.text] : nil);
         if (good) {
+            [self.view endEditing:YES];
             [self startShowingProgress];
         } else {
             [self clearFields];
