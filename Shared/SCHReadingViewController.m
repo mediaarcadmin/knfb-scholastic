@@ -121,7 +121,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 @property (nonatomic, assign) BOOL firstTimePlayForHelpController;
 
 - (void)updateNotesCounter;
-- (id)failureWithErrorCode:(NSInteger)code error:(NSError **)error;
+- (id)initFailureWithErrorCode:(NSInteger)code error:(NSError **)error;
 - (NSError *)errorWithCode:(NSInteger)code;
 - (void)releaseViewObjects;
 
@@ -359,7 +359,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
                                            code:code userInfo:eDict] autorelease];
 }
 
-- (id)failureWithErrorCode:(NSInteger)code error:(NSError **)error
+- (id)initFailureWithErrorCode:(NSInteger)code error:(NSError **)error
 {
     if (error != NULL) {
         *error = [self errorWithCode:code];
@@ -381,18 +381,18 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     if (self) {
         // Custom initialization
         if (!(aIdentifier && aProfile && moc)) {
-            return [self failureWithErrorCode:kSCHReadingViewMissingParametersError error:error];
+            return [self initFailureWithErrorCode:kSCHReadingViewMissingParametersError error:error];
         }
         
         xpsProvider = [[[SCHBookManager sharedBookManager] checkOutXPSProviderForBookIdentifier:aIdentifier inManagedObjectContext:moc] retain];
 
         if (!xpsProvider) {
-            return [self failureWithErrorCode:kSCHReadingViewXPSCheckoutFailedError error:error];
+            return [self initFailureWithErrorCode:kSCHReadingViewXPSCheckoutFailedError error:error];
         }
         
         if ([xpsProvider isEncrypted]) {
             if (![xpsProvider decryptionIsAvailable]) {
-                return [self failureWithErrorCode:kSCHReadingViewDecryptionUnavailableError error:error];
+                return [self initFailureWithErrorCode:kSCHReadingViewDecryptionUnavailableError error:error];
             }
         }
                 
@@ -459,7 +459,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
         self.firstTimePlayForHelpController = NO;
 
     } else {
-        return [self failureWithErrorCode:kSCHReadingViewUnspecifiedError error:error];
+        return [self initFailureWithErrorCode:kSCHReadingViewUnspecifiedError error:error];
     }
     
     return self;
