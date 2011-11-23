@@ -14,6 +14,6 @@
 {    
 }
 
-@property (nonatomic, retain) IBOutletCollection(SCHImageButton) NSArray *imageButtons;
+@property (nonatomic, retain) IBOutletCollection(UIImageView) NSArray *imageButtons;
 
 @end
