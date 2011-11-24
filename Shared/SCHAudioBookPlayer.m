@@ -295,8 +295,11 @@ static NSUInteger const kSCHAudioBookPlayerNoAudioLoaded = NSUIntegerMax;
 
 - (void)pause
 {
-    [self suspend];
-    [self.player pause];
+    if (self.player.playing == YES) {
+        [self suspend];
+        [self.player pause];
+    }
+    self.resumeInterruptedPlayer = NO;
 }
 
 - (BOOL)playing

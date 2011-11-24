@@ -1547,7 +1547,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 
 - (void)pauseAudioPlayback
 {
-    if (self.audioBookPlayer != nil && [self.audioBookPlayer playing]) {
+    if (self.audioBookPlayer) {
         [self.audioBookPlayer pause];
         [self.readingView dismissFollowAlongHighlighter];  
         [self setupStoryInteractionButtonForCurrentPagesAnimated:YES];
