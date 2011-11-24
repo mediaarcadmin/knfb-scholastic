@@ -60,8 +60,10 @@
         cell.textLabel.font = [cell.textLabel.font fontWithSize:16];
     }
     
-    if (self.books == nil || [self.books count] == 0) {
-        cell.textLabel.text = NSLocalizedString(@"Check again soon", @"");
+    if (self.books == nil) {
+        cell.textLabel.text = NSLocalizedString(@"Fetching the Top 10 Picks ...", @"");
+    } else if ([self.books count] == 0) {
+        cell.textLabel.text = NSLocalizedString(@"Top 10 Picks currently not available", @"");
     } else {
         cell.textLabel.text = [[books objectAtIndex:indexPath.row] valueForKey:@"Title"];
     }

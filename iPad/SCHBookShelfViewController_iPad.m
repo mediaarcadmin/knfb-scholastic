@@ -42,6 +42,7 @@ static NSTimeInterval const kSCHBookShelfViewControllerTopTenRefreshTime = -600.
 
 - (void)updateTheme;
 - (void)setupToolbar;
+- (void)updateTopTenWithBooks:(NSArray *)topBooks;
 
 @end
 
@@ -227,10 +228,7 @@ static NSTimeInterval const kSCHBookShelfViewControllerTopTenRefreshTime = -600.
     popoverTable.sortType = self.sortType;
     popoverTable.delegate = self;
     
-    popoverTable.title = @"Sort By";
-    UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:popoverTable];
-
-    self.popover = [[[UIPopoverController alloc] initWithContentViewController:navController] autorelease];
+    self.popover = [[[UIPopoverController alloc] initWithContentViewController:popoverTable] autorelease];
     self.popover.delegate = self;
     
     CGRect senderFrame = sender.superview.frame;
@@ -241,7 +239,6 @@ static NSTimeInterval const kSCHBookShelfViewControllerTopTenRefreshTime = -600.
     NSLog(@"Sender frame: %@", NSStringFromCGRect(senderFrame));
     
     [self.popover presentPopoverFromRect:senderFrame inView:self.view permittedArrowDirections:UIPopoverArrowDirectionUp animated:YES];
-    [navController release];
     [popoverTable release];
 
     NSLog(@"Sort!");
@@ -272,9 +269,7 @@ static NSTimeInterval const kSCHBookShelfViewControllerTopTenRefreshTime = -600.
     SCHBookShelfTopTenPopoverTableView *popoverTable = [[SCHBookShelfTopTenPopoverTableView alloc] initWithNibName:nil bundle:nil];
     popoverTable.books = self.topTenBooks;
 
-    UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:popoverTable];
-    
-    self.popover = [[[UIPopoverController alloc] initWithContentViewController:navController] autorelease];
+    self.popover = [[[UIPopoverController alloc] initWithContentViewController:popoverTable] autorelease];
     self.popover.delegate = self;
     
     CGRect senderFrame = sender.superview.frame;
@@ -285,7 +280,6 @@ static NSTimeInterval const kSCHBookShelfViewControllerTopTenRefreshTime = -600.
     NSLog(@"Sender frame: %@", NSStringFromCGRect(senderFrame));
     
     [self.popover presentPopoverFromRect:senderFrame inView:self.view permittedArrowDirections:UIPopoverArrowDirectionUp animated:YES];
-    [navController release];
     [popoverTable release];
     NSLog(@"Top ten!");
 }
@@ -345,6 +339,22 @@ static NSTimeInterval const kSCHBookShelfViewControllerTopTenRefreshTime = -600.
 
 #pragma mark - SCHComponent Delegate
 
+- (void)updateTopTenWithBooks:(NSArray *)topBooks
+{    
+    if (topBooks) {
+        self.topTenBooks = topBooks;
+    } else {
+        self.topTenBooks = [NSArray array];
+    }
+    
+    if (self.popover != nil) {
+        id bookShelfTopTenPopoverTableView = self.popover.contentViewController;
+        if ([bookShelfTopTenPopoverTableView isKindOfClass:[SCHBookShelfTopTenPopoverTableView class]] == YES) {
+            ((SCHBookShelfTopTenPopoverTableView *)bookShelfTopTenPopoverTableView).books = self.topTenBooks;
+        }
+    }
+}
+
 - (void)component:(SCHComponent *)component didCompleteWithResult:(NSDictionary *)result
 {
 	NSMutableArray *topBooks = [result objectForKey:kSCHLibreAccessWebServiceContentMetadataList];
@@ -353,22 +363,15 @@ static NSTimeInterval const kSCHBookShelfViewControllerTopTenRefreshTime = -600.
     
     if (topBooks != (id)[NSNull null] && [topBooks count] > 0) {
         self.lastTopTenBookRetrieval = [NSDate date];
-        
-        self.topTenBooks = topBooks;
-        
-        if (self.popover != nil) {
-            UINavigationController *navigationController = (UINavigationController *)self.popover.contentViewController;
-            id bookShelfTopTenPopoverTableView = navigationController.topViewController;
-            if ([bookShelfTopTenPopoverTableView isKindOfClass:[SCHBookShelfTopTenPopoverTableView class]] == YES) {
-                ((SCHBookShelfTopTenPopoverTableView *)bookShelfTopTenPopoverTableView).books = self.topTenBooks;
-            }
-        }
+        [self updateTopTenWithBooks:topBooks];
+    } else {
+        [self updateTopTenWithBooks:nil];
     }
 }
 
 - (void)component:(SCHComponent *)component didFailWithError:(NSError *)error
 {
-    
+    [self updateTopTenWithBooks:nil];
 }
 
 - (void)authenticationDidSucceed
