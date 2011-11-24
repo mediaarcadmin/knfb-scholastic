@@ -217,7 +217,7 @@
 								<int key="IBUIContentMode">7</int>
 								<bool key="IBUIUserInteractionEnabled">NO</bool>
 								<string key="targetRuntimeIdentifier">IBIPadFramework</string>
-								<string key="IBUIText">Take a tour of everything the Scholastic eReader has to offer now-without creating an account.</string>
+								<string key="IBUIText">Take a tour of everything the Scholastic eReader has to offer now—without creating an account.</string>
 								<reference key="IBUITextColor" ref="414531536"/>
 								<nil key="IBUIHighlightedColor"/>
 								<int key="IBUIBaselineAdjustment">1</int>
@@ -265,10 +265,23 @@
 						<int key="NSvFlags">277</int>
 						<object class="NSMutableArray" key="NSSubviews">
 							<bool key="EncodedWithXMLCoder">YES</bool>
+							<object class="IBUIView" id="431352074">
+								<reference key="NSNextResponder" ref="617002111"/>
+								<int key="NSvFlags">292</int>
+								<string key="NSFrame">{{0, 5}, {440, 1}}</string>
+								<reference key="NSSuperview" ref="617002111"/>
+								<reference key="NSWindow"/>
+								<reference key="NSNextKeyView" ref="513097889"/>
+								<object class="NSColor" key="IBUIBackgroundColor">
+									<int key="NSColorSpace">1</int>
+									<bytes key="NSRGB">MCAwIDAgMC4yAA</bytes>
+								</object>
+								<string key="targetRuntimeIdentifier">IBIPadFramework</string>
+							</object>
 							<object class="IBUILabel" id="513097889">
 								<reference key="NSNextResponder" ref="617002111"/>
 								<int key="NSvFlags">290</int>
-								<string key="NSFrameSize">{440, 26}</string>
+								<string key="NSFrame">{{0, 34}, {440, 26}}</string>
 								<reference key="NSSuperview" ref="617002111"/>
 								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="188485885"/>
@@ -290,7 +303,7 @@
 							<object class="IBUILabel" id="188485885">
 								<reference key="NSNextResponder" ref="617002111"/>
 								<int key="NSvFlags">290</int>
-								<string key="NSFrame">{{0, 26}, {440, 52}}</string>
+								<string key="NSFrame">{{0, 60}, {440, 52}}</string>
 								<reference key="NSSuperview" ref="617002111"/>
 								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView"/>
@@ -311,15 +324,15 @@
 								<reference key="IBUIFont" ref="12554104"/>
 							</object>
 						</object>
-						<string key="NSFrame">{{164, 20}, {440, 100}}</string>
+						<string key="NSFrame">{{164, 20}, {440, 130}}</string>
 						<reference key="NSSuperview" ref="771371832"/>
 						<reference key="NSWindow"/>
-						<reference key="NSNextKeyView" ref="513097889"/>
+						<reference key="NSNextKeyView" ref="431352074"/>
 						<reference key="IBUIBackgroundColor" ref="1007080006"/>
 						<string key="targetRuntimeIdentifier">IBIPadFramework</string>
 					</object>
 				</object>
-				<string key="NSFrameSize">{768, 120}</string>
+				<string key="NSFrameSize">{768, 150}</string>
 				<reference key="NSSuperview"/>
 				<reference key="NSWindow"/>
 				<reference key="NSNextKeyView" ref="617002111"/>
@@ -537,6 +550,7 @@
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<reference ref="188485885"/>
 							<reference ref="513097889"/>
+							<reference ref="431352074"/>
 						</object>
 						<reference key="parent" ref="771371832"/>
 					</object>
@@ -560,6 +574,11 @@
 						<reference key="object" ref="393533760"/>
 						<reference key="parent" ref="766721923"/>
 					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">29</int>
+						<reference key="object" ref="431352074"/>
+						<reference key="parent" ref="617002111"/>
+					</object>
 				</object>
 			</object>
 			<object class="NSMutableDictionary" key="flattenedProperties">
@@ -582,6 +601,7 @@
 					<string>25.IBPluginDependency</string>
 					<string>26.IBPluginDependency</string>
 					<string>27.IBPluginDependency</string>
+					<string>29.IBPluginDependency</string>
 					<string>4.IBPluginDependency</string>
 					<string>5.IBPluginDependency</string>
 					<string>6.IBPluginDependency</string>
@@ -611,6 +631,7 @@
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
+					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				</object>
 			</object>
 			<object class="NSMutableDictionary" key="unlocalizedProperties">
@@ -625,7 +646,7 @@
 				<reference key="dict.values" ref="0"/>
 			</object>
 			<nil key="sourceID"/>
-			<int key="maxID">28</int>
+			<int key="maxID">29</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<object class="NSMutableArray" key="referencedPartialClassDescriptions">

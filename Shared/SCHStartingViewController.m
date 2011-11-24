@@ -42,7 +42,7 @@ enum {
 enum {
     kTableOffsetPortrait_iPad = 240,
     kTableOffsetLandscape_iPad = 160,
-    kTableOffsetPortrait_iPhone = 44,
+    kTableOffsetPortrait_iPhone = 35,
     kTableOffsetLandscape_iPhone = 20
 };
 
@@ -270,7 +270,7 @@ typedef enum {
 
     switch (section) {
         case kTableSectionSamples:
-            [cell setTitle: NSLocalizedString(@"Sample Bookshelf", @"")];
+            [cell setTitle: NSLocalizedString(@"Start Reading", @"")];
             break;
         case kTableSectionSignIn:
             [cell setTitle:NSLocalizedString(@"Sign In", @"starter view sign in button title")];
