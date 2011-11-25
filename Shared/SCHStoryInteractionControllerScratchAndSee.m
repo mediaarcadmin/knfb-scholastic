@@ -38,6 +38,8 @@ enum ScratchState {
 
 - (void)setProgressViewForScratchCount: (NSInteger) scratchCount;
 - (void)askQuestion;
+- (void)promptToKeepScratching;
+- (void)promptWhatDoYouSee;
 
 @end
 
@@ -184,6 +186,16 @@ enum ScratchState {
                 [self askQuestion];
             }];
             break;
+        case kScratchStateSecondScratch:
+            [self cancelQueuedAudioExecutingSynchronizedBlocksBefore:^{
+                [self promptToKeepScratching];
+            }];
+           break; 
+        case kScratchStateKeepTrying:
+            [self cancelQueuedAudioExecutingSynchronizedBlocksBefore:^{
+                [self promptWhatDoYouSee];
+            }];
+            break; 
         default:
             [super playAudioButtonTapped:sender];
             break;
@@ -205,7 +217,7 @@ enum ScratchState {
                 [self setTitle:NSLocalizedString(@"Scratch away the question mark to see the picture.", @"")];
             } else {
                 [self setProgressViewForScratchCount:kFirstScratchPointTarget];
-                [self setTitle:NSLocalizedString(@"Keep Scratching!", @"")];
+                [self setTitle:NSLocalizedString(@"Keep scratching!", @"")];
             }
             self.scratchView.interactionEnabled = YES;
             self.progressView.alpha = 1;
@@ -291,6 +303,34 @@ enum ScratchState {
                   }
               }];
     }
+}
+
+- (void)promptToKeepScratching
+{
+    self.controllerState = SCHStoryInteractionControllerStateAskingOpeningQuestion;
+    
+    [self enqueueAudioWithPath:[(SCHStoryInteractionScratchAndSee *)self.storyInteraction keepScratchingAudioPath] 
+                    fromBundle:NO 
+                    startDelay:0 
+        synchronizedStartBlock:nil
+          synchronizedEndBlock:^{
+              self.controllerState = SCHStoryInteractionControllerStateInteractionInProgress;
+          }
+     ];
+}
+
+- (void)promptWhatDoYouSee
+{
+    self.controllerState = SCHStoryInteractionControllerStateAskingOpeningQuestion;
+    
+    [self enqueueAudioWithPath:[(SCHStoryInteractionScratchAndSee *)self.storyInteraction whatDoYouSeeAudioPath] 
+                    fromBundle:NO 
+                    startDelay:0 
+        synchronizedStartBlock:nil
+          synchronizedEndBlock:^{
+              self.controllerState = SCHStoryInteractionControllerStateInteractionInProgress;
+          }
+     ];
 }
 
 - (NSInteger)scratchPointTarget
