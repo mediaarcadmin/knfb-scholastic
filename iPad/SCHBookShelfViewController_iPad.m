@@ -88,9 +88,12 @@ static NSTimeInterval const kSCHBookShelfViewControllerTopTenRefreshTime = -600.
     [homeButton addTarget:self action:@selector(back) forControlEvents:UIControlEventTouchUpInside];    
     homeButton.accessibilityLabel = @"Back To Bookshelves Button";
     
+    CGRect topTenFrame = CGRectZero;
+    
     if ([[SCHAppStateManager sharedAppStateManager] canAuthenticate] == YES) {
+        topTenFrame = CGRectMake(0, 3, 120, 30);
         self.topTenPicksButton = [SCHThemeButton buttonWithType:UIButtonTypeCustom];
-        [self.topTenPicksButton setFrame:CGRectMake(0, 3, 120, 30)];
+        [self.topTenPicksButton setFrame:topTenFrame];
         [self.topTenPicksButton setTitle:NSLocalizedString(@"Top 10 Picks", @"") forState:UIControlStateNormal];
         [self.topTenPicksButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
         [self.topTenPicksButton setTitleColor:[UIColor colorWithWhite:1 alpha:0.5f] forState:UIControlStateHighlighted];
@@ -103,17 +106,20 @@ static NSTimeInterval const kSCHBookShelfViewControllerTopTenRefreshTime = -600.
         [self.topTenPicksButton addTarget:self action:@selector(topTenAction:) forControlEvents:UIControlEventTouchUpInside];    
     }
     
-    UIView *containerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.topTenPicksButton.frame) + kSCHBookShelfButtonPadding + CGRectGetWidth(themeButton.frame) + kSCHBookShelfEdgePadding, CGRectGetHeight(themeButton.frame))];
-    [containerView addSubview:self.topTenPicksButton];
+    UIView *rightContainerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth(topTenFrame) + kSCHBookShelfButtonPadding + CGRectGetWidth(themeButton.frame) + kSCHBookShelfEdgePadding, CGRectGetHeight(themeButton.frame))];
+        
+    //if (self.topTenPicksButton) {
+        [rightContainerView addSubview:self.topTenPicksButton];
+    //}
     
     CGRect themeFrame = themeButton.frame;
-    themeFrame.origin.x = kSCHBookShelfButtonPadding + CGRectGetWidth(self.topTenPicksButton.frame);
+    themeFrame.origin.x = kSCHBookShelfButtonPadding + CGRectGetWidth(topTenFrame);
     themeButton.frame = themeFrame;
     
-    [containerView addSubview:themeButton];
+    [rightContainerView addSubview:themeButton];
     
-    self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithCustomView:containerView] autorelease];
-    [containerView release];
+    self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithCustomView:rightContainerView] autorelease];
+    [rightContainerView release];
     
     self.sortButton = [SCHThemeButton buttonWithType:UIButtonTypeCustom];
     [self.sortButton setFrame:CGRectMake(0, 3, 120, 30)];
@@ -128,9 +134,9 @@ static NSTimeInterval const kSCHBookShelfViewControllerTopTenRefreshTime = -600.
     [self.sortButton setThemeButton:kSCHThemeManagerButtonImage leftCapWidth:7 topCapHeight:0];
     [self.sortButton addTarget:self action:@selector(sortAction:) forControlEvents:UIControlEventTouchUpInside];   
     
-    containerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth(homeButton.frame) + kSCHBookShelfButtonPadding + CGRectGetWidth(self.sortButton.frame) + kSCHBookShelfButtonPadding, CGRectGetHeight(homeButton.frame))];
+    UIView *leftContainerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth(homeButton.frame) + kSCHBookShelfButtonPadding + CGRectGetWidth(self.sortButton.frame) + kSCHBookShelfButtonPadding, CGRectGetHeight(homeButton.frame))];
     
-    [containerView addSubview:self.sortButton];
+    [leftContainerView addSubview:self.sortButton];
     
     CGRect sortFrame = self.sortButton.frame;
     sortFrame.origin.x = kSCHBookShelfEdgePadding + CGRectGetWidth(homeButton.frame) + kSCHBookShelfButtonPadding;
@@ -140,10 +146,10 @@ static NSTimeInterval const kSCHBookShelfViewControllerTopTenRefreshTime = -600.
     sortFrame.origin.x = kSCHBookShelfEdgePadding;
     homeButton.frame = sortFrame;
     
-    [containerView addSubview:homeButton];
+    [leftContainerView addSubview:homeButton];
     
-    self.navigationItem.leftBarButtonItem = [[[UIBarButtonItem alloc] initWithCustomView:containerView] autorelease];
-    [containerView release];
+    self.navigationItem.leftBarButtonItem = [[[UIBarButtonItem alloc] initWithCustomView:leftContainerView] autorelease];
+    [leftContainerView release];
     
 }
 
