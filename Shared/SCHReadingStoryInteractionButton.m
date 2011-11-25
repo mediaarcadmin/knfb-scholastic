@@ -9,10 +9,14 @@
 #import "SCHReadingStoryInteractionButton.h"
 #import "SCHAnimationDelegate.h"
 
+static const UIEdgeInsets kSCHReadingStoryInteractionButtonFillInsetYounger = { 16, 6, 16, 0 };
+static const UIEdgeInsets kSCHReadingStoryInteractionButtonFillInsetOlder =  { 8, 4, 12, 0 };
+
 @interface SCHReadingStoryInteractionButtonFillLayer : CALayer
 @property (nonatomic, assign) float fillLevel;
 @property (nonatomic, assign) CGImageRef fillImage;
 @property (nonatomic, assign) BOOL highlighted;
+@property (nonatomic, assign) UIEdgeInsets fillInset;
 @end
 
 @implementation SCHReadingStoryInteractionButtonFillLayer
@@ -20,6 +24,7 @@
 @synthesize fillLevel;
 @synthesize fillImage;
 @synthesize highlighted;
+@synthesize fillInset;
 
 + (BOOL)needsDisplayForKey:(NSString *)key
 {
@@ -28,6 +33,18 @@
     } else {
         return [super needsDisplayForKey:key];
     }
+}
+
+- (id)initWithLayer:(SCHReadingStoryInteractionButtonFillLayer *)layer
+{
+    if ((self = [super initWithLayer:layer])) {
+        // Don't make a copy of the CGImage - just reference the model's copy when drawing
+        self.fillLevel = layer.fillLevel;
+        self.highlighted = layer.highlighted;
+        self.fillInset = layer.fillInset;
+    }
+    
+    return self;
 }
 
 - (void)dealloc
@@ -58,16 +75,15 @@
     CGFloat height = CGRectGetHeight(bounds);
     CGContextTranslateCTM(ctx, 0, height);
     CGContextScaleCTM(ctx, 1, -1);
-
-    // allow for insets
-    CGRect rect = CGRectMake(0, 0.1*height, width, height*self.fillLevel*0.84);
+    
+    CGRect rect = CGRectMake(self.fillInset.left , self.fillInset.bottom, width - self.fillInset.left - self.fillInset.right, ceilf((height - self.fillInset.top - self.fillInset.bottom)*self.fillLevel));
 
     CGContextSaveGState(ctx);
     CGContextClipToRect(ctx, rect);
     CGContextDrawImage(ctx, bounds, [modelLayer fillImage]);
     CGContextRestoreGState(ctx);
     
-    if (modelLayer.highlighted) {
+    if (self.highlighted) {
         CGContextClipToMask(ctx, bounds, [modelLayer fillImage]);
         CGContextSetBlendMode(ctx, kCGBlendModeDarken);
         CGContextSetRGBFillColor(ctx, 0, 0, 0, 0.5);
@@ -104,6 +120,12 @@
     [self.fillLayer setFillImage:[fillImage CGImage]];
     self.fillLayer.bounds = (CGRect){CGPointZero, fillImage.size};
     self.fillLayer.position = CGPointMake(fillImage.size.width/2, fillImage.size.height/2);
+    
+    if (isYounger) {
+        self.fillLayer.fillInset = kSCHReadingStoryInteractionButtonFillInsetYounger;
+    } else {
+        self.fillLayer.fillInset = kSCHReadingStoryInteractionButtonFillInsetOlder;
+    }
 }
 
 - (void)setFillLevel:(float)level animated:(BOOL)animated
