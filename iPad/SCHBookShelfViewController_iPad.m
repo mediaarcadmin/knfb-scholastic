@@ -108,9 +108,9 @@ static NSTimeInterval const kSCHBookShelfViewControllerTopTenRefreshTime = -600.
     
     UIView *rightContainerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth(topTenFrame) + kSCHBookShelfButtonPadding + CGRectGetWidth(themeButton.frame) + kSCHBookShelfEdgePadding, CGRectGetHeight(themeButton.frame))];
         
-    //if (self.topTenPicksButton) {
+    if (self.topTenPicksButton) {
         [rightContainerView addSubview:self.topTenPicksButton];
-    //}
+    }
     
     CGRect themeFrame = themeButton.frame;
     themeFrame.origin.x = kSCHBookShelfButtonPadding + CGRectGetWidth(topTenFrame);
