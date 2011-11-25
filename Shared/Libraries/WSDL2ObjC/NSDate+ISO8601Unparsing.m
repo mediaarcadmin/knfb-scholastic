@@ -32,9 +32,14 @@ static BOOL is_leap_year(unsigned year) {
 #pragma mark Public methods
 
 - (NSString *)ISO8601DateStringWithTime:(BOOL)includeTime timeSeparator:(unichar)timeSep {
+  static NSLocale *locale = nil;
+  if (locale == nil) {
+    locale = [[NSLocale alloc] initWithLocaleIdentifier:NSISO8601Calendar];
+  }
   NSString *dateFormat = [(includeTime ? @"yyyy-MM-dd'T'HH:mm:ss" : @"yyyy-MM-dd") prepareDateFormatWithTimeSeparator:timeSep];
   NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
   [formatter setDateFormat: dateFormat];
+  [formatter setLocale:locale];
   [formatter setTimeZone:[NSTimeZone timeZoneWithName:@"UTC"]];
   
   NSString *str = [formatter stringForObjectValue:self];
