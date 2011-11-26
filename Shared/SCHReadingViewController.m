@@ -587,11 +587,17 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
         }
     }
     
-    // if the book has no audio, hide the audio buttons
+    // if the book has no audio, hide the audio button
     SCHAppBook *book = [[SCHBookManager sharedBookManager] bookWithIdentifier:self.bookIdentifier inManagedObjectContext:self.managedObjectContext];
-    BOOL audioButtonsHidden = ![[book HasAudio] boolValue];
+    BOOL audioButtonHidden = ![[book HasAudio] boolValue];
     
-    SCHReadingViewNavigationToolbar *aNavigationToolbar = [[SCHReadingViewNavigationToolbar alloc] initWithStyle:style audio:!audioButtonsHidden orientation:self.interfaceOrientation];
+    // if the help isn't yet downloaded, hide the help button
+    BOOL helpButtonHidden = ![[SCHDictionaryDownloadManager sharedDownloadManager] haveHelpVideosDownloaded];
+    
+    SCHReadingViewNavigationToolbar *aNavigationToolbar = [[SCHReadingViewNavigationToolbar alloc] initWithStyle:style 
+                                                                                                           audio:!audioButtonHidden 
+                                                                                                            help:!helpButtonHidden
+                                                                                                     orientation:self.interfaceOrientation];
     
     [aNavigationToolbar setTitle:book.Title];
     [aNavigationToolbar setDelegate:self];

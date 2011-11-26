@@ -31,6 +31,7 @@
 @property (nonatomic, retain, readonly) UIButton *helpItemButton;
 
 @property (nonatomic, assign, readonly) BOOL audioItemHidden;
+@property (nonatomic, assign, readonly) BOOL helpItemHidden;
 
 - (NSArray *)toolbarItemsForOrientation:(UIInterfaceOrientation)orientation;
 
@@ -75,6 +76,7 @@
 @synthesize helpItem;
 @synthesize helpItemButton;
 @synthesize audioItemHidden;
+@synthesize helpItemHidden;
 
 - (void)dealloc
 {
@@ -100,7 +102,10 @@
     [super dealloc];
 }
 
-- (id)initWithStyle:(SCHReadingViewNavigationToolbarStyle)aStyle audio:(BOOL)hasAudio orientation:(UIInterfaceOrientation)orientation
+- (id)initWithStyle:(SCHReadingViewNavigationToolbarStyle)aStyle 
+              audio:(BOOL)showAudio 
+               help:(BOOL)showHelp
+        orientation:(UIInterfaceOrientation)orientation
 {
     CGRect bounds = CGRectZero;
     bounds.size = [SCHReadingViewNavigationToolbar sizeForStyle:aStyle orientation:orientation];
@@ -124,7 +129,8 @@
         [toolbar setItems:[self toolbarItemsForOrientation:orientation]];
         [self addSubview:toolbar];
         
-        audioItemHidden = !hasAudio;
+        audioItemHidden = !showAudio;
+        helpItemHidden = !showHelp;
         
     }
     return self;
@@ -370,124 +376,122 @@
 
 - (NSArray *)toolbarItemsForOrientation:(UIInterfaceOrientation)orientation
 {
-    NSMutableArray *items = nil;
+    NSMutableArray *items = [NSMutableArray array];
     
     switch (self.style) {
         case kSCHReadingViewNavigationToolbarStyleYoungerPhone:
         {
-            if (self.audioItemHidden) {
-                items = [NSMutableArray arrayWithObjects:
-                         [self backItemForOrientation:orientation],
-                         [self flexibleItem],
-                         [self helpItemForOrientation:orientation],
-                         nil];
-            } else {
-                items = [NSMutableArray arrayWithObjects:
-                         [self backItemForOrientation:orientation],
-                         [self flexibleItem],
-                         [self audioItemForOrientation:orientation],
-                         [self flexibleItem],
-                         [self helpItemForOrientation:orientation],
-                         nil];
+            [items addObject:[self backItemForOrientation:orientation]];
+            [items addObject:[self flexibleItem]];
+
+            if (!self.audioItemHidden) {
+                [items addObject:[self audioItemForOrientation:orientation]];
             }
             
+            if (!self.audioItemHidden && !self.helpItemHidden) {
+                [items addObject:[self flexibleItem]];
+            }
+            
+            if (!self.helpItemHidden) {
+                [items addObject:[self helpItemForOrientation:orientation]];
+            }
+
             break;
         }
         case kSCHReadingViewNavigationToolbarStyleYoungerPictureStarterPhone:
         {
-            if (self.audioItemHidden) {
-                items = [NSMutableArray arrayWithObjects:
-                         [self backItemForOrientation:orientation],
-                         [self flexibleItem],
-                         [self pictureStarterItemForOrientation:orientation],
-                         [self flexibleItem],
-                         [self helpItemForOrientation:orientation],
-                         nil];
-            } else {
-                items = [NSMutableArray arrayWithObjects:
-                         [self backItemForOrientation:orientation],
-                         [self flexibleItem],
-                         [self pictureStarterItemForOrientation:orientation],
-                         [self flexibleItem],
-                         [self audioItemForOrientation:orientation],
-                         [self flexibleItem],
-                         [self helpItemForOrientation:orientation],
-                         nil];
+            [items addObject:[self backItemForOrientation:orientation]];
+            [items addObject:[self flexibleItem]];
+            [items addObject:[self pictureStarterItemForOrientation:orientation]];
+            
+            if (!self.audioItemHidden) {
+                [items addObject:[self flexibleItem]];
+                [items addObject:[self audioItemForOrientation:orientation]];
             }
+            
+            if (!self.helpItemHidden) {
+                [items addObject:[self flexibleItem]];
+                [items addObject:[self helpItemForOrientation:orientation]];
+            }
+            
             break;
         }
         case kSCHReadingViewNavigationToolbarStyleYoungerPad:
         {
-            if (self.audioItemHidden) {
-                items = [NSMutableArray arrayWithObjects:
-                         [self backItemForOrientation:orientation],
-                         [self fixedItemOfWidth:48],
-                         [self flexibleItem],
-                         [self titleItemForOrientation:orientation],
-                         [self flexibleItem],
-                         [self fixedItemOfWidth:70],
-                         [self helpItemForOrientation:orientation],
-                         nil];
-            } else {
-                items = [NSMutableArray arrayWithObjects:
-                         [self backItemForOrientation:orientation],
-                         [self fixedItemOfWidth:48],
-                         [self flexibleItem],
-                         [self titleItemForOrientation:orientation],
-                         [self flexibleItem],
-                         [self audioItemForOrientation:orientation],
-                         [self fixedItemOfWidth:9],
-                         [self helpItemForOrientation:orientation],
-                         nil];
+            [items addObject:[self backItemForOrientation:orientation]];
+            [items addObject:[self fixedItemOfWidth:48]];
+            [items addObject:[self flexibleItem]];
+            [items addObject:[self titleItemForOrientation:orientation]];
+            [items addObject:[self flexibleItem]];
+            
+            if (!self.audioItemHidden) {
+                [items addObject:[self audioItemForOrientation:orientation]];
             }
+            
+            if (!self.audioItemHidden && !self.helpItemHidden) {
+                [self fixedItemOfWidth:12];
+            } else if (!self.audioItemHidden && self.helpItemHidden) {
+                [self fixedItemOfWidth:48];
+            } else if (self.audioItemHidden && !self.helpItemHidden) {
+                [self fixedItemOfWidth:48];
+            } 
+            
+            if (!self.helpItemHidden) {
+                [items addObject:[self helpItemForOrientation:orientation]];
+            }
+
             break;
         }
         case kSCHReadingViewNavigationToolbarStyleYoungerPictureStarterPad:
         {
+            [items addObject:[self backItemForOrientation:orientation]];
+            
             if (self.audioItemHidden) {
-                items = [NSMutableArray arrayWithObjects:
-                         [self backItemForOrientation:orientation],
-                         [self fixedItemOfWidth:116],
-                         [self flexibleItem],
-                         [self titleItemForOrientation:orientation],
-                         [self flexibleItem],
-                         [self fixedItemOfWidth:61],
-                         [self pictureStarterItemForOrientation:orientation],
-                         [self fixedItemOfWidth:12],
-                         [self helpItemForOrientation:orientation],
-                         nil];
+                [items addObject:[self fixedItemOfWidth:116]];
             } else {
-                items = [NSMutableArray arrayWithObjects:
-                         [self backItemForOrientation:orientation],
-                         [self fixedItemOfWidth:124],
-                         [self flexibleItem],
-                         [self titleItemForOrientation:orientation],
-                         [self flexibleItem],
-                         [self audioItemForOrientation:orientation],
-                         [self fixedItemOfWidth:9],
-                         [self pictureStarterItemForOrientation:orientation],
-                         [self fixedItemOfWidth:12],
-                         [self helpItemForOrientation:orientation],
-                         nil];
+                [items addObject:[self fixedItemOfWidth:124]];
             }
             
+            [items addObject:[self flexibleItem]];
+            [items addObject:[self titleItemForOrientation:orientation]];
+            [items addObject:[self flexibleItem]];
+            
+            if (self.audioItemHidden) {
+                [items addObject:[self fixedItemOfWidth:61]];
+            } else {
+                [items addObject:[self audioItemForOrientation:orientation]];
+                [items addObject:[self fixedItemOfWidth:9]];
+            }
+            
+            [items addObject:[self pictureStarterItemForOrientation:orientation]];
+            
+            if (!self.helpItemHidden) {
+                [items addObject:[self fixedItemOfWidth:12]];
+                [items addObject:[self helpItemForOrientation:orientation]];
+            }
+             
             break;
         }
         case kSCHReadingViewNavigationToolbarStyleOlderPhone:
         case kSCHReadingViewNavigationToolbarStyleOlderPad:
         {
-            items = [NSMutableArray arrayWithObjects:
-                     [self backItemForOrientation:orientation],
-                     [self flexibleItem],
-                     [self titleItemForOrientation:orientation],
-                     [self flexibleItem],
-                     [self helpItemForOrientation:orientation],
-                     nil];
+            [items addObject:[self backItemForOrientation:orientation]];
+            [items addObject:[self flexibleItem]];
+            [items addObject:[self titleItemForOrientation:orientation]];
+            [items addObject:[self flexibleItem]];
+            
+            if (self.helpItemHidden) {
+                [items addObject:[self fixedItemOfWidth:48]];
+            } else {
+                [items addObject:[self helpItemForOrientation:orientation]];
+            }
+
             break;
         }
     }
     
     [self.audioItemButton setHidden:self.audioItemHidden];
+    [self.helpItemButton setHidden:self.helpItemHidden];
     
     return [NSArray arrayWithArray:items];
 }
