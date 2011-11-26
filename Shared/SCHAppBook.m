@@ -163,6 +163,34 @@ NSString * const kSCHAppBookFilenameSeparator = @"-";
     return (self.BookFileURL && ![self urlHasExpired:self.BookFileURL]);
 }
 
+- (BOOL)bookCoverURLIsBundleURL
+{
+    BOOL ret = NO;
+    
+    if (self.BookCoverURL) {
+        NSURL *url = [NSURL URLWithString:self.BookCoverURL];
+        if ([url scheme] == nil) {
+            ret = YES;
+        }
+    }
+    
+    return ret;
+}
+
+- (BOOL)bookFileURLIsBundleURL
+{
+    BOOL ret = NO;
+    
+    if (self.BookFileURL) {
+        NSURL *url = [NSURL URLWithString:self.BookFileURL];
+        if ([url scheme] == nil) {
+            ret = YES;
+        }
+    }
+    
+    return ret;
+}
+
 - (BOOL)contentMetadataCoverURLIsValid
 {
     return (self.ContentMetadataItem.CoverURL && ![self urlHasExpired:self.ContentMetadataItem.CoverURL]);

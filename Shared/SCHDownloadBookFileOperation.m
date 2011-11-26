@@ -26,7 +26,6 @@
 // the previous percentage reported - used to limit percentage notifications
 @property float previousPercentage;
 
-- (BOOL)stringBeginsWithHTTPScheme:(NSString *)string;
 - (NSString *)fullPathToBundledFile:(NSString *)fileName;
 - (void)completedDownload;
 - (NSData *)lastTwoBytes;
@@ -80,9 +79,11 @@
 	if (self.fileType == kSCHDownloadFileTypeXPSBook) {
 	
         __block NSString *bookFileURL = nil;
+        __block BOOL bookFileURLIsFileURL = NO;
         [self performWithBook:^(SCHAppBook *book) {
             self.localPath = [book xpsPath];
             bookFileURL = [[book BookFileURL] retain];
+            bookFileURLIsFileURL = [book bookFileURLIsBundleURL];
         }];
         
         if (self.localPath == nil || bookFileURL == nil || [bookFileURL compare:@""] == NSOrderedSame) {
@@ -94,7 +95,7 @@
             return;
         }
         
-        if ([self stringBeginsWithHTTPScheme:bookFileURL] == NO) {
+        if (bookFileURLIsFileURL) {
             [fileManager copyItemAtPath:[self fullPathToBundledFile:bookFileURL]
                                                     toPath:self.localPath 
                                                      error:&error];        
@@ -116,11 +117,13 @@
         __block NSString *bookDirectory = nil;
         __block NSString *contentIdentifier = nil;
         __block NSString *coverURL = nil;
+        __block BOOL coverURLIsFileURL = NO;
         [self performWithBook:^(SCHAppBook *book) {
             bookDirectory = [[book bookDirectory] retain];
             contentIdentifier = [[book ContentIdentifier] retain];
             self.localPath = [book coverImagePath];
             coverURL = [[book BookCoverURL] retain];
+            coverURLIsFileURL = [book bookCoverURLIsBundleURL];
         }];
 		
         if (self.localPath == nil || coverURL == nil || [coverURL compare:@""] == NSOrderedSame) {
@@ -132,7 +135,7 @@
             return;
         }
 
-        if ([self stringBeginsWithHTTPScheme:coverURL] == NO) {
+        if (coverURLIsFileURL) {
             [fileManager copyItemAtPath:[self fullPathToBundledFile:coverURL]
                                                     toPath:self.localPath 
                                                      error:&error];        
@@ -224,18 +227,6 @@
     
     [self.downloadOperation start];
     [self didChangeValueForKey:@"isExecuting"];
-}
-
-- (BOOL)stringBeginsWithHTTPScheme:(NSString *)string
-{
-    BOOL ret = NO;
-    
-    if (([string length] >= 7 && [[string substringToIndex:7] isEqualToString:@"http://"] == YES) ||
-        ([string length] >= 8 && [[string substringToIndex:8] isEqualToString:@"https://"] == YES)) {
-        ret = YES;
-    }
-    
-    return(ret);
 }
 
 - (NSString *)fullPathToBundledFile:(NSString *)fileName

@@ -127,6 +127,8 @@ typedef enum {
 
 - (BOOL)bookCoverURLIsValid;
 - (BOOL)bookFileURLIsValid;
+- (BOOL)bookCoverURLIsBundleURL;
+- (BOOL)bookFileURLIsBundleURL;
 - (BOOL)contentMetadataCoverURLIsValid;
 - (BOOL)contentMetadataFileURLIsValid;
 
