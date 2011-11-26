@@ -153,6 +153,7 @@ static NSString* const prModelCertFilename = @"iphonecert.dat";
 - (NSArray *)clearableUserDefaults
 {
     return [NSArray arrayWithObjects:kSCHUserDefaultsPerformedFirstSyncUpToBooks,
+            kSCHUserDefaultsSpaceSaverMode,
             kSCHAuthenticationManagerUserKey,
             kSCHAuthenticationManagerDeviceKey,
             kSCHAuthenticationManagerUsername,
