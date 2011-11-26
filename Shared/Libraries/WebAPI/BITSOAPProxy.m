@@ -16,7 +16,7 @@
 
 - (void)reportFault:(SOAPFault *)fault forMethod:(NSString *)method requestInfo:(NSDictionary *)requestInfo
 {
-	if (fault != nil && [(id)self.delegate respondsToSelector:@selector(method:didFailWithError:)] == YES) {
+	if (fault != nil && [(id)self.delegate respondsToSelector:@selector(method:didFailWithError:requestInfo:result:)] == YES) {
 		NSDictionary *userInfo = nil;
 
 		if (fault.simpleFaultString != nil) {

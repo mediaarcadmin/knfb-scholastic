@@ -49,6 +49,7 @@ NSTimeInterval const kSCHAuthenticationManagerSecondsInAMinute = 60.0;
 @property (nonatomic, copy) SCHDrmRegistrationFailureBlock registrationFailureBlock;
 @property (nonatomic, copy) SCHDrmDeregistrationSuccessBlock deregistrationSuccessBlock;
 @property (nonatomic, copy) SCHDrmDeregistrationFailureBlock deregistrationFailureBlock;
+@property (nonatomic, retain) NSTimer *renewTimer;
 
 @end
 
@@ -73,6 +74,7 @@ NSTimeInterval const kSCHAuthenticationManagerSecondsInAMinute = 60.0;
 @synthesize registrationFailureBlock;
 @synthesize deregistrationSuccessBlock;
 @synthesize deregistrationFailureBlock;
+@synthesize renewTimer;
 @synthesize authenticating;
 
 #pragma mark - Singleton instance methods
@@ -107,12 +109,20 @@ NSTimeInterval const kSCHAuthenticationManagerSecondsInAMinute = 60.0;
 		
 		libreAccessWebService = [[SCHLibreAccessWebService alloc] init];	
 		libreAccessWebService.delegate = self;
+        
+        [[NSNotificationCenter defaultCenter] addObserver:self 
+                                                 selector:@selector(applicationDidEnterBackground:) 
+                                                     name:UIApplicationDidEnterBackgroundNotification
+                                                   object:nil];
+
 	}
 	return(self);
 }
 
 - (void)dealloc 
 {
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationDidEnterBackgroundNotification object:nil];
+    
     [aToken release], aToken = nil;
     [tokenExpires release], tokenExpires = nil;
     [accountValidation release], accountValidation = nil;
@@ -124,6 +134,8 @@ NSTimeInterval const kSCHAuthenticationManagerSecondsInAMinute = 60.0;
     [registrationFailureBlock release], registrationFailureBlock = nil;
     [deregistrationSuccessBlock release], deregistrationSuccessBlock = nil;
     [deregistrationFailureBlock release], deregistrationFailureBlock = nil;
+    [renewTimer invalidate];
+    [renewTimer release], renewTimer = nil;
     
     [super dealloc];
 }
@@ -385,6 +397,14 @@ NSTimeInterval const kSCHAuthenticationManagerSecondsInAMinute = 60.0;
                         waitUntilDone:YES];
     
     return(ret);
+}
+
+#pragma mark - Notification methods
+
+- (void)applicationDidEnterBackground:(NSNotification *)notification
+{
+    [self.renewTimer invalidate];
+    self.renewTimer = nil;
 }
 
 #pragma mark - Private methods
@@ -657,8 +677,15 @@ NSTimeInterval const kSCHAuthenticationManagerSecondsInAMinute = 60.0;
                 self.aToken = returnedToken;
                 [self setLastKnownAuthToken:returnedToken];
                 
-                expiresIn = MAX(0, expiresIn - 1);
-                self.tokenExpires = [NSDate dateWithTimeIntervalSinceNow:expiresIn * kSCHAuthenticationManagerSecondsInAMinute];
+                expiresIn = MAX(0, expiresIn);
+                self.tokenExpires = [NSDate dateWithTimeIntervalSinceNow:(expiresIn * kSCHAuthenticationManagerSecondsInAMinute) - 30];
+                if (expiresIn > 0) {
+                    self.renewTimer = [NSTimer scheduledTimerWithTimeInterval:(expiresIn * kSCHAuthenticationManagerSecondsInAMinute) - 45
+                                                                       target:self 
+                                                                     selector:@selector(aTokenTimedOut:) 
+                                                                     userInfo:nil 
+                                                                      repeats:NO];
+                }
                 [self authenticationDidSucceedWithOfflineMode:NO];
             } else {
                 [self authenticationDidSucceedWithOfflineMode:YES];
@@ -666,6 +693,12 @@ NSTimeInterval const kSCHAuthenticationManagerSecondsInAMinute = 60.0;
         }
         
     }
+}
+
+- (void)aTokenTimedOut:(NSTimer *)timer
+{
+    [self authenticateWithSuccessBlock:nil failureBlock:nil];
+    self.renewTimer = nil;
 }
 
 - (void)method:(NSString *)method didFailWithError:(NSError *)error 
