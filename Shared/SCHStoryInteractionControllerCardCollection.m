@@ -124,10 +124,12 @@ enum {
                          for (UIButton *button in self.cardButtons) {
                              if ((button.tag == kPreviousCardButtonTag && isFirstCard)
                                  || (button.tag == kNextCardButtonTag && isLastCard)) {
-                                 continue;
+                                 button.userInteractionEnabled = NO;
+                                 button.alpha = 0;
+                             } else {
+                                 button.userInteractionEnabled = YES;
+                                 button.alpha = 1;
                              }
-                             button.userInteractionEnabled = YES;
-                             button.alpha = 1;
                          }
                      }
                      completion:nil];
