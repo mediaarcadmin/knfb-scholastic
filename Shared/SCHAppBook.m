@@ -575,6 +575,7 @@ NSString * const kSCHAppBookFilenameSeparator = @"-";
 	if ([self.State intValue] == SCHBookProcessingStateReadyToRead) {
 		ret = YES;
 	} else if(error != NULL) {
+        ret = NO;
         switch ([self.State intValue]) {
             case SCHBookProcessingStateUnableToAcquireLicense:
                 *error = [self errorWithCode:kSCHAppBookUnableToAcquireLicenseError];
