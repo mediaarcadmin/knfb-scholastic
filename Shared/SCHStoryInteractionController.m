@@ -371,7 +371,7 @@ static Class controllerClassForStoryInteraction(SCHStoryInteraction *storyIntera
               }];
         
         self.controllerState = SCHStoryInteractionControllerStateAskingOpeningQuestion;
-    } else {
+    } else if (self.controllerState != SCHStoryInteractionControllerStateInteractionFinishedSuccessfully) {
         self.controllerState = SCHStoryInteractionControllerStateInteractionInProgress;
     }
     
