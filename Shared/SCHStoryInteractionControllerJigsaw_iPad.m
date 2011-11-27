@@ -23,7 +23,7 @@ enum {
         case 0:
             return CGSizeMake(UIInterfaceOrientationIsLandscape(orientation) ? 798 : 690, 342);
         default:
-            return UIInterfaceOrientationIsLandscape(orientation) ? CGSizeMake(900, 680) : CGSizeMake(690, 900);
+            return UIInterfaceOrientationIsLandscape(orientation) ? CGSizeMake(900, 660) : CGSizeMake(690, 900);
     }
 }
 
