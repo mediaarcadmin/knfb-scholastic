@@ -269,6 +269,8 @@ enum {
                              completed.frame = [self puzzlePreviewFrame];
                          }];
         
+        self.controllerState = SCHStoryInteractionControllerStateInteractionFinishedSuccessfully;
+        
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 1.5*NSEC_PER_SEC), dispatch_get_main_queue(), ^{
             [self presentNextViewAnimated:NO];
         });
@@ -280,6 +282,7 @@ enum {
 - (void)playAgain:(id)sender
 {
     self.jigsawPaths = nil;
+    self.controllerState = SCHStoryInteractionControllerStateInteractionInProgress;
     [self presentNextView];
 }
 
