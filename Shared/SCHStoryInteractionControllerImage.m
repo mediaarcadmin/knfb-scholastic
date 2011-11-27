@@ -59,7 +59,8 @@
         self.scrollView.hidden = YES;
     } 
     
-    self.controllerState = SCHStoryInteractionControllerStateInteractionInProgress;
+    // Always mark the SI as complete as soon as it is opened once
+    self.controllerState = SCHStoryInteractionControllerStateInteractionFinishedSuccessfully;
 }
 
 - (SCHFrameStyle)frameStyle

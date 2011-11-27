@@ -138,6 +138,8 @@ static CGFloat const kSCHStoryInteractionControllerVideoBorderWidth = 4.0;
                 }
                 break;
             case MPMoviePlaybackStatePlaying:
+                // Always mark as complete if the user plays the video
+                self.controllerState = SCHStoryInteractionControllerStateInteractionFinishedSuccessfully;
                 self.playButton.play = YES;
                 break;            
             case MPMoviePlaybackStateInterrupted:
