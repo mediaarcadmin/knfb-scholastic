@@ -147,6 +147,7 @@
 - (void)playIncorrectAnswerSequence
 {
     self.controllerState = SCHStoryInteractionControllerStateInteractionReadingAnswerWithoutPause;
+    [self enqueueAudioWithPath:[self.storyInteraction storyInteractionWrongAnswerSoundFilename] fromBundle:YES];
     [self enqueueAudioWithPath:[self.storyInteraction audioPathForTryAgain]
                     fromBundle:NO
                     startDelay:0
