@@ -391,8 +391,9 @@ enum {
                   synchronizedEndBlock:^{
                       [self removeFromHostView];
                   }];
+        } else {
+            self.controllerState = SCHStoryInteractionControllerStateInteractionInProgress;
         }
-        self.controllerState = SCHStoryInteractionControllerStateInteractionInProgress;
     } else {
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0.5*NSEC_PER_SEC), dispatch_get_main_queue(), ^{
             // flip the tiles back
