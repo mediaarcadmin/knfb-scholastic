@@ -450,6 +450,10 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
                                                      name:SCHProfileSyncComponentWillDeleteNotification
                                                    object:nil];
         
+        [[NSNotificationCenter defaultCenter] addObserver:self 
+                                                 selector:@selector(dictionaryStateChange:) 
+                                                     name:kSCHDictionaryStateChange 
+                                                   object:nil];
         
         self.lastPageInteractionSoundPlayedOn = -1;
         
@@ -898,6 +902,16 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
             [self updateNotesCounter];
             [self.readingView refreshHighlightsForPageAtIndex:self.currentPageIndex];
         });
+    }
+}
+
+- (void)dictionaryStateChange:(NSNotification *)notification
+{
+    SCHDictionaryProcessingState state = [[SCHDictionaryDownloadManager sharedDownloadManager] dictionaryProcessingState];
+    
+    if ((state == SCHDictionaryProcessingStateReady) &&
+        (self.readingView.selectionMode == SCHReadingViewSelectionModeYoungerNoDictionary)) {
+        [self setDictionarySelectionMode];
     }
 }
 
@@ -1964,7 +1978,11 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 - (void)setDictionarySelectionMode
 {
     if (self.youngerMode) {
-        [self.readingView setSelectionMode:SCHReadingViewSelectionModeYoungerDictionary];
+        if ([[SCHDictionaryDownloadManager sharedDownloadManager] dictionaryProcessingState] != SCHDictionaryProcessingStateReady) {
+            [self.readingView setSelectionMode:SCHReadingViewSelectionModeYoungerNoDictionary];
+        } else {
+            [self.readingView setSelectionMode:SCHReadingViewSelectionModeYoungerDictionary];
+        }
     } else {
         [self.readingView setSelectionMode:SCHReadingViewSelectionModeOlderDictionary];
     }

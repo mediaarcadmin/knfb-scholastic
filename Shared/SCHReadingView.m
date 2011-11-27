@@ -51,6 +51,7 @@
 @synthesize singleWordSelectorRange;
 @synthesize createHighlightFromSelection;
 @synthesize fontSizeIndex;
+@synthesize allowsSelection;
 
 - (void) dealloc
 {
@@ -247,8 +248,12 @@ managedObjectContext:(NSManagedObjectContext *)managedObjectContext
 {
     EucSelector *mySelector = self.selector;
     switch (self.selectionMode) {
+        case SCHReadingViewSelectionModeYoungerNoDictionary:
+            self.allowsSelection = NO;
+            break;
         case SCHReadingViewSelectionModeYoungerDictionary:
         case SCHReadingViewSelectionModeOlderDictionary:
+            self.allowsSelection = YES;
             mySelector.shouldTrackSingleTaps = YES;
             mySelector.tracksClosestElementsInsteadOfHoveredElements = NO;
             mySelector.allowsInitialDragSelection = NO;
@@ -257,6 +262,7 @@ managedObjectContext:(NSManagedObjectContext *)managedObjectContext
             mySelector.selectionDelay = 0.2f;
             break;
         case SCHReadingViewSelectionModeHighlights:
+            self.allowsSelection = YES;
             mySelector.shouldTrackSingleTaps = NO;
             mySelector.tracksClosestElementsInsteadOfHoveredElements = YES;
             mySelector.allowsInitialDragSelection = YES;
@@ -265,6 +271,8 @@ managedObjectContext:(NSManagedObjectContext *)managedObjectContext
             mySelector.selectionDelay = 0.0f;
             break;
     }
+    
+    mySelector.selectionDisabled = !self.allowsSelection;
 }
 
 - (void)setSelectionMode:(SCHReadingViewSelectionMode)newSelectionMode

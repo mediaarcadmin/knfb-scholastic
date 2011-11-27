@@ -636,7 +636,7 @@ fastThumbnailUIImageForPageAtIndex:(NSUInteger)index
 - (void)pageTurningViewDidEndPageTurn:(EucPageTurningView *)aPageTurningView
 {
     [self updateCurrentPageIndex];
-    self.selector.selectionDisabled = NO;
+    self.selector.selectionDisabled = !self.allowsSelection;
     
     if (self.jumpToPageCompletionHandler != nil) {
         dispatch_block_t handler = Block_copy(self.jumpToPageCompletionHandler);
@@ -685,7 +685,7 @@ fastThumbnailUIImageForPageAtIndex:(NSUInteger)index
     // See comment in pageTurningViewWillBeginZooming: about disabling selection
     // during zoom.
     // [self.selector setShouldHideMenu:NO];
-    [self.selector setSelectionDisabled:NO];
+    [self.selector setSelectionDisabled:!self.allowsSelection];
     
     if (self.zoomCompletionHandler != nil) {
         dispatch_block_t handler = Block_copy(self.zoomCompletionHandler);

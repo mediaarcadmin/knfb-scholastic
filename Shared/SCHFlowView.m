@@ -115,7 +115,7 @@ managedObjectContext:(NSManagedObjectContext *)managedObjectContext
 
 - (void)attachSelector
 {
-    self.eucBookView.allowsSelection = YES;
+    self.eucBookView.allowsSelection = self.allowsSelection;
     self.eucBookView.selectorDelegate = self;
     
     [super attachSelector];

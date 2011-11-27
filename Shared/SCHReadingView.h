@@ -20,7 +20,8 @@
 
 typedef enum 
 {
-	SCHReadingViewSelectionModeYoungerDictionary = 0,
+    SCHReadingViewSelectionModeYoungerNoDictionary = 0,
+	SCHReadingViewSelectionModeYoungerDictionary,
 	SCHReadingViewSelectionModeOlderDictionary,
     SCHReadingViewSelectionModeHighlights
 } SCHReadingViewSelectionMode;
@@ -63,6 +64,7 @@ typedef enum
 @property (nonatomic, assign) SCHReadingViewSelectionMode selectionMode;
 @property (nonatomic, retain, readonly) EucSelector *selector;
 @property (nonatomic, assign) NSUInteger fontSizeIndex;
+@property (nonatomic, assign) BOOL allowsSelection;
 
 - (id)initWithFrame:(CGRect)frame 
      bookIdentifier:(SCHBookIdentifier *)bookIdentifier 
