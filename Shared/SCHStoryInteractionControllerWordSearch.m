@@ -246,7 +246,16 @@
             
             
             if ([self.remainingWords count] == 0) {
-                [label setStrikedOut:YES];
+                [self enqueueAudioWithPath:[wordSearch storyInteractionCorrectAnswerSoundFilename] fromBundle:YES];
+                [self enqueueAudioWithPath:[wordSearch audioPathForYouFound] fromBundle:NO];
+                [self enqueueAudioWithPath:[wordSearch audioPathForWordAtIndex:index]
+                                fromBundle:NO
+                                startDelay:0
+                    synchronizedStartBlock:^{
+                        [label setStrikedOut:YES];
+                    }
+                      synchronizedEndBlock:nil];
+
                 [self enqueueAudioWithPath:@"sfx_win_y.mp3" fromBundle:YES];
                 [self enqueueAudioWithPath:[self audioPathForYouFoundThemAll]
                                 fromBundle:NO
