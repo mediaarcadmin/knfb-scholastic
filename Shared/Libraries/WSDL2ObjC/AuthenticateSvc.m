@@ -128,7 +128,7 @@
  */
 - (id) initWithCoder:(NSCoder *)decoder {
 	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [super performSelector:@selector(initWithCoder:) withObject:decoder];
+		self = [(id)super initWithCoder:decoder];
 	} else {
 		self = [super init];
 	}
@@ -290,7 +290,7 @@
  */
 - (id) initWithCoder:(NSCoder *)decoder {
 	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [super performSelector:@selector(initWithCoder:) withObject:decoder];
+		self = [(id)super initWithCoder:decoder];
 	} else {
 		self = [super init];
 	}

@@ -3,7 +3,6 @@
 #if TARGET_OS_IPHONE
 #import <CFNetwork/CFNetwork.h>
 #endif
-#ifndef __clang_analyzer__
 LibreAccessServiceSvc_statuscodes LibreAccessServiceSvc_statuscodes_enumFromString(NSString *string)
 {
 	if([string isEqualToString:@"SUCCESS"]) {
@@ -202,7 +201,7 @@ NSString * LibreAccessServiceSvc_statuscodes_stringFromEnum(LibreAccessServiceSv
  */
 - (id) initWithCoder:(NSCoder *)decoder {
 	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [super performSelector:@selector(initWithCoder:) withObject:decoder];
+		self = [(id)super initWithCoder:decoder];
 	} else {
 		self = [super init];
 	}
@@ -403,7 +402,7 @@ NSString * LibreAccessServiceSvc_statuscodes_stringFromEnum(LibreAccessServiceSv
  */
 - (id) initWithCoder:(NSCoder *)decoder {
 	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [super performSelector:@selector(initWithCoder:) withObject:decoder];
+		self = [(id)super initWithCoder:decoder];
 	} else {
 		self = [super init];
 	}
@@ -952,7 +951,7 @@ NSString * LibreAccessServiceSvc_drmqualifiers_stringFromEnum(LibreAccessService
  */
 - (id) initWithCoder:(NSCoder *)decoder {
 	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [super performSelector:@selector(initWithCoder:) withObject:decoder];
+		self = [(id)super initWithCoder:decoder];
 	} else {
 		self = [super init];
 	}
@@ -1120,7 +1119,7 @@ NSString * LibreAccessServiceSvc_drmqualifiers_stringFromEnum(LibreAccessService
  */
 - (id) initWithCoder:(NSCoder *)decoder {
 	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [super performSelector:@selector(initWithCoder:) withObject:decoder];
+		self = [(id)super initWithCoder:decoder];
 	} else {
 		self = [super init];
 	}
@@ -1321,7 +1320,7 @@ NSString * LibreAccessServiceSvc_drmqualifiers_stringFromEnum(LibreAccessService
  */
 - (id) initWithCoder:(NSCoder *)decoder {
 	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [super performSelector:@selector(initWithCoder:) withObject:decoder];
+		self = [(id)super initWithCoder:decoder];
 	} else {
 		self = [super init];
 	}
@@ -1489,7 +1488,7 @@ NSString * LibreAccessServiceSvc_drmqualifiers_stringFromEnum(LibreAccessService
  */
 - (id) initWithCoder:(NSCoder *)decoder {
 	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [super performSelector:@selector(initWithCoder:) withObject:decoder];
+		self = [(id)super initWithCoder:decoder];
 	} else {
 		self = [super init];
 	}
@@ -1905,7 +1904,7 @@ NSString * LibreAccessServiceSvc_drmqualifiers_stringFromEnum(LibreAccessService
  */
 - (id) initWithCoder:(NSCoder *)decoder {
 	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [super performSelector:@selector(initWithCoder:) withObject:decoder];
+		self = [(id)super initWithCoder:decoder];
 	} else {
 		self = [super init];
 	}
@@ -2150,7 +2149,7 @@ NSString * LibreAccessServiceSvc_TopFavoritesTypes_stringFromEnum(LibreAccessSer
  */
 - (id) initWithCoder:(NSCoder *)decoder {
 	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [super performSelector:@selector(initWithCoder:) withObject:decoder];
+		self = [(id)super initWithCoder:decoder];
 	} else {
 		self = [super init];
 	}
@@ -2728,7 +2727,7 @@ NSString * LibreAccessServiceSvc_TopFavoritesTypes_stringFromEnum(LibreAccessSer
  */
 - (id) initWithCoder:(NSCoder *)decoder {
 	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [super performSelector:@selector(initWithCoder:) withObject:decoder];
+		self = [(id)super initWithCoder:decoder];
 	} else {
 		self = [super init];
 	}
@@ -2969,7 +2968,7 @@ NSString * LibreAccessServiceSvc_SaveActions_stringFromEnum(LibreAccessServiceSv
  */
 - (id) initWithCoder:(NSCoder *)decoder {
 	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [super performSelector:@selector(initWithCoder:) withObject:decoder];
+		self = [(id)super initWithCoder:decoder];
 	} else {
 		self = [super init];
 	}
@@ -3137,7 +3136,7 @@ NSString * LibreAccessServiceSvc_SaveActions_stringFromEnum(LibreAccessServiceSv
  */
 - (id) initWithCoder:(NSCoder *)decoder {
 	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [super performSelector:@selector(initWithCoder:) withObject:decoder];
+		self = [(id)super initWithCoder:decoder];
 	} else {
 		self = [super init];
 	}
@@ -3397,7 +3396,7 @@ NSString * LibreAccessServiceSvc_SaveActions_stringFromEnum(LibreAccessServiceSv
  */
 - (id) initWithCoder:(NSCoder *)decoder {
 	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [super performSelector:@selector(initWithCoder:) withObject:decoder];
+		self = [(id)super initWithCoder:decoder];
 	} else {
 		self = [super init];
 	}
@@ -3565,7 +3564,7 @@ NSString * LibreAccessServiceSvc_SaveActions_stringFromEnum(LibreAccessServiceSv
  */
 - (id) initWithCoder:(NSCoder *)decoder {
 	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [super performSelector:@selector(initWithCoder:) withObject:decoder];
+		self = [(id)super initWithCoder:decoder];
 	} else {
 		self = [super init];
 	}
@@ -3776,7 +3775,7 @@ NSString * LibreAccessServiceSvc_SaveActions_stringFromEnum(LibreAccessServiceSv
  */
 - (id) initWithCoder:(NSCoder *)decoder {
 	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [super performSelector:@selector(initWithCoder:) withObject:decoder];
+		self = [(id)super initWithCoder:decoder];
 	} else {
 		self = [super init];
 	}
@@ -3944,7 +3943,7 @@ NSString * LibreAccessServiceSvc_SaveActions_stringFromEnum(LibreAccessServiceSv
  */
 - (id) initWithCoder:(NSCoder *)decoder {
 	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [super performSelector:@selector(initWithCoder:) withObject:decoder];
+		self = [(id)super initWithCoder:decoder];
 	} else {
 		self = [super init];
 	}
@@ -4116,7 +4115,7 @@ NSString * LibreAccessServiceSvc_SaveActions_stringFromEnum(LibreAccessServiceSv
  */
 - (id) initWithCoder:(NSCoder *)decoder {
 	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [super performSelector:@selector(initWithCoder:) withObject:decoder];
+		self = [(id)super initWithCoder:decoder];
 	} else {
 		self = [super init];
 	}
@@ -4284,7 +4283,7 @@ NSString * LibreAccessServiceSvc_SaveActions_stringFromEnum(LibreAccessServiceSv
  */
 - (id) initWithCoder:(NSCoder *)decoder {
 	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [super performSelector:@selector(initWithCoder:) withObject:decoder];
+		self = [(id)super initWithCoder:decoder];
 	} else {
 		self = [super init];
 	}
@@ -4495,7 +4494,7 @@ NSString * LibreAccessServiceSvc_SaveActions_stringFromEnum(LibreAccessServiceSv
  */
 - (id) initWithCoder:(NSCoder *)decoder {
 	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [super performSelector:@selector(initWithCoder:) withObject:decoder];
+		self = [(id)super initWithCoder:decoder];
 	} else {
 		self = [super init];
 	}
@@ -4663,7 +4662,7 @@ NSString * LibreAccessServiceSvc_SaveActions_stringFromEnum(LibreAccessServiceSv
  */
 - (id) initWithCoder:(NSCoder *)decoder {
 	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [super performSelector:@selector(initWithCoder:) withObject:decoder];
+		self = [(id)super initWithCoder:decoder];
 	} else {
 		self = [super init];
 	}
@@ -5245,7 +5244,7 @@ NSString * LibreAccessServiceSvc_SaveActions_stringFromEnum(LibreAccessServiceSv
  */
 - (id) initWithCoder:(NSCoder *)decoder {
 	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [super performSelector:@selector(initWithCoder:) withObject:decoder];
+		self = [(id)super initWithCoder:decoder];
 	} else {
 		self = [super init];
 	}
@@ -5413,7 +5412,7 @@ NSString * LibreAccessServiceSvc_SaveActions_stringFromEnum(LibreAccessServiceSv
  */
 - (id) initWithCoder:(NSCoder *)decoder {
 	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [super performSelector:@selector(initWithCoder:) withObject:decoder];
+		self = [(id)super initWithCoder:decoder];
 	} else {
 		self = [super init];
 	}
@@ -6063,7 +6062,7 @@ NSString * LibreAccessServiceSvc_SaveActions_stringFromEnum(LibreAccessServiceSv
  */
 - (id) initWithCoder:(NSCoder *)decoder {
 	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [super performSelector:@selector(initWithCoder:) withObject:decoder];
+		self = [(id)super initWithCoder:decoder];
 	} else {
 		self = [super init];
 	}
@@ -6231,7 +6230,7 @@ NSString * LibreAccessServiceSvc_SaveActions_stringFromEnum(LibreAccessServiceSv
  */
 - (id) initWithCoder:(NSCoder *)decoder {
 	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [super performSelector:@selector(initWithCoder:) withObject:decoder];
+		self = [(id)super initWithCoder:decoder];
 	} else {
 		self = [super init];
 	}
@@ -6403,7 +6402,7 @@ NSString * LibreAccessServiceSvc_SaveActions_stringFromEnum(LibreAccessServiceSv
  */
 - (id) initWithCoder:(NSCoder *)decoder {
 	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [super performSelector:@selector(initWithCoder:) withObject:decoder];
+		self = [(id)super initWithCoder:decoder];
 	} else {
 		self = [super init];
 	}
@@ -6571,7 +6570,7 @@ NSString * LibreAccessServiceSvc_SaveActions_stringFromEnum(LibreAccessServiceSv
  */
 - (id) initWithCoder:(NSCoder *)decoder {
 	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [super performSelector:@selector(initWithCoder:) withObject:decoder];
+		self = [(id)super initWithCoder:decoder];
 	} else {
 		self = [super init];
 	}
@@ -6870,7 +6869,7 @@ NSString * LibreAccessServiceSvc_SaveActions_stringFromEnum(LibreAccessServiceSv
  */
 - (id) initWithCoder:(NSCoder *)decoder {
 	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [super performSelector:@selector(initWithCoder:) withObject:decoder];
+		self = [(id)super initWithCoder:decoder];
 	} else {
 		self = [super init];
 	}
@@ -7038,7 +7037,7 @@ NSString * LibreAccessServiceSvc_SaveActions_stringFromEnum(LibreAccessServiceSv
  */
 - (id) initWithCoder:(NSCoder *)decoder {
 	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [super performSelector:@selector(initWithCoder:) withObject:decoder];
+		self = [(id)super initWithCoder:decoder];
 	} else {
 		self = [super init];
 	}
@@ -7629,7 +7628,7 @@ NSString * LibreAccessServiceSvc_SaveActions_stringFromEnum(LibreAccessServiceSv
  */
 - (id) initWithCoder:(NSCoder *)decoder {
 	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [super performSelector:@selector(initWithCoder:) withObject:decoder];
+		self = [(id)super initWithCoder:decoder];
 	} else {
 		self = [super init];
 	}
@@ -7797,7 +7796,7 @@ NSString * LibreAccessServiceSvc_SaveActions_stringFromEnum(LibreAccessServiceSv
  */
 - (id) initWithCoder:(NSCoder *)decoder {
 	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [super performSelector:@selector(initWithCoder:) withObject:decoder];
+		self = [(id)super initWithCoder:decoder];
 	} else {
 		self = [super init];
 	}
@@ -8076,7 +8075,7 @@ NSString * LibreAccessServiceSvc_SaveActions_stringFromEnum(LibreAccessServiceSv
  */
 - (id) initWithCoder:(NSCoder *)decoder {
 	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [super performSelector:@selector(initWithCoder:) withObject:decoder];
+		self = [(id)super initWithCoder:decoder];
 	} else {
 		self = [super init];
 	}
@@ -8336,7 +8335,7 @@ NSString * LibreAccessServiceSvc_SaveActions_stringFromEnum(LibreAccessServiceSv
  */
 - (id) initWithCoder:(NSCoder *)decoder {
 	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [super performSelector:@selector(initWithCoder:) withObject:decoder];
+		self = [(id)super initWithCoder:decoder];
 	} else {
 		self = [super init];
 	}
@@ -8504,7 +8503,7 @@ NSString * LibreAccessServiceSvc_SaveActions_stringFromEnum(LibreAccessServiceSv
  */
 - (id) initWithCoder:(NSCoder *)decoder {
 	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [super performSelector:@selector(initWithCoder:) withObject:decoder];
+		self = [(id)super initWithCoder:decoder];
 	} else {
 		self = [super init];
 	}
@@ -8666,7 +8665,7 @@ NSString * LibreAccessServiceSvc_SaveActions_stringFromEnum(LibreAccessServiceSv
  */
 - (id) initWithCoder:(NSCoder *)decoder {
 	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [super performSelector:@selector(initWithCoder:) withObject:decoder];
+		self = [(id)super initWithCoder:decoder];
 	} else {
 		self = [super init];
 	}
@@ -8867,7 +8866,7 @@ NSString * LibreAccessServiceSvc_SaveActions_stringFromEnum(LibreAccessServiceSv
  */
 - (id) initWithCoder:(NSCoder *)decoder {
 	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [super performSelector:@selector(initWithCoder:) withObject:decoder];
+		self = [(id)super initWithCoder:decoder];
 	} else {
 		self = [super init];
 	}
@@ -9068,7 +9067,7 @@ NSString * LibreAccessServiceSvc_SaveActions_stringFromEnum(LibreAccessServiceSv
  */
 - (id) initWithCoder:(NSCoder *)decoder {
 	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [super performSelector:@selector(initWithCoder:) withObject:decoder];
+		self = [(id)super initWithCoder:decoder];
 	} else {
 		self = [super init];
 	}
@@ -9269,7 +9268,7 @@ NSString * LibreAccessServiceSvc_SaveActions_stringFromEnum(LibreAccessServiceSv
  */
 - (id) initWithCoder:(NSCoder *)decoder {
 	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [super performSelector:@selector(initWithCoder:) withObject:decoder];
+		self = [(id)super initWithCoder:decoder];
 	} else {
 		self = [super init];
 	}
@@ -9636,7 +9635,7 @@ NSString * LibreAccessServiceSvc_SaveActions_stringFromEnum(LibreAccessServiceSv
  */
 - (id) initWithCoder:(NSCoder *)decoder {
 	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [super performSelector:@selector(initWithCoder:) withObject:decoder];
+		self = [(id)super initWithCoder:decoder];
 	} else {
 		self = [super init];
 	}
@@ -9804,7 +9803,7 @@ NSString * LibreAccessServiceSvc_SaveActions_stringFromEnum(LibreAccessServiceSv
  */
 - (id) initWithCoder:(NSCoder *)decoder {
 	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [super performSelector:@selector(initWithCoder:) withObject:decoder];
+		self = [(id)super initWithCoder:decoder];
 	} else {
 		self = [super init];
 	}
@@ -10005,7 +10004,7 @@ NSString * LibreAccessServiceSvc_SaveActions_stringFromEnum(LibreAccessServiceSv
  */
 - (id) initWithCoder:(NSCoder *)decoder {
 	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [super performSelector:@selector(initWithCoder:) withObject:decoder];
+		self = [(id)super initWithCoder:decoder];
 	} else {
 		self = [super init];
 	}
@@ -10245,7 +10244,7 @@ NSString * LibreAccessServiceSvc_SaveActions_stringFromEnum(LibreAccessServiceSv
  */
 - (id) initWithCoder:(NSCoder *)decoder {
 	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [super performSelector:@selector(initWithCoder:) withObject:decoder];
+		self = [(id)super initWithCoder:decoder];
 	} else {
 		self = [super init];
 	}
@@ -10612,7 +10611,7 @@ NSString * LibreAccessServiceSvc_SaveActions_stringFromEnum(LibreAccessServiceSv
  */
 - (id) initWithCoder:(NSCoder *)decoder {
 	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [super performSelector:@selector(initWithCoder:) withObject:decoder];
+		self = [(id)super initWithCoder:decoder];
 	} else {
 		self = [super init];
 	}
@@ -10780,7 +10779,7 @@ NSString * LibreAccessServiceSvc_SaveActions_stringFromEnum(LibreAccessServiceSv
  */
 - (id) initWithCoder:(NSCoder *)decoder {
 	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [super performSelector:@selector(initWithCoder:) withObject:decoder];
+		self = [(id)super initWithCoder:decoder];
 	} else {
 		self = [super init];
 	}
@@ -10942,7 +10941,7 @@ NSString * LibreAccessServiceSvc_SaveActions_stringFromEnum(LibreAccessServiceSv
  */
 - (id) initWithCoder:(NSCoder *)decoder {
 	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [super performSelector:@selector(initWithCoder:) withObject:decoder];
+		self = [(id)super initWithCoder:decoder];
 	} else {
 		self = [super init];
 	}
@@ -11309,7 +11308,7 @@ NSString * LibreAccessServiceSvc_SaveActions_stringFromEnum(LibreAccessServiceSv
  */
 - (id) initWithCoder:(NSCoder *)decoder {
 	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [super performSelector:@selector(initWithCoder:) withObject:decoder];
+		self = [(id)super initWithCoder:decoder];
 	} else {
 		self = [super init];
 	}
@@ -11477,7 +11476,7 @@ NSString * LibreAccessServiceSvc_SaveActions_stringFromEnum(LibreAccessServiceSv
  */
 - (id) initWithCoder:(NSCoder *)decoder {
 	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [super performSelector:@selector(initWithCoder:) withObject:decoder];
+		self = [(id)super initWithCoder:decoder];
 	} else {
 		self = [super init];
 	}
@@ -11678,7 +11677,7 @@ NSString * LibreAccessServiceSvc_SaveActions_stringFromEnum(LibreAccessServiceSv
  */
 - (id) initWithCoder:(NSCoder *)decoder {
 	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [super performSelector:@selector(initWithCoder:) withObject:decoder];
+		self = [(id)super initWithCoder:decoder];
 	} else {
 		self = [super init];
 	}
@@ -11957,7 +11956,7 @@ NSString * LibreAccessServiceSvc_SaveActions_stringFromEnum(LibreAccessServiceSv
  */
 - (id) initWithCoder:(NSCoder *)decoder {
 	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [super performSelector:@selector(initWithCoder:) withObject:decoder];
+		self = [(id)super initWithCoder:decoder];
 	} else {
 		self = [super init];
 	}
@@ -12275,7 +12274,7 @@ NSString * LibreAccessServiceSvc_SaveActions_stringFromEnum(LibreAccessServiceSv
  */
 - (id) initWithCoder:(NSCoder *)decoder {
 	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [super performSelector:@selector(initWithCoder:) withObject:decoder];
+		self = [(id)super initWithCoder:decoder];
 	} else {
 		self = [super init];
 	}
@@ -12535,7 +12534,7 @@ NSString * LibreAccessServiceSvc_SaveActions_stringFromEnum(LibreAccessServiceSv
  */
 - (id) initWithCoder:(NSCoder *)decoder {
 	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [super performSelector:@selector(initWithCoder:) withObject:decoder];
+		self = [(id)super initWithCoder:decoder];
 	} else {
 		self = [super init];
 	}
@@ -12703,7 +12702,7 @@ NSString * LibreAccessServiceSvc_SaveActions_stringFromEnum(LibreAccessServiceSv
  */
 - (id) initWithCoder:(NSCoder *)decoder {
 	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [super performSelector:@selector(initWithCoder:) withObject:decoder];
+		self = [(id)super initWithCoder:decoder];
 	} else {
 		self = [super init];
 	}
@@ -12904,7 +12903,7 @@ NSString * LibreAccessServiceSvc_SaveActions_stringFromEnum(LibreAccessServiceSv
  */
 - (id) initWithCoder:(NSCoder *)decoder {
 	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [super performSelector:@selector(initWithCoder:) withObject:decoder];
+		self = [(id)super initWithCoder:decoder];
 	} else {
 		self = [super init];
 	}
@@ -13072,7 +13071,7 @@ NSString * LibreAccessServiceSvc_SaveActions_stringFromEnum(LibreAccessServiceSv
  */
 - (id) initWithCoder:(NSCoder *)decoder {
 	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [super performSelector:@selector(initWithCoder:) withObject:decoder];
+		self = [(id)super initWithCoder:decoder];
 	} else {
 		self = [super init];
 	}
@@ -13283,7 +13282,7 @@ NSString * LibreAccessServiceSvc_SaveActions_stringFromEnum(LibreAccessServiceSv
  */
 - (id) initWithCoder:(NSCoder *)decoder {
 	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [super performSelector:@selector(initWithCoder:) withObject:decoder];
+		self = [(id)super initWithCoder:decoder];
 	} else {
 		self = [super init];
 	}
@@ -13451,7 +13450,7 @@ NSString * LibreAccessServiceSvc_SaveActions_stringFromEnum(LibreAccessServiceSv
  */
 - (id) initWithCoder:(NSCoder *)decoder {
 	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [super performSelector:@selector(initWithCoder:) withObject:decoder];
+		self = [(id)super initWithCoder:decoder];
 	} else {
 		self = [super init];
 	}
@@ -13769,7 +13768,7 @@ NSString * LibreAccessServiceSvc_SaveActions_stringFromEnum(LibreAccessServiceSv
  */
 - (id) initWithCoder:(NSCoder *)decoder {
 	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [super performSelector:@selector(initWithCoder:) withObject:decoder];
+		self = [(id)super initWithCoder:decoder];
 	} else {
 		self = [super init];
 	}
@@ -14009,7 +14008,7 @@ NSString * LibreAccessServiceSvc_SaveActions_stringFromEnum(LibreAccessServiceSv
  */
 - (id) initWithCoder:(NSCoder *)decoder {
 	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [super performSelector:@selector(initWithCoder:) withObject:decoder];
+		self = [(id)super initWithCoder:decoder];
 	} else {
 		self = [super init];
 	}
@@ -14177,7 +14176,7 @@ NSString * LibreAccessServiceSvc_SaveActions_stringFromEnum(LibreAccessServiceSv
  */
 - (id) initWithCoder:(NSCoder *)decoder {
 	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [super performSelector:@selector(initWithCoder:) withObject:decoder];
+		self = [(id)super initWithCoder:decoder];
 	} else {
 		self = [super init];
 	}
@@ -14417,7 +14416,7 @@ NSString * LibreAccessServiceSvc_SaveActions_stringFromEnum(LibreAccessServiceSv
  */
 - (id) initWithCoder:(NSCoder *)decoder {
 	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [super performSelector:@selector(initWithCoder:) withObject:decoder];
+		self = [(id)super initWithCoder:decoder];
 	} else {
 		self = [super init];
 	}
@@ -14585,7 +14584,7 @@ NSString * LibreAccessServiceSvc_SaveActions_stringFromEnum(LibreAccessServiceSv
  */
 - (id) initWithCoder:(NSCoder *)decoder {
 	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [super performSelector:@selector(initWithCoder:) withObject:decoder];
+		self = [(id)super initWithCoder:decoder];
 	} else {
 		self = [super init];
 	}
@@ -15011,7 +15010,7 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
  */
 - (id) initWithCoder:(NSCoder *)decoder {
 	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [super performSelector:@selector(initWithCoder:) withObject:decoder];
+		self = [(id)super initWithCoder:decoder];
 	} else {
 		self = [super init];
 	}
@@ -15179,7 +15178,7 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
  */
 - (id) initWithCoder:(NSCoder *)decoder {
 	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [super performSelector:@selector(initWithCoder:) withObject:decoder];
+		self = [(id)super initWithCoder:decoder];
 	} else {
 		self = [super init];
 	}
@@ -15347,7 +15346,7 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
  */
 - (id) initWithCoder:(NSCoder *)decoder {
 	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [super performSelector:@selector(initWithCoder:) withObject:decoder];
+		self = [(id)super initWithCoder:decoder];
 	} else {
 		self = [super init];
 	}
@@ -15743,7 +15742,7 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
  */
 - (id) initWithCoder:(NSCoder *)decoder {
 	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [super performSelector:@selector(initWithCoder:) withObject:decoder];
+		self = [(id)super initWithCoder:decoder];
 	} else {
 		self = [super init];
 	}
@@ -15911,7 +15910,7 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
  */
 - (id) initWithCoder:(NSCoder *)decoder {
 	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [super performSelector:@selector(initWithCoder:) withObject:decoder];
+		self = [(id)super initWithCoder:decoder];
 	} else {
 		self = [super init];
 	}
@@ -16171,7 +16170,7 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
  */
 - (id) initWithCoder:(NSCoder *)decoder {
 	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [super performSelector:@selector(initWithCoder:) withObject:decoder];
+		self = [(id)super initWithCoder:decoder];
 	} else {
 		self = [super init];
 	}
@@ -16339,7 +16338,7 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
  */
 - (id) initWithCoder:(NSCoder *)decoder {
 	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [super performSelector:@selector(initWithCoder:) withObject:decoder];
+		self = [(id)super initWithCoder:decoder];
 	} else {
 		self = [super init];
 	}
@@ -16540,7 +16539,7 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
  */
 - (id) initWithCoder:(NSCoder *)decoder {
 	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [super performSelector:@selector(initWithCoder:) withObject:decoder];
+		self = [(id)super initWithCoder:decoder];
 	} else {
 		self = [super init];
 	}
@@ -16708,7 +16707,7 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
  */
 - (id) initWithCoder:(NSCoder *)decoder {
 	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [super performSelector:@selector(initWithCoder:) withObject:decoder];
+		self = [(id)super initWithCoder:decoder];
 	} else {
 		self = [super init];
 	}
@@ -16929,7 +16928,7 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
  */
 - (id) initWithCoder:(NSCoder *)decoder {
 	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [super performSelector:@selector(initWithCoder:) withObject:decoder];
+		self = [(id)super initWithCoder:decoder];
 	} else {
 		self = [super init];
 	}
@@ -17097,7 +17096,7 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
  */
 - (id) initWithCoder:(NSCoder *)decoder {
 	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [super performSelector:@selector(initWithCoder:) withObject:decoder];
+		self = [(id)super initWithCoder:decoder];
 	} else {
 		self = [super init];
 	}
@@ -17357,7 +17356,7 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
  */
 - (id) initWithCoder:(NSCoder *)decoder {
 	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [super performSelector:@selector(initWithCoder:) withObject:decoder];
+		self = [(id)super initWithCoder:decoder];
 	} else {
 		self = [super init];
 	}
@@ -17525,7 +17524,7 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
  */
 - (id) initWithCoder:(NSCoder *)decoder {
 	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [super performSelector:@selector(initWithCoder:) withObject:decoder];
+		self = [(id)super initWithCoder:decoder];
 	} else {
 		self = [super init];
 	}
@@ -17726,7 +17725,7 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
  */
 - (id) initWithCoder:(NSCoder *)decoder {
 	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [super performSelector:@selector(initWithCoder:) withObject:decoder];
+		self = [(id)super initWithCoder:decoder];
 	} else {
 		self = [super init];
 	}
@@ -17894,7 +17893,7 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
  */
 - (id) initWithCoder:(NSCoder *)decoder {
 	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [super performSelector:@selector(initWithCoder:) withObject:decoder];
+		self = [(id)super initWithCoder:decoder];
 	} else {
 		self = [super init];
 	}
@@ -18056,7 +18055,7 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
  */
 - (id) initWithCoder:(NSCoder *)decoder {
 	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [super performSelector:@selector(initWithCoder:) withObject:decoder];
+		self = [(id)super initWithCoder:decoder];
 	} else {
 		self = [super init];
 	}
@@ -18224,7 +18223,7 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
  */
 - (id) initWithCoder:(NSCoder *)decoder {
 	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [super performSelector:@selector(initWithCoder:) withObject:decoder];
+		self = [(id)super initWithCoder:decoder];
 	} else {
 		self = [super init];
 	}
@@ -18396,7 +18395,7 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
  */
 - (id) initWithCoder:(NSCoder *)decoder {
 	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [super performSelector:@selector(initWithCoder:) withObject:decoder];
+		self = [(id)super initWithCoder:decoder];
 	} else {
 		self = [super init];
 	}
@@ -18564,7 +18563,7 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
  */
 - (id) initWithCoder:(NSCoder *)decoder {
 	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [super performSelector:@selector(initWithCoder:) withObject:decoder];
+		self = [(id)super initWithCoder:decoder];
 	} else {
 		self = [super init];
 	}
@@ -18736,7 +18735,7 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
  */
 - (id) initWithCoder:(NSCoder *)decoder {
 	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [super performSelector:@selector(initWithCoder:) withObject:decoder];
+		self = [(id)super initWithCoder:decoder];
 	} else {
 		self = [super init];
 	}
@@ -18904,7 +18903,7 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
  */
 - (id) initWithCoder:(NSCoder *)decoder {
 	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [super performSelector:@selector(initWithCoder:) withObject:decoder];
+		self = [(id)super initWithCoder:decoder];
 	} else {
 		self = [super init];
 	}
@@ -19066,7 +19065,7 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
  */
 - (id) initWithCoder:(NSCoder *)decoder {
 	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [super performSelector:@selector(initWithCoder:) withObject:decoder];
+		self = [(id)super initWithCoder:decoder];
 	} else {
 		self = [super init];
 	}
@@ -19234,7 +19233,7 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
  */
 - (id) initWithCoder:(NSCoder *)decoder {
 	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [super performSelector:@selector(initWithCoder:) withObject:decoder];
+		self = [(id)super initWithCoder:decoder];
 	} else {
 		self = [super init];
 	}
@@ -19474,7 +19473,7 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
  */
 - (id) initWithCoder:(NSCoder *)decoder {
 	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [super performSelector:@selector(initWithCoder:) withObject:decoder];
+		self = [(id)super initWithCoder:decoder];
 	} else {
 		self = [super init];
 	}
@@ -19642,7 +19641,7 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
  */
 - (id) initWithCoder:(NSCoder *)decoder {
 	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [super performSelector:@selector(initWithCoder:) withObject:decoder];
+		self = [(id)super initWithCoder:decoder];
 	} else {
 		self = [super init];
 	}
@@ -19941,7 +19940,7 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
  */
 - (id) initWithCoder:(NSCoder *)decoder {
 	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [super performSelector:@selector(initWithCoder:) withObject:decoder];
+		self = [(id)super initWithCoder:decoder];
 	} else {
 		self = [super init];
 	}
@@ -20109,7 +20108,7 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
  */
 - (id) initWithCoder:(NSCoder *)decoder {
 	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [super performSelector:@selector(initWithCoder:) withObject:decoder];
+		self = [(id)super initWithCoder:decoder];
 	} else {
 		self = [super init];
 	}
@@ -20271,7 +20270,7 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
  */
 - (id) initWithCoder:(NSCoder *)decoder {
 	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [super performSelector:@selector(initWithCoder:) withObject:decoder];
+		self = [(id)super initWithCoder:decoder];
 	} else {
 		self = [super init];
 	}
@@ -20439,7 +20438,7 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
  */
 - (id) initWithCoder:(NSCoder *)decoder {
 	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [super performSelector:@selector(initWithCoder:) withObject:decoder];
+		self = [(id)super initWithCoder:decoder];
 	} else {
 		self = [super init];
 	}
@@ -20855,7 +20854,7 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
  */
 - (id) initWithCoder:(NSCoder *)decoder {
 	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [super performSelector:@selector(initWithCoder:) withObject:decoder];
+		self = [(id)super initWithCoder:decoder];
 	} else {
 		self = [super init];
 	}
@@ -21023,7 +21022,7 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
  */
 - (id) initWithCoder:(NSCoder *)decoder {
 	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [super performSelector:@selector(initWithCoder:) withObject:decoder];
+		self = [(id)super initWithCoder:decoder];
 	} else {
 		self = [super init];
 	}
@@ -21224,7 +21223,7 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
  */
 - (id) initWithCoder:(NSCoder *)decoder {
 	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [super performSelector:@selector(initWithCoder:) withObject:decoder];
+		self = [(id)super initWithCoder:decoder];
 	} else {
 		self = [super init];
 	}
@@ -21392,7 +21391,7 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
  */
 - (id) initWithCoder:(NSCoder *)decoder {
 	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [super performSelector:@selector(initWithCoder:) withObject:decoder];
+		self = [(id)super initWithCoder:decoder];
 	} else {
 		self = [super init];
 	}
@@ -21554,7 +21553,7 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
  */
 - (id) initWithCoder:(NSCoder *)decoder {
 	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [super performSelector:@selector(initWithCoder:) withObject:decoder];
+		self = [(id)super initWithCoder:decoder];
 	} else {
 		self = [super init];
 	}
@@ -21722,7 +21721,7 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
  */
 - (id) initWithCoder:(NSCoder *)decoder {
 	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [super performSelector:@selector(initWithCoder:) withObject:decoder];
+		self = [(id)super initWithCoder:decoder];
 	} else {
 		self = [super init];
 	}
@@ -21884,7 +21883,7 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
  */
 - (id) initWithCoder:(NSCoder *)decoder {
 	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [super performSelector:@selector(initWithCoder:) withObject:decoder];
+		self = [(id)super initWithCoder:decoder];
 	} else {
 		self = [super init];
 	}
@@ -22052,7 +22051,7 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
  */
 - (id) initWithCoder:(NSCoder *)decoder {
 	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [super performSelector:@selector(initWithCoder:) withObject:decoder];
+		self = [(id)super initWithCoder:decoder];
 	} else {
 		self = [super init];
 	}
@@ -22253,7 +22252,7 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
  */
 - (id) initWithCoder:(NSCoder *)decoder {
 	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [super performSelector:@selector(initWithCoder:) withObject:decoder];
+		self = [(id)super initWithCoder:decoder];
 	} else {
 		self = [super init];
 	}
@@ -22421,7 +22420,7 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
  */
 - (id) initWithCoder:(NSCoder *)decoder {
 	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [super performSelector:@selector(initWithCoder:) withObject:decoder];
+		self = [(id)super initWithCoder:decoder];
 	} else {
 		self = [super init];
 	}
@@ -22700,7 +22699,7 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
  */
 - (id) initWithCoder:(NSCoder *)decoder {
 	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [super performSelector:@selector(initWithCoder:) withObject:decoder];
+		self = [(id)super initWithCoder:decoder];
 	} else {
 		self = [super init];
 	}
@@ -22868,7 +22867,7 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
  */
 - (id) initWithCoder:(NSCoder *)decoder {
 	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [super performSelector:@selector(initWithCoder:) withObject:decoder];
+		self = [(id)super initWithCoder:decoder];
 	} else {
 		self = [super init];
 	}
@@ -23089,7 +23088,7 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
  */
 - (id) initWithCoder:(NSCoder *)decoder {
 	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [super performSelector:@selector(initWithCoder:) withObject:decoder];
+		self = [(id)super initWithCoder:decoder];
 	} else {
 		self = [super init];
 	}
@@ -23257,7 +23256,7 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
  */
 - (id) initWithCoder:(NSCoder *)decoder {
 	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [super performSelector:@selector(initWithCoder:) withObject:decoder];
+		self = [(id)super initWithCoder:decoder];
 	} else {
 		self = [super init];
 	}
@@ -23419,7 +23418,7 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
  */
 - (id) initWithCoder:(NSCoder *)decoder {
 	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [super performSelector:@selector(initWithCoder:) withObject:decoder];
+		self = [(id)super initWithCoder:decoder];
 	} else {
 		self = [super init];
 	}
@@ -23587,7 +23586,7 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
  */
 - (id) initWithCoder:(NSCoder *)decoder {
 	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [super performSelector:@selector(initWithCoder:) withObject:decoder];
+		self = [(id)super initWithCoder:decoder];
 	} else {
 		self = [super init];
 	}
@@ -23808,7 +23807,7 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
  */
 - (id) initWithCoder:(NSCoder *)decoder {
 	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [super performSelector:@selector(initWithCoder:) withObject:decoder];
+		self = [(id)super initWithCoder:decoder];
 	} else {
 		self = [super init];
 	}
@@ -23976,7 +23975,7 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
  */
 - (id) initWithCoder:(NSCoder *)decoder {
 	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [super performSelector:@selector(initWithCoder:) withObject:decoder];
+		self = [(id)super initWithCoder:decoder];
 	} else {
 		self = [super init];
 	}
@@ -24294,7 +24293,7 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
  */
 - (id) initWithCoder:(NSCoder *)decoder {
 	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [super performSelector:@selector(initWithCoder:) withObject:decoder];
+		self = [(id)super initWithCoder:decoder];
 	} else {
 		self = [super init];
 	}
@@ -24612,7 +24611,7 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
  */
 - (id) initWithCoder:(NSCoder *)decoder {
 	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [super performSelector:@selector(initWithCoder:) withObject:decoder];
+		self = [(id)super initWithCoder:decoder];
 	} else {
 		self = [super init];
 	}
@@ -24930,7 +24929,7 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
  */
 - (id) initWithCoder:(NSCoder *)decoder {
 	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [super performSelector:@selector(initWithCoder:) withObject:decoder];
+		self = [(id)super initWithCoder:decoder];
 	} else {
 		self = [super init];
 	}
@@ -25326,7 +25325,7 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
  */
 - (id) initWithCoder:(NSCoder *)decoder {
 	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [super performSelector:@selector(initWithCoder:) withObject:decoder];
+		self = [(id)super initWithCoder:decoder];
 	} else {
 		self = [super init];
 	}
@@ -25644,7 +25643,7 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
  */
 - (id) initWithCoder:(NSCoder *)decoder {
 	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [super performSelector:@selector(initWithCoder:) withObject:decoder];
+		self = [(id)super initWithCoder:decoder];
 	} else {
 		self = [super init];
 	}
@@ -26118,7 +26117,7 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
  */
 - (id) initWithCoder:(NSCoder *)decoder {
 	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [super performSelector:@selector(initWithCoder:) withObject:decoder];
+		self = [(id)super initWithCoder:decoder];
 	} else {
 		self = [super init];
 	}
@@ -26358,7 +26357,7 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
  */
 - (id) initWithCoder:(NSCoder *)decoder {
 	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [super performSelector:@selector(initWithCoder:) withObject:decoder];
+		self = [(id)super initWithCoder:decoder];
 	} else {
 		self = [super init];
 	}
@@ -26676,7 +26675,7 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
  */
 - (id) initWithCoder:(NSCoder *)decoder {
 	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [super performSelector:@selector(initWithCoder:) withObject:decoder];
+		self = [(id)super initWithCoder:decoder];
 	} else {
 		self = [super init];
 	}
@@ -26838,7 +26837,7 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
  */
 - (id) initWithCoder:(NSCoder *)decoder {
 	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [super performSelector:@selector(initWithCoder:) withObject:decoder];
+		self = [(id)super initWithCoder:decoder];
 	} else {
 		self = [super init];
 	}
@@ -27117,7 +27116,7 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
  */
 - (id) initWithCoder:(NSCoder *)decoder {
 	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [super performSelector:@selector(initWithCoder:) withObject:decoder];
+		self = [(id)super initWithCoder:decoder];
 	} else {
 		self = [super init];
 	}
@@ -27279,7 +27278,7 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
  */
 - (id) initWithCoder:(NSCoder *)decoder {
 	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [super performSelector:@selector(initWithCoder:) withObject:decoder];
+		self = [(id)super initWithCoder:decoder];
 	} else {
 		self = [super init];
 	}
@@ -27447,7 +27446,7 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
  */
 - (id) initWithCoder:(NSCoder *)decoder {
 	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [super performSelector:@selector(initWithCoder:) withObject:decoder];
+		self = [(id)super initWithCoder:decoder];
 	} else {
 		self = [super init];
 	}
@@ -27648,7 +27647,7 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
  */
 - (id) initWithCoder:(NSCoder *)decoder {
 	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [super performSelector:@selector(initWithCoder:) withObject:decoder];
+		self = [(id)super initWithCoder:decoder];
 	} else {
 		self = [super init];
 	}
@@ -27894,7 +27893,7 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
  */
 - (id) initWithCoder:(NSCoder *)decoder {
 	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [super performSelector:@selector(initWithCoder:) withObject:decoder];
+		self = [(id)super initWithCoder:decoder];
 	} else {
 		self = [super init];
 	}
@@ -28062,7 +28061,7 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
  */
 - (id) initWithCoder:(NSCoder *)decoder {
 	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [super performSelector:@selector(initWithCoder:) withObject:decoder];
+		self = [(id)super initWithCoder:decoder];
 	} else {
 		self = [super init];
 	}
@@ -28263,7 +28262,7 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
  */
 - (id) initWithCoder:(NSCoder *)decoder {
 	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [super performSelector:@selector(initWithCoder:) withObject:decoder];
+		self = [(id)super initWithCoder:decoder];
 	} else {
 		self = [super init];
 	}
@@ -28425,7 +28424,7 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
  */
 - (id) initWithCoder:(NSCoder *)decoder {
 	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [super performSelector:@selector(initWithCoder:) withObject:decoder];
+		self = [(id)super initWithCoder:decoder];
 	} else {
 		self = [super init];
 	}
@@ -28626,7 +28625,7 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
  */
 - (id) initWithCoder:(NSCoder *)decoder {
 	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [super performSelector:@selector(initWithCoder:) withObject:decoder];
+		self = [(id)super initWithCoder:decoder];
 	} else {
 		self = [super init];
 	}
@@ -28837,7 +28836,7 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
  */
 - (id) initWithCoder:(NSCoder *)decoder {
 	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [super performSelector:@selector(initWithCoder:) withObject:decoder];
+		self = [(id)super initWithCoder:decoder];
 	} else {
 		self = [super init];
 	}
@@ -29038,7 +29037,7 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
  */
 - (id) initWithCoder:(NSCoder *)decoder {
 	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [super performSelector:@selector(initWithCoder:) withObject:decoder];
+		self = [(id)super initWithCoder:decoder];
 	} else {
 		self = [super init];
 	}
@@ -29200,7 +29199,7 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
  */
 - (id) initWithCoder:(NSCoder *)decoder {
 	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [super performSelector:@selector(initWithCoder:) withObject:decoder];
+		self = [(id)super initWithCoder:decoder];
 	} else {
 		self = [super init];
 	}
@@ -29450,7 +29449,7 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
  */
 - (id) initWithCoder:(NSCoder *)decoder {
 	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [super performSelector:@selector(initWithCoder:) withObject:decoder];
+		self = [(id)super initWithCoder:decoder];
 	} else {
 		self = [super init];
 	}
@@ -29651,7 +29650,7 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
  */
 - (id) initWithCoder:(NSCoder *)decoder {
 	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [super performSelector:@selector(initWithCoder:) withObject:decoder];
+		self = [(id)super initWithCoder:decoder];
 	} else {
 		self = [super init];
 	}
@@ -29969,7 +29968,7 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
  */
 - (id) initWithCoder:(NSCoder *)decoder {
 	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [super performSelector:@selector(initWithCoder:) withObject:decoder];
+		self = [(id)super initWithCoder:decoder];
 	} else {
 		self = [super init];
 	}
@@ -30209,7 +30208,7 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
  */
 - (id) initWithCoder:(NSCoder *)decoder {
 	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [super performSelector:@selector(initWithCoder:) withObject:decoder];
+		self = [(id)super initWithCoder:decoder];
 	} else {
 		self = [super init];
 	}
@@ -30410,7 +30409,7 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
  */
 - (id) initWithCoder:(NSCoder *)decoder {
 	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [super performSelector:@selector(initWithCoder:) withObject:decoder];
+		self = [(id)super initWithCoder:decoder];
 	} else {
 		self = [super init];
 	}
@@ -30611,7 +30610,7 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
  */
 - (id) initWithCoder:(NSCoder *)decoder {
 	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [super performSelector:@selector(initWithCoder:) withObject:decoder];
+		self = [(id)super initWithCoder:decoder];
 	} else {
 		self = [super init];
 	}
@@ -30812,7 +30811,7 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
  */
 - (id) initWithCoder:(NSCoder *)decoder {
 	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [super performSelector:@selector(initWithCoder:) withObject:decoder];
+		self = [(id)super initWithCoder:decoder];
 	} else {
 		self = [super init];
 	}
@@ -31052,7 +31051,7 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
  */
 - (id) initWithCoder:(NSCoder *)decoder {
 	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [super performSelector:@selector(initWithCoder:) withObject:decoder];
+		self = [(id)super initWithCoder:decoder];
 	} else {
 		self = [super init];
 	}
@@ -31214,7 +31213,7 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
  */
 - (id) initWithCoder:(NSCoder *)decoder {
 	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [super performSelector:@selector(initWithCoder:) withObject:decoder];
+		self = [(id)super initWithCoder:decoder];
 	} else {
 		self = [super init];
 	}
@@ -31415,7 +31414,7 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
  */
 - (id) initWithCoder:(NSCoder *)decoder {
 	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [super performSelector:@selector(initWithCoder:) withObject:decoder];
+		self = [(id)super initWithCoder:decoder];
 	} else {
 		self = [super init];
 	}
@@ -31616,7 +31615,7 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
  */
 - (id) initWithCoder:(NSCoder *)decoder {
 	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [super performSelector:@selector(initWithCoder:) withObject:decoder];
+		self = [(id)super initWithCoder:decoder];
 	} else {
 		self = [super init];
 	}
@@ -31817,7 +31816,7 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
  */
 - (id) initWithCoder:(NSCoder *)decoder {
 	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [super performSelector:@selector(initWithCoder:) withObject:decoder];
+		self = [(id)super initWithCoder:decoder];
 	} else {
 		self = [super init];
 	}
@@ -31979,7 +31978,7 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
  */
 - (id) initWithCoder:(NSCoder *)decoder {
 	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [super performSelector:@selector(initWithCoder:) withObject:decoder];
+		self = [(id)super initWithCoder:decoder];
 	} else {
 		self = [super init];
 	}
@@ -32180,7 +32179,7 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
  */
 - (id) initWithCoder:(NSCoder *)decoder {
 	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [super performSelector:@selector(initWithCoder:) withObject:decoder];
+		self = [(id)super initWithCoder:decoder];
 	} else {
 		self = [super init];
 	}
@@ -32381,7 +32380,7 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
  */
 - (id) initWithCoder:(NSCoder *)decoder {
 	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [super performSelector:@selector(initWithCoder:) withObject:decoder];
+		self = [(id)super initWithCoder:decoder];
 	} else {
 		self = [super init];
 	}
@@ -32543,7 +32542,7 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
  */
 - (id) initWithCoder:(NSCoder *)decoder {
 	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [super performSelector:@selector(initWithCoder:) withObject:decoder];
+		self = [(id)super initWithCoder:decoder];
 	} else {
 		self = [super init];
 	}
@@ -32783,7 +32782,7 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
  */
 - (id) initWithCoder:(NSCoder *)decoder {
 	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [super performSelector:@selector(initWithCoder:) withObject:decoder];
+		self = [(id)super initWithCoder:decoder];
 	} else {
 		self = [super init];
 	}
@@ -32984,7 +32983,7 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
  */
 - (id) initWithCoder:(NSCoder *)decoder {
 	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [super performSelector:@selector(initWithCoder:) withObject:decoder];
+		self = [(id)super initWithCoder:decoder];
 	} else {
 		self = [super init];
 	}
@@ -33146,7 +33145,7 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
  */
 - (id) initWithCoder:(NSCoder *)decoder {
 	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [super performSelector:@selector(initWithCoder:) withObject:decoder];
+		self = [(id)super initWithCoder:decoder];
 	} else {
 		self = [super init];
 	}
@@ -33347,7 +33346,7 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
  */
 - (id) initWithCoder:(NSCoder *)decoder {
 	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [super performSelector:@selector(initWithCoder:) withObject:decoder];
+		self = [(id)super initWithCoder:decoder];
 	} else {
 		self = [super init];
 	}
@@ -33558,7 +33557,7 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
  */
 - (id) initWithCoder:(NSCoder *)decoder {
 	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [super performSelector:@selector(initWithCoder:) withObject:decoder];
+		self = [(id)super initWithCoder:decoder];
 	} else {
 		self = [super init];
 	}
@@ -33720,7 +33719,7 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
  */
 - (id) initWithCoder:(NSCoder *)decoder {
 	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [super performSelector:@selector(initWithCoder:) withObject:decoder];
+		self = [(id)super initWithCoder:decoder];
 	} else {
 		self = [super init];
 	}
@@ -33882,7 +33881,7 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
  */
 - (id) initWithCoder:(NSCoder *)decoder {
 	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [super performSelector:@selector(initWithCoder:) withObject:decoder];
+		self = [(id)super initWithCoder:decoder];
 	} else {
 		self = [super init];
 	}
@@ -34161,7 +34160,7 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
  */
 - (id) initWithCoder:(NSCoder *)decoder {
 	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [super performSelector:@selector(initWithCoder:) withObject:decoder];
+		self = [(id)super initWithCoder:decoder];
 	} else {
 		self = [super init];
 	}
@@ -34323,7 +34322,7 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
  */
 - (id) initWithCoder:(NSCoder *)decoder {
 	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [super performSelector:@selector(initWithCoder:) withObject:decoder];
+		self = [(id)super initWithCoder:decoder];
 	} else {
 		self = [super init];
 	}
@@ -34563,7 +34562,7 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
  */
 - (id) initWithCoder:(NSCoder *)decoder {
 	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [super performSelector:@selector(initWithCoder:) withObject:decoder];
+		self = [(id)super initWithCoder:decoder];
 	} else {
 		self = [super init];
 	}
@@ -34842,7 +34841,7 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
  */
 - (id) initWithCoder:(NSCoder *)decoder {
 	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [super performSelector:@selector(initWithCoder:) withObject:decoder];
+		self = [(id)super initWithCoder:decoder];
 	} else {
 		self = [super init];
 	}
@@ -35160,7 +35159,7 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
  */
 - (id) initWithCoder:(NSCoder *)decoder {
 	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [super performSelector:@selector(initWithCoder:) withObject:decoder];
+		self = [(id)super initWithCoder:decoder];
 	} else {
 		self = [super init];
 	}
@@ -35400,7 +35399,7 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
  */
 - (id) initWithCoder:(NSCoder *)decoder {
 	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [super performSelector:@selector(initWithCoder:) withObject:decoder];
+		self = [(id)super initWithCoder:decoder];
 	} else {
 		self = [super init];
 	}
@@ -35757,7 +35756,7 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
  */
 - (id) initWithCoder:(NSCoder *)decoder {
 	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [super performSelector:@selector(initWithCoder:) withObject:decoder];
+		self = [(id)super initWithCoder:decoder];
 	} else {
 		self = [super init];
 	}
@@ -35919,7 +35918,7 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
  */
 - (id) initWithCoder:(NSCoder *)decoder {
 	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [super performSelector:@selector(initWithCoder:) withObject:decoder];
+		self = [(id)super initWithCoder:decoder];
 	} else {
 		self = [super init];
 	}
@@ -36120,7 +36119,7 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
  */
 - (id) initWithCoder:(NSCoder *)decoder {
 	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [super performSelector:@selector(initWithCoder:) withObject:decoder];
+		self = [(id)super initWithCoder:decoder];
 	} else {
 		self = [super init];
 	}
@@ -36321,7 +36320,7 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
  */
 - (id) initWithCoder:(NSCoder *)decoder {
 	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [super performSelector:@selector(initWithCoder:) withObject:decoder];
+		self = [(id)super initWithCoder:decoder];
 	} else {
 		self = [super init];
 	}
@@ -36522,7 +36521,7 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
  */
 - (id) initWithCoder:(NSCoder *)decoder {
 	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [super performSelector:@selector(initWithCoder:) withObject:decoder];
+		self = [(id)super initWithCoder:decoder];
 	} else {
 		self = [super init];
 	}
@@ -36723,7 +36722,7 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
  */
 - (id) initWithCoder:(NSCoder *)decoder {
 	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [super performSelector:@selector(initWithCoder:) withObject:decoder];
+		self = [(id)super initWithCoder:decoder];
 	} else {
 		self = [super init];
 	}
@@ -36924,7 +36923,7 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
  */
 - (id) initWithCoder:(NSCoder *)decoder {
 	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [super performSelector:@selector(initWithCoder:) withObject:decoder];
+		self = [(id)super initWithCoder:decoder];
 	} else {
 		self = [super init];
 	}
@@ -37164,7 +37163,7 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
  */
 - (id) initWithCoder:(NSCoder *)decoder {
 	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [super performSelector:@selector(initWithCoder:) withObject:decoder];
+		self = [(id)super initWithCoder:decoder];
 	} else {
 		self = [super init];
 	}
@@ -37326,7 +37325,7 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
  */
 - (id) initWithCoder:(NSCoder *)decoder {
 	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [super performSelector:@selector(initWithCoder:) withObject:decoder];
+		self = [(id)super initWithCoder:decoder];
 	} else {
 		self = [super init];
 	}
@@ -37488,7 +37487,7 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
  */
 - (id) initWithCoder:(NSCoder *)decoder {
 	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [super performSelector:@selector(initWithCoder:) withObject:decoder];
+		self = [(id)super initWithCoder:decoder];
 	} else {
 		self = [super init];
 	}
@@ -37689,7 +37688,7 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
  */
 - (id) initWithCoder:(NSCoder *)decoder {
 	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [super performSelector:@selector(initWithCoder:) withObject:decoder];
+		self = [(id)super initWithCoder:decoder];
 	} else {
 		self = [super init];
 	}
@@ -37890,7 +37889,7 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
  */
 - (id) initWithCoder:(NSCoder *)decoder {
 	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [super performSelector:@selector(initWithCoder:) withObject:decoder];
+		self = [(id)super initWithCoder:decoder];
 	} else {
 		self = [super init];
 	}
@@ -38052,7 +38051,7 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
  */
 - (id) initWithCoder:(NSCoder *)decoder {
 	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [super performSelector:@selector(initWithCoder:) withObject:decoder];
+		self = [(id)super initWithCoder:decoder];
 	} else {
 		self = [super init];
 	}
@@ -38214,7 +38213,7 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
  */
 - (id) initWithCoder:(NSCoder *)decoder {
 	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [super performSelector:@selector(initWithCoder:) withObject:decoder];
+		self = [(id)super initWithCoder:decoder];
 	} else {
 		self = [super init];
 	}
@@ -38415,7 +38414,7 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
  */
 - (id) initWithCoder:(NSCoder *)decoder {
 	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [super performSelector:@selector(initWithCoder:) withObject:decoder];
+		self = [(id)super initWithCoder:decoder];
 	} else {
 		self = [super init];
 	}
@@ -38616,7 +38615,7 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
  */
 - (id) initWithCoder:(NSCoder *)decoder {
 	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [super performSelector:@selector(initWithCoder:) withObject:decoder];
+		self = [(id)super initWithCoder:decoder];
 	} else {
 		self = [super init];
 	}
@@ -38778,7 +38777,7 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
  */
 - (id) initWithCoder:(NSCoder *)decoder {
 	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [super performSelector:@selector(initWithCoder:) withObject:decoder];
+		self = [(id)super initWithCoder:decoder];
 	} else {
 		self = [super init];
 	}
@@ -38940,7 +38939,7 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
  */
 - (id) initWithCoder:(NSCoder *)decoder {
 	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [super performSelector:@selector(initWithCoder:) withObject:decoder];
+		self = [(id)super initWithCoder:decoder];
 	} else {
 		self = [super init];
 	}
@@ -39141,7 +39140,7 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
  */
 - (id) initWithCoder:(NSCoder *)decoder {
 	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [super performSelector:@selector(initWithCoder:) withObject:decoder];
+		self = [(id)super initWithCoder:decoder];
 	} else {
 		self = [super init];
 	}
@@ -39342,7 +39341,7 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
  */
 - (id) initWithCoder:(NSCoder *)decoder {
 	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [super performSelector:@selector(initWithCoder:) withObject:decoder];
+		self = [(id)super initWithCoder:decoder];
 	} else {
 		self = [super init];
 	}
@@ -39504,7 +39503,7 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
  */
 - (id) initWithCoder:(NSCoder *)decoder {
 	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [super performSelector:@selector(initWithCoder:) withObject:decoder];
+		self = [(id)super initWithCoder:decoder];
 	} else {
 		self = [super init];
 	}
@@ -39705,7 +39704,7 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
  */
 - (id) initWithCoder:(NSCoder *)decoder {
 	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [super performSelector:@selector(initWithCoder:) withObject:decoder];
+		self = [(id)super initWithCoder:decoder];
 	} else {
 		self = [super init];
 	}
@@ -39867,7 +39866,7 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
  */
 - (id) initWithCoder:(NSCoder *)decoder {
 	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [super performSelector:@selector(initWithCoder:) withObject:decoder];
+		self = [(id)super initWithCoder:decoder];
 	} else {
 		self = [super init];
 	}
@@ -40029,7 +40028,7 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
  */
 - (id) initWithCoder:(NSCoder *)decoder {
 	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [super performSelector:@selector(initWithCoder:) withObject:decoder];
+		self = [(id)super initWithCoder:decoder];
 	} else {
 		self = [super init];
 	}
@@ -40230,7 +40229,7 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
  */
 - (id) initWithCoder:(NSCoder *)decoder {
 	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [super performSelector:@selector(initWithCoder:) withObject:decoder];
+		self = [(id)super initWithCoder:decoder];
 	} else {
 		self = [super init];
 	}
@@ -40509,7 +40508,7 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
  */
 - (id) initWithCoder:(NSCoder *)decoder {
 	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [super performSelector:@selector(initWithCoder:) withObject:decoder];
+		self = [(id)super initWithCoder:decoder];
 	} else {
 		self = [super init];
 	}
@@ -40710,7 +40709,7 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
  */
 - (id) initWithCoder:(NSCoder *)decoder {
 	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [super performSelector:@selector(initWithCoder:) withObject:decoder];
+		self = [(id)super initWithCoder:decoder];
 	} else {
 		self = [super init];
 	}
@@ -41028,7 +41027,7 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
  */
 - (id) initWithCoder:(NSCoder *)decoder {
 	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [super performSelector:@selector(initWithCoder:) withObject:decoder];
+		self = [(id)super initWithCoder:decoder];
 	} else {
 		self = [super init];
 	}
@@ -41229,7 +41228,7 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
  */
 - (id) initWithCoder:(NSCoder *)decoder {
 	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [super performSelector:@selector(initWithCoder:) withObject:decoder];
+		self = [(id)super initWithCoder:decoder];
 	} else {
 		self = [super init];
 	}
@@ -41567,7 +41566,7 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
  */
 - (id) initWithCoder:(NSCoder *)decoder {
 	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [super performSelector:@selector(initWithCoder:) withObject:decoder];
+		self = [(id)super initWithCoder:decoder];
 	} else {
 		self = [super init];
 	}
@@ -41729,7 +41728,7 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
  */
 - (id) initWithCoder:(NSCoder *)decoder {
 	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [super performSelector:@selector(initWithCoder:) withObject:decoder];
+		self = [(id)super initWithCoder:decoder];
 	} else {
 		self = [super init];
 	}
@@ -41969,7 +41968,7 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
  */
 - (id) initWithCoder:(NSCoder *)decoder {
 	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [super performSelector:@selector(initWithCoder:) withObject:decoder];
+		self = [(id)super initWithCoder:decoder];
 	} else {
 		self = [super init];
 	}
@@ -42131,7 +42130,7 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
  */
 - (id) initWithCoder:(NSCoder *)decoder {
 	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [super performSelector:@selector(initWithCoder:) withObject:decoder];
+		self = [(id)super initWithCoder:decoder];
 	} else {
 		self = [super init];
 	}
@@ -42449,7 +42448,7 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
  */
 - (id) initWithCoder:(NSCoder *)decoder {
 	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [super performSelector:@selector(initWithCoder:) withObject:decoder];
+		self = [(id)super initWithCoder:decoder];
 	} else {
 		self = [super init];
 	}
@@ -42650,7 +42649,7 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
  */
 - (id) initWithCoder:(NSCoder *)decoder {
 	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [super performSelector:@selector(initWithCoder:) withObject:decoder];
+		self = [(id)super initWithCoder:decoder];
 	} else {
 		self = [super init];
 	}
@@ -42822,7 +42821,7 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
  */
 - (id) initWithCoder:(NSCoder *)decoder {
 	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [super performSelector:@selector(initWithCoder:) withObject:decoder];
+		self = [(id)super initWithCoder:decoder];
 	} else {
 		self = [super init];
 	}
@@ -43023,7 +43022,7 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
  */
 - (id) initWithCoder:(NSCoder *)decoder {
 	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [super performSelector:@selector(initWithCoder:) withObject:decoder];
+		self = [(id)super initWithCoder:decoder];
 	} else {
 		self = [super init];
 	}
@@ -43224,7 +43223,7 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
  */
 - (id) initWithCoder:(NSCoder *)decoder {
 	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [super performSelector:@selector(initWithCoder:) withObject:decoder];
+		self = [(id)super initWithCoder:decoder];
 	} else {
 		self = [super init];
 	}
@@ -43386,7 +43385,7 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
  */
 - (id) initWithCoder:(NSCoder *)decoder {
 	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [super performSelector:@selector(initWithCoder:) withObject:decoder];
+		self = [(id)super initWithCoder:decoder];
 	} else {
 		self = [super init];
 	}
@@ -43548,7 +43547,7 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
  */
 - (id) initWithCoder:(NSCoder *)decoder {
 	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [super performSelector:@selector(initWithCoder:) withObject:decoder];
+		self = [(id)super initWithCoder:decoder];
 	} else {
 		self = [super init];
 	}
@@ -43749,7 +43748,7 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
  */
 - (id) initWithCoder:(NSCoder *)decoder {
 	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [super performSelector:@selector(initWithCoder:) withObject:decoder];
+		self = [(id)super initWithCoder:decoder];
 	} else {
 		self = [super init];
 	}
@@ -43950,7 +43949,7 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
  */
 - (id) initWithCoder:(NSCoder *)decoder {
 	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [super performSelector:@selector(initWithCoder:) withObject:decoder];
+		self = [(id)super initWithCoder:decoder];
 	} else {
 		self = [super init];
 	}
@@ -44112,7 +44111,7 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
  */
 - (id) initWithCoder:(NSCoder *)decoder {
 	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [super performSelector:@selector(initWithCoder:) withObject:decoder];
+		self = [(id)super initWithCoder:decoder];
 	} else {
 		self = [super init];
 	}
@@ -44352,7 +44351,7 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
  */
 - (id) initWithCoder:(NSCoder *)decoder {
 	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [super performSelector:@selector(initWithCoder:) withObject:decoder];
+		self = [(id)super initWithCoder:decoder];
 	} else {
 		self = [super init];
 	}
@@ -44514,7 +44513,7 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
  */
 - (id) initWithCoder:(NSCoder *)decoder {
 	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [super performSelector:@selector(initWithCoder:) withObject:decoder];
+		self = [(id)super initWithCoder:decoder];
 	} else {
 		self = [super init];
 	}
@@ -44682,7 +44681,7 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
  */
 - (id) initWithCoder:(NSCoder *)decoder {
 	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [super performSelector:@selector(initWithCoder:) withObject:decoder];
+		self = [(id)super initWithCoder:decoder];
 	} else {
 		self = [super init];
 	}
@@ -45000,7 +44999,7 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
  */
 - (id) initWithCoder:(NSCoder *)decoder {
 	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [super performSelector:@selector(initWithCoder:) withObject:decoder];
+		self = [(id)super initWithCoder:decoder];
 	} else {
 		self = [super init];
 	}
@@ -45110,7 +45109,7 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
  */
 - (id) initWithCoder:(NSCoder *)decoder {
 	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [super performSelector:@selector(initWithCoder:) withObject:decoder];
+		self = [(id)super initWithCoder:decoder];
 	} else {
 		self = [super init];
 	}
@@ -45272,7 +45271,7 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
  */
 - (id) initWithCoder:(NSCoder *)decoder {
 	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [super performSelector:@selector(initWithCoder:) withObject:decoder];
+		self = [(id)super initWithCoder:decoder];
 	} else {
 		self = [super init];
 	}
@@ -51385,4 +51384,3 @@ static LibreAccessServiceSoap11Binding_envelope *LibreAccessServiceSoap11Binding
 	[super dealloc];
 }
 @end
-#endif
