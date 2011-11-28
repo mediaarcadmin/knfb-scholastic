@@ -72,6 +72,7 @@ static NSInteger const kSCHLibreAccessWebServiceVaid = 33;
 - (void)fromObject:(NSDictionary *)object intoAnnotationsRequestContentItem:(LibreAccessServiceSvc_AnnotationsRequestContentItem *)intoObject;
 - (void)fromObject:(NSDictionary *)object intoPrivateAnnotationsRequest:(LibreAccessServiceSvc_PrivateAnnotationsRequest *)intoObject;
 - (void)fromObject:(NSDictionary *)object intoAnnotationsItem:(LibreAccessServiceSvc_AnnotationsItem *)intoObject;
+- (BOOL)annotationsContentItemHasChanges:(NSDictionary *)annotationsContentItem;
 - (void)fromObject:(NSDictionary *)object intoAnnotationsContentItem:(LibreAccessServiceSvc_AnnotationsContentItem *)intoObject;
 - (void)fromObject:(NSDictionary *)object intoPrivateAnnotations:(LibreAccessServiceSvc_PrivateAnnotations *)intoObject;
 - (void)fromObject:(NSDictionary *)object intoHighlight:(LibreAccessServiceSvc_Highlight *)intoObject;
@@ -400,6 +401,8 @@ static NSInteger const kSCHLibreAccessWebServiceVaid = 33;
 	return(ret);							
 }
 
+// we save books with a modified LastPage and within each book annotations that 
+// have been modified
 - (BOOL)saveProfileContentAnnotations:(NSArray *)annotations
 {
 	BOOL ret = NO;
@@ -1508,6 +1511,7 @@ static NSInteger const kSCHLibreAccessWebServiceVaid = 33;
 	}
 }	
 
+// we only save those annotation content items that have changed, i.e. the last page has also change
 - (void)fromObject:(NSDictionary *)object intoAnnotationsItem:(LibreAccessServiceSvc_AnnotationsItem *)intoObject
 {
 	if (object != nil && intoObject != nil) {
@@ -1515,14 +1519,35 @@ static NSInteger const kSCHLibreAccessWebServiceVaid = 33;
 		intoObject.AnnotationsContentList = annotationsContentList;
         [annotationsContentList release];
 		for (NSDictionary *item in [self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceAnnotationsContentItem]]) {
-			LibreAccessServiceSvc_AnnotationsContentItem *annotationsContentItem = [[LibreAccessServiceSvc_AnnotationsContentItem alloc] init];
-			[self fromObject:item intoAnnotationsContentItem:annotationsContentItem];
-			[intoObject.AnnotationsContentList addAnnotationsContentItem:annotationsContentItem];
-			[annotationsContentItem release];
+            if ([self annotationsContentItemHasChanges:item] == YES) {
+                LibreAccessServiceSvc_AnnotationsContentItem *annotationsContentItem = [[LibreAccessServiceSvc_AnnotationsContentItem alloc] init];
+                [self fromObject:item intoAnnotationsContentItem:annotationsContentItem];
+                [intoObject.AnnotationsContentList addAnnotationsContentItem:annotationsContentItem];
+                [annotationsContentItem release];
+            }
 		}
 		intoObject.profileID = [self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceProfileID]];
 	}
 }												
+
+- (BOOL)annotationsContentItemHasChanges:(NSDictionary *)annotationsContentItem
+{
+    BOOL ret = NO;
+    
+    if (annotationsContentItem != nil) {
+		NSDictionary *privateAnnotations = [annotationsContentItem valueForKey:kSCHLibreAccessWebServicePrivateAnnotations];        
+        if (privateAnnotations != nil) {
+            NSDictionary *lastPage = [privateAnnotations valueForKey:kSCHLibreAccessWebServiceLastPage];
+            if (lastPage != nil) {
+                if ([[lastPage valueForKey:kSCHLibreAccessWebServiceAction] saveActionValue] != kSCHSaveActionsNone) {
+                    ret = YES;
+                }
+            }
+        }
+    }
+    
+    return ret;
+}
 
 - (void)fromObject:(NSDictionary *)object intoAnnotationsContentItem:(LibreAccessServiceSvc_AnnotationsContentItem *)intoObject
 {

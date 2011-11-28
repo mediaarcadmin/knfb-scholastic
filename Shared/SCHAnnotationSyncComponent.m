@@ -496,6 +496,9 @@ NSString * const SCHAnnotationSyncComponentCompletedProfileIDs = @"SCHAnnotation
 	NSArray *changedStates = [NSArray arrayWithObjects:[NSNumber numberWithStatus:kSCHStatusModified],
                               [NSNumber numberWithStatus:kSCHStatusDeleted], nil];
     // we don't check all the annotations as if they have changed then the last page has also change
+    // the resulting array with contain all books and annotations for this profile when we eventually 
+    // call the annotation save it will only save books with a modified LastPage and within each book
+    // annotations that have been modified
 	[fetchRequest setPredicate:[NSPredicate predicateWithFormat:
                                 @"ProfileID == %@ AND ANY AnnotationsContentItem.PrivateAnnotations.LastPage.State IN %@", 
                                 profileID, changedStates]];
