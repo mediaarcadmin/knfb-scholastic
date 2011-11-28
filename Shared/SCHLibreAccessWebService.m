@@ -401,6 +401,8 @@ static NSInteger const kSCHLibreAccessWebServiceVaid = 33;
 	return(ret);							
 }
 
+// we save books with a modified LastPage and within each book annotations that 
+// have been modified
 - (BOOL)saveProfileContentAnnotations:(NSArray *)annotations
 {
 	BOOL ret = NO;
