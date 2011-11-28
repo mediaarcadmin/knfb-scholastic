@@ -259,7 +259,7 @@ static SCHDictionaryAccessManager *sharedManager = nil;
 	
     [fetchRequest release], fetchRequest = nil;
 	
-	if (!results) {
+	if (!results || [results count] == 0) {
 		NSLog(@"error when retrieving word %@: %@", baseWord, [error localizedDescription]);
 		return nil;
 	}
