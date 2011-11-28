@@ -73,7 +73,6 @@ static const CGFloat kProfilePhoneTableOffsetLandscape = 20.0f;
     self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithCustomView:self.settingsButton] autorelease];
     
     UIImageView *logoImageView = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"logo.png"]] autorelease];
-    logoImageView.frame = CGRectZero;
     logoImageView.autoresizingMask = (UIViewAutoresizingFlexibleWidth
                                       | UIViewAutoresizingFlexibleLeftMargin
                                       | UIViewAutoresizingFlexibleRightMargin
@@ -81,7 +80,7 @@ static const CGFloat kProfilePhoneTableOffsetLandscape = 20.0f;
                                       | UIViewAutoresizingFlexibleBottomMargin
                                       | UIViewAutoresizingFlexibleTopMargin);
     logoImageView.contentMode = UIViewContentModeScaleAspectFit;
-    UIView *container = [[[UIView alloc] initWithFrame:CGRectZero] autorelease];
+    UIView *container = [[[UIView alloc] initWithFrame:logoImageView.frame] autorelease];
     [container addSubview:logoImageView];    
     self.logoContainer = container;
     self.navigationItem.titleView = container;
