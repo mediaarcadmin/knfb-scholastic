@@ -80,6 +80,7 @@ static const CGFloat kDeregisterContentHeightLandscape = 380;
     self.promptLabel.text = [NSString stringWithFormat:self.promptLabel.text, username];
     
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
+                
         [[NSNotificationCenter defaultCenter] addObserver:self 
                                                  selector:@selector(keyboardWillShow:) 
                                                      name:UIKeyboardWillShowNotification
