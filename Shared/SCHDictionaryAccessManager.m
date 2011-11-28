@@ -270,7 +270,6 @@ static SCHDictionaryAccessManager *sharedManager = nil;
     
 	if ([results count] != 1) {
 		NSLog(@"error when retrieving word %@: %d results retrieved.", baseWord, [results count]);
-		return nil;
 	}
     
     

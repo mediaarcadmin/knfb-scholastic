@@ -1511,17 +1511,22 @@ static SCHDictionaryDownloadManager *sharedManager = nil;
                                         }
                                         
                                         if (!results || [results count] != 1) {
-                                            int resultCount = -1;
-                                            if (results) {
-                                                resultCount = [results count];
+                                            NSLog(@"error when retrieving word %@: %d results retrieved.", dictWord, [results count]);
+                                            
+                                            // we assume that there is only one valid word form for each word
+                                            // therefore we delete existing entries to remove duplicates, then recreate from scratch
+                                            if ([results count] > 1) {
+                                                NSLog(@"Multiple results: deleting existing word form objects, then replacing with new from update file.");
+                                                
+                                                for (SCHDictionaryWordForm *deletedEntry in results) {
+                                                    [context deleteObject:deletedEntry];
+                                                }
                                             }
                                             
-                                            NSLog(@"error when retrieving word %@: %d results retrieved.", dictWord, resultCount);
                                             dictionaryWordForm = nil;
                                         } else {
                                             dictionaryWordForm = [results objectAtIndex:0];
                                         }
-                                        
                                         
                                         results = nil;
                                         
