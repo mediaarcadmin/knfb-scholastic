@@ -1339,10 +1339,18 @@ static SCHDictionaryDownloadManager *sharedManager = nil;
                                 if (!results) {
                                     NSLog(@"error when retrieving word with ID %@: %@", [NSString stringWithUTF8String:entryID], [error localizedDescription]);
                                     entry = nil;
-                                }
-                                
-                                if ([results count] != 1) {
+                                } else if ([results count] != 1) {
+                                    // we assume that there is only one valid entry for each word/category grouping
+                                    // therefore we delete existing entries to remove duplicates, then recreate from scratch
+
                                     NSLog(@"error when retrieving word with ID %@: %d results retrieved.", [NSString stringWithUTF8String:entryID], [results count]);
+                                    
+                                    NSLog(@"Multiple results: deleting existing entry objects, then replacing with new from update file.");
+                                    
+                                    for (SCHDictionaryEntry *deletedEntry in results) {
+                                        [context deleteObject:deletedEntry];
+                                    }
+                                    
                                     entry = nil;
                                 } else {
                                     entry = [results objectAtIndex:0];
@@ -1518,8 +1526,8 @@ static SCHDictionaryDownloadManager *sharedManager = nil;
                                             if ([results count] > 1) {
                                                 NSLog(@"Multiple results: deleting existing word form objects, then replacing with new from update file.");
                                                 
-                                                for (SCHDictionaryWordForm *deletedEntry in results) {
-                                                    [context deleteObject:deletedEntry];
+                                                for (SCHDictionaryWordForm *deletedWordForm in results) {
+                                                    [context deleteObject:deletedWordForm];
                                                 }
                                             }
                                             

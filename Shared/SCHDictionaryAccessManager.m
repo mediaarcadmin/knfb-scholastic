@@ -209,14 +209,13 @@ static SCHDictionaryAccessManager *sharedManager = nil;
 	
 	[fetchRequest release];
 	
-	if (results == nil) {
+	if (!results || [results count] == 0) {
 		NSLog(@"error when retrieving definition for word %@: %@", dictionaryWord, [error localizedDescription]);
 		return nil;
 	}
 	
-	if ([results count] != 1) {
+	if ([results count] > 1) {
 		NSLog(@"error when retrieving definition for word %@: %d results retrieved.", dictionaryWord, [results count]);
-		return nil;
 	}
     
     SCHDictionaryEntry *entry = [results objectAtIndex:0];
