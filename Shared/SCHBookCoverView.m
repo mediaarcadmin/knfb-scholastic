@@ -21,6 +21,7 @@
 - (void)updateCachedImage:(UIImage *)thumbImage atPath:(NSString *)thumbPath forIdentifier:(SCHBookIdentifier *)localIdentifier;
 - (void)resizeElementsForThumbSize: (CGSize) thumbSize;
 - (void)deferredRefreshBookCoverView;
+- (void)cachedImageFailureForBookIdentifier:(SCHBookIdentifier *)identifier;
 
 @property (nonatomic, retain) UIImageView *coverImageView;
 @property (nonatomic, retain) NSString *currentImageName;
@@ -326,6 +327,32 @@
     }
 }
 
+- (void)cachedImageFailureForBookIdentifier:(SCHBookIdentifier *)anIdentifier
+{
+    NSAssert([NSThread isMainThread] == YES, @"cachedImageFailureForBookIdentifier MUST be executed on the main thread");
+    
+    AppDelegate_Shared *appDelegate = (AppDelegate_Shared *)[[UIApplication sharedApplication] delegate];    
+    NSManagedObjectContext *context = appDelegate.coreDataHelper.managedObjectContext;
+    
+    SCHAppBook *book = [[SCHBookManager sharedBookManager] bookWithIdentifier:anIdentifier inManagedObjectContext:context];
+    
+    // Nuclear option, delete the locally stored files
+    [book setBookCoverExists:[NSNumber numberWithBool:NO]];
+    [book setXPSExists:[NSNumber numberWithBool:NO]];
+    [book deleteXPSFile];
+    [book deleteCoverFile];
+    
+    [book setProcessingState:SCHBookProcessingStateCachedCoverError];
+    
+    NSError *error;
+    
+    if (![context save:&error]) {
+        NSLog(@"Failed to save book after cachedImageFailureForBookIdentifier: %@", anIdentifier);
+    }
+
+    [self deferredRefreshBookCoverView];
+}
+
 - (void)deferredRefreshBookCoverView
 {
     // if no identifier has been set, then we don't need to refresh the image
@@ -380,12 +407,19 @@
             case SCHBookProcessingStateURLsNotPopulated:
             case SCHBookProcessingStateDownloadFailed:
             case SCHBookProcessingStateUnableToAcquireLicense:
+            case SCHBookProcessingStateCachedCoverError:
             case SCHBookProcessingStateError:
             case SCHBookProcessingStateBookVersionNotSupported:
                 [self.activitySpinner stopAnimating];
                 self.errorBadge.hidden = NO;
                 break;
-                
+            case SCHBookProcessingStateReadyToRead:
+                // Something has gone severely wrong, we have no book cover and yet the book is ready to read
+                [self.activitySpinner stopAnimating];
+                dispatch_async(dispatch_get_main_queue(), ^{  
+                    [self cachedImageFailureForBookIdentifier:localIdentifier];
+                });
+                break;
             default:
                 break;
         }
@@ -528,6 +562,7 @@
         case SCHBookProcessingStateDownloadFailed:
         case SCHBookProcessingStateURLsNotPopulated:
         case SCHBookProcessingStateUnableToAcquireLicense:
+        case SCHBookProcessingStateCachedCoverError:
         case SCHBookProcessingStateBookVersionNotSupported:
             self.progressView.alpha = 1.0f;
             self.bookTintView.hidden = NO;
@@ -652,11 +687,15 @@
     dispatch_async(dispatch_get_main_queue(), ^{        
         // first check if the identifier has changed; if so, don't set the processed thumbnail
         if ([self.identifier isEqual:localIdentifier]) {
-            self.currentImageName = thumbPath;
-            self.coverImageView.image = thumbImage;
-            self.coverImageView.hidden = NO;
-            self.showingPlaceholder = NO;
-            [self resizeElementsForThumbSize:thumbImage.size];
+            if (thumbImage) {
+                self.currentImageName = thumbPath;
+                self.coverImageView.image = thumbImage;
+                self.coverImageView.hidden = NO;
+                self.showingPlaceholder = NO;
+                [self resizeElementsForThumbSize:thumbImage.size];
+            } else {
+                [self cachedImageFailureForBookIdentifier:localIdentifier];
+            }
         }
     });
 }

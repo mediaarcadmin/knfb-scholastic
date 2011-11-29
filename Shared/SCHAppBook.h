@@ -16,6 +16,7 @@ typedef enum
 {
 	kSCHAppBookStillBeingProcessedError = 0,
     kSCHAppBookUnableToAcquireLicenseError,
+    kSCHAppBookCachedCoverError,
     kSCHAppBookDownloadFailedError,
     kSCHAppBookURLsNotPopulatedError,
     kSCHAppBookUnspecifiedError
@@ -156,6 +157,8 @@ typedef enum {
 - (SCHAppBookFeatures) bookFeatures;
 
 - (void)setForcedProcessing:(BOOL)forceProcess;
+- (void)deleteXPSFile;
+- (void)deleteCoverFile;
 
 @end
 

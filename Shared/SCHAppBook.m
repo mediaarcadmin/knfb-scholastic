@@ -519,6 +519,9 @@ NSString * const kSCHAppBookFilenameSeparator = @"-";
 		case SCHBookProcessingStateUnableToAcquireLicense:
 			status = @"Error Unable to Acquire License";
 			break;
+        case SCHBookProcessingStateCachedCoverError:
+			status = @"Error Cached Cover";
+			break;
 		case SCHBookProcessingStateError:
 			status = @"Error";
 			break;
@@ -580,6 +583,9 @@ NSString * const kSCHAppBookFilenameSeparator = @"-";
             case SCHBookProcessingStateUnableToAcquireLicense:
                 *error = [self errorWithCode:kSCHAppBookUnableToAcquireLicenseError];
                 break;
+            case SCHBookProcessingStateCachedCoverError:
+                *error = [self errorWithCode:kSCHAppBookCachedCoverError];
+                break;
             case SCHBookProcessingStateDownloadFailed:
                 *error = [self errorWithCode:kSCHAppBookDownloadFailedError];
                 break;
@@ -625,6 +631,38 @@ NSString * const kSCHAppBookFilenameSeparator = @"-";
     self.ForceProcess = [NSNumber numberWithBool:forceProcess];
 }
 
+- (void)deleteXPSFile
+{
+    NSError *error = nil;
+    
+    NSFileManager *localManager = [[[NSFileManager alloc] init] autorelease];
+    
+    if ([localManager fileExistsAtPath:self.xpsPath]) {
+        
+        if ([localManager removeItemAtPath:self.xpsPath 
+                                     error:&error] == NO) {
+            NSLog(@"Failed to delete XPS file for %@, error: %@", 
+                  self, [error localizedDescription]);
+        }
+    }
+}
+
+- (void)deleteCoverFile
+{
+    NSError *error = nil;
+    
+    NSFileManager *localManager = [[[NSFileManager alloc] init] autorelease];
+    
+    if ([localManager fileExistsAtPath:self.coverImagePath]) {
+        
+        if ([localManager removeItemAtPath:self.coverImagePath 
+                                     error:&error] == NO) {
+            NSLog(@"Failed to delete cover file for %@, error: %@", 
+                  self, [error localizedDescription]);
+        }
+    }
+}
+
 #pragma mark - Errors
 
 - (NSError *)errorWithCode:(NSInteger)code
@@ -637,6 +675,9 @@ NSString * const kSCHAppBookFilenameSeparator = @"-";
             break;
         case kSCHAppBookUnableToAcquireLicenseError:
             description = NSLocalizedString(@"It has not been possible to acquire a DRM license for this eBook. Please make sure this device is authorized and connected to the internet and try again.", @"Decryption not available error message from AppBook");
+            break;
+        case kSCHAppBookCachedCoverError:
+            description = NSLocalizedString(@"There was a problem retrieving the cover for this eBook. Please try again.", @"Cached Cover error message from AppBook");
             break;
         case kSCHAppBookDownloadFailedError:
             description = NSLocalizedString(@"There was a problem while downloading this eBook. Please make sure this device is connected to the internet and try again.", @"Download failed error message from AppBook");

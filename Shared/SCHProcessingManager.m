@@ -572,6 +572,7 @@ static SCHProcessingManager *sharedManager = nil;
             }
             case SCHBookProcessingStateError:
             case SCHBookProcessingStateUnableToAcquireLicense:
+            case SCHBookProcessingStateCachedCoverError:
             case SCHBookProcessingStateDownloadFailed:
             case SCHBookProcessingStateURLsNotPopulated:
             case SCHBookProcessingStateBookVersionNotSupported:
@@ -746,13 +747,17 @@ static SCHProcessingManager *sharedManager = nil;
             case SCHBookProcessingStateUnableToAcquireLicense:
                 [book setProcessingState:SCHBookProcessingStateReadyForLicenseAcquisition];
                 break;
+            case SCHBookProcessingStateCachedCoverError:
+                book.ForceProcess = [NSNumber numberWithBool:NO];
+                [book setProcessingState:SCHBookProcessingStateNoURLs];
+                break;
             case SCHBookProcessingStateBookVersionNotSupported:
                 [book setProcessingState:SCHBookProcessingStateReadyForRightsParsing];
                 break;
             case SCHBookProcessingStateError:            
             default:
                 if ([book.BookCoverExists boolValue] == NO) {
-                    book.ForceProcess = [NSNumber numberWithBool:YES];
+                    book.ForceProcess = [NSNumber numberWithBool:NO];
                     [book setProcessingState:SCHBookProcessingStateNoURLs];
                 } else if ([book.XPSExists boolValue] == NO) { 
                     book.ForceProcess = [NSNumber numberWithBool:YES];
