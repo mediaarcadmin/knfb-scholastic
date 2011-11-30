@@ -299,8 +299,13 @@ typedef enum
         [self changeToListView:nil];
     }
     
-    if ([[SCHSyncManager sharedSyncManager] isSynchronizing] == NO) {
-        [[SCHSyncManager sharedSyncManager] firstSync:NO requireDeviceAuthentication:NO];
+    // Always force a sync if we are on the sample bookshelf
+    if ([[SCHAppStateManager sharedAppStateManager] isSampleStore]) {
+        [[SCHSyncManager sharedSyncManager] firstSync:YES requireDeviceAuthentication:NO];
+    } else {
+        if ([[SCHSyncManager sharedSyncManager] isSynchronizing] == NO) {
+            [[SCHSyncManager sharedSyncManager] firstSync:NO requireDeviceAuthentication:NO];
+        }
     }
     
 }
