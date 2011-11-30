@@ -9,6 +9,7 @@
 #import "SCHStoryInteractionParser.h"
 #import "SCHStoryInteractionTypes.h"
 #import "USAdditions.h"
+#import "SCHGeometry.h"
 
 // must come after USAdditions.h
 #import <expat/expat.h>
@@ -237,6 +238,50 @@ static NSString *extractXmlAttribute(const XML_Char **atts, const char *key)
 
 #pragma mark - HotSpot
 
+static CGPathRef parseBase64EncodedPathAndFitToHotSpotRect(NSString *text, CGRect hotSpotRect)
+{
+    NSData *data = [NSData dataWithBase64EncodedString:text];
+    const uint8_t *bytes = (const uint8_t *)[data bytes];
+    int numberOfPoints = [data length] / 4;
+    CGPoint *points = (CGPoint *)malloc(sizeof(CGPoint)*numberOfPoints);
+    float minx, maxx, miny, maxy;
+    for (NSInteger i = 0; i < numberOfPoints; ++i, bytes += 4) {
+        float x = (bytes[0] << 8) + (bytes[1]);
+        float y = (bytes[2] << 8) + (bytes[3]);
+        points[i] = CGPointMake(x, y);
+        if (i == 0) {
+            minx = maxx = x;
+            miny = maxy = y;
+        } else {
+            minx = MIN(minx, x);
+            miny = MIN(miny, y);
+            maxx = MAX(maxx, x);
+            maxy = MAX(maxy, y);
+        }
+    }
+    
+    // fit the path inside the hotSpotRect
+    CGAffineTransform trans1 = CGAffineTransformMakeTranslation(-minx, -miny);
+    CGAffineTransform scale =  CGAffineTransformMakeScale(CGRectGetWidth(hotSpotRect)/(maxx-minx),
+                                                          CGRectGetHeight(hotSpotRect)/(maxy-miny));
+    CGAffineTransform trans2 = CGAffineTransformMakeTranslation(CGRectGetMinX(hotSpotRect), CGRectGetMinY(hotSpotRect));
+    CGAffineTransform pathTransform = CGAffineTransformConcat(CGAffineTransformConcat(trans1, scale), trans2);
+    
+    CGMutablePathRef path = CGPathCreateMutable();
+    CGPathMoveToPoint(path, &pathTransform, points[0].x, points[0].y);
+    for (NSInteger i = 1; i < numberOfPoints; ++i) {
+        CGPathAddLineToPoint(path, &pathTransform, points[i].x, points[i].y);
+    }
+    CGPathCloseSubpath(path);
+    free(points);
+    
+    CGPathRef pathCopy = CGPathCreateCopy(path);
+    CGPathRelease(path);
+    
+    [(id)pathCopy autorelease];
+    return pathCopy;
+}
+
 @implementation SCHStoryInteractionHotSpotQuestion (Parse)
 
 - (void)startElement:(const XML_Char *)name attributes:(const XML_Char **)attributes parser:(SCHStoryInteractionParser *)parser
@@ -260,23 +305,10 @@ static NSString *extractXmlAttribute(const XML_Char **atts, const char *key)
     if (strcmp(name, "Question1") == 0 || strcmp(name, "Question2") == 0 || strcmp(name, "Question3") == 0) {
         [parser endQuestion];
     } else if (strcmp(name, "Data") == 0) {
-        SCHStoryInteractionHotSpotQuestion *question = (SCHStoryInteractionHotSpotQuestion *)parser.question;
-        NSData *data = [NSData dataWithBase64EncodedString:parser.text];
-        const uint8_t *bytes = (const uint8_t *)[data bytes];
-        CGMutablePathRef path = CGPathCreateMutable();
-        for (NSInteger i = 0, n = [data length]; i < n; i += 4) {
-            float x = (bytes[i+0] << 8) + (bytes[i+1]);
-            float y = (bytes[i+2] << 8) + (bytes[i+3]);
-            if (i == 0) {
-                CGPathMoveToPoint(path, NULL, x, y);
-            } else {
-                CGPathAddLineToPoint(path, NULL, x, y);
-            }
+        if ([parser.text length] > 0) {
+            SCHStoryInteractionHotSpotQuestion *question = (SCHStoryInteractionHotSpotQuestion *)parser.question;
+            question.path = parseBase64EncodedPathAndFitToHotSpotRect(parser.text, self.hotSpotRect);
         }
-        CGPathRef pathCopy = CGPathCreateCopy(path);
-        question.path = pathCopy;
-        CGPathRelease(path);
-        CGPathRelease(pathCopy);
     } else {
         [super endElement:name parser:parser];
     }
