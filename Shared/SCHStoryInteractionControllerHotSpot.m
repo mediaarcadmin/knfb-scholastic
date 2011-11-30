@@ -84,7 +84,7 @@
 - (SCHStoryInteractionHotSpotQuestion *)currentQuestion
 {
     if (questions == nil) {
-        CGSize pageSize = CGRectApplyAffineTransform([self hostView].bounds, [self viewToPageTransform]).size;
+        CGSize pageSize = [self.delegate sizeOfPageAtIndex:self.storyInteraction.documentPageNumber];
         self.questions = [(SCHStoryInteractionHotSpot *)self.storyInteraction questionsWithPageAssociation:self.pageAssociation
                                                                                                   pageSize:pageSize];
     }
