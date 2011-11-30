@@ -12,6 +12,7 @@
 #import "SCHStarView.h"
 
 #define kNumberOfStars 20
+#define debug_show_answer_path_and_hotspot_rect 0
 
 @interface SCHStoryInteractionControllerHotSpot ()
 
@@ -62,6 +63,10 @@
 - (SCHFrameStyle)frameStyleForViewAtIndex:(NSInteger)viewIndex
 {
     CGRect frameInPageCoords = CGRectApplyAffineTransform([self overlaidTitleFrame], [self viewToPageTransform]);
+    if (self.pageAssociation == SCHStoryInteractionQuestionOnRightPage) {
+        frameInPageCoords.origin.x += [self.delegate sizeOfPageAtIndex:self.storyInteraction.documentPageNumber].width;
+    }
+    
     CGRect hotspotRect = [self currentQuestion].hotSpotRect;
     if (CGRectIntersectsRect(hotspotRect, frameInPageCoords)) {
         return SCHStoryInteractionTitleOverlaysContentsAtBottom;
@@ -84,7 +89,7 @@
 - (SCHStoryInteractionHotSpotQuestion *)currentQuestion
 {
     if (questions == nil) {
-        CGSize pageSize = CGRectApplyAffineTransform([self hostView].bounds, [self viewToPageTransform]).size;
+        CGSize pageSize = [self.delegate sizeOfPageAtIndex:self.storyInteraction.documentPageNumber];
         self.questions = [(SCHStoryInteractionHotSpot *)self.storyInteraction questionsWithPageAssociation:self.pageAssociation
                                                                                                   pageSize:pageSize];
     }
@@ -107,6 +112,14 @@
     [self.pageImageView addGestureRecognizer:tap];
     [self.pageImageView setUserInteractionEnabled:YES];
     [tap release];
+    
+#if debug_show_answer_path_and_hotspot_rect
+    CALayer *pathLayer = [CALayer layer];
+    pathLayer.delegate = self;
+    pathLayer.frame = [self.pageImageView bounds];
+    [self.pageImageView.layer addSublayer:pathLayer];
+    [pathLayer setNeedsDisplay];
+#endif
 }
 
 - (void)zoomOutAndCloseWithSuccess:(BOOL)success
@@ -150,12 +163,14 @@
 
 - (CGPoint)viewToPage:(CGPoint)pointInView;
 {
+    CGPoint pointOnPage = CGPointApplyAffineTransform(pointInView, [self viewToPageTransform]);
+
     // if presented on right page only, translate the tapped point as if the left page was present
     if (self.pageAssociation == SCHStoryInteractionQuestionOnRightPage) {
-        pointInView.x += CGRectGetWidth(self.hostView.bounds);
+        pointOnPage.x += [self.delegate sizeOfPageAtIndex:self.storyInteraction.documentPageNumber].width;
     }
-    
-    return CGPointApplyAffineTransform(pointInView, [self viewToPageTransform]);
+
+    return pointOnPage;
 }
 
 - (void)imageTapped:(UITapGestureRecognizer *)tap
@@ -171,7 +186,15 @@
           NSStringFromCGPoint(pointInPage),
           NSStringFromCGRect([self currentQuestion].hotSpotRect));
     
-    if (CGRectContainsPoint([self currentQuestion].hotSpotRect, pointInPage)) {
+    SCHStoryInteractionHotSpotQuestion *question = [self currentQuestion];
+    BOOL correct;
+    if (question.path != NULL) {
+        correct = CGPathContainsPoint(question.path, NULL, pointInPage, NO);
+    } else {
+        correct = CGRectContainsPoint(question.hotSpotRect, pointInPage);
+    }
+    
+    if (correct) {
         [self correctTapAtPoint:pointInView];
     } else {
         [self incorrectTapAtPoint:pointInView];
@@ -276,6 +299,30 @@
     }];
         
 }
+
+
+#if debug_show_answer_path_and_hotspot_rect
+- (void)drawLayer:(CALayer *)layer inContext:(CGContextRef)ctx
+{
+    CGAffineTransform pageToView = CGAffineTransformInvert([self viewToPageTransform]);
+    NSLog(@"pageToView: %@", NSStringFromCGAffineTransform(pageToView));
+    
+    CGContextConcatCTM(ctx, pageToView);
+    if (self.pageAssociation == SCHStoryInteractionQuestionOnRightPage) {
+        CGSize pageSize = [self.delegate sizeOfPageAtIndex:self.storyInteraction.documentPageNumber];
+        CGContextTranslateCTM(ctx, -pageSize.width, 0);
+    }
+    
+    CGContextSetRGBStrokeColor(ctx, 0, 1, 0, 1);
+    CGContextSetLineWidth(ctx, 2);
+    CGContextAddPath(ctx, [[self currentQuestion] path]);
+    CGContextStrokePath(ctx);
+    
+    CGContextSetRGBStrokeColor(ctx, 1, 0, 0, 1);
+    CGContextAddRect(ctx, [[self currentQuestion] hotSpotRect]);
+    CGContextStrokePath(ctx);
+}
+#endif
 
 #pragma mark - Override for SCHStoryInteractionControllerStateReactions
 

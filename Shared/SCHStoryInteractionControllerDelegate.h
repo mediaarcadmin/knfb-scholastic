@@ -30,6 +30,9 @@
 // get a snapshot of the current page
 - (UIImage *)currentPageSnapshot;
 
+// get the size of a book page in page coordinates
+- (CGSize)sizeOfPageAtIndex:(NSInteger)pageIndex;
+
 // transform to convert view coordinates to page coordinates
 - (CGAffineTransform)viewToPageTransform;
 

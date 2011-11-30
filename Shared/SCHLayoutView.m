@@ -1073,7 +1073,11 @@ CGAffineTransform transformRectToFitRect(CGRect sourceRect, CGRect targetRect, B
 
 - (CGRect)pageRect
 {
-    return self.pageTurningView.rightPageFrame;
+    if (self.pageTurningView.leftPageIndex != NSUIntegerMax) {
+        return self.pageTurningView.leftPageFrame;
+    } else {
+        return self.pageTurningView.rightPageFrame;
+    }
 }
 
 @end

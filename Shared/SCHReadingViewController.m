@@ -496,6 +496,10 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     // this before the readingView is added to the hierarchy to prevent
     // an inefficient double-layout in that view (also fixes a visual glitch)
     [self.storyInteractionButton setIsYounger:self.youngerMode];
+    CGRect buttonFrame = self.storyInteractionButtonView.frame;
+    buttonFrame.size = [self.storyInteractionButton imageForState:UIControlStateNormal].size;
+    buttonFrame.origin.x = CGRectGetWidth(self.view.frame) - buttonFrame.size.width;
+    self.storyInteractionButtonView.frame = buttonFrame;
     [self setupStoryInteractionButtonForCurrentPagesAnimated:NO];
 
     if (self.readingView) {
@@ -608,7 +612,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     
     self.navigationToolbar = aNavigationToolbar;
     [aNavigationToolbar release];
-    
+ 
     // if the book has no story interactions disable the button
     self.storyInteractionsListButton.enabled = [[self.bookStoryInteractions allStoryInteractionsExcludingInteractionWithPage:NO] count] > 0;
         
@@ -2084,29 +2088,31 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 
 - (void)readingView:(SCHReadingView *)aReadingView hasMovedToPageAtIndex:(NSUInteger)pageIndex
 {
-    // Increment pages read only if we have moved forwards and only if the page advance is <= 1
-    // This will exclude larger jumps made by the scrubber
-    // It's actually a cheat because we don't differentiate between user initiated page turns and page turns from the scrubber or book opening
-    // So we will incorrectly count it if you scrub forward 1 page or if you open the book to the page after the 1st page
-    // We also fail to count the last page the user reads before closing the book
-    // These are corner-cases so don't warrant a more complex solution that is triggered from something other than a page turn.
-    if (self.currentPageIndex != NSUIntegerMax) {
-        NSUInteger oldPageIndex = self.currentPageIndex;
-        NSUInteger newPageIndex = pageIndex;
+    if (self.readingView == aReadingView) {
+        // Increment pages read only if we have moved forwards and only if the page advance is <= 1
+        // This will exclude larger jumps made by the scrubber
+        // It's actually a cheat because we don't differentiate between user initiated page turns and page turns from the scrubber or book opening
+        // So we will incorrectly count it if you scrub forward 1 page or if you open the book to the page after the 1st page
+        // We also fail to count the last page the user reads before closing the book
+        // These are corner-cases so don't warrant a more complex solution that is triggered from something other than a page turn.
+        if (self.currentPageIndex != NSUIntegerMax) {
+            NSUInteger oldPageIndex = self.currentPageIndex;
+            NSUInteger newPageIndex = pageIndex;
+            
+            if (newPageIndex > oldPageIndex) {
+                NSUInteger pagesRead = newPageIndex - oldPageIndex;
+                if (pagesRead <= 1) {
+                    [self.bookStatistics increasePagesReadBy:pagesRead];
+                }
+            }        
+        }
         
-        if (newPageIndex > oldPageIndex) {
-            NSUInteger pagesRead = newPageIndex - oldPageIndex;
-            if (pagesRead <= 1) {
-                [self.bookStatistics increasePagesReadBy:pagesRead];
-            }
-        }        
+        self.currentPageIndex = pageIndex;
+        self.currentBookProgress = -1;
+        self.currentPageIndices = NSMakeRange(NSNotFound, 0);
+        
+        [self readingViewHasMoved];
     }
-    
-    self.currentPageIndex = pageIndex;
-    self.currentBookProgress = -1;
-    self.currentPageIndices = NSMakeRange(NSNotFound, 0);
-    
-    [self readingViewHasMoved];
 }
 
 - (void)readingView:(SCHReadingView *)readingView hasMovedToPageIndicesInRange:(NSRange)pageIndicesRange withFocusedPageIndex:(NSUInteger)pageIndex;
@@ -2809,8 +2815,12 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     }
 
     NSInteger pageIndex = [self storyInteractionPageIndices].location;
-    CGAffineTransform pageToView = [(SCHLayoutView *)self.readingView pageTurningViewTransformForPageAtIndex:pageIndex];
-    return CGAffineTransformInvert(pageToView);
+    if (self.readingView) {
+        CGAffineTransform pageToView = [(SCHLayoutView *)self.readingView pageTurningViewTransformForPageAtIndex:pageIndex];
+        return CGAffineTransformInvert(pageToView);
+    } else {
+        return CGAffineTransformIdentity;
+    }
 }
 
 #pragma mark - SCHBookStoryInteractionsDelegate
