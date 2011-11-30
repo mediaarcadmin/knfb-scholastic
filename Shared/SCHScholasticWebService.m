@@ -103,9 +103,15 @@ static NSString * const kSCHScholasticWebServiceAttributeErrorDesc = @"errorDesc
                                       requestInfo:nil 
                                            result:nil];
 					}
-				} else if([(id)self.delegate respondsToSelector:@selector(method:didCompleteWithResult:)]) {					
+				} else if([(id)self.delegate respondsToSelector:@selector(method:didCompleteWithResult:userInfo:)]) {					
+                    NSDate *serverDate = [self.rfc822DateFormatter dateFromString:[operation.responseHeaders objectForKey:@"Date"]];
+                    NSDictionary *userInfo = nil;
+                    if (serverDate != nil) {
+                        userInfo = [NSDictionary dictionaryWithObject:serverDate forKey:@"serverDate"];
+                    }
 					[(id)self.delegate method:kSCHScholasticWebServiceProcessRemote didCompleteWithResult:
-					 [NSDictionary dictionaryWithObject:token forKey:kSCHScholasticWebServicePToken]];
+					 [NSDictionary dictionaryWithObject:token forKey:kSCHScholasticWebServicePToken]
+                                     userInfo:userInfo];
 				}
 			}
 		}

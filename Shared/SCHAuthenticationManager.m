@@ -607,6 +607,7 @@ NSTimeInterval const kSCHAuthenticationManagerSecondsInAMinute = 60.0;
 #pragma mark - BITAPIProxy Delegate methods
 
 - (void)method:(NSString *)method didCompleteWithResult:(NSDictionary *)result
+      userInfo:(NSDictionary *)userInfo
 {	
     id userKeyValue = [result objectForKey:kSCHLibreAccessWebServiceUserKey];
     id deviceIsDeregisteredValue = [result objectForKey:kSCHLibreAccessWebServiceDeviceIsDeregistered]; 

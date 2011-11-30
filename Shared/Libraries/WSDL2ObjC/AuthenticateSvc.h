@@ -88,12 +88,14 @@
 	AuthenticateSoap11Binding *binding;
 	AuthenticateSoap11BindingResponse *response;
 	id<AuthenticateSoap11BindingResponseDelegate> delegate;
+	NSDictionary *responseHeaders;	
 	NSMutableData *responseData;
 	NSURLConnection *urlConnection;
 }
 @property (nonatomic, retain) AuthenticateSoap11Binding *binding;
 @property (nonatomic, readonly) AuthenticateSoap11BindingResponse *response;
 @property (nonatomic, assign) id<AuthenticateSoap11BindingResponseDelegate> delegate;
+@property (nonatomic, retain) NSDictionary *responseHeaders;
 @property (nonatomic, retain) NSMutableData *responseData;
 @property (nonatomic, retain) NSURLConnection *urlConnection;
 - (id)initWithBinding:(AuthenticateSoap11Binding *)aBinding delegate:(id<AuthenticateSoap11BindingResponseDelegate>)aDelegate;

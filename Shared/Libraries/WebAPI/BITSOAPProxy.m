@@ -14,6 +14,33 @@
 
 @implementation BITSOAPProxy
 
+@synthesize rfc822DateFormatter;
+
+#pragma mark - Object lifecycle
+
+- (void)dealloc
+{
+	[rfc822DateFormatter release], rfc822DateFormatter = nil;
+    
+	[super dealloc];
+}
+
+#pragma mark - Accessor methods
+
+- (NSDateFormatter *)rfc822DateFormatter
+{
+    if (rfc822DateFormatter == nil) {
+        rfc822DateFormatter = [[NSDateFormatter alloc] init];
+        NSLocale *en_US_POSIX = [[[NSLocale alloc] initWithLocaleIdentifier:@"en_US_POSIX"] autorelease];
+        [rfc822DateFormatter setLocale:en_US_POSIX];
+        [rfc822DateFormatter setDateFormat:@"EEE, dd MMM yyyy HH:mm:ss zzz"]; 
+    }
+    
+    return rfc822DateFormatter;
+}
+
+#pragma mark - methods
+
 - (void)reportFault:(SOAPFault *)fault forMethod:(NSString *)method requestInfo:(NSDictionary *)requestInfo
 {
 	if (fault != nil && [(id)self.delegate respondsToSelector:@selector(method:didFailWithError:requestInfo:result:)] == YES) {

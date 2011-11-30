@@ -46027,6 +46027,7 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
 @synthesize binding;
 @synthesize response;
 @synthesize delegate;
+@synthesize responseHeaders;
 @synthesize responseData;
 @synthesize urlConnection;
 - (id)initWithBinding:(LibreAccessServiceSoap11Binding *)aBinding delegate:(id<LibreAccessServiceSoap11BindingResponseDelegate>)aDelegate
@@ -46071,6 +46072,7 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
 		NSLog(@"ResponseStatus: %ld\n", (long)[httpResponse statusCode]);
 		NSLog(@"ResponseHeaders:\n%@", [httpResponse allHeaderFields]);
 	}
+	self.responseHeaders = [httpResponse allHeaderFields];
 	
 	if ([urlResponse.MIMEType rangeOfString:[self.binding MIMEType]].length == 0) {
 		NSError *error = nil;
@@ -46112,6 +46114,7 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
 	[binding release];
 	[response release];
 	delegate = nil;
+	[responseHeaders release];
 	[responseData release];
 	[urlConnection release];
 	

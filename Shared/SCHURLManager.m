@@ -205,6 +205,7 @@ static NSUInteger const kSCHURLManagerMaxConnections = 6;
 #pragma mark - BIT API Proxy Delegate methods
 
 - (void)method:(NSString *)method didCompleteWithResult:(NSDictionary *)result
+      userInfo:(NSDictionary *)userInfo
 {	
 	requestCount--;
 	

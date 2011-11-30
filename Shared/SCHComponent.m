@@ -43,6 +43,7 @@
 #pragma mark - Delegate methods
 
 - (void)method:(NSString *)method didCompleteWithResult:(NSDictionary *)result
+      userInfo:(NSDictionary *)userInfo
 {	
 	if([(id)self.delegate respondsToSelector:@selector(component:didCompleteWithResult:)]) {
 		[(id)self.delegate component:self didCompleteWithResult:nil];		

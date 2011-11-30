@@ -119,6 +119,7 @@ NSInteger const kSCHAccountValidationCredentialsError = 200;
 #pragma mark - BITAPIProxy Delegate methods
 
 - (void)method:(NSString *)method didCompleteWithResult:(NSDictionary *)result
+      userInfo:(NSDictionary *)userInfo
 {
     id pTokenResponse = [result objectForKey:kSCHScholasticWebServicePToken];
     NSError *error = nil;

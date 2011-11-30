@@ -97,6 +97,7 @@ NSString * const SCHBookshelfSyncComponentDidFailNotification = @"SCHBookshelfSy
 }
 
 - (void)method:(NSString *)method didCompleteWithResult:(NSDictionary *)result
+      userInfo:(NSDictionary *)userInfo
 {	
     @try {
         if([method compare:kSCHLibreAccessWebServiceListContentMetadata] == NSOrderedSame) {
@@ -115,14 +116,14 @@ NSString * const SCHBookshelfSyncComponentDidFailNotification = @"SCHBookshelfSy
                 if (self.requestCount < 1) {
                     [[NSNotificationCenter defaultCenter] postNotificationName:SCHBookshelfSyncComponentDidCompleteNotification 
                                                                         object:self];
-                    [super method:method didCompleteWithResult:nil];				
+                    [super method:method didCompleteWithResult:nil userInfo:nil];				
                 }
             } else {
                 [self postBookshelfSyncComponentBookReceivedNotification:list];
                 
                 [[NSNotificationCenter defaultCenter] postNotificationName:SCHBookshelfSyncComponentDidCompleteNotification 
                                                                     object:self];
-                [super method:method didCompleteWithResult:nil];				
+                [super method:method didCompleteWithResult:nil userInfo:nil];				
             }
         }
     }
@@ -296,7 +297,7 @@ NSString * const SCHBookshelfSyncComponentDidFailNotification = @"SCHBookshelfSy
         [[NSNotificationCenter defaultCenter] postNotificationName:SCHBookshelfSyncComponentDidCompleteNotification 
                                                             object:self];
         
-        [super method:nil didCompleteWithResult:nil];			
+        [super method:nil didCompleteWithResult:nil userInfo:nil];			
         
 		ret = NO;
 	}

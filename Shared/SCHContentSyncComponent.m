@@ -90,6 +90,7 @@ NSString * const SCHContentSyncComponentDidFailNotification = @"SCHContentSyncCo
 }
 
 - (void)method:(NSString *)method didCompleteWithResult:(NSDictionary *)result
+      userInfo:(NSDictionary *)userInfo
 {	
     @try {
         if([method compare:kSCHLibreAccessWebServiceSaveContentProfileAssignment] == NSOrderedSame) {	
@@ -113,7 +114,7 @@ NSString * const SCHContentSyncComponentDidFailNotification = @"SCHContentSyncCo
             [self syncUserContentItems:content];
             [[NSNotificationCenter defaultCenter] postNotificationName:SCHContentSyncComponentDidCompleteNotification 
                                                                 object:self];
-            [super method:method didCompleteWithResult:nil];				
+            [super method:method didCompleteWithResult:nil userInfo:nil];				
         }
     }
     @catch (NSException *exception) {

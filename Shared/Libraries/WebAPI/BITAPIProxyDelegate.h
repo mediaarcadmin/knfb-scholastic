@@ -11,7 +11,8 @@
 
 @protocol BITAPIProxyDelegate
 
-- (void)method:(NSString *)method didCompleteWithResult:(NSDictionary *)result;
+- (void)method:(NSString *)method didCompleteWithResult:(NSDictionary *)result 
+      userInfo:(NSDictionary *)userInfo;
 - (void)method:(NSString *)method didFailWithError:(NSError *)error 
    requestInfo:(NSDictionary *)requestInfo
         result:(NSDictionary *)result;

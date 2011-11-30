@@ -86,6 +86,7 @@
 #pragma mark - BITAPIProxy Delegate methods
 
 - (void)method:(NSString *)method didCompleteWithResult:(NSDictionary *)result
+      userInfo:(NSDictionary *)userInfo
 {
 	if([method compare:kSCHLibreAccessWebServiceTokenExchange] == NSOrderedSame) {	
         self.aToken = nil;
@@ -98,7 +99,9 @@
 	}
 }
 
-- (void)method:(NSString *)method didFailWithError:(NSError *)error userInfo:(NSDictionary *)userInfo
+- (void)method:(NSString *)method didFailWithError:(NSError *)error 
+   requestInfo:(NSDictionary *)requestInfo
+        result:(NSDictionary *)result
 {
     NSLog(@"AuthenticationManager:%@ %@", method, [error description]);
     [self clearOnMainThread];

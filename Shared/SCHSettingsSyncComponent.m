@@ -66,12 +66,13 @@ NSString * const SCHSettingsSyncComponentDidFailNotification = @"SCHSettingsSync
 	}	
 }
 
-- (void)method:(NSString *)method didCompleteWithResult:(NSDictionary *)result
+- (void)method:(NSString *)method didCompleteWithResult:(NSDictionary *)result 
+      userInfo:(NSDictionary *)userInfo
 {	
     @try {
         [self updateUserSettings:[result objectForKey:kSCHLibreAccessWebServiceUserSettingsList]];
         [[NSNotificationCenter defaultCenter] postNotificationName:SCHSettingsSyncComponentDidCompleteNotification object:self];			
-        [super method:method didCompleteWithResult:nil];	
+        [super method:method didCompleteWithResult:nil userInfo:nil];	
     }
     @catch (NSException *exception) {
         [[NSNotificationCenter defaultCenter] postNotificationName:SCHSettingsSyncComponentDidFailNotification 

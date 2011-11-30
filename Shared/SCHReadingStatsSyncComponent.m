@@ -61,7 +61,7 @@ NSString * const SCHReadingStatsSyncComponentDidFailNotification = @"SCHReadingS
                 ret = NO;			
             }		            
         } else {
-            [super method:nil didCompleteWithResult:nil];		
+            [super method:nil didCompleteWithResult:nil userInfo:nil];		
         }
 	}
     [fetchRequest release], fetchRequest = nil;
@@ -84,13 +84,14 @@ NSString * const SCHReadingStatsSyncComponentDidFailNotification = @"SCHReadingS
 	}		
 }
 
-- (void)method:(NSString *)method didCompleteWithResult:(NSDictionary *)result
+- (void)method:(NSString *)method didCompleteWithResult:(NSDictionary *)result 
+      userInfo:(NSDictionary *)userInfo
 {
     @try {
         [self clearStatistics];
         [[NSNotificationCenter defaultCenter] postNotificationName:SCHReadingStatsSyncComponentDidCompleteNotification 
                                                             object:self];
-        [super method:method didCompleteWithResult:nil];				    
+        [super method:method didCompleteWithResult:nil userInfo:nil];				    
     }
     @catch (NSException *exception) {
         [[NSNotificationCenter defaultCenter] postNotificationName:SCHReadingStatsSyncComponentDidFailNotification 

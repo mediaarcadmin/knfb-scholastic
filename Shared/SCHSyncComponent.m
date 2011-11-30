@@ -55,6 +55,7 @@ NSString * const SCHSyncComponentDidFailAuthenticationNotification = @"SCHSyncCo
 #pragma mark - Delegate methods
 
 - (void)method:(NSString *)method didCompleteWithResult:(NSDictionary *)result
+      userInfo:(NSDictionary *)userInfo
 {	
 	if (self.backgroundTaskIdentifier != UIBackgroundTaskInvalid) {
 		[[UIApplication sharedApplication] endBackgroundTask:self.backgroundTaskIdentifier];
@@ -64,7 +65,7 @@ NSString * const SCHSyncComponentDidFailAuthenticationNotification = @"SCHSyncCo
 	
     self.failureCount = 0;
     
-	[super method:method didCompleteWithResult:nil];	
+	[super method:method didCompleteWithResult:nil userInfo:nil];	
 }
 
 - (void)method:(NSString *)method didFailWithError:(NSError *)error 

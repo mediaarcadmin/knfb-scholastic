@@ -18,6 +18,8 @@
 
 }
 
+@property (nonatomic, retain) NSDateFormatter *rfc822DateFormatter;
+
 - (void)reportFault:(SOAPFault *)fault 
           forMethod:(NSString *)method 
         requestInfo:(NSDictionary *)requestInfo;

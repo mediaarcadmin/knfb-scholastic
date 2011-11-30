@@ -484,6 +484,7 @@
 @synthesize binding;
 @synthesize response;
 @synthesize delegate;
+@synthesize responseHeaders;
 @synthesize responseData;
 @synthesize urlConnection;
 - (id)initWithBinding:(AuthenticateSoap11Binding *)aBinding delegate:(id<AuthenticateSoap11BindingResponseDelegate>)aDelegate
@@ -528,6 +529,7 @@
 		NSLog(@"ResponseStatus: %ld\n", (long)[httpResponse statusCode]);
 		NSLog(@"ResponseHeaders:\n%@", [httpResponse allHeaderFields]);
 	}
+	self.responseHeaders = [httpResponse allHeaderFields];
 	
 	if ([urlResponse.MIMEType rangeOfString:[self.binding MIMEType]].length == 0) {
 		NSError *error = nil;
@@ -569,6 +571,7 @@
 	[binding release];
 	[response release];
 	delegate = nil;
+	[responseHeaders release];
 	[responseData release];
 	[urlConnection release];
 	

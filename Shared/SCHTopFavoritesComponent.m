@@ -54,6 +54,7 @@ static NSString * const kSCHTopFavoritesComponentCategoryYoungAdults = @"Young A
 }
 
 - (void)method:(NSString *)method didCompleteWithResult:(NSDictionary *)result
+      userInfo:(NSDictionary *)userInfo
 {	
 	if([method compare:kSCHLibreAccessWebServiceListFavoriteTypes] == NSOrderedSame) {
 		if([(id)self.delegate respondsToSelector:@selector(component:didCompleteWithResult:)]) {

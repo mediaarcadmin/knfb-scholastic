@@ -45,21 +45,25 @@ NSString * const SCHAnnotationSyncComponentCompletedProfileIDs = @"SCHAnnotation
 - (NSArray *)localModifiedAnnotationsItemForProfile:(NSNumber *)profileID;
 - (NSArray *)localAnnotationsItemForProfile:(NSNumber *)profileID;
 - (void)syncProfileContentAnnotations:(NSDictionary *)profileContentAnnotationList 
-                              canSyncNotes:(BOOL)canSyncNotes;
+                              canSyncNotes:(BOOL)canSyncNotes
+                             syncDate:(NSDate *)syncDate;
 - (void)syncProfileContentAnnotationsCompleted:(NSNumber *)profileID 
                                    usingMethod:(NSString *)method;
 - (void)syncAnnotationsContentList:(NSArray *)webAnnotationsContentList 
          withAnnotationContentList:(NSArray *)localAnnotationsContentList
                         insertInto:(SCHAnnotationsItem *)annotationsItem
-                           canSyncNotes:(BOOL)canSyncNotes;
+                           canSyncNotes:(BOOL)canSyncNotes
+                          syncDate:(NSDate *)syncDate;
 - (void)syncAnnotationsContentItem:(NSDictionary *)webAnnotationsContentItem 
         withAnnotationsContentItem:(SCHAnnotationsContentItem *)localAnnotationsContentItem
-                           canSyncNotes:(BOOL)canSyncNotes;
+                           canSyncNotes:(BOOL)canSyncNotes
+                               syncDate:(NSDate *)syncDate;
 - (SCHAnnotationsContentItem *)annotationsContentItem:(NSDictionary *)annotationsContentItem;
 - (SCHPrivateAnnotations *)privateAnnotation:(NSDictionary *)privateAnnotation;
 - (void)syncHighlights:(NSArray *)webHighlights
         withHighlights:(NSSet *)localHighlights
-            insertInto:(SCHPrivateAnnotations *)privateAnnotations;
+            insertInto:(SCHPrivateAnnotations *)privateAnnotations
+              syncDate:(NSDate *)syncDate;
 - (void)syncHighlight:(NSDictionary *)webHighlight
         withHighlight:(SCHHighlight *)localHighlight;
 - (SCHHighlight *)highlight:(NSDictionary *)highlight;
@@ -71,7 +75,8 @@ NSString * const SCHAnnotationSyncComponentCompletedProfileIDs = @"SCHAnnotation
 - (SCHWordIndex *)wordIndex:(NSDictionary *)wordIndex;
 - (void)syncNotes:(NSArray *)webNotes
         withNotes:(NSSet *)localNotes
-       insertInto:(SCHPrivateAnnotations *)privateAnnotations;
+       insertInto:(SCHPrivateAnnotations *)privateAnnotations
+         syncDate:(NSDate *)syncDate;
 - (void)syncNote:(NSDictionary *)webNote
         withNote:(SCHNote *)localNote;
 - (SCHNote *)note:(NSDictionary *)note;
@@ -80,7 +85,8 @@ NSString * const SCHAnnotationSyncComponentCompletedProfileIDs = @"SCHAnnotation
 - (SCHLocationGraphics *)locationGraphics:(NSDictionary *)locationGraphics;
 - (void)syncBookmarks:(NSArray *)webBookmarks
         withBookmarks:(NSSet *)localBookmarks
-           insertInto:(SCHPrivateAnnotations *)privateAnnotations;
+           insertInto:(SCHPrivateAnnotations *)privateAnnotations
+             syncDate:(NSDate *)syncDate;
 - (void)syncBookmark:(NSDictionary *)webBookmark 
         withBookmark:(SCHBookmark *)localBookmark;
 - (SCHBookmark *)bookmark:(NSDictionary *)bookmark;
@@ -91,7 +97,6 @@ NSString * const SCHAnnotationSyncComponentCompletedProfileIDs = @"SCHAnnotation
         withLastPage:(SCHLastPage *)localLastPage;
 - (SCHLastPage *)lastPage:(NSDictionary *)lastPage;
 - (void)backgroundSave:(BOOL)batch;
-- (NSDate *)latestDate:(NSArray *)items;
 - (NSArray *)removeNewlyCreatedAndSavedAnnotations:(NSArray *)annotationArray;
 
 @property (retain, nonatomic) NSMutableDictionary *annotations;
@@ -242,6 +247,7 @@ NSString * const SCHAnnotationSyncComponentCompletedProfileIDs = @"SCHAnnotation
 }
 
 - (void)method:(NSString *)method didCompleteWithResult:(NSDictionary *)result
+      userInfo:(NSDictionary *)userInfo
 {
     NSNumber *profileID = [self currentProfile];
     
@@ -254,8 +260,11 @@ NSString * const SCHAnnotationSyncComponentCompletedProfileIDs = @"SCHAnnotation
                 self.backgroundThreadManagedObjectContext = [[[NSManagedObjectContext alloc] init] autorelease];
                 [self.backgroundThreadManagedObjectContext setPersistentStoreCoordinator:self.managedObjectContext.persistentStoreCoordinator];
                 
+                // if we don't have a serverDate then use the current device date
+                NSDate *syncDate = [userInfo objectForKey:@"serverDate"];
                 [self syncProfileContentAnnotations:[result objectForKey:kSCHLibreAccessWebServiceListProfileContentAnnotations] 
-                                       canSyncNotes:canSyncNotes];	            
+                                       canSyncNotes:canSyncNotes
+                                           syncDate:(syncDate == nil ? [NSDate date] : syncDate)];	            
                 
                 self.backgroundThreadManagedObjectContext = nil;
                 
@@ -479,7 +488,7 @@ NSString * const SCHAnnotationSyncComponentCompletedProfileIDs = @"SCHAnnotation
                                                                                                forKey:SCHAnnotationSyncComponentCompletedProfileIDs]];        
         [self.annotations removeObjectForKey:profileID];
         
-        [super method:nil didCompleteWithResult:nil];
+        [super method:nil didCompleteWithResult:nil userInfo:nil];
     }
 	
 	return(ret);    
@@ -537,6 +546,7 @@ NSString * const SCHAnnotationSyncComponentCompletedProfileIDs = @"SCHAnnotation
 
 - (void)syncProfileContentAnnotations:(NSDictionary *)profileContentAnnotationList 
                          canSyncNotes:(BOOL)canSyncNotes
+                             syncDate:(NSDate *)syncDate
 {
     NSAssert([NSThread isMainThread] == NO, @"syncProfileContentAnnotations MUST NOT be executed on the main thread");
 	NSDictionary *annotationsList = [self makeNullNil:[profileContentAnnotationList 
@@ -558,7 +568,8 @@ NSString * const SCHAnnotationSyncComponentCompletedProfileIDs = @"SCHAnnotation
                 [self syncAnnotationsContentList:annotationsContentList
                        withAnnotationContentList:[[localAnnotationsItems objectAtIndex:0] AnnotationsContentItem] 
                                       insertInto:[localAnnotationsItems objectAtIndex:0]
-                                    canSyncNotes:canSyncNotes];
+                                    canSyncNotes:canSyncNotes
+                                        syncDate:syncDate];
             }
         } else {
             SCHAnnotationsItem *newAnnotationsItem = [NSEntityDescription insertNewObjectForEntityForName:kSCHAnnotationsItem 
@@ -582,13 +593,14 @@ NSString * const SCHAnnotationSyncComponentCompletedProfileIDs = @"SCHAnnotation
                                                                                            forKey:SCHAnnotationSyncComponentCompletedProfileIDs]];        
     [self.annotations removeObjectForKey:profileID];
     
-    [super method:method didCompleteWithResult:nil];
+    [super method:method didCompleteWithResult:nil userInfo:nil];
 }
 
 - (void)syncAnnotationsContentList:(NSArray *)webAnnotationsContentList 
          withAnnotationContentList:(NSArray *)localAnnotationsContentList
                         insertInto:(SCHAnnotationsItem *)annotationsItem
                       canSyncNotes:(BOOL)canSyncNotes
+                          syncDate:(NSDate *)syncDate
 {
 	NSMutableArray *creationPool = [NSMutableArray array];
 	
@@ -625,7 +637,8 @@ NSString * const SCHAnnotationSyncComponentCompletedProfileIDs = @"SCHAnnotation
 			case NSOrderedSame:
 				[self syncAnnotationsContentItem:webItem 
                       withAnnotationsContentItem:localItem 
-                                    canSyncNotes:canSyncNotes];
+                                    canSyncNotes:canSyncNotes
+                                        syncDate:syncDate];
                 [self backgroundSave:YES];
 				webItem = nil;
 				localItem = nil;
@@ -663,6 +676,7 @@ NSString * const SCHAnnotationSyncComponentCompletedProfileIDs = @"SCHAnnotation
 - (void)syncAnnotationsContentItem:(NSDictionary *)webAnnotationsContentItem 
         withAnnotationsContentItem:(SCHAnnotationsContentItem *)localAnnotationsContentItem
                       canSyncNotes:(BOOL)canSyncNotes
+                          syncDate:(NSDate *)syncDate
 {
     if (webAnnotationsContentItem != nil) {
         localAnnotationsContentItem.DRMQualifier = [self makeNullNil:[webAnnotationsContentItem objectForKey:kSCHLibreAccessWebServiceDRMQualifier]];
@@ -678,21 +692,24 @@ NSString * const SCHAnnotationSyncComponentCompletedProfileIDs = @"SCHAnnotation
             if (annotation != nil) {
                 [self syncHighlights:annotation
                       withHighlights:localAnnotationsContentItem.PrivateAnnotations.Highlights 
-                          insertInto:localAnnotationsContentItem.PrivateAnnotations];
+                          insertInto:localAnnotationsContentItem.PrivateAnnotations
+                            syncDate:syncDate];
             }
             if (canSyncNotes == YES) {
                 annotation = [self makeNullNil:[privateAnnotations objectForKey:kSCHLibreAccessWebServiceNotes]];
                 if (annotation != nil) {        
                     [self syncNotes:annotation
                           withNotes:localAnnotationsContentItem.PrivateAnnotations.Notes 
-                         insertInto:localAnnotationsContentItem.PrivateAnnotations];
+                         insertInto:localAnnotationsContentItem.PrivateAnnotations
+                           syncDate:syncDate];
                 }
             }
             annotation = [self makeNullNil:[privateAnnotations objectForKey:kSCHLibreAccessWebServiceBookmarks]] ;
             if (annotation != nil) {                
                 [self syncBookmarks:annotation
                       withBookmarks:localAnnotationsContentItem.PrivateAnnotations.Bookmarks 
-                         insertInto:localAnnotationsContentItem.PrivateAnnotations];        
+                         insertInto:localAnnotationsContentItem.PrivateAnnotations
+                           syncDate:syncDate];        
             }
             [self syncLastPage:[self makeNullNil:[privateAnnotations objectForKey:kSCHLibreAccessWebServiceLastPage]] 
                   withLastPage:localAnnotationsContentItem.PrivateAnnotations.LastPage];
@@ -745,6 +762,7 @@ NSString * const SCHAnnotationSyncComponentCompletedProfileIDs = @"SCHAnnotation
 - (void)syncHighlights:(NSArray *)webHighlights
         withHighlights:(NSSet *)localHighlights
             insertInto:(SCHPrivateAnnotations *)privateAnnotations
+              syncDate:(NSDate *)syncDate
 {
     NSAssert([NSThread isMainThread] == NO, @"syncHighlights MUST NOT be executed on the main thread");
 	NSMutableArray *creationPool = [NSMutableArray array];
@@ -807,10 +825,7 @@ NSString * const SCHAnnotationSyncComponentCompletedProfileIDs = @"SCHAnnotation
     SCHAppContentProfileItem *appContentProfileItem = [[privateAnnotations.AnnotationsContentItem.AnnotationsItem profileItem] 
                                                        appContentProfileItemForBookIdentifier:[privateAnnotations.AnnotationsContentItem bookIdentifier]];
     if (appContentProfileItem != nil) {
-        NSDate *date = [self latestDate:webHighlights];
-        if (date != nil) {
-            appContentProfileItem.LastHighlightAnnotationSync = date;
-        }
+        appContentProfileItem.LastHighlightAnnotationSync = syncDate;
     }
 	
 	[self backgroundSave:NO];        
@@ -913,6 +928,7 @@ NSString * const SCHAnnotationSyncComponentCompletedProfileIDs = @"SCHAnnotation
 - (void)syncNotes:(NSArray *)webNotes
         withNotes:(NSSet *)localNotes
        insertInto:(SCHPrivateAnnotations *)privateAnnotations
+         syncDate:(NSDate *)syncDate
 {
     NSAssert([NSThread isMainThread] == NO, @"syncNotes MUST NOT be executed on the main thread");
 	NSMutableArray *creationPool = [NSMutableArray array];
@@ -975,10 +991,7 @@ NSString * const SCHAnnotationSyncComponentCompletedProfileIDs = @"SCHAnnotation
     SCHAppContentProfileItem *appContentProfileItem = [[privateAnnotations.AnnotationsContentItem.AnnotationsItem profileItem] 
                                                        appContentProfileItemForBookIdentifier:[privateAnnotations.AnnotationsContentItem bookIdentifier]];
     if (appContentProfileItem != nil) {
-        NSDate *date = [self latestDate:webNotes];
-        if (date != nil) {
-            appContentProfileItem.LastNoteAnnotationSync = date;
-        }
+        appContentProfileItem.LastNoteAnnotationSync = syncDate;
     }
 	
 	[self backgroundSave:NO];        
@@ -1051,6 +1064,7 @@ NSString * const SCHAnnotationSyncComponentCompletedProfileIDs = @"SCHAnnotation
 - (void)syncBookmarks:(NSArray *)webBookmarks
         withBookmarks:(NSSet *)localBookmarks
            insertInto:(SCHPrivateAnnotations *)privateAnnotations
+             syncDate:(NSDate *)syncDate
 {
     NSAssert([NSThread isMainThread] == NO, @"syncBookmarks MUST NOT be executed on the main thread");
 	NSMutableArray *creationPool = [NSMutableArray array];
@@ -1113,10 +1127,7 @@ NSString * const SCHAnnotationSyncComponentCompletedProfileIDs = @"SCHAnnotation
     SCHAppContentProfileItem *appContentProfileItem = [[privateAnnotations.AnnotationsContentItem.AnnotationsItem profileItem] 
                                                        appContentProfileItemForBookIdentifier:[privateAnnotations.AnnotationsContentItem bookIdentifier]];
     if (appContentProfileItem != nil) {
-        NSDate *date = [self latestDate:webBookmarks];
-        if (date != nil) {
-            appContentProfileItem.LastBookmarkAnnotationSync = date;
-        }
+        appContentProfileItem.LastBookmarkAnnotationSync = syncDate;
     }    
     
 	[self backgroundSave:NO];    
@@ -1231,21 +1242,6 @@ NSString * const SCHAnnotationSyncComponentCompletedProfileIDs = @"SCHAnnotation
             NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
         } 
     }
-}
-
-- (NSDate *)latestDate:(NSArray *)items
-{
-    NSDate *ret = nil;
-    
-    for (NSDictionary *item in items) {
-        NSDate *date = [self makeNullNil:[item objectForKey:kSCHLibreAccessWebServiceLastModified]];
-        
-        if (date != nil) {
-            ret = (ret == nil? date : [date laterDate:ret]);
-        }
-    }
-    
-    return ret;
 }
 
 - (NSArray *)removeNewlyCreatedAndSavedAnnotations:(NSArray *)annotationArray

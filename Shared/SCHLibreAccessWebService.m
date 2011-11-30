@@ -126,8 +126,7 @@ static NSInteger const kSCHLibreAccessWebServiceVaid = 33;
     binding.logXMLInOut = NO;		
 }
 
-#pragma mark -
-#pragma mark API Proxy methods
+#pragma mark - API Proxy methods
 
 - (void)tokenExchange:(NSString *)pToken forUser:(NSString *)userName
 {
@@ -535,9 +534,15 @@ static NSInteger const kSCHLibreAccessWebServiceVaid = 33;
                                            result:[self objectFrom:bodyPart]];			
                     }
                 }
-                
-                if(errorTriggered == NO && [(id)self.delegate respondsToSelector:@selector(method:didCompleteWithResult:)]) {
-                    [(id)self.delegate method:methodName didCompleteWithResult:[self objectFrom:bodyPart]];									
+
+                NSDate *serverDate = [self.rfc822DateFormatter dateFromString:[operation.responseHeaders objectForKey:@"Date"]];
+                NSDictionary *userInfo = nil;
+                if (serverDate != nil) {
+                    userInfo = [NSDictionary dictionaryWithObject:serverDate forKey:@"serverDate"];
+                }
+                if(errorTriggered == NO && [(id)self.delegate respondsToSelector:@selector(method:didCompleteWithResult:userInfo:)]) {
+                    [(id)self.delegate method:methodName didCompleteWithResult:[self objectFrom:bodyPart] 
+                                     userInfo:userInfo];									
                 }
             }		
         }
