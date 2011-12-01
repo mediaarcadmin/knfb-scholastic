@@ -132,127 +132,152 @@
 
 - (BOOL)canSync
 {
-    BOOL ret = NO;
-    SCHAppState *appState = [self appState];
+    __block BOOL ret = NO;
     
-    if (appState != nil) {
-        ret = [appState.ShouldSync boolValue];
-    }
+    [self performWithAppState:^(SCHAppState *appState) {
+        if (appState != nil) {
+            ret = [appState.ShouldSync boolValue];
+        }
+    }];
     
-    return(ret);
+    return ret;
 }
 
 - (void)setCanSync:(BOOL)sync
 {
-    SCHAppState *appState = [self appState];
-    [appState setShouldSync:[NSNumber numberWithBool:sync]];
-    
-    NSError *error;
-    if ([self.managedObjectContext save:&error] == NO) {
-        NSLog(@"Unable to save the CanSync (%d) in the app state %@, %@", sync, error, [error userInfo]);
-    }
+    [self performWithAppStateAndSave:^(SCHAppState *appState) {
+        [appState setShouldSync:[NSNumber numberWithBool:sync]];
+    }];
 }
 
 - (BOOL)canSyncNotes
 {
-    BOOL ret = NO;
-    SCHAppState *appState = [self appState];
+    __block BOOL ret = NO;
     
-    if (appState != nil) {
-        ret = [appState.ShouldSyncNotes boolValue];
-    }
+    [self performWithAppState:^(SCHAppState *appState) {
+        if (appState != nil) {
+            ret = [appState.ShouldSyncNotes boolValue];
+        }
+    }];
     
-    return(ret);
+    return ret;
 }
 
 - (void)setCanSyncNotes:(BOOL)sync
 {
-    SCHAppState *appState = [self appState];
-    [appState setShouldSyncNotes:[NSNumber numberWithBool:sync]];
-    
-    NSError *error;
-    if ([self.managedObjectContext save:&error] == NO) {
-        NSLog(@"Unable to save the CanSyncNotes (%d) in the app state %@, %@", sync, error, [error userInfo]);
-    }
+    [self performWithAppStateAndSave:^(SCHAppState *appState) {
+        [appState setShouldSyncNotes:[NSNumber numberWithBool:sync]];
+    }];
 }
 
 - (BOOL)canAuthenticate
 {
-    BOOL ret = NO;
-    SCHAppState *appState = [self appState];
+    __block BOOL ret = NO;
     
-    if (appState != nil) {
-        ret = [appState.ShouldAuthenticate boolValue];
-    }
+    [self performWithAppState:^(SCHAppState *appState) {
+        if (appState != nil) {
+            ret = [appState.ShouldAuthenticate boolValue];
+        }
+    }];
     
-    return(ret);    
+    return ret;  
 }
 
 - (void)setCanAuthenticate:(BOOL)auth
 {
-    SCHAppState *appState = [self appState];
-    [appState setShouldAuthenticate:[NSNumber numberWithBool:auth]];
-    
-    NSError *error;
-    if ([self.managedObjectContext save:&error] == NO) {
-        NSLog(@"Unable to save the CanAuthenticate (%d) in the app state %@, %@", auth, error, [error userInfo]);
-    }
+    [self performWithAppStateAndSave:^(SCHAppState *appState) {
+        [appState setShouldAuthenticate:[NSNumber numberWithBool:auth]];
+    }];
 }
 
 - (BOOL)isStandardStore
 {
-    return([[self appState].DataStoreType isEqualToNumber:[NSNumber numberWithDataStoreType:kSCHDataStoreTypesStandard]]);
+    // Assume a standard store if there is no app state
+    __block BOOL ret = YES;
+    
+    [self performWithAppState:^(SCHAppState *appState) {
+        if (appState != nil) {
+            ret = [appState.DataStoreType isEqualToNumber:[NSNumber numberWithDataStoreType:kSCHDataStoreTypesStandard]];
+        }
+    }];
+    
+    return ret;
 }
 
 - (BOOL)isSampleStore
 {
-    return([[self appState].DataStoreType isEqualToNumber:[NSNumber numberWithDataStoreType:kSCHDataStoreTypesSample]]);
+    __block BOOL ret = NO;
+    
+    [self performWithAppState:^(SCHAppState *appState) {
+        if (appState != nil) {
+            ret = [appState.DataStoreType isEqualToNumber:[NSNumber numberWithDataStoreType:kSCHDataStoreTypesSample]];
+        }
+    }];
+    
+    return ret;
 }
 
 - (void)setDataStoreType:(SCHDataStoreTypes)type
 {
-    SCHAppState *appState = [self appState];
-    [appState setDataStoreType:[NSNumber numberWithDataStoreType:type]];
-    
-    NSError *error;
-    if ([self.managedObjectContext save:&error] == NO) {
-        NSLog(@"Unable to save the DataStoreType (%d) in the app state %@, %@", type, error, [error userInfo]);
-    }
+    [self performWithAppStateAndSave:^(SCHAppState *appState) {
+        [appState setDataStoreType:[NSNumber numberWithDataStoreType:type]];
+    }];
 }
 
 - (NSString *)lastKnownAuthToken
 {
-    NSString *ret = nil;
-    SCHAppState *appState = [self appState];
+    __block NSString *ret = nil;
     
-    if (appState != nil) {
-        ret = appState.LastKnownAuthToken;
-    }
+    [self performWithAppState:^(SCHAppState *appState) {
+        if (appState != nil) {
+            ret = appState.LastKnownAuthToken;
+        }
+    }];
     
-    return(ret);
+    return ret;  
 }
 
 - (void)setLastKnownAuthToken:(NSString *)token
 {
-    SCHAppState *appState = [self appState];
-    [appState setLastKnownAuthToken:token];
-    
-    NSError *error;
-    if ([self.managedObjectContext save:&error] == NO) {
-        NSLog(@"Unable to save the LastKnownAuthToken (%@) in the app state %@, %@", token, error, [error userInfo]);
-    }
+    [self performWithAppStateAndSave:^(SCHAppState *appState) {
+        [appState setLastKnownAuthToken:token];
+    }];
 }
 
 #pragma mark - Thread safe access to AppState
 
 - (void)performWithAppState:(void (^)(SCHAppState *appState))block
 {
+    dispatch_block_t accessBlock = ^{
+        SCHAppState *appState = [self appState];
+        block(appState);
+    };
     
+    if ([NSThread isMainThread]) {
+        accessBlock();
+    } else {
+        dispatch_sync(dispatch_get_main_queue(), accessBlock);
+    }
 }
 
 - (void)performWithAppStateAndSave:(void (^)(SCHAppState *appState))block
 {
+    dispatch_block_t accessBlock = ^{
+        if (block) {
+            SCHAppState *appState = [self appState];
+            block(appState);
+        }
+        NSError *error = nil;
+        if (![self.managedObjectContext save:&error]) {
+            NSLog(@"failed to save: %@", error);
+        }
+    };
     
+    if ([NSThread isMainThread]) {
+        accessBlock();
+    } else {
+        dispatch_async(dispatch_get_main_queue(), accessBlock);
+    }
 }
 
 #pragma mark - NSManagedObjectContext Changed Notification
