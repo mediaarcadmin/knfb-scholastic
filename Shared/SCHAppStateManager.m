@@ -16,6 +16,13 @@
 
 - (SCHAppState *)createAppStateIfNeeded;
 
+// thread-safe access to appstate object; the block is executed synchronously so may make
+// changes to any __block storage locals
+- (void)performWithAppState:(void (^)(SCHAppState *appState))block;
+
+// thread-safe access to appstate object followed by save; the block is executed asynchronously
+- (void)performWithAppStateAndSave:(void (^)(SCHAppState *appState))block;
+
 @end
 
 @implementation SCHAppStateManager
@@ -135,6 +142,17 @@
     return(ret);
 }
 
+- (void)setCanSync:(BOOL)sync
+{
+    SCHAppState *appState = [self appState];
+    [appState setShouldSync:[NSNumber numberWithBool:sync]];
+    
+    NSError *error;
+    if ([self.managedObjectContext save:&error] == NO) {
+        NSLog(@"Unable to save the CanSync (%d) in the app state %@, %@", sync, error, [error userInfo]);
+    }
+}
+
 - (BOOL)canSyncNotes
 {
     BOOL ret = NO;
@@ -145,6 +163,17 @@
     }
     
     return(ret);
+}
+
+- (void)setCanSyncNotes:(BOOL)sync
+{
+    SCHAppState *appState = [self appState];
+    [appState setShouldSyncNotes:[NSNumber numberWithBool:sync]];
+    
+    NSError *error;
+    if ([self.managedObjectContext save:&error] == NO) {
+        NSLog(@"Unable to save the CanSyncNotes (%d) in the app state %@, %@", sync, error, [error userInfo]);
+    }
 }
 
 - (BOOL)canAuthenticate
@@ -159,6 +188,17 @@
     return(ret);    
 }
 
+- (void)setCanAuthenticate:(BOOL)auth
+{
+    SCHAppState *appState = [self appState];
+    [appState setShouldAuthenticate:[NSNumber numberWithBool:auth]];
+    
+    NSError *error;
+    if ([self.managedObjectContext save:&error] == NO) {
+        NSLog(@"Unable to save the CanAuthenticate (%d) in the app state %@, %@", auth, error, [error userInfo]);
+    }
+}
+
 - (BOOL)isStandardStore
 {
     return([[self appState].DataStoreType isEqualToNumber:[NSNumber numberWithDataStoreType:kSCHDataStoreTypesStandard]]);
@@ -167,6 +207,52 @@
 - (BOOL)isSampleStore
 {
     return([[self appState].DataStoreType isEqualToNumber:[NSNumber numberWithDataStoreType:kSCHDataStoreTypesSample]]);
+}
+
+- (void)setDataStoreType:(SCHDataStoreTypes)type
+{
+    SCHAppState *appState = [self appState];
+    [appState setDataStoreType:[NSNumber numberWithDataStoreType:type]];
+    
+    NSError *error;
+    if ([self.managedObjectContext save:&error] == NO) {
+        NSLog(@"Unable to save the DataStoreType (%d) in the app state %@, %@", type, error, [error userInfo]);
+    }
+}
+
+- (NSString *)lastKnownAuthToken
+{
+    NSString *ret = nil;
+    SCHAppState *appState = [self appState];
+    
+    if (appState != nil) {
+        ret = appState.LastKnownAuthToken;
+    }
+    
+    return(ret);
+}
+
+- (void)setLastKnownAuthToken:(NSString *)token
+{
+    SCHAppState *appState = [self appState];
+    [appState setLastKnownAuthToken:token];
+    
+    NSError *error;
+    if ([self.managedObjectContext save:&error] == NO) {
+        NSLog(@"Unable to save the LastKnownAuthToken (%@) in the app state %@, %@", token, error, [error userInfo]);
+    }
+}
+
+#pragma mark - Thread safe access to AppState
+
+- (void)performWithAppState:(void (^)(SCHAppState *appState))block
+{
+    
+}
+
+- (void)performWithAppStateAndSave:(void (^)(SCHAppState *appState))block
+{
+    
 }
 
 #pragma mark - NSManagedObjectContext Changed Notification

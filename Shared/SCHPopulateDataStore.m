@@ -381,32 +381,22 @@
 
 - (void)setAppStateForSample
 {
-    SCHAppState *appState = [SCHAppStateManager sharedAppStateManager].appState;
-    
-    appState.ShouldSync = [NSNumber numberWithBool:NO];
-    appState.ShouldSyncNotes = [NSNumber numberWithBool:NO];
-    appState.ShouldAuthenticate = [NSNumber numberWithBool:NO];
-    appState.DataStoreType = [NSNumber numberWithDataStoreType:kSCHDataStoreTypesSample];
-    
-    NSError *error;
-    if ([self.managedObjectContext save:&error] == NO) {
-        NSLog(@"Unable to save the state for the sample store %@, %@", error, [error userInfo]);
-    }  
+    SCHAppStateManager *appStateManager = [SCHAppStateManager sharedAppStateManager];
+        
+    [appStateManager setCanSync:NO];
+    [appStateManager setCanSyncNotes:NO];
+    [appStateManager setCanAuthenticate:NO];
+    [appStateManager setDataStoreType:kSCHDataStoreTypesSample];
 }
 
 - (void)setAppStateForStandard
 {
-    SCHAppState *appState = [SCHAppStateManager sharedAppStateManager].appState;
+    SCHAppStateManager *appStateManager = [SCHAppStateManager sharedAppStateManager];
     
-    appState.ShouldSync = [NSNumber numberWithBool:YES];
-    appState.ShouldSyncNotes = [NSNumber numberWithBool:NO];
-    appState.ShouldAuthenticate = [NSNumber numberWithBool:YES];
-    appState.DataStoreType = [NSNumber numberWithDataStoreType:kSCHDataStoreTypesStandard];
-    
-    NSError *error;
-    if ([self.managedObjectContext save:&error] == NO) {
-        NSLog(@"Unable to save the state for the sample store %@, %@", error, [error userInfo]);
-    }  
+    [appStateManager setCanSync:YES];
+    [appStateManager setCanSyncNotes:NO];
+    [appStateManager setCanAuthenticate:YES];
+    [appStateManager setDataStoreType:kSCHDataStoreTypesStandard];
 }
 #pragma mark - Core Data population methods
 

@@ -693,14 +693,7 @@ static NSUInteger const kSCHSyncManagerMaximumFailureRetries = 3;
 
 - (BOOL)shouldSync
 {
-    BOOL ret = NO;
-    SCHAppState *appState = [SCHAppStateManager sharedAppStateManager].appState;
-    
-    if (appState != nil) {
-        ret = [appState.ShouldSync boolValue];        
-    }
-    
-    return ret;    
+    return [[SCHAppStateManager sharedAppStateManager] canSync];
 }
 
 #pragma mark - Population methods
