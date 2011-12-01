@@ -13,6 +13,7 @@
 @property (nonatomic, retain) IBOutlet UIView *answerContainer;
 @property (nonatomic, retain) IBOutlet UIView *lettersContainer;
 @property (nonatomic, retain) IBOutlet UIView *animationContainer;
+@property (nonatomic, retain) IBOutlet UIButton *playButton;
 
 - (IBAction)playTapped:(id)sender;
            
