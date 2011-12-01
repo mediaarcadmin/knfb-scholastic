@@ -115,6 +115,10 @@ NSTimeInterval const kSCHAuthenticationManagerSecondsInAMinute = 60.0;
                                                      name:UIApplicationDidEnterBackgroundNotification
                                                    object:nil];
 
+        [[NSNotificationCenter defaultCenter] addObserver:self 
+                                                 selector:@selector(applicationSignificantTimeChange:) 
+                                                     name:UIApplicationSignificantTimeChangeNotification 
+                                                   object:nil];
 	}
 	return(self);
 }
@@ -122,6 +126,7 @@ NSTimeInterval const kSCHAuthenticationManagerSecondsInAMinute = 60.0;
 - (void)dealloc 
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationDidEnterBackgroundNotification object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationSignificantTimeChangeNotification object:nil];
     
     [aToken release], aToken = nil;
     [tokenExpires release], tokenExpires = nil;
@@ -407,6 +412,13 @@ NSTimeInterval const kSCHAuthenticationManagerSecondsInAMinute = 60.0;
     self.renewTimer = nil;
 }
 
+- (void)applicationSignificantTimeChange:(NSNotification *)notification
+{
+    // when the device time changes we expire the token to force a renew of the
+    // server date delta
+    [self expireToken];
+}
+
 #pragma mark - Private methods
 
 - (void)aTokenOnMainThread
@@ -663,6 +675,13 @@ NSTimeInterval const kSCHAuthenticationManagerSecondsInAMinute = 60.0;
                   
         [self expireToken];
         
+        if (userInfo != nil) {
+            NSNumber *serverDateDelta = [userInfo objectForKey:@"serverDateDelta"];
+            if (serverDateDelta != nil) {
+                [[SCHAppStateManager sharedAppStateManager] setServerDateDelta:[serverDateDelta doubleValue]];
+            }
+        }
+
         if ([method isEqualToString:kSCHLibreAccessWebServiceAuthenticateDevice] && deviceIsDeregistered) {
             
             self.aToken = returnedToken;

@@ -69,7 +69,10 @@ NSString * const SCHSyncComponentDidFailAuthenticationNotification = @"SCHSyncCo
     if (userInfo != nil) {
         NSNumber *serverDateDelta = [userInfo objectForKey:@"serverDateDelta"];
         if (serverDateDelta != nil) {
-            [[SCHAppStateManager sharedAppStateManager] setServerDateDelta:[serverDateDelta doubleValue]];
+            SCHAppStateManager *appStateManager = [SCHAppStateManager sharedAppStateManager];
+            if (!(fabs([appStateManager serverDateDelta]) > 0.0)) {
+                [appStateManager setServerDateDelta:[serverDateDelta doubleValue]];
+            }
         }
     }
     
