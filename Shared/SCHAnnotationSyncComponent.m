@@ -49,7 +49,8 @@ NSString * const SCHAnnotationSyncComponentCompletedProfileIDs = @"SCHAnnotation
                               canSyncNotes:(BOOL)canSyncNotes
                              syncDate:(NSDate *)syncDate;
 - (void)syncProfileContentAnnotationsCompleted:(NSNumber *)profileID 
-                                   usingMethod:(NSString *)method;
+                                   usingMethod:(NSString *)method
+                                      userInfo:(NSDictionary *)userInfo;
 - (void)syncAnnotationsContentList:(NSArray *)webAnnotationsContentList 
          withAnnotationContentList:(NSArray *)localAnnotationsContentList
                         insertInto:(SCHAnnotationsItem *)annotationsItem
@@ -274,7 +275,9 @@ NSString * const SCHAnnotationSyncComponentCompletedProfileIDs = @"SCHAnnotation
                 self.backgroundThreadManagedObjectContext = nil;
                 
                 dispatch_async(dispatch_get_main_queue(), ^{
-                    [self syncProfileContentAnnotationsCompleted:profileID usingMethod:method];
+                    [self syncProfileContentAnnotationsCompleted:profileID 
+                                                     usingMethod:method
+                                                        userInfo:userInfo];
                 });                
             });
         }
@@ -591,6 +594,7 @@ NSString * const SCHAnnotationSyncComponentCompletedProfileIDs = @"SCHAnnotation
 
 - (void)syncProfileContentAnnotationsCompleted:(NSNumber *)profileID 
                                    usingMethod:(NSString *)method
+                                      userInfo:(NSDictionary *)userInfo
 {
     [[NSNotificationCenter defaultCenter] postNotificationName:SCHAnnotationSyncComponentDidCompleteNotification 
                                                         object:self 
@@ -598,7 +602,7 @@ NSString * const SCHAnnotationSyncComponentCompletedProfileIDs = @"SCHAnnotation
                                                                                            forKey:SCHAnnotationSyncComponentCompletedProfileIDs]];        
     [self.annotations removeObjectForKey:profileID];
     
-    [super method:method didCompleteWithResult:nil userInfo:nil];
+    [super method:method didCompleteWithResult:nil userInfo:userInfo];
 }
 
 - (void)syncAnnotationsContentList:(NSArray *)webAnnotationsContentList 
