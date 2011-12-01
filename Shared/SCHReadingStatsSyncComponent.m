@@ -91,7 +91,7 @@ NSString * const SCHReadingStatsSyncComponentDidFailNotification = @"SCHReadingS
         [self clearStatistics];
         [[NSNotificationCenter defaultCenter] postNotificationName:SCHReadingStatsSyncComponentDidCompleteNotification 
                                                             object:self];
-        [super method:method didCompleteWithResult:nil userInfo:nil];				    
+        [super method:method didCompleteWithResult:nil userInfo:userInfo];				    
     }
     @catch (NSException *exception) {
         [[NSNotificationCenter defaultCenter] postNotificationName:SCHReadingStatsSyncComponentDidFailNotification 

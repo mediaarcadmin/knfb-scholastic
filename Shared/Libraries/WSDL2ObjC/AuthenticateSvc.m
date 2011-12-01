@@ -486,6 +486,7 @@
 @synthesize delegate;
 @synthesize responseHeaders;
 @synthesize responseData;
+@synthesize serverDateDelta;
 @synthesize urlConnection;
 - (id)initWithBinding:(AuthenticateSoap11Binding *)aBinding delegate:(id<AuthenticateSoap11BindingResponseDelegate>)aDelegate
 {
@@ -530,6 +531,14 @@
 		NSLog(@"ResponseHeaders:\n%@", [httpResponse allHeaderFields]);
 	}
 	self.responseHeaders = [httpResponse allHeaderFields];
+	static NSDateFormatter *dateFormatter = nil;
+	if (dateFormatter == nil) {
+		dateFormatter = [[NSDateFormatter alloc] init];
+		[dateFormatter setLocale:[[[NSLocale alloc] initWithLocaleIdentifier:@"en_US_POSIX"] autorelease]];
+		[dateFormatter setDateFormat:@"EEE, dd MMM yyyy HH:mm:ss zzz"]; 
+	}
+	NSDate *serverDate = [dateFormatter dateFromString:[self.responseHeaders objectForKey:@"Date"]];
+	self.serverDateDelta = (serverDate == nil ? 0.0 : [serverDate timeIntervalSinceNow]);
 	
 	if ([urlResponse.MIMEType rangeOfString:[self.binding MIMEType]].length == 0) {
 		NSError *error = nil;

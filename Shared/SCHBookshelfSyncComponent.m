@@ -116,14 +116,14 @@ NSString * const SCHBookshelfSyncComponentDidFailNotification = @"SCHBookshelfSy
                 if (self.requestCount < 1) {
                     [[NSNotificationCenter defaultCenter] postNotificationName:SCHBookshelfSyncComponentDidCompleteNotification 
                                                                         object:self];
-                    [super method:method didCompleteWithResult:nil userInfo:nil];				
+                    [super method:method didCompleteWithResult:nil userInfo:userInfo];				
                 }
             } else {
                 [self postBookshelfSyncComponentBookReceivedNotification:list];
                 
                 [[NSNotificationCenter defaultCenter] postNotificationName:SCHBookshelfSyncComponentDidCompleteNotification 
                                                                     object:self];
-                [super method:method didCompleteWithResult:nil userInfo:nil];				
+                [super method:method didCompleteWithResult:nil userInfo:userInfo];				
             }
         }
     }

@@ -27,6 +27,7 @@
 #import "SCHAppContentProfileItem.h"
 #import "SCHBookIdentifier.h"
 #import "BITAPIError.h"
+#import "NSDate+ServerDate.h"
 
 // Constants
 NSString * const SCHAnnotationSyncComponentDidCompleteNotification = @"SCHAnnotationSyncComponentDidCompleteNotification";
@@ -255,21 +256,20 @@ NSString * const SCHAnnotationSyncComponentCompletedProfileIDs = @"SCHAnnotation
         if([method compare:kSCHLibreAccessWebServiceSaveProfileContentAnnotations] == NSOrderedSame) {
             [self processSaveProfileContentAnnotations:profileID result:result];
         } else if([method compare:kSCHLibreAccessWebServiceListProfileContentAnnotations] == NSOrderedSame) {
-            SCHAppStateManager *appStateManager = [SCHAppStateManager sharedAppStateManager];
-            BOOL canSyncNotes = [appStateManager canSyncNotes];
+            BOOL canSyncNotes = [[SCHAppStateManager sharedAppStateManager] canSyncNotes];
             NSDate *syncDate = [userInfo objectForKey:@"serverDate"];
-            if (syncDate != nil) {
-                appStateManager.appState.ServerDateDelta = [NSNumber numberWithDouble:[syncDate timeIntervalSinceNow]];               
-            }
 
+            // if we don't have a serverDate then use the current device date
+            if (syncDate == nil || syncDate == (id)[NSNull null]) {
+                syncDate = [NSDate date];
+            }
             dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{
                 self.backgroundThreadManagedObjectContext = [[[NSManagedObjectContext alloc] init] autorelease];
                 [self.backgroundThreadManagedObjectContext setPersistentStoreCoordinator:self.managedObjectContext.persistentStoreCoordinator];
                 
-                // if we don't have a serverDate then use the current device date
                 [self syncProfileContentAnnotations:[result objectForKey:kSCHLibreAccessWebServiceListProfileContentAnnotations] 
                                        canSyncNotes:canSyncNotes
-                                           syncDate:(syncDate == nil ? [NSDate date] : syncDate)];	            
+                                           syncDate:syncDate];	            
                 
                 self.backgroundThreadManagedObjectContext = nil;
                 

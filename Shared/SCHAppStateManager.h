@@ -24,6 +24,8 @@
 - (BOOL)canSync;
 - (BOOL)canSyncNotes;
 - (BOOL)canAuthenticate;
+- (void)setServerDateDelta:(NSTimeInterval)seconds;
+- (NSTimeInterval)serverDateDelta;
 - (BOOL)isStandardStore;
 - (BOOL)isSampleStore;
 

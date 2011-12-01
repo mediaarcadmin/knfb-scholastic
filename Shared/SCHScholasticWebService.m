@@ -105,10 +105,10 @@ static NSString * const kSCHScholasticWebServiceAttributeErrorDesc = @"errorDesc
 					}
 				} else if([(id)self.delegate respondsToSelector:@selector(method:didCompleteWithResult:userInfo:)]) {					
                     NSDate *serverDate = [self.rfc822DateFormatter dateFromString:[operation.responseHeaders objectForKey:@"Date"]];
-                    NSDictionary *userInfo = nil;
-                    if (serverDate != nil) {
-                        userInfo = [NSDictionary dictionaryWithObject:serverDate forKey:@"serverDate"];
-                    }
+                    NSDictionary *userInfo = [NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithDouble:(double)operation.serverDateDelta], @"serverDateDelta",
+                                              (serverDate == nil ? (id)[NSNull null] : serverDate), @"serverDate",
+                                              nil];
+                                
 					[(id)self.delegate method:kSCHScholasticWebServiceProcessRemote didCompleteWithResult:
 					 [NSDictionary dictionaryWithObject:token forKey:kSCHScholasticWebServicePToken]
                                      userInfo:userInfo];

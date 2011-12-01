@@ -8,6 +8,7 @@
 
 #import "SCHSyncComponent.h"
 #import "SCHSyncComponentProtected.h"
+#import "SCHAppStateManager.h"
 
 // Constants
 NSString * const SCHSyncComponentDidFailAuthenticationNotification = @"SCHSyncComponentDidFailAuthenticationNotification";
@@ -64,6 +65,13 @@ NSString * const SCHSyncComponentDidFailAuthenticationNotification = @"SCHSyncCo
 	self.isSynchronizing = NO;
 	
     self.failureCount = 0;
+    
+    if (userInfo != nil) {
+        NSNumber *serverDateDelta = [userInfo objectForKey:@"serverDateDelta"];
+        if (serverDateDelta != nil) {
+            [[SCHAppStateManager sharedAppStateManager] setServerDateDelta:[serverDateDelta doubleValue]];
+        }
+    }
     
 	[super method:method didCompleteWithResult:nil userInfo:nil];	
 }

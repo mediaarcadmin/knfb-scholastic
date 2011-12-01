@@ -536,10 +536,10 @@ static NSInteger const kSCHLibreAccessWebServiceVaid = 33;
                 }
 
                 NSDate *serverDate = [self.rfc822DateFormatter dateFromString:[operation.responseHeaders objectForKey:@"Date"]];
-                NSDictionary *userInfo = nil;
-                if (serverDate != nil) {
-                    userInfo = [NSDictionary dictionaryWithObject:serverDate forKey:@"serverDate"];
-                }
+                NSDictionary *userInfo = [NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithDouble:(double)operation.serverDateDelta], @"serverDateDelta",
+                                          (serverDate == nil ? (id)[NSNull null] : serverDate), @"serverDate",
+                                          nil];
+                
                 if(errorTriggered == NO && [(id)self.delegate respondsToSelector:@selector(method:didCompleteWithResult:userInfo:)]) {
                     [(id)self.delegate method:methodName didCompleteWithResult:[self objectFrom:bodyPart] 
                                      userInfo:userInfo];									

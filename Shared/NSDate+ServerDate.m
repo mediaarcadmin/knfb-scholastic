@@ -14,16 +14,12 @@
 
 + (NSDate *)serverDate
 {
-    SCHAppStateManager *appStateManager = [SCHAppStateManager sharedAppStateManager];
-
-    return [NSDate dateWithTimeIntervalSinceNow:[appStateManager.appState.ServerDateDelta doubleValue]];
+    return [NSDate dateWithTimeIntervalSinceNow:[[SCHAppStateManager sharedAppStateManager] serverDateDelta]];
 }
 
 + (NSDate *)serverDateWithTimeIntervalSinceNow:(NSTimeInterval)seconds
 {
-    SCHAppStateManager *appStateManager = [SCHAppStateManager sharedAppStateManager];
-    
-    return [NSDate dateWithTimeIntervalSinceNow:[appStateManager.appState.ServerDateDelta doubleValue] + seconds];
+    return [NSDate dateWithTimeIntervalSinceNow:[[SCHAppStateManager sharedAppStateManager] serverDateDelta] + seconds];
 }
 
 @end

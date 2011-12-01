@@ -4650,6 +4650,7 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
 @property (nonatomic, assign) id<LibreAccessServiceSoap11BindingResponseDelegate> delegate;
 @property (nonatomic, retain) NSDictionary *responseHeaders;
 @property (nonatomic, retain) NSMutableData *responseData;
+@property (nonatomic, assign) NSTimeInterval serverDateDelta;
 @property (nonatomic, retain) NSURLConnection *urlConnection;
 - (id)initWithBinding:(LibreAccessServiceSoap11Binding *)aBinding delegate:(id<LibreAccessServiceSoap11BindingResponseDelegate>)aDelegate;
 - (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error;

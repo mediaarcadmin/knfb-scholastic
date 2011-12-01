@@ -114,7 +114,7 @@ NSString * const SCHContentSyncComponentDidFailNotification = @"SCHContentSyncCo
             [self syncUserContentItems:content];
             [[NSNotificationCenter defaultCenter] postNotificationName:SCHContentSyncComponentDidCompleteNotification 
                                                                 object:self];
-            [super method:method didCompleteWithResult:nil userInfo:nil];				
+            [super method:method didCompleteWithResult:nil userInfo:userInfo];				
         }
     }
     @catch (NSException *exception) {

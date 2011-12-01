@@ -90,7 +90,7 @@ NSString * const SCHProfileSyncComponentDidFailNotification = @"SCHProfileSyncCo
             [self syncProfiles:[result objectForKey:kSCHLibreAccessWebServiceProfileList]];
             [[NSNotificationCenter defaultCenter] postNotificationName:SCHProfileSyncComponentDidCompleteNotification 
                                                                 object:self];		
-            [super method:method didCompleteWithResult:nil userInfo:nil];	
+            [super method:method didCompleteWithResult:nil userInfo:userInfo];	
         }
     }
     @catch (NSException *exception) {

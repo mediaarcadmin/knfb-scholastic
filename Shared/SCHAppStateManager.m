@@ -159,6 +159,27 @@
     return(ret);    
 }
 
+- (void)setServerDateDelta:(NSTimeInterval)seconds
+{
+    SCHAppState *appState = [self appState];
+    
+    if (appState != nil) {
+        appState.ServerDateDelta = [NSNumber numberWithDouble:seconds];
+    }
+}
+
+- (NSTimeInterval)serverDateDelta
+{
+    NSTimeInterval ret = 0.0;
+    SCHAppState *appState = [self appState];
+    
+    if (appState != nil) {
+        ret = [appState.ServerDateDelta doubleValue];
+    }
+    
+    return ret;
+}
+
 - (BOOL)isStandardStore
 {
     return([[self appState].DataStoreType isEqualToNumber:[NSNumber numberWithDataStoreType:kSCHDataStoreTypesStandard]]);

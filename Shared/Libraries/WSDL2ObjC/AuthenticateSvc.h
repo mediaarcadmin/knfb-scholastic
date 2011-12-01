@@ -97,6 +97,7 @@
 @property (nonatomic, assign) id<AuthenticateSoap11BindingResponseDelegate> delegate;
 @property (nonatomic, retain) NSDictionary *responseHeaders;
 @property (nonatomic, retain) NSMutableData *responseData;
+@property (nonatomic, assign) NSTimeInterval serverDateDelta;
 @property (nonatomic, retain) NSURLConnection *urlConnection;
 - (id)initWithBinding:(AuthenticateSoap11Binding *)aBinding delegate:(id<AuthenticateSoap11BindingResponseDelegate>)aDelegate;
 - (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error;
