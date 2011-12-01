@@ -20,5 +20,6 @@ NSString * const kSCHAppStatefetchAppState = @"fetchAppState";
 @dynamic DataStoreType;
 @dynamic ShouldSyncNotes;
 @dynamic LastKnownAuthToken;
+@dynamic ServerDateDelta;
 
 @end

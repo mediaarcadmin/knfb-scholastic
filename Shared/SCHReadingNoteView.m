@@ -13,6 +13,7 @@
 #import "SCHNote.h"
 #import "SCHBookAnnotations.h"
 #import "SCHBookPoint.h"
+#import "NSDate+ServerDate.h"
 
 static const CGFloat kSCHNotesViewPhoneShadow = 16;
 static const CGFloat kSCHNotesViewPadBorder = 6;
@@ -186,7 +187,7 @@ static NSString * const SCHNotesViewExitToTopAnimation = @"SCHNotesViewExitToTop
     [self addSubview:aButtonSegment];
     [aButtonSegment release];
     
-    NSDate *date = [NSDate date];
+    NSDate *date = [NSDate serverDate];
     NSDateFormatter *dateFormat = [[NSDateFormatter alloc] init];
     [dateFormat setDateStyle:NSDateFormatterShortStyle];
     NSString *dateString = [dateFormat stringFromDate:date];  

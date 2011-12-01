@@ -23,5 +23,6 @@ extern NSString * const kSCHAppStatefetchAppState;
 @property (nonatomic, retain) NSNumber * DataStoreType;
 @property (nonatomic, retain) NSNumber * ShouldSyncNotes;
 @property (nonatomic, retain) NSString * LastKnownAuthToken;
+@property (nonatomic, retain) NSNumber * ServerDateDelta;
 
 @end

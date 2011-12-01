@@ -44,6 +44,7 @@
 #import "SCHUserContentItem.h"
 #import "SCHReadingStoryInteractionButton.h"
 #import "SCHProfileSyncComponent.h"
+#import "NSDate+ServerDate.h"
 
 // constants
 NSString *const kSCHReadingViewErrorDomain  = @"com.knfb.scholastic.ReadingViewErrorDomain";
@@ -645,7 +646,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     
     [self save];
     
-    self.bookStatisticsReadingStartTime = [NSDate date];
+    self.bookStatisticsReadingStartTime = [NSDate serverDate];
     
     [self setupOptionsViewForMode:self.layoutType];
     self.optionsPhoneTopBackground.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"OptionsViewTopBackground"]];
@@ -804,9 +805,9 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
         SCHAppBook *book = [[SCHBookManager sharedBookManager] bookWithIdentifier:self.bookIdentifier inManagedObjectContext:self.managedObjectContext];
 
         if ([self.bookStatistics hasStatistics] == YES) {
-            NSTimeInterval readingDuration = [[NSDate date] timeIntervalSinceDate:self.bookStatisticsReadingStartTime];
+            NSTimeInterval readingDuration = [[NSDate serverDate] timeIntervalSinceDate:self.bookStatisticsReadingStartTime];
             [self.bookStatistics increaseReadingDurationBy:floor(readingDuration)];
-            self.bookStatisticsReadingStartTime = [NSDate date];
+            self.bookStatisticsReadingStartTime = [NSDate serverDate];
             [self.profile newStatistics:self.bookStatistics forBook:self.bookIdentifier];
             self.bookStatistics = nil;
         }
@@ -847,7 +848,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 
 - (void)willEnterForegroundNotification:(NSNotification *)notification
 {
-    self.bookStatisticsReadingStartTime = [NSDate date];
+    self.bookStatisticsReadingStartTime = [NSDate serverDate];
 }
 
 #pragma mark - Sync Propagation methods

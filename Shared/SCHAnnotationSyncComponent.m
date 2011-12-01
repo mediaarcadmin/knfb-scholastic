@@ -255,13 +255,18 @@ NSString * const SCHAnnotationSyncComponentCompletedProfileIDs = @"SCHAnnotation
         if([method compare:kSCHLibreAccessWebServiceSaveProfileContentAnnotations] == NSOrderedSame) {
             [self processSaveProfileContentAnnotations:profileID result:result];
         } else if([method compare:kSCHLibreAccessWebServiceListProfileContentAnnotations] == NSOrderedSame) {
-            BOOL canSyncNotes = [[SCHAppStateManager sharedAppStateManager] canSyncNotes];
+            SCHAppStateManager *appStateManager = [SCHAppStateManager sharedAppStateManager];
+            BOOL canSyncNotes = [appStateManager canSyncNotes];
+            NSDate *syncDate = [userInfo objectForKey:@"serverDate"];
+            if (syncDate != nil) {
+                appStateManager.appState.ServerDateDelta = [NSNumber numberWithDouble:[syncDate timeIntervalSinceNow]];               
+            }
+
             dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{
                 self.backgroundThreadManagedObjectContext = [[[NSManagedObjectContext alloc] init] autorelease];
                 [self.backgroundThreadManagedObjectContext setPersistentStoreCoordinator:self.managedObjectContext.persistentStoreCoordinator];
                 
                 // if we don't have a serverDate then use the current device date
-                NSDate *syncDate = [userInfo objectForKey:@"serverDate"];
                 [self syncProfileContentAnnotations:[result objectForKey:kSCHLibreAccessWebServiceListProfileContentAnnotations] 
                                        canSyncNotes:canSyncNotes
                                            syncDate:(syncDate == nil ? [NSDate date] : syncDate)];	            

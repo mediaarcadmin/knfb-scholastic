@@ -10,6 +10,7 @@
 #import "SCHBookIdentifier.h"
 #import "NSURL+Extensions.h"
 #import "SCHAppStateManager.h"
+#import "NSDate+ServerDate.h"
 
 // Constants
 NSString * const kSCHAppBookErrorDomain  = @"com.knfb.scholastic.AppBookErrorDomain";
@@ -211,7 +212,7 @@ NSString * const kSCHAppBookFilenameSeparator = @"-";
         if (expires) {
             NSDate *expiresDate = [NSDate dateWithTimeIntervalSince1970:[expires integerValue]];
             
-            if ([expiresDate earlierDate:[[NSDate date] dateByAddingTimeInterval:60]] == expiresDate) {
+            if ([expiresDate earlierDate:[[NSDate serverDate] dateByAddingTimeInterval:60]] == expiresDate) {
                 ret = YES;
             }
         }

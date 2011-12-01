@@ -9,6 +9,7 @@
 #import "SCHReadingStatsEntryItem.h"
 
 #import "SCHReadingStatsContentItem.h"
+#import "NSDate+ServerDate.h"
 
 // Constants
 NSString * const kSCHReadingStatsEntryItem = @"SCHReadingStatsEntryItem";
@@ -59,7 +60,7 @@ extern NSString * const kSCHAuthenticationManagerDeviceKey;
 	[super willSave];
 	
 	if (self.isInserted == YES || self.isUpdated == YES) {
-		[self setPrimitiveTimestamp:[NSDate date]];
+		[self setPrimitiveTimestamp:[NSDate serverDate]];
 	}
 }
 

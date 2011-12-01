@@ -10,6 +10,7 @@
 
 #import "NSNumber+ObjectTypes.h"
 #import "SCHLibreAccessConstants.h"
+#import "NSDate+ServerDate.h"
 
 // Constants
 NSString * const SCHSyncEntityState = @"State";
@@ -36,7 +37,7 @@ NSString * const SCHSyncEntityLastModified = @"LastModified";
 {
 	[super awakeFromInsert];
 	
-	[self setPrimitiveLastModified:[NSDate date]];
+	[self setPrimitiveLastModified:[NSDate serverDate]];
 	[self setPrimitiveState:[NSNumber numberWithStatus:kSCHStatusCreated]];						
 }
 
@@ -49,7 +50,7 @@ NSString * const SCHSyncEntityLastModified = @"LastModified";
         [self setPrimitiveState:[NSNumber numberWithStatus:kSCHStatusUnmodified]];
 	} else if ([self shouldSetAsModified] == YES) {
         // record user changes were made by setting lastModified and State
-        [self setPrimitiveLastModified:[NSDate date]];
+        [self setPrimitiveLastModified:[NSDate serverDate]];
         // never change the state from CREATED as the sync would never inform
         // the server to create it and do not stamp on an existing State change
         if ([self.State isEqualToNumber:[NSNumber numberWithStatus:kSCHStatusCreated]] == NO &&
@@ -101,7 +102,7 @@ NSString * const SCHSyncEntityLastModified = @"LastModified";
 {
     [self willChangeValueForKey:SCHSyncEntityLastModified];
     [self willChangeValueForKey:SCHSyncEntityState];
-	[self setPrimitiveLastModified:[NSDate date]];
+	[self setPrimitiveLastModified:[NSDate serverDate]];
 	[self setPrimitiveState:[NSNumber numberWithStatus:kSCHStatusDeleted]];		
     [self didChangeValueForKey:SCHSyncEntityState];
     [self didChangeValueForKey:SCHSyncEntityLastModified];
@@ -111,7 +112,7 @@ NSString * const SCHSyncEntityLastModified = @"LastModified";
 {
     [self willChangeValueForKey:SCHSyncEntityLastModified];
     [self willChangeValueForKey:SCHSyncEntityState];
-	[self setPrimitiveLastModified:[NSDate date]];
+	[self setPrimitiveLastModified:[NSDate serverDate]];
 	[self setPrimitiveState:[NSNumber numberWithStatus:kSCHStatusUnmodified]];	
     [self didChangeValueForKey:SCHSyncEntityState];
     [self didChangeValueForKey:SCHSyncEntityLastModified];

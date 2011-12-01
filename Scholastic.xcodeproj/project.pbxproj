@@ -1293,6 +1293,8 @@
 		5248E10C13C4858900FA2CDC /* SCHReadingStatsContentItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 5248E10B13C4858900FA2CDC /* SCHReadingStatsContentItem.m */; };
 		5248E11013C4858900FA2CDC /* SCHReadingStatsDetailItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 5248E10F13C4858900FA2CDC /* SCHReadingStatsDetailItem.m */; };
 		5248E11413C4858900FA2CDC /* SCHReadingStatsEntryItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 5248E11313C4858900FA2CDC /* SCHReadingStatsEntryItem.m */; };
+		525079421486FADC00712853 /* NSDate+ServerDate.m in Sources */ = {isa = PBXBuildFile; fileRef = 525079411486FADC00712853 /* NSDate+ServerDate.m */; };
+		525079431486FADC00712853 /* NSDate+ServerDate.m in Sources */ = {isa = PBXBuildFile; fileRef = 525079411486FADC00712853 /* NSDate+ServerDate.m */; };
 		525E82D3138FFFF7006A6775 /* SCHAudioInfoProcessor.m in Sources */ = {isa = PBXBuildFile; fileRef = 525E82D2138FFFF7006A6775 /* SCHAudioInfoProcessor.m */; };
 		525E82D713938548006A6775 /* SCHAudioInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 525E82D613938548006A6775 /* SCHAudioInfo.m */; };
 		5264FAC713A7555200D4F659 /* SCHBookShelfTopTenPopoverTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5264FAC513A7555200D4F659 /* SCHBookShelfTopTenPopoverTableView.m */; };
@@ -2631,6 +2633,8 @@
 		5248E10F13C4858900FA2CDC /* SCHReadingStatsDetailItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHReadingStatsDetailItem.m; path = Shared/SCHReadingStatsDetailItem.m; sourceTree = "<group>"; };
 		5248E11213C4858900FA2CDC /* SCHReadingStatsEntryItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHReadingStatsEntryItem.h; path = Shared/SCHReadingStatsEntryItem.h; sourceTree = "<group>"; };
 		5248E11313C4858900FA2CDC /* SCHReadingStatsEntryItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHReadingStatsEntryItem.m; path = Shared/SCHReadingStatsEntryItem.m; sourceTree = "<group>"; };
+		525079401486FADC00712853 /* NSDate+ServerDate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSDate+ServerDate.h"; path = "Shared/NSDate+ServerDate.h"; sourceTree = "<group>"; };
+		525079411486FADC00712853 /* NSDate+ServerDate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSDate+ServerDate.m"; path = "Shared/NSDate+ServerDate.m"; sourceTree = "<group>"; };
 		525E82D1138FFFF6006A6775 /* SCHAudioInfoProcessor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHAudioInfoProcessor.h; path = Shared/SCHAudioInfoProcessor.h; sourceTree = "<group>"; };
 		525E82D2138FFFF7006A6775 /* SCHAudioInfoProcessor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHAudioInfoProcessor.m; path = Shared/SCHAudioInfoProcessor.m; sourceTree = "<group>"; };
 		525E82D513938547006A6775 /* SCHAudioInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHAudioInfo.h; path = Shared/SCHAudioInfo.h; sourceTree = "<group>"; };
@@ -5122,6 +5126,8 @@
 				C9722BFD1393AAD0008605E8 /* UIImage+BlioAdditions.h */,
 				526760AE144D6A6A00F3FE56 /* NSURL+Extensions.h */,
 				526760AF144D6A6A00F3FE56 /* NSURL+Extensions.m */,
+				525079401486FADC00712853 /* NSDate+ServerDate.h */,
+				525079411486FADC00712853 /* NSDate+ServerDate.m */,
 			);
 			name = Extensions;
 			sourceTree = "<group>";
@@ -8233,6 +8239,7 @@
 				280DA9D2145AB3C300583695 /* SCHUnqueuedAudioPlayer.m in Sources */,
 				28EF28031462D51100DD1939 /* SCHBookStoryInteractions+XPS.m in Sources */,
 				C9367BD81472E89A0033A2EB /* KNFBXMLParserLock.m in Sources */,
+				525079421486FADC00712853 /* NSDate+ServerDate.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -8612,6 +8619,7 @@
 				280DA9D3145AB3C300583695 /* SCHUnqueuedAudioPlayer.m in Sources */,
 				28EF28041462D51100DD1939 /* SCHBookStoryInteractions+XPS.m in Sources */,
 				C9367BD91472E89A0033A2EB /* KNFBXMLParserLock.m in Sources */,
+				525079431486FADC00712853 /* NSDate+ServerDate.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
