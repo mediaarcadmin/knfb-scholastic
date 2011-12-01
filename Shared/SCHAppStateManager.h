@@ -7,7 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
-
+#import "NSNumber+ObjectTypes.h"
 #import "SCHAppState.h"
 
 @class NSManagedObjectContext;
@@ -20,13 +20,22 @@
 
 + (SCHAppStateManager *)sharedAppStateManager;
 
-- (SCHAppState *)appState;
 - (BOOL)canSync;
+- (void)setCanSync:(BOOL)sync;
+
 - (BOOL)canSyncNotes;
+- (void)setCanSyncNotes:(BOOL)sync;
+
 - (BOOL)canAuthenticate;
+- (void)setCanAuthenticate:(BOOL)auth;
+
 - (void)setServerDateDelta:(NSTimeInterval)seconds;
 - (NSTimeInterval)serverDateDelta;
 - (BOOL)isStandardStore;
 - (BOOL)isSampleStore;
+- (void)setDataStoreType:(SCHDataStoreTypes)type;
+
+- (NSString *)lastKnownAuthToken;
+- (void)setLastKnownAuthToken:(NSString *)token;
 
 @end

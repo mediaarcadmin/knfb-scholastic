@@ -296,8 +296,7 @@ NSTimeInterval const kSCHAuthenticationManagerSecondsInAMinute = 60.0;
     
     if (!authToken) {
         NSLog(@"Warning: an attempt was made to force deregisteration without a current auth token. Using last known auth token");
-        SCHAppState *appState = [SCHAppStateManager sharedAppStateManager].appState;
-        authToken = appState.LastKnownAuthToken;
+        authToken = [[SCHAppStateManager sharedAppStateManager] lastKnownAuthToken];
     }
     
     if (authToken) {
@@ -594,13 +593,7 @@ NSTimeInterval const kSCHAuthenticationManagerSecondsInAMinute = 60.0;
 - (void)setLastKnownAuthToken:(NSString *)token
 {
     if (token) {
-        SCHAppState *appState = [SCHAppStateManager sharedAppStateManager].appState;
-        appState.LastKnownAuthToken = token;
-        
-        NSError *error;
-        if ([appState.managedObjectContext save:&error] == NO) {
-            NSLog(@"Unable to save the LastKnownAuthToken (%@) in the app state %@, %@", token, error, [error userInfo]);
-        }
+        [[SCHAppStateManager sharedAppStateManager] setLastKnownAuthToken:token];
     }
 }
 

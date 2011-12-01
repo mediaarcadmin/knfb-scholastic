@@ -597,6 +597,7 @@ static SCHProcessingManager *sharedManager = nil;
         if (book != nil) {
             // check for space saver mode
             BOOL spaceSaverMode = [self spaceSaverMode];
+            BOOL bookFileURLIsBundleURL = [book bookFileURLIsBundleURL];
             
             switch (book.processingState) {
                     // these book states always require additional processing actions
@@ -615,7 +616,7 @@ static SCHProcessingManager *sharedManager = nil;
                     // if space saver mode is off, bump the book to the download state and start download
                 case SCHBookProcessingStateDownloadPaused:
                 case SCHBookProcessingStateReadyForBookFileDownload:
-                    if (!spaceSaverMode || [[book ForceProcess] boolValue]) {
+                    if (!spaceSaverMode || [[book ForceProcess] boolValue] || bookFileURLIsBundleURL) {
                         [book setProcessingState:SCHBookProcessingStateDownloadStarted];
                         [self processIdentifier:identifier];
                     }
