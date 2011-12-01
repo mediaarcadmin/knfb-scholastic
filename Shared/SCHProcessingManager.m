@@ -245,24 +245,32 @@ static SCHProcessingManager *sharedManager = nil;
 {
     NSAssert([NSThread isMainThread], @"checkStateForAllBooks must run on main thread");
     
-	NSArray *allBooks = [[SCHBookManager sharedBookManager] allBookIdentifiersInManagedObjectContext:self.managedObjectContext];
-	
-	// FIXME: add prioritisation
+    NSManagedObjectContext *moc = self.managedObjectContext;
+
+	NSArray *allIdentifiers = [[SCHBookManager sharedBookManager] allBookIdentifiersInManagedObjectContext:moc];
+    NSMutableArray *identifiersToBeProcessed = [NSMutableArray array];
     
 	// get all the books independent of profile
-	for (SCHBookIdentifier *identifier in allBooks) {
-		SCHAppBook *book = [[SCHBookManager sharedBookManager] bookWithIdentifier:identifier inManagedObjectContext:self.managedObjectContext];
+	for (SCHBookIdentifier *identifier in allIdentifiers) {
+		SCHAppBook *book = [[SCHBookManager sharedBookManager] bookWithIdentifier:identifier inManagedObjectContext:moc];
         
         if (book != nil) {
             // if the book is currently processing, it will already be taken care of 
             // when it finishes processing, so no need to add it for consideration
+            // Bundle books get processed before non-bundle books
             if (![book isProcessing] && [self identifierNeedsProcessing:identifier]) {
-                // FIXME: remove this checkout when the XPS library properly releases the mapped memory
-                //[[SCHBookManager sharedBookManager] checkOutXPSProviderForBookIdentifier:isbn];
-                [self processIdentifier:identifier];
+                if ([book contentMetadataCoverURLIsBundleURL]) {
+                    [identifiersToBeProcessed insertObject:identifier atIndex:0];
+                } else {
+                    [identifiersToBeProcessed addObject:identifier];
+                }
             }
         }
-	}	
+	}
+	
+    for (SCHBookIdentifier *identifier in identifiersToBeProcessed) {
+        [self processIdentifier:identifier];
+    }
     
     [self checkIfProcessing];
 }
@@ -334,7 +342,7 @@ static SCHProcessingManager *sharedManager = nil;
     }
 }
 
-- (void)cancelAllOperationsForBookIndentifier:(SCHBookIdentifier *)bookIdentifier
+- (void)cancelAllOperationsForBookIdentifier:(SCHBookIdentifier *)bookIdentifier
 {
     @synchronized(self) {
         for (SCHBookOperation *bookOperation in [self.webServiceOperationQueue operations]) {
@@ -415,8 +423,13 @@ static SCHProcessingManager *sharedManager = nil;
                 [downloadImageOp setNotCancelledCompletionBlock:^{
                     [self redispatchIdentifier:identifier];
                 }];
-                // add the operation to the network download queue
-                [self.networkOperationQueue addOperation:downloadImageOp];
+                
+                // add the operation to the network download queue unless it is a bundleURL
+                if ([book bookCoverURLIsBundleURL]) {
+                    [self.localProcessingQueue addOperation:downloadImageOp];
+                } else {
+                    [self.networkOperationQueue addOperation:downloadImageOp];
+                }
                 [downloadImageOp release];                
                 return;
             }	
@@ -445,8 +458,12 @@ static SCHProcessingManager *sharedManager = nil;
                     [self redispatchIdentifier:identifier];
                 }];
                 
-                // add the operation to the network download queue
-                [self.networkOperationQueue addOperation:bookDownloadOp];
+                // add the operation to the network download queue unless it is a bundleURL
+                if ([book bookCoverURLIsBundleURL]) {
+                    [self.localProcessingQueue addOperation:bookDownloadOp];
+                } else {
+                    [self.networkOperationQueue addOperation:bookDownloadOp];
+                }
                 [bookDownloadOp release];
                 return;
             }	

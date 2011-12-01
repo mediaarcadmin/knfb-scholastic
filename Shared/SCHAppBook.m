@@ -69,6 +69,7 @@ NSString * const kSCHAppBookFilenameSeparator = @"-";
 
 - (NSError *)errorWithCode:(NSInteger)code;
 - (BOOL)urlHasExpired:(NSString *)urlString;
+- (BOOL)urlStringIsBundleURL:(NSString *)urlString;
 
 @end
 
@@ -163,12 +164,12 @@ NSString * const kSCHAppBookFilenameSeparator = @"-";
     return (self.BookFileURL && ![self urlHasExpired:self.BookFileURL]);
 }
 
-- (BOOL)bookCoverURLIsBundleURL
+- (BOOL)urlStringIsBundleURL:(NSString *)urlString
 {
     BOOL ret = NO;
     
-    if (self.BookCoverURL) {
-        NSURL *url = [NSURL URLWithString:self.BookCoverURL];
+    if (urlString) {
+        NSURL *url = [NSURL URLWithString:urlString];
         if ([url scheme] == nil) {
             ret = YES;
         }
@@ -177,18 +178,24 @@ NSString * const kSCHAppBookFilenameSeparator = @"-";
     return ret;
 }
 
+- (BOOL)bookCoverURLIsBundleURL
+{
+    return [self urlStringIsBundleURL:self.BookCoverURL];
+}
+
 - (BOOL)bookFileURLIsBundleURL
 {
-    BOOL ret = NO;
-    
-    if (self.BookFileURL) {
-        NSURL *url = [NSURL URLWithString:self.BookFileURL];
-        if ([url scheme] == nil) {
-            ret = YES;
-        }
-    }
-    
-    return ret;
+    return [self urlStringIsBundleURL:self.BookFileURL];
+}
+
+- (BOOL)contentMetadataCoverURLIsBundleURL
+{
+    return [self urlStringIsBundleURL:self.ContentMetadataItem.CoverURL];
+}
+
+- (BOOL)contentMetadataFileURLIsBundleURL
+{
+    return [self urlStringIsBundleURL:self.ContentMetadataItem.ContentURL];
 }
 
 - (BOOL)contentMetadataCoverURLIsValid

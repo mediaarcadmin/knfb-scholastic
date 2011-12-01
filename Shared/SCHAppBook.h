@@ -132,6 +132,8 @@ typedef enum {
 - (BOOL)bookFileURLIsBundleURL;
 - (BOOL)contentMetadataCoverURLIsValid;
 - (BOOL)contentMetadataFileURLIsValid;
+- (BOOL)contentMetadataCoverURLIsBundleURL;
+- (BOOL)contentMetadataFileURLIsBundleURL;
 
 - (SCHBookCurrentProcessingState)processingState;
 - (void)setProcessingState:(SCHBookCurrentProcessingState)processingState;
