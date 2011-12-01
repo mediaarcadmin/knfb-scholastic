@@ -262,7 +262,7 @@ NSString * const SCHAnnotationSyncComponentCompletedProfileIDs = @"SCHAnnotation
 
             // if we don't have a serverDate then use the current device date
             if (syncDate == nil || syncDate == (id)[NSNull null]) {
-                syncDate = [NSDate date];
+                syncDate = [NSDate serverDate];
             }
             dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{
                 self.backgroundThreadManagedObjectContext = [[[NSManagedObjectContext alloc] init] autorelease];
