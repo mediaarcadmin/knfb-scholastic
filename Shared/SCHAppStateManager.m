@@ -192,23 +192,22 @@
 
 - (void)setServerDateDelta:(NSTimeInterval)seconds
 {
-    SCHAppState *appState = [self appState];
-    
-    if (appState != nil) {
-        appState.ServerDateDelta = [NSNumber numberWithDouble:seconds];
-    }
+    [self performWithAppStateAndSave:^(SCHAppState *appState) {
+        [appState setServerDateDelta:[NSNumber numberWithDouble:seconds]];
+    }];
 }
 
 - (NSTimeInterval)serverDateDelta
 {
-    NSTimeInterval ret = 0.0;
-    SCHAppState *appState = [self appState];
+    __block NSTimeInterval ret = 0.0;
     
-    if (appState != nil) {
-        ret = [appState.ServerDateDelta doubleValue];
-    }
+    [self performWithAppState:^(SCHAppState *appState) {
+        if (appState != nil) {
+            ret = [appState.ServerDateDelta doubleValue];
+        }
+    }];
     
-    return ret;
+    return ret;  
 }
 
 - (BOOL)isStandardStore

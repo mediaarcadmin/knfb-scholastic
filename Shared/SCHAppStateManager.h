@@ -31,6 +31,7 @@
 
 - (void)setServerDateDelta:(NSTimeInterval)seconds;
 - (NSTimeInterval)serverDateDelta;
+
 - (BOOL)isStandardStore;
 - (BOOL)isSampleStore;
 - (void)setDataStoreType:(SCHDataStoreTypes)type;
