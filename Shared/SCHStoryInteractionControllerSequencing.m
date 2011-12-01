@@ -228,19 +228,21 @@ static CGFloat distanceSq(CGPoint imageCenter, CGPoint targetCenter)
     
     self.controllerState = SCHStoryInteractionControllerStateInteractionReadingAnswerWithPause;
     
-    [self enqueueAudioWithPath:@"sfx_dropOK.mp3"
-                    fromBundle:YES
-                    startDelay:0
-        synchronizedStartBlock:nil
-          synchronizedEndBlock:^{
-              if (allCorrect) {
-                  [self playCorrectAnswerSequence];
-              } else if ([self.attachedImages count] == 3) {
-                  [self playIncorrectAnswerSequence];
-              } else {
+    if ([self.attachedImages count] == 3) {
+        if (allCorrect) {
+            [self playCorrectAnswerSequence];
+        } else {
+            [self playIncorrectAnswerSequence];
+        }
+    } else {
+        [self enqueueAudioWithPath:@"sfx_dropOK.mp3"
+                        fromBundle:YES
+                        startDelay:0
+            synchronizedStartBlock:nil
+              synchronizedEndBlock:^{
                   self.controllerState = SCHStoryInteractionControllerStateInteractionInProgress;
-              }
-          }];
+              }];
+    }
 }
 
 #pragma mark - Override for SCHStoryInteractionControllerStateReactions
