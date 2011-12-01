@@ -64,12 +64,14 @@ enum {
 @synthesize animationContainerLayer;
 @synthesize loseAnimationLayers;
 @synthesize tappedLetter;
+@synthesize playButton;
 
 - (void)dealloc
 {
     [answerContainer release], answerContainer = nil;
     [lettersContainer release], lettersContainer = nil;
     [animationContainer release], animationContainer = nil;
+    [playButton release], playButton = nil;
     [answerLetters release], answerLetters = nil;
     [shockedPenguinLayer release], shockedPenguinLayer = nil;
     [happyPenguinLayer release], happyPenguinLayer = nil;
@@ -96,7 +98,9 @@ enum {
 
 - (void)setupViewAtIndex:(NSInteger)screenIndex
 {
-    if (screenIndex == 1) {
+    if (screenIndex == 0) {
+        self.playButton.enabled = YES;
+    } else if (screenIndex == 1) {
         [self setupAnswerView];
         [self setupLetterViews];
         [self setupAnimationView];
@@ -288,6 +292,8 @@ enum {
 
 - (void)playTapped:(id)sender
 {
+    [self.playButton setEnabled:NO];
+    
     [self cancelQueuedAudioExecutingSynchronizedBlocksBefore:^{
         [self presentNextView];
     }];
