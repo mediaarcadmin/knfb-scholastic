@@ -673,6 +673,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 {
 	[super viewWillAppear:animated];
     [self setupAssetsForOrientation:self.interfaceOrientation];
+    [self updateScrubberValue];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -1339,6 +1340,9 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 {     
     // if a story interaction is active, hide the button
     if (self.storyInteractionController != nil) {
+        // But still set up the fill level
+        float fillLevel = [self storyInteractionButtonFillLevelForCurrentPage];
+        [self.storyInteractionButton setFillLevel:fillLevel animated:NO];
         [self setStoryInteractionButtonVisible:NO animated:YES withSound:NO completion:nil];
         return;
     }
@@ -1372,27 +1376,18 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
         float fillLevel = [self storyInteractionButtonFillLevelForCurrentPage];
         [self.storyInteractionButton setFillLevel:fillLevel animated:NO];
         
-        [self setStoryInteractionButtonVisible:YES animated:animated withSound:playAppearanceSound completion:^(BOOL finished){
-            CGRect buttonFrame = self.storyInteractionButtonView.frame;
-            buttonFrame.size = [self.storyInteractionButton imageForState:UIControlStateNormal].size;
-            buttonFrame.origin.x = CGRectGetWidth(self.storyInteractionButtonView.superview.frame) - buttonFrame.size.width;
-            self.storyInteractionButtonView.frame = buttonFrame;
-        }];
+        [self setStoryInteractionButtonVisible:YES animated:animated withSound:playAppearanceSound completion:nil];
     }
 }
 
 - (void)setStoryInteractionButtonVisible:(BOOL)visible animated:(BOOL)animated withSound:(BOOL)sound completion:(void (^)(BOOL finished))completionBlock
 {
     if (visible) {
-        
-        CGRect frame = self.storyInteractionButtonView.frame;
-        
+                
         // if the frame is out of screen, move it back on
-        if ((frame.origin.x + frame.size.width) > self.view.frame.size.width) {
+        if (!CGAffineTransformIsIdentity(self.storyInteractionButtonView.transform)) {
             void (^movementBlock)(void) = ^{
-                CGRect frame = self.storyInteractionButtonView.frame;
-                frame.origin.x = self.view.frame.size.width - frame.size.width;
-                self.storyInteractionButtonView.frame = frame;
+                self.storyInteractionButtonView.transform = CGAffineTransformIdentity;
                 self.storyInteractionButtonView.alpha = 1.0f;
             };
             
@@ -1455,8 +1450,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
         
         void (^movementBlock)(void) = ^{
             CGRect frame = self.storyInteractionButtonView.frame;
-            frame.origin.x += frame.size.width;
-            self.storyInteractionButtonView.frame = frame;
+            self.storyInteractionButtonView.transform = CGAffineTransformMakeTranslation(CGRectGetWidth(frame), 0);
             self.storyInteractionButtonView.alpha = 0.0f;
         };
         
