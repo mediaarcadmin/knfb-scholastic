@@ -63,7 +63,7 @@ typedef enum
 - (void)reloadData;
 - (void)save;
 - (BOOL)canOpenBook:(SCHBookIdentifier *)identifier error:(NSError **)error;
-- (void)selectBookAtIndex:(NSInteger)index startBlock:(dispatch_block_t)startBlock endBlock:(dispatch_block_t)endBlock;
+- (void)selectBookAtIndex:(NSInteger)index startBlock:(dispatch_block_t)startBlock endBlock:(void (^)(BOOL didOpen))endBlock;
 
 - (IBAction)changeToListView:(UIButton *)sender;
 - (IBAction)changeToGridView:(UIButton *)sender;
@@ -748,9 +748,10 @@ typedef enum
                  startBlock:^{
                      [cell setLoading:YES];
                  }
-                   endBlock:^{
-                       [cell setLoading:NO];
-                       
+                   endBlock:^(BOOL didOpen){
+                       if (didOpen) {
+                           [cell setLoading:NO];
+                       }
                    }];
 }
 
@@ -849,7 +850,7 @@ typedef enum
     // nop
 }
 
-- (void)selectBookAtIndex:(NSInteger)index startBlock:(dispatch_block_t)startBlock endBlock:(dispatch_block_t)endBlock
+- (void)selectBookAtIndex:(NSInteger)index startBlock:(dispatch_block_t)startBlock endBlock:(void (^)(BOOL didOpen))endBlock
 {
     if (index >= [self.books count]) {
         return;
@@ -876,9 +877,11 @@ typedef enum
         NSError *error;
         
         SCHReadingViewController *readingController = [self openBook:[self.books objectAtIndex:index] error:&error];
+        BOOL didOpen = NO;
+        
         if (readingController != nil) {
             self.updateShelfOnReturnToShelf = YES;
-            
+            didOpen = YES;
             [self.navigationController pushViewController:readingController animated:YES]; 
         } else {
             if (error) {
@@ -905,7 +908,7 @@ typedef enum
         }
         
         if (endBlock) {
-            endBlock();
+            endBlock(didOpen);
         }
         
         self.currentlyLoadingIndex = -1;
@@ -923,9 +926,10 @@ typedef enum
                  startBlock:^{
                      [cell setLoading:YES];
                  }
-                   endBlock:^{
-                       [cell setLoading:NO];
-                       
+                   endBlock:^(BOOL didOpen){
+                       if (didOpen) {
+                           [cell setLoading:NO];
+                       }
                    }];
 }
 
