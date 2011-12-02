@@ -72,6 +72,8 @@ NSString * const kSCHAppBookFilenameSeparator = @"-";
 - (BOOL)urlHasExpired:(NSString *)urlString;
 - (BOOL)urlStringIsBundleURL:(NSString *)urlString;
 
+@property (nonatomic, copy) NSString *cachedBookDirectory;
+
 @end
 
 @implementation SCHAppBook 
@@ -102,6 +104,13 @@ NSString * const kSCHAppBookFilenameSeparator = @"-";
 @dynamic XPSExists;
 
 @synthesize diskVersionOutOfDate;
+@synthesize cachedBookDirectory;
+
+- (void)didTurnIntoFault
+{
+    [cachedBookDirectory release], cachedBookDirectory = nil;
+    [super willTurnIntoFault];
+}
 
 #pragma mark - Convenience Methods
 
@@ -328,24 +337,29 @@ NSString * const kSCHAppBookFilenameSeparator = @"-";
 
 + (NSString *)booksDirectory
 {
-    NSString *applicationSupportDirectory = [NSSearchPathForDirectoriesInDomains(NSApplicationSupportDirectory, NSUserDomainMask, YES) lastObject];
-    NSString *ret = [applicationSupportDirectory stringByAppendingPathComponent:@"Books"];
-    
-    NSFileManager *localFileManager = [[NSFileManager alloc] init];
-    NSError *error = nil;
-    BOOL isDirectory = NO;
-    
-    if (![localFileManager fileExistsAtPath:ret isDirectory:&isDirectory]) {
-        [localFileManager createDirectoryAtPath:ret withIntermediateDirectories:YES attributes:nil error:&error];
+    static dispatch_once_t pred;
+	static NSString *cachedBooksDirectory = nil;
+	
+    dispatch_once(&pred, ^{
+        NSString *applicationSupportDirectory = [NSSearchPathForDirectoriesInDomains(NSApplicationSupportDirectory, NSUserDomainMask, YES) lastObject];
+        cachedBooksDirectory = [[applicationSupportDirectory stringByAppendingPathComponent:@"Books"] retain];
         
-        if (error) {
-            NSLog(@"Warning: problem creating books directory. %@", [error localizedDescription]);
+        NSFileManager *localFileManager = [[NSFileManager alloc] init];
+        NSError *error = nil;
+        BOOL isDirectory = NO;
+        
+        if (![localFileManager fileExistsAtPath:cachedBooksDirectory isDirectory:&isDirectory]) {
+            [localFileManager createDirectoryAtPath:cachedBooksDirectory withIntermediateDirectories:YES attributes:nil error:&error];
+            
+            if (error) {
+                NSLog(@"Warning: problem creating books directory. %@", [error localizedDescription]);
+            }
         }
-    }
+        
+        [localFileManager release], localFileManager = nil;   
+    });
     
-    [localFileManager release], localFileManager = nil;    
-    
-    return(ret);
+	return cachedBooksDirectory;
 }
 
 + (void)clearBooksDirectory
@@ -363,24 +377,29 @@ NSString * const kSCHAppBookFilenameSeparator = @"-";
 
 - (NSString *)bookDirectory 
 {
-    NSString *booksDirectory = [SCHAppBook booksDirectory];
-    NSString *bookDirectory = [booksDirectory stringByAppendingPathComponent:self.ContentIdentifier];
     
-    NSFileManager *localFileManager = [[NSFileManager alloc] init];
-    NSError *error = nil;
-    BOOL isDirectory = NO;
+    if (!cachedBookDirectory) {
+        NSString *booksDirectory = [SCHAppBook booksDirectory];
+        NSString *bookDirectory = [booksDirectory stringByAppendingPathComponent:self.ContentIdentifier];
     
-    if (![localFileManager fileExistsAtPath:bookDirectory isDirectory:&isDirectory]) {
-        [localFileManager createDirectoryAtPath:bookDirectory withIntermediateDirectories:YES attributes:nil error:&error];
+        NSFileManager *localFileManager = [[NSFileManager alloc] init];
+        NSError *error = nil;
+        BOOL isDirectory = NO;
+    
+        if (![localFileManager fileExistsAtPath:bookDirectory isDirectory:&isDirectory]) {
+            [localFileManager createDirectoryAtPath:bookDirectory withIntermediateDirectories:YES attributes:nil error:&error];
 
-        if (error) {
-            NSLog(@"Warning: problem creating book directory. %@", [error localizedDescription]);
+            if (error) {
+                NSLog(@"Warning: problem creating book directory. %@", [error localizedDescription]);
+            }
         }
+    
+        [localFileManager release], localFileManager = nil;
+        
+        cachedBookDirectory = [bookDirectory copy];
     }
     
-    [localFileManager release], localFileManager = nil;
-    
-    return bookDirectory;
+    return cachedBookDirectory;
 }
 
 - (NSString *)libEucalyptusCache
