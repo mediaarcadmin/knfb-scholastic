@@ -17,6 +17,8 @@
 #import "SCHBookIdentifier.h"
 #import "SCHCoreDataHelper.h"
 
+static const NSUInteger kSCHBookManagerAppBookCacheCountLimit = 100;
+
 @interface SCHBookManager ()
 
 @property (nonatomic, retain) NSMutableDictionary *cachedXPSProviders;
@@ -29,7 +31,7 @@
 @property (nonatomic, retain) NSCountedSet *cachedParagraphSourceCheckoutCounts;
 @property (nonatomic, retain) NSLock *threadSafeMutationLock;
 
-@property (nonatomic, retain) NSMutableDictionary *isbnManagedObjectCache;
+@property (nonatomic, retain) NSCache *appBookCache;
 
 @end
 
@@ -53,7 +55,7 @@ static NSDictionary *featureCompatibilityDictionary = nil;
 @synthesize cachedParagraphSourceCheckoutCounts;
 @synthesize persistentStoreCoordinator;
 @synthesize threadSafeMutationLock;
-@synthesize isbnManagedObjectCache;
+@synthesize appBookCache;
 @synthesize mainThreadManagedObjectContext;
 
 + (SCHBookManager *)sharedBookManager
@@ -77,7 +79,9 @@ static NSDictionary *featureCompatibilityDictionary = nil;
 		cachedEucBooks = [[NSMutableDictionary alloc] init];
 		cachedTextFlows = [[NSMutableDictionary alloc] init];
         cachedParagraphSources = [[NSMutableDictionary alloc] init];
-        isbnManagedObjectCache = [[NSMutableDictionary alloc] init];
+        appBookCache = [[NSCache alloc] init];
+        [appBookCache setCountLimit:kSCHBookManagerAppBookCacheCountLimit];
+
         
         [[NSNotificationCenter defaultCenter] addObserver:self 
                                                  selector:@selector(coreDataHelperManagedObjectContextDidChangeNotification:) 
@@ -96,7 +100,7 @@ static NSDictionary *featureCompatibilityDictionary = nil;
     [cachedEucBooks release], cachedEucBooks = nil;
     [cachedTextFlows release], cachedTextFlows = nil;
     [cachedParagraphSources release], cachedParagraphSources = nil;
-    [isbnManagedObjectCache release], isbnManagedObjectCache = nil;
+    [appBookCache release], appBookCache = nil;
     [mainThreadManagedObjectContext release], mainThreadManagedObjectContext = nil;
     [super dealloc];
 }
@@ -143,22 +147,15 @@ static NSDictionary *featureCompatibilityDictionary = nil;
 {
     NSAssert(identifier != nil, @"nil identifier at bookWithIdentifier");
     NSAssert(managedObjectContext != nil, @"nil managedObjectContext at bookWithIdentifier");
+        
+    SCHAppBook *appBook = [self.appBookCache objectForKey:identifier];
     
-    SCHAppBook *book = nil;
+    
+    if (appBook) {
+        return appBook;
+    }
+    
     NSError *error = nil;
-    NSManagedObjectID *managedObjectID = nil;
-    
-    @synchronized(self.isbnManagedObjectCache) {
-        managedObjectID = [self.isbnManagedObjectCache objectForKey:identifier];
-    }
-    if (managedObjectID != nil) {
-        book = (SCHAppBook *) [managedObjectContext existingObjectWithID:managedObjectID error:&error];
-        if (book == nil) {
-            NSLog(@"failed to fetch book with existing ID %@: %@", managedObjectID, error);
-        }
-        return book;
-    }
-    
     NSFetchRequest *fetchRequest = [self.persistentStoreCoordinator.managedObjectModel 
                                     fetchRequestFromTemplateWithName:kSCHAppBookFetchWithContentIdentifier 
                                     substitutionVariables:[NSDictionary dictionaryWithObjectsAndKeys:
@@ -170,29 +167,23 @@ static NSDictionary *featureCompatibilityDictionary = nil;
     if (!bookArray) {
         NSLog(@"Error while fetching book item: %@", [error localizedDescription]);
     } else if ([bookArray count] > 0) {
-        book = (SCHAppBook *)[bookArray objectAtIndex:0];
-        if (![book.objectID isTemporaryID]) {
-            @synchronized(self.isbnManagedObjectCache) {
-                [self.isbnManagedObjectCache setObject:book.objectID forKey:identifier];
-            }
+        appBook = (SCHAppBook *)[bookArray objectAtIndex:0];
+        if (![appBook.objectID isTemporaryID]) {
+            [self.appBookCache setObject:appBook forKey:identifier];
         }
     }
     
-    return book;
+    return appBook;
 }
 
 - (void)removeBookIdentifierFromCache:(SCHBookIdentifier *)identifier
 {
-    @synchronized(self.isbnManagedObjectCache) {
-        [self.isbnManagedObjectCache removeObjectForKey:identifier];
-    }
+    [self.appBookCache removeObjectForKey:identifier];
 }
 
 - (void)clearBookIdentifierCache
 {
-    @synchronized(self.isbnManagedObjectCache) {
-        [self.isbnManagedObjectCache removeAllObjects];
-    }
+    [self.appBookCache removeAllObjects];
 }
 
 - (NSArray *)allBookIdentifiersInManagedObjectContext:(NSManagedObjectContext *)managedObjectContext
