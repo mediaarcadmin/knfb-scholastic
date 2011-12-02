@@ -229,7 +229,7 @@ static NSString * const kSCHContentMetadataItemAnnotationsItemProfileID = @"Anno
 - (void)prepareForDeletion
 {
     [super prepareForDeletion];
-    [[SCHProcessingManager sharedProcessingManager] cancelAllOperationsForBookIndentifier:self.bookIdentifier];
+    [[SCHProcessingManager sharedProcessingManager] cancelAllOperationsForBookIdentifier:self.bookIdentifier];
     [[SCHBookManager sharedBookManager] removeBookIdentifierFromCache:self.bookIdentifier];    
     [self deleteAllFiles];
 }
@@ -238,7 +238,7 @@ static NSString * const kSCHContentMetadataItemAnnotationsItemProfileID = @"Anno
 {
     NSError *error = nil;
     
-    [[SCHProcessingManager sharedProcessingManager] cancelAllOperationsForBookIndentifier:self.bookIdentifier];
+    [[SCHProcessingManager sharedProcessingManager] cancelAllOperationsForBookIdentifier:self.bookIdentifier];
     if ([[NSFileManager defaultManager] removeItemAtPath:self.AppBook.bookDirectory 
                                                    error:&error] == NO) {
         NSLog(@"Failed to delete files for %@, error: %@", 
