@@ -363,7 +363,7 @@
         return;
     }
 
-    NSLog(@"%p:\tActual refresh for %@", self, self.identifier);
+    //NSLog(@"%p:\tActual refresh for %@", self, self.identifier);
     
     SCHBookIdentifier *localIdentifier = [self.identifier copy];
 
