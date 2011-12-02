@@ -59,11 +59,12 @@ typedef enum {
 @property (nonatomic, retain) SCHProfileViewController_Shared *profileViewController;
 @property (nonatomic, assign) SCHStartingViewControllerProfileSyncState profileSyncState;
 @property (nonatomic, retain) LambdaAlert *checkProfilesAlert;
+@property (nonatomic, assign, getter=isPerformingAction) BOOL performingAction;
 
 - (void)setupAssetsForOrientation:(UIInterfaceOrientation)orientation;
 - (void)setStandardStore;
-- (void)openSampleBookshelf;
-- (void)showSignInForm;
+- (void)openSampleBookshelfWithCompletionHandler:(dispatch_block_t)completion;
+- (void)showSignInFormWithCompletionHandler:(dispatch_block_t)completion;
 - (BOOL)dictionaryDownloadRequired;
 - (BOOL)bookshelfSetupRequired;
 - (void)checkDictionaryDownloadForSamples;
@@ -88,6 +89,7 @@ typedef enum {
 @synthesize profileViewController;
 @synthesize profileSyncState;
 @synthesize versionLabel;
+@synthesize performingAction;
 
 - (void)releaseViewObjects
 {
@@ -176,6 +178,8 @@ typedef enum {
     // if we logged in and deregistered then we will need to refresh so we 
     // don't show the Sample bookshelves
     [self.starterTableView reloadData];
+    
+    self.performingAction = NO;
 }
 
 #pragma mark - Orientation methods
@@ -283,22 +287,32 @@ typedef enum {
 
 - (void)cellButtonTapped:(NSIndexPath *)indexPath
 {
-    NSInteger section = indexPath.section;
+    if (!self.isPerformingAction) {
+        
+        self.performingAction = YES;
+        
+        NSInteger section = indexPath.section;
+        
+        switch (section) {
+            case kTableSectionSamples:
+                [self openSampleBookshelfWithCompletionHandler:^{
+                    self.performingAction = NO;
+                }];
+                break;
+                
+            case kTableSectionSignIn:
+                [self showSignInFormWithCompletionHandler:^{
+                    self.performingAction = NO;
+                }];
 
-    switch (section) {
-        case kTableSectionSamples:
-            [self openSampleBookshelf];
-            break;
-            
-        case kTableSectionSignIn:
-            [self showSignInForm];
-            break;
+                break;
+        }
     }
 }
 
 #pragma mark - Sample bookshelves
 
-- (void)openSampleBookshelf
+- (void)openSampleBookshelfWithCompletionHandler:(dispatch_block_t)completion;
 {
     AppDelegate_Shared *appDelegate = (AppDelegate_Shared *)[[UIApplication sharedApplication] delegate];
     [appDelegate setStoreType:kSCHStoreTypeSampleStore];
@@ -310,8 +324,16 @@ typedef enum {
                                                                    localManifest:localManifestURL
                                                                     successBlock:^{
                                                                         [self checkDictionaryDownloadForSamples];
+                                                                        if (completion) {
+                                                                            completion();
+                                                                        }
                                                                     }
                                                                     failureBlock:^(NSString * failureReason){
+                                                                        
+        if (completion) {
+            completion();
+        }
+                                                                        
         LambdaAlert *alert = [[LambdaAlert alloc]
                               initWithTitle:NSLocalizedString(@"Unable To Update Sample eBooks", @"")
                               message:[NSString stringWithFormat:NSLocalizedString(@"There was a problem while updating the sample eBooks. %@. Please try again.", @""), failureReason]];
@@ -334,7 +356,7 @@ typedef enum {
 
 #pragma mark - Sign In
 
-- (void)showSignInForm
+- (void)showSignInFormWithCompletionHandler:(dispatch_block_t)completion;
 {
     if ([[Reachability reachabilityForInternetConnection] isReachable] == NO) {
         LambdaAlert *alert = [[LambdaAlert alloc]
@@ -343,6 +365,10 @@ typedef enum {
         [alert addButtonWithTitle:NSLocalizedString(@"OK", @"") block:nil];
         [alert show];
         [alert release];
+        
+        if (completion) {
+            completion();
+        }
     } else {
         SCHLoginPasswordViewController *login = [[SCHLoginPasswordViewController alloc] initWithNibName:@"SCHLoginViewController" bundle:nil];
         login.controllerType = kSCHControllerLoginView;
@@ -376,6 +402,12 @@ typedef enum {
         
         [self.modalNavigationController setViewControllers:[NSArray arrayWithObject:login]];
         [self presentModalViewController:self.modalNavigationController animated:YES];
+        
+        if (completion) {
+            double delayInSeconds = 0.3;
+            dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);
+            dispatch_after(popTime, dispatch_get_main_queue(), completion);
+        }
         
         [login release];
     }

@@ -21,5 +21,6 @@ NSString * const kSCHAppStatefetchAppState = @"fetchAppState";
 @dynamic ShouldSyncNotes;
 @dynamic LastKnownAuthToken;
 @dynamic ServerDateDelta;
+@dynamic LastRemoteManifestUpdateDate;
 
 @end

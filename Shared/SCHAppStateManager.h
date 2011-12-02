@@ -39,4 +39,7 @@
 - (NSString *)lastKnownAuthToken;
 - (void)setLastKnownAuthToken:(NSString *)token;
 
+- (NSDate *)lastRemoteManifestUpdateDate;
+- (void)setLastRemoteManifestUpdateDate:(NSDate *)date;
+
 @end

@@ -14,9 +14,12 @@
 #import "LambdaAlert.h"
 #import "NSNumber+ObjectTypes.h"
 #import "SCHBookIdentifier.h"
+#import "SCHAppStateManager.h"
 
 NSString * const kSCHSampleBooksRemoteManifestURL = FREE_MANIFEST;
 NSString * const kSCHSampleBooksLocalManifestFile = @"LocalSamplesManifest.xml";
+
+static NSTimeInterval const kSCHSampleBooksRemoteManifestUpdateInterval = -(3600*24*7); // 1 week
 
 typedef enum {
 	kSCHSampleBooksProcessingStateError = 0,
@@ -40,6 +43,7 @@ typedef enum {
 @property (nonatomic, retain) LambdaAlert *remoteSamplesAlert;
 
 - (BOOL)isConnected;
+- (BOOL)needsRemoteManifest;
 - (void)enterBackground:(NSNotification *)note;
 - (void)enterForeground:(NSNotification *)note;
 - (void)checkRemoteState;
@@ -188,15 +192,24 @@ typedef enum {
     [manifestOp release];      
 }
 
+- (BOOL)needsRemoteManifest
+{
+    NSDate *lastRemoteManifestUpdateDate = [[SCHAppStateManager sharedAppStateManager] lastRemoteManifestUpdateDate];
+
+    return (lastRemoteManifestUpdateDate == nil || 
+            ([lastRemoteManifestUpdateDate timeIntervalSinceNow] < kSCHSampleBooksRemoteManifestUpdateInterval));
+}
+
 - (void)startRemote
-{    
-    self.remoteSamplesAlert = [[[LambdaAlert alloc]
-                       initWithTitle:NSLocalizedString(@"Updating Sample eBooks", @"")
-                       message:@"\n"] autorelease];
-    [self.remoteSamplesAlert setSpinnerHidden:NO];
-    [self.remoteSamplesAlert show];
-    
-    if ([self isConnected]) {
+{        
+    if ([self isConnected] && [self needsRemoteManifest]) {
+        
+        self.remoteSamplesAlert = [[[LambdaAlert alloc]
+                                    initWithTitle:NSLocalizedString(@"Updating Sample eBooks", @"")
+                                    message:@"\n"] autorelease];
+        [self.remoteSamplesAlert setSpinnerHidden:NO];
+        [self.remoteSamplesAlert show];
+        
         SCHSampleBooksManifestOperation *manifestOp = [[SCHSampleBooksManifestOperation alloc] init];
         manifestOp.manifestURL = self.remoteManifestURL;
         manifestOp.processingDelegate = self;
@@ -206,6 +219,7 @@ typedef enum {
         [manifestOp setCompletionBlock:^{
             if (![opPtr isCancelled]) {
                 dispatch_sync(dispatch_get_main_queue(), ^{
+                    [[SCHAppStateManager sharedAppStateManager] setLastRemoteManifestUpdateDate:[NSDate date]];
                     [opPtr.sampleEntries writeToFile:[self lastRemoteSampleBooksFilePath] atomically:YES];
                     [self.sampleEntries addObjectsFromArray:opPtr.sampleEntries];
                     [self populateSampleStore];

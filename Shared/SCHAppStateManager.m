@@ -264,6 +264,25 @@
     }];
 }
 
+- (NSDate *)lastRemoteManifestUpdateDate
+{
+    __block NSDate *ret = nil;
+    
+    [self performWithAppState:^(SCHAppState *appState) {
+        if (appState != nil) {
+            ret = appState.LastRemoteManifestUpdateDate;
+        }
+    }];
+    
+    return ret;  
+}
+- (void)setLastRemoteManifestUpdateDate:(NSDate *)date
+{
+    [self performWithAppStateAndSave:^(SCHAppState *appState) {
+        [appState setLastRemoteManifestUpdateDate:date];
+    }];
+}
+
 #pragma mark - Thread safe access to AppState
 
 - (void)performWithAppState:(void (^)(SCHAppState *appState))block
