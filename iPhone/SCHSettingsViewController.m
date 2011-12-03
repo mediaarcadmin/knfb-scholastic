@@ -42,6 +42,8 @@ extern NSString * const kSCHUserDefaultsSpaceSaverModeSetOffNotification;
 - (void)registerForSyncNotifications;
 - (void)deregisterForSyncNotifications;
 - (BOOL)connectionIsReachable;
+- (BOOL)connectionIsReachableViaWiFi;
+- (void)showNoInternetConnectionAlert;
 
 @end
 
@@ -282,6 +284,8 @@ extern NSString * const kSCHUserDefaultsSpaceSaverModeSetOffNotification;
         vc.settingsDelegate = self.settingsDelegate;
         [self.navigationController pushViewController:vc animated:YES];
         [vc release];
+    } else {
+        [self showNoInternetConnectionAlert];
     }
 }
 
@@ -356,18 +360,22 @@ extern NSString * const kSCHUserDefaultsSpaceSaverModeSetOffNotification;
 
 - (BOOL)connectionIsReachable
 {
-    BOOL reachable = [[Reachability reachabilityForInternetConnection] isReachable];
-    
-    if (reachable == NO) {
-        LambdaAlert *alert = [[LambdaAlert alloc]
-                              initWithTitle:NSLocalizedString(@"No Internet Connection", @"")
-                              message:NSLocalizedString(@"This function requires an Internet connection. Please connect to the internet and then try again.", @"")];
-        [alert addButtonWithTitle:NSLocalizedString(@"OK", @"") block:nil];
-        [alert show];
-        [alert release];   
-    }
-    
-    return reachable;
+    return [[Reachability reachabilityForInternetConnection] isReachable];
+}
+
+- (BOOL)connectionIsReachableViaWiFi
+{
+    return [[Reachability reachabilityForLocalWiFi] isReachable];
+}
+
+- (void)showNoInternetConnectionAlert
+{
+    LambdaAlert *alert = [[LambdaAlert alloc]
+                          initWithTitle:NSLocalizedString(@"No Internet Connection", @"")
+                          message:NSLocalizedString(@"This function requires an Internet connection. Please connect to the internet and then try again.", @"")];
+    [alert addButtonWithTitle:NSLocalizedString(@"OK", @"") block:nil];
+    [alert show];
+    [alert release];
 }
 
 - (IBAction)manageBooks:(id)sender
@@ -378,6 +386,8 @@ extern NSString * const kSCHUserDefaultsSpaceSaverModeSetOffNotification;
         accountValidationViewController.title = NSLocalizedString(@"Manage eBooks", @"Manage eBooks");
         accountValidationViewController.settingsDelegate = self.settingsDelegate;
         [self.navigationController pushViewController:accountValidationViewController animated:YES];   
+    } else {
+        [self showNoInternetConnectionAlert];
     }
 }
 
@@ -395,6 +405,8 @@ extern NSString * const kSCHUserDefaultsSpaceSaverModeSetOffNotification;
         [self registerForSyncNotifications];
         
         [[SCHSyncManager sharedSyncManager] firstSync:YES requireDeviceAuthentication:YES];      
+    } else {
+        [self showNoInternetConnectionAlert];
     }
     
 }
@@ -436,8 +448,17 @@ extern NSString * const kSCHUserDefaultsSpaceSaverModeSetOffNotification;
         SCHRemoveDictionaryViewController *vc = [[SCHRemoveDictionaryViewController alloc] init];
         [self.navigationController pushViewController:vc animated:YES];
         [vc release];
-    } else if ([self connectionIsReachable] == YES) {
-        [[SCHDictionaryDownloadManager sharedDownloadManager] beginDictionaryDownload];
+    } else {
+        if ([self connectionIsReachableViaWiFi] == YES) {
+            [[SCHDictionaryDownloadManager sharedDownloadManager] beginDictionaryDownload];
+        } else {
+            LambdaAlert *alert = [[LambdaAlert alloc]
+                                  initWithTitle:NSLocalizedString(@"No WiFi", @"")
+                                  message:NSLocalizedString(@"Downloading the dictionary requires a Wi-Fi connection. Please connect to Wi-Fi and then try again.", @"")];
+            [alert addButtonWithTitle:NSLocalizedString(@"OK", @"") block:nil];
+            [alert show];
+            [alert release];
+        }
     }
 }
 
