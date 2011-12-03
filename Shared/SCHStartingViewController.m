@@ -466,7 +466,7 @@ typedef enum {
     ([[SCHDictionaryDownloadManager sharedDownloadManager] userRequestState] == SCHDictionaryUserNotYetAsked) 
     || ([[SCHDictionaryDownloadManager sharedDownloadManager] dictionaryProcessingState] == SCHDictionaryProcessingStateUserSetup);
 
-    return downloadRequired;
+    return (downloadRequired && [[Reachability reachabilityForLocalWiFi] isReachable]);
 }
 
 - (BOOL)bookshelfSetupRequired;
