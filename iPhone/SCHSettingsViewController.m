@@ -241,7 +241,15 @@ extern NSString * const kSCHUserDefaultsSpaceSaverModeSetOffNotification;
     }
     
     self.downloadDictionaryButton.enabled = enabled;
+    self.downloadDictionaryButton.titleLabel.lineBreakMode = UILineBreakModeTailTruncation; 
+    self.downloadDictionaryButton.titleLabel.textAlignment = UITextAlignmentCenter;
     
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+        self.downloadDictionaryButton.titleLabel.font = [UIFont fontWithName:@"Arial-BoldMT" size:18.0f];
+    } else {
+        self.downloadDictionaryButton.titleLabel.font = [UIFont fontWithName:@"Arial-BoldMT" size:17.0f];
+    }
+
     switch (state) {
         case SCHDictionaryProcessingStateReady:
             [self.downloadDictionaryButton setTitle:NSLocalizedString(@"Remove Dictionary", @"remove dictionary button title")
@@ -255,7 +263,15 @@ extern NSString * const kSCHUserDefaultsSpaceSaverModeSetOffNotification;
                 [self.downloadDictionaryButton setTitle:NSLocalizedString(@"Downloading Dictionary...", @"Downloading dictionary button title")
                                                forState:UIControlStateNormal];
             } else {
-                [self.downloadDictionaryButton setTitle:NSLocalizedString(@"Waiting for WiFi...", @"Waiting for WiFi dictionary button title")
+                self.downloadDictionaryButton.titleLabel.lineBreakMode = UILineBreakModeWordWrap;
+                
+                if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+                    self.downloadDictionaryButton.titleLabel.font = [UIFont fontWithName:@"Arial-BoldMT" size:15.0f];
+                } else {
+                    self.downloadDictionaryButton.titleLabel.font = [UIFont fontWithName:@"Arial-BoldMT" size:14.0f];
+                }
+                
+                [self.downloadDictionaryButton setTitle:NSLocalizedString(@"Dictionary Download Paused.\nWaiting for WiFi...", @"Waiting for WiFi dictionary button title")
                                                forState:UIControlStateNormal];
             }
             break;
