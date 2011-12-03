@@ -219,12 +219,12 @@
     self.leftBarButtonItemContainer.hidden = YES;
     
     if (!wifiAvailable) {
-        self.bottomLabel.text = @"We need a Wifi connection to download the dictionary. Please connect to a Wifi network.";
+        self.bottomLabel.text = NSLocalizedString(@"The dictionary download has paused because you do not have a Wi-Fi connection. Please connect to Wi-Fi to continue the download.", nil);
         [self.activityIndicator stopAnimating];
         self.progressBar.hidden = YES;
         return;
     } else if (!connectionIdle) {
-        self.bottomLabel.text = @"Books are currently downloading. You can wait for them to finish, or look up your word later.";
+        self.bottomLabel.text = NSLocalizedString(@"Books are currently downloading. You can wait for them to finish, or look up your word later.", nil);
         [self.activityIndicator startAnimating];
         self.progressBar.hidden = YES;
         return;
@@ -238,9 +238,9 @@
         case SCHDictionaryProcessingStateUserDeclined:
         {
             if (isSampleStore) {
-                self.bottomLabel.text = @"You have not yet downloaded the Scholastic dictionary.";
+                self.bottomLabel.text = NSLocalizedString(@"You have not yet downloaded the Scholastic dictionary.", nil);
             } else {
-                self.bottomLabel.text = @"You have not yet downloaded the Scholastic dictionary. To download the dictionary, go to parent tools on the eReader sign-in screen.";
+                self.bottomLabel.text = NSLocalizedString(@"You have not yet downloaded the Scholastic dictionary. To download the dictionary, go to parent tools on the eReader sign-in screen.", nil);
             }
             
             [self.activityIndicator stopAnimating];
@@ -249,14 +249,14 @@
         }
         case SCHDictionaryProcessingStateNotEnoughFreeSpace:
         {
-            self.bottomLabel.text = @"There is not enough free space on the device. Please clear some space and try again.";
+            self.bottomLabel.text = NSLocalizedString(@"There is not enough free space on the device. Please clear some space and try again.", nil);
             [self.activityIndicator stopAnimating];
             self.progressBar.hidden = YES;
             break;
         }
         case SCHDictionaryProcessingStateError:
         {
-            self.bottomLabel.text = @"There was an error downloading the Scholastic dictionary. Please try again later.";
+            self.bottomLabel.text = NSLocalizedString(@"There was an error downloading the Scholastic dictionary. Please try again later.", nil);
             [self.activityIndicator stopAnimating];
             self.progressBar.hidden = YES;
             break;
@@ -264,7 +264,7 @@
         case SCHDictionaryProcessingStateNeedsUnzip:
         {
             [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(processingPercentageUpdate:) name:kSCHDictionaryProcessingPercentageUpdate object:nil];
-            self.bottomLabel.text = @"The dictionary will be ready soon. Please wait.";
+            self.bottomLabel.text = NSLocalizedString(@"The dictionary will be ready soon. Please wait.", nil);
             [self.activityIndicator stopAnimating];
             self.progressBar.progress = 0.8;
             self.progressBar.hidden = NO;
@@ -273,7 +273,7 @@
         case SCHDictionaryProcessingStateNeedsParse:
         {
             [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(processingPercentageUpdate:) name:kSCHDictionaryProcessingPercentageUpdate object:nil];
-            self.bottomLabel.text = @"The dictionary will be ready soon. Please wait.";
+            self.bottomLabel.text = NSLocalizedString(@"The dictionary will be ready soon. Please wait.", nil);
             [self.activityIndicator stopAnimating];
             self.progressBar.progress = 0.9;
             self.progressBar.hidden = NO;
@@ -286,12 +286,12 @@
         {
             if (!willDownloadAfterHelpVideo) {
                 if (isSampleStore) {
-                    self.bottomLabel.text = @"You have not yet downloaded the Scholastic dictionary.";
+                    self.bottomLabel.text = NSLocalizedString(@"You have not yet downloaded the Scholastic dictionary.", nil);
                 } else {
-                    self.bottomLabel.text = @"You have not yet downloaded the Scholastic dictionary. To download the dictionary, go to parent tools on the eReader sign-in screen.";
+                    self.bottomLabel.text =NSLocalizedString( @"You have not yet downloaded the Scholastic dictionary. To download the dictionary, go to parent tools on the eReader sign-in screen.", nil);
                 }
             } else {
-                self.bottomLabel.text = @"The dictionary is downloading from the Internet. You can wait for it to finish, or look up your word later.";
+                self.bottomLabel.text = NSLocalizedString(@"The dictionary is downloading from the Internet. You can wait for it to finish, or look up your word later.", nil);
             }
 
             [self.activityIndicator startAnimating];
@@ -300,7 +300,7 @@
         }
         case SCHDictionaryProcessingStateNeedsDownload:
         {
-            self.bottomLabel.text = @"The dictionary is downloading from the Internet. You can wait for it to finish, or look up your word later.";
+            self.bottomLabel.text = NSLocalizedString(@"The dictionary is downloading from the Internet. You can wait for it to finish, or look up your word later.", nil);
             [self.activityIndicator stopAnimating];
             self.progressBar.hidden = NO;
             self.progressBar.progress = [SCHDictionaryDownloadManager sharedDownloadManager].currentDictionaryDownloadPercentage;
