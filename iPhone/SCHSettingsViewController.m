@@ -16,8 +16,12 @@
 #import "SCHCheckbox.h"
 #import "SCHBookUpdates.h"
 #import "SCHUpdateBooksViewController.h"
+#import "SCHProfileSyncComponent.h"
 #import "SCHBookshelfSyncComponent.h"
 #import "SCHContentSyncComponent.h"
+#import "SCHAnnotationSyncComponent.h"
+#import "SCHSettingsSyncComponent.h"
+#import "SCHReadingStatsSyncComponent.h"
 #import "SCHCoreDataHelper.h"
 #import "SCHUserDefaults.h"
 #import "SCHAppStateManager.h"
@@ -34,6 +38,7 @@ extern NSString * const kSCHUserDefaultsSpaceSaverModeSetOffNotification;
 @property (nonatomic, retain) SCHBookUpdates *bookUpdates;
 @property (nonatomic, retain) SCHUpdateBooksViewController *updateBooksViewController;
 @property (nonatomic, retain) LambdaAlert *checkBooksAlert;
+@property (nonatomic, retain) Reachability *syncReachability;
 
 - (void)updateSpaceSaverButton;
 - (void)updateDictionaryButton;
@@ -44,6 +49,7 @@ extern NSString * const kSCHUserDefaultsSpaceSaverModeSetOffNotification;
 - (BOOL)connectionIsReachable;
 - (BOOL)connectionIsReachableViaWiFi;
 - (void)showNoInternetConnectionAlert;
+- (void)showAlertForSyncFailure;
 
 @end
 
@@ -60,6 +66,7 @@ extern NSString * const kSCHUserDefaultsSpaceSaverModeSetOffNotification;
 @synthesize updateBooksViewController;
 @synthesize managedObjectContext;
 @synthesize checkBooksAlert;
+@synthesize syncReachability;
 
 #pragma mark - Object lifecycle
 
@@ -84,6 +91,7 @@ extern NSString * const kSCHUserDefaultsSpaceSaverModeSetOffNotification;
 {    
     [bookUpdates release], bookUpdates = nil;
 	[managedObjectContext release], managedObjectContext = nil;
+    [syncReachability release], syncReachability = nil;
     
     [self releaseViewObjects];
     [super dealloc];
@@ -477,6 +485,27 @@ extern NSString * const kSCHUserDefaultsSpaceSaverModeSetOffNotification;
 
 }
 
+- (void)showAlertForSyncFailure
+{
+    if (self.checkBooksAlert) {
+        LambdaAlert *alert = [[LambdaAlert alloc]
+                              initWithTitle:NSLocalizedString(@"Sync Failed", @"")
+                              message:NSLocalizedString(@"There was a problem while checking for new eBooks. Please try again.", @"")];
+        [alert addButtonWithTitle:NSLocalizedString(@"OK", @"") block:^{
+            if ([[SCHAppStateManager sharedAppStateManager] canAuthenticate] != NO) {
+                [self.checkBooksButton setEnabled:YES];
+            }
+        }];
+        
+        [self replaceCheckBooksAlertWithAlert:alert];
+        [alert release];  
+    } else {
+        if ([[SCHAppStateManager sharedAppStateManager] canAuthenticate] != NO) {
+            [self.checkBooksButton setEnabled:YES];
+        }
+    }
+}
+
 #pragma mark - notifications
 
 - (void)registerForSyncNotifications
@@ -493,13 +522,47 @@ extern NSString * const kSCHUserDefaultsSpaceSaverModeSetOffNotification;
     
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(didFailSync:)
+                                                 name:SCHProfileSyncComponentDidFailNotification
+                                               object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(didFailSync:)
                                                  name:SCHBookshelfSyncComponentDidFailNotification
                                                object:nil];
     
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(didFailSync:)
+                                                 name:SCHContentSyncComponentDidFailNotification
+                                               object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(didFailSync:)
+                                                 name:SCHAnnotationSyncComponentDidFailNotification
+                                               object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(didFailSync:)
+                                                 name:SCHReadingStatsSyncComponentDidFailNotification
+                                               object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(didFailSync:)
+                                                 name:SCHSettingsSyncComponentDidFailNotification
+                                               object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(didFailSync:)
                                                  name:SCHSyncComponentDidFailAuthenticationNotification
-                                               object:nil];    
+                                               object:nil];
+    
+    self.syncReachability = [Reachability reachabilityForInternetConnection];
+    [self.syncReachability startNotifier];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self 
+                                                  selector:@selector(syncReachabilityChanged:) 
+                                                      name:kReachabilityChangedNotification 
+                                                    object:nil];
+    
 }
 
 - (void)deregisterForSyncNotifications
@@ -513,12 +576,40 @@ extern NSString * const kSCHUserDefaultsSpaceSaverModeSetOffNotification;
                                                object:nil];
     
     [[NSNotificationCenter defaultCenter] removeObserver:self
-                                                 name:SCHBookshelfSyncComponentDidFailNotification
+                                                 name:SCHProfileSyncComponentDidFailNotification
                                                object:nil];
     
     [[NSNotificationCenter defaultCenter] removeObserver:self
+                                                    name:SCHBookshelfSyncComponentDidFailNotification
+                                                  object:nil]; 
+    
+    [[NSNotificationCenter defaultCenter] removeObserver:self
+                                                    name:SCHContentSyncComponentDidFailNotification
+                                                  object:nil]; 
+    
+    [[NSNotificationCenter defaultCenter] removeObserver:self
+                                                    name:SCHAnnotationSyncComponentDidFailNotification
+                                                  object:nil]; 
+    
+    [[NSNotificationCenter defaultCenter] removeObserver:self
+                                                    name:SCHReadingStatsSyncComponentDidFailNotification
+                                                  object:nil]; 
+    
+    [[NSNotificationCenter defaultCenter] removeObserver:self
+                                                    name:SCHSettingsSyncComponentDidFailNotification
+                                                  object:nil]; 
+    
+    [[NSNotificationCenter defaultCenter] removeObserver:self
                                                     name:SCHSyncComponentDidFailAuthenticationNotification
-                                                  object:nil];    
+                                                  object:nil]; 
+    
+    [[NSNotificationCenter defaultCenter] removeObserver:self 
+                                                 name:kReachabilityChangedNotification 
+                                               object:nil];
+    
+    [self.syncReachability stopNotifier];
+    self.syncReachability = nil;
+
 }
 
 - (void)dictionaryStateChanged:(NSNotification *)note
@@ -554,24 +645,7 @@ extern NSString * const kSCHUserDefaultsSpaceSaverModeSetOffNotification;
 - (void)didFailSync:(NSNotification *)note
 {
     [self deregisterForSyncNotifications];
-    
-    if (self.checkBooksAlert) {
-        LambdaAlert *alert = [[LambdaAlert alloc]
-                              initWithTitle:NSLocalizedString(@"Sync Failed", @"")
-                              message:NSLocalizedString(@"There was a problem while checking for new eBooks. Please try again.", @"")];
-        [alert addButtonWithTitle:NSLocalizedString(@"OK", @"") block:^{
-            if ([[SCHAppStateManager sharedAppStateManager] canAuthenticate] != NO) {
-                [self.checkBooksButton setEnabled:YES];
-            }
-        }];
-        
-        [self replaceCheckBooksAlertWithAlert:alert];
-        [alert release];  
-    } else {
-        if ([[SCHAppStateManager sharedAppStateManager] canAuthenticate] != NO) {
-            [self.checkBooksButton setEnabled:YES];
-        }
-    }
+    [self showAlertForSyncFailure];
 }
 
 - (void)didCompleteSync:(NSNotification *)note
@@ -596,6 +670,14 @@ extern NSString * const kSCHUserDefaultsSpaceSaverModeSetOffNotification;
         if ([[SCHAppStateManager sharedAppStateManager] canAuthenticate] != NO) {
             [self.checkBooksButton setEnabled:YES];
         }
+    }
+}
+
+- (void)syncReachabilityChanged:(NSNotification *)note
+{
+    if (![self.syncReachability isReachableViaWWAN]) {
+        [self deregisterForSyncNotifications];
+        [self showAlertForSyncFailure];
     }
 }
 
