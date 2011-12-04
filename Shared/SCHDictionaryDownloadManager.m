@@ -1523,7 +1523,8 @@ static SCHDictionaryDownloadManager *sharedManager = nil;
     
     self.userRequestState = SCHDictionaryUserAccepted;
 
-    if (!self.isProcessing && (state == SCHDictionaryProcessingStateUserSetup || state == SCHDictionaryProcessingStateUserDeclined)) {
+    if (!self.isProcessing && 
+        (state == SCHDictionaryProcessingStateUserSetup || state == SCHDictionaryProcessingStateUserDeclined || state == SCHDictionaryProcessingStateError)) {
         [self threadSafeUpdateDictionaryState:SCHDictionaryProcessingStateNeedsManifest];
         [self checkOperatingStateImmediately:YES];
     }
