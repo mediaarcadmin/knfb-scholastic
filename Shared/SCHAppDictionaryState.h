@@ -23,8 +23,5 @@ extern NSString * const kSCHAppDictionaryState;
 @property (nonatomic, retain) NSString * Version;
 @property (nonatomic, retain) NSNumber * InitialDictionaryProcessed;
 @property (nonatomic, retain) SCHAppDictionaryManifestEntry *appDictionaryManifestEntry;
-@property (nonatomic, retain) NSString * helpVideoVersion;
-@property (nonatomic, retain) NSString * helpVideoOlderURL;
-@property (nonatomic, retain) NSString * helpVideoYoungerURL;
 
 @end

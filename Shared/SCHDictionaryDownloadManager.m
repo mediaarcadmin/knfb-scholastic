@@ -15,8 +15,6 @@
 #import "SCHDictionaryFileDownloadOperation.h"
 #import "SCHDictionaryFileUnzipOperation.h"
 #import "SCHDictionaryParseOperation.h"
-#import "SCHHelpVideoManifestOperation.h"
-#import "SCHHelpVideoFileDownloadOperation.h"
 #import "SCHDictionaryWordForm.h"
 #import "SCHDictionaryEntry.h"
 #import "SCHDictionaryAccessManager.h"
@@ -29,12 +27,10 @@
 // Constants
 NSString * const kSCHDictionaryDownloadPercentageUpdate = @"SCHDictionaryDownloadPercentageUpdate";
 NSString * const kSCHDictionaryProcessingPercentageUpdate = @"SCHDictionaryProcessingPercentageUpdate";
-NSString * const kSCHHelpVideoDownloadPercentageUpdate = @"SCHHelpVideoDownloadPercentageUpdate";
 
 NSString * const kSCHDictionaryStateChange = @"SCHDictionaryStateChange";
 
 static NSString * const kSCHDictionaryDownloadDirectoryName = @"Dictionary";
-static NSString * const kSCHHelpVideosDirectoryName = @"HelpVideos";
 
 int const kSCHDictionaryManifestEntryEntryTableBufferSize = 8192;
 int const kSCHDictionaryManifestEntryWordFormTableBufferSize = 1024;
@@ -69,7 +65,6 @@ char * const kSCHDictionaryManifestEntryColumnSeparator = "\t";
 
 @property (readwrite) float currentDictionaryDownloadPercentage;
 @property (readwrite) float currentDictionaryProcessingPercentage;
-@property (readwrite) float currentHelpVideoDownloadPercentage;
 
 // check current reachability state
 - (void) reachabilityCheck: (Reachability *) curReach;
@@ -111,8 +106,6 @@ char * const kSCHDictionaryManifestEntryColumnSeparator = "\t";
 @synthesize persistentStoreCoordinator;
 @synthesize currentDictionaryDownloadPercentage;
 @synthesize currentDictionaryProcessingPercentage;
-@synthesize currentHelpVideoDownloadPercentage;
-@synthesize helpVideoManifest;
 
 #pragma mark -
 #pragma mark Object Lifecycle
@@ -153,12 +146,7 @@ char * const kSCHDictionaryManifestEntryColumnSeparator = "\t";
         [[NSNotificationCenter defaultCenter] addObserver:self 
                                                  selector:@selector(dictionaryProcessingPercentageUpdate:) 
                                                      name:kSCHDictionaryProcessingPercentageUpdate 
-                                                   object:nil];    
-        
-        [[NSNotificationCenter defaultCenter] addObserver:self 
-                                                 selector:@selector(helpVideoDownloadPercentageUpdate:) 
-                                                     name:kSCHHelpVideoDownloadPercentageUpdate 
-                                                   object:nil];        
+                                                   object:nil];       
     }
 	
 	return self;
@@ -397,75 +385,7 @@ static SCHDictionaryDownloadManager *sharedManager = nil;
             // do nothing
             return;
         }
-        case SCHDictionaryProcessingStateHelpVideoManifest:
-        {
-            // check to see if we need to download help videos
-            NSString *lastPrefUpdate = [self helpVideoVersion];
-            
-            // this could be changed to a version check - if the version 
-            // in the manifest is higher, redownload the videos
-            if (!lastPrefUpdate) {
-                NSLog(@"needs help video manifest...");
-                // create manifest processing operation
-                SCHHelpVideoManifestOperation *manifestOp = [[SCHHelpVideoManifestOperation alloc] init];
-                
-                // dictionary processing is redispatched on completion
-                [manifestOp setNotCancelledCompletionBlock:^{
-                    [self processDictionary];
-                }];
-                
-                // add the operation to the queue
-                [self.dictionaryDownloadQueue addOperation:manifestOp];
-                [manifestOp release];
-                return;
-                break;
-            } else {
-                // if the help videos have already been downloaded, choose our next processing state 
-                // based on the user request state
-                SCHDictionaryUserRequestState userRequestState = [self userRequestState];
-                
-                if (userRequestState == SCHDictionaryUserDeclined) {
-                    [self threadSafeUpdateDictionaryState:SCHDictionaryProcessingStateUserDeclined];
-                } else if (userRequestState == SCHDictionaryUserNotYetAsked) {
-                    [self threadSafeUpdateDictionaryState:SCHDictionaryProcessingStateUserSetup];
-                } else {
-                    [self threadSafeUpdateDictionaryState:SCHDictionaryProcessingStateNeedsManifest];
-                }
-                
-                [self processDictionary];
-            }
-            break;
-        }
-        case SCHDictionaryProcessingStateDownloadingHelpVideos:
-        {
-            NSLog(@"Downloading help videos...");
-            
-            // if there's no manifest set, restart the process
-            if (!self.helpVideoManifest) {
-                [self threadSafeUpdateDictionaryState:SCHDictionaryProcessingStateHelpVideoManifest];
-                [self processDictionary];
-                return;
-            }
-            
-			// create dictionary download operation
-			SCHHelpVideoFileDownloadOperation *downloadOp = [[SCHHelpVideoFileDownloadOperation alloc] init];
-            downloadOp.videoManifest = self.helpVideoManifest;
-            self.currentDictionaryDownloadPercentage = 0.0;
-
-			// dictionary processing is redispatched on completion
-			[downloadOp setNotCancelledCompletionBlock:^{
-				[self processDictionary];
-			}];
-			
-			// add the operation to the queue
-			[self.dictionaryDownloadQueue addOperation:downloadOp];
-			[downloadOp release];
-			return;
-			break;
-
-            
-        }
-		case SCHDictionaryProcessingStateNeedsManifest:
+   		case SCHDictionaryProcessingStateNeedsManifest:
 		{
 			NSLog(@"needs dictionary manifest...");
 			// create manifest processing operation
@@ -747,34 +667,6 @@ static SCHDictionaryDownloadManager *sharedManager = nil;
     return dictionaryDirectory;
 }
 
-- (BOOL)haveHelpVideosDownloaded
-{
-    NSString *helpVideoVersion = [self helpVideoVersion];
-    return (helpVideoVersion?YES:NO);
-}
-
-- (NSString *)helpVideoDirectory
-{
-    NSString *applicationSupportDirectory = [NSSearchPathForDirectoriesInDomains(NSApplicationSupportDirectory, NSUserDomainMask, YES) lastObject];
-    NSString *dictionaryDirectory = [applicationSupportDirectory stringByAppendingPathComponent:kSCHHelpVideosDirectoryName];
-    
-    NSFileManager *localFileManager = [[NSFileManager alloc] init];
-    NSError *error = nil;
-    BOOL isDirectory = NO;
-    
-    if (![localFileManager fileExistsAtPath:dictionaryDirectory isDirectory:&isDirectory]) {
-        [localFileManager createDirectoryAtPath:dictionaryDirectory withIntermediateDirectories:YES attributes:nil error:&error];
-        
-        if (error) {
-            NSLog(@"Warning: problem creating help video directory. %@", [error localizedDescription]);
-        }
-    }
-    
-    [localFileManager release];
-    
-    return dictionaryDirectory;
-}
-
 - (NSString *)dictionaryTmpDirectory 
 {
     NSString *ret = [NSTemporaryDirectory() stringByAppendingPathComponent:kSCHDictionaryDownloadDirectoryName];  
@@ -814,45 +706,6 @@ static SCHDictionaryDownloadManager *sharedManager = nil;
                                                 [self dictionaryVersion]]];
     }
 }
-
-#pragma mark - Help Video Version
-
-- (NSString *)helpVideoVersion
-{
-    __block NSString *helpVideoVersion;
-    [self withAppDictionaryStatePerform:^(SCHAppDictionaryState *state) {
-        helpVideoVersion = [[state helpVideoVersion] retain];
-    }];
-    return [helpVideoVersion autorelease];
-}
-
-- (NSString *)helpVideoOlderURL
-{
-    __block NSString *helpVideoURL;
-    [self withAppDictionaryStatePerform:^(SCHAppDictionaryState *state) {
-        helpVideoURL = [[state helpVideoOlderURL] retain];
-    }];
-    return [helpVideoURL autorelease];
-}
-
-- (NSString *)helpVideoYoungerURL
-{
-    __block NSString *helpVideoURL;
-    [self withAppDictionaryStatePerform:^(SCHAppDictionaryState *state) {
-        helpVideoURL = [[state helpVideoYoungerURL] retain];
-    }];
-    return [helpVideoURL autorelease];
-}
-
-- (void)setHelpVideoVersion:(NSString *)newVersion olderURL:(NSString *)olderURL youngerURL:(NSString*)youngerURL
-{
-    [self withAppDictionaryStatePerform:^(SCHAppDictionaryState *state) {
-        state.helpVideoVersion = newVersion;
-        state.helpVideoOlderURL = olderURL;
-        state.helpVideoYoungerURL = youngerURL;
-    }];	
-}
-
 
 #pragma mark -
 #pragma mark Dictionary Version
@@ -921,32 +774,15 @@ static SCHDictionaryDownloadManager *sharedManager = nil;
     }
 }
 
-- (void)helpVideoDownloadPercentageUpdate:(NSNotification *)note
-{
-    NSDictionary *userInfo = [note userInfo];
-    NSNumber *currentPercentage = [userInfo objectForKey:@"currentPercentage"];
-    
-    if (currentPercentage != nil) {
-        self.currentHelpVideoDownloadPercentage = [currentPercentage floatValue];
-    }
-}
-
-- (void)startDictionaryDownload
-{
-    if (![self dictionaryDownloadStarted]) {
-        [self threadSafeUpdateDictionaryState:SCHDictionaryProcessingStateHelpVideoManifest];
-    }
-}
-
 #pragma mark - Update Check
 
-- (void)checkIfUpdateNeeded
+- (void)checkIfDictionaryUpdateNeeded
 {
     SCHDictionaryProcessingState state = [self dictionaryProcessingState];
     
     if (state == SCHDictionaryProcessingStateError || state == SCHDictionaryProcessingStateNotEnoughFreeSpace) {
         NSLog(@"There was an error - try the dictionary again.");
-        [self threadSafeUpdateDictionaryState:SCHDictionaryProcessingStateHelpVideoManifest];
+        [self threadSafeUpdateDictionaryState:SCHDictionaryProcessingStateNeedsManifest];
     } else if (state == SCHDictionaryProcessingStateReady) {
         
 		NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
@@ -976,7 +812,7 @@ static SCHDictionaryDownloadManager *sharedManager = nil;
         
         if (doUpdate) {
             NSLog(@"Dictionary needs an update check.");
-            [self threadSafeUpdateDictionaryState:SCHDictionaryProcessingStateHelpVideoManifest];
+            [self threadSafeUpdateDictionaryState:SCHDictionaryProcessingStateNeedsManifest];
         }
     }
 }
@@ -1644,7 +1480,7 @@ static SCHDictionaryDownloadManager *sharedManager = nil;
             // otherwise, create a dictionary state object
             state = [NSEntityDescription insertNewObjectForEntityForName:kSCHAppDictionaryState 
                                                                             inManagedObjectContext:self.mainThreadManagedObjectContext];
-            state.State = [NSNumber numberWithInt:SCHDictionaryProcessingStateHelpVideoManifest];
+            state.State = [NSNumber numberWithInt:SCHDictionaryProcessingStateUserSetup];
         }
             
         block(state);
@@ -1680,17 +1516,6 @@ static SCHDictionaryDownloadManager *sharedManager = nil;
 }
 
 #pragma mark - user control
-
-- (void)retryVideoDownload
-{
-    if (!self.isProcessing) {
-        if (!((self.dictionaryProcessingState == SCHDictionaryProcessingStateHelpVideoManifest) ||
-              (self.dictionaryProcessingState == SCHDictionaryProcessingStateDownloadingHelpVideos))) {
-            [self threadSafeUpdateDictionaryState:SCHDictionaryProcessingStateHelpVideoManifest];
-            [self checkOperatingStateImmediately:YES];
-        }
-    }
-}
 
 - (void)beginDictionaryDownload
 {

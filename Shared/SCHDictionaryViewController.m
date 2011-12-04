@@ -279,8 +279,6 @@
             self.progressBar.hidden = NO;
             break;
         }
-        case SCHDictionaryProcessingStateHelpVideoManifest:
-        case SCHDictionaryProcessingStateDownloadingHelpVideos:
         case SCHDictionaryProcessingStateManifestVersionCheck:
         case SCHDictionaryProcessingStateNeedsManifest:
         {

@@ -7,11 +7,9 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "SCHHelpVideoManifest.h"
 
 // Constants
 extern NSString * const kSCHDictionaryDownloadPercentageUpdate;
-extern NSString * const kSCHHelpVideoDownloadPercentageUpdate;
 extern NSString * const kSCHDictionaryProcessingPercentageUpdate;
 
 extern NSString * const kSCHDictionaryStateChange;
@@ -23,8 +21,6 @@ extern char * const kSCHDictionaryManifestEntryColumnSeparator;
 
 typedef enum {
 	SCHDictionaryProcessingStateError = 0,
-    SCHDictionaryProcessingStateHelpVideoManifest,
-    SCHDictionaryProcessingStateDownloadingHelpVideos,
     SCHDictionaryProcessingStateUserSetup,
     SCHDictionaryProcessingStateUserDeclined,
 	SCHDictionaryProcessingStateNotEnoughFreeSpace,
@@ -60,32 +56,19 @@ typedef enum {
 @property (nonatomic, retain) NSManagedObjectContext *mainThreadManagedObjectContext;
 @property (nonatomic, retain) NSPersistentStoreCoordinator *persistentStoreCoordinator;
 @property (nonatomic, retain) NSMutableArray *manifestUpdates;
-@property (nonatomic, retain) SCHHelpVideoManifest *helpVideoManifest;
 
 // the current dictionary version
 @property (readwrite, retain) NSString *dictionaryVersion;
-
-// the current help video version
-@property (readonly) NSString *helpVideoVersion;
-@property (readonly) NSString *helpVideoOlderURL;
-@property (readonly) NSString *helpVideoYoungerURL;
 
 // dictionary is currently processing
 @property BOOL isProcessing;
 
 @property (readonly) float currentDictionaryDownloadPercentage;
-@property (readonly) float currentHelpVideoDownloadPercentage;
 @property (readonly) float currentDictionaryProcessingPercentage;
 
 @property (nonatomic, assign) SCHDictionaryUserRequestState userRequestState;
 
 + (SCHDictionaryDownloadManager *)sharedDownloadManager;
-
-// have the help videos been downloaded?
-- (BOOL)haveHelpVideosDownloaded;
-
-// the local help videos directory
-- (NSString *)helpVideoDirectory;
 
 // the local dictionary directory
 - (NSString *)dictionaryDirectory;
@@ -116,16 +99,10 @@ typedef enum {
 @property BOOL wifiAvailable;
 @property BOOL connectionIdle;
 
-- (void)checkIfUpdateNeeded;
-
-// Video download control
-- (void)retryVideoDownload;
+- (void)checkIfDictionaryUpdateNeeded;
 
 // dictionary download control
 - (void)beginDictionaryDownload;
 - (void)deleteDictionary;
-
-// this sets the help video information in core data in a thread safe way
-- (void)setHelpVideoVersion:(NSString *)newVersion olderURL:(NSString *)olderURL youngerURL:(NSString*)youngerURL;
 
 @end

@@ -12,6 +12,7 @@
 #import "SCHSyncManager.h"
 #import "SCHUserDefaults.h"
 #import "SCHURLManager.h"
+#import "SCHHelpManager.h"
 #import "SCHDictionaryDownloadManager.h"
 #import "SCHDictionaryAccessManager.h"
 #import <CoreText/CoreText.h>
@@ -80,11 +81,16 @@ static NSString* const prModelCertFilename = @"iphonecert.dat";
         CFRelease(matchingFont);
         CFRelease(fontDesc);
     });
+    
+    SCHHelpManager *help = [SCHHelpManager sharedHelpManager];
+    help.mainThreadManagedObjectContext = self.coreDataHelper.managedObjectContext;
+    help.persistentStoreCoordinator = self.coreDataHelper.persistentStoreCoordinator;
+    [help checkIfHelpUpdateNeeded];
 	
     SCHDictionaryDownloadManager *ddm = [SCHDictionaryDownloadManager sharedDownloadManager];
     ddm.mainThreadManagedObjectContext = self.coreDataHelper.managedObjectContext;
     ddm.persistentStoreCoordinator = self.coreDataHelper.persistentStoreCoordinator;
-    [ddm checkIfUpdateNeeded];
+    [ddm checkIfDictionaryUpdateNeeded];
 
 	// instantiate the shared dictionary access manager
 	SCHDictionaryAccessManager *dam = [SCHDictionaryAccessManager sharedAccessManager];
@@ -185,8 +191,9 @@ static NSString* const prModelCertFilename = @"iphonecert.dat";
 
 - (void)applicationWillEnterForeground:(UIApplication *)application 
 {
-    // when we enter the foreground, check to see if the dictionary needs updating
-    [[SCHDictionaryDownloadManager sharedDownloadManager] checkIfUpdateNeeded];
+    // when we enter the foreground, check to see if the help and dictionary needs updating
+    [[SCHHelpManager sharedHelpManager] checkIfHelpUpdateNeeded];
+    [[SCHDictionaryDownloadManager sharedDownloadManager] checkIfDictionaryUpdateNeeded];
 }
 
 #pragma mark - Application directory functions

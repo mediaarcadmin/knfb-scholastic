@@ -1733,6 +1733,12 @@
 		C99F7DCC140560580091160B /* icon-higlights-active-landscape@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C99F7DC1140560570091160B /* icon-higlights-active-landscape@2x.png */; };
 		C9A1129F13608319007FD763 /* button-blue.png in Resources */ = {isa = PBXBuildFile; fileRef = C9A1129513608319007FD763 /* button-blue.png */; };
 		C9A112A113608319007FD763 /* button-blue@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C9A1129613608319007FD763 /* button-blue@2x.png */; };
+		C9A6B3FB148B7F0900B31277 /* SCHHelpManager.m in Sources */ = {isa = PBXBuildFile; fileRef = C9A6B3FA148B7F0900B31277 /* SCHHelpManager.m */; };
+		C9A6B3FC148B7F0900B31277 /* SCHHelpManager.m in Sources */ = {isa = PBXBuildFile; fileRef = C9A6B3FA148B7F0900B31277 /* SCHHelpManager.m */; };
+		C9A6B3FD148B7F0900B31277 /* SCHHelpManager.m in Sources */ = {isa = PBXBuildFile; fileRef = C9A6B3FA148B7F0900B31277 /* SCHHelpManager.m */; };
+		C9A6B400148B853C00B31277 /* SCHAppHelpState.m in Sources */ = {isa = PBXBuildFile; fileRef = C9A6B3FF148B853C00B31277 /* SCHAppHelpState.m */; };
+		C9A6B401148B853C00B31277 /* SCHAppHelpState.m in Sources */ = {isa = PBXBuildFile; fileRef = C9A6B3FF148B853C00B31277 /* SCHAppHelpState.m */; };
+		C9A6B402148B853C00B31277 /* SCHAppHelpState.m in Sources */ = {isa = PBXBuildFile; fileRef = C9A6B3FF148B853C00B31277 /* SCHAppHelpState.m */; };
 		C9AC854813ACE176000ECDAE /* old-lightning-bolt-0~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = C9AC854713ACE175000ECDAE /* old-lightning-bolt-0~ipad.png */; };
 		C9AC855213ACE6CB000ECDAE /* old-lightning-bolt-0~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = C9AC854A13ACE6CA000ECDAE /* old-lightning-bolt-0~iphone.png */; };
 		C9AC856313ACE76F000ECDAE /* old-lightning-bolt-0@2x~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = C9AC856213ACE76F000ECDAE /* old-lightning-bolt-0@2x~iphone.png */; };
@@ -3329,6 +3335,10 @@
 		C99F7DC1140560570091160B /* icon-higlights-active-landscape@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "icon-higlights-active-landscape@2x.png"; path = "Resources/UIAssets/FromPSD/icon-higlights-active-landscape@2x.png"; sourceTree = "<group>"; };
 		C9A1129513608319007FD763 /* button-blue.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "button-blue.png"; path = "Resources/UIAssets/button-blue.png"; sourceTree = "<group>"; };
 		C9A1129613608319007FD763 /* button-blue@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "button-blue@2x.png"; path = "Resources/UIAssets/button-blue@2x.png"; sourceTree = "<group>"; };
+		C9A6B3F9148B7F0900B31277 /* SCHHelpManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHHelpManager.h; path = Shared/SCHHelpManager.h; sourceTree = "<group>"; };
+		C9A6B3FA148B7F0900B31277 /* SCHHelpManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHHelpManager.m; path = Shared/SCHHelpManager.m; sourceTree = "<group>"; };
+		C9A6B3FE148B853C00B31277 /* SCHAppHelpState.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHAppHelpState.h; path = Shared/SCHAppHelpState.h; sourceTree = "<group>"; };
+		C9A6B3FF148B853C00B31277 /* SCHAppHelpState.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHAppHelpState.m; path = Shared/SCHAppHelpState.m; sourceTree = "<group>"; };
 		C9AC854713ACE175000ECDAE /* old-lightning-bolt-0~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "old-lightning-bolt-0~ipad.png"; sourceTree = "<group>"; };
 		C9AC854A13ACE6CA000ECDAE /* old-lightning-bolt-0~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "old-lightning-bolt-0~iphone.png"; sourceTree = "<group>"; };
 		C9AC856213ACE76F000ECDAE /* old-lightning-bolt-0@2x~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "old-lightning-bolt-0@2x~iphone.png"; sourceTree = "<group>"; };
@@ -4630,7 +4640,7 @@
 				52EF594712EECA7200E374F7 /* Extensions */,
 				52D19C681338A57B00A68D75 /* Views */,
 				C9C909681455A02100548DDE /* Sample Books Processing */,
-				F867904B1332346C001FDB2F /* Dictionary Processing */,
+				F867904B1332346C001FDB2F /* Dictionary & Help Processing */,
 				F8899217132E15A5007EB541 /* Processing Manager */,
 				F8DE53E2130A8C0300691CBA /* Book Data */,
 				28A08CC513950BD6006FD008 /* Story Interactions */,
@@ -4756,6 +4766,8 @@
 				281CC41614581D560049F736 /* SCHAppDictionaryManifestEntry.m */,
 				528433E9133382EA0010BAAB /* SCHAppDictionaryState.h */,
 				528433EA133382EA0010BAAB /* SCHAppDictionaryState.m */,
+				C9A6B3FE148B853C00B31277 /* SCHAppHelpState.h */,
+				C9A6B3FF148B853C00B31277 /* SCHAppHelpState.m */,
 				5206FF2313744E7000FCE07C /* SCHAppProfile.h */,
 				5206FF2413744E7000FCE07C /* SCHAppProfile.m */,
 				52C7F8701377DEE800DB08C9 /* SCHAppState.h */,
@@ -6147,17 +6159,19 @@
 			name = Configuration;
 			sourceTree = "<group>";
 		};
-		F867904B1332346C001FDB2F /* Dictionary Processing */ = {
+		F867904B1332346C001FDB2F /* Dictionary & Help Processing */ = {
 			isa = PBXGroup;
 			children = (
 				F8B30455144D8C9B0037708F /* Help Video Operations */,
 				F8C4C41913325A150057420E /* Dictionary Operations */,
+				C9A6B3F9148B7F0900B31277 /* SCHHelpManager.h */,
+				C9A6B3FA148B7F0900B31277 /* SCHHelpManager.m */,
 				F8C4C3F91332594A0057420E /* SCHDictionaryDownloadManager.h */,
 				F8C4C3FA1332594A0057420E /* SCHDictionaryDownloadManager.m */,
 				F88A7F7D138D151D006A7D12 /* SCHDictionaryAccessManager.h */,
 				F88A7F7E138D151D006A7D12 /* SCHDictionaryAccessManager.m */,
 			);
-			name = "Dictionary Processing";
+			name = "Dictionary & Help Processing";
 			sourceTree = "<group>";
 		};
 		F86DEC0813A21F2600053999 /* Sounds */ = {
@@ -8240,6 +8254,8 @@
 				28EF28031462D51100DD1939 /* SCHBookStoryInteractions+XPS.m in Sources */,
 				C9367BD81472E89A0033A2EB /* KNFBXMLParserLock.m in Sources */,
 				525079421486FADC00712853 /* NSDate+ServerDate.m in Sources */,
+				C9A6B3FB148B7F0900B31277 /* SCHHelpManager.m in Sources */,
+				C9A6B400148B853C00B31277 /* SCHAppHelpState.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -8302,6 +8318,8 @@
 				28EF28001462D40800DD1939 /* SCHBookStoryInteractionsTests.m in Sources */,
 				28EF28051462D76100DD1939 /* SCHDictionaryOperation.m in Sources */,
 				C9367BDA1472E89A0033A2EB /* KNFBXMLParserLock.m in Sources */,
+				C9A6B3FD148B7F0900B31277 /* SCHHelpManager.m in Sources */,
+				C9A6B402148B853C00B31277 /* SCHAppHelpState.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -8620,6 +8638,8 @@
 				28EF28041462D51100DD1939 /* SCHBookStoryInteractions+XPS.m in Sources */,
 				C9367BD91472E89A0033A2EB /* KNFBXMLParserLock.m in Sources */,
 				525079431486FADC00712853 /* NSDate+ServerDate.m in Sources */,
+				C9A6B3FC148B7F0900B31277 /* SCHHelpManager.m in Sources */,
+				C9A6B401148B853C00B31277 /* SCHAppHelpState.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -7,7 +7,7 @@
 //
 
 #import "SCHHelpVideoFileDownloadOperation.h"
-#import "SCHDictionaryDownloadManager.h"
+#import "SCHHelpManager.h"
 #import "BITNetworkActivityManager.h"
 
 #pragma mark Class Extension
@@ -62,12 +62,12 @@
         return;
 	}
 
-    [SCHDictionaryDownloadManager sharedDownloadManager].isProcessing = YES;
+    [SCHHelpManager sharedHelpManager].isProcessing = YES;
     [self willChangeValueForKey:@"isExecuting"];
 
     self.localFileManager = [[[NSFileManager alloc] init] autorelease];
     
-    NSString *localDirectory = [[SCHDictionaryDownloadManager sharedDownloadManager] helpVideoDirectory];
+    NSString *localDirectory = [[SCHHelpManager sharedHelpManager] helpVideoDirectory];
 
     self.downloadQueue = [NSMutableArray array];
     
@@ -133,21 +133,13 @@
 
     // we've successfully downloaded all files
     // set the version string to 1.0 (hardcoded at present)
-    [[SCHDictionaryDownloadManager sharedDownloadManager] setHelpVideoVersion:@"1.0" 
+    [[SCHHelpManager sharedHelpManager] threadSafeUpdateHelpVideoVersion:@"1.0" 
                                                                      olderURL:[self.videoManifest olderURLForCurrentDevice] 
                                                                    youngerURL:[self.videoManifest youngerURLForCurrentDevice]];
     
     [self fireProgressUpdate:1.0f];
     
-    SCHDictionaryUserRequestState userRequestState = [[SCHDictionaryDownloadManager sharedDownloadManager] userRequestState];
-    
-    if (userRequestState == SCHDictionaryUserDeclined) {
-        [[SCHDictionaryDownloadManager sharedDownloadManager] threadSafeUpdateDictionaryState:SCHDictionaryProcessingStateUserDeclined];
-    } else if (userRequestState == SCHDictionaryUserNotYetAsked) {
-        [[SCHDictionaryDownloadManager sharedDownloadManager] threadSafeUpdateDictionaryState:SCHDictionaryProcessingStateUserSetup];
-    } else {
-        [[SCHDictionaryDownloadManager sharedDownloadManager] threadSafeUpdateDictionaryState:SCHDictionaryProcessingStateNeedsManifest];
-    }
+    [[SCHHelpManager sharedHelpManager] threadSafeUpdateHelpState:SCHHelpProcessingStateReady];
     
     self.currentOperation = nil;
     [self terminateOperation];
@@ -165,7 +157,7 @@
     
     [self didChangeValueForKey:@"isExecuting"];
     [self didChangeValueForKey:@"isFinished"];
-    [SCHDictionaryDownloadManager sharedDownloadManager].isProcessing = NO;
+    [SCHHelpManager sharedHelpManager].isProcessing = NO;
 }
 
 - (BOOL)fileSystemHasBytesAvailable:(unsigned long long)sizeInBytes
@@ -187,7 +179,7 @@
         NSDictionary *userInfo = [NSDictionary dictionaryWithObjectsAndKeys:
                                   [NSNumber numberWithFloat:progress], @"currentPercentage",
                                   nil];
-        [[NSNotificationCenter defaultCenter] postNotificationName:kSCHHelpVideoDownloadPercentageUpdate
+        [[NSNotificationCenter defaultCenter] postNotificationName:kSCHHelpDownloadPercentageUpdate
                                                             object:self
                                                           userInfo:userInfo];
     });
@@ -228,7 +220,7 @@
     // N.B. Do not call terminateOperation directly as that waits for completion (which will lead to deadlock)
     if ([error.domain isEqualToString:kQHTTPOperationErrorDomain] && error.code == 416) {
         // There was a problem with the range. Delete the files on the disk        
-        NSString *localDirectory = [[SCHDictionaryDownloadManager sharedDownloadManager] helpVideoDirectory];
+        NSString *localDirectory = [[SCHHelpManager sharedHelpManager] helpVideoDirectory];
 
         for (NSString *downloadURL in [[self.videoManifest itemsForCurrentDevice] allValues]) {
             NSString *fileName = [downloadURL lastPathComponent];
@@ -239,7 +231,7 @@
         }
         [[BITNetworkActivityManager sharedNetworkActivityManager] hideNetworkActivityIndicator];
     } else if (!([error.domain isEqualToString:NSCocoaErrorDomain] && error.code == NSUserCancelledError)) {
-        [[SCHDictionaryDownloadManager sharedDownloadManager] threadSafeUpdateDictionaryState:SCHDictionaryProcessingStateError];
+        [[SCHHelpManager sharedHelpManager] threadSafeUpdateHelpState:SCHHelpProcessingStateError];
         [[BITNetworkActivityManager sharedNetworkActivityManager] hideNetworkActivityIndicator];
     } else {
         // Error due to cancellation. 

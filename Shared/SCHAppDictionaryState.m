@@ -17,8 +17,5 @@ NSString * const kSCHAppDictionaryState = @"SCHAppDictionaryState";
 @dynamic Version;
 @dynamic InitialDictionaryProcessed;
 @dynamic appDictionaryManifestEntry;
-@dynamic helpVideoVersion;
-@dynamic helpVideoOlderURL;
-@dynamic helpVideoYoungerURL;
 
 @end

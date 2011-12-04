@@ -27,6 +27,7 @@
 #import "SCHDictionaryViewController.h"
 #import "SCHDictionaryAccessManager.h"
 #import "SCHDictionaryDownloadManager.h"
+#import "SCHHelpManager.h"
 #import "SCHNotesCountView.h"
 #import "SCHBookStoryInteractions+XPS.h"
 #import "SCHStoryInteractionController.h"
@@ -601,7 +602,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     BOOL audioButtonHidden = ![[book HasAudio] boolValue];
     
     // if the help isn't yet downloaded, hide the help button
-    BOOL helpButtonHidden = ![[SCHDictionaryDownloadManager sharedDownloadManager] haveHelpVideosDownloaded];
+    BOOL helpButtonHidden = ![[SCHHelpManager sharedHelpManager] haveHelpVideosDownloaded];
     
     SCHReadingViewNavigationToolbar *aNavigationToolbar = [[SCHReadingViewNavigationToolbar alloc] initWithStyle:style 
                                                                                                            audio:!audioButtonHidden 

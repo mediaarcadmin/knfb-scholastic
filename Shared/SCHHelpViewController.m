@@ -13,7 +13,7 @@
 #import "SCHPlayButton.h"
 #import "UIColor+Scholastic.h"
 #import "SCHUserDefaults.h"
-#import "SCHDictionaryDownloadManager.h"
+#import "SCHHelpManager.h"
 #import "Reachability.h"
 
 // Constants
@@ -127,13 +127,13 @@ static CGFloat const kSCHStoryInteractionControllerCloseBorderWidth = 1.5;
     NSString *fileURL = nil;
     
     if (self.youngerMode) {
-        fileURL = [[SCHDictionaryDownloadManager sharedDownloadManager] helpVideoYoungerURL];
+        fileURL = [[SCHHelpManager sharedHelpManager] helpVideoYoungerURL];
     } else {
-        fileURL = [[SCHDictionaryDownloadManager sharedDownloadManager] helpVideoOlderURL];
+        fileURL = [[SCHHelpManager sharedHelpManager] helpVideoOlderURL];
     }
     
     NSString *filename = [fileURL lastPathComponent];
-    NSString *filePath = [[SCHDictionaryDownloadManager sharedDownloadManager] helpVideoDirectory];
+    NSString *filePath = [[SCHHelpManager sharedHelpManager] helpVideoDirectory];
     movieURL = [NSURL fileURLWithPath:[NSString stringWithFormat:@"%@/%@", filePath, filename]];
     
     if (movieURL) {
@@ -289,7 +289,7 @@ static CGFloat const kSCHStoryInteractionControllerCloseBorderWidth = 1.5;
                                                     name:kReachabilityChangedNotification 
                                                   object:nil];
     
-    if ([[SCHDictionaryDownloadManager sharedDownloadManager] haveHelpVideosDownloaded]) {
+    if ([[SCHHelpManager sharedHelpManager] haveHelpVideosDownloaded]) {
         self.loadingView.hidden = YES;
         self.wifiView.hidden = YES;
         self.playButton.userInteractionEnabled = YES;
@@ -308,10 +308,10 @@ static CGFloat const kSCHStoryInteractionControllerCloseBorderWidth = 1.5;
         if (reachable) {
             self.wifiView.hidden = YES;
             self.loadingView.hidden = NO;
-            [[SCHDictionaryDownloadManager sharedDownloadManager] retryVideoDownload];
-            self.progressView.progress = [[SCHDictionaryDownloadManager sharedDownloadManager] currentHelpVideoDownloadPercentage];
-            [[NSNotificationCenter defaultCenter] removeObserver:self name:kSCHHelpVideoDownloadPercentageUpdate object:nil];
-            [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(helpVideoDownloadPercentageUpdate:) name:kSCHHelpVideoDownloadPercentageUpdate object:nil];
+            [[SCHHelpManager sharedHelpManager] retryHelpDownload];
+            self.progressView.progress = [[SCHHelpManager sharedHelpManager] currentHelpVideoDownloadPercentage];
+            [[NSNotificationCenter defaultCenter] removeObserver:self name:kSCHHelpDownloadPercentageUpdate object:nil];
+            [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(helpVideoDownloadPercentageUpdate:) name:kSCHHelpDownloadPercentageUpdate object:nil];
         } else {
             self.wifiView.hidden = NO;
             self.loadingView.hidden = YES;

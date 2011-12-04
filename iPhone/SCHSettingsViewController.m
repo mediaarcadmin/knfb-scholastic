@@ -227,8 +227,6 @@ extern NSString * const kSCHUserDefaultsSpaceSaverModeSetOffNotification;
         case SCHDictionaryProcessingStateError:
             enabled = YES;
             break;
-        case SCHDictionaryProcessingStateHelpVideoManifest:
-        case SCHDictionaryProcessingStateDownloadingHelpVideos:
         case SCHDictionaryProcessingStateNotEnoughFreeSpace:
         case SCHDictionaryProcessingStateNeedsManifest:
         case SCHDictionaryProcessingStateManifestVersionCheck:

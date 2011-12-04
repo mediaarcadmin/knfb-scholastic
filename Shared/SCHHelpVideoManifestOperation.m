@@ -7,7 +7,7 @@
 //
 
 #import "SCHHelpVideoManifestOperation.h"
-#import "SCHDictionaryDownloadManager.h"
+#import "SCHHelpManager.h"
 
 @interface SCHHelpVideoManifestOperation ()
 
@@ -68,7 +68,7 @@
 						   delegate:self];
 		
         if (self.connection == nil) {
-            [[SCHDictionaryDownloadManager sharedDownloadManager] threadSafeUpdateDictionaryState:SCHDictionaryProcessingStateError];
+            [[SCHHelpManager sharedHelpManager] threadSafeUpdateHelpState:SCHHelpProcessingStateError];
             [self cancel];
         } else {
             [self startOp];
@@ -85,7 +85,7 @@ didReceiveResponse:(NSURLResponse *)response
         if ([(NSHTTPURLResponse *)response statusCode] != 200) {
             [conn cancel];
             NSLog(@"Error downloading file, errorCode: %d", [(NSHTTPURLResponse *)response statusCode]);
-            [[SCHDictionaryDownloadManager sharedDownloadManager] threadSafeUpdateDictionaryState:SCHDictionaryProcessingStateError];
+            [[SCHHelpManager sharedHelpManager] threadSafeUpdateHelpState:SCHHelpProcessingStateError];
             [self cancel];
             return;
         }
@@ -110,7 +110,7 @@ didReceiveResponse:(NSURLResponse *)response
          [self.manifestParser setDelegate:self];
          [self.manifestParser parse];
     
-         [SCHDictionaryDownloadManager sharedDownloadManager].helpVideoManifest = self.manifestItem; 
+         [SCHHelpManager sharedHelpManager].helpVideoManifest = self.manifestItem; 
      } else {
          NSLog(@"VideoManifestOperation was cancelled");
      }
@@ -122,7 +122,7 @@ didReceiveResponse:(NSURLResponse *)response
   didFailWithError:(NSError *)error
 {
 	NSLog(@"failed download!");
-    [[SCHDictionaryDownloadManager sharedDownloadManager] threadSafeUpdateDictionaryState:SCHDictionaryProcessingStateError];
+    [[SCHHelpManager sharedHelpManager] threadSafeUpdateHelpState:SCHHelpProcessingStateError];
     [self cancel];    
 }
 
@@ -163,16 +163,16 @@ didStartElement:(NSString *)elementName
 
 - (void)parserDidEndDocument:(NSXMLParser *)parser
 {
-    [[SCHDictionaryDownloadManager sharedDownloadManager] threadSafeUpdateDictionaryState:SCHDictionaryProcessingStateDownloadingHelpVideos];
-    [SCHDictionaryDownloadManager sharedDownloadManager].isProcessing = NO;
+    [[SCHHelpManager sharedHelpManager] threadSafeUpdateHelpState:SCHHelpProcessingStateDownloadingHelpVideos];
+    [SCHHelpManager sharedHelpManager].isProcessing = NO;
     
 	self.parsingComplete = YES;
 }
 
 - (void)parser:(NSXMLParser *)parser parseErrorOccurred:(NSError *)parseError
 {
-    [[SCHDictionaryDownloadManager sharedDownloadManager] threadSafeUpdateDictionaryState:SCHDictionaryProcessingStateError];
-    [SCHDictionaryDownloadManager sharedDownloadManager].isProcessing = NO;
+    [[SCHHelpManager sharedHelpManager] threadSafeUpdateHelpState:SCHHelpProcessingStateError];
+    [SCHHelpManager sharedHelpManager].isProcessing = NO;
     
 	NSLog(@"Error: could not parse XML.");
 	self.parsingComplete = YES;
@@ -188,7 +188,7 @@ didStartElement:(NSString *)elementName
 
 - (void)startOp
 {
-    [SCHDictionaryDownloadManager sharedDownloadManager].isProcessing = YES;
+    [SCHHelpManager sharedHelpManager].isProcessing = YES;
     [self willChangeValueForKey:@"isExecuting"];
     [self willChangeValueForKey:@"isFinished"];
     self.executing = YES;
@@ -205,7 +205,7 @@ didStartElement:(NSString *)elementName
 	self.executing = NO;
     [self didChangeValueForKey:@"isExecuting"];
     [self didChangeValueForKey:@"isFinished"];
-	[SCHDictionaryDownloadManager sharedDownloadManager].isProcessing = NO;
+	[SCHHelpManager sharedHelpManager].isProcessing = NO;
 }
 
 - (BOOL)isConcurrent
