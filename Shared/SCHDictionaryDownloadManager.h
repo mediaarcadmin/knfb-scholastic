@@ -11,12 +11,11 @@
 // Constants
 extern NSString * const kSCHDictionaryDownloadPercentageUpdate;
 extern NSString * const kSCHDictionaryProcessingPercentageUpdate;
-
 extern NSString * const kSCHDictionaryStateChange;
 
 extern int const kSCHDictionaryManifestEntryEntryTableBufferSize;
 extern int const kSCHDictionaryManifestEntryWordFormTableBufferSize;
-
+extern CGFloat const kSCHDictionaryFileUnzipMaxPercentage;
 extern char * const kSCHDictionaryManifestEntryColumnSeparator;
 
 typedef enum {

@@ -133,6 +133,16 @@ extern NSString * const kSCHUserDefaultsSpaceSaverModeSetOffNotification;
                                              selector:@selector(dictionaryStateChanged:)
                                                  name:kSCHDictionaryStateChange
                                                object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(dictionaryStateChanged:)
+                                                 name:kSCHDictionaryDownloadPercentageUpdate
+                                               object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(dictionaryStateChanged:)
+                                                 name:kSCHDictionaryProcessingPercentageUpdate
+                                               object:nil];
 }
 
 - (NSArray *)currentSettingsViewControllers
@@ -257,8 +267,11 @@ extern NSString * const kSCHUserDefaultsSpaceSaverModeSetOffNotification;
         case SCHDictionaryProcessingStateNeedsManifest:
         case SCHDictionaryProcessingStateManifestVersionCheck:
         case SCHDictionaryProcessingStateNeedsDownload:
+        {
             if ([[SCHDictionaryDownloadManager sharedDownloadManager] wifiAvailable]) {
-                [self.downloadDictionaryButton setTitle:NSLocalizedString(@"Downloading Dictionary...", @"Downloading dictionary button title")
+                NSUInteger progress = roundf([[SCHDictionaryDownloadManager sharedDownloadManager] currentDictionaryDownloadPercentage] * 100.0f);
+                [self.downloadDictionaryButton setTitle:[NSString stringWithFormat:NSLocalizedString(@"Downloading Dictionary %d%%", @"Downloading dictionary button title"), 
+                  progress]
                                                forState:UIControlStateNormal];
             } else {
                 self.downloadDictionaryButton.titleLabel.lineBreakMode = UILineBreakModeWordWrap;
@@ -273,15 +286,24 @@ extern NSString * const kSCHUserDefaultsSpaceSaverModeSetOffNotification;
                                                forState:UIControlStateNormal];
             }
             break;
+        }
         case SCHDictionaryProcessingStateNeedsUnzip:
         case SCHDictionaryProcessingStateNeedsParse:
-            [self.downloadDictionaryButton setTitle:NSLocalizedString(@"Processing Dictionary...", @"Processing dictionary button title")
+        {
+            NSUInteger progress = roundf([[SCHDictionaryDownloadManager sharedDownloadManager] currentDictionaryProcessingPercentage] * 100.0f);
+            [self.downloadDictionaryButton setTitle:[NSString stringWithFormat:NSLocalizedString(@"Processing Dictionary %d%%", @"Processing dictionary button title"), 
+                                                     progress]
                                            forState:UIControlStateNormal];
             break;
+        }
         case SCHDictionaryProcessingStateDeleting:
             [self.downloadDictionaryButton setTitle:NSLocalizedString(@"Deleting Dictionary...", @"Deleting dictionary button title")
                                            forState:UIControlStateNormal];
-            break;            
+            break;   
+        case SCHDictionaryProcessingStateError:
+            [self.downloadDictionaryButton setTitle:NSLocalizedString(@"Dictionary Error. Try again.", @"Dictionary error button title")
+                                           forState:UIControlStateNormal];
+            break;  
         default:
             [self.downloadDictionaryButton setTitle:NSLocalizedString(@"Download Dictionary", @"download dictionary button title")
                                            forState:UIControlStateNormal];

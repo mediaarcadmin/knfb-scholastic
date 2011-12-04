@@ -254,7 +254,6 @@ static SCHHelpManager *sharedManager = nil;
 			self.startTimer = nil; 
 		}
 		[self.downloadQueue cancelAllOperations];
-        self.isProcessing = NO;
 	}
     
     [[NSNotificationCenter defaultCenter] postNotificationName:kSCHHelpStateChange object:nil userInfo:nil];
@@ -271,9 +270,14 @@ static SCHHelpManager *sharedManager = nil;
 	}
 	
     if (!self.internetAvailable) {
-        NSLog(@"Process dictionary called, but no wifi available.");
+        NSLog(@"Process help called, but no wifi available.");
 		return;
 	}
+    
+    if (self.isProcessing) {
+        NSLog(@"Process help called, but help is already processing.");
+        return;
+    }
 	
     SCHHelpProcessingState state = [self helpProcessingState];
 	NSLog(@"**** Calling processHelp with state %d...", state);
@@ -445,41 +449,44 @@ static SCHHelpManager *sharedManager = nil;
 
 - (void)checkIfHelpUpdateNeeded
 {
-    SCHHelpProcessingState state = [self helpProcessingState];
     
-    if (state == SCHHelpProcessingStateError || state == SCHHelpProcessingStateNotEnoughFreeSpace) {
-        NSLog(@"There was an error - try the help again.");
-        [self threadSafeUpdateHelpState:SCHHelpProcessingStateHelpVideoManifest];
-    } else if (state == SCHHelpProcessingStateReady) {
+    if (!self.isProcessing) {
+        SCHHelpProcessingState state = [self helpProcessingState];
         
-		NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-        
-        // check to see if we need to do an update
-        bool doUpdate = NO;
-        
-        NSDate *lastPrefUpdate = [defaults objectForKey:@"lastHelpUpdateDate"];
-        NSDate *currentDate = [[NSDate alloc] init];
-        
-        // if there's no default, set the current date
-        if (lastPrefUpdate == nil) {
-            [defaults setValue:currentDate forKey:@"lastHelpUpdateDate"];
-            [defaults synchronize];
-            doUpdate = YES;
-        } else {
-            double timeInterval = [currentDate timeIntervalSinceDate:lastPrefUpdate];
-            
-            // have we updated in the last 24 hours?
-            if (timeInterval >= 86400) {
-                [defaults setValue:currentDate forKey:@"lastHelpUpdateDate"];
-                [defaults synchronize];					
-            }
-        }		
-        
-        [currentDate release];
-        
-        if (doUpdate) {
-            NSLog(@"Help needs an update check.");
+        if (state == SCHHelpProcessingStateError || state == SCHHelpProcessingStateNotEnoughFreeSpace) {
+            NSLog(@"There was an error - try the help again.");
             [self threadSafeUpdateHelpState:SCHHelpProcessingStateHelpVideoManifest];
+        } else if (state == SCHHelpProcessingStateReady) {
+            
+            NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+            
+            // check to see if we need to do an update
+            bool doUpdate = NO;
+            
+            NSDate *lastPrefUpdate = [defaults objectForKey:@"lastHelpUpdateDate"];
+            NSDate *currentDate = [[NSDate alloc] init];
+            
+            // if there's no default, set the current date
+            if (lastPrefUpdate == nil) {
+                [defaults setValue:currentDate forKey:@"lastHelpUpdateDate"];
+                [defaults synchronize];
+                doUpdate = YES;
+            } else {
+                double timeInterval = [currentDate timeIntervalSinceDate:lastPrefUpdate];
+                
+                // have we updated in the last 24 hours?
+                if (timeInterval >= 86400) {
+                    [defaults setValue:currentDate forKey:@"lastHelpUpdateDate"];
+                    [defaults synchronize];					
+                }
+            }		
+            
+            [currentDate release];
+            
+            if (doUpdate) {
+                NSLog(@"Help needs an update check.");
+                [self threadSafeUpdateHelpState:SCHHelpProcessingStateHelpVideoManifest];
+            }
         }
     }
 }

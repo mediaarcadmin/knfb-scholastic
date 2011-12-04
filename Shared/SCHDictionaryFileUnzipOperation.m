@@ -92,7 +92,7 @@
     }
     
     NSDictionary *userInfo = [NSDictionary dictionaryWithObjectsAndKeys:
-                              [NSNumber numberWithFloat:0.5], @"currentPercentage",
+                              [NSNumber numberWithFloat:kSCHDictionaryFileUnzipMaxPercentage], @"currentPercentage",
                               nil];
     
     [self performSelectorOnMainThread:@selector(firePercentageUpdate:) 
@@ -116,6 +116,8 @@
     if (myTotalFileCount > 0) {
         percentage = (float)((float)myCurrentFileIndex / (float)myTotalFileCount);
     }
+    
+    percentage *= kSCHDictionaryFileUnzipMaxPercentage;
     
     if (percentage - self.previousPercentage > 0.001f) {
         
