@@ -199,8 +199,12 @@ static SCHProcessingManager *sharedManager = nil;
                     [self.networkOperationQueue waitUntilAllOperationsAreFinished];    
                     [self.localProcessingQueue waitUntilAllOperationsAreFinished];    
 					NSLog(@"operation queues are finished!");
-                    [[UIApplication sharedApplication] endBackgroundTask:self.backgroundTask];
-                    self.backgroundTask = UIBackgroundTaskInvalid;
+                    if(self.backgroundTask != UIBackgroundTaskInvalid) {
+                        [[UIApplication sharedApplication] endBackgroundTask:self.backgroundTask];
+                        self.backgroundTask = UIBackgroundTaskInvalid;
+                    } else {
+                        NSLog(@"App came to foreground in the meantime");
+                    }
                 }
             });
         }

@@ -48,6 +48,10 @@
             [dictManager updateParseWordFormTable];
         }
         
+        NSFileManager *localFileManager = [[NSFileManager alloc] init];
+        [localFileManager removeItemAtPath:[dictManager dictionaryZipPath] error:nil];
+        [localFileManager release];
+        
         [[SCHDictionaryDownloadManager sharedDownloadManager] threadSafeUpdateDictionaryState:SCHDictionaryProcessingStateManifestVersionCheck];
         dictManager.isProcessing = NO;
 

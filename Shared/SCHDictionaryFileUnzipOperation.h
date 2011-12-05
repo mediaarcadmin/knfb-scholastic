@@ -11,9 +11,12 @@
 #import "ZipArchive.h"
 #import "SCHDictionaryOperation.h"
 
+@class SCHDictionaryManifestEntry;
 
 @interface SCHDictionaryFileUnzipOperation : SCHDictionaryOperation <ZipArchiveDelegate> {
     
 }
+
+@property (nonatomic, retain) SCHDictionaryManifestEntry *manifestEntry;
 
 @end

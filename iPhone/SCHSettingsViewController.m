@@ -235,6 +235,7 @@ extern NSString * const kSCHUserDefaultsSpaceSaverModeSetOffNotification;
         case SCHDictionaryProcessingStateUserSetup:
         case SCHDictionaryProcessingStateUserDeclined:
         case SCHDictionaryProcessingStateError:
+        case SCHDictionaryProcessingStateUnexpectedConnectivityFailure:
             enabled = YES;
             break;
         case SCHDictionaryProcessingStateNotEnoughFreeSpace:
@@ -301,6 +302,7 @@ extern NSString * const kSCHUserDefaultsSpaceSaverModeSetOffNotification;
                                            forState:UIControlStateNormal];
             break;   
         case SCHDictionaryProcessingStateError:
+        case SCHDictionaryProcessingStateUnexpectedConnectivityFailure:
             [self.downloadDictionaryButton setTitle:NSLocalizedString(@"Dictionary Error. Try again.", @"Dictionary error button title")
                                            forState:UIControlStateNormal];
             break;  

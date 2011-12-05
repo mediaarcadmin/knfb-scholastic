@@ -184,6 +184,7 @@ didStartElement:(NSString *)elementName
 {
     [super cancel];
     [self.connection cancel];
+    [SCHHelpManager sharedHelpManager].isProcessing = NO;
 }
 
 - (void)startOp

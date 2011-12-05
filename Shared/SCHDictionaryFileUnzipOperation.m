@@ -22,10 +22,12 @@
 
 @synthesize executing, finished;
 @synthesize previousPercentage;
+@synthesize manifestEntry;
 
 - (void) dealloc
 {
     NSLog(@"Unzip operation is definitely being deallocated.");
+    [manifestEntry release], manifestEntry = nil;
     [super dealloc];
 }
 
@@ -104,6 +106,31 @@
 
     if (deleteAfterUnzip) {
         [localFileManager removeItemAtPath:[dictManager dictionaryZipPath] error:nil];
+    }
+    
+    if (zipSuccess) {
+        // if this is the first download, move the two text files into the current directory
+        // otherwise we leave them where they are - the update text files are deleted at the end of the update parse
+        BOOL firstRun = NO;
+        
+        if (self.manifestEntry.fromVersion == nil) {
+            firstRun = YES;
+        }
+        
+        if (firstRun) {
+            NSString *currentLocation = [dictManager dictionaryDirectory];
+            NSString *newLocation = [dictManager dictionaryTextFilesDirectory];
+            
+            [localFileManager moveItemAtPath:[currentLocation stringByAppendingPathComponent:@"EntryTable.txt"]
+                                      toPath:[newLocation stringByAppendingPathComponent:@"EntryTable.txt"] error:nil];
+            
+            [localFileManager moveItemAtPath:[currentLocation stringByAppendingPathComponent:@"WordFormTable.txt"]
+                                      toPath:[newLocation stringByAppendingPathComponent:@"WordFormTable.txt"] error:nil];
+        }
+        
+        [dictManager threadSafeUpdateDictionaryState:SCHDictionaryProcessingStateNeedsParse];
+    } else {
+        [dictManager threadSafeUpdateDictionaryState:SCHDictionaryProcessingStateError];
     }
     
     [localFileManager release];

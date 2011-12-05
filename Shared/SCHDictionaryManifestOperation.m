@@ -72,7 +72,7 @@
 						   delegate:self];
 		
         if (self.connection == nil) {
-            [[SCHDictionaryDownloadManager sharedDownloadManager] threadSafeUpdateDictionaryState:SCHDictionaryProcessingStateError];
+            [[SCHDictionaryDownloadManager sharedDownloadManager] threadSafeUpdateDictionaryState:SCHDictionaryProcessingStateUnexpectedConnectivityFailure];
             [self cancel];
         } else {
             [self startOp];
@@ -89,7 +89,7 @@ didReceiveResponse:(NSURLResponse *)response
         if ([(NSHTTPURLResponse *)response statusCode] != 200) {
             [conn cancel];
             NSLog(@"Error downloading file, errorCode: %d", [(NSHTTPURLResponse *)response statusCode]);
-            [[SCHDictionaryDownloadManager sharedDownloadManager] threadSafeUpdateDictionaryState:SCHDictionaryProcessingStateError];
+            [[SCHDictionaryDownloadManager sharedDownloadManager] threadSafeUpdateDictionaryState:SCHDictionaryProcessingStateUnexpectedConnectivityFailure];
             [self cancel];
             return;
         }
@@ -126,7 +126,7 @@ didReceiveResponse:(NSURLResponse *)response
   didFailWithError:(NSError *)error
 {
 	NSLog(@"failed download!");
-    [[SCHDictionaryDownloadManager sharedDownloadManager] threadSafeUpdateDictionaryState:SCHDictionaryProcessingStateError];
+    [[SCHDictionaryDownloadManager sharedDownloadManager] threadSafeUpdateDictionaryState:SCHDictionaryProcessingStateUnexpectedConnectivityFailure];
     [self cancel];    
 }
 
@@ -206,6 +206,8 @@ didStartElement:(NSString *)elementName
 {
     [super cancel];
     [self.connection cancel];
+    self.connection = nil;
+    [SCHDictionaryDownloadManager sharedDownloadManager].isProcessing = NO;
 }
 
 - (void)startOp
@@ -221,6 +223,8 @@ didStartElement:(NSString *)elementName
 
 - (void)finishOp
 {
+    self.connection = nil;
+
     [self willChangeValueForKey:@"isExecuting"];
     [self willChangeValueForKey:@"isFinished"];
 	self.finished = YES;

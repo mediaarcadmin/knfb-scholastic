@@ -43,7 +43,7 @@
 
 // Dictionary manifest location
 #define UPDATE_MANIFEST_TEST @"http://bits.blioreader.com/partners/Scholastic/SLInstall/QAStandard/UpdateManifest.xml"
-#define UPDATE_MANIFEST_PRODUCTION @"http://reader.ebooks2.scholastic.com/reader/sch/UpdateManifest.xml"
+#define UPDATE_MANIFEST_PRODUCTION @"http://192.168.1.5/UpdateManifest.xml"
 
 // Help video manifest location
 #define VIDEO_MANIFEST_TEST @"http://bitwink.com/private/helpvideos/HelpVideoManifest.xml"

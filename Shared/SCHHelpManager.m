@@ -133,7 +133,6 @@ static SCHHelpManager *sharedManager = nil;
 												   object:nil];		
         
 		[sharedManager.reachability startNotifier];
-		[sharedManager reachabilityCheck:sharedManager.reachability];        
 	} 
 	
 	return sharedManager;
@@ -169,8 +168,13 @@ static SCHHelpManager *sharedManager = nil;
                 if(self.backgroundTask != UIBackgroundTaskInvalid) {
 					[self.downloadQueue waitUntilAllOperationsAreFinished];
 					NSLog(@"help download queue is finished!");
-                    [[UIApplication sharedApplication] endBackgroundTask:self.backgroundTask];
-                    self.backgroundTask = UIBackgroundTaskInvalid;
+                    if(self.backgroundTask != UIBackgroundTaskInvalid) {
+                        [[UIApplication sharedApplication] endBackgroundTask:self.backgroundTask];
+                        self.backgroundTask = UIBackgroundTaskInvalid;
+                    } else {
+                        NSLog(@"App came to foreground in the meantime");
+                    }
+
                 }
             });
         }
@@ -488,6 +492,8 @@ static SCHHelpManager *sharedManager = nil;
                 [self threadSafeUpdateHelpState:SCHHelpProcessingStateHelpVideoManifest];
             }
         }
+        
+        [self processHelp];
     }
 }
 

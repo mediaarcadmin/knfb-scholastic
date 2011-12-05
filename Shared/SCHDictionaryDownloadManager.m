@@ -90,6 +90,9 @@ char * const kSCHDictionaryManifestEntryColumnSeparator = "\t";
 - (void)removeManifestEntryFromDatabase;
 - (void)deleteDictionaryFileWithCompletionBlock:(dispatch_block_t)completion;
 
+- (BOOL)stateNeedsWiFi;
+- (BOOL)stateIsWaitingForUserInteraction;
+
 @end
 
 #pragma mark -
@@ -204,7 +207,6 @@ static SCHDictionaryDownloadManager *sharedManager = nil;
 												   object:nil];	
                 
 		[sharedManager.wifiReach startNotifier];
-		[sharedManager reachabilityCheck:sharedManager.wifiReach];        
 	} 
 	
 	return sharedManager;
@@ -240,8 +242,12 @@ static SCHDictionaryDownloadManager *sharedManager = nil;
                 if(self.backgroundTask != UIBackgroundTaskInvalid) {
 					[self.dictionaryDownloadQueue waitUntilAllOperationsAreFinished];
 					NSLog(@"dictionary download queue is finished!");
-                    [[UIApplication sharedApplication] endBackgroundTask:self.backgroundTask];
-                    self.backgroundTask = UIBackgroundTaskInvalid;
+                    if(self.backgroundTask != UIBackgroundTaskInvalid) {
+                        [[UIApplication sharedApplication] endBackgroundTask:self.backgroundTask];
+                        self.backgroundTask = UIBackgroundTaskInvalid;
+                    } else {
+                        NSLog(@"App came to foreground in the meantime");
+                    }
                 }
             });
         }
@@ -316,6 +322,47 @@ static SCHDictionaryDownloadManager *sharedManager = nil;
 #pragma mark -
 #pragma mark Check Operating State
 
+- (BOOL)stateNeedsWiFi
+{
+    BOOL stateNeedsWiFi = NO;
+    
+    SCHDictionaryProcessingState state = [self dictionaryProcessingState];
+    
+    switch (state) {
+        case SCHDictionaryProcessingStateNeedsManifest:
+        case SCHDictionaryProcessingStateNeedsDownload:
+            stateNeedsWiFi = YES;
+            break;
+        default:
+            stateNeedsWiFi = NO;
+            break;
+    }
+    
+    return stateNeedsWiFi;
+}
+
+- (BOOL)stateIsWaitingForUserInteraction
+{
+    BOOL stateIsWaitingForUserInteraction = NO;
+    
+    SCHDictionaryProcessingState state = [self dictionaryProcessingState];
+    
+    switch (state) {
+        case SCHDictionaryProcessingStateError:
+        case SCHDictionaryProcessingStateUserSetup:
+        case SCHDictionaryProcessingStateUserDeclined:
+        case SCHDictionaryProcessingStateNotEnoughFreeSpace:
+        case SCHDictionaryProcessingStateUnexpectedConnectivityFailure:
+            stateIsWaitingForUserInteraction = YES;
+            break;
+        default:
+            stateIsWaitingForUserInteraction = NO;
+            break;
+    }
+    
+    return stateIsWaitingForUserInteraction;
+}
+
 - (void)checkOperatingStateImmediately:(BOOL)immediately
 {
     // Dictionary can be disabled using preprocessor flag
@@ -329,7 +376,10 @@ static SCHDictionaryDownloadManager *sharedManager = nil;
 	
 	// if both conditions are met, start the countdown to begin work
 //	if (self.wifiAvailable && self.connectionIdle) {
-	if (self.wifiAvailable) {
+    
+    BOOL stateNeedsWiFi = [self stateNeedsWiFi];
+    
+	if (self.wifiAvailable || !stateNeedsWiFi) {
 
 		// start the countdown from 3 seconds again
 		if (self.startTimer && [self.startTimer isValid]) {
@@ -365,20 +415,25 @@ static SCHDictionaryDownloadManager *sharedManager = nil;
 
 - (void)processDictionary
 {
+    
 	if ([NSThread currentThread] != [NSThread mainThread]) {
 		[self performSelectorOnMainThread:@selector(processDictionary) withObject:nil waitUntilDone:NO];
 		return;
 	}
-	
-//	if (!self.wifiAvailable || !self.connectionIdle) {
-    if (!self.wifiAvailable) {
-        NSLog(@"Process dictionary called, but no wifi available.");
-		return;
-	}
-    
-    if (self.isProcessing) {
+	    
+    if (self.isProcessing && ![self stateIsWaitingForUserInteraction]) {
         NSLog(@"Process dictionary called, but dictionary is already processing.");
         return;
+    }
+    
+    if (!self.wifiAvailable &&  [self stateNeedsWiFi]) {
+        NSLog(@"Process dictionary called, but no wifi available.");
+        return;
+    }
+    
+    if ([self.dictionaryDownloadQueue operationCount]) {
+        NSLog(@"Trying to process a new operation whilst there are remaining operations");
+        [self.dictionaryDownloadQueue cancelAllOperations];
     }
 	
     SCHDictionaryProcessingState state = [self dictionaryProcessingState];
@@ -394,6 +449,7 @@ static SCHDictionaryDownloadManager *sharedManager = nil;
    		case SCHDictionaryProcessingStateNeedsManifest:
 		{
 			NSLog(@"needs dictionary manifest...");
+            
 			// create manifest processing operation
 			SCHDictionaryManifestOperation *manifestOp = [[SCHDictionaryManifestOperation alloc] init];
             
@@ -415,13 +471,17 @@ static SCHDictionaryDownloadManager *sharedManager = nil;
 			NSLog(@"needs manifest version check...");
             
             bool processUpdate = NO;
-            
+            SCHDictionaryManifestEntry *entry = nil;
+
             if (self.dictionaryVersion == nil) {
+                if ([self.manifestUpdates count]) {
+                    entry = [self.manifestUpdates objectAtIndex:0];
+                }
                 processUpdate = YES;
             } else {
             
-                for (SCHDictionaryManifestEntry *entry in self.manifestUpdates) {
-                    NSLog(@"from: %@ to: %@ URL: %@", entry.fromVersion, entry.toVersion, entry.url);
+                for (SCHDictionaryManifestEntry *anEntry in self.manifestUpdates) {
+                    NSLog(@"from: %@ to: %@ URL: %@", anEntry.fromVersion, anEntry.toVersion, anEntry.url);
                 }
                 
                 
@@ -434,8 +494,7 @@ static SCHDictionaryDownloadManager *sharedManager = nil;
                 
                 int currentMajorVersion = [[currentVersionComponents objectAtIndex:0] intValue];
                 int currentMinorVersion = [[currentVersionComponents objectAtIndex:1] intValue];
-                
-                
+                                
                 while ([self.manifestUpdates count] > 0) {
                     
                     NSArray *tmpVersionComponents = [[(SCHDictionaryManifestEntry *) [self.manifestUpdates objectAtIndex:0] toVersion]
@@ -452,6 +511,7 @@ static SCHDictionaryDownloadManager *sharedManager = nil;
                     // if the version is greater than the current one, then we need to process this entry
                     if ((tmpMajorVersion > currentMajorVersion) 
                         || (tmpMajorVersion == currentMajorVersion && tmpMinorVersion > currentMinorVersion)) {
+                        entry = [self.manifestUpdates objectAtIndex:0];
                         processUpdate = YES;
                         break;
                     } else {
@@ -463,6 +523,9 @@ static SCHDictionaryDownloadManager *sharedManager = nil;
             }
             
             if (processUpdate) {
+                if (entry) {
+                    [self storeManifestEntryInDatabase:entry];
+                }
                 [self threadSafeUpdateDictionaryState:SCHDictionaryProcessingStateNeedsDownload];
                 [self processDictionary];
             } else {
@@ -478,15 +541,20 @@ static SCHDictionaryDownloadManager *sharedManager = nil;
 			NSLog(@"needs download...");
             
             // if there's no manifest set, restart the process
-            if (self.manifestUpdates == nil) {
+            SCHDictionaryManifestEntry *entry = nil;
+            
+            if ([self.manifestUpdates count]) {
+                entry = [self.manifestUpdates objectAtIndex:0];
+            } else {
+                entry = [self manifestEntryFromDatabase];
+            }
+            
+            if (entry == nil) {                
                 [self threadSafeUpdateDictionaryState:SCHDictionaryProcessingStateNeedsManifest];
                 [self processDictionary];
                 return;
             }
-            
-            // figure out which dictionary file we're downloading
-            SCHDictionaryManifestEntry *entry = [self.manifestUpdates objectAtIndex:0];
-            
+                        
 			// create dictionary download operation
 			SCHDictionaryFileDownloadOperation *downloadOp = [[SCHDictionaryFileDownloadOperation alloc] init];
             downloadOp.manifestEntry = entry;
@@ -508,38 +576,28 @@ static SCHDictionaryDownloadManager *sharedManager = nil;
 			NSLog(@"needs unzip...");
 			// create unzip operation
             
+            // if there's no manifest set, restart the process
+            SCHDictionaryManifestEntry *entry = nil;
+            
+            if ([self.manifestUpdates count]) {
+                entry = [self.manifestUpdates objectAtIndex:0];
+            } else {
+                entry = [self manifestEntryFromDatabase];
+            }
+            
+            if (entry == nil) {
+                [self threadSafeUpdateDictionaryState:SCHDictionaryProcessingStateNeedsManifest];
+                [self processDictionary];
+                return;
+            }
+            
             self.currentDictionaryProcessingPercentage = 0.0;
             
 			SCHDictionaryFileUnzipOperation *unzipOp = [[SCHDictionaryFileUnzipOperation alloc] init];
+            unzipOp.manifestEntry = entry;
             
 			// on completion, we need to check if we are on the first download, or subsequent downloads
 			[unzipOp setNotCancelledCompletionBlock:^{
-                
-                // if this is the first download, move the two text files into the current directory
-                // otherwise we leave them where they are - the update text files are deleted at the end of the update parse
-                NSFileManager *localFileManager = [[NSFileManager alloc] init];
-                BOOL firstRun = NO;
-                
-                SCHDictionaryManifestEntry *manifestEntry = [self.manifestUpdates objectAtIndex:0];
-                
-                if (manifestEntry.fromVersion == nil) {
-                    firstRun = YES;
-                }
-                
-                if (firstRun) {
-                    NSString *currentLocation = [self dictionaryDirectory];
-                    NSString *newLocation = [self dictionaryTextFilesDirectory];
-                    
-                    [localFileManager moveItemAtPath:[currentLocation stringByAppendingPathComponent:@"EntryTable.txt"]
-                                              toPath:[newLocation stringByAppendingPathComponent:@"EntryTable.txt"] error:nil];
-                    
-                    [localFileManager moveItemAtPath:[currentLocation stringByAppendingPathComponent:@"WordFormTable.txt"]
-                                              toPath:[newLocation stringByAppendingPathComponent:@"WordFormTable.txt"] error:nil];
-                }
-                
-                [localFileManager release];
-                
-                [self threadSafeUpdateDictionaryState:SCHDictionaryProcessingStateNeedsParse];
 				[self processDictionary];
 			}];
 			
@@ -576,14 +634,8 @@ static SCHDictionaryDownloadManager *sharedManager = nil;
 			SCHDictionaryParseOperation *parseOp = [[SCHDictionaryParseOperation alloc] init];
 			parseOp.manifestEntry = entry;
             
-			// when parsing is successful, delete the zip file
-            // note the filename as it will change once we have parsed and know the version number
-            NSString *dictionaryZipPath = [self dictionaryZipPath];
 			[parseOp setNotCancelledCompletionBlock:^{
                 self.dictionaryVersion = entry.toVersion;
-                NSFileManager *localFileManager = [[NSFileManager alloc] init];
-                [localFileManager removeItemAtPath:dictionaryZipPath error:nil];
-                [localFileManager release];
                 [self removeManifestEntryFromDatabase];
 				[self processDictionary];
 			}];
@@ -789,14 +841,17 @@ static SCHDictionaryDownloadManager *sharedManager = nil;
 - (void)checkIfDictionaryUpdateNeeded
 {
     
-    if (!self.isProcessing) {
+    if (!self.isProcessing  || [self stateIsWaitingForUserInteraction]) {
         SCHDictionaryProcessingState state = [self dictionaryProcessingState];
         
-        if (state == SCHDictionaryProcessingStateError || state == SCHDictionaryProcessingStateNotEnoughFreeSpace || state == SCHDictionaryProcessingStateDeleting) {
-            NSLog(@"There was an error - delete the file and try the dictionary again.");
+        if (state == SCHDictionaryProcessingStateNotEnoughFreeSpace) {
+            [self threadSafeUpdateDictionaryState:SCHDictionaryProcessingStateUserSetup]; // wait for user input but don't delete
+        } else if (state == SCHDictionaryProcessingStateError || state == SCHDictionaryProcessingStateDeleting) {
             [self deleteDictionaryFileWithCompletionBlock:^{
-                [self threadSafeUpdateDictionaryState:SCHDictionaryProcessingStateUserSetup];
+                [self threadSafeUpdateDictionaryState:SCHDictionaryProcessingStateUserSetup]; // wait for user input after a delete
             }];
+        } else if (state == SCHDictionaryProcessingStateUnexpectedConnectivityFailure) {
+            [self threadSafeUpdateDictionaryState:SCHDictionaryProcessingStateNeedsManifest]; // Don't delete the existing files & attempt to restart
         } else if (state == SCHDictionaryProcessingStateReady) {
             
             NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
@@ -829,6 +884,8 @@ static SCHDictionaryDownloadManager *sharedManager = nil;
                 [self threadSafeUpdateDictionaryState:SCHDictionaryProcessingStateNeedsManifest];
             }
         }
+        
+        [self processDictionary];
     }
 }
 
@@ -1483,7 +1540,10 @@ static SCHDictionaryDownloadManager *sharedManager = nil;
 
 - (void)withAppDictionaryStatePerform:(void(^)(SCHAppDictionaryState *))block
 {
+    NSAssert(self.mainThreadManagedObjectContext != nil, @"mainThreadManagedObjectContext nil in withAppDictionaryStatePerform");
+
     dispatch_block_t action = ^{
+        
         NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
         // Edit the entity name as appropriate.
         NSEntityDescription *entity = [NSEntityDescription entityForName:kSCHAppDictionaryState inManagedObjectContext:self.mainThreadManagedObjectContext];
@@ -1546,13 +1606,15 @@ static SCHDictionaryDownloadManager *sharedManager = nil;
 
 - (void)beginDictionaryDownload
 {
-    if (!self.isProcessing) {
+    if (!self.isProcessing || [self stateIsWaitingForUserInteraction]) {
         SCHDictionaryProcessingState state = [self dictionaryProcessingState];
         
         self.userRequestState = SCHDictionaryUserAccepted;
         
         if ((state == SCHDictionaryProcessingStateUserSetup) || 
             (state == SCHDictionaryProcessingStateUserDeclined) || 
+            (state == SCHDictionaryProcessingStateNotEnoughFreeSpace) || 
+            (state == SCHDictionaryProcessingStateUnexpectedConnectivityFailure) || 
             (state == SCHDictionaryProcessingStateError)) {
             
             dispatch_block_t needsManifestBlock = ^{
@@ -1573,6 +1635,7 @@ static SCHDictionaryDownloadManager *sharedManager = nil;
 
 - (void)deleteDictionaryFileWithCompletionBlock:(dispatch_block_t)completion
 {
+    self.isProcessing = YES;
     [self threadSafeUpdateDictionaryState:SCHDictionaryProcessingStateDeleting];
 
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{
@@ -1581,20 +1644,23 @@ static SCHDictionaryDownloadManager *sharedManager = nil;
         NSError *error = nil;
         NSFileManager *fileManager = [[[NSFileManager alloc] init] autorelease];
         NSString *dictionaryDir = [self dictionaryDirectory];
+        
+        NSString *dirToDelete = dictionaryTmpDirectory;
         if (![fileManager moveItemAtPath:dictionaryDir 
                                   toPath:dictionaryTmpDirectory error:&error]) {
             NSLog(@"Failed to move dictionary %@ : %@", error, [error userInfo]);
-            [fileManager removeItemAtPath:dictionaryDir error:nil];
-        } else {
-            // remove dictionary files from tmp
-            [fileManager removeItemAtPath:dictionaryTmpDirectory error:nil];
+            dirToDelete = dictionaryDir;
         }
         
         dispatch_async(dispatch_get_main_queue(), ^{
+            self.isProcessing = NO;
+
             if (completion) {
                 completion();
-            }
+            }            
         });
+        
+        [fileManager removeItemAtPath:dirToDelete error:nil];
     });
     
 }
@@ -1610,7 +1676,7 @@ static SCHDictionaryDownloadManager *sharedManager = nil;
             [self setUserRequestState:SCHDictionaryUserDeclined];
             [self threadSafeUpdateDictionaryState:SCHDictionaryProcessingStateUserDeclined];
         }];
-            }
+    }
 }
 
 @end
