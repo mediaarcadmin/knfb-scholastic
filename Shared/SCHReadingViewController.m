@@ -675,6 +675,10 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 {
 	[super viewWillAppear:animated];
     [self setupAssetsForOrientation:self.interfaceOrientation];
+    
+    // Hide the corner button until audio is checked in viewDidAppear
+    self.cornerAudioButtonView.hidden = YES;
+    
     [self updateScrubberValue];
 }
 
