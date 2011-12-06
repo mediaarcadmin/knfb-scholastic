@@ -1673,6 +1673,9 @@ static SCHDictionaryDownloadManager *sharedManager = nil;
         [(AppDelegate_Shared *)[[UIApplication sharedApplication] delegate] resetDictionaryStore];
         
         [self deleteDictionaryFileWithCompletionBlock:^{
+            self.currentDictionaryDownloadPercentage = 0;
+            self.currentDictionaryProcessingPercentage = 0;
+            
             [self setUserRequestState:SCHDictionaryUserDeclined];
             [self threadSafeUpdateDictionaryState:SCHDictionaryProcessingStateUserDeclined];
         }];
