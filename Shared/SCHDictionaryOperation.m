@@ -31,9 +31,12 @@
         self.completionBlock = nil;
     } else {
         notCancelledCompletionBlock = Block_copy(block);
+        
+        __block dispatch_block_t blockPtr = notCancelledCompletionBlock;
+        
         self.completionBlock = ^{
             if (![selfPtr isCancelled]) {
-                notCancelledCompletionBlock();
+                blockPtr();
             }
         };
     }
