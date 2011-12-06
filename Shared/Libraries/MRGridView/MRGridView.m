@@ -824,6 +824,7 @@ const CGFloat MRGridViewScrollOverlapHeight = 44.0;
 	[self rearrangeCells];
 }
 - (void)dealloc {
+    [gridView release], gridView = nil;
 	self.gridDataSource = nil;
 	self.gridDelegate = nil;
 	self.reusableCells = nil;
