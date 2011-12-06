@@ -352,7 +352,6 @@ static SCHProcessingManager *sharedManager = nil;
         for (SCHBookOperation *bookOperation in [self.webServiceOperationQueue operations]) {
             if ([bookOperation.identifier isEqual:bookIdentifier] == YES) {
                 [bookOperation cancel];
-                [bookOperation waitUntilFinished];
                 break;
             }
         }
@@ -360,7 +359,6 @@ static SCHProcessingManager *sharedManager = nil;
         for (SCHBookOperation *bookOperation in [self.networkOperationQueue operations]) {
             if ([bookOperation.identifier isEqual:bookIdentifier] == YES) {
                 [bookOperation cancel];
-                [bookOperation waitUntilFinished];                
                 break;
             }
         }
@@ -368,7 +366,6 @@ static SCHProcessingManager *sharedManager = nil;
         for (SCHBookOperation *bookOperation in [self.localProcessingQueue operations]) {
             if ([bookOperation.identifier isEqual:bookIdentifier] == YES) {
                 [bookOperation cancel];
-                [bookOperation waitUntilFinished];                
                 break;
             }
         }
