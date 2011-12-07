@@ -230,6 +230,9 @@ NSString * const SCHAnnotationSyncComponentCompletedProfileIDs = @"SCHAnnotation
 		}];
 
 		ret = [self updateProfileContentAnnotations];
+        if (ret == NO) {
+            [self endBackgroundTask];
+        }         
 	}
 	
 	return(ret);

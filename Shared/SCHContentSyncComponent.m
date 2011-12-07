@@ -72,6 +72,9 @@ NSString * const SCHContentSyncComponentDidFailNotification = @"SCHContentSyncCo
 		}];
 		
 		ret = [self updateUserContentItems];
+        if (ret == NO) {
+            [self endBackgroundTask];
+        }         
 	}
 	
 	return(ret);		

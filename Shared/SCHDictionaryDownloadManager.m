@@ -221,17 +221,20 @@ static SCHDictionaryDownloadManager *sharedManager = nil;
     BOOL backgroundSupported = [device respondsToSelector:@selector(isMultitaskingSupported)] && device.multitaskingSupported;
     if(backgroundSupported) {        
 		
+        // if there's already a background monitoring task, then return - the existing one will work
+        if (self.backgroundTask && self.backgroundTask != UIBackgroundTaskInvalid) {
+            return;
+        }
+        
 		if ((self.dictionaryDownloadQueue && [self.dictionaryDownloadQueue operationCount]) ) {
 			NSLog(@"Dictionary download needs more time - going into the background.");
 			
             self.backgroundTask = [[UIApplication sharedApplication] beginBackgroundTaskWithExpirationHandler:^{
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    if(self.backgroundTask != UIBackgroundTaskInvalid) {
-						NSLog(@"Ran out of time. Pausing queue.");
-                        [[UIApplication sharedApplication] endBackgroundTask:self.backgroundTask];
-                        self.backgroundTask = UIBackgroundTaskInvalid;
-                    }
-                });
+                if(self.backgroundTask != UIBackgroundTaskInvalid) {
+                    NSLog(@"Ran out of time. Pausing queue.");
+                    [[UIApplication sharedApplication] endBackgroundTask:self.backgroundTask];
+                    self.backgroundTask = UIBackgroundTaskInvalid;
+                }
             }];
 			
             dispatch_queue_t taskcompletion = dispatch_get_global_queue(
