@@ -15,4 +15,6 @@
 
 @property (assign, nonatomic) UIBackgroundTaskIdentifier backgroundTaskIdentifier;
 
+- (void)endBackgroundTask;
+
 @end

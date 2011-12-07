@@ -51,6 +51,10 @@ NSString * const SCHSettingsSyncComponentDidFailNotification = @"SCHSettingsSync
             }];				
 			ret = NO;
 		}
+
+        if (ret == NO) {
+            [self endBackgroundTask];
+        }         
 	}
 	
 	return(ret);	

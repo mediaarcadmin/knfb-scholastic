@@ -63,6 +63,10 @@ NSString * const SCHReadingStatsSyncComponentDidFailNotification = @"SCHReadingS
         } else {
             [super method:nil didCompleteWithResult:nil userInfo:nil];		
         }
+
+        if (ret == NO) {
+            [self endBackgroundTask];
+        }         
 	}
     [fetchRequest release], fetchRequest = nil;
     

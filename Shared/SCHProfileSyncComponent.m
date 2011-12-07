@@ -62,7 +62,10 @@ NSString * const SCHProfileSyncComponentDidFailNotification = @"SCHProfileSyncCo
 			self.backgroundTaskIdentifier = UIBackgroundTaskInvalid;
 		}];
 		
-		ret = [self updateProfiles];		
+		ret = [self updateProfiles];	
+        if (ret == NO) {
+            [self endBackgroundTask];
+        }         
 	}
 
 	return(ret);	

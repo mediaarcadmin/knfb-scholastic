@@ -78,6 +78,9 @@ NSString * const SCHBookshelfSyncComponentDidFailNotification = @"SCHBookshelfSy
 		}];
 		
 		ret = [self updateContentMetadataItems];
+        if (ret == NO) {
+            [self endBackgroundTask];
+        }         
 	}
 	
 	return(ret);		
