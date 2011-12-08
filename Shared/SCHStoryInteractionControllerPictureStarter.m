@@ -489,7 +489,7 @@ enum SCHToolType {
                               } else {
                                   self.savingLabel.text = NSLocalizedString(@"    Your picture has been saved to your photos.    ", @"");
                                   [UIView animateWithDuration:0.25
-                                                        delay:0.5
+                                                        delay:1.5
                                                       options:UIViewAnimationOptionAllowUserInteraction
                                                    animations:^{
                                                        self.savingLabel.alpha = 0;
