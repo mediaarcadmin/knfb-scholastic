@@ -221,7 +221,6 @@
 										<string key="NSFrame">{{20, 113}, {280, 48}}</string>
 										<reference key="NSSuperview" ref="46868495"/>
 										<reference key="NSWindow"/>
-										<reference key="NSNextKeyView"/>
 										<bool key="IBUIOpaque">NO</bool>
 										<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 										<int key="IBUIContentHorizontalAlignment">0</int>
@@ -291,7 +290,7 @@
 										<int key="IBUIContentHorizontalAlignment">0</int>
 										<int key="IBUIContentVerticalAlignment">0</int>
 										<string key="IBUITitleShadowOffset">{0, -1}</string>
-										<string key="IBUINormalTitle">Deregister this Device</string>
+										<string key="IBUINormalTitle">Deregister This Device</string>
 										<reference key="IBUIHighlightedTitleColor" ref="829918602"/>
 										<reference key="IBUINormalTitleColor" ref="311316863"/>
 										<reference key="IBUINormalTitleShadowColor" ref="886941877"/>
