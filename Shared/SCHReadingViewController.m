@@ -844,6 +844,13 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     [self.readingView dismissFollowAlongHighlighter];  
 //    self.audioBookPlayer = nil;
     [self pauseAudioPlayback];
+    
+    // if the user kills the app while we are performing background tasks the 
+    // DidEnterBackground notification is called again, so we disable it and 
+    // enable it in the foreground
+    [[NSNotificationCenter defaultCenter] removeObserver:self 
+                                                    name:UIApplicationDidEnterBackgroundNotification 
+                                                  object:nil];    
 }
 
 - (void)willTerminateNotification:(NSNotification *)notification
@@ -854,6 +861,11 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 
 - (void)willEnterForegroundNotification:(NSNotification *)notification
 {
+    [[NSNotificationCenter defaultCenter] addObserver:self 
+                                             selector:@selector(didEnterBackgroundNotification:) 
+                                                 name:UIApplicationDidEnterBackgroundNotification 
+                                               object:nil];	
+
     self.bookStatisticsReadingStartTime = [NSDate serverDate];
 }
 

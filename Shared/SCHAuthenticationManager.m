@@ -126,6 +126,7 @@ NSTimeInterval const kSCHAuthenticationManagerSecondsInAMinute = 60.0;
 - (void)dealloc 
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationDidEnterBackgroundNotification object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationWillEnterForegroundNotification object:nil];    
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationSignificantTimeChangeNotification object:nil];
     
     [aToken release], aToken = nil;
@@ -409,6 +410,30 @@ NSTimeInterval const kSCHAuthenticationManagerSecondsInAMinute = 60.0;
 {
     [self.renewTimer invalidate];
     self.renewTimer = nil;
+    
+    // if the user kills the app while we are performing background tasks the 
+    // DidEnterBackground notification is called again, so we disable it and 
+    // enable it in the foreground
+    [[NSNotificationCenter defaultCenter] removeObserver:self 
+                                                    name:UIApplicationDidEnterBackgroundNotification 
+                                                  object:nil];    
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self 
+                                             selector:@selector(applicationWillEnterForeground) 
+                                                 name:UIApplicationWillEnterForegroundNotification 
+                                               object:nil];			            
+}
+
+- (void)applicationWillEnterForeground
+{
+    [[NSNotificationCenter defaultCenter] addObserver:self 
+                                             selector:@selector(applicationDidEnterBackground:) 
+                                                 name:UIApplicationDidEnterBackgroundNotification 
+                                               object:nil];	
+    
+    [[NSNotificationCenter defaultCenter] removeObserver:self 
+                                                    name:UIApplicationWillEnterForegroundNotification 
+                                                  object:nil];    
 }
 
 - (void)applicationSignificantTimeChange:(NSNotification *)notification

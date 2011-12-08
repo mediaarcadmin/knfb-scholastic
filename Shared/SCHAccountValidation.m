@@ -58,6 +58,11 @@ NSInteger const kSCHAccountValidationCredentialsError = 200;
     [[NSNotificationCenter defaultCenter] removeObserver:self 
                                                     name:UIApplicationDidEnterBackgroundNotification 
                                                   object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self 
+                                                    name:UIApplicationWillEnterForegroundNotification 
+                                                  object:nil];
+    
+    
 
     [pToken release], pToken = nil;
     [pTokenRequested release], pTokenRequested = nil;
@@ -114,6 +119,30 @@ NSInteger const kSCHAccountValidationCredentialsError = 200;
 - (void)applicationDidEnterBackground
 {
     self.pToken = nil;
+    
+    // if the user kills the app while we are performing background tasks the 
+    // DidEnterBackground notification is called again, so we disable it and 
+    // enable it in the foreground
+    [[NSNotificationCenter defaultCenter] removeObserver:self 
+                                                    name:UIApplicationDidEnterBackgroundNotification 
+                                                  object:nil];    
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self 
+                                             selector:@selector(applicationWillEnterForeground) 
+                                                 name:UIApplicationWillEnterForegroundNotification 
+                                               object:nil];			            
+}
+
+- (void)applicationWillEnterForeground
+{
+    [[NSNotificationCenter defaultCenter] addObserver:self 
+                                             selector:@selector(applicationDidEnterBackground) 
+                                                 name:UIApplicationDidEnterBackgroundNotification 
+                                               object:nil];	
+    
+    [[NSNotificationCenter defaultCenter] removeObserver:self 
+                                                    name:UIApplicationWillEnterForegroundNotification 
+                                                  object:nil];    
 }
 
 #pragma mark - BITAPIProxy Delegate methods
