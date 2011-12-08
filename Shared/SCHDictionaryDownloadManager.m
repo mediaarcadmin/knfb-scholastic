@@ -1647,12 +1647,13 @@ static SCHDictionaryDownloadManager *sharedManager = nil;
         NSError *error = nil;
         NSFileManager *fileManager = [[[NSFileManager alloc] init] autorelease];
         NSString *dictionaryDir = [self dictionaryDirectory];
+                
+        BOOL successfullyMovedToTmp = [fileManager moveItemAtPath:dictionaryDir 
+                                                           toPath:dictionaryTmpDirectory error:&error];
         
-        NSString *dirToDelete = dictionaryTmpDirectory;
-        if (![fileManager moveItemAtPath:dictionaryDir 
-                                  toPath:dictionaryTmpDirectory error:&error]) {
+        if (!successfullyMovedToTmp) {
             NSLog(@"Failed to move dictionary %@ : %@", error, [error userInfo]);
-            dirToDelete = dictionaryDir;
+            [fileManager removeItemAtPath:dictionaryDir error:nil];
         }
         
         dispatch_async(dispatch_get_main_queue(), ^{
@@ -1663,7 +1664,9 @@ static SCHDictionaryDownloadManager *sharedManager = nil;
             }            
         });
         
-        [fileManager removeItemAtPath:dirToDelete error:nil];
+        if (successfullyMovedToTmp) {
+            [fileManager removeItemAtPath:dictionaryTmpDirectory error:nil];
+        }
     });
     
 }
