@@ -541,6 +541,17 @@ NSString * const kSCHProfileItemDRM_QUALIFIER = @"DRM_QUALIFIER";
     return(ret);
 }
 
+- (BOOL)storyInteractionsDisabled
+{
+    BOOL ret = NO;
+    
+    if (self.StoryInteractionEnabled != nil) {
+        ret = ![self.StoryInteractionEnabled boolValue];
+    }
+    
+    return ret;
+}
+
 #pragma mark - Encryption methods
 
 - (NSString *)MD5:(NSString *)string

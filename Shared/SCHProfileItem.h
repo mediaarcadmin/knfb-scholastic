@@ -69,6 +69,7 @@ typedef enum {
 - (void)setRawPassword:(NSString *)value;
 - (BOOL)hasPassword;
 - (BOOL)validatePasswordWith:(NSString *)withPassword;
+- (BOOL)storyInteractionsDisabled;
 
 @end
 

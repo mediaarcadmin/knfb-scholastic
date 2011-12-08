@@ -477,6 +477,10 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
         bookStoryInteractions = [[SCHBookStoryInteractions alloc] initWithXPSProvider:self.xpsProvider
                                                                        oddPagesOnLeft:YES
                                                                              delegate:self];
+        
+        if ([self.profile storyInteractionsDisabled]) {
+            bookStoryInteractions.storyInteractions = nil;
+        }
     }
     return bookStoryInteractions;
 }

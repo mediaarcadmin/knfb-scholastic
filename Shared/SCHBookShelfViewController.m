@@ -696,6 +696,7 @@ typedef enum
     cell.identifier = identifier;
     SCHAppContentProfileItem *appContentProfileItem = [self.profileItem appContentProfileItemForBookIdentifier:identifier];
     cell.isNewBook = [appContentProfileItem.IsNewBook boolValue];
+    cell.disabledForInteractions = [self.profileItem storyInteractionsDisabled];
     
     if ([identifier isEqual:[self.books lastObject]]) {
         cell.lastCell = YES;
@@ -765,7 +766,8 @@ typedef enum
 	[gridCell setIdentifier:[self.books objectAtIndex:index]];
     SCHAppContentProfileItem *appContentProfileItem = [self.profileItem appContentProfileItemForBookIdentifier:[self.books objectAtIndex:index]];
     gridCell.isNewBook = [appContentProfileItem.IsNewBook boolValue];
-    
+    gridCell.disabledForInteractions = [self.profileItem storyInteractionsDisabled];
+
     if (self.currentlyLoadingIndex == index) {
         gridCell.loading = YES;
     } else {

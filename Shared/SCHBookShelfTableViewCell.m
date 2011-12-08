@@ -51,6 +51,7 @@ static NSInteger const CELL_ACTIVITY_SPINNER = 203;
 @synthesize loading;
 @synthesize coalesceRefreshes;
 @synthesize needsRefresh;
+@synthesize disabledForInteractions;
 
 - (id) initWithCoder:(NSCoder *)aDecoder
 {
@@ -166,7 +167,23 @@ static NSInteger const CELL_ACTIVITY_SPINNER = 203;
     self.textLabel.backgroundColor = [UIColor clearColor];
     [attrString release];
     
-    switch (book.bookFeatures) {
+    SCHAppBookFeatures bookFeatures = book.bookFeatures;
+    
+    if (self.disabledForInteractions) {
+        switch (bookFeatures) {
+            case kSCHAppBookFeaturesNone:
+            case kSCHAppBookFeaturesSample:
+                break;
+            case kSCHAppBookFeaturesStoryInteractions:
+                bookFeatures = kSCHAppBookFeaturesNone;
+                break;
+            case kSCHAppBookFeaturesSampleWithStoryInteractions:
+                bookFeatures = kSCHAppBookFeaturesSample;
+                break;
+        }
+    }
+    
+    switch (bookFeatures) {
         case kSCHAppBookFeaturesNone:
         {
             self.sampleAndSIIndicatorIcon.image = nil;
@@ -266,6 +283,13 @@ static NSInteger const CELL_ACTIVITY_SPINNER = 203;
 {
     isNewBook = newIsNewBook;
     [self.bookCoverView setIsNewBook:newIsNewBook];
+    [self refreshCell];
+}
+
+- (void)setDisabledForInteractions:(BOOL)newDisabledForInteractions
+{
+    disabledForInteractions = newDisabledForInteractions;
+    self.bookCoverView.disabledForInteractions = newDisabledForInteractions;
     [self refreshCell];
 }
 

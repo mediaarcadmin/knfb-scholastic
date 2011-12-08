@@ -16,6 +16,7 @@
 @property (nonatomic, assign) BOOL isNewBook;
 @property (nonatomic, assign) BOOL lastCell;
 @property (nonatomic, assign) BOOL loading;
+@property (nonatomic, assign) BOOL disabledForInteractions;
 
 - (void)beginUpdates;
 - (void)endUpdates;
