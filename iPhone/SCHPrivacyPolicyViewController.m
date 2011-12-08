@@ -22,6 +22,20 @@
 
     [self.textView loadHTMLString:privacyText baseURL:[NSURL URLWithString:[NSString stringWithFormat:@"file:/%@//", resourcePath]]];
     [self.textView setScalesPageToFit:YES];
+    
+    [self.textView setDelegate:self];
+}
+
+- (BOOL)webView:(UIWebView *)inWeb shouldStartLoadWithRequest:(NSURLRequest *)inRequest navigationType:(UIWebViewNavigationType)inType 
+{
+    if (inType == UIWebViewNavigationTypeLinkClicked ) {
+        if ([[[inRequest URL] scheme] isEqualToString:@"http"]) {
+            [[UIApplication sharedApplication] openURL:[inRequest URL]];
+            return NO;
+        }
+    }
+    
+    return YES;
 }
 
 @end
