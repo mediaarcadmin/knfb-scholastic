@@ -475,7 +475,7 @@ static SCHProcessingManager *sharedManager = nil;
                 }];
                 
                 // add the operation to the network download queue unless it is a bundleURL
-                if ([book bookCoverURLIsBundleURL]) {
+                if ([book bookFileURLIsBundleURL]) {
                     [self.localProcessingQueue addOperation:bookDownloadOp];
                 } else {
                     [self.networkOperationQueue addOperation:bookDownloadOp];
