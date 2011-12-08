@@ -109,7 +109,6 @@
 						<string key="NSFrame">{{560, 980}, {200, 16}}</string>
 						<reference key="NSSuperview" ref="766721923"/>
 						<reference key="NSWindow"/>
-						<reference key="NSNextKeyView"/>
 						<object class="NSColor" key="IBUIBackgroundColor" id="1007080006">
 							<int key="NSColorSpace">3</int>
 							<bytes key="NSWhite">MCAwAA</bytes>
@@ -173,7 +172,7 @@
 							<object class="IBUILabel" id="453518469">
 								<reference key="NSNextResponder" ref="684671453"/>
 								<int key="NSvFlags">290</int>
-								<string key="NSFrameSize">{440, 26}</string>
+								<string key="NSFrame">{{0, 21}, {440, 26}}</string>
 								<reference key="NSSuperview" ref="684671453"/>
 								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="908116773"/>
@@ -183,7 +182,7 @@
 								<int key="IBUIContentMode">7</int>
 								<bool key="IBUIUserInteractionEnabled">NO</bool>
 								<string key="targetRuntimeIdentifier">IBIPadFramework</string>
-								<string key="IBUIText">Preview the eReading Experience</string>
+								<string key="IBUIText">Try Our Free Children's eReading App</string>
 								<object class="NSColor" key="IBUITextColor" id="414531536">
 									<int key="NSColorSpace">3</int>
 									<bytes key="NSWhite">MC4zMzMzMzMzMzMzAA</bytes>
@@ -192,6 +191,7 @@
 								<int key="IBUIBaselineAdjustment">1</int>
 								<bool key="IBUIAdjustsFontSizeToFit">NO</bool>
 								<float key="IBUIMinimumFontSize">10</float>
+								<int key="IBUITextAlignment">1</int>
 								<object class="IBUIFontDescription" key="IBUIFontDescription" id="369690178">
 									<string key="name">Arial-BoldMT</string>
 									<string key="family">Arial</string>
@@ -207,23 +207,23 @@
 							<object class="IBUILabel" id="908116773">
 								<reference key="NSNextResponder" ref="684671453"/>
 								<int key="NSvFlags">290</int>
-								<string key="NSFrame">{{0, 26}, {440, 52}}</string>
+								<string key="NSFrame">{{0, 50}, {440, 31}}</string>
 								<reference key="NSSuperview" ref="684671453"/>
 								<reference key="NSWindow"/>
-								<reference key="NSNextKeyView"/>
 								<reference key="IBUIBackgroundColor" ref="1007080006"/>
 								<bool key="IBUIOpaque">NO</bool>
 								<bool key="IBUIClipsSubviews">YES</bool>
 								<int key="IBUIContentMode">7</int>
 								<bool key="IBUIUserInteractionEnabled">NO</bool>
 								<string key="targetRuntimeIdentifier">IBIPadFramework</string>
-								<string key="IBUIText">Take a tour of everything the Scholastic eReader has to offer now—without creating an account.</string>
+								<string key="IBUIText">Comes with five free eBooks!</string>
 								<reference key="IBUITextColor" ref="414531536"/>
 								<nil key="IBUIHighlightedColor"/>
 								<int key="IBUIBaselineAdjustment">1</int>
 								<bool key="IBUIAdjustsFontSizeToFit">NO</bool>
 								<float key="IBUIMinimumFontSize">10</float>
 								<int key="IBUINumberOfLines">0</int>
+								<int key="IBUITextAlignment">1</int>
 								<object class="IBUIFontDescription" key="IBUIFontDescription" id="275378541">
 									<string key="name">Helvetica</string>
 									<string key="family">Helvetica</string>
@@ -297,6 +297,7 @@
 								<int key="IBUIBaselineAdjustment">1</int>
 								<bool key="IBUIAdjustsFontSizeToFit">NO</bool>
 								<float key="IBUIMinimumFontSize">10</float>
+								<int key="IBUITextAlignment">1</int>
 								<reference key="IBUIFontDescription" ref="369690178"/>
 								<reference key="IBUIFont" ref="527153385"/>
 							</object>
@@ -306,7 +307,6 @@
 								<string key="NSFrame">{{0, 60}, {440, 52}}</string>
 								<reference key="NSSuperview" ref="617002111"/>
 								<reference key="NSWindow"/>
-								<reference key="NSNextKeyView"/>
 								<reference key="IBUIBackgroundColor" ref="1007080006"/>
 								<bool key="IBUIOpaque">NO</bool>
 								<bool key="IBUIClipsSubviews">YES</bool>
@@ -320,6 +320,7 @@
 								<bool key="IBUIAdjustsFontSizeToFit">NO</bool>
 								<float key="IBUIMinimumFontSize">10</float>
 								<int key="IBUINumberOfLines">0</int>
+								<int key="IBUITextAlignment">1</int>
 								<reference key="IBUIFontDescription" ref="275378541"/>
 								<reference key="IBUIFont" ref="12554104"/>
 							</object>
@@ -549,8 +550,8 @@
 						<object class="NSMutableArray" key="children">
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<reference ref="188485885"/>
-							<reference ref="513097889"/>
 							<reference ref="431352074"/>
+							<reference ref="513097889"/>
 						</object>
 						<reference key="parent" ref="771371832"/>
 					</object>
