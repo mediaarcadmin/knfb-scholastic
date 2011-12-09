@@ -15,7 +15,15 @@ enum {
     kPieceMargin = 5,
 };
 
+@interface SCHStoryInteractionControllerJigsaw_iPad ()
+
+@property (nonatomic, assign) BOOL isPlayingStartDrag;
+
+@end
+
 @implementation SCHStoryInteractionControllerJigsaw_iPad
+
+@synthesize isPlayingStartDrag;
 
 - (CGSize)iPadContentsSizeForViewAtIndex:(NSInteger)viewIndex forOrientation:(UIInterfaceOrientation)orientation
 {
@@ -155,7 +163,16 @@ enum {
 
 - (void)draggableViewDidStartDrag:(SCHStoryInteractionDraggableView *)draggableView
 {
-    [self enqueueAudioWithPath:@"sfx_pickup.mp3" fromBundle:YES];
+    if (self.isPlayingStartDrag == NO) {
+        self.isPlayingStartDrag = YES;
+        [self enqueueAudioWithPath:@"sfx_pickup.mp3" 
+                        fromBundle:YES
+                        startDelay:0
+            synchronizedStartBlock:nil
+              synchronizedEndBlock:^{
+                  self.isPlayingStartDrag = NO;
+              }];
+    }
 }
 
 - (BOOL)draggableView:(SCHStoryInteractionDraggableView *)draggableView shouldSnapFromPosition:(CGPoint)position toPosition:(CGPoint *)snapPosition
