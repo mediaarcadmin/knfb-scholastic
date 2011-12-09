@@ -51,6 +51,7 @@
 @synthesize isNewBadge;
 @synthesize errorBadge;
 @synthesize isNewBook;
+@synthesize disabledForInteractions;
 @synthesize coalesceRefreshes;
 @synthesize needsRefresh;
 @synthesize showingPlaceholder;
@@ -597,7 +598,23 @@
         // whether to actually do the resizing work
         BOOL doSizing = YES;
         
-        switch (book.bookFeatures) {
+        SCHAppBookFeatures bookFeatures = book.bookFeatures;
+        
+        if (self.disabledForInteractions) {
+            switch (bookFeatures) {
+                case kSCHAppBookFeaturesNone:
+                case kSCHAppBookFeaturesSample:
+                    break;
+                case kSCHAppBookFeaturesStoryInteractions:
+                    bookFeatures = kSCHAppBookFeaturesNone;
+                    break;
+                case kSCHAppBookFeaturesSampleWithStoryInteractions:
+                    bookFeatures = kSCHAppBookFeaturesSample;
+                    break;
+            }
+        }
+        
+        switch (bookFeatures) {
             case kSCHAppBookFeaturesNone:
             {
                 self.featureTab.image = nil;

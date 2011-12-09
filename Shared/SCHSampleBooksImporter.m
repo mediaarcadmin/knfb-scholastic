@@ -398,10 +398,22 @@ typedef enum {
             });
         }
 	}
+    
+    // if the user kills the app while we are performing background tasks the 
+    // DidEnterBackground notification is called again, so we disable it and 
+    // enable it in the foreground
+    [[NSNotificationCenter defaultCenter] removeObserver:self 
+                                                    name:UIApplicationDidEnterBackgroundNotification 
+                                                  object:nil];        
 }
 
 - (void)enterForeground:(NSNotification *)note
 {
+    [[NSNotificationCenter defaultCenter] addObserver:self 
+                                             selector:@selector(enterBackground:) 
+                                                 name:UIApplicationDidEnterBackgroundNotification 
+                                               object:nil];	
+    
     if(self.backgroundTask != UIBackgroundTaskInvalid) {
 		[[UIApplication sharedApplication] endBackgroundTask:self.backgroundTask];
 		self.backgroundTask = UIBackgroundTaskInvalid;

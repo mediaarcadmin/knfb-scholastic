@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "SCHBaseTextViewController.h"
 
-@interface SCHPrivacyPolicyViewController : SCHBaseTextViewController {}
+@interface SCHPrivacyPolicyViewController : SCHBaseTextViewController <UIWebViewDelegate> {}
 
 @end
 

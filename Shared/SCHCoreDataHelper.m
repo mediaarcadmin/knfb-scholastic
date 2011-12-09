@@ -14,6 +14,7 @@
 #import "SCHAppStateManager.h"
 #import "NSNumber+ObjectTypes.h"
 #import "SCHSyncManager.h"
+#import "SCHBookManager.h"
 
 // Constants
 NSString * const SCHCoreDataHelperManagedObjectContextDidChangeNotification = @"SCHCoreDataHelperManagedObjectContextDidChangeNotification";
@@ -91,14 +92,15 @@ static NSString * const kSCHCoreDataHelperDictionaryStoreName = @"Scholastic_Dic
     NSPersistentStore *currentDictionaryStore = [self currentDictionaryPersistentStore];
     NSError *error = nil;
     
-    [[self managedObjectContext] reset];
-    [[self persistentStoreCoordinator] removePersistentStore:currentDictionaryStore 
-                                                       error:&error];  
+    [[SCHBookManager sharedBookManager] clearBookIdentifierCache];
+    [[self managedObjectContext] save:&error];
+    
+    NSPersistentStoreCoordinator *coordinator = [self persistentStoreCoordinator];
+    
+    [coordinator removePersistentStore:currentDictionaryStore error:&error];  
     [self removeStoreAtURL:[self storeURL:kSCHCoreDataHelperDictionaryStoreName]];
     
-    self.managedObjectContext = nil;
-    
-    if ([[self persistentStoreCoordinator] addPersistentStoreWithType:NSSQLiteStoreType 
+    if ([coordinator addPersistentStoreWithType:NSSQLiteStoreType 
                                                         configuration:kSCHCoreDataHelperDictionaryStoreConfiguration 
                                                                   URL:[self storeURL:kSCHCoreDataHelperDictionaryStoreName] 
                                                               options:nil 
@@ -106,11 +108,6 @@ static NSString * const kSCHCoreDataHelperDictionaryStoreName = @"Scholastic_Dic
         NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
         abort();
     }
-    
-    [[NSNotificationCenter defaultCenter] postNotificationName:SCHCoreDataHelperManagedObjectContextDidChangeNotification 
-                                                        object:self 
-                                                      userInfo:[NSDictionary dictionaryWithObject:[self managedObjectContext] 
-                                                                                           forKey:SCHCoreDataHelperManagedObjectContext]];
 }
 
 #pragma mark - File methods

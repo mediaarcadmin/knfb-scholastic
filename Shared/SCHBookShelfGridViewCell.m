@@ -22,6 +22,7 @@
 @synthesize identifier;
 @synthesize isNewBook;
 @synthesize loading;
+@synthesize disabledForInteractions;
 
 #pragma mark - Object lifecycle
 
@@ -90,6 +91,12 @@
 {
     isNewBook = newIsNewBook;
     self.bookCoverView.isNewBook = newIsNewBook;
+}
+
+- (void)setDisabledForInteractions:(BOOL)newDisabledForInteractions
+{
+    disabledForInteractions = newDisabledForInteractions;
+    self.bookCoverView.disabledForInteractions = newDisabledForInteractions;
 }
 
 - (void)setLoading:(BOOL)newLoading

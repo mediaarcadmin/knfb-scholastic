@@ -161,7 +161,17 @@ NSString * const kSCHAppBookFilenameSeparator = @"-";
 
 - (SCHBookIdentifier *)bookIdentifier
 {
-    return(self.ContentMetadataItem.bookIdentifier);
+    SCHBookIdentifier *ret = nil;
+    
+    if (self.ContentMetadataItem) {
+        ret = self.ContentMetadataItem.bookIdentifier;
+    }
+    
+    if (!ret) {
+        ret = [SCHBookIdentifier invalidBookIdentifier];
+    }
+    
+    return ret;
 }
 
 - (BOOL)bookCoverURLIsValid

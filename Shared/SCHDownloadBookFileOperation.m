@@ -28,6 +28,7 @@
 
 - (NSString *)fullPathToBundledFile:(NSString *)fileName;
 - (void)completedDownload;
+- (void)failedDownload;
 - (NSData *)lastTwoBytes;
 - (NSData *)jpegEOF;
 - (void)cancelOperationAndSuboperations;
@@ -61,9 +62,7 @@
     
     if (self.identifier == nil) {
         NSLog(@"WARNING: tried to download a book without setting the ISBN");
-        [self setProcessingState:SCHBookProcessingStateDownloadFailed];
-        [self setIsProcessing:NO];                
-        [self endOperation];
+        [self failedDownload];
         return;
     }
     
@@ -88,22 +87,26 @@
         
         if (self.localPath == nil || bookFileURL == nil || [bookFileURL compare:@""] == NSOrderedSame) {
             NSLog(@"WARNING: problem with SCHAppBook (ISBN: %@ localPath: %@ bookFileURL: %@", self.identifier, self.localPath, bookFileURL);
-            [self setProcessingState:SCHBookProcessingStateError];
-            [self setIsProcessing:NO];                                
-            [self endOperation];
+            [self failedDownload];
             [bookFileURL release];            
             return;
         }
         
         if (bookFileURLIsFileURL) {
-            [fileManager copyItemAtPath:[self fullPathToBundledFile:bookFileURL]
-                                                    toPath:self.localPath 
-                                                     error:&error];        
-            if (error != nil) {
+            if ([fileManager fileExistsAtPath:self.localPath]) {
+                if (![fileManager removeItemAtPath:self.localPath error:&error]) {
+                    NSLog(@"Unable to remove existing item at path: %@ %@", self.localPath, error);
+                }
+            }
+            
+            if (![fileManager copyItemAtPath:[self fullPathToBundledFile:bookFileURL]
+                                      toPath:self.localPath 
+                                       error:&error]) {   
                 NSLog(@"Error copying XPS file from bundle: %@, %@", error, [error userInfo]);
-            } 
-                        
-            [self completedDownload];	
+                [self failedDownload];
+            } else {
+                [self completedDownload];
+            }
             [bookFileURL release];            
             return;
             
@@ -136,14 +139,20 @@
         }
 
         if (coverURLIsFileURL) {
-            [fileManager copyItemAtPath:[self fullPathToBundledFile:coverURL]
-                                                    toPath:self.localPath 
-                                                     error:&error];        
-            if (error != nil) {
-                NSLog(@"Error copying cover file from bundle: %@, %@", error, [error userInfo]);
-            } 
+            if ([fileManager fileExistsAtPath:self.localPath]) {
+                if (![fileManager removeItemAtPath:self.localPath error:&error]) {
+                    NSLog(@"Unable to remove existing item at path: %@ %@", self.localPath, error);
+                }
+            }
             
-            [self completedDownload];
+            if (![fileManager copyItemAtPath:[self fullPathToBundledFile:coverURL]
+                                                    toPath:self.localPath 
+                                       error:&error]) {     
+                NSLog(@"Error copying cover file from bundle: %@, %@", error, [error userInfo]);
+                [self failedDownload];
+            } else {
+                [self completedDownload];
+            }
             [bookDirectory release];
             [contentIdentifier release];
             [coverURL release];
@@ -176,8 +185,7 @@
             NSError *error = nil;
 			if (![fileManager removeItemAtPath:localPath error:&error]) {
 				NSLog(@"Error when deleting an existing file. Stopping. (%@)", [error localizedDescription]);
-                [self setIsProcessing:NO];                
-                [self endOperation];
+                [self failedDownload];
 				return;
 			}
 		} else {
@@ -185,8 +193,7 @@
 			NSDictionary *attributes = [fileManager attributesOfItemAtPath:localPath error:&error];
             if (!attributes) {
 				NSLog(@"Error when reading file attributes. Stopping. (%@)", [error localizedDescription]);
-                [self setIsProcessing:NO];                
-                [self endOperation];
+                [self failedDownload];
 				return;
 			}
             currentFilesize = [attributes fileSize];
@@ -401,6 +408,13 @@
 
     self.downloadOperation = nil;
     [self setIsProcessing:NO];        
+    [self endOperation];
+}
+
+- (void)failedDownload
+{
+    [self setProcessingState:SCHBookProcessingStateDownloadFailed];
+    [self setIsProcessing:NO];                                
     [self endOperation];
 }
 

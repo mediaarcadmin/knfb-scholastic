@@ -255,18 +255,26 @@
             break;
         }
         case SCHDictionaryProcessingStateError:
+        case SCHDictionaryProcessingStateUnexpectedConnectivityFailure:
         {
             self.bottomLabel.text = NSLocalizedString(@"There was an error downloading the Scholastic dictionary. Please try again later.", nil);
             [self.activityIndicator stopAnimating];
             self.progressBar.hidden = YES;
             break;
         }
+        case SCHDictionaryProcessingStateDeleting:
+        {
+            self.bottomLabel.text = NSLocalizedString(@"The dictionary is being deleted. If you wish to re-download the dictionary, go to parent tools on the eReader sign-in screen.", nil);
+            [self.activityIndicator stopAnimating];
+            self.progressBar.hidden = YES;
+            break;
+        }   
         case SCHDictionaryProcessingStateNeedsUnzip:
         {
             [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(processingPercentageUpdate:) name:kSCHDictionaryProcessingPercentageUpdate object:nil];
             self.bottomLabel.text = NSLocalizedString(@"The dictionary will be ready soon. Please wait.", nil);
             [self.activityIndicator stopAnimating];
-            self.progressBar.progress = 0.8;
+            self.progressBar.progress = 0.9;
             self.progressBar.hidden = NO;
             break;
         }
@@ -275,7 +283,7 @@
             [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(processingPercentageUpdate:) name:kSCHDictionaryProcessingPercentageUpdate object:nil];
             self.bottomLabel.text = NSLocalizedString(@"The dictionary will be ready soon. Please wait.", nil);
             [self.activityIndicator stopAnimating];
-            self.progressBar.progress = 0.9;
+            self.progressBar.progress = 0.95;
             self.progressBar.hidden = NO;
             break;
         }
@@ -312,9 +320,7 @@
             [self loadWord];
             break;
         }
-        default:
-            break;
-    }
+    }    
 }
 
 - (void)downloadPercentageUpdate:(NSNotification *)note {
