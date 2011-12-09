@@ -300,6 +300,7 @@ NSString * const SCHAnnotationSyncComponentCompletedProfileIDs = @"SCHAnnotation
         }    
     } else {
         [super method:method didCompleteWithResult:nil userInfo:nil];        
+        [self.savedAnnotations removeAllObjects];        
     }
 }
 
@@ -451,6 +452,7 @@ NSString * const SCHAnnotationSyncComponentCompletedProfileIDs = @"SCHAnnotation
     BOOL shouldSyncNotes = NO;
 	
     NSNumber *profileID = [self currentProfile];
+    
     if (profileID != nil) {
         NSArray *books = [self.annotations objectForKey:profileID];
         
