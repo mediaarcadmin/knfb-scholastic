@@ -90,7 +90,7 @@ static NSTimeInterval const kSCHBookShelfViewControllerTopTenRefreshTime = -600.
     
     CGRect topTenFrame = CGRectZero;
     
-    if ([[SCHAppStateManager sharedAppStateManager] canAuthenticate] == YES) {
+    if (!TOP_TEN_DISABLED && ([[SCHAppStateManager sharedAppStateManager] canAuthenticate] == YES)) {
         topTenFrame = CGRectMake(0, 3, 120, 30);
         self.topTenPicksButton = [SCHThemeButton buttonWithType:UIButtonTypeCustom];
         [self.topTenPicksButton setFrame:topTenFrame];
