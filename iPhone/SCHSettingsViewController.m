@@ -354,7 +354,7 @@ extern NSString * const kSCHUserDefaultsSpaceSaverModeSetOffNotification;
     if ([MFMailComposeViewController canSendMail]) {
         MFMailComposeViewController *mfViewController = [[MFMailComposeViewController alloc] init];
         mfViewController.mailComposeDelegate = self;
-        [mfViewController setToRecipients:[NSArray arrayWithObject:@"support@scholastic.com"]];
+        [mfViewController setToRecipients:[NSArray arrayWithObject:@"ebooks@scholastic.com"]];
         [mfViewController setSubject:[NSString stringWithFormat:@"Scholastic v%@ Support Request", [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"]]];
         [self presentModalViewController:mfViewController animated:YES];
         [mfViewController release];

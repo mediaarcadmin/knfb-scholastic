@@ -367,7 +367,7 @@
 											<object class="IBUIButton" id="603281047">
 												<reference key="NSNextResponder" ref="889947027"/>
 												<int key="NSvFlags">289</int>
-												<string key="NSFrame">{{126, 22}, {152, 25}}</string>
+												<string key="NSFrame">{{123, 22}, {152, 25}}</string>
 												<reference key="NSSuperview" ref="889947027"/>
 												<reference key="NSWindow"/>
 												<reference key="NSNextKeyView" ref="832405901"/>
@@ -377,7 +377,7 @@
 												<int key="IBUIContentVerticalAlignment">0</int>
 												<bool key="IBUIAdjustsImageWhenHighlighted">NO</bool>
 												<bool key="IBUIAdjustsImageWhenDisabled">NO</bool>
-												<string key="IBUINormalTitle">support@scholastic.com</string>
+												<string key="IBUINormalTitle">ebooks@scholastic.com</string>
 												<object class="NSColor" key="IBUIHighlightedTitleColor">
 													<int key="NSColorSpace">1</int>
 													<bytes key="NSRGB">MC4wNzExMTU4NTE0IDAuNjM2MjA5NDI4MyAxAA</bytes>
@@ -944,7 +944,7 @@
 					<real value="3"/>
 					<string>SCHUnderlinedButton</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
-					<real value="3"/>
+					<real value="0.0"/>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>SCHCustomToolbar</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
