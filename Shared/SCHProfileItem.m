@@ -491,10 +491,8 @@ NSString * const kSCHProfileItemDRM_QUALIFIER = @"DRM_QUALIFIER";
         
     if ([[self.FirstName stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]] length] > 0) {
         ret = self.FirstName;
-        //ret = [NSString stringWithFormat:@"%@%@", self.FirstName, 
-        //       (shortName == NO ? @"" : NSLocalizedString(@"'s Books", @""))];
     } else {
-        ret = (shortName == NO ? @"" : NSLocalizedString(@"Books", @""));
+        ret = (shortName == NO ? @"" : NSLocalizedString(@"eBooks", @""));
     }
     
     return(ret);

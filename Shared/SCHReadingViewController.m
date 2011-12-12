@@ -885,7 +885,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
             NSString *localizedMessage = [NSString stringWithFormat:
                                           NSLocalizedString(@"%@ has been removed", nil), book.Title];
             LambdaAlert *alert = [[LambdaAlert alloc]
-                                  initWithTitle:NSLocalizedString(@"Book Removed", @"Book Removed") 
+                                  initWithTitle:NSLocalizedString(@"eBook Removed", @"eBook Removed") 
                                   message:localizedMessage];
             [alert addButtonWithTitle:NSLocalizedString(@"OK", @"OK") block:^{}];
             [alert show];

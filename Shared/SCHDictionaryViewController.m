@@ -224,7 +224,7 @@
         self.progressBar.hidden = YES;
         return;
     } else if (!connectionIdle) {
-        self.bottomLabel.text = NSLocalizedString(@"Books are currently downloading. You can wait for them to finish, or look up your word later.", nil);
+        self.bottomLabel.text = NSLocalizedString(@"eBooks are currently downloading. You can wait for them to finish, or look up your word later.", nil);
         [self.activityIndicator startAnimating];
         self.progressBar.hidden = YES;
         return;
