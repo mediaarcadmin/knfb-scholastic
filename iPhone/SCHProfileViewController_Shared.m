@@ -467,8 +467,8 @@
 
 - (SCHBookShelfViewController *)newBookShelfViewController
 {
-    // must override
-    abort();
+    NSLog(@"WARNING: must override newBookShelfViewController");
+    return nil;
 }
 
 - (void)pushSettingsController

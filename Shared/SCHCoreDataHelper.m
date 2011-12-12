@@ -28,11 +28,13 @@ static NSString * const kSCHCoreDataHelperDictionaryStoreName = @"Scholastic_Dic
 
 @interface SCHCoreDataHelper ()
 
+@property (nonatomic, retain) NSPersistentStoreCoordinator *persistentStoreCoordinator;
 @property (nonatomic, retain) NSManagedObjectContext *managedObjectContext;
 
-- (void)addPersistentStore:(NSPersistentStoreCoordinator *)aPersistentStoreCoordinator 
+- (BOOL)addPersistentStore:(NSPersistentStoreCoordinator *)aPersistentStoreCoordinator 
              configuration:(NSString *)configuration 
-                       url:(NSURL *)url;
+                       url:(NSURL *)url
+                     error:(NSError **)errorPtr;
 - (NSURL *)storeURL:(NSString *)storeName;
 - (NSPersistentStore *)currentMainPersistentStore;
 - (NSPersistentStore *)currentDictionaryPersistentStore;
@@ -78,7 +80,7 @@ static NSString * const kSCHCoreDataHelperDictionaryStoreName = @"Scholastic_Dic
                                                               options:nil 
                                                                 error:&error] == nil){   
         NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
-        abort();
+        return;
     }
     
     [[NSNotificationCenter defaultCenter] postNotificationName:SCHCoreDataHelperManagedObjectContextDidChangeNotification 
@@ -106,38 +108,12 @@ static NSString * const kSCHCoreDataHelperDictionaryStoreName = @"Scholastic_Dic
                                                               options:nil 
                                                                 error:&error] == nil){   
         NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
-        abort();
+        return;
     }
 }
 
 #pragma mark - File methods
-             
-//- (BOOL)storeExists:(NSString *)storeName
-//{
-//    NSURL *applicationSupportDocumentsDirectory = [[[NSFileManager defaultManager] URLsForDirectory:NSApplicationSupportDirectory inDomains:NSUserDomainMask] lastObject];
-//    NSURL *destinationSampleStoreURL = [applicationSupportDocumentsDirectory URLByAppendingPathComponent:storeName];    
-//    NSString *destinationSampleStorePath = [destinationSampleStoreURL path];
-//    
-//    return([[NSFileManager defaultManager] fileExistsAtPath:destinationSampleStorePath]);
-//}
-//
-//- (void)setupSampleStore
-//{  
-//    if ([self storeExists:kSCHCoreDataHelperSampleStoreName] == NO) {
-//        NSString *sourceSampleStorePath = [[[NSBundle mainBundle] bundlePath] stringByAppendingPathComponent:kSCHCoreDataHelperStandardStoreName];
-//        NSURL *applicationSupportDocumentsDirectory = [[[NSFileManager defaultManager] URLsForDirectory:NSApplicationSupportDirectory inDomains:NSUserDomainMask] lastObject];
-//        NSURL *destinationSampleStoreURL = [applicationSupportDocumentsDirectory URLByAppendingPathComponent:kSCHCoreDataHelperSampleStoreName];    
-//        NSString *destinationSampleStorePath = [destinationSampleStoreURL path];
-//        
-//        NSError *error = nil;
-//        if ([[NSFileManager defaultManager] copyItemAtPath:sourceSampleStorePath 
-//                                                    toPath:destinationSampleStorePath
-//                                                     error:&error] == NO) {
-//            NSLog(@"Error copying Sample Data Store: %@, %@", error, [error userInfo]);
-//        }            
-//    }
-//}
-//             
+                        
 - (void)removeStoreAtURL:(NSURL *)storeURL
 {
     NSString *storePath = [storeURL path];
@@ -210,77 +186,88 @@ static NSString * const kSCHCoreDataHelperDictionaryStoreName = @"Scholastic_Dic
  Returns the persistent store coordinator for the application.
  If the coordinator doesn't already exist, it is created and the application's store added to it.
  */
-- (NSPersistentStoreCoordinator *)persistentStoreCoordinator 
+- (NSPersistentStoreCoordinator *)persistentStoreCoordinatorWithError:(NSError **)errorPtr
 {    
     if (persistentStoreCoordinator != nil) {
         return(persistentStoreCoordinator);
     }
 	    
     persistentStoreCoordinator = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel:[self managedObjectModel]];
-    [self addPersistentStore:persistentStoreCoordinator 
-               configuration:kSCHCoreDataHelperMainStoreConfiguration 
-                         url:[self storeURL:kSCHCoreDataHelperStandardStoreName]];
-    [self addPersistentStore:persistentStoreCoordinator 
-               configuration:kSCHCoreDataHelperDictionaryStoreConfiguration 
-                         url:[self storeURL:kSCHCoreDataHelperDictionaryStoreName]];
-        
-    // setup the appState
-    SCHAppStateManager *appStateManager = [SCHAppStateManager sharedAppStateManager];
-    appStateManager.managedObjectContext = self.managedObjectContext;
     
-    return(persistentStoreCoordinator);
+    BOOL success = NO;
+    
+    if ([self addPersistentStore:persistentStoreCoordinator 
+                              configuration:kSCHCoreDataHelperMainStoreConfiguration 
+                                                 url:[self storeURL:kSCHCoreDataHelperStandardStoreName]
+                           error:errorPtr]) {
+        if ([self addPersistentStore:persistentStoreCoordinator 
+                       configuration:kSCHCoreDataHelperDictionaryStoreConfiguration 
+                                 url:[self storeURL:kSCHCoreDataHelperDictionaryStoreName]
+                               error:errorPtr]) {
+            success = YES;
+        }
+    }
+
+    if (success) {
+        // setup the appState
+        SCHAppStateManager *appStateManager = [SCHAppStateManager sharedAppStateManager];
+        appStateManager.managedObjectContext = self.managedObjectContext;
+    } else {
+        [persistentStoreCoordinator release], persistentStoreCoordinator = nil;
+    }
+    
+    return persistentStoreCoordinator;
 }
 
-- (void)addPersistentStore:(NSPersistentStoreCoordinator *)aPersistentStoreCoordinator 
+- (BOOL)addPersistentStore:(NSPersistentStoreCoordinator *)aPersistentStoreCoordinator 
              configuration:(NSString *)configuration 
                        url:(NSURL *)url
+                     error:(NSError **)errorPtr;
 {
-    NSError *error = nil;
     NSDictionary *options = [NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithBool:YES], NSMigratePersistentStoresAutomaticallyOption,
                              [NSNumber numberWithBool:YES], NSInferMappingModelAutomaticallyOption, nil];
     
-    if ([aPersistentStoreCoordinator addPersistentStoreWithType:NSSQLiteStoreType configuration:configuration URL:url options:options error:&error] == nil) {
-        /*
-         Replace this implementation with code to handle the error appropriately.
-         
-         abort() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development. If it is not possible to recover from the error, display an alert panel that instructs the user to quit the application by pressing the Home button.
-         
-         Typical reasons for an error here include:
-         * The persistent store is not accessible;
-         * The schema for the persistent store is incompatible with current managed object model.
-         Check the error message to determine what the actual problem was.
-         
-         
-         If the persistent store is not accessible, there is typically something wrong with the file path. Often, a file URL is pointing into the application's resources directory instead of a writeable directory.
-         
-         If you encounter schema incompatibility errors during development, you can reduce their frequency by:
-         * Simply deleting the existing store:
-         [[NSFileManager defaultManager] removeItemAtURL:storeURL error:nil]
-         
-         * Performing automatic lightweight migration by passing the following dictionary as the options parameter: 
-         [NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithBool:YES],NSMigratePersistentStoresAutomaticallyOption, [NSNumber numberWithBool:YES], NSInferMappingModelAutomaticallyOption, nil];
-         
-         Lightweight migration will only work for a limited set of schema changes; consult "Core Data Model Versioning and Data Migration Programming Guide" for details.
-         
-         */
-        
-        BOOL bailOut = NO;
-        
-        if ([error code] == NSPersistentStoreIncompatibleVersionHashError) {
-            NSLog(@"Your %@ Core Data store is incompatible, we're gonna replace the store for you. You may need to re-populate it.", configuration);
-            [[NSFileManager defaultManager] removeItemAtURL:url error:nil];
-            if ([aPersistentStoreCoordinator addPersistentStoreWithType:NSSQLiteStoreType configuration:configuration URL:url options:options error:&error] == nil) {        
+        if ([aPersistentStoreCoordinator addPersistentStoreWithType:NSSQLiteStoreType configuration:configuration URL:url options:options error:errorPtr] == nil) {
+            /*
+             Replace this implementation with code to handle the error appropriately.
+             
+             Typical reasons for an error here include:
+             * The persistent store is not accessible;
+             * The schema for the persistent store is incompatible with current managed object model.
+             Check the error message to determine what the actual problem was.
+             
+             If the persistent store is not accessible, there is typically something wrong with the file path. Often, a file URL is pointing into the application's resources directory instead of a writeable directory.
+             
+             If you encounter schema incompatibility errors during development, you can reduce their frequency by:
+             * Simply deleting the existing store:
+             [[NSFileManager defaultManager] removeItemAtURL:storeURL error:nil]
+             
+             * Performing automatic lightweight migration by passing the following dictionary as the options parameter: 
+             [NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithBool:YES],NSMigratePersistentStoresAutomaticallyOption, [NSNumber numberWithBool:YES], NSInferMappingModelAutomaticallyOption, nil];
+             
+             Lightweight migration will only work for a limited set of schema changes; consult "Core Data Model Versioning and Data Migration Programming Guide" for details.
+             
+             */
+            
+            BOOL bailOut = NO;
+            
+            if ([*errorPtr code] == NSPersistentStoreIncompatibleVersionHashError) {
+                NSLog(@"Your %@ Core Data store is incompatible, we're gonna replace the store for you. You may need to re-populate it.", configuration);
+                [[NSFileManager defaultManager] removeItemAtURL:url error:nil];
+                if ([aPersistentStoreCoordinator addPersistentStoreWithType:NSSQLiteStoreType configuration:configuration URL:url options:options error:errorPtr] == nil) {        
+                    bailOut = YES;
+                }
+            } else {
                 bailOut = YES;
             }
-        } else {
-            bailOut = YES;
+            
+            if (bailOut == YES) {
+                NSLog(@"Unresolved error %@, %@", *errorPtr, [*errorPtr userInfo]);
+                return NO;
+            }
         }
-        
-        if (bailOut == YES) {
-            NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
-            abort();
-        }
-    }
+    
+    return YES;
 }
 
 - (void)saveContext 
@@ -289,73 +276,18 @@ static NSString * const kSCHCoreDataHelperDictionaryStoreName = @"Scholastic_Dic
     if (self.managedObjectContext != nil) {
         if ([self.managedObjectContext hasChanges] && 
             ![self.managedObjectContext save:&error]) {
-            /*
-             Replace this implementation with code to handle the error appropriately.
-             
-             abort() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development. If it is not possible to recover from the error, display an alert panel that instructs the user to quit the application by pressing the Home button.
-             */
             NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
-            abort();
-        } 
+        }
     }
 }    
 
 - (NSURL *)storeURL:(NSString *)storeName
 {
     NSURL *applicationSupportDocumentsDirectory = [[[NSFileManager defaultManager] URLsForDirectory:NSApplicationSupportDirectory inDomains:NSUserDomainMask] lastObject];
+    
     return [applicationSupportDocumentsDirectory URLByAppendingPathComponent:storeName];    
 }
 
-//- (void)setStoreType:(SCHCoreDataHelperStoreType)storeType
-//{                                             
-//    switch (storeType) {
-//        default:
-//        case SCHCoreDataHelperStandardStore:
-//            if ([self switchPersistentStore:kSCHCoreDataHelperStandardStoreName] == YES) {            
-//                // post switch steps
-//            }            
-//            break;
-//        case SCHCoreDataHelperSampleStore:
-//            if ([self switchPersistentStore:kSCHCoreDataHelperSampleStoreName] == YES) {            
-//                // post switch steps
-//            }
-//            break;
-//    }    
-//}
-//
-//- (BOOL)switchPersistentStore:(NSString *)storeName
-//{
-//    BOOL ret = NO;
-//    NSPersistentStore *currentMainStore = [self currentMainPersistentStore];
-//    NSString *storeFileName = [[[[self persistentStoreCoordinator] URLForPersistentStore:currentMainStore] path] lastPathComponent];
-//    NSError *error = nil;
-//    
-//    if ([storeFileName isEqualToString:storeName] == NO) {
-//        NSLog(@"Switching store from %@ to %@", storeFileName, storeName);
-//        [[SCHAuthenticationManager sharedAuthenticationManager] clearAppProcessing];
-//        [[self managedObjectContext] reset];
-//        [[self persistentStoreCoordinator] removePersistentStore:currentMainStore 
-//                                                           error:&error];  
-//        self.managedObjectContext = nil;
-//        if ([[self persistentStoreCoordinator] addPersistentStoreWithType:NSSQLiteStoreType 
-//                                                            configuration:kSCHCoreDataHelperMainStoreConfiguration 
-//                                                                      URL:[self storeURL:storeName] 
-//                                                                  options:nil 
-//                                                                    error:&error] == nil){   
-//            NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
-//            abort();
-//        }
-//
-//        [[NSNotificationCenter defaultCenter] postNotificationName:SCHCoreDataHelperManagedObjectContextDidChangeNotification 
-//                                                            object:self 
-//                                                          userInfo:[NSDictionary dictionaryWithObject:[self managedObjectContext] 
-//                                                                                               forKey:SCHCoreDataHelperManagedObjectContext]];
-//        ret = YES;
-//    }
-//    
-//    return(ret);
-//}
-//
 - (NSPersistentStore *)currentMainPersistentStore
 {
     NSPersistentStore *ret = nil;

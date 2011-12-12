@@ -196,7 +196,6 @@
     
     if ([self.managedObjectContext save:&error] == NO) {
         NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
-        abort();
     }     
 }
 
@@ -276,15 +275,20 @@
             
             if ([self.managedObjectContext save:&error] == NO) {
                 NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
-                abort();
+                LambdaAlert *doneAlert = [[LambdaAlert alloc]
+                                          initWithTitle:NSLocalizedString(@"Import Failed", @"")
+                                          message:[NSString stringWithFormat:@"There was an error whilst importing your eBook(s)\n\n'%@'",[error localizedDescription]]];
+                [doneAlert addButtonWithTitle:NSLocalizedString(@"OK", @"") block:^{}];          
+                [doneAlert show];
+                [doneAlert release];
+            } else {
+                LambdaAlert *doneAlert = [[LambdaAlert alloc]
+                                          initWithTitle:NSLocalizedString(@"Import Complete", @"")
+                                          message:[NSString stringWithFormat:@"You imported %d eBook(s). Imported eBook(s) will be erased if you exit this bookshelf",[xpsFiles count]]];
+                [doneAlert addButtonWithTitle:NSLocalizedString(@"OK", @"") block:^{}];          
+                [doneAlert show];
+                [doneAlert release];
             }
-
-            LambdaAlert *doneAlert = [[LambdaAlert alloc]
-                                  initWithTitle:NSLocalizedString(@"Import Complete", @"")
-                                      message:[NSString stringWithFormat:@"You imported %d eBook(s). Imported eBook(s) will be erased if you exit this bookshelf",[xpsFiles count]]];
-            [doneAlert addButtonWithTitle:NSLocalizedString(@"OK", @"") block:^{}];          
-            [doneAlert show];
-            [doneAlert release];
         }
     }
     
@@ -375,7 +379,6 @@
     
     if ([self.managedObjectContext save:&error] == NO) {
         NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
-        abort();
     }     
 }
 

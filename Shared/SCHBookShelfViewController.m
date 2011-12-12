@@ -664,7 +664,6 @@ typedef enum
     NSError *error = nil;
     if ([self.managedObjectContext save:&error] == NO) {
         NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
-        abort();
     }
 }
 
@@ -839,7 +838,6 @@ typedef enum
         
         if (![self.profileItem.managedObjectContext save:&error]) {
             NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
-            abort();
         }                
 	}
 

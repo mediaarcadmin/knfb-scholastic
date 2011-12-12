@@ -21,7 +21,8 @@ extern NSString * const SCHCoreDataHelperManagedObjectContext;
 
 @property (nonatomic, retain, readonly) NSManagedObjectContext *managedObjectContext;
 @property (nonatomic, readonly) NSManagedObjectModel *managedObjectModel;
-@property (nonatomic, readonly) NSPersistentStoreCoordinator *persistentStoreCoordinator;
+
+- (NSPersistentStoreCoordinator *)persistentStoreCoordinatorWithError:(NSError **)error;
 
 - (void)saveContext;
 - (void)resetMainStore;

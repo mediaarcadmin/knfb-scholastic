@@ -2873,7 +2873,6 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     NSError *error = nil;
     if ([self.managedObjectContext save:&error] == NO) {
         NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
-		abort();
     }
 }
 
