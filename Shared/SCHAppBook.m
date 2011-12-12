@@ -563,7 +563,7 @@ NSString * const kSCHAppBookFilenameSeparator = @"-";
 			status = @"Error";
 			break;
 		case SCHBookProcessingStateBookVersionNotSupported:
-			status = @"Error Book Version Not Supported";
+			status = @"Error eBook Version Not Supported";
 			break;            
 		case SCHBookProcessingStateNoURLs:
 			status = @"URLs..";

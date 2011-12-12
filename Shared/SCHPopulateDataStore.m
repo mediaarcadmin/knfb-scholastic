@@ -281,7 +281,7 @@
 
             LambdaAlert *doneAlert = [[LambdaAlert alloc]
                                   initWithTitle:NSLocalizedString(@"Import Complete", @"")
-                                      message:[NSString stringWithFormat:@"You imported %d book(s). Imported book(s) will be erased if you exit this bookshelf",[xpsFiles count]]];
+                                      message:[NSString stringWithFormat:@"You imported %d eBook(s). Imported eBook(s) will be erased if you exit this bookshelf",[xpsFiles count]]];
             [doneAlert addButtonWithTitle:NSLocalizedString(@"OK", @"") block:^{}];          
             [doneAlert show];
             [doneAlert release];
