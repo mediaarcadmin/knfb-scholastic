@@ -371,8 +371,12 @@ static SCHDictionaryDownloadManager *sharedManager = nil;
         case SCHDictionaryProcessingStateError:
         case SCHDictionaryProcessingStateUserSetup:
         case SCHDictionaryProcessingStateUserDeclined:
-        case SCHDictionaryProcessingStateNotEnoughFreeSpace:
-        case SCHDictionaryProcessingStateUnexpectedConnectivityFailure:
+        case SCHDictionaryProcessingStateNotEnoughFreeSpaceError:
+        case SCHDictionaryProcessingStateUnexpectedConnectivityFailureError:
+        case SCHDictionaryProcessingStateDownloadError:
+        case SCHDictionaryProcessingStateUnableToOpenZipError:
+        case SCHDictionaryProcessingStateUnZipFailureError:
+        case SCHDictionaryProcessingStateParseError:
             stateIsWaitingForUserInteraction = YES;
             break;
         default:
@@ -852,13 +856,18 @@ static SCHDictionaryDownloadManager *sharedManager = nil;
     if (!self.isProcessing  || [self stateIsWaitingForUserInteraction]) {
         SCHDictionaryProcessingState state = [self dictionaryProcessingState];
         
-        if (state == SCHDictionaryProcessingStateNotEnoughFreeSpace) {
+        if (state == SCHDictionaryProcessingStateNotEnoughFreeSpaceError) {
             [self threadSafeUpdateDictionaryState:SCHDictionaryProcessingStateUserSetup]; // wait for user input but don't delete
-        } else if (state == SCHDictionaryProcessingStateError || state == SCHDictionaryProcessingStateDeleting) {
+        } else if (state == SCHDictionaryProcessingStateError || 
+                   state == SCHDictionaryProcessingStateDeleting ||
+                   state == SCHDictionaryProcessingStateDownloadError ||
+                   state == SCHDictionaryProcessingStateUnableToOpenZipError ||
+                   state == SCHDictionaryProcessingStateUnZipFailureError ||
+                   state == SCHDictionaryProcessingStateParseError) {
             [self deleteDictionaryFileWithCompletionBlock:^{
                 [self threadSafeUpdateDictionaryState:SCHDictionaryProcessingStateUserSetup]; // wait for user input after a delete
             }];
-        } else if (state == SCHDictionaryProcessingStateUnexpectedConnectivityFailure) {
+        } else if (state == SCHDictionaryProcessingStateUnexpectedConnectivityFailureError) {
             [self threadSafeUpdateDictionaryState:SCHDictionaryProcessingStateNeedsManifest]; // Don't delete the existing files & attempt to restart
         } else if (state == SCHDictionaryProcessingStateReady) {
             
@@ -1698,16 +1707,24 @@ static SCHDictionaryDownloadManager *sharedManager = nil;
         
         if ((state == SCHDictionaryProcessingStateUserSetup) || 
             (state == SCHDictionaryProcessingStateUserDeclined) || 
-            (state == SCHDictionaryProcessingStateNotEnoughFreeSpace) || 
-            (state == SCHDictionaryProcessingStateUnexpectedConnectivityFailure) || 
-            (state == SCHDictionaryProcessingStateError)) {
+            (state == SCHDictionaryProcessingStateNotEnoughFreeSpaceError) || 
+            (state == SCHDictionaryProcessingStateUnexpectedConnectivityFailureError) || 
+            (state == SCHDictionaryProcessingStateError) || 
+            (state == SCHDictionaryProcessingStateDownloadError) || 
+            (state == SCHDictionaryProcessingStateUnableToOpenZipError) || 
+            (state == SCHDictionaryProcessingStateUnZipFailureError) || 
+            (state == SCHDictionaryProcessingStateParseError)) {
             
             dispatch_block_t needsManifestBlock = ^{
                 [self threadSafeUpdateDictionaryState:SCHDictionaryProcessingStateNeedsManifest];
                 [self checkOperatingStateImmediately:YES];
             };
             
-            if (state == SCHDictionaryProcessingStateError) {
+            if ((state == SCHDictionaryProcessingStateError) ||
+                (state == SCHDictionaryProcessingStateDownloadError) || 
+                (state == SCHDictionaryProcessingStateUnableToOpenZipError) || 
+                (state == SCHDictionaryProcessingStateUnZipFailureError) || 
+                (state == SCHDictionaryProcessingStateParseError)) {
                 [self deleteDictionaryFileWithCompletionBlock:needsManifestBlock];
             } else {
                 needsManifestBlock();

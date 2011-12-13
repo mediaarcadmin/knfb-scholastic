@@ -247,7 +247,7 @@
             self.progressBar.hidden = YES;            
             break;
         }
-        case SCHDictionaryProcessingStateNotEnoughFreeSpace:
+        case SCHDictionaryProcessingStateNotEnoughFreeSpaceError:
         {
             self.bottomLabel.text = NSLocalizedString(@"There is not enough free space on the device. Please clear some space and try again.", nil);
             [self.activityIndicator stopAnimating];
@@ -255,7 +255,11 @@
             break;
         }
         case SCHDictionaryProcessingStateError:
-        case SCHDictionaryProcessingStateUnexpectedConnectivityFailure:
+        case SCHDictionaryProcessingStateUnexpectedConnectivityFailureError:
+        case SCHDictionaryProcessingStateDownloadError:
+        case SCHDictionaryProcessingStateUnableToOpenZipError:
+        case SCHDictionaryProcessingStateUnZipFailureError:
+        case SCHDictionaryProcessingStateParseError:
         {
             self.bottomLabel.text = NSLocalizedString(@"There was an error downloading the Scholastic dictionary. Please try again later.", nil);
             [self.activityIndicator stopAnimating];

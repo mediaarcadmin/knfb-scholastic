@@ -82,6 +82,9 @@
         // unzip will always overwrite whatever is already there
         // this takes care of MP3, image updates etc.
         zipSuccess = [zipArchive UnzipFileTo:[dictManager dictionaryDirectory] overWrite:YES];
+    } else {
+        [dictManager threadSafeUpdateDictionaryState:SCHDictionaryProcessingStateUnableToOpenZipError];
+        return;
     }
     
     [zipArchive UnzipCloseFile];
@@ -90,7 +93,9 @@
     if (zipSuccess) {
         NSLog(@"Successful unzip!");
     } else {
-        NSLog(@"Unsuccessful unzip. boo.");
+        NSLog(@"Unsuccessful unzip");
+        [dictManager threadSafeUpdateDictionaryState:SCHDictionaryProcessingStateUnZipFailureError];
+        return;
     }
     
     NSDictionary *userInfo = [NSDictionary dictionaryWithObjectsAndKeys:
@@ -102,7 +107,7 @@
                         waitUntilDone:NO];
 
     
-    NSFileManager *localFileManager = [[NSFileManager alloc] init];
+    NSFileManager *localFileManager = [[[NSFileManager alloc] init] autorelease];
 
     if (deleteAfterUnzip) {
         [localFileManager removeItemAtPath:[dictManager dictionaryZipPath] error:nil];
@@ -129,11 +134,7 @@
         }
         
         [dictManager threadSafeUpdateDictionaryState:SCHDictionaryProcessingStateNeedsParse];
-    } else {
-        [dictManager threadSafeUpdateDictionaryState:SCHDictionaryProcessingStateError];
     }
-    
-    [localFileManager release];
 }
 
 -(void) UnzipProgress:(uLong)myCurrentFileIndex total:(uLong)myTotalFileCount

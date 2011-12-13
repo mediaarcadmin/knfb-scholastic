@@ -155,7 +155,7 @@
     }
     
     if (!sufficientSpace) {
-        [[SCHDictionaryDownloadManager sharedDownloadManager] threadSafeUpdateDictionaryState:SCHDictionaryProcessingStateNotEnoughFreeSpace];
+        [[SCHDictionaryDownloadManager sharedDownloadManager] threadSafeUpdateDictionaryState:SCHDictionaryProcessingStateNotEnoughFreeSpaceError];
         [operation cancel];
         [[BITNetworkActivityManager sharedNetworkActivityManager] hideNetworkActivityIndicator];            
         [self cancel];
@@ -187,12 +187,12 @@
 
     if ([error.domain isEqualToString:kQHTTPOperationErrorDomain] && error.code == 416) {
         // There was a problem with the range. Report an error state that will results in a delete of the files on the disk        
-        [[SCHDictionaryDownloadManager sharedDownloadManager] threadSafeUpdateDictionaryState:SCHDictionaryProcessingStateError];
+        [[SCHDictionaryDownloadManager sharedDownloadManager] threadSafeUpdateDictionaryState:SCHDictionaryProcessingStateDownloadError];
         [[BITNetworkActivityManager sharedNetworkActivityManager] hideNetworkActivityIndicator];
 
     } else if (!([error.domain isEqualToString:NSCocoaErrorDomain] && error.code == NSUserCancelledError)) {
         operation.completionBlock = nil;
-        [[SCHDictionaryDownloadManager sharedDownloadManager] threadSafeUpdateDictionaryState:SCHDictionaryProcessingStateUnexpectedConnectivityFailure];
+        [[SCHDictionaryDownloadManager sharedDownloadManager] threadSafeUpdateDictionaryState:SCHDictionaryProcessingStateUnexpectedConnectivityFailureError];
         [[BITNetworkActivityManager sharedNetworkActivityManager] hideNetworkActivityIndicator];
     }
     

@@ -235,10 +235,14 @@ extern NSString * const kSCHUserDefaultsSpaceSaverModeSetOffNotification;
         case SCHDictionaryProcessingStateUserSetup:
         case SCHDictionaryProcessingStateUserDeclined:
         case SCHDictionaryProcessingStateError:
-        case SCHDictionaryProcessingStateUnexpectedConnectivityFailure:
+        case SCHDictionaryProcessingStateNotEnoughFreeSpaceError:
+        case SCHDictionaryProcessingStateUnexpectedConnectivityFailureError:
+        case SCHDictionaryProcessingStateDownloadError:
+        case SCHDictionaryProcessingStateUnableToOpenZipError:
+        case SCHDictionaryProcessingStateUnZipFailureError:
+        case SCHDictionaryProcessingStateParseError:
             enabled = YES;
             break;
-        case SCHDictionaryProcessingStateNotEnoughFreeSpace:
         case SCHDictionaryProcessingStateNeedsManifest:
         case SCHDictionaryProcessingStateManifestVersionCheck:
         case SCHDictionaryProcessingStateNeedsDownload:
@@ -250,14 +254,9 @@ extern NSString * const kSCHUserDefaultsSpaceSaverModeSetOffNotification;
     }
     
     self.downloadDictionaryButton.enabled = enabled;
-    self.downloadDictionaryButton.titleLabel.lineBreakMode = UILineBreakModeTailTruncation; 
     self.downloadDictionaryButton.titleLabel.textAlignment = UITextAlignmentCenter;
-    
-    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
-        self.downloadDictionaryButton.titleLabel.font = [UIFont fontWithName:@"Arial-BoldMT" size:18.0f];
-    } else {
-        self.downloadDictionaryButton.titleLabel.font = [UIFont fontWithName:@"Arial-BoldMT" size:17.0f];
-    }
+
+    BOOL doubleLine = NO;
 
     switch (state) {
         case SCHDictionaryProcessingStateReady:
@@ -275,16 +274,9 @@ extern NSString * const kSCHUserDefaultsSpaceSaverModeSetOffNotification;
                   progress]
                                                forState:UIControlStateNormal];
             } else {
-                self.downloadDictionaryButton.titleLabel.lineBreakMode = UILineBreakModeWordWrap;
-                
-                if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
-                    self.downloadDictionaryButton.titleLabel.font = [UIFont fontWithName:@"Arial-BoldMT" size:15.0f];
-                } else {
-                    self.downloadDictionaryButton.titleLabel.font = [UIFont fontWithName:@"Arial-BoldMT" size:14.0f];
-                }
-                
                 [self.downloadDictionaryButton setTitle:NSLocalizedString(@"Dictionary Download Paused.\nWaiting for WiFi...", @"Waiting for WiFi dictionary button title")
                                                forState:UIControlStateNormal];
+                doubleLine = YES;
             }
             break;
         }
@@ -302,15 +294,64 @@ extern NSString * const kSCHUserDefaultsSpaceSaverModeSetOffNotification;
                                            forState:UIControlStateNormal];
             break;   
         case SCHDictionaryProcessingStateError:
-        case SCHDictionaryProcessingStateUnexpectedConnectivityFailure:
-            [self.downloadDictionaryButton setTitle:NSLocalizedString(@"Dictionary Error. Try again.", @"Dictionary error button title")
+            [self.downloadDictionaryButton setTitle:NSLocalizedString(@"Dictionary Error. Try Again.\nUnknown Error", @"Dictionary error button title for unknown error")
                                            forState:UIControlStateNormal];
+            doubleLine = YES;
+            break; 
+        case SCHDictionaryProcessingStateUnexpectedConnectivityFailureError:
+            [self.downloadDictionaryButton setTitle:NSLocalizedString(@"Dictionary Error. Try Again.\nDownload Interrupted.", @"Dictionary error button title for connection interrupted")
+                                           forState:UIControlStateNormal];
+            doubleLine = YES;
+            break; 
+        case SCHDictionaryProcessingStateNotEnoughFreeSpaceError:
+            [self.downloadDictionaryButton setTitle:NSLocalizedString(@"Dictionary Error. Try Again.\nNot Enough Free Space.", @"Dictionary error button title for not enough free space")
+                                           forState:UIControlStateNormal];
+            doubleLine = YES;
+            break; 
+        case SCHDictionaryProcessingStateDownloadError:
+            [self.downloadDictionaryButton setTitle:NSLocalizedString(@"Dictionary Error. Try Again.\nDownload Failed.", @"Dictionary error button title for download failed")
+                                           forState:UIControlStateNormal];
+            doubleLine = YES;
+            break; 
+        case SCHDictionaryProcessingStateUnableToOpenZipError:
+            [self.downloadDictionaryButton setTitle:NSLocalizedString(@"Dictionary Error. Try Again.\nCouldn't Open Zip.", @"Dictionary error button title for Couldn't open zip")
+                                           forState:UIControlStateNormal];
+            doubleLine = YES;
+            break; 
+        case SCHDictionaryProcessingStateUnZipFailureError:
+            [self.downloadDictionaryButton setTitle:NSLocalizedString(@"Dictionary Error. Try Again.\nUnzip Failed. Check Disk Space.", @"Dictionary error button title for unzip failed")
+                                           forState:UIControlStateNormal];
+            doubleLine = YES;
+            break; 
+        case SCHDictionaryProcessingStateParseError:
+            [self.downloadDictionaryButton setTitle:NSLocalizedString(@"Dictionary Error. Try Again.\nParse Failed.", @"Dictionary error button title for parser error")
+                                           forState:UIControlStateNormal];
+            doubleLine = YES;
             break;  
-        default:
+        case SCHDictionaryProcessingStateUserSetup:
+        case SCHDictionaryProcessingStateUserDeclined:
             [self.downloadDictionaryButton setTitle:NSLocalizedString(@"Download Dictionary", @"download dictionary button title")
                                            forState:UIControlStateNormal];
 
             break;
+    }
+    
+    if (doubleLine) {
+        self.downloadDictionaryButton.titleLabel.lineBreakMode = UILineBreakModeWordWrap;
+
+        if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+            self.downloadDictionaryButton.titleLabel.font = [UIFont fontWithName:@"Arial-BoldMT" size:15.0f];
+        } else {
+            self.downloadDictionaryButton.titleLabel.font = [UIFont fontWithName:@"Arial-BoldMT" size:14.0f];
+        }
+    } else {
+        self.downloadDictionaryButton.titleLabel.lineBreakMode = UILineBreakModeTailTruncation; 
+        
+        if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+            self.downloadDictionaryButton.titleLabel.font = [UIFont fontWithName:@"Arial-BoldMT" size:18.0f];
+        } else {
+            self.downloadDictionaryButton.titleLabel.font = [UIFont fontWithName:@"Arial-BoldMT" size:17.0f];
+        }
     }
 }
 
