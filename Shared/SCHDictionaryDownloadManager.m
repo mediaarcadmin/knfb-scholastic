@@ -95,6 +95,8 @@ char * const kSCHDictionaryManifestEntryColumnSeparator = "\t";
 
 - (SCHDictionaryManifestEntry *)nextManifestEntryUpdateForCurrentDictionaryVersion;
 
+- (BOOL)parseEntryTableLine:(char *)completeLine withOffset:(long)currentOffset context:(NSManagedObjectContext*)context updates:(BOOL)doesUpdate;
+
 @end
 
 #pragma mark -
@@ -935,7 +937,7 @@ static SCHDictionaryDownloadManager *sharedManager = nil;
         
         NSString *filePath = [[dictManager dictionaryTextFilesDirectory] stringByAppendingPathComponent:@"EntryTable.txt"];
         error = nil;
-        char *completeLine, *start, *entryID, *headword, *level;
+        char *completeLine;
         NSMutableData *collectLine = nil;                
         NSString *tmpCompleteLine = nil;    
         size_t strLength = 0;
@@ -950,6 +952,8 @@ static SCHDictionaryDownloadManager *sharedManager = nil;
         
         NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init]; 
         
+        BOOL bufferPopulated = NO;
+
         if (file != NULL) {
             while (fgets(line, kSCHDictionaryManifestEntryEntryTableBufferSize, file) != NULL) {
                 
@@ -965,32 +969,22 @@ static SCHDictionaryDownloadManager *sharedManager = nil;
                         [collectLine release], collectLine = nil;
                     }
                     
-                    start = strtok(completeLine, kSCHDictionaryManifestEntryColumnSeparator);
-                    if (start != NULL) {
-                        entryID = strtok(NULL, kSCHDictionaryManifestEntryColumnSeparator);                    // MATCH
-                        if (entryID != NULL) {
-                            headword = strtok(NULL, kSCHDictionaryManifestEntryColumnSeparator);
-                            if (headword != NULL) {
-                                level = strtok(NULL, kSCHDictionaryManifestEntryColumnSeparator);              // MATCH YD/OD
-                                if (level != NULL) {
-                                    SCHDictionaryEntry *entry = [NSEntityDescription insertNewObjectForEntityForName:kSCHDictionaryEntry inManagedObjectContext:context];
-                                    entry.word = [NSString stringWithUTF8String:headword];
-                                    entry.baseWordID = [NSString stringWithUTF8String:entryID];
-                                    entry.fileOffset = [NSNumber numberWithLong:currentOffset];
-                                    entry.category = [NSString stringWithUTF8String:level];                        
+                    BOOL success = [self parseEntryTableLine:completeLine withOffset:currentOffset context:context updates:NO];
                                     
-                                    savedItems++;
-                                    batchItems++;
-                                }
-                            }
-                        }
+                    if (success) {
+                        savedItems++;
+                        batchItems++;
                     }
+                    
+                    bufferPopulated = NO;
                 } else {
                     if (collectLine == nil) {
                         collectLine = [[NSMutableData alloc] initWithBytes:line length:strlen(line)];
                     } else {
                         [collectLine appendBytes:line length:strlen(line)];
                     }
+                    
+                    bufferPopulated = YES;
                 }
                 
                 if (batchItems > 500) {
@@ -1009,6 +1003,23 @@ static SCHDictionaryDownloadManager *sharedManager = nil;
                     currentOffset = ftell(file);
                 }
             }
+            
+            // if the final line doesn't have an end of line character, check to see if the buffer still has data
+            // if so, try to parse the final line
+            if (bufferPopulated) {
+                
+                tmpCompleteLine = [[NSString alloc] initWithData:collectLine encoding:NSUTF8StringEncoding];
+                // add a new line character
+                completeLine = (char *)[[NSString stringWithFormat:@"%@\n", tmpCompleteLine] UTF8String];
+                
+                BOOL success = [self parseEntryTableLine:completeLine withOffset:currentOffset context:context updates:NO];
+                if (success) {
+                    batchItems++;
+                    savedItems++;   
+                }
+            }
+            
+            
             [collectLine release], collectLine = nil;
             [tmpCompleteLine release], tmpCompleteLine = nil;
             
@@ -1169,7 +1180,7 @@ static SCHDictionaryDownloadManager *sharedManager = nil;
     });
 }
 
-- (BOOL)parseEntryTableUpdateLine:(char *)completeLine withOffset:(long)currentOffset context:(NSManagedObjectContext*)context
+- (BOOL)parseEntryTableLine:(char *)completeLine withOffset:(long)currentOffset context:(NSManagedObjectContext*)context updates:(BOOL)doesUpdate
 {
     BOOL success = NO;
     char *start, *entryID, *headword, *level;
@@ -1185,6 +1196,7 @@ static SCHDictionaryDownloadManager *sharedManager = nil;
                 if (level != NULL) {
                     SCHDictionaryEntry *entry = nil;
                     
+                    if (doesUpdate) {
                     // try to find an existing core data entry to update
                     NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
                     // Edit the entity name as appropriate.
@@ -1223,6 +1235,8 @@ static SCHDictionaryDownloadManager *sharedManager = nil;
                     }
                     
                     results = nil;
+                    
+                    }
                     
                     if (entry) {
                         entry.word = [NSString stringWithUTF8String:headword];
@@ -1309,7 +1323,7 @@ static SCHDictionaryDownloadManager *sharedManager = nil;
                 
                 bufferPopulated = NO;
 
-                BOOL success = [self parseEntryTableUpdateLine:completeLine withOffset:currentOffset context:context];
+                BOOL success = [self parseEntryTableLine:completeLine withOffset:currentOffset context:context updates:YES];
                 if (success) {
                     updatedTotal++;
                     batchItems++;
@@ -1345,13 +1359,11 @@ static SCHDictionaryDownloadManager *sharedManager = nil;
             // add a new line character
             completeLine = (char *)[[NSString stringWithFormat:@"%@\n", tmpCompleteLine] UTF8String];
 
-            [collectLine release], collectLine = nil;
-
             // get the current offset, then write the line to the main file
             currentOffset = ftell(existingFile);
             fputs(completeLine, existingFile);
             
-            BOOL success = [self parseEntryTableUpdateLine:completeLine withOffset:currentOffset context:context];
+            BOOL success = [self parseEntryTableLine:completeLine withOffset:currentOffset context:context updates:YES];
             if (success) {
                 updatedTotal++;
                 batchItems++;
