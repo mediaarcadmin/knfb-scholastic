@@ -58,6 +58,9 @@
 
 - (NSArray *)availableBookUpdates
 {
+#if defined UPDATE_BOOKS_DISABLED
+    return [NSArray array];
+#else
     if (self.refreshNeeded || [self.results count] == 0) {
         [self refresh];
     }
@@ -66,6 +69,7 @@
         return nil;
     }
     return [NSArray arrayWithArray:results];
+#endif
 }
 
 - (void)refresh

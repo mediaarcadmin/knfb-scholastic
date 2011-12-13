@@ -353,16 +353,17 @@
 					<object class="IBUIButton" id="502778851">
 						<reference key="NSNextResponder" ref="715934819"/>
 						<int key="NSvFlags">292</int>
-						<string key="NSFrame">{{382, 575}, {144, 25}}</string>
+						<string key="NSFrame">{{377, 575}, {144, 25}}</string>
 						<reference key="NSSuperview" ref="715934819"/>
 						<reference key="NSWindow"/>
+						<reference key="NSNextKeyView"/>
 						<bool key="IBUIOpaque">NO</bool>
 						<string key="targetRuntimeIdentifier">IBIPadFramework</string>
 						<int key="IBUIContentHorizontalAlignment">0</int>
 						<int key="IBUIContentVerticalAlignment">0</int>
 						<bool key="IBUIAdjustsImageWhenHighlighted">NO</bool>
 						<bool key="IBUIAdjustsImageWhenDisabled">NO</bool>
-						<string key="IBUINormalTitle">support@scholastic.com</string>
+						<string key="IBUINormalTitle">ebooks@scholastic.com</string>
 						<object class="NSColor" key="IBUIHighlightedTitleColor">
 							<int key="NSColorSpace">1</int>
 							<bytes key="NSRGB">MC4wNzExMTU4NTE0IDAuNjM2MjA5NDI4MyAxAA</bytes>
@@ -381,6 +382,7 @@
 						<string key="NSFrame">{{117, 223}, {306, 48}}</string>
 						<reference key="NSSuperview" ref="715934819"/>
 						<reference key="NSWindow"/>
+						<reference key="NSNextKeyView" ref="211303705"/>
 						<bool key="IBUIOpaque">NO</bool>
 						<string key="targetRuntimeIdentifier">IBIPadFramework</string>
 						<int key="IBUIContentHorizontalAlignment">0</int>
@@ -776,7 +778,7 @@
 				<string key="68.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<string key="70.CustomClassName">SCHUnderlinedButton</string>
 				<string key="70.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
-				<real value="3" key="70.IBUIButtonInspectorSelectedStateConfigurationMetadataKey"/>
+				<real value="0.0" key="70.IBUIButtonInspectorSelectedStateConfigurationMetadataKey"/>
 				<string key="87.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<string key="88.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<string key="89.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
