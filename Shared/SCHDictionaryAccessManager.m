@@ -333,11 +333,14 @@ static SCHDictionaryAccessManager *sharedManager = nil;
             NSString *tmpCompleteLine = nil;
             size_t strLength = 0;
             
-            //NSLog(@"Seeking to offset %ld", offset);
+//            NSLog(@"Seeking to offset %ld", offset);
             
             if (file != NULL) {
                 setlinebuf(file);
                 fseek(file, offset, 0);
+                
+                BOOL bufferPopulated = NO;
+
                 while (fgets(line, kSCHDictionaryManifestEntryEntryTableBufferSize, file) != NULL) {
                     if (strLength = strlen(line), strLength > 0 && line[strLength-1] == '\n') {        
                         
@@ -350,6 +353,7 @@ static SCHDictionaryAccessManager *sharedManager = nil;
                             tmpCompleteLine = [[NSString alloc] initWithData:collectLine encoding:NSUTF8StringEncoding];
                             completeLine = (char *)[tmpCompleteLine UTF8String];
                             [collectLine release], collectLine = nil;
+                            bufferPopulated = NO;
                         }
                         
                         start = strtok(completeLine, kSCHDictionaryManifestEntryColumnSeparator);
@@ -376,8 +380,38 @@ static SCHDictionaryAccessManager *sharedManager = nil;
                         } else {
                             [collectLine appendBytes:line length:strlen(line)];
                         }
+                        
+                        bufferPopulated = YES;
                     }
                 }
+                
+                // if the buffer has text, but no end of line character, retrieve the line
+                if (bufferPopulated) {
+                    tmpCompleteLine = [[NSString alloc] initWithData:collectLine encoding:NSUTF8StringEncoding];
+                    completeLine = (char *)[tmpCompleteLine UTF8String];
+                    [collectLine release], collectLine = nil;
+                    
+                    start = strtok(completeLine, kSCHDictionaryManifestEntryColumnSeparator);
+                    if (start != NULL) {
+                        entryID = strtok(NULL, kSCHDictionaryManifestEntryColumnSeparator);                    // MATCH
+                        if (entryID != NULL) {
+                            headword = strtok(NULL, kSCHDictionaryManifestEntryColumnSeparator);
+                            if (headword != NULL) {
+                                level = strtok(NULL, kSCHDictionaryManifestEntryColumnSeparator);              // MATCH YD/OD
+                                if (level != NULL) {
+                                    entryXML = strtok(NULL, kSCHDictionaryManifestEntryColumnSeparator);
+                                    if (entryXML != NULL) {
+                                        entryXML[strlen(entryXML)-1] = '\0';    // remove the line end
+                                        result = [[NSString stringWithUTF8String:entryXML] retain];
+                                    }
+                                }
+                            }
+                        }
+                    }
+
+                }
+                
+                
                 [collectLine release], collectLine = nil;
                 [tmpCompleteLine release], tmpCompleteLine = nil;
                 
