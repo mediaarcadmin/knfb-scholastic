@@ -964,10 +964,10 @@ static SCHDictionaryDownloadManager *sharedManager = nil;
                     } else {                    
                         [collectLine appendBytes:line length:strlen(line)];                                        
                         [collectLine appendBytes:(char []){'\0'} length:1];
-                        [tmpCompleteLine release];
                         tmpCompleteLine = [[NSString alloc] initWithData:collectLine encoding:NSUTF8StringEncoding];
                         completeLine = (char *)[tmpCompleteLine UTF8String];
                         [collectLine release], collectLine = nil;
+                        [tmpCompleteLine release], tmpCompleteLine = nil;
                     }
                     
                     BOOL success = [self parseEntryTableLine:completeLine withOffset:currentOffset context:context updates:NO];
@@ -1012,6 +1012,7 @@ static SCHDictionaryDownloadManager *sharedManager = nil;
                 tmpCompleteLine = [[NSString alloc] initWithData:collectLine encoding:NSUTF8StringEncoding];
                 // add a new line character
                 completeLine = (char *)[[NSString stringWithFormat:@"%@\n", tmpCompleteLine] UTF8String];
+                [tmpCompleteLine release], tmpCompleteLine = nil;
                 
                 BOOL success = [self parseEntryTableLine:completeLine withOffset:currentOffset context:context updates:NO];
                 if (success) {
@@ -1022,7 +1023,6 @@ static SCHDictionaryDownloadManager *sharedManager = nil;
             
             
             [collectLine release], collectLine = nil;
-            [tmpCompleteLine release], tmpCompleteLine = nil;
             
             [pool drain];
             fclose(file);
@@ -1098,10 +1098,10 @@ static SCHDictionaryDownloadManager *sharedManager = nil;
                     } else {
                         [collectLine appendBytes:line length:strlen(line)];                    
                         [collectLine appendBytes:(char []){'\0'} length:1];
-                        [tmpCompleteLine release];
                         tmpCompleteLine = [[NSString alloc] initWithData:collectLine encoding:NSUTF8StringEncoding];
                         completeLine = (char *)[tmpCompleteLine UTF8String];
                         [collectLine release], collectLine = nil;
+                        [tmpCompleteLine release], tmpCompleteLine = nil;
                     }
                     
                     bufferPopulated = NO;
@@ -1141,6 +1141,7 @@ static SCHDictionaryDownloadManager *sharedManager = nil;
                 
                 tmpCompleteLine = [[NSString alloc] initWithData:collectLine encoding:NSUTF8StringEncoding];
                 completeLine = (char *)[tmpCompleteLine UTF8String];
+                [tmpCompleteLine release], tmpCompleteLine = nil;
                 
                 BOOL success = [self parseWordFormLine:completeLine context:context updates:NO];
                 if (success) {
@@ -1151,7 +1152,6 @@ static SCHDictionaryDownloadManager *sharedManager = nil;
 
             
             [collectLine release], collectLine = nil;
-            [tmpCompleteLine release], tmpCompleteLine = nil;
             
             [pool drain];
             
@@ -1402,15 +1402,15 @@ static SCHDictionaryDownloadManager *sharedManager = nil;
                 } else {
                     [collectLine appendBytes:line length:strlen(line)];                                    
                     [collectLine appendBytes:(char []){'\0'} length:1];
-                    [tmpCompleteLine release];
                     tmpCompleteLine = [[NSString alloc] initWithData:collectLine encoding:NSUTF8StringEncoding];
                     completeLine = (char *)[tmpCompleteLine UTF8String];
                     [collectLine release], collectLine = nil;
+                    [tmpCompleteLine release], tmpCompleteLine = nil;
                 }
                 
                 // get the current offset, then write the line to the main file
                 currentOffset = ftell(existingFile);
-                fputs(line, existingFile);
+                fputs(completeLine, existingFile);
                 
                 bufferPopulated = NO;
 
@@ -1449,6 +1449,7 @@ static SCHDictionaryDownloadManager *sharedManager = nil;
             tmpCompleteLine = [[NSString alloc] initWithData:collectLine encoding:NSUTF8StringEncoding];
             // add a new line character
             completeLine = (char *)[[NSString stringWithFormat:@"%@\n", tmpCompleteLine] UTF8String];
+            [tmpCompleteLine release], tmpCompleteLine = nil;
 
             // get the current offset, then write the line to the main file
             currentOffset = ftell(existingFile);
@@ -1462,7 +1463,6 @@ static SCHDictionaryDownloadManager *sharedManager = nil;
         }
         
         [collectLine release], collectLine = nil;
-        [tmpCompleteLine release], tmpCompleteLine = nil;
         
         [pool drain];
         
@@ -1546,10 +1546,10 @@ static SCHDictionaryDownloadManager *sharedManager = nil;
                     } else {
                         [collectLine appendBytes:line length:strlen(line)];                                        
                         [collectLine appendBytes:(char []){'\0'} length:1];
-                        [tmpCompleteLine release];
                         tmpCompleteLine = [[NSString alloc] initWithData:collectLine encoding:NSUTF8StringEncoding];
                         completeLine = (char *)[tmpCompleteLine UTF8String];
                         [collectLine release], collectLine = nil;
+                        [tmpCompleteLine release], tmpCompleteLine = nil;
                         bufferPopulated = NO;
                     }
                     
@@ -1586,6 +1586,7 @@ static SCHDictionaryDownloadManager *sharedManager = nil;
                 tmpCompleteLine = [[NSString alloc] initWithData:collectLine encoding:NSUTF8StringEncoding];
                 // add a new line character
                 completeLine = (char *)[tmpCompleteLine UTF8String];
+                [tmpCompleteLine release], tmpCompleteLine = nil;
                 
                 BOOL success = [self parseWordFormLine:completeLine context:context updates:YES];
                 
@@ -1597,7 +1598,6 @@ static SCHDictionaryDownloadManager *sharedManager = nil;
             }
             
             [collectLine release], collectLine = nil;
-            [tmpCompleteLine release], tmpCompleteLine = nil;
             
             [pool drain];
             
