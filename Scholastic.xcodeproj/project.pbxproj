@@ -1646,6 +1646,8 @@
 		C949B3AA13963B5F00525C6A /* LineLoupeMask.png in Resources */ = {isa = PBXBuildFile; fileRef = C949B3A113963B5F00525C6A /* LineLoupeMask.png */; };
 		C949B3AC13963B5F00525C6A /* LineLoupeLow@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C949B3A213963B5F00525C6A /* LineLoupeLow@2x.png */; };
 		C949B3AE13963B5F00525C6A /* LineLoupeLow.png in Resources */ = {isa = PBXBuildFile; fileRef = C949B3A313963B5F00525C6A /* LineLoupeLow.png */; };
+		C959076C1497D08000E024AF /* NSString+URLEncoding.m in Sources */ = {isa = PBXBuildFile; fileRef = C959076B1497D08000E024AF /* NSString+URLEncoding.m */; };
+		C959076D1497D08000E024AF /* NSString+URLEncoding.m in Sources */ = {isa = PBXBuildFile; fileRef = C959076B1497D08000E024AF /* NSString+URLEncoding.m */; };
 		C95C7CC1135C3C8A00472AF6 /* SCHBookShelfGridView.m in Sources */ = {isa = PBXBuildFile; fileRef = C95C7CC0135C3C8A00472AF6 /* SCHBookShelfGridView.m */; };
 		C95C7CC5135C3F1400472AF6 /* SCHBookShelfGridShelvesView.m in Sources */ = {isa = PBXBuildFile; fileRef = C95C7CC4135C3F1300472AF6 /* SCHBookShelfGridShelvesView.m */; };
 		C95ECB4E133A77F000D88768 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C95ECB4C133A77A500D88768 /* AudioToolbox.framework */; };
@@ -3237,6 +3239,8 @@
 		C949B3A113963B5F00525C6A /* LineLoupeMask.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = LineLoupeMask.png; sourceTree = "<group>"; };
 		C949B3A213963B5F00525C6A /* LineLoupeLow@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "LineLoupeLow@2x.png"; sourceTree = "<group>"; };
 		C949B3A313963B5F00525C6A /* LineLoupeLow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = LineLoupeLow.png; sourceTree = "<group>"; };
+		C959076A1497D08000E024AF /* NSString+URLEncoding.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSString+URLEncoding.h"; path = "Shared/NSString+URLEncoding.h"; sourceTree = "<group>"; };
+		C959076B1497D08000E024AF /* NSString+URLEncoding.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSString+URLEncoding.m"; path = "Shared/NSString+URLEncoding.m"; sourceTree = "<group>"; };
 		C95C7CBF135C3C8A00472AF6 /* SCHBookShelfGridView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHBookShelfGridView.h; path = iPhone/SCHBookShelfGridView.h; sourceTree = "<group>"; };
 		C95C7CC0135C3C8A00472AF6 /* SCHBookShelfGridView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHBookShelfGridView.m; path = iPhone/SCHBookShelfGridView.m; sourceTree = "<group>"; };
 		C95C7CC3135C3F1200472AF6 /* SCHBookShelfGridShelvesView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHBookShelfGridShelvesView.h; path = iPhone/SCHBookShelfGridShelvesView.h; sourceTree = "<group>"; };
@@ -5140,6 +5144,8 @@
 				526760AF144D6A6A00F3FE56 /* NSURL+Extensions.m */,
 				525079401486FADC00712853 /* NSDate+ServerDate.h */,
 				525079411486FADC00712853 /* NSDate+ServerDate.m */,
+				C959076A1497D08000E024AF /* NSString+URLEncoding.h */,
+				C959076B1497D08000E024AF /* NSString+URLEncoding.m */,
 			);
 			name = Extensions;
 			sourceTree = "<group>";
@@ -8256,6 +8262,7 @@
 				525079421486FADC00712853 /* NSDate+ServerDate.m in Sources */,
 				C9A6B3FB148B7F0900B31277 /* SCHHelpManager.m in Sources */,
 				C9A6B400148B853C00B31277 /* SCHAppHelpState.m in Sources */,
+				C959076C1497D08000E024AF /* NSString+URLEncoding.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -8640,6 +8647,7 @@
 				525079431486FADC00712853 /* NSDate+ServerDate.m in Sources */,
 				C9A6B3FC148B7F0900B31277 /* SCHHelpManager.m in Sources */,
 				C9A6B401148B853C00B31277 /* SCHAppHelpState.m in Sources */,
+				C959076D1497D08000E024AF /* NSString+URLEncoding.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

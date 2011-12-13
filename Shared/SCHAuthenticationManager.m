@@ -22,7 +22,7 @@
 #import "SCHBookManager.h"
 #import "BITAPIError.h"
 #import "SCHUserDefaults.h"
-
+#import "NSString+URLEncoding.h"
 #import "SCHNonDRMAuthenticationManager.h"
 
 // Constants
@@ -366,13 +366,24 @@ NSTimeInterval const kSCHAuthenticationManagerSecondsInAMinute = 60.0;
             [appln addObject:@"iPhone"];        
         }
         
-        [appln addObject:@"ns"];            
+        [appln addObject:@"ns"];   
         
-        ret = [NSURL URLWithString:[[NSString stringWithFormat:@"%@?tk=%@&appln=%@&spsId=%@",
-                                     WEB_PARENT_TOOLS_SERVER,
-                                     (pToken == nil ? self.accountValidation.pToken : pToken), 
-                                     [appln componentsJoinedByString:@"|"], 
-                                     [[NSUserDefaults standardUserDefaults] stringForKey:kSCHAuthenticationManagerUserKey]] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
+        NSString *token = (pToken == nil) ? self.accountValidation.pToken : pToken;
+        NSString *escapedToken = [token urlEncodeUsingEncoding:NSUTF8StringEncoding];
+        
+        NSString *userKey = [[NSUserDefaults standardUserDefaults] stringForKey:kSCHAuthenticationManagerUserKey];
+        NSString *escapedKey = [userKey urlEncodeUsingEncoding:NSUTF8StringEncoding];
+        
+        NSString *application = [appln componentsJoinedByString:@"|"];
+        NSString *escapedApplication = [application urlEncodeUsingEncoding:NSUTF8StringEncoding];
+        
+        NSString *escapedURL = [NSString stringWithFormat:@"%@?tk=%@&appln=%@&spsId=%@",
+                                WEB_PARENT_TOOLS_SERVER,
+                                escapedToken, 
+                                escapedApplication, 
+                                escapedKey];
+        
+        ret = [NSURL URLWithString:escapedURL];
     }
     
     return ret;
