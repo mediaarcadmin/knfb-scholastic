@@ -1169,18 +1169,95 @@ static SCHDictionaryDownloadManager *sharedManager = nil;
     });
 }
 
+- (BOOL)parseEntryTableUpdateLine:(char *)completeLine withOffset:(long)currentOffset context:(NSManagedObjectContext*)context
+{
+    BOOL success = NO;
+    char *start, *entryID, *headword, *level;
+    NSError *error = nil;
+
+    start = strtok(completeLine, kSCHDictionaryManifestEntryColumnSeparator);
+    if (start != NULL) {
+        entryID = strtok(NULL, kSCHDictionaryManifestEntryColumnSeparator);                    // MATCH
+        if (entryID != NULL) {
+            headword = strtok(NULL, kSCHDictionaryManifestEntryColumnSeparator);
+            if (headword != NULL) {
+                level = strtok(NULL, kSCHDictionaryManifestEntryColumnSeparator);              // MATCH YD/OD
+                if (level != NULL) {
+                    SCHDictionaryEntry *entry = nil;
+                    
+                    // try to find an existing core data entry to update
+                    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+                    // Edit the entity name as appropriate.
+                    NSEntityDescription *entity = [NSEntityDescription entityForName:kSCHDictionaryEntry inManagedObjectContext:context];
+                    [fetchRequest setEntity:entity];
+                    entity = nil;
+                    
+                    NSPredicate *pred = [NSPredicate predicateWithFormat:@"baseWordID == %@ AND category == %@", 
+                                         [NSString stringWithUTF8String:entryID], [NSString stringWithUTF8String:level]];
+                    
+                    [fetchRequest setPredicate:pred];
+                    pred = nil;
+                    
+                    NSArray *results = [context executeFetchRequest:fetchRequest error:&error];
+                    
+                    [fetchRequest release], fetchRequest = nil;
+                    
+                    if (!results) {
+                        NSLog(@"error when retrieving word with ID %@: %@", [NSString stringWithUTF8String:entryID], [error localizedDescription]);
+                        entry = nil;
+                    } else if ([results count] != 1) {
+                        // we assume that there is only one valid entry for each word/category grouping
+                        // therefore we delete existing entries to remove duplicates, then recreate from scratch
+                        
+                        NSLog(@"error when retrieving word with ID %@: %d results retrieved.", [NSString stringWithUTF8String:entryID], [results count]);
+                        
+                        NSLog(@"Multiple results: deleting existing entry objects, then replacing with new from update file.");
+                        
+                        for (SCHDictionaryEntry *deletedEntry in results) {
+                            [context deleteObject:deletedEntry];
+                        }
+                        
+                        entry = nil;
+                    } else {
+                        entry = [results objectAtIndex:0];
+                    }
+                    
+                    results = nil;
+                    
+                    if (entry) {
+                        entry.word = [NSString stringWithUTF8String:headword];
+                        entry.baseWordID = [NSString stringWithUTF8String:entryID];
+                        entry.fileOffset = [NSNumber numberWithLong:currentOffset];
+                        entry.category = [NSString stringWithUTF8String:level];
+                    } else {
+                        entry = [NSEntityDescription insertNewObjectForEntityForName:kSCHDictionaryEntry inManagedObjectContext:context];
+                        entry.word = [NSString stringWithUTF8String:headword];
+                        entry.baseWordID = [NSString stringWithUTF8String:entryID];
+                        entry.fileOffset = [NSNumber numberWithLong:currentOffset];
+                        entry.category = [NSString stringWithUTF8String:level];
+                    }
+                    
+                    success = YES;
+                }
+            }
+        }
+    }
+    
+    return success;
+}
+
 - (void)updateParseEntryTable
 {
     NSLog(@"Updating entry table...");
     
     dispatch_sync([SCHDictionaryAccessManager sharedAccessManager].dictionaryAccessQueue, ^{
         
-        NSError *error = nil;
-        char *completeLine, *start, *entryID, *headword, *level;
+        char *completeLine;
         NSMutableData *collectLine = nil;                
         NSString *tmpCompleteLine = nil;            
         size_t strLength = 0;
-        
+        NSError *error = nil;
+
         // first, merge this file into the existing entry table file
         SCHDictionaryDownloadManager *dictManager = self;
         NSManagedObjectContext *context = [[NSManagedObjectContext alloc] init];
@@ -1203,11 +1280,13 @@ static SCHDictionaryDownloadManager *sharedManager = nil;
         char line[kSCHDictionaryManifestEntryEntryTableBufferSize];
         setlinebuf(updateFile);
         long currentOffset = 0;
-        
+
         int updatedTotal = 0;
         int batchItems = 0;
         
         NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init]; 
+        
+        BOOL bufferPopulated = NO;
         
         // go through each line of the update file
         while (fgets(line, kSCHDictionaryManifestEntryEntryTableBufferSize, updateFile) != NULL) {
@@ -1228,80 +1307,22 @@ static SCHDictionaryDownloadManager *sharedManager = nil;
                 currentOffset = ftell(existingFile);
                 fputs(line, existingFile);
                 
-                start = strtok(completeLine, kSCHDictionaryManifestEntryColumnSeparator);
-                if (start != NULL) {
-                    entryID = strtok(NULL, kSCHDictionaryManifestEntryColumnSeparator);                    // MATCH
-                    if (entryID != NULL) {
-                        headword = strtok(NULL, kSCHDictionaryManifestEntryColumnSeparator);
-                        if (headword != NULL) {
-                            level = strtok(NULL, kSCHDictionaryManifestEntryColumnSeparator);              // MATCH YD/OD
-                            if (level != NULL) {
-                                SCHDictionaryEntry *entry = nil;
-                                
-                                // try to find an existing core data entry to update
-                                NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
-                                // Edit the entity name as appropriate.
-                                NSEntityDescription *entity = [NSEntityDescription entityForName:kSCHDictionaryEntry inManagedObjectContext:context];
-                                [fetchRequest setEntity:entity];
-                                entity = nil;
-                                
-                                NSPredicate *pred = [NSPredicate predicateWithFormat:@"baseWordID == %@ AND category == %@", 
-                                                     [NSString stringWithUTF8String:entryID], [NSString stringWithUTF8String:level]];
-                                
-                                [fetchRequest setPredicate:pred];
-                                pred = nil;
-                                
-                                NSArray *results = [context executeFetchRequest:fetchRequest error:&error];
-                                
-                                [fetchRequest release], fetchRequest = nil;
-                                
-                                if (!results) {
-                                    NSLog(@"error when retrieving word with ID %@: %@", [NSString stringWithUTF8String:entryID], [error localizedDescription]);
-                                    entry = nil;
-                                } else if ([results count] != 1) {
-                                    // we assume that there is only one valid entry for each word/category grouping
-                                    // therefore we delete existing entries to remove duplicates, then recreate from scratch
+                bufferPopulated = NO;
 
-                                    NSLog(@"error when retrieving word with ID %@: %d results retrieved.", [NSString stringWithUTF8String:entryID], [results count]);
-                                    
-                                    NSLog(@"Multiple results: deleting existing entry objects, then replacing with new from update file.");
-                                    
-                                    for (SCHDictionaryEntry *deletedEntry in results) {
-                                        [context deleteObject:deletedEntry];
-                                    }
-                                    
-                                    entry = nil;
-                                } else {
-                                    entry = [results objectAtIndex:0];
-                                }
-                                
-                                results = nil;
-                                
-                                if (entry) {
-                                    entry.word = [NSString stringWithUTF8String:headword];
-                                    entry.baseWordID = [NSString stringWithUTF8String:entryID];
-                                    entry.fileOffset = [NSNumber numberWithLong:currentOffset];
-                                    entry.category = [NSString stringWithUTF8String:level];
-                                } else {
-                                    entry = [NSEntityDescription insertNewObjectForEntityForName:kSCHDictionaryEntry inManagedObjectContext:context];
-                                    entry.word = [NSString stringWithUTF8String:headword];
-                                    entry.baseWordID = [NSString stringWithUTF8String:entryID];
-                                    entry.fileOffset = [NSNumber numberWithLong:currentOffset];
-                                    entry.category = [NSString stringWithUTF8String:level];
-                                }
-                                
-                                updatedTotal++;
-                                batchItems++;
-                            }
-                        }
-                    }
+                BOOL success = [self parseEntryTableUpdateLine:completeLine withOffset:currentOffset context:context];
+                if (success) {
+                    updatedTotal++;
+                    batchItems++;
                 }
+                
             } else {
                 if (collectLine == nil) {
                     collectLine = [[NSMutableData alloc] initWithBytes:line length:strlen(line)];
                 } else {
                     [collectLine appendBytes:line length:strlen(line)];
                 }
+                
+                bufferPopulated = YES;
             }
             
             if (batchItems > 1000) {
@@ -1315,6 +1336,28 @@ static SCHDictionaryDownloadManager *sharedManager = nil;
                 pool = [[NSAutoreleasePool alloc] init];
             }
         }
+        
+        // if the final line doesn't have an end of line character, check to see if the buffer still has data
+        // if so, try to parse the final line
+        if (bufferPopulated) {
+
+            tmpCompleteLine = [[NSString alloc] initWithData:collectLine encoding:NSUTF8StringEncoding];
+            // add a new line character
+            completeLine = (char *)[[NSString stringWithFormat:@"%@\n", tmpCompleteLine] UTF8String];
+
+            [collectLine release], collectLine = nil;
+
+            // get the current offset, then write the line to the main file
+            currentOffset = ftell(existingFile);
+            fputs(completeLine, existingFile);
+            
+            BOOL success = [self parseEntryTableUpdateLine:completeLine withOffset:currentOffset context:context];
+            if (success) {
+                updatedTotal++;
+                batchItems++;
+            }
+        }
+        
         [collectLine release], collectLine = nil;
         [tmpCompleteLine release], tmpCompleteLine = nil;
         
