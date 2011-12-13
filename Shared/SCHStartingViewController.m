@@ -680,19 +680,25 @@ typedef enum {
     if (self.modalViewController) {
         [self dismissModalViewControllerAnimated:NO];
     }
-
-    if (showValidation) {
-        self.profileSyncState = kSCHStartingViewControllerProfileSyncStateWaitingForPassword;
-    } else {
-        self.profileSyncState = kSCHStartingViewControllerProfileSyncStateWaitingForBookshelves;
-
-        NSMutableArray *viewControllers = [[self.modalNavigationController viewControllers] mutableCopy];
-        [viewControllers removeLastObject];
-        [self.modalNavigationController setViewControllers:viewControllers];
-        [viewControllers release];
-    }
     
-    [self presentModalViewController:self.modalNavigationController animated:NO];
+    if ([[self.modalNavigationController viewControllers] count] == 0) {
+        // The view has been unloaded due to memory pressure
+        // Just push the bookshelves screen, don't bother with re-adding the validation controller
+        [self checkBookshelvesAndDictionaryDownloadForProfile:NO];
+    } else {
+        if (showValidation) {
+            self.profileSyncState = kSCHStartingViewControllerProfileSyncStateWaitingForPassword;
+        } else {
+            self.profileSyncState = kSCHStartingViewControllerProfileSyncStateWaitingForBookshelves;
+            
+            NSMutableArray *viewControllers = [[self.modalNavigationController viewControllers] mutableCopy];
+            [viewControllers removeLastObject];
+            [self.modalNavigationController setViewControllers:viewControllers];
+            [viewControllers release];
+        }
+        
+        [self presentModalViewController:self.modalNavigationController animated:NO];
+    }
     
     if (shouldSync) {
         [[SCHSyncManager sharedSyncManager] firstSync:YES requireDeviceAuthentication:YES];
@@ -701,7 +707,7 @@ typedef enum {
                                     message:@"\n"] autorelease];
         [self.checkProfilesAlert setSpinnerHidden:NO];
         [self.checkProfilesAlert show];
-    }    
+    }
 }
 
 - (void)waitingForPassword

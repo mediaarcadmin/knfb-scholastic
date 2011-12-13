@@ -36,6 +36,7 @@
 - (SCHBookIdentifier *)bookToLaunchForBookbookShelfViewController:(SCHBookShelfViewController *)bookShelfViewController;
 - (void)pushBookshelvesControllerWithProfileItem:(SCHProfileItem *)profileItem 
                                         animated:(BOOL)animated;
+- (void)pushSettingsControllerAnimated:(BOOL)animated;
 
 @end
 
@@ -473,12 +474,17 @@
 
 - (void)pushSettingsController
 {
+    [self pushSettingsControllerAnimated:YES];
+}
+
+- (void)pushSettingsControllerAnimated:(BOOL)animated
+{
     NSArray *viewControllers = [self.settingsViewController currentSettingsViewControllers];
     [self.modalNavigationController setViewControllers:viewControllers];
     [self.modalNavigationController setModalTransitionStyle:UIModalTransitionStyleCoverVertical];
     [self.modalNavigationController setModalPresentationStyle:UIModalPresentationFormSheet];
     [self.modalNavigationController.navigationBar setTintColor:[UIColor SCHRed2Color]];
-    [self presentModalViewController:self.modalNavigationController animated:YES];
+    [self presentModalViewController:self.modalNavigationController animated:animated];
     [self showUpdatesBubble:NO];
 }
 
@@ -542,14 +548,18 @@
         [self dismissModalViewControllerAnimated:NO];
     }
     
-    if (!showValidation) {
-        NSMutableArray *viewControllers = [[self.modalNavigationController viewControllers] mutableCopy];
-        [viewControllers removeLastObject];
-        [self.modalNavigationController setViewControllers:viewControllers];
-        [viewControllers release];
+    if ([[self.modalNavigationController viewControllers] count] == 0) {
+        // The view has been unloaded due to memory pressure
+        // Just push the settings screen, don't bother with re-adding the validation controller
+        [self pushSettingsControllerAnimated:NO];
+    } else {
+        if (!showValidation) {
+            NSMutableArray *currentControllers = [[[self.modalNavigationController viewControllers] mutableCopy] autorelease];
+            [currentControllers removeLastObject];
+            [self.modalNavigationController setViewControllers:currentControllers];
+            [self presentModalViewController:self.modalNavigationController animated:NO];
+        }
     }
-    
-    [self presentModalViewController:self.modalNavigationController animated:NO];
     
     if (shouldSync) {
         [[SCHSyncManager sharedSyncManager] firstSync:YES requireDeviceAuthentication:YES];
