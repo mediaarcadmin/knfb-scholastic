@@ -349,9 +349,9 @@ static SCHDictionaryAccessManager *sharedManager = nil;
                         } else {
                             [collectLine appendBytes:line length:strlen(line)];                                        
                             [collectLine appendBytes:(char []){'\0'} length:1];
-                            [tmpCompleteLine release];
                             tmpCompleteLine = [[NSString alloc] initWithData:collectLine encoding:NSUTF8StringEncoding];
                             completeLine = (char *)[tmpCompleteLine UTF8String];
+                            [tmpCompleteLine release], tmpCompleteLine = nil;
                             [collectLine release], collectLine = nil;
                             bufferPopulated = NO;
                         }
@@ -390,6 +390,7 @@ static SCHDictionaryAccessManager *sharedManager = nil;
                     tmpCompleteLine = [[NSString alloc] initWithData:collectLine encoding:NSUTF8StringEncoding];
                     completeLine = (char *)[tmpCompleteLine UTF8String];
                     [collectLine release], collectLine = nil;
+                    [tmpCompleteLine release], tmpCompleteLine = nil;
                     
                     start = strtok(completeLine, kSCHDictionaryManifestEntryColumnSeparator);
                     if (start != NULL) {
@@ -413,7 +414,6 @@ static SCHDictionaryAccessManager *sharedManager = nil;
                 
                 
                 [collectLine release], collectLine = nil;
-                [tmpCompleteLine release], tmpCompleteLine = nil;
                 
                 fclose(file);
             }
