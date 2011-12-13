@@ -93,6 +93,8 @@ char * const kSCHDictionaryManifestEntryColumnSeparator = "\t";
 - (BOOL)stateNeedsWiFi;
 - (BOOL)stateIsWaitingForUserInteraction;
 
+- (SCHDictionaryManifestEntry *)nextManifestEntryUpdateForCurrentDictionaryVersion;
+
 @end
 
 #pragma mark -
@@ -428,6 +430,33 @@ static SCHDictionaryDownloadManager *sharedManager = nil;
 #pragma mark -
 #pragma mark Processing Methods
 
+- (SCHDictionaryManifestEntry *)nextManifestEntryUpdateForCurrentDictionaryVersion
+{
+    NSString *currentDictionaryVersion = [self dictionaryVersion];
+    
+    SCHDictionaryManifestEntry *entryUpdateForCurrentDictionaryVersion = nil;
+    SCHDictionaryManifestEntry *defaultEntryUpdate = nil;
+    
+    for (SCHDictionaryManifestEntry *anEntry in self.manifestUpdates) {
+        //NSLog(@"from: (%@) to: (%@) URL: %@", anEntry.fromVersion, anEntry.toVersion, anEntry.url);
+
+        if ([anEntry fromVersion]) {
+            if ([[anEntry fromVersion] isEqualToString:currentDictionaryVersion]) {
+                entryUpdateForCurrentDictionaryVersion = anEntry;
+                break;
+            }
+        } else {
+            defaultEntryUpdate = anEntry;
+        }
+    }
+    
+    if (entryUpdateForCurrentDictionaryVersion) {
+        return entryUpdateForCurrentDictionaryVersion;
+    } else {
+        return defaultEntryUpdate;
+    }
+}
+
 - (void)processDictionary
 {
     
@@ -485,56 +514,17 @@ static SCHDictionaryDownloadManager *sharedManager = nil;
 		{
 			NSLog(@"needs manifest version check...");
             
-            bool processUpdate = NO;
-            SCHDictionaryManifestEntry *entry = nil;
+            BOOL processUpdate = NO;
+            SCHDictionaryManifestEntry *entry = [self nextManifestEntryUpdateForCurrentDictionaryVersion];
 
-            if (self.dictionaryVersion == nil) {
-                if ([self.manifestUpdates count]) {
-                    entry = [self.manifestUpdates objectAtIndex:0];
-                }
-                processUpdate = YES;
-            } else {
+            NSString *currentDictionaryVersion = [self dictionaryVersion];
             
-                for (SCHDictionaryManifestEntry *anEntry in self.manifestUpdates) {
-                    NSLog(@"from: %@ to: %@ URL: %@", anEntry.fromVersion, anEntry.toVersion, anEntry.url);
+            if (currentDictionaryVersion) {
+                if ([currentDictionaryVersion compare:[entry toVersion] options:NSNumericSearch] == NSOrderedAscending) {
+                    processUpdate = YES;
                 }
-                
-                
-                NSArray *currentVersionComponents = [self.dictionaryVersion componentsSeparatedByString:@"."];
-                
-                if (!currentVersionComponents || [currentVersionComponents count] != 2) {
-                    NSLog(@"Could not process version '%@'", self.dictionaryVersion);
-                    return;
-                }
-                
-                int currentMajorVersion = [[currentVersionComponents objectAtIndex:0] intValue];
-                int currentMinorVersion = [[currentVersionComponents objectAtIndex:1] intValue];
-                                
-                while ([self.manifestUpdates count] > 0) {
-                    
-                    NSArray *tmpVersionComponents = [[(SCHDictionaryManifestEntry *) [self.manifestUpdates objectAtIndex:0] toVersion]
-                                                     componentsSeparatedByString:@"."];
-                    
-                    if (!tmpVersionComponents || [currentVersionComponents count] != 2) {
-                        NSLog(@"Did not understand manifest version '%@'", [[self.manifestUpdates objectAtIndex:0] toVersion]);
-                        break;
-                    }
-                    
-                    int tmpMajorVersion = [[tmpVersionComponents objectAtIndex:0] intValue];
-                    int tmpMinorVersion = [[tmpVersionComponents objectAtIndex:1] intValue];
-                    
-                    // if the version is greater than the current one, then we need to process this entry
-                    if ((tmpMajorVersion > currentMajorVersion) 
-                        || (tmpMajorVersion == currentMajorVersion && tmpMinorVersion > currentMinorVersion)) {
-                        entry = [self.manifestUpdates objectAtIndex:0];
-                        processUpdate = YES;
-                        break;
-                    } else {
-                        // otherwise we need to remove this manifest entry and try again
-                        [self.manifestUpdates removeObjectAtIndex:0];
-                    }
-                    
-                }
+            } else {
+                processUpdate = YES;
             }
             
             if (processUpdate) {
@@ -559,7 +549,7 @@ static SCHDictionaryDownloadManager *sharedManager = nil;
             SCHDictionaryManifestEntry *entry = nil;
             
             if ([self.manifestUpdates count]) {
-                entry = [self.manifestUpdates objectAtIndex:0];
+                entry = [self nextManifestEntryUpdateForCurrentDictionaryVersion];
             } else {
                 entry = [self manifestEntryFromDatabase];
             }
@@ -595,7 +585,7 @@ static SCHDictionaryDownloadManager *sharedManager = nil;
             SCHDictionaryManifestEntry *entry = nil;
             
             if ([self.manifestUpdates count]) {
-                entry = [self.manifestUpdates objectAtIndex:0];
+                entry = [self nextManifestEntryUpdateForCurrentDictionaryVersion];
             } else {
                 entry = [self manifestEntryFromDatabase];
             }
@@ -631,8 +621,8 @@ static SCHDictionaryDownloadManager *sharedManager = nil;
             // to cope with resuming the app in this state, the manifest entry being processed
             // is cached in the database
             SCHDictionaryManifestEntry *entry;
-            if (self.manifestUpdates != nil) {
-                entry = [self.manifestUpdates objectAtIndex:0];
+            if ([self.manifestUpdates count]) {
+                entry = [self nextManifestEntryUpdateForCurrentDictionaryVersion];
                 [self storeManifestEntryInDatabase:entry];
             } else {
                 entry = [self manifestEntryFromDatabase];
