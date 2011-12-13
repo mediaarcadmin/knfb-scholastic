@@ -953,8 +953,6 @@ static SCHDictionaryDownloadManager *sharedManager = nil;
         
         NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init]; 
         
-        BOOL bufferPopulated = NO;
-
         if (file != NULL) {
             while (fgets(line, kSCHDictionaryManifestEntryEntryTableBufferSize, file) != NULL) {
                 
@@ -977,7 +975,6 @@ static SCHDictionaryDownloadManager *sharedManager = nil;
                         batchItems++;
                     }
                     
-                    bufferPopulated = NO;
                 } else {
                     if (collectLine == nil) {
                         collectLine = [[NSMutableData alloc] initWithBytes:line length:strlen(line)];
@@ -985,7 +982,6 @@ static SCHDictionaryDownloadManager *sharedManager = nil;
                         [collectLine appendBytes:line length:strlen(line)];
                     }
                     
-                    bufferPopulated = YES;
                 }
                 
                 if (batchItems > 500) {
@@ -1007,7 +1003,7 @@ static SCHDictionaryDownloadManager *sharedManager = nil;
             
             // if the final line doesn't have an end of line character, check to see if the buffer still has data
             // if so, try to parse the final line
-            if (bufferPopulated) {
+            if (collectLine != nil) {
                 
                 tmpCompleteLine = [[NSString alloc] initWithData:collectLine encoding:NSUTF8StringEncoding];
                 // add a new line character
@@ -1086,8 +1082,6 @@ static SCHDictionaryDownloadManager *sharedManager = nil;
         
         NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init]; 
         
-        BOOL bufferPopulated = NO;
-        
         if (file != NULL) {
             setlinebuf(file);
             while (fgets(line, kSCHDictionaryManifestEntryWordFormTableBufferSize, file) != NULL) {
@@ -1104,8 +1098,6 @@ static SCHDictionaryDownloadManager *sharedManager = nil;
                         [tmpCompleteLine release], tmpCompleteLine = nil;
                     }
                     
-                    bufferPopulated = NO;
-                    
                     BOOL success = [self parseWordFormLine:completeLine context:context updates:NO];
                     if (success) {
                         savedItems++;
@@ -1118,7 +1110,6 @@ static SCHDictionaryDownloadManager *sharedManager = nil;
                         [collectLine appendBytes:line length:strlen(line)];
                     }
                     
-                    bufferPopulated = YES;
                 }
                 
                 if (batchItems > 1000) {
@@ -1137,7 +1128,7 @@ static SCHDictionaryDownloadManager *sharedManager = nil;
             
             // if the final line doesn't have an end of line character, check to see if the buffer still has data
             // if so, try to parse the final line
-            if (bufferPopulated) {
+            if (collectLine != nil) {
                 
                 tmpCompleteLine = [[NSString alloc] initWithData:collectLine encoding:NSUTF8StringEncoding];
                 completeLine = (char *)[tmpCompleteLine UTF8String];
@@ -1391,8 +1382,6 @@ static SCHDictionaryDownloadManager *sharedManager = nil;
         
         NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init]; 
         
-        BOOL bufferPopulated = NO;
-        
         // go through each line of the update file
         while (fgets(line, kSCHDictionaryManifestEntryEntryTableBufferSize, updateFile) != NULL) {
             if (strLength = strlen(line), strLength > 0 && line[strLength-1] == '\n') {        
@@ -1412,8 +1401,6 @@ static SCHDictionaryDownloadManager *sharedManager = nil;
                 currentOffset = ftell(existingFile);
                 fputs(completeLine, existingFile);
                 
-                bufferPopulated = NO;
-
                 BOOL success = [self parseEntryTableLine:completeLine withOffset:currentOffset context:context updates:YES];
                 if (success) {
                     updatedTotal++;
@@ -1427,7 +1414,6 @@ static SCHDictionaryDownloadManager *sharedManager = nil;
                     [collectLine appendBytes:line length:strlen(line)];
                 }
                 
-                bufferPopulated = YES;
             }
             
             if (batchItems > 1000) {
@@ -1444,7 +1430,7 @@ static SCHDictionaryDownloadManager *sharedManager = nil;
         
         // if the final line doesn't have an end of line character, check to see if the buffer still has data
         // if so, try to parse the final line
-        if (bufferPopulated) {
+        if (collectLine != nil) {
 
             tmpCompleteLine = [[NSString alloc] initWithData:collectLine encoding:NSUTF8StringEncoding];
             // add a new line character
@@ -1533,8 +1519,6 @@ static SCHDictionaryDownloadManager *sharedManager = nil;
         
         NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init]; 
         
-        BOOL bufferPopulated = NO;
-        
         if (file != NULL) {
             setlinebuf(file);
             while (fgets(line, kSCHDictionaryManifestEntryWordFormTableBufferSize, file) != NULL) {
@@ -1550,7 +1534,6 @@ static SCHDictionaryDownloadManager *sharedManager = nil;
                         completeLine = (char *)[tmpCompleteLine UTF8String];
                         [collectLine release], collectLine = nil;
                         [tmpCompleteLine release], tmpCompleteLine = nil;
-                        bufferPopulated = NO;
                     }
                     
                     BOOL success = [self parseWordFormLine:completeLine context:context updates:YES];
@@ -1577,12 +1560,13 @@ static SCHDictionaryDownloadManager *sharedManager = nil;
                         [collectLine appendBytes:line length:strlen(line)];
                     }
                     
-                    bufferPopulated = YES;
                 }
                 
             }   
             
-            if (bufferPopulated) {
+            // if the final line doesn't have an end of line character, check to see if the buffer still has data
+            // if so, try to parse the final line
+            if (collectLine != nil) {
                 tmpCompleteLine = [[NSString alloc] initWithData:collectLine encoding:NSUTF8StringEncoding];
                 // add a new line character
                 completeLine = (char *)[tmpCompleteLine UTF8String];
