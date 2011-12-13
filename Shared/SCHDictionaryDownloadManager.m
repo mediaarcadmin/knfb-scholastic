@@ -1341,17 +1341,15 @@ static SCHDictionaryDownloadManager *sharedManager = nil;
         // if so, try to parse the final line
         if (bufferPopulated) {
 
-//            [collectLine appendBytes:(char []){'\n'} length:1];
             tmpCompleteLine = [[NSString alloc] initWithData:collectLine encoding:NSUTF8StringEncoding];
             // add a new line character
-//            completeLine = (char *)[[NSString stringWithFormat:@"%@\n", tmpCompleteLine] UTF8String];
-            completeLine = (char *)[tmpCompleteLine UTF8String];
+            completeLine = (char *)[[NSString stringWithFormat:@"%@\n", tmpCompleteLine] UTF8String];
 
             [collectLine release], collectLine = nil;
 
             // get the current offset, then write the line to the main file
             currentOffset = ftell(existingFile);
-            fputs(line, existingFile);
+            fputs(completeLine, existingFile);
             
             BOOL success = [self parseEntryTableUpdateLine:completeLine withOffset:currentOffset context:context];
             if (success) {
