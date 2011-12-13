@@ -43,11 +43,6 @@ static const CGFloat kProfilePadTableOffsetLandscape = 220.0f;
     [settingsButton release], settingsButton = nil;
 }
 
-- (void)dealloc 
-{    
-    [super dealloc];
-}
-
 #pragma mark - View lifecycle
 
 - (void)viewDidLoad 
@@ -77,12 +72,6 @@ static const CGFloat kProfilePadTableOffsetLandscape = 220.0f;
 {
     [super viewWillAppear:animated];
     [self setupAssetsForOrientation:self.interfaceOrientation];
-}
-
-- (void)viewDidUnload 
-{
-    [self releaseViewObjects];
-    [super viewDidUnload];
 }
 
 #pragma mark - Orientation methods

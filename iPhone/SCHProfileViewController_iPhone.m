@@ -54,12 +54,6 @@ static const CGFloat kProfilePhoneTableOffsetLandscape = 20.0f;
     [logoContainer release], logoContainer = nil;
 }
 
-- (void)dealloc 
-{    
-    [self releaseViewObjects];
-    [super dealloc];
-}
-
 #pragma mark - View lifecycle
 
 - (void)viewDidLoad 
