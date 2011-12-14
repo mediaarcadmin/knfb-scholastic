@@ -106,7 +106,7 @@ managedObjectContext:(NSManagedObjectContext *)managedObjectContext
         
         SCHBookManager *bookManager = [SCHBookManager sharedBookManager];
         eucBook = [[bookManager checkOutEucBookForBookIdentifier:self.identifier inManagedObjectContext:managedObjectContext] retain];
-        paragraphSource = [[bookManager checkOutParagraphSourceForBookIdentifier:self.identifier inManagedObjectContext:managedObjectContext] retain];
+        paragraphSource = (KNFBTextFlowParagraphSource *)[[bookManager checkOutParagraphSourceForBookIdentifier:self.identifier inManagedObjectContext:managedObjectContext] retain];
         
         openingPoint = [point retain];
     }

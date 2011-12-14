@@ -802,9 +802,9 @@ static NSInteger const kSCHLibreAccessWebServiceVaid = 33;
 		[objects setObject:[self objectFromTranslate:anObject.screenname] forKey:kSCHLibreAccessWebServiceScreenName];		
 		[objects setObject:[self objectFromTranslate:anObject.password] forKey:kSCHLibreAccessWebServicePassword];		
 		[objects setObject:[self objectFromTranslate:anObject.userkey] forKey:kSCHLibreAccessWebServiceUserKey];		
-		[objects setObject:[NSNumber numberWithProfileType:anObject.type] forKey:kSCHLibreAccessWebServiceType];		
+		[objects setObject:[NSNumber numberWithProfileType:(SCHProfileTypes)anObject.type] forKey:kSCHLibreAccessWebServiceType];		
 		[objects setObject:[self objectFromTranslate:anObject.id_] forKey:kSCHLibreAccessWebServiceID];		
-		[objects setObject:[NSNumber numberWithBookshelfStyle:anObject.BookshelfStyle] forKey:kSCHLibreAccessWebServiceBookshelfStyle];		
+		[objects setObject:[NSNumber numberWithBookshelfStyle:(SCHBookshelfStyles)anObject.BookshelfStyle] forKey:kSCHLibreAccessWebServiceBookshelfStyle];		
 		[objects setObject:[self objectFromTranslate:anObject.LastModified] forKey:kSCHLibreAccessWebServiceLastModified];		
 		[objects setObject:[self objectFromTranslate:anObject.LastScreenNameModified] forKey:kSCHLibreAccessWebServiceLastScreenNameModified];		
 		[objects setObject:[self objectFromTranslate:anObject.LastPasswordModified] forKey:kSCHLibreAccessWebServiceLastPasswordModified];		
@@ -824,8 +824,8 @@ static NSInteger const kSCHLibreAccessWebServiceVaid = 33;
 		NSMutableDictionary *objects = [NSMutableDictionary dictionary];
 		
 		[objects setObject:[self objectFromTranslate:anObject.ContentIdentifier] forKey:kSCHLibreAccessWebServiceContentIdentifier];
-		[objects setObject:[NSNumber numberWithContentIdentifierType:anObject.ContentIdentifierType] forKey:kSCHLibreAccessWebServiceContentIdentifierType];		
-		[objects setObject:[NSNumber numberWithDRMQualifier:anObject.DRMQualifier] forKey:kSCHLibreAccessWebServiceDRMQualifier];		
+		[objects setObject:[NSNumber numberWithContentIdentifierType:(SCHContentIdentifierTypes)anObject.ContentIdentifierType] forKey:kSCHLibreAccessWebServiceContentIdentifierType];		
+		[objects setObject:[NSNumber numberWithDRMQualifier:(SCHDRMQualifiers)anObject.DRMQualifier] forKey:kSCHLibreAccessWebServiceDRMQualifier];		
 		[objects setObject:[self objectFromTranslate:anObject.Format] forKey:kSCHLibreAccessWebServiceFormat];		
 		[objects setObject:[self objectFromTranslate:anObject.Version] forKey:kSCHLibreAccessWebServiceVersion];		
 		[objects setObject:[self objectFromTranslate:[[anObject ContentProfileList] ContentProfileItem]] forKey:kSCHLibreAccessWebServiceProfileList];
@@ -881,14 +881,14 @@ static NSInteger const kSCHLibreAccessWebServiceVaid = 33;
 		NSMutableDictionary *objects = [NSMutableDictionary dictionary];
 		
 		[objects setObject:[self objectFromTranslate:anObject.ContentIdentifier] forKey:kSCHLibreAccessWebServiceContentIdentifier];
-		[objects setObject:[NSNumber numberWithContentIdentifierType:anObject.ContentIdentifierType] forKey:kSCHLibreAccessWebServiceContentIdentifierType];
+		[objects setObject:[NSNumber numberWithContentIdentifierType:(SCHContentIdentifierTypes)anObject.ContentIdentifierType] forKey:kSCHLibreAccessWebServiceContentIdentifierType];
 		[objects setObject:[self objectFromTranslate:anObject.Title] forKey:kSCHLibreAccessWebServiceTitle];
 		[objects setObject:[self objectFromTranslate:anObject.Author] forKey:kSCHLibreAccessWebServiceAuthor];
 		[objects setObject:[self objectFromTranslate:anObject.Description] forKey:kSCHLibreAccessWebServiceDescription];
 		[objects setObject:[self objectFromTranslate:anObject.Version] forKey:kSCHLibreAccessWebServiceVersion];
 		[objects setObject:[self objectFromTranslate:anObject.PageNumber] forKey:kSCHLibreAccessWebServicePageNumber];
 		[objects setObject:[self objectFromTranslate:anObject.FileSize] forKey:kSCHLibreAccessWebServiceFileSize];
-		[objects setObject:[NSNumber numberWithDRMQualifier:anObject.DRMQualifier] forKey:kSCHLibreAccessWebServiceDRMQualifier];
+		[objects setObject:[NSNumber numberWithDRMQualifier:(SCHDRMQualifiers)anObject.DRMQualifier] forKey:kSCHLibreAccessWebServiceDRMQualifier];
 		[objects setObject:[self objectFromTranslate:anObject.CoverURL] forKey:kSCHLibreAccessWebServiceCoverURL];
 		[objects setObject:[self objectFromTranslate:anObject.ContentURL] forKey:kSCHLibreAccessWebServiceContentURL];
 		[objects setObject:[self objectFromTranslate:anObject.EreaderCategories] forKey:kSCHLibreAccessWebServiceeReaderCategories];
@@ -908,8 +908,8 @@ static NSInteger const kSCHLibreAccessWebServiceVaid = 33;
 		NSMutableDictionary *objects = [NSMutableDictionary dictionary];
 		
 		[objects setObject:[self objectFromTranslate:anObject.id_] forKey:kSCHLibreAccessWebServiceID];
-		[objects setObject:[NSNumber numberWithSaveAction:anObject.action] forKey:kSCHLibreAccessWebServiceAction];
-		[objects setObject:[NSNumber numberWithStatusCode:anObject.status] forKey:kSCHLibreAccessWebServiceStatus];
+		[objects setObject:[NSNumber numberWithSaveAction:(SCHSaveActions)anObject.action] forKey:kSCHLibreAccessWebServiceAction];
+		[objects setObject:[NSNumber numberWithStatusCode:(SCHStatusCodes)anObject.status] forKey:kSCHLibreAccessWebServiceStatus];
 		[objects setObject:[self objectFromTranslate:anObject.screenname] forKey:kSCHLibreAccessWebServiceScreenName];
 		[objects setObject:[self objectFromTranslate:anObject.statuscode] forKey:kSCHLibreAccessWebServiceStatusCode];
 		[objects setObject:[self objectFromTranslate:anObject.statusmessage] forKey:kSCHLibreAccessWebServiceStatusMessage];
@@ -927,7 +927,7 @@ static NSInteger const kSCHLibreAccessWebServiceVaid = 33;
 	if (anObject != nil) {
 		NSMutableDictionary *objects = [NSMutableDictionary dictionary];
 		
-		[objects setObject:[NSNumber numberWithUserSettingsType:anObject.SettingType] forKey:kSCHLibreAccessWebServiceSettingType];
+		[objects setObject:[NSNumber numberWithUserSettingsType:(SCHUserSettingsTypes)anObject.SettingType] forKey:kSCHLibreAccessWebServiceSettingType];
 		[objects setObject:[self objectFromTranslate:anObject.SettingValue] forKey:kSCHLibreAccessWebServiceSettingValue];
 		
 		ret = objects;					
@@ -960,8 +960,8 @@ static NSInteger const kSCHLibreAccessWebServiceVaid = 33;
 		NSMutableDictionary *objects = [NSMutableDictionary dictionary];
 		
 		[objects setObject:[self objectFromTranslate:anObject.contentIdentifier] forKey:kSCHLibreAccessWebServiceContentIdentifier];
-		[objects setObject:[NSNumber numberWithContentIdentifierType:anObject.ContentIdentifierType] forKey:kSCHLibreAccessWebServiceContentIdentifierType];
-		[objects setObject:[NSNumber numberWithDRMQualifier:anObject.drmqualifier] forKey:kSCHLibreAccessWebServiceDRMQualifier];
+		[objects setObject:[NSNumber numberWithContentIdentifierType:(SCHContentIdentifierTypes)anObject.ContentIdentifierType] forKey:kSCHLibreAccessWebServiceContentIdentifierType];
+		[objects setObject:[NSNumber numberWithDRMQualifier:(SCHDRMQualifiers)anObject.drmqualifier] forKey:kSCHLibreAccessWebServiceDRMQualifier];
 		[objects setObject:[self objectFromTranslate:anObject.format] forKey:kSCHLibreAccessWebServiceFormat];
 		[objects setObject:[self objectFromTranslate:anObject.PrivateAnnotations] forKey:kSCHLibreAccessWebServicePrivateAnnotations];
 		
@@ -1000,7 +1000,7 @@ static NSInteger const kSCHLibreAccessWebServiceVaid = 33;
 		NSMutableDictionary *objects = [NSMutableDictionary dictionary];
 		
 		[objects setObject:[self objectFromTranslate:anObject.id_] forKey:kSCHLibreAccessWebServiceID];
-		[objects setObject:[NSNumber numberWithSaveAction:anObject.action] forKey:kSCHLibreAccessWebServiceAction];
+		[objects setObject:[NSNumber numberWithSaveAction:(SCHSaveActions)anObject.action] forKey:kSCHLibreAccessWebServiceAction];
 		[objects setObject:[self objectFromTranslate:anObject.color] forKey:kSCHLibreAccessWebServiceColor];
 		[objects setObject:[self objectFromTranslate:anObject.location] forKey:kSCHLibreAccessWebServiceLocation];
 		[objects setObject:[self objectFromTranslate:anObject.endPage] forKey:kSCHLibreAccessWebServiceEndPage];
@@ -1053,7 +1053,7 @@ static NSInteger const kSCHLibreAccessWebServiceVaid = 33;
 		NSMutableDictionary *objects = [NSMutableDictionary dictionary];
 		
 		[objects setObject:[self objectFromTranslate:anObject.id_] forKey:kSCHLibreAccessWebServiceID];
-		[objects setObject:[NSNumber numberWithSaveAction:anObject.action] forKey:kSCHLibreAccessWebServiceAction];
+		[objects setObject:[NSNumber numberWithSaveAction:(SCHSaveActions)anObject.action] forKey:kSCHLibreAccessWebServiceAction];
 		[objects setObject:[self objectFromTranslate:anObject.location] forKey:kSCHLibreAccessWebServiceLocation];
 		[objects setObject:[self objectFromTranslate:anObject.color] forKey:kSCHLibreAccessWebServiceColor];
 		[objects setObject:[self objectFromTranslate:anObject.value] forKey:kSCHLibreAccessWebServiceValue];
@@ -1089,7 +1089,7 @@ static NSInteger const kSCHLibreAccessWebServiceVaid = 33;
 		NSMutableDictionary *objects = [NSMutableDictionary dictionary];
 		
 		[objects setObject:[self objectFromTranslate:anObject.id_] forKey:kSCHLibreAccessWebServiceID];
-		[objects setObject:[NSNumber numberWithSaveAction:anObject.action] forKey:kSCHLibreAccessWebServiceAction];
+		[objects setObject:[NSNumber numberWithSaveAction:(SCHSaveActions)anObject.action] forKey:kSCHLibreAccessWebServiceAction];
 		[objects setObject:[self objectFromTranslate:anObject.text] forKey:kSCHLibreAccessWebServiceText];
 		[objects setObject:[self objectFromTranslate:anObject.disabled] forKey:kSCHLibreAccessWebServiceDisabled];
 		[objects setObject:[self objectFromTranslate:anObject.location] forKey:kSCHLibreAccessWebServiceLocation];
@@ -1173,7 +1173,7 @@ static NSInteger const kSCHLibreAccessWebServiceVaid = 33;
 	if (anObject != nil) {
 		NSMutableDictionary *objects = [NSMutableDictionary dictionary];
 		
-		[objects setObject:[NSNumber numberWithTopFavoritesType:anObject.FavoriteType] forKey:kSCHLibreAccessWebServiceFavoriteType];
+		[objects setObject:[NSNumber numberWithTopFavoritesType:(SCHTopFavoritesTypes)anObject.FavoriteType] forKey:kSCHLibreAccessWebServiceFavoriteType];
 		[objects setObject:[self objectFromTranslate:[anObject.FavoriteTypeValuesList FavoriteTypesValuesItem]] forKey:kSCHLibreAccessWebServiceFavoriteTypeValuesList];
 		
 		ret = objects;					
@@ -1189,7 +1189,7 @@ static NSInteger const kSCHLibreAccessWebServiceVaid = 33;
 	if (anObject != nil) {
 		NSMutableDictionary *objects = [NSMutableDictionary dictionary];
 		
-		[objects setObject:[NSNumber numberWithTopFavoritesType:anObject.TopFavoritesType] forKey:kSCHLibreAccessWebServiceTopFavoritesType];
+		[objects setObject:[NSNumber numberWithTopFavoritesType:(SCHTopFavoritesTypes)anObject.TopFavoritesType] forKey:kSCHLibreAccessWebServiceTopFavoritesType];
 		[objects setObject:[self objectFromTranslate:anObject.TopFavoritesTypeValue] forKey:kSCHLibreAccessWebServiceTopFavoritesTypeValue];
 		[objects setObject:[self objectFromTranslate:[anObject.TopFavoritesContentItems TopFavoritesContentItem]] forKey:kSCHLibreAccessWebServiceTopFavoritesContentItems];
 		
@@ -1207,7 +1207,7 @@ static NSInteger const kSCHLibreAccessWebServiceVaid = 33;
 		NSMutableDictionary *objects = [NSMutableDictionary dictionary];
 		
 		[objects setObject:[self objectFromTranslate:anObject.ContentIdentifier] forKey:kSCHLibreAccessWebServiceContentIdentifier];
-		[objects setObject:[NSNumber numberWithContentIdentifierType:anObject.ContentIdentifierType] forKey:kSCHLibreAccessWebServiceContentIdentifierType];
+		[objects setObject:[NSNumber numberWithContentIdentifierType:(SCHContentIdentifierTypes)anObject.ContentIdentifierType] forKey:kSCHLibreAccessWebServiceContentIdentifierType];
 		
 		ret = objects;					
 	}
@@ -1239,7 +1239,7 @@ static NSInteger const kSCHLibreAccessWebServiceVaid = 33;
 	if (anObject != nil) {
 		NSMutableDictionary *objects = [NSMutableDictionary dictionary];
 		
-		[objects setObject:[NSNumber numberWithStatusCode:anObject.status] forKey:kSCHLibreAccessWebServiceStatus];
+		[objects setObject:[NSNumber numberWithStatusCode:(SCHStatusCodes)anObject.status] forKey:kSCHLibreAccessWebServiceStatus];
 		[objects setObject:[self objectFromTranslate:anObject.statuscode] forKey:kSCHLibreAccessWebServiceStatusCode];
 		[objects setObject:[self objectFromTranslate:anObject.statusmessage] forKey:kSCHLibreAccessWebServiceStatusMessage];
 		
@@ -1293,7 +1293,7 @@ static NSInteger const kSCHLibreAccessWebServiceVaid = 33;
 		NSMutableDictionary *objects = [NSMutableDictionary dictionary];
 		
 		[objects setObject:[self objectFromTranslate:anObject.id_] forKey:kSCHLibreAccessWebServiceID];
-        [objects setObject:[NSNumber numberWithSaveAction:anObject.action] forKey:kSCHLibreAccessWebServiceAction];
+        [objects setObject:[NSNumber numberWithSaveAction:(SCHSaveActions)anObject.action] forKey:kSCHLibreAccessWebServiceAction];
 		[objects setObject:[self objectFromTranslate:anObject.statusmessage] forKey:kSCHLibreAccessWebServiceStatusMessage];
                 
 		ret = objects;					
@@ -1311,8 +1311,8 @@ static NSInteger const kSCHLibreAccessWebServiceVaid = 33;
 		
 		[objects setObject:[self objectFromTranslate:anObject.ISBN] forKey:kSCHLibreAccessWebServiceContentIdentifier];
         [objects setObject:[self objectFromTranslate:anObject.Format] forKey:kSCHLibreAccessWebServiceFormat];
-		[objects setObject:[NSNumber numberWithContentIdentifierType:anObject.IdentifierType] forKey:kSCHLibreAccessWebServiceContentIdentifierType];
-		[objects setObject:[NSNumber numberWithDRMQualifier:anObject.Qualifier] forKey:kSCHLibreAccessWebServiceDRMQualifier];
+		[objects setObject:[NSNumber numberWithContentIdentifierType:(SCHContentIdentifierTypes)anObject.IdentifierType] forKey:kSCHLibreAccessWebServiceContentIdentifierType];
+		[objects setObject:[NSNumber numberWithDRMQualifier:(SCHDRMQualifiers)anObject.Qualifier] forKey:kSCHLibreAccessWebServiceDRMQualifier];
         
 		ret = objects;					
 	}
@@ -1329,7 +1329,7 @@ static NSInteger const kSCHLibreAccessWebServiceVaid = 33;
 	} else if([anObject isKindOfClass:[NSMutableArray class]] == YES) {
 		ret = [NSMutableArray array];
 		
-		if ([anObject count] > 0) {
+		if ([(NSMutableArray *)anObject count] > 0) {
 			id firstItem = [anObject objectAtIndex:0];
 			
 			if ([firstItem isKindOfClass:[LibreAccessServiceSvc_ProfileItem class]] == YES) {
@@ -1460,14 +1460,14 @@ static NSInteger const kSCHLibreAccessWebServiceVaid = 33;
 		intoObject.screenname = [self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceScreenName]];
 		intoObject.password = [self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServicePassword]];
 		intoObject.userkey = [self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceUserKey]];
-		intoObject.type = [[object valueForKey:kSCHLibreAccessWebServiceType] profileTypeValue];
-		intoObject.action = [[self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceAction]] saveActionValue];
+		intoObject.type = (LibreAccessServiceSvc_ProfileTypes)[[object valueForKey:kSCHLibreAccessWebServiceType] profileTypeValue];
+		intoObject.action = (LibreAccessServiceSvc_SaveActions)[[self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceAction]] saveActionValue];
         if (intoObject.action != kSCHSaveActionsCreate) {
             intoObject.id_ = [self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceID]];
 		} else {
             intoObject.id_ = [NSNumber numberWithInt:0];
         }
-		intoObject.BookshelfStyle = [[object valueForKey:kSCHLibreAccessWebServiceBookshelfStyle] bookshelfStyleValue];
+		intoObject.BookshelfStyle = (LibreAccessServiceSvc_BookshelfStyle)[[object valueForKey:kSCHLibreAccessWebServiceBookshelfStyle] bookshelfStyleValue];
 		intoObject.storyInteractionEnabled = [self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceStoryInteractionEnabled]];
 	}
 }
@@ -1479,15 +1479,15 @@ static NSInteger const kSCHLibreAccessWebServiceVaid = 33;
         // hard coded to XPS, same as the windows application
 //		intoObject.Format = [self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceFormat]];
         intoObject.Format = @"XPS";
-		intoObject.IdentifierType = [[object valueForKey:kSCHLibreAccessWebServiceContentIdentifierType] contentIdentifierTypeValue];
-		intoObject.Qualifier = [[object valueForKey:kSCHLibreAccessWebServiceDRMQualifier] DRMQualifierValue];
+		intoObject.IdentifierType = (LibreAccessServiceSvc_ContentIdentifierTypes)[[object valueForKey:kSCHLibreAccessWebServiceContentIdentifierType] contentIdentifierTypeValue];
+		intoObject.Qualifier = (LibreAccessServiceSvc_drmqualifiers)[[object valueForKey:kSCHLibreAccessWebServiceDRMQualifier] DRMQualifierValue];
 	}
 }
 
 - (void)fromObject:(NSDictionary *)object intoUserSettingsItem:(LibreAccessServiceSvc_UserSettingsItem *)intoObject
 {
 	if (object != nil && intoObject != nil) {
-		intoObject.SettingType = [[object valueForKey:kSCHLibreAccessWebServiceSettingType] userSettingsTypeValue];
+		intoObject.SettingType = (LibreAccessServiceSvc_UserSettingsTypes)[[object valueForKey:kSCHLibreAccessWebServiceSettingType] userSettingsTypeValue];
 		intoObject.SettingValue = [self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceSettingValue]];
 	}
 }
@@ -1496,8 +1496,8 @@ static NSInteger const kSCHLibreAccessWebServiceVaid = 33;
 {
 	if (object != nil && intoObject != nil) {
 		intoObject.contentIdentifier = [self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceContentIdentifier]];
-		intoObject.ContentIdentifierType = [[object valueForKey:kSCHLibreAccessWebServiceContentIdentifierType] contentIdentifierTypeValue];
-		intoObject.drmqualifier = [[object valueForKey:kSCHLibreAccessWebServiceDRMQualifier] DRMQualifierValue];
+		intoObject.ContentIdentifierType = (LibreAccessServiceSvc_ContentIdentifierTypes)[[object valueForKey:kSCHLibreAccessWebServiceContentIdentifierType] contentIdentifierTypeValue];
+		intoObject.drmqualifier = (LibreAccessServiceSvc_drmqualifiers)[[object valueForKey:kSCHLibreAccessWebServiceDRMQualifier] DRMQualifierValue];
 		intoObject.format = [self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceFormat]];
         id privateAnnotationsRequest = [[LibreAccessServiceSvc_PrivateAnnotationsRequest alloc] init];
 		intoObject.PrivateAnnotationsRequest = privateAnnotationsRequest;
@@ -1558,8 +1558,8 @@ static NSInteger const kSCHLibreAccessWebServiceVaid = 33;
 {
 	if (object != nil && intoObject != nil) {
 		intoObject.contentIdentifier = [self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceContentIdentifier]];
-		intoObject.ContentIdentifierType = [[self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceContentIdentifierType]] contentIdentifierTypeValue];
-		intoObject.drmqualifier = [[self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceDRMQualifier]] DRMQualifierValue];		
+		intoObject.ContentIdentifierType = (LibreAccessServiceSvc_ContentIdentifierTypes)[[self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceContentIdentifierType]] contentIdentifierTypeValue];
+		intoObject.drmqualifier = (LibreAccessServiceSvc_drmqualifiers)[[self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceDRMQualifier]] DRMQualifierValue];		
 		intoObject.format = [self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceFormat]];
         id privateAnnotations = [[LibreAccessServiceSvc_PrivateAnnotations alloc] init];
 		intoObject.PrivateAnnotations = privateAnnotations;
@@ -1620,7 +1620,7 @@ static NSInteger const kSCHLibreAccessWebServiceVaid = 33;
 - (void)fromObject:(NSDictionary *)object intoHighlight:(LibreAccessServiceSvc_Highlight *)intoObject
 {
 	if (object != nil && intoObject != nil) {
-		intoObject.action = [[self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceAction]] saveActionValue];
+		intoObject.action = (LibreAccessServiceSvc_SaveActions)[[self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceAction]] saveActionValue];
         if (intoObject.action != kSCHSaveActionsCreate) {
             intoObject.id_ = [self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceID]];
 		}
@@ -1657,7 +1657,7 @@ static NSInteger const kSCHLibreAccessWebServiceVaid = 33;
 - (void)fromObject:(NSDictionary *)object intoNote:(LibreAccessServiceSvc_Note *)intoObject
 {
 	if (object != nil && intoObject != nil) {
-		intoObject.action = [[self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceAction]] saveActionValue];
+		intoObject.action = (LibreAccessServiceSvc_SaveActions)[[self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceAction]] saveActionValue];
         if (intoObject.action != kSCHSaveActionsCreate) {
             intoObject.id_ = [self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceID]];
 		}
@@ -1689,7 +1689,7 @@ static NSInteger const kSCHLibreAccessWebServiceVaid = 33;
 - (void)fromObject:(NSDictionary *)object intoBookmark:(LibreAccessServiceSvc_Bookmark *)intoObject
 {
 	if (object != nil && intoObject != nil) {
-		intoObject.action = [[self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceAction]] saveActionValue];
+		intoObject.action = (LibreAccessServiceSvc_SaveActions)[[self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceAction]] saveActionValue];
         if (intoObject.action != kSCHSaveActionsCreate) {
             intoObject.id_ = [self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceID]];
 		}
@@ -1725,8 +1725,8 @@ static NSInteger const kSCHLibreAccessWebServiceVaid = 33;
 {
 	if (object != nil && intoObject != nil) {
 		intoObject.contentIdentifier = [self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceContentIdentifier]];
-		intoObject.ContentIdentifierType = [[self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceContentIdentifierType]] contentIdentifierTypeValue];
-		intoObject.drmqualifier = [[self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceDRMQualifier]] DRMQualifierValue];		
+		intoObject.ContentIdentifierType = (LibreAccessServiceSvc_ContentIdentifierTypes)[[self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceContentIdentifierType]] contentIdentifierTypeValue];
+		intoObject.drmqualifier = (LibreAccessServiceSvc_drmqualifiers)[[self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceDRMQualifier]] DRMQualifierValue];		
 		intoObject.format = [self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceFormat]];
         id assignedProfileList = [[LibreAccessServiceSvc_AssignedProfileList alloc] init];
 		intoObject.AssignedProfileList = assignedProfileList;
@@ -1744,7 +1744,7 @@ static NSInteger const kSCHLibreAccessWebServiceVaid = 33;
 {
 	if (object != nil && intoObject != nil) {
 		intoObject.profileID = [self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceProfileID]];
-		intoObject.action = [[self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceAction]] saveActionValue];
+		intoObject.action = (LibreAccessServiceSvc_SaveActions)[[self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceAction]] saveActionValue];
 		intoObject.lastmodified = [self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceLastModified]];				
 	}	
 }
@@ -1768,9 +1768,9 @@ static NSInteger const kSCHLibreAccessWebServiceVaid = 33;
 - (void)fromObject:(NSDictionary *)object intoReadingStatsContentItem:(LibreAccessServiceSvc_ReadingStatsContentItem *)intoObject
 {
 	if (object != nil && intoObject != nil) {
-		intoObject.ContentIdentifierType = [[self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceContentIdentifierType]] contentIdentifierTypeValue];
+		intoObject.ContentIdentifierType = (LibreAccessServiceSvc_ContentIdentifierTypes)[[self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceContentIdentifierType]] contentIdentifierTypeValue];
 		intoObject.contentIdentifier = [self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceContentIdentifier]];
-		intoObject.drmqualifier = [[self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceDRMQualifier]] DRMQualifierValue];		
+		intoObject.drmqualifier = (LibreAccessServiceSvc_drmqualifiers)[[self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceDRMQualifier]] DRMQualifierValue];		
 		intoObject.format = [self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceFormat]];
         id readingStatsEntryList = [[LibreAccessServiceSvc_ReadingStatsEntryList alloc] init];
 		intoObject.ReadingStatsEntryList = readingStatsEntryList;
@@ -1806,7 +1806,7 @@ static NSInteger const kSCHLibreAccessWebServiceVaid = 33;
 {
 	if (object != nil && intoObject != nil) {
 		intoObject.AssignedBooksOnly = [self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceAssignedBooksOnly]];
-		intoObject.TopFavoritesType = [[self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceTopFavoritesType]] topFavoritesTypeValue];
+		intoObject.TopFavoritesType = (LibreAccessServiceSvc_TopFavoritesTypes)[[self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceTopFavoritesType]] topFavoritesTypeValue];
 		intoObject.TopFavoritesTypeValue = [self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceTopFavoritesTypeValue]];
 	}	
 }
