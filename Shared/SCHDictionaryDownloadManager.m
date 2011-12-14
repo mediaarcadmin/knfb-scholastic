@@ -888,7 +888,8 @@ static SCHDictionaryDownloadManager *sharedManager = nil;
                 double timeInterval = [currentDate timeIntervalSinceDate:lastPrefUpdate];
                 
                 // have we updated in the last 24 hours?
-                if (timeInterval >= 86400) {
+                if (timeInterval >= 60) {
+                    doUpdate = YES;
                     [defaults setValue:currentDate forKey:@"lastDictionaryUpdateDate"];
                     [defaults synchronize];					
                 }
