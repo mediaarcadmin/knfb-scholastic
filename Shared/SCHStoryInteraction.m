@@ -24,6 +24,12 @@
 @synthesize bookStoryInteractions;
 @synthesize olderStoryInteraction;
 
+- (void)dealloc
+{
+    [ID release], ID = nil;
+    
+    [super dealloc];
+}
 - (BOOL)isValid
 {
     return(YES);
