@@ -13,6 +13,14 @@
 @synthesize animationDidStartBlock;
 @synthesize animationDidStopBlock;
 
+- (void)dealloc 
+{
+    [animationDidStartBlock release], animationDidStartBlock = nil;
+    [animationDidStopBlock release], animationDidStopBlock = nil;
+    
+    [super dealloc];
+}
+
 + (SCHAnimationDelegate *)animationDelegateWithStartBlock:(SCHAnimationDidStartBlock)startBlock
 {
     return [self animationDelegateWithStartBlock:startBlock stopBlock:nil];
