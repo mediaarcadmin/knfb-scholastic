@@ -64,6 +64,9 @@
 - (void)dealloc
 {
     [self releaseViewObjects];
+    [categoryMode release], categoryMode = nil;
+    [word release], word = nil;
+
     [super dealloc];
 }
 
