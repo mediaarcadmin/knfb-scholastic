@@ -488,8 +488,8 @@ static SCHDictionaryDownloadManager *sharedManager = nil;
     }
 	
     SCHDictionaryProcessingState state = [self dictionaryProcessingState];
-	//NSLog(@"**** Calling processDictionary with state %d...", state);
-    fprintf(stderr, "**** Calling processDictionary with state %d...\n", state);
+	NSLog(@"**** Calling processDictionary with state %d...", state);
+//    fprintf(stderr, "**** Calling processDictionary with state %d...\n", state);
 
 	switch (state) {
         case SCHDictionaryProcessingStateUserSetup:
@@ -886,9 +886,10 @@ static SCHDictionaryDownloadManager *sharedManager = nil;
                 [defaults synchronize];
                 doUpdate = YES;
             } else {
-                NSDate *updateAfter = [lastPrefUpdate dateByAddingTimeInterval:60.0];
-                
+
                 // have we updated in the last 24 hours?
+                NSDate *updateAfter = [lastPrefUpdate dateByAddingTimeInterval:86400.0];
+                
                 if ([updateAfter compare:currentDate] == NSOrderedAscending) {
                     doUpdate = YES;
                     [defaults setObject:currentDate forKey:@"lastDictionaryUpdateDate"];
@@ -897,10 +898,12 @@ static SCHDictionaryDownloadManager *sharedManager = nil;
             }		
                         
             if (doUpdate) {
-                fprintf(stderr, "Dictionary needs an update check. %g secs since last check\n", [currentDate timeIntervalSinceDate:lastPrefUpdate]);
+                NSLog(@"Dictionary needs an update check. %g secs since last check\n", [currentDate timeIntervalSinceDate:lastPrefUpdate]);
+                //fprintf(stderr, "Dictionary needs an update check. %g secs since last check\n", [currentDate timeIntervalSinceDate:lastPrefUpdate]);
                 [self threadSafeUpdateDictionaryState:SCHDictionaryProcessingStateNeedsManifest];
             } else {
-                fprintf(stderr, "Dictionary does not need an update check. %g secs since last check\n", [currentDate timeIntervalSinceDate:lastPrefUpdate]);
+                NSLog(@"Dictionary does not need an update check. %g secs since last check\n", [currentDate timeIntervalSinceDate:lastPrefUpdate]);
+                //fprintf(stderr, "Dictionary does not need an update check. %g secs since last check\n", [currentDate timeIntervalSinceDate:lastPrefUpdate]);
             }
         }
         
