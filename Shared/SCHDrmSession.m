@@ -39,7 +39,10 @@ struct SCHDrmIVars {
 	Drm_Uninitialize(drmIVars->drmAppContext); 
 	Oem_MemFree(drmIVars->drmAppContext);    
     free(drmIVars);
-	self.bookID = nil;
+    [bookID release], bookID = nil;
+    [boundBookID release], boundBookID = nil;
+    [serverResponse release], serverResponse = nil;
+    
 	[super dealloc];
 }
 
