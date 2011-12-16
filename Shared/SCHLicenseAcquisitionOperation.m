@@ -114,6 +114,8 @@
         [self endOperation];
 		return;
 	}
+    
+    NSLog(@"licenseAcquisitionSession didFailWithError: %@ : %@", error, [error userInfo]);
 
     [self updateBookWithFailure];
 }
