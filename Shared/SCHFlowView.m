@@ -136,8 +136,7 @@ managedObjectContext:(NSManagedObjectContext *)managedObjectContext
     
     switch (self.selectionMode) {
         case SCHReadingViewSelectionModeYoungerDictionary:
-            self.eucBookView.highlightsAreSelectable = NO;
-            break;
+        case SCHReadingViewSelectionModeYoungerNoDictionary:
         case SCHReadingViewSelectionModeOlderDictionary:
             self.eucBookView.highlightsAreSelectable = NO;
             break;
