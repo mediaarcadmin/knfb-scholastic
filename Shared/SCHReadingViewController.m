@@ -927,7 +927,10 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
         // dispatch this onto the main thread to avoid a race condition with the notification going to the SCHBookAnnotations object
         dispatch_async(dispatch_get_main_queue(), ^{
             [self updateNotesCounter];
-            [self.readingView refreshHighlightsForPageAtIndex:self.currentPageIndex];
+            NSRange visibleIndices = [self storyInteractionPageIndices];
+            for (NSUInteger i = 0; i < visibleIndices.length; i++) {
+                [self.readingView refreshHighlightsForPageAtIndex:visibleIndices.location + i];
+            }
         });
     }
 }
