@@ -76,6 +76,7 @@
     [builtWord release];
     [answersByLength release];
     [answerCountsByLength release];
+    [controlButtons release];
     [super dealloc];
 }
 
