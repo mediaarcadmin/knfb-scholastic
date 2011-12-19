@@ -102,6 +102,7 @@ static Class controllerClassForStoryInteraction(SCHStoryInteraction *storyIntera
     [[NSNotificationCenter defaultCenter] removeObserver:self];
     
     [xpsProvider release], xpsProvider = nil;
+    [bookIdentifier release], bookIdentifier = nil;
     [containerView release], containerView = nil;
     [titleView release], titleView = nil;
     [closeButton release], closeButton = nil;
@@ -134,12 +135,14 @@ static Class controllerClassForStoryInteraction(SCHStoryInteraction *storyIntera
         
         if (!nibName) {
             NSLog(@"can't find NIB for Story Interaction controller '%s'", object_getClassName(self));
+            [self release];
             return nil;
         }
         
         self.nibObjects = [[NSBundle mainBundle] loadNibNamed:nibName owner:self options:nil];
         if ([self.nibObjects count] == 0) {
             NSLog(@"failed to load nib %@", nibName);
+            [self release];
             return nil;
         }
         
