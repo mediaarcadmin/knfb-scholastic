@@ -68,8 +68,9 @@
 - (void)annotationSyncComponentDidCompleteNotification:(NSNotification *)notification
 {
     NSNumber *profileID = [notification.userInfo objectForKey:SCHAnnotationSyncComponentCompletedProfileIDs];
-    
-    if ([profileID isEqualToNumber:self.privateAnnotations.AnnotationsContentItem.AnnotationsItem.ProfileID] == YES) {
+
+    if (self.privateAnnotations != nil &&
+        [profileID isEqualToNumber:self.privateAnnotations.AnnotationsContentItem.AnnotationsItem.ProfileID] == YES) {
         [sortedBookmarks release], sortedBookmarks = nil;
         [sortedHighlights release], sortedHighlights = nil;
         [sortedNotes release], sortedNotes = nil;
@@ -82,8 +83,14 @@
 {
     if (sortedBookmarks == nil) {
         NSSortDescriptor *sortDescriptor = [NSSortDescriptor sortDescriptorWithKey:kSCHLibreAccessWebServicePage ascending:YES];
-        NSArray *allBookmarks = [self.privateAnnotations.Bookmarks sortedArrayUsingDescriptors:
-                                [NSArray arrayWithObject:sortDescriptor]];
+        NSArray *allBookmarks = nil;
+        
+        if (self.privateAnnotations != nil) {
+            allBookmarks = [self.privateAnnotations.Bookmarks sortedArrayUsingDescriptors:
+                            [NSArray arrayWithObject:sortDescriptor]];
+        } else {
+            allBookmarks = [NSArray array];
+        }
         
         // remove deleted objects
         sortedBookmarks = [[allBookmarks filteredArrayUsingPredicate:
@@ -100,8 +107,14 @@
         NSSortDescriptor *sortDescriptor1 = [NSSortDescriptor sortDescriptorWithKey:kSCHLibreAccessWebServiceLocationPage ascending:YES];
         NSSortDescriptor *sortDescriptor2 = [NSSortDescriptor sortDescriptorWithKey:kSCHLibreAccessWebServiceEndPage ascending:YES];
         
-        NSArray *allHighlights = [self.privateAnnotations.Highlights sortedArrayUsingDescriptors:
-                                 [NSArray arrayWithObjects:sortDescriptor1, sortDescriptor2, nil]];
+        NSArray *allHighlights = nil;
+        
+        if (self.privateAnnotations != nil) {
+            allHighlights = [self.privateAnnotations.Highlights sortedArrayUsingDescriptors:
+                             [NSArray arrayWithObjects:sortDescriptor1, sortDescriptor2, nil]];
+        } else {
+            allHighlights = [NSArray array];
+        }
         
         // remove deleted objects
         sortedHighlights = [[allHighlights filteredArrayUsingPredicate:
@@ -117,8 +130,14 @@
         NSSortDescriptor *sortDescriptor1 = [NSSortDescriptor sortDescriptorWithKey:kSCHLibreAccessWebServiceLocationPage ascending:YES];
         NSSortDescriptor *sortDescriptor2 = [NSSortDescriptor sortDescriptorWithKey:kSCHLibreAccessWebServiceLastModified ascending:YES];
         
-        NSArray *allNotes = [self.privateAnnotations.Notes sortedArrayUsingDescriptors:
-                             [NSArray arrayWithObjects:sortDescriptor1, sortDescriptor2, nil]];
+        NSArray *allNotes = nil;
+        
+        if (self.privateAnnotations != nil) {
+            allNotes = [self.privateAnnotations.Notes sortedArrayUsingDescriptors:
+                        [NSArray arrayWithObjects:sortDescriptor1, sortDescriptor2, nil]];
+        } else {
+            allNotes = [NSArray array];
+        }
         
         // remove deleted objects
         sortedNotes = [[allNotes filteredArrayUsingPredicate:
@@ -195,36 +214,47 @@
 
 - (SCHHighlight *)createEmptyHighlight
 {
-    SCHHighlight *highlight = [NSEntityDescription insertNewObjectForEntityForName:kSCHHighlight 
-                                                            inManagedObjectContext:self.privateAnnotations.managedObjectContext];
+    SCHHighlight *highlight = nil;
     
-    SCHLocationText *locationText = [NSEntityDescription insertNewObjectForEntityForName:kSCHLocationText
-                                                                  inManagedObjectContext:self.privateAnnotations.managedObjectContext];
+    if (self.privateAnnotations != nil) {
+        highlight = [NSEntityDescription insertNewObjectForEntityForName:kSCHHighlight 
+                                                  inManagedObjectContext:self.privateAnnotations.managedObjectContext];
+        
+        SCHLocationText *locationText = [NSEntityDescription insertNewObjectForEntityForName:kSCHLocationText
+                                                                      inManagedObjectContext:self.privateAnnotations.managedObjectContext];
+        
+        SCHWordIndex *wordIndex = [NSEntityDescription insertNewObjectForEntityForName:kSCHWordIndex
+                                                                inManagedObjectContext:self.privateAnnotations.managedObjectContext];
+        
+        locationText.WordIndex = wordIndex;
+        
+        highlight.PrivateAnnotations = self.privateAnnotations;
+        highlight.Location = locationText;
+        
+        [sortedHighlights release], sortedHighlights = nil;
+	}
     
-    SCHWordIndex *wordIndex = [NSEntityDescription insertNewObjectForEntityForName:kSCHWordIndex
-                                                            inManagedObjectContext:self.privateAnnotations.managedObjectContext];
-    
-    locationText.WordIndex = wordIndex;
-    
-    highlight.PrivateAnnotations = self.privateAnnotations;
-    highlight.Location = locationText;
-    
-    [sortedHighlights release], sortedHighlights = nil;
-	
 	return highlight;
 }
 
-- (SCHHighlight *)createHighlightBetweenStartPage:(NSUInteger)startPage startWord:(NSUInteger)startWord endPage:(NSUInteger)endPage endWord:(NSUInteger)endWord color:(UIColor *)color
+- (SCHHighlight *)createHighlightBetweenStartPage:(NSUInteger)startPage 
+                                        startWord:(NSUInteger)startWord 
+                                          endPage:(NSUInteger)endPage 
+                                          endWord:(NSUInteger)endWord 
+                                            color:(UIColor *)color
 {
     SCHHighlight *newHighlight = [self createEmptyHighlight];
-    newHighlight.EndPage = [NSNumber numberWithInteger:endPage];
-    newHighlight.HighlightColor = color;
-    newHighlight.Location.Page = [NSNumber numberWithInteger:startPage];
-    newHighlight.Location.WordIndex.Start = [NSNumber numberWithInteger:startWord];
-    newHighlight.Location.WordIndex.End = [NSNumber numberWithInteger:endWord];
     
-    [sortedHighlights release], sortedHighlights = nil;
+    if (newHighlight != nil) {
+        newHighlight.EndPage = [NSNumber numberWithInteger:endPage];
+        newHighlight.HighlightColor = color;
+        newHighlight.Location.Page = [NSNumber numberWithInteger:startPage];
+        newHighlight.Location.WordIndex.Start = [NSNumber numberWithInteger:startWord];
+        newHighlight.Location.WordIndex.End = [NSNumber numberWithInteger:endWord];
         
+        [sortedHighlights release], sortedHighlights = nil;
+    }
+    
     return newHighlight;
 }
 
@@ -259,19 +289,23 @@
 
 - (SCHNote *)createEmptyNote
 {
-    SCHNote *note = [NSEntityDescription insertNewObjectForEntityForName:kSCHNote 
-                                                  inManagedObjectContext:self.privateAnnotations.managedObjectContext];
+    SCHNote *note = nil;
     
-    SCHLocationGraphics *locationGraphics = [NSEntityDescription insertNewObjectForEntityForName:kSCHLocationGraphics
-                                                                          inManagedObjectContext:self.privateAnnotations.managedObjectContext];
+    if (self.privateAnnotations != nil) {
+        note = [NSEntityDescription insertNewObjectForEntityForName:kSCHNote 
+                                             inManagedObjectContext:self.privateAnnotations.managedObjectContext];
+        
+        SCHLocationGraphics *locationGraphics = [NSEntityDescription insertNewObjectForEntityForName:kSCHLocationGraphics
+                                                                              inManagedObjectContext:self.privateAnnotations.managedObjectContext];
+        
+        note.PrivateAnnotations = self.privateAnnotations;
+        note.NoteColor = [UIColor whiteColor];
+        note.Location = locationGraphics;
+        note.NoteText = @"";
+        
+        [sortedNotes release], sortedNotes = nil;
+	}
     
-    note.PrivateAnnotations = self.privateAnnotations;
-    note.NoteColor = [UIColor whiteColor];
-    note.Location = locationGraphics;
-    note.NoteText = @"";
-    
-    [sortedNotes release], sortedNotes = nil;
-	
 	return note;
 }
 
