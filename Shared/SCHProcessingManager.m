@@ -34,6 +34,7 @@ extern NSString * const kSCHUserDefaultsSpaceSaverModeSetOffNotification;
 
 @interface SCHProcessingManager()
 
+- (void)createProcessingQueues;
 - (void)checkStateForAllBooks;
 - (BOOL)identifierNeedsProcessing:(SCHBookIdentifier *)identifier;
 
@@ -97,13 +98,7 @@ extern NSString * const kSCHUserDefaultsSpaceSaverModeSetOffNotification;
 - (id)init
 {
 	if ((self = [super init])) {
-		self.localProcessingQueue = [[[NSOperationQueue alloc] init] autorelease];
-		self.webServiceOperationQueue = [[[NSOperationQueue alloc] init] autorelease];
-		self.networkOperationQueue = [[[NSOperationQueue alloc] init] autorelease];
-		
-		[self.localProcessingQueue setMaxConcurrentOperationCount:2];
-		[self.networkOperationQueue setMaxConcurrentOperationCount:3];
-		[self.webServiceOperationQueue setMaxConcurrentOperationCount:10];
+		[self createProcessingQueues];
 		
         self.currentlyProcessingIdentifiers = [NSMutableArray array];
 		
@@ -351,6 +346,17 @@ static SCHProcessingManager *sharedManager = nil;
     }
 }
 
+- (void)createProcessingQueues
+{
+    self.localProcessingQueue = [[[NSOperationQueue alloc] init] autorelease];
+    self.webServiceOperationQueue = [[[NSOperationQueue alloc] init] autorelease];
+    self.networkOperationQueue = [[[NSOperationQueue alloc] init] autorelease];
+    
+    [self.localProcessingQueue setMaxConcurrentOperationCount:2];
+    [self.networkOperationQueue setMaxConcurrentOperationCount:3];
+    [self.webServiceOperationQueue setMaxConcurrentOperationCount:10];
+}
+
 - (void)cancelAllOperations
 {
     @synchronized(self) {
@@ -362,13 +368,7 @@ static SCHProcessingManager *sharedManager = nil;
         self.webServiceOperationQueue = nil;
         self.networkOperationQueue = nil;
         
-        self.localProcessingQueue = [[[NSOperationQueue alloc] init] autorelease];
-		self.webServiceOperationQueue = [[[NSOperationQueue alloc] init] autorelease];
-		self.networkOperationQueue = [[[NSOperationQueue alloc] init] autorelease];
-        
-        [self.localProcessingQueue setMaxConcurrentOperationCount:2];
-		[self.networkOperationQueue setMaxConcurrentOperationCount:3];
-		[self.webServiceOperationQueue setMaxConcurrentOperationCount:10];
+        [self createProcessingQueues];
         
         [self.currentlyProcessingIdentifiers removeAllObjects];
     }
