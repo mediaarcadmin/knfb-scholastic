@@ -399,6 +399,8 @@
         self.errorBadge.center = [self.superview convertPoint:self.center toView:self];
 
         self.errorBadge.hidden = YES;
+        self.isNewBadge.hidden = YES;
+        self.progressView.hidden = YES;
         
         if (bookState >= SCHBookProcessingStateNoURLs) {
             [self.activitySpinner startAnimating];
