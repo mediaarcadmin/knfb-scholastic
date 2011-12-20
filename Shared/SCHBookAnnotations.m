@@ -68,16 +68,11 @@
 - (void)annotationSyncComponentDidCompleteNotification:(NSNotification *)notification
 {
     NSNumber *profileID = [notification.userInfo objectForKey:SCHAnnotationSyncComponentCompletedProfileIDs];
-    NSNumber *myProfileID = self.privateAnnotations.AnnotationsContentItem.AnnotationsItem.ProfileID;
     
-    if (myProfileID) {
-        if ([profileID isEqualToNumber:myProfileID] == YES) {
-            [sortedBookmarks release], sortedBookmarks = nil;
-            [sortedHighlights release], sortedHighlights = nil;
-            [sortedNotes release], sortedNotes = nil;
-        }
-    } else {
-        NSLog(@"Warning: unable to retrieve a profileID for this bookannotation - this is a memory leak");
+    if ([profileID isEqualToNumber:self.privateAnnotations.AnnotationsContentItem.AnnotationsItem.ProfileID] == YES) {
+        [sortedBookmarks release], sortedBookmarks = nil;
+        [sortedHighlights release], sortedHighlights = nil;
+        [sortedNotes release], sortedNotes = nil;
     }
 }
 

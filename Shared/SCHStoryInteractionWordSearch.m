@@ -19,9 +19,8 @@
 
 - (void)dealloc
 {
-    [introduction release], words = nil;
-    [words release], words = nil;
-    [matrix release], matrix = nil;
+    [introduction release];
+    [words release];
     [super dealloc];
 }
 
