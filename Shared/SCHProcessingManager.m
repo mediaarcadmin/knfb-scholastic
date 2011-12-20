@@ -366,6 +366,10 @@ static SCHProcessingManager *sharedManager = nil;
 		self.webServiceOperationQueue = [[[NSOperationQueue alloc] init] autorelease];
 		self.networkOperationQueue = [[[NSOperationQueue alloc] init] autorelease];
         
+        [self.localProcessingQueue setMaxConcurrentOperationCount:2];
+		[self.networkOperationQueue setMaxConcurrentOperationCount:3];
+		[self.webServiceOperationQueue setMaxConcurrentOperationCount:10];
+        
         [self.currentlyProcessingIdentifiers removeAllObjects];
     }
 }
