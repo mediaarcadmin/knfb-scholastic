@@ -9,7 +9,6 @@
 #import "SCHReadingInteractionsListController.h"
 
 #import "SCHCustomToolbar.h"
-#import "SCHBookAnnotations.h"
 #import "SCHProfileItem.h"
 #import "SCHNote.h"
 #import "SCHReadingView.h"

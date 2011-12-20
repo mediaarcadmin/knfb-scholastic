@@ -31,7 +31,6 @@
 #import "SCHAppContentProfileItem.h"
 #import "SCHBookshelfSyncComponent.h"
 #import "SCHAppStateManager.h"
-#import "SCHBookAnnotations.h"
 #import "Reachability.h"
 
 static NSInteger const kSCHBookShelfViewControllerGridCellHeightPortrait = 138;

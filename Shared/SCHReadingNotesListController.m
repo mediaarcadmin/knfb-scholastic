@@ -8,7 +8,6 @@
 
 #import "SCHReadingNotesListController.h"
 #import "SCHCustomToolbar.h"
-#import "SCHBookAnnotations.h"
 #import "SCHAnnotationSyncComponent.h"
 #import "SCHProfileItem.h"
 #import "SCHNote.h"

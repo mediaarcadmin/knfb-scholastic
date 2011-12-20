@@ -11,7 +11,6 @@
 #import <QuartzCore/QuartzCore.h>
 #import "UIImage+BlioAdditions.h"
 #import "SCHNote.h"
-#import "SCHBookAnnotations.h"
 #import "SCHBookPoint.h"
 #import "NSDate+ServerDate.h"
 
