@@ -11,11 +11,30 @@
 
 static const CGFloat kProfileViewCellButtonWidth = 296.0f;
 
+@interface SCHProfileViewCell ()
+
+@property (nonatomic, retain) UIButton *leftCellButton;
+@property (nonatomic, retain) NSIndexPath *leftIndexPath;
+@property (nonatomic, retain) UIButton *rightCellButton;
+@property (nonatomic, retain) NSIndexPath *rightIndexPath;
+@property (nonatomic, assign) CGSize buttonImageSize;
+@property (nonatomic, assign) BOOL singleButtonMode;
+
+- (UIButton *)addButtonWithBackground:(UIImage *)backgroundImage;
+- (void)setSingleButtonPosition;
+- (void)setDoubleButtonPosition;
+
+@end
+
 @implementation SCHProfileViewCell
 
-@synthesize cellButton;
-@synthesize indexPath;
+@synthesize leftCellButton;
+@synthesize leftIndexPath;
+@synthesize rightCellButton;
+@synthesize rightIndexPath;
+@synthesize buttonImageSize;
 @synthesize delegate;
+@synthesize singleButtonMode;
 
 #pragma mark - Object lifecycle
 
@@ -24,55 +43,129 @@ static const CGFloat kProfileViewCellButtonWidth = 296.0f;
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
         self.selectionStyle = UITableViewCellSelectionStyleNone;
-
-        UIImage *bgImage = [UIImage imageNamed:@"button-blue"];
-        UIImage *cellBGImage = [bgImage stretchableImageWithLeftCapWidth:15 topCapHeight:0];
-        CGRect buttonFrame = CGRectMake(ceilf((CGRectGetWidth(self.contentView.bounds) - kProfileViewCellButtonWidth) / 2.0f), 
-                                        ceilf((CGRectGetHeight(self.contentView.bounds) - bgImage.size.height) / 2.0f), 
-                                        kProfileViewCellButtonWidth, 
-                                        bgImage.size.height);
-        
-        cellButton = [[UIButton buttonWithType:UIButtonTypeCustom] retain];
-        [cellButton setBackgroundImage:cellBGImage forState:UIControlStateNormal];
-        cellButton.backgroundColor = [UIColor clearColor];
-        [cellButton setFrame:buttonFrame];
-        [cellButton setAutoresizingMask:UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin];
-        [cellButton addTarget:self 
-                       action:@selector(pressed:) 
-             forControlEvents:UIControlEventTouchUpInside];
-        
-        [cellButton addTarget:self 
-                       action:@selector(pressedDown:) 
-             forControlEvents:UIControlEventTouchDown];
-        
-        [cellButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-        [cellButton setTitleShadowColor:[UIColor colorWithWhite:0 alpha:0.5f] forState:UIControlStateNormal];
-
-        cellButton.titleLabel.font = [UIFont fontWithName:@"Arial-BoldMT" size:26.0f];
-        cellButton.titleLabel.shadowOffset = CGSizeMake(0, -1);
-        cellButton.titleLabel.minimumFontSize = 14;
-        cellButton.titleLabel.adjustsFontSizeToFitWidth = YES;
-        cellButton.titleLabel.textAlignment = UITextAlignmentCenter;
-         
-        [self.contentView addSubview:cellButton];
-
+        UIImage *buttonBackgroundImage = [UIImage imageNamed:@"button-blue"];
+        buttonImageSize = [buttonBackgroundImage size];
+        leftCellButton = [[self addButtonWithBackground:buttonBackgroundImage] retain];
+        [self.contentView addSubview:leftCellButton];        
+        rightCellButton = [[self addButtonWithBackground:buttonBackgroundImage] retain];         
+        [self.contentView addSubview:rightCellButton];
     }
-    return(self);
+    return self;
 }
 
 - (void)dealloc
 {
-    [cellButton release], cellButton = nil;
-    [indexPath release], indexPath = nil;
+    [leftCellButton release], leftCellButton = nil;
+    [leftIndexPath release], leftIndexPath = nil;    
+    [rightCellButton release], rightCellButton = nil;
+    [rightIndexPath release], rightIndexPath = nil;
     delegate = nil;
+    
     [super dealloc];
+}
+
+#pragma mark - Private methods
+
+- (UIButton *)addButtonWithBackground:(UIImage *)backgroundImage
+{
+    UIButton *cellButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    
+    [cellButton setBackgroundImage:[backgroundImage stretchableImageWithLeftCapWidth:15 topCapHeight:0] 
+                          forState:UIControlStateNormal];
+    cellButton.backgroundColor = [UIColor clearColor];
+    [cellButton addTarget:self 
+                   action:@selector(pressed:) 
+         forControlEvents:UIControlEventTouchUpInside];
+    
+    [cellButton addTarget:self 
+                   action:@selector(pressedDown:) 
+         forControlEvents:UIControlEventTouchDown];
+    
+    [cellButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    [cellButton setTitleShadowColor:[UIColor colorWithWhite:0 alpha:0.5f] forState:UIControlStateNormal];
+    
+    cellButton.titleLabel.font = [UIFont fontWithName:@"Arial-BoldMT" size:26.0f];
+    cellButton.titleLabel.shadowOffset = CGSizeMake(0, -1);
+    cellButton.titleLabel.minimumFontSize = 14;
+    cellButton.titleLabel.adjustsFontSizeToFitWidth = YES;
+    cellButton.titleLabel.textAlignment = UITextAlignmentCenter;
+    
+    return cellButton;
+}
+
+- (void)setLeftButtonTitle:(NSString *)leftButtonTitle 
+             leftIndexPath:(NSIndexPath *)aLeftIndexPath
+          rightButtonTitle:(NSString *)rightButtonTitle
+            rightIndexPath:(NSIndexPath *)aRightIndexPath
+{
+    [self.leftCellButton setTitle:leftButtonTitle forState:UIControlStateNormal];
+    self.leftIndexPath = aLeftIndexPath;
+    [self.rightCellButton setTitle:rightButtonTitle forState:UIControlStateNormal];
+    self.rightIndexPath = aRightIndexPath;  
+    
+    self.singleButtonMode = (rightButtonTitle == nil);
+}
+
+- (void)layoutSubviews
+{
+    [super layoutSubviews];
+    
+    if (self.singleButtonMode == YES) {
+        [self setSingleButtonPosition];
+    } else {
+        [self setDoubleButtonPosition];
+    }    
+}
+
+- (void)setSingleButtonPosition
+{
+    // the left button == center button
+    CGRect centerButtonRect = self.contentView.bounds;
+    
+    [self.leftCellButton setFrame:CGRectMake(CGRectGetMinX(centerButtonRect) + ceilf((CGRectGetWidth(centerButtonRect) - kProfileViewCellButtonWidth) / 2.0f), 
+                                             ceilf((CGRectGetHeight(centerButtonRect) - self.buttonImageSize.height) / 2.0f), 
+                                             kProfileViewCellButtonWidth, 
+                                             self.buttonImageSize.height)];
+    [self.leftCellButton setAutoresizingMask:UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin];        
+    
+    self.rightCellButton.hidden = YES;
+}
+
+- (void)setDoubleButtonPosition
+{
+    CGRect leftButtonRect = self.contentView.bounds;
+    leftButtonRect.size.width /= 2.0;
+    CGRect rightButtonRect = self.contentView.bounds;
+    rightButtonRect.size.width /= 2.0;
+    rightButtonRect.origin.x += rightButtonRect.size.width;    
+    
+    [self.leftCellButton setFrame:CGRectMake(CGRectGetMinX(leftButtonRect) + ceilf((CGRectGetWidth(leftButtonRect) - kProfileViewCellButtonWidth) / 2.0f), 
+                                             ceilf((CGRectGetHeight(leftButtonRect) - self.buttonImageSize.height) / 2.0f), 
+                                             kProfileViewCellButtonWidth, 
+                                             self.buttonImageSize.height)];
+    [self.leftCellButton setAutoresizingMask:UIViewAutoresizingFlexibleLeftMargin];    
+    
+    self.rightCellButton.hidden = NO;    
+    [self.rightCellButton setFrame:CGRectMake(CGRectGetMinX(rightButtonRect) + ceilf((CGRectGetWidth(rightButtonRect) - kProfileViewCellButtonWidth) / 2.0f), 
+                                              ceilf((CGRectGetHeight(rightButtonRect) - self.buttonImageSize.height) / 2.0f), 
+                                              kProfileViewCellButtonWidth, 
+                                              self.buttonImageSize.height)];
+    [self.rightCellButton setAutoresizingMask:UIViewAutoresizingFlexibleRightMargin];        
 }
 
 #pragma mark - Action methods
 
 - (void)pressed:(id)sender
 {
-    [self.delegate profileViewCell:self didSelectAnimated:YES];
+    if (sender == self.leftCellButton) {
+        [self.delegate profileViewCell:self 
+               didSelectButtonAnimated:YES
+                             indexPath:self.leftIndexPath];
+    } else if (sender == self.rightCellButton) {
+        [self.delegate profileViewCell:self 
+               didSelectButtonAnimated:YES
+                             indexPath:self.rightIndexPath];        
+    }
 }
 
 - (void)pressedDown:(id)sender

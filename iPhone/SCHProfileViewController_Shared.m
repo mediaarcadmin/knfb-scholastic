@@ -200,8 +200,10 @@
     }
     
     SCHProfileItem *managedObject = [self.fetchedResultsController objectAtIndexPath:indexPath];
-	[cell.cellButton setTitle:[managedObject bookshelfName:NO] forState:UIControlStateNormal];
-    [cell setIndexPath:indexPath];
+	[cell setLeftButtonTitle:[managedObject bookshelfName:NO]
+               leftIndexPath:indexPath
+            rightButtonTitle:nil
+              rightIndexPath:nil];
     
     return(cell);
 }
@@ -216,9 +218,10 @@
 
 #pragma mark - SCHProfileViewCellDelegate
 
-- (void)profileViewCell:(SCHProfileViewCell *)cell didSelectAnimated:(BOOL)animated
+- (void)profileViewCell:(SCHProfileViewCell *)cell 
+didSelectButtonAnimated:(BOOL)animated
+              indexPath:(NSIndexPath *)indexPath 
 {
-    NSIndexPath *indexPath = cell.indexPath;
     if (indexPath.section != 0) {
         return;
     }
