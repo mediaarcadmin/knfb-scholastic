@@ -530,29 +530,31 @@ typedef enum
 
 - (void)profileDeleted:(NSNotification *)notification
 {
-    NSArray *profileIDs = [notification.userInfo objectForKey:SCHProfileSyncComponentDeletedProfileIDs];
-    
-    for (NSNumber *profileID in profileIDs) {
-        if ([profileID isEqualToNumber:self.profileItem.ID] == YES) {
-            
-            if (self.modalViewController != nil) {
-                [self.modalViewController dismissModalViewControllerAnimated:NO];
+    if (self.profileItem.ID != nil) {
+        NSArray *profileIDs = [notification.userInfo objectForKey:SCHProfileSyncComponentDeletedProfileIDs];
+        
+        for (NSNumber *profileID in profileIDs) {
+            if ([profileID isEqualToNumber:self.profileItem.ID] == YES) {
+                
+                if (self.modalViewController != nil) {
+                    [self.modalViewController dismissModalViewControllerAnimated:NO];
+                }
+                
+                NSString *localizedMessage = [NSString stringWithFormat:
+                                              NSLocalizedString(@"%@ has been removed", nil), [self.profileItem bookshelfName:YES]];  
+                LambdaAlert *alert = [[LambdaAlert alloc]
+                                      initWithTitle:NSLocalizedString(@"Bookshelf Removed", @"Bookshelf Removed") 
+                                      message:localizedMessage];
+                [alert addButtonWithTitle:NSLocalizedString(@"OK", @"OK") block:^{
+                    [self.profileSetupDelegate popToAuthenticatedProfileAnimated:YES];
+                }];
+                
+                self.profileItem = nil;
+                
+                [alert show];
+                [alert release];
+                break;
             }
-            
-            NSString *localizedMessage = [NSString stringWithFormat:
-                                          NSLocalizedString(@"%@ has been removed", nil), [self.profileItem bookshelfName:YES]];  
-            LambdaAlert *alert = [[LambdaAlert alloc]
-                                  initWithTitle:NSLocalizedString(@"Bookshelf Removed", @"Bookshelf Removed") 
-                                  message:localizedMessage];
-            [alert addButtonWithTitle:NSLocalizedString(@"OK", @"OK") block:^{
-                [self.profileSetupDelegate popToAuthenticatedProfileAnimated:YES];
-            }];
-                
-            self.profileItem = nil;
-                
-            [alert show];
-            [alert release];
-            break;
         }
     }
 }
@@ -590,12 +592,14 @@ typedef enum
         }
     }
     
-    for (SCHContentProfileItem *object in [[notification userInfo] objectForKey:NSInsertedObjectsKey]) {
-        // check for new books on the shelf
-        if ([object isKindOfClass:[SCHContentProfileItem class]] == YES) {
-            if ([object.ProfileID isEqualToNumber:self.profileItem.ID] == YES) {
-                refreshBooks = YES;
-                break;
+    if (self.profileItem.ID != nil) {
+        for (SCHContentProfileItem *object in [[notification userInfo] objectForKey:NSInsertedObjectsKey]) {
+            // check for new books on the shelf
+            if ([object isKindOfClass:[SCHContentProfileItem class]] == YES) {
+                if ([object.ProfileID isEqualToNumber:self.profileItem.ID] == YES) {
+                    refreshBooks = YES;
+                    break;
+                }
             }
         }
     }

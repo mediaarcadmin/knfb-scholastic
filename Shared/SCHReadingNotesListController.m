@@ -190,10 +190,12 @@ static NSInteger const CELL_ACTIVITY_INDICATOR_TAG = 999;
 
 - (void)annotationSyncComponentCompletedNotification:(NSNotification *)notification
 {
-    NSNumber *profileID = [notification.userInfo objectForKey:SCHAnnotationSyncComponentCompletedProfileIDs];
-    
-    if ([profileID isEqualToNumber:self.profile.ID] == YES) {
-        [self.notesTableView reloadData];
+    if (self.profile.ID != nil) {
+        NSNumber *profileID = [notification.userInfo objectForKey:SCHAnnotationSyncComponentCompletedProfileIDs];
+        
+        if ([profileID isEqualToNumber:self.profile.ID] == YES) {
+            [self.notesTableView reloadData];
+        }
     }
 }
 

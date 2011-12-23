@@ -905,33 +905,37 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 {
     // Immediately deregister for any more book related notifications so we don't try to handle following annotationChanges or bookDeleted notifications
     // The bookshelf view controller will actually tear us down and push back to the root when it receives the same notification
-    NSArray *profileIDs = [notification.userInfo objectForKey:SCHProfileSyncComponentDeletedProfileIDs];
-    
-    for (NSNumber *profileID in profileIDs) {
-        if ([profileID isEqualToNumber:self.profile.ID] == YES) {
-            [[NSNotificationCenter defaultCenter] removeObserver:self
-                                                            name:SCHContentSyncComponentWillDeleteNotification
-                                                          object:nil];
-            [[NSNotificationCenter defaultCenter] removeObserver:self
-                                                            name:SCHAnnotationSyncComponentDidCompleteNotification
-                                                          object:nil];
+    if (self.profile.ID != nil) {
+        NSArray *profileIDs = [notification.userInfo objectForKey:SCHProfileSyncComponentDeletedProfileIDs];
+        
+        for (NSNumber *profileID in profileIDs) {
+            if ([profileID isEqualToNumber:self.profile.ID] == YES) {
+                [[NSNotificationCenter defaultCenter] removeObserver:self
+                                                                name:SCHContentSyncComponentWillDeleteNotification
+                                                              object:nil];
+                [[NSNotificationCenter defaultCenter] removeObserver:self
+                                                                name:SCHAnnotationSyncComponentDidCompleteNotification
+                                                              object:nil];
+            }
         }
     }
 }
 
 - (void)annotationChanges:(NSNotification *)notification
 {    
-    NSNumber *profileID = [notification.userInfo objectForKey:SCHAnnotationSyncComponentCompletedProfileIDs];
-    
-    if ([profileID isEqualToNumber:self.profile.ID] == YES) {
-        // dispatch this onto the main thread to avoid a race condition with the notification going to the SCHBookAnnotations object
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [self updateNotesCounter];
-            NSRange visibleIndices = [self storyInteractionPageIndices];
-            for (NSUInteger i = 0; i < visibleIndices.length; i++) {
-                [self.readingView refreshHighlightsForPageAtIndex:visibleIndices.location + i];
-            }
-        });
+    if (self.profile.ID != nil) {
+        NSNumber *profileID = [notification.userInfo objectForKey:SCHAnnotationSyncComponentCompletedProfileIDs];
+        
+        if ([profileID isEqualToNumber:self.profile.ID] == YES) {
+            // dispatch this onto the main thread to avoid a race condition with the notification going to the SCHBookAnnotations object
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [self updateNotesCounter];
+                NSRange visibleIndices = [self storyInteractionPageIndices];
+                for (NSUInteger i = 0; i < visibleIndices.length; i++) {
+                    [self.readingView refreshHighlightsForPageAtIndex:visibleIndices.location + i];
+                }
+            });
+        }
     }
 }
 

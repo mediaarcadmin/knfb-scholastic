@@ -218,7 +218,8 @@ static NSString * const kSCHContentMetadataItemAnnotationsItemProfileID = @"Anno
 	NSMutableArray *annotations = [NSMutableArray array];
 	
 	for (SCHAnnotationsContentItem *annotationsContentItem in [self AnnotationsContentItem]) {
-		if ([profileID isEqualToNumber:[annotationsContentItem valueForKeyPath:kSCHContentMetadataItemAnnotationsItemProfileID]] == YES) {
+        NSNumber *annotationsItemProfileID = [annotationsContentItem valueForKeyPath:kSCHContentMetadataItemAnnotationsItemProfileID];
+		if (annotationsItemProfileID != nil && [profileID isEqualToNumber:annotationsItemProfileID] == YES) {
 			[annotations addObject:annotationsContentItem];
 		}
 	}
