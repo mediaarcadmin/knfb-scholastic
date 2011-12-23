@@ -317,6 +317,12 @@
 		52162DA713DD763500D257C5 /* BITAPIError.m in Sources */ = {isa = PBXBuildFile; fileRef = 52162DA413DD763500D257C5 /* BITAPIError.m */; };
 		52162DA913DD88C700D257C5 /* SCHUserDefaults.m in Sources */ = {isa = PBXBuildFile; fileRef = 52162DA813DD88BF00D257C5 /* SCHUserDefaults.m */; };
 		52162DAB13DD88C700D257C5 /* SCHUserDefaults.m in Sources */ = {isa = PBXBuildFile; fileRef = 52162DA813DD88BF00D257C5 /* SCHUserDefaults.m */; };
+		5226C70514A489CB00307634 /* SCHVersionDownloadManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 5226C70214A489CB00307634 /* SCHVersionDownloadManager.m */; };
+		5226C70614A489CB00307634 /* SCHVersionDownloadManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 5226C70214A489CB00307634 /* SCHVersionDownloadManager.m */; };
+		5226C70714A489CB00307634 /* SCHVersionManifestOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 5226C70414A489CB00307634 /* SCHVersionManifestOperation.m */; };
+		5226C70814A489CB00307634 /* SCHVersionManifestOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 5226C70414A489CB00307634 /* SCHVersionManifestOperation.m */; };
+		5226C70B14A48C6100307634 /* SCHVersionManifestEntry.m in Sources */ = {isa = PBXBuildFile; fileRef = 5226C70A14A48C6100307634 /* SCHVersionManifestEntry.m */; };
+		5226C70C14A48C6100307634 /* SCHVersionManifestEntry.m in Sources */ = {isa = PBXBuildFile; fileRef = 5226C70A14A48C6100307634 /* SCHVersionManifestEntry.m */; };
 		52298A8712F0EF5600BBBCE6 /* SCHNote.m in Sources */ = {isa = PBXBuildFile; fileRef = 52298A5E12F0EF5600BBBCE6 /* SCHNote.m */; };
 		52298A8812F0EF5600BBBCE6 /* SCHUserSettingsItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 52298A6012F0EF5600BBBCE6 /* SCHUserSettingsItem.m */; };
 		52298A8912F0EF5600BBBCE6 /* SCHContentMetadataItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 52298A6212F0EF5600BBBCE6 /* SCHContentMetadataItem.m */; };
@@ -2581,6 +2587,12 @@
 		5215349F13B08AB200131E37 /* storyinteraction-bg-younger-notitle@2x~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "storyinteraction-bg-younger-notitle@2x~iphone.png"; sourceTree = "<group>"; };
 		52162DA413DD763500D257C5 /* BITAPIError.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BITAPIError.m; sourceTree = "<group>"; };
 		52162DA813DD88BF00D257C5 /* SCHUserDefaults.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHUserDefaults.m; path = Shared/SCHUserDefaults.m; sourceTree = "<group>"; };
+		5226C70114A489CB00307634 /* SCHVersionDownloadManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHVersionDownloadManager.h; path = Shared/SCHVersionDownloadManager.h; sourceTree = "<group>"; };
+		5226C70214A489CB00307634 /* SCHVersionDownloadManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHVersionDownloadManager.m; path = Shared/SCHVersionDownloadManager.m; sourceTree = "<group>"; };
+		5226C70314A489CB00307634 /* SCHVersionManifestOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHVersionManifestOperation.h; path = Shared/SCHVersionManifestOperation.h; sourceTree = "<group>"; };
+		5226C70414A489CB00307634 /* SCHVersionManifestOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHVersionManifestOperation.m; path = Shared/SCHVersionManifestOperation.m; sourceTree = "<group>"; };
+		5226C70914A48C6100307634 /* SCHVersionManifestEntry.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHVersionManifestEntry.h; path = Shared/SCHVersionManifestEntry.h; sourceTree = "<group>"; };
+		5226C70A14A48C6100307634 /* SCHVersionManifestEntry.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHVersionManifestEntry.m; path = Shared/SCHVersionManifestEntry.m; sourceTree = "<group>"; };
 		52298A5D12F0EF5600BBBCE6 /* SCHNote.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHNote.h; path = Shared/SCHNote.h; sourceTree = "<group>"; };
 		52298A5E12F0EF5600BBBCE6 /* SCHNote.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHNote.m; path = Shared/SCHNote.m; sourceTree = "<group>"; };
 		52298A5F12F0EF5600BBBCE6 /* SCHUserSettingsItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHUserSettingsItem.h; path = Shared/SCHUserSettingsItem.h; sourceTree = "<group>"; };
@@ -4645,6 +4657,7 @@
 				52EF594712EECA7200E374F7 /* Extensions */,
 				52D19C681338A57B00A68D75 /* Views */,
 				C9C909681455A02100548DDE /* Sample Books Processing */,
+				5226C70014A4893B00307634 /* Version Processing */,
 				F867904B1332346C001FDB2F /* Dictionary & Help Processing */,
 				F8899217132E15A5007EB541 /* Processing Manager */,
 				F8DE53E2130A8C0300691CBA /* Book Data */,
@@ -4758,6 +4771,19 @@
 				52BAFB68135DAB8600C2AFF3 /* SCHThemeImageView.m */,
 			);
 			name = Themes;
+			sourceTree = "<group>";
+		};
+		5226C70014A4893B00307634 /* Version Processing */ = {
+			isa = PBXGroup;
+			children = (
+				5226C70114A489CB00307634 /* SCHVersionDownloadManager.h */,
+				5226C70214A489CB00307634 /* SCHVersionDownloadManager.m */,
+				5226C70314A489CB00307634 /* SCHVersionManifestOperation.h */,
+				5226C70414A489CB00307634 /* SCHVersionManifestOperation.m */,
+				5226C70914A48C6100307634 /* SCHVersionManifestEntry.h */,
+				5226C70A14A48C6100307634 /* SCHVersionManifestEntry.m */,
+			);
+			name = "Version Processing";
 			sourceTree = "<group>";
 		};
 		5250C4AB12DE075C00542055 /* Core Data Models */ = {
@@ -8265,6 +8291,9 @@
 				C9A6B3FB148B7F0900B31277 /* SCHHelpManager.m in Sources */,
 				C9A6B400148B853C00B31277 /* SCHAppHelpState.m in Sources */,
 				C959076C1497D08000E024AF /* NSString+URLEncoding.m in Sources */,
+				5226C70514A489CB00307634 /* SCHVersionDownloadManager.m in Sources */,
+				5226C70714A489CB00307634 /* SCHVersionManifestOperation.m in Sources */,
+				5226C70B14A48C6100307634 /* SCHVersionManifestEntry.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -8650,6 +8679,9 @@
 				C9A6B3FC148B7F0900B31277 /* SCHHelpManager.m in Sources */,
 				C9A6B401148B853C00B31277 /* SCHAppHelpState.m in Sources */,
 				C959076D1497D08000E024AF /* NSString+URLEncoding.m in Sources */,
+				5226C70614A489CB00307634 /* SCHVersionDownloadManager.m in Sources */,
+				5226C70814A489CB00307634 /* SCHVersionManifestOperation.m in Sources */,
+				5226C70C14A48C6100307634 /* SCHVersionManifestEntry.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

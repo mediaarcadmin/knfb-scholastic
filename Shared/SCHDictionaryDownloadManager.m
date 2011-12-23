@@ -46,6 +46,15 @@ char * const kSCHDictionaryManifestEntryColumnSeparator = "\t";
 @synthesize toVersion;
 @synthesize url;
 
+- (void)dealloc
+{
+    [fromVersion release], fromVersion = nil;
+    [toVersion release], toVersion = nil;
+    [url release], url = nil;
+    
+    [super dealloc];
+}
+
 @end
 
 #pragma mark Class Extension

@@ -15,6 +15,7 @@
 #import "SCHHelpManager.h"
 #import "SCHDictionaryDownloadManager.h"
 #import "SCHDictionaryAccessManager.h"
+#import "SCHVersionDownloadManager.h"
 #import <CoreText/CoreText.h>
 #import "SCHPopulateDataStore.h"
 #import "SCHAppStateManager.h"
@@ -120,7 +121,10 @@ static NSString* const prModelCertFilename = @"iphonecert.dat";
         SCHDictionaryAccessManager *dam = [SCHDictionaryAccessManager sharedAccessManager];
         dam.mainThreadManagedObjectContext = self.coreDataHelper.managedObjectContext;
         dam.persistentStoreCoordinator = persistentStoreCoordinator;
-        
+
+        SCHVersionDownloadManager *versionManager = [SCHVersionDownloadManager sharedVersionManager];
+        [versionManager checkVersion];
+
         [self ensureCorrectCertsAvailable];
     } else {
         [self catastrophicFailureWithError:error];
