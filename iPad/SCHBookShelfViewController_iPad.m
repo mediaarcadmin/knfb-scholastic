@@ -89,40 +89,9 @@ static NSTimeInterval const kSCHBookShelfViewControllerTopTenRefreshTime = -600.
     homeButton.accessibilityLabel = @"Back To Bookshelves Button";
     
     CGRect topTenFrame = CGRectZero;
-    
-    if (!TOP_TEN_DISABLED && ([[SCHAppStateManager sharedAppStateManager] canAuthenticate] == YES)) {
-        topTenFrame = CGRectMake(0, 3, 120, 30);
-        self.topTenPicksButton = [SCHThemeButton buttonWithType:UIButtonTypeCustom];
-        [self.topTenPicksButton setFrame:topTenFrame];
-        [self.topTenPicksButton setTitle:NSLocalizedString(@"Top 10 Picks", @"") forState:UIControlStateNormal];
-        [self.topTenPicksButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-        [self.topTenPicksButton setTitleColor:[UIColor colorWithWhite:1 alpha:0.5f] forState:UIControlStateHighlighted];
-        [self.topTenPicksButton setReversesTitleShadowWhenHighlighted:YES];
-        
-        self.topTenPicksButton.titleLabel.font = [UIFont boldSystemFontOfSize:14];
-        self.topTenPicksButton.titleLabel.shadowOffset = CGSizeMake(0, -1);
-        
-        [self.topTenPicksButton setThemeButton:kSCHThemeManagerButtonImage leftCapWidth:7 topCapHeight:0];
-        [self.topTenPicksButton addTarget:self action:@selector(topTenAction:) forControlEvents:UIControlEventTouchUpInside];    
-    }
-    
-    UIView *rightContainerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth(topTenFrame) + kSCHBookShelfButtonPadding + CGRectGetWidth(themeButton.frame) + kSCHBookShelfEdgePadding, CGRectGetHeight(themeButton.frame))];
-        
-    if (self.topTenPicksButton) {
-        [rightContainerView addSubview:self.topTenPicksButton];
-    }
-    
-    CGRect themeFrame = themeButton.frame;
-    themeFrame.origin.x = kSCHBookShelfButtonPadding + CGRectGetWidth(topTenFrame);
-    themeButton.frame = themeFrame;
-    
-    [rightContainerView addSubview:themeButton];
-    
-    self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithCustomView:rightContainerView] autorelease];
-    [rightContainerView release];
-    
+
     self.sortButton = [SCHThemeButton buttonWithType:UIButtonTypeCustom];
-    [self.sortButton setFrame:CGRectMake(0, 3, 120, 30)];
+    [self.sortButton setFrame:CGRectMake(0, 3, 82, 30)];
     [self.sortButton setTitle:NSLocalizedString(@"Sort", @"") forState:UIControlStateNormal];
     [self.sortButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [self.sortButton setTitleColor:[UIColor colorWithWhite:1 alpha:0.5f] forState:UIControlStateHighlighted];
@@ -134,19 +103,63 @@ static NSTimeInterval const kSCHBookShelfViewControllerTopTenRefreshTime = -600.
     [self.sortButton setThemeButton:kSCHThemeManagerButtonImage leftCapWidth:7 topCapHeight:0];
     [self.sortButton addTarget:self action:@selector(sortAction:) forControlEvents:UIControlEventTouchUpInside];   
     
-    UIView *leftContainerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth(homeButton.frame) + kSCHBookShelfButtonPadding + CGRectGetWidth(self.sortButton.frame) + kSCHBookShelfButtonPadding, CGRectGetHeight(homeButton.frame))];
-    
-    [leftContainerView addSubview:self.sortButton];
-    
     CGRect sortFrame = self.sortButton.frame;
-    sortFrame.origin.x = kSCHBookShelfEdgePadding + CGRectGetWidth(homeButton.frame) + kSCHBookShelfButtonPadding;
+    sortFrame.origin.x = kSCHBookShelfEdgePadding;
     self.sortButton.frame = sortFrame;
     
-    sortFrame = homeButton.frame;
-    sortFrame.origin.x = kSCHBookShelfEdgePadding;
-    homeButton.frame = sortFrame;
+    if (!TOP_TEN_DISABLED && ([[SCHAppStateManager sharedAppStateManager] canAuthenticate] == YES)) {
+        topTenFrame = CGRectMake(kSCHBookShelfButtonPadding + CGRectGetWidth(sortFrame), 3, 120, 30);
+        self.topTenPicksButton = [SCHThemeButton buttonWithType:UIButtonTypeCustom];
+        [self.topTenPicksButton setFrame:topTenFrame];
+        [self.topTenPicksButton setTitle:NSLocalizedString(@"More eBooks", @"") forState:UIControlStateNormal];
+        [self.topTenPicksButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+        [self.topTenPicksButton setTitleColor:[UIColor colorWithWhite:1 alpha:0.5f] forState:UIControlStateHighlighted];
+        [self.topTenPicksButton setReversesTitleShadowWhenHighlighted:YES];
+        
+        self.topTenPicksButton.titleLabel.font = [UIFont boldSystemFontOfSize:14];
+        self.topTenPicksButton.titleLabel.shadowOffset = CGSizeMake(0, -1);
+        
+        [self.topTenPicksButton setThemeButton:kSCHThemeManagerButtonImage leftCapWidth:7 topCapHeight:0];
+        [self.topTenPicksButton addTarget:self action:@selector(topTenAction:) forControlEvents:UIControlEventTouchUpInside];    
+    }
+
+    CGFloat topTenWidth = topTenFrame.size.width;
+    
+    if (topTenWidth > 0) {
+        topTenWidth += kSCHBookShelfEdgePadding;
+    }
+    
+    UIView *rightContainerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.sortButton.frame) + kSCHBookShelfButtonPadding + topTenWidth + CGRectGetWidth(themeButton.frame) + kSCHBookShelfEdgePadding, CGRectGetHeight(themeButton.frame))];
+
+    [rightContainerView addSubview:self.sortButton];
+    
+    if (self.topTenPicksButton) {
+        [rightContainerView addSubview:self.topTenPicksButton];
+    }
+    
+    CGRect themeFrame = themeButton.frame;
+    themeFrame.origin.x = topTenWidth + kSCHBookShelfButtonPadding + CGRectGetWidth(sortFrame);
+    themeButton.frame = themeFrame;
+    
+    [rightContainerView addSubview:themeButton];
+    
+    self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithCustomView:rightContainerView] autorelease];
+    [rightContainerView release];
+    
+    UIImageView *storiaLogoView = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"storiatoolbar"]] autorelease];
+    
+    UIView *leftContainerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, kSCHBookShelfEdgePadding + CGRectGetWidth(homeButton.frame) + kSCHBookShelfEdgePadding + CGRectGetWidth(storiaLogoView.frame) + kSCHBookShelfButtonPadding, CGRectGetHeight(homeButton.frame))];
+    
+    CGRect homeFrame = homeButton.frame;
+    homeFrame.origin.x = kSCHBookShelfEdgePadding;
+    homeButton.frame = homeFrame;
+    
+    CGRect logoFrame = storiaLogoView.frame;
+    logoFrame.origin.x = kSCHBookShelfEdgePadding + CGRectGetWidth(homeFrame) + kSCHBookShelfEdgePadding;
+    storiaLogoView.frame = logoFrame;
     
     [leftContainerView addSubview:homeButton];
+    [leftContainerView addSubview:storiaLogoView];
     
     self.navigationItem.leftBarButtonItem = [[[UIBarButtonItem alloc] initWithCustomView:leftContainerView] autorelease];
     [leftContainerView release];
@@ -186,7 +199,6 @@ static NSTimeInterval const kSCHBookShelfViewControllerTopTenRefreshTime = -600.
     [(SCHCustomNavigationBar *)self.navigationController.navigationBar updateTheme:interfaceOrientation];
     self.listTableView.backgroundColor = [[SCHThemeManager sharedThemeManager] colorForListBackground];
     self.listToggleView.backgroundColor = [[SCHThemeManager sharedThemeManager] colorForListBackground]; 
-
 
     CGFloat inset = 86;
 
@@ -237,17 +249,8 @@ static NSTimeInterval const kSCHBookShelfViewControllerTopTenRefreshTime = -600.
     self.popover = [[[UIPopoverController alloc] initWithContentViewController:popoverTable] autorelease];
     self.popover.delegate = self;
     
-    CGRect senderFrame = sender.superview.frame;
-    senderFrame.origin.y -= 44;
-    senderFrame.origin.x += 28;
-
-    
-    NSLog(@"Sender frame: %@", NSStringFromCGRect(senderFrame));
-    
-    [self.popover presentPopoverFromRect:senderFrame inView:self.view permittedArrowDirections:UIPopoverArrowDirectionUp animated:YES];
+    [self.popover presentPopoverFromRect:sender.frame inView:sender.superview permittedArrowDirections:UIPopoverArrowDirectionUp animated:YES];
     [popoverTable release];
-
-    NSLog(@"Sort!");
 }
 
 - (void)topTenAction:(SCHThemeButton *)sender
@@ -278,16 +281,8 @@ static NSTimeInterval const kSCHBookShelfViewControllerTopTenRefreshTime = -600.
     self.popover = [[[UIPopoverController alloc] initWithContentViewController:popoverTable] autorelease];
     self.popover.delegate = self;
     
-    CGRect senderFrame = sender.superview.frame;
-    senderFrame.origin.y -= 44;
-    senderFrame.origin.x -= 28;
-
-    
-    NSLog(@"Sender frame: %@", NSStringFromCGRect(senderFrame));
-    
-    [self.popover presentPopoverFromRect:senderFrame inView:self.view permittedArrowDirections:UIPopoverArrowDirectionUp animated:YES];
+    [self.popover presentPopoverFromRect:sender.frame inView:sender.superview permittedArrowDirections:UIPopoverArrowDirectionUp animated:YES];
     [popoverTable release];
-    NSLog(@"Top ten!");
 }
 
 - (void)themeAction:(SCHThemeButton *)sender
@@ -300,15 +295,7 @@ static NSTimeInterval const kSCHBookShelfViewControllerTopTenRefreshTime = -600.
     self.popover = [[[UIPopoverController alloc] initWithContentViewController:self.themePickerContainer] autorelease];
     self.popover.delegate = self;
     
-    CGRect senderFrame = sender.superview.frame;
-    senderFrame.origin.y -= 44;
-    senderFrame.origin.x += 58;
-    
-    
-    NSLog(@"Sender frame: %@", NSStringFromCGRect(senderFrame));
-    
-    [self.popover presentPopoverFromRect:senderFrame inView:self.view permittedArrowDirections:UIPopoverArrowDirectionUp animated:YES];
-    NSLog(@"Theme change!");
+    [self.popover presentPopoverFromRect:sender.frame inView:sender.superview permittedArrowDirections:UIPopoverArrowDirectionUp animated:YES];
 }
 
 - (void)updateTheme
