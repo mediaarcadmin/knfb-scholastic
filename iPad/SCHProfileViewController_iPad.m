@@ -13,8 +13,8 @@
 #import "SCHThemeManager.h"
 #import "SCHCustomNavigationBar.h"
 
-static const CGFloat kProfilePadTableOffsetPortrait = 280.0f;
-static const CGFloat kProfilePadTableOffsetLandscape = 220.0f;
+static const CGFloat kProfilePadTableOffsetPortrait = 80.0f;
+static const CGFloat kProfilePadTableOffsetLandscape = 56.0f;
 
 #pragma mark - Class Extension
 
@@ -136,13 +136,22 @@ static const CGFloat kProfilePadTableOffsetLandscape = 220.0f;
 
 - (void)setupAssetsForOrientation:(UIInterfaceOrientation)orientation
 {
+    CGRect headerFrame = self.tableView.tableHeaderView.frame;
+    
     if (UIInterfaceOrientationIsLandscape(orientation)) {
         [self.backgroundView setImage:[UIImage imageNamed:@"plain-background-landscape.jpg"]];
+        headerFrame.size.height = 354;
         [self.tableView setContentInset:UIEdgeInsetsMake(kProfilePadTableOffsetLandscape, 0, 0, 0)];
     } else {
         [self.backgroundView setImage:[UIImage imageNamed:@"plain-background-portrait.jpg"]];
+        headerFrame.size.height = 378;
         [self.tableView setContentInset:UIEdgeInsetsMake(kProfilePadTableOffsetPortrait, 0, 0, 0)];
     }
+    
+    self.tableView.tableHeaderView.frame = headerFrame;
+    
+    // yuck - need to re-set the header view in order to get the table to recognise the size change
+    self.tableView.tableHeaderView = self.tableView.tableHeaderView;
     
     [(SCHCustomNavigationBar *)self.navigationController.navigationBar setBackgroundImage:[UIImage imageNamed:@"admin-iphone-landscape-top-toolbar.png"]];
 
