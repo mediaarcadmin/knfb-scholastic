@@ -10,3 +10,6 @@
 [submodule "UI Tests/tuneup"]
 	path = UI Tests/tuneup
 	url = git://github.com/alexvollmer/tuneup_js.git
+[submodule "Shared/Libraries/Submodules/bitmodalpopovercontroller"]
+	path = Shared/Libraries/Submodules/bitmodalpopovercontroller
+	url = git@codebasehq.com:bitwink/bitwink/bitmodalpopovercontroller.git

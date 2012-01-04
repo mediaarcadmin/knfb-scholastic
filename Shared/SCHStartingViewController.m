@@ -33,6 +33,8 @@
 #import "SCHAccountValidation.h"
 #import "SCHParentalToolsWebViewController.h"
 #import "Reachability.h"
+#import "BITModalPopoverController.h"
+#import "SCHStoriaLoginViewController.h"
 
 enum {
     kTableSectionSamples = 0,
@@ -180,6 +182,19 @@ typedef enum {
     [self.starterTableView reloadData];
     
     self.performingAction = NO;
+}
+
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    
+    SCHStoriaLoginViewController *login = [[SCHStoriaLoginViewController alloc] initWithNibName:@"SCHStoriaLoginViewController" bundle:nil];
+    
+    BITModalPopoverController *modalController = [[BITModalPopoverController alloc] initWithContentViewController:login];
+    [modalController setPopoverContentSize:CGSizeMake(602, 480)];
+    [modalController setPopoverContentOffset:CGPointMake(0, 100)];
+    [modalController presentModalPopoverInViewController:self animated:YES];
+    [login release];
 }
 
 #pragma mark - Orientation methods

@@ -1899,6 +1899,12 @@
 		C9F5B9FC13916C62009DE113 /* button-go.png in Resources */ = {isa = PBXBuildFile; fileRef = C9F5B9FA13916C62009DE113 /* button-go.png */; };
 		C9F5B9FE13916C62009DE113 /* button-go@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C9F5B9FB13916C62009DE113 /* button-go@2x.png */; };
 		C9F5BA0113918CE9009DE113 /* SCHProfilePasswordView~iphone.xib in Resources */ = {isa = PBXBuildFile; fileRef = C9F5BA0013918CE8009DE113 /* SCHProfilePasswordView~iphone.xib */; };
+		C9F8FD5914B4841500136C22 /* libBITModalPopoverController.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C9F8FD3714B4806B00136C22 /* libBITModalPopoverController.a */; };
+		C9F8FD5A14B4841D00136C22 /* libBITModalPopoverController.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C9F8FD3714B4806B00136C22 /* libBITModalPopoverController.a */; };
+		C9F8FD5E14B4909800136C22 /* SCHStoriaLoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C9F8FD5C14B4909800136C22 /* SCHStoriaLoginViewController.m */; };
+		C9F8FD5F14B4909800136C22 /* SCHStoriaLoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C9F8FD5C14B4909800136C22 /* SCHStoriaLoginViewController.m */; };
+		C9F8FD6014B4909800136C22 /* SCHStoriaLoginViewController~ipad.xib in Resources */ = {isa = PBXBuildFile; fileRef = C9F8FD5D14B4909800136C22 /* SCHStoriaLoginViewController~ipad.xib */; };
+		C9F8FD6114B4909800136C22 /* SCHStoriaLoginViewController~ipad.xib in Resources */ = {isa = PBXBuildFile; fileRef = C9F8FD5D14B4909800136C22 /* SCHStoriaLoginViewController~ipad.xib */; };
 		C9FD839013FBD674007D5B47 /* storyinteraction-wordbird-Shocked_Pen.png in Resources */ = {isa = PBXBuildFile; fileRef = C9FD838213FBD66E007D5B47 /* storyinteraction-wordbird-Shocked_Pen.png */; };
 		C9FD839413FBD674007D5B47 /* storyinteraction-wordbird-Pen_Happy_Filmstrip.png in Resources */ = {isa = PBXBuildFile; fileRef = C9FD838413FBD66F007D5B47 /* storyinteraction-wordbird-Pen_Happy_Filmstrip.png */; };
 		C9FE8CFA13AA60D300D55181 /* answer-button-yellow~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = C9FE8CF913AA60D300D55181 /* answer-button-yellow~ipad.png */; };
@@ -2225,6 +2231,34 @@
 			proxyType = 2;
 			remoteGlobalIDString = 7D034F8910C2CCBE0085778B;
 			remoteInfo = TransitionTest;
+		};
+		C9F8FD3614B4806B00136C22 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = C9F8FD2E14B4806A00136C22 /* BITModalPopoverController.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = C9F5538114A5205300E24168;
+			remoteInfo = BITModalPopoverController;
+		};
+		C9F8FD3814B4806B00136C22 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = C9F8FD2E14B4806A00136C22 /* BITModalPopoverController.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = C9F5539114A5205300E24168;
+			remoteInfo = BITModalPopoverControllerTests;
+		};
+		C9F8FD3A14B4809300136C22 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = C9F8FD2E14B4806A00136C22 /* BITModalPopoverController.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = C9F5538014A5205300E24168;
+			remoteInfo = BITModalPopoverController;
+		};
+		C9F8FD3C14B4809A00136C22 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = C9F8FD2E14B4806A00136C22 /* BITModalPopoverController.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = C9F5538014A5205300E24168;
+			remoteInfo = BITModalPopoverController;
 		};
 /* End PBXContainerItemProxy section */
 
@@ -3555,6 +3589,10 @@
 		C9F5B9FA13916C62009DE113 /* button-go.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "button-go.png"; path = "Resources/UIAssets/button-go.png"; sourceTree = "<group>"; };
 		C9F5B9FB13916C62009DE113 /* button-go@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "button-go@2x.png"; path = "Resources/UIAssets/button-go@2x.png"; sourceTree = "<group>"; };
 		C9F5BA0013918CE8009DE113 /* SCHProfilePasswordView~iphone.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "SCHProfilePasswordView~iphone.xib"; sourceTree = "<group>"; };
+		C9F8FD2E14B4806A00136C22 /* BITModalPopoverController.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = BITModalPopoverController.xcodeproj; path = Shared/Libraries/Submodules/bitmodalpopovercontroller/BITModalPopoverController.xcodeproj; sourceTree = "<group>"; };
+		C9F8FD5B14B4909800136C22 /* SCHStoriaLoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHStoriaLoginViewController.h; path = Shared/SCHStoriaLoginViewController.h; sourceTree = "<group>"; };
+		C9F8FD5C14B4909800136C22 /* SCHStoriaLoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHStoriaLoginViewController.m; path = Shared/SCHStoriaLoginViewController.m; sourceTree = "<group>"; };
+		C9F8FD5D14B4909800136C22 /* SCHStoriaLoginViewController~ipad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = "SCHStoriaLoginViewController~ipad.xib"; path = "Shared/SCHStoriaLoginViewController~ipad.xib"; sourceTree = "<group>"; };
 		C9FD838213FBD66E007D5B47 /* storyinteraction-wordbird-Shocked_Pen.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "storyinteraction-wordbird-Shocked_Pen.png"; sourceTree = "<group>"; };
 		C9FD838413FBD66F007D5B47 /* storyinteraction-wordbird-Pen_Happy_Filmstrip.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "storyinteraction-wordbird-Pen_Happy_Filmstrip.png"; sourceTree = "<group>"; };
 		C9FE8CF913AA60D300D55181 /* answer-button-yellow~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "answer-button-yellow~ipad.png"; sourceTree = "<group>"; };
@@ -3792,6 +3830,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C9F8FD5914B4841500136C22 /* libBITModalPopoverController.a in Frameworks */,
 				7D3F313C14069A5200C6F445 /* libEucalyptusIOSUI.a in Frameworks */,
 				7D3F313D14069A5200C6F445 /* libEucalyptusModel.a in Frameworks */,
 				7D3F313B14069A5200C6F445 /* libEucalyptusEPubIOSUI.a in Frameworks */,
@@ -3847,6 +3886,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C9F8FD5A14B4841D00136C22 /* libBITModalPopoverController.a in Frameworks */,
 				52488BE01407990500DA9AFA /* libEucalyptusIOSUI.a in Frameworks */,
 				52488BE11407990500DA9AFA /* libEucalyptusModel.a in Frameworks */,
 				52488BE21407990500DA9AFA /* libEucalyptusEPubIOSUI.a in Frameworks */,
@@ -4012,6 +4052,7 @@
 		2860E386111B897F00E27156 /* iPhone */ = {
 			isa = PBXGroup;
 			children = (
+				C9F8FD6314B490C300136C22 /* Starting View */,
 				C972283E1392B203008605E8 /* Settings Controller */,
 				C9F5B9F213911E21009DE113 /* Authentication Controllers */,
 				F864333B13813E0300BEB8EB /* Profile View Controller */,
@@ -4019,7 +4060,6 @@
 				2860E387111B897F00E27156 /* AppDelegate_iPhone.h */,
 				2860E388111B897F00E27156 /* AppDelegate_iPhone.m */,
 				2860E389111B897F00E27156 /* MainWindow_iPhone.xib */,
-				288A1C7E13E2E7EE009F56BA /* SCHStartingView~iphone.xib */,
 			);
 			path = iPhone;
 			sourceTree = "<group>";
@@ -4576,6 +4616,8 @@
 				28C3D1A613E2B30300931F5C /* SCHStartingViewController.m */,
 				289699F113E2C55000B7E3DF /* SCHStartingViewCell.h */,
 				289699F213E2C55000B7E3DF /* SCHStartingViewCell.m */,
+				C9F8FD5B14B4909800136C22 /* SCHStoriaLoginViewController.h */,
+				C9F8FD5C14B4909800136C22 /* SCHStoriaLoginViewController.m */,
 			);
 			name = "Starting View";
 			sourceTree = "<group>";
@@ -4735,6 +4777,7 @@
 		29B97317FDCFA39411CA2CEA /* iPad */ = {
 			isa = PBXGroup;
 			children = (
+				C9F8FD6214B490A600136C22 /* Starting View */,
 				C97228431392B28E008605E8 /* Settings Controller */,
 				C9F5B9F313911E4C009DE113 /* Authentication Controllers */,
 				F864333A13813DF100BEB8EB /* Profile View Controller */,
@@ -4742,7 +4785,6 @@
 				1D3623240D0F684500981E51 /* AppDelegate_iPad.h */,
 				1D3623250D0F684500981E51 /* AppDelegate_iPad.m */,
 				28AD733E0D9D9553002E5188 /* MainWindow_iPad.xib */,
-				28C3D1AC13E2B33600931F5C /* SCHStartingView~ipad.xib */,
 			);
 			name = iPad;
 			sourceTree = "<group>";
@@ -5923,6 +5965,7 @@
 			isa = PBXGroup;
 			children = (
 				C9B08A751344D34F001963D0 /* libKNFBReader */,
+				C9F8FD2E14B4806A00136C22 /* BITModalPopoverController.xcodeproj */,
 				C947D55D133B9C0000FB4404 /* libEucalyptus.xcodeproj */,
 				526FEB41140FD83A00638712 /* KIF.xcodeproj */,
 			);
@@ -6033,6 +6076,32 @@
 				28456BC313E071B600BD3804 /* SCHSetProfilePasswordView~ipad.xib */,
 			);
 			name = "Authentication Controllers";
+			sourceTree = "<group>";
+		};
+		C9F8FD2F14B4806A00136C22 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				C9F8FD3714B4806B00136C22 /* libBITModalPopoverController.a */,
+				C9F8FD3914B4806B00136C22 /* BITModalPopoverControllerTests.octest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		C9F8FD6214B490A600136C22 /* Starting View */ = {
+			isa = PBXGroup;
+			children = (
+				C9F8FD5D14B4909800136C22 /* SCHStoriaLoginViewController~ipad.xib */,
+				28C3D1AC13E2B33600931F5C /* SCHStartingView~ipad.xib */,
+			);
+			name = "Starting View";
+			sourceTree = "<group>";
+		};
+		C9F8FD6314B490C300136C22 /* Starting View */ = {
+			isa = PBXGroup;
+			children = (
+				288A1C7E13E2E7EE009F56BA /* SCHStartingView~iphone.xib */,
+			);
+			name = "Starting View";
 			sourceTree = "<group>";
 		};
 		F806563013FEAFF200DFAE43 /* Options View */ = {
@@ -6443,6 +6512,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				C9F8FD3B14B4809300136C22 /* PBXTargetDependency */,
 				7D3F3118140699EF00C6F445 /* PBXTargetDependency */,
 			);
 			name = Scholastic;
@@ -6480,6 +6550,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				C9F8FD3D14B4809A00136C22 /* PBXTargetDependency */,
 				524888261407990500DA9AFA /* PBXTargetDependency */,
 			);
 			name = "Local Samples Scholastic";
@@ -6509,6 +6580,10 @@
 			mainGroup = 29B97314FDCFA39411CA2CEA /* CustomTemplate */;
 			projectDirPath = "";
 			projectReferences = (
+				{
+					ProductGroup = C9F8FD2F14B4806A00136C22 /* Products */;
+					ProjectRef = C9F8FD2E14B4806A00136C22 /* BITModalPopoverController.xcodeproj */;
+				},
 				{
 					ProductGroup = 28D6D4C61451717E0094F144 /* Products */;
 					ProjectRef = 526FEB41140FD83A00638712 /* KIF.xcodeproj */;
@@ -6638,6 +6713,20 @@
 			fileType = wrapper.application;
 			path = TransitionTest.app;
 			remoteRef = C947D586133B9C0100FB4404 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		C9F8FD3714B4806B00136C22 /* libBITModalPopoverController.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libBITModalPopoverController.a;
+			remoteRef = C9F8FD3614B4806B00136C22 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		C9F8FD3914B4806B00136C22 /* BITModalPopoverControllerTests.octest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = BITModalPopoverControllerTests.octest;
+			remoteRef = C9F8FD3814B4806B00136C22 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 /* End PBXReferenceProxy section */
@@ -7290,6 +7379,7 @@
 				F8B1E4E814AE28CE0070EFCD /* storia-setup-logo~ipad.png in Resources */,
 				F8577FBC14AE2B200003FF20 /* Default-Landscape~ipad.jpg in Resources */,
 				F8577FBE14AE2B200003FF20 /* Default-Portrait~ipad.jpg in Resources */,
+				C9F8FD6014B4909800136C22 /* SCHStoriaLoginViewController~ipad.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -7985,6 +8075,7 @@
 				F8B1E4E914AE28CE0070EFCD /* storia-setup-logo~ipad.png in Resources */,
 				F8577FBD14AE2B200003FF20 /* Default-Landscape~ipad.jpg in Resources */,
 				F8577FBF14AE2B200003FF20 /* Default-Portrait~ipad.jpg in Resources */,
+				C9F8FD6114B4909800136C22 /* SCHStoriaLoginViewController~ipad.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -8325,6 +8416,7 @@
 				C9A6B3FB148B7F0900B31277 /* SCHHelpManager.m in Sources */,
 				C9A6B400148B853C00B31277 /* SCHAppHelpState.m in Sources */,
 				C959076C1497D08000E024AF /* NSString+URLEncoding.m in Sources */,
+				C9F8FD5E14B4909800136C22 /* SCHStoriaLoginViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -8710,6 +8802,7 @@
 				C9A6B3FC148B7F0900B31277 /* SCHHelpManager.m in Sources */,
 				C9A6B401148B853C00B31277 /* SCHAppHelpState.m in Sources */,
 				C959076D1497D08000E024AF /* NSString+URLEncoding.m in Sources */,
+				C9F8FD5F14B4909800136C22 /* SCHStoriaLoginViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -8730,6 +8823,16 @@
 			isa = PBXTargetDependency;
 			name = libEucalyptusIOSUI;
 			targetProxy = 7D3F3117140699EF00C6F445 /* PBXContainerItemProxy */;
+		};
+		C9F8FD3B14B4809300136C22 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = BITModalPopoverController;
+			targetProxy = C9F8FD3A14B4809300136C22 /* PBXContainerItemProxy */;
+		};
+		C9F8FD3D14B4809A00136C22 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = BITModalPopoverController;
+			targetProxy = C9F8FD3C14B4809A00136C22 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -8977,6 +9080,7 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = (
+					Shared/Libraries/Submodules/bitmodalpopovercontroller/BITModalPopoverController,
 					"\"$(TARGET_BUILD_DIR)/usr/local/lib/include\"",
 					"\"$(DSTROOT)/usr/local/lib/include\"",
 					"\"$(OBJROOT)/UninstalledProducts/include\"",
@@ -9044,6 +9148,7 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = (
+					Shared/Libraries/Submodules/bitmodalpopovercontroller/BITModalPopoverController,
 					"\"$(TARGET_BUILD_DIR)/usr/local/lib/include\"",
 					"\"$(DSTROOT)/usr/local/lib/include\"",
 					"\"$(OBJROOT)/UninstalledProducts/include\"",
@@ -9076,6 +9181,7 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = (
+					Shared/Libraries/Submodules/bitmodalpopovercontroller/BITModalPopoverController,
 					"\"$(TARGET_BUILD_DIR)/usr/local/lib/include\"",
 					"\"$(DSTROOT)/usr/local/lib/include\"",
 					"\"$(OBJROOT)/UninstalledProducts/include\"",
