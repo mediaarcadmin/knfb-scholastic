@@ -174,7 +174,7 @@ typedef enum {
 
     [self.navigationController.navigationBar setAlpha:1.0f];
     [self.navigationController.navigationBar setBarStyle:UIBarStyleBlackOpaque]; // For the title text
-    [self.navigationController setNavigationBarHidden:NO];
+    [self.navigationController setNavigationBarHidden:YES];
     [self setupAssetsForOrientation:self.interfaceOrientation];
 
     // if we logged in and deregistered then we will need to refresh so we 
@@ -209,12 +209,12 @@ typedef enum {
     
     if (UIInterfaceOrientationIsLandscape(orientation)) {
         CGFloat offset = iPad ? kTableOffsetLandscape_iPad : kTableOffsetLandscape_iPhone;
-        [self.backgroundView setImage:[UIImage imageNamed:@"plain-background-landscape.jpg"]];
+        [self.backgroundView setImage:[UIImage imageNamed:@"storia-startviewcontroller-static-landscape~ipad.png"]];
         [self.starterTableView setContentInset:UIEdgeInsetsMake(offset, 0, 0, 0)];
         logoHeight = iPad ? logoHeight : 32;
     } else {
         CGFloat offset = iPad ? kTableOffsetPortrait_iPad : kTableOffsetPortrait_iPhone;
-        [self.backgroundView setImage:[UIImage imageNamed:@"plain-background-portrait.jpg"]];
+        [self.backgroundView setImage:[UIImage imageNamed:@"storia-startviewcontroller-static-portrait~ipad.png"]];
         [self.starterTableView setContentInset:UIEdgeInsetsMake(offset, 0, 0, 0)];
     }
     
