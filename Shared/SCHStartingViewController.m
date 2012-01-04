@@ -191,8 +191,10 @@ typedef enum {
     SCHStoriaLoginViewController *login = [[SCHStoriaLoginViewController alloc] initWithNibName:@"SCHStoriaLoginViewController" bundle:nil];
     
     BITModalPopoverController *modalController = [[BITModalPopoverController alloc] initWithContentViewController:login];
-    [modalController setPopoverContentSize:CGSizeMake(602, 480)];
-    [modalController setPopoverContentOffset:CGPointMake(0, 100)];
+    [modalController setPopoverContentSize:CGSizeMake(630, 500)];
+    [modalController setPopoverContentOffset:CGPointMake(0, -70)];
+    [modalController setShouldDimBackground:NO];
+    [modalController setAutoresizingMask:UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleBottomMargin];
     [modalController presentModalPopoverInViewController:self animated:YES];
     [login release];
 }
