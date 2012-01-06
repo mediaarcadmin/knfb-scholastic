@@ -483,6 +483,18 @@ NSString * const kSCHProfileItemDRM_QUALIFIER = @"DRM_QUALIFIER";
     }
 }
 
+- (void)clearBookOrder:(NSArray *)books
+{
+    for (int idx = 0; idx < [books count]; idx++) {
+        SCHBookIdentifier *bookIdentifier = [books objectAtIndex:idx];
+        SCHAppContentProfileItem *appContentProfileItem = [self appContentProfileItemForBookIdentifier:bookIdentifier];
+        
+        if (appContentProfileItem != nil) {
+            appContentProfileItem.Order = [NSNumber numberWithInt:0];
+        }
+    }
+}
+
 #pragma mark - Accessor methods
 
 - (NSString *)bookshelfName:(BOOL)shortName

@@ -22,7 +22,7 @@
 @synthesize downloadSizeLabel;
 @synthesize downloadDictionaryButton;
 @synthesize closeButton;
-@synthesize shouldAnimateSamplesPush;
+@synthesize completion;
 
 - (void)releaseViewObjects
 {
@@ -35,6 +35,7 @@
 - (void)dealloc
 {
     [self releaseViewObjects];
+    [completion release], completion = nil;
     [super dealloc];
 }
 
@@ -72,9 +73,15 @@
     if ([[SCHAppStateManager sharedAppStateManager] isSampleStore] == NO) {
         [[SCHDictionaryDownloadManager sharedDownloadManager] threadSafeUpdateDictionaryState:SCHDictionaryProcessingStateUserDeclined];
         [SCHDictionaryDownloadManager sharedDownloadManager].userRequestState = SCHDictionaryUserDeclined;
-        [self.profileSetupDelegate showCurrentProfileAnimated:YES];
-    } else {
-        [self.profileSetupDelegate pushSamplesAnimated:self.shouldAnimateSamplesPush];
+        
+
+       // [self.profileSetupDelegate showCurrentProfileAnimated:YES];
+    } //else {
+        //[self.profileSetupDelegate pushSamplesAnimated:self.shouldAnimateSamplesPush];
+    //}
+    
+    if (completion) {
+        completion();
     }
 }
 
@@ -83,11 +90,14 @@
     [[SCHDictionaryDownloadManager sharedDownloadManager] beginDictionaryDownload];
     
     dispatch_block_t afterDownload = ^{
-        if ([[SCHAppStateManager sharedAppStateManager] isSampleStore] == NO) {
-            [self.profileSetupDelegate showCurrentProfileAnimated:YES];
-        } else {
-            [self.profileSetupDelegate pushSamplesAnimated:YES];
+        if (completion) {
+            completion();
         }
+        //if ([[SCHAppStateManager sharedAppStateManager] isSampleStore] == NO) {
+          //  [self.profileSetupDelegate showCurrentProfileAnimated:YES];
+        //} else {
+          //  [self.profileSetupDelegate pushSamplesAnimated:YES];
+        //}
     };
     
     BOOL reachable = [[Reachability reachabilityForLocalWiFi] isReachable];

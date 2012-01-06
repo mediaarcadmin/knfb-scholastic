@@ -13,7 +13,7 @@
 - (void)pushAuthenticatedProfileAnimated:(BOOL)animated;
 - (void)popToAuthenticatedProfileAnimated:(BOOL)animated;
 
-- (void)pushSamplesAnimated:(BOOL)animated;
+//- (void)pushSamplesAnimated:(BOOL)animated;
 - (void)showCurrentProfileAnimated:(BOOL)animated;
 
 - (void)waitingForPassword;

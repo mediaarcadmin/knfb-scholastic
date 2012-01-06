@@ -183,6 +183,21 @@ static const CGFloat kSCHBookShelfGridViewFooterHeight = 60;
 	[self updateSize];
 }
 
+- (void)rearrangeCells
+{
+    if (self.window == nil) {
+        [CATransaction begin];
+        [CATransaction setAnimationDuration:0];
+        [CATransaction setDisableActions:YES];
+    }
+    
+    [super rearrangeCells];
+    
+    if (self.window == nil) {
+        [CATransaction commit];
+    }
+}
+
 #pragma mark - Footer
 
 - (UILabel *)footer 

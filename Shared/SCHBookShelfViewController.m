@@ -54,11 +54,13 @@ typedef enum
 @property (nonatomic, assign) int currentlyLoadingIndex;
 @property (nonatomic, retain) LambdaAlert *loadingView;
 @property (nonatomic, assign) BOOL shouldShowBookshelfFailedErrorMessage;
+@property (nonatomic, assign) BOOL shouldWaitForCellsToLoad;
 
 - (void)setupAssetsForOrientation:(UIInterfaceOrientation)orientation;
 - (void)updateTheme;
 - (CGSize)cellSize;
 - (CGFloat)cellBorderSize;
+- (void)reloadDataImmediately:(BOOL)immediately;
 - (void)reloadData;
 - (void)save;
 - (BOOL)canOpenBook:(SCHBookIdentifier *)identifier error:(NSError **)error;
@@ -100,6 +102,7 @@ typedef enum
 @synthesize profileSetupDelegate;
 @synthesize loadingView;
 @synthesize shouldShowBookshelfFailedErrorMessage;
+@synthesize shouldWaitForCellsToLoad;
 
 #pragma mark - Object lifecycle
 
@@ -192,9 +195,7 @@ typedef enum
     } else {
         self.listTableCellNib = [UINib nibWithNibName:@"SCHBookShelfTableViewCell_iPhone" bundle:nil];
     }
-    
-    self.sortType = [[[self.profileItem AppProfile] SortType] intValue];
-    
+        
     self.themeButton = [SCHThemeButton buttonWithType:UIButtonTypeCustom];
     [self.themeButton setThemeIcon:kSCHThemeManagerThemeIcon iPadQualifier:kSCHThemeManagerPadQualifierSuffix];
     [self.themeButton sizeToFit];    
@@ -219,6 +220,8 @@ typedef enum
         [self.gridView setFooterText:NSLocalizedString(@"Notes and highlights made to sample eBooks will be lost when you sign in to your Scholastic account.", @"")];
         [self.gridView setFooterTextIsDark:[[SCHThemeManager sharedThemeManager] gridTextColorIsDark]];
     }
+    
+    self.sortType = [[[self.profileItem AppProfile] SortType] intValue];
     
     UILongPressGestureRecognizer *longPress = [[UILongPressGestureRecognizer alloc] initWithTarget:nil action:nil];
     longPress.delaysTouchesBegan = YES;
@@ -264,10 +267,6 @@ typedef enum
 	} else {
         [self dismissLoadingView];
 	}
-    
-    if (![[SCHAppStateManager sharedAppStateManager] isSampleStore]) {
-        self.navigationItem.title = [self.profileItem bookshelfName:YES];
-    }
 
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateTheme) name:kSCHThemeManagerThemeChangeNotification object:nil];              
     
@@ -294,13 +293,18 @@ typedef enum
     
     self.currentlyLoadingIndex = -1;
 
-    if ([self.profileItem.AppProfile.ShowListView boolValue] == YES) {
-        [self changeToListView:nil];
+    if (![[SCHAppStateManager sharedAppStateManager] isSampleStore]) {
+        self.navigationItem.title = [self.profileItem bookshelfName:YES];
+        if ([self.profileItem.AppProfile.ShowListView boolValue] == YES) {
+            [self changeToListView:nil];
+        }
     }
     
     // Always force a sync if we are on the sample bookshelf
     if ([[SCHAppStateManager sharedAppStateManager] isSampleStore]) {
         [[SCHSyncManager sharedSyncManager] firstSync:YES requireDeviceAuthentication:NO];
+        self.shouldWaitForCellsToLoad = YES;
+        [self reloadDataImmediately:YES];
     } else {
         if ([[SCHSyncManager sharedSyncManager] isSynchronizing] == NO) {
             [[SCHSyncManager sharedSyncManager] firstSync:NO requireDeviceAuthentication:NO];
@@ -326,14 +330,24 @@ typedef enum
         self.updateShelfOnReturnToShelf = NO;
         self.books = [self.profileItem allBookIdentifiers];
     }    
-    
+
     [self reloadData];
+}
+
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    self.shouldWaitForCellsToLoad = NO;
 }
 
 - (void)reloadData
 {
-    dispatch_async(dispatch_get_main_queue(), ^{
-        
+    [self reloadDataImmediately:NO];
+}
+
+- (void)reloadDataImmediately:(BOOL)immediately
+{
+    dispatch_block_t reloadBlock = ^{ 
         if (![self.listTableView isHidden] && self.listViewNeedsRefreshed) {
             NSLog(@"Reloading the list view.");
             self.listViewNeedsRefreshed = NO;
@@ -345,7 +359,14 @@ typedef enum
             self.gridViewNeedsRefreshed = NO;
             [self.gridView reloadData];
         }
-    });
+    };
+    
+    if (immediately) {
+        reloadBlock();
+    } else {
+        dispatch_async(dispatch_get_main_queue(), reloadBlock);
+    }
+    
 }
 
 #pragma mark - Orientation methods
@@ -442,8 +463,10 @@ typedef enum
 - (IBAction)back
 {
     self.profileItem.AppProfile.ShowListView = [NSNumber numberWithBool:self.listTableView.hidden == NO];
-
+    
     if ([[SCHAppStateManager sharedAppStateManager] isSampleStore] == YES) {
+        [self.profileItem clearBookOrder:self.books];
+        [[self.profileItem AppProfile] setSortType:[NSNumber numberWithInt:kSCHBookSortTypeUser]];
         [self.navigationController popToRootViewControllerAnimated:NO];        
     } else {
         [self.profileSetupDelegate popToAuthenticatedProfileAnimated:YES];
@@ -470,7 +493,7 @@ typedef enum
     if (![[SCHAppStateManager sharedAppStateManager] isSampleStore]) {
         self.navigationItem.title = [self.profileItem bookshelfName:YES];
     }
-    
+
 	self.books = [self.profileItem allBookIdentifiers];
         
     // tell the theme manager which profile to use for storage
@@ -763,6 +786,8 @@ typedef enum
 - (void)gridView:(MRGridView*)aGridView configureCell:(SCHBookShelfGridViewCell *)gridCell forGridIndex:(NSInteger)index
 {
     [gridCell beginUpdates];
+    gridCell.shouldWaitForExistingCachedThumbToLoad = self.shouldWaitForCellsToLoad;
+    
     gridCell.frame = [aGridView frameForCellAtGridIndex:index];
     
 	[gridCell setIdentifier:[self.books objectAtIndex:index]];

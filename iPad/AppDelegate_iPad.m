@@ -26,19 +26,19 @@ static NSTimeInterval const kAppDelegate_iPadSyncManagerWakeDelay = 5.0;
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions 
 {    
-	BOOL success = [super application:application didFinishLaunchingWithOptions:launchOptions];
+	[super application:application didFinishLaunchingWithOptions:launchOptions];
 	
     [self.window addSubview:navigationController.view];
     [self.window makeKeyAndVisible];
     
-    if (success) {
-        if ([[SCHAuthenticationManager sharedAuthenticationManager] hasUsernameAndPassword]) {
-            // skip the starter screen if already authenticated
-            [self.startingViewController pushAuthenticatedProfileAnimated:NO];
-        } else if ([[SCHAppStateManager sharedAppStateManager] isSampleStore]) {
-            [self.startingViewController pushSamplesAnimated:NO];
-        }
-    }
+//    if (success) {
+//        if ([[SCHAuthenticationManager sharedAuthenticationManager] hasUsernameAndPassword]) {
+//            // skip the starter screen if already authenticated
+//            [self.startingViewController pushAuthenticatedProfileAnimated:NO];
+//        } else if ([[SCHAppStateManager sharedAppStateManager] isSampleStore]) {
+//            [self.startingViewController pushSamplesAnimated:NO];
+//        }
+//    }
     
     return(YES);
 }

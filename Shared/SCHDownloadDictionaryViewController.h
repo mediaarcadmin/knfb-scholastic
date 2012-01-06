@@ -16,7 +16,7 @@
 @property (nonatomic, retain) IBOutlet UILabel *downloadSizeLabel;
 @property (nonatomic, retain) IBOutlet UIButton *downloadDictionaryButton;
 @property (nonatomic, retain) IBOutlet UIButton *closeButton;
-@property (nonatomic, assign) BOOL shouldAnimateSamplesPush;
+@property (nonatomic, copy) dispatch_block_t completion;
 
 - (IBAction)downloadDictionary:(id)sender;
 

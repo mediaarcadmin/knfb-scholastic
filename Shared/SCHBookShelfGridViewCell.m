@@ -76,6 +76,16 @@
     [self.bookCoverView endUpdates];
 }
 
+- (BOOL)shouldWaitForExistingCachedThumbToLoad
+{
+    return [self.bookCoverView shouldWaitForExistingCachedThumbToLoad];
+}
+
+- (void)setShouldWaitForExistingCachedThumbToLoad:(BOOL)shouldWait
+{
+    [self.bookCoverView setShouldWaitForExistingCachedThumbToLoad:shouldWait];
+}
+
 #pragma mark - Accessor methods
 
 - (void)setIdentifier:(SCHBookIdentifier *)newIdentifier

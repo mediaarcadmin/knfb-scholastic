@@ -21,6 +21,7 @@
 @property (nonatomic, assign) BOOL isNewBook;
 @property (nonatomic, assign) BOOL loading;
 @property (nonatomic, assign) BOOL disabledForInteractions;
+@property (nonatomic, assign) BOOL shouldWaitForExistingCachedThumbToLoad;
 
 @property (nonatomic, retain) SCHBookCoverView *bookCoverView;
 

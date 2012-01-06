@@ -19,6 +19,7 @@
 - (void)initialiseView;
 - (UIImage *)createImageWithSourcePath:(NSString *)sourcePath destinationPath:(NSString *)destinationPath;
 - (void)updateCachedImage:(UIImage *)thumbImage atPath:(NSString *)thumbPath forIdentifier:(SCHBookIdentifier *)localIdentifier;
+- (void)updateCachedImage:(UIImage *)thumbImage atPath:(NSString *)thumbPath forIdentifier:(SCHBookIdentifier *)localIdentifier waitUntilDone:(BOOL)wait;
 - (void)resizeElementsForThumbSize: (CGSize) thumbSize;
 - (void)deferredRefreshBookCoverView;
 - (void)cachedImageFailureForBookIdentifier:(SCHBookIdentifier *)identifier;
@@ -59,6 +60,7 @@
 @synthesize loading;
 @synthesize activitySpinner;
 @synthesize featureTab;
+@synthesize shouldWaitForExistingCachedThumbToLoad;
 
 #pragma mark - Initialisation and dealloc
 
@@ -439,20 +441,35 @@
         // Using the correct image - just redo the user interface elements
         [self resizeElementsForThumbSize:self.coverImageView.frame.size];
     } else {
-                
-        dispatch_async([SCHProcessingManager sharedProcessingManager].thumbnailAccessQueue, ^{
-                        
+        
+        BOOL successfullyLoaded = NO;
+        
+        if (self.shouldWaitForExistingCachedThumbToLoad) {
             NSFileManager *threadLocalFileManager = [[[NSFileManager alloc] init] autorelease];
-            
-            // check to see if we have the thumb already cached
             if ([threadLocalFileManager fileExistsAtPath:thumbPath]) {
                 UIImage *thumbImage = [UIImage imageWithContentsOfFile:thumbPath];
-                [self updateCachedImage:thumbImage atPath:thumbPath forIdentifier:localIdentifier];
-            } else {
-                UIImage *thumbImage = [self createImageWithSourcePath:fullImagePath destinationPath:thumbPath];
-                [self updateCachedImage:thumbImage atPath:thumbPath forIdentifier:localIdentifier];
+                [self updateCachedImage:thumbImage atPath:thumbPath forIdentifier:localIdentifier waitUntilDone:YES];
+                successfullyLoaded = YES;
             }
-        });
+        }
+        
+        if (!successfullyLoaded) {
+            dispatch_async([SCHProcessingManager sharedProcessingManager].thumbnailAccessQueue, ^{
+                
+                NSFileManager *threadLocalFileManager = [[[NSFileManager alloc] init] autorelease];
+                
+                // check to see if we have the thumb already cached
+                if ([threadLocalFileManager fileExistsAtPath:thumbPath]) {
+                    UIImage *thumbImage = [UIImage imageWithContentsOfFile:thumbPath];
+                    [self updateCachedImage:thumbImage atPath:thumbPath forIdentifier:localIdentifier];
+                } else {
+                    UIImage *thumbImage = [self createImageWithSourcePath:fullImagePath destinationPath:thumbPath];
+                    [self updateCachedImage:thumbImage atPath:thumbPath forIdentifier:localIdentifier];
+                }
+            });
+        }
+        
+        self.shouldWaitForExistingCachedThumbToLoad = NO;
     }
     
     [localIdentifier release];
@@ -703,7 +720,12 @@
 
 - (void)updateCachedImage:(UIImage *)thumbImage atPath:(NSString *)thumbPath forIdentifier:(SCHBookIdentifier *)localIdentifier
 {
-    dispatch_async(dispatch_get_main_queue(), ^{        
+    [self updateCachedImage:thumbImage atPath:thumbPath forIdentifier:localIdentifier waitUntilDone:NO];
+}
+
+- (void)updateCachedImage:(UIImage *)thumbImage atPath:(NSString *)thumbPath forIdentifier:(SCHBookIdentifier *)localIdentifier waitUntilDone:(BOOL)wait
+{
+    dispatch_block_t updateImage = ^{        
         // first check if the identifier has changed; if so, don't set the processed thumbnail
         if ([self.identifier isEqual:localIdentifier]) {
             if (thumbImage) {
@@ -716,7 +738,13 @@
                 [self cachedImageFailureForBookIdentifier:localIdentifier];
             }
         }
-    });
+    };
+    
+    if (wait) {
+        updateImage();
+    } else {
+        dispatch_async(dispatch_get_main_queue(), updateImage);
+    }
 }
 
 - (UIImage *)createImageWithSourcePath:(NSString *)sourcePath destinationPath:(NSString *)destinationPath 

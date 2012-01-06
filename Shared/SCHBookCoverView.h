@@ -26,6 +26,7 @@ typedef enum {
 @property (nonatomic, assign) BOOL loading;
 @property (nonatomic, assign) SCHBookCoverViewMode coverViewMode;
 @property (nonatomic, assign) BOOL disabledForInteractions;
+@property (nonatomic, assign) BOOL shouldWaitForExistingCachedThumbToLoad;
 
 - (void)beginUpdates;
 - (void)endUpdates;
