@@ -444,7 +444,7 @@ typedef enum
     self.profileItem.AppProfile.ShowListView = [NSNumber numberWithBool:self.listTableView.hidden == NO];
 
     if ([[SCHAppStateManager sharedAppStateManager] isSampleStore] == YES) {
-        [self.navigationController popToRootViewControllerAnimated:YES];        
+        [self.navigationController popToRootViewControllerAnimated:NO];        
     } else {
         [self.profileSetupDelegate popToAuthenticatedProfileAnimated:YES];
     }

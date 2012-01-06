@@ -13,3 +13,6 @@
 [submodule "Shared/Libraries/Submodules/bitmodalpopovercontroller"]
 	path = Shared/Libraries/Submodules/bitmodalpopovercontroller
 	url = git@codebasehq.com:bitwink/bitwink/bitmodalpopovercontroller.git
+[submodule "Shared/Libraries/Submodules/bitoperation"]
+	path = Shared/Libraries/Submodules/bitoperation
+	url = git@codebasehq.com:bitwink/bitwink/bitoperation.git

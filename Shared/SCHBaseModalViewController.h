@@ -24,7 +24,6 @@
 @property (nonatomic, assign) id<SCHSettingsDelegate> settingsDelegate; // Mutually excludes profileSetupDelegate. Both cannot be set.
 @property (nonatomic, assign) id<SCHProfileSetupDelegate> profileSetupDelegate; // Mutually excludes settingsDelegate. Both cannot be set.
 
-
 // set the appropriate button background for a setup screen button
 - (void)setButtonBackground:(UIButton *)button;
 

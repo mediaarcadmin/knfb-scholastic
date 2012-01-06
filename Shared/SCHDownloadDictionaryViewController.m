@@ -22,6 +22,7 @@
 @synthesize downloadSizeLabel;
 @synthesize downloadDictionaryButton;
 @synthesize closeButton;
+@synthesize shouldAnimateSamplesPush;
 
 - (void)releaseViewObjects
 {
@@ -73,7 +74,7 @@
         [SCHDictionaryDownloadManager sharedDownloadManager].userRequestState = SCHDictionaryUserDeclined;
         [self.profileSetupDelegate showCurrentProfileAnimated:YES];
     } else {
-        [self.profileSetupDelegate pushSamplesAnimated:YES];
+        [self.profileSetupDelegate pushSamplesAnimated:self.shouldAnimateSamplesPush];
     }
 }
 

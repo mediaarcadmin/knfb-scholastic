@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "SCHLoginHandlerDelegate.h"
 
 @class SCHCustomToolbar;
 @class SCHUnderlinedButton;
@@ -24,7 +25,7 @@ typedef enum {
 // defining a block type for use in the block property
 typedef void(^SCHActionBlock)(void);
 
-@interface SCHLoginPasswordViewController : UIViewController <UITextFieldDelegate> 
+@interface SCHLoginPasswordViewController : UIViewController <UITextFieldDelegate, SCHLoginHandlerDelegate> 
 {
     UIButton *footerForgotButton;
 }
@@ -50,11 +51,7 @@ typedef void(^SCHActionBlock)(void);
 - (void)startShowingProgress;
 - (void)stopShowingProgress;
 
-// clears the text fields
-- (void)clearFields;
 - (void)clearBottomField;
-
-- (void)setDisplayIncorrectCredentialsWarning:(BOOL)showWarning;
 
 // username and password accessors
 // consistent access over different modes

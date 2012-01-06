@@ -65,17 +65,17 @@ typedef enum {
 
 - (void)setupAssetsForOrientation:(UIInterfaceOrientation)orientation;
 - (void)setStandardStore;
-- (void)openSampleBookshelfWithCompletionHandler:(dispatch_block_t)completion;
+- (void)openSampleBookshelfAnimated:(BOOL)animated completionHandler:(dispatch_block_t)completion;
 - (void)showSignInFormWithCompletionHandler:(dispatch_block_t)completion;
 - (BOOL)dictionaryDownloadRequired;
 - (BOOL)bookshelfSetupRequired;
-- (void)checkDictionaryDownloadForSamples;
+- (void)checkDictionaryDownloadForSamplesAnimated:(BOOL)animated;
 - (void)recheckBookshelvesForProfile;
 - (void)checkBookshelvesAndDictionaryDownloadForProfile;
 - (void)checkBookshelvesAndDictionaryDownloadForProfile:(BOOL)rechecking;
 - (void)replaceCheckProfilesAlertWithAlert:(LambdaAlert *)alert;
-- (void)signInSucceededForLoginController:(SCHLoginPasswordViewController *)login;
-- (void)signInFailedForLoginController:(SCHLoginPasswordViewController *)login withError:(NSError *)error;
+- (void)signInSucceededForLoginController:(id<SCHLoginHandlerDelegate>)login;
+- (void)signInFailedForLoginController:(id<SCHLoginHandlerDelegate>)login withError:(NSError *)error;
 - (SCHProfileViewController_Shared *)profileViewController;
 
 @end
@@ -189,13 +189,50 @@ typedef enum {
     [super viewDidAppear:animated];
     
     SCHStoriaLoginViewController *login = [[SCHStoriaLoginViewController alloc] initWithNibName:@"SCHStoriaLoginViewController" bundle:nil];
+    login.loginBlock = ^BOOL(NSString *username, NSString *password) {
+        [self setStandardStore];
+        
+        self.profileSyncState = kSCHStartingViewControllerProfileSyncStateWaitingForLoginToComplete;
+        
+        if ([[username stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]] length] > 0 &&
+            [[password stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]] length] > 0) {      
+            [[SCHAuthenticationManager sharedAuthenticationManager] authenticateWithUser:username 
+                                                                                password:password
+                                                                            successBlock:^(BOOL offlineMode){
+                                                                                [self signInSucceededForLoginController:(id)login];
+                                                                            }
+                                                                            failureBlock:^(NSError * error){
+                                                                                [self signInFailedForLoginController:(id)login withError:error];
+                                                                            }];            
+            return(YES);
+        } else {
+            [login setDisplayIncorrectCredentialsWarning:YES];
+            
+            return(NO);
+        }
+    };
     
     BITModalPopoverController *modalController = [[BITModalPopoverController alloc] initWithContentViewController:login];
-    [modalController setPopoverContentSize:CGSizeMake(630, 500)];
-    [modalController setPopoverContentOffset:CGPointMake(0, -70)];
-    [modalController setShouldDimBackground:NO];
+    
+    login.previewBlock = ^{
+        self.performingAction = YES;
+        [modalController dismissModalPopoverAnimated:YES completion:^{
+            [self openSampleBookshelfAnimated:NO completionHandler:^{
+                self.performingAction = NO;
+            }];
+        }];
+    };
+    
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+        [modalController setPopoverContentSize:CGSizeMake(630, 500)];
+        [modalController setPopoverContentOffset:CGPointMake(0, -70)];
+    } else {
+        modalController = [[BITModalPopoverController alloc] initWithContentViewController:login];
+        [modalController setPopoverContentSize:CGSizeMake(300, 400)];
+    }
+    [modalController setShadowRadius:0];
     [modalController setAutoresizingMask:UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleBottomMargin];
-    [modalController presentModalPopoverInViewController:self animated:YES];
+    [modalController presentModalPopoverInViewController:self animated:YES completion:nil];
     [login release];
 }
 
@@ -209,12 +246,20 @@ typedef enum {
     
     if (UIInterfaceOrientationIsLandscape(orientation)) {
         CGFloat offset = iPad ? kTableOffsetLandscape_iPad : kTableOffsetLandscape_iPhone;
-        [self.backgroundView setImage:[UIImage imageNamed:@"storia-startviewcontroller-static-landscape~ipad.png"]];
+        if (iPad) {
+            [self.backgroundView setImage:[UIImage imageNamed:@"storia-startviewcontroller-static-landscape~ipad.jpg"]];
+        } else {
+            [self.backgroundView setImage:[UIImage imageNamed:@"plain-background-landscape.jpg"]];
+        }
         [self.starterTableView setContentInset:UIEdgeInsetsMake(offset, 0, 0, 0)];
         logoHeight = iPad ? logoHeight : 32;
     } else {
         CGFloat offset = iPad ? kTableOffsetPortrait_iPad : kTableOffsetPortrait_iPhone;
-        [self.backgroundView setImage:[UIImage imageNamed:@"storia-startviewcontroller-static-portrait~ipad.png"]];
+        if (iPad) {
+            [self.backgroundView setImage:[UIImage imageNamed:@"storia-startviewcontroller-static-portrait~ipad.jpg"]];
+        } else {
+            [self.backgroundView setImage:[UIImage imageNamed:@"plain-background-landscape.jpg"]];
+        }
         [self.starterTableView setContentInset:UIEdgeInsetsMake(offset, 0, 0, 0)];
     }
     
@@ -312,7 +357,7 @@ typedef enum {
         
         switch (section) {
             case kTableSectionSamples:
-                [self openSampleBookshelfWithCompletionHandler:^{
+                [self openSampleBookshelfAnimated:YES completionHandler:^{
                     self.performingAction = NO;
                 }];
                 break;
@@ -329,7 +374,7 @@ typedef enum {
 
 #pragma mark - Sample bookshelves
 
-- (void)openSampleBookshelfWithCompletionHandler:(dispatch_block_t)completion;
+- (void)openSampleBookshelfAnimated:(BOOL)animated completionHandler:(dispatch_block_t)completion;
 {
     AppDelegate_Shared *appDelegate = (AppDelegate_Shared *)[[UIApplication sharedApplication] delegate];
     [appDelegate setStoreType:kSCHStoreTypeSampleStore];
@@ -340,7 +385,7 @@ typedef enum {
     [[SCHSampleBooksImporter sharedImporter] importSampleBooksFromRemoteManifest:[NSURL URLWithString:kSCHSampleBooksRemoteManifestURL] 
                                                                    localManifest:localManifestURL
                                                                     successBlock:^{
-                                                                        [self checkDictionaryDownloadForSamples];
+                                                                        [self checkDictionaryDownloadForSamplesAnimated:animated];
                                                                         if (completion) {
                                                                             completion();
                                                                         }
@@ -430,13 +475,13 @@ typedef enum {
     }
 }
 
-- (void)signInSucceededForLoginController:(SCHLoginPasswordViewController *)login
+- (void)signInSucceededForLoginController:(id<SCHLoginHandlerDelegate>)login
 {
     [login setDisplayIncorrectCredentialsWarning:NO];
     [[SCHSyncManager sharedSyncManager] firstSync:YES requireDeviceAuthentication:NO];
 }
 
-- (void)signInFailedForLoginController:(SCHLoginPasswordViewController *)login withError:(NSError *)error
+- (void)signInFailedForLoginController:(id<SCHLoginHandlerDelegate>)login withError:(NSError *)error
 {    
     if (error != nil) {
         
@@ -495,18 +540,19 @@ typedef enum {
     return setupRequired;
 }
 
-- (void)checkDictionaryDownloadForSamples
+- (void)checkDictionaryDownloadForSamplesAnimated:(BOOL)animated
 {
     SCHDownloadDictionaryViewController *downloadDictionary = nil;
         
     if ([self dictionaryDownloadRequired]) {
         downloadDictionary = [[SCHDownloadDictionaryViewController alloc] init];
         downloadDictionary.profileSetupDelegate = self;
+        downloadDictionary.shouldAnimateSamplesPush = NO;
         [self.modalNavigationController setViewControllers:[NSArray arrayWithObject:downloadDictionary]];
         [self presentModalViewController:self.modalNavigationController animated:YES];
         [downloadDictionary release];
     } else {
-        [self pushSamplesAnimated:YES];
+        [self pushSamplesAnimated:animated];
     }
 }
 
