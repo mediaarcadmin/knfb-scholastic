@@ -40,8 +40,6 @@
 
 @property (nonatomic, retain) IBOutlet SCHBookShelfTableViewCell *listViewCell;
 
-@property (nonatomic, retain) KNFBTimeOrderedCache *componentCache;
-
 @property (nonatomic, retain) NSManagedObjectContext *managedObjectContext;
 @property (nonatomic, retain) NSMutableArray *books;
 @property (nonatomic, retain) SCHProfileItem *profileItem;

@@ -87,7 +87,6 @@ typedef enum
 @synthesize listButton;
 @synthesize listToggleView;
 @synthesize gridViewToggleView;
-@synthesize componentCache;
 @synthesize books;
 @synthesize profileItem;
 @synthesize moveToValue;
@@ -111,9 +110,7 @@ typedef enum
     [gridView release], gridView = nil;
     [themePickerContainer release], themePickerContainer = nil;
     [customNavigationBar release], customNavigationBar = nil;
-    
-    [componentCache release], componentCache = nil;
-    
+        
     [themeButton release], themeButton = nil;
     [backButton release], backButton = nil;    
     [listTableView release], listTableView = nil;
@@ -229,12 +226,6 @@ typedef enum
     [self.gridView addGestureRecognizer:longPress];
     [longPress release], longPress = nil;
 	self.moveToValue = -1;
-	
-	KNFBTimeOrderedCache *aCache = [[KNFBTimeOrderedCache alloc] init];
-	aCache.countLimit = 30; // Arbitrary 30 object limit
-	aCache.totalCostLimit = 1024*1024; // Arbitrary 1MB limit. This may need wteaked or set on a per-device basis
-	self.componentCache = aCache;
-	[aCache release], aCache = nil;
 	
     [[NSNotificationCenter defaultCenter] addObserver:self
 											 selector:@selector(bookshelfSyncComponentBookReceived:)
