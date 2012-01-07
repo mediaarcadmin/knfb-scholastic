@@ -73,12 +73,7 @@
     if ([[SCHAppStateManager sharedAppStateManager] isSampleStore] == NO) {
         [[SCHDictionaryDownloadManager sharedDownloadManager] threadSafeUpdateDictionaryState:SCHDictionaryProcessingStateUserDeclined];
         [SCHDictionaryDownloadManager sharedDownloadManager].userRequestState = SCHDictionaryUserDeclined;
-        
-
-       // [self.profileSetupDelegate showCurrentProfileAnimated:YES];
-    } //else {
-        //[self.profileSetupDelegate pushSamplesAnimated:self.shouldAnimateSamplesPush];
-    //}
+    }
     
     if (completion) {
         completion();
@@ -93,11 +88,6 @@
         if (completion) {
             completion();
         }
-        //if ([[SCHAppStateManager sharedAppStateManager] isSampleStore] == NO) {
-          //  [self.profileSetupDelegate showCurrentProfileAnimated:YES];
-        //} else {
-          //  [self.profileSetupDelegate pushSamplesAnimated:YES];
-        //}
     };
     
     BOOL reachable = [[Reachability reachabilityForLocalWiFi] isReachable];

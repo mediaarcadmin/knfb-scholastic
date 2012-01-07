@@ -31,7 +31,7 @@
 @property (nonatomic, assign) id<SCHProfileSetupDelegate> profileSetupDelegate;
 
 - (NSArray *)profileItems;
-- (NSArray *)viewControllersForProfileItem:(SCHProfileItem *)profileItem;
+- (NSArray *)viewControllersForProfileItem:(SCHProfileItem *)profileItem showWelcome:(BOOL)welcome;
 
 // for use by subclass
 - (void)releaseViewObjects;

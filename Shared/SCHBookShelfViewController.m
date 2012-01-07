@@ -32,6 +32,8 @@
 #import "SCHBookshelfSyncComponent.h"
 #import "SCHAppStateManager.h"
 #import "Reachability.h"
+#import "BITModalPopoverController.h"
+#import "SCHStoriaWelcomeViewController.h"
 
 static NSInteger const kSCHBookShelfViewControllerGridCellHeightPortrait = 138;
 static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 131;
@@ -102,6 +104,7 @@ typedef enum
 @synthesize loadingView;
 @synthesize shouldShowBookshelfFailedErrorMessage;
 @synthesize shouldWaitForCellsToLoad;
+@synthesize showWelcome;
 
 #pragma mark - Object lifecycle
 
@@ -329,6 +332,30 @@ typedef enum
 {
     [super viewDidAppear:animated];
     self.shouldWaitForCellsToLoad = NO;
+    
+    if (self.showWelcome) {
+        SCHStoriaWelcomeViewController *welcomeVC = [[SCHStoriaWelcomeViewController alloc] init];
+        
+        BITModalPopoverController *welcomePopoverController = [[BITModalPopoverController alloc] initWithContentViewController:welcomeVC];
+        [welcomePopoverController setPopoverContentSize:CGSizeMake(556, 241)];
+        [welcomePopoverController setPopoverContentOffset:CGPointMake(0, -15)];
+        [welcomePopoverController setShouldDismissOutsideContentBounds:YES];
+        //[welcomePopoverController setDelayPresentingViewControllerRotationAnimation:NO];
+        
+        __block BITModalPopoverController *weakWelcomePopoverController = welcomePopoverController;
+        
+        welcomeVC.closeBlock = ^{
+            [weakWelcomePopoverController dismissModalPopoverAnimated:YES completion:nil];
+        };
+        
+        [welcomeVC release];
+        
+        [welcomePopoverController presentModalPopoverInViewController:self animated:YES completion:nil];
+        
+        [welcomePopoverController release];
+        
+        self.showWelcome = NO;
+    }
 }
 
 - (void)reloadData

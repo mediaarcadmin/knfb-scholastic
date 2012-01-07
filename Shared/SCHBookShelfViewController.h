@@ -43,6 +43,7 @@
 @property (nonatomic, retain) NSManagedObjectContext *managedObjectContext;
 @property (nonatomic, retain) NSMutableArray *books;
 @property (nonatomic, retain) SCHProfileItem *profileItem;
+@property (nonatomic, assign) BOOL showWelcome;
 
 @property (nonatomic) SCHBookSortType sortType;
 

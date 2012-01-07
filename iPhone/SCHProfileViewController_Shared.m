@@ -146,6 +146,7 @@
     self.navigationItem.leftBarButtonItem = [[[UIBarButtonItem alloc] initWithCustomView:empty] autorelease];
     [empty release];
     
+    [self.navigationController setNavigationBarHidden:NO];
     [self checkForBookUpdates];
 }
 
@@ -421,7 +422,7 @@ didSelectButtonAnimated:(BOOL)animated
 
 }
 
-- (NSArray *)viewControllersForProfileItem:(SCHProfileItem *)profileItem
+- (NSArray *)viewControllersForProfileItem:(SCHProfileItem *)profileItem showWelcome:(BOOL)welcome
 {
     NSMutableArray *viewControllers = [NSMutableArray array];
     
@@ -429,6 +430,7 @@ didSelectButtonAnimated:(BOOL)animated
     bookShelfViewController.profileItem = profileItem;
     bookShelfViewController.managedObjectContext = self.managedObjectContext;
     bookShelfViewController.profileSetupDelegate = self.profileSetupDelegate;
+    bookShelfViewController.showWelcome = welcome;
     
     [viewControllers addObject:bookShelfViewController];
     
@@ -461,7 +463,7 @@ didSelectButtonAnimated:(BOOL)animated
     
     [viewControllers addObject:self];
     
-    NSArray *profileControllers = [self viewControllersForProfileItem:profileItem];
+    NSArray *profileControllers = [self viewControllersForProfileItem:profileItem showWelcome:NO];
     if (profileControllers) {
         [viewControllers addObjectsFromArray:profileControllers];
     }

@@ -1850,6 +1850,10 @@
 		C9C3F9EB14B5E87000757038 /* storia-startviewcontroller-static-portrait~ipad.jpg in Resources */ = {isa = PBXBuildFile; fileRef = C9C3F9E714B5E87000757038 /* storia-startviewcontroller-static-portrait~ipad.jpg */; };
 		C9C3FA3714B6FA7D00757038 /* libBITOperation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C9C3FA3014B6FA5E00757038 /* libBITOperation.a */; };
 		C9C3FA3814B6FA8400757038 /* libBITOperation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C9C3FA3014B6FA5E00757038 /* libBITOperation.a */; };
+		C9C3FABB14B85F4400757038 /* SCHStoriaWelcomeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C9C3FAB914B85F4200757038 /* SCHStoriaWelcomeViewController.m */; };
+		C9C3FABC14B85F4400757038 /* SCHStoriaWelcomeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C9C3FAB914B85F4200757038 /* SCHStoriaWelcomeViewController.m */; };
+		C9C3FABD14B85F4400757038 /* SCHStoriaWelcomeViewController~ipad.xib in Resources */ = {isa = PBXBuildFile; fileRef = C9C3FABA14B85F4300757038 /* SCHStoriaWelcomeViewController~ipad.xib */; };
+		C9C3FABE14B85F4400757038 /* SCHStoriaWelcomeViewController~ipad.xib in Resources */ = {isa = PBXBuildFile; fileRef = C9C3FABA14B85F4300757038 /* SCHStoriaWelcomeViewController~ipad.xib */; };
 		C9C9096B1455A06B00548DDE /* SCHSampleBooksImporter.m in Sources */ = {isa = PBXBuildFile; fileRef = C9C9096A1455A06B00548DDE /* SCHSampleBooksImporter.m */; };
 		C9C9096C1455A06B00548DDE /* SCHSampleBooksImporter.m in Sources */ = {isa = PBXBuildFile; fileRef = C9C9096A1455A06B00548DDE /* SCHSampleBooksImporter.m */; };
 		C9D4F6281345FFE8007F86E3 /* SCHTextFlow.m in Sources */ = {isa = PBXBuildFile; fileRef = C9D4F6271345FFE7007F86E3 /* SCHTextFlow.m */; };
@@ -3569,6 +3573,9 @@
 		C9C3F9E714B5E87000757038 /* storia-startviewcontroller-static-portrait~ipad.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = "storia-startviewcontroller-static-portrait~ipad.jpg"; path = "Resources/UIAssets/storia-startviewcontroller-static-portrait~ipad.jpg"; sourceTree = "<group>"; };
 		C9C3F9EC14B5F4C300757038 /* SCHLoginHandlerDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHLoginHandlerDelegate.h; path = Shared/SCHLoginHandlerDelegate.h; sourceTree = "<group>"; };
 		C9C3FA2714B6FA5E00757038 /* BITOperation.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = BITOperation.xcodeproj; path = Shared/Libraries/Submodules/bitoperation/BITOperation.xcodeproj; sourceTree = "<group>"; };
+		C9C3FAB814B85F4100757038 /* SCHStoriaWelcomeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHStoriaWelcomeViewController.h; path = Shared/SCHStoriaWelcomeViewController.h; sourceTree = "<group>"; };
+		C9C3FAB914B85F4200757038 /* SCHStoriaWelcomeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHStoriaWelcomeViewController.m; path = Shared/SCHStoriaWelcomeViewController.m; sourceTree = "<group>"; };
+		C9C3FABA14B85F4300757038 /* SCHStoriaWelcomeViewController~ipad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = "SCHStoriaWelcomeViewController~ipad.xib"; path = "Shared/SCHStoriaWelcomeViewController~ipad.xib"; sourceTree = "<group>"; };
 		C9C909691455A06B00548DDE /* SCHSampleBooksImporter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHSampleBooksImporter.h; path = Shared/SCHSampleBooksImporter.h; sourceTree = "<group>"; };
 		C9C9096A1455A06B00548DDE /* SCHSampleBooksImporter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHSampleBooksImporter.m; path = Shared/SCHSampleBooksImporter.m; sourceTree = "<group>"; };
 		C9D4F6261345FFE7007F86E3 /* SCHTextFlow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHTextFlow.h; path = Shared/SCHTextFlow.h; sourceTree = "<group>"; };
@@ -5520,9 +5527,6 @@
 		C920DDED138A69B400F1583D /* Profile and Admin Views */ = {
 			isa = PBXGroup;
 			children = (
-				F81CFDF914B4910000F552A9 /* storia-preview.png */,
-				F81CFDFA14B4910000F552A9 /* storia-preview@2x.png */,
-				F81CFDFB14B4910000F552A9 /* storia-preview~ipad.png */,
 				F8B1E4E114AE28CE0070EFCD /* storia-setup-logo.png */,
 				F8B1E4E214AE28CE0070EFCD /* storia-setup-logo@2x.png */,
 				F8B1E4E314AE28CE0070EFCD /* storia-setup-logo~ipad.png */,
@@ -5602,6 +5606,8 @@
 				F82D39D8131EA7D400289FF3 /* SCHBookShelfTableViewCell.m */,
 				F86666A013AF8C370050979F /* SCHBookShelfTableViewCell_iPad.xib */,
 				F837018413BB2B7A009B280D /* SCHBookShelfTableViewCell_iPhone.xib */,
+				C9C3FAB814B85F4100757038 /* SCHStoriaWelcomeViewController.h */,
+				C9C3FAB914B85F4200757038 /* SCHStoriaWelcomeViewController.m */,
 			);
 			name = Bookshelves;
 			sourceTree = "<group>";
@@ -5753,6 +5759,9 @@
 		C9703A5213E9615C0003C4D8 /* Bookshelf */ = {
 			isa = PBXGroup;
 			children = (
+				F81CFDF914B4910000F552A9 /* storia-preview.png */,
+				F81CFDFA14B4910000F552A9 /* storia-preview@2x.png */,
+				F81CFDFB14B4910000F552A9 /* storia-preview~ipad.png */,
 				F88FA50114AC9F6E00AB1911 /* storiatoolbar.png */,
 				F88FA50214AC9F6E00AB1911 /* storiatoolbar~ipad.png */,
 				C9703A9113E994BA0003C4D8 /* bookshelf-topright-shadow~ipad.png */,
@@ -6314,6 +6323,7 @@
 		F864333913813DE000BEB8EB /* Bookshelves */ = {
 			isa = PBXGroup;
 			children = (
+				C9C3FABA14B85F4300757038 /* SCHStoriaWelcomeViewController~ipad.xib */,
 				F864333513813B0100BEB8EB /* SCHBookShelfViewController_iPad.h */,
 				F864333613813B0100BEB8EB /* SCHBookShelfViewController_iPad.m */,
 				F87B6E2B1398ED65005CC0FA /* SCHBookShelfSortPopoverTableView.h */,
@@ -7487,6 +7497,7 @@
 				C9C3F9E414B5E01200757038 /* SCHStoriaLoginViewController~iphone.xib in Resources */,
 				C9C3F9E814B5E87000757038 /* storia-startviewcontroller-static-landscape~ipad.jpg in Resources */,
 				C9C3F9EA14B5E87000757038 /* storia-startviewcontroller-static-portrait~ipad.jpg in Resources */,
+				C9C3FABD14B85F4400757038 /* SCHStoriaWelcomeViewController~ipad.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -8191,6 +8202,7 @@
 				C9C3F9E514B5E01200757038 /* SCHStoriaLoginViewController~iphone.xib in Resources */,
 				C9C3F9E914B5E87000757038 /* storia-startviewcontroller-static-landscape~ipad.jpg in Resources */,
 				C9C3F9EB14B5E87000757038 /* storia-startviewcontroller-static-portrait~ipad.jpg in Resources */,
+				C9C3FABE14B85F4400757038 /* SCHStoriaWelcomeViewController~ipad.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -8531,6 +8543,7 @@
 				C9A6B400148B853C00B31277 /* SCHAppHelpState.m in Sources */,
 				C959076C1497D08000E024AF /* NSString+URLEncoding.m in Sources */,
 				C9F8FD5E14B4909800136C22 /* SCHStoriaLoginViewController.m in Sources */,
+				C9C3FABB14B85F4400757038 /* SCHStoriaWelcomeViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -8916,6 +8929,7 @@
 				C9A6B401148B853C00B31277 /* SCHAppHelpState.m in Sources */,
 				C959076D1497D08000E024AF /* NSString+URLEncoding.m in Sources */,
 				C9F8FD5F14B4909800136C22 /* SCHStoriaLoginViewController.m in Sources */,
+				C9C3FABC14B85F4400757038 /* SCHStoriaWelcomeViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -11,8 +11,7 @@
 
 @interface SCHStoriaLoginViewController : UIViewController <SCHLoginHandlerDelegate>
 
-// The loginBlock should return NO to clear the fields and refocus on the top one
-@property (nonatomic, copy) BOOL (^loginBlock)(NSString *topFieldString, NSString *bottomFieldString);
+@property (nonatomic, copy) void (^loginBlock)(NSString *topFieldString, NSString *bottomFieldString);
 @property (nonatomic, copy) dispatch_block_t previewBlock;
 
 @property (nonatomic, retain) IBOutlet UITextField *topField;

@@ -83,15 +83,8 @@
     NSAssert(self.loginBlock != nil, @"Login block must be set!");
     
     if (self.loginBlock) {
-        BOOL good = self.loginBlock(self.topField ? [NSString stringWithString:self.topField.text] : nil,
-                                    self.bottomField ? [NSString stringWithString:self.bottomField.text] : nil);
-        if (good) {
-            [self.view endEditing:YES];
-            //[self startShowingProgress];
-        } else {
-            [self clearFields];
-            [self.topField ?: self.bottomField becomeFirstResponder];
-        }
+        self.loginBlock(self.topField ? [NSString stringWithString:self.topField.text] : nil,
+                        self.bottomField ? [NSString stringWithString:self.bottomField.text] : nil);
     }
 }
 
