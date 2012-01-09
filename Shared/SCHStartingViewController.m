@@ -33,6 +33,7 @@
 #import "SCHAccountValidation.h"
 #import "SCHParentalToolsWebViewController.h"
 #import "Reachability.h"
+#import "SCHVersionDownloadManager.h"
 
 enum {
     kTableSectionSamples = 0,
@@ -157,6 +158,11 @@ typedef enum {
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(profileSyncDidFail:)
                                                  name:SCHProfileSyncComponentDidFailNotification
+                                               object:nil];    
+
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(versionDownloadManagerCompleted:)
+                                                 name:SCHVersionDownloadManagerCompletedNotification
                                                object:nil];    
 }
 
@@ -762,6 +768,8 @@ typedef enum {
 
 - (void)willEnterForeground:(NSNotification *)note
 {
+    [[SCHVersionDownloadManager sharedVersionManager] checkVersion];
+    
     if ((self.profileSyncState == kSCHStartingViewControllerProfileSyncStateWaitingForBookshelves) ||
         (self.profileSyncState == kSCHStartingViewControllerProfileSyncStateWaitingForPassword) ||
         (self.profileSyncState == kSCHStartingViewControllerProfileSyncStateWaitingForWebParentToolsToComplete)) {
@@ -823,6 +831,23 @@ typedef enum {
             [self.checkProfilesAlert dismissAnimated:YES];
             self.checkProfilesAlert = nil;
         }
+    }
+}
+
+- (void)versionDownloadManagerCompleted:(NSNotification *)note
+{
+    NSNumber *isCurrentVersion = [[note userInfo] objectForKey:SCHVersionDownloadManagerIsCurrentVersion];
+    
+    if (isCurrentVersion != nil && [isCurrentVersion boolValue] == NO) {
+        LambdaAlert *alert = [[LambdaAlert alloc]
+                              initWithTitle:NSLocalizedString(@"App is out of date", @"")
+                              message:NSLocalizedString(@"Please upgrade to the latest version", @"")];
+        [alert addButtonWithTitle:NSLocalizedString(@"Upgrade", @"") block:^{
+            // TODO: replace with link to Scholastic in the app store
+            [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"http://www.bitwink.com"]];
+        }];
+        [alert show];
+        [alert release];          
     }
 }
 
