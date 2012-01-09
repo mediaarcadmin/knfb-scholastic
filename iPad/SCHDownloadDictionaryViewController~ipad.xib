@@ -176,6 +176,7 @@
 						<string key="NSFrame">{{117, 463}, {306, 48}}</string>
 						<reference key="NSSuperview" ref="191373211"/>
 						<reference key="NSWindow"/>
+						<reference key="NSNextKeyView"/>
 						<bool key="IBUIOpaque">NO</bool>
 						<string key="targetRuntimeIdentifier">IBIPadFramework</string>
 						<int key="IBUIContentHorizontalAlignment">0</int>
@@ -206,9 +207,9 @@
 										<reference key="NSSuperview" ref="903668381"/>
 										<reference key="NSWindow"/>
 										<reference key="NSNextKeyView" ref="756187469"/>
-										<object class="NSColor" key="IBUIBackgroundColor">
-											<int key="NSColorSpace">1</int>
-											<bytes key="NSRGB">MSAwIDAuNTAxOTYwODE0AA</bytes>
+										<object class="NSColor" key="IBUIBackgroundColor" id="514852632">
+											<int key="NSColorSpace">3</int>
+											<bytes key="NSWhite">MCAwAA</bytes>
 										</object>
 										<bool key="IBUIOpaque">NO</bool>
 										<bool key="IBUIClipsSubviews">YES</bool>
@@ -248,10 +249,7 @@
 								<reference key="NSSuperview" ref="281857758"/>
 								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="587539197"/>
-								<object class="NSColor" key="IBUIBackgroundColor">
-									<int key="NSColorSpace">2</int>
-									<bytes key="NSRGB">MC40Mjc0NTEwMTQ1IDAuNzI5NDExNzgwOCAwLjg5MDE5NjE0NDYAA</bytes>
-								</object>
+								<reference key="IBUIBackgroundColor" ref="514852632"/>
 								<string key="targetRuntimeIdentifier">IBIPadFramework</string>
 							</object>
 						</object>
