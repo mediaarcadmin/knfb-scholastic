@@ -61,6 +61,8 @@ typedef enum {
 - (void)runLoginSequenceWithUsername:(NSString *)username password:(NSString *)password credentialsSuccessBlock:(void(^)(BOOL success))credentialsSuccessBlock;
 
 - (void)pushSamplesAnimated:(BOOL)animated showWelcome:(BOOL)welcome;
+- (void)pushAuthenticatedProfileAnimated:(BOOL)animated;
+
 - (void)setStandardStore;
 - (BOOL)dictionaryDownloadRequired;
 - (BOOL)bookshelfSetupRequired;
@@ -218,21 +220,6 @@ typedef enum {
 
 #pragma mark - SCHProfileSetupDelegate
 
-- (void)pushAuthenticatedProfileAnimated:(BOOL)animated
-{
-    if ([self bookshelfSetupRequired]) {
-        // Force the view to load from the nib without requiring the run loop to complete
-        [self view];
-        
-        // Start the sync in case they have been set up since last sync
-        [[SCHSyncManager sharedSyncManager] firstSync:YES requireDeviceAuthentication:NO];
-        
-        [self checkBookshelvesAndDictionaryDownloadForProfile:animated];
-    } else {
-        [self showCurrentProfileAnimated:animated];
-    }
-}
-
 - (void)popToAuthenticatedProfileAnimated:(BOOL)animated
 {
     if (self.modalViewController) {
@@ -278,31 +265,6 @@ typedef enum {
     }
     
     [CATransaction commit];
-}
-
-- (void)pushSamplesAnimated:(BOOL)animated showWelcome:(BOOL)welcome
-{       
-    if (self.modalViewController) {
-        [self dismissModalViewControllerAnimated:YES];
-    }
-    
-    SCHProfileViewController_Shared *profile = [self profileViewController];
-    SCHProfileItem *profileItem = [[profile profileItems] lastObject]; // Only one sample bookshelf so any result will do
-    
-    if (profileItem) {
-        NSMutableArray *viewControllers = [NSMutableArray arrayWithObjects:self, profile, nil];
-        [viewControllers addObjectsFromArray:[profile viewControllersForProfileItem:profileItem showWelcome:welcome]];
-        [self.navigationController setViewControllers:viewControllers animated:animated];
-    } else {
-        LambdaAlert *alert = [[LambdaAlert alloc]
-                              initWithTitle:NSLocalizedString(@"Unable To Open the Sample Bookshelf", @"")
-                              message:NSLocalizedString(@"There was a problem while opening the sample bookshelf. Please try again.", @"")];
-        [alert addButtonWithTitle:NSLocalizedString(@"OK", @"") block:^{
-        }];
-        
-        [alert show]; 
-        [alert release]; 
-    }
 }
 
 - (void)showCurrentProfileAnimated:(BOOL)animated
@@ -782,6 +744,46 @@ typedef enum {
         //        }
         
         [login release];
+    }
+}
+
+- (void)pushSamplesAnimated:(BOOL)animated showWelcome:(BOOL)welcome
+{       
+    if (self.modalViewController) {
+        [self dismissModalViewControllerAnimated:YES];
+    }
+    
+    SCHProfileViewController_Shared *profile = [self profileViewController];
+    SCHProfileItem *profileItem = [[profile profileItems] lastObject]; // Only one sample bookshelf so any result will do
+    
+    if (profileItem) {
+        NSMutableArray *viewControllers = [NSMutableArray arrayWithObjects:self, profile, nil];
+        [viewControllers addObjectsFromArray:[profile viewControllersForProfileItem:profileItem showWelcome:welcome]];
+        [self.navigationController setViewControllers:viewControllers animated:animated];
+    } else {
+        LambdaAlert *alert = [[LambdaAlert alloc]
+                              initWithTitle:NSLocalizedString(@"Unable To Open the Sample Bookshelf", @"")
+                              message:NSLocalizedString(@"There was a problem while opening the sample bookshelf. Please try again.", @"")];
+        [alert addButtonWithTitle:NSLocalizedString(@"OK", @"") block:^{
+        }];
+        
+        [alert show]; 
+        [alert release]; 
+    }
+}
+
+- (void)pushAuthenticatedProfileAnimated:(BOOL)animated
+{
+    if ([self bookshelfSetupRequired]) {
+        // Force the view to load from the nib without requiring the run loop to complete
+        [self view];
+        
+        // Start the sync in case they have been set up since last sync
+        [[SCHSyncManager sharedSyncManager] firstSync:YES requireDeviceAuthentication:NO];
+        
+        [self checkBookshelvesAndDictionaryDownloadForProfile:animated];
+    } else {
+        [self showCurrentProfileAnimated:animated];
     }
 }
 
