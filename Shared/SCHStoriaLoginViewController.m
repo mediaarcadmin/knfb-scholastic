@@ -8,7 +8,7 @@
 
 #import "SCHStoriaLoginViewController.h"
 
-@interface SCHStoriaLoginViewController()
+@interface SCHStoriaLoginViewController() <UITextFieldDelegate>
 
 - (void)releaseViewObjects;
 
@@ -21,6 +21,7 @@
 @synthesize topField;
 @synthesize bottomField;
 @synthesize loginButton;
+@synthesize spinner;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -36,6 +37,7 @@
     [topField release], topField = nil;
     [bottomField release], bottomField = nil;
     [loginButton release], loginButton = nil;
+    [spinner release], spinner = nil;
 }
 
 - (void)dealloc
@@ -103,25 +105,19 @@
 - (void)startShowingProgress
 {
  	[self.topField resignFirstResponder];
-    self.topField.enabled = NO;
+    [self.topField setEnabled:NO];
 	[self.bottomField resignFirstResponder];
-    self.bottomField.enabled = NO;
-    //[spinner startAnimating];
-    //self.forgotUsernamePasswordURL.enabled = NO;
-    //self.accountURL.enabled = NO;
-    self.loginButton.enabled = NO;
-    //self.closeButton.enabled = NO;
+    [self.bottomField setEnabled:NO];
+    [self.spinner startAnimating];
+    [self.loginButton setEnabled:NO];
 }
 
 - (void)stopShowingProgress
 {
-    self.topField.enabled = YES;
-    self.bottomField.enabled = YES;
-    //[spinner stopAnimating];
-    //self.forgotUsernamePasswordURL.enabled = YES;
-    //self.accountURL.enabled = YES;    
-    self.loginButton.enabled = YES;
-    //self.closeButton.enabled = YES;
+    [self.topField setEnabled:YES];
+    [self.bottomField setEnabled:YES];
+    [self.spinner stopAnimating];
+    [self.loginButton setEnabled:YES];
 }
 
 - (void)clearFields
@@ -140,6 +136,22 @@
 - (void)setDisplayIncorrectCredentialsWarning:(BOOL)showWarning
 {
     
+}
+
+#pragma mark - UITextFieldDelegate
+
+- (BOOL)textFieldShouldReturn:(UITextField *)textField
+{
+    if (textField == self.topField) {
+        [self.bottomField becomeFirstResponder];
+    }
+    
+    if (textField == self.bottomField && [self.topField.text length] > 0 && [self.bottomField.text length] > 0) {
+        [self.bottomField resignFirstResponder];
+        [self loginButtonAction:nil];
+    }
+    
+    return YES;
 }
 
 @end

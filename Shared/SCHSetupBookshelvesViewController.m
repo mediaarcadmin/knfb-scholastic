@@ -49,7 +49,7 @@
 #if 0 // force a way out of this screen
     [self.setupBookshelvesButton setTitle:@"EXIT" forState:UIControlStateNormal];
     
-    if ([self.profileSetupDelegate respondsToSelector:@selector(showCurrentProfileAnimated:)]) {
+    if ([self.profileSetupDelegate respondsToSelector:@selector(pushCurrentProfileAnimated:)]) {
         [self.setupBookshelvesButton addTarget:self.profileSetupDelegate action:@selector(showCurrentProfileAnimated:) forControlEvents:UIControlEventTouchDown];
     }
 #endif

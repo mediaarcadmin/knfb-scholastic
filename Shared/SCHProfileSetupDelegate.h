@@ -11,9 +11,7 @@
 @protocol SCHProfileSetupDelegate <SCHModalPresenterDelegate>
 
 - (void)popToAuthenticatedProfileAnimated:(BOOL)animated;
-
-- (void)showCurrentProfileAnimated:(BOOL)animated;
-
+- (void)pushCurrentProfileAnimated:(BOOL)animated;
 - (void)waitingForPassword;
 
 @end

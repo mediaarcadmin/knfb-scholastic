@@ -17,6 +17,7 @@
 @property (nonatomic, retain) IBOutlet UITextField *topField;
 @property (nonatomic, retain) IBOutlet UITextField *bottomField;
 @property (nonatomic, retain) IBOutlet UIButton *loginButton;
+@property (nonatomic, retain) IBOutlet UIActivityIndicatorView *spinner;
 
 - (IBAction)loginButtonAction:(id)sender;
 - (IBAction)previewButtonAction:(id)sender;
