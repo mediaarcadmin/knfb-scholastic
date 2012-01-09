@@ -77,6 +77,7 @@
 						   delegate:self];
 		
         if (self.connection == nil) {
+            [SCHVersionDownloadManager sharedVersionManager].state = SCHVersionDownloadManagerProcessingStateUnexpectedConnectivityFailureError;            
             [self cancel];
         } else {
             [self startOp];
@@ -143,7 +144,7 @@ didReceiveResponse:(NSURLResponse *)response
     
         [SCHVersionDownloadManager sharedVersionManager].manifestUpdates = self.manifestEntries;    
     } else {
-        NSLog(@"DictionaryManifestOperation was cancelled");
+        NSLog(@"VersionManifestOperation was cancelled");
     }
     
     [self finishOp];
@@ -153,6 +154,7 @@ didReceiveResponse:(NSURLResponse *)response
   didFailWithError:(NSError *)error
 {
 	NSLog(@"failed download!");
+    [SCHVersionDownloadManager sharedVersionManager].state = SCHVersionDownloadManagerProcessingStateUnexpectedConnectivityFailureError;                
     [self cancel];    
 }
 
@@ -210,6 +212,7 @@ didStartElement:(NSString *)elementName
 
 - (void)parserDidEndDocument:(NSXMLParser *)parser
 {
+    [SCHVersionDownloadManager sharedVersionManager].state = SCHVersionDownloadManagerProcessingStateManifestVersionCheck;
     [SCHVersionDownloadManager sharedVersionManager].isProcessing = NO;
 
 	self.parsingComplete = YES;
@@ -217,6 +220,7 @@ didStartElement:(NSString *)elementName
 
 - (void)parser:(NSXMLParser *)parser parseErrorOccurred:(NSError *)parseError
 {
+    [SCHVersionDownloadManager sharedVersionManager].state = SCHVersionDownloadManagerProcessingStateParseError;
     [SCHVersionDownloadManager sharedVersionManager].isProcessing = NO;
     
 	NSLog(@"Error: could not parse XML.");

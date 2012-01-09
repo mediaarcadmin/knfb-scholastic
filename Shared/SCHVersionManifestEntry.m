@@ -25,4 +25,9 @@
     [super dealloc];
 }
 
+- (NSString *)description
+{
+    return [NSString stringWithFormat:@"%@ to %@, %@", fromVersion, toVersion, forced];
+}
+
 @end

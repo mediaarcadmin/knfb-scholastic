@@ -9,22 +9,25 @@
 #import <Foundation/Foundation.h>
 
 // Constants
-extern NSString * const SCHVersionDownloadManagerChangedNotification;
+extern NSString * const SCHVersionDownloadManagerCompletedNotification;
+extern NSString * const SCHVersionDownloadManagerIsCurrentVersion;
 
 typedef enum {
+    SCHVersionDownloadManagerProcessingStateUnexpectedConnectivityFailureError = -3,
     SCHVersionDownloadManagerProcessingStateParseError = -2,    
 	SCHVersionDownloadManagerProcessingStateError = -1,
     SCHVersionDownloadManagerProcessingStateUnknown = 0,
 	SCHVersionDownloadManagerProcessomgStateNeedsManifest,
 	SCHVersionDownloadManagerProcessingStateManifestVersionCheck,
+	SCHVersionDownloadManagerProcessingStateCompleted,    
 } SCHVersionDownloadManagerProcessingState;
 
 @interface SCHVersionDownloadManager : NSObject
 
 @property (nonatomic, retain) NSMutableArray *manifestUpdates;
 
-// the current version
-@property (nonatomic, readwrite, retain) NSString *version;
+@property (nonatomic, retain, readonly) NSNumber *isCurrentVersion;
+@property (nonatomic, assign) SCHVersionDownloadManagerProcessingState state;
 
 // version check is currently processing
 @property (nonatomic, assign) BOOL isProcessing;

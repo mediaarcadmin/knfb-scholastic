@@ -13,25 +13,26 @@
 #import "SCHVersionManifestEntry.h"
 
 // Constants
-NSString * const SCHVersionDownloadManagerChangedNotification = @"SCHVersionDownloadManagerChangedNotification";
+NSString * const SCHVersionDownloadManagerCompletedNotification = @"SCHVersionDownloadManagerCompletedNotification";
+NSString * const SCHVersionDownloadManagerIsCurrentVersion = @"IsCurrentVersion";
 
 #pragma mark - Class Extension
 
 @interface SCHVersionDownloadManager ()
 
+@property (nonatomic, retain, readwrite) NSNumber *isCurrentVersion;
+
 // the background task ID for background processing
 @property (nonatomic, assign) UIBackgroundTaskIdentifier backgroundTask;
 
 // operation queue - to perform the dictionary download
-@property (nonatomic, readwrite, retain) NSOperationQueue *versionDownloadQueue;
-
-@property (nonatomic, assign) SCHVersionDownloadManagerProcessingState state;
+@property (nonatomic, retain) NSOperationQueue *versionDownloadQueue;
 
 // local reachability - used to determine the status of the network connection
-@property (nonatomic, readwrite, retain) Reachability *wifiReach;
+@property (nonatomic, retain) Reachability *wifiReach;
 
 // timer for preventing false starts
-@property (nonatomic, readwrite, retain) NSTimer *startTimer;
+@property (nonatomic, retain) NSTimer *startTimer;
 
 // background processing - called by the app delegate when the app
 // is put into or opened from the background
@@ -46,6 +47,7 @@ NSString * const SCHVersionDownloadManagerChangedNotification = @"SCHVersionDown
 - (void)process;
 
 - (SCHVersionManifestEntry *)nextManifestEntryUpdateForCurrentVersion;
+- (NSString *)appVersion;
 
 @end
 
@@ -54,7 +56,7 @@ NSString * const SCHVersionDownloadManagerChangedNotification = @"SCHVersionDown
 @implementation SCHVersionDownloadManager
 
 @synthesize manifestUpdates;
-@synthesize version;
+@synthesize isCurrentVersion;
 @synthesize isProcessing;
 @synthesize backgroundTask;
 @synthesize versionDownloadQueue;
@@ -71,7 +73,26 @@ NSString * const SCHVersionDownloadManagerChangedNotification = @"SCHVersionDown
 		versionDownloadQueue = [[NSOperationQueue alloc] init];
 		[versionDownloadQueue setMaxConcurrentOperationCount:1];
         state = SCHVersionDownloadManagerProcessomgStateNeedsManifest;
-		wifiReach = [[Reachability reachabilityForInternetConnection] retain];        
+		wifiReach = [[Reachability reachabilityForInternetConnection] retain];
+
+		// notifications for changes in reachability
+		[[NSNotificationCenter defaultCenter] addObserver:self 
+												 selector:@selector(reachabilityNotification:) 
+													 name:kReachabilityChangedNotification 
+												   object:nil];
+		
+		// background notifications
+		[[NSNotificationCenter defaultCenter] addObserver:self 
+												 selector:@selector(enterBackground) 
+													 name:UIApplicationDidEnterBackgroundNotification 
+												   object:nil];			
+		
+		[[NSNotificationCenter defaultCenter] addObserver:self 
+												 selector:@selector(enterForeground) 
+													 name:UIApplicationWillEnterForegroundNotification 
+												   object:nil];	
+                
+		[wifiReach startNotifier];        
     }
 	
 	return self;
@@ -79,8 +100,17 @@ NSString * const SCHVersionDownloadManagerChangedNotification = @"SCHVersionDown
 
 - (void)dealloc
 {
+    [[NSNotificationCenter defaultCenter] removeObserver:self 
+                                                    name:kReachabilityChangedNotification 
+                                                  object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self 
+                                                    name:UIApplicationDidEnterBackgroundNotification 
+                                                  object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self 
+                                                    name:UIApplicationWillEnterForegroundNotification 
+                                                  object:nil];
+    
     [manifestUpdates release], manifestUpdates = nil;
-    [version release], version = nil;
 	[versionDownloadQueue release], versionDownloadQueue = nil;
 	[wifiReach stopNotifier];
 	[wifiReach release], wifiReach = nil;
@@ -92,32 +122,14 @@ NSString * const SCHVersionDownloadManagerChangedNotification = @"SCHVersionDown
 
 #pragma mark - Default Manager Object
 
-static SCHVersionDownloadManager *sharedManager = nil;
-
 + (SCHVersionDownloadManager *)sharedVersionManager
 {
-	if (sharedManager == nil) {
-		sharedManager = [[SCHVersionDownloadManager alloc] init];
-        
-		// notifications for changes in reachability
-		[[NSNotificationCenter defaultCenter] addObserver:sharedManager 
-												 selector:@selector(reachabilityNotification:) 
-													 name:kReachabilityChangedNotification 
-												   object:nil];
-		
-		// background notifications
-		[[NSNotificationCenter defaultCenter] addObserver:sharedManager 
-												 selector:@selector(enterBackground) 
-													 name:UIApplicationDidEnterBackgroundNotification 
-												   object:nil];			
-		
-		[[NSNotificationCenter defaultCenter] addObserver:sharedManager 
-												 selector:@selector(enterForeground) 
-													 name:UIApplicationWillEnterForegroundNotification 
-												   object:nil];	
-                
-		[sharedManager.wifiReach startNotifier];
-	} 
+    static dispatch_once_t pred;
+    static SCHVersionDownloadManager *sharedManager = nil;
+    
+    dispatch_once(&pred, ^{
+		sharedManager = [[SCHVersionDownloadManager alloc] init];        
+    });
 	
 	return sharedManager;
 }
@@ -133,7 +145,7 @@ static SCHVersionDownloadManager *sharedManager = nil;
     }
     
     if ((self.versionDownloadQueue && [self.versionDownloadQueue operationCount]) ) {
-        NSLog(@"Dictionary download needs more time - going into the background.");
+        NSLog(@"Version processing needs more time - going into the background.");
         
         self.backgroundTask = [[UIApplication sharedApplication] beginBackgroundTaskWithExpirationHandler:^{
             if(self.backgroundTask != UIBackgroundTaskInvalid) {
@@ -149,7 +161,7 @@ static SCHVersionDownloadManager *sharedManager = nil;
             NSLog(@"Emptying operation queues...");
             if(self.backgroundTask != UIBackgroundTaskInvalid) {
                 [self.versionDownloadQueue waitUntilAllOperationsAreFinished];
-                NSLog(@"dictionary download queue is finished!");
+                NSLog(@"Version processing is finished!");
                 if(self.backgroundTask != UIBackgroundTaskInvalid) {
                     [[UIApplication sharedApplication] endBackgroundTask:self.backgroundTask];
                     self.backgroundTask = UIBackgroundTaskInvalid;
@@ -239,16 +251,15 @@ static SCHVersionDownloadManager *sharedManager = nil;
 
 - (SCHVersionManifestEntry *)nextManifestEntryUpdateForCurrentVersion
 {
-    NSString *currentVersion = [self version];
-    
+    NSString *currentVersion = [self appVersion];
     SCHVersionManifestEntry *entryUpdateForCurrentVersion = nil;
     SCHVersionManifestEntry *defaultEntryUpdate = nil;
     
     for (SCHVersionManifestEntry *anEntry in self.manifestUpdates) {
         //NSLog(@"from: (%@) to: (%@) URL: %@", anEntry.fromVersion, anEntry.toVersion, anEntry.url);
 
-        if ([anEntry fromVersion]) {
-            if ([[anEntry fromVersion] isEqualToString:currentVersion]) {
+        if (currentVersion != nil && [anEntry fromVersion]) {
+            if ([[anEntry fromVersion] isEqualToString:currentVersion] == YES) {
                 entryUpdateForCurrentVersion = anEntry;
                 break;
             }
@@ -308,7 +319,6 @@ static SCHVersionDownloadManager *sharedManager = nil;
 			// add the operation to the queue
 			[self.versionDownloadQueue addOperation:manifestOp];
 			[manifestOp release];
-			return;
 			break;
         case SCHVersionDownloadManagerProcessingStateManifestVersionCheck:
 			NSLog(@"needs manifest version check...");
@@ -316,7 +326,7 @@ static SCHVersionDownloadManager *sharedManager = nil;
             BOOL processUpdate = NO;
             SCHVersionManifestEntry *entry = [self nextManifestEntryUpdateForCurrentVersion];
             
-            NSString *currentVersion = [self version];
+            NSString *currentVersion = [self appVersion];
             
             if (currentVersion) {
                 if ([currentVersion compare:[entry toVersion] options:NSNumericSearch] == NSOrderedAscending) {
@@ -327,18 +337,20 @@ static SCHVersionDownloadManager *sharedManager = nil;
             }
             
             if (processUpdate) {
-                if (entry) {
-                    [[NSNotificationCenter defaultCenter] postNotificationName:SCHVersionDownloadManagerChangedNotification 
-                                                                        object:nil 
-                                                                      userInfo:[NSDictionary dictionaryWithObject:[entry toVersion] forKey:@"toVersion"]];
-                }
-                [self process];
+                self.isCurrentVersion = [NSNumber numberWithBool:NO];
             } else {
-                [self process];
+                self.isCurrentVersion = [NSNumber numberWithBool:YES];
             }
             
-			return;
+            [[NSNotificationCenter defaultCenter] postNotificationName:SCHVersionDownloadManagerCompletedNotification 
+                                                                object:nil 
+                                                              userInfo:[NSDictionary dictionaryWithObject:self.isCurrentVersion forKey:SCHVersionDownloadManagerIsCurrentVersion]];                
+            self.state = SCHVersionDownloadManagerProcessingStateCompleted;
+            [self process];
+    
 			break;
+        case SCHVersionDownloadManagerProcessingStateCompleted:
+			NSLog(@"Version check complete.");            
         default:
             break;
     }            
@@ -349,13 +361,17 @@ static SCHVersionDownloadManager *sharedManager = nil;
 
 - (NSString *)appVersion
 {
-    return [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"];
+    return [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"];
 }
 
 #pragma mark - Update Check
 
 - (void)checkVersion
 {    
+    if (self.state == SCHVersionDownloadManagerProcessingStateCompleted) {
+        self.state = SCHVersionDownloadManagerProcessomgStateNeedsManifest;
+    }
+    
     [self process];
 }
          
