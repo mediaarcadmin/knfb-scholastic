@@ -57,6 +57,7 @@ typedef enum
 @property (nonatomic, retain) LambdaAlert *loadingView;
 @property (nonatomic, assign) BOOL shouldShowBookshelfFailedErrorMessage;
 @property (nonatomic, assign) BOOL shouldWaitForCellsToLoad;
+@property (nonatomic, retain) BITModalPopoverController *welcomePopoverController;
 
 - (void)setupAssetsForOrientation:(UIInterfaceOrientation)orientation;
 - (void)updateTheme;
@@ -105,6 +106,7 @@ typedef enum
 @synthesize shouldShowBookshelfFailedErrorMessage;
 @synthesize shouldWaitForCellsToLoad;
 @synthesize showWelcome;
+@synthesize welcomePopoverController;
 
 #pragma mark - Object lifecycle
 
@@ -124,6 +126,11 @@ typedef enum
     [gridViewToggleView release], gridViewToggleView = nil;
     [backgroundView release], backgroundView = nil;
     [loadingView release], loadingView = nil;
+    
+    if ([welcomePopoverController isModalPopoverVisible]) {
+        [welcomePopoverController dismissModalPopoverAnimated:NO completion:nil];
+        [welcomePopoverController release], welcomePopoverController = nil;
+    }
     
     [[NSNotificationCenter defaultCenter] removeObserver:self
                                                     name:SCHBookshelfSyncComponentBookReceivedNotification
@@ -245,22 +252,24 @@ typedef enum
 												 name:SCHBookshelfSyncComponentDidFailNotification
 											   object:nil];
 
-	if (![[SCHSyncManager sharedSyncManager] havePerformedFirstSyncUpToBooks] && [[SCHSyncManager sharedSyncManager] isSynchronizing]) {
-        LambdaAlert *alert = [[LambdaAlert alloc]
-                            initWithTitle:NSLocalizedString(@"Syncing", @"")
-                            message:@"\n\n\n"];
-        __block SCHBookShelfViewController *weakSelf = self;
-        [alert addButtonWithTitle:NSLocalizedString(@"Back", @"") block:^{
-            [weakSelf dismissLoadingView];
-            [weakSelf performSelector:@selector(back)];
-        }];
-        [alert setSpinnerHidden:NO];
-        [alert show];
-        self.loadingView = alert;
-        [alert release];
-	} else {
-        [self dismissLoadingView];
-	}
+    if (!self.showWelcome) {
+        if (![[SCHSyncManager sharedSyncManager] havePerformedFirstSyncUpToBooks] && [[SCHSyncManager sharedSyncManager] isSynchronizing]) {
+            LambdaAlert *alert = [[LambdaAlert alloc]
+                                  initWithTitle:NSLocalizedString(@"Syncing", @"")
+                                  message:@"\n\n\n"];
+            __block SCHBookShelfViewController *weakSelf = self;
+            [alert addButtonWithTitle:NSLocalizedString(@"Back", @"") block:^{
+                [weakSelf dismissLoadingView];
+                [weakSelf performSelector:@selector(back)];
+            }];
+            [alert setSpinnerHidden:NO];
+            [alert show];
+            self.loadingView = alert;
+            [alert release];
+        } else {
+            [self dismissLoadingView];
+        }
+    }
 
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateTheme) name:kSCHThemeManagerThemeChangeNotification object:nil];              
     
@@ -336,23 +345,26 @@ typedef enum
     if (self.showWelcome) {
         SCHStoriaWelcomeViewController *welcomeVC = [[SCHStoriaWelcomeViewController alloc] init];
         
-        BITModalPopoverController *welcomePopoverController = [[BITModalPopoverController alloc] initWithContentViewController:welcomeVC];
-        [welcomePopoverController setPopoverContentSize:CGSizeMake(556, 241)];
-        [welcomePopoverController setPopoverContentOffset:CGPointMake(0, -15)];
-        [welcomePopoverController setShouldDismissOutsideContentBounds:YES];
-        //[welcomePopoverController setDelayPresentingViewControllerRotationAnimation:NO];
+        BITModalPopoverController *aWelcomePopoverController = [[BITModalPopoverController alloc] initWithContentViewController:welcomeVC];
+        [aWelcomePopoverController setPopoverContentSize:CGSizeMake(556, 241)];
+        [aWelcomePopoverController setPopoverContentOffset:CGPointMake(0, -15)];
+        [aWelcomePopoverController setShouldDismissOutsideContentBounds:YES];
         
-        __block BITModalPopoverController *weakWelcomePopoverController = welcomePopoverController;
+        __block BITModalPopoverController *weakWelcomePopoverController = aWelcomePopoverController;
+        __block SCHBookShelfViewController *weakSelf = self;
         
         welcomeVC.closeBlock = ^{
             [weakWelcomePopoverController dismissModalPopoverAnimated:YES completion:nil];
+            weakSelf.welcomePopoverController = nil;
         };
         
         [welcomeVC release];
         
-        [welcomePopoverController presentModalPopoverInViewController:self animated:YES completion:nil];
+        [aWelcomePopoverController presentModalPopoverInViewController:self animated:YES completion:nil];
         
-        [welcomePopoverController release];
+        self.welcomePopoverController = aWelcomePopoverController;
+        
+        [aWelcomePopoverController release];
         
         self.showWelcome = NO;
     }
@@ -591,7 +603,7 @@ typedef enum
                 }];
                 
                 self.profileItem = nil;
-                
+                                
                 [alert show];
                 [alert release];
                 break;
@@ -692,6 +704,7 @@ typedef enum
         [self.books firstObjectCommonWithArray:[[notification userInfo] objectForKey:SCHBookshelfSyncComponentBookIdentifiers]] != nil) {
         self.shouldShowBookshelfFailedErrorMessage = NO;
         [self reloadData];
+        
         LambdaAlert *alert = [[LambdaAlert alloc]
                               initWithTitle:NSLocalizedString(@"Unable to Retrieve all eBooks", @"Unable to Retrieve all eBooks") 
                               message:NSLocalizedString(@"There was a problem retrieving all eBooks on this bookshelf. Please try again.", @"") ];

@@ -497,34 +497,27 @@ didSelectButtonAnimated:(BOOL)animated
 
 - (void)dismissModalViewControllerAnimated:(BOOL)animated withCompletionHandler:(dispatch_block_t)completion;
 {
+    
+    [CATransaction begin];
+    
+    if (completion) {
+        [CATransaction setCompletionBlock:completion];
+    }
+    
     if (self.modalViewController) {
         [self dismissModalViewControllerAnimated:animated];
     }
     
-    // This is an inelegant solution but there isn't a straightforward way to perform the animation and then 
-    // fire the completion when it is finished
-    if (completion) {
-        double delayInSeconds = animated ? 0.3 : 0.0;
-        dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);
-        dispatch_after(popTime, dispatch_get_main_queue(), completion);
-    }
+    [CATransaction commit];
 }
 
 - (void)popToRootViewControllerAnimated:(BOOL)animated withCompletionHandler:(dispatch_block_t)completion
 {
     if (self.modalViewController) {
         [self dismissModalViewControllerAnimated:animated];
-        [self.navigationController popToRootViewControllerAnimated:NO];
+        [self.profileSetupDelegate popToRootViewControllerAnimated:NO withCompletionHandler:completion];
     } else {
-        [self.navigationController popToRootViewControllerAnimated:animated];
-    }
-    
-    // This is an inelegant solution but there isn't a straightforward way to perform the animation and then 
-    // fire the completion when it is finished
-    if (completion) {
-        double delayInSeconds = animated ? 0.3 : 0.0;
-        dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);
-        dispatch_after(popTime, dispatch_get_main_queue(), completion);
+        [self.profileSetupDelegate popToRootViewControllerAnimated:animated withCompletionHandler:completion];
     }
 }
 

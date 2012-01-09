@@ -15,4 +15,6 @@
 @property (nonatomic, retain) IBOutlet UINavigationController *modalNavigationController;
 @property (nonatomic, retain) IBOutlet UILabel *versionLabel;
 
+- (void)createInitialNavigationControllerStack;
+
 @end

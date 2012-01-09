@@ -55,7 +55,6 @@ typedef enum {
 
 - (void)setupVersionText;
 - (void)setupAssetsForOrientation:(UIInterfaceOrientation)orientation;
-- (void)createInitialNavigationControllerStack;
 
 - (void)runSetupSequence;
 - (void)runSetupSamplesSequence;
@@ -63,7 +62,6 @@ typedef enum {
 
 - (void)pushSamplesAnimated:(BOOL)animated showWelcome:(BOOL)welcome;
 - (void)setStandardStore;
-- (void)showSignInFormWithCompletionHandler:(dispatch_block_t)completion;
 - (BOOL)dictionaryDownloadRequired;
 - (BOOL)bookshelfSetupRequired;
 - (void)recheckBookshelvesForProfile;
@@ -121,7 +119,6 @@ typedef enum {
     [self.modalNavigationController setModalTransitionStyle:UIModalTransitionStyleCoverVertical];
     [self.modalNavigationController setModalPresentationStyle:UIModalPresentationFormSheet];
     
-    [self createInitialNavigationControllerStack];
     [self setupVersionText];
     
     [[NSNotificationCenter defaultCenter] addObserver:self
@@ -158,46 +155,7 @@ typedef enum {
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
-    
     [self runSetupSequence];
-    return;
-    SCHStoriaLoginViewController *login = [[SCHStoriaLoginViewController alloc] initWithNibName:@"SCHStoriaLoginViewController" bundle:nil];
-//    login.loginBlock = ^(NSString *username, NSString *password) {
-//        [self setStandardStore];
-//        
-//        self.profileSyncState = kSCHStartingViewControllerProfileSyncStateWaitingForLoginToComplete;
-//        
-//        if ([[username stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]] length] > 0 &&
-//            [[password stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]] length] > 0) {      
-//            [[SCHAuthenticationManager sharedAuthenticationManager] authenticateWithUser:username 
-//                                                                                password:password
-//                                                                            successBlock:^(BOOL offlineMode){
-//                                                                                [self signInSucceededForLoginController:(id)login];
-//                                                                            }
-//                                                                            failureBlock:^(NSError * error){
-//                                                                                [self signInFailedForLoginController:(id)login withError:error];
-//                                                                            }];            
-//            return(YES);
-//        } else {
-//            [login setDisplayIncorrectCredentialsWarning:YES];
-//            
-//            return(NO);
-//        }
-//    };
-    
-    BITModalPopoverController *modalController = [[BITModalPopoverController alloc] initWithContentViewController:login];
-    
-    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
-        [modalController setPopoverContentSize:CGSizeMake(630, 500)];
-        [modalController setPopoverContentOffset:CGPointMake(0, -70)];
-    } else {
-        modalController = [[BITModalPopoverController alloc] initWithContentViewController:login];
-        [modalController setPopoverContentSize:CGSizeMake(300, 400)];
-    }
-    [modalController setShadowRadius:0];
-    [modalController setAutoresizingMask:UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleBottomMargin];
-    [modalController presentModalPopoverInViewController:self animated:YES completion:nil];
-    [login release];
 }
 
 - (void)createInitialNavigationControllerStack
@@ -534,112 +492,6 @@ typedef enum {
     [SCHAppBook clearBooksDirectory];
 }
 
-#pragma mark - Sign In
-
-- (void)showSignInFormWithCompletionHandler:(dispatch_block_t)completion;
-{
-    if ([[Reachability reachabilityForInternetConnection] isReachable] == NO) {
-        LambdaAlert *alert = [[LambdaAlert alloc]
-                              initWithTitle:NSLocalizedString(@"No Internet Connection", @"")
-                              message:NSLocalizedString(@"An Internet connection is required to sign into your account.", @"")];
-        [alert addButtonWithTitle:NSLocalizedString(@"OK", @"") block:nil];
-        [alert show];
-        [alert release];
-        
-        if (completion) {
-            completion();
-        }
-    } else {
-        SCHLoginPasswordViewController *login = [[SCHLoginPasswordViewController alloc] initWithNibName:@"SCHLoginViewController" bundle:nil];
-        login.controllerType = kSCHControllerLoginView;
-        
-        login.cancelBlock = ^{
-            [self dismissModalViewControllerAnimated:YES];
-        };
-        
-        login.retainLoopSafeActionBlock = ^BOOL(NSString *username, NSString *password) {
-            [self setStandardStore];
-            
-            self.profileSyncState = kSCHStartingViewControllerProfileSyncStateWaitingForLoginToComplete;
-            
-            if ([[username stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]] length] > 0 &&
-                [[password stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]] length] > 0) {      
-                [[SCHAuthenticationManager sharedAuthenticationManager] authenticateWithUser:username 
-                                                                                    password:password
-                                                                                successBlock:^(BOOL offlineMode){
-                                                                                    [self signInSucceededForLoginController:login];
-                                                                                }
-                                                                                failureBlock:^(NSError * error){
-                                                                                    [self signInFailedForLoginController:login withError:error];
-                                                                                }];            
-                return(YES);
-            } else {
-                [login setDisplayIncorrectCredentialsWarning:YES];
-                
-                return(NO);
-            }
-        };
-        
-        [self.modalNavigationController setViewControllers:[NSArray arrayWithObject:login]];
-        [self presentModalViewController:self.modalNavigationController animated:YES];
-        
-        if (completion) {
-            double delayInSeconds = 0.3;
-            dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);
-            dispatch_after(popTime, dispatch_get_main_queue(), completion);
-        }
-        
-        [login release];
-    }
-}
-
-- (void)signInSucceededForLoginController:(id<SCHLoginHandlerDelegate>)login
-{
-    [login setDisplayIncorrectCredentialsWarning:NO];
-    [[SCHSyncManager sharedSyncManager] firstSync:YES requireDeviceAuthentication:NO];
-}
-
-- (void)signInFailedForLoginController:(id<SCHLoginHandlerDelegate>)login withError:(NSError *)error
-{    
-    if (error != nil) {
-        
-        if ([error code] == kSCHAccountValidationCredentialsError) {
-            [login clearBottomField];
-            [login setDisplayIncorrectCredentialsWarning:YES]; 
-        } else {
-            
-            NSString *localizedMessage = nil;
-            
-            if ([error code] == kSCHDrmDeviceLimitError) {
-                localizedMessage = NSLocalizedString(@"The Scholastic eReader is already installed on five devices, which is the maximum allowed. Before installing it on this device, you need to deregister the eReader on one of your current devices.", nil);
-            } else if (([error code] == kSCHDrmDeviceRegisteredToAnotherDevice) || 
-                       ([error code] == kSCHDrmDeviceUnableToAssign)) {
-                localizedMessage = NSLocalizedString(@"This device is registered to another Scholastic account. The owner of that account needs to deregister this device before it can be registered to a new account.", nil);
-            } else {
-                localizedMessage = [NSString stringWithFormat:
-                                    NSLocalizedString(@"A problem occured. If this problem persists please contact support.\n\n '%@'", nil), 
-                                    [error localizedDescription]];   
-            }
-            
-            LambdaAlert *alert = [[LambdaAlert alloc]
-                                  initWithTitle:NSLocalizedString(@"Login Error", @"Login Error") 
-                                  message:localizedMessage];
-            [alert addButtonWithTitle:NSLocalizedString(@"Cancel", @"Cancel") block:^{
-            }];
-            [alert addButtonWithTitle:NSLocalizedString(@"Retry", @"Retry") block:^{
-                // FIXME: this is not an acceptably robust way to do this
-                [[self.modalNavigationController topViewController] performSelector:@selector(actionButtonAction:) withObject:nil afterDelay:0.0];
-            }];
-            [alert show];
-            [alert release];
-            
-            [login setDisplayIncorrectCredentialsWarning:NO]; 
-        }
-    }	
-    
-    [login stopShowingProgress];
-}
-
 - (BOOL)dictionaryDownloadRequired
 {
     BOOL downloadRequired = 
@@ -712,6 +564,53 @@ typedef enum {
     }
 }
 
+- (void)signInSucceededForLoginController:(id<SCHLoginHandlerDelegate>)login
+{
+    [login setDisplayIncorrectCredentialsWarning:NO];
+    [[SCHSyncManager sharedSyncManager] firstSync:YES requireDeviceAuthentication:NO];
+}
+
+- (void)signInFailedForLoginController:(id<SCHLoginHandlerDelegate>)login withError:(NSError *)error
+{    
+    if (error != nil) {
+        
+        if ([error code] == kSCHAccountValidationCredentialsError) {
+            [login clearBottomField];
+            [login setDisplayIncorrectCredentialsWarning:YES]; 
+        } else {
+            
+            NSString *localizedMessage = nil;
+            
+            if ([error code] == kSCHDrmDeviceLimitError) {
+                localizedMessage = NSLocalizedString(@"The Scholastic eReader is already installed on five devices, which is the maximum allowed. Before installing it on this device, you need to deregister the eReader on one of your current devices.", nil);
+            } else if (([error code] == kSCHDrmDeviceRegisteredToAnotherDevice) || 
+                       ([error code] == kSCHDrmDeviceUnableToAssign)) {
+                localizedMessage = NSLocalizedString(@"This device is registered to another Scholastic account. The owner of that account needs to deregister this device before it can be registered to a new account.", nil);
+            } else {
+                localizedMessage = [NSString stringWithFormat:
+                                    NSLocalizedString(@"A problem occured. If this problem persists please contact support.\n\n '%@'", nil), 
+                                    [error localizedDescription]];   
+            }
+            
+            LambdaAlert *alert = [[LambdaAlert alloc]
+                                  initWithTitle:NSLocalizedString(@"Login Error", @"Login Error") 
+                                  message:localizedMessage];
+            [alert addButtonWithTitle:NSLocalizedString(@"Cancel", @"Cancel") block:^{
+            }];
+            [alert addButtonWithTitle:NSLocalizedString(@"Retry", @"Retry") block:^{
+                // FIXME: this is not an acceptably robust way to do this
+                [[self.modalNavigationController topViewController] performSelector:@selector(actionButtonAction:) withObject:nil afterDelay:0.0];
+            }];
+            [alert show];
+            [alert release];
+            
+            [login setDisplayIncorrectCredentialsWarning:NO]; 
+        }
+    }	
+    
+    [login stopShowingProgress];
+}
+
 - (void)checkBookshelvesAndDictionaryDownloadForProfile
 {
     [self checkBookshelvesAndDictionaryDownloadForProfile:YES];
@@ -755,21 +654,27 @@ typedef enum {
 
 - (void)dismissModalViewControllerAnimated:(BOOL)animated withCompletionHandler:(dispatch_block_t)completion;
 {
+    [CATransaction begin];
+    
+    if (completion) {
+        [CATransaction setCompletionBlock:completion];
+    }
+    
     if (self.modalViewController) {
         [self dismissModalViewControllerAnimated:animated];
     }
     
-    // This is an inelegant solution but there isn't a straightforward way to perform the animation and then 
-    // fire the completion when it is finished
-    if (completion) {
-        double delayInSeconds = animated ? 0.3 : 0.0;
-        dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);
-        dispatch_after(popTime, dispatch_get_main_queue(), completion);
-    }
+    [CATransaction commit];
 }
 
 - (void)popToRootViewControllerAnimated:(BOOL)animated withCompletionHandler:(dispatch_block_t)completion
 {
+    [CATransaction begin];
+    
+    if (completion) {
+        [CATransaction setCompletionBlock:completion];
+    }
+    
     if (self.modalViewController) {
         [self dismissModalViewControllerAnimated:animated];
         [self.navigationController popToRootViewControllerAnimated:NO];
@@ -777,13 +682,7 @@ typedef enum {
         [self.navigationController popToRootViewControllerAnimated:animated];
     }
     
-    // This is an inelegant solution but there isn't a straightforward way to perform the animation and then 
-    // fire the completion when it is finished
-    if (completion) {
-        double delayInSeconds = animated ? 0.3 : 0.0;
-        dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);
-        dispatch_after(popTime, dispatch_get_main_queue(), completion);
-    }
+    [CATransaction commit];
 }
 
 - (void)pushSamplesAnimated:(BOOL)animated showWelcome:(BOOL)welcome
