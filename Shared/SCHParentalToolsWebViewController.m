@@ -56,7 +56,7 @@
     
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
         
-        [self.contentView.layer setCornerRadius:8];
+        [self.contentView.layer setCornerRadius:6];
         [self.contentView.layer setMasksToBounds:YES];
         [self.contentView.layer setBorderColor:[UIColor SCHRed3Color].CGColor];
         [self.contentView.layer setBorderWidth:2.0f];

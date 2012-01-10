@@ -104,7 +104,23 @@
 
 - (void)moveToWebParentTools:(NSTimer *)theTimer
 {
-    [self setupBookshelves:nil];
+    BOOL shouldFireTimer = NO;
+    
+    if ([self respondsToSelector:@selector(presentingViewController)]) {
+        if (self.presentingViewController != nil) {
+            shouldFireTimer = YES;
+        }
+    } else {
+        if (self.parentViewController != nil) {
+            shouldFireTimer = YES;
+        }
+    }
+    
+    self.moveToWebParentToolsTimer = nil;
+    
+    if (shouldFireTimer) {
+        [self setupBookshelves:nil];
+    }
 }
 
 @end

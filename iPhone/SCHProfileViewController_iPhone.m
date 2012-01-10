@@ -8,7 +8,6 @@
 
 #import "SCHProfileViewController_iPhone.h"
 #import "SCHLoginPasswordViewController.h"
-#import "SCHSetupBookshelvesViewController.h"
 #import "SCHAuthenticationManager.h"
 #import "SCHBookShelfViewController.h"
 #import "SCHSettingsViewController.h"

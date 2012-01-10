@@ -23,10 +23,13 @@
 #import "LambdaAlert.h"
 #import "Reachability.h"
 #import "SCHProfileSyncComponent.h"
+#import "BITModalPopoverController.h"
 
 @interface SCHProfileViewController_Shared()  
 
 @property (nonatomic, retain) SCHBookUpdates *bookUpdates;
+@property (nonatomic, retain) BITModalPopoverController *webParentToolsPopoverController;
+@property (nonatomic, retain) SCHParentalToolsWebViewController *parentalToolsWebViewController; 
 
 - (void)checkForBookUpdates;
 - (void)showUpdatesBubble:(BOOL)show;
@@ -53,6 +56,8 @@
 @synthesize bookUpdates;
 @synthesize updatesBubble;
 @synthesize profileSetupDelegate;
+@synthesize webParentToolsPopoverController;
+@synthesize parentalToolsWebViewController;
 
 #pragma mark - Object lifecycle
 
@@ -87,6 +92,12 @@
     [modalNavigationController release], modalNavigationController = nil;
     [settingsViewController release], settingsViewController = nil;
     [updatesBubble release], updatesBubble = nil;
+    
+    if ([webParentToolsPopoverController isModalPopoverVisible]) {
+        [webParentToolsPopoverController dismissModalPopoverAnimated:NO completion:nil];
+    }
+    [webParentToolsPopoverController release], webParentToolsPopoverController = nil;
+    [parentalToolsWebViewController release], parentalToolsWebViewController = nil;
 }
 
 - (void)dealloc 
@@ -525,19 +536,47 @@ didSelectButtonAnimated:(BOOL)animated
                                         title:(NSString *)title 
                                    modalStyle:(UIModalPresentationStyle)style 
                         shouldHideCloseButton:(BOOL)shouldHide 
-{
+{    
+    [CATransaction begin];
+    [CATransaction setDisableActions:YES];
+    
     if (self.modalViewController) {
         [self dismissModalViewControllerAnimated:NO];
     }
     
-    SCHParentalToolsWebViewController *parentalToolsWebViewController = [[[SCHParentalToolsWebViewController alloc] init] autorelease];
-    parentalToolsWebViewController.title = title;
-    parentalToolsWebViewController.modalPresenterDelegate = self;
-    parentalToolsWebViewController.pToken = token;
-    parentalToolsWebViewController.shouldHideCloseButton = shouldHide;
-    parentalToolsWebViewController.modalPresentationStyle = style;
+    SCHParentalToolsWebViewController *aParentalToolsWebViewController = [[[SCHParentalToolsWebViewController alloc] init] autorelease];
+    aParentalToolsWebViewController.title = title;
+    aParentalToolsWebViewController.modalPresenterDelegate = self;
+    aParentalToolsWebViewController.pToken = token;
+    aParentalToolsWebViewController.shouldHideCloseButton = shouldHide;
+    self.parentalToolsWebViewController = aParentalToolsWebViewController;
     
-    [self presentModalViewController:parentalToolsWebViewController animated:NO];
+    BITModalPopoverController *aPopoverController = [[BITModalPopoverController alloc] initWithContentViewController:aParentalToolsWebViewController];
+    aPopoverController.popoverContentSize = CGSizeMake(540, 620);
+    aPopoverController.autoresizingMask = UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin | UIViewAutoresizingFlexibleWidth;
+    self.webParentToolsPopoverController = aPopoverController;
+    [aPopoverController release];
+    
+    __block BITModalPopoverController *weakPopover = self.webParentToolsPopoverController;
+    __block SCHProfileViewController_Shared *weakSelf = self;
+    
+    [self.webParentToolsPopoverController presentModalPopoverInViewController:self animated:NO completion:^{
+        weakSelf.parentalToolsWebViewController.textView.alpha = 0;
+        
+        CGSize expandedSize;
+        
+        if (UIInterfaceOrientationIsPortrait(weakSelf.interfaceOrientation)) {
+            expandedSize = CGSizeMake(700, 530);
+        } else {
+            expandedSize = CGSizeMake(964, 530);
+        }
+        
+        [weakPopover setPopoverContentSize:expandedSize animated:YES completion:^{
+            weakSelf.parentalToolsWebViewController.textView.alpha = 1;
+        }];
+    }];    
+    
+    [CATransaction commit];
 }
 
 - (void)dismissModalWebParentToolsWithSync:(BOOL)shouldSync showValidation:(BOOL)showValidation
@@ -546,22 +585,44 @@ didSelectButtonAnimated:(BOOL)animated
         [self dismissModalViewControllerAnimated:NO];
     }
     
-    if ([[self.modalNavigationController viewControllers] count] == 0) {
-        // The view has been unloaded due to memory pressure
-        // Just push the settings screen, don't bother with re-adding the validation controller
-        [self pushSettingsControllerAnimated:NO];
-    } else {
-        if (!showValidation) {
-            NSMutableArray *currentControllers = [[[self.modalNavigationController viewControllers] mutableCopy] autorelease];
-            [currentControllers removeLastObject];
-            [self.modalNavigationController setViewControllers:currentControllers];
-            [self presentModalViewController:self.modalNavigationController animated:NO];
+    dispatch_block_t completion = ^{
+        if ([[self.modalNavigationController viewControllers] count] == 0) {
+            // The view has been unloaded due to memory pressure
+            // Just push the settings screen, don't bother with re-adding the validation controller
+            [self pushSettingsControllerAnimated:NO];
+        } else {
+            if (!showValidation) {
+                NSMutableArray *currentControllers = [[[self.modalNavigationController viewControllers] mutableCopy] autorelease];
+                [currentControllers removeLastObject];
+                [self.modalNavigationController setViewControllers:currentControllers];
+                [self presentModalViewController:self.modalNavigationController animated:NO];
+            }
         }
-    }
-    
-    if (shouldSync) {
-        [[SCHSyncManager sharedSyncManager] firstSync:YES requireDeviceAuthentication:YES];
-    } 
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            if (shouldSync) {
+                [[SCHSyncManager sharedSyncManager] firstSync:YES requireDeviceAuthentication:YES];
+            }
+        });
+    };
+        
+    if ([self.webParentToolsPopoverController isModalPopoverVisible]) {
+        
+        self.parentalToolsWebViewController.textView.alpha = 0;
+        __block SCHProfileViewController_Shared *weakSelf = self;
+
+        [self.webParentToolsPopoverController setPopoverContentSize:CGSizeMake(540, 620) animated:YES completion:^{
+            [CATransaction begin];
+            [CATransaction setDisableActions:YES];
+            [self.webParentToolsPopoverController dismissModalPopoverAnimated:NO completion:^{
+                completion();
+                weakSelf.parentalToolsWebViewController = nil;
+                [CATransaction commit];
+            }];
+        }];
+    } else {
+        completion();
+    }  
 }
 
 - (void)waitingForWebParentToolsToComplete
