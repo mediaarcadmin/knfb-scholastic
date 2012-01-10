@@ -78,6 +78,8 @@
 {
     [super viewDidUnload];
     [self releaseViewObjects];
+    [self.moveToWebParentToolsTimer invalidate];
+    self.moveToWebParentToolsTimer = nil;
 }
 
 - (void)setupBookshelves:(id)sender

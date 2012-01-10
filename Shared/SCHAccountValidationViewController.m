@@ -157,47 +157,55 @@ static const CGFloat kDeregisterContentHeightLandscape = 380;
         [self.spinner startAnimating];
         [self setEnablesBackButton:NO];
         [self.validateButton setEnabled:NO];
-        
-        __block SCHAccountValidationViewController *weakSelf = self;
-        NSString *storedUsername = [[NSUserDefaults standardUserDefaults] stringForKey:kSCHAuthenticationManagerUsername];
-        if ([self.accountValidation validateWithUserName:storedUsername withPassword:passwordField.text validateBlock:^(NSString *pToken, NSError *error) {
-            if (error != nil) {
-                LambdaAlert *alert = [[LambdaAlert alloc]
-                                      initWithTitle:NSLocalizedString(@"Error", @"error alert title")
-                                      message:[error localizedDescription]];
-                [alert addButtonWithTitle:NSLocalizedString(@"OK", @"") block:nil];
-                [alert show];
-                [alert release];        
-            } else {
-                weakSelf.passwordField.text = @"";
-                
-                id<SCHModalPresenterDelegate> targetDelegate = nil;
-                if (weakSelf.profileSetupDelegate) {
-                    targetDelegate = weakSelf.profileSetupDelegate;
-                } else if (weakSelf.settingsDelegate) {
-                    targetDelegate = weakSelf.settingsDelegate;
+        [self.view endEditing:YES];
+
+        dispatch_block_t afterEditingEnds = ^{
+            __block SCHAccountValidationViewController *weakSelf = self;
+            NSString *storedUsername = [[NSUserDefaults standardUserDefaults] stringForKey:kSCHAuthenticationManagerUsername];
+            if ([self.accountValidation validateWithUserName:storedUsername withPassword:passwordField.text validateBlock:^(NSString *pToken, NSError *error) {
+                if (error != nil) {
+                    LambdaAlert *alert = [[LambdaAlert alloc]
+                                          initWithTitle:NSLocalizedString(@"Error", @"error alert title")
+                                          message:[error localizedDescription]];
+                    [alert addButtonWithTitle:NSLocalizedString(@"OK", @"") block:nil];
+                    [alert show];
+                    [alert release];        
+                } else {
+                    weakSelf.passwordField.text = @"";
+                    
+                    id<SCHModalPresenterDelegate> targetDelegate = nil;
+                    if (weakSelf.profileSetupDelegate) {
+                        targetDelegate = weakSelf.profileSetupDelegate;
+                    } else if (weakSelf.settingsDelegate) {
+                        targetDelegate = weakSelf.settingsDelegate;
+                    }
+                    
+                    [targetDelegate presentWebParentToolsModallyWithToken:pToken 
+                                                                    title:weakSelf.title 
+                                                               modalStyle:UIModalPresentationFullScreen 
+                                                    shouldHideCloseButton:weakSelf.validatedControllerShouldHideCloseButton];
                 }
                 
-                [targetDelegate presentWebParentToolsModallyWithToken:pToken 
-                                                                title:weakSelf.title 
-                                                           modalStyle:UIModalPresentationFullScreen 
-                                                    shouldHideCloseButton:weakSelf.validatedControllerShouldHideCloseButton];
-            }
-            
-            [weakSelf.spinner stopAnimating];
-            [weakSelf setEnablesBackButton:YES];
-            [weakSelf.validateButton setEnabled:YES];            
-        }] == NO) {
-            LambdaAlert *alert = [[LambdaAlert alloc]
-                                  initWithTitle:NSLocalizedString(@"Password authentication unavailable", @"")
-                                  message:NSLocalizedString(@"Please try again in a moment.", @"")];
-            [alert addButtonWithTitle:NSLocalizedString(@"OK", @"") block:nil];
-            [alert show];
-            [alert release];                
-            [self.spinner stopAnimating];
-            [self setEnablesBackButton:YES];
-            [self.validateButton setEnabled:YES];                        
+                [weakSelf.spinner stopAnimating];
+                [weakSelf setEnablesBackButton:YES];
+                [weakSelf.validateButton setEnabled:YES];            
+            }] == NO) {
+                LambdaAlert *alert = [[LambdaAlert alloc]
+                                      initWithTitle:NSLocalizedString(@"Password authentication unavailable", @"")
+                                      message:NSLocalizedString(@"Please try again in a moment.", @"")];
+                [alert addButtonWithTitle:NSLocalizedString(@"OK", @"") block:nil];
+                [alert show];
+                [alert release];                
+                [self.spinner stopAnimating];
+                [self setEnablesBackButton:YES];
+                [self.validateButton setEnabled:YES];                        
+            };
         };
+        
+        [self.view endEditing:YES];
+        double delayInSeconds = 0.5; // We really need the keyboard to be off screen
+        dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);
+        dispatch_after(popTime, dispatch_get_main_queue(), afterEditingEnds);
     }
 }
 

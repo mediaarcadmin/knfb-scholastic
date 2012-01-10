@@ -73,6 +73,12 @@
     [self setupAssetsForOrientation:toInterfaceOrientation];
 }
 
+- (UIInterfaceOrientation)interfaceOrientation
+{
+    UIInterfaceOrientation ret = [super interfaceOrientation];
+    return ret;
+}
+
 - (void)setupAssetsForOrientation:(UIInterfaceOrientation)toInterfaceOrientation
 {
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {

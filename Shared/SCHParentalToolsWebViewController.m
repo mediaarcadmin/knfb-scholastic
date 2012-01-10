@@ -17,12 +17,8 @@
 @implementation SCHParentalToolsWebViewController
 
 @synthesize contentView;
-@synthesize contentShadowMask;
-@synthesize backgroundToolbar;
-@synthesize toolbarSettingsImageView;
 @synthesize pToken;
 @synthesize modalPresenterDelegate;
-@synthesize shouldHideToolbarSettingsImageView;
 
 #pragma mark - View lifecycle
 
@@ -51,9 +47,6 @@
                                                     name:UIApplicationDidEnterBackgroundNotification 
                                                   object:nil];
     [contentView release], contentView = nil;
-    [contentShadowMask release], contentShadowMask = nil;
-    [backgroundToolbar release], backgroundToolbar = nil;
-    [toolbarSettingsImageView release], toolbarSettingsImageView = nil;
     [super releaseViewObjects];
 }
 
@@ -62,17 +55,11 @@
     [super viewDidLoad];
     
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
-        [self.contentShadowMask.layer setShadowRadius:8];
-        [self.contentShadowMask.layer setShadowOpacity:0.5f];
-        [self.contentShadowMask.layer setShadowOffset:CGSizeZero];
-        [self.contentShadowMask.layer setCornerRadius:8];
         
         [self.contentView.layer setCornerRadius:8];
         [self.contentView.layer setMasksToBounds:YES];
         [self.contentView.layer setBorderColor:[UIColor SCHRed3Color].CGColor];
         [self.contentView.layer setBorderWidth:2.0f];
-        [self.backgroundToolbar setBackgroundImage:[UIImage imageNamed:@"settings-ipad-top-toolbar.png"]];
-        [self.toolbarSettingsImageView setHidden:self.shouldHideToolbarSettingsImageView];
     }
 
     NSURL *webParentToolURL = [[SCHAuthenticationManager sharedAuthenticationManager] webParentToolURL:pToken];

@@ -51,6 +51,7 @@ typedef enum {
 @property (nonatomic, assign) SCHStartingViewControllerProfileSyncState profileSyncState;
 @property (nonatomic, retain) LambdaAlert *checkProfilesAlert;
 @property (nonatomic, retain) BITModalPopoverController *loginPopoverController;
+@property (nonatomic, retain) BITModalPopoverController *webParentToolsPopoverController;
 @property (nonatomic, retain) NSOperationQueue *setupSequenceQueue;
 
 - (void)setVersionText;
@@ -77,6 +78,7 @@ typedef enum {
 @synthesize backgroundView;
 @synthesize modalNavigationController;
 @synthesize loginPopoverController;
+@synthesize webParentToolsPopoverController;
 @synthesize profileViewController;
 @synthesize profileSyncState;
 @synthesize versionLabel;
@@ -125,6 +127,7 @@ typedef enum {
     [backgroundView release], backgroundView = nil;
     [modalNavigationController release], modalNavigationController = nil;
     [loginPopoverController release], loginPopoverController = nil;
+    [webParentToolsPopoverController release], webParentToolsPopoverController = nil;
     [versionLabel release], versionLabel = nil;
     [setupSequenceQueue release], setupSequenceQueue = nil;
 }
@@ -276,11 +279,8 @@ typedef enum {
 
 - (void)pushCurrentProfileAnimated:(BOOL)animated
 {   
-    BOOL shouldAnimatePush = animated;
-
     if (self.modalViewController) {
         [self dismissModalViewControllerAnimated:YES];
-        shouldAnimatePush = NO;
     }
     
     BOOL alreadyInUse = NO;
@@ -293,7 +293,7 @@ typedef enum {
         }
     }
     if (alreadyInUse == NO) {
-        [self.navigationController pushViewController:profile animated:shouldAnimatePush];
+        [self.navigationController pushViewController:profile animated:animated];
     }
 }
 
@@ -302,6 +302,9 @@ typedef enum {
                                    modalStyle:(UIModalPresentationStyle)style 
                         shouldHideCloseButton:(BOOL)shouldHide 
 {
+    [CATransaction begin];
+    [CATransaction setDisableActions:YES];
+    
     if (self.modalViewController) {
         [self dismissModalViewControllerAnimated:NO];
     }
@@ -310,11 +313,35 @@ typedef enum {
     parentalToolsWebViewController.title = title;
     parentalToolsWebViewController.modalPresenterDelegate = self;
     parentalToolsWebViewController.pToken = token;
-    parentalToolsWebViewController.shouldHideCloseButton = shouldHide;
-    parentalToolsWebViewController.shouldHideToolbarSettingsImageView = YES;
-    parentalToolsWebViewController.modalPresentationStyle = style;
+    parentalToolsWebViewController.shouldHideCloseButton = YES;
+    parentalToolsWebViewController.modalPresentationStyle = UIModalPresentationFormSheet;
     
-    [self presentModalViewController:parentalToolsWebViewController animated:NO];
+    BITModalPopoverController *aPopoverController = [[BITModalPopoverController alloc] initWithContentViewController:parentalToolsWebViewController];
+    aPopoverController.popoverContentSize = CGSizeMake(540, 620);
+    aPopoverController.autoresizingMask = UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin | UIViewAutoresizingFlexibleWidth;
+    self.webParentToolsPopoverController = aPopoverController;
+    [aPopoverController release];
+    
+    __block BITModalPopoverController *weakPopover = self.webParentToolsPopoverController;
+    __block UIViewController *weakSelf = self;
+        
+    [self.webParentToolsPopoverController presentModalPopoverInViewController:self animated:NO completion:^{
+        parentalToolsWebViewController.textView.alpha = 0;
+        
+        CGSize expandedSize;
+        
+        if (UIInterfaceOrientationIsPortrait(weakSelf.interfaceOrientation)) {
+            expandedSize = CGSizeMake(700, 530);
+        } else {
+            expandedSize = CGSizeMake(964, 530);
+        }
+        
+        [weakPopover setPopoverContentSize:expandedSize animated:YES completion:^{
+            parentalToolsWebViewController.textView.alpha = 1;
+        }];
+    }];    
+    
+    [CATransaction commit];
 }
 
 - (void)dismissModalWebParentToolsWithSync:(BOOL)shouldSync showValidation:(BOOL)showValidation
@@ -323,33 +350,50 @@ typedef enum {
         [self dismissModalViewControllerAnimated:NO];
     }
     
-    if ([[self.modalNavigationController viewControllers] count] == 0) {
-        // The view has been unloaded due to memory pressure
-        // Just push the bookshelves screen, don't bother with re-adding the validation controller
-        [self runSetupProfileSequenceAnimated:NO];
-    } else {
-        if (showValidation) {
-            self.profileSyncState = kSCHStartingViewControllerProfileSyncStateWaitingForPassword;
+    dispatch_block_t completion = ^{
+        if ([[self.modalNavigationController viewControllers] count] == 0) {
+            // The view has been unloaded due to memory pressure
+            // Just push the bookshelves screen, don't bother with re-adding the validation controller
+            [self runSetupProfileSequenceAnimated:NO];
         } else {
-            self.profileSyncState = kSCHStartingViewControllerProfileSyncStateWaitingForBookshelves;
+            if (showValidation) {
+                self.profileSyncState = kSCHStartingViewControllerProfileSyncStateWaitingForPassword;
+            } else {
+                self.profileSyncState = kSCHStartingViewControllerProfileSyncStateWaitingForBookshelves;
+                
+                NSMutableArray *viewControllers = [[self.modalNavigationController viewControllers] mutableCopy];
+                [viewControllers removeLastObject];
+                [self.modalNavigationController setViewControllers:viewControllers];
+                [viewControllers release];
+            }
             
-            NSMutableArray *viewControllers = [[self.modalNavigationController viewControllers] mutableCopy];
-            [viewControllers removeLastObject];
-            [self.modalNavigationController setViewControllers:viewControllers];
-            [viewControllers release];
+            [self presentModalViewController:self.modalNavigationController animated:NO];
         }
         
-        [self presentModalViewController:self.modalNavigationController animated:NO];
-    }
+        dispatch_async(dispatch_get_main_queue(), ^{
+            if (shouldSync) {
+                [[SCHSyncManager sharedSyncManager] firstSync:YES requireDeviceAuthentication:YES];
+                self.checkProfilesAlert = [[[LambdaAlert alloc]
+                                            initWithTitle:NSLocalizedString(@"Syncing with Your Account", @"")
+                                            message:@"\n"] autorelease];
+                [self.checkProfilesAlert setSpinnerHidden:NO];
+                [self.checkProfilesAlert show];
+            }
+        });
+    };
     
-    if (shouldSync) {
-        [[SCHSyncManager sharedSyncManager] firstSync:YES requireDeviceAuthentication:YES];
-        self.checkProfilesAlert = [[[LambdaAlert alloc]
-                                    initWithTitle:NSLocalizedString(@"Syncing with Your Account", @"")
-                                    message:@"\n"] autorelease];
-        [self.checkProfilesAlert setSpinnerHidden:NO];
-        [self.checkProfilesAlert show];
-    }
+    if ([self.webParentToolsPopoverController isModalPopoverVisible]) {
+        [self.webParentToolsPopoverController setPopoverContentSize:CGSizeMake(540, 620) animated:YES completion:^{
+            [CATransaction begin];
+            [CATransaction setDisableActions:YES];
+            [self.webParentToolsPopoverController dismissModalPopoverAnimated:NO completion:^{
+                completion();
+                [CATransaction commit];
+            }];
+        }];
+    } else {
+        completion();
+    }    
 }
 
 - (void)waitingForPassword
@@ -626,7 +670,13 @@ typedef enum {
             self.profileSyncState = kSCHStartingViewControllerProfileSyncStateWaitingForBookshelves;
             if ([current isKindOfClass:NSClassFromString(@"SCHSetupBookshelvesViewController")]) {
                 // Do nothing, we are trying to push the same thing on
-                return;
+                if (self.modalViewController) {
+                    return;
+                } else {
+                    [self presentModalViewController:self.modalNavigationController animated:shouldAnimate];
+                    return;
+                }
+                
             } else {
                 SCHSetupBookshelvesViewController *setupBookshelves = [[[SCHSetupBookshelvesViewController alloc] init] autorelease];
                 setupBookshelves.profileSetupDelegate = self;
