@@ -26,6 +26,7 @@ static const CGFloat kDeregisterContentHeightLandscape = 380;
 - (void)setupContentSizeForOrientation:(UIInterfaceOrientation)orientation;
 - (void)makeVisibleTextField:(UITextField *)textField;
 - (void)deregisterAfterSuccessfulAuthentication;
+- (void)deregisterFailedAuthentication:(NSError *)error;
 
 @end
 
@@ -178,19 +179,17 @@ static const CGFloat kDeregisterContentHeightLandscape = 380;
                 if ([[SCHAuthenticationManager sharedAuthenticationManager] isAuthenticated] == YES) {
                     [weakSelf deregisterAfterSuccessfulAuthentication];
                 } else {
-                    [[SCHAuthenticationManager sharedAuthenticationManager] authenticateWithSuccessBlock:^(BOOL offlineMode){
-                        [weakSelf deregisterAfterSuccessfulAuthentication];
+                    [[SCHAuthenticationManager sharedAuthenticationManager] authenticateWithSuccessBlock:^(SCHAuthenticationManagerConnectivityMode connectivityMode) {
+                        if (connectivityMode == SCHAuthenticationManagerConnectivityModeOnline) {
+                            [weakSelf deregisterAfterSuccessfulAuthentication];
+                        } else {
+                            [weakSelf deregisterFailedAuthentication:[NSError errorWithDomain:kSCHAuthenticationManagerErrorDomain 
+                                                                                         code:kSCHAuthenticationManagerOfflineError 
+                                                                                     userInfo:[NSDictionary dictionaryWithObject:NSLocalizedString(@"You are in offline mode, you must be in online mode to deregister", @"") 
+                                                                                                                          forKey:NSLocalizedDescriptionKey]]];
+                        }
                     } failureBlock:^(NSError *error){
-                        LambdaAlert *alert = [[LambdaAlert alloc]
-                                              initWithTitle:NSLocalizedString(@"Unable To Authenticate", @"")
-                                              message:[NSString stringWithFormat:NSLocalizedString(@"We are not able to authenticate your account with the server (%@). Please try again later.", nil), [error localizedDescription]]];
-                        [alert addButtonWithTitle:NSLocalizedString(@"OK", @"") block:^{
-                            [weakSelf.deregisterButton setEnabled:YES];
-                            [weakSelf.spinner stopAnimating];
-                            [weakSelf setEnablesBackButton:YES];                                            
-                        }];
-                        [alert show];
-                        [alert release];
+                        [weakSelf deregisterFailedAuthentication:error];
                     }];
                 }                
             }    
@@ -200,7 +199,6 @@ static const CGFloat kDeregisterContentHeightLandscape = 380;
 
 - (void)deregisterAfterSuccessfulAuthentication
 {
-    
     SCHDrmDeregistrationSuccessBlock deregistrationCompletionBlock = ^{
         [self.settingsDelegate popToRootViewControllerAnimated:YES withCompletionHandler:^{
             LambdaAlert *alert = [[LambdaAlert alloc]
@@ -233,6 +231,28 @@ static const CGFloat kDeregisterContentHeightLandscape = 380;
             [alert release];
         }
     }];
+}
+
+- (void)deregisterFailedAuthentication:(NSError *)error
+{
+    NSString *message = nil;
+    
+    if (error == nil) {
+        message = NSLocalizedString(@"We are not able to authenticate your account with the server. Please try again later.", nil);
+    } else {
+        message = [NSString stringWithFormat:NSLocalizedString(@"We are not able to authenticate your account with the server (%@). Please try again later.", nil), [error localizedDescription]];        
+    }
+    
+    LambdaAlert *alert = [[LambdaAlert alloc]
+                          initWithTitle:NSLocalizedString(@"Unable To Authenticate", @"")
+                          message:message];
+    [alert addButtonWithTitle:NSLocalizedString(@"OK", @"") block:^{
+        [self.deregisterButton setEnabled:YES];
+        [self.spinner stopAnimating];
+        [self setEnablesBackButton:YES];                                            
+    }];
+    [alert show];
+    [alert release];    
 }
 
 - (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation

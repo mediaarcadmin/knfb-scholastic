@@ -99,8 +99,8 @@ NSString * const SCHContentSyncComponentDidFailNotification = @"SCHContentSyncCo
         if([method compare:kSCHLibreAccessWebServiceSaveContentProfileAssignment] == NSOrderedSame) {	
             self.isSynchronizing = [self.libreAccessWebService listUserContent];
             if (self.isSynchronizing == NO) {
-                [[SCHAuthenticationManager sharedAuthenticationManager] authenticateWithSuccessBlock:^(BOOL offlineMode){
-                    if (!offlineMode) {
+                [[SCHAuthenticationManager sharedAuthenticationManager] authenticateWithSuccessBlock:^(SCHAuthenticationManagerConnectivityMode connectivityMode){
+                    if (connectivityMode == SCHAuthenticationManagerConnectivityModeOnline) {
                         [self.delegate authenticationDidSucceed];
                     } else {
                         self.isSynchronizing = NO;
@@ -163,8 +163,8 @@ NSString * const SCHContentSyncComponentDidFailNotification = @"SCHContentSyncCo
 	if ([results count] > 0) {
 		self.isSynchronizing = [self.libreAccessWebService saveContentProfileAssignment:results];
 		if (self.isSynchronizing == NO) {
-			[[SCHAuthenticationManager sharedAuthenticationManager] authenticateWithSuccessBlock:^(BOOL offlineMode){
-                if (!offlineMode) {
+			[[SCHAuthenticationManager sharedAuthenticationManager] authenticateWithSuccessBlock:^(SCHAuthenticationManagerConnectivityMode connectivityMode){
+                if (connectivityMode == SCHAuthenticationManagerConnectivityModeOnline) {
                     [self.delegate authenticationDidSucceed];
                 } else {
                     self.isSynchronizing = NO;
@@ -179,8 +179,8 @@ NSString * const SCHContentSyncComponentDidFailNotification = @"SCHContentSyncCo
 	} else {
 		self.isSynchronizing = [self.libreAccessWebService listUserContent];
 		if (self.isSynchronizing == NO) {
-			[[SCHAuthenticationManager sharedAuthenticationManager] authenticateWithSuccessBlock:^(BOOL offlineMode){
-                if (!offlineMode) {
+			[[SCHAuthenticationManager sharedAuthenticationManager] authenticateWithSuccessBlock:^(SCHAuthenticationManagerConnectivityMode connectivityMode){
+                if (connectivityMode == SCHAuthenticationManagerConnectivityModeOnline) {
                     [self.delegate authenticationDidSucceed];
                 } else {
                     self.isSynchronizing = NO;

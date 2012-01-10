@@ -16,11 +16,14 @@
 NSString * const SCHVersionDownloadManagerCompletedNotification = @"SCHVersionDownloadManagerCompletedNotification";
 NSString * const SCHVersionDownloadManagerIsCurrentVersion = @"IsCurrentVersion";
 
+static NSTimeInterval const kSCHVersionDownloadManagerVersionCheckTimeout = 60 * 60;
+
 #pragma mark - Class Extension
 
 @interface SCHVersionDownloadManager ()
 
 @property (nonatomic, retain, readwrite) NSNumber *isCurrentVersion;
+@property (nonatomic, retain) NSDate *expireCurrentVersion;
 
 // the background task ID for background processing
 @property (nonatomic, assign) UIBackgroundTaskIdentifier backgroundTask;
@@ -57,6 +60,7 @@ NSString * const SCHVersionDownloadManagerIsCurrentVersion = @"IsCurrentVersion"
 
 @synthesize manifestUpdates;
 @synthesize isCurrentVersion;
+@synthesize expireCurrentVersion;
 @synthesize isProcessing;
 @synthesize backgroundTask;
 @synthesize versionDownloadQueue;
@@ -134,8 +138,25 @@ NSString * const SCHVersionDownloadManagerIsCurrentVersion = @"IsCurrentVersion"
 	return sharedManager;
 }
 
-#pragma mark -
-#pragma mark Background Processing Methods
+#pragma mark - Accessor Methods
+
+- (NSNumber *)isCurrentVersion
+{
+    if(isCurrentVersion != nil &&
+       [isCurrentVersion boolValue] == YES &&
+       [expireCurrentVersion compare:[NSDate date]] == NSOrderedAscending) {
+        isCurrentVersion = nil;
+        self.expireCurrentVersion = nil;
+    }
+         
+    if (isCurrentVersion == nil) {
+        [self checkVersion];
+    }
+    
+    return isCurrentVersion;
+}
+
+#pragma mark - Background Processing Methods
 
 - (void)enterBackground
 {
@@ -329,7 +350,8 @@ NSString * const SCHVersionDownloadManagerIsCurrentVersion = @"IsCurrentVersion"
             NSString *currentVersion = [self appVersion];
             
             if (currentVersion) {
-                if ([currentVersion compare:[entry toVersion] options:NSNumericSearch] == NSOrderedAscending) {
+                if (entry == nil || 
+                    [currentVersion compare:[entry toVersion] options:NSNumericSearch] == NSOrderedAscending) {
                     processUpdate = YES;
                 }
             } else {
@@ -342,6 +364,7 @@ NSString * const SCHVersionDownloadManagerIsCurrentVersion = @"IsCurrentVersion"
                 self.isCurrentVersion = [NSNumber numberWithBool:YES];
             }
             
+            self.expireCurrentVersion = [NSDate dateWithTimeIntervalSinceNow:kSCHVersionDownloadManagerVersionCheckTimeout];
             [[NSNotificationCenter defaultCenter] postNotificationName:SCHVersionDownloadManagerCompletedNotification 
                                                                 object:nil 
                                                               userInfo:[NSDictionary dictionaryWithObject:self.isCurrentVersion forKey:SCHVersionDownloadManagerIsCurrentVersion]];                

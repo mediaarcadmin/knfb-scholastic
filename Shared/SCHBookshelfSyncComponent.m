@@ -263,8 +263,8 @@ NSString * const SCHBookshelfSyncComponentDidFailNotification = @"SCHBookshelfSy
 			for (NSDictionary *ISBN in results) {				
 				self.isSynchronizing = [self.libreAccessWebService listContentMetadata:[NSArray arrayWithObject:ISBN] includeURLs:NO];
 				if (self.isSynchronizing == NO) {
-					[[SCHAuthenticationManager sharedAuthenticationManager] authenticateWithSuccessBlock:^(BOOL offlineMode){
-                        if (!offlineMode) {
+					[[SCHAuthenticationManager sharedAuthenticationManager] authenticateWithSuccessBlock:^(SCHAuthenticationManagerConnectivityMode connectivityMode){
+                        if (connectivityMode == SCHAuthenticationManagerConnectivityModeOnline) {
                             [self.delegate authenticationDidSucceed];
                         } else {
                             self.isSynchronizing = NO;
@@ -283,8 +283,8 @@ NSString * const SCHBookshelfSyncComponentDidFailNotification = @"SCHBookshelfSy
 		} else {			
 			self.isSynchronizing = [self.libreAccessWebService listContentMetadata:results includeURLs:NO];
 			if (self.isSynchronizing == NO) {
-				[[SCHAuthenticationManager sharedAuthenticationManager] authenticateWithSuccessBlock:^(BOOL offlineMode){
-                    if (!offlineMode) {
+				[[SCHAuthenticationManager sharedAuthenticationManager] authenticateWithSuccessBlock:^(SCHAuthenticationManagerConnectivityMode connectivityMode){
+                    if (connectivityMode == SCHAuthenticationManagerConnectivityModeOnline) {
                         [self.delegate authenticationDidSucceed];
                     } else {
                         self.isSynchronizing = NO;

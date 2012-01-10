@@ -392,8 +392,15 @@ typedef enum {
                 [[password stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]] length] > 0) {      
                 [[SCHAuthenticationManager sharedAuthenticationManager] authenticateWithUser:username 
                                                                                     password:password
-                                                                                successBlock:^(BOOL offlineMode){
-                                                                                    [self signInSucceededForLoginController:login];
+                                                                                successBlock:^(SCHAuthenticationManagerConnectivityMode connectivityMode) {
+                                                                                    if (connectivityMode == SCHAuthenticationManagerConnectivityModeOnline) {
+                                                                                        [self signInSucceededForLoginController:login];
+                                                                                    } else {
+                                                                                        [self signInFailedForLoginController:login withError:[NSError errorWithDomain:kSCHAuthenticationManagerErrorDomain 
+                                                                                                                                                                 code:kSCHAuthenticationManagerOfflineError 
+                                                                                                                                                             userInfo:[NSDictionary dictionaryWithObject:NSLocalizedString(@"You are in offline mode, you must be in online mode to login", @"") 
+                                                                                                                                                                                                  forKey:NSLocalizedDescriptionKey]]];                                                                                        
+                                                                                    }
                                                                                 }
                                                                                 failureBlock:^(NSError * error){
                                                                                     [self signInFailedForLoginController:login withError:error];

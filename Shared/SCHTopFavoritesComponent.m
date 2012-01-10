@@ -42,8 +42,8 @@ static NSString * const kSCHTopFavoritesComponentCategoryYoungAdults = @"Young A
     }
 	
 	if ([self.libreAccessWebService listTopFavorites:[NSArray arrayWithObject:favoriteItem] withCount:kSCHTopFavoritesComponentTopCount] == NO) {
-		[[SCHAuthenticationManager sharedAuthenticationManager] authenticateWithSuccessBlock:^(BOOL offlineMode){
-            if (!offlineMode) {
+		[[SCHAuthenticationManager sharedAuthenticationManager] authenticateWithSuccessBlock:^(SCHAuthenticationManagerConnectivityMode connectivityMode){
+            if (connectivityMode == SCHAuthenticationManagerConnectivityModeOnline) {
                 [self.delegate authenticationDidSucceed];
             }
         } failureBlock:nil];			
