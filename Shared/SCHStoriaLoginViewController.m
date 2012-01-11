@@ -21,7 +21,9 @@
 @synthesize topField;
 @synthesize bottomField;
 @synthesize loginButton;
+@synthesize previewButton;
 @synthesize spinner;
+@synthesize promptLabel;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -37,7 +39,9 @@
     [topField release], topField = nil;
     [bottomField release], bottomField = nil;
     [loginButton release], loginButton = nil;
+    [previewButton release], previewButton = nil;
     [spinner release], spinner = nil;
+    [promptLabel release], promptLabel = nil;
 }
 
 - (void)dealloc
@@ -110,6 +114,8 @@
     [self.bottomField setEnabled:NO];
     [self.spinner startAnimating];
     [self.loginButton setEnabled:NO];
+    [self setDisplayIncorrectCredentialsWarning:NO];
+    [self.previewButton setEnabled:NO];
 }
 
 - (void)stopShowingProgress
@@ -118,6 +124,7 @@
     [self.bottomField setEnabled:YES];
     [self.spinner stopAnimating];
     [self.loginButton setEnabled:YES];
+    [self.previewButton setEnabled:YES];
 }
 
 - (void)clearFields
@@ -135,7 +142,19 @@
 
 - (void)setDisplayIncorrectCredentialsWarning:(BOOL)showWarning
 {
+    CGRect frame = self.promptLabel.frame;
+    if (showWarning) {
+        self.promptLabel.text = NSLocalizedString(@"Your User Name or Password was not recognized. Please try again.", @"");
+        frame.size.width = 200;
+    } else {
+        self.promptLabel.text = NSLocalizedString(@"You must have a Scholastic account to sign in.", @"");
+        frame.size.width = 140;
+    }
     
+    [CATransaction begin];
+    [CATransaction setDisableActions:YES];
+    self.promptLabel.frame = frame;
+    [CATransaction commit];
 }
 
 #pragma mark - UITextFieldDelegate

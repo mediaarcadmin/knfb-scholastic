@@ -59,7 +59,7 @@ typedef enum {
 
 - (void)runInitialChoiceSequence;
 - (void)runSetupSamplesSequence;
-- (void)runLoginSequenceWithUsername:(NSString *)username password:(NSString *)password credentialsSuccessBlock:(void(^)(BOOL success))credentialsSuccessBlock;
+- (void)runLoginSequenceWithUsername:(NSString *)username password:(NSString *)password credentialsSuccessBlock:(void(^)(BOOL success, BOOL retrying))credentialsSuccessBlock;
 - (void)runSetupProfileSequenceAnimated:(BOOL)animated;
 
 - (void)pushSamplesAnimated:(BOOL)animated showWelcome:(BOOL)welcome;
@@ -560,29 +560,32 @@ typedef enum {
         
         login.loginBlock = ^(NSString *username, NSString *password) {
             [weakLoginRef startShowingProgress];
-            [self runLoginSequenceWithUsername:username password:password credentialsSuccessBlock:^(BOOL success){
+            [self runLoginSequenceWithUsername:username password:password credentialsSuccessBlock:^(BOOL success, BOOL retrying){
                 [weakLoginRef setDisplayIncorrectCredentialsWarning:!success];
                 [weakLoginRef stopShowingProgress];
                 
                 if (!success) {
-                    [weakLoginRef clearBottomField];
+                    if (retrying) {
+                        [weakLoginRef startShowingProgress];
+                    } else {
+                        [weakLoginRef clearBottomField];
+                    }
                 }
             }];
             completion(nil);
         };
         
         BITModalPopoverController *aLoginPopoverController = [[BITModalPopoverController alloc] initWithContentViewController:login];
-        [aLoginPopoverController setShadowRadius:0];
         [aLoginPopoverController setAutoresizingMask:UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleBottomMargin];
         
         if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
-            [aLoginPopoverController setPopoverContentSize:CGSizeMake(630, 500)];
+            [aLoginPopoverController setPopoverContentSize:CGSizeMake(600, 481)];
             CGPoint offset;
             
             if (UIInterfaceOrientationIsPortrait(self.interfaceOrientation)) {
-                offset = CGPointMake(0, -54);
+                offset = CGPointMake(0, -60);
             } else {
-                offset = CGPointMake(0, 152);
+                offset = CGPointMake(0, 134);
             }
             [aLoginPopoverController setPopoverContentOffset:offset];
         } else {
@@ -731,7 +734,7 @@ typedef enum {
     }
 }
 
-- (void)runLoginSequenceWithUsername:(NSString *)username password:(NSString *)password credentialsSuccessBlock:(void(^)(BOOL success))credentialsSuccessBlock
+- (void)runLoginSequenceWithUsername:(NSString *)username password:(NSString *)password credentialsSuccessBlock:(void(^)(BOOL success, BOOL retrying))credentialsSuccessBlock
 {
     BITOperationWithBlocks *setupSequenceCheckConnectivity = [[BITOperationWithBlocks alloc] init];
     setupSequenceCheckConnectivity.syncMain = ^(BITOperationIsCancelledBlock isCancelled, BITOperationFailedBlock failed) {
@@ -763,7 +766,7 @@ typedef enum {
                                                                                 password:password
                                                                             successBlock:^(BOOL offlineMode){
                                                                                 if (credentialsSuccessBlock) {
-                                                                                    credentialsSuccessBlock(YES);
+                                                                                    credentialsSuccessBlock(YES, NO);
                                                                                 }
                                                                                 [[SCHSyncManager sharedSyncManager] firstSync:YES requireDeviceAuthentication:NO];
                                                                             }
@@ -779,10 +782,6 @@ typedef enum {
     };
     
     setupSequenceAttemptServiceLogin.failed = ^(NSError *error){
-        
-        if (credentialsSuccessBlock) {
-            credentialsSuccessBlock(NO);
-        }
         
         if ([error code] != kSCHAccountValidationCredentialsError) {
             NSString *localizedMessage = nil;
@@ -802,14 +801,22 @@ typedef enum {
                                   initWithTitle:NSLocalizedString(@"Login Error", @"Login Error") 
                                   message:localizedMessage];
             [alert addButtonWithTitle:NSLocalizedString(@"Cancel", @"Cancel") block:^{
+                if (credentialsSuccessBlock) {
+                    credentialsSuccessBlock(NO, NO);
+                }
             }];
             [alert addButtonWithTitle:NSLocalizedString(@"Retry", @"Retry") block:^{
+                if (credentialsSuccessBlock) {
+                    credentialsSuccessBlock(NO, YES);
+                }
                 [self runLoginSequenceWithUsername:username password:password credentialsSuccessBlock:credentialsSuccessBlock];
             }];
             [alert show];
             [alert release];
-            
-            credentialsSuccessBlock(NO);
+        } else {
+            if (credentialsSuccessBlock) {
+                credentialsSuccessBlock(NO, NO);
+            }
         }
     };
     
