@@ -33,7 +33,7 @@
 #import "SCHAccountValidation.h"
 #import "SCHParentalToolsWebViewController.h"
 #import "Reachability.h"
-#import "BITModalPopoverController.h"
+#import "BITModalSheetController.h"
 #import "SCHStoriaLoginViewController.h"
 #import "BITOperationWithBlocks.h"
 
@@ -50,8 +50,8 @@ typedef enum {
 @property (nonatomic, retain) SCHProfileViewController_Shared *profileViewController;
 @property (nonatomic, assign) SCHStartingViewControllerProfileSyncState profileSyncState;
 @property (nonatomic, retain) LambdaAlert *checkProfilesAlert;
-@property (nonatomic, retain) BITModalPopoverController *loginPopoverController;
-@property (nonatomic, retain) BITModalPopoverController *webParentToolsPopoverController;
+@property (nonatomic, retain) BITModalSheetController *loginPopoverController;
+@property (nonatomic, retain) BITModalSheetController *webParentToolsPopoverController;
 @property (nonatomic, retain) NSOperationQueue *setupSequenceQueue;
 
 - (void)setVersionText;
@@ -127,13 +127,13 @@ typedef enum {
     [backgroundView release], backgroundView = nil;
     [modalNavigationController release], modalNavigationController = nil;
     
-    if ([loginPopoverController isModalPopoverVisible]) {
-        [loginPopoverController dismissModalPopoverAnimated:NO completion:nil];
+    if ([loginPopoverController isModalSheetVisible]) {
+        [loginPopoverController dismissSheetAnimated:NO completion:nil];
     }
     [loginPopoverController release], loginPopoverController = nil;
     
-    if ([webParentToolsPopoverController isModalPopoverVisible]) {
-        [webParentToolsPopoverController dismissModalPopoverAnimated:NO completion:nil];
+    if ([webParentToolsPopoverController isModalSheetVisible]) {
+        [webParentToolsPopoverController dismissSheetAnimated:NO completion:nil];
     }
     [webParentToolsPopoverController release], webParentToolsPopoverController = nil;
     
@@ -324,17 +324,17 @@ typedef enum {
     parentalToolsWebViewController.pToken = token;
     parentalToolsWebViewController.shouldHideCloseButton = shouldHide;
 
-    BITModalPopoverController *aPopoverController = [[BITModalPopoverController alloc] initWithContentViewController:parentalToolsWebViewController];
-    aPopoverController.popoverContentSize = CGSizeMake(540, 620);
+    BITModalSheetController *aPopoverController = [[BITModalSheetController alloc] initWithContentViewController:parentalToolsWebViewController];
+    aPopoverController.contentSize = CGSizeMake(540, 620);
     aPopoverController.autoresizingMask = UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin | UIViewAutoresizingFlexibleWidth;
     self.webParentToolsPopoverController = aPopoverController;
     [aPopoverController release];
     
-    __block BITModalPopoverController *weakPopover = self.webParentToolsPopoverController;
+    __block BITModalSheetController *weakPopover = self.webParentToolsPopoverController;
     __block UIViewController *weakSelf = self;
     __block SCHParentalToolsWebViewController *weakParentTools = parentalToolsWebViewController;
     
-    [self.webParentToolsPopoverController presentModalPopoverInViewController:self animated:NO completion:^{
+    [self.webParentToolsPopoverController presentSheetInViewController:self animated:NO completion:^{
         weakParentTools.textView.alpha = 0;
         
         CGSize expandedSize;
@@ -345,7 +345,7 @@ typedef enum {
             expandedSize = CGSizeMake(964, 530);
         }
         
-        [weakPopover setPopoverContentSize:expandedSize animated:YES completion:^{
+        [weakPopover setContentSize:expandedSize animated:YES completion:^{
             weakParentTools.textView.alpha = 1;
         }];
     }];    
@@ -391,11 +391,11 @@ typedef enum {
         });
     };
     
-    if ([self.webParentToolsPopoverController isModalPopoverVisible]) {
-        [self.webParentToolsPopoverController setPopoverContentSize:CGSizeMake(540, 620) animated:YES completion:^{
+    if ([self.webParentToolsPopoverController isModalSheetVisible]) {
+        [self.webParentToolsPopoverController setContentSize:CGSizeMake(540, 620) animated:YES completion:^{
             [CATransaction begin];
             [CATransaction setDisableActions:YES];
-            [self.webParentToolsPopoverController dismissModalPopoverAnimated:NO completion:^{
+            [self.webParentToolsPopoverController dismissSheetAnimated:NO completion:^{
                 completion();
                 [CATransaction commit];
             }];
@@ -575,11 +575,11 @@ typedef enum {
             completion(nil);
         };
         
-        BITModalPopoverController *aLoginPopoverController = [[BITModalPopoverController alloc] initWithContentViewController:login];
+        BITModalSheetController *aLoginPopoverController = [[BITModalSheetController alloc] initWithContentViewController:login];
         [aLoginPopoverController setAutoresizingMask:UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleBottomMargin];
         
         if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
-            [aLoginPopoverController setPopoverContentSize:CGSizeMake(600, 481)];
+            [aLoginPopoverController setContentSize:CGSizeMake(600, 481)];
             CGPoint offset;
             
             if (UIInterfaceOrientationIsPortrait(self.interfaceOrientation)) {
@@ -587,16 +587,16 @@ typedef enum {
             } else {
                 offset = CGPointMake(0, 134);
             }
-            [aLoginPopoverController setPopoverContentOffset:offset];
+            [aLoginPopoverController setContentOffset:offset];
         } else {
-            [aLoginPopoverController setPopoverContentSize:CGSizeMake(300, 400)];
+            [aLoginPopoverController setContentSize:CGSizeMake(300, 400)];
         }
         
         self.loginPopoverController = aLoginPopoverController;
         [aLoginPopoverController release];
         [login release];
         
-        [self.loginPopoverController presentModalPopoverInViewController:self animated:YES completion:nil];
+        [self.loginPopoverController presentSheetInViewController:self animated:YES completion:nil];
     };
     
     self.setupSequenceQueue = [[[NSOperationQueue alloc] init] autorelease];
@@ -610,7 +610,7 @@ typedef enum {
 {
     BITOperationWithBlocks *setupSequenceDismissLoginOperation = [[BITOperationWithBlocks alloc] init];
     setupSequenceDismissLoginOperation.asyncMain = ^(BITOperationIsCancelledBlock isCancelled, BITOperationAsyncCompletionBlock completion) {
-        [self.loginPopoverController dismissModalPopoverAnimated:YES completion:^{
+        [self.loginPopoverController dismissSheetAnimated:YES completion:^{
             self.loginPopoverController = nil;
             completion(nil);
         }];
@@ -727,8 +727,8 @@ typedef enum {
         }
     };
     
-    if ([self.loginPopoverController isModalPopoverVisible]) {
-        [self.loginPopoverController dismissModalPopoverAnimated:YES completion:continueBlock];
+    if ([self.loginPopoverController isModalSheetVisible]) {
+        [self.loginPopoverController dismissSheetAnimated:YES completion:continueBlock];
     } else {
         continueBlock();
     }

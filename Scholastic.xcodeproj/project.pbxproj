@@ -1729,6 +1729,8 @@
 		C9A6B400148B853C00B31277 /* SCHAppHelpState.m in Sources */ = {isa = PBXBuildFile; fileRef = C9A6B3FF148B853C00B31277 /* SCHAppHelpState.m */; };
 		C9A6B401148B853C00B31277 /* SCHAppHelpState.m in Sources */ = {isa = PBXBuildFile; fileRef = C9A6B3FF148B853C00B31277 /* SCHAppHelpState.m */; };
 		C9A6B402148B853C00B31277 /* SCHAppHelpState.m in Sources */ = {isa = PBXBuildFile; fileRef = C9A6B3FF148B853C00B31277 /* SCHAppHelpState.m */; };
+		C9AC7DA414BDDE00009137BA /* libBITModalSheetController.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C9AC7D9F14BDDDE2009137BA /* libBITModalSheetController.a */; };
+		C9AC7DA714BDDE0F009137BA /* libBITModalSheetController.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C9AC7D9F14BDDDE2009137BA /* libBITModalSheetController.a */; };
 		C9AC854813ACE176000ECDAE /* old-lightning-bolt-0~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = C9AC854713ACE175000ECDAE /* old-lightning-bolt-0~ipad.png */; };
 		C9AC855213ACE6CB000ECDAE /* old-lightning-bolt-0~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = C9AC854A13ACE6CA000ECDAE /* old-lightning-bolt-0~iphone.png */; };
 		C9AC856313ACE76F000ECDAE /* old-lightning-bolt-0@2x~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = C9AC856213ACE76F000ECDAE /* old-lightning-bolt-0@2x~iphone.png */; };
@@ -1907,8 +1909,6 @@
 		C9F5B9FC13916C62009DE113 /* button-go.png in Resources */ = {isa = PBXBuildFile; fileRef = C9F5B9FA13916C62009DE113 /* button-go.png */; };
 		C9F5B9FE13916C62009DE113 /* button-go@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C9F5B9FB13916C62009DE113 /* button-go@2x.png */; };
 		C9F5BA0113918CE9009DE113 /* SCHProfilePasswordView~iphone.xib in Resources */ = {isa = PBXBuildFile; fileRef = C9F5BA0013918CE8009DE113 /* SCHProfilePasswordView~iphone.xib */; };
-		C9F8FD5914B4841500136C22 /* libBITModalPopoverController.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C9F8FD3714B4806B00136C22 /* libBITModalPopoverController.a */; };
-		C9F8FD5A14B4841D00136C22 /* libBITModalPopoverController.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C9F8FD3714B4806B00136C22 /* libBITModalPopoverController.a */; };
 		C9F8FD5E14B4909800136C22 /* SCHStoriaLoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C9F8FD5C14B4909800136C22 /* SCHStoriaLoginViewController.m */; };
 		C9F8FD5F14B4909800136C22 /* SCHStoriaLoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C9F8FD5C14B4909800136C22 /* SCHStoriaLoginViewController.m */; };
 		C9F8FD6014B4909800136C22 /* SCHStoriaLoginViewController~ipad.xib in Resources */ = {isa = PBXBuildFile; fileRef = C9F8FD5D14B4909800136C22 /* SCHStoriaLoginViewController~ipad.xib */; };
@@ -2252,6 +2252,34 @@
 			remoteGlobalIDString = 7D034F8910C2CCBE0085778B;
 			remoteInfo = TransitionTest;
 		};
+		C9AC7D9E14BDDDE2009137BA /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = C9AC7D9614BDDDE2009137BA /* BITModalSheetController.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = C9F5538114A5205300E24168;
+			remoteInfo = BITModalSheetController;
+		};
+		C9AC7DA014BDDDE2009137BA /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = C9AC7D9614BDDDE2009137BA /* BITModalSheetController.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = C9F5539114A5205300E24168;
+			remoteInfo = BITModalSheetControllerTests;
+		};
+		C9AC7DA214BDDDF7009137BA /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = C9AC7D9614BDDDE2009137BA /* BITModalSheetController.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = C9F5538014A5205300E24168;
+			remoteInfo = BITModalSheetController;
+		};
+		C9AC7DA514BDDE07009137BA /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = C9AC7D9614BDDDE2009137BA /* BITModalSheetController.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = C9F5538014A5205300E24168;
+			remoteInfo = BITModalSheetController;
+		};
 		C9C3FA2F14B6FA5E00757038 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = C9C3FA2714B6FA5E00757038 /* BITOperation.xcodeproj */;
@@ -2279,34 +2307,6 @@
 			proxyType = 1;
 			remoteGlobalIDString = 28DA329A1488E22300E1896D;
 			remoteInfo = BITOperation;
-		};
-		C9F8FD3614B4806B00136C22 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = C9F8FD2E14B4806A00136C22 /* BITModalPopoverController.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = C9F5538114A5205300E24168;
-			remoteInfo = BITModalPopoverController;
-		};
-		C9F8FD3814B4806B00136C22 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = C9F8FD2E14B4806A00136C22 /* BITModalPopoverController.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = C9F5539114A5205300E24168;
-			remoteInfo = BITModalPopoverControllerTests;
-		};
-		C9F8FD3A14B4809300136C22 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = C9F8FD2E14B4806A00136C22 /* BITModalPopoverController.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = C9F5538014A5205300E24168;
-			remoteInfo = BITModalPopoverController;
-		};
-		C9F8FD3C14B4809A00136C22 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = C9F8FD2E14B4806A00136C22 /* BITModalPopoverController.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = C9F5538014A5205300E24168;
-			remoteInfo = BITModalPopoverController;
 		};
 /* End PBXContainerItemProxy section */
 
@@ -3439,6 +3439,7 @@
 		C9A6B3FA148B7F0900B31277 /* SCHHelpManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHHelpManager.m; path = Shared/SCHHelpManager.m; sourceTree = "<group>"; };
 		C9A6B3FE148B853C00B31277 /* SCHAppHelpState.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHAppHelpState.h; path = Shared/SCHAppHelpState.h; sourceTree = "<group>"; };
 		C9A6B3FF148B853C00B31277 /* SCHAppHelpState.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHAppHelpState.m; path = Shared/SCHAppHelpState.m; sourceTree = "<group>"; };
+		C9AC7D9614BDDDE2009137BA /* BITModalSheetController.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = BITModalSheetController.xcodeproj; path = Shared/Libraries/Submodules/bitmodalsheetcontroller/BITModalSheetController.xcodeproj; sourceTree = "<group>"; };
 		C9AC854713ACE175000ECDAE /* old-lightning-bolt-0~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "old-lightning-bolt-0~ipad.png"; sourceTree = "<group>"; };
 		C9AC854A13ACE6CA000ECDAE /* old-lightning-bolt-0~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "old-lightning-bolt-0~iphone.png"; sourceTree = "<group>"; };
 		C9AC856213ACE76F000ECDAE /* old-lightning-bolt-0@2x~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "old-lightning-bolt-0@2x~iphone.png"; sourceTree = "<group>"; };
@@ -3642,7 +3643,6 @@
 		C9F5B9FA13916C62009DE113 /* button-go.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "button-go.png"; path = "Resources/UIAssets/button-go.png"; sourceTree = "<group>"; };
 		C9F5B9FB13916C62009DE113 /* button-go@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "button-go@2x.png"; path = "Resources/UIAssets/button-go@2x.png"; sourceTree = "<group>"; };
 		C9F5BA0013918CE8009DE113 /* SCHProfilePasswordView~iphone.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "SCHProfilePasswordView~iphone.xib"; sourceTree = "<group>"; };
-		C9F8FD2E14B4806A00136C22 /* BITModalPopoverController.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = BITModalPopoverController.xcodeproj; path = Shared/Libraries/Submodules/bitmodalpopovercontroller/BITModalPopoverController.xcodeproj; sourceTree = "<group>"; };
 		C9F8FD5B14B4909800136C22 /* SCHStoriaLoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHStoriaLoginViewController.h; path = Shared/SCHStoriaLoginViewController.h; sourceTree = "<group>"; };
 		C9F8FD5C14B4909800136C22 /* SCHStoriaLoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHStoriaLoginViewController.m; path = Shared/SCHStoriaLoginViewController.m; sourceTree = "<group>"; };
 		C9F8FD5D14B4909800136C22 /* SCHStoriaLoginViewController~ipad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = "SCHStoriaLoginViewController~ipad.xib"; path = "Shared/SCHStoriaLoginViewController~ipad.xib"; sourceTree = "<group>"; };
@@ -3889,8 +3889,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C9AC7DA414BDDE00009137BA /* libBITModalSheetController.a in Frameworks */,
 				C9C3FA3814B6FA8400757038 /* libBITOperation.a in Frameworks */,
-				C9F8FD5914B4841500136C22 /* libBITModalPopoverController.a in Frameworks */,
 				7D3F313C14069A5200C6F445 /* libEucalyptusIOSUI.a in Frameworks */,
 				7D3F313D14069A5200C6F445 /* libEucalyptusModel.a in Frameworks */,
 				7D3F313B14069A5200C6F445 /* libEucalyptusEPubIOSUI.a in Frameworks */,
@@ -3946,8 +3946,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C9AC7DA714BDDE0F009137BA /* libBITModalSheetController.a in Frameworks */,
 				C9C3FA3714B6FA7D00757038 /* libBITOperation.a in Frameworks */,
-				C9F8FD5A14B4841D00136C22 /* libBITModalPopoverController.a in Frameworks */,
 				52488BE01407990500DA9AFA /* libEucalyptusIOSUI.a in Frameworks */,
 				52488BE11407990500DA9AFA /* libEucalyptusModel.a in Frameworks */,
 				52488BE21407990500DA9AFA /* libEucalyptusEPubIOSUI.a in Frameworks */,
@@ -5939,6 +5939,15 @@
 			name = UIAssets;
 			sourceTree = "<group>";
 		};
+		C9AC7D9714BDDDE2009137BA /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				C9AC7D9F14BDDDE2009137BA /* libBITModalSheetController.a */,
+				C9AC7DA114BDDDE2009137BA /* BITModalSheetControllerTests.octest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 		C9B08A751344D34F001963D0 /* libKNFBReader */ = {
 			isa = PBXGroup;
 			children = (
@@ -6040,7 +6049,7 @@
 			children = (
 				C9B08A751344D34F001963D0 /* libKNFBReader */,
 				C9C3FA2714B6FA5E00757038 /* BITOperation.xcodeproj */,
-				C9F8FD2E14B4806A00136C22 /* BITModalPopoverController.xcodeproj */,
+				C9AC7D9614BDDDE2009137BA /* BITModalSheetController.xcodeproj */,
 				C947D55D133B9C0000FB4404 /* libEucalyptus.xcodeproj */,
 				526FEB41140FD83A00638712 /* KIF.xcodeproj */,
 			);
@@ -6152,15 +6161,6 @@
 				28456BC313E071B600BD3804 /* SCHSetProfilePasswordView~ipad.xib */,
 			);
 			name = "Authentication Controllers";
-			sourceTree = "<group>";
-		};
-		C9F8FD2F14B4806A00136C22 /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				C9F8FD3714B4806B00136C22 /* libBITModalPopoverController.a */,
-				C9F8FD3914B4806B00136C22 /* BITModalPopoverControllerTests.octest */,
-			);
-			name = Products;
 			sourceTree = "<group>";
 		};
 		C9F8FD6214B490A600136C22 /* Starting View */ = {
@@ -6601,8 +6601,8 @@
 			buildRules = (
 			);
 			dependencies = (
+				C9AC7DA314BDDDF7009137BA /* PBXTargetDependency */,
 				C9C3FA3414B6FA6E00757038 /* PBXTargetDependency */,
-				C9F8FD3B14B4809300136C22 /* PBXTargetDependency */,
 				7D3F3118140699EF00C6F445 /* PBXTargetDependency */,
 			);
 			name = Scholastic;
@@ -6640,8 +6640,8 @@
 			buildRules = (
 			);
 			dependencies = (
+				C9AC7DA614BDDE07009137BA /* PBXTargetDependency */,
 				C9C3FA3614B6FA7500757038 /* PBXTargetDependency */,
-				C9F8FD3D14B4809A00136C22 /* PBXTargetDependency */,
 				524888261407990500DA9AFA /* PBXTargetDependency */,
 			);
 			name = "Local Samples Scholastic";
@@ -6672,8 +6672,8 @@
 			projectDirPath = "";
 			projectReferences = (
 				{
-					ProductGroup = C9F8FD2F14B4806A00136C22 /* Products */;
-					ProjectRef = C9F8FD2E14B4806A00136C22 /* BITModalPopoverController.xcodeproj */;
+					ProductGroup = C9AC7D9714BDDDE2009137BA /* Products */;
+					ProjectRef = C9AC7D9614BDDDE2009137BA /* BITModalSheetController.xcodeproj */;
 				},
 				{
 					ProductGroup = C9C3FA2814B6FA5E00757038 /* Products */;
@@ -6810,6 +6810,20 @@
 			remoteRef = C947D586133B9C0100FB4404 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
+		C9AC7D9F14BDDDE2009137BA /* libBITModalSheetController.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libBITModalSheetController.a;
+			remoteRef = C9AC7D9E14BDDDE2009137BA /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		C9AC7DA114BDDDE2009137BA /* BITModalSheetControllerTests.octest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = BITModalSheetControllerTests.octest;
+			remoteRef = C9AC7DA014BDDDE2009137BA /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
 		C9C3FA3014B6FA5E00757038 /* libBITOperation.a */ = {
 			isa = PBXReferenceProxy;
 			fileType = archive.ar;
@@ -6822,20 +6836,6 @@
 			fileType = wrapper.cfbundle;
 			path = BITOperationTests.octest;
 			remoteRef = C9C3FA3114B6FA5E00757038 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		C9F8FD3714B4806B00136C22 /* libBITModalPopoverController.a */ = {
-			isa = PBXReferenceProxy;
-			fileType = archive.ar;
-			path = libBITModalPopoverController.a;
-			remoteRef = C9F8FD3614B4806B00136C22 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		C9F8FD3914B4806B00136C22 /* BITModalPopoverControllerTests.octest */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.cfbundle;
-			path = BITModalPopoverControllerTests.octest;
-			remoteRef = C9F8FD3814B4806B00136C22 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 /* End PBXReferenceProxy section */
@@ -8951,6 +8951,16 @@
 			name = libEucalyptusIOSUI;
 			targetProxy = 7D3F3117140699EF00C6F445 /* PBXContainerItemProxy */;
 		};
+		C9AC7DA314BDDDF7009137BA /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = BITModalSheetController;
+			targetProxy = C9AC7DA214BDDDF7009137BA /* PBXContainerItemProxy */;
+		};
+		C9AC7DA614BDDE07009137BA /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = BITModalSheetController;
+			targetProxy = C9AC7DA514BDDE07009137BA /* PBXContainerItemProxy */;
+		};
 		C9C3FA3414B6FA6E00757038 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			name = BITOperation;
@@ -8960,16 +8970,6 @@
 			isa = PBXTargetDependency;
 			name = BITOperation;
 			targetProxy = C9C3FA3514B6FA7500757038 /* PBXContainerItemProxy */;
-		};
-		C9F8FD3B14B4809300136C22 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = BITModalPopoverController;
-			targetProxy = C9F8FD3A14B4809300136C22 /* PBXContainerItemProxy */;
-		};
-		C9F8FD3D14B4809A00136C22 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = BITModalPopoverController;
-			targetProxy = C9F8FD3C14B4809A00136C22 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -9217,7 +9217,7 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = (
-					Shared/Libraries/Submodules/bitmodalpopovercontroller/BITModalPopoverController,
+					Shared/Libraries/Submodules/bitmodalsheetcontroller/BITModalSheetController,
 					"\"$(TARGET_BUILD_DIR)/usr/local/lib/include\"",
 					"\"$(DSTROOT)/usr/local/lib/include\"",
 					"\"$(OBJROOT)/UninstalledProducts/include\"",
@@ -9287,7 +9287,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = (
 					Shared/Libraries/Submodules/bitoperation/BITOperation,
-					Shared/Libraries/Submodules/bitmodalpopovercontroller/BITModalPopoverController,
+					Shared/Libraries/Submodules/bitmodalsheetcontroller/BITModalSheetController,
 					"\"$(TARGET_BUILD_DIR)/usr/local/lib/include\"",
 					"\"$(DSTROOT)/usr/local/lib/include\"",
 					"\"$(OBJROOT)/UninstalledProducts/include\"",
@@ -9321,7 +9321,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = (
 					Shared/Libraries/Submodules/bitoperation/BITOperation,
-					Shared/Libraries/Submodules/bitmodalpopovercontroller/BITModalPopoverController,
+					Shared/Libraries/Submodules/bitmodalsheetcontroller/BITModalSheetController,
 					"\"$(TARGET_BUILD_DIR)/usr/local/lib/include\"",
 					"\"$(DSTROOT)/usr/local/lib/include\"",
 					"\"$(OBJROOT)/UninstalledProducts/include\"",

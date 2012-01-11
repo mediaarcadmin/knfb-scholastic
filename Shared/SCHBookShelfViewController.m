@@ -32,7 +32,7 @@
 #import "SCHBookshelfSyncComponent.h"
 #import "SCHAppStateManager.h"
 #import "Reachability.h"
-#import "BITModalPopoverController.h"
+#import "BITModalSheetController.h"
 #import "SCHStoriaWelcomeViewController.h"
 
 static NSInteger const kSCHBookShelfViewControllerGridCellHeightPortrait = 138;
@@ -57,7 +57,7 @@ typedef enum
 @property (nonatomic, retain) LambdaAlert *loadingView;
 @property (nonatomic, assign) BOOL shouldShowBookshelfFailedErrorMessage;
 @property (nonatomic, assign) BOOL shouldWaitForCellsToLoad;
-@property (nonatomic, retain) BITModalPopoverController *welcomePopoverController;
+@property (nonatomic, retain) BITModalSheetController *welcomePopoverController;
 
 - (void)setupAssetsForOrientation:(UIInterfaceOrientation)orientation;
 - (void)updateTheme;
@@ -127,8 +127,8 @@ typedef enum
     [backgroundView release], backgroundView = nil;
     [loadingView release], loadingView = nil;
     
-    if ([welcomePopoverController isModalPopoverVisible]) {
-        [welcomePopoverController dismissModalPopoverAnimated:NO completion:nil];
+    if ([welcomePopoverController isModalSheetVisible]) {
+        [welcomePopoverController dismissSheetAnimated:NO completion:nil];
         [welcomePopoverController release], welcomePopoverController = nil;
     }
     
@@ -345,22 +345,22 @@ typedef enum
     if (self.showWelcome) {
         SCHStoriaWelcomeViewController *welcomeVC = [[SCHStoriaWelcomeViewController alloc] init];
         
-        BITModalPopoverController *aWelcomePopoverController = [[BITModalPopoverController alloc] initWithContentViewController:welcomeVC];
-        [aWelcomePopoverController setPopoverContentSize:CGSizeMake(556, 241)];
-        [aWelcomePopoverController setPopoverContentOffset:CGPointMake(0, -15)];
+        BITModalSheetController *aWelcomePopoverController = [[BITModalSheetController alloc] initWithContentViewController:welcomeVC];
+        [aWelcomePopoverController setContentSize:CGSizeMake(556, 241)];
+        [aWelcomePopoverController setContentOffset:CGPointMake(0, -15)];
         [aWelcomePopoverController setShouldDismissOutsideContentBounds:YES];
         
-        __block BITModalPopoverController *weakWelcomePopoverController = aWelcomePopoverController;
+        __block BITModalSheetController *weakWelcomePopoverController = aWelcomePopoverController;
         __block SCHBookShelfViewController *weakSelf = self;
         
         welcomeVC.closeBlock = ^{
-            [weakWelcomePopoverController dismissModalPopoverAnimated:YES completion:nil];
+            [weakWelcomePopoverController dismissSheetAnimated:YES completion:nil];
             weakSelf.welcomePopoverController = nil;
         };
         
         [welcomeVC release];
         
-        [aWelcomePopoverController presentModalPopoverInViewController:self animated:YES completion:nil];
+        [aWelcomePopoverController presentSheetInViewController:self animated:YES completion:nil];
         
         self.welcomePopoverController = aWelcomePopoverController;
         

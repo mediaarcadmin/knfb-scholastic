@@ -23,12 +23,12 @@
 #import "LambdaAlert.h"
 #import "Reachability.h"
 #import "SCHProfileSyncComponent.h"
-#import "BITModalPopoverController.h"
+#import "BITModalSheetController.h"
 
 @interface SCHProfileViewController_Shared()  
 
 @property (nonatomic, retain) SCHBookUpdates *bookUpdates;
-@property (nonatomic, retain) BITModalPopoverController *webParentToolsPopoverController;
+@property (nonatomic, retain) BITModalSheetController *webParentToolsPopoverController;
 @property (nonatomic, retain) SCHParentalToolsWebViewController *parentalToolsWebViewController; 
 
 - (void)checkForBookUpdates;
@@ -93,8 +93,8 @@
     [settingsViewController release], settingsViewController = nil;
     [updatesBubble release], updatesBubble = nil;
     
-    if ([webParentToolsPopoverController isModalPopoverVisible]) {
-        [webParentToolsPopoverController dismissModalPopoverAnimated:NO completion:nil];
+    if ([webParentToolsPopoverController isModalSheetVisible]) {
+        [webParentToolsPopoverController dismissSheetAnimated:NO completion:nil];
     }
     [webParentToolsPopoverController release], webParentToolsPopoverController = nil;
     [parentalToolsWebViewController release], parentalToolsWebViewController = nil;
@@ -551,16 +551,16 @@ didSelectButtonAnimated:(BOOL)animated
     aParentalToolsWebViewController.shouldHideCloseButton = shouldHide;
     self.parentalToolsWebViewController = aParentalToolsWebViewController;
     
-    BITModalPopoverController *aPopoverController = [[BITModalPopoverController alloc] initWithContentViewController:aParentalToolsWebViewController];
-    aPopoverController.popoverContentSize = CGSizeMake(540, 620);
+    BITModalSheetController *aPopoverController = [[BITModalSheetController alloc] initWithContentViewController:aParentalToolsWebViewController];
+    aPopoverController.contentSize = CGSizeMake(540, 620);
     aPopoverController.autoresizingMask = UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin | UIViewAutoresizingFlexibleWidth;
     self.webParentToolsPopoverController = aPopoverController;
     [aPopoverController release];
     
-    __block BITModalPopoverController *weakPopover = self.webParentToolsPopoverController;
+    __block BITModalSheetController *weakPopover = self.webParentToolsPopoverController;
     __block SCHProfileViewController_Shared *weakSelf = self;
     
-    [self.webParentToolsPopoverController presentModalPopoverInViewController:self animated:NO completion:^{
+    [self.webParentToolsPopoverController presentSheetInViewController:self animated:NO completion:^{
         weakSelf.parentalToolsWebViewController.textView.alpha = 0;
         
         CGSize expandedSize;
@@ -571,7 +571,7 @@ didSelectButtonAnimated:(BOOL)animated
             expandedSize = CGSizeMake(964, 530);
         }
         
-        [weakPopover setPopoverContentSize:expandedSize animated:YES completion:^{
+        [weakPopover setContentSize:expandedSize animated:YES completion:^{
             weakSelf.parentalToolsWebViewController.textView.alpha = 1;
         }];
     }];    
@@ -606,15 +606,15 @@ didSelectButtonAnimated:(BOOL)animated
         });
     };
         
-    if ([self.webParentToolsPopoverController isModalPopoverVisible]) {
+    if ([self.webParentToolsPopoverController isModalSheetVisible]) {
         
         self.parentalToolsWebViewController.textView.alpha = 0;
         __block SCHProfileViewController_Shared *weakSelf = self;
 
-        [self.webParentToolsPopoverController setPopoverContentSize:CGSizeMake(540, 620) animated:YES completion:^{
+        [self.webParentToolsPopoverController setContentSize:CGSizeMake(540, 620) animated:YES completion:^{
             [CATransaction begin];
             [CATransaction setDisableActions:YES];
-            [self.webParentToolsPopoverController dismissModalPopoverAnimated:NO completion:^{
+            [self.webParentToolsPopoverController dismissSheetAnimated:NO completion:^{
                 completion();
                 weakSelf.parentalToolsWebViewController = nil;
                 [CATransaction commit];
