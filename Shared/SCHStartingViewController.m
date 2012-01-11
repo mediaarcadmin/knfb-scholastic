@@ -36,6 +36,7 @@
 #import "BITModalSheetController.h"
 #import "SCHStoriaLoginViewController.h"
 #import "BITOperationWithBlocks.h"
+#import "SCHVersionDownloadManager.h"
 
 typedef enum {
 	kSCHStartingViewControllerProfileSyncStateNone = 0,
@@ -171,6 +172,11 @@ typedef enum {
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(profileSyncDidFail:)
                                                  name:SCHProfileSyncComponentDidFailNotification
+                                               object:nil];    
+
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(versionDownloadManagerCompleted:)
+                                                 name:SCHVersionDownloadManagerCompletedNotification
                                                object:nil];    
 }
 
@@ -457,6 +463,8 @@ typedef enum {
 
 - (void)willEnterForeground:(NSNotification *)note
 {
+    [[SCHVersionDownloadManager sharedVersionManager] checkVersion];
+    
     if ((self.profileSyncState == kSCHStartingViewControllerProfileSyncStateWaitingForBookshelves) ||
         (self.profileSyncState == kSCHStartingViewControllerProfileSyncStateWaitingForPassword) ||
         (self.profileSyncState == kSCHStartingViewControllerProfileSyncStateWaitingForWebParentToolsToComplete)) {
@@ -764,12 +772,21 @@ typedef enum {
             [[password stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]] length] > 0) {      
             [[SCHAuthenticationManager sharedAuthenticationManager] authenticateWithUser:username 
                                                                                 password:password
-                                                                            successBlock:^(BOOL offlineMode){
-                                                                                if (credentialsSuccessBlock) {
-                                                                                    credentialsSuccessBlock(YES, NO);
-                                                                                }
-                                                                                [[SCHSyncManager sharedSyncManager] firstSync:YES requireDeviceAuthentication:NO];
-                                                                            }
+                                                                            successBlock:^(SCHAuthenticationManagerConnectivityMode connectivityMode) { 
+                                                                                if (connectivityMode == SCHAuthenticationManagerConnectivityModeOnline) { 
+                                                                                    if (credentialsSuccessBlock) {
+                                                                                        credentialsSuccessBlock(YES, NO);
+                                                                                    }
+                                                                                    [[SCHSyncManager sharedSyncManager] firstSync:YES requireDeviceAuthentication:NO];
+                                                                                } else { 
+                                                                                    NSError *anError = [[[NSError alloc] init] autorelease];
+                                                                                    failed(anError);
+                                                                                    //[self signInFailedForLoginController:login withError:[NSError errorWithDomain:kSCHAuthenticationManagerErrorDomain  
+                                                                                      //                                                                       code:kSCHAuthenticationManagerOfflineError  
+                                                                                        //                                                                 userInfo:[NSDictionary dictionaryWithObject:NSLocalizedString(@"You are in offline mode, you must be in online mode to login", @"")  
+                                                                                          //                                                                                                    forKey:NSLocalizedDescriptionKey]]];                                                                                         
+                                                                                } 
+                                                                            } 
                                                                             failureBlock:^(NSError * error){
                                                                                 if (error == nil) {
                                                                                     NSError *anError = [[[NSError alloc] init] autorelease];
@@ -859,6 +876,23 @@ typedef enum {
     
     // clear all books
     [SCHAppBook clearBooksDirectory];
+}
+
+- (void)versionDownloadManagerCompleted:(NSNotification *)note
+{
+    NSNumber *isCurrentVersion = [[note userInfo] objectForKey:SCHVersionDownloadManagerIsCurrentVersion];
+    
+    if (isCurrentVersion != nil && [isCurrentVersion boolValue] == NO) {
+        LambdaAlert *alert = [[LambdaAlert alloc]
+                              initWithTitle:NSLocalizedString(@"App is out of date", @"")
+                              message:NSLocalizedString(@"Please upgrade to the latest version", @"")];
+        [alert addButtonWithTitle:NSLocalizedString(@"Upgrade", @"") block:^{
+            // TODO: replace with link to Scholastic in the app store
+            [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"http://www.bitwink.com"]];
+        }];
+        [alert show];
+        [alert release];          
+    }
 }
 
 @end

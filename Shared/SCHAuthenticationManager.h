@@ -11,7 +11,16 @@
 #import "BITAPIProxyDelegate.h"
 #import "SCHDrmRegistrationSessionDelegate.h"
 
-typedef void (^SCHAuthenticationSuccessBlock)(BOOL offlineMode);
+typedef enum {
+	SCHAuthenticationManagerConnectivityModeAuthenticationError = -1,
+    SCHAuthenticationManagerConnectivityModeUnknown = 0,
+	SCHAuthenticationManagerConnectivityModeOnline,
+	SCHAuthenticationManagerConnectivityModeOfflineNoConnectivity,
+	SCHAuthenticationManagerConnectivityModeOfflineAwaitingAppVersion,    
+	SCHAuthenticationManagerConnectivityModeOfflineOutdatedAppVersion,        
+} SCHAuthenticationManagerConnectivityMode;
+
+typedef void (^SCHAuthenticationSuccessBlock)(SCHAuthenticationManagerConnectivityMode connectivityMode);
 typedef void (^SCHAuthenticationFailureBlock)(NSError *error);
 typedef void (^SCHDrmRegistrationSuccessBlock)(NSString *deviceKey);
 typedef void (^SCHDrmRegistrationFailureBlock)(NSError *error);
@@ -23,6 +32,7 @@ extern NSString * const SCHAuthenticationManagerReceivedServerDeregistrationNoti
 extern NSString * const kSCHAuthenticationManagerErrorDomain;
 extern NSInteger const kSCHAuthenticationManagerGeneralError;
 extern NSInteger const kSCHAuthenticationManagerLoginError;
+extern NSInteger const kSCHAuthenticationManagerOfflineError;
 
 @interface SCHAuthenticationManager : NSObject <BITAPIProxyDelegate, SCHDrmRegistrationSessionDelegate>  
 {

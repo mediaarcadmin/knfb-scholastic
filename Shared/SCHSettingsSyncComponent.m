@@ -38,8 +38,8 @@ NSString * const SCHSettingsSyncComponentDidFailNotification = @"SCHSettingsSync
 		
 		self.isSynchronizing = [self.libreAccessWebService listUserSettings];
 		if (self.isSynchronizing == NO) {
-			[[SCHAuthenticationManager sharedAuthenticationManager] authenticateWithSuccessBlock:^(BOOL offlineMode){
-                if (!offlineMode) {
+			[[SCHAuthenticationManager sharedAuthenticationManager] authenticateWithSuccessBlock:^(SCHAuthenticationManagerConnectivityMode connectivityMode){
+                if (connectivityMode == SCHAuthenticationManagerConnectivityModeOnline) {
                     [self.delegate authenticationDidSucceed];
                 } else {
                     self.isSynchronizing = NO;

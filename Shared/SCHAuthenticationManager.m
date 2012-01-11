@@ -24,6 +24,7 @@
 #import "SCHUserDefaults.h"
 #import "NSString+URLEncoding.h"
 #import "SCHNonDRMAuthenticationManager.h"
+#import "SCHVersionDownloadManager.h"
 
 // Constants
 NSString * const SCHAuthenticationManagerReceivedServerDeregistrationNotification = @"SCHAuthenticationManagerReceivedServerDeregistrationNotification";
@@ -32,6 +33,7 @@ NSString * const kSCHAuthenticationManagerNSError = @"NSError";
 NSString * const kSCHAuthenticationManagerErrorDomain = @"AuthenticationManagerErrorDomain";
 NSInteger const kSCHAuthenticationManagerGeneralError = 2000;
 NSInteger const kSCHAuthenticationManagerLoginError = 2001;
+NSInteger const kSCHAuthenticationManagerOfflineError = 2002;
 
 NSString * const kSCHAuthenticationManagerServiceName = @"Scholastic";
 
@@ -176,11 +178,11 @@ NSTimeInterval const kSCHAuthenticationManagerSecondsInAMinute = 60.0;
         return;
     }
         
-    SCHAuthenticationSuccessBlock aSuccessBlock = ^(BOOL offlineMode){
+    SCHAuthenticationSuccessBlock aSuccessBlock = ^(SCHAuthenticationManagerConnectivityMode connectivityMode){
         [[SCHAuthenticationManager sharedAuthenticationManager] clearAppProcessing];
         
         if (successBlock) {
-            successBlock(offlineMode);
+            successBlock(connectivityMode);
         }
     };
     
@@ -249,7 +251,7 @@ NSTimeInterval const kSCHAuthenticationManagerSecondsInAMinute = 60.0;
         double delayInSeconds = 0.1;
         dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);
         dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
-            [self authenticationDidSucceedWithOfflineMode:NO];
+            [self authenticationDidSucceedWithOfflineMode:SCHAuthenticationManagerConnectivityModeOnline];
         });
     }
 }
@@ -520,7 +522,12 @@ NSTimeInterval const kSCHAuthenticationManagerSecondsInAMinute = 60.0;
     NSLog(@"Authenticating %@ with %@", storedUsername, (deviceKey == nil ? @"no deviceKey" : deviceKey));        
     
     if([[SCHAppStateManager sharedAppStateManager] canAuthenticate]) {
-        if ([[Reachability reachabilityForInternetConnection] isReachable]) {
+        NSNumber *isCurrentVersion = [SCHVersionDownloadManager sharedVersionManager].isCurrentVersion;
+        if (isCurrentVersion == nil) {
+            [self authenticationDidSucceedWithOfflineMode:SCHAuthenticationManagerConnectivityModeOfflineAwaitingAppVersion];
+        } else if ([isCurrentVersion boolValue] == NO) {
+            [self authenticationDidSucceedWithOfflineMode:SCHAuthenticationManagerConnectivityModeOfflineOutdatedAppVersion];
+        } else if ([[Reachability reachabilityForInternetConnection] isReachable]) {
             
             if (self.aToken != nil && [[self.aToken stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]] length] > 0) {
                 [self.libreAccessWebService renewToken:self.aToken];
@@ -553,7 +560,7 @@ NSTimeInterval const kSCHAuthenticationManagerSecondsInAMinute = 60.0;
             
             if ([[storedUsername stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]] length] > 0) {     
                 
-                [self authenticationDidSucceedWithOfflineMode:YES];
+                [self authenticationDidSucceedWithOfflineMode:SCHAuthenticationManagerConnectivityModeOfflineNoConnectivity];
             } else {
                 NSError *error = [NSError errorWithDomain:kSCHAuthenticationManagerErrorDomain 
                                                      code:kSCHAuthenticationManagerLoginError 
@@ -571,7 +578,7 @@ NSTimeInterval const kSCHAuthenticationManagerSecondsInAMinute = 60.0;
         double delayInSeconds = 0.1;
         dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);
         dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
-            [self authenticationDidSucceedWithOfflineMode:NO];
+            [self authenticationDidSucceedWithOfflineMode:SCHAuthenticationManagerConnectivityModeOnline];
         });
     }
 }
@@ -683,7 +690,7 @@ NSTimeInterval const kSCHAuthenticationManagerSecondsInAMinute = 60.0;
              
         } else if (deviceKey) {
             
-            [self authenticationDidSucceedWithOfflineMode:NO];
+            [self authenticationDidSucceedWithOfflineMode:SCHAuthenticationManagerConnectivityModeOnline];
         } else {
             
             self.registrationSuccessBlock = ^(NSString *deviceKey){
@@ -735,9 +742,9 @@ NSTimeInterval const kSCHAuthenticationManagerSecondsInAMinute = 60.0;
                                                                      userInfo:nil 
                                                                       repeats:NO];
                 }
-                [self authenticationDidSucceedWithOfflineMode:NO];
+                [self authenticationDidSucceedWithOfflineMode:SCHAuthenticationManagerConnectivityModeOnline];
             } else {
-                [self authenticationDidSucceedWithOfflineMode:YES];
+                [self authenticationDidSucceedWithOfflineMode:SCHAuthenticationManagerConnectivityModeAuthenticationError];
             }
         }
         
@@ -794,12 +801,12 @@ NSTimeInterval const kSCHAuthenticationManagerSecondsInAMinute = 60.0;
                 [[NSUserDefaults standardUserDefaults] removeObjectForKey:kSCHAuthenticationManagerDeviceKey];
                 [[NSUserDefaults standardUserDefaults] synchronize];
                 
-                [self authenticationDidSucceedWithOfflineMode:YES];
+                [self authenticationDidSucceedWithOfflineMode:SCHAuthenticationManagerConnectivityModeAuthenticationError];
             }
         } else if ([method compare:kSCHLibreAccessWebServiceRenewToken] == NSOrderedSame) {	
             [self expireToken];
             
-            [self authenticationDidSucceedWithOfflineMode:YES];
+            [self authenticationDidSucceedWithOfflineMode:SCHAuthenticationManagerConnectivityModeAuthenticationError];
         }
     } else {
         [self authenticationDidFailWithError:error];
@@ -808,15 +815,22 @@ NSTimeInterval const kSCHAuthenticationManagerSecondsInAMinute = 60.0;
 
 #pragma mark - Authentication Outcomes
 
-- (void)authenticationDidSucceedWithOfflineMode:(BOOL)offlineMode
+- (void)authenticationDidSucceedWithOfflineMode:(SCHAuthenticationManagerConnectivityMode)connectivityMode
 {
     self.authenticating = NO;
+    
+    NSNumber *isCurrentVersion = [SCHVersionDownloadManager sharedVersionManager].isCurrentVersion;
+    if (isCurrentVersion == nil) {
+        connectivityMode = SCHAuthenticationManagerConnectivityModeOfflineAwaitingAppVersion;
+    } else if ([isCurrentVersion boolValue] == NO) {
+        connectivityMode = SCHAuthenticationManagerConnectivityModeOfflineOutdatedAppVersion;        
+    }
     
     if (self.authenticationSuccessBlock) {
         SCHAuthenticationSuccessBlock handler = Block_copy(self.authenticationSuccessBlock);
         self.authenticationSuccessBlock = nil;
         dispatch_async(dispatch_get_main_queue(), ^{
-            handler(offlineMode);
+            handler(connectivityMode);
         });
         Block_release(handler);
     }
@@ -920,9 +934,9 @@ deregistrationDidFailWithError:(NSError *)error
                 
                 Block_release(authenticationSuccessBlock);
                 
-                SCHAuthenticationSuccessBlock combinedBlock = ^(BOOL offlineMode){
-                    existingBlock(offlineMode);
-                    newBlock(offlineMode);
+                SCHAuthenticationSuccessBlock combinedBlock = ^(SCHAuthenticationManagerConnectivityMode connectivityMode){
+                    existingBlock(connectivityMode);
+                    newBlock(connectivityMode);
                 };
                 
                 authenticationSuccessBlock = Block_copy(combinedBlock);

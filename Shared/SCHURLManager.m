@@ -189,8 +189,8 @@ static NSUInteger const kSCHURLManagerMaxConnections = 6;
 					self.backgroundTaskIdentifier = UIBackgroundTaskInvalid;			
 				}
 				
-				[[SCHAuthenticationManager sharedAuthenticationManager] authenticateWithSuccessBlock:^(BOOL offlineMode){
-                    if (!offlineMode) {
+				[[SCHAuthenticationManager sharedAuthenticationManager] authenticateWithSuccessBlock:^(SCHAuthenticationManagerConnectivityMode connectivityMode){
+                    if (connectivityMode == SCHAuthenticationManagerConnectivityModeOnline) {
                         [self shakeTable];
                     }
                 } failureBlock:nil];							

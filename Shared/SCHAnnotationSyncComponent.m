@@ -331,8 +331,8 @@ NSString * const SCHAnnotationSyncComponentCompletedProfileIDs = @"SCHAnnotation
     self.isSynchronizing = [self.libreAccessWebService listProfileContentAnnotations:books 
                                                                           forProfile:profileID];
     if (self.isSynchronizing == NO) {
-        [[SCHAuthenticationManager sharedAuthenticationManager] authenticateWithSuccessBlock:^(BOOL offlineMode){
-            if (!offlineMode) {
+        [[SCHAuthenticationManager sharedAuthenticationManager] authenticateWithSuccessBlock:^(SCHAuthenticationManagerConnectivityMode connectivityMode){
+            if (connectivityMode == SCHAuthenticationManagerConnectivityModeOnline) {
                 [self.delegate authenticationDidSucceed];
             } else {
                 self.isSynchronizing = NO;
@@ -473,8 +473,8 @@ NSString * const SCHAnnotationSyncComponentCompletedProfileIDs = @"SCHAnnotation
             
             self.isSynchronizing = [self.libreAccessWebService saveProfileContentAnnotations:updatedAnnotations];
             if (self.isSynchronizing == NO) {
-                [[SCHAuthenticationManager sharedAuthenticationManager] authenticateWithSuccessBlock:^(BOOL offlineMode){
-                    if (!offlineMode) {
+                [[SCHAuthenticationManager sharedAuthenticationManager] authenticateWithSuccessBlock:^(SCHAuthenticationManagerConnectivityMode connectivityMode){
+                    if (connectivityMode == SCHAuthenticationManagerConnectivityModeOnline) {
                         [self.delegate authenticationDidSucceed];
                     } else {
                         self.isSynchronizing = NO;
@@ -492,8 +492,8 @@ NSString * const SCHAnnotationSyncComponentCompletedProfileIDs = @"SCHAnnotation
             self.isSynchronizing = [self.libreAccessWebService listProfileContentAnnotations:books 
                                                                                   forProfile:profileID];
             if (self.isSynchronizing == NO) {
-                [[SCHAuthenticationManager sharedAuthenticationManager] authenticateWithSuccessBlock:^(BOOL offlineMode){
-                    if (!offlineMode) {
+                [[SCHAuthenticationManager sharedAuthenticationManager] authenticateWithSuccessBlock:^(SCHAuthenticationManagerConnectivityMode connectivityMode){
+                    if (connectivityMode == SCHAuthenticationManagerConnectivityModeOnline) {
                         [self.delegate authenticationDidSucceed];
                     } else {
                         self.isSynchronizing = NO;
