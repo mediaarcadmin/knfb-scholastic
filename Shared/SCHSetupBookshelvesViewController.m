@@ -69,9 +69,9 @@
 
 - (void)viewWillDisappear:(BOOL)animated
 {
-    [super viewWillDisappear:animated];
     [self.moveToWebParentToolsTimer invalidate];
     self.moveToWebParentToolsTimer = nil;
+    [super viewWillDisappear:animated];
 }
 
 - (void)viewDidUnload

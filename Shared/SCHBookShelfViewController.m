@@ -497,7 +497,8 @@ typedef enum
     if ([[SCHAppStateManager sharedAppStateManager] isSampleStore] == YES) {
         [self.profileItem clearBookOrder:self.books];
         [[self.profileItem AppProfile] setSortType:[NSNumber numberWithInt:kSCHBookSortTypeUser]];
-        [self.navigationController popToRootViewControllerAnimated:NO];        
+        [self.navigationController popToRootViewControllerAnimated:NO];  
+        [[SCHThemeManager sharedThemeManager] resetToDefault];
     } else {
         [self.profileSetupDelegate popToAuthenticatedProfileAnimated:YES];
     }

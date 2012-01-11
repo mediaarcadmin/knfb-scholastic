@@ -265,6 +265,16 @@ static NSString * const kSCHThemeManagerName = @"Name";
     return [[self.selectedTheme objectForKey:kSCHThemeManagerGridTextColorIsDark] boolValue];
 }
 
+- (void)resetToDefault
+{
+    for (NSDictionary *dict in self.allThemes) {
+        if ([[dict objectForKey:kSCHThemeManagerDefault] boolValue] == YES) {
+            [self setTheme:[dict valueForKey:kSCHThemeManagerName]];
+            break;
+        }
+    }
+}
+
 #pragma mark - Private methods
 
 - (NSString *)filePath:(NSString *)filePath orientation:(UIInterfaceOrientation)orientation

@@ -577,7 +577,14 @@ typedef enum {
         
         if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
             [aLoginPopoverController setPopoverContentSize:CGSizeMake(630, 500)];
-            [aLoginPopoverController setPopoverContentOffset:CGPointMake(0, -70)];
+            CGPoint offset;
+            
+            if (UIInterfaceOrientationIsPortrait(self.interfaceOrientation)) {
+                offset = CGPointMake(0, -54);
+            } else {
+                offset = CGPointMake(0, 152);
+            }
+            [aLoginPopoverController setPopoverContentOffset:offset];
         } else {
             [aLoginPopoverController setPopoverContentSize:CGSizeMake(300, 400)];
         }
