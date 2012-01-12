@@ -10,14 +10,22 @@
 
 // Constants
 extern NSString * const SCHVersionDownloadManagerCompletedNotification;
-extern NSString * const SCHVersionDownloadManagerIsCurrentVersion;
+extern NSString * const SCHVersionDownloadManagerCompletionAppVersionState;
+
+typedef enum {
+    SCHVersionDownloadManagerAppVersionStatePendingCheck = 0,
+    SCHVersionDownloadManagerAppVersionStateCurrent,    
+    SCHVersionDownloadManagerAppVersionStateOutdated,    
+    SCHVersionDownloadManagerAppVersionStateOutdatedRequiresForcedUpdate 
+} SCHVersionDownloadManagerAppVersionState;
 
 typedef enum {
     SCHVersionDownloadManagerProcessingStateUnexpectedConnectivityFailureError = -3,
     SCHVersionDownloadManagerProcessingStateParseError = -2,    
 	SCHVersionDownloadManagerProcessingStateError = -1,
     SCHVersionDownloadManagerProcessingStateUnknown = 0,
-	SCHVersionDownloadManagerProcessomgStateNeedsManifest,
+    SCHVersionDownloadManagerProcessingStateFetchingManifest,
+	SCHVersionDownloadManagerProcessingStateNeedsManifest,
 	SCHVersionDownloadManagerProcessingStateManifestVersionCheck,
 	SCHVersionDownloadManagerProcessingStateCompleted,    
 } SCHVersionDownloadManagerProcessingState;
@@ -26,10 +34,9 @@ typedef enum {
 
 @property (nonatomic, retain) NSMutableArray *manifestUpdates;
 
-@property (nonatomic, retain, readonly) NSNumber *isCurrentVersion;
+@property (nonatomic, assign, readonly) SCHVersionDownloadManagerAppVersionState appVersionState;
 @property (nonatomic, assign) SCHVersionDownloadManagerProcessingState state;
 
-// version check is currently processing
 @property (nonatomic, assign) BOOL isProcessing;
 
 + (SCHVersionDownloadManager *)sharedVersionManager;

@@ -46,6 +46,9 @@ typedef enum {
     kSCHStartingViewControllerProfileSyncStateWaitingForWebParentToolsToComplete
 } SCHStartingViewControllerProfileSyncState;
 
+//static const NSTimeInterval kSCHStartingViewControllerNonForcedAlertInterval = 60 * 60 * 24 * 7; // 1 week
+static const NSTimeInterval kSCHStartingViewControllerNonForcedAlertInterval = (60 * 5) - 1;
+
 @interface SCHStartingViewController ()
 
 @property (nonatomic, retain) SCHProfileViewController_Shared *profileViewController;
@@ -359,53 +362,62 @@ typedef enum {
     [CATransaction commit];
 }
 
-- (void)dismissModalWebParentToolsWithSync:(BOOL)shouldSync showValidation:(BOOL)showValidation
+- (void)dismissModalWebParentToolsAnimated:(BOOL)animated withSync:(BOOL)shouldSync showValidation:(BOOL)showValidation
 {
     if (self.modalViewController) {
         [self dismissModalViewControllerAnimated:NO];
     }
     
+    SCHStartingViewController *weakSelf = self;
+    
     dispatch_block_t completion = ^{
-        if ([[self.modalNavigationController viewControllers] count] == 0) {
+        [weakSelf setWebParentToolsPopoverController:nil];
+        
+        if ([[weakSelf.modalNavigationController viewControllers] count] == 0) {
             // The view has been unloaded due to memory pressure
             // Just push the bookshelves screen, don't bother with re-adding the validation controller
-            [self runSetupProfileSequenceAnimated:NO];
+            [weakSelf runSetupProfileSequenceAnimated:NO];
         } else {
             if (showValidation) {
-                self.profileSyncState = kSCHStartingViewControllerProfileSyncStateWaitingForPassword;
+                weakSelf.profileSyncState = kSCHStartingViewControllerProfileSyncStateWaitingForPassword;
             } else {
-                self.profileSyncState = kSCHStartingViewControllerProfileSyncStateWaitingForBookshelves;
+                weakSelf.profileSyncState = kSCHStartingViewControllerProfileSyncStateWaitingForBookshelves;
                 
-                NSMutableArray *viewControllers = [[self.modalNavigationController viewControllers] mutableCopy];
+                NSMutableArray *viewControllers = [[weakSelf.modalNavigationController viewControllers] mutableCopy];
                 [viewControllers removeLastObject];
-                [self.modalNavigationController setViewControllers:viewControllers];
+                [weakSelf.modalNavigationController setViewControllers:viewControllers];
                 [viewControllers release];
             }
             
-            [self presentModalViewController:self.modalNavigationController animated:NO];
+            [weakSelf presentModalViewController:self.modalNavigationController animated:NO];
         }
         
         dispatch_async(dispatch_get_main_queue(), ^{
             if (shouldSync) {
                 [[SCHSyncManager sharedSyncManager] firstSync:YES requireDeviceAuthentication:YES];
-                self.checkProfilesAlert = [[[LambdaAlert alloc]
+                weakSelf.checkProfilesAlert = [[[LambdaAlert alloc]
                                             initWithTitle:NSLocalizedString(@"Syncing with Your Account", @"")
                                             message:@"\n"] autorelease];
-                [self.checkProfilesAlert setSpinnerHidden:NO];
-                [self.checkProfilesAlert show];
+                [weakSelf.checkProfilesAlert setSpinnerHidden:NO];
+                [weakSelf.checkProfilesAlert show];
             }
         });
     };
     
     if ([self.webParentToolsPopoverController isModalSheetVisible]) {
-        [self.webParentToolsPopoverController setContentSize:CGSizeMake(540, 620) animated:YES completion:^{
-            [CATransaction begin];
-            [CATransaction setDisableActions:YES];
-            [self.webParentToolsPopoverController dismissSheetAnimated:NO completion:^{
-                completion();
-                [CATransaction commit];
+        if (animated) {
+            [self.webParentToolsPopoverController setContentSize:CGSizeMake(540, 620) animated:YES completion:^{
+                [CATransaction begin];
+                [CATransaction setDisableActions:YES];
+                [weakSelf.webParentToolsPopoverController dismissSheetAnimated:NO completion:^{
+                    completion();
+                    [CATransaction commit];
+                }];
             }];
-        }];
+        } else {
+            [weakSelf.webParentToolsPopoverController dismissSheetAnimated:NO completion:nil];
+            completion();
+        }
     } else {
         completion();
     }    
@@ -462,9 +474,7 @@ typedef enum {
 #pragma mark - Notifications
 
 - (void)willEnterForeground:(NSNotification *)note
-{
-    [[SCHVersionDownloadManager sharedVersionManager] checkVersion];
-    
+{    
     if ((self.profileSyncState == kSCHStartingViewControllerProfileSyncStateWaitingForBookshelves) ||
         (self.profileSyncState == kSCHStartingViewControllerProfileSyncStateWaitingForPassword) ||
         (self.profileSyncState == kSCHStartingViewControllerProfileSyncStateWaitingForWebParentToolsToComplete)) {
@@ -753,6 +763,11 @@ typedef enum {
     };
     
     setupSequenceCheckConnectivity.failed = ^(NSError *error){
+        
+        if (credentialsSuccessBlock) {
+            credentialsSuccessBlock(NO, NO);
+        }
+        
         LambdaAlert *alert = [[LambdaAlert alloc]
                               initWithTitle:NSLocalizedString(@"No Internet Connection", @"")
                               message:NSLocalizedString(@"An Internet connection is required to sign into your account.", @"")];
@@ -879,19 +894,67 @@ typedef enum {
 }
 
 - (void)versionDownloadManagerCompleted:(NSNotification *)note
-{
-    NSNumber *isCurrentVersion = [[note userInfo] objectForKey:SCHVersionDownloadManagerIsCurrentVersion];
+{    
+    NSNumber *appStateNumber = [[note userInfo] valueForKey:SCHVersionDownloadManagerCompletionAppVersionState];
     
-    if (isCurrentVersion != nil && [isCurrentVersion boolValue] == NO) {
-        LambdaAlert *alert = [[LambdaAlert alloc]
-                              initWithTitle:NSLocalizedString(@"App is out of date", @"")
-                              message:NSLocalizedString(@"Please upgrade to the latest version", @"")];
-        [alert addButtonWithTitle:NSLocalizedString(@"Upgrade", @"") block:^{
-            // TODO: replace with link to Scholastic in the app store
-            [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"http://www.bitwink.com"]];
-        }];
-        [alert show];
-        [alert release];          
+    if (appStateNumber) {
+        SCHVersionDownloadManagerAppVersionState appVersionState = [appStateNumber intValue];
+        
+        if (appVersionState == SCHVersionDownloadManagerAppVersionStateOutdatedRequiresForcedUpdate) {
+            LambdaAlert *alert = [[LambdaAlert alloc]
+                                  initWithTitle:NSLocalizedString(@"App is out of date", @"")
+                                  message:NSLocalizedString(@"Please update to the latest version", @"")];
+            [alert addButtonWithTitle:NSLocalizedString(@"Update", @"") block:^{
+                [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"http://itunes.apple.com/app/scholastic-ereading-app-the/id491014756?mt=8"]];
+                exit(EXIT_SUCCESS);
+            }];
+            [alert show];
+            [alert release];     
+        } else if (appVersionState == SCHVersionDownloadManagerAppVersionStateOutdated) {
+            NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+            
+            // check to see if we need to nag
+            BOOL doNag = NO;
+            
+            NSDate *lastNagDate = [defaults objectForKey:@"lastNonForcedVersionAlertDate"];
+            NSDate *currentDate = [NSDate date];
+            
+            // if there's no default, set the current date
+            if (lastNagDate == nil) {
+                [defaults setObject:currentDate forKey:@"lastNonForcedVersionAlertDate"];
+                [defaults synchronize];
+                doNag = YES;
+            } else {
+                // have we nagged recently?
+                NSDate *nagAfter = [lastNagDate dateByAddingTimeInterval:kSCHStartingViewControllerNonForcedAlertInterval];
+                
+                if ([nagAfter compare:currentDate] == NSOrderedAscending) {
+                    doNag = YES;
+                    [defaults setObject:currentDate forKey:@"lastNonForcedVersionAlertDate"];
+                    [defaults synchronize];					
+                }
+            }		
+            
+            if (doNag) {
+                LambdaAlert *alert = [[LambdaAlert alloc]
+                                      initWithTitle:NSLocalizedString(@"A newer version of the app is available", @"")
+                                      message:NSLocalizedString(@"Would you like to update to the latest version?", @"")];
+                
+                __block LambdaAlert *weakAlert = alert;
+                
+                [alert addButtonWithTitle:NSLocalizedString(@"App Store", @"") block:^{
+                    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"http://itunes.apple.com/app/scholastic-ereading-app-the/id491014756?mt=8"]];
+                    [weakAlert dismissAnimated:NO]; 
+                }];
+                
+                
+                [alert addButtonWithTitle:NSLocalizedString(@"Not Yet", @"") block:^{
+                    
+                }];
+                [alert show];
+                [alert release];   
+            }
+        }
     }
 }
 

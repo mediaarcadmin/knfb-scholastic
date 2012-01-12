@@ -485,7 +485,18 @@ extern NSString * const kSCHUserDefaultsSpaceSaverModeSetOffNotification;
     
         checkBooksAlert = [[LambdaAlert alloc]
                               initWithTitle:NSLocalizedString(@"Syncing with Your Account", @"")
-                              message:@"\n"];
+                              message:@"\n\n\n"];   
+        
+        SCHSettingsViewController *weakSelf = self;
+        LambdaAlert *weakAlert = checkBooksAlert;
+        [checkBooksAlert addButtonWithTitle:@"Cancel" block:^{
+            [weakSelf deregisterForSyncNotifications];
+            [weakAlert dismissAnimated:YES];
+            if ([[SCHAppStateManager sharedAppStateManager] canAuthenticate] != NO) {
+                [weakSelf.checkBooksButton setEnabled:YES];
+            }
+        }];
+        
         [checkBooksAlert setSpinnerHidden:NO];
         [checkBooksAlert show];
         
@@ -634,6 +645,11 @@ extern NSString * const kSCHUserDefaultsSpaceSaverModeSetOffNotification;
                                                  name:SCHSyncComponentDidFailAuthenticationNotification
                                                object:nil];
     
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(didEnterBackground:) 
+                                                 name:UIApplicationDidEnterBackgroundNotification
+                                               object:nil];
+    
     self.syncReachability = [Reachability reachabilityForInternetConnection];
     [self.syncReachability startNotifier];
     
@@ -682,6 +698,10 @@ extern NSString * const kSCHUserDefaultsSpaceSaverModeSetOffNotification;
                                                     name:SCHSyncComponentDidFailAuthenticationNotification
                                                   object:nil]; 
     
+    [[NSNotificationCenter defaultCenter] removeObserver:self
+                                                 name:UIApplicationDidEnterBackgroundNotification
+                                               object:nil];
+    
     [[NSNotificationCenter defaultCenter] removeObserver:self 
                                                  name:kReachabilityChangedNotification 
                                                object:nil];
@@ -689,6 +709,13 @@ extern NSString * const kSCHUserDefaultsSpaceSaverModeSetOffNotification;
     [self.syncReachability stopNotifier];
     self.syncReachability = nil;
 
+}
+
+- (void)didEnterBackground:(NSNotification *)note
+{
+    if (self.checkBooksAlert) {
+        [self.checkBooksAlert dismissAnimated:NO];
+    }
 }
 
 - (void)dictionaryStateChanged:(NSNotification *)note

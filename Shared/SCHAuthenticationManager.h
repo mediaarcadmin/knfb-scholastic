@@ -17,7 +17,7 @@ typedef enum {
 	SCHAuthenticationManagerConnectivityModeOnline,
 	SCHAuthenticationManagerConnectivityModeOfflineNoConnectivity,
 	SCHAuthenticationManagerConnectivityModeOfflineAwaitingAppVersion,    
-	SCHAuthenticationManagerConnectivityModeOfflineOutdatedAppVersion,        
+	SCHAuthenticationManagerConnectivityModeOfflineOutdatedAppVersionRequiringUpdate,        
 } SCHAuthenticationManagerConnectivityMode;
 
 typedef void (^SCHAuthenticationSuccessBlock)(SCHAuthenticationManagerConnectivityMode connectivityMode);

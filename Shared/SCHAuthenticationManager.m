@@ -488,8 +488,11 @@ NSTimeInterval const kSCHAuthenticationManagerSecondsInAMinute = 60.0;
     *(BOOL *)returnValue.pointerValue = YES;
     
     if([[SCHAppStateManager sharedAppStateManager] canAuthenticate] == YES) {
-        *(BOOL *)returnValue.pointerValue = (self.aToken != nil && 
-               [[self.aToken stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]] length] > 0);
+        BOOL appVersionCheckRequired = ([[SCHVersionDownloadManager sharedVersionManager] appVersionState] == SCHVersionDownloadManagerAppVersionStatePendingCheck);
+        
+        *(BOOL *)returnValue.pointerValue = ((!appVersionCheckRequired) &&
+                                             (self.aToken != nil) && 
+                                             ([[self.aToken stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]] length] > 0));
         
     }
 }
@@ -522,11 +525,13 @@ NSTimeInterval const kSCHAuthenticationManagerSecondsInAMinute = 60.0;
     NSLog(@"Authenticating %@ with %@", storedUsername, (deviceKey == nil ? @"no deviceKey" : deviceKey));        
     
     if([[SCHAppStateManager sharedAppStateManager] canAuthenticate]) {
-        NSNumber *isCurrentVersion = [SCHVersionDownloadManager sharedVersionManager].isCurrentVersion;
-        if (isCurrentVersion == nil) {
+        
+        SCHVersionDownloadManagerAppVersionState appVersionState = [[SCHVersionDownloadManager sharedVersionManager] appVersionState];
+        
+        if (appVersionState == SCHVersionDownloadManagerAppVersionStatePendingCheck) {
             [self authenticationDidSucceedWithOfflineMode:SCHAuthenticationManagerConnectivityModeOfflineAwaitingAppVersion];
-        } else if ([isCurrentVersion boolValue] == NO) {
-            [self authenticationDidSucceedWithOfflineMode:SCHAuthenticationManagerConnectivityModeOfflineOutdatedAppVersion];
+        } else if (appVersionState == SCHVersionDownloadManagerAppVersionStateOutdatedRequiresForcedUpdate) {
+            [self authenticationDidSucceedWithOfflineMode:SCHAuthenticationManagerConnectivityModeOfflineOutdatedAppVersionRequiringUpdate];
         } else if ([[Reachability reachabilityForInternetConnection] isReachable]) {
             
             if (self.aToken != nil && [[self.aToken stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]] length] > 0) {
@@ -819,11 +824,12 @@ NSTimeInterval const kSCHAuthenticationManagerSecondsInAMinute = 60.0;
 {
     self.authenticating = NO;
     
-    NSNumber *isCurrentVersion = [SCHVersionDownloadManager sharedVersionManager].isCurrentVersion;
-    if (isCurrentVersion == nil) {
+    SCHVersionDownloadManagerAppVersionState appVersionState = [[SCHVersionDownloadManager sharedVersionManager] appVersionState];
+
+    if (appVersionState == SCHVersionDownloadManagerAppVersionStatePendingCheck) {
         connectivityMode = SCHAuthenticationManagerConnectivityModeOfflineAwaitingAppVersion;
-    } else if ([isCurrentVersion boolValue] == NO) {
-        connectivityMode = SCHAuthenticationManagerConnectivityModeOfflineOutdatedAppVersion;        
+    } else if (appVersionState == SCHVersionDownloadManagerAppVersionStateOutdatedRequiresForcedUpdate) {
+        connectivityMode = SCHAuthenticationManagerConnectivityModeOfflineOutdatedAppVersionRequiringUpdate;        
     }
     
     if (self.authenticationSuccessBlock) {

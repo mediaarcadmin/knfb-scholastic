@@ -82,7 +82,8 @@
                             initWithTitle:NSLocalizedString(@"Error", @"")
                             message:NSLocalizedString(@"A problem occured accessing web parent tools with your account. Please contact support.", @"")];
         [lambdaAlert addButtonWithTitle:NSLocalizedString(@"OK", @"") block:^{
-            [self.modalPresenterDelegate dismissModalWebParentToolsWithSync:NO 
+            [self.modalPresenterDelegate dismissModalWebParentToolsAnimated:YES
+                                                                   withSync:NO 
                                                              showValidation:NO];
         }];
         [lambdaAlert show];
@@ -101,19 +102,23 @@
 
 - (void)back:(id)sender
 {
-    [self.modalPresenterDelegate dismissModalWebParentToolsWithSync:YES showValidation:NO];
+    [self.modalPresenterDelegate dismissModalWebParentToolsAnimated:YES
+                                                           withSync:YES 
+                                                     showValidation:NO];
 }
 
-- (void)requestPassword
+- (void)requestPasswordAnimated:(BOOL)animated
 {
-    [self.modalPresenterDelegate dismissModalWebParentToolsWithSync:NO showValidation:YES];
+    [self.modalPresenterDelegate dismissModalWebParentToolsAnimated:animated
+                                                           withSync:NO 
+                                                     showValidation:YES];
 }
 
 #pragma mark - Notification methods
 
 - (void)didEnterBackground:(NSNotification *)notification
 {
-    [self requestPassword];
+    [self requestPasswordAnimated:NO];
 }
 
 #pragma mark - UIWebView delegate methods
@@ -131,7 +136,7 @@
         if ([cmd isEqualToString:@"bookshelfSetupDidCompleteWithSuccess"] == YES) {
             ret = NO;
             
-            [self.modalPresenterDelegate dismissModalWebParentToolsWithSync:YES showValidation:NO];
+            [self.modalPresenterDelegate dismissModalWebParentToolsAnimated:YES withSync:YES showValidation:NO];
         }
     }
     

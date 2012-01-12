@@ -14,15 +14,16 @@
 
 // Constants
 NSString * const SCHVersionDownloadManagerCompletedNotification = @"SCHVersionDownloadManagerCompletedNotification";
-NSString * const SCHVersionDownloadManagerIsCurrentVersion = @"IsCurrentVersion";
+NSString * const SCHVersionDownloadManagerCompletionAppVersionState = @"SCHVersionDownloadManagerCompletionAppVersionState";
 
-static NSTimeInterval const kSCHVersionDownloadManagerVersionCheckTimeout = 60 * 60;
+//static NSTimeInterval const kSCHVersionDownloadManagerVersionCheckTimeout = 60 * 60; // 1 hour
+static NSTimeInterval const kSCHVersionDownloadManagerVersionCheckTimeout = 60 * 5;
 
 #pragma mark - Class Extension
 
 @interface SCHVersionDownloadManager ()
 
-@property (nonatomic, retain, readwrite) NSNumber *isCurrentVersion;
+@property (nonatomic, assign, readwrite) SCHVersionDownloadManagerAppVersionState appVersionState;
 @property (nonatomic, retain) NSDate *expireCurrentVersion;
 
 // the background task ID for background processing
@@ -59,7 +60,7 @@ static NSTimeInterval const kSCHVersionDownloadManagerVersionCheckTimeout = 60 *
 @implementation SCHVersionDownloadManager
 
 @synthesize manifestUpdates;
-@synthesize isCurrentVersion;
+@synthesize appVersionState;
 @synthesize expireCurrentVersion;
 @synthesize isProcessing;
 @synthesize backgroundTask;
@@ -76,7 +77,7 @@ static NSTimeInterval const kSCHVersionDownloadManagerVersionCheckTimeout = 60 *
 	if ((self = [super init])) {
 		versionDownloadQueue = [[NSOperationQueue alloc] init];
 		[versionDownloadQueue setMaxConcurrentOperationCount:1];
-        state = SCHVersionDownloadManagerProcessomgStateNeedsManifest;
+        state = SCHVersionDownloadManagerProcessingStateNeedsManifest;
 		wifiReach = [[Reachability reachabilityForInternetConnection] retain];
 
 		// notifications for changes in reachability
@@ -140,20 +141,19 @@ static NSTimeInterval const kSCHVersionDownloadManagerVersionCheckTimeout = 60 *
 
 #pragma mark - Accessor Methods
 
-- (NSNumber *)isCurrentVersion
+- (SCHVersionDownloadManagerAppVersionState)appVersionState
 {
-    if(isCurrentVersion != nil &&
-       [isCurrentVersion boolValue] == YES &&
-       [expireCurrentVersion compare:[NSDate date]] == NSOrderedAscending) {
-        isCurrentVersion = nil;
+    if ((appVersionState != SCHVersionDownloadManagerAppVersionStatePendingCheck) &&
+       [self.expireCurrentVersion compare:[NSDate date]] == NSOrderedAscending) {
+        appVersionState = SCHVersionDownloadManagerAppVersionStatePendingCheck;
         self.expireCurrentVersion = nil;
     }
-         
-    if (isCurrentVersion == nil) {
+    
+    if (appVersionState == SCHVersionDownloadManagerAppVersionStatePendingCheck) {
         [self checkVersion];
     }
     
-    return isCurrentVersion;
+    return appVersionState;
 }
 
 #pragma mark - Background Processing Methods
@@ -296,6 +296,19 @@ static NSTimeInterval const kSCHVersionDownloadManagerVersionCheckTimeout = 60 *
     }
 }
 
+- (void)handleUnexpectedVersionCheckError
+{
+    self.state = SCHVersionDownloadManagerProcessingStateCompleted;
+    self.appVersionState = SCHVersionDownloadManagerAppVersionStateCurrent;
+    self.expireCurrentVersion = [NSDate dateWithTimeIntervalSinceNow:kSCHVersionDownloadManagerVersionCheckTimeout];
+    
+    [[NSNotificationCenter defaultCenter] postNotificationName:SCHVersionDownloadManagerCompletedNotification 
+                                                        object:nil 
+                                                      userInfo:[NSDictionary dictionaryWithObject:[NSNumber numberWithInt:self.appVersionState]
+                                                                                           forKey:SCHVersionDownloadManagerCompletionAppVersionState]];                
+
+}
+
 - (void)process
 {
 	if ([NSThread currentThread] != [NSThread mainThread]) {
@@ -316,18 +329,21 @@ static NSTimeInterval const kSCHVersionDownloadManagerVersionCheckTimeout = 60 *
 	NSLog(@"**** Calling process with state %d...", self.state);
     
 	switch (self.state) {
+        case SCHVersionDownloadManagerProcessingStateUnexpectedConnectivityFailureError:
         case SCHVersionDownloadManagerProcessingStateParseError:
-        case SCHVersionDownloadManagerProcessingStateError:            
-            self.state = SCHVersionDownloadManagerProcessomgStateNeedsManifest;
-            [self checkOperatingStateImmediately:NO];
+        case SCHVersionDownloadManagerProcessingStateError:     
+            [self handleUnexpectedVersionCheckError];
+            [self process];
             break;
+        case SCHVersionDownloadManagerProcessingStateFetchingManifest:
         case SCHVersionDownloadManagerProcessingStateUnknown:
-            NSLog(@"The version manager has an unknown state!");
+            // Do nothing, we are either in an unknown state or a working state
             break;
-        case SCHVersionDownloadManagerProcessomgStateNeedsManifest:
+        case SCHVersionDownloadManagerProcessingStateNeedsManifest:
 			NSLog(@"needs version manifest...");
             
 			// create manifest processing operation
+            self.state = SCHVersionDownloadManagerProcessingStateFetchingManifest;
 			SCHVersionManifestOperation *manifestOp = [[SCHVersionManifestOperation alloc] init];
             
             NSLog(@"Manifest op: %@", manifestOp);
@@ -345,36 +361,50 @@ static NSTimeInterval const kSCHVersionDownloadManagerVersionCheckTimeout = 60 *
 			NSLog(@"needs manifest version check...");
             
             BOOL processUpdate = NO;
+            BOOL forcedUpdate = NO;
+            
             SCHVersionManifestEntry *entry = [self nextManifestEntryUpdateForCurrentVersion];
             
             NSString *currentVersion = [self appVersion];
             
             if (currentVersion) {
-                if (entry == nil || 
+                if (entry != nil && 
                     [currentVersion compare:[entry toVersion] options:NSNumericSearch] == NSOrderedAscending) {
+                    if ([[[entry forced] uppercaseString] isEqualToString:@"TRUE"]) {
+                        forcedUpdate = YES;
+                    }
                     processUpdate = YES;
                 }
             } else {
                 processUpdate = YES;
             }
             
+            SCHVersionDownloadManagerAppVersionState newState;
+            
             if (processUpdate) {
-                self.isCurrentVersion = [NSNumber numberWithBool:NO];
+                if (forcedUpdate) {
+                    newState = SCHVersionDownloadManagerAppVersionStateOutdatedRequiresForcedUpdate;
+                } else {
+                    newState = SCHVersionDownloadManagerAppVersionStateOutdated;
+                }
             } else {
-                self.isCurrentVersion = [NSNumber numberWithBool:YES];
+                newState = SCHVersionDownloadManagerAppVersionStateCurrent;
             }
             
+            self.appVersionState = newState;
             self.expireCurrentVersion = [NSDate dateWithTimeIntervalSinceNow:kSCHVersionDownloadManagerVersionCheckTimeout];
+            
             [[NSNotificationCenter defaultCenter] postNotificationName:SCHVersionDownloadManagerCompletedNotification 
                                                                 object:nil 
-                                                              userInfo:[NSDictionary dictionaryWithObject:self.isCurrentVersion forKey:SCHVersionDownloadManagerIsCurrentVersion]];                
+                                                              userInfo:[NSDictionary dictionaryWithObject:[NSNumber numberWithInt:newState]
+                                                                                                   forKey:SCHVersionDownloadManagerCompletionAppVersionState]]; 
+             
             self.state = SCHVersionDownloadManagerProcessingStateCompleted;
             [self process];
     
 			break;
         case SCHVersionDownloadManagerProcessingStateCompleted:
-			NSLog(@"Version check complete.");            
-        default:
+			NSLog(@"Version check complete."); 
             break;
     }            
 }
@@ -392,10 +422,12 @@ static NSTimeInterval const kSCHVersionDownloadManagerVersionCheckTimeout = 60 *
 - (void)checkVersion
 {    
     if (self.state == SCHVersionDownloadManagerProcessingStateCompleted) {
-        self.state = SCHVersionDownloadManagerProcessomgStateNeedsManifest;
+        self.state = SCHVersionDownloadManagerProcessingStateNeedsManifest;
     }
     
-    [self process];
+    if (!self.isProcessing && (self.state != SCHVersionDownloadManagerProcessingStateFetchingManifest)) {
+        [self process];
+    }
 }
          
 @end

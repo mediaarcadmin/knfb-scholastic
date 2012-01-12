@@ -579,23 +579,28 @@ didSelectButtonAnimated:(BOOL)animated
     [CATransaction commit];
 }
 
-- (void)dismissModalWebParentToolsWithSync:(BOOL)shouldSync showValidation:(BOOL)showValidation
+- (void)dismissModalWebParentToolsAnimated:(BOOL)animated withSync:(BOOL)shouldSync showValidation:(BOOL)showValidation
 {
     if (self.modalViewController) {
         [self dismissModalViewControllerAnimated:NO];
     }
     
+    __block SCHProfileViewController_Shared *weakSelf = self;
+    
     dispatch_block_t completion = ^{
-        if ([[self.modalNavigationController viewControllers] count] == 0) {
+        [weakSelf setWebParentToolsPopoverController:nil];
+        [weakSelf setParentalToolsWebViewController:nil];
+        
+        if ([[weakSelf.modalNavigationController viewControllers] count] == 0) {
             // The view has been unloaded due to memory pressure
             // Just push the settings screen, don't bother with re-adding the validation controller
-            [self pushSettingsControllerAnimated:NO];
+            [weakSelf pushSettingsControllerAnimated:NO];
         } else {
             if (!showValidation) {
-                NSMutableArray *currentControllers = [[[self.modalNavigationController viewControllers] mutableCopy] autorelease];
+                NSMutableArray *currentControllers = [[[weakSelf.modalNavigationController viewControllers] mutableCopy] autorelease];
                 [currentControllers removeLastObject];
-                [self.modalNavigationController setViewControllers:currentControllers];
-                [self presentModalViewController:self.modalNavigationController animated:NO];
+                [weakSelf.modalNavigationController setViewControllers:currentControllers];
+                [weakSelf presentModalViewController:self.modalNavigationController animated:NO];
             }
         }
         
@@ -609,17 +614,20 @@ didSelectButtonAnimated:(BOOL)animated
     if ([self.webParentToolsPopoverController isModalSheetVisible]) {
         
         self.parentalToolsWebViewController.textView.alpha = 0;
-        __block SCHProfileViewController_Shared *weakSelf = self;
-
-        [self.webParentToolsPopoverController setContentSize:CGSizeMake(540, 620) animated:YES completion:^{
-            [CATransaction begin];
-            [CATransaction setDisableActions:YES];
-            [self.webParentToolsPopoverController dismissSheetAnimated:NO completion:^{
-                completion();
-                weakSelf.parentalToolsWebViewController = nil;
-                [CATransaction commit];
+        
+        if (animated) {
+            [self.webParentToolsPopoverController setContentSize:CGSizeMake(540, 620) animated:YES completion:^{
+                [CATransaction begin];
+                [CATransaction setDisableActions:YES];
+                [weakSelf.webParentToolsPopoverController dismissSheetAnimated:NO completion:^{
+                    completion();
+                    [CATransaction commit];
+                }];
             }];
-        }];
+        } else {
+            [weakSelf.webParentToolsPopoverController dismissSheetAnimated:NO completion:nil];
+            completion();
+        }
     } else {
         completion();
     }  
