@@ -161,7 +161,7 @@ extern NSString * const kSCHUserDefaultsSpaceSaverModeSetOffNotification;
 
 - (SCHBookUpdates *)bookUpdates
 {
-    if (bookUpdates) {
+    if (bookUpdates == nil) {
         NSAssert(self.managedObjectContext != nil, @"must set managedObjectContext before accessing bookUpdates");
         bookUpdates = [[SCHBookUpdates alloc] init];
         bookUpdates.managedObjectContext = self.managedObjectContext;
