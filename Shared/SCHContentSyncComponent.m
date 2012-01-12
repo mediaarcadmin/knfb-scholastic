@@ -111,8 +111,8 @@ NSString * const SCHContentSyncComponentDidFailNotification = @"SCHContentSyncCo
                                                                         object:self];                    
                 }];				
             }
-        } else if([method compare:kSCHLibreAccessWebServiceListUserContent] == NSOrderedSame) {
-            NSArray *content = [result objectForKey:kSCHLibreAccessWebServiceUserContentList];
+        } else if([method compare:kSCHLibreAccessWebServiceListUserContentEx] == NSOrderedSame) {
+            NSArray *content = [result objectForKey:kSCHLibreAccessWebServiceUserContentListEx];
             
             [self syncUserContentItems:content];
             [[NSNotificationCenter defaultCenter] postNotificationName:SCHContentSyncComponentDidCompleteNotification 
@@ -325,6 +325,9 @@ NSString * const SCHContentSyncComponentDidFailNotification = @"SCHContentSyncCo
         }
 	}
     	
+	newUserContentItem.LastVersion = [self makeNullNil:[webUserContentItem objectForKey:kSCHLibreAccessWebServiceLastVersion]];
+	newUserContentItem.FreeBook = [self makeNullNil:[webUserContentItem objectForKey:kSCHLibreAccessWebServiceFreeBook]];    
+    
 	newUserContentItem.LastModified = [self makeNullNil:[webUserContentItem objectForKey:kSCHLibreAccessWebServiceLastModified]];
 	newUserContentItem.State = [NSNumber numberWithStatus:kSCHStatusUnmodified];	
 }
@@ -476,6 +479,9 @@ NSString * const SCHContentSyncComponentDidFailNotification = @"SCHContentSyncCo
         [self syncContentProfileItems:[self makeNullNil:[webUserContentItem objectForKey:kSCHLibreAccessWebServiceProfileList]] 
               localContentProfileList:localUserContentItem.ProfileList
                            insertInto:localUserContentItem];
+
+        localUserContentItem.LastVersion = [self makeNullNil:[webUserContentItem objectForKey:kSCHLibreAccessWebServiceLastVersion]];
+        localUserContentItem.FreeBook = [self makeNullNil:[webUserContentItem objectForKey:kSCHLibreAccessWebServiceFreeBook]];
         
         localUserContentItem.LastModified = [self makeNullNil:[webUserContentItem objectForKey:kSCHLibreAccessWebServiceLastModified]];
         localUserContentItem.State = [NSNumber numberWithStatus:kSCHStatusSyncUpdate];				

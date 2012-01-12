@@ -12,6 +12,7 @@
 #import "SCHBookManager.h"
 #import "SCHAppStateManager.h"
 #import "SCHContentMetadataItem.h"
+#import "SCHUserContentItem.h"
 
 #define DEBUG_FORCE_ENABLE_UPDATES 0
 
@@ -58,7 +59,7 @@
 
 - (NSArray *)availableBookUpdates
 {
-#if defined UPDATE_BOOKS_DISABLED
+#if UPDATE_BOOKS_DISABLED
     return [NSArray array];
 #else
     if (self.refreshNeeded || [self.results count] == 0) {
@@ -94,10 +95,10 @@
     [allAppBooks enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
         SCHContentMetadataItem *contentMetadataItem = [(SCHAppBook*) obj ContentMetadataItem];
         
-        NSString *onDiskversion = [(SCHAppBook*) obj OnDiskVersion];
-        BOOL validOnDiskVersion = (onDiskversion != nil);
-        
-        if (validOnDiskVersion && ([[contentMetadataItem Version] integerValue] > [onDiskversion integerValue])) {
+        NSString *onDiskVersion = [(SCHAppBook*) obj OnDiskVersion];
+        BOOL validOnDiskVersion = (onDiskVersion != nil);
+                
+        if (validOnDiskVersion && ([contentMetadataItem.UserContentItem.LastVersion integerValue] > [onDiskVersion integerValue])) {
             [self.results addObject:obj];
         }
     }];

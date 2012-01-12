@@ -329,12 +329,12 @@
             [self performWithBookAndSave:^(SCHAppBook *book) {
                 
                 int contentMetadataVersion = [[[book ContentMetadataItem] Version] intValue];
-                int userContentVersion = [[[[book ContentMetadataItem] UserContentItem] Version] intValue];
+                int userContentVersion = [[[[book ContentMetadataItem] UserContentItem] LastVersion] intValue];
                 
                 if (contentMetadataVersion > userContentVersion) {
                     book.OnDiskVersion = [[book ContentMetadataItem] Version];
                 } else {
-                    book.OnDiskVersion = [[[book ContentMetadataItem] UserContentItem] Version];
+                    book.OnDiskVersion = [[[book ContentMetadataItem] UserContentItem] LastVersion];
                 }
                 book.XPSExists = [NSNumber numberWithBool:YES];
             }];

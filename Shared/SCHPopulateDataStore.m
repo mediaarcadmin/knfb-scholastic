@@ -470,6 +470,7 @@
 {
     NSMutableDictionary *ret = [NSMutableDictionary dictionary];    
     NSDate *dateNow = [NSDate date];
+    NSString *version = @"1";
     
     NSMutableArray *profileList = [NSMutableArray arrayWithCapacity:[profileIDs count]];
     NSMutableArray *orderList = [NSMutableArray arrayWithCapacity:[profileIDs count]];    
@@ -492,9 +493,11 @@
     [ret setObject:[NSNumber numberWithContentIdentifierType:kSCHContentItemContentIdentifierTypesISBN13] forKey:kSCHLibreAccessWebServiceContentIdentifierType];
     [ret setObject:[NSNumber numberWithDRMQualifier:drmQualifer] forKey:kSCHLibreAccessWebServiceDRMQualifier];
     [ret setObject:@"XPS" forKey:kSCHLibreAccessWebServiceFormat];
-    [ret setObject:@"1" forKey:kSCHLibreAccessWebServiceVersion];    
+    [ret setObject:version forKey:kSCHLibreAccessWebServiceVersion];    
     [ret setObject:profileList forKey:kSCHLibreAccessWebServiceProfileList];
-    [ret setObject:orderList forKey:kSCHLibreAccessWebServiceOrderList];        
+    [ret setObject:orderList forKey:kSCHLibreAccessWebServiceOrderList]; 
+    [ret setObject:version forKey:kSCHLibreAccessWebServiceLastVersion];    
+    [ret setObject:[NSNumber numberWithBool:NO] forKey:kSCHLibreAccessWebServiceFreeBook];        
     [ret setObject:dateNow forKey:kSCHLibreAccessWebServiceLastModified];
     [ret setObject:[NSNumber numberWithBool:NO] forKey:kSCHLibreAccessWebServiceDefaultAssignment];
     

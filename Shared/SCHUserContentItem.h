@@ -32,6 +32,8 @@ extern NSString * const kSCHUserContentItemDRM_QUALIFIER;
 @property (nonatomic, retain) NSNumber * DRMQualifier;
 @property (nonatomic, retain) NSSet* OrderList;
 @property (nonatomic, retain) NSSet* ProfileList;
+@property (nonatomic, retain) NSNumber * FreeBook;
+@property (nonatomic, retain) NSString * LastVersion;
 
 @property (nonatomic, readonly) NSSet *ContentMetadataItem;
 @property (nonatomic, readonly) NSSet *AssignedProfileList;

@@ -2029,7 +2029,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 
         SCHAppContentProfileItem *appContentProfileItem = [profile appContentProfileItemForBookIdentifier:self.bookIdentifier];
         if (appContentProfileItem != nil) {
-            newHighlight.Version = [NSNumber numberWithInteger:[appContentProfileItem.ContentProfileItem.UserContentItem.Version integerValue]];
+            newHighlight.Version = [NSNumber numberWithInteger:[appContentProfileItem.ContentProfileItem.UserContentItem.LastVersion integerValue]];
         }
         [self save];
     }
@@ -2615,7 +2615,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     
     SCHAppContentProfileItem *appContentProfileItem = [profile appContentProfileItemForBookIdentifier:self.bookIdentifier];
     if (appContentProfileItem != nil) {
-        newNote.Version = [NSNumber numberWithInteger:[appContentProfileItem.ContentProfileItem.UserContentItem.Version integerValue]];
+        newNote.Version = [NSNumber numberWithInteger:[appContentProfileItem.ContentProfileItem.UserContentItem.LastVersion integerValue]];
     }
     [self save];
     
