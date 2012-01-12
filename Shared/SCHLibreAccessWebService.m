@@ -37,7 +37,7 @@ static NSInteger const kSCHLibreAccessWebServiceVaid = 33;
 - (NSDictionary *)objectFromAuthenticateDevice:(LibreAccessServiceSvc_AuthenticateDeviceResponse *)anObject;
 - (NSDictionary *)objectFromRenewToken:(LibreAccessServiceSvc_RenewTokenResponse *)anObject;
 - (NSDictionary *)objectFromProfileItem:(LibreAccessServiceSvc_ProfileItem *)anObject;
-- (NSDictionary *)objectFromUserContentItem:(LibreAccessServiceSvc_UserContentItem *)anObject;
+- (NSDictionary *)objectFromUserContentItemEx:(LibreAccessServiceSvc_UserContentItemEx *)anObject;
 - (NSDictionary *)objectFromContentProfileItem:(LibreAccessServiceSvc_ContentProfileItem *)anObject;
 - (NSDictionary *)objectFromOrderItem:(LibreAccessServiceSvc_OrderItem *)anObject;
 - (NSDictionary *)objectFromContentMetadataItem:(LibreAccessServiceSvc_ContentMetadataItem *)anObject;
@@ -223,11 +223,11 @@ static NSInteger const kSCHLibreAccessWebServiceVaid = 33;
 	BOOL ret = NO;
 	
 	if ([SCHAuthenticationManager sharedAuthenticationManager].isAuthenticated == YES) {		
-		LibreAccessServiceSvc_ListUserContent *request = [LibreAccessServiceSvc_ListUserContent new];
+		LibreAccessServiceSvc_ListUserContentEx *request = [LibreAccessServiceSvc_ListUserContentEx new];
 		
 		request.authtoken = [SCHAuthenticationManager sharedAuthenticationManager].aToken;
 		
-		[self.binding ListUserContentAsyncUsingBody:request delegate:self]; 
+		[self.binding ListUserContentExAsyncUsingBody:request delegate:self]; 
 		[[BITNetworkActivityManager sharedNetworkActivityManager] showNetworkActivityIndicator];
 		
 		[request release], request = nil;	
@@ -590,10 +590,10 @@ static NSInteger const kSCHLibreAccessWebServiceVaid = 33;
 				  [anObject isKindOfClass:[LibreAccessServiceSvc_GetUserProfilesResponse class]] == YES ||
 				  [anObject isKindOfClass:[LibreAccessServiceSoap11Binding_GetUserProfiles class]] == YES) {
 			ret = kSCHLibreAccessWebServiceGetUserProfiles;	
-		} else if([anObject isKindOfClass:[LibreAccessServiceSvc_ListUserContent class]] == YES ||
-				  [anObject isKindOfClass:[LibreAccessServiceSvc_ListUserContentResponse class]] == YES ||
-				  [anObject isKindOfClass:[LibreAccessServiceSoap11Binding_ListUserContent class]] == YES) {
-			ret = kSCHLibreAccessWebServiceListUserContent;	
+		} else if([anObject isKindOfClass:[LibreAccessServiceSvc_ListUserContentEx class]] == YES ||
+				  [anObject isKindOfClass:[LibreAccessServiceSvc_ListUserContentExResponse class]] == YES ||
+				  [anObject isKindOfClass:[LibreAccessServiceSoap11Binding_ListUserContentEx class]] == YES) {
+			ret = kSCHLibreAccessWebServiceListUserContentEx;	
 		} else if([anObject isKindOfClass:[LibreAccessServiceSvc_ListContentMetadata class]] == YES ||
 				  [anObject isKindOfClass:[LibreAccessServiceSvc_ListContentMetadataResponse class]] == YES ||
 				  [anObject isKindOfClass:[LibreAccessServiceSoap11Binding_ListContentMetadata class]] == YES) {
@@ -674,8 +674,8 @@ static NSInteger const kSCHLibreAccessWebServiceVaid = 33;
 			ret = [self objectFromRenewToken:anObject];
 		} else if ([anObject isKindOfClass:[LibreAccessServiceSvc_GetUserProfilesResponse class]] == YES) {
 			ret = [NSDictionary dictionaryWithObject:[self objectFromTranslate:[[anObject ProfileList] ProfileItem]] forKey:kSCHLibreAccessWebServiceProfileList];
-		} else if ([anObject isKindOfClass:[LibreAccessServiceSvc_ListUserContentResponse class]] == YES) {
-			ret = [NSDictionary dictionaryWithObject:[self objectFromTranslate:[[anObject UserContentList] UserContentItem]] forKey:kSCHLibreAccessWebServiceUserContentList];
+		} else if ([anObject isKindOfClass:[LibreAccessServiceSvc_ListUserContentExResponse class]] == YES) {
+			ret = [NSDictionary dictionaryWithObject:[self objectFromTranslate:[[anObject UserContentListEx] UserContentItemEx]] forKey:kSCHLibreAccessWebServiceUserContentListEx];
 		} else if ([anObject isKindOfClass:[LibreAccessServiceSvc_ListContentMetadataResponse class]] == YES) {
 			ret = [NSDictionary dictionaryWithObject:[self objectFromTranslate:[[anObject ContentMetadataList] ContentMetadataItem]] forKey:kSCHLibreAccessWebServiceContentMetadataList];
 		} else if ([anObject isKindOfClass:[LibreAccessServiceSvc_SaveUserProfilesResponse class]] == YES) {
@@ -816,7 +816,7 @@ static NSInteger const kSCHLibreAccessWebServiceVaid = 33;
 	return(ret);
 }
 
-- (NSDictionary *)objectFromUserContentItem:(LibreAccessServiceSvc_UserContentItem *)anObject
+- (NSDictionary *)objectFromUserContentItemEx:(LibreAccessServiceSvc_UserContentItemEx *)anObject
 {
 	NSDictionary *ret = nil;
 	
@@ -832,8 +832,10 @@ static NSInteger const kSCHLibreAccessWebServiceVaid = 33;
 		[objects setObject:[self objectFromTranslate:[[anObject OrderList] OrderItem]] forKey:kSCHLibreAccessWebServiceOrderList];		
 		[objects setObject:[self objectFromTranslate:anObject.lastmodified] forKey:kSCHLibreAccessWebServiceLastModified];		
 		[objects setObject:[self objectFromTranslate:anObject.DefaultAssignment] forKey:kSCHLibreAccessWebServiceDefaultAssignment];		
-			
-		ret = objects;					
+		[objects setObject:[self objectFromTranslate:anObject.FreeBook] forKey:kSCHLibreAccessWebServiceFreeBook];		        
+		[objects setObject:[self objectFromTranslate:anObject.LastVersion] forKey:kSCHLibreAccessWebServiceLastVersion];		
+		
+        ret = objects;					
 	}
 	
 	return(ret);
@@ -1336,9 +1338,9 @@ static NSInteger const kSCHLibreAccessWebServiceVaid = 33;
 				for (id item in anObject) {
 					[ret addObject:[self objectFromProfileItem:item]];					
 				}
-			} else if ([firstItem isKindOfClass:[LibreAccessServiceSvc_UserContentItem class]] == YES) {
+			} else if ([firstItem isKindOfClass:[LibreAccessServiceSvc_UserContentItemEx class]] == YES) {
 				for (id item in anObject) {				
-					[ret addObject:[self objectFromUserContentItem:item]];					
+					[ret addObject:[self objectFromUserContentItemEx:item]];					
 				}
 			} else if ([firstItem isKindOfClass:[LibreAccessServiceSvc_ContentProfileItem class]] == YES) {
 				for (id item in anObject) {

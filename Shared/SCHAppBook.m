@@ -385,6 +385,11 @@ NSString * const kSCHAppBookFilenameSeparator = @"-";
     }
 }
 
+- (void)clearCachedBookDirectory
+{
+    self.cachedBookDirectory = nil;
+}
+
 - (NSString *)bookDirectory 
 {
     

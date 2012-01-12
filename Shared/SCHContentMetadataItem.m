@@ -245,6 +245,7 @@ static NSString * const kSCHContentMetadataItemAnnotationsItemProfileID = @"Anno
         NSLog(@"Failed to delete files for %@, error: %@", 
               self.ContentIdentifier, [error localizedDescription]);
     }
+    [self.AppBook clearCachedBookDirectory];
 }
 
 - (void)deleteXPSFile

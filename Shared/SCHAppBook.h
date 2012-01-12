@@ -148,6 +148,7 @@ typedef enum {
 - (NSString *)thumbPathForSize:(CGSize)size;
 + (NSString *)booksDirectory;
 + (void)clearBooksDirectory;
+- (void)clearCachedBookDirectory;
 - (NSString *)bookDirectory;
 - (NSString *)libEucalyptusCache;
 - (void)clearToDefaultValues;
