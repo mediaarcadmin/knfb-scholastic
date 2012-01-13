@@ -66,4 +66,20 @@ NSString * const kSCHUserContentItemDRM_QUALIFIER = @"DRM_QUALIFIER";
 	return(self.ProfileList);
 }
 
+
+- (NSString *)LastVersion
+{
+    [self willAccessValueForKey:@"LastVersion"];
+    NSString *ret = [self primitiveValueForKey:@"LastVersion"];
+    // LastVersion was added in version 2. Once the core data migration has 
+    // finished LastVersion will be populated by the next sync, until that 
+    // happens we will use the Version value
+    if (ret == nil) {
+        ret = [self primitiveValueForKey:@"Version"];
+    }
+    [self didAccessValueForKey:@"LastVersion"];
+    
+    return ret;
+}
+
 @end
