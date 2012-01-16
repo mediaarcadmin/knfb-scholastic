@@ -205,7 +205,7 @@
 						<int key="IBUIContentMode">7</int>
 						<bool key="IBUIUserInteractionEnabled">NO</bool>
 						<string key="targetRuntimeIdentifier">IBIPadFramework</string>
-						<string key="IBUIText">Deregistering this device means it can no longer be used to read your Scholastic eBooks. It will also no longer count against the maximum number of five devices you can use for reading.</string>
+						<string key="IBUIText">Deregistering this device means it can no longer be used to read your eBooks. It will also no longer count against the maximum number of five devices you can use for reading.</string>
 						<object class="NSColor" key="IBUITextColor" id="8182699">
 							<int key="NSColorSpace">3</int>
 							<bytes key="NSWhite">MC4zMzMzMzMzMzMzAA</bytes>

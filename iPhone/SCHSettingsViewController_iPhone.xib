@@ -316,7 +316,7 @@
 												<int key="IBUIContentVerticalAlignment">0</int>
 												<bool key="IBUIAdjustsImageWhenHighlighted">NO</bool>
 												<bool key="IBUIAdjustsImageWhenDisabled">NO</bool>
-												<string key="IBUINormalTitle">About the Scholastic eReader</string>
+												<string key="IBUINormalTitle">About Storia</string>
 												<object class="NSColor" key="IBUIHighlightedTitleColor">
 													<int key="NSColorSpace">1</int>
 													<bytes key="NSRGB">MC4wNzExMTU4NTE0IDAuNjM2MjA5NDI4MyAxAA</bytes>
@@ -377,7 +377,7 @@
 												<int key="IBUIContentVerticalAlignment">0</int>
 												<bool key="IBUIAdjustsImageWhenHighlighted">NO</bool>
 												<bool key="IBUIAdjustsImageWhenDisabled">NO</bool>
-												<string key="IBUINormalTitle">ebooks@scholastic.com</string>
+												<string key="IBUINormalTitle">ebooks@scholastic.com.</string>
 												<object class="NSColor" key="IBUIHighlightedTitleColor">
 													<int key="NSColorSpace">1</int>
 													<bytes key="NSRGB">MC4wNzExMTU4NTE0IDAuNjM2MjA5NDI4MyAxAA</bytes>
