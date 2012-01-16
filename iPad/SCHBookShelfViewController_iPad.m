@@ -88,39 +88,44 @@ static NSTimeInterval const kSCHBookShelfViewControllerTopTenRefreshTime = -600.
     [homeButton addTarget:self action:@selector(back) forControlEvents:UIControlEventTouchUpInside];    
     homeButton.accessibilityLabel = @"Back To Bookshelves Button";
     
+    CGRect sortFrame = CGRectZero;
     CGRect topTenFrame = CGRectZero;
 
-    self.sortButton = [SCHThemeButton buttonWithType:UIButtonTypeCustom];
-    [self.sortButton setFrame:CGRectMake(0, 3, 82, 30)];
-    [self.sortButton setTitle:NSLocalizedString(@"Sort", @"") forState:UIControlStateNormal];
-    [self.sortButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    [self.sortButton setTitleColor:[UIColor colorWithWhite:1 alpha:0.5f] forState:UIControlStateHighlighted];
-    [self.sortButton setReversesTitleShadowWhenHighlighted:YES];
-    
-    self.sortButton.titleLabel.font = [UIFont boldSystemFontOfSize:14];
-    self.sortButton.titleLabel.shadowOffset = CGSizeMake(0, -1);
-    
-    [self.sortButton setThemeButton:kSCHThemeManagerButtonImage leftCapWidth:7 topCapHeight:0];
-    [self.sortButton addTarget:self action:@selector(sortAction:) forControlEvents:UIControlEventTouchUpInside];   
-    
-    CGRect sortFrame = self.sortButton.frame;
-    sortFrame.origin.x = kSCHBookShelfEdgePadding;
-    self.sortButton.frame = sortFrame;
-    
-    if (!TOP_TEN_DISABLED && ([[SCHAppStateManager sharedAppStateManager] canAuthenticate] == YES)) {
-        topTenFrame = CGRectMake(kSCHBookShelfButtonPadding + CGRectGetWidth(sortFrame), 3, 120, 30);
-        self.topTenPicksButton = [SCHThemeButton buttonWithType:UIButtonTypeCustom];
-        [self.topTenPicksButton setFrame:topTenFrame];
-        [self.topTenPicksButton setTitle:NSLocalizedString(@"More eBooks", @"") forState:UIControlStateNormal];
-        [self.topTenPicksButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-        [self.topTenPicksButton setTitleColor:[UIColor colorWithWhite:1 alpha:0.5f] forState:UIControlStateHighlighted];
-        [self.topTenPicksButton setReversesTitleShadowWhenHighlighted:YES];
+    // no sort or top ten buttons for the sample bookshelf
+    if ([[SCHAppStateManager sharedAppStateManager] isSampleStore] == NO) {
+        self.sortButton = [SCHThemeButton buttonWithType:UIButtonTypeCustom];
+        sortFrame = CGRectMake(0, 3, 82, 30);
+        [self.sortButton setFrame:sortFrame];
+        [self.sortButton setTitle:NSLocalizedString(@"Sort", @"") forState:UIControlStateNormal];
+        [self.sortButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+        [self.sortButton setTitleColor:[UIColor colorWithWhite:1 alpha:0.5f] forState:UIControlStateHighlighted];
+        [self.sortButton setReversesTitleShadowWhenHighlighted:YES];
         
-        self.topTenPicksButton.titleLabel.font = [UIFont boldSystemFontOfSize:14];
-        self.topTenPicksButton.titleLabel.shadowOffset = CGSizeMake(0, -1);
+        self.sortButton.titleLabel.font = [UIFont boldSystemFontOfSize:14];
+        self.sortButton.titleLabel.shadowOffset = CGSizeMake(0, -1);
         
-        [self.topTenPicksButton setThemeButton:kSCHThemeManagerButtonImage leftCapWidth:7 topCapHeight:0];
-        [self.topTenPicksButton addTarget:self action:@selector(topTenAction:) forControlEvents:UIControlEventTouchUpInside];    
+        [self.sortButton setThemeButton:kSCHThemeManagerButtonImage leftCapWidth:7 topCapHeight:0];
+        [self.sortButton addTarget:self action:@selector(sortAction:) forControlEvents:UIControlEventTouchUpInside];   
+        
+        CGRect sortFrame = self.sortButton.frame;
+        sortFrame.origin.x = kSCHBookShelfEdgePadding;
+        self.sortButton.frame = sortFrame;
+        
+        if (!TOP_TEN_DISABLED && ([[SCHAppStateManager sharedAppStateManager] canAuthenticate] == YES)) {
+            topTenFrame = CGRectMake(kSCHBookShelfButtonPadding + CGRectGetWidth(sortFrame), 3, 120, 30);
+            self.topTenPicksButton = [SCHThemeButton buttonWithType:UIButtonTypeCustom];
+            [self.topTenPicksButton setFrame:topTenFrame];
+            [self.topTenPicksButton setTitle:NSLocalizedString(@"More eBooks", @"") forState:UIControlStateNormal];
+            [self.topTenPicksButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+            [self.topTenPicksButton setTitleColor:[UIColor colorWithWhite:1 alpha:0.5f] forState:UIControlStateHighlighted];
+            [self.topTenPicksButton setReversesTitleShadowWhenHighlighted:YES];
+            
+            self.topTenPicksButton.titleLabel.font = [UIFont boldSystemFontOfSize:14];
+            self.topTenPicksButton.titleLabel.shadowOffset = CGSizeMake(0, -1);
+            
+            [self.topTenPicksButton setThemeButton:kSCHThemeManagerButtonImage leftCapWidth:7 topCapHeight:0];
+            [self.topTenPicksButton addTarget:self action:@selector(topTenAction:) forControlEvents:UIControlEventTouchUpInside];    
+        }
     }
 
     CGFloat topTenWidth = topTenFrame.size.width;
@@ -128,11 +133,12 @@ static NSTimeInterval const kSCHBookShelfViewControllerTopTenRefreshTime = -600.
     if (topTenWidth > 0) {
         topTenWidth += kSCHBookShelfEdgePadding;
     }
-    
-    UIView *rightContainerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.sortButton.frame) + kSCHBookShelfButtonPadding + topTenWidth + CGRectGetWidth(themeButton.frame) + kSCHBookShelfEdgePadding, CGRectGetHeight(themeButton.frame))];
 
-    [rightContainerView addSubview:self.sortButton];
-    
+    UIView *rightContainerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth(sortFrame) + kSCHBookShelfButtonPadding + topTenWidth + CGRectGetWidth(themeButton.frame) + kSCHBookShelfEdgePadding, CGRectGetHeight(themeButton.frame))];
+
+    if (self.sortButton) {
+        [rightContainerView addSubview:self.sortButton];
+    }
     if (self.topTenPicksButton) {
         [rightContainerView addSubview:self.topTenPicksButton];
     }
@@ -170,12 +176,13 @@ static NSTimeInterval const kSCHBookShelfViewControllerTopTenRefreshTime = -600.
 {
     [super setEditing:editing animated:animated];
     
-    if (editing) {
-        self.sortButton.hidden = YES;
-    } else {
-        self.sortButton.hidden = NO;
-    }
-    
+    if (self.sortButton != nil) {
+        if (editing) {
+            self.sortButton.hidden = YES;
+        } else {
+            self.sortButton.hidden = NO;
+        }
+    }    
 }
 
 - (void)viewWillAppear:(BOOL)animated

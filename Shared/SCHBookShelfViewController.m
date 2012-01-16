@@ -301,6 +301,8 @@ typedef enum
         if ([self.profileItem.AppProfile.ShowListView boolValue] == YES) {
             [self changeToListView:nil];
         }
+    } else {
+        self.navigationItem.title = NSLocalizedString(@"My eBooks", @"Sample bookshelf title");
     }
     
     // Always force a sync if we are on the sample bookshelf
