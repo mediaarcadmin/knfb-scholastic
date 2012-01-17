@@ -19,7 +19,7 @@
 @property (nonatomic, retain) IBOutlet UIButton *loginButton;
 @property (nonatomic, retain) IBOutlet UIButton *previewButton;
 @property (nonatomic, retain) IBOutlet UIActivityIndicatorView *spinner;
-@property (nonatomic, assign) IBOutlet UILabel *promptLabel;
+@property (nonatomic, retain) IBOutlet UILabel *promptLabel;
 
 - (IBAction)loginButtonAction:(id)sender;
 - (IBAction)previewButtonAction:(id)sender;
