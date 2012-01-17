@@ -53,12 +53,17 @@ extern NSInteger const kSCHAuthenticationManagerOfflineError;
 - (void)authenticateWithUser:(NSString *)userName 
                     password:(NSString *)password
                 successBlock:(SCHAuthenticationSuccessBlock)successBlock
-                failureBlock:(SCHAuthenticationFailureBlock)failureBlock;
+                failureBlock:(SCHAuthenticationFailureBlock)failureBlock
+ waitUntilVersionCheckIsDone:(BOOL)wait;
 
 // authenticateWithSuccessBlock:failureBlock: is effectively re-entrant
 // success and failure blocks are nested if authentication is already taking place
 - (void)authenticateWithSuccessBlock:(SCHAuthenticationSuccessBlock)successBlock
                         failureBlock:(SCHAuthenticationFailureBlock)failureBlock;
+
+- (void)authenticateWithSuccessBlock:(SCHAuthenticationSuccessBlock)successBlock
+                        failureBlock:(SCHAuthenticationFailureBlock)failureBlock
+         waitUntilVersionCheckIsDone:(BOOL)wait;
 
 - (void)deregisterWithSuccessBlock:(SCHDrmDeregistrationSuccessBlock)successBlock
                       failureBlock:(SCHDrmDeregistrationFailureBlock)failureBlock;

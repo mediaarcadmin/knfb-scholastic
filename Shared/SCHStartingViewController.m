@@ -90,7 +90,7 @@ static const NSTimeInterval kSCHStartingViewControllerNonForcedAlertInterval = (
 
 - (void)createInitialNavigationControllerStack
 {
-    if ([[SCHAuthenticationManager sharedAuthenticationManager] hasUsernameAndPassword]) {
+    if ([[SCHAuthenticationManager sharedAuthenticationManager] hasUsernameAndPassword] && [[SCHSyncManager sharedSyncManager] havePerformedFirstSyncUpToBooks]) {
         if (![self bookshelfSetupRequired]) {
             [self pushCurrentProfileAnimated:NO];
         }
@@ -203,6 +203,7 @@ static const NSTimeInterval kSCHStartingViewControllerNonForcedAlertInterval = (
     [super viewDidAppear:animated];
     
     if ([[SCHAuthenticationManager sharedAuthenticationManager] hasUsernameAndPassword] &&
+        [[SCHSyncManager sharedSyncManager] havePerformedFirstSyncUpToBooks] &&
         [self bookshelfSetupRequired]) {
         
         // Start the sync in case they have been set up since last sync
@@ -817,7 +818,8 @@ static const NSTimeInterval kSCHStartingViewControllerNonForcedAlertInterval = (
                                                                                 } else {
                                                                                     failed(error);
                                                                                 }
-                                                                            }];    
+                                                                            }
+                                                             waitUntilVersionCheckIsDone:YES];    
         }
     };
     

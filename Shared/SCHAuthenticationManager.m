@@ -166,6 +166,7 @@ NSTimeInterval const kSCHAuthenticationManagerSecondsInAMinute = 60.0;
                     password:(NSString *)password
                 successBlock:(SCHAuthenticationSuccessBlock)successBlock
                 failureBlock:(SCHAuthenticationFailureBlock)failureBlock
+ waitUntilVersionCheckIsDone:(BOOL)wait
 {
     
     if (![NSThread isMainThread]) {
@@ -173,7 +174,8 @@ NSTimeInterval const kSCHAuthenticationManagerSecondsInAMinute = 60.0;
             [self authenticateWithUser:userName 
                               password:password 
                           successBlock:successBlock 
-                          failureBlock:failureBlock];
+                          failureBlock:failureBlock
+           waitUntilVersionCheckIsDone:wait];
         });
         return;
     }
@@ -211,7 +213,8 @@ NSTimeInterval const kSCHAuthenticationManagerSecondsInAMinute = 60.0;
                                            error:nil];
                 
                 [self authenticateWithSuccessBlock:aSuccessBlock
-                                      failureBlock:aFailureBlock];
+                                      failureBlock:aFailureBlock
+                       waitUntilVersionCheckIsDone:wait];
                 
             } else {
                 NSError *error = [NSError errorWithDomain:kSCHAuthenticationManagerErrorDomain 
@@ -497,9 +500,32 @@ NSTimeInterval const kSCHAuthenticationManagerSecondsInAMinute = 60.0;
     }
 }
 
+
+
 - (void)authenticateWithSuccessBlock:(SCHAuthenticationSuccessBlock)successBlock
                         failureBlock:(SCHAuthenticationFailureBlock)failureBlock;
+{
+    [self authenticateWithSuccessBlock:successBlock failureBlock:failureBlock waitUntilVersionCheckIsDone:NO];
+}
+
+- (void)authenticateWithSuccessBlock:(SCHAuthenticationSuccessBlock)successBlock
+                        failureBlock:(SCHAuthenticationFailureBlock)failureBlock
+         waitUntilVersionCheckIsDone:(BOOL)wait
 {    
+    
+    SCHVersionDownloadManagerAppVersionState appVersionState = [[SCHVersionDownloadManager sharedVersionManager] appVersionState];
+    
+    if (wait && (appVersionState == SCHVersionDownloadManagerAppVersionStatePendingCheck)) {
+        __block SCHAuthenticationManager *weakSelf = self;
+
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{
+            [[[SCHVersionDownloadManager sharedVersionManager] versionDownloadQueue] waitUntilAllOperationsAreFinished];
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [weakSelf authenticateWithSuccessBlock:successBlock failureBlock:failureBlock waitUntilVersionCheckIsDone:NO];
+            });
+        });
+        return;
+    }
     
     if (![NSThread isMainThread]) {
         dispatch_async(dispatch_get_main_queue(), ^{
@@ -823,14 +849,6 @@ NSTimeInterval const kSCHAuthenticationManagerSecondsInAMinute = 60.0;
 - (void)authenticationDidSucceedWithOfflineMode:(SCHAuthenticationManagerConnectivityMode)connectivityMode
 {
     self.authenticating = NO;
-    
-    SCHVersionDownloadManagerAppVersionState appVersionState = [[SCHVersionDownloadManager sharedVersionManager] appVersionState];
-
-    if (appVersionState == SCHVersionDownloadManagerAppVersionStatePendingCheck) {
-        connectivityMode = SCHAuthenticationManagerConnectivityModeOfflineAwaitingAppVersion;
-    } else if (appVersionState == SCHVersionDownloadManagerAppVersionStateOutdatedRequiresForcedUpdate) {
-        connectivityMode = SCHAuthenticationManagerConnectivityModeOfflineOutdatedAppVersionRequiringUpdate;        
-    }
     
     if (self.authenticationSuccessBlock) {
         SCHAuthenticationSuccessBlock handler = Block_copy(self.authenticationSuccessBlock);

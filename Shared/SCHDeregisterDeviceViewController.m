@@ -188,9 +188,11 @@ static const CGFloat kDeregisterContentHeightLandscape = 380;
                                                                                      userInfo:[NSDictionary dictionaryWithObject:NSLocalizedString(@"You are in offline mode, you must be in online mode to deregister", @"") 
                                                                                                                           forKey:NSLocalizedDescriptionKey]]];
                         }
-                    } failureBlock:^(NSError *error){
-                        [weakSelf deregisterFailedAuthentication:error];
-                    }];
+                    } 
+                                                                                            failureBlock:^(NSError *error){
+                                                                                                [weakSelf deregisterFailedAuthentication:error];
+                                                                                            }
+                                                                             waitUntilVersionCheckIsDone:YES];
                 }                
             }    
         }];

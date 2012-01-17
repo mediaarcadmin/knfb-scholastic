@@ -22,6 +22,7 @@
 #import "SCHPopulateDataStore.h"
 #import "SCHAppContentProfileItem.h"
 #import "SCHAuthenticationManager.h"
+#import "SCHVersionDownloadManager.h"
 
 // Constants
 NSString * const SCHSyncManagerDidCompleteNotification = @"SCHSyncManagerDidCompleteNotification";
@@ -127,7 +128,12 @@ static NSUInteger const kSCHSyncManagerMaximumFailureRetries = 3;
         [[NSNotificationCenter defaultCenter] addObserver:self 
                                                  selector:@selector(updateAnnotationSync) 
                                                      name:SCHContentSyncComponentDidCompleteNotification 
-                                                   object:nil];	        
+                                                   object:nil];	    
+        
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(kickQueue)
+                                                     name:SCHVersionDownloadManagerCompletedNotification 
+                                                   object:nil];
 	}
 	
 	return self;

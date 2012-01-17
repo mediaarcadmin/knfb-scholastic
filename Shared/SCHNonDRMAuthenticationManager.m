@@ -20,6 +20,13 @@
 #pragma - methods
 
 - (void)authenticateWithSuccessBlock:(SCHAuthenticationSuccessBlock)successBlock
+                        failureBlock:(SCHAuthenticationFailureBlock)failureBlock
+         waitUntilVersionCheckIsDone:(BOOL)wait
+{
+    [self authenticateWithSuccessBlock:successBlock failureBlock:failureBlock];
+}
+
+- (void)authenticateWithSuccessBlock:(SCHAuthenticationSuccessBlock)successBlock
                         failureBlock:(SCHAuthenticationFailureBlock)failureBlock;
 {    
     if (![NSThread isMainThread]) {
