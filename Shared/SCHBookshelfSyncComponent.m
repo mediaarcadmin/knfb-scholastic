@@ -388,24 +388,35 @@ NSString * const SCHBookshelfSyncComponentDidFailNotification = @"SCHBookshelfSy
 			break;			
 		}
 		
-        SCHBookIdentifier *webBookIdentifier = [[SCHBookIdentifier alloc] initWithObject:webItem];
+        SCHBookIdentifier *webBookIdentifier = nil;
+        if ([webItem objectForKey:kSCHLibreAccessWebServiceContentIdentifier] == [NSNull null] ||
+            [webItem objectForKey:kSCHLibreAccessWebServiceDRMQualifier] == [NSNull null]) {
+            webBookIdentifier = (id)[NSNull null];
+        } else {
+            webBookIdentifier = [[SCHBookIdentifier alloc] initWithObject:webItem];
+        }
         SCHBookIdentifier *localBookIdentifier = localItem.bookIdentifier;
         
-		switch ([webBookIdentifier compare:localBookIdentifier]) {
-			case NSOrderedSame:
-				[self syncContentMetadataItem:webItem withContentMetadataItem:localItem];
-				webItem = nil;
-				localItem = nil;
-				break;
-			case NSOrderedAscending:
-				[creationPool addObject:webItem];
-				webItem = nil;
-				break;
-			case NSOrderedDescending:
-				[deletePool addObject:localItem];                
-				localItem = nil;
-				break;			
-		}		
+        if ((id)webBookIdentifier == [NSNull null]) {
+            // ignore any items with no ID
+            webItem = nil;
+        } else {
+            switch ([webBookIdentifier compare:localBookIdentifier]) {
+                case NSOrderedSame:
+                    [self syncContentMetadataItem:webItem withContentMetadataItem:localItem];
+                    webItem = nil;
+                    localItem = nil;
+                    break;
+                case NSOrderedAscending:
+                    [creationPool addObject:webItem];
+                    webItem = nil;
+                    break;
+                case NSOrderedDescending:
+                    [deletePool addObject:localItem];                
+                    localItem = nil;
+                    break;			
+            }		
+		}
 		
         [webBookIdentifier release], webBookIdentifier = nil;
 

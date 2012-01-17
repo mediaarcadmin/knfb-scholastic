@@ -862,62 +862,61 @@ static SCHDictionaryDownloadManager *sharedManager = nil;
 
 - (void)checkIfDictionaryUpdateNeeded
 {
-    if ([sharedManager.wifiReach currentReachabilityStatus] == ReachableViaWiFi) {
-        if (!self.isProcessing || [self stateIsWaitingForUserInteraction]) {
-            SCHDictionaryProcessingState state = [self dictionaryProcessingState];
+    
+    if (!self.isProcessing  || [self stateIsWaitingForUserInteraction]) {
+        SCHDictionaryProcessingState state = [self dictionaryProcessingState];
+        
+        if (state == SCHDictionaryProcessingStateNotEnoughFreeSpaceError) {
+            [self threadSafeUpdateDictionaryState:SCHDictionaryProcessingStateUserSetup]; // wait for user input but don't delete
+        } else if (state == SCHDictionaryProcessingStateError || 
+                   state == SCHDictionaryProcessingStateDeleting ||
+                   state == SCHDictionaryProcessingStateDownloadError ||
+                   state == SCHDictionaryProcessingStateUnableToOpenZipError ||
+                   state == SCHDictionaryProcessingStateUnZipFailureError ||
+                   state == SCHDictionaryProcessingStateParseError) {
+            [self deleteDictionaryFileWithCompletionBlock:^{
+                [self threadSafeUpdateDictionaryState:SCHDictionaryProcessingStateUserSetup]; // wait for user input after a delete
+            }];
+        } else if (state == SCHDictionaryProcessingStateUnexpectedConnectivityFailureError) {
+            [self threadSafeUpdateDictionaryState:SCHDictionaryProcessingStateNeedsManifest]; // Don't delete the existing files & attempt to restart
+        } else if (state == SCHDictionaryProcessingStateReady) {
             
-            if (state == SCHDictionaryProcessingStateNotEnoughFreeSpaceError) {
-                [self threadSafeUpdateDictionaryState:SCHDictionaryProcessingStateUserSetup]; // wait for user input but don't delete
-            } else if (state == SCHDictionaryProcessingStateError || 
-                       state == SCHDictionaryProcessingStateDeleting ||
-                       state == SCHDictionaryProcessingStateDownloadError ||
-                       state == SCHDictionaryProcessingStateUnableToOpenZipError ||
-                       state == SCHDictionaryProcessingStateUnZipFailureError ||
-                       state == SCHDictionaryProcessingStateParseError) {
-                [self deleteDictionaryFileWithCompletionBlock:^{
-                    [self threadSafeUpdateDictionaryState:SCHDictionaryProcessingStateUserSetup]; // wait for user input after a delete
-                }];
-            } else if (state == SCHDictionaryProcessingStateUnexpectedConnectivityFailureError) {
-                [self threadSafeUpdateDictionaryState:SCHDictionaryProcessingStateNeedsManifest]; // Don't delete the existing files & attempt to restart
-            } else if (state == SCHDictionaryProcessingStateReady) {
+            NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+            
+            // check to see if we need to do an update
+            BOOL doUpdate = NO;
+            
+            NSDate *lastPrefUpdate = [defaults objectForKey:@"lastDictionaryUpdateDate"];
+            NSDate *currentDate = [NSDate date];
+            
+            // if there's no default, set the current date
+            if (lastPrefUpdate == nil) {
+                [defaults setObject:currentDate forKey:@"lastDictionaryUpdateDate"];
+                [defaults synchronize];
+                doUpdate = YES;
+            } else {
+
+                // have we updated in the last 24 hours?
+                NSDate *updateAfter = [lastPrefUpdate dateByAddingTimeInterval:86400.0];
                 
-                NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-                
-                // check to see if we need to do an update
-                BOOL doUpdate = NO;
-                
-                NSDate *lastPrefUpdate = [defaults objectForKey:@"lastDictionaryUpdateDate"];
-                NSDate *currentDate = [NSDate date];
-                
-                // if there's no default, set the current date
-                if (lastPrefUpdate == nil) {
-                    [defaults setObject:currentDate forKey:@"lastDictionaryUpdateDate"];
-                    [defaults synchronize];
+                if ([updateAfter compare:currentDate] == NSOrderedAscending) {
                     doUpdate = YES;
-                } else {
-                    
-                    // have we updated in the last 24 hours?
-                    NSDate *updateAfter = [lastPrefUpdate dateByAddingTimeInterval:86400.0];
-                    
-                    if ([updateAfter compare:currentDate] == NSOrderedAscending) {
-                        doUpdate = YES;
-                        [defaults setObject:currentDate forKey:@"lastDictionaryUpdateDate"];
-                        [defaults synchronize];					
-                    }
-                }		
-                
-                if (doUpdate) {
-                    NSLog(@"Dictionary needs an update check. %g secs since last check\n", [currentDate timeIntervalSinceDate:lastPrefUpdate]);
-                    //fprintf(stderr, "Dictionary needs an update check. %g secs since last check\n", [currentDate timeIntervalSinceDate:lastPrefUpdate]);
-                    [self threadSafeUpdateDictionaryState:SCHDictionaryProcessingStateNeedsManifest];
-                } else {
-                    NSLog(@"Dictionary does not need an update check. %g secs since last check\n", [currentDate timeIntervalSinceDate:lastPrefUpdate]);
-                    //fprintf(stderr, "Dictionary does not need an update check. %g secs since last check\n", [currentDate timeIntervalSinceDate:lastPrefUpdate]);
+                    [defaults setObject:currentDate forKey:@"lastDictionaryUpdateDate"];
+                    [defaults synchronize];					
                 }
+            }		
+                        
+            if (doUpdate) {
+                NSLog(@"Dictionary needs an update check. %g secs since last check\n", [currentDate timeIntervalSinceDate:lastPrefUpdate]);
+                //fprintf(stderr, "Dictionary needs an update check. %g secs since last check\n", [currentDate timeIntervalSinceDate:lastPrefUpdate]);
+                [self threadSafeUpdateDictionaryState:SCHDictionaryProcessingStateNeedsManifest];
+            } else {
+                NSLog(@"Dictionary does not need an update check. %g secs since last check\n", [currentDate timeIntervalSinceDate:lastPrefUpdate]);
+                //fprintf(stderr, "Dictionary does not need an update check. %g secs since last check\n", [currentDate timeIntervalSinceDate:lastPrefUpdate]);
             }
-            
-            [self processDictionary];
         }
+        
+        [self processDictionary];
     }
 }
 
