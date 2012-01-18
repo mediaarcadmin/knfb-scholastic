@@ -253,7 +253,7 @@ static NSTimeInterval const kSCHVersionDownloadManagerVersionCheckTimeout = 60 *
         self.startTimer = nil; 
     } 
     
-    NSLog(@"********* Starting timer...");
+    NSLog(@"********* Starting version download timer...");
     if (immediately) {
         [self process];
     } else {
@@ -322,11 +322,11 @@ static NSTimeInterval const kSCHVersionDownloadManagerVersionCheckTimeout = 60 *
     }
         
     if ([self.versionDownloadQueue operationCount]) {
-        NSLog(@"Trying to process a new operation whilst there are remaining operations");
+        NSLog(@"Trying to process a new Version operation whilst there are remaining operations");
         [self.versionDownloadQueue cancelAllOperations];
     }
 	
-	NSLog(@"**** Calling process with state %d...", self.state);
+	NSLog(@"**** Calling process version download with state %d...", self.state);
     
 	switch (self.state) {
         case SCHVersionDownloadManagerProcessingStateUnexpectedConnectivityFailureError:

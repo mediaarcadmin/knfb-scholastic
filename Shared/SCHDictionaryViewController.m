@@ -94,11 +94,9 @@
     
     [self.topShadow setImage:[UIImage imageNamed:@"reading-view-top-shadow.png"]];
 
-    if ([[SCHDictionaryDownloadManager sharedDownloadManager] dictionaryProcessingState] != SCHDictionaryProcessingStateReady) {
+    if (![[SCHDictionaryDownloadManager sharedDownloadManager] dictionaryIsAvailable]) {
         [self.contentView addSubview:self.downloadProgressView];
-        
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(setUserInterfaceFromState) name:kSCHDictionaryStateChange object:nil];
-
         [self setUserInterfaceFromState];
         
     } else {
@@ -221,7 +219,13 @@
     
     self.leftBarButtonItemContainer.hidden = YES;
     
-    if (!wifiAvailable) {
+    // check to see if we're in a state that needs wifi to proceed
+    // if so, notify the user
+    if (!wifiAvailable && 
+        (state == SCHDictionaryProcessingStateNeedsDownload ||
+         state == SCHDictionaryProcessingStateManifestVersionCheck ||
+         state == SCHDictionaryProcessingStateNeedsManifest) 
+        ) {
         self.bottomLabel.text = NSLocalizedString(@"The dictionary download has paused because you do not have a Wi-Fi connection. Please connect to Wi-Fi to continue the download.", nil);
         [self.activityIndicator stopAnimating];
         self.progressBar.hidden = YES;
