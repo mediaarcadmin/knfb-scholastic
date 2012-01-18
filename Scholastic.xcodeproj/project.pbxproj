@@ -1378,6 +1378,12 @@
 		52EF570A12ED977C00E374F7 /* NSManagedObjectContext+Extensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 52EF570912ED977C00E374F7 /* NSManagedObjectContext+Extensions.m */; };
 		52EF579712EDBE6E00E374F7 /* SFHFKeychainUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 52EF579612EDBE6E00E374F7 /* SFHFKeychainUtils.m */; };
 		52F15A1F1371A2CA0073941E /* SCHBookAnnotations.m in Sources */ = {isa = PBXBuildFile; fileRef = 52F15A1E1371A2CA0073941E /* SCHBookAnnotations.m */; };
+		52FCCF3E14C6FDEB008C2626 /* SCHStoriaWelcomeTwoViewController~ipad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 52FCCF3D14C6FDEB008C2626 /* SCHStoriaWelcomeTwoViewController~ipad.xib */; };
+		52FCCF3F14C6FDEB008C2626 /* SCHStoriaWelcomeTwoViewController~ipad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 52FCCF3D14C6FDEB008C2626 /* SCHStoriaWelcomeTwoViewController~ipad.xib */; };
+		52FCCF4114C6FE71008C2626 /* storia-preview-two~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = 52FCCF4014C6FE71008C2626 /* storia-preview-two~ipad.png */; };
+		52FCCF4214C6FE71008C2626 /* storia-preview-two~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = 52FCCF4014C6FE71008C2626 /* storia-preview-two~ipad.png */; };
+		52FCCF4514C6FF5B008C2626 /* SCHStoriaWelcomeTwoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 52FCCF4414C6FF5B008C2626 /* SCHStoriaWelcomeTwoViewController.m */; };
+		52FCCF4614C6FF5B008C2626 /* SCHStoriaWelcomeTwoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 52FCCF4414C6FF5B008C2626 /* SCHStoriaWelcomeTwoViewController.m */; };
 		7D3F313714069A5200C6F445 /* libcss.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C947D583133B9C0100FB4404 /* libcss.a */; };
 		7D3F313814069A5200C6F445 /* libEucalyptusBase.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C947D575133B9C0100FB4404 /* libEucalyptusBase.a */; };
 		7D3F313914069A5200C6F445 /* libEucalyptusCSS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C947D579133B9C0100FB4404 /* libEucalyptusCSS.a */; };
@@ -2919,6 +2925,10 @@
 		52EF579612EDBE6E00E374F7 /* SFHFKeychainUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SFHFKeychainUtils.m; sourceTree = "<group>"; };
 		52F15A1D1371A2CA0073941E /* SCHBookAnnotations.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHBookAnnotations.h; path = Shared/SCHBookAnnotations.h; sourceTree = "<group>"; };
 		52F15A1E1371A2CA0073941E /* SCHBookAnnotations.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHBookAnnotations.m; path = Shared/SCHBookAnnotations.m; sourceTree = "<group>"; };
+		52FCCF3D14C6FDEB008C2626 /* SCHStoriaWelcomeTwoViewController~ipad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = "SCHStoriaWelcomeTwoViewController~ipad.xib"; path = "Shared/SCHStoriaWelcomeTwoViewController~ipad.xib"; sourceTree = "<group>"; };
+		52FCCF4014C6FE71008C2626 /* storia-preview-two~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "storia-preview-two~ipad.png"; path = "Resources/UIAssets/storia-preview-two~ipad.png"; sourceTree = "<group>"; };
+		52FCCF4314C6FF5B008C2626 /* SCHStoriaWelcomeTwoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHStoriaWelcomeTwoViewController.h; path = Shared/SCHStoriaWelcomeTwoViewController.h; sourceTree = "<group>"; };
+		52FCCF4414C6FF5B008C2626 /* SCHStoriaWelcomeTwoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHStoriaWelcomeTwoViewController.m; path = Shared/SCHStoriaWelcomeTwoViewController.m; sourceTree = "<group>"; };
 		8D1107310486CEB800E47090 /* Scholastic-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Scholastic-Info.plist"; plistStructureDefinitionIdentifier = "com.apple.xcode.plist.structure-definition.iphone.info-plist"; sourceTree = "<group>"; };
 		A33477FB13DF206000768DC6 /* 9780545287012_r1.HalloweenParade.xps */ = {isa = PBXFileReference; lastKnownFileType = file; name = 9780545287012_r1.HalloweenParade.xps; path = "Shared/Debug Books/9780545287012_r1.HalloweenParade.xps"; sourceTree = "<group>"; };
 		A33477FC13DF206000768DC6 /* 9780545289726_r1.OlliesNewTricks.xps */ = {isa = PBXFileReference; lastKnownFileType = file; name = 9780545289726_r1.OlliesNewTricks.xps; path = "Shared/Debug Books/9780545289726_r1.OlliesNewTricks.xps"; sourceTree = "<group>"; };
@@ -5635,6 +5645,8 @@
 				F837018413BB2B7A009B280D /* SCHBookShelfTableViewCell_iPhone.xib */,
 				C9C3FAB814B85F4100757038 /* SCHStoriaWelcomeViewController.h */,
 				C9C3FAB914B85F4200757038 /* SCHStoriaWelcomeViewController.m */,
+				52FCCF4314C6FF5B008C2626 /* SCHStoriaWelcomeTwoViewController.h */,
+				52FCCF4414C6FF5B008C2626 /* SCHStoriaWelcomeTwoViewController.m */,
 			);
 			name = Bookshelves;
 			sourceTree = "<group>";
@@ -5789,6 +5801,7 @@
 				F81CFDF914B4910000F552A9 /* storia-preview.png */,
 				F81CFDFA14B4910000F552A9 /* storia-preview@2x.png */,
 				F81CFDFB14B4910000F552A9 /* storia-preview~ipad.png */,
+				52FCCF4014C6FE71008C2626 /* storia-preview-two~ipad.png */,
 				F88FA50114AC9F6E00AB1911 /* storiatoolbar.png */,
 				F88FA50214AC9F6E00AB1911 /* storiatoolbar~ipad.png */,
 				C9703A9113E994BA0003C4D8 /* bookshelf-topright-shadow~ipad.png */,
@@ -6351,6 +6364,7 @@
 			isa = PBXGroup;
 			children = (
 				C9C3FABA14B85F4300757038 /* SCHStoriaWelcomeViewController~ipad.xib */,
+				52FCCF3D14C6FDEB008C2626 /* SCHStoriaWelcomeTwoViewController~ipad.xib */,
 				F864333513813B0100BEB8EB /* SCHBookShelfViewController_iPad.h */,
 				F864333613813B0100BEB8EB /* SCHBookShelfViewController_iPad.m */,
 				F87B6E2B1398ED65005CC0FA /* SCHBookShelfSortPopoverTableView.h */,
@@ -7525,6 +7539,8 @@
 				C9C3F9E814B5E87000757038 /* storia-startviewcontroller-static-landscape~ipad.jpg in Resources */,
 				C9C3F9EA14B5E87000757038 /* storia-startviewcontroller-static-portrait~ipad.jpg in Resources */,
 				C9C3FABD14B85F4400757038 /* SCHStoriaWelcomeViewController~ipad.xib in Resources */,
+				52FCCF3E14C6FDEB008C2626 /* SCHStoriaWelcomeTwoViewController~ipad.xib in Resources */,
+				52FCCF4114C6FE71008C2626 /* storia-preview-two~ipad.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -8230,6 +8246,8 @@
 				C9C3F9E914B5E87000757038 /* storia-startviewcontroller-static-landscape~ipad.jpg in Resources */,
 				C9C3F9EB14B5E87000757038 /* storia-startviewcontroller-static-portrait~ipad.jpg in Resources */,
 				C9C3FABE14B85F4400757038 /* SCHStoriaWelcomeViewController~ipad.xib in Resources */,
+				52FCCF3F14C6FDEB008C2626 /* SCHStoriaWelcomeTwoViewController~ipad.xib in Resources */,
+				52FCCF4214C6FE71008C2626 /* storia-preview-two~ipad.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -8574,6 +8592,7 @@
 				5226C70514A489CB00307634 /* SCHVersionDownloadManager.m in Sources */,
 				5226C70714A489CB00307634 /* SCHVersionManifestOperation.m in Sources */,
 				5226C70B14A48C6100307634 /* SCHVersionManifestEntry.m in Sources */,
+				52FCCF4514C6FF5B008C2626 /* SCHStoriaWelcomeTwoViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -8963,6 +8982,7 @@
 				5226C70614A489CB00307634 /* SCHVersionDownloadManager.m in Sources */,
 				5226C70814A489CB00307634 /* SCHVersionManifestOperation.m in Sources */,
 				5226C70C14A48C6100307634 /* SCHVersionManifestEntry.m in Sources */,
+				52FCCF4614C6FF5B008C2626 /* SCHStoriaWelcomeTwoViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

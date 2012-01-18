@@ -179,6 +179,7 @@ static NSString* const prModelCertFilename = @"iphonecert.dat";
     NSDictionary *appDefaults = [NSDictionary dictionaryWithObjectsAndKeys:
 								 [NSNumber numberWithBool:NO], kSCHUserDefaultsPerformedFirstSyncUpToBooks,
 								 [NSNumber numberWithBool:YES], kSCHUserDefaultsSpaceSaverMode,
+                                 [NSNumber numberWithInteger:0], kSCHUserDefaultsWelcomeViewShowCount,
                                  nil];
     
 	[[NSUserDefaults standardUserDefaults] registerDefaults:appDefaults];

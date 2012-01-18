@@ -34,9 +34,12 @@
 #import "Reachability.h"
 #import "BITModalSheetController.h"
 #import "SCHStoriaWelcomeViewController.h"
+#import "SCHStoriaWelcomeTwoViewController.h"
+#import "SCHUserDefaults.h"
 
 static NSInteger const kSCHBookShelfViewControllerGridCellHeightPortrait = 138;
 static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 131;
+static NSInteger const kSCHBookShelfViewControllerWelcomeShowMaximumCount = 2;
 
 NSString * const kSCHBookShelfErrorDomain  = @"com.knfb.scholastic.BookShelfErrorDomain";
 
@@ -59,6 +62,8 @@ typedef enum
 @property (nonatomic, assign) BOOL shouldWaitForCellsToLoad;
 @property (nonatomic, retain) BITModalSheetController *welcomePopoverController;
 
+- (void)showWelcomeView;
+- (void)showWelcomeTwoView;
 - (void)setupAssetsForOrientation:(UIInterfaceOrientation)orientation;
 - (void)updateTheme;
 - (CGSize)cellSize;
@@ -343,33 +348,80 @@ typedef enum
 {
     [super viewDidAppear:animated];
     self.shouldWaitForCellsToLoad = NO;
+    NSInteger currentWelcomeShowCount = [[NSUserDefaults standardUserDefaults] integerForKey:kSCHUserDefaultsWelcomeViewShowCount];
     
-    if (self.showWelcome) {
-        SCHStoriaWelcomeViewController *welcomeVC = [[SCHStoriaWelcomeViewController alloc] init];
+    if (self.showWelcome &&
+        currentWelcomeShowCount < kSCHBookShelfViewControllerWelcomeShowMaximumCount) {
+        switch (currentWelcomeShowCount) {
+            case 0:
+                currentWelcomeShowCount++;
+                [self showWelcomeView];        
+                break;
+            case 1:
+                currentWelcomeShowCount++;
+                [self showWelcomeTwoView];        
+                break;
+                
+            default:
+                break;
+        }
         
-        BITModalSheetController *aWelcomePopoverController = [[BITModalSheetController alloc] initWithContentViewController:welcomeVC];
-        [aWelcomePopoverController setContentSize:CGSizeMake(556, 241)];
-        [aWelcomePopoverController setContentOffset:CGPointMake(0, -15)];
-        [aWelcomePopoverController setShouldDismissOutsideContentBounds:YES];
-        
-        __block BITModalSheetController *weakWelcomePopoverController = aWelcomePopoverController;
-        __block SCHBookShelfViewController *weakSelf = self;
-        
-        welcomeVC.closeBlock = ^{
-            [weakWelcomePopoverController dismissSheetAnimated:YES completion:nil];
-            weakSelf.welcomePopoverController = nil;
-        };
-        
-        [welcomeVC release];
-        
-        [aWelcomePopoverController presentSheetInViewController:self animated:YES completion:nil];
-        
-        self.welcomePopoverController = aWelcomePopoverController;
-        
-        [aWelcomePopoverController release];
-        
+        [[NSUserDefaults standardUserDefaults] setInteger:currentWelcomeShowCount
+                                                   forKey:kSCHUserDefaultsWelcomeViewShowCount];
         self.showWelcome = NO;
     }
+}
+
+- (void)showWelcomeView
+{
+    SCHStoriaWelcomeViewController *welcomeVC = [[SCHStoriaWelcomeViewController alloc] init];
+    
+    BITModalSheetController *aWelcomePopoverController = [[BITModalSheetController alloc] initWithContentViewController:welcomeVC];
+    [aWelcomePopoverController setContentSize:CGSizeMake(556, 241)];
+    [aWelcomePopoverController setContentOffset:CGPointMake(0, -15)];
+    [aWelcomePopoverController setShouldDismissOutsideContentBounds:YES];
+    
+    __block BITModalSheetController *weakWelcomePopoverController = aWelcomePopoverController;
+    __block SCHBookShelfViewController *weakSelf = self;
+    
+    welcomeVC.closeBlock = ^{
+        [weakWelcomePopoverController dismissSheetAnimated:YES completion:nil];
+        weakSelf.welcomePopoverController = nil;
+    };
+    
+    [welcomeVC release];
+    
+    [aWelcomePopoverController presentSheetInViewController:self animated:YES completion:nil];
+    
+    self.welcomePopoverController = aWelcomePopoverController;
+    
+    [aWelcomePopoverController release];    
+}
+
+- (void)showWelcomeTwoView
+{
+    SCHStoriaWelcomeTwoViewController *welcomeTwoVC = [[SCHStoriaWelcomeTwoViewController alloc] init];
+    
+    BITModalSheetController *aWelcomePopoverController = [[BITModalSheetController alloc] initWithContentViewController:welcomeTwoVC];
+    [aWelcomePopoverController setContentSize:CGSizeMake(556, 241)];
+    [aWelcomePopoverController setContentOffset:CGPointMake(0, -15)];
+    [aWelcomePopoverController setShouldDismissOutsideContentBounds:YES];
+    
+    __block BITModalSheetController *weakWelcomePopoverController = aWelcomePopoverController;
+    __block SCHBookShelfViewController *weakSelf = self;
+    
+    welcomeTwoVC.closeBlock = ^{
+        [weakWelcomePopoverController dismissSheetAnimated:YES completion:nil];
+        weakSelf.welcomePopoverController = nil;
+    };
+    
+    [welcomeTwoVC release];
+    
+    [aWelcomePopoverController presentSheetInViewController:self animated:YES completion:nil];
+    
+    self.welcomePopoverController = aWelcomePopoverController;
+    
+    [aWelcomePopoverController release];    
 }
 
 - (void)reloadData
