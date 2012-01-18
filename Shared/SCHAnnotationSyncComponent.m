@@ -821,21 +821,26 @@ NSString * const SCHAnnotationSyncComponentCompletedProfileIDs = @"SCHAnnotation
 		id webItemID = [webItem valueForKey:kSCHLibreAccessWebServiceID];
 		id localItemID = [localItem valueForKey:kSCHLibreAccessWebServiceID];
 		
-		switch ([webItemID compare:localItemID]) {
-			case NSOrderedSame:
-				[self syncHighlight:webItem withHighlight:localItem];
-                [self backgroundSave:YES];
-				webItem = nil;
-				localItem = nil;
-				break;
-			case NSOrderedAscending:
-				[creationPool addObject:webItem];
-				webItem = nil;
-				break;
-			case NSOrderedDescending:
-				localItem = nil;
-				break;			
-		}		
+        if ((id)webItemID == [NSNull null]) {
+            // ignore any items with no ID
+            webItem = nil;
+        } else {                
+            switch ([webItemID compare:localItemID]) {
+                case NSOrderedSame:
+                    [self syncHighlight:webItem withHighlight:localItem];
+                    [self backgroundSave:YES];
+                    webItem = nil;
+                    localItem = nil;
+                    break;
+                case NSOrderedAscending:
+                    [creationPool addObject:webItem];
+                    webItem = nil;
+                    break;
+                case NSOrderedDescending:
+                    localItem = nil;
+                    break;			
+            }		
+        }
 		
 		if (webItem == nil) {
 			webItem = [webEnumerator nextObject];
@@ -987,21 +992,26 @@ NSString * const SCHAnnotationSyncComponentCompletedProfileIDs = @"SCHAnnotation
 		id webItemID = [webItem valueForKey:kSCHLibreAccessWebServiceID];
 		id localItemID = [localItem valueForKey:kSCHLibreAccessWebServiceID];
 		
-		switch ([webItemID compare:localItemID]) {
-			case NSOrderedSame:
-				[self syncNote:webItem withNote:localItem];
-                [self backgroundSave:YES];
-				webItem = nil;
-				localItem = nil;
-				break;
-			case NSOrderedAscending:
-				[creationPool addObject:webItem];
-				webItem = nil;
-				break;
-			case NSOrderedDescending:
-				localItem = nil;
-				break;			
-		}		
+        if ((id)webItemID == [NSNull null]) {
+            // ignore any items with no ID
+            webItem = nil;
+        } else {        
+            switch ([webItemID compare:localItemID]) {
+                case NSOrderedSame:
+                    [self syncNote:webItem withNote:localItem];
+                    [self backgroundSave:YES];
+                    webItem = nil;
+                    localItem = nil;
+                    break;
+                case NSOrderedAscending:
+                    [creationPool addObject:webItem];
+                    webItem = nil;
+                    break;
+                case NSOrderedDescending:
+                    localItem = nil;
+                    break;			
+            }		
+        }
 		
 		if (webItem == nil) {
 			webItem = [webEnumerator nextObject];
@@ -1123,21 +1133,26 @@ NSString * const SCHAnnotationSyncComponentCompletedProfileIDs = @"SCHAnnotation
 		id webItemID = [webItem valueForKey:kSCHLibreAccessWebServiceID];
 		id localItemID = [localItem valueForKey:kSCHLibreAccessWebServiceID];
 		
-		switch ([webItemID compare:localItemID]) {
-			case NSOrderedSame:
-				[self syncBookmark:webItem withBookmark:localItem];
-                [self backgroundSave:YES];
-				webItem = nil;
-				localItem = nil;
-				break;
-			case NSOrderedAscending:
-				[creationPool addObject:webItem];
-				webItem = nil;
-				break;
-			case NSOrderedDescending:
-				localItem = nil;
-				break;			
-		}		
+        if ((id)webItemID == [NSNull null]) {
+            // ignore any items with no ID
+            webItem = nil;
+        } else {        
+            switch ([webItemID compare:localItemID]) {
+                case NSOrderedSame:
+                    [self syncBookmark:webItem withBookmark:localItem];
+                    [self backgroundSave:YES];
+                    webItem = nil;
+                    localItem = nil;
+                    break;
+                case NSOrderedAscending:
+                    [creationPool addObject:webItem];
+                    webItem = nil;
+                    break;
+                case NSOrderedDescending:
+                    localItem = nil;
+                    break;			
+            }		
+        }
 		
 		if (webItem == nil) {
 			webItem = [webEnumerator nextObject];

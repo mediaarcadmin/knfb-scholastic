@@ -90,7 +90,7 @@ static const NSTimeInterval kSCHStartingViewControllerNonForcedAlertInterval = (
 
 - (void)createInitialNavigationControllerStack
 {
-    if ([[SCHAuthenticationManager sharedAuthenticationManager] hasUsernameAndPassword]) {
+    if ([[SCHAuthenticationManager sharedAuthenticationManager] hasUsernameAndPassword] && [[SCHSyncManager sharedSyncManager] havePerformedFirstSyncUpToBooks]) {
         if (![self bookshelfSetupRequired]) {
             [self pushCurrentProfileAnimated:NO];
         }
@@ -203,6 +203,7 @@ static const NSTimeInterval kSCHStartingViewControllerNonForcedAlertInterval = (
     [super viewDidAppear:animated];
     
     if ([[SCHAuthenticationManager sharedAuthenticationManager] hasUsernameAndPassword] &&
+        [[SCHSyncManager sharedSyncManager] havePerformedFirstSyncUpToBooks] &&
         [self bookshelfSetupRequired]) {
         
         // Start the sync in case they have been set up since last sync
@@ -735,11 +736,13 @@ static const NSTimeInterval kSCHStartingViewControllerNonForcedAlertInterval = (
         }
         
         if (next) {
-            [self.modalNavigationController setViewControllers:[NSArray arrayWithObject:next] animated:shouldAnimate];
-            
+                        
             if (!self.modalViewController) {
+                [self.modalNavigationController setViewControllers:[NSArray arrayWithObject:next]];
                 [self presentModalViewController:self.modalNavigationController animated:shouldAnimate];
-            }        
+            } else {
+                [self.modalNavigationController setViewControllers:[NSArray arrayWithObject:next] animated:shouldAnimate];
+            }
         } else {
             [self pushCurrentProfileAnimated:YES];
         }
@@ -757,7 +760,10 @@ static const NSTimeInterval kSCHStartingViewControllerNonForcedAlertInterval = (
     BITOperationWithBlocks *setupSequenceCheckConnectivity = [[BITOperationWithBlocks alloc] init];
     setupSequenceCheckConnectivity.syncMain = ^(BITOperationIsCancelledBlock isCancelled, BITOperationFailedBlock failed) {
         if ([[Reachability reachabilityForInternetConnection] isReachable] == NO) {
-            NSError *error = [[[NSError alloc] init] autorelease];
+            NSError *error = [NSError errorWithDomain:nil  
+                                                   code:0  
+                                               userInfo:[NSDictionary dictionaryWithObject:NSLocalizedString(@"An Internet connection is required to sign into your account.", @"")  
+                                                                                    forKey:NSLocalizedDescriptionKey]];  
             failed(error);
         }
     };
@@ -794,22 +800,26 @@ static const NSTimeInterval kSCHStartingViewControllerNonForcedAlertInterval = (
                                                                                     }
                                                                                     [[SCHSyncManager sharedSyncManager] firstSync:YES requireDeviceAuthentication:NO];
                                                                                 } else { 
-                                                                                    NSError *anError = [[[NSError alloc] init] autorelease];
+                                                                                    NSError *anError = [NSError errorWithDomain:kSCHAuthenticationManagerErrorDomain  
+                                                                                                                           code:kSCHAuthenticationManagerOfflineError  
+                                                                                                                       userInfo:[NSDictionary dictionaryWithObject:NSLocalizedString(@"There was a problem checking your username and password. Please try again.", @"")  
+                                                                                                                                                            forKey:NSLocalizedDescriptionKey]];        
                                                                                     failed(anError);
-                                                                                    //[self signInFailedForLoginController:login withError:[NSError errorWithDomain:kSCHAuthenticationManagerErrorDomain  
-                                                                                      //                                                                       code:kSCHAuthenticationManagerOfflineError  
-                                                                                        //                                                                 userInfo:[NSDictionary dictionaryWithObject:NSLocalizedString(@"You are in offline mode, you must be in online mode to login", @"")  
-                                                                                          //                                                                                                    forKey:NSLocalizedDescriptionKey]]];                                                                                         
                                                                                 } 
                                                                             } 
                                                                             failureBlock:^(NSError * error){
                                                                                 if (error == nil) {
-                                                                                    NSError *anError = [[[NSError alloc] init] autorelease];
+                                                                                    NSError *anError = [NSError errorWithDomain:kSCHAuthenticationManagerErrorDomain  
+                                                                                                                           code:kSCHAuthenticationManagerGeneralError  
+                                                                                                                       userInfo:[NSDictionary dictionaryWithObject:NSLocalizedString(@"There was a problem checking your username and password. Please try again.", @"")  
+                                                                                                                                                            forKey:NSLocalizedDescriptionKey]];  
+                                                                                    
                                                                                     failed(anError);
                                                                                 } else {
                                                                                     failed(error);
                                                                                 }
-                                                                            }];    
+                                                                            }
+                                                             waitUntilVersionCheckIsDone:YES];    
         }
     };
     

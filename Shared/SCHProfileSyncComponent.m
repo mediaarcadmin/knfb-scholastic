@@ -321,21 +321,26 @@ NSString * const SCHProfileSyncComponentDidFailNotification = @"SCHProfileSyncCo
 		id webItemID = [webItem valueForKey:kSCHLibreAccessWebServiceID];
 		id localItemID = [localItem valueForKey:kSCHLibreAccessWebServiceID];
 
-		switch ([webItemID compare:localItemID]) {
-			case NSOrderedSame:
-				[self syncProfile:webItem withProfile:localItem];
-				webItem = nil;
-				localItem = nil;
-				break;
-			case NSOrderedAscending:
-				[creationPool addObject:webItem];
-				webItem = nil;
-				break;
-			case NSOrderedDescending:
-				[deletePool addObject:localItem];
-				localItem = nil;
-				break;			
-		}		
+        if ((id)webItemID == [NSNull null]) {
+            // ignore any items with no ID
+            webItem = nil;
+        } else {        
+            switch ([webItemID compare:localItemID]) {
+                case NSOrderedSame:
+                    [self syncProfile:webItem withProfile:localItem];
+                    webItem = nil;
+                    localItem = nil;
+                    break;
+                case NSOrderedAscending:
+                    [creationPool addObject:webItem];
+                    webItem = nil;
+                    break;
+                case NSOrderedDescending:
+                    [deletePool addObject:localItem];
+                    localItem = nil;
+                    break;			
+            }	
+        }
 		
 		if (webItem == nil) {
 			webItem = [webEnumerator nextObject];
