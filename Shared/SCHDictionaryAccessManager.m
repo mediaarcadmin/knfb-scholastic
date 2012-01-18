@@ -101,7 +101,7 @@ static SCHDictionaryAccessManager *sharedManager = nil;
     [super dealloc];
 }
 
-- (void)updateOnReady
+- (void)fetchCSSFromDisk
 {
     self.youngDictionaryCSS = [NSString stringWithContentsOfFile:[[[SCHDictionaryDownloadManager sharedDownloadManager] dictionaryDirectory] stringByAppendingPathComponent:@"YoungDictionary.css"]
                                                         encoding:NSUTF8StringEncoding 
@@ -240,7 +240,7 @@ static SCHDictionaryAccessManager *sharedManager = nil;
     }
     
     if (!self.youngDictionaryCSS) {
-        [self updateOnReady];
+        [self fetchCSSFromDisk];
     }
     
     // fetch the word form from core data
@@ -288,7 +288,7 @@ static SCHDictionaryAccessManager *sharedManager = nil;
     }
     
     if (!self.youngDictionaryCSS) {
-        [self updateOnReady];
+        [self fetchCSSFromDisk];
     }
     
     // if the category isn't YD or OD, return

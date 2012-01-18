@@ -1762,6 +1762,11 @@ static SCHDictionaryDownloadManager *sharedManager = nil;
 - (void)deleteDictionaryFileWithCompletionBlock:(dispatch_block_t)completion
 {
     self.isProcessing = YES;
+
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    [defaults setObject:[NSNumber numberWithBool:NO] forKey:@"dictionaryIsCurrentlyReadable"];
+    [defaults synchronize];
+    
     [self threadSafeUpdateDictionaryState:SCHDictionaryProcessingStateDeleting];
 
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{
