@@ -240,6 +240,11 @@ static SCHDictionaryDownloadManager *sharedManager = nil;
             return;
         }
         
+        if (self.startTimer && [self.startTimer isValid]) {
+			[self.startTimer invalidate];
+			self.startTimer = nil; 
+		} 
+        
 		if ((self.dictionaryDownloadQueue && [self.dictionaryDownloadQueue operationCount]) ) {
 			NSLog(@"Dictionary download needs more time - going into the background.");
 			
