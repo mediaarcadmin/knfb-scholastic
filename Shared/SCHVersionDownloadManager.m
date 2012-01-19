@@ -16,15 +16,11 @@
 NSString * const SCHVersionDownloadManagerCompletedNotification = @"SCHVersionDownloadManagerCompletedNotification";
 NSString * const SCHVersionDownloadManagerCompletionAppVersionState = @"SCHVersionDownloadManagerCompletionAppVersionState";
 
-//static NSTimeInterval const kSCHVersionDownloadManagerVersionCheckTimeout = 60 * 60; // 1 hour
-static NSTimeInterval const kSCHVersionDownloadManagerVersionCheckTimeout = 60 * 5;
-
 #pragma mark - Class Extension
 
 @interface SCHVersionDownloadManager ()
 
 @property (nonatomic, assign, readwrite) SCHVersionDownloadManagerAppVersionState appVersionState;
-@property (nonatomic, retain) NSDate *expireCurrentVersion;
 
 // the background task ID for background processing
 @property (nonatomic, assign) UIBackgroundTaskIdentifier backgroundTask;
@@ -61,7 +57,6 @@ static NSTimeInterval const kSCHVersionDownloadManagerVersionCheckTimeout = 60 *
 
 @synthesize manifestUpdates;
 @synthesize appVersionState;
-@synthesize expireCurrentVersion;
 @synthesize isProcessing;
 @synthesize backgroundTask;
 @synthesize versionDownloadQueue;
@@ -142,13 +137,7 @@ static NSTimeInterval const kSCHVersionDownloadManagerVersionCheckTimeout = 60 *
 #pragma mark - Accessor Methods
 
 - (SCHVersionDownloadManagerAppVersionState)appVersionState
-{
-    if ((appVersionState != SCHVersionDownloadManagerAppVersionStatePendingCheck) &&
-       [self.expireCurrentVersion compare:[NSDate date]] == NSOrderedAscending) {
-        appVersionState = SCHVersionDownloadManagerAppVersionStatePendingCheck;
-        self.expireCurrentVersion = nil;
-    }
-    
+{    
     if (appVersionState == SCHVersionDownloadManagerAppVersionStatePendingCheck) {
         [self checkVersion];
     }
@@ -300,7 +289,6 @@ static NSTimeInterval const kSCHVersionDownloadManagerVersionCheckTimeout = 60 *
 {
     self.state = SCHVersionDownloadManagerProcessingStateCompleted;
     self.appVersionState = SCHVersionDownloadManagerAppVersionStateCurrent;
-    self.expireCurrentVersion = [NSDate dateWithTimeIntervalSinceNow:kSCHVersionDownloadManagerVersionCheckTimeout];
     
     [[NSNotificationCenter defaultCenter] postNotificationName:SCHVersionDownloadManagerCompletedNotification 
                                                         object:nil 
@@ -392,7 +380,6 @@ static NSTimeInterval const kSCHVersionDownloadManagerVersionCheckTimeout = 60 *
             }
             
             self.appVersionState = newState;
-            self.expireCurrentVersion = [NSDate dateWithTimeIntervalSinceNow:kSCHVersionDownloadManagerVersionCheckTimeout];
             
             [[NSNotificationCenter defaultCenter] postNotificationName:SCHVersionDownloadManagerCompletedNotification 
                                                                 object:nil 
