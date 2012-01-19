@@ -48,6 +48,7 @@ NSString * const SCHVersionDownloadManagerCompletionAppVersionState = @"SCHVersi
 
 - (SCHVersionManifestEntry *)nextManifestEntryUpdateForCurrentVersion;
 - (NSString *)appVersion;
+- (void)resetStateForced:(BOOL)forced;
 
 @end
 
@@ -149,6 +150,12 @@ NSString * const SCHVersionDownloadManagerCompletionAppVersionState = @"SCHVersi
 
 - (void)enterBackground
 {
+    // cancel the timer so we can restart when we come to the foreground
+    if (self.startTimer && [self.startTimer isValid]) {
+        [self.startTimer invalidate];
+        self.startTimer = nil; 
+    } 
+
     // if there's already a background monitoring task, then return - the existing one will work
     if (self.backgroundTask && self.backgroundTask != UIBackgroundTaskInvalid) {
         return;
@@ -203,6 +210,8 @@ NSString * const SCHVersionDownloadManagerCompletionAppVersionState = @"SCHVersi
 		self.backgroundTask = UIBackgroundTaskInvalid;
 	}	
 	
+    // we need to perform a fresh check on the version
+    [self resetStateForced:YES];
     [self checkOperatingStateImmediately:NO]; 
 }
 
@@ -287,8 +296,7 @@ NSString * const SCHVersionDownloadManagerCompletionAppVersionState = @"SCHVersi
 
 - (void)handleUnexpectedVersionCheckError
 {
-    self.state = SCHVersionDownloadManagerProcessingStateCompleted;
-    self.appVersionState = SCHVersionDownloadManagerAppVersionStateCurrent;
+    [self resetStateForced:YES];
     
     [[NSNotificationCenter defaultCenter] postNotificationName:SCHVersionDownloadManagerCompletedNotification 
                                                         object:nil 
@@ -408,13 +416,24 @@ NSString * const SCHVersionDownloadManagerCompletionAppVersionState = @"SCHVersi
 
 - (void)checkVersion
 {    
-    if (self.state == SCHVersionDownloadManagerProcessingStateCompleted) {
-        self.state = SCHVersionDownloadManagerProcessingStateNeedsManifest;
-    }
+    [self resetStateForced:NO];
     
     if (!self.isProcessing && (self.state != SCHVersionDownloadManagerProcessingStateFetchingManifest)) {
         [self process];
     }
 }
-         
+
+- (void)resetStateForced:(BOOL)forced
+{
+    // only reset if we were in a completed state
+    if (forced == YES ||
+        self.state == SCHVersionDownloadManagerProcessingStateCompleted) {
+        NSLog(@"Version download manager will re-check version");        
+        self.state = SCHVersionDownloadManagerProcessingStateNeedsManifest;
+        self.appVersionState = SCHVersionDownloadManagerAppVersionStateCurrent;
+
+        [self.versionDownloadQueue cancelAllOperations];        
+    }
+}
+
 @end
