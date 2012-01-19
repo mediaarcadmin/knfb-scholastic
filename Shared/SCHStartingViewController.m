@@ -912,8 +912,8 @@ static const NSTimeInterval kSCHStartingViewControllerNonForcedAlertInterval = (
         
         if (appVersionState == SCHVersionDownloadManagerAppVersionStateOutdatedRequiresForcedUpdate) {
             LambdaAlert *alert = [[LambdaAlert alloc]
-                                  initWithTitle:NSLocalizedString(@"App is out of date", @"")
-                                  message:NSLocalizedString(@"Please update to the latest version", @"")];
+                                  initWithTitle:NSLocalizedString(@"Update Required", @"")
+                                  message:NSLocalizedString(@"Please visit the app store to update Storia. Until you do, you will still be able to read your eBooks, but will not be able to download any new eBooks or synchronize your app.", @"")];
             [alert addButtonWithTitle:NSLocalizedString(@"Update", @"") block:^{
                 [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"http://itunes.apple.com/app/scholastic-ereading-app-the/id491014756?mt=8"]];
                 exit(EXIT_SUCCESS);
@@ -921,49 +921,21 @@ static const NSTimeInterval kSCHStartingViewControllerNonForcedAlertInterval = (
             [alert show];
             [alert release];     
         } else if (appVersionState == SCHVersionDownloadManagerAppVersionStateOutdated) {
-            NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+            LambdaAlert *alert = [[LambdaAlert alloc]
+                                  initWithTitle:NSLocalizedString(@"Update Required", @"")
+                                  message:NSLocalizedString(@"Please visit the app store to update Storia. Until you do, you will still be able to read your eBooks, but will not be able to download any new eBooks or synchronize your app.", @"")];
             
-            // check to see if we need to nag
-            BOOL doNag = NO;
+            __block LambdaAlert *weakAlert = alert;
             
-            NSDate *lastNagDate = [defaults objectForKey:@"lastNonForcedVersionAlertDate"];
-            NSDate *currentDate = [NSDate date];
+            [alert addButtonWithTitle:NSLocalizedString(@"App Store", @"") block:^{
+                [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"http://itunes.apple.com/app/scholastic-ereading-app-the/id491014756?mt=8"]];
+                [weakAlert dismissAnimated:NO]; 
+            }];
             
-            // if there's no default, set the current date
-            if (lastNagDate == nil) {
-                [defaults setObject:currentDate forKey:@"lastNonForcedVersionAlertDate"];
-                [defaults synchronize];
-                doNag = YES;
-            } else {
-                // have we nagged recently?
-                NSDate *nagAfter = [lastNagDate dateByAddingTimeInterval:kSCHStartingViewControllerNonForcedAlertInterval];
-                
-                if ([nagAfter compare:currentDate] == NSOrderedAscending) {
-                    doNag = YES;
-                    [defaults setObject:currentDate forKey:@"lastNonForcedVersionAlertDate"];
-                    [defaults synchronize];					
-                }
-            }		
-            
-            if (doNag) {
-                LambdaAlert *alert = [[LambdaAlert alloc]
-                                      initWithTitle:NSLocalizedString(@"A newer version of the app is available", @"")
-                                      message:NSLocalizedString(@"Would you like to update to the latest version?", @"")];
-                
-                __block LambdaAlert *weakAlert = alert;
-                
-                [alert addButtonWithTitle:NSLocalizedString(@"App Store", @"") block:^{
-                    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"http://itunes.apple.com/app/scholastic-ereading-app-the/id491014756?mt=8"]];
-                    [weakAlert dismissAnimated:NO]; 
-                }];
-                
-                
-                [alert addButtonWithTitle:NSLocalizedString(@"Not Yet", @"") block:^{
-                    
-                }];
-                [alert show];
-                [alert release];   
-            }
+            [alert addButtonWithTitle:NSLocalizedString(@"Not Yet", @"") block:^{
+            }];
+            [alert show];
+            [alert release];   
         }
     }
 }
