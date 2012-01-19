@@ -914,17 +914,6 @@ static const NSTimeInterval kSCHStartingViewControllerNonForcedAlertInterval = (
             LambdaAlert *alert = [[LambdaAlert alloc]
                                   initWithTitle:NSLocalizedString(@"Update Required", @"")
                                   message:NSLocalizedString(@"Please visit the app store to update Storia. Until you do, you will still be able to read your eBooks, but will not be able to download any new eBooks or synchronize your app.", @"")];
-            [alert addButtonWithTitle:NSLocalizedString(@"Update", @"") block:^{
-                [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"http://itunes.apple.com/app/scholastic-ereading-app-the/id491014756?mt=8"]];
-                exit(EXIT_SUCCESS);
-            }];
-            [alert show];
-            [alert release];     
-        } else if (appVersionState == SCHVersionDownloadManagerAppVersionStateOutdated) {
-            LambdaAlert *alert = [[LambdaAlert alloc]
-                                  initWithTitle:NSLocalizedString(@"Update Required", @"")
-                                  message:NSLocalizedString(@"Please visit the app store to update Storia. Until you do, you will still be able to read your eBooks, but will not be able to download any new eBooks or synchronize your app.", @"")];
-            
             __block LambdaAlert *weakAlert = alert;
             
             [alert addButtonWithTitle:NSLocalizedString(@"App Store", @"") block:^{
@@ -932,8 +921,7 @@ static const NSTimeInterval kSCHStartingViewControllerNonForcedAlertInterval = (
                 [weakAlert dismissAnimated:NO]; 
             }];
             
-            [alert addButtonWithTitle:NSLocalizedString(@"Not Yet", @"") block:^{
-            }];
+            [alert addButtonWithTitle:NSLocalizedString(@"Not Yet", @"") block:^{}];
             [alert show];
             [alert release];   
         }
