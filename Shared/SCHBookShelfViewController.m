@@ -348,7 +348,8 @@ typedef enum
 {
     [super viewDidAppear:animated];
     self.shouldWaitForCellsToLoad = NO;
-    NSInteger currentWelcomeShowCount = [[NSUserDefaults standardUserDefaults] integerForKey:kSCHUserDefaultsWelcomeViewShowCount];
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    NSInteger currentWelcomeShowCount = [userDefaults integerForKey:kSCHUserDefaultsWelcomeViewShowCount];
     
     if (self.showWelcome &&
         currentWelcomeShowCount < kSCHBookShelfViewControllerWelcomeShowMaximumCount) {
@@ -366,8 +367,10 @@ typedef enum
                 break;
         }
         
-        [[NSUserDefaults standardUserDefaults] setInteger:currentWelcomeShowCount
-                                                   forKey:kSCHUserDefaultsWelcomeViewShowCount];
+        [userDefaults setInteger:currentWelcomeShowCount
+                          forKey:kSCHUserDefaultsWelcomeViewShowCount];
+        [userDefaults synchronize];
+        
         self.showWelcome = NO;
     }
 }
