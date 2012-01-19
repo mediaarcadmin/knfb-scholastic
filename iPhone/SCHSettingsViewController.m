@@ -29,6 +29,7 @@
 #import "Reachability.h"
 #import "LambdaAlert.h"
 #import "SCHAccountValidationViewController.h"
+#import "SCHVersionDownloadManager.h"
 
 extern NSString * const kSCHAuthenticationManagerDeviceKey;
 extern NSString * const kSCHUserDefaultsSpaceSaverModeSetOffNotification;
@@ -48,6 +49,8 @@ extern NSString * const kSCHUserDefaultsSpaceSaverModeSetOffNotification;
 - (void)deregisterForSyncNotifications;
 - (BOOL)connectionIsReachable;
 - (BOOL)connectionIsReachableViaWiFi;
+- (BOOL)isAppVersionOutdated;
+- (void)showAppVersionOutdatedAlert;
 - (void)showNoInternetConnectionAlert;
 - (void)showAlertForSyncFailure;
 
@@ -271,7 +274,7 @@ extern NSString * const kSCHUserDefaultsSpaceSaverModeSetOffNotification;
             if ([[SCHDictionaryDownloadManager sharedDownloadManager] wifiAvailable]) {
                 NSUInteger progress = roundf([[SCHDictionaryDownloadManager sharedDownloadManager] currentDictionaryDownloadPercentage] * 100.0f);
                 [self.downloadDictionaryButton setTitle:[NSString stringWithFormat:NSLocalizedString(@"Downloading Dictionary %d%%", @"Downloading dictionary button title"), 
-                  progress]
+                                                         progress]
                                                forState:UIControlStateNormal];
             } else {
                 [self.downloadDictionaryButton setTitle:NSLocalizedString(@"Dictionary Download Paused.\nWaiting for WiFi...", @"Waiting for WiFi dictionary button title")
@@ -366,7 +369,9 @@ extern NSString * const kSCHUserDefaultsSpaceSaverModeSetOffNotification;
 
 - (IBAction)deregisterDevice:(id)sender 
 {
-    if ([self connectionIsReachable]) {
+    if ([self isAppVersionOutdated] == YES) {
+        [self showAppVersionOutdatedAlert];
+    } else if ([self connectionIsReachable]) {
         SCHDeregisterDeviceViewController *vc = [[SCHDeregisterDeviceViewController alloc] init];
         vc.settingsDelegate = self.settingsDelegate;
         [self.navigationController pushViewController:vc animated:YES];
@@ -455,6 +460,24 @@ extern NSString * const kSCHUserDefaultsSpaceSaverModeSetOffNotification;
     return [[Reachability reachabilityForLocalWiFi] isReachable];
 }
 
+- (BOOL)isAppVersionOutdated
+{
+    SCHVersionDownloadManagerAppVersionState appVersionState = [[SCHVersionDownloadManager sharedVersionManager] appVersionState];
+    
+    return (appVersionState == SCHVersionDownloadManagerAppVersionStateOutdated) || 
+    (appVersionState == SCHVersionDownloadManagerAppVersionStateOutdatedRequiresForcedUpdate);
+}
+
+- (void)showAppVersionOutdatedAlert
+{
+    LambdaAlert *alert = [[LambdaAlert alloc]
+                          initWithTitle:NSLocalizedString(@"Update Required", @"")
+                          message:NSLocalizedString(@"This function requires that you update Storia. Please visit the App Store to update your app.", @"")];
+    [alert addButtonWithTitle:NSLocalizedString(@"OK", @"") block:nil];
+    [alert show];
+    [alert release];         
+}
+
 - (void)showNoInternetConnectionAlert
 {
     LambdaAlert *alert = [[LambdaAlert alloc]
@@ -467,7 +490,9 @@ extern NSString * const kSCHUserDefaultsSpaceSaverModeSetOffNotification;
 
 - (IBAction)manageBooks:(id)sender
 {
-    if ([self connectionIsReachable]) {
+    if ([self isAppVersionOutdated] == YES) {
+        [self showAppVersionOutdatedAlert];
+    } else if ([self connectionIsReachable]) {
         // we always ask for the password before showing parent tools from settings
         SCHAccountValidationViewController *accountValidationViewController = [[[SCHAccountValidationViewController alloc] init] autorelease];
         accountValidationViewController.title = NSLocalizedString(@"Manage eBooks", @"Manage eBooks");
@@ -480,12 +505,14 @@ extern NSString * const kSCHUserDefaultsSpaceSaverModeSetOffNotification;
 
 - (IBAction)checkBooks:(id)sender
 {
-    if ([self connectionIsReachable]) {
+    if ([self isAppVersionOutdated] == YES) {
+        [self showAppVersionOutdatedAlert];
+    } else if ([self connectionIsReachable]) {
         [self.checkBooksButton setEnabled:NO];
     
         checkBooksAlert = [[LambdaAlert alloc]
-                              initWithTitle:NSLocalizedString(@"Syncing with Your Account", @"")
-                              message:@"\n\n\n"];   
+                           initWithTitle:NSLocalizedString(@"Syncing with Your Account", @"")
+                           message:@"\n\n\n"];   
         
         SCHSettingsViewController *weakSelf = self;
         LambdaAlert *weakAlert = checkBooksAlert;
@@ -505,8 +532,7 @@ extern NSString * const kSCHUserDefaultsSpaceSaverModeSetOffNotification;
         [[SCHSyncManager sharedSyncManager] firstSync:YES requireDeviceAuthentication:YES];      
     } else {
         [self showNoInternetConnectionAlert];
-    }
-    
+    }    
 }
 
 - (IBAction)toggleSpaceSaverMode:(id)sender
@@ -542,7 +568,9 @@ extern NSString * const kSCHUserDefaultsSpaceSaverModeSetOffNotification;
 
 - (IBAction)downloadDictionary:(id)sender
 {
-    if ([[SCHDictionaryDownloadManager sharedDownloadManager] dictionaryProcessingState] == SCHDictionaryProcessingStateReady) {
+    if ([self isAppVersionOutdated] == YES) {
+        [self showAppVersionOutdatedAlert];
+    } else if ([[SCHDictionaryDownloadManager sharedDownloadManager] dictionaryProcessingState] == SCHDictionaryProcessingStateReady) {
         SCHRemoveDictionaryViewController *vc = [[SCHRemoveDictionaryViewController alloc] init];
         [self.navigationController pushViewController:vc animated:YES];
         [vc release];
