@@ -299,7 +299,7 @@ NSString * const SCHAnnotationSyncComponentCompletedProfileIDs = @"SCHAnnotation
             [self.savedAnnotations removeAllObjects];
         }    
     } else {
-        [super method:method didCompleteWithResult:nil userInfo:nil];        
+        [super method:method didCompleteWithResult:result userInfo:nil];        
         [self.savedAnnotations removeAllObjects];        
     }
 }
@@ -307,44 +307,44 @@ NSString * const SCHAnnotationSyncComponentCompletedProfileIDs = @"SCHAnnotation
 - (void)processSaveProfileContentAnnotations:(NSNumber *)profileID 
                                       result:(NSDictionary *)result
 {
-    if (profileID != nil) {
-        NSArray *books = [self.annotations objectForKey:profileID];
-        BOOL shouldSyncNotes = NO;
-        
-        if (result != nil && [self.savedAnnotations count] > 0) {
-            shouldSyncNotes = [[SCHAppStateManager sharedAppStateManager] canSyncNotes];
-            for (NSDictionary *annotationStatusItem in [result objectForKey:kSCHLibreAccessWebServiceAnnotationStatusList]) {
-                if ([[annotationStatusItem objectForKey:kSCHLibreAccessWebServiceProfileID] isEqualToNumber:profileID] == YES) {
-                    for (NSDictionary *annotationStatusContentItem in [annotationStatusItem objectForKey:kSCHLibreAccessWebServiceAnnotationStatusContentList]) {            
-                        NSDictionary *privateAnnotationsStatus = [annotationStatusContentItem objectForKey:kSCHLibreAccessWebServicePrivateAnnotationsStatus];
-                        
-                        [self applyAnnotationSaves:[privateAnnotationsStatus objectForKey:kSCHLibreAccessWebServiceHighlightsStatusList]];
-                        if (shouldSyncNotes == YES) {
-                            [self applyAnnotationSaves:[privateAnnotationsStatus objectForKey:kSCHLibreAccessWebServiceNotesStatusList]];
-                        }
-                        [self applyAnnotationSaves:[privateAnnotationsStatus objectForKey:kSCHLibreAccessWebServiceBookmarksStatusList]];
+    NSArray *books = [self.annotations objectForKey:profileID];
+    BOOL shouldSyncNotes = NO;
+    
+    if (result != nil && [self.savedAnnotations count] > 0) {
+        shouldSyncNotes = [[SCHAppStateManager sharedAppStateManager] canSyncNotes];
+        for (NSDictionary *annotationStatusItem in [result objectForKey:kSCHLibreAccessWebServiceAnnotationStatusList]) {
+            NSNumber *annotationProfileID = [annotationStatusItem objectForKey:kSCHLibreAccessWebServiceProfileID];
+            if (annotationProfileID != nil && profileID != nil &&
+                [annotationProfileID isEqualToNumber:profileID] == YES) {
+                for (NSDictionary *annotationStatusContentItem in [annotationStatusItem objectForKey:kSCHLibreAccessWebServiceAnnotationStatusContentList]) {            
+                    NSDictionary *privateAnnotationsStatus = [annotationStatusContentItem objectForKey:kSCHLibreAccessWebServicePrivateAnnotationsStatus];
+                    
+                    [self applyAnnotationSaves:[privateAnnotationsStatus objectForKey:kSCHLibreAccessWebServiceHighlightsStatusList]];
+                    if (shouldSyncNotes == YES) {
+                        [self applyAnnotationSaves:[privateAnnotationsStatus objectForKey:kSCHLibreAccessWebServiceNotesStatusList]];
                     }
-                    break;
+                    [self applyAnnotationSaves:[privateAnnotationsStatus objectForKey:kSCHLibreAccessWebServiceBookmarksStatusList]];
                 }
+                break;
             }
         }
-        
-        self.isSynchronizing = [self.libreAccessWebService listProfileContentAnnotations:books 
-                                                                              forProfile:profileID];
-        if (self.isSynchronizing == NO) {
-            [[SCHAuthenticationManager sharedAuthenticationManager] authenticateWithSuccessBlock:^(SCHAuthenticationManagerConnectivityMode connectivityMode){
-                if (connectivityMode == SCHAuthenticationManagerConnectivityModeOnline) {
-                    [self.delegate authenticationDidSucceed];
-                } else {
-                    self.isSynchronizing = NO;
-                }
-            } failureBlock:^(NSError *error){
-                self.isSynchronizing = NO;
-                [[NSNotificationCenter defaultCenter] postNotificationName:SCHSyncComponentDidFailAuthenticationNotification
-                                                                    object:self];
-            }];	
-        }            
     }
+    
+    self.isSynchronizing = [self.libreAccessWebService listProfileContentAnnotations:books 
+                                                                          forProfile:profileID];
+    if (self.isSynchronizing == NO) {
+        [[SCHAuthenticationManager sharedAuthenticationManager] authenticateWithSuccessBlock:^(SCHAuthenticationManagerConnectivityMode connectivityMode){
+            if (connectivityMode == SCHAuthenticationManagerConnectivityModeOnline) {
+                [self.delegate authenticationDidSucceed];
+            } else {
+                self.isSynchronizing = NO;
+            }
+        } failureBlock:^(NSError *error){
+            self.isSynchronizing = NO;
+            [[NSNotificationCenter defaultCenter] postNotificationName:SCHSyncComponentDidFailAuthenticationNotification
+                                                                object:self];
+        }];	
+    }            
 }
 
 // track annotations that need to be saved
