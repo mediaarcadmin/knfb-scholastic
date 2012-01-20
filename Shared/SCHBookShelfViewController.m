@@ -34,7 +34,6 @@
 #import "Reachability.h"
 #import "BITModalSheetController.h"
 #import "SCHStoriaWelcomeViewController.h"
-#import "SCHStoriaWelcomeTwoViewController.h"
 #import "SCHUserDefaults.h"
 #import "SCHVersionDownloadManager.h"
 
@@ -382,9 +381,8 @@ typedef enum
     SCHStoriaWelcomeViewController *welcomeVC = [[SCHStoriaWelcomeViewController alloc] init];
     
     BITModalSheetController *aWelcomePopoverController = [[BITModalSheetController alloc] initWithContentViewController:welcomeVC];
-    [aWelcomePopoverController setContentSize:CGSizeMake(556, 241)];
+    [aWelcomePopoverController setContentSize:CGSizeMake(577, 241)];
     [aWelcomePopoverController setContentOffset:CGPointMake(0, -15)];
-    [aWelcomePopoverController setShouldDismissOutsideContentBounds:YES];
     
     __block BITModalSheetController *weakWelcomePopoverController = aWelcomePopoverController;
     __block SCHBookShelfViewController *weakSelf = self;
@@ -405,12 +403,11 @@ typedef enum
 
 - (void)showWelcomeTwoView
 {
-    SCHStoriaWelcomeTwoViewController *welcomeTwoVC = [[SCHStoriaWelcomeTwoViewController alloc] init];
+    SCHStoriaWelcomeViewController *welcomeTwoVC = [[SCHStoriaWelcomeViewController alloc] initWithNibName:@"SCHStoriaWelcomeTwoViewController" bundle:nil];
     
     BITModalSheetController *aWelcomePopoverController = [[BITModalSheetController alloc] initWithContentViewController:welcomeTwoVC];
-    [aWelcomePopoverController setContentSize:CGSizeMake(556, 241)];
+    [aWelcomePopoverController setContentSize:CGSizeMake(577, 241)];
     [aWelcomePopoverController setContentOffset:CGPointMake(0, -15)];
-    [aWelcomePopoverController setShouldDismissOutsideContentBounds:YES];
     
     __block BITModalSheetController *weakWelcomePopoverController = aWelcomePopoverController;
     __block SCHBookShelfViewController *weakSelf = self;
