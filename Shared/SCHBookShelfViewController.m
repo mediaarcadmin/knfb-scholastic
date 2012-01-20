@@ -1188,8 +1188,7 @@ typedef enum
 {
     SCHVersionDownloadManagerAppVersionState appVersionState = [[SCHVersionDownloadManager sharedVersionManager] appVersionState];
     
-    return (appVersionState == SCHVersionDownloadManagerAppVersionStateOutdated) || 
-    (appVersionState == SCHVersionDownloadManagerAppVersionStateOutdatedRequiresForcedUpdate);
+    return (appVersionState == SCHVersionDownloadManagerAppVersionStateOutdatedRequiresForcedUpdate);
 }
 
 - (void)showAppVersionOutdatedAlert
