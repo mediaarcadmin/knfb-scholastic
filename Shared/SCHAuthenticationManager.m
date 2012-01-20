@@ -491,9 +491,10 @@ NSTimeInterval const kSCHAuthenticationManagerSecondsInAMinute = 60.0;
     *(BOOL *)returnValue.pointerValue = YES;
     
     if([[SCHAppStateManager sharedAppStateManager] canAuthenticate] == YES) {
-        BOOL appVersionUpToDate = ([[SCHVersionDownloadManager sharedVersionManager] appVersionState] == SCHVersionDownloadManagerAppVersionStateCurrent);
+        SCHVersionDownloadManagerAppVersionState appVersionState = [[SCHVersionDownloadManager sharedVersionManager] appVersionState];
         
-        *(BOOL *)returnValue.pointerValue = ((appVersionUpToDate == YES) &&
+        *(BOOL *)returnValue.pointerValue = ((appVersionState != SCHVersionDownloadManagerAppVersionStatePendingCheck) &&
+                                             (appVersionState != SCHVersionDownloadManagerAppVersionStateOutdatedRequiresForcedUpdate) &&                                             
                                              (self.aToken != nil) && 
                                              ([[self.aToken stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]] length] > 0));
         
