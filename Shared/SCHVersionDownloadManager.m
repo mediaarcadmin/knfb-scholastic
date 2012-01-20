@@ -423,6 +423,11 @@ NSString * const SCHVersionDownloadManagerCompletionAppVersionState = @"SCHVersi
     }
 }
 
+- (BOOL)isAppVersionOutdated
+{
+    return (self.appVersionState == SCHVersionDownloadManagerAppVersionStateOutdatedRequiresForcedUpdate);
+}
+
 - (void)resetStateForced:(BOOL)forced
 {
     // only reset if we were in a completed state

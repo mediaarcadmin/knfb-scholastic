@@ -78,7 +78,6 @@ typedef enum
 - (IBAction)changeToListView:(UIButton *)sender;
 - (IBAction)changeToGridView:(UIButton *)sender;
 
-- (BOOL)isAppVersionOutdated;
 - (void)showAppVersionOutdatedAlert;
 
 @property (nonatomic, retain) UINib *listTableCellNib;
@@ -853,7 +852,7 @@ typedef enum
 
 - (void)tableView:(UITableView *)aTableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if ([self isAppVersionOutdated] == YES) {
+    if ([[SCHVersionDownloadManager sharedVersionManager] isAppVersionOutdated] == YES) {
         [self showAppVersionOutdatedAlert];
     } else {
         SCHBookShelfTableViewCell *cell = (SCHBookShelfTableViewCell *) [aTableView cellForRowAtIndexPath:indexPath];
@@ -1043,7 +1042,7 @@ typedef enum
 
 - (void)gridView:(MRGridView *)aGridView didSelectCellAtIndex:(NSInteger)index 
 {
-    if ([self isAppVersionOutdated] == YES) {
+    if ([[SCHVersionDownloadManager sharedVersionManager] isAppVersionOutdated] == YES) {
         [self showAppVersionOutdatedAlert];
     } else {
         SCHBookShelfGridViewCell *cell = (SCHBookShelfGridViewCell *) [aGridView cellAtGridIndex:index];
@@ -1183,13 +1182,6 @@ typedef enum
 }
 
 #pragma mark - App Version checking methods
-
-- (BOOL)isAppVersionOutdated
-{
-    SCHVersionDownloadManagerAppVersionState appVersionState = [[SCHVersionDownloadManager sharedVersionManager] appVersionState];
-    
-    return (appVersionState == SCHVersionDownloadManagerAppVersionStateOutdatedRequiresForcedUpdate);
-}
 
 - (void)showAppVersionOutdatedAlert
 {

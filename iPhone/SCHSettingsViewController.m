@@ -49,7 +49,6 @@ extern NSString * const kSCHUserDefaultsSpaceSaverModeSetOffNotification;
 - (void)deregisterForSyncNotifications;
 - (BOOL)connectionIsReachable;
 - (BOOL)connectionIsReachableViaWiFi;
-- (BOOL)isAppVersionOutdated;
 - (void)showAppVersionOutdatedAlert;
 - (void)showNoInternetConnectionAlert;
 - (void)showAlertForSyncFailure;
@@ -369,7 +368,7 @@ extern NSString * const kSCHUserDefaultsSpaceSaverModeSetOffNotification;
 
 - (IBAction)deregisterDevice:(id)sender 
 {
-    if ([self isAppVersionOutdated] == YES) {
+    if ([[SCHVersionDownloadManager sharedVersionManager] isAppVersionOutdated] == YES) {
         [self showAppVersionOutdatedAlert];
     } else if ([self connectionIsReachable]) {
         SCHDeregisterDeviceViewController *vc = [[SCHDeregisterDeviceViewController alloc] init];
@@ -460,13 +459,6 @@ extern NSString * const kSCHUserDefaultsSpaceSaverModeSetOffNotification;
     return [[Reachability reachabilityForLocalWiFi] isReachable];
 }
 
-- (BOOL)isAppVersionOutdated
-{
-    SCHVersionDownloadManagerAppVersionState appVersionState = [[SCHVersionDownloadManager sharedVersionManager] appVersionState];
-    
-    return (appVersionState == SCHVersionDownloadManagerAppVersionStateOutdatedRequiresForcedUpdate);
-}
-
 - (void)showAppVersionOutdatedAlert
 {
     LambdaAlert *alert = [[LambdaAlert alloc]
@@ -489,7 +481,7 @@ extern NSString * const kSCHUserDefaultsSpaceSaverModeSetOffNotification;
 
 - (IBAction)manageBooks:(id)sender
 {
-    if ([self isAppVersionOutdated] == YES) {
+    if ([[SCHVersionDownloadManager sharedVersionManager] isAppVersionOutdated] == YES) {
         [self showAppVersionOutdatedAlert];
     } else if ([self connectionIsReachable]) {
         // we always ask for the password before showing parent tools from settings
@@ -504,7 +496,7 @@ extern NSString * const kSCHUserDefaultsSpaceSaverModeSetOffNotification;
 
 - (IBAction)checkBooks:(id)sender
 {
-    if ([self isAppVersionOutdated] == YES) {
+    if ([[SCHVersionDownloadManager sharedVersionManager] isAppVersionOutdated] == YES) {
         [self showAppVersionOutdatedAlert];
     } else if ([self connectionIsReachable]) {
         [self.checkBooksButton setEnabled:NO];
@@ -567,7 +559,7 @@ extern NSString * const kSCHUserDefaultsSpaceSaverModeSetOffNotification;
 
 - (IBAction)downloadDictionary:(id)sender
 {
-    if ([self isAppVersionOutdated] == YES) {
+    if ([[SCHVersionDownloadManager sharedVersionManager] isAppVersionOutdated] == YES) {
         [self showAppVersionOutdatedAlert];
     } else if ([[SCHDictionaryDownloadManager sharedDownloadManager] dictionaryProcessingState] == SCHDictionaryProcessingStateReady) {
         SCHRemoveDictionaryViewController *vc = [[SCHRemoveDictionaryViewController alloc] init];
