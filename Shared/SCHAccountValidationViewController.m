@@ -15,6 +15,7 @@
 #import "SCHParentalToolsWebViewController.h"
 #import "SCHUserDefaults.h"
 #import "SCHSyncManager.h"
+#import "SCHVersionDownloadManager.h"
 
 static const CGFloat kDeregisterContentHeightLandscape = 380;
 
@@ -25,6 +26,7 @@ static const CGFloat kDeregisterContentHeightLandscape = 380;
 
 - (void)setupContentSizeForOrientation:(UIInterfaceOrientation)orientation;
 - (void)makeVisibleTextField:(UITextField *)textField;
+- (void)showAppVersionOutdatedAlert;
 
 @end
 
@@ -139,73 +141,77 @@ static const CGFloat kDeregisterContentHeightLandscape = 380;
 
 - (void)validate:(id)sender
 {
-    if ([[passwordField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]] length] < 1) {
-        LambdaAlert *alert = [[LambdaAlert alloc]
-                              initWithTitle:NSLocalizedString(@"Error", @"error alert title")
-                              message:NSLocalizedString(@"Incorrect password", @"error alert title")];
-        [alert addButtonWithTitle:NSLocalizedString(@"OK", @"") block:nil];
-        [alert show];
-        [alert release];                
-    } else if ([[Reachability reachabilityForInternetConnection] isReachable] == NO) {
-        LambdaAlert *alert = [[LambdaAlert alloc]
-                              initWithTitle:NSLocalizedString(@"No Internet Connection", @"")
-                              message:NSLocalizedString(@"This function requires an Internet connection. Please connect to the internet and then try again.", @"")];
-        [alert addButtonWithTitle:NSLocalizedString(@"OK", @"") block:nil];
-        [alert show];
-        [alert release];                
+    if ([[SCHVersionDownloadManager sharedVersionManager] isAppVersionOutdated] == YES) {
+        [self showAppVersionOutdatedAlert];
     } else {
-        [self.spinner startAnimating];
-        [self setEnablesBackButton:NO];
-        [self.validateButton setEnabled:NO];
-        [self.view endEditing:YES];
-
-        dispatch_block_t afterEditingEnds = ^{
-            __block SCHAccountValidationViewController *weakSelf = self;
-            NSString *storedUsername = [[NSUserDefaults standardUserDefaults] stringForKey:kSCHAuthenticationManagerUsername];
-            if ([self.accountValidation validateWithUserName:storedUsername withPassword:passwordField.text validateBlock:^(NSString *pToken, NSError *error) {
-                if (error != nil) {
-                    LambdaAlert *alert = [[LambdaAlert alloc]
-                                          initWithTitle:NSLocalizedString(@"Error", @"error alert title")
-                                          message:[error localizedDescription]];
-                    [alert addButtonWithTitle:NSLocalizedString(@"OK", @"") block:nil];
-                    [alert show];
-                    [alert release];        
-                } else {
-                    weakSelf.passwordField.text = @"";
-                    
-                    id<SCHModalPresenterDelegate> targetDelegate = nil;
-                    if (weakSelf.profileSetupDelegate) {
-                        targetDelegate = weakSelf.profileSetupDelegate;
-                    } else if (weakSelf.settingsDelegate) {
-                        targetDelegate = weakSelf.settingsDelegate;
+        if ([[passwordField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]] length] < 1) {
+            LambdaAlert *alert = [[LambdaAlert alloc]
+                                  initWithTitle:NSLocalizedString(@"Error", @"error alert title")
+                                  message:NSLocalizedString(@"Incorrect password", @"error alert title")];
+            [alert addButtonWithTitle:NSLocalizedString(@"OK", @"") block:nil];
+            [alert show];
+            [alert release];                
+        } else if ([[Reachability reachabilityForInternetConnection] isReachable] == NO) {
+            LambdaAlert *alert = [[LambdaAlert alloc]
+                                  initWithTitle:NSLocalizedString(@"No Internet Connection", @"")
+                                  message:NSLocalizedString(@"This function requires an Internet connection. Please connect to the internet and then try again.", @"")];
+            [alert addButtonWithTitle:NSLocalizedString(@"OK", @"") block:nil];
+            [alert show];
+            [alert release];                
+        } else {
+            [self.spinner startAnimating];
+            [self setEnablesBackButton:NO];
+            [self.validateButton setEnabled:NO];
+            [self.view endEditing:YES];
+            
+            dispatch_block_t afterEditingEnds = ^{
+                __block SCHAccountValidationViewController *weakSelf = self;
+                NSString *storedUsername = [[NSUserDefaults standardUserDefaults] stringForKey:kSCHAuthenticationManagerUsername];
+                if ([self.accountValidation validateWithUserName:storedUsername withPassword:passwordField.text validateBlock:^(NSString *pToken, NSError *error) {
+                    if (error != nil) {
+                        LambdaAlert *alert = [[LambdaAlert alloc]
+                                              initWithTitle:NSLocalizedString(@"Error", @"error alert title")
+                                              message:[error localizedDescription]];
+                        [alert addButtonWithTitle:NSLocalizedString(@"OK", @"") block:nil];
+                        [alert show];
+                        [alert release];        
+                    } else {
+                        weakSelf.passwordField.text = @"";
+                        
+                        id<SCHModalPresenterDelegate> targetDelegate = nil;
+                        if (weakSelf.profileSetupDelegate) {
+                            targetDelegate = weakSelf.profileSetupDelegate;
+                        } else if (weakSelf.settingsDelegate) {
+                            targetDelegate = weakSelf.settingsDelegate;
+                        }
+                        
+                        [targetDelegate presentWebParentToolsModallyWithToken:pToken 
+                                                                        title:weakSelf.title 
+                                                                   modalStyle:UIModalPresentationFullScreen 
+                                                        shouldHideCloseButton:weakSelf.validatedControllerShouldHideCloseButton];
                     }
                     
-                    [targetDelegate presentWebParentToolsModallyWithToken:pToken 
-                                                                    title:weakSelf.title 
-                                                               modalStyle:UIModalPresentationFullScreen 
-                                                    shouldHideCloseButton:weakSelf.validatedControllerShouldHideCloseButton];
-                }
-                
-                [weakSelf.spinner stopAnimating];
-                [weakSelf setEnablesBackButton:YES];
-                [weakSelf.validateButton setEnabled:YES];            
-            }] == NO) {
-                LambdaAlert *alert = [[LambdaAlert alloc]
-                                      initWithTitle:NSLocalizedString(@"Password authentication unavailable", @"")
-                                      message:NSLocalizedString(@"Please try again in a moment.", @"")];
-                [alert addButtonWithTitle:NSLocalizedString(@"OK", @"") block:nil];
-                [alert show];
-                [alert release];                
-                [self.spinner stopAnimating];
-                [self setEnablesBackButton:YES];
-                [self.validateButton setEnabled:YES];                        
+                    [weakSelf.spinner stopAnimating];
+                    [weakSelf setEnablesBackButton:YES];
+                    [weakSelf.validateButton setEnabled:YES];            
+                }] == NO) {
+                    LambdaAlert *alert = [[LambdaAlert alloc]
+                                          initWithTitle:NSLocalizedString(@"Password authentication unavailable", @"")
+                                          message:NSLocalizedString(@"Please try again in a moment.", @"")];
+                    [alert addButtonWithTitle:NSLocalizedString(@"OK", @"") block:nil];
+                    [alert show];
+                    [alert release];                
+                    [self.spinner stopAnimating];
+                    [self setEnablesBackButton:YES];
+                    [self.validateButton setEnabled:YES];                        
+                };
             };
-        };
-        
-        [self.view endEditing:YES];
-        double delayInSeconds = 0.5; // We really need the keyboard to be off screen
-        dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);
-        dispatch_after(popTime, dispatch_get_main_queue(), afterEditingEnds);
+            
+            [self.view endEditing:YES];
+            double delayInSeconds = 0.5; // We really need the keyboard to be off screen
+            dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);
+            dispatch_after(popTime, dispatch_get_main_queue(), afterEditingEnds);
+        }
     }
 }
 
@@ -277,6 +283,16 @@ static const CGFloat kDeregisterContentHeightLandscape = 380;
 {
     self.activeTextField = nil;
     [self setupContentSizeForOrientation:self.interfaceOrientation];
+}
+
+- (void)showAppVersionOutdatedAlert
+{
+    LambdaAlert *alert = [[LambdaAlert alloc]
+                          initWithTitle:NSLocalizedString(@"Update Required", @"")
+                          message:NSLocalizedString(@"This function requires that you update Storia. Please visit the App Store to update your app.", @"")];
+    [alert addButtonWithTitle:NSLocalizedString(@"OK", @"") block:nil];
+    [alert show];
+    [alert release];         
 }
 
 @end
