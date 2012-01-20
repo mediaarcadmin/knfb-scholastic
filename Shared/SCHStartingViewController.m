@@ -591,13 +591,13 @@ static const NSTimeInterval kSCHStartingViewControllerNonForcedAlertInterval = (
         [aLoginPopoverController setAutoresizingMask:UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleBottomMargin];
         
         if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
-            [aLoginPopoverController setContentSize:CGSizeMake(600, 481)];
+            [aLoginPopoverController setContentSize:CGSizeMake(605, 497)];
             CGPoint offset;
             
             if (UIInterfaceOrientationIsPortrait(self.interfaceOrientation)) {
-                offset = CGPointMake(0, -60);
+                offset = CGPointMake(0, -64);
             } else {
-                offset = CGPointMake(0, 134);
+                offset = CGPointMake(0, 130);
             }
             [aLoginPopoverController setContentOffset:offset];
         } else {
@@ -834,6 +834,12 @@ static const NSTimeInterval kSCHStartingViewControllerNonForcedAlertInterval = (
                                                                                 }
                                                                             }
                                                              waitUntilVersionCheckIsDone:YES];    
+        } else {
+            NSError *anError = [NSError errorWithDomain:kSCHAccountValidationErrorDomain  
+                                                   code:kSCHAccountValidationCredentialsError  
+                                               userInfo:[NSDictionary dictionaryWithObject:NSLocalizedString(@"Username and password must not be blank. Please try again.", @"")  
+                                                                                    forKey:NSLocalizedDescriptionKey]];
+            failed(anError);
         }
     };
     

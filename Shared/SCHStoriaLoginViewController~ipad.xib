@@ -42,7 +42,7 @@
 					<object class="IBUIImageView" id="778033605">
 						<reference key="NSNextResponder" ref="766721923"/>
 						<int key="NSvFlags">274</int>
-						<string key="NSFrameSize">{603, 481}</string>
+						<string key="NSFrameSize">{605, 497}</string>
 						<reference key="NSSuperview" ref="766721923"/>
 						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="225590887"/>
@@ -57,7 +57,7 @@
 					<object class="IBUITextField" id="713090979">
 						<reference key="NSNextResponder" ref="766721923"/>
 						<int key="NSvFlags">292</int>
-						<string key="NSFrame">{{121, 182}, {182, 31}}</string>
+						<string key="NSFrame">{{169, 171}, {173, 31}}</string>
 						<reference key="NSSuperview" ref="766721923"/>
 						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="23666349"/>
@@ -94,7 +94,7 @@
 					<object class="IBUITextField" id="329900527">
 						<reference key="NSNextResponder" ref="766721923"/>
 						<int key="NSvFlags">292</int>
-						<string key="NSFrame">{{121, 222}, {182, 31}}</string>
+						<string key="NSFrame">{{169, 211}, {173, 31}}</string>
 						<reference key="NSSuperview" ref="766721923"/>
 						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="951125602"/>
@@ -120,7 +120,7 @@
 					<object class="IBUIButton" id="737535226">
 						<reference key="NSNextResponder" ref="766721923"/>
 						<int key="NSvFlags">292</int>
-						<string key="NSFrame">{{116, 272}, {96, 49}}</string>
+						<string key="NSFrame">{{165, 254}, {96, 49}}</string>
 						<reference key="NSSuperview" ref="766721923"/>
 						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="918514944"/>
@@ -157,7 +157,7 @@
 					<object class="IBUIActivityIndicatorView" id="918514944">
 						<reference key="NSNextResponder" ref="766721923"/>
 						<int key="NSvFlags">-2147483356</int>
-						<string key="NSFrame">{{220, 287}, {20, 20}}</string>
+						<string key="NSFrame">{{269, 269}, {20, 20}}</string>
 						<reference key="NSSuperview" ref="766721923"/>
 						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="447926444"/>
@@ -168,7 +168,7 @@
 					<object class="IBUILabel" id="225590887">
 						<reference key="NSNextResponder" ref="766721923"/>
 						<int key="NSvFlags">292</int>
-						<string key="NSFrame">{{33, 187}, {79, 21}}</string>
+						<string key="NSFrame">{{80, 176}, {79, 21}}</string>
 						<reference key="NSSuperview" ref="766721923"/>
 						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="713090979"/>
@@ -205,7 +205,7 @@
 					<object class="IBUILabel" id="951125602">
 						<reference key="NSNextResponder" ref="766721923"/>
 						<int key="NSvFlags">292</int>
-						<string key="NSFrame">{{353, 182}, {140, 71}}</string>
+						<string key="NSFrame">{{382, 172}, {140, 71}}</string>
 						<reference key="NSSuperview" ref="766721923"/>
 						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="737535226"/>
@@ -231,14 +231,14 @@
 						<int key="IBUIBaselineAdjustment">1</int>
 						<float key="IBUIMinimumFontSize">10</float>
 						<int key="IBUINumberOfLines">0</int>
-						<object class="IBUIFontDescription" key="IBUIFontDescription" id="707945521">
-							<string key="name">ArialMT</string>
+						<object class="IBUIFontDescription" key="IBUIFontDescription">
+							<string key="name">Arial-BoldMT</string>
 							<string key="family">Arial</string>
-							<int key="traits">0</int>
+							<int key="traits">2</int>
 							<double key="pointSize">15</double>
 						</object>
-						<object class="NSFont" key="IBUIFont" id="504019839">
-							<string key="NSName">ArialMT</string>
+						<object class="NSFont" key="IBUIFont">
+							<string key="NSName">Arial-BoldMT</string>
 							<double key="NSSize">15</double>
 							<int key="NSfFlags">16</int>
 						</object>
@@ -246,7 +246,7 @@
 					<object class="IBUILabel" id="23666349">
 						<reference key="NSNextResponder" ref="766721923"/>
 						<int key="NSvFlags">292</int>
-						<string key="NSFrame">{{33, 225}, {79, 21}}</string>
+						<string key="NSFrame">{{80, 214}, {79, 21}}</string>
 						<reference key="NSSuperview" ref="766721923"/>
 						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="329900527"/>
@@ -270,7 +270,7 @@
 					<object class="IBUILabel" id="447926444">
 						<reference key="NSNextResponder" ref="766721923"/>
 						<int key="NSvFlags">292</int>
-						<string key="NSFrame">{{42, 343}, {274, 20}}</string>
+						<string key="NSFrame">{{88, 321}, {274, 20}}</string>
 						<reference key="NSSuperview" ref="766721923"/>
 						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="950756345"/>
@@ -299,13 +299,22 @@
 						<int key="IBUIBaselineAdjustment">1</int>
 						<float key="IBUIMinimumFontSize">10</float>
 						<int key="IBUINumberOfLines">0</int>
-						<reference key="IBUIFontDescription" ref="707945521"/>
-						<reference key="IBUIFont" ref="504019839"/>
+						<object class="IBUIFontDescription" key="IBUIFontDescription" id="707945521">
+							<string key="name">ArialMT</string>
+							<string key="family">Arial</string>
+							<int key="traits">0</int>
+							<double key="pointSize">15</double>
+						</object>
+						<object class="NSFont" key="IBUIFont" id="783422483">
+							<string key="NSName">ArialMT</string>
+							<double key="NSSize">15</double>
+							<int key="NSfFlags">16</int>
+						</object>
 					</object>
 					<object class="IBUILabel" id="950756345">
 						<reference key="NSNextResponder" ref="766721923"/>
 						<int key="NSvFlags">292</int>
-						<string key="NSFrame">{{42, 367}, {274, 20}}</string>
+						<string key="NSFrame">{{88, 341}, {274, 20}}</string>
 						<reference key="NSSuperview" ref="766721923"/>
 						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="1025919359"/>
@@ -335,15 +344,14 @@
 						<float key="IBUIMinimumFontSize">10</float>
 						<int key="IBUINumberOfLines">0</int>
 						<reference key="IBUIFontDescription" ref="707945521"/>
-						<reference key="IBUIFont" ref="504019839"/>
+						<reference key="IBUIFont" ref="783422483"/>
 					</object>
 					<object class="IBUIButton" id="1025919359">
 						<reference key="NSNextResponder" ref="766721923"/>
 						<int key="NSvFlags">292</int>
-						<string key="NSFrame">{{172, 359}, {154, 37}}</string>
+						<string key="NSFrame">{{213, 333}, {154, 37}}</string>
 						<reference key="NSSuperview" ref="766721923"/>
 						<reference key="NSWindow"/>
-						<reference key="NSNextKeyView"/>
 						<bool key="IBUIOpaque">NO</bool>
 						<string key="targetRuntimeIdentifier">IBIPadFramework</string>
 						<int key="IBUIContentHorizontalAlignment">0</int>
@@ -358,20 +366,11 @@
 							<bytes key="NSRGB">MC4xMzMzMzMzNDAzIDAuNjc4NDMxMzkxNyAwLjg4NjI3NDU3NjIAA</bytes>
 						</object>
 						<reference key="IBUINormalTitleShadowColor" ref="683645725"/>
-						<object class="IBUIFontDescription" key="IBUIFontDescription">
-							<string key="name">Arial-BoldMT</string>
-							<string key="family">Arial</string>
-							<int key="traits">2</int>
-							<double key="pointSize">15</double>
-						</object>
-						<object class="NSFont" key="IBUIFont">
-							<string key="NSName">Arial-BoldMT</string>
-							<double key="NSSize">15</double>
-							<int key="NSfFlags">16</int>
-						</object>
+						<reference key="IBUIFontDescription" ref="707945521"/>
+						<reference key="IBUIFont" ref="783422483"/>
 					</object>
 				</array>
-				<string key="NSFrameSize">{603, 481}</string>
+				<string key="NSFrameSize">{605, 497}</string>
 				<reference key="NSSuperview"/>
 				<reference key="NSWindow"/>
 				<reference key="NSNextKeyView" ref="778033605"/>
@@ -673,7 +672,7 @@
 		<bool key="IBDocument.PluginDeclaredDependenciesTrackSystemTargetVersion">YES</bool>
 		<int key="IBDocument.defaultPropertyAccessControl">3</int>
 		<dictionary class="NSMutableDictionary" key="IBDocument.LastKnownImageSizes">
-			<string key="storia-loginbackground~ipad.png">{603, 481}</string>
+			<string key="storia-loginbackground~ipad.png">{605, 497}</string>
 			<string key="storia-signin-button~ipad.png">{96, 49}</string>
 		</dictionary>
 		<string key="IBCocoaTouchPluginVersion">933</string>
