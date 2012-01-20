@@ -558,6 +558,9 @@ static const NSTimeInterval kSCHStartingViewControllerNonForcedAlertInterval = (
     BITOperationWithBlocks *setupSequencePresentLoginOperation = [[BITOperationWithBlocks alloc] init];
     setupSequencePresentLoginOperation.asyncMain = ^(BITOperationIsCancelledBlock isCancelled, BITOperationAsyncCompletionBlock completion) {
         
+        // Clear the modal contents so we have a known starting point
+        [self.modalNavigationController setViewControllers:nil];
+        
         SCHStoriaLoginViewController *login = [[SCHStoriaLoginViewController alloc] initWithNibName:@"SCHStoriaLoginViewController" bundle:nil];
         
         login.previewBlock = ^{
