@@ -42,6 +42,7 @@ typedef enum {
 + (SCHVersionDownloadManager *)sharedVersionManager;
 
 - (void)checkVersion;
+- (BOOL)isAppVersionOutdated;
 - (NSOperationQueue *)versionDownloadQueue; // exposed to the authentication manager can wait until it's finished processing
 
 @end

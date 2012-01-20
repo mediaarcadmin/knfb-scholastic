@@ -8,9 +8,13 @@
 
 #import "SCHStoriaLoginViewController.h"
 
+#import "SCHVersionDownloadManager.h"
+#import "LambdaAlert.h"
+
 @interface SCHStoriaLoginViewController() <UITextFieldDelegate>
 
 - (void)releaseViewObjects;
+- (void)showAppVersionOutdatedAlert;
 
 @end
 
@@ -88,7 +92,9 @@
 {
     NSAssert(self.loginBlock != nil, @"Login block must be set!");
     
-    if (self.loginBlock) {
+    if ([[SCHVersionDownloadManager sharedVersionManager] isAppVersionOutdated] == YES) {
+        [self showAppVersionOutdatedAlert];
+    } else if (self.loginBlock) {
         self.loginBlock(self.topField ? [NSString stringWithString:self.topField.text] : nil,
                         self.bottomField ? [NSString stringWithString:self.bottomField.text] : nil);
     }
@@ -171,6 +177,16 @@
     }
     
     return YES;
+}
+
+- (void)showAppVersionOutdatedAlert
+{
+    LambdaAlert *alert = [[LambdaAlert alloc]
+                          initWithTitle:NSLocalizedString(@"Update Required", @"")
+                          message:NSLocalizedString(@"This function requires that you update Storia. Please visit the App Store to update your app.", @"")];
+    [alert addButtonWithTitle:NSLocalizedString(@"OK", @"") block:nil];
+    [alert show];
+    [alert release];         
 }
 
 @end

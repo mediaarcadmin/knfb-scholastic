@@ -399,7 +399,7 @@ NSString * const SCHVersionDownloadManagerCompletionAppVersionState = @"SCHVersi
     
 			break;
         case SCHVersionDownloadManagerProcessingStateCompleted:
-			NSLog(@"Version check complete."); 
+			NSLog(@"Version check complete. appVersionState=%d", self.appVersionState); 
             break;
     }            
 }
@@ -421,6 +421,11 @@ NSString * const SCHVersionDownloadManagerCompletionAppVersionState = @"SCHVersi
     if (!self.isProcessing && (self.state != SCHVersionDownloadManagerProcessingStateFetchingManifest)) {
         [self process];
     }
+}
+
+- (BOOL)isAppVersionOutdated
+{
+    return (self.appVersionState == SCHVersionDownloadManagerAppVersionStateOutdatedRequiresForcedUpdate);
 }
 
 - (void)resetStateForced:(BOOL)forced
