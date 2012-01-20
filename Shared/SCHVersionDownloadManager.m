@@ -399,7 +399,7 @@ NSString * const SCHVersionDownloadManagerCompletionAppVersionState = @"SCHVersi
     
 			break;
         case SCHVersionDownloadManagerProcessingStateCompleted:
-			NSLog(@"Version check complete."); 
+			NSLog(@"Version check complete. appVersionState=%d", self.appVersionState); 
             break;
     }            
 }
