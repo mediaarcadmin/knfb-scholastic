@@ -36,6 +36,7 @@
 #import "SCHStoriaWelcomeViewController.h"
 #import "SCHStoriaWelcomeTwoViewController.h"
 #import "SCHUserDefaults.h"
+#import "SCHVersionDownloadManager.h"
 
 static NSInteger const kSCHBookShelfViewControllerGridCellHeightPortrait = 138;
 static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 131;
@@ -77,6 +78,8 @@ typedef enum
 - (IBAction)changeToListView:(UIButton *)sender;
 - (IBAction)changeToGridView:(UIButton *)sender;
 
+- (BOOL)isAppVersionOutdated;
+- (void)showAppVersionOutdatedAlert;
 
 @property (nonatomic, retain) UINib *listTableCellNib;
 
@@ -348,7 +351,8 @@ typedef enum
 {
     [super viewDidAppear:animated];
     self.shouldWaitForCellsToLoad = NO;
-    NSInteger currentWelcomeShowCount = [[NSUserDefaults standardUserDefaults] integerForKey:kSCHUserDefaultsWelcomeViewShowCount];
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    NSInteger currentWelcomeShowCount = [userDefaults integerForKey:kSCHUserDefaultsWelcomeViewShowCount];
     
     if (self.showWelcome &&
         currentWelcomeShowCount < kSCHBookShelfViewControllerWelcomeShowMaximumCount) {
@@ -366,8 +370,10 @@ typedef enum
                 break;
         }
         
-        [[NSUserDefaults standardUserDefaults] setInteger:currentWelcomeShowCount
-                                                   forKey:kSCHUserDefaultsWelcomeViewShowCount];
+        [userDefaults setInteger:currentWelcomeShowCount
+                          forKey:kSCHUserDefaultsWelcomeViewShowCount];
+        [userDefaults synchronize];
+        
         self.showWelcome = NO;
     }
 }
@@ -847,24 +853,27 @@ typedef enum
 
 - (void)tableView:(UITableView *)aTableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    
-    SCHBookShelfTableViewCell *cell = (SCHBookShelfTableViewCell *) [aTableView cellForRowAtIndexPath:indexPath];
-    
-    if ([indexPath section] != 0) {
-        return;
+    if ([self isAppVersionOutdated] == YES) {
+        [self showAppVersionOutdatedAlert];
+    } else {
+        SCHBookShelfTableViewCell *cell = (SCHBookShelfTableViewCell *) [aTableView cellForRowAtIndexPath:indexPath];
+        
+        if ([indexPath section] != 0) {
+            return;
+        }
+        
+        [aTableView deselectRowAtIndexPath:indexPath animated:YES];
+        
+        [self selectBookAtIndex:[indexPath row] 
+                     startBlock:^{
+                         [cell setLoading:YES];
+                     }
+                       endBlock:^(BOOL didOpen){
+                           if (didOpen) {
+                               [cell setLoading:NO];
+                           }
+                       }];
     }
-    
-    [aTableView deselectRowAtIndexPath:indexPath animated:YES];
-    
-    [self selectBookAtIndex:[indexPath row] 
-                 startBlock:^{
-                     [cell setLoading:YES];
-                 }
-                   endBlock:^(BOOL didOpen){
-                       if (didOpen) {
-                           [cell setLoading:NO];
-                       }
-                   }];
 }
 
 #pragma mark - SCHBookShelfGridViewDataSource methods
@@ -1034,17 +1043,21 @@ typedef enum
 
 - (void)gridView:(MRGridView *)aGridView didSelectCellAtIndex:(NSInteger)index 
 {
-    SCHBookShelfGridViewCell *cell = (SCHBookShelfGridViewCell *) [aGridView cellAtGridIndex:index];
-    
-    [self selectBookAtIndex:index 
-                 startBlock:^{
-                     [cell setLoading:YES];
-                 }
-                   endBlock:^(BOOL didOpen){
-                       if (didOpen) {
-                           [cell setLoading:NO];
-                       }
-                   }];
+    if ([self isAppVersionOutdated] == YES) {
+        [self showAppVersionOutdatedAlert];
+    } else {
+        SCHBookShelfGridViewCell *cell = (SCHBookShelfGridViewCell *) [aGridView cellAtGridIndex:index];
+        
+        [self selectBookAtIndex:index 
+                     startBlock:^{
+                         [cell setLoading:YES];
+                     }
+                       endBlock:^(BOOL didOpen){
+                           if (didOpen) {
+                               [cell setLoading:NO];
+                           }
+                       }];
+    }
 }
 
 - (BOOL)canOpenBook:(SCHBookIdentifier *)identifier error:(NSError **)error 
@@ -1167,6 +1180,25 @@ typedef enum
 - (CGFloat)cellBorderSize
 {
     return 10;
+}
+
+#pragma mark - App Version checking methods
+
+- (BOOL)isAppVersionOutdated
+{
+    SCHVersionDownloadManagerAppVersionState appVersionState = [[SCHVersionDownloadManager sharedVersionManager] appVersionState];
+    
+    return (appVersionState == SCHVersionDownloadManagerAppVersionStateOutdatedRequiresForcedUpdate);
+}
+
+- (void)showAppVersionOutdatedAlert
+{
+    LambdaAlert *alert = [[LambdaAlert alloc]
+                          initWithTitle:NSLocalizedString(@"Update Required", @"")
+                          message:NSLocalizedString(@"This function requires that you update Storia. Please visit the App Store to update your app.", @"")];
+    [alert addButtonWithTitle:NSLocalizedString(@"OK", @"") block:nil];
+    [alert show];
+    [alert release];         
 }
 
 @end
