@@ -849,27 +849,23 @@ typedef enum
 
 - (void)tableView:(UITableView *)aTableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if ([[SCHVersionDownloadManager sharedVersionManager] isAppVersionOutdated] == YES) {
-        [self showAppVersionOutdatedAlert];
-    } else {
-        SCHBookShelfTableViewCell *cell = (SCHBookShelfTableViewCell *) [aTableView cellForRowAtIndexPath:indexPath];
-        
-        if ([indexPath section] != 0) {
-            return;
-        }
-        
-        [aTableView deselectRowAtIndexPath:indexPath animated:YES];
-        
-        [self selectBookAtIndex:[indexPath row] 
-                     startBlock:^{
-                         [cell setLoading:YES];
-                     }
-                       endBlock:^(BOOL didOpen){
-                           if (didOpen) {
-                               [cell setLoading:NO];
-                           }
-                       }];
+    SCHBookShelfTableViewCell *cell = (SCHBookShelfTableViewCell *) [aTableView cellForRowAtIndexPath:indexPath];
+    
+    if ([indexPath section] != 0) {
+        return;
     }
+    
+    [aTableView deselectRowAtIndexPath:indexPath animated:YES];
+    
+    [self selectBookAtIndex:[indexPath row] 
+                 startBlock:^{
+                     [cell setLoading:YES];
+                 }
+                   endBlock:^(BOOL didOpen){
+                       if (didOpen) {
+                           [cell setLoading:NO];
+                       }
+                   }];
 }
 
 #pragma mark - SCHBookShelfGridViewDataSource methods
@@ -983,77 +979,78 @@ typedef enum
     
     SCHBookIdentifier *identifier = [self.books objectAtIndex:index];
     NSError *canOpenError;
+    BOOL canOpenBook = [self canOpenBook:identifier error:&canOpenError];
     
-    if ([self canOpenBook:identifier error:&canOpenError]) {
-        if (startBlock) {
-            startBlock();
-        }
-    }
-    
-    double delayInSeconds = 0.02;
-    dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);
-    dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
-        NSError *error;
-        
-        SCHReadingViewController *readingController = [self openBook:[self.books objectAtIndex:index] error:&error];
-        BOOL didOpen = NO;
-        
-        if (readingController != nil) {
-            self.updateShelfOnReturnToShelf = YES;
-            didOpen = YES;
-            [self.navigationController pushViewController:readingController animated:YES]; 
-        } else {
-            if (error) {
-                if ([[error domain] isEqualToString:kSCHBookShelfErrorDomain] && ([error code] == kSCHBookShelfNoInternet)) {
-                    LambdaAlert *alert = [[LambdaAlert alloc]
-                                          initWithTitle:NSLocalizedString(@"No Internet Connection", @"No Internet Connection")
-                                          message:[error localizedDescription]];
-                    [alert addButtonWithTitle:@"OK" block:nil];
-                    [alert show];
-                    [alert release];
-                } else if (!([[error domain] isEqualToString:kSCHAppBookErrorDomain] && ([error code] == kSCHAppBookStillBeingProcessedError))) {
-                    LambdaAlert *alert = [[LambdaAlert alloc]
-                                          initWithTitle:NSLocalizedString(@"This eBook Could Not Be Opened", @"Could not open eBook")
-                                          message:[error localizedDescription]];
-                    [alert addButtonWithTitle:@"Cancel" block:nil];
-                    [alert addButtonWithTitle:@"Retry" block:^{
-                        [[SCHProcessingManager sharedProcessingManager] userRequestedRetryForBookWithIdentifier:identifier];
-                        
-                    }];
-                    [alert show];
-                    [alert release];
-                }
+    if (canOpenBook == NO && 
+        [[SCHVersionDownloadManager sharedVersionManager] isAppVersionOutdated] == YES) {
+        [self showAppVersionOutdatedAlert];
+    } else {
+        if (canOpenBook) {
+            if (startBlock) {
+                startBlock();
             }
         }
         
-        if (endBlock) {
-            endBlock(didOpen);
-        }
-        
-        self.currentlyLoadingIndex = -1;
-    });
-
+        double delayInSeconds = 0.02;
+        dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);
+        dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+            NSError *error;
+            
+            SCHReadingViewController *readingController = [self openBook:[self.books objectAtIndex:index] error:&error];
+            BOOL didOpen = NO;
+            
+            if (readingController != nil) {
+                self.updateShelfOnReturnToShelf = YES;
+                didOpen = YES;
+                [self.navigationController pushViewController:readingController animated:YES]; 
+            } else {
+                if (error) {
+                    if ([[error domain] isEqualToString:kSCHBookShelfErrorDomain] && ([error code] == kSCHBookShelfNoInternet)) {
+                        LambdaAlert *alert = [[LambdaAlert alloc]
+                                              initWithTitle:NSLocalizedString(@"No Internet Connection", @"No Internet Connection")
+                                              message:[error localizedDescription]];
+                        [alert addButtonWithTitle:@"OK" block:nil];
+                        [alert show];
+                        [alert release];
+                    } else if (!([[error domain] isEqualToString:kSCHAppBookErrorDomain] && ([error code] == kSCHAppBookStillBeingProcessedError))) {
+                        LambdaAlert *alert = [[LambdaAlert alloc]
+                                              initWithTitle:NSLocalizedString(@"This eBook Could Not Be Opened", @"Could not open eBook")
+                                              message:[error localizedDescription]];
+                        [alert addButtonWithTitle:@"Cancel" block:nil];
+                        [alert addButtonWithTitle:@"Retry" block:^{
+                            [[SCHProcessingManager sharedProcessingManager] userRequestedRetryForBookWithIdentifier:identifier];
+                            
+                        }];
+                        [alert show];
+                        [alert release];
+                    }
+                }
+            }
+            
+            if (endBlock) {
+                endBlock(didOpen);
+            }
+            
+            self.currentlyLoadingIndex = -1;
+        });
+    }
 }
 
 #pragma mark - MRGridViewDelegate methods
 
 - (void)gridView:(MRGridView *)aGridView didSelectCellAtIndex:(NSInteger)index 
 {
-    if ([[SCHVersionDownloadManager sharedVersionManager] isAppVersionOutdated] == YES) {
-        [self showAppVersionOutdatedAlert];
-    } else {
-        SCHBookShelfGridViewCell *cell = (SCHBookShelfGridViewCell *) [aGridView cellAtGridIndex:index];
-        
-        [self selectBookAtIndex:index 
-                     startBlock:^{
-                         [cell setLoading:YES];
-                     }
-                       endBlock:^(BOOL didOpen){
-                           if (didOpen) {
-                               [cell setLoading:NO];
-                           }
-                       }];
-    }
+    SCHBookShelfGridViewCell *cell = (SCHBookShelfGridViewCell *) [aGridView cellAtGridIndex:index];
+    
+    [self selectBookAtIndex:index 
+                 startBlock:^{
+                     [cell setLoading:YES];
+                 }
+                   endBlock:^(BOOL didOpen){
+                       if (didOpen) {
+                           [cell setLoading:NO];
+                       }
+                   }];
 }
 
 - (BOOL)canOpenBook:(SCHBookIdentifier *)identifier error:(NSError **)error 
