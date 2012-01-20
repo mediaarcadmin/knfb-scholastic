@@ -37,6 +37,7 @@
 #import "SCHStoriaLoginViewController.h"
 #import "BITOperationWithBlocks.h"
 #import "SCHVersionDownloadManager.h"
+#import "SCHAccountValidationViewController.h"
 
 typedef enum {
 	kSCHStartingViewControllerProfileSyncStateNone = 0,
@@ -67,6 +68,9 @@ static const NSTimeInterval kSCHStartingViewControllerNonForcedAlertInterval = (
 - (void)runSetupProfileSequenceAnimated:(BOOL)animated;
 
 - (void)pushSamplesAnimated:(BOOL)animated showWelcome:(BOOL)welcome;
+- (void)pushBookshelfSetupModalControllerAnimated:(BOOL)animated showValidation:(BOOL)showValidation;
+- (void)pushDictionaryDownloadModalControllerAnimated:(BOOL)animated;
+- (void)runSetupProfileSequenceAnimated:(BOOL)animated pushProfile:(BOOL)pushProfile showValidation:(BOOL)showValidation;
 
 - (void)setStandardStore;
 - (BOOL)dictionaryDownloadRequired;
@@ -91,9 +95,7 @@ static const NSTimeInterval kSCHStartingViewControllerNonForcedAlertInterval = (
 - (void)createInitialNavigationControllerStack
 {
     if ([[SCHAuthenticationManager sharedAuthenticationManager] hasUsernameAndPassword] && [[SCHSyncManager sharedSyncManager] havePerformedFirstSyncUpToBooks]) {
-        if (![self bookshelfSetupRequired]) {
-            [self pushCurrentProfileAnimated:NO];
-        }
+        [self runSetupProfileSequenceAnimated:NO pushProfile:YES showValidation:NO];
     } else if ([[SCHAppStateManager sharedAppStateManager] isSampleStore]) {
         [self pushSamplesAnimated:NO showWelcome:NO];
     }
@@ -203,13 +205,12 @@ static const NSTimeInterval kSCHStartingViewControllerNonForcedAlertInterval = (
     [super viewDidAppear:animated];
     
     if ([[SCHAuthenticationManager sharedAuthenticationManager] hasUsernameAndPassword] &&
-        [[SCHSyncManager sharedSyncManager] havePerformedFirstSyncUpToBooks] &&
-        [self bookshelfSetupRequired]) {
+        [[SCHSyncManager sharedSyncManager] havePerformedFirstSyncUpToBooks]) {
         
-        // Start the sync in case they have been set up since last sync
-        [[SCHSyncManager sharedSyncManager] firstSync:YES requireDeviceAuthentication:NO];
-        
-        [self runSetupProfileSequenceAnimated:animated];
+        if ([self bookshelfSetupRequired]) {
+            // Start the sync in case they have been set up since last sync
+            [[SCHSyncManager sharedSyncManager] firstSync:YES requireDeviceAuthentication:NO];
+        }
     } else {
         [self runInitialChoiceSequence];
     }
@@ -344,7 +345,7 @@ static const NSTimeInterval kSCHStartingViewControllerNonForcedAlertInterval = (
     __block UIViewController *weakSelf = self;
     __block SCHParentalToolsWebViewController *weakParentTools = parentalToolsWebViewController;
     
-    [self.webParentToolsPopoverController presentSheetInViewController:self animated:NO completion:^{
+    [self.webParentToolsPopoverController presentSheetInViewController:[self profileViewController] animated:NO completion:^{
         weakParentTools.textView.alpha = 0;
         
         CGSize expandedSize;
@@ -374,35 +375,24 @@ static const NSTimeInterval kSCHStartingViewControllerNonForcedAlertInterval = (
     dispatch_block_t completion = ^{
         [weakSelf setWebParentToolsPopoverController:nil];
         
-        if ([[weakSelf.modalNavigationController viewControllers] count] == 0) {
-            // The view has been unloaded due to memory pressure
-            // Just push the bookshelves screen, don't bother with re-adding the validation controller
-            [weakSelf runSetupProfileSequenceAnimated:NO];
+        if (showValidation) {
+            weakSelf.profileSyncState = kSCHStartingViewControllerProfileSyncStateWaitingForPassword;
         } else {
-            if (showValidation) {
-                weakSelf.profileSyncState = kSCHStartingViewControllerProfileSyncStateWaitingForPassword;
-            } else {
-                weakSelf.profileSyncState = kSCHStartingViewControllerProfileSyncStateWaitingForBookshelves;
-                
-                NSMutableArray *viewControllers = [[weakSelf.modalNavigationController viewControllers] mutableCopy];
-                [viewControllers removeLastObject];
-                [weakSelf.modalNavigationController setViewControllers:viewControllers];
-                [viewControllers release];
-            }
-            
-            [weakSelf presentModalViewController:self.modalNavigationController animated:NO];
+            weakSelf.profileSyncState = kSCHStartingViewControllerProfileSyncStateWaitingForBookshelves;
         }
         
-        dispatch_async(dispatch_get_main_queue(), ^{
-            if (shouldSync) {
+        [weakSelf runSetupProfileSequenceAnimated:NO pushProfile:NO showValidation:showValidation];
+        
+        if (shouldSync) {
+            dispatch_async(dispatch_get_main_queue(), ^{
                 [[SCHSyncManager sharedSyncManager] firstSync:YES requireDeviceAuthentication:YES];
                 weakSelf.checkProfilesAlert = [[[LambdaAlert alloc]
-                                            initWithTitle:NSLocalizedString(@"Syncing with Your Account", @"")
-                                            message:@"\n"] autorelease];
+                                                initWithTitle:NSLocalizedString(@"Syncing with Your Account", @"")
+                                                message:@"\n"] autorelease];
                 [weakSelf.checkProfilesAlert setSpinnerHidden:NO];
                 [weakSelf.checkProfilesAlert show];
-            }
-        });
+            });
+        }
     };
     
     if ([self.webParentToolsPopoverController isModalSheetVisible]) {
@@ -498,7 +488,7 @@ static const NSTimeInterval kSCHStartingViewControllerNonForcedAlertInterval = (
             [self runSetupProfileSequenceAnimated:YES];
             break;
         case kSCHStartingViewControllerProfileSyncStateWaitingForBookshelves:
-            [self runSetupProfileSequenceAnimated:NO];
+            [self runSetupProfileSequenceAnimated:NO pushProfile:NO showValidation:NO];
             break;
         case kSCHStartingViewControllerProfileSyncStateWaitingForPassword:
             if (![self bookshelfSetupRequired]) {
@@ -693,58 +683,79 @@ static const NSTimeInterval kSCHStartingViewControllerNonForcedAlertInterval = (
     [setupSequenceCheckDictionaryDownload release];
 }
 
+- (void)pushBookshelfSetupModalControllerAnimated:(BOOL)animated showValidation:(BOOL)showValidation
+{
+    NSMutableArray *controllers = [NSMutableArray arrayWithArray:[self.modalNavigationController viewControllers]];
+    
+    if (![[controllers lastObject] isKindOfClass:NSClassFromString(@"SCHSetupBookshelvesViewController")]) {
+        SCHSetupBookshelvesViewController *setupBookshelves = [[[SCHSetupBookshelvesViewController alloc] init] autorelease];
+        setupBookshelves.profileSetupDelegate = self;
+        [controllers addObject:setupBookshelves];
+    }
+    
+    if (showValidation) {
+        SCHAccountValidationViewController *accountValidationViewController = [[[SCHAccountValidationViewController alloc] init] autorelease];
+        accountValidationViewController.profileSetupDelegate = self;        
+        accountValidationViewController.validatedControllerShouldHideCloseButton = YES;
+        accountValidationViewController.title = NSLocalizedString(@"Set Up Your Bookshelves", @"");
+        [controllers addObject:accountValidationViewController];
+    }
+    
+    if (!self.modalViewController) {
+        [self.modalNavigationController setViewControllers:controllers];
+        [self presentModalViewController:self.modalNavigationController animated:animated];
+    } else {
+        [self.modalNavigationController setViewControllers:controllers animated:YES];
+    }
+}
+
+- (void)pushDictionaryDownloadModalControllerAnimated:(BOOL)animated
+{
+    
+    NSMutableArray *controllers = [NSMutableArray arrayWithArray:[self.modalNavigationController viewControllers]];
+
+    if (![[controllers lastObject] isKindOfClass:NSClassFromString(@"SCHDownloadDictionaryViewController")]) {
+        SCHDownloadDictionaryViewController *downloadDictionary = [[[SCHDownloadDictionaryViewController alloc] init] autorelease];
+        downloadDictionary.profileSetupDelegate = self;
+        downloadDictionary.completion = ^{
+            if (self.modalViewController) {
+                [self dismissModalViewControllerAnimated:YES];
+            }
+        };
+        [controllers addObject:downloadDictionary];
+    }
+    
+    if (!self.modalViewController) {
+        [self.modalNavigationController setViewControllers:controllers];
+        [self presentModalViewController:self.modalNavigationController animated:animated];
+    } else {
+        [self.modalNavigationController setViewControllers:controllers animated:YES];
+    }
+}
+
 - (void)runSetupProfileSequenceAnimated:(BOOL)animated
-{    
-    
-    __block BOOL shouldAnimate = animated;
-    
+{
+    [self runSetupProfileSequenceAnimated:animated pushProfile:YES showValidation:NO];
+}
+
+- (void)runSetupProfileSequenceAnimated:(BOOL)animated pushProfile:(BOOL)pushProfile showValidation:(BOOL)showValidation
+{        
     dispatch_block_t continueBlock = ^{
-        NSArray *currentViewControllers = [self.modalNavigationController viewControllers];
-        UIViewController *current = ([currentViewControllers count] == 1) ? [currentViewControllers objectAtIndex:0] : nil;
         
-        UIViewController *next = nil;
-        
+        if (pushProfile) {
+            [self pushCurrentProfileAnimated:animated];
+        }
+                
         if ([self bookshelfSetupRequired]) {
             self.profileSyncState = kSCHStartingViewControllerProfileSyncStateWaitingForBookshelves;
-            if ([current isKindOfClass:NSClassFromString(@"SCHSetupBookshelvesViewController")]) {
-                // Do nothing, we are trying to push the same thing on
-                if (self.modalViewController) {
-                    return;
-                } else {
-                    [self presentModalViewController:self.modalNavigationController animated:shouldAnimate];
-                    return;
-                }
-                
-            } else {
-                SCHSetupBookshelvesViewController *setupBookshelves = [[[SCHSetupBookshelvesViewController alloc] init] autorelease];
-                setupBookshelves.profileSetupDelegate = self;
-                next = setupBookshelves;
-            }
+            [self pushBookshelfSetupModalControllerAnimated:animated showValidation:showValidation];
         } else if ([self dictionaryDownloadRequired]) {
-            if ([current isKindOfClass:NSClassFromString(@"SCHDownloadDictionaryViewController")]) {
-                // Do nothing, we are trying to push the same thing on
-                return;
-            } else {
-                SCHDownloadDictionaryViewController *downloadDictionary = [[[SCHDownloadDictionaryViewController alloc] init] autorelease];
-                downloadDictionary.profileSetupDelegate = self;
-                downloadDictionary.completion = ^{
-                    [self pushCurrentProfileAnimated:YES];
-                };
-                next = downloadDictionary;
-                shouldAnimate = YES;
-            }
-        }
-        
-        if (next) {
-                        
-            if (!self.modalViewController) {
-                [self.modalNavigationController setViewControllers:[NSArray arrayWithObject:next]];
-                [self presentModalViewController:self.modalNavigationController animated:shouldAnimate];
-            } else {
-                [self.modalNavigationController setViewControllers:[NSArray arrayWithObject:next] animated:shouldAnimate];
-            }
+            self.profileSyncState = kSCHStartingViewControllerProfileSyncStateNone;
+            [self pushDictionaryDownloadModalControllerAnimated:animated];
         } else {
-            [self pushCurrentProfileAnimated:YES];
+            if (self.modalViewController) {
+                [self dismissModalViewControllerAnimated:YES];
+            }
         }
     };
     
