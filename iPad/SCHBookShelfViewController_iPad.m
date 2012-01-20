@@ -21,6 +21,8 @@
 #import "NSNumber+ObjectTypes.h"
 #import "SCHAppProfile.h"
 #import "SCHAppStateManager.h"
+#import "LambdaAlert.h"
+#import "SCHVersionDownloadManager.h"
 
 //static NSInteger const kSCHBookShelfViewControllerGridCellHeightPortrait_iPad = 254;
 static NSInteger const kSCHBookShelfViewControllerGridCellHeightPortrait_iPad = 224;
@@ -43,6 +45,7 @@ static NSTimeInterval const kSCHBookShelfViewControllerTopTenRefreshTime = -600.
 - (void)updateTheme;
 - (void)setupToolbar;
 - (void)updateTopTenWithBooks:(NSArray *)topBooks;
+- (void)showAppVersionOutdatedAlert;
 
 @end
 
@@ -266,30 +269,34 @@ static NSTimeInterval const kSCHBookShelfViewControllerTopTenRefreshTime = -600.
         [self.popover dismissPopoverAnimated:YES];
         self.popover = nil;
     }
- 
-    if (self.topFavoritesComponent == nil) {
-        self.topTenBooks = nil;
-        
-        self.topFavoritesComponent = [[[SCHTopFavoritesComponent alloc] init] autorelease];
-        self.topFavoritesComponent.delegate = self;
-    }
-
-    if (self.lastTopTenBookRetrieval == nil || 
-        [self.lastTopTenBookRetrieval timeIntervalSinceNow] <= kSCHBookShelfViewControllerTopTenRefreshTime || 
-        [self.topTenBooks count] < 1) {
-        
-        [self.topFavoritesComponent topFavoritesForAge:self.profileItem.age];
-        
-    }
     
-    SCHBookShelfTopTenPopoverTableView *popoverTable = [[SCHBookShelfTopTenPopoverTableView alloc] initWithNibName:nil bundle:nil];
-    popoverTable.books = self.topTenBooks;
-
-    self.popover = [[[UIPopoverController alloc] initWithContentViewController:popoverTable] autorelease];
-    self.popover.delegate = self;
-    
-    [self.popover presentPopoverFromRect:sender.frame inView:sender.superview permittedArrowDirections:UIPopoverArrowDirectionUp animated:YES];
-    [popoverTable release];
+    if ([[SCHVersionDownloadManager sharedVersionManager] isAppVersionOutdated] == YES) {
+        [self showAppVersionOutdatedAlert];
+    } else {
+        if (self.topFavoritesComponent == nil) {
+            self.topTenBooks = nil;
+            
+            self.topFavoritesComponent = [[[SCHTopFavoritesComponent alloc] init] autorelease];
+            self.topFavoritesComponent.delegate = self;
+        }
+        
+        if (self.lastTopTenBookRetrieval == nil || 
+            [self.lastTopTenBookRetrieval timeIntervalSinceNow] <= kSCHBookShelfViewControllerTopTenRefreshTime || 
+            [self.topTenBooks count] < 1) {
+            
+            [self.topFavoritesComponent topFavoritesForAge:self.profileItem.age];
+            
+        }
+        
+        SCHBookShelfTopTenPopoverTableView *popoverTable = [[SCHBookShelfTopTenPopoverTableView alloc] initWithNibName:nil bundle:nil];
+        popoverTable.books = self.topTenBooks;
+        
+        self.popover = [[[UIPopoverController alloc] initWithContentViewController:popoverTable] autorelease];
+        self.popover.delegate = self;
+        
+        [self.popover presentPopoverFromRect:sender.frame inView:sender.superview permittedArrowDirections:UIPopoverArrowDirectionUp animated:YES];
+        [popoverTable release];
+    }
 }
 
 - (void)themeAction:(SCHThemeButton *)sender
@@ -378,6 +385,16 @@ static NSTimeInterval const kSCHBookShelfViewControllerTopTenRefreshTime = -600.
 {
     // Re-call top favorites for age now we have authenticated
     [self.topFavoritesComponent topFavoritesForAge:self.profileItem.age];
+}
+
+- (void)showAppVersionOutdatedAlert
+{
+    LambdaAlert *alert = [[LambdaAlert alloc]
+                          initWithTitle:NSLocalizedString(@"Update Required", @"")
+                          message:NSLocalizedString(@"This function requires that you update Storia. Please visit the App Store to update your app.", @"")];
+    [alert addButtonWithTitle:NSLocalizedString(@"OK", @"") block:nil];
+    [alert show];
+    [alert release];         
 }
 
 @end
