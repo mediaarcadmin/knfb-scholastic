@@ -984,6 +984,7 @@ typedef enum
     if (canOpenBook == NO && 
         [[SCHVersionDownloadManager sharedVersionManager] isAppVersionOutdated] == YES) {
         [self showAppVersionOutdatedAlert];
+        self.currentlyLoadingIndex = -1;
     } else {
         if (canOpenBook) {
             if (startBlock) {
