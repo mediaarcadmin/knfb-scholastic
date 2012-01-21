@@ -981,8 +981,9 @@ typedef enum
     NSError *canOpenError;
     BOOL canOpenBook = [self canOpenBook:identifier error:&canOpenError];
     
-    if (canOpenBook == NO && 
-        [[SCHVersionDownloadManager sharedVersionManager] isAppVersionOutdated] == YES) {
+    if ((canOpenBook == NO) && 
+        ([[SCHVersionDownloadManager sharedVersionManager] isAppVersionOutdated] == YES) &&
+        ([[SCHAppStateManager sharedAppStateManager] isSampleStore] == NO)) {
         [self showAppVersionOutdatedAlert];
         self.currentlyLoadingIndex = -1;
     } else {
