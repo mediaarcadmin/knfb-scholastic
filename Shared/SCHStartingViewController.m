@@ -933,7 +933,7 @@ static const NSTimeInterval kSCHStartingViewControllerNonForcedAlertInterval = (
         if (appVersionState == SCHVersionDownloadManagerAppVersionStateOutdatedRequiresForcedUpdate) {
             LambdaAlert *alert = [[LambdaAlert alloc]
                                   initWithTitle:NSLocalizedString(@"Update Required", @"")
-                                  message:NSLocalizedString(@"Please visit the app store to update Storia. Until you do, you will still be able to read your eBooks, but will not be able to download any new eBooks or synchronize your app.", @"")];
+                                  message:NSLocalizedString(@"Please visit the App Store to update Storia. Until you do, you will still be able to read your eBooks, but will not be able to download any new eBooks or synchronize your app.", @"")];
             __block LambdaAlert *weakAlert = alert;
             
             [alert addButtonWithTitle:NSLocalizedString(@"App Store", @"") block:^{
