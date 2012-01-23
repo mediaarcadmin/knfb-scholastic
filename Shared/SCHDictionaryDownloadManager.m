@@ -240,6 +240,11 @@ static SCHDictionaryDownloadManager *sharedManager = nil;
             return;
         }
         
+        if (self.startTimer && [self.startTimer isValid]) {
+			[self.startTimer invalidate];
+			self.startTimer = nil; 
+		} 
+        
 		if ((self.dictionaryDownloadQueue && [self.dictionaryDownloadQueue operationCount]) ) {
 			NSLog(@"Dictionary download needs more time - going into the background.");
 			
@@ -420,7 +425,7 @@ static SCHDictionaryDownloadManager *sharedManager = nil;
 			self.startTimer = nil; 
 		} 
 
-		NSLog(@"********* Starting timer...");
+		NSLog(@"********* Starting dictionary download timer...");
         if (immediately) {
             [self processDictionary];
         } else {
@@ -456,7 +461,7 @@ static SCHDictionaryDownloadManager *sharedManager = nil;
     for (SCHDictionaryManifestEntry *anEntry in self.manifestUpdates) {
         //NSLog(@"from: (%@) to: (%@) URL: %@", anEntry.fromVersion, anEntry.toVersion, anEntry.url);
 
-        if ([anEntry fromVersion]) {
+        if (currentDictionaryVersion != nil && [anEntry fromVersion]) {
             if ([[anEntry fromVersion] isEqualToString:currentDictionaryVersion]) {
                 entryUpdateForCurrentDictionaryVersion = anEntry;
                 break;
@@ -492,7 +497,7 @@ static SCHDictionaryDownloadManager *sharedManager = nil;
     }
     
     if ([self.dictionaryDownloadQueue operationCount]) {
-        NSLog(@"Trying to process a new operation whilst there are remaining operations");
+        NSLog(@"Trying to process a new Dictionary operation whilst there are remaining operations");
         [self.dictionaryDownloadQueue cancelAllOperations];
     }
 	
@@ -551,6 +556,9 @@ static SCHDictionaryDownloadManager *sharedManager = nil;
                 [self threadSafeUpdateDictionaryState:SCHDictionaryProcessingStateNeedsDownload];
                 [self processDictionary];
             } else {
+                NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+                [defaults setObject:[NSNumber numberWithBool:YES] forKey:@"dictionaryIsCurrentlyReadable"];
+                [defaults synchronize];
                 [self threadSafeUpdateDictionaryState:SCHDictionaryProcessingStateReady];
                 [self processDictionary];
             }
@@ -595,6 +603,10 @@ static SCHDictionaryDownloadManager *sharedManager = nil;
 		}	
 		case SCHDictionaryProcessingStateNeedsUnzip:
 		{
+            NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+            [defaults setObject:[NSNumber numberWithBool:NO] forKey:@"dictionaryIsCurrentlyReadable"];
+            [defaults synchronize];
+
 			NSLog(@"needs unzip...");
 			// create unzip operation
             
@@ -632,6 +644,10 @@ static SCHDictionaryDownloadManager *sharedManager = nil;
 		case SCHDictionaryProcessingStateNeedsParse:
 		{
 			NSLog(@"needs parse...");
+            
+            NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+            [defaults setObject:[NSNumber numberWithBool:NO] forKey:@"dictionaryIsCurrentlyReadable"];
+            [defaults synchronize];
             
             self.currentDictionaryProcessingPercentage = kSCHDictionaryFileUnzipMaxPercentage;
 
@@ -671,7 +687,6 @@ static SCHDictionaryDownloadManager *sharedManager = nil;
         case SCHDictionaryProcessingStateReady:
         {
             NSLog(@"Dictionary is ready.");
-            [[SCHDictionaryAccessManager sharedAccessManager] updateOnReady];
             break;
         }
 		default:
@@ -893,7 +908,7 @@ static SCHDictionaryDownloadManager *sharedManager = nil;
             if (lastPrefUpdate == nil) {
                 [defaults setObject:currentDate forKey:@"lastDictionaryUpdateDate"];
                 [defaults synchronize];
-                doUpdate = YES;
+                doUpdate = NO;
             } else {
 
                 // have we updated in the last 24 hours?
@@ -1752,6 +1767,11 @@ static SCHDictionaryDownloadManager *sharedManager = nil;
 - (void)deleteDictionaryFileWithCompletionBlock:(dispatch_block_t)completion
 {
     self.isProcessing = YES;
+
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    [defaults setObject:[NSNumber numberWithBool:NO] forKey:@"dictionaryIsCurrentlyReadable"];
+    [defaults synchronize];
+    
     [self threadSafeUpdateDictionaryState:SCHDictionaryProcessingStateDeleting];
 
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{
@@ -1799,6 +1819,14 @@ static SCHDictionaryDownloadManager *sharedManager = nil;
             [self threadSafeUpdateDictionaryState:SCHDictionaryProcessingStateUserDeclined];
         }];
     }
+}
+
+- (BOOL)dictionaryIsAvailable
+{
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    BOOL isReadable = [[defaults objectForKey:@"dictionaryIsCurrentlyReadable"] boolValue];
+    return isReadable;
+
 }
 
 @end

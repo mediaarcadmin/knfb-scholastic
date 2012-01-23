@@ -15,6 +15,7 @@
 #import "SCHAccountValidation.h"
 #import "SCHUserDefaults.h"
 #import "SCHDrmSession.h"
+#import "SCHVersionDownloadManager.h"
 
 static const CGFloat kDeregisterContentHeightLandscape = 380;
 
@@ -27,6 +28,7 @@ static const CGFloat kDeregisterContentHeightLandscape = 380;
 - (void)makeVisibleTextField:(UITextField *)textField;
 - (void)deregisterAfterSuccessfulAuthentication;
 - (void)deregisterFailedAuthentication:(NSError *)error;
+- (void)showAppVersionOutdatedAlert;
 
 @end
 
@@ -133,67 +135,73 @@ static const CGFloat kDeregisterContentHeightLandscape = 380;
 
 - (void)deregister:(id)sender
 {
-    [self.deregisterButton setEnabled:NO];
-    
-    NSString *username = [[NSUserDefaults standardUserDefaults] objectForKey:kSCHAuthenticationManagerUsername];
-    
-    if (!username) {
-        // Something has gone wrong - we don't know the username. Perform a non-authenticated deregister
-        [self deregisterAfterSuccessfulAuthentication];
-    } else if ([[self.passwordField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]] length] < 1) {
-        LambdaAlert *alert = [[LambdaAlert alloc]
-                              initWithTitle:NSLocalizedString(@"Incorrect Password", @"")
-                              message:NSLocalizedString(@"Incorrect password for deregistration", @"")];
-        [alert addButtonWithTitle:NSLocalizedString(@"OK", @"") block:^{
-            [self.deregisterButton setEnabled:YES];
-        }];
-        [alert show];
-        [alert release];                
-    } else if ([[Reachability reachabilityForInternetConnection] isReachable] == NO) {
-        LambdaAlert *alert = [[LambdaAlert alloc]
-                              initWithTitle:NSLocalizedString(@"No Internet Connection", @"")
-                              message:NSLocalizedString(@"This function requires an Internet connection. Please connect to the internet and then try again.", @"")];
-        [alert addButtonWithTitle:NSLocalizedString(@"OK", @"") block:^{
-            [self.deregisterButton setEnabled:YES];
-        }];
-        [alert show];
-        [alert release];                
+    if ([[SCHVersionDownloadManager sharedVersionManager] isAppVersionOutdated] == YES) {
+        [self showAppVersionOutdatedAlert];
     } else {
-        __block SCHDeregisterDeviceViewController *weakSelf = self;
-        NSString *storedUsername = [[NSUserDefaults standardUserDefaults] stringForKey:kSCHAuthenticationManagerUsername];
-        [self.spinner startAnimating];
-        [self setEnablesBackButton:NO];
-        [self.accountValidation validateWithUserName:storedUsername withPassword:self.passwordField.text validateBlock:^(NSString *pToken, NSError *error) {
-            if (error != nil) {
-                LambdaAlert *alert = [[LambdaAlert alloc]
-                                      initWithTitle:NSLocalizedString(@"Error", @"error alert title")
-                                      message:[error localizedDescription]];
-                [alert addButtonWithTitle:NSLocalizedString(@"OK", @"") block:^{
-                    [weakSelf.deregisterButton setEnabled:YES];
-                    [weakSelf.spinner stopAnimating];
-                    [weakSelf setEnablesBackButton:YES];                                    
-                }];
-                [alert show];
-                [alert release]; 
-            } else {
-                if ([[SCHAuthenticationManager sharedAuthenticationManager] isAuthenticated] == YES) {
-                    [weakSelf deregisterAfterSuccessfulAuthentication];
-                } else {
-                    [[SCHAuthenticationManager sharedAuthenticationManager] authenticateWithSuccessBlock:^(SCHAuthenticationManagerConnectivityMode connectivityMode) {
-                        if (connectivityMode == SCHAuthenticationManagerConnectivityModeOnline) {
-                            [weakSelf deregisterAfterSuccessfulAuthentication];
-                        } else {
-                            [weakSelf deregisterFailedAuthentication:[NSError errorWithDomain:kSCHAuthenticationManagerErrorDomain 
-                                                                                         code:kSCHAuthenticationManagerOfflineError 
-                                                                                     userInfo:[NSDictionary dictionaryWithObject:NSLocalizedString(@"You are in offline mode, you must be in online mode to deregister", @"") 
-                                                                                                                          forKey:NSLocalizedDescriptionKey]]];
-                        }
-                    } failureBlock:^(NSError *error){
-                        [weakSelf deregisterFailedAuthentication:error];
+        [self.deregisterButton setEnabled:NO];
+        
+        NSString *username = [[NSUserDefaults standardUserDefaults] objectForKey:kSCHAuthenticationManagerUsername];
+        
+        if (!username) {
+            // Something has gone wrong - we don't know the username. Perform a non-authenticated deregister
+            [self deregisterAfterSuccessfulAuthentication];
+        } else if ([[self.passwordField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]] length] < 1) {
+            LambdaAlert *alert = [[LambdaAlert alloc]
+                                  initWithTitle:NSLocalizedString(@"Incorrect Password", @"")
+                                  message:NSLocalizedString(@"Incorrect password for deregistration", @"")];
+            [alert addButtonWithTitle:NSLocalizedString(@"OK", @"") block:^{
+                [self.deregisterButton setEnabled:YES];
+            }];
+            [alert show];
+            [alert release];                
+        } else if ([[Reachability reachabilityForInternetConnection] isReachable] == NO) {
+            LambdaAlert *alert = [[LambdaAlert alloc]
+                                  initWithTitle:NSLocalizedString(@"No Internet Connection", @"")
+                                  message:NSLocalizedString(@"This function requires an Internet connection. Please connect to the internet and then try again.", @"")];
+            [alert addButtonWithTitle:NSLocalizedString(@"OK", @"") block:^{
+                [self.deregisterButton setEnabled:YES];
+            }];
+            [alert show];
+            [alert release];                
+        } else {
+            __block SCHDeregisterDeviceViewController *weakSelf = self;
+            NSString *storedUsername = [[NSUserDefaults standardUserDefaults] stringForKey:kSCHAuthenticationManagerUsername];
+            [self.spinner startAnimating];
+            [self setEnablesBackButton:NO];
+            [self.accountValidation validateWithUserName:storedUsername withPassword:self.passwordField.text validateBlock:^(NSString *pToken, NSError *error) {
+                if (error != nil) {
+                    LambdaAlert *alert = [[LambdaAlert alloc]
+                                          initWithTitle:NSLocalizedString(@"Error", @"error alert title")
+                                          message:[error localizedDescription]];
+                    [alert addButtonWithTitle:NSLocalizedString(@"OK", @"") block:^{
+                        [weakSelf.deregisterButton setEnabled:YES];
+                        [weakSelf.spinner stopAnimating];
+                        [weakSelf setEnablesBackButton:YES];                                    
                     }];
-                }                
-            }    
-        }];
+                    [alert show];
+                    [alert release]; 
+                } else {
+                    if ([[SCHAuthenticationManager sharedAuthenticationManager] isAuthenticated] == YES) {
+                        [weakSelf deregisterAfterSuccessfulAuthentication];
+                    } else {
+                        [[SCHAuthenticationManager sharedAuthenticationManager] authenticateWithSuccessBlock:^(SCHAuthenticationManagerConnectivityMode connectivityMode) {
+                            if (connectivityMode == SCHAuthenticationManagerConnectivityModeOnline) {
+                                [weakSelf deregisterAfterSuccessfulAuthentication];
+                            } else {
+                                [weakSelf deregisterFailedAuthentication:[NSError errorWithDomain:kSCHAuthenticationManagerErrorDomain 
+                                                                                             code:kSCHAuthenticationManagerOfflineError 
+                                                                                         userInfo:[NSDictionary dictionaryWithObject:NSLocalizedString(@"You are in offline mode, you must be in online mode to deregister", @"") 
+                                                                                                                              forKey:NSLocalizedDescriptionKey]]];
+                            }
+                        } 
+                                                                                                failureBlock:^(NSError *error){
+                                                                                                    [weakSelf deregisterFailedAuthentication:error];
+                                                                                                }
+                                                                                 waitUntilVersionCheckIsDone:YES];
+                    }                
+                }    
+            }];
+        }
     }
 }
 
@@ -323,6 +331,16 @@ static const CGFloat kDeregisterContentHeightLandscape = 380;
 {
     self.activeTextField = nil;
     [self setupContentSizeForOrientation:self.interfaceOrientation];
+}
+
+- (void)showAppVersionOutdatedAlert
+{
+    LambdaAlert *alert = [[LambdaAlert alloc]
+                          initWithTitle:NSLocalizedString(@"Update Required", @"")
+                          message:NSLocalizedString(@"This function requires that you update Storia. Please visit the App Store to update your app.", @"")];
+    [alert addButtonWithTitle:NSLocalizedString(@"OK", @"") block:nil];
+    [alert show];
+    [alert release];         
 }
 
 @end

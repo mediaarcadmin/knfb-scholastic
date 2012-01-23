@@ -299,7 +299,7 @@ NSString * const SCHAnnotationSyncComponentCompletedProfileIDs = @"SCHAnnotation
             [self.savedAnnotations removeAllObjects];
         }    
     } else {
-        [super method:method didCompleteWithResult:nil userInfo:nil];        
+        [super method:method didCompleteWithResult:result userInfo:nil];        
         [self.savedAnnotations removeAllObjects];        
     }
 }
@@ -313,7 +313,9 @@ NSString * const SCHAnnotationSyncComponentCompletedProfileIDs = @"SCHAnnotation
     if (result != nil && [self.savedAnnotations count] > 0) {
         shouldSyncNotes = [[SCHAppStateManager sharedAppStateManager] canSyncNotes];
         for (NSDictionary *annotationStatusItem in [result objectForKey:kSCHLibreAccessWebServiceAnnotationStatusList]) {
-            if ([[annotationStatusItem objectForKey:kSCHLibreAccessWebServiceProfileID] isEqualToNumber:profileID] == YES) {
+            NSNumber *annotationProfileID = [annotationStatusItem objectForKey:kSCHLibreAccessWebServiceProfileID];
+            if (annotationProfileID != nil && profileID != nil &&
+                [annotationProfileID isEqualToNumber:profileID] == YES) {
                 for (NSDictionary *annotationStatusContentItem in [annotationStatusItem objectForKey:kSCHLibreAccessWebServiceAnnotationStatusContentList]) {            
                     NSDictionary *privateAnnotationsStatus = [annotationStatusContentItem objectForKey:kSCHLibreAccessWebServicePrivateAnnotationsStatus];
                     
@@ -821,21 +823,26 @@ NSString * const SCHAnnotationSyncComponentCompletedProfileIDs = @"SCHAnnotation
 		id webItemID = [webItem valueForKey:kSCHLibreAccessWebServiceID];
 		id localItemID = [localItem valueForKey:kSCHLibreAccessWebServiceID];
 		
-		switch ([webItemID compare:localItemID]) {
-			case NSOrderedSame:
-				[self syncHighlight:webItem withHighlight:localItem];
-                [self backgroundSave:YES];
-				webItem = nil;
-				localItem = nil;
-				break;
-			case NSOrderedAscending:
-				[creationPool addObject:webItem];
-				webItem = nil;
-				break;
-			case NSOrderedDescending:
-				localItem = nil;
-				break;			
-		}		
+        if ((id)webItemID == [NSNull null]) {
+            // ignore any items with no ID
+            webItem = nil;
+        } else {                
+            switch ([webItemID compare:localItemID]) {
+                case NSOrderedSame:
+                    [self syncHighlight:webItem withHighlight:localItem];
+                    [self backgroundSave:YES];
+                    webItem = nil;
+                    localItem = nil;
+                    break;
+                case NSOrderedAscending:
+                    [creationPool addObject:webItem];
+                    webItem = nil;
+                    break;
+                case NSOrderedDescending:
+                    localItem = nil;
+                    break;			
+            }		
+        }
 		
 		if (webItem == nil) {
 			webItem = [webEnumerator nextObject];
@@ -987,21 +994,26 @@ NSString * const SCHAnnotationSyncComponentCompletedProfileIDs = @"SCHAnnotation
 		id webItemID = [webItem valueForKey:kSCHLibreAccessWebServiceID];
 		id localItemID = [localItem valueForKey:kSCHLibreAccessWebServiceID];
 		
-		switch ([webItemID compare:localItemID]) {
-			case NSOrderedSame:
-				[self syncNote:webItem withNote:localItem];
-                [self backgroundSave:YES];
-				webItem = nil;
-				localItem = nil;
-				break;
-			case NSOrderedAscending:
-				[creationPool addObject:webItem];
-				webItem = nil;
-				break;
-			case NSOrderedDescending:
-				localItem = nil;
-				break;			
-		}		
+        if ((id)webItemID == [NSNull null]) {
+            // ignore any items with no ID
+            webItem = nil;
+        } else {        
+            switch ([webItemID compare:localItemID]) {
+                case NSOrderedSame:
+                    [self syncNote:webItem withNote:localItem];
+                    [self backgroundSave:YES];
+                    webItem = nil;
+                    localItem = nil;
+                    break;
+                case NSOrderedAscending:
+                    [creationPool addObject:webItem];
+                    webItem = nil;
+                    break;
+                case NSOrderedDescending:
+                    localItem = nil;
+                    break;			
+            }		
+        }
 		
 		if (webItem == nil) {
 			webItem = [webEnumerator nextObject];
@@ -1123,21 +1135,26 @@ NSString * const SCHAnnotationSyncComponentCompletedProfileIDs = @"SCHAnnotation
 		id webItemID = [webItem valueForKey:kSCHLibreAccessWebServiceID];
 		id localItemID = [localItem valueForKey:kSCHLibreAccessWebServiceID];
 		
-		switch ([webItemID compare:localItemID]) {
-			case NSOrderedSame:
-				[self syncBookmark:webItem withBookmark:localItem];
-                [self backgroundSave:YES];
-				webItem = nil;
-				localItem = nil;
-				break;
-			case NSOrderedAscending:
-				[creationPool addObject:webItem];
-				webItem = nil;
-				break;
-			case NSOrderedDescending:
-				localItem = nil;
-				break;			
-		}		
+        if ((id)webItemID == [NSNull null]) {
+            // ignore any items with no ID
+            webItem = nil;
+        } else {        
+            switch ([webItemID compare:localItemID]) {
+                case NSOrderedSame:
+                    [self syncBookmark:webItem withBookmark:localItem];
+                    [self backgroundSave:YES];
+                    webItem = nil;
+                    localItem = nil;
+                    break;
+                case NSOrderedAscending:
+                    [creationPool addObject:webItem];
+                    webItem = nil;
+                    break;
+                case NSOrderedDescending:
+                    localItem = nil;
+                    break;			
+            }		
+        }
 		
 		if (webItem == nil) {
 			webItem = [webEnumerator nextObject];

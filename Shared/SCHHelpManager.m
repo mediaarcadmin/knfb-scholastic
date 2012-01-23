@@ -255,7 +255,7 @@ static SCHHelpManager *sharedManager = nil;
 			self.startTimer = nil; 
 		} 
         
-		NSLog(@"********* Starting timer...");
+		NSLog(@"********* Starting help timer...");
         if (immediately) {
             [self processHelp];
         } else {

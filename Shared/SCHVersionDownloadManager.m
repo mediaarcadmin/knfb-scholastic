@@ -16,15 +16,11 @@
 NSString * const SCHVersionDownloadManagerCompletedNotification = @"SCHVersionDownloadManagerCompletedNotification";
 NSString * const SCHVersionDownloadManagerCompletionAppVersionState = @"SCHVersionDownloadManagerCompletionAppVersionState";
 
-//static NSTimeInterval const kSCHVersionDownloadManagerVersionCheckTimeout = 60 * 60; // 1 hour
-static NSTimeInterval const kSCHVersionDownloadManagerVersionCheckTimeout = 60 * 5;
-
 #pragma mark - Class Extension
 
 @interface SCHVersionDownloadManager ()
 
 @property (nonatomic, assign, readwrite) SCHVersionDownloadManagerAppVersionState appVersionState;
-@property (nonatomic, retain) NSDate *expireCurrentVersion;
 
 // the background task ID for background processing
 @property (nonatomic, assign) UIBackgroundTaskIdentifier backgroundTask;
@@ -52,6 +48,7 @@ static NSTimeInterval const kSCHVersionDownloadManagerVersionCheckTimeout = 60 *
 
 - (SCHVersionManifestEntry *)nextManifestEntryUpdateForCurrentVersion;
 - (NSString *)appVersion;
+- (void)resetStateForced:(BOOL)forced;
 
 @end
 
@@ -61,7 +58,6 @@ static NSTimeInterval const kSCHVersionDownloadManagerVersionCheckTimeout = 60 *
 
 @synthesize manifestUpdates;
 @synthesize appVersionState;
-@synthesize expireCurrentVersion;
 @synthesize isProcessing;
 @synthesize backgroundTask;
 @synthesize versionDownloadQueue;
@@ -142,13 +138,7 @@ static NSTimeInterval const kSCHVersionDownloadManagerVersionCheckTimeout = 60 *
 #pragma mark - Accessor Methods
 
 - (SCHVersionDownloadManagerAppVersionState)appVersionState
-{
-    if ((appVersionState != SCHVersionDownloadManagerAppVersionStatePendingCheck) &&
-       [self.expireCurrentVersion compare:[NSDate date]] == NSOrderedAscending) {
-        appVersionState = SCHVersionDownloadManagerAppVersionStatePendingCheck;
-        self.expireCurrentVersion = nil;
-    }
-    
+{    
     if (appVersionState == SCHVersionDownloadManagerAppVersionStatePendingCheck) {
         [self checkVersion];
     }
@@ -160,6 +150,12 @@ static NSTimeInterval const kSCHVersionDownloadManagerVersionCheckTimeout = 60 *
 
 - (void)enterBackground
 {
+    // cancel the timer so we can restart when we come to the foreground
+    if (self.startTimer && [self.startTimer isValid]) {
+        [self.startTimer invalidate];
+        self.startTimer = nil; 
+    } 
+
     // if there's already a background monitoring task, then return - the existing one will work
     if (self.backgroundTask && self.backgroundTask != UIBackgroundTaskInvalid) {
         return;
@@ -214,6 +210,8 @@ static NSTimeInterval const kSCHVersionDownloadManagerVersionCheckTimeout = 60 *
 		self.backgroundTask = UIBackgroundTaskInvalid;
 	}	
 	
+    // we need to perform a fresh check on the version
+    [self resetStateForced:YES];
     [self checkOperatingStateImmediately:NO]; 
 }
 
@@ -253,7 +251,7 @@ static NSTimeInterval const kSCHVersionDownloadManagerVersionCheckTimeout = 60 *
         self.startTimer = nil; 
     } 
     
-    NSLog(@"********* Starting timer...");
+    NSLog(@"********* Starting version download timer...");
     if (immediately) {
         [self process];
     } else {
@@ -298,9 +296,7 @@ static NSTimeInterval const kSCHVersionDownloadManagerVersionCheckTimeout = 60 *
 
 - (void)handleUnexpectedVersionCheckError
 {
-    self.state = SCHVersionDownloadManagerProcessingStateCompleted;
-    self.appVersionState = SCHVersionDownloadManagerAppVersionStateCurrent;
-    self.expireCurrentVersion = [NSDate dateWithTimeIntervalSinceNow:kSCHVersionDownloadManagerVersionCheckTimeout];
+    [self resetStateForced:YES];
     
     [[NSNotificationCenter defaultCenter] postNotificationName:SCHVersionDownloadManagerCompletedNotification 
                                                         object:nil 
@@ -322,11 +318,11 @@ static NSTimeInterval const kSCHVersionDownloadManagerVersionCheckTimeout = 60 *
     }
         
     if ([self.versionDownloadQueue operationCount]) {
-        NSLog(@"Trying to process a new operation whilst there are remaining operations");
+        NSLog(@"Trying to process a new Version operation whilst there are remaining operations");
         [self.versionDownloadQueue cancelAllOperations];
     }
 	
-	NSLog(@"**** Calling process with state %d...", self.state);
+	NSLog(@"**** Calling process version download with state %d...", self.state);
     
 	switch (self.state) {
         case SCHVersionDownloadManagerProcessingStateUnexpectedConnectivityFailureError:
@@ -392,7 +388,6 @@ static NSTimeInterval const kSCHVersionDownloadManagerVersionCheckTimeout = 60 *
             }
             
             self.appVersionState = newState;
-            self.expireCurrentVersion = [NSDate dateWithTimeIntervalSinceNow:kSCHVersionDownloadManagerVersionCheckTimeout];
             
             [[NSNotificationCenter defaultCenter] postNotificationName:SCHVersionDownloadManagerCompletedNotification 
                                                                 object:nil 
@@ -404,7 +399,7 @@ static NSTimeInterval const kSCHVersionDownloadManagerVersionCheckTimeout = 60 *
     
 			break;
         case SCHVersionDownloadManagerProcessingStateCompleted:
-			NSLog(@"Version check complete."); 
+			NSLog(@"Version check complete. appVersionState=%d", self.appVersionState); 
             break;
     }            
 }
@@ -421,13 +416,29 @@ static NSTimeInterval const kSCHVersionDownloadManagerVersionCheckTimeout = 60 *
 
 - (void)checkVersion
 {    
-    if (self.state == SCHVersionDownloadManagerProcessingStateCompleted) {
-        self.state = SCHVersionDownloadManagerProcessingStateNeedsManifest;
-    }
+    [self resetStateForced:NO];
     
     if (!self.isProcessing && (self.state != SCHVersionDownloadManagerProcessingStateFetchingManifest)) {
         [self process];
     }
 }
-         
+
+- (BOOL)isAppVersionOutdated
+{
+    return (self.appVersionState == SCHVersionDownloadManagerAppVersionStateOutdatedRequiresForcedUpdate);
+}
+
+- (void)resetStateForced:(BOOL)forced
+{
+    // only reset if we were in a completed state
+    if (forced == YES ||
+        self.state == SCHVersionDownloadManagerProcessingStateCompleted) {
+        NSLog(@"Version download manager will re-check version");        
+        self.state = SCHVersionDownloadManagerProcessingStateNeedsManifest;
+        self.appVersionState = SCHVersionDownloadManagerAppVersionStateCurrent;
+
+        [self.versionDownloadQueue cancelAllOperations];        
+    }
+}
+
 @end

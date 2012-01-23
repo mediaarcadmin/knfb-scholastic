@@ -71,9 +71,12 @@
 		self.connectionData = [[[NSMutableData alloc] init] autorelease];
         self.manifestEntries = [[[NSMutableArray alloc] init] autorelease];
 		
+        
+        NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:UPDATE_MANIFEST]];
+        [request setCachePolicy:NSURLRequestReloadIgnoringCacheData];
+        
 		self.connection = [NSURLConnection 
-						   connectionWithRequest:[NSURLRequest requestWithURL:
-                                                  [NSURL URLWithString:UPDATE_MANIFEST]]
+						   connectionWithRequest:request
 						   delegate:self];
 		
         if (self.connection == nil) {

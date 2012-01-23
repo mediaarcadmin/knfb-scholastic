@@ -34,9 +34,12 @@
 #import "Reachability.h"
 #import "BITModalSheetController.h"
 #import "SCHStoriaWelcomeViewController.h"
+#import "SCHUserDefaults.h"
+#import "SCHVersionDownloadManager.h"
 
 static NSInteger const kSCHBookShelfViewControllerGridCellHeightPortrait = 138;
 static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 131;
+static NSInteger const kSCHBookShelfViewControllerWelcomeShowMaximumCount = 2;
 
 NSString * const kSCHBookShelfErrorDomain  = @"com.knfb.scholastic.BookShelfErrorDomain";
 
@@ -59,6 +62,8 @@ typedef enum
 @property (nonatomic, assign) BOOL shouldWaitForCellsToLoad;
 @property (nonatomic, retain) BITModalSheetController *welcomePopoverController;
 
+- (void)showWelcomeView;
+- (void)showWelcomeTwoView;
 - (void)setupAssetsForOrientation:(UIInterfaceOrientation)orientation;
 - (void)updateTheme;
 - (CGSize)cellSize;
@@ -72,6 +77,7 @@ typedef enum
 - (IBAction)changeToListView:(UIButton *)sender;
 - (IBAction)changeToGridView:(UIButton *)sender;
 
+- (void)showAppVersionOutdatedAlert;
 
 @property (nonatomic, retain) UINib *listTableCellNib;
 
@@ -301,6 +307,8 @@ typedef enum
         if ([self.profileItem.AppProfile.ShowListView boolValue] == YES) {
             [self changeToListView:nil];
         }
+    } else {
+        self.navigationItem.title = NSLocalizedString(@"My eBooks", @"Sample bookshelf title");
     }
     
     // Always force a sync if we are on the sample bookshelf
@@ -341,33 +349,81 @@ typedef enum
 {
     [super viewDidAppear:animated];
     self.shouldWaitForCellsToLoad = NO;
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    NSInteger currentWelcomeShowCount = [userDefaults integerForKey:kSCHUserDefaultsWelcomeViewShowCount];
     
-    if (self.showWelcome) {
-        SCHStoriaWelcomeViewController *welcomeVC = [[SCHStoriaWelcomeViewController alloc] init];
+    if (self.showWelcome &&
+        currentWelcomeShowCount < kSCHBookShelfViewControllerWelcomeShowMaximumCount) {
+        switch (currentWelcomeShowCount) {
+            case 0:
+                currentWelcomeShowCount++;
+                [self showWelcomeView];        
+                break;
+            case 1:
+                currentWelcomeShowCount++;
+                [self showWelcomeTwoView];        
+                break;
+                
+            default:
+                break;
+        }
         
-        BITModalSheetController *aWelcomePopoverController = [[BITModalSheetController alloc] initWithContentViewController:welcomeVC];
-        [aWelcomePopoverController setContentSize:CGSizeMake(556, 241)];
-        [aWelcomePopoverController setContentOffset:CGPointMake(0, -15)];
-        [aWelcomePopoverController setShouldDismissOutsideContentBounds:YES];
-        
-        __block BITModalSheetController *weakWelcomePopoverController = aWelcomePopoverController;
-        __block SCHBookShelfViewController *weakSelf = self;
-        
-        welcomeVC.closeBlock = ^{
-            [weakWelcomePopoverController dismissSheetAnimated:YES completion:nil];
-            weakSelf.welcomePopoverController = nil;
-        };
-        
-        [welcomeVC release];
-        
-        [aWelcomePopoverController presentSheetInViewController:self animated:YES completion:nil];
-        
-        self.welcomePopoverController = aWelcomePopoverController;
-        
-        [aWelcomePopoverController release];
+        [userDefaults setInteger:currentWelcomeShowCount
+                          forKey:kSCHUserDefaultsWelcomeViewShowCount];
+        [userDefaults synchronize];
         
         self.showWelcome = NO;
     }
+}
+
+- (void)showWelcomeView
+{
+    SCHStoriaWelcomeViewController *welcomeVC = [[SCHStoriaWelcomeViewController alloc] init];
+    
+    BITModalSheetController *aWelcomePopoverController = [[BITModalSheetController alloc] initWithContentViewController:welcomeVC];
+    [aWelcomePopoverController setContentSize:CGSizeMake(577, 241)];
+    [aWelcomePopoverController setContentOffset:CGPointMake(0, -15)];
+    
+    __block BITModalSheetController *weakWelcomePopoverController = aWelcomePopoverController;
+    __block SCHBookShelfViewController *weakSelf = self;
+    
+    welcomeVC.closeBlock = ^{
+        [weakWelcomePopoverController dismissSheetAnimated:YES completion:nil];
+        weakSelf.welcomePopoverController = nil;
+    };
+    
+    [welcomeVC release];
+    
+    [aWelcomePopoverController presentSheetInViewController:self animated:YES completion:nil];
+    
+    self.welcomePopoverController = aWelcomePopoverController;
+    
+    [aWelcomePopoverController release];    
+}
+
+- (void)showWelcomeTwoView
+{
+    SCHStoriaWelcomeViewController *welcomeTwoVC = [[SCHStoriaWelcomeViewController alloc] initWithNibName:@"SCHStoriaWelcomeTwoViewController" bundle:nil];
+    
+    BITModalSheetController *aWelcomePopoverController = [[BITModalSheetController alloc] initWithContentViewController:welcomeTwoVC];
+    [aWelcomePopoverController setContentSize:CGSizeMake(577, 241)];
+    [aWelcomePopoverController setContentOffset:CGPointMake(0, -15)];
+    
+    __block BITModalSheetController *weakWelcomePopoverController = aWelcomePopoverController;
+    __block SCHBookShelfViewController *weakSelf = self;
+    
+    welcomeTwoVC.closeBlock = ^{
+        [weakWelcomePopoverController dismissSheetAnimated:YES completion:nil];
+        weakSelf.welcomePopoverController = nil;
+    };
+    
+    [welcomeTwoVC release];
+    
+    [aWelcomePopoverController presentSheetInViewController:self animated:YES completion:nil];
+    
+    self.welcomePopoverController = aWelcomePopoverController;
+    
+    [aWelcomePopoverController release];    
 }
 
 - (void)reloadData
@@ -793,7 +849,6 @@ typedef enum
 
 - (void)tableView:(UITableView *)aTableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    
     SCHBookShelfTableViewCell *cell = (SCHBookShelfTableViewCell *) [aTableView cellForRowAtIndexPath:indexPath];
     
     if ([indexPath section] != 0) {
@@ -924,56 +979,63 @@ typedef enum
     
     SCHBookIdentifier *identifier = [self.books objectAtIndex:index];
     NSError *canOpenError;
+    BOOL canOpenBook = [self canOpenBook:identifier error:&canOpenError];
     
-    if ([self canOpenBook:identifier error:&canOpenError]) {
-        if (startBlock) {
-            startBlock();
-        }
-    }
-    
-    double delayInSeconds = 0.02;
-    dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);
-    dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
-        NSError *error;
-        
-        SCHReadingViewController *readingController = [self openBook:[self.books objectAtIndex:index] error:&error];
-        BOOL didOpen = NO;
-        
-        if (readingController != nil) {
-            self.updateShelfOnReturnToShelf = YES;
-            didOpen = YES;
-            [self.navigationController pushViewController:readingController animated:YES]; 
-        } else {
-            if (error) {
-                if ([[error domain] isEqualToString:kSCHBookShelfErrorDomain] && ([error code] == kSCHBookShelfNoInternet)) {
-                    LambdaAlert *alert = [[LambdaAlert alloc]
-                                          initWithTitle:NSLocalizedString(@"No Internet Connection", @"No Internet Connection")
-                                          message:[error localizedDescription]];
-                    [alert addButtonWithTitle:@"OK" block:nil];
-                    [alert show];
-                    [alert release];
-                } else if (!([[error domain] isEqualToString:kSCHAppBookErrorDomain] && ([error code] == kSCHAppBookStillBeingProcessedError))) {
-                    LambdaAlert *alert = [[LambdaAlert alloc]
-                                          initWithTitle:NSLocalizedString(@"This eBook Could Not Be Opened", @"Could not open eBook")
-                                          message:[error localizedDescription]];
-                    [alert addButtonWithTitle:@"Cancel" block:nil];
-                    [alert addButtonWithTitle:@"Retry" block:^{
-                        [[SCHProcessingManager sharedProcessingManager] userRequestedRetryForBookWithIdentifier:identifier];
-                        
-                    }];
-                    [alert show];
-                    [alert release];
-                }
+    if ((canOpenBook == NO) && 
+        ([[SCHVersionDownloadManager sharedVersionManager] isAppVersionOutdated] == YES) &&
+        ([[SCHAppStateManager sharedAppStateManager] isSampleStore] == NO)) {
+        [self showAppVersionOutdatedAlert];
+        self.currentlyLoadingIndex = -1;
+    } else {
+        if (canOpenBook) {
+            if (startBlock) {
+                startBlock();
             }
         }
         
-        if (endBlock) {
-            endBlock(didOpen);
-        }
-        
-        self.currentlyLoadingIndex = -1;
-    });
-
+        double delayInSeconds = 0.02;
+        dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);
+        dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+            NSError *error;
+            
+            SCHReadingViewController *readingController = [self openBook:[self.books objectAtIndex:index] error:&error];
+            BOOL didOpen = NO;
+            
+            if (readingController != nil) {
+                self.updateShelfOnReturnToShelf = YES;
+                didOpen = YES;
+                [self.navigationController pushViewController:readingController animated:YES]; 
+            } else {
+                if (error) {
+                    if ([[error domain] isEqualToString:kSCHBookShelfErrorDomain] && ([error code] == kSCHBookShelfNoInternet)) {
+                        LambdaAlert *alert = [[LambdaAlert alloc]
+                                              initWithTitle:NSLocalizedString(@"No Internet Connection", @"No Internet Connection")
+                                              message:[error localizedDescription]];
+                        [alert addButtonWithTitle:@"OK" block:nil];
+                        [alert show];
+                        [alert release];
+                    } else if (!([[error domain] isEqualToString:kSCHAppBookErrorDomain] && ([error code] == kSCHAppBookStillBeingProcessedError))) {
+                        LambdaAlert *alert = [[LambdaAlert alloc]
+                                              initWithTitle:NSLocalizedString(@"This eBook Could Not Be Opened", @"Could not open eBook")
+                                              message:[error localizedDescription]];
+                        [alert addButtonWithTitle:@"Cancel" block:nil];
+                        [alert addButtonWithTitle:@"Retry" block:^{
+                            [[SCHProcessingManager sharedProcessingManager] userRequestedRetryForBookWithIdentifier:identifier];
+                            
+                        }];
+                        [alert show];
+                        [alert release];
+                    }
+                }
+            }
+            
+            if (endBlock) {
+                endBlock(didOpen);
+            }
+            
+            self.currentlyLoadingIndex = -1;
+        });
+    }
 }
 
 #pragma mark - MRGridViewDelegate methods
@@ -1113,6 +1175,18 @@ typedef enum
 - (CGFloat)cellBorderSize
 {
     return 10;
+}
+
+#pragma mark - App Version checking methods
+
+- (void)showAppVersionOutdatedAlert
+{
+    LambdaAlert *alert = [[LambdaAlert alloc]
+                          initWithTitle:NSLocalizedString(@"Update Required", @"")
+                          message:NSLocalizedString(@"This function requires that you update Storia. Please visit the App Store to update your app.", @"")];
+    [alert addButtonWithTitle:NSLocalizedString(@"OK", @"") block:nil];
+    [alert show];
+    [alert release];         
 }
 
 @end

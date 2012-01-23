@@ -11,6 +11,7 @@
 extern NSString * const kSCHUserDefaultsPerformedFirstSyncUpToBooks;
 extern NSString * const kSCHUserDefaultsSpaceSaverMode;
 extern NSString * const kSCHUserDefaultsSpaceSaverModeSetOffNotification;
+extern NSString * const kSCHUserDefaultsWelcomeViewShowCount;
 
 extern NSString * const kSCHAuthenticationManagerUserKey;
 extern NSString * const kSCHAuthenticationManagerDeviceKey;

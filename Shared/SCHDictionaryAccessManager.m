@@ -101,7 +101,7 @@ static SCHDictionaryAccessManager *sharedManager = nil;
     [super dealloc];
 }
 
-- (void)updateOnReady
+- (void)fetchCSSFromDisk
 {
     self.youngDictionaryCSS = [NSString stringWithContentsOfFile:[[[SCHDictionaryDownloadManager sharedDownloadManager] dictionaryDirectory] stringByAppendingPathComponent:@"YoungDictionary.css"]
                                                         encoding:NSUTF8StringEncoding 
@@ -139,9 +139,7 @@ static SCHDictionaryAccessManager *sharedManager = nil;
 {
     // if the dictionary isn't ready, we should clear out the existing cached CSS
     // it'll be reloaded when HTMLforWord is called
-    SCHDictionaryProcessingState state = [[SCHDictionaryDownloadManager sharedDownloadManager] dictionaryProcessingState];
-    
-    if (state != SCHDictionaryProcessingStateReady) {
+    if (![[SCHDictionaryDownloadManager sharedDownloadManager] dictionaryIsAvailable]) {
         self.youngDictionaryCSS = nil;
         self.oldDictionaryCSS = nil;
         self.youngAdditions = nil;
@@ -162,7 +160,7 @@ static SCHDictionaryAccessManager *sharedManager = nil;
 {
     NSAssert([NSThread isMainThread], @"entryForWord must be called on main thread");
     
-    if ([[SCHDictionaryDownloadManager sharedDownloadManager] dictionaryProcessingState] != SCHDictionaryProcessingStateReady) {
+    if (![[SCHDictionaryDownloadManager sharedDownloadManager] dictionaryIsAvailable]) {
         NSLog(@"Dictionary is not ready yet!");
         return nil;
     }
@@ -227,7 +225,7 @@ static SCHDictionaryAccessManager *sharedManager = nil;
 {
     NSAssert([NSThread isMainThread], @"wordFormForBaseWord must be called on main thread");
     
-    if ([[SCHDictionaryDownloadManager sharedDownloadManager] dictionaryProcessingState] != SCHDictionaryProcessingStateReady) {
+    if (![[SCHDictionaryDownloadManager sharedDownloadManager] dictionaryIsAvailable]) {
         NSLog(@"Dictionary is not ready yet!");
         return nil;
     }
@@ -239,6 +237,10 @@ static SCHDictionaryAccessManager *sharedManager = nil;
     {
         NSLog(@"Warning: unrecognised category %@ in HTMLForWord.", category);
         return nil;
+    }
+    
+    if (!self.youngDictionaryCSS) {
+        [self fetchCSSFromDisk];
     }
     
     // fetch the word form from core data
@@ -280,13 +282,13 @@ static SCHDictionaryAccessManager *sharedManager = nil;
 {
     NSAssert([NSThread isMainThread], @"HTMLForWord must be called on main thread");
     
-    if ([[SCHDictionaryDownloadManager sharedDownloadManager] dictionaryProcessingState] != SCHDictionaryProcessingStateReady) {
+    if (![[SCHDictionaryDownloadManager sharedDownloadManager] dictionaryIsAvailable]) {
         NSLog(@"Dictionary is not ready yet!");
         return nil;
     }
     
     if (!self.youngDictionaryCSS) {
-        [self updateOnReady];
+        [self fetchCSSFromDisk];
     }
     
     // if the category isn't YD or OD, return
@@ -467,7 +469,7 @@ static SCHDictionaryAccessManager *sharedManager = nil;
 - (void)speakWord:(NSString *)dictionaryWord category:(NSString *)category
 {
     
-    if ([[SCHDictionaryDownloadManager sharedDownloadManager] dictionaryProcessingState] != SCHDictionaryProcessingStateReady) {
+    if (![[SCHDictionaryDownloadManager sharedDownloadManager] dictionaryIsAvailable]) {
         NSLog(@"Dictionary is not ready yet!");
         return;
     }
@@ -542,7 +544,7 @@ static SCHDictionaryAccessManager *sharedManager = nil;
 
 - (void)speakYoungerWordDefinition:(NSString *)dictionaryWord
 {
-    if ([[SCHDictionaryDownloadManager sharedDownloadManager] dictionaryProcessingState] != SCHDictionaryProcessingStateReady) {
+    if (![[SCHDictionaryDownloadManager sharedDownloadManager] dictionaryIsAvailable]) {
         NSLog(@"Dictionary is not ready yet!");
         return;
     }
@@ -588,7 +590,7 @@ static SCHDictionaryAccessManager *sharedManager = nil;
 
 - (BOOL)dictionaryContainsWord:(NSString *)word forCategory:(NSString*)category
 {
-    if ([[SCHDictionaryDownloadManager sharedDownloadManager] dictionaryProcessingState] != SCHDictionaryProcessingStateReady) {
+    if (![[SCHDictionaryDownloadManager sharedDownloadManager] dictionaryIsAvailable]) {
         NSLog(@"Dictionary is not ready yet!");
         return NO;
     }

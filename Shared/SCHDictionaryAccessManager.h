@@ -23,7 +23,7 @@ extern NSString* const kSCHDictionaryOlderReader;
 
 + (SCHDictionaryAccessManager *)sharedAccessManager;
 
-- (void)updateOnReady;
+- (void)fetchCSSFromDisk;
 
 // HTML definition for a word (uses YD/OD as category)
 - (NSString *)HTMLForWord:(NSString *)dictionaryWord category:(NSString *)category;

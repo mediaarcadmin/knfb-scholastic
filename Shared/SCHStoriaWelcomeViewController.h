@@ -12,4 +12,6 @@
 
 @property (nonatomic, copy) dispatch_block_t closeBlock;
 
+- (IBAction)close:(id)sender;
+
 @end

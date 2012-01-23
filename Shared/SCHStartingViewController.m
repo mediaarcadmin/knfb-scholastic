@@ -37,6 +37,7 @@
 #import "SCHStoriaLoginViewController.h"
 #import "BITOperationWithBlocks.h"
 #import "SCHVersionDownloadManager.h"
+#import "SCHAccountValidationViewController.h"
 
 typedef enum {
 	kSCHStartingViewControllerProfileSyncStateNone = 0,
@@ -67,6 +68,9 @@ static const NSTimeInterval kSCHStartingViewControllerNonForcedAlertInterval = (
 - (void)runSetupProfileSequenceAnimated:(BOOL)animated;
 
 - (void)pushSamplesAnimated:(BOOL)animated showWelcome:(BOOL)welcome;
+- (void)pushBookshelfSetupModalControllerAnimated:(BOOL)animated showValidation:(BOOL)showValidation;
+- (void)pushDictionaryDownloadModalControllerAnimated:(BOOL)animated;
+- (void)runSetupProfileSequenceAnimated:(BOOL)animated pushProfile:(BOOL)pushProfile showValidation:(BOOL)showValidation;
 
 - (void)setStandardStore;
 - (BOOL)dictionaryDownloadRequired;
@@ -90,10 +94,8 @@ static const NSTimeInterval kSCHStartingViewControllerNonForcedAlertInterval = (
 
 - (void)createInitialNavigationControllerStack
 {
-    if ([[SCHAuthenticationManager sharedAuthenticationManager] hasUsernameAndPassword]) {
-        if (![self bookshelfSetupRequired]) {
-            [self pushCurrentProfileAnimated:NO];
-        }
+    if ([[SCHAuthenticationManager sharedAuthenticationManager] hasUsernameAndPassword] && [[SCHSyncManager sharedSyncManager] havePerformedFirstSyncUpToBooks]) {
+        [self runSetupProfileSequenceAnimated:NO pushProfile:YES showValidation:NO];
     } else if ([[SCHAppStateManager sharedAppStateManager] isSampleStore]) {
         [self pushSamplesAnimated:NO showWelcome:NO];
     }
@@ -203,12 +205,12 @@ static const NSTimeInterval kSCHStartingViewControllerNonForcedAlertInterval = (
     [super viewDidAppear:animated];
     
     if ([[SCHAuthenticationManager sharedAuthenticationManager] hasUsernameAndPassword] &&
-        [self bookshelfSetupRequired]) {
+        [[SCHSyncManager sharedSyncManager] havePerformedFirstSyncUpToBooks]) {
         
-        // Start the sync in case they have been set up since last sync
-        [[SCHSyncManager sharedSyncManager] firstSync:YES requireDeviceAuthentication:NO];
-        
-        [self runSetupProfileSequenceAnimated:animated];
+        if ([self bookshelfSetupRequired]) {
+            // Start the sync in case they have been set up since last sync
+            [[SCHSyncManager sharedSyncManager] firstSync:YES requireDeviceAuthentication:NO];
+        }
     } else {
         [self runInitialChoiceSequence];
     }
@@ -343,7 +345,7 @@ static const NSTimeInterval kSCHStartingViewControllerNonForcedAlertInterval = (
     __block UIViewController *weakSelf = self;
     __block SCHParentalToolsWebViewController *weakParentTools = parentalToolsWebViewController;
     
-    [self.webParentToolsPopoverController presentSheetInViewController:self animated:NO completion:^{
+    [self.webParentToolsPopoverController presentSheetInViewController:[self profileViewController] animated:NO completion:^{
         weakParentTools.textView.alpha = 0;
         
         CGSize expandedSize;
@@ -373,35 +375,24 @@ static const NSTimeInterval kSCHStartingViewControllerNonForcedAlertInterval = (
     dispatch_block_t completion = ^{
         [weakSelf setWebParentToolsPopoverController:nil];
         
-        if ([[weakSelf.modalNavigationController viewControllers] count] == 0) {
-            // The view has been unloaded due to memory pressure
-            // Just push the bookshelves screen, don't bother with re-adding the validation controller
-            [weakSelf runSetupProfileSequenceAnimated:NO];
+        if (showValidation) {
+            weakSelf.profileSyncState = kSCHStartingViewControllerProfileSyncStateWaitingForPassword;
         } else {
-            if (showValidation) {
-                weakSelf.profileSyncState = kSCHStartingViewControllerProfileSyncStateWaitingForPassword;
-            } else {
-                weakSelf.profileSyncState = kSCHStartingViewControllerProfileSyncStateWaitingForBookshelves;
-                
-                NSMutableArray *viewControllers = [[weakSelf.modalNavigationController viewControllers] mutableCopy];
-                [viewControllers removeLastObject];
-                [weakSelf.modalNavigationController setViewControllers:viewControllers];
-                [viewControllers release];
-            }
-            
-            [weakSelf presentModalViewController:self.modalNavigationController animated:NO];
+            weakSelf.profileSyncState = kSCHStartingViewControllerProfileSyncStateWaitingForBookshelves;
         }
         
-        dispatch_async(dispatch_get_main_queue(), ^{
-            if (shouldSync) {
+        [weakSelf runSetupProfileSequenceAnimated:NO pushProfile:NO showValidation:showValidation];
+        
+        if (shouldSync) {
+            dispatch_async(dispatch_get_main_queue(), ^{
                 [[SCHSyncManager sharedSyncManager] firstSync:YES requireDeviceAuthentication:YES];
                 weakSelf.checkProfilesAlert = [[[LambdaAlert alloc]
-                                            initWithTitle:NSLocalizedString(@"Syncing with Your Account", @"")
-                                            message:@"\n"] autorelease];
+                                                initWithTitle:NSLocalizedString(@"Syncing with Your Account", @"")
+                                                message:@"\n"] autorelease];
                 [weakSelf.checkProfilesAlert setSpinnerHidden:NO];
                 [weakSelf.checkProfilesAlert show];
-            }
-        });
+            });
+        }
     };
     
     if ([self.webParentToolsPopoverController isModalSheetVisible]) {
@@ -497,7 +488,7 @@ static const NSTimeInterval kSCHStartingViewControllerNonForcedAlertInterval = (
             [self runSetupProfileSequenceAnimated:YES];
             break;
         case kSCHStartingViewControllerProfileSyncStateWaitingForBookshelves:
-            [self runSetupProfileSequenceAnimated:NO];
+            [self runSetupProfileSequenceAnimated:NO pushProfile:NO showValidation:NO];
             break;
         case kSCHStartingViewControllerProfileSyncStateWaitingForPassword:
             if (![self bookshelfSetupRequired]) {
@@ -567,6 +558,9 @@ static const NSTimeInterval kSCHStartingViewControllerNonForcedAlertInterval = (
     BITOperationWithBlocks *setupSequencePresentLoginOperation = [[BITOperationWithBlocks alloc] init];
     setupSequencePresentLoginOperation.asyncMain = ^(BITOperationIsCancelledBlock isCancelled, BITOperationAsyncCompletionBlock completion) {
         
+        // Clear the modal contents so we have a known starting point
+        [self.modalNavigationController setViewControllers:nil];
+        
         SCHStoriaLoginViewController *login = [[SCHStoriaLoginViewController alloc] initWithNibName:@"SCHStoriaLoginViewController" bundle:nil];
         
         login.previewBlock = ^{
@@ -597,13 +591,13 @@ static const NSTimeInterval kSCHStartingViewControllerNonForcedAlertInterval = (
         [aLoginPopoverController setAutoresizingMask:UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleBottomMargin];
         
         if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
-            [aLoginPopoverController setContentSize:CGSizeMake(600, 481)];
+            [aLoginPopoverController setContentSize:CGSizeMake(605, 497)];
             CGPoint offset;
             
             if (UIInterfaceOrientationIsPortrait(self.interfaceOrientation)) {
-                offset = CGPointMake(0, -60);
+                offset = CGPointMake(0, -64);
             } else {
-                offset = CGPointMake(0, 134);
+                offset = CGPointMake(0, 130);
             }
             [aLoginPopoverController setContentOffset:offset];
         } else {
@@ -692,56 +686,79 @@ static const NSTimeInterval kSCHStartingViewControllerNonForcedAlertInterval = (
     [setupSequenceCheckDictionaryDownload release];
 }
 
+- (void)pushBookshelfSetupModalControllerAnimated:(BOOL)animated showValidation:(BOOL)showValidation
+{
+    NSMutableArray *controllers = [NSMutableArray arrayWithArray:[self.modalNavigationController viewControllers]];
+    
+    if (![[controllers lastObject] isKindOfClass:NSClassFromString(@"SCHSetupBookshelvesViewController")]) {
+        SCHSetupBookshelvesViewController *setupBookshelves = [[[SCHSetupBookshelvesViewController alloc] init] autorelease];
+        setupBookshelves.profileSetupDelegate = self;
+        [controllers addObject:setupBookshelves];
+    }
+    
+    if (showValidation) {
+        SCHAccountValidationViewController *accountValidationViewController = [[[SCHAccountValidationViewController alloc] init] autorelease];
+        accountValidationViewController.profileSetupDelegate = self;        
+        accountValidationViewController.validatedControllerShouldHideCloseButton = YES;
+        accountValidationViewController.title = NSLocalizedString(@"Set Up Your Bookshelves", @"");
+        [controllers addObject:accountValidationViewController];
+    }
+    
+    if (!self.modalViewController) {
+        [self.modalNavigationController setViewControllers:controllers];
+        [self presentModalViewController:self.modalNavigationController animated:animated];
+    } else {
+        [self.modalNavigationController setViewControllers:controllers animated:YES];
+    }
+}
+
+- (void)pushDictionaryDownloadModalControllerAnimated:(BOOL)animated
+{
+    
+    NSMutableArray *controllers = [NSMutableArray arrayWithArray:[self.modalNavigationController viewControllers]];
+
+    if (![[controllers lastObject] isKindOfClass:NSClassFromString(@"SCHDownloadDictionaryViewController")]) {
+        SCHDownloadDictionaryViewController *downloadDictionary = [[[SCHDownloadDictionaryViewController alloc] init] autorelease];
+        downloadDictionary.profileSetupDelegate = self;
+        downloadDictionary.completion = ^{
+            if (self.modalViewController) {
+                [self dismissModalViewControllerAnimated:YES];
+            }
+        };
+        [controllers addObject:downloadDictionary];
+    }
+    
+    if (!self.modalViewController) {
+        [self.modalNavigationController setViewControllers:controllers];
+        [self presentModalViewController:self.modalNavigationController animated:animated];
+    } else {
+        [self.modalNavigationController setViewControllers:controllers animated:YES];
+    }
+}
+
 - (void)runSetupProfileSequenceAnimated:(BOOL)animated
-{    
-    
-    __block BOOL shouldAnimate = animated;
-    
+{
+    [self runSetupProfileSequenceAnimated:animated pushProfile:YES showValidation:NO];
+}
+
+- (void)runSetupProfileSequenceAnimated:(BOOL)animated pushProfile:(BOOL)pushProfile showValidation:(BOOL)showValidation
+{        
     dispatch_block_t continueBlock = ^{
-        NSArray *currentViewControllers = [self.modalNavigationController viewControllers];
-        UIViewController *current = ([currentViewControllers count] == 1) ? [currentViewControllers objectAtIndex:0] : nil;
         
-        UIViewController *next = nil;
-        
+        if (pushProfile) {
+            [self pushCurrentProfileAnimated:animated];
+        }
+                
         if ([self bookshelfSetupRequired]) {
             self.profileSyncState = kSCHStartingViewControllerProfileSyncStateWaitingForBookshelves;
-            if ([current isKindOfClass:NSClassFromString(@"SCHSetupBookshelvesViewController")]) {
-                // Do nothing, we are trying to push the same thing on
-                if (self.modalViewController) {
-                    return;
-                } else {
-                    [self presentModalViewController:self.modalNavigationController animated:shouldAnimate];
-                    return;
-                }
-                
-            } else {
-                SCHSetupBookshelvesViewController *setupBookshelves = [[[SCHSetupBookshelvesViewController alloc] init] autorelease];
-                setupBookshelves.profileSetupDelegate = self;
-                next = setupBookshelves;
-            }
+            [self pushBookshelfSetupModalControllerAnimated:animated showValidation:showValidation];
         } else if ([self dictionaryDownloadRequired]) {
-            if ([current isKindOfClass:NSClassFromString(@"SCHDownloadDictionaryViewController")]) {
-                // Do nothing, we are trying to push the same thing on
-                return;
-            } else {
-                SCHDownloadDictionaryViewController *downloadDictionary = [[[SCHDownloadDictionaryViewController alloc] init] autorelease];
-                downloadDictionary.profileSetupDelegate = self;
-                downloadDictionary.completion = ^{
-                    [self pushCurrentProfileAnimated:YES];
-                };
-                next = downloadDictionary;
-                shouldAnimate = YES;
-            }
-        }
-        
-        if (next) {
-            [self.modalNavigationController setViewControllers:[NSArray arrayWithObject:next] animated:shouldAnimate];
-            
-            if (!self.modalViewController) {
-                [self presentModalViewController:self.modalNavigationController animated:shouldAnimate];
-            }        
+            self.profileSyncState = kSCHStartingViewControllerProfileSyncStateNone;
+            [self pushDictionaryDownloadModalControllerAnimated:animated];
         } else {
-            [self pushCurrentProfileAnimated:YES];
+            if (self.modalViewController) {
+                [self dismissModalViewControllerAnimated:YES];
+            }
         }
     };
     
@@ -757,7 +774,10 @@ static const NSTimeInterval kSCHStartingViewControllerNonForcedAlertInterval = (
     BITOperationWithBlocks *setupSequenceCheckConnectivity = [[BITOperationWithBlocks alloc] init];
     setupSequenceCheckConnectivity.syncMain = ^(BITOperationIsCancelledBlock isCancelled, BITOperationFailedBlock failed) {
         if ([[Reachability reachabilityForInternetConnection] isReachable] == NO) {
-            NSError *error = [[[NSError alloc] init] autorelease];
+            NSError *error = [NSError errorWithDomain:nil  
+                                                   code:0  
+                                               userInfo:[NSDictionary dictionaryWithObject:NSLocalizedString(@"An Internet connection is required to sign into your account.", @"")  
+                                                                                    forKey:NSLocalizedDescriptionKey]];  
             failed(error);
         }
     };
@@ -794,22 +814,32 @@ static const NSTimeInterval kSCHStartingViewControllerNonForcedAlertInterval = (
                                                                                     }
                                                                                     [[SCHSyncManager sharedSyncManager] firstSync:YES requireDeviceAuthentication:NO];
                                                                                 } else { 
-                                                                                    NSError *anError = [[[NSError alloc] init] autorelease];
+                                                                                    NSError *anError = [NSError errorWithDomain:kSCHAuthenticationManagerErrorDomain  
+                                                                                                                           code:kSCHAuthenticationManagerOfflineError  
+                                                                                                                       userInfo:[NSDictionary dictionaryWithObject:NSLocalizedString(@"There was a problem checking your username and password. Please try again.", @"")  
+                                                                                                                                                            forKey:NSLocalizedDescriptionKey]];        
                                                                                     failed(anError);
-                                                                                    //[self signInFailedForLoginController:login withError:[NSError errorWithDomain:kSCHAuthenticationManagerErrorDomain  
-                                                                                      //                                                                       code:kSCHAuthenticationManagerOfflineError  
-                                                                                        //                                                                 userInfo:[NSDictionary dictionaryWithObject:NSLocalizedString(@"You are in offline mode, you must be in online mode to login", @"")  
-                                                                                          //                                                                                                    forKey:NSLocalizedDescriptionKey]]];                                                                                         
                                                                                 } 
                                                                             } 
                                                                             failureBlock:^(NSError * error){
                                                                                 if (error == nil) {
-                                                                                    NSError *anError = [[[NSError alloc] init] autorelease];
+                                                                                    NSError *anError = [NSError errorWithDomain:kSCHAuthenticationManagerErrorDomain  
+                                                                                                                           code:kSCHAuthenticationManagerGeneralError  
+                                                                                                                       userInfo:[NSDictionary dictionaryWithObject:NSLocalizedString(@"There was a problem checking your username and password. Please try again.", @"")  
+                                                                                                                                                            forKey:NSLocalizedDescriptionKey]];  
+                                                                                    
                                                                                     failed(anError);
                                                                                 } else {
                                                                                     failed(error);
                                                                                 }
-                                                                            }];    
+                                                                            }
+                                                             waitUntilVersionCheckIsDone:YES];    
+        } else {
+            NSError *anError = [NSError errorWithDomain:kSCHAccountValidationErrorDomain  
+                                                   code:kSCHAccountValidationCredentialsError  
+                                               userInfo:[NSDictionary dictionaryWithObject:NSLocalizedString(@"Username and password must not be blank. Please try again.", @"")  
+                                                                                    forKey:NSLocalizedDescriptionKey]];
+            failed(anError);
         }
     };
     
@@ -902,58 +932,18 @@ static const NSTimeInterval kSCHStartingViewControllerNonForcedAlertInterval = (
         
         if (appVersionState == SCHVersionDownloadManagerAppVersionStateOutdatedRequiresForcedUpdate) {
             LambdaAlert *alert = [[LambdaAlert alloc]
-                                  initWithTitle:NSLocalizedString(@"App is out of date", @"")
-                                  message:NSLocalizedString(@"Please update to the latest version", @"")];
-            [alert addButtonWithTitle:NSLocalizedString(@"Update", @"") block:^{
+                                  initWithTitle:NSLocalizedString(@"Update Required", @"")
+                                  message:NSLocalizedString(@"Please visit the App Store to update Storia. Until you do, you will still be able to read your eBooks, but will not be able to download any new eBooks or synchronize your app.", @"")];
+            __block LambdaAlert *weakAlert = alert;
+            
+            [alert addButtonWithTitle:NSLocalizedString(@"App Store", @"") block:^{
                 [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"http://itunes.apple.com/app/scholastic-ereading-app-the/id491014756?mt=8"]];
-                exit(EXIT_SUCCESS);
+                [weakAlert dismissAnimated:NO]; 
             }];
+            
+            [alert addButtonWithTitle:NSLocalizedString(@"Not Yet", @"") block:^{}];
             [alert show];
-            [alert release];     
-        } else if (appVersionState == SCHVersionDownloadManagerAppVersionStateOutdated) {
-            NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-            
-            // check to see if we need to nag
-            BOOL doNag = NO;
-            
-            NSDate *lastNagDate = [defaults objectForKey:@"lastNonForcedVersionAlertDate"];
-            NSDate *currentDate = [NSDate date];
-            
-            // if there's no default, set the current date
-            if (lastNagDate == nil) {
-                [defaults setObject:currentDate forKey:@"lastNonForcedVersionAlertDate"];
-                [defaults synchronize];
-                doNag = YES;
-            } else {
-                // have we nagged recently?
-                NSDate *nagAfter = [lastNagDate dateByAddingTimeInterval:kSCHStartingViewControllerNonForcedAlertInterval];
-                
-                if ([nagAfter compare:currentDate] == NSOrderedAscending) {
-                    doNag = YES;
-                    [defaults setObject:currentDate forKey:@"lastNonForcedVersionAlertDate"];
-                    [defaults synchronize];					
-                }
-            }		
-            
-            if (doNag) {
-                LambdaAlert *alert = [[LambdaAlert alloc]
-                                      initWithTitle:NSLocalizedString(@"A newer version of the app is available", @"")
-                                      message:NSLocalizedString(@"Would you like to update to the latest version?", @"")];
-                
-                __block LambdaAlert *weakAlert = alert;
-                
-                [alert addButtonWithTitle:NSLocalizedString(@"App Store", @"") block:^{
-                    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"http://itunes.apple.com/app/scholastic-ereading-app-the/id491014756?mt=8"]];
-                    [weakAlert dismissAnimated:NO]; 
-                }];
-                
-                
-                [alert addButtonWithTitle:NSLocalizedString(@"Not Yet", @"") block:^{
-                    
-                }];
-                [alert show];
-                [alert release];   
-            }
+            [alert release];   
         }
     }
 }

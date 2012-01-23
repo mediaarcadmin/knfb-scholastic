@@ -163,7 +163,7 @@
 										<int key="IBUIContentMode">7</int>
 										<bool key="IBUIUserInteractionEnabled">NO</bool>
 										<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
-										<string key="IBUIText">Deregistering this device means it can no longer be used to read your Scholastic eBooks. It will also no longer count against the maximum number of five devices you can use for reading.</string>
+										<string key="IBUIText">Deregistering this device means it can no longer be used to read your eBooks. It will also no longer count against the maximum number of five devices you can use for reading.</string>
 										<object class="NSColor" key="IBUITextColor" id="18532674">
 											<int key="NSColorSpace">3</int>
 											<bytes key="NSWhite">MC4zMzMzMzMzMzMzAA</bytes>
@@ -967,7 +967,7 @@
 				<string>{18, 18}</string>
 				<string>{31, 51}</string>
 				<string>{23, 48}</string>
-				<string>{293, 46}</string>
+				<string>{257, 33}</string>
 			</object>
 		</object>
 		<string key="IBCocoaTouchPluginVersion">933</string>

@@ -103,7 +103,7 @@ static const CGFloat kProfilePadTableOffsetLandscape = 56.0f;
     NSIndexPath *leftIndexPath = nil;
     NSString *rightTitle = nil;
     NSIndexPath *rightIndexPath = nil;
-    SCHProfileItem *managedObject = nil;
+    SCHProfileItem *profileItem = nil;
     
     SCHProfileViewCell *cell = (SCHProfileViewCell*)[aTableView dequeueReusableCellWithIdentifier:CellIdentifier];
     if (cell == nil) {
@@ -114,16 +114,15 @@ static const CGFloat kProfilePadTableOffsetLandscape = 56.0f;
     
     leftIndexPath = [NSIndexPath indexPathForRow:(indexPath.row == 0 ? 0 : indexPath.row * 2)
                                        inSection:indexPath.section];
-    managedObject = [self.fetchedResultsController objectAtIndexPath:leftIndexPath]; 
-    leftTitle = [managedObject bookshelfName:NO];
+    profileItem = [self.fetchedResultsController objectAtIndexPath:leftIndexPath]; 
+    leftTitle = [profileItem bookshelfName:NO];
     
     if (leftIndexPath.row + 1 < [[[self.fetchedResultsController sections] objectAtIndex:indexPath.section] numberOfObjects]) {
         rightIndexPath = [NSIndexPath indexPathForRow:leftIndexPath.row + 1 inSection:indexPath.section];
-        managedObject = [self.fetchedResultsController objectAtIndexPath:rightIndexPath]; 
-        rightTitle = [managedObject bookshelfName:NO];
+        profileItem = [self.fetchedResultsController objectAtIndexPath:rightIndexPath]; 
+        rightTitle = [profileItem bookshelfName:NO];
     }
     
-    managedObject = [self.fetchedResultsController objectAtIndexPath:indexPath];
 	[cell setLeftButtonTitle:leftTitle
                leftIndexPath:leftIndexPath
             rightButtonTitle:rightTitle

@@ -109,4 +109,6 @@ typedef enum {
 - (void)beginDictionaryDownload;
 - (void)deleteDictionary;
 
+- (BOOL)dictionaryIsAvailable;
+
 @end

@@ -10,6 +10,7 @@
 #import <QuartzCore/QuartzCore.h>
 
 static const CGFloat kProfileViewCellButtonWidth = 296.0f;
+static const CGFloat kProfileViewCellButtonEdge = 10.0f;
 
 @interface SCHProfileViewCell ()
 
@@ -139,14 +140,14 @@ static const CGFloat kProfileViewCellButtonWidth = 296.0f;
     rightButtonRect.size.width /= 2.0;
     rightButtonRect.origin.x += rightButtonRect.size.width;    
     
-    [self.leftCellButton setFrame:CGRectMake(CGRectGetMinX(leftButtonRect) + ceilf((CGRectGetWidth(leftButtonRect) - kProfileViewCellButtonWidth) / 2.0f), 
+    [self.leftCellButton setFrame:CGRectMake(CGRectGetMaxX(leftButtonRect) - kProfileViewCellButtonWidth - kProfileViewCellButtonEdge, 
                                              ceilf((CGRectGetHeight(leftButtonRect) - self.buttonImageSize.height) / 2.0f), 
                                              kProfileViewCellButtonWidth, 
                                              self.buttonImageSize.height)];
     [self.leftCellButton setAutoresizingMask:UIViewAutoresizingFlexibleLeftMargin];    
     
     self.rightCellButton.hidden = NO;    
-    [self.rightCellButton setFrame:CGRectMake(CGRectGetMinX(rightButtonRect) + ceilf((CGRectGetWidth(rightButtonRect) - kProfileViewCellButtonWidth) / 2.0f), 
+    [self.rightCellButton setFrame:CGRectMake(CGRectGetMinX(rightButtonRect) + kProfileViewCellButtonEdge,
                                               ceilf((CGRectGetHeight(rightButtonRect) - self.buttonImageSize.height) / 2.0f), 
                                               kProfileViewCellButtonWidth, 
                                               self.buttonImageSize.height)];
