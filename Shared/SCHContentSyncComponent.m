@@ -250,37 +250,34 @@ NSString * const SCHContentSyncComponentDidFailNotification = @"SCHContentSyncCo
 			break;			
 		}
 		
-        SCHBookIdentifier *webBookIdentifier = nil;
         if ([webItem objectForKey:kSCHLibreAccessWebServiceContentIdentifier] == [NSNull null] ||
             [webItem objectForKey:kSCHLibreAccessWebServiceDRMQualifier] == [NSNull null]) {
-            webBookIdentifier = (id)[NSNull null];
-        } else {
-            webBookIdentifier = [[SCHBookIdentifier alloc] initWithObject:webItem];
-        }
-        SCHBookIdentifier *localBookIdentifier = localItem.bookIdentifier;
-        
-        if ((id)webBookIdentifier == [NSNull null]) {
-            // ignore any items with no ID
             webItem = nil;
-        } else {        
-            switch ([webBookIdentifier compare:localBookIdentifier]) {
-                case NSOrderedSame:
-                    [self syncUserContentItem:webItem withUserContentItem:localItem];
-                    webItem = nil;
-                    localItem = nil;
-                    break;
-                case NSOrderedAscending:
-                    [creationPool addObject:webItem];
-                    webItem = nil;
-                    break;
-                case NSOrderedDescending:
-                    [deletePool addObject:localItem];
-                    localItem = nil;
-                    break;			
-            }		
+        } else {
+            SCHBookIdentifier *webBookIdentifier = [[SCHBookIdentifier alloc] initWithObject:webItem];
+            SCHBookIdentifier *localBookIdentifier = localItem.bookIdentifier;
+            
+            if (webBookIdentifier) {    
+                switch ([webBookIdentifier compare:localBookIdentifier]) {
+                    case NSOrderedSame:
+                        [self syncUserContentItem:webItem withUserContentItem:localItem];
+                        webItem = nil;
+                        localItem = nil;
+                        break;
+                    case NSOrderedAscending:
+                        [creationPool addObject:webItem];
+                        webItem = nil;
+                        break;
+                    case NSOrderedDescending:
+                        [deletePool addObject:localItem];
+                        localItem = nil;
+                        break;			
+                }		
+                
+                [webBookIdentifier release];
+            }
         }
 		
-        [webBookIdentifier release], webBookIdentifier = nil;
 
 		if (webItem == nil) {
 			webItem = [webEnumerator nextObject];
