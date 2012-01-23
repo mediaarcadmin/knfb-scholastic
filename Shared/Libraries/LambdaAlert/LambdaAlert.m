@@ -4,7 +4,12 @@
 @property(retain) UIAlertView *alert;
 @property(retain) NSMutableArray *blocks;
 @property(nonatomic, retain) UIActivityIndicatorView *spinner;
+
+- (void)positionSpinner;
+
 @end
+
+static const CGFloat kLambdaAlertSpinnerInsetPerButton = 44;
 
 @implementation LambdaAlert
 @synthesize alert, blocks;
@@ -30,6 +35,7 @@
 - (void) show
 {
     [alert show];
+    [self positionSpinner];
     [self retain];
 }
 
@@ -58,12 +64,20 @@
 {
     if (!spinner) {
         spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
-        [alert addSubview:spinner];
-        [spinner setCenter:CGPointMake(CGRectGetMidX(alert.frame), CGRectGetMidY(alert.frame))];
+        [spinner setCenter:CGPointMake(CGRectGetMidX(self.alert.frame), CGRectGetMidY(self.alert.frame))];
         [spinner setAutoresizingMask:UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin];
+        [self.alert addSubview:spinner];
     }
     
     return spinner;
+}
+
+- (void)positionSpinner
+{
+    if (spinner) {
+        CGFloat offsetY = floorf((CGRectGetHeight(self.alert.frame) - self.alert.numberOfButtons*kLambdaAlertSpinnerInsetPerButton)/2.0f);
+        [spinner setCenter:CGPointMake(spinner.center.x, offsetY)];
+    }
 }
 
 - (void)setSpinnerHidden:(BOOL)hidden
