@@ -135,14 +135,16 @@ static NSString * const kSCHThemeManagerName = @"Name";
 
 - (void)setTheme:(NSString *)themeName
 {    
-    for (NSDictionary *dict in self.allThemes) {
-        if ([[dict objectForKey:kSCHThemeManagerName] isEqualToString:themeName] == YES) {
-            self.selectedTheme = dict;
-            appProfile.SelectedTheme = [self.selectedTheme objectForKey:kSCHThemeManagerID];
-            [[NSNotificationCenter defaultCenter] postNotificationName:kSCHThemeManagerThemeChangeNotification 
-                                                                object:self 
-                                                              userInfo:nil];				            
-            break;
+    if (themeName != nil) {
+        for (NSDictionary *dict in self.allThemes) {
+            if ([[dict objectForKey:kSCHThemeManagerName] isEqualToString:themeName] == YES) {
+                self.selectedTheme = dict;
+                appProfile.SelectedTheme = [self.selectedTheme objectForKey:kSCHThemeManagerID];
+                [[NSNotificationCenter defaultCenter] postNotificationName:kSCHThemeManagerThemeChangeNotification 
+                                                                    object:self 
+                                                                  userInfo:nil];				            
+                break;
+            }
         }
     }
 }
@@ -180,12 +182,14 @@ static NSString * const kSCHThemeManagerName = @"Name";
 {
     UIImage *ret = nil;
     
-    for (NSDictionary *dict in self.allThemes) {
-        if ([[dict objectForKey:kSCHThemeManagerName] isEqualToString:themeName] == YES) {
-            ret = [UIImage imageNamed:[kSCHThemeManagerDirectory 
-                                       stringByAppendingPathComponent:[self filePath:[dict objectForKey:key] 
-                                                                         orientation:orientation iPadQualifier:iPadQualifier]]];
-            break;
+    if (themeName != nil) {
+        for (NSDictionary *dict in self.allThemes) {
+            if ([[dict objectForKey:kSCHThemeManagerName] isEqualToString:themeName] == YES) {
+                ret = [UIImage imageNamed:[kSCHThemeManagerDirectory 
+                                           stringByAppendingPathComponent:[self filePath:[dict objectForKey:key] 
+                                                                             orientation:orientation iPadQualifier:iPadQualifier]]];
+                break;
+            }
         }
     }
     

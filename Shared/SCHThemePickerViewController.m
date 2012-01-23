@@ -222,8 +222,12 @@ static NSTimeInterval const kSCHThemePickerViewControllerThemeTransitionDuration
     NSString *theme = [[[SCHThemeManager sharedThemeManager] themeNames:NO] objectAtIndex:indexPath.row];
     
     cell.backgroundColor = [UIColor colorWithPatternImage:
-                            [[SCHThemeManager sharedThemeManager] imageForTheme:theme key:kSCHThemeManagerImage orientation:self.interfaceOrientation iPadQualifier:kSCHThemeManagerPadQualifierSuffix]];
-    if ([theme isEqualToString:[SCHThemeManager sharedThemeManager].theme] == YES) {
+                            [[SCHThemeManager sharedThemeManager] imageForTheme:theme 
+                                                                            key:kSCHThemeManagerImage 
+                                                                    orientation:self.interfaceOrientation 
+                                                                  iPadQualifier:kSCHThemeManagerPadQualifierSuffix]];
+    if ([SCHThemeManager sharedThemeManager].theme != nil &&
+        [theme isEqualToString:[SCHThemeManager sharedThemeManager].theme] == YES) {
         cell.accessoryView = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"popoverTickLight"]] autorelease];
     } else {
         cell.accessoryView = nil;
@@ -240,7 +244,8 @@ static NSTimeInterval const kSCHThemePickerViewControllerThemeTransitionDuration
     
     NSString *themeName = [[[SCHThemeManager sharedThemeManager] themeNames:NO] 
                            objectAtIndex:indexPath.row];
-    if ([themeName isEqualToString:self.lastTappedTheme] == NO) {
+    if (self.lastTappedTheme == nil ||
+        [themeName isEqualToString:self.lastTappedTheme] == NO) {
         self.lastTappedTheme = themeName;
         
         if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {

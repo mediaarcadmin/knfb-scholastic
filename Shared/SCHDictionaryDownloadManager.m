@@ -461,7 +461,7 @@ static SCHDictionaryDownloadManager *sharedManager = nil;
     for (SCHDictionaryManifestEntry *anEntry in self.manifestUpdates) {
         //NSLog(@"from: (%@) to: (%@) URL: %@", anEntry.fromVersion, anEntry.toVersion, anEntry.url);
 
-        if ([anEntry fromVersion]) {
+        if (currentDictionaryVersion != nil && [anEntry fromVersion]) {
             if ([[anEntry fromVersion] isEqualToString:currentDictionaryVersion]) {
                 entryUpdateForCurrentDictionaryVersion = anEntry;
                 break;

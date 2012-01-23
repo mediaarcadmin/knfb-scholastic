@@ -359,7 +359,8 @@ didSelectButtonAnimated:(BOOL)animated
     [passwordController setModalPresentationStyle:UIModalPresentationFormSheet];
 
     passwordController.retainLoopSafeActionBlock = ^BOOL(NSString *topFieldText, NSString *bottomFieldText) {
-        if ([topFieldText isEqualToString:bottomFieldText]) {
+        if (bottomFieldText != nil && 
+            [topFieldText isEqualToString:bottomFieldText]) {
             if ([topFieldText length] > 0) {
                 
                 if (![[topFieldText substringToIndex:1] isEqualToString:@" "]) {

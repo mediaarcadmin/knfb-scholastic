@@ -269,7 +269,8 @@ NSString * const kSCHAppBookFilenameSeparator = @"-";
 
 - (BOOL)diskVersionOutOfDate
 {
-    return([self.OnDiskVersion isEqualToString:self.ContentMetadataItem.Version] == NO);
+    return(self.ContentMetadataItem.Version == nil ||
+           [self.OnDiskVersion isEqualToString:self.ContentMetadataItem.Version] == NO);
 }
 
 - (SCHBookCurrentProcessingState)processingState
