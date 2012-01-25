@@ -48,11 +48,16 @@
 
 - (NSInteger)wordIndexForLetters:(NSString *)letters
 {
-    for (NSInteger i = 0, n = [words count]; i < n; ++i) {
-        if ([[words objectAtIndex:i] caseInsensitiveCompare:letters] == NSOrderedSame) {
-            return i;
+    if (letters != nil) {
+        for (NSInteger i = 0, n = [words count]; i < n; ++i) {
+            NSString *word = [words objectAtIndex:i];
+            if (word != nil &&
+                [word caseInsensitiveCompare:letters] == NSOrderedSame) {
+                return i;
+            }
         }
     }
+    
     return NSNotFound;
 }
 

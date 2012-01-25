@@ -495,7 +495,8 @@ static SCHHelpManager *sharedManager = nil;
                 // have we updated in the last 24 hours?
                 NSDate *updateAfter = [lastPrefUpdate dateByAddingTimeInterval:86400.0];
                 
-                if ([updateAfter compare:currentDate] == NSOrderedAscending) {
+                if (updateAfter != nil &&
+                    [updateAfter compare:currentDate] == NSOrderedAscending) {
                     doUpdate = YES;
                     [defaults setObject:currentDate forKey:@"lastHelpUpdateDate"];
                     [defaults synchronize];					

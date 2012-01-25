@@ -261,7 +261,8 @@ static NSUInteger const kSCHSyncManagerMaximumFailureRetries = 3;
 - (void)firstSync:(BOOL)syncNow requireDeviceAuthentication:(BOOL)requireAuthentication
 {
     // reset if the date has been changed in a backward motion
-    if ([self.lastFirstSyncEnded compare:[NSDate date]] == NSOrderedDescending) {
+    if (self.lastFirstSyncEnded != nil &&
+        [self.lastFirstSyncEnded compare:[NSDate date]] == NSOrderedDescending) {
         self.lastFirstSyncEnded = nil;
     }
     
