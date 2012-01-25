@@ -208,11 +208,9 @@ NSString * const kSCHProfileItemDRM_QUALIFIER = @"DRM_QUALIFIER";
                 SCHAppContentProfileItem *appContentProfileItem = [bookOrder objectAtIndex:i];
                 
                 NSUInteger bookIndex = [books indexOfObjectPassingTest:^(id obj, NSUInteger idx, BOOL *stop) {
-                    SCHBookIdentifier *identifier = (SCHBookIdentifier *)obj;
-                    if ([appContentProfileItem.ISBN compare:identifier.isbn] == NSOrderedSame &&
-                        [appContentProfileItem.DRMQualifier compare:identifier.DRMQualifier] == NSOrderedSame) {
+                    if ([[appContentProfileItem bookIdentifier] isEqual:obj] == YES) {
                         *stop = YES;
-                        return(YES);
+                        return YES;
                     } else {
                         return NO;
                     }

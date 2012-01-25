@@ -465,7 +465,8 @@ NSTimeInterval const kSCHAuthenticationManagerSecondsInAMinute = 60.0;
 {
     NSAssert([NSThread isMainThread] == YES, @"SCHAuthenticationManager::aTokenOnMainThread MUST be executed on the main thread");
     
-    if([tokenExpires compare:[NSDate date]] == NSOrderedAscending) {
+    if(tokenExpires != nil && 
+       [tokenExpires compare:[NSDate date]] == NSOrderedAscending) {
         [self expireToken];
     }
 }
