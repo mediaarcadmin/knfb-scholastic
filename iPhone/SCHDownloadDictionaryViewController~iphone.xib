@@ -168,7 +168,7 @@
 								<int key="IBUITag">1</int>
 								<bool key="IBUIUserInteractionEnabled">NO</bool>
 								<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
-								<string key="IBUIText">The Scholastic eReader features a rich dictionary built especially for kids. It includes definitions tailored to different ages and stages with complete audio readthroughs of all definitions for young kids.</string>
+								<string key="IBUIText">Storia features a rich dictionary built especially for kids. It includes definitions tailored to different ages and stages with complete audio readthroughs of all definitions for young kids.</string>
 								<object class="NSColor" key="IBUITextColor" id="683523935">
 									<int key="NSColorSpace">3</int>
 									<bytes key="NSWhite">MC4zMzMzMzMzMzMzAA</bytes>
@@ -833,7 +833,7 @@
 				<bool key="EncodedWithXMLCoder">YES</bool>
 				<string>{7, 7}</string>
 				<string>{23, 48}</string>
-				<string>{293, 46}</string>
+				<string>{257, 33}</string>
 			</object>
 		</object>
 		<string key="IBCocoaTouchPluginVersion">933</string>

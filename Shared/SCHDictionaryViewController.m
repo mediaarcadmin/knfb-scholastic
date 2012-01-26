@@ -245,9 +245,9 @@
         case SCHDictionaryProcessingStateUserDeclined:
         {
             if (isSampleStore) {
-                self.bottomLabel.text = NSLocalizedString(@"You have not yet downloaded the Scholastic dictionary.", nil);
+                self.bottomLabel.text = NSLocalizedString(@"You have not yet downloaded the Storia dictionary.", nil);
             } else {
-                self.bottomLabel.text = NSLocalizedString(@"You have not yet downloaded the Scholastic dictionary. To download the dictionary, go to parent tools on the eReader sign-in screen.", nil);
+                self.bottomLabel.text = NSLocalizedString(@"You have not yet downloaded the Storia dictionary. To download the dictionary, go to parent tools on the eReader sign-in screen.", nil);
             }
             
             [self.activityIndicator stopAnimating];
@@ -268,7 +268,7 @@
         case SCHDictionaryProcessingStateUnZipFailureError:
         case SCHDictionaryProcessingStateParseError:
         {
-            self.bottomLabel.text = NSLocalizedString(@"There was an error downloading the Scholastic dictionary. Please try again later.", nil);
+            self.bottomLabel.text = NSLocalizedString(@"There was an error downloading the Storia dictionary. Please try again later.", nil);
             [self.activityIndicator stopAnimating];
             self.progressBar.hidden = YES;
             break;
@@ -303,9 +303,9 @@
         {
             if (!willDownloadAfterHelpVideo) {
                 if (isSampleStore) {
-                    self.bottomLabel.text = NSLocalizedString(@"You have not yet downloaded the Scholastic dictionary.", nil);
+                    self.bottomLabel.text = NSLocalizedString(@"You have not yet downloaded the Storia dictionary.", nil);
                 } else {
-                    self.bottomLabel.text =NSLocalizedString( @"You have not yet downloaded the Scholastic dictionary. To download the dictionary, go to parent tools on the eReader sign-in screen.", nil);
+                    self.bottomLabel.text =NSLocalizedString( @"You have not yet downloaded the Storia dictionary. To download the dictionary, go to parent tools on the eReader sign-in screen.", nil);
                 }
             } else {
                 self.bottomLabel.text = NSLocalizedString(@"The dictionary is downloading from the Internet. You can wait for it to finish, or look up your word later.", nil);
