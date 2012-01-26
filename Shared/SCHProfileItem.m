@@ -249,38 +249,15 @@ NSString * const kSCHProfileItemDRM_QUALIFIER = @"DRM_QUALIFIER";
         }
         case kSCHBookSortTypeNewest:
         {
+            NSLog(@"Sort by newest.");
             NSMutableArray *sortArray = [[NSMutableArray alloc] initWithCapacity:[books count]];
-            NSEntityDescription *entityDescription = [NSEntityDescription 
-                                                      entityForName:kSCHUserContentItem
-                                                      inManagedObjectContext:self.managedObjectContext];
-
+                        
             for (SCHContentMetadataItem *book in bookObjects) {
-                NSError *error = nil;
-                NSFetchRequest *fetchRequest = [entityDescription.managedObjectModel
-                                                fetchRequestFromTemplateWithName:kSCHUserContentItemFetchWithContentIdentifier
-                                                substitutionVariables:[NSDictionary dictionaryWithObjectsAndKeys:
-                                                                       book.ContentIdentifier, kSCHUserContentItemCONTENT_IDENTIFIER,
-                                                                       book.DRMQualifier, kSCHUserContentItemDRM_QUALIFIER,
-                                                                       nil]];
-                [fetchRequest setFetchLimit:1];
-                
-                NSArray *userContentItems = [self.managedObjectContext executeFetchRequest:fetchRequest error:&error];	
-                if (userContentItems == nil) {
-                    NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
-                }
-                
-                NSDate *date = [NSDate distantPast];
-                if (userContentItems != nil && [userContentItems count] > 0) {
-                    NSSet *orderItems = [[userContentItems objectAtIndex:0] OrderList];
-                    if ([orderItems count] > 0) {
-                        // use the latest date
-                        NSArray *sortedOrderItems = [[orderItems allObjects] sortedArrayUsingDescriptors:[NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:@"OrderDate" ascending:NO]]];
-                        SCHOrderItem *orderItem = [sortedOrderItems objectAtIndex:0];
-                        date = [orderItem OrderDate];
-                    }
-                }
+                SCHAppContentProfileItem *appContentProfileItem = [self appContentProfileItemForBookIdentifier:book.bookIdentifier];
+                SCHContentProfileItem *contentProfileItem = appContentProfileItem.ContentProfileItem;
+
                 SCHProfileItemSortObject *sortObj = [[SCHProfileItemSortObject alloc] init];
-                sortObj.date = date;
+                sortObj.date = [contentProfileItem LastModified];
                 sortObj.item = book;
                 
                 [sortArray addObject:sortObj];
@@ -600,6 +577,12 @@ NSString * const kSCHProfileItemDRM_QUALIFIER = @"DRM_QUALIFIER";
     [date release], date = nil;
     
     [super dealloc];
+}
+
+- (NSString *)description
+{
+    return [NSString stringWithFormat:@"%p %@ %@", self.item, self.date, 
+     (self.isNewBook == YES ? @"New" : @"") ];
 }
 
 @end
