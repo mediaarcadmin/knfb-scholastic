@@ -64,7 +64,7 @@
 										<int key="IBUIContentMode">7</int>
 										<bool key="IBUIUserInteractionEnabled">NO</bool>
 										<string key="targetRuntimeIdentifier">IBIPadFramework</string>
-										<string key="IBUIText">Remove the Scholastic Dictionary</string>
+										<string key="IBUIText">Remove the Storia Dictionary</string>
 										<object class="NSColor" key="IBUITextColor">
 											<int key="NSColorSpace">1</int>
 											<bytes key="NSRGB">MSAxIDEAA</bytes>
@@ -196,7 +196,7 @@
 						<int key="IBUIContentMode">7</int>
 						<bool key="IBUIUserInteractionEnabled">NO</bool>
 						<string key="targetRuntimeIdentifier">IBIPadFramework</string>
-						<string key="IBUIText">The Scholastic dictionary uses about 400MB of storage space. If you remove the dictionary readers will no longer be able to look up words or hear definitions read out loud.</string>
+						<string key="IBUIText">The Storia dictionary uses about 400MB of storage space. If you remove the dictionary readers will no longer be able to look up words or hear definitions read out loud.</string>
 						<reference key="IBUITextColor" ref="92910497"/>
 						<nil key="IBUIHighlightedColor"/>
 						<int key="IBUIBaselineAdjustment">1</int>

@@ -214,7 +214,7 @@
 								<int key="IBUITag">2</int>
 								<bool key="IBUIUserInteractionEnabled">NO</bool>
 								<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
-								<string key="IBUIText">The Scholastic dictionary uses about 400MB of storage space. If you remove the dictionary readers will no longer be able to look up words or hear definitions read out loud.</string>
+								<string key="IBUIText">The Storia dictionary uses about 400MB of storage space. If you remove the dictionary readers will no longer be able to look up words or hear definitions read out loud.</string>
 								<reference key="IBUITextColor" ref="366798696"/>
 								<nil key="IBUIHighlightedColor"/>
 								<int key="IBUIBaselineAdjustment">1</int>
@@ -756,7 +756,7 @@
 				<string>{7, 7}</string>
 				<string>{18, 18}</string>
 				<string>{23, 48}</string>
-				<string>{293, 46}</string>
+				<string>{257, 33}</string>
 			</object>
 		</object>
 		<string key="IBCocoaTouchPluginVersion">933</string>

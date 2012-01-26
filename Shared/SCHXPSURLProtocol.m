@@ -24,7 +24,7 @@
 /* our own class method.  Here we return the NSString used to mark
  urls handled by our special protocol. */
 + (NSString *)xpsProtocolScheme {
-	return @"scholasticXpsUrlProtocol";
+	return @"storiaXpsUrlProtocol";
 }
 
 + (BOOL)canInitWithRequest:(NSURLRequest *)request {
