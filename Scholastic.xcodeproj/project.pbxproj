@@ -3177,7 +3177,7 @@
 		1D30AB110D05D00D00671497 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		1D3623240D0F684500981E51 /* AppDelegate_iPad.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AppDelegate_iPad.h; path = iPad/AppDelegate_iPad.h; sourceTree = "<group>"; };
 		1D3623250D0F684500981E51 /* AppDelegate_iPad.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AppDelegate_iPad.m; path = iPad/AppDelegate_iPad.m; sourceTree = "<group>"; };
-		1D6058910D05DD3D006BFB54 /* Scholastic.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Scholastic.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		1D6058910D05DD3D006BFB54 /* Storia.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Storia.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1DF5F4DF0D08C38300B7A737 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		28024703139F6D6E00B73703 /* SCHStoryInteractionWordSearch_iPhone.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SCHStoryInteractionWordSearch_iPhone.xib; sourceTree = "<group>"; };
 		2807DF2B13B0C2CF007C8F41 /* SCHStoryInteractionHotSpot_iPad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SCHStoryInteractionHotSpot_iPad.xib; sourceTree = "<group>"; };
@@ -3601,7 +3601,7 @@
 		523E19F113A0241D00A785B6 /* SCHStoryInteractionVideo_iPad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SCHStoryInteractionVideo_iPad.xib; sourceTree = "<group>"; };
 		5243545613337BAC00282B53 /* SCHAppContentProfileItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHAppContentProfileItem.h; path = Shared/SCHAppContentProfileItem.h; sourceTree = "<group>"; };
 		5243545713337BAC00282B53 /* SCHAppContentProfileItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHAppContentProfileItem.m; path = Shared/SCHAppContentProfileItem.m; sourceTree = "<group>"; };
-		52488C051407990500DA9AFA /* Scholastic.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Scholastic.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		52488C051407990500DA9AFA /* Storia.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Storia.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		5248E10A13C4858900FA2CDC /* SCHReadingStatsContentItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHReadingStatsContentItem.h; path = Shared/SCHReadingStatsContentItem.h; sourceTree = "<group>"; };
 		5248E10B13C4858900FA2CDC /* SCHReadingStatsContentItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHReadingStatsContentItem.m; path = Shared/SCHReadingStatsContentItem.m; sourceTree = "<group>"; };
 		5248E10E13C4858900FA2CDC /* SCHReadingStatsDetailItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHReadingStatsDetailItem.h; path = Shared/SCHReadingStatsDetailItem.h; sourceTree = "<group>"; };
@@ -3806,7 +3806,7 @@
 		A3A38E01133A7FA300C325A3 /* DrmGlobals.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DrmGlobals.h; path = Shared/Libraries/DRM/DrmGlobals.h; sourceTree = "<group>"; };
 		A3A38E02133A7FFF00C325A3 /* KeychainItemWrapper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = KeychainItemWrapper.h; path = Shared/Libraries/DRM/KeychainItemWrapper.h; sourceTree = "<group>"; };
 		A3A38E05133A803500C325A3 /* SCHDrmRegistrationSessionDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHDrmRegistrationSessionDelegate.h; path = Shared/SCHDrmRegistrationSessionDelegate.h; sourceTree = "<group>"; };
-		A3D3F4AB14CDDF31004A56A5 /* Scholastic.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Scholastic.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		A3D3F4AB14CDDF31004A56A5 /* Storia.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Storia.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A3D933851326D92000037111 /* libPlayReadyPK.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libPlayReadyPK.a; path = Shared/Libraries/DRM/libPlayReadyPK.a; sourceTree = "<group>"; };
 		A3D9338B1326DA3F00037111 /* bigdefs.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = bigdefs.h; path = Shared/Libraries/DRM/bigdefs.h; sourceTree = "<group>"; };
 		A3D9338C1326DA3F00037111 /* bignum.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = bignum.h; path = Shared/Libraries/DRM/bignum.h; sourceTree = "<group>"; };
@@ -4906,10 +4906,10 @@
 		19C28FACFE9D520D11CA2CBB /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				1D6058910D05DD3D006BFB54 /* Scholastic.app */,
+				1D6058910D05DD3D006BFB54 /* Storia.app */,
 				28A08CFB13952CB4006FD008 /* UnitTests.octest */,
-				52488C051407990500DA9AFA /* Scholastic.app */,
-				A3D3F4AB14CDDF31004A56A5 /* Scholastic.app */,
+				52488C051407990500DA9AFA /* Storia.app */,
+				A3D3F4AB14CDDF31004A56A5 /* Storia.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -7541,7 +7541,7 @@
 			);
 			name = Scholastic;
 			productName = Scholastic;
-			productReference = 1D6058910D05DD3D006BFB54 /* Scholastic.app */;
+			productReference = 1D6058910D05DD3D006BFB54 /* Storia.app */;
 			productType = "com.apple.product-type.application";
 		};
 		28A08CFA13952CB4006FD008 /* UnitTests */ = {
@@ -7580,7 +7580,7 @@
 			);
 			name = "Local Samples Scholastic";
 			productName = Scholastic;
-			productReference = 52488C051407990500DA9AFA /* Scholastic.app */;
+			productReference = 52488C051407990500DA9AFA /* Storia.app */;
 			productType = "com.apple.product-type.application";
 		};
 		A3D3F0AC14CDDF31004A56A5 /* Scholastic No iPhone */ = {
@@ -7600,7 +7600,7 @@
 			);
 			name = "Scholastic No iPhone";
 			productName = Scholastic;
-			productReference = A3D3F4AB14CDDF31004A56A5 /* Scholastic.app */;
+			productReference = A3D3F4AB14CDDF31004A56A5 /* Storia.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -10802,7 +10802,7 @@
 					"-ObjC",
 					"-all_load",
 				);
-				PRODUCT_NAME = Scholastic;
+				PRODUCT_NAME = Storia;
 				TARGETED_DEVICE_FAMILY = 2;
 			};
 			name = Debug;
@@ -10831,7 +10831,7 @@
 					"-ObjC",
 					"-all_load",
 				);
-				PRODUCT_NAME = Scholastic;
+				PRODUCT_NAME = Storia;
 				TARGETED_DEVICE_FAMILY = 2;
 				VALIDATE_PRODUCT = YES;
 			};
@@ -10935,7 +10935,7 @@
 					"\"$(SRCROOT)/Shared/Libraries/Submodules/libKNFBReader/Pagemark/Sim\"",
 				);
 				OTHER_CFLAGS = "-I/usr/include/libxml2";
-				PRODUCT_NAME = Scholastic;
+				PRODUCT_NAME = Storia;
 			};
 			name = Debug;
 		};
@@ -10962,7 +10962,7 @@
 					"-I/usr/include/libxml2",
 					"-DNS_BLOCK_ASSERTIONS=1",
 				);
-				PRODUCT_NAME = Scholastic;
+				PRODUCT_NAME = Storia;
 				VALIDATE_PRODUCT = YES;
 			};
 			name = "Ad Hoc";
@@ -10990,7 +10990,7 @@
 					"-I/usr/include/libxml2",
 					"-DNS_BLOCK_ASSERTIONS=1",
 				);
-				PRODUCT_NAME = Scholastic;
+				PRODUCT_NAME = Storia;
 				VALIDATE_PRODUCT = YES;
 			};
 			name = Release;
@@ -11057,7 +11057,7 @@
 					"-ObjC",
 					"-all_load",
 				);
-				PRODUCT_NAME = Scholastic;
+				PRODUCT_NAME = Storia;
 				PROVISIONING_PROFILE = "2E59CAE6-A1A5-42B1-B1FC-F87A932B37F4";
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "2E59CAE6-A1A5-42B1-B1FC-F87A932B37F4";
 				TARGETED_DEVICE_FAMILY = 2;
@@ -11091,7 +11091,7 @@
 					"-ObjC",
 					"-all_load",
 				);
-				PRODUCT_NAME = Scholastic;
+				PRODUCT_NAME = Storia;
 				TARGETED_DEVICE_FAMILY = 2;
 			};
 			name = Debug;
@@ -11122,7 +11122,7 @@
 					"-ObjC",
 					"-all_load",
 				);
-				PRODUCT_NAME = Scholastic;
+				PRODUCT_NAME = Storia;
 				PROVISIONING_PROFILE = "92AE4D21-1244-41B9-8BF0-0CD272940A22";
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "92AE4D21-1244-41B9-8BF0-0CD272940A22";
 				TARGETED_DEVICE_FAMILY = 2;
@@ -11156,7 +11156,7 @@
 					"-ObjC",
 					"-all_load",
 				);
-				PRODUCT_NAME = Scholastic;
+				PRODUCT_NAME = Storia;
 				PROVISIONING_PROFILE = "3000DF94-20D7-495E-AB95-E774256151AE";
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "3000DF94-20D7-495E-AB95-E774256151AE";
 				TARGETED_DEVICE_FAMILY = 2;
