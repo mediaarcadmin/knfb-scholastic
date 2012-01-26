@@ -322,8 +322,9 @@ NSString * const SCHProfileSyncComponentDidFailNotification = @"SCHProfileSyncCo
 		id localItemID = [localItem valueForKey:kSCHLibreAccessWebServiceID];
 
         if ((id)webItemID == [NSNull null]) {
-            // ignore any items with no ID
             webItem = nil;
+        } else if ((id)localItemID == [NSNull null]) {
+            localItem = nil;            
         } else {        
             switch ([webItemID compare:localItemID]) {
                 case NSOrderedSame:

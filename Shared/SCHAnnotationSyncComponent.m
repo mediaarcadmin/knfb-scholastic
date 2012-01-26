@@ -660,29 +660,40 @@ NSString * const SCHAnnotationSyncComponentCompletedProfileIDs = @"SCHAnnotation
 			break;			
 		}
 				
-        SCHBookIdentifier *webBookIdentifier = [[SCHBookIdentifier alloc] initWithObject:webItem];
-        SCHBookIdentifier *localBookIdentifier = localItem.bookIdentifier;
-        
-		switch ([webBookIdentifier compare:localBookIdentifier]) {
-			case NSOrderedSame:
-				[self syncAnnotationsContentItem:webItem 
-                      withAnnotationsContentItem:localItem 
-                                    canSyncNotes:canSyncNotes
-                                        syncDate:syncDate];
-                [self backgroundSave:YES];
-				webItem = nil;
-				localItem = nil;
-				break;
-			case NSOrderedAscending:
-				[creationPool addObject:webItem];
-				webItem = nil;
-				break;
-			case NSOrderedDescending:
-				localItem = nil;
-				break;			
-		}		
-        
-		[webBookIdentifier release], webBookIdentifier = nil;
+        if ([webItem objectForKey:kSCHLibreAccessWebServiceContentIdentifier] == [NSNull null] ||
+            [webItem objectForKey:kSCHLibreAccessWebServiceDRMQualifier] == [NSNull null]) {
+            webItem = nil;
+        } else {        
+            SCHBookIdentifier *webBookIdentifier = [[SCHBookIdentifier alloc] initWithObject:webItem];
+            SCHBookIdentifier *localBookIdentifier = localItem.bookIdentifier;
+            
+            if (webBookIdentifier == nil) {
+                webItem = nil;
+            } else if (localBookIdentifier == nil) {
+                localItem = nil;                                
+            } else {
+                switch ([webBookIdentifier compare:localBookIdentifier]) {
+                    case NSOrderedSame:
+                        [self syncAnnotationsContentItem:webItem 
+                              withAnnotationsContentItem:localItem 
+                                            canSyncNotes:canSyncNotes
+                                                syncDate:syncDate];
+                        [self backgroundSave:YES];
+                        webItem = nil;
+                        localItem = nil;
+                        break;
+                    case NSOrderedAscending:
+                        [creationPool addObject:webItem];
+                        webItem = nil;
+                        break;
+                    case NSOrderedDescending:
+                        localItem = nil;
+                        break;			
+                }		
+            }
+            
+            [webBookIdentifier release], webBookIdentifier = nil;
+        }
         
 		if (webItem == nil) {
 			webItem = [webEnumerator nextObject];
@@ -824,8 +835,9 @@ NSString * const SCHAnnotationSyncComponentCompletedProfileIDs = @"SCHAnnotation
 		id localItemID = [localItem valueForKey:kSCHLibreAccessWebServiceID];
 		
         if ((id)webItemID == [NSNull null]) {
-            // ignore any items with no ID
             webItem = nil;
+        } else if ((id)localItemID == [NSNull null]) {
+            localItem = nil;            
         } else {                
             switch ([webItemID compare:localItemID]) {
                 case NSOrderedSame:
@@ -995,8 +1007,9 @@ NSString * const SCHAnnotationSyncComponentCompletedProfileIDs = @"SCHAnnotation
 		id localItemID = [localItem valueForKey:kSCHLibreAccessWebServiceID];
 		
         if ((id)webItemID == [NSNull null]) {
-            // ignore any items with no ID
             webItem = nil;
+        } else if ((id)localItemID == [NSNull null]) {
+            localItem = nil;            
         } else {        
             switch ([webItemID compare:localItemID]) {
                 case NSOrderedSame:
@@ -1136,9 +1149,10 @@ NSString * const SCHAnnotationSyncComponentCompletedProfileIDs = @"SCHAnnotation
 		id localItemID = [localItem valueForKey:kSCHLibreAccessWebServiceID];
 		
         if ((id)webItemID == [NSNull null]) {
-            // ignore any items with no ID
             webItem = nil;
-        } else {        
+        } else if ((id)localItemID == [NSNull null]) {
+            localItem = nil;
+        } else {
             switch ([webItemID compare:localItemID]) {
                 case NSOrderedSame:
                     [self syncBookmark:webItem withBookmark:localItem];

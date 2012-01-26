@@ -257,7 +257,11 @@ NSString * const SCHContentSyncComponentDidFailNotification = @"SCHContentSyncCo
             SCHBookIdentifier *webBookIdentifier = [[SCHBookIdentifier alloc] initWithObject:webItem];
             SCHBookIdentifier *localBookIdentifier = localItem.bookIdentifier;
             
-            if (webBookIdentifier) {    
+            if (webBookIdentifier == nil) {
+                webItem = nil;
+            } else if (localBookIdentifier == nil) {
+                localItem = nil;
+            } else {
                 switch ([webBookIdentifier compare:localBookIdentifier]) {
                     case NSOrderedSame:
                         [self syncUserContentItem:webItem withUserContentItem:localItem];
@@ -273,12 +277,11 @@ NSString * const SCHContentSyncComponentDidFailNotification = @"SCHContentSyncCo
                         localItem = nil;
                         break;			
                 }		
-                
-                [webBookIdentifier release];
             }
+            
+            [webBookIdentifier release];            
         }
 		
-
 		if (webItem == nil) {
 			webItem = [webEnumerator nextObject];
 		}
@@ -534,8 +537,9 @@ NSString * const SCHContentSyncComponentDidFailNotification = @"SCHContentSyncCo
 		NSNumber *localItemID = [localItem valueForKey:kSCHLibreAccessWebServiceOrderID];
 		
         if ((id)webItemID == [NSNull null]) {
-            // ignore any items with no ID
             webItem = nil;
+        } else if ((id)localItemID == [NSNull null]) {
+            localItem = nil;            
         } else {
             switch ([webItemID compare:localItemID]) {
                 case NSOrderedSame:
@@ -618,8 +622,9 @@ NSString * const SCHContentSyncComponentDidFailNotification = @"SCHContentSyncCo
 		NSNumber *localItemID = [localItem valueForKey:kSCHLibreAccessWebServiceProfileID];
 		
         if ((id)webItemID == [NSNull null]) {
-            // ignore any items with no ID
             webItem = nil;
+        } else if ((id)localItemID == [NSNull null]) {
+            localItem = nil;            
         } else {                
             switch ([webItemID compare:localItemID]) {
                 case NSOrderedSame:
