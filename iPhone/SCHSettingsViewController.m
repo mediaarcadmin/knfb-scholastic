@@ -420,7 +420,7 @@ extern NSString * const kSCHUserDefaultsSpaceSaverModeSetOffNotification;
     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Storia Support Email", @"Support Email Alert title")
                                                     message:@""
                                                    delegate:nil 
-                                          cancelButtonTitle:@"ok" 
+                                          cancelButtonTitle:@"OK" 
                                           otherButtonTitles:nil];
     
     switch (result) {
