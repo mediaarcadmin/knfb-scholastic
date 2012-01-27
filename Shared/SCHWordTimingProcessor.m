@@ -62,7 +62,11 @@ static NSUInteger kSCHWordTimingProcessorRTXNewFormatLineCount = 9;
                     if ([pageElements count] > 2) {
                         SCHWordTiming *wordTiming = [[SCHWordTiming alloc] initWithStartTime:[[timingElements objectAtIndex:1] integerValue] 
                                                                                      endTime:[[timingElements objectAtIndex:2] integerValue]
-                                                                                        page:[[pageElements objectAtIndex:0] integerValue]];
+                                                                                        word:[timingElements objectAtIndex:3]
+                                                                                   pageIndex:[[pageElements objectAtIndex:0] integerValue]
+                                                                                     blockIndex:[[pageElements objectAtIndex:1] integerValue]
+                                                                                      wordIndex:[[pageElements objectAtIndex:2] integerValue]];                                                         
+                        
                         [ret addObject:wordTiming];
                         [wordTiming release];
                     }

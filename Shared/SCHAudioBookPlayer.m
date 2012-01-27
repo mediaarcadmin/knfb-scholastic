@@ -106,7 +106,8 @@ static NSUInteger const kSCHAudioBookPlayerNoAudioLoaded = NSUIntegerMax;
 
 - (BOOL)prepareAudio:(NSArray *)setAudioBookReferences 
                error:(NSError **)outError 
-           wordBlock:(WordBlock)wordBlock 
+        wordBlockOld:(WordBlockOld)wordBlockOld 
+        wordBlockNew:(WordBlockNew)wordBlockNew 
        pageTurnBlock:(PageTurnBlock)pageTurnBlock {
     BOOL ret = NO;
     
@@ -214,20 +215,20 @@ static NSUInteger const kSCHAudioBookPlayerNoAudioLoaded = NSUIntegerMax;
                     
                     if (wordTiming != lastTriggered && [wordTiming compareTime:currentPlayTime] == NSOrderedSame) {
                         lastTriggered = wordTiming;
-                        SCHAudioInfo *audioInfo = [self.audioInfos objectAtIndex:currentAudioInfoPosition];
                         if (self.usingNewRTXFormat == YES) {
-                            wordBlock(wordTiming.page + 1, currentPosition - audioInfo.timeIndex);
+                            wordBlockNew(wordTiming.pageIndex + 1, wordTiming.blockIndex, wordTiming.wordIndex);
                             
                             pageTurnAtTime = NSUIntegerMax; 
                             if (currentPosition + 1 < [self.wordTimings count]) {
                                 SCHWordTiming *nextWordTiming = [self.wordTimings objectAtIndex:currentPosition + 1];
-                                if (wordTiming.page != nextWordTiming.page) {
+                                if (wordTiming.pageIndex != nextWordTiming.pageIndex) {
                                     pageTurnAtTime = wordTiming.endTime;
-                                    pageTurnToLayoutPage = nextWordTiming.page + 1;                                
+                                    pageTurnToLayoutPage = nextWordTiming.pageIndex + 1;                                
                                 }
                             }                                                    
                         } else {
-                            wordBlock(audioInfo.pageIndex + 1, currentPosition - audioInfo.timeIndex);                            
+                            SCHAudioInfo *audioInfo = [self.audioInfos objectAtIndex:currentAudioInfoPosition];
+                            wordBlockOld(audioInfo.pageIndex + 1, currentPosition - audioInfo.timeIndex);                            
                             
                             pageTurnAtTime = NSUIntegerMax; 
                             if (currentAudioInfoPosition + 1 < [self.audioInfos count]) {
