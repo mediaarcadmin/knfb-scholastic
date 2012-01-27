@@ -64,8 +64,8 @@ static NSUInteger kSCHWordTimingProcessorRTXNewFormatLineCount = 9;
                                                                                      endTime:[[timingElements objectAtIndex:2] integerValue]
                                                                                         word:[timingElements objectAtIndex:3]
                                                                                    pageIndex:[[pageElements objectAtIndex:0] integerValue]
-                                                                                     blockIndex:[[pageElements objectAtIndex:1] integerValue]
-                                                                                      wordIndex:[[pageElements objectAtIndex:2] integerValue]];                                                         
+                                                                                     blockID:[[pageElements objectAtIndex:1] integerValue]
+                                                                                      wordID:[[pageElements objectAtIndex:2] integerValue]];                                                         
                         
                         [ret addObject:wordTiming];
                         [wordTiming release];

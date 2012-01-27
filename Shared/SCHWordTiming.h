@@ -17,8 +17,8 @@
 @property (nonatomic, copy, readonly) NSString *word;
 
 @property (nonatomic, assign, readonly) NSUInteger pageIndex;
-@property (nonatomic, assign, readonly) NSUInteger blockIndex;
-@property (nonatomic, assign, readonly) NSUInteger wordIndex;
+@property (nonatomic, assign, readonly) NSUInteger blockID;
+@property (nonatomic, assign, readonly) NSUInteger wordID;
 
 - (id)initWithStartTime:(NSUInteger)setStartTime 
                 endTime:(NSUInteger)setEndTime;
@@ -26,8 +26,8 @@
                 endTime:(NSUInteger)setEndTime 
                    word:(NSString *)setWord
               pageIndex:(NSUInteger)setPageIndex
-                blockIndex:(NSUInteger)setBlockIndex
-                 wordIndex:(NSUInteger)setWordIndex;
+                blockID:(NSUInteger)setBlockID
+                 wordID:(NSUInteger)setWordID;
 - (NSComparisonResult)compareTime:(NSUInteger)time;
 - (NSTimeInterval)startTimeAsSeconds;
 - (NSTimeInterval)endTimeAsSeconds;

@@ -15,7 +15,7 @@
 @class SCHXPSProvider;
 
 typedef void (^WordBlockOld)(NSUInteger layoutPage, NSUInteger pageWordOffset);
-typedef void (^WordBlockNew)(NSUInteger layoutPage, NSUInteger blockIndex, NSUInteger wordIndex);
+typedef void (^WordBlockNew)(NSUInteger layoutPage, NSUInteger audioBlockID, NSUInteger audioWordID);
 typedef void (^PageTurnBlock)(NSUInteger turnToLayoutPage);
 
 // Constants
