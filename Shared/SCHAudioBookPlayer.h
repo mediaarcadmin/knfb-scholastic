@@ -14,7 +14,8 @@
 
 @class SCHXPSProvider;
 
-typedef void (^WordBlock)(NSUInteger layoutPage, NSUInteger pageWordOffset);
+typedef void (^WordBlockOld)(NSUInteger layoutPage, NSUInteger pageWordOffset);
+typedef void (^WordBlockNew)(NSUInteger layoutPage, NSUInteger blockIndex, NSUInteger wordIndex);
 typedef void (^PageTurnBlock)(NSUInteger turnToLayoutPage);
 
 // Constants
@@ -32,7 +33,8 @@ extern NSInteger const kSCHAudioBookPlayerDataError;
 
 - (BOOL)prepareAudio:(NSArray *)setAudioBookReferences 
                error:(NSError **)outError 
-           wordBlock:(WordBlock)wordBlock 
+           wordBlockOld:(WordBlockOld)wordBlockOld 
+           wordBlockNew:(WordBlockNew)wordBlockNew 
        pageTurnBlock:(PageTurnBlock)pageTurnBlock;
 - (void)cleanAudio;
 - (BOOL)play;

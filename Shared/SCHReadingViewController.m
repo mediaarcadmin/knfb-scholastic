@@ -1097,21 +1097,31 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
             self.audioBookPlayer = [[[SCHAudioBookPlayer alloc] init] autorelease];
             self.audioBookPlayer.xpsProvider = self.xpsProvider;
             BOOL success = [self.audioBookPlayer prepareAudio:audioBookReferences error:&error 
-                                                    wordBlock:^(NSUInteger layoutPage, NSUInteger pageWordOffset) {
-                                                        //NSLog(@"WORD UP! at layoutPage %d pageWordOffset %d", layoutPage, pageWordOffset);
-                                                        self.pauseAudioOnNextPageTurn = NO;
-                                                        [self.readingView followAlongHighlightWordForLayoutPage:layoutPage pageWordOffset:pageWordOffset withCompletionHandler:^{
-                                                            self.pauseAudioOnNextPageTurn = YES;
-                                                        }];
-                                                    } pageTurnBlock:^(NSUInteger turnToLayoutPage) {
-                                                        //NSLog(@"Turn to layoutPage %d", turnToLayoutPage);
-                                                        if (self.layoutType == SCHReadingViewLayoutTypeFixed) {
-                                                            self.pauseAudioOnNextPageTurn = NO;
-                                                            [self.readingView jumpToPageAtIndex:turnToLayoutPage - 1 animated:YES withCompletionHandler:^{
-                                                                self.pauseAudioOnNextPageTurn = YES;
-                                                            }];
-                                                        }
-                                                    }];
+                                                 wordBlockOld:^(NSUInteger layoutPage, NSUInteger pageWordOffset) {
+                                                     //NSLog(@"WORD UP! at layoutPage %d pageWordOffset %d", layoutPage, pageWordOffset);
+                                                     self.pauseAudioOnNextPageTurn = NO;
+                                                     [self.readingView followAlongHighlightWordForLayoutPage:layoutPage pageWordOffset:pageWordOffset withCompletionHandler:^{
+                                                         self.pauseAudioOnNextPageTurn = YES;
+                                                     }];
+                                                 } wordBlockNew:^(NSUInteger layoutPage, NSUInteger blockIndex, NSUInteger wordIndex) {
+                                                     //NSLog(@"WORD UP! at layoutPage %d blockIndex %d wordIndex %d", layoutPage, blockIndex, wordIndex);
+                                                     self.pauseAudioOnNextPageTurn = NO;
+                                                     SCHBookPoint *bookPoint = [[[SCHBookPoint alloc] init] autorelease];
+                                                     bookPoint.layoutPage = layoutPage;
+                                                     bookPoint.blockOffset = blockIndex;
+                                                     bookPoint.wordOffset = wordIndex;
+                                                     [self.readingView followAlongHighlightWordAtPoint:bookPoint withCompletionHandler:^{
+                                                         self.pauseAudioOnNextPageTurn = YES;
+                                                     }];
+                                                 } pageTurnBlock:^(NSUInteger turnToLayoutPage) {
+                                                     //NSLog(@"Turn to layoutPage %d", turnToLayoutPage);
+                                                     if (self.layoutType == SCHReadingViewLayoutTypeFixed) {
+                                                         self.pauseAudioOnNextPageTurn = NO;
+                                                         [self.readingView jumpToPageAtIndex:turnToLayoutPage - 1 animated:YES withCompletionHandler:^{
+                                                             self.pauseAudioOnNextPageTurn = YES;
+                                                         }];
+                                                     }
+                                                 }];
             if (success) {
                 self.audioBookPlayer.delegate = self;
                 [self.audioBookPlayer playAtLayoutPage:layoutPage pageWordOffset:pageWordOffset];

@@ -14,27 +14,46 @@ static NSTimeInterval const kSCHWordTimingMilliSecondsInASecond = 1000.0;
 
 @synthesize startTime;
 @synthesize endTime;
-@synthesize page;
+@synthesize word;
+@synthesize pageIndex;
+@synthesize blockIndex;
+@synthesize wordIndex;
 
 - (id)initWithStartTime:(NSUInteger)setStartTime 
                 endTime:(NSUInteger)setEndTime 
 {
     return([self initWithStartTime:setStartTime 
                            endTime:setEndTime 
-                              page:NSUIntegerMax]);
+                              word:nil
+                         pageIndex:NSUIntegerMax
+                           blockIndex:NSUIntegerMax
+                            wordIndex:NSUIntegerMax]);
 }
 
 - (id)initWithStartTime:(NSUInteger)setStartTime 
                 endTime:(NSUInteger)setEndTime 
-                   page:(NSUInteger)setPage
+                   word:(NSString *)setWord
+              pageIndex:(NSUInteger)setPageIndex
+                blockIndex:(NSUInteger)setBlockIndex
+                 wordIndex:(NSUInteger)setWordIndex
 {
     self = [super init];
     if (self) {
         startTime = MIN(setStartTime, setEndTime);
         endTime = MAX(setStartTime, setEndTime);
-        page = setPage;
+        word = [setWord copy];
+        pageIndex = setPageIndex;
+        blockIndex = setBlockIndex;
+        wordIndex = setWordIndex;
     }
     return(self);
+}
+
+- (void)dealloc 
+{
+    [word release], word = nil;
+    
+    [super dealloc];
 }
 
 - (NSComparisonResult)compareTime:(NSUInteger)time
@@ -76,10 +95,10 @@ static NSTimeInterval const kSCHWordTimingMilliSecondsInASecond = 1000.0;
 
 - (NSString *)description
 {
-    if (self.page == NSUIntegerMax) {
+    if (self.pageIndex == NSUIntegerMax) {
         return([NSString stringWithFormat:@"%lu - %lu", self.startTime, self.endTime]);
     } else {
-        return([NSString stringWithFormat:@"%lu - %lu (%lu)", self.startTime, self.endTime, self.page]);
+        return([NSString stringWithFormat:@"%lu - %lu %@ (page:%lu block:%lu word:%lu)", self.startTime, self.endTime, self.word, self.pageIndex, self.blockIndex, self.wordIndex]);
     }
 }
 

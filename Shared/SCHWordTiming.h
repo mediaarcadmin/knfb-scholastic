@@ -14,13 +14,20 @@
 
 @property (nonatomic, assign, readonly) NSUInteger startTime;
 @property (nonatomic, assign, readonly) NSUInteger endTime;
-@property (nonatomic, assign, readonly) NSUInteger page;
+@property (nonatomic, copy, readonly) NSString *word;
+
+@property (nonatomic, assign, readonly) NSUInteger pageIndex;
+@property (nonatomic, assign, readonly) NSUInteger blockIndex;
+@property (nonatomic, assign, readonly) NSUInteger wordIndex;
 
 - (id)initWithStartTime:(NSUInteger)setStartTime 
                 endTime:(NSUInteger)setEndTime;
 - (id)initWithStartTime:(NSUInteger)setStartTime 
                 endTime:(NSUInteger)setEndTime 
-                   page:(NSUInteger)setPage;
+                   word:(NSString *)setWord
+              pageIndex:(NSUInteger)setPageIndex
+                blockIndex:(NSUInteger)setBlockIndex
+                 wordIndex:(NSUInteger)setWordIndex;
 - (NSComparisonResult)compareTime:(NSUInteger)time;
 - (NSTimeInterval)startTimeAsSeconds;
 - (NSTimeInterval)endTimeAsSeconds;
