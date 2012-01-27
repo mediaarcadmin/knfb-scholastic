@@ -13,9 +13,9 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "524888251407990500DA9AFA"
+               BlueprintIdentifier = "A3D3F0AC14CDDF31004A56A5"
                BuildableName = "Storia.app"
-               BlueprintName = "Local Samples Scholastic"
+               BlueprintName = "Scholastic No iPhone"
                ReferencedContainer = "container:Scholastic.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -27,32 +27,16 @@
       shouldUseLaunchSchemeArgsEnv = "YES"
       buildConfiguration = "Debug">
       <Testables>
-         <TestableReference
-            skipped = "NO">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "28A08CFA13952CB4006FD008"
-               BuildableName = "UnitTests.octest"
-               BlueprintName = "UnitTests"
-               ReferencedContainer = "container:Scholastic.xcodeproj">
-            </BuildableReference>
-         </TestableReference>
       </Testables>
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "524888251407990500DA9AFA"
+            BlueprintIdentifier = "A3D3F0AC14CDDF31004A56A5"
             BuildableName = "Storia.app"
-            BlueprintName = "Local Samples Scholastic"
+            BlueprintName = "Scholastic No iPhone"
             ReferencedContainer = "container:Scholastic.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
-      <CommandLineArguments>
-         <CommandLineArgument
-            argument = "NSZombieEnabled=YES"
-            isEnabled = "YES">
-         </CommandLineArgument>
-      </CommandLineArguments>
    </TestAction>
    <LaunchAction
       selectedDebuggerIdentifier = "Xcode.DebuggerFoundation.Debugger.GDB"
@@ -61,13 +45,14 @@
       useCustomWorkingDirectory = "NO"
       buildConfiguration = "Debug"
       debugDocumentVersioning = "YES"
+      enablesOpenGLESFrameCapture = "YES"
       allowLocationSimulation = "YES">
       <BuildableProductRunnable>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "524888251407990500DA9AFA"
+            BlueprintIdentifier = "A3D3F0AC14CDDF31004A56A5"
             BuildableName = "Storia.app"
-            BlueprintName = "Local Samples Scholastic"
+            BlueprintName = "Scholastic No iPhone"
             ReferencedContainer = "container:Scholastic.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
@@ -83,9 +68,9 @@
       <BuildableProductRunnable>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "524888251407990500DA9AFA"
+            BlueprintIdentifier = "A3D3F0AC14CDDF31004A56A5"
             BuildableName = "Storia.app"
-            BlueprintName = "Local Samples Scholastic"
+            BlueprintName = "Scholastic No iPhone"
             ReferencedContainer = "container:Scholastic.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
