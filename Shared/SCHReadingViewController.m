@@ -3014,8 +3014,8 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 {
     // only show on the first page, if toolbars are not visible, not in highlights mode
     // and the audio isn't already playing (and it's in younger mode!)
-    BOOL shouldShow = YES;//(self.currentPageIndex == 0 && !self.toolbarsVisible && !self.audioBookPlayer.playing 
-//                       && self.youngerMode && !self.highlightsModeEnabled);
+    BOOL shouldShow = (self.currentPageIndex == 0 && !self.toolbarsVisible && !self.audioBookPlayer.playing 
+                       && self.youngerMode && !self.highlightsModeEnabled);
     float buttonAlpha = 0.0f;
     
     if (shouldShow) {
