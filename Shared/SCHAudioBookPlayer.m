@@ -216,7 +216,7 @@ static NSUInteger const kSCHAudioBookPlayerNoAudioLoaded = NSUIntegerMax;
                     if (wordTiming != lastTriggered && [wordTiming compareTime:currentPlayTime] == NSOrderedSame) {
                         lastTriggered = wordTiming;
                         if (self.usingNewRTXFormat == YES) {
-                            wordBlockNew(wordTiming.pageIndex + 1, wordTiming.blockIndex, wordTiming.wordIndex);
+                            wordBlockNew(wordTiming.pageIndex + 1, wordTiming.blockID, wordTiming.wordID);
                             
                             pageTurnAtTime = NSUIntegerMax; 
                             if (currentPosition + 1 < [self.wordTimings count]) {

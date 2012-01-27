@@ -16,8 +16,8 @@ static NSTimeInterval const kSCHWordTimingMilliSecondsInASecond = 1000.0;
 @synthesize endTime;
 @synthesize word;
 @synthesize pageIndex;
-@synthesize blockIndex;
-@synthesize wordIndex;
+@synthesize blockID;
+@synthesize wordID;
 
 - (id)initWithStartTime:(NSUInteger)setStartTime 
                 endTime:(NSUInteger)setEndTime 
@@ -26,16 +26,16 @@ static NSTimeInterval const kSCHWordTimingMilliSecondsInASecond = 1000.0;
                            endTime:setEndTime 
                               word:nil
                          pageIndex:NSUIntegerMax
-                           blockIndex:NSUIntegerMax
-                            wordIndex:NSUIntegerMax]);
+                           blockID:NSUIntegerMax
+                            wordID:NSUIntegerMax]);
 }
 
 - (id)initWithStartTime:(NSUInteger)setStartTime 
                 endTime:(NSUInteger)setEndTime 
                    word:(NSString *)setWord
               pageIndex:(NSUInteger)setPageIndex
-                blockIndex:(NSUInteger)setBlockIndex
-                 wordIndex:(NSUInteger)setWordIndex
+                blockID:(NSUInteger)setBlockID
+                 wordID:(NSUInteger)setWordID
 {
     self = [super init];
     if (self) {
@@ -43,8 +43,8 @@ static NSTimeInterval const kSCHWordTimingMilliSecondsInASecond = 1000.0;
         endTime = MAX(setStartTime, setEndTime);
         word = [setWord copy];
         pageIndex = setPageIndex;
-        blockIndex = setBlockIndex;
-        wordIndex = setWordIndex;
+        blockID = setBlockID;
+        wordID = setWordID;
     }
     return(self);
 }
@@ -98,7 +98,13 @@ static NSTimeInterval const kSCHWordTimingMilliSecondsInASecond = 1000.0;
     if (self.pageIndex == NSUIntegerMax) {
         return([NSString stringWithFormat:@"%lu - %lu", self.startTime, self.endTime]);
     } else {
-        return([NSString stringWithFormat:@"%lu - %lu %@ (page:%lu block:%lu word:%lu)", self.startTime, self.endTime, self.word, self.pageIndex, self.blockIndex, self.wordIndex]);
+        return([NSString stringWithFormat:@"%lu - %lu %@ (pageIndex:%lu blockID:%lu wordID:%lu)", 
+                self.startTime, 
+                self.endTime, 
+                self.word, 
+                self.pageIndex, 
+                self.blockID, 
+                self.wordID]);
     }
 }
 

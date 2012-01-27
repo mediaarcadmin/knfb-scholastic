@@ -1104,19 +1104,23 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
                                                  wordBlockOld:^(NSUInteger layoutPage, NSUInteger pageWordOffset) {
                                                      //NSLog(@"WORD UP! at layoutPage %d pageWordOffset %d", layoutPage, pageWordOffset);
                                                      self.pauseAudioOnNextPageTurn = NO;
-                                                     [self.readingView followAlongHighlightWordForLayoutPage:layoutPage pageWordOffset:pageWordOffset withCompletionHandler:^{
-                                                         self.pauseAudioOnNextPageTurn = YES;
-                                                     }];
-                                                 } wordBlockNew:^(NSUInteger layoutPage, NSUInteger blockIndex, NSUInteger wordIndex) {
+                                                     [self.readingView followAlongHighlightWordForLayoutPage:layoutPage 
+                                                                                              pageWordOffset:pageWordOffset 
+                                                                                       withCompletionHandler:^{
+                                                                                           self.pauseAudioOnNextPageTurn = YES;
+                                                                                       }];
+                                                 } wordBlockNew:^(NSUInteger layoutPage, NSUInteger audioBlockID, NSUInteger audioWordID) {
                                                      //NSLog(@"WORD UP! at layoutPage %d blockIndex %d wordIndex %d", layoutPage, blockIndex, wordIndex);
                                                      self.pauseAudioOnNextPageTurn = NO;
+                                                     // this assumes the RTX file format uses the same blockID and wordID as the textFlow
                                                      SCHBookPoint *bookPoint = [[[SCHBookPoint alloc] init] autorelease];
                                                      bookPoint.layoutPage = layoutPage;
-                                                     bookPoint.blockOffset = blockIndex;
-                                                     bookPoint.wordOffset = wordIndex;
-                                                     [self.readingView followAlongHighlightWordAtPoint:bookPoint withCompletionHandler:^{
-                                                         self.pauseAudioOnNextPageTurn = YES;
-                                                     }];
+                                                     bookPoint.blockOffset = audioBlockID;
+                                                     bookPoint.wordOffset = audioWordID;
+                                                     [self.readingView followAlongHighlightWordAtPoint:bookPoint 
+                                                                                 withCompletionHandler:^{
+                                                                                     self.pauseAudioOnNextPageTurn = YES;
+                                                                                 }];
                                                  } pageTurnBlock:^(NSUInteger turnToLayoutPage) {
                                                      //NSLog(@"Turn to layoutPage %d", turnToLayoutPage);
                                                      if (self.layoutType == SCHReadingViewLayoutTypeFixed) {
@@ -3014,8 +3018,8 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 {
     // only show on the first page, if toolbars are not visible, not in highlights mode
     // and the audio isn't already playing (and it's in younger mode!)
-    BOOL shouldShow = (self.currentPageIndex == 0 && !self.toolbarsVisible && !self.audioBookPlayer.playing 
-                       && self.youngerMode && !self.highlightsModeEnabled);
+    BOOL shouldShow = YES;//(self.currentPageIndex == 0 && !self.toolbarsVisible && !self.audioBookPlayer.playing 
+//                       && self.youngerMode && !self.highlightsModeEnabled);
     float buttonAlpha = 0.0f;
     
     if (shouldShow) {
