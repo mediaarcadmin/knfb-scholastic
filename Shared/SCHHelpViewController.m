@@ -109,11 +109,13 @@ static CGFloat const kSCHStoryInteractionControllerCloseBorderWidth = 1.5;
         
     self.playButton.icon = SCHPlayButtonIconNone;
     
+    __block SCHHelpViewController *weakSelf = self;
+    
     self.playButton.actionBlock = ^(SCHPlayButton *button) {
         if (button.play == YES) {
-            [self play];
+            [weakSelf play];
         } else {
-            [self pause];
+            [weakSelf pause];
         }
     };
     
