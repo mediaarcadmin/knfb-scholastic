@@ -156,7 +156,6 @@
     
     if (!sufficientSpace) {
         [[SCHDictionaryDownloadManager sharedDownloadManager] threadSafeUpdateDictionaryState:SCHDictionaryProcessingStateNotEnoughFreeSpaceError];
-        [[BITNetworkActivityManager sharedNetworkActivityManager] hideNetworkActivityIndicator];            
         [self cancel];
         return;
     }
