@@ -33,7 +33,7 @@ NSString * const SCHSettingsSyncComponentDidFailNotification = @"SCHSettingsSync
 	if (self.isSynchronizing == NO) {
 		self.backgroundTaskIdentifier = [[UIApplication sharedApplication] beginBackgroundTaskWithExpirationHandler:^{ 
 			self.isSynchronizing = NO;
-			self.backgroundTaskIdentifier = UIBackgroundTaskInvalid;
+            [self endBackgroundTask];
 		}];
 		
 		self.isSynchronizing = [self.libreAccessWebService listUserSettings];
