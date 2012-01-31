@@ -615,6 +615,7 @@ static NSUInteger const kSCHSyncManagerMaximumFailureRetries = 3;
 {
     if (self.backgroundTaskIdentifier == UIBackgroundTaskInvalid) {
         self.backgroundTaskIdentifier = [[UIApplication sharedApplication] beginBackgroundTaskWithExpirationHandler:^{ 
+            [[UIApplication sharedApplication] endBackgroundTask:self.backgroundTaskIdentifier];
             self.backgroundTaskIdentifier = UIBackgroundTaskInvalid;
         }];			
     }

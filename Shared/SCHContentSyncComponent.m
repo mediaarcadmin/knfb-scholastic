@@ -68,7 +68,7 @@ NSString * const SCHContentSyncComponentDidFailNotification = @"SCHContentSyncCo
 	if (self.isSynchronizing == NO) {
 		self.backgroundTaskIdentifier = [[UIApplication sharedApplication] beginBackgroundTaskWithExpirationHandler:^{ 
 			self.isSynchronizing = NO;
-			self.backgroundTaskIdentifier = UIBackgroundTaskInvalid;
+            [self endBackgroundTask];
 		}];
 		
 		ret = [self updateUserContentItems];

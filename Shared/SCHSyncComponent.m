@@ -58,10 +58,7 @@ NSString * const SCHSyncComponentDidFailAuthenticationNotification = @"SCHSyncCo
 - (void)method:(NSString *)method didCompleteWithResult:(NSDictionary *)result
       userInfo:(NSDictionary *)userInfo
 {	
-	if (self.backgroundTaskIdentifier != UIBackgroundTaskInvalid) {
-		[[UIApplication sharedApplication] endBackgroundTask:self.backgroundTaskIdentifier];
-		self.backgroundTaskIdentifier = UIBackgroundTaskInvalid;			
-	}
+	[self endBackgroundTask];
 	self.isSynchronizing = NO;
 	
     self.failureCount = 0;

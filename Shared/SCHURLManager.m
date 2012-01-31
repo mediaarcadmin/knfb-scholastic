@@ -164,6 +164,7 @@ static NSUInteger const kSCHURLManagerMaxConnections = 6;
 		NSMutableSet *removeFromTable = [NSMutableSet set];
 		
 		self.backgroundTaskIdentifier = [[UIApplication sharedApplication] beginBackgroundTaskWithExpirationHandler:^{ 
+            [[UIApplication sharedApplication] endBackgroundTask:self.backgroundTaskIdentifier];            
 			self.backgroundTaskIdentifier = UIBackgroundTaskInvalid;
 		}];
 		
