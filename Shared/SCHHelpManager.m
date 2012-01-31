@@ -355,10 +355,23 @@ static SCHHelpManager *sharedManager = nil;
 			[downloadOp release];
 			return;
 			break;
-            
-            
         }
-        default:
+        case SCHHelpProcessingStateError:
+        {
+            NSLog(@"An error occured attempting to download Help videos");
+            break;
+        }
+        case SCHHelpProcessingStateNotEnoughFreeSpace:
+        {
+            NSLog(@"Not enough free disk space for Help videos");
+            break;
+        }
+        case SCHHelpProcessingStateReady:
+        {
+            NSLog(@"Help is ready.");
+            break;
+        }
+		default:
 			break;
 	}
 }
