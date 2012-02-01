@@ -1396,6 +1396,8 @@
 		7D3F314214069A5200C6F445 /* libwapcaplet.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C947D57F133B9C0100FB4404 /* libwapcaplet.a */; };
 		A33F7311136B050A00BAA101 /* SCHDrmSession.m in Sources */ = {isa = PBXBuildFile; fileRef = A33F7310136B050A00BAA101 /* SCHDrmSession.m */; };
 		A35F45D5138D3A9000055D60 /* DRM in Resources */ = {isa = PBXBuildFile; fileRef = A35F45D4138D3A9000055D60 /* DRM */; };
+		A3775D8514D9BDAE00473314 /* Icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C9722BF31393AA75008605E8 /* Icon@2x.png */; };
+		A3775D8614D9BDB400473314 /* Icon-Small@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C908D867133F93FA00661718 /* Icon-Small@2x.png */; };
 		A38CF1FB1374503300EABF43 /* credits.html in Resources */ = {isa = PBXBuildFile; fileRef = A38CF1FA1374503300EABF43 /* credits.html */; };
 		A38CF1FF1374504F00EABF43 /* SCHAboutViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A38CF1FE1374504F00EABF43 /* SCHAboutViewController.m */; };
 		A39009911379B06900D6B608 /* privacy.html in Resources */ = {isa = PBXBuildFile; fileRef = A39009901379B06900D6B608 /* privacy.html */; };
@@ -9648,6 +9650,8 @@
 				A3D3F34214CDDF31004A56A5 /* storia-preview-two~ipad.png in Resources */,
 				A3D3F34314CDDF31004A56A5 /* storia-preview-close-button~ipad.png in Resources */,
 				A3D3F4AE14CDE6AA004A56A5 /* answer-button-blue@2x~iphone.png in Resources */,
+				A3775D8514D9BDAE00473314 /* Icon@2x.png in Resources */,
+				A3775D8614D9BDB400473314 /* Icon-Small@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
