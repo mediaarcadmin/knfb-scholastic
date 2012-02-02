@@ -692,20 +692,20 @@ NSString * const SCHContentSyncComponentDidFailNotification = @"SCHContentSyncCo
 {
     NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init]; 
     NSError *error = nil;    
-    [fetchRequest setEntity:[NSEntityDescription entityForName:kSCHUserContentItem
-                                        inManagedObjectContext:self.managedObjectContext]];	                                                                            
-    [fetchRequest setPredicate:[NSPredicate predicateWithFormat:@"ProfileList.@count < 1"]];    
+    [fetchRequest setEntity:[NSEntityDescription entityForName:kSCHContentMetadataItem
+                                        inManagedObjectContext:self.managedObjectContext]];
     
-    NSArray *userContent = [self.managedObjectContext executeFetchRequest:fetchRequest 
-                                                                error:&error];
+    NSArray *contentMetadataItems = [self.managedObjectContext executeFetchRequest:fetchRequest 
+                                                                             error:&error];
     [fetchRequest release], fetchRequest = nil;
-    if (userContent == nil) {
+    if (contentMetadataItems == nil) {
         NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
     }
     
-    for (SCHUserContentItem *userContentItem in userContent) {
-        for (SCHContentMetadataItem *item in [userContentItem ContentMetadataItem]) {
-            [self.managedObjectContext deleteObject:item];
+    for (SCHContentMetadataItem *contentMetadataItem in contentMetadataItems) {
+        SCHUserContentItem *userContentItem = [contentMetadataItem UserContentItem];
+        if (userContentItem == nil || [userContentItem.ProfileList count] == 0) {
+            [self.managedObjectContext deleteObject:contentMetadataItem];
         }
     }   
     
