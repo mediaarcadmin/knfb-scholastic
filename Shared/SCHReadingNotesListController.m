@@ -247,8 +247,10 @@ static NSInteger const CELL_ACTIVITY_INDICATOR_TAG = 999;
         [newBBI release];
         
         // adjust the width of the fixed space to keep the title centred
-        UIBarButtonItem *fixedSpace = (UIBarButtonItem *) [currentItems objectAtIndex:5];
-        fixedSpace.width = width;
+        if ([currentItems count] >= 6){
+            UIBarButtonItem *fixedSpace = (UIBarButtonItem *) [currentItems objectAtIndex:5];
+            fixedSpace.width = width;
+        }
         
         self.topBar.items = [NSArray arrayWithArray:currentItems];
     }
