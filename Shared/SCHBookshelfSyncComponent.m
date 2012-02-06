@@ -433,7 +433,10 @@ NSString * const SCHBookshelfSyncComponentDidFailNotification = @"SCHBookshelfSy
         [deletePool count] > 0) {
         NSMutableArray *deletedBookIdentifiers = [NSMutableArray array];
         for (SCHContentMetadataItem *contentMetadataItem in deletePool) {
-            [deletedBookIdentifiers addObject:[contentMetadataItem bookIdentifier]];            
+            SCHBookIdentifier *bookIdentifier = [contentMetadataItem bookIdentifier];
+            if (bookIdentifier != nil) {
+                [deletedBookIdentifiers addObject:bookIdentifier];            
+            }
         }
         [[NSNotificationCenter defaultCenter] postNotificationName:SCHBookshelfSyncComponentWillDeleteNotification 
                                                             object:self 

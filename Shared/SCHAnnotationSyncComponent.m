@@ -180,7 +180,7 @@ NSString * const SCHAnnotationSyncComponentCompletedProfileIDs = @"SCHAnnotation
                     }
                     [profileBookIdentifier release], profileBookIdentifier = nil;                    
                 }];
-                if (removeBook != NSUIntegerMax) {
+                if (removeBook != NSUIntegerMax && removeBook < [profileBooks count]) {
                     [profileBooks removeObjectAtIndex:removeBook];   
                 }
             }
@@ -200,7 +200,7 @@ NSString * const SCHAnnotationSyncComponentCompletedProfileIDs = @"SCHAnnotation
 {
     NSNumber *ret = nil;
     
-    if ([self haveProfiles] == YES) {
+    if ([self haveProfiles] == YES && [self.annotations count] > 0) {
         ret = [[[self.annotations allKeys] sortedArrayUsingSelector:@selector(compare:)] objectAtIndex:0];    
     }
     
@@ -404,7 +404,9 @@ NSString * const SCHAnnotationSyncComponentCompletedProfileIDs = @"SCHAnnotation
                                                forKey:SCHSyncEntityState];
                 }
             }
-            [self.savedAnnotations removeObjectAtIndex:0];
+            if ([self.savedAnnotations count] > 0) {
+                [self.savedAnnotations removeObjectAtIndex:0];
+            }
         }
         [self save];
     }

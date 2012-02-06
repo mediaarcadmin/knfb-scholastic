@@ -164,7 +164,9 @@ NSString * const SCHProfileSyncComponentDidFailNotification = @"SCHProfileSyncCo
                                                forKey:SCHSyncEntityState];
                 }
             }
-            [self.savedProfiles removeObjectAtIndex:0];
+            if ([self.savedProfiles count] > 0) {
+                [self.savedProfiles removeObjectAtIndex:0];
+            }
         }
         [self save];
     }
@@ -354,7 +356,10 @@ NSString * const SCHProfileSyncComponentDidFailNotification = @"SCHProfileSyncCo
     if ([deletePool count] > 0) {
         NSMutableArray *deletedIDs = [NSMutableArray array];
         for (SCHProfileItem *profileItem in deletePool) {
-            [deletedIDs addObject:profileItem.ID];
+            NSNumber *profileID = profileItem.ID;
+            if (profileID != nil) {
+                [deletedIDs addObject:profileID];
+            }
         }        
         [[NSNotificationCenter defaultCenter] postNotificationName:SCHProfileSyncComponentWillDeleteNotification 
                                                             object:self 
