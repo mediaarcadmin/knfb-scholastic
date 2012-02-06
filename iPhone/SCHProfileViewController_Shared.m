@@ -599,7 +599,9 @@ didSelectButtonAnimated:(BOOL)animated
         } else {
             if (!showValidation) {
                 NSMutableArray *currentControllers = [[[weakSelf.modalNavigationController viewControllers] mutableCopy] autorelease];
-                [currentControllers removeLastObject];
+                if ([currentControllers count] > 0) {
+                    [currentControllers removeLastObject];
+                }
                 [weakSelf.modalNavigationController setViewControllers:currentControllers];
                 [weakSelf presentModalViewController:self.modalNavigationController animated:NO];
             }

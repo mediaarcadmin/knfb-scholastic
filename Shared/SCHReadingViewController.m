@@ -668,7 +668,9 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 #if FLOW_VIEW_DISABLED
     // if flow view is disabled, then remove the options button
     NSMutableArray *toolbarArray = [[NSMutableArray alloc] initWithArray:self.olderBottomToolbar.items];
-    [toolbarArray removeObjectsAtIndexes:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(6, 2)]];
+    if ([toolbarArray count] >= 9) {
+        [toolbarArray removeObjectsAtIndexes:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(6, 2)]];
+    }
     self.olderBottomToolbar.items = [NSArray arrayWithArray:toolbarArray];
     [toolbarArray release];
 #endif
@@ -2745,6 +2747,8 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 
 - (void)readingInteractionsView:(SCHReadingInteractionsListController *)interactionsView didSelectInteraction:(NSInteger)interaction
 {    
+    NSParameterAssert(interaction < [[self.bookStoryInteractions allStoryInteractionsExcludingInteractionWithPage:interactionsView.excludeInteractionWithPage] count]);
+    
     SCHStoryInteraction *storyInteraction = [[self.bookStoryInteractions allStoryInteractionsExcludingInteractionWithPage:interactionsView.excludeInteractionWithPage] objectAtIndex:interaction];
     
     SCHBookPoint *notePoint = [self.readingView bookPointForLayoutPage:[storyInteraction documentPageNumber]
