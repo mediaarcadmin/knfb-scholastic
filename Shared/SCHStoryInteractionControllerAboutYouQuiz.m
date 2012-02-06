@@ -122,7 +122,7 @@ typedef enum {
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
         [self setupTitle];        
     }
-    self.outcomeTextLabel.text = [NSString stringWithFormat:@"%@.", [splitResult objectAtIndex:0]];
+    self.outcomeTextLabel.text = ([splitResult count] > 0 ? [NSString stringWithFormat:@"%@.", [splitResult objectAtIndex:0]] : @"");
     self.outcomeTitleLabel.text = ([splitResult count] > 1 ? [splitResult objectAtIndex:1] : @"");
 }
 

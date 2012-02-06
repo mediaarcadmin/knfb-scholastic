@@ -79,6 +79,8 @@
 
 - (NSString *)audioPathForWordAtIndex:(NSInteger)index
 {
+    NSParameterAssert(index < [self.words count]);
+    
     NSString *filename = [NSString stringWithFormat:@"%@_%@.mp3", self.ID, [[self.words objectAtIndex:index] lowercaseString]];
     return [KNFBXPSStoryInteractionsDirectory stringByAppendingPathComponent:filename];
 }

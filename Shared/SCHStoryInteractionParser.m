@@ -127,7 +127,10 @@ static NSString *extractXmlAttribute(const XML_Char **atts, const char *key)
     if (strcmp(name, "QuestionPrompt") == 0) {
         self.prompt = extractXmlAttribute(attributes, "Transcript");
     } else if (strcmp(name, "Answer") == 0) {
-        [parser.answers addObject:extractXmlAttribute(attributes, "Transcript")];
+        NSString *transcript = extractXmlAttribute(attributes, "Transcript");
+        if (transcript != nil) {
+            [parser.answers addObject:transcript];
+        }
     } else {
         [super startElement:name attributes:attributes parser:parser];
     }
@@ -160,7 +163,9 @@ static NSString *extractXmlAttribute(const XML_Char **atts, const char *key)
         self.introduction = extractXmlAttribute(attributes, "Transcript");
     } else if (strcmp(name, "OutcomeMessage") == 0) {
         NSString *outcomeMessage = extractXmlAttribute(attributes, "Transcript");
-        [parser.array addObject:outcomeMessage];
+        if (outcomeMessage != nil) {
+            [parser.array addObject:outcomeMessage];
+        }
     } else if (strcmp(name, "TiebreakOrder") == 0) {
         NSString *orderString = extractXmlAttribute(attributes, "Transcript");
         NSMutableArray *convertedOrder = [NSMutableArray array];
@@ -362,7 +367,10 @@ static CGPathRef parseBase64EncodedPathAndFitToHotSpotRect(NSString *text, CGRec
         if ([[extractXmlAttribute(attributes, "IsCorrect") lowercaseString] isEqualToString:@"true"]) {
             self.correctAnswer = [parser.answers count];
         }
-        [parser.answers addObject:extractXmlAttribute(attributes, "Transcript")];
+        NSString *transcript = extractXmlAttribute(attributes, "Transcript");
+        if (transcript != nil) {
+            [parser.answers addObject:transcript];
+        }
     } else {
         [super startElement:name attributes:attributes parser:parser];
     }
@@ -460,7 +468,10 @@ static CGPathRef parseBase64EncodedPathAndFitToHotSpotRect(NSString *text, CGRec
 - (void)startElement:(const XML_Char *)name attributes:(const XML_Char **)attributes parser:(SCHStoryInteractionParser *)parser
 {
     if (strcmp(name, "Introduction") == 0) {
-        [parser.array addObject:extractXmlAttribute(attributes, "Transcript")];
+        NSString *transcript = extractXmlAttribute(attributes, "Transcript");
+        if (transcript != nil) {
+            [parser.array addObject:transcript];
+        }
     } else {
         [super startElement:name attributes:attributes parser:parser];
     }
@@ -486,7 +497,10 @@ static CGPathRef parseBase64EncodedPathAndFitToHotSpotRect(NSString *text, CGRec
         if ([[extractXmlAttribute(attributes, "IsCorrect") lowercaseString] isEqualToString:@"true"]) {
             self.correctAnswer = [parser.answers count];
         }
-        [parser.answers addObject:extractXmlAttribute(attributes, "Transcript")];
+        NSString *transcript = extractXmlAttribute(attributes, "Transcript");
+        if (transcript != nil) {
+            [parser.answers addObject:transcript];
+        }
     } else {
         [super startElement:name attributes:attributes parser:parser];
     }
@@ -546,7 +560,10 @@ static CGPathRef parseBase64EncodedPathAndFitToHotSpotRect(NSString *text, CGRec
         if ([[extractXmlAttribute(attributes, "IsCorrect") lowercaseString] isEqualToString:@"true"]) {
             self.correctAnswer = [parser.answers count];
         }
-        [parser.answers addObject:extractXmlAttribute(attributes, "Transcript")];
+        NSString *transcript = extractXmlAttribute(attributes, "Transcript");
+        if (transcript != nil) {
+            [parser.answers addObject:transcript];
+        }
     } else {
         [super startElement:name attributes:attributes parser:parser];
     }
@@ -839,7 +856,10 @@ static CGPathRef parseBase64EncodedPathAndFitToHotSpotRect(NSString *text, CGRec
         if (!parser.answers) {
             parser.answers = [NSMutableArray array];
         }
-        [parser.answers addObject:extractXmlAttribute(attributes, "Transcript")];
+        NSString *transcript = extractXmlAttribute(attributes, "Transcript");
+        if (transcript != nil) {
+            [parser.answers addObject:transcript];
+        }
     } else if (strcmp(name, "Row") == 0) {
         NSString *row = extractXmlAttribute(attributes, "Letters");
         BOOL isFirstRow = ([parser.array count] == 0);
@@ -983,9 +1003,11 @@ static void storyInteractionCharacterDataHandler(void *userData, const XML_Char 
 
 - (void)endQuestion
 {
-    [self.question parseComplete:self];
-    [self.questions addObject:self.question];
-    self.question = nil;
+    if (self.question != nil) {
+        [self.question parseComplete:self];
+        [self.questions addObject:self.question];
+        self.question = nil;
+    }
     self.answers = nil;
 }
 

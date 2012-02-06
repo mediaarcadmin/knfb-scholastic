@@ -409,7 +409,9 @@
         [draggableView moveToHomePosition];
     } else if (![self buildTargetIsFull]) {
         self.gapPosition = NSNotFound;
-        [self.builtWord addObject:draggableView];
+        if (draggableView != nil) {
+            [self.builtWord addObject:draggableView];
+        }
     } else {
         return;
     }
@@ -461,7 +463,9 @@
         if (letterPosition > self.gapPosition) {
             letterPosition--;
         }
-        [self.builtWord insertObject:draggableView atIndex:letterPosition];
+        if (draggableView != nil && letterPosition <= [self.builtWord count]) {
+            [self.builtWord insertObject:draggableView atIndex:letterPosition];
+        }
     }
     self.gapPosition = NSNotFound;
     [self repositionLettersInBuiltWord];

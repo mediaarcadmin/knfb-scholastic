@@ -73,6 +73,8 @@ static void jigsawEndElementHandler(void *userData, const XML_Char *name)
 
 - (CGPathRef)pathAtIndex:(NSInteger)pathIndex
 {
+    NSParameterAssert(pathIndex < [self.paths count]);
+    
     return (CGPathRef)[self.paths objectAtIndex:pathIndex];
 }
 

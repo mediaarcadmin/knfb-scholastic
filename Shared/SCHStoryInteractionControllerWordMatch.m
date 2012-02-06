@@ -197,7 +197,9 @@
             [imageView setImage:[UIImage imageNamed:@"storyinteraction-draggable-green"]];
             [draggableView setLockedInPlace:YES];
             [draggableView setUserInteractionEnabled:NO];
-            [self.occupiedTargets addObject:onTarget];
+            if (onTarget != nil) {
+                [self.occupiedTargets addObject:onTarget];
+            }
             
             // get the current item before any state changes, as this may advance currentQuestion
             SCHStoryInteractionWordMatchQuestionItem *item = [[[self currentQuestion] items] objectAtIndex:onTarget.matchTag];
