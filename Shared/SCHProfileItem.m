@@ -167,7 +167,10 @@ NSString * const kSCHProfileItemDRM_QUALIFIER = @"DRM_QUALIFIER";
     NSMutableArray *ret = [NSMutableArray arrayWithCapacity:[contentProfileItem count]];
                            
     for(SCHContentProfileItem *item in contentProfileItem) {
-        [ret addObject:item.UserContentItem.bookIdentifier];
+        SCHBookIdentifier *bookIdentifier = item.UserContentItem.bookIdentifier;
+        if (bookIdentifier != nil) {
+            [ret addObject:bookIdentifier];
+        }
     }
     
     return ret;
@@ -282,14 +285,19 @@ NSString * const kSCHProfileItemDRM_QUALIFIER = @"DRM_QUALIFIER";
             NSMutableArray *sortArray = [[NSMutableArray alloc] initWithCapacity:[books count]];
 
             for (SCHContentMetadataItem *item in bookObjects) {
-                SCHPrivateAnnotations *privAnnotations = [(SCHAnnotationsContentItem *)[[item annotationsContentForProfile:self.ID] objectAtIndex:0] PrivateAnnotations];
+                NSArray *annotations = [item annotationsContentForProfile:self.ID];
+                SCHPrivateAnnotations *privAnnotations = nil;
+                if ([annotations count] > 0) {
+                    privAnnotations = [(SCHAnnotationsContentItem *)[annotations objectAtIndex:0] PrivateAnnotations];
+                }
                 SCHAppContentProfileItem *appContentProfileItem = [self appContentProfileItemForBookIdentifier:item.bookIdentifier];
                 SCHContentProfileItem *contentProfileItem = appContentProfileItem.ContentProfileItem;
                 
                 SCHProfileItemSortObject *sortObj = [[SCHProfileItemSortObject alloc] init];
                 // If we havnt yet received the annotations from the sync then use the contentprofileitem
                 // lastModified date, see SCHReadingView:lastPageLocation where we do the same for the last page
-                if ([[contentProfileItem LastModified] compare:privAnnotations.LastPage.LastModified] == NSOrderedDescending) {
+                if (privAnnotations == nil ||
+                    [[contentProfileItem LastModified] compare:privAnnotations.LastPage.LastModified] == NSOrderedDescending) {
                     sortObj.date = [contentProfileItem LastModified];
                 } else {
                     sortObj.date = privAnnotations.LastPage.LastModified;
@@ -299,7 +307,6 @@ NSString * const kSCHProfileItemDRM_QUALIFIER = @"DRM_QUALIFIER";
                 
                 [sortArray addObject:sortObj];
                 [sortObj release];
-
             }
             
             [sortArray sortUsingDescriptors:[NSArray arrayWithObjects:[NSSortDescriptor sortDescriptorWithKey:@"isNewBook" ascending:YES], 
@@ -308,7 +315,9 @@ NSString * const kSCHProfileItemDRM_QUALIFIER = @"DRM_QUALIFIER";
             [bookObjects removeAllObjects];
             
             for (SCHProfileItemSortObject *sortObj in sortArray) {
-                [bookObjects addObject:sortObj.item];
+                if (sortObj.item != nil) {
+                    [bookObjects addObject:sortObj.item];
+                }
             }
             
             [sortArray release];
