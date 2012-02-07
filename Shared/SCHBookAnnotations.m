@@ -209,7 +209,8 @@
         }
     }];
     
-    if (found == YES) {
+    if (found == YES && 
+        pageRange.length > 0 && NSMaxRange(pageRange) <= [self.sortedHighlights count]) {
         ret = [self.sortedHighlights subarrayWithRange:pageRange];
     }
     
