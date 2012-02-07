@@ -57,6 +57,7 @@
 - (SCHStoryInteractionWordMatchQuestion *)currentQuestion
 {
     NSInteger currentQuestionIndex = [self.delegate currentQuestionForStoryInteraction];
+    NSAssert(currentQuestionIndex < [[(SCHStoryInteractionWordMatch *)self.storyInteraction questions] count], @"index must be within array bounds");
     return [[(SCHStoryInteractionWordMatch *)self.storyInteraction questions] objectAtIndex:currentQuestionIndex];
 }
 
@@ -175,11 +176,16 @@
             UIImage* oldImage = [imageView.image retain];
             [imageView setImage:[UIImage imageNamed:@"storyinteraction-draggable-red"]];
             
-            SCHStoryInteractionWordMatchQuestionItem *item = [[[self currentQuestion] items] objectAtIndex:draggableView.matchTag];
+            SCHStoryInteractionWordMatchQuestionItem *item = nil;
+            if (draggableView.matchTag < [[[self currentQuestion] items] count]) {
+                item = [[[self currentQuestion] items] objectAtIndex:draggableView.matchTag];
+            }
             [self enqueueAudioWithPath:[self.storyInteraction storyInteractionWrongAnswerSoundFilename]
                             fromBundle:YES];
-            [self enqueueAudioWithPath:[item audioPath]
-                            fromBundle:NO];
+            if (item != nil) {
+                [self enqueueAudioWithPath:[item audioPath]
+                                fromBundle:NO];
+            }
             [self enqueueAudioWithPath:[self.storyInteraction audioPathForTryAgain]
                             fromBundle:NO
                             startDelay:0
@@ -202,7 +208,10 @@
             }
             
             // get the current item before any state changes, as this may advance currentQuestion
-            SCHStoryInteractionWordMatchQuestionItem *item = [[[self currentQuestion] items] objectAtIndex:onTarget.matchTag];
+            SCHStoryInteractionWordMatchQuestionItem *item = nil;
+            if (onTarget.matchTag < [[[self currentQuestion] items] count]) {
+                item = [[[self currentQuestion] items] objectAtIndex:onTarget.matchTag];
+            }
             
             BOOL allCorrect = (self.numberOfCorrectItems == kNumberOfItems);
             if (allCorrect) {
@@ -213,8 +222,10 @@
             
             [self enqueueAudioWithPath:sfxFile
                             fromBundle:YES];
-            [self enqueueAudioWithPath:[item audioPath]
-                            fromBundle:NO];
+            if (item != nil) {
+                [self enqueueAudioWithPath:[item audioPath]
+                                fromBundle:NO];
+            }
             [self enqueueAudioWithPath:[self.storyInteraction audioPathForThatsRight]
                             fromBundle:NO
                             startDelay:0

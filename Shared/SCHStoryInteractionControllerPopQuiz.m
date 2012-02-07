@@ -48,6 +48,8 @@
 
 - (SCHStoryInteractionPopQuizQuestion *)currentQuestion
 {
+    NSParameterAssert(self.currentQuestionIndex < [[(SCHStoryInteractionPopQuiz *)self.storyInteraction questions] count]);
+    
     return [[(SCHStoryInteractionPopQuiz *)self.storyInteraction questions] objectAtIndex:currentQuestionIndex];
 }
 

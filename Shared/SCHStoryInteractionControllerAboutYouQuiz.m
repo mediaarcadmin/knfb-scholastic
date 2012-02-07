@@ -165,6 +165,7 @@ typedef enum {
 
 - (SCHStoryInteractionAboutYouQuizQuestion *)currentQuestion
 {
+    NSAssert(currentQuestionIndex < [[(SCHStoryInteractionAboutYouQuiz *)self.storyInteraction questions] count], @"index must be within array bounds");
     return [[(SCHStoryInteractionAboutYouQuiz *)self.storyInteraction questions] objectAtIndex:currentQuestionIndex];
 }
 

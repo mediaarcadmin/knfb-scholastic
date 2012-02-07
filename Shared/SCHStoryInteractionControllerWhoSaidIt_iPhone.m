@@ -113,10 +113,12 @@
 
     for (NSInteger i = 0; i < numAnswers; ++i) {
         SCHStoryInteractionWhoSaidItStatement *statement = [shuffledStatements objectAtIndex:i];
-        UIButton *button = [self.answerButtons objectAtIndex:i];
-        [button setTitle:statement.source forState:UIControlStateNormal];
-        [button setHidden:NO];
-        [button setTag:[whoSaidIt.statements indexOfObject:statement]];
+        if (i < [self.answerButtons count]) {
+            UIButton *button = [self.answerButtons objectAtIndex:i];
+            [button setTitle:statement.source forState:UIControlStateNormal];
+            [button setHidden:NO];
+            [button setTag:[whoSaidIt.statements indexOfObject:statement]];
+        }
     }
     for (NSInteger i = numAnswers; i < [self.answerButtons count]; ++i) {
         [[self.answerButtons objectAtIndex:i] setHidden:YES];
@@ -141,15 +143,17 @@
 - (void)setupQuestion
 {
     SCHStoryInteractionWhoSaidIt *whoSaidIt = (SCHStoryInteractionWhoSaidIt *)self.storyInteraction;
-    SCHStoryInteractionWhoSaidItStatement *statement = [whoSaidIt.statements objectAtIndex:self.currentStatement];
-    self.statementLabel.text = statement.text;
-    CGRect maxRect = CGRectInset(self.statementLabel.superview.bounds, 5, 5);
-    CGSize textSize = [statement.text sizeWithFont:self.statementLabel.font
-                                 constrainedToSize:maxRect.size
-                                     lineBreakMode:self.statementLabel.lineBreakMode];
-    self.statementLabel.frame = CGRectMake(CGRectGetMinX(maxRect) + (CGRectGetWidth(maxRect) - textSize.width)/2,
-                                           CGRectGetMinY(maxRect) + (CGRectGetHeight(maxRect) - textSize.height)/2,
-                                           textSize.width, textSize.height);
+    if (self.currentStatement < [whoSaidIt.statements count]) {
+        SCHStoryInteractionWhoSaidItStatement *statement = [whoSaidIt.statements objectAtIndex:self.currentStatement];
+        self.statementLabel.text = statement.text;
+        CGRect maxRect = CGRectInset(self.statementLabel.superview.bounds, 5, 5);
+        CGSize textSize = [statement.text sizeWithFont:self.statementLabel.font
+                                     constrainedToSize:maxRect.size
+                                         lineBreakMode:self.statementLabel.lineBreakMode];
+        self.statementLabel.frame = CGRectMake(CGRectGetMinX(maxRect) + (CGRectGetWidth(maxRect) - textSize.width)/2,
+                                               CGRectGetMinY(maxRect) + (CGRectGetHeight(maxRect) - textSize.height)/2,
+                                               textSize.width, textSize.height);
+    }
 }
 
 - (void)setupAnswerButtons

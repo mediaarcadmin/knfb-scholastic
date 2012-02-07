@@ -38,6 +38,8 @@
 
 - (SCHStoryInteractionMultipleChoicePictureQuestion *)currentQuestion
 {
+    NSParameterAssert(currentQuestionIndex < [[(SCHStoryInteractionMultipleChoiceWithAnswerPictures *)self.storyInteraction questions] count]);
+    
     return [[(SCHStoryInteractionMultipleChoiceWithAnswerPictures *)self.storyInteraction questions] objectAtIndex:currentQuestionIndex];
 }
 

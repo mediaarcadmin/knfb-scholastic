@@ -87,9 +87,13 @@ static CGPoint pointWithOffset(CGPoint p, CGPoint offset)
     for (SCHStoryInteractionWhoSaidItStatement *statement in whoSaidIt.statements) {
         NSLog(@"%@ -> %@", statement.source, statement.text);
         if (statement.questionIndex != whoSaidIt.distracterIndex) {
-            [[self.statementLabels objectAtIndex:targetIndex] setText:statement.text];
-            SCHStoryInteractionDraggableTargetView *target = [self.targets objectAtIndex:targetIndex];
-            target.matchTag = statement.questionIndex;
+            if (targetIndex < [self.statementLabels count]) {
+                [[self.statementLabels objectAtIndex:targetIndex] setText:statement.text];
+            }
+            if (targetIndex < [self.targets count]) {
+                SCHStoryInteractionDraggableTargetView *target = [self.targets objectAtIndex:targetIndex];
+                target.matchTag = statement.questionIndex;
+            }
             targetIndex++;
         }
     }
@@ -105,13 +109,15 @@ static CGPoint pointWithOffset(CGPoint p, CGPoint offset)
         [self.contentsView addSubview:source];
         source.center = center;
         
-        SCHStoryInteractionWhoSaidItStatement *statement = [statements objectAtIndex:index];
         UILabel *label = (UILabel *)[source viewWithTag:kSourceLabelTag];
-        label.text = statement.source;
-        source.attachedTarget = nil;
-        source.matchTag = statement.questionIndex;
+        source.attachedTarget = nil;        
         source.delegate = self;
-        source.homePosition = center;
+        source.homePosition = center;        
+        if (index < [statements count]) {
+            SCHStoryInteractionWhoSaidItStatement *statement = [statements objectAtIndex:index];
+            label.text = statement.source;            
+            source.matchTag = statement.questionIndex;
+        }
         index++;
     }
     
