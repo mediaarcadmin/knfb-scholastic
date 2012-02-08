@@ -257,9 +257,7 @@
                 hintLetterCurrentPosition != hintPosition) {
                 SCHStoryInteractionDraggableLetterView *letterAtHintPosition = [self.lettersByPosition objectAtIndex:hintPosition];
                 [self.lettersByPosition replaceObjectAtIndex:hintPosition withObject:hintLetter];
-                if (letterAtHintPosition != nil) {
-                    [self.lettersByPosition replaceObjectAtIndex:hintLetterCurrentPosition withObject:letterAtHintPosition];
-                }
+                [self.lettersByPosition replaceObjectAtIndex:hintLetterCurrentPosition withObject:letterAtHintPosition];
                 
                 letterAtHintPosition.homePosition = hintLetter.center;
                 hintLetter.homePosition = letterAtHintPosition.center;
