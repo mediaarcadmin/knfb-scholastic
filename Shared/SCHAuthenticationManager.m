@@ -234,9 +234,11 @@ NSTimeInterval const kSCHAuthenticationManagerSecondsInAMinute = 60.0;
             [self authenticationDidFailWithError:error];
         }
     } else {
-        [[NSUserDefaults standardUserDefaults] setObject:userName forKey:kSCHAuthenticationManagerUsername];
+        NSString *nonNullUserName = (userName == nil ? @"" : userName);
+
+        [[NSUserDefaults standardUserDefaults] setObject:nonNullUserName forKey:kSCHAuthenticationManagerUsername];
         
-        [SFHFKeychainUtils storeUsername:userName 
+        [SFHFKeychainUtils storeUsername:nonNullUserName
                              andPassword:password 
                           forServiceName:kSCHAuthenticationManagerServiceName 
                           updateExisting:YES 

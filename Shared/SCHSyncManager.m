@@ -453,9 +453,12 @@ static NSUInteger const kSCHSyncManagerMaximumFailureRetries = 3;
             id format = [userContentItem valueForKey:kSCHLibreAccessWebServiceFormat];
             id version = [userContentItem valueForKey:kSCHLibreAccessWebServiceLastVersion];
             
-            if (appContentProfileItem != nil && contentIdentifier != [NSNull null] && 
-                contentIdentifierType != [NSNull null] && DRMQualifier != [NSNull null] &&
-                format != [NSNull null] && version != [NSNull null]) {
+            if (appContentProfileItem != nil && 
+                contentIdentifier != nil && contentIdentifier != [NSNull null] && 
+                contentIdentifierType != nil && contentIdentifierType != [NSNull null] && 
+                DRMQualifier != nil && DRMQualifier != [NSNull null] &&
+                format != nil && format != [NSNull null] && 
+                version != nil && version != [NSNull null]) {
                 ret = [NSMutableDictionary dictionary];
                 
                 [ret setObject:contentIdentifier forKey:kSCHLibreAccessWebServiceContentIdentifier];

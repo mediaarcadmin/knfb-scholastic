@@ -258,7 +258,7 @@
         
         NSDictionary *userInfo = [NSDictionary dictionaryWithObjectsAndKeys:
                                   [NSNumber numberWithFloat:percentage], @"currentPercentage",
-                                  self.identifier, @"bookIdentifier",
+                                  (self.identifier == nil ? (id)[NSNull null] : self.identifier), @"bookIdentifier",
                                   nil];
         
         [self performSelectorOnMainThread:@selector(firePercentageUpdate:) 
@@ -342,7 +342,7 @@
             [self setProcessingState:SCHBookProcessingStateReadyForLicenseAcquisition];
             NSDictionary *userInfo = [NSDictionary dictionaryWithObjectsAndKeys:
                                       [NSNumber numberWithFloat:1.0], @"currentPercentage",
-                                      self.identifier, @"bookIdentifier",
+                                      (self.identifier == nil ? (id)[NSNull null] : self.identifier), @"bookIdentifier",
                                       nil];
             
             [self performSelectorOnMainThread:@selector(firePercentageUpdate:) 
