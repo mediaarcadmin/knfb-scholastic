@@ -44,6 +44,7 @@ static NSUInteger const kSCHSyncManagerMaximumFailureRetries = 3;
 - (NSMutableArray *)bookAnnotationsFromProfile:(SCHProfileItem *)profileItem;
 - (NSDictionary *)annotationContentItemFromUserContentItem:(SCHUserContentItem *)userContentItem
                                                        forProfile:(NSNumber *)profileID;
+- (SCHSyncComponent *)queueHead;
 - (void)addToQueue:(SCHSyncComponent *)component;
 - (void)moveToEndOfQueue:(SCHSyncComponent *)component;
 - (void)removeFromQueue:(SCHSyncComponent *)component 
@@ -179,13 +180,11 @@ static NSUInteger const kSCHSyncManagerMaximumFailureRetries = 3;
 {
 	BOOL ret = NO;
 	
-	if ([self.queue count] > 0) {
-		SCHSyncComponent *syncComponent = [self.queue objectAtIndex:0];
-		
-		if (syncComponent != nil) {
-			ret = [syncComponent isSynchronizing];
-		}
+    SCHSyncComponent *syncComponent = [self queueHead];
+    if (syncComponent != nil) {
+        ret = [syncComponent isSynchronizing];
 	}		
+    
 	return ret;
 }
 
@@ -599,12 +598,24 @@ static NSUInteger const kSCHSyncManagerMaximumFailureRetries = 3;
     
     // Kick the queue to continue but leave the heartbeat to trigger if it's the 
     // failed component
-    if ([self.queue count] > 0 && [self.queue objectAtIndex:0] != component) {
+    SCHSyncComponent *queueHead = [self queueHead];
+    if (queueHead != nil && queueHead != component) {
         [self kickQueue];
     }
 }
 
-#pragma mark - Sync methods
+#pragma mark - Queue methods
+
+- (SCHSyncComponent *)queueHead
+{
+    SCHSyncComponent *ret = nil;
+    
+	if ([self.queue count] > 0) {
+		ret = [self.queue objectAtIndex:0];
+    }
+    
+    return ret;
+}
 
 - (void)addToQueue:(SCHSyncComponent *)component
 {
@@ -674,17 +685,18 @@ static NSUInteger const kSCHSyncManagerMaximumFailureRetries = 3;
         }
 	}
     
-	if ([self.queue count] < 1) {
+	if ([self isQueueEmpty] == YES) {
         [self endBackgroundTask];
     }
 }
 
 - (void)kickQueue
 {
-	if ([self.queue count] > 0) {
-		SCHSyncComponent *syncComponent = [self.queue objectAtIndex:0];
+    SCHSyncComponent *syncComponent = [self queueHead];
+    
+    if (syncComponent != nil) {
 		NSLog(@"Sync component is %@", syncComponent);
-		if (syncComponent != nil && [syncComponent isSynchronizing] == NO) {
+		if ([syncComponent isSynchronizing] == NO) {
 			NSLog(@"Kicking %@", [syncComponent class]);			
 			// if the queue has stopped then start it up again
 			[syncComponent synchronize];
@@ -692,7 +704,7 @@ static NSUInteger const kSCHSyncManagerMaximumFailureRetries = 3;
 			NSLog(@"Kicked but already syncing %@", [syncComponent class]);
 		}
 	}  else {
-        if ([self.queue count] < 1) {
+        if ([self isQueueEmpty] == YES) {
             [self endBackgroundTask];			
         }    
         
