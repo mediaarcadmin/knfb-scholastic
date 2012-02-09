@@ -145,10 +145,8 @@ static NSUInteger const kSCHSyncManagerMaximumFailureRetries = 3;
 {
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
 	
-    if (self.backgroundTaskIdentifier != UIBackgroundTaskInvalid) {
-        [[UIApplication sharedApplication] endBackgroundTask:self.backgroundTaskIdentifier];
-    }    
-
+    [self endBackgroundTask];
+    
     [lastFirstSyncEnded release], lastFirstSyncEnded = nil;
 	[timer release], timer = nil;
 	[queue release], queue = nil;
