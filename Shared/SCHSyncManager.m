@@ -38,6 +38,7 @@ static NSUInteger const kSCHSyncManagerMaximumFailureRetries = 3;
 @property (nonatomic, assign) BOOL syncAfterDelay;
 @property (nonatomic , assign) UIBackgroundTaskIdentifier backgroundTaskIdentifier;
 
+- (void)endBackgroundTask;
 - (void)updateAnnotationSync;
 - (void)addAllProfilesToAnnotationSync;
 - (NSMutableArray *)bookAnnotationsFromProfile:(SCHProfileItem *)profileItem;
@@ -241,16 +242,20 @@ static NSUInteger const kSCHSyncManagerMaximumFailureRetries = 3;
     self.lastFirstSyncEnded = nil;
     self.syncAfterDelay = NO;
     
-    if (self.backgroundTaskIdentifier != UIBackgroundTaskInvalid) {
-        [[UIApplication sharedApplication] endBackgroundTask:self.backgroundTaskIdentifier];
-        self.backgroundTaskIdentifier = UIBackgroundTaskInvalid;			
-    }    
-
-    
+    [self endBackgroundTask];
+        
 	[[NSUserDefaults standardUserDefaults] setBool:NO 
                                             forKey:kSCHUserDefaultsPerformedFirstSyncUpToBooks];
     [[NSUserDefaults standardUserDefaults] synchronize];
 
+}
+
+- (void)endBackgroundTask
+{
+    if (self.backgroundTaskIdentifier != UIBackgroundTaskInvalid) {
+        [[UIApplication sharedApplication] endBackgroundTask:self.backgroundTaskIdentifier];
+        self.backgroundTaskIdentifier = UIBackgroundTaskInvalid;			
+    }    
 }
 
 - (BOOL)havePerformedFirstSyncUpToBooks
@@ -605,8 +610,7 @@ static NSUInteger const kSCHSyncManagerMaximumFailureRetries = 3;
 {
     if (self.backgroundTaskIdentifier == UIBackgroundTaskInvalid) {
         self.backgroundTaskIdentifier = [[UIApplication sharedApplication] beginBackgroundTaskWithExpirationHandler:^{ 
-            [[UIApplication sharedApplication] endBackgroundTask:self.backgroundTaskIdentifier];
-            self.backgroundTaskIdentifier = UIBackgroundTaskInvalid;
+            [self endBackgroundTask];
         }];			
     }
 
@@ -670,10 +674,9 @@ static NSUInteger const kSCHSyncManagerMaximumFailureRetries = 3;
         }
 	}
     
-	if ([self.queue count] < 1 && self.backgroundTaskIdentifier != UIBackgroundTaskInvalid) {
-		[[UIApplication sharedApplication] endBackgroundTask:self.backgroundTaskIdentifier];
-		self.backgroundTaskIdentifier = UIBackgroundTaskInvalid;			
-	}    
+	if ([self.queue count] < 1) {
+        [self endBackgroundTask];
+    }
 }
 
 - (void)kickQueue
@@ -689,9 +692,8 @@ static NSUInteger const kSCHSyncManagerMaximumFailureRetries = 3;
 			NSLog(@"Kicked but already syncing %@", [syncComponent class]);
 		}
 	}  else {
-        if ([self.queue count] < 1 && self.backgroundTaskIdentifier != UIBackgroundTaskInvalid) {
-            [[UIApplication sharedApplication] endBackgroundTask:self.backgroundTaskIdentifier];
-            self.backgroundTaskIdentifier = UIBackgroundTaskInvalid;			
+        if ([self.queue count] < 1) {
+            [self endBackgroundTask];			
         }    
         
         [[NSNotificationCenter defaultCenter] postNotificationName:SCHSyncManagerDidCompleteNotification 
