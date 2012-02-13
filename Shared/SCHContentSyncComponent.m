@@ -97,19 +97,25 @@ NSString * const SCHContentSyncComponentDidFailNotification = @"SCHContentSyncCo
 {	
     @try {
         if([method compare:kSCHLibreAccessWebServiceSaveContentProfileAssignment] == NSOrderedSame) {	
-            self.isSynchronizing = [self.libreAccessWebService listUserContent];
-            if (self.isSynchronizing == NO) {
-                [[SCHAuthenticationManager sharedAuthenticationManager] authenticateWithSuccessBlock:^(SCHAuthenticationManagerConnectivityMode connectivityMode){
-                    if (connectivityMode == SCHAuthenticationManagerConnectivityModeOnline) {
-                        [self.delegate authenticationDidSucceed];
-                    } else {
+            if (self.saveOnly == NO) {
+                self.isSynchronizing = [self.libreAccessWebService listUserContent];
+                if (self.isSynchronizing == NO) {
+                    [[SCHAuthenticationManager sharedAuthenticationManager] authenticateWithSuccessBlock:^(SCHAuthenticationManagerConnectivityMode connectivityMode){
+                        if (connectivityMode == SCHAuthenticationManagerConnectivityModeOnline) {
+                            [self.delegate authenticationDidSucceed];
+                        } else {
+                            self.isSynchronizing = NO;
+                        }
+                    } failureBlock:^(NSError *error){
                         self.isSynchronizing = NO;
-                    }
-                } failureBlock:^(NSError *error){
-                    self.isSynchronizing = NO;
-                    [[NSNotificationCenter defaultCenter] postNotificationName:SCHSyncComponentDidFailAuthenticationNotification
-                                                                        object:self];                    
-                }];				
+                        [[NSNotificationCenter defaultCenter] postNotificationName:SCHSyncComponentDidFailAuthenticationNotification
+                                                                            object:self];                    
+                    }];				
+                }
+            } else {
+                [[NSNotificationCenter defaultCenter] postNotificationName:SCHContentSyncComponentDidCompleteNotification 
+                                                                    object:self];
+                [super method:method didCompleteWithResult:result userInfo:userInfo];				                
             }
         } else if([method compare:kSCHLibreAccessWebServiceListUserContentEx] == NSOrderedSame) {
             NSArray *content = [result objectForKey:kSCHLibreAccessWebServiceUserContentListEx];
@@ -117,7 +123,7 @@ NSString * const SCHContentSyncComponentDidFailNotification = @"SCHContentSyncCo
             [self syncUserContentItems:content];
             [[NSNotificationCenter defaultCenter] postNotificationName:SCHContentSyncComponentDidCompleteNotification 
                                                                 object:self];
-            [super method:method didCompleteWithResult:nil userInfo:userInfo];				
+            [super method:method didCompleteWithResult:result userInfo:userInfo];				
         }
     }
     @catch (NSException *exception) {
@@ -177,21 +183,27 @@ NSString * const SCHContentSyncComponentDidFailNotification = @"SCHContentSyncCo
 			ret = NO;			
 		}		
 	} else {
-		self.isSynchronizing = [self.libreAccessWebService listUserContent];
-		if (self.isSynchronizing == NO) {
-			[[SCHAuthenticationManager sharedAuthenticationManager] authenticateWithSuccessBlock:^(SCHAuthenticationManagerConnectivityMode connectivityMode){
-                if (connectivityMode == SCHAuthenticationManagerConnectivityModeOnline) {
-                    [self.delegate authenticationDidSucceed];
-                } else {
+        if (self.saveOnly == NO) {
+            self.isSynchronizing = [self.libreAccessWebService listUserContent];
+            if (self.isSynchronizing == NO) {
+                [[SCHAuthenticationManager sharedAuthenticationManager] authenticateWithSuccessBlock:^(SCHAuthenticationManagerConnectivityMode connectivityMode){
+                    if (connectivityMode == SCHAuthenticationManagerConnectivityModeOnline) {
+                        [self.delegate authenticationDidSucceed];
+                    } else {
+                        self.isSynchronizing = NO;
+                    }
+                } failureBlock:^(NSError *error){
                     self.isSynchronizing = NO;
-                }
-            } failureBlock:^(NSError *error){
-                self.isSynchronizing = NO;
-                [[NSNotificationCenter defaultCenter] postNotificationName:SCHSyncComponentDidFailAuthenticationNotification
-                                                                    object:self];                
-            }];				
-			ret = NO;
-		}
+                    [[NSNotificationCenter defaultCenter] postNotificationName:SCHSyncComponentDidFailAuthenticationNotification
+                                                                        object:self];                
+                }];				
+                ret = NO;
+            }
+        } else {
+            [[NSNotificationCenter defaultCenter] postNotificationName:SCHContentSyncComponentDidCompleteNotification 
+                                                                object:self];
+            [super method:nil didCompleteWithResult:nil userInfo:nil];				                            
+        }
 	}
 	[fetchRequest release], fetchRequest = nil;
 	

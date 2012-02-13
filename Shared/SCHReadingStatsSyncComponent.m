@@ -61,6 +61,8 @@ NSString * const SCHReadingStatsSyncComponentDidFailNotification = @"SCHReadingS
                 ret = NO;			
             }		            
         } else {
+            [[NSNotificationCenter defaultCenter] postNotificationName:SCHReadingStatsSyncComponentDidCompleteNotification 
+                                                                object:self];            
             [super method:nil didCompleteWithResult:nil userInfo:nil];		
         }
 

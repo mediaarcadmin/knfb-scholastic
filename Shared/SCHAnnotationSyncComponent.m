@@ -32,7 +32,7 @@
 // Constants
 NSString * const SCHAnnotationSyncComponentDidCompleteNotification = @"SCHAnnotationSyncComponentDidCompleteNotification";
 NSString * const SCHAnnotationSyncComponentDidFailNotification = @"SCHAnnotationSyncComponentDidFailNotification";
-NSString * const SCHAnnotationSyncComponentCompletedProfileIDs = @"SCHAnnotationSyncComponentCompletedProfileIDs";
+NSString * const SCHAnnotationSyncComponentProfileIDs = @"SCHAnnotationSyncComponentProfileIDs";
 
 @interface SCHAnnotationSyncComponent ()
 
@@ -289,8 +289,8 @@ NSString * const SCHAnnotationSyncComponentCompletedProfileIDs = @"SCHAnnotation
         @catch (NSException *exception) {
             [[NSNotificationCenter defaultCenter] postNotificationName:SCHAnnotationSyncComponentDidFailNotification 
                                                                 object:self 
-                                                              userInfo:[NSDictionary dictionaryWithObject:profileID 
-                                                                                                   forKey:SCHAnnotationSyncComponentCompletedProfileIDs]];            
+                                                              userInfo:[NSDictionary dictionaryWithObject:(profileID == nil ? (id)[NSNull null] : profileID)
+                                                                                                   forKey:SCHAnnotationSyncComponentProfileIDs]];            
             NSError *error = [NSError errorWithDomain:kBITAPIErrorDomain 
                                                  code:kBITAPIExceptionError 
                                              userInfo:[NSDictionary dictionaryWithObject:[exception reason]
@@ -299,6 +299,10 @@ NSString * const SCHAnnotationSyncComponentCompletedProfileIDs = @"SCHAnnotation
             [self.savedAnnotations removeAllObjects];
         }    
     } else {
+        [[NSNotificationCenter defaultCenter] postNotificationName:SCHAnnotationSyncComponentDidCompleteNotification
+                                                            object:self 
+                                                          userInfo:[NSDictionary dictionaryWithObject:(profileID == nil ? (id)[NSNull null] : profileID)
+                                                                                               forKey:SCHAnnotationSyncComponentProfileIDs]];                    
         [super method:method didCompleteWithResult:result userInfo:nil];        
         [self.savedAnnotations removeAllObjects];        
     }
@@ -330,21 +334,34 @@ NSString * const SCHAnnotationSyncComponentCompletedProfileIDs = @"SCHAnnotation
         }
     }
     
-    self.isSynchronizing = [self.libreAccessWebService listProfileContentAnnotations:books 
-                                                                          forProfile:profileID];
-    if (self.isSynchronizing == NO) {
-        [[SCHAuthenticationManager sharedAuthenticationManager] authenticateWithSuccessBlock:^(SCHAuthenticationManagerConnectivityMode connectivityMode){
-            if (connectivityMode == SCHAuthenticationManagerConnectivityModeOnline) {
-                [self.delegate authenticationDidSucceed];
-            } else {
+    if (self.saveOnly == NO) {
+        self.isSynchronizing = [self.libreAccessWebService listProfileContentAnnotations:books 
+                                                                              forProfile:profileID];
+        if (self.isSynchronizing == NO) {
+            [[SCHAuthenticationManager sharedAuthenticationManager] authenticateWithSuccessBlock:^(SCHAuthenticationManagerConnectivityMode connectivityMode){
+                if (connectivityMode == SCHAuthenticationManagerConnectivityModeOnline) {
+                    [self.delegate authenticationDidSucceed];
+                } else {
+                    self.isSynchronizing = NO;
+                }
+            } failureBlock:^(NSError *error){
                 self.isSynchronizing = NO;
-            }
-        } failureBlock:^(NSError *error){
-            self.isSynchronizing = NO;
-            [[NSNotificationCenter defaultCenter] postNotificationName:SCHSyncComponentDidFailAuthenticationNotification
-                                                                object:self];
-        }];	
-    }            
+                [[NSNotificationCenter defaultCenter] postNotificationName:SCHSyncComponentDidFailAuthenticationNotification
+                                                                    object:self];
+            }];	
+        }            
+    } else {
+        [[NSNotificationCenter defaultCenter] postNotificationName:SCHAnnotationSyncComponentDidCompleteNotification 
+                                                            object:self 
+                                                          userInfo:[NSDictionary dictionaryWithObject:(profileID == nil ? (id)[NSNull null] : profileID)
+                                                                                               forKey:SCHAnnotationSyncComponentProfileIDs]];        
+        if (profileID != nil) {
+            [self.annotations removeObjectForKey:profileID];
+        }
+        
+        [super method:nil didCompleteWithResult:nil userInfo:nil];
+        [self.savedAnnotations removeAllObjects];        
+    }
 }
 
 // track annotations that need to be saved
@@ -436,15 +453,17 @@ NSString * const SCHAnnotationSyncComponentCompletedProfileIDs = @"SCHAnnotation
         if (profileID != nil) {
             [self processSaveProfileContentAnnotations:profileID result:result];
         } else {
+            [[NSNotificationCenter defaultCenter] postNotificationName:SCHAnnotationSyncComponentDidFailNotification 
+                                                                object:self 
+                                                              userInfo:[NSDictionary dictionaryWithObject:(profileID == nil ? (id)[NSNull null] : profileID)
+                                                                                                   forKey:SCHAnnotationSyncComponentProfileIDs]];            
             [super method:method didFailWithError:error requestInfo:requestInfo result:result];            
         }
     } else {
-        if (profileID != nil) {
-            [[NSNotificationCenter defaultCenter] postNotificationName:SCHAnnotationSyncComponentDidFailNotification 
-                                                                object:self 
-                                                              userInfo:[NSDictionary dictionaryWithObject:profileID 
-                                                                                                   forKey:SCHAnnotationSyncComponentCompletedProfileIDs]];            
-        }
+        [[NSNotificationCenter defaultCenter] postNotificationName:SCHAnnotationSyncComponentDidFailNotification 
+                                                            object:self 
+                                                          userInfo:[NSDictionary dictionaryWithObject:(profileID == nil ? (id)[NSNull null] : profileID)
+                                                                                               forKey:SCHAnnotationSyncComponentProfileIDs]];            
         [super method:method didFailWithError:error requestInfo:requestInfo result:result];
     }
     [self.savedAnnotations removeAllObjects];
@@ -492,7 +511,7 @@ NSString * const SCHAnnotationSyncComponentCompletedProfileIDs = @"SCHAnnotation
             } else {
                 self.lastSyncSaveCalled = [NSDate date];
             }
-        } else if ([self.annotations count] > 0) {
+        } else if (self.saveOnly == NO && [self.annotations count] > 0) {
             self.isSynchronizing = [self.libreAccessWebService listProfileContentAnnotations:books 
                                                                                   forProfile:profileID];
             if (self.isSynchronizing == NO) {
@@ -512,14 +531,23 @@ NSString * const SCHAnnotationSyncComponentCompletedProfileIDs = @"SCHAnnotation
         } else {
             [[NSNotificationCenter defaultCenter] postNotificationName:SCHAnnotationSyncComponentDidCompleteNotification 
                                                                 object:self 
-                                                              userInfo:[NSDictionary dictionaryWithObject:profileID 
-                                                                                                   forKey:SCHAnnotationSyncComponentCompletedProfileIDs]];        
-            [self.annotations removeObjectForKey:profileID];
+                                                              userInfo:[NSDictionary dictionaryWithObject:(profileID == nil ? (id)[NSNull null] : profileID)
+                                                                                                   forKey:SCHAnnotationSyncComponentProfileIDs]];        
+            if (profileID != nil) {
+                [self.annotations removeObjectForKey:profileID];
+            }
             
             [super method:nil didCompleteWithResult:nil userInfo:nil];
+            [self.savedAnnotations removeAllObjects];                    
         }
     } else {
+        [[NSNotificationCenter defaultCenter] postNotificationName:SCHAnnotationSyncComponentDidCompleteNotification 
+                                                            object:self 
+                                                          userInfo:[NSDictionary dictionaryWithObject:(profileID == nil ? (id)[NSNull null] : profileID)
+                                                                                               forKey:SCHAnnotationSyncComponentProfileIDs]];        
+        
         [super method:nil didCompleteWithResult:nil userInfo:nil];        
+        [self.savedAnnotations removeAllObjects];                            
     }
 	
 	return(ret);    
@@ -536,7 +564,7 @@ NSString * const SCHAnnotationSyncComponentCompletedProfileIDs = @"SCHAnnotation
 	NSArray *changedStates = [NSArray arrayWithObjects:[NSNumber numberWithStatus:kSCHStatusModified],
                               [NSNumber numberWithStatus:kSCHStatusDeleted], nil];
     // we don't check all the annotations as if they have changed then the last page has also change
-    // the resulting array with contain all books and annotations for this profile when we eventually 
+    // the resulting array will contain all books and annotations for this profile when we eventually 
     // call the annotation save it will only save books with a modified LastPage and within each book
     // annotations that have been modified
 	[fetchRequest setPredicate:[NSPredicate predicateWithFormat:
@@ -626,12 +654,13 @@ NSString * const SCHAnnotationSyncComponentCompletedProfileIDs = @"SCHAnnotation
     [[NSNotificationCenter defaultCenter] postNotificationName:SCHAnnotationSyncComponentDidCompleteNotification 
                                                         object:self 
                                                       userInfo:[NSDictionary dictionaryWithObject:(profileID == nil ? (id)[NSNull null] : profileID) 
-                                                                                           forKey:SCHAnnotationSyncComponentCompletedProfileIDs]];        
+                                                                                           forKey:SCHAnnotationSyncComponentProfileIDs]];        
     if (profileID != nil) {
         [self.annotations removeObjectForKey:profileID];
     }
     
     [super method:method didCompleteWithResult:nil userInfo:userInfo];
+    [self.savedAnnotations removeAllObjects];        
 }
 
 - (void)syncAnnotationsContentList:(NSArray *)webAnnotationsContentList 

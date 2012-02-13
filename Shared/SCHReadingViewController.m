@@ -926,7 +926,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 - (void)annotationChanges:(NSNotification *)notification
 {    
     if (self.profile.ID != nil) {
-        NSNumber *profileID = [notification.userInfo objectForKey:SCHAnnotationSyncComponentCompletedProfileIDs];
+        NSNumber *profileID = [notification.userInfo objectForKey:SCHAnnotationSyncComponentProfileIDs];
         
         if ([profileID isEqualToNumber:self.profile.ID] == YES) {
             // dispatch this onto the main thread to avoid a race condition with the notification going to the SCHBookAnnotations object

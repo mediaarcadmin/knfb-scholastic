@@ -24,6 +24,8 @@ extern NSString * const SCHSyncComponentDidFailAuthenticationNotification;
 
 @property (readonly, nonatomic) NSUInteger failureCount;
 
+@property (nonatomic, assign) BOOL saveOnly;
+
 - (BOOL)synchronize;
 - (void)clearFailures;
 

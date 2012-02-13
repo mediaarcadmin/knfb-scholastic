@@ -93,7 +93,7 @@ NSString * const SCHProfileSyncComponentDidFailNotification = @"SCHProfileSyncCo
             [self syncProfiles:[result objectForKey:kSCHLibreAccessWebServiceProfileList]];
             [[NSNotificationCenter defaultCenter] postNotificationName:SCHProfileSyncComponentDidCompleteNotification 
                                                                 object:self];		
-            [super method:method didCompleteWithResult:nil userInfo:userInfo];	
+            [super method:method didCompleteWithResult:result userInfo:userInfo];	
         }
     }
     @catch (NSException *exception) {
@@ -178,20 +178,26 @@ NSString * const SCHProfileSyncComponentDidFailNotification = @"SCHProfileSyncCo
         [self applyProfileSaves:[result objectForKey:kSCHLibreAccessWebServiceProfileStatusList]];
     }        
     
-    self.isSynchronizing = [self.libreAccessWebService getUserProfiles];
-    if (self.isSynchronizing == NO) {
-        [[SCHAuthenticationManager sharedAuthenticationManager] authenticateWithSuccessBlock:^(SCHAuthenticationManagerConnectivityMode connectivityMode){
-            if (connectivityMode == SCHAuthenticationManagerConnectivityModeOnline) {
-                [self.delegate authenticationDidSucceed];
-            } else {
+    if (self.saveOnly == NO) {
+        self.isSynchronizing = [self.libreAccessWebService getUserProfiles];
+        if (self.isSynchronizing == NO) {
+            [[SCHAuthenticationManager sharedAuthenticationManager] authenticateWithSuccessBlock:^(SCHAuthenticationManagerConnectivityMode connectivityMode){
+                if (connectivityMode == SCHAuthenticationManagerConnectivityModeOnline) {
+                    [self.delegate authenticationDidSucceed];
+                } else {
+                    self.isSynchronizing = NO;
+                }
+            } failureBlock:^(NSError *error){
                 self.isSynchronizing = NO;
-            }
-        } failureBlock:^(NSError *error){
-            self.isSynchronizing = NO;
-            [[NSNotificationCenter defaultCenter] postNotificationName:SCHSyncComponentDidFailAuthenticationNotification
-                                                                object:self];            
-        }];				
-    }		    
+                [[NSNotificationCenter defaultCenter] postNotificationName:SCHSyncComponentDidFailAuthenticationNotification
+                                                                    object:self];            
+            }];				
+        }	
+    } else {
+        [[NSNotificationCenter defaultCenter] postNotificationName:SCHProfileSyncComponentDidCompleteNotification 
+                                                            object:self];		
+        [super method:nil didCompleteWithResult:result userInfo:nil];	
+    }
 }
 
 - (void)method:(NSString *)method didFailWithError:(NSError *)error 
@@ -247,7 +253,7 @@ NSString * const SCHProfileSyncComponentDidFailNotification = @"SCHProfileSyncCo
             }];				
 			ret = NO;			
 		}		
-	} else {
+	} else if (self.saveOnly == NO) {
 		
 		self.isSynchronizing = [self.libreAccessWebService getUserProfiles];
 		if (self.isSynchronizing == NO) {
@@ -264,7 +270,11 @@ NSString * const SCHProfileSyncComponentDidFailNotification = @"SCHProfileSyncCo
             }];					
 			ret = NO;
 		}
-	}
+	} else {
+        [[NSNotificationCenter defaultCenter] postNotificationName:SCHProfileSyncComponentDidCompleteNotification 
+                                                            object:self];		
+        [super method:nil didCompleteWithResult:nil userInfo:nil];
+    }
 	[fetchRequest release], fetchRequest = nil;
 	
 	return(ret);

@@ -67,7 +67,7 @@
 
 - (void)annotationSyncComponentDidCompleteNotification:(NSNotification *)notification
 {
-    NSNumber *profileID = [notification.userInfo objectForKey:SCHAnnotationSyncComponentCompletedProfileIDs];
+    NSNumber *profileID = [notification.userInfo objectForKey:SCHAnnotationSyncComponentProfileIDs];
     NSNumber *myProfileID = self.privateAnnotations.AnnotationsContentItem.AnnotationsItem.ProfileID;
     
     if (myProfileID) {

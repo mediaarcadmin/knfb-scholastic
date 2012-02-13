@@ -191,7 +191,7 @@ static NSInteger const CELL_ACTIVITY_INDICATOR_TAG = 999;
 - (void)annotationSyncComponentCompletedNotification:(NSNotification *)notification
 {
     if (self.profile.ID != nil) {
-        NSNumber *profileID = [notification.userInfo objectForKey:SCHAnnotationSyncComponentCompletedProfileIDs];
+        NSNumber *profileID = [notification.userInfo objectForKey:SCHAnnotationSyncComponentProfileIDs];
         
         if ([profileID isEqualToNumber:self.profile.ID] == YES) {
             [self.notesTableView reloadData];
@@ -211,13 +211,13 @@ static NSInteger const CELL_ACTIVITY_INDICATOR_TAG = 999;
     [self toggleToolbarEditMode];
 }
 
-- (void) toggleToolbarEditMode
+- (void)toggleToolbarEditMode
 {
     [self setToolbarModeEditing:!self.editMode];
     [self updateEditButton];
 }
 
-- (void) setToolbarModeEditing: (BOOL) editing
+- (void)setToolbarModeEditing:(BOOL)editing
 {
     UIBarButtonItem *newBBI = nil;
     int width = 43;

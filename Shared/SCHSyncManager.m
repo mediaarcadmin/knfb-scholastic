@@ -36,7 +36,8 @@ static NSUInteger const kSCHSyncManagerMaximumFailureRetries = 3;
 
 @property (nonatomic, retain) NSDate *lastFirstSyncEnded;
 @property (nonatomic, assign) BOOL syncAfterDelay;
-@property (nonatomic , assign) UIBackgroundTaskIdentifier backgroundTaskIdentifier;
+@property (nonatomic, assign) UIBackgroundTaskIdentifier backgroundTaskIdentifier;
+@property (nonatomic, assign) BOOL flushSaveMode;
 
 - (void)endBackgroundTask;
 - (void)updateAnnotationSync;
@@ -79,6 +80,7 @@ static NSUInteger const kSCHSyncManagerMaximumFailureRetries = 3;
 @synthesize readingStatsSyncComponent;
 @synthesize settingsSyncComponent;
 @synthesize backgroundTaskIdentifier;
+@synthesize flushSaveMode;
 
 #pragma mark - Singleton Instance methods
 
@@ -116,6 +118,8 @@ static NSUInteger const kSCHSyncManagerMaximumFailureRetries = 3;
 		settingsSyncComponent.delegate = self;	
 		
         backgroundTaskIdentifier = UIBackgroundTaskInvalid;	
+        
+        flushSaveMode = NO;
         
         [[NSNotificationCenter defaultCenter] addObserver:self 
                                                  selector:@selector(coreDataHelperManagedObjectContextDidChangeNotification:) 
@@ -191,6 +195,20 @@ static NSUInteger const kSCHSyncManagerMaximumFailureRetries = 3;
 	return [self.queue count] < 1;
 }
 
+- (void)setFlushSaveMode:(BOOL)setFlushSaveMode
+{
+    if (flushSaveMode != setFlushSaveMode) {
+        flushSaveMode = setFlushSaveMode;
+        
+        self.profileSyncComponent.saveOnly = flushSaveMode;
+        self.contentSyncComponent.saveOnly = flushSaveMode;
+        self.bookshelfSyncComponent.saveOnly = flushSaveMode;
+        self.annotationSyncComponent.saveOnly = flushSaveMode;
+        self.readingStatsSyncComponent.saveOnly = flushSaveMode;
+        self.settingsSyncComponent.saveOnly = flushSaveMode;        
+    }    
+}
+
 #pragma mark - NSManagedObjectContext Changed Notification
 
 - (void)coreDataHelperManagedObjectContextDidChangeNotification:(NSNotification *)notification
@@ -203,6 +221,7 @@ static NSUInteger const kSCHSyncManagerMaximumFailureRetries = 3;
 - (void)start
 {
 	[self stop];
+    self.flushSaveMode = NO;
 	self.timer = [NSTimer scheduledTimerWithTimeInterval:kSCHSyncManagerHeartbeatInterval 
                                              target:self 
                                            selector:@selector(backgroundSyncHeartbeat:) 
@@ -347,7 +366,7 @@ static NSUInteger const kSCHSyncManagerMaximumFailureRetries = 3;
 // guarantee the annotation sync contains any new profiles or books
 - (void)updateAnnotationSync
 {
-    if ([self shouldSync] == YES) {	    
+    if (self.flushSaveMode == NO && [self shouldSync] == YES) {	    
         [self addAllProfilesToAnnotationSync];
         if ([self.queue containsObject:self.annotationSyncComponent] == NO &&
             [self.annotationSyncComponent haveProfiles] == YES) {
@@ -355,6 +374,26 @@ static NSUInteger const kSCHSyncManagerMaximumFailureRetries = 3;
             [self kickQueue];	            
         }
     }
+}
+
+- (void)performFlushSaves
+{
+    if ([self shouldSync] == YES) {	  
+        // go into flush save mode
+        self.flushSaveMode = YES;
+        
+        NSLog(@"Performing Flush Saves");
+        
+        [self.queue removeAllObjects];
+        
+        [self addAllProfilesToAnnotationSync];
+        if ([self.annotationSyncComponent haveProfiles] == YES) {
+            [self.annotationSyncComponent synchronize];
+        }
+        [self.readingStatsSyncComponent synchronize];
+        [self.profileSyncComponent synchronize];
+        [self.contentSyncComponent synchronize];
+    }    
 }
 
 - (void)addAllProfilesToAnnotationSync
@@ -622,7 +661,9 @@ static NSUInteger const kSCHSyncManagerMaximumFailureRetries = 3;
             [self endBackgroundTask];
         }];			
     }
-
+    
+    self.flushSaveMode = NO;
+    
 	if ([self.queue containsObject:component] == NO) {
 		NSLog(@"Adding %@ to the sync manager queue", [component class]);
         [component clearFailures];
@@ -708,7 +749,7 @@ static NSUInteger const kSCHSyncManagerMaximumFailureRetries = 3;
         
         [[NSNotificationCenter defaultCenter] postNotificationName:SCHSyncManagerDidCompleteNotification 
                                                             object:self];        
-        if (self.syncAfterDelay == YES) {
+        if (self.flushSaveMode == NO && self.syncAfterDelay == YES) {
             [self firstSync:NO requireDeviceAuthentication:NO];   
         }
 	}
