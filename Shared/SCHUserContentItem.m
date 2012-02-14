@@ -8,7 +8,7 @@
 
 #import "SCHUserContentItem.h"
 
-#import "SCHContentProfileItem.h"
+//#import "SCHContentProfileItem.h"
 #import "SCHOrderItem.h"
 #import "SCHContentMetadataItem.h"
 #import "SCHBookIdentifier.h"
@@ -32,6 +32,7 @@ NSString * const kSCHUserContentItemDRM_QUALIFIER = @"DRM_QUALIFIER";
 @dynamic ProfileList;
 @dynamic FreeBook;
 @dynamic LastVersion;
+@dynamic AverageRating;
 
 - (SCHBookIdentifier *)bookIdentifier
 {

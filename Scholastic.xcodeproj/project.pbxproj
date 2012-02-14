@@ -2888,6 +2888,7 @@
 		52AD9D9813000CAA0099FB88 /* SCHSyncComponentProtected.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHSyncComponentProtected.h; path = Shared/SCHSyncComponentProtected.h; sourceTree = "<group>"; };
 		52BAFB67135DAB8600C2AFF3 /* SCHThemeImageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHThemeImageView.h; path = Shared/SCHThemeImageView.h; sourceTree = "<group>"; };
 		52BAFB68135DAB8600C2AFF3 /* SCHThemeImageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHThemeImageView.m; path = Shared/SCHThemeImageView.m; sourceTree = "<group>"; };
+		52BB7DC214EA67A4009E6CD6 /* Scholastic 3.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Scholastic 3.xcdatamodel"; sourceTree = "<group>"; };
 		52BF57B21352F3FC00B5066E /* SCHAuthenticationManagerProtected.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHAuthenticationManagerProtected.h; path = Shared/SCHAuthenticationManagerProtected.h; sourceTree = "<group>"; };
 		52C489C91369AC4200460876 /* UIColor+Extensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "UIColor+Extensions.h"; path = "Shared/UIColor+Extensions.h"; sourceTree = "<group>"; };
 		52C489CA1369AC4200460876 /* UIColor+Extensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "UIColor+Extensions.m"; path = "Shared/UIColor+Extensions.m"; sourceTree = "<group>"; };
@@ -9443,10 +9444,11 @@
 		2819307C112F81BE00ECF9B4 /* Scholastic.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
+				52BB7DC214EA67A4009E6CD6 /* Scholastic 3.xcdatamodel */,
 				525477D114BD9B6D001E2388 /* Scholastic 2.xcdatamodel */,
 				2870939E111907710040F596 /* Scholastic.xcdatamodel */,
 			);
-			currentVersion = 525477D114BD9B6D001E2388 /* Scholastic 2.xcdatamodel */;
+			currentVersion = 52BB7DC214EA67A4009E6CD6 /* Scholastic 3.xcdatamodel */;
 			name = Scholastic.xcdatamodeld;
 			path = Shared/Scholastic.xcdatamodeld;
 			sourceTree = "<group>";

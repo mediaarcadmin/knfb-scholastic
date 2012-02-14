@@ -19,11 +19,11 @@ extern NSString * const kSCHContentProfileItem;
 {
 }
 
-@property (nonatomic, retain) NSNumber * IsFavorite;
 @property (nonatomic, retain) NSNumber * ProfileID;
 @property (nonatomic, retain) NSNumber * LastPageLocation;
 @property (nonatomic, retain) SCHUserContentItem * UserContentItem;
 @property (nonatomic, retain) SCHAppContentProfileItem * AppContentProfileItem;
+@property (nonatomic, retain) NSNumber * Rating;
 
 @end
 

@@ -467,6 +467,7 @@
     [ret setObject:(contentURL == nil ? (id)[NSNull null] : contentURL) forKey:kSCHLibreAccessWebServiceContentURL];
     [ret setObject:[NSNull null] forKey:kSCHLibreAccessWebServiceeReaderCategories];
     [ret setObject:[NSNumber numberWithBool:enhanced] forKey:kSCHLibreAccessWebServiceEnhanced];
+    [ret setObject:@"0.0" forKey:kSCHLibreAccessWebServiceAverageRating];
     
     return(ret);    
 }
@@ -487,9 +488,9 @@
     for (NSNumber *profileID in profileIDs) {
         NSMutableDictionary *profileItem = [NSMutableDictionary dictionary];
         [profileItem setObject:profileID forKey:kSCHLibreAccessWebServiceProfileID];        
-        [profileItem setObject:[NSNumber numberWithBool:NO] forKey:kSCHLibreAccessWebServiceIsFavorite];        
         [profileItem setObject:[NSNumber numberWithInteger:0] forKey:kSCHLibreAccessWebServiceLastPageLocation];            
         [profileItem setObject:dateNow forKey:kSCHLibreAccessWebServiceLastModified];        
+        [profileItem setObject:[NSNumber numberWithInt:0] forKey:kSCHLibreAccessWebServiceRating];        
         [profileList addObject:profileItem];
         
         NSMutableDictionary *orderItem = [NSMutableDictionary dictionary];
@@ -509,6 +510,7 @@
     [ret setObject:[NSNumber numberWithBool:NO] forKey:kSCHLibreAccessWebServiceFreeBook];        
     [ret setObject:dateNow forKey:kSCHLibreAccessWebServiceLastModified];
     [ret setObject:[NSNumber numberWithBool:NO] forKey:kSCHLibreAccessWebServiceDefaultAssignment];
+    [ret setObject:@"0.0" forKey:kSCHLibreAccessWebServiceAverageRating];
     
     return(ret);    
 }
