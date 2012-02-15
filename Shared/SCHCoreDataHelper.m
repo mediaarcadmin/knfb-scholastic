@@ -35,9 +35,15 @@ static NSString * const kSCHCoreDataHelperDictionaryStoreName = @"Scholastic_Dic
              configuration:(NSString *)configuration 
                        url:(NSURL *)url
                      error:(NSError **)errorPtr;
+- (BOOL)performConfigurationMigrationWorkaroundWithPersistentStore:(NSPersistentStoreCoordinator *)aPersistentStoreCoordinator 
+                                                     configuration:(NSString *)configuration 
+                                                               url:(NSURL *)url
+                                                           options:(NSDictionary *)options
+                                                             error:(NSError **)errorPtr;
 - (NSURL *)storeURL:(NSString *)storeName;
 - (NSPersistentStore *)currentMainPersistentStore;
 - (NSPersistentStore *)currentDictionaryPersistentStore;
+- (BOOL)storeFileExists:(NSURL *)storeURL;
 - (void)removeStoreAtURL:(NSURL *)storeURL;
 
 @end
@@ -113,7 +119,20 @@ static NSString * const kSCHCoreDataHelperDictionaryStoreName = @"Scholastic_Dic
 }
 
 #pragma mark - File methods
-                        
+                       
+- (BOOL)storeFileExists:(NSURL *)storeURL
+{
+    BOOL ret = NO;
+    
+    if (storeURL != nil) {
+        NSFileManager *threadSafeFileManager = [[[NSFileManager alloc] init] autorelease];
+        
+        ret = [threadSafeFileManager fileExistsAtPath:[storeURL path]];
+    }
+    
+    return ret;
+}
+
 - (void)removeStoreAtURL:(NSURL *)storeURL
 {
     NSString *storePath = [storeURL path];
@@ -222,52 +241,101 @@ static NSString * const kSCHCoreDataHelperDictionaryStoreName = @"Scholastic_Dic
 - (BOOL)addPersistentStore:(NSPersistentStoreCoordinator *)aPersistentStoreCoordinator 
              configuration:(NSString *)configuration 
                        url:(NSURL *)url
-                     error:(NSError **)errorPtr;
+                     error:(NSError **)errorPtr
 {
     NSDictionary *options = [NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithBool:YES], NSMigratePersistentStoresAutomaticallyOption,
                              [NSNumber numberWithBool:YES], NSInferMappingModelAutomaticallyOption, nil];
     
-        if ([aPersistentStoreCoordinator addPersistentStoreWithType:NSSQLiteStoreType configuration:configuration URL:url options:options error:errorPtr] == nil) {
-            /*
-             Replace this implementation with code to handle the error appropriately.
-             
-             Typical reasons for an error here include:
-             * The persistent store is not accessible;
-             * The schema for the persistent store is incompatible with current managed object model.
-             Check the error message to determine what the actual problem was.
-             
-             If the persistent store is not accessible, there is typically something wrong with the file path. Often, a file URL is pointing into the application's resources directory instead of a writeable directory.
-             
-             If you encounter schema incompatibility errors during development, you can reduce their frequency by:
-             * Simply deleting the existing store:
-             [[NSFileManager defaultManager] removeItemAtURL:storeURL error:nil]
-             
-             * Performing automatic lightweight migration by passing the following dictionary as the options parameter: 
-             [NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithBool:YES],NSMigratePersistentStoresAutomaticallyOption, [NSNumber numberWithBool:YES], NSInferMappingModelAutomaticallyOption, nil];
-             
-             Lightweight migration will only work for a limited set of schema changes; consult "Core Data Model Versioning and Data Migration Programming Guide" for details.
-             
-             */
-            
-            BOOL bailOut = NO;
-            
-            if ([*errorPtr code] == NSPersistentStoreIncompatibleVersionHashError) {
-                NSLog(@"Your %@ Core Data store is incompatible, we're gonna replace the store for you. You may need to re-populate it.", configuration);
-                [[NSFileManager defaultManager] removeItemAtURL:url error:nil];
-                if ([aPersistentStoreCoordinator addPersistentStoreWithType:NSSQLiteStoreType configuration:configuration URL:url options:options error:errorPtr] == nil) {        
-                    bailOut = YES;
-                }
-            } else {
+    if ([self performConfigurationMigrationWorkaroundWithPersistentStore:aPersistentStoreCoordinator 
+                                                           configuration:configuration 
+                                                                     url:url
+                                                                 options:options
+                                                                   error:errorPtr] == NO) {
+        NSLog(@"Unresolved error %@, %@", *errorPtr, [*errorPtr userInfo]);
+        return NO;        
+    }
+    
+    if ([aPersistentStoreCoordinator addPersistentStoreWithType:NSSQLiteStoreType configuration:configuration URL:url options:options error:errorPtr] == nil) {
+        /*
+         Replace this implementation with code to handle the error appropriately.
+         
+         Typical reasons for an error here include:
+         * The persistent store is not accessible;
+         * The schema for the persistent store is incompatible with current managed object model.
+         Check the error message to determine what the actual problem was.
+         
+         If the persistent store is not accessible, there is typically something wrong with the file path. Often, a file URL is pointing into the application's resources directory instead of a writeable directory.
+         
+         If you encounter schema incompatibility errors during development, you can reduce their frequency by:
+         * Simply deleting the existing store:
+         [[NSFileManager defaultManager] removeItemAtURL:storeURL error:nil]
+         
+         * Performing automatic lightweight migration by passing the following dictionary as the options parameter: 
+         [NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithBool:YES],NSMigratePersistentStoresAutomaticallyOption, [NSNumber numberWithBool:YES], NSInferMappingModelAutomaticallyOption, nil];
+         
+         Lightweight migration will only work for a limited set of schema changes; consult "Core Data Model Versioning and Data Migration Programming Guide" for details.
+         
+         */
+        
+        BOOL bailOut = NO;
+        
+        if ([*errorPtr code] == NSPersistentStoreIncompatibleVersionHashError) {
+            NSLog(@"Your %@ Core Data store is incompatible, we're gonna replace the store for you. You may need to re-populate it.", configuration);
+            [[NSFileManager defaultManager] removeItemAtURL:url error:nil];
+            if ([aPersistentStoreCoordinator addPersistentStoreWithType:NSSQLiteStoreType configuration:configuration URL:url options:options error:errorPtr] == nil) {        
                 bailOut = YES;
             }
-            
-            if (bailOut == YES) {
-                NSLog(@"Unresolved error %@, %@", *errorPtr, [*errorPtr userInfo]);
-                return NO;
-            }
+        } else {
+            bailOut = YES;
         }
+        
+        if (bailOut == YES) {
+            NSLog(@"Unresolved error %@, %@", *errorPtr, [*errorPtr userInfo]);
+            return NO;
+        }
+    }
     
     return YES;
+}
+
+// work around for migrating with configurations
+// return NO if an error occured
+- (BOOL)performConfigurationMigrationWorkaroundWithPersistentStore:(NSPersistentStoreCoordinator *)aPersistentStoreCoordinator 
+                                                     configuration:(NSString *)configuration 
+                                                               url:(NSURL *)url
+                                                           options:(NSDictionary *)options
+                                                             error:(NSError **)errorPtr
+{
+    BOOL ret = YES;
+    
+    if ([self storeFileExists:url] == YES) {
+        // check if we need to perform a migration
+        NSDictionary *sourceMetadata = [NSPersistentStoreCoordinator metadataForPersistentStoreOfType:NSSQLiteStoreType
+                                                                                                  URL:url
+                                                                                                error:errorPtr];
+        
+        if (sourceMetadata == nil) {
+            ret = NO;
+        } else {
+            if ([[aPersistentStoreCoordinator managedObjectModel] isConfiguration:configuration 
+                                                      compatibleWithStoreMetadata:sourceMetadata] == NO) {
+                // using nil configuration workaround so the migration succeeds
+                NSPersistentStore *persistentStore = [aPersistentStoreCoordinator addPersistentStoreWithType:NSSQLiteStoreType 
+                                                                                               configuration:nil 
+                                                                                                         URL:url 
+                                                                                                     options:options 
+                                                                                                       error:errorPtr];
+                // migration performed now remove the persistent store
+                if (persistentStore == nil) {  
+                    ret = NO;
+                } else if ([aPersistentStoreCoordinator removePersistentStore:persistentStore error:errorPtr] == NO) {
+                    ret = NO;
+                }
+            }    
+        }    
+    }
+    
+    return ret;
 }
 
 - (void)saveContext 

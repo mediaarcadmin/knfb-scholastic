@@ -399,7 +399,7 @@ extern NSString * const kSCHUserDefaultsSpaceSaverModeSetOffNotification;
     if ([MFMailComposeViewController canSendMail]) {
         MFMailComposeViewController *mfViewController = [[MFMailComposeViewController alloc] init];
         mfViewController.mailComposeDelegate = self;
-        [mfViewController setToRecipients:[NSArray arrayWithObject:@"ebooks@scholastic.com"]];
+        [mfViewController setToRecipients:[NSArray arrayWithObject:@"support@scholastic.com"]];
         [mfViewController setSubject:[NSString stringWithFormat:@"Storia v%@ Support Request", [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"]]];
         [self presentModalViewController:mfViewController animated:YES];
         [mfViewController release];
@@ -420,7 +420,7 @@ extern NSString * const kSCHUserDefaultsSpaceSaverModeSetOffNotification;
     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Storia Support Email", @"Support Email Alert title")
                                                     message:@""
                                                    delegate:nil 
-                                          cancelButtonTitle:@"ok" 
+                                          cancelButtonTitle:@"OK" 
                                           otherButtonTitles:nil];
     
     switch (result) {
