@@ -135,16 +135,18 @@ static NSString * const kSCHScholasticWebServiceAttributeErrorDesc = @"errorDesc
 			for (CXMLElement *node in nodes) {
 				NSString *attributeName = [[node attributeForName:kSCHScholasticWebServiceAttributeName] stringValue];
 				
-				if ([attributeName caseInsensitiveCompare:kSCHScholasticWebServiceAttributeToken] == NSOrderedSame) {
-					ret = [[node attributeForName:kSCHScholasticWebServiceAttributeValue] stringValue];
-					break;
-				}
-				else if ([attributeName caseInsensitiveCompare:kSCHScholasticWebServiceAttributeErrorCode] == NSOrderedSame) {
-					errorCode = [[node attributeForName:kSCHScholasticWebServiceAttributeValue] stringValue];
-				}
-				else if ([attributeName caseInsensitiveCompare:kSCHScholasticWebServiceAttributeErrorDesc] == NSOrderedSame) {
-					errorDescription = [[node attributeForName:kSCHScholasticWebServiceAttributeValue] stringValue];
-				}		
+				if (attributeName != nil) {
+                    if ([attributeName caseInsensitiveCompare:kSCHScholasticWebServiceAttributeToken] == NSOrderedSame) {
+                        ret = [[node attributeForName:kSCHScholasticWebServiceAttributeValue] stringValue];
+                        break;
+                    }
+                    else if ([attributeName caseInsensitiveCompare:kSCHScholasticWebServiceAttributeErrorCode] == NSOrderedSame) {
+                        errorCode = [[node attributeForName:kSCHScholasticWebServiceAttributeValue] stringValue];
+                    }
+                    else if ([attributeName caseInsensitiveCompare:kSCHScholasticWebServiceAttributeErrorDesc] == NSOrderedSame) {
+                        errorDescription = [[node attributeForName:kSCHScholasticWebServiceAttributeValue] stringValue];
+                    }		
+                }
 			}	
 		}
 	}

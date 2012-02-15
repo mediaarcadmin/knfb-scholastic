@@ -35,7 +35,7 @@ NSString * const SCHReadingStatsSyncComponentDidFailNotification = @"SCHReadingS
 	if (self.isSynchronizing == NO) {
 		self.backgroundTaskIdentifier = [[UIApplication sharedApplication] beginBackgroundTaskWithExpirationHandler:^{ 
 			self.isSynchronizing = NO;
-			self.backgroundTaskIdentifier = UIBackgroundTaskInvalid;
+            [self endBackgroundTask];
 		}];
 		
         [fetchRequest setEntity:[NSEntityDescription entityForName:kSCHReadingStatsDetailItem inManagedObjectContext:self.managedObjectContext]];	
@@ -61,6 +61,8 @@ NSString * const SCHReadingStatsSyncComponentDidFailNotification = @"SCHReadingS
                 ret = NO;			
             }		            
         } else {
+            [[NSNotificationCenter defaultCenter] postNotificationName:SCHReadingStatsSyncComponentDidCompleteNotification 
+                                                                object:self];            
             [super method:nil didCompleteWithResult:nil userInfo:nil];		
         }
 

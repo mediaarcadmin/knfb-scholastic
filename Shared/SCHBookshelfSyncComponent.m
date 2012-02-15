@@ -74,7 +74,7 @@ NSString * const SCHBookshelfSyncComponentDidFailNotification = @"SCHBookshelfSy
 	if (self.isSynchronizing == NO) {
 		self.backgroundTaskIdentifier = [[UIApplication sharedApplication] beginBackgroundTaskWithExpirationHandler:^{ 
 			self.isSynchronizing = NO;
-			self.backgroundTaskIdentifier = UIBackgroundTaskInvalid;
+            [self endBackgroundTask];
 		}];
 		
 		ret = [self updateContentMetadataItems];
@@ -395,7 +395,11 @@ NSString * const SCHBookshelfSyncComponentDidFailNotification = @"SCHBookshelfSy
             SCHBookIdentifier *webBookIdentifier = [[SCHBookIdentifier alloc] initWithObject:webItem];
             SCHBookIdentifier *localBookIdentifier = localItem.bookIdentifier;
             
-            if (webBookIdentifier) {
+            if (webBookIdentifier == nil) {
+                webItem = nil;
+            } else if (localBookIdentifier == nil) {
+                localItem = nil;                
+            } else {
                 switch ([webBookIdentifier compare:localBookIdentifier]) {
                     case NSOrderedSame:
                         [self syncContentMetadataItem:webItem withContentMetadataItem:localItem];
@@ -411,9 +415,9 @@ NSString * const SCHBookshelfSyncComponentDidFailNotification = @"SCHBookshelfSy
                         localItem = nil;
                         break;			
                 }
-                
-                [webBookIdentifier release];
             }
+            
+            [webBookIdentifier release];            
         }
 		
 
@@ -429,7 +433,10 @@ NSString * const SCHBookshelfSyncComponentDidFailNotification = @"SCHBookshelfSy
         [deletePool count] > 0) {
         NSMutableArray *deletedBookIdentifiers = [NSMutableArray array];
         for (SCHContentMetadataItem *contentMetadataItem in deletePool) {
-            [deletedBookIdentifiers addObject:[contentMetadataItem bookIdentifier]];            
+            SCHBookIdentifier *bookIdentifier = [contentMetadataItem bookIdentifier];
+            if (bookIdentifier != nil) {
+                [deletedBookIdentifiers addObject:bookIdentifier];            
+            }
         }
         [[NSNotificationCenter defaultCenter] postNotificationName:SCHBookshelfSyncComponentWillDeleteNotification 
                                                             object:self 

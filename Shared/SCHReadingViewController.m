@@ -668,7 +668,9 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 #if FLOW_VIEW_DISABLED
     // if flow view is disabled, then remove the options button
     NSMutableArray *toolbarArray = [[NSMutableArray alloc] initWithArray:self.olderBottomToolbar.items];
-    [toolbarArray removeObjectsAtIndexes:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(6, 2)]];
+    if ([toolbarArray count] >= 9) {
+        [toolbarArray removeObjectsAtIndexes:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(6, 2)]];
+    }
     self.olderBottomToolbar.items = [NSArray arrayWithArray:toolbarArray];
     [toolbarArray release];
 #endif
@@ -924,7 +926,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 - (void)annotationChanges:(NSNotification *)notification
 {    
     if (self.profile.ID != nil) {
-        NSNumber *profileID = [notification.userInfo objectForKey:SCHAnnotationSyncComponentCompletedProfileIDs];
+        NSNumber *profileID = [notification.userInfo objectForKey:SCHAnnotationSyncComponentProfileIDs];
         
         if ([profileID isEqualToNumber:self.profile.ID] == YES) {
             // dispatch this onto the main thread to avoid a race condition with the notification going to the SCHBookAnnotations object
@@ -992,7 +994,11 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     
     // If we havnt yet received the annotations from the sync then use the contentprofileitem
     // lastpage, see SCHProfileItem:allBookIdentifiers where we do the same for the last modified date
-    if ([[contentProfileItem LastModified] compare:[annotationsLastPage LastModified]] == NSOrderedDescending) {
+    NSDate *contentProfileLastModified = [contentProfileItem LastModified];
+    NSDate *annotationLastPageLastModified = [annotationsLastPage LastModified];
+    if (contentProfileLastModified != nil && 
+        annotationLastPageLastModified != nil &&
+        [contentProfileLastModified compare:annotationLastPageLastModified] == NSOrderedDescending) {
         lastPageLocation = [contentProfileItem LastPageLocation];
     } else {
         lastPageLocation = [annotationsLastPage LastPageLocation];
@@ -2741,6 +2747,8 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 
 - (void)readingInteractionsView:(SCHReadingInteractionsListController *)interactionsView didSelectInteraction:(NSInteger)interaction
 {    
+    NSParameterAssert(interaction < [[self.bookStoryInteractions allStoryInteractionsExcludingInteractionWithPage:interactionsView.excludeInteractionWithPage] count]);
+    
     SCHStoryInteraction *storyInteraction = [[self.bookStoryInteractions allStoryInteractionsExcludingInteractionWithPage:interactionsView.excludeInteractionWithPage] objectAtIndex:interaction];
     
     SCHBookPoint *notePoint = [self.readingView bookPointForLayoutPage:[storyInteraction documentPageNumber]
@@ -3014,8 +3022,8 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 {
     // only show on the first page, if toolbars are not visible, not in highlights mode
     // and the audio isn't already playing (and it's in younger mode!)
-    BOOL shouldShow = (self.currentPageIndex == 0 && !self.toolbarsVisible && !self.audioBookPlayer.playing 
-                       && self.youngerMode && !self.highlightsModeEnabled);
+    BOOL shouldShow = YES;//(self.currentPageIndex == 0 && !self.toolbarsVisible && !self.audioBookPlayer.playing 
+//                       && self.youngerMode && !self.highlightsModeEnabled);
     float buttonAlpha = 0.0f;
     
     if (shouldShow) {

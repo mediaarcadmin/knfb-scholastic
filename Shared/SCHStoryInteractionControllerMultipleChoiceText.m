@@ -40,11 +40,15 @@
 
 - (SCHStoryInteractionMultipleChoiceTextQuestion *)currentQuestion
 {
+    NSParameterAssert(self.currentQuestionIndex < [[(SCHStoryInteractionMultipleChoiceText *)self.storyInteraction questions] count]);
+    
     return [[(SCHStoryInteractionMultipleChoiceText *)self.storyInteraction questions] objectAtIndex:currentQuestionIndex];
 }
 
 - (NSString *)currentQuestionAnswerOptionAtIndex:(NSInteger)index
 {
+    NSParameterAssert(index < [[self currentQuestion].answers count]);
+    
 #if debug_layout
     // use various lengths of strings to force the text layout code to do some work
     switch (index) {

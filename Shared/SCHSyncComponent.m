@@ -25,6 +25,7 @@ NSString * const SCHSyncComponentDidFailAuthenticationNotification = @"SCHSyncCo
 @synthesize managedObjectContext;
 @synthesize backgroundTaskIdentifier;
 @synthesize failureCount;
+@synthesize saveOnly;
 
 #pragma mark - Object lifecycle
 
@@ -34,6 +35,7 @@ NSString * const SCHSyncComponentDidFailAuthenticationNotification = @"SCHSyncCo
 	if (self != nil) {
 		isSynchronizing = NO;
         backgroundTaskIdentifier = UIBackgroundTaskInvalid;
+        saveOnly = NO;
 	}
 	
 	return(self);
@@ -58,10 +60,7 @@ NSString * const SCHSyncComponentDidFailAuthenticationNotification = @"SCHSyncCo
 - (void)method:(NSString *)method didCompleteWithResult:(NSDictionary *)result
       userInfo:(NSDictionary *)userInfo
 {	
-	if (self.backgroundTaskIdentifier != UIBackgroundTaskInvalid) {
-		[[UIApplication sharedApplication] endBackgroundTask:self.backgroundTaskIdentifier];
-		self.backgroundTaskIdentifier = UIBackgroundTaskInvalid;			
-	}
+	[self endBackgroundTask];
 	self.isSynchronizing = NO;
 	
     self.failureCount = 0;
@@ -76,7 +75,7 @@ NSString * const SCHSyncComponentDidFailAuthenticationNotification = @"SCHSyncCo
         }
     }
     
-	[super method:method didCompleteWithResult:nil userInfo:nil];	
+	[super method:method didCompleteWithResult:result userInfo:userInfo];	
 }
 
 - (void)method:(NSString *)method didFailWithError:(NSError *)error 

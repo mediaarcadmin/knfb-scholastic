@@ -162,7 +162,10 @@ static NSString * const kSCHThemeManagerName = @"Name";
     
     for (NSDictionary *dict in self.allThemes) {
         if (excludeSelectedTheme == NO || dict != self.selectedTheme) {
-            [ret addObject:[dict objectForKey:kSCHThemeManagerName]];
+            NSString *themeName = [dict objectForKey:kSCHThemeManagerName];
+            if (themeName != nil) {
+                [ret addObject:themeName];
+            }
         }
     }
     

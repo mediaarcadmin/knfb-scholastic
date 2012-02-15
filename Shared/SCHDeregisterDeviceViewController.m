@@ -16,6 +16,7 @@
 #import "SCHUserDefaults.h"
 #import "SCHDrmSession.h"
 #import "SCHVersionDownloadManager.h"
+#import "SCHSyncManager.h"
 
 static const CGFloat kDeregisterContentHeightLandscape = 380;
 
@@ -207,6 +208,8 @@ static const CGFloat kDeregisterContentHeightLandscape = 380;
 
 - (void)deregisterAfterSuccessfulAuthentication
 {
+    [[SCHSyncManager sharedSyncManager] performFlushSaves];
+    
     SCHDrmDeregistrationSuccessBlock deregistrationCompletionBlock = ^{
         [self.settingsDelegate popToRootViewControllerAnimated:YES withCompletionHandler:^{
             LambdaAlert *alert = [[LambdaAlert alloc]

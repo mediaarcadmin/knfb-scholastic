@@ -40,7 +40,7 @@
 
 - (NSString *)introductionAtIndex:(NSInteger)index
 {
-    NSAssert(0 <= index && index <= [self.introductions count], @"bad index");
+    NSAssert(0 <= index && index < [self.introductions count], @"bad index");
     return [self.introductions objectAtIndex:index];
 }
 

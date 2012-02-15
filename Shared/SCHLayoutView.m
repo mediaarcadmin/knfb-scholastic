@@ -951,7 +951,12 @@ fastThumbnailUIImageForPageAtIndex:(NSUInteger)index
         }
         if (word) {
             CGAffineTransform viewTransform = [self pageTurningViewTransformForPageAtIndex:pageIndex];
-            CGRect wordRect = [[[block words] objectAtIndex:[elementId integerValue]] rect];            
+            CGRect wordRect = CGRectZero;
+            NSInteger elementValue = [elementId integerValue];
+            NSArray *words = [block words];
+            if (elementValue < [words count]) {
+                wordRect = [[words objectAtIndex:elementValue] rect];            
+            }
             return [NSArray arrayWithObject:[NSValue valueWithCGRect:CGRectApplyAffineTransform(wordRect, viewTransform)]];
         }
     } 

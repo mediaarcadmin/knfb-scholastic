@@ -79,11 +79,25 @@
 	
         __block NSString *bookFileURL = nil;
         __block BOOL bookFileURLIsFileURL = NO;
+        __block BOOL bookFileURLIsValid = NO;
+        
         [self performWithBook:^(SCHAppBook *book) {
             self.localPath = [book xpsPath];
             bookFileURL = [[book BookFileURL] retain];
             bookFileURLIsFileURL = [book bookFileURLIsBundleURL];
+            bookFileURLIsValid = [book bookFileURLIsValid];
         }];
+        
+        if (bookFileURLIsValid == NO) {
+            NSLog(@"URL timed out requesting new URL for ISBN: %@", self.identifier);    
+            [self performWithBookAndSave:^(SCHAppBook *book) {  
+                book.ForceProcess = [NSNumber numberWithBool:YES];
+            }];
+            [self setProcessingState:SCHBookProcessingStateNoURLs];
+            [self setIsProcessing:NO];                                
+            [self endOperation];
+            return;            
+        }
         
         if (self.localPath == nil || bookFileURL == nil || [bookFileURL compare:@""] == NSOrderedSame) {
             NSLog(@"WARNING: problem with SCHAppBook (ISBN: %@ localPath: %@ bookFileURL: %@", self.identifier, self.localPath, bookFileURL);
@@ -121,14 +135,25 @@
         __block NSString *contentIdentifier = nil;
         __block NSString *coverURL = nil;
         __block BOOL coverURLIsFileURL = NO;
+        __block BOOL bookCoverURLIsValid = NO;
+        
         [self performWithBook:^(SCHAppBook *book) {
             bookDirectory = [[book bookDirectory] retain];
             contentIdentifier = [[book ContentIdentifier] retain];
             self.localPath = [book coverImagePath];
             coverURL = [[book BookCoverURL] retain];
             coverURLIsFileURL = [book bookCoverURLIsBundleURL];
+            bookCoverURLIsValid = [book bookCoverURLIsValid];
         }];
 		
+        if (bookCoverURLIsValid == NO) {
+            NSLog(@"URL timed out requesting new URL for ISBN: %@", self.identifier);
+            [self setProcessingState:SCHBookProcessingStateNoURLs];
+            [self setIsProcessing:NO];                                
+            [self endOperation];
+            return;            
+        }
+
         if (self.localPath == nil || coverURL == nil || [coverURL compare:@""] == NSOrderedSame) {
             NSLog(@"WARNING: problem with SCHAppBook (ISBN: %@ localPath: %@ coverURL: %@", self.identifier, self.localPath, coverURL);
             [self setProcessingState:SCHBookProcessingStateError];
@@ -258,7 +283,7 @@
         
         NSDictionary *userInfo = [NSDictionary dictionaryWithObjectsAndKeys:
                                   [NSNumber numberWithFloat:percentage], @"currentPercentage",
-                                  self.identifier, @"bookIdentifier",
+                                  (self.identifier == nil ? (id)[NSNull null] : self.identifier), @"bookIdentifier",
                                   nil];
         
         [self performSelectorOnMainThread:@selector(firePercentageUpdate:) 
@@ -342,7 +367,7 @@
             [self setProcessingState:SCHBookProcessingStateReadyForLicenseAcquisition];
             NSDictionary *userInfo = [NSDictionary dictionaryWithObjectsAndKeys:
                                       [NSNumber numberWithFloat:1.0], @"currentPercentage",
-                                      self.identifier, @"bookIdentifier",
+                                      (self.identifier == nil ? (id)[NSNull null] : self.identifier), @"bookIdentifier",
                                       nil];
             
             [self performSelectorOnMainThread:@selector(firePercentageUpdate:) 

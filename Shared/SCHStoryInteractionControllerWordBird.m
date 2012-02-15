@@ -112,6 +112,7 @@ enum {
 {
     NSInteger currentQuestion = [self.delegate currentQuestionForStoryInteraction];
     SCHStoryInteractionWordBird *wordBird = (SCHStoryInteractionWordBird *)self.storyInteraction;
+    NSAssert(currentQuestion < [wordBird.questions count], @"index must be within array bounds");
     SCHStoryInteractionWordBirdQuestion *question = [wordBird.questions objectAtIndex:currentQuestion];
     return question;
 }
@@ -357,8 +358,10 @@ enum {
     NSInteger letterCount = [word length];
     for (NSInteger letterIndex = 0; letterIndex < letterCount; ++letterIndex) {
         if ([word characterAtIndex:letterIndex] == letter) {
-            SCHStoryInteractionWordBirdAnswerLetterView *answer = [self.answerContainer.subviews objectAtIndex:letterIndex];
-            [answer setLetter:letter];
+            if (letterIndex < [self.answerContainer.subviews count]) {
+                SCHStoryInteractionWordBirdAnswerLetterView *answer = [self.answerContainer.subviews objectAtIndex:letterIndex];
+                [answer setLetter:letter];
+            }
             self.correctLetterCount++;
         }
     }

@@ -29,7 +29,8 @@
 
 + (BOOL)canInitWithRequest:(NSURLRequest *)request {
 	NSString *theScheme = [[request URL] scheme];
-	return ([theScheme caseInsensitiveCompare: [SCHXPSURLProtocol xpsProtocolScheme]] == NSOrderedSame);
+	return (theScheme != nil &&
+            [theScheme isEqualToString:[SCHXPSURLProtocol xpsProtocolScheme]] == NSOrderedSame);
 }
 
 /* if canInitWithRequest returns true, then webKit will call your

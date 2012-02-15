@@ -122,7 +122,7 @@ typedef enum {
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
         [self setupTitle];        
     }
-    self.outcomeTextLabel.text = [NSString stringWithFormat:@"%@.", [splitResult objectAtIndex:0]];
+    self.outcomeTextLabel.text = ([splitResult count] > 0 ? [NSString stringWithFormat:@"%@.", [splitResult objectAtIndex:0]] : @"");
     self.outcomeTitleLabel.text = ([splitResult count] > 1 ? [splitResult objectAtIndex:1] : @"");
 }
 
@@ -165,6 +165,7 @@ typedef enum {
 
 - (SCHStoryInteractionAboutYouQuizQuestion *)currentQuestion
 {
+    NSAssert(currentQuestionIndex < [[(SCHStoryInteractionAboutYouQuiz *)self.storyInteraction questions] count], @"index must be within array bounds");
     return [[(SCHStoryInteractionAboutYouQuiz *)self.storyInteraction questions] objectAtIndex:currentQuestionIndex];
 }
 

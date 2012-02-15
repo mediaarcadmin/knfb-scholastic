@@ -67,7 +67,7 @@
 
 - (void)annotationSyncComponentDidCompleteNotification:(NSNotification *)notification
 {
-    NSNumber *profileID = [notification.userInfo objectForKey:SCHAnnotationSyncComponentCompletedProfileIDs];
+    NSNumber *profileID = [notification.userInfo objectForKey:SCHAnnotationSyncComponentProfileIDs];
     NSNumber *myProfileID = self.privateAnnotations.AnnotationsContentItem.AnnotationsItem.ProfileID;
     
     if (myProfileID) {
@@ -209,7 +209,8 @@
         }
     }];
     
-    if (found == YES) {
+    if (found == YES && 
+        pageRange.length > 0 && NSMaxRange(pageRange) <= [self.sortedHighlights count]) {
         ret = [self.sortedHighlights subarrayWithRange:pageRange];
     }
     

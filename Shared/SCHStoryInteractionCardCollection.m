@@ -51,12 +51,16 @@
 
 - (NSString *)imagePathForCardFrontAtIndex:(NSInteger)index
 {
+    NSParameterAssert(index < [self.cards count]);
+    
     NSString *filename = [[self.cards objectAtIndex:index] frontFilename];
     return [KNFBXPSStoryInteractionsDirectory stringByAppendingPathComponent:filename];
 }
 
 - (NSString *)imagePathForCardBackAtIndex:(NSInteger)index
 {
+    NSParameterAssert(index < [self.cards count]);
+    
     NSString *filename = [[self.cards objectAtIndex:index] backFilename];
     return [KNFBXPSStoryInteractionsDirectory stringByAppendingPathComponent:filename];
 }

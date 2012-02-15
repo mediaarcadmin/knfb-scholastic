@@ -94,6 +94,7 @@
                                                                                                   pageSize:pageSize];
     }
     NSInteger currentQuestionIndex = [self.delegate currentQuestionForStoryInteraction];
+    NSAssert(currentQuestionIndex < [questions count], @"index must be within array bounds");    
     return [questions objectAtIndex:currentQuestionIndex];
 }
 

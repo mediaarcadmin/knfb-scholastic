@@ -157,7 +157,7 @@
         book.State = [NSNumber numberWithInt: (int) state];
 
         NSDictionary *userInfo = [NSDictionary dictionaryWithObjectsAndKeys:
-                                  self.identifier, @"bookIdentifier",
+                                  (self.identifier == nil ? (id)[NSNull null] : self.identifier), @"bookIdentifier",
                                   nil];
         [[NSNotificationCenter defaultCenter] postNotificationName:@"SCHBookStateUpdate" object:nil userInfo:userInfo];
     }];

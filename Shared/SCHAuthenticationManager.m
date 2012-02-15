@@ -234,9 +234,11 @@ NSTimeInterval const kSCHAuthenticationManagerSecondsInAMinute = 60.0;
             [self authenticationDidFailWithError:error];
         }
     } else {
-        [[NSUserDefaults standardUserDefaults] setObject:userName forKey:kSCHAuthenticationManagerUsername];
+        NSString *nonNullUserName = (userName == nil ? @"" : userName);
+
+        [[NSUserDefaults standardUserDefaults] setObject:nonNullUserName forKey:kSCHAuthenticationManagerUsername];
         
-        [SFHFKeychainUtils storeUsername:userName 
+        [SFHFKeychainUtils storeUsername:nonNullUserName
                              andPassword:password 
                           forServiceName:kSCHAuthenticationManagerServiceName 
                           updateExisting:YES 
@@ -465,7 +467,8 @@ NSTimeInterval const kSCHAuthenticationManagerSecondsInAMinute = 60.0;
 {
     NSAssert([NSThread isMainThread] == YES, @"SCHAuthenticationManager::aTokenOnMainThread MUST be executed on the main thread");
     
-    if([tokenExpires compare:[NSDate date]] == NSOrderedAscending) {
+    if(tokenExpires != nil && 
+       [tokenExpires compare:[NSDate date]] == NSOrderedAscending) {
         [self expireToken];
     }
 }

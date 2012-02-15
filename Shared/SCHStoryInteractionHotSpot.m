@@ -109,6 +109,8 @@
 - (enum SCHStoryInteractionQuestionPageAssociation)pageAssociationForQuestionAtIndex:(NSInteger)questionIndex
                                                                         withPageSize:(CGSize)pageSize
 {
+    NSParameterAssert(questionIndex < [self.questions count]);
+    
     SCHStoryInteractionHotSpotQuestion *question = [self.questions objectAtIndex:questionIndex];
     return [question pageAssociationForPageSize:pageSize];
 }

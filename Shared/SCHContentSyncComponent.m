@@ -68,7 +68,7 @@ NSString * const SCHContentSyncComponentDidFailNotification = @"SCHContentSyncCo
 	if (self.isSynchronizing == NO) {
 		self.backgroundTaskIdentifier = [[UIApplication sharedApplication] beginBackgroundTaskWithExpirationHandler:^{ 
 			self.isSynchronizing = NO;
-			self.backgroundTaskIdentifier = UIBackgroundTaskInvalid;
+            [self endBackgroundTask];
 		}];
 		
 		ret = [self updateUserContentItems];
@@ -97,19 +97,25 @@ NSString * const SCHContentSyncComponentDidFailNotification = @"SCHContentSyncCo
 {	
     @try {
         if([method compare:kSCHLibreAccessWebServiceSaveContentProfileAssignment] == NSOrderedSame) {	
-            self.isSynchronizing = [self.libreAccessWebService listUserContent];
-            if (self.isSynchronizing == NO) {
-                [[SCHAuthenticationManager sharedAuthenticationManager] authenticateWithSuccessBlock:^(SCHAuthenticationManagerConnectivityMode connectivityMode){
-                    if (connectivityMode == SCHAuthenticationManagerConnectivityModeOnline) {
-                        [self.delegate authenticationDidSucceed];
-                    } else {
+            if (self.saveOnly == NO) {
+                self.isSynchronizing = [self.libreAccessWebService listUserContent];
+                if (self.isSynchronizing == NO) {
+                    [[SCHAuthenticationManager sharedAuthenticationManager] authenticateWithSuccessBlock:^(SCHAuthenticationManagerConnectivityMode connectivityMode){
+                        if (connectivityMode == SCHAuthenticationManagerConnectivityModeOnline) {
+                            [self.delegate authenticationDidSucceed];
+                        } else {
+                            self.isSynchronizing = NO;
+                        }
+                    } failureBlock:^(NSError *error){
                         self.isSynchronizing = NO;
-                    }
-                } failureBlock:^(NSError *error){
-                    self.isSynchronizing = NO;
-                    [[NSNotificationCenter defaultCenter] postNotificationName:SCHSyncComponentDidFailAuthenticationNotification
-                                                                        object:self];                    
-                }];				
+                        [[NSNotificationCenter defaultCenter] postNotificationName:SCHSyncComponentDidFailAuthenticationNotification
+                                                                            object:self];                    
+                    }];				
+                }
+            } else {
+                [[NSNotificationCenter defaultCenter] postNotificationName:SCHContentSyncComponentDidCompleteNotification 
+                                                                    object:self];
+                [super method:method didCompleteWithResult:result userInfo:userInfo];				                
             }
         } else if([method compare:kSCHLibreAccessWebServiceListUserContentEx] == NSOrderedSame) {
             NSArray *content = [result objectForKey:kSCHLibreAccessWebServiceUserContentListEx];
@@ -117,7 +123,7 @@ NSString * const SCHContentSyncComponentDidFailNotification = @"SCHContentSyncCo
             [self syncUserContentItems:content];
             [[NSNotificationCenter defaultCenter] postNotificationName:SCHContentSyncComponentDidCompleteNotification 
                                                                 object:self];
-            [super method:method didCompleteWithResult:nil userInfo:userInfo];				
+            [super method:method didCompleteWithResult:result userInfo:userInfo];				
         }
     }
     @catch (NSException *exception) {
@@ -177,21 +183,27 @@ NSString * const SCHContentSyncComponentDidFailNotification = @"SCHContentSyncCo
 			ret = NO;			
 		}		
 	} else {
-		self.isSynchronizing = [self.libreAccessWebService listUserContent];
-		if (self.isSynchronizing == NO) {
-			[[SCHAuthenticationManager sharedAuthenticationManager] authenticateWithSuccessBlock:^(SCHAuthenticationManagerConnectivityMode connectivityMode){
-                if (connectivityMode == SCHAuthenticationManagerConnectivityModeOnline) {
-                    [self.delegate authenticationDidSucceed];
-                } else {
+        if (self.saveOnly == NO) {
+            self.isSynchronizing = [self.libreAccessWebService listUserContent];
+            if (self.isSynchronizing == NO) {
+                [[SCHAuthenticationManager sharedAuthenticationManager] authenticateWithSuccessBlock:^(SCHAuthenticationManagerConnectivityMode connectivityMode){
+                    if (connectivityMode == SCHAuthenticationManagerConnectivityModeOnline) {
+                        [self.delegate authenticationDidSucceed];
+                    } else {
+                        self.isSynchronizing = NO;
+                    }
+                } failureBlock:^(NSError *error){
                     self.isSynchronizing = NO;
-                }
-            } failureBlock:^(NSError *error){
-                self.isSynchronizing = NO;
-                [[NSNotificationCenter defaultCenter] postNotificationName:SCHSyncComponentDidFailAuthenticationNotification
-                                                                    object:self];                
-            }];				
-			ret = NO;
-		}
+                    [[NSNotificationCenter defaultCenter] postNotificationName:SCHSyncComponentDidFailAuthenticationNotification
+                                                                        object:self];                
+                }];				
+                ret = NO;
+            }
+        } else {
+            [[NSNotificationCenter defaultCenter] postNotificationName:SCHContentSyncComponentDidCompleteNotification 
+                                                                object:self];
+            [super method:nil didCompleteWithResult:nil userInfo:nil];				                            
+        }
 	}
 	[fetchRequest release], fetchRequest = nil;
 	
@@ -257,7 +269,11 @@ NSString * const SCHContentSyncComponentDidFailNotification = @"SCHContentSyncCo
             SCHBookIdentifier *webBookIdentifier = [[SCHBookIdentifier alloc] initWithObject:webItem];
             SCHBookIdentifier *localBookIdentifier = localItem.bookIdentifier;
             
-            if (webBookIdentifier) {    
+            if (webBookIdentifier == nil) {
+                webItem = nil;
+            } else if (localBookIdentifier == nil) {
+                localItem = nil;
+            } else {
                 switch ([webBookIdentifier compare:localBookIdentifier]) {
                     case NSOrderedSame:
                         [self syncUserContentItem:webItem withUserContentItem:localItem];
@@ -273,12 +289,11 @@ NSString * const SCHContentSyncComponentDidFailNotification = @"SCHContentSyncCo
                         localItem = nil;
                         break;			
                 }		
-                
-                [webBookIdentifier release];
             }
+            
+            [webBookIdentifier release];            
         }
 		
-
 		if (webItem == nil) {
 			webItem = [webEnumerator nextObject];
 		}
@@ -534,8 +549,9 @@ NSString * const SCHContentSyncComponentDidFailNotification = @"SCHContentSyncCo
 		NSNumber *localItemID = [localItem valueForKey:kSCHLibreAccessWebServiceOrderID];
 		
         if ((id)webItemID == [NSNull null]) {
-            // ignore any items with no ID
             webItem = nil;
+        } else if ((id)localItemID == [NSNull null]) {
+            localItem = nil;            
         } else {
             switch ([webItemID compare:localItemID]) {
                 case NSOrderedSame:
@@ -618,8 +634,9 @@ NSString * const SCHContentSyncComponentDidFailNotification = @"SCHContentSyncCo
 		NSNumber *localItemID = [localItem valueForKey:kSCHLibreAccessWebServiceProfileID];
 		
         if ((id)webItemID == [NSNull null]) {
-            // ignore any items with no ID
             webItem = nil;
+        } else if ((id)localItemID == [NSNull null]) {
+            localItem = nil;            
         } else {                
             switch ([webItemID compare:localItemID]) {
                 case NSOrderedSame:
@@ -687,20 +704,20 @@ NSString * const SCHContentSyncComponentDidFailNotification = @"SCHContentSyncCo
 {
     NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init]; 
     NSError *error = nil;    
-    [fetchRequest setEntity:[NSEntityDescription entityForName:kSCHUserContentItem
-                                        inManagedObjectContext:self.managedObjectContext]];	                                                                            
-    [fetchRequest setPredicate:[NSPredicate predicateWithFormat:@"ProfileList.@count < 1"]];    
+    [fetchRequest setEntity:[NSEntityDescription entityForName:kSCHContentMetadataItem
+                                        inManagedObjectContext:self.managedObjectContext]];
     
-    NSArray *userContent = [self.managedObjectContext executeFetchRequest:fetchRequest 
-                                                                error:&error];
+    NSArray *contentMetadataItems = [self.managedObjectContext executeFetchRequest:fetchRequest 
+                                                                             error:&error];
     [fetchRequest release], fetchRequest = nil;
-    if (userContent == nil) {
+    if (contentMetadataItems == nil) {
         NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
     }
     
-    for (SCHUserContentItem *userContentItem in userContent) {
-        for (SCHContentMetadataItem *item in [userContentItem ContentMetadataItem]) {
-            [self.managedObjectContext deleteObject:item];
+    for (SCHContentMetadataItem *contentMetadataItem in contentMetadataItems) {
+        SCHUserContentItem *userContentItem = [contentMetadataItem UserContentItem];
+        if (userContentItem == nil || [userContentItem.ProfileList count] == 0) {
+            [self.managedObjectContext deleteObject:contentMetadataItem];
         }
     }   
     

@@ -194,7 +194,7 @@ static void pageFileXMLParsingStartElementHandler(void *ctx, const XML_Char *nam
         
         NSDictionary *userInfo = [NSDictionary dictionaryWithObjectsAndKeys:
                                   [NSNumber numberWithFloat:percentage], @"currentPercentage",
-                                  self.identifier, @"bookIdentifier",
+                                  (self.identifier == nil ? (id)[NSNull null] : self.identifier), @"bookIdentifier",
                                   nil];
 
         [[NSNotificationCenter defaultCenter] postNotificationName:@"SCHBookTextFlowParsePercentageUpdate" object:nil userInfo:userInfo];

@@ -553,7 +553,9 @@ managedObjectContext:(NSManagedObjectContext *)managedObjectContext
         case SCHReadingViewSelectionModeHighlights:
             for (SCHBookRange *highlightRange in [self highlightRangesForCurrentPage]) {
                 EucSelectorRange *range = [self selectorRangeFromBookRange:highlightRange];
-                [selectorRanges addObject:range];
+                if (range != nil) {
+                    [selectorRanges addObject:range];
+                }
             }
             break;
         default:
@@ -597,7 +599,9 @@ managedObjectContext:(NSManagedObjectContext *)managedObjectContext
     
     for (SCHHighlight *highlight in [self.delegate highlightsForLayoutPage:page]) {
         SCHBookRange *range = [self bookRangeForHighlight:highlight];
-        [highlights addObject:range];
+        if (range != nil) {
+            [highlights addObject:range];
+        }
     }
     
     return highlights;

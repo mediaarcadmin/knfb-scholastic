@@ -542,8 +542,12 @@ static SCHDictionaryDownloadManager *sharedManager = nil;
             NSString *currentDictionaryVersion = [self dictionaryVersion];
             
             if (currentDictionaryVersion) {
-                if ([currentDictionaryVersion compare:[entry toVersion] options:NSNumericSearch] == NSOrderedAscending) {
-                    processUpdate = YES;
+                if (entry != nil) {
+                    NSString *toVersion = [entry toVersion];
+                    if (toVersion != nil &&
+                        [currentDictionaryVersion compare:toVersion options:NSNumericSearch] == NSOrderedAscending) {
+                        processUpdate = YES;
+                    }
                 }
             } else {
                 processUpdate = YES;
@@ -914,7 +918,8 @@ static SCHDictionaryDownloadManager *sharedManager = nil;
                 // have we updated in the last 24 hours?
                 NSDate *updateAfter = [lastPrefUpdate dateByAddingTimeInterval:86400.0];
                 
-                if ([updateAfter compare:currentDate] == NSOrderedAscending) {
+                if (updateAfter != nil && 
+                    [updateAfter compare:currentDate] == NSOrderedAscending) {
                     doUpdate = YES;
                     [defaults setObject:currentDate forKey:@"lastDictionaryUpdateDate"];
                     [defaults synchronize];					

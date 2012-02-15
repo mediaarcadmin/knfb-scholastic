@@ -74,7 +74,8 @@ enum {
 
 - (UIColor *)selectedColor
 {
-    if (self.selectedColorIndex == NSNotFound) {
+    if (self.selectedColorIndex == NSNotFound ||
+        self.selectedColorIndex >= [self.colors count]) {
         return nil;
     }
     return [self.colors objectAtIndex:self.selectedColorIndex];

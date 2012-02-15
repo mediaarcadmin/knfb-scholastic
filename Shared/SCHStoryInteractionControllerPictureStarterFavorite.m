@@ -13,7 +13,9 @@
 - (void)setupOpeningScreen
 {
     NSArray *nibObjects = [[NSBundle mainBundle] loadNibNamed:@"SCHStoryInteractionPictureStarterFavorite" owner:self options:nil];
-    [self.contentsView addSubview:[nibObjects objectAtIndex:0]];
+    if ([nibObjects count] > 0) {
+        [self.contentsView addSubview:[nibObjects objectAtIndex:0]];
+    }
 }
 
 - (IBAction)goTapped:(id)sender

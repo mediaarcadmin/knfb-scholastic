@@ -62,13 +62,17 @@ static NSString * const kSCHTopFavoritesComponentCategoryYoungAdults = @"Young A
 		}
 	} else if([method compare:kSCHLibreAccessWebServiceListTopFavorites] == NSOrderedSame) {
 		NSArray *favorites = [self makeNullNil:[result objectForKey:kSCHLibreAccessWebServiceTopFavoritesList]];
-		NSArray *books = [self makeNullNil:[[favorites objectAtIndex:0] objectForKey:kSCHLibreAccessWebServiceTopFavoritesContentItems]];
-		
-		if ([books count] > 0) {
-			[self.libreAccessWebService listContentMetadata:books includeURLs:YES];			
-		} else if([(id)self.delegate respondsToSelector:@selector(component:didCompleteWithResult:)]) {
+        if ([favorites count] > 0) {
+            NSArray *books = [self makeNullNil:[[favorites objectAtIndex:0] objectForKey:kSCHLibreAccessWebServiceTopFavoritesContentItems]];
+            
+            if ([books count] > 0) {
+                [self.libreAccessWebService listContentMetadata:books includeURLs:YES];			
+            } else if([(id)self.delegate respondsToSelector:@selector(component:didCompleteWithResult:)]) {
 				[(id)self.delegate component:self didCompleteWithResult:[NSDictionary dictionaryWithObject:[NSNull null] forKey:kSCHLibreAccessWebServiceContentMetadataList]];									
-		}
+            }
+        } else {
+            [(id)self.delegate component:self didCompleteWithResult:[NSDictionary dictionaryWithObject:[NSNull null] forKey:kSCHLibreAccessWebServiceContentMetadataList]];									
+        }
 	} else if([method compare:kSCHLibreAccessWebServiceListContentMetadata] == NSOrderedSame) {
 		if([(id)self.delegate respondsToSelector:@selector(component:didCompleteWithResult:)]) {
 			[(id)self.delegate component:self didCompleteWithResult:result];									

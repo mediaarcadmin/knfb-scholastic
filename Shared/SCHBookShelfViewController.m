@@ -939,12 +939,12 @@ typedef enum
 // Although this is called finishedMovingCellToIndex it actually passes the fromIndex
 - (void)gridView:(MRGridView*)gridView finishedMovingCellToIndex:(NSInteger)fromIndex
 {
-	if (self.moveToValue != -1 && (fromIndex != self.moveToValue)) {
+    NSUInteger toIndex = self.moveToValue;
+	if (toIndex != -1 && (fromIndex != toIndex) &&
+        fromIndex < [self.books count] && toIndex <= [self.books count]) {
         id book = [self.books objectAtIndex:fromIndex];
         [book retain];
         [self.books removeObjectAtIndex:fromIndex];
-
-        NSUInteger toIndex = self.moveToValue;
         
         [self.books insertObject:book atIndex:toIndex];
         [book release];
