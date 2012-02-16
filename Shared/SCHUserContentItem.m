@@ -8,7 +8,7 @@
 
 #import "SCHUserContentItem.h"
 
-//#import "SCHContentProfileItem.h"
+#import "SCHContentProfileItem.h"
 #import "SCHOrderItem.h"
 #import "SCHContentMetadataItem.h"
 #import "SCHBookIdentifier.h"

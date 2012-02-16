@@ -18,7 +18,6 @@ extern NSString * const kSCHLibreAccessWebServiceListTopFavorites;
 extern NSString * const kSCHLibreAccessWebServiceListContentMetadata;
 extern NSString * const kSCHLibreAccessWebServiceListUserSettings;
 extern NSString * const kSCHLibreAccessWebServiceSaveUserSettings;
-extern NSString * const kSCHLibreAccessWebServiceListProfileContentAnnotations;
 extern NSString * const kSCHLibreAccessWebServiceListProfileContentAnnotationsForRatings;
 extern NSString * const kSCHLibreAccessWebServiceSaveProfileContentAnnotationsForRatings;
 extern NSString * const kSCHLibreAccessWebServiceSaveContentProfileAssignment;

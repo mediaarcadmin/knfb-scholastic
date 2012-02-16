@@ -689,7 +689,7 @@ static NSInteger const kSCHLibreAccessWebServiceVaid = 33;
 			[listProfileContentAnnotations setObject:[self objectFromTranslate:[[anObject AnnotationsForRatingsList] AnnotationsForRatingsItem]] forKey:kSCHLibreAccessWebServiceAnnotationsList];
 			[listProfileContentAnnotations setObject:[self objectFromItemsCount:[anObject ItemsCount]] forKey:kSCHLibreAccessWebServiceItemsCount];			
 
-			ret = [NSDictionary dictionaryWithObject:listProfileContentAnnotations forKey:kSCHLibreAccessWebServiceListProfileContentAnnotations];
+			ret = [NSDictionary dictionaryWithObject:listProfileContentAnnotations forKey:kSCHLibreAccessWebServiceListProfileContentAnnotationsForRatings];
 		} else if ([anObject isKindOfClass:[LibreAccessServiceSvc_SaveContentProfileAssignmentResponse class]] == YES) {
 			ret = nil;	// only returns the status so nothing to return
 		} else if ([anObject isKindOfClass:[LibreAccessServiceSvc_SaveReadingStatisticsDetailedResponse class]] == YES) {

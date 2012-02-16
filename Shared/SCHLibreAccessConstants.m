@@ -20,7 +20,6 @@ NSString * const kSCHLibreAccessWebServiceListTopFavorites = @"ListTopFavorites"
 NSString * const kSCHLibreAccessWebServiceListContentMetadata = @"ListContentMetadata";
 NSString * const kSCHLibreAccessWebServiceListUserSettings = @"ListUserSettings";
 NSString * const kSCHLibreAccessWebServiceSaveUserSettings = @"SaveUserSettings";
-NSString * const kSCHLibreAccessWebServiceListProfileContentAnnotations = @"ListProfileContentAnnotations";
 NSString * const kSCHLibreAccessWebServiceListProfileContentAnnotationsForRatings = @"ListProfileContentAnnotationsForRatings";
 NSString * const kSCHLibreAccessWebServiceSaveProfileContentAnnotationsForRatings = @"SaveProfileContentAnnotationsForRatings";
 NSString * const kSCHLibreAccessWebServiceSaveContentProfileAssignment = @"SaveContentProfileAssignment";

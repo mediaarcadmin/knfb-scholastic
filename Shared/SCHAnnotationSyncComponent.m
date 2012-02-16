@@ -272,7 +272,7 @@ NSString * const SCHAnnotationSyncComponentProfileIDs = @"SCHAnnotationSyncCompo
                     self.backgroundThreadManagedObjectContext = [[[NSManagedObjectContext alloc] init] autorelease];
                     [self.backgroundThreadManagedObjectContext setPersistentStoreCoordinator:self.managedObjectContext.persistentStoreCoordinator];
                     
-                    [self syncProfileContentAnnotations:[result objectForKey:kSCHLibreAccessWebServiceListProfileContentAnnotations] 
+                    [self syncProfileContentAnnotations:[result objectForKey:kSCHLibreAccessWebServiceListProfileContentAnnotationsForRatings] 
                                            canSyncNotes:canSyncNotes
                                                syncDate:syncDate];	            
                     
