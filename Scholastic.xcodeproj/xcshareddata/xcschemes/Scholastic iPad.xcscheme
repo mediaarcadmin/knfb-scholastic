@@ -15,7 +15,7 @@
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "A3D3F0AC14CDDF31004A56A5"
                BuildableName = "Storia.app"
-               BlueprintName = "Scholastic No iPhone"
+               BlueprintName = "Scholastic iPad"
                ReferencedContainer = "container:Scholastic.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -33,7 +33,7 @@
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "A3D3F0AC14CDDF31004A56A5"
             BuildableName = "Storia.app"
-            BlueprintName = "Scholastic No iPhone"
+            BlueprintName = "Scholastic iPad"
             ReferencedContainer = "container:Scholastic.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
@@ -45,14 +45,13 @@
       useCustomWorkingDirectory = "NO"
       buildConfiguration = "Debug"
       debugDocumentVersioning = "YES"
-      enablesOpenGLESFrameCapture = "YES"
       allowLocationSimulation = "YES">
       <BuildableProductRunnable>
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "A3D3F0AC14CDDF31004A56A5"
             BuildableName = "Storia.app"
-            BlueprintName = "Scholastic No iPhone"
+            BlueprintName = "Scholastic iPad"
             ReferencedContainer = "container:Scholastic.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
@@ -70,7 +69,7 @@
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "A3D3F0AC14CDDF31004A56A5"
             BuildableName = "Storia.app"
-            BlueprintName = "Scholastic No iPhone"
+            BlueprintName = "Scholastic iPad"
             ReferencedContainer = "container:Scholastic.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>

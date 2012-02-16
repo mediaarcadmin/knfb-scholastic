@@ -246,6 +246,18 @@ static const NSTimeInterval kSCHStartingViewControllerNonForcedAlertInterval = (
 {
     [super willRotateToInterfaceOrientation:toInterfaceOrientation duration:duration];
     [self setupAssetsForOrientation:toInterfaceOrientation];
+    
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
+        if (self.loginPopoverController) {
+            if (UIInterfaceOrientationIsPortrait(toInterfaceOrientation)) {
+                [self.loginPopoverController setContentSize:CGSizeMake(300, 400) animated:YES completion:nil];
+                [self.loginPopoverController setContentOffset:CGPointZero animated:YES completion:nil];
+            } else {
+                [self.loginPopoverController setContentSize:CGSizeMake(400, 300) animated:YES completion:nil];
+                [self.loginPopoverController setContentOffset:CGPointMake(0, -60) animated:YES completion:nil];
+            }
+        }
+    }
 }
 
 #pragma mark - SCHProfileSetupDelegate
