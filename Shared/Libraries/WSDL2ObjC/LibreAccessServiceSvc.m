@@ -17532,6 +17532,7 @@ NSString * LibreAccessServiceSvc_SaveActions_stringFromEnum(LibreAccessServiceSv
 		drmqualifier = 0;
 		format = 0;
 		rating = 0;
+		lastmodified = 0;
 		averageRating = 0;
 		PrivateAnnotations = 0;
 	}
@@ -17543,6 +17544,7 @@ NSString * LibreAccessServiceSvc_SaveActions_stringFromEnum(LibreAccessServiceSv
 	if(contentIdentifier != nil) [contentIdentifier release];
 	if(format != nil) [format release];
 	if(rating != nil) [rating release];
+	if(lastmodified != nil) [lastmodified release];
 	if(averageRating != nil) [averageRating release];
 	if(PrivateAnnotations != nil) [PrivateAnnotations release];
 	
@@ -17593,6 +17595,9 @@ NSString * LibreAccessServiceSvc_SaveActions_stringFromEnum(LibreAccessServiceSv
 	if(self.rating != 0) {
 		xmlAddChild(node, [self.rating xmlNodeForDoc:node->doc elementName:@"rating" elementNSPrefix:nil]);
 	}
+	if(self.lastmodified != 0) {
+		xmlAddChild(node, [self.lastmodified xmlNodeForDoc:node->doc elementName:@"lastmodified" elementNSPrefix:nil]);
+	}
 	if(self.averageRating != 0) {
 		xmlAddChild(node, [self.averageRating xmlNodeForDoc:node->doc elementName:@"averageRating" elementNSPrefix:nil]);
 	}
@@ -17606,6 +17611,7 @@ NSString * LibreAccessServiceSvc_SaveActions_stringFromEnum(LibreAccessServiceSv
 @synthesize drmqualifier;
 @synthesize format;
 @synthesize rating;
+@synthesize lastmodified;
 @synthesize averageRating;
 @synthesize PrivateAnnotations;
 /* attributes */
@@ -17749,6 +17755,39 @@ NSString * LibreAccessServiceSvc_SaveActions_stringFromEnum(LibreAccessServiceSv
 				id newChild = [elementClass deserializeNode:cur];
 				
 				self.rating = newChild;
+			}
+			if(xmlStrEqual(cur->name, (const xmlChar *) "lastmodified")) {
+				
+				Class elementClass = nil;
+				xmlChar *instanceType = xmlGetNsProp(cur, (const xmlChar *) "type", (const xmlChar *) "http://www.w3.org/2001/XMLSchema-instance");
+				if(instanceType == NULL) {
+					elementClass = [NSDate class];
+				} else {
+					NSString *elementTypeString = [NSString stringWithCString:(char*)instanceType encoding:NSUTF8StringEncoding];
+					
+					NSArray *elementTypeArray = [elementTypeString componentsSeparatedByString:@":"];
+					
+					NSString *elementClassString = nil;
+					if([elementTypeArray count] > 1) {
+						NSString *prefix = [elementTypeArray objectAtIndex:0];
+						NSString *localName = [elementTypeArray objectAtIndex:1];
+						
+						xmlNsPtr elementNamespace = xmlSearchNs(cur->doc, cur, [prefix xmlString]);
+						
+						NSString *standardPrefix = [[USGlobals sharedInstance].wsdlStandardNamespaces objectForKey:[NSString stringWithCString:(char*)elementNamespace->href encoding:NSUTF8StringEncoding]];
+						
+						elementClassString = [NSString stringWithFormat:@"%@_%@", standardPrefix, localName];
+					} else {
+						elementClassString = [elementTypeString stringByReplacingOccurrencesOfString:@":" withString:@"_" options:0 range:NSMakeRange(0, [elementTypeString length])];
+					}
+					
+					elementClass = NSClassFromString(elementClassString);
+					xmlFree(instanceType);
+				}
+				
+				id newChild = [elementClass deserializeNode:cur];
+				
+				self.lastmodified = newChild;
 			}
 			if(xmlStrEqual(cur->name, (const xmlChar *) "averageRating")) {
 				

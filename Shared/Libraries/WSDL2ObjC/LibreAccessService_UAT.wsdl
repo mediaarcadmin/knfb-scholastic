@@ -523,6 +523,7 @@
                     <xsd:element name="drmqualifier" type="tns:drmqualifiers"/>
                     <xsd:element name="format" type="xsd:string"/>
                     <xsd:element name="rating" type="xsd:int"/>
+                    <xsd:element name="lastmodified" type="xsd:dateTime"/>
                     <xsd:element minOccurs="0" name="averageRating" type="xsd:string"/>
                     <xsd:element name="PrivateAnnotations" type="tns:PrivateAnnotations"/>
                 </xsd:sequence>
