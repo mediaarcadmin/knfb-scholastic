@@ -15,6 +15,7 @@
 #import "BITNetworkActivityManager.h"
 #import "UIColor+Extensions.h"
 #import "SCHAppStateManager.h"
+#import "NSDate+ServerDate.h"
 
 static NSString * const kSCHLibreAccessWebServiceUndefinedMethod = @"undefined method";
 static NSString * const kSCHLibreAccessWebServiceStatusHolderStatusMessage = @"statusmessage";
@@ -74,6 +75,7 @@ static NSInteger const kSCHLibreAccessWebServiceVaid = 33;
 - (void)fromObject:(NSDictionary *)object intoAnnotationsForRatingsItem:(LibreAccessServiceSvc_AnnotationsForRatingsItem *)intoObject;
 - (BOOL)annotationsContentItemHasChanges:(NSDictionary *)annotationsContentItem;
 - (void)fromObject:(NSDictionary *)object intoAnnotationsContentForRatingsItem:(LibreAccessServiceSvc_AnnotationsContentForRatingsItem *)intoObject;
+- (NSDate *)latestLastModifiedFromPrivateAnnotations:(NSDictionary *)privateAnnotations;
 - (void)fromObject:(NSDictionary *)object intoPrivateAnnotations:(LibreAccessServiceSvc_PrivateAnnotations *)intoObject;
 - (void)fromObject:(NSDictionary *)object intoHighlight:(LibreAccessServiceSvc_Highlight *)intoObject;
 - (void)fromObject:(NSDictionary *)object intoLocationText:(LibreAccessServiceSvc_LocationText *)intoObject;
@@ -968,6 +970,7 @@ static NSInteger const kSCHLibreAccessWebServiceVaid = 33;
 		[objects setObject:[NSNumber numberWithContentIdentifierType:(SCHContentIdentifierTypes)anObject.ContentIdentifierType] forKey:kSCHLibreAccessWebServiceContentIdentifierType];
 		[objects setObject:[NSNumber numberWithDRMQualifier:(SCHDRMQualifiers)anObject.drmqualifier] forKey:kSCHLibreAccessWebServiceDRMQualifier];
 		[objects setObject:[self objectFromTranslate:anObject.format] forKey:kSCHLibreAccessWebServiceFormat];
+        [objects setObject:[self objectFromTranslate:anObject.lastmodified] forKey:kSCHLibreAccessWebServiceLastModified];
         [objects setObject:[self objectFromTranslate:anObject.rating] forKey:kSCHLibreAccessWebServiceRating];
         [objects setObject:[self objectFromTranslate:anObject.averageRating] forKey:kSCHLibreAccessWebServiceAverageRating];
 		[objects setObject:[self objectFromTranslate:anObject.PrivateAnnotations] forKey:kSCHLibreAccessWebServicePrivateAnnotations];
@@ -1569,6 +1572,9 @@ static NSInteger const kSCHLibreAccessWebServiceVaid = 33;
 		intoObject.ContentIdentifierType = (LibreAccessServiceSvc_ContentIdentifierTypes)[[self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceContentIdentifierType]] contentIdentifierTypeValue];
 		intoObject.drmqualifier = (LibreAccessServiceSvc_drmqualifiers)[[self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceDRMQualifier]] DRMQualifierValue];		
 		intoObject.format = [self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceFormat]];
+        intoObject.rating = [self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceRating]];
+        NSDate *lastModified = [self latestLastModifiedFromPrivateAnnotations:[object valueForKey:kSCHLibreAccessWebServicePrivateAnnotations]];
+        intoObject.lastmodified = (lastModified == nil ? [NSDate serverDate] : lastModified);
         id privateAnnotations = [[LibreAccessServiceSvc_PrivateAnnotations alloc] init];
 		intoObject.PrivateAnnotations = privateAnnotations;
         [privateAnnotations release];
@@ -1576,6 +1582,58 @@ static NSInteger const kSCHLibreAccessWebServiceVaid = 33;
         intoObject.averageRating = [self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceAverageRating]];
 	}
 }												
+
+// returns the most recent last modified date
+- (NSDate *)latestLastModifiedFromPrivateAnnotations:(NSDictionary *)privateAnnotations
+{
+    NSDate *ret = nil;
+    NSDate *lastModified = nil;
+    
+    if (privateAnnotations != nil) {
+        for (NSDictionary *item in [self fromObjectTranslate:[privateAnnotations valueForKey:kSCHLibreAccessWebServiceHighlights]]) {
+            if ([[self fromObjectTranslate:[item valueForKey:kSCHLibreAccessWebServiceAction]] saveActionValue] != kSCHSaveActionsNone) {
+                lastModified = [self fromObjectTranslate:[item valueForKey:kSCHLibreAccessWebServiceLastModified]];
+                if (lastModified != nil && 
+                    (ret == nil || [ret earlierDate:lastModified] == ret)) {
+                    ret = lastModified;
+                }
+            }
+		}
+
+        if ([[SCHAppStateManager sharedAppStateManager] canSyncNotes] == YES) {
+            for (NSDictionary *item in [self fromObjectTranslate:[privateAnnotations valueForKey:kSCHLibreAccessWebServiceNotes]]) {
+                if ([[self fromObjectTranslate:[item valueForKey:kSCHLibreAccessWebServiceAction]] saveActionValue] != kSCHSaveActionsNone) {
+                    lastModified = [self fromObjectTranslate:[item valueForKey:kSCHLibreAccessWebServiceLastModified]];
+                    if (lastModified != nil && 
+                        (ret == nil || [ret earlierDate:lastModified] == ret)) {
+                        ret = lastModified;
+                    }
+                }
+            }
+        }
+
+        for (NSDictionary *item in [self fromObjectTranslate:[privateAnnotations valueForKey:kSCHLibreAccessWebServiceBookmarks]]) {
+            if ([[self fromObjectTranslate:[item valueForKey:kSCHLibreAccessWebServiceAction]] saveActionValue] != kSCHSaveActionsNone) {
+                lastModified = [self fromObjectTranslate:[item valueForKey:kSCHLibreAccessWebServiceLastModified]];
+                if (lastModified != nil && 
+                    (ret == nil || [ret earlierDate:lastModified] == ret)) {
+                    ret = lastModified;
+                }
+            }
+		}
+
+        NSDictionary *lastPage = [self fromObjectTranslate:[privateAnnotations valueForKey:kSCHLibreAccessWebServiceLastPage]];
+        if (lastPage != nil) {
+            lastModified = [self fromObjectTranslate:[lastPage valueForKey:kSCHLibreAccessWebServiceLastModified]];
+            if (lastModified != nil && 
+                (ret == nil || [ret earlierDate:lastModified] == ret)) {
+                ret = lastModified;
+            }            
+        }
+    }
+    
+    return ret;
+}
 
 // only creates annotation objects that have a status, i.e. need to be saved
 - (void)fromObject:(NSDictionary *)object intoPrivateAnnotations:(LibreAccessServiceSvc_PrivateAnnotations *)intoObject

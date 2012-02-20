@@ -763,7 +763,9 @@ NSString * const SCHAnnotationSyncComponentProfileIDs = @"SCHAnnotationSyncCompo
         
         localAnnotationsContentItem.Format = [self makeNullNil:[webAnnotationsContentItem objectForKey:kSCHLibreAccessWebServiceFormat]];
 
+        localAnnotationsContentItem.LastModified = [self makeNullNil:[webAnnotationsContentItem objectForKey:kSCHLibreAccessWebServiceLastModified]];
         localAnnotationsContentItem.AverageRating = [self makeNullNil:[webAnnotationsContentItem objectForKey:kSCHLibreAccessWebServiceAverageRating]];
+        localAnnotationsContentItem.Rating = [self makeNullNil:[webAnnotationsContentItem objectForKey:kSCHLibreAccessWebServiceRating]];
         
         NSDictionary *privateAnnotations = [self makeNullNil:[webAnnotationsContentItem objectForKey:kSCHLibreAccessWebServicePrivateAnnotations]];
         
@@ -811,7 +813,9 @@ NSString * const SCHAnnotationSyncComponentProfileIDs = @"SCHAnnotationSyncCompo
 		ret.ContentIdentifier = [self makeNullNil:[annotationsContentItem objectForKey:kSCHLibreAccessWebServiceContentIdentifier]];
 		
 		ret.Format = [self makeNullNil:[annotationsContentItem objectForKey:kSCHLibreAccessWebServiceFormat]];
+        ret.LastModified = [self makeNullNil:[annotationsContentItem objectForKey:kSCHLibreAccessWebServiceLastModified]];        
 		ret.AverageRating = [self makeNullNil:[annotationsContentItem objectForKey:kSCHLibreAccessWebServiceAverageRating]];        
+		ret.Rating = [self makeNullNil:[annotationsContentItem objectForKey:kSCHLibreAccessWebServiceRating]];                
         ret.PrivateAnnotations = [self privateAnnotation:[annotationsContentItem objectForKey:kSCHLibreAccessWebServicePrivateAnnotations]];        
     }
 	

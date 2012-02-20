@@ -333,6 +333,10 @@ NSString * const SCHContentSyncComponentDidFailNotification = @"SCHContentSyncCo
 	newUserContentItem.DefaultAssignment = [self makeNullNil:[webUserContentItem objectForKey:kSCHLibreAccessWebServiceDefaultAssignment]];		
 	newUserContentItem.ContentIdentifierType = [self makeNullNil:[webUserContentItem objectForKey:kSCHLibreAccessWebServiceContentIdentifierType]];				
 	
+    newUserContentItem.LastVersion = [self makeNullNil:[webUserContentItem objectForKey:kSCHLibreAccessWebServiceLastVersion]];
+	newUserContentItem.FreeBook = [self makeNullNil:[webUserContentItem objectForKey:kSCHLibreAccessWebServiceFreeBook]];    
+	newUserContentItem.AverageRating = [self makeNullNil:[webUserContentItem objectForKey:kSCHLibreAccessWebServiceAverageRating]];        
+
 	NSArray *orderList = [self makeNullNil:[webUserContentItem objectForKey:kSCHLibreAccessWebServiceOrderList]];
 	for (NSDictionary *orderItem in orderList) {
 		[newUserContentItem addOrderListObject:[self addOrderItem:orderItem]];
@@ -348,10 +352,6 @@ NSString * const SCHContentSyncComponentDidFailNotification = @"SCHContentSyncCo
         }
 	}
     	
-	newUserContentItem.LastVersion = [self makeNullNil:[webUserContentItem objectForKey:kSCHLibreAccessWebServiceLastVersion]];
-	newUserContentItem.FreeBook = [self makeNullNil:[webUserContentItem objectForKey:kSCHLibreAccessWebServiceFreeBook]];    
-	newUserContentItem.AverageRating = [self makeNullNil:[webUserContentItem objectForKey:kSCHLibreAccessWebServiceAverageRating]];        
-    
 	newUserContentItem.LastModified = [self makeNullNil:[webUserContentItem objectForKey:kSCHLibreAccessWebServiceLastModified]];
 	newUserContentItem.State = [NSNumber numberWithStatus:kSCHStatusUnmodified];	
 }
@@ -387,6 +387,7 @@ NSString * const SCHContentSyncComponentDidFailNotification = @"SCHContentSyncCo
             newAnnotationsContentItem.DRMQualifier = userContentItem.DRMQualifier;
             newAnnotationsContentItem.ContentIdentifier = userContentItem.ContentIdentifier;
             newAnnotationsContentItem.Format = userContentItem.Format;
+            newAnnotationsContentItem.Rating = [NSNumber numberWithInt:0];
             newAnnotationsContentItem.AverageRating = userContentItem.AverageRating;
             newAnnotationsContentItem.ContentIdentifierType = userContentItem.ContentIdentifierType;
             newAnnotationsContentItem.PrivateAnnotations = newPrivateAnnotations;
