@@ -8,7 +8,8 @@
 
 #import "SCHAccountValidation.h"
 
-#import "SCHScholasticWebService.h"
+#import "SCHScholasticAuthenticationWebService.h"
+#import "SCHUserDefaults.h"
 
 // Constants
 NSString * const kSCHAccountValidationErrorDomain = @"AccountValidationErrorDomain";
@@ -20,7 +21,7 @@ NSInteger const kSCHAccountValidationCredentialsError = 200;
 @property (nonatomic, copy, readwrite) NSString *pToken;
 @property (nonatomic, retain) NSDate *pTokenRequested;
 @property (nonatomic, assign) BOOL waitingOnResponse;
-@property (nonatomic, retain) SCHScholasticWebService *scholasticWebService;
+@property (nonatomic, retain) SCHScholasticAuthenticationWebService *scholasticWebService;
 @property (nonatomic, copy) ValidateBlock validateBlock;
 
 @end
@@ -42,7 +43,7 @@ NSInteger const kSCHAccountValidationCredentialsError = 200;
         pToken = nil;
 		waitingOnResponse = NO;
 
-		scholasticWebService = [[SCHScholasticWebService alloc] init];
+		scholasticWebService = [[SCHScholasticAuthenticationWebService alloc] init];
 		scholasticWebService.delegate = self;	
         
 		[[NSNotificationCenter defaultCenter] addObserver:self 
@@ -100,6 +101,10 @@ NSInteger const kSCHAccountValidationCredentialsError = 200;
     if (pToken != aPToken) {
         [pToken release];
         pToken = [aPToken copy];
+        if (pToken != nil) {
+            [[NSUserDefaults standardUserDefaults] setObject:pToken forKey:kSCHAccountValidationpToken];
+            [[NSUserDefaults standardUserDefaults] synchronize];
+        }
         self.pTokenRequested = (pToken == nil ? nil : [NSDate dateWithTimeIntervalSinceNow:360.0]);
     }
 }
@@ -150,7 +155,7 @@ NSInteger const kSCHAccountValidationCredentialsError = 200;
 - (void)method:(NSString *)method didCompleteWithResult:(NSDictionary *)result
       userInfo:(NSDictionary *)userInfo
 {
-    id pTokenResponse = [result objectForKey:kSCHScholasticWebServicePToken];
+    id pTokenResponse = [result objectForKey:kSCHScholasticAuthenticationWebServicePToken];
     NSError *error = nil;
     
     if (pTokenResponse == [NSNull null]) {

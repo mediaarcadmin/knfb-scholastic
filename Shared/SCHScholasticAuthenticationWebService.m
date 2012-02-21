@@ -1,33 +1,33 @@
 //
-//  SCHScholasticWebService.m
-//  TestWSDL2ObjC
+//  SCHScholasticAuthenticationWebService.m
+//  Scholastic
 //
 //  Created by John S. Eddie on 21/12/2010.
 //  Copyright 2010 BitWink. All rights reserved.
 //
 
-#import "SCHScholasticWebService.h"
+#import "SCHScholasticAuthenticationWebService.h"
 
 #import "BITAPIError.h"
 #import "BITNetworkActivityManager.h"
 #import "TouchXML.h"
 
 // ProcessRemote Constants
-NSString * const kSCHScholasticWebServiceProcessRemote = @"processRemote";
-NSString * const kSCHScholasticWebServicePToken = @"pToken";
+NSString * const kSCHScholasticAuthenticationWebServiceProcessRemote = @"processRemote";
+NSString * const kSCHScholasticAuthenticationWebServicePToken = @"pToken";
 
-static NSString * const kSCHScholasticWebServiceAttribute = @"//attribute";
-static NSString * const kSCHScholasticWebServiceAttributeName = @"name";
-static NSString * const kSCHScholasticWebServiceAttributeValue = @"value";
-static NSString * const kSCHScholasticWebServiceAttributeToken = @"token";
-static NSString * const kSCHScholasticWebServiceAttributeErrorCode = @"errorCode";
-static NSString * const kSCHScholasticWebServiceAttributeErrorDesc = @"errorDesc";
+static NSString * const kSCHScholasticAuthenticationWebServiceAttribute = @"//attribute";
+static NSString * const kSCHScholasticAuthenticationWebServiceAttributeName = @"name";
+static NSString * const kSCHScholasticAuthenticationWebServiceAttributeValue = @"value";
+static NSString * const kSCHScholasticAuthenticationWebServiceAttributeToken = @"token";
+static NSString * const kSCHScholasticAuthenticationWebServiceAttributeErrorCode = @"errorCode";
+static NSString * const kSCHScholasticAuthenticationWebServiceAttributeErrorDesc = @"errorDesc";
 
 /*
  * This class is thread safe when using the Thread Confinement design pattern.
  */
 
-@interface SCHScholasticWebService ()
+@interface SCHScholasticAuthenticationWebService ()
 
 @property (nonatomic, retain) AuthenticateSoap11Binding *binding;
 
@@ -36,7 +36,7 @@ static NSString * const kSCHScholasticWebServiceAttributeErrorDesc = @"errorDesc
 @end
 
 
-@implementation SCHScholasticWebService
+@implementation SCHScholasticAuthenticationWebService
 
 @synthesize binding;
 
@@ -82,13 +82,13 @@ static NSString * const kSCHScholasticWebServiceAttributeErrorDesc = @"errorDesc
 	
 	if (operation.response.error != nil) {
         if ([(id)self.delegate respondsToSelector:@selector(method:didFailWithError:requestInfo:result:)]) {
-            [(id)self.delegate method:kSCHScholasticWebServiceProcessRemote didFailWithError:[self confirmErrorDomain:operation.response.error] 
+            [(id)self.delegate method:kSCHScholasticAuthenticationWebServiceProcessRemote didFailWithError:[self confirmErrorDomain:operation.response.error] 
                           requestInfo:nil result:nil];
         }
 	} else {		
 		for (id bodyPart in response.bodyParts) {
 			if ([bodyPart isKindOfClass:[SOAPFault class]]) {
-				[self reportFault:(SOAPFault *)bodyPart forMethod:kSCHScholasticWebServiceProcessRemote requestInfo:nil];
+				[self reportFault:(SOAPFault *)bodyPart forMethod:kSCHScholasticAuthenticationWebServiceProcessRemote requestInfo:nil];
 				continue;
 			}
 			
@@ -99,7 +99,7 @@ static NSString * const kSCHScholasticWebServiceAttributeErrorDesc = @"errorDesc
 				
 				if (token == nil) {
 					if([(id)self.delegate respondsToSelector:@selector(method:didFailWithError:requestInfo:result:)]) {
-						[(id)self.delegate method:kSCHScholasticWebServiceProcessRemote didFailWithError:error 
+						[(id)self.delegate method:kSCHScholasticAuthenticationWebServiceProcessRemote didFailWithError:error 
                                       requestInfo:nil 
                                            result:nil];
 					}
@@ -109,8 +109,8 @@ static NSString * const kSCHScholasticWebServiceAttributeErrorDesc = @"errorDesc
                                               (serverDate == nil ? (id)[NSNull null] : serverDate), @"serverDate",
                                               nil];
                                 
-					[(id)self.delegate method:kSCHScholasticWebServiceProcessRemote didCompleteWithResult:
-					 [NSDictionary dictionaryWithObject:token forKey:kSCHScholasticWebServicePToken]
+					[(id)self.delegate method:kSCHScholasticAuthenticationWebServiceProcessRemote didCompleteWithResult:
+					 [NSDictionary dictionaryWithObject:token forKey:kSCHScholasticAuthenticationWebServicePToken]
                                      userInfo:userInfo];
 				}
 			}
@@ -130,21 +130,20 @@ static NSString * const kSCHScholasticWebServiceAttributeErrorDesc = @"errorDesc
 	NSString *errorDescription = nil;
 	
 	if (*error == nil) {
-		nodes = [doc nodesForXPath:kSCHScholasticWebServiceAttribute error:error];
+		nodes = [doc nodesForXPath:kSCHScholasticAuthenticationWebServiceAttribute error:error];
 		if (*error == nil) {		
 			for (CXMLElement *node in nodes) {
-				NSString *attributeName = [[node attributeForName:kSCHScholasticWebServiceAttributeName] stringValue];
+				NSString *attributeName = [[node attributeForName:kSCHScholasticAuthenticationWebServiceAttributeName] stringValue];
 				
 				if (attributeName != nil) {
-                    if ([attributeName caseInsensitiveCompare:kSCHScholasticWebServiceAttributeToken] == NSOrderedSame) {
-                        ret = [[node attributeForName:kSCHScholasticWebServiceAttributeValue] stringValue];
+                    if ([attributeName caseInsensitiveCompare:kSCHScholasticAuthenticationWebServiceAttributeToken] == NSOrderedSame) {
+                        ret = [[node attributeForName:kSCHScholasticAuthenticationWebServiceAttributeValue] stringValue];
                         break;
+                    } else if ([attributeName caseInsensitiveCompare:kSCHScholasticAuthenticationWebServiceAttributeErrorCode] == NSOrderedSame) {
+                        errorCode = [[node attributeForName:kSCHScholasticAuthenticationWebServiceAttributeValue] stringValue];
                     }
-                    else if ([attributeName caseInsensitiveCompare:kSCHScholasticWebServiceAttributeErrorCode] == NSOrderedSame) {
-                        errorCode = [[node attributeForName:kSCHScholasticWebServiceAttributeValue] stringValue];
-                    }
-                    else if ([attributeName caseInsensitiveCompare:kSCHScholasticWebServiceAttributeErrorDesc] == NSOrderedSame) {
-                        errorDescription = [[node attributeForName:kSCHScholasticWebServiceAttributeValue] stringValue];
+                    else if ([attributeName caseInsensitiveCompare:kSCHScholasticAuthenticationWebServiceAttributeErrorDesc] == NSOrderedSame) {
+                        errorDescription = [[node attributeForName:kSCHScholasticAuthenticationWebServiceAttributeValue] stringValue];
                     }		
                 }
 			}	
@@ -168,6 +167,5 @@ static NSString * const kSCHScholasticWebServiceAttributeErrorDesc = @"errorDesc
 	
 	return(ret);
 }
-
 
 @end

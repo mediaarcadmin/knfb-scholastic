@@ -19,6 +19,7 @@
 #import <CoreText/CoreText.h>
 #import "SCHPopulateDataStore.h"
 #import "SCHAppStateManager.h"
+#import "SCHCOPPAManager.h"
 #import "LambdaAlert.h"
 #if RUN_KIF_TESTS
 #import "SCHKIFTestController.h"
@@ -125,6 +126,9 @@ static NSString* const prModelCertFilename = @"iphonecert.dat";
         SCHVersionDownloadManager *versionManager = [SCHVersionDownloadManager sharedVersionManager];
         [versionManager checkVersion];
 
+        SCHCOPPAManager *COPPAManager = [SCHCOPPAManager sharedCOPPAManager];
+        [COPPAManager checkCOPPAIfRequired];
+        
         [self ensureCorrectCertsAvailable];
     } else {
         [self catastrophicFailureWithError:error];
@@ -195,6 +199,7 @@ static NSString* const prModelCertFilename = @"iphonecert.dat";
             kSCHAuthenticationManagerUserKey,
             kSCHAuthenticationManagerDeviceKey,
             kSCHAuthenticationManagerUsername,
+            kSCHAccountValidationpToken,
             nil];    
 }
 

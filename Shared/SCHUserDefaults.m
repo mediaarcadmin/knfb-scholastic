@@ -17,3 +17,5 @@ NSString * const kSCHUserDefaultsWelcomeViewShowCount = @"SCHUserDefaultsWelcome
 NSString * const kSCHAuthenticationManagerUserKey = @"AuthenticationManager.UserKey";
 NSString * const kSCHAuthenticationManagerDeviceKey = @"AuthenticationManager.DeviceKey";
 NSString * const kSCHAuthenticationManagerUsername = @"AuthenticationManager.Username";
+
+NSString * const kSCHAccountValidationpToken = @"AccountValidation.pToken";

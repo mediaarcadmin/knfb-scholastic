@@ -25,6 +25,7 @@
 #import "NSString+URLEncoding.h"
 #import "SCHNonDRMAuthenticationManager.h"
 #import "SCHVersionDownloadManager.h"
+#import "SCHCOPPAManager.h"
 
 // Constants
 NSString * const SCHAuthenticationManagerReceivedServerDeregistrationNotification = @"SCHAuthenticationManagerReceivedServerDeregistrationNotification";
@@ -579,6 +580,7 @@ NSTimeInterval const kSCHAuthenticationManagerSecondsInAMinute = 60.0;
                     } else {
                         [weakSelf.libreAccessWebService tokenExchange:pToken 
                                                               forUser:[[NSUserDefaults standardUserDefaults] stringForKey:kSCHAuthenticationManagerUsername]];                            
+                        [[SCHCOPPAManager sharedCOPPAManager] checkCOPPAIfRequired];
                     }
                 }];
                 
@@ -653,6 +655,8 @@ NSTimeInterval const kSCHAuthenticationManagerSecondsInAMinute = 60.0;
     [[NSUserDefaults standardUserDefaults] removeObjectForKey:kSCHAuthenticationManagerUsername];
     [[NSUserDefaults standardUserDefaults] removeObjectForKey:kSCHAuthenticationManagerUserKey];    
     [[NSUserDefaults standardUserDefaults] synchronize];
+    
+    [[SCHCOPPAManager sharedCOPPAManager] resetCOPPA];
 }
 
 - (void)clearAppProcessingOnMainThread
