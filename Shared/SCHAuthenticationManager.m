@@ -484,6 +484,12 @@ NSTimeInterval const kSCHAuthenticationManagerSecondsInAMinute = 60.0;
     self.aToken = nil;
 }
 
+- (void)expireDeviceKey
+{
+    [[NSUserDefaults standardUserDefaults] removeObjectForKey:kSCHAuthenticationManagerDeviceKey];
+    [[NSUserDefaults standardUserDefaults] synchronize];
+}
+
 - (void)isAuthenticatedOnMainThread:(NSValue *)returnValue
 {
     NSAssert([NSThread isMainThread] == YES, @"SCHAuthenticationManager::isAuthenticatedOnMainThread MUST be executed on the main thread");

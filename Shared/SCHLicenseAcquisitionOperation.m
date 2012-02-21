@@ -47,8 +47,19 @@
             [self.licenseAcquisitionSession acquireLicense:[[SCHAuthenticationManager sharedAuthenticationManager] aToken] bookID:self.identifier];
             self.licenseAcquisitionSession = nil;
         } else {
-            [self setIsProcessing:NO];
-            [self endOperation];
+            // Attempt to authenticate
+            [[SCHAuthenticationManager sharedAuthenticationManager] authenticateWithSuccessBlock:^(SCHAuthenticationManagerConnectivityMode connectivityMode){
+                    if (connectivityMode == SCHAuthenticationManagerConnectivityModeOnline) {
+                        self.licenseAcquisitionSession = [[[SCHDrmLicenseAcquisitionSession alloc] initWithBook:self.identifier] autorelease];
+                        [self.licenseAcquisitionSession setDelegate:self];            
+                        [self.licenseAcquisitionSession acquireLicense:[[SCHAuthenticationManager sharedAuthenticationManager] aToken] bookID:self.identifier];
+                        self.licenseAcquisitionSession = nil;
+                    } else {
+                        [self updateBookWithFailure];
+                    }
+            } failureBlock:^(NSError *error) {
+                [self updateBookWithFailure];
+            } waitUntilVersionCheckIsDone:YES];
         }
     } else {
         [self updateBookWithSuccess];
@@ -63,6 +74,10 @@
         SCHXPSProvider *xpsProvider = [[SCHBookManager sharedBookManager] threadSafeCheckOutXPSProviderForBookIdentifier:self.identifier];
         
         useDRM = [[NSNumber numberWithBool:[xpsProvider isEncrypted]] retain];
+        
+        if ([useDRM boolValue]) {
+            [xpsProvider resetDrmDecrypter];
+        }
         
         [[SCHBookManager sharedBookManager] checkInXPSProviderForBookIdentifier:self.identifier];
     }

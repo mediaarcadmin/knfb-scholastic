@@ -71,5 +71,6 @@ extern NSInteger const kSCHAuthenticationManagerOfflineError;
 - (void)forceDeregistrationWithCompletionBlock:(SCHDrmDeregistrationSuccessBlock)completionBlock;
 
 - (void)expireToken;
+- (void)expireDeviceKey;
 
 @end

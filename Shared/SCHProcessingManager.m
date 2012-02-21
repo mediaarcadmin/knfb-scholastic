@@ -37,6 +37,7 @@ extern NSString * const kSCHUserDefaultsSpaceSaverModeSetOffNotification;
 - (void)createProcessingQueues;
 - (void)checkStateForAllBooks;
 - (BOOL)identifierNeedsProcessing:(SCHBookIdentifier *)identifier;
+- (BOOL)identifierHasAcquiredLicense:(SCHBookIdentifier *)identifier;
 
 - (void) processIdentifier: (SCHBookIdentifier *) identifier;
 - (void) redispatchIdentifier: (SCHBookIdentifier *) identifier;
@@ -312,6 +313,30 @@ static SCHProcessingManager *sharedManager = nil;
 	return needsProcessing;
 }
 
+- (BOOL)identifierHasAcquiredLicense:(SCHBookIdentifier *)identifier
+{
+    NSAssert([NSThread isMainThread], @"identifierHasAcquiredLicense must run on main thread");
+    
+	SCHAppBook *book = [[SCHBookManager sharedBookManager] bookWithIdentifier:identifier inManagedObjectContext:self.managedObjectContext];
+    
+    if (book != nil) {        
+        switch (book.processingState) {
+            case  SCHBookProcessingStateReadyForRightsParsing:    
+            case SCHBookProcessingStateReadyForAudioInfoParsing: 
+            case SCHBookProcessingStateReadyForTextFlowPreParse: 
+            case  SCHBookProcessingStateReadyForSmartZoomPreParse:
+            case SCHBookProcessingStateReadyForPagination:
+            case SCHBookProcessingStateReadyToRead:
+                return YES;
+                break;
+            default:
+                break;
+        }
+    }
+    
+	return NO;
+}
+
 - (BOOL)spaceSaverMode
 {
     BOOL ret = YES;
@@ -400,6 +425,36 @@ static SCHProcessingManager *sharedManager = nil;
         
         [self.currentlyProcessingIdentifiers removeObject:bookIdentifier];
     }
+}
+
+- (void)forceAllBooksToReAcquireLicense
+{
+    NSAssert([NSThread isMainThread], @"forceAllAvailableBooksToReAcquireLicenses must run on main thread");
+    
+    NSManagedObjectContext *moc = self.managedObjectContext;
+    
+	NSArray *allIdentifiers = [[SCHBookManager sharedBookManager] allBookIdentifiersInManagedObjectContext:moc];
+    NSMutableArray *identifiersToBeProcessed = [NSMutableArray array];
+    
+	// get all the books independent of profile
+	for (SCHBookIdentifier *identifier in allIdentifiers) {
+		SCHAppBook *book = [[SCHBookManager sharedBookManager] bookWithIdentifier:identifier inManagedObjectContext:moc];
+        
+        if (book != nil) {
+            // if the book is currently processing, ignore it 
+            if (![book isProcessing] && [self identifierHasAcquiredLicense:identifier]) {
+                [identifiersToBeProcessed addObject:identifier];
+            }
+        }
+	}
+	
+    for (SCHBookIdentifier *identifier in identifiersToBeProcessed) {
+        SCHAppBook *book = [[SCHBookManager sharedBookManager] bookWithIdentifier:identifier inManagedObjectContext:moc];
+        [book setProcessingState:SCHBookProcessingStateReadyForLicenseAcquisition];
+        [self redispatchIdentifier:identifier];
+    }
+    
+    [self checkIfProcessing];
 }
 
 #pragma mark - Processing Methods

@@ -60,6 +60,8 @@ extern NSString * const kSCHProcessingManagerConnectionBusy;
 // stop processing a book
 - (void)cancelAllOperationsForBookIdentifier:(SCHBookIdentifier *)bookIdentifier;
 
+- (void)forceAllBooksToReAcquireLicense;
+
 // FIXME: locking queue for SCHBookCoverView, here temporarily for testings
 @property dispatch_queue_t thumbnailAccessQueue;
 

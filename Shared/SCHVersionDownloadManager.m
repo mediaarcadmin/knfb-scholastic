@@ -15,6 +15,7 @@
 // Constants
 NSString * const SCHVersionDownloadManagerCompletedNotification = @"SCHVersionDownloadManagerCompletedNotification";
 NSString * const SCHVersionDownloadManagerCompletionAppVersionState = @"SCHVersionDownloadManagerCompletionAppVersionState";
+NSString * const SCHVersionDownloadManagerSavedAppVersion = @"SCHVersionDownloadManagerSavedAppVersion";
 
 #pragma mark - Class Extension
 
@@ -47,7 +48,6 @@ NSString * const SCHVersionDownloadManagerCompletionAppVersionState = @"SCHVersi
 - (void)process;
 
 - (SCHVersionManifestEntry *)nextManifestEntryUpdateForCurrentVersion;
-- (NSString *)appVersion;
 - (void)resetStateForced:(BOOL)forced;
 
 @end
@@ -270,7 +270,7 @@ NSString * const SCHVersionDownloadManagerCompletionAppVersionState = @"SCHVersi
 
 - (SCHVersionManifestEntry *)nextManifestEntryUpdateForCurrentVersion
 {
-    NSString *currentVersion = [self appVersion];
+    NSString *currentVersion = [self bundleAppVersion];
     SCHVersionManifestEntry *entryUpdateForCurrentVersion = nil;
     SCHVersionManifestEntry *defaultEntryUpdate = nil;
     
@@ -361,7 +361,7 @@ NSString * const SCHVersionDownloadManagerCompletionAppVersionState = @"SCHVersi
             
             SCHVersionManifestEntry *entry = [self nextManifestEntryUpdateForCurrentVersion];
             
-            NSString *currentVersion = [self appVersion];
+            NSString *currentVersion = [self bundleAppVersion];
             
             if (currentVersion) {
                 if (entry != nil && 
@@ -407,9 +407,24 @@ NSString * const SCHVersionDownloadManagerCompletionAppVersionState = @"SCHVersi
 #pragma mark -
 #pragma mark App Version
 
-- (NSString *)appVersion
+- (NSString *)bundleAppVersion
 {
     return [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"];
+}
+
+- (NSString *)retrieveAppVersionFromPreferences
+{
+    return [[NSUserDefaults standardUserDefaults] stringForKey:SCHVersionDownloadManagerSavedAppVersion];
+}
+
+- (void)saveAppVersionToPreferences
+{
+    NSString *currentVersion = [self bundleAppVersion];
+    
+    if (currentVersion) {
+        [[NSUserDefaults standardUserDefaults] setObject:currentVersion forKey:SCHVersionDownloadManagerSavedAppVersion];
+        [[NSUserDefaults standardUserDefaults] synchronize];
+    }
 }
 
 #pragma mark - Update Check

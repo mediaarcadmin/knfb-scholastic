@@ -1049,9 +1049,7 @@ typedef enum
                      [cell setLoading:YES];
                  }
                    endBlock:^(BOOL didOpen){
-                       if (didOpen) {
-                           [cell setLoading:NO];
-                       }
+                       [cell setLoading:NO];
                    }];
 }
 

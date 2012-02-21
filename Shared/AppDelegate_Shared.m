@@ -20,17 +20,22 @@
 #import "SCHPopulateDataStore.h"
 #import "SCHAppStateManager.h"
 #import "LambdaAlert.h"
+#import "SCHDrmSession.h"
+#import "SCHAuthenticationManager.h"
 #if RUN_KIF_TESTS
 #import "SCHKIFTestController.h"
 #endif
 
 static NSString* const wmModelCertFilename = @"devcerttemplate.dat";
 static NSString* const prModelCertFilename = @"iphonecert.dat";
+static NSString* const devCertFilename = @"devcert.dat";
+static NSString* const binaryDevCertFilename = @"bdevcert.dat";
 
 @interface AppDelegate_Shared ()
 
 - (void)setupUserDefaults;
 - (BOOL)createApplicationSupportDirectory;
+- (void)resetDRMState;
 - (void)ensureCorrectCertsAvailable;
 - (void)catastrophicFailureWithError:(NSError *)error;
 
@@ -96,6 +101,20 @@ static NSString* const prModelCertFilename = @"iphonecert.dat";
         // instantiate the shared processing manager
         [SCHProcessingManager sharedProcessingManager].managedObjectContext = self.coreDataHelper.managedObjectContext;
         
+        NSString *bundleVersion = [[SCHVersionDownloadManager sharedVersionManager] bundleAppVersion];
+        NSString *lastVersion = [[SCHVersionDownloadManager sharedVersionManager] retrieveAppVersionFromPreferences];
+        
+        // Store the current version to preferences so that on next launch the check is up to date
+        [[SCHVersionDownloadManager sharedVersionManager] saveAppVersionToPreferences];
+        
+        if (!(lastVersion && [bundleVersion isEqualToString:lastVersion])) {
+            // We force the DRM to reset on an upgrade
+            // This will also force a reset on first install
+            [self resetDRMState];
+        } else {
+            [self ensureCorrectCertsAvailable];
+        }
+        
         // pre-warm Core Text
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
             NSMutableDictionary *attributes = [NSMutableDictionary dictionary];
@@ -124,8 +143,6 @@ static NSString* const prModelCertFilename = @"iphonecert.dat";
 
         SCHVersionDownloadManager *versionManager = [SCHVersionDownloadManager sharedVersionManager];
         [versionManager checkVersion];
-
-        [self ensureCorrectCertsAvailable];
     } else {
         [self catastrophicFailureWithError:error];
     }
@@ -272,6 +289,73 @@ static NSString* const prModelCertFilename = @"iphonecert.dat";
 	else {
 		return YES;
 	}
+}
+
+- (void)resetDRMState
+{
+    fprintf(stderr, "\nStoria: Resetting the DRM state");
+    
+    // Suspend syncing and processing
+    [[SCHProcessingManager sharedProcessingManager] cancelAllOperations];                
+    [[SCHSyncManager sharedSyncManager] stop]; 
+    
+    // Clear out the DRM Keychain items
+    [SCHDrmSession resetDRMKeychainItems];
+    
+    NSString *supportDirectory = [[self applicationSupportDocumentsDirectory] path];
+    
+    // Remove the PlayReady.hds file from disk (this code is ported from Blio)
+    NSString *strDataStore = [supportDirectory stringByAppendingPathComponent:@"playready.hds"];
+    if ([[NSFileManager defaultManager] fileExistsAtPath:strDataStore]) {
+        NSError * error;
+        if (![[NSFileManager defaultManager] removeItemAtPath:strDataStore error:&error]) {
+            fprintf(stderr, "\nWARNING: deletion of PlayReady store failed. %s, %s", [[error description] UTF8String], [[[error userInfo] description] UTF8String]);
+        } else {
+            fprintf(stderr, "\nPlayReady store deleted.");
+        }
+    }
+
+    // Remove the devcertdat and bdevcert.dat files
+    NSString *devcertDatFile = [supportDirectory stringByAppendingPathComponent:devCertFilename];
+    if ([[NSFileManager defaultManager] fileExistsAtPath:devcertDatFile]) {
+        NSError * error;
+        if (![[NSFileManager defaultManager] removeItemAtPath:devcertDatFile error:&error]) {
+            fprintf(stderr, "\nWARNING: deletion of devcert.dat failed. %s, %s", [[error description] UTF8String], [[[error userInfo] description] UTF8String]);
+        } else {
+            fprintf(stderr, "\ndevcert.dat deleted.");
+        }
+    }
+    
+    NSString *binaryDevcertDatFile = [supportDirectory stringByAppendingPathComponent:binaryDevCertFilename];
+    if ([[NSFileManager defaultManager] fileExistsAtPath:binaryDevcertDatFile]) {
+        NSError * error;
+        if (![[NSFileManager defaultManager] removeItemAtPath:binaryDevcertDatFile error:&error]) {
+            fprintf(stderr, "\nWARNING: deletion of bdevcert.dat failed. %s, %s", [[error description] UTF8String], [[[error userInfo] description] UTF8String]);
+        } else {
+            fprintf(stderr, "\nbdevcert.dat deleted.\n");
+        }
+    }
+    
+    // Expire the drmToken and the device Key so that it does a domain join again
+    [[SCHAuthenticationManager sharedAuthenticationManager] expireToken];
+    [[SCHAuthenticationManager sharedAuthenticationManager] expireDeviceKey];
+    [[SCHAuthenticationManager sharedAuthenticationManager] authenticateWithSuccessBlock:^(SCHAuthenticationManagerConnectivityMode connectivityMode) {
+        [self ensureCorrectCertsAvailable];
+        // Force the books to re-aquire licenses
+        [[SCHProcessingManager sharedProcessingManager] forceAllBooksToReAcquireLicense];
+        [[SCHSyncManager sharedSyncManager] start];
+        [[SCHSyncManager sharedSyncManager] firstSync:YES requireDeviceAuthentication:NO];
+     } failureBlock:^(NSError *error) {
+         LambdaAlert *alert = [[LambdaAlert alloc]
+                               initWithTitle:NSLocalizedString(@"Unable to Authenticate", @"Unable to Authenticate") 
+                               message:NSLocalizedString(@"Unable to authenticate Storia. Please make sure you are connected to the internet and try again.", nil)];
+         [alert addButtonWithTitle:NSLocalizedString(@"Retry", @"Retry") block:^{
+             [self resetDRMState];
+         }];
+         [alert show];
+         [alert release];
+     } waitUntilVersionCheckIsDone:YES];
+
 }
 
 - (void)ensureCorrectCertsAvailable 
