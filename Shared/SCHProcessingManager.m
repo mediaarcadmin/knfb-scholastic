@@ -451,6 +451,7 @@ static SCHProcessingManager *sharedManager = nil;
     for (SCHBookIdentifier *identifier in identifiersToBeProcessed) {
         SCHAppBook *book = [[SCHBookManager sharedBookManager] bookWithIdentifier:identifier inManagedObjectContext:moc];
         [book setProcessingState:SCHBookProcessingStateReadyForLicenseAcquisition];
+        [self postBookStateUpdate:identifier];
         [self redispatchIdentifier:identifier];
     }
     

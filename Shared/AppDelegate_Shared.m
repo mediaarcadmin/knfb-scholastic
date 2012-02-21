@@ -64,8 +64,12 @@ static NSString* const binaryDevCertFilename = @"bdevcert.dat";
                           message:[NSString stringWithFormat:
                                    NSLocalizedString(@"A critical error occured. If this problem persists please contact support.\n\n '%@ %@'", nil), 
                                    [error localizedDescription], [error userInfo]]];
-    [alert addButtonWithTitle:NSLocalizedString(@"Quit", @"Quit") block:^{
-        abort();
+    [alert addButtonWithTitle:NSLocalizedString(@"Reset", @"Reset") block:^{
+        [[SCHAuthenticationManager sharedAuthenticationManager] forceDeregistrationWithCompletionBlock:^{
+            [self.coreDataHelper resetMainStore];
+            [self.coreDataHelper resetDictionaryStore];
+            abort();
+        }];
     }];
     [alert show];
     [alert release];
@@ -103,7 +107,7 @@ static NSString* const binaryDevCertFilename = @"bdevcert.dat";
         
         NSString *bundleVersion = [[SCHVersionDownloadManager sharedVersionManager] bundleAppVersion];
         NSString *lastVersion = [[SCHVersionDownloadManager sharedVersionManager] retrieveAppVersionFromPreferences];
-        
+
         // Store the current version to preferences so that on next launch the check is up to date
         [[SCHVersionDownloadManager sharedVersionManager] saveAppVersionToPreferences];
         
@@ -336,25 +340,33 @@ static NSString* const binaryDevCertFilename = @"bdevcert.dat";
         }
     }
     
-    // Expire the drmToken and the device Key so that it does a domain join again
+    // Expire the drmToken and the device Key so that it does a domain join again on next authentication
     [[SCHAuthenticationManager sharedAuthenticationManager] expireToken];
     [[SCHAuthenticationManager sharedAuthenticationManager] expireDeviceKey];
-    [[SCHAuthenticationManager sharedAuthenticationManager] authenticateWithSuccessBlock:^(SCHAuthenticationManagerConnectivityMode connectivityMode) {
+    
+    if ([[SCHAuthenticationManager sharedAuthenticationManager] hasUsernameAndPassword] && 
+        [[SCHSyncManager sharedSyncManager] havePerformedFirstSyncUpToBooks]) {
+        
+        [[SCHAuthenticationManager sharedAuthenticationManager] authenticateWithSuccessBlock:^(SCHAuthenticationManagerConnectivityMode connectivityMode) {
+            [self ensureCorrectCertsAvailable];
+            // Force the books to re-aquire licenses
+            [[SCHProcessingManager sharedProcessingManager] forceAllBooksToReAcquireLicense];
+            [[SCHSyncManager sharedSyncManager] start];
+            [[SCHSyncManager sharedSyncManager] firstSync:YES requireDeviceAuthentication:NO];
+        } failureBlock:^(NSError *error) {
+            LambdaAlert *alert = [[LambdaAlert alloc]
+                                  initWithTitle:NSLocalizedString(@"Unable to Authenticate", @"Unable to Authenticate") 
+                                  message:NSLocalizedString(@"Unable to authenticate Storia. Please make sure you are connected to the internet and try again.", nil)];
+            [alert addButtonWithTitle:NSLocalizedString(@"Retry", @"Retry") block:^{
+                [self resetDRMState];
+            }];
+            [alert show];
+            [alert release];
+        } waitUntilVersionCheckIsDone:YES];
+    } else {
         [self ensureCorrectCertsAvailable];
-        // Force the books to re-aquire licenses
-        [[SCHProcessingManager sharedProcessingManager] forceAllBooksToReAcquireLicense];
         [[SCHSyncManager sharedSyncManager] start];
-        [[SCHSyncManager sharedSyncManager] firstSync:YES requireDeviceAuthentication:NO];
-     } failureBlock:^(NSError *error) {
-         LambdaAlert *alert = [[LambdaAlert alloc]
-                               initWithTitle:NSLocalizedString(@"Unable to Authenticate", @"Unable to Authenticate") 
-                               message:NSLocalizedString(@"Unable to authenticate Storia. Please make sure you are connected to the internet and try again.", nil)];
-         [alert addButtonWithTitle:NSLocalizedString(@"Retry", @"Retry") block:^{
-             [self resetDRMState];
-         }];
-         [alert show];
-         [alert release];
-     } waitUntilVersionCheckIsDone:YES];
+    }
 
 }
 
