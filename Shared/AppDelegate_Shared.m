@@ -107,7 +107,7 @@ static NSString* const binaryDevCertFilename = @"bdevcert.dat";
         
         NSString *bundleVersion = [[SCHVersionDownloadManager sharedVersionManager] bundleAppVersion];
         NSString *lastVersion = [[SCHVersionDownloadManager sharedVersionManager] retrieveAppVersionFromPreferences];
-        
+
         // Store the current version to preferences so that on next launch the check is up to date
         [[SCHVersionDownloadManager sharedVersionManager] saveAppVersionToPreferences];
         
@@ -354,11 +354,21 @@ static NSString* const binaryDevCertFilename = @"bdevcert.dat";
             [[SCHSyncManager sharedSyncManager] setSuspended:NO];
             [[SCHSyncManager sharedSyncManager] firstSync:YES requireDeviceAuthentication:NO];
         } failureBlock:^(NSError *error) {
+            NSString *authMessage = [[SCHAuthenticationManager sharedAuthenticationManager] localizedMessageForAuthenticationError:error];
+            
+            if (!authMessage) {
+                authMessage = NSLocalizedString(@"Unable to authenticate Storia. Please make sure you are connected to the internet and try again.", nil);
+            }
             LambdaAlert *alert = [[LambdaAlert alloc]
                                   initWithTitle:NSLocalizedString(@"Unable to Authenticate", @"Unable to Authenticate") 
-                                  message:NSLocalizedString(@"Unable to authenticate Storia. Please make sure you are connected to the internet and try again.", nil)];
+                                  message:authMessage];
             [alert addButtonWithTitle:NSLocalizedString(@"Retry", @"Retry") block:^{
                 [self resetDRMState];
+            }];
+            [alert addButtonWithTitle:NSLocalizedString(@"Reset", @"Reset") block:^{
+                [[SCHAuthenticationManager sharedAuthenticationManager] forceDeregistrationWithCompletionBlock:^{
+                    abort();
+                }];
             }];
             [alert show];
             [alert release];

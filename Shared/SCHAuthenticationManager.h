@@ -73,4 +73,6 @@ extern NSInteger const kSCHAuthenticationManagerOfflineError;
 - (void)expireToken;
 - (void)expireDeviceKey;
 
+- (NSString *)localizedMessageForAuthenticationError:(NSError *)error;
+
 @end
