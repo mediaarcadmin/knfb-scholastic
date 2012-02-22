@@ -23,6 +23,7 @@
 #import "SCHUserDefaults.h"
 #import "SCHCoreDataHelper.h"
 #import "SCHAppStateManager.h"
+#import "SCHXPSProvider.h"
 
 // Constants
 NSString * const kSCHProcessingManagerConnectionIdle = @"SCHProcessingManagerConnectionIdle";
@@ -317,7 +318,11 @@ static SCHProcessingManager *sharedManager = nil;
 {
     NSAssert([NSThread isMainThread], @"identifierHasAcquiredLicense must run on main thread");
     
+    BOOL hasCompletedLicenseAquisitionProcessingOperation = NO;
+    BOOL hasAquiredLicense = NO;
+    
 	SCHAppBook *book = [[SCHBookManager sharedBookManager] bookWithIdentifier:identifier inManagedObjectContext:self.managedObjectContext];
+   
     
     if (book != nil) {        
         switch (book.processingState) {
@@ -327,14 +332,22 @@ static SCHProcessingManager *sharedManager = nil;
             case  SCHBookProcessingStateReadyForSmartZoomPreParse:
             case SCHBookProcessingStateReadyForPagination:
             case SCHBookProcessingStateReadyToRead:
-                return YES;
+                hasCompletedLicenseAquisitionProcessingOperation = YES;
                 break;
             default:
                 break;
         }
     }
     
-	return NO;
+    if (hasCompletedLicenseAquisitionProcessingOperation) {
+        NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
+        SCHXPSProvider *xpsProvider = [[SCHBookManager sharedBookManager] threadSafeCheckOutXPSProviderForBookIdentifier:identifier];
+        hasAquiredLicense = [xpsProvider isEncrypted];
+        [[SCHBookManager sharedBookManager] checkInXPSProviderForBookIdentifier:identifier];
+        [pool drain];
+    }
+    
+	return hasAquiredLicense;
 }
 
 - (BOOL)spaceSaverMode
