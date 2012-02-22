@@ -97,7 +97,7 @@ static NSString* const binaryDevCertFilename = @"bdevcert.dat";
         
         SCHSyncManager *syncManager = [SCHSyncManager sharedSyncManager];
         syncManager.managedObjectContext = self.coreDataHelper.managedObjectContext;
-        [syncManager start];
+        [syncManager startHeartbeat];
 	    
         SCHURLManager *urlManager = [SCHURLManager sharedURLManager];
         urlManager.managedObjectContext = self.coreDataHelper.managedObjectContext;
@@ -107,7 +107,7 @@ static NSString* const binaryDevCertFilename = @"bdevcert.dat";
         
         NSString *bundleVersion = [[SCHVersionDownloadManager sharedVersionManager] bundleAppVersion];
         NSString *lastVersion = [[SCHVersionDownloadManager sharedVersionManager] retrieveAppVersionFromPreferences];
-
+        
         // Store the current version to preferences so that on next launch the check is up to date
         [[SCHVersionDownloadManager sharedVersionManager] saveAppVersionToPreferences];
         
@@ -301,7 +301,7 @@ static NSString* const binaryDevCertFilename = @"bdevcert.dat";
     
     // Suspend syncing and processing
     [[SCHProcessingManager sharedProcessingManager] cancelAllOperations];                
-    [[SCHSyncManager sharedSyncManager] stop]; 
+    [[SCHSyncManager sharedSyncManager] setSuspended:YES]; 
     
     // Clear out the DRM Keychain items
     [SCHDrmSession resetDRMKeychainItems];
@@ -351,7 +351,7 @@ static NSString* const binaryDevCertFilename = @"bdevcert.dat";
             [self ensureCorrectCertsAvailable];
             // Force the books to re-aquire licenses
             [[SCHProcessingManager sharedProcessingManager] forceAllBooksToReAcquireLicense];
-            [[SCHSyncManager sharedSyncManager] start];
+            [[SCHSyncManager sharedSyncManager] setSuspended:NO];
             [[SCHSyncManager sharedSyncManager] firstSync:YES requireDeviceAuthentication:NO];
         } failureBlock:^(NSError *error) {
             LambdaAlert *alert = [[LambdaAlert alloc]
@@ -365,7 +365,7 @@ static NSString* const binaryDevCertFilename = @"bdevcert.dat";
         } waitUntilVersionCheckIsDone:YES];
     } else {
         [self ensureCorrectCertsAvailable];
-        [[SCHSyncManager sharedSyncManager] start];
+        [[SCHSyncManager sharedSyncManager] setSuspended:NO];
     }
 
 }
