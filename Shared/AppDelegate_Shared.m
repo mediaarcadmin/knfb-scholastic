@@ -107,7 +107,7 @@ static NSString* const binaryDevCertFilename = @"bdevcert.dat";
         
         NSString *bundleVersion = [[SCHVersionDownloadManager sharedVersionManager] bundleAppVersion];
         NSString *lastVersion = [[SCHVersionDownloadManager sharedVersionManager] retrieveAppVersionFromPreferences];
-        lastVersion = nil;
+
         // Store the current version to preferences so that on next launch the check is up to date
         [[SCHVersionDownloadManager sharedVersionManager] saveAppVersionToPreferences];
         
