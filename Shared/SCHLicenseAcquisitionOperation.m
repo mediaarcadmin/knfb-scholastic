@@ -92,6 +92,8 @@
             } else {
                 [self updateBookWithFailure];
             }
+            
+            [authenticationCondition release];
         }
     } else {
         [self updateBookWithSuccess];
