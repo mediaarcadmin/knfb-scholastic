@@ -36,7 +36,6 @@ extern NSString * const kSCHUserDefaultsSpaceSaverModeSetOffNotification;
 @interface SCHProcessingManager()
 
 - (void)createProcessingQueues;
-- (void)checkStateForAllBooks;
 - (BOOL)identifierNeedsProcessing:(SCHBookIdentifier *)identifier;
 - (BOOL)identifierHasAcquiredLicense:(SCHBookIdentifier *)identifier;
 
@@ -830,6 +829,25 @@ static SCHProcessingManager *sharedManager = nil;
             
             [self processIdentifier:identifier];
         }
+        
+        if (![self identifierIsProcessing:identifier]) {
+            switch (book.processingState) {
+                case SCHBookProcessingStateNoURLs:
+                    case SCHBookProcessingStateNoCoverImage:
+                    case SCHBookProcessingStateReadyForLicenseAcquisition:
+                    case SCHBookProcessingStateReadyForRightsParsing:
+                    case SCHBookProcessingStateReadyForAudioInfoParsing:
+                    case SCHBookProcessingStateReadyForTextFlowPreParse:
+                    case SCHBookProcessingStateReadyForSmartZoomPreParse:
+                    case SCHBookProcessingStateReadyForPagination:
+                        // Book is not processing, but is not waiting for user interaction - this is an error state, re-kick off processing for all books
+                        [self checkStateForAllBooks];
+                    break;                      
+                default:
+                    break;
+            }
+        }
+        
         // otherwise ignore the touch
     }
 }

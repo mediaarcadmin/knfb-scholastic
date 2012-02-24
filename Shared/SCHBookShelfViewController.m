@@ -320,6 +320,10 @@ typedef enum
         if ([[SCHSyncManager sharedSyncManager] isSynchronizing] == NO) {
             [[SCHSyncManager sharedSyncManager] firstSync:NO requireDeviceAuthentication:NO];
         }
+        
+        if ([[SCHSyncManager sharedSyncManager] isSuspended]) {
+            [[SCHProcessingManager sharedProcessingManager] checkStateForAllBooks];
+        }
     }
     
 }
