@@ -866,6 +866,11 @@ NSTimeInterval const kSCHAuthenticationManagerSecondsInAMinute = 60.0;
         Block_release(handler);
     }
     
+    if ([[SCHSyncManager sharedSyncManager] isSuspended] && (connectivityMode == SCHAuthenticationManagerConnectivityModeOnline))  {
+        NSLog(@"Warning Sync Manager suspended when authentication succeeded with online mode");
+        [[SCHSyncManager sharedSyncManager] setSuspended:NO];
+    }
+    
     self.authenticationFailureBlock = nil;
 }
 
