@@ -268,6 +268,13 @@ typedef enum
                 [weakSelf dismissLoadingView];
                 [weakSelf performSelector:@selector(back)];
             }];
+            
+            if ([[SCHSyncManager sharedSyncManager] isSuspended]) {
+                [alert addButtonWithTitle:NSLocalizedString(@"Dismiss", @"") block:^{
+                    [weakSelf dismissLoadingView];
+                }];
+            }
+            
             [alert setSpinnerHidden:NO];
             [alert show];
             self.loadingView = alert;
