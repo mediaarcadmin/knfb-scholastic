@@ -389,7 +389,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
         bookIdentifier = [aIdentifier retain];
         xpsProvider = [[[SCHBookManager sharedBookManager] checkOutXPSProviderForBookIdentifier:bookIdentifier inManagedObjectContext:moc] retain];
 
-        if (!xpsProvider) {
+        if (!xpsProvider || ([xpsProvider pageCount] == 0)) {
             return [self initFailureWithErrorCode:kSCHReadingViewXPSCheckoutFailedError error:error];
         }
         
