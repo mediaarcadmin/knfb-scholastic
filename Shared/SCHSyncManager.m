@@ -253,6 +253,7 @@ static NSUInteger const kSCHSyncManagerMaximumFailureRetries = 3;
 	
     self.lastFirstSyncEnded = nil;
     self.syncAfterDelay = NO;
+    self.suspended = NO;
     
     [self endBackgroundTask];
         

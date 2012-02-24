@@ -204,6 +204,12 @@ static const NSTimeInterval kSCHStartingViewControllerNonForcedAlertInterval = (
 {
     [super viewDidAppear:animated];
     
+    // SyncManager should not be suspended
+    if ([[SCHSyncManager sharedSyncManager] isSuspended]) {
+        NSLog(@"Warning Sync Manager suspended when showing start view controller");
+        [[SCHSyncManager sharedSyncManager] setSuspended:NO];
+    }
+    
     if ([[SCHAuthenticationManager sharedAuthenticationManager] hasUsernameAndPassword] &&
         [[SCHSyncManager sharedSyncManager] havePerformedFirstSyncUpToBooks]) {
         
@@ -882,6 +888,12 @@ static const NSTimeInterval kSCHStartingViewControllerNonForcedAlertInterval = (
 {       
     if (self.modalViewController) {
         [self dismissModalViewControllerAnimated:YES];
+    }
+    
+    // SyncManager should not be suspended
+    if ([[SCHSyncManager sharedSyncManager] isSuspended]) {
+        NSLog(@"Warning Sync Manager suspended when opening samples");
+        [[SCHSyncManager sharedSyncManager] setSuspended:NO];
     }
     
     SCHProfileViewController_Shared *profile = [self profileViewController];
