@@ -87,6 +87,7 @@ didReceiveResponse:(NSURLResponse *)response
             NSLog(@"Error downloading file, errorCode: %d", [(NSHTTPURLResponse *)response statusCode]);
             [[SCHHelpManager sharedHelpManager] threadSafeUpdateHelpState:SCHHelpProcessingStateError];
             [self cancel];
+            [self finishOp];
             return;
         }
     }
@@ -123,7 +124,8 @@ didReceiveResponse:(NSURLResponse *)response
 {
 	NSLog(@"failed download!");
     [[SCHHelpManager sharedHelpManager] threadSafeUpdateHelpState:SCHHelpProcessingStateError];
-    [self cancel];    
+    [self cancel];  
+    [self finishOp];
 }
 
 #pragma mark - NSXMLParserDelegate methods
