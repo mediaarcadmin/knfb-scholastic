@@ -41,6 +41,8 @@ struct SCHDrmIVars;
 - (id)initWithBook:(SCHBookIdentifier*)identifier;
 - (NSError*)drmError:(NSInteger)errCode message:(NSString*)message;
 
++ (void)resetDRMKeychainItems;
+
 @end
 
 

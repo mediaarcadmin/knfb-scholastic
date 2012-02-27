@@ -61,6 +61,13 @@
 	return drmDecrypter;
 }
 
+// This is used to clear the drmDecrypter so it will bind to a license again if required
+// It is called from teh License Acquisition operation
+- (void)resetDrmDecrypter
+{
+    [drmDecrypter release], drmDecrypter = nil;
+}
+
 // Subclassed methods
 
 - (NSString *)bookThumbnailsDirectory {
