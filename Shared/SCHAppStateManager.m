@@ -74,6 +74,10 @@
     SCHAppState *ret = nil;
     NSError *error = nil;
     
+    if (!self.managedObjectContext) {
+        return nil;
+    }
+    
     NSEntityDescription *entityDescription = [NSEntityDescription 
                                               entityForName:kSCHAppState
                                               inManagedObjectContext:self.managedObjectContext];

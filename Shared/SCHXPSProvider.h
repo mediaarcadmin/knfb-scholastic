@@ -21,5 +21,6 @@
 // Scholastic convenience methods
 
 - (NSData *)coverThumbData;
+- (void)resetDrmDecrypter;
 
 @end

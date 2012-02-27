@@ -75,7 +75,8 @@ static const CGFloat kLambdaAlertSpinnerInsetPerButton = 44;
 - (void)positionSpinner
 {
     if (spinner) {
-        CGFloat offsetY = floorf((CGRectGetHeight(self.alert.frame) - self.alert.numberOfButtons*kLambdaAlertSpinnerInsetPerButton)/2.0f);
+        // FIXME: this only workks for 0, 1 or 2 buttons on iPad
+        CGFloat offsetY = floorf((CGRectGetHeight(self.alert.frame) - MIN(self.alert.numberOfButtons, 1)*kLambdaAlertSpinnerInsetPerButton)/2.0f);
         [spinner setCenter:CGPointMake(spinner.center.x, offsetY)];
     }
 }

@@ -47,8 +47,53 @@
             [self.licenseAcquisitionSession acquireLicense:[[SCHAuthenticationManager sharedAuthenticationManager] aToken] bookID:self.identifier];
             self.licenseAcquisitionSession = nil;
         } else {
-            [self setIsProcessing:NO];
-            [self endOperation];
+            // It's not ideal but rather than changing the license aquisition operation to be async, we use an NSCondition to wait for the authentication to complete
+            // We cannot just set the success and failure blocks because those will fire on the main thread and this operation will be orphaned
+            
+            __block BOOL authenticationSuccess = NO;
+            __block BOOL authenticationComplete = NO;
+            
+            __block NSCondition *authenticationCondition = [[NSCondition alloc] init];
+            
+            // Attempt to authenticate
+            [[SCHAuthenticationManager sharedAuthenticationManager] authenticateWithSuccessBlock:^(SCHAuthenticationManagerConnectivityMode connectivityMode){
+                if (connectivityMode == SCHAuthenticationManagerConnectivityModeOnline) {
+                    authenticationSuccess = YES;
+                } else {
+                    authenticationSuccess = NO;
+                }
+                
+                [authenticationCondition lock];
+                authenticationComplete = YES;
+                [authenticationCondition signal];
+                [authenticationCondition unlock];
+                    
+            } failureBlock:^(NSError *error) {
+                authenticationSuccess = NO;
+                
+                [authenticationCondition lock];
+                authenticationComplete = YES;
+                [authenticationCondition signal];
+                [authenticationCondition unlock];
+                
+            } waitUntilVersionCheckIsDone:YES];
+            
+            [authenticationCondition lock];
+            while (!authenticationComplete) {
+                [authenticationCondition wait];
+            }
+            [authenticationCondition unlock];
+            
+            if (authenticationSuccess) {
+                self.licenseAcquisitionSession = [[[SCHDrmLicenseAcquisitionSession alloc] initWithBook:self.identifier] autorelease];
+                [self.licenseAcquisitionSession setDelegate:self];            
+                [self.licenseAcquisitionSession acquireLicense:[[SCHAuthenticationManager sharedAuthenticationManager] aToken] bookID:self.identifier];
+                self.licenseAcquisitionSession = nil;
+            } else {
+                [self updateBookWithFailure];
+            }
+            
+            [authenticationCondition release];
         }
     } else {
         [self updateBookWithSuccess];
@@ -63,6 +108,10 @@
         SCHXPSProvider *xpsProvider = [[SCHBookManager sharedBookManager] threadSafeCheckOutXPSProviderForBookIdentifier:self.identifier];
         
         useDRM = [[NSNumber numberWithBool:[xpsProvider isEncrypted]] retain];
+        
+        if ([useDRM boolValue]) {
+            [xpsProvider resetDrmDecrypter];
+        }
         
         [[SCHBookManager sharedBookManager] checkInXPSProviderForBookIdentifier:self.identifier];
     }

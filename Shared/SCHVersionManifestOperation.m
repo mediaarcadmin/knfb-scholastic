@@ -122,6 +122,7 @@ didReceiveResponse:(NSURLResponse *)response
             [conn cancel];
             NSLog(@"Error downloading file, errorCode: %d", [(NSHTTPURLResponse *)response statusCode]);
             [self cancel];
+            [self finishOp];
             return;
         }
     }
@@ -158,7 +159,8 @@ didReceiveResponse:(NSURLResponse *)response
 {
 	NSLog(@"failed download!");
     [SCHVersionDownloadManager sharedVersionManager].state = SCHVersionDownloadManagerProcessingStateUnexpectedConnectivityFailureError;                
-    [self cancel];    
+    [self cancel];
+    [self finishOp];
 }
 
 #pragma mark - NSXMLParserDelegate methods
