@@ -23,6 +23,7 @@
 #import "SCHUserDefaults.h"
 #import "SCHCoreDataHelper.h"
 #import "SCHAppStateManager.h"
+#import "SCHXPSProvider.h"
 
 // Constants
 NSString * const kSCHProcessingManagerConnectionIdle = @"SCHProcessingManagerConnectionIdle";
@@ -35,8 +36,8 @@ extern NSString * const kSCHUserDefaultsSpaceSaverModeSetOffNotification;
 @interface SCHProcessingManager()
 
 - (void)createProcessingQueues;
-- (void)checkStateForAllBooks;
 - (BOOL)identifierNeedsProcessing:(SCHBookIdentifier *)identifier;
+- (BOOL)identifierHasAcquiredLicense:(SCHBookIdentifier *)identifier;
 
 - (void) processIdentifier: (SCHBookIdentifier *) identifier;
 - (void) redispatchIdentifier: (SCHBookIdentifier *) identifier;
@@ -312,6 +313,42 @@ static SCHProcessingManager *sharedManager = nil;
 	return needsProcessing;
 }
 
+- (BOOL)identifierHasAcquiredLicense:(SCHBookIdentifier *)identifier
+{
+    NSAssert([NSThread isMainThread], @"identifierHasAcquiredLicense must run on main thread");
+    
+    BOOL hasCompletedLicenseAquisitionProcessingOperation = NO;
+    BOOL hasAquiredLicense = NO;
+    
+	SCHAppBook *book = [[SCHBookManager sharedBookManager] bookWithIdentifier:identifier inManagedObjectContext:self.managedObjectContext];
+   
+    
+    if (book != nil) {        
+        switch (book.processingState) {
+            case  SCHBookProcessingStateReadyForRightsParsing:    
+            case SCHBookProcessingStateReadyForAudioInfoParsing: 
+            case SCHBookProcessingStateReadyForTextFlowPreParse: 
+            case  SCHBookProcessingStateReadyForSmartZoomPreParse:
+            case SCHBookProcessingStateReadyForPagination:
+            case SCHBookProcessingStateReadyToRead:
+                hasCompletedLicenseAquisitionProcessingOperation = YES;
+                break;
+            default:
+                break;
+        }
+    }
+    
+    if (hasCompletedLicenseAquisitionProcessingOperation) {
+        NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
+        SCHXPSProvider *xpsProvider = [[SCHBookManager sharedBookManager] threadSafeCheckOutXPSProviderForBookIdentifier:identifier];
+        hasAquiredLicense = [xpsProvider isEncrypted];
+        [[SCHBookManager sharedBookManager] checkInXPSProviderForBookIdentifier:identifier];
+        [pool drain];
+    }
+    
+	return hasAquiredLicense;
+}
+
 - (BOOL)spaceSaverMode
 {
     BOOL ret = YES;
@@ -400,6 +437,37 @@ static SCHProcessingManager *sharedManager = nil;
         
         [self.currentlyProcessingIdentifiers removeObject:bookIdentifier];
     }
+}
+
+- (void)forceAllBooksToReAcquireLicense
+{
+    NSAssert([NSThread isMainThread], @"forceAllAvailableBooksToReAcquireLicenses must run on main thread");
+    
+    NSManagedObjectContext *moc = self.managedObjectContext;
+    
+	NSArray *allIdentifiers = [[SCHBookManager sharedBookManager] allBookIdentifiersInManagedObjectContext:moc];
+    NSMutableArray *identifiersToBeProcessed = [NSMutableArray array];
+    
+	// get all the books independent of profile
+	for (SCHBookIdentifier *identifier in allIdentifiers) {
+		SCHAppBook *book = [[SCHBookManager sharedBookManager] bookWithIdentifier:identifier inManagedObjectContext:moc];
+        
+        if (book != nil) {
+            // if the book is currently processing, ignore it 
+            if (![book isProcessing] && [self identifierHasAcquiredLicense:identifier]) {
+                [identifiersToBeProcessed addObject:identifier];
+            }
+        }
+	}
+	
+    for (SCHBookIdentifier *identifier in identifiersToBeProcessed) {
+        SCHAppBook *book = [[SCHBookManager sharedBookManager] bookWithIdentifier:identifier inManagedObjectContext:moc];
+        [book setProcessingState:SCHBookProcessingStateReadyForLicenseAcquisition];
+        [self postBookStateUpdate:identifier];
+        [self redispatchIdentifier:identifier];
+    }
+    
+    [self checkIfProcessing];
 }
 
 #pragma mark - Processing Methods
@@ -761,6 +829,25 @@ static SCHProcessingManager *sharedManager = nil;
             
             [self processIdentifier:identifier];
         }
+        
+        if (![self identifierIsProcessing:identifier]) {
+            switch (book.processingState) {
+                case SCHBookProcessingStateNoURLs:
+                    case SCHBookProcessingStateNoCoverImage:
+                    case SCHBookProcessingStateReadyForLicenseAcquisition:
+                    case SCHBookProcessingStateReadyForRightsParsing:
+                    case SCHBookProcessingStateReadyForAudioInfoParsing:
+                    case SCHBookProcessingStateReadyForTextFlowPreParse:
+                    case SCHBookProcessingStateReadyForSmartZoomPreParse:
+                    case SCHBookProcessingStateReadyForPagination:
+                        // Book is not processing, but is not waiting for user interaction - this is an error state, re-kick off processing for all books
+                        [self checkStateForAllBooks];
+                    break;                      
+                default:
+                    break;
+            }
+        }
+        
         // otherwise ignore the touch
     }
 }

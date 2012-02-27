@@ -15,6 +15,31 @@
 #import "KNFBXPSConstants.h"
 #import "DrmGlobals.h"
 
+// The following 2 categories expose methods that are internally available in these classes
+// Caution, use these with care
+
+@interface DrmGlobals(SCHDRMKeychainItemProviderInternalMethods)
+
+- (KeychainItemWrapper *)devKeyEncryptItem;
+- (KeychainItemWrapper *)devKeySignItem;
+
+@end
+
+@interface KeychainItemWrapper(SCHDRMKeychainItemReset)
+
+- (void)resetKeychainItem;
+//- (BOOL)setObject:(id)inObject forKey:(id)key;
+
+@end
+
+@interface KeychainItemWrapper(SCHDRMKeychainItemResetInternalMethods)
+
+- (NSMutableDictionary *)dictionaryToSecItemFormat:(NSDictionary *)dictionaryToConvert;
+- (BOOL)writeToKeychain;
+- (NSMutableDictionary *)privKeyQuery;
+
+@end
+
 struct SCHDrmIVars {
     DRM_APP_CONTEXT* drmAppContext;
     DRM_BYTE drmRevocationBuffer[REVOCATION_BUFFER_SIZE];
@@ -97,7 +122,7 @@ ErrorExit:
      self.sessionInitialized = YES;
 }
  
- 
+
 
 -(id)initWithBook:(SCHBookIdentifier*)identifier
 {
@@ -107,6 +132,15 @@ ErrorExit:
         [self initialize];
     }
     return self;
+}
+
++ (void)resetDRMKeychainItems
+{
+    KeychainItemWrapper *devKeyEncryptItem = [[DrmGlobals getDrmGlobals] devKeyEncryptItem];
+    [devKeyEncryptItem resetKeychainItem];
+    
+    KeychainItemWrapper *devKeySignItem = [[DrmGlobals getDrmGlobals] devKeySignItem];
+    [devKeySignItem resetKeychainItem];
 }
 
 - (NSError*)drmError:(NSInteger)errCode message:(NSString*)message {
@@ -270,7 +304,7 @@ ErrorExit:
     dr = Drm_JoinDomain_GenerateChallenge( drmIVars->drmAppContext,
 										  DRM_REGISTER_NULL_DATA,
 										  &domainID,
-										  NULL,
+										  NULL, 
 										  0,
 										  customData,
 										  customDataSz,
@@ -960,3 +994,71 @@ ErrorExit:
 
 @end
 
+@implementation KeychainItemWrapper(SCHDRMKeychainItemReset)
+
+- (void)resetKeychainItem
+{
+    OSStatus status = noErr;
+
+    if (self.keychainItemData) {
+        NSMutableDictionary *tempDictionary = [self dictionaryToSecItemFormat:keychainItemData];
+        [tempDictionary setObject:(id)kSecClassKey forKey:(id)kSecClass];
+		status = SecItemDelete((CFDictionaryRef)tempDictionary);
+        NSString *label = (NSString *)[[self keychainItemData] objectForKey:(id)kSecAttrLabel];
+        if (status == noErr) {
+            fprintf(stderr, "\nKeychain item reset for %s", [label UTF8String]);
+        } else if (status == errSecItemNotFound) {
+            fprintf(stderr, "\nKeychain item not found for %s", [label UTF8String]);
+        } else {
+            fprintf(stderr, "\nError in resetKeychainItem: %d for %s", (int)status, [[[self keychainItemData] description] UTF8String]);
+        }
+    }
+}
+
+- (BOOL)writeToKeychain
+{
+    NSDictionary *attributes = NULL;
+    NSMutableDictionary *updateItem = NULL;
+    
+    NSMutableDictionary *queryDictionary = [self privKeyQuery];
+    
+    BOOL updatedExistingItem = NO;
+    
+    OSStatus res = SecItemCopyMatching((CFDictionaryRef)queryDictionary, (CFTypeRef *)&attributes);
+    if (res == noErr) {
+        // First we need the attributes from the Keychain.
+        updateItem = [NSMutableDictionary dictionaryWithDictionary:attributes];
+        // Second we need to add the appropriate search key/values.
+        [updateItem setObject:[[self privKeyQuery] objectForKey:(id)kSecClass] forKey:(id)kSecClass];
+        
+        // Lastly, we need to set up the updated attribute list being careful to remove the class.
+        NSMutableDictionary *tempCheck = [self dictionaryToSecItemFormat:keychainItemData];
+        [tempCheck removeObjectForKey:(id)kSecClass];
+        
+        // An implicit assumption is that you can only update a single item at a time.
+        res = SecItemUpdate((CFDictionaryRef)updateItem, (CFDictionaryRef)tempCheck);
+        
+        if (res == noErr) {
+            updatedExistingItem = YES;
+        } else {
+			fprintf(stderr, "\nDRM couldn't update a Keychain Item: %d", (int)res);
+		}
+    }
+    
+    if (!updatedExistingItem) {
+        // No previous item updated, delete the existing one (if it exists) and add the new one.
+        [self resetKeychainItem];
+        
+        NSMutableDictionary *newItem = [NSMutableDictionary dictionaryWithDictionary:[self dictionaryToSecItemFormat:keychainItemData]];
+        [newItem setObject:[[self privKeyQuery] objectForKey:(id)kSecClass] forKey:(id)kSecClass];
+        
+        OSStatus res = SecItemAdd((CFDictionaryRef)newItem, NULL);
+        if (res != noErr ) {
+			fprintf(stderr, "\nDRM couldn't add a Keychain Item: %d", (int)res);
+			return NO;
+		}
+    }
+	return YES;
+}
+
+@end

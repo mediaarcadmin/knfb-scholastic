@@ -268,6 +268,13 @@ typedef enum
                 [weakSelf dismissLoadingView];
                 [weakSelf performSelector:@selector(back)];
             }];
+            
+            if ([[SCHSyncManager sharedSyncManager] isSuspended]) {
+                [alert addButtonWithTitle:NSLocalizedString(@"Dismiss", @"") block:^{
+                    [weakSelf dismissLoadingView];
+                }];
+            }
+            
             [alert setSpinnerHidden:NO];
             [alert show];
             self.loadingView = alert;
@@ -319,6 +326,10 @@ typedef enum
     } else {
         if ([[SCHSyncManager sharedSyncManager] isSynchronizing] == NO) {
             [[SCHSyncManager sharedSyncManager] firstSync:NO requireDeviceAuthentication:NO];
+        }
+        
+        if ([[SCHSyncManager sharedSyncManager] isSuspended]) {
+            [[SCHProcessingManager sharedProcessingManager] checkStateForAllBooks];
         }
     }
     
@@ -1049,9 +1060,7 @@ typedef enum
                      [cell setLoading:YES];
                  }
                    endBlock:^(BOOL didOpen){
-                       if (didOpen) {
-                           [cell setLoading:NO];
-                       }
+                       [cell setLoading:NO];
                    }];
 }
 

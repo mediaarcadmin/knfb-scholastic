@@ -260,6 +260,11 @@ didSelectButtonAnimated:(BOOL)animated
      Set up the fetched results controller.
      */
     // Create the fetch request for the entity.
+    
+    if (self.managedObjectContext == nil) {
+        return nil;
+    }
+    
     NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
     // Edit the entity name as appropriate.
     NSEntityDescription *entity = [NSEntityDescription entityForName:kSCHProfileItem 

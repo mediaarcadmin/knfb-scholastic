@@ -81,6 +81,7 @@ static NSUInteger const kSCHSyncManagerMaximumFailureRetries = 3;
 @synthesize settingsSyncComponent;
 @synthesize backgroundTaskIdentifier;
 @synthesize flushSaveMode;
+@synthesize suspended;
 
 #pragma mark - Singleton Instance methods
 
@@ -218,9 +219,9 @@ static NSUInteger const kSCHSyncManagerMaximumFailureRetries = 3;
 
 #pragma mark - Background Sync methods
 
-- (void)start
+- (void)startHeartbeat
 {
-	[self stop];
+	[self stopHeartbeat];
     self.flushSaveMode = NO;
 	self.timer = [NSTimer scheduledTimerWithTimeInterval:kSCHSyncManagerHeartbeatInterval 
                                              target:self 
@@ -229,10 +230,23 @@ static NSUInteger const kSCHSyncManagerMaximumFailureRetries = 3;
                                             repeats:YES];
 }
 
-- (void)stop
+- (void)stopHeartbeat
 {
 	[timer invalidate];
 	self.timer = nil;
+}
+
+- (void)setSuspended:(BOOL)newSuspended
+{
+    if (newSuspended != suspended) {
+        suspended = newSuspended;
+        if (suspended) {
+            [self stopHeartbeat];
+        } else {
+            [self startHeartbeat];
+            [self kickQueue];
+        }
+    }
 }
 
 - (void)backgroundSyncHeartbeat:(NSTimer *)theTimer
@@ -257,6 +271,7 @@ static NSUInteger const kSCHSyncManagerMaximumFailureRetries = 3;
 	
     self.lastFirstSyncEnded = nil;
     self.syncAfterDelay = NO;
+    self.suspended = NO;
     
     [self endBackgroundTask];
         
@@ -731,6 +746,11 @@ static NSUInteger const kSCHSyncManagerMaximumFailureRetries = 3;
 
 - (void)kickQueue
 {
+    if (self.suspended) {
+        NSLog(@"WARNING: Sync queue kicked whilst manager is suspended");
+        return;
+    }
+
     SCHSyncComponent *syncComponent = [self queueHead];
     
     if (syncComponent != nil) {
