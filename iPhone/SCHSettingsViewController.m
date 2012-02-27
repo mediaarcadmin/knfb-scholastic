@@ -518,9 +518,17 @@ extern NSString * const kSCHUserDefaultsSpaceSaverModeSetOffNotification;
         [checkBooksAlert setSpinnerHidden:NO];
         [checkBooksAlert show];
         
-        [self registerForSyncNotifications];
+        if ([[SCHSyncManager sharedSyncManager] isSuspended]) {
+            double delayInSeconds = 2.0;
+            dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);
+            dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+                [self showAlertForSyncFailure];
+            });
+        } else {
+            [self registerForSyncNotifications];
+            [[SCHSyncManager sharedSyncManager] firstSync:YES requireDeviceAuthentication:YES];
+        }
         
-        [[SCHSyncManager sharedSyncManager] firstSync:YES requireDeviceAuthentication:YES];      
     } else {
         [self showNoInternetConnectionAlert];
     }    

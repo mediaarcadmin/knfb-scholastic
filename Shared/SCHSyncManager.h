@@ -23,11 +23,12 @@ extern NSString * const SCHSyncManagerDidCompleteNotification;
 @property (nonatomic, retain) NSManagedObjectContext *managedObjectContext;
 @property (nonatomic, readonly) BOOL isSynchronizing;
 @property (nonatomic, readonly) BOOL isQueueEmpty;
+@property (nonatomic, assign, getter=isSuspended) BOOL suspended;
 
 + (SCHSyncManager *)sharedSyncManager;
 
-- (void)start;
-- (void)stop;
+- (void)startHeartbeat;
+- (void)stopHeartbeat;
 
 - (void)clear;
 - (BOOL)havePerformedFirstSyncUpToBooks;

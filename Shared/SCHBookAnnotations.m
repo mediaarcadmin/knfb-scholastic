@@ -28,6 +28,7 @@
 @property (nonatomic, retain, readonly) NSArray *sortedBookmarks;
 @property (nonatomic, retain, readonly) NSArray *sortedHighlights;
 @property (nonatomic, retain, readonly) NSArray *sortedNotes;
+@property (nonatomic, retain) NSNumber *cachedProfileID;
 
 @end
 
@@ -37,6 +38,7 @@
 @synthesize sortedBookmarks;
 @synthesize sortedHighlights;
 @synthesize sortedNotes;
+@synthesize cachedProfileID;
 
 #pragma mark - Object lifecycle
 
@@ -45,6 +47,8 @@
     self = [super init];
     if (self) {
         privateAnnotations = [aPrivateAnnotation retain];
+        cachedProfileID = [privateAnnotations.AnnotationsContentItem.AnnotationsItem.ProfileID retain];
+        
         [[NSNotificationCenter defaultCenter] addObserver:self 
                                                  selector:@selector(annotationSyncComponentDidCompleteNotification:) 
                                                      name:SCHAnnotationSyncComponentDidCompleteNotification 
@@ -61,6 +65,7 @@
     [sortedBookmarks release], sortedBookmarks = nil;
     [sortedHighlights release], sortedHighlights = nil;
     [sortedNotes release], sortedNotes = nil;
+    [cachedProfileID release], cachedProfileID = nil;
     
     [super dealloc];
 }
@@ -68,16 +73,15 @@
 - (void)annotationSyncComponentDidCompleteNotification:(NSNotification *)notification
 {
     NSNumber *profileID = [notification.userInfo objectForKey:SCHAnnotationSyncComponentProfileIDs];
-    NSNumber *myProfileID = self.privateAnnotations.AnnotationsContentItem.AnnotationsItem.ProfileID;
     
-    if (myProfileID) {
-        if ([profileID isEqualToNumber:myProfileID] == YES) {
+    if (self.cachedProfileID) {
+        if ([profileID isEqualToNumber:self.cachedProfileID] == YES) {
             [sortedBookmarks release], sortedBookmarks = nil;
             [sortedHighlights release], sortedHighlights = nil;
             [sortedNotes release], sortedNotes = nil;
         }
     } else {
-        NSLog(@"Warning: unable to retrieve a profileID for this bookannotation - this is a memory leak");
+        NSLog(@"Warning: unable to retrieve a cachedProfileID for this bookannotation");
     }
 }
 
