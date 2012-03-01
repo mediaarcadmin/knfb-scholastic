@@ -23,6 +23,9 @@
 - (void)reportFault:(SOAPFault *)fault 
           forMethod:(NSString *)method 
         requestInfo:(NSDictionary *)requestInfo;
-- (NSError *)confirmErrorDomain:(NSError *)error;
+- (NSError *)confirmErrorDomain:(NSError *)error 
+                  forDomainName:(NSString *)domainName;
+
+- (id)fromObjectTranslate:(id)anObject;
 
 @end

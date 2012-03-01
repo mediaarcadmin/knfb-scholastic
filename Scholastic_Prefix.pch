@@ -18,6 +18,7 @@
 
 #define AUTHENTICATION_SERVER_ENDPOINT AUTHENTICATION_SERVER_ENDPOINT_PRODUCTION
 #define LIBREDIGITAL_SERVER_ENDPOINT LIBREDIGITAL_SERVER_ENDPOINT_PRODUCTION
+#define WISHLIST_SERVER_ENDPOINT WISHLIST_SERVER_ENDPOINT_PRODUCTION
 #define DRM_RIGHTSMANAGER_SERVER DRM_RIGHTSMANAGER_SERVER_PRODUCTION
 #define WEB_PARENT_TOOLS_SERVER WEB_PARENT_TOOLS_SERVER_PRODUCTION
 
@@ -33,6 +34,10 @@
 #define LIBREDIGITAL_SERVER_ENDPOINT_DEVINT @"http://laesb.devint.cld.libredigital.com/services/LibreAccessService.LibreAccessServiceHttpSoap11Endpoint"
 #define LIBREDIGITAL_SERVER_ENDPOINT_UAT @"http://laesb.uat.cld.libredigital.com/services/LibreAccessService.LibreAccessServiceHttpSoap11Endpoint"
 #define LIBREDIGITAL_SERVER_ENDPOINT_PRODUCTION @"http://laesb.cld.libredigital.com/services/LibreAccessService.LibreAccessServiceHttpSoap11Endpoint"
+
+// Wishlist Server EndPoint
+#define WISHLIST_SERVER_ENDPOINT_QA @"https://esvcsqa.scholastic.com/SchWS/services/SPS/WishListService.WishListServiceHttpsSoap11Endpoint/"
+#define WISHLIST_SERVER_ENDPOINT_PRODUCTION @"https://esvcs.scholastic.com/SchWS/services/SPS/WishListService.WishListServiceHttpsSoap11Endpoint/"
 
 // DRM Rights Manager server
 #define DRM_RIGHTSMANAGER_SERVER_DEVINT @"http://plr.devint.cld.libredigital.com/rightsmanager.asmx"

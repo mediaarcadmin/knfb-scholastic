@@ -304,6 +304,9 @@
 		5204B860135C1FC500FCBD90 /* SCHThemeButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 5204B85F135C1FC500FCBD90 /* SCHThemeButton.m */; };
 		5206FF2513744E7000FCE07C /* SCHAppProfile.m in Sources */ = {isa = PBXBuildFile; fileRef = 5206FF2413744E7000FCE07C /* SCHAppProfile.m */; };
 		520CD295139F84530018EA7E /* SCHStoryInteractionMultipleChoiceText_iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 520CD294139F84530018EA7E /* SCHStoryInteractionMultipleChoiceText_iPad.xib */; };
+		520D28CC14F4E2F9005AAF4F /* SCHWishListWebService.m in Sources */ = {isa = PBXBuildFile; fileRef = 520D28CB14F4E2F9005AAF4F /* SCHWishListWebService.m */; };
+		520D28CD14F4E2F9005AAF4F /* SCHWishListWebService.m in Sources */ = {isa = PBXBuildFile; fileRef = 520D28CB14F4E2F9005AAF4F /* SCHWishListWebService.m */; };
+		520D28CE14F4E2F9005AAF4F /* SCHWishListWebService.m in Sources */ = {isa = PBXBuildFile; fileRef = 520D28CB14F4E2F9005AAF4F /* SCHWishListWebService.m */; };
 		520FE8A1143F3B15002AB30B /* SCHLibreAccessConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = 520FE8A0143F3B14002AB30B /* SCHLibreAccessConstants.m */; };
 		520FE8A2143F3B15002AB30B /* SCHLibreAccessConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = 520FE8A0143F3B14002AB30B /* SCHLibreAccessConstants.m */; };
 		520FE8A3143F3B15002AB30B /* SCHLibreAccessConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = 520FE8A0143F3B14002AB30B /* SCHLibreAccessConstants.m */; };
@@ -345,9 +348,18 @@
 		5233E0D813159CA80088F18C /* BITNetworkActivityManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 5233E0D713159CA80088F18C /* BITNetworkActivityManager.m */; };
 		523756AB13A2548E00B38441 /* MediaPlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 523756AA13A2548E00B38441 /* MediaPlayer.framework */; };
 		523756AF13A275E800B38441 /* SCHPlayButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 523756AE13A275E800B38441 /* SCHPlayButton.m */; };
+		523B2E7014F403E300413883 /* ax21.m in Sources */ = {isa = PBXBuildFile; fileRef = 523B2E6D14F403E300413883 /* ax21.m */; };
+		523B2E7114F403E300413883 /* ax21.m in Sources */ = {isa = PBXBuildFile; fileRef = 523B2E6D14F403E300413883 /* ax21.m */; };
+		523B2E7214F403E300413883 /* ax21.m in Sources */ = {isa = PBXBuildFile; fileRef = 523B2E6D14F403E300413883 /* ax21.m */; };
+		523B2E7314F403E300413883 /* WishListServiceSvc.m in Sources */ = {isa = PBXBuildFile; fileRef = 523B2E6F14F403E300413883 /* WishListServiceSvc.m */; };
+		523B2E7414F403E300413883 /* WishListServiceSvc.m in Sources */ = {isa = PBXBuildFile; fileRef = 523B2E6F14F403E300413883 /* WishListServiceSvc.m */; };
+		523B2E7514F403E300413883 /* WishListServiceSvc.m in Sources */ = {isa = PBXBuildFile; fileRef = 523B2E6F14F403E300413883 /* WishListServiceSvc.m */; };
 		523E19ED13A0206E00A785B6 /* SCHStoryInteractionControllerVideo.m in Sources */ = {isa = PBXBuildFile; fileRef = 523E19EB13A0206E00A785B6 /* SCHStoryInteractionControllerVideo.m */; };
 		523E19EF13A0206E00A785B6 /* SCHStoryInteractionVideo_iPhone.xib in Resources */ = {isa = PBXBuildFile; fileRef = 523E19EC13A0206E00A785B6 /* SCHStoryInteractionVideo_iPhone.xib */; };
 		523E19F213A0241D00A785B6 /* SCHStoryInteractionVideo_iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 523E19F113A0241D00A785B6 /* SCHStoryInteractionVideo_iPad.xib */; };
+		523EC29A14F6326800EBB843 /* SCHWishListConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = 523EC29914F6326800EBB843 /* SCHWishListConstants.m */; };
+		523EC29B14F6326800EBB843 /* SCHWishListConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = 523EC29914F6326800EBB843 /* SCHWishListConstants.m */; };
+		523EC29C14F6326800EBB843 /* SCHWishListConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = 523EC29914F6326800EBB843 /* SCHWishListConstants.m */; };
 		5243545A13337BAC00282B53 /* SCHAppContentProfileItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 5243545713337BAC00282B53 /* SCHAppContentProfileItem.m */; };
 		524888291407990500DA9AFA /* MainWindow_iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 28AD733E0D9D9553002E5188 /* MainWindow_iPad.xib */; };
 		5248882A1407990500DA9AFA /* MainWindow_iPhone.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2860E389111B897F00E27156 /* MainWindow_iPhone.xib */; };
@@ -2963,26 +2975,12 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		281CC4041457FE100049F736 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = C947D55D133B9C0000FB4404 /* libEucalyptus.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = 7D5171BC1028B6AE005F3C46;
-			remoteInfo = expat;
-		};
 		28D6D4C91451717E0094F144 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 526FEB41140FD83A00638712 /* KIF.xcodeproj */;
 			proxyType = 2;
 			remoteGlobalIDString = AAB07268139719AC008AF393;
 			remoteInfo = KIF;
-		};
-		524888271407990500DA9AFA /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = C947D55D133B9C0000FB4404 /* libEucalyptus.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = D2AAC07D0554694100DB518D;
-			remoteInfo = libEucalyptusIOSUI;
 		};
 		7D3F30F2140698D800C6F445 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -3011,34 +3009,6 @@
 			proxyType = 2;
 			remoteGlobalIDString = 7D3AC23914054DBA007F91AD;
 			remoteInfo = PageLayoutTest;
-		};
-		7D3F3117140699EF00C6F445 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = C947D55D133B9C0000FB4404 /* libEucalyptus.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = D2AAC07D0554694100DB518D;
-			remoteInfo = libEucalyptusIOSUI;
-		};
-		A3D3F0AE14CDDF31004A56A5 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = C9AC7D9614BDDDE2009137BA /* BITModalSheetController.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = C9F5538014A5205300E24168;
-			remoteInfo = BITModalSheetController;
-		};
-		A3D3F0B014CDDF31004A56A5 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = C9C3FA2714B6FA5E00757038 /* BITOperation.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = 28DA329A1488E22300E1896D;
-			remoteInfo = BITOperation;
-		};
-		A3D3F0B214CDDF31004A56A5 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = C947D55D133B9C0000FB4404 /* libEucalyptus.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = D2AAC07D0554694100DB518D;
-			remoteInfo = libEucalyptusIOSUI;
 		};
 		C947D572133B9C0100FB4404 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -3131,20 +3101,6 @@
 			remoteGlobalIDString = C9F5539114A5205300E24168;
 			remoteInfo = BITModalSheetControllerTests;
 		};
-		C9AC7DA214BDDDF7009137BA /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = C9AC7D9614BDDDE2009137BA /* BITModalSheetController.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = C9F5538014A5205300E24168;
-			remoteInfo = BITModalSheetController;
-		};
-		C9AC7DA514BDDE07009137BA /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = C9AC7D9614BDDDE2009137BA /* BITModalSheetController.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = C9F5538014A5205300E24168;
-			remoteInfo = BITModalSheetController;
-		};
 		C9C3FA2F14B6FA5E00757038 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = C9C3FA2714B6FA5E00757038 /* BITOperation.xcodeproj */;
@@ -3158,20 +3114,6 @@
 			proxyType = 2;
 			remoteGlobalIDString = 28DA32AB1488E22300E1896D;
 			remoteInfo = BITOperationTests;
-		};
-		C9C3FA3314B6FA6E00757038 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = C9C3FA2714B6FA5E00757038 /* BITOperation.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = 28DA329A1488E22300E1896D;
-			remoteInfo = BITOperation;
-		};
-		C9C3FA3514B6FA7500757038 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = C9C3FA2714B6FA5E00757038 /* BITOperation.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = 28DA329A1488E22300E1896D;
-			remoteInfo = BITOperation;
 		};
 /* End PBXContainerItemProxy section */
 
@@ -3534,6 +3476,8 @@
 		5206FF2313744E7000FCE07C /* SCHAppProfile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHAppProfile.h; path = Shared/SCHAppProfile.h; sourceTree = "<group>"; };
 		5206FF2413744E7000FCE07C /* SCHAppProfile.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHAppProfile.m; path = Shared/SCHAppProfile.m; sourceTree = "<group>"; };
 		520CD294139F84530018EA7E /* SCHStoryInteractionMultipleChoiceText_iPad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SCHStoryInteractionMultipleChoiceText_iPad.xib; sourceTree = "<group>"; };
+		520D28CA14F4E2F9005AAF4F /* SCHWishListWebService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHWishListWebService.h; path = Shared/SCHWishListWebService.h; sourceTree = "<group>"; };
+		520D28CB14F4E2F9005AAF4F /* SCHWishListWebService.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHWishListWebService.m; path = Shared/SCHWishListWebService.m; sourceTree = "<group>"; };
 		520FE89F143F3B14002AB30B /* SCHLibreAccessConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHLibreAccessConstants.h; path = Shared/SCHLibreAccessConstants.h; sourceTree = "<group>"; };
 		520FE8A0143F3B14002AB30B /* SCHLibreAccessConstants.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHLibreAccessConstants.m; path = Shared/SCHLibreAccessConstants.m; sourceTree = "<group>"; };
 		521399EE13717BB10081FD3D /* SCHLocationBookmark.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHLocationBookmark.h; path = Shared/SCHLocationBookmark.h; sourceTree = "<group>"; };
@@ -3597,10 +3541,16 @@
 		523756AA13A2548E00B38441 /* MediaPlayer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MediaPlayer.framework; path = System/Library/Frameworks/MediaPlayer.framework; sourceTree = SDKROOT; };
 		523756AD13A275E800B38441 /* SCHPlayButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCHPlayButton.h; sourceTree = "<group>"; };
 		523756AE13A275E800B38441 /* SCHPlayButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCHPlayButton.m; sourceTree = "<group>"; };
+		523B2E6C14F403E300413883 /* ax21.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ax21.h; sourceTree = "<group>"; };
+		523B2E6D14F403E300413883 /* ax21.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ax21.m; sourceTree = "<group>"; };
+		523B2E6E14F403E300413883 /* WishListServiceSvc.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WishListServiceSvc.h; sourceTree = "<group>"; };
+		523B2E6F14F403E300413883 /* WishListServiceSvc.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WishListServiceSvc.m; sourceTree = "<group>"; };
 		523E19EA13A0206E00A785B6 /* SCHStoryInteractionControllerVideo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCHStoryInteractionControllerVideo.h; sourceTree = "<group>"; };
 		523E19EB13A0206E00A785B6 /* SCHStoryInteractionControllerVideo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCHStoryInteractionControllerVideo.m; sourceTree = "<group>"; };
 		523E19EC13A0206E00A785B6 /* SCHStoryInteractionVideo_iPhone.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SCHStoryInteractionVideo_iPhone.xib; sourceTree = "<group>"; };
 		523E19F113A0241D00A785B6 /* SCHStoryInteractionVideo_iPad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SCHStoryInteractionVideo_iPad.xib; sourceTree = "<group>"; };
+		523EC29814F6326800EBB843 /* SCHWishListConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHWishListConstants.h; path = Shared/SCHWishListConstants.h; sourceTree = "<group>"; };
+		523EC29914F6326800EBB843 /* SCHWishListConstants.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHWishListConstants.m; path = Shared/SCHWishListConstants.m; sourceTree = "<group>"; };
 		5243545613337BAC00282B53 /* SCHAppContentProfileItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHAppContentProfileItem.h; path = Shared/SCHAppContentProfileItem.h; sourceTree = "<group>"; };
 		5243545713337BAC00282B53 /* SCHAppContentProfileItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHAppContentProfileItem.m; path = Shared/SCHAppContentProfileItem.m; sourceTree = "<group>"; };
 		52488C051407990500DA9AFA /* Storia.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Storia.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -6025,6 +5975,10 @@
 				5293868F12DF3A3300045B44 /* AuthenticateSvc.m */,
 				52EF508512E739E900E374F7 /* LibreAccessServiceSvc.h */,
 				52EF508612E739E900E374F7 /* LibreAccessServiceSvc.m */,
+				523B2E6C14F403E300413883 /* ax21.h */,
+				523B2E6D14F403E300413883 /* ax21.m */,
+				523B2E6E14F403E300413883 /* WishListServiceSvc.h */,
+				523B2E6F14F403E300413883 /* WishListServiceSvc.m */,
 				5293869212DF3A3300045B44 /* NSDate+ISO8601Parsing.h */,
 				5293869312DF3A3300045B44 /* NSDate+ISO8601Parsing.m */,
 				5293869412DF3A3300045B44 /* NSDate+ISO8601Unparsing.h */,
@@ -6109,6 +6063,10 @@
 				5293872C12DF43CB00045B44 /* SCHLibreAccessWebService.m */,
 				520FE89F143F3B14002AB30B /* SCHLibreAccessConstants.h */,
 				520FE8A0143F3B14002AB30B /* SCHLibreAccessConstants.m */,
+				520D28CA14F4E2F9005AAF4F /* SCHWishListWebService.h */,
+				520D28CB14F4E2F9005AAF4F /* SCHWishListWebService.m */,
+				523EC29814F6326800EBB843 /* SCHWishListConstants.h */,
+				523EC29914F6326800EBB843 /* SCHWishListConstants.m */,
 				52322C32132693F500BB071D /* SCHURLManager.h */,
 				52322C33132693F500BB071D /* SCHURLManager.m */,
 				5266D38213007D15004E3AC6 /* SCHComponent.h */,
@@ -7537,9 +7495,6 @@
 			buildRules = (
 			);
 			dependencies = (
-				C9AC7DA314BDDDF7009137BA /* PBXTargetDependency */,
-				C9C3FA3414B6FA6E00757038 /* PBXTargetDependency */,
-				7D3F3118140699EF00C6F445 /* PBXTargetDependency */,
 			);
 			name = Scholastic;
 			productName = Scholastic;
@@ -7558,7 +7513,6 @@
 			buildRules = (
 			);
 			dependencies = (
-				281CC4051457FE100049F736 /* PBXTargetDependency */,
 			);
 			name = UnitTests;
 			productName = UnitTests;
@@ -7576,9 +7530,6 @@
 			buildRules = (
 			);
 			dependencies = (
-				C9AC7DA614BDDE07009137BA /* PBXTargetDependency */,
-				C9C3FA3614B6FA7500757038 /* PBXTargetDependency */,
-				524888261407990500DA9AFA /* PBXTargetDependency */,
 			);
 			name = "Local Samples Scholastic";
 			productName = Scholastic;
@@ -7596,9 +7547,6 @@
 			buildRules = (
 			);
 			dependencies = (
-				A3D3F0AD14CDDF31004A56A5 /* PBXTargetDependency */,
-				A3D3F0AF14CDDF31004A56A5 /* PBXTargetDependency */,
-				A3D3F0B114CDDF31004A56A5 /* PBXTargetDependency */,
 			);
 			name = "Scholastic No iPhone";
 			productName = Scholastic;
@@ -9996,6 +9944,10 @@
 				5226C70514A489CB00307634 /* SCHVersionDownloadManager.m in Sources */,
 				5226C70714A489CB00307634 /* SCHVersionManifestOperation.m in Sources */,
 				5226C70B14A48C6100307634 /* SCHVersionManifestEntry.m in Sources */,
+				523B2E7014F403E300413883 /* ax21.m in Sources */,
+				523B2E7314F403E300413883 /* WishListServiceSvc.m in Sources */,
+				520D28CC14F4E2F9005AAF4F /* SCHWishListWebService.m in Sources */,
+				523EC29A14F6326800EBB843 /* SCHWishListConstants.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -10385,6 +10337,10 @@
 				5226C70614A489CB00307634 /* SCHVersionDownloadManager.m in Sources */,
 				5226C70814A489CB00307634 /* SCHVersionManifestOperation.m in Sources */,
 				5226C70C14A48C6100307634 /* SCHVersionManifestEntry.m in Sources */,
+				523B2E7114F403E300413883 /* ax21.m in Sources */,
+				523B2E7414F403E300413883 /* WishListServiceSvc.m in Sources */,
+				520D28CD14F4E2F9005AAF4F /* SCHWishListWebService.m in Sources */,
+				523EC29B14F6326800EBB843 /* SCHWishListConstants.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -10710,63 +10666,14 @@
 				A3D3F48014CDDF31004A56A5 /* SCHVersionDownloadManager.m in Sources */,
 				A3D3F48114CDDF31004A56A5 /* SCHVersionManifestOperation.m in Sources */,
 				A3D3F48214CDDF31004A56A5 /* SCHVersionManifestEntry.m in Sources */,
+				523B2E7214F403E300413883 /* ax21.m in Sources */,
+				523B2E7514F403E300413883 /* WishListServiceSvc.m in Sources */,
+				520D28CE14F4E2F9005AAF4F /* SCHWishListWebService.m in Sources */,
+				523EC29C14F6326800EBB843 /* SCHWishListConstants.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
-
-/* Begin PBXTargetDependency section */
-		281CC4051457FE100049F736 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = expat;
-			targetProxy = 281CC4041457FE100049F736 /* PBXContainerItemProxy */;
-		};
-		524888261407990500DA9AFA /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = libEucalyptusIOSUI;
-			targetProxy = 524888271407990500DA9AFA /* PBXContainerItemProxy */;
-		};
-		7D3F3118140699EF00C6F445 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = libEucalyptusIOSUI;
-			targetProxy = 7D3F3117140699EF00C6F445 /* PBXContainerItemProxy */;
-		};
-		A3D3F0AD14CDDF31004A56A5 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = BITModalSheetController;
-			targetProxy = A3D3F0AE14CDDF31004A56A5 /* PBXContainerItemProxy */;
-		};
-		A3D3F0AF14CDDF31004A56A5 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = BITOperation;
-			targetProxy = A3D3F0B014CDDF31004A56A5 /* PBXContainerItemProxy */;
-		};
-		A3D3F0B114CDDF31004A56A5 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = libEucalyptusIOSUI;
-			targetProxy = A3D3F0B214CDDF31004A56A5 /* PBXContainerItemProxy */;
-		};
-		C9AC7DA314BDDDF7009137BA /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = BITModalSheetController;
-			targetProxy = C9AC7DA214BDDDF7009137BA /* PBXContainerItemProxy */;
-		};
-		C9AC7DA614BDDE07009137BA /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = BITModalSheetController;
-			targetProxy = C9AC7DA514BDDE07009137BA /* PBXContainerItemProxy */;
-		};
-		C9C3FA3414B6FA6E00757038 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = BITOperation;
-			targetProxy = C9C3FA3314B6FA6E00757038 /* PBXContainerItemProxy */;
-		};
-		C9C3FA3614B6FA7500757038 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = BITOperation;
-			targetProxy = C9C3FA3514B6FA7500757038 /* PBXContainerItemProxy */;
-		};
-/* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
 		28A08D0213952CB4006FD008 /* InfoPlist.strings */ = {

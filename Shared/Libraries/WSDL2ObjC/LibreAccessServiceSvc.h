@@ -1877,6 +1877,7 @@ NSString * LibreAccessServiceSvc_SaveActions_stringFromEnum(LibreAccessServiceSv
 	LibreAccessServiceSvc_drmqualifiers drmqualifier;
 	NSString * format;
 	NSNumber * rating;
+	NSDate * lastmodified;
 	NSString * averageRating;
 	LibreAccessServiceSvc_PrivateAnnotations * PrivateAnnotations;
 /* attributes */
@@ -1894,6 +1895,7 @@ NSString * LibreAccessServiceSvc_SaveActions_stringFromEnum(LibreAccessServiceSv
 @property (nonatomic, assign) LibreAccessServiceSvc_drmqualifiers drmqualifier;
 @property (nonatomic, retain) NSString * format;
 @property (nonatomic, retain) NSNumber * rating;
+@property (nonatomic, retain) NSDate * lastmodified;
 @property (nonatomic, retain) NSString * averageRating;
 @property (nonatomic, retain) LibreAccessServiceSvc_PrivateAnnotations * PrivateAnnotations;
 /* attributes */
