@@ -94,6 +94,12 @@ static NSTimeInterval const kSCHBookShelfViewControllerTopTenRefreshTime = -600.
     CGRect sortFrame = CGRectZero;
     CGRect topTenFrame = CGRectZero;
 
+    SCHThemeButton *ratingButton = [SCHThemeButton buttonWithType:UIButtonTypeCustom];
+    [ratingButton setThemeIcon:kSCHThemeManagerHomeIcon iPadQualifier:kSCHThemeManagerPadQualifierSuffix];
+    [ratingButton sizeToFit];    
+    [ratingButton addTarget:self action:@selector(toggleRatings) forControlEvents:UIControlEventTouchUpInside];    
+    ratingButton.accessibilityLabel = @"Rating Button";
+
     // no sort or top ten buttons for the sample bookshelf
     if ([[SCHAppStateManager sharedAppStateManager] isSampleStore] == NO) {
         self.sortButton = [SCHThemeButton buttonWithType:UIButtonTypeCustom];
@@ -137,7 +143,7 @@ static NSTimeInterval const kSCHBookShelfViewControllerTopTenRefreshTime = -600.
         topTenWidth += kSCHBookShelfEdgePadding;
     }
 
-    UIView *rightContainerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth(sortFrame) + kSCHBookShelfButtonPadding + topTenWidth + CGRectGetWidth(themeButton.frame) + kSCHBookShelfEdgePadding, CGRectGetHeight(themeButton.frame))];
+    UIView *rightContainerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth(sortFrame) + kSCHBookShelfButtonPadding + topTenWidth + CGRectGetWidth(themeButton.frame) + kSCHBookShelfButtonPadding + CGRectGetWidth(themeButton.frame) + kSCHBookShelfEdgePadding, CGRectGetHeight(themeButton.frame))];
 
     if (self.sortButton) {
         [rightContainerView addSubview:self.sortButton];
@@ -145,13 +151,20 @@ static NSTimeInterval const kSCHBookShelfViewControllerTopTenRefreshTime = -600.
     if (self.topTenPicksButton) {
         [rightContainerView addSubview:self.topTenPicksButton];
     }
+    if (ratingButton) {
+        [rightContainerView addSubview:ratingButton];
+    }
     
     CGRect themeFrame = themeButton.frame;
-    themeFrame.origin.x = topTenWidth + kSCHBookShelfButtonPadding + CGRectGetWidth(sortFrame);
+    themeFrame.origin.x = topTenWidth + kSCHBookShelfButtonPadding + CGRectGetWidth(sortFrame) + kSCHBookShelfButtonPadding + CGRectGetWidth(ratingButton.frame);
     themeButton.frame = themeFrame;
-    
+
+    CGRect ratingFrame = ratingButton.frame;
+    ratingFrame.origin.x = topTenWidth + kSCHBookShelfButtonPadding + CGRectGetWidth(sortFrame);
+    ratingButton.frame = ratingFrame;
+
     [rightContainerView addSubview:themeButton];
-    
+
     self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithCustomView:rightContainerView] autorelease];
     [rightContainerView release];
     

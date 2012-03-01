@@ -2815,6 +2815,18 @@
 		F83701B213BC73BE009B280D /* BookShelfModeGridInactive~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = F83701AD13BC73BE009B280D /* BookShelfModeGridInactive~iphone.png */; };
 		F83701B413BC73BE009B280D /* BookShelfModeListActive~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = F83701AE13BC73BE009B280D /* BookShelfModeListActive~iphone.png */; };
 		F83701B613BC73BE009B280D /* BookShelfModeListInactive~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = F83701AF13BC73BE009B280D /* BookShelfModeListInactive~iphone.png */; };
+		F849155614FFA54D000D064B /* RateView.m in Sources */ = {isa = PBXBuildFile; fileRef = F849155514FFA54D000D064B /* RateView.m */; };
+		F849155714FFA54D000D064B /* RateView.m in Sources */ = {isa = PBXBuildFile; fileRef = F849155514FFA54D000D064B /* RateView.m */; };
+		F849155814FFA54D000D064B /* RateView.m in Sources */ = {isa = PBXBuildFile; fileRef = F849155514FFA54D000D064B /* RateView.m */; };
+		F849155914FFA54D000D064B /* RateView.m in Sources */ = {isa = PBXBuildFile; fileRef = F849155514FFA54D000D064B /* RateView.m */; };
+		F849155C14FFA6E5000D064B /* storiaStarEmpty.png in Resources */ = {isa = PBXBuildFile; fileRef = F849155A14FFA6E5000D064B /* storiaStarEmpty.png */; };
+		F849155D14FFA6E5000D064B /* storiaStarEmpty.png in Resources */ = {isa = PBXBuildFile; fileRef = F849155A14FFA6E5000D064B /* storiaStarEmpty.png */; };
+		F849155E14FFA6E5000D064B /* storiaStarEmpty.png in Resources */ = {isa = PBXBuildFile; fileRef = F849155A14FFA6E5000D064B /* storiaStarEmpty.png */; };
+		F849155F14FFA6E5000D064B /* storiaStarEmpty.png in Resources */ = {isa = PBXBuildFile; fileRef = F849155A14FFA6E5000D064B /* storiaStarEmpty.png */; };
+		F849156014FFA6E5000D064B /* storiaStarFull.png in Resources */ = {isa = PBXBuildFile; fileRef = F849155B14FFA6E5000D064B /* storiaStarFull.png */; };
+		F849156114FFA6E5000D064B /* storiaStarFull.png in Resources */ = {isa = PBXBuildFile; fileRef = F849155B14FFA6E5000D064B /* storiaStarFull.png */; };
+		F849156214FFA6E5000D064B /* storiaStarFull.png in Resources */ = {isa = PBXBuildFile; fileRef = F849155B14FFA6E5000D064B /* storiaStarFull.png */; };
+		F849156314FFA6E5000D064B /* storiaStarFull.png in Resources */ = {isa = PBXBuildFile; fileRef = F849155B14FFA6E5000D064B /* storiaStarFull.png */; };
 		F84CE156134C691D0044729E /* SCHNonDRMAuthenticationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = F84CE155134C691D0044729E /* SCHNonDRMAuthenticationManager.m */; };
 		F8509EA312F0621E00197EB5 /* SCHScrubberView.m in Sources */ = {isa = PBXBuildFile; fileRef = F8509E9B12F0621E00197EB5 /* SCHScrubberView.m */; };
 		F8537F13139E3BB10092C743 /* SCHStoryInteractionAboutYouQuiz_iPhone.xib in Resources */ = {isa = PBXBuildFile; fileRef = F8537F12139E3BB10092C743 /* SCHStoryInteractionAboutYouQuiz_iPhone.xib */; };
@@ -4583,6 +4595,10 @@
 		F83701AD13BC73BE009B280D /* BookShelfModeGridInactive~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "BookShelfModeGridInactive~iphone.png"; path = "Resources/BookShelfModeGridInactive~iphone.png"; sourceTree = "<group>"; };
 		F83701AE13BC73BE009B280D /* BookShelfModeListActive~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "BookShelfModeListActive~iphone.png"; path = "Resources/BookShelfModeListActive~iphone.png"; sourceTree = "<group>"; };
 		F83701AF13BC73BE009B280D /* BookShelfModeListInactive~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "BookShelfModeListInactive~iphone.png"; path = "Resources/BookShelfModeListInactive~iphone.png"; sourceTree = "<group>"; };
+		F849155414FFA54D000D064B /* RateView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RateView.h; sourceTree = "<group>"; };
+		F849155514FFA54D000D064B /* RateView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RateView.m; sourceTree = "<group>"; };
+		F849155A14FFA6E5000D064B /* storiaStarEmpty.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = storiaStarEmpty.png; path = Resources/storiaStarEmpty.png; sourceTree = "<group>"; };
+		F849155B14FFA6E5000D064B /* storiaStarFull.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = storiaStarFull.png; path = Resources/storiaStarFull.png; sourceTree = "<group>"; };
 		F84CE154134C691D0044729E /* SCHNonDRMAuthenticationManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHNonDRMAuthenticationManager.h; path = Shared/SCHNonDRMAuthenticationManager.h; sourceTree = "<group>"; };
 		F84CE155134C691D0044729E /* SCHNonDRMAuthenticationManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHNonDRMAuthenticationManager.m; path = Shared/SCHNonDRMAuthenticationManager.m; sourceTree = "<group>"; };
 		F8509E9A12F0621E00197EB5 /* SCHScrubberView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCHScrubberView.h; sourceTree = "<group>"; };
@@ -5990,6 +6006,7 @@
 		528A2CFE12CCFD050053A343 /* Libraries */ = {
 			isa = PBXGroup;
 			children = (
+				F849155314FFA54D000D064B /* RateView */,
 				2808E2191456BDC2004EA40E /* QHTTPOperation */,
 				C9CEF2F11339F77200FB5BE0 /* Submodules */,
 				A3D933751326D84900037111 /* DRM */,
@@ -6834,6 +6851,8 @@
 		C9A11290136082A6007FD763 /* UIAssets */ = {
 			isa = PBXGroup;
 			children = (
+				F849155A14FFA6E5000D064B /* storiaStarEmpty.png */,
+				F849155B14FFA6E5000D064B /* storiaStarFull.png */,
 				C9F8FDD014B4A1D600136C22 /* Start View */,
 				C9747CD513EAEAC5003ADC71 /* Splash */,
 				C9703A5213E9615C0003C4D8 /* Bookshelf */,
@@ -7196,6 +7215,16 @@
 				F80A387913C1C39500D2B47C /* SISampleIcon~ipad.png */,
 			);
 			name = "List View Icons";
+			sourceTree = "<group>";
+		};
+		F849155314FFA54D000D064B /* RateView */ = {
+			isa = PBXGroup;
+			children = (
+				F849155414FFA54D000D064B /* RateView.h */,
+				F849155514FFA54D000D064B /* RateView.m */,
+			);
+			name = RateView;
+			path = Shared/Libraries/RateView;
 			sourceTree = "<group>";
 		};
 		F84CE153134C68E50044729E /* Authentication Manager */ = {
@@ -8459,6 +8488,8 @@
 				52FCCF3E14C6FDEB008C2626 /* SCHStoriaWelcomeTwoViewController~ipad.xib in Resources */,
 				52FCCF4114C6FE71008C2626 /* storia-preview-two~ipad.png in Resources */,
 				C94975C014C9B871008A19C7 /* storia-preview-close-button~ipad.png in Resources */,
+				F849155C14FFA6E5000D064B /* storiaStarEmpty.png in Resources */,
+				F849156014FFA6E5000D064B /* storiaStarFull.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -8492,6 +8523,8 @@
 				2866311D13F010990092A5DE /* StoryInteractionCardCollection1.xml in Resources */,
 				2898A0B713F436B100618172 /* Puzzle-6pc.xaml in Resources */,
 				C9367BE314731A8B0033A2EB /* SCHParentalToolsWebViewController_iPad.xib in Resources */,
+				F849155E14FFA6E5000D064B /* storiaStarEmpty.png in Resources */,
+				F849156214FFA6E5000D064B /* storiaStarFull.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -9167,6 +9200,8 @@
 				52FCCF3F14C6FDEB008C2626 /* SCHStoriaWelcomeTwoViewController~ipad.xib in Resources */,
 				52FCCF4214C6FE71008C2626 /* storia-preview-two~ipad.png in Resources */,
 				C94975C114C9B871008A19C7 /* storia-preview-close-button~ipad.png in Resources */,
+				F849155D14FFA6E5000D064B /* storiaStarEmpty.png in Resources */,
+				F849156114FFA6E5000D064B /* storiaStarFull.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -9653,6 +9688,8 @@
 				A3D3F4AE14CDE6AA004A56A5 /* answer-button-blue@2x~iphone.png in Resources */,
 				A3775D8514D9BDAE00473314 /* Icon@2x.png in Resources */,
 				A3775D8614D9BDB400473314 /* Icon-Small@2x.png in Resources */,
+				F849155F14FFA6E5000D064B /* storiaStarEmpty.png in Resources */,
+				F849156314FFA6E5000D064B /* storiaStarFull.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -9997,6 +10034,7 @@
 				5226C70514A489CB00307634 /* SCHVersionDownloadManager.m in Sources */,
 				5226C70714A489CB00307634 /* SCHVersionManifestOperation.m in Sources */,
 				5226C70B14A48C6100307634 /* SCHVersionManifestEntry.m in Sources */,
+				F849155614FFA54D000D064B /* RateView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -10061,6 +10099,7 @@
 				C9367BDA1472E89A0033A2EB /* KNFBXMLParserLock.m in Sources */,
 				C9A6B3FD148B7F0900B31277 /* SCHHelpManager.m in Sources */,
 				C9A6B402148B853C00B31277 /* SCHAppHelpState.m in Sources */,
+				F849155814FFA54D000D064B /* RateView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -10386,6 +10425,7 @@
 				5226C70614A489CB00307634 /* SCHVersionDownloadManager.m in Sources */,
 				5226C70814A489CB00307634 /* SCHVersionManifestOperation.m in Sources */,
 				5226C70C14A48C6100307634 /* SCHVersionManifestEntry.m in Sources */,
+				F849155714FFA54D000D064B /* RateView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -10711,6 +10751,7 @@
 				A3D3F48014CDDF31004A56A5 /* SCHVersionDownloadManager.m in Sources */,
 				A3D3F48114CDDF31004A56A5 /* SCHVersionManifestOperation.m in Sources */,
 				A3D3F48214CDDF31004A56A5 /* SCHVersionManifestEntry.m in Sources */,
+				F849155914FFA54D000D064B /* RateView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

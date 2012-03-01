@@ -125,6 +125,8 @@ typedef enum {
 @property (nonatomic, readonly) BOOL shouldShowChapters;
 @property (nonatomic, readonly) BOOL alwaysOpenToCover;
 @property (nonatomic, readonly) BOOL diskVersionOutOfDate;
+@property (nonatomic, readonly) NSNumber * AverageRating;
+
 
 - (BOOL)bookCoverURLIsValid;
 - (BOOL)bookFileURLIsValid;

@@ -24,6 +24,10 @@ static NSInteger const CELL_BACKGROUND_VIEW = 200;
 static NSInteger const CELL_THUMB_BACKGROUND_VIEW = 201;
 static NSInteger const CELL_RULE_IMAGE_VIEW = 202;
 static NSInteger const CELL_ACTIVITY_SPINNER = 203;
+static NSInteger const CELL_STAR_VIEW = 300;
+static NSInteger const CELL_STAR_OTHERS_RATING_VIEW = 301;
+static NSInteger const CELL_STAR_PERSONAL_RATING_VIEW = 302;
+
 
 @interface SCHBookShelfTableViewCell ()
 
@@ -32,6 +36,9 @@ static NSInteger const CELL_ACTIVITY_SPINNER = 203;
 @property (readonly) UIImageView *sampleAndSIIndicatorIcon;
 @property (readonly) UIView *backgroundView;
 @property (readonly) UIView *thumbBackgroundView;
+@property (readonly) UIView *starView;
+@property (readonly) RateView *othersRateView;
+@property (readonly) RateView *personalRateView;
 @property (readonly) UIImageView *ruleImageView;
 @property (nonatomic, assign) BOOL coalesceRefreshes;
 @property (nonatomic, assign) BOOL needsRefresh;
@@ -52,6 +59,7 @@ static NSInteger const CELL_ACTIVITY_SPINNER = 203;
 @synthesize coalesceRefreshes;
 @synthesize needsRefresh;
 @synthesize disabledForInteractions;
+@synthesize showStarRatings;
 
 - (id) initWithCoder:(NSCoder *)aDecoder
 {
@@ -67,6 +75,19 @@ static NSInteger const CELL_ACTIVITY_SPINNER = 203;
         self.bookCoverView.coverViewMode = SCHBookCoverViewModeListView;
         self.bookCoverView.topInset = 0;
         self.bookCoverView.leftRightInset = 0;
+        
+        self.personalRateView.fullSelectedImage = [UIImage imageNamed:@"storiaStarFull"];
+        self.personalRateView.notSelectedImage = [UIImage imageNamed:@"storiaStarEmpty"];
+        self.personalRateView.rating = 0;
+        self.personalRateView.editable = YES;
+        self.personalRateView.maxRating = 5;
+        self.personalRateView.delegate = self;
+        
+        self.othersRateView.fullSelectedImage = [UIImage imageNamed:@"storiaStarFull"];
+        self.othersRateView.notSelectedImage = [UIImage imageNamed:@"storiaStarEmpty"];
+        self.othersRateView.rating = 3;
+        self.othersRateView.editable = NO;
+        self.othersRateView.maxRating = 5;
     }
     
     return self;
@@ -101,6 +122,17 @@ static NSInteger const CELL_ACTIVITY_SPINNER = 203;
     if (self.needsRefresh) {
         [self deferredRefreshCell];
     }
+}
+
+- (void)setShowStarRatings:(BOOL)newShowStarRatings
+{
+    showStarRatings = newShowStarRatings;
+    [self refreshCell];
+}
+
+- (void)rateView:(RateView *)rateView ratingDidChange:(float)rating
+{
+    NSLog(@"Changing rating to %f", rating);
 }
 
 - (void)refreshCell
@@ -217,12 +249,14 @@ static NSInteger const CELL_ACTIVITY_SPINNER = 203;
     } else {
         self.ruleImageView.hidden = NO;
     }
-
+    
 //    if (self.loading) {
 //        [self.activitySpinner startAnimating];
 //    } else {
 //        [self.activitySpinner stopAnimating];
 //    }
+    
+    self.othersRateView.rating = [[book AverageRating] floatValue];
     
     self.needsRefresh = NO;
 }
@@ -231,16 +265,37 @@ static NSInteger const CELL_ACTIVITY_SPINNER = 203;
 {
     [super layoutSubviews];
 
+    
+    CGRect labelFrame = self.textLabel.frame;
+    CGRect starFrame = self.starView.frame;
+    CGRect backgroundFrame = self.backgroundView.frame;
+    
+    if (self.showStarRatings) {
+        starFrame.origin.x = self.frame.size.width - starFrame.size.width;
+        backgroundFrame.size.width = self.frame.size.width - starFrame.size.width;
+    } else {
+        starFrame.origin.x = self.frame.size.width;
+        backgroundFrame.size.width = self.frame.size.width;
+        labelFrame.size.width += 100;
+    }
+    
+    labelFrame.size.width = backgroundFrame.size.width - self.thumbBackgroundView.frame.size.width - self.sampleAndSIIndicatorIcon.frame.size.width - 60;
+
+    
+    self.starView.frame = starFrame;
+    self.backgroundView.frame = backgroundFrame;
+    
+
     // code to centre the text label vertically
-    CGRect frame = self.textLabel.frame;
     
     float textHeight = [self.textLabel sizeThatFits:self.textLabel.frame.size].height;
     if (textHeight > self.textLabel.frame.size.height) {
         textHeight = self.textLabel.frame.size.height;
     }
     
-    frame.origin.y = ceilf(CGRectGetMidY(self.backgroundView.frame) - (textHeight / 2));
-    self.textLabel.frame = frame;
+    labelFrame.origin.y = ceilf(CGRectGetMidY(self.backgroundView.frame) - (textHeight / 2));
+    self.textLabel.frame = labelFrame;
+    
 }
 
 
@@ -327,6 +382,21 @@ static NSInteger const CELL_ACTIVITY_SPINNER = 203;
 - (UIView *)thumbBackgroundView
 {
     return (UIView *)[self.contentView viewWithTag:CELL_THUMB_BACKGROUND_VIEW];
+}
+
+- (UIView *)starView
+{
+    return (UIView *)[self.contentView viewWithTag:CELL_STAR_VIEW];
+}
+
+- (RateView *)othersRateView
+{
+    return (RateView *)[self.contentView viewWithTag:CELL_STAR_OTHERS_RATING_VIEW];
+}
+
+- (RateView *)personalRateView
+{
+    return (RateView *)[self.contentView viewWithTag:CELL_STAR_PERSONAL_RATING_VIEW];
 }
 
 - (UIImageView *)ruleImageView

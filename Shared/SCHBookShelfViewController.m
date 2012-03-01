@@ -60,6 +60,7 @@ typedef enum
 @property (nonatomic, retain) LambdaAlert *loadingView;
 @property (nonatomic, assign) BOOL shouldShowBookshelfFailedErrorMessage;
 @property (nonatomic, assign) BOOL shouldWaitForCellsToLoad;
+@property (nonatomic, assign) BOOL showingRatings;
 @property (nonatomic, retain) BITModalSheetController *welcomePopoverController;
 
 - (void)showWelcomeView;
@@ -113,6 +114,7 @@ typedef enum
 @synthesize shouldWaitForCellsToLoad;
 @synthesize showWelcome;
 @synthesize welcomePopoverController;
+@synthesize showingRatings;
 
 #pragma mark - Object lifecycle
 
@@ -199,6 +201,7 @@ typedef enum
     self.gridViewNeedsRefreshed = YES;
     self.listViewNeedsRefreshed = YES;
     self.shouldShowBookshelfFailedErrorMessage = YES;
+    self.showingRatings = NO;
     
     [self.listTableView setAlwaysBounceVertical:NO]; // For some reason this doesn't work when set from the nib
     
@@ -213,6 +216,7 @@ typedef enum
     [self.themeButton setThemeIcon:kSCHThemeManagerThemeIcon iPadQualifier:kSCHThemeManagerPadQualifierSuffix];
     [self.themeButton sizeToFit];    
     [self.themeButton addTarget:self action:@selector(changeTheme) forControlEvents:UIControlEventTouchUpInside];    
+
     self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithCustomView:self.themeButton] autorelease];
 
     self.backButton = [SCHThemeButton buttonWithType:UIButtonTypeCustom];
@@ -557,6 +561,16 @@ typedef enum
 
 #pragma mark - Action methods
 
+- (void)toggleRatings
+{
+    self.showingRatings = !self.showingRatings;
+    NSLog(@"Toggling ratings to %@. FIXME: need to change icon.", self.showingRatings?@"Yes":@"No");
+
+    self.gridViewNeedsRefreshed = YES;
+    self.listViewNeedsRefreshed = YES;
+    [self reloadData];
+}
+
 - (IBAction)back
 {
     self.profileItem.AppProfile.ShowListView = [NSNumber numberWithBool:self.listTableView.hidden == NO];
@@ -797,7 +811,7 @@ typedef enum
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     static NSString *cellIdentifier = @"ScholasticBookshelfTableCell";
-    
+
     SCHBookShelfTableViewCell *cell = (SCHBookShelfTableViewCell *) [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
     
     if (cell == nil) {
@@ -833,6 +847,8 @@ typedef enum
     } else {
         cell.loading = NO;
     }
+    
+    cell.showStarRatings = self.showingRatings;
     
     [cell endUpdates];
     return cell;
