@@ -2570,6 +2570,15 @@
 		C979C6A8138C237C00581F7F /* button-field.png in Resources */ = {isa = PBXBuildFile; fileRef = C979C6A6138C237C00581F7F /* button-field.png */; };
 		C979C6AA138C237C00581F7F /* button-field@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C979C6A7138C237C00581F7F /* button-field@2x.png */; };
 		C979D88A138C2D9100581F7F /* SCHGradientView.m in Sources */ = {isa = PBXBuildFile; fileRef = C979D889138C2D9100581F7F /* SCHGradientView.m */; };
+		C97BC5641500CFF00076D0FC /* SCHCOPPAManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 52C62CE814F2A4F100F261DA /* SCHCOPPAManager.m */; };
+		C97BC5651500CFF80076D0FC /* SCHWishListSyncComponent.m in Sources */ = {isa = PBXBuildFile; fileRef = 52943AE414FFD0E8002991EB /* SCHWishListSyncComponent.m */; };
+		C97BC5661500D01A0076D0FC /* SCHScholasticGetUserInfoWebService.m in Sources */ = {isa = PBXBuildFile; fileRef = 52C62CFA14F3A2FA00F261DA /* SCHScholasticGetUserInfoWebService.m */; };
+		C97BC5671500D0340076D0FC /* SCHWishListWebService.m in Sources */ = {isa = PBXBuildFile; fileRef = 520D28CB14F4E2F9005AAF4F /* SCHWishListWebService.m */; };
+		C97BC5681500D0520076D0FC /* SCHWishListConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = 523EC29914F6326800EBB843 /* SCHWishListConstants.m */; };
+		C97BC5691500D0650076D0FC /* GetUserInfoSvc.m in Sources */ = {isa = PBXBuildFile; fileRef = 52C62CF014F3A02100F261DA /* GetUserInfoSvc.m */; };
+		C97BC56A1500D07A0076D0FC /* WishListServiceSvc.m in Sources */ = {isa = PBXBuildFile; fileRef = 523B2E6F14F403E300413883 /* WishListServiceSvc.m */; };
+		C97BC56B1500D09C0076D0FC /* ax21.m in Sources */ = {isa = PBXBuildFile; fileRef = 523B2E6D14F403E300413883 /* ax21.m */; };
+		C97BC56C1500D0A40076D0FC /* ax25.m in Sources */ = {isa = PBXBuildFile; fileRef = 52C62CF514F3A25700F261DA /* ax25.m */; };
 		C97D6DA313696D7B0017974B /* SCHBookPoint.m in Sources */ = {isa = PBXBuildFile; fileRef = C97D6DA213696D7B0017974B /* SCHBookPoint.m */; };
 		C97F7F9314078A91002BB9FB /* reading-si~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = C97F7F8D14078A91002BB9FB /* reading-si~iphone.png */; };
 		C97F7F9514078A91002BB9FB /* reading-si@2x~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = C97F7F8E14078A91002BB9FB /* reading-si@2x~iphone.png */; };
@@ -5299,7 +5308,7 @@
 		C9C9096A1455A06B00548DDE /* SCHSampleBooksImporter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHSampleBooksImporter.m; path = Shared/SCHSampleBooksImporter.m; sourceTree = "<group>"; };
 		C9D4F6261345FFE7007F86E3 /* SCHTextFlow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHTextFlow.h; path = Shared/SCHTextFlow.h; sourceTree = "<group>"; };
 		C9D4F6271345FFE7007F86E3 /* SCHTextFlow.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHTextFlow.m; path = Shared/SCHTextFlow.m; sourceTree = "<group>"; };
-		C9D703AC14ED50B100C10006 /* Scholastic iPad copy.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Scholastic iPad copy.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		C9D703AC14ED50B100C10006 /* Storia.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Storia.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C9E89A491369B87A00E7ED53 /* levenshtein_distance.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = levenshtein_distance.c; sourceTree = "<group>"; };
 		C9E89A4A1369B87A00E7ED53 /* levenshtein_distance.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = levenshtein_distance.h; sourceTree = "<group>"; };
 		C9EB4CD714026C7900DBC3BD /* icon-help-older~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "icon-help-older~ipad.png"; path = "Resources/icon-help-older~ipad.png"; sourceTree = "<group>"; };
@@ -5801,7 +5810,7 @@
 				28A08CFB13952CB4006FD008 /* UnitTests.octest */,
 				52488C051407990500DA9AFA /* Storia.app */,
 				A3D3F4AB14CDDF31004A56A5 /* Storia.app */,
-				C9D703AC14ED50B100C10006 /* Scholastic iPad copy.app */,
+				C9D703AC14ED50B100C10006 /* Storia.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -8541,7 +8550,7 @@
 			);
 			name = "Scholastic iPhone";
 			productName = Scholastic;
-			productReference = C9D703AC14ED50B100C10006 /* Scholastic iPad copy.app */;
+			productReference = C9D703AC14ED50B100C10006 /* Storia.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -12502,6 +12511,15 @@
 				C9D7038114ED50B100C10006 /* SCHVersionDownloadManager.m in Sources */,
 				C9D7038214ED50B100C10006 /* SCHVersionManifestOperation.m in Sources */,
 				C9D7038314ED50B100C10006 /* SCHVersionManifestEntry.m in Sources */,
+				C97BC5641500CFF00076D0FC /* SCHCOPPAManager.m in Sources */,
+				C97BC5651500CFF80076D0FC /* SCHWishListSyncComponent.m in Sources */,
+				C97BC5661500D01A0076D0FC /* SCHScholasticGetUserInfoWebService.m in Sources */,
+				C97BC5671500D0340076D0FC /* SCHWishListWebService.m in Sources */,
+				C97BC5681500D0520076D0FC /* SCHWishListConstants.m in Sources */,
+				C97BC5691500D0650076D0FC /* GetUserInfoSvc.m in Sources */,
+				C97BC56A1500D07A0076D0FC /* WishListServiceSvc.m in Sources */,
+				C97BC56B1500D09C0076D0FC /* ax21.m in Sources */,
+				C97BC56C1500D0A40076D0FC /* ax25.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -13017,7 +13035,7 @@
 					"-ObjC",
 					"-all_load",
 				);
-				PRODUCT_NAME = "Scholastic iPad copy";
+				PRODUCT_NAME = Storia;
 				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
@@ -13048,7 +13066,7 @@
 					"-ObjC",
 					"-all_load",
 				);
-				PRODUCT_NAME = "Scholastic iPad copy";
+				PRODUCT_NAME = Storia;
 				PROVISIONING_PROFILE = "92AE4D21-1244-41B9-8BF0-0CD272940A22";
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "92AE4D21-1244-41B9-8BF0-0CD272940A22";
 				TARGETED_DEVICE_FAMILY = 1;
@@ -13082,7 +13100,7 @@
 					"-ObjC",
 					"-all_load",
 				);
-				PRODUCT_NAME = "Scholastic iPad copy";
+				PRODUCT_NAME = Storia;
 				PROVISIONING_PROFILE = "3000DF94-20D7-495E-AB95-E774256151AE";
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "3000DF94-20D7-495E-AB95-E774256151AE";
 				TARGETED_DEVICE_FAMILY = 1;
