@@ -806,6 +806,13 @@ typedef enum
     }
 }
 
+#pragma mark - SCHBookShelfTableViewCellDelegate methods
+
+- (void)bookshelfCell:(SCHBookShelfTableViewCell *)cell userRatingChanged:(NSInteger)newRating
+{
+    NSLog(@"Book %@ changed to rating %d", cell.identifier, newRating);
+}
+
 #pragma mark - UITableViewDataSource methods
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -831,6 +838,7 @@ typedef enum
 
     SCHBookIdentifier *identifier = [self.books objectAtIndex:[indexPath row]];
 
+    cell.delegate = self;
     cell.identifier = identifier;
     SCHAppContentProfileItem *appContentProfileItem = [self.profileItem appContentProfileItemForBookIdentifier:identifier];
     cell.isNewBook = [appContentProfileItem.IsNewBook boolValue];

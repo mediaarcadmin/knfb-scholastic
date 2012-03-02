@@ -11,10 +11,13 @@
 
 @class SCHBookIdentifier;
 
+@protocol SCHBookShelfTableViewCellDelegate;
+
 @interface SCHBookShelfTableViewCell : UITableViewCell <RateViewDelegate>
 {}
 
 @property (nonatomic, retain) SCHBookIdentifier *identifier;
+@property (nonatomic, assign) id <SCHBookShelfTableViewCellDelegate> delegate;
 @property (nonatomic, assign) BOOL isNewBook;
 @property (nonatomic, assign) BOOL lastCell;
 @property (nonatomic, assign) BOOL loading;
@@ -24,5 +27,11 @@
 - (void)beginUpdates;
 - (void)endUpdates;
 - (void)refreshCell;
+
+@end
+
+@protocol SCHBookShelfTableViewCellDelegate <NSObject>
+
+- (void)bookshelfCell:(SCHBookShelfTableViewCell *)cell userRatingChanged:(NSInteger)newRating;
 
 @end

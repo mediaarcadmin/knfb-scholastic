@@ -60,6 +60,7 @@ static NSInteger const CELL_STAR_PERSONAL_RATING_VIEW = 302;
 @synthesize needsRefresh;
 @synthesize disabledForInteractions;
 @synthesize showStarRatings;
+@synthesize delegate;
 
 - (id) initWithCoder:(NSCoder *)aDecoder
 {
@@ -104,6 +105,7 @@ static NSInteger const CELL_STAR_PERSONAL_RATING_VIEW = 302;
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
     [NSObject cancelPreviousPerformRequestsWithTarget:self];
     
+    delegate = nil;
     [identifier release], identifier = nil;
     [super dealloc];
 }
@@ -133,6 +135,9 @@ static NSInteger const CELL_STAR_PERSONAL_RATING_VIEW = 302;
 - (void)rateView:(RateView *)rateView ratingDidChange:(float)rating
 {
     NSLog(@"Changing rating to %f", rating);
+    if (self.delegate) {
+        [self.delegate bookshelfCell:self userRatingChanged:(NSInteger)rating];
+    }
 }
 
 - (void)refreshCell

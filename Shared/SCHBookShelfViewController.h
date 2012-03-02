@@ -22,7 +22,8 @@
 @class SCHReadingViewController;
 @class SCHBookIdentifier;
 
-@interface SCHBookShelfViewController : UIViewController <MRGridViewDelegate, SCHBookShelfGridViewDataSource, UITableViewDelegate, UITableViewDataSource> 
+@interface SCHBookShelfViewController : UIViewController <MRGridViewDelegate, SCHBookShelfGridViewDataSource, 
+UITableViewDelegate, UITableViewDataSource, SCHBookShelfTableViewCellDelegate> 
 {
 }
 
