@@ -996,6 +996,9 @@ ErrorExit:
 
 @implementation KeychainItemWrapper(SCHDRMKeychainItemReset)
 
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wobjc-protocol-method-implementation"
+
 - (void)resetKeychainItem
 {
     OSStatus status = noErr;
@@ -1014,6 +1017,7 @@ ErrorExit:
         }
     }
 }
+#pragma clang diagnostic pop
 
 - (BOOL)writeToKeychain
 {
