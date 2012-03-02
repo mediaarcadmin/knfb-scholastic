@@ -39,6 +39,7 @@ static NSTimeInterval const kSCHBookShelfViewControllerTopTenRefreshTime = -600.
 
 @property (nonatomic, retain) SCHThemeButton *topTenPicksButton;
 @property (nonatomic, retain) SCHThemeButton *sortButton;
+@property (nonatomic, retain) SCHThemeButton *ratingButton;
 
 @property (nonatomic, retain) UIPopoverController *popover;
 
@@ -57,11 +58,13 @@ static NSTimeInterval const kSCHBookShelfViewControllerTopTenRefreshTime = -600.
 @synthesize topTenPicksButton;
 @synthesize sortButton;
 @synthesize popover;
+@synthesize ratingButton;
 
 - (void)dealloc
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
     
+    [ratingButton release], ratingButton = nil;
     [topFavoritesComponent release], topFavoritesComponent = nil;
     [topTenBooks release], topTenBooks = nil;
     [lastTopTenBookRetrieval release], lastTopTenBookRetrieval = nil;
@@ -94,11 +97,11 @@ static NSTimeInterval const kSCHBookShelfViewControllerTopTenRefreshTime = -600.
     CGRect sortFrame = CGRectZero;
     CGRect topTenFrame = CGRectZero;
 
-    SCHThemeButton *ratingButton = [SCHThemeButton buttonWithType:UIButtonTypeCustom];
-    [ratingButton setThemeIcon:kSCHThemeManagerHomeIcon iPadQualifier:kSCHThemeManagerPadQualifierSuffix];
-    [ratingButton sizeToFit];    
-    [ratingButton addTarget:self action:@selector(toggleRatings) forControlEvents:UIControlEventTouchUpInside];    
-    ratingButton.accessibilityLabel = @"Rating Button";
+    self.ratingButton = [SCHThemeButton buttonWithType:UIButtonTypeCustom];
+    [self.ratingButton setThemeIcon:kSCHThemeManagerRatingsIcon iPadQualifier:kSCHThemeManagerPadQualifierSuffix];
+    [self.ratingButton sizeToFit];    
+    [self.ratingButton addTarget:self action:@selector(toggleRatings) forControlEvents:UIControlEventTouchUpInside];    
+    self.ratingButton.accessibilityLabel = @"Rating Button";
 
     // no sort or top ten buttons for the sample bookshelf
     if ([[SCHAppStateManager sharedAppStateManager] isSampleStore] == NO) {
@@ -151,17 +154,17 @@ static NSTimeInterval const kSCHBookShelfViewControllerTopTenRefreshTime = -600.
     if (self.topTenPicksButton) {
         [rightContainerView addSubview:self.topTenPicksButton];
     }
-    if (ratingButton) {
-        [rightContainerView addSubview:ratingButton];
+    if (self.ratingButton) {
+        [rightContainerView addSubview:self.ratingButton];
     }
     
     CGRect themeFrame = themeButton.frame;
-    themeFrame.origin.x = topTenWidth + kSCHBookShelfButtonPadding + CGRectGetWidth(sortFrame) + kSCHBookShelfButtonPadding + CGRectGetWidth(ratingButton.frame);
+    themeFrame.origin.x = topTenWidth + kSCHBookShelfButtonPadding + CGRectGetWidth(sortFrame) + kSCHBookShelfButtonPadding + CGRectGetWidth(self.ratingButton.frame);
     themeButton.frame = themeFrame;
 
-    CGRect ratingFrame = ratingButton.frame;
+    CGRect ratingFrame = self.ratingButton.frame;
     ratingFrame.origin.x = topTenWidth + kSCHBookShelfButtonPadding + CGRectGetWidth(sortFrame);
-    ratingButton.frame = ratingFrame;
+    self.ratingButton.frame = ratingFrame;
 
     [rightContainerView addSubview:themeButton];
 
@@ -199,6 +202,18 @@ static NSTimeInterval const kSCHBookShelfViewControllerTopTenRefreshTime = -600.
             self.sortButton.hidden = NO;
         }
     }    
+}
+
+- (void)toggleRatings
+{
+    [super toggleRatings];
+    
+    if (self.showingRatings) {
+        [self.ratingButton setThemeIcon:kSCHThemeManagerRatingsSelectedIcon iPadQualifier:kSCHThemeManagerPadQualifierSuffix];
+    } else {
+        [self.ratingButton setThemeIcon:kSCHThemeManagerRatingsIcon iPadQualifier:kSCHThemeManagerPadQualifierSuffix];
+    }
+
 }
 
 - (void)viewWillAppear:(BOOL)animated

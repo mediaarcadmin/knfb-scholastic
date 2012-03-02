@@ -45,11 +45,13 @@ UITableViewDelegate, UITableViewDataSource, SCHBookShelfTableViewCellDelegate>
 @property (nonatomic, retain) NSMutableArray *books;
 @property (nonatomic, retain) SCHProfileItem *profileItem;
 @property (nonatomic, assign) BOOL showWelcome;
+@property (nonatomic, assign) BOOL showingRatings;
 
 @property (nonatomic) SCHBookSortType sortType;
 
 - (BOOL)isBookOnShelf:(SCHBookIdentifier *)aBookIdentifier;
 - (SCHReadingViewController *)openBook:(SCHBookIdentifier *)identifier error:(NSError **)error;
 - (void)updateTheme;
+- (void)toggleRatings;
 
 @end

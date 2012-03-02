@@ -13,6 +13,10 @@
 		<string>Shared/button-done</string>
 		<key>HomeIcon</key>
 		<string>Shared/icon-home</string>
+		<key>RatingsIcon</key>
+		<string>Shared/icon-rating</string>
+		<key>RatingsSelectedIcon</key>
+		<string>Shared/icon-rating-toggled</string>
 		<key>id</key>
 		<integer>1</integer>
 		<key>Image</key>
@@ -39,6 +43,10 @@
 		<string>Shared/button-done</string>
 		<key>HomeIcon</key>
 		<string>Shared/icon-home</string>
+		<key>RatingsIcon</key>
+		<string>Shared/icon-rating</string>
+		<key>RatingsSelectedIcon</key>
+		<string>Shared/icon-rating-toggled</string>
 		<key>id</key>
 		<integer>2</integer>
 		<key>Image</key>
@@ -65,6 +73,10 @@
 		<string>Shared/button-done</string>
 		<key>HomeIcon</key>
 		<string>Shared/icon-home</string>
+		<key>RatingsIcon</key>
+		<string>Shared/icon-rating</string>
+		<key>RatingsSelectedIcon</key>
+		<string>Shared/icon-rating-toggled</string>
 		<key>id</key>
 		<integer>3</integer>
 		<key>Image</key>
@@ -91,6 +103,10 @@
 		<string>Shared/button-done</string>
 		<key>HomeIcon</key>
 		<string>Shared/icon-home</string>
+		<key>RatingsIcon</key>
+		<string>Shared/icon-rating</string>
+		<key>RatingsSelectedIcon</key>
+		<string>Shared/icon-rating-toggled</string>
 		<key>id</key>
 		<integer>4</integer>
 		<key>Image</key>
@@ -117,6 +133,10 @@
 		<string>Shared/button-done</string>
 		<key>HomeIcon</key>
 		<string>Shared/icon-home</string>
+		<key>RatingsIcon</key>
+		<string>Shared/icon-rating</string>
+		<key>RatingsSelectedIcon</key>
+		<string>Shared/icon-rating-toggled</string>
 		<key>id</key>
 		<integer>5</integer>
 		<key>Image</key>
@@ -143,6 +163,10 @@
 		<string>Shared/button-done</string>
 		<key>HomeIcon</key>
 		<string>Shared/icon-home</string>
+		<key>RatingsIcon</key>
+		<string>Shared/icon-rating</string>
+		<key>RatingsSelectedIcon</key>
+		<string>Shared/icon-rating-toggled</string>
 		<key>id</key>
 		<integer>6</integer>
 		<key>Image</key>
@@ -169,6 +193,10 @@
 		<string>Shared/button-done</string>
 		<key>HomeIcon</key>
 		<string>Shared/icon-home</string>
+		<key>RatingsIcon</key>
+		<string>Shared/icon-rating</string>
+		<key>RatingsSelectedIcon</key>
+		<string>Shared/icon-rating-toggled</string>
 		<key>id</key>
 		<integer>7</integer>
 		<key>Image</key>

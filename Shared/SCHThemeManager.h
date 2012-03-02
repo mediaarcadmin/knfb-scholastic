@@ -30,6 +30,8 @@ extern NSString * const kSCHThemeManagerShelfImage;
 extern NSString * const kSCHThemeManagerHomeIcon;
 extern NSString * const kSCHThemeManagerThemeIcon;
 extern NSString * const kSCHThemeManagerColorForListBackground;
+extern NSString * const kSCHThemeManagerRatingsIcon;
+extern NSString * const kSCHThemeManagerRatingsSelectedIcon;
 
 @class SCHAppProfile;
 

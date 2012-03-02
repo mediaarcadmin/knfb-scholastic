@@ -27,6 +27,8 @@ NSString * const kSCHThemeManagerBackgroundImage = @"BackgroundImage";
 NSString * const kSCHThemeManagerShelfImage = @"ShelfImage";
 NSString * const kSCHThemeManagerHomeIcon = @"HomeIcon";
 NSString * const kSCHThemeManagerThemeIcon = @"ThemeIcon";
+NSString * const kSCHThemeManagerRatingsIcon = @"RatingsIcon";
+NSString * const kSCHThemeManagerRatingsSelectedIcon = @"RatingsSelectedIcon";
 NSString * const kSCHThemeManagerColorForListBackground = @"ListBackgroundColor";
 NSString * const kSCHThemeManagerGridTextColorIsDark = @"GridTextColorIsDark";
 

@@ -61,7 +61,6 @@ typedef enum
 @property (nonatomic, retain) LambdaAlert *loadingView;
 @property (nonatomic, assign) BOOL shouldShowBookshelfFailedErrorMessage;
 @property (nonatomic, assign) BOOL shouldWaitForCellsToLoad;
-@property (nonatomic, assign) BOOL showingRatings;
 @property (nonatomic, retain) BITModalSheetController *welcomePopoverController;
 
 - (void)showWelcomeView;
@@ -565,6 +564,7 @@ typedef enum
 - (void)toggleRatings
 {
     self.showingRatings = !self.showingRatings;
+    
     NSLog(@"Toggling ratings to %@. FIXME: need to change icon.", self.showingRatings?@"Yes":@"No");
 
     self.gridViewNeedsRefreshed = YES;
@@ -864,10 +864,14 @@ typedef enum
         cell.loading = NO;
     }
     
+    
     cell.showStarRatings = self.showingRatings;
 
-    SCHBookAnnotations *anno = [self.profileItem annotationsForBook:identifier];
-    cell.userRating = [anno userRating];
+    // don't need to open the annotation unless we are showing ratings
+    if (self.showingRatings) {
+        SCHBookAnnotations *anno = [self.profileItem annotationsForBook:identifier];
+        cell.userRating = [anno userRating];
+    }
 
     [cell endUpdates];
     return cell;
