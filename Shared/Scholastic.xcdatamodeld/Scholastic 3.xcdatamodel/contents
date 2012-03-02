@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model name="Test1.xcdatamodel" userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="872" systemVersion="10K549" minimumToolsVersion="Xcode 4.2" macOSVersion="Automatic" iOSVersion="Automatic">
+<model name="" userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="1170" systemVersion="11D50b" minimumToolsVersion="Xcode 4.2" macOSVersion="Automatic" iOSVersion="Automatic">
     <entity name="SCHAnnotation" representedClassName="SCHAnnotation" isAbstract="YES" parentEntity="SCHSyncEntity">
         <attribute name="Action" optional="YES" attributeType="Integer 16" defaultValueString="0"/>
         <attribute name="ID" optional="YES" attributeType="Integer 64" defaultValueString="0"/>
@@ -256,6 +256,20 @@
         <attribute name="SettingType" optional="YES" attributeType="Integer 16" defaultValueString="0"/>
         <attribute name="SettingValue" optional="YES" attributeType="String"/>
     </entity>
+    <entity name="SCHWishListItem" representedClassName="SCHWishListItem">
+        <attribute name="author" optional="YES" attributeType="String"/>
+        <attribute name="initiatedBy" optional="YES" attributeType="String"/>
+        <attribute name="isbn" optional="YES" attributeType="String" indexed="YES"/>
+        <attribute name="timestamp" optional="YES" attributeType="Date"/>
+        <attribute name="title" optional="YES" attributeType="String"/>
+        <relationship name="wishListProfile" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="SCHWishListProfile" inverseName="itemList" inverseEntity="SCHWishListProfile"/>
+    </entity>
+    <entity name="SCHWishListProfile" representedClassName="SCHWishListProfile">
+        <attribute name="profileID" optional="YES" attributeType="Integer 64" defaultValueString="0" indexed="YES"/>
+        <attribute name="profileName" optional="YES" attributeType="String"/>
+        <attribute name="timestamp" optional="YES" attributeType="Date"/>
+        <relationship name="itemList" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="SCHWishListItem" inverseName="wishListProfile" inverseEntity="SCHWishListItem"/>
+    </entity>
     <entity name="SCHWordIndex" representedClassName="SCHWordIndex">
         <attribute name="End" optional="YES" attributeType="Integer 64" defaultValueString="0"/>
         <attribute name="Start" optional="YES" attributeType="Integer 64" defaultValueString="0"/>
@@ -305,41 +319,45 @@
         <memberEntity name="SCHUserContentItem"/>
         <memberEntity name="SCHUserSettingsItem"/>
         <memberEntity name="SCHWordIndex"/>
+        <memberEntity name="SCHWishListItem"/>
+        <memberEntity name="SCHWishListProfile"/>
     </configuration>
     <elements>
-        <element name="SCHAppState" positionX="0" positionY="0" width="128" height="150"/>
-        <element name="SCHReadingStatsDetailItem" positionX="0" positionY="0" width="128" height="75"/>
-        <element name="SCHUserContentItem" positionX="898" positionY="1290" width="128" height="210"/>
+        <element name="SCHAnnotation" positionX="292" positionY="362" width="128" height="90"/>
         <element name="SCHAnnotationsContentItem" positionX="438" positionY="661" width="128" height="135"/>
-        <element name="SCHUserSettingsItem" positionX="1044" positionY="1349" width="128" height="75"/>
+        <element name="SCHAnnotationsItem" positionX="438" positionY="362" width="128" height="75"/>
         <element name="SCHAppBook" positionX="1177" positionY="600" width="128" height="405"/>
-        <element name="SCHLocationGraphics" positionX="146" positionY="354" width="128" height="75"/>
         <element name="SCHAppContentProfileItem" positionX="727" positionY="27" width="128" height="180"/>
-        <element name="SCHeReaderCategories" positionX="990" positionY="369" width="128" height="75"/>
+        <element name="SCHAppDictionaryManifestEntry" positionX="1179" positionY="144" width="128" height="105"/>
+        <element name="SCHAppDictionaryState" positionX="1197" positionY="315" width="128" height="105"/>
+        <element name="SCHAppHelpState" positionX="160" positionY="192" width="128" height="135"/>
+        <element name="SCHAppProfile" positionX="0" positionY="0" width="128" height="165"/>
+        <element name="SCHAppState" positionX="0" positionY="0" width="128" height="150"/>
+        <element name="SCHBookmark" positionX="292" positionY="653" width="128" height="105"/>
         <element name="SCHContentItem" positionX="772" positionY="531" width="128" height="90"/>
         <element name="SCHContentMetadataItem" positionX="990" positionY="586" width="128" height="255"/>
-        <element name="SCHLocationBookmark" positionX="0" positionY="0" width="128" height="75"/>
-        <element name="SCHSyncEntity" positionX="822" positionY="144" width="128" height="75"/>
-        <element name="SCHAppDictionaryState" positionX="1197" positionY="315" width="128" height="105"/>
-        <element name="SCHLastPage" positionX="584" positionY="653" width="128" height="105"/>
-        <element name="SCHAnnotation" positionX="292" positionY="362" width="128" height="90"/>
-        <element name="SCHDictionaryEntry" positionX="151" positionY="1080" width="128" height="105"/>
-        <element name="SCHAppHelpState" positionX="160" positionY="192" width="128" height="135"/>
-        <element name="SCHOrderItem" positionX="990" positionY="1147" width="128" height="90"/>
-        <element name="SCHLocationText" positionX="0" positionY="362" width="128" height="90"/>
-        <element name="SCHReadingStatsContentItem" positionX="0" positionY="0" width="128" height="90"/>
-        <element name="SCHNote" positionX="146" positionY="653" width="128" height="105"/>
         <element name="SCHContentProfileItem" positionX="806" positionY="1147" width="128" height="120"/>
-        <element name="SCHAppDictionaryManifestEntry" positionX="1179" positionY="144" width="128" height="105"/>
-        <element name="SCHReadingStatsEntryItem" positionX="0" positionY="0" width="128" height="135"/>
-        <element name="SCHDictionaryWordForm" positionX="-36" positionY="1080" width="128" height="105"/>
-        <element name="SCHProfileItem" positionX="584" positionY="265" width="128" height="285"/>
-        <element name="SCHHighlight" positionX="0" positionY="653" width="128" height="105"/>
-        <element name="SCHBookmark" positionX="292" positionY="653" width="128" height="105"/>
-        <element name="SCHAnnotationsItem" positionX="438" positionY="362" width="128" height="75"/>
-        <element name="SCHPrivateAnnotations" positionX="365" positionY="862" width="128" height="120"/>
-        <element name="SCHWordIndex" positionX="0" positionY="137" width="128" height="90"/>
-        <element name="SCHAppProfile" positionX="0" positionY="0" width="128" height="165"/>
         <element name="SCHDeviceInfo" positionX="1336" positionY="1274" width="128" height="225"/>
+        <element name="SCHDictionaryEntry" positionX="151" positionY="1080" width="128" height="105"/>
+        <element name="SCHDictionaryWordForm" positionX="-36" positionY="1080" width="128" height="105"/>
+        <element name="SCHeReaderCategories" positionX="990" positionY="369" width="128" height="75"/>
+        <element name="SCHHighlight" positionX="0" positionY="653" width="128" height="105"/>
+        <element name="SCHLastPage" positionX="584" positionY="653" width="128" height="105"/>
+        <element name="SCHLocationBookmark" positionX="0" positionY="0" width="128" height="75"/>
+        <element name="SCHLocationGraphics" positionX="146" positionY="354" width="128" height="75"/>
+        <element name="SCHLocationText" positionX="0" positionY="362" width="128" height="90"/>
+        <element name="SCHNote" positionX="146" positionY="653" width="128" height="105"/>
+        <element name="SCHOrderItem" positionX="990" positionY="1147" width="128" height="90"/>
+        <element name="SCHPrivateAnnotations" positionX="365" positionY="862" width="128" height="120"/>
+        <element name="SCHProfileItem" positionX="584" positionY="265" width="128" height="285"/>
+        <element name="SCHReadingStatsContentItem" positionX="0" positionY="0" width="128" height="90"/>
+        <element name="SCHReadingStatsDetailItem" positionX="0" positionY="0" width="128" height="75"/>
+        <element name="SCHReadingStatsEntryItem" positionX="0" positionY="0" width="128" height="135"/>
+        <element name="SCHSyncEntity" positionX="822" positionY="144" width="128" height="75"/>
+        <element name="SCHUserContentItem" positionX="898" positionY="1290" width="128" height="210"/>
+        <element name="SCHUserSettingsItem" positionX="1044" positionY="1349" width="128" height="75"/>
+        <element name="SCHWishListItem" positionX="160" positionY="192" width="128" height="135"/>
+        <element name="SCHWishListProfile" positionX="160" positionY="192" width="128" height="105"/>
+        <element name="SCHWordIndex" positionX="0" positionY="137" width="128" height="90"/>
     </elements>
 </model>

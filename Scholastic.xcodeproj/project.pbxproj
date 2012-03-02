@@ -1399,6 +1399,14 @@
 		52E36769131D3ED200ACCBEE /* SCHBookshelfSyncComponent.m in Sources */ = {isa = PBXBuildFile; fileRef = 52E36768131D3ED200ACCBEE /* SCHBookshelfSyncComponent.m */; };
 		52E622F41358385D00245CA7 /* Themes in Resources */ = {isa = PBXBuildFile; fileRef = 52E622F31358385D00245CA7 /* Themes */; };
 		52E622FB13584EBF00245CA7 /* SCHThemeManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 52E622FA13584EBE00245CA7 /* SCHThemeManager.m */; };
+		52EA323115011C2E0069C72E /* SCHWishListProfile.m in Sources */ = {isa = PBXBuildFile; fileRef = 52EA323015011C2E0069C72E /* SCHWishListProfile.m */; };
+		52EA323215011C2E0069C72E /* SCHWishListProfile.m in Sources */ = {isa = PBXBuildFile; fileRef = 52EA323015011C2E0069C72E /* SCHWishListProfile.m */; };
+		52EA323415011C2E0069C72E /* SCHWishListProfile.m in Sources */ = {isa = PBXBuildFile; fileRef = 52EA323015011C2E0069C72E /* SCHWishListProfile.m */; };
+		52EA323515011C2E0069C72E /* SCHWishListProfile.m in Sources */ = {isa = PBXBuildFile; fileRef = 52EA323015011C2E0069C72E /* SCHWishListProfile.m */; };
+		52EA323815011CA10069C72E /* SCHWishListItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 52EA323715011CA10069C72E /* SCHWishListItem.m */; };
+		52EA323915011CA10069C72E /* SCHWishListItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 52EA323715011CA10069C72E /* SCHWishListItem.m */; };
+		52EA323A15011CA10069C72E /* SCHWishListItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 52EA323715011CA10069C72E /* SCHWishListItem.m */; };
+		52EA323B15011CA10069C72E /* SCHWishListItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 52EA323715011CA10069C72E /* SCHWishListItem.m */; };
 		52EF4E5F12E6E01C00E374F7 /* SCHLoginPasswordViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 52EF4E5D12E6E01C00E374F7 /* SCHLoginPasswordViewController.m */; };
 		52EF4E6012E6E01C00E374F7 /* SCHLoginViewController~iphone.xib in Resources */ = {isa = PBXBuildFile; fileRef = 52EF4E5E12E6E01C00E374F7 /* SCHLoginViewController~iphone.xib */; };
 		52EF508712E739E900E374F7 /* LibreAccessServiceSvc.m in Sources */ = {isa = PBXBuildFile; fileRef = 52EF508612E739E900E374F7 /* LibreAccessServiceSvc.m */; };
@@ -4615,6 +4623,10 @@
 		52E622F31358385D00245CA7 /* Themes */ = {isa = PBXFileReference; lastKnownFileType = folder; name = Themes; path = Resources/Themes; sourceTree = "<group>"; };
 		52E622F913584EBE00245CA7 /* SCHThemeManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHThemeManager.h; path = Shared/SCHThemeManager.h; sourceTree = "<group>"; };
 		52E622FA13584EBE00245CA7 /* SCHThemeManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHThemeManager.m; path = Shared/SCHThemeManager.m; sourceTree = "<group>"; };
+		52EA322F15011C2E0069C72E /* SCHWishListProfile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHWishListProfile.h; path = Shared/SCHWishListProfile.h; sourceTree = "<group>"; };
+		52EA323015011C2E0069C72E /* SCHWishListProfile.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHWishListProfile.m; path = Shared/SCHWishListProfile.m; sourceTree = "<group>"; };
+		52EA323615011CA10069C72E /* SCHWishListItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHWishListItem.h; path = Shared/SCHWishListItem.h; sourceTree = "<group>"; };
+		52EA323715011CA10069C72E /* SCHWishListItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHWishListItem.m; path = Shared/SCHWishListItem.m; sourceTree = "<group>"; };
 		52EF4E5C12E6E01C00E374F7 /* SCHLoginPasswordViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHLoginPasswordViewController.h; path = iPhone/SCHLoginPasswordViewController.h; sourceTree = "<group>"; };
 		52EF4E5D12E6E01C00E374F7 /* SCHLoginPasswordViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHLoginPasswordViewController.m; path = iPhone/SCHLoginPasswordViewController.m; sourceTree = "<group>"; };
 		52EF4E5E12E6E01C00E374F7 /* SCHLoginViewController~iphone.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = "SCHLoginViewController~iphone.xib"; sourceTree = "<group>"; };
@@ -6793,6 +6805,10 @@
 				52298A6812F0EF5600BBBCE6 /* SCHUserContentItem.m */,
 				52298A5F12F0EF5600BBBCE6 /* SCHUserSettingsItem.h */,
 				52298A6012F0EF5600BBBCE6 /* SCHUserSettingsItem.m */,
+				52EA323615011CA10069C72E /* SCHWishListItem.h */,
+				52EA323715011CA10069C72E /* SCHWishListItem.m */,
+				52EA322F15011C2E0069C72E /* SCHWishListProfile.h */,
+				52EA323015011C2E0069C72E /* SCHWishListProfile.m */,
 				52298A6B12F0EF5600BBBCE6 /* SCHWordIndex.h */,
 				52298A6C12F0EF5600BBBCE6 /* SCHWordIndex.m */,
 				52D612B612E4650B0033DA92 /* NSNumber+ObjectTypes.h */,
@@ -11450,6 +11466,8 @@
 				52C62CF114F3A02100F261DA /* GetUserInfoSvc.m in Sources */,
 				52C62CF614F3A25700F261DA /* ax25.m in Sources */,
 				52C62CFB14F3A2FA00F261DA /* SCHScholasticGetUserInfoWebService.m in Sources */,
+				52EA323115011C2E0069C72E /* SCHWishListProfile.m in Sources */,
+				52EA323815011CA10069C72E /* SCHWishListItem.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -11851,6 +11869,8 @@
 				52C62CF214F3A02100F261DA /* GetUserInfoSvc.m in Sources */,
 				52C62CF714F3A25700F261DA /* ax25.m in Sources */,
 				52C62CFC14F3A2FA00F261DA /* SCHScholasticGetUserInfoWebService.m in Sources */,
+				52EA323215011C2E0069C72E /* SCHWishListProfile.m in Sources */,
+				52EA323915011CA10069C72E /* SCHWishListItem.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -12186,6 +12206,8 @@
 				52C62CF314F3A02100F261DA /* GetUserInfoSvc.m in Sources */,
 				52C62CF814F3A25700F261DA /* ax25.m in Sources */,
 				52C62CFD14F3A2FA00F261DA /* SCHScholasticGetUserInfoWebService.m in Sources */,
+				52EA323415011C2E0069C72E /* SCHWishListProfile.m in Sources */,
+				52EA323A15011CA10069C72E /* SCHWishListItem.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -12520,6 +12542,8 @@
 				C97BC56A1500D07A0076D0FC /* WishListServiceSvc.m in Sources */,
 				C97BC56B1500D09C0076D0FC /* ax21.m in Sources */,
 				C97BC56C1500D0A40076D0FC /* ax25.m in Sources */,
+				52EA323515011C2E0069C72E /* SCHWishListProfile.m in Sources */,
+				52EA323B15011CA10069C72E /* SCHWishListItem.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
