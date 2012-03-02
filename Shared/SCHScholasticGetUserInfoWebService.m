@@ -71,19 +71,14 @@ static NSString * const kSCHScholasticGetUserInfoWebServiceAttributeErrorDesc = 
 
 #pragma mark - GetUserInfoSoap11BindingResponse Delegate methods
 
-// TODO: JSE - implement this properly
-- (NSError *)confirmErrorDomain:(NSError *)anError
-{
-    return nil;
-}
-
 - (void)operation:(GetUserInfoSoap11BindingOperation *)operation completedWithResponse:(GetUserInfoSoap11BindingResponse *)response
 {	
 	[[BITNetworkActivityManager sharedNetworkActivityManager] hideNetworkActivityIndicator];
 	
 	if (operation.response.error != nil) {
         if ([(id)self.delegate respondsToSelector:@selector(method:didFailWithError:requestInfo:result:)]) {
-            [(id)self.delegate method:kSCHScholasticGetUserInfoWebServiceProcessRemote didFailWithError:[self confirmErrorDomain:operation.response.error] 
+            [(id)self.delegate method:kSCHScholasticGetUserInfoWebServiceProcessRemote didFailWithError:[self confirmErrorDomain:operation.response.error 
+                                                                                                                   forDomainName:@"GetUserInfoServiceSoap11BindingResponseHTTP"] 
                           requestInfo:nil result:nil];
         }
 	} else {		
