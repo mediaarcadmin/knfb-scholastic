@@ -36,6 +36,7 @@
 #import "SCHStoriaWelcomeViewController.h"
 #import "SCHUserDefaults.h"
 #import "SCHVersionDownloadManager.h"
+#import "SCHBookAnnotations.h"
 
 static NSInteger const kSCHBookShelfViewControllerGridCellHeightPortrait = 138;
 static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 131;
@@ -811,6 +812,13 @@ typedef enum
 - (void)bookshelfCell:(SCHBookShelfTableViewCell *)cell userRatingChanged:(NSInteger)newRating
 {
     NSLog(@"Book %@ changed to rating %d", cell.identifier, newRating);
+    
+    SCHBookAnnotations *anno = [self.profileItem annotationsForBook:cell.identifier];
+    
+    if (anno) {
+        [anno setUserRating:newRating];
+    }
+    
 }
 
 #pragma mark - UITableViewDataSource methods
@@ -857,7 +865,10 @@ typedef enum
     }
     
     cell.showStarRatings = self.showingRatings;
-    
+
+    SCHBookAnnotations *anno = [self.profileItem annotationsForBook:identifier];
+    cell.userRating = [anno userRating];
+
     [cell endUpdates];
     return cell;
 }

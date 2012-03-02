@@ -336,4 +336,14 @@
     return self.privateAnnotations.LastPage;
 }
 
+- (void)setUserRating:(NSInteger)userRating
+{
+    self.privateAnnotations.AnnotationsContentItem.Rating = [NSNumber numberWithInt:userRating];
+}
+
+- (NSInteger)userRating
+{
+    return [self.privateAnnotations.AnnotationsContentItem.Rating integerValue];
+}
+
 @end

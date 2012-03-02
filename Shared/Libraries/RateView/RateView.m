@@ -10,39 +10,39 @@
 
 @implementation RateView
 
-@synthesize notSelectedImage = _notSelectedImage;
-@synthesize halfSelectedImage = _halfSelectedImage;
-@synthesize fullSelectedImage = _fullSelectedImage;
-@synthesize rating = _rating;
-@synthesize editable = _editable;
-@synthesize imageViews = _imageViews;
-@synthesize maxRating = _maxRating;
-@synthesize midMargin = _midMargin;
-@synthesize leftMargin = _leftMargin;
-@synthesize minImageSize = _minImageSize;
-@synthesize delegate = _delegate;
+@synthesize notSelectedImage;
+@synthesize halfSelectedImage;
+@synthesize fullSelectedImage;
+@synthesize rating;
+@synthesize editable;
+@synthesize imageViews;
+@synthesize maxRating;
+@synthesize midMargin;
+@synthesize leftMargin;
+@synthesize minImageSize;
+@synthesize delegate;
 
 - (void)dealloc
 {
-    [_imageViews release], _imageViews = nil;
-    [_notSelectedImage release], _notSelectedImage = nil;
-    [_halfSelectedImage release], _halfSelectedImage = nil;
-    [_fullSelectedImage release], _fullSelectedImage = nil;
+    [imageViews release], imageViews = nil;
+    [notSelectedImage release], notSelectedImage = nil;
+    [halfSelectedImage release], halfSelectedImage = nil;
+    [fullSelectedImage release], fullSelectedImage = nil;
     [super dealloc];
 }
 
 - (void)baseInit {
-    _notSelectedImage = nil;
-    _halfSelectedImage = nil;
-    _fullSelectedImage = nil;
-    _rating = 0;
-    _editable = NO;    
-    _imageViews = [[NSMutableArray alloc] init];
-    _maxRating = 5;
-    _midMargin = 5;
-    _leftMargin = 0;
-    _minImageSize = CGSizeMake(5, 5);
-    _delegate = nil;    
+    self.notSelectedImage = nil;
+    self.halfSelectedImage = nil;
+    self.fullSelectedImage = nil;
+    self.rating = 0;
+    self.editable = NO;    
+    self.imageViews = [[NSMutableArray alloc] init];
+    self.maxRating = 5;
+    self.midMargin = 5;
+    self.leftMargin = 0;
+    self.minImageSize = CGSizeMake(5, 5);
+    self.delegate = nil;    
 }
 
 - (id)initWithFrame:(CGRect)frame
@@ -93,8 +93,8 @@
     
 }
 
-- (void)setMaxRating:(int)maxRating {
-    _maxRating = maxRating;
+- (void)setMaxRating:(int)newMaxRating {
+    maxRating = newMaxRating;
     
     // Remove old image views
     for(int i = 0; i < self.imageViews.count; ++i) {
@@ -117,22 +117,32 @@
 }
 
 - (void)setNotSelectedImage:(UIImage *)image {
-    _notSelectedImage = image;
+    
+    UIImage *oldImage = notSelectedImage;
+    notSelectedImage = [image retain];
+    [oldImage release];
+    
     [self refresh];
 }
 
 - (void)setHalfSelectedImage:(UIImage *)image {
-    _halfSelectedImage = image;
+    UIImage *oldImage = halfSelectedImage;
+    halfSelectedImage = [image retain];
+    [oldImage release];
+    
     [self refresh];
 }
 
 - (void)setFullSelectedImage:(UIImage *)image {
-    _fullSelectedImage = image;
+    UIImage *oldImage = fullSelectedImage;
+    fullSelectedImage = [image retain];
+    [oldImage release];
+    
     [self refresh];
 }
 
-- (void)setRating:(float)rating {
-    _rating = rating;
+- (void)setRating:(float)newRating {
+    rating = newRating;
     [self refresh];
 }
 

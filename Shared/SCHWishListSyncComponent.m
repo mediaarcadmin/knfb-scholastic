@@ -34,7 +34,7 @@ NSString * const SCHWishListSyncComponentDidFailNotification = @"SCHWishListSync
     SCHWishListWebService *wishListWebService = [[SCHWishListWebService alloc] init];
     wishListWebService.delegate = self;
 
-    SCHAccountValidation *accountValidation = [[SCHAccountValidation alloc] init];
+    SCHAccountValidation *accountValidation = [[[SCHAccountValidation alloc] init] autorelease];
     
     NSString *storedUsername = [[NSUserDefaults standardUserDefaults] stringForKey:kSCHAuthenticationManagerUsername];
     NSString *storedPassword = [SFHFKeychainUtils getPasswordForUsername:storedUsername andServiceName:@"Scholastic" error:nil];
