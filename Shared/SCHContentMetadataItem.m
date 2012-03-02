@@ -48,6 +48,7 @@ static NSString * const kSCHContentMetadataItemAnnotationsItemProfileID = @"Anno
 @dynamic AppBook;
 @dynamic eReaderCategories;
 @dynamic FormatAuthorString;
+@dynamic AverageRating;
 
 - (NSSet *)AnnotationsContentItem
 {

@@ -159,6 +159,15 @@ NSString * const kSCHAppBookFilenameSeparator = @"-";
 	return self.ContentMetadataItem.FileName;
 }
 
+- (NSNumber *)AverageRating
+{
+    NSNumberFormatter * f = [[NSNumberFormatter alloc] init];
+    [f setNumberStyle:NSNumberFormatterDecimalStyle];
+    NSNumber * number = [f numberFromString:self.ContentMetadataItem.AverageRating];
+    [f release];
+    return number;
+}
+
 - (SCHBookIdentifier *)bookIdentifier
 {
     SCHBookIdentifier *ret = nil;

@@ -508,19 +508,22 @@ static NSUInteger const kSCHSyncManagerMaximumFailureRetries = 3;
             id DRMQualifier = [userContentItem valueForKey:kSCHLibreAccessWebServiceDRMQualifier];
             id format = [userContentItem valueForKey:kSCHLibreAccessWebServiceFormat];
             id version = [userContentItem valueForKey:kSCHLibreAccessWebServiceLastVersion];
+            id averageRating = [userContentItem valueForKey:kSCHLibreAccessWebServiceAverageRating];
             
             if (appContentProfileItem != nil && 
                 contentIdentifier != nil && contentIdentifier != [NSNull null] && 
                 contentIdentifierType != nil && contentIdentifierType != [NSNull null] && 
                 DRMQualifier != nil && DRMQualifier != [NSNull null] &&
                 format != nil && format != [NSNull null] && 
-                version != nil && version != [NSNull null]) {
+                version != nil && version != [NSNull null] &&
+                averageRating != nil && averageRating != [NSNull null]) {
                 ret = [NSMutableDictionary dictionary];
                 
                 [ret setObject:contentIdentifier forKey:kSCHLibreAccessWebServiceContentIdentifier];
                 [ret setObject:contentIdentifierType forKey:kSCHLibreAccessWebServiceContentIdentifierType];
                 [ret setObject:DRMQualifier forKey:kSCHLibreAccessWebServiceDRMQualifier];
                 [ret setObject:format forKey:kSCHLibreAccessWebServiceFormat];
+                [ret setObject:averageRating forKey:kSCHLibreAccessWebServiceAverageRating];
                 
                 NSMutableDictionary *privateAnnotation = [NSMutableDictionary dictionary];	
                 

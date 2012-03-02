@@ -117,8 +117,8 @@ NSString * const SCHContentSyncComponentDidFailNotification = @"SCHContentSyncCo
                                                                     object:self];
                 [super method:method didCompleteWithResult:result userInfo:userInfo];				                
             }
-        } else if([method compare:kSCHLibreAccessWebServiceListUserContentEx] == NSOrderedSame) {
-            NSArray *content = [result objectForKey:kSCHLibreAccessWebServiceUserContentListEx];
+        } else if([method compare:kSCHLibreAccessWebServiceListUserContentForRatings] == NSOrderedSame) {
+            NSArray *content = [result objectForKey:kSCHLibreAccessWebServiceUserContentList];
             
             [self syncUserContentItems:content];
             [[NSNotificationCenter defaultCenter] postNotificationName:SCHContentSyncComponentDidCompleteNotification 
@@ -333,6 +333,10 @@ NSString * const SCHContentSyncComponentDidFailNotification = @"SCHContentSyncCo
 	newUserContentItem.DefaultAssignment = [self makeNullNil:[webUserContentItem objectForKey:kSCHLibreAccessWebServiceDefaultAssignment]];		
 	newUserContentItem.ContentIdentifierType = [self makeNullNil:[webUserContentItem objectForKey:kSCHLibreAccessWebServiceContentIdentifierType]];				
 	
+    newUserContentItem.LastVersion = [self makeNullNil:[webUserContentItem objectForKey:kSCHLibreAccessWebServiceLastVersion]];
+	newUserContentItem.FreeBook = [self makeNullNil:[webUserContentItem objectForKey:kSCHLibreAccessWebServiceFreeBook]];    
+	newUserContentItem.AverageRating = [self makeNullNil:[webUserContentItem objectForKey:kSCHLibreAccessWebServiceAverageRating]];        
+
 	NSArray *orderList = [self makeNullNil:[webUserContentItem objectForKey:kSCHLibreAccessWebServiceOrderList]];
 	for (NSDictionary *orderItem in orderList) {
 		[newUserContentItem addOrderListObject:[self addOrderItem:orderItem]];
@@ -348,9 +352,6 @@ NSString * const SCHContentSyncComponentDidFailNotification = @"SCHContentSyncCo
         }
 	}
     	
-	newUserContentItem.LastVersion = [self makeNullNil:[webUserContentItem objectForKey:kSCHLibreAccessWebServiceLastVersion]];
-	newUserContentItem.FreeBook = [self makeNullNil:[webUserContentItem objectForKey:kSCHLibreAccessWebServiceFreeBook]];    
-    
 	newUserContentItem.LastModified = [self makeNullNil:[webUserContentItem objectForKey:kSCHLibreAccessWebServiceLastModified]];
 	newUserContentItem.State = [NSNumber numberWithStatus:kSCHStatusUnmodified];	
 }
@@ -386,6 +387,8 @@ NSString * const SCHContentSyncComponentDidFailNotification = @"SCHContentSyncCo
             newAnnotationsContentItem.DRMQualifier = userContentItem.DRMQualifier;
             newAnnotationsContentItem.ContentIdentifier = userContentItem.ContentIdentifier;
             newAnnotationsContentItem.Format = userContentItem.Format;
+            newAnnotationsContentItem.Rating = [NSNumber numberWithInt:0];
+            newAnnotationsContentItem.AverageRating = userContentItem.AverageRating;
             newAnnotationsContentItem.ContentIdentifierType = userContentItem.ContentIdentifierType;
             newAnnotationsContentItem.PrivateAnnotations = newPrivateAnnotations;
         }
@@ -445,10 +448,9 @@ NSString * const SCHContentSyncComponentDidFailNotification = @"SCHContentSyncCo
 		ret.LastModified = [self makeNullNil:[contentProfileItem objectForKey:kSCHLibreAccessWebServiceLastModified]];
 		ret.State = [NSNumber numberWithStatus:kSCHStatusUnmodified];
 		
-		ret.IsFavorite = [self makeNullNil:[contentProfileItem objectForKey:kSCHLibreAccessWebServiceIsFavorite]];
-		
 		ret.ProfileID = [self makeNullNil:[contentProfileItem objectForKey:kSCHLibreAccessWebServiceProfileID]];
 		ret.LastPageLocation = [self makeNullNil:[contentProfileItem objectForKey:kSCHLibreAccessWebServiceLastPageLocation]];
+        ret.Rating = [self makeNullNil:[contentProfileItem objectForKey:kSCHLibreAccessWebServiceRating]];
         
         SCHAppContentProfileItem *newAppContentProfileItem = [NSEntityDescription insertNewObjectForEntityForName:kSCHAppContentProfileItem 
                                                                              inManagedObjectContext:self.managedObjectContext];    
@@ -505,6 +507,7 @@ NSString * const SCHContentSyncComponentDidFailNotification = @"SCHContentSyncCo
 
         localUserContentItem.LastVersion = [self makeNullNil:[webUserContentItem objectForKey:kSCHLibreAccessWebServiceLastVersion]];
         localUserContentItem.FreeBook = [self makeNullNil:[webUserContentItem objectForKey:kSCHLibreAccessWebServiceFreeBook]];
+        localUserContentItem.AverageRating = [self makeNullNil:[webUserContentItem objectForKey:kSCHLibreAccessWebServiceAverageRating]];
         
         localUserContentItem.LastModified = [self makeNullNil:[webUserContentItem objectForKey:kSCHLibreAccessWebServiceLastModified]];
         localUserContentItem.State = [NSNumber numberWithStatus:kSCHStatusSyncUpdate];				
@@ -687,14 +690,13 @@ NSString * const SCHContentSyncComponentDidFailNotification = @"SCHContentSyncCo
         localContentProfileItem.LastModified = [self makeNullNil:[webContentProfileItem objectForKey:kSCHLibreAccessWebServiceLastModified]];
         localContentProfileItem.State = [NSNumber numberWithStatus:kSCHStatusSyncUpdate];
         
-        localContentProfileItem.IsFavorite = [self makeNullNil:[webContentProfileItem objectForKey:kSCHLibreAccessWebServiceIsFavorite]];
-        
         localContentProfileItem.ProfileID = [self makeNullNil:[webContentProfileItem objectForKey:kSCHLibreAccessWebServiceProfileID]];
         localContentProfileItem.LastPageLocation = [self makeNullNil:[webContentProfileItem objectForKey:kSCHLibreAccessWebServiceLastPageLocation]];
         if ([localContentProfileItem.AppContentProfileItem.IsNewBook boolValue] == YES &&
             [localContentProfileItem.LastPageLocation integerValue] > 0) {
             localContentProfileItem.AppContentProfileItem.IsNewBook = [NSNumber numberWithBool:NO];
         }
+        localContentProfileItem.Rating = [self makeNullNil:[webContentProfileItem objectForKey:kSCHLibreAccessWebServiceRating]];
     }
 }
 

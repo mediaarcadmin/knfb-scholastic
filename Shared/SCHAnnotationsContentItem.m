@@ -21,6 +21,9 @@ NSString * const kSCHAnnotationsContentItemDRM_QUALIFIER = @"DRM_QUALIFIER";
 @implementation SCHAnnotationsContentItem 
 
 @dynamic Format;
+@dynamic AverageRating;
+@dynamic Rating;
+@dynamic LastModified;
 @dynamic AnnotationsItem;
 @dynamic PrivateAnnotations;
 

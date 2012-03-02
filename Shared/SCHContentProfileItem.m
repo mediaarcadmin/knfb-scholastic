@@ -25,11 +25,11 @@ NSString * const kSCHContentProfileItem = @"SCHContentProfileItem";
 
 @implementation SCHContentProfileItem 
 
-@dynamic IsFavorite;
 @dynamic ProfileID;
 @dynamic LastPageLocation;
 @dynamic UserContentItem;
 @dynamic AppContentProfileItem;
+@dynamic Rating;
 
 - (void)prepareForDeletion
 {

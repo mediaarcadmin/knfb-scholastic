@@ -32,6 +32,7 @@ NSString * const kSCHUserContentItemDRM_QUALIFIER = @"DRM_QUALIFIER";
 @dynamic ProfileList;
 @dynamic FreeBook;
 @dynamic LastVersion;
+@dynamic AverageRating;
 
 - (SCHBookIdentifier *)bookIdentifier
 {

@@ -98,6 +98,8 @@ NSString * const SCHAnnotationSyncComponentProfileIDs = @"SCHAnnotationSyncCompo
 - (void)syncLastPage:(NSDictionary *)webLastPage 
         withLastPage:(SCHLastPage *)localLastPage;
 - (SCHLastPage *)lastPage:(NSDictionary *)lastPage;
+- (BOOL)shouldCreate:(NSDictionary *)webItem;
+- (BOOL)shouldDelete:(NSDictionary *)webItem;
 - (void)backgroundSave:(BOOL)batch;
 - (NSArray *)removeNewlyCreatedAndSavedAnnotations:(NSArray *)annotationArray;
 
@@ -258,9 +260,9 @@ NSString * const SCHAnnotationSyncComponentProfileIDs = @"SCHAnnotationSyncCompo
     
     if (profileID != nil) {
         @try {
-            if([method compare:kSCHLibreAccessWebServiceSaveProfileContentAnnotations] == NSOrderedSame) {
+            if([method compare:kSCHLibreAccessWebServiceSaveProfileContentAnnotationsForRatings] == NSOrderedSame) {
                 [self processSaveProfileContentAnnotations:profileID result:result];
-            } else if([method compare:kSCHLibreAccessWebServiceListProfileContentAnnotations] == NSOrderedSame) {
+            } else if([method compare:kSCHLibreAccessWebServiceListProfileContentAnnotationsForRatings] == NSOrderedSame) {
                 BOOL canSyncNotes = [[SCHAppStateManager sharedAppStateManager] canSyncNotes];
                 NSDate *syncDate = [userInfo objectForKey:@"serverDate"];
                 
@@ -272,7 +274,7 @@ NSString * const SCHAnnotationSyncComponentProfileIDs = @"SCHAnnotationSyncCompo
                     self.backgroundThreadManagedObjectContext = [[[NSManagedObjectContext alloc] init] autorelease];
                     [self.backgroundThreadManagedObjectContext setPersistentStoreCoordinator:self.managedObjectContext.persistentStoreCoordinator];
                     
-                    [self syncProfileContentAnnotations:[result objectForKey:kSCHLibreAccessWebServiceListProfileContentAnnotations] 
+                    [self syncProfileContentAnnotations:[result objectForKey:kSCHLibreAccessWebServiceListProfileContentAnnotationsForRatings] 
                                            canSyncNotes:canSyncNotes
                                                syncDate:syncDate];	            
                     
@@ -449,7 +451,7 @@ NSString * const SCHAnnotationSyncComponentProfileIDs = @"SCHAnnotationSyncCompo
     
     // server error so process the result
     if ([error domain] == kBITAPIErrorDomain &&
-        [method compare:kSCHLibreAccessWebServiceSaveProfileContentAnnotations] == NSOrderedSame) {	            
+        [method compare:kSCHLibreAccessWebServiceSaveProfileContentAnnotationsForRatings] == NSOrderedSame) {	            
         if (profileID != nil) {
             [self processSaveProfileContentAnnotations:profileID result:result];
         } else {
@@ -762,6 +764,10 @@ NSString * const SCHAnnotationSyncComponentProfileIDs = @"SCHAnnotationSyncCompo
         localAnnotationsContentItem.ContentIdentifier = [self makeNullNil:[webAnnotationsContentItem objectForKey:kSCHLibreAccessWebServiceContentIdentifier]];
         
         localAnnotationsContentItem.Format = [self makeNullNil:[webAnnotationsContentItem objectForKey:kSCHLibreAccessWebServiceFormat]];
+
+        localAnnotationsContentItem.LastModified = [self makeNullNil:[webAnnotationsContentItem objectForKey:kSCHLibreAccessWebServiceLastModified]];
+        localAnnotationsContentItem.AverageRating = [self makeNullNil:[webAnnotationsContentItem objectForKey:kSCHLibreAccessWebServiceAverageRating]];
+        localAnnotationsContentItem.Rating = [self makeNullNil:[webAnnotationsContentItem objectForKey:kSCHLibreAccessWebServiceRating]];
         
         NSDictionary *privateAnnotations = [self makeNullNil:[webAnnotationsContentItem objectForKey:kSCHLibreAccessWebServicePrivateAnnotations]];
         
@@ -809,6 +815,9 @@ NSString * const SCHAnnotationSyncComponentProfileIDs = @"SCHAnnotationSyncCompo
 		ret.ContentIdentifier = [self makeNullNil:[annotationsContentItem objectForKey:kSCHLibreAccessWebServiceContentIdentifier]];
 		
 		ret.Format = [self makeNullNil:[annotationsContentItem objectForKey:kSCHLibreAccessWebServiceFormat]];
+        ret.LastModified = [self makeNullNil:[annotationsContentItem objectForKey:kSCHLibreAccessWebServiceLastModified]];        
+		ret.AverageRating = [self makeNullNil:[annotationsContentItem objectForKey:kSCHLibreAccessWebServiceAverageRating]];        
+		ret.Rating = [self makeNullNil:[annotationsContentItem objectForKey:kSCHLibreAccessWebServiceRating]];                
         ret.PrivateAnnotations = [self privateAnnotation:[annotationsContentItem objectForKey:kSCHLibreAccessWebServicePrivateAnnotations]];        
     }
 	
@@ -843,6 +852,7 @@ NSString * const SCHAnnotationSyncComponentProfileIDs = @"SCHAnnotationSyncCompo
               syncDate:(NSDate *)syncDate
 {
     NSAssert([NSThread isMainThread] == NO, @"syncHighlights MUST NOT be executed on the main thread");
+	NSMutableArray *deletePool = [NSMutableArray array];
 	NSMutableArray *creationPool = [NSMutableArray array];
 	
 	webHighlights = [webHighlights sortedArrayUsingDescriptors:[NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:kSCHLibreAccessWebServiceID ascending:YES]]];		
@@ -862,7 +872,9 @@ NSString * const SCHAnnotationSyncComponentProfileIDs = @"SCHAnnotationSyncCompo
 		
 		if (localItem == nil) {
 			while (webItem != nil) {
-				[creationPool addObject:webItem];
+                if ([self shouldCreate:webItem] == YES) {
+                    [creationPool addObject:webItem];
+                }
 				webItem = [webEnumerator nextObject];
 			} 
 			break;			
@@ -878,13 +890,19 @@ NSString * const SCHAnnotationSyncComponentProfileIDs = @"SCHAnnotationSyncCompo
         } else {                
             switch ([webItemID compare:localItemID]) {
                 case NSOrderedSame:
-                    [self syncHighlight:webItem withHighlight:localItem];
-                    [self backgroundSave:YES];
+                    if ([self shouldDelete:webItem] == YES) {
+                        [deletePool addObject:localItem];
+                    } else {
+                        [self syncHighlight:webItem withHighlight:localItem];
+                        [self backgroundSave:YES];
+                    }
                     webItem = nil;
                     localItem = nil;
                     break;
                 case NSOrderedAscending:
-                    [creationPool addObject:webItem];
+                    if ([self shouldCreate:webItem] == YES) {
+                        [creationPool addObject:webItem];
+                    }
                     webItem = nil;
                     break;
                 case NSOrderedDescending:
@@ -901,6 +919,11 @@ NSString * const SCHAnnotationSyncComponentProfileIDs = @"SCHAnnotationSyncCompo
 		}		
 	}
     
+    for (SCHHighlight *highlightItem in deletePool) {
+        [self.backgroundThreadManagedObjectContext deleteObject:highlightItem];
+        [self backgroundSave:YES];
+    }                
+
 	for (NSDictionary *webItem in creationPool) {
         [privateAnnotations addHighlightsObject:[self highlight:webItem]];
         [self backgroundSave:YES];
@@ -1015,6 +1038,7 @@ NSString * const SCHAnnotationSyncComponentProfileIDs = @"SCHAnnotationSyncCompo
          syncDate:(NSDate *)syncDate
 {
     NSAssert([NSThread isMainThread] == NO, @"syncNotes MUST NOT be executed on the main thread");
+	NSMutableArray *deletePool = [NSMutableArray array];    
 	NSMutableArray *creationPool = [NSMutableArray array];
 	
 	webNotes = [webNotes sortedArrayUsingDescriptors:[NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:kSCHLibreAccessWebServiceID ascending:YES]]];		
@@ -1034,7 +1058,9 @@ NSString * const SCHAnnotationSyncComponentProfileIDs = @"SCHAnnotationSyncCompo
 		
 		if (localItem == nil) {
 			while (webItem != nil) {
-				[creationPool addObject:webItem];
+                if ([self shouldCreate:webItem] == YES) {
+                    [creationPool addObject:webItem];
+                }
 				webItem = [webEnumerator nextObject];
 			} 
 			break;			
@@ -1050,13 +1076,19 @@ NSString * const SCHAnnotationSyncComponentProfileIDs = @"SCHAnnotationSyncCompo
         } else {        
             switch ([webItemID compare:localItemID]) {
                 case NSOrderedSame:
-                    [self syncNote:webItem withNote:localItem];
-                    [self backgroundSave:YES];
+                    if ([self shouldDelete:webItem] == YES) {
+                        [deletePool addObject:localItem];
+                    } else {
+                        [self syncNote:webItem withNote:localItem];
+                        [self backgroundSave:YES];
+                    }
                     webItem = nil;
                     localItem = nil;
                     break;
                 case NSOrderedAscending:
-                    [creationPool addObject:webItem];
+                    if ([self shouldCreate:webItem] == YES) {
+                        [creationPool addObject:webItem];
+                    }
                     webItem = nil;
                     break;
                 case NSOrderedDescending:
@@ -1072,6 +1104,11 @@ NSString * const SCHAnnotationSyncComponentProfileIDs = @"SCHAnnotationSyncCompo
 			localItem = [localEnumerator nextObject];
 		}		
 	}
+
+    for (SCHNote *noteItem in deletePool) {
+        [self.backgroundThreadManagedObjectContext deleteObject:noteItem];
+        [self backgroundSave:YES];
+    }                
 
 	for (NSDictionary *webItem in creationPool) {
         [privateAnnotations addNotesObject:[self note:webItem]];
@@ -1157,6 +1194,7 @@ NSString * const SCHAnnotationSyncComponentProfileIDs = @"SCHAnnotationSyncCompo
              syncDate:(NSDate *)syncDate
 {
     NSAssert([NSThread isMainThread] == NO, @"syncBookmarks MUST NOT be executed on the main thread");
+	NSMutableArray *deletePool = [NSMutableArray array];
 	NSMutableArray *creationPool = [NSMutableArray array];
 	
 	webBookmarks = [webBookmarks sortedArrayUsingDescriptors:[NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:kSCHLibreAccessWebServiceID ascending:YES]]];		
@@ -1176,7 +1214,9 @@ NSString * const SCHAnnotationSyncComponentProfileIDs = @"SCHAnnotationSyncCompo
 		
 		if (localItem == nil) {
 			while (webItem != nil) {
-				[creationPool addObject:webItem];
+                if ([self shouldCreate:webItem] == YES) {
+                    [creationPool addObject:webItem];
+                }
 				webItem = [webEnumerator nextObject];
 			} 
 			break;			
@@ -1192,13 +1232,19 @@ NSString * const SCHAnnotationSyncComponentProfileIDs = @"SCHAnnotationSyncCompo
         } else {
             switch ([webItemID compare:localItemID]) {
                 case NSOrderedSame:
-                    [self syncBookmark:webItem withBookmark:localItem];
-                    [self backgroundSave:YES];
+                    if ([self shouldDelete:webItem] == YES) {
+                        [deletePool addObject:localItem];
+                    } else {
+                        [self syncBookmark:webItem withBookmark:localItem];
+                        [self backgroundSave:YES];
+                    }
                     webItem = nil;
                     localItem = nil;
                     break;
                 case NSOrderedAscending:
-                    [creationPool addObject:webItem];
+                    if ([self shouldCreate:webItem] == YES) {
+                        [creationPool addObject:webItem];
+                    }
                     webItem = nil;
                     break;
                 case NSOrderedDescending:
@@ -1215,6 +1261,11 @@ NSString * const SCHAnnotationSyncComponentProfileIDs = @"SCHAnnotationSyncCompo
 		}		
 	}
     
+    for (SCHBookmark *bookmarkItem in deletePool) {
+        [self.backgroundThreadManagedObjectContext deleteObject:bookmarkItem];
+        [self backgroundSave:YES];
+    }                
+
 	for (NSDictionary *webItem in creationPool) {
         [privateAnnotations addBookmarksObject:[self bookmark:webItem]];
         [self backgroundSave:YES];
@@ -1323,6 +1374,30 @@ NSString * const SCHAnnotationSyncComponentProfileIDs = @"SCHAnnotationSyncCompo
     }
 	
 	return(ret);
+}
+
+- (BOOL)shouldCreate:(NSDictionary *)webItem
+{
+    BOOL ret = NO;
+    NSNumber *saveAction = [self makeNullNil:[webItem valueForKey:kSCHLibreAccessWebServiceAction]];
+    
+    if ([saveAction saveActionValue] != kSCHSaveActionsRemove) {
+        ret = YES;
+    }
+    
+    return ret;
+}
+
+- (BOOL)shouldDelete:(NSDictionary *)webItem
+{
+    BOOL ret = NO;
+    NSNumber *saveAction = [self makeNullNil:[webItem valueForKey:kSCHLibreAccessWebServiceAction]];
+    
+    if ([saveAction saveActionValue] == kSCHSaveActionsRemove) {                    
+        ret = YES;
+    }
+    
+    return ret;
 }
 
 - (void)backgroundSave:(BOOL)batch
