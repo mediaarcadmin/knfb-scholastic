@@ -1,0 +1,338 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<model name="Test1.xcdatamodel" userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="872" systemVersion="10K549" minimumToolsVersion="Xcode 4.2" macOSVersion="Automatic" iOSVersion="Automatic">
+    <entity name="SCHAnnotation" representedClassName="SCHAnnotation" isAbstract="YES" parentEntity="SCHSyncEntity">
+        <attribute name="Action" optional="YES" attributeType="Integer 16" defaultValueString="0"/>
+        <attribute name="ID" optional="YES" attributeType="Integer 64" defaultValueString="0"/>
+        <attribute name="Version" optional="YES" attributeType="Integer 16" defaultValueString="0"/>
+    </entity>
+    <entity name="SCHAnnotationsContentItem" representedClassName="SCHAnnotationsContentItem" parentEntity="SCHContentItem">
+        <attribute name="Format" optional="YES" attributeType="String"/>
+        <relationship name="AnnotationsItem" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="SCHAnnotationsItem" inverseName="AnnotationsContentItem" inverseEntity="SCHAnnotationsItem" indexed="YES"/>
+        <relationship name="PrivateAnnotations" optional="YES" minCount="1" maxCount="1" deletionRule="Cascade" destinationEntity="SCHPrivateAnnotations" inverseName="AnnotationsContentItem" inverseEntity="SCHPrivateAnnotations" indexed="YES"/>
+    </entity>
+    <entity name="SCHAnnotationsItem" representedClassName="SCHAnnotationsItem">
+        <attribute name="ProfileID" optional="YES" attributeType="Integer 64" defaultValueString="0" indexed="YES"/>
+        <relationship name="AnnotationsContentItem" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="SCHAnnotationsContentItem" inverseName="AnnotationsItem" inverseEntity="SCHAnnotationsContentItem" indexed="YES"/>
+    </entity>
+    <entity name="SCHAppBook" representedClassName="SCHAppBook">
+        <attribute name="AudioBookReferences" optional="YES" attributeType="Transformable"/>
+        <attribute name="BookCoverExists" optional="YES" attributeType="Boolean" defaultValueString="NO"/>
+        <attribute name="BookCoverHeight" optional="YES" attributeType="Integer 16" defaultValueString="0"/>
+        <attribute name="BookCoverURL" optional="YES" attributeType="String"/>
+        <attribute name="BookCoverWidth" optional="YES" attributeType="Integer 16" defaultValueString="0"/>
+        <attribute name="BookFileURL" optional="YES" attributeType="String"/>
+        <attribute name="DRMVersion" optional="YES" attributeType="String"/>
+        <attribute name="ForceProcess" optional="YES" attributeType="Boolean" defaultValueString="NO"/>
+        <attribute name="HasAudio" optional="YES" attributeType="Boolean"/>
+        <attribute name="HasExtras" optional="YES" attributeType="Boolean"/>
+        <attribute name="HasStoryInteractions" optional="YES" attributeType="Boolean"/>
+        <attribute name="LayoutPageEquivalentCount" optional="YES" attributeType="Integer 16" defaultValueString="0"/>
+        <attribute name="LayoutStartsOnLeftSide" optional="YES" attributeType="Boolean"/>
+        <attribute name="OnDiskVersion" optional="YES" attributeType="String"/>
+        <attribute name="ReflowPermitted" optional="YES" attributeType="Boolean"/>
+        <attribute name="SmartZoomPageMarkers" optional="YES" attributeType="Transformable"/>
+        <attribute name="State" optional="YES" attributeType="Integer 16" defaultValueString="0"/>
+        <attribute name="TextFlowPageRanges" optional="YES" attributeType="Transformable"/>
+        <attribute name="TTSPermitted" optional="YES" attributeType="Boolean" defaultValueString="YES"/>
+        <attribute name="XPSAuthor" optional="YES" attributeType="String"/>
+        <attribute name="XPSCategory" optional="YES" attributeType="String"/>
+        <attribute name="XPSExists" optional="YES" attributeType="Boolean" defaultValueString="NO"/>
+        <attribute name="XPSTitle" optional="YES" attributeType="String"/>
+        <relationship name="ContentMetadataItem" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="SCHContentMetadataItem" inverseName="AppBook" inverseEntity="SCHContentMetadataItem" indexed="YES"/>
+    </entity>
+    <entity name="SCHAppContentProfileItem" representedClassName="SCHAppContentProfileItem">
+        <attribute name="DRMQualifier" optional="YES" attributeType="Integer 16" defaultValueString="0" indexed="YES"/>
+        <attribute name="ISBN" attributeType="String" defaultValueString="0" indexed="YES"/>
+        <attribute name="IsNewBook" optional="YES" attributeType="Boolean" defaultValueString="YES"/>
+        <attribute name="LastBookmarkAnnotationSync" optional="YES" attributeType="Date"/>
+        <attribute name="LastHighlightAnnotationSync" optional="YES" attributeType="Date"/>
+        <attribute name="LastNoteAnnotationSync" optional="YES" attributeType="Date"/>
+        <attribute name="Order" attributeType="Integer 16" minValueString="0" defaultValueString="0"/>
+        <relationship name="ContentProfileItem" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="SCHContentProfileItem" inverseName="AppContentProfileItem" inverseEntity="SCHContentProfileItem" indexed="YES"/>
+        <relationship name="ProfileItem" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="SCHProfileItem" inverseName="AppContentProfileItem" inverseEntity="SCHProfileItem" indexed="YES"/>
+    </entity>
+    <entity name="SCHAppDictionaryManifestEntry" representedClassName="SCHAppDictionaryManifestEntry" syncable="YES">
+        <attribute name="fromVersion" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="toVersion" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="url" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="appDictionaryState" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="SCHAppDictionaryState" inverseName="appDictionaryManifestEntry" inverseEntity="SCHAppDictionaryState" indexed="YES" syncable="YES"/>
+    </entity>
+    <entity name="SCHAppDictionaryState" representedClassName="SCHAppDictionaryState">
+        <attribute name="LastModified" optional="YES" attributeType="Date"/>
+        <attribute name="State" optional="YES" attributeType="Integer 16" defaultValueString="0"/>
+        <attribute name="Version" optional="YES" attributeType="String"/>
+        <relationship name="appDictionaryManifestEntry" optional="YES" minCount="1" maxCount="1" deletionRule="Cascade" destinationEntity="SCHAppDictionaryManifestEntry" inverseName="appDictionaryState" inverseEntity="SCHAppDictionaryManifestEntry" indexed="YES"/>
+    </entity>
+    <entity name="SCHAppHelpState" representedClassName="SCHAppDictionaryState" syncable="YES">
+        <attribute name="helpVideoOlderURL" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="helpVideoVersion" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="helpVideoYoungerURL" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="LastModified" optional="YES" attributeType="Date" syncable="YES"/>
+        <attribute name="State" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <attribute name="Version" optional="YES" attributeType="String" syncable="YES"/>
+    </entity>
+    <entity name="SCHAppProfile" representedClassName="SCHAppProfile">
+        <attribute name="AutomaticallyLaunchBook" optional="YES" attributeType="String"/>
+        <attribute name="FontIndex" optional="YES" attributeType="Integer 16"/>
+        <attribute name="LayoutType" optional="YES" attributeType="Integer 16"/>
+        <attribute name="PaperType" optional="YES" attributeType="Integer 16"/>
+        <attribute name="SelectedTheme" optional="YES" attributeType="Integer 16" defaultValueString="0"/>
+        <attribute name="ShowListView" optional="YES" attributeType="Boolean" defaultValueString="NO"/>
+        <attribute name="SortType" optional="YES" attributeType="Integer 16"/>
+        <relationship name="ProfileItem" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="SCHProfileItem" inverseName="AppProfile" inverseEntity="SCHProfileItem" indexed="YES"/>
+    </entity>
+    <entity name="SCHAppState" representedClassName="SCHAppState">
+        <attribute name="DataStoreType" optional="YES" attributeType="Integer 16" defaultValueString="0"/>
+        <attribute name="LastKnownAuthToken" optional="YES" attributeType="String"/>
+        <attribute name="LastRemoteManifestUpdateDate" optional="YES" attributeType="Date"/>
+        <attribute name="ServerDateDelta" attributeType="Double" defaultValueString="0"/>
+        <attribute name="ShouldAuthenticate" attributeType="Boolean" defaultValueString="YES"/>
+        <attribute name="ShouldSync" attributeType="Boolean" defaultValueString="YES"/>
+        <attribute name="ShouldSyncNotes" attributeType="Boolean" defaultValueString="NO"/>
+    </entity>
+    <entity name="SCHBookmark" representedClassName="SCHBookmark" parentEntity="SCHAnnotation">
+        <attribute name="Disabled" optional="YES" attributeType="Boolean"/>
+        <attribute name="Text" optional="YES" attributeType="String"/>
+        <relationship name="Location" optional="YES" minCount="1" maxCount="1" deletionRule="Cascade" destinationEntity="SCHLocationBookmark" inverseName="Bookmark" inverseEntity="SCHLocationBookmark" indexed="YES"/>
+        <relationship name="PrivateAnnotations" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="SCHPrivateAnnotations" inverseName="Bookmarks" inverseEntity="SCHPrivateAnnotations" indexed="YES"/>
+    </entity>
+    <entity name="SCHContentItem" representedClassName="SCHContentItem" isAbstract="YES">
+        <attribute name="ContentIdentifier" optional="YES" attributeType="String" indexed="YES"/>
+        <attribute name="ContentIdentifierType" optional="YES" attributeType="Integer 16" defaultValueString="0"/>
+        <attribute name="DRMQualifier" optional="YES" attributeType="Integer 16" defaultValueString="0" indexed="YES"/>
+    </entity>
+    <entity name="SCHContentMetadataItem" representedClassName="SCHContentMetadataItem" parentEntity="SCHContentItem">
+        <attribute name="Author" optional="YES" attributeType="String"/>
+        <attribute name="ContentURL" optional="YES" attributeType="String"/>
+        <attribute name="CoverURL" optional="YES" attributeType="String"/>
+        <attribute name="Description" optional="YES" attributeType="String"/>
+        <attribute name="Enhanced" optional="YES" attributeType="Boolean" defaultValueString="0"/>
+        <attribute name="FileName" optional="YES" attributeType="String"/>
+        <attribute name="FileSize" optional="YES" attributeType="Integer 32" defaultValueString="0"/>
+        <attribute name="FormatAuthorString" optional="YES" transient="YES" attributeType="String"/>
+        <attribute name="PageNumber" optional="YES" attributeType="Integer 32" defaultValueString="0"/>
+        <attribute name="Title" optional="YES" attributeType="String"/>
+        <attribute name="Version" optional="YES" attributeType="String"/>
+        <relationship name="AppBook" optional="YES" minCount="1" maxCount="1" deletionRule="Cascade" destinationEntity="SCHAppBook" inverseName="ContentMetadataItem" inverseEntity="SCHAppBook" indexed="YES"/>
+        <relationship name="eReaderCategories" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="SCHeReaderCategories" inverseName="ContentMetadataItem" inverseEntity="SCHeReaderCategories" indexed="YES"/>
+    </entity>
+    <entity name="SCHContentProfileItem" representedClassName="SCHContentProfileItem" parentEntity="SCHSyncEntity">
+        <attribute name="IsFavorite" attributeType="Boolean" defaultValueString="NO"/>
+        <attribute name="LastPageLocation" attributeType="Integer 64" defaultValueString="0"/>
+        <attribute name="ProfileID" optional="YES" attributeType="Integer 64" defaultValueString="0" indexed="YES"/>
+        <relationship name="AppContentProfileItem" optional="YES" minCount="1" maxCount="1" deletionRule="Cascade" destinationEntity="SCHAppContentProfileItem" inverseName="ContentProfileItem" inverseEntity="SCHAppContentProfileItem" indexed="YES"/>
+        <relationship name="UserContentItem" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="SCHUserContentItem" inverseName="ProfileList" inverseEntity="SCHUserContentItem" indexed="YES"/>
+    </entity>
+    <entity name="SCHDeviceInfo" representedClassName="SCHDeviceInfo">
+        <attribute name="Active" optional="YES" attributeType="Boolean"/>
+        <attribute name="AutoloadContent" optional="YES" attributeType="Boolean"/>
+        <attribute name="BadLoginAttempts" optional="YES" attributeType="Integer 16" defaultValueString="0"/>
+        <attribute name="BadLoginDatetimeUTC" optional="YES" attributeType="Date"/>
+        <attribute name="DeregistrationConfirmed" optional="YES" attributeType="Boolean"/>
+        <attribute name="DeviceId" optional="YES" attributeType="Integer 64" defaultValueString="0"/>
+        <attribute name="DeviceKey" optional="YES" attributeType="String"/>
+        <attribute name="DeviceNickname" optional="YES" attributeType="String"/>
+        <attribute name="DevicePlatform" optional="YES" attributeType="String"/>
+        <attribute name="LastActivated" optional="YES" attributeType="Date"/>
+        <attribute name="LastModified" optional="YES" attributeType="Date"/>
+        <attribute name="RemoveReason" optional="YES" attributeType="String"/>
+    </entity>
+    <entity name="SCHDictionaryEntry" representedClassName="SCHDictionaryEntry">
+        <attribute name="baseWordID" optional="YES" attributeType="String"/>
+        <attribute name="category" optional="YES" attributeType="String"/>
+        <attribute name="fileOffset" optional="YES" attributeType="Integer 64" defaultValueString="0"/>
+        <attribute name="word" optional="YES" attributeType="String"/>
+    </entity>
+    <entity name="SCHDictionaryWordForm" representedClassName="SCHDictionaryWordForm">
+        <attribute name="baseWordID" optional="YES" attributeType="String"/>
+        <attribute name="category" optional="YES" attributeType="String"/>
+        <attribute name="rootWord" optional="YES" attributeType="String"/>
+        <attribute name="word" optional="YES" attributeType="String"/>
+    </entity>
+    <entity name="SCHeReaderCategories" representedClassName="SCHeReaderCategories">
+        <attribute name="Category" optional="YES" attributeType="String"/>
+        <relationship name="ContentMetadataItem" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="SCHContentMetadataItem" inverseName="eReaderCategories" inverseEntity="SCHContentMetadataItem" indexed="YES"/>
+    </entity>
+    <entity name="SCHHighlight" representedClassName="SCHHighlight" parentEntity="SCHAnnotation">
+        <attribute name="Color" optional="YES" attributeType="String"/>
+        <attribute name="EndPage" optional="YES" attributeType="Integer 64" defaultValueString="0"/>
+        <relationship name="Location" optional="YES" minCount="1" maxCount="1" deletionRule="Cascade" destinationEntity="SCHLocationText" inverseName="Highlight" inverseEntity="SCHLocationText" indexed="YES"/>
+        <relationship name="PrivateAnnotations" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="SCHPrivateAnnotations" inverseName="Highlights" inverseEntity="SCHPrivateAnnotations" indexed="YES"/>
+    </entity>
+    <entity name="SCHLastPage" representedClassName="SCHLastPage" parentEntity="SCHSyncEntity">
+        <attribute name="Component" optional="YES" attributeType="String"/>
+        <attribute name="LastPageLocation" optional="YES" attributeType="Integer 64" defaultValueString="0"/>
+        <attribute name="Percentage" optional="YES" attributeType="Float" defaultValueString="0"/>
+        <relationship name="PrivateAnnotations" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="SCHPrivateAnnotations" inverseName="LastPage" inverseEntity="SCHPrivateAnnotations" indexed="YES"/>
+    </entity>
+    <entity name="SCHLocationBookmark" representedClassName="SCHLocationBookmark">
+        <attribute name="Page" optional="YES" attributeType="Integer 64" defaultValueString="0"/>
+        <relationship name="Bookmark" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="SCHBookmark" inverseName="Location" inverseEntity="SCHBookmark" indexed="YES"/>
+    </entity>
+    <entity name="SCHLocationGraphics" representedClassName="SCHLocationGraphics">
+        <attribute name="Page" optional="YES" attributeType="Integer 64" defaultValueString="0"/>
+        <relationship name="Note" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="SCHNote" inverseName="Location" inverseEntity="SCHNote" indexed="YES"/>
+    </entity>
+    <entity name="SCHLocationText" representedClassName="SCHLocationText">
+        <attribute name="Page" optional="YES" attributeType="Integer 64" defaultValueString="0"/>
+        <relationship name="Highlight" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="SCHHighlight" inverseName="Location" inverseEntity="SCHHighlight" indexed="YES"/>
+        <relationship name="WordIndex" optional="YES" minCount="1" maxCount="1" deletionRule="Cascade" destinationEntity="SCHWordIndex" inverseName="LocationText" inverseEntity="SCHWordIndex" indexed="YES"/>
+    </entity>
+    <entity name="SCHNote" representedClassName="SCHNote" parentEntity="SCHAnnotation">
+        <attribute name="Color" optional="YES" attributeType="String"/>
+        <attribute name="Value" optional="YES" attributeType="String" defaultValueString="0"/>
+        <relationship name="Location" optional="YES" minCount="1" maxCount="1" deletionRule="Cascade" destinationEntity="SCHLocationGraphics" inverseName="Note" inverseEntity="SCHLocationGraphics" indexed="YES"/>
+        <relationship name="PrivateAnnotations" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="SCHPrivateAnnotations" inverseName="Notes" inverseEntity="SCHPrivateAnnotations" indexed="YES"/>
+    </entity>
+    <entity name="SCHOrderItem" representedClassName="SCHOrderItem">
+        <attribute name="OrderDate" optional="YES" attributeType="Date"/>
+        <attribute name="OrderID" optional="YES" attributeType="String"/>
+        <relationship name="UserContentItem" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="SCHUserContentItem" inverseName="OrderList" inverseEntity="SCHUserContentItem" indexed="YES"/>
+    </entity>
+    <entity name="SCHPrivateAnnotations" representedClassName="SCHPrivateAnnotations">
+        <relationship name="AnnotationsContentItem" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="SCHAnnotationsContentItem" inverseName="PrivateAnnotations" inverseEntity="SCHAnnotationsContentItem" indexed="YES"/>
+        <relationship name="Bookmarks" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="SCHBookmark" inverseName="PrivateAnnotations" inverseEntity="SCHBookmark" indexed="YES"/>
+        <relationship name="Highlights" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="SCHHighlight" inverseName="PrivateAnnotations" inverseEntity="SCHHighlight" indexed="YES"/>
+        <relationship name="LastPage" optional="YES" minCount="1" maxCount="1" deletionRule="Cascade" destinationEntity="SCHLastPage" inverseName="PrivateAnnotations" inverseEntity="SCHLastPage" indexed="YES"/>
+        <relationship name="Notes" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="SCHNote" inverseName="PrivateAnnotations" inverseEntity="SCHNote" indexed="YES"/>
+    </entity>
+    <entity name="SCHProfileItem" representedClassName="SCHProfileItem" parentEntity="SCHSyncEntity">
+        <attribute name="AutoAssignContentToProfiles" optional="YES" attributeType="Boolean"/>
+        <attribute name="Birthday" optional="YES" attributeType="Date"/>
+        <attribute name="BookshelfStyle" optional="YES" attributeType="Integer 16" defaultValueString="0"/>
+        <attribute name="FirstName" optional="YES" attributeType="String"/>
+        <attribute name="ID" optional="YES" attributeType="Integer 64" defaultValueString="0" indexed="YES"/>
+        <attribute name="LastName" optional="YES" attributeType="String"/>
+        <attribute name="LastPasswordModified" optional="YES" attributeType="Date"/>
+        <attribute name="LastScreenNameModified" optional="YES" attributeType="Date"/>
+        <attribute name="Password" optional="YES" attributeType="String"/>
+        <attribute name="ProfilePasswordRequired" optional="YES" attributeType="Boolean"/>
+        <attribute name="ScreenName" optional="YES" attributeType="String"/>
+        <attribute name="StoryInteractionEnabled" optional="YES" attributeType="Boolean"/>
+        <attribute name="Type" optional="YES" attributeType="Integer 16" defaultValueString="0"/>
+        <attribute name="UserKey" optional="YES" attributeType="String"/>
+        <relationship name="AppContentProfileItem" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="SCHAppContentProfileItem" inverseName="ProfileItem" inverseEntity="SCHAppContentProfileItem" indexed="YES"/>
+        <relationship name="AppProfile" optional="YES" minCount="1" maxCount="1" deletionRule="Cascade" destinationEntity="SCHAppProfile" inverseName="ProfileItem" inverseEntity="SCHAppProfile" indexed="YES"/>
+    </entity>
+    <entity name="SCHReadingStatsContentItem" representedClassName="SCHReadingStatsContentItem" parentEntity="SCHContentItem">
+        <attribute name="Format" optional="YES" attributeType="String"/>
+        <relationship name="ReadingStatsDetailItem" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="SCHReadingStatsDetailItem" inverseName="ReadingStatsContentItem" inverseEntity="SCHReadingStatsDetailItem" indexed="YES"/>
+        <relationship name="ReadingStatsEntryItem" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="SCHReadingStatsEntryItem" inverseName="ReadingStatsContentItem" inverseEntity="SCHReadingStatsEntryItem" indexed="YES"/>
+    </entity>
+    <entity name="SCHReadingStatsDetailItem" representedClassName="SCHReadingStatsDetailItem">
+        <attribute name="ProfileID" optional="YES" attributeType="Integer 64" defaultValueString="0" indexed="YES"/>
+        <relationship name="ReadingStatsContentItem" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="SCHReadingStatsContentItem" inverseName="ReadingStatsDetailItem" inverseEntity="SCHReadingStatsContentItem" indexed="YES"/>
+    </entity>
+    <entity name="SCHReadingStatsEntryItem" representedClassName="SCHReadingStatsEntryItem">
+        <attribute name="DictionaryLookupsList" optional="YES" attributeType="Transformable"/>
+        <attribute name="PagesRead" optional="YES" attributeType="Integer 64" defaultValueString="0"/>
+        <attribute name="ReadingDuration" optional="YES" attributeType="Integer 64" defaultValueString="0"/>
+        <attribute name="StoryInteractions" optional="YES" attributeType="Integer 64" defaultValueString="0"/>
+        <attribute name="Timestamp" optional="YES" attributeType="Date"/>
+        <relationship name="ReadingStatsContentItem" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="SCHReadingStatsContentItem" inverseName="ReadingStatsEntryItem" inverseEntity="SCHReadingStatsContentItem" indexed="YES"/>
+    </entity>
+    <entity name="SCHSyncEntity" representedClassName="SCHSyncEntity" isAbstract="YES">
+        <attribute name="LastModified" attributeType="Date"/>
+        <attribute name="State" attributeType="Integer 16" defaultValueString="0" indexed="YES"/>
+    </entity>
+    <entity name="SCHUserContentItem" representedClassName="SCHUserContentItem" parentEntity="SCHSyncEntity">
+        <attribute name="ContentIdentifier" optional="YES" attributeType="String" indexed="YES"/>
+        <attribute name="ContentIdentifierType" optional="YES" attributeType="Integer 16" defaultValueString="0"/>
+        <attribute name="DefaultAssignment" optional="YES" attributeType="Boolean"/>
+        <attribute name="DRMQualifier" optional="YES" attributeType="Integer 16" defaultValueString="0" indexed="YES"/>
+        <attribute name="Format" optional="YES" attributeType="String"/>
+        <attribute name="Version" optional="YES" attributeType="String"/>
+        <relationship name="OrderList" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="SCHOrderItem" inverseName="UserContentItem" inverseEntity="SCHOrderItem" indexed="YES"/>
+        <relationship name="ProfileList" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="SCHContentProfileItem" inverseName="UserContentItem" inverseEntity="SCHContentProfileItem" indexed="YES"/>
+    </entity>
+    <entity name="SCHUserSettingsItem" representedClassName="SCHUserSettingsItem">
+        <attribute name="SettingType" optional="YES" attributeType="Integer 16" defaultValueString="0"/>
+        <attribute name="SettingValue" optional="YES" attributeType="String"/>
+    </entity>
+    <entity name="SCHWordIndex" representedClassName="SCHWordIndex">
+        <attribute name="End" optional="YES" attributeType="Integer 64" defaultValueString="0"/>
+        <attribute name="Start" optional="YES" attributeType="Integer 64" defaultValueString="0"/>
+        <relationship name="LocationText" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="SCHLocationText" inverseName="WordIndex" inverseEntity="SCHLocationText" indexed="YES"/>
+    </entity>
+    <fetchRequest name="fetchAnnotationItemForProfile" entity="SCHAnnotationsItem" predicateString="ProfileID == $PROFILE_ID"/>
+    <fetchRequest name="fetchAnnotationsContentItemsForBook" entity="SCHAnnotationsContentItem" predicateString="ContentIdentifier == $CONTENT_IDENTIFIER AND DRMQualifier == $DRM_QUALIFIER"/>
+    <fetchRequest name="fetchAnnotationsForProfileBook" entity="SCHPrivateAnnotations" predicateString="AnnotationsContentItem.ContentIdentifier == $CONTENT_IDENTIFIER AND AnnotationsContentItem.AnnotationsItem.ProfileID == $PROFILE_ID AND AnnotationsContentItem.DRMQualifier == $DRM_QUALIFIER"/>
+    <fetchRequest name="fetchAppBookWithContentIdentifier" entity="SCHAppBook" predicateString="ContentMetadataItem.ContentIdentifier == $CONTENT_IDENTIFIER AND ContentMetadataItem.DRMQualifier == $DRM_QUALIFIER"/>
+    <fetchRequest name="fetchAppState" entity="SCHAppState"/>
+    <fetchRequest name="fetchReadingStatsContentItemForBook" entity="SCHReadingStatsContentItem" predicateString="ContentIdentifier == $CONTENT_IDENTIFIER AND DRMQualifier == $DRM_QUALIFIER"/>
+    <fetchRequest name="fetchUserContentItemWithContentIdentifier" entity="SCHUserContentItem" predicateString="ContentIdentifier == $CONTENT_IDENTIFIER AND DRMQualifier == $DRM_QUALIFIER"/>
+    <configuration name="Dictionary">
+        <memberEntity name="SCHDictionaryEntry"/>
+        <memberEntity name="SCHDictionaryWordForm"/>
+        <memberEntity name="SCHAppDictionaryState"/>
+        <memberEntity name="SCHAppDictionaryManifestEntry"/>
+        <memberEntity name="SCHAppHelpState"/>
+    </configuration>
+    <configuration name="Main">
+        <memberEntity name="SCHAnnotation"/>
+        <memberEntity name="SCHAnnotationsContentItem"/>
+        <memberEntity name="SCHAnnotationsItem"/>
+        <memberEntity name="SCHAppBook"/>
+        <memberEntity name="SCHAppContentProfileItem"/>
+        <memberEntity name="SCHAppProfile"/>
+        <memberEntity name="SCHAppState"/>
+        <memberEntity name="SCHBookmark"/>
+        <memberEntity name="SCHContentItem"/>
+        <memberEntity name="SCHContentMetadataItem"/>
+        <memberEntity name="SCHContentProfileItem"/>
+        <memberEntity name="SCHDeviceInfo"/>
+        <memberEntity name="SCHeReaderCategories"/>
+        <memberEntity name="SCHHighlight"/>
+        <memberEntity name="SCHLastPage"/>
+        <memberEntity name="SCHLocationBookmark"/>
+        <memberEntity name="SCHLocationGraphics"/>
+        <memberEntity name="SCHLocationText"/>
+        <memberEntity name="SCHNote"/>
+        <memberEntity name="SCHOrderItem"/>
+        <memberEntity name="SCHPrivateAnnotations"/>
+        <memberEntity name="SCHProfileItem"/>
+        <memberEntity name="SCHReadingStatsContentItem"/>
+        <memberEntity name="SCHReadingStatsDetailItem"/>
+        <memberEntity name="SCHReadingStatsEntryItem"/>
+        <memberEntity name="SCHSyncEntity"/>
+        <memberEntity name="SCHUserContentItem"/>
+        <memberEntity name="SCHUserSettingsItem"/>
+        <memberEntity name="SCHWordIndex"/>
+    </configuration>
+    <elements>
+        <element name="SCHAppState" positionX="0" positionY="0" width="128" height="150"/>
+        <element name="SCHReadingStatsDetailItem" positionX="0" positionY="0" width="128" height="75"/>
+        <element name="SCHUserContentItem" positionX="898" positionY="1290" width="128" height="165"/>
+        <element name="SCHAnnotationsContentItem" positionX="438" positionY="661" width="128" height="90"/>
+        <element name="SCHUserSettingsItem" positionX="1044" positionY="1349" width="128" height="75"/>
+        <element name="SCHAppBook" positionX="1177" positionY="600" width="128" height="405"/>
+        <element name="SCHLocationGraphics" positionX="146" positionY="354" width="128" height="75"/>
+        <element name="SCHAppContentProfileItem" positionX="727" positionY="27" width="128" height="180"/>
+        <element name="SCHeReaderCategories" positionX="990" positionY="369" width="128" height="75"/>
+        <element name="SCHContentItem" positionX="772" positionY="531" width="128" height="90"/>
+        <element name="SCHContentMetadataItem" positionX="990" positionY="586" width="128" height="240"/>
+        <element name="SCHLocationBookmark" positionX="0" positionY="0" width="128" height="75"/>
+        <element name="SCHSyncEntity" positionX="822" positionY="144" width="128" height="75"/>
+        <element name="SCHAppDictionaryState" positionX="1197" positionY="315" width="128" height="105"/>
+        <element name="SCHLastPage" positionX="584" positionY="653" width="128" height="105"/>
+        <element name="SCHAnnotation" positionX="292" positionY="362" width="128" height="90"/>
+        <element name="SCHDictionaryEntry" positionX="151" positionY="1080" width="128" height="105"/>
+        <element name="SCHOrderItem" positionX="990" positionY="1147" width="128" height="90"/>
+        <element name="SCHAppHelpState" positionX="160" positionY="192" width="128" height="135"/>
+        <element name="SCHLocationText" positionX="0" positionY="362" width="128" height="90"/>
+        <element name="SCHReadingStatsContentItem" positionX="0" positionY="0" width="128" height="90"/>
+        <element name="SCHNote" positionX="146" positionY="653" width="128" height="105"/>
+        <element name="SCHContentProfileItem" positionX="806" positionY="1147" width="128" height="120"/>
+        <element name="SCHAppDictionaryManifestEntry" positionX="1179" positionY="144" width="128" height="105"/>
+        <element name="SCHReadingStatsEntryItem" positionX="0" positionY="0" width="128" height="135"/>
+        <element name="SCHDictionaryWordForm" positionX="-36" positionY="1080" width="128" height="105"/>
+        <element name="SCHProfileItem" positionX="584" positionY="265" width="128" height="285"/>
+        <element name="SCHHighlight" positionX="0" positionY="653" width="128" height="105"/>
+        <element name="SCHBookmark" positionX="292" positionY="653" width="128" height="105"/>
+        <element name="SCHAnnotationsItem" positionX="438" positionY="362" width="128" height="75"/>
+        <element name="SCHPrivateAnnotations" positionX="365" positionY="862" width="128" height="120"/>
+        <element name="SCHWordIndex" positionX="0" positionY="137" width="128" height="90"/>
+        <element name="SCHAppProfile" positionX="0" positionY="0" width="128" height="165"/>
+        <element name="SCHDeviceInfo" positionX="1336" positionY="1274" width="128" height="225"/>
+    </elements>
+</model>
