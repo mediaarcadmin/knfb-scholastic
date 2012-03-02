@@ -82,7 +82,8 @@ static NSString * const kSCHScholasticWebServiceAttributeErrorDesc = @"errorDesc
 	
 	if (operation.response.error != nil) {
         if ([(id)self.delegate respondsToSelector:@selector(method:didFailWithError:requestInfo:result:)]) {
-            [(id)self.delegate method:kSCHScholasticWebServiceProcessRemote didFailWithError:[self confirmErrorDomain:operation.response.error] 
+            [(id)self.delegate method:kSCHScholasticWebServiceProcessRemote didFailWithError:[self confirmErrorDomain:operation.response.error 
+                                                                                                        forDomainName:@"AuthenticateSoap11BindingResponseHTTP"] 
                           requestInfo:nil result:nil];
         }
 	} else {		

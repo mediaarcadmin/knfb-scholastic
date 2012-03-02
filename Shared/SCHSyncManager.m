@@ -14,6 +14,7 @@
 #import "SCHAnnotationSyncComponent.h"
 #import "SCHReadingStatsSyncComponent.h"
 #import "SCHSettingsSyncComponent.h"
+#import "SCHWishListSyncComponent.h"
 #import "SCHProfileItem.h"
 #import "SCHContentProfileItem.h"
 #import "SCHUserDefaults.h"
@@ -63,6 +64,7 @@ static NSUInteger const kSCHSyncManagerMaximumFailureRetries = 3;
 @property (retain, nonatomic) SCHAnnotationSyncComponent *annotationSyncComponent;
 @property (retain, nonatomic) SCHReadingStatsSyncComponent *readingStatsSyncComponent;
 @property (retain, nonatomic) SCHSettingsSyncComponent *settingsSyncComponent;
+@property (retain, nonatomic) SCHWishListSyncComponent *wishListSyncComponent;
 
 @end
 
@@ -79,6 +81,7 @@ static NSUInteger const kSCHSyncManagerMaximumFailureRetries = 3;
 @synthesize annotationSyncComponent;
 @synthesize readingStatsSyncComponent;
 @synthesize settingsSyncComponent;
+@synthesize wishListSyncComponent;
 @synthesize backgroundTaskIdentifier;
 @synthesize flushSaveMode;
 @synthesize suspended;
@@ -117,7 +120,9 @@ static NSUInteger const kSCHSyncManagerMaximumFailureRetries = 3;
 		readingStatsSyncComponent.delegate = self;		
 		settingsSyncComponent = [[SCHSettingsSyncComponent alloc] init];		
 		settingsSyncComponent.delegate = self;	
-		
+		wishListSyncComponent = [[SCHWishListSyncComponent alloc] init];
+        wishListSyncComponent.delegate = self;
+        
         backgroundTaskIdentifier = UIBackgroundTaskInvalid;	
         
         flushSaveMode = NO;
@@ -161,6 +166,7 @@ static NSUInteger const kSCHSyncManagerMaximumFailureRetries = 3;
 	[annotationSyncComponent release], annotationSyncComponent = nil;
 	[readingStatsSyncComponent release], readingStatsSyncComponent = nil;
 	[settingsSyncComponent release], settingsSyncComponent = nil;
+    [wishListSyncComponent release], wishListSyncComponent = nil;
 	
 	[super dealloc];
 }
@@ -176,7 +182,8 @@ static NSUInteger const kSCHSyncManagerMaximumFailureRetries = 3;
 	self.bookshelfSyncComponent.managedObjectContext = newManagedObjectContext;
 	self.annotationSyncComponent.managedObjectContext = newManagedObjectContext;		
 	self.readingStatsSyncComponent.managedObjectContext = newManagedObjectContext;		
-	self.settingsSyncComponent.managedObjectContext = newManagedObjectContext;			
+	self.settingsSyncComponent.managedObjectContext = newManagedObjectContext;	
+    self.wishListSyncComponent.managedObjectContext = newManagedObjectContext;
 }
 
 - (BOOL)isSynchronizing
@@ -324,6 +331,8 @@ static NSUInteger const kSCHSyncManagerMaximumFailureRetries = 3;
             
             [self addToQueue:self.readingStatsSyncComponent];
             [self addToQueue:self.settingsSyncComponent];
+            
+//            [self addToQueue:self.wishListSyncComponent];
             
             [self kickQueue];	
         } else {

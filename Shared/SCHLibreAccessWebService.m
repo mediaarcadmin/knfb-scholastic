@@ -92,8 +92,6 @@ static NSInteger const kSCHLibreAccessWebServiceVaid = 33;
 - (void)fromObject:(NSDictionary *)object intoReadingStatsEntryItem:(LibreAccessServiceSvc_ReadingStatsEntryItem *)intoObject;
 - (void)fromObject:(NSDictionary *)object intoTopFavoritesItem:(LibreAccessServiceSvc_TopFavoritesRequestItem *)intoObject;
 
-- (id)fromObjectTranslate:(id)anObject;
-
 @end
 
 
@@ -506,7 +504,8 @@ static NSInteger const kSCHLibreAccessWebServiceVaid = 33;
         
         if (operation.response.error != nil) {
             if ([(id)self.delegate respondsToSelector:@selector(method:didFailWithError:requestInfo:result:)]) {
-                [(id)self.delegate method:methodName didFailWithError:[self confirmErrorDomain:operation.response.error]
+                [(id)self.delegate method:methodName didFailWithError:[self confirmErrorDomain:operation.response.error 
+                                                                                 forDomainName:@"LibreAccessServiceSoap11BindingResponseHTTP"]
                               requestInfo:[self requestInfoFromOperation:operation] result:nil];
             }
         } else {
@@ -1876,28 +1875,6 @@ static NSInteger const kSCHLibreAccessWebServiceVaid = 33;
 		intoObject.TopFavoritesType = (LibreAccessServiceSvc_TopFavoritesTypes)[[self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceTopFavoritesType]] topFavoritesTypeValue];
 		intoObject.TopFavoritesTypeValue = [self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceTopFavoritesTypeValue]];
 	}	
-}
-
-- (id)fromObjectTranslate:(id)anObject
-{
-	static Class boolClass = nil;
-	id ret = nil;
-	
-	if (boolClass == nil) {
-		boolClass = [[[NSNumber numberWithBool:YES] class] retain];
-	}
-	
-	if (anObject != nil) {
-		if (anObject == [NSNull null]) {
-			ret = nil;
-		} else if ([anObject isKindOfClass:boolClass] == YES) {
-			ret = [[[USBoolean alloc] initWithBool:[anObject boolValue]] autorelease];
-		} else {
-			ret = anObject;
-		}
-	}
-	
-	return(ret);
 }
 
 #pragma mark - Internal Debug Methods
