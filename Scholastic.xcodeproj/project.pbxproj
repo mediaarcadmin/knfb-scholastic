@@ -5300,7 +5300,6 @@
 		C9D4F6261345FFE7007F86E3 /* SCHTextFlow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHTextFlow.h; path = Shared/SCHTextFlow.h; sourceTree = "<group>"; };
 		C9D4F6271345FFE7007F86E3 /* SCHTextFlow.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHTextFlow.m; path = Shared/SCHTextFlow.m; sourceTree = "<group>"; };
 		C9D703AC14ED50B100C10006 /* Scholastic iPad copy.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Scholastic iPad copy.app"; sourceTree = BUILT_PRODUCTS_DIR; };
-		C9D703AE14ED50B200C10006 /* Scholastic iPad copy-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "Scholastic iPad copy-Info.plist"; path = "/Users/matt/Projects/Consulting/scholastic/Scholastic iPad copy-Info.plist"; sourceTree = "<absolute>"; };
 		C9E89A491369B87A00E7ED53 /* levenshtein_distance.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = levenshtein_distance.c; sourceTree = "<group>"; };
 		C9E89A4A1369B87A00E7ED53 /* levenshtein_distance.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = levenshtein_distance.h; sourceTree = "<group>"; };
 		C9EB4CD714026C7900DBC3BD /* icon-help-older~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "icon-help-older~ipad.png"; path = "Resources/icon-help-older~ipad.png"; sourceTree = "<group>"; };
@@ -6632,7 +6631,6 @@
 				28A08CFF13952CB4006FD008 /* UnitTests */,
 				29B97323FDCFA39411CA2CEA /* Frameworks */,
 				19C28FACFE9D520D11CA2CBB /* Products */,
-				C9D703AE14ED50B200C10006 /* Scholastic iPad copy-Info.plist */,
 			);
 			name = CustomTemplate;
 			sourceTree = "<group>";
@@ -13005,7 +13003,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = Scholastic_Prefix.pch;
 				GCC_PREPROCESSOR_DEFINITIONS = "";
-				INFOPLIST_FILE = "Scholastic iPad copy-Info.plist";
+				INFOPLIST_FILE = "Scholastic-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 4.0;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
@@ -13036,7 +13034,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = Scholastic_Prefix.pch;
 				GCC_PREPROCESSOR_DEFINITIONS = "";
-				INFOPLIST_FILE = "Scholastic iPad copy-Info.plist";
+				INFOPLIST_FILE = "Scholastic-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 4.0;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
@@ -13070,7 +13068,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = Scholastic_Prefix.pch;
 				GCC_PREPROCESSOR_DEFINITIONS = "";
-				INFOPLIST_FILE = "Scholastic iPad copy-Info.plist";
+				INFOPLIST_FILE = "Scholastic-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 4.0;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
