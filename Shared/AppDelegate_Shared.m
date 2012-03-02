@@ -19,6 +19,7 @@
 #import <CoreText/CoreText.h>
 #import "SCHPopulateDataStore.h"
 #import "SCHAppStateManager.h"
+#import "SCHCOPPAManager.h"
 #import "LambdaAlert.h"
 #import "SCHDrmSession.h"
 #import "SCHAuthenticationManager.h"
@@ -147,6 +148,9 @@ static NSString* const binaryDevCertFilename = @"bdevcert.dat";
 
         SCHVersionDownloadManager *versionManager = [SCHVersionDownloadManager sharedVersionManager];
         [versionManager checkVersion];
+
+        SCHCOPPAManager *COPPAManager = [SCHCOPPAManager sharedCOPPAManager];
+        [COPPAManager checkCOPPAIfRequired];
     } else {
         [self catastrophicFailureWithError:error];
     }
@@ -216,6 +220,7 @@ static NSString* const binaryDevCertFilename = @"bdevcert.dat";
             kSCHAuthenticationManagerUserKey,
             kSCHAuthenticationManagerDeviceKey,
             kSCHAuthenticationManagerUsername,
+            kSCHAccountValidationpToken,
             nil];    
 }
 
