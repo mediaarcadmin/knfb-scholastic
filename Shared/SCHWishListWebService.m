@@ -14,7 +14,7 @@
 
 static NSString * const kSCHWishListWebServiceUndefinedMethod = @"undefined method";
 
-static NSString * const kSCHWishListWebServiceClientID = @"LD";
+static NSString * const kSCHWishListWebServiceClientID = @"KNFB";
 
 /*
  * This class is thread safe when using the Thread Confinement design pattern.

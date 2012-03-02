@@ -1357,6 +1357,10 @@
 		5293873012DF43D200045B44 /* SCHScholasticWebService.m in Sources */ = {isa = PBXBuildFile; fileRef = 5293872F12DF43D200045B44 /* SCHScholasticWebService.m */; };
 		5293883312E03CD000045B44 /* SCHBookShelfViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5293883112E03CD000045B44 /* SCHBookShelfViewController.m */; };
 		5293883412E03CD000045B44 /* SCHBookShelfViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5293883212E03CD000045B44 /* SCHBookShelfViewController.xib */; };
+		52943AE514FFD0E8002991EB /* SCHWishListSyncComponent.m in Sources */ = {isa = PBXBuildFile; fileRef = 52943AE414FFD0E8002991EB /* SCHWishListSyncComponent.m */; };
+		52943AE614FFD0E8002991EB /* SCHWishListSyncComponent.m in Sources */ = {isa = PBXBuildFile; fileRef = 52943AE414FFD0E8002991EB /* SCHWishListSyncComponent.m */; };
+		52943AE714FFD0E8002991EB /* SCHWishListSyncComponent.m in Sources */ = {isa = PBXBuildFile; fileRef = 52943AE414FFD0E8002991EB /* SCHWishListSyncComponent.m */; };
+		52943AE814FFD0E8002991EB /* SCHWishListSyncComponent.m in Sources */ = {isa = PBXBuildFile; fileRef = 52943AE414FFD0E8002991EB /* SCHWishListSyncComponent.m */; };
 		5297B44913A8C362008ADD9B /* SCHStoryInteractionControllerMultipleChoiceWithAnswerPictures.m in Sources */ = {isa = PBXBuildFile; fileRef = 5297B44813A8C362008ADD9B /* SCHStoryInteractionControllerMultipleChoiceWithAnswerPictures.m */; };
 		5297B44C13A8C489008ADD9B /* SCHStoryInteractionMultipleChoiceWithAnswerPictures_iPhone.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5297B44B13A8C489008ADD9B /* SCHStoryInteractionMultipleChoiceWithAnswerPictures_iPhone.xib */; };
 		52985F7213C48D32009AD121 /* SCHBookStatistics.m in Sources */ = {isa = PBXBuildFile; fileRef = 52985F7113C48D32009AD121 /* SCHBookStatistics.m */; };
@@ -3652,6 +3656,8 @@
 		5293883012E03CD000045B44 /* SCHBookShelfViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHBookShelfViewController.h; path = Shared/SCHBookShelfViewController.h; sourceTree = "<group>"; };
 		5293883112E03CD000045B44 /* SCHBookShelfViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHBookShelfViewController.m; path = Shared/SCHBookShelfViewController.m; sourceTree = "<group>"; };
 		5293883212E03CD000045B44 /* SCHBookShelfViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = SCHBookShelfViewController.xib; path = Shared/SCHBookShelfViewController.xib; sourceTree = "<group>"; };
+		52943AE314FFD0E8002991EB /* SCHWishListSyncComponent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHWishListSyncComponent.h; path = Shared/SCHWishListSyncComponent.h; sourceTree = "<group>"; };
+		52943AE414FFD0E8002991EB /* SCHWishListSyncComponent.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHWishListSyncComponent.m; path = Shared/SCHWishListSyncComponent.m; sourceTree = "<group>"; };
 		5296F99713FE7B4F009532F3 /* 9780545287012_r1.HalloweenParade.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = 9780545287012_r1.HalloweenParade.jpg; path = "Shared/Debug Books/9780545287012_r1.HalloweenParade.jpg"; sourceTree = "<group>"; };
 		5296F99813FE7B4F009532F3 /* 9780545289726_r1.OlliesNewTricks.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = 9780545289726_r1.OlliesNewTricks.jpg; path = "Shared/Debug Books/9780545289726_r1.OlliesNewTricks.jpg"; sourceTree = "<group>"; };
 		5296F99913FE7B4F009532F3 /* 9780545308656.6.StableMatesPatch.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = 9780545308656.6.StableMatesPatch.jpg; path = "Shared/Debug Books/9780545308656.6.StableMatesPatch.jpg"; sourceTree = "<group>"; };
@@ -6126,6 +6132,8 @@
 				52AD9D6C130000570099FB88 /* SCHReadingStatsSyncComponent.m */,
 				52AD9D6D130000570099FB88 /* SCHSettingsSyncComponent.h */,
 				52AD9D6E130000570099FB88 /* SCHSettingsSyncComponent.m */,
+				52943AE314FFD0E8002991EB /* SCHWishListSyncComponent.h */,
+				52943AE414FFD0E8002991EB /* SCHWishListSyncComponent.m */,
 			);
 			name = Sync;
 			sourceTree = "<group>";
@@ -9948,6 +9956,7 @@
 				523B2E7314F403E300413883 /* WishListServiceSvc.m in Sources */,
 				520D28CC14F4E2F9005AAF4F /* SCHWishListWebService.m in Sources */,
 				523EC29A14F6326800EBB843 /* SCHWishListConstants.m in Sources */,
+				52943AE514FFD0E8002991EB /* SCHWishListSyncComponent.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -10012,6 +10021,7 @@
 				C9367BDA1472E89A0033A2EB /* KNFBXMLParserLock.m in Sources */,
 				C9A6B3FD148B7F0900B31277 /* SCHHelpManager.m in Sources */,
 				C9A6B402148B853C00B31277 /* SCHAppHelpState.m in Sources */,
+				52943AE714FFD0E8002991EB /* SCHWishListSyncComponent.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -10341,6 +10351,7 @@
 				523B2E7414F403E300413883 /* WishListServiceSvc.m in Sources */,
 				520D28CD14F4E2F9005AAF4F /* SCHWishListWebService.m in Sources */,
 				523EC29B14F6326800EBB843 /* SCHWishListConstants.m in Sources */,
+				52943AE614FFD0E8002991EB /* SCHWishListSyncComponent.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -10670,6 +10681,7 @@
 				523B2E7514F403E300413883 /* WishListServiceSvc.m in Sources */,
 				520D28CE14F4E2F9005AAF4F /* SCHWishListWebService.m in Sources */,
 				523EC29C14F6326800EBB843 /* SCHWishListConstants.m in Sources */,
+				52943AE814FFD0E8002991EB /* SCHWishListSyncComponent.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
