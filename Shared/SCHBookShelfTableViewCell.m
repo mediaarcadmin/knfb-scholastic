@@ -61,6 +61,7 @@ static NSInteger const CELL_STAR_PERSONAL_RATING_VIEW = 302;
 @synthesize disabledForInteractions;
 @synthesize showStarRatings;
 @synthesize delegate;
+@synthesize userRating;
 
 - (id) initWithCoder:(NSCoder *)aDecoder
 {
@@ -80,6 +81,7 @@ static NSInteger const CELL_STAR_PERSONAL_RATING_VIEW = 302;
         self.personalRateView.fullSelectedImage = [UIImage imageNamed:@"storiaStarFull"];
         self.personalRateView.notSelectedImage = [UIImage imageNamed:@"storiaStarEmpty"];
         self.personalRateView.rating = 0;
+        self.userRating = 0;
         self.personalRateView.editable = YES;
         self.personalRateView.maxRating = 5;
         self.personalRateView.delegate = self;
@@ -136,7 +138,8 @@ static NSInteger const CELL_STAR_PERSONAL_RATING_VIEW = 302;
 {
     NSLog(@"Changing rating to %f", rating);
     if (self.delegate) {
-        [self.delegate bookshelfCell:self userRatingChanged:(NSInteger)rating];
+        self.userRating = (NSInteger)rating;
+        [self.delegate bookshelfCell:self userRatingChanged:self.userRating];
     }
 }
 
@@ -262,6 +265,7 @@ static NSInteger const CELL_STAR_PERSONAL_RATING_VIEW = 302;
 //    }
     
     self.othersRateView.rating = [[book AverageRating] floatValue];
+    self.personalRateView.rating = (float)self.userRating;
     
     self.needsRefresh = NO;
 }
