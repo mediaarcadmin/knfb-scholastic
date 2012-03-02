@@ -543,12 +543,6 @@ didSelectButtonAnimated:(BOOL)animated
                                    modalStyle:(UIModalPresentationStyle)style 
                         shouldHideCloseButton:(BOOL)shouldHide 
 {    
-    [CATransaction begin];
-    [CATransaction setDisableActions:YES];
-    
-    if (self.modalViewController) {
-        [self dismissModalViewControllerAnimated:NO];
-    }
     
     SCHParentalToolsWebViewController *aParentalToolsWebViewController = [[[SCHParentalToolsWebViewController alloc] init] autorelease];
     aParentalToolsWebViewController.title = title;
@@ -557,30 +551,43 @@ didSelectButtonAnimated:(BOOL)animated
     aParentalToolsWebViewController.shouldHideCloseButton = shouldHide;
     self.parentalToolsWebViewController = aParentalToolsWebViewController;
     
-    BITModalSheetController *aPopoverController = [[BITModalSheetController alloc] initWithContentViewController:aParentalToolsWebViewController];
-    aPopoverController.contentSize = CGSizeMake(540, 620);
-    aPopoverController.autoresizingMask = UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin | UIViewAutoresizingFlexibleWidth;
-    self.webParentToolsPopoverController = aPopoverController;
-    [aPopoverController release];
+    [CATransaction begin];
+    [CATransaction setDisableActions:YES];
     
-    __block BITModalSheetController *weakPopover = self.webParentToolsPopoverController;
-    __block SCHProfileViewController_Shared *weakSelf = self;
+    if (self.modalViewController) {
+        [self dismissModalViewControllerAnimated:NO];
+    }
     
-    [self.webParentToolsPopoverController presentSheetInViewController:self animated:NO completion:^{
-        weakSelf.parentalToolsWebViewController.textView.alpha = 0;
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+
+        BITModalSheetController *aPopoverController = [[BITModalSheetController alloc] initWithContentViewController:aParentalToolsWebViewController];
+        aPopoverController.contentSize = CGSizeMake(540, 620);
+        aPopoverController.autoresizingMask = UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin | UIViewAutoresizingFlexibleWidth;
+        self.webParentToolsPopoverController = aPopoverController;
+        [aPopoverController release];
         
-        CGSize expandedSize;
+        __block BITModalSheetController *weakPopover = self.webParentToolsPopoverController;
+        __block SCHProfileViewController_Shared *weakSelf = self;
         
-        if (UIInterfaceOrientationIsPortrait(weakSelf.interfaceOrientation)) {
-            expandedSize = CGSizeMake(700, 530);
-        } else {
-            expandedSize = CGSizeMake(964, 530);
-        }
-        
-        [weakPopover setContentSize:expandedSize animated:YES completion:^{
-            weakSelf.parentalToolsWebViewController.textView.alpha = 1;
+        [self.webParentToolsPopoverController presentSheetInViewController:self animated:NO completion:^{
+            weakSelf.parentalToolsWebViewController.textView.alpha = 0;
+            
+            CGSize expandedSize;
+            
+            if (UIInterfaceOrientationIsPortrait(weakSelf.interfaceOrientation)) {
+                expandedSize = CGSizeMake(700, 530);
+            } else {
+                expandedSize = CGSizeMake(964, 530);
+            }
+            
+            [weakPopover setContentSize:expandedSize animated:YES completion:^{
+                weakSelf.parentalToolsWebViewController.textView.alpha = 1;
+            }];
         }];
-    }];    
+        
+    } else {
+        [self presentModalViewController:self.parentalToolsWebViewController animated:YES];        
+    }
     
     [CATransaction commit];
 }

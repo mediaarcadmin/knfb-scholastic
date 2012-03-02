@@ -252,6 +252,18 @@ static const NSTimeInterval kSCHStartingViewControllerNonForcedAlertInterval = (
 {
     [super willRotateToInterfaceOrientation:toInterfaceOrientation duration:duration];
     [self setupAssetsForOrientation:toInterfaceOrientation];
+    
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
+        if (self.loginPopoverController) {
+            if (UIInterfaceOrientationIsPortrait(toInterfaceOrientation)) {
+                [self.loginPopoverController setContentSize:CGSizeMake(300, 400) animated:YES completion:nil];
+                [self.loginPopoverController setContentOffset:CGPointZero animated:YES completion:nil];
+            } else {
+                [self.loginPopoverController setContentSize:CGSizeMake(400, 300) animated:YES completion:nil];
+                [self.loginPopoverController setContentOffset:CGPointMake(0, -60) animated:YES completion:nil];
+            }
+        }
+    }
 }
 
 #pragma mark - SCHProfileSetupDelegate
@@ -340,32 +352,37 @@ static const NSTimeInterval kSCHStartingViewControllerNonForcedAlertInterval = (
     parentalToolsWebViewController.modalPresenterDelegate = self;
     parentalToolsWebViewController.pToken = token;
     parentalToolsWebViewController.shouldHideCloseButton = shouldHide;
-
-    BITModalSheetController *aPopoverController = [[BITModalSheetController alloc] initWithContentViewController:parentalToolsWebViewController];
-    aPopoverController.contentSize = CGSizeMake(540, 620);
-    aPopoverController.autoresizingMask = UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin | UIViewAutoresizingFlexibleWidth;
-    self.webParentToolsPopoverController = aPopoverController;
-    [aPopoverController release];
     
-    __block BITModalSheetController *weakPopover = self.webParentToolsPopoverController;
-    __block UIViewController *weakSelf = self;
-    __block SCHParentalToolsWebViewController *weakParentTools = parentalToolsWebViewController;
-    
-    [self.webParentToolsPopoverController presentSheetInViewController:[self profileViewController] animated:NO completion:^{
-        weakParentTools.textView.alpha = 0;
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
         
-        CGSize expandedSize;
+        BITModalSheetController *aPopoverController = [[BITModalSheetController alloc] initWithContentViewController:parentalToolsWebViewController];
+        aPopoverController.contentSize = CGSizeMake(540, 620);
+        aPopoverController.autoresizingMask = UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin | UIViewAutoresizingFlexibleWidth;
+        self.webParentToolsPopoverController = aPopoverController;
+        [aPopoverController release];
         
-        if (UIInterfaceOrientationIsPortrait(weakSelf.interfaceOrientation)) {
-            expandedSize = CGSizeMake(700, 530);
-        } else {
-            expandedSize = CGSizeMake(964, 530);
-        }
+        __block BITModalSheetController *weakPopover = self.webParentToolsPopoverController;
+        __block UIViewController *weakSelf = self;
+        __block SCHParentalToolsWebViewController *weakParentTools = parentalToolsWebViewController;
         
-        [weakPopover setContentSize:expandedSize animated:YES completion:^{
-            weakParentTools.textView.alpha = 1;
-        }];
-    }];    
+        [self.webParentToolsPopoverController presentSheetInViewController:[self profileViewController] animated:NO completion:^{
+            weakParentTools.textView.alpha = 0;
+            
+            CGSize expandedSize;
+            
+            if (UIInterfaceOrientationIsPortrait(weakSelf.interfaceOrientation)) {
+                expandedSize = CGSizeMake(700, 530);
+            } else {
+                expandedSize = CGSizeMake(964, 530);
+            }
+            
+            [weakPopover setContentSize:expandedSize animated:YES completion:^{
+                weakParentTools.textView.alpha = 1;
+            }];
+        }];    
+    } else {
+        [self presentModalViewController:parentalToolsWebViewController animated:YES];        
+    }
     
     [CATransaction commit];
 }

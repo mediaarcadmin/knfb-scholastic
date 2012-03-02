@@ -384,8 +384,16 @@ NSTimeInterval const kSCHAuthenticationManagerSecondsInAMinute = 60.0;
         NSString *application = [appln componentsJoinedByString:@"|"];
         NSString *escapedApplication = [application urlEncodeUsingEncoding:NSUTF8StringEncoding];
         
+        NSString *webParentToolsServer = nil;
+        
+        if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+            webParentToolsServer = WEB_PARENT_TOOLS_SERVER_PAD;
+        } else {
+            webParentToolsServer = WEB_PARENT_TOOLS_SERVER_PHONE;
+        }
+        
         NSString *escapedURL = [NSString stringWithFormat:@"%@?tk=%@&appln=%@&spsId=%@",
-                                WEB_PARENT_TOOLS_SERVER,
+                                webParentToolsServer,
                                 escapedToken, 
                                 escapedApplication, 
                                 escapedKey];
