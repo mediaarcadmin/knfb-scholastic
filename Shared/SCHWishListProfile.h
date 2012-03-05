@@ -8,10 +8,11 @@
 
 #import <Foundation/Foundation.h>
 #import <CoreData/CoreData.h>
+#import "SCHSyncEntity.h"
 
 extern NSString * const kSCHWishListProfile;
 
-@interface SCHWishListProfile : NSManagedObject
+@interface SCHWishListProfile : SCHSyncEntity
 
 @property (nonatomic, retain) NSNumber * profileID;
 @property (nonatomic, retain) NSString * profileName;

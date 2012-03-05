@@ -8,12 +8,13 @@
 
 #import <Foundation/Foundation.h>
 #import <CoreData/CoreData.h>
+#import "SCHSyncEntity.h"
 
 extern NSString * const kSCHWishListItem;
 
 @class SCHWishListProfile;
 
-@interface SCHWishListItem : NSManagedObject
+@interface SCHWishListItem : SCHSyncEntity
 
 @property (nonatomic, retain) NSString * author;
 @property (nonatomic, retain) NSString * initiatedBy;
