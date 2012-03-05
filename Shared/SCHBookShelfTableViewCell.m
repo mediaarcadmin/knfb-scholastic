@@ -24,6 +24,8 @@ static NSInteger const CELL_BACKGROUND_VIEW = 200;
 static NSInteger const CELL_THUMB_BACKGROUND_VIEW = 201;
 static NSInteger const CELL_RULE_IMAGE_VIEW = 202;
 static NSInteger const CELL_ACTIVITY_SPINNER = 203;
+static NSInteger const CELL_RATING_TOP_RULE_IMAGE_VIEW = 204;
+static NSInteger const CELL_RATING_BOTTOM_RULE_IMAGE_VIEW = 205;
 static NSInteger const CELL_STAR_VIEW = 300;
 static NSInteger const CELL_STAR_OTHERS_RATING_VIEW = 301;
 static NSInteger const CELL_STAR_PERSONAL_RATING_VIEW = 302;
@@ -40,6 +42,8 @@ static NSInteger const CELL_STAR_PERSONAL_RATING_VIEW = 302;
 @property (readonly) RateView *othersRateView;
 @property (readonly) RateView *personalRateView;
 @property (readonly) UIImageView *ruleImageView;
+@property (readonly) UIImageView *ratingTopRuleImageView;
+@property (readonly) UIImageView *ratingBottomRuleImageView;
 @property (nonatomic, assign) BOOL coalesceRefreshes;
 @property (nonatomic, assign) BOOL needsRefresh;
 
@@ -72,6 +76,8 @@ static NSInteger const CELL_STAR_PERSONAL_RATING_VIEW = 302;
         self.textLabel.text = [[[NSAttributedString alloc] initWithString:@""] autorelease];
         [self updateTheme];
         self.ruleImageView.image = [[UIImage imageNamed:@"ListViewRule"] stretchableImageWithLeftCapWidth:6 topCapHeight:0];
+        self.ratingTopRuleImageView.image = [[UIImage imageNamed:@"ListViewRule"] stretchableImageWithLeftCapWidth:6 topCapHeight:0];
+        self.ratingBottomRuleImageView.image = [[UIImage imageNamed:@"ListViewRule"] stretchableImageWithLeftCapWidth:6 topCapHeight:0];
         self.lastCell = NO;
         
         self.bookCoverView.coverViewMode = SCHBookCoverViewModeListView;
@@ -254,8 +260,10 @@ static NSInteger const CELL_STAR_PERSONAL_RATING_VIEW = 302;
     
     if (self.lastCell) {
         self.ruleImageView.hidden = YES;
+        self.ratingBottomRuleImageView.hidden = YES;
     } else {
         self.ruleImageView.hidden = NO;
+        self.ratingBottomRuleImageView.hidden = NO;
     }
     
 //    if (self.loading) {
@@ -411,6 +419,16 @@ static NSInteger const CELL_STAR_PERSONAL_RATING_VIEW = 302;
 - (UIImageView *)ruleImageView
 {
     return (UIImageView *)[self.contentView viewWithTag:CELL_RULE_IMAGE_VIEW];
+}
+
+- (UIImageView *)ratingTopRuleImageView
+{
+    return (UIImageView *)[self.contentView viewWithTag:CELL_RATING_TOP_RULE_IMAGE_VIEW];
+}
+
+- (UIImageView *)ratingBottomRuleImageView
+{
+    return (UIImageView *)[self.contentView viewWithTag:CELL_RATING_BOTTOM_RULE_IMAGE_VIEW];
 }
 
 
