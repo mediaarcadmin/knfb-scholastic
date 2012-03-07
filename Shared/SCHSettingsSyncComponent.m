@@ -125,9 +125,7 @@ NSString * const SCHSettingsSyncComponentDidFailNotification = @"SCHSettingsSync
 }
 
 - (void)updateUserSettings:(NSArray *)settingsList
-{
-	NSError *error = nil;
-	
+{	
     if ([settingsList count] > 0) {
         [self clear];
         
@@ -138,10 +136,7 @@ NSString * const SCHSettingsSyncComponentDidFailNotification = @"SCHSettingsSync
             newUserSettingsItem.SettingValue = [self makeNullNil:[setting objectForKey:kSCHLibreAccessWebServiceSettingValue]];
         }
         
-        // Save the context.
-        if (![self.managedObjectContext save:&error]) {
-            NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
-        }	
+        [self save];
     }
 }
 

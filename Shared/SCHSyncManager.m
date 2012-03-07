@@ -335,7 +335,7 @@ static NSUInteger const kSCHSyncManagerMaximumFailureRetries = 3;
             [self addToQueue:self.readingStatsSyncComponent];
             [self addToQueue:self.settingsSyncComponent];
             
-//            [self addToQueue:self.wishListSyncComponent];
+            [self addToQueue:self.wishListSyncComponent];
             
             [self kickQueue];	
         } else {
@@ -590,8 +590,11 @@ static NSUInteger const kSCHSyncManagerMaximumFailureRetries = 3;
 - (void)closeDocumentSync:(SCHUserContentItem *)userContentItem forProfile:(NSNumber *)profileID
 {
     // save any changes first
-    NSError *error = nil;
-    [self.managedObjectContext save:&error];
+    NSError *error = nil;    
+    if ([self.managedObjectContext hasChanges] == YES &&
+        ![self.managedObjectContext save:&error]) {
+        NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
+    } 
     
     if ([self shouldSync] == YES) {	
         NSLog(@"Scheduling Close Document");

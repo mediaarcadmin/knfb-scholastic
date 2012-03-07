@@ -1420,7 +1420,8 @@ NSString * const SCHAnnotationSyncComponentProfileIDs = @"SCHAnnotationSyncCompo
     
     if (batch == NO || ++batchCount > 250) {
         batchCount = 0;
-        if (![self.backgroundThreadManagedObjectContext save:&error]) {
+        if ([self.backgroundThreadManagedObjectContext hasChanges] == YES &&
+            ![self.backgroundThreadManagedObjectContext save:&error]) {
             NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
         } 
     }

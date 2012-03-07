@@ -107,11 +107,12 @@ NSString * const SCHSyncComponentDidFailAuthenticationNotification = @"SCHSyncCo
 
 - (void)save
 {
-	NSError *error = nil;
-	
-	if (![self.managedObjectContext save:&error]) {
-		NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
-	} 
+    NSError *error = nil;
+    
+    if ([self.managedObjectContext hasChanges] == YES &&
+        ![self.managedObjectContext save:&error]) {
+        NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
+    } 
 }
 
 @end
