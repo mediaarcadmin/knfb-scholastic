@@ -75,6 +75,8 @@ typedef enum
 - (BOOL)canOpenBook:(SCHBookIdentifier *)identifier error:(NSError **)error;
 - (void)selectBookAtIndex:(NSInteger)index startBlock:(dispatch_block_t)startBlock endBlock:(void (^)(BOOL didOpen))endBlock;
 
+- (void)bookIdentifier:(SCHBookIdentifier *)identifier userRatingChanged:(NSInteger)newRating;
+
 - (IBAction)changeToListView:(UIButton *)sender;
 - (IBAction)changeToGridView:(UIButton *)sender;
 
@@ -811,14 +813,27 @@ typedef enum
 
 - (void)bookshelfCell:(SCHBookShelfTableViewCell *)cell userRatingChanged:(NSInteger)newRating
 {
-    NSLog(@"Book %@ changed to rating %d", cell.identifier, newRating);
+    [self bookIdentifier:cell.identifier userRatingChanged:newRating];
+    self.gridViewNeedsRefreshed = YES;
+    [self reloadData];
+}
+
+- (void)gridCell:(SCHBookShelfGridViewCell *)cell userRatingChanged:(NSInteger)newRating
+{
+    [self bookIdentifier:cell.identifier userRatingChanged:newRating];
+    self.listViewNeedsRefreshed = YES;
+    [self reloadData];
+}
+
+- (void)bookIdentifier:(SCHBookIdentifier *)identifier userRatingChanged:(NSInteger)newRating
+{
+    NSLog(@"Book %@ changed to rating %d", identifier, newRating);
     
-    SCHBookAnnotations *anno = [self.profileItem annotationsForBook:cell.identifier];
+    SCHBookAnnotations *anno = [self.profileItem annotationsForBook:identifier];
     
     if (anno) {
         [anno setUserRating:newRating];
     }
-    
 }
 
 #pragma mark - UITableViewDataSource methods
@@ -867,11 +882,8 @@ typedef enum
     
     cell.showStarRatings = self.showingRatings;
 
-    // don't need to open the annotation unless we are showing ratings
-    if (self.showingRatings) {
-        SCHBookAnnotations *anno = [self.profileItem annotationsForBook:identifier];
-        cell.userRating = [anno userRating];
-    }
+    SCHBookAnnotations *anno = [self.profileItem annotationsForBook:identifier];
+    cell.userRating = [anno userRating];
 
     [cell endUpdates];
     return cell;
@@ -929,7 +941,8 @@ typedef enum
     
 	[gridCell setIdentifier:[self.books objectAtIndex:index]];
     SCHAppContentProfileItem *appContentProfileItem = [self.profileItem appContentProfileItemForBookIdentifier:[self.books objectAtIndex:index]];
-    gridCell.isNewBook = [appContentProfileItem.IsNewBook boolValue];
+    gridCell.delegate = self;
+        gridCell.isNewBook = [appContentProfileItem.IsNewBook boolValue];
     gridCell.disabledForInteractions = [self.profileItem storyInteractionsDisabled];
     gridCell.showRatings = self.showingRatings;
 
@@ -938,6 +951,10 @@ typedef enum
     } else {
         gridCell.loading = NO;
     }
+    
+    SCHBookAnnotations *anno = [self.profileItem annotationsForBook:[self.books objectAtIndex:index]];
+    gridCell.userRating = [anno userRating];
+
     
     [gridCell endUpdates];
 }
