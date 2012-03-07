@@ -12,32 +12,10 @@
 @implementation SCHComponent
 
 @synthesize delegate;
-@synthesize libreAccessWebService;
-
-#pragma mark - Object lifecycle
-
-- (id)init
-{
-	self = [super init];
-	if (self != nil) {
-		libreAccessWebService = [[SCHLibreAccessWebService alloc] init];	
-		libreAccessWebService.delegate = self;
-	}
-	
-	return(self);
-}
-
-- (void)dealloc
-{	
-    libreAccessWebService.delegate = nil;
-	[libreAccessWebService release], libreAccessWebService = nil;
-	
-	[super dealloc];
-}
 
 - (void)clear
 {
-    [self.libreAccessWebService clear];
+    NSAssert(NO, @"SCHComponent:clear needs to be overidden in sub-classes");
 }
 
 #pragma mark - Delegate methods

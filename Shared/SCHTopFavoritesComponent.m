@@ -10,6 +10,7 @@
 #import "SCHComponentProtected.h"
 
 #import "NSNumber+ObjectTypes.h"
+#import "SCHLibreAccessWebService.h"
 
 static NSInteger const kSCHTopFavoritesComponentTopCount = 10;
 static NSString * const kSCHTopFavoritesComponentCategoryPictureBooks = @"Picture books";
@@ -17,7 +18,39 @@ static NSString * const kSCHTopFavoritesComponentCategoryLevelReader = @"Level r
 static NSString * const kSCHTopFavoritesComponentCategoryChapterBooks = @"Chapter books";
 static NSString * const kSCHTopFavoritesComponentCategoryYoungAdults = @"Young Adults";
 
+@interface SCHTopFavoritesComponent ()
+
+@property (nonatomic, retain) SCHLibreAccessWebService *libreAccessWebService;
+
+@end
+
 @implementation SCHTopFavoritesComponent
+
+@synthesize libreAccessWebService;
+
+- (id)init
+{
+	self = [super init];
+	if (self != nil) {
+		libreAccessWebService = [[SCHLibreAccessWebService alloc] init];	
+		libreAccessWebService.delegate = self;
+	}
+	
+	return(self);
+}
+
+- (void)dealloc
+{
+    libreAccessWebService.delegate = nil;
+	[libreAccessWebService release], libreAccessWebService = nil;
+    
+	[super dealloc];
+}
+
+- (void)clear
+{
+    // nothing to clear
+}
 
 - (BOOL)topFavoritesForAge:(NSUInteger)ageInYears
 {

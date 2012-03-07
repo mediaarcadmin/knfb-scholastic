@@ -18,12 +18,15 @@
 #import "SCHProfileItem.h"
 #import "SCHWishListProfile.h"
 #import "SCHWishListItem.h"
+#import "SCHLibreAccessConstants.h"
 
 // Constants
 NSString * const SCHWishListSyncComponentDidCompleteNotification = @"SCHWishListSyncComponentDidCompleteNotification";
 NSString * const SCHWishListSyncComponentDidFailNotification = @"SCHWishListSyncComponentDidFailNotification";
 
 @interface SCHWishListSyncComponent ()
+
+@property (nonatomic, retain) SCHWishListWebService *wishListWebService;
 
 - (BOOL)updateWishListItems;
 
@@ -44,6 +47,27 @@ NSString * const SCHWishListSyncComponentDidFailNotification = @"SCHWishListSync
 @end
 
 @implementation SCHWishListSyncComponent
+
+@synthesize wishListWebService;
+
+- (id)init
+{
+	self = [super init];
+	if (self != nil) {
+		wishListWebService = [[SCHWishListWebService alloc] init];	
+		wishListWebService.delegate = self;
+	}
+	
+	return(self);
+}
+
+- (void)dealloc
+{
+    wishListWebService.delegate = nil;
+	[wishListWebService release], wishListWebService = nil;
+    
+	[super dealloc];
+}
 
 - (BOOL)synchronize
 {
@@ -66,9 +90,10 @@ NSString * const SCHWishListSyncComponentDidFailNotification = @"SCHWishListSync
 
 - (void)clear
 {
-    [super clear];
 	NSError *error = nil;
 	
+    [self.wishListWebService clear];
+    
 	if (![self.managedObjectContext BITemptyEntity:kSCHWishListProfile error:&error]) {
 		NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
 	}		
@@ -116,10 +141,7 @@ NSString * const SCHWishListSyncComponentDidFailNotification = @"SCHWishListSync
 - (BOOL)updateWishListItems
 {
     BOOL ret = YES;
-    
-    SCHWishListWebService *wishListWebService = [[SCHWishListWebService alloc] init];
-    wishListWebService.delegate = self;
-    
+        
     SCHAccountValidation *accountValidation = [[SCHAccountValidation alloc] init];
     
     NSString *storedUsername = [[NSUserDefaults standardUserDefaults] stringForKey:kSCHAuthenticationManagerUsername];

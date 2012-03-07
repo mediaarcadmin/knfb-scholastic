@@ -20,11 +20,34 @@ NSString * const SCHSettingsSyncComponentDidFailNotification = @"SCHSettingsSync
 
 @interface SCHSettingsSyncComponent ()
 
+@property (nonatomic, retain) SCHLibreAccessWebService *libreAccessWebService;
+
 - (void)updateUserSettings:(NSArray *)settingsList;
 
 @end
 
 @implementation SCHSettingsSyncComponent
+
+@synthesize libreAccessWebService;
+
+- (id)init
+{
+	self = [super init];
+	if (self != nil) {
+		libreAccessWebService = [[SCHLibreAccessWebService alloc] init];	
+		libreAccessWebService.delegate = self;
+	}
+	
+	return(self);
+}
+
+- (void)dealloc
+{
+    libreAccessWebService.delegate = nil;
+	[libreAccessWebService release], libreAccessWebService = nil;
+    
+	[super dealloc];
+}
 
 - (BOOL)synchronize
 {
@@ -62,9 +85,10 @@ NSString * const SCHSettingsSyncComponentDidFailNotification = @"SCHSettingsSync
 
 - (void)clear
 {
-    [super clear];
 	NSError *error = nil;
 	
+    [self.libreAccessWebService clear];
+    
 	if (![self.managedObjectContext BITemptyEntity:kSCHUserSettingsItem error:&error]) {
 		NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
 	}	
