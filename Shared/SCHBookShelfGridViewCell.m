@@ -12,7 +12,15 @@
 #import "SCHBookManager.h"
 #import "SCHBookCoverView.h"
 
+#import "RateView.h"
+
+#define RATING_VIEW_HEIGHT 88
+#define RATING_VIEW_WIDTH_PADDING 20
+
+
 @interface SCHBookShelfGridViewCell ()
+
+@property (nonatomic, retain) UIView *ratingContainerView;
 
 @end;
 
@@ -23,6 +31,8 @@
 @synthesize isNewBook;
 @synthesize loading;
 @synthesize disabledForInteractions;
+@synthesize showRatings;
+@synthesize ratingContainerView;
 
 #pragma mark - Object lifecycle
 
@@ -43,6 +53,13 @@
         
         [self.deleteButton setShowsTouchWhenHighlighted:NO]; // Needed to remove a "puff" visual glitch when pushing directly into the samples shelf
         [self.contentView addSubview:self.bookCoverView];
+        
+        self.ratingContainerView = [[[UIView alloc] initWithFrame:CGRectMake(RATING_VIEW_WIDTH_PADDING, frame.size.height - RATING_VIEW_HEIGHT - 22, frame.size.width - (2 * RATING_VIEW_WIDTH_PADDING), RATING_VIEW_HEIGHT)] autorelease];
+        self.ratingContainerView.backgroundColor = [UIColor colorWithWhite:1 alpha:0.4];
+        self.ratingContainerView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleTopMargin;
+        [self.contentView addSubview:self.ratingContainerView];
+        
+        
     }
 	
 	return(self);
@@ -59,6 +76,7 @@
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
     [NSObject cancelPreviousPerformRequestsWithTarget:self];
     
+    [ratingContainerView release], ratingContainerView = nil;
 	[bookCoverView release], bookCoverView = nil;
     [identifier release], identifier = nil;
     [super dealloc];
@@ -113,6 +131,14 @@
 {
     loading = newLoading;
     self.bookCoverView.loading = newLoading;
+}
+
+- (void)setShowRatings:(BOOL)newShowRatings
+{
+    showRatings = newShowRatings;
+    self.bookCoverView.hideElementsForRatings = showRatings;
+    self.ratingContainerView.hidden = !showRatings;
+    [self.bookCoverView refreshBookCoverView];
 }
 
 @end

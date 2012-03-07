@@ -84,6 +84,7 @@ static NSInteger const CELL_STAR_PERSONAL_RATING_VIEW = 302;
         self.bookCoverView.topInset = 0;
         self.bookCoverView.leftRightInset = 0;
         
+        
         self.personalRateView.fullSelectedImage = [UIImage imageNamed:@"storiaStarFull"];
         self.personalRateView.notSelectedImage = [UIImage imageNamed:@"storiaStarEmpty"];
         self.personalRateView.rating = 0;

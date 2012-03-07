@@ -931,6 +931,7 @@ typedef enum
     SCHAppContentProfileItem *appContentProfileItem = [self.profileItem appContentProfileItemForBookIdentifier:[self.books objectAtIndex:index]];
     gridCell.isNewBook = [appContentProfileItem.IsNewBook boolValue];
     gridCell.disabledForInteractions = [self.profileItem storyInteractionsDisabled];
+    gridCell.showRatings = self.showingRatings;
 
     if (self.currentlyLoadingIndex == index) {
         gridCell.loading = YES;
