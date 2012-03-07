@@ -14,10 +14,10 @@ extern NSString * const kSCHWishListProfile;
 
 @interface SCHWishListProfile : SCHSyncEntity
 
-@property (nonatomic, retain) NSNumber * profileID;
-@property (nonatomic, retain) NSString * profileName;
-@property (nonatomic, retain) NSDate * timestamp;
-@property (nonatomic, retain) NSSet *itemList;
+@property (nonatomic, retain) NSNumber * ProfileID;
+@property (nonatomic, retain) NSString * ProfileName;
+@property (nonatomic, retain) NSDate * Timestamp;
+@property (nonatomic, retain) NSSet *ItemList;
 @end
 
 @interface SCHWishListProfile (CoreDataGeneratedAccessors)
