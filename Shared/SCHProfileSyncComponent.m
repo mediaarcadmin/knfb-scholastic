@@ -14,6 +14,7 @@
 #import "SCHAppProfile.h"
 #import "SCHAnnotationsItem.h"
 #import "BITAPIError.h"
+#import "SCHLibreAccessWebService.h"
 
 // Constants
 NSString * const SCHProfileSyncComponentWillDeleteNotification = @"SCHProfileSyncComponentWillDeleteNotification";
@@ -23,6 +24,7 @@ NSString * const SCHProfileSyncComponentDidFailNotification = @"SCHProfileSyncCo
 
 @interface SCHProfileSyncComponent ()
 
+@property (nonatomic, retain) SCHLibreAccessWebService *libreAccessWebService;
 @property (retain, nonatomic) NSMutableArray *savedProfiles;
 
 - (void)trackProfileSaves:(NSArray *)profilesArray;
@@ -35,12 +37,16 @@ NSString * const SCHProfileSyncComponentDidFailNotification = @"SCHProfileSyncCo
 
 @implementation SCHProfileSyncComponent
 
+@synthesize libreAccessWebService;
 @synthesize savedProfiles;
 
 - (id)init 
 {
     self = [super init];
     if (self) {
+        libreAccessWebService = [[SCHLibreAccessWebService alloc] init];	
+		libreAccessWebService.delegate = self;
+
         savedProfiles = [[NSMutableArray array] retain];
     }
     return self;
@@ -48,6 +54,9 @@ NSString * const SCHProfileSyncComponentDidFailNotification = @"SCHProfileSyncCo
 
 - (void)dealloc 
 {
+    libreAccessWebService.delegate = nil;
+	[libreAccessWebService release], libreAccessWebService = nil;
+
     [savedProfiles release], savedProfiles = nil;
     [super dealloc];
 }
@@ -73,9 +82,10 @@ NSString * const SCHProfileSyncComponentDidFailNotification = @"SCHProfileSyncCo
 
 - (void)clear
 {
-    [super clear];
 	NSError *error = nil;
 	
+    [self.libreAccessWebService clear];
+    
     [self.savedProfiles removeAllObjects];
     
 	if (![self.managedObjectContext BITemptyEntity:kSCHProfileItem error:&error]) {

@@ -14,11 +14,11 @@ NSString * const kSCHWishListItem = @"SCHWishListItem";
 
 @implementation SCHWishListItem
 
-@dynamic author;
-@dynamic initiatedBy;
-@dynamic isbn;
-@dynamic timestamp;
-@dynamic title;
-@dynamic wishListProfile;
+@dynamic Author;
+@dynamic InitiatedBy;
+@dynamic ISBN;
+@dynamic Timestamp;
+@dynamic Title;
+@dynamic WishListProfile;
 
 @end

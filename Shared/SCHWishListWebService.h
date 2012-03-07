@@ -15,6 +15,8 @@
 
 @interface SCHWishListWebService : BITSOAPProxy <WishListServiceSoap11BindingResponseDelegate, BITObjectMapperProtocol> 
 
+- (void)clear;
+
 - (void)getWishListItems:(NSString *)pToken profiles:(NSArray *)profileIDs;
 - (void)addItemsToWishList:(NSString *)pToken wishListItems:(NSArray *)wishListItems;
 - (void)deleteWishListItems:(NSString *)pToken wishListItems:(NSArray *)wishListItems;

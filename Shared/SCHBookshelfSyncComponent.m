@@ -19,6 +19,7 @@
 #import "SCHReadingStatsContentItem.h"
 #import "BITAPIError.h"
 #import "SCHBookIdentifier.h"
+#import "SCHLibreAccessWebService.h"
 
 // Constants
 NSString * const SCHBookshelfSyncComponentWillDeleteNotification = @"SCHBookshelfSyncComponentWillDeleteNotification";
@@ -28,6 +29,8 @@ NSString * const SCHBookshelfSyncComponentDidCompleteNotification = @"SCHBookshe
 NSString * const SCHBookshelfSyncComponentDidFailNotification = @"SCHBookshelfSyncComponentDidFailNotification";
 
 @interface SCHBookshelfSyncComponent ()
+
+@property (nonatomic, retain) SCHLibreAccessWebService *libreAccessWebService;
 
 - (NSArray *)bookIdentifiersFromRequestInfo:(NSArray *)contentMetadataItems;
 - (void)postBookshelfSyncComponentBookReceivedNotification:(NSArray *)contentMetadataItems;
@@ -45,6 +48,7 @@ NSString * const SCHBookshelfSyncComponentDidFailNotification = @"SCHBookshelfSy
 
 @implementation SCHBookshelfSyncComponent
 
+@synthesize libreAccessWebService;
 @synthesize useIndividualRequests;
 @synthesize requestCount;
 @synthesize didReceiveFailedResponseBooks;
@@ -53,6 +57,9 @@ NSString * const SCHBookshelfSyncComponentDidFailNotification = @"SCHBookshelfSy
 {
 	self = [super init];
 	if (self != nil) {
+        libreAccessWebService = [[SCHLibreAccessWebService alloc] init];	
+		libreAccessWebService.delegate = self;
+
 		useIndividualRequests = YES;	
 		requestCount = 0;
         didReceiveFailedResponseBooks = [[NSMutableArray alloc] init];
@@ -62,6 +69,9 @@ NSString * const SCHBookshelfSyncComponentDidFailNotification = @"SCHBookshelfSy
 
 - (void)dealloc
 {
+    libreAccessWebService.delegate = nil;
+	[libreAccessWebService release], libreAccessWebService = nil;
+
     [didReceiveFailedResponseBooks release], didReceiveFailedResponseBooks = nil;
     
     [super dealloc];
@@ -88,8 +98,9 @@ NSString * const SCHBookshelfSyncComponentDidFailNotification = @"SCHBookshelfSy
 
 - (void)clear
 {
-    [super clear];
 	NSError *error = nil;
+    
+    [self.libreAccessWebService clear];
     
     self.requestCount = 0;
     [self.didReceiveFailedResponseBooks removeAllObjects];

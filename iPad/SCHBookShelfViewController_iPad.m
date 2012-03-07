@@ -23,6 +23,7 @@
 #import "SCHAppStateManager.h"
 #import "LambdaAlert.h"
 #import "SCHVersionDownloadManager.h"
+#import "SCHLibreAccessConstants.h"
 
 //static NSInteger const kSCHBookShelfViewControllerGridCellHeightPortrait_iPad = 254;
 static NSInteger const kSCHBookShelfViewControllerGridCellHeightPortrait_iPad = 224;

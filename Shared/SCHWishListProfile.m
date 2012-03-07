@@ -12,9 +12,9 @@ NSString * const kSCHWishListProfile = @"SCHWishListProfile";
 
 @implementation SCHWishListProfile
 
-@dynamic profileID;
-@dynamic profileName;
-@dynamic timestamp;
-@dynamic itemList;
+@dynamic ProfileID;
+@dynamic ProfileName;
+@dynamic Timestamp;
+@dynamic ItemList;
 
 @end

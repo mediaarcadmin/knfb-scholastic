@@ -121,7 +121,7 @@
         <relationship name="eReaderCategories" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="SCHeReaderCategories" inverseName="ContentMetadataItem" inverseEntity="SCHeReaderCategories" indexed="YES"/>
     </entity>
     <entity name="SCHContentProfileItem" representedClassName="SCHContentProfileItem" parentEntity="SCHSyncEntity">
-        <attribute name="LastPageLocation" attributeType="Integer 64" defaultValueString="0"/>
+        <attribute name="LastPageLocation" optional="YES" attributeType="Integer 64" defaultValueString="0"/>
         <attribute name="ProfileID" optional="YES" attributeType="Integer 64" defaultValueString="0" indexed="YES"/>
         <attribute name="Rating" optional="YES" attributeType="Integer 16" defaultValueString="0"/>
         <relationship name="AppContentProfileItem" optional="YES" minCount="1" maxCount="1" deletionRule="Cascade" destinationEntity="SCHAppContentProfileItem" inverseName="ContentProfileItem" inverseEntity="SCHAppContentProfileItem" indexed="YES"/>
@@ -257,16 +257,16 @@
         <attribute name="SettingValue" optional="YES" attributeType="String"/>
     </entity>
     <entity name="SCHWishListItem" representedClassName="SCHWishListItem" parentEntity="SCHSyncEntity">
-        <attribute name="author" optional="YES" attributeType="String"/>
-        <attribute name="initiatedBy" optional="YES" attributeType="String"/>
-        <attribute name="isbn" optional="YES" attributeType="String" indexed="YES"/>
-        <attribute name="title" optional="YES" attributeType="String"/>
-        <relationship name="wishListProfile" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="SCHWishListProfile" inverseName="itemList" inverseEntity="SCHWishListProfile"/>
+        <attribute name="Author" optional="YES" attributeType="String"/>
+        <attribute name="InitiatedBy" optional="YES" attributeType="String"/>
+        <attribute name="ISBN" optional="YES" attributeType="String" indexed="YES"/>
+        <attribute name="Title" optional="YES" attributeType="String"/>
+        <relationship name="WishListProfile" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="SCHWishListProfile" inverseName="ItemList" inverseEntity="SCHWishListProfile"/>
     </entity>
     <entity name="SCHWishListProfile" representedClassName="SCHWishListProfile" parentEntity="SCHSyncEntity">
-        <attribute name="profileID" optional="YES" attributeType="Integer 64" defaultValueString="0" indexed="YES"/>
-        <attribute name="profileName" optional="YES" attributeType="String"/>
-        <relationship name="itemList" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="SCHWishListItem" inverseName="wishListProfile" inverseEntity="SCHWishListItem"/>
+        <attribute name="ProfileID" optional="YES" attributeType="Integer 64" defaultValueString="0" indexed="YES"/>
+        <attribute name="ProfileName" optional="YES" attributeType="String"/>
+        <relationship name="ItemList" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="SCHWishListItem" inverseName="WishListProfile" inverseEntity="SCHWishListItem"/>
     </entity>
     <entity name="SCHWordIndex" representedClassName="SCHWordIndex">
         <attribute name="End" optional="YES" attributeType="Integer 64" defaultValueString="0"/>
