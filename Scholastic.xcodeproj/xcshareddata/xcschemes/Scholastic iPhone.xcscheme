@@ -14,7 +14,7 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "C9D7005E14ED50B100C10006"
-               BuildableName = "Scholastic iPad copy.app"
+               BuildableName = "Storia.app"
                BlueprintName = "Scholastic iPhone"
                ReferencedContainer = "container:Scholastic.xcodeproj">
             </BuildableReference>
@@ -32,7 +32,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "C9D7005E14ED50B100C10006"
-            BuildableName = "Scholastic iPad copy.app"
+            BuildableName = "Storia.app"
             BlueprintName = "Scholastic iPhone"
             ReferencedContainer = "container:Scholastic.xcodeproj">
          </BuildableReference>
@@ -50,7 +50,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "C9D7005E14ED50B100C10006"
-            BuildableName = "Scholastic iPad copy.app"
+            BuildableName = "Storia.app"
             BlueprintName = "Scholastic iPhone"
             ReferencedContainer = "container:Scholastic.xcodeproj">
          </BuildableReference>
@@ -68,7 +68,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "C9D7005E14ED50B100C10006"
-            BuildableName = "Scholastic iPad copy.app"
+            BuildableName = "Storia.app"
             BlueprintName = "Scholastic iPhone"
             ReferencedContainer = "container:Scholastic.xcodeproj">
          </BuildableReference>

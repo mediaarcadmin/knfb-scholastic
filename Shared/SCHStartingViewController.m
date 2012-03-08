@@ -610,10 +610,12 @@ static const NSTimeInterval kSCHStartingViewControllerNonForcedAlertInterval = (
             completion(nil);
         };
         
-        BITModalSheetController *aLoginPopoverController = [[BITModalSheetController alloc] initWithContentViewController:login];
-        [aLoginPopoverController setAutoresizingMask:UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleBottomMargin];
+        
         
         if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+            BITModalSheetController *aLoginPopoverController = [[BITModalSheetController alloc] initWithContentViewController:login];
+            [aLoginPopoverController setAutoresizingMask:UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleBottomMargin];
+            
             [aLoginPopoverController setContentSize:CGSizeMake(605, 497)];
             CGPoint offset;
             
@@ -623,15 +625,16 @@ static const NSTimeInterval kSCHStartingViewControllerNonForcedAlertInterval = (
                 offset = CGPointMake(0, 130);
             }
             [aLoginPopoverController setContentOffset:offset];
+            
+            self.loginPopoverController = aLoginPopoverController;
+            [aLoginPopoverController release];
+            [login release];
+            
+            [self.loginPopoverController presentSheetInViewController:self animated:YES completion:nil];
         } else {
-            [aLoginPopoverController setContentSize:CGSizeMake(300, 400)];
+            [self presentModalViewController:login animated:NO];
+            [login release];
         }
-        
-        self.loginPopoverController = aLoginPopoverController;
-        [aLoginPopoverController release];
-        [login release];
-        
-        [self.loginPopoverController presentSheetInViewController:self animated:YES completion:nil];
     };
     
     self.setupSequenceQueue = [[[NSOperationQueue alloc] init] autorelease];
