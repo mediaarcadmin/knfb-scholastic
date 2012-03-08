@@ -16,5 +16,3 @@ extern NSString * const kSCHUserDefaultsWelcomeViewShowCount;
 extern NSString * const kSCHAuthenticationManagerUserKey;
 extern NSString * const kSCHAuthenticationManagerDeviceKey;
 extern NSString * const kSCHAuthenticationManagerUsername;
-
-extern NSString * const kSCHAccountValidationpToken;

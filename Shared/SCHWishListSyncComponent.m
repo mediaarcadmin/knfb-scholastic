@@ -12,9 +12,6 @@
 
 #import "SCHWishListWebService.h"
 #import "SCHWishListConstants.h"
-#import "SCHAccountValidation.h"
-#import "SCHUserDefaults.h"
-#import "SFHFKeychainUtils.h"
 #import "SCHProfileItem.h"
 #import "SCHWishListProfile.h"
 #import "SCHWishListItem.h"
@@ -110,15 +107,15 @@ NSString * const SCHWishListSyncComponentDidFailNotification = @"SCHWishListSync
             NSArray *profileItems = [self makeNullNil:[wishListItems objectForKey:kSCHWishListWebServiceProfileItemList]];
             
             [self syncWishListProfiles:profileItems];
-
+            
+            [[NSNotificationCenter defaultCenter] postNotificationName:SCHWishListSyncComponentDidCompleteNotification 
+                                                                object:self];		            
             [super method:method didCompleteWithResult:result userInfo:userInfo];				                
-        }
-        //else if([method compare:kSCHLibreAccessWebServiceGetUserProfiles] == NSOrderedSame) {
-//            [self syncProfiles:[result objectForKey:kSCHLibreAccessWebServiceProfileList]];
-//            [[NSNotificationCenter defaultCenter] postNotificationName:SCHProfileSyncComponentDidCompleteNotification 
-//                                                                object:self];		
-//            [super method:method didCompleteWithResult:result userInfo:userInfo];	
-//        }
+        } else if([method compare:kSCHWishListWebServiceDeleteWishListItems] == NSOrderedSame) {
+            [super method:method didCompleteWithResult:result userInfo:userInfo];				                            
+        } else if([method compare:kSCHWishListWebServiceAddItemsToWishList] == NSOrderedSame) {
+            [super method:method didCompleteWithResult:result userInfo:userInfo];				                
+        }        
     }
     @catch (NSException *exception) {
         [[NSNotificationCenter defaultCenter] postNotificationName:SCHWishListSyncComponentDidFailNotification 
@@ -144,75 +141,60 @@ NSString * const SCHWishListSyncComponentDidFailNotification = @"SCHWishListSync
 
 - (BOOL)updateWishListItems
 {
-    BOOL ret = YES;
-        
-    SCHAccountValidation *accountValidation = [[SCHAccountValidation alloc] init];
+    __block BOOL ret = YES;
     
-    NSString *storedUsername = [[NSUserDefaults standardUserDefaults] stringForKey:kSCHAuthenticationManagerUsername];
-    NSString *storedPassword = [SFHFKeychainUtils getPasswordForUsername:storedUsername andServiceName:@"Scholastic" error:nil];
-    
-    NSString *pToken = [SCHAuthenticationManager sharedAuthenticationManager].pToken;
-    
-    if (pToken == nil) {
-        [accountValidation validateWithUserName:storedUsername withPassword:storedPassword validateBlock:^(NSString *pToken2, NSError *error) {
-            if (error != nil) {
-                //            [weakSelf authenticationDidFailWithError:error];                            
-            } else {
-                NSArray *profiles = [self localProfiles];
-                if ([profiles count] > 0) {
-                    NSMutableArray *profileIDs = [NSMutableArray arrayWithCapacity:[profiles count]];
-                    for (id item in profiles) {
-                        [profileIDs addObject:[item valueForKey:kSCHLibreAccessWebServiceID]];
-                    }
-                    
-                    [wishListWebService getWishListItems:pToken2 profiles:profileIDs];            
-                    
-                    NSMutableDictionary *wlpi = [NSMutableDictionary dictionary];
-                    NSMutableDictionary *wli = [NSMutableDictionary dictionary];
-                    NSMutableDictionary *ib = [NSMutableDictionary dictionary];
-                    
-                    [ib setObject:@"CHILD" forKey:kSCHWishListWebServiceValue];
-                    
-                    [wli setObject:@"Norman Bridwell" forKey:kSCHWishListWebServiceAuthor];
-                    [wli setObject:ib forKey:kSCHWishListWebServiceInitiatedBy];                    
-                    [wli setObject:@"9780545323024" forKey:kSCHWishListWebServiceISBN];
-                    [wli setObject:[NSDate date] forKey:kSCHWishListWebServiceTimestamp];
-                    [wli setObject:@"Clifford's Good Deeds" forKey:kSCHWishListWebServiceTitle];
-                    
-                    NSMutableDictionary *profile = [NSMutableDictionary dictionary];
-                    
-                    NSDictionary *p = [profiles objectAtIndex:0];
-                    [profile setObject:[p valueForKey:kSCHLibreAccessWebServiceID] forKey:kSCHWishListWebServiceProfileID];
-                    [profile setObject:[p valueForKey:kSCHLibreAccessWebServiceScreenName] forKey:kSCHWishListWebServiceProfileName];
-                    [profile setObject:[NSDate date] forKey:kSCHWishListWebServiceTimestamp];
-                    
-                    [wlpi setObject:[NSArray arrayWithObject:wli] forKey:kSCHWishListWebServiceItemList];
-                    [wlpi setObject:profile forKey:kSCHWishListWebServiceProfile];                    
-                    
-                  //  [wishListWebService addItemsToWishList:pToken2 wishListItems:[NSArray arrayWithObject:wlpi]];      
-                    
-                    //   [wishListWebService deleteWishList:pToken2 wishListProfiles:[NSArray arrayWithObject:profile]];
-                    
-                    NSMutableDictionary *pi = [NSMutableDictionary dictionary];
-                    [pi setObject:[NSArray arrayWithObject:wli] forKey:kSCHWishListWebServiceItemList];
-                    [pi setObject:profile forKey:kSCHWishListWebServiceProfile];
-                    
-                    //                    [wishListWebService deleteWishListItems:pToken2 wishListItems:[NSArray arrayWithObject:pi]];
-                    
+    ret = [[SCHAuthenticationManager sharedAuthenticationManager] pTokenWithValidation:^(NSString *pToken, NSError *error) {
+        if (error == nil) {
+            NSArray *profiles = [self localProfiles];
+            if ([profiles count] > 0) {
+                NSMutableArray *profileIDs = [NSMutableArray arrayWithCapacity:[profiles count]];
+                for (id item in profiles) {
+                    [profileIDs addObject:[item valueForKey:kSCHLibreAccessWebServiceID]];
                 }
+                
+                [wishListWebService getWishListItems:pToken profiles:profileIDs];            
+                
+                NSMutableDictionary *wlpi = [NSMutableDictionary dictionary];
+                NSMutableDictionary *wli = [NSMutableDictionary dictionary];
+                NSMutableDictionary *ib = [NSMutableDictionary dictionary];
+                
+                [ib setObject:@"CHILD" forKey:kSCHWishListWebServiceValue];
+                
+                [wli setObject:@"Norman Bridwell" forKey:kSCHWishListWebServiceAuthor];
+                [wli setObject:ib forKey:kSCHWishListWebServiceInitiatedBy];                    
+                [wli setObject:@"9780545323024" forKey:kSCHWishListWebServiceISBN];
+                [wli setObject:[NSDate date] forKey:kSCHWishListWebServiceTimestamp];
+                [wli setObject:@"Clifford's Good Deeds" forKey:kSCHWishListWebServiceTitle];
+                
+                NSMutableDictionary *profile = [NSMutableDictionary dictionary];
+                
+                NSDictionary *p = [profiles objectAtIndex:0];
+                [profile setObject:[p valueForKey:kSCHLibreAccessWebServiceID] forKey:kSCHWishListWebServiceProfileID];
+                [profile setObject:[p valueForKey:kSCHLibreAccessWebServiceScreenName] forKey:kSCHWishListWebServiceProfileName];
+                [profile setObject:[NSDate date] forKey:kSCHWishListWebServiceTimestamp];
+                
+                [wlpi setObject:[NSArray arrayWithObject:wli] forKey:kSCHWishListWebServiceItemList];
+                [wlpi setObject:profile forKey:kSCHWishListWebServiceProfile];                    
+                
+                //  [wishListWebService addItemsToWishList:pToken2 wishListItems:[NSArray arrayWithObject:wlpi]];      
+                
+                //   [wishListWebService deleteWishList:pToken2 wishListProfiles:[NSArray arrayWithObject:profile]];
+                
+                NSMutableDictionary *pi = [NSMutableDictionary dictionary];
+                [pi setObject:[NSArray arrayWithObject:wli] forKey:kSCHWishListWebServiceItemList];
+                [pi setObject:profile forKey:kSCHWishListWebServiceProfile];
+                
+                //                    [wishListWebService deleteWishListItems:pToken2 wishListItems:[NSArray arrayWithObject:pi]];
+                
             }
-        }];
-    } else {
-        NSArray *profiles = [self localProfiles];
-        if ([profiles count] > 0) {
-            NSMutableArray *profileIDs = [NSMutableArray arrayWithCapacity:[profiles count]];
-            for (SCHProfileItem *item in profiles) {
-                [profileIDs addObject:item.ID];
-            }
-            
-            [wishListWebService getWishListItems:pToken profiles:profileIDs];            
-        }        
-    }   
+        } else {
+            // failed to get pToken
+            ret = NO;
+            [[NSNotificationCenter defaultCenter] postNotificationName:SCHWishListSyncComponentDidFailNotification 
+                                                                object:self];        
+            [super method:nil didFailWithError:error requestInfo:nil result:nil];                
+        }
+    }];
     
     return ret;
 }

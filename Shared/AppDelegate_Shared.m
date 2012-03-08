@@ -220,7 +220,6 @@ static NSString* const binaryDevCertFilename = @"bdevcert.dat";
             kSCHAuthenticationManagerUserKey,
             kSCHAuthenticationManagerDeviceKey,
             kSCHAuthenticationManagerUsername,
-            kSCHAccountValidationpToken,
             nil];    
 }
 

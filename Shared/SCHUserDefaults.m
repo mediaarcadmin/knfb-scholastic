@@ -14,8 +14,6 @@ NSString * const kSCHUserDefaultsSpaceSaverMode = @"SpaceSaverMode";
 NSString * const kSCHUserDefaultsSpaceSaverModeSetOffNotification = @"SpaceSaverModeSetOffNotification";
 NSString * const kSCHUserDefaultsWelcomeViewShowCount = @"SCHUserDefaultsWelcomeViewShowCount";
 
-NSString * const kSCHAuthenticationManagerUserKey = @"AuthenticationManager.UserKey";
+NSString * const kSCHAuthenticationManagerUserKey = @"AuthenticationManager.UserKey";   // AKA spsID
 NSString * const kSCHAuthenticationManagerDeviceKey = @"AuthenticationManager.DeviceKey";
 NSString * const kSCHAuthenticationManagerUsername = @"AuthenticationManager.Username";
-
-NSString * const kSCHAccountValidationpToken = @"AccountValidation.pToken";
