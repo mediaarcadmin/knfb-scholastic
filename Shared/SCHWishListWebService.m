@@ -295,7 +295,7 @@ static NSString * const kSCHWishListWebServiceClientID = @"KNFB";
 	if (anObject != nil) {
 		NSMutableDictionary *objects = [NSMutableDictionary dictionary];
 		
-		[objects setObject:[self objectFromTranslate:anObject.author] forKey:kSCHWishListWebServiceItemList];
+		[objects setObject:[self objectFromTranslate:anObject.author] forKey:kSCHWishListWebServiceAuthor];
 		[objects setObject:[self objectFromTranslate:anObject.initiatedBy] forKey:kSCHWishListWebServiceInitiatedBy];
 		[objects setObject:[self objectFromTranslate:anObject.isbn] forKey:kSCHWishListWebServiceISBN];
 		[objects setObject:[self objectFromTranslate:anObject.timeStamp] forKey:kSCHWishListWebServiceTimestamp];
