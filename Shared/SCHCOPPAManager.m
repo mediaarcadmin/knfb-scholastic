@@ -11,7 +11,6 @@
 #import "SCHAccountValidation.h"
 #import "SCHScholasticGetUserInfoWebService.h"
 #import "SCHAuthenticationManager.h"
-#import "SCHUserDefaults.h"
 #import "SCHAppStateManager.h"
 
 @interface SCHCOPPAManager ()
@@ -107,14 +106,19 @@
 #pragma mark - methods
 
 - (void)checkCOPPAIfRequired
-{
-    NSString *pToken = [[NSUserDefaults standardUserDefaults] stringForKey:kSCHAccountValidationpToken];
-
-    if (pToken != nil && waitingOnResponse == NO &&
+{    
+    if (self.waitingOnResponse == NO &&
         [self.nextRequest earlierDate:[NSDate date]] == self.nextRequest &&        
         [[SCHAppStateManager sharedAppStateManager] canSyncNotes] == NO) {
-        [self.scholasticWebService getUserInfo:pToken];     
-        waitingOnResponse = YES;
+        SCHCOPPAManager *weakSelf = self;
+        self.waitingOnResponse = YES;
+        [[SCHAuthenticationManager sharedAuthenticationManager] pTokenWithValidation:^(NSString *pToken, NSError *error) {
+            if (error == nil) {
+                [weakSelf.scholasticWebService getUserInfo:pToken];     
+            } else {
+                weakSelf.waitingOnResponse = NO;
+            }
+        }];
     }
 }
 

@@ -18,7 +18,6 @@
 #import "SCHSyncManager.h"
 #import "SCHAppStateManager.h"
 #import "AppDelegate_Shared.h"
-#import "SCHAccountValidation.h"
 #import "SCHBookManager.h"
 #import "BITAPIError.h"
 #import "SCHUserDefaults.h"
@@ -353,6 +352,27 @@ NSTimeInterval const kSCHAuthenticationManagerSecondsInAMinute = 60.0;
 - (NSString *)pToken
 {
     return(self.accountValidation.pToken);    
+}
+
+- (BOOL)pTokenWithValidation:(ValidateBlock)aValidateBlock
+{
+    BOOL ret = NO;
+    NSString *currentPToken = self.accountValidation.pToken;
+    
+    if (currentPToken == nil) {
+        NSString *storedUsername = [[NSUserDefaults standardUserDefaults] stringForKey:kSCHAuthenticationManagerUsername];
+        NSString *storedPassword = [SFHFKeychainUtils getPasswordForUsername:storedUsername andServiceName:kSCHAuthenticationManagerServiceName error:nil];
+        
+        ret = [self.accountValidation validateWithUserName:storedUsername 
+                                              withPassword:storedPassword 
+                                             validateBlock:aValidateBlock];
+    } else {
+        if (aValidateBlock != nil) {
+            aValidateBlock(currentPToken, nil);  
+        }
+    }
+    
+    return ret;
 }
 
 - (NSURL *)webParentToolURL:(NSString *)pToken

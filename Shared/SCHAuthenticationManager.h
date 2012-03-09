@@ -10,6 +10,7 @@
 
 #import "BITAPIProxyDelegate.h"
 #import "SCHDrmRegistrationSessionDelegate.h"
+#import "SCHAccountValidation.h"
 
 typedef enum {
 	SCHAuthenticationManagerConnectivityModeAuthenticationError = -1,
@@ -46,6 +47,7 @@ extern NSInteger const kSCHAuthenticationManagerOfflineError;
 
 - (BOOL)hasUsernameAndPassword;
 - (NSString *)pToken;
+- (BOOL)pTokenWithValidation:(ValidateBlock)aValidateBlock;
 - (NSURL *)webParentToolURL:(NSString *)pToken;
 - (void)clear;
 - (void)clearAppProcessing;

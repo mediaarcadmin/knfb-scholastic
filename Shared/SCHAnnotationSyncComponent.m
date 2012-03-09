@@ -28,6 +28,7 @@
 #import "SCHBookIdentifier.h"
 #import "BITAPIError.h"
 #import "NSDate+ServerDate.h"
+#import "SCHLibreAccessWebService.h"
 
 // Constants
 NSString * const SCHAnnotationSyncComponentDidCompleteNotification = @"SCHAnnotationSyncComponentDidCompleteNotification";
@@ -35,6 +36,8 @@ NSString * const SCHAnnotationSyncComponentDidFailNotification = @"SCHAnnotation
 NSString * const SCHAnnotationSyncComponentProfileIDs = @"SCHAnnotationSyncComponentProfileIDs";
 
 @interface SCHAnnotationSyncComponent ()
+
+@property (nonatomic, retain) SCHLibreAccessWebService *libreAccessWebService;
 
 - (NSNumber *)currentProfile;
 - (BOOL)updateProfileContentAnnotations;
@@ -52,7 +55,7 @@ NSString * const SCHAnnotationSyncComponentProfileIDs = @"SCHAnnotationSyncCompo
                                    usingMethod:(NSString *)method
                                       userInfo:(NSDictionary *)userInfo;
 - (void)syncAnnotationsContentList:(NSArray *)webAnnotationsContentList 
-         withAnnotationContentList:(NSArray *)localAnnotationsContentList
+         withAnnotationContentList:(NSSet *)localAnnotationsContentList
                         insertInto:(SCHAnnotationsItem *)annotationsItem
                            canSyncNotes:(BOOL)canSyncNotes
                           syncDate:(NSDate *)syncDate;
@@ -112,6 +115,7 @@ NSString * const SCHAnnotationSyncComponentProfileIDs = @"SCHAnnotationSyncCompo
 
 @implementation SCHAnnotationSyncComponent
 
+@synthesize libreAccessWebService;
 @synthesize annotations;
 @synthesize savedAnnotations;
 @synthesize backgroundThreadManagedObjectContext;
@@ -121,6 +125,9 @@ NSString * const SCHAnnotationSyncComponentProfileIDs = @"SCHAnnotationSyncCompo
 {
 	self = [super init];
 	if (self != nil) {
+		libreAccessWebService = [[SCHLibreAccessWebService alloc] init];	
+		libreAccessWebService.delegate = self;
+        
 		annotations = [[NSMutableDictionary dictionary] retain];
 		savedAnnotations = [[NSMutableArray array] retain];
 	}
@@ -130,6 +137,9 @@ NSString * const SCHAnnotationSyncComponentProfileIDs = @"SCHAnnotationSyncCompo
 
 - (void)dealloc
 {
+    libreAccessWebService.delegate = nil;
+	[libreAccessWebService release], libreAccessWebService = nil;
+
 	[annotations release], annotations = nil;
     [savedAnnotations release], savedAnnotations = nil;
 	[backgroundThreadManagedObjectContext release], backgroundThreadManagedObjectContext = nil;
@@ -242,9 +252,10 @@ NSString * const SCHAnnotationSyncComponentProfileIDs = @"SCHAnnotationSyncCompo
 
 - (void)clear
 {
-    [super clear];
 	NSError *error = nil;
 	
+    [self.libreAccessWebService clear];
+    
     [self.annotations removeAllObjects];
     [self.savedAnnotations removeAllObjects];
     
@@ -666,7 +677,7 @@ NSString * const SCHAnnotationSyncComponentProfileIDs = @"SCHAnnotationSyncCompo
 }
 
 - (void)syncAnnotationsContentList:(NSArray *)webAnnotationsContentList 
-         withAnnotationContentList:(NSArray *)localAnnotationsContentList
+         withAnnotationContentList:(NSSet *)localAnnotationsContentList
                         insertInto:(SCHAnnotationsItem *)annotationsItem
                       canSyncNotes:(BOOL)canSyncNotes
                           syncDate:(NSDate *)syncDate
@@ -676,12 +687,12 @@ NSString * const SCHAnnotationSyncComponentProfileIDs = @"SCHAnnotationSyncCompo
 	webAnnotationsContentList = [webAnnotationsContentList sortedArrayUsingDescriptors:[NSArray arrayWithObjects:[NSSortDescriptor sortDescriptorWithKey:kSCHLibreAccessWebServiceContentIdentifier ascending:YES],
                                                                                         [NSSortDescriptor sortDescriptorWithKey:kSCHLibreAccessWebServiceDRMQualifier ascending:YES],                                                                             
                                                                                         nil]];		
-	localAnnotationsContentList = [localAnnotationsContentList sortedArrayUsingDescriptors:[NSArray arrayWithObjects:[NSSortDescriptor sortDescriptorWithKey:kSCHLibreAccessWebServiceContentIdentifier ascending:YES],
+	NSArray *localAnnotationsContentArray = [localAnnotationsContentList sortedArrayUsingDescriptors:[NSArray arrayWithObjects:[NSSortDescriptor sortDescriptorWithKey:kSCHLibreAccessWebServiceContentIdentifier ascending:YES],
                                                                                             [NSSortDescriptor sortDescriptorWithKey:kSCHLibreAccessWebServiceDRMQualifier ascending:YES],                                                                             
                                                                                             nil]];
     
 	NSEnumerator *webEnumerator = [webAnnotationsContentList objectEnumerator];			  
-	NSEnumerator *localEnumerator = [localAnnotationsContentList objectEnumerator];			  			  
+	NSEnumerator *localEnumerator = [localAnnotationsContentArray objectEnumerator];			  			  
     
 	NSDictionary *webItem = [webEnumerator nextObject];
 	SCHAnnotationsContentItem *localItem = [localEnumerator nextObject];
@@ -1409,7 +1420,8 @@ NSString * const SCHAnnotationSyncComponentProfileIDs = @"SCHAnnotationSyncCompo
     
     if (batch == NO || ++batchCount > 250) {
         batchCount = 0;
-        if (![self.backgroundThreadManagedObjectContext save:&error]) {
+        if ([self.backgroundThreadManagedObjectContext hasChanges] == YES &&
+            ![self.backgroundThreadManagedObjectContext save:&error]) {
             NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
         } 
     }

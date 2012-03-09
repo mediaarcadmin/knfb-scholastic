@@ -121,7 +121,7 @@
         <relationship name="eReaderCategories" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="SCHeReaderCategories" inverseName="ContentMetadataItem" inverseEntity="SCHeReaderCategories" indexed="YES"/>
     </entity>
     <entity name="SCHContentProfileItem" representedClassName="SCHContentProfileItem" parentEntity="SCHSyncEntity">
-        <attribute name="LastPageLocation" attributeType="Integer 64" defaultValueString="0"/>
+        <attribute name="LastPageLocation" optional="YES" attributeType="Integer 64" defaultValueString="0"/>
         <attribute name="ProfileID" optional="YES" attributeType="Integer 64" defaultValueString="0" indexed="YES"/>
         <attribute name="Rating" optional="YES" attributeType="Integer 16" defaultValueString="0"/>
         <relationship name="AppContentProfileItem" optional="YES" minCount="1" maxCount="1" deletionRule="Cascade" destinationEntity="SCHAppContentProfileItem" inverseName="ContentProfileItem" inverseEntity="SCHAppContentProfileItem" indexed="YES"/>
@@ -256,19 +256,17 @@
         <attribute name="SettingType" optional="YES" attributeType="Integer 16" defaultValueString="0"/>
         <attribute name="SettingValue" optional="YES" attributeType="String"/>
     </entity>
-    <entity name="SCHWishListItem" representedClassName="SCHWishListItem">
-        <attribute name="author" optional="YES" attributeType="String"/>
-        <attribute name="initiatedBy" optional="YES" attributeType="String"/>
-        <attribute name="isbn" optional="YES" attributeType="String" indexed="YES"/>
-        <attribute name="timestamp" optional="YES" attributeType="Date"/>
-        <attribute name="title" optional="YES" attributeType="String"/>
-        <relationship name="wishListProfile" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="SCHWishListProfile" inverseName="itemList" inverseEntity="SCHWishListProfile"/>
+    <entity name="SCHWishListItem" representedClassName="SCHWishListItem" parentEntity="SCHSyncEntity">
+        <attribute name="Author" optional="YES" attributeType="String"/>
+        <attribute name="InitiatedBy" optional="YES" attributeType="String"/>
+        <attribute name="ISBN" optional="YES" attributeType="String" indexed="YES"/>
+        <attribute name="Title" optional="YES" attributeType="String"/>
+        <relationship name="WishListProfile" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="SCHWishListProfile" inverseName="ItemList" inverseEntity="SCHWishListProfile"/>
     </entity>
-    <entity name="SCHWishListProfile" representedClassName="SCHWishListProfile">
-        <attribute name="profileID" optional="YES" attributeType="Integer 64" defaultValueString="0" indexed="YES"/>
-        <attribute name="profileName" optional="YES" attributeType="String"/>
-        <attribute name="timestamp" optional="YES" attributeType="Date"/>
-        <relationship name="itemList" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="SCHWishListItem" inverseName="wishListProfile" inverseEntity="SCHWishListItem"/>
+    <entity name="SCHWishListProfile" representedClassName="SCHWishListProfile" parentEntity="SCHSyncEntity">
+        <attribute name="ProfileID" optional="YES" attributeType="Integer 64" defaultValueString="0" indexed="YES"/>
+        <attribute name="ProfileName" optional="YES" attributeType="String"/>
+        <relationship name="ItemList" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="SCHWishListItem" inverseName="WishListProfile" inverseEntity="SCHWishListItem"/>
     </entity>
     <entity name="SCHWordIndex" representedClassName="SCHWordIndex">
         <attribute name="End" optional="YES" attributeType="Integer 64" defaultValueString="0"/>
@@ -356,8 +354,8 @@
         <element name="SCHSyncEntity" positionX="822" positionY="144" width="128" height="75"/>
         <element name="SCHUserContentItem" positionX="898" positionY="1290" width="128" height="210"/>
         <element name="SCHUserSettingsItem" positionX="1044" positionY="1349" width="128" height="75"/>
-        <element name="SCHWishListItem" positionX="160" positionY="192" width="128" height="135"/>
-        <element name="SCHWishListProfile" positionX="160" positionY="192" width="128" height="105"/>
+        <element name="SCHWishListItem" positionX="160" positionY="192" width="128" height="120"/>
+        <element name="SCHWishListProfile" positionX="160" positionY="192" width="128" height="90"/>
         <element name="SCHWordIndex" positionX="0" positionY="137" width="128" height="90"/>
     </elements>
 </model>

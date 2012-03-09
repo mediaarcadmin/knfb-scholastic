@@ -34,6 +34,8 @@ NSString * const SCHContentSyncComponentDidFailNotification = @"SCHContentSyncCo
 
 @interface SCHContentSyncComponent ()
 
+@property (nonatomic, retain) SCHLibreAccessWebService *libreAccessWebService;
+
 - (BOOL)updateUserContentItems;
 
 - (void)addAnnotationStructure:(SCHUserContentItem *)userContentItem 
@@ -61,6 +63,27 @@ NSString * const SCHContentSyncComponentDidFailNotification = @"SCHContentSyncCo
 
 @implementation SCHContentSyncComponent
 
+@synthesize libreAccessWebService;
+
+- (id)init
+{
+	self = [super init];
+	if (self != nil) {
+		libreAccessWebService = [[SCHLibreAccessWebService alloc] init];	
+		libreAccessWebService.delegate = self;        
+	}
+	
+	return(self);
+}
+
+- (void)dealloc
+{
+    libreAccessWebService.delegate = nil;
+	[libreAccessWebService release], libreAccessWebService = nil;
+    
+	[super dealloc];
+}
+
 - (BOOL)synchronize
 {
 	BOOL ret = YES;
@@ -82,9 +105,10 @@ NSString * const SCHContentSyncComponentDidFailNotification = @"SCHContentSyncCo
 
 - (void)clear
 {
-    [super clear];
 	NSError *error = nil;
 	
+    [self.libreAccessWebService clear];
+    
 	if (![self.managedObjectContext BITemptyEntity:kSCHUserContentItem error:&error] ||
 		![self.managedObjectContext BITemptyEntity:kSCHOrderItem error:&error] ||
 		![self.managedObjectContext BITemptyEntity:kSCHContentProfileItem error:&error]) {

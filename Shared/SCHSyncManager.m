@@ -24,6 +24,7 @@
 #import "SCHAppContentProfileItem.h"
 #import "SCHAuthenticationManager.h"
 #import "SCHVersionDownloadManager.h"
+#import "SCHLibreAccessConstants.h"
 
 // Constants
 NSString * const SCHSyncManagerDidCompleteNotification = @"SCHSyncManagerDidCompleteNotification";
@@ -213,7 +214,8 @@ static NSUInteger const kSCHSyncManagerMaximumFailureRetries = 3;
         self.bookshelfSyncComponent.saveOnly = flushSaveMode;
         self.annotationSyncComponent.saveOnly = flushSaveMode;
         self.readingStatsSyncComponent.saveOnly = flushSaveMode;
-        self.settingsSyncComponent.saveOnly = flushSaveMode;        
+        self.settingsSyncComponent.saveOnly = flushSaveMode;
+        self.wishListSyncComponent.saveOnly = flushSaveMode;
     }    
 }
 
@@ -275,6 +277,7 @@ static NSUInteger const kSCHSyncManagerMaximumFailureRetries = 3;
 	[self.annotationSyncComponent clear];	
 	[self.readingStatsSyncComponent clear];	
 	[self.settingsSyncComponent clear];	
+	[self.wishListSyncComponent clear];	
 	
     self.lastFirstSyncEnded = nil;
     self.syncAfterDelay = NO;
@@ -332,7 +335,7 @@ static NSUInteger const kSCHSyncManagerMaximumFailureRetries = 3;
             [self addToQueue:self.readingStatsSyncComponent];
             [self addToQueue:self.settingsSyncComponent];
             
-//            [self addToQueue:self.wishListSyncComponent];
+            [self addToQueue:self.wishListSyncComponent];
             
             [self kickQueue];	
         } else {
@@ -364,6 +367,8 @@ static NSUInteger const kSCHSyncManagerMaximumFailureRetries = 3;
                                                                     object:nil];    
                 [[NSNotificationCenter defaultCenter] postNotificationName:SCHSettingsSyncComponentDidCompleteNotification
                                                                     object:nil];   
+                [[NSNotificationCenter defaultCenter] postNotificationName:SCHWishListSyncComponentDidCompleteNotification
+                                                                    object:nil];                   
             });
         }
     }
@@ -417,6 +422,7 @@ static NSUInteger const kSCHSyncManagerMaximumFailureRetries = 3;
         [self.readingStatsSyncComponent synchronize];
         [self.profileSyncComponent synchronize];
         [self.contentSyncComponent synchronize];
+        [self.wishListSyncComponent synchronize];
     }    
 }
 
@@ -584,8 +590,11 @@ static NSUInteger const kSCHSyncManagerMaximumFailureRetries = 3;
 - (void)closeDocumentSync:(SCHUserContentItem *)userContentItem forProfile:(NSNumber *)profileID
 {
     // save any changes first
-    NSError *error = nil;
-    [self.managedObjectContext save:&error];
+    NSError *error = nil;    
+    if ([self.managedObjectContext hasChanges] == YES &&
+        ![self.managedObjectContext save:&error]) {
+        NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
+    } 
     
     if ([self shouldSync] == YES) {	
         NSLog(@"Scheduling Close Document");

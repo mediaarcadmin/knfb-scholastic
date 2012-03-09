@@ -158,7 +158,7 @@
 									<object class="IBUIImageView" id="349761556">
 										<reference key="NSNextResponder" ref="11916819"/>
 										<int key="NSvFlags">266</int>
-										<string key="NSFrame">{{0, 97}, {768, 2}}</string>
+										<string key="NSFrame">{{0, 97}, {2000, 2}}</string>
 										<reference key="NSSuperview" ref="11916819"/>
 										<reference key="NSWindow"/>
 										<reference key="NSNextKeyView" ref="739321097"/>
@@ -286,9 +286,9 @@
 												<string key="NSFrame">{{90, 4}, {110, 25}}</string>
 												<reference key="NSSuperview" ref="639937899"/>
 												<reference key="NSWindow"/>
-												<reference key="NSNextKeyView"/>
+												<reference key="NSNextKeyView" ref="435284901"/>
 												<string key="NSReuseIdentifierKey">_NS:9</string>
-												<object class="NSColor" key="IBUIBackgroundColor">
+												<object class="NSColor" key="IBUIBackgroundColor" id="930835942">
 													<int key="NSColorSpace">3</int>
 													<bytes key="NSWhite">MQA</bytes>
 												</object>
@@ -307,11 +307,38 @@
 										</object>
 										<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 									</object>
+									<object class="IBUIImageView" id="514136443">
+										<reference key="NSNextResponder" ref="739321097"/>
+										<int key="NSvFlags">290</int>
+										<string key="NSFrame">{{-2, 49}, {224, 2}}</string>
+										<reference key="NSSuperview" ref="739321097"/>
+										<reference key="NSWindow"/>
+										<reference key="NSNextKeyView" ref="473372437"/>
+										<object class="NSColor" key="IBUIBackgroundColor">
+											<int key="NSColorSpace">2</int>
+											<bytes key="NSRGB">MC45NDUwOTgxMDIxIDAuOTM3MjU0OTY1MyAwLjgxNTY4NjM0NTEAA</bytes>
+										</object>
+										<int key="IBUITag">204</int>
+										<bool key="IBUIUserInteractionEnabled">NO</bool>
+										<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
+									</object>
+									<object class="IBUIImageView" id="435284901">
+										<reference key="NSNextResponder" ref="739321097"/>
+										<int key="NSvFlags">266</int>
+										<string key="NSFrame">{{-2, 97}, {224, 2}}</string>
+										<reference key="NSSuperview" ref="739321097"/>
+										<reference key="NSWindow"/>
+										<reference key="NSNextKeyView"/>
+										<reference key="IBUIBackgroundColor" ref="930835942"/>
+										<int key="IBUITag">205</int>
+										<bool key="IBUIUserInteractionEnabled">NO</bool>
+										<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
+									</object>
 								</object>
-								<string key="NSFrame">{{200, -2}, {220, 100}}</string>
+								<string key="NSFrame">{{200, 0}, {220, 99}}</string>
 								<reference key="NSSuperview" ref="187366655"/>
 								<reference key="NSWindow"/>
-								<reference key="NSNextKeyView" ref="473372437"/>
+								<reference key="NSNextKeyView" ref="514136443"/>
 								<string key="NSReuseIdentifierKey">_NS:9</string>
 								<object class="NSColor" key="IBUIBackgroundColor">
 									<int key="NSColorSpace">3</int>
@@ -320,6 +347,7 @@
 										<int key="NSID">2</int>
 									</object>
 								</object>
+								<bool key="IBUIClipsSubviews">YES</bool>
 								<int key="IBUITag">300</int>
 								<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 							</object>
@@ -466,6 +494,8 @@
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<reference ref="639937899"/>
 							<reference ref="473372437"/>
+							<reference ref="514136443"/>
+							<reference ref="435284901"/>
 						</object>
 						<reference key="parent" ref="881346957"/>
 						<string key="objectName">Star View</string>
@@ -510,6 +540,18 @@
 						<reference key="object" ref="679713105"/>
 						<reference key="parent" ref="639937899"/>
 					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">33</int>
+						<reference key="object" ref="514136443"/>
+						<reference key="parent" ref="739321097"/>
+						<string key="objectName">Bottom Line Image View</string>
+					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">34</int>
+						<reference key="object" ref="435284901"/>
+						<reference key="parent" ref="739321097"/>
+						<string key="objectName">Bottom Line Image View</string>
+					</object>
 				</object>
 			</object>
 			<object class="NSMutableDictionary" key="flattenedProperties">
@@ -541,6 +583,8 @@
 					<string>31.IBPluginDependency</string>
 					<string>32.CustomClassName</string>
 					<string>32.IBPluginDependency</string>
+					<string>33.IBPluginDependency</string>
+					<string>34.IBPluginDependency</string>
 				</object>
 				<object class="NSArray" key="dict.values">
 					<bool key="EncodedWithXMLCoder">YES</bool>
@@ -569,6 +613,8 @@
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>RateView</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
+					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
+					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				</object>
 			</object>
 			<object class="NSMutableDictionary" key="unlocalizedProperties">
@@ -583,7 +629,7 @@
 				<reference key="dict.values" ref="0"/>
 			</object>
 			<nil key="sourceID"/>
-			<int key="maxID">32</int>
+			<int key="maxID">34</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<object class="NSMutableArray" key="referencedPartialClassDescriptions">

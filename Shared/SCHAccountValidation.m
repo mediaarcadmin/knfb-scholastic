@@ -82,7 +82,9 @@ NSInteger const kSCHAccountValidationCredentialsError = 200;
 {
     BOOL ret = NO;
     
-    if (self.waitingOnResponse == NO && username != nil && password != nil && 
+    if (self.waitingOnResponse == NO &&
+        [[username stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]] length] > 0 &&
+        [[password stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]] length] > 0 &&
         aValidateBlock != nil) {
         self.pToken = nil;
         self.validateBlock = aValidateBlock;
@@ -101,10 +103,6 @@ NSInteger const kSCHAccountValidationCredentialsError = 200;
     if (pToken != aPToken) {
         [pToken release];
         pToken = [aPToken copy];
-        if (pToken != nil) {
-            [[NSUserDefaults standardUserDefaults] setObject:pToken forKey:kSCHAccountValidationpToken];
-            [[NSUserDefaults standardUserDefaults] synchronize];
-        }
         self.pTokenRequested = (pToken == nil ? nil : [NSDate dateWithTimeIntervalSinceNow:360.0]);
     }
 }

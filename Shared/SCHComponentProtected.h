@@ -12,6 +12,4 @@
 
 - (id)makeNullNil:(id)object;
 
-@property (retain, nonatomic) SCHLibreAccessWebService *libreAccessWebService;
-
 @end
