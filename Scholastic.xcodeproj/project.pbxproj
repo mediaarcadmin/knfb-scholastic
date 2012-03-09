@@ -2693,6 +2693,7 @@
 		C9B08BE61344D34F001963D0 /* KNFBTextFlowXAMLTree.m in Sources */ = {isa = PBXBuildFile; fileRef = C9B08B251344D34F001963D0 /* KNFBTextFlowXAMLTree.m */; };
 		C9B08BE81344D34F001963D0 /* KNFBTextFlowXAMLTreeNode.m in Sources */ = {isa = PBXBuildFile; fileRef = C9B08B271344D34F001963D0 /* KNFBTextFlowXAMLTreeNode.m */; };
 		C9B08BEA1344D34F001963D0 /* KNFBTOCEntry.m in Sources */ = {isa = PBXBuildFile; fileRef = C9B08B291344D34F001963D0 /* KNFBTOCEntry.m */; };
+		C9B32A3D150A33F3008A04FC /* RateView.m in Sources */ = {isa = PBXBuildFile; fileRef = F849155514FFA54D000D064B /* RateView.m */; };
 		C9B3765913BC929F00992A6E /* storyinteraction-video-play~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = C9B3765313BC929F00992A6E /* storyinteraction-video-play~iphone.png */; };
 		C9B3765B13BC929F00992A6E /* storyinteraction-video-play@2x~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = C9B3765413BC929F00992A6E /* storyinteraction-video-play@2x~iphone.png */; };
 		C9B3765D13BC929F00992A6E /* storyinteraction-video-pause~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = C9B3765513BC929F00992A6E /* storyinteraction-video-pause~iphone.png */; };
@@ -12544,6 +12545,7 @@
 				C97BC56C1500D0A40076D0FC /* ax25.m in Sources */,
 				52EA323515011C2E0069C72E /* SCHWishListProfile.m in Sources */,
 				52EA323B15011CA10069C72E /* SCHWishListItem.m in Sources */,
+				C9B32A3D150A33F3008A04FC /* RateView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
