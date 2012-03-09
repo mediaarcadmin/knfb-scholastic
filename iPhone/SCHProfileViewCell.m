@@ -100,10 +100,10 @@ static const CGFloat kProfileViewCellButtonEdgePhone = 5.0f;
     self.cellStyle = aStyle;
     
     [self.leftCellButton setTitle:([buttonTitles count] > 0 ? [buttonTitles objectAtIndex:0] : nil) forState:UIControlStateNormal];
-    self.leftIndexPath = ([indexPaths count] > 0 ? [buttonTitles objectAtIndex:0] : nil);
+    self.leftIndexPath = ([indexPaths count] > 0 ? [indexPaths objectAtIndex:0] : nil);
     
     [self.rightCellButton setTitle:([buttonTitles count] > 1 ? [buttonTitles objectAtIndex:1] : nil) forState:UIControlStateNormal];
-    self.rightIndexPath = ([indexPaths count] > 1 ? [buttonTitles objectAtIndex:1] : nil);
+    self.rightIndexPath = ([indexPaths count] > 1 ? [indexPaths objectAtIndex:1] : nil);
 }
 
 - (void)layoutSubviews
