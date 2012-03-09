@@ -40,6 +40,8 @@
 - (void)pushBookshelvesControllerWithProfileItem:(SCHProfileItem *)profileItem 
                                         animated:(BOOL)animated;
 - (void)pushSettingsControllerAnimated:(BOOL)animated;
+- (UITableViewCell *)tableView:(UITableView *)aTableView singleColumnCellForRowAtIndexPath:(NSIndexPath *)indexPath; 
+- (UITableViewCell *)tableView:(UITableView *)aTableView dualColumnCellForRowAtIndexPath:(NSIndexPath *)indexPath;
 
 @end
 
@@ -161,6 +163,16 @@
     [self checkForBookUpdates];
 }
 
+- (void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
+{
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
+//        [CATransaction begin];
+//        [CATransaction setAnimationDuration:duration];
+            [self.tableView reloadData];
+//        [CATransaction commit];
+    }
+}
+
 #pragma mark - NSManagedObjectContext Changed Notification
 
 - (void)coreDataHelperManagedObjectContextDidChangeNotification:(NSNotification *)notification
@@ -185,6 +197,8 @@
     return(1);
 }
 
+#pragma mark - Table view data source
+
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section 
 {
 	NSInteger ret = 0;
@@ -193,7 +207,12 @@
 	switch (section) {
 		case 0:
 			sectionInfo = [[self.fetchedResultsController sections] objectAtIndex:section];
-			ret = [sectionInfo numberOfObjects];
+            NSUInteger numberOfObjects = [sectionInfo numberOfObjects];
+			ret = (numberOfObjects > 0 ? numberOfObjects / 2 : numberOfObjects);
+            // if we have an odd number of profiles add an extra row
+            if (numberOfObjects % 2 > 0) {
+                ret++;
+            }
 			break;
 	}
 	
@@ -201,6 +220,16 @@
 }
 
 - (UITableViewCell *)tableView:(UITableView *)aTableView cellForRowAtIndexPath:(NSIndexPath *)indexPath 
+{  
+    if ((UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) &&
+        UIInterfaceOrientationIsPortrait(self.interfaceOrientation)) {
+        return [self tableView:aTableView singleColumnCellForRowAtIndexPath:indexPath];
+    } else {
+        return [self tableView:aTableView dualColumnCellForRowAtIndexPath:indexPath];
+    }
+}
+
+- (UITableViewCell *)tableView:(UITableView *)aTableView singleColumnCellForRowAtIndexPath:(NSIndexPath *)indexPath 
 {    
     static NSString *CellIdentifier = @"Cell";
     
@@ -212,11 +241,52 @@
     }
     
     SCHProfileItem *managedObject = [self.fetchedResultsController objectAtIndexPath:indexPath];
-	[cell setLeftButtonTitle:[managedObject bookshelfName:NO]
-               leftIndexPath:indexPath
-            rightButtonTitle:nil
-              rightIndexPath:nil];
+	if (indexPath) {
+        [cell setButtonTitles:[NSArray arrayWithObjects:[managedObject bookshelfName:NO] ? : @"", nil] 
+                forIndexPaths:[NSArray arrayWithObjects:indexPath, nil] 
+                 forCellStyle:kSCHProfileCellLayoutStyle1Up];
+    }
     
+    return(cell);
+}
+
+- (UITableViewCell *)tableView:(UITableView *)aTableView dualColumnCellForRowAtIndexPath:(NSIndexPath *)indexPath 
+{    
+    static NSString *CellIdentifier = @"Cell";
+    NSString *leftTitle = nil;
+    NSIndexPath *leftIndexPath = nil;
+    NSString *rightTitle = nil;
+    NSIndexPath *rightIndexPath = nil;
+    SCHProfileItem *profileItem = nil;
+    
+    SCHProfileViewCell *cell = (SCHProfileViewCell*)[aTableView dequeueReusableCellWithIdentifier:CellIdentifier];
+    if (cell == nil) {
+        cell = [[[SCHProfileViewCell alloc] initWithStyle:UITableViewCellStyleDefault 
+                                          reuseIdentifier:CellIdentifier] autorelease];
+        cell.delegate = self;
+    }
+    
+    leftIndexPath = [NSIndexPath indexPathForRow:(indexPath.row == 0 ? 0 : indexPath.row * 2)
+                                       inSection:indexPath.section];
+    profileItem = [self.fetchedResultsController objectAtIndexPath:leftIndexPath]; 
+    leftTitle = [profileItem bookshelfName:NO] ? : @"";
+    
+    if (leftIndexPath.row + 1 < [[[self.fetchedResultsController sections] objectAtIndex:indexPath.section] numberOfObjects]) {
+        rightIndexPath = [NSIndexPath indexPathForRow:leftIndexPath.row + 1 inSection:indexPath.section];
+        profileItem = [self.fetchedResultsController objectAtIndexPath:rightIndexPath]; 
+        rightTitle = [profileItem bookshelfName:NO] ? : @"";
+    }
+    
+    if (leftIndexPath && rightIndexPath) {
+        [cell setButtonTitles:[NSArray arrayWithObjects:leftTitle, rightTitle, nil] 
+                forIndexPaths:[NSArray arrayWithObjects:leftIndexPath, rightIndexPath, nil] 
+                 forCellStyle:kSCHProfileCellLayoutStyle2UpSideBySide];
+    } else if (leftIndexPath) {
+        [cell setButtonTitles:[NSArray arrayWithObjects:leftTitle, nil] 
+                forIndexPaths:[NSArray arrayWithObjects:leftIndexPath, nil] 
+                 forCellStyle:kSCHProfileCellLayoutStyle2UpCentered];
+    }
+       
     return(cell);
 }
 

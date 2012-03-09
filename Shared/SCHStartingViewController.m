@@ -769,6 +769,8 @@ static const NSTimeInterval kSCHStartingViewControllerNonForcedAlertInterval = (
 
 - (void)runSetupProfileSequenceAnimated:(BOOL)animated pushProfile:(BOOL)pushProfile showValidation:(BOOL)showValidation
 {        
+    self.view; // force the view to load if it hasn't already;
+
     dispatch_block_t continueBlock = ^{
         
         if (pushProfile) {
@@ -906,6 +908,8 @@ static const NSTimeInterval kSCHStartingViewControllerNonForcedAlertInterval = (
 
 - (void)pushSamplesAnimated:(BOOL)animated showWelcome:(BOOL)welcome
 {       
+    self.view; // force the view to load if it hasn't already;
+    
     if (self.modalViewController) {
         [self dismissModalViewControllerAnimated:YES];
     }

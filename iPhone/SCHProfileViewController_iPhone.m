@@ -22,9 +22,6 @@
 
 extern NSString * const kSCHAuthenticationManagerDeviceKey;
 
-static const CGFloat kProfilePhoneTableOffsetPortrait = 70.0f;
-static const CGFloat kProfilePhoneTableOffsetLandscape = 20.0f;
-
 @interface SCHProfileViewController_iPhone() <UITableViewDelegate> 
 
 - (void)setupAssetsForOrientation:(UIInterfaceOrientation)orientation;
@@ -110,7 +107,6 @@ static const CGFloat kProfilePhoneTableOffsetLandscape = 20.0f;
         [self.settingsButton sizeToFit];
         self.settingsButton.accessibilityLabel = @"Settings Button";
         [self.barSpacer setWidth:CGRectGetWidth(self.settingsButton.frame) + 7];
-        [self.tableView setContentInset:UIEdgeInsetsMake(kProfilePhoneTableOffsetLandscape, 0, 0, 0)];
         [self.logoContainer setFrame:CGRectMake(0, 0, 260, 32)];
     } else {
         [(SCHCustomNavigationBar *)self.navigationController.navigationBar setBackgroundImage:
@@ -120,7 +116,6 @@ static const CGFloat kProfilePhoneTableOffsetLandscape = 20.0f;
                              forState:UIControlStateNormal];
         [self.settingsButton sizeToFit];
         [self.barSpacer setWidth:0];
-        [self.tableView setContentInset:UIEdgeInsetsMake(kProfilePhoneTableOffsetPortrait, 0, 0, 0)];
         [self.logoContainer setFrame:CGRectMake(0, 0, 260, 44)];
     }
     

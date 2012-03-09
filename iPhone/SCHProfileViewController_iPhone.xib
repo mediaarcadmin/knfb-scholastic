@@ -139,8 +139,8 @@
 					<bool key="EncodedWithXMLCoder">YES</bool>
 					<object class="IBUILabel" id="226217735">
 						<reference key="NSNextResponder" ref="755066334"/>
-						<int key="NSvFlags">277</int>
-						<string key="NSFrameSize">{320, 56}</string>
+						<int key="NSvFlags">269</int>
+						<string key="NSFrame">{{0, 112}, {320, 44}}</string>
 						<reference key="NSSuperview" ref="755066334"/>
 						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView"/>
@@ -153,7 +153,7 @@
 						<int key="IBUIContentMode">7</int>
 						<bool key="IBUIUserInteractionEnabled">NO</bool>
 						<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
-						<string key="IBUIText">Choose your bookshelf</string>
+						<string key="IBUIText">Choose Your Bookshelf</string>
 						<object class="NSColor" key="IBUITextColor">
 							<int key="NSColorSpace">2</int>
 							<bytes key="NSRGB">MCAwLjY4MjM1Mjk0MTIgMC45MzcyNTQ5MDIAA</bytes>
@@ -177,11 +177,26 @@
 							<int key="NSfFlags">16</int>
 						</object>
 					</object>
+					<object class="IBUIImageView" id="861031377">
+						<reference key="NSNextResponder" ref="755066334"/>
+						<int key="NSvFlags">293</int>
+						<string key="NSFrame">{{80, 14}, {160, 91}}</string>
+						<reference key="NSSuperview" ref="755066334"/>
+						<reference key="NSWindow"/>
+						<reference key="NSNextKeyView" ref="226217735"/>
+						<int key="IBUIContentMode">1</int>
+						<bool key="IBUIUserInteractionEnabled">NO</bool>
+						<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
+						<object class="NSCustomResource" key="IBUIImage">
+							<string key="NSClassName">NSImage</string>
+							<string key="NSResourceName">largestoriaicon.png</string>
+						</object>
+					</object>
 				</object>
-				<string key="NSFrameSize">{320, 70}</string>
+				<string key="NSFrameSize">{320, 166}</string>
 				<reference key="NSSuperview"/>
 				<reference key="NSWindow"/>
-				<reference key="NSNextKeyView" ref="226217735"/>
+				<reference key="NSNextKeyView" ref="861031377"/>
 				<object class="NSColor" key="IBUIBackgroundColor">
 					<int key="NSColorSpace">3</int>
 					<bytes key="NSWhite">MCAwAA</bytes>
@@ -400,6 +415,7 @@
 						<object class="NSMutableArray" key="children">
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<reference ref="226217735"/>
+							<reference ref="861031377"/>
 						</object>
 						<reference key="parent" ref="0"/>
 						<string key="objectName">Profile Header View</string>
@@ -428,6 +444,11 @@
 						<reference key="object" ref="661978322"/>
 						<reference key="parent" ref="594099141"/>
 					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">69</int>
+						<reference key="object" ref="861031377"/>
+						<reference key="parent" ref="755066334"/>
+					</object>
 				</object>
 			</object>
 			<object class="NSMutableDictionary" key="flattenedProperties">
@@ -453,6 +474,7 @@
 					<string>59.CustomClassName</string>
 					<string>59.IBPluginDependency</string>
 					<string>66.IBPluginDependency</string>
+					<string>69.IBPluginDependency</string>
 				</object>
 				<object class="NSMutableArray" key="dict.values">
 					<bool key="EncodedWithXMLCoder">YES</bool>
@@ -475,6 +497,7 @@
 					<string>SCHCustomNavigationBar</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
+					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				</object>
 			</object>
 			<object class="NSMutableDictionary" key="unlocalizedProperties">
@@ -489,7 +512,7 @@
 				<reference key="dict.values" ref="0"/>
 			</object>
 			<nil key="sourceID"/>
-			<int key="maxID">68</int>
+			<int key="maxID">69</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<object class="NSMutableArray" key="referencedPartialClassDescriptions">
@@ -870,11 +893,13 @@
 				<bool key="EncodedWithXMLCoder">YES</bool>
 				<string>admin-iphone-top-shadow.png</string>
 				<string>admin-updates-available.png</string>
+				<string>largestoriaicon.png</string>
 			</object>
 			<object class="NSMutableArray" key="dict.values">
 				<bool key="EncodedWithXMLCoder">YES</bool>
 				<string>{7, 7}</string>
 				<string>{16, 16}</string>
+				<string>{194, 131}</string>
 			</object>
 		</object>
 		<string key="IBCocoaTouchPluginVersion">933</string>
