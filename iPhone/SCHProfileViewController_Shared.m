@@ -208,10 +208,15 @@
 		case 0:
 			sectionInfo = [[self.fetchedResultsController sections] objectAtIndex:section];
             NSUInteger numberOfObjects = [sectionInfo numberOfObjects];
-			ret = (numberOfObjects > 0 ? numberOfObjects / 2 : numberOfObjects);
-            // if we have an odd number of profiles add an extra row
-            if (numberOfObjects % 2 > 0) {
-                ret++;
+            if ((UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) &&
+                UIInterfaceOrientationIsPortrait(self.interfaceOrientation)) {
+                ret = numberOfObjects;
+            } else {
+                ret = (numberOfObjects > 0 ? numberOfObjects / 2 : numberOfObjects);
+                // if we have an odd number of profiles add an extra row
+                if (numberOfObjects % 2 > 0) {
+                    ret++;
+                }
             }
 			break;
 	}
