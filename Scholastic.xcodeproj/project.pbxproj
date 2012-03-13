@@ -428,11 +428,6 @@
 		5248886B1407990500DA9AFA /* BookPaperWhite.png in Resources */ = {isa = PBXBuildFile; fileRef = C93ECA68134B5EF9003B99FD /* BookPaperWhite.png */; };
 		5248886C1407990500DA9AFA /* ContentsButton.png in Resources */ = {isa = PBXBuildFile; fileRef = C93ECA69134B5EF9003B99FD /* ContentsButton.png */; };
 		5248886D1407990500DA9AFA /* ContentsButton@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C93ECA6A134B5EF9003B99FD /* ContentsButton@2x.png */; };
-		5248886E1407990500DA9AFA /* EucConfiguration.plist in Resources */ = {isa = PBXBuildFile; fileRef = C93ECA6D134B5EF9003B99FD /* EucConfiguration.plist */; };
-		5248886F1407990500DA9AFA /* LinuxLibertine-Bold.otf in Resources */ = {isa = PBXBuildFile; fileRef = C93ECA70134B5EF9003B99FD /* LinuxLibertine-Bold.otf */; };
-		524888701407990500DA9AFA /* LinuxLibertine-BoldItalic.otf in Resources */ = {isa = PBXBuildFile; fileRef = C93ECA71134B5EF9003B99FD /* LinuxLibertine-BoldItalic.otf */; };
-		524888711407990500DA9AFA /* LinuxLibertine-Italic.otf in Resources */ = {isa = PBXBuildFile; fileRef = C93ECA72134B5EF9003B99FD /* LinuxLibertine-Italic.otf */; };
-		524888721407990500DA9AFA /* LinuxLibertine.otf in Resources */ = {isa = PBXBuildFile; fileRef = C93ECA73134B5EF9003B99FD /* LinuxLibertine.otf */; };
 		524888731407990500DA9AFA /* UIBarButtonSystemItemFastForward.png in Resources */ = {isa = PBXBuildFile; fileRef = C93ECA74134B5EF9003B99FD /* UIBarButtonSystemItemFastForward.png */; };
 		524888741407990500DA9AFA /* UIBarButtonSystemItemRewind.png in Resources */ = {isa = PBXBuildFile; fileRef = C93ECA75134B5EF9003B99FD /* UIBarButtonSystemItemRewind.png */; };
 		524888751407990500DA9AFA /* ePubBaseOverrides.css in Resources */ = {isa = PBXBuildFile; fileRef = C93ECB2A134B64B1003B99FD /* ePubBaseOverrides.css */; };
@@ -1494,11 +1489,6 @@
 		A3D3F0F314CDDF31004A56A5 /* BookPaperBlack.png in Resources */ = {isa = PBXBuildFile; fileRef = C93ECA67134B5EF9003B99FD /* BookPaperBlack.png */; };
 		A3D3F0F414CDDF31004A56A5 /* BookPaperWhite.png in Resources */ = {isa = PBXBuildFile; fileRef = C93ECA68134B5EF9003B99FD /* BookPaperWhite.png */; };
 		A3D3F0F514CDDF31004A56A5 /* ContentsButton.png in Resources */ = {isa = PBXBuildFile; fileRef = C93ECA69134B5EF9003B99FD /* ContentsButton.png */; };
-		A3D3F0F714CDDF31004A56A5 /* EucConfiguration.plist in Resources */ = {isa = PBXBuildFile; fileRef = C93ECA6D134B5EF9003B99FD /* EucConfiguration.plist */; };
-		A3D3F0F814CDDF31004A56A5 /* LinuxLibertine-Bold.otf in Resources */ = {isa = PBXBuildFile; fileRef = C93ECA70134B5EF9003B99FD /* LinuxLibertine-Bold.otf */; };
-		A3D3F0F914CDDF31004A56A5 /* LinuxLibertine-BoldItalic.otf in Resources */ = {isa = PBXBuildFile; fileRef = C93ECA71134B5EF9003B99FD /* LinuxLibertine-BoldItalic.otf */; };
-		A3D3F0FA14CDDF31004A56A5 /* LinuxLibertine-Italic.otf in Resources */ = {isa = PBXBuildFile; fileRef = C93ECA72134B5EF9003B99FD /* LinuxLibertine-Italic.otf */; };
-		A3D3F0FB14CDDF31004A56A5 /* LinuxLibertine.otf in Resources */ = {isa = PBXBuildFile; fileRef = C93ECA73134B5EF9003B99FD /* LinuxLibertine.otf */; };
 		A3D3F0FC14CDDF31004A56A5 /* UIBarButtonSystemItemFastForward.png in Resources */ = {isa = PBXBuildFile; fileRef = C93ECA74134B5EF9003B99FD /* UIBarButtonSystemItemFastForward.png */; };
 		A3D3F0FD14CDDF31004A56A5 /* UIBarButtonSystemItemRewind.png in Resources */ = {isa = PBXBuildFile; fileRef = C93ECA75134B5EF9003B99FD /* UIBarButtonSystemItemRewind.png */; };
 		A3D3F0FE14CDDF31004A56A5 /* ePubBaseOverrides.css in Resources */ = {isa = PBXBuildFile; fileRef = C93ECB2A134B64B1003B99FD /* ePubBaseOverrides.css */; };
@@ -2435,6 +2425,10 @@
 		C9367BE114731A8B0033A2EB /* SCHParentalToolsWebViewController_iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = C9367BE014731A8B0033A2EB /* SCHParentalToolsWebViewController_iPad.xib */; };
 		C9367BE214731A8B0033A2EB /* SCHParentalToolsWebViewController_iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = C9367BE014731A8B0033A2EB /* SCHParentalToolsWebViewController_iPad.xib */; };
 		C9367BE314731A8B0033A2EB /* SCHParentalToolsWebViewController_iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = C9367BE014731A8B0033A2EB /* SCHParentalToolsWebViewController_iPad.xib */; };
+		C937E7E7150F5718001882AC /* THFonts in Resources */ = {isa = PBXBuildFile; fileRef = C937E7E6150F5718001882AC /* THFonts */; };
+		C937E7E8150F5718001882AC /* THFonts in Resources */ = {isa = PBXBuildFile; fileRef = C937E7E6150F5718001882AC /* THFonts */; };
+		C937E7E9150F5718001882AC /* THFonts in Resources */ = {isa = PBXBuildFile; fileRef = C937E7E6150F5718001882AC /* THFonts */; };
+		C937E7EA150F5718001882AC /* THFonts in Resources */ = {isa = PBXBuildFile; fileRef = C937E7E6150F5718001882AC /* THFonts */; };
 		C93EBDFD13462883003B99FD /* SCHBookRange.m in Sources */ = {isa = PBXBuildFile; fileRef = C93EBDFC13462883003B99FD /* SCHBookRange.m */; };
 		C93EBEAF13472FED003B99FD /* SCHTextFlowParagraphSource.m in Sources */ = {isa = PBXBuildFile; fileRef = C93EBEAE13472FEC003B99FD /* SCHTextFlowParagraphSource.m */; };
 		C93ECA77134B5EFA003B99FD /* iPodLikeSliderBlueLeftCap.png in Resources */ = {isa = PBXBuildFile; fileRef = C93ECA2E134B5EF9003B99FD /* iPodLikeSliderBlueLeftCap.png */; };
@@ -2492,11 +2486,6 @@
 		C93ECAEB134B5EFA003B99FD /* BookPaperWhite.png in Resources */ = {isa = PBXBuildFile; fileRef = C93ECA68134B5EF9003B99FD /* BookPaperWhite.png */; };
 		C93ECAED134B5EFA003B99FD /* ContentsButton.png in Resources */ = {isa = PBXBuildFile; fileRef = C93ECA69134B5EF9003B99FD /* ContentsButton.png */; };
 		C93ECAEF134B5EFA003B99FD /* ContentsButton@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C93ECA6A134B5EF9003B99FD /* ContentsButton@2x.png */; };
-		C93ECAF5134B5EFA003B99FD /* EucConfiguration.plist in Resources */ = {isa = PBXBuildFile; fileRef = C93ECA6D134B5EF9003B99FD /* EucConfiguration.plist */; };
-		C93ECAF9134B5EFA003B99FD /* LinuxLibertine-Bold.otf in Resources */ = {isa = PBXBuildFile; fileRef = C93ECA70134B5EF9003B99FD /* LinuxLibertine-Bold.otf */; };
-		C93ECAFB134B5EFA003B99FD /* LinuxLibertine-BoldItalic.otf in Resources */ = {isa = PBXBuildFile; fileRef = C93ECA71134B5EF9003B99FD /* LinuxLibertine-BoldItalic.otf */; };
-		C93ECAFD134B5EFA003B99FD /* LinuxLibertine-Italic.otf in Resources */ = {isa = PBXBuildFile; fileRef = C93ECA72134B5EF9003B99FD /* LinuxLibertine-Italic.otf */; };
-		C93ECAFF134B5EFA003B99FD /* LinuxLibertine.otf in Resources */ = {isa = PBXBuildFile; fileRef = C93ECA73134B5EF9003B99FD /* LinuxLibertine.otf */; };
 		C93ECB01134B5EFA003B99FD /* UIBarButtonSystemItemFastForward.png in Resources */ = {isa = PBXBuildFile; fileRef = C93ECA74134B5EF9003B99FD /* UIBarButtonSystemItemFastForward.png */; };
 		C93ECB03134B5EFA003B99FD /* UIBarButtonSystemItemRewind.png in Resources */ = {isa = PBXBuildFile; fileRef = C93ECA75134B5EF9003B99FD /* UIBarButtonSystemItemRewind.png */; };
 		C93ECB2F134B64B1003B99FD /* ePubBaseOverrides.css in Resources */ = {isa = PBXBuildFile; fileRef = C93ECB2A134B64B1003B99FD /* ePubBaseOverrides.css */; };
@@ -2793,11 +2782,6 @@
 		C9D7008F14ED50B100C10006 /* BookPaperBlack.png in Resources */ = {isa = PBXBuildFile; fileRef = C93ECA67134B5EF9003B99FD /* BookPaperBlack.png */; };
 		C9D7009014ED50B100C10006 /* BookPaperWhite.png in Resources */ = {isa = PBXBuildFile; fileRef = C93ECA68134B5EF9003B99FD /* BookPaperWhite.png */; };
 		C9D7009114ED50B100C10006 /* ContentsButton.png in Resources */ = {isa = PBXBuildFile; fileRef = C93ECA69134B5EF9003B99FD /* ContentsButton.png */; };
-		C9D7009214ED50B100C10006 /* EucConfiguration.plist in Resources */ = {isa = PBXBuildFile; fileRef = C93ECA6D134B5EF9003B99FD /* EucConfiguration.plist */; };
-		C9D7009314ED50B100C10006 /* LinuxLibertine-Bold.otf in Resources */ = {isa = PBXBuildFile; fileRef = C93ECA70134B5EF9003B99FD /* LinuxLibertine-Bold.otf */; };
-		C9D7009414ED50B100C10006 /* LinuxLibertine-BoldItalic.otf in Resources */ = {isa = PBXBuildFile; fileRef = C93ECA71134B5EF9003B99FD /* LinuxLibertine-BoldItalic.otf */; };
-		C9D7009514ED50B100C10006 /* LinuxLibertine-Italic.otf in Resources */ = {isa = PBXBuildFile; fileRef = C93ECA72134B5EF9003B99FD /* LinuxLibertine-Italic.otf */; };
-		C9D7009614ED50B100C10006 /* LinuxLibertine.otf in Resources */ = {isa = PBXBuildFile; fileRef = C93ECA73134B5EF9003B99FD /* LinuxLibertine.otf */; };
 		C9D7009714ED50B100C10006 /* UIBarButtonSystemItemFastForward.png in Resources */ = {isa = PBXBuildFile; fileRef = C93ECA74134B5EF9003B99FD /* UIBarButtonSystemItemFastForward.png */; };
 		C9D7009814ED50B100C10006 /* UIBarButtonSystemItemRewind.png in Resources */ = {isa = PBXBuildFile; fileRef = C93ECA75134B5EF9003B99FD /* UIBarButtonSystemItemRewind.png */; };
 		C9D7009914ED50B100C10006 /* ePubBaseOverrides.css in Resources */ = {isa = PBXBuildFile; fileRef = C93ECB2A134B64B1003B99FD /* ePubBaseOverrides.css */; };
@@ -3874,19 +3858,19 @@
 			remoteGlobalIDString = 7D8D910F1403D2E800632892;
 			remoteInfo = libEucalyptusEPubIOSUI;
 		};
-		7D3F30F6140698D800C6F445 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = C947D55D133B9C0000FB4404 /* libEucalyptus.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 7D46E1C813FD52130021763E;
-			remoteInfo = CSSTest;
-		};
 		7D3F30F8140698D800C6F445 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = C947D55D133B9C0000FB4404 /* libEucalyptus.xcodeproj */;
 			proxyType = 2;
 			remoteGlobalIDString = 7D3AC23914054DBA007F91AD;
 			remoteInfo = PageLayoutTest;
+		};
+		C937E7E3150F5335001882AC /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = C947D55D133B9C0000FB4404 /* libEucalyptus.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 7DB4BA8814E04C4F004B4511;
+			remoteInfo = libots;
 		};
 		C947D572133B9C0100FB4404 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -4994,6 +4978,7 @@
 		C9367BD61472E89A0033A2EB /* KNFBXMLParserLock.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = KNFBXMLParserLock.h; path = XPS/KNFBXMLParserLock.h; sourceTree = "<group>"; };
 		C9367BD71472E89A0033A2EB /* KNFBXMLParserLock.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = KNFBXMLParserLock.m; path = XPS/KNFBXMLParserLock.m; sourceTree = "<group>"; };
 		C9367BE014731A8B0033A2EB /* SCHParentalToolsWebViewController_iPad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = SCHParentalToolsWebViewController_iPad.xib; path = iPad/SCHParentalToolsWebViewController_iPad.xib; sourceTree = "<group>"; };
+		C937E7E6150F5718001882AC /* THFonts */ = {isa = PBXFileReference; lastKnownFileType = folder; path = THFonts; sourceTree = "<group>"; };
 		C93EBDFB13462882003B99FD /* SCHBookRange.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHBookRange.h; path = Shared/SCHBookRange.h; sourceTree = "<group>"; };
 		C93EBDFC13462883003B99FD /* SCHBookRange.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHBookRange.m; path = Shared/SCHBookRange.m; sourceTree = "<group>"; };
 		C93EBEAD13472FEC003B99FD /* SCHTextFlowParagraphSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHTextFlowParagraphSource.h; path = Shared/SCHTextFlowParagraphSource.h; sourceTree = "<group>"; };
@@ -5053,11 +5038,6 @@
 		C93ECA68134B5EF9003B99FD /* BookPaperWhite.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = BookPaperWhite.png; sourceTree = "<group>"; };
 		C93ECA69134B5EF9003B99FD /* ContentsButton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ContentsButton.png; sourceTree = "<group>"; };
 		C93ECA6A134B5EF9003B99FD /* ContentsButton@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ContentsButton@2x.png"; sourceTree = "<group>"; };
-		C93ECA6D134B5EF9003B99FD /* EucConfiguration.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = EucConfiguration.plist; sourceTree = "<group>"; };
-		C93ECA70134B5EF9003B99FD /* LinuxLibertine-Bold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "LinuxLibertine-Bold.otf"; sourceTree = "<group>"; };
-		C93ECA71134B5EF9003B99FD /* LinuxLibertine-BoldItalic.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "LinuxLibertine-BoldItalic.otf"; sourceTree = "<group>"; };
-		C93ECA72134B5EF9003B99FD /* LinuxLibertine-Italic.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "LinuxLibertine-Italic.otf"; sourceTree = "<group>"; };
-		C93ECA73134B5EF9003B99FD /* LinuxLibertine.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = LinuxLibertine.otf; sourceTree = "<group>"; };
 		C93ECA74134B5EF9003B99FD /* UIBarButtonSystemItemFastForward.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = UIBarButtonSystemItemFastForward.png; sourceTree = "<group>"; };
 		C93ECA75134B5EF9003B99FD /* UIBarButtonSystemItemRewind.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = UIBarButtonSystemItemRewind.png; sourceTree = "<group>"; };
 		C93ECB2A134B64B1003B99FD /* ePubBaseOverrides.css */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.css; path = ePubBaseOverrides.css; sourceTree = "<group>"; };
@@ -7516,6 +7496,7 @@
 		C93ECA2C134B5EF9003B99FD /* libEucalyptus Resources */ = {
 			isa = PBXGroup;
 			children = (
+				C937E7E6150F5718001882AC /* THFonts */,
 				C93ECA2D134B5EF9003B99FD /* Apple */,
 				C93ECA63134B5EF9003B99FD /* BookButton.png */,
 				C93ECA64134B5EF9003B99FD /* BookButton@2x.png */,
@@ -7525,11 +7506,6 @@
 				C93ECA68134B5EF9003B99FD /* BookPaperWhite.png */,
 				C93ECA69134B5EF9003B99FD /* ContentsButton.png */,
 				C93ECA6A134B5EF9003B99FD /* ContentsButton@2x.png */,
-				C93ECA6D134B5EF9003B99FD /* EucConfiguration.plist */,
-				C93ECA70134B5EF9003B99FD /* LinuxLibertine-Bold.otf */,
-				C93ECA71134B5EF9003B99FD /* LinuxLibertine-BoldItalic.otf */,
-				C93ECA72134B5EF9003B99FD /* LinuxLibertine-Italic.otf */,
-				C93ECA73134B5EF9003B99FD /* LinuxLibertine.otf */,
 				C93ECA74134B5EF9003B99FD /* UIBarButtonSystemItemFastForward.png */,
 				C93ECA75134B5EF9003B99FD /* UIBarButtonSystemItemRewind.png */,
 			);
@@ -7619,6 +7595,7 @@
 				C947D577133B9C0100FB4404 /* libEucalyptusEPub.a */,
 				C947D579133B9C0100FB4404 /* libEucalyptusCSS.a */,
 				C947D575133B9C0100FB4404 /* libEucalyptusBase.a */,
+				C937E7E4150F5335001882AC /* libots.a */,
 				C947D57B133B9C0100FB4404 /* libexpat.a */,
 				C947D57D133B9C0100FB4404 /* libhyphenate.a */,
 				C947D57F133B9C0100FB4404 /* libwapcaplet.a */,
@@ -7626,7 +7603,6 @@
 				C947D583133B9C0100FB4404 /* libcss.a */,
 				C947D585133B9C0100FB4404 /* libminiunzip.a */,
 				C947D587133B9C0100FB4404 /* TransitionTest.app */,
-				7D3F30F7140698D800C6F445 /* CSSTest */,
 				7D3F30F9140698D800C6F445 /* PageLayoutTest */,
 			);
 			name = Products;
@@ -8643,18 +8619,18 @@
 			remoteRef = 7D3F30F4140698D800C6F445 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		7D3F30F7140698D800C6F445 /* CSSTest */ = {
-			isa = PBXReferenceProxy;
-			fileType = "compiled.mach-o.executable";
-			path = CSSTest;
-			remoteRef = 7D3F30F6140698D800C6F445 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
 		7D3F30F9140698D800C6F445 /* PageLayoutTest */ = {
 			isa = PBXReferenceProxy;
 			fileType = "compiled.mach-o.executable";
 			path = PageLayoutTest;
 			remoteRef = 7D3F30F8140698D800C6F445 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		C937E7E4150F5335001882AC /* libots.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libots.a;
+			remoteRef = C937E7E3150F5335001882AC /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		C947D573133B9C0100FB4404 /* libEucalyptusIOSUI.a */ = {
@@ -8836,11 +8812,6 @@
 				C93ECAEB134B5EFA003B99FD /* BookPaperWhite.png in Resources */,
 				C93ECAED134B5EFA003B99FD /* ContentsButton.png in Resources */,
 				C93ECAEF134B5EFA003B99FD /* ContentsButton@2x.png in Resources */,
-				C93ECAF5134B5EFA003B99FD /* EucConfiguration.plist in Resources */,
-				C93ECAF9134B5EFA003B99FD /* LinuxLibertine-Bold.otf in Resources */,
-				C93ECAFB134B5EFA003B99FD /* LinuxLibertine-BoldItalic.otf in Resources */,
-				C93ECAFD134B5EFA003B99FD /* LinuxLibertine-Italic.otf in Resources */,
-				C93ECAFF134B5EFA003B99FD /* LinuxLibertine.otf in Resources */,
 				C93ECB01134B5EFA003B99FD /* UIBarButtonSystemItemFastForward.png in Resources */,
 				C93ECB03134B5EFA003B99FD /* UIBarButtonSystemItemRewind.png in Resources */,
 				C93ECB2F134B64B1003B99FD /* ePubBaseOverrides.css in Resources */,
@@ -9427,6 +9398,7 @@
 				C94975C014C9B871008A19C7 /* storia-preview-close-button~ipad.png in Resources */,
 				F849155C14FFA6E5000D064B /* storiaStarEmpty.png in Resources */,
 				F849156014FFA6E5000D064B /* storiaStarFull.png in Resources */,
+				C937E7E7150F5718001882AC /* THFonts in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -9536,11 +9508,6 @@
 				5248886B1407990500DA9AFA /* BookPaperWhite.png in Resources */,
 				5248886C1407990500DA9AFA /* ContentsButton.png in Resources */,
 				5248886D1407990500DA9AFA /* ContentsButton@2x.png in Resources */,
-				5248886E1407990500DA9AFA /* EucConfiguration.plist in Resources */,
-				5248886F1407990500DA9AFA /* LinuxLibertine-Bold.otf in Resources */,
-				524888701407990500DA9AFA /* LinuxLibertine-BoldItalic.otf in Resources */,
-				524888711407990500DA9AFA /* LinuxLibertine-Italic.otf in Resources */,
-				524888721407990500DA9AFA /* LinuxLibertine.otf in Resources */,
 				524888731407990500DA9AFA /* UIBarButtonSystemItemFastForward.png in Resources */,
 				524888741407990500DA9AFA /* UIBarButtonSystemItemRewind.png in Resources */,
 				524888751407990500DA9AFA /* ePubBaseOverrides.css in Resources */,
@@ -10139,6 +10106,7 @@
 				C94975C114C9B871008A19C7 /* storia-preview-close-button~ipad.png in Resources */,
 				F849155D14FFA6E5000D064B /* storiaStarEmpty.png in Resources */,
 				F849156114FFA6E5000D064B /* storiaStarFull.png in Resources */,
+				C937E7E8150F5718001882AC /* THFonts in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -10190,11 +10158,6 @@
 				A3D3F0F314CDDF31004A56A5 /* BookPaperBlack.png in Resources */,
 				A3D3F0F414CDDF31004A56A5 /* BookPaperWhite.png in Resources */,
 				A3D3F0F514CDDF31004A56A5 /* ContentsButton.png in Resources */,
-				A3D3F0F714CDDF31004A56A5 /* EucConfiguration.plist in Resources */,
-				A3D3F0F814CDDF31004A56A5 /* LinuxLibertine-Bold.otf in Resources */,
-				A3D3F0F914CDDF31004A56A5 /* LinuxLibertine-BoldItalic.otf in Resources */,
-				A3D3F0FA14CDDF31004A56A5 /* LinuxLibertine-Italic.otf in Resources */,
-				A3D3F0FB14CDDF31004A56A5 /* LinuxLibertine.otf in Resources */,
 				A3D3F0FC14CDDF31004A56A5 /* UIBarButtonSystemItemFastForward.png in Resources */,
 				A3D3F0FD14CDDF31004A56A5 /* UIBarButtonSystemItemRewind.png in Resources */,
 				A3D3F0FE14CDDF31004A56A5 /* ePubBaseOverrides.css in Resources */,
@@ -10627,6 +10590,7 @@
 				A3775D8614D9BDB400473314 /* Icon-Small@2x.png in Resources */,
 				F849155F14FFA6E5000D064B /* storiaStarEmpty.png in Resources */,
 				F849156314FFA6E5000D064B /* storiaStarFull.png in Resources */,
+				C937E7E9150F5718001882AC /* THFonts in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -10678,11 +10642,6 @@
 				C9D7008F14ED50B100C10006 /* BookPaperBlack.png in Resources */,
 				C9D7009014ED50B100C10006 /* BookPaperWhite.png in Resources */,
 				C9D7009114ED50B100C10006 /* ContentsButton.png in Resources */,
-				C9D7009214ED50B100C10006 /* EucConfiguration.plist in Resources */,
-				C9D7009314ED50B100C10006 /* LinuxLibertine-Bold.otf in Resources */,
-				C9D7009414ED50B100C10006 /* LinuxLibertine-BoldItalic.otf in Resources */,
-				C9D7009514ED50B100C10006 /* LinuxLibertine-Italic.otf in Resources */,
-				C9D7009614ED50B100C10006 /* LinuxLibertine.otf in Resources */,
 				C9D7009714ED50B100C10006 /* UIBarButtonSystemItemFastForward.png in Resources */,
 				C9D7009814ED50B100C10006 /* UIBarButtonSystemItemRewind.png in Resources */,
 				C9D7009914ED50B100C10006 /* ePubBaseOverrides.css in Resources */,
@@ -11113,6 +11072,7 @@
 				C9D7024214ED50B100C10006 /* answer-button-blue@2x~iphone.png in Resources */,
 				C9D7024314ED50B100C10006 /* Icon@2x.png in Resources */,
 				C9D7024414ED50B100C10006 /* Icon-Small@2x.png in Resources */,
+				C937E7EA150F5718001882AC /* THFonts in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -12809,7 +12769,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_TREAT_WARNINGS_AS_ERRORS = YES;
-				GCC_VERSION = com.apple.compilers.llvmgcc42;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = (
@@ -12976,7 +12936,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_TREAT_WARNINGS_AS_ERRORS = YES;
-				GCC_VERSION = com.apple.compilers.llvmgcc42;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = (
@@ -13009,7 +12969,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_TREAT_WARNINGS_AS_ERRORS = YES;
-				GCC_VERSION = com.apple.compilers.llvmgcc42;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = (
