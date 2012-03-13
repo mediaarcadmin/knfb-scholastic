@@ -43,10 +43,10 @@
 - (UIBarButtonItem *)flexibleItem;
 - (UIBarButtonItem *)fixedItemOfWidth:(CGFloat)width;
 
-- (void)backItemAction:(id)selector;
-- (void)pictureStarterItemAction:(id)selector;
-- (void)audioItemAction:(id)selector;
-- (void)helpItemAction:(id)selector;
+- (IBAction)backItemAction:(id)selector;
+- (IBAction)pictureStarterItemAction:(id)selector;
+- (IBAction)audioItemAction:(id)selector;
+- (IBAction)helpItemAction:(id)selector;
 
 - (void)setFontSizeOfMultiLineLabel:(UILabel*)label 
                           toFitSize:(CGSize)size 
@@ -498,28 +498,28 @@
 
 #pragma Toolbar Item Actions
 
-- (void)backItemAction:(id)sender
+- (IBAction)backItemAction:(id)sender
 {
     if ([self.delegate respondsToSelector:@selector(backAction:)]) {
         [self.delegate backAction:sender];
     }
 }
 
-- (void)pictureStarterItemAction:(id)sender
+- (IBAction)pictureStarterItemAction:(id)sender
 {
     if ([self.delegate respondsToSelector:@selector(pictureStarterAction:)]) {
         [self.delegate pictureStarterAction:sender];
     }
 }
 
-- (void)audioItemAction:(id)sender
+- (IBAction)audioItemAction:(id)sender
 {
     if ([self.delegate respondsToSelector:@selector(audioAction:)]) {
         [self.delegate audioAction:sender];
     }
 }
 
-- (void)helpItemAction:(id)sender
+- (IBAction)helpItemAction:(id)sender
 {
     if ([self.delegate respondsToSelector:@selector(helpAction:)]) {
         [self.delegate helpAction:sender];
