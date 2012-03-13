@@ -769,31 +769,33 @@ static const NSTimeInterval kSCHStartingViewControllerNonForcedAlertInterval = (
 
 - (void)runSetupProfileSequenceAnimated:(BOOL)animated pushProfile:(BOOL)pushProfile showValidation:(BOOL)showValidation
 {        
-    self.view; // force the view to load if it hasn't already;
-
-    dispatch_block_t continueBlock = ^{
+    if (self.view != nil)  { // force the view to load if it hasn't already;
         
-        if (pushProfile) {
-            [self pushCurrentProfileAnimated:animated];
-        }
-                
-        if ([self bookshelfSetupRequired]) {
-            self.profileSyncState = kSCHStartingViewControllerProfileSyncStateWaitingForBookshelves;
-            [self pushBookshelfSetupModalControllerAnimated:animated showValidation:showValidation];
-        } else if ([self dictionaryDownloadRequired]) {
-            self.profileSyncState = kSCHStartingViewControllerProfileSyncStateNone;
-            [self pushDictionaryDownloadModalControllerAnimated:animated];
-        } else {
-            if (self.modalViewController) {
-                [self dismissModalViewControllerAnimated:YES];
+        dispatch_block_t continueBlock = ^{
+            
+            if (pushProfile) {
+                [self pushCurrentProfileAnimated:animated];
             }
+            
+            if ([self bookshelfSetupRequired]) {
+                self.profileSyncState = kSCHStartingViewControllerProfileSyncStateWaitingForBookshelves;
+                [self pushBookshelfSetupModalControllerAnimated:animated showValidation:showValidation];
+            } else if ([self dictionaryDownloadRequired]) {
+                self.profileSyncState = kSCHStartingViewControllerProfileSyncStateNone;
+                [self pushDictionaryDownloadModalControllerAnimated:animated];
+            } else {
+                if (self.modalViewController) {
+                    [self dismissModalViewControllerAnimated:YES];
+                }
+            }
+        };
+        
+        if ([self.loginPopoverController isModalSheetVisible]) {
+            [self.loginPopoverController dismissSheetAnimated:YES completion:continueBlock];
+        } else {
+            continueBlock();
         }
-    };
-    
-    if ([self.loginPopoverController isModalSheetVisible]) {
-        [self.loginPopoverController dismissSheetAnimated:YES completion:continueBlock];
-    } else {
-        continueBlock();
+        
     }
 }
 
@@ -908,34 +910,36 @@ static const NSTimeInterval kSCHStartingViewControllerNonForcedAlertInterval = (
 
 - (void)pushSamplesAnimated:(BOOL)animated showWelcome:(BOOL)welcome
 {       
-    self.view; // force the view to load if it hasn't already;
-    
-    if (self.modalViewController) {
-        [self dismissModalViewControllerAnimated:YES];
-    }
-    
-    // SyncManager should not be suspended
-    if ([[SCHSyncManager sharedSyncManager] isSuspended]) {
-        NSLog(@"Warning Sync Manager suspended when opening samples");
-        [[SCHSyncManager sharedSyncManager] setSuspended:NO];
-    }
-    
-    SCHProfileViewController_Shared *profile = [self profileViewController];
-    SCHProfileItem *profileItem = [[profile profileItems] lastObject]; // Only one sample bookshelf so any result will do
-    
-    if (profileItem) {
-        NSMutableArray *viewControllers = [NSMutableArray arrayWithObjects:self, profile, nil];
-        [viewControllers addObjectsFromArray:[profile viewControllersForProfileItem:profileItem showWelcome:welcome]];
-        [self.navigationController setViewControllers:viewControllers animated:animated];
-    } else {
-        LambdaAlert *alert = [[LambdaAlert alloc]
-                              initWithTitle:NSLocalizedString(@"Unable To Open the Sample Bookshelf", @"")
-                              message:NSLocalizedString(@"There was a problem while opening the sample bookshelf. Please try again.", @"")];
-        [alert addButtonWithTitle:NSLocalizedString(@"OK", @"") block:^{
-        }];
+    if (self.view != nil) { // force the view to load if it hasn't already;
         
-        [alert show]; 
-        [alert release]; 
+        if (self.modalViewController) {
+            [self dismissModalViewControllerAnimated:YES];
+        }
+        
+        // SyncManager should not be suspended
+        if ([[SCHSyncManager sharedSyncManager] isSuspended]) {
+            NSLog(@"Warning Sync Manager suspended when opening samples");
+            [[SCHSyncManager sharedSyncManager] setSuspended:NO];
+        }
+        
+        SCHProfileViewController_Shared *profile = [self profileViewController];
+        SCHProfileItem *profileItem = [[profile profileItems] lastObject]; // Only one sample bookshelf so any result will do
+        
+        if (profileItem) {
+            NSMutableArray *viewControllers = [NSMutableArray arrayWithObjects:self, profile, nil];
+            [viewControllers addObjectsFromArray:[profile viewControllersForProfileItem:profileItem showWelcome:welcome]];
+            [self.navigationController setViewControllers:viewControllers animated:animated];
+        } else {
+            LambdaAlert *alert = [[LambdaAlert alloc]
+                                  initWithTitle:NSLocalizedString(@"Unable To Open the Sample Bookshelf", @"")
+                                  message:NSLocalizedString(@"There was a problem while opening the sample bookshelf. Please try again.", @"")];
+            [alert addButtonWithTitle:NSLocalizedString(@"OK", @"") block:^{
+            }];
+            
+            [alert show]; 
+            [alert release]; 
+        }
+        
     }
 }
 
