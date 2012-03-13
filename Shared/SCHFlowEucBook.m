@@ -15,6 +15,7 @@
 #import "SCHBookIdentifier.h"
 #import "SCHTextFlowParagraphSource.h"
 #import "KNFBXPSConstants.h"
+#import <libEucalyptus/EucCSSIntermediateDocument.h>
 #import <libEucalyptus/EucBookPageIndexPoint.h>
 #import <libEucalyptus/EucCSSLayoutRunExtractor.h>
 
@@ -45,13 +46,13 @@
         if ((self = [super initWithBookID:nil
                        cacheDirectoryPath:aCacheDirectoryPath
                                  textFlow:aTextFlow
-                                fakeCover:aFakeCover])) 
+                                fakeCover:aFakeCover
+                                    title:[book XPSTitle] 
+                                   author:[book XPSAuthor] 
+                         uniqueIdentifier:[newIdentifier encodeAsString]]))
         {
             self.identifier = newIdentifier;
             self.managedObjectContext = moc;
-                
-            self.title = [book XPSTitle];
-            self.author = [book XPSAuthor];        
         }
     }
     

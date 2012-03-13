@@ -1425,6 +1425,14 @@
 		7D3F314014069A5200C6F445 /* libminiunzip.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C947D585133B9C0100FB4404 /* libminiunzip.a */; };
 		7D3F314114069A5200C6F445 /* libparserutils.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C947D581133B9C0100FB4404 /* libparserutils.a */; };
 		7D3F314214069A5200C6F445 /* libwapcaplet.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C947D57F133B9C0100FB4404 /* libwapcaplet.a */; };
+		7D95F773150F66030093BB90 /* libots.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C937E7E4150F5335001882AC /* libots.a */; };
+		7D95F778150F66160093BB90 /* CoreVideo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7D95F777150F66160093BB90 /* CoreVideo.framework */; };
+		7D95F779150F66220093BB90 /* CoreVideo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7D95F777150F66160093BB90 /* CoreVideo.framework */; };
+		7D95F77A150F66260093BB90 /* libots.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C937E7E4150F5335001882AC /* libots.a */; };
+		7D95F77B150F66320093BB90 /* libots.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C937E7E4150F5335001882AC /* libots.a */; };
+		7D95F77C150F66380093BB90 /* CoreVideo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7D95F777150F66160093BB90 /* CoreVideo.framework */; };
+		7D95F77D150F663D0093BB90 /* libots.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C937E7E4150F5335001882AC /* libots.a */; };
+		7D95F77E150F66440093BB90 /* CoreVideo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7D95F777150F66160093BB90 /* CoreVideo.framework */; };
 		A33F7311136B050A00BAA101 /* SCHDrmSession.m in Sources */ = {isa = PBXBuildFile; fileRef = A33F7310136B050A00BAA101 /* SCHDrmSession.m */; };
 		A35F45D5138D3A9000055D60 /* DRM in Resources */ = {isa = PBXBuildFile; fileRef = A35F45D4138D3A9000055D60 /* DRM */; };
 		A3775D8514D9BDAE00473314 /* Icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C9722BF31393AA75008605E8 /* Icon@2x.png */; };
@@ -4628,6 +4636,7 @@
 		52F15A1E1371A2CA0073941E /* SCHBookAnnotations.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHBookAnnotations.m; path = Shared/SCHBookAnnotations.m; sourceTree = "<group>"; };
 		52FCCF3D14C6FDEB008C2626 /* SCHStoriaWelcomeTwoViewController~ipad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = "SCHStoriaWelcomeTwoViewController~ipad.xib"; path = "Shared/SCHStoriaWelcomeTwoViewController~ipad.xib"; sourceTree = "<group>"; };
 		52FCCF4014C6FE71008C2626 /* storia-preview-two~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "storia-preview-two~ipad.png"; path = "Resources/UIAssets/storia-preview-two~ipad.png"; sourceTree = "<group>"; };
+		7D95F777150F66160093BB90 /* CoreVideo.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreVideo.framework; path = System/Library/Frameworks/CoreVideo.framework; sourceTree = SDKROOT; };
 		8D1107310486CEB800E47090 /* Scholastic-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Scholastic-Info.plist"; plistStructureDefinitionIdentifier = "com.apple.xcode.plist.structure-definition.iphone.info-plist"; sourceTree = "<group>"; };
 		A33477FB13DF206000768DC6 /* 9780545287012_r1.HalloweenParade.xps */ = {isa = PBXFileReference; lastKnownFileType = file; name = 9780545287012_r1.HalloweenParade.xps; path = "Shared/Debug Books/9780545287012_r1.HalloweenParade.xps"; sourceTree = "<group>"; };
 		A33477FC13DF206000768DC6 /* 9780545289726_r1.OlliesNewTricks.xps */ = {isa = PBXFileReference; lastKnownFileType = file; name = 9780545289726_r1.OlliesNewTricks.xps; path = "Shared/Debug Books/9780545289726_r1.OlliesNewTricks.xps"; sourceTree = "<group>"; };
@@ -5614,6 +5623,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7D95F778150F66160093BB90 /* CoreVideo.framework in Frameworks */,
+				7D95F773150F66030093BB90 /* libots.a in Frameworks */,
 				C9AC7DA414BDDE00009137BA /* libBITModalSheetController.a in Frameworks */,
 				C9C3FA3814B6FA8400757038 /* libBITOperation.a in Frameworks */,
 				7D3F313C14069A5200C6F445 /* libEucalyptusIOSUI.a in Frameworks */,
@@ -5671,6 +5682,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7D95F77A150F66260093BB90 /* libots.a in Frameworks */,
+				7D95F779150F66220093BB90 /* CoreVideo.framework in Frameworks */,
 				C9AC7DA714BDDE0F009137BA /* libBITModalSheetController.a in Frameworks */,
 				C9C3FA3714B6FA7D00757038 /* libBITOperation.a in Frameworks */,
 				52488BE01407990500DA9AFA /* libEucalyptusIOSUI.a in Frameworks */,
@@ -5713,6 +5726,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7D95F77C150F66380093BB90 /* CoreVideo.framework in Frameworks */,
+				7D95F77B150F66320093BB90 /* libots.a in Frameworks */,
 				A3D3F48414CDDF31004A56A5 /* libBITModalSheetController.a in Frameworks */,
 				A3D3F48514CDDF31004A56A5 /* libBITOperation.a in Frameworks */,
 				A3D3F48614CDDF31004A56A5 /* libEucalyptusIOSUI.a in Frameworks */,
@@ -5755,6 +5770,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7D95F77E150F66440093BB90 /* CoreVideo.framework in Frameworks */,
+				7D95F77D150F663D0093BB90 /* libots.a in Frameworks */,
 				C9D7038514ED50B100C10006 /* libBITModalSheetController.a in Frameworks */,
 				C9D7038614ED50B100C10006 /* libBITOperation.a in Frameworks */,
 				C9D7038714ED50B100C10006 /* libEucalyptusIOSUI.a in Frameworks */,
@@ -6664,6 +6681,7 @@
 		29B97323FDCFA39411CA2CEA /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				7D95F777150F66160093BB90 /* CoreVideo.framework */,
 				28B193ED1405253100313821 /* AssetsLibrary.framework */,
 				F80060FD13D9CF76001CA881 /* ImageIO.framework */,
 				C9ED56811343328F00A25486 /* libiconv.dylib */,
