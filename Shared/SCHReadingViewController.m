@@ -2250,6 +2250,46 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     [self.bookStatistics addToDictionaryLookup:word];
 }
 
+- (NSUInteger)generatedPageCountForReadingView:(SCHReadingView *)aReadingView
+{
+    NSUInteger pageCount = [aReadingView pageCount];
+    
+    if ([aReadingView isKindOfClass:[SCHLayoutView class]]) {
+        pageCount++;
+    }
+    
+    return pageCount;
+}
+
+- (BOOL)readingView:(SCHReadingView *)aReadingView shouldGenerateViewForPageAtIndex:(NSUInteger)pageIndex
+{
+    if ([aReadingView isKindOfClass:[SCHLayoutView class]]) {
+        if (pageIndex == [self generatedPageCountForReadingView:aReadingView] - 1) {
+            return YES;
+        }
+    }
+    
+    return NO;
+}
+
+- (UIView *)generatedViewForPageAtIndex:(NSUInteger)pageIndex
+{
+    UIView *aView = [[UIView alloc] init];
+    aView.backgroundColor = [UIColor colorWithRed:rand()%1000/1000.0f green:rand()%1000/1000.0f blue:rand()%1000/1000.0f alpha:1];
+    
+    UIButton *aButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    aButton.frame = CGRectMake(50, 50, 50, 50);
+    [aView addSubview:aButton];
+    
+    UIActivityIndicatorView *activity = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
+    
+    activity.center = CGPointMake(300, 300);
+    [activity startAnimating];
+    [aView addSubview:activity];
+    
+    return aView;
+}
+
 #pragma mark - SCHReadingViewDelegate Toolbars methods
 
 - (void)hideToolbars
