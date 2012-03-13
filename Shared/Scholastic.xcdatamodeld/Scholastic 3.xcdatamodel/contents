@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model name="" userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="1170" systemVersion="11D50b" minimumToolsVersion="Xcode 4.2" macOSVersion="Automatic" iOSVersion="Automatic">
+<model name="" userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="1171" systemVersion="11D50b" minimumToolsVersion="Xcode 4.2" macOSVersion="Automatic" iOSVersion="Automatic">
     <entity name="SCHAnnotation" representedClassName="SCHAnnotation" isAbstract="YES" parentEntity="SCHSyncEntity">
         <attribute name="Action" optional="YES" attributeType="Integer 16" defaultValueString="0"/>
         <attribute name="ID" optional="YES" attributeType="Integer 64" defaultValueString="0"/>
@@ -235,6 +235,29 @@
         <attribute name="Timestamp" optional="YES" attributeType="Date"/>
         <relationship name="ReadingStatsContentItem" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="SCHReadingStatsContentItem" inverseName="ReadingStatsEntryItem" inverseEntity="SCHReadingStatsContentItem" indexed="YES"/>
     </entity>
+    <entity name="SCHRecommendationISBN" representedClassName="SCHRecommendationISBN" syncable="YES">
+        <attribute name="fetchDate" attributeType="Date" syncable="YES"/>
+        <attribute name="isbn" attributeType="String" indexed="YES" syncable="YES"/>
+        <relationship name="recommendationItems" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="SCHRecommendationItem" inverseName="isbn" inverseEntity="SCHRecommendationItem" syncable="YES"/>
+    </entity>
+    <entity name="SCHRecommendationItem" representedClassName="SCHRecommendationItem" syncable="YES">
+        <attribute name="author" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="format" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="imageLink" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="link" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="order" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <attribute name="productCode" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="regularPrice" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
+        <attribute name="salePrice" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
+        <relationship name="isbn" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="SCHRecommendationISBN" inverseName="recommendationItems" inverseEntity="SCHRecommendationISBN" syncable="YES"/>
+        <relationship name="profile" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="SCHRecommendationProfile" inverseName="recommendationItem" inverseEntity="SCHRecommendationProfile" syncable="YES"/>
+    </entity>
+    <entity name="SCHRecommendationProfile" representedClassName="SCHRecommendationProfile" syncable="YES">
+        <attribute name="fetchDate" attributeType="Date" syncable="YES"/>
+        <attribute name="profileID" attributeType="Integer 64" defaultValueString="0" indexed="YES" syncable="YES"/>
+        <relationship name="recommendationItem" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="SCHRecommendationItem" inverseName="profile" inverseEntity="SCHRecommendationItem" syncable="YES"/>
+    </entity>
     <entity name="SCHSyncEntity" representedClassName="SCHSyncEntity" isAbstract="YES">
         <attribute name="LastModified" attributeType="Date"/>
         <attribute name="State" attributeType="Integer 16" defaultValueString="0" indexed="YES"/>
@@ -319,6 +342,9 @@
         <memberEntity name="SCHWordIndex"/>
         <memberEntity name="SCHWishListItem"/>
         <memberEntity name="SCHWishListProfile"/>
+        <memberEntity name="SCHRecommendationISBN"/>
+        <memberEntity name="SCHRecommendationItem"/>
+        <memberEntity name="SCHRecommendationProfile"/>
     </configuration>
     <elements>
         <element name="SCHAnnotation" positionX="292" positionY="362" width="128" height="90"/>
@@ -357,5 +383,8 @@
         <element name="SCHWishListItem" positionX="160" positionY="192" width="128" height="120"/>
         <element name="SCHWishListProfile" positionX="160" positionY="192" width="128" height="90"/>
         <element name="SCHWordIndex" positionX="0" positionY="137" width="128" height="90"/>
+        <element name="SCHRecommendationItem" positionX="160" positionY="192" width="128" height="210"/>
+        <element name="SCHRecommendationISBN" positionX="160" positionY="192" width="128" height="90"/>
+        <element name="SCHRecommendationProfile" positionX="160" positionY="192" width="128" height="90"/>
     </elements>
 </model>
