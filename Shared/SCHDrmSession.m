@@ -730,9 +730,9 @@ ErrorExit:
 ErrorExit:
 	if ( pbChallenge )
 		Oem_MemFree(pbChallenge);
-    if ( !DRM_SUCCEEDED(dr)  ) 
+    if ( !DRM_SUCCEEDED(dr)  ) {
         NSLog(@"Cannot acknowledge license because of DRM error: %08X",dr);
-	
+	}
 }
 
 - (void)acquireLicense:(NSString *)token bookID:(SCHBookIdentifier*)identifier {
@@ -996,6 +996,9 @@ ErrorExit:
 
 @implementation KeychainItemWrapper(SCHDRMKeychainItemReset)
 
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wobjc-protocol-method-implementation"
+
 - (void)resetKeychainItem
 {
     OSStatus status = noErr;
@@ -1014,6 +1017,7 @@ ErrorExit:
         }
     }
 }
+#pragma clang diagnostic pop
 
 - (BOOL)writeToKeychain
 {
