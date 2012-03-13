@@ -186,6 +186,13 @@ XXX  7. init -> start -> cancel -> startOnRunLoopThreadThread -> cancelOnRunLoop
 
 @synthesize state         = _state;
 
+- (QRunLoopOperationState)state
+{
+    @synchronized (self) {
+        return _state;
+    }
+}
+
 - (void)setState:(QRunLoopOperationState)newState
     // Change the state of the operation, sending the appropriate KVO notifications.
 {
