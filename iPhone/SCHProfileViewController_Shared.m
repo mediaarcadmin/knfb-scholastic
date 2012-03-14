@@ -161,15 +161,17 @@
     
     [self.navigationController setNavigationBarHidden:NO];
     [self checkForBookUpdates];
+    
+    // Reload the iPhone in case it has been rotated
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
+        [self.tableView reloadData];
+    }
 }
 
 - (void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
 {
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
-//        [CATransaction begin];
-//        [CATransaction setAnimationDuration:duration];
-            [self.tableView reloadData];
-//        [CATransaction commit];
+        [self.tableView reloadData];
     }
 }
 
