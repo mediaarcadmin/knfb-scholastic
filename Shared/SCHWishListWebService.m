@@ -11,6 +11,7 @@
 #import "BITAPIError.h"
 #import "BITNetworkActivityManager.h"
 #import "SCHWishListConstants.h"
+#import "SCHAuthenticationManager.h"
 
 static NSString * const kSCHWishListWebServiceUndefinedMethod = @"undefined method";
 
@@ -78,80 +79,108 @@ static NSString * const kSCHWishListWebServiceClientID = @"KNFB";
 
 #pragma mark - API Proxy methods
 
-- (void)getWishListItems:(NSString *)pToken profiles:(NSArray *)profileIDs
+- (BOOL)getWishListItems:(NSArray *)profileIDs
 {
-	WishListServiceSvc_GetWishListItems *request = [WishListServiceSvc_GetWishListItems new];
+    BOOL ret = NO;
     
-    request.clientID = kSCHWishListWebServiceClientID;
-	request.token = pToken;
-    for (id profileID in profileIDs) {
-        [request addProfileIdList:profileID];
+    if ([SCHAuthenticationManager sharedAuthenticationManager].pToken != nil) {
+        WishListServiceSvc_GetWishListItems *request = [WishListServiceSvc_GetWishListItems new];
+        
+        request.clientID = kSCHWishListWebServiceClientID;
+        request.token = [SCHAuthenticationManager sharedAuthenticationManager].pToken;
+        for (id profileID in profileIDs) {
+            [request addProfileIdList:profileID];
+        }
+        
+        [self.binding GetWishListItemsAsyncUsingParameters:request delegate:self]; 
+        [[BITNetworkActivityManager sharedNetworkActivityManager] showNetworkActivityIndicator];
+        
+        [request release], request = nil;
+        ret = YES;
     }
     
-	[self.binding GetWishListItemsAsyncUsingParameters:request delegate:self]; 
-	[[BITNetworkActivityManager sharedNetworkActivityManager] showNetworkActivityIndicator];
-	
-	[request release], request = nil;
+    return ret;
 }
 
-- (void)addItemsToWishList:(NSString *)pToken wishListItems:(NSArray *)wishListItems
+- (BOOL)addItemsToWishList:(NSArray *)wishListItems
 {
-	WishListServiceSvc_AddItemsToWishList *request = [WishListServiceSvc_AddItemsToWishList new];
+    BOOL ret = NO;
     
-    request.clientID = kSCHWishListWebServiceClientID;
-	request.token = pToken;
-    ax21_WishListProfileItem *wishListProfileItem = nil;
-    for (id item in wishListItems) {
-        wishListProfileItem = [[ax21_WishListProfileItem alloc] init];
-        [self fromObject:item intoObject:wishListProfileItem];		
-        [request addProfileItemList:wishListProfileItem];
-        [wishListProfileItem release], wishListProfileItem = nil;
-    }
-    
-	[self.binding AddItemsToWishListAsyncUsingParameters:request delegate:self]; 
-	[[BITNetworkActivityManager sharedNetworkActivityManager] showNetworkActivityIndicator];
+    if ([SCHAuthenticationManager sharedAuthenticationManager].pToken != nil) {
+        WishListServiceSvc_AddItemsToWishList *request = [WishListServiceSvc_AddItemsToWishList new];
+        
+        request.clientID = kSCHWishListWebServiceClientID;
+        request.token = [SCHAuthenticationManager sharedAuthenticationManager].pToken;
+        ax21_WishListProfileItem *wishListProfileItem = nil;
+        for (id item in wishListItems) {
+            wishListProfileItem = [[ax21_WishListProfileItem alloc] init];
+            [self fromObject:item intoObject:wishListProfileItem];		
+            [request addProfileItemList:wishListProfileItem];
+            [wishListProfileItem release], wishListProfileItem = nil;
+        }
+        
+        [self.binding AddItemsToWishListAsyncUsingParameters:request delegate:self]; 
+        [[BITNetworkActivityManager sharedNetworkActivityManager] showNetworkActivityIndicator];
+        
+        [request release], request = nil;
+		ret = YES;
+	}
 	
-	[request release], request = nil;
+	return ret;        
 }
 
-- (void)deleteWishListItems:(NSString *)pToken wishListItems:(NSArray *)wishListItems
+- (BOOL)deleteWishListItems:(NSArray *)wishListItems
 {
-	WishListServiceSvc_DeleteWishListItems *request = [WishListServiceSvc_DeleteWishListItems new];
+    BOOL ret = NO;
     
-    request.clientID = kSCHWishListWebServiceClientID;
-	request.token = pToken;
-    ax21_WishListProfileItem *wishListProfileItem = nil;
-    for (id item in wishListItems) {
-        wishListProfileItem = [[ax21_WishListProfileItem alloc] init];
-        [self fromObject:item intoObject:wishListProfileItem];		
-        [request addProfileItemList:wishListProfileItem];
-        [wishListProfileItem release], wishListProfileItem = nil;
-    }
-    
-	[self.binding DeleteWishListItemsAsyncUsingParameters:request delegate:self]; 
-	[[BITNetworkActivityManager sharedNetworkActivityManager] showNetworkActivityIndicator];
+    if ([SCHAuthenticationManager sharedAuthenticationManager].pToken != nil) {
+        WishListServiceSvc_DeleteWishListItems *request = [WishListServiceSvc_DeleteWishListItems new];
+        
+        request.clientID = kSCHWishListWebServiceClientID;
+        request.token = [SCHAuthenticationManager sharedAuthenticationManager].pToken;
+        ax21_WishListProfileItem *wishListProfileItem = nil;
+        for (id item in wishListItems) {
+            wishListProfileItem = [[ax21_WishListProfileItem alloc] init];
+            [self fromObject:item intoObject:wishListProfileItem];		
+            [request addProfileItemList:wishListProfileItem];
+            [wishListProfileItem release], wishListProfileItem = nil;
+        }
+        
+        [self.binding DeleteWishListItemsAsyncUsingParameters:request delegate:self]; 
+        [[BITNetworkActivityManager sharedNetworkActivityManager] showNetworkActivityIndicator];
+        
+        [request release], request = nil;
+        ret = YES;
+	}
 	
-	[request release], request = nil;
+	return ret;        
 }
 
-- (void)deleteWishList:(NSString *)pToken wishListProfiles:(NSArray *)wishListProfiles
+- (BOOL)deleteWishList:(NSArray *)wishListProfiles
 {
-	WishListServiceSvc_DeleteWishList *request = [WishListServiceSvc_DeleteWishList new];
+    BOOL ret = NO;
     
-    request.clientID = kSCHWishListWebServiceClientID;
-	request.token = pToken;
-    ax21_WishListProfile *wishListProfile = nil;
-    for (id profile in wishListProfiles) {
-        wishListProfile = [[ax21_WishListProfile alloc] init];
-        [self fromObject:profile intoObject:wishListProfile];		
-        [request addProfileIdList:wishListProfile];
-        [wishListProfile release], wishListProfile = nil;
-    }
-    
-	[self.binding DeleteWishListAsyncUsingParameters:request delegate:self]; 
-	[[BITNetworkActivityManager sharedNetworkActivityManager] showNetworkActivityIndicator];
+    if ([SCHAuthenticationManager sharedAuthenticationManager].pToken != nil) {
+        WishListServiceSvc_DeleteWishList *request = [WishListServiceSvc_DeleteWishList new];
+        
+        request.clientID = kSCHWishListWebServiceClientID;
+        request.token = [SCHAuthenticationManager sharedAuthenticationManager].pToken;
+        ax21_WishListProfile *wishListProfile = nil;
+        for (id profile in wishListProfiles) {
+            wishListProfile = [[ax21_WishListProfile alloc] init];
+            [self fromObject:profile intoObject:wishListProfile];		
+            [request addProfileIdList:wishListProfile];
+            [wishListProfile release], wishListProfile = nil;
+        }
+        
+        [self.binding DeleteWishListAsyncUsingParameters:request delegate:self]; 
+        [[BITNetworkActivityManager sharedNetworkActivityManager] showNetworkActivityIndicator];
+        
+        [request release], request = nil;
+        ret = YES;
+	}
 	
-	[request release], request = nil;
+	return ret;                
 }
 
 #pragma mark - LibreAccessServiceSoap12BindingResponse Delegate methods

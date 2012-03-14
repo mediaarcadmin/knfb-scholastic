@@ -17,9 +17,9 @@
 
 - (void)clear;
 
-- (void)getWishListItems:(NSString *)pToken profiles:(NSArray *)profileIDs;
-- (void)addItemsToWishList:(NSString *)pToken wishListItems:(NSArray *)wishListItems;
-- (void)deleteWishListItems:(NSString *)pToken wishListItems:(NSArray *)wishListItems;
-- (void)deleteWishList:(NSString *)pToken wishListProfiles:(NSArray *)wishListProfiles;
+- (BOOL)getWishListItems:(NSArray *)profileIDs;
+- (BOOL)addItemsToWishList:(NSArray *)wishListItems;
+- (BOOL)deleteWishListItems:(NSArray *)wishListItems;
+- (BOOL)deleteWishList:(NSArray *)wishListProfiles;
 
 @end
