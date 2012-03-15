@@ -809,7 +809,7 @@ typedef enum
     }
 }
 
-#pragma mark - SCHBookShelfTableViewCellDelegate methods
+#pragma mark - SCHBookShelfTableViewCellDelegate / SCHBookShelfGridViewCellDelegate
 
 - (void)bookshelfCell:(SCHBookShelfTableViewCell *)cell userRatingChanged:(NSInteger)newRating
 {
