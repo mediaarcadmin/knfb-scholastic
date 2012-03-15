@@ -24,6 +24,7 @@
 #import "LambdaAlert.h"
 #import "SCHVersionDownloadManager.h"
 #import "SCHLibreAccessConstants.h"
+#import "SCHBookShelfRecommendationListController.h"
 
 //static NSInteger const kSCHBookShelfViewControllerGridCellHeightPortrait_iPad = 254;
 static NSInteger const kSCHBookShelfViewControllerGridCellHeightPortrait_iPad = 224;
@@ -140,6 +141,9 @@ static NSTimeInterval const kSCHBookShelfViewControllerTopTenRefreshTime = -600.
             [self.topTenPicksButton addTarget:self action:@selector(topTenAction:) forControlEvents:UIControlEventTouchUpInside];    
         }
     }
+    
+    // right toolbar items code
+    // order: Sort, Ratings, More eBooks (top 10), Themes
 
     CGFloat topTenWidth = topTenFrame.size.width;
     
@@ -302,29 +306,32 @@ static NSTimeInterval const kSCHBookShelfViewControllerTopTenRefreshTime = -600.
     if ([[SCHVersionDownloadManager sharedVersionManager] isAppVersionOutdated] == YES) {
         [self showAppVersionOutdatedAlert];
     } else {
-        if (self.topFavoritesComponent == nil) {
-            self.topTenBooks = nil;
-            
-            self.topFavoritesComponent = [[[SCHTopFavoritesComponent alloc] init] autorelease];
-            self.topFavoritesComponent.delegate = self;
-        }
+//        if (self.topFavoritesComponent == nil) {
+//            self.topTenBooks = nil;
+//            
+//            self.topFavoritesComponent = [[[SCHTopFavoritesComponent alloc] init] autorelease];
+//            self.topFavoritesComponent.delegate = self;
+//        }
+//        
+//        if (self.lastTopTenBookRetrieval == nil || 
+//            [self.lastTopTenBookRetrieval timeIntervalSinceNow] <= kSCHBookShelfViewControllerTopTenRefreshTime || 
+//            [self.topTenBooks count] < 1) {
+//            
+//            [self.topFavoritesComponent topFavoritesForAge:self.profileItem.age];
+//            
+//        }
+//        
+//        SCHBookShelfTopTenPopoverTableView *popoverTable = [[SCHBookShelfTopTenPopoverTableView alloc] initWithNibName:nil bundle:nil];
+//        popoverTable.books = self.topTenBooks;
         
-        if (self.lastTopTenBookRetrieval == nil || 
-            [self.lastTopTenBookRetrieval timeIntervalSinceNow] <= kSCHBookShelfViewControllerTopTenRefreshTime || 
-            [self.topTenBooks count] < 1) {
-            
-            [self.topFavoritesComponent topFavoritesForAge:self.profileItem.age];
-            
-        }
+        SCHBookShelfRecommendationListController *recommendationController = 
+        [[SCHBookShelfRecommendationListController alloc] initWithNibName:@"SCHBookShelfRecommendationListController" bundle:nil];
         
-        SCHBookShelfTopTenPopoverTableView *popoverTable = [[SCHBookShelfTopTenPopoverTableView alloc] initWithNibName:nil bundle:nil];
-        popoverTable.books = self.topTenBooks;
-        
-        self.popover = [[[UIPopoverController alloc] initWithContentViewController:popoverTable] autorelease];
+        self.popover = [[[UIPopoverController alloc] initWithContentViewController:recommendationController] autorelease];
         self.popover.delegate = self;
         
         [self.popover presentPopoverFromRect:sender.frame inView:sender.superview permittedArrowDirections:UIPopoverArrowDirectionUp animated:YES];
-        [popoverTable release];
+        [recommendationController release];
     }
 }
 
