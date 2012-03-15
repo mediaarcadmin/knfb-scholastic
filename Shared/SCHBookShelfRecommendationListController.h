@@ -7,7 +7,10 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "SCHAppProfile.h"
 
 @interface SCHBookShelfRecommendationListController : UITableViewController
+
+@property (nonatomic, retain) SCHAppProfile *appProfile;
 
 @end

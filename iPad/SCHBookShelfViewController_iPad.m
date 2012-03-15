@@ -326,6 +326,7 @@ static NSTimeInterval const kSCHBookShelfViewControllerTopTenRefreshTime = -600.
         
         SCHBookShelfRecommendationListController *recommendationController = 
         [[SCHBookShelfRecommendationListController alloc] initWithNibName:@"SCHBookShelfRecommendationListController" bundle:nil];
+        recommendationController.appProfile = self.profileItem.AppProfile;
         
         self.popover = [[[UIPopoverController alloc] initWithContentViewController:recommendationController] autorelease];
         self.popover.delegate = self;
