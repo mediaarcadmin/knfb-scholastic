@@ -12,6 +12,8 @@
 // Constants
 NSString * const kSCHRecommendationItem = @"SCHRecommendationItem";
 
+NSString * const kSCHRecommendationOrder = @"order";
+
 @implementation SCHRecommendationItem
 
 @dynamic name;
@@ -25,5 +27,10 @@ NSString * const kSCHRecommendationItem = @"SCHRecommendationItem";
 @dynamic order;
 @dynamic isbn;
 @dynamic profile;
+
+- (UIImage *)bookCover
+{
+    return nil;
+}
 
 @end

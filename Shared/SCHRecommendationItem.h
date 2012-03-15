@@ -14,6 +14,8 @@
 // Constants
 extern NSString * const kSCHRecommendationItem;
 
+extern NSString * const kSCHRecommendationOrder;
+
 @interface SCHRecommendationItem : NSManagedObject
 
 @property (nonatomic, retain) NSString * name;
@@ -27,5 +29,7 @@ extern NSString * const kSCHRecommendationItem;
 @property (nonatomic, retain) NSNumber * order;
 @property (nonatomic, retain) SCHRecommendationISBN *isbn;
 @property (nonatomic, retain) NSManagedObject *profile;
+
+- (UIImage *)bookCover;
 
 @end
