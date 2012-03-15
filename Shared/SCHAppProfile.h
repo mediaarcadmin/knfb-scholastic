@@ -27,4 +27,6 @@ extern NSString * const kSCHAppProfile;
 @property (nonatomic, retain) NSNumber *SortType;
 @property (nonatomic, retain) NSNumber *ShowListView;
 
+- (NSArray *)recommendations;
+
 @end

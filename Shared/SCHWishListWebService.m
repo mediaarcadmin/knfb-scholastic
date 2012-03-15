@@ -57,7 +57,7 @@ static NSString * const kSCHWishListWebServiceClientID = @"KNFB";
 	self = [super init];
 	if (self != nil) {
 		binding = [[WishListServiceSvc WishListServiceSoap11Binding] retain];
-		binding.logXMLInOut = YES;		
+		binding.logXMLInOut = NO;		
 	}
 	
 	return(self);
