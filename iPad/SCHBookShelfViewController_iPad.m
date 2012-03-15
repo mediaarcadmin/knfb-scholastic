@@ -25,6 +25,7 @@
 #import "SCHVersionDownloadManager.h"
 #import "SCHLibreAccessConstants.h"
 #import "SCHBookShelfRecommendationListController.h"
+#import "BITModalSheetController.h"
 
 //static NSInteger const kSCHBookShelfViewControllerGridCellHeightPortrait_iPad = 254;
 static NSInteger const kSCHBookShelfViewControllerGridCellHeightPortrait_iPad = 224;
@@ -44,6 +45,7 @@ static NSTimeInterval const kSCHBookShelfViewControllerTopTenRefreshTime = -600.
 @property (nonatomic, retain) SCHThemeButton *ratingButton;
 
 @property (nonatomic, retain) UIPopoverController *popover;
+@property (nonatomic, retain) BITModalSheetController *recommendationPopover;
 
 - (void)updateTheme;
 - (void)setupToolbar;
@@ -61,11 +63,13 @@ static NSTimeInterval const kSCHBookShelfViewControllerTopTenRefreshTime = -600.
 @synthesize sortButton;
 @synthesize popover;
 @synthesize ratingButton;
+@synthesize recommendationPopover;
 
 - (void)dealloc
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
     
+    [recommendationPopover release], recommendationPopover = nil;
     [ratingButton release], ratingButton = nil;
     [topFavoritesComponent release], topFavoritesComponent = nil;
     [topTenBooks release], topTenBooks = nil;
@@ -306,6 +310,8 @@ static NSTimeInterval const kSCHBookShelfViewControllerTopTenRefreshTime = -600.
     if ([[SCHVersionDownloadManager sharedVersionManager] isAppVersionOutdated] == YES) {
         [self showAppVersionOutdatedAlert];
     } else {
+        
+        // FIXME: work in progress
 //        if (self.topFavoritesComponent == nil) {
 //            self.topTenBooks = nil;
 //            
@@ -327,11 +333,32 @@ static NSTimeInterval const kSCHBookShelfViewControllerTopTenRefreshTime = -600.
         SCHBookShelfRecommendationListController *recommendationController = 
         [[SCHBookShelfRecommendationListController alloc] initWithNibName:@"SCHBookShelfRecommendationListController" bundle:nil];
         recommendationController.appProfile = self.profileItem.AppProfile;
+        recommendationController.contentSizeForViewInPopover = CGSizeMake(557, 241);
         
-        self.popover = [[[UIPopoverController alloc] initWithContentViewController:recommendationController] autorelease];
-        self.popover.delegate = self;
+//        self.popover = [[[UIPopoverController alloc] initWithContentViewController:recommendationController] autorelease];
+//        self.popover.delegate = self;
+//        
+//        [self.popover presentPopoverFromRect:sender.frame inView:sender.superview permittedArrowDirections:UIPopoverArrowDirectionUp animated:YES];
         
-        [self.popover presentPopoverFromRect:sender.frame inView:sender.superview permittedArrowDirections:UIPopoverArrowDirectionUp animated:YES];
+        UINavigationController *navCon = [[UINavigationController alloc] initWithRootViewController:recommendationController];
+        
+        self.recommendationPopover = [[[BITModalSheetController alloc] initWithContentViewController:navCon] autorelease];
+        [self.recommendationPopover setContentSize:CGSizeMake(577, 241)];
+        [self.recommendationPopover setContentOffset:CGPointMake(0, -15)];
+        
+//        __block BITModalSheetController *weakPopoverController = self.recommendationPopover;
+//        __block SCHBookShelfViewController_iPad *weakSelf = self;
+//        
+//        welcomeVC.closeBlock = ^{
+//            [weakWelcomePopoverController dismissSheetAnimated:YES completion:nil];
+//            weakSelf.welcomePopoverController = nil;
+//        };
+//        
+//        [welcomeVC release];
+        
+        [self.recommendationPopover presentSheetInViewController:self animated:YES completion:nil];
+        
+        [navCon release];
         [recommendationController release];
     }
 }

@@ -23,15 +23,17 @@
 
 - (void)dealloc
 {
-    [self releaseViewObjects];
-    
+    // release any non-view objects
     [appProfile release], appProfile = nil;
+    
+    // release view objects
+    [self releaseViewObjects];
     [super dealloc];
 }
 
 - (void)releaseViewObjects
 {
-    
+    // release any view objects here
 }
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
@@ -52,6 +54,7 @@
 
 - (void)viewDidUnload
 {
+    // release view objects
     [self releaseViewObjects];
     [super viewDidUnload];
 }
@@ -60,7 +63,7 @@
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
-    return (interfaceOrientation == UIInterfaceOrientationPortrait);
+    return YES;
 }
 
 #pragma mark - Table view data source
