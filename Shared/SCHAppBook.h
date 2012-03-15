@@ -160,6 +160,7 @@ typedef enum {
 - (BOOL)canOpenBookError:(NSError **)error;
 - (CGSize)bookCoverImageSize;
 - (SCHAppBookFeatures) bookFeatures;
+- (NSArray *)recommendations;
 
 - (void)setForcedProcessing:(BOOL)forceProcess;
 - (void)deleteXPSFile;

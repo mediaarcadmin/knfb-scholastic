@@ -11,6 +11,7 @@
 #import "NSURL+Extensions.h"
 #import "SCHAppStateManager.h"
 #import "NSDate+ServerDate.h"
+#import "SCHRecommendationItem.h"
 
 // Constants
 NSString * const kSCHAppBookErrorDomain  = @"com.knfb.scholastic.AppBookErrorDomain";
@@ -357,6 +358,30 @@ NSString * const kSCHAppBookFilenameSeparator = @"-";
     return ret;
 }
 
+- (NSArray *)recommendations
+{
+    NSArray *ret = nil;
+    
+    if (self.bookIdentifier != [SCHBookIdentifier invalidBookIdentifier]) {
+        NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+        
+        [fetchRequest setEntity:[NSEntityDescription entityForName:kSCHRecommendationItem 
+                                            inManagedObjectContext:self.managedObjectContext]];	
+        [fetchRequest setPredicate:[NSPredicate predicateWithFormat:@"recommendationISBN.isbn = %@", self.bookIdentifier.isbn]];
+        [fetchRequest setSortDescriptors:[NSArray arrayWithObject:
+                                          [NSSortDescriptor sortDescriptorWithKey:kSCHRecommendationOrder ascending:YES]]];
+        
+        NSError *error = nil;
+        ret = [self.managedObjectContext executeFetchRequest:fetchRequest error:&error];	
+        if (ret == nil) {
+            NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
+        }
+        
+        [fetchRequest release], fetchRequest = nil;        
+    }
+    
+    return ret;
+}
 
 #pragma mark - Directory for Current Book
 
