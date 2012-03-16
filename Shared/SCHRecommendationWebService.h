@@ -8,6 +8,18 @@
 
 #import <Foundation/Foundation.h>
 
-@interface SCHRecommendationWebService : NSObject
+#import "BITSOAPProxy.h"
+#import "QHTTPOperation.h"
+
+// Constants
+extern NSString * const kSCHRecommendationWebServiceRetrieveRecommendationsForProfile;
+extern NSString * const kSCHRecommendationWebServiceRetrieveRecommendationsForBooks;
+
+@interface SCHRecommendationWebService : BITSOAPProxy <QHTTPOperationDelegate> 
+
+- (void)clear;
+
+- (BOOL)retrieveRecommendationsForProfileWithAges:(NSArray *)ages;
+- (BOOL)retrieveRecommendationsForBooks:(NSArray *)books;
 
 @end

@@ -9,6 +9,8 @@
 #import <Foundation/Foundation.h>
 #import <CoreData/CoreData.h>
 
+@class SCHRecommendationItem;
+
 // Constants
 extern NSString * const kSCHRecommendationISBN;
 
@@ -21,8 +23,8 @@ extern NSString * const kSCHRecommendationISBN;
 
 @interface SCHRecommendationISBN (CoreDataGeneratedAccessors)
 
-- (void)addRecommendationItemsObject:(NSManagedObject *)value;
-- (void)removeRecommendationItemsObject:(NSManagedObject *)value;
+- (void)addRecommendationItemsObject:(SCHRecommendationItem *)value;
+- (void)removeRecommendationItemsObject:(SCHRecommendationItem *)value;
 - (void)addRecommendationItems:(NSSet *)values;
 - (void)removeRecommendationItems:(NSSet *)values;
 @end

@@ -10,25 +10,24 @@
 #import <CoreData/CoreData.h>
 
 @class SCHRecommendationISBN;
+@class SCHRecommendationProfile;
 
 // Constants
 extern NSString * const kSCHRecommendationItem;
-
-extern NSString * const kSCHRecommendationOrder;
 
 @interface SCHRecommendationItem : NSManagedObject
 
 @property (nonatomic, retain) NSString * name;
 @property (nonatomic, retain) NSString * link;
-@property (nonatomic, retain) NSString * imageLink;
-@property (nonatomic, retain) NSNumber * regularPrice;
-@property (nonatomic, retain) NSNumber * salePrice;
-@property (nonatomic, retain) NSString * productCode;
+@property (nonatomic, retain) NSString * image_link;
+@property (nonatomic, retain) NSNumber * regular_price;
+@property (nonatomic, retain) NSNumber * sale_price;
+@property (nonatomic, retain) NSString * product_code;
 @property (nonatomic, retain) NSString * format;
 @property (nonatomic, retain) NSString * author;
 @property (nonatomic, retain) NSNumber * order;
 @property (nonatomic, retain) SCHRecommendationISBN *isbn;
-@property (nonatomic, retain) NSManagedObject *profile;
+@property (nonatomic, retain) SCHRecommendationProfile *profile;
 
 - (UIImage *)bookCover;
 

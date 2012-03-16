@@ -12,6 +12,7 @@
 #import "SCHAppStateManager.h"
 #import "NSDate+ServerDate.h"
 #import "SCHRecommendationItem.h"
+#import "SCHRecommendationConstants.h"
 
 // Constants
 NSString * const kSCHAppBookErrorDomain  = @"com.knfb.scholastic.AppBookErrorDomain";
@@ -369,7 +370,7 @@ NSString * const kSCHAppBookFilenameSeparator = @"-";
                                             inManagedObjectContext:self.managedObjectContext]];	
         [fetchRequest setPredicate:[NSPredicate predicateWithFormat:@"recommendationISBN.isbn = %@", self.bookIdentifier.isbn]];
         [fetchRequest setSortDescriptors:[NSArray arrayWithObject:
-                                          [NSSortDescriptor sortDescriptorWithKey:kSCHRecommendationOrder ascending:YES]]];
+                                          [NSSortDescriptor sortDescriptorWithKey:kSCHRecommendationWebServiceOrder ascending:YES]]];
         
         NSError *error = nil;
         ret = [self.managedObjectContext executeFetchRequest:fetchRequest error:&error];	

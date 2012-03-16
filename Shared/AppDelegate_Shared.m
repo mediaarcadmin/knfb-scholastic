@@ -357,6 +357,7 @@ static NSString* const binaryDevCertFilename = @"bdevcert.dat";
             [[SCHProcessingManager sharedProcessingManager] forceAllBooksToReAcquireLicense];
             [[SCHSyncManager sharedSyncManager] setSuspended:NO];
             [[SCHSyncManager sharedSyncManager] firstSync:YES requireDeviceAuthentication:NO];
+            [[SCHSyncManager sharedSyncManager] recommendationSync];            
         } failureBlock:^(NSError *error) {
             NSString *authMessage = [[SCHAuthenticationManager sharedAuthenticationManager] localizedMessageForAuthenticationError:error];
             

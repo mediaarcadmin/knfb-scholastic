@@ -10,12 +10,12 @@
 #import "SCHRecommendationItem.h"
 
 // Constants
-NSString * const kSCHRecommendationProfile = @"SCHRecommendationISBN";
+NSString * const kSCHRecommendationProfile = @"SCHRecommendationProfile";
 
 @implementation SCHRecommendationProfile
 
-@dynamic profileID;
+@dynamic age;
 @dynamic fetchDate;
-@dynamic recommendationItem;
+@dynamic recommendationItems;
 
 @end

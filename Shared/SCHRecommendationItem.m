@@ -8,20 +8,19 @@
 
 #import "SCHRecommendationItem.h"
 #import "SCHRecommendationISBN.h"
+#import "SCHRecommendationProfile.h"
 
 // Constants
 NSString * const kSCHRecommendationItem = @"SCHRecommendationItem";
-
-NSString * const kSCHRecommendationOrder = @"order";
 
 @implementation SCHRecommendationItem
 
 @dynamic name;
 @dynamic link;
-@dynamic imageLink;
-@dynamic regularPrice;
-@dynamic salePrice;
-@dynamic productCode;
+@dynamic image_link;
+@dynamic regular_price;
+@dynamic sale_price;
+@dynamic product_code;
 @dynamic format;
 @dynamic author;
 @dynamic order;
