@@ -8,6 +8,11 @@
 
 #import <Foundation/Foundation.h>
 
-@interface SCHRecommendationSyncComponent : NSObject
+#import "SCHSyncComponent.h"
+
+extern NSString * const SCHRecommendationSyncComponentDidCompleteNotification;
+extern NSString * const SCHRecommendationSyncComponentDidFailNotification;
+
+@interface SCHRecommendationSyncComponent : SCHSyncComponent
 
 @end
