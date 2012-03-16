@@ -18,6 +18,8 @@
 @implementation SCHBookShelfRecommendationListController
 
 @synthesize appProfile;
+@synthesize mainTableView;
+@synthesize closeBlock;
 
 #pragma mark - Memory Management
 
@@ -25,6 +27,7 @@
 {
     // release any non-view objects
     [appProfile release], appProfile = nil;
+    [closeBlock release], closeBlock = nil;
     
     // release view objects
     [self releaseViewObjects];
@@ -34,6 +37,7 @@
 - (void)releaseViewObjects
 {
     // release any view objects here
+    [mainTableView release], mainTableView = nil;
 }
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
@@ -41,6 +45,8 @@
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
         // Custom initialization
+        self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(close:)] autorelease];
+        self.title = @"Kids' Top Rated eBooks";
     }
     return self;
 }
@@ -57,6 +63,15 @@
     // release view objects
     [self releaseViewObjects];
     [super viewDidUnload];
+}
+
+#pragma mark - View Actions
+
+- (IBAction)close:(id)sender
+{
+    if (closeBlock) {
+        closeBlock();
+    }
 }
 
 #pragma mark - View Rotation
