@@ -24,8 +24,8 @@ NSString * const kSCHRecommendationItem = @"SCHRecommendationItem";
 @dynamic format;
 @dynamic author;
 @dynamic order;
-@dynamic isbn;
-@dynamic profile;
+@dynamic recommendationISBN;
+@dynamic recommendationProfile;
 
 - (UIImage *)bookCover
 {

@@ -32,7 +32,7 @@ NSString * const kSCHAppProfile = @"SCHAppProfile";
     
     [fetchRequest setEntity:[NSEntityDescription entityForName:kSCHRecommendationItem 
                                         inManagedObjectContext:self.managedObjectContext]];	
-    [fetchRequest setPredicate:[NSPredicate predicateWithFormat:@"recommendationProfile.age = %@", [self.ProfileItem age]]];
+    [fetchRequest setPredicate:[NSPredicate predicateWithFormat:@"recommendationProfile.age = %d", self.ProfileItem.age]];
     [fetchRequest setSortDescriptors:[NSArray arrayWithObject:
                                       [NSSortDescriptor sortDescriptorWithKey:kSCHRecommendationWebServiceOrder ascending:YES]]];
     
