@@ -3762,6 +3762,10 @@
 		F8615B21144D712400D0D265 /* SCHHelpVideoManifest.m in Sources */ = {isa = PBXBuildFile; fileRef = F8615B20144D712400D0D265 /* SCHHelpVideoManifest.m */; };
 		F8615B22144D712400D0D265 /* SCHHelpVideoManifest.m in Sources */ = {isa = PBXBuildFile; fileRef = F8615B20144D712400D0D265 /* SCHHelpVideoManifest.m */; };
 		F864333713813B0100BEB8EB /* SCHBookShelfViewController_iPad.m in Sources */ = {isa = PBXBuildFile; fileRef = F864333613813B0100BEB8EB /* SCHBookShelfViewController_iPad.m */; };
+		F864916D15139122003A8B81 /* sampleCoverImage.jpg in Resources */ = {isa = PBXBuildFile; fileRef = F864916C15139122003A8B81 /* sampleCoverImage.jpg */; };
+		F864916E15139122003A8B81 /* sampleCoverImage.jpg in Resources */ = {isa = PBXBuildFile; fileRef = F864916C15139122003A8B81 /* sampleCoverImage.jpg */; };
+		F864916F15139122003A8B81 /* sampleCoverImage.jpg in Resources */ = {isa = PBXBuildFile; fileRef = F864916C15139122003A8B81 /* sampleCoverImage.jpg */; };
+		F864917015139122003A8B81 /* sampleCoverImage.jpg in Resources */ = {isa = PBXBuildFile; fileRef = F864916C15139122003A8B81 /* sampleCoverImage.jpg */; };
 		F8687ED613BA234100B59987 /* BookShelfNewIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = F8687ED513BA234100B59987 /* BookShelfNewIcon.png */; };
 		F86DEBFE13A21B6800053999 /* SCHStoryInteractionControllerStartingLetter.m in Sources */ = {isa = PBXBuildFile; fileRef = F86DEBFB13A21B6800053999 /* SCHStoryInteractionControllerStartingLetter.m */; };
 		F86DEC0613A21C5F00053999 /* SCHImageButton.m in Sources */ = {isa = PBXBuildFile; fileRef = F86DEC0513A21C5F00053999 /* SCHImageButton.m */; };
@@ -5533,6 +5537,7 @@
 		F8615B20144D712400D0D265 /* SCHHelpVideoManifest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHHelpVideoManifest.m; path = Shared/SCHHelpVideoManifest.m; sourceTree = "<group>"; };
 		F864333513813B0100BEB8EB /* SCHBookShelfViewController_iPad.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHBookShelfViewController_iPad.h; path = iPad/SCHBookShelfViewController_iPad.h; sourceTree = "<group>"; };
 		F864333613813B0100BEB8EB /* SCHBookShelfViewController_iPad.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHBookShelfViewController_iPad.m; path = iPad/SCHBookShelfViewController_iPad.m; sourceTree = "<group>"; };
+		F864916C15139122003A8B81 /* sampleCoverImage.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = sampleCoverImage.jpg; sourceTree = "<group>"; };
 		F86666A013AF8C370050979F /* SCHBookShelfTableViewCell_iPad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = SCHBookShelfTableViewCell_iPad.xib; path = iPad/SCHBookShelfTableViewCell_iPad.xib; sourceTree = "<group>"; };
 		F8678D89133218D8001FDB2F /* ScholasticFeatureCompatibility.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = ScholasticFeatureCompatibility.plist; path = ../../../../../../Users/john/Projects/BitWink/Scholastic/Scholastic/Shared/ScholasticFeatureCompatibility.plist; sourceTree = "<group>"; };
 		F8687ED513BA234100B59987 /* BookShelfNewIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = BookShelfNewIcon.png; path = Resources/BookShelfNewIcon.png; sourceTree = "<group>"; };
@@ -6916,6 +6921,7 @@
 		528A2CCF12CCDC400053A343 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				F864916C15139122003A8B81 /* sampleCoverImage.jpg */,
 				C995171F146D690B00EA7337 /* Sample Manifests */,
 				A3A19356146AC94E00938888 /* gnulesser-license.html */,
 				A3A19357146AC94F00938888 /* minizip-license.html */,
@@ -9514,6 +9520,7 @@
 				F849155C14FFA6E5000D064B /* storiaStarEmpty.png in Resources */,
 				F849156014FFA6E5000D064B /* storiaStarFull.png in Resources */,
 				F89140C41511EB310026F16F /* SCHBookShelfRecommendationListController.xib in Resources */,
+				F864916D15139122003A8B81 /* sampleCoverImage.jpg in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -10227,6 +10234,7 @@
 				F849155D14FFA6E5000D064B /* storiaStarEmpty.png in Resources */,
 				F849156114FFA6E5000D064B /* storiaStarFull.png in Resources */,
 				F89140C51511EB310026F16F /* SCHBookShelfRecommendationListController.xib in Resources */,
+				F864916E15139122003A8B81 /* sampleCoverImage.jpg in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -10716,6 +10724,7 @@
 				F849155F14FFA6E5000D064B /* storiaStarEmpty.png in Resources */,
 				F849156314FFA6E5000D064B /* storiaStarFull.png in Resources */,
 				F89140C61511EB310026F16F /* SCHBookShelfRecommendationListController.xib in Resources */,
+				F864916F15139122003A8B81 /* sampleCoverImage.jpg in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -11203,6 +11212,7 @@
 				C9D7024314ED50B100C10006 /* Icon@2x.png in Resources */,
 				C9D7024414ED50B100C10006 /* Icon-Small@2x.png in Resources */,
 				F89140C71511EB310026F16F /* SCHBookShelfRecommendationListController.xib in Resources */,
+				F864917015139122003A8B81 /* sampleCoverImage.jpg in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

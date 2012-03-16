@@ -24,7 +24,6 @@
 #import "LambdaAlert.h"
 #import "SCHVersionDownloadManager.h"
 #import "SCHLibreAccessConstants.h"
-#import "SCHBookShelfRecommendationListController.h"
 #import "BITModalSheetController.h"
 
 //static NSInteger const kSCHBookShelfViewControllerGridCellHeightPortrait_iPad = 254;
@@ -314,11 +313,12 @@ static NSTimeInterval const kSCHBookShelfViewControllerTopTenRefreshTime = -600.
         [[SCHBookShelfRecommendationListController alloc] initWithNibName:@"SCHBookShelfRecommendationListController" bundle:nil];
         recommendationController.appProfile = self.profileItem.AppProfile;
         recommendationController.contentSizeForViewInPopover = CGSizeMake(557, 241);
+        recommendationController.delegate = self;
         
         UINavigationController *navCon = [[UINavigationController alloc] initWithRootViewController:recommendationController];
         
         self.recommendationPopover = [[[BITModalSheetController alloc] initWithContentViewController:navCon] autorelease];
-        [self.recommendationPopover setContentSize:CGSizeMake(604, 498)];
+        [self.recommendationPopover setContentSize:CGSizeMake(604, 482)];
         [self.recommendationPopover setContentOffset:CGPointMake(0, 0)];
         
         __block BITModalSheetController *weakPopoverController = self.recommendationPopover;
@@ -379,6 +379,13 @@ static NSTimeInterval const kSCHBookShelfViewControllerTopTenRefreshTime = -600.
 
     [self.popover dismissPopoverAnimated:YES];
     self.popover = nil;
+}
+
+#pragma mark - SCHBookShelfRecommendationListController Delegate
+
+- (void)switchToWishListFromRecommendationListController:(SCHBookShelfRecommendationListController *)recommendationController
+{
+    NSLog(@"Switch to the wish list.");
 }
 
 #pragma mark - SCHComponent Delegate

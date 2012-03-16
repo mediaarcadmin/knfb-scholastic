@@ -17,6 +17,7 @@
 
 @implementation SCHBookShelfRecommendationListController
 
+@synthesize delegate;
 @synthesize appProfile;
 @synthesize mainTableView;
 @synthesize closeBlock;
@@ -26,6 +27,7 @@
 - (void)dealloc
 {
     // release any non-view objects
+    delegate = nil;
     [appProfile release], appProfile = nil;
     [closeBlock release], closeBlock = nil;
     
@@ -74,6 +76,13 @@
     }
 }
 
+- (IBAction)switchToWishList:(id)sender
+{
+    if (self.delegate) {
+        [self.delegate switchToWishListFromRecommendationListController:self];
+    }
+}
+
 #pragma mark - View Rotation
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
@@ -112,11 +121,21 @@
 
         SCHRecommendationListView *recommendationView = [[SCHRecommendationListView alloc] initWithFrame:cell.frame];
         recommendationView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
+        recommendationView.tag = 999;
         
         [cell addSubview:recommendationView];
         [recommendationView release];
     }
     
+    NSArray *recommendations = [self.appProfile recommendations];
+    
+    if (recommendations && recommendations.count > 0) {
+        SCHRecommendationListView *recommendationView = (SCHRecommendationListView *)[cell viewWithTag:999];
+        
+        if (recommendationView) {
+            [recommendationView updateWithRecommendationItem:[recommendations objectAtIndex:indexPath.row]];
+        }
+    }
     
     return cell;
 }

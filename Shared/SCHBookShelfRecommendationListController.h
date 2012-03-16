@@ -9,10 +9,19 @@
 #import <UIKit/UIKit.h>
 #import "SCHAppProfile.h"
 
+@protocol SCHBookShelfRecommendationListControllerDelegate;
+
 @interface SCHBookShelfRecommendationListController : UIViewController <UITableViewDelegate, UITableViewDataSource>
 
+@property (nonatomic, assign) id <SCHBookShelfRecommendationListControllerDelegate> delegate;
 @property (nonatomic, retain) SCHAppProfile *appProfile;
 @property (nonatomic, copy) dispatch_block_t closeBlock;
 @property (nonatomic, retain) IBOutlet UITableView *mainTableView;
+
+@end
+
+@protocol SCHBookShelfRecommendationListControllerDelegate <NSObject>
+
+- (void)switchToWishListFromRecommendationListController:(SCHBookShelfRecommendationListController *)recommendationController;
 
 @end

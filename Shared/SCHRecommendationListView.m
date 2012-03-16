@@ -73,21 +73,38 @@
 	return self;
 }
 
+- (void)updateWithRecommendationItem:(SCHRecommendationItem *)item
+{
+    self.titleLabel.text = item.name;
+    self.subtitleLabel.text = item.author;
+//    self.rateView.rating = item.;
+    self.coverImageView.image = [item bookCover];
+}
+
 - (void)initialiseView 
 {
+    
+    UIColor *viewBackgroundColor = [UIColor colorWithRed:0.996 green:0.937 blue:0.718 alpha:1.0];
+    
+    self.backgroundColor = viewBackgroundColor;
+    
     CGRect currentFrame = self.bounds;
     NSLog(@"Current frame: %@", NSStringFromCGRect(self.bounds));
     
     CGFloat imageViewWidth = floorf(currentFrame.size.width * 0.3);
     CGFloat rightStartingPoint = imageViewWidth + RIGHT_ELEMENTS_PADDING;
 
-    CGFloat labelHeight = floorf(currentFrame.size.height * 0.2);
-    CGFloat subtitleLabelHeight = floorf(currentFrame.size.height * 0.4);
+    CGFloat labelHeight = floorf(currentFrame.size.height * 0.24);
+    CGFloat subtitleLabelHeight = floorf(currentFrame.size.height * 0.3);
     
     // cover view
-    self.coverImageView = [[[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 
-                                                                         imageViewWidth, currentFrame.size.height)] autorelease];
+    
+    CGRect coverViewFrame = CGRectMake(0, 0, imageViewWidth, currentFrame.size.height);
+    coverViewFrame = CGRectInset(coverViewFrame, 15, 15);
+    
+    self.coverImageView = [[[UIImageView alloc] initWithFrame:coverViewFrame] autorelease];
     self.coverImageView.autoresizingMask = UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+    self.coverImageView.contentMode = UIViewContentModeScaleAspectFit;
     
     [self addSubview:self.coverImageView];
     
@@ -99,8 +116,10 @@
                                        UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     
     self.titleLabel.font = [UIFont boldSystemFontOfSize:15];
-    self.titleLabel.layer.borderColor = [UIColor orangeColor].CGColor;
-    self.titleLabel.layer.borderWidth = 1;
+
+    self.titleLabel.backgroundColor = viewBackgroundColor;
+//    self.titleLabel.layer.borderColor = [UIColor orangeColor].CGColor;
+//    self.titleLabel.layer.borderWidth = 1;
     
     [self addSubview:self.titleLabel];
     
@@ -110,21 +129,23 @@
     self.subtitleLabel.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleBottomMargin | UIViewAutoresizingFlexibleTopMargin |
                                           UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     self.subtitleLabel.font = [UIFont systemFontOfSize:13];
+    self.subtitleLabel.backgroundColor = viewBackgroundColor;
     
-    self.subtitleLabel.layer.borderColor = [UIColor greenColor].CGColor;
-    self.subtitleLabel.layer.borderWidth = 1;
+//    self.subtitleLabel.layer.borderColor = [UIColor greenColor].CGColor;
+//    self.subtitleLabel.layer.borderWidth = 1;
     
     [self addSubview:self.subtitleLabel];
     
 
     // rating label - FIXME get the width right
     self.ratingLabel = [[[UILabel alloc] initWithFrame:CGRectMake(rightStartingPoint, self.titleLabel.frame.size.height + self.subtitleLabel.frame.size.height, 
-                                                                  74, labelHeight)] autorelease];
-    self.ratingLabel.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleBottomMargin | UIViewAutoresizingFlexibleTopMargin |
+                                                                  40, labelHeight)] autorelease];
+    self.ratingLabel.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleBottomMargin | UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleRightMargin |
     UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     self.ratingLabel.font = [UIFont systemFontOfSize:13];
-    self.ratingLabel.layer.borderColor = [UIColor blueColor].CGColor;
-    self.ratingLabel.layer.borderWidth = 1;
+    self.ratingLabel.backgroundColor = viewBackgroundColor;
+//    self.ratingLabel.layer.borderColor = [UIColor blueColor].CGColor;
+//    self.ratingLabel.layer.borderWidth = 1;
 
     
     [self addSubview:self.ratingLabel];
@@ -132,32 +153,30 @@
 
     // rating view - FIXME get the width right
     self.rateView = [[[RateView alloc] initWithFrame:CGRectMake(self.ratingLabel.frame.origin.x + self.ratingLabel.frame.size.width, 
-                                                                self.ratingLabel.frame.origin.y, 142, self.ratingLabel.frame.size.height)] autorelease];
+                                                                self.ratingLabel.frame.origin.y, 100, self.ratingLabel.frame.size.height)] autorelease];
     self.rateView.editable = NO;
     self.rateView.fullSelectedImage = [UIImage imageNamed:@"storiaStarFull"];
     self.rateView.notSelectedImage = [UIImage imageNamed:@"storiaStarEmpty"];
 
-    self.rateView.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleBottomMargin | UIViewAutoresizingFlexibleTopMargin |
+    self.rateView.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleBottomMargin | UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleRightMargin |
     UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-    self.rateView.layer.borderColor = [UIColor yellowColor].CGColor;
-    self.rateView.layer.borderWidth = 1;
+//    self.rateView.layer.borderColor = [UIColor yellowColor].CGColor;
+//    self.rateView.layer.borderWidth = 1;
 
     [self addSubview:self.rateView];
     
-
-    
     // wishlist checkbox button - FIXME fixed width control - get the width right
     self.onWishListButton = [[[UIButton alloc] initWithFrame:CGRectMake(rightStartingPoint, self.titleLabel.frame.size.height + self.subtitleLabel.frame.size.height + self.rateView.frame.size.height,
-                                                                        36, labelHeight)] autorelease];
+                                                                        26, labelHeight)] autorelease];
     // FIXME: buttons
-    [self.onWishListButton setImage:[UIImage imageNamed:@""] forState:UIControlStateNormal];
-    [self.onWishListButton setImage:[UIImage imageNamed:@""] forState:UIControlStateSelected];
+    [self.onWishListButton setImage:[UIImage imageNamed:@"popoverTickLight"] forState:UIControlStateNormal];
+    [self.onWishListButton setImage:[UIImage imageNamed:@"popoverTick"] forState:UIControlStateSelected];
     
-    self.onWishListButton.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleBottomMargin | UIViewAutoresizingFlexibleTopMargin |
+    self.onWishListButton.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleBottomMargin | UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleRightMargin |
     UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
 
-    self.onWishListButton.layer.borderColor = [UIColor orangeColor].CGColor;
-    self.onWishListButton.layer.borderWidth = 1;
+//    self.onWishListButton.layer.borderColor = [UIColor orangeColor].CGColor;
+//    self.onWishListButton.layer.borderWidth = 1;
     
     [self addSubview:self.onWishListButton];
     
@@ -167,21 +186,15 @@
     self.onWishListLabel.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleBottomMargin | UIViewAutoresizingFlexibleTopMargin |
     UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     self.onWishListLabel.font = [UIFont systemFontOfSize:13];
+    self.onWishListLabel.backgroundColor = viewBackgroundColor;
 
-    self.onWishListLabel.layer.borderColor = [UIColor greenColor].CGColor;
-    self.onWishListLabel.layer.borderWidth = 1;
+//    self.onWishListLabel.layer.borderColor = [UIColor greenColor].CGColor;
+//    self.onWishListLabel.layer.borderWidth = 1;
     
     [self addSubview:self.onWishListLabel];
     
-    // FIXME: debug text etc.
-    
-    self.titleLabel.text = @"Sample Book Title";
-    self.subtitleLabel.text = @"Sample Book Subtitle";
     self.ratingLabel.text = @"Kids Rating:";
-    self.rateView.rating = 3.0f;
     self.onWishListLabel.text = @"Add to Wish List";
-    self.coverImageView.backgroundColor = [UIColor purpleColor];
-    
     
 }
 @end

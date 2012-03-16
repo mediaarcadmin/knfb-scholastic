@@ -29,7 +29,8 @@ NSString * const kSCHRecommendationItem = @"SCHRecommendationItem";
 
 - (UIImage *)bookCover
 {
-    return nil;
+    // FIXME: return a real image at some point...
+    return [UIImage imageNamed:@"sampleCoverImage.jpg"];
 }
 
 @end
