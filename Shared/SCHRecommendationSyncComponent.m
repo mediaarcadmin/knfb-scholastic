@@ -157,24 +157,26 @@ NSString * const SCHRecommendationSyncComponentDidFailNotification = @"SCHRecomm
         NSMutableArray *isbns = [NSMutableArray arrayWithCapacity:[books count]];
         for (id item in books) {
             NSString *isbn = [self makeNullNil:[item valueForKey:kSCHLibreAccessWebServiceContentIdentifier]];
-            if (isbn != nil) {
+            if (isbn != nil && [isbns containsObject:isbn] == NO) {
                 [isbns addObject:isbn];
             }
         }    
         
         [self.recommendationWebService retrieveRecommendationsForBooks:isbns];
-        
     }
 
 //    NSArray *profiles = [self localProfiles];
 //    
 //    if ([profiles count] > 0) {
-//        NSMutableArray *profileIDs = [NSMutableArray arrayWithCapacity:[profiles count]];
+//        NSMutableArray *profileAges = [NSMutableArray arrayWithCapacity:[profiles count]];
 //        for (SCHProfileItem *item in profiles) {
-//            [profileIDs addObject:[NSNumber numberWithUnsignedInteger:[item age]]];
-//        }    
+//            NSNumber *age = [NSNumber numberWithUnsignedInteger:[item age]];
+//            if ([profileAges containsObject:age] == NO) {
+//                [profileAges addObject:age]];
+//            }    
+//        }
 //        
-//        [self.recommendationWebService retrieveRecommendationsForProfileWithAges:profileIDs];
+//        [self.recommendationWebService retrieveRecommendationsForProfileWithAges:profileAges];
 //    }
     
     return  ret;
@@ -260,10 +262,10 @@ NSString * const SCHRecommendationSyncComponentDidFailNotification = @"SCHRecomm
 	return(ret);
 }
 
+// the sync can provide partial results so we don't delete
 - (void)syncRecommendationProfiles:(NSArray *)webRecommendationProfiles
 {
     NSDate *syncDate = [NSDate date];
-	NSMutableArray *deletePool = [NSMutableArray array];
 	NSMutableArray *creationPool = [NSMutableArray array];
 	
 	webRecommendationProfiles = [webRecommendationProfiles sortedArrayUsingDescriptors:
@@ -278,10 +280,6 @@ NSString * const SCHRecommendationSyncComponentDidFailNotification = @"SCHRecomm
 	
 	while (webItem != nil || localItem != nil) {		            
         if (webItem == nil) {
-			while (localItem != nil) {
-				[deletePool addObject:localItem];
-				localItem = [localEnumerator nextObject];
-			} 
 			break;
 		}
 		
@@ -314,7 +312,6 @@ NSString * const SCHRecommendationSyncComponentDidFailNotification = @"SCHRecomm
                     webItem = nil;
                     break;
                 case NSOrderedDescending:
-                    [deletePool addObject:localItem];                    
                     localItem = nil;
                     break;			
             }		
@@ -327,12 +324,7 @@ NSString * const SCHRecommendationSyncComponentDidFailNotification = @"SCHRecomm
 			localItem = [localEnumerator nextObject];
 		}		
 	}
-    
-    for (SCHRecommendationProfile *recommendationProfile in deletePool) {
-        [self.managedObjectContext deleteObject:recommendationProfile];
-        [self save];
-    }                
-    
+        
 	for (NSDictionary *webItem in creationPool) {
         [self recommendationProfile:webItem syncDate:syncDate];
         [self save];
@@ -375,10 +367,11 @@ NSString * const SCHRecommendationSyncComponentDidFailNotification = @"SCHRecomm
     }
 }
 
+// the sync can provide partial results so we don't delete here - we leave that to
+// the book sync
 - (void)syncRecommendationISBNs:(NSArray *)webRecommendationISBNs
 {
     NSDate *syncDate = [NSDate date];
-	NSMutableArray *deletePool = [NSMutableArray array];
 	NSMutableArray *creationPool = [NSMutableArray array];
 	
 	webRecommendationISBNs = [webRecommendationISBNs sortedArrayUsingDescriptors:
@@ -393,10 +386,6 @@ NSString * const SCHRecommendationSyncComponentDidFailNotification = @"SCHRecomm
 	
 	while (webItem != nil || localItem != nil) {		            
         if (webItem == nil) {
-			while (localItem != nil) {
-				[deletePool addObject:localItem];
-				localItem = [localEnumerator nextObject];
-			} 
 			break;
 		}
 		
@@ -429,7 +418,6 @@ NSString * const SCHRecommendationSyncComponentDidFailNotification = @"SCHRecomm
                     webItem = nil;
                     break;
                 case NSOrderedDescending:
-                    [deletePool addObject:localItem];                    
                     localItem = nil;
                     break;			
             }		
@@ -442,12 +430,7 @@ NSString * const SCHRecommendationSyncComponentDidFailNotification = @"SCHRecomm
 			localItem = [localEnumerator nextObject];
 		}		
 	}
-    
-    for (SCHRecommendationISBN *recommendationISBN in deletePool) {
-        [self.managedObjectContext deleteObject:recommendationISBN];
-        [self save];
-    }                
-    
+        
 	for (NSDictionary *webItem in creationPool) {
         [self recommendationISBN:webItem syncDate:syncDate];
         [self save];

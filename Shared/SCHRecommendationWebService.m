@@ -28,17 +28,20 @@ NSInteger const kSCHRecommendationWebServiceParseError = 2000;
 @interface SCHRecommendationWebService ()
 
 @property (nonatomic, retain) QHTTPOperation *downloadOperation;
+@property (nonatomic, retain) NSString *activeMethod;
 
 @end
 
 @implementation SCHRecommendationWebService
 
 @synthesize downloadOperation;
+@synthesize activeMethod;
 
 - (void)dealloc
 {
     downloadOperation.delegate = nil;
     [downloadOperation release], downloadOperation = nil;
+    [activeMethod release], activeMethod = nil;
     
     [super dealloc];
 }
@@ -46,13 +49,13 @@ NSInteger const kSCHRecommendationWebServiceParseError = 2000;
 - (void)clear
 {
     downloadOperation.delegate = nil;
-    [downloadOperation release], downloadOperation = nil;    
+    self.downloadOperation = nil;
+    self.activeMethod = nil;
 }
 
 - (BOOL)retrieveRecommendationsForProfileWithAges:(NSArray *)ages
 {
     BOOL ret = NO;
-    
     NSString *userKey = [[NSUserDefaults standardUserDefaults] stringForKey:kSCHAuthenticationManagerUserKey];
     
     if (userKey != nil) {
@@ -61,46 +64,49 @@ NSInteger const kSCHRecommendationWebServiceParseError = 2000;
                                [[ages componentsJoinedByString:kSCHRecommendationWebServiceBookListSeparator] urlEncodeUsingEncoding:NSUTF8StringEncoding],
                                [userKey urlEncodeUsingEncoding:NSUTF8StringEncoding]];
         NSURL *url = [NSURL URLWithString:urlString];
+        NSMutableIndexSet *acceptableStatusCodes = [NSMutableIndexSet indexSetWithIndex:200];
+        [acceptableStatusCodes addIndex:206];
         
-        if (url != nil) {
-            NSMutableIndexSet *acceptableStatusCodes = [NSMutableIndexSet indexSetWithIndex:200];
-            [acceptableStatusCodes addIndex:206];
+        self.downloadOperation = [[[QHTTPOperation alloc] initWithURL:url] autorelease];
+        self.downloadOperation.acceptableStatusCodes = acceptableStatusCodes;
+        self.downloadOperation.responseOutputStream = [NSOutputStream outputStreamToMemory];
+        self.downloadOperation.delegate = self;
+        
+        __block SCHRecommendationWebService *weakSelf = self;
+        self.downloadOperation.completionBlock = ^{                
+            [[BITNetworkActivityManager sharedNetworkActivityManager] hideNetworkActivityIndicator];
             
-            self.downloadOperation = [[[QHTTPOperation alloc] initWithURL:url] autorelease];
-            self.downloadOperation.acceptableStatusCodes = acceptableStatusCodes;
-            self.downloadOperation.responseOutputStream = [NSOutputStream outputStreamToMemory];
-            self.downloadOperation.delegate = self;
-            
-            __block SCHRecommendationWebService *weakSelf = self;
-            self.downloadOperation.completionBlock = ^{                
-                [[BITNetworkActivityManager sharedNetworkActivityManager] hideNetworkActivityIndicator];
+            SCHRecommendationProcessor *recommendationProcessor = [[SCHRecommendationProcessor alloc] init];
+            NSArray *recommendations = [recommendationProcessor recommendationsFrom:[self.downloadOperation.responseOutputStream propertyForKey:NSStreamDataWrittenToMemoryStreamKey]];
+            if (recommendations == nil) {
+                NSError *error = [NSError errorWithDomain:kSCHRecommendationWebServiceErrorDomain 
+                                                     code:kSCHRecommendationWebServiceParseError 
+                                                 userInfo:[NSDictionary dictionaryWithObject:@"Error while attempting to parse recommend.xml"
+                                                                                      forKey:NSLocalizedDescriptionKey]];
                 
-                SCHRecommendationProcessor *recommendationProcessor = [[SCHRecommendationProcessor alloc] init];
-                NSArray *recommendations = [recommendationProcessor recommendationsFrom:[self.downloadOperation.responseOutputStream propertyForKey:NSStreamDataWrittenToMemoryStreamKey]];
-                if (recommendations == nil) {
-                    NSError *error = [NSError errorWithDomain:kSCHRecommendationWebServiceErrorDomain 
-                                                         code:kSCHRecommendationWebServiceParseError 
-                                                     userInfo:[NSDictionary dictionaryWithObject:@"Error while attempting to parse recommend.xml"
-                                                                                          forKey:NSLocalizedDescriptionKey]];
-                    
-                    if ([(id)self.delegate respondsToSelector:@selector(method:didFailWithError:requestInfo:result:)]) {
-                        [(id)self.delegate method:@"" didFailWithError:error
-                                      requestInfo:nil 
-                                           result:nil];
-                    }
-                } else {
-                    if([(id)self.delegate respondsToSelector:@selector(method:didCompleteWithResult:userInfo:)]) {
-                        [(id)self.delegate method:kSCHRecommendationWebServiceRetrieveRecommendationsForProfile didCompleteWithResult:[NSDictionary dictionaryWithObject:recommendations forKey:kSCHRecommendationWebServiceRetrieveRecommendationsForProfile] 
-                                         userInfo:nil];									
-                    }
+                if ([(id)self.delegate respondsToSelector:@selector(method:didFailWithError:requestInfo:result:)]) {
+                    [(id)self.delegate method:self.activeMethod didFailWithError:error
+                                  requestInfo:nil 
+                                       result:nil];
                 }
-                [recommendationProcessor release], recommendationProcessor = nil;
-            };
-            
-            [[BITNetworkActivityManager sharedNetworkActivityManager] showNetworkActivityIndicator];                
-            
-            [self.downloadOperation start];
-        }
+            } else {
+                if([(id)self.delegate respondsToSelector:@selector(method:didCompleteWithResult:userInfo:)]) {
+                    [(id)self.delegate method:kSCHRecommendationWebServiceRetrieveRecommendationsForProfile 
+                        didCompleteWithResult:[NSDictionary dictionaryWithObject:recommendations 
+                                                                          forKey:kSCHRecommendationWebServiceRetrieveRecommendationsForProfile] 
+                                     userInfo:nil];									
+                }
+            }
+            [recommendationProcessor release], recommendationProcessor = nil;
+            weakSelf.downloadOperation.delegate = nil;
+            weakSelf.downloadOperation = nil;
+            weakSelf.activeMethod = nil;
+        };
+        
+        [[BITNetworkActivityManager sharedNetworkActivityManager] showNetworkActivityIndicator];                
+        [self.downloadOperation start];
+        self.activeMethod = kSCHRecommendationWebServiceRetrieveRecommendationsForProfile;
+        ret = YES;
     }
     
     return ret;
@@ -109,7 +115,6 @@ NSInteger const kSCHRecommendationWebServiceParseError = 2000;
 - (BOOL)retrieveRecommendationsForBooks:(NSArray *)books
 {
     BOOL ret = NO;
-    
     NSString *userKey = [[NSUserDefaults standardUserDefaults] stringForKey:kSCHAuthenticationManagerUserKey];
     
     if (userKey != nil) {
@@ -118,46 +123,49 @@ NSInteger const kSCHRecommendationWebServiceParseError = 2000;
                                [[books componentsJoinedByString:kSCHRecommendationWebServiceBookListSeparator] urlEncodeUsingEncoding:NSUTF8StringEncoding],
                                 [userKey urlEncodeUsingEncoding:NSUTF8StringEncoding]];
         NSURL *url = [NSURL URLWithString:urlString];
+        NSMutableIndexSet *acceptableStatusCodes = [NSMutableIndexSet indexSetWithIndex:200];
+        [acceptableStatusCodes addIndex:206];
         
-        if (url != nil) {
-            NSMutableIndexSet *acceptableStatusCodes = [NSMutableIndexSet indexSetWithIndex:200];
-            [acceptableStatusCodes addIndex:206];
+        self.downloadOperation = [[[QHTTPOperation alloc] initWithURL:url] autorelease];
+        self.downloadOperation.acceptableStatusCodes = acceptableStatusCodes;
+        self.downloadOperation.responseOutputStream = [NSOutputStream outputStreamToMemory];
+        self.downloadOperation.delegate = self;
+        
+        __block SCHRecommendationWebService *weakSelf = self;
+        self.downloadOperation.completionBlock = ^{                
+            [[BITNetworkActivityManager sharedNetworkActivityManager] hideNetworkActivityIndicator];
             
-            self.downloadOperation = [[[QHTTPOperation alloc] initWithURL:url] autorelease];
-            self.downloadOperation.acceptableStatusCodes = acceptableStatusCodes;
-            self.downloadOperation.responseOutputStream = [NSOutputStream outputStreamToMemory];
-            self.downloadOperation.delegate = self;
-            
-            __block SCHRecommendationWebService *weakSelf = self;
-            self.downloadOperation.completionBlock = ^{                
-                [[BITNetworkActivityManager sharedNetworkActivityManager] hideNetworkActivityIndicator];
+            SCHRecommendationProcessor *recommendationProcessor = [[SCHRecommendationProcessor alloc] init];
+            NSArray *recommendations = [recommendationProcessor recommendationsFrom:[self.downloadOperation.responseOutputStream propertyForKey:NSStreamDataWrittenToMemoryStreamKey]];
+            if (recommendations == nil) {
+                NSError *error = [NSError errorWithDomain:kSCHRecommendationWebServiceErrorDomain 
+                                                     code:kSCHRecommendationWebServiceParseError 
+                                                 userInfo:[NSDictionary dictionaryWithObject:@"Error while attempting to parse recommend.xml"
+                                                                                      forKey:NSLocalizedDescriptionKey]];
                 
-                SCHRecommendationProcessor *recommendationProcessor = [[SCHRecommendationProcessor alloc] init];
-                NSArray *recommendations = [recommendationProcessor recommendationsFrom:[self.downloadOperation.responseOutputStream propertyForKey:NSStreamDataWrittenToMemoryStreamKey]];
-                if (recommendations == nil) {
-                    NSError *error = [NSError errorWithDomain:kSCHRecommendationWebServiceErrorDomain 
-                                                         code:kSCHRecommendationWebServiceParseError 
-                                                     userInfo:[NSDictionary dictionaryWithObject:@"Error while attempting to parse recommend.xml"
-                                                                                          forKey:NSLocalizedDescriptionKey]];
-                    
-                    if ([(id)self.delegate respondsToSelector:@selector(method:didFailWithError:requestInfo:result:)]) {
-                        [(id)self.delegate method:@"" didFailWithError:error
-                                      requestInfo:nil 
-                                           result:nil];
-                    }
-                } else {
-                    if([(id)self.delegate respondsToSelector:@selector(method:didCompleteWithResult:userInfo:)]) {
-                        [(id)self.delegate method:kSCHRecommendationWebServiceRetrieveRecommendationsForBooks didCompleteWithResult:[NSDictionary dictionaryWithObject:recommendations forKey:kSCHRecommendationWebServiceRetrieveRecommendationsForBooks] 
-                                         userInfo:nil];									
-                    }
+                if ([(id)self.delegate respondsToSelector:@selector(method:didFailWithError:requestInfo:result:)]) {
+                    [(id)self.delegate method:self.activeMethod didFailWithError:error
+                                  requestInfo:nil 
+                                       result:nil];
                 }
-                [recommendationProcessor release], recommendationProcessor = nil;
-            };
-            
-            [[BITNetworkActivityManager sharedNetworkActivityManager] showNetworkActivityIndicator];                
-            
-            [self.downloadOperation start];
-        }
+            } else {
+                if([(id)self.delegate respondsToSelector:@selector(method:didCompleteWithResult:userInfo:)]) {
+                    [(id)self.delegate method:kSCHRecommendationWebServiceRetrieveRecommendationsForBooks 
+                        didCompleteWithResult:[NSDictionary dictionaryWithObject:recommendations 
+                                                                          forKey:kSCHRecommendationWebServiceRetrieveRecommendationsForBooks] 
+                                     userInfo:nil];									
+                }
+            }
+            [recommendationProcessor release], recommendationProcessor = nil;
+            weakSelf.downloadOperation.delegate = nil;
+            weakSelf.downloadOperation = nil;
+            weakSelf.activeMethod = nil;
+        };
+        
+        [[BITNetworkActivityManager sharedNetworkActivityManager] showNetworkActivityIndicator];
+        [self.downloadOperation start];
+        self.activeMethod = kSCHRecommendationWebServiceRetrieveRecommendationsForBooks;
+        ret = YES;
     }
     
     return ret;
@@ -179,10 +187,14 @@ NSInteger const kSCHRecommendationWebServiceParseError = 2000;
     [[BITNetworkActivityManager sharedNetworkActivityManager] hideNetworkActivityIndicator];
     
     if ([(id)self.delegate respondsToSelector:@selector(method:didFailWithError:requestInfo:result:)]) {
-        [(id)self.delegate method:@"" didFailWithError:error
+        [(id)self.delegate method:self.activeMethod didFailWithError:error
                       requestInfo:nil 
                            result:nil];
     }
+    
+    self.downloadOperation.delegate = nil;
+    self.downloadOperation = nil;
+    self.activeMethod = nil;
 }
 
 @end
