@@ -16,15 +16,16 @@ extern NSString * const kSCHRecommendationProfile;
 
 @interface SCHRecommendationProfile : NSManagedObject
 
-@property (nonatomic, retain) NSNumber * profileID;
+@property (nonatomic, retain) NSNumber * age;
 @property (nonatomic, retain) NSDate * fetchDate;
-@property (nonatomic, retain) NSSet *recommendationItem;
+@property (nonatomic, retain) NSSet *recommendationItems;
 @end
 
 @interface SCHRecommendationProfile (CoreDataGeneratedAccessors)
 
-- (void)addRecommendationItemObject:(SCHRecommendationItem *)value;
-- (void)removeRecommendationItemObject:(SCHRecommendationItem *)value;
-- (void)addRecommendationItem:(NSSet *)values;
-- (void)removeRecommendationItem:(NSSet *)values;
+- (void)addRecommendationItemsObject:(SCHRecommendationItem *)value;
+- (void)removeRecommendationItemsObject:(SCHRecommendationItem *)value;
+- (void)addRecommendationItems:(NSSet *)values;
+- (void)removeRecommendationItems:(NSSet *)values;
+
 @end

@@ -9,6 +9,7 @@
 #import "SCHAppProfile.h"
 #import "SCHProfileItem.h"
 #import "SCHRecommendationItem.h"
+#import "SCHRecommendationConstants.h"
 
 // Constants
 NSString * const kSCHAppProfile = @"SCHAppProfile";
@@ -27,25 +28,21 @@ NSString * const kSCHAppProfile = @"SCHAppProfile";
 - (NSArray *)recommendations
 {
     NSArray *ret = nil;
-    NSNumber *profileID = self.ProfileItem.ID;
+    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
     
-    if ([profileID integerValue] > 0) {
-        NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
-        
-        [fetchRequest setEntity:[NSEntityDescription entityForName:kSCHRecommendationItem 
-                                            inManagedObjectContext:self.managedObjectContext]];	
-        [fetchRequest setPredicate:[NSPredicate predicateWithFormat:@"recommendationProfile.profileID = %@", profileID]];
-        [fetchRequest setSortDescriptors:[NSArray arrayWithObject:
-                                          [NSSortDescriptor sortDescriptorWithKey:kSCHRecommendationOrder ascending:YES]]];
-        
-        NSError *error = nil;
-        ret = [self.managedObjectContext executeFetchRequest:fetchRequest error:&error];	
-        if (ret == nil) {
-            NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
-        }
-        
-        [fetchRequest release], fetchRequest = nil;        
+    [fetchRequest setEntity:[NSEntityDescription entityForName:kSCHRecommendationItem 
+                                        inManagedObjectContext:self.managedObjectContext]];	
+    [fetchRequest setPredicate:[NSPredicate predicateWithFormat:@"recommendationProfile.age = %@", [self.ProfileItem age]]];
+    [fetchRequest setSortDescriptors:[NSArray arrayWithObject:
+                                      [NSSortDescriptor sortDescriptorWithKey:kSCHRecommendationWebServiceOrder ascending:YES]]];
+    
+    NSError *error = nil;
+    ret = [self.managedObjectContext executeFetchRequest:fetchRequest error:&error];	
+    if (ret == nil) {
+        NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
     }
+    
+    [fetchRequest release], fetchRequest = nil;        
     
     return ret;
 }
