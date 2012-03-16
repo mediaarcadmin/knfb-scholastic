@@ -33,13 +33,17 @@ NSString * const SCHRecommendationSyncComponentDidFailNotification = @"SCHRecomm
 - (NSArray *)localRecommendationProfiles;
 - (NSArray *)localRecommendationISBNs;
 - (void)syncRecommendationProfiles:(NSArray *)webRecommendationProfiles;
-- (SCHRecommendationProfile *)recommendationProfile:(NSDictionary *)recommendationProfile;
+- (SCHRecommendationProfile *)recommendationProfile:(NSDictionary *)recommendationProfile
+                                           syncDate:(NSDate *)syncDate;
 - (void)syncRecommendationProfile:(NSDictionary *)webRecommendationProfile 
-        withRecommendationProfile:(SCHRecommendationProfile *)localRecommendationProfile;
+        withRecommendationProfile:(SCHRecommendationProfile *)localRecommendationProfile
+                         syncDate:(NSDate *)syncDate;
 - (void)syncRecommendationISBNs:(NSArray *)webRecommendationISBNs;
-- (SCHRecommendationISBN *)recommendationISBN:(NSDictionary *)webRecommendationISBN;
+- (SCHRecommendationISBN *)recommendationISBN:(NSDictionary *)webRecommendationISBN
+                                     syncDate:(NSDate *)syncDate;
 - (void)syncRecommendationISBN:(NSDictionary *)webRecommendationISBN 
-        withRecommendationISBN:(SCHRecommendationISBN *)localRecommendationISBN;
+        withRecommendationISBN:(SCHRecommendationISBN *)localRecommendationISBN
+                      syncDate:(NSDate *)syncDate;
 - (void)syncRecommendationItems:(NSArray *)webRecommendationItems
         withRecommendationItems:(NSSet *)localRecommendationItems
                      insertInto:(id)recommendation;
@@ -258,6 +262,7 @@ NSString * const SCHRecommendationSyncComponentDidFailNotification = @"SCHRecomm
 
 - (void)syncRecommendationProfiles:(NSArray *)webRecommendationProfiles
 {
+    NSDate *syncDate = [NSDate date];
 	NSMutableArray *deletePool = [NSMutableArray array];
 	NSMutableArray *creationPool = [NSMutableArray array];
 	
@@ -299,7 +304,7 @@ NSString * const SCHRecommendationSyncComponentDidFailNotification = @"SCHRecomm
             switch ([webItemID compare:localItemID]) {
                 case NSOrderedSame:
                     [self syncRecommendationProfile:webItem 
-                          withRecommendationProfile:localItem];
+                          withRecommendationProfile:localItem syncDate:syncDate];
                     [self save];
                     webItem = nil;
                     localItem = nil;
@@ -329,7 +334,7 @@ NSString * const SCHRecommendationSyncComponentDidFailNotification = @"SCHRecomm
     }                
     
 	for (NSDictionary *webItem in creationPool) {
-        [self recommendationProfile:webItem];
+        [self recommendationProfile:webItem syncDate:syncDate];
         [self save];
 	}
     
@@ -337,6 +342,7 @@ NSString * const SCHRecommendationSyncComponentDidFailNotification = @"SCHRecomm
 }
 
 - (SCHRecommendationProfile *)recommendationProfile:(NSDictionary *)webRecommendationProfile
+                                           syncDate:(NSDate *)syncDate
 {
 	SCHRecommendationProfile *ret = nil;
 	
@@ -345,7 +351,7 @@ NSString * const SCHRecommendationSyncComponentDidFailNotification = @"SCHRecomm
                                             inManagedObjectContext:self.managedObjectContext];			
         
         ret.age = [self makeNullNil:[webRecommendationProfile objectForKey:kSCHRecommendationWebServiceAge]];
-        ret.fetchDate = [NSDate date];
+        ret.fetchDate = syncDate;
         
         [self syncRecommendationItems:[self makeNullNil:[webRecommendationProfile objectForKey:kSCHRecommendationWebServiceItems]] 
               withRecommendationItems:ret.recommendationItems
@@ -357,10 +363,11 @@ NSString * const SCHRecommendationSyncComponentDidFailNotification = @"SCHRecomm
 
 - (void)syncRecommendationProfile:(NSDictionary *)webRecommendationProfile 
         withRecommendationProfile:(SCHRecommendationProfile *)localRecommendationProfile
+                         syncDate:(NSDate *)syncDate
 {
     if (webRecommendationProfile != nil) {
         localRecommendationProfile.age = [self makeNullNil:[webRecommendationProfile objectForKey:kSCHRecommendationWebServiceAge]];
-        localRecommendationProfile.fetchDate = [NSDate date];
+        localRecommendationProfile.fetchDate = syncDate;
         
         [self syncRecommendationItems:[self makeNullNil:[webRecommendationProfile objectForKey:kSCHRecommendationWebServiceItems]] 
               withRecommendationItems:localRecommendationProfile.recommendationItems
@@ -370,6 +377,7 @@ NSString * const SCHRecommendationSyncComponentDidFailNotification = @"SCHRecomm
 
 - (void)syncRecommendationISBNs:(NSArray *)webRecommendationISBNs
 {
+    NSDate *syncDate = [NSDate date];
 	NSMutableArray *deletePool = [NSMutableArray array];
 	NSMutableArray *creationPool = [NSMutableArray array];
 	
@@ -411,7 +419,7 @@ NSString * const SCHRecommendationSyncComponentDidFailNotification = @"SCHRecomm
             switch ([webItemID compare:localItemID]) {
                 case NSOrderedSame:
                     [self syncRecommendationISBN:webItem 
-                          withRecommendationISBN:localItem];
+                          withRecommendationISBN:localItem syncDate:syncDate];
                     [self save];
                     webItem = nil;
                     localItem = nil;
@@ -441,7 +449,7 @@ NSString * const SCHRecommendationSyncComponentDidFailNotification = @"SCHRecomm
     }                
     
 	for (NSDictionary *webItem in creationPool) {
-        [self recommendationISBN:webItem];
+        [self recommendationISBN:webItem syncDate:syncDate];
         [self save];
 	}
     
@@ -449,6 +457,7 @@ NSString * const SCHRecommendationSyncComponentDidFailNotification = @"SCHRecomm
 }
 
 - (SCHRecommendationISBN *)recommendationISBN:(NSDictionary *)webRecommendationISBN
+                                     syncDate:(NSDate *)syncDate
 {
 	SCHRecommendationISBN *ret = nil;
 	
@@ -457,7 +466,7 @@ NSString * const SCHRecommendationSyncComponentDidFailNotification = @"SCHRecomm
                                             inManagedObjectContext:self.managedObjectContext];			
         
         ret.isbn = [self makeNullNil:[webRecommendationISBN objectForKey:kSCHRecommendationWebServiceISBN]];
-        ret.fetchDate = [NSDate date];
+        ret.fetchDate = syncDate;
         
         [self syncRecommendationItems:[self makeNullNil:[webRecommendationISBN objectForKey:kSCHRecommendationWebServiceItems]] 
               withRecommendationItems:ret.recommendationItems
@@ -469,10 +478,11 @@ NSString * const SCHRecommendationSyncComponentDidFailNotification = @"SCHRecomm
 
 - (void)syncRecommendationISBN:(NSDictionary *)webRecommendationISBN 
         withRecommendationISBN:(SCHRecommendationISBN *)localRecommendationISBN
+                      syncDate:(NSDate *)syncDate
 {
     if (webRecommendationISBN != nil) {
         localRecommendationISBN.isbn = [self makeNullNil:[webRecommendationISBN objectForKey:kSCHRecommendationWebServiceISBN]];
-        localRecommendationISBN.fetchDate = [NSDate date];
+        localRecommendationISBN.fetchDate = syncDate;
         
         [self syncRecommendationItems:[self makeNullNil:[webRecommendationISBN objectForKey:kSCHRecommendationWebServiceItems]] 
               withRecommendationItems:localRecommendationISBN.recommendationItems
