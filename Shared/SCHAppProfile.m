@@ -47,5 +47,15 @@ NSString * const kSCHAppProfile = @"SCHAppProfile";
     return ret;
 }
 
+- (NSArray *)wishListItems
+{
+    NSArray *ret = nil;
+
+    // FIXME: add real wish list items
+    
+    return ret;
+
+}
+
 
 @end

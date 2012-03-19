@@ -28,5 +28,6 @@ extern NSString * const kSCHAppProfile;
 @property (nonatomic, retain) NSNumber *ShowListView;
 
 - (NSArray *)recommendations;
+- (NSArray *)wishListItems;
 
 @end
