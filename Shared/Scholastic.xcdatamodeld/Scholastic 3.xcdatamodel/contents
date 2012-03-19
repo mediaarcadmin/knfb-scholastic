@@ -84,6 +84,20 @@
         <attribute name="SortType" optional="YES" attributeType="Integer 16"/>
         <relationship name="ProfileItem" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="SCHProfileItem" inverseName="AppProfile" inverseEntity="SCHProfileItem" indexed="YES"/>
     </entity>
+    <entity name="SCHAppRecommendationItem" representedClassName="SCHAppRecommendationItem" parentEntity="SCHContentItem">
+        <attribute name="Author" optional="YES" attributeType="String"/>
+        <attribute name="AverageRating" optional="YES" attributeType="String"/>
+        <attribute name="ContentURL" optional="YES" attributeType="String"/>
+        <attribute name="CoverURL" optional="YES" attributeType="String"/>
+        <attribute name="Description" optional="YES" attributeType="String"/>
+        <attribute name="Enhanced" optional="YES" attributeType="Boolean" defaultValueString="0"/>
+        <attribute name="FileName" optional="YES" attributeType="String"/>
+        <attribute name="FileSize" optional="YES" attributeType="Integer 32" defaultValueString="0"/>
+        <attribute name="PageNumber" optional="YES" attributeType="Integer 32" defaultValueString="0"/>
+        <attribute name="Title" optional="YES" attributeType="String"/>
+        <attribute name="Version" optional="YES" attributeType="String"/>
+        <relationship name="recommendationItems" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="SCHRecommendationItem" inverseName="appRecommendationItem" inverseEntity="SCHRecommendationItem" syncable="YES"/>
+    </entity>
     <entity name="SCHAppState" representedClassName="SCHAppState">
         <attribute name="DataStoreType" optional="YES" attributeType="Integer 16" defaultValueString="0"/>
         <attribute name="LastKnownAuthToken" optional="YES" attributeType="String"/>
@@ -250,6 +264,7 @@
         <attribute name="product_code" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="regular_price" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
         <attribute name="sale_price" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
+        <relationship name="appRecommendationItem" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="SCHAppRecommendationItem" inverseName="recommendationItems" inverseEntity="SCHAppRecommendationItem" syncable="YES"/>
         <relationship name="recommendationISBN" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="SCHRecommendationISBN" inverseName="recommendationItems" inverseEntity="SCHRecommendationISBN" syncable="YES"/>
         <relationship name="recommendationProfile" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="SCHRecommendationProfile" inverseName="recommendationItems" inverseEntity="SCHRecommendationProfile" syncable="YES"/>
     </entity>
@@ -345,6 +360,7 @@
         <memberEntity name="SCHRecommendationISBN"/>
         <memberEntity name="SCHRecommendationItem"/>
         <memberEntity name="SCHRecommendationProfile"/>
+        <memberEntity name="SCHAppRecommendationItem"/>
     </configuration>
     <elements>
         <element name="SCHAnnotation" positionX="292" positionY="362" width="128" height="90"/>
@@ -386,5 +402,6 @@
         <element name="SCHWishListItem" positionX="160" positionY="192" width="128" height="120"/>
         <element name="SCHWishListProfile" positionX="160" positionY="192" width="128" height="90"/>
         <element name="SCHWordIndex" positionX="0" positionY="137" width="128" height="90"/>
+        <element name="SCHAppRecommendationItem" positionX="160" positionY="192" width="128" height="225"/>
     </elements>
 </model>
