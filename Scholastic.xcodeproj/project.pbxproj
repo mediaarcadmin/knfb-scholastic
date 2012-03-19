@@ -3823,6 +3823,14 @@
 		F89140C51511EB310026F16F /* SCHBookShelfRecommendationListController.xib in Resources */ = {isa = PBXBuildFile; fileRef = F89140BF1511EB310026F16F /* SCHBookShelfRecommendationListController.xib */; };
 		F89140C61511EB310026F16F /* SCHBookShelfRecommendationListController.xib in Resources */ = {isa = PBXBuildFile; fileRef = F89140BF1511EB310026F16F /* SCHBookShelfRecommendationListController.xib */; };
 		F89140C71511EB310026F16F /* SCHBookShelfRecommendationListController.xib in Resources */ = {isa = PBXBuildFile; fileRef = F89140BF1511EB310026F16F /* SCHBookShelfRecommendationListController.xib */; };
+		F8A57E721517702000390D56 /* SCHBookShelfWishListController.m in Sources */ = {isa = PBXBuildFile; fileRef = F8A57E701517702000390D56 /* SCHBookShelfWishListController.m */; };
+		F8A57E731517702000390D56 /* SCHBookShelfWishListController.m in Sources */ = {isa = PBXBuildFile; fileRef = F8A57E701517702000390D56 /* SCHBookShelfWishListController.m */; };
+		F8A57E741517702000390D56 /* SCHBookShelfWishListController.m in Sources */ = {isa = PBXBuildFile; fileRef = F8A57E701517702000390D56 /* SCHBookShelfWishListController.m */; };
+		F8A57E751517702000390D56 /* SCHBookShelfWishListController.m in Sources */ = {isa = PBXBuildFile; fileRef = F8A57E701517702000390D56 /* SCHBookShelfWishListController.m */; };
+		F8A57E761517702000390D56 /* SCHBookShelfWishListController.xib in Resources */ = {isa = PBXBuildFile; fileRef = F8A57E711517702000390D56 /* SCHBookShelfWishListController.xib */; };
+		F8A57E771517702000390D56 /* SCHBookShelfWishListController.xib in Resources */ = {isa = PBXBuildFile; fileRef = F8A57E711517702000390D56 /* SCHBookShelfWishListController.xib */; };
+		F8A57E781517702000390D56 /* SCHBookShelfWishListController.xib in Resources */ = {isa = PBXBuildFile; fileRef = F8A57E711517702000390D56 /* SCHBookShelfWishListController.xib */; };
+		F8A57E791517702000390D56 /* SCHBookShelfWishListController.xib in Resources */ = {isa = PBXBuildFile; fileRef = F8A57E711517702000390D56 /* SCHBookShelfWishListController.xib */; };
 		F8B1E4DB14AE25670070EFCD /* storia-parent-tools-logo.png in Resources */ = {isa = PBXBuildFile; fileRef = F8B1E4D814AE25670070EFCD /* storia-parent-tools-logo.png */; };
 		F8B1E4DC14AE25670070EFCD /* storia-parent-tools-logo.png in Resources */ = {isa = PBXBuildFile; fileRef = F8B1E4D814AE25670070EFCD /* storia-parent-tools-logo.png */; };
 		F8B1E4DD14AE25670070EFCD /* storia-parent-tools-logo@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F8B1E4D914AE25670070EFCD /* storia-parent-tools-logo@2x.png */; };
@@ -5605,6 +5613,9 @@
 		F89140BD1511EB310026F16F /* SCHBookShelfRecommendationListController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHBookShelfRecommendationListController.h; path = Shared/SCHBookShelfRecommendationListController.h; sourceTree = "<group>"; };
 		F89140BE1511EB310026F16F /* SCHBookShelfRecommendationListController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHBookShelfRecommendationListController.m; path = Shared/SCHBookShelfRecommendationListController.m; sourceTree = "<group>"; };
 		F89140BF1511EB310026F16F /* SCHBookShelfRecommendationListController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = SCHBookShelfRecommendationListController.xib; path = Shared/SCHBookShelfRecommendationListController.xib; sourceTree = "<group>"; };
+		F8A57E6F1517702000390D56 /* SCHBookShelfWishListController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHBookShelfWishListController.h; path = Shared/SCHBookShelfWishListController.h; sourceTree = "<group>"; };
+		F8A57E701517702000390D56 /* SCHBookShelfWishListController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHBookShelfWishListController.m; path = Shared/SCHBookShelfWishListController.m; sourceTree = "<group>"; };
+		F8A57E711517702000390D56 /* SCHBookShelfWishListController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = SCHBookShelfWishListController.xib; path = Shared/SCHBookShelfWishListController.xib; sourceTree = "<group>"; };
 		F8B1E4D814AE25670070EFCD /* storia-parent-tools-logo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "storia-parent-tools-logo.png"; path = "Resources/UIAssets/storia-parent-tools-logo.png"; sourceTree = "<group>"; };
 		F8B1E4D914AE25670070EFCD /* storia-parent-tools-logo@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "storia-parent-tools-logo@2x.png"; path = "Resources/UIAssets/storia-parent-tools-logo@2x.png"; sourceTree = "<group>"; };
 		F8B1E4DA14AE25670070EFCD /* storia-parent-tools-logo~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "storia-parent-tools-logo~ipad.png"; path = "Resources/UIAssets/storia-parent-tools-logo~ipad.png"; sourceTree = "<group>"; };
@@ -8315,6 +8326,9 @@
 				F89140BD1511EB310026F16F /* SCHBookShelfRecommendationListController.h */,
 				F89140BE1511EB310026F16F /* SCHBookShelfRecommendationListController.m */,
 				F89140BF1511EB310026F16F /* SCHBookShelfRecommendationListController.xib */,
+				F8A57E6F1517702000390D56 /* SCHBookShelfWishListController.h */,
+				F8A57E701517702000390D56 /* SCHBookShelfWishListController.m */,
+				F8A57E711517702000390D56 /* SCHBookShelfWishListController.xib */,
 			);
 			name = Bookshelves;
 			sourceTree = "<group>";
@@ -9521,6 +9535,7 @@
 				F849156014FFA6E5000D064B /* storiaStarFull.png in Resources */,
 				F89140C41511EB310026F16F /* SCHBookShelfRecommendationListController.xib in Resources */,
 				F864916D15139122003A8B81 /* sampleCoverImage.jpg in Resources */,
+				F8A57E761517702000390D56 /* SCHBookShelfWishListController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -10235,6 +10250,7 @@
 				F849156114FFA6E5000D064B /* storiaStarFull.png in Resources */,
 				F89140C51511EB310026F16F /* SCHBookShelfRecommendationListController.xib in Resources */,
 				F864916E15139122003A8B81 /* sampleCoverImage.jpg in Resources */,
+				F8A57E771517702000390D56 /* SCHBookShelfWishListController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -10725,6 +10741,7 @@
 				F849156314FFA6E5000D064B /* storiaStarFull.png in Resources */,
 				F89140C61511EB310026F16F /* SCHBookShelfRecommendationListController.xib in Resources */,
 				F864916F15139122003A8B81 /* sampleCoverImage.jpg in Resources */,
+				F8A57E781517702000390D56 /* SCHBookShelfWishListController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -11213,6 +11230,7 @@
 				C9D7024414ED50B100C10006 /* Icon-Small@2x.png in Resources */,
 				F89140C71511EB310026F16F /* SCHBookShelfRecommendationListController.xib in Resources */,
 				F864917015139122003A8B81 /* sampleCoverImage.jpg in Resources */,
+				F8A57E791517702000390D56 /* SCHBookShelfWishListController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -11578,6 +11596,7 @@
 				525668EB1511DEBF00570623 /* SCHRecommendationProcessor.m in Sources */,
 				528F14DA1512478500C2C6DA /* SCHBookShelfRecommendationListController.m in Sources */,
 				528F14DE151247CB00C2C6DA /* SCHRecommendationListView.m in Sources */,
+				F8A57E721517702000390D56 /* SCHBookShelfWishListController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -11990,6 +12009,7 @@
 				525668EC1511DEBF00570623 /* SCHRecommendationProcessor.m in Sources */,
 				528F14DB1512478600C2C6DA /* SCHBookShelfRecommendationListController.m in Sources */,
 				528F14DF151247CC00C2C6DA /* SCHRecommendationListView.m in Sources */,
+				F8A57E731517702000390D56 /* SCHBookShelfWishListController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -12336,6 +12356,7 @@
 				525668ED1511DEBF00570623 /* SCHRecommendationProcessor.m in Sources */,
 				528F14DC1512478700C2C6DA /* SCHBookShelfRecommendationListController.m in Sources */,
 				528F14E0151247CD00C2C6DA /* SCHRecommendationListView.m in Sources */,
+				F8A57E741517702000390D56 /* SCHBookShelfWishListController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -12682,6 +12703,7 @@
 				525668EE1511DEBF00570623 /* SCHRecommendationProcessor.m in Sources */,
 				528F14DD1512478700C2C6DA /* SCHBookShelfRecommendationListController.m in Sources */,
 				528F14E1151247CD00C2C6DA /* SCHRecommendationListView.m in Sources */,
+				F8A57E751517702000390D56 /* SCHBookShelfWishListController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

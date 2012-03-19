@@ -51,6 +51,9 @@ static NSTimeInterval const kSCHBookShelfViewControllerTopTenRefreshTime = -600.
 - (void)updateTopTenWithBooks:(NSArray *)topBooks;
 - (void)showAppVersionOutdatedAlert;
 
+- (void)showRecommendationsListAnimated:(BOOL)animated;
+- (void)showWishListAnimated:(BOOL)animated;
+
 @end
 
 @implementation SCHBookShelfViewController_iPad
@@ -309,30 +312,7 @@ static NSTimeInterval const kSCHBookShelfViewControllerTopTenRefreshTime = -600.
     if ([[SCHVersionDownloadManager sharedVersionManager] isAppVersionOutdated] == YES) {
         [self showAppVersionOutdatedAlert];
     } else {
-        SCHBookShelfRecommendationListController *recommendationController = 
-        [[SCHBookShelfRecommendationListController alloc] initWithNibName:@"SCHBookShelfRecommendationListController" bundle:nil];
-        recommendationController.appProfile = self.profileItem.AppProfile;
-        recommendationController.contentSizeForViewInPopover = CGSizeMake(557, 241);
-        recommendationController.delegate = self;
-        
-        UINavigationController *navCon = [[UINavigationController alloc] initWithRootViewController:recommendationController];
-        
-        self.recommendationPopover = [[[BITModalSheetController alloc] initWithContentViewController:navCon] autorelease];
-        [self.recommendationPopover setContentSize:CGSizeMake(604, 482)];
-        [self.recommendationPopover setContentOffset:CGPointMake(0, 0)];
-        
-        __block BITModalSheetController *weakPopoverController = self.recommendationPopover;
-        __block SCHBookShelfViewController_iPad *weakSelf = self;
-        
-        recommendationController.closeBlock = ^{
-            [weakPopoverController dismissSheetAnimated:YES completion:nil];
-            weakSelf.recommendationPopover = nil;
-        };
-        
-        [self.recommendationPopover presentSheetInViewController:self animated:YES completion:nil];
-        
-        [navCon release];
-        [recommendationController release];
+        [self showRecommendationsListAnimated:YES];
     }
 }
 
@@ -381,11 +361,82 @@ static NSTimeInterval const kSCHBookShelfViewControllerTopTenRefreshTime = -600.
     self.popover = nil;
 }
 
-#pragma mark - SCHBookShelfRecommendationListController Delegate
+#pragma mark - Recommendations and Wish List
 
 - (void)switchToWishListFromRecommendationListController:(SCHBookShelfRecommendationListController *)recommendationController
 {
     NSLog(@"Switch to the wish list.");
+    [self showWishListAnimated:NO];
+}
+
+- (void)switchToRecommendationsFromWishListController:(SCHBookShelfWishListController *)wishListController
+{
+    NSLog(@"Switch to the recommendations.");
+    [self showRecommendationsListAnimated:NO];
+}
+
+- (void)showRecommendationsListAnimated:(BOOL)animated
+{
+    if (self.recommendationPopover) {
+        [self.recommendationPopover dismissSheetAnimated:NO completion:^{}];
+    }
+
+    SCHBookShelfRecommendationListController *recommendationController = 
+    [[SCHBookShelfRecommendationListController alloc] initWithNibName:@"SCHBookShelfRecommendationListController" bundle:nil];
+    recommendationController.appProfile = self.profileItem.AppProfile;
+    recommendationController.contentSizeForViewInPopover = CGSizeMake(557, 241);
+    recommendationController.delegate = self;
+    
+    UINavigationController *navCon = [[UINavigationController alloc] initWithRootViewController:recommendationController];
+    
+    self.recommendationPopover = [[[BITModalSheetController alloc] initWithContentViewController:navCon] autorelease];
+    [self.recommendationPopover setContentSize:CGSizeMake(604, 482)];
+    [self.recommendationPopover setContentOffset:CGPointMake(0, 0)];
+    
+    __block BITModalSheetController *weakPopoverController = self.recommendationPopover;
+    __block SCHBookShelfViewController_iPad *weakSelf = self;
+    
+    recommendationController.closeBlock = ^{
+        [weakPopoverController dismissSheetAnimated:YES completion:nil];
+        weakSelf.recommendationPopover = nil;
+    };
+    
+    [self.recommendationPopover presentSheetInViewController:self animated:animated completion:nil];
+    
+    [navCon release];
+    [recommendationController release];
+}
+
+- (void)showWishListAnimated:(BOOL)animated
+{
+    if (self.recommendationPopover) {
+        [self.recommendationPopover dismissSheetAnimated:NO completion:^{}];
+    }
+    
+    SCHBookShelfWishListController *wishListController = 
+    [[SCHBookShelfWishListController alloc] initWithNibName:@"SCHBookShelfWishListController" bundle:nil];
+    wishListController.appProfile = self.profileItem.AppProfile;
+    wishListController.contentSizeForViewInPopover = CGSizeMake(557, 241);
+    wishListController.delegate = self;
+    
+    UINavigationController *navCon = [[UINavigationController alloc] initWithRootViewController:wishListController];
+    
+    self.recommendationPopover = [[[BITModalSheetController alloc] initWithContentViewController:navCon] autorelease];
+    [self.recommendationPopover setContentSize:CGSizeMake(604, 482)];
+    [self.recommendationPopover setContentOffset:CGPointMake(0, 0)];
+    
+    __block BITModalSheetController *weakPopoverController = self.recommendationPopover;
+    __block SCHBookShelfViewController_iPad *weakSelf = self;
+    
+    wishListController.closeBlock = ^{
+        [weakPopoverController dismissSheetAnimated:YES completion:nil];
+        weakSelf.recommendationPopover = nil;
+    };
+    
+    [self.recommendationPopover presentSheetInViewController:self animated:animated completion:nil];
+
+    [navCon release];
+    [wishListController release];
 }
 
 #pragma mark - SCHComponent Delegate

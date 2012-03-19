@@ -11,11 +11,12 @@
 #import "SCHBookShelfSortPopoverTableView.h"
 #import "SCHComponentDelegate.h"
 #import "SCHBookShelfRecommendationListController.h"
+#import "SCHBookShelfWishListController.h"
 
 @class SCHProfileViewController_iPad;
 
 @interface SCHBookShelfViewController_iPad : SCHBookShelfViewController <UIPopoverControllerDelegate, SCHBookShelfSortPopoverTableViewDelegate, 
-                                                                         SCHComponentDelegate, SCHBookShelfRecommendationListControllerDelegate> 
+                                                                         SCHComponentDelegate, SCHBookShelfRecommendationListControllerDelegate, SCHBookShelfWishListControllerDelegate> 
 {    
 }
 
