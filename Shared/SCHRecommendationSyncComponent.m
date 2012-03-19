@@ -181,27 +181,29 @@ NSString * const SCHRecommendationSyncComponentDidFailNotification = @"SCHRecomm
             if ([profiles count] > 0) {
                 [self syncRecommendationProfiles:profiles];                        
             }
-        } else if ([method isEqualToString:kSCHRecommendationWebServiceRetrieveRecommendationsForBooks] == YES) {{
-            NSArray *books = [self makeNullNil:[result objectForKey:kSCHRecommendationWebServiceRetrieveRecommendationsForBooks]];
-            if ([books count] > 0) { 
-                [self syncRecommendationISBNs:books];            
-            }
             
             if (self.saveOnly == NO) {
-                NSArray *profiles = [self localProfiles];
+                NSArray *books = [self localBooks];
                 
-                if ([profiles count] > 0) {
-                    [self retrieveProfiles:profiles];
+                if ([books count] > 0) {
+                    [self retrieveBooks:books];
                 } else {
                     [self completeWithSuccess:method result:result userInfo:userInfo];
                 }
             } else {
                 [self completeWithSuccess:method result:result userInfo:userInfo];                
             }            
-        }           
+        } else if ([method isEqualToString:kSCHRecommendationWebServiceRetrieveRecommendationsForBooks] == YES) {
+            NSArray *books = [self makeNullNil:[result objectForKey:kSCHRecommendationWebServiceRetrieveRecommendationsForBooks]];
+            if ([books count] > 0) { 
+                [self syncRecommendationISBNs:books];            
+            }            
+            
             [self completeWithSuccess:method result:result userInfo:userInfo];
+        } else {
+            [self completeWithSuccess:method result:result userInfo:userInfo];            
         }
-    }
+    } 
     @catch (NSException *exception) {
         NSError *error = [NSError errorWithDomain:kBITAPIErrorDomain 
                                              code:kBITAPIExceptionError 
