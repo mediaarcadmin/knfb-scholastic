@@ -58,6 +58,10 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    UIColor *viewBackgroundColor = [UIColor colorWithRed:0.996 green:0.937 blue:0.718 alpha:1.0];
+    self.mainTableView.backgroundColor = viewBackgroundColor;
+
 }
 
 - (void)viewDidUnload

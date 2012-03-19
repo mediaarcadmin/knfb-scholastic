@@ -384,7 +384,6 @@ static NSTimeInterval const kSCHBookShelfViewControllerTopTenRefreshTime = -600.
     SCHBookShelfRecommendationListController *recommendationController = 
     [[SCHBookShelfRecommendationListController alloc] initWithNibName:@"SCHBookShelfRecommendationListController" bundle:nil];
     recommendationController.appProfile = self.profileItem.AppProfile;
-    recommendationController.contentSizeForViewInPopover = CGSizeMake(557, 241);
     recommendationController.delegate = self;
     
     UINavigationController *navCon = [[UINavigationController alloc] initWithRootViewController:recommendationController];
@@ -416,7 +415,6 @@ static NSTimeInterval const kSCHBookShelfViewControllerTopTenRefreshTime = -600.
     SCHBookShelfWishListController *wishListController = 
     [[SCHBookShelfWishListController alloc] initWithNibName:@"SCHBookShelfWishListController" bundle:nil];
     wishListController.appProfile = self.profileItem.AppProfile;
-    wishListController.contentSizeForViewInPopover = CGSizeMake(557, 241);
     wishListController.delegate = self;
     
     UINavigationController *navCon = [[UINavigationController alloc] initWithRootViewController:wishListController];

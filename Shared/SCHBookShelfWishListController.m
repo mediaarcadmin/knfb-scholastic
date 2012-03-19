@@ -15,6 +15,8 @@
 - (void)releaseViewObjects;
 - (IBAction)switchToRecommendations:(id)sender;
 
+@property (nonatomic, retain) NSArray *localWishListItems;
+
 @end
 
 @implementation SCHBookShelfWishListController
@@ -23,6 +25,7 @@
 @synthesize appProfile;
 @synthesize mainTableView;
 @synthesize closeBlock;
+@synthesize localWishListItems;
 
 #pragma mark - Memory Management
 
@@ -32,6 +35,7 @@
     delegate = nil;
     [appProfile release], appProfile = nil;
     [closeBlock release], closeBlock = nil;
+    [localWishListItems release], localWishListItems = nil;
     
     // release view objects
     [self releaseViewObjects];
@@ -50,7 +54,7 @@
     if (self) {
         // Custom initialization
         self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(close:)] autorelease];
-        self.title = @"Here are eBooks on your wish list";
+        self.title = @"Your Wish List";
     }
     return self;
 }
@@ -60,6 +64,14 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    UIColor *viewBackgroundColor = [UIColor colorWithRed:0.996 green:0.937 blue:0.718 alpha:1.0];
+    self.mainTableView.backgroundColor = viewBackgroundColor;
+    
+    // fetch a local list of wish list items
+    // we need to maintain this local copy, so that items can 
+    // be unticked but remain in the list
+    self.localWishListItems = [self.appProfile wishListItems];
 }
 
 - (void)viewDidUnload
@@ -102,22 +114,17 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-//    // Return the number of rows in the section.
-//    NSLog(@"Number of rows.");
-//    NSArray *recommendations = [self.appProfile recommendations];
-//    
-//    if (recommendations && recommendations.count > 0) {
-//        return recommendations.count;
-//    } else {
-//        return 0;
-//    }
-    
-    return 3;
+    // Return the number of rows in the section.
+    if (self.localWishListItems && self.localWishListItems.count > 0) {
+        return self.localWishListItems.count;
+    } else {
+        return 0;
+    }
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    static NSString *CellIdentifier = @"RecommendationListController";
+    static NSString *CellIdentifier = @"WishListControllerCell";
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     
     if (!cell) {
@@ -131,15 +138,13 @@
         [recommendationView release];
     }
     
-//    NSArray *recommendations = [self.appProfile recommendations];
-//    
-//    if (recommendations && recommendations.count > 0) {
-//        SCHRecommendationListView *recommendationView = (SCHRecommendationListView *)[cell viewWithTag:999];
-//        
-//        if (recommendationView) {
-//            [recommendationView updateWithRecommendationItem:[recommendations objectAtIndex:indexPath.row]];
-//        }
-//    }
+    if (self.localWishListItems && self.localWishListItems.count > 0) {
+        SCHRecommendationListView *recommendationView = (SCHRecommendationListView *)[cell viewWithTag:999];
+        
+        if (recommendationView) {
+            [recommendationView updateWithWishListItem:[self.localWishListItems objectAtIndex:indexPath.row]];
+        }
+    }
     
     return cell;
 }

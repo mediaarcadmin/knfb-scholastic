@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "SCHRecommendationItem.h"
+#import "SCHWishListItem.h"
 
 @protocol SCHRecommendationListViewDelegate;
 
@@ -16,6 +17,7 @@
 @property (nonatomic, assign) id <SCHRecommendationListViewDelegate> delegate;
 
 - (void)updateWithRecommendationItem:(SCHRecommendationItem *)item;
+- (void)updateWithWishListItem:(SCHWishListItem *)item;
 
 @end
 

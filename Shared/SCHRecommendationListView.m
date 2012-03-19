@@ -81,9 +81,16 @@
     self.coverImageView.image = [item bookCover];
 }
 
+- (void)updateWithWishListItem:(SCHWishListItem *)item
+{
+    self.titleLabel.text = item.Title;
+    self.subtitleLabel.text = item.Author;
+//    self.rateView.rating = item.;
+    self.coverImageView.image = [item bookCover];
+}
+
 - (void)initialiseView 
 {
-    
     UIColor *viewBackgroundColor = [UIColor colorWithRed:0.996 green:0.937 blue:0.718 alpha:1.0];
     
     self.backgroundColor = viewBackgroundColor;

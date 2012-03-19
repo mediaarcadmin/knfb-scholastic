@@ -23,4 +23,6 @@ extern NSString * const kSCHWishListItem;
 @property (nonatomic, retain) NSString * Title;
 @property (nonatomic, retain) SCHWishListProfile *WishListProfile;
 
+- (UIImage *)bookCover;
+
 @end
