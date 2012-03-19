@@ -10,6 +10,7 @@
 #import "SCHProfileItem.h"
 #import "SCHRecommendationItem.h"
 #import "SCHRecommendationConstants.h"
+#import "SCHWishListItem.h"
 
 // Constants
 NSString * const kSCHAppProfile = @"SCHAppProfile";
@@ -50,12 +51,21 @@ NSString * const kSCHAppProfile = @"SCHAppProfile";
 - (NSArray *)wishListItems
 {
     NSArray *ret = nil;
-
-    // FIXME: add real wish list items
+    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+    
+    [fetchRequest setEntity:[NSEntityDescription entityForName:kSCHWishListItem 
+                                        inManagedObjectContext:self.managedObjectContext]];	
+    [fetchRequest setPredicate:[NSPredicate predicateWithFormat:@"WishListProfile.ProfileID = %@", self.ProfileItem.ID]];
+    
+    NSError *error = nil;
+    ret = [self.managedObjectContext executeFetchRequest:fetchRequest error:&error];	
+    if (ret == nil) {
+        NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
+    }
+    
+    [fetchRequest release], fetchRequest = nil;        
     
     return ret;
-
 }
-
 
 @end
