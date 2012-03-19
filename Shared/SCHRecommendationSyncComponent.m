@@ -18,6 +18,7 @@
 #import "SCHRecommendationConstants.h"
 #import "SCHRecommendationItem.h"
 #import "SCHUserContentItem.h"
+#import "BITAPIError.h" 
 
 // Constants
 NSString * const SCHRecommendationSyncComponentDidCompleteNotification = @"SCHRecommendationSyncComponentDidCompleteNotification";
@@ -28,6 +29,15 @@ NSString * const SCHRecommendationSyncComponentDidFailNotification = @"SCHRecomm
 @property (nonatomic, retain) SCHRecommendationWebService *recommendationWebService;
 
 - (BOOL)updateRecommendations;
+- (void)completeWithSuccess:(NSString *)method 
+                     result:(NSDictionary *)result 
+                   userInfo:(NSDictionary *)userInfo;
+- (void)completeWithFailure:(NSString *)method 
+                      error:(NSError *)error 
+                requestInfo:(NSDictionary *)requestInfo 
+                     result:(NSDictionary *)result;
+- (BOOL)retrieveBooks:(NSArray *)books;
+- (BOOL)retrieveProfiles:(NSArray *)profiles;
 - (NSArray *)localProfiles;
 - (NSArray *)localBooks;
 - (NSArray *)localRecommendationProfiles;
@@ -107,31 +117,99 @@ NSString * const SCHRecommendationSyncComponentDidFailNotification = @"SCHRecomm
 	}	
 }
 
+// TODO: batch these buggers into 10s
+- (BOOL)updateRecommendations
+{	
+    BOOL ret = YES;
+
+    if (self.saveOnly == NO) {
+        NSArray *profiles = [self localProfiles];
+        
+        if ([profiles count] > 0) {
+            ret = [self retrieveProfiles:profiles];
+        } else if (self.saveOnly == NO) {
+            NSArray *books = [self localBooks];
+            
+            if ([books count] > 0) {
+                ret = [self retrieveBooks:books];
+            } else {
+                [self completeWithSuccess:nil result:nil userInfo:nil];
+            }
+        } else {
+            [self completeWithSuccess:nil result:nil userInfo:nil];
+        }
+    } else {
+        [self completeWithSuccess:nil result:nil userInfo:nil];
+    }
+    
+    return  ret;
+}
+
+- (void)completeWithSuccess:(NSString *)method 
+                     result:(NSDictionary *)result 
+                   userInfo:(NSDictionary *)userInfo
+{
+    [[NSNotificationCenter defaultCenter] postNotificationName:SCHRecommendationSyncComponentDidCompleteNotification 
+                                                        object:self 
+                                                      userInfo:nil];                
+    [super method:nil didCompleteWithResult:result userInfo:userInfo];                                
+}
+
+- (void)completeWithFailure:(NSString *)method 
+                      error:(NSError *)error 
+                requestInfo:(NSDictionary *)requestInfo 
+                     result:(NSDictionary *)result
+{
+    [[NSNotificationCenter defaultCenter] postNotificationName:SCHRecommendationSyncComponentDidFailNotification 
+                                                        object:self];        
+    [super method:method 
+ didFailWithError:error 
+      requestInfo:requestInfo 
+           result:result];    
+}
+
+#pragma - Web Service delegate methods
+
 - (void)method:(NSString *)method didCompleteWithResult:(NSDictionary *)result 
       userInfo:(NSDictionary *)userInfo
 {	
-    NSLog(@"%@", result);
-
-    NSArray *books = [result objectForKey:kSCHRecommendationWebServiceRetrieveRecommendationsForBooks];
-    [self syncRecommendationISBNs:books];
-
-//    NSArray *profiles = [result objectForKey:kSCHRecommendationWebServiceRetrieveRecommendationsForProfile];
-//    [self syncRecommendationProfiles:profiles];
+    NSLog(@"%@:didCompleteWithResult\n%@", method, result);
     
-//    @try {
-//        [self updateUserSettings:[result objectForKey:kSCHLibreAccessWebServiceUserSettingsList]];
-//        [[NSNotificationCenter defaultCenter] postNotificationName:SCHSettingsSyncComponentDidCompleteNotification object:self];			
-//        [super method:method didCompleteWithResult:nil userInfo:userInfo];	
-//    }
-//    @catch (NSException *exception) {
-//        [[NSNotificationCenter defaultCenter] postNotificationName:SCHSettingsSyncComponentDidFailNotification 
-//                                                            object:self];        
-//        NSError *error = [NSError errorWithDomain:kBITAPIErrorDomain 
-//                                             code:kBITAPIExceptionError 
-//                                         userInfo:[NSDictionary dictionaryWithObject:[exception reason]
-//                                                                              forKey:NSLocalizedDescriptionKey]];
-//        [super method:method didFailWithError:error requestInfo:nil result:result];
-//    }
+    @try {        
+        if ([method isEqualToString:kSCHRecommendationWebServiceRetrieveRecommendationsForProfile] == YES) {
+            NSArray *profiles = [self makeNullNil:[result objectForKey:kSCHRecommendationWebServiceRetrieveRecommendationsForProfile]];
+            if ([profiles count] > 0) {
+                [self syncRecommendationProfiles:profiles];                        
+            }
+        } else if ([method isEqualToString:kSCHRecommendationWebServiceRetrieveRecommendationsForBooks] == YES) {{
+            NSArray *books = [self makeNullNil:[result objectForKey:kSCHRecommendationWebServiceRetrieveRecommendationsForBooks]];
+            if ([books count] > 0) { 
+                [self syncRecommendationISBNs:books];            
+            }
+            
+            if (self.saveOnly == NO) {
+                NSArray *profiles = [self localProfiles];
+                
+                if ([profiles count] > 0) {
+                    [self retrieveProfiles:profiles];
+                } else {
+                    [self completeWithSuccess:method result:result userInfo:userInfo];
+                }
+            } else {
+                [self completeWithSuccess:method result:result userInfo:userInfo];                
+            }            
+        }           
+            [self completeWithSuccess:method result:result userInfo:userInfo];
+        }
+    }
+    @catch (NSException *exception) {
+        NSError *error = [NSError errorWithDomain:kBITAPIErrorDomain 
+                                             code:kBITAPIExceptionError 
+                                         userInfo:[NSDictionary dictionaryWithObject:[exception reason]
+                                                                              forKey:NSLocalizedDescriptionKey]];
+        [self completeWithFailure:method error:error requestInfo:nil 
+                           result:result];
+    }
 }
 
 - (void)method:(NSString *)method didFailWithError:(NSError *)error 
@@ -140,18 +218,15 @@ NSString * const SCHRecommendationSyncComponentDidFailNotification = @"SCHRecomm
 {
     NSLog(@"%@:didFailWithError\n%@", method, error);
     
-    [[NSNotificationCenter defaultCenter] postNotificationName:SCHRecommendationSyncComponentDidFailNotification 
-                                                        object:self];        
-    [super method:method didFailWithError:error requestInfo:requestInfo result:result];
+    [self completeWithFailure:method error:error requestInfo:requestInfo 
+                       result:result];
 }
 
-// TODO: batch these buggers into 10s
-- (BOOL)updateRecommendations
-{	
-    BOOL ret = YES;
-    
-    self.isSynchronizing = YES;
-    NSArray *books = [self localBooks];
+#pragma - Web API methods
+
+- (BOOL)retrieveBooks:(NSArray *)books
+{
+    BOOL ret = NO;
     
     if ([books count] > 0) {
         NSMutableArray *isbns = [NSMutableArray arrayWithCapacity:[books count]];
@@ -162,25 +237,34 @@ NSString * const SCHRecommendationSyncComponentDidFailNotification = @"SCHRecomm
             }
         }    
         
-        [self.recommendationWebService retrieveRecommendationsForBooks:isbns];
+        self.isSynchronizing = [self.recommendationWebService retrieveRecommendationsForBooks:isbns];
+        ret = self.isSynchronizing;
     }
-
-//    NSArray *profiles = [self localProfiles];
-//    
-//    if ([profiles count] > 0) {
-//        NSMutableArray *profileAges = [NSMutableArray arrayWithCapacity:[profiles count]];
-//        for (SCHProfileItem *item in profiles) {
-//            NSNumber *age = [NSNumber numberWithUnsignedInteger:[item age]];
-//            if ([profileAges containsObject:age] == NO) {
-//                [profileAges addObject:age]];
-//            }    
-//        }
-//        
-//        [self.recommendationWebService retrieveRecommendationsForProfileWithAges:profileAges];
-//    }
     
-    return  ret;
+    return ret;
 }
+
+- (BOOL)retrieveProfiles:(NSArray *)profiles
+{
+    BOOL ret = NO;
+    
+    if ([profiles count] > 0) {
+        NSMutableArray *profileAges = [NSMutableArray arrayWithCapacity:[profiles count]];
+        for (SCHProfileItem *item in profiles) {
+            NSNumber *age = [NSNumber numberWithUnsignedInteger:[item age]];
+            if ([profileAges containsObject:age] == NO) {
+                [profileAges addObject:age];
+            }    
+        }
+        
+        self.isSynchronizing = [self.recommendationWebService retrieveRecommendationsForProfileWithAges:profileAges];
+        ret = self.isSynchronizing;
+    }
+    
+    return ret;
+}
+
+#pragma - Information retrieval methods
 
 - (NSArray *)localProfiles
 {
@@ -261,6 +345,8 @@ NSString * const SCHRecommendationSyncComponentDidFailNotification = @"SCHRecomm
     
 	return(ret);
 }
+
+#pragma - Syncing methods
 
 // the sync can provide partial results so we don't delete
 - (void)syncRecommendationProfiles:(NSArray *)webRecommendationProfiles
