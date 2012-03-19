@@ -9,6 +9,7 @@
 #import "SCHRecommendationItem.h"
 #import "SCHRecommendationISBN.h"
 #import "SCHRecommendationProfile.h"
+#import "SCHAppRecommendationItem.h"
 
 // Constants
 NSString * const kSCHRecommendationItem = @"SCHRecommendationItem";
@@ -24,6 +25,7 @@ NSString * const kSCHRecommendationItem = @"SCHRecommendationItem";
 @dynamic format;
 @dynamic author;
 @dynamic order;
+@dynamic appRecommendationItem;
 @dynamic recommendationISBN;
 @dynamic recommendationProfile;
 
