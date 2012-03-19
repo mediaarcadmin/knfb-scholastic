@@ -11,6 +11,7 @@
 
 @class SCHRecommendationISBN;
 @class SCHRecommendationProfile;
+@class SCHAppRecommendationItem;
 
 // Constants
 extern NSString * const kSCHRecommendationItem;
@@ -26,6 +27,7 @@ extern NSString * const kSCHRecommendationItem;
 @property (nonatomic, retain) NSString * format;
 @property (nonatomic, retain) NSString * author;
 @property (nonatomic, retain) NSNumber * order;
+@property (nonatomic, retain) SCHAppRecommendationItem *appRecommendationItem;
 @property (nonatomic, retain) SCHRecommendationISBN *recommendationISBN;
 @property (nonatomic, retain) SCHRecommendationProfile *recommendationProfile;
 
