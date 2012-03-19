@@ -13,6 +13,7 @@
 #import "NSDate+ServerDate.h"
 #import "SCHRecommendationItem.h"
 #import "SCHRecommendationConstants.h"
+#import "SCHUserContentItem.h"
 
 // Constants
 NSString * const kSCHAppBookErrorDomain  = @"com.knfb.scholastic.AppBookErrorDomain";
@@ -163,9 +164,21 @@ NSString * const kSCHAppBookFilenameSeparator = @"-";
 
 - (NSNumber *)AverageRating
 {
+    NSString *averageRating = nil;
+    SCHUserContentItem *userContentItem = self.ContentMetadataItem.UserContentItem;
+    
+    if (userContentItem != nil) {
+        averageRating = userContentItem.AverageRating;
+    }
+
+    if (averageRating == nil || 
+        [[averageRating stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]] length]  < 1) {
+        averageRating = @"0";
+    }
+    
     NSNumberFormatter * f = [[NSNumberFormatter alloc] init];
     [f setNumberStyle:NSNumberFormatterDecimalStyle];
-    NSNumber * number = [f numberFromString:self.ContentMetadataItem.AverageRating];
+    NSNumber *number = [f numberFromString:averageRating];
     [f release];
     return number;
 }
