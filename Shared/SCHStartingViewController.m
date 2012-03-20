@@ -648,10 +648,19 @@ static const NSTimeInterval kSCHStartingViewControllerNonForcedAlertInterval = (
 {
     BITOperationWithBlocks *setupSequenceDismissLoginOperation = [[BITOperationWithBlocks alloc] init];
     setupSequenceDismissLoginOperation.asyncMain = ^(BITOperationIsCancelledBlock isCancelled, BITOperationAsyncCompletionBlock completion) {
-        [self.loginPopoverController dismissSheetAnimated:YES completion:^{
-            self.loginPopoverController = nil;
-            completion(nil);
-        }];
+        if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+            [self.loginPopoverController dismissSheetAnimated:YES completion:^{
+                self.loginPopoverController = nil;
+                completion(nil);
+            }];
+        } else {
+            [CATransaction begin];
+            [CATransaction setCompletionBlock:^{
+                completion(nil);
+            }];
+            [self dismissModalViewControllerAnimated:YES];
+            [CATransaction commit];
+        }
     };
     
     BITOperationWithBlocks *setupSequenceImportSamplesOperation = [[BITOperationWithBlocks alloc] init];
