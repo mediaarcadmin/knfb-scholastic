@@ -631,18 +631,18 @@ static NSUInteger const kSCHSyncManagerMaximumFailureRetries = 3;
 
 - (void)recommendationSync
 {
-//    if ([self shouldSync] == YES) {	 
-//        NSLog(@"Scheduling Recommendation");  
-//        
-//        [self addToQueue:self.recommendationSyncComponent];
-//        
-//        [self kickQueue];	
-//    } else {
+    if ([self shouldSync] == YES) {	 
+        NSLog(@"Scheduling Recommendation");  
+        
+        [self addToQueue:self.recommendationSyncComponent];
+        
+        [self kickQueue];	
+    } else {
         dispatch_async(dispatch_get_main_queue(), ^(void) {
             [[NSNotificationCenter defaultCenter] postNotificationName:SCHRecommendationSyncComponentDidCompleteNotification 
                                                                 object:self];		
         });        
-//    }
+    }
 }
 
 #pragma mark - SCHComponent Delegate methods

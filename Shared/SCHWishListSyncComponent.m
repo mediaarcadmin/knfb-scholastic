@@ -102,9 +102,7 @@ NSString * const SCHWishListSyncComponentDidFailNotification = @"SCHWishListSync
 
 - (void)method:(NSString *)method didCompleteWithResult:(NSDictionary *)result 
       userInfo:(NSDictionary *)userInfo
-{	
-    NSLog(@"%@:didCompleteWithResult\n%@", method, result);
-    
+{	    
     @try {
         if([method compare:kSCHWishListWebServiceDeleteWishListItems] == NSOrderedSame) {            
             NSDictionary *deleteWishListItems = [self makeNullNil:[result objectForKey:kSCHWishListWebServiceDeleteWishListItems]];

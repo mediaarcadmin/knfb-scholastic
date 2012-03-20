@@ -15,6 +15,9 @@
 extern NSString * const kSCHRecommendationWebServiceRetrieveRecommendationsForProfile;
 extern NSString * const kSCHRecommendationWebServiceRetrieveRecommendationsForBooks;
 
+// the maximum amount of items you can make in a single method call
+extern NSInteger const kSCHRecommendationWebServiceMaxRequestItems;
+
 @interface SCHRecommendationWebService : BITSOAPProxy <QHTTPOperationDelegate> 
 
 - (void)clear;

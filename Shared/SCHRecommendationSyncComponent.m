@@ -31,6 +31,7 @@ static NSTimeInterval const kSCHRecommendationSyncComponentBookSyncDelayTimeInte
 @interface SCHRecommendationSyncComponent ()
 
 @property (nonatomic, retain) SCHRecommendationWebService *recommendationWebService;
+@property (nonatomic, retain) NSMutableArray *remainingBatchedItems;
 
 - (BOOL)updateRecommendations;
 - (void)completeWithSuccess:(NSString *)method 
@@ -42,8 +43,9 @@ static NSTimeInterval const kSCHRecommendationSyncComponentBookSyncDelayTimeInte
                      result:(NSDictionary *)result;
 - (BOOL)retrieveBooks:(NSArray *)books;
 - (BOOL)retrieveProfiles:(NSArray *)profiles;
-- (NSArray *)localFilteredProfiles;
-- (NSArray *)localFilteredBooks;
+- (NSMutableArray *)removeBatchItemsFrom:(NSMutableArray *)items;
+- (NSMutableArray *)localFilteredProfiles;
+- (NSMutableArray *)localFilteredBooks;
 - (NSArray *)localRecommendationProfiles;
 - (NSArray *)localRecommendationISBNs;
 - (void)syncRecommendationProfiles:(NSArray *)webRecommendationProfiles;
@@ -70,6 +72,7 @@ static NSTimeInterval const kSCHRecommendationSyncComponentBookSyncDelayTimeInte
 @implementation SCHRecommendationSyncComponent
 
 @synthesize recommendationWebService;
+@synthesize remainingBatchedItems;
 
 - (id)init
 {
@@ -86,6 +89,7 @@ static NSTimeInterval const kSCHRecommendationSyncComponentBookSyncDelayTimeInte
 {
     recommendationWebService.delegate = nil;
 	[recommendationWebService release], recommendationWebService = nil;
+    [remainingBatchedItems release], remainingBatchedItems = nil;
     
 	[super dealloc];
 }
@@ -115,26 +119,29 @@ static NSTimeInterval const kSCHRecommendationSyncComponentBookSyncDelayTimeInte
 	
     [self.recommendationWebService clear];
     
+    self.remainingBatchedItems = nil;
+
 	if (![self.managedObjectContext BITemptyEntity:kSCHRecommendationProfile error:&error] ||
         ![self.managedObjectContext BITemptyEntity:kSCHRecommendationISBN error:&error]) {
 		NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
 	}	
 }
 
-// TODO: batch these buggers into 10s
 - (BOOL)updateRecommendations
 {	
     BOOL ret = YES;
 
     if (self.saveOnly == NO) {
-        NSArray *profiles = [self localFilteredProfiles];
+        NSMutableArray *profiles = [self localFilteredProfiles];
         
         if ([profiles count] > 0) {
+            self.remainingBatchedItems = [self removeBatchItemsFrom:profiles];
             ret = [self retrieveProfiles:profiles];
         } else if (self.saveOnly == NO) {
-            NSArray *books = [self localFilteredBooks];
+            NSMutableArray *books = [self localFilteredBooks];
             
             if ([books count] > 0) {
+                self.remainingBatchedItems = [self removeBatchItemsFrom:books];
                 ret = [self retrieveBooks:books];
             } else {
                 [self completeWithSuccess:nil result:nil userInfo:nil];
@@ -153,6 +160,7 @@ static NSTimeInterval const kSCHRecommendationSyncComponentBookSyncDelayTimeInte
                      result:(NSDictionary *)result 
                    userInfo:(NSDictionary *)userInfo
 {
+    self.remainingBatchedItems = nil;
     [[NSNotificationCenter defaultCenter] postNotificationName:SCHRecommendationSyncComponentDidCompleteNotification 
                                                         object:self 
                                                       userInfo:nil];                
@@ -166,6 +174,7 @@ static NSTimeInterval const kSCHRecommendationSyncComponentBookSyncDelayTimeInte
 {
     [[NSNotificationCenter defaultCenter] postNotificationName:SCHRecommendationSyncComponentDidFailNotification 
                                                         object:self];        
+    self.remainingBatchedItems = nil;
     [super method:method 
  didFailWithError:error 
       requestInfo:requestInfo 
@@ -177,8 +186,6 @@ static NSTimeInterval const kSCHRecommendationSyncComponentBookSyncDelayTimeInte
 - (void)method:(NSString *)method didCompleteWithResult:(NSDictionary *)result 
       userInfo:(NSDictionary *)userInfo
 {	
-    NSLog(@"%@:didCompleteWithResult\n%@", method, result);
-    
     @try {        
         if ([method isEqualToString:kSCHRecommendationWebServiceRetrieveRecommendationsForProfile] == YES) {
             NSArray *profiles = [self makeNullNil:[result objectForKey:kSCHRecommendationWebServiceRetrieveRecommendationsForProfile]];
@@ -187,12 +194,19 @@ static NSTimeInterval const kSCHRecommendationSyncComponentBookSyncDelayTimeInte
             }
             
             if (self.saveOnly == NO) {
-                NSArray *books = [self localFilteredBooks];
-                
-                if ([books count] > 0) {
-                    [self retrieveBooks:books];
+                if ([self.remainingBatchedItems count] > 0) {
+                    NSMutableArray *remainingProfiles = [self removeBatchItemsFrom:self.remainingBatchedItems];
+                    [self retrieveProfiles:self.remainingBatchedItems];  
+                    self.remainingBatchedItems = remainingProfiles;                    
                 } else {
-                    [self completeWithSuccess:method result:result userInfo:userInfo];
+                    NSMutableArray *books = [self localFilteredBooks];
+                    
+                    if ([books count] > 0) {
+                        self.remainingBatchedItems = [self removeBatchItemsFrom:books];
+                        [self retrieveBooks:books];
+                    } else {
+                        [self completeWithSuccess:method result:result userInfo:userInfo];
+                    }
                 }
             } else {
                 [self completeWithSuccess:method result:result userInfo:userInfo];                
@@ -203,7 +217,13 @@ static NSTimeInterval const kSCHRecommendationSyncComponentBookSyncDelayTimeInte
                 [self syncRecommendationISBNs:books];            
             }            
             
-            [self completeWithSuccess:method result:result userInfo:userInfo];
+            if ([self.remainingBatchedItems count] > 0) {
+                NSMutableArray *remainingBooks = [self removeBatchItemsFrom:self.remainingBatchedItems];
+                [self retrieveBooks:self.remainingBatchedItems];                    
+                self.remainingBatchedItems = remainingBooks;                
+            } else {
+                [self completeWithSuccess:method result:result userInfo:userInfo];
+            }
         } else {
             [self completeWithSuccess:method result:result userInfo:userInfo];            
         }
@@ -235,7 +255,6 @@ static NSTimeInterval const kSCHRecommendationSyncComponentBookSyncDelayTimeInte
     BOOL ret = NO;
     
     if ([isbns count] > 0) {
-        
         self.isSynchronizing = [self.recommendationWebService retrieveRecommendationsForBooks:isbns];
         ret = self.isSynchronizing;
     }
@@ -255,9 +274,23 @@ static NSTimeInterval const kSCHRecommendationSyncComponentBookSyncDelayTimeInte
     return ret;
 }
 
+- (NSMutableArray *)removeBatchItemsFrom:(NSMutableArray *)items
+{
+    NSMutableArray *ret = nil;
+    
+    if ([items count] > kSCHRecommendationWebServiceMaxRequestItems) {
+        NSRange remainingItems = NSMakeRange(kSCHRecommendationWebServiceMaxRequestItems, 
+                                             [items count] - kSCHRecommendationWebServiceMaxRequestItems);
+        ret = [NSMutableArray arrayWithArray:[items subarrayWithRange:remainingItems]];
+        [items removeObjectsInRange:remainingItems];
+    }   
+    
+    return ret;
+}
+
 #pragma - Information retrieval methods
 
-- (NSArray *)localFilteredProfiles
+- (NSMutableArray *)localFilteredProfiles
 {
     NSMutableArray *profileAges = nil;
 	NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
@@ -293,7 +326,7 @@ static NSTimeInterval const kSCHRecommendationSyncComponentBookSyncDelayTimeInte
 	return(profileAges);
 }
 
-- (NSArray *)localFilteredBooks
+- (NSMutableArray *)localFilteredBooks
 {
     NSMutableArray *isbns = nil;
 	NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];

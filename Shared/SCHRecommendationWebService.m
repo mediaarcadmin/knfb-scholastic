@@ -25,6 +25,8 @@ NSString * const kSCHRecommendationWebServiceRetrieveRecommendationsForBooks = @
 NSString * const kSCHRecommendationWebServiceErrorDomain = @"RecommendationWebServiceErrorDomain";
 NSInteger const kSCHRecommendationWebServiceParseError = 2000;
 
+NSInteger const kSCHRecommendationWebServiceMaxRequestItems = 10;
+
 @interface SCHRecommendationWebService ()
 
 @property (nonatomic, retain) QHTTPOperation *downloadOperation;
