@@ -13,6 +13,7 @@
 #import "NSDate+ServerDate.h"
 #import "SCHRecommendationItem.h"
 #import "SCHRecommendationConstants.h"
+#import "SCHRecommendationISBN.h"
 #import "SCHUserContentItem.h"
 
 // Constants
@@ -368,6 +369,28 @@ NSString * const kSCHAppBookFilenameSeparator = @"-";
         [self.XPSCategory caseInsensitiveCompare:kSCHAppBookCategoryPictureBook] == NSOrderedSame) {
         ret = YES;
     }    
+    
+    return ret;
+}
+
+- (SCHRecommendationISBN *)recommendationISBN
+{
+    SCHRecommendationISBN *ret = nil;
+    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+    
+    [fetchRequest setEntity:[NSEntityDescription entityForName:kSCHRecommendationISBN 
+                                        inManagedObjectContext:self.managedObjectContext]];	
+    [fetchRequest setPredicate:[NSPredicate predicateWithFormat:@"isbn = %@", self.bookIdentifier.isbn]];
+    
+    NSError *error = nil;
+    NSArray *books = [self.managedObjectContext executeFetchRequest:fetchRequest error:&error];	
+    if (books == nil) {
+        NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
+    } else if ([books count] > 0) {
+        ret = [books objectAtIndex:0];
+    }
+    
+    [fetchRequest release], fetchRequest = nil;        
     
     return ret;
 }

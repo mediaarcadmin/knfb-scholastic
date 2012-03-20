@@ -19,10 +19,14 @@
 #import "SCHRecommendationItem.h"
 #import "SCHUserContentItem.h"
 #import "BITAPIError.h" 
+#import "SCHContentMetadataItem.h"
 
 // Constants
 NSString * const SCHRecommendationSyncComponentDidCompleteNotification = @"SCHRecommendationSyncComponentDidCompleteNotification";
 NSString * const SCHRecommendationSyncComponentDidFailNotification = @"SCHRecommendationSyncComponentDidFailNotification";
+
+static NSTimeInterval const kSCHRecommendationSyncComponentProfileSyncDelayTimeInterval = 86400.0;  // 24h
+static NSTimeInterval const kSCHRecommendationSyncComponentBookSyncDelayTimeInterval = 86400.0;  // 24h
 
 @interface SCHRecommendationSyncComponent ()
 
@@ -38,8 +42,8 @@ NSString * const SCHRecommendationSyncComponentDidFailNotification = @"SCHRecomm
                      result:(NSDictionary *)result;
 - (BOOL)retrieveBooks:(NSArray *)books;
 - (BOOL)retrieveProfiles:(NSArray *)profiles;
-- (NSArray *)localProfiles;
-- (NSArray *)localBooks;
+- (NSArray *)localFilteredProfiles;
+- (NSArray *)localFilteredBooks;
 - (NSArray *)localRecommendationProfiles;
 - (NSArray *)localRecommendationISBNs;
 - (void)syncRecommendationProfiles:(NSArray *)webRecommendationProfiles;
@@ -123,12 +127,12 @@ NSString * const SCHRecommendationSyncComponentDidFailNotification = @"SCHRecomm
     BOOL ret = YES;
 
     if (self.saveOnly == NO) {
-        NSArray *profiles = [self localProfiles];
+        NSArray *profiles = [self localFilteredProfiles];
         
         if ([profiles count] > 0) {
             ret = [self retrieveProfiles:profiles];
         } else if (self.saveOnly == NO) {
-            NSArray *books = [self localBooks];
+            NSArray *books = [self localFilteredBooks];
             
             if ([books count] > 0) {
                 ret = [self retrieveBooks:books];
@@ -183,7 +187,7 @@ NSString * const SCHRecommendationSyncComponentDidFailNotification = @"SCHRecomm
             }
             
             if (self.saveOnly == NO) {
-                NSArray *books = [self localBooks];
+                NSArray *books = [self localFilteredBooks];
                 
                 if ([books count] > 0) {
                     [self retrieveBooks:books];
@@ -226,18 +230,11 @@ NSString * const SCHRecommendationSyncComponentDidFailNotification = @"SCHRecomm
 
 #pragma - Web API methods
 
-- (BOOL)retrieveBooks:(NSArray *)books
+- (BOOL)retrieveBooks:(NSArray *)isbns
 {
     BOOL ret = NO;
     
-    if ([books count] > 0) {
-        NSMutableArray *isbns = [NSMutableArray arrayWithCapacity:[books count]];
-        for (id item in books) {
-            NSString *isbn = [self makeNullNil:[item valueForKey:kSCHLibreAccessWebServiceContentIdentifier]];
-            if (isbn != nil && [isbns containsObject:isbn] == NO) {
-                [isbns addObject:isbn];
-            }
-        }    
+    if ([isbns count] > 0) {
         
         self.isSynchronizing = [self.recommendationWebService retrieveRecommendationsForBooks:isbns];
         ret = self.isSynchronizing;
@@ -246,19 +243,11 @@ NSString * const SCHRecommendationSyncComponentDidFailNotification = @"SCHRecomm
     return ret;
 }
 
-- (BOOL)retrieveProfiles:(NSArray *)profiles
+- (BOOL)retrieveProfiles:(NSArray *)profileAges
 {
     BOOL ret = NO;
     
-    if ([profiles count] > 0) {
-        NSMutableArray *profileAges = [NSMutableArray arrayWithCapacity:[profiles count]];
-        for (SCHProfileItem *item in profiles) {
-            NSNumber *age = [NSNumber numberWithUnsignedInteger:[item age]];
-            if ([profileAges containsObject:age] == NO) {
-                [profileAges addObject:age];
-            }    
-        }
-        
+    if ([profileAges count] > 0) {        
         self.isSynchronizing = [self.recommendationWebService retrieveRecommendationsForProfileWithAges:profileAges];
         ret = self.isSynchronizing;
     }
@@ -268,8 +257,9 @@ NSString * const SCHRecommendationSyncComponentDidFailNotification = @"SCHRecomm
 
 #pragma - Information retrieval methods
 
-- (NSArray *)localProfiles
+- (NSArray *)localFilteredProfiles
 {
+    NSMutableArray *profileAges = nil;
 	NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
 	
 	[fetchRequest setEntity:[NSEntityDescription entityForName:kSCHProfileItem 
@@ -278,18 +268,34 @@ NSString * const SCHRecommendationSyncComponentDidFailNotification = @"SCHRecomm
                                       [NSSortDescriptor sortDescriptorWithKey:kSCHLibreAccessWebServiceID ascending:YES]]];
 	
     NSError *error = nil;
-	NSArray *ret = [self.managedObjectContext executeFetchRequest:fetchRequest error:&error];	
-    if (ret == nil) {
+	NSArray *results = [self.managedObjectContext executeFetchRequest:fetchRequest error:&error];	
+    if (results == nil) {
         NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
+    } else {
+        // only return those items that require updating
+        profileAges = [NSMutableArray arrayWithCapacity:[results count]];
+        for (SCHProfileItem *item in results) {
+            SCHRecommendationProfile *profile = [[item AppProfile] recommendationProfile];
+            NSDate *nextUpdate = [profile.fetchDate dateByAddingTimeInterval:kSCHRecommendationSyncComponentProfileSyncDelayTimeInterval];
+            
+            if (profile == nil || 
+                nextUpdate == nil ||
+                [[NSDate date] earlierDate:nextUpdate] == nextUpdate) {
+                NSNumber *age = [NSNumber numberWithUnsignedInteger:[item age]];
+                if ([profileAges containsObject:age] == NO) {
+                    [profileAges addObject:age];
+                }    
+            }
+        }                
     }
-	
 	[fetchRequest release], fetchRequest = nil;
-    
-	return(ret);
+        
+	return(profileAges);
 }
 
-- (NSArray *)localBooks
+- (NSArray *)localFilteredBooks
 {
+    NSMutableArray *isbns = nil;
 	NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
 	
 	[fetchRequest setEntity:[NSEntityDescription entityForName:kSCHUserContentItem 
@@ -298,14 +304,36 @@ NSString * const SCHRecommendationSyncComponentDidFailNotification = @"SCHRecomm
                                       [NSSortDescriptor sortDescriptorWithKey:kSCHLibreAccessWebServiceContentIdentifier ascending:YES]]];
 	
     NSError *error = nil;
-	NSArray *ret = [self.managedObjectContext executeFetchRequest:fetchRequest error:&error];	
-    if (ret == nil) {
+	NSArray *results = [self.managedObjectContext executeFetchRequest:fetchRequest error:&error];	
+    if (results == nil) {
         NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
+    } else {
+        // only return those items that require updating
+        isbns = [NSMutableArray arrayWithCapacity:[results count]];
+        for (SCHUserContentItem *item in results) {
+            NSSet *contentMetadataItems = [item ContentMetadataItem];            
+            SCHRecommendationISBN *isbn = nil;
+            if ([contentMetadataItems count] > 0) {
+                // it's a book to book relationship so only 1 book in the set
+                SCHContentMetadataItem *contentMetadataItem = [contentMetadataItems anyObject];
+                isbn = [contentMetadataItem.AppBook recommendationISBN];
+            }
+            NSDate *nextUpdate = [isbn.fetchDate dateByAddingTimeInterval:kSCHRecommendationSyncComponentBookSyncDelayTimeInterval];
+            
+            if (isbn == nil || 
+                nextUpdate == nil ||
+                [[NSDate date] earlierDate:nextUpdate] == nextUpdate) {
+                NSString *isbn = [self makeNullNil:[item valueForKey:kSCHLibreAccessWebServiceContentIdentifier]];
+                if (isbn != nil && [isbns containsObject:isbn] == NO) {
+                    [isbns addObject:isbn];
+                }
+            }
+        }                    
     }
-	
 	[fetchRequest release], fetchRequest = nil;
     
-	return(ret);
+
+	return(isbns);
 }
 
 - (NSArray *)localRecommendationProfiles
