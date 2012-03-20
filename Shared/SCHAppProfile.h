@@ -10,6 +10,7 @@
 #import <CoreData/CoreData.h>
 
 @class SCHProfileItem;
+@class SCHRecommendationProfile;
 
 // Constants
 extern NSString * const kSCHAppProfile;
@@ -27,6 +28,7 @@ extern NSString * const kSCHAppProfile;
 @property (nonatomic, retain) NSNumber *SortType;
 @property (nonatomic, retain) NSNumber *ShowListView;
 
+- (SCHRecommendationProfile *)recommendationProfile;
 - (NSArray *)recommendations;
 - (NSArray *)wishListItems;
 

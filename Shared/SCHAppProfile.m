@@ -9,6 +9,7 @@
 #import "SCHAppProfile.h"
 #import "SCHProfileItem.h"
 #import "SCHRecommendationItem.h"
+#import "SCHRecommendationProfile.h"
 #import "SCHRecommendationConstants.h"
 #import "SCHWishListItem.h"
 
@@ -25,6 +26,28 @@ NSString * const kSCHAppProfile = @"SCHAppProfile";
 @dynamic PaperType;
 @dynamic SortType;
 @dynamic ShowListView;
+
+- (SCHRecommendationProfile *)recommendationProfile
+{
+    SCHRecommendationProfile *ret = nil;
+    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+    
+    [fetchRequest setEntity:[NSEntityDescription entityForName:kSCHRecommendationProfile 
+                                        inManagedObjectContext:self.managedObjectContext]];	
+    [fetchRequest setPredicate:[NSPredicate predicateWithFormat:@"age = %d", self.ProfileItem.age]];
+    
+    NSError *error = nil;
+    NSArray *profiles = [self.managedObjectContext executeFetchRequest:fetchRequest error:&error];	
+    if (profiles == nil) {
+        NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
+    } else if ([profiles count] > 0) {
+        ret = [profiles objectAtIndex:0];
+    }
+    
+    [fetchRequest release], fetchRequest = nil;        
+    
+    return ret;
+}
 
 - (NSArray *)recommendations
 {
