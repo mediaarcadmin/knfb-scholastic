@@ -28,6 +28,8 @@
 @implementation SCHRecommendationListView
 
 @synthesize delegate;
+@synthesize ISBN;
+@synthesize isOnWishList;
 
 @synthesize coverImageView;
 @synthesize titleLabel;
@@ -40,6 +42,7 @@
 - (void)dealloc
 {
     delegate = nil;
+    [ISBN release], ISBN = nil;
     [coverImageView release], coverImageView = nil;
     [titleLabel release], titleLabel = nil;
     [subtitleLabel release], subtitleLabel = nil;
@@ -73,20 +76,38 @@
 	return self;
 }
 
-- (void)updateWithRecommendationItem:(SCHRecommendationItem *)item
+- (void)toggledOnWishListButton:(UIButton *)wishListButton
 {
-    self.titleLabel.text = item.name;
-    self.subtitleLabel.text = item.author;
-//    self.rateView.rating = item.;
-    self.coverImageView.image = [item bookCover];
+    if (self.delegate) {
+        if (!wishListButton.isSelected) {
+            [self.delegate recommendationListView:self addedISBNToWishList:self.ISBN];
+        } else {
+            [self.delegate recommendationListView:self removedISBNFromWishList:self.ISBN];
+        }
+    }
 }
 
-- (void)updateWithWishListItem:(SCHWishListItem *)item
+- (void)setIsOnWishList:(BOOL)newIsOnWishList
 {
-    self.titleLabel.text = item.Title;
-    self.subtitleLabel.text = item.Author;
+    isOnWishList = newIsOnWishList;
+    [self.onWishListButton setSelected:isOnWishList];
+}
+
+- (void)updateWithRecommendationItem:(NSDictionary *)item
+{
+    
+    self.titleLabel.text = [item objectForKey:kSCHRecommendationWebServiceName];
+    self.subtitleLabel.text = [item objectForKey:kSCHRecommendationWebServiceAuthor];
 //    self.rateView.rating = item.;
-    self.coverImageView.image = [item bookCover];
+//    self.coverImageView.image = [item bookCover];
+}
+
+- (void)updateWithWishListItem:(NSDictionary *)item
+{
+    self.titleLabel.text = [item objectForKey:kSCHWishListWebServiceTitle];
+    self.subtitleLabel.text = [item objectForKey:kSCHWishListWebServiceAuthor];
+//    self.rateView.rating = item.;
+//    self.coverImageView.image = [item bookCover];
 }
 
 - (void)initialiseView 
@@ -125,8 +146,6 @@
     self.titleLabel.font = [UIFont boldSystemFontOfSize:15];
 
     self.titleLabel.backgroundColor = viewBackgroundColor;
-//    self.titleLabel.layer.borderColor = [UIColor orangeColor].CGColor;
-//    self.titleLabel.layer.borderWidth = 1;
     
     [self addSubview:self.titleLabel];
     
@@ -138,9 +157,6 @@
     self.subtitleLabel.font = [UIFont systemFontOfSize:13];
     self.subtitleLabel.backgroundColor = viewBackgroundColor;
     
-//    self.subtitleLabel.layer.borderColor = [UIColor greenColor].CGColor;
-//    self.subtitleLabel.layer.borderWidth = 1;
-    
     [self addSubview:self.subtitleLabel];
     
 
@@ -151,9 +167,6 @@
     UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     self.ratingLabel.font = [UIFont systemFontOfSize:13];
     self.ratingLabel.backgroundColor = viewBackgroundColor;
-//    self.ratingLabel.layer.borderColor = [UIColor blueColor].CGColor;
-//    self.ratingLabel.layer.borderWidth = 1;
-
     
     [self addSubview:self.ratingLabel];
     
@@ -167,8 +180,6 @@
 
     self.rateView.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleBottomMargin | UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleRightMargin |
     UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-//    self.rateView.layer.borderColor = [UIColor yellowColor].CGColor;
-//    self.rateView.layer.borderWidth = 1;
 
     [self addSubview:self.rateView];
     
@@ -182,8 +193,7 @@
     self.onWishListButton.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleBottomMargin | UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleRightMargin |
     UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
 
-//    self.onWishListButton.layer.borderColor = [UIColor orangeColor].CGColor;
-//    self.onWishListButton.layer.borderWidth = 1;
+    [self.onWishListButton addTarget:self action:@selector(toggledOnWishListButton:) forControlEvents:UIControlEventTouchUpInside];
     
     [self addSubview:self.onWishListButton];
     
@@ -194,9 +204,6 @@
     UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     self.onWishListLabel.font = [UIFont systemFontOfSize:13];
     self.onWishListLabel.backgroundColor = viewBackgroundColor;
-
-//    self.onWishListLabel.layer.borderColor = [UIColor greenColor].CGColor;
-//    self.onWishListLabel.layer.borderWidth = 1;
     
     [self addSubview:self.onWishListLabel];
     

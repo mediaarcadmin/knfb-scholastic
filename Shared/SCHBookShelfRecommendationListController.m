@@ -7,11 +7,13 @@
 //
 
 #import "SCHBookShelfRecommendationListController.h"
-#import "SCHRecommendationListView.h"
 
 @interface SCHBookShelfRecommendationListController ()
 
 - (void)releaseViewObjects;
+
+@property (nonatomic, retain) NSArray *localRecommendationItems;
+@property (nonatomic, retain) NSArray *localWishListItems;
 
 @end
 
@@ -21,6 +23,8 @@
 @synthesize appProfile;
 @synthesize mainTableView;
 @synthesize closeBlock;
+@synthesize localRecommendationItems;
+@synthesize localWishListItems;
 
 #pragma mark - Memory Management
 
@@ -28,6 +32,8 @@
 {
     // release any non-view objects
     delegate = nil;
+    [localWishListItems release], localWishListItems = nil;
+    [localRecommendationItems release], localRecommendationItems = nil;
     [appProfile release], appProfile = nil;
     [closeBlock release], closeBlock = nil;
     
@@ -61,6 +67,9 @@
     
     UIColor *viewBackgroundColor = [UIColor colorWithRed:0.996 green:0.937 blue:0.718 alpha:1.0];
     self.mainTableView.backgroundColor = viewBackgroundColor;
+    
+    self.localRecommendationItems = [self.appProfile recommendations];
+    self.localWishListItems = [self.appProfile wishListItems];
 
 }
 
@@ -94,6 +103,59 @@
     return YES;
 }
 
+#pragma mark - SCHRecommendationListView delegate
+
+- (void)recommendationListView:(SCHRecommendationListView *)listView addedISBNToWishList:(NSString *)ISBN
+{
+    // find the recommendation item
+    NSUInteger index = [self.localRecommendationItems indexOfObjectPassingTest:^BOOL (id obj, NSUInteger idx, BOOL *stop) {
+        return [[(NSDictionary *)obj objectForKey:kSCHRecommendationWebServiceProductCode] isEqualToString:ISBN];
+    }];
+    
+    if (index != NSNotFound) {
+        NSDictionary *item = [self.localRecommendationItems objectAtIndex:index];
+
+        // create the wishlist dictionary
+        // add it to the profile
+        NSMutableDictionary *wishListItem = [NSMutableDictionary dictionary];
+        
+        [wishListItem setValue:([item objectForKey:kSCHRecommendationWebServiceAuthor] == nil ? (id)[NSNull null] : [item objectForKey:kSCHRecommendationWebServiceAuthor]) 
+                        forKey:kSCHWishListWebServiceAuthor];
+        [wishListItem setValue:([item objectForKey:kSCHRecommendationWebServiceProductCode] == nil ? (id)[NSNull null] : [item objectForKey:kSCHRecommendationWebServiceProductCode]) 
+                        forKey:kSCHWishListWebServiceISBN];
+        [wishListItem setValue:([item objectForKey:kSCHRecommendationWebServiceName] == nil ? (id)[NSNull null] : [item objectForKey:kSCHRecommendationWebServiceName]) 
+                        forKey:kSCHWishListWebServiceTitle];
+        
+        [self.appProfile addToWishList:wishListItem];
+    }
+
+    
+    // reload table data
+    self.localRecommendationItems = [self.appProfile recommendations];
+    self.localWishListItems = [self.appProfile wishListItems];
+    [self.mainTableView reloadData];
+}
+
+- (void)recommendationListView:(SCHRecommendationListView *)listView removedISBNFromWishList:(NSString *)ISBN
+{
+    // get the wishlist from the app profile
+    NSArray *wishListItems = [self.appProfile wishListItems];
+    
+    NSUInteger index = [wishListItems indexOfObjectPassingTest:^BOOL (id obj, NSUInteger idx, BOOL *stop) {
+        return [[(NSDictionary *)obj objectForKey:kSCHWishListWebServiceISBN] isEqualToString:ISBN];
+    }];
+    
+    if (index != NSNotFound) {
+        NSDictionary *item = [wishListItems objectAtIndex:index];
+        [self.appProfile removeFromWishList:item];
+    }
+    
+    // reload table data
+    self.localRecommendationItems = [self.appProfile recommendations];
+    self.localWishListItems = [self.appProfile wishListItems];
+    [self.mainTableView reloadData];
+}
+
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
@@ -106,10 +168,9 @@
 {
     // Return the number of rows in the section.
     NSLog(@"Number of rows.");
-    NSArray *recommendations = [self.appProfile recommendations];
     
-    if (recommendations && recommendations.count > 0) {
-        return recommendations.count;
+    if (self.localRecommendationItems && self.localRecommendationItems.count > 0) {
+        return self.localRecommendationItems.count;
     } else {
         return 0;
     }
@@ -126,23 +187,39 @@
         SCHRecommendationListView *recommendationView = [[SCHRecommendationListView alloc] initWithFrame:cell.frame];
         recommendationView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
         recommendationView.tag = 999;
+        recommendationView.delegate = self;
         
         [cell addSubview:recommendationView];
         [recommendationView release];
     }
     
-    NSArray *recommendations = [self.appProfile recommendations];
     
-    if (recommendations && recommendations.count > 0) {
+
+    if (self.localRecommendationItems && self.localRecommendationItems.count > 0) {
         SCHRecommendationListView *recommendationView = (SCHRecommendationListView *)[cell viewWithTag:999];
+        NSString *ISBN = [[self.localRecommendationItems objectAtIndex:indexPath.row] objectForKey:kSCHRecommendationWebServiceProductCode];
         
         if (recommendationView) {
-            [recommendationView updateWithRecommendationItem:[recommendations objectAtIndex:indexPath.row]];
+            
+            recommendationView.ISBN = ISBN;
+            
+            [recommendationView updateWithRecommendationItem:[self.localRecommendationItems objectAtIndex:indexPath.row]];
+            
+            NSUInteger index = [self.localWishListItems indexOfObjectPassingTest:^BOOL (id obj, NSUInteger idx, BOOL *stop) {
+                return [[(NSDictionary *)obj objectForKey:kSCHWishListWebServiceISBN] isEqualToString:ISBN];
+            }];
+            
+            if (index != NSNotFound) {
+                [recommendationView setIsOnWishList:YES];
+            } else {
+                [recommendationView setIsOnWishList:NO];
+            }
         }
     }
     
     return cell;
 }
+
 
 - (float)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
