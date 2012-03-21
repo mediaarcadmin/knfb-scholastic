@@ -165,23 +165,16 @@ NSString * const kSCHAppBookFilenameSeparator = @"-";
 
 - (NSNumber *)AverageRating
 {
-    NSString *averageRating = nil;
+    NSNumber *averageRating = nil;
     SCHUserContentItem *userContentItem = self.ContentMetadataItem.UserContentItem;
     
     if (userContentItem != nil) {
-        averageRating = userContentItem.AverageRating;
+        averageRating = [userContentItem AverageRatingAsNumber];
+    } else {
+        averageRating = [NSNumber numberWithInteger:0];
     }
-
-    if (averageRating == nil || 
-        [[averageRating stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]] length]  < 1) {
-        averageRating = @"0";
-    }
-    
-    NSNumberFormatter * f = [[NSNumberFormatter alloc] init];
-    [f setNumberStyle:NSNumberFormatterDecimalStyle];
-    NSNumber *number = [f numberFromString:averageRating];
-    [f release];
-    return number;
+            
+    return averageRating;
 }
 
 - (SCHBookIdentifier *)bookIdentifier

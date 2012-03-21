@@ -333,6 +333,8 @@ static NSTimeInterval const kSCHRecommendationSyncComponentBookSyncDelayTimeInte
 	
 	[fetchRequest setEntity:[NSEntityDescription entityForName:kSCHUserContentItem 
                                         inManagedObjectContext:self.managedObjectContext]];	
+    // we only want books that are on a bookshelf
+	[fetchRequest setPredicate:[NSPredicate predicateWithFormat:@"ProfileList.@count > 0"]];    
 	[fetchRequest setSortDescriptors:[NSArray arrayWithObject:
                                       [NSSortDescriptor sortDescriptorWithKey:kSCHLibreAccessWebServiceContentIdentifier ascending:YES]]];
 	

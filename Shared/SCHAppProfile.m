@@ -14,6 +14,8 @@
 #import "SCHWishListItem.h"
 #import "SCHWishListProfile.h"
 #import "SCHWishListConstants.h"
+#import "SCHAppRecommendationItem.h"
+#import "SCHLibreAccessConstants.h"
 
 // Constants
 NSString * const kSCHAppProfile = @"SCHAppProfile";
@@ -77,7 +79,7 @@ NSString * const kSCHAppProfile = @"SCHAppProfile";
         NSMutableArray *objectArray = [NSMutableArray arrayWithCapacity:[result count]];
         
         for(SCHRecommendationItem *item in result) {
-            NSDictionary *recommendationItem = [NSDictionary dictionary];
+            NSMutableDictionary *recommendationItem = [NSMutableDictionary dictionary];
             
             [recommendationItem setValue:(item.name == nil ? (id)[NSNull null] : item.name) 
                                   forKey:kSCHRecommendationWebServiceName];
@@ -87,8 +89,10 @@ NSString * const kSCHAppProfile = @"SCHAppProfile";
                                   forKey:kSCHRecommendationWebServiceProductCode];
             [recommendationItem setValue:(item.author == nil ? (id)[NSNull null] : item.author) 
                                   forKey:kSCHRecommendationWebServiceAuthor];
+            [recommendationItem setValue:[item.appRecommendationItem AverageRatingAsNumber] 
+                                  forKey:kSCHLibreAccessWebServiceAverageRating];
             
-            [objectArray addObject:recommendationItem];
+            [objectArray addObject:[NSDictionary dictionaryWithDictionary:recommendationItem]];
         }
         
         ret = [NSArray arrayWithArray:objectArray];
@@ -106,7 +110,7 @@ NSString * const kSCHAppProfile = @"SCHAppProfile";
     
     [fetchRequest setEntity:[NSEntityDescription entityForName:kSCHWishListProfile 
                                         inManagedObjectContext:self.managedObjectContext]];	
-    [fetchRequest setPredicate:[NSPredicate predicateWithFormat:@"ProfileID = %A", self.ProfileItem.ID]];
+    [fetchRequest setPredicate:[NSPredicate predicateWithFormat:@"ProfileID = %@", self.ProfileItem.ID]];
     
     NSError *error = nil;
     NSArray *profiles = [self.managedObjectContext executeFetchRequest:fetchRequest error:&error];	
@@ -138,7 +142,7 @@ NSString * const kSCHAppProfile = @"SCHAppProfile";
         NSMutableArray *objectArray = [NSMutableArray arrayWithCapacity:[result count]];
         
         for(SCHWishListItem *item in result) {
-            NSDictionary *wishListItem = [NSDictionary dictionary];
+            NSMutableDictionary *wishListItem = [NSMutableDictionary dictionary];
             
             [wishListItem setValue:(item.Author == nil ? (id)[NSNull null] : item.Author) 
                             forKey:kSCHWishListWebServiceAuthor];
@@ -150,7 +154,7 @@ NSString * const kSCHAppProfile = @"SCHAppProfile";
                             forKey:@"objectID"];
             
             
-            [objectArray addObject:wishListItem];
+            [objectArray addObject:[NSDictionary dictionaryWithDictionary:wishListItem]];
         }
         
         ret = [NSArray arrayWithArray:objectArray];
