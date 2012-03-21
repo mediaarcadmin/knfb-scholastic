@@ -27,4 +27,21 @@ NSString * const kSCHAppRecommendationItem = @"SCHAppRecommendationItem";
 @dynamic Version;
 @dynamic recommendationItems;
 
+- (NSNumber *)AverageRatingAsNumber
+{    
+    NSString *averageRating = self.AverageRating;
+    
+    if (averageRating == nil || 
+        [[averageRating stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]] length]  < 1) {
+        averageRating = @"0";
+    }
+    
+    NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
+    [formatter setNumberStyle:NSNumberFormatterDecimalStyle];
+    NSNumber *number = [formatter numberFromString:averageRating];
+    [formatter release];
+    
+    return number;
+}
+
 @end
