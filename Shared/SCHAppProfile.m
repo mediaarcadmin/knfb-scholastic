@@ -14,6 +14,8 @@
 #import "SCHWishListItem.h"
 #import "SCHWishListProfile.h"
 #import "SCHWishListConstants.h"
+#import "SCHAppRecommendationItem.h"
+#import "SCHLibreAccessConstants.h"
 
 // Constants
 NSString * const kSCHAppProfile = @"SCHAppProfile";
@@ -87,6 +89,8 @@ NSString * const kSCHAppProfile = @"SCHAppProfile";
                                   forKey:kSCHRecommendationWebServiceProductCode];
             [recommendationItem setValue:(item.author == nil ? (id)[NSNull null] : item.author) 
                                   forKey:kSCHRecommendationWebServiceAuthor];
+            [recommendationItem setValue:[item.appRecommendationItem AverageRatingAsNumber] 
+                                  forKey:kSCHLibreAccessWebServiceAverageRating];
             
             [objectArray addObject:[NSDictionary dictionaryWithDictionary:recommendationItem]];
         }
@@ -106,7 +110,7 @@ NSString * const kSCHAppProfile = @"SCHAppProfile";
     
     [fetchRequest setEntity:[NSEntityDescription entityForName:kSCHWishListProfile 
                                         inManagedObjectContext:self.managedObjectContext]];	
-    [fetchRequest setPredicate:[NSPredicate predicateWithFormat:@"ProfileID = %A", self.ProfileItem.ID]];
+    [fetchRequest setPredicate:[NSPredicate predicateWithFormat:@"ProfileID = %@", self.ProfileItem.ID]];
     
     NSError *error = nil;
     NSArray *profiles = [self.managedObjectContext executeFetchRequest:fetchRequest error:&error];	

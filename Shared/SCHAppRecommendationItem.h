@@ -30,6 +30,8 @@ extern NSString * const kSCHAppRecommendationItem;
 @property (nonatomic, retain) NSString * Version;
 @property (nonatomic, retain) NSSet *recommendationItems;
 
+- (NSNumber *)AverageRatingAsNumber;
+
 @end
 
 @interface SCHAppRecommendationItem (CoreDataGeneratedAccessors)
