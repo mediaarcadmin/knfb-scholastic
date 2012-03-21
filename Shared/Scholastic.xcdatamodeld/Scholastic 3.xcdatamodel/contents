@@ -96,7 +96,8 @@
         <attribute name="PageNumber" optional="YES" attributeType="Integer 32" defaultValueString="0"/>
         <attribute name="Title" optional="YES" attributeType="String"/>
         <attribute name="Version" optional="YES" attributeType="String"/>
-        <relationship name="recommendationItems" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="SCHRecommendationItem" inverseName="appRecommendationItem" inverseEntity="SCHRecommendationItem" syncable="YES"/>
+        <relationship name="recommendationItems" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="SCHRecommendationItem" inverseName="appRecommendationItem" inverseEntity="SCHRecommendationItem" syncable="YES"/>
+        <relationship name="wishListItems" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="SCHWishListItem" inverseName="appRecommendationItem" inverseEntity="SCHWishListItem" syncable="YES"/>
     </entity>
     <entity name="SCHAppState" representedClassName="SCHAppState">
         <attribute name="DataStoreType" optional="YES" attributeType="Integer 16" defaultValueString="0"/>
@@ -299,6 +300,7 @@
         <attribute name="InitiatedBy" optional="YES" attributeType="String"/>
         <attribute name="ISBN" optional="YES" attributeType="String" indexed="YES"/>
         <attribute name="Title" optional="YES" attributeType="String"/>
+        <relationship name="appRecommendationItem" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="SCHAppRecommendationItem" inverseName="wishListItems" inverseEntity="SCHAppRecommendationItem" syncable="YES"/>
         <relationship name="WishListProfile" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="SCHWishListProfile" inverseName="ItemList" inverseEntity="SCHWishListProfile"/>
     </entity>
     <entity name="SCHWishListProfile" representedClassName="SCHWishListProfile" parentEntity="SCHSyncEntity">
@@ -372,6 +374,7 @@
         <element name="SCHAppDictionaryState" positionX="1197" positionY="315" width="128" height="105"/>
         <element name="SCHAppHelpState" positionX="160" positionY="192" width="128" height="135"/>
         <element name="SCHAppProfile" positionX="0" positionY="0" width="128" height="165"/>
+        <element name="SCHAppRecommendationItem" positionX="160" positionY="192" width="128" height="240"/>
         <element name="SCHAppState" positionX="0" positionY="0" width="128" height="150"/>
         <element name="SCHBookmark" positionX="292" positionY="653" width="128" height="105"/>
         <element name="SCHContentItem" positionX="772" positionY="531" width="128" height="90"/>
@@ -399,9 +402,8 @@
         <element name="SCHSyncEntity" positionX="822" positionY="144" width="128" height="75"/>
         <element name="SCHUserContentItem" positionX="898" positionY="1290" width="128" height="210"/>
         <element name="SCHUserSettingsItem" positionX="1044" positionY="1349" width="128" height="75"/>
-        <element name="SCHWishListItem" positionX="160" positionY="192" width="128" height="120"/>
+        <element name="SCHWishListItem" positionX="160" positionY="192" width="128" height="135"/>
         <element name="SCHWishListProfile" positionX="160" positionY="192" width="128" height="90"/>
         <element name="SCHWordIndex" positionX="0" positionY="137" width="128" height="90"/>
-        <element name="SCHAppRecommendationItem" positionX="160" positionY="192" width="128" height="225"/>
     </elements>
 </model>
