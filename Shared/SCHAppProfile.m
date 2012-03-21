@@ -12,10 +12,18 @@
 #import "SCHRecommendationProfile.h"
 #import "SCHRecommendationConstants.h"
 #import "SCHWishListItem.h"
+#import "SCHWishListProfile.h"
 #import "SCHWishListConstants.h"
 
 // Constants
 NSString * const kSCHAppProfile = @"SCHAppProfile";
+
+@interface SCHAppProfile ()
+
+- (id)makeNullNil:(id)object;
+- (void)save;
+
+@end
 
 @implementation SCHAppProfile
 
@@ -91,6 +99,28 @@ NSString * const kSCHAppProfile = @"SCHAppProfile";
     return ret;
 }
 
+- (SCHWishListProfile *)wishListProfile
+{
+    SCHWishListProfile *ret = nil;
+    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+    
+    [fetchRequest setEntity:[NSEntityDescription entityForName:kSCHWishListProfile 
+                                        inManagedObjectContext:self.managedObjectContext]];	
+    [fetchRequest setPredicate:[NSPredicate predicateWithFormat:@"ProfileID = %A", self.ProfileItem.ID]];
+    
+    NSError *error = nil;
+    NSArray *profiles = [self.managedObjectContext executeFetchRequest:fetchRequest error:&error];	
+    if (profiles == nil) {
+        NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
+    } else if ([profiles count] > 0) {
+        ret = [profiles objectAtIndex:0];
+    }
+    
+    [fetchRequest release], fetchRequest = nil;        
+    
+    return ret;
+}
+
 - (NSArray *)wishListItems
 {
     NSArray *ret = nil;
@@ -116,6 +146,8 @@ NSString * const kSCHAppProfile = @"SCHAppProfile";
                             forKey:kSCHWishListWebServiceISBN];
             [wishListItem setValue:(item.Title == nil ? (id)[NSNull null] : item.Title) 
                             forKey:kSCHWishListWebServiceTitle];
+            [wishListItem setValue:item.objectID
+                            forKey:@"objectID"];
             
             
             [objectArray addObject:wishListItem];
@@ -127,6 +159,53 @@ NSString * const kSCHAppProfile = @"SCHAppProfile";
     [fetchRequest release], fetchRequest = nil;        
     
     return ret;
+}
+
+- (void)addToWishList:(NSDictionary *)wishListItem
+{
+    if (wishListItem != nil) {
+        SCHWishListProfile *wishListProfile = [self wishListProfile];
+        if (wishListProfile != nil) {
+            SCHWishListItem *newWishListItem = [NSEntityDescription insertNewObjectForEntityForName:kSCHWishListItem 
+                                                                             inManagedObjectContext:self.managedObjectContext];
+            
+            newWishListItem.Author = [self makeNullNil:[wishListItem objectForKey:kSCHWishListWebServiceAuthor]];
+            newWishListItem.InitiatedBy = [self makeNullNil:[wishListItem objectForKey:kSCHWishListWebServiceInitiatedBy]];
+            newWishListItem.ISBN = [self makeNullNil:[wishListItem objectForKey:kSCHWishListWebServiceISBN]];
+            newWishListItem.Title = [self makeNullNil:[wishListItem objectForKey:kSCHWishListWebServiceTitle]];
+            
+            [wishListProfile addItemListObject:newWishListItem];
+            
+            [self save];
+        }
+    }
+}
+
+- (void)removeFromWishList:(NSDictionary *)wishListItem
+{
+    if (wishListItem != nil) {
+        NSManagedObjectID *objectID = [wishListItem objectForKey:@"objectID"];
+        if (objectID != nil) {
+            SCHWishListItem *wishListItem = (SCHWishListItem *)[self.managedObjectContext objectRegisteredForID:objectID];
+            [wishListItem syncDelete];
+            [self save];
+        }
+    }
+}
+
+- (id)makeNullNil:(id)object
+{
+	return(object == [NSNull null] ? nil : object);
+}
+
+- (void)save
+{
+    NSError *error = nil;
+    
+    if ([self.managedObjectContext hasChanges] == YES &&
+        ![self.managedObjectContext save:&error]) {
+        NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
+    } 
 }
 
 @end

@@ -11,6 +11,7 @@
 
 @class SCHProfileItem;
 @class SCHRecommendationProfile;
+@class SCHWishListProfile;
 
 // Constants
 extern NSString * const kSCHAppProfile;
@@ -30,6 +31,9 @@ extern NSString * const kSCHAppProfile;
 
 - (SCHRecommendationProfile *)recommendationProfile;
 - (NSArray *)recommendations;
+- (SCHWishListProfile *)wishListProfile;
 - (NSArray *)wishListItems;
+- (void)addToWishList:(NSDictionary *)wishListItem;
+- (void)removeFromWishList:(NSDictionary *)wishListItem;
 
 @end
