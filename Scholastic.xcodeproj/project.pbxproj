@@ -6683,7 +6683,7 @@
 		28EEBF621118D79A00187D67 /* Shared */ = {
 			isa = PBXGroup;
 			children = (
-				C9B2F5AD151A25F40044BBCC /* Recommendation Manager */,
+				C9B2F5AD151A25F40044BBCC /* Recommendation Processing */,
 				F81B00D515109783002DEE25 /* Recommendation Views */,
 				52C62CE614F2A4B500F261DA /* COPPA */,
 				528C616313FAA5D300D033F8 /* Help */,
@@ -7997,13 +7997,21 @@
 			path = TextFlow;
 			sourceTree = "<group>";
 		};
-		C9B2F5AD151A25F40044BBCC /* Recommendation Manager */ = {
+		C9B2F5AD151A25F40044BBCC /* Recommendation Processing */ = {
 			isa = PBXGroup;
 			children = (
+				C9B2F5B4151A27300044BBCC /* Processing Operations */,
 				C9B2F5AE151A262F0044BBCC /* SCHRecommendationManager.h */,
 				C9B2F5AF151A262F0044BBCC /* SCHRecommendationManager.m */,
 			);
-			name = "Recommendation Manager";
+			name = "Recommendation Processing";
+			sourceTree = "<group>";
+		};
+		C9B2F5B4151A27300044BBCC /* Processing Operations */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = "Processing Operations";
 			sourceTree = "<group>";
 		};
 		C9B59BCF13D048D000C7760D /* LambdaAlert */ = {
