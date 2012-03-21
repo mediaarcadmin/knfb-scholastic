@@ -12,6 +12,7 @@
 #import "SCHRecommendationProfile.h"
 #import "SCHRecommendationConstants.h"
 #import "SCHWishListItem.h"
+#import "SCHWishListConstants.h"
 
 // Constants
 NSString * const kSCHAppProfile = @"SCHAppProfile";
@@ -61,9 +62,28 @@ NSString * const kSCHAppProfile = @"SCHAppProfile";
                                       [NSSortDescriptor sortDescriptorWithKey:kSCHRecommendationWebServiceOrder ascending:YES]]];
     
     NSError *error = nil;
-    ret = [self.managedObjectContext executeFetchRequest:fetchRequest error:&error];	
-    if (ret == nil) {
+    NSArray *result = [self.managedObjectContext executeFetchRequest:fetchRequest error:&error];	
+    if (result == nil) {
         NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
+    } else {
+        NSMutableArray *objectArray = [NSMutableArray arrayWithCapacity:[result count]];
+        
+        for(SCHRecommendationItem *item in result) {
+            NSDictionary *recommendationItem = [NSDictionary dictionary];
+            
+            [recommendationItem setValue:(item.name == nil ? (id)[NSNull null] : item.name) 
+                                  forKey:kSCHRecommendationWebServiceName];
+            [recommendationItem setValue:(item.link == nil ? (id)[NSNull null] : item.link) 
+                                  forKey:kSCHRecommendationWebServiceLink];
+            [recommendationItem setValue:(item.product_code == nil ? (id)[NSNull null] : item.product_code) 
+                                  forKey:kSCHRecommendationWebServiceProductCode];
+            [recommendationItem setValue:(item.author == nil ? (id)[NSNull null] : item.author) 
+                                  forKey:kSCHRecommendationWebServiceAuthor];
+            
+            [objectArray addObject:recommendationItem];
+        }
+        
+        ret = [NSArray arrayWithArray:objectArray];
     }
     
     [fetchRequest release], fetchRequest = nil;        
@@ -81,9 +101,27 @@ NSString * const kSCHAppProfile = @"SCHAppProfile";
     [fetchRequest setPredicate:[NSPredicate predicateWithFormat:@"WishListProfile.ProfileID = %@", self.ProfileItem.ID]];
     
     NSError *error = nil;
-    ret = [self.managedObjectContext executeFetchRequest:fetchRequest error:&error];	
-    if (ret == nil) {
+    NSArray *result = [self.managedObjectContext executeFetchRequest:fetchRequest error:&error];	
+    if (result == nil) {
         NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
+    } else {
+        NSMutableArray *objectArray = [NSMutableArray arrayWithCapacity:[result count]];
+        
+        for(SCHWishListItem *item in result) {
+            NSDictionary *wishListItem = [NSDictionary dictionary];
+            
+            [wishListItem setValue:(item.Author == nil ? (id)[NSNull null] : item.Author) 
+                            forKey:kSCHWishListWebServiceAuthor];
+            [wishListItem setValue:(item.ISBN == nil ? (id)[NSNull null] : item.ISBN) 
+                            forKey:kSCHWishListWebServiceISBN];
+            [wishListItem setValue:(item.Title == nil ? (id)[NSNull null] : item.Title) 
+                            forKey:kSCHWishListWebServiceTitle];
+            
+            
+            [objectArray addObject:wishListItem];
+        }
+        
+        ret = [NSArray arrayWithArray:objectArray];
     }
     
     [fetchRequest release], fetchRequest = nil;        
