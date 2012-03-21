@@ -2737,6 +2737,10 @@
 		C9B2F5B1151A262F0044BBCC /* SCHRecommendationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = C9B2F5AF151A262F0044BBCC /* SCHRecommendationManager.m */; };
 		C9B2F5B2151A262F0044BBCC /* SCHRecommendationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = C9B2F5AF151A262F0044BBCC /* SCHRecommendationManager.m */; };
 		C9B2F5B3151A262F0044BBCC /* SCHRecommendationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = C9B2F5AF151A262F0044BBCC /* SCHRecommendationManager.m */; };
+		C9B2F5B7151A33710044BBCC /* SCHRecommendationOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = C9B2F5B6151A33710044BBCC /* SCHRecommendationOperation.m */; };
+		C9B2F5B8151A33710044BBCC /* SCHRecommendationOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = C9B2F5B6151A33710044BBCC /* SCHRecommendationOperation.m */; };
+		C9B2F5B9151A33710044BBCC /* SCHRecommendationOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = C9B2F5B6151A33710044BBCC /* SCHRecommendationOperation.m */; };
+		C9B2F5BA151A33710044BBCC /* SCHRecommendationOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = C9B2F5B6151A33710044BBCC /* SCHRecommendationOperation.m */; };
 		C9B32A3D150A33F3008A04FC /* RateView.m in Sources */ = {isa = PBXBuildFile; fileRef = F849155514FFA54D000D064B /* RateView.m */; };
 		C9B3765913BC929F00992A6E /* storyinteraction-video-play~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = C9B3765313BC929F00992A6E /* storyinteraction-video-play~iphone.png */; };
 		C9B3765B13BC929F00992A6E /* storyinteraction-video-play@2x~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = C9B3765413BC929F00992A6E /* storyinteraction-video-play@2x~iphone.png */; };
@@ -5350,6 +5354,8 @@
 		C9B08B291344D34F001963D0 /* KNFBTOCEntry.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KNFBTOCEntry.m; sourceTree = "<group>"; };
 		C9B2F5AE151A262F0044BBCC /* SCHRecommendationManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHRecommendationManager.h; path = Shared/SCHRecommendationManager.h; sourceTree = "<group>"; };
 		C9B2F5AF151A262F0044BBCC /* SCHRecommendationManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHRecommendationManager.m; path = Shared/SCHRecommendationManager.m; sourceTree = "<group>"; };
+		C9B2F5B5151A33710044BBCC /* SCHRecommendationOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHRecommendationOperation.h; path = Shared/SCHRecommendationOperation.h; sourceTree = "<group>"; };
+		C9B2F5B6151A33710044BBCC /* SCHRecommendationOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHRecommendationOperation.m; path = Shared/SCHRecommendationOperation.m; sourceTree = "<group>"; };
 		C9B3765313BC929F00992A6E /* storyinteraction-video-play~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "storyinteraction-video-play~iphone.png"; sourceTree = "<group>"; };
 		C9B3765413BC929F00992A6E /* storyinteraction-video-play@2x~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "storyinteraction-video-play@2x~iphone.png"; sourceTree = "<group>"; };
 		C9B3765513BC929F00992A6E /* storyinteraction-video-pause~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "storyinteraction-video-pause~iphone.png"; sourceTree = "<group>"; };
@@ -8003,6 +8009,8 @@
 				C9B2F5B4151A27300044BBCC /* Processing Operations */,
 				C9B2F5AE151A262F0044BBCC /* SCHRecommendationManager.h */,
 				C9B2F5AF151A262F0044BBCC /* SCHRecommendationManager.m */,
+				C9B2F5B5151A33710044BBCC /* SCHRecommendationOperation.h */,
+				C9B2F5B6151A33710044BBCC /* SCHRecommendationOperation.m */,
 			);
 			name = "Recommendation Processing";
 			sourceTree = "<group>";
@@ -11631,6 +11639,7 @@
 				F8A57E721517702000390D56 /* SCHBookShelfWishListController.m in Sources */,
 				5279E09215176481000D7D8D /* SCHAppRecommendationItem.m in Sources */,
 				C9B2F5B0151A262F0044BBCC /* SCHRecommendationManager.m in Sources */,
+				C9B2F5B7151A33710044BBCC /* SCHRecommendationOperation.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -12046,6 +12055,7 @@
 				F8A57E731517702000390D56 /* SCHBookShelfWishListController.m in Sources */,
 				5279E09315176481000D7D8D /* SCHAppRecommendationItem.m in Sources */,
 				C9B2F5B1151A262F0044BBCC /* SCHRecommendationManager.m in Sources */,
+				C9B2F5B8151A33710044BBCC /* SCHRecommendationOperation.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -12395,6 +12405,7 @@
 				F8A57E741517702000390D56 /* SCHBookShelfWishListController.m in Sources */,
 				5279E09415176481000D7D8D /* SCHAppRecommendationItem.m in Sources */,
 				C9B2F5B2151A262F0044BBCC /* SCHRecommendationManager.m in Sources */,
+				C9B2F5B9151A33710044BBCC /* SCHRecommendationOperation.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -12744,6 +12755,7 @@
 				F8A57E751517702000390D56 /* SCHBookShelfWishListController.m in Sources */,
 				5279E09515176481000D7D8D /* SCHAppRecommendationItem.m in Sources */,
 				C9B2F5B3151A262F0044BBCC /* SCHRecommendationManager.m in Sources */,
+				C9B2F5BA151A33710044BBCC /* SCHRecommendationOperation.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

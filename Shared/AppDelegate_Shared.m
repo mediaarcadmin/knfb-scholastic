@@ -23,6 +23,7 @@
 #import "LambdaAlert.h"
 #import "SCHDrmSession.h"
 #import "SCHAuthenticationManager.h"
+#import "SCHRecommendationManager.h"
 #if RUN_KIF_TESTS
 #import "SCHKIFTestController.h"
 #endif
@@ -151,6 +152,9 @@ static NSString* const binaryDevCertFilename = @"bdevcert.dat";
 
         SCHCOPPAManager *COPPAManager = [SCHCOPPAManager sharedCOPPAManager];
         [COPPAManager checkCOPPAIfRequired];
+        
+        [SCHRecommendationManager sharedManager].managedObjectContext = self.coreDataHelper.managedObjectContext;
+        
     } else {
         [self catastrophicFailureWithError:error];
     }
@@ -304,7 +308,8 @@ static NSString* const binaryDevCertFilename = @"bdevcert.dat";
     fprintf(stderr, "\nStoria: Resetting the DRM state");
     
     // Suspend syncing and processing
-    [[SCHProcessingManager sharedProcessingManager] cancelAllOperations];                
+    [[SCHProcessingManager sharedProcessingManager] cancelAllOperations];
+    [[SCHRecommendationManager sharedManager] cancelAllOperations];
     [[SCHSyncManager sharedSyncManager] setSuspended:YES]; 
     
     // Clear out the DRM Keychain items

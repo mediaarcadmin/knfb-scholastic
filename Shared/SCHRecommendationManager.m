@@ -8,14 +8,18 @@
 
 #import "SCHRecommendationManager.h"
 #import "SCHCoreDataHelper.h"
+#import "SCHRecommendationOperation.h"
 
 @interface SCHRecommendationManager()
 
 - (void)createProcessingQueues;
 - (void)coreDataHelperManagedObjectContextDidChangeNotification:(NSNotification *)notification;
+- (BOOL)isbnIsProcessing:(NSString *)isbn;
+- (void)setProcessing:(BOOL)processing forIsbn:(NSString *)isbn;
 
 @property (readwrite, retain) NSOperationQueue *processingQueue;
 @property (nonatomic, assign) UIBackgroundTaskIdentifier backgroundTask;
+@property (readwrite, retain) NSMutableSet *currentlyProcessingIsbns;
 
 @end
 
@@ -26,6 +30,7 @@ static SCHRecommendationManager *sharedManager = nil;
 @synthesize managedObjectContext;
 @synthesize processingQueue;
 @synthesize backgroundTask;
+@synthesize currentlyProcessingIsbns;
 
 - (void)dealloc
 {
@@ -33,17 +38,18 @@ static SCHRecommendationManager *sharedManager = nil;
                                                  name:SCHCoreDataHelperManagedObjectContextDidChangeNotification 
                                                object:nil];	    
     
-    [[NSNotificationCenter defaultCenter] removeObserver:sharedManager 
+    [[NSNotificationCenter defaultCenter] removeObserver:self 
                                                  name:UIApplicationDidEnterBackgroundNotification 
                                                object:nil];			
     
-    [[NSNotificationCenter defaultCenter] removeObserver:sharedManager 
+    [[NSNotificationCenter defaultCenter] removeObserver:self 
                                                  name:UIApplicationWillEnterForegroundNotification 
                                                object:nil];	
     
     
     [managedObjectContext release], managedObjectContext = nil;
     [processingQueue release], processingQueue = nil;
+    [currentlyProcessingIsbns release], currentlyProcessingIsbns = nil;
     [super dealloc];
 }
 
@@ -51,6 +57,8 @@ static SCHRecommendationManager *sharedManager = nil;
 {
 	if ((self = [super init])) {
 		[self createProcessingQueues];
+        
+        currentlyProcessingIsbns = [NSMutableSet set];
 		        
         [[NSNotificationCenter defaultCenter] addObserver:self 
                                                  selector:@selector(coreDataHelperManagedObjectContextDidChangeNotification:) 
@@ -70,6 +78,43 @@ static SCHRecommendationManager *sharedManager = nil;
 - (void)cancelAllOperations
 {
     
+}
+
+- (void)cancelAllOperationsForIsbn:(NSString *)isbn
+{
+    @synchronized(self) {
+        for (SCHRecommendationOperation *op in [self.processingQueue operations]) {
+            if ([op.isbn isEqual:isbn] == YES) {
+                [op cancel];
+                break;
+            }
+        }
+               
+        [self.currentlyProcessingIsbns removeObject:isbn];
+    }
+}
+
+#pragma mark - Processing
+
+- (BOOL)isbnIsProcessing:(NSString *)isbn
+{
+    @synchronized(self.currentlyProcessingIsbns) {
+        return [self.currentlyProcessingIsbns containsObject:isbn];
+    }
+}
+
+- (void)setProcessing:(BOOL)processing forIsbn:(NSString *)isbn
+{
+    @synchronized(self.currentlyProcessingIsbns) {
+        if (processing) {
+            if (![self.currentlyProcessingIsbns containsObject:isbn]) {
+                [self.currentlyProcessingIsbns addObject:isbn];
+            }
+            
+        } else {
+            [self.currentlyProcessingIsbns removeObject:isbn];
+        }
+    }
 }
 
 #pragma mark - Notification handlers
@@ -144,7 +189,7 @@ static SCHRecommendationManager *sharedManager = nil;
 
 #pragma mark - Class methods
 
-+ (SCHRecommendationManager *)sharedProcessingManager
++ (SCHRecommendationManager *)sharedManager
 {
     if (sharedManager == nil) {
 		sharedManager = [[SCHRecommendationManager alloc] init];
