@@ -8,10 +8,11 @@
 
 #import <UIKit/UIKit.h>
 #import "SCHAppProfile.h"
+#import "SCHRecommendationListView.h"
 
 @protocol SCHBookShelfRecommendationListControllerDelegate;
 
-@interface SCHBookShelfRecommendationListController : UIViewController <UITableViewDelegate, UITableViewDataSource>
+@interface SCHBookShelfRecommendationListController : UIViewController <UITableViewDelegate, UITableViewDataSource, SCHRecommendationListViewDelegate>
 
 @property (nonatomic, assign) id <SCHBookShelfRecommendationListControllerDelegate> delegate;
 @property (nonatomic, retain) SCHAppProfile *appProfile;

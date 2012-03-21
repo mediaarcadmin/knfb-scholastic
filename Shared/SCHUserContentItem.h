@@ -40,6 +40,7 @@ extern NSString * const kSCHUserContentItemDRM_QUALIFIER;
 @property (nonatomic, readonly) NSSet *AssignedProfileList;
 
 - (SCHBookIdentifier *)bookIdentifier;
+- (NSNumber *)AverageRatingAsNumber;
 
 @end
 

@@ -27,7 +27,7 @@
 @synthesize closeBlock;
 @synthesize localWishListItems;
 
-#pragma mark - Memory Management
+#pragma mark - Memory Management 
 
 - (void)dealloc
 {
