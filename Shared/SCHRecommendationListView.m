@@ -8,6 +8,7 @@
 
 #import "SCHRecommendationListView.h"
 #import "RateView.h"
+#import "SCHAppProfile.h"
 
 #define RIGHT_ELEMENTS_PADDING 5.0
 
@@ -95,19 +96,33 @@
 
 - (void)updateWithRecommendationItem:(NSDictionary *)item
 {
-    self.titleLabel.text = [item objectForKey:kSCHRecommendationWebServiceName];
-    self.subtitleLabel.text = [item objectForKey:kSCHRecommendationWebServiceAuthor];
-    self.rateView.rating = [[item objectForKey:kSCHLibreAccessWebServiceAverageRating] floatValue];
-    NSLog(@"Object for key: %@", [item objectForKey:kSCHLibreAccessWebServiceAverageRating]);
-//    self.coverImageView.image = [item bookCover];
+    NSLog(@"Recommendation Item Dictionary: %@", item);
+
+    self.ISBN = [item objectForKey:kSCHAppProfileISBN];
+    self.titleLabel.text = [item objectForKey:kSCHAppProfileTitle];
+    self.subtitleLabel.text = [item objectForKey:kSCHAppProfileAuthor];
+    self.rateView.rating = [[item objectForKey:kSCHAppProfileAverageRating] floatValue];
+    
+    UIImage *coverImage = [item objectForKey:kSCHAppProfileCoverImage];
+    
+    if (coverImage && ![coverImage isKindOfClass:[NSNull class]]) {
+        self.coverImageView.image = coverImage;
+    }
 }
 
 - (void)updateWithWishListItem:(NSDictionary *)item
 {
-    self.titleLabel.text = [item objectForKey:kSCHWishListWebServiceTitle];
-    self.subtitleLabel.text = [item objectForKey:kSCHWishListWebServiceAuthor];
-//    self.rateView.rating = item.;
-//    self.coverImageView.image = [item bookCover];
+    NSLog(@"Wish List Item Dictionary: %@", item);
+    
+    self.ISBN = [item objectForKey:kSCHAppProfileISBN];
+    self.titleLabel.text = [item objectForKey:kSCHAppProfileTitle];
+    self.subtitleLabel.text = [item objectForKey:kSCHAppProfileAuthor];
+    self.rateView.rating = [[item objectForKey:kSCHAppProfileAverageRating] floatValue];
+    UIImage *coverImage = [item objectForKey:kSCHAppProfileCoverImage];
+    
+    if (coverImage && ![coverImage isKindOfClass:[NSNull class]]) {
+        self.coverImageView.image = coverImage;
+    }
 }
 
 - (void)initialiseView 
