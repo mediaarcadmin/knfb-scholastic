@@ -13,6 +13,7 @@
 extern NSString * const kSCHWishListItem;
 
 @class SCHWishListProfile;
+@class SCHAppRecommendationItem;
 
 @interface SCHWishListItem : SCHSyncEntity
 
@@ -22,7 +23,6 @@ extern NSString * const kSCHWishListItem;
 @property (nonatomic, retain) NSDate * Timestamp;
 @property (nonatomic, retain) NSString * Title;
 @property (nonatomic, retain) SCHWishListProfile *WishListProfile;
-
-- (UIImage *)bookCover;
+@property (nonatomic, retain) SCHAppRecommendationItem *appRecommendationItem;
 
 @end

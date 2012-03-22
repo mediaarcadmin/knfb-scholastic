@@ -71,7 +71,7 @@
     // fetch a local list of wish list items
     // we need to maintain this local copy, so that items can 
     // be unticked but remain in the list
-    self.localWishListItems = [self.appProfile wishListItems];
+    self.localWishListItems = [self.appProfile wishListItemDictionaries];
 }
 
 - (void)viewDidUnload

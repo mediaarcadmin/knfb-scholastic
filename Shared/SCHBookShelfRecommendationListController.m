@@ -68,8 +68,8 @@
     UIColor *viewBackgroundColor = [UIColor colorWithRed:0.996 green:0.937 blue:0.718 alpha:1.0];
     self.mainTableView.backgroundColor = viewBackgroundColor;
     
-    self.localRecommendationItems = [self.appProfile recommendations];
-    self.localWishListItems = [self.appProfile wishListItems];
+    self.localRecommendationItems = [self.appProfile recommendationDictionaries];
+    self.localWishListItems = [self.appProfile wishListItemDictionaries];
 
 }
 
@@ -131,15 +131,15 @@
 
     
     // reload table data
-    self.localRecommendationItems = [self.appProfile recommendations];
-    self.localWishListItems = [self.appProfile wishListItems];
+    self.localRecommendationItems = [self.appProfile recommendationDictionaries];
+    self.localWishListItems = [self.appProfile wishListItemDictionaries];
     [self.mainTableView reloadData];
 }
 
 - (void)recommendationListView:(SCHRecommendationListView *)listView removedISBNFromWishList:(NSString *)ISBN
 {
     // get the wishlist from the app profile
-    NSArray *wishListItems = [self.appProfile wishListItems];
+    NSArray *wishListItems = [self.appProfile wishListItemDictionaries];
     
     NSUInteger index = [wishListItems indexOfObjectPassingTest:^BOOL (id obj, NSUInteger idx, BOOL *stop) {
         return [[(NSDictionary *)obj objectForKey:kSCHWishListWebServiceISBN] isEqualToString:ISBN];
@@ -151,8 +151,8 @@
     }
     
     // reload table data
-    self.localRecommendationItems = [self.appProfile recommendations];
-    self.localWishListItems = [self.appProfile wishListItems];
+    self.localRecommendationItems = [self.appProfile recommendationDictionaries];
+    self.localWishListItems = [self.appProfile wishListItemDictionaries];
     [self.mainTableView reloadData];
 }
 
