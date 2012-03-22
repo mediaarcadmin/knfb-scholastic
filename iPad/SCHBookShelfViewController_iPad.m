@@ -377,6 +377,12 @@ static NSTimeInterval const kSCHBookShelfViewControllerTopTenRefreshTime = -600.
 
 - (void)showRecommendationsListAnimated:(BOOL)animated
 {
+    // FIXME: "sticky plaster" preventing animation while switching
+    if (!animated) {
+        [CATransaction begin];
+        [CATransaction setValue:(id)kCFBooleanTrue forKey:kCATransactionDisableActions];
+    }
+    
     if (self.recommendationPopover) {
         [self.recommendationPopover dismissSheetAnimated:NO completion:^{}];
     }
@@ -404,10 +410,20 @@ static NSTimeInterval const kSCHBookShelfViewControllerTopTenRefreshTime = -600.
     
     [navCon release];
     [recommendationController release];
+
+    if (!animated) {
+        [CATransaction commit];
+    }
 }
 
 - (void)showWishListAnimated:(BOOL)animated
 {
+    // FIXME: "sticky plaster" preventing animation while switching
+    if (!animated) {
+        [CATransaction begin];
+        [CATransaction setValue:(id)kCFBooleanTrue forKey:kCATransactionDisableActions];
+    }
+    
     if (self.recommendationPopover) {
         [self.recommendationPopover dismissSheetAnimated:NO completion:^{}];
     }
@@ -435,6 +451,10 @@ static NSTimeInterval const kSCHBookShelfViewControllerTopTenRefreshTime = -600.
 
     [navCon release];
     [wishListController release];
+    
+    if (!animated) {
+        [CATransaction commit];
+    }
 }
 
 #pragma mark - SCHComponent Delegate
