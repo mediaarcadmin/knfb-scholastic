@@ -20,11 +20,6 @@ NSString * const kSCHWishListItem = @"SCHWishListItem";
 @dynamic Timestamp;
 @dynamic Title;
 @dynamic WishListProfile;
-
-- (UIImage *)bookCover
-{
-    // FIXME: return a real image at some point...
-    return [UIImage imageNamed:@"sampleCoverImage.jpg"];
-}
+@dynamic appRecommendationItem;
 
 @end

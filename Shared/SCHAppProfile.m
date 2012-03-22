@@ -20,6 +20,8 @@
 // Constants
 NSString * const kSCHAppProfile = @"SCHAppProfile";
 
+NSString * const kSCHAppProfileCoverImage = @"CoverImage";
+
 @interface SCHAppProfile ()
 
 - (id)makeNullNil:(id)object;
@@ -60,7 +62,7 @@ NSString * const kSCHAppProfile = @"SCHAppProfile";
     return ret;
 }
 
-- (NSArray *)recommendations
+- (NSArray *)recommendationDictionaries
 {
     NSArray *ret = nil;
     NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
@@ -91,6 +93,9 @@ NSString * const kSCHAppProfile = @"SCHAppProfile";
                                   forKey:kSCHRecommendationWebServiceAuthor];
             [recommendationItem setValue:[item.appRecommendationItem AverageRatingAsNumber] 
                                   forKey:kSCHLibreAccessWebServiceAverageRating];
+            UIImage *coverImage = [item.appRecommendationItem bookCover];
+            [recommendationItem setValue:(coverImage == nil ? (id)[NSNull null] : coverImage) 
+                                  forKey:kSCHAppProfileCoverImage];
             
             [objectArray addObject:[NSDictionary dictionaryWithDictionary:recommendationItem]];
         }
@@ -126,7 +131,7 @@ NSString * const kSCHAppProfile = @"SCHAppProfile";
 }
 
 
-- (NSArray *)wishListItems
+- (NSArray *)wishListItemDictionaries
 {
     NSArray *ret = nil;
     NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
@@ -151,6 +156,9 @@ NSString * const kSCHAppProfile = @"SCHAppProfile";
                             forKey:kSCHWishListWebServiceISBN];
             [wishListItem setValue:(item.Title == nil ? (id)[NSNull null] : item.Title) 
                             forKey:kSCHWishListWebServiceTitle];
+            UIImage *coverImage = [item.appRecommendationItem bookCover];
+            [wishListItem setValue:(coverImage == nil ? (id)[NSNull null] : coverImage) 
+                                  forKey:kSCHAppProfileCoverImage];            
             [wishListItem setValue:item.objectID
                             forKey:@"objectID"];
             

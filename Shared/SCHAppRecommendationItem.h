@@ -31,6 +31,7 @@ extern NSString * const kSCHAppRecommendationItem;
 @property (nonatomic, retain) NSSet *recommendationItems;
 
 - (NSNumber *)AverageRatingAsNumber;
+- (UIImage *)bookCover;
 
 @end
 

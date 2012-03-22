@@ -29,10 +29,4 @@ NSString * const kSCHRecommendationItem = @"SCHRecommendationItem";
 @dynamic recommendationISBN;
 @dynamic recommendationProfile;
 
-- (UIImage *)bookCover
-{
-    // FIXME: return a real image at some point...
-    return [UIImage imageNamed:@"sampleCoverImage.jpg"];
-}
-
 @end

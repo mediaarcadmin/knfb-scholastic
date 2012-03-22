@@ -44,4 +44,10 @@ NSString * const kSCHAppRecommendationItem = @"SCHAppRecommendationItem";
     return number;
 }
 
+- (UIImage *)bookCover
+{
+    // FIXME: return a real image at some point...
+    return [UIImage imageNamed:@"sampleCoverImage.jpg"];
+}
+
 @end
