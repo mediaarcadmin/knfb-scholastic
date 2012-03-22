@@ -501,7 +501,7 @@ static NSString * const kSCHWishListWebServiceClientID = @"KNFB";
         id wishListProfile = [[ax21_WishListProfile alloc] init];
         intoObject.profile = wishListProfile;
         [wishListProfile release], wishListProfile = nil;
-		[self fromObject:[object valueForKey:kSCHWishListWebServiceProfile] intoWishListProfile:intoObject.profile];
+		[self fromObject:object intoWishListProfile:intoObject.profile];
 	}
 }
 
