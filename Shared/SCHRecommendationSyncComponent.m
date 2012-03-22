@@ -128,7 +128,8 @@ static NSTimeInterval const kSCHRecommendationSyncComponentBookSyncDelayTimeInte
     self.remainingBatchedItems = nil;
 
 	if (![self.managedObjectContext BITemptyEntity:kSCHRecommendationProfile error:&error] ||
-        ![self.managedObjectContext BITemptyEntity:kSCHRecommendationISBN error:&error]) {
+        ![self.managedObjectContext BITemptyEntity:kSCHRecommendationISBN error:&error] ||
+        ![self.managedObjectContext BITemptyEntity:kSCHAppRecommendationItem error:&error]) {
 		NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
 	}	
 }
@@ -298,7 +299,8 @@ static NSTimeInterval const kSCHRecommendationSyncComponentBookSyncDelayTimeInte
 
 - (NSMutableArray *)localFilteredProfiles
 {
-    NSMutableArray *profileAges = nil;
+    NSMutableArray *allProfileAges = nil;
+    NSMutableArray *filteredProfileAges = nil;    
 	NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
 	
 	[fetchRequest setEntity:[NSEntityDescription entityForName:kSCHProfileItem 
@@ -312,26 +314,31 @@ static NSTimeInterval const kSCHRecommendationSyncComponentBookSyncDelayTimeInte
         NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
     } else {
         // only return those items that require updating
-        profileAges = [NSMutableArray arrayWithCapacity:[results count]];
+        allProfileAges = [NSMutableArray arrayWithCapacity:[results count]];
+        filteredProfileAges = [NSMutableArray arrayWithCapacity:[results count]];        
         for (SCHProfileItem *item in results) {
             SCHRecommendationProfile *profile = [[item AppProfile] recommendationProfile];
             NSDate *nextUpdate = [profile.fetchDate dateByAddingTimeInterval:kSCHRecommendationSyncComponentProfileSyncDelayTimeInterval];
+            NSNumber *age = [NSNumber numberWithUnsignedInteger:[item age]]; 
+            
+            if ([allProfileAges containsObject:age] == NO) {
+                [allProfileAges addObject:age];
+            }
             
             if (profile == nil || 
                 nextUpdate == nil ||
                 [[NSDate date] earlierDate:nextUpdate] == nextUpdate) {
-                NSNumber *age = [NSNumber numberWithUnsignedInteger:[item age]];
-                if ([profileAges containsObject:age] == NO) {
-                    [profileAges addObject:age];
-                }    
+                if ([filteredProfileAges containsObject:age] == NO) {
+                    [filteredProfileAges addObject:age];
+                }
             }
         }                
     }
 	[fetchRequest release], fetchRequest = nil;
-        
-    [self deleteUnusedProfileAges:profileAges];
+     
+    [self deleteUnusedProfileAges:allProfileAges];
     
-	return(profileAges);
+	return(filteredProfileAges);
 }
 
 - (NSMutableArray *)localFilteredBooks

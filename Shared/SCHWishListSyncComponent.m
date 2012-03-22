@@ -100,7 +100,8 @@ NSString * const SCHWishListSyncComponentDidFailNotification = @"SCHWishListSync
 	
     [self.wishListWebService clear];
     
-	if (![self.managedObjectContext BITemptyEntity:kSCHWishListProfile error:&error]) {
+	if (![self.managedObjectContext BITemptyEntity:kSCHWishListProfile error:&error] ||
+        ![self.managedObjectContext BITemptyEntity:kSCHAppRecommendationItem error:&error]) {
 		NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
 	}		
 }
@@ -590,7 +591,7 @@ NSString * const SCHWishListSyncComponentDidFailNotification = @"SCHWishListSync
             SCHWishListItem *wishListItem = [self wishListItem:webItem];
             if (wishListItem != nil) {
                 [insertedISBNs addObject:wishListItem.ISBN];
-                [wishListProfile addItemListObject:[self wishListItem:webItem]];
+                [wishListProfile addItemListObject:wishListItem];
                 [self save];
             }
         }
