@@ -12,6 +12,12 @@
 // Constants
 NSString * const kSCHAppRecommendationItem = @"SCHAppRecommendationItem";
 
+@interface SCHAppRecommendationItem ()
+
+- (void)deleteAllFiles;
+
+@end
+
 @implementation SCHAppRecommendationItem
 
 @dynamic Author;
@@ -26,6 +32,7 @@ NSString * const kSCHAppRecommendationItem = @"SCHAppRecommendationItem";
 @dynamic Title;
 @dynamic Version;
 @dynamic recommendationItems;
+@dynamic wishListItems;
 
 - (NSNumber *)AverageRatingAsNumber
 {    
@@ -44,11 +51,39 @@ NSString * const kSCHAppRecommendationItem = @"SCHAppRecommendationItem";
     return number;
 }
 
+// FIXME: return a real image at some point...
 - (UIImage *)bookCover
 {
-    // FIXME: return a real image at some point...
     return [UIImage imageNamed:@"sampleCoverImage.jpg"];
 }
 
+- (BOOL)isInUse
+{
+    return ([self.recommendationItems count] > 0 ||
+            [self.wishListItems count] > 0);
+}
+
+- (void)prepareForDeletion
+{
+    [super prepareForDeletion];
+
+    [self deleteAllFiles];
+}
+
+// TODO: Implement deletion of files
+- (void)deleteAllFiles
+{
+//    NSError *error = nil;
+    
+    NSLog(@"We should be deleting files for %@. But we need to be implemneted first", self.ContentIdentifier);
+    
+//    [[SCHRecoomendationManager sharedRecommendationManager] cancelAllOperationsForBook:self.ContentIdentifier];
+
+//    if ([[NSFileManager defaultManager] removeItemAtPath:self.filePath 
+//                                                   error:&error] == NO) {
+//        NSLog(@"Failed to delete files for %@, error: %@", 
+//              self.ContentIdentifier, [error localizedDescription]);
+//    }
+}
 
 @end

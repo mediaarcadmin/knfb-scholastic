@@ -11,6 +11,7 @@
 #import "SCHContentItem.h"
 
 @class SCHRecommendationItem;
+@class SCHWishListItem;
 
 // Constants
 extern NSString * const kSCHAppRecommendationItem;
@@ -29,16 +30,24 @@ extern NSString * const kSCHAppRecommendationItem;
 @property (nonatomic, retain) NSString * Title;
 @property (nonatomic, retain) NSString * Version;
 @property (nonatomic, retain) NSSet *recommendationItems;
+@property (nonatomic, retain) NSSet *wishListItems;
 
 - (NSNumber *)AverageRatingAsNumber;
 - (UIImage *)bookCover;
+- (BOOL)isInUse;
 
 @end
 
 @interface SCHAppRecommendationItem (CoreDataGeneratedAccessors)
 
-- (void)addRecommendationItemObject:(SCHRecommendationItem *)value;
-- (void)removeRecommendationItemObject:(SCHRecommendationItem *)value;
-- (void)addRecommendationItem:(NSSet *)values;
-- (void)removeRecommendationItem:(NSSet *)values;
+- (void)addRecommendationItemsObject:(SCHRecommendationItem *)value;
+- (void)removeRecommendationItemsObject:(SCHRecommendationItem *)value;
+- (void)addRecommendationItems:(NSSet *)values;
+- (void)removeRecommendationItems:(NSSet *)values;
+
+- (void)addWishListItemsObject:(SCHWishListItem *)value;
+- (void)removeWishListItemsObject:(SCHWishListItem *)value;
+- (void)addWishListItems:(NSSet *)values;
+- (void)removeWishListItems:(NSSet *)values;
+
 @end
