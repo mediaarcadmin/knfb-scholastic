@@ -15,6 +15,9 @@
 #import "SCHAnnotationsItem.h"
 #import "BITAPIError.h"
 #import "SCHLibreAccessWebService.h"
+#import "SCHWishListProfile.h"
+#import "SCHWishListItem.h"
+#import "SCHWishListSyncComponent.h"
 
 // Constants
 NSString * const SCHProfileSyncComponentWillDeleteNotification = @"SCHProfileSyncComponentWillDeleteNotification";
@@ -32,6 +35,7 @@ NSString * const SCHProfileSyncComponentDidFailNotification = @"SCHProfileSyncCo
 - (void)processSaveUserProfilesWithResult:(NSDictionary *)result;
 - (BOOL)updateProfiles;
 - (void)syncProfile:(NSDictionary *)webProfile withProfile:(SCHProfileItem *)localProfile;
+- (void)removeWishListForProfile:(SCHProfileItem *)profileItem;
 
 @end
 
@@ -154,6 +158,7 @@ NSString * const SCHProfileSyncComponentDidFailNotification = @"SCHProfileSyncCo
                             break;
                         case kSCHSaveActionsRemove:                            
                         {
+                            [self removeWishListForProfile:(SCHProfileItem *)profileManagedObject];
                             [self.managedObjectContext deleteObject:profileManagedObject];
                         }
                             break;
@@ -386,6 +391,7 @@ NSString * const SCHProfileSyncComponentDidFailNotification = @"SCHProfileSyncCo
                                                           userInfo:[NSDictionary dictionaryWithObject:deletedIDs 
                                                                                                forKey:SCHProfileSyncComponentDeletedProfileIDs]];				
         for (SCHProfileItem *profileItem in deletePool) {
+            [self removeWishListForProfile:profileItem];
             [self.managedObjectContext deleteObject:profileItem];
         }                
     }
@@ -423,6 +429,10 @@ NSString * const SCHProfileSyncComponentDidFailNotification = @"SCHProfileSyncCo
     SCHAnnotationsItem *newAnnotationsItem = [NSEntityDescription insertNewObjectForEntityForName:kSCHAnnotationsItem inManagedObjectContext:self.managedObjectContext];
     newAnnotationsItem.ProfileID = newProfileItem.ID;
     
+    SCHWishListProfile *newWishListProfile = [NSEntityDescription insertNewObjectForEntityForName:kSCHWishListProfile inManagedObjectContext:self.managedObjectContext];    
+    newWishListProfile.ProfileID = newProfileItem.ID;
+    newWishListProfile.ProfileName = newProfileItem.ScreenName;
+    
     NSLog(@"Added profile with screenname %@ and ID %@", newProfileItem.ScreenName, newProfileItem.ID);
 }
 
@@ -445,6 +455,31 @@ NSString * const SCHProfileSyncComponentDidFailNotification = @"SCHProfileSyncCo
         localProfile.LastName = [self makeNullNil:[webProfile valueForKey:kSCHLibreAccessWebServiceLastName]];
         localProfile.LastModified = [self makeNullNil:[webProfile valueForKey:kSCHLibreAccessWebServiceLastModified]];
         localProfile.State = [NSNumber numberWithStatus:kSCHStatusSyncUpdate];				
+    }
+}
+
+- (void)removeWishListForProfile:(SCHProfileItem *)profileItem
+{
+    if (profileItem != nil) {
+        SCHWishListProfile *wishListProfile = [profileItem.AppProfile wishListProfile];
+        if (wishListProfile != nil) {
+            NSMutableArray *deletedISBNs = [NSMutableArray array];
+            for (SCHWishListItem *item in wishListProfile.ItemList) {
+                NSString *isbn = item.ISBN;
+                if (isbn != nil) {
+                    [deletedISBNs addObject:isbn];
+                }
+            }
+            if ([deletedISBNs count] > 0) {
+                [[NSNotificationCenter defaultCenter] postNotificationName:SCHWishListSyncComponentWillDeleteNotification 
+                                                                    object:self 
+                                                                  userInfo:[NSDictionary dictionaryWithObject:[NSArray arrayWithArray:deletedISBNs]
+                                                                                                       forKey:SCHWishListSyncComponentISBNs]];
+                
+            }   
+            [self.managedObjectContext deleteObject:wishListProfile];
+            [self save];
+        }    
     }
 }
 
