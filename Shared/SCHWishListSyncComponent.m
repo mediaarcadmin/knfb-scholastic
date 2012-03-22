@@ -417,7 +417,23 @@ NSString * const SCHWishListSyncComponentDidFailNotification = @"SCHWishListSync
 	}
     
     for (SCHWishListProfile *wishListProfile in deletePool) {
-        [self.managedObjectContext deleteObject:wishListProfile];
+        // we leave the actual deletion to the profile sync but we do delete 
+        // the items
+        NSMutableArray *deletedISBNs = [NSMutableArray array];
+        for (SCHWishListItem *item in wishListProfile.ItemList) {
+            if (isbn != nil) {
+                [deletedISBNs addObject:isbn];
+            }            
+        }
+        if ([deletedISBNs count] > 0) {
+            [[NSNotificationCenter defaultCenter] postNotificationName:SCHWishListSyncComponentWillDeleteNotification 
+                                                                object:self 
+                                                              userInfo:[NSDictionary dictionaryWithObject:[NSArray arrayWithArray:deletedISBNs]
+                                                                                                   forKey:SCHWishListSyncComponentISBNs]];
+            
+        }           
+        
+        [wishListProfile removeItemList:wishListProfile.ItemList];
         [self save];
     }                
     
