@@ -744,11 +744,6 @@ static NSTimeInterval const kSCHRecommendationSyncComponentBookSyncDelayTimeInte
                                                                                                    forKey:SCHRecommendationSyncComponentISBNs]];
         } 
     }
-
-	for (NSDictionary *webItem in creationPool) {
-        [recommendation addRecommendationItemsObject:[self recommendationItem:webItem]];
-        [self save];
-	}
     
 	[self save];    
 }
