@@ -22,4 +22,9 @@ NSString * const kSCHWishListItem = @"SCHWishListItem";
 @dynamic WishListProfile;
 @dynamic appRecommendationItem;
 
+- (NSDate *)Timestamp
+{
+    return self.LastModified;
+}
+
 @end

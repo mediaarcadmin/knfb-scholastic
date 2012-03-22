@@ -20,9 +20,10 @@ extern NSString * const kSCHWishListItem;
 @property (nonatomic, retain) NSString * Author;
 @property (nonatomic, retain) NSString * InitiatedBy;
 @property (nonatomic, retain) NSString * ISBN;
-@property (nonatomic, retain) NSDate * Timestamp;
 @property (nonatomic, retain) NSString * Title;
 @property (nonatomic, retain) SCHWishListProfile *WishListProfile;
 @property (nonatomic, retain) SCHAppRecommendationItem *appRecommendationItem;
+
+@property (nonatomic, readonly) NSDate *Timestamp;
 
 @end
