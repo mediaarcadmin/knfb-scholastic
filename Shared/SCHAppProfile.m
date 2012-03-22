@@ -15,6 +15,7 @@
 #import "SCHWishListItem.h"
 #import "SCHWishListProfile.h"
 #import "SCHAppRecommendationItem.h"
+#import "NSNumber+ObjectTypes.h"
 
 // Constants
 NSString * const kSCHAppProfile = @"SCHAppProfile";
@@ -141,7 +142,8 @@ static NSString * const kSCHAppProfileObjectID = @"ObjectID";
     
     [fetchRequest setEntity:[NSEntityDescription entityForName:kSCHWishListItem 
                                         inManagedObjectContext:self.managedObjectContext]];	
-    [fetchRequest setPredicate:[NSPredicate predicateWithFormat:@"WishListProfile.ProfileID = %@", self.ProfileItem.ID]];
+    [fetchRequest setPredicate:[NSPredicate predicateWithFormat:@"WishListProfile.ProfileID = %@ AND State != %@", 
+                                self.ProfileItem.ID, [NSNumber numberWithStatus:kSCHStatusDeleted]]];
     
     NSError *error = nil;
     NSArray *result = [self.managedObjectContext executeFetchRequest:fetchRequest error:&error];	
