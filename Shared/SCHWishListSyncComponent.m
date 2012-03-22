@@ -19,6 +19,9 @@
 #import "BITAPIError.h" 
 
 // Constants
+NSString * const SCHWishListSyncComponentDidInsertNotification = @"SCHWishListSyncComponentDidInsertNotification";
+NSString * const SCHWishListSyncComponentWillDeleteNotification = @"SCHWishListSyncComponentWillDeleteNotification";
+NSString * const SCHWishListSyncComponentISBNs = @"SCHWishListSyncComponentISBNs";
 NSString * const SCHWishListSyncComponentDidCompleteNotification = @"SCHWishListSyncComponentDidCompleteNotification";
 NSString * const SCHWishListSyncComponentDidFailNotification = @"SCHWishListSyncComponentDidFailNotification";
 
@@ -421,6 +424,7 @@ NSString * const SCHWishListSyncComponentDidFailNotification = @"SCHWishListSync
         // the items
         NSMutableArray *deletedISBNs = [NSMutableArray array];
         for (SCHWishListItem *item in wishListProfile.ItemList) {
+            NSString *isbn = item.ISBN;
             if (isbn != nil) {
                 [deletedISBNs addObject:isbn];
             }            
@@ -558,16 +562,44 @@ NSString * const SCHWishListSyncComponentDidFailNotification = @"SCHWishListSync
 		}		
 	}
     
-    for (SCHWishListItem *wishListItem in deletePool) {
-        [self.managedObjectContext deleteObject:wishListItem];
-        [self save];
-    }                
+    if ([deletePool count] > 0) {
+        NSMutableArray *deletedISBNs = [NSMutableArray arrayWithCapacity:[deletePool count]];
+        for (SCHWishListItem *item in deletePool) {
+            NSString *isbn = item.ISBN;
+            if (isbn != nil) {
+                [deletedISBNs addObject:isbn];
+            }
+        }
+        if ([deletedISBNs count] > 0) {
+            [[NSNotificationCenter defaultCenter] postNotificationName:SCHWishListSyncComponentWillDeleteNotification 
+                                                                object:self 
+                                                              userInfo:[NSDictionary dictionaryWithObject:[NSArray arrayWithArray:deletedISBNs]
+                                                                                                   forKey:SCHWishListSyncComponentISBNs]];
+        }        
+        for (SCHWishListItem *wishListItem in deletePool) {
+            [self.managedObjectContext deleteObject:wishListItem];
+            [self save];
+        }                        
+    }
+
+    if ([creationPool count] > 0) {
+        NSMutableArray *insertedISBNs = [NSMutableArray arrayWithCapacity:[creationPool count]];
+        for (NSDictionary *webItem in creationPool) {
+            SCHWishListItem *wishListItem = [self wishListItem:webItem];
+            if (wishListItem != nil) {
+                [insertedISBNs addObject:wishListItem.ISBN];
+                [wishListProfile addItemListObject:[self wishListItem:webItem]];
+                [self save];
+            }
+        }
+        if ([insertedISBNs count] > 0) {
+            [[NSNotificationCenter defaultCenter] postNotificationName:SCHWishListSyncComponentDidInsertNotification 
+                                                                object:self 
+                                                              userInfo:[NSDictionary dictionaryWithObject:[NSArray arrayWithArray:insertedISBNs]
+                                                                                                   forKey:SCHWishListSyncComponentISBNs]];
+        } 
+    }
     
-	for (NSDictionary *webItem in creationPool) {
-        [wishListProfile addItemListObject:[self wishListItem:webItem]];
-        [self save];
-	}
-	    
 	[self save];    
 }
 

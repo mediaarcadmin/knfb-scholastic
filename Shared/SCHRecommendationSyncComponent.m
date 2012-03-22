@@ -22,6 +22,9 @@
 #import "SCHContentMetadataItem.h"
 
 // Constants
+NSString * const SCHRecommendationSyncComponentDidInsertNotification = @"SCHRecommendationSyncComponentDidInsertNotification";
+NSString * const SCHRecommendationSyncComponentWillDeleteNotification = @"SCHRecommendationSyncComponentWillDeleteNotification";
+NSString * const SCHRecommendationSyncComponentISBNs = @"SCHRecommendationSyncComponentISBNs";
 NSString * const SCHRecommendationSyncComponentDidCompleteNotification = @"SCHRecommendationSyncComponentDidCompleteNotification";
 NSString * const SCHRecommendationSyncComponentDidFailNotification = @"SCHRecommendationSyncComponentDidFailNotification";
 
@@ -66,6 +69,7 @@ static NSTimeInterval const kSCHRecommendationSyncComponentBookSyncDelayTimeInte
 - (SCHRecommendationItem *)recommendationItem:(NSDictionary *)webRecommendationItem;
 - (void)syncRecommendationItem:(NSDictionary *)webRecommendationItem 
         withRecommendationItem:(SCHRecommendationItem *)localRecommendationItem;
+- (void)deleteUnusedProfileAges:(NSArray *)profileAges;
 
 @end
 
@@ -323,6 +327,8 @@ static NSTimeInterval const kSCHRecommendationSyncComponentBookSyncDelayTimeInte
     }
 	[fetchRequest release], fetchRequest = nil;
         
+    [self deleteUnusedProfileAges:profileAges];
+    
 	return(profileAges);
 }
 
@@ -413,7 +419,8 @@ static NSTimeInterval const kSCHRecommendationSyncComponentBookSyncDelayTimeInte
 
 #pragma - Syncing methods
 
-// the sync can provide partial results so we don't delete
+// the sync can provide partial results so we don't delete here - we leave that to
+// localFilteredProfiles:
 - (void)syncRecommendationProfiles:(NSArray *)webRecommendationProfiles
 {
     NSDate *syncDate = [NSDate date];
@@ -691,11 +698,44 @@ static NSTimeInterval const kSCHRecommendationSyncComponentBookSyncDelayTimeInte
 		}		
 	}
     
-    for (SCHRecommendationItem *recommendationItem in deletePool) {
-        [self.managedObjectContext deleteObject:recommendationItem];
-        [self save];
-    }                
-    
+    if ([deletePool count] > 0) {
+        NSMutableArray *deletedISBNs = [NSMutableArray arrayWithCapacity:[deletePool count]];
+        for (SCHRecommendationItem *item in deletePool) {
+            NSString *isbn = item.product_code;
+            if (isbn != nil) {
+                [deletedISBNs addObject:isbn];
+            }
+        }
+        if ([deletedISBNs count] > 0) {
+            [[NSNotificationCenter defaultCenter] postNotificationName:SCHRecommendationSyncComponentWillDeleteNotification 
+                                                                object:self 
+                                                              userInfo:[NSDictionary dictionaryWithObject:[NSArray arrayWithArray:deletedISBNs]
+                                                                                                   forKey:SCHRecommendationSyncComponentISBNs]];
+        }        
+        for (SCHRecommendationItem *recommendationItem in deletePool) {
+            [self.managedObjectContext deleteObject:recommendationItem];
+            [self save];
+        }                        
+    }
+      
+    if ([creationPool count] > 0) {
+        NSMutableArray *insertedISBNs = [NSMutableArray arrayWithCapacity:[creationPool count]];
+        for (NSDictionary *webItem in creationPool) {
+            SCHRecommendationItem *recommendationItem = [self recommendationItem:webItem];
+            if (recommendationItem != nil) {
+                [insertedISBNs addObject:recommendationItem.product_code];
+                [recommendation addRecommendationItemsObject:recommendationItem];
+                [self save];
+            }
+        }
+        if ([insertedISBNs count] > 0) {
+            [[NSNotificationCenter defaultCenter] postNotificationName:SCHRecommendationSyncComponentDidInsertNotification 
+                                                                object:self 
+                                                              userInfo:[NSDictionary dictionaryWithObject:[NSArray arrayWithArray:insertedISBNs]
+                                                                                                   forKey:SCHRecommendationSyncComponentISBNs]];
+        } 
+    }
+
 	for (NSDictionary *webItem in creationPool) {
         [recommendation addRecommendationItemsObject:[self recommendationItem:webItem]];
         [self save];
@@ -739,6 +779,44 @@ static NSTimeInterval const kSCHRecommendationSyncComponentBookSyncDelayTimeInte
         localRecommendationItem.format = [self makeNullNil:[webRecommendationItem objectForKey:kSCHRecommendationWebServiceFormat]];                        
         localRecommendationItem.author = [self makeNullNil:[webRecommendationItem objectForKey:kSCHRecommendationWebServiceAuthor]];                                
         localRecommendationItem.order = [self makeNullNil:[webRecommendationItem objectForKey:kSCHRecommendationWebServiceOrder]];                                        
+    }
+}
+
+- (void)deleteUnusedProfileAges:(NSArray *)profileAges
+{
+    if ([profileAges count] > 0) {
+        NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init]; 
+        NSError *error = nil;    
+        [fetchRequest setEntity:[NSEntityDescription entityForName:kSCHRecommendationProfile
+                                            inManagedObjectContext:self.managedObjectContext]];
+        
+        NSArray *recommendationProfiles = [self.managedObjectContext executeFetchRequest:fetchRequest 
+                                                                                   error:&error];
+        [fetchRequest release], fetchRequest = nil;
+        if (recommendationProfiles == nil) {
+            NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
+        } else {
+            for (SCHRecommendationProfile *profile in recommendationProfiles) {
+                if ([profileAges containsObject:profile.age] == NO) {
+                    NSMutableArray *deletedISBNs = [NSMutableArray array];
+                    for (SCHRecommendationItem *item in profile.recommendationItems) {
+                        NSString *isbn = item.product_code;
+                        if (isbn != nil) {
+                            [deletedISBNs addObject:isbn];
+                        }
+                    }
+                    if ([deletedISBNs count] > 0) {
+                        [[NSNotificationCenter defaultCenter] postNotificationName:SCHRecommendationSyncComponentWillDeleteNotification 
+                                                                            object:self 
+                                                                          userInfo:[NSDictionary dictionaryWithObject:[NSArray arrayWithArray:deletedISBNs]
+                                                                                                               forKey:SCHRecommendationSyncComponentISBNs]];
+                        
+                    }                       
+                    [self.managedObjectContext deleteObject:profile];
+                    [self save];
+                }
+            }   
+        }        
     }
 }
 
