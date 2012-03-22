@@ -20,6 +20,11 @@
 // Constants
 NSString * const kSCHAppProfile = @"SCHAppProfile";
 
+// Parameter Constants
+NSString * const kSCHAppProfileTitle = @"Title";
+NSString * const kSCHAppProfileAuthor = @"Author";
+NSString * const kSCHAppProfileISBN = @"ISBN";
+NSString * const kSCHAppProfileAverageRating = @"AverageRating";
 NSString * const kSCHAppProfileCoverImage = @"CoverImage";
 
 @interface SCHAppProfile ()
@@ -84,15 +89,13 @@ NSString * const kSCHAppProfileCoverImage = @"CoverImage";
             NSMutableDictionary *recommendationItem = [NSMutableDictionary dictionary];
             
             [recommendationItem setValue:(item.name == nil ? (id)[NSNull null] : item.name) 
-                                  forKey:kSCHRecommendationWebServiceName];
-            [recommendationItem setValue:(item.link == nil ? (id)[NSNull null] : item.link) 
-                                  forKey:kSCHRecommendationWebServiceLink];
+                                  forKey:kSCHAppProfileTitle];
             [recommendationItem setValue:(item.product_code == nil ? (id)[NSNull null] : item.product_code) 
-                                  forKey:kSCHRecommendationWebServiceProductCode];
+                                  forKey:kSCHAppProfileISBN];
             [recommendationItem setValue:(item.author == nil ? (id)[NSNull null] : item.author) 
-                                  forKey:kSCHRecommendationWebServiceAuthor];
+                                  forKey:kSCHAppProfileAuthor];
             [recommendationItem setValue:[item.appRecommendationItem AverageRatingAsNumber] 
-                                  forKey:kSCHLibreAccessWebServiceAverageRating];
+                                  forKey:kSCHAppProfileAverageRating];
             UIImage *coverImage = [item.appRecommendationItem bookCover];
             [recommendationItem setValue:(coverImage == nil ? (id)[NSNull null] : coverImage) 
                                   forKey:kSCHAppProfileCoverImage];
@@ -151,11 +154,11 @@ NSString * const kSCHAppProfileCoverImage = @"CoverImage";
             NSMutableDictionary *wishListItem = [NSMutableDictionary dictionary];
             
             [wishListItem setValue:(item.Author == nil ? (id)[NSNull null] : item.Author) 
-                            forKey:kSCHWishListWebServiceAuthor];
+                            forKey:kSCHAppProfileAuthor];
             [wishListItem setValue:(item.ISBN == nil ? (id)[NSNull null] : item.ISBN) 
-                            forKey:kSCHWishListWebServiceISBN];
+                            forKey:kSCHAppProfileISBN];
             [wishListItem setValue:(item.Title == nil ? (id)[NSNull null] : item.Title) 
-                            forKey:kSCHWishListWebServiceTitle];
+                            forKey:kSCHAppProfileTitle];
             UIImage *coverImage = [item.appRecommendationItem bookCover];
             [wishListItem setValue:(coverImage == nil ? (id)[NSNull null] : coverImage) 
                                   forKey:kSCHAppProfileCoverImage];            
