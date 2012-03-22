@@ -50,4 +50,5 @@ NSString * const kSCHAppRecommendationItem = @"SCHAppRecommendationItem";
     return [UIImage imageNamed:@"sampleCoverImage.jpg"];
 }
 
+
 @end
