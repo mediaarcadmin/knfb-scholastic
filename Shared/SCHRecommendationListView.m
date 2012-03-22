@@ -95,10 +95,10 @@
 
 - (void)updateWithRecommendationItem:(NSDictionary *)item
 {
-    
     self.titleLabel.text = [item objectForKey:kSCHRecommendationWebServiceName];
     self.subtitleLabel.text = [item objectForKey:kSCHRecommendationWebServiceAuthor];
-//    self.rateView.rating = item.;
+    self.rateView.rating = [[item objectForKey:kSCHLibreAccessWebServiceAverageRating] floatValue];
+    NSLog(@"Object for key: %@", [item objectForKey:kSCHLibreAccessWebServiceAverageRating]);
 //    self.coverImageView.image = [item bookCover];
 }
 
