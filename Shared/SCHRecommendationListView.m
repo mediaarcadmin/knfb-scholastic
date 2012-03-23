@@ -92,6 +92,11 @@
 {
     isOnWishList = newIsOnWishList;
     [self.onWishListButton setSelected:isOnWishList];
+    if (isOnWishList) {
+        self.onWishListLabel.text = @"On My Wish List";
+    } else {
+        self.onWishListLabel.text = @"Add to Wish List";
+    }
 }
 
 - (void)updateWithRecommendationItem:(NSDictionary *)item
