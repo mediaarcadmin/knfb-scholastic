@@ -16,6 +16,7 @@
 
 // Constants
 extern NSString * const kSCHAppRecommendationItem;
+extern NSString * const kSCHAppRecommendationItemIsbn;
 
 @interface SCHAppRecommendationItem : SCHContentItem
 

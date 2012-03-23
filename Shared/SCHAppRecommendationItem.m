@@ -12,6 +12,7 @@
 
 // Constants
 NSString * const kSCHAppRecommendationItem = @"SCHAppRecommendationItem";
+NSString * const kSCHAppRecommendationItemIsbn = @"isbn";
 NSString * const kSCHAppRecommendationFilenameSeparator = @"-";
 
 @interface SCHAppRecommendationItem()
@@ -65,6 +66,18 @@ NSString * const kSCHAppRecommendationFilenameSeparator = @"-";
 - (void)setProcessingState:(SCHAppRecommendationProcessingState)processingState
 {
     self.state = [NSNumber numberWithInt:processingState];
+}
+
+#pragma mark - SCHContentItem overriden implementations
+
+- (NSNumber *)DRMQualifier
+{
+    return [NSNumber numberWithInt:kSCHDRMQualifiersFullWithDRM];
+}
+
+- (NSNumber *)ContentIdentifierType
+{
+    return [NSNumber numberWithInt:kSCHContentItemContentIdentifierTypesISBN13];
 }
 
 #pragma mark - Thumbnail/Cover Caching
