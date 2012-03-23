@@ -128,6 +128,7 @@ static NSTimeInterval const kSCHRecommendationSyncComponentBookSyncDelayTimeInte
 
 	if (![self.managedObjectContext BITemptyEntity:kSCHRecommendationProfile error:&error] ||
         ![self.managedObjectContext BITemptyEntity:kSCHRecommendationISBN error:&error] ||
+        ![self.managedObjectContext BITemptyEntity:kSCHRecommendationItem error:&error] ||
         ![self.managedObjectContext BITemptyEntity:kSCHAppRecommendationItem error:&error]) {
 		NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
 	}	

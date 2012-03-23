@@ -78,9 +78,6 @@ NSInteger const kSCHRecommendationWebServiceMaxRequestItems = 10;
         self.downloadOperation.completionBlock = ^{                
             [[BITNetworkActivityManager sharedNetworkActivityManager] hideNetworkActivityIndicator];
             NSData *xmlData = [weakSelf.downloadOperation.responseOutputStream propertyForKey:NSStreamDataWrittenToMemoryStreamKey];
-            // Release prior to calling delegate methods to avoid run into any request cycles.
-            weakSelf.downloadOperation.delegate = nil;
-            weakSelf.downloadOperation = nil;
 
             SCHRecommendationProcessor *recommendationProcessor = [[SCHRecommendationProcessor alloc] init];
             NSArray *recommendations = [recommendationProcessor recommendationsFrom:xmlData];
@@ -91,19 +88,30 @@ NSInteger const kSCHRecommendationWebServiceMaxRequestItems = 10;
                                                                                       forKey:NSLocalizedDescriptionKey]];
                 
                 if ([(id)weakSelf.delegate respondsToSelector:@selector(method:didFailWithError:requestInfo:result:)]) {
-                    [(id)weakSelf.delegate method:weakSelf.activeMethod didFailWithError:error
-                                  requestInfo:nil 
-                                       result:nil];
+                    NSString *method = [self.activeMethod copy];
+                    dispatch_async(dispatch_get_main_queue(), ^(void) {
+                        if ([(id)weakSelf.delegate respondsToSelector:@selector(method:didFailWithError:requestInfo:result:)]) {
+                            [(id)weakSelf.delegate method:method didFailWithError:error
+                                              requestInfo:nil 
+                                                   result:nil];
+                        }
+                    });
                 }
             } else {
                 if([(id)weakSelf.delegate respondsToSelector:@selector(method:didCompleteWithResult:userInfo:)]) {
-                    [(id)weakSelf.delegate method:kSCHRecommendationWebServiceRetrieveRecommendationsForProfile 
-                        didCompleteWithResult:[NSDictionary dictionaryWithObject:recommendations 
-                                                                          forKey:kSCHRecommendationWebServiceRetrieveRecommendationsForProfile] 
-                                     userInfo:nil];									
+                    dispatch_async(dispatch_get_main_queue(), ^(void) {
+                        if([(id)weakSelf.delegate respondsToSelector:@selector(method:didCompleteWithResult:userInfo:)]) {                        
+                            [(id)weakSelf.delegate method:kSCHRecommendationWebServiceRetrieveRecommendationsForProfile 
+                                    didCompleteWithResult:[NSDictionary dictionaryWithObject:recommendations 
+                                                                                      forKey:kSCHRecommendationWebServiceRetrieveRecommendationsForProfile] 
+                                                 userInfo:nil];									
+                        }
+                    });
                 }
             }
             [recommendationProcessor release], recommendationProcessor = nil;
+            weakSelf.downloadOperation.delegate = nil;
+            weakSelf.downloadOperation = nil;            
             weakSelf.activeMethod = nil;
         };
         
@@ -125,7 +133,7 @@ NSInteger const kSCHRecommendationWebServiceMaxRequestItems = 10;
         NSString *urlString = [NSString stringWithFormat:kSCHRecommendationWebServiceBookURLString, 
                                RECOMMENDATION_SERVER_ENDPOINT,
                                [[books componentsJoinedByString:kSCHRecommendationWebServiceBookListSeparator] urlEncodeUsingEncoding:NSUTF8StringEncoding],
-                                [userKey urlEncodeUsingEncoding:NSUTF8StringEncoding]];
+                               [userKey urlEncodeUsingEncoding:NSUTF8StringEncoding]];
         NSURL *url = [NSURL URLWithString:urlString];
         NSMutableIndexSet *acceptableStatusCodes = [NSMutableIndexSet indexSetWithIndex:200];
         [acceptableStatusCodes addIndex:206];
@@ -139,32 +147,40 @@ NSInteger const kSCHRecommendationWebServiceMaxRequestItems = 10;
         self.downloadOperation.completionBlock = ^{                
             [[BITNetworkActivityManager sharedNetworkActivityManager] hideNetworkActivityIndicator];
             NSData *xmlData = [weakSelf.downloadOperation.responseOutputStream propertyForKey:NSStreamDataWrittenToMemoryStreamKey];
-            // Release prior to calling delegate methods to avoid run into any request cycles.
-            weakSelf.downloadOperation.delegate = nil;
-            weakSelf.downloadOperation = nil;
             
             SCHRecommendationProcessor *recommendationProcessor = [[SCHRecommendationProcessor alloc] init];
             NSArray *recommendations = [recommendationProcessor recommendationsFrom:xmlData];
-            if (recommendations == nil) {
+            if (recommendations != nil) {
                 NSError *error = [NSError errorWithDomain:kSCHRecommendationWebServiceErrorDomain 
                                                      code:kSCHRecommendationWebServiceParseError 
                                                  userInfo:[NSDictionary dictionaryWithObject:@"Error while attempting to parse recommend.xml"
                                                                                       forKey:NSLocalizedDescriptionKey]];
                 
                 if ([(id)weakSelf.delegate respondsToSelector:@selector(method:didFailWithError:requestInfo:result:)]) {
-                    [(id)weakSelf.delegate method:weakSelf.activeMethod didFailWithError:error
-                                  requestInfo:nil 
-                                       result:nil];
+                    NSString *method = [self.activeMethod copy];
+                    dispatch_async(dispatch_get_main_queue(), ^(void) {                    
+                        if ([(id)weakSelf.delegate respondsToSelector:@selector(method:didFailWithError:requestInfo:result:)]) {                        
+                            [(id)weakSelf.delegate method:method didFailWithError:error
+                                              requestInfo:nil 
+                                                   result:nil];
+                        }
+                    });
                 }
             } else {
                 if([(id)weakSelf.delegate respondsToSelector:@selector(method:didCompleteWithResult:userInfo:)]) {
-                    [(id)weakSelf.delegate method:kSCHRecommendationWebServiceRetrieveRecommendationsForBooks 
-                        didCompleteWithResult:[NSDictionary dictionaryWithObject:recommendations 
-                                                                          forKey:kSCHRecommendationWebServiceRetrieveRecommendationsForBooks] 
-                                     userInfo:nil];									
+                    dispatch_async(dispatch_get_main_queue(), ^(void) {
+                        if([(id)weakSelf.delegate respondsToSelector:@selector(method:didCompleteWithResult:userInfo:)]) {
+                            [(id)weakSelf.delegate method:kSCHRecommendationWebServiceRetrieveRecommendationsForBooks 
+                                    didCompleteWithResult:[NSDictionary dictionaryWithObject:recommendations 
+                                                                                      forKey:kSCHRecommendationWebServiceRetrieveRecommendationsForBooks] 
+                                                 userInfo:nil];								
+                        }
+                    });
                 }
             }
             [recommendationProcessor release], recommendationProcessor = nil;
+            weakSelf.downloadOperation.delegate = nil;
+            weakSelf.downloadOperation = nil;
             weakSelf.activeMethod = nil;
         };
         
