@@ -100,6 +100,7 @@ NSString * const SCHWishListSyncComponentDidFailNotification = @"SCHWishListSync
     [self.wishListWebService clear];
     
 	if (![self.managedObjectContext BITemptyEntity:kSCHWishListProfile error:&error] ||
+        ![self.managedObjectContext BITemptyEntity:kSCHWishListItem error:&error] ||
         ![self.managedObjectContext BITemptyEntity:kSCHAppRecommendationItem error:&error]) {
 		NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
 	}		
