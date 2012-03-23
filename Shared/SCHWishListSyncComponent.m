@@ -197,7 +197,7 @@ NSString * const SCHWishListSyncComponentDidFailNotification = @"SCHWishListSync
     } else {
         NSArray *wishListProfilesToCreate = [self localWishListProfilesWithItemStates:
                                              [NSArray arrayWithObject:[NSNumber numberWithStatus:kSCHStatusCreated]]];
-        if ([wishListProfilesToDelete count] > 0) {
+        if ([wishListProfilesToCreate count] > 0) {
             ret = [self createWishLists:wishListProfilesToCreate];
         } else if (self.saveOnly == NO) {
             NSArray *profiles = [self localProfiles];

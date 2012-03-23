@@ -16,6 +16,7 @@
 #import "SCHWishListProfile.h"
 #import "SCHAppRecommendationItem.h"
 #import "NSNumber+ObjectTypes.h"
+#import "SCHWishListConstants.h"
 
 // Constants
 NSString * const kSCHAppProfile = @"SCHAppProfile";
@@ -190,6 +191,7 @@ static NSString * const kSCHAppProfileObjectID = @"ObjectID";
             newWishListItem.Title = [self makeNullNil:[wishListItem objectForKey:kSCHAppProfileTitle]];
             newWishListItem.Author = [self makeNullNil:[wishListItem objectForKey:kSCHAppProfileAuthor]];
             newWishListItem.ISBN = [self makeNullNil:[wishListItem objectForKey:kSCHAppProfileISBN]];
+            newWishListItem.InitiatedBy = kSCHWishListWebServiceCHILD;
             
             [wishListProfile addItemListObject:newWishListItem];
             

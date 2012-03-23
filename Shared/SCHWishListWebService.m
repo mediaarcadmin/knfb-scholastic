@@ -30,7 +30,6 @@ static NSString * const kSCHWishListWebServiceClientID = @"KNFB";
 - (NSDictionary *)objectFromWishList:(ax21_WishList *)anObject;
 - (NSDictionary *)objectFromWishListProfileItem:(ax21_WishListProfileItem *)anObject;
 - (NSDictionary *)objectFromWishListItem:(ax21_WishListItem *)anObject;
-- (NSDictionary *)objectFromInitiatedBy:(ax21_InitiatedByEnum *)anObject;
 - (NSDictionary *)objectFromWishListProfile:(ax21_WishListProfile *)anObject;
 - (NSDictionary *)objectFromWishListStatus:(ax21_WishListStatus *)anObject;
 - (NSDictionary *)objectFromWishListProfileStatus:(ax21_WishListProfileStatus *)anObject;
@@ -41,7 +40,6 @@ static NSString * const kSCHWishListWebServiceClientID = @"KNFB";
 
 - (void)fromObject:(NSDictionary *)object intoWishListProfileItem:(ax21_WishListProfileItem *)intoObject;
 - (void)fromObject:(NSDictionary *)object intoWishListItem:(ax21_WishListItem *)intoObject;
-- (void)fromObject:(NSDictionary *)object intoInitiatedByEnum:(ax21_InitiatedByEnum *)intoObject;
 - (void)fromObject:(NSDictionary *)object intoWishListProfile:(ax21_WishListProfile *)intoObject;
 
 @end
@@ -325,25 +323,10 @@ static NSString * const kSCHWishListWebServiceClientID = @"KNFB";
 		NSMutableDictionary *objects = [NSMutableDictionary dictionary];
 		
 		[objects setObject:[self objectFromTranslate:anObject.author] forKey:kSCHWishListWebServiceAuthor];
-		[objects setObject:[self objectFromTranslate:anObject.initiatedBy] forKey:kSCHWishListWebServiceInitiatedBy];
+		[objects setObject:[self objectFromTranslate:anObject.initiatedBy.value] forKey:kSCHWishListWebServiceValue];
 		[objects setObject:[self objectFromTranslate:anObject.isbn] forKey:kSCHWishListWebServiceISBN];
 		[objects setObject:[self objectFromTranslate:anObject.timeStamp] forKey:kSCHWishListWebServiceTimestamp];
         [objects setObject:[self objectFromTranslate:anObject.title] forKey:kSCHWishListWebServiceTitle]; 
-        
-		ret = objects;				
-	}
-	
-	return(ret);
-}
-
-- (NSDictionary *)objectFromInitiatedBy:(ax21_InitiatedByEnum *)anObject
-{
-	NSDictionary *ret = nil;
-	
-	if (anObject != nil) {
-		NSMutableDictionary *objects = [NSMutableDictionary dictionary];
-		
-		[objects setObject:[self objectFromTranslate:anObject.value] forKey:kSCHWishListWebServiceValue];
         
 		ret = objects;				
 	}
@@ -468,8 +451,6 @@ static NSString * const kSCHWishListWebServiceClientID = @"KNFB";
 		ret = [NSNumber numberWithBool:[anObject boolValue]];
     } else if ([anObject isKindOfClass:[ax21_WishList class]] == YES) {
         ret = [self objectFromWishList:anObject];	
-    } else if ([anObject isKindOfClass:[ax21_InitiatedByEnum class]] == YES) {
-        ret = [self objectFromInitiatedBy:anObject];	
     } else if ([anObject isKindOfClass:[ax21_WishListProfile class]] == YES) {
         ret = [self objectFromWishListProfile:anObject];	        
     } else if ([anObject isKindOfClass:[ax21_WishListItemStatus class]] == YES) {
@@ -509,20 +490,13 @@ static NSString * const kSCHWishListWebServiceClientID = @"KNFB";
 {
     if (object != nil && intoObject != nil) {
         intoObject.author = [self fromObjectTranslate:[object valueForKey:kSCHWishListWebServiceAuthor]];
-        id initiatedByEnum = [[ax21_InitiatedByEnum alloc] init];
+        ax21_InitiatedByEnum *initiatedByEnum = [[ax21_InitiatedByEnum alloc] init];
+        initiatedByEnum.value = [self fromObjectTranslate:[object valueForKey:kSCHWishListWebServiceInitiatedBy]];
         intoObject.initiatedBy = initiatedByEnum;
         [initiatedByEnum release], initiatedByEnum = nil;
-        [self fromObject:[self fromObjectTranslate:[object valueForKey:kSCHWishListWebServiceInitiatedBy]] intoInitiatedByEnum:intoObject.initiatedBy];
         intoObject.isbn = [self fromObjectTranslate:[object valueForKey:kSCHWishListWebServiceISBN]];
         intoObject.timeStamp = [self fromObjectTranslate:[object valueForKey:kSCHWishListWebServiceTimestamp]];
         intoObject.title = [self fromObjectTranslate:[object valueForKey:kSCHWishListWebServiceTitle]];        
-    }
-}
-
-- (void)fromObject:(NSDictionary *)object intoInitiatedByEnum:(ax21_InitiatedByEnum *)intoObject
-{
-    if (object != nil && intoObject != nil) {
-        intoObject.value = [self fromObjectTranslate:[object valueForKey:kSCHWishListWebServiceValue]];
     }
 }
 
