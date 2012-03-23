@@ -48,7 +48,6 @@ NSString * const SCHWishListSyncComponentDidFailNotification = @"SCHWishListSync
 - (SCHWishListItem *)wishListItem:(NSDictionary *)wishListItem;
 - (void)syncWishListItem:(NSDictionary *)webWishListItem 
         withWishListItem:(SCHWishListItem *)localWishListItem;
-- (SCHAppRecommendationItem *)findOrCreateAppRecommendationItemForBook:(NSString *)isbn;
 
 @end
 
@@ -623,7 +622,7 @@ NSString * const SCHWishListSyncComponentDidFailNotification = @"SCHWishListSync
         ret.ISBN = [self makeNullNil:[wishListItem objectForKey:kSCHWishListWebServiceISBN]];
         ret.Title = [self makeNullNil:[wishListItem objectForKey:kSCHWishListWebServiceTitle]];  
         
-        ret.appRecommendationItem = [self findOrCreateAppRecommendationItemForBook:ret.ISBN];
+        [ret assignAppRecommendationItem];
 	}
 	
 	return(ret);
@@ -643,35 +642,5 @@ NSString * const SCHWishListSyncComponentDidFailNotification = @"SCHWishListSync
         localWishListItem.Title = [self makeNullNil:[webWishListItem objectForKey:kSCHWishListWebServiceTitle]];
     }
 }
-
-- (SCHAppRecommendationItem *)findOrCreateAppRecommendationItemForBook:(NSString *)isbn
-{
-    SCHAppRecommendationItem *ret = nil;
-    
-    if (isbn != nil) {
-        NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
-        
-        [fetchRequest setEntity:[NSEntityDescription entityForName:kSCHAppRecommendationItem 
-                                            inManagedObjectContext:self.managedObjectContext]];	
-        [fetchRequest setPredicate:[NSPredicate predicateWithFormat:@"ContentIdentifier = %@", isbn]];
-        
-        NSError *error = nil;
-        NSArray *items = [self.managedObjectContext executeFetchRequest:fetchRequest error:&error];	
-        [fetchRequest release], fetchRequest = nil;  
-        
-        if (items == nil) {
-            NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
-        } else if ([items count] > 0) {
-            ret = [items objectAtIndex:0];
-        } else {
-            ret = [NSEntityDescription insertNewObjectForEntityForName:kSCHAppRecommendationItem 
-                                                inManagedObjectContext:self.managedObjectContext];
-            ret.ContentIdentifier = isbn;
-        }
-    }
-    
-    return ret;
-}
-
 
 @end

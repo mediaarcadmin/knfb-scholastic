@@ -26,4 +26,6 @@ extern NSString * const kSCHWishListItem;
 
 @property (nonatomic, readonly) NSDate *Timestamp;
 
+- (void)assignAppRecommendationItem;
+
 @end

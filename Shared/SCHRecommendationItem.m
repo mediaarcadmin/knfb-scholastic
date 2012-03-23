@@ -29,4 +29,29 @@ NSString * const kSCHRecommendationItem = @"SCHRecommendationItem";
 @dynamic recommendationISBN;
 @dynamic recommendationProfile;
 
+- (void)assignAppRecommendationItem
+{
+    if (self.product_code != nil) {
+        NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+        
+        [fetchRequest setEntity:[NSEntityDescription entityForName:kSCHAppRecommendationItem 
+                                            inManagedObjectContext:self.managedObjectContext]];	
+        [fetchRequest setPredicate:[NSPredicate predicateWithFormat:@"ContentIdentifier = %@", self.product_code]];
+        
+        NSError *error = nil;
+        NSArray *items = [self.managedObjectContext executeFetchRequest:fetchRequest error:&error];	
+        [fetchRequest release], fetchRequest = nil;  
+        
+        if (items == nil) {
+            NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
+        } else if ([items count] > 0) {
+            self.appRecommendationItem = [items objectAtIndex:0];
+        } else {
+            self.appRecommendationItem = [NSEntityDescription insertNewObjectForEntityForName:kSCHAppRecommendationItem 
+                                                inManagedObjectContext:self.managedObjectContext];
+            self.appRecommendationItem.ContentIdentifier = self.product_code;
+        }
+    }
+}
+
 @end

@@ -193,6 +193,8 @@ static NSString * const kSCHAppProfileObjectID = @"ObjectID";
             newWishListItem.ISBN = [self makeNullNil:[wishListItem objectForKey:kSCHAppProfileISBN]];
             newWishListItem.InitiatedBy = kSCHWishListWebServiceCHILD;
             
+            [newWishListItem assignAppRecommendationItem];
+            
             [wishListProfile addItemListObject:newWishListItem];
             
             [self save];
