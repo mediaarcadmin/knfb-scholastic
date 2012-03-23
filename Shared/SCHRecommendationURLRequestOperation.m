@@ -13,23 +13,7 @@
 #import "SCHBookshelfSyncComponent.h"
 #import "SCHBookIdentifier.h"
 
-@interface SCHRecommendationURLRequestOperation()
-
-@property (nonatomic, retain) SCHBookIdentifier *bookIdentifier;
-
-@end
-
 @implementation SCHRecommendationURLRequestOperation
-
-@synthesize bookIdentifier;
-
-#pragma mark - Object Lifecycle
-
-- (void)dealloc 
-{
-    [bookIdentifier release], bookIdentifier = nil;
-	[super dealloc];
-}
 
 #pragma mark - Book Operation Methods
 
@@ -56,13 +40,10 @@
         [self setProcessingState:kSCHAppRecommendationProcessingStateError];
         [self endOperation];
     } else {
-        
-        self.bookIdentifier = [[[SCHBookIdentifier alloc] initWithISBN:self.isbn DRMQualifier:[NSNumber numberWithInteger:kSCHDRMQualifiersFullWithDRM]] autorelease];
-        
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(urlSuccess:) name:kSCHURLManagerSuccess object:nil];
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(urlFailure:) name:kSCHURLManagerFailure object:nil];
         
-        [[SCHURLManager sharedURLManager] requestURLForBook:self.bookIdentifier];
+        [[SCHURLManager sharedURLManager] requestURLForRecommendation:self.isbn];
     }
 }
 
@@ -79,9 +60,9 @@
 	NSAssert([NSThread currentThread] == [NSThread mainThread], @"Notification is not fired on the main thread!");
     
 	NSDictionary *userInfo = [notification userInfo];
-    SCHBookIdentifier *aBookIdentifier = [[[SCHBookIdentifier alloc] initWithObject:userInfo] autorelease];
+    NSString *completedIsbn = [userInfo objectForKey:kSCHAppRecommendationItemIsbn];
 	
-    if ([aBookIdentifier isEqual:self.bookIdentifier]) {
+    if ([completedIsbn isEqualToString:self.isbn]) {
         
         if ([[userInfo valueForKey:kSCHLibreAccessWebServiceCoverURL] isEqual:[NSNull null]]) {
             NSLog(@"Warning: recommendation URL request was missing cover URL: %@", userInfo);
@@ -106,10 +87,10 @@
             
             // check here for invalidity
             if (!coverUrlIsValid) {
-                NSLog(@"Warning: URLs from the server were already invalid for %@!", aBookIdentifier);
+                NSLog(@"Warning: URLs from the server were already invalid for %@!", completedIsbn);
                 [self setProcessingState:kSCHAppRecommendationProcessingStateURLsNotPopulated];
             } else {
-                NSLog(@"Successful URL retrieval for %@!", aBookIdentifier);
+                NSLog(@"Successful URL retrieval for %@!", completedIsbn);
                 [self setProcessingState:kSCHAppRecommendationProcessingStateNoCover];
             }
         }
@@ -129,10 +110,10 @@
     
 	NSAssert([NSThread currentThread] == [NSThread mainThread], @"Notification is not fired on the main thread!");
 	NSDictionary *userInfo = [notification userInfo];
-	SCHBookIdentifier *completedBookIdentifier = [userInfo objectForKey:kSCHBookIdentifierBookIdentifier];
+	NSString *completedIsbn = [userInfo objectForKey:kSCHAppRecommendationItemIsbn];
 	
-    if ([completedBookIdentifier isEqual:self.bookIdentifier]) {
-        NSLog(@"Warning: book URL request was missing cover and/or content URL: %@", userInfo);
+    if ([completedIsbn isEqualToString:self.isbn]) {
+        NSLog(@"Warning: recommendation URL request failed %@", userInfo);
         [self setProcessingState:kSCHAppRecommendationProcessingStateURLsNotPopulated];
         
         [[NSNotificationCenter defaultCenter] removeObserver:self];

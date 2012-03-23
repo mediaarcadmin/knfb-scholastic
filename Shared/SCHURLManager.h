@@ -26,6 +26,7 @@ extern NSString * const kSCHURLManagerFailure;
 + (SCHURLManager *)sharedURLManager;
 
 - (void)requestURLForBook:(SCHBookIdentifier *)bookIdentifier;
+- (void)requestURLForRecommendation:(NSString *)isbn;
 - (void)clear;
 
 @end
