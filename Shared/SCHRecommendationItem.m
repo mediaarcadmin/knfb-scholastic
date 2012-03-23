@@ -56,7 +56,7 @@ NSString * const kSCHRecommendationItem = @"SCHRecommendationItem";
 
 - (NSString *)isbn
 {
-    return [[self recommendationISBN] isbn];
+    return [self product_code];
 }
 
 @end
