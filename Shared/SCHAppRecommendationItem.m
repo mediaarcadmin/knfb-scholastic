@@ -18,6 +18,8 @@ NSString * const kSCHAppRecommendationFilenameSeparator = @"-";
 
 @property (nonatomic, copy) NSString *cachedRecommendationDirectory;
 
+- (void)deleteAllFiles;
+
 @end
 
 @implementation SCHAppRecommendationItem
@@ -28,6 +30,7 @@ NSString * const kSCHAppRecommendationFilenameSeparator = @"-";
 @dynamic Title;
 @dynamic recommendationItems;
 @dynamic state;
+@dynamic wishListItems;
 
 @synthesize cachedRecommendationDirectory;
 
@@ -149,6 +152,41 @@ NSString * const kSCHAppRecommendationFilenameSeparator = @"-";
     });
     
 	return cachedRecommendationsDirectory;
+}
+
+// FIXME: return a real image at some point...
+- (UIImage *)bookCover
+{
+    return [UIImage imageNamed:@"sampleCoverImage.jpg"];
+}
+
+- (BOOL)isInUse
+{
+    return ([self.recommendationItems count] > 0 ||
+            [self.wishListItems count] > 0);
+}
+
+- (void)prepareForDeletion
+{
+    [super prepareForDeletion];
+
+    [self deleteAllFiles];
+}
+
+// TODO: Implement deletion of files
+- (void)deleteAllFiles
+{
+//    NSError *error = nil;
+    
+    NSLog(@"We should be deleting files for %@. But we need to be implemneted first", self.ContentIdentifier);
+    
+//    [[SCHRecoomendationManager sharedRecommendationManager] cancelAllOperationsForBook:self.ContentIdentifier];
+
+//    if ([[NSFileManager defaultManager] removeItemAtPath:self.filePath 
+//                                                   error:&error] == NO) {
+//        NSLog(@"Failed to delete files for %@, error: %@", 
+//              self.ContentIdentifier, [error localizedDescription]);
+//    }
 }
 
 @end

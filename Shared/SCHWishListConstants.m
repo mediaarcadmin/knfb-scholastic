@@ -33,3 +33,7 @@ NSString * const kSCHWishListWebServiceTimestamp = @"Timestamp";
 NSString * const kSCHWishListWebServiceTitle = @"Title";
 NSString * const kSCHWishListWebServiceValue = @"Value";
 NSString * const kSCHWishListWebServiceWishListError = @"WishListError";
+
+// InitiatedBy 
+NSString * const kSCHWishListWebServicePARENT = @"PARENT";
+NSString * const kSCHWishListWebServiceCHILD = @"CHILD";

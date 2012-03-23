@@ -8,14 +8,15 @@
 
 #import "SCHBookShelfWishListController.h"
 
-#import "SCHRecommendationListView.h"
-
 @interface SCHBookShelfWishListController ()
 
 - (void)releaseViewObjects;
 - (IBAction)switchToRecommendations:(id)sender;
+- (void)commitWishListDeletions;
+
 
 @property (nonatomic, retain) NSArray *localWishListItems;
+@property (nonatomic, retain) NSMutableArray *wishListItemsToRemove;
 
 @end
 
@@ -26,6 +27,7 @@
 @synthesize mainTableView;
 @synthesize closeBlock;
 @synthesize localWishListItems;
+@synthesize wishListItemsToRemove;
 
 #pragma mark - Memory Management 
 
@@ -36,6 +38,7 @@
     [appProfile release], appProfile = nil;
     [closeBlock release], closeBlock = nil;
     [localWishListItems release], localWishListItems = nil;
+    [wishListItemsToRemove release], wishListItemsToRemove = nil;
     
     // release view objects
     [self releaseViewObjects];
@@ -55,6 +58,7 @@
         // Custom initialization
         self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(close:)] autorelease];
         self.title = @"Your Wish List";
+        self.wishListItemsToRemove = [NSMutableArray array];
     }
     return self;
 }
@@ -71,7 +75,7 @@
     // fetch a local list of wish list items
     // we need to maintain this local copy, so that items can 
     // be unticked but remain in the list
-    self.localWishListItems = [self.appProfile wishListItems];
+    self.localWishListItems = [self.appProfile wishListItemDictionaries];
 }
 
 - (void)viewDidUnload
@@ -85,6 +89,8 @@
 
 - (IBAction)close:(id)sender
 {
+    [self commitWishListDeletions];
+
     if (closeBlock) {
         closeBlock();
     }
@@ -92,6 +98,8 @@
 
 - (IBAction)switchToRecommendations:(id)sender
 {
+    [self commitWishListDeletions];
+    
     if (self.delegate) {
         [self.delegate switchToRecommendationsFromWishListController:self];
     }
@@ -102,6 +110,44 @@
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
     return YES;
+}
+
+#pragma mark - SCHRecommendationListViewDelegate methods
+
+- (void)recommendationListView:(SCHRecommendationListView *)listView addedISBNToWishList:(NSString *)ISBN
+{
+    // remove the item from the list to be deleted
+    NSUInteger index = [self.wishListItemsToRemove indexOfObjectPassingTest:^BOOL (id obj, NSUInteger idx, BOOL *stop) {
+        return [[(NSDictionary *)obj objectForKey:kSCHAppProfileISBN] isEqualToString:ISBN];
+    }];
+    
+    if (index != NSNotFound) {
+        [self.wishListItemsToRemove removeObjectAtIndex:index];
+    }
+
+    [self.mainTableView reloadData];
+}
+
+- (void)recommendationListView:(SCHRecommendationListView *)listView removedISBNFromWishList:(NSString *)ISBN
+{
+    NSUInteger index = [self.localWishListItems indexOfObjectPassingTest:^BOOL (id obj, NSUInteger idx, BOOL *stop) {
+        return [[(NSDictionary *)obj objectForKey:kSCHAppProfileISBN] isEqualToString:ISBN];
+    }];
+    
+    if (index != NSNotFound) {
+        [self.wishListItemsToRemove addObject:[self.localWishListItems objectAtIndex:index]];
+    }
+         
+    [self.mainTableView reloadData];
+}
+
+#pragma mark - Wish List Deletion
+
+- (void)commitWishListDeletions
+{
+    for (NSDictionary *dict in self.wishListItemsToRemove) {
+        [self.appProfile removeFromWishList:dict];
+    }
 }
 
 #pragma mark - Table view data source
@@ -133,6 +179,7 @@
         SCHRecommendationListView *recommendationView = [[SCHRecommendationListView alloc] initWithFrame:cell.frame];
         recommendationView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
         recommendationView.tag = 999;
+        recommendationView.delegate = self;
         
         [cell addSubview:recommendationView];
         [recommendationView release];
@@ -143,6 +190,19 @@
         
         if (recommendationView) {
             [recommendationView updateWithWishListItem:[self.localWishListItems objectAtIndex:indexPath.row]];
+            
+            NSString *ISBN = [[self.localWishListItems objectAtIndex:indexPath.row] objectForKey:kSCHAppProfileISBN];
+
+            NSUInteger index = [self.wishListItemsToRemove indexOfObjectPassingTest:^BOOL (id obj, NSUInteger idx, BOOL *stop) {
+                return [[(NSDictionary *)obj objectForKey:kSCHAppProfileISBN] isEqualToString:ISBN];
+            }];
+            
+            if (index == NSNotFound) {
+                [recommendationView setIsOnWishList:YES];
+            } else {
+                [recommendationView setIsOnWishList:NO];
+            }
+
         }
     }
     

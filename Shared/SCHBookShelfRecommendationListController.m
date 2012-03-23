@@ -68,8 +68,8 @@
     UIColor *viewBackgroundColor = [UIColor colorWithRed:0.996 green:0.937 blue:0.718 alpha:1.0];
     self.mainTableView.backgroundColor = viewBackgroundColor;
     
-    self.localRecommendationItems = [self.appProfile recommendations];
-    self.localWishListItems = [self.appProfile wishListItems];
+    self.localRecommendationItems = [self.appProfile recommendationDictionaries];
+    self.localWishListItems = [self.appProfile wishListItemDictionaries];
 
 }
 
@@ -109,7 +109,7 @@
 {
     // find the recommendation item
     NSUInteger index = [self.localRecommendationItems indexOfObjectPassingTest:^BOOL (id obj, NSUInteger idx, BOOL *stop) {
-        return [[(NSDictionary *)obj objectForKey:kSCHRecommendationWebServiceProductCode] isEqualToString:ISBN];
+        return [[(NSDictionary *)obj objectForKey:kSCHAppProfileISBN] isEqualToString:ISBN];
     }];
     
     if (index != NSNotFound) {
@@ -119,30 +119,30 @@
         // add it to the profile
         NSMutableDictionary *wishListItem = [NSMutableDictionary dictionary];
         
-        [wishListItem setValue:([item objectForKey:kSCHRecommendationWebServiceAuthor] == nil ? (id)[NSNull null] : [item objectForKey:kSCHRecommendationWebServiceAuthor]) 
-                        forKey:kSCHWishListWebServiceAuthor];
-        [wishListItem setValue:([item objectForKey:kSCHRecommendationWebServiceProductCode] == nil ? (id)[NSNull null] : [item objectForKey:kSCHRecommendationWebServiceProductCode]) 
-                        forKey:kSCHWishListWebServiceISBN];
-        [wishListItem setValue:([item objectForKey:kSCHRecommendationWebServiceName] == nil ? (id)[NSNull null] : [item objectForKey:kSCHRecommendationWebServiceName]) 
-                        forKey:kSCHWishListWebServiceTitle];
+        [wishListItem setValue:([item objectForKey:kSCHAppProfileAuthor] == nil ? (id)[NSNull null] : [item objectForKey:kSCHAppProfileAuthor]) 
+                        forKey:kSCHAppProfileAuthor];
+        [wishListItem setValue:([item objectForKey:kSCHAppProfileISBN] == nil ? (id)[NSNull null] : [item objectForKey:kSCHAppProfileISBN]) 
+                        forKey:kSCHAppProfileISBN];
+        [wishListItem setValue:([item objectForKey:kSCHAppProfileTitle] == nil ? (id)[NSNull null] : [item objectForKey:kSCHAppProfileTitle]) 
+                        forKey:kSCHAppProfileTitle];
         
         [self.appProfile addToWishList:wishListItem];
     }
 
     
     // reload table data
-    self.localRecommendationItems = [self.appProfile recommendations];
-    self.localWishListItems = [self.appProfile wishListItems];
+    self.localRecommendationItems = [self.appProfile recommendationDictionaries];
+    self.localWishListItems = [self.appProfile wishListItemDictionaries];
     [self.mainTableView reloadData];
 }
 
 - (void)recommendationListView:(SCHRecommendationListView *)listView removedISBNFromWishList:(NSString *)ISBN
 {
     // get the wishlist from the app profile
-    NSArray *wishListItems = [self.appProfile wishListItems];
+    NSArray *wishListItems = [self.appProfile wishListItemDictionaries];
     
     NSUInteger index = [wishListItems indexOfObjectPassingTest:^BOOL (id obj, NSUInteger idx, BOOL *stop) {
-        return [[(NSDictionary *)obj objectForKey:kSCHWishListWebServiceISBN] isEqualToString:ISBN];
+        return [[(NSDictionary *)obj objectForKey:kSCHAppProfileISBN] isEqualToString:ISBN];
     }];
     
     if (index != NSNotFound) {
@@ -151,8 +151,8 @@
     }
     
     // reload table data
-    self.localRecommendationItems = [self.appProfile recommendations];
-    self.localWishListItems = [self.appProfile wishListItems];
+    self.localRecommendationItems = [self.appProfile recommendationDictionaries];
+    self.localWishListItems = [self.appProfile wishListItemDictionaries];
     [self.mainTableView reloadData];
 }
 
@@ -197,16 +197,14 @@
 
     if (self.localRecommendationItems && self.localRecommendationItems.count > 0) {
         SCHRecommendationListView *recommendationView = (SCHRecommendationListView *)[cell viewWithTag:999];
-        NSString *ISBN = [[self.localRecommendationItems objectAtIndex:indexPath.row] objectForKey:kSCHRecommendationWebServiceProductCode];
+        NSString *ISBN = [[self.localRecommendationItems objectAtIndex:indexPath.row] objectForKey:kSCHAppProfileISBN];
         
         if (recommendationView) {
-            
-            recommendationView.ISBN = ISBN;
             
             [recommendationView updateWithRecommendationItem:[self.localRecommendationItems objectAtIndex:indexPath.row]];
             
             NSUInteger index = [self.localWishListItems indexOfObjectPassingTest:^BOOL (id obj, NSUInteger idx, BOOL *stop) {
-                return [[(NSDictionary *)obj objectForKey:kSCHWishListWebServiceISBN] isEqualToString:ISBN];
+                return [[(NSDictionary *)obj objectForKey:kSCHAppProfileISBN] isEqualToString:ISBN];
             }];
             
             if (index != NSNotFound) {

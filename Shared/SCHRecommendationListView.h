@@ -9,8 +9,6 @@
 #import <UIKit/UIKit.h>
 #import "SCHRecommendationItem.h"
 #import "SCHWishListItem.h"
-#import "SCHRecommendationConstants.h"
-#import "SCHWishListConstants.h"
 
 @protocol SCHRecommendationListViewDelegate;
 

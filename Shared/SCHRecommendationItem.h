@@ -31,7 +31,7 @@ extern NSString * const kSCHRecommendationItem;
 @property (nonatomic, retain) SCHRecommendationISBN *recommendationISBN;
 @property (nonatomic, retain) SCHRecommendationProfile *recommendationProfile;
 
-- (UIImage *)bookCover;
 - (NSString *)isbn;
+- (void)assignAppRecommendationItem;
 
 @end

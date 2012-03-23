@@ -31,3 +31,7 @@ extern NSString * const kSCHWishListWebServiceTimestamp;
 extern NSString * const kSCHWishListWebServiceTitle;
 extern NSString * const kSCHWishListWebServiceValue;
 extern NSString * const kSCHWishListWebServiceWishListError;
+
+// InitiatedBy 
+extern NSString * const kSCHWishListWebServicePARENT;
+extern NSString * const kSCHWishListWebServiceCHILD;

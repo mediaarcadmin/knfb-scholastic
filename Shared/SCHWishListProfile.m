@@ -14,7 +14,11 @@ NSString * const kSCHWishListProfile = @"SCHWishListProfile";
 
 @dynamic ProfileID;
 @dynamic ProfileName;
-@dynamic Timestamp;
 @dynamic ItemList;
+
+- (NSDate *)Timestamp
+{
+    return self.LastModified;
+}
 
 @end

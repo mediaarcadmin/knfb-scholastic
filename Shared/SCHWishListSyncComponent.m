@@ -17,8 +17,12 @@
 #import "SCHWishListItem.h"
 #import "SCHLibreAccessConstants.h"
 #import "BITAPIError.h" 
+#import "SCHAppRecommendationItem.h"
 
 // Constants
+NSString * const SCHWishListSyncComponentDidInsertNotification = @"SCHWishListSyncComponentDidInsertNotification";
+NSString * const SCHWishListSyncComponentWillDeleteNotification = @"SCHWishListSyncComponentWillDeleteNotification";
+NSString * const SCHWishListSyncComponentISBNs = @"SCHWishListSyncComponentISBNs";
 NSString * const SCHWishListSyncComponentDidCompleteNotification = @"SCHWishListSyncComponentDidCompleteNotification";
 NSString * const SCHWishListSyncComponentDidFailNotification = @"SCHWishListSyncComponentDidFailNotification";
 
@@ -95,7 +99,8 @@ NSString * const SCHWishListSyncComponentDidFailNotification = @"SCHWishListSync
 	
     [self.wishListWebService clear];
     
-	if (![self.managedObjectContext BITemptyEntity:kSCHWishListProfile error:&error]) {
+	if (![self.managedObjectContext BITemptyEntity:kSCHWishListProfile error:&error] ||
+        ![self.managedObjectContext BITemptyEntity:kSCHAppRecommendationItem error:&error]) {
 		NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
 	}		
 }
@@ -191,7 +196,7 @@ NSString * const SCHWishListSyncComponentDidFailNotification = @"SCHWishListSync
     } else {
         NSArray *wishListProfilesToCreate = [self localWishListProfilesWithItemStates:
                                              [NSArray arrayWithObject:[NSNumber numberWithStatus:kSCHStatusCreated]]];
-        if ([wishListProfilesToDelete count] > 0) {
+        if ([wishListProfilesToCreate count] > 0) {
             ret = [self createWishLists:wishListProfilesToCreate];
         } else if (self.saveOnly == NO) {
             NSArray *profiles = [self localProfiles];
@@ -417,7 +422,24 @@ NSString * const SCHWishListSyncComponentDidFailNotification = @"SCHWishListSync
 	}
     
     for (SCHWishListProfile *wishListProfile in deletePool) {
-        [self.managedObjectContext deleteObject:wishListProfile];
+        // we leave the actual deletion to the profile sync but we do delete 
+        // the items
+        NSMutableArray *deletedISBNs = [NSMutableArray array];
+        for (SCHWishListItem *item in wishListProfile.ItemList) {
+            NSString *isbn = item.ISBN;
+            if (isbn != nil) {
+                [deletedISBNs addObject:isbn];
+            }            
+        }
+        if ([deletedISBNs count] > 0) {
+            [[NSNotificationCenter defaultCenter] postNotificationName:SCHWishListSyncComponentWillDeleteNotification 
+                                                                object:self 
+                                                              userInfo:[NSDictionary dictionaryWithObject:[NSArray arrayWithArray:deletedISBNs]
+                                                                                                   forKey:SCHWishListSyncComponentISBNs]];
+            
+        }           
+        
+        [wishListProfile removeItemList:wishListProfile.ItemList];
         [self save];
     }                
     
@@ -542,16 +564,44 @@ NSString * const SCHWishListSyncComponentDidFailNotification = @"SCHWishListSync
 		}		
 	}
     
-    for (SCHWishListItem *wishListItem in deletePool) {
-        [self.managedObjectContext deleteObject:wishListItem];
-        [self save];
-    }                
+    if ([deletePool count] > 0) {
+        NSMutableArray *deletedISBNs = [NSMutableArray arrayWithCapacity:[deletePool count]];
+        for (SCHWishListItem *item in deletePool) {
+            NSString *isbn = item.ISBN;
+            if (isbn != nil) {
+                [deletedISBNs addObject:isbn];
+            }
+        }
+        if ([deletedISBNs count] > 0) {
+            [[NSNotificationCenter defaultCenter] postNotificationName:SCHWishListSyncComponentWillDeleteNotification 
+                                                                object:self 
+                                                              userInfo:[NSDictionary dictionaryWithObject:[NSArray arrayWithArray:deletedISBNs]
+                                                                                                   forKey:SCHWishListSyncComponentISBNs]];
+        }        
+        for (SCHWishListItem *wishListItem in deletePool) {
+            [self.managedObjectContext deleteObject:wishListItem];
+            [self save];
+        }                        
+    }
+
+    if ([creationPool count] > 0) {
+        NSMutableArray *insertedISBNs = [NSMutableArray arrayWithCapacity:[creationPool count]];
+        for (NSDictionary *webItem in creationPool) {
+            SCHWishListItem *wishListItem = [self wishListItem:webItem];
+            if (wishListItem != nil) {
+                [insertedISBNs addObject:wishListItem.ISBN];
+                [wishListProfile addItemListObject:wishListItem];
+                [self save];
+            }
+        }
+        if ([insertedISBNs count] > 0) {
+            [[NSNotificationCenter defaultCenter] postNotificationName:SCHWishListSyncComponentDidInsertNotification 
+                                                                object:self 
+                                                              userInfo:[NSDictionary dictionaryWithObject:[NSArray arrayWithArray:insertedISBNs]
+                                                                                                   forKey:SCHWishListSyncComponentISBNs]];
+        } 
+    }
     
-	for (NSDictionary *webItem in creationPool) {
-        [wishListProfile addItemListObject:[self wishListItem:webItem]];
-        [self save];
-	}
-	    
 	[self save];    
 }
 
@@ -570,7 +620,9 @@ NSString * const SCHWishListSyncComponentDidFailNotification = @"SCHWishListSync
 		ret.Author = [self makeNullNil:[wishListItem objectForKey:kSCHWishListWebServiceAuthor]];
 		ret.InitiatedBy = [self makeNullNil:[wishListItem objectForKey:kSCHWishListWebServiceInitiatedBy]];
         ret.ISBN = [self makeNullNil:[wishListItem objectForKey:kSCHWishListWebServiceISBN]];
-        ret.Title = [self makeNullNil:[wishListItem objectForKey:kSCHWishListWebServiceTitle]];        
+        ret.Title = [self makeNullNil:[wishListItem objectForKey:kSCHWishListWebServiceTitle]];  
+        
+        [ret assignAppRecommendationItem];
 	}
 	
 	return(ret);

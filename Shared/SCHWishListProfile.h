@@ -16,8 +16,10 @@ extern NSString * const kSCHWishListProfile;
 
 @property (nonatomic, retain) NSNumber * ProfileID;
 @property (nonatomic, retain) NSString * ProfileName;
-@property (nonatomic, retain) NSDate * Timestamp;
 @property (nonatomic, retain) NSSet *ItemList;
+
+@property (nonatomic, readonly) NSDate * Timestamp;
+
 @end
 
 @interface SCHWishListProfile (CoreDataGeneratedAccessors)
