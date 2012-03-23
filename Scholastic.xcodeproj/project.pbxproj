@@ -2741,6 +2741,14 @@
 		C9B2F5B8151A33710044BBCC /* SCHRecommendationOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = C9B2F5B6151A33710044BBCC /* SCHRecommendationOperation.m */; };
 		C9B2F5B9151A33710044BBCC /* SCHRecommendationOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = C9B2F5B6151A33710044BBCC /* SCHRecommendationOperation.m */; };
 		C9B2F5BA151A33710044BBCC /* SCHRecommendationOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = C9B2F5B6151A33710044BBCC /* SCHRecommendationOperation.m */; };
+		C9B2F62C151BD64B0044BBCC /* SCHRecommendationURLRequestOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = C9B2F62B151BD64B0044BBCC /* SCHRecommendationURLRequestOperation.m */; };
+		C9B2F62D151BD64B0044BBCC /* SCHRecommendationURLRequestOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = C9B2F62B151BD64B0044BBCC /* SCHRecommendationURLRequestOperation.m */; };
+		C9B2F62E151BD64B0044BBCC /* SCHRecommendationURLRequestOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = C9B2F62B151BD64B0044BBCC /* SCHRecommendationURLRequestOperation.m */; };
+		C9B2F62F151BD64B0044BBCC /* SCHRecommendationURLRequestOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = C9B2F62B151BD64B0044BBCC /* SCHRecommendationURLRequestOperation.m */; };
+		C9B2F632151C9E030044BBCC /* SCHRecommendationDownloadCoverOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = C9B2F631151C9E030044BBCC /* SCHRecommendationDownloadCoverOperation.m */; };
+		C9B2F633151C9E030044BBCC /* SCHRecommendationDownloadCoverOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = C9B2F631151C9E030044BBCC /* SCHRecommendationDownloadCoverOperation.m */; };
+		C9B2F634151C9E030044BBCC /* SCHRecommendationDownloadCoverOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = C9B2F631151C9E030044BBCC /* SCHRecommendationDownloadCoverOperation.m */; };
+		C9B2F635151C9E030044BBCC /* SCHRecommendationDownloadCoverOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = C9B2F631151C9E030044BBCC /* SCHRecommendationDownloadCoverOperation.m */; };
 		C9B32A3D150A33F3008A04FC /* RateView.m in Sources */ = {isa = PBXBuildFile; fileRef = F849155514FFA54D000D064B /* RateView.m */; };
 		C9B3765913BC929F00992A6E /* storyinteraction-video-play~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = C9B3765313BC929F00992A6E /* storyinteraction-video-play~iphone.png */; };
 		C9B3765B13BC929F00992A6E /* storyinteraction-video-play@2x~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = C9B3765413BC929F00992A6E /* storyinteraction-video-play@2x~iphone.png */; };
@@ -5356,6 +5364,10 @@
 		C9B2F5AF151A262F0044BBCC /* SCHRecommendationManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHRecommendationManager.m; path = Shared/SCHRecommendationManager.m; sourceTree = "<group>"; };
 		C9B2F5B5151A33710044BBCC /* SCHRecommendationOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHRecommendationOperation.h; path = Shared/SCHRecommendationOperation.h; sourceTree = "<group>"; };
 		C9B2F5B6151A33710044BBCC /* SCHRecommendationOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHRecommendationOperation.m; path = Shared/SCHRecommendationOperation.m; sourceTree = "<group>"; };
+		C9B2F62A151BD64B0044BBCC /* SCHRecommendationURLRequestOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHRecommendationURLRequestOperation.h; path = Shared/SCHRecommendationURLRequestOperation.h; sourceTree = "<group>"; };
+		C9B2F62B151BD64B0044BBCC /* SCHRecommendationURLRequestOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHRecommendationURLRequestOperation.m; path = Shared/SCHRecommendationURLRequestOperation.m; sourceTree = "<group>"; };
+		C9B2F630151C9E020044BBCC /* SCHRecommendationDownloadCoverOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHRecommendationDownloadCoverOperation.h; path = Shared/SCHRecommendationDownloadCoverOperation.h; sourceTree = "<group>"; };
+		C9B2F631151C9E030044BBCC /* SCHRecommendationDownloadCoverOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHRecommendationDownloadCoverOperation.m; path = Shared/SCHRecommendationDownloadCoverOperation.m; sourceTree = "<group>"; };
 		C9B3765313BC929F00992A6E /* storyinteraction-video-play~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "storyinteraction-video-play~iphone.png"; sourceTree = "<group>"; };
 		C9B3765413BC929F00992A6E /* storyinteraction-video-play@2x~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "storyinteraction-video-play@2x~iphone.png"; sourceTree = "<group>"; };
 		C9B3765513BC929F00992A6E /* storyinteraction-video-pause~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "storyinteraction-video-pause~iphone.png"; sourceTree = "<group>"; };
@@ -8018,6 +8030,10 @@
 		C9B2F5B4151A27300044BBCC /* Processing Operations */ = {
 			isa = PBXGroup;
 			children = (
+				C9B2F62A151BD64B0044BBCC /* SCHRecommendationURLRequestOperation.h */,
+				C9B2F62B151BD64B0044BBCC /* SCHRecommendationURLRequestOperation.m */,
+				C9B2F630151C9E020044BBCC /* SCHRecommendationDownloadCoverOperation.h */,
+				C9B2F631151C9E030044BBCC /* SCHRecommendationDownloadCoverOperation.m */,
 			);
 			name = "Processing Operations";
 			sourceTree = "<group>";
@@ -11640,6 +11656,8 @@
 				5279E09215176481000D7D8D /* SCHAppRecommendationItem.m in Sources */,
 				C9B2F5B0151A262F0044BBCC /* SCHRecommendationManager.m in Sources */,
 				C9B2F5B7151A33710044BBCC /* SCHRecommendationOperation.m in Sources */,
+				C9B2F62C151BD64B0044BBCC /* SCHRecommendationURLRequestOperation.m in Sources */,
+				C9B2F632151C9E030044BBCC /* SCHRecommendationDownloadCoverOperation.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -12056,6 +12074,8 @@
 				5279E09315176481000D7D8D /* SCHAppRecommendationItem.m in Sources */,
 				C9B2F5B1151A262F0044BBCC /* SCHRecommendationManager.m in Sources */,
 				C9B2F5B8151A33710044BBCC /* SCHRecommendationOperation.m in Sources */,
+				C9B2F62D151BD64B0044BBCC /* SCHRecommendationURLRequestOperation.m in Sources */,
+				C9B2F633151C9E030044BBCC /* SCHRecommendationDownloadCoverOperation.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -12406,6 +12426,8 @@
 				5279E09415176481000D7D8D /* SCHAppRecommendationItem.m in Sources */,
 				C9B2F5B2151A262F0044BBCC /* SCHRecommendationManager.m in Sources */,
 				C9B2F5B9151A33710044BBCC /* SCHRecommendationOperation.m in Sources */,
+				C9B2F62E151BD64B0044BBCC /* SCHRecommendationURLRequestOperation.m in Sources */,
+				C9B2F634151C9E030044BBCC /* SCHRecommendationDownloadCoverOperation.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -12756,6 +12778,8 @@
 				5279E09515176481000D7D8D /* SCHAppRecommendationItem.m in Sources */,
 				C9B2F5B3151A262F0044BBCC /* SCHRecommendationManager.m in Sources */,
 				C9B2F5BA151A33710044BBCC /* SCHRecommendationOperation.m in Sources */,
+				C9B2F62F151BD64B0044BBCC /* SCHRecommendationURLRequestOperation.m in Sources */,
+				C9B2F635151C9E030044BBCC /* SCHRecommendationDownloadCoverOperation.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

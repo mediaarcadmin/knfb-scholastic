@@ -41,6 +41,7 @@
 - (void)start
 {
 	if (self.isbn && ![self isCancelled]) {
+        [[SCHRecommendationManager sharedManager] setProcessing:YES forIsbn:self.isbn];
 		[self beginOperation];
 	}
 }
@@ -78,38 +79,14 @@
     self.executing = NO;
     self.finished = YES;
     
+    
     [self didChangeValueForKey:@"isExecuting"];
-    [self didChangeValueForKey:@"isFinished"];  
+    [self didChangeValueForKey:@"isFinished"];
+    
+    [[SCHRecommendationManager sharedManager] setProcessing:NO forIsbn:self.isbn];
 }
 
 #pragma mark - thread safe access to book object
-
-- (SCHAppRecommendationItem *)appRecommendation
-{
-    NSAssert([NSThread isMainThread], @"appRecommendation called not on main thread");
-    
-    SCHAppRecommendationItem *ret = nil;
-
-    if (self.isbn) {
-        NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
-        
-        [fetchRequest setEntity:[NSEntityDescription entityForName:kSCHRecommendationItem 
-                                            inManagedObjectContext:self.mainThreadManagedObjectContext]];	
-        [fetchRequest setPredicate:[NSPredicate predicateWithFormat:@"recommendationISBN.isbn = %@", self.isbn]];
-        
-        NSError *error = nil;
-        NSArray *result = [self.mainThreadManagedObjectContext executeFetchRequest:fetchRequest error:&error];	
-        if (result == nil) {
-            NSLog(@"Unresolved error fetching recommendation %@, %@", error, [error userInfo]);
-        } else if ([result count] == 0) {
-            NSLog(@"Could not fetch recoomendation with isbn %@", self.isbn);
-        } else {
-            ret = [result lastObject];
-        }
-    }
-    
-    return ret;
-}
 
 - (void)performWithRecommendation:(void (^)(SCHAppRecommendationItem *item))block;
 {
@@ -118,7 +95,7 @@
     }
     
     dispatch_block_t accessBlock = ^{
-        SCHAppRecommendationItem *recommendation = [self appRecommendation];
+        SCHAppRecommendationItem *recommendation = [[SCHRecommendationManager sharedManager] appRecommendationForIsbn:self.isbn];
         block(recommendation);
     };
     
@@ -137,7 +114,7 @@
     
     dispatch_block_t accessBlock = ^{
         if (block) {
-            SCHAppRecommendationItem *recommendation = [self appRecommendation];
+            SCHAppRecommendationItem *recommendation = [[SCHRecommendationManager sharedManager] appRecommendationForIsbn:self.isbn];
             block(recommendation);
         }
         NSError *error = nil;
@@ -151,6 +128,13 @@
     } else {
         dispatch_async(dispatch_get_main_queue(), accessBlock);
     }
+}
+
+- (void)setProcessingState:(SCHAppRecommendationProcessingState)state
+{
+    [self performWithRecommendation:^(SCHAppRecommendationItem *item) {
+        item.state = [NSNumber numberWithInt: (int) state];
+    }];
 }
 
 - (void)setNotCancelledCompletionBlock:(void (^)(void))block

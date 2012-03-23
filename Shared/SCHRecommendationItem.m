@@ -35,4 +35,9 @@ NSString * const kSCHRecommendationItem = @"SCHRecommendationItem";
     return [UIImage imageNamed:@"sampleCoverImage.jpg"];
 }
 
+- (NSString *)isbn
+{
+    return [[self recommendationISBN] isbn];
+}
+
 @end

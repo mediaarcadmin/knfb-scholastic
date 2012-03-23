@@ -9,13 +9,26 @@
 #import "SCHRecommendationManager.h"
 #import "SCHCoreDataHelper.h"
 #import "SCHRecommendationOperation.h"
+#import "SCHRecommendationURLRequestOperation.h"
+#import "SCHRecommendationDownloadCoverOperation.h"
+#import "SCHRecommendationItem.h"
+#import "SCHAppRecommendationItem.h"
+#import "SCHRecommendationSyncComponent.h"
+#import "NSURL+Extensions.h"
+#import "NSDate+ServerDate.h"
 
 @interface SCHRecommendationManager()
 
 - (void)createProcessingQueues;
 - (void)coreDataHelperManagedObjectContextDidChangeNotification:(NSNotification *)notification;
 - (BOOL)isbnIsProcessing:(NSString *)isbn;
-- (void)setProcessing:(BOOL)processing forIsbn:(NSString *)isbn;
+- (BOOL)isbnNeedsProcessing:(NSString *)isbn;
+- (void)processIsbn:(NSString *)isbn;
+- (void)checkStateForAllRecommendations;
+- (void)checkIfProcessing;
+- (void)redispatchIsbn:(NSString *)isbn;
+
++ (BOOL)urlHasExpired:(NSString *)urlString;
 
 @property (readwrite, retain) NSOperationQueue *processingQueue;
 @property (nonatomic, assign) UIBackgroundTaskIdentifier backgroundTask;
@@ -34,18 +47,7 @@ static SCHRecommendationManager *sharedManager = nil;
 
 - (void)dealloc
 {
-    [[NSNotificationCenter defaultCenter] removeObserver:self 
-                                                 name:SCHCoreDataHelperManagedObjectContextDidChangeNotification 
-                                               object:nil];	    
-    
-    [[NSNotificationCenter defaultCenter] removeObserver:self 
-                                                 name:UIApplicationDidEnterBackgroundNotification 
-                                               object:nil];			
-    
-    [[NSNotificationCenter defaultCenter] removeObserver:self 
-                                                 name:UIApplicationWillEnterForegroundNotification 
-                                               object:nil];	
-    
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
     
     [managedObjectContext release], managedObjectContext = nil;
     [processingQueue release], processingQueue = nil;
@@ -58,7 +60,7 @@ static SCHRecommendationManager *sharedManager = nil;
 	if ((self = [super init])) {
 		[self createProcessingQueues];
         
-        currentlyProcessingIsbns = [NSMutableSet set];
+        currentlyProcessingIsbns = [[NSMutableSet set] retain];
 		        
         [[NSNotificationCenter defaultCenter] addObserver:self 
                                                  selector:@selector(coreDataHelperManagedObjectContextDidChangeNotification:) 
@@ -77,7 +79,14 @@ static SCHRecommendationManager *sharedManager = nil;
 
 - (void)cancelAllOperations
 {
-    
+    @synchronized(self) {
+        [self.processingQueue cancelAllOperations];    
+        
+        self.processingQueue = nil;
+        [self createProcessingQueues];
+        
+        [self.currentlyProcessingIsbns removeAllObjects];
+    }
 }
 
 - (void)cancelAllOperationsForIsbn:(NSString *)isbn
@@ -92,6 +101,76 @@ static SCHRecommendationManager *sharedManager = nil;
                
         [self.currentlyProcessingIsbns removeObject:isbn];
     }
+}
+
+#pragma mark - Recommendation State Check
+
+- (void)checkStateForAllRecommendations
+{
+    NSAssert([NSThread isMainThread], @"checkStateForAllRecommendations must run on main thread");
+    
+    NSArray *allRecommendationItems = nil;
+        NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+        
+        [fetchRequest setEntity:[NSEntityDescription entityForName:kSCHRecommendationItem 
+                                            inManagedObjectContext:self.managedObjectContext]];	
+        
+        NSError *error = nil;
+        allRecommendationItems = [self.managedObjectContext executeFetchRequest:fetchRequest error:&error];	
+        if (allRecommendationItems == nil) {
+            NSLog(@"Unresolved error fetching recommendations %@, %@", error, [error userInfo]);
+        }
+    
+    
+    NSMutableArray *isbnsToBeProcessed = [NSMutableArray array];
+        
+	for (SCHRecommendationItem *recommendationItem in allRecommendationItems) {
+        NSString *isbn = [recommendationItem isbn];
+        
+        if ([self isbnNeedsProcessing:isbn]) {
+            [isbnsToBeProcessed addObject:isbn];
+        }
+    }
+               	
+    for (NSString *isbn in isbnsToBeProcessed) {
+        [self processIsbn:isbn];
+    }
+    
+    [self checkIfProcessing];
+}
+
+- (BOOL)isbnNeedsProcessing:(NSString *)isbn
+{
+    NSAssert([NSThread isMainThread], @"isbnNeedsProcessing must run on main thread");
+    
+    BOOL needsProcessing = NO;
+    
+    if (![self isbnIsProcessing:isbn]) {
+
+        SCHAppRecommendationItem *recommendationItem = [self appRecommendationForIsbn:isbn];
+        
+        if (recommendationItem != nil) {
+            switch ([recommendationItem processingState]) {
+                case kSCHAppRecommendationProcessingStateURLsNotPopulated:
+                case kSCHAppRecommendationProcessingStateCachedCoverError:    
+                case kSCHAppRecommendationProcessingStateThumbnailError:      
+                case kSCHAppRecommendationProcessingStateError:               
+                case kSCHAppRecommendationProcessingStateComplete:      
+                    needsProcessing = NO;
+                    break;
+                case kSCHAppRecommendationProcessingStateDownloadFailed:     
+                case kSCHAppRecommendationProcessingStateNoMetadata:          
+                case kSCHAppRecommendationProcessingStateNoCover:
+                case kSCHAppRecommendationProcessingStateNoThumbnails:
+                    needsProcessing = YES;
+                    break;
+                default:
+                    break;
+            }
+        }
+    }
+    
+	return needsProcessing;
 }
 
 #pragma mark - Processing
@@ -115,6 +194,128 @@ static SCHRecommendationManager *sharedManager = nil;
             [self.currentlyProcessingIsbns removeObject:isbn];
         }
     }
+}
+
+- (void)processIsbn:(NSString *)isbn
+{
+    SCHAppRecommendationItem *item = [self appRecommendationForIsbn:isbn];
+    
+    if (item != nil) {
+        switch ([item processingState]) {
+            case kSCHAppRecommendationProcessingStateNoMetadata:
+            { 
+                SCHRecommendationURLRequestOperation *urlOp = [[SCHRecommendationURLRequestOperation alloc] init];
+                [urlOp setMainThreadManagedObjectContext:self.managedObjectContext];
+                urlOp.isbn = isbn;
+                
+                [urlOp setNotCancelledCompletionBlock:^{
+                    [self redispatchIsbn:isbn];
+                }];
+                
+                [self.processingQueue addOperation:urlOp];
+                [urlOp release];
+                return;
+            }
+            case kSCHAppRecommendationProcessingStateNoCover:
+            {	
+                if (![SCHRecommendationManager urlIsValid:item.CoverURL]) {
+                    [item setProcessingState:kSCHAppRecommendationProcessingStateNoMetadata];
+                    [self redispatchIsbn:isbn];
+                    return;
+                }
+                
+                // create cover image download operation
+                SCHRecommendationDownloadCoverOperation *downloadOp = [[SCHRecommendationDownloadCoverOperation alloc] init];
+                [downloadOp setMainThreadManagedObjectContext:self.managedObjectContext];
+                downloadOp.isbn = isbn;
+                // the book will be redispatched on completion
+                [downloadOp setNotCancelledCompletionBlock:^{
+                    [self redispatchIsbn:isbn];
+                }];
+                
+                    [self.processingQueue addOperation:downloadOp];
+                [downloadOp release];                
+                return;
+            }
+            case kSCHAppRecommendationProcessingStateCachedCoverError:  
+            case kSCHAppRecommendationProcessingStateThumbnailError:      
+            case kSCHAppRecommendationProcessingStateError:               
+            case kSCHAppRecommendationProcessingStateComplete: 
+            case kSCHAppRecommendationProcessingStateDownloadFailed:     
+            case kSCHAppRecommendationProcessingStateNoThumbnails:
+            {
+                // Do nothing until the sync kicks off again or the user initiates an action
+                // Prefer explicitly listing these state to just having a default because it catches
+                // Unhandled cases at compile time
+                return;
+            }
+        }
+	}
+}
+            
+- (void)redispatchIsbn:(NSString *)isbn
+{    
+    dispatch_block_t redispatchBlock = ^{
+        if ([self isbnNeedsProcessing:isbn]) {
+            [self processIsbn:isbn];
+        }
+        
+        [self checkIfProcessing];
+    };
+    
+    if ([NSThread isMainThread]) {
+        redispatchBlock();
+    } else {
+        dispatch_async(dispatch_get_main_queue(), redispatchBlock);
+    }
+}
+
+- (void)checkIfProcessing
+{
+    NSAssert([NSThread isMainThread], @"checkIfProcessing must be called on main thread");
+    
+#if 0
+    // check to see if we're processing
+    //	int totalOperations = [[self.networkOperationQueue operations] count] + 
+    //	[[self.webServiceOperationQueue operations] count];
+    
+    int totalBooksProcessing = 0;
+    
+	NSArray *allBooks = [[SCHBookManager sharedBookManager] allBookIdentifiersInManagedObjectContext:self.managedObjectContext];
+	
+	// FIXME: add prioritisation
+    
+	// get all the books independent of profile
+	for (SCHBookIdentifier *identifier in allBooks) {
+		SCHAppBook *book = [[SCHBookManager sharedBookManager] bookWithIdentifier:identifier inManagedObjectContext:self.managedObjectContext];
+        
+        if (book != nil && [book isProcessing]) {
+            totalBooksProcessing++;
+        }
+	}	
+	
+	if (totalBooksProcessing == 0) {
+		self.connectionIsIdle = YES;
+        
+		if (!self.connectionIsIdle || !self.firedFirstBusyIdleNotification) {
+			[self performSelectorOnMainThread:@selector(sendNotification:) withObject:kSCHProcessingManagerConnectionIdle waitUntilDone:YES];
+            self.firedFirstBusyIdleNotification = YES;
+		}
+        
+#ifndef __OPTIMIZE__
+        // FIXME: remove this logging when we are satisfied we aren't failing to clean up the vended objects from the shared book manager
+        NSLog(@"Processing stopped. SharedBookManager: %@", [SCHBookManager sharedBookManager]);
+#endif
+        
+	} else {
+		self.connectionIsIdle = NO;
+        
+		if (self.connectionIsIdle || !self.firedFirstBusyIdleNotification) {
+			[self performSelectorOnMainThread:@selector(sendNotification:) withObject:kSCHProcessingManagerConnectionBusy waitUntilDone:YES];
+            self.firedFirstBusyIdleNotification = YES;
+		}
+	}
+#endif
 }
 
 #pragma mark - Notification handlers
@@ -187,6 +388,42 @@ static SCHRecommendationManager *sharedManager = nil;
 	}		
 }
 
+- (void)recommendationSyncDidComplete:(NSNotification *)notification
+{
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self checkStateForAllRecommendations];
+    });
+}
+
+#pragma mark - SCHAppRecommendationItem vending
+
+- (SCHAppRecommendationItem *)appRecommendationForIsbn:(NSString *)isbn
+{
+    NSAssert([NSThread isMainThread], @"appRecommendation called not on main thread");
+    
+    SCHAppRecommendationItem *ret = nil;
+    
+    if (isbn) {
+        NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+        
+        [fetchRequest setEntity:[NSEntityDescription entityForName:kSCHAppRecommendationItem 
+                                            inManagedObjectContext:self.managedObjectContext]];	
+        [fetchRequest setPredicate:[NSPredicate predicateWithFormat:@"ContentIdentifier = %@", isbn]];
+        
+        NSError *error = nil;
+        NSArray *result = [self.managedObjectContext executeFetchRequest:fetchRequest error:&error];	
+        if (result == nil) {
+            NSLog(@"Unresolved error fetching recommendation %@, %@", error, [error userInfo]);
+        } else if ([result count] == 0) {
+            NSLog(@"Could not fetch recoomendation with isbn %@", isbn);
+        } else {
+            ret = [result lastObject];
+        }
+    }
+    
+    return ret;
+}
+
 #pragma mark - Class methods
 
 + (SCHRecommendationManager *)sharedManager
@@ -203,9 +440,38 @@ static SCHRecommendationManager *sharedManager = nil;
 												 selector:@selector(enterForeground) 
 													 name:UIApplicationWillEnterForegroundNotification 
 												   object:nil];	
+        
+        [[NSNotificationCenter defaultCenter] addObserver:sharedManager 
+												 selector:@selector(recommendationSyncDidComplete:) 
+													 name:SCHRecommendationSyncComponentDidCompleteNotification 
+												   object:nil];
     } 
 	
 	return sharedManager;
+}
+
++ (BOOL)urlIsValid:(NSString *)urlString
+{
+    return (urlString && ![SCHRecommendationManager urlHasExpired:urlString]);
+}
+
++ (BOOL)urlHasExpired:(NSString *)urlString
+{
+    BOOL ret = NO;
+    
+    if (urlString) {
+        NSURL *url = [NSURL URLWithString:urlString];
+        NSString *expires = [[url queryParameters] objectForKey:@"Expires"];
+        if (expires) {
+            NSDate *expiresDate = [NSDate dateWithTimeIntervalSince1970:[expires integerValue]];
+            
+            if ([expiresDate earlierDate:[[NSDate serverDate] dateByAddingTimeInterval:60]] == expiresDate) {
+                ret = YES;
+            }
+        }
+    }
+    
+    return ret;
 }
 
 @end

@@ -8,6 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import "SCHCoreDataOperation.h"
+#import "SCHRecommendationManager.h"
 
 @class SCHAppRecommendationItem;
 
@@ -25,5 +26,6 @@
 // thread-safe access
 - (void)performWithRecommendation:(void (^)(SCHAppRecommendationItem *item))block;
 - (void)performWithRecommendationAndSave:(void (^)(SCHAppRecommendationItem *))block;
+- (void)setProcessingState:(SCHAppRecommendationProcessingState)state;
 
 @end

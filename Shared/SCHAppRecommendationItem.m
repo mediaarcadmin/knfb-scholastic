@@ -8,24 +8,34 @@
 
 #import "SCHAppRecommendationItem.h"
 #import "SCHRecommendationItem.h"
+#import "NSNumber+ObjectTypes.h"
 
 // Constants
 NSString * const kSCHAppRecommendationItem = @"SCHAppRecommendationItem";
+NSString * const kSCHAppRecommendationFilenameSeparator = @"-";
+
+@interface SCHAppRecommendationItem()
+
+@property (nonatomic, copy) NSString *cachedRecommendationDirectory;
+
+@end
 
 @implementation SCHAppRecommendationItem
 
 @dynamic Author;
 @dynamic AverageRating;
-@dynamic ContentURL;
 @dynamic CoverURL;
-@dynamic Description;
-@dynamic Enhanced;
-@dynamic FileName;
-@dynamic FileSize;
-@dynamic PageNumber;
 @dynamic Title;
-@dynamic Version;
 @dynamic recommendationItems;
+@dynamic state;
+
+@synthesize cachedRecommendationDirectory;
+
+- (void)didTurnIntoFault
+{
+    [cachedRecommendationDirectory release], cachedRecommendationDirectory = nil;
+    [super willTurnIntoFault];
+}
 
 - (NSNumber *)AverageRatingAsNumber
 {    
@@ -42,6 +52,103 @@ NSString * const kSCHAppRecommendationItem = @"SCHAppRecommendationItem";
     [formatter release];
     
     return number;
+}
+
+- (SCHAppRecommendationProcessingState)processingState
+{
+	return (SCHAppRecommendationProcessingState) [self.state intValue];
+}
+
+- (void)setProcessingState:(SCHAppRecommendationProcessingState)processingState
+{
+    self.state = [NSNumber numberWithInt:processingState];
+}
+
+#pragma mark - Thumbnail/Cover Caching
+
+- (NSString *)coverImagePath
+{
+	return [[self recommendationDirectory] stringByAppendingPathComponent:[NSString stringWithFormat:@"%@%@%@.jpg", 
+                                                                             self.ContentIdentifier, 
+                                                                             kSCHAppRecommendationFilenameSeparator,
+                                                                             [NSNumber numberWithInteger:kSCHDRMQualifiersFullWithDRM]]];    
+}	
+
+- (NSString *)thumbPathForSize:(CGSize)size
+{    
+    CGFloat scale = 1.0f;
+    if ([[UIScreen mainScreen] respondsToSelector:@selector(scale)]) {
+        scale = [[UIScreen mainScreen] scale];
+    }
+    
+    NSString *thumbPath = [[self recommendationDirectory] stringByAppendingPathComponent:[NSString stringWithFormat:@"%@%@%@%@%d%@%d", 
+                                                                         self.ContentIdentifier, 
+                                                                         kSCHAppRecommendationFilenameSeparator,
+                                                                         [NSNumber numberWithInteger:kSCHDRMQualifiersFullWithDRM], 
+                                                                         kSCHAppRecommendationFilenameSeparator,                                                                         
+                                                                         (int)size.width, 
+                                                                         kSCHAppRecommendationFilenameSeparator,
+                                                                         (int)size.height]];
+    if (scale != 1) {
+        thumbPath = [thumbPath stringByAppendingFormat:@"@%dx",(int)scale];
+    }
+    
+    thumbPath = [thumbPath stringByAppendingPathExtension:@"png"];
+    
+	return thumbPath;
+}
+
+- (NSString *)recommendationDirectory 
+{
+    
+    if (!cachedRecommendationDirectory) {
+        NSString *recommendationDirectory = [[SCHAppRecommendationItem recommendationsDirectory] stringByAppendingPathComponent:self.ContentIdentifier];
+        
+        NSFileManager *localFileManager = [[NSFileManager alloc] init];
+        NSError *error = nil;
+        BOOL isDirectory = NO;
+        
+        if (![localFileManager fileExistsAtPath:recommendationDirectory isDirectory:&isDirectory]) {
+            [localFileManager createDirectoryAtPath:recommendationDirectory withIntermediateDirectories:YES attributes:nil error:&error];
+            
+            if (error) {
+                NSLog(@"Warning: problem creating recommendation directory. %@", [error localizedDescription]);
+            }
+        }
+        
+        [localFileManager release], localFileManager = nil;
+        
+        cachedRecommendationDirectory = [recommendationDirectory copy];
+    }
+    
+    return cachedRecommendationDirectory;
+}
+
++ (NSString *)recommendationsDirectory
+{
+    static dispatch_once_t pred;
+	static NSString *cachedRecommendationsDirectory = nil;
+	
+    dispatch_once(&pred, ^{
+        NSString *applicationSupportDirectory = [NSSearchPathForDirectoriesInDomains(NSApplicationSupportDirectory, NSUserDomainMask, YES) lastObject];
+        cachedRecommendationsDirectory = [[applicationSupportDirectory stringByAppendingPathComponent:@"Recommendations"] retain];
+        
+        NSFileManager *localFileManager = [[NSFileManager alloc] init];
+        NSError *error = nil;
+        BOOL isDirectory = NO;
+        
+        if (![localFileManager fileExistsAtPath:cachedRecommendationsDirectory isDirectory:&isDirectory]) {
+            [localFileManager createDirectoryAtPath:cachedRecommendationsDirectory withIntermediateDirectories:YES attributes:nil error:&error];
+            
+            if (error) {
+                NSLog(@"Warning: problem creating recommendations directory. %@", [error localizedDescription]);
+            }
+        }
+        
+        [localFileManager release], localFileManager = nil;   
+    });
+    
+	return cachedRecommendationsDirectory;
 }
 
 @end

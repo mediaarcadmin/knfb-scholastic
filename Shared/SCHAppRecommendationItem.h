@@ -9,6 +9,7 @@
 #import <Foundation/Foundation.h>
 #import <CoreData/CoreData.h>
 #import "SCHContentItem.h"
+#import "SCHRecommendationManager.h"
 
 @class SCHRecommendationItem;
 
@@ -19,18 +20,20 @@ extern NSString * const kSCHAppRecommendationItem;
 
 @property (nonatomic, retain) NSString * Author;
 @property (nonatomic, retain) NSString * AverageRating;
-@property (nonatomic, retain) NSString * ContentURL;
 @property (nonatomic, retain) NSString * CoverURL;
-@property (nonatomic, retain) NSString * Description;
-@property (nonatomic, retain) NSNumber * Enhanced;
-@property (nonatomic, retain) NSString * FileName;
-@property (nonatomic, retain) NSNumber * FileSize;
-@property (nonatomic, retain) NSNumber * PageNumber;
 @property (nonatomic, retain) NSString * Title;
-@property (nonatomic, retain) NSString * Version;
 @property (nonatomic, retain) NSSet *recommendationItems;
+@property (nonatomic, retain) NSNumber * state;
 
 - (NSNumber *)AverageRatingAsNumber;
+- (SCHAppRecommendationProcessingState)processingState;
+- (void)setProcessingState:(SCHAppRecommendationProcessingState)processingState;
+
+- (NSString *)coverImagePath;
+- (NSString *)thumbPathForSize:(CGSize)size;
+- (NSString *)recommendationDirectory;
+
++ (NSString *)recommendationsDirectory;
 
 @end
 
