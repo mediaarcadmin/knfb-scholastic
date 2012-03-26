@@ -3829,6 +3829,14 @@
 		F8898903135877B100D236ED /* SCHProfileViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F8898902135877B100D236ED /* SCHProfileViewCell.m */; };
 		F88A7F7F138D151D006A7D12 /* SCHDictionaryAccessManager.m in Sources */ = {isa = PBXBuildFile; fileRef = F88A7F7E138D151D006A7D12 /* SCHDictionaryAccessManager.m */; };
 		F88F03DF13A24649006D7C1E /* SCHStoryInteractionMultipleChoiceWithAnswerPictures_iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = F88F03DC13A24649006D7C1E /* SCHStoryInteractionMultipleChoiceWithAnswerPictures_iPad.xib */; };
+		F88F6FD115208A1600572E7C /* SCHBookShelfMenuTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F88F6FCF15208A1600572E7C /* SCHBookShelfMenuTableViewController.m */; };
+		F88F6FD215208A1600572E7C /* SCHBookShelfMenuTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F88F6FCF15208A1600572E7C /* SCHBookShelfMenuTableViewController.m */; };
+		F88F6FD315208A1600572E7C /* SCHBookShelfMenuTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F88F6FCF15208A1600572E7C /* SCHBookShelfMenuTableViewController.m */; };
+		F88F6FD415208A1600572E7C /* SCHBookShelfMenuTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F88F6FCF15208A1600572E7C /* SCHBookShelfMenuTableViewController.m */; };
+		F88F6FD515208A1600572E7C /* SCHBookShelfMenuTableViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = F88F6FD015208A1600572E7C /* SCHBookShelfMenuTableViewController.xib */; };
+		F88F6FD615208A1600572E7C /* SCHBookShelfMenuTableViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = F88F6FD015208A1600572E7C /* SCHBookShelfMenuTableViewController.xib */; };
+		F88F6FD715208A1600572E7C /* SCHBookShelfMenuTableViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = F88F6FD015208A1600572E7C /* SCHBookShelfMenuTableViewController.xib */; };
+		F88F6FD815208A1600572E7C /* SCHBookShelfMenuTableViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = F88F6FD015208A1600572E7C /* SCHBookShelfMenuTableViewController.xib */; };
 		F88FA50314AC9F6E00AB1911 /* storiatoolbar.png in Resources */ = {isa = PBXBuildFile; fileRef = F88FA50114AC9F6E00AB1911 /* storiatoolbar.png */; };
 		F88FA50414AC9F6E00AB1911 /* storiatoolbar.png in Resources */ = {isa = PBXBuildFile; fileRef = F88FA50114AC9F6E00AB1911 /* storiatoolbar.png */; };
 		F88FA50514AC9F6E00AB1911 /* storiatoolbar~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = F88FA50214AC9F6E00AB1911 /* storiatoolbar~ipad.png */; };
@@ -5635,6 +5643,9 @@
 		F88A7F7D138D151D006A7D12 /* SCHDictionaryAccessManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHDictionaryAccessManager.h; path = Shared/SCHDictionaryAccessManager.h; sourceTree = "<group>"; };
 		F88A7F7E138D151D006A7D12 /* SCHDictionaryAccessManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHDictionaryAccessManager.m; path = Shared/SCHDictionaryAccessManager.m; sourceTree = "<group>"; };
 		F88F03DC13A24649006D7C1E /* SCHStoryInteractionMultipleChoiceWithAnswerPictures_iPad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SCHStoryInteractionMultipleChoiceWithAnswerPictures_iPad.xib; sourceTree = "<group>"; };
+		F88F6FCE15208A1600572E7C /* SCHBookShelfMenuTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHBookShelfMenuTableViewController.h; path = Shared/SCHBookShelfMenuTableViewController.h; sourceTree = "<group>"; };
+		F88F6FCF15208A1600572E7C /* SCHBookShelfMenuTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHBookShelfMenuTableViewController.m; path = Shared/SCHBookShelfMenuTableViewController.m; sourceTree = "<group>"; };
+		F88F6FD015208A1600572E7C /* SCHBookShelfMenuTableViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = SCHBookShelfMenuTableViewController.xib; path = Shared/SCHBookShelfMenuTableViewController.xib; sourceTree = "<group>"; };
 		F88FA50114AC9F6E00AB1911 /* storiatoolbar.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = storiatoolbar.png; path = Resources/UIAssets/FromPSD/storiatoolbar.png; sourceTree = "<group>"; };
 		F88FA50214AC9F6E00AB1911 /* storiatoolbar~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "storiatoolbar~ipad.png"; path = "Resources/UIAssets/FromPSD/storiatoolbar~ipad.png"; sourceTree = "<group>"; };
 		F88FA50B14ADDAE500AB1911 /* largestoriaicon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = largestoriaicon.png; path = Resources/UIAssets/FromPSD/largestoriaicon.png; sourceTree = "<group>"; };
@@ -6701,6 +6712,7 @@
 		28EEBF621118D79A00187D67 /* Shared */ = {
 			isa = PBXGroup;
 			children = (
+				F88F6FCD152089ED00572E7C /* Bookshelf Menu */,
 				C9B2F5AD151A25F40044BBCC /* Recommendation Processing */,
 				F81B00D515109783002DEE25 /* Recommendation Views */,
 				52C62CE614F2A4B500F261DA /* COPPA */,
@@ -8517,6 +8529,16 @@
 			name = "Processing Operations";
 			sourceTree = "<group>";
 		};
+		F88F6FCD152089ED00572E7C /* Bookshelf Menu */ = {
+			isa = PBXGroup;
+			children = (
+				F88F6FCE15208A1600572E7C /* SCHBookShelfMenuTableViewController.h */,
+				F88F6FCF15208A1600572E7C /* SCHBookShelfMenuTableViewController.m */,
+				F88F6FD015208A1600572E7C /* SCHBookShelfMenuTableViewController.xib */,
+			);
+			name = "Bookshelf Menu";
+			sourceTree = "<group>";
+		};
 		F8B30455144D8C9B0037708F /* Help Video Operations */ = {
 			isa = PBXGroup;
 			children = (
@@ -9592,6 +9614,7 @@
 				F89140C41511EB310026F16F /* SCHBookShelfRecommendationListController.xib in Resources */,
 				F864916D15139122003A8B81 /* sampleCoverImage.jpg in Resources */,
 				F8A57E761517702000390D56 /* SCHBookShelfWishListController.xib in Resources */,
+				F88F6FD515208A1600572E7C /* SCHBookShelfMenuTableViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -10307,6 +10330,7 @@
 				F89140C51511EB310026F16F /* SCHBookShelfRecommendationListController.xib in Resources */,
 				F864916E15139122003A8B81 /* sampleCoverImage.jpg in Resources */,
 				F8A57E771517702000390D56 /* SCHBookShelfWishListController.xib in Resources */,
+				F88F6FD615208A1600572E7C /* SCHBookShelfMenuTableViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -10798,6 +10822,7 @@
 				F89140C61511EB310026F16F /* SCHBookShelfRecommendationListController.xib in Resources */,
 				F864916F15139122003A8B81 /* sampleCoverImage.jpg in Resources */,
 				F8A57E781517702000390D56 /* SCHBookShelfWishListController.xib in Resources */,
+				F88F6FD715208A1600572E7C /* SCHBookShelfMenuTableViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -11287,6 +11312,7 @@
 				F89140C71511EB310026F16F /* SCHBookShelfRecommendationListController.xib in Resources */,
 				F864917015139122003A8B81 /* sampleCoverImage.jpg in Resources */,
 				F8A57E791517702000390D56 /* SCHBookShelfWishListController.xib in Resources */,
+				F88F6FD815208A1600572E7C /* SCHBookShelfMenuTableViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -11658,6 +11684,7 @@
 				C9B2F5B7151A33710044BBCC /* SCHRecommendationOperation.m in Sources */,
 				C9B2F62C151BD64B0044BBCC /* SCHRecommendationURLRequestOperation.m in Sources */,
 				C9B2F632151C9E030044BBCC /* SCHRecommendationDownloadCoverOperation.m in Sources */,
+				F88F6FD115208A1600572E7C /* SCHBookShelfMenuTableViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -12076,6 +12103,7 @@
 				C9B2F5B8151A33710044BBCC /* SCHRecommendationOperation.m in Sources */,
 				C9B2F62D151BD64B0044BBCC /* SCHRecommendationURLRequestOperation.m in Sources */,
 				C9B2F633151C9E030044BBCC /* SCHRecommendationDownloadCoverOperation.m in Sources */,
+				F88F6FD215208A1600572E7C /* SCHBookShelfMenuTableViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -12428,6 +12456,7 @@
 				C9B2F5B9151A33710044BBCC /* SCHRecommendationOperation.m in Sources */,
 				C9B2F62E151BD64B0044BBCC /* SCHRecommendationURLRequestOperation.m in Sources */,
 				C9B2F634151C9E030044BBCC /* SCHRecommendationDownloadCoverOperation.m in Sources */,
+				F88F6FD315208A1600572E7C /* SCHBookShelfMenuTableViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -12780,6 +12809,7 @@
 				C9B2F5BA151A33710044BBCC /* SCHRecommendationOperation.m in Sources */,
 				C9B2F62F151BD64B0044BBCC /* SCHRecommendationURLRequestOperation.m in Sources */,
 				C9B2F635151C9E030044BBCC /* SCHRecommendationDownloadCoverOperation.m in Sources */,
+				F88F6FD415208A1600572E7C /* SCHBookShelfMenuTableViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

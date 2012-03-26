@@ -12,6 +12,7 @@
 #import "SCHComponentDelegate.h"
 #import "SCHBookShelfRecommendationListController.h"
 #import "SCHBookShelfWishListController.h"
+#import "SCHBookShelfMenuTableViewController.h"
 
 @class SCHProfileViewController_iPad;
 
