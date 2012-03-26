@@ -55,11 +55,14 @@
     __block NSString *coverPath = nil;
     
     [self performWithRecommendation:^(SCHAppRecommendationItem *item) {
-        recommendationDirectory = [[[item recommendationDirectory] copy] autorelease];
-        coverPath = [[[item coverImagePath] copy] autorelease];
-        coverURL = [[[item CoverURL] copy] autorelease];
-        NSLog(@"coverURL: %@", coverURL);
+        recommendationDirectory = [[item recommendationDirectory] retain];
+        coverPath = [[item coverImagePath] retain];
+        coverURL = [[item CoverURL] retain];
     }];
+    
+    [recommendationDirectory autorelease];
+    [coverPath autorelease];
+    [coverURL autorelease];
     
     self.localPath = coverPath;
     

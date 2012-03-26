@@ -132,7 +132,7 @@
 
 - (void)setProcessingState:(SCHAppRecommendationProcessingState)state
 {
-    [self performWithRecommendation:^(SCHAppRecommendationItem *item) {
+    [self performWithRecommendationAndSave:^(SCHAppRecommendationItem *item) {
         item.state = [NSNumber numberWithInt: (int) state];
     }];
 }
