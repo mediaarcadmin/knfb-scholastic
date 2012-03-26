@@ -137,43 +137,37 @@
         [wishListItem setValue:([item objectForKey:kSCHAppProfileTitle] == nil ? (id)[NSNull null] : [item objectForKey:kSCHAppProfileTitle]) 
                         forKey:kSCHAppProfileTitle];
         
-//        [self.appProfile addToWishList:wishListItem];
-        
         [self.modifiedWishListItems addObject:wishListItem];
     }
 
     
     // reload table data
     self.localRecommendationItems = [self.appProfile recommendationDictionaries];
-//    self.localWishListItems = [self.appProfile wishListItemDictionaries];
     [self.mainTableView reloadData];
 }
 
 - (void)recommendationListView:(SCHRecommendationListView *)listView removedISBNFromWishList:(NSString *)ISBN
 {
-    // get the wishlist from the app profile
-//    NSArray *wishListItems = [self.appProfile wishListItemDictionaries];
-    
-    NSUInteger index = [self.localWishListItems indexOfObjectPassingTest:^BOOL (id obj, NSUInteger idx, BOOL *stop) {
+    // find the item in the modified list and remove it
+    NSUInteger modifiedItemsIndex = [self.modifiedWishListItems indexOfObjectPassingTest:^BOOL (id obj, NSUInteger idx, BOOL *stop) {
         return [[(NSDictionary *)obj objectForKey:kSCHAppProfileISBN] isEqualToString:ISBN];
     }];
     
-    if (index != NSNotFound) {
-//        NSDictionary *item = [self.localWishListItems objectAtIndex:index];
-//        [self.appProfile removeFromWishList:item];
-        [self.modifiedWishListItems removeObjectAtIndex:index];
+    if (modifiedItemsIndex != NSNotFound) {
+        [self.modifiedWishListItems removeObjectAtIndex:modifiedItemsIndex];
+        
+        // reload table data
+        self.localRecommendationItems = [self.appProfile recommendationDictionaries];
+        [self.mainTableView reloadData];
     }
-    
-    // reload table data
-    self.localRecommendationItems = [self.appProfile recommendationDictionaries];
-//    self.localWishListItems = [self.appProfile wishListItemDictionaries];
-    [self.mainTableView reloadData];
 }
 
 #pragma mark - Wish List Changes
 
 - (void)commitWishListChanges
 {
+    // look for items that are in the new list but not in the original list
+    // those need to be added
     for (NSDictionary *item in self.modifiedWishListItems) {
         if (![self.localWishListItems containsObject:item]) {
             [self.appProfile addToWishList:item];
@@ -216,7 +210,8 @@
     
     if (!cell) {
         cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier] autorelease];
-
+        cell.selectionStyle = UITableViewCellSelectionStyleNone;
+        
         SCHRecommendationListView *recommendationView = [[SCHRecommendationListView alloc] initWithFrame:cell.frame];
         recommendationView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
         recommendationView.tag = 999;
@@ -259,14 +254,8 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    // Navigation logic may go here. Create and push another view controller.
-    /*
-     <#DetailViewController#> *detailViewController = [[<#DetailViewController#> alloc] initWithNibName:@"<#Nib name#>" bundle:nil];
-     // ...
-     // Pass the selected object to the new view controller.
-     [self.navigationController pushViewController:detailViewController animated:YES];
-     [detailViewController release];
-     */
+    // FIXME: could add the ability to toggle the whole row for add/remove from wishlist
+//    NSLog(@"Recommendation item selected: %@", [self.localRecommendationItems objectAtIndex:indexPath.row]);
 }
 
 @end
