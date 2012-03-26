@@ -151,7 +151,7 @@ NSInteger const kSCHRecommendationWebServiceMaxRequestItems = 10;
             
             SCHRecommendationProcessor *recommendationProcessor = [[SCHRecommendationProcessor alloc] init];
             NSArray *recommendations = [recommendationProcessor recommendationsFrom:xmlData];
-            if (recommendations != nil) {
+            if (recommendations == nil) {
                 NSError *error = [NSError errorWithDomain:kSCHRecommendationWebServiceErrorDomain 
                                                      code:kSCHRecommendationWebServiceParseError 
                                                  userInfo:[NSDictionary dictionaryWithObject:@"Error while attempting to parse recommend.xml"
