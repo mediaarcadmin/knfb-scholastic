@@ -25,6 +25,7 @@ NSString * const kSCHAppRecommendationFilenameSeparator = @"-";
 
 @implementation SCHAppRecommendationItem
 
+@dynamic ContentIdentifier;
 @dynamic Author;
 @dynamic AverageRating;
 @dynamic CoverURL;

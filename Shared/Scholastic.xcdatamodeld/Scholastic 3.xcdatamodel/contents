@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model name="" userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="872" systemVersion="10K549" minimumToolsVersion="Xcode 4.2" macOSVersion="Automatic" iOSVersion="Automatic">
+<model name="" userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="1171" systemVersion="11D50b" minimumToolsVersion="Xcode 4.2" macOSVersion="Automatic" iOSVersion="Automatic">
     <entity name="SCHAnnotation" representedClassName="SCHAnnotation" isAbstract="YES" parentEntity="SCHSyncEntity">
         <attribute name="Action" optional="YES" attributeType="Integer 16" defaultValueString="0"/>
         <attribute name="ID" optional="YES" attributeType="Integer 64" defaultValueString="0"/>
@@ -84,9 +84,10 @@
         <attribute name="SortType" optional="YES" attributeType="Integer 16"/>
         <relationship name="ProfileItem" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="SCHProfileItem" inverseName="AppProfile" inverseEntity="SCHProfileItem" indexed="YES"/>
     </entity>
-    <entity name="SCHAppRecommendationItem" representedClassName="SCHAppRecommendationItem" parentEntity="SCHContentItem">
+    <entity name="SCHAppRecommendationItem" representedClassName="SCHAppRecommendationItem">
         <attribute name="Author" optional="YES" attributeType="String"/>
         <attribute name="AverageRating" optional="YES" attributeType="String"/>
+        <attribute name="ContentIdentifier" optional="YES" attributeType="String" indexed="YES"/>
         <attribute name="CoverURL" optional="YES" attributeType="String"/>
         <attribute name="state" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
         <attribute name="Title" optional="YES" attributeType="String"/>
@@ -368,7 +369,7 @@
         <element name="SCHAppDictionaryState" positionX="1197" positionY="315" width="128" height="105"/>
         <element name="SCHAppHelpState" positionX="160" positionY="192" width="128" height="135"/>
         <element name="SCHAppProfile" positionX="0" positionY="0" width="128" height="165"/>
-        <element name="SCHAppRecommendationItem" positionX="160" positionY="192" width="128" height="150"/>
+        <element name="SCHAppRecommendationItem" positionX="160" positionY="192" width="128" height="165"/>
         <element name="SCHAppState" positionX="0" positionY="0" width="128" height="150"/>
         <element name="SCHBookmark" positionX="292" positionY="653" width="128" height="105"/>
         <element name="SCHContentItem" positionX="772" positionY="531" width="128" height="90"/>
