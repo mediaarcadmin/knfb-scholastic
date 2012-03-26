@@ -31,11 +31,15 @@
         return;
     }
     
-    __block BOOL coverUrlIsValid = NO;
+    __block NSString *coverURL;
     
     [self performWithRecommendation:^(SCHAppRecommendationItem *item) {
-        [SCHRecommendationManager urlIsValid:item.CoverURL];
+        coverURL = [item.CoverURL retain];
     }];
+    
+    [coverURL autorelease];
+    
+    BOOL coverUrlIsValid = [SCHRecommendationManager urlIsValid:coverURL];
     
     if (coverUrlIsValid) {
         [self setProcessingState:kSCHAppRecommendationProcessingStateNoCover];
