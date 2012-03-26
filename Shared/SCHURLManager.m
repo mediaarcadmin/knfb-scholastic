@@ -19,6 +19,7 @@
 #import "SCHBookManager.h"
 #import "SCHAppRecommendationItem.h"
 #import "SCHContentItem.h"
+#import "SCHISBNItem.h"
 
 // Constants
 NSString * const kSCHURLManagerSuccess = @"URLManagerSuccess";
@@ -207,34 +208,36 @@ static NSUInteger const kSCHURLManagerMaxConnections = 6;
 			self.backgroundTaskIdentifier = UIBackgroundTaskInvalid;
 		}];
 		
-		for (SCHContentItem *contentItem in table) {
-            // limit the amount of requests
-            if (requestCount > kSCHURLManagerMaxConnections) {
-                NSLog(@"URL Manager connections maxed out, please wait...");
-                continue;
-            } else {
-                NSLog(@"URL Manager active connections %d", requestCount);
-            }
-
-			if ([self.libreAccessWebService listContentMetadata:[NSArray arrayWithObject:contentItem] 
-													includeURLs:YES] == YES) {
-				NSLog(@"Requesting URLs for %@", contentItem);
-				
-				requestCount++;
-				[removeFromTable addObject:contentItem];
-			} else {
-				if (self.backgroundTaskIdentifier != UIBackgroundTaskInvalid) {
-					[[UIApplication sharedApplication] endBackgroundTask:self.backgroundTaskIdentifier];
-					self.backgroundTaskIdentifier = UIBackgroundTaskInvalid;			
-				}
-				
-				[[SCHAuthenticationManager sharedAuthenticationManager] authenticateWithSuccessBlock:^(SCHAuthenticationManagerConnectivityMode connectivityMode){
-                    if (connectivityMode == SCHAuthenticationManagerConnectivityModeOnline) {
-                        [self shakeTable];
+		for (id<SCHISBNItem> isbnItem in table) {
+            if ([isbnItem conformsToProtocol:@protocol(SCHISBNItem)] == YES) {
+                // limit the amount of requests
+                if (requestCount > kSCHURLManagerMaxConnections) {
+                    NSLog(@"URL Manager connections maxed out, please wait...");
+                    continue;
+                } else {
+                    NSLog(@"URL Manager active connections %d", requestCount);
+                }
+                
+                if ([self.libreAccessWebService listContentMetadata:[NSArray arrayWithObject:isbnItem] 
+                                                        includeURLs:YES] == YES) {
+                    NSLog(@"Requesting URLs for %@", isbnItem);
+                    
+                    requestCount++;
+                    [removeFromTable addObject:isbnItem];
+                } else {
+                    if (self.backgroundTaskIdentifier != UIBackgroundTaskInvalid) {
+                        [[UIApplication sharedApplication] endBackgroundTask:self.backgroundTaskIdentifier];
+                        self.backgroundTaskIdentifier = UIBackgroundTaskInvalid;			
                     }
-                } failureBlock:nil];							
-				break;
-			}
+                    
+                    [[SCHAuthenticationManager sharedAuthenticationManager] authenticateWithSuccessBlock:^(SCHAuthenticationManagerConnectivityMode connectivityMode){
+                        if (connectivityMode == SCHAuthenticationManagerConnectivityModeOnline) {
+                            [self shakeTable];
+                        }
+                    } failureBlock:nil];							
+                    break;
+                }
+            }
 		}
 		
 		[table minusSet:removeFromTable];	
