@@ -10,10 +10,11 @@
 #import "SCHProfileItem.h"
 #import "SCHBookShelfSortTableView.h"
 #import "SCHThemePickerViewController.h"
+#import "SCHBookShelfTypeMenuTableController.h"
 
 @protocol SCHBookShelfMenuControllerDelegate;
 
-@interface SCHBookShelfMenuController : UITableViewController <SCHBookShelfSortTableViewDelegate>
+@interface SCHBookShelfMenuController : UITableViewController <SCHBookShelfSortTableViewDelegate, SCHBookShelfTypeMenuTableControllerDelegate>
 
 @property (nonatomic, assign) id <SCHBookShelfMenuControllerDelegate> delegate;
 @property (nonatomic, assign) BOOL userIsAuthenticated;
@@ -23,8 +24,8 @@
 @protocol SCHBookShelfMenuControllerDelegate <NSObject>
 
 // switching between shelf types
-- (NSString *)shelfSwitchTextForBookShelfMenu:(SCHBookShelfMenuController *)controller;
-- (void)bookShelfMenuToggledSwitch:(SCHBookShelfMenuController *)controller;
+- (void)bookShelfMenuSwitchedToGridView:(SCHBookShelfMenuController *)controller;
+- (void)bookShelfMenuSwitchedToListView:(SCHBookShelfMenuController *)controller;
 
 // bookshelf sorting
 - (SCHBookSortType)sortTypeForBookShelfMenu:(SCHBookShelfMenuController *)controller;

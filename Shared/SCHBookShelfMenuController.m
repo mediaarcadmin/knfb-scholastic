@@ -30,19 +30,13 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-
-    // Uncomment the following line to preserve selection between presentations.
-    // self.clearsSelectionOnViewWillAppear = NO;
- 
-    // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-    // self.navigationItem.rightBarButtonItem = self.editButtonItem;
+    
+    self.navigationController.navigationBarHidden = YES;
 }
 
 - (void)viewDidUnload
 {
     [super viewDidUnload];
-    // Release any retained subviews of the main view.
-    // e.g. self.myOutlet = nil;
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
@@ -52,7 +46,7 @@
 
 - (CGSize)contentSizeForViewInPopover
 {
-    CGFloat height = (([self tableView:self.tableView numberOfRowsInSection:0] + 1) * 44);
+    CGFloat height = ([self tableView:self.tableView numberOfRowsInSection:0] * 44) + 20;
     return CGSizeMake(320, height);
 }
 
@@ -88,22 +82,22 @@
     switch (indexPath.row) {
         case 0:
         {
-            cell.textLabel.text = [self.delegate shelfSwitchTextForBookShelfMenu:self];
+            cell.textLabel.text = NSLocalizedString(@"View", @"View");
             break;
         }   
         case 1:
         {
-            cell.textLabel.text = @"Sort";
+            cell.textLabel.text = NSLocalizedString(@"Sort", @"Sort");
             break;
         }   
         case 2:
         {
-            cell.textLabel.text = @"Wallpaper";
+            cell.textLabel.text = NSLocalizedString(@"Wallpaper", @"Wallpaper");
             break;
         }   
         case 3:
         {
-            cell.textLabel.text = @"More eBooks";
+            cell.textLabel.text = NSLocalizedString(@"More eBooks", @"More eBooks");
             break;
         }   
     }
@@ -119,7 +113,12 @@
     switch (indexPath.row) {
         case 0:
         {
-            [self.delegate bookShelfMenuToggledSwitch:self];
+            SCHBookShelfTypeMenuTableController *typeMenuController = [[SCHBookShelfTypeMenuTableController alloc] initWithNibName:@"SCHBookShelfTypeMenuTableController" bundle:nil];
+            typeMenuController.delegate = self;
+            
+            [self.navigationController pushViewController:typeMenuController animated:YES];
+            [typeMenuController release];
+
             break;
         }
         // sort
@@ -159,6 +158,18 @@
     NSLog(@"Picked a sort type!");
     [self.delegate bookShelfMenu:self changedSortType:newType];
     
+}
+
+#pragma mark - Bookshelf Type Delegate
+
+- (void)bookShelfTypeControllerSelectedGridView:(SCHBookShelfTypeMenuTableController *)typeController
+{
+    [self.delegate bookShelfMenuSwitchedToGridView:self];
+}
+
+- (void)bookShelfTypeControllerSelectedListView:(SCHBookShelfTypeMenuTableController *)typeController
+{
+    [self.delegate bookShelfMenuSwitchedToListView:self];
 }
 
 @end
