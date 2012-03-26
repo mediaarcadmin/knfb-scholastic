@@ -268,8 +268,8 @@ static NSUInteger const kSCHURLManagerMaxConnections = 6;
                 }
             }
             
-			[[NSNotificationCenter defaultCenter] postNotificationName:kSCHURLManagerSuccess 
-																object:self userInfo:[list objectAtIndex:0]];				
+            [[NSNotificationCenter defaultCenter] postNotificationName:kSCHURLManagerSuccess 
+																object:self userInfo:[list objectAtIndex:0]];
 		}		
 	}
 	
@@ -297,8 +297,7 @@ static NSUInteger const kSCHURLManagerMaxConnections = 6;
 
         [[NSNotificationCenter defaultCenter] postNotificationName:kSCHURLManagerFailure 
                                                             object:self 
-                                                          userInfo:[NSDictionary dictionaryWithObject:bookIdentifier
-                                                                                               forKey:kSCHBookIdentifierBookIdentifier]];	
+                                                          userInfo:[NSDictionary dictionaryWithObjects:[NSArray arrayWithObjects:bookIdentifier, bookIdentifier.isbn, nil]                                                                                                  forKeys:[NSArray arrayWithObjects:kSCHBookIdentifierBookIdentifier, kSCHAppRecommendationItemIsbn, nil]]];	
 	}
     
 	if (requestCount < 1) {
