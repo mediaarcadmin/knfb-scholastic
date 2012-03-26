@@ -95,6 +95,7 @@ NSInteger const kSCHRecommendationWebServiceMaxRequestItems = 10;
                                               requestInfo:nil 
                                                    result:nil];
                         }
+                        [method release], activeMethod = nil;
                     });
                 }
             } else {
@@ -164,6 +165,7 @@ NSInteger const kSCHRecommendationWebServiceMaxRequestItems = 10;
                                               requestInfo:nil 
                                                    result:nil];
                         }
+                        [method release], activeMethod = nil;
                     });
                 }
             } else {
