@@ -1,21 +1,21 @@
 //
-//  SCHBookShelfSortPopoverTableView.m
+//  SCHBookShelfSortTableView.m
 //  Scholastic
 //
 //  Created by Gordon Christie on 03/06/2011.
 //  Copyright 2011 BitWink. All rights reserved.
 //
 
-#import "SCHBookShelfSortPopoverTableView.h"
+#import "SCHBookShelfSortTableView.h"
 
 
-@interface SCHBookShelfSortPopoverTableView ()
+@interface SCHBookShelfSortTableView ()
 
 @property (nonatomic, retain) NSArray *sortTypeArray;
 
 @end 
 
-@implementation SCHBookShelfSortPopoverTableView
+@implementation SCHBookShelfSortTableView
 
 @synthesize delegate;
 @synthesize itemsTableView;

@@ -14,7 +14,6 @@
 #import "SCHThemeManager.h"
 #import "SCHBookManager.h"
 #import "SCHThemeButton.h"
-#import "SCHBookShelfSortPopoverTableView.h"
 #import "SCHBookShelfTopTenPopoverTableView.h"
 #import "SCHTopFavoritesComponent.h"
 #import "SCHProfileItem.h"
@@ -31,7 +30,7 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightPortrait_iPad = 
 static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape_iPad = 225;
 static NSInteger const kSCHBookShelfButtonPadding = 25;
 static NSInteger const kSCHBookShelfEdgePadding = 12;
-static NSTimeInterval const kSCHBookShelfViewControllerTopTenRefreshTime = -600.0;
+//static NSTimeInterval const kSCHBookShelfViewControllerTopTenRefreshTime = -600.0;
 
 @interface SCHBookShelfViewController_iPad ()
 
@@ -48,7 +47,7 @@ static NSTimeInterval const kSCHBookShelfViewControllerTopTenRefreshTime = -600.
 
 - (void)updateTheme;
 - (void)setupToolbar;
-- (void)updateTopTenWithBooks:(NSArray *)topBooks;
+//- (void)updateTopTenWithBooks:(NSArray *)topBooks;
 - (void)showAppVersionOutdatedAlert;
 
 - (void)showRecommendationsListAnimated:(BOOL)animated;
@@ -345,7 +344,10 @@ static NSTimeInterval const kSCHBookShelfViewControllerTopTenRefreshTime = -600.
 
 - (void)menuAction:(SCHThemeButton *)sender
 {
-    SCHBookShelfMenuTableViewController *menuTableController = [[SCHBookShelfMenuTableViewController alloc] initWithNibName:@"SCHBookShelfMenuTableViewController" bundle:nil];
+    SCHBookShelfMenuController *menuTableController = [[SCHBookShelfMenuController alloc] initWithNibName:@"SCHBookShelfMenuTableViewController" bundle:nil];
+    menuTableController.delegate = self;
+    menuTableController.userIsAuthenticated = !TOP_TEN_DISABLED && [[SCHAppStateManager sharedAppStateManager] canAuthenticate];
+    
     UINavigationController *navCon = [[UINavigationController alloc] initWithRootViewController:menuTableController];
     
     self.popover = [[[UIPopoverController alloc] initWithContentViewController:navCon] autorelease];
@@ -375,19 +377,39 @@ static NSTimeInterval const kSCHBookShelfViewControllerTopTenRefreshTime = -600.
     self.popover = nil;
 }
 
-#pragma mark - Sort Popover Delegate
+#pragma mark - Bookshelf Menu Delegate
 
-- (void)sortPopoverPickedSortType: (SCHBookSortType) newType
+- (SCHBookSortType)sortTypeForBookShelfMenu:(SCHBookShelfMenuController *)controller
 {
-    self.sortType = newType;
-    [[self.profileItem AppProfile] setSortType:[NSNumber numberWithInt:newType]];
+    return self.sortType;
+}
 
+- (void)bookShelfMenu:(SCHBookShelfMenuController *)controller changedSortType:(SCHBookSortType)newSortType
+{
+    self.sortType = newSortType;
+    [[self.profileItem AppProfile] setSortType:[NSNumber numberWithInt:self.sortType]];
+    
     self.books = [self.profileItem allBookIdentifiers];
     [self dismissLoadingView];
-
+    
     [self.popover dismissPopoverAnimated:YES];
     self.popover = nil;
 }
+
+- (void)bookShelfMenuSelectedRecommendations:(SCHBookShelfMenuController *)controller
+{
+    if (self.popover) {
+        [self.popover dismissPopoverAnimated:YES];
+        self.popover = nil;
+    }
+    
+    if ([[SCHVersionDownloadManager sharedVersionManager] isAppVersionOutdated] == YES) {
+        [self showAppVersionOutdatedAlert];
+    } else {
+        [self showRecommendationsListAnimated:YES];
+    }
+}
+
 
 #pragma mark - Recommendations and Wish List
 
@@ -444,6 +466,29 @@ static NSTimeInterval const kSCHBookShelfViewControllerTopTenRefreshTime = -600.
     }
 }
 
+- (NSString *)shelfSwitchTextForBookShelfMenu:(SCHBookShelfMenuController *)controller
+{
+    if (self.listTableView.hidden == YES) {
+        return @"Switch to List View";
+    } 
+
+    return @"Switch to Grid View";
+}
+
+- (void)bookShelfMenuToggledSwitch:(SCHBookShelfMenuController *)controller
+{
+    if (self.popover) {
+        [self.popover dismissPopoverAnimated:YES];
+        self.popover = nil;
+    }
+    
+    if (self.listTableView.hidden == YES) {
+        [super changeToListView:nil];
+    } else {
+        [super changeToGridView:nil];
+    }
+}
+
 - (void)showWishListAnimated:(BOOL)animated
 {
     // FIXME: "sticky plaster" preventing animation while switching
@@ -485,42 +530,42 @@ static NSTimeInterval const kSCHBookShelfViewControllerTopTenRefreshTime = -600.
     }
 }
 
-#pragma mark - SCHComponent Delegate
-
-- (void)updateTopTenWithBooks:(NSArray *)topBooks
-{    
-    if (topBooks) {
-        self.topTenBooks = topBooks;
-    } else {
-        self.topTenBooks = [NSArray array];
-    }
-    
-    if (self.popover != nil) {
-        id bookShelfTopTenPopoverTableView = self.popover.contentViewController;
-        if ([bookShelfTopTenPopoverTableView isKindOfClass:[SCHBookShelfTopTenPopoverTableView class]] == YES) {
-            ((SCHBookShelfTopTenPopoverTableView *)bookShelfTopTenPopoverTableView).books = self.topTenBooks;
-        }
-    }
-}
-
-- (void)component:(SCHComponent *)component didCompleteWithResult:(NSDictionary *)result
-{
-	NSMutableArray *topBooks = [result objectForKey:kSCHLibreAccessWebServiceContentMetadataList];
-
-    NSLog(@"%@", topBooks);
-    
-    if (topBooks != (id)[NSNull null] && [topBooks count] > 0) {
-        self.lastTopTenBookRetrieval = [NSDate date];
-        [self updateTopTenWithBooks:topBooks];
-    } else {
-        [self updateTopTenWithBooks:nil];
-    }
-}
-
-- (void)component:(SCHComponent *)component didFailWithError:(NSError *)error
-{
-    [self updateTopTenWithBooks:nil];
-}
+//#pragma mark - SCHComponent Delegate
+//
+//- (void)updateTopTenWithBooks:(NSArray *)topBooks
+//{    
+//    if (topBooks) {
+//        self.topTenBooks = topBooks;
+//    } else {
+//        self.topTenBooks = [NSArray array];
+//    }
+//    
+//    if (self.popover != nil) {
+//        id bookShelfTopTenPopoverTableView = self.popover.contentViewController;
+//        if ([bookShelfTopTenPopoverTableView isKindOfClass:[SCHBookShelfTopTenPopoverTableView class]] == YES) {
+//            ((SCHBookShelfTopTenPopoverTableView *)bookShelfTopTenPopoverTableView).books = self.topTenBooks;
+//        }
+//    }
+//}
+//
+//- (void)component:(SCHComponent *)component didCompleteWithResult:(NSDictionary *)result
+//{
+//	NSMutableArray *topBooks = [result objectForKey:kSCHLibreAccessWebServiceContentMetadataList];
+//
+//    NSLog(@"%@", topBooks);
+//    
+//    if (topBooks != (id)[NSNull null] && [topBooks count] > 0) {
+//        self.lastTopTenBookRetrieval = [NSDate date];
+//        [self updateTopTenWithBooks:topBooks];
+//    } else {
+//        [self updateTopTenWithBooks:nil];
+//    }
+//}
+//
+//- (void)component:(SCHComponent *)component didFailWithError:(NSError *)error
+//{
+//    [self updateTopTenWithBooks:nil];
+//}
 
 - (void)authenticationDidSucceed
 {
