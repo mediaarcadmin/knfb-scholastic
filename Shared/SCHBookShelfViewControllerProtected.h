@@ -9,5 +9,8 @@
 @interface SCHBookShelfViewController () <UIGestureRecognizerDelegate>
 
 - (void)dismissLoadingView;
+- (IBAction)changeToGridView:(UIButton *)sender;
+- (IBAction)changeToListView:(UIButton *)sender;
+
 
 @end
