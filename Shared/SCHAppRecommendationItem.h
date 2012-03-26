@@ -10,6 +10,7 @@
 #import <CoreData/CoreData.h>
 #import "SCHContentItem.h"
 #import "SCHRecommendationManager.h"
+#import "SCHISBNItem.h"
 
 @class SCHRecommendationItem;
 @class SCHWishListItem;
@@ -18,7 +19,7 @@
 extern NSString * const kSCHAppRecommendationItem;
 extern NSString * const kSCHAppRecommendationItemIsbn;
 
-@interface SCHAppRecommendationItem : NSManagedObject
+@interface SCHAppRecommendationItem : NSManagedObject <SCHISBNItem>
 
 @property (nonatomic, retain) NSString * ContentIdentifier;
 @property (nonatomic, retain) NSString * Author;
