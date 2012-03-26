@@ -111,16 +111,17 @@ static SCHRecommendationManager *sharedManager = nil;
     
     // TO DO: make this SCHAppRecommendationItem based
     NSArray *allRecommendationItems = nil;
-        NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
-        
-        [fetchRequest setEntity:[NSEntityDescription entityForName:kSCHRecommendationItem 
-                                            inManagedObjectContext:self.managedObjectContext]];	
-        
-        NSError *error = nil;
-        allRecommendationItems = [self.managedObjectContext executeFetchRequest:fetchRequest error:&error];	
-        if (allRecommendationItems == nil) {
-            NSLog(@"Unresolved error fetching recommendations %@, %@", error, [error userInfo]);
-        }
+    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+    
+    [fetchRequest setEntity:[NSEntityDescription entityForName:kSCHRecommendationItem 
+                                        inManagedObjectContext:self.managedObjectContext]];	
+    
+    NSError *error = nil;
+    allRecommendationItems = [self.managedObjectContext executeFetchRequest:fetchRequest error:&error];	
+    [fetchRequest release], fetchRequest = nil;
+    if (allRecommendationItems == nil) {
+        NSLog(@"Unresolved error fetching recommendations %@, %@", error, [error userInfo]);
+    }
     
     
     NSMutableArray *isbnsToBeProcessed = [NSMutableArray array];
@@ -413,6 +414,7 @@ static SCHRecommendationManager *sharedManager = nil;
         
         NSError *error = nil;
         NSArray *result = [self.managedObjectContext executeFetchRequest:fetchRequest error:&error];	
+        [fetchRequest release], fetchRequest = nil;
         if (result == nil) {
             NSLog(@"Unresolved error fetching recommendation %@, %@", error, [error userInfo]);
         } else if ([result count] == 0) {
