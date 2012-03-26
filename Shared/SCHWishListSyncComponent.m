@@ -590,7 +590,10 @@ NSString * const SCHWishListSyncComponentDidFailNotification = @"SCHWishListSync
         for (NSDictionary *webItem in creationPool) {
             SCHWishListItem *wishListItem = [self wishListItem:webItem];
             if (wishListItem != nil) {
-                [insertedISBNs addObject:wishListItem.ISBN];
+                NSString *isbn = wishListItem.ISBN;
+                if (isbn != nil) {
+                    [insertedISBNs addObject:isbn];
+                }
                 [wishListProfile addItemListObject:wishListItem];
                 [self save];
             }

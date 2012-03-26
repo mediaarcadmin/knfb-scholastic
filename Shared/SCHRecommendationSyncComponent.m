@@ -732,7 +732,10 @@ static NSTimeInterval const kSCHRecommendationSyncComponentBookSyncDelayTimeInte
         for (NSDictionary *webItem in creationPool) {
             SCHRecommendationItem *recommendationItem = [self recommendationItem:webItem];
             if (recommendationItem != nil) {
-                [insertedISBNs addObject:recommendationItem.product_code];
+                NSString *isbn = recommendationItem.product_code;
+                if (isbn != nil) {
+                    [insertedISBNs addObject:isbn];
+                }
                 [recommendation addRecommendationItemsObject:recommendationItem];
                 [self save];
             }
