@@ -18,8 +18,9 @@
 extern NSString * const kSCHAppRecommendationItem;
 extern NSString * const kSCHAppRecommendationItemIsbn;
 
-@interface SCHAppRecommendationItem : SCHContentItem
+@interface SCHAppRecommendationItem : NSManagedObject
 
+@property (nonatomic, retain) NSString * ContentIdentifier;
 @property (nonatomic, retain) NSString * Author;
 @property (nonatomic, retain) NSString * AverageRating;
 @property (nonatomic, retain) NSString * CoverURL;
