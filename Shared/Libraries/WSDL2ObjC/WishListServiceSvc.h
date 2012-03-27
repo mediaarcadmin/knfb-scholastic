@@ -16,6 +16,7 @@
 /* elements */
 	NSString * clientID;
 	NSString * token;
+	NSString * spsIdParam;
 	NSMutableArray *profileItemList;
 /* attributes */
 }
@@ -29,6 +30,7 @@
 /* elements */
 @property (nonatomic, retain) NSString * clientID;
 @property (nonatomic, retain) NSString * token;
+@property (nonatomic, retain) NSString * spsIdParam;
 - (void)addProfileItemList:(ax21_WishListProfileItem *)toAdd;
 @property (nonatomic, readonly) NSMutableArray * profileItemList;
 /* attributes */
@@ -55,6 +57,7 @@
 /* elements */
 	NSString * clientID;
 	NSString * token;
+	NSString * spsIdParam;
 	NSMutableArray *profileItemList;
 /* attributes */
 }
@@ -68,6 +71,7 @@
 /* elements */
 @property (nonatomic, retain) NSString * clientID;
 @property (nonatomic, retain) NSString * token;
+@property (nonatomic, retain) NSString * spsIdParam;
 - (void)addProfileItemList:(ax21_WishListProfileItem *)toAdd;
 @property (nonatomic, readonly) NSMutableArray * profileItemList;
 /* attributes */
@@ -94,6 +98,7 @@
 /* elements */
 	NSString * clientID;
 	NSString * token;
+	NSString * spsIdParam;
 	NSMutableArray *profileIdList;
 /* attributes */
 }
@@ -107,6 +112,7 @@
 /* elements */
 @property (nonatomic, retain) NSString * clientID;
 @property (nonatomic, retain) NSString * token;
+@property (nonatomic, retain) NSString * spsIdParam;
 - (void)addProfileIdList:(NSNumber *)toAdd;
 @property (nonatomic, readonly) NSMutableArray * profileIdList;
 /* attributes */
@@ -133,6 +139,7 @@
 /* elements */
 	NSString * clientID;
 	NSString * token;
+	NSString * spsIdParam;
 	NSMutableArray *profileIdList;
 /* attributes */
 }
@@ -146,6 +153,7 @@
 /* elements */
 @property (nonatomic, retain) NSString * clientID;
 @property (nonatomic, retain) NSString * token;
+@property (nonatomic, retain) NSString * spsIdParam;
 - (void)addProfileIdList:(ax21_WishListProfile *)toAdd;
 @property (nonatomic, readonly) NSMutableArray * profileIdList;
 /* attributes */
