@@ -106,7 +106,7 @@
 - (CGSize)contentSizeForViewInPopover
 {
     CGFloat height = ([self tableView:self.tableView numberOfRowsInSection:0] * 44) + 20;
-    return CGSizeMake(320, height);
+    return CGSizeMake(200, height);
 }
 
 

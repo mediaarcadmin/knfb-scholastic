@@ -64,6 +64,7 @@
     if (self) 
     {
         [self setBackgroundColor:[UIColor clearColor]];
+        self.contentMode = UIViewContentModeRedraw;
     }
     return self;
 }

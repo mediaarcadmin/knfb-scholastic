@@ -299,7 +299,7 @@ static NSTimeInterval const kSCHThemePickerViewControllerThemeTransitionDuration
 - (CGSize) contentSizeForViewInPopover
 {
     CGFloat height = ([[[SCHThemeManager sharedThemeManager] themeNames:NO] count] * 44) + 44 + 18;
-    return CGSizeMake(320, height);
+    return CGSizeMake(200, height);
 }
 
 @end
