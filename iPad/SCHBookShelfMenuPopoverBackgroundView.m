@@ -113,6 +113,8 @@
         
         self.arrowImageView = [[[UIImageView alloc] init] autorelease];
         [self addSubview:self.arrowImageView]; 
+        
+        [self bringSubviewToFront:self.popoverBackgroundImageView];
     }
     
     return self;
