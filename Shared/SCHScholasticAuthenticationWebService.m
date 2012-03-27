@@ -11,6 +11,7 @@
 #import "BITAPIError.h"
 #import "BITNetworkActivityManager.h"
 #import "TouchXML.h"
+#import "AuthenticateSvc+Binding.h"
 
 // ProcessRemote Constants
 NSString * const kSCHScholasticAuthenticationWebServiceProcessRemote = @"processRemote";
@@ -46,7 +47,7 @@ static NSString * const kSCHScholasticAuthenticationWebServiceAttributeErrorDesc
 {
 	self = [super init];
 	if (self != nil) {
-		binding = [[AuthenticateSvc AuthenticateSoap11Binding] retain];
+		binding = [[AuthenticateSvc SCHAuthenticateSoap11Binding] retain];
 		binding.logXMLInOut = NO;		
 	}
 	

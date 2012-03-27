@@ -13,6 +13,7 @@
 #import "SCHWishListConstants.h"
 #import "SCHAuthenticationManager.h"
 #import "SCHUserDefaults.h"
+#import "WishListServiceSvc+Binding.h"
 
 static NSString * const kSCHWishListWebServiceUndefinedMethod = @"undefined method";
 
@@ -55,7 +56,7 @@ static NSString * const kSCHWishListWebServiceClientID = @"KNFB";
 {
 	self = [super init];
 	if (self != nil) {
-		binding = [[WishListServiceSvc WishListServiceSoap11Binding] retain];
+		binding = [[WishListServiceSvc SCHWishListServiceSoap11Binding] retain];
 		binding.logXMLInOut = NO;		
 	}
 	
@@ -72,7 +73,7 @@ static NSString * const kSCHWishListWebServiceClientID = @"KNFB";
 
 - (void)clear
 {
-    self.binding = [WishListServiceSvc WishListServiceSoap11Binding];
+    self.binding = [WishListServiceSvc SCHWishListServiceSoap11Binding];
     binding.logXMLInOut = NO;		
 }
 
