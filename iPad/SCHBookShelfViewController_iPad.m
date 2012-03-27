@@ -221,7 +221,11 @@ static NSInteger const kSCHBookShelfEdgePadding = 12;
     
     self.popover = [[[UIPopoverController alloc] initWithContentViewController:navCon] autorelease];
     self.popover.delegate = self;
-    [self.popover setPopoverBackgroundViewClass:[SCHBookShelfMenuPopoverBackgroundView class]];
+
+    // iOS 5 and higher: add a custom popover background
+    if ([self.popover respondsToSelector:@selector(setPopoverBackgroundViewClass:)]) {
+        [self.popover setPopoverBackgroundViewClass:[SCHBookShelfMenuPopoverBackgroundView class]];
+    }
     
     [self.popover presentPopoverFromRect:sender.frame inView:sender.superview permittedArrowDirections:UIPopoverArrowDirectionUp animated:YES];
     [menuTableController release];
