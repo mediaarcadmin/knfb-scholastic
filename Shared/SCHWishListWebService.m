@@ -12,6 +12,8 @@
 #import "BITNetworkActivityManager.h"
 #import "SCHWishListConstants.h"
 #import "SCHAuthenticationManager.h"
+#import "SCHUserDefaults.h"
+#import "WishListServiceSvc+Binding.h"
 
 static NSString * const kSCHWishListWebServiceUndefinedMethod = @"undefined method";
 
@@ -54,7 +56,7 @@ static NSString * const kSCHWishListWebServiceClientID = @"KNFB";
 {
 	self = [super init];
 	if (self != nil) {
-		binding = [[WishListServiceSvc WishListServiceSoap11Binding] retain];
+		binding = [[WishListServiceSvc SCHWishListServiceSoap11Binding] retain];
 		binding.logXMLInOut = NO;		
 	}
 	
@@ -71,7 +73,7 @@ static NSString * const kSCHWishListWebServiceClientID = @"KNFB";
 
 - (void)clear
 {
-    self.binding = [WishListServiceSvc WishListServiceSoap11Binding];
+    self.binding = [WishListServiceSvc SCHWishListServiceSoap11Binding];
     binding.logXMLInOut = NO;		
 }
 
@@ -82,9 +84,13 @@ static NSString * const kSCHWishListWebServiceClientID = @"KNFB";
     BOOL ret = NO;
     
     if ([SCHAuthenticationManager sharedAuthenticationManager].pToken != nil) {
+        NSString *userKey = [[NSUserDefaults standardUserDefaults] stringForKey:kSCHAuthenticationManagerUserKey];        
         WishListServiceSvc_GetWishListItems *request = [WishListServiceSvc_GetWishListItems new];
         
         request.clientID = kSCHWishListWebServiceClientID;
+        if (userKey != nil) {
+            request.spsIdParam = userKey;
+        }
         request.token = [SCHAuthenticationManager sharedAuthenticationManager].pToken;
         for (id profileID in profileIDs) {
             [request addProfileIdList:profileID];
@@ -105,9 +111,13 @@ static NSString * const kSCHWishListWebServiceClientID = @"KNFB";
     BOOL ret = NO;
     
     if ([SCHAuthenticationManager sharedAuthenticationManager].pToken != nil) {
+        NSString *userKey = [[NSUserDefaults standardUserDefaults] stringForKey:kSCHAuthenticationManagerUserKey];
         WishListServiceSvc_AddItemsToWishList *request = [WishListServiceSvc_AddItemsToWishList new];
         
         request.clientID = kSCHWishListWebServiceClientID;
+        if (userKey != nil) {
+            request.spsIdParam = userKey;
+        }        
         request.token = [SCHAuthenticationManager sharedAuthenticationManager].pToken;
         ax21_WishListProfileItem *wishListProfileItem = nil;
         for (id item in wishListItems) {
@@ -132,9 +142,13 @@ static NSString * const kSCHWishListWebServiceClientID = @"KNFB";
     BOOL ret = NO;
     
     if ([SCHAuthenticationManager sharedAuthenticationManager].pToken != nil) {
+        NSString *userKey = [[NSUserDefaults standardUserDefaults] stringForKey:kSCHAuthenticationManagerUserKey];
         WishListServiceSvc_DeleteWishListItems *request = [WishListServiceSvc_DeleteWishListItems new];
         
         request.clientID = kSCHWishListWebServiceClientID;
+        if (userKey != nil) {
+            request.spsIdParam = userKey;
+        }        
         request.token = [SCHAuthenticationManager sharedAuthenticationManager].pToken;
         ax21_WishListProfileItem *wishListProfileItem = nil;
         for (id item in wishListItems) {
@@ -159,9 +173,13 @@ static NSString * const kSCHWishListWebServiceClientID = @"KNFB";
     BOOL ret = NO;
     
     if ([SCHAuthenticationManager sharedAuthenticationManager].pToken != nil) {
+        NSString *userKey = [[NSUserDefaults standardUserDefaults] stringForKey:kSCHAuthenticationManagerUserKey];
         WishListServiceSvc_DeleteWishList *request = [WishListServiceSvc_DeleteWishList new];
         
         request.clientID = kSCHWishListWebServiceClientID;
+        if (userKey != nil) {
+            request.spsIdParam = userKey;
+        }        
         request.token = [SCHAuthenticationManager sharedAuthenticationManager].pToken;
         ax21_WishListProfile *wishListProfile = nil;
         for (id profile in wishListProfiles) {

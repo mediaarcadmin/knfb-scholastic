@@ -24,6 +24,7 @@
 #import "SCHVersionDownloadManager.h"
 #import "SCHLibreAccessConstants.h"
 #import "BITModalSheetController.h"
+#import "SCHBookShelfMenuPopoverBackgroundView.h"
 
 //static NSInteger const kSCHBookShelfViewControllerGridCellHeightPortrait_iPad = 254;
 static NSInteger const kSCHBookShelfViewControllerGridCellHeightPortrait_iPad = 224;
@@ -47,7 +48,6 @@ static NSInteger const kSCHBookShelfEdgePadding = 12;
 
 - (void)updateTheme;
 - (void)setupToolbar;
-//- (void)updateTopTenWithBooks:(NSArray *)topBooks;
 - (void)showAppVersionOutdatedAlert;
 
 - (void)showRecommendationsListAnimated:(BOOL)animated;
@@ -90,105 +90,19 @@ static NSInteger const kSCHBookShelfEdgePadding = 12;
 
 - (void)setupToolbar
 {
-//    SCHThemeButton *themeButton = [SCHThemeButton buttonWithType:UIButtonTypeCustom];
-//    [themeButton setThemeIcon:kSCHThemeManagerThemeIcon iPadQualifier:kSCHThemeManagerPadQualifierSuffix];
-//    [themeButton sizeToFit];    
-//    [themeButton addTarget:self action:@selector(themeAction:) forControlEvents:UIControlEventTouchUpInside];
-    
     SCHThemeButton *homeButton = [SCHThemeButton buttonWithType:UIButtonTypeCustom];
     [homeButton setThemeIcon:kSCHThemeManagerHomeIcon iPadQualifier:kSCHThemeManagerPadQualifierSuffix];
     [homeButton sizeToFit];    
     [homeButton addTarget:self action:@selector(back) forControlEvents:UIControlEventTouchUpInside];    
     homeButton.accessibilityLabel = @"Back To Bookshelves Button";
     
-//    CGRect sortFrame = CGRectZero;
-//    CGRect topTenFrame = CGRectZero;
-
-//    self.ratingButton = [SCHThemeButton buttonWithType:UIButtonTypeCustom];
-//    [self.ratingButton setThemeIcon:kSCHThemeManagerRatingsIcon iPadQualifier:kSCHThemeManagerPadQualifierSuffix];
-//    [self.ratingButton sizeToFit];    
-//    [self.ratingButton addTarget:self action:@selector(toggleRatings) forControlEvents:UIControlEventTouchUpInside];    
-//    self.ratingButton.accessibilityLabel = @"Rating Button";
-
-//    // no sort or top ten buttons for the sample bookshelf
-//    if ([[SCHAppStateManager sharedAppStateManager] isSampleStore] == NO) {
-//        self.sortButton = [SCHThemeButton buttonWithType:UIButtonTypeCustom];
-//        sortFrame = CGRectMake(0, 3, 82, 30);
-//        [self.sortButton setFrame:sortFrame];
-//        [self.sortButton setTitle:NSLocalizedString(@"Sort", @"") forState:UIControlStateNormal];
-//        [self.sortButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-//        [self.sortButton setTitleColor:[UIColor colorWithWhite:1 alpha:0.5f] forState:UIControlStateHighlighted];
-//        [self.sortButton setReversesTitleShadowWhenHighlighted:YES];
-//        
-//        self.sortButton.titleLabel.font = [UIFont boldSystemFontOfSize:14];
-//        self.sortButton.titleLabel.shadowOffset = CGSizeMake(0, -1);
-//        
-//        [self.sortButton setThemeButton:kSCHThemeManagerButtonImage leftCapWidth:7 topCapHeight:0];
-//        [self.sortButton addTarget:self action:@selector(sortAction:) forControlEvents:UIControlEventTouchUpInside];   
-//        
-//        CGRect sortFrame = self.sortButton.frame;
-//        sortFrame.origin.x = kSCHBookShelfEdgePadding;
-//        self.sortButton.frame = sortFrame;
-//        
-//        if (!TOP_TEN_DISABLED && ([[SCHAppStateManager sharedAppStateManager] canAuthenticate] == YES)) {
-//            topTenFrame = CGRectMake(kSCHBookShelfButtonPadding + CGRectGetWidth(sortFrame), 3, 120, 30);
-//            self.topTenPicksButton = [SCHThemeButton buttonWithType:UIButtonTypeCustom];
-//            [self.topTenPicksButton setFrame:topTenFrame];
-//            [self.topTenPicksButton setTitle:NSLocalizedString(@"More eBooks", @"") forState:UIControlStateNormal];
-//            [self.topTenPicksButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-//            [self.topTenPicksButton setTitleColor:[UIColor colorWithWhite:1 alpha:0.5f] forState:UIControlStateHighlighted];
-//            [self.topTenPicksButton setReversesTitleShadowWhenHighlighted:YES];
-//            
-//            self.topTenPicksButton.titleLabel.font = [UIFont boldSystemFontOfSize:14];
-//            self.topTenPicksButton.titleLabel.shadowOffset = CGSizeMake(0, -1);
-//            
-//            [self.topTenPicksButton setThemeButton:kSCHThemeManagerButtonImage leftCapWidth:7 topCapHeight:0];
-//            [self.topTenPicksButton addTarget:self action:@selector(topTenAction:) forControlEvents:UIControlEventTouchUpInside];    
-//        }
-//    }
-//    
-//    // right toolbar items code
-//    // order: Sort, Ratings, More eBooks (top 10), Themes
-//
-//    CGFloat topTenWidth = topTenFrame.size.width;
-//    
-//    if (topTenWidth > 0) {
-//        topTenWidth += kSCHBookShelfEdgePadding;
-//    }
-//
-//    UIView *rightContainerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth(sortFrame) + kSCHBookShelfButtonPadding + topTenWidth + CGRectGetWidth(themeButton.frame) + kSCHBookShelfButtonPadding + CGRectGetWidth(themeButton.frame) + kSCHBookShelfEdgePadding, CGRectGetHeight(themeButton.frame))];
-//
-//    if (self.sortButton) {
-//        [rightContainerView addSubview:self.sortButton];
-//    }
-//    if (self.topTenPicksButton) {
-//        [rightContainerView addSubview:self.topTenPicksButton];
-//    }
-//    if (self.ratingButton) {
-//        [rightContainerView addSubview:self.ratingButton];
-//    }
-    
-//    CGRect themeFrame = themeButton.frame;
-//    themeFrame.origin.x = topTenWidth + kSCHBookShelfButtonPadding + CGRectGetWidth(sortFrame) + kSCHBookShelfButtonPadding + CGRectGetWidth(self.ratingButton.frame);
-//    themeButton.frame = themeFrame;
-//
-//    CGRect ratingFrame = self.ratingButton.frame;
-//    ratingFrame.origin.x = topTenWidth + kSCHBookShelfButtonPadding + CGRectGetWidth(sortFrame);
-//    self.ratingButton.frame = ratingFrame;
-//
-//    [rightContainerView addSubview:themeButton];
-//
-//    self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithCustomView:rightContainerView] autorelease];
-//    [rightContainerView release];
-    
-    
     SCHThemeButton *menuButton = [SCHThemeButton buttonWithType:UIButtonTypeCustom];
-    [menuButton setThemeIcon:kSCHThemeManagerThemeIcon iPadQualifier:kSCHThemeManagerPadQualifierSuffix];
+    [menuButton setThemeIcon:kSCHThemeManagerMenuIcon iPadQualifier:kSCHThemeManagerPadQualifierSuffix];
     [menuButton sizeToFit];    
     [menuButton addTarget:self action:@selector(menuAction:) forControlEvents:UIControlEventTouchUpInside];    
     menuButton.accessibilityLabel = @"Menu Button";
 
-    UIView *rightContainerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth(menuButton.frame), CGRectGetHeight(menuButton.frame))];
+    UIView *rightContainerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth(menuButton.frame) + kSCHBookShelfEdgePadding + 1, CGRectGetHeight(menuButton.frame))];
 
     [rightContainerView addSubview:menuButton];
 
@@ -297,54 +211,9 @@ static NSInteger const kSCHBookShelfEdgePadding = 12;
 
 #pragma mark - Actions
 
-//- (void)sortAction:(SCHThemeButton *)sender
-//{
-//    if (self.popover) {
-//        [self.popover dismissPopoverAnimated:YES];
-//        self.popover = nil;
-//    }
-//    
-//    SCHBookShelfSortPopoverTableView *popoverTable = [[SCHBookShelfSortPopoverTableView alloc] initWithNibName:nil bundle:nil];
-//    popoverTable.sortType = self.sortType;
-//    popoverTable.delegate = self;
-//    
-//    self.popover = [[[UIPopoverController alloc] initWithContentViewController:popoverTable] autorelease];
-//    self.popover.delegate = self;
-//    
-//    [self.popover presentPopoverFromRect:sender.frame inView:sender.superview permittedArrowDirections:UIPopoverArrowDirectionUp animated:YES];
-//    [popoverTable release];
-//}
-//
-//- (void)topTenAction:(SCHThemeButton *)sender
-//{
-//    if (self.popover) {
-//        [self.popover dismissPopoverAnimated:YES];
-//        self.popover = nil;
-//    }
-//    
-//    if ([[SCHVersionDownloadManager sharedVersionManager] isAppVersionOutdated] == YES) {
-//        [self showAppVersionOutdatedAlert];
-//    } else {
-//        [self showRecommendationsListAnimated:YES];
-//    }
-//}
-//
-//- (void)themeAction:(SCHThemeButton *)sender
-//{
-//    if (self.popover) {
-//        [self.popover dismissPopoverAnimated:YES];
-//        self.popover = nil;
-//    }
-//    
-//    self.popover = [[[UIPopoverController alloc] initWithContentViewController:self.themePickerContainer] autorelease];
-//    self.popover.delegate = self;
-//    
-//    [self.popover presentPopoverFromRect:sender.frame inView:sender.superview permittedArrowDirections:UIPopoverArrowDirectionUp animated:YES];
-//}
-
 - (void)menuAction:(SCHThemeButton *)sender
 {
-    SCHBookShelfMenuController *menuTableController = [[SCHBookShelfMenuController alloc] initWithNibName:@"SCHBookShelfMenuTableViewController" bundle:nil];
+    SCHBookShelfMenuController *menuTableController = [[SCHBookShelfMenuController alloc] initWithNibName:@"SCHBookShelfMenuController" bundle:nil];
     menuTableController.delegate = self;
     menuTableController.userIsAuthenticated = !TOP_TEN_DISABLED && [[SCHAppStateManager sharedAppStateManager] canAuthenticate];
     
@@ -352,6 +221,11 @@ static NSInteger const kSCHBookShelfEdgePadding = 12;
     
     self.popover = [[[UIPopoverController alloc] initWithContentViewController:navCon] autorelease];
     self.popover.delegate = self;
+
+    // iOS 5 and higher: add a custom popover background
+    if ([self.popover respondsToSelector:@selector(setPopoverBackgroundViewClass:)]) {
+        [self.popover setPopoverBackgroundViewClass:[SCHBookShelfMenuPopoverBackgroundView class]];
+    }
     
     [self.popover presentPopoverFromRect:sender.frame inView:sender.superview permittedArrowDirections:UIPopoverArrowDirectionUp animated:YES];
     [menuTableController release];
@@ -410,6 +284,25 @@ static NSInteger const kSCHBookShelfEdgePadding = 12;
     }
 }
 
+- (void)bookShelfMenuSwitchedToGridView:(SCHBookShelfMenuController *)controller
+{
+    if (self.popover) {
+        [self.popover dismissPopoverAnimated:YES];
+        self.popover = nil;
+    }
+    
+    [super changeToGridView:nil];
+}
+
+- (void)bookShelfMenuSwitchedToListView:(SCHBookShelfMenuController *)controller
+{
+    if (self.popover) {
+        [self.popover dismissPopoverAnimated:YES];
+        self.popover = nil;
+    }
+    
+    [super changeToListView:nil];
+}
 
 #pragma mark - Recommendations and Wish List
 
@@ -466,29 +359,6 @@ static NSInteger const kSCHBookShelfEdgePadding = 12;
     }
 }
 
-- (NSString *)shelfSwitchTextForBookShelfMenu:(SCHBookShelfMenuController *)controller
-{
-    if (self.listTableView.hidden == YES) {
-        return @"Switch to List View";
-    } 
-
-    return @"Switch to Grid View";
-}
-
-- (void)bookShelfMenuToggledSwitch:(SCHBookShelfMenuController *)controller
-{
-    if (self.popover) {
-        [self.popover dismissPopoverAnimated:YES];
-        self.popover = nil;
-    }
-    
-    if (self.listTableView.hidden == YES) {
-        [super changeToListView:nil];
-    } else {
-        [super changeToGridView:nil];
-    }
-}
-
 - (void)showWishListAnimated:(BOOL)animated
 {
     // FIXME: "sticky plaster" preventing animation while switching
@@ -529,43 +399,6 @@ static NSInteger const kSCHBookShelfEdgePadding = 12;
         [CATransaction commit];
     }
 }
-
-//#pragma mark - SCHComponent Delegate
-//
-//- (void)updateTopTenWithBooks:(NSArray *)topBooks
-//{    
-//    if (topBooks) {
-//        self.topTenBooks = topBooks;
-//    } else {
-//        self.topTenBooks = [NSArray array];
-//    }
-//    
-//    if (self.popover != nil) {
-//        id bookShelfTopTenPopoverTableView = self.popover.contentViewController;
-//        if ([bookShelfTopTenPopoverTableView isKindOfClass:[SCHBookShelfTopTenPopoverTableView class]] == YES) {
-//            ((SCHBookShelfTopTenPopoverTableView *)bookShelfTopTenPopoverTableView).books = self.topTenBooks;
-//        }
-//    }
-//}
-//
-//- (void)component:(SCHComponent *)component didCompleteWithResult:(NSDictionary *)result
-//{
-//	NSMutableArray *topBooks = [result objectForKey:kSCHLibreAccessWebServiceContentMetadataList];
-//
-//    NSLog(@"%@", topBooks);
-//    
-//    if (topBooks != (id)[NSNull null] && [topBooks count] > 0) {
-//        self.lastTopTenBookRetrieval = [NSDate date];
-//        [self updateTopTenWithBooks:topBooks];
-//    } else {
-//        [self updateTopTenWithBooks:nil];
-//    }
-//}
-//
-//- (void)component:(SCHComponent *)component didFailWithError:(NSError *)error
-//{
-//    [self updateTopTenWithBooks:nil];
-//}
 
 - (void)authenticationDidSucceed
 {

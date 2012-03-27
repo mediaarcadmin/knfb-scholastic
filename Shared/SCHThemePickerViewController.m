@@ -136,7 +136,7 @@ static NSTimeInterval const kSCHThemePickerViewControllerThemeTransitionDuration
 
     } else {
         UIView *backgroundView = [[UIView alloc] initWithFrame:CGRectZero];
-        backgroundView.backgroundColor = [UIColor whiteColor];
+        backgroundView.backgroundColor = [UIColor colorWithRed:0.839 green:0.847 blue:0.871 alpha:1.];
         self.tableView.backgroundView = backgroundView;
         [backgroundView release];
         
@@ -144,6 +144,9 @@ static NSTimeInterval const kSCHThemePickerViewControllerThemeTransitionDuration
     }
     self.tableView.rowHeight = 50;
     self.tableView.separatorColor = [UIColor whiteColor];
+    self.tableView.separatorStyle = UITableViewCellSeparatorStyleSingleLineEtched;
+    
+    self.title = NSLocalizedString(@"Wallpaper", @"Wallpaper");
 }
 
 - (void)viewDidUnload
@@ -296,10 +299,12 @@ static NSTimeInterval const kSCHThemePickerViewControllerThemeTransitionDuration
     [self.tableView reloadData];
 }
 
+#pragma mark - Popover Size
+
 - (CGSize) contentSizeForViewInPopover
 {
     CGFloat height = ([[[SCHThemeManager sharedThemeManager] themeNames:NO] count] * 44) + 44 + 18;
-    return CGSizeMake(320, height);
+    return CGSizeMake(240, height);
 }
 
 @end

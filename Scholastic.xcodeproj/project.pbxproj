@@ -317,6 +317,22 @@
 		52162DA713DD763500D257C5 /* BITAPIError.m in Sources */ = {isa = PBXBuildFile; fileRef = 52162DA413DD763500D257C5 /* BITAPIError.m */; };
 		52162DA913DD88C700D257C5 /* SCHUserDefaults.m in Sources */ = {isa = PBXBuildFile; fileRef = 52162DA813DD88BF00D257C5 /* SCHUserDefaults.m */; };
 		52162DAB13DD88C700D257C5 /* SCHUserDefaults.m in Sources */ = {isa = PBXBuildFile; fileRef = 52162DA813DD88BF00D257C5 /* SCHUserDefaults.m */; };
+		521B7AD81521D1ED00DC0739 /* AuthenticateSvc+Binding.m in Sources */ = {isa = PBXBuildFile; fileRef = 521B7AD71521D1ED00DC0739 /* AuthenticateSvc+Binding.m */; };
+		521B7AD91521D1ED00DC0739 /* AuthenticateSvc+Binding.m in Sources */ = {isa = PBXBuildFile; fileRef = 521B7AD71521D1ED00DC0739 /* AuthenticateSvc+Binding.m */; };
+		521B7ADA1521D1ED00DC0739 /* AuthenticateSvc+Binding.m in Sources */ = {isa = PBXBuildFile; fileRef = 521B7AD71521D1ED00DC0739 /* AuthenticateSvc+Binding.m */; };
+		521B7ADB1521D1ED00DC0739 /* AuthenticateSvc+Binding.m in Sources */ = {isa = PBXBuildFile; fileRef = 521B7AD71521D1ED00DC0739 /* AuthenticateSvc+Binding.m */; };
+		521B7ADE1521D4BC00DC0739 /* LibreAccessServiceSvc+Binding.m in Sources */ = {isa = PBXBuildFile; fileRef = 521B7ADD1521D4BC00DC0739 /* LibreAccessServiceSvc+Binding.m */; };
+		521B7ADF1521D4BC00DC0739 /* LibreAccessServiceSvc+Binding.m in Sources */ = {isa = PBXBuildFile; fileRef = 521B7ADD1521D4BC00DC0739 /* LibreAccessServiceSvc+Binding.m */; };
+		521B7AE01521D4BC00DC0739 /* LibreAccessServiceSvc+Binding.m in Sources */ = {isa = PBXBuildFile; fileRef = 521B7ADD1521D4BC00DC0739 /* LibreAccessServiceSvc+Binding.m */; };
+		521B7AE11521D4BC00DC0739 /* LibreAccessServiceSvc+Binding.m in Sources */ = {isa = PBXBuildFile; fileRef = 521B7ADD1521D4BC00DC0739 /* LibreAccessServiceSvc+Binding.m */; };
+		521B7AE41521D61200DC0739 /* GetUserInfoSvc+Binding.m in Sources */ = {isa = PBXBuildFile; fileRef = 521B7AE31521D61200DC0739 /* GetUserInfoSvc+Binding.m */; };
+		521B7AE51521D61200DC0739 /* GetUserInfoSvc+Binding.m in Sources */ = {isa = PBXBuildFile; fileRef = 521B7AE31521D61200DC0739 /* GetUserInfoSvc+Binding.m */; };
+		521B7AE61521D61200DC0739 /* GetUserInfoSvc+Binding.m in Sources */ = {isa = PBXBuildFile; fileRef = 521B7AE31521D61200DC0739 /* GetUserInfoSvc+Binding.m */; };
+		521B7AE71521D61200DC0739 /* GetUserInfoSvc+Binding.m in Sources */ = {isa = PBXBuildFile; fileRef = 521B7AE31521D61200DC0739 /* GetUserInfoSvc+Binding.m */; };
+		521B7AEA1521D67E00DC0739 /* WishListServiceSvc+Binding.m in Sources */ = {isa = PBXBuildFile; fileRef = 521B7AE91521D67E00DC0739 /* WishListServiceSvc+Binding.m */; };
+		521B7AEB1521D67E00DC0739 /* WishListServiceSvc+Binding.m in Sources */ = {isa = PBXBuildFile; fileRef = 521B7AE91521D67E00DC0739 /* WishListServiceSvc+Binding.m */; };
+		521B7AEC1521D67E00DC0739 /* WishListServiceSvc+Binding.m in Sources */ = {isa = PBXBuildFile; fileRef = 521B7AE91521D67E00DC0739 /* WishListServiceSvc+Binding.m */; };
+		521B7AED1521D67E00DC0739 /* WishListServiceSvc+Binding.m in Sources */ = {isa = PBXBuildFile; fileRef = 521B7AE91521D67E00DC0739 /* WishListServiceSvc+Binding.m */; };
 		5226C70514A489CB00307634 /* SCHVersionDownloadManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 5226C70214A489CB00307634 /* SCHVersionDownloadManager.m */; };
 		5226C70614A489CB00307634 /* SCHVersionDownloadManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 5226C70214A489CB00307634 /* SCHVersionDownloadManager.m */; };
 		5226C70714A489CB00307634 /* SCHVersionManifestOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 5226C70414A489CB00307634 /* SCHVersionManifestOperation.m */; };
@@ -3770,6 +3786,18 @@
 		F849156214FFA6E5000D064B /* storiaStarFull.png in Resources */ = {isa = PBXBuildFile; fileRef = F849155B14FFA6E5000D064B /* storiaStarFull.png */; };
 		F849156314FFA6E5000D064B /* storiaStarFull.png in Resources */ = {isa = PBXBuildFile; fileRef = F849155B14FFA6E5000D064B /* storiaStarFull.png */; };
 		F84CE156134C691D0044729E /* SCHNonDRMAuthenticationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = F84CE155134C691D0044729E /* SCHNonDRMAuthenticationManager.m */; };
+		F84DB7591520B9F10025BFCF /* SCHBookShelfMenuPopoverBackgroundView.m in Sources */ = {isa = PBXBuildFile; fileRef = F84DB7581520B9F10025BFCF /* SCHBookShelfMenuPopoverBackgroundView.m */; };
+		F84DB75A1520B9F10025BFCF /* SCHBookShelfMenuPopoverBackgroundView.m in Sources */ = {isa = PBXBuildFile; fileRef = F84DB7581520B9F10025BFCF /* SCHBookShelfMenuPopoverBackgroundView.m */; };
+		F84DB75B1520B9F10025BFCF /* SCHBookShelfMenuPopoverBackgroundView.m in Sources */ = {isa = PBXBuildFile; fileRef = F84DB7581520B9F10025BFCF /* SCHBookShelfMenuPopoverBackgroundView.m */; };
+		F84DB75C1520B9F10025BFCF /* SCHBookShelfMenuPopoverBackgroundView.m in Sources */ = {isa = PBXBuildFile; fileRef = F84DB7581520B9F10025BFCF /* SCHBookShelfMenuPopoverBackgroundView.m */; };
+		F84DB76E1520D2750025BFCF /* SCHBookShelfTypeMenuTableController.m in Sources */ = {isa = PBXBuildFile; fileRef = F84DB76C1520D2750025BFCF /* SCHBookShelfTypeMenuTableController.m */; };
+		F84DB76F1520D2750025BFCF /* SCHBookShelfTypeMenuTableController.m in Sources */ = {isa = PBXBuildFile; fileRef = F84DB76C1520D2750025BFCF /* SCHBookShelfTypeMenuTableController.m */; };
+		F84DB7701520D2750025BFCF /* SCHBookShelfTypeMenuTableController.m in Sources */ = {isa = PBXBuildFile; fileRef = F84DB76C1520D2750025BFCF /* SCHBookShelfTypeMenuTableController.m */; };
+		F84DB7711520D2750025BFCF /* SCHBookShelfTypeMenuTableController.m in Sources */ = {isa = PBXBuildFile; fileRef = F84DB76C1520D2750025BFCF /* SCHBookShelfTypeMenuTableController.m */; };
+		F84DB7721520D2750025BFCF /* SCHBookShelfTypeMenuTableController.xib in Resources */ = {isa = PBXBuildFile; fileRef = F84DB76D1520D2750025BFCF /* SCHBookShelfTypeMenuTableController.xib */; };
+		F84DB7731520D2750025BFCF /* SCHBookShelfTypeMenuTableController.xib in Resources */ = {isa = PBXBuildFile; fileRef = F84DB76D1520D2750025BFCF /* SCHBookShelfTypeMenuTableController.xib */; };
+		F84DB7741520D2750025BFCF /* SCHBookShelfTypeMenuTableController.xib in Resources */ = {isa = PBXBuildFile; fileRef = F84DB76D1520D2750025BFCF /* SCHBookShelfTypeMenuTableController.xib */; };
+		F84DB7751520D2750025BFCF /* SCHBookShelfTypeMenuTableController.xib in Resources */ = {isa = PBXBuildFile; fileRef = F84DB76D1520D2750025BFCF /* SCHBookShelfTypeMenuTableController.xib */; };
 		F8509EA312F0621E00197EB5 /* SCHScrubberView.m in Sources */ = {isa = PBXBuildFile; fileRef = F8509E9B12F0621E00197EB5 /* SCHScrubberView.m */; };
 		F8537F13139E3BB10092C743 /* SCHStoryInteractionAboutYouQuiz_iPhone.xib in Resources */ = {isa = PBXBuildFile; fileRef = F8537F12139E3BB10092C743 /* SCHStoryInteractionAboutYouQuiz_iPhone.xib */; };
 		F8537F17139E3E4C0092C743 /* SCHStoryInteractionControllerAboutYouQuiz.m in Sources */ = {isa = PBXBuildFile; fileRef = F8537F16139E3E4C0092C743 /* SCHStoryInteractionControllerAboutYouQuiz.m */; };
@@ -3895,6 +3923,26 @@
 		F8C6DA9A136073D300D9E953 /* paper-neutral.png in Resources */ = {isa = PBXBuildFile; fileRef = F8C6DA93136073D300D9E953 /* paper-neutral.png */; };
 		F8C6DA9C136073D300D9E953 /* paper-neutral@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F8C6DA94136073D300D9E953 /* paper-neutral@2x.png */; };
 		F8C6DA9E136073D300D9E953 /* paper-white@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F8C6DA95136073D300D9E953 /* paper-white@2x.png */; };
+		F8C7C51D1521C08D0067674D /* popover-black-bcg-image.png in Resources */ = {isa = PBXBuildFile; fileRef = F8C7C5181521C08D0067674D /* popover-black-bcg-image.png */; };
+		F8C7C51E1521C08D0067674D /* popover-black-bcg-image.png in Resources */ = {isa = PBXBuildFile; fileRef = F8C7C5181521C08D0067674D /* popover-black-bcg-image.png */; };
+		F8C7C51F1521C08D0067674D /* popover-black-bcg-image.png in Resources */ = {isa = PBXBuildFile; fileRef = F8C7C5181521C08D0067674D /* popover-black-bcg-image.png */; };
+		F8C7C5201521C08D0067674D /* popover-black-bcg-image.png in Resources */ = {isa = PBXBuildFile; fileRef = F8C7C5181521C08D0067674D /* popover-black-bcg-image.png */; };
+		F8C7C5211521C08D0067674D /* popover-black-bottom-arrow-image.png in Resources */ = {isa = PBXBuildFile; fileRef = F8C7C5191521C08D0067674D /* popover-black-bottom-arrow-image.png */; };
+		F8C7C5221521C08D0067674D /* popover-black-bottom-arrow-image.png in Resources */ = {isa = PBXBuildFile; fileRef = F8C7C5191521C08D0067674D /* popover-black-bottom-arrow-image.png */; };
+		F8C7C5231521C08D0067674D /* popover-black-bottom-arrow-image.png in Resources */ = {isa = PBXBuildFile; fileRef = F8C7C5191521C08D0067674D /* popover-black-bottom-arrow-image.png */; };
+		F8C7C5241521C08D0067674D /* popover-black-bottom-arrow-image.png in Resources */ = {isa = PBXBuildFile; fileRef = F8C7C5191521C08D0067674D /* popover-black-bottom-arrow-image.png */; };
+		F8C7C5251521C08D0067674D /* popover-black-left-arrow-image.png in Resources */ = {isa = PBXBuildFile; fileRef = F8C7C51A1521C08D0067674D /* popover-black-left-arrow-image.png */; };
+		F8C7C5261521C08D0067674D /* popover-black-left-arrow-image.png in Resources */ = {isa = PBXBuildFile; fileRef = F8C7C51A1521C08D0067674D /* popover-black-left-arrow-image.png */; };
+		F8C7C5271521C08D0067674D /* popover-black-left-arrow-image.png in Resources */ = {isa = PBXBuildFile; fileRef = F8C7C51A1521C08D0067674D /* popover-black-left-arrow-image.png */; };
+		F8C7C5281521C08D0067674D /* popover-black-left-arrow-image.png in Resources */ = {isa = PBXBuildFile; fileRef = F8C7C51A1521C08D0067674D /* popover-black-left-arrow-image.png */; };
+		F8C7C5291521C08D0067674D /* popover-black-right-arrow-image.png in Resources */ = {isa = PBXBuildFile; fileRef = F8C7C51B1521C08D0067674D /* popover-black-right-arrow-image.png */; };
+		F8C7C52A1521C08D0067674D /* popover-black-right-arrow-image.png in Resources */ = {isa = PBXBuildFile; fileRef = F8C7C51B1521C08D0067674D /* popover-black-right-arrow-image.png */; };
+		F8C7C52B1521C08D0067674D /* popover-black-right-arrow-image.png in Resources */ = {isa = PBXBuildFile; fileRef = F8C7C51B1521C08D0067674D /* popover-black-right-arrow-image.png */; };
+		F8C7C52C1521C08D0067674D /* popover-black-right-arrow-image.png in Resources */ = {isa = PBXBuildFile; fileRef = F8C7C51B1521C08D0067674D /* popover-black-right-arrow-image.png */; };
+		F8C7C52D1521C08D0067674D /* popover-black-top-arrow-image.png in Resources */ = {isa = PBXBuildFile; fileRef = F8C7C51C1521C08D0067674D /* popover-black-top-arrow-image.png */; };
+		F8C7C52E1521C08D0067674D /* popover-black-top-arrow-image.png in Resources */ = {isa = PBXBuildFile; fileRef = F8C7C51C1521C08D0067674D /* popover-black-top-arrow-image.png */; };
+		F8C7C52F1521C08D0067674D /* popover-black-top-arrow-image.png in Resources */ = {isa = PBXBuildFile; fileRef = F8C7C51C1521C08D0067674D /* popover-black-top-arrow-image.png */; };
+		F8C7C5301521C08D0067674D /* popover-black-top-arrow-image.png in Resources */ = {isa = PBXBuildFile; fileRef = F8C7C51C1521C08D0067674D /* popover-black-top-arrow-image.png */; };
 		F8C8FC2A136065AD0097F9DD /* SCHCustomNavigationBar.m in Sources */ = {isa = PBXBuildFile; fileRef = F8C8FC29136065AD0097F9DD /* SCHCustomNavigationBar.m */; };
 		F8DA34CF139F88AC0032B1B3 /* SCHStoryInteractionControllerScratchAndSee.m in Sources */ = {isa = PBXBuildFile; fileRef = F8DA34CE139F88AC0032B1B3 /* SCHStoryInteractionControllerScratchAndSee.m */; };
 		F8DA34D2139F88F80032B1B3 /* SCHStoryInteractionScratchAndSee_iPhone.xib in Resources */ = {isa = PBXBuildFile; fileRef = F8DA34D1139F88F80032B1B3 /* SCHStoryInteractionScratchAndSee_iPhone.xib */; };
@@ -4475,6 +4523,14 @@
 		5215349F13B08AB200131E37 /* storyinteraction-bg-younger-notitle@2x~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "storyinteraction-bg-younger-notitle@2x~iphone.png"; sourceTree = "<group>"; };
 		52162DA413DD763500D257C5 /* BITAPIError.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BITAPIError.m; sourceTree = "<group>"; };
 		52162DA813DD88BF00D257C5 /* SCHUserDefaults.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHUserDefaults.m; path = Shared/SCHUserDefaults.m; sourceTree = "<group>"; };
+		521B7AD61521D1ED00DC0739 /* AuthenticateSvc+Binding.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "AuthenticateSvc+Binding.h"; sourceTree = "<group>"; };
+		521B7AD71521D1ED00DC0739 /* AuthenticateSvc+Binding.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "AuthenticateSvc+Binding.m"; sourceTree = "<group>"; };
+		521B7ADC1521D4BC00DC0739 /* LibreAccessServiceSvc+Binding.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "LibreAccessServiceSvc+Binding.h"; sourceTree = "<group>"; };
+		521B7ADD1521D4BC00DC0739 /* LibreAccessServiceSvc+Binding.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "LibreAccessServiceSvc+Binding.m"; sourceTree = "<group>"; };
+		521B7AE21521D61200DC0739 /* GetUserInfoSvc+Binding.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "GetUserInfoSvc+Binding.h"; sourceTree = "<group>"; };
+		521B7AE31521D61200DC0739 /* GetUserInfoSvc+Binding.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "GetUserInfoSvc+Binding.m"; sourceTree = "<group>"; };
+		521B7AE81521D67E00DC0739 /* WishListServiceSvc+Binding.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "WishListServiceSvc+Binding.h"; sourceTree = "<group>"; };
+		521B7AE91521D67E00DC0739 /* WishListServiceSvc+Binding.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "WishListServiceSvc+Binding.m"; sourceTree = "<group>"; };
 		521BB6C015207FF00045AC92 /* SCHISBNItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHISBNItem.h; path = Shared/SCHISBNItem.h; sourceTree = "<group>"; };
 		5226C70114A489CB00307634 /* SCHVersionDownloadManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHVersionDownloadManager.h; path = Shared/SCHVersionDownloadManager.h; sourceTree = "<group>"; };
 		5226C70214A489CB00307634 /* SCHVersionDownloadManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHVersionDownloadManager.m; path = Shared/SCHVersionDownloadManager.m; sourceTree = "<group>"; };
@@ -5572,6 +5628,11 @@
 		F849155B14FFA6E5000D064B /* storiaStarFull.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = storiaStarFull.png; path = Resources/storiaStarFull.png; sourceTree = "<group>"; };
 		F84CE154134C691D0044729E /* SCHNonDRMAuthenticationManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHNonDRMAuthenticationManager.h; path = Shared/SCHNonDRMAuthenticationManager.h; sourceTree = "<group>"; };
 		F84CE155134C691D0044729E /* SCHNonDRMAuthenticationManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHNonDRMAuthenticationManager.m; path = Shared/SCHNonDRMAuthenticationManager.m; sourceTree = "<group>"; };
+		F84DB7571520B9F10025BFCF /* SCHBookShelfMenuPopoverBackgroundView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHBookShelfMenuPopoverBackgroundView.h; path = iPad/SCHBookShelfMenuPopoverBackgroundView.h; sourceTree = "<group>"; };
+		F84DB7581520B9F10025BFCF /* SCHBookShelfMenuPopoverBackgroundView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHBookShelfMenuPopoverBackgroundView.m; path = iPad/SCHBookShelfMenuPopoverBackgroundView.m; sourceTree = "<group>"; };
+		F84DB76B1520D2750025BFCF /* SCHBookShelfTypeMenuTableController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHBookShelfTypeMenuTableController.h; path = Shared/SCHBookShelfTypeMenuTableController.h; sourceTree = "<group>"; };
+		F84DB76C1520D2750025BFCF /* SCHBookShelfTypeMenuTableController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHBookShelfTypeMenuTableController.m; path = Shared/SCHBookShelfTypeMenuTableController.m; sourceTree = "<group>"; };
+		F84DB76D1520D2750025BFCF /* SCHBookShelfTypeMenuTableController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = SCHBookShelfTypeMenuTableController.xib; path = Shared/SCHBookShelfTypeMenuTableController.xib; sourceTree = "<group>"; };
 		F8509E9A12F0621E00197EB5 /* SCHScrubberView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCHScrubberView.h; sourceTree = "<group>"; };
 		F8509E9B12F0621E00197EB5 /* SCHScrubberView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCHScrubberView.m; sourceTree = "<group>"; };
 		F8537F12139E3BB10092C743 /* SCHStoryInteractionAboutYouQuiz_iPhone.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SCHStoryInteractionAboutYouQuiz_iPhone.xib; sourceTree = "<group>"; };
@@ -5703,6 +5764,11 @@
 		F8C6DA93136073D300D9E953 /* paper-neutral.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "paper-neutral.png"; path = "Resources/paper-neutral.png"; sourceTree = "<group>"; };
 		F8C6DA94136073D300D9E953 /* paper-neutral@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "paper-neutral@2x.png"; path = "Resources/paper-neutral@2x.png"; sourceTree = "<group>"; };
 		F8C6DA95136073D300D9E953 /* paper-white@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "paper-white@2x.png"; path = "Resources/paper-white@2x.png"; sourceTree = "<group>"; };
+		F8C7C5181521C08D0067674D /* popover-black-bcg-image.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "popover-black-bcg-image.png"; path = "Resources/popover-black-bcg-image.png"; sourceTree = "<group>"; };
+		F8C7C5191521C08D0067674D /* popover-black-bottom-arrow-image.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "popover-black-bottom-arrow-image.png"; path = "Resources/popover-black-bottom-arrow-image.png"; sourceTree = "<group>"; };
+		F8C7C51A1521C08D0067674D /* popover-black-left-arrow-image.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "popover-black-left-arrow-image.png"; path = "Resources/popover-black-left-arrow-image.png"; sourceTree = "<group>"; };
+		F8C7C51B1521C08D0067674D /* popover-black-right-arrow-image.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "popover-black-right-arrow-image.png"; path = "Resources/popover-black-right-arrow-image.png"; sourceTree = "<group>"; };
+		F8C7C51C1521C08D0067674D /* popover-black-top-arrow-image.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "popover-black-top-arrow-image.png"; path = "Resources/popover-black-top-arrow-image.png"; sourceTree = "<group>"; };
 		F8C8FC28136065AD0097F9DD /* SCHCustomNavigationBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHCustomNavigationBar.h; path = iPhone/SCHCustomNavigationBar.h; sourceTree = "<group>"; };
 		F8C8FC29136065AD0097F9DD /* SCHCustomNavigationBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHCustomNavigationBar.m; path = iPhone/SCHCustomNavigationBar.m; sourceTree = "<group>"; };
 		F8CD24C912F9714D001C748B /* SCHBookManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHBookManager.h; path = iPhone/SCHBookManager.h; sourceTree = "<group>"; };
@@ -6991,6 +7057,7 @@
 		528A2CCF12CCDC400053A343 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				F8C7C5171521C07E0067674D /* Custom Popover Graphics */,
 				F864916C15139122003A8B81 /* sampleCoverImage.jpg */,
 				C995171F146D690B00EA7337 /* Sample Manifests */,
 				A3A19356146AC94E00938888 /* gnulesser-license.html */,
@@ -7083,16 +7150,24 @@
 			children = (
 				5293868E12DF3A3300045B44 /* AuthenticateSvc.h */,
 				5293868F12DF3A3300045B44 /* AuthenticateSvc.m */,
+				521B7AD61521D1ED00DC0739 /* AuthenticateSvc+Binding.h */,
+				521B7AD71521D1ED00DC0739 /* AuthenticateSvc+Binding.m */,
 				52C62CEF14F3A02100F261DA /* GetUserInfoSvc.h */,
 				52C62CF014F3A02100F261DA /* GetUserInfoSvc.m */,
+				521B7AE21521D61200DC0739 /* GetUserInfoSvc+Binding.h */,
+				521B7AE31521D61200DC0739 /* GetUserInfoSvc+Binding.m */,
 				52C62CF414F3A25700F261DA /* ax25.h */,
 				52C62CF514F3A25700F261DA /* ax25.m */,
 				52EF508512E739E900E374F7 /* LibreAccessServiceSvc.h */,
 				52EF508612E739E900E374F7 /* LibreAccessServiceSvc.m */,
+				521B7ADC1521D4BC00DC0739 /* LibreAccessServiceSvc+Binding.h */,
+				521B7ADD1521D4BC00DC0739 /* LibreAccessServiceSvc+Binding.m */,
 				523B2E6C14F403E300413883 /* ax21.h */,
 				523B2E6D14F403E300413883 /* ax21.m */,
 				523B2E6E14F403E300413883 /* WishListServiceSvc.h */,
 				523B2E6F14F403E300413883 /* WishListServiceSvc.m */,
+				521B7AE81521D67E00DC0739 /* WishListServiceSvc+Binding.h */,
+				521B7AE91521D67E00DC0739 /* WishListServiceSvc+Binding.m */,
 				5293869212DF3A3300045B44 /* NSDate+ISO8601Parsing.h */,
 				5293869312DF3A3300045B44 /* NSDate+ISO8601Parsing.m */,
 				5293869412DF3A3300045B44 /* NSDate+ISO8601Unparsing.h */,
@@ -8553,6 +8628,11 @@
 				F88F6FCE15208A1600572E7C /* SCHBookShelfMenuController.h */,
 				F88F6FCF15208A1600572E7C /* SCHBookShelfMenuController.m */,
 				F88F6FD015208A1600572E7C /* SCHBookShelfMenuController.xib */,
+				F84DB7571520B9F10025BFCF /* SCHBookShelfMenuPopoverBackgroundView.h */,
+				F84DB7581520B9F10025BFCF /* SCHBookShelfMenuPopoverBackgroundView.m */,
+				F84DB76B1520D2750025BFCF /* SCHBookShelfTypeMenuTableController.h */,
+				F84DB76C1520D2750025BFCF /* SCHBookShelfTypeMenuTableController.m */,
+				F84DB76D1520D2750025BFCF /* SCHBookShelfTypeMenuTableController.xib */,
 			);
 			name = "Bookshelf Menu";
 			sourceTree = "<group>";
@@ -8594,6 +8674,18 @@
 				F82F913D145943B000F609F9 /* SCHDictionaryOperation.m */,
 			);
 			name = "Dictionary Operations";
+			sourceTree = "<group>";
+		};
+		F8C7C5171521C07E0067674D /* Custom Popover Graphics */ = {
+			isa = PBXGroup;
+			children = (
+				F8C7C5181521C08D0067674D /* popover-black-bcg-image.png */,
+				F8C7C5191521C08D0067674D /* popover-black-bottom-arrow-image.png */,
+				F8C7C51A1521C08D0067674D /* popover-black-left-arrow-image.png */,
+				F8C7C51B1521C08D0067674D /* popover-black-right-arrow-image.png */,
+				F8C7C51C1521C08D0067674D /* popover-black-top-arrow-image.png */,
+			);
+			name = "Custom Popover Graphics";
 			sourceTree = "<group>";
 		};
 		F8DC5655138C09DB00F27146 /* Reading View Controllers */ = {
@@ -9633,6 +9725,12 @@
 				F864916D15139122003A8B81 /* sampleCoverImage.jpg in Resources */,
 				F8A57E761517702000390D56 /* SCHBookShelfWishListController.xib in Resources */,
 				F88F6FD515208A1600572E7C /* SCHBookShelfMenuController.xib in Resources */,
+				F84DB7721520D2750025BFCF /* SCHBookShelfTypeMenuTableController.xib in Resources */,
+				F8C7C51D1521C08D0067674D /* popover-black-bcg-image.png in Resources */,
+				F8C7C5211521C08D0067674D /* popover-black-bottom-arrow-image.png in Resources */,
+				F8C7C5251521C08D0067674D /* popover-black-left-arrow-image.png in Resources */,
+				F8C7C5291521C08D0067674D /* popover-black-right-arrow-image.png in Resources */,
+				F8C7C52D1521C08D0067674D /* popover-black-top-arrow-image.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -10349,6 +10447,12 @@
 				F864916E15139122003A8B81 /* sampleCoverImage.jpg in Resources */,
 				F8A57E771517702000390D56 /* SCHBookShelfWishListController.xib in Resources */,
 				F88F6FD615208A1600572E7C /* SCHBookShelfMenuController.xib in Resources */,
+				F84DB7731520D2750025BFCF /* SCHBookShelfTypeMenuTableController.xib in Resources */,
+				F8C7C51E1521C08D0067674D /* popover-black-bcg-image.png in Resources */,
+				F8C7C5221521C08D0067674D /* popover-black-bottom-arrow-image.png in Resources */,
+				F8C7C5261521C08D0067674D /* popover-black-left-arrow-image.png in Resources */,
+				F8C7C52A1521C08D0067674D /* popover-black-right-arrow-image.png in Resources */,
+				F8C7C52E1521C08D0067674D /* popover-black-top-arrow-image.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -10841,6 +10945,12 @@
 				F864916F15139122003A8B81 /* sampleCoverImage.jpg in Resources */,
 				F8A57E781517702000390D56 /* SCHBookShelfWishListController.xib in Resources */,
 				F88F6FD715208A1600572E7C /* SCHBookShelfMenuController.xib in Resources */,
+				F84DB7741520D2750025BFCF /* SCHBookShelfTypeMenuTableController.xib in Resources */,
+				F8C7C51F1521C08D0067674D /* popover-black-bcg-image.png in Resources */,
+				F8C7C5231521C08D0067674D /* popover-black-bottom-arrow-image.png in Resources */,
+				F8C7C5271521C08D0067674D /* popover-black-left-arrow-image.png in Resources */,
+				F8C7C52B1521C08D0067674D /* popover-black-right-arrow-image.png in Resources */,
+				F8C7C52F1521C08D0067674D /* popover-black-top-arrow-image.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -11331,6 +11441,12 @@
 				F864917015139122003A8B81 /* sampleCoverImage.jpg in Resources */,
 				F8A57E791517702000390D56 /* SCHBookShelfWishListController.xib in Resources */,
 				F88F6FD815208A1600572E7C /* SCHBookShelfMenuController.xib in Resources */,
+				F84DB7751520D2750025BFCF /* SCHBookShelfTypeMenuTableController.xib in Resources */,
+				F8C7C5201521C08D0067674D /* popover-black-bcg-image.png in Resources */,
+				F8C7C5241521C08D0067674D /* popover-black-bottom-arrow-image.png in Resources */,
+				F8C7C5281521C08D0067674D /* popover-black-left-arrow-image.png in Resources */,
+				F8C7C52C1521C08D0067674D /* popover-black-right-arrow-image.png in Resources */,
+				F8C7C5301521C08D0067674D /* popover-black-top-arrow-image.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -11705,6 +11821,12 @@
 				F88F6FD115208A1600572E7C /* SCHBookShelfMenuController.m in Sources */,
 				C95D6EC51520C92D000C4168 /* UIImage+ScholasticAdditions.m in Sources */,
 				C95D6ECB1521FCA7000C4168 /* SCHRecommendationThumbnailOperation.m in Sources */,
+				F84DB7591520B9F10025BFCF /* SCHBookShelfMenuPopoverBackgroundView.m in Sources */,
+				F84DB76E1520D2750025BFCF /* SCHBookShelfTypeMenuTableController.m in Sources */,
+				521B7AD81521D1ED00DC0739 /* AuthenticateSvc+Binding.m in Sources */,
+				521B7ADE1521D4BC00DC0739 /* LibreAccessServiceSvc+Binding.m in Sources */,
+				521B7AE41521D61200DC0739 /* GetUserInfoSvc+Binding.m in Sources */,
+				521B7AEA1521D67E00DC0739 /* WishListServiceSvc+Binding.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -12126,6 +12248,12 @@
 				F88F6FD215208A1600572E7C /* SCHBookShelfMenuController.m in Sources */,
 				C95D6EC61520C92D000C4168 /* UIImage+ScholasticAdditions.m in Sources */,
 				C95D6ECC1521FCA7000C4168 /* SCHRecommendationThumbnailOperation.m in Sources */,
+				F84DB75A1520B9F10025BFCF /* SCHBookShelfMenuPopoverBackgroundView.m in Sources */,
+				F84DB76F1520D2750025BFCF /* SCHBookShelfTypeMenuTableController.m in Sources */,
+				521B7AD91521D1ED00DC0739 /* AuthenticateSvc+Binding.m in Sources */,
+				521B7ADF1521D4BC00DC0739 /* LibreAccessServiceSvc+Binding.m in Sources */,
+				521B7AE51521D61200DC0739 /* GetUserInfoSvc+Binding.m in Sources */,
+				521B7AEB1521D67E00DC0739 /* WishListServiceSvc+Binding.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -12481,6 +12609,12 @@
 				F88F6FD315208A1600572E7C /* SCHBookShelfMenuController.m in Sources */,
 				C95D6EC71520C92D000C4168 /* UIImage+ScholasticAdditions.m in Sources */,
 				C95D6ECD1521FCA7000C4168 /* SCHRecommendationThumbnailOperation.m in Sources */,
+				F84DB75B1520B9F10025BFCF /* SCHBookShelfMenuPopoverBackgroundView.m in Sources */,
+				F84DB7701520D2750025BFCF /* SCHBookShelfTypeMenuTableController.m in Sources */,
+				521B7ADA1521D1ED00DC0739 /* AuthenticateSvc+Binding.m in Sources */,
+				521B7AE01521D4BC00DC0739 /* LibreAccessServiceSvc+Binding.m in Sources */,
+				521B7AE61521D61200DC0739 /* GetUserInfoSvc+Binding.m in Sources */,
+				521B7AEC1521D67E00DC0739 /* WishListServiceSvc+Binding.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -12836,6 +12970,12 @@
 				F88F6FD415208A1600572E7C /* SCHBookShelfMenuController.m in Sources */,
 				C95D6EC81520C92D000C4168 /* UIImage+ScholasticAdditions.m in Sources */,
 				C95D6ECE1521FCA7000C4168 /* SCHRecommendationThumbnailOperation.m in Sources */,
+				F84DB75C1520B9F10025BFCF /* SCHBookShelfMenuPopoverBackgroundView.m in Sources */,
+				F84DB7711520D2750025BFCF /* SCHBookShelfTypeMenuTableController.m in Sources */,
+				521B7ADB1521D1ED00DC0739 /* AuthenticateSvc+Binding.m in Sources */,
+				521B7AE11521D4BC00DC0739 /* LibreAccessServiceSvc+Binding.m in Sources */,
+				521B7AE71521D61200DC0739 /* GetUserInfoSvc+Binding.m in Sources */,
+				521B7AED1521D67E00DC0739 /* WishListServiceSvc+Binding.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

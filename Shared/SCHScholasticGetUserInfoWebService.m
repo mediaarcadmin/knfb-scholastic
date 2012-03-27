@@ -11,6 +11,7 @@
 #import "BITAPIError.h"
 #import "BITNetworkActivityManager.h"
 #import "TouchXML.h"
+#import "GetUserInfoSvc+Binding.h"
 
 // ProcessRemote Constants
 NSString * const kSCHScholasticGetUserInfoWebServiceProcessRemote = @"processRemote";
@@ -41,7 +42,7 @@ static NSString * const kSCHScholasticGetUserInfoWebServiceAttributeErrorDesc = 
 {
 	self = [super init];
 	if (self != nil) {
-		binding = [[GetUserInfoSvc GetUserInfoSoap11Binding] retain];
+		binding = [[GetUserInfoSvc SCHGetUserInfoSoap11Binding] retain];
 		binding.logXMLInOut = NO;		
 	}
 	
