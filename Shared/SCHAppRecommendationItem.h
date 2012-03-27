@@ -18,6 +18,7 @@
 // Constants
 extern NSString * const kSCHAppRecommendationItem;
 extern NSString * const kSCHAppRecommendationItemIsbn;
+extern NSUInteger const kSCHRecommendationThumbnailMaxDimension;
 
 @interface SCHAppRecommendationItem : NSManagedObject <SCHISBNItem>
 
@@ -37,7 +38,7 @@ extern NSString * const kSCHAppRecommendationItemIsbn;
 - (BOOL)isInUse;
 
 - (NSString *)coverImagePath;
-- (NSString *)thumbPathForSize:(CGSize)size;
+- (NSString *)thumbPath;
 - (NSString *)recommendationDirectory;
 
 + (NSString *)recommendationsDirectory;

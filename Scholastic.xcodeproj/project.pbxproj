@@ -2576,6 +2576,14 @@
 		C959076D1497D08000E024AF /* NSString+URLEncoding.m in Sources */ = {isa = PBXBuildFile; fileRef = C959076B1497D08000E024AF /* NSString+URLEncoding.m */; };
 		C95C7CC1135C3C8A00472AF6 /* SCHBookShelfGridView.m in Sources */ = {isa = PBXBuildFile; fileRef = C95C7CC0135C3C8A00472AF6 /* SCHBookShelfGridView.m */; };
 		C95C7CC5135C3F1400472AF6 /* SCHBookShelfGridShelvesView.m in Sources */ = {isa = PBXBuildFile; fileRef = C95C7CC4135C3F1300472AF6 /* SCHBookShelfGridShelvesView.m */; };
+		C95D6EC51520C92D000C4168 /* UIImage+ScholasticAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = C95D6EC41520C92D000C4168 /* UIImage+ScholasticAdditions.m */; };
+		C95D6EC61520C92D000C4168 /* UIImage+ScholasticAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = C95D6EC41520C92D000C4168 /* UIImage+ScholasticAdditions.m */; };
+		C95D6EC71520C92D000C4168 /* UIImage+ScholasticAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = C95D6EC41520C92D000C4168 /* UIImage+ScholasticAdditions.m */; };
+		C95D6EC81520C92D000C4168 /* UIImage+ScholasticAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = C95D6EC41520C92D000C4168 /* UIImage+ScholasticAdditions.m */; };
+		C95D6ECB1521FCA7000C4168 /* SCHRecommendationThumbnailOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = C95D6ECA1521FCA7000C4168 /* SCHRecommendationThumbnailOperation.m */; };
+		C95D6ECC1521FCA7000C4168 /* SCHRecommendationThumbnailOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = C95D6ECA1521FCA7000C4168 /* SCHRecommendationThumbnailOperation.m */; };
+		C95D6ECD1521FCA7000C4168 /* SCHRecommendationThumbnailOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = C95D6ECA1521FCA7000C4168 /* SCHRecommendationThumbnailOperation.m */; };
+		C95D6ECE1521FCA7000C4168 /* SCHRecommendationThumbnailOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = C95D6ECA1521FCA7000C4168 /* SCHRecommendationThumbnailOperation.m */; };
 		C95ECB4E133A77F000D88768 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C95ECB4C133A77A500D88768 /* AudioToolbox.framework */; };
 		C95ECB50133A77F800D88768 /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C95ECB48133A770B00D88768 /* OpenGLES.framework */; };
 		C95ECB51133A77FA00D88768 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C95ECB46133A76DE00D88768 /* QuartzCore.framework */; };
@@ -5236,6 +5244,10 @@
 		C95C7CC0135C3C8A00472AF6 /* SCHBookShelfGridView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHBookShelfGridView.m; path = iPhone/SCHBookShelfGridView.m; sourceTree = "<group>"; };
 		C95C7CC3135C3F1200472AF6 /* SCHBookShelfGridShelvesView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHBookShelfGridShelvesView.h; path = iPhone/SCHBookShelfGridShelvesView.h; sourceTree = "<group>"; };
 		C95C7CC4135C3F1300472AF6 /* SCHBookShelfGridShelvesView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHBookShelfGridShelvesView.m; path = iPhone/SCHBookShelfGridShelvesView.m; sourceTree = "<group>"; };
+		C95D6EC31520C92D000C4168 /* UIImage+ScholasticAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "UIImage+ScholasticAdditions.h"; path = "Shared/UIImage+ScholasticAdditions.h"; sourceTree = "<group>"; };
+		C95D6EC41520C92D000C4168 /* UIImage+ScholasticAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "UIImage+ScholasticAdditions.m"; path = "Shared/UIImage+ScholasticAdditions.m"; sourceTree = "<group>"; };
+		C95D6EC91521FCA7000C4168 /* SCHRecommendationThumbnailOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHRecommendationThumbnailOperation.h; path = Shared/SCHRecommendationThumbnailOperation.h; sourceTree = "<group>"; };
+		C95D6ECA1521FCA7000C4168 /* SCHRecommendationThumbnailOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHRecommendationThumbnailOperation.m; path = Shared/SCHRecommendationThumbnailOperation.m; sourceTree = "<group>"; };
 		C95ECB44133A76C400D88768 /* Accelerate.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accelerate.framework; path = System/Library/Frameworks/Accelerate.framework; sourceTree = SDKROOT; };
 		C95ECB46133A76DE00D88768 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		C95ECB48133A770B00D88768 /* OpenGLES.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGLES.framework; path = System/Library/Frameworks/OpenGLES.framework; sourceTree = SDKROOT; };
@@ -7361,6 +7373,8 @@
 				52EF570912ED977C00E374F7 /* NSManagedObjectContext+Extensions.m */,
 				C9722BFC1393AAD0008605E8 /* UIImage+BlioAdditions.m */,
 				C9722BFD1393AAD0008605E8 /* UIImage+BlioAdditions.h */,
+				C95D6EC31520C92D000C4168 /* UIImage+ScholasticAdditions.h */,
+				C95D6EC41520C92D000C4168 /* UIImage+ScholasticAdditions.m */,
 				526760AE144D6A6A00F3FE56 /* NSURL+Extensions.h */,
 				526760AF144D6A6A00F3FE56 /* NSURL+Extensions.m */,
 				525079401486FADC00712853 /* NSDate+ServerDate.h */,
@@ -8123,6 +8137,8 @@
 				C9B2F62B151BD64B0044BBCC /* SCHRecommendationURLRequestOperation.m */,
 				C9B2F630151C9E020044BBCC /* SCHRecommendationDownloadCoverOperation.h */,
 				C9B2F631151C9E030044BBCC /* SCHRecommendationDownloadCoverOperation.m */,
+				C95D6EC91521FCA7000C4168 /* SCHRecommendationThumbnailOperation.h */,
+				C95D6ECA1521FCA7000C4168 /* SCHRecommendationThumbnailOperation.m */,
 			);
 			name = "Processing Operations";
 			sourceTree = "<group>";
@@ -11803,6 +11819,8 @@
 				C9B2F62C151BD64B0044BBCC /* SCHRecommendationURLRequestOperation.m in Sources */,
 				C9B2F632151C9E030044BBCC /* SCHRecommendationDownloadCoverOperation.m in Sources */,
 				F88F6FD115208A1600572E7C /* SCHBookShelfMenuController.m in Sources */,
+				C95D6EC51520C92D000C4168 /* UIImage+ScholasticAdditions.m in Sources */,
+				C95D6ECB1521FCA7000C4168 /* SCHRecommendationThumbnailOperation.m in Sources */,
 				F84DB7591520B9F10025BFCF /* SCHBookShelfMenuPopoverBackgroundView.m in Sources */,
 				F84DB76E1520D2750025BFCF /* SCHBookShelfTypeMenuTableController.m in Sources */,
 				521B7AD81521D1ED00DC0739 /* AuthenticateSvc+Binding.m in Sources */,
@@ -12228,6 +12246,8 @@
 				C9B2F62D151BD64B0044BBCC /* SCHRecommendationURLRequestOperation.m in Sources */,
 				C9B2F633151C9E030044BBCC /* SCHRecommendationDownloadCoverOperation.m in Sources */,
 				F88F6FD215208A1600572E7C /* SCHBookShelfMenuController.m in Sources */,
+				C95D6EC61520C92D000C4168 /* UIImage+ScholasticAdditions.m in Sources */,
+				C95D6ECC1521FCA7000C4168 /* SCHRecommendationThumbnailOperation.m in Sources */,
 				F84DB75A1520B9F10025BFCF /* SCHBookShelfMenuPopoverBackgroundView.m in Sources */,
 				F84DB76F1520D2750025BFCF /* SCHBookShelfTypeMenuTableController.m in Sources */,
 				521B7AD91521D1ED00DC0739 /* AuthenticateSvc+Binding.m in Sources */,
@@ -12587,6 +12607,8 @@
 				C9B2F62E151BD64B0044BBCC /* SCHRecommendationURLRequestOperation.m in Sources */,
 				C9B2F634151C9E030044BBCC /* SCHRecommendationDownloadCoverOperation.m in Sources */,
 				F88F6FD315208A1600572E7C /* SCHBookShelfMenuController.m in Sources */,
+				C95D6EC71520C92D000C4168 /* UIImage+ScholasticAdditions.m in Sources */,
+				C95D6ECD1521FCA7000C4168 /* SCHRecommendationThumbnailOperation.m in Sources */,
 				F84DB75B1520B9F10025BFCF /* SCHBookShelfMenuPopoverBackgroundView.m in Sources */,
 				F84DB7701520D2750025BFCF /* SCHBookShelfTypeMenuTableController.m in Sources */,
 				521B7ADA1521D1ED00DC0739 /* AuthenticateSvc+Binding.m in Sources */,
@@ -12946,6 +12968,8 @@
 				C9B2F62F151BD64B0044BBCC /* SCHRecommendationURLRequestOperation.m in Sources */,
 				C9B2F635151C9E030044BBCC /* SCHRecommendationDownloadCoverOperation.m in Sources */,
 				F88F6FD415208A1600572E7C /* SCHBookShelfMenuController.m in Sources */,
+				C95D6EC81520C92D000C4168 /* UIImage+ScholasticAdditions.m in Sources */,
+				C95D6ECE1521FCA7000C4168 /* SCHRecommendationThumbnailOperation.m in Sources */,
 				F84DB75C1520B9F10025BFCF /* SCHBookShelfMenuPopoverBackgroundView.m in Sources */,
 				F84DB7711520D2750025BFCF /* SCHBookShelfTypeMenuTableController.m in Sources */,
 				521B7ADB1521D1ED00DC0739 /* AuthenticateSvc+Binding.m in Sources */,
