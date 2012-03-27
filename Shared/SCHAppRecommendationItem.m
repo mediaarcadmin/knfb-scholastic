@@ -9,6 +9,7 @@
 #import "SCHAppRecommendationItem.h"
 #import "SCHRecommendationItem.h"
 #import "NSNumber+ObjectTypes.h"
+#import "SCHRecommendationManager.h"
 
 // Constants
 NSString * const kSCHAppRecommendationItem = @"SCHAppRecommendationItem";
@@ -187,20 +188,18 @@ NSString * const kSCHAppRecommendationFilenameSeparator = @"-";
     [self deleteAllFiles];
 }
 
-// TODO: Implement deletion of files
+// when there are no wishlist or recommendation items the appRecommendationItem
+// gets deleted as well as the on disk files
 - (void)deleteAllFiles
 {
-//    NSError *error = nil;
+    NSError *error = nil;
     
-    NSLog(@"We should be deleting files for %@. But we need to be implemneted first", self.ContentIdentifier);
-    
-//    [[SCHRecoomendationManager sharedRecommendationManager] cancelAllOperationsForBook:self.ContentIdentifier];
-
-//    if ([[NSFileManager defaultManager] removeItemAtPath:self.filePath 
-//                                                   error:&error] == NO) {
-//        NSLog(@"Failed to delete files for %@, error: %@", 
-//              self.ContentIdentifier, [error localizedDescription]);
-//    }
+    [[SCHRecommendationManager sharedManager] cancelAllOperationsForIsbn:self.ContentIdentifier];
+    if ([[NSFileManager defaultManager] removeItemAtPath:[self recommendationDirectory]
+                                                   error:&error] == NO) {
+        NSLog(@"Failed to delete files for %@, error: %@", 
+              self.ContentIdentifier, [error localizedDescription]);
+    }
 }
 
 @end
