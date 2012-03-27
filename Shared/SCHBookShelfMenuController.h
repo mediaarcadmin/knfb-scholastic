@@ -1,5 +1,5 @@
 //
-//  SCHBookShelfMenuTableViewController.h
+//  SCHBookShelfMenuController.h
 //  Scholastic
 //
 //  Created by Gordon Christie on 26/03/2012.
