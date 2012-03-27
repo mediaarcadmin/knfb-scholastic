@@ -14,6 +14,7 @@
 NSString * const kSCHAppRecommendationItem = @"SCHAppRecommendationItem";
 NSString * const kSCHAppRecommendationItemIsbn = @"isbn";
 NSString * const kSCHAppRecommendationFilenameSeparator = @"-";
+NSUInteger const kSCHRecommendationThumbnailMaxDimension = 60;
 
 @interface SCHAppRecommendationItem()
 
@@ -91,21 +92,19 @@ NSString * const kSCHAppRecommendationFilenameSeparator = @"-";
                                                                              [NSNumber numberWithInteger:kSCHDRMQualifiersFullWithDRM]]];    
 }	
 
-- (NSString *)thumbPathForSize:(CGSize)size
+- (NSString *)thumbPath
 {    
     CGFloat scale = 1.0f;
     if ([[UIScreen mainScreen] respondsToSelector:@selector(scale)]) {
         scale = [[UIScreen mainScreen] scale];
     }
     
-    NSString *thumbPath = [[self recommendationDirectory] stringByAppendingPathComponent:[NSString stringWithFormat:@"%@%@%@%@%d%@%d", 
+    NSString *thumbPath = [[self recommendationDirectory] stringByAppendingPathComponent:[NSString stringWithFormat:@"%@%@%@%@%d", 
                                                                          self.ContentIdentifier, 
                                                                          kSCHAppRecommendationFilenameSeparator,
                                                                          [NSNumber numberWithInteger:kSCHDRMQualifiersFullWithDRM], 
                                                                          kSCHAppRecommendationFilenameSeparator,                                                                         
-                                                                         (int)size.width, 
-                                                                         kSCHAppRecommendationFilenameSeparator,
-                                                                         (int)size.height]];
+                                                                         kSCHRecommendationThumbnailMaxDimension]];
     if (scale != 1) {
         thumbPath = [thumbPath stringByAppendingFormat:@"@%dx",(int)scale];
     }

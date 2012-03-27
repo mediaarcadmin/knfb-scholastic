@@ -11,6 +11,7 @@
 #import "SCHRecommendationOperation.h"
 #import "SCHRecommendationURLRequestOperation.h"
 #import "SCHRecommendationDownloadCoverOperation.h"
+#import "SCHRecommendationThumbnailOperation.h"
 #import "SCHRecommendationItem.h"
 #import "SCHAppRecommendationItem.h"
 #import "SCHRecommendationSyncComponent.h"
@@ -239,12 +240,25 @@ static SCHRecommendationManager *sharedManager = nil;
                 [downloadOp release];                
                 return;
             }
+            case kSCHAppRecommendationProcessingStateNoThumbnails:
+            {
+                SCHRecommendationThumbnailOperation *thumbOp = [[SCHRecommendationThumbnailOperation alloc] init];
+                [thumbOp setMainThreadManagedObjectContext:self.managedObjectContext];
+                thumbOp.isbn = isbn;
+                
+                [thumbOp setNotCancelledCompletionBlock:^{
+                    [self redispatchIsbn:isbn];
+                }];
+                
+                [self.processingQueue addOperation:thumbOp];
+                [thumbOp release];
+                return;
+            }
             case kSCHAppRecommendationProcessingStateCachedCoverError:  
             case kSCHAppRecommendationProcessingStateThumbnailError:      
             case kSCHAppRecommendationProcessingStateError:               
             case kSCHAppRecommendationProcessingStateComplete: 
             case kSCHAppRecommendationProcessingStateDownloadFailed:     
-            case kSCHAppRecommendationProcessingStateNoThumbnails:
             {
                 // Do nothing until the sync kicks off again or the user initiates an action
                 // Prefer explicitly listing these state to just having a default because it catches

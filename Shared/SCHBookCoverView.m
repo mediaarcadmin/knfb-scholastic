@@ -9,7 +9,7 @@
 #import "SCHBookCoverView.h"
 #import "SCHAppBook.h"
 #import "SCHBookManager.h"
-#import <ImageIO/ImageIO.h>
+#import "UIImage+ScholasticAdditions.h"
 #import <QuartzCore/QuartzCore.h>
 #import "AppDelegate_Shared.h"
 #import "SCHCoreDataHelper.h"
@@ -786,71 +786,12 @@
 
 - (UIImage *)createImageWithSourcePath:(NSString *)sourcePath destinationPath:(NSString *)destinationPath 
 {
-    UIImage *resizedImage = nil;
+    CGSize frameSizeWithInsets = CGSizeMake(self.frame.size.width - (self.leftRightInset * 2), 
+                                            self.frame.size.height - self.topInset);
     
-    // debug: make sure we're not running the image resizing on the main thread
-    NSAssert([NSThread currentThread] != [NSThread mainThread], @"Don't do image interpolation on the main thread!");
+    NSUInteger maxDimension = ceilf(MAX(frameSizeWithInsets.width, frameSizeWithInsets.height));
     
-    NSURL *sourceURL = [NSURL fileURLWithPath:sourcePath];
-    
-    CGImageSourceRef src = CGImageSourceCreateWithURL((CFURLRef)sourceURL, NULL);
-    
-    if (src != nil) {
-        // get the main image properties without loading it into memory
-        CGFloat width = 0.0f, height = 0.0f;
-        CFDictionaryRef imageProperties = CGImageSourceCopyPropertiesAtIndex(src, 0, NULL);
-        if (imageProperties != NULL) {
-            CFNumberRef widthNum  = CFDictionaryGetValue(imageProperties, kCGImagePropertyPixelWidth);
-            if (widthNum != NULL) {
-                CFNumberGetValue(widthNum, kCFNumberFloatType, &width);
-            }
-            
-            CFNumberRef heightNum = CFDictionaryGetValue(imageProperties, kCGImagePropertyPixelHeight);
-            if (heightNum != NULL) {
-                CFNumberGetValue(heightNum, kCFNumberFloatType, &height);
-            }
-            
-            CFRelease(imageProperties);
-        }
-        
-        CGSize frameSizeWithInsets = CGSizeMake(self.frame.size.width - (self.leftRightInset * 2), 
-                                                self.frame.size.height - self.topInset);
-        
-        CGFloat scale = 1.0f;
-        
-        if ([[UIScreen mainScreen] respondsToSelector:@selector(scale)]) {
-            scale = [[UIScreen mainScreen] scale];
-            frameSizeWithInsets = CGSizeApplyAffineTransform(frameSizeWithInsets, CGAffineTransformMakeScale(scale, scale));
-        }
-        
-        NSInteger maxDimension = frameSizeWithInsets.height;
-        
-        if (width >= height) {
-            maxDimension = frameSizeWithInsets.width;
-        }
-        
-        
-        NSDictionary* d = [NSDictionary dictionaryWithObjectsAndKeys:
-                           (id)kCFBooleanFalse, kCGImageSourceShouldAllowFloat,
-                           (id)kCFBooleanTrue, kCGImageSourceCreateThumbnailWithTransform,
-                           (id)kCFBooleanTrue, kCGImageSourceCreateThumbnailFromImageAlways,
-                           [NSNumber numberWithInt:maxDimension], kCGImageSourceThumbnailMaxPixelSize,
-                           nil];
-        
-        CGImageRef thumbnailRef = CGImageSourceCreateThumbnailAtIndex(src, 0, (CFDictionaryRef) d);
-        
-        resizedImage = [[UIImage alloc] initWithCGImage:thumbnailRef scale:scale orientation:UIImageOrientationUp];
-        
-        CGImageRelease(thumbnailRef);
-        CFRelease(src);
-        
-        if (resizedImage) {
-            NSData *pngData = UIImagePNGRepresentation(resizedImage);
-            [pngData writeToFile:destinationPath atomically:YES];
-        }
-    }
-    
-    return [resizedImage autorelease];
+    return [UIImage SCHCreateThumbWithSourcePath:sourcePath destinationPath:destinationPath maxDimension:maxDimension];
 }
 
 #pragma mark - Notification Methods
