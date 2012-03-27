@@ -114,7 +114,7 @@
 - (CGSize)contentSizeForViewInPopover
 {
     CGFloat height = (2 * 44) + 20;
-    return CGSizeMake(200, height);
+    return CGSizeMake(240, height);
 }
 
 

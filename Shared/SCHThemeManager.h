@@ -29,6 +29,7 @@ extern NSString * const kSCHThemeManagerBackgroundImage;
 extern NSString * const kSCHThemeManagerShelfImage;
 extern NSString * const kSCHThemeManagerHomeIcon;
 extern NSString * const kSCHThemeManagerThemeIcon;
+extern NSString * const kSCHThemeManagerMenuIcon;
 extern NSString * const kSCHThemeManagerColorForListBackground;
 extern NSString * const kSCHThemeManagerColorForPopoverBackground;
 extern NSString * const kSCHThemeManagerRatingsIcon;

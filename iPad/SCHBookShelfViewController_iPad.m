@@ -97,12 +97,12 @@ static NSInteger const kSCHBookShelfEdgePadding = 12;
     homeButton.accessibilityLabel = @"Back To Bookshelves Button";
     
     SCHThemeButton *menuButton = [SCHThemeButton buttonWithType:UIButtonTypeCustom];
-    [menuButton setThemeIcon:kSCHThemeManagerThemeIcon iPadQualifier:kSCHThemeManagerPadQualifierSuffix];
+    [menuButton setThemeIcon:kSCHThemeManagerMenuIcon iPadQualifier:kSCHThemeManagerPadQualifierSuffix];
     [menuButton sizeToFit];    
     [menuButton addTarget:self action:@selector(menuAction:) forControlEvents:UIControlEventTouchUpInside];    
     menuButton.accessibilityLabel = @"Menu Button";
 
-    UIView *rightContainerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth(menuButton.frame) + kSCHBookShelfEdgePadding, CGRectGetHeight(menuButton.frame))];
+    UIView *rightContainerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth(menuButton.frame) + kSCHBookShelfEdgePadding + 1, CGRectGetHeight(menuButton.frame))];
 
     [rightContainerView addSubview:menuButton];
 
@@ -284,6 +284,25 @@ static NSInteger const kSCHBookShelfEdgePadding = 12;
     }
 }
 
+- (void)bookShelfMenuSwitchedToGridView:(SCHBookShelfMenuController *)controller
+{
+    if (self.popover) {
+        [self.popover dismissPopoverAnimated:YES];
+        self.popover = nil;
+    }
+    
+    [super changeToGridView:nil];
+}
+
+- (void)bookShelfMenuSwitchedToListView:(SCHBookShelfMenuController *)controller
+{
+    if (self.popover) {
+        [self.popover dismissPopoverAnimated:YES];
+        self.popover = nil;
+    }
+    
+    [super changeToListView:nil];
+}
 
 #pragma mark - Recommendations and Wish List
 
@@ -338,26 +357,6 @@ static NSInteger const kSCHBookShelfEdgePadding = 12;
     if (!animated) {
         [CATransaction commit];
     }
-}
-
-- (void)bookShelfMenuSwitchedToGridView:(SCHBookShelfMenuController *)controller
-{
-    if (self.popover) {
-        [self.popover dismissPopoverAnimated:YES];
-        self.popover = nil;
-    }
-    
-    [super changeToGridView:nil];
-}
-
-- (void)bookShelfMenuSwitchedToListView:(SCHBookShelfMenuController *)controller
-{
-    if (self.popover) {
-        [self.popover dismissPopoverAnimated:YES];
-        self.popover = nil;
-    }
-    
-    [super changeToListView:nil];
 }
 
 - (void)showWishListAnimated:(BOOL)animated

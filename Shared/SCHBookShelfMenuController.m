@@ -30,9 +30,8 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
-//    self.navigationController.navigationBarHidden = YES;
     self.title = @"Options";
+    self.navigationItem.backBarButtonItem = [[[UIBarButtonItem alloc] initWithTitle:@"Back" style:UIBarButtonItemStyleBordered target:nil action:nil] autorelease];
 }
 
 - (void)viewDidUnload
@@ -43,12 +42,6 @@
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
     return (interfaceOrientation == UIInterfaceOrientationPortrait);
-}
-
-- (CGSize)contentSizeForViewInPopover
-{
-    CGFloat height = ([self tableView:self.tableView numberOfRowsInSection:0] * 44) + 20;
-    return CGSizeMake(200, height);
 }
 
 #pragma mark - Table view data source
@@ -172,5 +165,14 @@
 {
     [self.delegate bookShelfMenuSwitchedToListView:self];
 }
+
+#pragma mark - Popover Size
+
+- (CGSize)contentSizeForViewInPopover
+{
+    CGFloat height = ([self tableView:self.tableView numberOfRowsInSection:0] * 44) + 20;
+    return CGSizeMake(240, height);
+}
+
 
 @end

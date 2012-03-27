@@ -55,6 +55,7 @@
     // Do any additional setup after loading the view from its nib.
     
     self.itemsTableView.scrollEnabled = NO;
+    self.title = @"Sort";
 }
 
 - (void)viewDidUnload
@@ -123,10 +124,12 @@
     }
 }
 
+#pragma mark - Popover Size
+
 - (CGSize)contentSizeForViewInPopover
 {
     CGFloat height = ([sortTypeArray count] * 44);
-    return CGSizeMake(200, height);
+    return CGSizeMake(240, height);
 }
 
 
