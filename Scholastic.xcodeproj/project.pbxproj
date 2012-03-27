@@ -317,6 +317,22 @@
 		52162DA713DD763500D257C5 /* BITAPIError.m in Sources */ = {isa = PBXBuildFile; fileRef = 52162DA413DD763500D257C5 /* BITAPIError.m */; };
 		52162DA913DD88C700D257C5 /* SCHUserDefaults.m in Sources */ = {isa = PBXBuildFile; fileRef = 52162DA813DD88BF00D257C5 /* SCHUserDefaults.m */; };
 		52162DAB13DD88C700D257C5 /* SCHUserDefaults.m in Sources */ = {isa = PBXBuildFile; fileRef = 52162DA813DD88BF00D257C5 /* SCHUserDefaults.m */; };
+		521B7AD81521D1ED00DC0739 /* AuthenticateSvc+Binding.m in Sources */ = {isa = PBXBuildFile; fileRef = 521B7AD71521D1ED00DC0739 /* AuthenticateSvc+Binding.m */; };
+		521B7AD91521D1ED00DC0739 /* AuthenticateSvc+Binding.m in Sources */ = {isa = PBXBuildFile; fileRef = 521B7AD71521D1ED00DC0739 /* AuthenticateSvc+Binding.m */; };
+		521B7ADA1521D1ED00DC0739 /* AuthenticateSvc+Binding.m in Sources */ = {isa = PBXBuildFile; fileRef = 521B7AD71521D1ED00DC0739 /* AuthenticateSvc+Binding.m */; };
+		521B7ADB1521D1ED00DC0739 /* AuthenticateSvc+Binding.m in Sources */ = {isa = PBXBuildFile; fileRef = 521B7AD71521D1ED00DC0739 /* AuthenticateSvc+Binding.m */; };
+		521B7ADE1521D4BC00DC0739 /* LibreAccessServiceSvc+Binding.m in Sources */ = {isa = PBXBuildFile; fileRef = 521B7ADD1521D4BC00DC0739 /* LibreAccessServiceSvc+Binding.m */; };
+		521B7ADF1521D4BC00DC0739 /* LibreAccessServiceSvc+Binding.m in Sources */ = {isa = PBXBuildFile; fileRef = 521B7ADD1521D4BC00DC0739 /* LibreAccessServiceSvc+Binding.m */; };
+		521B7AE01521D4BC00DC0739 /* LibreAccessServiceSvc+Binding.m in Sources */ = {isa = PBXBuildFile; fileRef = 521B7ADD1521D4BC00DC0739 /* LibreAccessServiceSvc+Binding.m */; };
+		521B7AE11521D4BC00DC0739 /* LibreAccessServiceSvc+Binding.m in Sources */ = {isa = PBXBuildFile; fileRef = 521B7ADD1521D4BC00DC0739 /* LibreAccessServiceSvc+Binding.m */; };
+		521B7AE41521D61200DC0739 /* GetUserInfoSvc+Binding.m in Sources */ = {isa = PBXBuildFile; fileRef = 521B7AE31521D61200DC0739 /* GetUserInfoSvc+Binding.m */; };
+		521B7AE51521D61200DC0739 /* GetUserInfoSvc+Binding.m in Sources */ = {isa = PBXBuildFile; fileRef = 521B7AE31521D61200DC0739 /* GetUserInfoSvc+Binding.m */; };
+		521B7AE61521D61200DC0739 /* GetUserInfoSvc+Binding.m in Sources */ = {isa = PBXBuildFile; fileRef = 521B7AE31521D61200DC0739 /* GetUserInfoSvc+Binding.m */; };
+		521B7AE71521D61200DC0739 /* GetUserInfoSvc+Binding.m in Sources */ = {isa = PBXBuildFile; fileRef = 521B7AE31521D61200DC0739 /* GetUserInfoSvc+Binding.m */; };
+		521B7AEA1521D67E00DC0739 /* WishListServiceSvc+Binding.m in Sources */ = {isa = PBXBuildFile; fileRef = 521B7AE91521D67E00DC0739 /* WishListServiceSvc+Binding.m */; };
+		521B7AEB1521D67E00DC0739 /* WishListServiceSvc+Binding.m in Sources */ = {isa = PBXBuildFile; fileRef = 521B7AE91521D67E00DC0739 /* WishListServiceSvc+Binding.m */; };
+		521B7AEC1521D67E00DC0739 /* WishListServiceSvc+Binding.m in Sources */ = {isa = PBXBuildFile; fileRef = 521B7AE91521D67E00DC0739 /* WishListServiceSvc+Binding.m */; };
+		521B7AED1521D67E00DC0739 /* WishListServiceSvc+Binding.m in Sources */ = {isa = PBXBuildFile; fileRef = 521B7AE91521D67E00DC0739 /* WishListServiceSvc+Binding.m */; };
 		5226C70514A489CB00307634 /* SCHVersionDownloadManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 5226C70214A489CB00307634 /* SCHVersionDownloadManager.m */; };
 		5226C70614A489CB00307634 /* SCHVersionDownloadManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 5226C70214A489CB00307634 /* SCHVersionDownloadManager.m */; };
 		5226C70714A489CB00307634 /* SCHVersionManifestOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 5226C70414A489CB00307634 /* SCHVersionManifestOperation.m */; };
@@ -4499,6 +4515,14 @@
 		5215349F13B08AB200131E37 /* storyinteraction-bg-younger-notitle@2x~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "storyinteraction-bg-younger-notitle@2x~iphone.png"; sourceTree = "<group>"; };
 		52162DA413DD763500D257C5 /* BITAPIError.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BITAPIError.m; sourceTree = "<group>"; };
 		52162DA813DD88BF00D257C5 /* SCHUserDefaults.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHUserDefaults.m; path = Shared/SCHUserDefaults.m; sourceTree = "<group>"; };
+		521B7AD61521D1ED00DC0739 /* AuthenticateSvc+Binding.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "AuthenticateSvc+Binding.h"; sourceTree = "<group>"; };
+		521B7AD71521D1ED00DC0739 /* AuthenticateSvc+Binding.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "AuthenticateSvc+Binding.m"; sourceTree = "<group>"; };
+		521B7ADC1521D4BC00DC0739 /* LibreAccessServiceSvc+Binding.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "LibreAccessServiceSvc+Binding.h"; sourceTree = "<group>"; };
+		521B7ADD1521D4BC00DC0739 /* LibreAccessServiceSvc+Binding.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "LibreAccessServiceSvc+Binding.m"; sourceTree = "<group>"; };
+		521B7AE21521D61200DC0739 /* GetUserInfoSvc+Binding.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "GetUserInfoSvc+Binding.h"; sourceTree = "<group>"; };
+		521B7AE31521D61200DC0739 /* GetUserInfoSvc+Binding.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "GetUserInfoSvc+Binding.m"; sourceTree = "<group>"; };
+		521B7AE81521D67E00DC0739 /* WishListServiceSvc+Binding.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "WishListServiceSvc+Binding.h"; sourceTree = "<group>"; };
+		521B7AE91521D67E00DC0739 /* WishListServiceSvc+Binding.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "WishListServiceSvc+Binding.m"; sourceTree = "<group>"; };
 		521BB6C015207FF00045AC92 /* SCHISBNItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHISBNItem.h; path = Shared/SCHISBNItem.h; sourceTree = "<group>"; };
 		5226C70114A489CB00307634 /* SCHVersionDownloadManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHVersionDownloadManager.h; path = Shared/SCHVersionDownloadManager.h; sourceTree = "<group>"; };
 		5226C70214A489CB00307634 /* SCHVersionDownloadManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHVersionDownloadManager.m; path = Shared/SCHVersionDownloadManager.m; sourceTree = "<group>"; };
@@ -7114,16 +7138,24 @@
 			children = (
 				5293868E12DF3A3300045B44 /* AuthenticateSvc.h */,
 				5293868F12DF3A3300045B44 /* AuthenticateSvc.m */,
+				521B7AD61521D1ED00DC0739 /* AuthenticateSvc+Binding.h */,
+				521B7AD71521D1ED00DC0739 /* AuthenticateSvc+Binding.m */,
 				52C62CEF14F3A02100F261DA /* GetUserInfoSvc.h */,
 				52C62CF014F3A02100F261DA /* GetUserInfoSvc.m */,
+				521B7AE21521D61200DC0739 /* GetUserInfoSvc+Binding.h */,
+				521B7AE31521D61200DC0739 /* GetUserInfoSvc+Binding.m */,
 				52C62CF414F3A25700F261DA /* ax25.h */,
 				52C62CF514F3A25700F261DA /* ax25.m */,
 				52EF508512E739E900E374F7 /* LibreAccessServiceSvc.h */,
 				52EF508612E739E900E374F7 /* LibreAccessServiceSvc.m */,
+				521B7ADC1521D4BC00DC0739 /* LibreAccessServiceSvc+Binding.h */,
+				521B7ADD1521D4BC00DC0739 /* LibreAccessServiceSvc+Binding.m */,
 				523B2E6C14F403E300413883 /* ax21.h */,
 				523B2E6D14F403E300413883 /* ax21.m */,
 				523B2E6E14F403E300413883 /* WishListServiceSvc.h */,
 				523B2E6F14F403E300413883 /* WishListServiceSvc.m */,
+				521B7AE81521D67E00DC0739 /* WishListServiceSvc+Binding.h */,
+				521B7AE91521D67E00DC0739 /* WishListServiceSvc+Binding.m */,
 				5293869212DF3A3300045B44 /* NSDate+ISO8601Parsing.h */,
 				5293869312DF3A3300045B44 /* NSDate+ISO8601Parsing.m */,
 				5293869412DF3A3300045B44 /* NSDate+ISO8601Unparsing.h */,
@@ -11773,6 +11805,10 @@
 				F88F6FD115208A1600572E7C /* SCHBookShelfMenuController.m in Sources */,
 				F84DB7591520B9F10025BFCF /* SCHBookShelfMenuPopoverBackgroundView.m in Sources */,
 				F84DB76E1520D2750025BFCF /* SCHBookShelfTypeMenuTableController.m in Sources */,
+				521B7AD81521D1ED00DC0739 /* AuthenticateSvc+Binding.m in Sources */,
+				521B7ADE1521D4BC00DC0739 /* LibreAccessServiceSvc+Binding.m in Sources */,
+				521B7AE41521D61200DC0739 /* GetUserInfoSvc+Binding.m in Sources */,
+				521B7AEA1521D67E00DC0739 /* WishListServiceSvc+Binding.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -12194,6 +12230,10 @@
 				F88F6FD215208A1600572E7C /* SCHBookShelfMenuController.m in Sources */,
 				F84DB75A1520B9F10025BFCF /* SCHBookShelfMenuPopoverBackgroundView.m in Sources */,
 				F84DB76F1520D2750025BFCF /* SCHBookShelfTypeMenuTableController.m in Sources */,
+				521B7AD91521D1ED00DC0739 /* AuthenticateSvc+Binding.m in Sources */,
+				521B7ADF1521D4BC00DC0739 /* LibreAccessServiceSvc+Binding.m in Sources */,
+				521B7AE51521D61200DC0739 /* GetUserInfoSvc+Binding.m in Sources */,
+				521B7AEB1521D67E00DC0739 /* WishListServiceSvc+Binding.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -12549,6 +12589,10 @@
 				F88F6FD315208A1600572E7C /* SCHBookShelfMenuController.m in Sources */,
 				F84DB75B1520B9F10025BFCF /* SCHBookShelfMenuPopoverBackgroundView.m in Sources */,
 				F84DB7701520D2750025BFCF /* SCHBookShelfTypeMenuTableController.m in Sources */,
+				521B7ADA1521D1ED00DC0739 /* AuthenticateSvc+Binding.m in Sources */,
+				521B7AE01521D4BC00DC0739 /* LibreAccessServiceSvc+Binding.m in Sources */,
+				521B7AE61521D61200DC0739 /* GetUserInfoSvc+Binding.m in Sources */,
+				521B7AEC1521D67E00DC0739 /* WishListServiceSvc+Binding.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -12904,6 +12948,10 @@
 				F88F6FD415208A1600572E7C /* SCHBookShelfMenuController.m in Sources */,
 				F84DB75C1520B9F10025BFCF /* SCHBookShelfMenuPopoverBackgroundView.m in Sources */,
 				F84DB7711520D2750025BFCF /* SCHBookShelfTypeMenuTableController.m in Sources */,
+				521B7ADB1521D1ED00DC0739 /* AuthenticateSvc+Binding.m in Sources */,
+				521B7AE11521D4BC00DC0739 /* LibreAccessServiceSvc+Binding.m in Sources */,
+				521B7AE71521D61200DC0739 /* GetUserInfoSvc+Binding.m in Sources */,
+				521B7AED1521D67E00DC0739 /* WishListServiceSvc+Binding.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

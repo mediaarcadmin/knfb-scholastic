@@ -16,6 +16,7 @@
 #import "UIColor+Extensions.h"
 #import "SCHAppStateManager.h"
 #import "NSDate+ServerDate.h"
+#import "LibreAccessServiceSvc+Binding.h"
 
 static NSString * const kSCHLibreAccessWebServiceUndefinedMethod = @"undefined method";
 static NSString * const kSCHLibreAccessWebServiceStatusHolderStatusMessage = @"statusmessage";
@@ -105,7 +106,7 @@ static NSInteger const kSCHLibreAccessWebServiceVaid = 33;
 {
 	self = [super init];
 	if (self != nil) {
-		binding = [[LibreAccessServiceSvc LibreAccessServiceSoap11Binding] retain];
+		binding = [[LibreAccessServiceSvc SCHLibreAccessServiceSoap11Binding] retain];
 		binding.logXMLInOut = NO;		
 	}
 	
@@ -122,7 +123,7 @@ static NSInteger const kSCHLibreAccessWebServiceVaid = 33;
 
 - (void)clear
 {
-    self.binding = [LibreAccessServiceSvc LibreAccessServiceSoap11Binding];
+    self.binding = [LibreAccessServiceSvc SCHLibreAccessServiceSoap11Binding];
     binding.logXMLInOut = NO;		
 }
 

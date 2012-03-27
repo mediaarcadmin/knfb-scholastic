@@ -1980,8 +1980,7 @@
 }
 + (WishListServiceSoap11Binding *)WishListServiceSoap11Binding
 {
-    NSLog(@"SOAP WishList using: %@", WISHLIST_SERVER_ENDPOINT);
-    return [[[WishListServiceSoap11Binding alloc] initWithAddress:WISHLIST_SERVER_ENDPOINT] autorelease];
+	return [[[WishListServiceSoap11Binding alloc] initWithAddress:@"http://esvcsqa.scholastic.com/SchWS/services/SPS/WishListService.WishListServiceHttpSoap11Endpoint/"] autorelease];
 }
 @end
 @implementation WishListServiceSoap11Binding

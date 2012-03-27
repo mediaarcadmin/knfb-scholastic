@@ -738,8 +738,7 @@
 }
 + (GetUserInfoSoap11Binding *)GetUserInfoSoap11Binding
 {
-    NSLog(@"SOAP using: %@", GETUSERINFO_SERVER_ENDPOINT);
-    return [[[GetUserInfoSoap11Binding alloc] initWithAddress:GETUSERINFO_SERVER_ENDPOINT] autorelease];     
+	return [[[GetUserInfoSoap11Binding alloc] initWithAddress:@"http://esvcsqa.scholastic.com/SchWS/services/SPS/GetUserInfo.GetUserInfoHttpSoap11Endpoint/"] autorelease];
 }
 @end
 @implementation GetUserInfoSoap11Binding
