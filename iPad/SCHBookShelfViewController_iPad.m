@@ -174,7 +174,12 @@ static NSInteger const kSCHBookShelfEdgePadding = 12;
     [self.backgroundView setImage:[[SCHThemeManager sharedThemeManager] imageForBackground:UIInterfaceOrientationPortrait]]; // Note we re-use portrait
     [(SCHCustomNavigationBar *)self.navigationController.navigationBar updateTheme:interfaceOrientation];
     self.listTableView.backgroundColor = [[SCHThemeManager sharedThemeManager] colorForListBackground];
-    self.listToggleView.backgroundColor = [[SCHThemeManager sharedThemeManager] colorForListBackground]; 
+//    self.listToggleView.backgroundColor = [[SCHThemeManager sharedThemeManager] colorForListBackground]; 
+    
+    // this removes the toggle view from the iPad version - this is now covered by the menu
+    if (self.listToggleView.superview) {
+        [self.listToggleView removeFromSuperview];
+    }
 
     CGFloat inset = 86;
 

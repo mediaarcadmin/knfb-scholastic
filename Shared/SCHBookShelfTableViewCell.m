@@ -63,7 +63,6 @@ static NSInteger const CELL_STAR_PERSONAL_RATING_VIEW = 302;
 @synthesize coalesceRefreshes;
 @synthesize needsRefresh;
 @synthesize disabledForInteractions;
-@synthesize showStarRatings;
 @synthesize delegate;
 @synthesize userRating;
 
@@ -133,12 +132,6 @@ static NSInteger const CELL_STAR_PERSONAL_RATING_VIEW = 302;
     if (self.needsRefresh) {
         [self deferredRefreshCell];
     }
-}
-
-- (void)setShowStarRatings:(BOOL)newShowStarRatings
-{
-    showStarRatings = newShowStarRatings;
-    [self refreshCell];
 }
 
 - (void)rateView:(RateView *)rateView ratingDidChange:(float)rating
@@ -288,14 +281,14 @@ static NSInteger const CELL_STAR_PERSONAL_RATING_VIEW = 302;
     CGRect starFrame = self.starView.frame;
     CGRect backgroundFrame = self.backgroundView.frame;
     
-    if (self.showStarRatings) {
-        starFrame.origin.x = self.frame.size.width - starFrame.size.width;
-        backgroundFrame.size.width = self.frame.size.width - starFrame.size.width;
-    } else {
-        starFrame.origin.x = self.frame.size.width;
-        backgroundFrame.size.width = self.frame.size.width;
-        labelFrame.size.width += 100;
-    }
+//    if (self.showStarRatings) {
+//        starFrame.origin.x = self.frame.size.width - starFrame.size.width;
+//        backgroundFrame.size.width = self.frame.size.width - starFrame.size.width;
+//    } else {
+//        starFrame.origin.x = self.frame.size.width;
+//        backgroundFrame.size.width = self.frame.size.width;
+//        labelFrame.size.width += 100;
+//    }
     
     labelFrame.size.width = backgroundFrame.size.width - self.thumbBackgroundView.frame.size.width - self.sampleAndSIIndicatorIcon.frame.size.width - 60;
 
@@ -306,12 +299,12 @@ static NSInteger const CELL_STAR_PERSONAL_RATING_VIEW = 302;
 
     // code to centre the text label vertically
     
-    float textHeight = [self.textLabel sizeThatFits:self.textLabel.frame.size].height;
-    if (textHeight > self.textLabel.frame.size.height) {
-        textHeight = self.textLabel.frame.size.height;
-    }
+//    float textHeight = [self.textLabel sizeThatFits:self.textLabel.frame.size].height;
+//    if (textHeight > self.textLabel.frame.size.height) {
+//        textHeight = self.textLabel.frame.size.height;
+//    }
     
-    labelFrame.origin.y = ceilf(CGRectGetMidY(self.backgroundView.frame) - (textHeight / 2));
+//    labelFrame.origin.y = ceilf(CGRectGetMidY(self.backgroundView.frame) - (textHeight / 2));
     self.textLabel.frame = labelFrame;
     
 }
