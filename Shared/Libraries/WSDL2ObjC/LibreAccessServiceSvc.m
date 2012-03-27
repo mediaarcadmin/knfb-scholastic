@@ -61490,8 +61490,7 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
 }
 + (LibreAccessServiceSoap11Binding *)LibreAccessServiceSoap11Binding
 {
-    NSLog(@"SOAP LibreAccess using: %@", LIBREDIGITAL_SERVER_ENDPOINT);
-    return [[[LibreAccessServiceSoap11Binding alloc] initWithAddress:LIBREDIGITAL_SERVER_ENDPOINT] autorelease];
+	return [[[LibreAccessServiceSoap11Binding alloc] initWithAddress:@"http://laesb.uat.cld.libredigital.com/services/LibreAccessService.LibreAccessServiceHttpSoap11Endpoint"] autorelease];
 }
 @end
 @implementation LibreAccessServiceSoap11Binding
