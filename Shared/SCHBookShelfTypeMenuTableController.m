@@ -7,6 +7,7 @@
 //
 
 #import "SCHBookShelfTypeMenuTableController.h"
+#import "SCHThemeManager.h"
 
 @interface SCHBookShelfTypeMenuTableController ()
 
@@ -28,11 +29,18 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    self.title = @"View";
+    [self.navigationController.navigationBar setTintColor:[UIColor orangeColor]];
 }
 
 - (void)viewDidUnload
 {
     [super viewDidUnload];
+}
+
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
@@ -105,7 +113,7 @@
 
 - (CGSize)contentSizeForViewInPopover
 {
-    CGFloat height = ([self tableView:self.tableView numberOfRowsInSection:0] * 44) + 20;
+    CGFloat height = (2 * 44) + 20;
     return CGSizeMake(200, height);
 }
 

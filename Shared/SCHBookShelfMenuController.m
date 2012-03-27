@@ -31,7 +31,8 @@
 {
     [super viewDidLoad];
     
-    self.navigationController.navigationBarHidden = YES;
+//    self.navigationController.navigationBarHidden = YES;
+    self.title = @"Options";
 }
 
 - (void)viewDidUnload

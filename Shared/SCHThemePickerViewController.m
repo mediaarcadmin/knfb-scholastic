@@ -136,14 +136,14 @@ static NSTimeInterval const kSCHThemePickerViewControllerThemeTransitionDuration
 
     } else {
         UIView *backgroundView = [[UIView alloc] initWithFrame:CGRectZero];
-        backgroundView.backgroundColor = [UIColor whiteColor];
+        backgroundView.backgroundColor = [UIColor colorWithRed:0.839 green:0.847 blue:0.871 alpha:1.];
         self.tableView.backgroundView = backgroundView;
         [backgroundView release];
         
         self.tableView.scrollEnabled = NO;
     }
     self.tableView.rowHeight = 50;
-    self.tableView.separatorColor = [UIColor whiteColor];
+//    self.tableView.separatorColor = [UIColor whiteColor];
 }
 
 - (void)viewDidUnload

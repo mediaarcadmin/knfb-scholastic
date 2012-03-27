@@ -33,10 +33,9 @@
 			<object class="IBUITableView" id="873029372">
 				<reference key="NSNextResponder"/>
 				<int key="NSvFlags">274</int>
-				<string key="NSFrameSize">{200, 460}</string>
+				<string key="NSFrameSize">{200, 139}</string>
 				<reference key="NSSuperview"/>
 				<reference key="NSWindow"/>
-				<reference key="NSNextKeyView"/>
 				<object class="NSColor" key="IBUIBackgroundColor">
 					<int key="NSColorSpace">2</int>
 					<bytes key="NSRGB">MC44MTk2MDc5MTM1IDAuODI3NDUxMDUwMyAwLjg1MDk4MDQ2MDYAA</bytes>

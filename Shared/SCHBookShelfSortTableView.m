@@ -54,7 +54,6 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
     
-    [self.itemsTableView setSeparatorColor:[UIColor SCHGrayColor]];
     self.itemsTableView.scrollEnabled = NO;
 }
 
@@ -85,9 +84,6 @@
     
     if (!cell) {
         cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"sortTableCell"] autorelease];        
-        cell.textLabel.textColor = [UIColor SCHDarkBlue1Color];        
-        cell.textLabel.font = [cell.textLabel.font fontWithSize:16];  
-        cell.selectionStyle = UITableViewCellSelectionStyleNone;
     }
     
     cell.textLabel.text = [self.sortTypeArray objectAtIndex:[indexPath row]];

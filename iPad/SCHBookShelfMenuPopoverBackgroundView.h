@@ -10,4 +10,13 @@
 
 @interface SCHBookShelfMenuPopoverBackgroundView : UIPopoverBackgroundView
 
+@property (nonatomic, assign) CGFloat arrowOffset;
+@property (nonatomic, assign) UIPopoverArrowDirection arrowDirection;
+@property (nonatomic, retain) UIImageView *arrowImageView;
+@property (nonatomic, retain) UIImageView *popoverBackgroundImageView;
+
++ (CGFloat)arrowHeight;
++ (CGFloat)arrowBase;
++ (UIEdgeInsets)contentViewInsets;
+
 @end

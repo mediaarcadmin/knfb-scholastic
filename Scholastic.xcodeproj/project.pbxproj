@@ -3766,14 +3766,6 @@
 		F84DB75A1520B9F10025BFCF /* SCHBookShelfMenuPopoverBackgroundView.m in Sources */ = {isa = PBXBuildFile; fileRef = F84DB7581520B9F10025BFCF /* SCHBookShelfMenuPopoverBackgroundView.m */; };
 		F84DB75B1520B9F10025BFCF /* SCHBookShelfMenuPopoverBackgroundView.m in Sources */ = {isa = PBXBuildFile; fileRef = F84DB7581520B9F10025BFCF /* SCHBookShelfMenuPopoverBackgroundView.m */; };
 		F84DB75C1520B9F10025BFCF /* SCHBookShelfMenuPopoverBackgroundView.m in Sources */ = {isa = PBXBuildFile; fileRef = F84DB7581520B9F10025BFCF /* SCHBookShelfMenuPopoverBackgroundView.m */; };
-		F84DB75E1520BA970025BFCF /* popover_stretchable.png in Resources */ = {isa = PBXBuildFile; fileRef = F84DB75D1520BA970025BFCF /* popover_stretchable.png */; };
-		F84DB75F1520BA970025BFCF /* popover_stretchable.png in Resources */ = {isa = PBXBuildFile; fileRef = F84DB75D1520BA970025BFCF /* popover_stretchable.png */; };
-		F84DB7601520BA970025BFCF /* popover_stretchable.png in Resources */ = {isa = PBXBuildFile; fileRef = F84DB75D1520BA970025BFCF /* popover_stretchable.png */; };
-		F84DB7611520BA970025BFCF /* popover_stretchable.png in Resources */ = {isa = PBXBuildFile; fileRef = F84DB75D1520BA970025BFCF /* popover_stretchable.png */; };
-		F84DB7671520C47F0025BFCF /* popover_background.png in Resources */ = {isa = PBXBuildFile; fileRef = F84DB7661520C47F0025BFCF /* popover_background.png */; };
-		F84DB7681520C47F0025BFCF /* popover_background.png in Resources */ = {isa = PBXBuildFile; fileRef = F84DB7661520C47F0025BFCF /* popover_background.png */; };
-		F84DB7691520C47F0025BFCF /* popover_background.png in Resources */ = {isa = PBXBuildFile; fileRef = F84DB7661520C47F0025BFCF /* popover_background.png */; };
-		F84DB76A1520C47F0025BFCF /* popover_background.png in Resources */ = {isa = PBXBuildFile; fileRef = F84DB7661520C47F0025BFCF /* popover_background.png */; };
 		F84DB76E1520D2750025BFCF /* SCHBookShelfTypeMenuTableController.m in Sources */ = {isa = PBXBuildFile; fileRef = F84DB76C1520D2750025BFCF /* SCHBookShelfTypeMenuTableController.m */; };
 		F84DB76F1520D2750025BFCF /* SCHBookShelfTypeMenuTableController.m in Sources */ = {isa = PBXBuildFile; fileRef = F84DB76C1520D2750025BFCF /* SCHBookShelfTypeMenuTableController.m */; };
 		F84DB7701520D2750025BFCF /* SCHBookShelfTypeMenuTableController.m in Sources */ = {isa = PBXBuildFile; fileRef = F84DB76C1520D2750025BFCF /* SCHBookShelfTypeMenuTableController.m */; };
@@ -3907,6 +3899,26 @@
 		F8C6DA9A136073D300D9E953 /* paper-neutral.png in Resources */ = {isa = PBXBuildFile; fileRef = F8C6DA93136073D300D9E953 /* paper-neutral.png */; };
 		F8C6DA9C136073D300D9E953 /* paper-neutral@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F8C6DA94136073D300D9E953 /* paper-neutral@2x.png */; };
 		F8C6DA9E136073D300D9E953 /* paper-white@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F8C6DA95136073D300D9E953 /* paper-white@2x.png */; };
+		F8C7C51D1521C08D0067674D /* popover-black-bcg-image.png in Resources */ = {isa = PBXBuildFile; fileRef = F8C7C5181521C08D0067674D /* popover-black-bcg-image.png */; };
+		F8C7C51E1521C08D0067674D /* popover-black-bcg-image.png in Resources */ = {isa = PBXBuildFile; fileRef = F8C7C5181521C08D0067674D /* popover-black-bcg-image.png */; };
+		F8C7C51F1521C08D0067674D /* popover-black-bcg-image.png in Resources */ = {isa = PBXBuildFile; fileRef = F8C7C5181521C08D0067674D /* popover-black-bcg-image.png */; };
+		F8C7C5201521C08D0067674D /* popover-black-bcg-image.png in Resources */ = {isa = PBXBuildFile; fileRef = F8C7C5181521C08D0067674D /* popover-black-bcg-image.png */; };
+		F8C7C5211521C08D0067674D /* popover-black-bottom-arrow-image.png in Resources */ = {isa = PBXBuildFile; fileRef = F8C7C5191521C08D0067674D /* popover-black-bottom-arrow-image.png */; };
+		F8C7C5221521C08D0067674D /* popover-black-bottom-arrow-image.png in Resources */ = {isa = PBXBuildFile; fileRef = F8C7C5191521C08D0067674D /* popover-black-bottom-arrow-image.png */; };
+		F8C7C5231521C08D0067674D /* popover-black-bottom-arrow-image.png in Resources */ = {isa = PBXBuildFile; fileRef = F8C7C5191521C08D0067674D /* popover-black-bottom-arrow-image.png */; };
+		F8C7C5241521C08D0067674D /* popover-black-bottom-arrow-image.png in Resources */ = {isa = PBXBuildFile; fileRef = F8C7C5191521C08D0067674D /* popover-black-bottom-arrow-image.png */; };
+		F8C7C5251521C08D0067674D /* popover-black-left-arrow-image.png in Resources */ = {isa = PBXBuildFile; fileRef = F8C7C51A1521C08D0067674D /* popover-black-left-arrow-image.png */; };
+		F8C7C5261521C08D0067674D /* popover-black-left-arrow-image.png in Resources */ = {isa = PBXBuildFile; fileRef = F8C7C51A1521C08D0067674D /* popover-black-left-arrow-image.png */; };
+		F8C7C5271521C08D0067674D /* popover-black-left-arrow-image.png in Resources */ = {isa = PBXBuildFile; fileRef = F8C7C51A1521C08D0067674D /* popover-black-left-arrow-image.png */; };
+		F8C7C5281521C08D0067674D /* popover-black-left-arrow-image.png in Resources */ = {isa = PBXBuildFile; fileRef = F8C7C51A1521C08D0067674D /* popover-black-left-arrow-image.png */; };
+		F8C7C5291521C08D0067674D /* popover-black-right-arrow-image.png in Resources */ = {isa = PBXBuildFile; fileRef = F8C7C51B1521C08D0067674D /* popover-black-right-arrow-image.png */; };
+		F8C7C52A1521C08D0067674D /* popover-black-right-arrow-image.png in Resources */ = {isa = PBXBuildFile; fileRef = F8C7C51B1521C08D0067674D /* popover-black-right-arrow-image.png */; };
+		F8C7C52B1521C08D0067674D /* popover-black-right-arrow-image.png in Resources */ = {isa = PBXBuildFile; fileRef = F8C7C51B1521C08D0067674D /* popover-black-right-arrow-image.png */; };
+		F8C7C52C1521C08D0067674D /* popover-black-right-arrow-image.png in Resources */ = {isa = PBXBuildFile; fileRef = F8C7C51B1521C08D0067674D /* popover-black-right-arrow-image.png */; };
+		F8C7C52D1521C08D0067674D /* popover-black-top-arrow-image.png in Resources */ = {isa = PBXBuildFile; fileRef = F8C7C51C1521C08D0067674D /* popover-black-top-arrow-image.png */; };
+		F8C7C52E1521C08D0067674D /* popover-black-top-arrow-image.png in Resources */ = {isa = PBXBuildFile; fileRef = F8C7C51C1521C08D0067674D /* popover-black-top-arrow-image.png */; };
+		F8C7C52F1521C08D0067674D /* popover-black-top-arrow-image.png in Resources */ = {isa = PBXBuildFile; fileRef = F8C7C51C1521C08D0067674D /* popover-black-top-arrow-image.png */; };
+		F8C7C5301521C08D0067674D /* popover-black-top-arrow-image.png in Resources */ = {isa = PBXBuildFile; fileRef = F8C7C51C1521C08D0067674D /* popover-black-top-arrow-image.png */; };
 		F8C8FC2A136065AD0097F9DD /* SCHCustomNavigationBar.m in Sources */ = {isa = PBXBuildFile; fileRef = F8C8FC29136065AD0097F9DD /* SCHCustomNavigationBar.m */; };
 		F8DA34CF139F88AC0032B1B3 /* SCHStoryInteractionControllerScratchAndSee.m in Sources */ = {isa = PBXBuildFile; fileRef = F8DA34CE139F88AC0032B1B3 /* SCHStoryInteractionControllerScratchAndSee.m */; };
 		F8DA34D2139F88F80032B1B3 /* SCHStoryInteractionScratchAndSee_iPhone.xib in Resources */ = {isa = PBXBuildFile; fileRef = F8DA34D1139F88F80032B1B3 /* SCHStoryInteractionScratchAndSee_iPhone.xib */; };
@@ -5582,8 +5594,6 @@
 		F84CE155134C691D0044729E /* SCHNonDRMAuthenticationManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHNonDRMAuthenticationManager.m; path = Shared/SCHNonDRMAuthenticationManager.m; sourceTree = "<group>"; };
 		F84DB7571520B9F10025BFCF /* SCHBookShelfMenuPopoverBackgroundView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHBookShelfMenuPopoverBackgroundView.h; path = iPad/SCHBookShelfMenuPopoverBackgroundView.h; sourceTree = "<group>"; };
 		F84DB7581520B9F10025BFCF /* SCHBookShelfMenuPopoverBackgroundView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHBookShelfMenuPopoverBackgroundView.m; path = iPad/SCHBookShelfMenuPopoverBackgroundView.m; sourceTree = "<group>"; };
-		F84DB75D1520BA970025BFCF /* popover_stretchable.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = popover_stretchable.png; path = Resources/popover_stretchable.png; sourceTree = "<group>"; };
-		F84DB7661520C47F0025BFCF /* popover_background.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = popover_background.png; path = Resources/popover_background.png; sourceTree = "<group>"; };
 		F84DB76B1520D2750025BFCF /* SCHBookShelfTypeMenuTableController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHBookShelfTypeMenuTableController.h; path = Shared/SCHBookShelfTypeMenuTableController.h; sourceTree = "<group>"; };
 		F84DB76C1520D2750025BFCF /* SCHBookShelfTypeMenuTableController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHBookShelfTypeMenuTableController.m; path = Shared/SCHBookShelfTypeMenuTableController.m; sourceTree = "<group>"; };
 		F84DB76D1520D2750025BFCF /* SCHBookShelfTypeMenuTableController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = SCHBookShelfTypeMenuTableController.xib; path = Shared/SCHBookShelfTypeMenuTableController.xib; sourceTree = "<group>"; };
@@ -5718,6 +5728,11 @@
 		F8C6DA93136073D300D9E953 /* paper-neutral.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "paper-neutral.png"; path = "Resources/paper-neutral.png"; sourceTree = "<group>"; };
 		F8C6DA94136073D300D9E953 /* paper-neutral@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "paper-neutral@2x.png"; path = "Resources/paper-neutral@2x.png"; sourceTree = "<group>"; };
 		F8C6DA95136073D300D9E953 /* paper-white@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "paper-white@2x.png"; path = "Resources/paper-white@2x.png"; sourceTree = "<group>"; };
+		F8C7C5181521C08D0067674D /* popover-black-bcg-image.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "popover-black-bcg-image.png"; path = "Resources/popover-black-bcg-image.png"; sourceTree = "<group>"; };
+		F8C7C5191521C08D0067674D /* popover-black-bottom-arrow-image.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "popover-black-bottom-arrow-image.png"; path = "Resources/popover-black-bottom-arrow-image.png"; sourceTree = "<group>"; };
+		F8C7C51A1521C08D0067674D /* popover-black-left-arrow-image.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "popover-black-left-arrow-image.png"; path = "Resources/popover-black-left-arrow-image.png"; sourceTree = "<group>"; };
+		F8C7C51B1521C08D0067674D /* popover-black-right-arrow-image.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "popover-black-right-arrow-image.png"; path = "Resources/popover-black-right-arrow-image.png"; sourceTree = "<group>"; };
+		F8C7C51C1521C08D0067674D /* popover-black-top-arrow-image.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "popover-black-top-arrow-image.png"; path = "Resources/popover-black-top-arrow-image.png"; sourceTree = "<group>"; };
 		F8C8FC28136065AD0097F9DD /* SCHCustomNavigationBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHCustomNavigationBar.h; path = iPhone/SCHCustomNavigationBar.h; sourceTree = "<group>"; };
 		F8C8FC29136065AD0097F9DD /* SCHCustomNavigationBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHCustomNavigationBar.m; path = iPhone/SCHCustomNavigationBar.m; sourceTree = "<group>"; };
 		F8CD24C912F9714D001C748B /* SCHBookManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHBookManager.h; path = iPhone/SCHBookManager.h; sourceTree = "<group>"; };
@@ -7006,8 +7021,7 @@
 		528A2CCF12CCDC400053A343 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				F84DB7661520C47F0025BFCF /* popover_background.png */,
-				F84DB75D1520BA970025BFCF /* popover_stretchable.png */,
+				F8C7C5171521C07E0067674D /* Custom Popover Graphics */,
 				F864916C15139122003A8B81 /* sampleCoverImage.jpg */,
 				C995171F146D690B00EA7337 /* Sample Manifests */,
 				A3A19356146AC94E00938888 /* gnulesser-license.html */,
@@ -8614,6 +8628,18 @@
 			name = "Dictionary Operations";
 			sourceTree = "<group>";
 		};
+		F8C7C5171521C07E0067674D /* Custom Popover Graphics */ = {
+			isa = PBXGroup;
+			children = (
+				F8C7C5181521C08D0067674D /* popover-black-bcg-image.png */,
+				F8C7C5191521C08D0067674D /* popover-black-bottom-arrow-image.png */,
+				F8C7C51A1521C08D0067674D /* popover-black-left-arrow-image.png */,
+				F8C7C51B1521C08D0067674D /* popover-black-right-arrow-image.png */,
+				F8C7C51C1521C08D0067674D /* popover-black-top-arrow-image.png */,
+			);
+			name = "Custom Popover Graphics";
+			sourceTree = "<group>";
+		};
 		F8DC5655138C09DB00F27146 /* Reading View Controllers */ = {
 			isa = PBXGroup;
 			children = (
@@ -9651,9 +9677,12 @@
 				F864916D15139122003A8B81 /* sampleCoverImage.jpg in Resources */,
 				F8A57E761517702000390D56 /* SCHBookShelfWishListController.xib in Resources */,
 				F88F6FD515208A1600572E7C /* SCHBookShelfMenuController.xib in Resources */,
-				F84DB75E1520BA970025BFCF /* popover_stretchable.png in Resources */,
-				F84DB7671520C47F0025BFCF /* popover_background.png in Resources */,
 				F84DB7721520D2750025BFCF /* SCHBookShelfTypeMenuTableController.xib in Resources */,
+				F8C7C51D1521C08D0067674D /* popover-black-bcg-image.png in Resources */,
+				F8C7C5211521C08D0067674D /* popover-black-bottom-arrow-image.png in Resources */,
+				F8C7C5251521C08D0067674D /* popover-black-left-arrow-image.png in Resources */,
+				F8C7C5291521C08D0067674D /* popover-black-right-arrow-image.png in Resources */,
+				F8C7C52D1521C08D0067674D /* popover-black-top-arrow-image.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -10370,9 +10399,12 @@
 				F864916E15139122003A8B81 /* sampleCoverImage.jpg in Resources */,
 				F8A57E771517702000390D56 /* SCHBookShelfWishListController.xib in Resources */,
 				F88F6FD615208A1600572E7C /* SCHBookShelfMenuController.xib in Resources */,
-				F84DB75F1520BA970025BFCF /* popover_stretchable.png in Resources */,
-				F84DB7681520C47F0025BFCF /* popover_background.png in Resources */,
 				F84DB7731520D2750025BFCF /* SCHBookShelfTypeMenuTableController.xib in Resources */,
+				F8C7C51E1521C08D0067674D /* popover-black-bcg-image.png in Resources */,
+				F8C7C5221521C08D0067674D /* popover-black-bottom-arrow-image.png in Resources */,
+				F8C7C5261521C08D0067674D /* popover-black-left-arrow-image.png in Resources */,
+				F8C7C52A1521C08D0067674D /* popover-black-right-arrow-image.png in Resources */,
+				F8C7C52E1521C08D0067674D /* popover-black-top-arrow-image.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -10865,9 +10897,12 @@
 				F864916F15139122003A8B81 /* sampleCoverImage.jpg in Resources */,
 				F8A57E781517702000390D56 /* SCHBookShelfWishListController.xib in Resources */,
 				F88F6FD715208A1600572E7C /* SCHBookShelfMenuController.xib in Resources */,
-				F84DB7601520BA970025BFCF /* popover_stretchable.png in Resources */,
-				F84DB7691520C47F0025BFCF /* popover_background.png in Resources */,
 				F84DB7741520D2750025BFCF /* SCHBookShelfTypeMenuTableController.xib in Resources */,
+				F8C7C51F1521C08D0067674D /* popover-black-bcg-image.png in Resources */,
+				F8C7C5231521C08D0067674D /* popover-black-bottom-arrow-image.png in Resources */,
+				F8C7C5271521C08D0067674D /* popover-black-left-arrow-image.png in Resources */,
+				F8C7C52B1521C08D0067674D /* popover-black-right-arrow-image.png in Resources */,
+				F8C7C52F1521C08D0067674D /* popover-black-top-arrow-image.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -11358,9 +11393,12 @@
 				F864917015139122003A8B81 /* sampleCoverImage.jpg in Resources */,
 				F8A57E791517702000390D56 /* SCHBookShelfWishListController.xib in Resources */,
 				F88F6FD815208A1600572E7C /* SCHBookShelfMenuController.xib in Resources */,
-				F84DB7611520BA970025BFCF /* popover_stretchable.png in Resources */,
-				F84DB76A1520C47F0025BFCF /* popover_background.png in Resources */,
 				F84DB7751520D2750025BFCF /* SCHBookShelfTypeMenuTableController.xib in Resources */,
+				F8C7C5201521C08D0067674D /* popover-black-bcg-image.png in Resources */,
+				F8C7C5241521C08D0067674D /* popover-black-bottom-arrow-image.png in Resources */,
+				F8C7C5281521C08D0067674D /* popover-black-left-arrow-image.png in Resources */,
+				F8C7C52C1521C08D0067674D /* popover-black-right-arrow-image.png in Resources */,
+				F8C7C5301521C08D0067674D /* popover-black-top-arrow-image.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

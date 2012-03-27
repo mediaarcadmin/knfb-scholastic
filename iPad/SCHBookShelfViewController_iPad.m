@@ -211,51 +211,6 @@ static NSInteger const kSCHBookShelfEdgePadding = 12;
 
 #pragma mark - Actions
 
-//- (void)sortAction:(SCHThemeButton *)sender
-//{
-//    if (self.popover) {
-//        [self.popover dismissPopoverAnimated:YES];
-//        self.popover = nil;
-//    }
-//    
-//    SCHBookShelfSortPopoverTableView *popoverTable = [[SCHBookShelfSortPopoverTableView alloc] initWithNibName:nil bundle:nil];
-//    popoverTable.sortType = self.sortType;
-//    popoverTable.delegate = self;
-//    
-//    self.popover = [[[UIPopoverController alloc] initWithContentViewController:popoverTable] autorelease];
-//    self.popover.delegate = self;
-//    
-//    [self.popover presentPopoverFromRect:sender.frame inView:sender.superview permittedArrowDirections:UIPopoverArrowDirectionUp animated:YES];
-//    [popoverTable release];
-//}
-//
-//- (void)topTenAction:(SCHThemeButton *)sender
-//{
-//    if (self.popover) {
-//        [self.popover dismissPopoverAnimated:YES];
-//        self.popover = nil;
-//    }
-//    
-//    if ([[SCHVersionDownloadManager sharedVersionManager] isAppVersionOutdated] == YES) {
-//        [self showAppVersionOutdatedAlert];
-//    } else {
-//        [self showRecommendationsListAnimated:YES];
-//    }
-//}
-//
-//- (void)themeAction:(SCHThemeButton *)sender
-//{
-//    if (self.popover) {
-//        [self.popover dismissPopoverAnimated:YES];
-//        self.popover = nil;
-//    }
-//    
-//    self.popover = [[[UIPopoverController alloc] initWithContentViewController:self.themePickerContainer] autorelease];
-//    self.popover.delegate = self;
-//    
-//    [self.popover presentPopoverFromRect:sender.frame inView:sender.superview permittedArrowDirections:UIPopoverArrowDirectionUp animated:YES];
-//}
-
 - (void)menuAction:(SCHThemeButton *)sender
 {
     SCHBookShelfMenuController *menuTableController = [[SCHBookShelfMenuController alloc] initWithNibName:@"SCHBookShelfMenuController" bundle:nil];
