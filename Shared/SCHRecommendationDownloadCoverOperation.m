@@ -50,17 +50,19 @@
         return;
     }
     
-    NSFileManager *fileManager = [[[NSFileManager alloc] init] autorelease];
-    
     __block NSString *recommendationDirectory = nil;
     __block NSString *coverURL = nil;
     __block NSString *coverPath = nil;
     
-    [self performWithRecommendationAndSave:^(SCHAppRecommendationItem *item) {
-        recommendationDirectory = [[[item recommendationDirectory] copy] autorelease];
-        coverPath = [[[item coverImagePath] copy] autorelease];
-        coverURL = [[[item CoverURL] copy] autorelease];
+    [self performWithRecommendation:^(SCHAppRecommendationItem *item) {
+        recommendationDirectory = [[item recommendationDirectory] retain];
+        coverPath = [[item coverImagePath] retain];
+        coverURL = [[item CoverURL] retain];
     }];
+    
+    [recommendationDirectory autorelease];
+    [coverPath autorelease];
+    [coverURL autorelease];
     
     self.localPath = coverPath;
     
@@ -80,12 +82,11 @@
         return;
     }
     
-    
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:coverURL]];
-    
     
     [self willChangeValueForKey:@"isExecuting"];
     
+    NSFileManager *fileManager = [[[NSFileManager alloc] init] autorelease];
 	if ([fileManager fileExistsAtPath:self.localPath]) {
         // Delete the existing file first
         NSError *error = nil;

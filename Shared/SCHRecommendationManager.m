@@ -108,7 +108,7 @@ static SCHRecommendationManager *sharedManager = nil;
 - (void)checkStateForAllRecommendations
 {
     NSAssert([NSThread isMainThread], @"checkStateForAllRecommendations must run on main thread");
-    
+
     // TO DO: make this SCHAppRecommendationItem based
     NSArray *allRecommendationItems = nil;
     NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];

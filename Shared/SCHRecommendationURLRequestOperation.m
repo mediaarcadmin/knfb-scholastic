@@ -15,6 +15,10 @@
 
 @implementation SCHRecommendationURLRequestOperation
 
+- (void)dealloc
+{
+    [super dealloc];
+}
 #pragma mark - Book Operation Methods
 
 - (void)beginOperation
@@ -27,11 +31,15 @@
         return;
     }
     
-    __block BOOL coverUrlIsValid = NO;
+    __block NSString *coverURL;
     
     [self performWithRecommendation:^(SCHAppRecommendationItem *item) {
-        [SCHRecommendationManager urlIsValid:item.CoverURL];
+        coverURL = [item.CoverURL retain];
     }];
+    
+    [coverURL autorelease];
+    
+    BOOL coverUrlIsValid = [SCHRecommendationManager urlIsValid:coverURL];
     
     if (coverUrlIsValid) {
         [self setProcessingState:kSCHAppRecommendationProcessingStateNoCover];
@@ -60,7 +68,7 @@
 	NSAssert([NSThread currentThread] == [NSThread mainThread], @"Notification is not fired on the main thread!");
     
 	NSDictionary *userInfo = [notification userInfo];
-    NSString *completedIsbn = [userInfo objectForKey:kSCHAppRecommendationItemIsbn];
+    NSString *completedIsbn = [userInfo objectForKey:kSCHLibreAccessWebServiceContentIdentifier];
 	
     if ([completedIsbn isEqualToString:self.isbn]) {
         
@@ -69,28 +77,26 @@
             [self setProcessingState:kSCHAppRecommendationProcessingStateURLsNotPopulated];
         } else {
             
-            __block BOOL coverUrlIsValid = NO;
+            NSString *coverURL = [userInfo valueForKey:kSCHLibreAccessWebServiceCoverURL];
             
-            [self performWithRecommendationAndSave:^(SCHAppRecommendationItem *item) {
-                
-                NSString *coverURL = [userInfo valueForKey:kSCHLibreAccessWebServiceCoverURL];
-                
-                if ([SCHRecommendationManager urlIsValid:coverURL]) {
-                    [item setCoverURL:[userInfo valueForKey:kSCHLibreAccessWebServiceCoverURL]];
-                    [item setAuthor:[userInfo valueForKey:kSCHLibreAccessWebServiceAuthor]];
-                    [item setTitle:[userInfo valueForKey:kSCHLibreAccessWebServiceTitle]];
-                    [item setAverageRating:[userInfo valueForKey:kSCHLibreAccessWebServiceAverageRating]];
-                    
-                    coverUrlIsValid = YES;
-                }                
-            }];
+            BOOL coverUrlIsValid = NO;
             
-            // check here for invalidity
+            if ([SCHRecommendationManager urlIsValid:coverURL]) {                
+                coverUrlIsValid = YES;
+            } 
+            
             if (!coverUrlIsValid) {
                 NSLog(@"Warning: URLs from the server were already invalid for %@!", completedIsbn);
                 [self setProcessingState:kSCHAppRecommendationProcessingStateURLsNotPopulated];
             } else {
                 NSLog(@"Successful URL retrieval for %@!", completedIsbn);
+                [self performWithRecommendationAndSave:^(SCHAppRecommendationItem *item) {
+                    [item setCoverURL:[userInfo valueForKey:kSCHLibreAccessWebServiceCoverURL]];
+                    [item setAuthor:[userInfo valueForKey:kSCHLibreAccessWebServiceAuthor]];
+                    [item setTitle:[userInfo valueForKey:kSCHLibreAccessWebServiceTitle]];
+                    [item setAverageRating:[userInfo valueForKey:kSCHLibreAccessWebServiceAverageRating]];
+                }];
+                
                 [self setProcessingState:kSCHAppRecommendationProcessingStateNoCover];
             }
         }
