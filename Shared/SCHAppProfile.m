@@ -72,43 +72,43 @@ static NSString * const kSCHAppProfileObjectID = @"ObjectID";
 - (NSArray *)recommendationDictionaries
 {
     NSArray *ret = nil;
-    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+    NSSet *allItems = [[self recommendationProfile] recommendationItems];
+    NSPredicate *readyRecommendations = [NSPredicate predicateWithFormat:@"appRecommendationItem.processingState = %d", kSCHAppRecommendationProcessingStateComplete];
+    NSSet *filteredItems = [allItems filteredSetUsingPredicate:readyRecommendations];
+
+    NSMutableArray *objectArray = [NSMutableArray arrayWithCapacity:[filteredItems count]];
     
-    [fetchRequest setEntity:[NSEntityDescription entityForName:kSCHRecommendationItem 
-                                        inManagedObjectContext:self.managedObjectContext]];	
-    [fetchRequest setPredicate:[NSPredicate predicateWithFormat:@"recommendationProfile.age = %d", self.ProfileItem.age]];
-    [fetchRequest setSortDescriptors:[NSArray arrayWithObject:
-                                      [NSSortDescriptor sortDescriptorWithKey:kSCHRecommendationWebServiceOrder ascending:YES]]];
-    
-    NSError *error = nil;
-    NSArray *result = [self.managedObjectContext executeFetchRequest:fetchRequest error:&error];	
-    if (result == nil) {
-        NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
-    } else {
-        NSMutableArray *objectArray = [NSMutableArray arrayWithCapacity:[result count]];
+    for(SCHRecommendationItem *item in filteredItems) {
+        NSMutableDictionary *recommendationItem = [NSMutableDictionary dictionary];
         
-        for(SCHRecommendationItem *item in result) {
-            NSMutableDictionary *recommendationItem = [NSMutableDictionary dictionary];
-            
-            [recommendationItem setValue:(item.name == nil ? (id)[NSNull null] : item.name) 
+        if ([item.appRecommendationItem Title]) {
+            [recommendationItem setValue:[item.appRecommendationItem Title] 
                                   forKey:kSCHAppProfileTitle];
-            [recommendationItem setValue:(item.product_code == nil ? (id)[NSNull null] : item.product_code) 
+        }
+        if (item.product_code) {
+            [recommendationItem setValue:item.product_code 
                                   forKey:kSCHAppProfileISBN];
-            [recommendationItem setValue:(item.author == nil ? (id)[NSNull null] : item.author) 
-                                  forKey:kSCHAppProfileAuthor];
-            [recommendationItem setValue:[item.appRecommendationItem AverageRatingAsNumber] 
-                                  forKey:kSCHAppProfileAverageRating];
-            UIImage *coverImage = [item.appRecommendationItem bookCover];
-            [recommendationItem setValue:(coverImage == nil ? (id)[NSNull null] : coverImage) 
-                                  forKey:kSCHAppProfileCoverImage];
-            
-            [objectArray addObject:[NSDictionary dictionaryWithDictionary:recommendationItem]];
         }
         
-        ret = [NSArray arrayWithArray:objectArray];
+        if ([item.appRecommendationItem Author]) {
+            [recommendationItem setValue:[item.appRecommendationItem Author]
+                                  forKey:kSCHAppProfileAuthor];
+        }
+        if ([item.appRecommendationItem AverageRatingAsNumber]) {
+            [recommendationItem setValue:[item.appRecommendationItem AverageRatingAsNumber] 
+                                  forKey:kSCHAppProfileAverageRating];
+        }
+        UIImage *coverImage = [item.appRecommendationItem bookCover];
+        
+        if (coverImage) {
+            [recommendationItem setValue:coverImage
+                                  forKey:kSCHAppProfileCoverImage];
+        }
+        
+        [objectArray addObject:[NSDictionary dictionaryWithDictionary:recommendationItem]];
     }
     
-    [fetchRequest release], fetchRequest = nil;        
+    ret = [NSArray arrayWithArray:objectArray];
     
     return ret;
 }

@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import "SCHCoreDataOperation.h"
-#import "SCHRecommendationManager.h"
+#import "SCHAppRecommendationItem.h"
 
 @class SCHAppRecommendationItem;
 

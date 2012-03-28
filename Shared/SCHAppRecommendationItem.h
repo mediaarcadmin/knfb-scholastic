@@ -18,7 +18,20 @@
 // Constants
 extern NSString * const kSCHAppRecommendationItem;
 extern NSString * const kSCHAppRecommendationItemIsbn;
-extern NSUInteger const kSCHRecommendationThumbnailMaxDimension;
+extern NSUInteger const kSCHRecommendationThumbnailMaxDimensionPad;
+extern NSUInteger const kSCHRecommendationThumbnailMaxDimensionPhone;
+
+typedef enum {
+    kSCHAppRecommendationProcessingStateURLsNotPopulated        = -5,
+    kSCHAppRecommendationProcessingStateDownloadFailed          = -4,
+    kSCHAppRecommendationProcessingStateCachedCoverError        = -3,
+    kSCHAppRecommendationProcessingStateThumbnailError          = -2,
+	kSCHAppRecommendationProcessingStateError                   = -1,
+	kSCHAppRecommendationProcessingStateNoMetadata              = 0,
+    kSCHAppRecommendationProcessingStateNoCover                 = 1,
+    kSCHAppRecommendationProcessingStateNoThumbnails            = 2,
+	kSCHAppRecommendationProcessingStateComplete                = 3
+} SCHAppRecommendationProcessingState;
 
 @interface SCHAppRecommendationItem : NSManagedObject <SCHISBNItem>
 
@@ -36,6 +49,7 @@ extern NSUInteger const kSCHRecommendationThumbnailMaxDimension;
 - (void)setProcessingState:(SCHAppRecommendationProcessingState)processingState;
 - (UIImage *)bookCover;
 - (BOOL)isInUse;
+- (BOOL)isReady;
 
 - (NSString *)coverImagePath;
 - (NSString *)thumbPath;

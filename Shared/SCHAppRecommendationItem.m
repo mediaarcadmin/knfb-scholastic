@@ -15,7 +15,8 @@
 NSString * const kSCHAppRecommendationItem = @"SCHAppRecommendationItem";
 NSString * const kSCHAppRecommendationItemIsbn = @"isbn";
 NSString * const kSCHAppRecommendationFilenameSeparator = @"-";
-NSUInteger const kSCHRecommendationThumbnailMaxDimension = 60;
+NSUInteger const kSCHRecommendationThumbnailMaxDimensionPad = 160;
+NSUInteger const kSCHRecommendationThumbnailMaxDimensionPhone = 60;
 
 @interface SCHAppRecommendationItem()
 
@@ -100,12 +101,20 @@ NSUInteger const kSCHRecommendationThumbnailMaxDimension = 60;
         scale = [[UIScreen mainScreen] scale];
     }
     
+    NSUInteger maxDimension;
+    
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+        maxDimension = kSCHRecommendationThumbnailMaxDimensionPad;
+    } else {
+        maxDimension = kSCHRecommendationThumbnailMaxDimensionPhone;
+    }
+    
     NSString *thumbPath = [[self recommendationDirectory] stringByAppendingPathComponent:[NSString stringWithFormat:@"%@%@%@%@%d", 
                                                                          self.ContentIdentifier, 
                                                                          kSCHAppRecommendationFilenameSeparator,
                                                                          [NSNumber numberWithInteger:kSCHDRMQualifiersFullWithDRM], 
                                                                          kSCHAppRecommendationFilenameSeparator,                                                                         
-                                                                         kSCHRecommendationThumbnailMaxDimension]];
+                                                                         maxDimension]];
     if (scale != 1) {
         thumbPath = [thumbPath stringByAppendingFormat:@"@%dx",(int)scale];
     }
@@ -168,16 +177,46 @@ NSUInteger const kSCHRecommendationThumbnailMaxDimension = 60;
 	return cachedRecommendationsDirectory;
 }
 
-// FIXME: return a real image at some point...
 - (UIImage *)bookCover
 {
-    return [UIImage imageNamed:@"sampleCoverImage.jpg"];
+    UIImage *ret = nil;
+    NSData *imageData = [NSData dataWithContentsOfMappedFile:[self thumbPath]];
+    
+    if (imageData) {
+        ret = [UIImage imageWithData:imageData];
+    }
+    
+    return ret;
 }
 
 - (BOOL)isInUse
 {
     return ([self.recommendationItems count] > 0 ||
             [self.wishListItems count] > 0);
+}
+
+- (BOOL)isReady
+{
+    BOOL isReady = NO;
+    
+    switch ([self processingState]) {
+        case kSCHAppRecommendationProcessingStateURLsNotPopulated:
+        case kSCHAppRecommendationProcessingStateCachedCoverError:    
+        case kSCHAppRecommendationProcessingStateThumbnailError:      
+        case kSCHAppRecommendationProcessingStateError:               
+        case kSCHAppRecommendationProcessingStateDownloadFailed:     
+        case kSCHAppRecommendationProcessingStateNoMetadata:          
+        case kSCHAppRecommendationProcessingStateNoCover:     
+            isReady = NO;
+            break;
+        
+        case kSCHAppRecommendationProcessingStateNoThumbnails:
+        case kSCHAppRecommendationProcessingStateComplete:
+            isReady = YES;
+            break;
+    }
+    
+    return isReady;
 }
 
 - (void)prepareForDeletion

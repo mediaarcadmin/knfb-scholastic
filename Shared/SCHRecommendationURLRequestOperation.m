@@ -12,6 +12,7 @@
 #import "SCHAppRecommendationItem.h"
 #import "SCHBookshelfSyncComponent.h"
 #import "SCHBookIdentifier.h"
+#import "SCHAppRecommendationItem.h"
 
 @implementation SCHRecommendationURLRequestOperation
 

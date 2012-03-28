@@ -12,7 +12,6 @@
 #import "SCHRecommendationURLRequestOperation.h"
 #import "SCHRecommendationDownloadCoverOperation.h"
 #import "SCHRecommendationThumbnailOperation.h"
-#import "SCHRecommendationItem.h"
 #import "SCHAppRecommendationItem.h"
 #import "SCHRecommendationSyncComponent.h"
 #import "NSURL+Extensions.h"
@@ -23,6 +22,7 @@
 - (void)createProcessingQueues;
 - (void)coreDataHelperManagedObjectContextDidChangeNotification:(NSNotification *)notification;
 - (BOOL)isbnIsProcessing:(NSString *)isbn;
+- (BOOL)recommendationNeedsProcessing:(SCHAppRecommendationItem *)recommendationItem;
 - (BOOL)isbnNeedsProcessing:(NSString *)isbn;
 - (void)processIsbn:(NSString *)isbn;
 - (void)checkStateForAllRecommendations;
@@ -110,11 +110,10 @@ static SCHRecommendationManager *sharedManager = nil;
 {
     NSAssert([NSThread isMainThread], @"checkStateForAllRecommendations must run on main thread");
 
-    // TO DO: make this SCHAppRecommendationItem based
     NSArray *allRecommendationItems = nil;
     NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
     
-    [fetchRequest setEntity:[NSEntityDescription entityForName:kSCHRecommendationItem 
+    [fetchRequest setEntity:[NSEntityDescription entityForName:kSCHAppRecommendationItem 
                                         inManagedObjectContext:self.managedObjectContext]];	
     
     NSError *error = nil;
@@ -124,14 +123,11 @@ static SCHRecommendationManager *sharedManager = nil;
         NSLog(@"Unresolved error fetching recommendations %@, %@", error, [error userInfo]);
     }
     
-    
     NSMutableArray *isbnsToBeProcessed = [NSMutableArray array];
         
-	for (SCHRecommendationItem *recommendationItem in allRecommendationItems) {
-        NSString *isbn = [recommendationItem isbn];
-        
-        if ([self isbnNeedsProcessing:isbn]) {
-            [isbnsToBeProcessed addObject:isbn];
+	for (SCHAppRecommendationItem *recommendationItem in allRecommendationItems) {        
+        if ([self recommendationNeedsProcessing:recommendationItem]) {
+            [isbnsToBeProcessed addObject:[recommendationItem ContentIdentifier]];
         }
     }
                	
@@ -142,16 +138,11 @@ static SCHRecommendationManager *sharedManager = nil;
     [self checkIfProcessing];
 }
 
-- (BOOL)isbnNeedsProcessing:(NSString *)isbn
+- (BOOL)recommendationNeedsProcessing:(SCHAppRecommendationItem *)recommendationItem
 {
-    NSAssert([NSThread isMainThread], @"isbnNeedsProcessing must run on main thread");
-    
     BOOL needsProcessing = NO;
     
-    if (![self isbnIsProcessing:isbn]) {
-
-        SCHAppRecommendationItem *recommendationItem = [self appRecommendationForIsbn:isbn];
-        
+    if (![self isbnIsProcessing:[recommendationItem ContentIdentifier]]) {        
         if (recommendationItem != nil) {
             switch ([recommendationItem processingState]) {
                 case kSCHAppRecommendationProcessingStateURLsNotPopulated:
@@ -167,13 +158,20 @@ static SCHRecommendationManager *sharedManager = nil;
                 case kSCHAppRecommendationProcessingStateNoThumbnails:
                     needsProcessing = YES;
                     break;
-                default:
-                    break;
             }
         }
     }
     
 	return needsProcessing;
+
+}
+
+- (BOOL)isbnNeedsProcessing:(NSString *)isbn
+{
+    NSAssert([NSThread isMainThread], @"isbnNeedsProcessing must run on main thread");
+    SCHAppRecommendationItem *recommendationItem = [self appRecommendationForIsbn:isbn];
+    
+    return [self recommendationNeedsProcessing:recommendationItem];
 }
 
 #pragma mark - Processing

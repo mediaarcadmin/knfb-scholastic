@@ -25,7 +25,15 @@
     [coverPath autorelease];
     [thumbPath autorelease];
     
-    UIImage *createdThumb = [UIImage SCHCreateThumbWithSourcePath:coverPath destinationPath:thumbPath maxDimension:kSCHRecommendationThumbnailMaxDimension];
+    NSUInteger maxDimension;
+    
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+        maxDimension = kSCHRecommendationThumbnailMaxDimensionPad;
+    } else {
+        maxDimension = kSCHRecommendationThumbnailMaxDimensionPhone;
+    }
+    
+    UIImage *createdThumb = [UIImage SCHCreateThumbWithSourcePath:coverPath destinationPath:thumbPath maxDimension:maxDimension];
     
     if (createdThumb) {
         [self setProcessingState:kSCHAppRecommendationProcessingStateComplete];
