@@ -3777,14 +3777,6 @@
 		F849155714FFA54D000D064B /* RateView.m in Sources */ = {isa = PBXBuildFile; fileRef = F849155514FFA54D000D064B /* RateView.m */; };
 		F849155814FFA54D000D064B /* RateView.m in Sources */ = {isa = PBXBuildFile; fileRef = F849155514FFA54D000D064B /* RateView.m */; };
 		F849155914FFA54D000D064B /* RateView.m in Sources */ = {isa = PBXBuildFile; fileRef = F849155514FFA54D000D064B /* RateView.m */; };
-		F849155C14FFA6E5000D064B /* storiaStarEmpty.png in Resources */ = {isa = PBXBuildFile; fileRef = F849155A14FFA6E5000D064B /* storiaStarEmpty.png */; };
-		F849155D14FFA6E5000D064B /* storiaStarEmpty.png in Resources */ = {isa = PBXBuildFile; fileRef = F849155A14FFA6E5000D064B /* storiaStarEmpty.png */; };
-		F849155E14FFA6E5000D064B /* storiaStarEmpty.png in Resources */ = {isa = PBXBuildFile; fileRef = F849155A14FFA6E5000D064B /* storiaStarEmpty.png */; };
-		F849155F14FFA6E5000D064B /* storiaStarEmpty.png in Resources */ = {isa = PBXBuildFile; fileRef = F849155A14FFA6E5000D064B /* storiaStarEmpty.png */; };
-		F849156014FFA6E5000D064B /* storiaStarFull.png in Resources */ = {isa = PBXBuildFile; fileRef = F849155B14FFA6E5000D064B /* storiaStarFull.png */; };
-		F849156114FFA6E5000D064B /* storiaStarFull.png in Resources */ = {isa = PBXBuildFile; fileRef = F849155B14FFA6E5000D064B /* storiaStarFull.png */; };
-		F849156214FFA6E5000D064B /* storiaStarFull.png in Resources */ = {isa = PBXBuildFile; fileRef = F849155B14FFA6E5000D064B /* storiaStarFull.png */; };
-		F849156314FFA6E5000D064B /* storiaStarFull.png in Resources */ = {isa = PBXBuildFile; fileRef = F849155B14FFA6E5000D064B /* storiaStarFull.png */; };
 		F84CE156134C691D0044729E /* SCHNonDRMAuthenticationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = F84CE155134C691D0044729E /* SCHNonDRMAuthenticationManager.m */; };
 		F84DB7591520B9F10025BFCF /* SCHBookShelfMenuPopoverBackgroundView.m in Sources */ = {isa = PBXBuildFile; fileRef = F84DB7581520B9F10025BFCF /* SCHBookShelfMenuPopoverBackgroundView.m */; };
 		F84DB75A1520B9F10025BFCF /* SCHBookShelfMenuPopoverBackgroundView.m in Sources */ = {isa = PBXBuildFile; fileRef = F84DB7581520B9F10025BFCF /* SCHBookShelfMenuPopoverBackgroundView.m */; };
@@ -3983,6 +3975,26 @@
 		F8EB72E813FE6D8000FE2410 /* OptionsOriginalButtonInactiveSmall.png in Resources */ = {isa = PBXBuildFile; fileRef = F8EB72DA13FE6D8000FE2410 /* OptionsOriginalButtonInactiveSmall.png */; };
 		F8EB72EA13FE6D8000FE2410 /* OptionsOriginalButtonInactiveSmall@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F8EB72DB13FE6D8000FE2410 /* OptionsOriginalButtonInactiveSmall@2x.png */; };
 		F8EDE542138561390079BFD8 /* SCHReadingNoteView.m in Sources */ = {isa = PBXBuildFile; fileRef = F8EDE541138561390079BFD8 /* SCHReadingNoteView.m */; };
+		F8F7268015246D6000250724 /* BookShelfListRatingBackground~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = F8F7267F15246D6000250724 /* BookShelfListRatingBackground~ipad.png */; };
+		F8F7268115246D6000250724 /* BookShelfListRatingBackground~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = F8F7267F15246D6000250724 /* BookShelfListRatingBackground~ipad.png */; };
+		F8F7268215246D6000250724 /* BookShelfListRatingBackground~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = F8F7267F15246D6000250724 /* BookShelfListRatingBackground~ipad.png */; };
+		F8F7268315246D6000250724 /* BookShelfListRatingBackground~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = F8F7267F15246D6000250724 /* BookShelfListRatingBackground~ipad.png */; };
+		F8F726871524722400250724 /* storiaStarEmpty~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = F8F726841524722400250724 /* storiaStarEmpty~ipad.png */; };
+		F8F726881524722400250724 /* storiaStarEmpty~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = F8F726841524722400250724 /* storiaStarEmpty~ipad.png */; };
+		F8F726891524722400250724 /* storiaStarEmpty~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = F8F726841524722400250724 /* storiaStarEmpty~ipad.png */; };
+		F8F7268A1524722400250724 /* storiaStarEmpty~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = F8F726841524722400250724 /* storiaStarEmpty~ipad.png */; };
+		F8F7268B1524722400250724 /* storiaStarFull~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = F8F726851524722400250724 /* storiaStarFull~ipad.png */; };
+		F8F7268C1524722400250724 /* storiaStarFull~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = F8F726851524722400250724 /* storiaStarFull~ipad.png */; };
+		F8F7268D1524722400250724 /* storiaStarFull~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = F8F726851524722400250724 /* storiaStarFull~ipad.png */; };
+		F8F7268E1524722400250724 /* storiaStarFull~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = F8F726851524722400250724 /* storiaStarFull~ipad.png */; };
+		F8F7268F1524722400250724 /* storiaStarHalfFull~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = F8F726861524722400250724 /* storiaStarHalfFull~ipad.png */; };
+		F8F726901524722400250724 /* storiaStarHalfFull~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = F8F726861524722400250724 /* storiaStarHalfFull~ipad.png */; };
+		F8F726911524722400250724 /* storiaStarHalfFull~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = F8F726861524722400250724 /* storiaStarHalfFull~ipad.png */; };
+		F8F726921524722400250724 /* storiaStarHalfFull~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = F8F726861524722400250724 /* storiaStarHalfFull~ipad.png */; };
+		F8F726941524875F00250724 /* BookShelfListWhiteGradientBackground~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = F8F726931524875F00250724 /* BookShelfListWhiteGradientBackground~ipad.png */; };
+		F8F726951524875F00250724 /* BookShelfListWhiteGradientBackground~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = F8F726931524875F00250724 /* BookShelfListWhiteGradientBackground~ipad.png */; };
+		F8F726961524875F00250724 /* BookShelfListWhiteGradientBackground~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = F8F726931524875F00250724 /* BookShelfListWhiteGradientBackground~ipad.png */; };
+		F8F726971524875F00250724 /* BookShelfListWhiteGradientBackground~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = F8F726931524875F00250724 /* BookShelfListWhiteGradientBackground~ipad.png */; };
 		F8FAF2F313F12F20009C7E9F /* SCHAppStateManager.m in Sources */ = {isa = PBXBuildFile; fileRef = F8FAF2F213F12F20009C7E9F /* SCHAppStateManager.m */; };
 		F8FF8D81139513B000CD7B73 /* OldDictionary-additions.css in Resources */ = {isa = PBXBuildFile; fileRef = F8FF8D7F139513B000CD7B73 /* OldDictionary-additions.css */; };
 		F8FF8D83139513B000CD7B73 /* YoungDictionary-additions.css in Resources */ = {isa = PBXBuildFile; fileRef = F8FF8D80139513B000CD7B73 /* YoungDictionary-additions.css */; };
@@ -5624,8 +5636,6 @@
 		F83701AF13BC73BE009B280D /* BookShelfModeListInactive~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "BookShelfModeListInactive~iphone.png"; path = "Resources/BookShelfModeListInactive~iphone.png"; sourceTree = "<group>"; };
 		F849155414FFA54D000D064B /* RateView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RateView.h; sourceTree = "<group>"; };
 		F849155514FFA54D000D064B /* RateView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RateView.m; sourceTree = "<group>"; };
-		F849155A14FFA6E5000D064B /* storiaStarEmpty.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = storiaStarEmpty.png; path = Resources/storiaStarEmpty.png; sourceTree = "<group>"; };
-		F849155B14FFA6E5000D064B /* storiaStarFull.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = storiaStarFull.png; path = Resources/storiaStarFull.png; sourceTree = "<group>"; };
 		F84CE154134C691D0044729E /* SCHNonDRMAuthenticationManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHNonDRMAuthenticationManager.h; path = Shared/SCHNonDRMAuthenticationManager.h; sourceTree = "<group>"; };
 		F84CE155134C691D0044729E /* SCHNonDRMAuthenticationManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHNonDRMAuthenticationManager.m; path = Shared/SCHNonDRMAuthenticationManager.m; sourceTree = "<group>"; };
 		F84DB7571520B9F10025BFCF /* SCHBookShelfMenuPopoverBackgroundView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHBookShelfMenuPopoverBackgroundView.h; path = iPad/SCHBookShelfMenuPopoverBackgroundView.h; sourceTree = "<group>"; };
@@ -5818,6 +5828,11 @@
 		F8EB72DB13FE6D8000FE2410 /* OptionsOriginalButtonInactiveSmall@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "OptionsOriginalButtonInactiveSmall@2x.png"; path = "Resources/UIAssets/OptionsOriginalButtonInactiveSmall@2x.png"; sourceTree = "<group>"; };
 		F8EDE540138561390079BFD8 /* SCHReadingNoteView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHReadingNoteView.h; path = Shared/SCHReadingNoteView.h; sourceTree = "<group>"; };
 		F8EDE541138561390079BFD8 /* SCHReadingNoteView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHReadingNoteView.m; path = Shared/SCHReadingNoteView.m; sourceTree = "<group>"; };
+		F8F7267F15246D6000250724 /* BookShelfListRatingBackground~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "BookShelfListRatingBackground~ipad.png"; path = "Resources/BookShelfListRatingBackground~ipad.png"; sourceTree = "<group>"; };
+		F8F726841524722400250724 /* storiaStarEmpty~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "storiaStarEmpty~ipad.png"; path = "Resources/storiaStarEmpty~ipad.png"; sourceTree = "<group>"; };
+		F8F726851524722400250724 /* storiaStarFull~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "storiaStarFull~ipad.png"; path = "Resources/storiaStarFull~ipad.png"; sourceTree = "<group>"; };
+		F8F726861524722400250724 /* storiaStarHalfFull~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "storiaStarHalfFull~ipad.png"; path = "Resources/storiaStarHalfFull~ipad.png"; sourceTree = "<group>"; };
+		F8F726931524875F00250724 /* BookShelfListWhiteGradientBackground~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "BookShelfListWhiteGradientBackground~ipad.png"; path = "Resources/BookShelfListWhiteGradientBackground~ipad.png"; sourceTree = "<group>"; };
 		F8FAF2F113F12F20009C7E9F /* SCHAppStateManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHAppStateManager.h; path = Shared/SCHAppStateManager.h; sourceTree = "<group>"; };
 		F8FAF2F213F12F20009C7E9F /* SCHAppStateManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHAppStateManager.m; path = Shared/SCHAppStateManager.m; sourceTree = "<group>"; };
 		F8FF8D7F139513B000CD7B73 /* OldDictionary-additions.css */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.css; name = "OldDictionary-additions.css"; path = "Resources/OldDictionary-additions.css"; sourceTree = "<group>"; };
@@ -8003,8 +8018,10 @@
 		C9A11290136082A6007FD763 /* UIAssets */ = {
 			isa = PBXGroup;
 			children = (
-				F849155A14FFA6E5000D064B /* storiaStarEmpty.png */,
-				F849155B14FFA6E5000D064B /* storiaStarFull.png */,
+				F8F726841524722400250724 /* storiaStarEmpty~ipad.png */,
+				F8F726851524722400250724 /* storiaStarFull~ipad.png */,
+				F8F726861524722400250724 /* storiaStarHalfFull~ipad.png */,
+				F8F7267F15246D6000250724 /* BookShelfListRatingBackground~ipad.png */,
 				C9F8FDD014B4A1D600136C22 /* Start View */,
 				C9747CD513EAEAC5003ADC71 /* Splash */,
 				C9703A5213E9615C0003C4D8 /* Bookshelf */,
@@ -8362,6 +8379,7 @@
 			isa = PBXGroup;
 			children = (
 				F82E3BBA13F9289A000B67A4 /* BookShelfErrorIcon~ipad.png */,
+				F8F726931524875F00250724 /* BookShelfListWhiteGradientBackground~ipad.png */,
 				F81CA37C13FAB149006EF9D6 /* BookSampleTab~ipad.png */,
 				F82E3BBB13F9289A000B67A4 /* BookSISampleTab~ipad.png */,
 				F81CA37F13FAB230006EF9D6 /* BookSISampleTabHorizontal~ipad.png */,
@@ -9719,8 +9737,6 @@
 				52FCCF3E14C6FDEB008C2626 /* SCHStoriaWelcomeTwoViewController~ipad.xib in Resources */,
 				52FCCF4114C6FE71008C2626 /* storia-preview-two~ipad.png in Resources */,
 				C94975C014C9B871008A19C7 /* storia-preview-close-button~ipad.png in Resources */,
-				F849155C14FFA6E5000D064B /* storiaStarEmpty.png in Resources */,
-				F849156014FFA6E5000D064B /* storiaStarFull.png in Resources */,
 				F89140C41511EB310026F16F /* SCHBookShelfRecommendationListController.xib in Resources */,
 				F864916D15139122003A8B81 /* sampleCoverImage.jpg in Resources */,
 				F8A57E761517702000390D56 /* SCHBookShelfWishListController.xib in Resources */,
@@ -9731,6 +9747,11 @@
 				F8C7C5251521C08D0067674D /* popover-black-left-arrow-image.png in Resources */,
 				F8C7C5291521C08D0067674D /* popover-black-right-arrow-image.png in Resources */,
 				F8C7C52D1521C08D0067674D /* popover-black-top-arrow-image.png in Resources */,
+				F8F7268015246D6000250724 /* BookShelfListRatingBackground~ipad.png in Resources */,
+				F8F726871524722400250724 /* storiaStarEmpty~ipad.png in Resources */,
+				F8F7268B1524722400250724 /* storiaStarFull~ipad.png in Resources */,
+				F8F7268F1524722400250724 /* storiaStarHalfFull~ipad.png in Resources */,
+				F8F726941524875F00250724 /* BookShelfListWhiteGradientBackground~ipad.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -9764,8 +9785,6 @@
 				2866311D13F010990092A5DE /* StoryInteractionCardCollection1.xml in Resources */,
 				2898A0B713F436B100618172 /* Puzzle-6pc.xaml in Resources */,
 				C9367BE314731A8B0033A2EB /* SCHParentalToolsWebViewController_iPad.xib in Resources */,
-				F849155E14FFA6E5000D064B /* storiaStarEmpty.png in Resources */,
-				F849156214FFA6E5000D064B /* storiaStarFull.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -10441,8 +10460,6 @@
 				52FCCF3F14C6FDEB008C2626 /* SCHStoriaWelcomeTwoViewController~ipad.xib in Resources */,
 				52FCCF4214C6FE71008C2626 /* storia-preview-two~ipad.png in Resources */,
 				C94975C114C9B871008A19C7 /* storia-preview-close-button~ipad.png in Resources */,
-				F849155D14FFA6E5000D064B /* storiaStarEmpty.png in Resources */,
-				F849156114FFA6E5000D064B /* storiaStarFull.png in Resources */,
 				F89140C51511EB310026F16F /* SCHBookShelfRecommendationListController.xib in Resources */,
 				F864916E15139122003A8B81 /* sampleCoverImage.jpg in Resources */,
 				F8A57E771517702000390D56 /* SCHBookShelfWishListController.xib in Resources */,
@@ -10453,6 +10470,11 @@
 				F8C7C5261521C08D0067674D /* popover-black-left-arrow-image.png in Resources */,
 				F8C7C52A1521C08D0067674D /* popover-black-right-arrow-image.png in Resources */,
 				F8C7C52E1521C08D0067674D /* popover-black-top-arrow-image.png in Resources */,
+				F8F7268115246D6000250724 /* BookShelfListRatingBackground~ipad.png in Resources */,
+				F8F726881524722400250724 /* storiaStarEmpty~ipad.png in Resources */,
+				F8F7268C1524722400250724 /* storiaStarFull~ipad.png in Resources */,
+				F8F726901524722400250724 /* storiaStarHalfFull~ipad.png in Resources */,
+				F8F726951524875F00250724 /* BookShelfListWhiteGradientBackground~ipad.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -10939,8 +10961,6 @@
 				A3D3F4AE14CDE6AA004A56A5 /* answer-button-blue@2x~iphone.png in Resources */,
 				A3775D8514D9BDAE00473314 /* Icon@2x.png in Resources */,
 				A3775D8614D9BDB400473314 /* Icon-Small@2x.png in Resources */,
-				F849155F14FFA6E5000D064B /* storiaStarEmpty.png in Resources */,
-				F849156314FFA6E5000D064B /* storiaStarFull.png in Resources */,
 				F89140C61511EB310026F16F /* SCHBookShelfRecommendationListController.xib in Resources */,
 				F864916F15139122003A8B81 /* sampleCoverImage.jpg in Resources */,
 				F8A57E781517702000390D56 /* SCHBookShelfWishListController.xib in Resources */,
@@ -10951,6 +10971,11 @@
 				F8C7C5271521C08D0067674D /* popover-black-left-arrow-image.png in Resources */,
 				F8C7C52B1521C08D0067674D /* popover-black-right-arrow-image.png in Resources */,
 				F8C7C52F1521C08D0067674D /* popover-black-top-arrow-image.png in Resources */,
+				F8F7268215246D6000250724 /* BookShelfListRatingBackground~ipad.png in Resources */,
+				F8F726891524722400250724 /* storiaStarEmpty~ipad.png in Resources */,
+				F8F7268D1524722400250724 /* storiaStarFull~ipad.png in Resources */,
+				F8F726911524722400250724 /* storiaStarHalfFull~ipad.png in Resources */,
+				F8F726961524875F00250724 /* BookShelfListWhiteGradientBackground~ipad.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -11447,6 +11472,11 @@
 				F8C7C5281521C08D0067674D /* popover-black-left-arrow-image.png in Resources */,
 				F8C7C52C1521C08D0067674D /* popover-black-right-arrow-image.png in Resources */,
 				F8C7C5301521C08D0067674D /* popover-black-top-arrow-image.png in Resources */,
+				F8F7268315246D6000250724 /* BookShelfListRatingBackground~ipad.png in Resources */,
+				F8F7268A1524722400250724 /* storiaStarEmpty~ipad.png in Resources */,
+				F8F7268E1524722400250724 /* storiaStarFull~ipad.png in Resources */,
+				F8F726921524722400250724 /* storiaStarHalfFull~ipad.png in Resources */,
+				F8F726971524875F00250724 /* BookShelfListWhiteGradientBackground~ipad.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

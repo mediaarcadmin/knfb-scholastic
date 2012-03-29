@@ -106,7 +106,7 @@
     // Add new image views
     for(int i = 0; i < maxRating; ++i) {
         UIImageView *imageView = [[UIImageView alloc] init];
-        imageView.contentMode = UIViewContentModeScaleAspectFit;
+        imageView.contentMode = UIViewContentModeCenter;
         [self.imageViews addObject:imageView];
         [self addSubview:imageView];
         [imageView release], imageView = nil;
