@@ -256,7 +256,8 @@ static SCHRecommendationManager *sharedManager = nil;
             case kSCHAppRecommendationProcessingStateThumbnailError:      
             case kSCHAppRecommendationProcessingStateError:               
             case kSCHAppRecommendationProcessingStateComplete: 
-            case kSCHAppRecommendationProcessingStateDownloadFailed:     
+            case kSCHAppRecommendationProcessingStateDownloadFailed:  
+            case kSCHAppRecommendationProcessingStateURLsNotPopulated:
             {
                 // Do nothing until the sync kicks off again or the user initiates an action
                 // Prefer explicitly listing these state to just having a default because it catches
