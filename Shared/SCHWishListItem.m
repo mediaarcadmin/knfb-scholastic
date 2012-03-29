@@ -12,6 +12,11 @@
 
 // Constants
 NSString * const kSCHWishListItem = @"SCHWishListItem";
+NSString * const kSCHWishListTitle = @"Title";
+NSString * const kSCHWishListAuthor = @"Author";
+NSString * const kSCHWishListISBN = @"ISBN";
+NSString * const kSCHWishListCoverImage = @"CoverImage";
+NSString * const kSCHWishListObjectID = @"objectID";
 
 @implementation SCHWishListItem
 
@@ -51,6 +56,40 @@ NSString * const kSCHWishListItem = @"SCHWishListItem";
             self.appRecommendationItem.ContentIdentifier = self.ISBN;
         }
     }
+}
+
+- (NSDictionary *)dictionary
+{
+    NSMutableDictionary *wishListDict = [NSMutableDictionary dictionary];
+    
+    if ([self Title]) {
+        [wishListDict setValue:[self Title] 
+                        forKey:kSCHWishListTitle];
+    }
+    
+    if ([self Author]) {
+        [wishListDict setValue:[self Author]
+                        forKey:kSCHWishListAuthor];
+    }
+    
+    if ([self ISBN]) {
+        [wishListDict setValue:[self ISBN] 
+                        forKey:kSCHWishListISBN];
+    }
+
+    UIImage *coverImage = [self.appRecommendationItem bookCover];
+    
+    if (coverImage) {
+        [wishListDict setValue:coverImage
+                        forKey:kSCHWishListCoverImage];
+    }
+    
+    if ([self objectID]) {
+        [wishListDict setValue:[self objectID]
+                        forKey:kSCHWishListObjectID];
+    }
+    
+    return wishListDict;
 }
 
 @end

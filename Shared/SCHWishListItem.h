@@ -15,6 +15,12 @@ extern NSString * const kSCHWishListItem;
 @class SCHWishListProfile;
 @class SCHAppRecommendationItem;
 
+extern NSString * const kSCHWishListTitle;
+extern NSString * const kSCHWishListAuthor;
+extern NSString * const kSCHWishListISBN;
+extern NSString * const kSCHWishListCoverImage;
+extern NSString * const kSCHWishListObjectID;
+
 @interface SCHWishListItem : SCHSyncEntity
 
 @property (nonatomic, retain) NSString * Author;
@@ -27,5 +33,6 @@ extern NSString * const kSCHWishListItem;
 @property (nonatomic, readonly) NSDate *Timestamp;
 
 - (void)assignAppRecommendationItem;
+- (NSDictionary *)dictionary;
 
 @end

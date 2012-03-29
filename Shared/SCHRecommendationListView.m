@@ -8,7 +8,7 @@
 
 #import "SCHRecommendationListView.h"
 #import "RateView.h"
-#import "SCHAppProfile.h"
+#import "SCHAppRecommendationItem.h"
 
 #define RIGHT_ELEMENTS_PADDING 5.0
 
@@ -103,12 +103,12 @@
 {
     NSLog(@"Recommendation Item Dictionary: %@", item);
 
-    self.ISBN = [item objectForKey:kSCHAppProfileISBN];
-    self.titleLabel.text = [item objectForKey:kSCHAppProfileTitle];
-    self.subtitleLabel.text = [item objectForKey:kSCHAppProfileAuthor];
-    self.rateView.rating = [[item objectForKey:kSCHAppProfileAverageRating] floatValue];
+    self.ISBN = [item objectForKey:kSCHAppRecommendationISBN];
+    self.titleLabel.text = [item objectForKey:kSCHAppRecommendationTitle];
+    self.subtitleLabel.text = [item objectForKey:kSCHAppRecommendationAuthor];
+    self.rateView.rating = [[item objectForKey:kSCHAppRecommendationAverageRating] floatValue];
     
-    UIImage *coverImage = [item objectForKey:kSCHAppProfileCoverImage];
+    UIImage *coverImage = [item objectForKey:kSCHAppRecommendationCoverImage];
     
     if (coverImage && ![coverImage isKindOfClass:[NSNull class]]) {
         self.coverImageView.image = coverImage;
@@ -119,11 +119,11 @@
 {
     NSLog(@"Wish List Item Dictionary: %@", item);
     
-    self.ISBN = [item objectForKey:kSCHAppProfileISBN];
-    self.titleLabel.text = [item objectForKey:kSCHAppProfileTitle];
-    self.subtitleLabel.text = [item objectForKey:kSCHAppProfileAuthor];
-    self.rateView.rating = [[item objectForKey:kSCHAppProfileAverageRating] floatValue];
-    UIImage *coverImage = [item objectForKey:kSCHAppProfileCoverImage];
+    self.ISBN = [item objectForKey:kSCHAppRecommendationISBN];
+    self.titleLabel.text = [item objectForKey:kSCHAppRecommendationTitle];
+    self.subtitleLabel.text = [item objectForKey:kSCHAppRecommendationAuthor];
+    self.rateView.rating = [[item objectForKey:kSCHAppRecommendationAverageRating] floatValue];
+    UIImage *coverImage = [item objectForKey:kSCHAppRecommendationCoverImage];
     
     if (coverImage && ![coverImage isKindOfClass:[NSNull class]]) {
         self.coverImageView.image = coverImage;

@@ -162,7 +162,7 @@ typedef enum {
 - (CGSize)bookCoverImageSize;
 - (SCHAppBookFeatures) bookFeatures;
 - (SCHRecommendationISBN *)recommendationISBN;
-- (NSArray *)recommendations;
+- (NSArray *)recommendationDictionaries;
 
 - (void)setForcedProcessing:(BOOL)forceProcess;
 - (void)deleteXPSFile;
