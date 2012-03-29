@@ -62,6 +62,23 @@ NSString * const kSCHUserContentItemDRM_QUALIFIER = @"DRM_QUALIFIER";
     return((result == nil ? [NSSet set] : [NSSet setWithArray:result]));
 }
 
+- (NSNumber *)AverageRatingAsNumber
+{    
+    NSString *averageRating = self.AverageRating;
+    
+    if (averageRating == nil || 
+        [[averageRating stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]] length]  < 1) {
+        averageRating = @"0";
+    }
+    
+    NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
+    [formatter setNumberStyle:NSNumberFormatterDecimalStyle];
+    NSNumber *number = [formatter numberFromString:averageRating];
+    [formatter release];
+    
+    return number;
+}
+
 - (NSSet *)AssignedProfileList
 {
 	return(self.ProfileList);

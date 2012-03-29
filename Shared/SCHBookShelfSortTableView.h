@@ -1,5 +1,5 @@
 //
-//  SCHBookShelfSortPopoverTableView.h
+//  SCHBookShelfSortTableView.h
 //  Scholastic
 //
 //  Created by Gordon Christie on 03/06/2011.
@@ -10,20 +10,19 @@
 #import "SCHBookShelfViewController.h"
 #import "SCHProfileItem.h"
 
-@protocol SCHBookShelfSortPopoverTableViewDelegate;
+@protocol SCHBookShelfSortTableViewDelegate;
 
-@interface SCHBookShelfSortPopoverTableView : UIViewController <UITableViewDelegate, UITableViewDataSource> {
+@interface SCHBookShelfSortTableView : UIViewController <UITableViewDelegate, UITableViewDataSource> {
     
 }
-@property (nonatomic, assign) id<SCHBookShelfSortPopoverTableViewDelegate> delegate;
+@property (nonatomic, assign) id<SCHBookShelfSortTableViewDelegate> delegate;
 @property (nonatomic, retain) IBOutlet UITableView *itemsTableView;
 @property (nonatomic) SCHBookSortType sortType;
 
 @end
 
-@protocol SCHBookShelfSortPopoverTableViewDelegate <NSObject>
+@protocol SCHBookShelfSortTableViewDelegate <NSObject>
 
-@optional
 - (void)sortPopoverPickedSortType: (SCHBookSortType) newType;
 
 @end

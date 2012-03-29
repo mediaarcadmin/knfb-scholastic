@@ -30,6 +30,8 @@ extern NSString * const kSCHAnnotationsContentItemDRM_QUALIFIER;
 @property (nonatomic, retain) SCHAnnotationsItem * AnnotationsItem;
 @property (nonatomic, retain) SCHPrivateAnnotations * PrivateAnnotations;
 
+- (NSNumber *)AverageRatingAsNumber;
+
 @end
 
 

@@ -25,6 +25,7 @@
 #import "SCHNonDRMAuthenticationManager.h"
 #import "SCHVersionDownloadManager.h"
 #import "SCHCOPPAManager.h"
+#import "SCHRecommendationManager.h"
 
 // Constants
 NSString * const SCHAuthenticationManagerReceivedServerDeregistrationNotification = @"SCHAuthenticationManagerReceivedServerDeregistrationNotification";
@@ -699,7 +700,8 @@ NSTimeInterval const kSCHAuthenticationManagerSecondsInAMinute = 60.0;
     
     [[SCHBookManager sharedBookManager] clearBookIdentifierCache];
     [[SCHURLManager sharedURLManager] clear];
-    [[SCHProcessingManager sharedProcessingManager] cancelAllOperations];                
+    [[SCHProcessingManager sharedProcessingManager] cancelAllOperations]; 
+    [[SCHRecommendationManager sharedManager] cancelAllOperations];
     [[SCHSyncManager sharedSyncManager] clear];    
 }
 

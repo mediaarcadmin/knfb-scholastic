@@ -7,10 +7,34 @@
 //
 
 #import "SCHAppProfile.h"
+
 #import "SCHProfileItem.h"
+#import "SCHRecommendationItem.h"
+#import "SCHRecommendationProfile.h"
+#import "SCHRecommendationConstants.h"
+#import "SCHWishListItem.h"
+#import "SCHWishListProfile.h"
+#import "SCHAppRecommendationItem.h"
+#import "NSNumber+ObjectTypes.h"
+#import "SCHWishListConstants.h"
 
 // Constants
 NSString * const kSCHAppProfile = @"SCHAppProfile";
+
+// Parameter Constants
+NSString * const kSCHAppProfileTitle = @"Title";
+NSString * const kSCHAppProfileAuthor = @"Author";
+NSString * const kSCHAppProfileISBN = @"ISBN";
+NSString * const kSCHAppProfileAverageRating = @"AverageRating";
+NSString * const kSCHAppProfileCoverImage = @"CoverImage";
+static NSString * const kSCHAppProfileObjectID = @"ObjectID";
+
+@interface SCHAppProfile ()
+
+- (id)makeNullNil:(id)object;
+- (void)save;
+
+@end
 
 @implementation SCHAppProfile
 
@@ -22,5 +46,187 @@ NSString * const kSCHAppProfile = @"SCHAppProfile";
 @dynamic PaperType;
 @dynamic SortType;
 @dynamic ShowListView;
+
+- (SCHRecommendationProfile *)recommendationProfile
+{
+    SCHRecommendationProfile *ret = nil;
+    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+    
+    [fetchRequest setEntity:[NSEntityDescription entityForName:kSCHRecommendationProfile 
+                                        inManagedObjectContext:self.managedObjectContext]];	
+    [fetchRequest setPredicate:[NSPredicate predicateWithFormat:@"age = %d", self.ProfileItem.age]];
+    
+    NSError *error = nil;
+    NSArray *profiles = [self.managedObjectContext executeFetchRequest:fetchRequest error:&error];	
+    if (profiles == nil) {
+        NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
+    } else if ([profiles count] > 0) {
+        ret = [profiles objectAtIndex:0];
+    }
+    
+    [fetchRequest release], fetchRequest = nil;        
+    
+    return ret;
+}
+
+- (NSArray *)recommendationDictionaries
+{
+    NSArray *ret = nil;
+    NSSet *allItems = [[self recommendationProfile] recommendationItems];
+    NSPredicate *readyRecommendations = [NSPredicate predicateWithFormat:@"appRecommendationItem.processingState = %d", kSCHAppRecommendationProcessingStateComplete];
+    NSSet *filteredItems = [allItems filteredSetUsingPredicate:readyRecommendations];
+
+    NSMutableArray *objectArray = [NSMutableArray arrayWithCapacity:[filteredItems count]];
+    
+    for(SCHRecommendationItem *item in filteredItems) {
+        NSMutableDictionary *recommendationItem = [NSMutableDictionary dictionary];
+        
+        if ([item.appRecommendationItem Title]) {
+            [recommendationItem setValue:[item.appRecommendationItem Title] 
+                                  forKey:kSCHAppProfileTitle];
+        }
+        if (item.product_code) {
+            [recommendationItem setValue:item.product_code 
+                                  forKey:kSCHAppProfileISBN];
+        }
+        
+        if ([item.appRecommendationItem Author]) {
+            [recommendationItem setValue:[item.appRecommendationItem Author]
+                                  forKey:kSCHAppProfileAuthor];
+        }
+        if ([item.appRecommendationItem AverageRatingAsNumber]) {
+            [recommendationItem setValue:[item.appRecommendationItem AverageRatingAsNumber] 
+                                  forKey:kSCHAppProfileAverageRating];
+        }
+        UIImage *coverImage = [item.appRecommendationItem bookCover];
+        
+        if (coverImage) {
+            [recommendationItem setValue:coverImage
+                                  forKey:kSCHAppProfileCoverImage];
+        }
+        
+        [objectArray addObject:[NSDictionary dictionaryWithDictionary:recommendationItem]];
+    }
+    
+    ret = [NSArray arrayWithArray:objectArray];
+    
+    return ret;
+}
+
+- (SCHWishListProfile *)wishListProfile
+{
+    SCHWishListProfile *ret = nil;
+    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+    
+    [fetchRequest setEntity:[NSEntityDescription entityForName:kSCHWishListProfile 
+                                        inManagedObjectContext:self.managedObjectContext]];	
+    [fetchRequest setPredicate:[NSPredicate predicateWithFormat:@"ProfileID = %@", self.ProfileItem.ID]];
+    
+    NSError *error = nil;
+    NSArray *profiles = [self.managedObjectContext executeFetchRequest:fetchRequest error:&error];	
+    if (profiles == nil) {
+        NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
+    } else if ([profiles count] > 0) {
+        ret = [profiles objectAtIndex:0];
+    }
+    
+    [fetchRequest release], fetchRequest = nil;        
+    
+    return ret;
+}
+
+
+- (NSArray *)wishListItemDictionaries
+{
+    NSArray *ret = nil;
+    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+    
+    [fetchRequest setEntity:[NSEntityDescription entityForName:kSCHWishListItem 
+                                        inManagedObjectContext:self.managedObjectContext]];	
+    [fetchRequest setPredicate:[NSPredicate predicateWithFormat:@"WishListProfile.ProfileID = %@ AND State != %@", 
+                                self.ProfileItem.ID, [NSNumber numberWithStatus:kSCHStatusDeleted]]];
+    
+    NSError *error = nil;
+    NSArray *result = [self.managedObjectContext executeFetchRequest:fetchRequest error:&error];	
+    if (result == nil) {
+        NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
+    } else {
+        NSMutableArray *objectArray = [NSMutableArray arrayWithCapacity:[result count]];
+        
+        for(SCHWishListItem *item in result) {
+            NSMutableDictionary *wishListItem = [NSMutableDictionary dictionary];
+            
+            [wishListItem setValue:(item.Author == nil ? (id)[NSNull null] : item.Author) 
+                            forKey:kSCHAppProfileAuthor];
+            [wishListItem setValue:(item.ISBN == nil ? (id)[NSNull null] : item.ISBN) 
+                            forKey:kSCHAppProfileISBN];
+            [wishListItem setValue:(item.Title == nil ? (id)[NSNull null] : item.Title) 
+                            forKey:kSCHAppProfileTitle];
+            UIImage *coverImage = [item.appRecommendationItem bookCover];
+            [wishListItem setValue:(coverImage == nil ? (id)[NSNull null] : coverImage) 
+                                  forKey:kSCHAppProfileCoverImage];            
+            [wishListItem setValue:item.objectID
+                            forKey:kSCHAppProfileObjectID];
+            
+            
+            [objectArray addObject:[NSDictionary dictionaryWithDictionary:wishListItem]];
+        }
+        
+        ret = [NSArray arrayWithArray:objectArray];
+    }
+    
+    [fetchRequest release], fetchRequest = nil;        
+    
+    return ret;
+}
+
+- (void)addToWishList:(NSDictionary *)wishListItem
+{
+    if (wishListItem != nil) {
+        SCHWishListProfile *wishListProfile = [self wishListProfile];
+        if (wishListProfile != nil) {
+            SCHWishListItem *newWishListItem = [NSEntityDescription insertNewObjectForEntityForName:kSCHWishListItem 
+                                                                             inManagedObjectContext:self.managedObjectContext];
+            
+            newWishListItem.Title = [self makeNullNil:[wishListItem objectForKey:kSCHAppProfileTitle]];
+            newWishListItem.Author = [self makeNullNil:[wishListItem objectForKey:kSCHAppProfileAuthor]];
+            newWishListItem.ISBN = [self makeNullNil:[wishListItem objectForKey:kSCHAppProfileISBN]];
+            newWishListItem.InitiatedBy = kSCHWishListWebServiceCHILD;
+            
+            [newWishListItem assignAppRecommendationItem];
+            
+            [wishListProfile addItemListObject:newWishListItem];
+            
+            [self save];
+        }
+    }
+}
+
+- (void)removeFromWishList:(NSDictionary *)wishListItem
+{
+    if (wishListItem != nil) {
+        NSManagedObjectID *objectID = [wishListItem objectForKey:kSCHAppProfileObjectID];
+        if (objectID != nil) {
+            SCHWishListItem *wishListItem = (SCHWishListItem *)[self.managedObjectContext objectRegisteredForID:objectID];
+            [wishListItem syncDelete];
+            [self save];
+        }
+    }
+}
+
+- (id)makeNullNil:(id)object
+{
+	return(object == [NSNull null] ? nil : object);
+}
+
+- (void)save
+{
+    NSError *error = nil;
+    
+    if ([self.managedObjectContext hasChanges] == YES &&
+        ![self.managedObjectContext save:&error]) {
+        NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
+    } 
+}
 
 @end

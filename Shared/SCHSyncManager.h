@@ -39,6 +39,7 @@ extern NSString * const SCHSyncManagerDidCompleteNotification;
 - (void)bookshelfSync;
 - (void)openDocumentSync:(SCHUserContentItem *)userContentItem forProfile:(NSNumber *)profileID;
 - (void)closeDocumentSync:(SCHUserContentItem *)userContentItem forProfile:(NSNumber *)profileID;
+- (void)recommendationSync;
 
 // for populating Sample Store
 - (void)populateTestSampleStore;

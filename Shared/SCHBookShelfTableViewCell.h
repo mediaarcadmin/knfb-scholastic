@@ -22,7 +22,6 @@
 @property (nonatomic, assign) BOOL lastCell;
 @property (nonatomic, assign) BOOL loading;
 @property (nonatomic, assign) BOOL disabledForInteractions;
-@property (nonatomic, assign) BOOL showStarRatings;
 @property (nonatomic, assign) NSInteger userRating;
 
 - (void)beginUpdates;

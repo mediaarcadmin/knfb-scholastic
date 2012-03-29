@@ -353,8 +353,7 @@
 }
 + (AuthenticateSoap11Binding *)AuthenticateSoap11Binding
 {
-     NSLog(@"SOAP Authentication using: %@", AUTHENTICATION_SERVER_ENDPOINT);
-     return [[[AuthenticateSoap11Binding alloc] initWithAddress:AUTHENTICATION_SERVER_ENDPOINT] autorelease];     
+	return [[[AuthenticateSoap11Binding alloc] initWithAddress:@"http://esvcsqa.scholastic.com/SchWS/services/SPS/Authenticate.AuthenticateHttpSoap11Endpoint/"] autorelease];
 }
 @end
 @implementation AuthenticateSoap11Binding

@@ -294,24 +294,27 @@ typedef enum
     
     [self.listTableView setSeparatorColor:[UIColor clearColor]];
 
-    CGRect listFrame = self.listTableView.tableHeaderView.frame;
-    CGRect gridFrame = self.gridViewToggleView.frame;
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
 
-    listFrame.size.width = self.view.frame.size.width;
-    gridFrame.size.width = self.view.frame.size.width;
+        CGRect listFrame = self.listTableView.tableHeaderView.frame;
+        CGRect gridFrame = self.gridViewToggleView.frame;
+
+        listFrame.size.width = self.view.frame.size.width;
+        gridFrame.size.width = self.view.frame.size.width;
+
+        // this is the height of the top toggle view for both iPad and iPhone
+        if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+            listFrame.size.height = 66;
+            gridFrame.size.height = 66;
+        } else {
+            listFrame.size.height = 44;
+            gridFrame.size.height = 44;
+        }
+        self.listTableView.tableHeaderView.frame = listFrame;
+        self.gridViewToggleView.frame = gridFrame;
     
-    // this is the height of the top toggle view for both iPad and iPhone
-    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
-        listFrame.size.height = 66;
-        gridFrame.size.height = 66;
-    } else {
-        listFrame.size.height = 44;
-        gridFrame.size.height = 44;
+        self.gridView.toggleView = self.gridViewToggleView;
     }
-    self.listTableView.tableHeaderView.frame = listFrame;
-    self.gridViewToggleView.frame = gridFrame;
-    
-    self.gridView.toggleView = self.gridViewToggleView;
     
     self.currentlyLoadingIndex = -1;
 
@@ -809,7 +812,7 @@ typedef enum
     }
 }
 
-#pragma mark - SCHBookShelfTableViewCellDelegate methods
+#pragma mark - SCHBookShelfTableViewCellDelegate / SCHBookShelfGridViewCellDelegate
 
 - (void)bookshelfCell:(SCHBookShelfTableViewCell *)cell userRatingChanged:(NSInteger)newRating
 {
@@ -880,8 +883,6 @@ typedef enum
     }
     
     
-    cell.showStarRatings = self.showingRatings;
-
     SCHBookAnnotations *anno = [self.profileItem annotationsForBook:identifier];
     cell.userRating = [anno userRating];
 

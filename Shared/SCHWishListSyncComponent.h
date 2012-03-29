@@ -10,6 +10,9 @@
 
 #import "SCHSyncComponent.h"
 
+extern NSString * const SCHWishListSyncComponentDidInsertNotification;
+extern NSString * const SCHWishListSyncComponentWillDeleteNotification;
+extern NSString * const SCHWishListSyncComponentISBNs;
 extern NSString * const SCHWishListSyncComponentDidCompleteNotification;
 extern NSString * const SCHWishListSyncComponentDidFailNotification;
 

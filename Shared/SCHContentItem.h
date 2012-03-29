@@ -8,9 +8,11 @@
 
 #import <CoreData/CoreData.h>
 
+#import "SCHISBNItem.h"
+
 @class SCHBookIdentifier;
 
-@interface SCHContentItem :  NSManagedObject  
+@interface SCHContentItem :  NSManagedObject <SCHISBNItem>
 {
 }
 

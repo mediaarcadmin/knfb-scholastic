@@ -11,6 +11,9 @@
 #import "BITAPIError.h"
 #import "BITNetworkActivityManager.h"
 #import "SCHWishListConstants.h"
+#import "SCHAuthenticationManager.h"
+#import "SCHUserDefaults.h"
+#import "WishListServiceSvc+Binding.h"
 
 static NSString * const kSCHWishListWebServiceUndefinedMethod = @"undefined method";
 
@@ -29,7 +32,6 @@ static NSString * const kSCHWishListWebServiceClientID = @"KNFB";
 - (NSDictionary *)objectFromWishList:(ax21_WishList *)anObject;
 - (NSDictionary *)objectFromWishListProfileItem:(ax21_WishListProfileItem *)anObject;
 - (NSDictionary *)objectFromWishListItem:(ax21_WishListItem *)anObject;
-- (NSDictionary *)objectFromInitiatedBy:(ax21_InitiatedByEnum *)anObject;
 - (NSDictionary *)objectFromWishListProfile:(ax21_WishListProfile *)anObject;
 - (NSDictionary *)objectFromWishListStatus:(ax21_WishListStatus *)anObject;
 - (NSDictionary *)objectFromWishListProfileStatus:(ax21_WishListProfileStatus *)anObject;
@@ -40,7 +42,6 @@ static NSString * const kSCHWishListWebServiceClientID = @"KNFB";
 
 - (void)fromObject:(NSDictionary *)object intoWishListProfileItem:(ax21_WishListProfileItem *)intoObject;
 - (void)fromObject:(NSDictionary *)object intoWishListItem:(ax21_WishListItem *)intoObject;
-- (void)fromObject:(NSDictionary *)object intoInitiatedByEnum:(ax21_InitiatedByEnum *)intoObject;
 - (void)fromObject:(NSDictionary *)object intoWishListProfile:(ax21_WishListProfile *)intoObject;
 
 @end
@@ -55,8 +56,8 @@ static NSString * const kSCHWishListWebServiceClientID = @"KNFB";
 {
 	self = [super init];
 	if (self != nil) {
-		binding = [[WishListServiceSvc WishListServiceSoap11Binding] retain];
-		binding.logXMLInOut = YES;		
+		binding = [[WishListServiceSvc SCHWishListServiceSoap11Binding] retain];
+		binding.logXMLInOut = NO;		
 	}
 	
 	return(self);
@@ -72,86 +73,118 @@ static NSString * const kSCHWishListWebServiceClientID = @"KNFB";
 
 - (void)clear
 {
-    self.binding = [WishListServiceSvc WishListServiceSoap11Binding];
+    self.binding = [WishListServiceSvc SCHWishListServiceSoap11Binding];
     binding.logXMLInOut = NO;		
 }
 
 #pragma mark - API Proxy methods
 
-- (void)getWishListItems:(NSString *)pToken profiles:(NSArray *)profileIDs
+- (BOOL)getWishListItems:(NSArray *)profileIDs
 {
-	WishListServiceSvc_GetWishListItems *request = [WishListServiceSvc_GetWishListItems new];
+    BOOL ret = NO;
     
-    request.clientID = kSCHWishListWebServiceClientID;
-	request.token = pToken;
-    for (id profileID in profileIDs) {
-        [request addProfileIdList:profileID];
+    if ([SCHAuthenticationManager sharedAuthenticationManager].pToken != nil) {
+        WishListServiceSvc_GetWishListItems *request = [WishListServiceSvc_GetWishListItems new];
+        
+        request.clientID = kSCHWishListWebServiceClientID;
+        request.spsIdParam = nil;
+        request.token = [SCHAuthenticationManager sharedAuthenticationManager].pToken;
+        for (id profileID in profileIDs) {
+            [request addProfileIdList:profileID];
+        }
+        
+        [self.binding GetWishListItemsAsyncUsingParameters:request delegate:self]; 
+        [[BITNetworkActivityManager sharedNetworkActivityManager] showNetworkActivityIndicator];
+        
+        [request release], request = nil;
+        ret = YES;
     }
     
-	[self.binding GetWishListItemsAsyncUsingParameters:request delegate:self]; 
-	[[BITNetworkActivityManager sharedNetworkActivityManager] showNetworkActivityIndicator];
-	
-	[request release], request = nil;
+    return ret;
 }
 
-- (void)addItemsToWishList:(NSString *)pToken wishListItems:(NSArray *)wishListItems
+- (BOOL)addItemsToWishList:(NSArray *)wishListItems
 {
-	WishListServiceSvc_AddItemsToWishList *request = [WishListServiceSvc_AddItemsToWishList new];
+    BOOL ret = NO;
     
-    request.clientID = kSCHWishListWebServiceClientID;
-	request.token = pToken;
-    ax21_WishListProfileItem *wishListProfileItem = nil;
-    for (id item in wishListItems) {
-        wishListProfileItem = [[ax21_WishListProfileItem alloc] init];
-        [self fromObject:item intoObject:wishListProfileItem];		
-        [request addProfileItemList:wishListProfileItem];
-        [wishListProfileItem release], wishListProfileItem = nil;
-    }
-    
-	[self.binding AddItemsToWishListAsyncUsingParameters:request delegate:self]; 
-	[[BITNetworkActivityManager sharedNetworkActivityManager] showNetworkActivityIndicator];
+    if ([SCHAuthenticationManager sharedAuthenticationManager].pToken != nil) {
+        WishListServiceSvc_AddItemsToWishList *request = [WishListServiceSvc_AddItemsToWishList new];
+        
+        request.clientID = kSCHWishListWebServiceClientID;
+        request.spsIdParam = nil;
+        request.token = [SCHAuthenticationManager sharedAuthenticationManager].pToken;
+        ax21_WishListProfileItem *wishListProfileItem = nil;
+        for (id item in wishListItems) {
+            wishListProfileItem = [[ax21_WishListProfileItem alloc] init];
+            [self fromObject:item intoObject:wishListProfileItem];		
+            [request addProfileItemList:wishListProfileItem];
+            [wishListProfileItem release], wishListProfileItem = nil;
+        }
+        
+        [self.binding AddItemsToWishListAsyncUsingParameters:request delegate:self]; 
+        [[BITNetworkActivityManager sharedNetworkActivityManager] showNetworkActivityIndicator];
+        
+        [request release], request = nil;
+		ret = YES;
+	}
 	
-	[request release], request = nil;
+	return ret;        
 }
 
-- (void)deleteWishListItems:(NSString *)pToken wishListItems:(NSArray *)wishListItems
+- (BOOL)deleteWishListItems:(NSArray *)wishListItems
 {
-	WishListServiceSvc_DeleteWishListItems *request = [WishListServiceSvc_DeleteWishListItems new];
+    BOOL ret = NO;
     
-    request.clientID = kSCHWishListWebServiceClientID;
-	request.token = pToken;
-    ax21_WishListProfileItem *wishListProfileItem = nil;
-    for (id item in wishListItems) {
-        wishListProfileItem = [[ax21_WishListProfileItem alloc] init];
-        [self fromObject:item intoObject:wishListProfileItem];		
-        [request addProfileItemList:wishListProfileItem];
-        [wishListProfileItem release], wishListProfileItem = nil;
-    }
-    
-	[self.binding DeleteWishListItemsAsyncUsingParameters:request delegate:self]; 
-	[[BITNetworkActivityManager sharedNetworkActivityManager] showNetworkActivityIndicator];
+    if ([SCHAuthenticationManager sharedAuthenticationManager].pToken != nil) {
+        WishListServiceSvc_DeleteWishListItems *request = [WishListServiceSvc_DeleteWishListItems new];
+        
+        request.clientID = kSCHWishListWebServiceClientID;
+        request.spsIdParam = nil;
+        request.token = [SCHAuthenticationManager sharedAuthenticationManager].pToken;
+        ax21_WishListProfileItem *wishListProfileItem = nil;
+        for (id item in wishListItems) {
+            wishListProfileItem = [[ax21_WishListProfileItem alloc] init];
+            [self fromObject:item intoObject:wishListProfileItem];		
+            [request addProfileItemList:wishListProfileItem];
+            [wishListProfileItem release], wishListProfileItem = nil;
+        }
+        
+        [self.binding DeleteWishListItemsAsyncUsingParameters:request delegate:self]; 
+        [[BITNetworkActivityManager sharedNetworkActivityManager] showNetworkActivityIndicator];
+        
+        [request release], request = nil;
+        ret = YES;
+	}
 	
-	[request release], request = nil;
+	return ret;        
 }
 
-- (void)deleteWishList:(NSString *)pToken wishListProfiles:(NSArray *)wishListProfiles
+- (BOOL)deleteWishList:(NSArray *)wishListProfiles
 {
-	WishListServiceSvc_DeleteWishList *request = [WishListServiceSvc_DeleteWishList new];
+    BOOL ret = NO;
     
-    request.clientID = kSCHWishListWebServiceClientID;
-	request.token = pToken;
-    ax21_WishListProfile *wishListProfile = nil;
-    for (id profile in wishListProfiles) {
-        wishListProfile = [[ax21_WishListProfile alloc] init];
-        [self fromObject:profile intoObject:wishListProfile];		
-        [request addProfileIdList:wishListProfile];
-        [wishListProfile release], wishListProfile = nil;
-    }
-    
-	[self.binding DeleteWishListAsyncUsingParameters:request delegate:self]; 
-	[[BITNetworkActivityManager sharedNetworkActivityManager] showNetworkActivityIndicator];
+    if ([SCHAuthenticationManager sharedAuthenticationManager].pToken != nil) {
+        WishListServiceSvc_DeleteWishList *request = [WishListServiceSvc_DeleteWishList new];
+        
+        request.clientID = kSCHWishListWebServiceClientID;
+        request.spsIdParam = nil;
+        request.token = [SCHAuthenticationManager sharedAuthenticationManager].pToken;
+        ax21_WishListProfile *wishListProfile = nil;
+        for (id profile in wishListProfiles) {
+            wishListProfile = [[ax21_WishListProfile alloc] init];
+            [self fromObject:profile intoObject:wishListProfile];		
+            [request addProfileIdList:wishListProfile];
+            [wishListProfile release], wishListProfile = nil;
+        }
+        
+        [self.binding DeleteWishListAsyncUsingParameters:request delegate:self]; 
+        [[BITNetworkActivityManager sharedNetworkActivityManager] showNetworkActivityIndicator];
+        
+        [request release], request = nil;
+        ret = YES;
+	}
 	
-	[request release], request = nil;
+	return ret;                
 }
 
 #pragma mark - LibreAccessServiceSoap12BindingResponse Delegate methods
@@ -296,25 +329,10 @@ static NSString * const kSCHWishListWebServiceClientID = @"KNFB";
 		NSMutableDictionary *objects = [NSMutableDictionary dictionary];
 		
 		[objects setObject:[self objectFromTranslate:anObject.author] forKey:kSCHWishListWebServiceAuthor];
-		[objects setObject:[self objectFromTranslate:anObject.initiatedBy] forKey:kSCHWishListWebServiceInitiatedBy];
+		[objects setObject:[self objectFromTranslate:anObject.initiatedBy.value] forKey:kSCHWishListWebServiceValue];
 		[objects setObject:[self objectFromTranslate:anObject.isbn] forKey:kSCHWishListWebServiceISBN];
 		[objects setObject:[self objectFromTranslate:anObject.timeStamp] forKey:kSCHWishListWebServiceTimestamp];
         [objects setObject:[self objectFromTranslate:anObject.title] forKey:kSCHWishListWebServiceTitle]; 
-        
-		ret = objects;				
-	}
-	
-	return(ret);
-}
-
-- (NSDictionary *)objectFromInitiatedBy:(ax21_InitiatedByEnum *)anObject
-{
-	NSDictionary *ret = nil;
-	
-	if (anObject != nil) {
-		NSMutableDictionary *objects = [NSMutableDictionary dictionary];
-		
-		[objects setObject:[self objectFromTranslate:anObject.value] forKey:kSCHWishListWebServiceValue];
         
 		ret = objects;				
 	}
@@ -439,8 +457,6 @@ static NSString * const kSCHWishListWebServiceClientID = @"KNFB";
 		ret = [NSNumber numberWithBool:[anObject boolValue]];
     } else if ([anObject isKindOfClass:[ax21_WishList class]] == YES) {
         ret = [self objectFromWishList:anObject];	
-    } else if ([anObject isKindOfClass:[ax21_InitiatedByEnum class]] == YES) {
-        ret = [self objectFromInitiatedBy:anObject];	
     } else if ([anObject isKindOfClass:[ax21_WishListProfile class]] == YES) {
         ret = [self objectFromWishListProfile:anObject];	        
     } else if ([anObject isKindOfClass:[ax21_WishListItemStatus class]] == YES) {
@@ -472,7 +488,7 @@ static NSString * const kSCHWishListWebServiceClientID = @"KNFB";
         id wishListProfile = [[ax21_WishListProfile alloc] init];
         intoObject.profile = wishListProfile;
         [wishListProfile release], wishListProfile = nil;
-		[self fromObject:[object valueForKey:kSCHWishListWebServiceProfile] intoWishListProfile:intoObject.profile];
+		[self fromObject:object intoWishListProfile:intoObject.profile];
 	}
 }
 
@@ -480,20 +496,13 @@ static NSString * const kSCHWishListWebServiceClientID = @"KNFB";
 {
     if (object != nil && intoObject != nil) {
         intoObject.author = [self fromObjectTranslate:[object valueForKey:kSCHWishListWebServiceAuthor]];
-        id initiatedByEnum = [[ax21_InitiatedByEnum alloc] init];
+        ax21_InitiatedByEnum *initiatedByEnum = [[ax21_InitiatedByEnum alloc] init];
+        initiatedByEnum.value = [self fromObjectTranslate:[object valueForKey:kSCHWishListWebServiceInitiatedBy]];
         intoObject.initiatedBy = initiatedByEnum;
         [initiatedByEnum release], initiatedByEnum = nil;
-        [self fromObject:[self fromObjectTranslate:[object valueForKey:kSCHWishListWebServiceInitiatedBy]] intoInitiatedByEnum:intoObject.initiatedBy];
         intoObject.isbn = [self fromObjectTranslate:[object valueForKey:kSCHWishListWebServiceISBN]];
         intoObject.timeStamp = [self fromObjectTranslate:[object valueForKey:kSCHWishListWebServiceTimestamp]];
         intoObject.title = [self fromObjectTranslate:[object valueForKey:kSCHWishListWebServiceTitle]];        
-    }
-}
-
-- (void)fromObject:(NSDictionary *)object intoInitiatedByEnum:(ax21_InitiatedByEnum *)intoObject
-{
-    if (object != nil && intoObject != nil) {
-        intoObject.value = [self fromObjectTranslate:[object valueForKey:kSCHWishListWebServiceValue]];
     }
 }
 

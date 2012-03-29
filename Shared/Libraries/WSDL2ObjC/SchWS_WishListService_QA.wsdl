@@ -9,6 +9,7 @@
                     <xs:sequence>
                         <xs:element minOccurs="0" name="clientID" nillable="true" type="xs:string"/>
                         <xs:element minOccurs="0" name="token" nillable="true" type="xs:string"/>
+                        <xs:element minOccurs="0" name="spsIdParam" nillable="true" type="xs:string"/>
                         <xs:element maxOccurs="unbounded" minOccurs="0" name="profileItemList" nillable="true" type="ax22:WishListProfileItem"/>
                     </xs:sequence>
                 </xs:complexType>
@@ -25,6 +26,7 @@
                     <xs:sequence>
                         <xs:element minOccurs="0" name="clientID" nillable="true" type="xs:string"/>
                         <xs:element minOccurs="0" name="token" nillable="true" type="xs:string"/>
+                        <xs:element minOccurs="0" name="spsIdParam" nillable="true" type="xs:string"/>
                         <xs:element maxOccurs="unbounded" minOccurs="0" name="profileItemList" nillable="true" type="ax22:WishListProfileItem"/>
                     </xs:sequence>
                 </xs:complexType>
@@ -41,6 +43,7 @@
                     <xs:sequence>
                         <xs:element minOccurs="0" name="clientID" nillable="true" type="xs:string"/>
                         <xs:element minOccurs="0" name="token" nillable="true" type="xs:string"/>
+                        <xs:element minOccurs="0" name="spsIdParam" nillable="true" type="xs:string"/>
                         <xs:element maxOccurs="unbounded" minOccurs="0" name="profileIdList" type="xs:long"/>
                     </xs:sequence>
                 </xs:complexType>
@@ -57,6 +60,7 @@
                     <xs:sequence>
                         <xs:element minOccurs="0" name="clientID" nillable="true" type="xs:string"/>
                         <xs:element minOccurs="0" name="token" nillable="true" type="xs:string"/>
+                        <xs:element minOccurs="0" name="spsIdParam" nillable="true" type="xs:string"/>
                         <xs:element maxOccurs="unbounded" minOccurs="0" name="profileIdList" nillable="true" type="ax22:WishListProfile"/>
                     </xs:sequence>
                 </xs:complexType>

@@ -37,7 +37,7 @@
     self.fullSelectedImage = nil;
     self.rating = 0;
     self.editable = NO;    
-    self.imageViews = [[NSMutableArray alloc] init];
+    self.imageViews = [NSMutableArray array];
     self.maxRating = 5;
     self.midMargin = 5;
     self.leftMargin = 0;
@@ -109,6 +109,7 @@
         imageView.contentMode = UIViewContentModeScaleAspectFit;
         [self.imageViews addObject:imageView];
         [self addSubview:imageView];
+        [imageView release], imageView = nil;
     }
     
     // Relayout and refresh

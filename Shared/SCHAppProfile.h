@@ -10,9 +10,20 @@
 #import <CoreData/CoreData.h>
 
 @class SCHProfileItem;
+@class SCHRecommendationProfile;
+@class SCHWishListProfile;
 
 // Constants
 extern NSString * const kSCHAppProfile;
+
+extern NSString * const kSCHAppProfileCoverImage;
+
+// Parameter Constants
+extern NSString * const kSCHAppProfileTitle;
+extern NSString * const kSCHAppProfileAuthor;
+extern NSString * const kSCHAppProfileISBN;
+extern NSString * const kSCHAppProfileAverageRating;
+extern NSString * const kSCHAppProfileCoverImage;
 
 @interface SCHAppProfile : NSManagedObject 
 {
@@ -26,5 +37,12 @@ extern NSString * const kSCHAppProfile;
 @property (nonatomic, retain) NSNumber *PaperType;
 @property (nonatomic, retain) NSNumber *SortType;
 @property (nonatomic, retain) NSNumber *ShowListView;
+
+- (SCHRecommendationProfile *)recommendationProfile;
+- (NSArray *)recommendationDictionaries;
+- (SCHWishListProfile *)wishListProfile;
+- (NSArray *)wishListItemDictionaries;
+- (void)addToWishList:(NSDictionary *)wishListItem;
+- (void)removeFromWishList:(NSDictionary *)wishListItem;
 
 @end

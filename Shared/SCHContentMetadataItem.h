@@ -40,6 +40,8 @@ extern NSString * const kSCHContentMetadataItem;
 @property (nonatomic, readonly) NSSet *AnnotationsContentItem;
 @property (nonatomic, readonly) SCHUserContentItem *UserContentItem;
 
+- (NSNumber *)AverageRatingAsNumber;
+
 - (NSArray *)annotationsContentForProfile:(NSNumber *)profileID;
 - (void)deleteAllFiles;
 - (void)deleteXPSFile;

@@ -15,6 +15,7 @@
 #import "SCHReadingStatsSyncComponent.h"
 #import "SCHSettingsSyncComponent.h"
 #import "SCHWishListSyncComponent.h"
+#import "SCHRecommendationSyncComponent.h"
 #import "SCHProfileItem.h"
 #import "SCHContentProfileItem.h"
 #import "SCHUserDefaults.h"
@@ -66,6 +67,7 @@ static NSUInteger const kSCHSyncManagerMaximumFailureRetries = 3;
 @property (retain, nonatomic) SCHReadingStatsSyncComponent *readingStatsSyncComponent;
 @property (retain, nonatomic) SCHSettingsSyncComponent *settingsSyncComponent;
 @property (retain, nonatomic) SCHWishListSyncComponent *wishListSyncComponent;
+@property (retain, nonatomic) SCHRecommendationSyncComponent *recommendationSyncComponent;
 
 @end
 
@@ -83,6 +85,7 @@ static NSUInteger const kSCHSyncManagerMaximumFailureRetries = 3;
 @synthesize readingStatsSyncComponent;
 @synthesize settingsSyncComponent;
 @synthesize wishListSyncComponent;
+@synthesize recommendationSyncComponent;
 @synthesize backgroundTaskIdentifier;
 @synthesize flushSaveMode;
 @synthesize suspended;
@@ -123,6 +126,8 @@ static NSUInteger const kSCHSyncManagerMaximumFailureRetries = 3;
 		settingsSyncComponent.delegate = self;	
 		wishListSyncComponent = [[SCHWishListSyncComponent alloc] init];
         wishListSyncComponent.delegate = self;
+        recommendationSyncComponent = [[SCHRecommendationSyncComponent alloc] init];
+        recommendationSyncComponent.delegate = self;
         
         backgroundTaskIdentifier = UIBackgroundTaskInvalid;	
         
@@ -168,6 +173,7 @@ static NSUInteger const kSCHSyncManagerMaximumFailureRetries = 3;
 	[readingStatsSyncComponent release], readingStatsSyncComponent = nil;
 	[settingsSyncComponent release], settingsSyncComponent = nil;
     [wishListSyncComponent release], wishListSyncComponent = nil;
+    [recommendationSyncComponent release], recommendationSyncComponent = nil;
 	
 	[super dealloc];
 }
@@ -185,6 +191,7 @@ static NSUInteger const kSCHSyncManagerMaximumFailureRetries = 3;
 	self.readingStatsSyncComponent.managedObjectContext = newManagedObjectContext;		
 	self.settingsSyncComponent.managedObjectContext = newManagedObjectContext;	
     self.wishListSyncComponent.managedObjectContext = newManagedObjectContext;
+    self.recommendationSyncComponent.managedObjectContext = newManagedObjectContext;
 }
 
 - (BOOL)isSynchronizing
@@ -216,6 +223,7 @@ static NSUInteger const kSCHSyncManagerMaximumFailureRetries = 3;
         self.readingStatsSyncComponent.saveOnly = flushSaveMode;
         self.settingsSyncComponent.saveOnly = flushSaveMode;
         self.wishListSyncComponent.saveOnly = flushSaveMode;
+        self.recommendationSyncComponent.saveOnly = flushSaveMode;
     }    
 }
 
@@ -278,6 +286,7 @@ static NSUInteger const kSCHSyncManagerMaximumFailureRetries = 3;
 	[self.readingStatsSyncComponent clear];	
 	[self.settingsSyncComponent clear];	
 	[self.wishListSyncComponent clear];	
+    [self.recommendationSyncComponent clear];
 	
     self.lastFirstSyncEnded = nil;
     self.syncAfterDelay = NO;
@@ -616,6 +625,22 @@ static NSUInteger const kSCHSyncManagerMaximumFailureRetries = 3;
                                                                 object:self];		        
             [[NSNotificationCenter defaultCenter] postNotificationName:SCHReadingStatsSyncComponentDidCompleteNotification
                                                                 object:nil];    
+        });        
+    }
+}
+
+- (void)recommendationSync
+{
+    if ([self shouldSync] == YES) {	 
+        NSLog(@"Scheduling Recommendation");  
+        
+        [self addToQueue:self.recommendationSyncComponent];
+        
+        [self kickQueue];	
+    } else {
+        dispatch_async(dispatch_get_main_queue(), ^(void) {
+            [[NSNotificationCenter defaultCenter] postNotificationName:SCHRecommendationSyncComponentDidCompleteNotification 
+                                                                object:self];		
         });        
     }
 }

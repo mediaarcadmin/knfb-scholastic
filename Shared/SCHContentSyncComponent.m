@@ -23,6 +23,9 @@
 #import "SCHBookIdentifier.h"
 #import "BITAPIError.h"
 #import "SCHContentMetadataItem.h"
+#import "SCHRecommendationISBN.h"
+#import "SCHRecommendationItem.h"
+#import "SCHRecommendationSyncComponent.h"
 
 // Constants
 NSString * const SCHContentSyncComponentWillDeleteNotification = @"SCHContentSyncComponentWillDeleteNotification";
@@ -58,6 +61,7 @@ NSString * const SCHContentSyncComponentDidFailNotification = @"SCHContentSyncCo
 - (void)syncContentProfileItem:(NSDictionary *)webContentProfileItem 
         withContentProfileItem:(SCHContentProfileItem *)localContentProfileItem;
 - (void)deleteUnusedContentMetadataItems;
+- (void)removeRecommendationForBook:(SCHContentMetadataItem *)contentMetadataItem;
 
 @end
 
@@ -743,11 +747,36 @@ NSString * const SCHContentSyncComponentDidFailNotification = @"SCHContentSyncCo
     for (SCHContentMetadataItem *contentMetadataItem in contentMetadataItems) {
         SCHUserContentItem *userContentItem = [contentMetadataItem UserContentItem];
         if (userContentItem == nil || [userContentItem.ProfileList count] == 0) {
+            [self removeRecommendationForBook:contentMetadataItem];
             [self.managedObjectContext deleteObject:contentMetadataItem];
         }
     }   
     
     [self save];
+}
+
+- (void)removeRecommendationForBook:(SCHContentMetadataItem *)contentMetadataItem
+{
+    if (contentMetadataItem != nil) {
+        SCHRecommendationISBN *recommendationISBN = [contentMetadataItem.AppBook recommendationISBN];
+        if (recommendationISBN != nil) {
+            NSMutableArray *deletedISBNs = [NSMutableArray array];
+            for (SCHRecommendationItem *item in recommendationISBN.recommendationItems) {
+                NSString *isbn = item.product_code;
+                if (isbn != nil) {
+                    [deletedISBNs addObject:isbn];
+                }
+            }
+            if ([deletedISBNs count] > 0) {
+                [[NSNotificationCenter defaultCenter] postNotificationName:SCHRecommendationSyncComponentWillDeleteNotification 
+                                                                    object:self 
+                                                                  userInfo:[NSDictionary dictionaryWithObject:[NSArray arrayWithArray:deletedISBNs]
+                                                                                                       forKey:SCHRecommendationSyncComponentISBNs]];
+            }
+            [self.managedObjectContext deleteObject:recommendationISBN];
+            [self save];
+        }
+    }
 }
 
 @end

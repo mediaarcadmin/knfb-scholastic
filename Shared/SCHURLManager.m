@@ -17,6 +17,9 @@
 #import "SCHCoreDataHelper.h"
 #import "SCHAppBook.h"
 #import "SCHBookManager.h"
+#import "SCHAppRecommendationItem.h"
+#import "SCHContentItem.h"
+#import "SCHISBNItem.h"
 
 // Constants
 NSString * const kSCHURLManagerSuccess = @"URLManagerSuccess";
@@ -26,6 +29,7 @@ static NSUInteger const kSCHURLManagerMaxConnections = 6;
 @interface SCHURLManager ()
 
 - (void)requestURLForBookOnMainThread:(SCHBookIdentifier *)bookIdentifier;
+- (void)requestURLForRecommendationOnMainThread:(NSString *)isbn;
 - (void)clearOnMainThread;
 - (void)shakeTable;
 
@@ -105,6 +109,11 @@ static NSUInteger const kSCHURLManagerMaxConnections = 6;
 {
     [self performSelectorOnMainThread:@selector(requestURLForBookOnMainThread:) withObject:bookIdentifier waitUntilDone:NO];
 }
+
+- (void)requestURLForRecommendation:(NSString *)isbn
+{
+    [self performSelectorOnMainThread:@selector(requestURLForRecommendationOnMainThread:) withObject:isbn waitUntilDone:NO];
+}
 	
 - (void)clear
 {
@@ -151,6 +160,37 @@ static NSUInteger const kSCHURLManagerMaxConnections = 6;
 	}
 }
 
+- (void)requestURLForRecommendationOnMainThread:(NSString *)isbn
+{	
+    NSAssert([NSThread isMainThread] == YES, @"SCHURLManager:requestURLForRecommendationOnMainThread MUST be executed on the main thread");
+    
+	if (isbn != nil) {
+        NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+        NSError *error = nil;
+        
+        [fetchRequest setEntity:[NSEntityDescription entityForName:kSCHAppRecommendationItem 
+                                            inManagedObjectContext:self.managedObjectContext]];	
+        [fetchRequest setPredicate:[NSPredicate predicateWithFormat:@"ContentIdentifier == %@", 
+                                    isbn]];
+        
+		NSArray *recommendations = [self.managedObjectContext executeFetchRequest:fetchRequest error:&error];	
+        [fetchRequest release], fetchRequest = nil;
+        if (recommendations == nil) {
+            NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
+        }
+		
+		if ([recommendations count] > 0) {
+			[table addObject:[recommendations objectAtIndex:0]];
+			[self shakeTable];
+		} else {
+			[[NSNotificationCenter defaultCenter] postNotificationName:kSCHURLManagerFailure 
+																object:self
+                                                              userInfo:[NSDictionary dictionaryWithObject:isbn 
+                                                                                                   forKey:kSCHAppRecommendationItemIsbn]];
+        }
+	}
+}
+
 - (void)clearOnMainThread
 {
     NSAssert([NSThread isMainThread] == YES, @"SCHURLManager:clearOnMainThread MUST be executed on the main thread");
@@ -168,34 +208,36 @@ static NSUInteger const kSCHURLManagerMaxConnections = 6;
 			self.backgroundTaskIdentifier = UIBackgroundTaskInvalid;
 		}];
 		
-		for (SCHContentMetadataItem *contentMetaDataItem in table) {
-            // limit the amount of requests
-            if (requestCount > kSCHURLManagerMaxConnections) {
-                NSLog(@"URL Manager connections maxed out, please wait...");
-                continue;
-            } else {
-                NSLog(@"URL Manager active connections %d", requestCount);
-            }
-
-			if ([self.libreAccessWebService listContentMetadata:[NSArray arrayWithObject:contentMetaDataItem] 
-													includeURLs:YES] == YES) {
-				NSLog(@"Requesting URLs for %@", contentMetaDataItem.bookIdentifier);
-				
-				requestCount++;
-				[removeFromTable addObject:contentMetaDataItem];
-			} else {
-				if (self.backgroundTaskIdentifier != UIBackgroundTaskInvalid) {
-					[[UIApplication sharedApplication] endBackgroundTask:self.backgroundTaskIdentifier];
-					self.backgroundTaskIdentifier = UIBackgroundTaskInvalid;			
-				}
-				
-				[[SCHAuthenticationManager sharedAuthenticationManager] authenticateWithSuccessBlock:^(SCHAuthenticationManagerConnectivityMode connectivityMode){
-                    if (connectivityMode == SCHAuthenticationManagerConnectivityModeOnline) {
-                        [self shakeTable];
+		for (id<SCHISBNItem> isbnItem in table) {
+            if ([isbnItem conformsToProtocol:@protocol(SCHISBNItem)] == YES) {
+                // limit the amount of requests
+                if (requestCount > kSCHURLManagerMaxConnections) {
+                    NSLog(@"URL Manager connections maxed out, please wait...");
+                    continue;
+                } else {
+                    NSLog(@"URL Manager active connections %d", requestCount);
+                }
+                
+                if ([self.libreAccessWebService listContentMetadata:[NSArray arrayWithObject:isbnItem] 
+                                                        includeURLs:YES] == YES) {
+                    NSLog(@"Requesting URLs for %@", isbnItem);
+                    
+                    requestCount++;
+                    [removeFromTable addObject:isbnItem];
+                } else {
+                    if (self.backgroundTaskIdentifier != UIBackgroundTaskInvalid) {
+                        [[UIApplication sharedApplication] endBackgroundTask:self.backgroundTaskIdentifier];
+                        self.backgroundTaskIdentifier = UIBackgroundTaskInvalid;			
                     }
-                } failureBlock:nil];							
-				break;
-			}
+                    
+                    [[SCHAuthenticationManager sharedAuthenticationManager] authenticateWithSuccessBlock:^(SCHAuthenticationManagerConnectivityMode connectivityMode){
+                        if (connectivityMode == SCHAuthenticationManagerConnectivityModeOnline) {
+                            [self shakeTable];
+                        }
+                    } failureBlock:nil];							
+                    break;
+                }
+            }
 		}
 		
 		[table minusSet:removeFromTable];	
@@ -229,8 +271,8 @@ static NSUInteger const kSCHURLManagerMaxConnections = 6;
                 }
             }
             
-			[[NSNotificationCenter defaultCenter] postNotificationName:kSCHURLManagerSuccess 
-																object:self userInfo:[list objectAtIndex:0]];				
+            [[NSNotificationCenter defaultCenter] postNotificationName:kSCHURLManagerSuccess 
+																object:self userInfo:[list objectAtIndex:0]];
 		}		
 	}
 	
@@ -258,8 +300,7 @@ static NSUInteger const kSCHURLManagerMaxConnections = 6;
 
         [[NSNotificationCenter defaultCenter] postNotificationName:kSCHURLManagerFailure 
                                                             object:self 
-                                                          userInfo:[NSDictionary dictionaryWithObject:bookIdentifier
-                                                                                               forKey:kSCHBookIdentifierBookIdentifier]];	
+                                                          userInfo:[NSDictionary dictionaryWithObjects:[NSArray arrayWithObjects:bookIdentifier, bookIdentifier.isbn, nil]                                                                                                  forKeys:[NSArray arrayWithObjects:kSCHBookIdentifierBookIdentifier, kSCHAppRecommendationItemIsbn, nil]]];	
 	}
     
 	if (requestCount < 1) {
