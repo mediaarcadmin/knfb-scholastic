@@ -567,23 +567,11 @@ static void sortedHighlightRangePredicateInit() {
 {
     if (nil == selectorRange) return nil;
     
-    EucBookPageIndexPoint *indexPoint = [[EucBookPageIndexPoint alloc] init];
-    
-    indexPoint.source = [self.eucBookView currentPageIndexPoint].source;
-    
-    indexPoint.block = [((THPair *)selectorRange.startBlockId).second unsignedIntValue];
-    indexPoint.word = [selectorRange.startElementId unsignedIntValue];
-    SCHBookPoint *startPoint = [self.eucBook bookPointFromBookPageIndexPoint:indexPoint];
-    
-    indexPoint.block = [((THPair *)selectorRange.endBlockId).second unsignedIntValue];
-    indexPoint.word = [selectorRange.endElementId unsignedIntValue];
-    SCHBookPoint *endPoint = [self.eucBook bookPointFromBookPageIndexPoint:indexPoint];
-    
-    [indexPoint release];
-    
+    EucBookPageIndexPointRange *eucIndexPointRange = [self.eucBookView pageIndexPointRangeFromSelectorRange:selectorRange];
+
     SCHBookRange *range = [[SCHBookRange alloc] init];
-    range.startPoint = startPoint;
-    range.endPoint = endPoint;    
+    range.startPoint = [self.eucBook bookPointFromBookPageIndexPoint:eucIndexPointRange.startPoint];
+    range.endPoint = [self.eucBook bookPointFromBookPageIndexPoint:eucIndexPointRange.endPoint];    
     
     return [range autorelease];
 }
