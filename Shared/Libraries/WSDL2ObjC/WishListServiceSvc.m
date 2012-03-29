@@ -62,7 +62,11 @@
 	}
 	if(self.spsIdParam != 0) {
 		xmlAddChild(node, [self.spsIdParam xmlNodeForDoc:node->doc elementName:@"spsIdParam" elementNSPrefix:@"WishListServiceSvc"]);
-	}
+	} else {
+        xmlNodePtr newnode = xmlNewDocNode(node->doc, NULL, [@"WishListServiceSvc:spsIdParam" xmlString], NULL);        
+        xmlNewProp(newnode, (const xmlChar *)"xsi:nil", (const xmlChar *)"true");
+        xmlAddChild(node, newnode);
+    }
 	if(self.profileItemList != 0) {
 		for(ax21_WishListProfileItem * child in self.profileItemList) {
 			xmlAddChild(node, [child xmlNodeForDoc:node->doc elementName:@"profileItemList" elementNSPrefix:@"WishListServiceSvc"]);
@@ -554,7 +558,11 @@
 	}
 	if(self.spsIdParam != 0) {
 		xmlAddChild(node, [self.spsIdParam xmlNodeForDoc:node->doc elementName:@"spsIdParam" elementNSPrefix:@"WishListServiceSvc"]);
-	}
+	} else {
+        xmlNodePtr newnode = xmlNewDocNode(node->doc, NULL, [@"WishListServiceSvc:spsIdParam" xmlString], NULL);        
+        xmlNewProp(newnode, (const xmlChar *)"xsi:nil", (const xmlChar *)"true");
+        xmlAddChild(node, newnode);
+    }
 	if(self.profileItemList != 0) {
 		for(ax21_WishListProfileItem * child in self.profileItemList) {
 			xmlAddChild(node, [child xmlNodeForDoc:node->doc elementName:@"profileItemList" elementNSPrefix:@"WishListServiceSvc"]);
@@ -1046,7 +1054,11 @@
 	}
 	if(self.spsIdParam != 0) {
 		xmlAddChild(node, [self.spsIdParam xmlNodeForDoc:node->doc elementName:@"spsIdParam" elementNSPrefix:@"WishListServiceSvc"]);
-	}
+	} else {
+        xmlNodePtr newnode = xmlNewDocNode(node->doc, NULL, [@"WishListServiceSvc:spsIdParam" xmlString], NULL);        
+        xmlNewProp(newnode, (const xmlChar *)"xsi:nil", (const xmlChar *)"true");
+        xmlAddChild(node, newnode);
+    }
 	if(self.profileIdList != 0) {
 		for(NSNumber * child in self.profileIdList) {
 			xmlAddChild(node, [child xmlNodeForDoc:node->doc elementName:@"profileIdList" elementNSPrefix:@"WishListServiceSvc"]);
@@ -1538,7 +1550,11 @@
 	}
 	if(self.spsIdParam != 0) {
 		xmlAddChild(node, [self.spsIdParam xmlNodeForDoc:node->doc elementName:@"spsIdParam" elementNSPrefix:@"WishListServiceSvc"]);
-	}
+	} else {
+        xmlNodePtr newnode = xmlNewDocNode(node->doc, NULL, [@"WishListServiceSvc:spsIdParam" xmlString], NULL);        
+        xmlNewProp(newnode, (const xmlChar *)"xsi:nil", (const xmlChar *)"true");
+        xmlAddChild(node, newnode);
+    }
 	if(self.profileIdList != 0) {
 		for(ax21_WishListProfile * child in self.profileIdList) {
 			xmlAddChild(node, [child xmlNodeForDoc:node->doc elementName:@"profileIdList" elementNSPrefix:@"WishListServiceSvc"]);
