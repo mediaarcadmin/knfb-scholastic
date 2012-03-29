@@ -16,15 +16,6 @@
 // Constants
 extern NSString * const kSCHAppProfile;
 
-extern NSString * const kSCHAppProfileCoverImage;
-
-// Parameter Constants
-extern NSString * const kSCHAppProfileTitle;
-extern NSString * const kSCHAppProfileAuthor;
-extern NSString * const kSCHAppProfileISBN;
-extern NSString * const kSCHAppProfileAverageRating;
-extern NSString * const kSCHAppProfileCoverImage;
-
 @interface SCHAppProfile : NSManagedObject 
 {
 }

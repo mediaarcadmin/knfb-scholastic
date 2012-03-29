@@ -21,14 +21,6 @@
 // Constants
 NSString * const kSCHAppProfile = @"SCHAppProfile";
 
-// Parameter Constants
-NSString * const kSCHAppProfileTitle = @"Title";
-NSString * const kSCHAppProfileAuthor = @"Author";
-NSString * const kSCHAppProfileISBN = @"ISBN";
-NSString * const kSCHAppProfileAverageRating = @"AverageRating";
-NSString * const kSCHAppProfileCoverImage = @"CoverImage";
-static NSString * const kSCHAppProfileObjectID = @"ObjectID";
-
 @interface SCHAppProfile ()
 
 - (id)makeNullNil:(id)object;
@@ -79,33 +71,11 @@ static NSString * const kSCHAppProfileObjectID = @"ObjectID";
     NSMutableArray *objectArray = [NSMutableArray arrayWithCapacity:[filteredItems count]];
     
     for(SCHRecommendationItem *item in filteredItems) {
-        NSMutableDictionary *recommendationItem = [NSMutableDictionary dictionary];
+        NSDictionary *recommendationDictionary = [item.appRecommendationItem dictionary];
         
-        if ([item.appRecommendationItem Title]) {
-            [recommendationItem setValue:[item.appRecommendationItem Title] 
-                                  forKey:kSCHAppProfileTitle];
+        if (recommendationDictionary) {
+            [objectArray addObject:recommendationDictionary];
         }
-        if (item.product_code) {
-            [recommendationItem setValue:item.product_code 
-                                  forKey:kSCHAppProfileISBN];
-        }
-        
-        if ([item.appRecommendationItem Author]) {
-            [recommendationItem setValue:[item.appRecommendationItem Author]
-                                  forKey:kSCHAppProfileAuthor];
-        }
-        if ([item.appRecommendationItem AverageRatingAsNumber]) {
-            [recommendationItem setValue:[item.appRecommendationItem AverageRatingAsNumber] 
-                                  forKey:kSCHAppProfileAverageRating];
-        }
-        UIImage *coverImage = [item.appRecommendationItem bookCover];
-        
-        if (coverImage) {
-            [recommendationItem setValue:coverImage
-                                  forKey:kSCHAppProfileCoverImage];
-        }
-        
-        [objectArray addObject:[NSDictionary dictionaryWithDictionary:recommendationItem]];
     }
     
     ret = [NSArray arrayWithArray:objectArray];
@@ -153,23 +123,11 @@ static NSString * const kSCHAppProfileObjectID = @"ObjectID";
     } else {
         NSMutableArray *objectArray = [NSMutableArray arrayWithCapacity:[result count]];
         
-        for(SCHWishListItem *item in result) {
-            NSMutableDictionary *wishListItem = [NSMutableDictionary dictionary];
-            
-            [wishListItem setValue:(item.Author == nil ? (id)[NSNull null] : item.Author) 
-                            forKey:kSCHAppProfileAuthor];
-            [wishListItem setValue:(item.ISBN == nil ? (id)[NSNull null] : item.ISBN) 
-                            forKey:kSCHAppProfileISBN];
-            [wishListItem setValue:(item.Title == nil ? (id)[NSNull null] : item.Title) 
-                            forKey:kSCHAppProfileTitle];
-            UIImage *coverImage = [item.appRecommendationItem bookCover];
-            [wishListItem setValue:(coverImage == nil ? (id)[NSNull null] : coverImage) 
-                                  forKey:kSCHAppProfileCoverImage];            
-            [wishListItem setValue:item.objectID
-                            forKey:kSCHAppProfileObjectID];
-            
-            
-            [objectArray addObject:[NSDictionary dictionaryWithDictionary:wishListItem]];
+        for (SCHWishListItem *item in result) {
+            NSDictionary *wishlistDictionary = [item dictionary];
+            if (wishlistDictionary) {
+                [objectArray addObject:wishlistDictionary];
+            }
         }
         
         ret = [NSArray arrayWithArray:objectArray];
@@ -188,9 +146,9 @@ static NSString * const kSCHAppProfileObjectID = @"ObjectID";
             SCHWishListItem *newWishListItem = [NSEntityDescription insertNewObjectForEntityForName:kSCHWishListItem 
                                                                              inManagedObjectContext:self.managedObjectContext];
             
-            newWishListItem.Title = [self makeNullNil:[wishListItem objectForKey:kSCHAppProfileTitle]];
-            newWishListItem.Author = [self makeNullNil:[wishListItem objectForKey:kSCHAppProfileAuthor]];
-            newWishListItem.ISBN = [self makeNullNil:[wishListItem objectForKey:kSCHAppProfileISBN]];
+            newWishListItem.Title = [self makeNullNil:[wishListItem objectForKey:kSCHWishListTitle]];
+            newWishListItem.Author = [self makeNullNil:[wishListItem objectForKey:kSCHWishListAuthor]];
+            newWishListItem.ISBN = [self makeNullNil:[wishListItem objectForKey:kSCHWishListISBN]];
             newWishListItem.InitiatedBy = kSCHWishListWebServiceCHILD;
             
             [newWishListItem assignAppRecommendationItem];
@@ -205,7 +163,7 @@ static NSString * const kSCHAppProfileObjectID = @"ObjectID";
 - (void)removeFromWishList:(NSDictionary *)wishListItem
 {
     if (wishListItem != nil) {
-        NSManagedObjectID *objectID = [wishListItem objectForKey:kSCHAppProfileObjectID];
+        NSManagedObjectID *objectID = [wishListItem objectForKey:kSCHWishListObjectID];
         if (objectID != nil) {
             SCHWishListItem *wishListItem = (SCHWishListItem *)[self.managedObjectContext objectRegisteredForID:objectID];
             [wishListItem syncDelete];

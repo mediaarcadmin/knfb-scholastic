@@ -18,6 +18,12 @@ NSString * const kSCHAppRecommendationFilenameSeparator = @"-";
 NSUInteger const kSCHRecommendationThumbnailMaxDimensionPad = 160;
 NSUInteger const kSCHRecommendationThumbnailMaxDimensionPhone = 60;
 
+NSString * const kSCHAppRecommendationTitle = @"Title";
+NSString * const kSCHAppRecommendationAuthor = @"Author";
+NSString * const kSCHAppRecommendationISBN = @"ISBN";
+NSString * const kSCHAppRecommendationAverageRating = @"AverageRating";
+NSString * const kSCHAppRecommendationCoverImage = @"CoverImage";
+
 @interface SCHAppRecommendationItem()
 
 @property (nonatomic, copy) NSString *cachedRecommendationDirectory;
@@ -238,6 +244,38 @@ NSUInteger const kSCHRecommendationThumbnailMaxDimensionPhone = 60;
         NSLog(@"Failed to delete files for %@, error: %@", 
               self.ContentIdentifier, [error localizedDescription]);
     }
+}
+
+- (NSDictionary *)dictionary {
+    NSMutableDictionary *recommendationDict = [NSMutableDictionary dictionary];
+    
+    if ([self Title]) {
+        [recommendationDict setValue:[self Title] 
+                              forKey:kSCHAppRecommendationTitle];
+    }
+    if ([self ContentIdentifier]) {
+        [recommendationDict setValue:[self ContentIdentifier] 
+                              forKey:kSCHAppRecommendationISBN];
+    }
+    
+    if ([self Author]) {
+        [recommendationDict setValue:[self Author]
+                              forKey:kSCHAppRecommendationAuthor];
+    }
+    if ([self AverageRatingAsNumber]) {
+        [recommendationDict setValue:[self AverageRatingAsNumber] 
+                              forKey:kSCHAppRecommendationAverageRating];
+    }
+    
+    UIImage *coverImage = [self bookCover];
+    
+    if (coverImage) {
+        [recommendationDict setValue:coverImage
+                              forKey:kSCHAppRecommendationCoverImage];
+    }
+    
+    return recommendationDict;
+
 }
 
 @end
