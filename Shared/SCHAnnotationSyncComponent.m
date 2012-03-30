@@ -22,6 +22,7 @@
 #import "SCHBookmark.h"
 #import "SCHLocationBookmark.h"
 #import "SCHLastPage.h"
+#import "SCHRating.h"
 #import "SCHAppStateManager.h"
 #import "SCHProfileItem.h"
 #import "SCHAppContentProfileItem.h"
@@ -101,6 +102,8 @@ NSString * const SCHAnnotationSyncComponentProfileIDs = @"SCHAnnotationSyncCompo
 - (void)syncLastPage:(NSDictionary *)webLastPage 
         withLastPage:(SCHLastPage *)localLastPage;
 - (SCHLastPage *)lastPage:(NSDictionary *)lastPage;
+- (void)syncRating:(NSDictionary *)webRating withRating:(SCHRating *)localRating;
+- (SCHRating *)rating:(NSDictionary *)rating;
 - (BOOL)shouldCreate:(NSDictionary *)webItem;
 - (BOOL)shouldDelete:(NSDictionary *)webItem;
 - (void)backgroundSave:(BOOL)batch;
@@ -775,10 +778,6 @@ NSString * const SCHAnnotationSyncComponentProfileIDs = @"SCHAnnotationSyncCompo
         localAnnotationsContentItem.ContentIdentifier = [self makeNullNil:[webAnnotationsContentItem objectForKey:kSCHLibreAccessWebServiceContentIdentifier]];
         
         localAnnotationsContentItem.Format = [self makeNullNil:[webAnnotationsContentItem objectForKey:kSCHLibreAccessWebServiceFormat]];
-
-        localAnnotationsContentItem.LastModified = [self makeNullNil:[webAnnotationsContentItem objectForKey:kSCHLibreAccessWebServiceLastModified]];
-        localAnnotationsContentItem.AverageRating = [self makeNullNil:[webAnnotationsContentItem objectForKey:kSCHLibreAccessWebServiceAverageRating]];
-        localAnnotationsContentItem.Rating = [self makeNullNil:[webAnnotationsContentItem objectForKey:kSCHLibreAccessWebServiceRating]];
         
         NSDictionary *privateAnnotations = [self makeNullNil:[webAnnotationsContentItem objectForKey:kSCHLibreAccessWebServicePrivateAnnotations]];
         
@@ -808,6 +807,8 @@ NSString * const SCHAnnotationSyncComponentProfileIDs = @"SCHAnnotationSyncCompo
             }
             [self syncLastPage:[self makeNullNil:[privateAnnotations objectForKey:kSCHLibreAccessWebServiceLastPage]] 
                   withLastPage:localAnnotationsContentItem.PrivateAnnotations.LastPage];
+            [self syncRating:[self makeNullNil:[privateAnnotations objectForKey:kSCHLibreAccessWebServiceRating]] 
+                  withRating:localAnnotationsContentItem.PrivateAnnotations.rating];            
         }
     }
 }
@@ -826,9 +827,6 @@ NSString * const SCHAnnotationSyncComponentProfileIDs = @"SCHAnnotationSyncCompo
 		ret.ContentIdentifier = [self makeNullNil:[annotationsContentItem objectForKey:kSCHLibreAccessWebServiceContentIdentifier]];
 		
 		ret.Format = [self makeNullNil:[annotationsContentItem objectForKey:kSCHLibreAccessWebServiceFormat]];
-        ret.LastModified = [self makeNullNil:[annotationsContentItem objectForKey:kSCHLibreAccessWebServiceLastModified]];        
-		ret.AverageRating = [self makeNullNil:[annotationsContentItem objectForKey:kSCHLibreAccessWebServiceAverageRating]];        
-		ret.Rating = [self makeNullNil:[annotationsContentItem objectForKey:kSCHLibreAccessWebServiceRating]];                
         ret.PrivateAnnotations = [self privateAnnotation:[annotationsContentItem objectForKey:kSCHLibreAccessWebServicePrivateAnnotations]];        
     }
 	
@@ -853,6 +851,7 @@ NSString * const SCHAnnotationSyncComponentProfileIDs = @"SCHAnnotationSyncCompo
 		}
 	}
     ret.LastPage = [self lastPage:[privateAnnotation objectForKey:kSCHLibreAccessWebServiceLastPage]];
+    ret.rating = [self rating:[privateAnnotation objectForKey:kSCHLibreAccessWebServiceRating]];
 	
 	return(ret);
 }
@@ -1379,6 +1378,36 @@ NSString * const SCHAnnotationSyncComponentProfileIDs = @"SCHAnnotationSyncCompo
 		ret.Component = [self makeNullNil:[lastPage objectForKey:kSCHLibreAccessWebServiceComponent]];
         
 		ret.LastModified = [self makeNullNil:[lastPage objectForKey:kSCHLibreAccessWebServiceLastModified]];
+		ret.State = [NSNumber numberWithStatus:kSCHStatusUnmodified];        
+	} else {
+        [ret setInitialValues];
+    }
+	
+	return(ret);
+}
+
+- (void)syncRating:(NSDictionary *)webRating withRating:(SCHRating *)localRating
+{
+    if (webRating != nil) {
+        localRating.averageRating = [self makeNullNil:[webRating objectForKey:kSCHLibreAccessWebServiceAverageRating]];
+        localRating.rating = [self makeNullNil:[webRating objectForKey:kSCHLibreAccessWebServiceRating]];
+        
+        localRating.LastModified = [self makeNullNil:[webRating objectForKey:kSCHLibreAccessWebServiceLastModified]];
+        localRating.State = [NSNumber numberWithStatus:kSCHStatusSyncUpdate];				    
+    }
+}
+
+- (SCHRating *)rating:(NSDictionary *)rating
+{
+    NSAssert([NSThread isMainThread] == NO, @"rating MUST NOT be executed on the main thread");
+	SCHRating *ret = [NSEntityDescription insertNewObjectForEntityForName:kSCHRating
+                                                     inManagedObjectContext:self.backgroundThreadManagedObjectContext];
+    
+	if (rating != nil) {				
+		ret.averageRating = [self makeNullNil:[rating objectForKey:kSCHLibreAccessWebServiceAverageRating]];
+		ret.rating = [self makeNullNil:[rating objectForKey:kSCHLibreAccessWebServiceRating]];
+        
+		ret.LastModified = [self makeNullNil:[rating objectForKey:kSCHLibreAccessWebServiceLastModified]];
 		ret.State = [NSNumber numberWithStatus:kSCHStatusUnmodified];        
 	} else {
         [ret setInitialValues];

@@ -94,8 +94,8 @@ static NSString * const kSCHAppProfileObjectID = @"ObjectID";
             [recommendationItem setValue:[item.appRecommendationItem Author]
                                   forKey:kSCHAppProfileAuthor];
         }
-        if ([item.appRecommendationItem AverageRatingAsNumber]) {
-            [recommendationItem setValue:[item.appRecommendationItem AverageRatingAsNumber] 
+        if ([item.appRecommendationItem AverageRating]) {
+            [recommendationItem setValue:[item.appRecommendationItem AverageRating] 
                                   forKey:kSCHAppProfileAverageRating];
         }
         UIImage *coverImage = [item.appRecommendationItem bookCover];

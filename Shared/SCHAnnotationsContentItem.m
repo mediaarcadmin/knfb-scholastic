@@ -21,27 +21,7 @@ NSString * const kSCHAnnotationsContentItemDRM_QUALIFIER = @"DRM_QUALIFIER";
 @implementation SCHAnnotationsContentItem 
 
 @dynamic Format;
-@dynamic AverageRating;
-@dynamic Rating;
-@dynamic LastModified;
 @dynamic AnnotationsItem;
 @dynamic PrivateAnnotations;
-
-- (NSNumber *)AverageRatingAsNumber
-{    
-    NSString *averageRating = self.AverageRating;
-    
-    if (averageRating == nil || 
-        [[averageRating stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]] length]  < 1) {
-        averageRating = @"0";
-    }
-    
-    NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
-    [formatter setNumberStyle:NSNumberFormatterDecimalStyle];
-    NSNumber *number = [formatter numberFromString:averageRating];
-    [formatter release];
-    
-    return number;
-}
 
 @end

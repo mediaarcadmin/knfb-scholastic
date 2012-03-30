@@ -50,23 +50,6 @@ static NSString * const kSCHContentMetadataItemAnnotationsItemProfileID = @"Anno
 @dynamic FormatAuthorString;
 @dynamic AverageRating;
 
-- (NSNumber *)AverageRatingAsNumber
-{    
-    NSString *averageRating = self.AverageRating;
-    
-    if (averageRating == nil || 
-        [[averageRating stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]] length]  < 1) {
-        averageRating = @"0";
-    }
-    
-    NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
-    [formatter setNumberStyle:NSNumberFormatterDecimalStyle];
-    NSNumber *number = [formatter numberFromString:averageRating];
-    [formatter release];
-    
-    return number;
-}
-
 - (NSSet *)AnnotationsContentItem
 {
     NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];

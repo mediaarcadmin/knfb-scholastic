@@ -37,14 +37,13 @@ typedef enum {
 
 @property (nonatomic, retain) NSString * ContentIdentifier;
 @property (nonatomic, retain) NSString * Author;
-@property (nonatomic, retain) NSString * AverageRating;
+@property (nonatomic, retain) NSNumber * AverageRating;
 @property (nonatomic, retain) NSString * CoverURL;
 @property (nonatomic, retain) NSString * Title;
 @property (nonatomic, retain) NSSet *recommendationItems;
 @property (nonatomic, retain) NSNumber * state;
 @property (nonatomic, retain) NSSet *wishListItems;
 
-- (NSNumber *)AverageRatingAsNumber;
 - (SCHAppRecommendationProcessingState)processingState;
 - (void)setProcessingState:(SCHAppRecommendationProcessingState)processingState;
 - (UIImage *)bookCover;

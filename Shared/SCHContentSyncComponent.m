@@ -18,6 +18,7 @@
 #import "SCHAnnotationsItem.h"
 #import "SCHAnnotationsContentItem.h"
 #import "SCHLastPage.h"
+#import "SCHRating.h"
 #import "SCHPrivateAnnotations.h"
 #import "SCHAppContentProfileItem.h"
 #import "SCHBookIdentifier.h"
@@ -404,10 +405,15 @@ NSString * const SCHContentSyncComponentDidFailNotification = @"SCHContentSyncCo
             SCHLastPage *newLastPage = [NSEntityDescription insertNewObjectForEntityForName:kSCHLastPage 
                                                                      inManagedObjectContext:self.managedObjectContext];
             [newLastPage setInitialValues];
-            
+
+            SCHRating *newRating = [NSEntityDescription insertNewObjectForEntityForName:kSCHRating 
+                                                                     inManagedObjectContext:self.managedObjectContext];
+            [newRating setInitialValues];
+
             SCHPrivateAnnotations *newPrivateAnnotations = [NSEntityDescription insertNewObjectForEntityForName:kSCHPrivateAnnotations 
                                                                                          inManagedObjectContext:self.managedObjectContext];
             newPrivateAnnotations.LastPage = newLastPage;
+            newPrivateAnnotations.rating = newRating;
             
             SCHAnnotationsContentItem *newAnnotationsContentItem = [NSEntityDescription insertNewObjectForEntityForName:kSCHAnnotationsContentItem 
                                                                                                  inManagedObjectContext:self.managedObjectContext];
@@ -415,8 +421,6 @@ NSString * const SCHContentSyncComponentDidFailNotification = @"SCHContentSyncCo
             newAnnotationsContentItem.DRMQualifier = userContentItem.DRMQualifier;
             newAnnotationsContentItem.ContentIdentifier = userContentItem.ContentIdentifier;
             newAnnotationsContentItem.Format = userContentItem.Format;
-            newAnnotationsContentItem.Rating = [NSNumber numberWithInt:0];
-            newAnnotationsContentItem.AverageRating = userContentItem.AverageRating;
             newAnnotationsContentItem.ContentIdentifierType = userContentItem.ContentIdentifierType;
             newAnnotationsContentItem.PrivateAnnotations = newPrivateAnnotations;
         }

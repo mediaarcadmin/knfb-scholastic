@@ -219,7 +219,7 @@ static NSUInteger const kSCHURLManagerMaxConnections = 6;
                 }
                 
                 if ([self.libreAccessWebService listContentMetadata:[NSArray arrayWithObject:isbnItem] 
-                                                        includeURLs:YES] == YES) {
+                                                        includeURLs:YES coverURLOnly:[isbnItem coverURLOnly]] == YES) {
                     NSLog(@"Requesting URLs for %@", isbnItem);
                     
                     requestCount++;

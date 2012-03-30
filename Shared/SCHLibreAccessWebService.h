@@ -28,7 +28,9 @@
 - (BOOL)listUserContent;
 - (BOOL)listFavoriteTypes;
 - (BOOL)listTopFavorites:(NSArray *)favorites withCount:(NSUInteger)count;
-- (BOOL)listContentMetadata:(NSArray *)bookISBNs includeURLs:(BOOL)includeURLs;
+- (BOOL)listContentMetadata:(NSArray *)bookISBNs 
+                includeURLs:(BOOL)includeURLs
+               coverURLOnly:(BOOL)coverURLOnly;
 - (BOOL)listUserSettings;
 - (BOOL)saveUserSettings:(NSArray *)settings;
 - (BOOL)listProfileContentAnnotations:(NSArray *)annotations forProfile:(NSNumber *)profileID;

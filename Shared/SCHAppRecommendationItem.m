@@ -45,23 +45,6 @@ NSUInteger const kSCHRecommendationThumbnailMaxDimensionPhone = 60;
     [super willTurnIntoFault];
 }
 
-- (NSNumber *)AverageRatingAsNumber
-{    
-    NSString *averageRating = self.AverageRating;
-    
-    if (averageRating == nil || 
-        [[averageRating stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]] length]  < 1) {
-        averageRating = @"0";
-    }
-    
-    NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
-    [formatter setNumberStyle:NSNumberFormatterDecimalStyle];
-    NSNumber *number = [formatter numberFromString:averageRating];
-    [formatter release];
-    
-    return number;
-}
-
 - (SCHAppRecommendationProcessingState)processingState
 {
 	return (SCHAppRecommendationProcessingState) [self.state intValue];
@@ -72,7 +55,7 @@ NSUInteger const kSCHRecommendationThumbnailMaxDimensionPhone = 60;
     self.state = [NSNumber numberWithInt:processingState];
 }
 
-#pragma mark - SCHContentItem overriden implementations
+#pragma SCHISBNItem protocol methods
 
 - (NSNumber *)DRMQualifier
 {
@@ -82,6 +65,11 @@ NSUInteger const kSCHRecommendationThumbnailMaxDimensionPhone = 60;
 - (NSNumber *)ContentIdentifierType
 {
     return [NSNumber numberWithInt:kSCHContentItemContentIdentifierTypesISBN13];
+}
+
+- (BOOL)coverURLOnly
+{
+    return YES;
 }
 
 #pragma mark - Thumbnail/Cover Caching

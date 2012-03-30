@@ -36,13 +36,12 @@ extern NSString * const kSCHUserContentItemDRM_QUALIFIER;
 @property (nonatomic, retain) NSSet* ProfileList;
 @property (nonatomic, retain) NSNumber * FreeBook;
 @property (nonatomic, retain) NSString * LastVersion;
-@property (nonatomic, retain) NSString * AverageRating;
+@property (nonatomic, retain) NSNumber * AverageRating;
 
 @property (nonatomic, readonly) NSSet *ContentMetadataItem;
 @property (nonatomic, readonly) NSSet *AssignedProfileList;
 
 - (SCHBookIdentifier *)bookIdentifier;
-- (NSNumber *)AverageRatingAsNumber;
 
 @end
 
