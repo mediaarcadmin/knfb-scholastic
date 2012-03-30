@@ -290,11 +290,11 @@ NSString * LibreAccessServiceSvc_ErrorType_stringFromEnum(LibreAccessServiceSvc_
  * http://davedelong.com/blog/2009/04/13/aspect-oriented-programming-objective-c
  */
 - (id) initWithCoder:(NSCoder *)decoder {
-	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [(id)super initWithCoder:decoder];
-	} else {
+	//if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
+	//	self = [(id)super initWithCoder:decoder];
+	//} else {
 		self = [super init];
-	}
+	//}
 	if (self == nil) { return nil; }
  
 	NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
@@ -467,11 +467,11 @@ NSString * LibreAccessServiceSvc_ErrorType_stringFromEnum(LibreAccessServiceSvc_
  * http://davedelong.com/blog/2009/04/13/aspect-oriented-programming-objective-c
  */
 - (id) initWithCoder:(NSCoder *)decoder {
-	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [(id)super initWithCoder:decoder];
-	} else {
+	//if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
+	//	self = [(id)super initWithCoder:decoder];
+	//} else {
 		self = [super init];
-	}
+	//}
 	if (self == nil) { return nil; }
  
 	NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
@@ -696,11 +696,11 @@ NSString * LibreAccessServiceSvc_ErrorType_stringFromEnum(LibreAccessServiceSvc_
  * http://davedelong.com/blog/2009/04/13/aspect-oriented-programming-objective-c
  */
 - (id) initWithCoder:(NSCoder *)decoder {
-	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [(id)super initWithCoder:decoder];
-	} else {
+	//if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
+	//	self = [(id)super initWithCoder:decoder];
+	//} else {
 		self = [super init];
-	}
+	//}
 	if (self == nil) { return nil; }
  
 	NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
@@ -915,11 +915,11 @@ NSString * LibreAccessServiceSvc_ErrorType_stringFromEnum(LibreAccessServiceSvc_
  * http://davedelong.com/blog/2009/04/13/aspect-oriented-programming-objective-c
  */
 - (id) initWithCoder:(NSCoder *)decoder {
-	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [(id)super initWithCoder:decoder];
-	} else {
+	//if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
+	//	self = [(id)super initWithCoder:decoder];
+	//} else {
 		self = [super init];
-	}
+	//}
 	if (self == nil) { return nil; }
  
 	NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
@@ -1500,11 +1500,11 @@ NSString * LibreAccessServiceSvc_drmqualifiers_stringFromEnum(LibreAccessService
  * http://davedelong.com/blog/2009/04/13/aspect-oriented-programming-objective-c
  */
 - (id) initWithCoder:(NSCoder *)decoder {
-	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [(id)super initWithCoder:decoder];
-	} else {
+	//if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
+	//	self = [(id)super initWithCoder:decoder];
+	//} else {
 		self = [super init];
-	}
+	//}
 	if (self == nil) { return nil; }
  
 	NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
@@ -1677,11 +1677,11 @@ NSString * LibreAccessServiceSvc_drmqualifiers_stringFromEnum(LibreAccessService
  * http://davedelong.com/blog/2009/04/13/aspect-oriented-programming-objective-c
  */
 - (id) initWithCoder:(NSCoder *)decoder {
-	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [(id)super initWithCoder:decoder];
-	} else {
+	//if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
+	//	self = [(id)super initWithCoder:decoder];
+	//} else {
 		self = [super init];
-	}
+	//}
 	if (self == nil) { return nil; }
  
 	NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
@@ -1896,11 +1896,11 @@ NSString * LibreAccessServiceSvc_drmqualifiers_stringFromEnum(LibreAccessService
  * http://davedelong.com/blog/2009/04/13/aspect-oriented-programming-objective-c
  */
 - (id) initWithCoder:(NSCoder *)decoder {
-	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [(id)super initWithCoder:decoder];
-	} else {
+	//if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
+	//	self = [(id)super initWithCoder:decoder];
+	//} else {
 		self = [super init];
-	}
+	//}
 	if (self == nil) { return nil; }
  
 	NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
@@ -2073,11 +2073,11 @@ NSString * LibreAccessServiceSvc_drmqualifiers_stringFromEnum(LibreAccessService
  * http://davedelong.com/blog/2009/04/13/aspect-oriented-programming-objective-c
  */
 - (id) initWithCoder:(NSCoder *)decoder {
-	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [(id)super initWithCoder:decoder];
-	} else {
+	//if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
+	//	self = [(id)super initWithCoder:decoder];
+	//} else {
 		self = [super init];
-	}
+	//}
 	if (self == nil) { return nil; }
  
 	NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
@@ -2552,11 +2552,11 @@ NSString * LibreAccessServiceSvc_drmqualifiers_stringFromEnum(LibreAccessService
  * http://davedelong.com/blog/2009/04/13/aspect-oriented-programming-objective-c
  */
 - (id) initWithCoder:(NSCoder *)decoder {
-	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [(id)super initWithCoder:decoder];
-	} else {
+	//if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
+	//	self = [(id)super initWithCoder:decoder];
+	//} else {
 		self = [super init];
-	}
+	//}
 	if (self == nil) { return nil; }
  
 	NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
@@ -2778,11 +2778,11 @@ NSString * LibreAccessServiceSvc_drmqualifiers_stringFromEnum(LibreAccessService
  * http://davedelong.com/blog/2009/04/13/aspect-oriented-programming-objective-c
  */
 - (id) initWithCoder:(NSCoder *)decoder {
-	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [(id)super initWithCoder:decoder];
-	} else {
+	//if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
+	//	self = [(id)super initWithCoder:decoder];
+	//} else {
 		self = [super init];
-	}
+	//}
 	if (self == nil) { return nil; }
  
 	NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
@@ -3141,11 +3141,11 @@ NSString * LibreAccessServiceSvc_drmqualifiers_stringFromEnum(LibreAccessService
  * http://davedelong.com/blog/2009/04/13/aspect-oriented-programming-objective-c
  */
 - (id) initWithCoder:(NSCoder *)decoder {
-	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [(id)super initWithCoder:decoder];
-	} else {
+	//if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
+	//	self = [(id)super initWithCoder:decoder];
+	//} else {
 		self = [super init];
-	}
+	//}
 	if (self == nil) { return nil; }
  
 	NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
@@ -3318,11 +3318,11 @@ NSString * LibreAccessServiceSvc_drmqualifiers_stringFromEnum(LibreAccessService
  * http://davedelong.com/blog/2009/04/13/aspect-oriented-programming-objective-c
  */
 - (id) initWithCoder:(NSCoder *)decoder {
-	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [(id)super initWithCoder:decoder];
-	} else {
+	//if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
+	//	self = [(id)super initWithCoder:decoder];
+	//} else {
 		self = [super init];
-	}
+	//}
 	if (self == nil) { return nil; }
  
 	NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
@@ -3537,11 +3537,11 @@ NSString * LibreAccessServiceSvc_drmqualifiers_stringFromEnum(LibreAccessService
  * http://davedelong.com/blog/2009/04/13/aspect-oriented-programming-objective-c
  */
 - (id) initWithCoder:(NSCoder *)decoder {
-	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [(id)super initWithCoder:decoder];
-	} else {
+	//if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
+	//	self = [(id)super initWithCoder:decoder];
+	//} else {
 		self = [super init];
-	}
+	//}
 	if (self == nil) { return nil; }
  
 	NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
@@ -3900,11 +3900,11 @@ NSString * LibreAccessServiceSvc_drmqualifiers_stringFromEnum(LibreAccessService
  * http://davedelong.com/blog/2009/04/13/aspect-oriented-programming-objective-c
  */
 - (id) initWithCoder:(NSCoder *)decoder {
-	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [(id)super initWithCoder:decoder];
-	} else {
+	//if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
+	//	self = [(id)super initWithCoder:decoder];
+	//} else {
 		self = [super init];
-	}
+	//}
 	if (self == nil) { return nil; }
  
 	NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
@@ -4743,11 +4743,11 @@ NSString * LibreAccessServiceSvc_drmqualifiers_stringFromEnum(LibreAccessService
  * http://davedelong.com/blog/2009/04/13/aspect-oriented-programming-objective-c
  */
 - (id) initWithCoder:(NSCoder *)decoder {
-	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [(id)super initWithCoder:decoder];
-	} else {
+	//if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
+	//	self = [(id)super initWithCoder:decoder];
+	//} else {
 		self = [super init];
-	}
+	//}
 	if (self == nil) { return nil; }
  
 	NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
@@ -4920,11 +4920,11 @@ NSString * LibreAccessServiceSvc_drmqualifiers_stringFromEnum(LibreAccessService
  * http://davedelong.com/blog/2009/04/13/aspect-oriented-programming-objective-c
  */
 - (id) initWithCoder:(NSCoder *)decoder {
-	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [(id)super initWithCoder:decoder];
-	} else {
+	//if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
+	//	self = [(id)super initWithCoder:decoder];
+	//} else {
 		self = [super init];
-	}
+	//}
 	if (self == nil) { return nil; }
  
 	NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
@@ -5639,11 +5639,11 @@ NSString * LibreAccessServiceSvc_drmqualifiers_stringFromEnum(LibreAccessService
  * http://davedelong.com/blog/2009/04/13/aspect-oriented-programming-objective-c
  */
 - (id) initWithCoder:(NSCoder *)decoder {
-	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [(id)super initWithCoder:decoder];
-	} else {
+	//if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
+	//	self = [(id)super initWithCoder:decoder];
+	//} else {
 		self = [super init];
-	}
+	//}
 	if (self == nil) { return nil; }
  
 	NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
@@ -5902,11 +5902,11 @@ NSString * LibreAccessServiceSvc_TopFavoritesTypes_stringFromEnum(LibreAccessSer
  * http://davedelong.com/blog/2009/04/13/aspect-oriented-programming-objective-c
  */
 - (id) initWithCoder:(NSCoder *)decoder {
-	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [(id)super initWithCoder:decoder];
-	} else {
+	//if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
+	//	self = [(id)super initWithCoder:decoder];
+	//} else {
 		self = [super init];
-	}
+	//}
 	if (self == nil) { return nil; }
  
 	NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
@@ -6579,11 +6579,11 @@ NSString * LibreAccessServiceSvc_TopFavoritesTypes_stringFromEnum(LibreAccessSer
  * http://davedelong.com/blog/2009/04/13/aspect-oriented-programming-objective-c
  */
 - (id) initWithCoder:(NSCoder *)decoder {
-	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [(id)super initWithCoder:decoder];
-	} else {
+	//if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
+	//	self = [(id)super initWithCoder:decoder];
+	//} else {
 		self = [super init];
-	}
+	//}
 	if (self == nil) { return nil; }
  
 	NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
@@ -7304,11 +7304,11 @@ NSString * LibreAccessServiceSvc_TopFavoritesTypes_stringFromEnum(LibreAccessSer
  * http://davedelong.com/blog/2009/04/13/aspect-oriented-programming-objective-c
  */
 - (id) initWithCoder:(NSCoder *)decoder {
-	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [(id)super initWithCoder:decoder];
-	} else {
+	//if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
+	//	self = [(id)super initWithCoder:decoder];
+	//} else {
 		self = [super init];
-	}
+	//}
 	if (self == nil) { return nil; }
  
 	NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
@@ -7563,11 +7563,11 @@ NSString * LibreAccessServiceSvc_SaveActions_stringFromEnum(LibreAccessServiceSv
  * http://davedelong.com/blog/2009/04/13/aspect-oriented-programming-objective-c
  */
 - (id) initWithCoder:(NSCoder *)decoder {
-	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [(id)super initWithCoder:decoder];
-	} else {
+	//if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
+	//	self = [(id)super initWithCoder:decoder];
+	//} else {
 		self = [super init];
-	}
+	//}
 	if (self == nil) { return nil; }
  
 	NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
@@ -7740,11 +7740,11 @@ NSString * LibreAccessServiceSvc_SaveActions_stringFromEnum(LibreAccessServiceSv
  * http://davedelong.com/blog/2009/04/13/aspect-oriented-programming-objective-c
  */
 - (id) initWithCoder:(NSCoder *)decoder {
-	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [(id)super initWithCoder:decoder];
-	} else {
+	//if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
+	//	self = [(id)super initWithCoder:decoder];
+	//} else {
 		self = [super init];
-	}
+	//}
 	if (self == nil) { return nil; }
  
 	NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
@@ -8027,11 +8027,11 @@ NSString * LibreAccessServiceSvc_SaveActions_stringFromEnum(LibreAccessServiceSv
  * http://davedelong.com/blog/2009/04/13/aspect-oriented-programming-objective-c
  */
 - (id) initWithCoder:(NSCoder *)decoder {
-	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [(id)super initWithCoder:decoder];
-	} else {
+	//if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
+	//	self = [(id)super initWithCoder:decoder];
+	//} else {
 		self = [super init];
-	}
+	//}
 	if (self == nil) { return nil; }
  
 	NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
@@ -8204,11 +8204,11 @@ NSString * LibreAccessServiceSvc_SaveActions_stringFromEnum(LibreAccessServiceSv
  * http://davedelong.com/blog/2009/04/13/aspect-oriented-programming-objective-c
  */
 - (id) initWithCoder:(NSCoder *)decoder {
-	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [(id)super initWithCoder:decoder];
-	} else {
+	//if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
+	//	self = [(id)super initWithCoder:decoder];
+	//} else {
 		self = [super init];
-	}
+	//}
 	if (self == nil) { return nil; }
  
 	NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
@@ -8433,11 +8433,11 @@ NSString * LibreAccessServiceSvc_SaveActions_stringFromEnum(LibreAccessServiceSv
  * http://davedelong.com/blog/2009/04/13/aspect-oriented-programming-objective-c
  */
 - (id) initWithCoder:(NSCoder *)decoder {
-	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [(id)super initWithCoder:decoder];
-	} else {
+	//if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
+	//	self = [(id)super initWithCoder:decoder];
+	//} else {
 		self = [super init];
-	}
+	//}
 	if (self == nil) { return nil; }
  
 	NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
@@ -8610,11 +8610,11 @@ NSString * LibreAccessServiceSvc_SaveActions_stringFromEnum(LibreAccessServiceSv
  * http://davedelong.com/blog/2009/04/13/aspect-oriented-programming-objective-c
  */
 - (id) initWithCoder:(NSCoder *)decoder {
-	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [(id)super initWithCoder:decoder];
-	} else {
+	//if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
+	//	self = [(id)super initWithCoder:decoder];
+	//} else {
 		self = [super init];
-	}
+	//}
 	if (self == nil) { return nil; }
  
 	NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
@@ -8791,11 +8791,11 @@ NSString * LibreAccessServiceSvc_SaveActions_stringFromEnum(LibreAccessServiceSv
  * http://davedelong.com/blog/2009/04/13/aspect-oriented-programming-objective-c
  */
 - (id) initWithCoder:(NSCoder *)decoder {
-	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [(id)super initWithCoder:decoder];
-	} else {
+	//if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
+	//	self = [(id)super initWithCoder:decoder];
+	//} else {
 		self = [super init];
-	}
+	//}
 	if (self == nil) { return nil; }
  
 	NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
@@ -8968,11 +8968,11 @@ NSString * LibreAccessServiceSvc_SaveActions_stringFromEnum(LibreAccessServiceSv
  * http://davedelong.com/blog/2009/04/13/aspect-oriented-programming-objective-c
  */
 - (id) initWithCoder:(NSCoder *)decoder {
-	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [(id)super initWithCoder:decoder];
-	} else {
+	//if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
+	//	self = [(id)super initWithCoder:decoder];
+	//} else {
 		self = [super init];
-	}
+	//}
 	if (self == nil) { return nil; }
  
 	NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
@@ -9149,11 +9149,11 @@ NSString * LibreAccessServiceSvc_SaveActions_stringFromEnum(LibreAccessServiceSv
  * http://davedelong.com/blog/2009/04/13/aspect-oriented-programming-objective-c
  */
 - (id) initWithCoder:(NSCoder *)decoder {
-	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [(id)super initWithCoder:decoder];
-	} else {
+	//if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
+	//	self = [(id)super initWithCoder:decoder];
+	//} else {
 		self = [super init];
-	}
+	//}
 	if (self == nil) { return nil; }
  
 	NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
@@ -9326,11 +9326,11 @@ NSString * LibreAccessServiceSvc_SaveActions_stringFromEnum(LibreAccessServiceSv
  * http://davedelong.com/blog/2009/04/13/aspect-oriented-programming-objective-c
  */
 - (id) initWithCoder:(NSCoder *)decoder {
-	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [(id)super initWithCoder:decoder];
-	} else {
+	//if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
+	//	self = [(id)super initWithCoder:decoder];
+	//} else {
 		self = [super init];
-	}
+	//}
 	if (self == nil) { return nil; }
  
 	NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
@@ -9555,11 +9555,11 @@ NSString * LibreAccessServiceSvc_SaveActions_stringFromEnum(LibreAccessServiceSv
  * http://davedelong.com/blog/2009/04/13/aspect-oriented-programming-objective-c
  */
 - (id) initWithCoder:(NSCoder *)decoder {
-	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [(id)super initWithCoder:decoder];
-	} else {
+	//if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
+	//	self = [(id)super initWithCoder:decoder];
+	//} else {
 		self = [super init];
-	}
+	//}
 	if (self == nil) { return nil; }
  
 	NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
@@ -9732,11 +9732,11 @@ NSString * LibreAccessServiceSvc_SaveActions_stringFromEnum(LibreAccessServiceSv
  * http://davedelong.com/blog/2009/04/13/aspect-oriented-programming-objective-c
  */
 - (id) initWithCoder:(NSCoder *)decoder {
-	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [(id)super initWithCoder:decoder];
-	} else {
+	//if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
+	//	self = [(id)super initWithCoder:decoder];
+	//} else {
 		self = [super init];
-	}
+	//}
 	if (self == nil) { return nil; }
  
 	NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
@@ -9961,11 +9961,11 @@ NSString * LibreAccessServiceSvc_SaveActions_stringFromEnum(LibreAccessServiceSv
  * http://davedelong.com/blog/2009/04/13/aspect-oriented-programming-objective-c
  */
 - (id) initWithCoder:(NSCoder *)decoder {
-	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [(id)super initWithCoder:decoder];
-	} else {
+	//if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
+	//	self = [(id)super initWithCoder:decoder];
+	//} else {
 		self = [super init];
-	}
+	//}
 	if (self == nil) { return nil; }
  
 	NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
@@ -10138,11 +10138,11 @@ NSString * LibreAccessServiceSvc_SaveActions_stringFromEnum(LibreAccessServiceSv
  * http://davedelong.com/blog/2009/04/13/aspect-oriented-programming-objective-c
  */
 - (id) initWithCoder:(NSCoder *)decoder {
-	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [(id)super initWithCoder:decoder];
-	} else {
+	//if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
+	//	self = [(id)super initWithCoder:decoder];
+	//} else {
 		self = [super init];
-	}
+	//}
 	if (self == nil) { return nil; }
  
 	NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
@@ -10367,11 +10367,11 @@ NSString * LibreAccessServiceSvc_SaveActions_stringFromEnum(LibreAccessServiceSv
  * http://davedelong.com/blog/2009/04/13/aspect-oriented-programming-objective-c
  */
 - (id) initWithCoder:(NSCoder *)decoder {
-	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [(id)super initWithCoder:decoder];
-	} else {
+	//if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
+	//	self = [(id)super initWithCoder:decoder];
+	//} else {
 		self = [super init];
-	}
+	//}
 	if (self == nil) { return nil; }
  
 	NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
@@ -10544,11 +10544,11 @@ NSString * LibreAccessServiceSvc_SaveActions_stringFromEnum(LibreAccessServiceSv
  * http://davedelong.com/blog/2009/04/13/aspect-oriented-programming-objective-c
  */
 - (id) initWithCoder:(NSCoder *)decoder {
-	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [(id)super initWithCoder:decoder];
-	} else {
+	//if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
+	//	self = [(id)super initWithCoder:decoder];
+	//} else {
 		self = [super init];
-	}
+	//}
 	if (self == nil) { return nil; }
  
 	NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
@@ -11225,11 +11225,11 @@ NSString * LibreAccessServiceSvc_SaveActions_stringFromEnum(LibreAccessServiceSv
  * http://davedelong.com/blog/2009/04/13/aspect-oriented-programming-objective-c
  */
 - (id) initWithCoder:(NSCoder *)decoder {
-	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [(id)super initWithCoder:decoder];
-	} else {
+	//if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
+	//	self = [(id)super initWithCoder:decoder];
+	//} else {
 		self = [super init];
-	}
+	//}
 	if (self == nil) { return nil; }
  
 	NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
@@ -11402,11 +11402,11 @@ NSString * LibreAccessServiceSvc_SaveActions_stringFromEnum(LibreAccessServiceSv
  * http://davedelong.com/blog/2009/04/13/aspect-oriented-programming-objective-c
  */
 - (id) initWithCoder:(NSCoder *)decoder {
-	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [(id)super initWithCoder:decoder];
-	} else {
+	//if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
+	//	self = [(id)super initWithCoder:decoder];
+	//} else {
 		self = [super init];
-	}
+	//}
 	if (self == nil) { return nil; }
  
 	NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
@@ -12169,11 +12169,11 @@ NSString * LibreAccessServiceSvc_SaveActions_stringFromEnum(LibreAccessServiceSv
  * http://davedelong.com/blog/2009/04/13/aspect-oriented-programming-objective-c
  */
 - (id) initWithCoder:(NSCoder *)decoder {
-	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [(id)super initWithCoder:decoder];
-	} else {
+	//if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
+	//	self = [(id)super initWithCoder:decoder];
+	//} else {
 		self = [super init];
-	}
+	//}
 	if (self == nil) { return nil; }
  
 	NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
@@ -12346,11 +12346,11 @@ NSString * LibreAccessServiceSvc_SaveActions_stringFromEnum(LibreAccessServiceSv
  * http://davedelong.com/blog/2009/04/13/aspect-oriented-programming-objective-c
  */
 - (id) initWithCoder:(NSCoder *)decoder {
-	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [(id)super initWithCoder:decoder];
-	} else {
+	//if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
+	//	self = [(id)super initWithCoder:decoder];
+	//} else {
 		self = [super init];
-	}
+	//}
 	if (self == nil) { return nil; }
  
 	NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
@@ -12527,11 +12527,11 @@ NSString * LibreAccessServiceSvc_SaveActions_stringFromEnum(LibreAccessServiceSv
  * http://davedelong.com/blog/2009/04/13/aspect-oriented-programming-objective-c
  */
 - (id) initWithCoder:(NSCoder *)decoder {
-	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [(id)super initWithCoder:decoder];
-	} else {
+	//if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
+	//	self = [(id)super initWithCoder:decoder];
+	//} else {
 		self = [super init];
-	}
+	//}
 	if (self == nil) { return nil; }
  
 	NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
@@ -12704,11 +12704,11 @@ NSString * LibreAccessServiceSvc_SaveActions_stringFromEnum(LibreAccessServiceSv
  * http://davedelong.com/blog/2009/04/13/aspect-oriented-programming-objective-c
  */
 - (id) initWithCoder:(NSCoder *)decoder {
-	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [(id)super initWithCoder:decoder];
-	} else {
+	//if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
+	//	self = [(id)super initWithCoder:decoder];
+	//} else {
 		self = [super init];
-	}
+	//}
 	if (self == nil) { return nil; }
  
 	NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
@@ -13039,11 +13039,11 @@ NSString * LibreAccessServiceSvc_SaveActions_stringFromEnum(LibreAccessServiceSv
  * http://davedelong.com/blog/2009/04/13/aspect-oriented-programming-objective-c
  */
 - (id) initWithCoder:(NSCoder *)decoder {
-	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [(id)super initWithCoder:decoder];
-	} else {
+	//if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
+	//	self = [(id)super initWithCoder:decoder];
+	//} else {
 		self = [super init];
-	}
+	//}
 	if (self == nil) { return nil; }
  
 	NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
@@ -13216,11 +13216,11 @@ NSString * LibreAccessServiceSvc_SaveActions_stringFromEnum(LibreAccessServiceSv
  * http://davedelong.com/blog/2009/04/13/aspect-oriented-programming-objective-c
  */
 - (id) initWithCoder:(NSCoder *)decoder {
-	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [(id)super initWithCoder:decoder];
-	} else {
+	//if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
+	//	self = [(id)super initWithCoder:decoder];
+	//} else {
 		self = [super init];
-	}
+	//}
 	if (self == nil) { return nil; }
  
 	NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
@@ -13915,11 +13915,11 @@ NSString * LibreAccessServiceSvc_SaveActions_stringFromEnum(LibreAccessServiceSv
  * http://davedelong.com/blog/2009/04/13/aspect-oriented-programming-objective-c
  */
 - (id) initWithCoder:(NSCoder *)decoder {
-	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [(id)super initWithCoder:decoder];
-	} else {
+	//if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
+	//	self = [(id)super initWithCoder:decoder];
+	//} else {
 		self = [super init];
-	}
+	//}
 	if (self == nil) { return nil; }
  
 	NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
@@ -14092,11 +14092,11 @@ NSString * LibreAccessServiceSvc_SaveActions_stringFromEnum(LibreAccessServiceSv
  * http://davedelong.com/blog/2009/04/13/aspect-oriented-programming-objective-c
  */
 - (id) initWithCoder:(NSCoder *)decoder {
-	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [(id)super initWithCoder:decoder];
-	} else {
+	//if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
+	//	self = [(id)super initWithCoder:decoder];
+	//} else {
 		self = [super init];
-	}
+	//}
 	if (self == nil) { return nil; }
  
 	NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
@@ -14407,11 +14407,11 @@ NSString * LibreAccessServiceSvc_SaveActions_stringFromEnum(LibreAccessServiceSv
  * http://davedelong.com/blog/2009/04/13/aspect-oriented-programming-objective-c
  */
 - (id) initWithCoder:(NSCoder *)decoder {
-	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [(id)super initWithCoder:decoder];
-	} else {
+	//if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
+	//	self = [(id)super initWithCoder:decoder];
+	//} else {
 		self = [super init];
-	}
+	//}
 	if (self == nil) { return nil; }
  
 	NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
@@ -14694,11 +14694,11 @@ NSString * LibreAccessServiceSvc_SaveActions_stringFromEnum(LibreAccessServiceSv
  * http://davedelong.com/blog/2009/04/13/aspect-oriented-programming-objective-c
  */
 - (id) initWithCoder:(NSCoder *)decoder {
-	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [(id)super initWithCoder:decoder];
-	} else {
+	//if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
+	//	self = [(id)super initWithCoder:decoder];
+	//} else {
 		self = [super init];
-	}
+	//}
 	if (self == nil) { return nil; }
  
 	NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
@@ -14871,11 +14871,11 @@ NSString * LibreAccessServiceSvc_SaveActions_stringFromEnum(LibreAccessServiceSv
  * http://davedelong.com/blog/2009/04/13/aspect-oriented-programming-objective-c
  */
 - (id) initWithCoder:(NSCoder *)decoder {
-	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [(id)super initWithCoder:decoder];
-	} else {
+	//if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
+	//	self = [(id)super initWithCoder:decoder];
+	//} else {
 		self = [super init];
-	}
+	//}
 	if (self == nil) { return nil; }
  
 	NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
@@ -15042,11 +15042,11 @@ NSString * LibreAccessServiceSvc_SaveActions_stringFromEnum(LibreAccessServiceSv
  * http://davedelong.com/blog/2009/04/13/aspect-oriented-programming-objective-c
  */
 - (id) initWithCoder:(NSCoder *)decoder {
-	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [(id)super initWithCoder:decoder];
-	} else {
+	//if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
+	//	self = [(id)super initWithCoder:decoder];
+	//} else {
 		self = [super init];
-	}
+	//}
 	if (self == nil) { return nil; }
  
 	NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
@@ -15261,11 +15261,11 @@ NSString * LibreAccessServiceSvc_SaveActions_stringFromEnum(LibreAccessServiceSv
  * http://davedelong.com/blog/2009/04/13/aspect-oriented-programming-objective-c
  */
 - (id) initWithCoder:(NSCoder *)decoder {
-	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [(id)super initWithCoder:decoder];
-	} else {
+	//if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
+	//	self = [(id)super initWithCoder:decoder];
+	//} else {
 		self = [super init];
-	}
+	//}
 	if (self == nil) { return nil; }
  
 	NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
@@ -15439,11 +15439,11 @@ NSString * LibreAccessServiceSvc_SaveActions_stringFromEnum(LibreAccessServiceSv
  * http://davedelong.com/blog/2009/04/13/aspect-oriented-programming-objective-c
  */
 - (id) initWithCoder:(NSCoder *)decoder {
-	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [(id)super initWithCoder:decoder];
-	} else {
+	//if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
+	//	self = [(id)super initWithCoder:decoder];
+	//} else {
 		self = [super init];
-	}
+	//}
 	if (self == nil) { return nil; }
  
 	NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
@@ -15616,11 +15616,11 @@ NSString * LibreAccessServiceSvc_SaveActions_stringFromEnum(LibreAccessServiceSv
  * http://davedelong.com/blog/2009/04/13/aspect-oriented-programming-objective-c
  */
 - (id) initWithCoder:(NSCoder *)decoder {
-	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [(id)super initWithCoder:decoder];
-	} else {
+	//if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
+	//	self = [(id)super initWithCoder:decoder];
+	//} else {
 		self = [super init];
-	}
+	//}
 	if (self == nil) { return nil; }
  
 	NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
@@ -15835,11 +15835,11 @@ NSString * LibreAccessServiceSvc_SaveActions_stringFromEnum(LibreAccessServiceSv
  * http://davedelong.com/blog/2009/04/13/aspect-oriented-programming-objective-c
  */
 - (id) initWithCoder:(NSCoder *)decoder {
-	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [(id)super initWithCoder:decoder];
-	} else {
+	//if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
+	//	self = [(id)super initWithCoder:decoder];
+	//} else {
 		self = [super init];
-	}
+	//}
 	if (self == nil) { return nil; }
  
 	NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
@@ -16054,11 +16054,11 @@ NSString * LibreAccessServiceSvc_SaveActions_stringFromEnum(LibreAccessServiceSv
  * http://davedelong.com/blog/2009/04/13/aspect-oriented-programming-objective-c
  */
 - (id) initWithCoder:(NSCoder *)decoder {
-	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [(id)super initWithCoder:decoder];
-	} else {
+	//if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
+	//	self = [(id)super initWithCoder:decoder];
+	//} else {
 		self = [super init];
-	}
+	//}
 	if (self == nil) { return nil; }
  
 	NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
@@ -16475,11 +16475,11 @@ NSString * LibreAccessServiceSvc_SaveActions_stringFromEnum(LibreAccessServiceSv
  * http://davedelong.com/blog/2009/04/13/aspect-oriented-programming-objective-c
  */
 - (id) initWithCoder:(NSCoder *)decoder {
-	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [(id)super initWithCoder:decoder];
-	} else {
+	//if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
+	//	self = [(id)super initWithCoder:decoder];
+	//} else {
 		self = [super init];
-	}
+	//}
 	if (self == nil) { return nil; }
  
 	NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
@@ -16652,11 +16652,11 @@ NSString * LibreAccessServiceSvc_SaveActions_stringFromEnum(LibreAccessServiceSv
  * http://davedelong.com/blog/2009/04/13/aspect-oriented-programming-objective-c
  */
 - (id) initWithCoder:(NSCoder *)decoder {
-	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [(id)super initWithCoder:decoder];
-	} else {
+	//if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
+	//	self = [(id)super initWithCoder:decoder];
+	//} else {
 		self = [super init];
-	}
+	//}
 	if (self == nil) { return nil; }
  
 	NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
@@ -16871,11 +16871,11 @@ NSString * LibreAccessServiceSvc_SaveActions_stringFromEnum(LibreAccessServiceSv
  * http://davedelong.com/blog/2009/04/13/aspect-oriented-programming-objective-c
  */
 - (id) initWithCoder:(NSCoder *)decoder {
-	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [(id)super initWithCoder:decoder];
-	} else {
+	//if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
+	//	self = [(id)super initWithCoder:decoder];
+	//} else {
 		self = [super init];
-	}
+	//}
 	if (self == nil) { return nil; }
  
 	NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
@@ -17138,11 +17138,11 @@ NSString * LibreAccessServiceSvc_SaveActions_stringFromEnum(LibreAccessServiceSv
  * http://davedelong.com/blog/2009/04/13/aspect-oriented-programming-objective-c
  */
 - (id) initWithCoder:(NSCoder *)decoder {
-	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [(id)super initWithCoder:decoder];
-	} else {
+	//if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
+	//	self = [(id)super initWithCoder:decoder];
+	//} else {
 		self = [super init];
-	}
+	//}
 	if (self == nil) { return nil; }
  
 	NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
@@ -17559,11 +17559,11 @@ NSString * LibreAccessServiceSvc_SaveActions_stringFromEnum(LibreAccessServiceSv
  * http://davedelong.com/blog/2009/04/13/aspect-oriented-programming-objective-c
  */
 - (id) initWithCoder:(NSCoder *)decoder {
-	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [(id)super initWithCoder:decoder];
-	} else {
+	//if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
+	//	self = [(id)super initWithCoder:decoder];
+	//} else {
 		self = [super init];
-	}
+	//}
 	if (self == nil) { return nil; }
  
 	NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
@@ -17736,11 +17736,11 @@ NSString * LibreAccessServiceSvc_SaveActions_stringFromEnum(LibreAccessServiceSv
  * http://davedelong.com/blog/2009/04/13/aspect-oriented-programming-objective-c
  */
 - (id) initWithCoder:(NSCoder *)decoder {
-	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [(id)super initWithCoder:decoder];
-	} else {
+	//if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
+	//	self = [(id)super initWithCoder:decoder];
+	//} else {
 		self = [super init];
-	}
+	//}
 	if (self == nil) { return nil; }
  
 	NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
@@ -17907,11 +17907,11 @@ NSString * LibreAccessServiceSvc_SaveActions_stringFromEnum(LibreAccessServiceSv
  * http://davedelong.com/blog/2009/04/13/aspect-oriented-programming-objective-c
  */
 - (id) initWithCoder:(NSCoder *)decoder {
-	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [(id)super initWithCoder:decoder];
-	} else {
+	//if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
+	//	self = [(id)super initWithCoder:decoder];
+	//} else {
 		self = [super init];
-	}
+	//}
 	if (self == nil) { return nil; }
  
 	NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
@@ -18328,11 +18328,11 @@ NSString * LibreAccessServiceSvc_SaveActions_stringFromEnum(LibreAccessServiceSv
  * http://davedelong.com/blog/2009/04/13/aspect-oriented-programming-objective-c
  */
 - (id) initWithCoder:(NSCoder *)decoder {
-	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [(id)super initWithCoder:decoder];
-	} else {
+	//if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
+	//	self = [(id)super initWithCoder:decoder];
+	//} else {
 		self = [super init];
-	}
+	//}
 	if (self == nil) { return nil; }
  
 	NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
@@ -18505,11 +18505,11 @@ NSString * LibreAccessServiceSvc_SaveActions_stringFromEnum(LibreAccessServiceSv
  * http://davedelong.com/blog/2009/04/13/aspect-oriented-programming-objective-c
  */
 - (id) initWithCoder:(NSCoder *)decoder {
-	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [(id)super initWithCoder:decoder];
-	} else {
+	//if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
+	//	self = [(id)super initWithCoder:decoder];
+	//} else {
 		self = [super init];
-	}
+	//}
 	if (self == nil) { return nil; }
  
 	NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
@@ -18724,11 +18724,11 @@ NSString * LibreAccessServiceSvc_SaveActions_stringFromEnum(LibreAccessServiceSv
  * http://davedelong.com/blog/2009/04/13/aspect-oriented-programming-objective-c
  */
 - (id) initWithCoder:(NSCoder *)decoder {
-	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [(id)super initWithCoder:decoder];
-	} else {
+	//if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
+	//	self = [(id)super initWithCoder:decoder];
+	//} else {
 		self = [super init];
-	}
+	//}
 	if (self == nil) { return nil; }
  
 	NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
@@ -19039,11 +19039,11 @@ NSString * LibreAccessServiceSvc_SaveActions_stringFromEnum(LibreAccessServiceSv
  * http://davedelong.com/blog/2009/04/13/aspect-oriented-programming-objective-c
  */
 - (id) initWithCoder:(NSCoder *)decoder {
-	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [(id)super initWithCoder:decoder];
-	} else {
+	//if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
+	//	self = [(id)super initWithCoder:decoder];
+	//} else {
 		self = [super init];
-	}
+	//}
 	if (self == nil) { return nil; }
  
 	NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
@@ -19402,11 +19402,11 @@ NSString * LibreAccessServiceSvc_SaveActions_stringFromEnum(LibreAccessServiceSv
  * http://davedelong.com/blog/2009/04/13/aspect-oriented-programming-objective-c
  */
 - (id) initWithCoder:(NSCoder *)decoder {
-	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [(id)super initWithCoder:decoder];
-	} else {
+	//if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
+	//	self = [(id)super initWithCoder:decoder];
+	//} else {
 		self = [super init];
-	}
+	//}
 	if (self == nil) { return nil; }
  
 	NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
@@ -19689,11 +19689,11 @@ NSString * LibreAccessServiceSvc_SaveActions_stringFromEnum(LibreAccessServiceSv
  * http://davedelong.com/blog/2009/04/13/aspect-oriented-programming-objective-c
  */
 - (id) initWithCoder:(NSCoder *)decoder {
-	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [(id)super initWithCoder:decoder];
-	} else {
+	//if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
+	//	self = [(id)super initWithCoder:decoder];
+	//} else {
 		self = [super init];
-	}
+	//}
 	if (self == nil) { return nil; }
  
 	NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
@@ -19866,11 +19866,11 @@ NSString * LibreAccessServiceSvc_SaveActions_stringFromEnum(LibreAccessServiceSv
  * http://davedelong.com/blog/2009/04/13/aspect-oriented-programming-objective-c
  */
 - (id) initWithCoder:(NSCoder *)decoder {
-	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [(id)super initWithCoder:decoder];
-	} else {
+	//if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
+	//	self = [(id)super initWithCoder:decoder];
+	//} else {
 		self = [super init];
-	}
+	//}
 	if (self == nil) { return nil; }
  
 	NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
@@ -20085,11 +20085,11 @@ NSString * LibreAccessServiceSvc_SaveActions_stringFromEnum(LibreAccessServiceSv
  * http://davedelong.com/blog/2009/04/13/aspect-oriented-programming-objective-c
  */
 - (id) initWithCoder:(NSCoder *)decoder {
-	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [(id)super initWithCoder:decoder];
-	} else {
+	//if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
+	//	self = [(id)super initWithCoder:decoder];
+	//} else {
 		self = [super init];
-	}
+	//}
 	if (self == nil) { return nil; }
  
 	NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
@@ -20262,11 +20262,11 @@ NSString * LibreAccessServiceSvc_SaveActions_stringFromEnum(LibreAccessServiceSv
  * http://davedelong.com/blog/2009/04/13/aspect-oriented-programming-objective-c
  */
 - (id) initWithCoder:(NSCoder *)decoder {
-	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [(id)super initWithCoder:decoder];
-	} else {
+	//if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
+	//	self = [(id)super initWithCoder:decoder];
+	//} else {
 		self = [super init];
-	}
+	//}
 	if (self == nil) { return nil; }
  
 	NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
@@ -20529,11 +20529,11 @@ NSString * LibreAccessServiceSvc_SaveActions_stringFromEnum(LibreAccessServiceSv
  * http://davedelong.com/blog/2009/04/13/aspect-oriented-programming-objective-c
  */
 - (id) initWithCoder:(NSCoder *)decoder {
-	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [(id)super initWithCoder:decoder];
-	} else {
+	//if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
+	//	self = [(id)super initWithCoder:decoder];
+	//} else {
 		self = [super init];
-	}
+	//}
 	if (self == nil) { return nil; }
  
 	NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
@@ -20892,11 +20892,11 @@ NSString * LibreAccessServiceSvc_SaveActions_stringFromEnum(LibreAccessServiceSv
  * http://davedelong.com/blog/2009/04/13/aspect-oriented-programming-objective-c
  */
 - (id) initWithCoder:(NSCoder *)decoder {
-	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [(id)super initWithCoder:decoder];
-	} else {
+	//if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
+	//	self = [(id)super initWithCoder:decoder];
+	//} else {
 		self = [super init];
-	}
+	//}
 	if (self == nil) { return nil; }
  
 	NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
@@ -21179,11 +21179,11 @@ NSString * LibreAccessServiceSvc_SaveActions_stringFromEnum(LibreAccessServiceSv
  * http://davedelong.com/blog/2009/04/13/aspect-oriented-programming-objective-c
  */
 - (id) initWithCoder:(NSCoder *)decoder {
-	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [(id)super initWithCoder:decoder];
-	} else {
+	//if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
+	//	self = [(id)super initWithCoder:decoder];
+	//} else {
 		self = [super init];
-	}
+	//}
 	if (self == nil) { return nil; }
  
 	NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
@@ -21356,11 +21356,11 @@ NSString * LibreAccessServiceSvc_SaveActions_stringFromEnum(LibreAccessServiceSv
  * http://davedelong.com/blog/2009/04/13/aspect-oriented-programming-objective-c
  */
 - (id) initWithCoder:(NSCoder *)decoder {
-	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [(id)super initWithCoder:decoder];
-	} else {
+	//if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
+	//	self = [(id)super initWithCoder:decoder];
+	//} else {
 		self = [super init];
-	}
+	//}
 	if (self == nil) { return nil; }
  
 	NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
@@ -21575,11 +21575,11 @@ NSString * LibreAccessServiceSvc_SaveActions_stringFromEnum(LibreAccessServiceSv
  * http://davedelong.com/blog/2009/04/13/aspect-oriented-programming-objective-c
  */
 - (id) initWithCoder:(NSCoder *)decoder {
-	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [(id)super initWithCoder:decoder];
-	} else {
+	//if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
+	//	self = [(id)super initWithCoder:decoder];
+	//} else {
 		self = [super init];
-	}
+	//}
 	if (self == nil) { return nil; }
  
 	NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
@@ -21752,11 +21752,11 @@ NSString * LibreAccessServiceSvc_SaveActions_stringFromEnum(LibreAccessServiceSv
  * http://davedelong.com/blog/2009/04/13/aspect-oriented-programming-objective-c
  */
 - (id) initWithCoder:(NSCoder *)decoder {
-	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [(id)super initWithCoder:decoder];
-	} else {
+	//if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
+	//	self = [(id)super initWithCoder:decoder];
+	//} else {
 		self = [super init];
-	}
+	//}
 	if (self == nil) { return nil; }
  
 	NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
@@ -21981,11 +21981,11 @@ NSString * LibreAccessServiceSvc_SaveActions_stringFromEnum(LibreAccessServiceSv
  * http://davedelong.com/blog/2009/04/13/aspect-oriented-programming-objective-c
  */
 - (id) initWithCoder:(NSCoder *)decoder {
-	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [(id)super initWithCoder:decoder];
-	} else {
+	//if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
+	//	self = [(id)super initWithCoder:decoder];
+	//} else {
 		self = [super init];
-	}
+	//}
 	if (self == nil) { return nil; }
  
 	NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
@@ -22158,11 +22158,11 @@ NSString * LibreAccessServiceSvc_SaveActions_stringFromEnum(LibreAccessServiceSv
  * http://davedelong.com/blog/2009/04/13/aspect-oriented-programming-objective-c
  */
 - (id) initWithCoder:(NSCoder *)decoder {
-	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [(id)super initWithCoder:decoder];
-	} else {
+	//if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
+	//	self = [(id)super initWithCoder:decoder];
+	//} else {
 		self = [super init];
-	}
+	//}
 	if (self == nil) { return nil; }
  
 	NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
@@ -22521,11 +22521,11 @@ NSString * LibreAccessServiceSvc_SaveActions_stringFromEnum(LibreAccessServiceSv
  * http://davedelong.com/blog/2009/04/13/aspect-oriented-programming-objective-c
  */
 - (id) initWithCoder:(NSCoder *)decoder {
-	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [(id)super initWithCoder:decoder];
-	} else {
+	//if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
+	//	self = [(id)super initWithCoder:decoder];
+	//} else {
 		self = [super init];
-	}
+	//}
 	if (self == nil) { return nil; }
  
 	NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
@@ -22788,11 +22788,11 @@ NSString * LibreAccessServiceSvc_SaveActions_stringFromEnum(LibreAccessServiceSv
  * http://davedelong.com/blog/2009/04/13/aspect-oriented-programming-objective-c
  */
 - (id) initWithCoder:(NSCoder *)decoder {
-	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [(id)super initWithCoder:decoder];
-	} else {
+	//if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
+	//	self = [(id)super initWithCoder:decoder];
+	//} else {
 		self = [super init];
-	}
+	//}
 	if (self == nil) { return nil; }
  
 	NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
@@ -22965,11 +22965,11 @@ NSString * LibreAccessServiceSvc_SaveActions_stringFromEnum(LibreAccessServiceSv
  * http://davedelong.com/blog/2009/04/13/aspect-oriented-programming-objective-c
  */
 - (id) initWithCoder:(NSCoder *)decoder {
-	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [(id)super initWithCoder:decoder];
-	} else {
+	//if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
+	//	self = [(id)super initWithCoder:decoder];
+	//} else {
 		self = [super init];
-	}
+	//}
 	if (self == nil) { return nil; }
  
 	NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
@@ -23232,11 +23232,11 @@ NSString * LibreAccessServiceSvc_SaveActions_stringFromEnum(LibreAccessServiceSv
  * http://davedelong.com/blog/2009/04/13/aspect-oriented-programming-objective-c
  */
 - (id) initWithCoder:(NSCoder *)decoder {
-	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [(id)super initWithCoder:decoder];
-	} else {
+	//if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
+	//	self = [(id)super initWithCoder:decoder];
+	//} else {
 		self = [super init];
-	}
+	//}
 	if (self == nil) { return nil; }
  
 	NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
@@ -23409,11 +23409,11 @@ NSString * LibreAccessServiceSvc_SaveActions_stringFromEnum(LibreAccessServiceSv
  * http://davedelong.com/blog/2009/04/13/aspect-oriented-programming-objective-c
  */
 - (id) initWithCoder:(NSCoder *)decoder {
-	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [(id)super initWithCoder:decoder];
-	} else {
+	//if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
+	//	self = [(id)super initWithCoder:decoder];
+	//} else {
 		self = [super init];
-	}
+	//}
 	if (self == nil) { return nil; }
  
 	NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
@@ -23587,11 +23587,11 @@ NSString * LibreAccessServiceSvc_SaveActions_stringFromEnum(LibreAccessServiceSv
  * http://davedelong.com/blog/2009/04/13/aspect-oriented-programming-objective-c
  */
 - (id) initWithCoder:(NSCoder *)decoder {
-	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [(id)super initWithCoder:decoder];
-	} else {
+	//if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
+	//	self = [(id)super initWithCoder:decoder];
+	//} else {
 		self = [super init];
-	}
+	//}
 	if (self == nil) { return nil; }
  
 	NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
@@ -23902,11 +23902,11 @@ NSString * LibreAccessServiceSvc_SaveActions_stringFromEnum(LibreAccessServiceSv
  * http://davedelong.com/blog/2009/04/13/aspect-oriented-programming-objective-c
  */
 - (id) initWithCoder:(NSCoder *)decoder {
-	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [(id)super initWithCoder:decoder];
-	} else {
+	//if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
+	//	self = [(id)super initWithCoder:decoder];
+	//} else {
 		self = [super init];
-	}
+	//}
 	if (self == nil) { return nil; }
  
 	NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
@@ -24079,11 +24079,11 @@ NSString * LibreAccessServiceSvc_SaveActions_stringFromEnum(LibreAccessServiceSv
  * http://davedelong.com/blog/2009/04/13/aspect-oriented-programming-objective-c
  */
 - (id) initWithCoder:(NSCoder *)decoder {
-	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [(id)super initWithCoder:decoder];
-	} else {
+	//if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
+	//	self = [(id)super initWithCoder:decoder];
+	//} else {
 		self = [super init];
-	}
+	//}
 	if (self == nil) { return nil; }
  
 	NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
@@ -24346,11 +24346,11 @@ NSString * LibreAccessServiceSvc_SaveActions_stringFromEnum(LibreAccessServiceSv
  * http://davedelong.com/blog/2009/04/13/aspect-oriented-programming-objective-c
  */
 - (id) initWithCoder:(NSCoder *)decoder {
-	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [(id)super initWithCoder:decoder];
-	} else {
+	//if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
+	//	self = [(id)super initWithCoder:decoder];
+	//} else {
 		self = [super init];
-	}
+	//}
 	if (self == nil) { return nil; }
  
 	NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
@@ -24523,11 +24523,11 @@ NSString * LibreAccessServiceSvc_SaveActions_stringFromEnum(LibreAccessServiceSv
  * http://davedelong.com/blog/2009/04/13/aspect-oriented-programming-objective-c
  */
 - (id) initWithCoder:(NSCoder *)decoder {
-	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [(id)super initWithCoder:decoder];
-	} else {
+	//if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
+	//	self = [(id)super initWithCoder:decoder];
+	//} else {
 		self = [super init];
-	}
+	//}
 	if (self == nil) { return nil; }
  
 	NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
@@ -25028,11 +25028,11 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
  * http://davedelong.com/blog/2009/04/13/aspect-oriented-programming-objective-c
  */
 - (id) initWithCoder:(NSCoder *)decoder {
-	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [(id)super initWithCoder:decoder];
-	} else {
+	//if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
+	//	self = [(id)super initWithCoder:decoder];
+	//} else {
 		self = [super init];
-	}
+	//}
 	if (self == nil) { return nil; }
  
 	NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
@@ -25205,11 +25205,11 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
  * http://davedelong.com/blog/2009/04/13/aspect-oriented-programming-objective-c
  */
 - (id) initWithCoder:(NSCoder *)decoder {
-	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [(id)super initWithCoder:decoder];
-	} else {
+	//if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
+	//	self = [(id)super initWithCoder:decoder];
+	//} else {
 		self = [super init];
-	}
+	//}
 	if (self == nil) { return nil; }
  
 	NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
@@ -25382,11 +25382,11 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
  * http://davedelong.com/blog/2009/04/13/aspect-oriented-programming-objective-c
  */
 - (id) initWithCoder:(NSCoder *)decoder {
-	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [(id)super initWithCoder:decoder];
-	} else {
+	//if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
+	//	self = [(id)super initWithCoder:decoder];
+	//} else {
 		self = [super init];
-	}
+	//}
 	if (self == nil) { return nil; }
  
 	NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
@@ -25841,11 +25841,11 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
  * http://davedelong.com/blog/2009/04/13/aspect-oriented-programming-objective-c
  */
 - (id) initWithCoder:(NSCoder *)decoder {
-	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [(id)super initWithCoder:decoder];
-	} else {
+	//if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
+	//	self = [(id)super initWithCoder:decoder];
+	//} else {
 		self = [super init];
-	}
+	//}
 	if (self == nil) { return nil; }
  
 	NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
@@ -26018,11 +26018,11 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
  * http://davedelong.com/blog/2009/04/13/aspect-oriented-programming-objective-c
  */
 - (id) initWithCoder:(NSCoder *)decoder {
-	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [(id)super initWithCoder:decoder];
-	} else {
+	//if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
+	//	self = [(id)super initWithCoder:decoder];
+	//} else {
 		self = [super init];
-	}
+	//}
 	if (self == nil) { return nil; }
  
 	NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
@@ -26305,11 +26305,11 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
  * http://davedelong.com/blog/2009/04/13/aspect-oriented-programming-objective-c
  */
 - (id) initWithCoder:(NSCoder *)decoder {
-	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [(id)super initWithCoder:decoder];
-	} else {
+	//if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
+	//	self = [(id)super initWithCoder:decoder];
+	//} else {
 		self = [super init];
-	}
+	//}
 	if (self == nil) { return nil; }
  
 	NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
@@ -26482,11 +26482,11 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
  * http://davedelong.com/blog/2009/04/13/aspect-oriented-programming-objective-c
  */
 - (id) initWithCoder:(NSCoder *)decoder {
-	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [(id)super initWithCoder:decoder];
-	} else {
+	//if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
+	//	self = [(id)super initWithCoder:decoder];
+	//} else {
 		self = [super init];
-	}
+	//}
 	if (self == nil) { return nil; }
  
 	NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
@@ -26701,11 +26701,11 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
  * http://davedelong.com/blog/2009/04/13/aspect-oriented-programming-objective-c
  */
 - (id) initWithCoder:(NSCoder *)decoder {
-	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [(id)super initWithCoder:decoder];
-	} else {
+	//if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
+	//	self = [(id)super initWithCoder:decoder];
+	//} else {
 		self = [super init];
-	}
+	//}
 	if (self == nil) { return nil; }
  
 	NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
@@ -26878,11 +26878,11 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
  * http://davedelong.com/blog/2009/04/13/aspect-oriented-programming-objective-c
  */
 - (id) initWithCoder:(NSCoder *)decoder {
-	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [(id)super initWithCoder:decoder];
-	} else {
+	//if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
+	//	self = [(id)super initWithCoder:decoder];
+	//} else {
 		self = [super init];
-	}
+	//}
 	if (self == nil) { return nil; }
  
 	NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
@@ -27055,11 +27055,11 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
  * http://davedelong.com/blog/2009/04/13/aspect-oriented-programming-objective-c
  */
 - (id) initWithCoder:(NSCoder *)decoder {
-	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [(id)super initWithCoder:decoder];
-	} else {
+	//if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
+	//	self = [(id)super initWithCoder:decoder];
+	//} else {
 		self = [super init];
-	}
+	//}
 	if (self == nil) { return nil; }
  
 	NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
@@ -27438,11 +27438,11 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
  * http://davedelong.com/blog/2009/04/13/aspect-oriented-programming-objective-c
  */
 - (id) initWithCoder:(NSCoder *)decoder {
-	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [(id)super initWithCoder:decoder];
-	} else {
+	//if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
+	//	self = [(id)super initWithCoder:decoder];
+	//} else {
 		self = [super init];
-	}
+	//}
 	if (self == nil) { return nil; }
  
 	NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
@@ -27615,11 +27615,11 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
  * http://davedelong.com/blog/2009/04/13/aspect-oriented-programming-objective-c
  */
 - (id) initWithCoder:(NSCoder *)decoder {
-	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [(id)super initWithCoder:decoder];
-	} else {
+	//if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
+	//	self = [(id)super initWithCoder:decoder];
+	//} else {
 		self = [super init];
-	}
+	//}
 	if (self == nil) { return nil; }
  
 	NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
@@ -27902,11 +27902,11 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
  * http://davedelong.com/blog/2009/04/13/aspect-oriented-programming-objective-c
  */
 - (id) initWithCoder:(NSCoder *)decoder {
-	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [(id)super initWithCoder:decoder];
-	} else {
+	//if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
+	//	self = [(id)super initWithCoder:decoder];
+	//} else {
 		self = [super init];
-	}
+	//}
 	if (self == nil) { return nil; }
  
 	NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
@@ -28079,11 +28079,11 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
  * http://davedelong.com/blog/2009/04/13/aspect-oriented-programming-objective-c
  */
 - (id) initWithCoder:(NSCoder *)decoder {
-	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [(id)super initWithCoder:decoder];
-	} else {
+	//if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
+	//	self = [(id)super initWithCoder:decoder];
+	//} else {
 		self = [super init];
-	}
+	//}
 	if (self == nil) { return nil; }
  
 	NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
@@ -28298,11 +28298,11 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
  * http://davedelong.com/blog/2009/04/13/aspect-oriented-programming-objective-c
  */
 - (id) initWithCoder:(NSCoder *)decoder {
-	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [(id)super initWithCoder:decoder];
-	} else {
+	//if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
+	//	self = [(id)super initWithCoder:decoder];
+	//} else {
 		self = [super init];
-	}
+	//}
 	if (self == nil) { return nil; }
  
 	NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
@@ -28475,11 +28475,11 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
  * http://davedelong.com/blog/2009/04/13/aspect-oriented-programming-objective-c
  */
 - (id) initWithCoder:(NSCoder *)decoder {
-	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [(id)super initWithCoder:decoder];
-	} else {
+	//if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
+	//	self = [(id)super initWithCoder:decoder];
+	//} else {
 		self = [super init];
-	}
+	//}
 	if (self == nil) { return nil; }
  
 	NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
@@ -28646,11 +28646,11 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
  * http://davedelong.com/blog/2009/04/13/aspect-oriented-programming-objective-c
  */
 - (id) initWithCoder:(NSCoder *)decoder {
-	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [(id)super initWithCoder:decoder];
-	} else {
+	//if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
+	//	self = [(id)super initWithCoder:decoder];
+	//} else {
 		self = [super init];
-	}
+	//}
 	if (self == nil) { return nil; }
  
 	NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
@@ -28823,11 +28823,11 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
  * http://davedelong.com/blog/2009/04/13/aspect-oriented-programming-objective-c
  */
 - (id) initWithCoder:(NSCoder *)decoder {
-	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [(id)super initWithCoder:decoder];
-	} else {
+	//if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
+	//	self = [(id)super initWithCoder:decoder];
+	//} else {
 		self = [super init];
-	}
+	//}
 	if (self == nil) { return nil; }
  
 	NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
@@ -29004,11 +29004,11 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
  * http://davedelong.com/blog/2009/04/13/aspect-oriented-programming-objective-c
  */
 - (id) initWithCoder:(NSCoder *)decoder {
-	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [(id)super initWithCoder:decoder];
-	} else {
+	//if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
+	//	self = [(id)super initWithCoder:decoder];
+	//} else {
 		self = [super init];
-	}
+	//}
 	if (self == nil) { return nil; }
  
 	NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
@@ -29181,11 +29181,11 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
  * http://davedelong.com/blog/2009/04/13/aspect-oriented-programming-objective-c
  */
 - (id) initWithCoder:(NSCoder *)decoder {
-	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [(id)super initWithCoder:decoder];
-	} else {
+	//if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
+	//	self = [(id)super initWithCoder:decoder];
+	//} else {
 		self = [super init];
-	}
+	//}
 	if (self == nil) { return nil; }
  
 	NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
@@ -29362,11 +29362,11 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
  * http://davedelong.com/blog/2009/04/13/aspect-oriented-programming-objective-c
  */
 - (id) initWithCoder:(NSCoder *)decoder {
-	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [(id)super initWithCoder:decoder];
-	} else {
+	//if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
+	//	self = [(id)super initWithCoder:decoder];
+	//} else {
 		self = [super init];
-	}
+	//}
 	if (self == nil) { return nil; }
  
 	NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
@@ -29539,11 +29539,11 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
  * http://davedelong.com/blog/2009/04/13/aspect-oriented-programming-objective-c
  */
 - (id) initWithCoder:(NSCoder *)decoder {
-	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [(id)super initWithCoder:decoder];
-	} else {
+	//if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
+	//	self = [(id)super initWithCoder:decoder];
+	//} else {
 		self = [super init];
-	}
+	//}
 	if (self == nil) { return nil; }
  
 	NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
@@ -29758,11 +29758,11 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
  * http://davedelong.com/blog/2009/04/13/aspect-oriented-programming-objective-c
  */
 - (id) initWithCoder:(NSCoder *)decoder {
-	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [(id)super initWithCoder:decoder];
-	} else {
+	//if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
+	//	self = [(id)super initWithCoder:decoder];
+	//} else {
 		self = [super init];
-	}
+	//}
 	if (self == nil) { return nil; }
  
 	NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
@@ -29935,11 +29935,11 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
  * http://davedelong.com/blog/2009/04/13/aspect-oriented-programming-objective-c
  */
 - (id) initWithCoder:(NSCoder *)decoder {
-	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [(id)super initWithCoder:decoder];
-	} else {
+	//if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
+	//	self = [(id)super initWithCoder:decoder];
+	//} else {
 		self = [super init];
-	}
+	//}
 	if (self == nil) { return nil; }
  
 	NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
@@ -30154,11 +30154,11 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
  * http://davedelong.com/blog/2009/04/13/aspect-oriented-programming-objective-c
  */
 - (id) initWithCoder:(NSCoder *)decoder {
-	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [(id)super initWithCoder:decoder];
-	} else {
+	//if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
+	//	self = [(id)super initWithCoder:decoder];
+	//} else {
 		self = [super init];
-	}
+	//}
 	if (self == nil) { return nil; }
  
 	NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
@@ -30331,11 +30331,11 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
  * http://davedelong.com/blog/2009/04/13/aspect-oriented-programming-objective-c
  */
 - (id) initWithCoder:(NSCoder *)decoder {
-	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [(id)super initWithCoder:decoder];
-	} else {
+	//if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
+	//	self = [(id)super initWithCoder:decoder];
+	//} else {
 		self = [super init];
-	}
+	//}
 	if (self == nil) { return nil; }
  
 	NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
@@ -30502,11 +30502,11 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
  * http://davedelong.com/blog/2009/04/13/aspect-oriented-programming-objective-c
  */
 - (id) initWithCoder:(NSCoder *)decoder {
-	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [(id)super initWithCoder:decoder];
-	} else {
+	//if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
+	//	self = [(id)super initWithCoder:decoder];
+	//} else {
 		self = [super init];
-	}
+	//}
 	if (self == nil) { return nil; }
  
 	NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
@@ -30679,11 +30679,11 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
  * http://davedelong.com/blog/2009/04/13/aspect-oriented-programming-objective-c
  */
 - (id) initWithCoder:(NSCoder *)decoder {
-	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [(id)super initWithCoder:decoder];
-	} else {
+	//if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
+	//	self = [(id)super initWithCoder:decoder];
+	//} else {
 		self = [super init];
-	}
+	//}
 	if (self == nil) { return nil; }
  
 	NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
@@ -30946,11 +30946,11 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
  * http://davedelong.com/blog/2009/04/13/aspect-oriented-programming-objective-c
  */
 - (id) initWithCoder:(NSCoder *)decoder {
-	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [(id)super initWithCoder:decoder];
-	} else {
+	//if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
+	//	self = [(id)super initWithCoder:decoder];
+	//} else {
 		self = [super init];
-	}
+	//}
 	if (self == nil) { return nil; }
  
 	NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
@@ -31123,11 +31123,11 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
  * http://davedelong.com/blog/2009/04/13/aspect-oriented-programming-objective-c
  */
 - (id) initWithCoder:(NSCoder *)decoder {
-	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [(id)super initWithCoder:decoder];
-	} else {
+	//if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
+	//	self = [(id)super initWithCoder:decoder];
+	//} else {
 		self = [super init];
-	}
+	//}
 	if (self == nil) { return nil; }
  
 	NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
@@ -31458,11 +31458,11 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
  * http://davedelong.com/blog/2009/04/13/aspect-oriented-programming-objective-c
  */
 - (id) initWithCoder:(NSCoder *)decoder {
-	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [(id)super initWithCoder:decoder];
-	} else {
+	//if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
+	//	self = [(id)super initWithCoder:decoder];
+	//} else {
 		self = [super init];
-	}
+	//}
 	if (self == nil) { return nil; }
  
 	NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
@@ -31635,11 +31635,11 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
  * http://davedelong.com/blog/2009/04/13/aspect-oriented-programming-objective-c
  */
 - (id) initWithCoder:(NSCoder *)decoder {
-	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [(id)super initWithCoder:decoder];
-	} else {
+	//if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
+	//	self = [(id)super initWithCoder:decoder];
+	//} else {
 		self = [super init];
-	}
+	//}
 	if (self == nil) { return nil; }
  
 	NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
@@ -31806,11 +31806,11 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
  * http://davedelong.com/blog/2009/04/13/aspect-oriented-programming-objective-c
  */
 - (id) initWithCoder:(NSCoder *)decoder {
-	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [(id)super initWithCoder:decoder];
-	} else {
+	//if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
+	//	self = [(id)super initWithCoder:decoder];
+	//} else {
 		self = [super init];
-	}
+	//}
 	if (self == nil) { return nil; }
  
 	NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
@@ -31983,11 +31983,11 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
  * http://davedelong.com/blog/2009/04/13/aspect-oriented-programming-objective-c
  */
 - (id) initWithCoder:(NSCoder *)decoder {
-	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [(id)super initWithCoder:decoder];
-	} else {
+	//if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
+	//	self = [(id)super initWithCoder:decoder];
+	//} else {
 		self = [super init];
-	}
+	//}
 	if (self == nil) { return nil; }
  
 	NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
@@ -32462,11 +32462,11 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
  * http://davedelong.com/blog/2009/04/13/aspect-oriented-programming-objective-c
  */
 - (id) initWithCoder:(NSCoder *)decoder {
-	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [(id)super initWithCoder:decoder];
-	} else {
+	//if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
+	//	self = [(id)super initWithCoder:decoder];
+	//} else {
 		self = [super init];
-	}
+	//}
 	if (self == nil) { return nil; }
  
 	NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
@@ -32639,11 +32639,11 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
  * http://davedelong.com/blog/2009/04/13/aspect-oriented-programming-objective-c
  */
 - (id) initWithCoder:(NSCoder *)decoder {
-	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [(id)super initWithCoder:decoder];
-	} else {
+	//if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
+	//	self = [(id)super initWithCoder:decoder];
+	//} else {
 		self = [super init];
-	}
+	//}
 	if (self == nil) { return nil; }
  
 	NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
@@ -32858,11 +32858,11 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
  * http://davedelong.com/blog/2009/04/13/aspect-oriented-programming-objective-c
  */
 - (id) initWithCoder:(NSCoder *)decoder {
-	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [(id)super initWithCoder:decoder];
-	} else {
+	//if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
+	//	self = [(id)super initWithCoder:decoder];
+	//} else {
 		self = [super init];
-	}
+	//}
 	if (self == nil) { return nil; }
  
 	NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
@@ -33035,11 +33035,11 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
  * http://davedelong.com/blog/2009/04/13/aspect-oriented-programming-objective-c
  */
 - (id) initWithCoder:(NSCoder *)decoder {
-	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [(id)super initWithCoder:decoder];
-	} else {
+	//if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
+	//	self = [(id)super initWithCoder:decoder];
+	//} else {
 		self = [super init];
-	}
+	//}
 	if (self == nil) { return nil; }
  
 	NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
@@ -33206,11 +33206,11 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
  * http://davedelong.com/blog/2009/04/13/aspect-oriented-programming-objective-c
  */
 - (id) initWithCoder:(NSCoder *)decoder {
-	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [(id)super initWithCoder:decoder];
-	} else {
+	//if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
+	//	self = [(id)super initWithCoder:decoder];
+	//} else {
 		self = [super init];
-	}
+	//}
 	if (self == nil) { return nil; }
  
 	NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
@@ -33383,11 +33383,11 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
  * http://davedelong.com/blog/2009/04/13/aspect-oriented-programming-objective-c
  */
 - (id) initWithCoder:(NSCoder *)decoder {
-	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [(id)super initWithCoder:decoder];
-	} else {
+	//if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
+	//	self = [(id)super initWithCoder:decoder];
+	//} else {
 		self = [super init];
-	}
+	//}
 	if (self == nil) { return nil; }
  
 	NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
@@ -33554,11 +33554,11 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
  * http://davedelong.com/blog/2009/04/13/aspect-oriented-programming-objective-c
  */
 - (id) initWithCoder:(NSCoder *)decoder {
-	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [(id)super initWithCoder:decoder];
-	} else {
+	//if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
+	//	self = [(id)super initWithCoder:decoder];
+	//} else {
 		self = [super init];
-	}
+	//}
 	if (self == nil) { return nil; }
  
 	NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
@@ -33731,11 +33731,11 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
  * http://davedelong.com/blog/2009/04/13/aspect-oriented-programming-objective-c
  */
 - (id) initWithCoder:(NSCoder *)decoder {
-	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [(id)super initWithCoder:decoder];
-	} else {
+	//if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
+	//	self = [(id)super initWithCoder:decoder];
+	//} else {
 		self = [super init];
-	}
+	//}
 	if (self == nil) { return nil; }
  
 	NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
@@ -33950,11 +33950,11 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
  * http://davedelong.com/blog/2009/04/13/aspect-oriented-programming-objective-c
  */
 - (id) initWithCoder:(NSCoder *)decoder {
-	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [(id)super initWithCoder:decoder];
-	} else {
+	//if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
+	//	self = [(id)super initWithCoder:decoder];
+	//} else {
 		self = [super init];
-	}
+	//}
 	if (self == nil) { return nil; }
  
 	NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
@@ -34127,11 +34127,11 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
  * http://davedelong.com/blog/2009/04/13/aspect-oriented-programming-objective-c
  */
 - (id) initWithCoder:(NSCoder *)decoder {
-	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [(id)super initWithCoder:decoder];
-	} else {
+	//if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
+	//	self = [(id)super initWithCoder:decoder];
+	//} else {
 		self = [super init];
-	}
+	//}
 	if (self == nil) { return nil; }
  
 	NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
@@ -34442,11 +34442,11 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
  * http://davedelong.com/blog/2009/04/13/aspect-oriented-programming-objective-c
  */
 - (id) initWithCoder:(NSCoder *)decoder {
-	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [(id)super initWithCoder:decoder];
-	} else {
+	//if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
+	//	self = [(id)super initWithCoder:decoder];
+	//} else {
 		self = [super init];
-	}
+	//}
 	if (self == nil) { return nil; }
  
 	NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
@@ -34619,11 +34619,11 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
  * http://davedelong.com/blog/2009/04/13/aspect-oriented-programming-objective-c
  */
 - (id) initWithCoder:(NSCoder *)decoder {
-	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [(id)super initWithCoder:decoder];
-	} else {
+	//if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
+	//	self = [(id)super initWithCoder:decoder];
+	//} else {
 		self = [super init];
-	}
+	//}
 	if (self == nil) { return nil; }
  
 	NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
@@ -34858,11 +34858,11 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
  * http://davedelong.com/blog/2009/04/13/aspect-oriented-programming-objective-c
  */
 - (id) initWithCoder:(NSCoder *)decoder {
-	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [(id)super initWithCoder:decoder];
-	} else {
+	//if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
+	//	self = [(id)super initWithCoder:decoder];
+	//} else {
 		self = [super init];
-	}
+	//}
 	if (self == nil) { return nil; }
  
 	NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
@@ -35035,11 +35035,11 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
  * http://davedelong.com/blog/2009/04/13/aspect-oriented-programming-objective-c
  */
 - (id) initWithCoder:(NSCoder *)decoder {
-	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [(id)super initWithCoder:decoder];
-	} else {
+	//if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
+	//	self = [(id)super initWithCoder:decoder];
+	//} else {
 		self = [super init];
-	}
+	//}
 	if (self == nil) { return nil; }
  
 	NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
@@ -35206,11 +35206,11 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
  * http://davedelong.com/blog/2009/04/13/aspect-oriented-programming-objective-c
  */
 - (id) initWithCoder:(NSCoder *)decoder {
-	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [(id)super initWithCoder:decoder];
-	} else {
+	//if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
+	//	self = [(id)super initWithCoder:decoder];
+	//} else {
 		self = [super init];
-	}
+	//}
 	if (self == nil) { return nil; }
  
 	NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
@@ -35383,11 +35383,11 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
  * http://davedelong.com/blog/2009/04/13/aspect-oriented-programming-objective-c
  */
 - (id) initWithCoder:(NSCoder *)decoder {
-	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [(id)super initWithCoder:decoder];
-	} else {
+	//if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
+	//	self = [(id)super initWithCoder:decoder];
+	//} else {
 		self = [super init];
-	}
+	//}
 	if (self == nil) { return nil; }
  
 	NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
@@ -35622,11 +35622,11 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
  * http://davedelong.com/blog/2009/04/13/aspect-oriented-programming-objective-c
  */
 - (id) initWithCoder:(NSCoder *)decoder {
-	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [(id)super initWithCoder:decoder];
-	} else {
+	//if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
+	//	self = [(id)super initWithCoder:decoder];
+	//} else {
 		self = [super init];
-	}
+	//}
 	if (self == nil) { return nil; }
  
 	NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
@@ -35799,11 +35799,11 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
  * http://davedelong.com/blog/2009/04/13/aspect-oriented-programming-objective-c
  */
 - (id) initWithCoder:(NSCoder *)decoder {
-	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [(id)super initWithCoder:decoder];
-	} else {
+	//if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
+	//	self = [(id)super initWithCoder:decoder];
+	//} else {
 		self = [super init];
-	}
+	//}
 	if (self == nil) { return nil; }
  
 	NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
@@ -36162,11 +36162,11 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
  * http://davedelong.com/blog/2009/04/13/aspect-oriented-programming-objective-c
  */
 - (id) initWithCoder:(NSCoder *)decoder {
-	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [(id)super initWithCoder:decoder];
-	} else {
+	//if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
+	//	self = [(id)super initWithCoder:decoder];
+	//} else {
 		self = [super init];
-	}
+	//}
 	if (self == nil) { return nil; }
  
 	NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
@@ -36525,11 +36525,11 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
  * http://davedelong.com/blog/2009/04/13/aspect-oriented-programming-objective-c
  */
 - (id) initWithCoder:(NSCoder *)decoder {
-	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [(id)super initWithCoder:decoder];
-	} else {
+	//if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
+	//	self = [(id)super initWithCoder:decoder];
+	//} else {
 		self = [super init];
-	}
+	//}
 	if (self == nil) { return nil; }
  
 	NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
@@ -36888,11 +36888,11 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
  * http://davedelong.com/blog/2009/04/13/aspect-oriented-programming-objective-c
  */
 - (id) initWithCoder:(NSCoder *)decoder {
-	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [(id)super initWithCoder:decoder];
-	} else {
+	//if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
+	//	self = [(id)super initWithCoder:decoder];
+	//} else {
 		self = [super init];
-	}
+	//}
 	if (self == nil) { return nil; }
  
 	NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
@@ -37347,11 +37347,11 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
  * http://davedelong.com/blog/2009/04/13/aspect-oriented-programming-objective-c
  */
 - (id) initWithCoder:(NSCoder *)decoder {
-	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [(id)super initWithCoder:decoder];
-	} else {
+	//if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
+	//	self = [(id)super initWithCoder:decoder];
+	//} else {
 		self = [super init];
-	}
+	//}
 	if (self == nil) { return nil; }
  
 	NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
@@ -37710,11 +37710,11 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
  * http://davedelong.com/blog/2009/04/13/aspect-oriented-programming-objective-c
  */
 - (id) initWithCoder:(NSCoder *)decoder {
-	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [(id)super initWithCoder:decoder];
-	} else {
+	//if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
+	//	self = [(id)super initWithCoder:decoder];
+	//} else {
 		self = [super init];
-	}
+	//}
 	if (self == nil) { return nil; }
  
 	NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
@@ -38217,11 +38217,11 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
  * http://davedelong.com/blog/2009/04/13/aspect-oriented-programming-objective-c
  */
 - (id) initWithCoder:(NSCoder *)decoder {
-	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [(id)super initWithCoder:decoder];
-	} else {
+	//if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
+	//	self = [(id)super initWithCoder:decoder];
+	//} else {
 		self = [super init];
-	}
+	//}
 	if (self == nil) { return nil; }
  
 	NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
@@ -38580,11 +38580,11 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
  * http://davedelong.com/blog/2009/04/13/aspect-oriented-programming-objective-c
  */
 - (id) initWithCoder:(NSCoder *)decoder {
-	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [(id)super initWithCoder:decoder];
-	} else {
+	//if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
+	//	self = [(id)super initWithCoder:decoder];
+	//} else {
 		self = [super init];
-	}
+	//}
 	if (self == nil) { return nil; }
  
 	NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
@@ -39231,11 +39231,11 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
  * http://davedelong.com/blog/2009/04/13/aspect-oriented-programming-objective-c
  */
 - (id) initWithCoder:(NSCoder *)decoder {
-	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [(id)super initWithCoder:decoder];
-	} else {
+	//if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
+	//	self = [(id)super initWithCoder:decoder];
+	//} else {
 		self = [super init];
-	}
+	//}
 	if (self == nil) { return nil; }
  
 	NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
@@ -39498,11 +39498,11 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
  * http://davedelong.com/blog/2009/04/13/aspect-oriented-programming-objective-c
  */
 - (id) initWithCoder:(NSCoder *)decoder {
-	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [(id)super initWithCoder:decoder];
-	} else {
+	//if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
+	//	self = [(id)super initWithCoder:decoder];
+	//} else {
 		self = [super init];
-	}
+	//}
 	if (self == nil) { return nil; }
  
 	NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
@@ -39861,11 +39861,11 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
  * http://davedelong.com/blog/2009/04/13/aspect-oriented-programming-objective-c
  */
 - (id) initWithCoder:(NSCoder *)decoder {
-	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [(id)super initWithCoder:decoder];
-	} else {
+	//if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
+	//	self = [(id)super initWithCoder:decoder];
+	//} else {
 		self = [super init];
-	}
+	//}
 	if (self == nil) { return nil; }
  
 	NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
@@ -40032,11 +40032,11 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
  * http://davedelong.com/blog/2009/04/13/aspect-oriented-programming-objective-c
  */
 - (id) initWithCoder:(NSCoder *)decoder {
-	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [(id)super initWithCoder:decoder];
-	} else {
+	//if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
+	//	self = [(id)super initWithCoder:decoder];
+	//} else {
 		self = [super init];
-	}
+	//}
 	if (self == nil) { return nil; }
  
 	NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
@@ -40347,11 +40347,11 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
  * http://davedelong.com/blog/2009/04/13/aspect-oriented-programming-objective-c
  */
 - (id) initWithCoder:(NSCoder *)decoder {
-	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [(id)super initWithCoder:decoder];
-	} else {
+	//if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
+	//	self = [(id)super initWithCoder:decoder];
+	//} else {
 		self = [super init];
-	}
+	//}
 	if (self == nil) { return nil; }
  
 	NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
@@ -40518,11 +40518,11 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
  * http://davedelong.com/blog/2009/04/13/aspect-oriented-programming-objective-c
  */
 - (id) initWithCoder:(NSCoder *)decoder {
-	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [(id)super initWithCoder:decoder];
-	} else {
+	//if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
+	//	self = [(id)super initWithCoder:decoder];
+	//} else {
 		self = [super init];
-	}
+	//}
 	if (self == nil) { return nil; }
  
 	NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
@@ -40695,11 +40695,11 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
  * http://davedelong.com/blog/2009/04/13/aspect-oriented-programming-objective-c
  */
 - (id) initWithCoder:(NSCoder *)decoder {
-	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [(id)super initWithCoder:decoder];
-	} else {
+	//if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
+	//	self = [(id)super initWithCoder:decoder];
+	//} else {
 		self = [super init];
-	}
+	//}
 	if (self == nil) { return nil; }
  
 	NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
@@ -40914,11 +40914,11 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
  * http://davedelong.com/blog/2009/04/13/aspect-oriented-programming-objective-c
  */
 - (id) initWithCoder:(NSCoder *)decoder {
-	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [(id)super initWithCoder:decoder];
-	} else {
+	//if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
+	//	self = [(id)super initWithCoder:decoder];
+	//} else {
 		self = [super init];
-	}
+	//}
 	if (self == nil) { return nil; }
  
 	NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
@@ -41085,11 +41085,11 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
  * http://davedelong.com/blog/2009/04/13/aspect-oriented-programming-objective-c
  */
 - (id) initWithCoder:(NSCoder *)decoder {
-	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [(id)super initWithCoder:decoder];
-	} else {
+	//if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
+	//	self = [(id)super initWithCoder:decoder];
+	//} else {
 		self = [super init];
-	}
+	//}
 	if (self == nil) { return nil; }
  
 	NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
@@ -41262,11 +41262,11 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
  * http://davedelong.com/blog/2009/04/13/aspect-oriented-programming-objective-c
  */
 - (id) initWithCoder:(NSCoder *)decoder {
-	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [(id)super initWithCoder:decoder];
-	} else {
+	//if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
+	//	self = [(id)super initWithCoder:decoder];
+	//} else {
 		self = [super init];
-	}
+	//}
 	if (self == nil) { return nil; }
  
 	NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
@@ -41481,11 +41481,11 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
  * http://davedelong.com/blog/2009/04/13/aspect-oriented-programming-objective-c
  */
 - (id) initWithCoder:(NSCoder *)decoder {
-	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [(id)super initWithCoder:decoder];
-	} else {
+	//if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
+	//	self = [(id)super initWithCoder:decoder];
+	//} else {
 		self = [super init];
-	}
+	//}
 	if (self == nil) { return nil; }
  
 	NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
@@ -41652,11 +41652,11 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
  * http://davedelong.com/blog/2009/04/13/aspect-oriented-programming-objective-c
  */
 - (id) initWithCoder:(NSCoder *)decoder {
-	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [(id)super initWithCoder:decoder];
-	} else {
+	//if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
+	//	self = [(id)super initWithCoder:decoder];
+	//} else {
 		self = [super init];
-	}
+	//}
 	if (self == nil) { return nil; }
  
 	NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
@@ -41829,11 +41829,11 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
  * http://davedelong.com/blog/2009/04/13/aspect-oriented-programming-objective-c
  */
 - (id) initWithCoder:(NSCoder *)decoder {
-	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [(id)super initWithCoder:decoder];
-	} else {
+	//if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
+	//	self = [(id)super initWithCoder:decoder];
+	//} else {
 		self = [super init];
-	}
+	//}
 	if (self == nil) { return nil; }
  
 	NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
@@ -42048,11 +42048,11 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
  * http://davedelong.com/blog/2009/04/13/aspect-oriented-programming-objective-c
  */
 - (id) initWithCoder:(NSCoder *)decoder {
-	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [(id)super initWithCoder:decoder];
-	} else {
+	//if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
+	//	self = [(id)super initWithCoder:decoder];
+	//} else {
 		self = [super init];
-	}
+	//}
 	if (self == nil) { return nil; }
  
 	NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
@@ -42321,11 +42321,11 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
  * http://davedelong.com/blog/2009/04/13/aspect-oriented-programming-objective-c
  */
 - (id) initWithCoder:(NSCoder *)decoder {
-	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [(id)super initWithCoder:decoder];
-	} else {
+	//if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
+	//	self = [(id)super initWithCoder:decoder];
+	//} else {
 		self = [super init];
-	}
+	//}
 	if (self == nil) { return nil; }
  
 	NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
@@ -42498,11 +42498,11 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
  * http://davedelong.com/blog/2009/04/13/aspect-oriented-programming-objective-c
  */
 - (id) initWithCoder:(NSCoder *)decoder {
-	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [(id)super initWithCoder:decoder];
-	} else {
+	//if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
+	//	self = [(id)super initWithCoder:decoder];
+	//} else {
 		self = [super init];
-	}
+	//}
 	if (self == nil) { return nil; }
  
 	NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
@@ -42717,11 +42717,11 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
  * http://davedelong.com/blog/2009/04/13/aspect-oriented-programming-objective-c
  */
 - (id) initWithCoder:(NSCoder *)decoder {
-	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [(id)super initWithCoder:decoder];
-	} else {
+	//if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
+	//	self = [(id)super initWithCoder:decoder];
+	//} else {
 		self = [super init];
-	}
+	//}
 	if (self == nil) { return nil; }
  
 	NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
@@ -43038,11 +43038,11 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
  * http://davedelong.com/blog/2009/04/13/aspect-oriented-programming-objective-c
  */
 - (id) initWithCoder:(NSCoder *)decoder {
-	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [(id)super initWithCoder:decoder];
-	} else {
+	//if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
+	//	self = [(id)super initWithCoder:decoder];
+	//} else {
 		self = [super init];
-	}
+	//}
 	if (self == nil) { return nil; }
  
 	NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
@@ -43215,11 +43215,11 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
  * http://davedelong.com/blog/2009/04/13/aspect-oriented-programming-objective-c
  */
 - (id) initWithCoder:(NSCoder *)decoder {
-	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [(id)super initWithCoder:decoder];
-	} else {
+	//if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
+	//	self = [(id)super initWithCoder:decoder];
+	//} else {
 		self = [super init];
-	}
+	//}
 	if (self == nil) { return nil; }
  
 	NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
@@ -43434,11 +43434,11 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
  * http://davedelong.com/blog/2009/04/13/aspect-oriented-programming-objective-c
  */
 - (id) initWithCoder:(NSCoder *)decoder {
-	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [(id)super initWithCoder:decoder];
-	} else {
+	//if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
+	//	self = [(id)super initWithCoder:decoder];
+	//} else {
 		self = [super init];
-	}
+	//}
 	if (self == nil) { return nil; }
  
 	NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
@@ -43605,11 +43605,11 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
  * http://davedelong.com/blog/2009/04/13/aspect-oriented-programming-objective-c
  */
 - (id) initWithCoder:(NSCoder *)decoder {
-	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [(id)super initWithCoder:decoder];
-	} else {
+	//if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
+	//	self = [(id)super initWithCoder:decoder];
+	//} else {
 		self = [super init];
-	}
+	//}
 	if (self == nil) { return nil; }
  
 	NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
@@ -43824,11 +43824,11 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
  * http://davedelong.com/blog/2009/04/13/aspect-oriented-programming-objective-c
  */
 - (id) initWithCoder:(NSCoder *)decoder {
-	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [(id)super initWithCoder:decoder];
-	} else {
+	//if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
+	//	self = [(id)super initWithCoder:decoder];
+	//} else {
 		self = [super init];
-	}
+	//}
 	if (self == nil) { return nil; }
  
 	NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
@@ -44053,11 +44053,11 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
  * http://davedelong.com/blog/2009/04/13/aspect-oriented-programming-objective-c
  */
 - (id) initWithCoder:(NSCoder *)decoder {
-	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [(id)super initWithCoder:decoder];
-	} else {
+	//if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
+	//	self = [(id)super initWithCoder:decoder];
+	//} else {
 		self = [super init];
-	}
+	//}
 	if (self == nil) { return nil; }
  
 	NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
@@ -44272,11 +44272,11 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
  * http://davedelong.com/blog/2009/04/13/aspect-oriented-programming-objective-c
  */
 - (id) initWithCoder:(NSCoder *)decoder {
-	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [(id)super initWithCoder:decoder];
-	} else {
+	//if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
+	//	self = [(id)super initWithCoder:decoder];
+	//} else {
 		self = [super init];
-	}
+	//}
 	if (self == nil) { return nil; }
  
 	NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
@@ -44443,11 +44443,11 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
  * http://davedelong.com/blog/2009/04/13/aspect-oriented-programming-objective-c
  */
 - (id) initWithCoder:(NSCoder *)decoder {
-	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [(id)super initWithCoder:decoder];
-	} else {
+	//if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
+	//	self = [(id)super initWithCoder:decoder];
+	//} else {
 		self = [super init];
-	}
+	//}
 	if (self == nil) { return nil; }
  
 	NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
@@ -44720,11 +44720,11 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
  * http://davedelong.com/blog/2009/04/13/aspect-oriented-programming-objective-c
  */
 - (id) initWithCoder:(NSCoder *)decoder {
-	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [(id)super initWithCoder:decoder];
-	} else {
+	//if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
+	//	self = [(id)super initWithCoder:decoder];
+	//} else {
 		self = [super init];
-	}
+	//}
 	if (self == nil) { return nil; }
  
 	NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
@@ -44939,11 +44939,11 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
  * http://davedelong.com/blog/2009/04/13/aspect-oriented-programming-objective-c
  */
 - (id) initWithCoder:(NSCoder *)decoder {
-	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [(id)super initWithCoder:decoder];
-	} else {
+	//if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
+	//	self = [(id)super initWithCoder:decoder];
+	//} else {
 		self = [super init];
-	}
+	//}
 	if (self == nil) { return nil; }
  
 	NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
@@ -45302,11 +45302,11 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
  * http://davedelong.com/blog/2009/04/13/aspect-oriented-programming-objective-c
  */
 - (id) initWithCoder:(NSCoder *)decoder {
-	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [(id)super initWithCoder:decoder];
-	} else {
+	//if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
+	//	self = [(id)super initWithCoder:decoder];
+	//} else {
 		self = [super init];
-	}
+	//}
 	if (self == nil) { return nil; }
  
 	NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
@@ -45569,11 +45569,11 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
  * http://davedelong.com/blog/2009/04/13/aspect-oriented-programming-objective-c
  */
 - (id) initWithCoder:(NSCoder *)decoder {
-	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [(id)super initWithCoder:decoder];
-	} else {
+	//if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
+	//	self = [(id)super initWithCoder:decoder];
+	//} else {
 		self = [super init];
-	}
+	//}
 	if (self == nil) { return nil; }
  
 	NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
@@ -45788,11 +45788,11 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
  * http://davedelong.com/blog/2009/04/13/aspect-oriented-programming-objective-c
  */
 - (id) initWithCoder:(NSCoder *)decoder {
-	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [(id)super initWithCoder:decoder];
-	} else {
+	//if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
+	//	self = [(id)super initWithCoder:decoder];
+	//} else {
 		self = [super init];
-	}
+	//}
 	if (self == nil) { return nil; }
  
 	NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
@@ -46007,11 +46007,11 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
  * http://davedelong.com/blog/2009/04/13/aspect-oriented-programming-objective-c
  */
 - (id) initWithCoder:(NSCoder *)decoder {
-	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [(id)super initWithCoder:decoder];
-	} else {
+	//if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
+	//	self = [(id)super initWithCoder:decoder];
+	//} else {
 		self = [super init];
-	}
+	//}
 	if (self == nil) { return nil; }
  
 	NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
@@ -46226,11 +46226,11 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
  * http://davedelong.com/blog/2009/04/13/aspect-oriented-programming-objective-c
  */
 - (id) initWithCoder:(NSCoder *)decoder {
-	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [(id)super initWithCoder:decoder];
-	} else {
+	//if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
+	//	self = [(id)super initWithCoder:decoder];
+	//} else {
 		self = [super init];
-	}
+	//}
 	if (self == nil) { return nil; }
  
 	NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
@@ -46445,11 +46445,11 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
  * http://davedelong.com/blog/2009/04/13/aspect-oriented-programming-objective-c
  */
 - (id) initWithCoder:(NSCoder *)decoder {
-	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [(id)super initWithCoder:decoder];
-	} else {
+	//if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
+	//	self = [(id)super initWithCoder:decoder];
+	//} else {
 		self = [super init];
-	}
+	//}
 	if (self == nil) { return nil; }
  
 	NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
@@ -46712,11 +46712,11 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
  * http://davedelong.com/blog/2009/04/13/aspect-oriented-programming-objective-c
  */
 - (id) initWithCoder:(NSCoder *)decoder {
-	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [(id)super initWithCoder:decoder];
-	} else {
+	//if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
+	//	self = [(id)super initWithCoder:decoder];
+	//} else {
 		self = [super init];
-	}
+	//}
 	if (self == nil) { return nil; }
  
 	NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
@@ -46979,11 +46979,11 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
  * http://davedelong.com/blog/2009/04/13/aspect-oriented-programming-objective-c
  */
 - (id) initWithCoder:(NSCoder *)decoder {
-	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [(id)super initWithCoder:decoder];
-	} else {
+	//if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
+	//	self = [(id)super initWithCoder:decoder];
+	//} else {
 		self = [super init];
-	}
+	//}
 	if (self == nil) { return nil; }
  
 	NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
@@ -47246,11 +47246,11 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
  * http://davedelong.com/blog/2009/04/13/aspect-oriented-programming-objective-c
  */
 - (id) initWithCoder:(NSCoder *)decoder {
-	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [(id)super initWithCoder:decoder];
-	} else {
+	//if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
+	//	self = [(id)super initWithCoder:decoder];
+	//} else {
 		self = [super init];
-	}
+	//}
 	if (self == nil) { return nil; }
  
 	NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
@@ -47513,11 +47513,11 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
  * http://davedelong.com/blog/2009/04/13/aspect-oriented-programming-objective-c
  */
 - (id) initWithCoder:(NSCoder *)decoder {
-	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [(id)super initWithCoder:decoder];
-	} else {
+	//if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
+	//	self = [(id)super initWithCoder:decoder];
+	//} else {
 		self = [super init];
-	}
+	//}
 	if (self == nil) { return nil; }
  
 	NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
@@ -47684,11 +47684,11 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
  * http://davedelong.com/blog/2009/04/13/aspect-oriented-programming-objective-c
  */
 - (id) initWithCoder:(NSCoder *)decoder {
-	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [(id)super initWithCoder:decoder];
-	} else {
+	//if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
+	//	self = [(id)super initWithCoder:decoder];
+	//} else {
 		self = [super init];
-	}
+	//}
 	if (self == nil) { return nil; }
  
 	NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
@@ -47903,11 +47903,11 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
  * http://davedelong.com/blog/2009/04/13/aspect-oriented-programming-objective-c
  */
 - (id) initWithCoder:(NSCoder *)decoder {
-	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [(id)super initWithCoder:decoder];
-	} else {
+	//if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
+	//	self = [(id)super initWithCoder:decoder];
+	//} else {
 		self = [super init];
-	}
+	//}
 	if (self == nil) { return nil; }
  
 	NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
@@ -48122,11 +48122,11 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
  * http://davedelong.com/blog/2009/04/13/aspect-oriented-programming-objective-c
  */
 - (id) initWithCoder:(NSCoder *)decoder {
-	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [(id)super initWithCoder:decoder];
-	} else {
+	//if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
+	//	self = [(id)super initWithCoder:decoder];
+	//} else {
 		self = [super init];
-	}
+	//}
 	if (self == nil) { return nil; }
  
 	NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
@@ -48341,11 +48341,11 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
  * http://davedelong.com/blog/2009/04/13/aspect-oriented-programming-objective-c
  */
 - (id) initWithCoder:(NSCoder *)decoder {
-	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [(id)super initWithCoder:decoder];
-	} else {
+	//if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
+	//	self = [(id)super initWithCoder:decoder];
+	//} else {
 		self = [super init];
-	}
+	//}
 	if (self == nil) { return nil; }
  
 	NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
@@ -48512,11 +48512,11 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
  * http://davedelong.com/blog/2009/04/13/aspect-oriented-programming-objective-c
  */
 - (id) initWithCoder:(NSCoder *)decoder {
-	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [(id)super initWithCoder:decoder];
-	} else {
+	//if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
+	//	self = [(id)super initWithCoder:decoder];
+	//} else {
 		self = [super init];
-	}
+	//}
 	if (self == nil) { return nil; }
  
 	NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
@@ -48731,11 +48731,11 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
  * http://davedelong.com/blog/2009/04/13/aspect-oriented-programming-objective-c
  */
 - (id) initWithCoder:(NSCoder *)decoder {
-	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [(id)super initWithCoder:decoder];
-	} else {
+	//if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
+	//	self = [(id)super initWithCoder:decoder];
+	//} else {
 		self = [super init];
-	}
+	//}
 	if (self == nil) { return nil; }
  
 	NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
@@ -48950,11 +48950,11 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
  * http://davedelong.com/blog/2009/04/13/aspect-oriented-programming-objective-c
  */
 - (id) initWithCoder:(NSCoder *)decoder {
-	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [(id)super initWithCoder:decoder];
-	} else {
+	//if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
+	//	self = [(id)super initWithCoder:decoder];
+	//} else {
 		self = [super init];
-	}
+	//}
 	if (self == nil) { return nil; }
  
 	NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
@@ -49121,11 +49121,11 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
  * http://davedelong.com/blog/2009/04/13/aspect-oriented-programming-objective-c
  */
 - (id) initWithCoder:(NSCoder *)decoder {
-	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [(id)super initWithCoder:decoder];
-	} else {
+	//if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
+	//	self = [(id)super initWithCoder:decoder];
+	//} else {
 		self = [super init];
-	}
+	//}
 	if (self == nil) { return nil; }
  
 	NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
@@ -49388,11 +49388,11 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
  * http://davedelong.com/blog/2009/04/13/aspect-oriented-programming-objective-c
  */
 - (id) initWithCoder:(NSCoder *)decoder {
-	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [(id)super initWithCoder:decoder];
-	} else {
+	//if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
+	//	self = [(id)super initWithCoder:decoder];
+	//} else {
 		self = [super init];
-	}
+	//}
 	if (self == nil) { return nil; }
  
 	NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
@@ -49607,11 +49607,11 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
  * http://davedelong.com/blog/2009/04/13/aspect-oriented-programming-objective-c
  */
 - (id) initWithCoder:(NSCoder *)decoder {
-	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [(id)super initWithCoder:decoder];
-	} else {
+	//if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
+	//	self = [(id)super initWithCoder:decoder];
+	//} else {
 		self = [super init];
-	}
+	//}
 	if (self == nil) { return nil; }
  
 	NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
@@ -49778,11 +49778,11 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
  * http://davedelong.com/blog/2009/04/13/aspect-oriented-programming-objective-c
  */
 - (id) initWithCoder:(NSCoder *)decoder {
-	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [(id)super initWithCoder:decoder];
-	} else {
+	//if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
+	//	self = [(id)super initWithCoder:decoder];
+	//} else {
 		self = [super init];
-	}
+	//}
 	if (self == nil) { return nil; }
  
 	NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
@@ -49997,11 +49997,11 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
  * http://davedelong.com/blog/2009/04/13/aspect-oriented-programming-objective-c
  */
 - (id) initWithCoder:(NSCoder *)decoder {
-	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [(id)super initWithCoder:decoder];
-	} else {
+	//if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
+	//	self = [(id)super initWithCoder:decoder];
+	//} else {
 		self = [super init];
-	}
+	//}
 	if (self == nil) { return nil; }
  
 	NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
@@ -50226,11 +50226,11 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
  * http://davedelong.com/blog/2009/04/13/aspect-oriented-programming-objective-c
  */
 - (id) initWithCoder:(NSCoder *)decoder {
-	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [(id)super initWithCoder:decoder];
-	} else {
+	//if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
+	//	self = [(id)super initWithCoder:decoder];
+	//} else {
 		self = [super init];
-	}
+	//}
 	if (self == nil) { return nil; }
  
 	NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
@@ -50397,11 +50397,11 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
  * http://davedelong.com/blog/2009/04/13/aspect-oriented-programming-objective-c
  */
 - (id) initWithCoder:(NSCoder *)decoder {
-	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [(id)super initWithCoder:decoder];
-	} else {
+	//if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
+	//	self = [(id)super initWithCoder:decoder];
+	//} else {
 		self = [super init];
-	}
+	//}
 	if (self == nil) { return nil; }
  
 	NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
@@ -50568,11 +50568,11 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
  * http://davedelong.com/blog/2009/04/13/aspect-oriented-programming-objective-c
  */
 - (id) initWithCoder:(NSCoder *)decoder {
-	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [(id)super initWithCoder:decoder];
-	} else {
+	//if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
+	//	self = [(id)super initWithCoder:decoder];
+	//} else {
 		self = [super init];
-	}
+	//}
 	if (self == nil) { return nil; }
  
 	NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
@@ -50883,11 +50883,11 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
  * http://davedelong.com/blog/2009/04/13/aspect-oriented-programming-objective-c
  */
 - (id) initWithCoder:(NSCoder *)decoder {
-	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [(id)super initWithCoder:decoder];
-	} else {
+	//if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
+	//	self = [(id)super initWithCoder:decoder];
+	//} else {
 		self = [super init];
-	}
+	//}
 	if (self == nil) { return nil; }
  
 	NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
@@ -51054,11 +51054,11 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
  * http://davedelong.com/blog/2009/04/13/aspect-oriented-programming-objective-c
  */
 - (id) initWithCoder:(NSCoder *)decoder {
-	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [(id)super initWithCoder:decoder];
-	} else {
+	//if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
+	//	self = [(id)super initWithCoder:decoder];
+	//} else {
 		self = [super init];
-	}
+	//}
 	if (self == nil) { return nil; }
  
 	NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
@@ -51321,11 +51321,11 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
  * http://davedelong.com/blog/2009/04/13/aspect-oriented-programming-objective-c
  */
 - (id) initWithCoder:(NSCoder *)decoder {
-	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [(id)super initWithCoder:decoder];
-	} else {
+	//if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
+	//	self = [(id)super initWithCoder:decoder];
+	//} else {
 		self = [super init];
-	}
+	//}
 	if (self == nil) { return nil; }
  
 	NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
@@ -51636,11 +51636,11 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
  * http://davedelong.com/blog/2009/04/13/aspect-oriented-programming-objective-c
  */
 - (id) initWithCoder:(NSCoder *)decoder {
-	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [(id)super initWithCoder:decoder];
-	} else {
+	//if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
+	//	self = [(id)super initWithCoder:decoder];
+	//} else {
 		self = [super init];
-	}
+	//}
 	if (self == nil) { return nil; }
  
 	NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
@@ -51999,11 +51999,11 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
  * http://davedelong.com/blog/2009/04/13/aspect-oriented-programming-objective-c
  */
 - (id) initWithCoder:(NSCoder *)decoder {
-	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [(id)super initWithCoder:decoder];
-	} else {
+	//if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
+	//	self = [(id)super initWithCoder:decoder];
+	//} else {
 		self = [super init];
-	}
+	//}
 	if (self == nil) { return nil; }
  
 	NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
@@ -52266,11 +52266,11 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
  * http://davedelong.com/blog/2009/04/13/aspect-oriented-programming-objective-c
  */
 - (id) initWithCoder:(NSCoder *)decoder {
-	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [(id)super initWithCoder:decoder];
-	} else {
+	//if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
+	//	self = [(id)super initWithCoder:decoder];
+	//} else {
 		self = [super init];
-	}
+	//}
 	if (self == nil) { return nil; }
  
 	NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
@@ -52677,11 +52677,11 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
  * http://davedelong.com/blog/2009/04/13/aspect-oriented-programming-objective-c
  */
 - (id) initWithCoder:(NSCoder *)decoder {
-	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [(id)super initWithCoder:decoder];
-	} else {
+	//if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
+	//	self = [(id)super initWithCoder:decoder];
+	//} else {
 		self = [super init];
-	}
+	//}
 	if (self == nil) { return nil; }
  
 	NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
@@ -52848,11 +52848,11 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
  * http://davedelong.com/blog/2009/04/13/aspect-oriented-programming-objective-c
  */
 - (id) initWithCoder:(NSCoder *)decoder {
-	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [(id)super initWithCoder:decoder];
-	} else {
+	//if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
+	//	self = [(id)super initWithCoder:decoder];
+	//} else {
 		self = [super init];
-	}
+	//}
 	if (self == nil) { return nil; }
  
 	NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
@@ -53067,11 +53067,11 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
  * http://davedelong.com/blog/2009/04/13/aspect-oriented-programming-objective-c
  */
 - (id) initWithCoder:(NSCoder *)decoder {
-	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [(id)super initWithCoder:decoder];
-	} else {
+	//if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
+	//	self = [(id)super initWithCoder:decoder];
+	//} else {
 		self = [super init];
-	}
+	//}
 	if (self == nil) { return nil; }
  
 	NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
@@ -53286,11 +53286,11 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
  * http://davedelong.com/blog/2009/04/13/aspect-oriented-programming-objective-c
  */
 - (id) initWithCoder:(NSCoder *)decoder {
-	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [(id)super initWithCoder:decoder];
-	} else {
+	//if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
+	//	self = [(id)super initWithCoder:decoder];
+	//} else {
 		self = [super init];
-	}
+	//}
 	if (self == nil) { return nil; }
  
 	NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
@@ -53505,11 +53505,11 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
  * http://davedelong.com/blog/2009/04/13/aspect-oriented-programming-objective-c
  */
 - (id) initWithCoder:(NSCoder *)decoder {
-	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [(id)super initWithCoder:decoder];
-	} else {
+	//if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
+	//	self = [(id)super initWithCoder:decoder];
+	//} else {
 		self = [super init];
-	}
+	//}
 	if (self == nil) { return nil; }
  
 	NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
@@ -53724,11 +53724,11 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
  * http://davedelong.com/blog/2009/04/13/aspect-oriented-programming-objective-c
  */
 - (id) initWithCoder:(NSCoder *)decoder {
-	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [(id)super initWithCoder:decoder];
-	} else {
+	//if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
+	//	self = [(id)super initWithCoder:decoder];
+	//} else {
 		self = [super init];
-	}
+	//}
 	if (self == nil) { return nil; }
  
 	NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
@@ -53943,11 +53943,11 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
  * http://davedelong.com/blog/2009/04/13/aspect-oriented-programming-objective-c
  */
 - (id) initWithCoder:(NSCoder *)decoder {
-	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [(id)super initWithCoder:decoder];
-	} else {
+	//if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
+	//	self = [(id)super initWithCoder:decoder];
+	//} else {
 		self = [super init];
-	}
+	//}
 	if (self == nil) { return nil; }
  
 	NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
@@ -54210,11 +54210,11 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
  * http://davedelong.com/blog/2009/04/13/aspect-oriented-programming-objective-c
  */
 - (id) initWithCoder:(NSCoder *)decoder {
-	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [(id)super initWithCoder:decoder];
-	} else {
+	//if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
+	//	self = [(id)super initWithCoder:decoder];
+	//} else {
 		self = [super init];
-	}
+	//}
 	if (self == nil) { return nil; }
  
 	NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
@@ -54381,11 +54381,11 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
  * http://davedelong.com/blog/2009/04/13/aspect-oriented-programming-objective-c
  */
 - (id) initWithCoder:(NSCoder *)decoder {
-	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [(id)super initWithCoder:decoder];
-	} else {
+	//if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
+	//	self = [(id)super initWithCoder:decoder];
+	//} else {
 		self = [super init];
-	}
+	//}
 	if (self == nil) { return nil; }
  
 	NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
@@ -54552,11 +54552,11 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
  * http://davedelong.com/blog/2009/04/13/aspect-oriented-programming-objective-c
  */
 - (id) initWithCoder:(NSCoder *)decoder {
-	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [(id)super initWithCoder:decoder];
-	} else {
+	//if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
+	//	self = [(id)super initWithCoder:decoder];
+	//} else {
 		self = [super init];
-	}
+	//}
 	if (self == nil) { return nil; }
  
 	NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
@@ -54771,11 +54771,11 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
  * http://davedelong.com/blog/2009/04/13/aspect-oriented-programming-objective-c
  */
 - (id) initWithCoder:(NSCoder *)decoder {
-	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [(id)super initWithCoder:decoder];
-	} else {
+	//if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
+	//	self = [(id)super initWithCoder:decoder];
+	//} else {
 		self = [super init];
-	}
+	//}
 	if (self == nil) { return nil; }
  
 	NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
@@ -54990,11 +54990,11 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
  * http://davedelong.com/blog/2009/04/13/aspect-oriented-programming-objective-c
  */
 - (id) initWithCoder:(NSCoder *)decoder {
-	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [(id)super initWithCoder:decoder];
-	} else {
+	//if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
+	//	self = [(id)super initWithCoder:decoder];
+	//} else {
 		self = [super init];
-	}
+	//}
 	if (self == nil) { return nil; }
  
 	NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
@@ -55161,11 +55161,11 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
  * http://davedelong.com/blog/2009/04/13/aspect-oriented-programming-objective-c
  */
 - (id) initWithCoder:(NSCoder *)decoder {
-	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [(id)super initWithCoder:decoder];
-	} else {
+	//if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
+	//	self = [(id)super initWithCoder:decoder];
+	//} else {
 		self = [super init];
-	}
+	//}
 	if (self == nil) { return nil; }
  
 	NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
@@ -55332,11 +55332,11 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
  * http://davedelong.com/blog/2009/04/13/aspect-oriented-programming-objective-c
  */
 - (id) initWithCoder:(NSCoder *)decoder {
-	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [(id)super initWithCoder:decoder];
-	} else {
+	//if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
+	//	self = [(id)super initWithCoder:decoder];
+	//} else {
 		self = [super init];
-	}
+	//}
 	if (self == nil) { return nil; }
  
 	NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
@@ -55551,11 +55551,11 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
  * http://davedelong.com/blog/2009/04/13/aspect-oriented-programming-objective-c
  */
 - (id) initWithCoder:(NSCoder *)decoder {
-	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [(id)super initWithCoder:decoder];
-	} else {
+	//if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
+	//	self = [(id)super initWithCoder:decoder];
+	//} else {
 		self = [super init];
-	}
+	//}
 	if (self == nil) { return nil; }
  
 	NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
@@ -55770,11 +55770,11 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
  * http://davedelong.com/blog/2009/04/13/aspect-oriented-programming-objective-c
  */
 - (id) initWithCoder:(NSCoder *)decoder {
-	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [(id)super initWithCoder:decoder];
-	} else {
+	//if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
+	//	self = [(id)super initWithCoder:decoder];
+	//} else {
 		self = [super init];
-	}
+	//}
 	if (self == nil) { return nil; }
  
 	NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
@@ -55941,11 +55941,11 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
  * http://davedelong.com/blog/2009/04/13/aspect-oriented-programming-objective-c
  */
 - (id) initWithCoder:(NSCoder *)decoder {
-	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [(id)super initWithCoder:decoder];
-	} else {
+	//if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
+	//	self = [(id)super initWithCoder:decoder];
+	//} else {
 		self = [super init];
-	}
+	//}
 	if (self == nil) { return nil; }
  
 	NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
@@ -56160,11 +56160,11 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
  * http://davedelong.com/blog/2009/04/13/aspect-oriented-programming-objective-c
  */
 - (id) initWithCoder:(NSCoder *)decoder {
-	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [(id)super initWithCoder:decoder];
-	} else {
+	//if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
+	//	self = [(id)super initWithCoder:decoder];
+	//} else {
 		self = [super init];
-	}
+	//}
 	if (self == nil) { return nil; }
  
 	NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
@@ -56379,11 +56379,11 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
  * http://davedelong.com/blog/2009/04/13/aspect-oriented-programming-objective-c
  */
 - (id) initWithCoder:(NSCoder *)decoder {
-	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [(id)super initWithCoder:decoder];
-	} else {
+	//if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
+	//	self = [(id)super initWithCoder:decoder];
+	//} else {
 		self = [super init];
-	}
+	//}
 	if (self == nil) { return nil; }
  
 	NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
@@ -56550,11 +56550,11 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
  * http://davedelong.com/blog/2009/04/13/aspect-oriented-programming-objective-c
  */
 - (id) initWithCoder:(NSCoder *)decoder {
-	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [(id)super initWithCoder:decoder];
-	} else {
+	//if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
+	//	self = [(id)super initWithCoder:decoder];
+	//} else {
 		self = [super init];
-	}
+	//}
 	if (self == nil) { return nil; }
  
 	NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
@@ -56769,11 +56769,11 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
  * http://davedelong.com/blog/2009/04/13/aspect-oriented-programming-objective-c
  */
 - (id) initWithCoder:(NSCoder *)decoder {
-	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [(id)super initWithCoder:decoder];
-	} else {
+	//if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
+	//	self = [(id)super initWithCoder:decoder];
+	//} else {
 		self = [super init];
-	}
+	//}
 	if (self == nil) { return nil; }
  
 	NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
@@ -56940,11 +56940,11 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
  * http://davedelong.com/blog/2009/04/13/aspect-oriented-programming-objective-c
  */
 - (id) initWithCoder:(NSCoder *)decoder {
-	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [(id)super initWithCoder:decoder];
-	} else {
+	//if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
+	//	self = [(id)super initWithCoder:decoder];
+	//} else {
 		self = [super init];
-	}
+	//}
 	if (self == nil) { return nil; }
  
 	NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
@@ -57159,11 +57159,11 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
  * http://davedelong.com/blog/2009/04/13/aspect-oriented-programming-objective-c
  */
 - (id) initWithCoder:(NSCoder *)decoder {
-	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [(id)super initWithCoder:decoder];
-	} else {
+	//if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
+	//	self = [(id)super initWithCoder:decoder];
+	//} else {
 		self = [super init];
-	}
+	//}
 	if (self == nil) { return nil; }
  
 	NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
@@ -57378,11 +57378,11 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
  * http://davedelong.com/blog/2009/04/13/aspect-oriented-programming-objective-c
  */
 - (id) initWithCoder:(NSCoder *)decoder {
-	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [(id)super initWithCoder:decoder];
-	} else {
+	//if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
+	//	self = [(id)super initWithCoder:decoder];
+	//} else {
 		self = [super init];
-	}
+	//}
 	if (self == nil) { return nil; }
  
 	NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
@@ -57549,11 +57549,11 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
  * http://davedelong.com/blog/2009/04/13/aspect-oriented-programming-objective-c
  */
 - (id) initWithCoder:(NSCoder *)decoder {
-	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [(id)super initWithCoder:decoder];
-	} else {
+	//if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
+	//	self = [(id)super initWithCoder:decoder];
+	//} else {
 		self = [super init];
-	}
+	//}
 	if (self == nil) { return nil; }
  
 	NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
@@ -57768,11 +57768,11 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
  * http://davedelong.com/blog/2009/04/13/aspect-oriented-programming-objective-c
  */
 - (id) initWithCoder:(NSCoder *)decoder {
-	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [(id)super initWithCoder:decoder];
-	} else {
+	//if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
+	//	self = [(id)super initWithCoder:decoder];
+	//} else {
 		self = [super init];
-	}
+	//}
 	if (self == nil) { return nil; }
  
 	NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
@@ -57939,11 +57939,11 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
  * http://davedelong.com/blog/2009/04/13/aspect-oriented-programming-objective-c
  */
 - (id) initWithCoder:(NSCoder *)decoder {
-	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [(id)super initWithCoder:decoder];
-	} else {
+	//if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
+	//	self = [(id)super initWithCoder:decoder];
+	//} else {
 		self = [super init];
-	}
+	//}
 	if (self == nil) { return nil; }
  
 	NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
@@ -58110,11 +58110,11 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
  * http://davedelong.com/blog/2009/04/13/aspect-oriented-programming-objective-c
  */
 - (id) initWithCoder:(NSCoder *)decoder {
-	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [(id)super initWithCoder:decoder];
-	} else {
+	//if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
+	//	self = [(id)super initWithCoder:decoder];
+	//} else {
 		self = [super init];
-	}
+	//}
 	if (self == nil) { return nil; }
  
 	NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
@@ -58329,11 +58329,11 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
  * http://davedelong.com/blog/2009/04/13/aspect-oriented-programming-objective-c
  */
 - (id) initWithCoder:(NSCoder *)decoder {
-	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [(id)super initWithCoder:decoder];
-	} else {
+	//if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
+	//	self = [(id)super initWithCoder:decoder];
+	//} else {
 		self = [super init];
-	}
+	//}
 	if (self == nil) { return nil; }
  
 	NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
@@ -58644,11 +58644,11 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
  * http://davedelong.com/blog/2009/04/13/aspect-oriented-programming-objective-c
  */
 - (id) initWithCoder:(NSCoder *)decoder {
-	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [(id)super initWithCoder:decoder];
-	} else {
+	//if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
+	//	self = [(id)super initWithCoder:decoder];
+	//} else {
 		self = [super init];
-	}
+	//}
 	if (self == nil) { return nil; }
  
 	NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
@@ -58863,11 +58863,11 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
  * http://davedelong.com/blog/2009/04/13/aspect-oriented-programming-objective-c
  */
 - (id) initWithCoder:(NSCoder *)decoder {
-	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [(id)super initWithCoder:decoder];
-	} else {
+	//if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
+	//	self = [(id)super initWithCoder:decoder];
+	//} else {
 		self = [super init];
-	}
+	//}
 	if (self == nil) { return nil; }
  
 	NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
@@ -59226,11 +59226,11 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
  * http://davedelong.com/blog/2009/04/13/aspect-oriented-programming-objective-c
  */
 - (id) initWithCoder:(NSCoder *)decoder {
-	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [(id)super initWithCoder:decoder];
-	} else {
+	//if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
+	//	self = [(id)super initWithCoder:decoder];
+	//} else {
 		self = [super init];
-	}
+	//}
 	if (self == nil) { return nil; }
  
 	NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
@@ -59445,11 +59445,11 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
  * http://davedelong.com/blog/2009/04/13/aspect-oriented-programming-objective-c
  */
 - (id) initWithCoder:(NSCoder *)decoder {
-	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [(id)super initWithCoder:decoder];
-	} else {
+	//if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
+	//	self = [(id)super initWithCoder:decoder];
+	//} else {
 		self = [super init];
-	}
+	//}
 	if (self == nil) { return nil; }
  
 	NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
@@ -59828,11 +59828,11 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
  * http://davedelong.com/blog/2009/04/13/aspect-oriented-programming-objective-c
  */
 - (id) initWithCoder:(NSCoder *)decoder {
-	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [(id)super initWithCoder:decoder];
-	} else {
+	//if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
+	//	self = [(id)super initWithCoder:decoder];
+	//} else {
 		self = [super init];
-	}
+	//}
 	if (self == nil) { return nil; }
  
 	NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
@@ -59999,11 +59999,11 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
  * http://davedelong.com/blog/2009/04/13/aspect-oriented-programming-objective-c
  */
 - (id) initWithCoder:(NSCoder *)decoder {
-	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [(id)super initWithCoder:decoder];
-	} else {
+	//if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
+	//	self = [(id)super initWithCoder:decoder];
+	//} else {
 		self = [super init];
-	}
+	//}
 	if (self == nil) { return nil; }
  
 	NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
@@ -60266,11 +60266,11 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
  * http://davedelong.com/blog/2009/04/13/aspect-oriented-programming-objective-c
  */
 - (id) initWithCoder:(NSCoder *)decoder {
-	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [(id)super initWithCoder:decoder];
-	} else {
+	//if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
+	//	self = [(id)super initWithCoder:decoder];
+	//} else {
 		self = [super init];
-	}
+	//}
 	if (self == nil) { return nil; }
  
 	NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
@@ -60437,11 +60437,11 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
  * http://davedelong.com/blog/2009/04/13/aspect-oriented-programming-objective-c
  */
 - (id) initWithCoder:(NSCoder *)decoder {
-	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [(id)super initWithCoder:decoder];
-	} else {
+	//if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
+	//	self = [(id)super initWithCoder:decoder];
+	//} else {
 		self = [super init];
-	}
+	//}
 	if (self == nil) { return nil; }
  
 	NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
@@ -60800,11 +60800,11 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
  * http://davedelong.com/blog/2009/04/13/aspect-oriented-programming-objective-c
  */
 - (id) initWithCoder:(NSCoder *)decoder {
-	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [(id)super initWithCoder:decoder];
-	} else {
+	//if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
+	//	self = [(id)super initWithCoder:decoder];
+	//} else {
 		self = [super init];
-	}
+	//}
 	if (self == nil) { return nil; }
  
 	NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
@@ -61019,11 +61019,11 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
  * http://davedelong.com/blog/2009/04/13/aspect-oriented-programming-objective-c
  */
 - (id) initWithCoder:(NSCoder *)decoder {
-	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [(id)super initWithCoder:decoder];
-	} else {
+	//if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
+	//	self = [(id)super initWithCoder:decoder];
+	//} else {
 		self = [super init];
-	}
+	//}
 	if (self == nil) { return nil; }
  
 	NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
@@ -61200,11 +61200,11 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
  * http://davedelong.com/blog/2009/04/13/aspect-oriented-programming-objective-c
  */
 - (id) initWithCoder:(NSCoder *)decoder {
-	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [(id)super initWithCoder:decoder];
-	} else {
+	//if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
+	//	self = [(id)super initWithCoder:decoder];
+	//} else {
 		self = [super init];
-	}
+	//}
 	if (self == nil) { return nil; }
  
 	NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
@@ -61419,11 +61419,11 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
  * http://davedelong.com/blog/2009/04/13/aspect-oriented-programming-objective-c
  */
 - (id) initWithCoder:(NSCoder *)decoder {
-	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [(id)super initWithCoder:decoder];
-	} else {
+	//if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
+	//	self = [(id)super initWithCoder:decoder];
+	//} else {
 		self = [super init];
-	}
+	//}
 	if (self == nil) { return nil; }
  
 	NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
@@ -61638,11 +61638,11 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
  * http://davedelong.com/blog/2009/04/13/aspect-oriented-programming-objective-c
  */
 - (id) initWithCoder:(NSCoder *)decoder {
-	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [(id)super initWithCoder:decoder];
-	} else {
+	//if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
+	//	self = [(id)super initWithCoder:decoder];
+	//} else {
 		self = [super init];
-	}
+	//}
 	if (self == nil) { return nil; }
  
 	NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
@@ -61809,11 +61809,11 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
  * http://davedelong.com/blog/2009/04/13/aspect-oriented-programming-objective-c
  */
 - (id) initWithCoder:(NSCoder *)decoder {
-	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [(id)super initWithCoder:decoder];
-	} else {
+	//if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
+	//	self = [(id)super initWithCoder:decoder];
+	//} else {
 		self = [super init];
-	}
+	//}
 	if (self == nil) { return nil; }
  
 	NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
@@ -61980,11 +61980,11 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
  * http://davedelong.com/blog/2009/04/13/aspect-oriented-programming-objective-c
  */
 - (id) initWithCoder:(NSCoder *)decoder {
-	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [(id)super initWithCoder:decoder];
-	} else {
+	//if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
+	//	self = [(id)super initWithCoder:decoder];
+	//} else {
 		self = [super init];
-	}
+	//}
 	if (self == nil) { return nil; }
  
 	NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
@@ -62199,11 +62199,11 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
  * http://davedelong.com/blog/2009/04/13/aspect-oriented-programming-objective-c
  */
 - (id) initWithCoder:(NSCoder *)decoder {
-	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [(id)super initWithCoder:decoder];
-	} else {
+	//if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
+	//	self = [(id)super initWithCoder:decoder];
+	//} else {
 		self = [super init];
-	}
+	//}
 	if (self == nil) { return nil; }
  
 	NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
@@ -62418,11 +62418,11 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
  * http://davedelong.com/blog/2009/04/13/aspect-oriented-programming-objective-c
  */
 - (id) initWithCoder:(NSCoder *)decoder {
-	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [(id)super initWithCoder:decoder];
-	} else {
+	//if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
+	//	self = [(id)super initWithCoder:decoder];
+	//} else {
 		self = [super init];
-	}
+	//}
 	if (self == nil) { return nil; }
  
 	NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
@@ -62589,11 +62589,11 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
  * http://davedelong.com/blog/2009/04/13/aspect-oriented-programming-objective-c
  */
 - (id) initWithCoder:(NSCoder *)decoder {
-	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [(id)super initWithCoder:decoder];
-	} else {
+	//if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
+	//	self = [(id)super initWithCoder:decoder];
+	//} else {
 		self = [super init];
-	}
+	//}
 	if (self == nil) { return nil; }
  
 	NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
@@ -62856,11 +62856,11 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
  * http://davedelong.com/blog/2009/04/13/aspect-oriented-programming-objective-c
  */
 - (id) initWithCoder:(NSCoder *)decoder {
-	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [(id)super initWithCoder:decoder];
-	} else {
+	//if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
+	//	self = [(id)super initWithCoder:decoder];
+	//} else {
 		self = [super init];
-	}
+	//}
 	if (self == nil) { return nil; }
  
 	NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
@@ -63027,11 +63027,11 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
  * http://davedelong.com/blog/2009/04/13/aspect-oriented-programming-objective-c
  */
 - (id) initWithCoder:(NSCoder *)decoder {
-	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [(id)super initWithCoder:decoder];
-	} else {
+	//if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
+	//	self = [(id)super initWithCoder:decoder];
+	//} else {
 		self = [super init];
-	}
+	//}
 	if (self == nil) { return nil; }
  
 	NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
@@ -63246,11 +63246,11 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
  * http://davedelong.com/blog/2009/04/13/aspect-oriented-programming-objective-c
  */
 - (id) initWithCoder:(NSCoder *)decoder {
-	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [(id)super initWithCoder:decoder];
-	} else {
+	//if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
+	//	self = [(id)super initWithCoder:decoder];
+	//} else {
 		self = [super init];
-	}
+	//}
 	if (self == nil) { return nil; }
  
 	NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
@@ -63417,11 +63417,11 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
  * http://davedelong.com/blog/2009/04/13/aspect-oriented-programming-objective-c
  */
 - (id) initWithCoder:(NSCoder *)decoder {
-	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [(id)super initWithCoder:decoder];
-	} else {
+	//if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
+	//	self = [(id)super initWithCoder:decoder];
+	//} else {
 		self = [super init];
-	}
+	//}
 	if (self == nil) { return nil; }
  
 	NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
@@ -63594,11 +63594,11 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
  * http://davedelong.com/blog/2009/04/13/aspect-oriented-programming-objective-c
  */
 - (id) initWithCoder:(NSCoder *)decoder {
-	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [(id)super initWithCoder:decoder];
-	} else {
+	//if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
+	//	self = [(id)super initWithCoder:decoder];
+	//} else {
 		self = [super init];
-	}
+	//}
 	if (self == nil) { return nil; }
  
 	NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
@@ -63813,11 +63813,11 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
  * http://davedelong.com/blog/2009/04/13/aspect-oriented-programming-objective-c
  */
 - (id) initWithCoder:(NSCoder *)decoder {
-	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [(id)super initWithCoder:decoder];
-	} else {
+	//if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
+	//	self = [(id)super initWithCoder:decoder];
+	//} else {
 		self = [super init];
-	}
+	//}
 	if (self == nil) { return nil; }
  
 	NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
@@ -64320,11 +64320,11 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
  * http://davedelong.com/blog/2009/04/13/aspect-oriented-programming-objective-c
  */
 - (id) initWithCoder:(NSCoder *)decoder {
-	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [(id)super initWithCoder:decoder];
-	} else {
+	//if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
+	//	self = [(id)super initWithCoder:decoder];
+	//} else {
 		self = [super init];
-	}
+	//}
 	if (self == nil) { return nil; }
  
 	NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
@@ -64497,11 +64497,11 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
  * http://davedelong.com/blog/2009/04/13/aspect-oriented-programming-objective-c
  */
 - (id) initWithCoder:(NSCoder *)decoder {
-	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [(id)super initWithCoder:decoder];
-	} else {
+	//if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
+	//	self = [(id)super initWithCoder:decoder];
+	//} else {
 		self = [super init];
-	}
+	//}
 	if (self == nil) { return nil; }
  
 	NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
@@ -64812,11 +64812,11 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
  * http://davedelong.com/blog/2009/04/13/aspect-oriented-programming-objective-c
  */
 - (id) initWithCoder:(NSCoder *)decoder {
-	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [(id)super initWithCoder:decoder];
-	} else {
+	//if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
+	//	self = [(id)super initWithCoder:decoder];
+	//} else {
 		self = [super init];
-	}
+	//}
 	if (self == nil) { return nil; }
  
 	NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
@@ -65079,11 +65079,11 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
  * http://davedelong.com/blog/2009/04/13/aspect-oriented-programming-objective-c
  */
 - (id) initWithCoder:(NSCoder *)decoder {
-	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [(id)super initWithCoder:decoder];
-	} else {
+	//if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
+	//	self = [(id)super initWithCoder:decoder];
+	//} else {
 		self = [super init];
-	}
+	//}
 	if (self == nil) { return nil; }
  
 	NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
@@ -65256,11 +65256,11 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
  * http://davedelong.com/blog/2009/04/13/aspect-oriented-programming-objective-c
  */
 - (id) initWithCoder:(NSCoder *)decoder {
-	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [(id)super initWithCoder:decoder];
-	} else {
+	//if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
+	//	self = [(id)super initWithCoder:decoder];
+	//} else {
 		self = [super init];
-	}
+	//}
 	if (self == nil) { return nil; }
  
 	NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
@@ -65475,11 +65475,11 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
  * http://davedelong.com/blog/2009/04/13/aspect-oriented-programming-objective-c
  */
 - (id) initWithCoder:(NSCoder *)decoder {
-	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [(id)super initWithCoder:decoder];
-	} else {
+	//if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
+	//	self = [(id)super initWithCoder:decoder];
+	//} else {
 		self = [super init];
-	}
+	//}
 	if (self == nil) { return nil; }
  
 	NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
@@ -65585,11 +65585,11 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
  * http://davedelong.com/blog/2009/04/13/aspect-oriented-programming-objective-c
  */
 - (id) initWithCoder:(NSCoder *)decoder {
-	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [(id)super initWithCoder:decoder];
-	} else {
+	//if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
+	//	self = [(id)super initWithCoder:decoder];
+	//} else {
 		self = [super init];
-	}
+	//}
 	if (self == nil) { return nil; }
  
 	NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
@@ -65756,11 +65756,11 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
  * http://davedelong.com/blog/2009/04/13/aspect-oriented-programming-objective-c
  */
 - (id) initWithCoder:(NSCoder *)decoder {
-	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [(id)super initWithCoder:decoder];
-	} else {
+	//if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
+	//	self = [(id)super initWithCoder:decoder];
+	//} else {
 		self = [super init];
-	}
+	//}
 	if (self == nil) { return nil; }
  
 	NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
@@ -66023,11 +66023,11 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
  * http://davedelong.com/blog/2009/04/13/aspect-oriented-programming-objective-c
  */
 - (id) initWithCoder:(NSCoder *)decoder {
-	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [(id)super initWithCoder:decoder];
-	} else {
+	//if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
+	//	self = [(id)super initWithCoder:decoder];
+	//} else {
 		self = [super init];
-	}
+	//}
 	if (self == nil) { return nil; }
  
 	NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
@@ -66242,11 +66242,11 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
  * http://davedelong.com/blog/2009/04/13/aspect-oriented-programming-objective-c
  */
 - (id) initWithCoder:(NSCoder *)decoder {
-	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		self = [(id)super initWithCoder:decoder];
-	} else {
+	//if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
+	//	self = [(id)super initWithCoder:decoder];
+	//} else {
 		self = [super init];
-	}
+	//}
 	if (self == nil) { return nil; }
  
 	NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];

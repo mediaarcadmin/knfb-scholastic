@@ -22,7 +22,6 @@
 #import <libEucalyptus/EucSelectorRange.h>
 #import <libEucalyptus/EucHighlightRange.h>
 #import <libEucalyptus/THPair.h>
-#import <libEucalyptus/EucConfiguration.h>
 #import <libEucalyptus/EucOTFIndex.h>
 
 @interface SCHFlowView ()
@@ -30,6 +29,8 @@
 @property (nonatomic, retain) SCHFlowEucBook *eucBook;
 @property (nonatomic, retain) KNFBTextFlowParagraphSource *paragraphSource;
 @property (nonatomic, retain) EucBookView *eucBookView;
+
+@property (nonatomic, retain) NSArray *fontPointSizes;
 
 @property (nonatomic, retain) UIImage *currentPageTexture;
 @property (nonatomic, assign) BOOL textureIsDark;
@@ -46,6 +47,7 @@
 @synthesize eucBook;
 @synthesize paragraphSource;
 @synthesize eucBookView;
+@synthesize fontPointSizes;
 
 @synthesize currentPageTexture;
 @synthesize textureIsDark;
@@ -54,7 +56,9 @@
 
 - (void)initialiseView
 {
-    if((eucBookView = [[EucBookView alloc] initWithFrame:self.bounds book:self.eucBook])) {
+    if((eucBookView = [[EucBookView alloc] initWithFrame:self.bounds 
+                                                    book:self.eucBook
+                                          fontPointSizes:self.fontPointSizes])) {
         eucBookView.delegate = self;
         eucBookView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
         eucBookView.vibratesOnInvalidTurn = NO;
@@ -88,6 +92,8 @@
     [jumpToPageCompletionHandler release], jumpToPageCompletionHandler = nil;
     [openingPoint release], openingPoint = nil;
 
+    [fontPointSizes release], fontPointSizes = nil;
+    
     [super dealloc];
 }
 
@@ -184,7 +190,7 @@ managedObjectContext:(NSManagedObjectContext *)managedObjectContext
 
 - (SCHBookPoint *)currentBookPoint
 {
-    return [self.eucBook bookPointFromBookPageIndexPoint:[self.eucBook currentPageIndexPoint]];
+    return [self.eucBook bookPointFromBookPageIndexPoint:self.eucBookView.currentPageIndexPoint];
 }
 
 - (SCHBookRange *)currentBookRange
@@ -271,9 +277,24 @@ managedObjectContext:(NSManagedObjectContext *)managedObjectContext
     }
 }
 
+- (NSArray *)fontPointSizes
+{
+    if(!fontPointSizes) {
+        NSMutableArray *buildFontPointSizes = [[NSMutableArray alloc] init];
+        static const CGFloat sFontSizesArray[] = { 14, 16, 19, 24, 32, 41 };
+        NSUInteger fontSizeCount = UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone ? 5 : 6;
+        for(size_t i = 0; i < fontSizeCount; ++i) {
+            [buildFontPointSizes addObject:[NSNumber numberWithFloat:sFontSizesArray[i]]];
+        }
+        self.fontPointSizes = buildFontPointSizes;
+        [buildFontPointSizes release];
+    }
+    return fontPointSizes;
+}
+
 - (NSInteger) maximumFontIndex
 {
-    return ([[EucConfiguration objectForKey:EucConfigurationFontSizesKey] count] - 1);
+    return ([self.fontPointSizes count] - 1);
 }
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object
@@ -494,7 +515,7 @@ static void sortedHighlightRangePredicateInit() {
     CGFloat actualFontSize = [[NSUserDefaults standardUserDefaults] floatForKey:@"gs.ingsmadeoutofotherthin.th.libEucalyptus.fontPointSize"];
     CGFloat bestDifference = CGFLOAT_MAX;
     NSUInteger bestFontSizeIndex = 0;
-    NSArray *fontSizeNumbers = [EucConfiguration objectForKey:EucConfigurationFontSizesKey];
+    NSArray *fontSizeNumbers = self.eucBookView.fontPointSizes;
     
     NSUInteger fontSizeCount = fontSizeNumbers.count;
     for(NSUInteger i = 0; i < fontSizeCount; ++i) {
@@ -510,7 +531,7 @@ static void sortedHighlightRangePredicateInit() {
 
 - (void)setFontSizeIndex:(NSUInteger)index
 {
-    NSArray *eucFontSizeNumbers = [EucConfiguration objectForKey:EucConfigurationFontSizesKey];
+    NSArray *eucFontSizeNumbers = self.eucBookView.fontPointSizes;
     
     if (index > ([eucFontSizeNumbers count] - 1)) {
         return;
@@ -546,23 +567,11 @@ static void sortedHighlightRangePredicateInit() {
 {
     if (nil == selectorRange) return nil;
     
-    EucBookPageIndexPoint *indexPoint = [[EucBookPageIndexPoint alloc] init];
-    
-    indexPoint.source = [self.eucBook currentPageIndexPoint].source;
-    
-    indexPoint.block = [((THPair *)selectorRange.startBlockId).second unsignedIntValue];
-    indexPoint.word = [selectorRange.startElementId unsignedIntValue];
-    SCHBookPoint *startPoint = [self.eucBook bookPointFromBookPageIndexPoint:indexPoint];
-    
-    indexPoint.block = [((THPair *)selectorRange.endBlockId).second unsignedIntValue];
-    indexPoint.word = [selectorRange.endElementId unsignedIntValue];
-    SCHBookPoint *endPoint = [self.eucBook bookPointFromBookPageIndexPoint:indexPoint];
-    
-    [indexPoint release];
-    
+    EucBookPageIndexPointRange *eucIndexPointRange = [self.eucBookView pageIndexPointRangeFromSelectorRange:selectorRange];
+
     SCHBookRange *range = [[SCHBookRange alloc] init];
-    range.startPoint = startPoint;
-    range.endPoint = endPoint;    
+    range.startPoint = [self.eucBook bookPointFromBookPageIndexPoint:eucIndexPointRange.startPoint];
+    range.endPoint = [self.eucBook bookPointFromBookPageIndexPoint:eucIndexPointRange.endPoint];    
     
     return [range autorelease];
 }

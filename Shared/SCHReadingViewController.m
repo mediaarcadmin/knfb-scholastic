@@ -46,6 +46,7 @@
 #import "SCHReadingStoryInteractionButton.h"
 #import "SCHProfileSyncComponent.h"
 #import "NSDate+ServerDate.h"
+#import "SCHRecommendationListView.h"
 
 // constants
 NSString *const kSCHReadingViewErrorDomain  = @"com.knfb.scholastic.ReadingViewErrorDomain";
@@ -2250,6 +2251,72 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     [self.bookStatistics addToDictionaryLookup:word];
 }
 
+- (NSUInteger)generatedPageCountForReadingView:(SCHReadingView *)aReadingView
+{
+    NSUInteger pageCount = [aReadingView pageCount];
+    
+    if ([aReadingView isKindOfClass:[SCHLayoutView class]]) {
+        pageCount++;
+    }
+    
+    return pageCount;
+}
+
+- (BOOL)readingView:(SCHReadingView *)aReadingView shouldGenerateViewForPageAtIndex:(NSUInteger)pageIndex
+{
+    if ([aReadingView isKindOfClass:[SCHLayoutView class]]) {
+        if (pageIndex == [self generatedPageCountForReadingView:aReadingView] - 1) {
+            return YES;
+        }
+    }
+    
+    return NO;
+}
+
+- (UIView *)generatedViewForPageAtIndex:(NSUInteger)pageIndex
+{
+    SCHBookManager *bookManager = [SCHBookManager sharedBookManager];
+    SCHAppBook *book = [bookManager bookWithIdentifier:self.bookIdentifier inManagedObjectContext:bookManager.mainThreadManagedObjectContext];    
+
+    NSArray *recommendationsDictionaries = [book recommendationDictionaries];
+    
+    UIView *container = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 300, 400)];
+    container.backgroundColor = [UIColor whiteColor];
+    
+    CGFloat count = MIN([recommendationsDictionaries count], 8);
+    CGFloat inset = 30;
+    CGFloat rowHeight = floorf((container.frame.size.height - 2*inset)/count);
+    
+    for (int i = 0; i < count; i++) {
+        NSDictionary *recommendationDictionary = [recommendationsDictionaries objectAtIndex:i];
+        SCHRecommendationListView *listView = [[SCHRecommendationListView alloc] initWithFrame:CGRectMake(inset, inset + rowHeight * i, container.frame.size.width - 2*inset, rowHeight)];
+        listView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin;
+        
+        [listView updateWithRecommendationItem:recommendationDictionary];
+        [container addSubview:listView];
+        [listView release];
+    }
+    //SCHRecommendationListView *listView = [[SCHRecommendationListView alloc] initWithFrame:CGRectMake(0, 0, 600, 50)];
+    
+    
+    
+    return [container autorelease];
+//    UIView *aView = [[UIView alloc] init];
+//    aView.backgroundColor = [UIColor colorWithRed:rand()%1000/1000.0f green:rand()%1000/1000.0f blue:rand()%1000/1000.0f alpha:1];
+//    
+//    UIButton *aButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+//    aButton.frame = CGRectMake(50, 50, 50, 50);
+//    [aView addSubview:aButton];
+//    
+//    UIActivityIndicatorView *activity = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
+//    
+//    activity.center = CGPointMake(300, 300);
+//    [activity startAnimating];
+//    [aView addSubview:activity];
+//    
+//    return aView;
+}
+
 #pragma mark - SCHReadingViewDelegate Toolbars methods
 
 - (void)hideToolbars
@@ -3070,5 +3137,9 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
         self.firstTimePlayForHelpController = NO;
     }
 }
+
+#pragma mark - Book Recommendations
+
+
 
 @end

@@ -118,7 +118,7 @@
 {
     // remove the item from the list to be deleted
     NSUInteger index = [self.wishListItemsToRemove indexOfObjectPassingTest:^BOOL (id obj, NSUInteger idx, BOOL *stop) {
-        return [[(NSDictionary *)obj objectForKey:kSCHAppProfileISBN] isEqualToString:ISBN];
+        return [[(NSDictionary *)obj objectForKey:kSCHWishListISBN] isEqualToString:ISBN];
     }];
     
     if (index != NSNotFound) {
@@ -131,7 +131,7 @@
 - (void)recommendationListView:(SCHRecommendationListView *)listView removedISBNFromWishList:(NSString *)ISBN
 {
     NSUInteger index = [self.localWishListItems indexOfObjectPassingTest:^BOOL (id obj, NSUInteger idx, BOOL *stop) {
-        return [[(NSDictionary *)obj objectForKey:kSCHAppProfileISBN] isEqualToString:ISBN];
+        return [[(NSDictionary *)obj objectForKey:kSCHWishListISBN] isEqualToString:ISBN];
     }];
     
     if (index != NSNotFound) {
@@ -191,10 +191,10 @@
         if (recommendationView) {
             [recommendationView updateWithWishListItem:[self.localWishListItems objectAtIndex:indexPath.row]];
             
-            NSString *ISBN = [[self.localWishListItems objectAtIndex:indexPath.row] objectForKey:kSCHAppProfileISBN];
+            NSString *ISBN = [[self.localWishListItems objectAtIndex:indexPath.row] objectForKey:kSCHWishListISBN];
 
             NSUInteger index = [self.wishListItemsToRemove indexOfObjectPassingTest:^BOOL (id obj, NSUInteger idx, BOOL *stop) {
-                return [[(NSDictionary *)obj objectForKey:kSCHAppProfileISBN] isEqualToString:ISBN];
+                return [[(NSDictionary *)obj objectForKey:kSCHWishListISBN] isEqualToString:ISBN];
             }];
             
             if (index == NSNotFound) {

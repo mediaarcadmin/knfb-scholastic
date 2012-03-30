@@ -7,6 +7,7 @@
 //
 
 #import "SCHBookShelfRecommendationListController.h"
+#import "SCHAppRecommendationItem.h"
 
 @interface SCHBookShelfRecommendationListController ()
 
@@ -120,22 +121,23 @@
 {
     // find the recommendation item
     NSUInteger index = [self.localRecommendationItems indexOfObjectPassingTest:^BOOL (id obj, NSUInteger idx, BOOL *stop) {
-        return [[(NSDictionary *)obj objectForKey:kSCHAppProfileISBN] isEqualToString:ISBN];
+        return [[(NSDictionary *)obj objectForKey:kSCHAppRecommendationISBN] isEqualToString:ISBN];
     }];
     
     if (index != NSNotFound) {
-        NSDictionary *item = [self.localRecommendationItems objectAtIndex:index];
+        NSDictionary *recommendationItem = [self.localRecommendationItems objectAtIndex:index];
 
         // create the wishlist dictionary
         // add it to the profile
         NSMutableDictionary *wishListItem = [NSMutableDictionary dictionary];
         
-        [wishListItem setValue:([item objectForKey:kSCHAppProfileAuthor] == nil ? (id)[NSNull null] : [item objectForKey:kSCHAppProfileAuthor]) 
-                        forKey:kSCHAppProfileAuthor];
-        [wishListItem setValue:([item objectForKey:kSCHAppProfileISBN] == nil ? (id)[NSNull null] : [item objectForKey:kSCHAppProfileISBN]) 
-                        forKey:kSCHAppProfileISBN];
-        [wishListItem setValue:([item objectForKey:kSCHAppProfileTitle] == nil ? (id)[NSNull null] : [item objectForKey:kSCHAppProfileTitle]) 
-                        forKey:kSCHAppProfileTitle];
+        
+        [wishListItem setValue:([recommendationItem objectForKey:kSCHAppRecommendationAuthor] == nil ? (id)[NSNull null] : [recommendationItem objectForKey:kSCHAppRecommendationAuthor]) 
+                        forKey:kSCHWishListAuthor];
+        [wishListItem setValue:([recommendationItem objectForKey:kSCHAppRecommendationISBN] == nil ? (id)[NSNull null] : [recommendationItem objectForKey:kSCHAppRecommendationISBN]) 
+                        forKey:kSCHWishListISBN];
+        [wishListItem setValue:([recommendationItem objectForKey:kSCHAppRecommendationTitle] == nil ? (id)[NSNull null] : [recommendationItem objectForKey:kSCHAppRecommendationTitle]) 
+                        forKey:kSCHWishListTitle];
         
         [self.modifiedWishListItems addObject:wishListItem];
     }
@@ -150,7 +152,7 @@
 {
     // find the item in the modified list and remove it
     NSUInteger modifiedItemsIndex = [self.modifiedWishListItems indexOfObjectPassingTest:^BOOL (id obj, NSUInteger idx, BOOL *stop) {
-        return [[(NSDictionary *)obj objectForKey:kSCHAppProfileISBN] isEqualToString:ISBN];
+        return [[(NSDictionary *)obj objectForKey:kSCHAppRecommendationISBN] isEqualToString:ISBN];
     }];
     
     if (modifiedItemsIndex != NSNotFound) {
@@ -223,14 +225,14 @@
     
     if (self.localRecommendationItems && self.localRecommendationItems.count > 0) {
         SCHRecommendationListView *recommendationView = (SCHRecommendationListView *)[cell viewWithTag:999];
-        NSString *ISBN = [[self.localRecommendationItems objectAtIndex:indexPath.row] objectForKey:kSCHAppProfileISBN];
+        NSString *ISBN = [[self.localRecommendationItems objectAtIndex:indexPath.row] objectForKey:kSCHAppRecommendationISBN];
         
         if (recommendationView) {
             
             [recommendationView updateWithRecommendationItem:[self.localRecommendationItems objectAtIndex:indexPath.row]];
             
             NSUInteger index = [self.modifiedWishListItems indexOfObjectPassingTest:^BOOL (id obj, NSUInteger idx, BOOL *stop) {
-                return [[(NSDictionary *)obj objectForKey:kSCHAppProfileISBN] isEqualToString:ISBN];
+                return [[(NSDictionary *)obj objectForKey:kSCHAppRecommendationISBN] isEqualToString:ISBN];
             }];
             
             if (index != NSNotFound) {

@@ -22,6 +22,7 @@
 #import <libEucalyptus/EucBookPageIndexPoint.h>
 #import <libEucalyptus/EucCSSXHTMLTree.h>
 #import <libEucalyptus/EucCSSLayoutRunExtractor.h>
+#import <libEucalyptus/EucCSSIntermediateDocument.h>
 #import "levenshtein_distance.h"
 
 #define MATCHING_WINDOW_SIZE 11

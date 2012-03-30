@@ -24,10 +24,10 @@ typedef enum
 
 @optional
 
-- (void)backAction:(id)sender;
-- (void)pictureStarterAction:(id)sender;
-- (void)audioAction:(id)sender;
-- (void)helpAction:(id)sender;
+- (IBAction)backAction:(id)sender;
+- (IBAction)pictureStarterAction:(id)sender;
+- (IBAction)audioAction:(id)sender;
+- (IBAction)helpAction:(id)sender;
 
 @end
 

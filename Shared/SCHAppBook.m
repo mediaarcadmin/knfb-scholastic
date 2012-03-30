@@ -12,6 +12,7 @@
 #import "SCHAppStateManager.h"
 #import "NSDate+ServerDate.h"
 #import "SCHRecommendationItem.h"
+#import "SCHAppRecommendationItem.h"
 #import "SCHRecommendationConstants.h"
 #import "SCHRecommendationISBN.h"
 #import "SCHUserContentItem.h"
@@ -387,27 +388,24 @@ NSString * const kSCHAppBookFilenameSeparator = @"-";
     return ret;
 }
 
-- (NSArray *)recommendations
+- (NSArray *)recommendationDictionaries
 {
     NSArray *ret = nil;
+    NSSet *allItems = [[self recommendationISBN] recommendationItems];
+    NSPredicate *readyRecommendations = [NSPredicate predicateWithFormat:@"appRecommendationItem.processingState = %d", kSCHAppRecommendationProcessingStateComplete];
+    NSSet *filteredItems = [allItems filteredSetUsingPredicate:readyRecommendations];
     
-    if (self.bookIdentifier != [SCHBookIdentifier invalidBookIdentifier]) {
-        NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+    NSMutableArray *objectArray = [NSMutableArray arrayWithCapacity:[filteredItems count]];
+    
+    for(SCHRecommendationItem *item in filteredItems) {
+        NSDictionary *recommendationDictionary = [item.appRecommendationItem dictionary];
         
-        [fetchRequest setEntity:[NSEntityDescription entityForName:kSCHRecommendationItem 
-                                            inManagedObjectContext:self.managedObjectContext]];	
-        [fetchRequest setPredicate:[NSPredicate predicateWithFormat:@"recommendationISBN.isbn = %@", self.bookIdentifier.isbn]];
-        [fetchRequest setSortDescriptors:[NSArray arrayWithObject:
-                                          [NSSortDescriptor sortDescriptorWithKey:kSCHRecommendationWebServiceOrder ascending:YES]]];
-        
-        NSError *error = nil;
-        ret = [self.managedObjectContext executeFetchRequest:fetchRequest error:&error];	
-        if (ret == nil) {
-            NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
+        if (recommendationDictionary) {
+            [objectArray addObject:recommendationDictionary];
         }
-        
-        [fetchRequest release], fetchRequest = nil;        
     }
+    
+    ret = [NSArray arrayWithArray:objectArray];
     
     return ret;
 }

@@ -21,6 +21,12 @@ extern NSString * const kSCHAppRecommendationItemIsbn;
 extern NSUInteger const kSCHRecommendationThumbnailMaxDimensionPad;
 extern NSUInteger const kSCHRecommendationThumbnailMaxDimensionPhone;
 
+extern NSString * const kSCHAppRecommendationTitle;
+extern NSString * const kSCHAppRecommendationAuthor;
+extern NSString * const kSCHAppRecommendationISBN;
+extern NSString * const kSCHAppRecommendationAverageRating;
+extern NSString * const kSCHAppRecommendationCoverImage;
+
 typedef enum {
     kSCHAppRecommendationProcessingStateURLsNotPopulated        = -5,
     kSCHAppRecommendationProcessingStateDownloadFailed          = -4,
@@ -53,6 +59,8 @@ typedef enum {
 - (NSString *)coverImagePath;
 - (NSString *)thumbPath;
 - (NSString *)recommendationDirectory;
+
+- (NSDictionary *)dictionary;
 
 + (NSString *)recommendationsDirectory;
 
