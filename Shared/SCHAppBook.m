@@ -169,9 +169,8 @@ NSString * const kSCHAppBookFilenameSeparator = @"-";
     NSNumber *averageRating = nil;
     SCHUserContentItem *userContentItem = self.ContentMetadataItem.UserContentItem;
     
-    if (userContentItem != nil) {
-        averageRating = [userContentItem AverageRatingAsNumber];
-    } else {
+    averageRating = userContentItem.AverageRating;
+    if (averageRating == nil) {
         averageRating = [NSNumber numberWithInteger:0];
     }
             

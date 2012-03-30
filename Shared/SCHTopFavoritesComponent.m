@@ -99,7 +99,7 @@ static NSString * const kSCHTopFavoritesComponentCategoryYoungAdults = @"Young A
             NSArray *books = [self makeNullNil:[[favorites objectAtIndex:0] objectForKey:kSCHLibreAccessWebServiceTopFavoritesContentItems]];
             
             if ([books count] > 0) {
-                [self.libreAccessWebService listContentMetadata:books includeURLs:YES];			
+                [self.libreAccessWebService listContentMetadata:books includeURLs:YES coverURLOnly:YES];			
             } else if([(id)self.delegate respondsToSelector:@selector(component:didCompleteWithResult:)]) {
 				[(id)self.delegate component:self didCompleteWithResult:[NSDictionary dictionaryWithObject:[NSNull null] forKey:kSCHLibreAccessWebServiceContentMetadataList]];									
             }

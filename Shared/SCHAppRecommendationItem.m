@@ -51,23 +51,6 @@ NSString * const kSCHAppRecommendationCoverImage = @"CoverImage";
     [super willTurnIntoFault];
 }
 
-- (NSNumber *)AverageRatingAsNumber
-{    
-    NSString *averageRating = self.AverageRating;
-    
-    if (averageRating == nil || 
-        [[averageRating stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]] length]  < 1) {
-        averageRating = @"0";
-    }
-    
-    NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
-    [formatter setNumberStyle:NSNumberFormatterDecimalStyle];
-    NSNumber *number = [formatter numberFromString:averageRating];
-    [formatter release];
-    
-    return number;
-}
-
 - (SCHAppRecommendationProcessingState)processingState
 {
 	return (SCHAppRecommendationProcessingState) [self.state intValue];
@@ -78,7 +61,7 @@ NSString * const kSCHAppRecommendationCoverImage = @"CoverImage";
     self.state = [NSNumber numberWithInt:processingState];
 }
 
-#pragma mark - SCHContentItem overriden implementations
+#pragma SCHISBNItem protocol methods
 
 - (NSNumber *)DRMQualifier
 {
@@ -88,6 +71,11 @@ NSString * const kSCHAppRecommendationCoverImage = @"CoverImage";
 - (NSNumber *)ContentIdentifierType
 {
     return [NSNumber numberWithInt:kSCHContentItemContentIdentifierTypesISBN13];
+}
+
+- (BOOL)coverURLOnly
+{
+    return YES;
 }
 
 #pragma mark - Thumbnail/Cover Caching
@@ -262,8 +250,8 @@ NSString * const kSCHAppRecommendationCoverImage = @"CoverImage";
         [recommendationDict setValue:[self Author]
                               forKey:kSCHAppRecommendationAuthor];
     }
-    if ([self AverageRatingAsNumber]) {
-        [recommendationDict setValue:[self AverageRatingAsNumber] 
+    if ([self AverageRating]) {
+        [recommendationDict setValue:[self AverageRating] 
                               forKey:kSCHAppRecommendationAverageRating];
     }
     

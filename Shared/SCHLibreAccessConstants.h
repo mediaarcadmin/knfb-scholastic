@@ -113,6 +113,7 @@ extern NSString * const kSCHLibreAccessWebServiceProfileList;
 extern NSString * const kSCHLibreAccessWebServiceProfilePasswordRequired;
 extern NSString * const kSCHLibreAccessWebServiceProfileStatusList;
 extern NSString * const kSCHLibreAccessWebServiceRating;
+extern NSString * const kSCHLibreAccessWebServiceRatingStatus;
 extern NSString * const kSCHLibreAccessWebServiceReadingDuration;
 extern NSString * const kSCHLibreAccessWebServiceReadingStatsContentItem;
 extern NSString * const kSCHLibreAccessWebServiceReadingStatsEntryItem;

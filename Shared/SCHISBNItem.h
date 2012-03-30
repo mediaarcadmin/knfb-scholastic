@@ -16,4 +16,8 @@
 - (NSNumber *)ContentIdentifierType;
 - (NSString *)ContentIdentifier;
 
+// when requesting the URL's for this object should we request book and cover 
+// or just cover?
+- (BOOL)coverURLOnly;
+
 @end

@@ -6,10 +6,7 @@
         <attribute name="Version" optional="YES" attributeType="Integer 16" defaultValueString="0"/>
     </entity>
     <entity name="SCHAnnotationsContentItem" representedClassName="SCHAnnotationsContentItem" parentEntity="SCHContentItem">
-        <attribute name="AverageRating" optional="YES" attributeType="String"/>
         <attribute name="Format" optional="YES" attributeType="String"/>
-        <attribute name="LastModified" optional="YES" attributeType="Date"/>
-        <attribute name="Rating" optional="YES" attributeType="Integer 16" defaultValueString="0"/>
         <relationship name="AnnotationsItem" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="SCHAnnotationsItem" inverseName="AnnotationsContentItem" inverseEntity="SCHAnnotationsItem" indexed="YES"/>
         <relationship name="PrivateAnnotations" optional="YES" minCount="1" maxCount="1" deletionRule="Cascade" destinationEntity="SCHPrivateAnnotations" inverseName="AnnotationsContentItem" inverseEntity="SCHPrivateAnnotations" indexed="YES"/>
     </entity>
@@ -86,7 +83,7 @@
     </entity>
     <entity name="SCHAppRecommendationItem" representedClassName="SCHAppRecommendationItem">
         <attribute name="Author" optional="YES" attributeType="String"/>
-        <attribute name="AverageRating" optional="YES" attributeType="String"/>
+        <attribute name="AverageRating" optional="YES" attributeType="Float" defaultValueString="0"/>
         <attribute name="ContentIdentifier" optional="YES" attributeType="String" indexed="YES"/>
         <attribute name="CoverURL" optional="YES" attributeType="String"/>
         <attribute name="state" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
@@ -116,7 +113,7 @@
     </entity>
     <entity name="SCHContentMetadataItem" representedClassName="SCHContentMetadataItem" parentEntity="SCHContentItem">
         <attribute name="Author" optional="YES" attributeType="String"/>
-        <attribute name="AverageRating" optional="YES" attributeType="String"/>
+        <attribute name="AverageRating" optional="YES" attributeType="Float" defaultValueString="0.0"/>
         <attribute name="ContentURL" optional="YES" attributeType="String"/>
         <attribute name="CoverURL" optional="YES" attributeType="String"/>
         <attribute name="Description" optional="YES" attributeType="String"/>
@@ -209,6 +206,7 @@
         <relationship name="Highlights" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="SCHHighlight" inverseName="PrivateAnnotations" inverseEntity="SCHHighlight" indexed="YES"/>
         <relationship name="LastPage" optional="YES" minCount="1" maxCount="1" deletionRule="Cascade" destinationEntity="SCHLastPage" inverseName="PrivateAnnotations" inverseEntity="SCHLastPage" indexed="YES"/>
         <relationship name="Notes" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="SCHNote" inverseName="PrivateAnnotations" inverseEntity="SCHNote" indexed="YES"/>
+        <relationship name="rating" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="SCHRating" inverseName="PrivateAnnotations" inverseEntity="SCHRating" syncable="YES"/>
     </entity>
     <entity name="SCHProfileItem" representedClassName="SCHProfileItem" parentEntity="SCHSyncEntity">
         <attribute name="AutoAssignContentToProfiles" optional="YES" attributeType="Boolean"/>
@@ -227,6 +225,11 @@
         <attribute name="UserKey" optional="YES" attributeType="String"/>
         <relationship name="AppContentProfileItem" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="SCHAppContentProfileItem" inverseName="ProfileItem" inverseEntity="SCHAppContentProfileItem" indexed="YES"/>
         <relationship name="AppProfile" optional="YES" minCount="1" maxCount="1" deletionRule="Cascade" destinationEntity="SCHAppProfile" inverseName="ProfileItem" inverseEntity="SCHAppProfile" indexed="YES"/>
+    </entity>
+    <entity name="SCHRating" representedClassName="SCHRating" parentEntity="SCHSyncEntity" syncable="YES">
+        <attribute name="averageRating" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
+        <attribute name="rating" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
+        <relationship name="PrivateAnnotations" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="SCHPrivateAnnotations" inverseName="rating" inverseEntity="SCHPrivateAnnotations" indexed="YES"/>
     </entity>
     <entity name="SCHReadingStatsContentItem" representedClassName="SCHReadingStatsContentItem" parentEntity="SCHContentItem">
         <attribute name="Format" optional="YES" attributeType="String"/>
@@ -274,7 +277,7 @@
         <attribute name="State" attributeType="Integer 16" defaultValueString="0" indexed="YES"/>
     </entity>
     <entity name="SCHUserContentItem" representedClassName="SCHUserContentItem" parentEntity="SCHSyncEntity">
-        <attribute name="AverageRating" optional="YES" attributeType="String"/>
+        <attribute name="AverageRating" optional="YES" attributeType="Float" defaultValueString="0.0"/>
         <attribute name="ContentIdentifier" optional="YES" attributeType="String" indexed="YES"/>
         <attribute name="ContentIdentifierType" optional="YES" attributeType="Integer 16" defaultValueString="0"/>
         <attribute name="DefaultAssignment" optional="YES" attributeType="Boolean"/>
@@ -358,6 +361,7 @@
         <memberEntity name="SCHRecommendationItem"/>
         <memberEntity name="SCHRecommendationProfile"/>
         <memberEntity name="SCHAppRecommendationItem"/>
+        <memberEntity name="SCHRating"/>
     </configuration>
     <elements>
         <element name="SCHAnnotation" positionX="292" positionY="362" width="128" height="90"/>
@@ -388,6 +392,7 @@
         <element name="SCHOrderItem" positionX="990" positionY="1147" width="128" height="90"/>
         <element name="SCHPrivateAnnotations" positionX="365" positionY="862" width="128" height="120"/>
         <element name="SCHProfileItem" positionX="584" positionY="265" width="128" height="285"/>
+        <element name="SCHRating" positionX="160" positionY="192" width="128" height="90"/>
         <element name="SCHReadingStatsContentItem" positionX="0" positionY="0" width="128" height="90"/>
         <element name="SCHReadingStatsDetailItem" positionX="0" positionY="0" width="128" height="75"/>
         <element name="SCHReadingStatsEntryItem" positionX="0" positionY="0" width="128" height="135"/>

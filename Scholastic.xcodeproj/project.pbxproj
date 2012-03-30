@@ -1439,6 +1439,10 @@
 		52C62CFC14F3A2FA00F261DA /* SCHScholasticGetUserInfoWebService.m in Sources */ = {isa = PBXBuildFile; fileRef = 52C62CFA14F3A2FA00F261DA /* SCHScholasticGetUserInfoWebService.m */; };
 		52C62CFD14F3A2FA00F261DA /* SCHScholasticGetUserInfoWebService.m in Sources */ = {isa = PBXBuildFile; fileRef = 52C62CFA14F3A2FA00F261DA /* SCHScholasticGetUserInfoWebService.m */; };
 		52C7F8721377DEE800DB08C9 /* SCHAppState.m in Sources */ = {isa = PBXBuildFile; fileRef = 52C7F8711377DEE800DB08C9 /* SCHAppState.m */; };
+		52D343E4152481FF0066E73E /* SCHRating.m in Sources */ = {isa = PBXBuildFile; fileRef = 52D343E3152481FF0066E73E /* SCHRating.m */; };
+		52D343E5152481FF0066E73E /* SCHRating.m in Sources */ = {isa = PBXBuildFile; fileRef = 52D343E3152481FF0066E73E /* SCHRating.m */; };
+		52D343E6152481FF0066E73E /* SCHRating.m in Sources */ = {isa = PBXBuildFile; fileRef = 52D343E3152481FF0066E73E /* SCHRating.m */; };
+		52D343E7152481FF0066E73E /* SCHRating.m in Sources */ = {isa = PBXBuildFile; fileRef = 52D343E3152481FF0066E73E /* SCHRating.m */; };
 		52D438E013F521EE00D51FDA /* SCH3DView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2866314313F03C140092A5DE /* SCH3DView.m */; };
 		52D612B812E4650B0033DA92 /* NSNumber+ObjectTypes.m in Sources */ = {isa = PBXBuildFile; fileRef = 52D612B712E4650B0033DA92 /* NSNumber+ObjectTypes.m */; };
 		52D6D3861404FB0600962FC6 /* SCHPopulateDataStore.m in Sources */ = {isa = PBXBuildFile; fileRef = 52D6D3841403EC6900962FC6 /* SCHPopulateDataStore.m */; };
@@ -4772,6 +4776,8 @@
 		52C7F8701377DEE800DB08C9 /* SCHAppState.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHAppState.h; path = Shared/SCHAppState.h; sourceTree = "<group>"; };
 		52C7F8711377DEE800DB08C9 /* SCHAppState.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHAppState.m; path = Shared/SCHAppState.m; sourceTree = "<group>"; };
 		52D0CD0E14A3306C0031D547 /* SCHProfileViewCellDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHProfileViewCellDelegate.h; path = Shared/SCHProfileViewCellDelegate.h; sourceTree = "<group>"; };
+		52D343E2152481FF0066E73E /* SCHRating.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHRating.h; path = Shared/SCHRating.h; sourceTree = "<group>"; };
+		52D343E3152481FF0066E73E /* SCHRating.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHRating.m; path = Shared/SCHRating.m; sourceTree = "<group>"; };
 		52D612B612E4650B0033DA92 /* NSNumber+ObjectTypes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSNumber+ObjectTypes.h"; path = "Shared/NSNumber+ObjectTypes.h"; sourceTree = "<group>"; };
 		52D612B712E4650B0033DA92 /* NSNumber+ObjectTypes.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSNumber+ObjectTypes.m"; path = "Shared/NSNumber+ObjectTypes.m"; sourceTree = "<group>"; };
 		52D6D3831403EC6900962FC6 /* SCHPopulateDataStore.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHPopulateDataStore.h; path = Shared/SCHPopulateDataStore.h; sourceTree = "<group>"; };
@@ -6951,6 +6957,8 @@
 		5250C4AB12DE075C00542055 /* Core Data Models */ = {
 			isa = PBXGroup;
 			children = (
+				52D343E2152481FF0066E73E /* SCHRating.h */,
+				52D343E3152481FF0066E73E /* SCHRating.m */,
 				F8BEE8AD1334FD44008B40DA /* SCHAppBook.h */,
 				F8BEE8AE1334FD44008B40DA /* SCHAppBook.m */,
 				5243545613337BAC00282B53 /* SCHAppContentProfileItem.h */,
@@ -11835,6 +11843,7 @@
 				521B7ADE1521D4BC00DC0739 /* LibreAccessServiceSvc+Binding.m in Sources */,
 				521B7AE41521D61200DC0739 /* GetUserInfoSvc+Binding.m in Sources */,
 				521B7AEA1521D67E00DC0739 /* WishListServiceSvc+Binding.m in Sources */,
+				52D343E4152481FF0066E73E /* SCHRating.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -12262,6 +12271,7 @@
 				521B7ADF1521D4BC00DC0739 /* LibreAccessServiceSvc+Binding.m in Sources */,
 				521B7AE51521D61200DC0739 /* GetUserInfoSvc+Binding.m in Sources */,
 				521B7AEB1521D67E00DC0739 /* WishListServiceSvc+Binding.m in Sources */,
+				52D343E5152481FF0066E73E /* SCHRating.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -12623,6 +12633,7 @@
 				521B7AE01521D4BC00DC0739 /* LibreAccessServiceSvc+Binding.m in Sources */,
 				521B7AE61521D61200DC0739 /* GetUserInfoSvc+Binding.m in Sources */,
 				521B7AEC1521D67E00DC0739 /* WishListServiceSvc+Binding.m in Sources */,
+				52D343E6152481FF0066E73E /* SCHRating.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -12984,6 +12995,7 @@
 				521B7AE11521D4BC00DC0739 /* LibreAccessServiceSvc+Binding.m in Sources */,
 				521B7AE71521D61200DC0739 /* GetUserInfoSvc+Binding.m in Sources */,
 				521B7AED1521D67E00DC0739 /* WishListServiceSvc+Binding.m in Sources */,
+				52D343E7152481FF0066E73E /* SCHRating.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

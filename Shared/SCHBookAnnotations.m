@@ -21,6 +21,7 @@
 #import "SCHWordIndex.h"
 #import "SCHBookRange.h"
 #import "SCHAppStateManager.h"
+#import "SCHRating.h"
 
 @interface SCHBookAnnotations ()
 
@@ -338,12 +339,12 @@
 
 - (void)setUserRating:(NSInteger)userRating
 {
-    self.privateAnnotations.AnnotationsContentItem.Rating = [NSNumber numberWithInt:userRating];
+    self.privateAnnotations.rating.rating = [NSNumber numberWithInt:userRating];
 }
 
 - (NSInteger)userRating
 {
-    return [self.privateAnnotations.AnnotationsContentItem.Rating integerValue];
+    return [self.privateAnnotations.rating.rating integerValue];
 }
 
 @end

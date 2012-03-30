@@ -12,6 +12,7 @@
 #import "SCHBookmark.h"
 #import "SCHHighlight.h"
 #import "SCHLastPage.h"
+#import "SCHRating.h"
 #import "SCHNote.h"
 
 // Constants
@@ -20,6 +21,7 @@ NSString * const kSCHPrivateAnnotations = @"SCHPrivateAnnotations";
 @implementation SCHPrivateAnnotations 
 
 @dynamic LastPage;
+@dynamic rating;
 @dynamic AnnotationsContentItem;
 @dynamic Bookmarks;
 @dynamic Highlights;
