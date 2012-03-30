@@ -24,10 +24,9 @@ static NSInteger const CELL_BACKGROUND_VIEW = 200;
 static NSInteger const CELL_THUMB_BACKGROUND_VIEW = 201;
 static NSInteger const CELL_RULE_IMAGE_VIEW = 202;
 static NSInteger const CELL_ACTIVITY_SPINNER = 203;
-static NSInteger const CELL_RATING_TOP_RULE_IMAGE_VIEW = 204;
-static NSInteger const CELL_RATING_BOTTOM_RULE_IMAGE_VIEW = 205;
+static NSInteger const CELL_USER_RATING_BACKGROUND_IMAGE_VIEW = 204;
+static NSInteger const CELL_BACKGROUND_GRADIENT_VIEW = 205;
 static NSInteger const CELL_STAR_VIEW = 300;
-static NSInteger const CELL_STAR_OTHERS_RATING_VIEW = 301;
 static NSInteger const CELL_STAR_PERSONAL_RATING_VIEW = 302;
 
 
@@ -39,11 +38,10 @@ static NSInteger const CELL_STAR_PERSONAL_RATING_VIEW = 302;
 @property (readonly) UIView *backgroundView;
 @property (readonly) UIView *thumbBackgroundView;
 @property (readonly) UIView *starView;
-@property (readonly) RateView *othersRateView;
 @property (readonly) RateView *personalRateView;
 @property (readonly) UIImageView *ruleImageView;
-@property (readonly) UIImageView *ratingTopRuleImageView;
-@property (readonly) UIImageView *ratingBottomRuleImageView;
+@property (readonly) UIImageView *backgroundGradientImageView;
+@property (readonly) UIImageView *userRatingBackgroundImageView;
 @property (nonatomic, assign) BOOL coalesceRefreshes;
 @property (nonatomic, assign) BOOL needsRefresh;
 
@@ -74,9 +72,9 @@ static NSInteger const CELL_STAR_PERSONAL_RATING_VIEW = 302;
         self.textLabel.backgroundColor = [UIColor clearColor];
         self.textLabel.text = [[[NSAttributedString alloc] initWithString:@""] autorelease];
         [self updateTheme];
-        self.ruleImageView.image = [[UIImage imageNamed:@"ListViewRule"] stretchableImageWithLeftCapWidth:6 topCapHeight:0];
-        self.ratingTopRuleImageView.image = [[UIImage imageNamed:@"ListViewRule"] stretchableImageWithLeftCapWidth:6 topCapHeight:0];
-        self.ratingBottomRuleImageView.image = [[UIImage imageNamed:@"ListViewRule"] stretchableImageWithLeftCapWidth:6 topCapHeight:0];
+        self.ruleImageView.image = [[UIImage imageNamed:@"ListViewRule"] stretchableImageWithLeftCapWidth:0 topCapHeight:0];
+        self.userRatingBackgroundImageView.image = [[UIImage imageNamed:@"BookShelfListRatingBackground"] stretchableImageWithLeftCapWidth:19 topCapHeight:0];
+        self.backgroundGradientImageView.image = [[UIImage imageNamed:@"BookShelfListWhiteGradientBackground"] stretchableImageWithLeftCapWidth:0 topCapHeight:0];
         self.lastCell = NO;
         
         self.bookCoverView.coverViewMode = SCHBookCoverViewModeListView;
@@ -86,17 +84,12 @@ static NSInteger const CELL_STAR_PERSONAL_RATING_VIEW = 302;
         
         self.personalRateView.fullSelectedImage = [UIImage imageNamed:@"storiaStarFull"];
         self.personalRateView.notSelectedImage = [UIImage imageNamed:@"storiaStarEmpty"];
+        self.personalRateView.halfSelectedImage = [UIImage imageNamed:@"storiaStarHalfFull"];
         self.personalRateView.rating = 0;
         self.userRating = 0;
         self.personalRateView.editable = YES;
         self.personalRateView.maxRating = 5;
         self.personalRateView.delegate = self;
-        
-        self.othersRateView.fullSelectedImage = [UIImage imageNamed:@"storiaStarFull"];
-        self.othersRateView.notSelectedImage = [UIImage imageNamed:@"storiaStarEmpty"];
-        self.othersRateView.rating = 3;
-        self.othersRateView.editable = NO;
-        self.othersRateView.maxRating = 5;
     }
     
     return self;
@@ -254,10 +247,8 @@ static NSInteger const CELL_STAR_PERSONAL_RATING_VIEW = 302;
     
     if (self.lastCell) {
         self.ruleImageView.hidden = YES;
-        self.ratingBottomRuleImageView.hidden = YES;
     } else {
         self.ruleImageView.hidden = NO;
-        self.ratingBottomRuleImageView.hidden = NO;
     }
     
 //    if (self.loading) {
@@ -266,7 +257,6 @@ static NSInteger const CELL_STAR_PERSONAL_RATING_VIEW = 302;
 //        [self.activitySpinner stopAnimating];
 //    }
     
-    self.othersRateView.rating = [[book AverageRating] floatValue];
     self.personalRateView.rating = (float)self.userRating;
     
     self.needsRefresh = NO;
@@ -400,11 +390,6 @@ static NSInteger const CELL_STAR_PERSONAL_RATING_VIEW = 302;
     return (UIView *)[self.contentView viewWithTag:CELL_STAR_VIEW];
 }
 
-- (RateView *)othersRateView
-{
-    return (RateView *)[self.contentView viewWithTag:CELL_STAR_OTHERS_RATING_VIEW];
-}
-
 - (RateView *)personalRateView
 {
     return (RateView *)[self.contentView viewWithTag:CELL_STAR_PERSONAL_RATING_VIEW];
@@ -415,15 +400,14 @@ static NSInteger const CELL_STAR_PERSONAL_RATING_VIEW = 302;
     return (UIImageView *)[self.contentView viewWithTag:CELL_RULE_IMAGE_VIEW];
 }
 
-- (UIImageView *)ratingTopRuleImageView
+- (UIImageView *)backgroundGradientImageView
 {
-    return (UIImageView *)[self.contentView viewWithTag:CELL_RATING_TOP_RULE_IMAGE_VIEW];
+    return (UIImageView *)[self.contentView viewWithTag:CELL_BACKGROUND_GRADIENT_VIEW];
 }
 
-- (UIImageView *)ratingBottomRuleImageView
+- (UIImageView *)userRatingBackgroundImageView
 {
-    return (UIImageView *)[self.contentView viewWithTag:CELL_RATING_BOTTOM_RULE_IMAGE_VIEW];
+    return (UIImageView *)[self.contentView viewWithTag:CELL_USER_RATING_BACKGROUND_IMAGE_VIEW];
 }
-
 
 @end

@@ -294,7 +294,28 @@ typedef enum
     
     [self.listTableView setSeparatorColor:[UIColor clearColor]];
 
-    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
+//    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
+//
+//        CGRect listFrame = self.listTableView.tableHeaderView.frame;
+//        CGRect gridFrame = self.gridViewToggleView.frame;
+//
+//        listFrame.size.width = self.view.frame.size.width;
+//        gridFrame.size.width = self.view.frame.size.width;
+//
+//        // this is the height of the top toggle view for both iPad and iPhone
+//        if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+//            listFrame.size.height = 66;
+//            gridFrame.size.height = 66;
+//        } else {
+//            listFrame.size.height = 44;
+//            gridFrame.size.height = 44;
+//        }
+//        self.listTableView.tableHeaderView.frame = listFrame;
+//        self.gridViewToggleView.frame = gridFrame;
+//    
+//        self.gridView.toggleView = self.gridViewToggleView;
+//    }
+    
 
         CGRect listFrame = self.listTableView.tableHeaderView.frame;
         CGRect gridFrame = self.gridViewToggleView.frame;
@@ -304,17 +325,15 @@ typedef enum
 
         // this is the height of the top toggle view for both iPad and iPhone
         if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
-            listFrame.size.height = 66;
-            gridFrame.size.height = 66;
+            listFrame.size.height = 0;
+            gridFrame.size.height = 7;
         } else {
-            listFrame.size.height = 44;
-            gridFrame.size.height = 44;
+            listFrame.size.height = 0;
+            gridFrame.size.height = 0;
         }
         self.listTableView.tableHeaderView.frame = listFrame;
         self.gridViewToggleView.frame = gridFrame;
-    
-        self.gridView.toggleView = self.gridViewToggleView;
-    }
+
     
     self.currentlyLoadingIndex = -1;
 
@@ -902,7 +921,11 @@ typedef enum
 - (float)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
-        return 100;
+        if (indexPath.row == 0) {
+            return 113;
+        } else {
+            return 106;
+        }
     } else {
         return 62;
     }
