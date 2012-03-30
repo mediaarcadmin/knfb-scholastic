@@ -178,7 +178,6 @@
 												<string key="NSFrame">{{0, 104}, {2000, 2}}</string>
 												<reference key="NSSuperview" ref="717249785"/>
 												<reference key="NSWindow"/>
-												<reference key="NSNextKeyView"/>
 												<reference key="IBUIBackgroundColor" ref="142432702"/>
 												<int key="IBUITag">202</int>
 												<bool key="IBUIUserInteractionEnabled">NO</bool>
@@ -186,7 +185,7 @@
 											</object>
 											<object class="IBUIView" id="739321097">
 												<reference key="NSNextResponder" ref="717249785"/>
-												<int key="NSvFlags">319</int>
+												<int key="NSvFlags">318</int>
 												<object class="NSMutableArray" key="NSSubviews">
 													<bool key="EncodedWithXMLCoder">YES</bool>
 													<object class="IBUIView" id="473372437">
