@@ -4548,7 +4548,7 @@
 		5226C70A14A48C6100307634 /* SCHVersionManifestEntry.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHVersionManifestEntry.m; path = Shared/SCHVersionManifestEntry.m; sourceTree = "<group>"; };
 		52298A5D12F0EF5600BBBCE6 /* SCHNote.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHNote.h; path = Shared/SCHNote.h; sourceTree = "<group>"; };
 		52298A5E12F0EF5600BBBCE6 /* SCHNote.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHNote.m; path = Shared/SCHNote.m; sourceTree = "<group>"; };
-		52298A5F12F0EF5600BBBCE6 /* SCHSettingItem.h */ = {isa = PBXFileReference; fileEncoding = 4; name = SCHSettingItem.h; path = Shared/SCHSettingItem.h; sourceTree = "<group>"; };
+		52298A5F12F0EF5600BBBCE6 /* SCHSettingItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHSettingItem.h; path = Shared/SCHSettingItem.h; sourceTree = "<group>"; };
 		52298A6012F0EF5600BBBCE6 /* SCHSettingItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHSettingItem.m; path = Shared/SCHSettingItem.m; sourceTree = "<group>"; };
 		52298A6112F0EF5600BBBCE6 /* SCHContentMetadataItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHContentMetadataItem.h; path = Shared/SCHContentMetadataItem.h; sourceTree = "<group>"; };
 		52298A6212F0EF5600BBBCE6 /* SCHContentMetadataItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHContentMetadataItem.m; path = Shared/SCHContentMetadataItem.m; sourceTree = "<group>"; };
