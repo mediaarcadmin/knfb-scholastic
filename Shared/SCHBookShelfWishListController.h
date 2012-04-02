@@ -9,6 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "SCHAppProfile.h"
 #import "SCHRecommendationListView.h"
+#import "SCHCustomToolbar.h"
 
 
 @protocol SCHBookShelfWishListControllerDelegate;
@@ -19,6 +20,11 @@
 @property (nonatomic, retain) SCHAppProfile *appProfile;
 @property (nonatomic, copy) dispatch_block_t closeBlock;
 @property (nonatomic, retain) IBOutlet UITableView *mainTableView;
+@property (retain, nonatomic) IBOutlet UILabel *titleLabel;
+@property (retain, nonatomic) IBOutlet SCHCustomToolbar *topToolbar;
+@property (retain, nonatomic) IBOutlet SCHCustomToolbar *bottomToolbar;
+@property (retain, nonatomic) IBOutlet UIBarButtonItem *closeButton;
+@property (retain, nonatomic) IBOutlet UISegmentedControl *bottomSegment;
 
 @end
 

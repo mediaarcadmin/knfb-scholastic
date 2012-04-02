@@ -7,11 +7,11 @@
 //
 
 #import "SCHBookShelfWishListController.h"
+#import "SCHThemeManager.h"
 
 @interface SCHBookShelfWishListController ()
 
 - (void)releaseViewObjects;
-- (IBAction)switchToRecommendations:(id)sender;
 - (void)commitWishListDeletions;
 
 
@@ -26,6 +26,11 @@
 @synthesize delegate;
 @synthesize appProfile;
 @synthesize mainTableView;
+@synthesize titleLabel;
+@synthesize topToolbar;
+@synthesize bottomToolbar;
+@synthesize closeButton;
+@synthesize bottomSegment;
 @synthesize closeBlock;
 @synthesize localWishListItems;
 @synthesize wishListItemsToRemove;
@@ -52,6 +57,11 @@
 {
     // release any view objects here
     [mainTableView release], mainTableView = nil;
+    [topToolbar release], topToolbar = nil;
+    [bottomToolbar release], bottomToolbar = nil;
+    [titleLabel release], titleLabel = nil;
+    [closeButton release], closeButton = nil;
+    [bottomSegment release], bottomSegment = nil;
 }
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
@@ -59,8 +69,6 @@
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
         // Custom initialization
-        self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(close:)] autorelease];
-        self.title = @"Your Wish List";
         self.wishListItemsToRemove = [NSMutableArray array];
         self.recommendationViewNib = [UINib nibWithNibName:@"SCHRecommendationListView" bundle:nil];
     }
@@ -81,6 +89,20 @@
     // we need to maintain this local copy, so that items can 
     // be unticked but remain in the list
     self.localWishListItems = [self.appProfile wishListItemDictionaries];
+    
+    [self.view.layer setCornerRadius:6];
+    [self.view.layer setMasksToBounds:YES];
+    [self.view.layer setBorderColor:[[SCHThemeManager sharedThemeManager] colorForModalSheetBorder].CGColor];
+    [self.view.layer setBorderWidth:2.0f];
+    
+    [self.closeButton setTintColor:[[SCHThemeManager sharedThemeManager] colorForModalSheetBorder]];
+    [self.bottomSegment setTintColor:[[SCHThemeManager sharedThemeManager] colorForModalSheetBorder]];
+    
+    [self.topToolbar setBackgroundImage:[[SCHThemeManager sharedThemeManager] imageForNavigationBar:UIInterfaceOrientationPortrait]];
+    [self.bottomToolbar setBackgroundImage:[[SCHThemeManager sharedThemeManager] imageForNavigationBar:UIInterfaceOrientationPortrait]];
+    
+    self.titleLabel.text = @"Your Wish List";
+
 }
 
 - (void)viewDidUnload
@@ -101,12 +123,14 @@
     }
 }
 
-- (IBAction)switchToRecommendations:(id)sender
+- (IBAction)bottomSegmentChanged:(UISegmentedControl *)sender 
 {
-    [self commitWishListDeletions];
-    
-    if (self.delegate) {
-        [self.delegate switchToRecommendationsFromWishListController:self];
+    if (sender.selectedSegmentIndex == 0) {
+        [self commitWishListDeletions];
+        
+        if (self.delegate) {
+            [self.delegate switchToRecommendationsFromWishListController:self];
+        }
     }
 }
 

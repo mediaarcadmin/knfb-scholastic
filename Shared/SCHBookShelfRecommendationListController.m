@@ -73,7 +73,6 @@
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
         // Custom initialization
-        self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(close:)] autorelease];
         self.recommendationViewNib = [UINib nibWithNibName:@"SCHRecommendationListView" bundle:nil];
 
     }
@@ -208,7 +207,8 @@
 
 #pragma mark - Segmented Control
 
-- (IBAction)segmentChanged:(UISegmentedControl *)sender {
+- (IBAction)segmentChanged:(UISegmentedControl *)sender 
+{
     if (sender.selectedSegmentIndex == 1) {
         [self commitWishListChanges];
         
