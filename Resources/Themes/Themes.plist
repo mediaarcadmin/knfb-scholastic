@@ -23,8 +23,10 @@
 		<string>Blue/Blue</string>
 		<key>ListBackgroundColor</key>
 		<string>a7d8fb</string>
-        <key>PopoverBackgroundColor</key>
-        <string>0073ed</string>
+		<key>PopoverBackgroundColor</key>
+		<string>0073ed</string>
+		<key>ModalSheetBorderColor</key>
+		<string>002C6C</string>
 		<key>Name</key>
 		<string>Blue</string>
 		<key>NavigationBarImage</key>
@@ -33,8 +35,8 @@
 		<string>Blue/bookshelf-shelf</string>
 		<key>ThemeIcon</key>
 		<string>Shared/icon-theme</string>
-        <key>MenuIcon</key>
-        <string>Shared/icon-menu</string>
+		<key>MenuIcon</key>
+		<string>Shared/icon-menu</string>
 		<key>GridTextColorIsDark</key>
 		<false/>
 	</dict>
@@ -57,8 +59,10 @@
 		<string>Snake Skin/Snake Skin</string>
 		<key>ListBackgroundColor</key>
 		<string>def3d8</string>
-        <key>PopoverBackgroundColor</key>
-        <string>309702</string>
+		<key>PopoverBackgroundColor</key>
+		<string>309702</string>
+		<key>ModalSheetBorderColor</key>
+		<string>205907</string>
 		<key>Name</key>
 		<string>Snake Skin</string>
 		<key>NavigationBarImage</key>
@@ -67,8 +71,8 @@
 		<string>Snake Skin/bookshelf-shelf</string>
 		<key>ThemeIcon</key>
 		<string>Shared/icon-theme</string>
-        <key>MenuIcon</key>
-        <string>Shared/icon-menu</string>
+		<key>MenuIcon</key>
+		<string>Shared/icon-menu</string>
 		<key>GridTextColorIsDark</key>
 		<true/>
 	</dict>
@@ -91,8 +95,10 @@
 		<string>Waterdrops/Waterdrops</string>
 		<key>ListBackgroundColor</key>
 		<string>bde0f1</string>
-        <key>PopoverBackgroundColor</key>
-        <string>126fa6</string>
+		<key>PopoverBackgroundColor</key>
+		<string>126fa6</string>
+		<key>ModalSheetBorderColor</key>
+		<string>044469</string>
 		<key>Name</key>
 		<string>Waterdrops</string>
 		<key>NavigationBarImage</key>
@@ -101,8 +107,8 @@
 		<string>Waterdrops/bookshelf-shelf</string>
 		<key>ThemeIcon</key>
 		<string>Shared/icon-theme</string>
-        <key>MenuIcon</key>
-        <string>Shared/icon-menu</string>
+		<key>MenuIcon</key>
+		<string>Shared/icon-menu</string>
 		<key>GridTextColorIsDark</key>
 		<true/>
 	</dict>
@@ -125,8 +131,10 @@
 		<string>Starry Night/Starry Night</string>
 		<key>ListBackgroundColor</key>
 		<string>d1ddfe</string>
-        <key>PopoverBackgroundColor</key>
-        <string>164eb1</string>
+		<key>PopoverBackgroundColor</key>
+		<string>164eb1</string>
+		<key>ModalSheetBorderColor</key>
+		<string>00267A</string>
 		<key>Name</key>
 		<string>Starry Night</string>
 		<key>NavigationBarImage</key>
@@ -135,9 +143,9 @@
 		<string>Starry Night/bookshelf-shelf</string>
 		<key>ThemeIcon</key>
 		<string>Shared/icon-theme</string>
-        <key>MenuIcon</key>
-        <string>Shared/icon-menu</string>
-        <key>GridTextColorIsDark</key>
+		<key>MenuIcon</key>
+		<string>Shared/icon-menu</string>
+		<key>GridTextColorIsDark</key>
 		<false/>
 	</dict>
 	<dict>
@@ -159,8 +167,10 @@
 		<string>Fence/Fence</string>
 		<key>ListBackgroundColor</key>
 		<string>d8d8d8</string>
-        <key>PopoverBackgroundColor</key>
-        <string>665b55</string>
+		<key>PopoverBackgroundColor</key>
+		<string>665b55</string>
+		<key>ModalSheetBorderColor</key>
+		<string>433C38</string>
 		<key>Name</key>
 		<string>Fence</string>
 		<key>NavigationBarImage</key>
@@ -169,8 +179,8 @@
 		<string>Fence/bookshelf-shelf</string>
 		<key>ThemeIcon</key>
 		<string>Shared/icon-theme</string>
-        <key>MenuIcon</key>
-        <string>Shared/icon-menu</string>
+		<key>MenuIcon</key>
+		<string>Shared/icon-menu</string>
 		<key>GridTextColorIsDark</key>
 		<true/>
 	</dict>
@@ -193,8 +203,10 @@
 		<string>Grid/Grid</string>
 		<key>ListBackgroundColor</key>
 		<string>c4f6fd</string>
-        <key>PopoverBackgroundColor</key>
-        <string>208d9c</string>
+		<key>PopoverBackgroundColor</key>
+		<string>208d9c</string>
+		<key>ModalSheetBorderColor</key>
+		<string>045D69</string>
 		<key>Name</key>
 		<string>Grid</string>
 		<key>NavigationBarImage</key>
@@ -203,8 +215,8 @@
 		<string>Grid/bookshelf-shelf</string>
 		<key>ThemeIcon</key>
 		<string>Shared/icon-theme</string>
-        <key>MenuIcon</key>
-        <string>Shared/icon-menu</string>
+		<key>MenuIcon</key>
+		<string>Shared/icon-menu</string>
 		<key>GridTextColorIsDark</key>
 		<true/>
 	</dict>
@@ -227,8 +239,10 @@
 		<string>Dots/Dots</string>
 		<key>ListBackgroundColor</key>
 		<string>fff4bb</string>
-        <key>PopoverBackgroundColor</key>
-        <string>fff700</string>
+		<key>PopoverBackgroundColor</key>
+		<string>fff700</string>
+		<key>ModalSheetBorderColor</key>
+		<string>9B8200</string>
 		<key>Name</key>
 		<string>Dots</string>
 		<key>NavigationBarImage</key>
@@ -237,8 +251,8 @@
 		<string>Dots/bookshelf-shelf</string>
 		<key>ThemeIcon</key>
 		<string>Shared/icon-theme</string>
-        <key>MenuIcon</key>
-        <string>Shared/icon-menu</string>
+		<key>MenuIcon</key>
+		<string>Shared/icon-menu</string>
 		<key>GridTextColorIsDark</key>
 		<true/>
 	</dict>

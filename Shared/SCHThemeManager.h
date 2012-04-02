@@ -32,6 +32,7 @@ extern NSString * const kSCHThemeManagerThemeIcon;
 extern NSString * const kSCHThemeManagerMenuIcon;
 extern NSString * const kSCHThemeManagerColorForListBackground;
 extern NSString * const kSCHThemeManagerColorForPopoverBackground;
+extern NSString * const kSCHThemeManagerColorForModalSheetBorder;
 extern NSString * const kSCHThemeManagerRatingsIcon;
 extern NSString * const kSCHThemeManagerRatingsSelectedIcon;
 
@@ -66,6 +67,7 @@ extern NSString * const kSCHThemeManagerRatingsSelectedIcon;
 - (UIImage *)imageForThemeIcon:(UIInterfaceOrientation)orientation;
 - (UIColor *)colorForListBackground;
 - (UIColor *)colorForPopoverBackground;
+- (UIColor *)colorForModalSheetBorder;
 - (BOOL)gridTextColorIsDark;
 - (void)resetToDefault;
 

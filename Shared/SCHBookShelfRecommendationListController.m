@@ -8,6 +8,7 @@
 
 #import "SCHBookShelfRecommendationListController.h"
 #import "SCHAppRecommendationItem.h"
+#import "SCHThemeManager.h"
 
 @interface SCHBookShelfRecommendationListController ()
 
@@ -27,6 +28,11 @@
 @synthesize delegate;
 @synthesize appProfile;
 @synthesize mainTableView;
+@synthesize titleLabel;
+@synthesize topToolbar;
+@synthesize bottomToolbar;
+@synthesize closeButton;
+@synthesize bottomSegment;
 @synthesize closeBlock;
 @synthesize localRecommendationItems;
 @synthesize localWishListItems;
@@ -55,6 +61,11 @@
 {
     // release any view objects here
     [mainTableView release], mainTableView = nil;
+    [topToolbar release], topToolbar = nil;
+    [bottomToolbar release], bottomToolbar = nil;
+    [titleLabel release], titleLabel = nil;
+    [closeButton release], closeButton = nil;
+    [bottomSegment release], bottomSegment = nil;
 }
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
@@ -63,8 +74,8 @@
     if (self) {
         // Custom initialization
         self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(close:)] autorelease];
-        self.title = @"Kids' Top Rated eBooks";
         self.recommendationViewNib = [UINib nibWithNibName:@"SCHRecommendationListView" bundle:nil];
+
     }
     return self;
 }
@@ -85,13 +96,18 @@
     // take a copy of the original state of the wish list and modify that instead
     self.modifiedWishListItems = [NSMutableArray arrayWithArray:self.localWishListItems];
     
-    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
-        
-        [self.navigationController.view.layer setCornerRadius:6];
-        [self.navigationController.view.layer setMasksToBounds:YES];
-        [self.navigationController.view.layer setBorderColor:[UIColor SCHBlue3Color].CGColor];
-        [self.navigationController.view.layer setBorderWidth:2.0f];
-    }
+    [self.view.layer setCornerRadius:6];
+    [self.view.layer setMasksToBounds:YES];
+    [self.view.layer setBorderColor:[[SCHThemeManager sharedThemeManager] colorForModalSheetBorder].CGColor];
+    [self.view.layer setBorderWidth:2.0f];
+    
+    [self.closeButton setTintColor:[[SCHThemeManager sharedThemeManager] colorForModalSheetBorder]];
+    [self.bottomSegment setTintColor:[[SCHThemeManager sharedThemeManager] colorForModalSheetBorder]];
+    
+    [self.topToolbar setBackgroundImage:[[SCHThemeManager sharedThemeManager] imageForNavigationBar:UIInterfaceOrientationPortrait]];
+    [self.bottomToolbar setBackgroundImage:[[SCHThemeManager sharedThemeManager] imageForNavigationBar:UIInterfaceOrientationPortrait]];
+    
+    self.titleLabel.text = @"Kids' Top Rated eBooks";
 
 }
 
@@ -110,15 +126,6 @@
 
     if (closeBlock) {
         closeBlock();
-    }
-}
-
-- (IBAction)switchToWishList:(id)sender
-{
-    [self commitWishListChanges];
-    
-    if (self.delegate) {
-        [self.delegate switchToWishListFromRecommendationListController:self];
     }
 }
 
@@ -195,6 +202,18 @@
     for (NSDictionary *item in self.localWishListItems) {
         if (![self.modifiedWishListItems containsObject:item]) {
             [self.appProfile removeFromWishList:item];
+        }
+    }
+}
+
+#pragma mark - Segmented Control
+
+- (IBAction)segmentChanged:(UISegmentedControl *)sender {
+    if (sender.selectedSegmentIndex == 1) {
+        [self commitWishListChanges];
+        
+        if (self.delegate) {
+            [self.delegate switchToWishListFromRecommendationListController:self];
         }
     }
 }
