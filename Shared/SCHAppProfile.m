@@ -63,6 +63,7 @@ NSString * const kSCHAppProfile = @"SCHAppProfile";
 
 - (NSArray *)recommendationDictionaries
 {
+    
     NSArray *ret = nil;
     NSSet *allItems = [[self recommendationProfile] recommendationItems];
     NSPredicate *readyRecommendations = [NSPredicate predicateWithFormat:@"appRecommendationItem.processingState = %d", kSCHAppRecommendationProcessingStateComplete];
@@ -81,6 +82,49 @@ NSString * const kSCHAppProfile = @"SCHAppProfile";
     ret = [NSArray arrayWithArray:objectArray];
     
     return ret;
+    
+    /*
+    NSMutableDictionary *recommendationDict1 = [NSMutableDictionary dictionary];
+    
+    [recommendationDict1 setValue:@"Be Mine"
+                           forKey:kSCHAppRecommendationTitle];
+    [recommendationDict1 setValue:@"Book ISBN 1"
+                           forKey:kSCHAppRecommendationISBN];
+    [recommendationDict1 setValue:@"by Sabrina James"
+                           forKey:kSCHAppRecommendationAuthor];
+    [recommendationDict1 setValue:[NSNumber numberWithInt:2] 
+                           forKey:kSCHAppRecommendationAverageRating];
+    [recommendationDict1 setValue:[UIImage imageNamed:@"sampleCoverImage.jpg"]
+                           forKey:kSCHAppRecommendationCoverImage];
+
+    NSMutableDictionary *recommendationDict2 = [NSMutableDictionary dictionary];
+    
+    [recommendationDict2 setValue:@"Marcelo and the Real World"
+                           forKey:kSCHAppRecommendationTitle];
+    [recommendationDict2 setValue:@"Book ISBN 2"
+                           forKey:kSCHAppRecommendationISBN];
+    [recommendationDict2 setValue:@"by Francisco X. Stork"
+                           forKey:kSCHAppRecommendationAuthor];
+    [recommendationDict2 setValue:[NSNumber numberWithInt:5] 
+                           forKey:kSCHAppRecommendationAverageRating];
+    [recommendationDict2 setValue:[UIImage imageNamed:@"sampleCoverImage.jpg"]
+                           forKey:kSCHAppRecommendationCoverImage];
+
+    NSMutableDictionary *recommendationDict3 = [NSMutableDictionary dictionary];
+    
+    [recommendationDict3 setValue:@"Wish"
+                           forKey:kSCHAppRecommendationTitle];
+    [recommendationDict3 setValue:@"Book ISBN 3"
+                           forKey:kSCHAppRecommendationISBN];
+    [recommendationDict3 setValue:@"by Alexandria Bullen"
+                           forKey:kSCHAppRecommendationAuthor];
+    [recommendationDict3 setValue:[NSNumber numberWithInt:2] 
+                           forKey:kSCHAppRecommendationAverageRating];
+    [recommendationDict3 setValue:[UIImage imageNamed:@"sampleCoverImage.jpg"]
+                           forKey:kSCHAppRecommendationCoverImage];
+
+    return [NSArray arrayWithObjects:recommendationDict1, recommendationDict2, recommendationDict3, nil];
+*/
 }
 
 - (SCHWishListProfile *)wishListProfile

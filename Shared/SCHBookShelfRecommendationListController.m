@@ -18,6 +18,8 @@
 @property (nonatomic, retain) NSArray *localWishListItems;
 @property (nonatomic, retain) NSMutableArray *modifiedWishListItems;
 
+@property (nonatomic, retain) UINib *recommendationViewNib;
+
 @end
 
 @implementation SCHBookShelfRecommendationListController
@@ -29,6 +31,7 @@
 @synthesize localRecommendationItems;
 @synthesize localWishListItems;
 @synthesize modifiedWishListItems;
+@synthesize recommendationViewNib;
 
 #pragma mark - Memory Management
 
@@ -41,6 +44,7 @@
     [modifiedWishListItems release], modifiedWishListItems = nil;
     [appProfile release], appProfile = nil;
     [closeBlock release], closeBlock = nil;
+    [recommendationViewNib release], recommendationViewNib = nil;
     
     // release view objects
     [self releaseViewObjects];
@@ -60,6 +64,7 @@
         // Custom initialization
         self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(close:)] autorelease];
         self.title = @"Kids' Top Rated eBooks";
+        self.recommendationViewNib = [UINib nibWithNibName:@"SCHRecommendationListView" bundle:nil];
     }
     return self;
 }
@@ -70,7 +75,8 @@
 {
     [super viewDidLoad];
     
-    UIColor *viewBackgroundColor = [UIColor colorWithRed:0.996 green:0.937 blue:0.718 alpha:1.0];
+    UIColor *viewBackgroundColor = [UIColor colorWithRed:0.863 green:0.875 blue:0.894 alpha:1.0];
+
     self.mainTableView.backgroundColor = viewBackgroundColor;
     
     self.localRecommendationItems = [self.appProfile recommendationDictionaries];
@@ -214,10 +220,17 @@
         cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier] autorelease];
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         
-        SCHRecommendationListView *recommendationView = [[SCHRecommendationListView alloc] initWithFrame:cell.frame];
-        recommendationView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
+//        SCHRecommendationListView *recommendationView = [[SCHRecommendationListView alloc] initWithFrame:cell.frame];
+//        [self.recommendationViewNib instantiateWithOwner:recommendationView options:nil];
+        
+        SCHRecommendationListView *recommendationView = [[[self.recommendationViewNib instantiateWithOwner:self options:nil] objectAtIndex:0] retain];
+        recommendationView.frame = cell.frame;
+        NSLog(@"rec view: %@", recommendationView);
+        
+//        recommendationView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
         recommendationView.tag = 999;
         recommendationView.delegate = self;
+        recommendationView.recommendationBackgroundColor = [UIColor colorWithRed:0.863 green:0.875 blue:0.894 alpha:1.0];
         
         [cell addSubview:recommendationView];
         [recommendationView release];
@@ -249,7 +262,7 @@
 
 - (float)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return 132;
+    return 180;
 }
 
 #pragma mark - Table view delegate

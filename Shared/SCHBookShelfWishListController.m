@@ -69,7 +69,8 @@
 {
     [super viewDidLoad];
     
-    UIColor *viewBackgroundColor = [UIColor colorWithRed:0.996 green:0.937 blue:0.718 alpha:1.0];
+    UIColor *viewBackgroundColor = [UIColor colorWithRed:0.863 green:0.875 blue:0.894 alpha:1.0];
+
     self.mainTableView.backgroundColor = viewBackgroundColor;
     
     // fetch a local list of wish list items
@@ -180,6 +181,7 @@
         recommendationView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
         recommendationView.tag = 999;
         recommendationView.delegate = self;
+        recommendationView.recommendationBackgroundColor = [UIColor colorWithRed:0.863 green:0.875 blue:0.894 alpha:1.0];
         
         [cell addSubview:recommendationView];
         [recommendationView release];
@@ -211,7 +213,7 @@
 
 - (float)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return 132;
+    return 180;
 }
 
 #pragma mark - Table view delegate
