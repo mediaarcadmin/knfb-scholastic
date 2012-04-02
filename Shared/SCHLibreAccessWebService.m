@@ -44,6 +44,8 @@ static NSInteger const kSCHLibreAccessWebServiceVaid = 33;
 - (NSDictionary *)objectFromOrderItem:(LibreAccessServiceSvc_OrderItem *)anObject;
 - (NSDictionary *)objectFromContentMetadataForRatingsItem:(LibreAccessServiceSvc_ContentMetadataForRatingsItem *)anObject;
 - (NSDictionary *)objectFromProfileStatusItem:(LibreAccessServiceSvc_ProfileStatusItem *)anObject;
+- (NSDictionary *)objectFromSettingItem:(LibreAccessServiceSvc_SettingItem *)anObject;
+- (NSDictionary *)objectFromSettingsStatusItem:(LibreAccessServiceSvc_SettingStatusItem *)anObject;
 - (NSDictionary *)objectFromAnnotationsForRatingsItem:(LibreAccessServiceSvc_AnnotationsForRatingsItem *)anObject;
 - (NSDictionary *)objectFromAnnotationsContentForRatingsItem:(LibreAccessServiceSvc_AnnotationsContentForRatingsItem *)anObject;
 - (NSDictionary *)objectFromPrivateAnnotations:(LibreAccessServiceSvc_PrivateAnnotationsForRatings *)anObject;
@@ -72,7 +74,7 @@ static NSInteger const kSCHLibreAccessWebServiceVaid = 33;
 
 - (void)fromObject:(NSDictionary *)object intoSaveProfileItem:(LibreAccessServiceSvc_SaveProfileItem *)intoObject;
 - (void)fromObject:(NSDictionary *)object intoISBNItem:(LibreAccessServiceSvc_isbnItem *)intoObject;
-- (void)fromObject:(NSDictionary *)object intoUserSettingsItem:(LibreAccessServiceSvc_UserSettingsItem *)intoObject;
+- (void)fromObject:(NSDictionary *)object intoSettingItem:(LibreAccessServiceSvc_SettingItem *)intoObject;
 - (void)fromObject:(NSDictionary *)object intoAnnotationsRequestContentItem:(LibreAccessServiceSvc_AnnotationsRequestContentItem *)intoObject;
 - (void)fromObject:(NSDictionary *)object intoPrivateAnnotationsRequest:(LibreAccessServiceSvc_PrivateAnnotationsRequest *)intoObject;
 - (void)fromObject:(NSDictionary *)object intoAnnotationsForRatingsItem:(LibreAccessServiceSvc_AnnotationsForRatingsItem *)intoObject;
@@ -348,21 +350,19 @@ static NSInteger const kSCHLibreAccessWebServiceVaid = 33;
 	BOOL ret = NO;
 	
 	if ([SCHAuthenticationManager sharedAuthenticationManager].isAuthenticated == YES) {								
-		LibreAccessServiceSvc_SaveUserSettingsRequest *request = [LibreAccessServiceSvc_SaveUserSettingsRequest new];
+		LibreAccessServiceSvc_SaveUserSettingsExRequest *request = [LibreAccessServiceSvc_SaveUserSettingsExRequest new];
 		
 		request.authtoken = [SCHAuthenticationManager sharedAuthenticationManager].aToken;
-        id userSettingsList = [[LibreAccessServiceSvc_UserSettingsList alloc] init];
-		request.UserSettingsList = userSettingsList;
-        [userSettingsList release];
-		LibreAccessServiceSvc_UserSettingsItem *item = nil;
+        request.settingsList = [[[LibreAccessServiceSvc_SettingsList alloc] init] autorelease];
+		LibreAccessServiceSvc_SettingItem *item = nil;
 		for (id setting in settings) {
-			item = [[LibreAccessServiceSvc_UserSettingsItem alloc] init];
+			item = [[LibreAccessServiceSvc_SettingItem alloc] init];
 			[self fromObject:setting intoObject:item];
-			[request.UserSettingsList addUserSettingsItem:item];	
+			[request.settingsList addSettingItem:item];	
 			[item release], item = nil;
 		}
 		
-		[self.binding SaveUserSettingsAsyncUsingParameters:request delegate:self]; 
+		[self.binding SaveUserSettingsExAsyncUsingParameters:request delegate:self]; 
 		[[BITNetworkActivityManager sharedNetworkActivityManager] showNetworkActivityIndicator];
 		
 		[request release], request = nil;
@@ -617,10 +617,10 @@ static NSInteger const kSCHLibreAccessWebServiceVaid = 33;
 				  [anObject isKindOfClass:[LibreAccessServiceSvc_ListUserSettingsExResponse class]] == YES ||
 				  [anObject isKindOfClass:[LibreAccessServiceSoap11Binding_ListUserSettingsEx class]] == YES) {
 			ret = kSCHLibreAccessWebServiceListUserSettings;				
-		} else if([anObject isKindOfClass:[LibreAccessServiceSvc_SaveUserSettingsRequest class]] == YES ||
-				  [anObject isKindOfClass:[LibreAccessServiceSvc_SaveUserSettingsResponse class]] == YES ||
-				  [anObject isKindOfClass:[LibreAccessServiceSoap11Binding_SaveUserSettings class]] == YES) {
-			ret = kSCHLibreAccessWebServiceListUserSettings;				
+		} else if([anObject isKindOfClass:[LibreAccessServiceSvc_SaveUserSettingsExRequest class]] == YES ||
+				  [anObject isKindOfClass:[LibreAccessServiceSvc_SaveUserSettingsExResponse class]] == YES ||
+				  [anObject isKindOfClass:[LibreAccessServiceSoap11Binding_SaveUserSettingsEx class]] == YES) {
+			ret = kSCHLibreAccessWebServiceSaveUserSettings;				
 		} else if([anObject isKindOfClass:[LibreAccessServiceSvc_ListProfileContentAnnotationsForRatingsRequest class]] == YES ||
 				  [anObject isKindOfClass:[LibreAccessServiceSvc_ListProfileContentAnnotationsForRatingsResponse class]] == YES ||
 				  [anObject isKindOfClass:[LibreAccessServiceSoap11Binding_ListProfileContentAnnotationsForRatings class]] == YES) {
@@ -691,8 +691,8 @@ static NSInteger const kSCHLibreAccessWebServiceVaid = 33;
 			ret = [NSDictionary dictionaryWithObject:[self objectFromTranslate:[[anObject ContentMetadataForRatingsList] ContentMetadataForRatingsItem]] forKey:kSCHLibreAccessWebServiceContentMetadataList];
 		} else if ([anObject isKindOfClass:[LibreAccessServiceSvc_SaveUserProfilesResponse class]] == YES) {
 			ret = [NSDictionary dictionaryWithObject:[self objectFromTranslate:[[anObject ProfileStatusList] ProfileStatusItem]] forKey:kSCHLibreAccessWebServiceProfileStatusList];
-		} else if ([anObject isKindOfClass:[LibreAccessServiceSvc_ListUserSettingsResponse class]] == YES) {
-			ret = [NSDictionary dictionaryWithObject:[self objectFromTranslate:[[anObject UserSettingsList] UserSettingsItem]] forKey:kSCHLibreAccessWebServiceUserSettingsList];
+		} else if ([anObject isKindOfClass:[LibreAccessServiceSvc_ListUserSettingsExResponse class]] == YES) {
+			ret = [NSDictionary dictionaryWithObject:[self objectFromTranslate:[[anObject settingsList] settingItem]] forKey:kSCHLibreAccessWebServiceUserSettingsList];
 		} else if ([anObject isKindOfClass:[LibreAccessServiceSvc_ListProfileContentAnnotationsForRatingsResponse class]] == YES) {
 			NSMutableDictionary *listProfileContentAnnotations = [NSMutableDictionary dictionary];
 			
@@ -710,8 +710,8 @@ static NSInteger const kSCHLibreAccessWebServiceVaid = 33;
 			ret = [NSDictionary dictionaryWithObject:[self objectFromTranslate:[[anObject TopFavoritesResponseList] TopFavoritesResponseItem]] forKey:kSCHLibreAccessWebServiceTopFavoritesList];
 		} else if ([anObject isKindOfClass:[LibreAccessServiceSvc_SaveProfileContentAnnotationsForRatingsResponse class]] == YES) {
 			ret = [NSDictionary dictionaryWithObject:[self objectFromTranslate:[[anObject AnnotationStatusForRatingsList] AnnotationStatusForRatingsItem]] forKey:kSCHLibreAccessWebServiceAnnotationStatusList];
-		} else if ([anObject isKindOfClass:[LibreAccessServiceSvc_SaveUserProfilesResponse class]] == YES) {
-			ret = [NSDictionary dictionaryWithObject:[self objectFromTranslate:[[anObject ProfileStatusList] ProfileStatusItem]] forKey:kSCHLibreAccessWebServiceProfileStatusList];
+		} else if ([anObject isKindOfClass:[LibreAccessServiceSvc_SaveUserSettingsExResponse class]] == YES) {
+			ret = [NSDictionary dictionaryWithObject:[self objectFromTranslate:[[anObject settingStatusList] settingStatusItem]] forKey:kSCHLibreAccessWebServiceUserSettingsStatusList];
 		}
         
 	}
@@ -726,8 +726,8 @@ static NSInteger const kSCHLibreAccessWebServiceVaid = 33;
 			[self fromObject:object intoSaveProfileItem:intoObject];
 		} else if ([intoObject isKindOfClass:[LibreAccessServiceSvc_isbnItem class]] == YES) {
 			[self fromObject:object intoISBNItem:intoObject];
-		} else if ([intoObject isKindOfClass:[LibreAccessServiceSvc_UserSettingsItem class]] == YES) {
-			[self fromObject:object intoUserSettingsItem:intoObject];
+		} else if ([intoObject isKindOfClass:[LibreAccessServiceSvc_SettingItem class]] == YES) {
+			[self fromObject:object intoSettingItem:intoObject];
 		} else if ([intoObject isKindOfClass:[LibreAccessServiceSvc_AnnotationsRequestContentItem class]] == YES) {
 			[self fromObject:object intoAnnotationsRequestContentItem:intoObject];
 		} else if ([intoObject isKindOfClass:[LibreAccessServiceSvc_AnnotationsForRatingsItem class]] == YES) {
@@ -935,20 +935,36 @@ static NSInteger const kSCHLibreAccessWebServiceVaid = 33;
 	return(ret);
 }
 
-- (NSDictionary *)objectFromUserSettingsItem:(LibreAccessServiceSvc_UserSettingsItem *)anObject
+- (NSDictionary *)objectFromSettingItem:(LibreAccessServiceSvc_SettingItem *)anObject
 {
 	NSDictionary *ret = nil;
 	
 	if (anObject != nil) {
 		NSMutableDictionary *objects = [NSMutableDictionary dictionary];
 		
-		[objects setObject:[NSNumber numberWithUserSettingsType:(SCHUserSettingsTypes)anObject.SettingType] forKey:kSCHLibreAccessWebServiceSettingType];
-		[objects setObject:[self objectFromTranslate:anObject.SettingValue] forKey:kSCHLibreAccessWebServiceSettingValue];
+		[objects setObject:[self objectFromTranslate:anObject.settingName] forKey:kSCHLibreAccessWebServiceSettingName];
+		[objects setObject:[self objectFromTranslate:anObject.settingValue] forKey:kSCHLibreAccessWebServiceSettingValue];
 		
 		ret = objects;					
 	}
 	
 	return(ret);
+}
+
+- (NSDictionary *)objectFromSettingsStatusItem:(LibreAccessServiceSvc_SettingStatusItem *)anObject
+{
+    NSDictionary *ret = nil;
+    
+    if (anObject != nil) {
+        NSMutableDictionary *objects = [NSMutableDictionary dictionary];
+        
+        [objects setObject:[self objectFromTranslate:anObject.settingName   ] forKey:kSCHLibreAccessWebServiceSettingName];
+        [objects setObject:[self objectFromTranslate:anObject.statusMessage] forKey:kSCHLibreAccessWebServiceStatusMessage];
+        
+        ret = objects;					
+    }
+    
+    return(ret);
 }
 
 - (NSDictionary *)objectFromAnnotationsForRatingsItem:(LibreAccessServiceSvc_AnnotationsForRatingsItem *)anObject
@@ -1391,9 +1407,9 @@ static NSInteger const kSCHLibreAccessWebServiceVaid = 33;
 				for (id item in anObject) {
 					[ret addObject:[self objectFromProfileStatusItem:item]];													
 				}
-			} else if ([firstItem isKindOfClass:[LibreAccessServiceSvc_UserSettingsItem class]] == YES) {
+			} else if ([firstItem isKindOfClass:[LibreAccessServiceSvc_SettingItem class]] == YES) {
 				for (id item in anObject) {
-					[ret addObject:[self objectFromUserSettingsItem:item]];	
+					[ret addObject:[self objectFromSettingItem:item]];	
 				}
 			} else if ([firstItem isKindOfClass:[LibreAccessServiceSvc_AnnotationsForRatingsItem class]] == YES) {
 				for (id item in anObject) {
@@ -1454,6 +1470,10 @@ static NSInteger const kSCHLibreAccessWebServiceVaid = 33;
 			} else if ([firstItem isKindOfClass:[LibreAccessServiceSvc_ProfileStatusItem class]] == YES) {
 				for (id item in anObject) {
 					[ret addObject:[self objectFromProfileStatusItem:item]];	
+				}                                
+			} else if ([firstItem isKindOfClass:[LibreAccessServiceSvc_SettingStatusItem class]] == YES) {
+				for (id item in anObject) {
+					[ret addObject:[self objectFromSettingsStatusItem:item]];	
 				}                                
 			}
         }		
@@ -1525,11 +1545,11 @@ static NSInteger const kSCHLibreAccessWebServiceVaid = 33;
 	}
 }
 
-- (void)fromObject:(NSDictionary *)object intoUserSettingsItem:(LibreAccessServiceSvc_UserSettingsItem *)intoObject
+- (void)fromObject:(NSDictionary *)object intoSettingItem:(LibreAccessServiceSvc_SettingItem *)intoObject
 {
 	if (object != nil && intoObject != nil) {
-		intoObject.SettingType = (LibreAccessServiceSvc_UserSettingsTypes)[[object valueForKey:kSCHLibreAccessWebServiceSettingType] userSettingsTypeValue];
-		intoObject.SettingValue = [self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceSettingValue]];
+		intoObject.settingName = [self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceSettingName]];
+		intoObject.settingValue = [self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceSettingValue]];
 	}
 }
 

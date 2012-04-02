@@ -272,6 +272,10 @@
         <attribute name="fetchDate" attributeType="Date" syncable="YES"/>
         <relationship name="recommendationItems" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="SCHRecommendationItem" inverseName="recommendationProfile" inverseEntity="SCHRecommendationItem" syncable="YES"/>
     </entity>
+    <entity name="SCHSettingItem" representedClassName="SCHUserSettingsItem">
+        <attribute name="settingName" optional="YES" attributeType="String"/>
+        <attribute name="SettingValue" optional="YES" attributeType="String"/>
+    </entity>
     <entity name="SCHSyncEntity" representedClassName="SCHSyncEntity" isAbstract="YES">
         <attribute name="LastModified" attributeType="Date"/>
         <attribute name="State" attributeType="Integer 16" defaultValueString="0" indexed="YES"/>
@@ -288,10 +292,6 @@
         <attribute name="Version" optional="YES" attributeType="String"/>
         <relationship name="OrderList" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="SCHOrderItem" inverseName="UserContentItem" inverseEntity="SCHOrderItem" indexed="YES"/>
         <relationship name="ProfileList" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="SCHContentProfileItem" inverseName="UserContentItem" inverseEntity="SCHContentProfileItem" indexed="YES"/>
-    </entity>
-    <entity name="SCHUserSettingsItem" representedClassName="SCHUserSettingsItem">
-        <attribute name="SettingType" optional="YES" attributeType="Integer 16" defaultValueString="0"/>
-        <attribute name="SettingValue" optional="YES" attributeType="String"/>
     </entity>
     <entity name="SCHWishListItem" representedClassName="SCHWishListItem" parentEntity="SCHSyncEntity">
         <attribute name="Author" optional="YES" attributeType="String"/>
@@ -353,7 +353,7 @@
         <memberEntity name="SCHReadingStatsEntryItem"/>
         <memberEntity name="SCHSyncEntity"/>
         <memberEntity name="SCHUserContentItem"/>
-        <memberEntity name="SCHUserSettingsItem"/>
+        <memberEntity name="SCHSettingItem"/>
         <memberEntity name="SCHWordIndex"/>
         <memberEntity name="SCHWishListItem"/>
         <memberEntity name="SCHWishListProfile"/>
@@ -401,7 +401,7 @@
         <element name="SCHRecommendationProfile" positionX="160" positionY="192" width="128" height="90"/>
         <element name="SCHSyncEntity" positionX="822" positionY="144" width="128" height="75"/>
         <element name="SCHUserContentItem" positionX="898" positionY="1290" width="128" height="210"/>
-        <element name="SCHUserSettingsItem" positionX="1044" positionY="1349" width="128" height="75"/>
+        <element name="SCHSettingItem" positionX="1044" positionY="1349" width="128" height="75"/>
         <element name="SCHWishListItem" positionX="160" positionY="192" width="128" height="135"/>
         <element name="SCHWishListProfile" positionX="160" positionY="192" width="128" height="90"/>
         <element name="SCHWordIndex" positionX="0" positionY="137" width="128" height="90"/>

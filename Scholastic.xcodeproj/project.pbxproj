@@ -340,7 +340,7 @@
 		5226C70B14A48C6100307634 /* SCHVersionManifestEntry.m in Sources */ = {isa = PBXBuildFile; fileRef = 5226C70A14A48C6100307634 /* SCHVersionManifestEntry.m */; };
 		5226C70C14A48C6100307634 /* SCHVersionManifestEntry.m in Sources */ = {isa = PBXBuildFile; fileRef = 5226C70A14A48C6100307634 /* SCHVersionManifestEntry.m */; };
 		52298A8712F0EF5600BBBCE6 /* SCHNote.m in Sources */ = {isa = PBXBuildFile; fileRef = 52298A5E12F0EF5600BBBCE6 /* SCHNote.m */; };
-		52298A8812F0EF5600BBBCE6 /* SCHUserSettingsItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 52298A6012F0EF5600BBBCE6 /* SCHUserSettingsItem.m */; };
+		52298A8812F0EF5600BBBCE6 /* SCHSettingItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 52298A6012F0EF5600BBBCE6 /* SCHSettingItem.m */; };
 		52298A8912F0EF5600BBBCE6 /* SCHContentMetadataItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 52298A6212F0EF5600BBBCE6 /* SCHContentMetadataItem.m */; };
 		52298A8A12F0EF5600BBBCE6 /* SCHLastPage.m in Sources */ = {isa = PBXBuildFile; fileRef = 52298A6412F0EF5600BBBCE6 /* SCHLastPage.m */; };
 		52298A8B12F0EF5600BBBCE6 /* SCHLocationText.m in Sources */ = {isa = PBXBuildFile; fileRef = 52298A6612F0EF5600BBBCE6 /* SCHLocationText.m */; };
@@ -1037,7 +1037,7 @@
 		52488AEB1407990500DA9AFA /* SCHProfileItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 52298A7E12F0EF5600BBBCE6 /* SCHProfileItem.m */; };
 		52488AEC1407990500DA9AFA /* SCHSyncEntity.m in Sources */ = {isa = PBXBuildFile; fileRef = 52298A7012F0EF5600BBBCE6 /* SCHSyncEntity.m */; };
 		52488AED1407990500DA9AFA /* SCHUserContentItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 52298A6812F0EF5600BBBCE6 /* SCHUserContentItem.m */; };
-		52488AEE1407990500DA9AFA /* SCHUserSettingsItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 52298A6012F0EF5600BBBCE6 /* SCHUserSettingsItem.m */; };
+		52488AEE1407990500DA9AFA /* SCHSettingItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 52298A6012F0EF5600BBBCE6 /* SCHSettingItem.m */; };
 		52488AEF1407990500DA9AFA /* SCHWordIndex.m in Sources */ = {isa = PBXBuildFile; fileRef = 52298A6C12F0EF5600BBBCE6 /* SCHWordIndex.m */; };
 		52488AF01407990500DA9AFA /* SCHPrivateAnnotations.m in Sources */ = {isa = PBXBuildFile; fileRef = 5200EFEB12F6CFE400BAC355 /* SCHPrivateAnnotations.m */; };
 		52488AF11407990500DA9AFA /* SCHeReaderCategories.m in Sources */ = {isa = PBXBuildFile; fileRef = 5200EFF312F6D00B00BAC355 /* SCHeReaderCategories.m */; };
@@ -2020,7 +2020,7 @@
 		A3D3F36614CDDF31004A56A5 /* MRGridViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C923A27512F06FE60054426F /* MRGridViewCell.m */; };
 		A3D3F36714CDDF31004A56A5 /* MRGridViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C923A27712F06FE60054426F /* MRGridViewController.m */; };
 		A3D3F36814CDDF31004A56A5 /* SCHNote.m in Sources */ = {isa = PBXBuildFile; fileRef = 52298A5E12F0EF5600BBBCE6 /* SCHNote.m */; };
-		A3D3F36914CDDF31004A56A5 /* SCHUserSettingsItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 52298A6012F0EF5600BBBCE6 /* SCHUserSettingsItem.m */; };
+		A3D3F36914CDDF31004A56A5 /* SCHSettingItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 52298A6012F0EF5600BBBCE6 /* SCHSettingItem.m */; };
 		A3D3F36A14CDDF31004A56A5 /* SCHContentMetadataItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 52298A6212F0EF5600BBBCE6 /* SCHContentMetadataItem.m */; };
 		A3D3F36B14CDDF31004A56A5 /* SCHLastPage.m in Sources */ = {isa = PBXBuildFile; fileRef = 52298A6412F0EF5600BBBCE6 /* SCHLastPage.m */; };
 		A3D3F36C14CDDF31004A56A5 /* SCHLocationText.m in Sources */ = {isa = PBXBuildFile; fileRef = 52298A6612F0EF5600BBBCE6 /* SCHLocationText.m */; };
@@ -3340,7 +3340,7 @@
 		C9D7026714ED50B100C10006 /* MRGridViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C923A27512F06FE60054426F /* MRGridViewCell.m */; };
 		C9D7026814ED50B100C10006 /* MRGridViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C923A27712F06FE60054426F /* MRGridViewController.m */; };
 		C9D7026914ED50B100C10006 /* SCHNote.m in Sources */ = {isa = PBXBuildFile; fileRef = 52298A5E12F0EF5600BBBCE6 /* SCHNote.m */; };
-		C9D7026A14ED50B100C10006 /* SCHUserSettingsItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 52298A6012F0EF5600BBBCE6 /* SCHUserSettingsItem.m */; };
+		C9D7026A14ED50B100C10006 /* SCHSettingItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 52298A6012F0EF5600BBBCE6 /* SCHSettingItem.m */; };
 		C9D7026B14ED50B100C10006 /* SCHContentMetadataItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 52298A6212F0EF5600BBBCE6 /* SCHContentMetadataItem.m */; };
 		C9D7026C14ED50B100C10006 /* SCHLastPage.m in Sources */ = {isa = PBXBuildFile; fileRef = 52298A6412F0EF5600BBBCE6 /* SCHLastPage.m */; };
 		C9D7026D14ED50B100C10006 /* SCHLocationText.m in Sources */ = {isa = PBXBuildFile; fileRef = 52298A6612F0EF5600BBBCE6 /* SCHLocationText.m */; };
@@ -4548,8 +4548,8 @@
 		5226C70A14A48C6100307634 /* SCHVersionManifestEntry.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHVersionManifestEntry.m; path = Shared/SCHVersionManifestEntry.m; sourceTree = "<group>"; };
 		52298A5D12F0EF5600BBBCE6 /* SCHNote.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHNote.h; path = Shared/SCHNote.h; sourceTree = "<group>"; };
 		52298A5E12F0EF5600BBBCE6 /* SCHNote.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHNote.m; path = Shared/SCHNote.m; sourceTree = "<group>"; };
-		52298A5F12F0EF5600BBBCE6 /* SCHUserSettingsItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHUserSettingsItem.h; path = Shared/SCHUserSettingsItem.h; sourceTree = "<group>"; };
-		52298A6012F0EF5600BBBCE6 /* SCHUserSettingsItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHUserSettingsItem.m; path = Shared/SCHUserSettingsItem.m; sourceTree = "<group>"; };
+		52298A5F12F0EF5600BBBCE6 /* SCHSettingItem.h */ = {isa = PBXFileReference; fileEncoding = 4; name = SCHSettingItem.h; path = Shared/SCHSettingItem.h; sourceTree = "<group>"; };
+		52298A6012F0EF5600BBBCE6 /* SCHSettingItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHSettingItem.m; path = Shared/SCHSettingItem.m; sourceTree = "<group>"; };
 		52298A6112F0EF5600BBBCE6 /* SCHContentMetadataItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHContentMetadataItem.h; path = Shared/SCHContentMetadataItem.h; sourceTree = "<group>"; };
 		52298A6212F0EF5600BBBCE6 /* SCHContentMetadataItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHContentMetadataItem.m; path = Shared/SCHContentMetadataItem.m; sourceTree = "<group>"; };
 		52298A6312F0EF5600BBBCE6 /* SCHLastPage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHLastPage.h; path = Shared/SCHLastPage.h; sourceTree = "<group>"; };
@@ -7031,8 +7031,8 @@
 				52298A7012F0EF5600BBBCE6 /* SCHSyncEntity.m */,
 				52298A6712F0EF5600BBBCE6 /* SCHUserContentItem.h */,
 				52298A6812F0EF5600BBBCE6 /* SCHUserContentItem.m */,
-				52298A5F12F0EF5600BBBCE6 /* SCHUserSettingsItem.h */,
-				52298A6012F0EF5600BBBCE6 /* SCHUserSettingsItem.m */,
+				52298A5F12F0EF5600BBBCE6 /* SCHSettingItem.h */,
+				52298A6012F0EF5600BBBCE6 /* SCHSettingItem.m */,
 				52EA323615011CA10069C72E /* SCHWishListItem.h */,
 				52EA323715011CA10069C72E /* SCHWishListItem.m */,
 				52EA322F15011C2E0069C72E /* SCHWishListProfile.h */,
@@ -11525,7 +11525,7 @@
 				C923A27E12F06FE60054426F /* MRGridViewCell.m in Sources */,
 				C923A27F12F06FE60054426F /* MRGridViewController.m in Sources */,
 				52298A8712F0EF5600BBBCE6 /* SCHNote.m in Sources */,
-				52298A8812F0EF5600BBBCE6 /* SCHUserSettingsItem.m in Sources */,
+				52298A8812F0EF5600BBBCE6 /* SCHSettingItem.m in Sources */,
 				52298A8912F0EF5600BBBCE6 /* SCHContentMetadataItem.m in Sources */,
 				52298A8A12F0EF5600BBBCE6 /* SCHLastPage.m in Sources */,
 				52298A8B12F0EF5600BBBCE6 /* SCHLocationText.m in Sources */,
@@ -11966,7 +11966,7 @@
 				52488AEB1407990500DA9AFA /* SCHProfileItem.m in Sources */,
 				52488AEC1407990500DA9AFA /* SCHSyncEntity.m in Sources */,
 				52488AED1407990500DA9AFA /* SCHUserContentItem.m in Sources */,
-				52488AEE1407990500DA9AFA /* SCHUserSettingsItem.m in Sources */,
+				52488AEE1407990500DA9AFA /* SCHSettingItem.m in Sources */,
 				52488AEF1407990500DA9AFA /* SCHWordIndex.m in Sources */,
 				52488AF01407990500DA9AFA /* SCHPrivateAnnotations.m in Sources */,
 				52488AF11407990500DA9AFA /* SCHeReaderCategories.m in Sources */,
@@ -12315,7 +12315,7 @@
 				A3D3F36614CDDF31004A56A5 /* MRGridViewCell.m in Sources */,
 				A3D3F36714CDDF31004A56A5 /* MRGridViewController.m in Sources */,
 				A3D3F36814CDDF31004A56A5 /* SCHNote.m in Sources */,
-				A3D3F36914CDDF31004A56A5 /* SCHUserSettingsItem.m in Sources */,
+				A3D3F36914CDDF31004A56A5 /* SCHSettingItem.m in Sources */,
 				A3D3F36A14CDDF31004A56A5 /* SCHContentMetadataItem.m in Sources */,
 				A3D3F36B14CDDF31004A56A5 /* SCHLastPage.m in Sources */,
 				A3D3F36C14CDDF31004A56A5 /* SCHLocationText.m in Sources */,
@@ -12677,7 +12677,7 @@
 				C9D7026714ED50B100C10006 /* MRGridViewCell.m in Sources */,
 				C9D7026814ED50B100C10006 /* MRGridViewController.m in Sources */,
 				C9D7026914ED50B100C10006 /* SCHNote.m in Sources */,
-				C9D7026A14ED50B100C10006 /* SCHUserSettingsItem.m in Sources */,
+				C9D7026A14ED50B100C10006 /* SCHSettingItem.m in Sources */,
 				C9D7026B14ED50B100C10006 /* SCHContentMetadataItem.m in Sources */,
 				C9D7026C14ED50B100C10006 /* SCHLastPage.m in Sources */,
 				C9D7026D14ED50B100C10006 /* SCHLocationText.m in Sources */,

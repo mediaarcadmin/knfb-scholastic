@@ -11,7 +11,7 @@
 #import "NSManagedObjectContext+Extensions.h"
 
 #import "SCHLibreAccessWebService.h"
-#import "SCHUserSettingsItem.h"
+#import "SCHSettingItem.h"
 #import "BITAPIError.h"
 
 // Constants
@@ -89,7 +89,7 @@ NSString * const SCHSettingsSyncComponentDidFailNotification = @"SCHSettingsSync
 	
     [self.libreAccessWebService clear];
     
-	if (![self.managedObjectContext BITemptyEntity:kSCHUserSettingsItem error:&error]) {
+	if (![self.managedObjectContext BITemptyEntity:kSCHSettingItem error:&error]) {
 		NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
 	}	
 }
@@ -130,9 +130,9 @@ NSString * const SCHSettingsSyncComponentDidFailNotification = @"SCHSettingsSync
         [self clear];
         
         for (id setting in settingsList) {
-            SCHUserSettingsItem *newUserSettingsItem = [NSEntityDescription insertNewObjectForEntityForName:kSCHUserSettingsItem inManagedObjectContext:self.managedObjectContext];
+            SCHSettingItem *newUserSettingsItem = [NSEntityDescription insertNewObjectForEntityForName:kSCHSettingItem inManagedObjectContext:self.managedObjectContext];
             
-            newUserSettingsItem.SettingType = [self makeNullNil:[setting objectForKey:kSCHLibreAccessWebServiceSettingType]];
+            newUserSettingsItem.SettingName = [self makeNullNil:[setting objectForKey:kSCHLibreAccessWebServiceSettingName]];
             newUserSettingsItem.SettingValue = [self makeNullNil:[setting objectForKey:kSCHLibreAccessWebServiceSettingValue]];
         }
         
