@@ -340,9 +340,9 @@ static NSInteger const kSCHBookShelfEdgePadding = 12;
     recommendationController.appProfile = self.profileItem.AppProfile;
     recommendationController.delegate = self;
     
-    UINavigationController *navCon = [[UINavigationController alloc] initWithRootViewController:recommendationController];
+//    UINavigationController *navCon = [[UINavigationController alloc] initWithRootViewController:recommendationController];
     
-    self.recommendationPopover = [[[BITModalSheetController alloc] initWithContentViewController:navCon] autorelease];
+    self.recommendationPopover = [[[BITModalSheetController alloc] initWithContentViewController:recommendationController] autorelease];
     [self.recommendationPopover setContentSize:CGSizeMake(640, 628)];
     [self.recommendationPopover setContentOffset:CGPointMake(0, 0)];
     
@@ -356,7 +356,7 @@ static NSInteger const kSCHBookShelfEdgePadding = 12;
     
     [self.recommendationPopover presentSheetInViewController:self animated:animated completion:nil];
     
-    [navCon release];
+//    [navCon release];
     [recommendationController release];
 
     if (!animated) {

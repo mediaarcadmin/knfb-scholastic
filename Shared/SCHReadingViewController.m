@@ -123,6 +123,8 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 @property (nonatomic, assign) BOOL highlightsModeEnabled;
 @property (nonatomic, assign) BOOL firstTimePlayForHelpController;
 
+@property (nonatomic, retain) UINib *recommendationViewNib;
+
 - (void)updateNotesCounter;
 - (id)initFailureWithErrorCode:(NSInteger)code error:(NSError **)error;
 - (NSError *)errorWithCode:(NSInteger)code;
@@ -244,6 +246,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 @synthesize highlightsCancelButton;
 @synthesize cornerCoverFadeTimer;
 @synthesize firstTimePlayForHelpController;
+@synthesize recommendationViewNib;
 
 #pragma mark - Dealloc and View Teardown
 
@@ -275,6 +278,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     [storyInteractionViewController release], storyInteractionViewController = nil;
     [cornerCoverFadeTimer release], cornerCoverFadeTimer = nil;
     [forceOpenToCover release], forceOpenToCover = nil;
+    [recommendationViewNib release], recommendationViewNib = nil;
     
     // Ideally the readingView would be release it viewDidUnload but it contains 
     // logic that this view controller uses while it is potentially off-screen (e.g. when a story interaction is being shown)
@@ -464,6 +468,8 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 
         self.coverMarkerShouldAppear = YES;
         self.firstTimePlayForHelpController = NO;
+        
+        self.recommendationViewNib = [UINib nibWithNibName:@"SCHRecommendationListView" bundle:nil];
 
     } else {
         return [self initFailureWithErrorCode:kSCHReadingViewUnspecifiedError error:error];
@@ -2289,9 +2295,10 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     
     for (int i = 0; i < count; i++) {
         NSDictionary *recommendationDictionary = [recommendationsDictionaries objectAtIndex:i];
-        SCHRecommendationListView *listView = [[SCHRecommendationListView alloc] initWithFrame:CGRectMake(inset, inset + rowHeight * i, container.frame.size.width - 2*inset, rowHeight)];
-        listView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin;
         
+        SCHRecommendationListView *listView = [[[self.recommendationViewNib instantiateWithOwner:self options:nil] objectAtIndex:0] retain];
+        listView.frame = CGRectMake(inset, inset + rowHeight * i, container.frame.size.width - 2*inset, rowHeight);
+
         [listView updateWithRecommendationItem:recommendationDictionary];
         [container addSubview:listView];
         [listView release];

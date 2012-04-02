@@ -23,7 +23,6 @@
 @property (nonatomic, retain) IBOutlet UIImageView *coverImageView;
 @property (nonatomic, retain) IBOutlet UILabel *titleLabel;
 @property (nonatomic, retain) IBOutlet UILabel *subtitleLabel;
-@property (nonatomic, retain) IBOutlet UILabel *descriptionLabel;
 @property (nonatomic, retain) IBOutlet RateView *rateView;
 @property (nonatomic, retain) IBOutlet UILabel *ratingLabel;
 @property (nonatomic, retain) IBOutlet UIImageView *ratingBackgroundImageView;

@@ -84,6 +84,14 @@
 
     // take a copy of the original state of the wish list and modify that instead
     self.modifiedWishListItems = [NSMutableArray arrayWithArray:self.localWishListItems];
+    
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+        
+        [self.navigationController.view.layer setCornerRadius:6];
+        [self.navigationController.view.layer setMasksToBounds:YES];
+        [self.navigationController.view.layer setBorderColor:[UIColor SCHBlue3Color].CGColor];
+        [self.navigationController.view.layer setBorderWidth:2.0f];
+    }
 
 }
 
@@ -220,14 +228,9 @@
         cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier] autorelease];
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         
-//        SCHRecommendationListView *recommendationView = [[SCHRecommendationListView alloc] initWithFrame:cell.frame];
-//        [self.recommendationViewNib instantiateWithOwner:recommendationView options:nil];
-        
         SCHRecommendationListView *recommendationView = [[[self.recommendationViewNib instantiateWithOwner:self options:nil] objectAtIndex:0] retain];
         recommendationView.frame = cell.frame;
-        NSLog(@"rec view: %@", recommendationView);
         
-//        recommendationView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
         recommendationView.tag = 999;
         recommendationView.delegate = self;
         recommendationView.recommendationBackgroundColor = [UIColor colorWithRed:0.863 green:0.875 blue:0.894 alpha:1.0];

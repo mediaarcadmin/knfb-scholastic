@@ -17,6 +17,7 @@
 
 @property (nonatomic, retain) NSArray *localWishListItems;
 @property (nonatomic, retain) NSMutableArray *wishListItemsToRemove;
+@property (nonatomic, retain) UINib *recommendationViewNib;
 
 @end
 
@@ -28,6 +29,7 @@
 @synthesize closeBlock;
 @synthesize localWishListItems;
 @synthesize wishListItemsToRemove;
+@synthesize recommendationViewNib;
 
 #pragma mark - Memory Management 
 
@@ -39,7 +41,8 @@
     [closeBlock release], closeBlock = nil;
     [localWishListItems release], localWishListItems = nil;
     [wishListItemsToRemove release], wishListItemsToRemove = nil;
-    
+    [recommendationViewNib release], recommendationViewNib = nil;
+
     // release view objects
     [self releaseViewObjects];
     [super dealloc];
@@ -59,6 +62,7 @@
         self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(close:)] autorelease];
         self.title = @"Your Wish List";
         self.wishListItemsToRemove = [NSMutableArray array];
+        self.recommendationViewNib = [UINib nibWithNibName:@"SCHRecommendationListView" bundle:nil];
     }
     return self;
 }
@@ -177,8 +181,9 @@
     if (!cell) {
         cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier] autorelease];
         
-        SCHRecommendationListView *recommendationView = [[SCHRecommendationListView alloc] initWithFrame:cell.frame];
-        recommendationView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
+        SCHRecommendationListView *recommendationView = [[[self.recommendationViewNib instantiateWithOwner:self options:nil] objectAtIndex:0] retain];
+        recommendationView.frame = cell.frame;
+
         recommendationView.tag = 999;
         recommendationView.delegate = self;
         recommendationView.recommendationBackgroundColor = [UIColor colorWithRed:0.863 green:0.875 blue:0.894 alpha:1.0];

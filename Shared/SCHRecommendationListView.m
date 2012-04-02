@@ -29,7 +29,6 @@
 @synthesize coverImageView;
 @synthesize titleLabel;
 @synthesize subtitleLabel;
-@synthesize descriptionLabel;
 @synthesize rateView;
 @synthesize ratingLabel;
 @synthesize ratingBackgroundImageView;
@@ -46,7 +45,6 @@
     [coverImageView release], coverImageView = nil;
     [titleLabel release], titleLabel = nil;
     [subtitleLabel release], subtitleLabel = nil;
-    [descriptionLabel release], descriptionLabel = nil;
     [rateView release], rateView = nil;
     [ratingLabel release], ratingLabel = nil;
     [onWishListButton release], onWishListButton = nil;
@@ -107,7 +105,6 @@
     self.titleLabel.text = [item objectForKey:kSCHAppRecommendationTitle];
     self.subtitleLabel.text = [item objectForKey:kSCHAppRecommendationAuthor];
     self.rateView.rating = [[item objectForKey:kSCHAppRecommendationAverageRating] floatValue];
-    
     UIImage *coverImage = [item objectForKey:kSCHAppRecommendationCoverImage];
     
     if (coverImage && ![coverImage isKindOfClass:[NSNull class]]) {
@@ -148,7 +145,7 @@
     self.rateView.editable = NO;
     self.rateView.fullSelectedImage = [UIImage imageNamed:@"storiaBlueStarFull"];
     self.rateView.notSelectedImage = [UIImage imageNamed:@"storiaBlueStarEmpty"];
-    self.rateView.halfSelectedImage = [UIImage imageNamed:@"storyBlueStarHalfFull"];
+    self.rateView.halfSelectedImage = [UIImage imageNamed:@"storiaBlueStarHalfFull"];
     
     self.ratingBackgroundImageView.image = [[UIImage imageNamed:@"BookShelfListRatingBackground"] stretchableImageWithLeftCapWidth:19 topCapHeight:0];
     
