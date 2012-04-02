@@ -93,6 +93,7 @@
     </entity>
     <entity name="SCHAppState" representedClassName="SCHAppState">
         <attribute name="DataStoreType" optional="YES" attributeType="Integer 16" defaultValueString="0"/>
+        <attribute name="isCOPPACompliant" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
         <attribute name="LastKnownAuthToken" optional="YES" attributeType="String"/>
         <attribute name="LastRemoteManifestUpdateDate" optional="YES" attributeType="Date"/>
         <attribute name="ServerDateDelta" attributeType="Double" defaultValueString="0"/>
@@ -374,7 +375,7 @@
         <element name="SCHAppHelpState" positionX="160" positionY="192" width="128" height="135"/>
         <element name="SCHAppProfile" positionX="0" positionY="0" width="128" height="165"/>
         <element name="SCHAppRecommendationItem" positionX="160" positionY="192" width="128" height="165"/>
-        <element name="SCHAppState" positionX="0" positionY="0" width="128" height="150"/>
+        <element name="SCHAppState" positionX="0" positionY="0" width="128" height="165"/>
         <element name="SCHBookmark" positionX="292" positionY="653" width="128" height="105"/>
         <element name="SCHContentItem" positionX="772" positionY="531" width="128" height="90"/>
         <element name="SCHContentMetadataItem" positionX="990" positionY="586" width="128" height="255"/>
@@ -399,9 +400,9 @@
         <element name="SCHRecommendationISBN" positionX="160" positionY="192" width="128" height="90"/>
         <element name="SCHRecommendationItem" positionX="160" positionY="192" width="128" height="210"/>
         <element name="SCHRecommendationProfile" positionX="160" positionY="192" width="128" height="90"/>
+        <element name="SCHSettingItem" positionX="1044" positionY="1349" width="128" height="75"/>
         <element name="SCHSyncEntity" positionX="822" positionY="144" width="128" height="75"/>
         <element name="SCHUserContentItem" positionX="898" positionY="1290" width="128" height="210"/>
-        <element name="SCHSettingItem" positionX="1044" positionY="1349" width="128" height="75"/>
         <element name="SCHWishListItem" positionX="160" positionY="192" width="128" height="135"/>
         <element name="SCHWishListProfile" positionX="160" positionY="192" width="128" height="90"/>
         <element name="SCHWordIndex" positionX="0" positionY="137" width="128" height="90"/>

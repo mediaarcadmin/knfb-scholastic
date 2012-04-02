@@ -26,6 +26,9 @@
 - (BOOL)canSyncNotes;
 - (void)setCanSyncNotes:(BOOL)sync;
 
+- (BOOL)isCOPPACompliant;
+- (void)setCOPPACompliant:(BOOL)coppa;
+
 - (BOOL)canAuthenticate;
 - (void)setCanAuthenticate:(BOOL)auth;
 
