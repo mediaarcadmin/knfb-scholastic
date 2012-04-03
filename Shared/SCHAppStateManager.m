@@ -178,11 +178,15 @@
 {
     __block BOOL ret = NO;
     
+#if IGNORE_COPPA_COMPLIANCE
+    ret = YES;
+#else
     [self performWithAppState:^(SCHAppState *appState) {
         if (appState != nil) {
             ret = [appState.isCOPPACompliant boolValue];
         }
     }];
+#endif
     
     return ret;
 }
