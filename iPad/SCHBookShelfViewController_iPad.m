@@ -340,10 +340,8 @@ static NSInteger const kSCHBookShelfEdgePadding = 12;
     recommendationController.appProfile = self.profileItem.AppProfile;
     recommendationController.delegate = self;
     
-    UINavigationController *navCon = [[UINavigationController alloc] initWithRootViewController:recommendationController];
-    
-    self.recommendationPopover = [[[BITModalSheetController alloc] initWithContentViewController:navCon] autorelease];
-    [self.recommendationPopover setContentSize:CGSizeMake(604, 482)];
+    self.recommendationPopover = [[[BITModalSheetController alloc] initWithContentViewController:recommendationController] autorelease];
+    [self.recommendationPopover setContentSize:CGSizeMake(640, 654)];
     [self.recommendationPopover setContentOffset:CGPointMake(0, 0)];
     
     __block BITModalSheetController *weakPopoverController = self.recommendationPopover;
@@ -356,7 +354,6 @@ static NSInteger const kSCHBookShelfEdgePadding = 12;
     
     [self.recommendationPopover presentSheetInViewController:self animated:animated completion:nil];
     
-    [navCon release];
     [recommendationController release];
 
     if (!animated) {
@@ -381,10 +378,8 @@ static NSInteger const kSCHBookShelfEdgePadding = 12;
     wishListController.appProfile = self.profileItem.AppProfile;
     wishListController.delegate = self;
     
-    UINavigationController *navCon = [[UINavigationController alloc] initWithRootViewController:wishListController];
-    
-    self.recommendationPopover = [[[BITModalSheetController alloc] initWithContentViewController:navCon] autorelease];
-    [self.recommendationPopover setContentSize:CGSizeMake(604, 482)];
+    self.recommendationPopover = [[[BITModalSheetController alloc] initWithContentViewController:wishListController] autorelease];
+    [self.recommendationPopover setContentSize:CGSizeMake(640, 654)];
     [self.recommendationPopover setContentOffset:CGPointMake(0, 0)];
     
     __block BITModalSheetController *weakPopoverController = self.recommendationPopover;
@@ -397,7 +392,6 @@ static NSInteger const kSCHBookShelfEdgePadding = 12;
     
     [self.recommendationPopover presentSheetInViewController:self animated:animated completion:nil];
 
-    [navCon release];
     [wishListController release];
     
     if (!animated) {

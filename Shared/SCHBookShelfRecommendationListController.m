@@ -8,6 +8,7 @@
 
 #import "SCHBookShelfRecommendationListController.h"
 #import "SCHAppRecommendationItem.h"
+#import "SCHThemeManager.h"
 
 @interface SCHBookShelfRecommendationListController ()
 
@@ -18,6 +19,8 @@
 @property (nonatomic, retain) NSArray *localWishListItems;
 @property (nonatomic, retain) NSMutableArray *modifiedWishListItems;
 
+@property (nonatomic, retain) UINib *recommendationViewNib;
+
 @end
 
 @implementation SCHBookShelfRecommendationListController
@@ -25,10 +28,16 @@
 @synthesize delegate;
 @synthesize appProfile;
 @synthesize mainTableView;
+@synthesize titleLabel;
+@synthesize topToolbar;
+@synthesize bottomToolbar;
+@synthesize closeButton;
+@synthesize bottomSegment;
 @synthesize closeBlock;
 @synthesize localRecommendationItems;
 @synthesize localWishListItems;
 @synthesize modifiedWishListItems;
+@synthesize recommendationViewNib;
 
 #pragma mark - Memory Management
 
@@ -41,6 +50,7 @@
     [modifiedWishListItems release], modifiedWishListItems = nil;
     [appProfile release], appProfile = nil;
     [closeBlock release], closeBlock = nil;
+    [recommendationViewNib release], recommendationViewNib = nil;
     
     // release view objects
     [self releaseViewObjects];
@@ -51,6 +61,11 @@
 {
     // release any view objects here
     [mainTableView release], mainTableView = nil;
+    [topToolbar release], topToolbar = nil;
+    [bottomToolbar release], bottomToolbar = nil;
+    [titleLabel release], titleLabel = nil;
+    [closeButton release], closeButton = nil;
+    [bottomSegment release], bottomSegment = nil;
 }
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
@@ -58,8 +73,8 @@
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
         // Custom initialization
-        self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(close:)] autorelease];
-        self.title = @"Kids' Top Rated eBooks";
+        self.recommendationViewNib = [UINib nibWithNibName:@"SCHRecommendationListView" bundle:nil];
+
     }
     return self;
 }
@@ -70,7 +85,8 @@
 {
     [super viewDidLoad];
     
-    UIColor *viewBackgroundColor = [UIColor colorWithRed:0.996 green:0.937 blue:0.718 alpha:1.0];
+    UIColor *viewBackgroundColor = [UIColor colorWithRed:0.863 green:0.875 blue:0.894 alpha:1.0];
+
     self.mainTableView.backgroundColor = viewBackgroundColor;
     
     self.localRecommendationItems = [self.appProfile recommendationDictionaries];
@@ -78,6 +94,19 @@
 
     // take a copy of the original state of the wish list and modify that instead
     self.modifiedWishListItems = [NSMutableArray arrayWithArray:self.localWishListItems];
+    
+    [self.view.layer setCornerRadius:6];
+    [self.view.layer setMasksToBounds:YES];
+    [self.view.layer setBorderColor:[[SCHThemeManager sharedThemeManager] colorForModalSheetBorder].CGColor];
+    [self.view.layer setBorderWidth:2.0f];
+    
+    [self.closeButton setTintColor:[[SCHThemeManager sharedThemeManager] colorForModalSheetBorder]];
+    [self.bottomSegment setTintColor:[[SCHThemeManager sharedThemeManager] colorForModalSheetBorder]];
+    
+    [self.topToolbar setBackgroundImage:[[SCHThemeManager sharedThemeManager] imageForNavigationBar:UIInterfaceOrientationPortrait]];
+    [self.bottomToolbar setBackgroundImage:[[SCHThemeManager sharedThemeManager] imageForNavigationBar:UIInterfaceOrientationPortrait]];
+    
+    self.titleLabel.text = @"Kids' Top Rated eBooks";
 
 }
 
@@ -96,15 +125,6 @@
 
     if (closeBlock) {
         closeBlock();
-    }
-}
-
-- (IBAction)switchToWishList:(id)sender
-{
-    [self commitWishListChanges];
-    
-    if (self.delegate) {
-        [self.delegate switchToWishListFromRecommendationListController:self];
     }
 }
 
@@ -185,6 +205,19 @@
     }
 }
 
+#pragma mark - Segmented Control
+
+- (IBAction)segmentChanged:(UISegmentedControl *)sender 
+{
+    if (sender.selectedSegmentIndex == 1) {
+        [self commitWishListChanges];
+        
+        if (self.delegate) {
+            [self.delegate switchToWishListFromRecommendationListController:self];
+        }
+    }
+}
+
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
@@ -214,10 +247,18 @@
         cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier] autorelease];
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         
-        SCHRecommendationListView *recommendationView = [[SCHRecommendationListView alloc] initWithFrame:cell.frame];
-        recommendationView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
+        SCHRecommendationListView *recommendationView = [[[self.recommendationViewNib instantiateWithOwner:self options:nil] objectAtIndex:0] retain];
+        recommendationView.frame = cell.frame;
+        
         recommendationView.tag = 999;
         recommendationView.delegate = self;
+        recommendationView.recommendationBackgroundColor = [UIColor colorWithRed:0.863 green:0.875 blue:0.894 alpha:1.0];
+        
+        if (indexPath.row >= ([self tableView:self.mainTableView numberOfRowsInSection:0] - 1)) {
+            recommendationView.showsBottomRule = NO;
+        } else {
+            recommendationView.showsBottomRule = YES;
+        }
         
         [cell addSubview:recommendationView];
         [recommendationView release];
@@ -249,7 +290,11 @@
 
 - (float)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return 132;
+    if (indexPath.row == 0) {
+        return 199;
+    }
+    
+    return 185;
 }
 
 #pragma mark - Table view delegate

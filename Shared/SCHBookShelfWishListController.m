@@ -7,16 +7,17 @@
 //
 
 #import "SCHBookShelfWishListController.h"
+#import "SCHThemeManager.h"
 
 @interface SCHBookShelfWishListController ()
 
 - (void)releaseViewObjects;
-- (IBAction)switchToRecommendations:(id)sender;
 - (void)commitWishListDeletions;
 
 
 @property (nonatomic, retain) NSArray *localWishListItems;
 @property (nonatomic, retain) NSMutableArray *wishListItemsToRemove;
+@property (nonatomic, retain) UINib *recommendationViewNib;
 
 @end
 
@@ -25,9 +26,15 @@
 @synthesize delegate;
 @synthesize appProfile;
 @synthesize mainTableView;
+@synthesize titleLabel;
+@synthesize topToolbar;
+@synthesize bottomToolbar;
+@synthesize closeButton;
+@synthesize bottomSegment;
 @synthesize closeBlock;
 @synthesize localWishListItems;
 @synthesize wishListItemsToRemove;
+@synthesize recommendationViewNib;
 
 #pragma mark - Memory Management 
 
@@ -39,7 +46,8 @@
     [closeBlock release], closeBlock = nil;
     [localWishListItems release], localWishListItems = nil;
     [wishListItemsToRemove release], wishListItemsToRemove = nil;
-    
+    [recommendationViewNib release], recommendationViewNib = nil;
+
     // release view objects
     [self releaseViewObjects];
     [super dealloc];
@@ -49,6 +57,11 @@
 {
     // release any view objects here
     [mainTableView release], mainTableView = nil;
+    [topToolbar release], topToolbar = nil;
+    [bottomToolbar release], bottomToolbar = nil;
+    [titleLabel release], titleLabel = nil;
+    [closeButton release], closeButton = nil;
+    [bottomSegment release], bottomSegment = nil;
 }
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
@@ -56,9 +69,8 @@
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
         // Custom initialization
-        self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(close:)] autorelease];
-        self.title = @"Your Wish List";
         self.wishListItemsToRemove = [NSMutableArray array];
+        self.recommendationViewNib = [UINib nibWithNibName:@"SCHRecommendationListView" bundle:nil];
     }
     return self;
 }
@@ -69,13 +81,28 @@
 {
     [super viewDidLoad];
     
-    UIColor *viewBackgroundColor = [UIColor colorWithRed:0.996 green:0.937 blue:0.718 alpha:1.0];
+    UIColor *viewBackgroundColor = [UIColor colorWithRed:0.863 green:0.875 blue:0.894 alpha:1.0];
+
     self.mainTableView.backgroundColor = viewBackgroundColor;
     
     // fetch a local list of wish list items
     // we need to maintain this local copy, so that items can 
     // be unticked but remain in the list
     self.localWishListItems = [self.appProfile wishListItemDictionaries];
+    
+    [self.view.layer setCornerRadius:6];
+    [self.view.layer setMasksToBounds:YES];
+    [self.view.layer setBorderColor:[[SCHThemeManager sharedThemeManager] colorForModalSheetBorder].CGColor];
+    [self.view.layer setBorderWidth:2.0f];
+    
+    [self.closeButton setTintColor:[[SCHThemeManager sharedThemeManager] colorForModalSheetBorder]];
+    [self.bottomSegment setTintColor:[[SCHThemeManager sharedThemeManager] colorForModalSheetBorder]];
+    
+    [self.topToolbar setBackgroundImage:[[SCHThemeManager sharedThemeManager] imageForNavigationBar:UIInterfaceOrientationPortrait]];
+    [self.bottomToolbar setBackgroundImage:[[SCHThemeManager sharedThemeManager] imageForNavigationBar:UIInterfaceOrientationPortrait]];
+    
+    self.titleLabel.text = @"Your Wish List";
+
 }
 
 - (void)viewDidUnload
@@ -96,12 +123,14 @@
     }
 }
 
-- (IBAction)switchToRecommendations:(id)sender
+- (IBAction)bottomSegmentChanged:(UISegmentedControl *)sender 
 {
-    [self commitWishListDeletions];
-    
-    if (self.delegate) {
-        [self.delegate switchToRecommendationsFromWishListController:self];
+    if (sender.selectedSegmentIndex == 0) {
+        [self commitWishListDeletions];
+        
+        if (self.delegate) {
+            [self.delegate switchToRecommendationsFromWishListController:self];
+        }
     }
 }
 
@@ -176,11 +205,20 @@
     if (!cell) {
         cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier] autorelease];
         
-        SCHRecommendationListView *recommendationView = [[SCHRecommendationListView alloc] initWithFrame:cell.frame];
-        recommendationView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
+        SCHRecommendationListView *recommendationView = [[[self.recommendationViewNib instantiateWithOwner:self options:nil] objectAtIndex:0] retain];
+        recommendationView.frame = cell.frame;
+
         recommendationView.tag = 999;
         recommendationView.delegate = self;
+        recommendationView.recommendationBackgroundColor = [UIColor colorWithRed:0.863 green:0.875 blue:0.894 alpha:1.0];
         
+        if (indexPath.row >= ([self tableView:self.mainTableView numberOfRowsInSection:0] - 1)) {
+            recommendationView.showsBottomRule = NO;
+        } else {
+            recommendationView.showsBottomRule = YES;
+        }
+        
+
         [cell addSubview:recommendationView];
         [recommendationView release];
     }
@@ -211,7 +249,11 @@
 
 - (float)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return 132;
+    if (indexPath.row == 0) {
+        return 199;
+    }
+    
+    return 185;
 }
 
 #pragma mark - Table view delegate

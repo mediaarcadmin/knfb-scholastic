@@ -9,6 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "SCHRecommendationItem.h"
 #import "SCHWishListItem.h"
+#import "RateView.h"
 
 @protocol SCHRecommendationListViewDelegate;
 
@@ -17,9 +18,25 @@
 @property (nonatomic, assign) id <SCHRecommendationListViewDelegate> delegate;
 @property (nonatomic, retain) NSString *ISBN;
 @property (nonatomic, assign) BOOL isOnWishList;
+@property (nonatomic, assign) BOOL showsBottomRule;
+@property (nonatomic, retain) UIColor *recommendationBackgroundColor;
+
+@property (nonatomic, retain) IBOutlet UIImageView *coverImageView;
+@property (nonatomic, retain) IBOutlet UILabel *titleLabel;
+@property (nonatomic, retain) IBOutlet UILabel *subtitleLabel;
+@property (nonatomic, retain) IBOutlet RateView *rateView;
+@property (nonatomic, retain) IBOutlet UILabel *ratingLabel;
+@property (nonatomic, retain) IBOutlet UIImageView *ratingBackgroundImageView;
+@property (nonatomic, retain) IBOutlet UIButton *onWishListButton;
+
+@property (retain, nonatomic) IBOutlet UIView *middleView;
+@property (retain, nonatomic) IBOutlet UIView *leftView;
+@property (retain, nonatomic) IBOutlet UIImageView *ruleImageView;
+
 
 - (void)updateWithRecommendationItem:(NSDictionary *)item;
 - (void)updateWithWishListItem:(NSDictionary *)item;
+- (IBAction)toggledOnWishListButton:(UIButton *)wishListButton;
 
 @end
 
