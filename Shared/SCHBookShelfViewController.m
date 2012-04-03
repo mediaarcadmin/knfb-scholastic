@@ -334,7 +334,7 @@ typedef enum
             gridFrame.size.height = 7;
         } else {
             listFrame.size.height = 0;
-            gridFrame.size.height = 0;
+            gridFrame.size.height = 7;
         }
         self.listTableView.tableHeaderView.frame = listFrame;
         self.gridViewToggleView.frame = gridFrame;
@@ -1100,7 +1100,11 @@ typedef enum
             return 106;
         }
     } else {
-        return 62;
+        if (indexPath.row == 0) {
+            return 77;
+        } else {
+            return 66;
+        }
     }
 }
 

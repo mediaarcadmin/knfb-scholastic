@@ -73,7 +73,10 @@ static NSInteger const CELL_STAR_PERSONAL_RATING_VIEW = 302;
         self.textLabel.text = [[[NSAttributedString alloc] initWithString:@""] autorelease];
         [self updateTheme];
         self.ruleImageView.image = [[UIImage imageNamed:@"ListViewRule"] stretchableImageWithLeftCapWidth:0 topCapHeight:0];
-        self.userRatingBackgroundImageView.image = [[UIImage imageNamed:@"BookShelfListRatingBackground"] stretchableImageWithLeftCapWidth:19 topCapHeight:0];
+        
+        CGFloat capWidth = (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)?19.0f:10.0f;
+        
+        self.userRatingBackgroundImageView.image = [[UIImage imageNamed:@"BookShelfListRatingBackground"] stretchableImageWithLeftCapWidth:capWidth topCapHeight:0];
         self.backgroundGradientImageView.image = [[UIImage imageNamed:@"BookShelfListWhiteGradientBackground"] stretchableImageWithLeftCapWidth:0 topCapHeight:0];
         self.lastCell = NO;
         

@@ -8,7 +8,7 @@
 		<string key="IBDocument.HIToolboxVersion">568.00</string>
 		<object class="NSMutableDictionary" key="IBDocument.PluginVersions">
 			<string key="NS.key.0">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
-			<string key="NS.object.0">1181</string>
+			<string key="NS.object.0">1179</string>
 		</object>
 		<object class="NSArray" key="IBDocument.IntegratedClassDependencies">
 			<bool key="EncodedWithXMLCoder">YES</bool>
@@ -84,7 +84,7 @@
 																<string key="NSFrameSize">{96, 90}</string>
 																<reference key="NSSuperview" ref="2685029"/>
 																<reference key="NSWindow"/>
-																<reference key="NSNextKeyView" ref="448554426"/>
+																<reference key="NSNextKeyView" ref="739321097"/>
 																<object class="NSColor" key="IBUIBackgroundColor" id="142432702">
 																	<int key="NSColorSpace">3</int>
 																	<bytes key="NSWhite">MCAwAA</bytes>
@@ -142,7 +142,7 @@
 												<string key="NSFrame">{{141, 9}, {431, 49}}</string>
 												<reference key="NSSuperview" ref="717249785"/>
 												<reference key="NSWindow"/>
-												<reference key="NSNextKeyView" ref="739321097"/>
+												<reference key="NSNextKeyView" ref="836594745"/>
 												<reference key="IBUIBackgroundColor" ref="142432702"/>
 												<bool key="IBUIOpaque">NO</bool>
 												<bool key="IBUIClipsSubviews">YES</bool>
@@ -178,6 +178,7 @@
 												<string key="NSFrame">{{0, 104}, {2000, 2}}</string>
 												<reference key="NSSuperview" ref="717249785"/>
 												<reference key="NSWindow"/>
+												<reference key="NSNextKeyView"/>
 												<reference key="IBUIBackgroundColor" ref="142432702"/>
 												<int key="IBUITag">202</int>
 												<bool key="IBUIUserInteractionEnabled">NO</bool>
@@ -194,7 +195,7 @@
 														<string key="NSFrame">{{245, 0}, {162, 40}}</string>
 														<reference key="NSSuperview" ref="739321097"/>
 														<reference key="NSWindow"/>
-														<reference key="NSNextKeyView" ref="836594745"/>
+														<reference key="NSNextKeyView" ref="448554426"/>
 														<string key="NSReuseIdentifierKey">_NS:9</string>
 														<reference key="IBUIBackgroundColor" ref="142432702"/>
 														<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
@@ -230,7 +231,7 @@
 																<int key="IBUIContentMode">7</int>
 																<bool key="IBUIUserInteractionEnabled">NO</bool>
 																<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
-																<string key="IBUIText">My Ratings</string>
+																<string key="IBUIText">My Rating</string>
 																<object class="NSColor" key="IBUITextColor">
 																	<int key="NSColorSpace">1</int>
 																	<bytes key="NSRGB">MC4wMDM5MjE1Njg2MjcgMC4xODQzMTM3MjU1IDAuMzY4NjI3NDUxAA</bytes>
@@ -774,6 +775,6 @@
 		</object>
 		<bool key="IBDocument.PluginDeclaredDependenciesTrackSystemTargetVersion">YES</bool>
 		<int key="IBDocument.defaultPropertyAccessControl">3</int>
-		<string key="IBCocoaTouchPluginVersion">1181</string>
+		<string key="IBCocoaTouchPluginVersion">1179</string>
 	</data>
 </archive>
