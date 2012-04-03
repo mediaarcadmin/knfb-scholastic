@@ -88,7 +88,7 @@
 									<object class="IBUILabel" id="72136360">
 										<reference key="NSNextResponder" ref="279056488"/>
 										<int key="NSvFlags">290</int>
-										<string key="NSFrame">{{20, 8}, {566, 20}}</string>
+										<string key="NSFrame">{{20, 8}, {566, 22}}</string>
 										<reference key="NSSuperview" ref="279056488"/>
 										<reference key="NSWindow"/>
 										<reference key="NSNextKeyView" ref="866276868"/>
@@ -98,7 +98,7 @@
 										<int key="IBUIContentMode">7</int>
 										<bool key="IBUIUserInteractionEnabled">NO</bool>
 										<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
-										<string key="IBUIText">Book Title</string>
+										<string key="IBUIText">The Quick Brown Fox Jumps Over The Lazy Dog</string>
 										<object class="NSColor" key="IBUITextColor">
 											<int key="NSColorSpace">2</int>
 											<bytes key="NSRGB">MC4wMjc0NTA5ODI0OCAwLjEyNTQ5MDIwMzUgMC4zMTc2NDcwNjk3AA</bytes>
@@ -120,7 +120,7 @@
 									<object class="IBUILabel" id="866276868">
 										<reference key="NSNextResponder" ref="279056488"/>
 										<int key="NSvFlags">290</int>
-										<string key="NSFrame">{{20, 26}, {566, 20}}</string>
+										<string key="NSFrame">{{20, 28}, {566, 22}}</string>
 										<reference key="NSSuperview" ref="279056488"/>
 										<reference key="NSWindow"/>
 										<reference key="NSNextKeyView" ref="649108987"/>
@@ -130,7 +130,7 @@
 										<int key="IBUIContentMode">7</int>
 										<bool key="IBUIUserInteractionEnabled">NO</bool>
 										<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
-										<string key="IBUIText">Book Subtitle</string>
+										<string key="IBUIText">The Quick Brown Fox Jumps Over The Lazy Dog</string>
 										<object class="NSColor" key="IBUITextColor">
 											<int key="NSColorSpace">2</int>
 											<bytes key="NSRGB">MC4wMjc0NTA5ODI0OCAwLjEyNTQ5MDIwMzUgMC4zMTc2NDcwNjk3AA</bytes>
