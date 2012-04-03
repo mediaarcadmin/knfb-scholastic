@@ -469,7 +469,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
         self.coverMarkerShouldAppear = YES;
         self.firstTimePlayForHelpController = NO;
         
-        self.recommendationViewNib = [UINib nibWithNibName:@"SCHRecommendationListView" bundle:nil];
+        self.recommendationViewNib = [UINib nibWithNibName:@"SCHRecommendationListView-ReadingView" bundle:nil];
 
     } else {
         return [self initFailureWithErrorCode:kSCHReadingViewUnspecifiedError error:error];
@@ -2298,7 +2298,8 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
         
         SCHRecommendationListView *listView = [[[self.recommendationViewNib instantiateWithOwner:self options:nil] objectAtIndex:0] retain];
         listView.frame = CGRectMake(inset, inset + rowHeight * i, container.frame.size.width - 2*inset, rowHeight);
-
+        listView.showsBottomRule = NO;
+        
         [listView updateWithRecommendationItem:recommendationDictionary];
         [container addSubview:listView];
         [listView release];
