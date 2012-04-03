@@ -113,14 +113,10 @@ NSString * const SCHWishListSyncComponentDidFailNotification = @"SCHWishListSync
         if([method compare:kSCHWishListWebServiceDeleteWishListItems] == NSOrderedSame) {            
             NSDictionary *deleteWishListItems = [self makeNullNil:[result objectForKey:kSCHWishListWebServiceDeleteWishListItems]];
             
-            // TODO: is this the correct thing to do?
-            // if we have a general error don't delete the items - thus try again
-            if ([self makeNullNil:[deleteWishListItems objectForKey:kSCHWishListWebServiceWishListError]] == nil) {            
-                NSArray *profileStatusList = [self makeNullNil:[deleteWishListItems objectForKey:kSCHWishListWebServiceProfileStatusList]];                
-                
-                if ([profileStatusList count] > 0) {
-                    [self processDeletedWishListItems:profileStatusList];
-                }
+            NSArray *profileStatusList = [self makeNullNil:[deleteWishListItems objectForKey:kSCHWishListWebServiceProfileStatusList]];                
+            
+            if ([profileStatusList count] > 0) {
+                [self processDeletedWishListItems:profileStatusList];
             }
 
             NSArray *wishListProfilesToCreate = [self localWishListProfilesWithItemStates:
@@ -202,7 +198,7 @@ NSString * const SCHWishListSyncComponentDidFailNotification = @"SCHWishListSync
         } else if (self.saveOnly == NO) {
             NSArray *profiles = [self localProfiles];
             if ([profiles count] > 0) {
-            ret = [self retrieveWishLists:profiles];       
+                ret = [self retrieveWishLists:profiles];       
             } else {
                 [[NSNotificationCenter defaultCenter] postNotificationName:SCHWishListSyncComponentDidCompleteNotification 
                                                                     object:self 
@@ -294,20 +290,26 @@ NSString * const SCHWishListSyncComponentDidFailNotification = @"SCHWishListSync
             if ([profileID integerValue] > 0) {
                 for (NSDictionary *item in [self makeNullNil:[wishListItem objectForKey:kSCHWishListWebServiceItemStatusList]]) {
                     NSString *isbn = [self makeNullNil:[item objectForKey:kSCHWishListWebServiceISBN]];
-                    if (isbn != nil) {
-                        NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
-                        NSError *error = nil;
+                    NSDictionary *wishListError = [self makeNullNil:[item objectForKey:kSCHWishListWebServiceWishListError]];
+                    if (wishListError != nil) {
+                        NSString *errorCode = [self makeNullNil:[wishListError objectForKey:kSCHWishListWebServiceErrorCode]];
                         
-                        [fetchRequest setEntity:[NSEntityDescription entityForName:kSCHWishListItem inManagedObjectContext:self.managedObjectContext]];	
-                        [fetchRequest setPredicate:[NSPredicate predicateWithFormat:
-                                                    @"ISBN = %@ AND WishListProfile.ProfileID = %@", isbn, profileID]];
-                        
-                        NSArray *wishListItem = [self.managedObjectContext executeFetchRequest:fetchRequest error:&error];	
-                        [fetchRequest release], fetchRequest = nil;
-                        if (wishListItem == nil) {
-                            NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
-                        } else if ([wishListItem count] > 0) {
-                            [self.managedObjectContext deleteObject:[wishListItems objectAtIndex:0]];
+                        if (isbn != nil && errorCode != nil && [errorCode integerValue] == 0) {
+                            NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+                            NSError *error = nil;
+                            
+                            [fetchRequest setEntity:[NSEntityDescription entityForName:kSCHWishListItem inManagedObjectContext:self.managedObjectContext]];	
+                            [fetchRequest setPredicate:[NSPredicate predicateWithFormat:
+                                                        @"ISBN = %@ AND WishListProfile.ProfileID = %@", isbn, profileID]];
+                            
+                            NSArray *localWishListItem = [self.managedObjectContext executeFetchRequest:fetchRequest error:&error];	
+                            [fetchRequest release], fetchRequest = nil;
+                            if (localWishListItem == nil) {
+                                NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
+                            } else if ([localWishListItem count] > 0) {
+                                [self.managedObjectContext deleteObject:[localWishListItem objectAtIndex:0]];
+                                [self save];
+                            }
                         }
                     }
                 }
