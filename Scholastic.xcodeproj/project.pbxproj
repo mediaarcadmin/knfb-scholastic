@@ -3803,6 +3803,10 @@
 		F85C9D8C13E19CA8006F0546 /* BookShelfErrorIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = F85C9D8A13E19CA8006F0546 /* BookShelfErrorIcon.png */; };
 		F85C9D8E13E19CA8006F0546 /* BookShelfErrorIcon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F85C9D8B13E19CA8006F0546 /* BookShelfErrorIcon@2x.png */; };
 		F85E0309134F59E800E81D58 /* SCHCustomToolbar.m in Sources */ = {isa = PBXBuildFile; fileRef = F85E0308134F59E700E81D58 /* SCHCustomToolbar.m */; };
+		F85E4990152B458900A9AF25 /* SCHBookshelfPopoverController.m in Sources */ = {isa = PBXBuildFile; fileRef = F85E498F152B458900A9AF25 /* SCHBookshelfPopoverController.m */; };
+		F85E4991152B458900A9AF25 /* SCHBookshelfPopoverController.m in Sources */ = {isa = PBXBuildFile; fileRef = F85E498F152B458900A9AF25 /* SCHBookshelfPopoverController.m */; };
+		F85E4992152B458900A9AF25 /* SCHBookshelfPopoverController.m in Sources */ = {isa = PBXBuildFile; fileRef = F85E498F152B458900A9AF25 /* SCHBookshelfPopoverController.m */; };
+		F85E4993152B458900A9AF25 /* SCHBookshelfPopoverController.m in Sources */ = {isa = PBXBuildFile; fileRef = F85E498F152B458900A9AF25 /* SCHBookshelfPopoverController.m */; };
 		F8615B19144D69F100D0D265 /* SCHHelpVideoManifestOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = F8615B18144D69F100D0D265 /* SCHHelpVideoManifestOperation.m */; };
 		F8615B1A144D69F100D0D265 /* SCHHelpVideoManifestOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = F8615B18144D69F100D0D265 /* SCHHelpVideoManifestOperation.m */; };
 		F8615B1D144D6E7000D0D265 /* SCHHelpVideoFileDownloadOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = F8615B1C144D6E7000D0D265 /* SCHHelpVideoFileDownloadOperation.m */; };
@@ -5683,6 +5687,8 @@
 		F85C9D8B13E19CA8006F0546 /* BookShelfErrorIcon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "BookShelfErrorIcon@2x.png"; path = "Resources/BookShelfErrorIcon@2x.png"; sourceTree = "<group>"; };
 		F85E0307134F59E700E81D58 /* SCHCustomToolbar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHCustomToolbar.h; path = Shared/SCHCustomToolbar.h; sourceTree = "<group>"; };
 		F85E0308134F59E700E81D58 /* SCHCustomToolbar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHCustomToolbar.m; path = Shared/SCHCustomToolbar.m; sourceTree = "<group>"; };
+		F85E498E152B458900A9AF25 /* SCHBookshelfPopoverController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHBookshelfPopoverController.h; path = iPad/SCHBookshelfPopoverController.h; sourceTree = "<group>"; };
+		F85E498F152B458900A9AF25 /* SCHBookshelfPopoverController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHBookshelfPopoverController.m; path = iPad/SCHBookshelfPopoverController.m; sourceTree = "<group>"; };
 		F8615B17144D69F100D0D265 /* SCHHelpVideoManifestOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHHelpVideoManifestOperation.h; path = Shared/SCHHelpVideoManifestOperation.h; sourceTree = "<group>"; };
 		F8615B18144D69F100D0D265 /* SCHHelpVideoManifestOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHHelpVideoManifestOperation.m; path = Shared/SCHHelpVideoManifestOperation.m; sourceTree = "<group>"; };
 		F8615B1B144D6E7000D0D265 /* SCHHelpVideoFileDownloadOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHHelpVideoFileDownloadOperation.h; path = Shared/SCHHelpVideoFileDownloadOperation.h; sourceTree = "<group>"; };
@@ -8552,6 +8558,8 @@
 				F8A57E6F1517702000390D56 /* SCHBookShelfWishListController.h */,
 				F8A57E701517702000390D56 /* SCHBookShelfWishListController.m */,
 				F8A57E711517702000390D56 /* SCHBookShelfWishListController.xib */,
+				F85E498E152B458900A9AF25 /* SCHBookshelfPopoverController.h */,
+				F85E498F152B458900A9AF25 /* SCHBookshelfPopoverController.m */,
 			);
 			name = Bookshelves;
 			sourceTree = "<group>";
@@ -11914,6 +11922,7 @@
 				521B7AE41521D61200DC0739 /* GetUserInfoSvc+Binding.m in Sources */,
 				521B7AEA1521D67E00DC0739 /* WishListServiceSvc+Binding.m in Sources */,
 				52D343E4152481FF0066E73E /* SCHRating.m in Sources */,
+				F85E4990152B458900A9AF25 /* SCHBookshelfPopoverController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -12342,6 +12351,7 @@
 				521B7AE51521D61200DC0739 /* GetUserInfoSvc+Binding.m in Sources */,
 				521B7AEB1521D67E00DC0739 /* WishListServiceSvc+Binding.m in Sources */,
 				52D343E5152481FF0066E73E /* SCHRating.m in Sources */,
+				F85E4991152B458900A9AF25 /* SCHBookshelfPopoverController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -12704,6 +12714,7 @@
 				521B7AE61521D61200DC0739 /* GetUserInfoSvc+Binding.m in Sources */,
 				521B7AEC1521D67E00DC0739 /* WishListServiceSvc+Binding.m in Sources */,
 				52D343E6152481FF0066E73E /* SCHRating.m in Sources */,
+				F85E4992152B458900A9AF25 /* SCHBookshelfPopoverController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -13066,6 +13077,7 @@
 				521B7AE71521D61200DC0739 /* GetUserInfoSvc+Binding.m in Sources */,
 				521B7AED1521D67E00DC0739 /* WishListServiceSvc+Binding.m in Sources */,
 				52D343E7152481FF0066E73E /* SCHRating.m in Sources */,
+				F85E4993152B458900A9AF25 /* SCHBookshelfPopoverController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

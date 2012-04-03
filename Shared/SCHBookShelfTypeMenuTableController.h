@@ -20,5 +20,6 @@
 
 - (void)bookShelfTypeControllerSelectedListView:(SCHBookShelfTypeMenuTableController *)typeController;
 - (void)bookShelfTypeControllerSelectedGridView:(SCHBookShelfTypeMenuTableController *)typeController;
+- (void)bookShelfTypeControllerSelectedCancel:(SCHBookShelfTypeMenuTableController *)typeController;
 
 @end

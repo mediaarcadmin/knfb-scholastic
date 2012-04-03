@@ -8,11 +8,19 @@
 
 #import <UIKit/UIKit.h>
 
+@protocol SCHThemePickerViewControllerDelegate;
 
 @interface SCHThemePickerViewController : UIViewController <UITableViewDelegate, UITableViewDataSource> 
 {
 }
-
+@property (nonatomic, assign) id <SCHThemePickerViewControllerDelegate> delegate;
 @property (nonatomic, retain) IBOutlet UITableView *tableView;
+
+@end
+
+
+@protocol SCHThemePickerViewControllerDelegate <NSObject>
+
+- (void)themePickerControllerSelectedClose:(SCHThemePickerViewController *)controller;
 
 @end

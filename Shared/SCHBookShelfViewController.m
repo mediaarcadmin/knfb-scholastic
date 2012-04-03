@@ -51,7 +51,7 @@ typedef enum
 
 @interface SCHBookShelfViewController () <UIGestureRecognizerDelegate>
 
-@property (nonatomic, retain) SCHThemeButton *themeButton;
+@property (nonatomic, retain) SCHThemeButton *menuButton;
 @property (nonatomic, retain) SCHThemeButton *backButton;
 @property (nonatomic, assign) int moveToValue;
 @property (nonatomic, assign) BOOL updateShelfOnReturnToShelf;
@@ -62,6 +62,7 @@ typedef enum
 @property (nonatomic, assign) BOOL shouldShowBookshelfFailedErrorMessage;
 @property (nonatomic, assign) BOOL shouldWaitForCellsToLoad;
 @property (nonatomic, retain) BITModalSheetController *welcomePopoverController;
+@property (nonatomic, retain) BITModalSheetController *menuPopover;
 
 - (void)showWelcomeView;
 - (void)showWelcomeTwoView;
@@ -80,6 +81,9 @@ typedef enum
 - (IBAction)changeToListView:(UIButton *)sender;
 - (IBAction)changeToGridView:(UIButton *)sender;
 
+- (void)showRecommendationsListAnimated:(BOOL)animated;
+- (void)showWishListAnimated:(BOOL)animated;
+
 - (void)showAppVersionOutdatedAlert;
 
 @property (nonatomic, retain) UINib *listTableCellNib;
@@ -88,7 +92,7 @@ typedef enum
 
 @implementation SCHBookShelfViewController
 
-@synthesize themeButton;
+@synthesize menuButton;
 @synthesize backButton;
 @synthesize listTableView;
 @synthesize listTableCellNib;
@@ -117,6 +121,7 @@ typedef enum
 @synthesize showWelcome;
 @synthesize welcomePopoverController;
 @synthesize showingRatings;
+@synthesize menuPopover;
 
 #pragma mark - Object lifecycle
 
@@ -126,7 +131,7 @@ typedef enum
     [themePickerContainer release], themePickerContainer = nil;
     [customNavigationBar release], customNavigationBar = nil;
         
-    [themeButton release], themeButton = nil;
+    [menuButton release], menuButton = nil;
     [backButton release], backButton = nil;    
     [listTableView release], listTableView = nil;
     [gridButton release], gridButton = nil;
@@ -214,12 +219,12 @@ typedef enum
         self.listTableCellNib = [UINib nibWithNibName:@"SCHBookShelfTableViewCell_iPhone" bundle:nil];
     }
         
-    self.themeButton = [SCHThemeButton buttonWithType:UIButtonTypeCustom];
-    [self.themeButton setThemeIcon:kSCHThemeManagerThemeIcon iPadQualifier:kSCHThemeManagerPadQualifierSuffix];
-    [self.themeButton sizeToFit];    
-    [self.themeButton addTarget:self action:@selector(changeTheme) forControlEvents:UIControlEventTouchUpInside];    
+    self.menuButton = [SCHThemeButton buttonWithType:UIButtonTypeCustom];
+    [self.menuButton setThemeIcon:kSCHThemeManagerMenuIcon iPadQualifier:kSCHThemeManagerPadQualifierSuffix];
+    [self.menuButton sizeToFit];    
+    [self.menuButton addTarget:self action:@selector(presentMenu) forControlEvents:UIControlEventTouchUpInside];    
 
-    self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithCustomView:self.themeButton] autorelease];
+    self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithCustomView:self.menuButton] autorelease];
 
     self.backButton = [SCHThemeButton buttonWithType:UIButtonTypeCustom];
     [self.backButton setThemeIcon:kSCHThemeManagerHomeIcon iPadQualifier:kSCHThemeManagerPadQualifierSuffix];
@@ -500,7 +505,7 @@ typedef enum
 - (void)setupAssetsForOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
     [self.gridView setShelfImage:[[SCHThemeManager sharedThemeManager] imageForShelf:interfaceOrientation]];       
-    [self.themeButton updateTheme:interfaceOrientation];
+    [self.menuButton updateTheme:interfaceOrientation];
     [self.backButton updateTheme:interfaceOrientation];
     
     [self.backgroundView setImage:[[SCHThemeManager sharedThemeManager] imageForBackground:UIInterfaceOrientationPortrait]]; // Note we re-use portrait
@@ -551,13 +556,47 @@ typedef enum
 
 #pragma mark - Private methods
 
-- (void)changeTheme
+- (void)presentMenu
 {
-    self.themePickerContainer.modalPresentationStyle = UIModalPresentationFormSheet;
-    self.themePickerContainer.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
-    self.themePickerContainer.title = @"";
+//    self.themePickerContainer.modalPresentationStyle = UIModalPresentationFormSheet;
+//    self.themePickerContainer.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
+//    self.themePickerContainer.title = @"";
+//    
+//	[self presentModalViewController:self.themePickerContainer animated:YES];		
     
-	[self presentModalViewController:self.themePickerContainer animated:YES];		
+    NSLog(@"Presenting menu...");
+    
+    SCHBookShelfMenuController *menuTableController = [[SCHBookShelfMenuController alloc] initWithNibName:@"SCHBookShelfMenuController" bundle:nil];
+    menuTableController.delegate = self;
+    menuTableController.userIsAuthenticated = !TOP_TEN_DISABLED && [[SCHAppStateManager sharedAppStateManager] canAuthenticate];
+    
+    UINavigationController *navCon = [[UINavigationController alloc] initWithRootViewController:menuTableController];
+    SCHCustomNavigationBar *customBar = [[SCHCustomNavigationBar alloc] init];
+    [navCon setValue:customBar forKeyPath:@"navigationBar"];
+    
+    [customBar setTheme:kSCHThemeManagerNavigationBarImage];
+    [customBar release];
+    
+    
+    // present from a modal sheet
+    
+    self.menuPopover = [[[BITModalSheetController alloc] initWithContentViewController:navCon] autorelease];
+    [self.menuPopover setContentSize:CGSizeMake(320, 460)];
+    [self.menuPopover setContentOffset:CGPointMake(0, 0)];
+    
+//    __block BITModalSheetController *weakPopoverController = self.menuPopover;
+//    __block SCHBookShelfViewController *weakSelf = self;
+    
+//    menuTableController.closeBlock = ^{
+//        [weakPopoverController dismissSheetAnimated:YES completion:nil];
+//        weakSelf.recommendationPopover = nil;
+//    };
+    
+    [self.menuPopover presentSheetInViewController:self animated:YES completion:nil];
+    
+    [menuTableController release];
+    [navCon release];
+
 }
 
 - (void)dismissLoadingView
@@ -618,6 +657,140 @@ typedef enum
     
     return NO;
 }
+
+#pragma mark - Bookshelf Menu Delegate
+
+- (SCHBookSortType)sortTypeForBookShelfMenu:(SCHBookShelfMenuController *)controller
+{
+    return self.sortType;
+}
+
+- (void)bookShelfMenu:(SCHBookShelfMenuController *)controller changedSortType:(SCHBookSortType)newSortType
+{
+    self.sortType = newSortType;
+    [[self.profileItem AppProfile] setSortType:[NSNumber numberWithInt:self.sortType]];
+    
+    self.books = [self.profileItem allBookIdentifiers];
+    [self dismissLoadingView];
+    
+    if (self.menuPopover) {
+        [self.menuPopover dismissSheetAnimated:YES completion:^{}];
+    }
+}
+
+- (void)bookShelfMenuSelectedRecommendations:(SCHBookShelfMenuController *)controller
+{
+    if ([[SCHVersionDownloadManager sharedVersionManager] isAppVersionOutdated] == YES) {
+        [self showAppVersionOutdatedAlert];
+    } else {
+        [self showRecommendationsListAnimated:YES];
+    }
+}
+
+- (void)bookShelfMenuSwitchedToGridView:(SCHBookShelfMenuController *)controller
+{
+    if (self.menuPopover) {
+        [self.menuPopover dismissSheetAnimated:YES completion:^{}];
+    }
+
+    [self changeToGridView:nil];
+}
+
+- (void)bookShelfMenuSwitchedToListView:(SCHBookShelfMenuController *)controller
+{
+    if (self.menuPopover) {
+        [self.menuPopover dismissSheetAnimated:YES completion:^{}];
+    }
+
+    [self changeToListView:nil];
+}
+
+- (void)bookShelfMenuCancelled:(SCHBookShelfMenuController *)controller
+{
+    if (self.menuPopover) {
+        [self.menuPopover dismissSheetAnimated:YES completion:^{}];
+    }
+}
+
+- (void)showRecommendationsListAnimated:(BOOL)animated
+{/*
+    // FIXME: "sticky plaster" preventing animation while switching
+    if (!animated) {
+        [CATransaction begin];
+        [CATransaction setValue:(id)kCFBooleanTrue forKey:kCATransactionDisableActions];
+    }
+    
+    if (self.menuPopover) {
+        [self.menuPopover dismissSheetAnimated:NO completion:^{}];
+    }
+    
+    SCHBookShelfRecommendationListController *recommendationController = 
+    [[SCHBookShelfRecommendationListController alloc] initWithNibName:@"SCHBookShelfRecommendationListController" bundle:nil];
+    recommendationController.appProfile = self.profileItem.AppProfile;
+    recommendationController.delegate = self;
+    
+    self.recommendationPopover = [[[BITModalSheetController alloc] initWithContentViewController:recommendationController] autorelease];
+    [self.recommendationPopover setContentSize:CGSizeMake(640, 654)];
+    [self.recommendationPopover setContentOffset:CGPointMake(0, 0)];
+    
+    __block BITModalSheetController *weakPopoverController = self.recommendationPopover;
+    __block SCHBookShelfViewController *weakSelf = self;
+    
+    recommendationController.closeBlock = ^{
+        [weakPopoverController dismissSheetAnimated:YES completion:nil];
+        weakSelf.recommendationPopover = nil;
+    };
+    
+    [self.recommendationPopover presentSheetInViewController:self animated:animated completion:nil];
+    
+    [recommendationController release];
+    
+    if (!animated) {
+        [CATransaction commit];
+    }
+  */
+}
+
+- (void)showWishListAnimated:(BOOL)animated
+{
+    /*
+    // FIXME: "sticky plaster" preventing animation while switching
+    if (!animated) {
+        [CATransaction begin];
+        [CATransaction setValue:(id)kCFBooleanTrue forKey:kCATransactionDisableActions];
+    }
+    
+    if (self.menuPopover) {
+        [self.menuPopover dismissSheetAnimated:NO completion:^{}];
+    }
+    
+    SCHBookShelfWishListController *wishListController = 
+    [[SCHBookShelfWishListController alloc] initWithNibName:@"SCHBookShelfWishListController" bundle:nil];
+    wishListController.appProfile = self.profileItem.AppProfile;
+    wishListController.delegate = self;
+    
+    self.recommendationPopover = [[[BITModalSheetController alloc] initWithContentViewController:wishListController] autorelease];
+    [self.recommendationPopover setContentSize:CGSizeMake(640, 654)];
+    [self.recommendationPopover setContentOffset:CGPointMake(0, 0)];
+    
+    __block BITModalSheetController *weakPopoverController = self.recommendationPopover;
+    __block SCHBookShelfViewController_iPad *weakSelf = self;
+    
+    wishListController.closeBlock = ^{
+        [weakPopoverController dismissSheetAnimated:YES completion:nil];
+        weakSelf.recommendationPopover = nil;
+    };
+    
+    [self.recommendationPopover presentSheetInViewController:self animated:animated completion:nil];
+    
+    [wishListController release];
+    
+    if (!animated) {
+        [CATransaction commit];
+    }
+     */
+}
+
 
 #pragma mark - Accessor Methods
 

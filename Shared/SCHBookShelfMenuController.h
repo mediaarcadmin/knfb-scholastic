@@ -8,13 +8,13 @@
 
 #import <UIKit/UIKit.h>
 #import "SCHProfileItem.h"
-#import "SCHBookShelfSortTableView.h"
 #import "SCHThemePickerViewController.h"
+#import "SCHBookShelfSortTableView.h"
 #import "SCHBookShelfTypeMenuTableController.h"
 
 @protocol SCHBookShelfMenuControllerDelegate;
 
-@interface SCHBookShelfMenuController : UITableViewController <SCHBookShelfSortTableViewDelegate, SCHBookShelfTypeMenuTableControllerDelegate>
+@interface SCHBookShelfMenuController : UITableViewController <SCHBookShelfSortTableViewDelegate, SCHBookShelfTypeMenuTableControllerDelegate, SCHThemePickerViewControllerDelegate>
 
 @property (nonatomic, assign) id <SCHBookShelfMenuControllerDelegate> delegate;
 @property (nonatomic, assign) BOOL userIsAuthenticated;
@@ -33,5 +33,8 @@
 
 // recommendations/wish list
 - (void)bookShelfMenuSelectedRecommendations:(SCHBookShelfMenuController *)controller;
+
+// cancel out of the menu
+- (void)bookShelfMenuCancelled:(SCHBookShelfMenuController *)controller;
 
 @end

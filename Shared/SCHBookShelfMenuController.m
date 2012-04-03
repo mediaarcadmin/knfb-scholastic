@@ -7,8 +7,9 @@
 //
 
 #import "SCHBookShelfMenuController.h"
-
 #import "SCHAppStateManager.h"
+#import "SCHThemeManager.h"
+#import "SCHBookshelfPopoverController.h"
 
 @interface SCHBookShelfMenuController ()
 
@@ -34,6 +35,24 @@
     [super viewDidLoad];
     self.title = @"Options";
     self.navigationItem.backBarButtonItem = [[[UIBarButtonItem alloc] initWithTitle:@"Back" style:UIBarButtonItemStyleBordered target:nil action:nil] autorelease];
+    
+    // button tint colour for iPhone
+    self.navigationController.navigationBar.tintColor = [[SCHThemeManager sharedThemeManager] colorForModalSheetBorder];
+    
+    // iOS 5 and above - set the tint colour inside a popover
+    // simply setting the tint colour on the navigation bar isn't enough - 
+    // popover overrides the style. This uses SCHBookShelfPopoverController 
+    // to allow the appearance to be set only on this popover
+    if ([[UIBarButtonItem class] respondsToSelector:@selector(appearanceWhenContainedIn:)]) {
+        [[UIBarButtonItem appearanceWhenContainedIn:[SCHBookshelfPopoverController class], nil] 
+         setTintColor:[[SCHThemeManager sharedThemeManager] colorForModalSheetBorder]];
+    }
+        
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
+        self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithTitle:@"Cancel" style:UIBarButtonItemStyleBordered target:self action:@selector(cancel)] autorelease];
+        
+        self.view.backgroundColor = [UIColor clearColor];
+    }
 }
 
 - (void)viewDidUnload
@@ -43,7 +62,12 @@
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
-    return (interfaceOrientation == UIInterfaceOrientationPortrait);
+    return YES;
+}
+
+- (void)cancel
+{
+    [self.delegate bookShelfMenuCancelled:self];
 }
 
 #pragma mark - Table view data source
@@ -134,6 +158,7 @@
         case 2:
         {
             SCHThemePickerViewController *themePicker = [[SCHThemePickerViewController alloc] initWithNibName:nil bundle:nil];
+            themePicker.delegate = self;
             
             [self.navigationController pushViewController:themePicker animated:YES];
             [themePicker release];
@@ -150,11 +175,16 @@
 
 #pragma mark - Sort Table View Delegate
 
-- (void)sortPopoverPickedSortType: (SCHBookSortType) newType
+- (void)sortPopover: (SCHBookShelfSortTableView *) sortTableView pickedSortType: (SCHBookSortType) newType
 {
     NSLog(@"Picked a sort type!");
     [self.delegate bookShelfMenu:self changedSortType:newType];
     
+}
+
+- (void)sortPopoverCancelled: (SCHBookShelfSortTableView *) sortTableView
+{
+    [self.delegate bookShelfMenuCancelled:self];
 }
 
 #pragma mark - Bookshelf Type Delegate
@@ -167,6 +197,18 @@
 - (void)bookShelfTypeControllerSelectedListView:(SCHBookShelfTypeMenuTableController *)typeController
 {
     [self.delegate bookShelfMenuSwitchedToListView:self];
+}
+
+- (void)bookShelfTypeControllerSelectedCancel:(SCHBookShelfTypeMenuTableController *)typeController
+{
+    [self.delegate bookShelfMenuCancelled:self];
+}
+
+#pragma mark - SCHThemePickerViewController Delegate
+
+- (void)themePickerControllerSelectedClose:(SCHThemePickerViewController *)controller
+{
+    [self.delegate bookShelfMenuCancelled:self];
 }
 
 #pragma mark - Popover Size

@@ -25,6 +25,7 @@
 #import "SCHLibreAccessConstants.h"
 #import "BITModalSheetController.h"
 #import "SCHBookShelfMenuPopoverBackgroundView.h"
+#import "SCHBookshelfPopoverController.h"
 
 //static NSInteger const kSCHBookShelfViewControllerGridCellHeightPortrait_iPad = 254;
 static NSInteger const kSCHBookShelfViewControllerGridCellHeightPortrait_iPad = 224;
@@ -224,7 +225,7 @@ static NSInteger const kSCHBookShelfEdgePadding = 12;
     
     UINavigationController *navCon = [[UINavigationController alloc] initWithRootViewController:menuTableController];
     
-    self.popover = [[[UIPopoverController alloc] initWithContentViewController:navCon] autorelease];
+    self.popover = [[[SCHBookshelfPopoverController alloc] initWithContentViewController:navCon] autorelease];
     self.popover.delegate = self;
 
     // iOS 5 and higher: add a custom popover background
@@ -258,18 +259,9 @@ static NSInteger const kSCHBookShelfEdgePadding = 12;
 
 #pragma mark - Bookshelf Menu Delegate
 
-- (SCHBookSortType)sortTypeForBookShelfMenu:(SCHBookShelfMenuController *)controller
-{
-    return self.sortType;
-}
-
 - (void)bookShelfMenu:(SCHBookShelfMenuController *)controller changedSortType:(SCHBookSortType)newSortType
 {
-    self.sortType = newSortType;
-    [[self.profileItem AppProfile] setSortType:[NSNumber numberWithInt:self.sortType]];
-    
-    self.books = [self.profileItem allBookIdentifiers];
-    [self dismissLoadingView];
+    [super bookShelfMenu:controller changedSortType:newSortType];
     
     [self.popover dismissPopoverAnimated:YES];
     self.popover = nil;
@@ -282,11 +274,7 @@ static NSInteger const kSCHBookShelfEdgePadding = 12;
         self.popover = nil;
     }
     
-    if ([[SCHVersionDownloadManager sharedVersionManager] isAppVersionOutdated] == YES) {
-        [self showAppVersionOutdatedAlert];
-    } else {
-        [self showRecommendationsListAnimated:YES];
-    }
+    [super bookShelfMenuSelectedRecommendations:controller];
 }
 
 - (void)bookShelfMenuSwitchedToGridView:(SCHBookShelfMenuController *)controller
@@ -296,7 +284,7 @@ static NSInteger const kSCHBookShelfEdgePadding = 12;
         self.popover = nil;
     }
     
-    [super changeToGridView:nil];
+    [super bookShelfMenuSwitchedToGridView:controller];
 }
 
 - (void)bookShelfMenuSwitchedToListView:(SCHBookShelfMenuController *)controller
@@ -306,8 +294,17 @@ static NSInteger const kSCHBookShelfEdgePadding = 12;
         self.popover = nil;
     }
     
-    [super changeToListView:nil];
+    [super bookShelfMenuSwitchedToListView:controller];
 }
+
+- (void)bookShelfMenuCancelled:(SCHBookShelfMenuController *)controller
+{
+    if (self.popover) {
+        [self.popover dismissPopoverAnimated:YES];
+        self.popover = nil;
+    }
+}
+
 
 #pragma mark - Recommendations and Wish List
 

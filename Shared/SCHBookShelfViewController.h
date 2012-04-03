@@ -14,6 +14,7 @@
 #import "SCHBookShelfGridViewDataSource.h"
 #import "SCHBookShelfTableViewCell.h"
 #import "SCHProfileSetupDelegate.h"
+#import "SCHBookShelfMenuController.h"
 
 @class SCHBookShelfGridView;
 @class SCHCustomNavigationBar;
@@ -23,7 +24,7 @@
 @class SCHBookIdentifier;
 
 @interface SCHBookShelfViewController : UIViewController <MRGridViewDelegate, SCHBookShelfGridViewDataSource, 
-UITableViewDelegate, UITableViewDataSource, SCHBookShelfTableViewCellDelegate, SCHBookShelfGridViewCellDelegate> 
+UITableViewDelegate, UITableViewDataSource, SCHBookShelfTableViewCellDelegate, SCHBookShelfGridViewCellDelegate, SCHBookShelfMenuControllerDelegate> 
 {
 }
 

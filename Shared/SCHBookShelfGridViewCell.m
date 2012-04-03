@@ -106,8 +106,6 @@
         
         
         [self.contentView addSubview:self.ratingContainerView];
-        
-        
     }
 	
 	return(self);
@@ -190,7 +188,7 @@
 - (void)setShowRatings:(BOOL)newShowRatings
 {
     showRatings = newShowRatings;
-    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+//    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
         self.bookCoverView.hideElementsForRatings = showRatings;
         self.personalRateView.rating = (float)self.userRating;
         
@@ -201,7 +199,7 @@
 
         self.ratingContainerView.hidden = !showRatings;
         [self.bookCoverView refreshBookCoverView];
-    }
+//    }
 }
 
 #pragma mark - RateViewDelegate

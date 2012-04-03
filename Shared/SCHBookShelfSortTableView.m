@@ -56,6 +56,14 @@
     
     self.itemsTableView.scrollEnabled = NO;
     self.title = @"Sort";
+
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
+        
+        self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithTitle:@"Cancel" style:UIBarButtonItemStyleBordered target:self action:@selector(cancel)] autorelease];
+
+        self.itemsTableView.backgroundColor = [UIColor clearColor];
+        self.view.backgroundColor = [UIColor clearColor];
+    }
 }
 
 - (void)viewDidUnload
@@ -69,7 +77,12 @@
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
     // Return YES for supported orientations
-    return (interfaceOrientation == UIInterfaceOrientationPortrait);
+    return YES;
+}
+
+- (void)cancel
+{
+    [self.delegate sortPopoverCancelled:self];
 }
 
 #pragma mark - UITableView delegate and data source
@@ -119,16 +132,14 @@
             break;
     }
     
-    if (self.delegate && [self.delegate respondsToSelector:@selector(sortPopoverPickedSortType:)]) {
-        [self.delegate sortPopoverPickedSortType:newSortType];
-    }
+    [self.delegate sortPopover:self pickedSortType:newSortType];
 }
 
 #pragma mark - Popover Size
 
 - (CGSize)contentSizeForViewInPopover
 {
-    CGFloat height = ([sortTypeArray count] * 44);
+    CGFloat height = ([sortTypeArray count] * 44) + 20;
     return CGSizeMake(240, height);
 }
 

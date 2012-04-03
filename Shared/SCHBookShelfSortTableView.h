@@ -7,8 +7,9 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "SCHBookShelfViewController.h"
 #import "SCHProfileItem.h"
+
+@class SCHBookShelfViewController;
 
 @protocol SCHBookShelfSortTableViewDelegate;
 
@@ -23,6 +24,7 @@
 
 @protocol SCHBookShelfSortTableViewDelegate <NSObject>
 
-- (void)sortPopoverPickedSortType: (SCHBookSortType) newType;
+- (void)sortPopover: (SCHBookShelfSortTableView *) sortTableView pickedSortType: (SCHBookSortType) newType;
+- (void)sortPopoverCancelled: (SCHBookShelfSortTableView *) sortTableView;
 
 @end

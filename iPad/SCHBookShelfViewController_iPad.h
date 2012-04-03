@@ -18,7 +18,7 @@
 @interface SCHBookShelfViewController_iPad : SCHBookShelfViewController 
     <UIPopoverControllerDelegate,
      SCHBookShelfRecommendationListControllerDelegate, 
-     SCHBookShelfWishListControllerDelegate, SCHBookShelfMenuControllerDelegate> 
+     SCHBookShelfWishListControllerDelegate> 
 {    
 }
 

@@ -30,7 +30,14 @@
 {
     [super viewDidLoad];
     self.title = @"View";
-    [self.navigationController.navigationBar setTintColor:[UIColor orangeColor]];
+
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
+        
+        self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithTitle:@"Cancel" style:UIBarButtonItemStyleBordered target:self action:@selector(cancel)] autorelease];
+        
+        self.tableView.backgroundColor = [UIColor clearColor];
+    }
+
 }
 
 - (void)viewDidUnload
@@ -46,6 +53,11 @@
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
     return (interfaceOrientation == UIInterfaceOrientationPortrait);
+}
+
+- (void)cancel
+{
+    [self.delegate bookShelfTypeControllerSelectedCancel:self];
 }
 
 #pragma mark - Table view data source
