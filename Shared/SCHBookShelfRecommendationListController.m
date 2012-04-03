@@ -254,6 +254,12 @@
         recommendationView.delegate = self;
         recommendationView.recommendationBackgroundColor = [UIColor colorWithRed:0.863 green:0.875 blue:0.894 alpha:1.0];
         
+        if (indexPath.row >= ([self tableView:self.mainTableView numberOfRowsInSection:0] - 1)) {
+            recommendationView.showsBottomRule = NO;
+        } else {
+            recommendationView.showsBottomRule = YES;
+        }
+        
         [cell addSubview:recommendationView];
         [recommendationView release];
     }
@@ -284,7 +290,11 @@
 
 - (float)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return 180;
+    if (indexPath.row == 0) {
+        return 199;
+    }
+    
+    return 185;
 }
 
 #pragma mark - Table view delegate
