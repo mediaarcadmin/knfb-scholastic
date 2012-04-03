@@ -63,7 +63,7 @@ NSString * const kSCHAppProfile = @"SCHAppProfile";
 
 - (NSArray *)recommendationDictionaries
 {
- /*   
+    
     NSArray *ret = nil;
     NSSet *allItems = [[self recommendationProfile] recommendationItems];
     NSPredicate *readyRecommendations = [NSPredicate predicateWithFormat:@"appRecommendationItem.processingState = %d", kSCHAppRecommendationProcessingStateComplete];
@@ -82,8 +82,8 @@ NSString * const kSCHAppProfile = @"SCHAppProfile";
     ret = [NSArray arrayWithArray:objectArray];
     
     return ret;
-    */
-    
+
+    /*    
     NSMutableDictionary *recommendationDict1 = [NSMutableDictionary dictionary];
     
     [recommendationDict1 setValue:@"Be Mine"
@@ -124,6 +124,7 @@ NSString * const kSCHAppProfile = @"SCHAppProfile";
                            forKey:kSCHAppRecommendationCoverImage];
 
     return [NSArray arrayWithObjects:recommendationDict1, recommendationDict2, recommendationDict3, nil];
+ */
 }
 
 - (SCHWishListProfile *)wishListProfile
