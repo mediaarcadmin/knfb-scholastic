@@ -47,7 +47,7 @@ NSString * const kSCHWishListObjectID = @"objectID";
         [fetchRequest release], fetchRequest = nil;  
         
         if (items == nil) {
-            NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
+            NSLog(@"Unresolved error in assignAppRecommendationItem %@, %@", error, [error userInfo]);
         } else if ([items count] > 0) {
             self.appRecommendationItem = [items objectAtIndex:0];
         } else {
@@ -61,23 +61,33 @@ NSString * const kSCHWishListObjectID = @"objectID";
 - (NSDictionary *)dictionary
 {
     NSMutableDictionary *wishListDict = [NSMutableDictionary dictionary];
+    SCHAppRecommendationItem *recommendationItem = [self appRecommendationItem];
     
-    if ([self Title]) {
+    if ([recommendationItem Title]) {
+        [wishListDict setValue:[recommendationItem Title] 
+                        forKey:kSCHWishListTitle];
+    } else if ([self Title]) {
         [wishListDict setValue:[self Title] 
                         forKey:kSCHWishListTitle];
     }
     
-    if ([self Author]) {
+    if ([recommendationItem Author]) {
+        [wishListDict setValue:[recommendationItem Author] 
+                        forKey:kSCHWishListAuthor];
+    } else if ([self Author]) {
         [wishListDict setValue:[self Author]
                         forKey:kSCHWishListAuthor];
     }
     
-    if ([self ISBN]) {
+    if ([recommendationItem ContentIdentifier]) {
+        [wishListDict setValue:[recommendationItem ContentIdentifier] 
+                        forKey:kSCHWishListISBN];
+    } else if ([self ISBN]) {
         [wishListDict setValue:[self ISBN] 
                         forKey:kSCHWishListISBN];
     }
 
-    UIImage *coverImage = [self.appRecommendationItem bookCover];
+    UIImage *coverImage = [recommendationItem bookCover];
     
     if (coverImage) {
         [wishListDict setValue:coverImage
