@@ -344,7 +344,9 @@ static NSUInteger const kSCHSyncManagerMaximumFailureRetries = 3;
             [self addToQueue:self.readingStatsSyncComponent];
             [self addToQueue:self.settingsSyncComponent];
             
-            [self addToQueue:self.wishListSyncComponent];
+            if ([[SCHAppStateManager sharedAppStateManager] isCOPPACompliant] == YES) {
+                [self addToQueue:self.wishListSyncComponent];
+            }
             
             [self kickQueue];	
         } else {
@@ -431,7 +433,9 @@ static NSUInteger const kSCHSyncManagerMaximumFailureRetries = 3;
         [self.readingStatsSyncComponent synchronize];
         [self.profileSyncComponent synchronize];
         [self.contentSyncComponent synchronize];
-        [self.wishListSyncComponent synchronize];
+        if ([[SCHAppStateManager sharedAppStateManager] isCOPPACompliant] == YES) {
+            [self.wishListSyncComponent synchronize];
+        }
     }    
 }
 

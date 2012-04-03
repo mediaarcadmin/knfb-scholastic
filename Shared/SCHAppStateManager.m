@@ -174,6 +174,26 @@
     }];
 }
 
+- (BOOL)isCOPPACompliant
+{
+    __block BOOL ret = NO;
+    
+    [self performWithAppState:^(SCHAppState *appState) {
+        if (appState != nil) {
+            ret = [appState.isCOPPACompliant boolValue];
+        }
+    }];
+    
+    return ret;
+}
+
+- (void)setCOPPACompliant:(BOOL)coppa
+{
+    [self performWithAppStateAndSave:^(SCHAppState *appState) {
+        [appState setIsCOPPACompliant:[NSNumber numberWithBool:coppa]];
+    }];
+}
+
 - (BOOL)canAuthenticate
 {
     __block BOOL ret = NO;

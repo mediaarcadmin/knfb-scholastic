@@ -125,6 +125,7 @@
 - (void)resetCOPPA
 {
     [[SCHAppStateManager sharedAppStateManager] setCanSyncNotes:NO];
+    [[SCHAppStateManager sharedAppStateManager] setCOPPACompliant:NO];    
 }
 
 #pragma mark - BITAPIProxy Delegate methods
@@ -134,6 +135,7 @@
 {
     if ([[result objectForKey:kSCHScholasticGetUserInfoWebServiceCOPPA] boolValue] == YES) {
         [[SCHAppStateManager sharedAppStateManager] setCanSyncNotes:YES];
+        [[SCHAppStateManager sharedAppStateManager] setCOPPACompliant:YES];        
         NSLog(@"COPPA Compliance accepted");
         
         // we won't be using the resources any more so let's release them

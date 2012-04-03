@@ -8,6 +8,8 @@
 
 #import "SCHBookShelfMenuController.h"
 
+#import "SCHAppStateManager.h"
+
 @interface SCHBookShelfMenuController ()
 
 @end
@@ -55,7 +57,8 @@
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     // Return the number of rows in the section.
-    if (self.userIsAuthenticated) {
+    if (self.userIsAuthenticated &&
+        [[SCHAppStateManager sharedAppStateManager] isCOPPACompliant] == YES) {
         return 4;
     } else {
         return 3;
