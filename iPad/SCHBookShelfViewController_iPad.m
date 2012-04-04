@@ -274,7 +274,11 @@ static NSInteger const kSCHBookShelfEdgePadding = 12;
         self.popover = nil;
     }
     
-    [super bookShelfMenuSelectedRecommendations:controller];
+    if ([[SCHVersionDownloadManager sharedVersionManager] isAppVersionOutdated] == YES) {
+        [self showAppVersionOutdatedAlert];
+    } else {
+        [self showRecommendationsListAnimated:YES];
+    }
 }
 
 - (void)bookShelfMenuSwitchedToGridView:(SCHBookShelfMenuController *)controller
