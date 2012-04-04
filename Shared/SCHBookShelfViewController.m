@@ -941,6 +941,7 @@ typedef enum
     
     if (anno) {
         [anno setUserRating:newRating];
+        [self save];
     }
 }
 

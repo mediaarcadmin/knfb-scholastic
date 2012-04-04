@@ -1577,7 +1577,7 @@ static NSInteger const kSCHLibreAccessWebServiceVaid = 33;
 	}
 }	
 
-// we only save those annotation content items that have changed, i.e. the last page has also change
+// we only save those annotation content items that have changed, i.e. the last page or rating has also change
 - (void)fromObject:(NSDictionary *)object intoAnnotationsForRatingsItem:(LibreAccessServiceSvc_AnnotationsForRatingsItem *)intoObject
 {
 	if (object != nil && intoObject != nil) {
@@ -1609,6 +1609,13 @@ static NSInteger const kSCHLibreAccessWebServiceVaid = 33;
                     ret = YES;
                 }
             }
+            NSDictionary *rating = [privateAnnotations valueForKey:kSCHLibreAccessWebServiceRating];
+            if (rating != nil) {
+                if ([[rating valueForKey:kSCHLibreAccessWebServiceAction] saveActionValue] != kSCHSaveActionsNone) {
+                    ret = YES;
+                }
+            }
+            
         }
     }
     
@@ -1676,6 +1683,16 @@ static NSInteger const kSCHLibreAccessWebServiceVaid = 33;
                 ret = lastModified;
             }            
         }
+        
+        NSDictionary *rating = [self fromObjectTranslate:[privateAnnotations valueForKey:kSCHLibreAccessWebServiceRating]];
+        if (rating != nil) {
+            lastModified = [self fromObjectTranslate:[rating valueForKey:kSCHLibreAccessWebServiceLastModified]];
+            if (lastModified != nil && 
+                (ret == nil || [ret earlierDate:lastModified] == ret)) {
+                ret = lastModified;
+            }            
+        }
+        
     }
     
     return ret;
