@@ -579,13 +579,13 @@ NSString * const SCHAnnotationSyncComponentProfileIDs = @"SCHAnnotationSyncCompo
 	[fetchRequest setEntity:[NSEntityDescription entityForName:kSCHAnnotationsItem inManagedObjectContext:self.managedObjectContext]];	
 	NSArray *changedStates = [NSArray arrayWithObjects:[NSNumber numberWithStatus:kSCHStatusModified],
                               [NSNumber numberWithStatus:kSCHStatusDeleted], nil];
-    // we don't check all the annotations as if they have changed then the last page has also change
+    // we don't check all the annotations as if they have changed then the last page or rating has also change
     // the resulting array will contain all books and annotations for this profile when we eventually 
     // call the annotation save it will only save books with a modified LastPage and within each book
     // annotations that have been modified
 	[fetchRequest setPredicate:[NSPredicate predicateWithFormat:
-                                @"ProfileID == %@ AND ANY AnnotationsContentItem.PrivateAnnotations.LastPage.State IN %@", 
-                                profileID, changedStates]];
+                                @"ProfileID == %@ AND ((ANY AnnotationsContentItem.PrivateAnnotations.LastPage.State IN %@) OR (ANY AnnotationsContentItem.PrivateAnnotations.rating.State IN %@))", 
+                                profileID, changedStates, changedStates]];
 	    
 	ret = [self.managedObjectContext executeFetchRequest:fetchRequest error:&error];
     [fetchRequest release], fetchRequest = nil;
