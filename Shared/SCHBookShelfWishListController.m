@@ -105,7 +105,7 @@
         
         self.titleLabel.text = @"Your Wish List";
     } else {
-        self.title = @"Top Rated eBooks";
+        self.title = @"Wish List";
         self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithTitle:@"Done" style:UIBarButtonItemStyleBordered target:self action:@selector(close:)] autorelease];
     }
 }
@@ -202,43 +202,44 @@
     if (self.localWishListItems && self.localWishListItems.count > 0) {
         return self.localWishListItems.count;
     } else {
-        return 0;
+        return 1;
     }
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    static NSString *CellIdentifier = @"WishListControllerCell";
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-    
-    if (!cell) {
-        cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier] autorelease];
-        
-        SCHRecommendationListView *recommendationView = [[[self.recommendationViewNib instantiateWithOwner:self options:nil] objectAtIndex:0] retain];
-        recommendationView.frame = cell.frame;
-
-        recommendationView.tag = 999;
-        recommendationView.delegate = self;
-        
-        if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
-            recommendationView.recommendationBackgroundColor = [UIColor colorWithRed:0.863 green:0.875 blue:0.894 alpha:1.0];
-        } else {
-            recommendationView.recommendationBackgroundColor = [UIColor clearColor];
-            cell.backgroundColor = [UIColor colorWithRed:0.863 green:0.875 blue:0.902 alpha:1.0];
-        }
-        
-        if (indexPath.row >= ([self tableView:self.mainTableView numberOfRowsInSection:0] - 1)) {
-            recommendationView.showsBottomRule = NO;
-        } else {
-            recommendationView.showsBottomRule = YES;
-        }
-        
-
-        [cell addSubview:recommendationView];
-        [recommendationView release];
-    }
-    
     if (self.localWishListItems && self.localWishListItems.count > 0) {
+
+        static NSString *CellIdentifier = @"WishListControllerCell";
+        UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+        
+        if (!cell) {
+            cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier] autorelease];
+            
+            SCHRecommendationListView *recommendationView = [[[self.recommendationViewNib instantiateWithOwner:self options:nil] objectAtIndex:0] retain];
+            recommendationView.frame = cell.frame;
+
+            recommendationView.tag = 999;
+            recommendationView.delegate = self;
+            
+            if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+                recommendationView.recommendationBackgroundColor = [UIColor colorWithRed:0.863 green:0.875 blue:0.894 alpha:1.0];
+            } else {
+                recommendationView.recommendationBackgroundColor = [UIColor clearColor];
+                cell.backgroundColor = [UIColor colorWithRed:0.863 green:0.875 blue:0.902 alpha:1.0];
+            }
+            
+            if (indexPath.row >= ([self tableView:self.mainTableView numberOfRowsInSection:0] - 1)) {
+                recommendationView.showsBottomRule = NO;
+            } else {
+                recommendationView.showsBottomRule = YES;
+            }
+            
+
+            [cell addSubview:recommendationView];
+            [recommendationView release];
+        }
+        
         SCHRecommendationListView *recommendationView = (SCHRecommendationListView *)[cell viewWithTag:999];
         
         if (recommendationView) {
@@ -257,14 +258,40 @@
             }
 
         }
+        
+        return cell;
+    } else {
+        static NSString *CellIdentifier = @"WishListEmptyCell";
+        UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+        
+        if (!cell) {
+            cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier] autorelease];
+            cell.backgroundColor = [UIColor colorWithRed:0.863 green:0.875 blue:0.902 alpha:1.0];
+            UILabel *label = [[UILabel alloc] initWithFrame:cell.contentView.frame];
+            label.text = @"No Wish List Items.";
+            label.font = [UIFont fontWithName:@"Arial-BoldMT" size:17.0f];
+            label.textColor = [UIColor colorWithRed:0.004 green:0.192 blue:0.373 alpha:1.0];
+            label.textAlignment = UITextAlignmentCenter;
+            label.backgroundColor = [UIColor clearColor];
+            label.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+            
+            [cell.contentView addSubview:label];
+            [label release];
+        }
+        
+        
+        return cell;
     }
-    
-    return cell;
 }
 
 - (float)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    if (!self.localWishListItems || self.localWishListItems.count == 0) {
+        return 44;
+    }
+    
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+        
         if (indexPath.row == 0) {
             return 199;
         }

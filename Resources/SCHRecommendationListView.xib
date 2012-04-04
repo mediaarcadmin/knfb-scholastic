@@ -8,7 +8,7 @@
 		<string key="IBDocument.HIToolboxVersion">568.00</string>
 		<object class="NSMutableDictionary" key="IBDocument.PluginVersions">
 			<string key="NS.key.0">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
-			<string key="NS.object.0">1181</string>
+			<string key="NS.object.0">1179</string>
 		</object>
 		<array key="IBDocument.IntegratedClassDependencies">
 			<string>IBUIButton</string>
@@ -63,7 +63,7 @@
 									<object class="IBUILabel" id="1020106147">
 										<reference key="NSNextResponder" ref="121917684"/>
 										<int key="NSvFlags">294</int>
-										<string key="NSFrame">{{13, 22}, {157, 19}}</string>
+										<string key="NSFrame">{{13, 7}, {157, 30}}</string>
 										<reference key="NSSuperview" ref="121917684"/>
 										<reference key="NSWindow"/>
 										<reference key="NSNextKeyView" ref="819251977"/>
@@ -81,6 +81,8 @@
 										<nil key="IBUIHighlightedColor"/>
 										<int key="IBUIBaselineAdjustment">0</int>
 										<float key="IBUIMinimumFontSize">10</float>
+										<int key="IBUINumberOfLines">2</int>
+										<int key="IBUILineBreakMode">0</int>
 										<object class="IBUIFontDescription" key="IBUIFontDescription">
 											<string key="name">Arial-BoldMT</string>
 											<string key="family">Arial</string>
@@ -135,7 +137,7 @@
 											<object class="IBUIImageView" id="437293296">
 												<reference key="NSNextResponder" ref="990173853"/>
 												<int key="NSvFlags">274</int>
-												<string key="NSFrameSize">{198, 24}</string>
+												<string key="NSFrameSize">{198, 25}</string>
 												<reference key="NSSuperview" ref="990173853"/>
 												<reference key="NSWindow"/>
 												<reference key="NSNextKeyView" ref="127801543"/>
@@ -147,7 +149,7 @@
 											<object class="IBUILabel" id="127801543">
 												<reference key="NSNextResponder" ref="990173853"/>
 												<int key="NSvFlags">300</int>
-												<string key="NSFrame">{{9, 0}, {68, 26}}</string>
+												<string key="NSFrame">{{9, 0}, {75, 25}}</string>
 												<reference key="NSSuperview" ref="990173853"/>
 												<reference key="NSWindow"/>
 												<reference key="NSNextKeyView" ref="331354190"/>
@@ -171,11 +173,11 @@
 													<string key="name">ArialMT</string>
 													<string key="family">Arial</string>
 													<int key="traits">0</int>
-													<double key="pointSize">10</double>
+													<double key="pointSize">11</double>
 												</object>
 												<object class="NSFont" key="IBUIFont">
 													<string key="NSName">ArialMT</string>
-													<double key="NSSize">10</double>
+													<double key="NSSize">11</double>
 													<int key="NSfFlags">16</int>
 												</object>
 												<bool key="IBUIAdjustsFontSizeToFit">NO</bool>
@@ -183,7 +185,7 @@
 											<object class="IBUIView" id="331354190">
 												<reference key="NSNextResponder" ref="990173853"/>
 												<int key="NSvFlags">297</int>
-												<string key="NSFrame">{{87, 0}, {103, 26}}</string>
+												<string key="NSFrame">{{92, 0}, {100, 25}}</string>
 												<reference key="NSSuperview" ref="990173853"/>
 												<reference key="NSWindow"/>
 												<reference key="NSNextKeyView" ref="1067390221"/>
@@ -193,7 +195,7 @@
 												<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 											</object>
 										</array>
-										<string key="NSFrame">{{6, 65}, {198, 26}}</string>
+										<string key="NSFrame">{{6, 65}, {198, 25}}</string>
 										<reference key="NSSuperview" ref="121917684"/>
 										<reference key="NSWindow"/>
 										<reference key="NSNextKeyView" ref="437293296"/>
@@ -204,10 +206,9 @@
 									<object class="IBUIButton" id="1067390221">
 										<reference key="NSNextResponder" ref="121917684"/>
 										<int key="NSvFlags">292</int>
-										<string key="NSFrame">{{0, 93}, {165, 55}}</string>
+										<string key="NSFrame">{{0, 92}, {165, 55}}</string>
 										<reference key="NSSuperview" ref="121917684"/>
 										<reference key="NSWindow"/>
-										<reference key="NSNextKeyView"/>
 										<string key="NSReuseIdentifierKey">_NS:9</string>
 										<bool key="IBUIOpaque">NO</bool>
 										<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
@@ -620,6 +621,6 @@
 			<string key="WishListButtonOff.png">{157, 51}</string>
 			<string key="WishListButtonOn.png">{157, 51}</string>
 		</dictionary>
-		<string key="IBCocoaTouchPluginVersion">1181</string>
+		<string key="IBCocoaTouchPluginVersion">1179</string>
 	</data>
 </archive>

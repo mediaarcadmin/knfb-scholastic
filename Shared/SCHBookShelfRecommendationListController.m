@@ -243,68 +243,96 @@
     if (self.localRecommendationItems && self.localRecommendationItems.count > 0) {
         return self.localRecommendationItems.count;
     } else {
-        return 0;
+        return 1;
     }
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    static NSString *CellIdentifier = @"RecommendationListController";
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-    
-    if (!cell) {
-        cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier] autorelease];
-        cell.selectionStyle = UITableViewCellSelectionStyleNone;
-        
-        SCHRecommendationListView *recommendationView = [[[self.recommendationViewNib instantiateWithOwner:self options:nil] objectAtIndex:0] retain];
-        recommendationView.frame = cell.frame;
-        
-        recommendationView.tag = 999;
-        recommendationView.delegate = self;
-        
-        if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
-            recommendationView.recommendationBackgroundColor = [UIColor colorWithRed:0.863 green:0.875 blue:0.894 alpha:1.0];
-        } else {
-            recommendationView.recommendationBackgroundColor = [UIColor clearColor];
-            cell.backgroundColor = [UIColor colorWithRed:0.863 green:0.875 blue:0.902 alpha:1.0];
-        }
-        
-        if (indexPath.row >= ([self tableView:self.mainTableView numberOfRowsInSection:0] - 1)) {
-            recommendationView.showsBottomRule = NO;
-        } else {
-            recommendationView.showsBottomRule = YES;
-        }
-        
-        [cell addSubview:recommendationView];
-        [recommendationView release];
-    }
-    
     if (self.localRecommendationItems && self.localRecommendationItems.count > 0) {
-        SCHRecommendationListView *recommendationView = (SCHRecommendationListView *)[cell viewWithTag:999];
-        NSString *ISBN = [[self.localRecommendationItems objectAtIndex:indexPath.row] objectForKey:kSCHAppRecommendationISBN];
         
-        if (recommendationView) {
+        static NSString *CellIdentifier = @"RecommendationListController";
+        UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+        
+        if (!cell) {
+            cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier] autorelease];
+            cell.selectionStyle = UITableViewCellSelectionStyleNone;
             
-            [recommendationView updateWithRecommendationItem:[self.localRecommendationItems objectAtIndex:indexPath.row]];
+            SCHRecommendationListView *recommendationView = [[[self.recommendationViewNib instantiateWithOwner:self options:nil] objectAtIndex:0] retain];
+            recommendationView.frame = cell.frame;
             
-            NSUInteger index = [self.modifiedWishListItems indexOfObjectPassingTest:^BOOL (id obj, NSUInteger idx, BOOL *stop) {
-                return [[(NSDictionary *)obj objectForKey:kSCHAppRecommendationISBN] isEqualToString:ISBN];
-            }];
+            recommendationView.tag = 999;
+            recommendationView.delegate = self;
             
-            if (index != NSNotFound) {
-                [recommendationView setIsOnWishList:YES];
+            if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+                recommendationView.recommendationBackgroundColor = [UIColor colorWithRed:0.863 green:0.875 blue:0.894 alpha:1.0];
             } else {
-                [recommendationView setIsOnWishList:NO];
+                recommendationView.recommendationBackgroundColor = [UIColor clearColor];
+                cell.backgroundColor = [UIColor colorWithRed:0.863 green:0.875 blue:0.902 alpha:1.0];
+            }
+            
+            if (indexPath.row >= ([self tableView:self.mainTableView numberOfRowsInSection:0] - 1)) {
+                recommendationView.showsBottomRule = NO;
+            } else {
+                recommendationView.showsBottomRule = YES;
+            }
+            
+            [cell addSubview:recommendationView];
+            [recommendationView release];
+        }
+        
+        if (self.localRecommendationItems && self.localRecommendationItems.count > 0) {
+            SCHRecommendationListView *recommendationView = (SCHRecommendationListView *)[cell viewWithTag:999];
+            NSString *ISBN = [[self.localRecommendationItems objectAtIndex:indexPath.row] objectForKey:kSCHAppRecommendationISBN];
+            
+            if (recommendationView) {
+                
+                [recommendationView updateWithRecommendationItem:[self.localRecommendationItems objectAtIndex:indexPath.row]];
+                
+                NSUInteger index = [self.modifiedWishListItems indexOfObjectPassingTest:^BOOL (id obj, NSUInteger idx, BOOL *stop) {
+                    return [[(NSDictionary *)obj objectForKey:kSCHAppRecommendationISBN] isEqualToString:ISBN];
+                }];
+                
+                if (index != NSNotFound) {
+                    [recommendationView setIsOnWishList:YES];
+                } else {
+                    [recommendationView setIsOnWishList:NO];
+                }
             }
         }
+        
+        return cell;
+    } else {
+        static NSString *CellIdentifier = @"RecommendationEmptyCell";
+        UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+        
+        if (!cell) {
+            cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier] autorelease];
+            cell.backgroundColor = [UIColor colorWithRed:0.863 green:0.875 blue:0.902 alpha:1.0];
+            UILabel *label = [[UILabel alloc] initWithFrame:cell.contentView.frame];
+            label.text = @"No Recommendations.";
+            label.font = [UIFont fontWithName:@"Arial-BoldMT" size:17.0f];
+            label.textColor = [UIColor colorWithRed:0.004 green:0.192 blue:0.373 alpha:1.0];
+            label.textAlignment = UITextAlignmentCenter;
+            label.backgroundColor = [UIColor clearColor];
+            label.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+            
+            [cell.contentView addSubview:label];
+            [label release];
+        }
+        
+        return cell;
     }
-    
-    return cell;
+
 }
 
 
 - (float)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    if (!self.localRecommendationItems || self.localRecommendationItems.count == 0) {
+        return 44;
+    }
+    
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
         if (indexPath.row == 0) {
             return 199;
