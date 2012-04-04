@@ -27,6 +27,7 @@ extern NSString * const kSCHWishListWebServiceProfileItemList;
 extern NSString * const kSCHWishListWebServiceProfileName;
 extern NSString * const kSCHWishListWebServiceProfileStatusList;
 extern NSString * const kSCHWishListWebServicespsID;
+extern NSString * const kSCHWishListWebServiceState;
 extern NSString * const kSCHWishListWebServiceTimestamp;
 extern NSString * const kSCHWishListWebServiceTitle;
 extern NSString * const kSCHWishListWebServiceValue;
