@@ -14,6 +14,7 @@
 #import "SCHAuthenticationManager.h"
 #import "SCHUserDefaults.h"
 #import "WishListServiceSvc+Binding.h"
+#import "NSNumber+ObjectTypes.h"
 
 static NSString * const kSCHWishListWebServiceUndefinedMethod = @"undefined method";
 
@@ -41,6 +42,8 @@ static NSString * const kSCHWishListWebServiceClientID = @"KNFB";
 - (id)objectFromTranslate:(id)anObject;
 
 - (void)fromObject:(NSDictionary *)object intoWishListProfileItem:(ax21_WishListProfileItem *)intoObject;
+- (void)fromObject:(NSDictionary *)object intoWishListProfileItem:(ax21_WishListProfileItem *)intoObject
+          forState:(NSNumber *)forState;
 - (void)fromObject:(NSDictionary *)object intoWishListItem:(ax21_WishListItem *)intoObject;
 - (void)fromObject:(NSDictionary *)object intoWishListProfile:(ax21_WishListProfile *)intoObject;
 
@@ -116,7 +119,8 @@ static NSString * const kSCHWishListWebServiceClientID = @"KNFB";
         ax21_WishListProfileItem *wishListProfileItem = nil;
         for (id item in wishListItems) {
             wishListProfileItem = [[ax21_WishListProfileItem alloc] init];
-            [self fromObject:item intoObject:wishListProfileItem];		
+            [self fromObject:item intoWishListProfileItem:wishListProfileItem 
+                    forState:[NSNumber numberWithStatus:kSCHStatusCreated]];		
             [request addProfileItemList:wishListProfileItem];
             [wishListProfileItem release], wishListProfileItem = nil;
         }
@@ -144,7 +148,8 @@ static NSString * const kSCHWishListWebServiceClientID = @"KNFB";
         ax21_WishListProfileItem *wishListProfileItem = nil;
         for (id item in wishListItems) {
             wishListProfileItem = [[ax21_WishListProfileItem alloc] init];
-            [self fromObject:item intoObject:wishListProfileItem];		
+            [self fromObject:item intoWishListProfileItem:wishListProfileItem 
+                    forState:[NSNumber numberWithStatus:kSCHStatusDeleted]];		
             [request addProfileItemList:wishListProfileItem];
             [wishListProfileItem release], wishListProfileItem = nil;
         }
@@ -477,13 +482,30 @@ static NSString * const kSCHWishListWebServiceClientID = @"KNFB";
 
 - (void)fromObject:(NSDictionary *)object intoWishListProfileItem:(ax21_WishListProfileItem *)intoObject
 {
+    [self fromObject:object intoWishListProfileItem:intoObject forState:nil];
+}
+
+- (void)fromObject:(NSDictionary *)object intoWishListProfileItem:(ax21_WishListProfileItem *)intoObject
+          forState:(NSNumber *)forState
+{
+    BOOL includeItem = NO;
+    
 	if (object != nil && intoObject != nil) {
         ax21_WishListItem *wishListItem = nil;
         for (NSDictionary *item in [self fromObjectTranslate:[object valueForKey:kSCHWishListWebServiceItemList]]) {
-            wishListItem = [[ax21_WishListItem alloc] init];
-            [self fromObject:item intoWishListItem:wishListItem];
-            [intoObject addItemList:wishListItem];
-            [wishListItem release], wishListItem = nil;
+            if (forState == nil) {
+                includeItem = YES;
+            } else {
+                NSNumber *state = [self fromObjectTranslate:[item valueForKey:kSCHWishListWebServiceState]];
+                includeItem = [state isEqualToNumber:forState];
+            }
+            
+            if (includeItem == YES) {
+                wishListItem = [[ax21_WishListItem alloc] init];
+                [self fromObject:item intoWishListItem:wishListItem];
+                [intoObject addItemList:wishListItem];
+                [wishListItem release], wishListItem = nil;
+            }
         }
         id wishListProfile = [[ax21_WishListProfile alloc] init];
         intoObject.profile = wishListProfile;

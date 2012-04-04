@@ -29,6 +29,7 @@ NSString * const SCHWishListSyncComponentDidFailNotification = @"SCHWishListSync
 @interface SCHWishListSyncComponent ()
 
 @property (nonatomic, retain) SCHWishListWebService *wishListWebService;
+@property (nonatomic, retain) NSDate *lastSyncSaveCalled;
 
 - (BOOL)updateWishListItems;
 - (BOOL)createWishLists:(NSArray *)wishListProfiles;
@@ -48,12 +49,14 @@ NSString * const SCHWishListSyncComponentDidFailNotification = @"SCHWishListSync
 - (SCHWishListItem *)wishListItem:(NSDictionary *)wishListItem;
 - (void)syncWishListItem:(NSDictionary *)webWishListItem 
         withWishListItem:(SCHWishListItem *)localWishListItem;
+- (NSArray *)removeNewlyCreatedDeletedWishListItems:(NSArray *)annotationArray;
 
 @end
 
 @implementation SCHWishListSyncComponent
 
 @synthesize wishListWebService;
+@synthesize lastSyncSaveCalled;
 
 - (id)init
 {
@@ -186,6 +189,7 @@ NSString * const SCHWishListSyncComponentDidFailNotification = @"SCHWishListSync
 {
     BOOL ret = YES;
     
+    self.lastSyncSaveCalled = nil;
     NSArray *wishListProfilesToDelete = [self localWishListProfilesWithItemStates:
                                          [NSArray arrayWithObject:[NSNumber numberWithStatus:kSCHStatusDeleted]]];
     if ([wishListProfilesToDelete count] > 0) {
@@ -224,6 +228,7 @@ NSString * const SCHWishListSyncComponentDidFailNotification = @"SCHWishListSync
         self.isSynchronizing = [wishListWebService addItemsToWishList:wishListProfiles];
         if (self.isSynchronizing == YES) {
             ret = YES;
+            self.lastSyncSaveCalled = [NSDate date];
         } else {
             [[SCHAuthenticationManager sharedAuthenticationManager] pTokenWithValidation:^(NSString *pToken, NSError *error) {
                 if (error == nil) {
@@ -270,6 +275,7 @@ NSString * const SCHWishListSyncComponentDidFailNotification = @"SCHWishListSync
         self.isSynchronizing = [wishListWebService deleteWishListItems:wishListProfiles];
         if (self.isSynchronizing == YES) {
             ret = YES;
+            self.lastSyncSaveCalled = [NSDate date];            
         } else {
             [[SCHAuthenticationManager sharedAuthenticationManager] pTokenWithValidation:^(NSString *pToken, NSError *error) {
                 if (error == nil) {
@@ -292,7 +298,7 @@ NSString * const SCHWishListSyncComponentDidFailNotification = @"SCHWishListSync
                     NSString *isbn = [self makeNullNil:[item objectForKey:kSCHWishListWebServiceISBN]];
                     NSDictionary *wishListError = [self makeNullNil:[item objectForKey:kSCHWishListWebServiceWishListError]];
                     if (wishListError != nil) {
-                        NSString *errorCode = [self makeNullNil:[wishListError objectForKey:kSCHWishListWebServiceErrorCode]];
+                        NSNumber *errorCode = [self makeNullNil:[wishListError objectForKey:kSCHWishListWebServiceErrorCode]];
                         
                         if (isbn != nil && errorCode != nil && [errorCode integerValue] == 0) {
                             NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
@@ -509,6 +515,7 @@ NSString * const SCHWishListSyncComponentDidFailNotification = @"SCHWishListSync
 	
 	webWishListItems = [webWishListItems sortedArrayUsingDescriptors:[NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:kSCHWishListWebServiceISBN ascending:YES]]];		
 	NSArray *localWishListItemsArray = [localWishListItems sortedArrayUsingDescriptors:[NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:kSCHWishListWebServiceISBN ascending:YES]]];
+    localWishListItemsArray = [self removeNewlyCreatedDeletedWishListItems:localWishListItemsArray];
     
 	NSEnumerator *webEnumerator = [webWishListItems objectEnumerator];			  
 	NSEnumerator *localEnumerator = [localWishListItemsArray objectEnumerator];			  			  
@@ -647,6 +654,34 @@ NSString * const SCHWishListSyncComponentDidFailNotification = @"SCHWishListSync
         localWishListItem.ISBN = [self makeNullNil:[webWishListItem objectForKey:kSCHWishListWebServiceISBN]];
         localWishListItem.Title = [self makeNullNil:[webWishListItem objectForKey:kSCHWishListWebServiceTitle]];
     }
+}
+
+// remove any created or deleted wishlist items that had issues
+// the next get will then up date with the truth
+- (NSArray *)removeNewlyCreatedDeletedWishListItems:(NSArray *)annotationArray
+{
+    NSMutableArray *ret = nil;
+    
+    if (self.lastSyncSaveCalled == nil || [annotationArray count] < 1) {
+        return annotationArray;
+    } else {
+        ret = [NSMutableArray arrayWithCapacity:[annotationArray count]];
+        
+        [annotationArray enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+            SCHStatus status = [[obj State] statusValue];
+            NSDate *lastModified = [obj LastModified];
+            if ((status == kSCHStatusCreated || status == kSCHStatusDeleted) &&
+                [lastModified earlierDate:self.lastSyncSaveCalled] == lastModified) {
+                [self.managedObjectContext deleteObject:obj];
+            } else {
+                [ret addObject:obj];
+            }
+        }];
+        
+        [self save];
+    }
+    
+    return ret;
 }
 
 @end
