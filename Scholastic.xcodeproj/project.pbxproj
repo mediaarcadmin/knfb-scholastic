@@ -3931,6 +3931,10 @@
 		F89304D7152C6A4F00C0398A /* SCHRecommendationListView.xib in Resources */ = {isa = PBXBuildFile; fileRef = F89304D5152C6A4F00C0398A /* SCHRecommendationListView.xib */; };
 		F89304D8152C6A4F00C0398A /* SCHRecommendationListView.xib in Resources */ = {isa = PBXBuildFile; fileRef = F89304D5152C6A4F00C0398A /* SCHRecommendationListView.xib */; };
 		F89304D9152C6A4F00C0398A /* SCHRecommendationListView.xib in Resources */ = {isa = PBXBuildFile; fileRef = F89304D5152C6A4F00C0398A /* SCHRecommendationListView.xib */; };
+		F89304DB152C719A00C0398A /* SCHBookShelfWishListController.xib in Resources */ = {isa = PBXBuildFile; fileRef = F89304DA152C719A00C0398A /* SCHBookShelfWishListController.xib */; };
+		F89304DC152C719A00C0398A /* SCHBookShelfWishListController.xib in Resources */ = {isa = PBXBuildFile; fileRef = F89304DA152C719A00C0398A /* SCHBookShelfWishListController.xib */; };
+		F89304DD152C719A00C0398A /* SCHBookShelfWishListController.xib in Resources */ = {isa = PBXBuildFile; fileRef = F89304DA152C719A00C0398A /* SCHBookShelfWishListController.xib */; };
+		F89304DE152C719A00C0398A /* SCHBookShelfWishListController.xib in Resources */ = {isa = PBXBuildFile; fileRef = F89304DA152C719A00C0398A /* SCHBookShelfWishListController.xib */; };
 		F8A3FAAB1529B39F0002AFD2 /* storiaBlueStarHalfFull.png in Resources */ = {isa = PBXBuildFile; fileRef = F8A3FAA81529B39F0002AFD2 /* storiaBlueStarHalfFull.png */; };
 		F8A3FAAC1529B39F0002AFD2 /* storiaBlueStarHalfFull.png in Resources */ = {isa = PBXBuildFile; fileRef = F8A3FAA81529B39F0002AFD2 /* storiaBlueStarHalfFull.png */; };
 		F8A3FAAD1529B39F0002AFD2 /* storiaBlueStarHalfFull.png in Resources */ = {isa = PBXBuildFile; fileRef = F8A3FAA81529B39F0002AFD2 /* storiaBlueStarHalfFull.png */; };
@@ -5824,6 +5828,7 @@
 		F89140BE1511EB310026F16F /* SCHBookShelfRecommendationListController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHBookShelfRecommendationListController.m; path = Shared/SCHBookShelfRecommendationListController.m; sourceTree = "<group>"; };
 		F89140BF1511EB310026F16F /* SCHBookShelfRecommendationListController~ipad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = "SCHBookShelfRecommendationListController~ipad.xib"; path = "Shared/SCHBookShelfRecommendationListController~ipad.xib"; sourceTree = "<group>"; };
 		F89304D5152C6A4F00C0398A /* SCHRecommendationListView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = SCHRecommendationListView.xib; path = Resources/SCHRecommendationListView.xib; sourceTree = "<group>"; };
+		F89304DA152C719A00C0398A /* SCHBookShelfWishListController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = SCHBookShelfWishListController.xib; path = Shared/SCHBookShelfWishListController.xib; sourceTree = "<group>"; };
 		F8A3FAA81529B39F0002AFD2 /* storiaBlueStarHalfFull.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = storiaBlueStarHalfFull.png; path = Resources/storiaBlueStarHalfFull.png; sourceTree = "<group>"; };
 		F8A3FAA91529B39F0002AFD2 /* storiaBlueStarEmpty.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = storiaBlueStarEmpty.png; path = Resources/storiaBlueStarEmpty.png; sourceTree = "<group>"; };
 		F8A3FAAA1529B39F0002AFD2 /* storiaBlueStarFull.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = storiaBlueStarFull.png; path = Resources/storiaBlueStarFull.png; sourceTree = "<group>"; };
@@ -8761,6 +8766,7 @@
 				F8A57E6F1517702000390D56 /* SCHBookShelfWishListController.h */,
 				F8A57E701517702000390D56 /* SCHBookShelfWishListController.m */,
 				F8A57E711517702000390D56 /* SCHBookShelfWishListController~ipad.xib */,
+				F89304DA152C719A00C0398A /* SCHBookShelfWishListController.xib */,
 				F88F6FCE15208A1600572E7C /* SCHBookShelfMenuController.h */,
 				F88F6FCF15208A1600572E7C /* SCHBookShelfMenuController.m */,
 				F88F6FD015208A1600572E7C /* SCHBookShelfMenuController.xib */,
@@ -9884,6 +9890,7 @@
 				F87FFBF1152C699700A0282E /* WishListButtonOn.png in Resources */,
 				F87FFBF6152C69DD00A0282E /* SCHRecommendationListView~ipad.xib in Resources */,
 				F89304D6152C6A4F00C0398A /* SCHRecommendationListView.xib in Resources */,
+				F89304DB152C719A00C0398A /* SCHBookShelfWishListController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -10621,6 +10628,7 @@
 				F87FFBF2152C699700A0282E /* WishListButtonOn.png in Resources */,
 				F87FFBF7152C69DD00A0282E /* SCHRecommendationListView~ipad.xib in Resources */,
 				F89304D7152C6A4F00C0398A /* SCHRecommendationListView.xib in Resources */,
+				F89304DC152C719A00C0398A /* SCHBookShelfWishListController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -11136,6 +11144,7 @@
 				F87FFBF3152C699700A0282E /* WishListButtonOn.png in Resources */,
 				F87FFBF8152C69DD00A0282E /* SCHRecommendationListView~ipad.xib in Resources */,
 				F89304D8152C6A4F00C0398A /* SCHRecommendationListView.xib in Resources */,
+				F89304DD152C719A00C0398A /* SCHBookShelfWishListController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -11651,6 +11660,7 @@
 				F87FFBF4152C699700A0282E /* WishListButtonOn.png in Resources */,
 				F87FFBF9152C69DD00A0282E /* SCHRecommendationListView~ipad.xib in Resources */,
 				F89304D9152C6A4F00C0398A /* SCHRecommendationListView.xib in Resources */,
+				F89304DE152C719A00C0398A /* SCHBookShelfWishListController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

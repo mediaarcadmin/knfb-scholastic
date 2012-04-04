@@ -122,12 +122,16 @@
     [super viewDidUnload];
 }
 
+- (void)viewWillDisappear:(BOOL)animated
+{
+    [self commitWishListChanges];
+    [super viewWillDisappear:animated];
+}
+
 #pragma mark - View Actions
 
 - (IBAction)close:(id)sender
 {
-    [self commitWishListChanges];
-
     if (closeBlock) {
         closeBlock();
     }
