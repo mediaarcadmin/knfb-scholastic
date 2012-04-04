@@ -468,7 +468,7 @@
     [ret setObject:(contentURL == nil ? (id)[NSNull null] : contentURL) forKey:kSCHLibreAccessWebServiceContentURL];
     [ret setObject:[NSNull null] forKey:kSCHLibreAccessWebServiceeReaderCategories];
     [ret setObject:[NSNumber numberWithBool:enhanced] forKey:kSCHLibreAccessWebServiceEnhanced];
-    [ret setObject:@"0.0" forKey:kSCHLibreAccessWebServiceAverageRating];
+    [ret setObject:[NSNumber numberWithFloat:0.0] forKey:kSCHLibreAccessWebServiceAverageRating];
     
     return(ret);    
 }
@@ -511,7 +511,7 @@
     [ret setObject:[NSNumber numberWithBool:NO] forKey:kSCHLibreAccessWebServiceFreeBook];        
     [ret setObject:dateNow forKey:kSCHLibreAccessWebServiceLastModified];
     [ret setObject:[NSNumber numberWithBool:NO] forKey:kSCHLibreAccessWebServiceDefaultAssignment];
-    [ret setObject:@"0.0" forKey:kSCHLibreAccessWebServiceAverageRating];
+    [ret setObject:[NSNumber numberWithFloat:0.0] forKey:kSCHLibreAccessWebServiceAverageRating];
     
     return(ret);    
 }
