@@ -10,6 +10,8 @@
 #import "SCHAppStateManager.h"
 #import "SCHThemeManager.h"
 #import "SCHBookshelfPopoverController.h"
+#import "SCHBookShelfWishListController.h"
+#import "SCHBookShelfRecommendationListController.h"
 
 @interface SCHBookShelfMenuController ()
 
@@ -83,7 +85,11 @@
     // Return the number of rows in the section.
     if (self.userIsAuthenticated &&
         [[SCHAppStateManager sharedAppStateManager] isCOPPACompliant] == YES) {
-        return 4;
+        if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+            return 4;
+        } else {
+            return 5;
+        }
     } else {
         return 3;
     }
@@ -118,9 +124,18 @@
         }   
         case 3:
         {
-            cell.textLabel.text = NSLocalizedString(@"More eBooks", @"More eBooks");
+            if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+                cell.textLabel.text = NSLocalizedString(@"More eBooks", @"More eBooks");
+            } else {
+                cell.textLabel.text = NSLocalizedString(@"Kids' Top Rated eBooks", @"Kids' Top Rated eBooks");
+            }
             break;
-        }   
+        }
+        case 4:
+        {
+            cell.textLabel.text = NSLocalizedString(@"Wish List", @"Wish List");
+            break;
+        }
     }
     
     return cell;
@@ -166,9 +181,36 @@
             break;
         }
         // recommendations / list view
+        // also iPhone - Kids Top Rated eBooks
         case 3:
         {
-            [self.delegate bookShelfMenuSelectedRecommendations:self];
+            if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+                [self.delegate bookShelfMenuSelectedRecommendations:self];
+            } else {
+                SCHBookShelfRecommendationListController *recommendationList = [[SCHBookShelfRecommendationListController alloc] initWithNibName:@"SCHBookShelfRecommendationListController" bundle:nil];
+                recommendationList.appProfile = [self.delegate appProfileForBookShelfMenu];
+                recommendationList.closeBlock = ^{
+                    [self.delegate bookShelfMenuCancelled:self];
+                };
+                [self.navigationController pushViewController:recommendationList animated:YES];
+                [recommendationList release];
+            }
+            break;
+        }
+        // iPhone only - Wish List
+        case 4:
+        {
+            if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
+                SCHBookShelfWishListController *wishList = [[SCHBookShelfWishListController alloc] initWithNibName:@"SCHBookShelfWishListController" bundle:nil];
+                wishList.appProfile = [self.delegate appProfileForBookShelfMenu];
+                wishList.closeBlock = ^{
+                    [self.delegate bookShelfMenuCancelled:self];
+                };
+                [self.navigationController pushViewController:wishList animated:YES];
+                [wishList release];
+            }
+            
+            break;
         }
     }
 }

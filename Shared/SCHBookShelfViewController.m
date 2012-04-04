@@ -81,9 +81,6 @@ typedef enum
 - (IBAction)changeToListView:(UIButton *)sender;
 - (IBAction)changeToGridView:(UIButton *)sender;
 
-- (void)showRecommendationsListAnimated:(BOOL)animated;
-- (void)showWishListAnimated:(BOOL)animated;
-
 - (void)showAppVersionOutdatedAlert;
 
 @property (nonatomic, retain) UINib *listTableCellNib;
@@ -678,15 +675,6 @@ typedef enum
     }
 }
 
-- (void)bookShelfMenuSelectedRecommendations:(SCHBookShelfMenuController *)controller
-{
-    if ([[SCHVersionDownloadManager sharedVersionManager] isAppVersionOutdated] == YES) {
-        [self showAppVersionOutdatedAlert];
-    } else {
-        [self showRecommendationsListAnimated:YES];
-    }
-}
-
 - (void)bookShelfMenuSwitchedToGridView:(SCHBookShelfMenuController *)controller
 {
     if (self.menuPopover) {
@@ -712,85 +700,10 @@ typedef enum
     }
 }
 
-- (void)showRecommendationsListAnimated:(BOOL)animated
-{/*
-    // FIXME: "sticky plaster" preventing animation while switching
-    if (!animated) {
-        [CATransaction begin];
-        [CATransaction setValue:(id)kCFBooleanTrue forKey:kCATransactionDisableActions];
-    }
-    
-    if (self.menuPopover) {
-        [self.menuPopover dismissSheetAnimated:NO completion:^{}];
-    }
-    
-    SCHBookShelfRecommendationListController *recommendationController = 
-    [[SCHBookShelfRecommendationListController alloc] initWithNibName:@"SCHBookShelfRecommendationListController" bundle:nil];
-    recommendationController.appProfile = self.profileItem.AppProfile;
-    recommendationController.delegate = self;
-    
-    self.recommendationPopover = [[[BITModalSheetController alloc] initWithContentViewController:recommendationController] autorelease];
-    [self.recommendationPopover setContentSize:CGSizeMake(640, 654)];
-    [self.recommendationPopover setContentOffset:CGPointMake(0, 0)];
-    
-    __block BITModalSheetController *weakPopoverController = self.recommendationPopover;
-    __block SCHBookShelfViewController *weakSelf = self;
-    
-    recommendationController.closeBlock = ^{
-        [weakPopoverController dismissSheetAnimated:YES completion:nil];
-        weakSelf.recommendationPopover = nil;
-    };
-    
-    [self.recommendationPopover presentSheetInViewController:self animated:animated completion:nil];
-    
-    [recommendationController release];
-    
-    if (!animated) {
-        [CATransaction commit];
-    }
-  */
-}
-
-- (void)showWishListAnimated:(BOOL)animated
+- (SCHAppProfile *)appProfileForBookShelfMenu
 {
-    /*
-    // FIXME: "sticky plaster" preventing animation while switching
-    if (!animated) {
-        [CATransaction begin];
-        [CATransaction setValue:(id)kCFBooleanTrue forKey:kCATransactionDisableActions];
-    }
-    
-    if (self.menuPopover) {
-        [self.menuPopover dismissSheetAnimated:NO completion:^{}];
-    }
-    
-    SCHBookShelfWishListController *wishListController = 
-    [[SCHBookShelfWishListController alloc] initWithNibName:@"SCHBookShelfWishListController" bundle:nil];
-    wishListController.appProfile = self.profileItem.AppProfile;
-    wishListController.delegate = self;
-    
-    self.recommendationPopover = [[[BITModalSheetController alloc] initWithContentViewController:wishListController] autorelease];
-    [self.recommendationPopover setContentSize:CGSizeMake(640, 654)];
-    [self.recommendationPopover setContentOffset:CGPointMake(0, 0)];
-    
-    __block BITModalSheetController *weakPopoverController = self.recommendationPopover;
-    __block SCHBookShelfViewController_iPad *weakSelf = self;
-    
-    wishListController.closeBlock = ^{
-        [weakPopoverController dismissSheetAnimated:YES completion:nil];
-        weakSelf.recommendationPopover = nil;
-    };
-    
-    [self.recommendationPopover presentSheetInViewController:self animated:animated completion:nil];
-    
-    [wishListController release];
-    
-    if (!animated) {
-        [CATransaction commit];
-    }
-     */
+    return self.profileItem.AppProfile;
 }
-
 
 #pragma mark - Accessor Methods
 

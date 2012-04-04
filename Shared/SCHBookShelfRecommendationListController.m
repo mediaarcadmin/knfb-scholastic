@@ -85,28 +85,33 @@
 {
     [super viewDidLoad];
     
-    UIColor *viewBackgroundColor = [UIColor colorWithRed:0.863 green:0.875 blue:0.894 alpha:1.0];
-
-    self.mainTableView.backgroundColor = viewBackgroundColor;
-    
     self.localRecommendationItems = [self.appProfile recommendationDictionaries];
     self.localWishListItems = [self.appProfile wishListItemDictionaries];
 
     // take a copy of the original state of the wish list and modify that instead
     self.modifiedWishListItems = [NSMutableArray arrayWithArray:self.localWishListItems];
     
-    [self.view.layer setCornerRadius:6];
-    [self.view.layer setMasksToBounds:YES];
-    [self.view.layer setBorderColor:[[SCHThemeManager sharedThemeManager] colorForModalSheetBorder].CGColor];
-    [self.view.layer setBorderWidth:2.0f];
-    
-    [self.closeButton setTintColor:[[SCHThemeManager sharedThemeManager] colorForModalSheetBorder]];
-    [self.bottomSegment setTintColor:[[SCHThemeManager sharedThemeManager] colorForModalSheetBorder]];
-    
-    [self.topToolbar setBackgroundImage:[[SCHThemeManager sharedThemeManager] imageForNavigationBar:UIInterfaceOrientationPortrait]];
-    [self.bottomToolbar setBackgroundImage:[[SCHThemeManager sharedThemeManager] imageForNavigationBar:UIInterfaceOrientationPortrait]];
-    
-    self.titleLabel.text = @"Kids' Top Rated eBooks";
+    // iPad specific setup
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+        UIColor *viewBackgroundColor = [UIColor colorWithRed:0.863 green:0.875 blue:0.894 alpha:1.0];
+        self.mainTableView.backgroundColor = viewBackgroundColor;
+        
+        [self.view.layer setCornerRadius:6];
+        [self.view.layer setMasksToBounds:YES];
+        [self.view.layer setBorderColor:[[SCHThemeManager sharedThemeManager] colorForModalSheetBorder].CGColor];
+        [self.view.layer setBorderWidth:2.0f];
+        
+        [self.closeButton setTintColor:[[SCHThemeManager sharedThemeManager] colorForModalSheetBorder]];
+        [self.bottomSegment setTintColor:[[SCHThemeManager sharedThemeManager] colorForModalSheetBorder]];
+        
+        [self.topToolbar setBackgroundImage:[[SCHThemeManager sharedThemeManager] imageForNavigationBar:UIInterfaceOrientationPortrait]];
+        [self.bottomToolbar setBackgroundImage:[[SCHThemeManager sharedThemeManager] imageForNavigationBar:UIInterfaceOrientationPortrait]];
+        
+        self.titleLabel.text = @"Kids' Top Rated eBooks";
+    } else {
+        self.title = @"Top Rated eBooks";
+        self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithTitle:@"Done" style:UIBarButtonItemStyleBordered target:self action:@selector(close:)] autorelease];
+    }
 
 }
 
@@ -229,7 +234,7 @@
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     // Return the number of rows in the section.
-    NSLog(@"Number of rows.");
+    NSLog(@"Number of rows. %@", self.localRecommendationItems);
     
     if (self.localRecommendationItems && self.localRecommendationItems.count > 0) {
         return self.localRecommendationItems.count;
@@ -252,7 +257,13 @@
         
         recommendationView.tag = 999;
         recommendationView.delegate = self;
-        recommendationView.recommendationBackgroundColor = [UIColor colorWithRed:0.863 green:0.875 blue:0.894 alpha:1.0];
+        
+        if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+            recommendationView.recommendationBackgroundColor = [UIColor colorWithRed:0.863 green:0.875 blue:0.894 alpha:1.0];
+        } else {
+            recommendationView.recommendationBackgroundColor = [UIColor clearColor];
+            cell.backgroundColor = [UIColor colorWithRed:0.863 green:0.875 blue:0.902 alpha:1.0];
+        }
         
         if (indexPath.row >= ([self tableView:self.mainTableView numberOfRowsInSection:0] - 1)) {
             recommendationView.showsBottomRule = NO;
@@ -290,11 +301,19 @@
 
 - (float)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (indexPath.row == 0) {
-        return 199;
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+        if (indexPath.row == 0) {
+            return 199;
+        }
+        
+        return 185;
+    } else {
+        if (indexPath.row == 0) {
+            return 157;
+        }
+        
+        return 150;
     }
-    
-    return 185;
 }
 
 #pragma mark - Table view delegate

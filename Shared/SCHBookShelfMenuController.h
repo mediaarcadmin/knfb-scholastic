@@ -31,10 +31,16 @@
 - (SCHBookSortType)sortTypeForBookShelfMenu:(SCHBookShelfMenuController *)controller;
 - (void)bookShelfMenu:(SCHBookShelfMenuController *)controller changedSortType:(SCHBookSortType)newSortType;
 
-// recommendations/wish list
-- (void)bookShelfMenuSelectedRecommendations:(SCHBookShelfMenuController *)controller;
-
 // cancel out of the menu
 - (void)bookShelfMenuCancelled:(SCHBookShelfMenuController *)controller;
+
+// recommendations/wish list need the app profile
+- (SCHAppProfile *)appProfileForBookShelfMenu;
+
+@optional
+
+// recommendations/wish list - iPad only
+- (void)bookShelfMenuSelectedRecommendations:(SCHBookShelfMenuController *)controller;
+
 
 @end
