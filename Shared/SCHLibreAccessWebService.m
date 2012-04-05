@@ -1749,7 +1749,6 @@ static NSInteger const kSCHLibreAccessWebServiceVaid = 33;
 		intoObject.Rating = rating;
         [rating release];
 		[self fromObject:[self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceRating]] intoRating:intoObject.Rating];
-        
 	}
 }												
 
@@ -1860,7 +1859,11 @@ static NSInteger const kSCHLibreAccessWebServiceVaid = 33;
 - (void)fromObject:(NSDictionary *)object intoRating:(LibreAccessServiceSvc_Rating *)intoObject
 {
 	if (object != nil && intoObject != nil) {
-		intoObject.rating = [self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceRating]];
+        if ([[SCHAppStateManager sharedAppStateManager] isCOPPACompliant] == YES) {
+            intoObject.rating = [self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceRating]];
+        } else {
+            intoObject.rating = [NSNumber numberWithInteger:0];
+        }
 		intoObject.lastmodified = [self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceLastModified]];						
         intoObject.averageRating = [self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceAverageRating]]; 
 	}	
