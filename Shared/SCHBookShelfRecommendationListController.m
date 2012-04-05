@@ -242,9 +242,6 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    // Return the number of rows in the section.
-    NSLog(@"Number of rows. %@", self.localRecommendationItems);
-    
     if (self.localRecommendationItems && self.localRecommendationItems.count > 0) {
         return self.localRecommendationItems.count;
     } else {

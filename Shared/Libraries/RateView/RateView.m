@@ -43,6 +43,7 @@
     self.leftMargin = 0;
     self.minImageSize = CGSizeMake(5, 5);
     self.delegate = nil;    
+    
 }
 
 - (id)initWithFrame:(CGRect)frame
@@ -71,6 +72,13 @@
         } else {
             imageView.image = self.notSelectedImage;
         }
+        
+        if (!self.editable && self.rating == 0) {
+            imageView.alpha = 0.3;
+        } else {
+            imageView.alpha = 1;
+        }
+
     }
 }
 
