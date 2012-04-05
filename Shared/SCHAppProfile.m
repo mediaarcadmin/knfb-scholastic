@@ -89,7 +89,8 @@ NSString * const kSCHAppProfile = @"SCHAppProfile";
     NSArray *ret = nil;
     NSSet *allItems = [[self recommendationProfile] recommendationItems];
     NSPredicate *readyRecommendations = [NSPredicate predicateWithFormat:@"appRecommendationItem.processingState = %d", kSCHAppRecommendationProcessingStateComplete];
-    NSSet *filteredItems = [allItems filteredSetUsingPredicate:readyRecommendations];
+    NSArray *filteredItems = [[allItems filteredSetUsingPredicate:readyRecommendations] 
+                              sortedArrayUsingDescriptors:[NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:@"order" ascending:YES]]];
 
     NSMutableArray *objectArray = [NSMutableArray arrayWithCapacity:[filteredItems count]];
     NSArray *purchasedBooks = [self purchasedBooks];
