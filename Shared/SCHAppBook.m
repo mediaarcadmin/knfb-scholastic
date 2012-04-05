@@ -73,6 +73,7 @@ NSString * const kSCHAppBookFilenameSeparator = @"-";
 
 @interface SCHAppBook()
 
+- (NSArray *)purchasedBooks;
 - (NSError *)errorWithCode:(NSInteger)code;
 - (BOOL)urlHasExpired:(NSString *)urlString;
 - (BOOL)urlStringIsBundleURL:(NSString *)urlString;
@@ -388,6 +389,27 @@ NSString * const kSCHAppBookFilenameSeparator = @"-";
     return ret;
 }
 
+// returns an array of isbns
+- (NSArray *)purchasedBooks
+{
+    NSArray *ret = nil;
+    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+    
+    [fetchRequest setEntity:[NSEntityDescription entityForName:kSCHUserContentItem 
+                                        inManagedObjectContext:self.managedObjectContext]];	
+    
+    NSError *error = nil;
+    NSArray *books = [self.managedObjectContext executeFetchRequest:fetchRequest error:&error];	
+    if (books == nil) {
+        NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
+    } else {
+        ret = [books valueForKeyPath:@"@unionOfObjects.ContentIdentifier"];
+    }
+    [fetchRequest release], fetchRequest = nil;        
+    
+    return ret;
+}
+
 - (NSArray *)recommendationDictionaries
 {
     NSArray *ret = nil;
@@ -396,11 +418,13 @@ NSString * const kSCHAppBookFilenameSeparator = @"-";
     NSSet *filteredItems = [allItems filteredSetUsingPredicate:readyRecommendations];
     
     NSMutableArray *objectArray = [NSMutableArray arrayWithCapacity:[filteredItems count]];
+    NSArray *purchasedBooks = [self purchasedBooks];
     
     for(SCHRecommendationItem *item in filteredItems) {
         NSDictionary *recommendationDictionary = [item.appRecommendationItem dictionary];
         
-        if (recommendationDictionary) {
+        if (recommendationDictionary && 
+            [purchasedBooks containsObject:[recommendationDictionary objectForKey:kSCHAppRecommendationISBN]] == NO) {
             [objectArray addObject:recommendationDictionary];
         }
     }

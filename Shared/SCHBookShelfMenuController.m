@@ -7,7 +7,6 @@
 //
 
 #import "SCHBookShelfMenuController.h"
-#import "SCHAppStateManager.h"
 #import "SCHThemeManager.h"
 #import "SCHBookshelfPopoverController.h"
 #import "SCHBookShelfWishListController.h"
@@ -83,8 +82,7 @@
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     // Return the number of rows in the section.
-    if (self.userIsAuthenticated &&
-        [[SCHAppStateManager sharedAppStateManager] isCOPPACompliant] == YES) {
+    if (self.userIsAuthenticated) {
         if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
             return 4;
         } else {
