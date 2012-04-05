@@ -333,6 +333,7 @@ static NSInteger const kSCHBookShelfEdgePadding = 12;
     }
     
     if (self.recommendationPopover) {
+        NSLog(@"Dismissing wish list.");
         [self.recommendationPopover dismissSheetAnimated:NO completion:^{}];
     }
 
@@ -371,6 +372,7 @@ static NSInteger const kSCHBookShelfEdgePadding = 12;
     }
     
     if (self.recommendationPopover) {
+        NSLog(@"Dismissing recommendations.");
         [self.recommendationPopover dismissSheetAnimated:NO completion:^{}];
     }
     

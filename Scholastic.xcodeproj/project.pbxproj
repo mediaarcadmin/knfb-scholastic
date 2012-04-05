@@ -3806,6 +3806,18 @@
 		F84DB7731520D2750025BFCF /* SCHBookShelfTypeMenuTableController.xib in Resources */ = {isa = PBXBuildFile; fileRef = F84DB76D1520D2750025BFCF /* SCHBookShelfTypeMenuTableController.xib */; };
 		F84DB7741520D2750025BFCF /* SCHBookShelfTypeMenuTableController.xib in Resources */ = {isa = PBXBuildFile; fileRef = F84DB76D1520D2750025BFCF /* SCHBookShelfTypeMenuTableController.xib */; };
 		F84DB7751520D2750025BFCF /* SCHBookShelfTypeMenuTableController.xib in Resources */ = {isa = PBXBuildFile; fileRef = F84DB76D1520D2750025BFCF /* SCHBookShelfTypeMenuTableController.xib */; };
+		F84E5024152DA04000177BC1 /* storiaBlueStarEmpty~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = F84E5021152DA04000177BC1 /* storiaBlueStarEmpty~ipad.png */; };
+		F84E5025152DA04000177BC1 /* storiaBlueStarEmpty~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = F84E5021152DA04000177BC1 /* storiaBlueStarEmpty~ipad.png */; };
+		F84E5026152DA04000177BC1 /* storiaBlueStarEmpty~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = F84E5021152DA04000177BC1 /* storiaBlueStarEmpty~ipad.png */; };
+		F84E5027152DA04000177BC1 /* storiaBlueStarEmpty~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = F84E5021152DA04000177BC1 /* storiaBlueStarEmpty~ipad.png */; };
+		F84E5028152DA04000177BC1 /* storiaBlueStarFull~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = F84E5022152DA04000177BC1 /* storiaBlueStarFull~ipad.png */; };
+		F84E5029152DA04000177BC1 /* storiaBlueStarFull~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = F84E5022152DA04000177BC1 /* storiaBlueStarFull~ipad.png */; };
+		F84E502A152DA04000177BC1 /* storiaBlueStarFull~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = F84E5022152DA04000177BC1 /* storiaBlueStarFull~ipad.png */; };
+		F84E502B152DA04000177BC1 /* storiaBlueStarFull~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = F84E5022152DA04000177BC1 /* storiaBlueStarFull~ipad.png */; };
+		F84E502C152DA04000177BC1 /* storiaBlueStarHalfFull~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = F84E5023152DA04000177BC1 /* storiaBlueStarHalfFull~ipad.png */; };
+		F84E502D152DA04000177BC1 /* storiaBlueStarHalfFull~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = F84E5023152DA04000177BC1 /* storiaBlueStarHalfFull~ipad.png */; };
+		F84E502E152DA04000177BC1 /* storiaBlueStarHalfFull~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = F84E5023152DA04000177BC1 /* storiaBlueStarHalfFull~ipad.png */; };
+		F84E502F152DA04000177BC1 /* storiaBlueStarHalfFull~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = F84E5023152DA04000177BC1 /* storiaBlueStarHalfFull~ipad.png */; };
 		F8509EA312F0621E00197EB5 /* SCHScrubberView.m in Sources */ = {isa = PBXBuildFile; fileRef = F8509E9B12F0621E00197EB5 /* SCHScrubberView.m */; };
 		F8537F13139E3BB10092C743 /* SCHStoryInteractionAboutYouQuiz_iPhone.xib in Resources */ = {isa = PBXBuildFile; fileRef = F8537F12139E3BB10092C743 /* SCHStoryInteractionAboutYouQuiz_iPhone.xib */; };
 		F8537F17139E3E4C0092C743 /* SCHStoryInteractionControllerAboutYouQuiz.m in Sources */ = {isa = PBXBuildFile; fileRef = F8537F16139E3E4C0092C743 /* SCHStoryInteractionControllerAboutYouQuiz.m */; };
@@ -5723,6 +5735,9 @@
 		F84DB76B1520D2750025BFCF /* SCHBookShelfTypeMenuTableController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHBookShelfTypeMenuTableController.h; path = Shared/SCHBookShelfTypeMenuTableController.h; sourceTree = "<group>"; };
 		F84DB76C1520D2750025BFCF /* SCHBookShelfTypeMenuTableController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHBookShelfTypeMenuTableController.m; path = Shared/SCHBookShelfTypeMenuTableController.m; sourceTree = "<group>"; };
 		F84DB76D1520D2750025BFCF /* SCHBookShelfTypeMenuTableController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = SCHBookShelfTypeMenuTableController.xib; path = Shared/SCHBookShelfTypeMenuTableController.xib; sourceTree = "<group>"; };
+		F84E5021152DA04000177BC1 /* storiaBlueStarEmpty~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "storiaBlueStarEmpty~ipad.png"; path = "Resources/storiaBlueStarEmpty~ipad.png"; sourceTree = "<group>"; };
+		F84E5022152DA04000177BC1 /* storiaBlueStarFull~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "storiaBlueStarFull~ipad.png"; path = "Resources/storiaBlueStarFull~ipad.png"; sourceTree = "<group>"; };
+		F84E5023152DA04000177BC1 /* storiaBlueStarHalfFull~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "storiaBlueStarHalfFull~ipad.png"; path = "Resources/storiaBlueStarHalfFull~ipad.png"; sourceTree = "<group>"; };
 		F8509E9A12F0621E00197EB5 /* SCHScrubberView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCHScrubberView.h; sourceTree = "<group>"; };
 		F8509E9B12F0621E00197EB5 /* SCHScrubberView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCHScrubberView.m; sourceTree = "<group>"; };
 		F8537F12139E3BB10092C743 /* SCHStoryInteractionAboutYouQuiz_iPhone.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SCHStoryInteractionAboutYouQuiz_iPhone.xib; sourceTree = "<group>"; };
@@ -8128,6 +8143,9 @@
 				F8A3FAA81529B39F0002AFD2 /* storiaBlueStarHalfFull.png */,
 				F8A3FAA91529B39F0002AFD2 /* storiaBlueStarEmpty.png */,
 				F8A3FAAA1529B39F0002AFD2 /* storiaBlueStarFull.png */,
+				F84E5021152DA04000177BC1 /* storiaBlueStarEmpty~ipad.png */,
+				F84E5022152DA04000177BC1 /* storiaBlueStarFull~ipad.png */,
+				F84E5023152DA04000177BC1 /* storiaBlueStarHalfFull~ipad.png */,
 				F848F40F152B50A400048074 /* storiaStarEmpty.png */,
 				F87FFBD7152C59CB00A0282E /* storiaStarEmpty@2x.png */,
 				F848F410152B50A400048074 /* storiaStarFull.png */,
@@ -9891,6 +9909,9 @@
 				F87FFBF6152C69DD00A0282E /* SCHRecommendationListView~ipad.xib in Resources */,
 				F89304D6152C6A4F00C0398A /* SCHRecommendationListView.xib in Resources */,
 				F89304DB152C719A00C0398A /* SCHBookShelfWishListController.xib in Resources */,
+				F84E5024152DA04000177BC1 /* storiaBlueStarEmpty~ipad.png in Resources */,
+				F84E5028152DA04000177BC1 /* storiaBlueStarFull~ipad.png in Resources */,
+				F84E502C152DA04000177BC1 /* storiaBlueStarHalfFull~ipad.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -10629,6 +10650,9 @@
 				F87FFBF7152C69DD00A0282E /* SCHRecommendationListView~ipad.xib in Resources */,
 				F89304D7152C6A4F00C0398A /* SCHRecommendationListView.xib in Resources */,
 				F89304DC152C719A00C0398A /* SCHBookShelfWishListController.xib in Resources */,
+				F84E5025152DA04000177BC1 /* storiaBlueStarEmpty~ipad.png in Resources */,
+				F84E5029152DA04000177BC1 /* storiaBlueStarFull~ipad.png in Resources */,
+				F84E502D152DA04000177BC1 /* storiaBlueStarHalfFull~ipad.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -11145,6 +11169,9 @@
 				F87FFBF8152C69DD00A0282E /* SCHRecommendationListView~ipad.xib in Resources */,
 				F89304D8152C6A4F00C0398A /* SCHRecommendationListView.xib in Resources */,
 				F89304DD152C719A00C0398A /* SCHBookShelfWishListController.xib in Resources */,
+				F84E5026152DA04000177BC1 /* storiaBlueStarEmpty~ipad.png in Resources */,
+				F84E502A152DA04000177BC1 /* storiaBlueStarFull~ipad.png in Resources */,
+				F84E502E152DA04000177BC1 /* storiaBlueStarHalfFull~ipad.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -11661,6 +11688,9 @@
 				F87FFBF9152C69DD00A0282E /* SCHRecommendationListView~ipad.xib in Resources */,
 				F89304D9152C6A4F00C0398A /* SCHRecommendationListView.xib in Resources */,
 				F89304DE152C719A00C0398A /* SCHBookShelfWishListController.xib in Resources */,
+				F84E5027152DA04000177BC1 /* storiaBlueStarEmpty~ipad.png in Resources */,
+				F84E502B152DA04000177BC1 /* storiaBlueStarFull~ipad.png in Resources */,
+				F84E502F152DA04000177BC1 /* storiaBlueStarHalfFull~ipad.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

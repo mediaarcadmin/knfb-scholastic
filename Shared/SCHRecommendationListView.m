@@ -98,7 +98,7 @@
 
 - (void)updateWithRecommendationItem:(NSDictionary *)item
 {
-    NSLog(@"Recommendation Item Dictionary: %@", item);
+//    NSLog(@"Recommendation Item Dictionary: %@", item);
 
     [self initialiseView];
 
@@ -115,7 +115,7 @@
 
 - (void)updateWithWishListItem:(NSDictionary *)item
 {
-    NSLog(@"Wish List Item Dictionary: %@", item);
+//    NSLog(@"Wish List Item Dictionary: %@", item);
     
     [self initialiseView];
 

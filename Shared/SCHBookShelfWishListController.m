@@ -97,8 +97,10 @@
         [self.view.layer setBorderColor:[[SCHThemeManager sharedThemeManager] colorForModalSheetBorder].CGColor];
         [self.view.layer setBorderWidth:2.0f];
         
-        [self.closeButton setTintColor:[[SCHThemeManager sharedThemeManager] colorForModalSheetBorder]];
-        [self.bottomSegment setTintColor:[[SCHThemeManager sharedThemeManager] colorForModalSheetBorder]];
+        if ([self.closeButton respondsToSelector:@selector(setTintColor:)]) {
+            [self.closeButton setTintColor:[[SCHThemeManager sharedThemeManager] colorForModalSheetBorder]];
+            [self.bottomSegment setTintColor:[[SCHThemeManager sharedThemeManager] colorForModalSheetBorder]];
+        }
         
         [self.topToolbar setBackgroundImage:[[SCHThemeManager sharedThemeManager] imageForNavigationBar:UIInterfaceOrientationPortrait]];
         [self.bottomToolbar setBackgroundImage:[[SCHThemeManager sharedThemeManager] imageForNavigationBar:UIInterfaceOrientationPortrait]];
@@ -119,7 +121,10 @@
 
 - (void)viewWillDisappear:(BOOL)animated
 {
-    [self commitWishListDeletions];
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
+        [self commitWishListDeletions];
+    }
+    
     [super viewWillDisappear:animated];
 }
 
