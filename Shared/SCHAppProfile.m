@@ -141,6 +141,11 @@ NSString * const kSCHAppProfile = @"SCHAppProfile";
                                         inManagedObjectContext:self.managedObjectContext]];	
     [fetchRequest setPredicate:[NSPredicate predicateWithFormat:@"WishListProfile.ProfileID = %@ AND State != %@", 
                                 self.ProfileItem.ID, [NSNumber numberWithStatus:kSCHStatusDeleted]]];
+	[fetchRequest setSortDescriptors:[NSArray arrayWithObjects:
+                                      [NSSortDescriptor sortDescriptorWithKey:SCHSyncEntityLastModified ascending:NO],
+                                      [NSSortDescriptor sortDescriptorWithKey:kSCHWishListTitle ascending:YES],
+                                      nil]];
+    
     
     NSError *error = nil;
     NSArray *result = [self.managedObjectContext executeFetchRequest:fetchRequest error:&error];	
