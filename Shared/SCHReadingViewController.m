@@ -50,6 +50,7 @@
 #import "SCHRecommendationContainerView.h"
 #import "SCHAppStateManager.h"
 #import "SCHAppRecommendationItem.h"
+#import "SCHSettingItem.h"
 
 // constants
 NSString *const kSCHReadingViewErrorDomain  = @"com.knfb.scholastic.ReadingViewErrorDomain";
@@ -3174,7 +3175,16 @@ static const NSUInteger kReadingViewMaxRecommendationsCount = 4;
 
 - (BOOL)shouldShowBookRecommendationsForReadingView:(SCHReadingView *)aReadingView
 {
-    return  ([aReadingView isKindOfClass:[SCHLayoutView class]] && ([[self recommendationsDictionaries] count] > 0));
+    return  ([aReadingView isKindOfClass:[SCHLayoutView class]] && 
+             [self recommendationsActive] == YES &&
+             ([[self recommendationsDictionaries] count] > 0));
+}
+
+- (BOOL)recommendationsActive
+{
+    NSString *settingValue = [[SCHAppStateManager sharedAppStateManager] settingNamed:kSCHSettingItemRECOMMENDATIONS_ON];
+    
+    return [settingValue boolValue];
 }
 
 - (NSArray *)recommendationsDictionaries
