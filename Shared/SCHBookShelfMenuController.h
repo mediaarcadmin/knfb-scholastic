@@ -18,6 +18,10 @@
 
 @property (nonatomic, assign) id <SCHBookShelfMenuControllerDelegate> delegate;
 @property (nonatomic, assign) BOOL userIsAuthenticated;
+@property (nonatomic, retain) NSManagedObjectContext *managedObjectContext;
+
+- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil 
+ managedObjectContext:(NSManagedObjectContext *)setManagedObjectContext;
 
 @end
 

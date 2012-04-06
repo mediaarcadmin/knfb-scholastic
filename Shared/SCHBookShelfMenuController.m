@@ -11,8 +11,12 @@
 #import "SCHBookshelfPopoverController.h"
 #import "SCHBookShelfWishListController.h"
 #import "SCHBookShelfRecommendationListController.h"
+#import "SCHSettingItem.h"
+#import "SCHAppStateManager.h"
 
 @interface SCHBookShelfMenuController ()
+
+- (BOOL)recommendationsActive;
 
 @end
 
@@ -20,15 +24,25 @@
 
 @synthesize delegate;
 @synthesize userIsAuthenticated;
+@synthesize managedObjectContext;
 
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
+- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil 
+ managedObjectContext:(NSManagedObjectContext *)setManagedObjectContext
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
         // Custom initialization
-        self.userIsAuthenticated = NO;
+        userIsAuthenticated = NO;
+        managedObjectContext = [setManagedObjectContext retain];
     }
     return self;
+}
+
+- (void)dealloc
+{
+    [managedObjectContext release], managedObjectContext = nil;
+     
+    [super dealloc];
 }
 
 - (void)viewDidLoad
@@ -79,10 +93,17 @@
     return 1;
 }
 
+- (BOOL)recommendationsActive
+{
+    NSString *settingValue = [[SCHAppStateManager sharedAppStateManager] settingNamed:kSCHSettingItemRECOMMENDATIONS_ON];
+    
+    return [settingValue boolValue];
+}
+
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     // Return the number of rows in the section.
-    if (self.userIsAuthenticated) {
+    if (self.userIsAuthenticated && [self recommendationsActive] == YES) {
         if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
             return 4;
         } else {

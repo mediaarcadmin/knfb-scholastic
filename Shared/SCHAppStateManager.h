@@ -45,4 +45,9 @@
 - (NSDate *)lastRemoteManifestUpdateDate;
 - (void)setLastRemoteManifestUpdateDate:(NSDate *)date;
 
+- (BOOL)lastScholasticAuthenticationFailed;
+- (void)setLastScholasticAuthenticationFailed:(BOOL)failure;
+
+- (NSString *)settingNamed:(NSString *)settingName;
+
 @end

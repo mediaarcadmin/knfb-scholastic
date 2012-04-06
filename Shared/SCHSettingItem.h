@@ -20,7 +20,7 @@ extern NSString * const kSCHSettingItemRECOMMENDATIONS_ON;
 }
 
 @property (nonatomic, retain) NSString * SettingValue;
-@property (nonatomic, retain) NSNumber * SettingName;
+@property (nonatomic, retain) NSString * settingName;
 
 @end
 
