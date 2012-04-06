@@ -242,9 +242,6 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    // Return the number of rows in the section.
-    NSLog(@"Number of rows. %@", self.localRecommendationItems);
-    
     if (self.localRecommendationItems && self.localRecommendationItems.count > 0) {
         return self.localRecommendationItems.count;
     } else {
@@ -335,7 +332,11 @@
 - (float)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if (!self.localRecommendationItems || self.localRecommendationItems.count == 0) {
-        return 44;
+        if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+            return 120;
+        } else {
+            return 44;
+        }
     }
     
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
