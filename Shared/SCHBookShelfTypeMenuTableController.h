@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "SCHAppProfile.h"
 
 @protocol SCHBookShelfTypeMenuTableControllerDelegate;
 
@@ -18,6 +19,7 @@
 
 @protocol SCHBookShelfTypeMenuTableControllerDelegate <NSObject>
 
+- (SCHAppProfile *)appProfileForbookShelfTypeController;
 - (void)bookShelfTypeControllerSelectedListView:(SCHBookShelfTypeMenuTableController *)typeController;
 - (void)bookShelfTypeControllerSelectedGridView:(SCHBookShelfTypeMenuTableController *)typeController;
 - (void)bookShelfTypeControllerSelectedCancel:(SCHBookShelfTypeMenuTableController *)typeController;

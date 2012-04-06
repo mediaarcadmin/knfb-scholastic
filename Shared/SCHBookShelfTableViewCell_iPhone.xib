@@ -8,7 +8,7 @@
 		<string key="IBDocument.HIToolboxVersion">568.00</string>
 		<object class="NSMutableDictionary" key="IBDocument.PluginVersions">
 			<string key="NS.key.0">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
-			<string key="NS.object.0">1181</string>
+			<string key="NS.object.0">1179</string>
 		</object>
 		<object class="NSArray" key="IBDocument.IntegratedClassDependencies">
 			<bool key="EncodedWithXMLCoder">YES</bool>
@@ -173,7 +173,7 @@
 															<object class="IBUILabel" id="363565323">
 																<reference key="NSNextResponder" ref="448425986"/>
 																<int key="NSvFlags">300</int>
-																<string key="NSFrame">{{3, 0}, {54, 25}}</string>
+																<string key="NSFrame">{{2, 0}, {54, 25}}</string>
 																<reference key="NSSuperview" ref="448425986"/>
 																<reference key="NSWindow"/>
 																<reference key="NSNextKeyView" ref="974305391"/>
@@ -208,7 +208,7 @@
 															<object class="IBUIView" id="974305391">
 																<reference key="NSNextResponder" ref="448425986"/>
 																<int key="NSvFlags">297</int>
-																<string key="NSFrame">{{62, 1}, {108, 23}}</string>
+																<string key="NSFrame">{{67, 1}, {103, 23}}</string>
 																<reference key="NSSuperview" ref="448425986"/>
 																<reference key="NSWindow"/>
 																<reference key="NSNextKeyView" ref="415796073"/>
@@ -353,10 +353,9 @@
 				<string key="IBUIReuseIdentifier">ScholasticBookshelfTableCell</string>
 			</object>
 			<object class="IBUILabel" id="967749228">
-				<reference key="NSNextResponder"/>
+				<nil key="NSNextResponder"/>
 				<int key="NSvFlags">314</int>
 				<string key="NSFrameSize">{150, 30}</string>
-				<reference key="NSSuperview"/>
 				<reference key="IBUIBackgroundColor" ref="1036126128"/>
 				<bool key="IBUIOpaque">NO</bool>
 				<bool key="IBUIClipsSubviews">YES</bool>
@@ -720,10 +719,8 @@
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<string>backgroundView</string>
 							<string>customNavigationBar</string>
-							<string>gridButton</string>
 							<string>gridView</string>
 							<string>gridViewToggleView</string>
-							<string>listButton</string>
 							<string>listTableView</string>
 							<string>listToggleView</string>
 							<string>listViewCell</string>
@@ -733,10 +730,8 @@
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<string>UIImageView</string>
 							<string>SCHCustomNavigationBar</string>
-							<string>UIButton</string>
 							<string>SCHBookShelfGridView</string>
 							<string>UIView</string>
-							<string>UIButton</string>
 							<string>UITableView</string>
 							<string>UIView</string>
 							<string>SCHBookShelfTableViewCell</string>
@@ -749,10 +744,8 @@
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<string>backgroundView</string>
 							<string>customNavigationBar</string>
-							<string>gridButton</string>
 							<string>gridView</string>
 							<string>gridViewToggleView</string>
-							<string>listButton</string>
 							<string>listTableView</string>
 							<string>listToggleView</string>
 							<string>listViewCell</string>
@@ -769,20 +762,12 @@
 								<string key="candidateClassName">SCHCustomNavigationBar</string>
 							</object>
 							<object class="IBToOneOutletInfo">
-								<string key="name">gridButton</string>
-								<string key="candidateClassName">UIButton</string>
-							</object>
-							<object class="IBToOneOutletInfo">
 								<string key="name">gridView</string>
 								<string key="candidateClassName">SCHBookShelfGridView</string>
 							</object>
 							<object class="IBToOneOutletInfo">
 								<string key="name">gridViewToggleView</string>
 								<string key="candidateClassName">UIView</string>
-							</object>
-							<object class="IBToOneOutletInfo">
-								<string key="name">listButton</string>
-								<string key="candidateClassName">UIButton</string>
 							</object>
 							<object class="IBToOneOutletInfo">
 								<string key="name">listTableView</string>
@@ -837,6 +822,6 @@
 		</object>
 		<bool key="IBDocument.PluginDeclaredDependenciesTrackSystemTargetVersion">YES</bool>
 		<int key="IBDocument.defaultPropertyAccessControl">3</int>
-		<string key="IBCocoaTouchPluginVersion">1181</string>
+		<string key="IBCocoaTouchPluginVersion">1179</string>
 	</data>
 </archive>

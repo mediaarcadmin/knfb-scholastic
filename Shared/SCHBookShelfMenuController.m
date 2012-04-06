@@ -229,6 +229,11 @@
 
 #pragma mark - Bookshelf Type Delegate
 
+- (SCHAppProfile *)appProfileForbookShelfTypeController
+{
+    return [self.delegate appProfileForBookShelfMenu];
+}
+
 - (void)bookShelfTypeControllerSelectedGridView:(SCHBookShelfTypeMenuTableController *)typeController
 {
     [self.delegate bookShelfMenuSwitchedToGridView:self];

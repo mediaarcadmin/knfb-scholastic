@@ -11,17 +11,21 @@
 
 @interface SCHBookShelfTypeMenuTableController ()
 
+@property (nonatomic, assign) BOOL showingListView;
+
 @end
 
 @implementation SCHBookShelfTypeMenuTableController
 
 @synthesize delegate;
+@synthesize showingListView;
 
 - (id)initWithStyle:(UITableViewStyle)style
 {
     self = [super initWithStyle:style];
     if (self) {
         // Custom initialization
+        self.showingListView = NO;
     }
     return self;
 }
@@ -38,6 +42,8 @@
         self.tableView.backgroundColor = [UIColor clearColor];
     }
 
+    self.showingListView = [[self.delegate appProfileForbookShelfTypeController].ShowListView boolValue];
+    
 }
 
 - (void)viewDidUnload
@@ -90,11 +96,27 @@
         case 0:
         {
             cell.textLabel.text = @"Bookshelf";
+            if (self.showingListView) {
+                cell.textLabel.textColor = [UIColor darkTextColor];
+                cell.selectionStyle = UITableViewCellSelectionStyleBlue;
+            } else {
+                cell.textLabel.textColor = [UIColor grayColor];
+                cell.selectionStyle = UITableViewCellSelectionStyleNone;
+            }
+
             break;
         }   
         case 1:
         {
-            cell.textLabel.text = @"Detail";
+            cell.textLabel.text = @"Details";
+            if (self.showingListView) {
+                cell.textLabel.textColor = [UIColor grayColor];
+                cell.selectionStyle = UITableViewCellSelectionStyleNone;
+            } else {
+                cell.textLabel.textColor = [UIColor darkTextColor];
+                cell.selectionStyle = UITableViewCellSelectionStyleBlue;
+            }
+
             break;
         }   
     }
@@ -109,12 +131,16 @@
     switch (indexPath.row) {
         case 0:
         {
-            [self.delegate bookShelfTypeControllerSelectedGridView:self];
+            if (self.showingListView) {
+                [self.delegate bookShelfTypeControllerSelectedGridView:self];
+            }
             break;
         }   
         case 1:
         {
-            [self.delegate bookShelfTypeControllerSelectedListView:self];
+            if (!self.showingListView) {
+                [self.delegate bookShelfTypeControllerSelectedListView:self];
+            }
             break;
         }   
     }
