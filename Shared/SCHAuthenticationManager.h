@@ -35,6 +35,8 @@ extern NSInteger const kSCHAuthenticationManagerGeneralError;
 extern NSInteger const kSCHAuthenticationManagerLoginError;
 extern NSInteger const kSCHAuthenticationManagerOfflineError;
 
+extern NSString * const kSCHAuthenticationManagerServiceName;
+
 @interface SCHAuthenticationManager : NSObject <BITAPIProxyDelegate, SCHDrmRegistrationSessionDelegate>  
 {
 }

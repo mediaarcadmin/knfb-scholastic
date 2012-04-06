@@ -96,8 +96,6 @@ typedef enum
 @synthesize gridView;
 @synthesize themePickerContainer;
 @synthesize customNavigationBar;
-@synthesize gridButton;
-@synthesize listButton;
 @synthesize listToggleView;
 @synthesize gridViewToggleView;
 @synthesize books;
@@ -131,8 +129,6 @@ typedef enum
     [menuButton release], menuButton = nil;
     [backButton release], backButton = nil;    
     [listTableView release], listTableView = nil;
-    [gridButton release], gridButton = nil;
-    [listButton release], listButton = nil;
     [listToggleView release], listToggleView = nil;
     [listTableCellNib release], listTableCellNib = nil;
     [gridViewToggleView release], gridViewToggleView = nil;
@@ -563,7 +559,9 @@ typedef enum
     
     NSLog(@"Presenting menu...");
     
-    SCHBookShelfMenuController *menuTableController = [[SCHBookShelfMenuController alloc] initWithNibName:@"SCHBookShelfMenuController" bundle:nil];
+    SCHBookShelfMenuController *menuTableController = [[SCHBookShelfMenuController alloc] initWithNibName:@"SCHBookShelfMenuController" 
+                                                                                                   bundle:nil 
+                                                                                     managedObjectContext:self.managedObjectContext];
     menuTableController.delegate = self;
     menuTableController.userIsAuthenticated = !TOP_TEN_DISABLED && [[SCHAppStateManager sharedAppStateManager] canAuthenticate];
     
@@ -753,8 +751,10 @@ typedef enum
 - (IBAction)changeToGridView:(UIButton *)sender
 {
     if (self.gridView.hidden == YES) {
-        self.gridButton.highlighted = YES;
-        self.listButton.highlighted = NO;
+        // save change to profile
+        self.profileItem.AppProfile.ShowListView = [NSNumber numberWithBool:NO];
+        [self save];
+
         self.listTableView.hidden = YES;
         self.gridView.hidden = NO;
         [self reloadData];
@@ -764,8 +764,10 @@ typedef enum
 - (IBAction)changeToListView:(UIButton *)sender
 {
     if (self.listTableView.hidden == YES) {
-        self.gridButton.highlighted = NO;
-        self.listButton.highlighted = YES;
+        // save change to profile
+        self.profileItem.AppProfile.ShowListView = [NSNumber numberWithBool:YES];
+        [self save];
+
         self.listTableView.hidden = NO;
         self.gridView.hidden = YES;
         [self reloadData];

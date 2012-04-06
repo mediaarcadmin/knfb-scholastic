@@ -8,7 +8,6 @@
 
 #import "SCHLibreAccessWebService.h"
 
-#import "SCHScholasticAuthenticationWebService.h"
 #import "BITAPIError.h"
 #import "NSNumber+ObjectTypes.h"
 #import "SCHAuthenticationManager.h"
