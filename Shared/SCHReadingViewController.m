@@ -989,7 +989,9 @@ static const NSUInteger kReadingViewMaxRecommendationsCount = 4;
         SCHBookPoint *currentBookPoint = [self.readingView currentBookPoint];
         SCHLastPage *lastPage = [self.bookAnnotations lastPage];
         
-        lastPage.LastPageLocation = [NSNumber numberWithInteger:currentBookPoint.layoutPage];
+        // We don't actually want to persist a generated last page as the current page
+        NSInteger currentPage = MIN(currentBookPoint.layoutPage, [self.readingView pageCount]);
+        lastPage.LastPageLocation = [NSNumber numberWithInteger:currentPage];
         
         // Progress should not be exactly 0 once a book is opened so always set a min of 0.001f and a max of 1.0f
         CGFloat progress = MIN(MAX([self.readingView currentProgressPosition], 0.001f), 1.0f);
@@ -2290,18 +2292,13 @@ static const NSUInteger kReadingViewMaxRecommendationsCount = 4;
     return NO;
 }
 
-- (UIView *)generatedViewForPageAtIndex:(NSUInteger)pageIndex withFrame:(CGRect)pageFrame
+- (UIView *)generatedViewForPageAtIndex:(NSUInteger)pageIndex
 {
     // This currently assumes there is only one generated view, which is the recommendations view.
     SCHRecommendationContainerView *recommendationsContainer = [[[self.recommendationsContainerNib instantiateWithOwner:self options:nil] objectAtIndex:0] retain];
-    [recommendationsContainer setFrame:CGRectMake(0, 0, pageFrame.size.width, pageFrame.size.height)];
-    
-    UIView *box = recommendationsContainer.box;
-    box.layer.borderWidth = 1;
-    box.layer.borderColor = [UIColor lightGrayColor].CGColor;
+    [recommendationsContainer setFrame:self.readingView.bounds];
     
     UIView *container = recommendationsContainer.container;
-    
     CGFloat count = MIN([[self recommendationsDictionaries] count], kReadingViewMaxRecommendationsCount);
     CGFloat rowHeight = floorf((container.frame.size.height)/count);
     
@@ -2317,7 +2314,7 @@ static const NSUInteger kReadingViewMaxRecommendationsCount = 4;
         [container addSubview:listView];
         [listView release];
     }    
-        
+    
     return [recommendationsContainer autorelease];
 }
 

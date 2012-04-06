@@ -58,8 +58,8 @@ static const NSUInteger kSCHLayoutViewPageViewCacheLimit = 2;
 - (void)updateCurrentPageIndex;
 - (BOOL)pageAtIndexIsOnRight:(NSUInteger)pageIndex;
 
-- (UIView *)createGeneratedPageViewForPageAtIndex:(NSInteger)pageIndex withFrame:(CGRect)pageFrame;
-- (UIView *)generatedViewForPageAtIndex:(NSInteger)pageIndex withFrame:(CGRect)pageFrame;
+- (UIView *)createGeneratedPageViewForPageAtIndex:(NSInteger)pageIndex;
+- (UIView *)generatedViewForPageAtIndex:(NSInteger)pageIndex;
 
 - (NSUInteger)generatedPageCount;
 
@@ -602,6 +602,7 @@ managedObjectContext:(NSManagedObjectContext *)managedObjectContext
 
 - (NSCache *)generatedPageViewsCache
 {
+    return nil; // turn off cache
     if (!generatedPageViewsCache) {
         generatedPageViewsCache = [[NSCache alloc] init];
         generatedPageViewsCache.countLimit = kSCHLayoutViewPageViewCacheLimit;
@@ -610,31 +611,29 @@ managedObjectContext:(NSManagedObjectContext *)managedObjectContext
     return generatedPageViewsCache;
 }
 
-- (UIView *)createGeneratedPageViewForPageAtIndex:(NSInteger)pageIndex withFrame:(CGRect)pageFrame
+- (UIView *)createGeneratedPageViewForPageAtIndex:(NSInteger)pageIndex 
 {
     NSAssert(![pageViewsCacheLock tryLock], @"pageViewsCacheLock should always have been previously acquired prior to creating a new cached value");
     
-    NSString *cacheKey = [NSString stringWithFormat:@"%d-%@", pageIndex, NSStringFromCGRect(pageFrame)];
-    UIView *pageView = [self.generatedPageViewsCache objectForKey:cacheKey];
+    UIView *pageView = [self.generatedPageViewsCache objectForKey:[NSNumber numberWithInt:pageIndex]];
     if (nil == pageView) {
-        pageView = [self.delegate generatedViewForPageAtIndex:pageIndex withFrame:pageFrame];
+        pageView = [self.delegate generatedViewForPageAtIndex:pageIndex];
         if (pageView) {
-            [self.generatedPageViewsCache setObject:pageView forKey:cacheKey];
+            [self.generatedPageViewsCache setObject:pageView forKey:[NSNumber numberWithInt:pageIndex]];
         }
     }
     
     return pageView;
 }
 
-- (UIView *)generatedViewForPageAtIndex:(NSInteger)pageIndex withFrame:(CGRect)pageFrame
+- (UIView *)generatedViewForPageAtIndex:(NSInteger)pageIndex 
 {    
     [pageViewsCacheLock lock];
 
-    NSString *cacheKey = [NSString stringWithFormat:@"%d-%@", pageIndex, NSStringFromCGRect(pageFrame)];
-    UIView *pageView = [self.generatedPageViewsCache objectForKey:cacheKey];
+    UIView *pageView = [self.generatedPageViewsCache objectForKey:[NSNumber numberWithInt:pageIndex]];
     
     if (nil == pageView) {
-        pageView = [self createGeneratedPageViewForPageAtIndex:pageIndex withFrame:pageFrame];
+        pageView = [self createGeneratedPageViewForPageAtIndex:pageIndex];
     }
     
     [pageViewsCacheLock unlock];
@@ -707,18 +706,22 @@ fastThumbnailUIImageForPageAtIndex:(NSUInteger)index
     UIView *aView = nil;
     
     if ([self.delegate readingView:self shouldGenerateViewForPageAtIndex:pageIndex]) {
+        aView = [self generatedViewForPageAtIndex:pageIndex];     
         
-        // Calculate the frame and key on this. Resized views don't really behave well in teh page turning view.
+        // Turn on autoresizing before setting the frame and turn it off again immediately afterwards
+        // as it doesn't play nicely with teh page turning view
         
-        CGRect pageFrame;
+        aView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+        aView.autoresizesSubviews = YES;
         
         if ([self pageAtIndexIsOnRight:pageIndex]) {
-            pageFrame = [self.pageTurningView unzoomedRightPageFrame];
+            aView.frame = [self.pageTurningView unzoomedRightPageFrame];
         } else {
-            pageFrame = [self.pageTurningView unzoomedLeftPageFrame];
+            aView.frame = [self.pageTurningView unzoomedLeftPageFrame];
         }
         
-        aView = [self generatedViewForPageAtIndex:pageIndex withFrame:pageFrame];     
+        aView.autoresizingMask = UIViewAutoresizingNone;
+        aView.autoresizesSubviews = NO;
     }
     
     return aView;

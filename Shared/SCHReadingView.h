@@ -53,7 +53,7 @@ typedef enum
 
 - (NSUInteger)generatedPageCountForReadingView:(SCHReadingView *)aReadingView;
 - (BOOL)readingView:(SCHReadingView *)readingView shouldGenerateViewForPageAtIndex:(NSUInteger)pageIndex;
-- (UIView *)generatedViewForPageAtIndex:(NSUInteger)pageIndex withFrame:(CGRect)frame;
+- (UIView *)generatedViewForPageAtIndex:(NSUInteger)pageIndex;
 
 @end
 

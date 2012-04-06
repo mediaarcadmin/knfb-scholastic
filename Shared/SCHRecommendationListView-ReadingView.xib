@@ -39,12 +39,12 @@
 				<array class="NSMutableArray" key="NSSubviews">
 					<object class="IBUIView" id="216959339">
 						<reference key="NSNextResponder" ref="686552263"/>
-						<int key="NSvFlags">275</int>
+						<int key="NSvFlags">319</int>
 						<array class="NSMutableArray" key="NSSubviews">
 							<object class="IBUILabel" id="916531137">
 								<reference key="NSNextResponder" ref="216959339"/>
-								<int key="NSvFlags">290</int>
-								<string key="NSFrame">{{10, 8}, {274, 22}}</string>
+								<int key="NSvFlags">319</int>
+								<string key="NSFrame">{{0, 8}, {274, 22}}</string>
 								<reference key="NSSuperview" ref="216959339"/>
 								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="1023514415"/>
@@ -55,7 +55,7 @@
 								<bool key="IBUIUserInteractionEnabled">NO</bool>
 								<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 								<string key="IBUIText">Book Title</string>
-								<object class="NSColor" key="IBUITextColor" id="745627089">
+								<object class="NSColor" key="IBUITextColor" id="233541412">
 									<int key="NSColorSpace">1</int>
 									<bytes key="NSRGB">MCAwIDAAA</bytes>
 								</object>
@@ -75,8 +75,8 @@
 							</object>
 							<object class="IBUILabel" id="1023514415">
 								<reference key="NSNextResponder" ref="216959339"/>
-								<int key="NSvFlags">290</int>
-								<string key="NSFrame">{{10, 27}, {274, 22}}</string>
+								<int key="NSvFlags">319</int>
+								<string key="NSFrame">{{0, 27}, {274, 22}}</string>
 								<reference key="NSSuperview" ref="216959339"/>
 								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="399810119"/>
@@ -87,7 +87,7 @@
 								<bool key="IBUIUserInteractionEnabled">NO</bool>
 								<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 								<string key="IBUIText">Book Subtitle</string>
-								<reference key="IBUITextColor" ref="745627089"/>
+								<reference key="IBUITextColor" ref="233541412"/>
 								<nil key="IBUIHighlightedColor"/>
 								<int key="IBUIBaselineAdjustment">0</int>
 								<float key="IBUIMinimumFontSize">10</float>
@@ -104,11 +104,11 @@
 							</object>
 							<object class="IBUIView" id="399810119">
 								<reference key="NSNextResponder" ref="216959339"/>
-								<int key="NSvFlags">292</int>
+								<int key="NSvFlags">319</int>
 								<array class="NSMutableArray" key="NSSubviews">
 									<object class="IBUIImageView" id="85922276">
 										<reference key="NSNextResponder" ref="399810119"/>
-										<int key="NSvFlags">274</int>
+										<int key="NSvFlags">319</int>
 										<string key="NSFrameSize">{246, 40}</string>
 										<reference key="NSSuperview" ref="399810119"/>
 										<reference key="NSWindow"/>
@@ -120,7 +120,7 @@
 									</object>
 									<object class="IBUILabel" id="373743187">
 										<reference key="NSNextResponder" ref="399810119"/>
-										<int key="NSvFlags">300</int>
+										<int key="NSvFlags">319</int>
 										<string key="NSFrame">{{3, 10}, {93, 21}}</string>
 										<reference key="NSSuperview" ref="399810119"/>
 										<reference key="NSWindow"/>
@@ -136,10 +136,10 @@
 										<bool key="IBUIUserInteractionEnabled">NO</bool>
 										<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 										<string key="IBUIText">All Kids Rating</string>
-										<reference key="IBUITextColor" ref="745627089"/>
+										<reference key="IBUITextColor" ref="233541412"/>
 										<nil key="IBUIHighlightedColor"/>
 										<int key="IBUIBaselineAdjustment">0</int>
-										<float key="IBUIMinimumFontSize">10</float>
+										<float key="IBUIMinimumFontSize">4</float>
 										<int key="IBUITextAlignment">2</int>
 										<object class="IBUIFontDescription" key="IBUIFontDescription">
 											<string key="name">Helvetica</string>
@@ -152,11 +152,10 @@
 											<double key="NSSize">13</double>
 											<int key="NSfFlags">16</int>
 										</object>
-										<bool key="IBUIAdjustsFontSizeToFit">NO</bool>
 									</object>
 									<object class="IBUIView" id="480156077">
 										<reference key="NSNextResponder" ref="399810119"/>
-										<int key="NSvFlags">297</int>
+										<int key="NSvFlags">319</int>
 										<string key="NSFrame">{{106, 6}, {120, 28}}</string>
 										<reference key="NSSuperview" ref="399810119"/>
 										<reference key="NSWindow"/>
@@ -177,8 +176,8 @@
 							</object>
 							<object class="IBUIButton" id="313765562">
 								<reference key="NSNextResponder" ref="216959339"/>
-								<int key="NSvFlags">292</int>
-								<string key="NSFrame">{{3, 92}, {182, 62}}</string>
+								<int key="NSvFlags">319</int>
+								<string key="NSFrame">{{-11, 92}, {173, 62}}</string>
 								<reference key="NSSuperview" ref="216959339"/>
 								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="620368271"/>
@@ -221,7 +220,7 @@
 					</object>
 					<object class="IBUIImageView" id="620368271">
 						<reference key="NSNextResponder" ref="686552263"/>
-						<int key="NSvFlags">266</int>
+						<int key="NSvFlags">271</int>
 						<string key="NSFrame">{{0, 183}, {768, 2}}</string>
 						<reference key="NSSuperview" ref="686552263"/>
 						<reference key="NSWindow"/>
@@ -232,11 +231,11 @@
 					</object>
 					<object class="IBUIView" id="54690948">
 						<reference key="NSNextResponder" ref="686552263"/>
-						<int key="NSvFlags">278</int>
+						<int key="NSvFlags">319</int>
 						<array class="NSMutableArray" key="NSSubviews">
 							<object class="IBUIImageView" id="223766261">
 								<reference key="NSNextResponder" ref="54690948"/>
-								<int key="NSvFlags">292</int>
+								<int key="NSvFlags">319</int>
 								<string key="NSFrame">{{22, 11}, {97, 134}}</string>
 								<reference key="NSSuperview" ref="54690948"/>
 								<reference key="NSWindow"/>
