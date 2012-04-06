@@ -311,6 +311,26 @@
     }];
 }
 
+- (BOOL)lastScholasticAuthenticationFailed
+{
+    __block BOOL ret = NO;
+    
+    [self performWithAppState:^(SCHAppState *appState) {
+        if (appState != nil) {
+            ret = [appState.lastScholasticAuthenticationFailed boolValue];
+        }
+    }];
+    
+    return ret;
+}
+
+- (void)setLastScholasticAuthenticationFailed:(BOOL)failure
+{
+    [self performWithAppStateAndSave:^(SCHAppState *appState) {
+        [appState setLastScholasticAuthenticationFailed:[NSNumber numberWithBool:failure]];
+    }];
+}
+
 #pragma mark - Thread safe access to AppState
 
 - (void)performWithAppState:(void (^)(SCHAppState *appState))block

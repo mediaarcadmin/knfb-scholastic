@@ -96,6 +96,7 @@
         <attribute name="isCOPPACompliant" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
         <attribute name="LastKnownAuthToken" optional="YES" attributeType="String"/>
         <attribute name="LastRemoteManifestUpdateDate" optional="YES" attributeType="Date"/>
+        <attribute name="lastScholasticAuthenticationFailed" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
         <attribute name="ServerDateDelta" attributeType="Double" defaultValueString="0"/>
         <attribute name="ShouldAuthenticate" attributeType="Boolean" defaultValueString="YES"/>
         <attribute name="ShouldSync" attributeType="Boolean" defaultValueString="YES"/>
@@ -375,7 +376,7 @@
         <element name="SCHAppHelpState" positionX="160" positionY="192" width="128" height="135"/>
         <element name="SCHAppProfile" positionX="0" positionY="0" width="128" height="165"/>
         <element name="SCHAppRecommendationItem" positionX="160" positionY="192" width="128" height="165"/>
-        <element name="SCHAppState" positionX="0" positionY="0" width="128" height="165"/>
+        <element name="SCHAppState" positionX="0" positionY="0" width="128" height="180"/>
         <element name="SCHBookmark" positionX="292" positionY="653" width="128" height="105"/>
         <element name="SCHContentItem" positionX="772" positionY="531" width="128" height="90"/>
         <element name="SCHContentMetadataItem" positionX="990" positionY="586" width="128" height="255"/>
