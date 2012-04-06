@@ -130,7 +130,8 @@ static const NSUInteger kReadingViewMaxRecommendationsCount = 4;
 @property (nonatomic, retain) UINib *recommendationsContainerNib;
 @property (nonatomic, retain) UINib *recommendationViewNib;
 @property (nonatomic, retain) NSArray *recommendationsDictionaries;
-@property (nonatomic, retain) NSMutableArray *modifiedWishListItems;
+@property (nonatomic, retain) NSArray *wishListDictionaries;
+@property (nonatomic, retain) NSMutableArray *modifiedWishListDictionaries;
 
 - (void)updateNotesCounter;
 - (id)initFailureWithErrorCode:(NSInteger)code error:(NSError **)error;
@@ -176,6 +177,7 @@ static const NSUInteger kReadingViewMaxRecommendationsCount = 4;
 - (void)positionCornerAudioButtonForOrientation:(UIInterfaceOrientation)newOrientation;
 - (BOOL)shouldShowBookRecommendationsForReadingView:(SCHReadingView *)readingView;
 - (void)reloadRecommendations;
+- (void)commitWishListChanges;
 
 @end
 
@@ -258,7 +260,8 @@ static const NSUInteger kReadingViewMaxRecommendationsCount = 4;
 @synthesize recommendationViewNib;
 @synthesize recommendationsContainerNib;
 @synthesize recommendationsDictionaries;
-@synthesize modifiedWishListItems;
+@synthesize wishListDictionaries;
+@synthesize modifiedWishListDictionaries;
 
 #pragma mark - Dealloc and View Teardown
 
@@ -293,7 +296,8 @@ static const NSUInteger kReadingViewMaxRecommendationsCount = 4;
     [recommendationViewNib release], recommendationViewNib = nil;
     [recommendationsContainerNib release], recommendationsContainerNib = nil;
     [recommendationsDictionaries release], recommendationsDictionaries = nil;
-    [modifiedWishListItems release], modifiedWishListItems = nil;
+    [wishListDictionaries release], wishListDictionaries = nil;
+    [modifiedWishListDictionaries release], modifiedWishListDictionaries = nil;
     
     // Ideally the readingView would be release it viewDidUnload but it contains 
     // logic that this view controller uses while it is potentially off-screen (e.g. when a story interaction is being shown)
@@ -837,6 +841,9 @@ static const NSUInteger kReadingViewMaxRecommendationsCount = 4;
 - (void)updateBookState
 {
     if (self.bookIdentifier != nil) {
+ 
+        [self commitWishListChanges];
+        
         SCHAppBook *book = [[SCHBookManager sharedBookManager] bookWithIdentifier:self.bookIdentifier inManagedObjectContext:self.managedObjectContext];
 
         if ([self.bookStatistics hasStatistics] == YES) {
@@ -2319,7 +2326,8 @@ static const NSUInteger kReadingViewMaxRecommendationsCount = 4;
         
         NSString *ISBN = [recommendationDictionary objectForKey:kSCHAppRecommendationISBN];
         
-        NSUInteger index = [self.modifiedWishListItems indexOfObjectPassingTest:^BOOL (id obj, NSUInteger idx, BOOL *stop) {
+        NSUInteger index = [self.modifiedWishListDictionaries
+                            indexOfObjectPassingTest:^BOOL (id obj, NSUInteger idx, BOOL *stop) {
             return [[(NSDictionary *)obj objectForKey:kSCHAppRecommendationISBN] isEqualToString:ISBN];
         }];
         
@@ -3188,14 +3196,23 @@ static const NSUInteger kReadingViewMaxRecommendationsCount = 4;
     return recommendationsDictionaries;
 }
 
-- (NSMutableArray *)modifiedWishListItems
+- (NSMutableArray *)modifiedWishListDictionaries
 {
-    if (!modifiedWishListItems) {
-        NSArray *wishListItems = [[self.profile AppProfile] wishListItemDictionaries];
-        modifiedWishListItems = [wishListItems mutableCopy];
+    if (!modifiedWishListDictionaries) {
+        modifiedWishListDictionaries = [[self wishListDictionaries] mutableCopy];
     }
     
-    return modifiedWishListItems;
+    return modifiedWishListDictionaries;
+}
+
+- (NSArray *)wishListDictionaries
+{
+    if (!wishListDictionaries) {
+        NSArray *wishListItemDictionaries = [[self.profile AppProfile] wishListItemDictionaries];
+        wishListDictionaries = [wishListItemDictionaries mutableCopy];
+    }
+    
+    return wishListDictionaries;
 }
 
 #pragma mark - SCHRecommendationListViewDelegate
@@ -3221,7 +3238,7 @@ static const NSUInteger kReadingViewMaxRecommendationsCount = 4;
         [wishListItem setValue:([recommendationItem objectForKey:kSCHAppRecommendationTitle] == nil ? (id)[NSNull null] : [recommendationItem objectForKey:kSCHAppRecommendationTitle]) 
                         forKey:kSCHWishListTitle];
         
-        [self.modifiedWishListItems addObject:wishListItem];
+        [self.modifiedWishListDictionaries addObject:wishListItem];
         [self reloadRecommendations];
     }
 }
@@ -3229,12 +3246,13 @@ static const NSUInteger kReadingViewMaxRecommendationsCount = 4;
 - (void)recommendationListView:(SCHRecommendationListView *)listView removedISBNFromWishList:(NSString *)ISBN
 {
     // find the item in the modified list and remove it
-    NSUInteger modifiedItemsIndex = [self.modifiedWishListItems indexOfObjectPassingTest:^BOOL (id obj, NSUInteger idx, BOOL *stop) {
+    NSUInteger modifiedItemsIndex = [self.modifiedWishListDictionaries
+                                     indexOfObjectPassingTest:^BOOL (id obj, NSUInteger idx, BOOL *stop) {
         return [[(NSDictionary *)obj objectForKey:kSCHAppRecommendationISBN] isEqualToString:ISBN];
     }];
     
     if (modifiedItemsIndex != NSNotFound) {
-        [self.modifiedWishListItems removeObjectAtIndex:modifiedItemsIndex];
+        [self.modifiedWishListDictionaries removeObjectAtIndex:modifiedItemsIndex];
         [self reloadRecommendations];
     }
 }
@@ -3243,6 +3261,27 @@ static const NSUInteger kReadingViewMaxRecommendationsCount = 4;
 {
     // Reload the recommendations
     // TODO: speak to Jamie about a way to force this reload, rather than relying on the button updating itself
+}
+
+- (void)commitWishListChanges
+{
+    // look for items that are in the new list but not in the original list
+    // those need to be added
+    for (NSDictionary *item in self.modifiedWishListDictionaries) {
+        if (![[self wishListDictionaries] containsObject:item]) {
+            [[self.profile AppProfile] addToWishList:item];
+        }
+    }
+    
+    // look for items that are in the original but not in the new list
+    // those need to be deleted
+    for (NSDictionary *item in [self wishListDictionaries]) {
+        if (![self.modifiedWishListDictionaries containsObject:item]) {
+            [[self.profile AppProfile] removeFromWishList:item];
+        }
+    }
+    
+    [wishListDictionaries release], wishListDictionaries = nil;
 }
 
 @end
