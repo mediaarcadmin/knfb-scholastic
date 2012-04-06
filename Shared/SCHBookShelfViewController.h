@@ -33,8 +33,6 @@ UITableViewDelegate, UITableViewDataSource, SCHBookShelfTableViewCellDelegate, S
 @property (nonatomic, retain) IBOutlet SCHBookShelfGridView *gridView;
 @property (nonatomic, retain) IBOutlet UINavigationController *themePickerContainer;
 @property (nonatomic, retain) IBOutlet SCHCustomNavigationBar *customNavigationBar;
-@property (nonatomic, retain) IBOutlet UIButton *gridButton;
-@property (nonatomic, retain) IBOutlet UIButton *listButton;
 @property (nonatomic, retain) IBOutlet UIView *listToggleView;
 @property (nonatomic, retain) IBOutlet UIView *gridViewToggleView;
 @property (nonatomic, retain) IBOutlet UIImageView *backgroundView;
