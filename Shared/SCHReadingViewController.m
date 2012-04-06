@@ -47,6 +47,8 @@
 #import "SCHProfileSyncComponent.h"
 #import "NSDate+ServerDate.h"
 #import "SCHRecommendationListView.h"
+#import "SCHRecommendationContainerView.h"
+#import "SCHAppStateManager.h"
 
 // constants
 NSString *const kSCHReadingViewErrorDomain  = @"com.knfb.scholastic.ReadingViewErrorDomain";
@@ -55,10 +57,11 @@ static const CGFloat kReadingViewStandardScrubHeight = 47.0f;
 static const CGFloat kReadingViewOlderScrubberToolbarHeight = 44;
 static const CGFloat kReadingViewYoungerScrubberToolbarHeight = 60.0f;
 static const CGFloat kReadingViewBackButtonPadding = 7.0f;
+static const NSUInteger kReadingViewMaxRecommendationsCount = 4;
 
 #pragma mark - Class Extension
 
-@interface SCHReadingViewController ()
+@interface SCHReadingViewController () <SCHRecommendationListViewDelegate>
 
 @property (nonatomic, retain) SCHBookIdentifier *bookIdentifier;
 
@@ -123,7 +126,9 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 @property (nonatomic, assign) BOOL highlightsModeEnabled;
 @property (nonatomic, assign) BOOL firstTimePlayForHelpController;
 
+@property (nonatomic, retain) UINib *recommendationsContainerNib;
 @property (nonatomic, retain) UINib *recommendationViewNib;
+@property (nonatomic, retain) NSArray *recommendationsDictionaries;
 
 - (void)updateNotesCounter;
 - (id)initFailureWithErrorCode:(NSInteger)code error:(NSError **)error;
@@ -167,6 +172,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 - (void)dismissCoverCornerViewWithAnimation:(BOOL)animated;
 - (void)checkCornerAudioButtonVisibilityWithAnimation:(BOOL)animated;
 - (void)positionCornerAudioButtonForOrientation:(UIInterfaceOrientation)newOrientation;
+- (BOOL)shouldShowBookRecommendationsForReadingView:(SCHReadingView *)readingView;
 
 @end
 
@@ -247,6 +253,8 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 @synthesize cornerCoverFadeTimer;
 @synthesize firstTimePlayForHelpController;
 @synthesize recommendationViewNib;
+@synthesize recommendationsContainerNib;
+@synthesize recommendationsDictionaries;
 
 #pragma mark - Dealloc and View Teardown
 
@@ -279,6 +287,8 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     [cornerCoverFadeTimer release], cornerCoverFadeTimer = nil;
     [forceOpenToCover release], forceOpenToCover = nil;
     [recommendationViewNib release], recommendationViewNib = nil;
+    [recommendationsContainerNib release], recommendationsContainerNib = nil;
+    [recommendationsDictionaries release], recommendationsDictionaries = nil;
     
     // Ideally the readingView would be release it viewDidUnload but it contains 
     // logic that this view controller uses while it is potentially off-screen (e.g. when a story interaction is being shown)
@@ -470,6 +480,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
         self.firstTimePlayForHelpController = NO;
         
         self.recommendationViewNib = [UINib nibWithNibName:@"SCHRecommendationListView-ReadingView" bundle:nil];
+        self.recommendationsContainerNib = [UINib nibWithNibName:@"SCHRecommendationListView-ReadingViewContainer" bundle:nil];
 
     } else {
         return [self initFailureWithErrorCode:kSCHReadingViewUnspecifiedError error:error];
@@ -978,7 +989,9 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
         SCHBookPoint *currentBookPoint = [self.readingView currentBookPoint];
         SCHLastPage *lastPage = [self.bookAnnotations lastPage];
         
-        lastPage.LastPageLocation = [NSNumber numberWithInteger:currentBookPoint.layoutPage];
+        // We don't actually want to persist a generated last page as the current page
+        NSInteger currentPage = MIN(currentBookPoint.layoutPage, [self.readingView pageCount]);
+        lastPage.LastPageLocation = [NSNumber numberWithInteger:currentPage];
         
         // Progress should not be exactly 0 once a book is opened so always set a min of 0.001f and a max of 1.0f
         CGFloat progress = MIN(MAX([self.readingView currentProgressPosition], 0.001f), 1.0f);
@@ -2261,8 +2274,8 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 {
     NSUInteger pageCount = [aReadingView pageCount];
     
-    if ([aReadingView isKindOfClass:[SCHLayoutView class]]) {
-        pageCount++;
+    if ([self shouldShowBookRecommendationsForReadingView:aReadingView]) {
+        pageCount = pageCount + 1;
     }
     
     return pageCount;
@@ -2270,7 +2283,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 
 - (BOOL)readingView:(SCHReadingView *)aReadingView shouldGenerateViewForPageAtIndex:(NSUInteger)pageIndex
 {
-    if ([aReadingView isKindOfClass:[SCHLayoutView class]]) {
+    if ([self shouldShowBookRecommendationsForReadingView:aReadingView]) {
         if (pageIndex == [self generatedPageCountForReadingView:aReadingView] - 1) {
             return YES;
         }
@@ -2281,48 +2294,28 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 
 - (UIView *)generatedViewForPageAtIndex:(NSUInteger)pageIndex
 {
-    SCHBookManager *bookManager = [SCHBookManager sharedBookManager];
-    SCHAppBook *book = [bookManager bookWithIdentifier:self.bookIdentifier inManagedObjectContext:bookManager.mainThreadManagedObjectContext];    
-
-    NSArray *recommendationsDictionaries = [book recommendationDictionaries];
+    // This currently assumes there is only one generated view, which is the recommendations view.
+    SCHRecommendationContainerView *recommendationsContainer = [[[self.recommendationsContainerNib instantiateWithOwner:self options:nil] objectAtIndex:0] retain];
+    [recommendationsContainer setFrame:self.readingView.bounds];
     
-    UIView *container = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 300, 400)];
-    container.backgroundColor = [UIColor whiteColor];
-    
-    CGFloat count = MIN([recommendationsDictionaries count], 8);
-    CGFloat inset = 30;
-    CGFloat rowHeight = floorf((container.frame.size.height - 2*inset)/count);
+    UIView *container = recommendationsContainer.container;
+    CGFloat count = MIN([[self recommendationsDictionaries] count], kReadingViewMaxRecommendationsCount);
+    CGFloat rowHeight = floorf((container.frame.size.height)/count);
     
     for (int i = 0; i < count; i++) {
-        NSDictionary *recommendationDictionary = [recommendationsDictionaries objectAtIndex:i];
+        NSDictionary *recommendationDictionary = [[self recommendationsDictionaries] objectAtIndex:i];
         
         SCHRecommendationListView *listView = [[[self.recommendationViewNib instantiateWithOwner:self options:nil] objectAtIndex:0] retain];
-        listView.frame = CGRectMake(inset, inset + rowHeight * i, container.frame.size.width - 2*inset, rowHeight);
+        listView.frame = CGRectMake(0, rowHeight * i, container.frame.size.width, rowHeight);
         listView.showsBottomRule = NO;
+        listView.delegate = self;
         
         [listView updateWithRecommendationItem:recommendationDictionary];
         [container addSubview:listView];
         [listView release];
-    }
-    //SCHRecommendationListView *listView = [[SCHRecommendationListView alloc] initWithFrame:CGRectMake(0, 0, 600, 50)];
+    }    
     
-    
-    
-    return [container autorelease];
-//    UIView *aView = [[UIView alloc] init];
-//    aView.backgroundColor = [UIColor colorWithRed:rand()%1000/1000.0f green:rand()%1000/1000.0f blue:rand()%1000/1000.0f alpha:1];
-//    
-//    UIButton *aButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-//    aButton.frame = CGRectMake(50, 50, 50, 50);
-//    [aView addSubview:aButton];
-//    
-//    UIActivityIndicatorView *activity = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
-//    
-//    activity.center = CGPointMake(300, 300);
-//    [activity startAnimating];
-//    [aView addSubview:activity];
-//    
-//    return aView;
+    return [recommendationsContainer autorelease];
 }
 
 #pragma mark - SCHReadingViewDelegate Toolbars methods
@@ -2336,6 +2329,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 
 - (void)adjustScrubberInfoViewHeightForImageSize:(CGSize)imageSize
 {
+    NSLog(@"adjustScrubberInfoViewHeightForImageSize:%@", NSStringFromCGSize(imageSize));
     CGRect scrubFrame = self.scrubberInfoView.frame;
     scrubFrame.origin.x = self.view.bounds.size.width / 2 - (scrubFrame.size.width / 2);
     
@@ -2414,13 +2408,22 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 
 - (void)updateScrubberLabel
 {
+    BOOL showRecommendationsLabel = NO;
+    
     if (self.currentPageIndex != NSUIntegerMax) {
-        [self.pageLabel setText:[self.readingView pageLabelForPageAtIndex:self.currentPageIndex showChapters:self.shouldShowChapters]];
+        if (([self shouldShowBookRecommendationsForReadingView:self.readingView]) &&
+             (self.currentPageIndex == [self generatedPageCountForReadingView:self.readingView] - 1)) {
+            showRecommendationsLabel = YES;
+            [self.pageLabel setText:NSLocalizedString(@"Recommendations", nil)];
+        } else {
+            [self.pageLabel setText:[self.readingView pageLabelForPageAtIndex:self.currentPageIndex showChapters:self.shouldShowChapters]];
+        }
     } else {
         [self.pageLabel setText:nil];
     }  
     
-    if (self.layoutType == SCHReadingViewLayoutTypeFixed) {
+    if ((self.layoutType == SCHReadingViewLayoutTypeFixed) &&
+        (showRecommendationsLabel == NO)) {
         if (self.scrubberInfoView.frame.size.height == kReadingViewStandardScrubHeight) {
             self.scrubberThumbImage.image = nil;
         } else {
@@ -2443,7 +2446,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 {
     if (self.currentPageIndex != NSUIntegerMax) {
         self.pageSlider.minimumValue = 0;
-        self.pageSlider.maximumValue = [self.readingView pageCount] - 1;
+        self.pageSlider.maximumValue = [self generatedPageCountForReadingView:self.readingView] - 1;
         self.pageSlider.value = self.currentPageIndex;        
     } else {
         self.pageSlider.minimumValue = 0;
@@ -2471,9 +2474,11 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     if (self.layoutType == SCHReadingViewLayoutTypeFixed) {
         UIImage *scrubImage = [self.xpsProvider thumbnailForPage:self.currentPageIndex + 1];
         self.scrubberThumbImage.image = scrubImage;
+        NSLog(@"1");
         [self adjustScrubberInfoViewHeightForImageSize:scrubImage.size];
     } else {
         self.scrubberThumbImage.image = nil;
+        NSLog(@"2");
         [self adjustScrubberInfoViewHeightForImageSize:CGSizeZero];
     }
 
@@ -2541,6 +2546,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     }
     
     if (adjustScrubInfo) {
+        NSLog(@"3: %@", self.scrubberThumbImage);
         [self adjustScrubberInfoViewHeightForImageSize:self.scrubberThumbImage.image.size];
         [self updateScrubberLabel];
     }
@@ -3148,6 +3154,32 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 
 #pragma mark - Book Recommendations
 
+- (BOOL)shouldShowBookRecommendationsForReadingView:(SCHReadingView *)aReadingView
+{
+    return  ([aReadingView isKindOfClass:[SCHLayoutView class]] && ([[self recommendationsDictionaries] count] > 0));
+}
 
+- (NSArray *)recommendationsDictionaries
+{
+    if (!recommendationsDictionaries) {
+        SCHBookManager *bookManager = [SCHBookManager sharedBookManager];
+        SCHAppBook *book = [bookManager bookWithIdentifier:self.bookIdentifier inManagedObjectContext:bookManager.mainThreadManagedObjectContext];    
+        recommendationsDictionaries = [[book recommendationDictionaries] copy];
+    }
+    
+    return recommendationsDictionaries;
+}
+
+#pragma mark - SCHRecommendationListViewDelegate
+
+- (void)recommendationListView:(SCHRecommendationListView *)listView addedISBNToWishList:(NSString *)ISBN
+{
+    [self.readingView refreshPageTurningViewImmediately:YES];
+}
+     
+- (void)recommendationListView:(SCHRecommendationListView *)listView removedISBNFromWishList:(NSString *)ISBN
+{
+    [self.readingView refreshPageTurningViewImmediately:YES];  
+}
 
 @end

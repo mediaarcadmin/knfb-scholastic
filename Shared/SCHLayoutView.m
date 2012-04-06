@@ -391,7 +391,7 @@ managedObjectContext:(NSManagedObjectContext *)managedObjectContext
 
 - (CGFloat)currentProgressPosition
 {
-    return (self.currentPageIndex + 1)/(CGFloat)MAX([self pageCount], 1);
+    return (self.currentPageIndex + 1)/(CGFloat)MAX([self generatedPageCount], 1);
 }
 
 - (void)jumpToBookPoint:(SCHBookPoint *)bookPoint animated:(BOOL)animated
@@ -602,6 +602,7 @@ managedObjectContext:(NSManagedObjectContext *)managedObjectContext
 
 - (NSCache *)generatedPageViewsCache
 {
+    return nil; // turn off cache
     if (!generatedPageViewsCache) {
         generatedPageViewsCache = [[NSCache alloc] init];
         generatedPageViewsCache.countLimit = kSCHLayoutViewPageViewCacheLimit;
@@ -707,11 +708,20 @@ fastThumbnailUIImageForPageAtIndex:(NSUInteger)index
     if ([self.delegate readingView:self shouldGenerateViewForPageAtIndex:pageIndex]) {
         aView = [self generatedViewForPageAtIndex:pageIndex];     
         
+        // Turn on autoresizing before setting the frame and turn it off again immediately afterwards
+        // as it doesn't play nicely with teh page turning view
+        
+        aView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+        aView.autoresizesSubviews = YES;
+        
         if ([self pageAtIndexIsOnRight:pageIndex]) {
             aView.frame = [self.pageTurningView unzoomedRightPageFrame];
         } else {
             aView.frame = [self.pageTurningView unzoomedLeftPageFrame];
         }
+        
+        aView.autoresizingMask = UIViewAutoresizingNone;
+        aView.autoresizesSubviews = NO;
     }
     
     return aView;
@@ -802,6 +812,7 @@ fastThumbnailUIImageForPageAtIndex:(NSUInteger)index
 - (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
     [self detachSelector];
 	self.temporaryHighlightRange = nil;
+    [generatedPageViewsCache release], generatedPageViewsCache = nil;
 }
 
 - (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation {

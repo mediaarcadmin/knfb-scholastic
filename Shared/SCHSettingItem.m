@@ -18,6 +18,6 @@ NSString * const kSCHSettingItemRECOMMENDATIONS_ON = @"RECOMMENDATIONS_ON";
 @implementation SCHSettingItem 
 
 @dynamic SettingValue;
-@dynamic SettingName;
+@dynamic settingName;
 
 @end

@@ -26,6 +26,7 @@
 #import "SCHAuthenticationManager.h"
 #import "SCHVersionDownloadManager.h"
 #import "SCHLibreAccessConstants.h"
+#import "SCHSettingItem.h"
 
 // Constants
 NSString * const SCHSyncManagerDidCompleteNotification = @"SCHSyncManagerDidCompleteNotification";
@@ -48,6 +49,7 @@ static NSUInteger const kSCHSyncManagerMaximumFailureRetries = 3;
 - (NSMutableArray *)bookAnnotationsFromProfile:(SCHProfileItem *)profileItem;
 - (NSDictionary *)annotationContentItemFromUserContentItem:(SCHUserContentItem *)userContentItem
                                                        forProfile:(NSNumber *)profileID;
+- (BOOL)recommendationSyncActive;
 - (SCHSyncComponent *)queueHead;
 - (void)addToQueue:(SCHSyncComponent *)component;
 - (void)moveToEndOfQueue:(SCHSyncComponent *)component;
@@ -633,19 +635,30 @@ static NSUInteger const kSCHSyncManagerMaximumFailureRetries = 3;
     }
 }
 
+- (BOOL)recommendationSyncActive
+{
+    NSString *settingValue = [[SCHAppStateManager sharedAppStateManager] settingNamed:kSCHSettingItemRECOMMENDATIONS_ON];
+    
+    return [settingValue boolValue];
+}
+
 - (void)recommendationSync
 {
-    if ([self shouldSync] == YES) {	 
-        NSLog(@"Scheduling Recommendation");  
-        
-        [self addToQueue:self.recommendationSyncComponent];
-        
-        [self kickQueue];	
+    if ([self recommendationSyncActive] == YES) {
+        if ([self shouldSync] == YES) {	 
+            NSLog(@"Scheduling Recommendation");  
+            
+            [self addToQueue:self.recommendationSyncComponent];
+            
+            [self kickQueue];	
+        } else {
+            dispatch_async(dispatch_get_main_queue(), ^(void) {
+                [[NSNotificationCenter defaultCenter] postNotificationName:SCHRecommendationSyncComponentDidCompleteNotification 
+                                                                    object:self];		
+            });        
+        }
     } else {
-        dispatch_async(dispatch_get_main_queue(), ^(void) {
-            [[NSNotificationCenter defaultCenter] postNotificationName:SCHRecommendationSyncComponentDidCompleteNotification 
-                                                                object:self];		
-        });        
+        NSLog(@"Recommendations are OFF");
     }
 }
 

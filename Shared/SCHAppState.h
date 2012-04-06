@@ -26,5 +26,6 @@ extern NSString * const kSCHAppStatefetchAppState;
 @property (nonatomic, retain) NSNumber * ServerDateDelta;
 @property (nonatomic, retain) NSDate *LastRemoteManifestUpdateDate;
 @property (nonatomic, retain) NSNumber * isCOPPACompliant;
+@property (nonatomic, retain) NSNumber * lastScholasticAuthenticationFailed;
 
 @end

@@ -96,6 +96,7 @@
         <attribute name="isCOPPACompliant" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
         <attribute name="LastKnownAuthToken" optional="YES" attributeType="String"/>
         <attribute name="LastRemoteManifestUpdateDate" optional="YES" attributeType="Date"/>
+        <attribute name="lastScholasticAuthenticationFailed" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
         <attribute name="ServerDateDelta" attributeType="Double" defaultValueString="0"/>
         <attribute name="ShouldAuthenticate" attributeType="Boolean" defaultValueString="YES"/>
         <attribute name="ShouldSync" attributeType="Boolean" defaultValueString="YES"/>
@@ -273,7 +274,7 @@
         <attribute name="fetchDate" attributeType="Date" syncable="YES"/>
         <relationship name="recommendationItems" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="SCHRecommendationItem" inverseName="recommendationProfile" inverseEntity="SCHRecommendationItem" syncable="YES"/>
     </entity>
-    <entity name="SCHSettingItem" representedClassName="SCHUserSettingsItem">
+    <entity name="SCHSettingItem" representedClassName="SCHSettingItem">
         <attribute name="settingName" optional="YES" attributeType="String"/>
         <attribute name="SettingValue" optional="YES" attributeType="String"/>
     </entity>
