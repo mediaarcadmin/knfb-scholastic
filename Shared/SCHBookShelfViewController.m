@@ -563,7 +563,9 @@ typedef enum
     
     NSLog(@"Presenting menu...");
     
-    SCHBookShelfMenuController *menuTableController = [[SCHBookShelfMenuController alloc] initWithNibName:@"SCHBookShelfMenuController" bundle:nil];
+    SCHBookShelfMenuController *menuTableController = [[SCHBookShelfMenuController alloc] initWithNibName:@"SCHBookShelfMenuController" 
+                                                                                                   bundle:nil 
+                                                                                     managedObjectContext:self.managedObjectContext];
     menuTableController.delegate = self;
     menuTableController.userIsAuthenticated = !TOP_TEN_DISABLED && [[SCHAppStateManager sharedAppStateManager] canAuthenticate];
     

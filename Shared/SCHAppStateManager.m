@@ -11,6 +11,7 @@
 #import <CoreData/CoreData.h>
 #import "SCHCoreDataHelper.h"
 #import "NSNumber+ObjectTypes.h"
+#import "SCHSettingItem.h"
 
 @interface SCHAppStateManager()
 
@@ -365,6 +366,45 @@
     } else {
         dispatch_async(dispatch_get_main_queue(), accessBlock);
     }
+}
+
+#pragma mark - Setting Item methods
+
+- (NSString *)settingNamed:(NSString *)settingName
+{
+    __block NSString *ret = nil;
+    
+    if (settingName == nil || !self.managedObjectContext) {
+        return nil;
+    }
+
+    dispatch_block_t accessBlock = ^{
+        NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+        NSEntityDescription *entityDescription = [NSEntityDescription 
+                                                  entityForName:kSCHSettingItem
+                                                  inManagedObjectContext:self.managedObjectContext];
+        [fetchRequest setEntity:entityDescription];
+        [fetchRequest setPredicate:[NSPredicate predicateWithFormat:@"settingName = %@", settingName]];
+        
+        NSError *error = nil;
+        NSArray *fetchedObjects = [self.managedObjectContext executeFetchRequest:fetchRequest error:&error];
+        if (fetchedObjects == nil) {
+            NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
+        } else if ([fetchedObjects count] > 0) {
+            SCHSettingItem *item = [fetchedObjects objectAtIndex:0];
+            
+            ret = [[item.SettingValue copy] autorelease];
+        }    
+        [fetchRequest release], fetchedObjects = nil;
+    };
+    
+    if ([NSThread isMainThread]) {
+        accessBlock();
+    } else {
+        dispatch_async(dispatch_get_main_queue(), accessBlock);
+    }
+    
+    return ret;    
 }
 
 #pragma mark - NSManagedObjectContext Changed Notification
