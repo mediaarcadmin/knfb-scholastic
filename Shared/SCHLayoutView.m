@@ -58,8 +58,8 @@ static const NSUInteger kSCHLayoutViewPageViewCacheLimit = 2;
 - (void)updateCurrentPageIndex;
 - (BOOL)pageAtIndexIsOnRight:(NSUInteger)pageIndex;
 
-- (UIView *)createGeneratedPageViewForPageAtIndex:(NSInteger)pageIndex;
-- (UIView *)generatedViewForPageAtIndex:(NSInteger)pageIndex;
+- (UIView *)createGeneratedPageViewForPageAtIndex:(NSInteger)pageIndex withFrame:(CGRect)pageFrame;
+- (UIView *)generatedViewForPageAtIndex:(NSInteger)pageIndex withFrame:(CGRect)pageFrame;
 
 - (NSUInteger)generatedPageCount;
 
@@ -391,7 +391,7 @@ managedObjectContext:(NSManagedObjectContext *)managedObjectContext
 
 - (CGFloat)currentProgressPosition
 {
-    return (self.currentPageIndex + 1)/(CGFloat)MAX([self pageCount], 1);
+    return (self.currentPageIndex + 1)/(CGFloat)MAX([self generatedPageCount], 1);
 }
 
 - (void)jumpToBookPoint:(SCHBookPoint *)bookPoint animated:(BOOL)animated
@@ -610,29 +610,31 @@ managedObjectContext:(NSManagedObjectContext *)managedObjectContext
     return generatedPageViewsCache;
 }
 
-- (UIView *)createGeneratedPageViewForPageAtIndex:(NSInteger)pageIndex 
+- (UIView *)createGeneratedPageViewForPageAtIndex:(NSInteger)pageIndex withFrame:(CGRect)pageFrame
 {
     NSAssert(![pageViewsCacheLock tryLock], @"pageViewsCacheLock should always have been previously acquired prior to creating a new cached value");
     
-    UIView *pageView = [self.generatedPageViewsCache objectForKey:[NSNumber numberWithInt:pageIndex]];
+    NSString *cacheKey = [NSString stringWithFormat:@"%d-%@", pageIndex, NSStringFromCGRect(pageFrame)];
+    UIView *pageView = [self.generatedPageViewsCache objectForKey:cacheKey];
     if (nil == pageView) {
-        pageView = [self.delegate generatedViewForPageAtIndex:pageIndex];
+        pageView = [self.delegate generatedViewForPageAtIndex:pageIndex withFrame:pageFrame];
         if (pageView) {
-            [self.generatedPageViewsCache setObject:pageView forKey:[NSNumber numberWithInt:pageIndex]];
+            [self.generatedPageViewsCache setObject:pageView forKey:cacheKey];
         }
     }
     
     return pageView;
 }
 
-- (UIView *)generatedViewForPageAtIndex:(NSInteger)pageIndex 
+- (UIView *)generatedViewForPageAtIndex:(NSInteger)pageIndex withFrame:(CGRect)pageFrame
 {    
     [pageViewsCacheLock lock];
 
-    UIView *pageView = [self.generatedPageViewsCache objectForKey:[NSNumber numberWithInt:pageIndex]];
+    NSString *cacheKey = [NSString stringWithFormat:@"%d-%@", pageIndex, NSStringFromCGRect(pageFrame)];
+    UIView *pageView = [self.generatedPageViewsCache objectForKey:cacheKey];
     
     if (nil == pageView) {
-        pageView = [self createGeneratedPageViewForPageAtIndex:pageIndex];
+        pageView = [self createGeneratedPageViewForPageAtIndex:pageIndex withFrame:pageFrame];
     }
     
     [pageViewsCacheLock unlock];
@@ -705,13 +707,18 @@ fastThumbnailUIImageForPageAtIndex:(NSUInteger)index
     UIView *aView = nil;
     
     if ([self.delegate readingView:self shouldGenerateViewForPageAtIndex:pageIndex]) {
-        aView = [self generatedViewForPageAtIndex:pageIndex];     
+        
+        // Calculate the frame and key on this. Resized views don't really behave well in teh page turning view.
+        
+        CGRect pageFrame;
         
         if ([self pageAtIndexIsOnRight:pageIndex]) {
-            aView.frame = [self.pageTurningView unzoomedRightPageFrame];
+            pageFrame = [self.pageTurningView unzoomedRightPageFrame];
         } else {
-            aView.frame = [self.pageTurningView unzoomedLeftPageFrame];
+            pageFrame = [self.pageTurningView unzoomedLeftPageFrame];
         }
+        
+        aView = [self generatedViewForPageAtIndex:pageIndex withFrame:pageFrame];     
     }
     
     return aView;
@@ -802,6 +809,7 @@ fastThumbnailUIImageForPageAtIndex:(NSUInteger)index
 - (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
     [self detachSelector];
 	self.temporaryHighlightRange = nil;
+    [generatedPageViewsCache release], generatedPageViewsCache = nil;
 }
 
 - (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation {
