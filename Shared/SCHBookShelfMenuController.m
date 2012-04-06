@@ -112,12 +112,12 @@
         }   
         case 1:
         {
-            cell.textLabel.text = NSLocalizedString(@"Sort", @"Sort");
+            cell.textLabel.text = NSLocalizedString(@"Theme", @"Theme");
             break;
         }   
         case 2:
         {
-            cell.textLabel.text = NSLocalizedString(@"Wallpaper", @"Wallpaper");
+            cell.textLabel.text = NSLocalizedString(@"Sort", @"Sort");
             break;
         }   
         case 3:
@@ -155,8 +155,19 @@
 
             break;
         }
-        // sort
+        // themes
         case 1:
+        {
+            SCHThemePickerViewController *themePicker = [[SCHThemePickerViewController alloc] initWithNibName:nil bundle:nil];
+            themePicker.delegate = self;
+            
+            [self.navigationController pushViewController:themePicker animated:YES];
+            [themePicker release];
+            
+            break;
+        }
+        // sort
+        case 2:
         {
             SCHBookShelfSortTableView *sortTable = [[SCHBookShelfSortTableView alloc] initWithNibName:nil bundle:nil];
             sortTable.sortType = [self.delegate sortTypeForBookShelfMenu:self];
@@ -164,17 +175,6 @@
 
             [self.navigationController pushViewController:sortTable animated:YES];
             [sortTable release];
-            
-            break;
-        }
-        // themes
-        case 2:
-        {
-            SCHThemePickerViewController *themePicker = [[SCHThemePickerViewController alloc] initWithNibName:nil bundle:nil];
-            themePicker.delegate = self;
-            
-            [self.navigationController pushViewController:themePicker animated:YES];
-            [themePicker release];
             
             break;
         }

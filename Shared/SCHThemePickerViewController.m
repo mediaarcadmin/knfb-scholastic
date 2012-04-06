@@ -39,8 +39,6 @@ static NSTimeInterval const kSCHThemePickerViewControllerThemeTransitionDuration
 - (void)releaseViewObjects
 {
     [tableView release], tableView = nil;
-//    [cancelButton release], cancelButton = nil;
-//    [doneButton release], doneButton = nil;
 }
 
 - (void)dealloc 
@@ -71,9 +69,6 @@ static NSTimeInterval const kSCHThemePickerViewControllerThemeTransitionDuration
 
 - (void)setThemeForInterfaceOrientation:(UIInterfaceOrientation)orientation
 {
-//    [self.cancelButton updateTheme:orientation];
-//    [self.doneButton updateTheme:orientation];
-    
     NSString *themeName = [[SCHThemeManager sharedThemeManager] theme];
     [self setThemeWithName:themeName forInterfaceOrientation:orientation];
 }
@@ -83,43 +78,6 @@ static NSTimeInterval const kSCHThemePickerViewControllerThemeTransitionDuration
     [super viewDidLoad];
 
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
-//        SCHThemeImageView *themeBackgroundView = [[[SCHThemeImageView alloc] initWithImage:nil] autorelease];
-//        [themeBackgroundView setContentMode:UIViewContentModeCenter];
-//        [themeBackgroundView setTheme:kSCHThemeManagerBackgroundImage];
-//        self.tableView.backgroundView = themeBackgroundView;
-//        
-//        SCHBookShelfShadowsView *shadows = [[SCHBookShelfShadowsView alloc] initWithFrame:themeBackgroundView.bounds];
-//        [shadows setAutoresizingMask:UIViewAutoresizingFlexibleBottomMargin | UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleWidth];
-//        [themeBackgroundView addSubview:shadows];
-//        [shadows release];
-    
-//        self.cancelButton = [SCHThemeButton buttonWithType:UIButtonTypeCustom];
-//        [self.cancelButton setFrame:CGRectMake(0, 0, 60, 30)];
-//        [self.cancelButton setTitle:NSLocalizedString(@"Cancel", @"") forState:UIControlStateNormal];
-//        [self.cancelButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-//        [self.cancelButton setTitleColor:[UIColor colorWithWhite:1 alpha:0.5f] forState:UIControlStateHighlighted];
-//        [self.cancelButton setReversesTitleShadowWhenHighlighted:YES];
-//        
-//        self.cancelButton.titleLabel.font = [UIFont boldSystemFontOfSize:14];
-//        self.cancelButton.titleLabel.shadowOffset = CGSizeMake(0, -1);
-//        
-//        [self.cancelButton setThemeButton:kSCHThemeManagerDoneButtonImage leftCapWidth:7 topCapHeight:0];
-//        [self.cancelButton addTarget:self action:@selector(cancel) forControlEvents:UIControlEventTouchUpInside];    
-//        self.navigationItem.leftBarButtonItem = [[[UIBarButtonItem alloc] initWithCustomView:cancelButton] autorelease];
-        
-//        self.doneButton = [SCHThemeButton buttonWithType:UIButtonTypeCustom];
-//        [self.doneButton setFrame:CGRectMake(0, 0, 60, 30)];
-//        [self.doneButton setTitle:NSLocalizedString(@"Done", @"") forState:UIControlStateNormal];
-//        [self.doneButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-//        [self.doneButton setTitleColor:[UIColor colorWithWhite:1 alpha:0.5f] forState:UIControlStateHighlighted];
-//        [self.doneButton setReversesTitleShadowWhenHighlighted:YES];
-//        
-//        self.doneButton.titleLabel.font = [UIFont boldSystemFontOfSize:14];
-//        self.doneButton.titleLabel.shadowOffset = CGSizeMake(0, -1);
-//        
-//        [self.doneButton setThemeButton:kSCHThemeManagerButtonImage leftCapWidth:7 topCapHeight:0];
-//        [self.doneButton addTarget:self action:@selector(done) forControlEvents:UIControlEventTouchUpInside];    
-
         self.originalTheme = [SCHThemeManager sharedThemeManager].theme;
         self.keepSelectedTheme = NO;
         
@@ -142,7 +100,7 @@ static NSTimeInterval const kSCHThemePickerViewControllerThemeTransitionDuration
     self.tableView.separatorColor = [UIColor whiteColor];
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleSingleLineEtched;
     
-    self.title = NSLocalizedString(@"Wallpaper", @"Wallpaper");
+    self.title = NSLocalizedString(@"Theme", @"Theme");
 }
 
 - (void)viewDidUnload
@@ -197,12 +155,6 @@ static NSTimeInterval const kSCHThemePickerViewControllerThemeTransitionDuration
     }
 }
 
-//- (IBAction)cancel
-//{
-//    [self dismissModalViewControllerAnimated:YES];
-//    [self previewTheme:[SCHThemeManager sharedThemeManager].theme];    
-//}
-//
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
@@ -257,37 +209,10 @@ static NSTimeInterval const kSCHThemePickerViewControllerThemeTransitionDuration
         [self.tableView reloadData];    
     }
 }
-/*
-- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
-{
-    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
-    UILabel *headerLabel = [[UILabel alloc] initWithFrame:CGRectMake(16, 0, self.view.frame.size.width - 32, 50)];
-    headerLabel.text = NSLocalizedString(@"Themes", @"");
-    headerLabel.font = [UIFont boldSystemFontOfSize:17.0f];
-    headerLabel.numberOfLines = 1;
-    headerLabel.backgroundColor = [UIColor clearColor];
-    headerLabel.textColor = [UIColor whiteColor];
-    headerLabel.shadowOffset = CGSizeMake(0, -1);
-    
-    UIView *containerView = [[UIView alloc] initWithFrame:CGRectZero];
-    [containerView addSubview:headerLabel];
-    [headerLabel release], headerLabel = nil;
-    
-    return([containerView autorelease]);
-    } else {
-        UIView *containerView = [[UIView alloc] initWithFrame:CGRectZero];
-        return [containerView autorelease];
-    }
-}
- */
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
-//    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
-//        return(50);
-//    } else {
-        return 10;
-//    }
+    return 10;
 }
 
 - (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation
