@@ -49,6 +49,7 @@
 #import "SCHRecommendationListView.h"
 #import "SCHRecommendationContainerView.h"
 #import "SCHAppStateManager.h"
+#import "SCHAppRecommendationItem.h"
 
 // constants
 NSString *const kSCHReadingViewErrorDomain  = @"com.knfb.scholastic.ReadingViewErrorDomain";
@@ -129,6 +130,7 @@ static const NSUInteger kReadingViewMaxRecommendationsCount = 4;
 @property (nonatomic, retain) UINib *recommendationsContainerNib;
 @property (nonatomic, retain) UINib *recommendationViewNib;
 @property (nonatomic, retain) NSArray *recommendationsDictionaries;
+@property (nonatomic, retain) NSMutableArray *modifiedWishListItems;
 
 - (void)updateNotesCounter;
 - (id)initFailureWithErrorCode:(NSInteger)code error:(NSError **)error;
@@ -173,6 +175,7 @@ static const NSUInteger kReadingViewMaxRecommendationsCount = 4;
 - (void)checkCornerAudioButtonVisibilityWithAnimation:(BOOL)animated;
 - (void)positionCornerAudioButtonForOrientation:(UIInterfaceOrientation)newOrientation;
 - (BOOL)shouldShowBookRecommendationsForReadingView:(SCHReadingView *)readingView;
+- (void)reloadRecommendations;
 
 @end
 
@@ -255,6 +258,7 @@ static const NSUInteger kReadingViewMaxRecommendationsCount = 4;
 @synthesize recommendationViewNib;
 @synthesize recommendationsContainerNib;
 @synthesize recommendationsDictionaries;
+@synthesize modifiedWishListItems;
 
 #pragma mark - Dealloc and View Teardown
 
@@ -289,6 +293,7 @@ static const NSUInteger kReadingViewMaxRecommendationsCount = 4;
     [recommendationViewNib release], recommendationViewNib = nil;
     [recommendationsContainerNib release], recommendationsContainerNib = nil;
     [recommendationsDictionaries release], recommendationsDictionaries = nil;
+    [modifiedWishListItems release], modifiedWishListItems = nil;
     
     // Ideally the readingView would be release it viewDidUnload but it contains 
     // logic that this view controller uses while it is potentially off-screen (e.g. when a story interaction is being shown)
@@ -2311,6 +2316,19 @@ static const NSUInteger kReadingViewMaxRecommendationsCount = 4;
         listView.delegate = self;
         
         [listView updateWithRecommendationItem:recommendationDictionary];
+        
+        NSString *ISBN = [recommendationDictionary objectForKey:kSCHAppRecommendationISBN];
+        
+        NSUInteger index = [self.modifiedWishListItems indexOfObjectPassingTest:^BOOL (id obj, NSUInteger idx, BOOL *stop) {
+            return [[(NSDictionary *)obj objectForKey:kSCHAppRecommendationISBN] isEqualToString:ISBN];
+        }];
+        
+        if (index != NSNotFound) {
+            [listView setIsOnWishList:YES];
+        } else {
+            [listView setIsOnWishList:NO];
+        }
+
         [container addSubview:listView];
         [listView release];
     }    
@@ -3170,16 +3188,61 @@ static const NSUInteger kReadingViewMaxRecommendationsCount = 4;
     return recommendationsDictionaries;
 }
 
+- (NSMutableArray *)modifiedWishListItems
+{
+    if (!modifiedWishListItems) {
+        NSArray *wishListItems = [[self.profile AppProfile] wishListItemDictionaries];
+        modifiedWishListItems = [wishListItems mutableCopy];
+    }
+    
+    return modifiedWishListItems;
+}
+
 #pragma mark - SCHRecommendationListViewDelegate
 
 - (void)recommendationListView:(SCHRecommendationListView *)listView addedISBNToWishList:(NSString *)ISBN
 {
-    [self.readingView refreshPageTurningViewImmediately:YES];
+    // find the recommendation item
+    NSUInteger index = [self.recommendationsDictionaries indexOfObjectPassingTest:^BOOL (id obj, NSUInteger idx, BOOL *stop) {
+        return [[(NSDictionary *)obj objectForKey:kSCHAppRecommendationISBN] isEqualToString:ISBN];
+    }];
+    
+    if (index != NSNotFound) {
+        NSDictionary *recommendationItem = [self.recommendationsDictionaries objectAtIndex:index];
+        
+        // create the wishlist dictionary
+        // add it to the profile
+        NSMutableDictionary *wishListItem = [NSMutableDictionary dictionary];
+        
+        [wishListItem setValue:([recommendationItem objectForKey:kSCHAppRecommendationAuthor] == nil ? (id)[NSNull null] : [recommendationItem objectForKey:kSCHAppRecommendationAuthor]) 
+                        forKey:kSCHWishListAuthor];
+        [wishListItem setValue:([recommendationItem objectForKey:kSCHAppRecommendationISBN] == nil ? (id)[NSNull null] : [recommendationItem objectForKey:kSCHAppRecommendationISBN]) 
+                        forKey:kSCHWishListISBN];
+        [wishListItem setValue:([recommendationItem objectForKey:kSCHAppRecommendationTitle] == nil ? (id)[NSNull null] : [recommendationItem objectForKey:kSCHAppRecommendationTitle]) 
+                        forKey:kSCHWishListTitle];
+        
+        [self.modifiedWishListItems addObject:wishListItem];
+        [self reloadRecommendations];
+    }
 }
      
 - (void)recommendationListView:(SCHRecommendationListView *)listView removedISBNFromWishList:(NSString *)ISBN
 {
-    [self.readingView refreshPageTurningViewImmediately:YES];  
+    // find the item in the modified list and remove it
+    NSUInteger modifiedItemsIndex = [self.modifiedWishListItems indexOfObjectPassingTest:^BOOL (id obj, NSUInteger idx, BOOL *stop) {
+        return [[(NSDictionary *)obj objectForKey:kSCHAppRecommendationISBN] isEqualToString:ISBN];
+    }];
+    
+    if (modifiedItemsIndex != NSNotFound) {
+        [self.modifiedWishListItems removeObjectAtIndex:modifiedItemsIndex];
+        [self reloadRecommendations];
+    }
+}
+
+- (void)reloadRecommendations
+{
+    // Reload the recommendations
+    // TODO: speak to Jamie about a way to force this reload, rather than relying on the button updating itself
 }
 
 @end

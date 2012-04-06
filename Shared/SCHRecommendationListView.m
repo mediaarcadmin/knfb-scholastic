@@ -84,8 +84,10 @@
     if (self.delegate) {
         if (!wishListButton.isSelected) {
             [self.delegate recommendationListView:self addedISBNToWishList:self.ISBN];
+            [self setIsOnWishList:YES];
         } else {
             [self.delegate recommendationListView:self removedISBNFromWishList:self.ISBN];
+            [self setIsOnWishList:NO];
         }
     }
 }
