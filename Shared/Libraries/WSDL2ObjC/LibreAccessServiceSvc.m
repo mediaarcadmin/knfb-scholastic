@@ -67202,6 +67202,14 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
 		}
 				
 		[self connection:connection didFailWithError:error];
+	} else if ([httpResponse statusCode] >= 400) {
+		NSError *error = nil;
+		[connection cancel];	
+		NSDictionary *userInfo = [NSDictionary dictionaryWithObjectsAndKeys:[NSHTTPURLResponse localizedStringForStatusCode:[httpResponse statusCode]],NSLocalizedDescriptionKey,
+                                                                         httpResponse.URL, NSURLErrorKey, nil];
+				
+		error = [NSError errorWithDomain:@"LibreAccessServiceSoap11BindingResponseHTTP" code:[httpResponse statusCode] userInfo:userInfo];
+		[self connection:connection didFailWithError:error];		
 	}
 }
 - (void)connection:(NSURLConnection *)connection didReceiveData:(NSData *)data

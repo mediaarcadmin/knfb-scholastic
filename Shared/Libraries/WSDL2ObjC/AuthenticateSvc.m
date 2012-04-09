@@ -50,6 +50,15 @@
 	
 	if(self.SPSWSXML != 0) {
 		xmlAddChild(node, [self.SPSWSXML xmlNodeForDoc:node->doc elementName:@"SPSWSXML" elementNSPrefix:@"AuthenticateSvc"]);
+	} else {
+		xmlNodePtr newnode;
+		if([@"AuthenticateSvc" length] > 0) {
+			newnode = xmlNewDocNode(node->doc, NULL, [@"AuthenticateSvc:SPSWSXML" xmlString], NULL);        
+		} else {
+			newnode = xmlNewDocNode(node->doc, NULL, [@"SPSWSXML" xmlString], NULL);        
+		}
+        xmlNewProp(newnode, (const xmlChar *)"xsi:nil", (const xmlChar *)"true");
+        xmlAddChild(node, newnode);
 	}
 }
 /* elements */
@@ -136,11 +145,11 @@
  * http://davedelong.com/blog/2009/04/13/aspect-oriented-programming-objective-c
  */
 - (id) initWithCoder:(NSCoder *)decoder {
-//	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-//		self = [(id)super initWithCoder:decoder];
-//	} else {
+	//if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
+	//	self = [(id)super initWithCoder:decoder];
+	//} else {
 		self = [super init];
-//	}
+	//}
 	if (self == nil) { return nil; }
  
 	NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
@@ -221,6 +230,15 @@
 	
 	if(self.return_ != 0) {
 		xmlAddChild(node, [self.return_ xmlNodeForDoc:node->doc elementName:@"return" elementNSPrefix:@"AuthenticateSvc"]);
+	} else {
+		xmlNodePtr newnode;
+		if([@"AuthenticateSvc" length] > 0) {
+			newnode = xmlNewDocNode(node->doc, NULL, [@"AuthenticateSvc:return" xmlString], NULL);        
+		} else {
+			newnode = xmlNewDocNode(node->doc, NULL, [@"return" xmlString], NULL);        
+		}
+        xmlNewProp(newnode, (const xmlChar *)"xsi:nil", (const xmlChar *)"true");
+        xmlAddChild(node, newnode);
 	}
 }
 /* elements */
@@ -307,11 +325,11 @@
  * http://davedelong.com/blog/2009/04/13/aspect-oriented-programming-objective-c
  */
 - (id) initWithCoder:(NSCoder *)decoder {
-//	if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-//		self = [(id)super initWithCoder:decoder];
-//	} else {
+	//if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
+	//	self = [(id)super initWithCoder:decoder];
+	//} else {
 		self = [super init];
-//	}
+	//}
 	if (self == nil) { return nil; }
  
 	NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
@@ -573,6 +591,14 @@
 		}
 				
 		[self connection:connection didFailWithError:error];
+	} else if ([httpResponse statusCode] >= 400) {
+		NSError *error = nil;
+		[connection cancel];	
+		NSDictionary *userInfo = [NSDictionary dictionaryWithObjectsAndKeys:[NSHTTPURLResponse localizedStringForStatusCode:[httpResponse statusCode]],NSLocalizedDescriptionKey,
+                                                                         httpResponse.URL, NSURLErrorKey, nil];
+				
+		error = [NSError errorWithDomain:@"AuthenticateSoap11BindingResponseHTTP" code:[httpResponse statusCode] userInfo:userInfo];
+		[self connection:connection didFailWithError:error];		
 	}
 }
 - (void)connection:(NSURLConnection *)connection didReceiveData:(NSData *)data
