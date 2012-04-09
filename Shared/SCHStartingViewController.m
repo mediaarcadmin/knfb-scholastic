@@ -328,8 +328,10 @@ static const NSTimeInterval kSCHStartingViewControllerNonForcedAlertInterval = (
 
 - (void)pushCurrentProfileAnimated:(BOOL)animated
 {   
-    if (self.modalViewController) {
-        [self dismissModalViewControllerAnimated:YES];
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+        if (self.modalViewController) {
+            [self dismissModalViewControllerAnimated:YES];
+        }
     }
     
     BOOL alreadyInUse = NO;
@@ -343,6 +345,12 @@ static const NSTimeInterval kSCHStartingViewControllerNonForcedAlertInterval = (
     }
     if (alreadyInUse == NO) {
         [self.navigationController pushViewController:profile animated:animated];
+    }
+    
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
+        if (self.modalViewController) {
+            [self dismissModalViewControllerAnimated:YES];
+        }
     }
 }
 
@@ -644,7 +652,9 @@ static const NSTimeInterval kSCHStartingViewControllerNonForcedAlertInterval = (
             [self.loginPopoverController presentSheetInViewController:self animated:YES completion:nil];
         } else {
             [self.modalNavigationController setViewControllers:[NSArray arrayWithObject:login]];
-            [self presentModalViewController:self.modalNavigationController animated:NO];
+             if (!self.modalViewController) {
+                 [self presentModalViewController:self.modalNavigationController animated:NO];
+             }
             [login release];
         }
     };
