@@ -831,8 +831,11 @@ fastThumbnailUIImageForPageAtIndex:(NSUInteger)index
 
 - (void)refreshHighlightsForPageAtIndex:(NSUInteger)index
 {
-    [self.pageTurningView refreshHighlightsForPageAtIndex:index];
-    [self.pageTurningView setNeedsDraw];
+    [self.pageTurningView turnToPageAtIndex:-1 animated:NO];
+    [self.pageTurningView turnToPageAtIndex:index animated:NO];
+    [self.pageTurningView waitForAllPageImagesToBeAvailable];
+    [self.pageTurningView drawView];
+    //[self.pageTurningView refreshHighlightsForPageAtIndex:index];
 }
 
 - (void)refreshPageTurningViewImmediately:(BOOL)immediately
