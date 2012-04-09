@@ -214,7 +214,8 @@ managedObjectContext:(NSManagedObjectContext *)managedObjectContext
     if(!CGSizeEqualToSize(newSize, self.pageSize)) {
         
         if(self.selector.tracking) {
-            [self.selector setSelectedRange:nil];
+            //[self.selector setSelectedRange:nil];
+            [self.selector performSelector:@selector(calculateAndSetSelectedRangeForRange:) withObject:nil];
         }
                 
 		self.pageSize = newSize;
