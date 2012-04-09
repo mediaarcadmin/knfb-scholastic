@@ -50,6 +50,15 @@
 	
 	if(self.SPSWSXML != 0) {
 		xmlAddChild(node, [self.SPSWSXML xmlNodeForDoc:node->doc elementName:@"SPSWSXML" elementNSPrefix:@"GetUserInfoSvc"]);
+	} else {
+		xmlNodePtr newnode;
+		if([@"GetUserInfoSvc" length] > 0) {
+			newnode = xmlNewDocNode(node->doc, NULL, [@"GetUserInfoSvc:SPSWSXML" xmlString], NULL);        
+		} else {
+			newnode = xmlNewDocNode(node->doc, NULL, [@"SPSWSXML" xmlString], NULL);        
+		}
+        xmlNewProp(newnode, (const xmlChar *)"xsi:nil", (const xmlChar *)"true");
+        xmlAddChild(node, newnode);
 	}
 }
 /* elements */
@@ -88,37 +97,46 @@
 				xmlFree(elementText);
 			}
 			if(xmlStrEqual(cur->name, (const xmlChar *) "SPSWSXML")) {
-				
-				Class elementClass = nil;
-				xmlChar *instanceType = xmlGetNsProp(cur, (const xmlChar *) "type", (const xmlChar *) "http://www.w3.org/2001/XMLSchema-instance");
-				if(instanceType == NULL) {
-					elementClass = [NSString class];
-				} else {
-					NSString *elementTypeString = [NSString stringWithCString:(char*)instanceType encoding:NSUTF8StringEncoding];
-					
-					NSArray *elementTypeArray = [elementTypeString componentsSeparatedByString:@":"];
-					
-					NSString *elementClassString = nil;
-					if([elementTypeArray count] > 1) {
-						NSString *prefix = [elementTypeArray objectAtIndex:0];
-						NSString *localName = [elementTypeArray objectAtIndex:1];
-						
-						xmlNsPtr elementNamespace = xmlSearchNs(cur->doc, cur, [prefix xmlString]);
-						
-						NSString *standardPrefix = [[USGlobals sharedInstance].wsdlStandardNamespaces objectForKey:[NSString stringWithCString:(char*)elementNamespace->href encoding:NSUTF8StringEncoding]];
-						
-						elementClassString = [NSString stringWithFormat:@"%@_%@", standardPrefix, localName];
+				BOOL nilProperty = NO;
+                for(xmlAttrPtr attr = cur->properties; attr != NULL; attr = attr->next) {
+                    if(xmlStrEqual(attr->name, (const xmlChar *) "nil") &&
+                       attr->children &&
+                       xmlStrEqual(attr->children->content, (const xmlChar *) "true"))
+                        nilProperty = YES;
+                        break;
+                }
+                if (nilProperty == NO) {
+					Class elementClass = nil;
+					xmlChar *instanceType = xmlGetNsProp(cur, (const xmlChar *) "type", (const xmlChar *) "http://www.w3.org/2001/XMLSchema-instance");
+					if(instanceType == NULL) {
+						elementClass = [NSString class];
 					} else {
-						elementClassString = [elementTypeString stringByReplacingOccurrencesOfString:@":" withString:@"_" options:0 range:NSMakeRange(0, [elementTypeString length])];
-					}
+						NSString *elementTypeString = [NSString stringWithCString:(char*)instanceType encoding:NSUTF8StringEncoding];
 					
-					elementClass = NSClassFromString(elementClassString);
-					xmlFree(instanceType);
+						NSArray *elementTypeArray = [elementTypeString componentsSeparatedByString:@":"];
+					
+						NSString *elementClassString = nil;
+						if([elementTypeArray count] > 1) {
+							NSString *prefix = [elementTypeArray objectAtIndex:0];
+							NSString *localName = [elementTypeArray objectAtIndex:1];
+						
+							xmlNsPtr elementNamespace = xmlSearchNs(cur->doc, cur, [prefix xmlString]);
+						
+							NSString *standardPrefix = [[USGlobals sharedInstance].wsdlStandardNamespaces objectForKey:[NSString stringWithCString:(char*)elementNamespace->href encoding:NSUTF8StringEncoding]];
+						
+							elementClassString = [NSString stringWithFormat:@"%@_%@", standardPrefix, localName];
+						} else {
+							elementClassString = [elementTypeString stringByReplacingOccurrencesOfString:@":" withString:@"_" options:0 range:NSMakeRange(0, [elementTypeString length])];
+						}
+					
+						elementClass = NSClassFromString(elementClassString);
+						xmlFree(instanceType);
+					}
+				
+					id newChild = [elementClass deserializeNode:cur];
+				
+					self.SPSWSXML = newChild;
 				}
-				
-				id newChild = [elementClass deserializeNode:cur];
-				
-				self.SPSWSXML = newChild;
 			}
 		}
 	}
@@ -140,9 +158,9 @@
 	for(int i = 0; i < numIvars; i++) {
 		Ivar thisIvar = ivars[i];
 		NSString * key = [NSString stringWithUTF8String:ivar_getName(thisIvar)];
-		id value = [decoder decodeObjectForKey:key];
-		if (value == nil) { value = [NSNumber numberWithFloat:0.0]; }
-		[self setValue:value forKey:key];
+		id val = [decoder decodeObjectForKey:key];
+		if (val == nil) { val = [NSNumber numberWithFloat:0.0]; }
+		[self setValue:val forKey:key];
 	}
 	if (numIvars > 0) { free(ivars); }
 	[pool drain];
@@ -158,8 +176,8 @@
 	for (int i = 0; i < numIvars; i++) {
 		Ivar thisIvar = ivars[i];
 		NSString * key = [NSString stringWithUTF8String:ivar_getName(thisIvar)];
-		id value = [self valueForKey:key];
-		[encoder encodeObject:value forKey:key];
+		id val = [self valueForKey:key];
+		[encoder encodeObject:val forKey:key];
 	}
 	if (numIvars > 0) { free(ivars); }
 	[pool drain];
@@ -212,6 +230,15 @@
 	
 	if(self.return_ != 0) {
 		xmlAddChild(node, [self.return_ xmlNodeForDoc:node->doc elementName:@"return" elementNSPrefix:@"GetUserInfoSvc"]);
+	} else {
+		xmlNodePtr newnode;
+		if([@"GetUserInfoSvc" length] > 0) {
+			newnode = xmlNewDocNode(node->doc, NULL, [@"GetUserInfoSvc:return" xmlString], NULL);        
+		} else {
+			newnode = xmlNewDocNode(node->doc, NULL, [@"return" xmlString], NULL);        
+		}
+        xmlNewProp(newnode, (const xmlChar *)"xsi:nil", (const xmlChar *)"true");
+        xmlAddChild(node, newnode);
 	}
 }
 /* elements */
@@ -250,37 +277,46 @@
 				xmlFree(elementText);
 			}
 			if(xmlStrEqual(cur->name, (const xmlChar *) "return")) {
-				
-				Class elementClass = nil;
-				xmlChar *instanceType = xmlGetNsProp(cur, (const xmlChar *) "type", (const xmlChar *) "http://www.w3.org/2001/XMLSchema-instance");
-				if(instanceType == NULL) {
-					elementClass = [NSString class];
-				} else {
-					NSString *elementTypeString = [NSString stringWithCString:(char*)instanceType encoding:NSUTF8StringEncoding];
-					
-					NSArray *elementTypeArray = [elementTypeString componentsSeparatedByString:@":"];
-					
-					NSString *elementClassString = nil;
-					if([elementTypeArray count] > 1) {
-						NSString *prefix = [elementTypeArray objectAtIndex:0];
-						NSString *localName = [elementTypeArray objectAtIndex:1];
-						
-						xmlNsPtr elementNamespace = xmlSearchNs(cur->doc, cur, [prefix xmlString]);
-						
-						NSString *standardPrefix = [[USGlobals sharedInstance].wsdlStandardNamespaces objectForKey:[NSString stringWithCString:(char*)elementNamespace->href encoding:NSUTF8StringEncoding]];
-						
-						elementClassString = [NSString stringWithFormat:@"%@_%@", standardPrefix, localName];
+				BOOL nilProperty = NO;
+                for(xmlAttrPtr attr = cur->properties; attr != NULL; attr = attr->next) {
+                    if(xmlStrEqual(attr->name, (const xmlChar *) "nil") &&
+                       attr->children &&
+                       xmlStrEqual(attr->children->content, (const xmlChar *) "true"))
+                        nilProperty = YES;
+                        break;
+                }
+                if (nilProperty == NO) {
+					Class elementClass = nil;
+					xmlChar *instanceType = xmlGetNsProp(cur, (const xmlChar *) "type", (const xmlChar *) "http://www.w3.org/2001/XMLSchema-instance");
+					if(instanceType == NULL) {
+						elementClass = [NSString class];
 					} else {
-						elementClassString = [elementTypeString stringByReplacingOccurrencesOfString:@":" withString:@"_" options:0 range:NSMakeRange(0, [elementTypeString length])];
-					}
+						NSString *elementTypeString = [NSString stringWithCString:(char*)instanceType encoding:NSUTF8StringEncoding];
 					
-					elementClass = NSClassFromString(elementClassString);
-					xmlFree(instanceType);
+						NSArray *elementTypeArray = [elementTypeString componentsSeparatedByString:@":"];
+					
+						NSString *elementClassString = nil;
+						if([elementTypeArray count] > 1) {
+							NSString *prefix = [elementTypeArray objectAtIndex:0];
+							NSString *localName = [elementTypeArray objectAtIndex:1];
+						
+							xmlNsPtr elementNamespace = xmlSearchNs(cur->doc, cur, [prefix xmlString]);
+						
+							NSString *standardPrefix = [[USGlobals sharedInstance].wsdlStandardNamespaces objectForKey:[NSString stringWithCString:(char*)elementNamespace->href encoding:NSUTF8StringEncoding]];
+						
+							elementClassString = [NSString stringWithFormat:@"%@_%@", standardPrefix, localName];
+						} else {
+							elementClassString = [elementTypeString stringByReplacingOccurrencesOfString:@":" withString:@"_" options:0 range:NSMakeRange(0, [elementTypeString length])];
+						}
+					
+						elementClass = NSClassFromString(elementClassString);
+						xmlFree(instanceType);
+					}
+				
+					id newChild = [elementClass deserializeNode:cur];
+				
+					self.return_ = newChild;
 				}
-				
-				id newChild = [elementClass deserializeNode:cur];
-				
-				self.return_ = newChild;
 			}
 		}
 	}
@@ -302,9 +338,9 @@
 	for(int i = 0; i < numIvars; i++) {
 		Ivar thisIvar = ivars[i];
 		NSString * key = [NSString stringWithUTF8String:ivar_getName(thisIvar)];
-		id value = [decoder decodeObjectForKey:key];
-		if (value == nil) { value = [NSNumber numberWithFloat:0.0]; }
-		[self setValue:value forKey:key];
+		id val = [decoder decodeObjectForKey:key];
+		if (val == nil) { val = [NSNumber numberWithFloat:0.0]; }
+		[self setValue:val forKey:key];
 	}
 	if (numIvars > 0) { free(ivars); }
 	[pool drain];
@@ -320,8 +356,8 @@
 	for (int i = 0; i < numIvars; i++) {
 		Ivar thisIvar = ivars[i];
 		NSString * key = [NSString stringWithUTF8String:ivar_getName(thisIvar)];
-		id value = [self valueForKey:key];
-		[encoder encodeObject:value forKey:key];
+		id val = [self valueForKey:key];
+		[encoder encodeObject:val forKey:key];
 	}
 	if (numIvars > 0) { free(ivars); }
 	[pool drain];
@@ -374,6 +410,15 @@
 	
 	if(self.SchWSException != 0) {
 		xmlAddChild(node, [self.SchWSException xmlNodeForDoc:node->doc elementName:@"SchWSException" elementNSPrefix:@"GetUserInfoSvc"]);
+	} else {
+		xmlNodePtr newnode;
+		if([@"GetUserInfoSvc" length] > 0) {
+			newnode = xmlNewDocNode(node->doc, NULL, [@"GetUserInfoSvc:SchWSException" xmlString], NULL);        
+		} else {
+			newnode = xmlNewDocNode(node->doc, NULL, [@"SchWSException" xmlString], NULL);        
+		}
+        xmlNewProp(newnode, (const xmlChar *)"xsi:nil", (const xmlChar *)"true");
+        xmlAddChild(node, newnode);
 	}
 }
 /* elements */
@@ -412,37 +457,46 @@
 				xmlFree(elementText);
 			}
 			if(xmlStrEqual(cur->name, (const xmlChar *) "SchWSException")) {
-				
-				Class elementClass = nil;
-				xmlChar *instanceType = xmlGetNsProp(cur, (const xmlChar *) "type", (const xmlChar *) "http://www.w3.org/2001/XMLSchema-instance");
-				if(instanceType == NULL) {
-					elementClass = [ax25_SchWSException class];
-				} else {
-					NSString *elementTypeString = [NSString stringWithCString:(char*)instanceType encoding:NSUTF8StringEncoding];
-					
-					NSArray *elementTypeArray = [elementTypeString componentsSeparatedByString:@":"];
-					
-					NSString *elementClassString = nil;
-					if([elementTypeArray count] > 1) {
-						NSString *prefix = [elementTypeArray objectAtIndex:0];
-						NSString *localName = [elementTypeArray objectAtIndex:1];
-						
-						xmlNsPtr elementNamespace = xmlSearchNs(cur->doc, cur, [prefix xmlString]);
-						
-						NSString *standardPrefix = [[USGlobals sharedInstance].wsdlStandardNamespaces objectForKey:[NSString stringWithCString:(char*)elementNamespace->href encoding:NSUTF8StringEncoding]];
-						
-						elementClassString = [NSString stringWithFormat:@"%@_%@", standardPrefix, localName];
+				BOOL nilProperty = NO;
+                for(xmlAttrPtr attr = cur->properties; attr != NULL; attr = attr->next) {
+                    if(xmlStrEqual(attr->name, (const xmlChar *) "nil") &&
+                       attr->children &&
+                       xmlStrEqual(attr->children->content, (const xmlChar *) "true"))
+                        nilProperty = YES;
+                        break;
+                }
+                if (nilProperty == NO) {
+					Class elementClass = nil;
+					xmlChar *instanceType = xmlGetNsProp(cur, (const xmlChar *) "type", (const xmlChar *) "http://www.w3.org/2001/XMLSchema-instance");
+					if(instanceType == NULL) {
+						elementClass = [ax25_SchWSException class];
 					} else {
-						elementClassString = [elementTypeString stringByReplacingOccurrencesOfString:@":" withString:@"_" options:0 range:NSMakeRange(0, [elementTypeString length])];
-					}
+						NSString *elementTypeString = [NSString stringWithCString:(char*)instanceType encoding:NSUTF8StringEncoding];
 					
-					elementClass = NSClassFromString(elementClassString);
-					xmlFree(instanceType);
+						NSArray *elementTypeArray = [elementTypeString componentsSeparatedByString:@":"];
+					
+						NSString *elementClassString = nil;
+						if([elementTypeArray count] > 1) {
+							NSString *prefix = [elementTypeArray objectAtIndex:0];
+							NSString *localName = [elementTypeArray objectAtIndex:1];
+						
+							xmlNsPtr elementNamespace = xmlSearchNs(cur->doc, cur, [prefix xmlString]);
+						
+							NSString *standardPrefix = [[USGlobals sharedInstance].wsdlStandardNamespaces objectForKey:[NSString stringWithCString:(char*)elementNamespace->href encoding:NSUTF8StringEncoding]];
+						
+							elementClassString = [NSString stringWithFormat:@"%@_%@", standardPrefix, localName];
+						} else {
+							elementClassString = [elementTypeString stringByReplacingOccurrencesOfString:@":" withString:@"_" options:0 range:NSMakeRange(0, [elementTypeString length])];
+						}
+					
+						elementClass = NSClassFromString(elementClassString);
+						xmlFree(instanceType);
+					}
+				
+					id newChild = [elementClass deserializeNode:cur];
+				
+					self.SchWSException = newChild;
 				}
-				
-				id newChild = [elementClass deserializeNode:cur];
-				
-				self.SchWSException = newChild;
 			}
 		}
 	}
@@ -464,9 +518,9 @@
 	for(int i = 0; i < numIvars; i++) {
 		Ivar thisIvar = ivars[i];
 		NSString * key = [NSString stringWithUTF8String:ivar_getName(thisIvar)];
-		id value = [decoder decodeObjectForKey:key];
-		if (value == nil) { value = [NSNumber numberWithFloat:0.0]; }
-		[self setValue:value forKey:key];
+		id val = [decoder decodeObjectForKey:key];
+		if (val == nil) { val = [NSNumber numberWithFloat:0.0]; }
+		[self setValue:val forKey:key];
 	}
 	if (numIvars > 0) { free(ivars); }
 	[pool drain];
@@ -482,8 +536,8 @@
 	for (int i = 0; i < numIvars; i++) {
 		Ivar thisIvar = ivars[i];
 		NSString * key = [NSString stringWithUTF8String:ivar_getName(thisIvar)];
-		id value = [self valueForKey:key];
-		[encoder encodeObject:value forKey:key];
+		id val = [self valueForKey:key];
+		[encoder encodeObject:val forKey:key];
 	}
 	if (numIvars > 0) { free(ivars); }
 	[pool drain];
@@ -540,12 +594,39 @@
 	
 	if(self.name != 0) {
 		xmlAddChild(node, [self.name xmlNodeForDoc:node->doc elementName:@"name" elementNSPrefix:@"GetUserInfoSvc"]);
+	} else {
+		xmlNodePtr newnode;
+		if([@"GetUserInfoSvc" length] > 0) {
+			newnode = xmlNewDocNode(node->doc, NULL, [@"GetUserInfoSvc:name" xmlString], NULL);        
+		} else {
+			newnode = xmlNewDocNode(node->doc, NULL, [@"name" xmlString], NULL);        
+		}
+        xmlNewProp(newnode, (const xmlChar *)"xsi:nil", (const xmlChar *)"true");
+        xmlAddChild(node, newnode);
 	}
 	if(self.clientID != 0) {
 		xmlAddChild(node, [self.clientID xmlNodeForDoc:node->doc elementName:@"clientID" elementNSPrefix:@"GetUserInfoSvc"]);
+	} else {
+		xmlNodePtr newnode;
+		if([@"GetUserInfoSvc" length] > 0) {
+			newnode = xmlNewDocNode(node->doc, NULL, [@"GetUserInfoSvc:clientID" xmlString], NULL);        
+		} else {
+			newnode = xmlNewDocNode(node->doc, NULL, [@"clientID" xmlString], NULL);        
+		}
+        xmlNewProp(newnode, (const xmlChar *)"xsi:nil", (const xmlChar *)"true");
+        xmlAddChild(node, newnode);
 	}
 	if(self.serviceName != 0) {
 		xmlAddChild(node, [self.serviceName xmlNodeForDoc:node->doc elementName:@"serviceName" elementNSPrefix:@"GetUserInfoSvc"]);
+	} else {
+		xmlNodePtr newnode;
+		if([@"GetUserInfoSvc" length] > 0) {
+			newnode = xmlNewDocNode(node->doc, NULL, [@"GetUserInfoSvc:serviceName" xmlString], NULL);        
+		} else {
+			newnode = xmlNewDocNode(node->doc, NULL, [@"serviceName" xmlString], NULL);        
+		}
+        xmlNewProp(newnode, (const xmlChar *)"xsi:nil", (const xmlChar *)"true");
+        xmlAddChild(node, newnode);
 	}
 }
 /* elements */
@@ -586,103 +667,130 @@
 				xmlFree(elementText);
 			}
 			if(xmlStrEqual(cur->name, (const xmlChar *) "name")) {
-				
-				Class elementClass = nil;
-				xmlChar *instanceType = xmlGetNsProp(cur, (const xmlChar *) "type", (const xmlChar *) "http://www.w3.org/2001/XMLSchema-instance");
-				if(instanceType == NULL) {
-					elementClass = [NSString class];
-				} else {
-					NSString *elementTypeString = [NSString stringWithCString:(char*)instanceType encoding:NSUTF8StringEncoding];
-					
-					NSArray *elementTypeArray = [elementTypeString componentsSeparatedByString:@":"];
-					
-					NSString *elementClassString = nil;
-					if([elementTypeArray count] > 1) {
-						NSString *prefix = [elementTypeArray objectAtIndex:0];
-						NSString *localName = [elementTypeArray objectAtIndex:1];
-						
-						xmlNsPtr elementNamespace = xmlSearchNs(cur->doc, cur, [prefix xmlString]);
-						
-						NSString *standardPrefix = [[USGlobals sharedInstance].wsdlStandardNamespaces objectForKey:[NSString stringWithCString:(char*)elementNamespace->href encoding:NSUTF8StringEncoding]];
-						
-						elementClassString = [NSString stringWithFormat:@"%@_%@", standardPrefix, localName];
+				BOOL nilProperty = NO;
+                for(xmlAttrPtr attr = cur->properties; attr != NULL; attr = attr->next) {
+                    if(xmlStrEqual(attr->name, (const xmlChar *) "nil") &&
+                       attr->children &&
+                       xmlStrEqual(attr->children->content, (const xmlChar *) "true"))
+                        nilProperty = YES;
+                        break;
+                }
+                if (nilProperty == NO) {
+					Class elementClass = nil;
+					xmlChar *instanceType = xmlGetNsProp(cur, (const xmlChar *) "type", (const xmlChar *) "http://www.w3.org/2001/XMLSchema-instance");
+					if(instanceType == NULL) {
+						elementClass = [NSString class];
 					} else {
-						elementClassString = [elementTypeString stringByReplacingOccurrencesOfString:@":" withString:@"_" options:0 range:NSMakeRange(0, [elementTypeString length])];
-					}
+						NSString *elementTypeString = [NSString stringWithCString:(char*)instanceType encoding:NSUTF8StringEncoding];
 					
-					elementClass = NSClassFromString(elementClassString);
-					xmlFree(instanceType);
+						NSArray *elementTypeArray = [elementTypeString componentsSeparatedByString:@":"];
+					
+						NSString *elementClassString = nil;
+						if([elementTypeArray count] > 1) {
+							NSString *prefix = [elementTypeArray objectAtIndex:0];
+							NSString *localName = [elementTypeArray objectAtIndex:1];
+						
+							xmlNsPtr elementNamespace = xmlSearchNs(cur->doc, cur, [prefix xmlString]);
+						
+							NSString *standardPrefix = [[USGlobals sharedInstance].wsdlStandardNamespaces objectForKey:[NSString stringWithCString:(char*)elementNamespace->href encoding:NSUTF8StringEncoding]];
+						
+							elementClassString = [NSString stringWithFormat:@"%@_%@", standardPrefix, localName];
+						} else {
+							elementClassString = [elementTypeString stringByReplacingOccurrencesOfString:@":" withString:@"_" options:0 range:NSMakeRange(0, [elementTypeString length])];
+						}
+					
+						elementClass = NSClassFromString(elementClassString);
+						xmlFree(instanceType);
+					}
+				
+					id newChild = [elementClass deserializeNode:cur];
+				
+					self.name = newChild;
 				}
-				
-				id newChild = [elementClass deserializeNode:cur];
-				
-				self.name = newChild;
 			}
 			if(xmlStrEqual(cur->name, (const xmlChar *) "clientID")) {
-				
-				Class elementClass = nil;
-				xmlChar *instanceType = xmlGetNsProp(cur, (const xmlChar *) "type", (const xmlChar *) "http://www.w3.org/2001/XMLSchema-instance");
-				if(instanceType == NULL) {
-					elementClass = [NSString class];
-				} else {
-					NSString *elementTypeString = [NSString stringWithCString:(char*)instanceType encoding:NSUTF8StringEncoding];
-					
-					NSArray *elementTypeArray = [elementTypeString componentsSeparatedByString:@":"];
-					
-					NSString *elementClassString = nil;
-					if([elementTypeArray count] > 1) {
-						NSString *prefix = [elementTypeArray objectAtIndex:0];
-						NSString *localName = [elementTypeArray objectAtIndex:1];
-						
-						xmlNsPtr elementNamespace = xmlSearchNs(cur->doc, cur, [prefix xmlString]);
-						
-						NSString *standardPrefix = [[USGlobals sharedInstance].wsdlStandardNamespaces objectForKey:[NSString stringWithCString:(char*)elementNamespace->href encoding:NSUTF8StringEncoding]];
-						
-						elementClassString = [NSString stringWithFormat:@"%@_%@", standardPrefix, localName];
+				BOOL nilProperty = NO;
+                for(xmlAttrPtr attr = cur->properties; attr != NULL; attr = attr->next) {
+                    if(xmlStrEqual(attr->name, (const xmlChar *) "nil") &&
+                       attr->children &&
+                       xmlStrEqual(attr->children->content, (const xmlChar *) "true"))
+                        nilProperty = YES;
+                        break;
+                }
+                if (nilProperty == NO) {
+					Class elementClass = nil;
+					xmlChar *instanceType = xmlGetNsProp(cur, (const xmlChar *) "type", (const xmlChar *) "http://www.w3.org/2001/XMLSchema-instance");
+					if(instanceType == NULL) {
+						elementClass = [NSString class];
 					} else {
-						elementClassString = [elementTypeString stringByReplacingOccurrencesOfString:@":" withString:@"_" options:0 range:NSMakeRange(0, [elementTypeString length])];
-					}
+						NSString *elementTypeString = [NSString stringWithCString:(char*)instanceType encoding:NSUTF8StringEncoding];
 					
-					elementClass = NSClassFromString(elementClassString);
-					xmlFree(instanceType);
+						NSArray *elementTypeArray = [elementTypeString componentsSeparatedByString:@":"];
+					
+						NSString *elementClassString = nil;
+						if([elementTypeArray count] > 1) {
+							NSString *prefix = [elementTypeArray objectAtIndex:0];
+							NSString *localName = [elementTypeArray objectAtIndex:1];
+						
+							xmlNsPtr elementNamespace = xmlSearchNs(cur->doc, cur, [prefix xmlString]);
+						
+							NSString *standardPrefix = [[USGlobals sharedInstance].wsdlStandardNamespaces objectForKey:[NSString stringWithCString:(char*)elementNamespace->href encoding:NSUTF8StringEncoding]];
+						
+							elementClassString = [NSString stringWithFormat:@"%@_%@", standardPrefix, localName];
+						} else {
+							elementClassString = [elementTypeString stringByReplacingOccurrencesOfString:@":" withString:@"_" options:0 range:NSMakeRange(0, [elementTypeString length])];
+						}
+					
+						elementClass = NSClassFromString(elementClassString);
+						xmlFree(instanceType);
+					}
+				
+					id newChild = [elementClass deserializeNode:cur];
+				
+					self.clientID = newChild;
 				}
-				
-				id newChild = [elementClass deserializeNode:cur];
-				
-				self.clientID = newChild;
 			}
 			if(xmlStrEqual(cur->name, (const xmlChar *) "serviceName")) {
-				
-				Class elementClass = nil;
-				xmlChar *instanceType = xmlGetNsProp(cur, (const xmlChar *) "type", (const xmlChar *) "http://www.w3.org/2001/XMLSchema-instance");
-				if(instanceType == NULL) {
-					elementClass = [NSString class];
-				} else {
-					NSString *elementTypeString = [NSString stringWithCString:(char*)instanceType encoding:NSUTF8StringEncoding];
-					
-					NSArray *elementTypeArray = [elementTypeString componentsSeparatedByString:@":"];
-					
-					NSString *elementClassString = nil;
-					if([elementTypeArray count] > 1) {
-						NSString *prefix = [elementTypeArray objectAtIndex:0];
-						NSString *localName = [elementTypeArray objectAtIndex:1];
-						
-						xmlNsPtr elementNamespace = xmlSearchNs(cur->doc, cur, [prefix xmlString]);
-						
-						NSString *standardPrefix = [[USGlobals sharedInstance].wsdlStandardNamespaces objectForKey:[NSString stringWithCString:(char*)elementNamespace->href encoding:NSUTF8StringEncoding]];
-						
-						elementClassString = [NSString stringWithFormat:@"%@_%@", standardPrefix, localName];
+				BOOL nilProperty = NO;
+                for(xmlAttrPtr attr = cur->properties; attr != NULL; attr = attr->next) {
+                    if(xmlStrEqual(attr->name, (const xmlChar *) "nil") &&
+                       attr->children &&
+                       xmlStrEqual(attr->children->content, (const xmlChar *) "true"))
+                        nilProperty = YES;
+                        break;
+                }
+                if (nilProperty == NO) {
+					Class elementClass = nil;
+					xmlChar *instanceType = xmlGetNsProp(cur, (const xmlChar *) "type", (const xmlChar *) "http://www.w3.org/2001/XMLSchema-instance");
+					if(instanceType == NULL) {
+						elementClass = [NSString class];
 					} else {
-						elementClassString = [elementTypeString stringByReplacingOccurrencesOfString:@":" withString:@"_" options:0 range:NSMakeRange(0, [elementTypeString length])];
-					}
+						NSString *elementTypeString = [NSString stringWithCString:(char*)instanceType encoding:NSUTF8StringEncoding];
 					
-					elementClass = NSClassFromString(elementClassString);
-					xmlFree(instanceType);
+						NSArray *elementTypeArray = [elementTypeString componentsSeparatedByString:@":"];
+					
+						NSString *elementClassString = nil;
+						if([elementTypeArray count] > 1) {
+							NSString *prefix = [elementTypeArray objectAtIndex:0];
+							NSString *localName = [elementTypeArray objectAtIndex:1];
+						
+							xmlNsPtr elementNamespace = xmlSearchNs(cur->doc, cur, [prefix xmlString]);
+						
+							NSString *standardPrefix = [[USGlobals sharedInstance].wsdlStandardNamespaces objectForKey:[NSString stringWithCString:(char*)elementNamespace->href encoding:NSUTF8StringEncoding]];
+						
+							elementClassString = [NSString stringWithFormat:@"%@_%@", standardPrefix, localName];
+						} else {
+							elementClassString = [elementTypeString stringByReplacingOccurrencesOfString:@":" withString:@"_" options:0 range:NSMakeRange(0, [elementTypeString length])];
+						}
+					
+						elementClass = NSClassFromString(elementClassString);
+						xmlFree(instanceType);
+					}
+				
+					id newChild = [elementClass deserializeNode:cur];
+				
+					self.serviceName = newChild;
 				}
-				
-				id newChild = [elementClass deserializeNode:cur];
-				
-				self.serviceName = newChild;
 			}
 		}
 	}
@@ -704,9 +812,9 @@
 	for(int i = 0; i < numIvars; i++) {
 		Ivar thisIvar = ivars[i];
 		NSString * key = [NSString stringWithUTF8String:ivar_getName(thisIvar)];
-		id value = [decoder decodeObjectForKey:key];
-		if (value == nil) { value = [NSNumber numberWithFloat:0.0]; }
-		[self setValue:value forKey:key];
+		id val = [decoder decodeObjectForKey:key];
+		if (val == nil) { val = [NSNumber numberWithFloat:0.0]; }
+		[self setValue:val forKey:key];
 	}
 	if (numIvars > 0) { free(ivars); }
 	[pool drain];
@@ -722,8 +830,8 @@
 	for (int i = 0; i < numIvars; i++) {
 		Ivar thisIvar = ivars[i];
 		NSString * key = [NSString stringWithUTF8String:ivar_getName(thisIvar)];
-		id value = [self valueForKey:key];
-		[encoder encodeObject:value forKey:key];
+		id val = [self valueForKey:key];
+		[encoder encodeObject:val forKey:key];
 	}
 	if (numIvars > 0) { free(ivars); }
 	[pool drain];
@@ -970,6 +1078,14 @@
 		}
 				
 		[self connection:connection didFailWithError:error];
+	} else if ([httpResponse statusCode] >= 400) {
+		NSError *error = nil;
+		[connection cancel];	
+		NSDictionary *userInfo = [NSDictionary dictionaryWithObjectsAndKeys:[NSHTTPURLResponse localizedStringForStatusCode:[httpResponse statusCode]],NSLocalizedDescriptionKey,
+                                                                         httpResponse.URL, NSURLErrorKey, nil];
+				
+		error = [NSError errorWithDomain:@"GetUserInfoSoap11BindingResponseHTTP" code:[httpResponse statusCode] userInfo:userInfo];
+		[self connection:connection didFailWithError:error];		
 	}
 }
 - (void)connection:(NSURLConnection *)connection didReceiveData:(NSData *)data

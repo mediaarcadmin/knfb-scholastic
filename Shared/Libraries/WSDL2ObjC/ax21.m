@@ -50,6 +50,15 @@
 	
 	if(self.value != 0) {
 		xmlAddChild(node, [self.value xmlNodeForDoc:node->doc elementName:@"value" elementNSPrefix:@"ax21"]);
+	} else {
+		xmlNodePtr newnode;
+		if([@"ax21" length] > 0) {
+			newnode = xmlNewDocNode(node->doc, NULL, [@"ax21:value" xmlString], NULL);        
+		} else {
+			newnode = xmlNewDocNode(node->doc, NULL, [@"value" xmlString], NULL);        
+		}
+        xmlNewProp(newnode, (const xmlChar *)"xsi:nil", (const xmlChar *)"true");
+        xmlAddChild(node, newnode);
 	}
 }
 /* elements */
@@ -229,18 +238,63 @@
 	
 	if(self.author != 0) {
 		xmlAddChild(node, [self.author xmlNodeForDoc:node->doc elementName:@"author" elementNSPrefix:@"ax21"]);
+	} else {
+		xmlNodePtr newnode;
+		if([@"ax21" length] > 0) {
+			newnode = xmlNewDocNode(node->doc, NULL, [@"ax21:author" xmlString], NULL);        
+		} else {
+			newnode = xmlNewDocNode(node->doc, NULL, [@"author" xmlString], NULL);        
+		}
+        xmlNewProp(newnode, (const xmlChar *)"xsi:nil", (const xmlChar *)"true");
+        xmlAddChild(node, newnode);
 	}
 	if(self.initiatedBy != 0) {
 		xmlAddChild(node, [self.initiatedBy xmlNodeForDoc:node->doc elementName:@"initiatedBy" elementNSPrefix:@"ax21"]);
+	} else {
+		xmlNodePtr newnode;
+		if([@"ax21" length] > 0) {
+			newnode = xmlNewDocNode(node->doc, NULL, [@"ax21:initiatedBy" xmlString], NULL);        
+		} else {
+			newnode = xmlNewDocNode(node->doc, NULL, [@"initiatedBy" xmlString], NULL);        
+		}
+        xmlNewProp(newnode, (const xmlChar *)"xsi:nil", (const xmlChar *)"true");
+        xmlAddChild(node, newnode);
 	}
 	if(self.isbn != 0) {
 		xmlAddChild(node, [self.isbn xmlNodeForDoc:node->doc elementName:@"isbn" elementNSPrefix:@"ax21"]);
+	} else {
+		xmlNodePtr newnode;
+		if([@"ax21" length] > 0) {
+			newnode = xmlNewDocNode(node->doc, NULL, [@"ax21:isbn" xmlString], NULL);        
+		} else {
+			newnode = xmlNewDocNode(node->doc, NULL, [@"isbn" xmlString], NULL);        
+		}
+        xmlNewProp(newnode, (const xmlChar *)"xsi:nil", (const xmlChar *)"true");
+        xmlAddChild(node, newnode);
 	}
 	if(self.timeStamp != 0) {
 		xmlAddChild(node, [self.timeStamp xmlNodeForDoc:node->doc elementName:@"timeStamp" elementNSPrefix:@"ax21"]);
+	} else {
+		xmlNodePtr newnode;
+		if([@"ax21" length] > 0) {
+			newnode = xmlNewDocNode(node->doc, NULL, [@"ax21:timeStamp" xmlString], NULL);        
+		} else {
+			newnode = xmlNewDocNode(node->doc, NULL, [@"timeStamp" xmlString], NULL);        
+		}
+        xmlNewProp(newnode, (const xmlChar *)"xsi:nil", (const xmlChar *)"true");
+        xmlAddChild(node, newnode);
 	}
 	if(self.title != 0) {
 		xmlAddChild(node, [self.title xmlNodeForDoc:node->doc elementName:@"title" elementNSPrefix:@"ax21"]);
+	} else {
+		xmlNodePtr newnode;
+		if([@"ax21" length] > 0) {
+			newnode = xmlNewDocNode(node->doc, NULL, [@"ax21:title" xmlString], NULL);        
+		} else {
+			newnode = xmlNewDocNode(node->doc, NULL, [@"title" xmlString], NULL);        
+		}
+        xmlNewProp(newnode, (const xmlChar *)"xsi:nil", (const xmlChar *)"true");
+        xmlAddChild(node, newnode);
 	}
 }
 /* elements */
@@ -591,9 +645,27 @@
 	}
 	if(self.profileName != 0) {
 		xmlAddChild(node, [self.profileName xmlNodeForDoc:node->doc elementName:@"profileName" elementNSPrefix:@"ax21"]);
+	} else {
+		xmlNodePtr newnode;
+		if([@"ax21" length] > 0) {
+			newnode = xmlNewDocNode(node->doc, NULL, [@"ax21:profileName" xmlString], NULL);        
+		} else {
+			newnode = xmlNewDocNode(node->doc, NULL, [@"profileName" xmlString], NULL);        
+		}
+        xmlNewProp(newnode, (const xmlChar *)"xsi:nil", (const xmlChar *)"true");
+        xmlAddChild(node, newnode);
 	}
 	if(self.timestamp != 0) {
 		xmlAddChild(node, [self.timestamp xmlNodeForDoc:node->doc elementName:@"timestamp" elementNSPrefix:@"ax21"]);
+	} else {
+		xmlNodePtr newnode;
+		if([@"ax21" length] > 0) {
+			newnode = xmlNewDocNode(node->doc, NULL, [@"ax21:timestamp" xmlString], NULL);        
+		} else {
+			newnode = xmlNewDocNode(node->doc, NULL, [@"timestamp" xmlString], NULL);        
+		}
+        xmlNewProp(newnode, (const xmlChar *)"xsi:nil", (const xmlChar *)"true");
+        xmlAddChild(node, newnode);
 	}
 }
 /* elements */
@@ -855,9 +927,27 @@
 		for(ax21_WishListItem * child in self.itemList) {
 			xmlAddChild(node, [child xmlNodeForDoc:node->doc elementName:@"itemList" elementNSPrefix:@"ax21"]);
 		}
+	} else {
+		xmlNodePtr newnode;
+		if([@"ax21" length] > 0) {
+			newnode = xmlNewDocNode(node->doc, NULL, [@"ax21:itemList" xmlString], NULL);        
+		} else {
+			newnode = xmlNewDocNode(node->doc, NULL, [@"itemList" xmlString], NULL);        
+		}
+        xmlNewProp(newnode, (const xmlChar *)"xsi:nil", (const xmlChar *)"true");
+        xmlAddChild(node, newnode);
 	}
 	if(self.profile != 0) {
 		xmlAddChild(node, [self.profile xmlNodeForDoc:node->doc elementName:@"profile" elementNSPrefix:@"ax21"]);
+	} else {
+		xmlNodePtr newnode;
+		if([@"ax21" length] > 0) {
+			newnode = xmlNewDocNode(node->doc, NULL, [@"ax21:profile" xmlString], NULL);        
+		} else {
+			newnode = xmlNewDocNode(node->doc, NULL, [@"profile" xmlString], NULL);        
+		}
+        xmlNewProp(newnode, (const xmlChar *)"xsi:nil", (const xmlChar *)"true");
+        xmlAddChild(node, newnode);
 	}
 }
 /* elements */
@@ -1081,6 +1171,15 @@
 	}
 	if(self.errorMessage != 0) {
 		xmlAddChild(node, [self.errorMessage xmlNodeForDoc:node->doc elementName:@"errorMessage" elementNSPrefix:@"ax21"]);
+	} else {
+		xmlNodePtr newnode;
+		if([@"ax21" length] > 0) {
+			newnode = xmlNewDocNode(node->doc, NULL, [@"ax21:errorMessage" xmlString], NULL);        
+		} else {
+			newnode = xmlNewDocNode(node->doc, NULL, [@"errorMessage" xmlString], NULL);        
+		}
+        xmlNewProp(newnode, (const xmlChar *)"xsi:nil", (const xmlChar *)"true");
+        xmlAddChild(node, newnode);
 	}
 }
 /* elements */
@@ -1297,9 +1396,27 @@
 	
 	if(self.isbn != 0) {
 		xmlAddChild(node, [self.isbn xmlNodeForDoc:node->doc elementName:@"isbn" elementNSPrefix:@"ax21"]);
+	} else {
+		xmlNodePtr newnode;
+		if([@"ax21" length] > 0) {
+			newnode = xmlNewDocNode(node->doc, NULL, [@"ax21:isbn" xmlString], NULL);        
+		} else {
+			newnode = xmlNewDocNode(node->doc, NULL, [@"isbn" xmlString], NULL);        
+		}
+        xmlNewProp(newnode, (const xmlChar *)"xsi:nil", (const xmlChar *)"true");
+        xmlAddChild(node, newnode);
 	}
 	if(self.itemError != 0) {
 		xmlAddChild(node, [self.itemError xmlNodeForDoc:node->doc elementName:@"itemError" elementNSPrefix:@"ax21"]);
+	} else {
+		xmlNodePtr newnode;
+		if([@"ax21" length] > 0) {
+			newnode = xmlNewDocNode(node->doc, NULL, [@"ax21:itemError" xmlString], NULL);        
+		} else {
+			newnode = xmlNewDocNode(node->doc, NULL, [@"itemError" xmlString], NULL);        
+		}
+        xmlNewProp(newnode, (const xmlChar *)"xsi:nil", (const xmlChar *)"true");
+        xmlAddChild(node, newnode);
 	}
 }
 /* elements */
@@ -1520,9 +1637,27 @@
 		for(ax21_WishListItemStatus * child in self.itemStatusList) {
 			xmlAddChild(node, [child xmlNodeForDoc:node->doc elementName:@"itemStatusList" elementNSPrefix:@"ax21"]);
 		}
+	} else {
+		xmlNodePtr newnode;
+		if([@"ax21" length] > 0) {
+			newnode = xmlNewDocNode(node->doc, NULL, [@"ax21:itemStatusList" xmlString], NULL);        
+		} else {
+			newnode = xmlNewDocNode(node->doc, NULL, [@"itemStatusList" xmlString], NULL);        
+		}
+        xmlNewProp(newnode, (const xmlChar *)"xsi:nil", (const xmlChar *)"true");
+        xmlAddChild(node, newnode);
 	}
 	if(self.profileError != 0) {
 		xmlAddChild(node, [self.profileError xmlNodeForDoc:node->doc elementName:@"profileError" elementNSPrefix:@"ax21"]);
+	} else {
+		xmlNodePtr newnode;
+		if([@"ax21" length] > 0) {
+			newnode = xmlNewDocNode(node->doc, NULL, [@"ax21:profileError" xmlString], NULL);        
+		} else {
+			newnode = xmlNewDocNode(node->doc, NULL, [@"profileError" xmlString], NULL);        
+		}
+        xmlNewProp(newnode, (const xmlChar *)"xsi:nil", (const xmlChar *)"true");
+        xmlAddChild(node, newnode);
 	}
 	if(self.profileID != 0) {
 		xmlAddChild(node, [self.profileID xmlNodeForDoc:node->doc elementName:@"profileID" elementNSPrefix:@"ax21"]);
@@ -1793,12 +1928,39 @@
 		for(ax21_WishListProfileStatus * child in self.profileStatusList) {
 			xmlAddChild(node, [child xmlNodeForDoc:node->doc elementName:@"profileStatusList" elementNSPrefix:@"ax21"]);
 		}
+	} else {
+		xmlNodePtr newnode;
+		if([@"ax21" length] > 0) {
+			newnode = xmlNewDocNode(node->doc, NULL, [@"ax21:profileStatusList" xmlString], NULL);        
+		} else {
+			newnode = xmlNewDocNode(node->doc, NULL, [@"profileStatusList" xmlString], NULL);        
+		}
+        xmlNewProp(newnode, (const xmlChar *)"xsi:nil", (const xmlChar *)"true");
+        xmlAddChild(node, newnode);
 	}
 	if(self.spsID != 0) {
 		xmlAddChild(node, [self.spsID xmlNodeForDoc:node->doc elementName:@"spsID" elementNSPrefix:@"ax21"]);
+	} else {
+		xmlNodePtr newnode;
+		if([@"ax21" length] > 0) {
+			newnode = xmlNewDocNode(node->doc, NULL, [@"ax21:spsID" xmlString], NULL);        
+		} else {
+			newnode = xmlNewDocNode(node->doc, NULL, [@"spsID" xmlString], NULL);        
+		}
+        xmlNewProp(newnode, (const xmlChar *)"xsi:nil", (const xmlChar *)"true");
+        xmlAddChild(node, newnode);
 	}
 	if(self.wishListError != 0) {
 		xmlAddChild(node, [self.wishListError xmlNodeForDoc:node->doc elementName:@"wishListError" elementNSPrefix:@"ax21"]);
+	} else {
+		xmlNodePtr newnode;
+		if([@"ax21" length] > 0) {
+			newnode = xmlNewDocNode(node->doc, NULL, [@"ax21:wishListError" xmlString], NULL);        
+		} else {
+			newnode = xmlNewDocNode(node->doc, NULL, [@"wishListError" xmlString], NULL);        
+		}
+        xmlNewProp(newnode, (const xmlChar *)"xsi:nil", (const xmlChar *)"true");
+        xmlAddChild(node, newnode);
 	}
 }
 /* elements */
@@ -2064,6 +2226,15 @@
 		for(ax21_WishListProfileItem * child in self.profileItemList) {
 			xmlAddChild(node, [child xmlNodeForDoc:node->doc elementName:@"profileItemList" elementNSPrefix:@"ax21"]);
 		}
+	} else {
+		xmlNodePtr newnode;
+		if([@"ax21" length] > 0) {
+			newnode = xmlNewDocNode(node->doc, NULL, [@"ax21:profileItemList" xmlString], NULL);        
+		} else {
+			newnode = xmlNewDocNode(node->doc, NULL, [@"profileItemList" xmlString], NULL);        
+		}
+        xmlNewProp(newnode, (const xmlChar *)"xsi:nil", (const xmlChar *)"true");
+        xmlAddChild(node, newnode);
 	}
 	if(self.spsID != 0) {
 		xmlAddChild(node, [self.spsID xmlNodeForDoc:node->doc elementName:@"spsID" elementNSPrefix:@"ax21"]);
