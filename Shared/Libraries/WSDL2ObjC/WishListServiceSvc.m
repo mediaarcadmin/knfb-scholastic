@@ -56,21 +56,53 @@
 	
 	if(self.clientID != 0) {
 		xmlAddChild(node, [self.clientID xmlNodeForDoc:node->doc elementName:@"clientID" elementNSPrefix:@"WishListServiceSvc"]);
+	} else {
+		xmlNodePtr newnode;
+		if([@"WishListServiceSvc" length] > 0) {
+			newnode = xmlNewDocNode(node->doc, NULL, [@"WishListServiceSvc:clientID" xmlString], NULL);        
+		} else {
+			newnode = xmlNewDocNode(node->doc, NULL, [@"clientID" xmlString], NULL);        
+		}
+        xmlNewProp(newnode, (const xmlChar *)"xsi:nil", (const xmlChar *)"true");
+        xmlAddChild(node, newnode);
 	}
 	if(self.token != 0) {
 		xmlAddChild(node, [self.token xmlNodeForDoc:node->doc elementName:@"token" elementNSPrefix:@"WishListServiceSvc"]);
+	} else {
+		xmlNodePtr newnode;
+		if([@"WishListServiceSvc" length] > 0) {
+			newnode = xmlNewDocNode(node->doc, NULL, [@"WishListServiceSvc:token" xmlString], NULL);        
+		} else {
+			newnode = xmlNewDocNode(node->doc, NULL, [@"token" xmlString], NULL);        
+		}
+        xmlNewProp(newnode, (const xmlChar *)"xsi:nil", (const xmlChar *)"true");
+        xmlAddChild(node, newnode);
 	}
 	if(self.spsIdParam != 0) {
 		xmlAddChild(node, [self.spsIdParam xmlNodeForDoc:node->doc elementName:@"spsIdParam" elementNSPrefix:@"WishListServiceSvc"]);
 	} else {
-        xmlNodePtr newnode = xmlNewDocNode(node->doc, NULL, [@"WishListServiceSvc:spsIdParam" xmlString], NULL);        
+		xmlNodePtr newnode;
+		if([@"WishListServiceSvc" length] > 0) {
+			newnode = xmlNewDocNode(node->doc, NULL, [@"WishListServiceSvc:spsIdParam" xmlString], NULL);        
+		} else {
+			newnode = xmlNewDocNode(node->doc, NULL, [@"spsIdParam" xmlString], NULL);        
+		}
         xmlNewProp(newnode, (const xmlChar *)"xsi:nil", (const xmlChar *)"true");
         xmlAddChild(node, newnode);
-    }
+	}
 	if(self.profileItemList != 0) {
 		for(ax21_WishListProfileItem * child in self.profileItemList) {
 			xmlAddChild(node, [child xmlNodeForDoc:node->doc elementName:@"profileItemList" elementNSPrefix:@"WishListServiceSvc"]);
 		}
+	} else {
+		xmlNodePtr newnode;
+		if([@"WishListServiceSvc" length] > 0) {
+			newnode = xmlNewDocNode(node->doc, NULL, [@"WishListServiceSvc:profileItemList" xmlString], NULL);        
+		} else {
+			newnode = xmlNewDocNode(node->doc, NULL, [@"profileItemList" xmlString], NULL);        
+		}
+        xmlNewProp(newnode, (const xmlChar *)"xsi:nil", (const xmlChar *)"true");
+        xmlAddChild(node, newnode);
 	}
 }
 /* elements */
@@ -375,6 +407,15 @@
 	
 	if(self.return_ != 0) {
 		xmlAddChild(node, [self.return_ xmlNodeForDoc:node->doc elementName:@"return" elementNSPrefix:@"WishListServiceSvc"]);
+	} else {
+		xmlNodePtr newnode;
+		if([@"WishListServiceSvc" length] > 0) {
+			newnode = xmlNewDocNode(node->doc, NULL, [@"WishListServiceSvc:return" xmlString], NULL);        
+		} else {
+			newnode = xmlNewDocNode(node->doc, NULL, [@"return" xmlString], NULL);        
+		}
+        xmlNewProp(newnode, (const xmlChar *)"xsi:nil", (const xmlChar *)"true");
+        xmlAddChild(node, newnode);
 	}
 }
 /* elements */
@@ -552,21 +593,53 @@
 	
 	if(self.clientID != 0) {
 		xmlAddChild(node, [self.clientID xmlNodeForDoc:node->doc elementName:@"clientID" elementNSPrefix:@"WishListServiceSvc"]);
+	} else {
+		xmlNodePtr newnode;
+		if([@"WishListServiceSvc" length] > 0) {
+			newnode = xmlNewDocNode(node->doc, NULL, [@"WishListServiceSvc:clientID" xmlString], NULL);        
+		} else {
+			newnode = xmlNewDocNode(node->doc, NULL, [@"clientID" xmlString], NULL);        
+		}
+        xmlNewProp(newnode, (const xmlChar *)"xsi:nil", (const xmlChar *)"true");
+        xmlAddChild(node, newnode);
 	}
 	if(self.token != 0) {
 		xmlAddChild(node, [self.token xmlNodeForDoc:node->doc elementName:@"token" elementNSPrefix:@"WishListServiceSvc"]);
+	} else {
+		xmlNodePtr newnode;
+		if([@"WishListServiceSvc" length] > 0) {
+			newnode = xmlNewDocNode(node->doc, NULL, [@"WishListServiceSvc:token" xmlString], NULL);        
+		} else {
+			newnode = xmlNewDocNode(node->doc, NULL, [@"token" xmlString], NULL);        
+		}
+        xmlNewProp(newnode, (const xmlChar *)"xsi:nil", (const xmlChar *)"true");
+        xmlAddChild(node, newnode);
 	}
 	if(self.spsIdParam != 0) {
 		xmlAddChild(node, [self.spsIdParam xmlNodeForDoc:node->doc elementName:@"spsIdParam" elementNSPrefix:@"WishListServiceSvc"]);
 	} else {
-        xmlNodePtr newnode = xmlNewDocNode(node->doc, NULL, [@"WishListServiceSvc:spsIdParam" xmlString], NULL);        
+		xmlNodePtr newnode;
+		if([@"WishListServiceSvc" length] > 0) {
+			newnode = xmlNewDocNode(node->doc, NULL, [@"WishListServiceSvc:spsIdParam" xmlString], NULL);        
+		} else {
+			newnode = xmlNewDocNode(node->doc, NULL, [@"spsIdParam" xmlString], NULL);        
+		}
         xmlNewProp(newnode, (const xmlChar *)"xsi:nil", (const xmlChar *)"true");
         xmlAddChild(node, newnode);
-    }
+	}
 	if(self.profileItemList != 0) {
 		for(ax21_WishListProfileItem * child in self.profileItemList) {
 			xmlAddChild(node, [child xmlNodeForDoc:node->doc elementName:@"profileItemList" elementNSPrefix:@"WishListServiceSvc"]);
 		}
+	} else {
+		xmlNodePtr newnode;
+		if([@"WishListServiceSvc" length] > 0) {
+			newnode = xmlNewDocNode(node->doc, NULL, [@"WishListServiceSvc:profileItemList" xmlString], NULL);        
+		} else {
+			newnode = xmlNewDocNode(node->doc, NULL, [@"profileItemList" xmlString], NULL);        
+		}
+        xmlNewProp(newnode, (const xmlChar *)"xsi:nil", (const xmlChar *)"true");
+        xmlAddChild(node, newnode);
 	}
 }
 /* elements */
@@ -871,6 +944,15 @@
 	
 	if(self.return_ != 0) {
 		xmlAddChild(node, [self.return_ xmlNodeForDoc:node->doc elementName:@"return" elementNSPrefix:@"WishListServiceSvc"]);
+	} else {
+		xmlNodePtr newnode;
+		if([@"WishListServiceSvc" length] > 0) {
+			newnode = xmlNewDocNode(node->doc, NULL, [@"WishListServiceSvc:return" xmlString], NULL);        
+		} else {
+			newnode = xmlNewDocNode(node->doc, NULL, [@"return" xmlString], NULL);        
+		}
+        xmlNewProp(newnode, (const xmlChar *)"xsi:nil", (const xmlChar *)"true");
+        xmlAddChild(node, newnode);
 	}
 }
 /* elements */
@@ -1048,17 +1130,40 @@
 	
 	if(self.clientID != 0) {
 		xmlAddChild(node, [self.clientID xmlNodeForDoc:node->doc elementName:@"clientID" elementNSPrefix:@"WishListServiceSvc"]);
+	} else {
+		xmlNodePtr newnode;
+		if([@"WishListServiceSvc" length] > 0) {
+			newnode = xmlNewDocNode(node->doc, NULL, [@"WishListServiceSvc:clientID" xmlString], NULL);        
+		} else {
+			newnode = xmlNewDocNode(node->doc, NULL, [@"clientID" xmlString], NULL);        
+		}
+        xmlNewProp(newnode, (const xmlChar *)"xsi:nil", (const xmlChar *)"true");
+        xmlAddChild(node, newnode);
 	}
 	if(self.token != 0) {
 		xmlAddChild(node, [self.token xmlNodeForDoc:node->doc elementName:@"token" elementNSPrefix:@"WishListServiceSvc"]);
+	} else {
+		xmlNodePtr newnode;
+		if([@"WishListServiceSvc" length] > 0) {
+			newnode = xmlNewDocNode(node->doc, NULL, [@"WishListServiceSvc:token" xmlString], NULL);        
+		} else {
+			newnode = xmlNewDocNode(node->doc, NULL, [@"token" xmlString], NULL);        
+		}
+        xmlNewProp(newnode, (const xmlChar *)"xsi:nil", (const xmlChar *)"true");
+        xmlAddChild(node, newnode);
 	}
 	if(self.spsIdParam != 0) {
 		xmlAddChild(node, [self.spsIdParam xmlNodeForDoc:node->doc elementName:@"spsIdParam" elementNSPrefix:@"WishListServiceSvc"]);
 	} else {
-        xmlNodePtr newnode = xmlNewDocNode(node->doc, NULL, [@"WishListServiceSvc:spsIdParam" xmlString], NULL);        
+		xmlNodePtr newnode;
+		if([@"WishListServiceSvc" length] > 0) {
+			newnode = xmlNewDocNode(node->doc, NULL, [@"WishListServiceSvc:spsIdParam" xmlString], NULL);        
+		} else {
+			newnode = xmlNewDocNode(node->doc, NULL, [@"spsIdParam" xmlString], NULL);        
+		}
         xmlNewProp(newnode, (const xmlChar *)"xsi:nil", (const xmlChar *)"true");
         xmlAddChild(node, newnode);
-    }
+	}
 	if(self.profileIdList != 0) {
 		for(NSNumber * child in self.profileIdList) {
 			xmlAddChild(node, [child xmlNodeForDoc:node->doc elementName:@"profileIdList" elementNSPrefix:@"WishListServiceSvc"]);
@@ -1367,6 +1472,15 @@
 	
 	if(self.return_ != 0) {
 		xmlAddChild(node, [self.return_ xmlNodeForDoc:node->doc elementName:@"return" elementNSPrefix:@"WishListServiceSvc"]);
+	} else {
+		xmlNodePtr newnode;
+		if([@"WishListServiceSvc" length] > 0) {
+			newnode = xmlNewDocNode(node->doc, NULL, [@"WishListServiceSvc:return" xmlString], NULL);        
+		} else {
+			newnode = xmlNewDocNode(node->doc, NULL, [@"return" xmlString], NULL);        
+		}
+        xmlNewProp(newnode, (const xmlChar *)"xsi:nil", (const xmlChar *)"true");
+        xmlAddChild(node, newnode);
 	}
 }
 /* elements */
@@ -1544,21 +1658,53 @@
 	
 	if(self.clientID != 0) {
 		xmlAddChild(node, [self.clientID xmlNodeForDoc:node->doc elementName:@"clientID" elementNSPrefix:@"WishListServiceSvc"]);
+	} else {
+		xmlNodePtr newnode;
+		if([@"WishListServiceSvc" length] > 0) {
+			newnode = xmlNewDocNode(node->doc, NULL, [@"WishListServiceSvc:clientID" xmlString], NULL);        
+		} else {
+			newnode = xmlNewDocNode(node->doc, NULL, [@"clientID" xmlString], NULL);        
+		}
+        xmlNewProp(newnode, (const xmlChar *)"xsi:nil", (const xmlChar *)"true");
+        xmlAddChild(node, newnode);
 	}
 	if(self.token != 0) {
 		xmlAddChild(node, [self.token xmlNodeForDoc:node->doc elementName:@"token" elementNSPrefix:@"WishListServiceSvc"]);
+	} else {
+		xmlNodePtr newnode;
+		if([@"WishListServiceSvc" length] > 0) {
+			newnode = xmlNewDocNode(node->doc, NULL, [@"WishListServiceSvc:token" xmlString], NULL);        
+		} else {
+			newnode = xmlNewDocNode(node->doc, NULL, [@"token" xmlString], NULL);        
+		}
+        xmlNewProp(newnode, (const xmlChar *)"xsi:nil", (const xmlChar *)"true");
+        xmlAddChild(node, newnode);
 	}
 	if(self.spsIdParam != 0) {
 		xmlAddChild(node, [self.spsIdParam xmlNodeForDoc:node->doc elementName:@"spsIdParam" elementNSPrefix:@"WishListServiceSvc"]);
 	} else {
-        xmlNodePtr newnode = xmlNewDocNode(node->doc, NULL, [@"WishListServiceSvc:spsIdParam" xmlString], NULL);        
+		xmlNodePtr newnode;
+		if([@"WishListServiceSvc" length] > 0) {
+			newnode = xmlNewDocNode(node->doc, NULL, [@"WishListServiceSvc:spsIdParam" xmlString], NULL);        
+		} else {
+			newnode = xmlNewDocNode(node->doc, NULL, [@"spsIdParam" xmlString], NULL);        
+		}
         xmlNewProp(newnode, (const xmlChar *)"xsi:nil", (const xmlChar *)"true");
         xmlAddChild(node, newnode);
-    }
+	}
 	if(self.profileIdList != 0) {
 		for(ax21_WishListProfile * child in self.profileIdList) {
 			xmlAddChild(node, [child xmlNodeForDoc:node->doc elementName:@"profileIdList" elementNSPrefix:@"WishListServiceSvc"]);
 		}
+	} else {
+		xmlNodePtr newnode;
+		if([@"WishListServiceSvc" length] > 0) {
+			newnode = xmlNewDocNode(node->doc, NULL, [@"WishListServiceSvc:profileIdList" xmlString], NULL);        
+		} else {
+			newnode = xmlNewDocNode(node->doc, NULL, [@"profileIdList" xmlString], NULL);        
+		}
+        xmlNewProp(newnode, (const xmlChar *)"xsi:nil", (const xmlChar *)"true");
+        xmlAddChild(node, newnode);
 	}
 }
 /* elements */
@@ -1863,6 +2009,15 @@
 	
 	if(self.return_ != 0) {
 		xmlAddChild(node, [self.return_ xmlNodeForDoc:node->doc elementName:@"return" elementNSPrefix:@"WishListServiceSvc"]);
+	} else {
+		xmlNodePtr newnode;
+		if([@"WishListServiceSvc" length] > 0) {
+			newnode = xmlNewDocNode(node->doc, NULL, [@"WishListServiceSvc:return" xmlString], NULL);        
+		} else {
+			newnode = xmlNewDocNode(node->doc, NULL, [@"return" xmlString], NULL);        
+		}
+        xmlNewProp(newnode, (const xmlChar *)"xsi:nil", (const xmlChar *)"true");
+        xmlAddChild(node, newnode);
 	}
 }
 /* elements */
@@ -2252,6 +2407,14 @@
 		}
 				
 		[self connection:connection didFailWithError:error];
+	} else if ([httpResponse statusCode] >= 400) {
+		NSError *error = nil;
+		[connection cancel];	
+		NSDictionary *userInfo = [NSDictionary dictionaryWithObjectsAndKeys:[NSHTTPURLResponse localizedStringForStatusCode:[httpResponse statusCode]],NSLocalizedDescriptionKey,
+                                                                         httpResponse.URL, NSURLErrorKey, nil];
+				
+		error = [NSError errorWithDomain:@"WishListServiceSoap11BindingResponseHTTP" code:[httpResponse statusCode] userInfo:userInfo];
+		[self connection:connection didFailWithError:error];		
 	}
 }
 - (void)connection:(NSURLConnection *)connection didReceiveData:(NSData *)data
