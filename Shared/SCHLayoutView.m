@@ -119,6 +119,7 @@ static const NSUInteger kSCHLayoutViewPageViewCacheLimit = 2;
         pageTurningView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
         pageTurningView.zoomHandlingKind = EucPageTurningViewZoomHandlingKindZoom;
         pageTurningView.vibratesOnInvalidTurn = NO;
+        [pageTurningView.tapGestureRecognizer setCancelsTouchesInView:NO];
         
         // Must do this here so that the page aspect ratio takes account of the twoUp property
         CGRect myBounds = self.bounds;
