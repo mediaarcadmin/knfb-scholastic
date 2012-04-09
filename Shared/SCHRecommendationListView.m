@@ -24,6 +24,7 @@
 @synthesize delegate;
 @synthesize ISBN;
 @synthesize isOnWishList;
+@synthesize lastAuthenticationFailed;
 @synthesize showsBottomRule;
 @synthesize recommendationBackgroundColor;
 
@@ -63,6 +64,7 @@
     
 	if (self) {
         self.showsBottomRule = YES;
+        self.lastAuthenticationFailed = NO;
 	}
     
 	return self;
@@ -100,8 +102,6 @@
 
 - (void)updateWithRecommendationItem:(NSDictionary *)item
 {
-//    NSLog(@"Recommendation Item Dictionary: %@", item);
-
     [self initialiseView];
 
     self.ISBN = [item objectForKey:kSCHAppRecommendationISBN];
@@ -117,8 +117,6 @@
 
 - (void)updateWithWishListItem:(NSDictionary *)item
 {
-//    NSLog(@"Wish List Item Dictionary: %@", item);
-    
     [self initialiseView];
 
     self.ISBN = [item objectForKey:kSCHAppRecommendationISBN];
@@ -160,11 +158,11 @@
         self.ruleImageView.hidden = YES;
     }
     
-//    self.leftView.layer.borderWidth = 1;
-//    self.middleView.layer.borderWidth = 1;
-//    
-//    self.leftView.layer.borderColor = [UIColor redColor].CGColor;
-//    self.middleView.layer.borderColor = [UIColor blueColor].CGColor;
+    if (self.lastAuthenticationFailed) {
+        self.onWishListButton.hidden = YES;
+    } else {
+        self.onWishListButton.hidden = NO;
+    }
 }
 
 @end

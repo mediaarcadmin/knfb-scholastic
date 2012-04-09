@@ -38,6 +38,7 @@
 @synthesize localWishListItems;
 @synthesize modifiedWishListItems;
 @synthesize recommendationViewNib;
+@synthesize lastAuthenticationFailed;
 
 #pragma mark - Memory Management
 
@@ -74,6 +75,7 @@
     if (self) {
         // Custom initialization
         self.recommendationViewNib = [UINib nibWithNibName:@"SCHRecommendationListView" bundle:nil];
+        self.lastAuthenticationFailed = NO;
 
     }
     return self;
@@ -110,6 +112,13 @@
         [self.bottomToolbar setBackgroundImage:[[SCHThemeManager sharedThemeManager] imageForNavigationBar:UIInterfaceOrientationPortrait]];
         
         self.titleLabel.text = @"Kids' Top Rated eBooks";
+        
+        if (self.lastAuthenticationFailed) {
+            self.bottomSegment.enabled = NO;
+        } else {
+            self.bottomSegment.enabled = YES;
+        }
+        
     } else {
         self.title = @"Top Rated eBooks";
         self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithTitle:@"Done" style:UIBarButtonItemStyleBordered target:self action:@selector(close:)] autorelease];

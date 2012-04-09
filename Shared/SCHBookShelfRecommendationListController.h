@@ -15,9 +15,13 @@
 
 @interface SCHBookShelfRecommendationListController : UIViewController <UITableViewDelegate, UITableViewDataSource, SCHRecommendationListViewDelegate>
 
+
 @property (nonatomic, assign) id <SCHBookShelfRecommendationListControllerDelegate> delegate;
 @property (nonatomic, retain) SCHAppProfile *appProfile;
 @property (nonatomic, copy) dispatch_block_t closeBlock;
+@property (nonatomic, assign) BOOL lastAuthenticationFailed;
+
+// IB
 @property (nonatomic, retain) IBOutlet UITableView *mainTableView;
 @property (retain, nonatomic) IBOutlet UILabel *titleLabel;
 @property (retain, nonatomic) IBOutlet SCHCustomToolbar *topToolbar;

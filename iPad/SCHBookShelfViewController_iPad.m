@@ -26,6 +26,7 @@
 #import "BITModalSheetController.h"
 #import "SCHBookShelfMenuPopoverBackgroundView.h"
 #import "SCHBookshelfPopoverController.h"
+#import "SCHAppStateManager.h"
 
 //static NSInteger const kSCHBookShelfViewControllerGridCellHeightPortrait_iPad = 254;
 static NSInteger const kSCHBookShelfViewControllerGridCellHeightPortrait_iPad = 224;
@@ -344,6 +345,7 @@ static NSInteger const kSCHBookShelfEdgePadding = 12;
     [[SCHBookShelfRecommendationListController alloc] initWithNibName:@"SCHBookShelfRecommendationListController" bundle:nil];
     recommendationController.appProfile = self.profileItem.AppProfile;
     recommendationController.delegate = self;
+    recommendationController.lastAuthenticationFailed = [[SCHAppStateManager sharedAppStateManager] lastScholasticAuthenticationFailed];
     
     self.recommendationPopover = [[[BITModalSheetController alloc] initWithContentViewController:recommendationController] autorelease];
     [self.recommendationPopover setContentSize:CGSizeMake(640, 654)];
