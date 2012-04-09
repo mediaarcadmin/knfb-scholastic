@@ -17,6 +17,9 @@
 
 - (void)initialiseView;
 
+@property (nonatomic, retain) UIImage *initialNormalStateImage;
+@property (nonatomic, retain) UIImage *initialSelectedStateImage;
+
 @end
 
 @implementation SCHRecommendationListView
@@ -38,6 +41,8 @@
 @synthesize middleView;
 @synthesize leftView;
 @synthesize ruleImageView;
+@synthesize initialNormalStateImage;
+@synthesize initialSelectedStateImage;
 
 - (void)dealloc
 {
@@ -52,6 +57,8 @@
     [onWishListButton release], onWishListButton = nil;
     [ratingBackgroundImageView release], ratingBackgroundImageView = nil;
     [ruleImageView release], ruleImageView = nil;
+    [initialNormalStateImage release], initialNormalStateImage = nil;
+    [initialSelectedStateImage release], initialSelectedStateImage = nil;
 
     [middleView release];
     [leftView release];
@@ -96,7 +103,19 @@
 
 - (void)setIsOnWishList:(BOOL)newIsOnWishList
 {
+    UIImage *selectedImage = [self initialSelectedStateImage];
+    UIImage *normalImage = [self initialNormalStateImage];
+    
     isOnWishList = newIsOnWishList;
+    
+    if (isOnWishList) {
+        [self.onWishListButton setImage:selectedImage forState:UIControlStateNormal];
+        [self.onWishListButton setImage:selectedImage forState:UIControlStateSelected];
+    } else {
+        [self.onWishListButton setImage:normalImage forState:UIControlStateNormal];
+        [self.onWishListButton setImage:normalImage forState:UIControlStateSelected];
+    }
+    
     [self.onWishListButton setSelected:isOnWishList];
 }
 
@@ -163,6 +182,24 @@
     } else {
         self.onWishListButton.hidden = NO;
     }
+}
+
+- (UIImage *)initialNormalStateImage
+{
+    if (!initialNormalStateImage) {
+        initialNormalStateImage = [[self.onWishListButton imageForState:UIControlStateNormal] retain];
+    }
+    
+    return initialNormalStateImage;
+}
+
+- (UIImage *)initialSelectedStateImage
+{
+    if (!initialSelectedStateImage) {
+        initialSelectedStateImage = [[self.onWishListButton imageForState:UIControlStateSelected] retain];
+    }
+    
+    return initialSelectedStateImage;
 }
 
 @end
