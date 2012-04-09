@@ -142,7 +142,6 @@
 												<string key="NSFrame">{{0, 104}, {2000, 2}}</string>
 												<reference key="NSSuperview" ref="717249785"/>
 												<reference key="NSWindow"/>
-												<reference key="NSNextKeyView"/>
 												<reference key="IBUIBackgroundColor" ref="142432702"/>
 												<int key="IBUITag">202</int>
 												<bool key="IBUIUserInteractionEnabled">NO</bool>
@@ -260,7 +259,7 @@
 												<bool key="IBUIOpaque">NO</bool>
 												<bool key="IBUIClipsSubviews">YES</bool>
 												<int key="IBUIContentMode">7</int>
-												<int key="IBUITag">108</int>
+												<int key="IBUITag">110</int>
 												<bool key="IBUIUserInteractionEnabled">NO</bool>
 												<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 												<string key="IBUIText">Classic Goosebumps: Night of the Living Dummy</string>
@@ -375,11 +374,9 @@
 				<string key="IBUIReuseIdentifier">ScholasticBookshelfTableCell</string>
 			</object>
 			<object class="IBUILabel" id="448554426">
-				<reference key="NSNextResponder"/>
+				<nil key="NSNextResponder"/>
 				<int key="NSvFlags">314</int>
 				<string key="NSFrameSize">{431, 49}</string>
-				<reference key="NSSuperview"/>
-				<reference key="NSNextKeyView"/>
 				<reference key="IBUIBackgroundColor" ref="142432702"/>
 				<bool key="IBUIOpaque">NO</bool>
 				<bool key="IBUIClipsSubviews">YES</bool>
@@ -751,10 +748,8 @@
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<string>backgroundView</string>
 							<string>customNavigationBar</string>
-							<string>gridButton</string>
 							<string>gridView</string>
 							<string>gridViewToggleView</string>
-							<string>listButton</string>
 							<string>listTableView</string>
 							<string>listToggleView</string>
 							<string>listViewCell</string>
@@ -764,10 +759,8 @@
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<string>UIImageView</string>
 							<string>SCHCustomNavigationBar</string>
-							<string>UIButton</string>
 							<string>SCHBookShelfGridView</string>
 							<string>UIView</string>
-							<string>UIButton</string>
 							<string>UITableView</string>
 							<string>UIView</string>
 							<string>SCHBookShelfTableViewCell</string>
@@ -780,10 +773,8 @@
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<string>backgroundView</string>
 							<string>customNavigationBar</string>
-							<string>gridButton</string>
 							<string>gridView</string>
 							<string>gridViewToggleView</string>
-							<string>listButton</string>
 							<string>listTableView</string>
 							<string>listToggleView</string>
 							<string>listViewCell</string>
@@ -800,20 +791,12 @@
 								<string key="candidateClassName">SCHCustomNavigationBar</string>
 							</object>
 							<object class="IBToOneOutletInfo">
-								<string key="name">gridButton</string>
-								<string key="candidateClassName">UIButton</string>
-							</object>
-							<object class="IBToOneOutletInfo">
 								<string key="name">gridView</string>
 								<string key="candidateClassName">SCHBookShelfGridView</string>
 							</object>
 							<object class="IBToOneOutletInfo">
 								<string key="name">gridViewToggleView</string>
 								<string key="candidateClassName">UIView</string>
-							</object>
-							<object class="IBToOneOutletInfo">
-								<string key="name">listButton</string>
-								<string key="candidateClassName">UIButton</string>
 							</object>
 							<object class="IBToOneOutletInfo">
 								<string key="name">listTableView</string>
