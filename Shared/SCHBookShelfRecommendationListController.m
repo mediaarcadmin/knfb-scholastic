@@ -271,6 +271,7 @@
             
             SCHRecommendationListView *recommendationView = [[[self.recommendationViewNib instantiateWithOwner:self options:nil] objectAtIndex:0] retain];
             recommendationView.frame = cell.frame;
+            recommendationView.lastAuthenticationFailed = self.lastAuthenticationFailed;
             
             recommendationView.tag = 999;
             recommendationView.delegate = self;
