@@ -337,11 +337,12 @@ typedef enum
     
     self.currentlyLoadingIndex = -1;
 
+    if ([self.profileItem.AppProfile.ShowListView boolValue] == YES) {
+        [self changeToListView:nil];
+    }
+    
     if (![[SCHAppStateManager sharedAppStateManager] isSampleStore]) {
         self.navigationItem.title = [self.profileItem bookshelfName:YES];
-        if ([self.profileItem.AppProfile.ShowListView boolValue] == YES) {
-            [self changeToListView:nil];
-        }
     } else {
         self.navigationItem.title = NSLocalizedString(@"My eBooks", @"Sample bookshelf title");
     }
