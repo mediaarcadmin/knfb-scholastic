@@ -198,6 +198,7 @@ typedef enum
 - (void)viewDidLoad 
 {
     [super viewDidLoad];
+    
     self.gridViewNeedsRefreshed = YES;
     self.listViewNeedsRefreshed = YES;
     self.shouldShowBookshelfFailedErrorMessage = YES;
@@ -210,6 +211,7 @@ typedef enum
         self.listTableCellNib = [UINib nibWithNibName:@"SCHBookShelfTableViewCell_iPad" bundle:nil];
     } else {
         self.listTableCellNib = [UINib nibWithNibName:@"SCHBookShelfTableViewCell_iPhone" bundle:nil];
+        self.showWelcome = NO;
     }
         
     self.menuButton = [SCHThemeButton buttonWithType:UIButtonTypeCustom];

@@ -77,6 +77,7 @@ static const NSTimeInterval kSCHStartingViewControllerNonForcedAlertInterval = (
 - (BOOL)bookshelfSetupRequired;
 - (void)replaceCheckProfilesAlertWithAlert:(LambdaAlert *)alert;
 - (SCHProfileViewController_Shared *)profileViewController;
+- (void)checkState;
 
 @end
 
@@ -198,12 +199,22 @@ static const NSTimeInterval kSCHStartingViewControllerNonForcedAlertInterval = (
     [self.navigationController setNavigationBarHidden:YES];
     [self setupAssetsForOrientation:self.interfaceOrientation];
     
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
+        [self checkState];
+    }
 }
 
 - (void)viewDidAppear:(BOOL)animated
 {
-    [super viewDidAppear:animated];
+   [super viewDidAppear:animated];
     
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+        [self checkState];
+    }
+}
+
+- (void)checkState
+{
     // SyncManager should not be suspended
     if ([[SCHSyncManager sharedSyncManager] isSuspended]) {
         NSLog(@"Warning Sync Manager suspended when showing start view controller");
@@ -632,7 +643,8 @@ static const NSTimeInterval kSCHStartingViewControllerNonForcedAlertInterval = (
             
             [self.loginPopoverController presentSheetInViewController:self animated:YES completion:nil];
         } else {
-            [self presentModalViewController:login animated:NO];
+            [self.modalNavigationController setViewControllers:[NSArray arrayWithObject:login]];
+            [self presentModalViewController:self.modalNavigationController animated:NO];
             [login release];
         }
     };
@@ -654,12 +666,8 @@ static const NSTimeInterval kSCHStartingViewControllerNonForcedAlertInterval = (
                 completion(nil);
             }];
         } else {
-            [CATransaction begin];
-            [CATransaction setCompletionBlock:^{
-                completion(nil);
-            }];
-            [self dismissModalViewControllerAnimated:YES];
-            [CATransaction commit];
+            // Don't dismiss the modal view for iPhone, we want to wait until we have the samples
+            completion(nil);
         }
     };
     
@@ -705,8 +713,13 @@ static const NSTimeInterval kSCHStartingViewControllerNonForcedAlertInterval = (
                 [self pushSamplesAnimated:NO showWelcome:YES];
                 completion(nil);
             };
-            [self.modalNavigationController setViewControllers:[NSArray arrayWithObject:downloadDictionary]];
-            [self presentModalViewController:self.modalNavigationController animated:YES];
+            
+            if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+                [self.modalNavigationController setViewControllers:[NSArray arrayWithObject:downloadDictionary]];
+                [self presentModalViewController:self.modalNavigationController animated:YES];
+            } else {
+                [self.modalNavigationController pushViewController:downloadDictionary animated:YES];
+            }
             [downloadDictionary release];
         } else {
             [self pushSamplesAnimated:NO showWelcome:YES];
@@ -922,8 +935,10 @@ static const NSTimeInterval kSCHStartingViewControllerNonForcedAlertInterval = (
 {       
     if (self.view != nil) { // force the view to load if it hasn't already;
         
-        if (self.modalViewController) {
-            [self dismissModalViewControllerAnimated:YES];
+        if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+            if (self.modalViewController) {
+                [self dismissModalViewControllerAnimated:YES];
+            }
         }
         
         // SyncManager should not be suspended
@@ -948,6 +963,12 @@ static const NSTimeInterval kSCHStartingViewControllerNonForcedAlertInterval = (
             
             [alert show]; 
             [alert release]; 
+        }
+        
+        if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
+            if (self.modalViewController) {
+                [self dismissModalViewControllerAnimated:YES];
+            }
         }
         
     }
