@@ -225,7 +225,7 @@
 									<object class="IBUIButton" id="946887159">
 										<reference key="NSNextResponder" ref="279056488"/>
 										<int key="NSvFlags">301</int>
-										<string key="NSFrame">{{13, 112}, {182, 62}}</string>
+										<string key="NSFrame">{{13, 112}, {186, 62}}</string>
 										<reference key="NSSuperview" ref="279056488"/>
 										<reference key="NSWindow"/>
 										<reference key="NSNextKeyView"/>
@@ -606,8 +606,8 @@
 		<bool key="IBDocument.PluginDeclaredDependenciesTrackSystemTargetVersion">YES</bool>
 		<int key="IBDocument.defaultPropertyAccessControl">3</int>
 		<dictionary class="NSMutableDictionary" key="IBDocument.LastKnownImageSizes">
-			<string key="WishListButtonOff~ipad.png">{182, 62}</string>
-			<string key="WishListButtonOn~ipad.png">{182, 62}</string>
+			<string key="WishListButtonOff~ipad.png">{186, 62}</string>
+			<string key="WishListButtonOn~ipad.png">{186, 62}</string>
 		</dictionary>
 		<string key="IBCocoaTouchPluginVersion">1181</string>
 	</data>
