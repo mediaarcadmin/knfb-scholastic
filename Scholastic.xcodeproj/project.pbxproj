@@ -13324,7 +13324,7 @@
 					"-all_load",
 				);
 				PRODUCT_NAME = Storia;
-				TARGETED_DEVICE_FAMILY = 2;
+				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
 		};
@@ -13353,7 +13353,7 @@
 					"-all_load",
 				);
 				PRODUCT_NAME = Storia;
-				TARGETED_DEVICE_FAMILY = 2;
+				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
 			};
 			name = Release;
@@ -13581,7 +13581,7 @@
 				PRODUCT_NAME = Storia;
 				PROVISIONING_PROFILE = "2E59CAE6-A1A5-42B1-B1FC-F87A932B37F4";
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "2E59CAE6-A1A5-42B1-B1FC-F87A932B37F4";
-				TARGETED_DEVICE_FAMILY = 2;
+				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
 			};
 			name = "Ad Hoc";
