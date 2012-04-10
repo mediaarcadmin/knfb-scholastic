@@ -77,6 +77,7 @@ static const NSTimeInterval kSCHStartingViewControllerNonForcedAlertInterval = (
 - (BOOL)bookshelfSetupRequired;
 - (void)replaceCheckProfilesAlertWithAlert:(LambdaAlert *)alert;
 - (SCHProfileViewController_Shared *)profileViewController;
+- (void)checkState;
 
 @end
 
@@ -198,12 +199,22 @@ static const NSTimeInterval kSCHStartingViewControllerNonForcedAlertInterval = (
     [self.navigationController setNavigationBarHidden:YES];
     [self setupAssetsForOrientation:self.interfaceOrientation];
     
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
+        [self checkState];
+    }
 }
 
 - (void)viewDidAppear:(BOOL)animated
 {
-    [super viewDidAppear:animated];
+   [super viewDidAppear:animated];
     
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+        [self checkState];
+    }
+}
+
+- (void)checkState
+{
     // SyncManager should not be suspended
     if ([[SCHSyncManager sharedSyncManager] isSuspended]) {
         NSLog(@"Warning Sync Manager suspended when showing start view controller");
@@ -252,6 +263,18 @@ static const NSTimeInterval kSCHStartingViewControllerNonForcedAlertInterval = (
 {
     [super willRotateToInterfaceOrientation:toInterfaceOrientation duration:duration];
     [self setupAssetsForOrientation:toInterfaceOrientation];
+    
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
+        if (self.loginPopoverController) {
+            if (UIInterfaceOrientationIsPortrait(toInterfaceOrientation)) {
+                [self.loginPopoverController setContentSize:CGSizeMake(300, 400) animated:YES completion:nil];
+                [self.loginPopoverController setContentOffset:CGPointZero animated:YES completion:nil];
+            } else {
+                [self.loginPopoverController setContentSize:CGSizeMake(400, 300) animated:YES completion:nil];
+                [self.loginPopoverController setContentOffset:CGPointMake(0, -60) animated:YES completion:nil];
+            }
+        }
+    }
 }
 
 #pragma mark - SCHProfileSetupDelegate
@@ -294,8 +317,13 @@ static const NSTimeInterval kSCHStartingViewControllerNonForcedAlertInterval = (
     }
     
     if (self.modalViewController) {
-        [self dismissModalViewControllerAnimated:animated];
-        [self.navigationController popToRootViewControllerAnimated:NO];
+        if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+            [self dismissModalViewControllerAnimated:animated];
+            [self.navigationController popToRootViewControllerAnimated:NO];
+        } else {
+            [self.navigationController popToRootViewControllerAnimated:NO];
+            [self dismissModalViewControllerAnimated:animated];
+        }
     } else {
         [self.navigationController popToRootViewControllerAnimated:animated];
     }
@@ -305,8 +333,10 @@ static const NSTimeInterval kSCHStartingViewControllerNonForcedAlertInterval = (
 
 - (void)pushCurrentProfileAnimated:(BOOL)animated
 {   
-    if (self.modalViewController) {
-        [self dismissModalViewControllerAnimated:YES];
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+        if (self.modalViewController) {
+            [self dismissModalViewControllerAnimated:YES];
+        }
     }
     
     BOOL alreadyInUse = NO;
@@ -318,6 +348,11 @@ static const NSTimeInterval kSCHStartingViewControllerNonForcedAlertInterval = (
             break;
         }
     }
+    
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
+        animated = NO;
+    }
+                                                                 
     if (alreadyInUse == NO) {
         [self.navigationController pushViewController:profile animated:animated];
     }
@@ -340,32 +375,37 @@ static const NSTimeInterval kSCHStartingViewControllerNonForcedAlertInterval = (
     parentalToolsWebViewController.modalPresenterDelegate = self;
     parentalToolsWebViewController.pToken = token;
     parentalToolsWebViewController.shouldHideCloseButton = shouldHide;
-
-    BITModalSheetController *aPopoverController = [[BITModalSheetController alloc] initWithContentViewController:parentalToolsWebViewController];
-    aPopoverController.contentSize = CGSizeMake(540, 620);
-    aPopoverController.autoresizingMask = UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin | UIViewAutoresizingFlexibleWidth;
-    self.webParentToolsPopoverController = aPopoverController;
-    [aPopoverController release];
     
-    __block BITModalSheetController *weakPopover = self.webParentToolsPopoverController;
-    __block UIViewController *weakSelf = self;
-    __block SCHParentalToolsWebViewController *weakParentTools = parentalToolsWebViewController;
-    
-    [self.webParentToolsPopoverController presentSheetInViewController:[self profileViewController] animated:NO completion:^{
-        weakParentTools.textView.alpha = 0;
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
         
-        CGSize expandedSize;
+        BITModalSheetController *aPopoverController = [[BITModalSheetController alloc] initWithContentViewController:parentalToolsWebViewController];
+        aPopoverController.contentSize = CGSizeMake(540, 620);
+        aPopoverController.autoresizingMask = UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin | UIViewAutoresizingFlexibleWidth;
+        self.webParentToolsPopoverController = aPopoverController;
+        [aPopoverController release];
         
-        if (UIInterfaceOrientationIsPortrait(weakSelf.interfaceOrientation)) {
-            expandedSize = CGSizeMake(700, 530);
-        } else {
-            expandedSize = CGSizeMake(964, 530);
-        }
+        __block BITModalSheetController *weakPopover = self.webParentToolsPopoverController;
+        __block UIViewController *weakSelf = self;
+        __block SCHParentalToolsWebViewController *weakParentTools = parentalToolsWebViewController;
         
-        [weakPopover setContentSize:expandedSize animated:YES completion:^{
-            weakParentTools.textView.alpha = 1;
-        }];
-    }];    
+        [self.webParentToolsPopoverController presentSheetInViewController:[self profileViewController] animated:NO completion:^{
+            weakParentTools.textView.alpha = 0;
+            
+            CGSize expandedSize;
+            
+            if (UIInterfaceOrientationIsPortrait(weakSelf.interfaceOrientation)) {
+                expandedSize = CGSizeMake(700, 530);
+            } else {
+                expandedSize = CGSizeMake(964, 530);
+            }
+            
+            [weakPopover setContentSize:expandedSize animated:YES completion:^{
+                weakParentTools.textView.alpha = 1;
+            }];
+        }];    
+    } else {
+        [self presentModalViewController:parentalToolsWebViewController animated:YES];        
+    }
     
     [CATransaction commit];
 }
@@ -593,10 +633,12 @@ static const NSTimeInterval kSCHStartingViewControllerNonForcedAlertInterval = (
             completion(nil);
         };
         
-        BITModalSheetController *aLoginPopoverController = [[BITModalSheetController alloc] initWithContentViewController:login];
-        [aLoginPopoverController setAutoresizingMask:UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleBottomMargin];
+        
         
         if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+            BITModalSheetController *aLoginPopoverController = [[BITModalSheetController alloc] initWithContentViewController:login];
+            [aLoginPopoverController setAutoresizingMask:UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleBottomMargin];
+            
             [aLoginPopoverController setContentSize:CGSizeMake(605, 497)];
             CGPoint offset;
             
@@ -606,15 +648,20 @@ static const NSTimeInterval kSCHStartingViewControllerNonForcedAlertInterval = (
                 offset = CGPointMake(0, 130);
             }
             [aLoginPopoverController setContentOffset:offset];
+            
+            self.loginPopoverController = aLoginPopoverController;
+            [aLoginPopoverController release];
+            [login release];
+            
+            [self.loginPopoverController presentSheetInViewController:self animated:YES completion:nil];
         } else {
-            [aLoginPopoverController setContentSize:CGSizeMake(300, 400)];
+            [self.modalNavigationController setViewControllers:[NSArray arrayWithObject:login]];
+             if (self.modalViewController) {
+                 [self dismissModalViewControllerAnimated:NO];
+             }
+            [self presentModalViewController:self.modalNavigationController animated:NO];
+            [login release];
         }
-        
-        self.loginPopoverController = aLoginPopoverController;
-        [aLoginPopoverController release];
-        [login release];
-        
-        [self.loginPopoverController presentSheetInViewController:self animated:YES completion:nil];
     };
     
     self.setupSequenceQueue = [[[NSOperationQueue alloc] init] autorelease];
@@ -628,10 +675,15 @@ static const NSTimeInterval kSCHStartingViewControllerNonForcedAlertInterval = (
 {
     BITOperationWithBlocks *setupSequenceDismissLoginOperation = [[BITOperationWithBlocks alloc] init];
     setupSequenceDismissLoginOperation.asyncMain = ^(BITOperationIsCancelledBlock isCancelled, BITOperationAsyncCompletionBlock completion) {
-        [self.loginPopoverController dismissSheetAnimated:YES completion:^{
-            self.loginPopoverController = nil;
+        if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+            [self.loginPopoverController dismissSheetAnimated:YES completion:^{
+                self.loginPopoverController = nil;
+                completion(nil);
+            }];
+        } else {
+            // Don't dismiss the modal view for iPhone, we want to wait until we have the samples
             completion(nil);
-        }];
+        }
     };
     
     BITOperationWithBlocks *setupSequenceImportSamplesOperation = [[BITOperationWithBlocks alloc] init];
@@ -676,8 +728,13 @@ static const NSTimeInterval kSCHStartingViewControllerNonForcedAlertInterval = (
                 [self pushSamplesAnimated:NO showWelcome:YES];
                 completion(nil);
             };
-            [self.modalNavigationController setViewControllers:[NSArray arrayWithObject:downloadDictionary]];
-            [self presentModalViewController:self.modalNavigationController animated:YES];
+            
+            if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+                [self.modalNavigationController setViewControllers:[NSArray arrayWithObject:downloadDictionary]];
+                [self presentModalViewController:self.modalNavigationController animated:YES];
+            } else {
+                [self.modalNavigationController pushViewController:downloadDictionary animated:YES];
+            }
             [downloadDictionary release];
         } else {
             [self pushSamplesAnimated:NO showWelcome:YES];
@@ -749,29 +806,33 @@ static const NSTimeInterval kSCHStartingViewControllerNonForcedAlertInterval = (
 
 - (void)runSetupProfileSequenceAnimated:(BOOL)animated pushProfile:(BOOL)pushProfile showValidation:(BOOL)showValidation
 {        
-    dispatch_block_t continueBlock = ^{
+    if (self.view != nil)  { // force the view to load if it hasn't already;
         
-        if (pushProfile) {
-            [self pushCurrentProfileAnimated:animated];
-        }
-                
-        if ([self bookshelfSetupRequired]) {
-            self.profileSyncState = kSCHStartingViewControllerProfileSyncStateWaitingForBookshelves;
-            [self pushBookshelfSetupModalControllerAnimated:animated showValidation:showValidation];
-        } else if ([self dictionaryDownloadRequired]) {
-            self.profileSyncState = kSCHStartingViewControllerProfileSyncStateNone;
-            [self pushDictionaryDownloadModalControllerAnimated:animated];
-        } else {
-            if (self.modalViewController) {
-                [self dismissModalViewControllerAnimated:YES];
+        dispatch_block_t continueBlock = ^{
+            
+            if (pushProfile) {
+                [self pushCurrentProfileAnimated:animated];
             }
+            
+            if ([self bookshelfSetupRequired]) {
+                self.profileSyncState = kSCHStartingViewControllerProfileSyncStateWaitingForBookshelves;
+                [self pushBookshelfSetupModalControllerAnimated:animated showValidation:showValidation];
+            } else if ([self dictionaryDownloadRequired]) {
+                self.profileSyncState = kSCHStartingViewControllerProfileSyncStateNone;
+                [self pushDictionaryDownloadModalControllerAnimated:animated];
+            } else {
+                if (self.modalViewController) {
+                    [self dismissModalViewControllerAnimated:YES];
+                }
+            }
+        };
+        
+        if ([self.loginPopoverController isModalSheetVisible]) {
+            [self.loginPopoverController dismissSheetAnimated:YES completion:continueBlock];
+        } else {
+            continueBlock();
         }
-    };
-    
-    if ([self.loginPopoverController isModalSheetVisible]) {
-        [self.loginPopoverController dismissSheetAnimated:YES completion:continueBlock];
-    } else {
-        continueBlock();
+        
     }
 }
 
@@ -819,6 +880,7 @@ static const NSTimeInterval kSCHStartingViewControllerNonForcedAlertInterval = (
                                                                                         credentialsSuccessBlock(YES, NO);
                                                                                     }
                                                                                     [[SCHSyncManager sharedSyncManager] firstSync:YES requireDeviceAuthentication:NO];
+                                                                                    [[SCHSyncManager sharedSyncManager] recommendationSync];
                                                                                 } else { 
                                                                                     NSError *anError = [NSError errorWithDomain:kSCHAuthenticationManagerErrorDomain  
                                                                                                                            code:kSCHAuthenticationManagerOfflineError  
@@ -886,32 +948,44 @@ static const NSTimeInterval kSCHStartingViewControllerNonForcedAlertInterval = (
 
 - (void)pushSamplesAnimated:(BOOL)animated showWelcome:(BOOL)welcome
 {       
-    if (self.modalViewController) {
-        [self dismissModalViewControllerAnimated:YES];
-    }
-    
-    // SyncManager should not be suspended
-    if ([[SCHSyncManager sharedSyncManager] isSuspended]) {
-        NSLog(@"Warning Sync Manager suspended when opening samples");
-        [[SCHSyncManager sharedSyncManager] setSuspended:NO];
-    }
-    
-    SCHProfileViewController_Shared *profile = [self profileViewController];
-    SCHProfileItem *profileItem = [[profile profileItems] lastObject]; // Only one sample bookshelf so any result will do
-    
-    if (profileItem) {
-        NSMutableArray *viewControllers = [NSMutableArray arrayWithObjects:self, profile, nil];
-        [viewControllers addObjectsFromArray:[profile viewControllersForProfileItem:profileItem showWelcome:welcome]];
-        [self.navigationController setViewControllers:viewControllers animated:animated];
-    } else {
-        LambdaAlert *alert = [[LambdaAlert alloc]
-                              initWithTitle:NSLocalizedString(@"Unable To Open the Sample Bookshelf", @"")
-                              message:NSLocalizedString(@"There was a problem while opening the sample bookshelf. Please try again.", @"")];
-        [alert addButtonWithTitle:NSLocalizedString(@"OK", @"") block:^{
-        }];
+    if (self.view != nil) { // force the view to load if it hasn't already;
         
-        [alert show]; 
-        [alert release]; 
+        if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+            if (self.modalViewController) {
+                [self dismissModalViewControllerAnimated:YES];
+            }
+        }
+        
+        // SyncManager should not be suspended
+        if ([[SCHSyncManager sharedSyncManager] isSuspended]) {
+            NSLog(@"Warning Sync Manager suspended when opening samples");
+            [[SCHSyncManager sharedSyncManager] setSuspended:NO];
+        }
+        
+        SCHProfileViewController_Shared *profile = [self profileViewController];
+        SCHProfileItem *profileItem = [[profile profileItems] lastObject]; // Only one sample bookshelf so any result will do
+        
+        if (profileItem) {
+            NSMutableArray *viewControllers = [NSMutableArray arrayWithObjects:self, profile, nil];
+            [viewControllers addObjectsFromArray:[profile viewControllersForProfileItem:profileItem showWelcome:welcome]];
+            [self.navigationController setViewControllers:viewControllers animated:animated];
+        } else {
+            LambdaAlert *alert = [[LambdaAlert alloc]
+                                  initWithTitle:NSLocalizedString(@"Unable To Open the Sample Bookshelf", @"")
+                                  message:NSLocalizedString(@"There was a problem while opening the sample bookshelf. Please try again.", @"")];
+            [alert addButtonWithTitle:NSLocalizedString(@"OK", @"") block:^{
+            }];
+            
+            [alert show]; 
+            [alert release]; 
+        }
+        
+        if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
+            if (self.modalViewController) {
+                [self dismissModalViewControllerAnimated:YES];
+            }
+        }
+        
     }
 }
 

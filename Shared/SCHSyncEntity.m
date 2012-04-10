@@ -118,6 +118,17 @@ NSString * const SCHSyncEntityLastModified = @"LastModified";
     [self didChangeValueForKey:SCHSyncEntityLastModified];
 }
 
+- (void)setLastModified:(NSDate *)LastModified
+{
+    // if the sync gave us a nil last modified date then we ignore it as 
+    // last modified is mandatory 
+    if (LastModified != nil) {
+        [self willChangeValueForKey:SCHSyncEntityLastModified];
+        [self setPrimitiveValue:LastModified forKey:SCHSyncEntityLastModified];
+        [self didChangeValueForKey:SCHSyncEntityLastModified];    
+    }
+}
+            
 - (NSNumber *)Action
 {
 	NSNumber *ret = nil;

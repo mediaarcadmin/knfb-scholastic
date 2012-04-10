@@ -54,7 +54,8 @@ enum {
 
 - (NSInteger)selectedSize
 {
-    if (self.selectedSizeIndex == NSNotFound) {
+    if (self.selectedSizeIndex == NSNotFound ||
+        self.selectedSizeIndex >= [self.sizes count]) {
         return NSNotFound;
     }
     return [[self.sizes objectAtIndex:self.selectedSizeIndex] integerValue];

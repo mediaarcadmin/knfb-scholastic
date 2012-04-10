@@ -9,6 +9,8 @@
 #import <CoreData/CoreData.h>
 #import "SCHSyncEntity.h"
 
+#import "SCHISBNItem.h"
+
 @class SCHContentProfileItem;
 @class SCHOrderItem;
 @class SCHBookIdentifier;
@@ -20,7 +22,7 @@ extern NSString * const kSCHUserContentItemFetchWithContentIdentifier;
 extern NSString * const kSCHUserContentItemCONTENT_IDENTIFIER;
 extern NSString * const kSCHUserContentItemDRM_QUALIFIER;
 
-@interface SCHUserContentItem :  SCHSyncEntity  
+@interface SCHUserContentItem :  SCHSyncEntity <SCHISBNItem>
 {
 }
 
@@ -34,6 +36,7 @@ extern NSString * const kSCHUserContentItemDRM_QUALIFIER;
 @property (nonatomic, retain) NSSet* ProfileList;
 @property (nonatomic, retain) NSNumber * FreeBook;
 @property (nonatomic, retain) NSString * LastVersion;
+@property (nonatomic, retain) NSNumber * AverageRating;
 
 @property (nonatomic, readonly) NSSet *ContentMetadataItem;
 @property (nonatomic, readonly) NSSet *AssignedProfileList;

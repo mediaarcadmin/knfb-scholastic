@@ -22,4 +22,11 @@
     return [identifier autorelease];
 }
 
+#pragma SCHISBNItem protocol methods
+
+- (BOOL)coverURLOnly
+{
+    return NO;
+}
+
 @end

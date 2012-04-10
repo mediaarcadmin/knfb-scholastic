@@ -8,7 +8,11 @@
 
 #import "SCHAccountValidation.h"
 
-#import "SCHScholasticWebService.h"
+#import "SCHScholasticAuthenticationWebService.h"
+#import "SCHUserDefaults.h"
+#import "SCHAppStateManager.h"
+#import "SFHFKeychainUtils.h"
+#import "SCHAuthenticationManager.h"
 
 // Constants
 NSString * const kSCHAccountValidationErrorDomain = @"AccountValidationErrorDomain";
@@ -18,9 +22,10 @@ NSInteger const kSCHAccountValidationCredentialsError = 200;
 @interface SCHAccountValidation ()
 
 @property (nonatomic, copy, readwrite) NSString *pToken;
+@property (nonatomic, retain) NSString *passwordUsed;
 @property (nonatomic, retain) NSDate *pTokenRequested;
 @property (nonatomic, assign) BOOL waitingOnResponse;
-@property (nonatomic, retain) SCHScholasticWebService *scholasticWebService;
+@property (nonatomic, retain) SCHScholasticAuthenticationWebService *scholasticWebService;
 @property (nonatomic, copy) ValidateBlock validateBlock;
 
 @end
@@ -28,6 +33,7 @@ NSInteger const kSCHAccountValidationCredentialsError = 200;
 @implementation SCHAccountValidation
 
 @synthesize pToken;
+@synthesize passwordUsed;
 @synthesize pTokenRequested;
 @synthesize waitingOnResponse;
 @synthesize scholasticWebService;
@@ -40,9 +46,10 @@ NSInteger const kSCHAccountValidationCredentialsError = 200;
 	self = [super init];
 	if (self != nil) {
         pToken = nil;
+        passwordUsed = nil;
 		waitingOnResponse = NO;
 
-		scholasticWebService = [[SCHScholasticWebService alloc] init];
+		scholasticWebService = [[SCHScholasticAuthenticationWebService alloc] init];
 		scholasticWebService.delegate = self;	
         
 		[[NSNotificationCenter defaultCenter] addObserver:self 
@@ -65,6 +72,7 @@ NSInteger const kSCHAccountValidationCredentialsError = 200;
     
 
     [pToken release], pToken = nil;
+    [passwordUsed release], passwordUsed = nil;
     [pTokenRequested release], pTokenRequested = nil;
     scholasticWebService.delegate = nil;
     [scholasticWebService release], scholasticWebService = nil;
@@ -81,9 +89,12 @@ NSInteger const kSCHAccountValidationCredentialsError = 200;
 {
     BOOL ret = NO;
     
-    if (self.waitingOnResponse == NO && username != nil && password != nil && 
+    if (self.waitingOnResponse == NO &&
+        [[username stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]] length] > 0 &&
+        [[password stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]] length] > 0 &&
         aValidateBlock != nil) {
         self.pToken = nil;
+        self.passwordUsed = password;
         self.validateBlock = aValidateBlock;
         self.waitingOnResponse = YES;
         [self.scholasticWebService authenticateUserName:username withPassword:password]; 
@@ -150,7 +161,7 @@ NSInteger const kSCHAccountValidationCredentialsError = 200;
 - (void)method:(NSString *)method didCompleteWithResult:(NSDictionary *)result
       userInfo:(NSDictionary *)userInfo
 {
-    id pTokenResponse = [result objectForKey:kSCHScholasticWebServicePToken];
+    id pTokenResponse = [result objectForKey:kSCHScholasticAuthenticationWebServicePToken];
     NSError *error = nil;
     
     if (pTokenResponse == [NSNull null]) {
@@ -161,9 +172,24 @@ NSInteger const kSCHAccountValidationCredentialsError = 200;
                                      code:kSCHAccountValidationPTokenError
                                  userInfo:userInfo];
     } else {
+        NSString *storedUsername = [[NSUserDefaults standardUserDefaults] stringForKey:kSCHAuthenticationManagerUsername];
+        NSString *storedPassword = [SFHFKeychainUtils getPasswordForUsername:storedUsername 
+                                                              andServiceName:kSCHAuthenticationManagerServiceName 
+                                                                       error:nil];
+
+        if ([self.passwordUsed isEqualToString:storedPassword] == NO) {
+            [SFHFKeychainUtils storeUsername:storedUsername 
+                                 andPassword:self.passwordUsed 
+                              forServiceName:kSCHAuthenticationManagerServiceName 
+                              updateExisting:YES 
+                                       error:nil];
+        }
+        
         self.pToken = pTokenResponse;
+        [[SCHAppStateManager sharedAppStateManager] setLastScholasticAuthenticationFailed:NO];
     }
     
+    self.passwordUsed = nil;
     self.validateBlock(self.pToken, error);  
     self.validateBlock = nil;    
     self.waitingOnResponse = NO;
@@ -175,6 +201,9 @@ NSInteger const kSCHAccountValidationCredentialsError = 200;
 {
     NSLog(@"%@:didFailWithError\n%@", method, error);
     
+    [[SCHAppStateManager sharedAppStateManager] setLastScholasticAuthenticationFailed:YES];
+    
+    self.passwordUsed = nil;
     self.validateBlock(nil, error);
     self.validateBlock = nil;    
     self.waitingOnResponse = NO;    

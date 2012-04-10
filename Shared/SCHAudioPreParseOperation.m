@@ -129,9 +129,15 @@
 	self.parsingComplete = YES;
     
     for (NSInteger i = 0; i < count; i++) { 
-        [audioBookReferences addObject:
-         [NSDictionary dictionaryWithObjectsAndKeys:[self.audioFiles objectAtIndex:i], kSCHAppBookAudioFile,
-          [self.timingFiles objectAtIndex:i], kSCHAppBookTimingFile, nil]];
+        NSString *timingFile = nil;
+        if (i < [self.timingFiles count]) {
+            timingFile = [self.timingFiles objectAtIndex:i]; 
+        }        
+        if (timingFile != nil) {
+            [audioBookReferences addObject:
+             [NSDictionary dictionaryWithObjectsAndKeys:[self.audioFiles objectAtIndex:i], kSCHAppBookAudioFile,
+              timingFile, kSCHAppBookTimingFile, nil]];
+        }
     }
     
     [self performWithBook:^(SCHAppBook *book) {

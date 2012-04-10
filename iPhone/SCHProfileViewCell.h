@@ -10,15 +10,19 @@
 
 #import "SCHProfileViewCellDelegate.h"
 
+typedef enum {
+    kSCHProfileCellLayoutStyle1Up = 0,
+    kSCHProfileCellLayoutStyle2UpSideBySide,
+    kSCHProfileCellLayoutStyle2UpCentered
+    
+} SCHProfileCellLayoutStyle;
+
 @interface SCHProfileViewCell : UITableViewCell 
 {    
 }
 
 @property (nonatomic, assign) id<SCHProfileViewCellDelegate> delegate;
 
-- (void)setLeftButtonTitle:(NSString *)leftButtonTitle 
-             leftIndexPath:(NSIndexPath *)aLeftIndexPath
-          rightButtonTitle:(NSString *)rightButtonTitle
-            rightIndexPath:(NSIndexPath *)aRightIndexPath;
+- (void)setButtonTitles:(NSArray *)buttonTitles forIndexPaths:(NSArray *)indexPaths forCellStyle:(SCHProfileCellLayoutStyle)style;
 
 @end

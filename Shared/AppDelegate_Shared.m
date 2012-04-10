@@ -19,9 +19,11 @@
 #import <CoreText/CoreText.h>
 #import "SCHPopulateDataStore.h"
 #import "SCHAppStateManager.h"
+#import "SCHCOPPAManager.h"
 #import "LambdaAlert.h"
 #import "SCHDrmSession.h"
 #import "SCHAuthenticationManager.h"
+#import "SCHRecommendationManager.h"
 #if RUN_KIF_TESTS
 #import "SCHKIFTestController.h"
 #endif
@@ -147,6 +149,12 @@ static NSString* const binaryDevCertFilename = @"bdevcert.dat";
 
         SCHVersionDownloadManager *versionManager = [SCHVersionDownloadManager sharedVersionManager];
         [versionManager checkVersion];
+
+        SCHCOPPAManager *COPPAManager = [SCHCOPPAManager sharedCOPPAManager];
+        [COPPAManager checkCOPPAIfRequired];
+        
+        [SCHRecommendationManager sharedManager].managedObjectContext = self.coreDataHelper.managedObjectContext;
+        
     } else {
         [self catastrophicFailureWithError:error];
     }
@@ -300,7 +308,8 @@ static NSString* const binaryDevCertFilename = @"bdevcert.dat";
     fprintf(stderr, "\nStoria: Resetting the DRM state");
     
     // Suspend syncing and processing
-    [[SCHProcessingManager sharedProcessingManager] cancelAllOperations];                
+    [[SCHProcessingManager sharedProcessingManager] cancelAllOperations];
+    [[SCHRecommendationManager sharedManager] cancelAllOperations];
     [[SCHSyncManager sharedSyncManager] setSuspended:YES]; 
     
     // Clear out the DRM Keychain items
@@ -353,6 +362,7 @@ static NSString* const binaryDevCertFilename = @"bdevcert.dat";
             [[SCHProcessingManager sharedProcessingManager] forceAllBooksToReAcquireLicense];
             [[SCHSyncManager sharedSyncManager] setSuspended:NO];
             [[SCHSyncManager sharedSyncManager] firstSync:YES requireDeviceAuthentication:NO];
+            [[SCHSyncManager sharedSyncManager] recommendationSync];            
         } failureBlock:^(NSError *error) {
             NSString *authMessage = [[SCHAuthenticationManager sharedAuthenticationManager] localizedMessageForAuthenticationError:error];
             

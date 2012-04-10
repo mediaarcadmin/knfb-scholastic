@@ -110,6 +110,8 @@
 // Since NSAssert and NSCAssert are used in this code, 
 // I recommend you set NS_BLOCK_ASSERTIONS=1 in the release versions of your projects.
 
+struct sockaddr_in;
+
 enum {
 	
 	// DDG NetworkStatus Constant Names.

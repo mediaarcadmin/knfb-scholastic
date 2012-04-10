@@ -40,6 +40,8 @@
 - (void)pushBookshelvesControllerWithProfileItem:(SCHProfileItem *)profileItem 
                                         animated:(BOOL)animated;
 - (void)pushSettingsControllerAnimated:(BOOL)animated;
+- (UITableViewCell *)tableView:(UITableView *)aTableView singleColumnCellForRowAtIndexPath:(NSIndexPath *)indexPath; 
+- (UITableViewCell *)tableView:(UITableView *)aTableView dualColumnCellForRowAtIndexPath:(NSIndexPath *)indexPath;
 
 @end
 
@@ -159,6 +161,18 @@
     
     [self.navigationController setNavigationBarHidden:NO];
     [self checkForBookUpdates];
+    
+    // Reload the iPhone in case it has been rotated
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
+        [self.tableView reloadData];
+    }
+}
+
+- (void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
+{
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
+        [self.tableView reloadData];
+    }
 }
 
 #pragma mark - NSManagedObjectContext Changed Notification
@@ -185,6 +199,8 @@
     return(1);
 }
 
+#pragma mark - Table view data source
+
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section 
 {
 	NSInteger ret = 0;
@@ -193,7 +209,17 @@
 	switch (section) {
 		case 0:
 			sectionInfo = [[self.fetchedResultsController sections] objectAtIndex:section];
-			ret = [sectionInfo numberOfObjects];
+            NSUInteger numberOfObjects = [sectionInfo numberOfObjects];
+            if ((UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) &&
+                UIInterfaceOrientationIsPortrait(self.interfaceOrientation)) {
+                ret = numberOfObjects;
+            } else {
+                ret = (numberOfObjects > 0 ? numberOfObjects / 2 : numberOfObjects);
+                // if we have an odd number of profiles add an extra row
+                if (numberOfObjects % 2 > 0) {
+                    ret++;
+                }
+            }
 			break;
 	}
 	
@@ -201,6 +227,16 @@
 }
 
 - (UITableViewCell *)tableView:(UITableView *)aTableView cellForRowAtIndexPath:(NSIndexPath *)indexPath 
+{  
+    if ((UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) &&
+        UIInterfaceOrientationIsPortrait(self.interfaceOrientation)) {
+        return [self tableView:aTableView singleColumnCellForRowAtIndexPath:indexPath];
+    } else {
+        return [self tableView:aTableView dualColumnCellForRowAtIndexPath:indexPath];
+    }
+}
+
+- (UITableViewCell *)tableView:(UITableView *)aTableView singleColumnCellForRowAtIndexPath:(NSIndexPath *)indexPath 
 {    
     static NSString *CellIdentifier = @"Cell";
     
@@ -212,11 +248,52 @@
     }
     
     SCHProfileItem *managedObject = [self.fetchedResultsController objectAtIndexPath:indexPath];
-	[cell setLeftButtonTitle:[managedObject bookshelfName:NO]
-               leftIndexPath:indexPath
-            rightButtonTitle:nil
-              rightIndexPath:nil];
+	if (indexPath) {
+        [cell setButtonTitles:[NSArray arrayWithObjects:[managedObject bookshelfName:NO] ? : @"", nil] 
+                forIndexPaths:[NSArray arrayWithObjects:indexPath, nil] 
+                 forCellStyle:kSCHProfileCellLayoutStyle1Up];
+    }
     
+    return(cell);
+}
+
+- (UITableViewCell *)tableView:(UITableView *)aTableView dualColumnCellForRowAtIndexPath:(NSIndexPath *)indexPath 
+{    
+    static NSString *CellIdentifier = @"Cell";
+    NSString *leftTitle = nil;
+    NSIndexPath *leftIndexPath = nil;
+    NSString *rightTitle = nil;
+    NSIndexPath *rightIndexPath = nil;
+    SCHProfileItem *profileItem = nil;
+    
+    SCHProfileViewCell *cell = (SCHProfileViewCell*)[aTableView dequeueReusableCellWithIdentifier:CellIdentifier];
+    if (cell == nil) {
+        cell = [[[SCHProfileViewCell alloc] initWithStyle:UITableViewCellStyleDefault 
+                                          reuseIdentifier:CellIdentifier] autorelease];
+        cell.delegate = self;
+    }
+    
+    leftIndexPath = [NSIndexPath indexPathForRow:(indexPath.row == 0 ? 0 : indexPath.row * 2)
+                                       inSection:indexPath.section];
+    profileItem = [self.fetchedResultsController objectAtIndexPath:leftIndexPath]; 
+    leftTitle = [profileItem bookshelfName:NO] ? : @"";
+    
+    if (leftIndexPath.row + 1 < [[[self.fetchedResultsController sections] objectAtIndex:indexPath.section] numberOfObjects]) {
+        rightIndexPath = [NSIndexPath indexPathForRow:leftIndexPath.row + 1 inSection:indexPath.section];
+        profileItem = [self.fetchedResultsController objectAtIndexPath:rightIndexPath]; 
+        rightTitle = [profileItem bookshelfName:NO] ? : @"";
+    }
+    
+    if (leftIndexPath && rightIndexPath) {
+        [cell setButtonTitles:[NSArray arrayWithObjects:leftTitle, rightTitle, nil] 
+                forIndexPaths:[NSArray arrayWithObjects:leftIndexPath, rightIndexPath, nil] 
+                 forCellStyle:kSCHProfileCellLayoutStyle2UpSideBySide];
+    } else if (leftIndexPath) {
+        [cell setButtonTitles:[NSArray arrayWithObjects:leftTitle, nil] 
+                forIndexPaths:[NSArray arrayWithObjects:leftIndexPath, nil] 
+                 forCellStyle:kSCHProfileCellLayoutStyle2UpCentered];
+    }
+       
     return(cell);
 }
 
@@ -531,8 +608,13 @@ didSelectButtonAnimated:(BOOL)animated
 - (void)popToRootViewControllerAnimated:(BOOL)animated withCompletionHandler:(dispatch_block_t)completion
 {
     if (self.modalViewController) {
-        [self dismissModalViewControllerAnimated:animated];
-        [self.profileSetupDelegate popToRootViewControllerAnimated:NO withCompletionHandler:completion];
+        if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+            [self dismissModalViewControllerAnimated:animated];
+            [self.profileSetupDelegate popToRootViewControllerAnimated:NO withCompletionHandler:completion];
+        } else {
+            [self.profileSetupDelegate popToRootViewControllerAnimated:NO withCompletionHandler:completion];
+            [self dismissModalViewControllerAnimated:animated];
+        }
     } else {
         [self.profileSetupDelegate popToRootViewControllerAnimated:animated withCompletionHandler:completion];
     }
@@ -543,12 +625,6 @@ didSelectButtonAnimated:(BOOL)animated
                                    modalStyle:(UIModalPresentationStyle)style 
                         shouldHideCloseButton:(BOOL)shouldHide 
 {    
-    [CATransaction begin];
-    [CATransaction setDisableActions:YES];
-    
-    if (self.modalViewController) {
-        [self dismissModalViewControllerAnimated:NO];
-    }
     
     SCHParentalToolsWebViewController *aParentalToolsWebViewController = [[[SCHParentalToolsWebViewController alloc] init] autorelease];
     aParentalToolsWebViewController.title = title;
@@ -557,30 +633,43 @@ didSelectButtonAnimated:(BOOL)animated
     aParentalToolsWebViewController.shouldHideCloseButton = shouldHide;
     self.parentalToolsWebViewController = aParentalToolsWebViewController;
     
-    BITModalSheetController *aPopoverController = [[BITModalSheetController alloc] initWithContentViewController:aParentalToolsWebViewController];
-    aPopoverController.contentSize = CGSizeMake(540, 620);
-    aPopoverController.autoresizingMask = UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin | UIViewAutoresizingFlexibleWidth;
-    self.webParentToolsPopoverController = aPopoverController;
-    [aPopoverController release];
+    [CATransaction begin];
+    [CATransaction setDisableActions:YES];
     
-    __block BITModalSheetController *weakPopover = self.webParentToolsPopoverController;
-    __block SCHProfileViewController_Shared *weakSelf = self;
+    if (self.modalViewController) {
+        [self dismissModalViewControllerAnimated:NO];
+    }
     
-    [self.webParentToolsPopoverController presentSheetInViewController:self animated:NO completion:^{
-        weakSelf.parentalToolsWebViewController.textView.alpha = 0;
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+
+        BITModalSheetController *aPopoverController = [[BITModalSheetController alloc] initWithContentViewController:aParentalToolsWebViewController];
+        aPopoverController.contentSize = CGSizeMake(540, 620);
+        aPopoverController.autoresizingMask = UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin | UIViewAutoresizingFlexibleWidth;
+        self.webParentToolsPopoverController = aPopoverController;
+        [aPopoverController release];
         
-        CGSize expandedSize;
+        __block BITModalSheetController *weakPopover = self.webParentToolsPopoverController;
+        __block SCHProfileViewController_Shared *weakSelf = self;
         
-        if (UIInterfaceOrientationIsPortrait(weakSelf.interfaceOrientation)) {
-            expandedSize = CGSizeMake(700, 530);
-        } else {
-            expandedSize = CGSizeMake(964, 530);
-        }
-        
-        [weakPopover setContentSize:expandedSize animated:YES completion:^{
-            weakSelf.parentalToolsWebViewController.textView.alpha = 1;
+        [self.webParentToolsPopoverController presentSheetInViewController:self animated:NO completion:^{
+            weakSelf.parentalToolsWebViewController.textView.alpha = 0;
+            
+            CGSize expandedSize;
+            
+            if (UIInterfaceOrientationIsPortrait(weakSelf.interfaceOrientation)) {
+                expandedSize = CGSizeMake(700, 530);
+            } else {
+                expandedSize = CGSizeMake(964, 530);
+            }
+            
+            [weakPopover setContentSize:expandedSize animated:YES completion:^{
+                weakSelf.parentalToolsWebViewController.textView.alpha = 1;
+            }];
         }];
-    }];    
+        
+    } else {
+        [self presentModalViewController:self.parentalToolsWebViewController animated:YES];        
+    }
     
     [CATransaction commit];
 }
@@ -604,7 +693,9 @@ didSelectButtonAnimated:(BOOL)animated
         } else {
             if (!showValidation) {
                 NSMutableArray *currentControllers = [[[weakSelf.modalNavigationController viewControllers] mutableCopy] autorelease];
-                [currentControllers removeLastObject];
+                if ([currentControllers count] > 0) {
+                    [currentControllers removeLastObject];
+                }
                 [weakSelf.modalNavigationController setViewControllers:currentControllers];
                 [weakSelf presentModalViewController:self.modalNavigationController animated:NO];
             }

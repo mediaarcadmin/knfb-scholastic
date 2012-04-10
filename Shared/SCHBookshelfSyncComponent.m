@@ -19,6 +19,7 @@
 #import "SCHReadingStatsContentItem.h"
 #import "BITAPIError.h"
 #import "SCHBookIdentifier.h"
+#import "SCHLibreAccessWebService.h"
 
 // Constants
 NSString * const SCHBookshelfSyncComponentWillDeleteNotification = @"SCHBookshelfSyncComponentWillDeleteNotification";
@@ -28,6 +29,8 @@ NSString * const SCHBookshelfSyncComponentDidCompleteNotification = @"SCHBookshe
 NSString * const SCHBookshelfSyncComponentDidFailNotification = @"SCHBookshelfSyncComponentDidFailNotification";
 
 @interface SCHBookshelfSyncComponent ()
+
+@property (nonatomic, retain) SCHLibreAccessWebService *libreAccessWebService;
 
 - (NSArray *)bookIdentifiersFromRequestInfo:(NSArray *)contentMetadataItems;
 - (void)postBookshelfSyncComponentBookReceivedNotification:(NSArray *)contentMetadataItems;
@@ -45,6 +48,7 @@ NSString * const SCHBookshelfSyncComponentDidFailNotification = @"SCHBookshelfSy
 
 @implementation SCHBookshelfSyncComponent
 
+@synthesize libreAccessWebService;
 @synthesize useIndividualRequests;
 @synthesize requestCount;
 @synthesize didReceiveFailedResponseBooks;
@@ -53,6 +57,9 @@ NSString * const SCHBookshelfSyncComponentDidFailNotification = @"SCHBookshelfSy
 {
 	self = [super init];
 	if (self != nil) {
+        libreAccessWebService = [[SCHLibreAccessWebService alloc] init];	
+		libreAccessWebService.delegate = self;
+
 		useIndividualRequests = YES;	
 		requestCount = 0;
         didReceiveFailedResponseBooks = [[NSMutableArray alloc] init];
@@ -62,6 +69,9 @@ NSString * const SCHBookshelfSyncComponentDidFailNotification = @"SCHBookshelfSy
 
 - (void)dealloc
 {
+    libreAccessWebService.delegate = nil;
+	[libreAccessWebService release], libreAccessWebService = nil;
+
     [didReceiveFailedResponseBooks release], didReceiveFailedResponseBooks = nil;
     
     [super dealloc];
@@ -88,8 +98,9 @@ NSString * const SCHBookshelfSyncComponentDidFailNotification = @"SCHBookshelfSy
 
 - (void)clear
 {
-    [super clear];
 	NSError *error = nil;
+    
+    [self.libreAccessWebService clear];
     
     self.requestCount = 0;
     [self.didReceiveFailedResponseBooks removeAllObjects];
@@ -261,7 +272,8 @@ NSString * const SCHBookshelfSyncComponentDidFailNotification = @"SCHBookshelfSy
 	if([results count] > 0) {
 		if (self.useIndividualRequests == YES) {
 			for (NSDictionary *ISBN in results) {				
-				self.isSynchronizing = [self.libreAccessWebService listContentMetadata:[NSArray arrayWithObject:ISBN] includeURLs:NO];
+				self.isSynchronizing = [self.libreAccessWebService listContentMetadata:[NSArray arrayWithObject:ISBN] 
+                                                                           includeURLs:NO coverURLOnly:NO];
 				if (self.isSynchronizing == NO) {
 					[[SCHAuthenticationManager sharedAuthenticationManager] authenticateWithSuccessBlock:^(SCHAuthenticationManagerConnectivityMode connectivityMode){
                         if (connectivityMode == SCHAuthenticationManagerConnectivityModeOnline) {
@@ -281,7 +293,8 @@ NSString * const SCHBookshelfSyncComponentDidFailNotification = @"SCHBookshelfSy
 				}
 			}
 		} else {			
-			self.isSynchronizing = [self.libreAccessWebService listContentMetadata:results includeURLs:NO];
+			self.isSynchronizing = [self.libreAccessWebService listContentMetadata:results 
+                                                                       includeURLs:NO coverURLOnly:NO];
 			if (self.isSynchronizing == NO) {
 				[[SCHAuthenticationManager sharedAuthenticationManager] authenticateWithSuccessBlock:^(SCHAuthenticationManagerConnectivityMode connectivityMode){
                     if (connectivityMode == SCHAuthenticationManagerConnectivityModeOnline) {
@@ -395,7 +408,11 @@ NSString * const SCHBookshelfSyncComponentDidFailNotification = @"SCHBookshelfSy
             SCHBookIdentifier *webBookIdentifier = [[SCHBookIdentifier alloc] initWithObject:webItem];
             SCHBookIdentifier *localBookIdentifier = localItem.bookIdentifier;
             
-            if (webBookIdentifier) {
+            if (webBookIdentifier == nil) {
+                webItem = nil;
+            } else if (localBookIdentifier == nil) {
+                localItem = nil;                
+            } else {
                 switch ([webBookIdentifier compare:localBookIdentifier]) {
                     case NSOrderedSame:
                         [self syncContentMetadataItem:webItem withContentMetadataItem:localItem];
@@ -411,9 +428,9 @@ NSString * const SCHBookshelfSyncComponentDidFailNotification = @"SCHBookshelfSy
                         localItem = nil;
                         break;			
                 }
-                
-                [webBookIdentifier release];
             }
+            
+            [webBookIdentifier release];            
         }
 		
 
@@ -429,7 +446,10 @@ NSString * const SCHBookshelfSyncComponentDidFailNotification = @"SCHBookshelfSy
         [deletePool count] > 0) {
         NSMutableArray *deletedBookIdentifiers = [NSMutableArray array];
         for (SCHContentMetadataItem *contentMetadataItem in deletePool) {
-            [deletedBookIdentifiers addObject:[contentMetadataItem bookIdentifier]];            
+            SCHBookIdentifier *bookIdentifier = [contentMetadataItem bookIdentifier];
+            if (bookIdentifier != nil) {
+                [deletedBookIdentifiers addObject:bookIdentifier];            
+            }
         }
         [[NSNotificationCenter defaultCenter] postNotificationName:SCHBookshelfSyncComponentWillDeleteNotification 
                                                             object:self 
@@ -467,6 +487,7 @@ NSString * const SCHBookshelfSyncComponentDidFailNotification = @"SCHBookshelfSy
 	newContentMetadataItem.PageNumber = [self makeNullNil:[webContentMetadataItem objectForKey:kSCHLibreAccessWebServicePageNumber]];
 	newContentMetadataItem.Title = [self makeNullNil:[webContentMetadataItem objectForKey:kSCHLibreAccessWebServiceTitle]];
 	newContentMetadataItem.Description = [self makeNullNil:[webContentMetadataItem objectForKey:kSCHLibreAccessWebServiceDescription]];
+	newContentMetadataItem.AverageRating = [self makeNullNil:[webContentMetadataItem objectForKey:kSCHLibreAccessWebServiceAverageRating]];
     
     newContentMetadataItem.AppBook = [NSEntityDescription insertNewObjectForEntityForName:kSCHAppBook inManagedObjectContext:self.managedObjectContext];
     
@@ -495,6 +516,7 @@ NSString * const SCHBookshelfSyncComponentDidFailNotification = @"SCHBookshelfSy
         localContentMetadataItem.PageNumber = [self makeNullNil:[webContentMetadataItem objectForKey:kSCHLibreAccessWebServicePageNumber]];
         localContentMetadataItem.Title = [self makeNullNil:[webContentMetadataItem objectForKey:kSCHLibreAccessWebServiceTitle]];
         localContentMetadataItem.Description = [self makeNullNil:[webContentMetadataItem objectForKey:kSCHLibreAccessWebServiceDescription]];
+        localContentMetadataItem.AverageRating = [self makeNullNil:[webContentMetadataItem objectForKey:kSCHLibreAccessWebServiceAverageRating]];
     }
 }
 

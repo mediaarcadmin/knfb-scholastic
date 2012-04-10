@@ -21,6 +21,8 @@
 
 #define LAYOUT_LANDSCAPE_PAGE_EDGE_COUNT 3
 
+static const NSUInteger kSCHLayoutViewPageViewCacheLimit = 2;
+
 @interface SCHLayoutView() <EucSelectorDataSource>
 
 @property (nonatomic, retain) EucIndexBasedPageTurningView *pageTurningView;
@@ -37,6 +39,8 @@
 @property (nonatomic, copy) dispatch_block_t jumpToPageCompletionHandler;
 @property (nonatomic, assign) BOOL suppressZoomingCallback;
 @property (nonatomic, retain) SCHBookPoint *openingPoint;
+@property (nonatomic, retain) NSCache *generatedPageViewsCache;
+@property (nonatomic, retain) NSLock *pageViewsCacheLock;
 
 - (void)initialiseView;
 
@@ -52,6 +56,12 @@
 - (CGAffineTransform)pageTurningViewTransformForPageAtIndex:(NSInteger)pageIndex offsetOrigin:(BOOL)offset applyZoom:(BOOL)applyZoom;
 
 - (void)updateCurrentPageIndex;
+- (BOOL)pageAtIndexIsOnRight:(NSUInteger)pageIndex;
+
+- (UIView *)createGeneratedPageViewForPageAtIndex:(NSInteger)pageIndex;
+- (UIView *)generatedViewForPageAtIndex:(NSInteger)pageIndex;
+
+- (NSUInteger)generatedPageCount;
 
 @end
 
@@ -71,6 +81,8 @@
 @synthesize jumpToPageCompletionHandler;
 @synthesize suppressZoomingCallback;
 @synthesize openingPoint;
+@synthesize generatedPageViewsCache; // Lazily instantiated;
+@synthesize pageViewsCacheLock;
 
 - (void)dealloc
 {
@@ -86,6 +98,8 @@
     [zoomCompletionHandler release], zoomCompletionHandler = nil;
     [jumpToPageCompletionHandler release], jumpToPageCompletionHandler = nil;
     [openingPoint release], openingPoint = nil;
+    [generatedPageViewsCache release], generatedPageViewsCache = nil;
+    [pageViewsCacheLock release], pageViewsCacheLock = nil;
     
     [super dealloc];
 }
@@ -94,6 +108,7 @@
 {
     if (self.xpsProvider) {
         layoutCacheLock = [[NSLock alloc] init];
+        pageViewsCacheLock = [[NSLock alloc] init];
         
         pageCount = [self.xpsProvider pageCount];
         firstPageCrop = [self cropForPage:1 allowEstimate:NO];
@@ -104,6 +119,7 @@
         pageTurningView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
         pageTurningView.zoomHandlingKind = EucPageTurningViewZoomHandlingKindZoom;
         pageTurningView.vibratesOnInvalidTurn = NO;
+        [pageTurningView.tapGestureRecognizer setCancelsTouchesInView:NO];
         
         // Must do this here so that the page aspect ratio takes account of the twoUp property
         CGRect myBounds = self.bounds;
@@ -198,7 +214,8 @@ managedObjectContext:(NSManagedObjectContext *)managedObjectContext
     if(!CGSizeEqualToSize(newSize, self.pageSize)) {
         
         if(self.selector.tracking) {
-            [self.selector setSelectedRange:nil];
+            //[self.selector setSelectedRange:nil];
+            [self.selector performSelector:@selector(calculateAndSetSelectedRangeForRange:) withObject:nil];
         }
                 
 		self.pageSize = newSize;
@@ -285,7 +302,8 @@ managedObjectContext:(NSManagedObjectContext *)managedObjectContext
 }
 
 - (void)createLayoutCacheForPage:(NSInteger)page {
-    // N.B. please ensure this is only called with a [layoutCacheLock lock] acquired
+    NSAssert(![layoutCacheLock tryLock], @"layoutCacheLock should always have been previously acquired prior to creating a new cached value");
+    
     if (nil == self.pageCropsCache) {
         self.pageCropsCache = [NSMutableDictionary dictionaryWithCapacity:pageCount];
     }
@@ -375,7 +393,7 @@ managedObjectContext:(NSManagedObjectContext *)managedObjectContext
 
 - (CGFloat)currentProgressPosition
 {
-    return (self.currentPageIndex + 1)/(CGFloat)MAX([self pageCount], 1);
+    return (self.currentPageIndex + 1)/(CGFloat)MAX([self generatedPageCount], 1);
 }
 
 - (void)jumpToBookPoint:(SCHBookPoint *)bookPoint animated:(BOOL)animated
@@ -407,7 +425,7 @@ managedObjectContext:(NSManagedObjectContext *)managedObjectContext
         self.jumpToPageCompletionHandler = completion;
     }
     
-    if (pageIndex < pageCount) {
+    if (pageIndex < [self generatedPageCount]) {
         [self.pageTurningView turnToPageAtIndex:pageIndex animated:animated];
 	}
     
@@ -581,11 +599,70 @@ managedObjectContext:(NSManagedObjectContext *)managedObjectContext
     return pageLabel;
 }
 
+
+#pragma mark - Cached generated pageViews
+
+- (NSCache *)generatedPageViewsCache
+{
+    return nil; // turn off cache
+    if (!generatedPageViewsCache) {
+        generatedPageViewsCache = [[NSCache alloc] init];
+        generatedPageViewsCache.countLimit = kSCHLayoutViewPageViewCacheLimit;
+    }
+    
+    return generatedPageViewsCache;
+}
+
+- (UIView *)createGeneratedPageViewForPageAtIndex:(NSInteger)pageIndex 
+{
+    NSAssert(![pageViewsCacheLock tryLock], @"pageViewsCacheLock should always have been previously acquired prior to creating a new cached value");
+    
+    UIView *pageView = [self.generatedPageViewsCache objectForKey:[NSNumber numberWithInt:pageIndex]];
+    if (nil == pageView) {
+        pageView = [self.delegate generatedViewForPageAtIndex:pageIndex];
+        if (pageView) {
+            [self.generatedPageViewsCache setObject:pageView forKey:[NSNumber numberWithInt:pageIndex]];
+        }
+    }
+    
+    return pageView;
+}
+
+- (UIView *)generatedViewForPageAtIndex:(NSInteger)pageIndex 
+{    
+    [pageViewsCacheLock lock];
+
+    UIView *pageView = [self.generatedPageViewsCache objectForKey:[NSNumber numberWithInt:pageIndex]];
+    
+    if (nil == pageView) {
+        pageView = [self createGeneratedPageViewForPageAtIndex:pageIndex];
+    }
+    
+    [pageViewsCacheLock unlock];
+
+    return pageView;
+}
+
+- (NSUInteger)generatedPageCount
+{
+    return [self.delegate generatedPageCountForReadingView:self];
+}
+
 #pragma mark -
 #pragma mark EucIndexBasedPageTurningViewDataSource
 
 - (CGRect)pageTurningView:(EucIndexBasedPageTurningView *)aPageTurningView contentRectForPageAtIndex:(NSUInteger)index 
 {
+    if ((index == ([self generatedPageCount] - 1)) && 
+        ([self.delegate readingView:self shouldGenerateViewForPageAtIndex:index])) {
+        
+        if ([self pageAtIndexIsOnRight:index]) {
+            return [self.pageTurningView unzoomedRightPageFrame];
+        } else {
+            return [self.pageTurningView unzoomedLeftPageFrame];
+        }
+    }
+    
     return [self cropForPage:index + 1];
 }
 
@@ -622,7 +699,34 @@ fastThumbnailUIImageForPageAtIndex:(NSUInteger)index
 
 - (NSUInteger)pageTurningViewPageCount:(EucIndexBasedPageTurningView *)pageTurningView
 {
-	return self.pageCount;
+	return [self generatedPageCount];
+}
+
+- (UIView *)pageTurningView:(EucIndexBasedPageTurningView *)pageTurningView 
+       UIViewForPageAtIndex:(NSUInteger)pageIndex
+{
+    UIView *aView = nil;
+    
+    if ([self.delegate readingView:self shouldGenerateViewForPageAtIndex:pageIndex]) {
+        aView = [self generatedViewForPageAtIndex:pageIndex];     
+        
+        // Turn on autoresizing before setting the frame and turn it off again immediately afterwards
+        // as it doesn't play nicely with teh page turning view
+        
+        aView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+        aView.autoresizesSubviews = YES;
+        
+        if ([self pageAtIndexIsOnRight:pageIndex]) {
+            aView.frame = [self.pageTurningView unzoomedRightPageFrame];
+        } else {
+            aView.frame = [self.pageTurningView unzoomedLeftPageFrame];
+        }
+        
+        aView.autoresizingMask = UIViewAutoresizingNone;
+        aView.autoresizesSubviews = NO;
+    }
+    
+    return aView;
 }
 
 #pragma mark - EucPageTurningViewDelegate
@@ -710,6 +814,7 @@ fastThumbnailUIImageForPageAtIndex:(NSUInteger)index
 - (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
     [self detachSelector];
 	self.temporaryHighlightRange = nil;
+    [generatedPageViewsCache release], generatedPageViewsCache = nil;
 }
 
 - (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation {
@@ -727,7 +832,7 @@ fastThumbnailUIImageForPageAtIndex:(NSUInteger)index
 - (void)refreshHighlightsForPageAtIndex:(NSUInteger)index
 {
     [self.pageTurningView refreshHighlightsForPageAtIndex:index];
-    [self.pageTurningView setNeedsDraw];
+    [self.pageTurningView setNeedsDraw]; 
 }
 
 - (void)refreshPageTurningViewImmediately:(BOOL)immediately
@@ -951,7 +1056,12 @@ fastThumbnailUIImageForPageAtIndex:(NSUInteger)index
         }
         if (word) {
             CGAffineTransform viewTransform = [self pageTurningViewTransformForPageAtIndex:pageIndex];
-            CGRect wordRect = [[[block words] objectAtIndex:[elementId integerValue]] rect];            
+            CGRect wordRect = CGRectZero;
+            NSInteger elementValue = [elementId integerValue];
+            NSArray *words = [block words];
+            if (elementValue < [words count]) {
+                wordRect = [[words objectAtIndex:elementValue] rect];            
+            }
             return [NSArray arrayWithObject:[NSValue valueWithCGRect:CGRectApplyAffineTransform(wordRect, viewTransform)]];
         }
     } 
@@ -1032,17 +1142,24 @@ CGAffineTransform transformRectToFitRect(CGRect sourceRect, CGRect targetRect, B
 	return CGPointMake(scaledOffsetX, scaledOffsetY);
 }
 
-- (CGAffineTransform)pageTurningViewTransformForPageAtIndex:(NSInteger)pageIndex offsetOrigin:(BOOL)offset applyZoom:(BOOL)applyZoom {
-    // TODO: Make sure this is cached in LayoutView or pageTurningView
-    CGRect pageCrop = [self pageTurningView:self.pageTurningView contentRectForPageAtIndex:pageIndex];
-    CGRect pageFrame;
-    
-	BOOL isOnRight = YES;
+- (BOOL)pageAtIndexIsOnRight:(NSUInteger)pageIndex
+{
+    BOOL isOnRight = YES;
 	if (self.pageTurningView.isTwoUp) {
 		if ((pageIndex % 2) != 0) {
 			isOnRight = NO;
 		}
 	}
+    
+    return isOnRight;
+}
+
+- (CGAffineTransform)pageTurningViewTransformForPageAtIndex:(NSInteger)pageIndex offsetOrigin:(BOOL)offset applyZoom:(BOOL)applyZoom {
+    // TODO: Make sure this is cached in LayoutView or pageTurningView
+    CGRect pageCrop = [self pageTurningView:self.pageTurningView contentRectForPageAtIndex:pageIndex];
+    CGRect pageFrame;
+    
+	BOOL isOnRight = [self pageAtIndexIsOnRight:pageIndex];
     	
 	if (isOnRight) {
 		if (applyZoom) {

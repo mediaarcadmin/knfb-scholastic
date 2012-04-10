@@ -11,10 +11,15 @@
 #import "SCHVersionDownloadManager.h"
 #import "LambdaAlert.h"
 
+static const CGFloat kSCHStoriaLoginContentHeightLandscape = 420;
+
 @interface SCHStoriaLoginViewController() <UITextFieldDelegate>
 
 - (void)releaseViewObjects;
 - (void)showAppVersionOutdatedAlert;
+- (void)setupContentSizeForOrientation:(UIInterfaceOrientation)orientation;
+
+@property (nonatomic, retain) UITextField *activeTextField;
 
 @end
 
@@ -28,6 +33,8 @@
 @synthesize previewButton;
 @synthesize spinner;
 @synthesize promptLabel;
+@synthesize activeTextField;
+@synthesize scrollView;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -40,12 +47,18 @@
 
 - (void)releaseViewObjects
 {
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
+        [[NSNotificationCenter defaultCenter] removeObserver:self];
+    }
+    
     [topField release], topField = nil;
     [bottomField release], bottomField = nil;
     [loginButton release], loginButton = nil;
     [previewButton release], previewButton = nil;
     [spinner release], spinner = nil;
     [promptLabel release], promptLabel = nil;
+    [activeTextField release], activeTextField = nil;
+    [scrollView release], scrollView = nil;
 }
 
 - (void)dealloc
@@ -71,6 +84,25 @@
 {
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
+    
+    [self.scrollView setAlwaysBounceVertical:NO];
+    
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
+        [[NSNotificationCenter defaultCenter] addObserver:self 
+                                                 selector:@selector(keyboardWillShow:) 
+                                                     name:UIKeyboardWillShowNotification
+                                                   object:nil];
+        
+        [[NSNotificationCenter defaultCenter] addObserver:self 
+                                                 selector:@selector(keyboardDidShow:) 
+                                                     name:UIKeyboardDidShowNotification
+                                                   object:nil];
+        
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(keyboardWillHide:)
+                                                     name:UIKeyboardWillHideNotification
+                                                   object:nil];
+    }
 }
 
 - (void)viewDidUnload
@@ -80,10 +112,38 @@
     [self releaseViewObjects];
 }
 
+- (void)viewWillAppear:(BOOL)animated 
+{
+    [super viewWillAppear:animated];
+    [self stopShowingProgress];
+    [self setupContentSizeForOrientation:self.interfaceOrientation];
+    [self clearFields];
+    [self setDisplayIncorrectCredentialsWarning:NO];    
+}
+
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
     // Return YES for supported orientations
 	return YES;
+}
+
+- (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation
+{
+    [self.view endEditing:YES];
+    [self setupContentSizeForOrientation:self.interfaceOrientation];
+}
+
+- (void)setupContentSizeForOrientation:(UIInterfaceOrientation)orientation;
+{
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
+        if (UIInterfaceOrientationIsPortrait(orientation)) {
+            self.scrollView.contentSize = CGSizeZero;
+        } else {
+            self.scrollView.contentSize = CGSizeMake(self.view.bounds.size.width, kSCHStoriaLoginContentHeightLandscape);
+        }
+    } else {
+        self.scrollView.contentSize = CGSizeZero;
+    }    
 }
 
 #pragma mark - Actions
@@ -148,22 +208,46 @@
 
 - (void)setDisplayIncorrectCredentialsWarning:(BOOL)showWarning
 {
-    CGRect frame = self.promptLabel.frame;
-    if (showWarning) {
-        self.promptLabel.text = NSLocalizedString(@"Your User Name or Password was not recognized. Please try again.", @"");
-        frame.size.width = 200;
-    } else {
-        self.promptLabel.text = NSLocalizedString(@"You must have a Scholastic account to sign in.", @"");
-        frame.size.width = 140;
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+        CGRect frame = self.promptLabel.frame;
+        if (showWarning) {
+            self.promptLabel.text = NSLocalizedString(@"Your User Name or Password was not recognized. Please try again.", @"");
+            frame.size.width = 200;
+        } else {
+            self.promptLabel.text = NSLocalizedString(@"You must have a Scholastic account to sign in.", @"");
+            frame.size.width = 140;
+        }
+        
+        [CATransaction begin];
+        [CATransaction setDisableActions:YES];
+        self.promptLabel.frame = frame;
+        [CATransaction commit];
     }
-    
-    [CATransaction begin];
-    [CATransaction setDisableActions:YES];
-    self.promptLabel.frame = frame;
-    [CATransaction commit];
 }
 
 #pragma mark - UITextFieldDelegate
+
+- (void)makeVisibleTextField:(UITextField *)textField
+{
+    CGFloat textFieldCenterY    = CGRectGetMidY(textField.frame);
+    CGFloat scrollViewQuadrantY = CGRectGetMidY(self.scrollView.frame)/2.0f;
+    
+    if (textFieldCenterY > scrollViewQuadrantY) {
+        [self.scrollView setContentOffset:CGPointMake(0, textFieldCenterY - scrollViewQuadrantY) animated:YES];
+    }
+}
+
+- (void)textFieldDidBeginEditing:(UITextField *)textField
+{    
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
+        if (self.activeTextField && (self.activeTextField != textField)) {
+            // We have swapped textFields with the keyboard showing
+            [self makeVisibleTextField:textField];
+        }
+        
+        self.activeTextField = textField;
+    }
+}
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField
 {
@@ -187,6 +271,30 @@
     [alert addButtonWithTitle:NSLocalizedString(@"OK", @"") block:nil];
     [alert show];
     [alert release];         
+}
+
+#pragma mark - UIKeyboard Notifications
+
+- (void)keyboardDidShow:(NSNotification *) notification
+{
+    if (self.activeTextField) {
+        [self makeVisibleTextField:self.activeTextField];
+    }
+}
+
+- (void)keyboardWillShow:(NSNotification *) notification
+{
+    if (UIInterfaceOrientationIsPortrait(self.interfaceOrientation)) {
+        [self.scrollView setContentSize:CGSizeMake(self.scrollView.contentSize.width, MAX(self.view.frame.size.height, self.scrollView.contentSize.height) * 1.5f)];
+    } else {
+        [self.scrollView setContentSize:CGSizeMake(self.scrollView.contentSize.width, kSCHStoriaLoginContentHeightLandscape * 1.4)];
+    }
+}
+
+- (void)keyboardWillHide:(NSNotification *) notification
+{
+    self.activeTextField = nil;
+    [self setupContentSizeForOrientation:self.interfaceOrientation];
 }
 
 @end

@@ -163,8 +163,8 @@
 - (BOOL)fileSystemHasBytesAvailable:(unsigned long long)sizeInBytes
 {
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-    NSString *docDirectory = [paths objectAtIndex:0];            
-    
+    NSString *docDirectory = ([paths count] > 0 ? [paths objectAtIndex:0] : nil);            
+
     NSDictionary* fsAttr = [self.localFileManager attributesOfFileSystemForPath:docDirectory error:NULL];
     
     unsigned long long freeSize = [(NSNumber*)[fsAttr objectForKey:NSFileSystemFreeSize] unsignedLongLongValue];
@@ -192,12 +192,22 @@
     self.currentDownloadSize = expectedDataSize;
     self.lastUpdatePercentage = -1;
     
-    if (![self fileSystemHasBytesAvailable:expectedDataSize]) {
-        NSLog(@"unsufficient space for %@ [%llu]: cancelling download", [operation URL], expectedDataSize);
-        [operation cancel];
+    BOOL sufficientSpace;
+    if (expectedDataSize == NSURLResponseUnknownLength) {
+        sufficientSpace = [self fileSystemHasBytesAvailable:1];
     } else {
-        NSLog(@"downloading %@ expected size = %llu", [operation URL], expectedDataSize);
+        sufficientSpace = [self fileSystemHasBytesAvailable:expectedDataSize];
     }
+    
+    if (!sufficientSpace) {
+        [[SCHHelpManager sharedHelpManager] threadSafeUpdateHelpState:SCHHelpProcessingStateNotEnoughFreeSpace];    
+        // we should do the same as the dictionary download code but the help
+        // download is a little different so we cancel the operation and not self
+        [operation cancel];
+        return;
+    }
+    
+    NSLog(@"start downloading help file size = %llu", expectedDataSize);
 }
 
 - (void)httpOperation:(QHTTPOperation *)operation updatedDownloadSize:(long long)downloadedSize

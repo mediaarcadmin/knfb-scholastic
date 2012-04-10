@@ -167,7 +167,7 @@ static BOOL is_leap_year(unsigned year) {
  * //Day only of implied week
  *  -W-d
  */
-+ (NSDate *)dateForString:(NSString *)str strictly:(BOOL)strict timeSeparator:(unichar)timeSep getRange:(out NSRange *)outRange {  
++ (NSDate *)dateForString:(NSString *)str strictly:(BOOL)strict timeSeparator:(unichar)timeSep getRange:(out NSRange *)outRange {
   static NSCalendar *gregorian = nil;
   if (gregorian == nil) {
     gregorian = [[NSCalendar alloc]

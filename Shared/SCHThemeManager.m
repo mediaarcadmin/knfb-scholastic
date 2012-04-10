@@ -27,7 +27,12 @@ NSString * const kSCHThemeManagerBackgroundImage = @"BackgroundImage";
 NSString * const kSCHThemeManagerShelfImage = @"ShelfImage";
 NSString * const kSCHThemeManagerHomeIcon = @"HomeIcon";
 NSString * const kSCHThemeManagerThemeIcon = @"ThemeIcon";
+NSString * const kSCHThemeManagerMenuIcon = @"MenuIcon";
+NSString * const kSCHThemeManagerRatingsIcon = @"RatingsIcon";
+NSString * const kSCHThemeManagerRatingsSelectedIcon = @"RatingsSelectedIcon";
 NSString * const kSCHThemeManagerColorForListBackground = @"ListBackgroundColor";
+NSString * const kSCHThemeManagerColorForPopoverBackground = @"PopoverBackgroundColor";
+NSString * const kSCHThemeManagerColorForModalSheetBorder = @"ModalSheetBorderColor";
 NSString * const kSCHThemeManagerGridTextColorIsDark = @"GridTextColorIsDark";
 
 static NSString * const kSCHThemeManagerDirectory = @"Themes";
@@ -162,7 +167,10 @@ static NSString * const kSCHThemeManagerName = @"Name";
     
     for (NSDictionary *dict in self.allThemes) {
         if (excludeSelectedTheme == NO || dict != self.selectedTheme) {
-            [ret addObject:[dict objectForKey:kSCHThemeManagerName]];
+            NSString *themeName = [dict objectForKey:kSCHThemeManagerName];
+            if (themeName != nil) {
+                [ret addObject:themeName];
+            }
         }
     }
     
@@ -262,6 +270,16 @@ static NSString * const kSCHThemeManagerName = @"Name";
 - (UIColor *)colorForListBackground
 {
     return ([UIColor BITcolorWithHexString:[self.selectedTheme objectForKey:kSCHThemeManagerColorForListBackground]]);
+}
+
+- (UIColor *)colorForPopoverBackground
+{
+    return ([UIColor BITcolorWithHexString:[self.selectedTheme objectForKey:kSCHThemeManagerColorForPopoverBackground]]);
+}
+
+- (UIColor *)colorForModalSheetBorder
+{
+    return ([UIColor BITcolorWithHexString:[self.selectedTheme objectForKey:kSCHThemeManagerColorForModalSheetBorder]]);
 }
 
 - (BOOL)gridTextColorIsDark

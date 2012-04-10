@@ -7,19 +7,31 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "RateView.h"
 
 @class SCHBookIdentifier;
 
-@interface SCHBookShelfTableViewCell : UITableViewCell {}
+@protocol SCHBookShelfTableViewCellDelegate;
+
+@interface SCHBookShelfTableViewCell : UITableViewCell <RateViewDelegate>
+{}
 
 @property (nonatomic, retain) SCHBookIdentifier *identifier;
+@property (nonatomic, assign) id <SCHBookShelfTableViewCellDelegate> delegate;
 @property (nonatomic, assign) BOOL isNewBook;
 @property (nonatomic, assign) BOOL lastCell;
 @property (nonatomic, assign) BOOL loading;
 @property (nonatomic, assign) BOOL disabledForInteractions;
+@property (nonatomic, assign) NSInteger userRating;
 
 - (void)beginUpdates;
 - (void)endUpdates;
 - (void)refreshCell;
+
+@end
+
+@protocol SCHBookShelfTableViewCellDelegate <NSObject>
+
+- (void)bookshelfCell:(SCHBookShelfTableViewCell *)cell userRatingChanged:(NSInteger)newRating;
 
 @end

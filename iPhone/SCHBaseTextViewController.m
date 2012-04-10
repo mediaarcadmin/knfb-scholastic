@@ -137,8 +137,12 @@
     } else {
         if (![items containsObject:self.closeButton] && 
             ![items containsObject:self.spacer]) {
-            [items insertObject:self.closeButton atIndex:0];
-            [items addObject:self.spacer];
+            if (self.closeButton != nil) {
+                [items insertObject:self.closeButton atIndex:0];
+            }
+            if (self.spacer != nil) {
+                [items addObject:self.spacer];
+            }
         }
     }
     

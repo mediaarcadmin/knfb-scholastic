@@ -32,6 +32,7 @@ NSString * const kSCHUserContentItemDRM_QUALIFIER = @"DRM_QUALIFIER";
 @dynamic ProfileList;
 @dynamic FreeBook;
 @dynamic LastVersion;
+@dynamic AverageRating;
 
 - (SCHBookIdentifier *)bookIdentifier
 {
@@ -80,6 +81,13 @@ NSString * const kSCHUserContentItemDRM_QUALIFIER = @"DRM_QUALIFIER";
     [self didAccessValueForKey:@"LastVersion"];
     
     return ret;
+}
+
+#pragma SCHISBNItem protocol methods
+
+- (BOOL)coverURLOnly
+{
+    return NO;
 }
 
 @end

@@ -25,6 +25,7 @@ NSString * const SCHSyncComponentDidFailAuthenticationNotification = @"SCHSyncCo
 @synthesize managedObjectContext;
 @synthesize backgroundTaskIdentifier;
 @synthesize failureCount;
+@synthesize saveOnly;
 
 #pragma mark - Object lifecycle
 
@@ -34,6 +35,7 @@ NSString * const SCHSyncComponentDidFailAuthenticationNotification = @"SCHSyncCo
 	if (self != nil) {
 		isSynchronizing = NO;
         backgroundTaskIdentifier = UIBackgroundTaskInvalid;
+        saveOnly = NO;
 	}
 	
 	return(self);
@@ -73,7 +75,7 @@ NSString * const SCHSyncComponentDidFailAuthenticationNotification = @"SCHSyncCo
         }
     }
     
-	[super method:method didCompleteWithResult:nil userInfo:nil];	
+	[super method:method didCompleteWithResult:result userInfo:userInfo];	
 }
 
 - (void)method:(NSString *)method didFailWithError:(NSError *)error 
@@ -105,11 +107,12 @@ NSString * const SCHSyncComponentDidFailAuthenticationNotification = @"SCHSyncCo
 
 - (void)save
 {
-	NSError *error = nil;
-	
-	if (![self.managedObjectContext save:&error]) {
-		NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
-	} 
+    NSError *error = nil;
+    
+    if ([self.managedObjectContext hasChanges] == YES &&
+        ![self.managedObjectContext save:&error]) {
+        NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
+    } 
 }
 
 @end

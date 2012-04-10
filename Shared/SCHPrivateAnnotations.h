@@ -12,6 +12,7 @@
 @class SCHBookmark;
 @class SCHHighlight;
 @class SCHLastPage;
+@class SCHRating;
 @class SCHNote;
 
 // Constants
@@ -22,6 +23,8 @@ extern NSString * const kSCHPrivateAnnotations;
 }
 
 @property (nonatomic, retain) SCHLastPage * LastPage;
+@property (nonatomic, retain) SCHRating *rating;
+
 @property (nonatomic, retain) SCHAnnotationsContentItem * AnnotationsContentItem;
 @property (nonatomic, retain) NSSet* Bookmarks;
 @property (nonatomic, retain) NSSet* Highlights;

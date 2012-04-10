@@ -46,6 +46,11 @@
 #import "SCHReadingStoryInteractionButton.h"
 #import "SCHProfileSyncComponent.h"
 #import "NSDate+ServerDate.h"
+#import "SCHRecommendationListView.h"
+#import "SCHRecommendationContainerView.h"
+#import "SCHAppStateManager.h"
+#import "SCHAppRecommendationItem.h"
+#import "SCHSettingItem.h"
 
 // constants
 NSString *const kSCHReadingViewErrorDomain  = @"com.knfb.scholastic.ReadingViewErrorDomain";
@@ -54,10 +59,11 @@ static const CGFloat kReadingViewStandardScrubHeight = 47.0f;
 static const CGFloat kReadingViewOlderScrubberToolbarHeight = 44;
 static const CGFloat kReadingViewYoungerScrubberToolbarHeight = 60.0f;
 static const CGFloat kReadingViewBackButtonPadding = 7.0f;
+static const NSUInteger kReadingViewMaxRecommendationsCount = 4;
 
 #pragma mark - Class Extension
 
-@interface SCHReadingViewController ()
+@interface SCHReadingViewController () <SCHRecommendationListViewDelegate>
 
 @property (nonatomic, retain) SCHBookIdentifier *bookIdentifier;
 
@@ -122,6 +128,14 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 @property (nonatomic, assign) BOOL highlightsModeEnabled;
 @property (nonatomic, assign) BOOL firstTimePlayForHelpController;
 
+@property (nonatomic, retain) UINib *recommendationsContainerNib;
+@property (nonatomic, retain) UINib *recommendationViewNib;
+@property (nonatomic, retain) NSArray *recommendationsDictionaries;
+@property (nonatomic, retain) NSArray *wishListDictionaries;
+@property (nonatomic, retain) NSMutableArray *modifiedWishListDictionaries;
+
+@property (nonatomic, retain) NSNumber *cachedRecommendationsActive;
+
 - (void)updateNotesCounter;
 - (id)initFailureWithErrorCode:(NSInteger)code error:(NSError **)error;
 - (NSError *)errorWithCode:(NSInteger)code;
@@ -164,6 +178,9 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 - (void)dismissCoverCornerViewWithAnimation:(BOOL)animated;
 - (void)checkCornerAudioButtonVisibilityWithAnimation:(BOOL)animated;
 - (void)positionCornerAudioButtonForOrientation:(UIInterfaceOrientation)newOrientation;
+- (BOOL)shouldShowBookRecommendationsForReadingView:(SCHReadingView *)readingView;
+- (void)reloadRecommendations;
+- (void)commitWishListChanges;
 
 @end
 
@@ -243,6 +260,12 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 @synthesize highlightsCancelButton;
 @synthesize cornerCoverFadeTimer;
 @synthesize firstTimePlayForHelpController;
+@synthesize recommendationViewNib;
+@synthesize recommendationsContainerNib;
+@synthesize recommendationsDictionaries;
+@synthesize wishListDictionaries;
+@synthesize modifiedWishListDictionaries;
+@synthesize cachedRecommendationsActive;
 
 #pragma mark - Dealloc and View Teardown
 
@@ -274,6 +297,13 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     [storyInteractionViewController release], storyInteractionViewController = nil;
     [cornerCoverFadeTimer release], cornerCoverFadeTimer = nil;
     [forceOpenToCover release], forceOpenToCover = nil;
+    [recommendationViewNib release], recommendationViewNib = nil;
+    [recommendationsContainerNib release], recommendationsContainerNib = nil;
+    [recommendationsDictionaries release], recommendationsDictionaries = nil;
+    [wishListDictionaries release], wishListDictionaries = nil;
+    [modifiedWishListDictionaries release], modifiedWishListDictionaries = nil;
+    
+    [cachedRecommendationsActive release], cachedRecommendationsActive = nil;
     
     // Ideally the readingView would be release it viewDidUnload but it contains 
     // logic that this view controller uses while it is potentially off-screen (e.g. when a story interaction is being shown)
@@ -463,6 +493,9 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 
         self.coverMarkerShouldAppear = YES;
         self.firstTimePlayForHelpController = NO;
+        
+        self.recommendationViewNib = [UINib nibWithNibName:@"SCHRecommendationListView-ReadingView" bundle:nil];
+        self.recommendationsContainerNib = [UINib nibWithNibName:@"SCHRecommendationListView-ReadingViewContainer" bundle:nil];
 
     } else {
         return [self initFailureWithErrorCode:kSCHReadingViewUnspecifiedError error:error];
@@ -668,7 +701,9 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 #if FLOW_VIEW_DISABLED
     // if flow view is disabled, then remove the options button
     NSMutableArray *toolbarArray = [[NSMutableArray alloc] initWithArray:self.olderBottomToolbar.items];
-    [toolbarArray removeObjectsAtIndexes:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(6, 2)]];
+    if ([toolbarArray count] >= 9) {
+        [toolbarArray removeObjectsAtIndexes:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(6, 2)]];
+    }
     self.olderBottomToolbar.items = [NSArray arrayWithArray:toolbarArray];
     [toolbarArray release];
 #endif
@@ -812,6 +847,9 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 - (void)updateBookState
 {
     if (self.bookIdentifier != nil) {
+ 
+        [self commitWishListChanges];
+        
         SCHAppBook *book = [[SCHBookManager sharedBookManager] bookWithIdentifier:self.bookIdentifier inManagedObjectContext:self.managedObjectContext];
 
         if ([self.bookStatistics hasStatistics] == YES) {
@@ -924,7 +962,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 - (void)annotationChanges:(NSNotification *)notification
 {    
     if (self.profile.ID != nil) {
-        NSNumber *profileID = [notification.userInfo objectForKey:SCHAnnotationSyncComponentCompletedProfileIDs];
+        NSNumber *profileID = [notification.userInfo objectForKey:SCHAnnotationSyncComponentProfileIDs];
         
         if ([profileID isEqualToNumber:self.profile.ID] == YES) {
             // dispatch this onto the main thread to avoid a race condition with the notification going to the SCHBookAnnotations object
@@ -969,7 +1007,9 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
         SCHBookPoint *currentBookPoint = [self.readingView currentBookPoint];
         SCHLastPage *lastPage = [self.bookAnnotations lastPage];
         
-        lastPage.LastPageLocation = [NSNumber numberWithInteger:currentBookPoint.layoutPage];
+        // We don't actually want to persist a generated last page as the current page
+        NSInteger currentPage = MIN(currentBookPoint.layoutPage, [self.readingView pageCount]);
+        lastPage.LastPageLocation = [NSNumber numberWithInteger:currentPage];
         
         // Progress should not be exactly 0 once a book is opened so always set a min of 0.001f and a max of 1.0f
         CGFloat progress = MIN(MAX([self.readingView currentProgressPosition], 0.001f), 1.0f);
@@ -992,7 +1032,11 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     
     // If we havnt yet received the annotations from the sync then use the contentprofileitem
     // lastpage, see SCHProfileItem:allBookIdentifiers where we do the same for the last modified date
-    if ([[contentProfileItem LastModified] compare:[annotationsLastPage LastModified]] == NSOrderedDescending) {
+    NSDate *contentProfileLastModified = [contentProfileItem LastModified];
+    NSDate *annotationLastPageLastModified = [annotationsLastPage LastModified];
+    if (contentProfileLastModified != nil && 
+        annotationLastPageLastModified != nil &&
+        [contentProfileLastModified compare:annotationLastPageLastModified] == NSOrderedDescending) {
         lastPageLocation = [contentProfileItem LastPageLocation];
     } else {
         lastPageLocation = [annotationsLastPage LastPageLocation];
@@ -2244,6 +2288,69 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     [self.bookStatistics addToDictionaryLookup:word];
 }
 
+- (NSUInteger)generatedPageCountForReadingView:(SCHReadingView *)aReadingView
+{
+    NSUInteger pageCount = [aReadingView pageCount];
+    
+    if ([self shouldShowBookRecommendationsForReadingView:aReadingView]) {
+        pageCount = pageCount + 1;
+    }
+    
+    return pageCount;
+}
+
+- (BOOL)readingView:(SCHReadingView *)aReadingView shouldGenerateViewForPageAtIndex:(NSUInteger)pageIndex
+{
+    if ([self shouldShowBookRecommendationsForReadingView:aReadingView]) {
+        if (pageIndex == [self generatedPageCountForReadingView:aReadingView] - 1) {
+            return YES;
+        }
+    }
+    
+    return NO;
+}
+
+- (UIView *)generatedViewForPageAtIndex:(NSUInteger)pageIndex
+{
+    // This currently assumes there is only one generated view, which is the recommendations view.
+    SCHRecommendationContainerView *recommendationsContainer = [[[self.recommendationsContainerNib instantiateWithOwner:self options:nil] objectAtIndex:0] retain];
+    [recommendationsContainer setFrame:self.readingView.bounds];
+    
+    UIView *container = recommendationsContainer.container;
+    CGFloat count = MIN([[self recommendationsDictionaries] count], 4);
+    CGFloat rowHeight = floorf((container.frame.size.height)/count);
+    for (int i = 0; i < count; i++) {
+        NSDictionary *recommendationDictionary = [[self recommendationsDictionaries] objectAtIndex:i];
+        
+        SCHRecommendationListView *listView = [[[self.recommendationViewNib instantiateWithOwner:self options:nil] objectAtIndex:0] retain];
+        listView.frame = CGRectMake(0, rowHeight * i, container.frame.size.width, rowHeight);
+        listView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin;
+
+        listView.showsBottomRule = NO;
+        listView.delegate = self;
+        
+        [listView updateWithRecommendationItem:recommendationDictionary];
+        
+        NSString *ISBN = [recommendationDictionary objectForKey:kSCHAppRecommendationISBN];
+        
+        NSUInteger index = [self.modifiedWishListDictionaries
+                            indexOfObjectPassingTest:^BOOL (id obj, NSUInteger idx, BOOL *stop) {
+            return [[(NSDictionary *)obj objectForKey:kSCHAppRecommendationISBN] isEqualToString:ISBN];
+        }];
+        
+        if (index != NSNotFound) {
+            [listView setIsOnWishList:YES];
+        } else {
+            [listView setIsOnWishList:NO];
+        }
+
+        [container addSubview:listView];
+        [listView release];
+    }    
+    
+    return [recommendationsContainer autorelease];
+}
+
 #pragma mark - SCHReadingViewDelegate Toolbars methods
 
 - (void)hideToolbars
@@ -2255,6 +2362,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 
 - (void)adjustScrubberInfoViewHeightForImageSize:(CGSize)imageSize
 {
+    NSLog(@"adjustScrubberInfoViewHeightForImageSize:%@", NSStringFromCGSize(imageSize));
     CGRect scrubFrame = self.scrubberInfoView.frame;
     scrubFrame.origin.x = self.view.bounds.size.width / 2 - (scrubFrame.size.width / 2);
     
@@ -2333,13 +2441,22 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 
 - (void)updateScrubberLabel
 {
+    BOOL showRecommendationsLabel = NO;
+    
     if (self.currentPageIndex != NSUIntegerMax) {
-        [self.pageLabel setText:[self.readingView pageLabelForPageAtIndex:self.currentPageIndex showChapters:self.shouldShowChapters]];
+        if (([self shouldShowBookRecommendationsForReadingView:self.readingView]) &&
+             (self.currentPageIndex == [self generatedPageCountForReadingView:self.readingView] - 1)) {
+            showRecommendationsLabel = YES;
+            [self.pageLabel setText:NSLocalizedString(@"Recommendations", nil)];
+        } else {
+            [self.pageLabel setText:[self.readingView pageLabelForPageAtIndex:self.currentPageIndex showChapters:self.shouldShowChapters]];
+        }
     } else {
         [self.pageLabel setText:nil];
     }  
     
-    if (self.layoutType == SCHReadingViewLayoutTypeFixed) {
+    if ((self.layoutType == SCHReadingViewLayoutTypeFixed) &&
+        (showRecommendationsLabel == NO)) {
         if (self.scrubberInfoView.frame.size.height == kReadingViewStandardScrubHeight) {
             self.scrubberThumbImage.image = nil;
         } else {
@@ -2362,7 +2479,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 {
     if (self.currentPageIndex != NSUIntegerMax) {
         self.pageSlider.minimumValue = 0;
-        self.pageSlider.maximumValue = [self.readingView pageCount] - 1;
+        self.pageSlider.maximumValue = [self generatedPageCountForReadingView:self.readingView] - 1;
         self.pageSlider.value = self.currentPageIndex;        
     } else {
         self.pageSlider.minimumValue = 0;
@@ -2390,9 +2507,11 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     if (self.layoutType == SCHReadingViewLayoutTypeFixed) {
         UIImage *scrubImage = [self.xpsProvider thumbnailForPage:self.currentPageIndex + 1];
         self.scrubberThumbImage.image = scrubImage;
+        NSLog(@"1");
         [self adjustScrubberInfoViewHeightForImageSize:scrubImage.size];
     } else {
         self.scrubberThumbImage.image = nil;
+        NSLog(@"2");
         [self adjustScrubberInfoViewHeightForImageSize:CGSizeZero];
     }
 
@@ -2460,6 +2579,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     }
     
     if (adjustScrubInfo) {
+        NSLog(@"3: %@", self.scrubberThumbImage);
         [self adjustScrubberInfoViewHeightForImageSize:self.scrubberThumbImage.image.size];
         [self updateScrubberLabel];
     }
@@ -2741,6 +2861,8 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 
 - (void)readingInteractionsView:(SCHReadingInteractionsListController *)interactionsView didSelectInteraction:(NSInteger)interaction
 {    
+    NSParameterAssert(interaction < [[self.bookStoryInteractions allStoryInteractionsExcludingInteractionWithPage:interactionsView.excludeInteractionWithPage] count]);
+    
     SCHStoryInteraction *storyInteraction = [[self.bookStoryInteractions allStoryInteractionsExcludingInteractionWithPage:interactionsView.excludeInteractionWithPage] objectAtIndex:interaction];
     
     SCHBookPoint *notePoint = [self.readingView bookPointForLayoutPage:[storyInteraction documentPageNumber]
@@ -3014,8 +3136,8 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 {
     // only show on the first page, if toolbars are not visible, not in highlights mode
     // and the audio isn't already playing (and it's in younger mode!)
-    BOOL shouldShow = (self.currentPageIndex == 0 && !self.toolbarsVisible && !self.audioBookPlayer.playing 
-                       && self.youngerMode && !self.highlightsModeEnabled);
+    BOOL shouldShow = YES;//(self.currentPageIndex == 0 && !self.toolbarsVisible && !self.audioBookPlayer.playing 
+//                       && self.youngerMode && !self.highlightsModeEnabled);
     float buttonAlpha = 0.0f;
     
     if (shouldShow) {
@@ -3061,6 +3183,128 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     if (self.firstTimePlayForHelpController) {
         self.firstTimePlayForHelpController = NO;
     }
+}
+
+#pragma mark - Book Recommendations
+
+- (BOOL)shouldShowBookRecommendationsForReadingView:(SCHReadingView *)aReadingView
+{
+    return  ([aReadingView isKindOfClass:[SCHLayoutView class]] && 
+             [self recommendationsActive] == YES &&
+             ([[self recommendationsDictionaries] count] > 0));
+}
+
+- (BOOL)recommendationsActive
+{
+    if (self.cachedRecommendationsActive == nil) {
+        NSString *settingValue = [[SCHAppStateManager sharedAppStateManager] settingNamed:kSCHSettingItemRECOMMENDATIONS_ON];
+        
+        if (settingValue != nil) {
+            self.cachedRecommendationsActive = [NSNumber numberWithBool:[settingValue boolValue]];
+        }
+    }
+    
+    return [self.cachedRecommendationsActive boolValue];
+}
+
+- (NSArray *)recommendationsDictionaries
+{
+    if (!recommendationsDictionaries) {
+        SCHBookManager *bookManager = [SCHBookManager sharedBookManager];
+        SCHAppBook *book = [bookManager bookWithIdentifier:self.bookIdentifier inManagedObjectContext:bookManager.mainThreadManagedObjectContext];    
+        recommendationsDictionaries = [[book recommendationDictionaries] copy];
+        
+    }
+    
+    return recommendationsDictionaries;
+}
+
+- (NSMutableArray *)modifiedWishListDictionaries
+{
+    if (!modifiedWishListDictionaries) {
+        modifiedWishListDictionaries = [[self wishListDictionaries] mutableCopy];
+    }
+    
+    return modifiedWishListDictionaries;
+}
+
+- (NSArray *)wishListDictionaries
+{
+    if (!wishListDictionaries) {
+        NSArray *wishListItemDictionaries = [[self.profile AppProfile] wishListItemDictionaries];
+        wishListDictionaries = [wishListItemDictionaries mutableCopy];
+    }
+    
+    return wishListDictionaries;
+}
+
+#pragma mark - SCHRecommendationListViewDelegate
+
+- (void)recommendationListView:(SCHRecommendationListView *)listView addedISBNToWishList:(NSString *)ISBN
+{
+    // find the recommendation item
+    NSUInteger index = [self.recommendationsDictionaries indexOfObjectPassingTest:^BOOL (id obj, NSUInteger idx, BOOL *stop) {
+        return [[(NSDictionary *)obj objectForKey:kSCHAppRecommendationISBN] isEqualToString:ISBN];
+    }];
+    
+    if (index != NSNotFound) {
+        NSDictionary *recommendationItem = [self.recommendationsDictionaries objectAtIndex:index];
+        
+        // create the wishlist dictionary
+        // add it to the profile
+        NSMutableDictionary *wishListItem = [NSMutableDictionary dictionary];
+        
+        [wishListItem setValue:([recommendationItem objectForKey:kSCHAppRecommendationAuthor] == nil ? (id)[NSNull null] : [recommendationItem objectForKey:kSCHAppRecommendationAuthor]) 
+                        forKey:kSCHWishListAuthor];
+        [wishListItem setValue:([recommendationItem objectForKey:kSCHAppRecommendationISBN] == nil ? (id)[NSNull null] : [recommendationItem objectForKey:kSCHAppRecommendationISBN]) 
+                        forKey:kSCHWishListISBN];
+        [wishListItem setValue:([recommendationItem objectForKey:kSCHAppRecommendationTitle] == nil ? (id)[NSNull null] : [recommendationItem objectForKey:kSCHAppRecommendationTitle]) 
+                        forKey:kSCHWishListTitle];
+        
+        [self.modifiedWishListDictionaries addObject:wishListItem];
+        [self reloadRecommendations];
+    }
+}
+     
+- (void)recommendationListView:(SCHRecommendationListView *)listView removedISBNFromWishList:(NSString *)ISBN
+{
+    // find the item in the modified list and remove it
+    NSUInteger modifiedItemsIndex = [self.modifiedWishListDictionaries
+                                     indexOfObjectPassingTest:^BOOL (id obj, NSUInteger idx, BOOL *stop) {
+        return [[(NSDictionary *)obj objectForKey:kSCHAppRecommendationISBN] isEqualToString:ISBN];
+    }];
+    
+    if (modifiedItemsIndex != NSNotFound) {
+        [self.modifiedWishListDictionaries removeObjectAtIndex:modifiedItemsIndex];
+        [self reloadRecommendations];
+    }
+}
+
+- (void)reloadRecommendations
+{
+    // Reload the recommendations
+    // TODO: speak to Jamie about a way to force this reload, rather than relying on the button updating itself
+}
+
+- (void)commitWishListChanges
+{
+    // look for items that are in the new list but not in the original list
+    // those need to be added
+    for (NSDictionary *item in self.modifiedWishListDictionaries) {
+        if (![[self wishListDictionaries] containsObject:item]) {
+            [[self.profile AppProfile] addToWishList:item];
+        }
+    }
+    
+    // look for items that are in the original but not in the new list
+    // those need to be deleted
+    for (NSDictionary *item in [self wishListDictionaries]) {
+        if (![self.modifiedWishListDictionaries containsObject:item]) {
+            [[self.profile AppProfile] removeFromWishList:item];
+        }
+    }
+    
+    [wishListDictionaries release], wishListDictionaries = nil;
 }
 
 @end

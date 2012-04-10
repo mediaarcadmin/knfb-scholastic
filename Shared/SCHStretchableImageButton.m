@@ -101,8 +101,12 @@
 
 - (void)setBackgroundImage:(UIImage *)image forState:(UIControlState)state
 {
-    [self.unstretchedImages setObject:image forKey:[NSNumber numberWithInteger:state]];
-    [self stretchImageForControlState:state];
+    NSParameterAssert(image);
+
+    if (image != nil) {
+        [self.unstretchedImages setObject:image forKey:[NSNumber numberWithInteger:state]];
+        [self stretchImageForControlState:state];
+    }
 }
 
 - (UIImage *)stretchImageForControlState:(UIControlState)controlState

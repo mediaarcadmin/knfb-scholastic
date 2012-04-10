@@ -20,11 +20,34 @@ NSString * const SCHReadingStatsSyncComponentDidFailNotification = @"SCHReadingS
 
 @interface SCHReadingStatsSyncComponent ()
 
+@property (nonatomic, retain) SCHLibreAccessWebService *libreAccessWebService;
+
 - (void)clearStatistics;
 
 @end
 
 @implementation SCHReadingStatsSyncComponent
+
+@synthesize libreAccessWebService;
+
+- (id)init
+{
+	self = [super init];
+	if (self != nil) {
+		libreAccessWebService = [[SCHLibreAccessWebService alloc] init];	
+		libreAccessWebService.delegate = self;
+	}
+	
+	return(self);
+}
+
+- (void)dealloc
+{
+    libreAccessWebService.delegate = nil;
+	[libreAccessWebService release], libreAccessWebService = nil;
+    
+	[super dealloc];
+}
 
 - (BOOL)synchronize
 {
@@ -61,6 +84,8 @@ NSString * const SCHReadingStatsSyncComponentDidFailNotification = @"SCHReadingS
                 ret = NO;			
             }		            
         } else {
+            [[NSNotificationCenter defaultCenter] postNotificationName:SCHReadingStatsSyncComponentDidCompleteNotification 
+                                                                object:self];            
             [super method:nil didCompleteWithResult:nil userInfo:nil];		
         }
 
@@ -75,7 +100,8 @@ NSString * const SCHReadingStatsSyncComponentDidFailNotification = @"SCHReadingS
 
 - (void)clear
 {
-    [super clear];
+    [self.libreAccessWebService clear];
+    
     [self clearStatistics];
 }
 

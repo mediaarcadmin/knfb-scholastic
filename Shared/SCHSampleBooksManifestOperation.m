@@ -167,8 +167,10 @@ didStartElement:(NSString *)elementName
  qualifiedName:(NSString *)qName
 {
 	if ([elementName isEqualToString:@"Book"]) {
-        [self.sampleManifestEntries addObject:self.currentEntry];
-		self.currentEntry = nil;
+        if (self.currentEntry != nil) {
+            [self.sampleManifestEntries addObject:self.currentEntry];
+            self.currentEntry = nil;
+        }
 	} else if ([elementName isEqualToString:@"Isbn13"] ||
                [elementName isEqualToString:@"Title"] ||
                [elementName isEqualToString:@"Author"] ||

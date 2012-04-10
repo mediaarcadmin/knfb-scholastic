@@ -86,9 +86,11 @@ enum ScratchState {
     
     NSInteger i = 0;
     for (NSString *answer in [self currentQuestion].answers) {
-        UIButton *button = [self.answerButtons objectAtIndex:i];
-        [button setTitle:answer forState:UIControlStateNormal];
-        [button setAlpha:0];
+        if (i < [self.answerButtons count]) {
+            UIButton *button = [self.answerButtons objectAtIndex:i];
+            [button setTitle:answer forState:UIControlStateNormal];
+            [button setAlpha:0];
+        }
         ++i;
     }
     
@@ -235,29 +237,30 @@ enum ScratchState {
         NSInteger i = 0;
         for (NSString *answer in [self currentQuestion].answers) {
             UIImage *highlight;
-            UIButton *button = [self.answerButtons objectAtIndex:i];
-            
-            if (i == [self currentQuestion].correctAnswer) {
-                highlight = [[UIImage imageNamed:@"answer-button-green"] stretchableImageWithLeftCapWidth:10 topCapHeight:0];
-            } else {
-                highlight = [[UIImage imageNamed:@"answer-button-red"] stretchableImageWithLeftCapWidth:10 topCapHeight:0];
+            if (i < [self.answerButtons count]) {
+                UIButton *button = [self.answerButtons objectAtIndex:i];
+                
+                if (i == [self currentQuestion].correctAnswer) {
+                    highlight = [[UIImage imageNamed:@"answer-button-green"] stretchableImageWithLeftCapWidth:10 topCapHeight:0];
+                } else {
+                    highlight = [[UIImage imageNamed:@"answer-button-red"] stretchableImageWithLeftCapWidth:10 topCapHeight:0];
+                }
+                
+                [button setTitle:answer forState:UIControlStateNormal];
+                [button setTitleColor:(iPad ? [UIColor whiteColor] : [UIColor SCHBlue2Color]) forState:UIControlStateNormal];
+                [button setBackgroundImage:[(iPad == YES ? [UIImage imageNamed:@"answer-button-blue"] : [UIImage imageNamed:@"answer-button-yellow"]) stretchableImageWithLeftCapWidth:10 topCapHeight:0] forState:UIControlStateNormal];        
+                [button setBackgroundImage:[(iPad == YES ? [UIImage imageNamed:@"answer-button-blue"] : [UIImage imageNamed:@"answer-button-yellow"]) stretchableImageWithLeftCapWidth:10 topCapHeight:0] forState:UIControlStateSelected];        
+                [button setSelected:NO];
+                [button setAlpha:scratching ? 0 : 1];
+                [button setBackgroundImage:highlight forState:UIControlStateSelected];
+                
+                [button setImage:[UIImage imageNamed:@"answer-blank"] forState:UIControlStateNormal];
+                if (i == [self currentQuestion].correctAnswer) {
+                    [button setImage:[UIImage imageNamed:@"answer-tick"] forState:UIControlStateSelected];
+                } else {
+                    [button setImage:[UIImage imageNamed:@"answer-cross"] forState:UIControlStateSelected];
+                }
             }
-            
-            [button setTitle:answer forState:UIControlStateNormal];
-            [button setTitleColor:(iPad ? [UIColor whiteColor] : [UIColor SCHBlue2Color]) forState:UIControlStateNormal];
-            [button setBackgroundImage:[(iPad == YES ? [UIImage imageNamed:@"answer-button-blue"] : [UIImage imageNamed:@"answer-button-yellow"]) stretchableImageWithLeftCapWidth:10 topCapHeight:0] forState:UIControlStateNormal];        
-            [button setBackgroundImage:[(iPad == YES ? [UIImage imageNamed:@"answer-button-blue"] : [UIImage imageNamed:@"answer-button-yellow"]) stretchableImageWithLeftCapWidth:10 topCapHeight:0] forState:UIControlStateSelected];        
-            [button setSelected:NO];
-            [button setAlpha:scratching ? 0 : 1];
-            [button setBackgroundImage:highlight forState:UIControlStateSelected];
-
-            [button setImage:[UIImage imageNamed:@"answer-blank"] forState:UIControlStateNormal];
-            if (i == [self currentQuestion].correctAnswer) {
-                [button setImage:[UIImage imageNamed:@"answer-tick"] forState:UIControlStateSelected];
-            } else {
-                [button setImage:[UIImage imageNamed:@"answer-cross"] forState:UIControlStateSelected];
-            }
-            
             ++i;
         }
         for (; i < [self.answerButtons count]; ++i) {
@@ -346,6 +349,8 @@ enum ScratchState {
 
 - (SCHStoryInteractionScratchAndSeeQuestion *)currentQuestion
 {
+    NSParameterAssert(self.currentQuestionIndex < [[(SCHStoryInteractionScratchAndSee *)self.storyInteraction questions] count]);
+    
     return [[(SCHStoryInteractionScratchAndSee *)self.storyInteraction questions] objectAtIndex:currentQuestionIndex];
 }
 
@@ -406,12 +411,15 @@ enum ScratchState {
     }];
 }
 
-- (void)wrongAnswer:(NSInteger) selection
+- (void)wrongAnswer:(NSInteger)selection
 {
     SCHStoryInteractionScratchAndSee *scratchAndSee = (SCHStoryInteractionScratchAndSee *)self.storyInteraction;
+    UIButton *button = nil;
     
-    UIButton *button = (UIButton *) [self.answerButtons objectAtIndex:selection];
-    [button setSelected:YES];
+    if (selection < [self.answerButtons count]) {
+        button = (UIButton *) [self.answerButtons objectAtIndex:selection];
+        [button setSelected:YES];
+    }
     
     [self cancelQueuedAudioExecutingSynchronizedBlocksBefore:^{
         [self enqueueAudioWithPath:[scratchAndSee storyInteractionWrongAnswerSoundFilename] 

@@ -18,13 +18,14 @@
 #import "SCHSyncManager.h"
 #import "SCHAppStateManager.h"
 #import "AppDelegate_Shared.h"
-#import "SCHAccountValidation.h"
 #import "SCHBookManager.h"
 #import "BITAPIError.h"
 #import "SCHUserDefaults.h"
 #import "NSString+URLEncoding.h"
 #import "SCHNonDRMAuthenticationManager.h"
 #import "SCHVersionDownloadManager.h"
+#import "SCHCOPPAManager.h"
+#import "SCHRecommendationManager.h"
 
 // Constants
 NSString * const SCHAuthenticationManagerReceivedServerDeregistrationNotification = @"SCHAuthenticationManagerReceivedServerDeregistrationNotification";
@@ -234,9 +235,11 @@ NSTimeInterval const kSCHAuthenticationManagerSecondsInAMinute = 60.0;
             [self authenticationDidFailWithError:error];
         }
     } else {
-        [[NSUserDefaults standardUserDefaults] setObject:userName forKey:kSCHAuthenticationManagerUsername];
+        NSString *nonNullUserName = (userName == nil ? @"" : userName);
+
+        [[NSUserDefaults standardUserDefaults] setObject:nonNullUserName forKey:kSCHAuthenticationManagerUsername];
         
-        [SFHFKeychainUtils storeUsername:userName 
+        [SFHFKeychainUtils storeUsername:nonNullUserName
                              andPassword:password 
                           forServiceName:kSCHAuthenticationManagerServiceName 
                           updateExisting:YES 
@@ -352,6 +355,27 @@ NSTimeInterval const kSCHAuthenticationManagerSecondsInAMinute = 60.0;
     return(self.accountValidation.pToken);    
 }
 
+- (BOOL)pTokenWithValidation:(ValidateBlock)aValidateBlock
+{
+    BOOL ret = NO;
+    NSString *currentPToken = self.accountValidation.pToken;
+    
+    if (currentPToken == nil) {
+        NSString *storedUsername = [[NSUserDefaults standardUserDefaults] stringForKey:kSCHAuthenticationManagerUsername];
+        NSString *storedPassword = [SFHFKeychainUtils getPasswordForUsername:storedUsername andServiceName:kSCHAuthenticationManagerServiceName error:nil];
+        
+        ret = [self.accountValidation validateWithUserName:storedUsername 
+                                              withPassword:storedPassword 
+                                             validateBlock:aValidateBlock];
+    } else {
+        if (aValidateBlock != nil) {
+            aValidateBlock(currentPToken, nil);  
+        }
+    }
+    
+    return ret;
+}
+
 - (NSURL *)webParentToolURL:(NSString *)pToken
 {   
     NSURL *ret = nil;
@@ -382,8 +406,16 @@ NSTimeInterval const kSCHAuthenticationManagerSecondsInAMinute = 60.0;
         NSString *application = [appln componentsJoinedByString:@"|"];
         NSString *escapedApplication = [application urlEncodeUsingEncoding:NSUTF8StringEncoding];
         
+        NSString *webParentToolsServer = nil;
+        
+        if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+            webParentToolsServer = WEB_PARENT_TOOLS_SERVER_PAD;
+        } else {
+            webParentToolsServer = WEB_PARENT_TOOLS_SERVER_PHONE;
+        }
+        
         NSString *escapedURL = [NSString stringWithFormat:@"%@?tk=%@&appln=%@&spsId=%@",
-                                WEB_PARENT_TOOLS_SERVER,
+                                webParentToolsServer,
                                 escapedToken, 
                                 escapedApplication, 
                                 escapedKey];
@@ -465,7 +497,8 @@ NSTimeInterval const kSCHAuthenticationManagerSecondsInAMinute = 60.0;
 {
     NSAssert([NSThread isMainThread] == YES, @"SCHAuthenticationManager::aTokenOnMainThread MUST be executed on the main thread");
     
-    if([tokenExpires compare:[NSDate date]] == NSOrderedAscending) {
+    if(tokenExpires != nil && 
+       [tokenExpires compare:[NSDate date]] == NSOrderedAscending) {
         [self expireToken];
     }
 }
@@ -582,6 +615,7 @@ NSTimeInterval const kSCHAuthenticationManagerSecondsInAMinute = 60.0;
                     } else {
                         [weakSelf.libreAccessWebService tokenExchange:pToken 
                                                               forUser:[[NSUserDefaults standardUserDefaults] stringForKey:kSCHAuthenticationManagerUsername]];                            
+                        [[SCHCOPPAManager sharedCOPPAManager] checkCOPPAIfRequired];
                     }
                 }];
                 
@@ -656,6 +690,8 @@ NSTimeInterval const kSCHAuthenticationManagerSecondsInAMinute = 60.0;
     [[NSUserDefaults standardUserDefaults] removeObjectForKey:kSCHAuthenticationManagerUsername];
     [[NSUserDefaults standardUserDefaults] removeObjectForKey:kSCHAuthenticationManagerUserKey];    
     [[NSUserDefaults standardUserDefaults] synchronize];
+    
+    [[SCHCOPPAManager sharedCOPPAManager] resetCOPPA];
 }
 
 - (void)clearAppProcessingOnMainThread
@@ -664,7 +700,8 @@ NSTimeInterval const kSCHAuthenticationManagerSecondsInAMinute = 60.0;
     
     [[SCHBookManager sharedBookManager] clearBookIdentifierCache];
     [[SCHURLManager sharedURLManager] clear];
-    [[SCHProcessingManager sharedProcessingManager] cancelAllOperations];                
+    [[SCHProcessingManager sharedProcessingManager] cancelAllOperations]; 
+    [[SCHRecommendationManager sharedManager] cancelAllOperations];
     [[SCHSyncManager sharedSyncManager] clear];    
 }
 

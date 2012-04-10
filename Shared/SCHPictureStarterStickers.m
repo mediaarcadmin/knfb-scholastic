@@ -104,8 +104,10 @@ static NSString *cacheDirectory()
                 NSString *imagePath = [binPath stringByAppendingPathComponent:image];
                 NSString *thumbFilename = [[[image stringByDeletingPathExtension] stringByAppendingString:thumbsSuffix] stringByAppendingPathExtension:@"png"];
                 NSString *thumbPath = [thumbBinPath stringByAppendingPathComponent:thumbFilename];
-                [imagePathsArray addObject:imagePath];
-                [thumbPathsArray addObject:thumbPath];
+                if (imagePath != nil && thumbPath != nil) {
+                    [imagePathsArray addObject:imagePath];
+                    [thumbPathsArray addObject:thumbPath];
+                }
             }
         }
         
@@ -239,7 +241,9 @@ static NSString *cacheDirectory()
             dispatch_async(dispatch_get_main_queue(), ^{
                 pendingBlock(thumbImage);
             });
-            [pendingThumbs removeObjectForKey:thumbPath];
+            if (thumbPath != nil) {
+                [pendingThumbs removeObjectForKey:thumbPath];
+            }
         }
         
         // write to file for future access

@@ -23,6 +23,7 @@ typedef enum
 } SCHAppBookError;
 
 @class SCHBookIdentifier;
+@class SCHRecommendationISBN;
 
 // Constants
 extern NSString * const kSCHAppBookProcessingState;
@@ -125,6 +126,8 @@ typedef enum {
 @property (nonatomic, readonly) BOOL shouldShowChapters;
 @property (nonatomic, readonly) BOOL alwaysOpenToCover;
 @property (nonatomic, readonly) BOOL diskVersionOutOfDate;
+@property (nonatomic, readonly) NSNumber * AverageRating;
+
 
 - (BOOL)bookCoverURLIsValid;
 - (BOOL)bookFileURLIsValid;
@@ -158,6 +161,8 @@ typedef enum {
 - (BOOL)canOpenBookError:(NSError **)error;
 - (CGSize)bookCoverImageSize;
 - (SCHAppBookFeatures) bookFeatures;
+- (SCHRecommendationISBN *)recommendationISBN;
+- (NSArray *)recommendationDictionaries;
 
 - (void)setForcedProcessing:(BOOL)forceProcess;
 - (void)deleteXPSFile;

@@ -22,8 +22,10 @@
 
 extern NSString * const kSCHAuthenticationManagerDeviceKey;
 
-static const CGFloat kProfilePhoneTableOffsetPortrait = 70.0f;
-static const CGFloat kProfilePhoneTableOffsetLandscape = 20.0f;
+static const CGFloat kSCHProfileViewControllerPhoneLogoWidthPortrait = 260;
+static const CGFloat kSCHProfileViewControllerPhoneLogoWidthLandscape = 200;
+static const CGFloat kSCHProfileViewControllerPhoneLogoHeightPortrait = 44;
+static const CGFloat kSCHProfileViewControllerPhoneLogoHeightLandscape = 32;
 
 @interface SCHProfileViewController_iPhone() <UITableViewDelegate> 
 
@@ -62,31 +64,12 @@ static const CGFloat kProfilePhoneTableOffsetLandscape = 20.0f;
     self.settingsButton = [UIButton buttonWithType:UIButtonTypeCustom];
     [self.settingsButton addTarget:self action:@selector(pushSettingsController) 
                   forControlEvents:UIControlEventTouchUpInside]; 
-    
+        
     self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithCustomView:self.settingsButton] autorelease];
     
     UIImageView *logoImageView = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"logo.png"]] autorelease];
-    logoImageView.autoresizingMask = (UIViewAutoresizingFlexibleWidth
-                                      | UIViewAutoresizingFlexibleLeftMargin
-                                      | UIViewAutoresizingFlexibleRightMargin
-                                      | UIViewAutoresizingFlexibleHeight
-                                      | UIViewAutoresizingFlexibleBottomMargin
-                                      | UIViewAutoresizingFlexibleTopMargin);
     logoImageView.contentMode = UIViewContentModeScaleAspectFit;
-    UIView *container = [[[UIView alloc] initWithFrame:logoImageView.frame] autorelease];
-    [container addSubview:logoImageView];    
-    self.logoContainer = container;
-    self.navigationItem.titleView = container;
-    
-    UIBarButtonItem *item = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil] autorelease];
-    self.barSpacer = item;
-    
-    // FIXME: When we are compiling against iOS 5 this should be cleaned up 
-    if ([self.navigationItem respondsToSelector:@selector(setLeftBarButtonItems:)]) {
-        [self.navigationItem performSelector:@selector(setLeftBarButtonItems:) withObject:[NSArray arrayWithObject:self.barSpacer]];
-    } else {
-        self.navigationItem.leftBarButtonItem = self.barSpacer;
-    }
+    self.navigationItem.titleView = logoImageView;
     
     self.tableView.tableHeaderView = self.headerView;
 }  
@@ -101,6 +84,9 @@ static const CGFloat kProfilePhoneTableOffsetLandscape = 20.0f;
 
 - (void)setupAssetsForOrientation:(UIInterfaceOrientation)orientation
 {
+    CGRect currentTitleBounds = self.navigationItem.titleView.bounds;
+    CGRect newTitleBounds;
+    
     if (UIInterfaceOrientationIsLandscape(orientation)) {
         [(SCHCustomNavigationBar *)self.navigationController.navigationBar setBackgroundImage:
          [UIImage imageNamed:@"admin-iphone-landscape-top-toolbar.png"]];
@@ -108,10 +94,8 @@ static const CGFloat kProfilePhoneTableOffsetLandscape = 20.0f;
         [self.settingsButton setImage:[UIImage imageNamed:@"settings-landscape.png"] 
                              forState:UIControlStateNormal];
         [self.settingsButton sizeToFit];
-        self.settingsButton.accessibilityLabel = @"Settings Button";
-        [self.barSpacer setWidth:CGRectGetWidth(self.settingsButton.frame) + 7];
-        [self.tableView setContentInset:UIEdgeInsetsMake(kProfilePhoneTableOffsetLandscape, 0, 0, 0)];
-        [self.logoContainer setFrame:CGRectMake(0, 0, 260, 32)];
+        
+        newTitleBounds = CGRectMake(0, 0, kSCHProfileViewControllerPhoneLogoWidthLandscape, kSCHProfileViewControllerPhoneLogoHeightLandscape);
     } else {
         [(SCHCustomNavigationBar *)self.navigationController.navigationBar setBackgroundImage:
          [UIImage imageNamed:@"admin-iphone-portrait-top-toolbar.png"]];
@@ -119,9 +103,11 @@ static const CGFloat kProfilePhoneTableOffsetLandscape = 20.0f;
         [self.settingsButton setImage:[UIImage imageNamed:@"settings-portrait.png"] 
                              forState:UIControlStateNormal];
         [self.settingsButton sizeToFit];
-        [self.barSpacer setWidth:0];
-        [self.tableView setContentInset:UIEdgeInsetsMake(kProfilePhoneTableOffsetPortrait, 0, 0, 0)];
-        [self.logoContainer setFrame:CGRectMake(0, 0, 260, 44)];
+        newTitleBounds = CGRectMake(0, 0, kSCHProfileViewControllerPhoneLogoWidthPortrait, kSCHProfileViewControllerPhoneLogoHeightPortrait);
+    }
+    
+    if (!CGRectEqualToRect(newTitleBounds, currentTitleBounds)) {
+        [self.navigationItem.titleView setBounds:newTitleBounds];
     }
     
 }

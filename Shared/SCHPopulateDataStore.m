@@ -23,6 +23,7 @@
 #import "SCHBookIdentifier.h"
 #import "SCHSampleBooksImporter.h"
 #import "LambdaAlert.h"
+#import "SCHLibreAccessConstants.h"
 
 @interface SCHPopulateDataStore ()
 
@@ -409,6 +410,9 @@
                               age:(NSUInteger)age 
                         bookshelf:(SCHBookshelfStyles)bookshelf
 {
+    NSParameterAssert(profileID);
+    NSParameterAssert(title);    
+
     NSMutableDictionary *ret = [NSMutableDictionary dictionary];
     NSDate *dateNow = [NSDate date];
     NSCalendar *gregorian = [[[NSCalendar alloc]
@@ -418,18 +422,18 @@
     [ret setObject:[NSNumber numberWithBool:YES] forKey:kSCHLibreAccessWebServiceStoryInteractionEnabled];
     [ret setObject:[NSNumber numberWithInteger:profileID] forKey:kSCHLibreAccessWebServiceID];
     [ret setObject:dateNow forKey:kSCHLibreAccessWebServiceLastPasswordModified];    
-    [ret setObject:password forKey:kSCHLibreAccessWebServicePassword]; 
+    [ret setObject:(password == nil ? (id)[NSNull null] : password) forKey:kSCHLibreAccessWebServicePassword]; 
     dateComponents.year = -age;
     [ret setObject:[gregorian dateByAddingComponents:dateComponents toDate:dateNow options:0] forKey:kSCHLibreAccessWebServiceBirthday];    
-    [ret setObject:title forKey:kSCHLibreAccessWebServiceFirstName];    
+    [ret setObject:(title == nil ? (id)[NSNull null] : title) forKey:kSCHLibreAccessWebServiceFirstName];    
     [ret setObject:[NSNumber numberWithBool:NO] forKey:kSCHLibreAccessWebServiceProfilePasswordRequired];    
     [ret setObject:[NSNumber numberWithProfileType:kSCHProfileTypesCHILD] forKey:kSCHLibreAccessWebServiceType];        
-    [ret setObject:title forKey:kSCHLibreAccessWebServiceScreenName];        
+    [ret setObject:(title == nil ? (id)[NSNull null] : title) forKey:kSCHLibreAccessWebServiceScreenName];        
     [ret setObject:[NSNumber numberWithBool:YES] forKey:kSCHLibreAccessWebServiceAutoAssignContentToProfiles];        
     [ret setObject:dateNow forKey:kSCHLibreAccessWebServiceLastScreenNameModified];            
     [ret setObject:@"" forKey:kSCHLibreAccessWebServiceUserKey];            
     [ret setObject:[NSNumber numberWithBookshelfStyle:bookshelf] forKey:kSCHLibreAccessWebServiceBookshelfStyle];                
-    [ret setObject:title forKey:kSCHLibreAccessWebServiceLastName];                
+    [ret setObject:(title == nil ? (id)[NSNull null] : title) forKey:kSCHLibreAccessWebServiceLastName];                
     [ret setObject:dateNow forKey:kSCHLibreAccessWebServiceLastModified];                
     
     return(ret);
@@ -445,12 +449,16 @@
                                contentURL:(NSString *)contentURL
                                  enhanced:(BOOL)enhanced
 {
+    NSParameterAssert(contentIdentifier);
+    NSParameterAssert(title);
+    NSParameterAssert(author);
+
     NSMutableDictionary *ret = [NSMutableDictionary dictionary];    
     
-    [ret setObject:contentIdentifier forKey:kSCHLibreAccessWebServiceContentIdentifier];
+    [ret setObject:(contentIdentifier == nil ? (id)[NSNull null] : contentIdentifier) forKey:kSCHLibreAccessWebServiceContentIdentifier];
     [ret setObject:[NSNumber numberWithContentIdentifierType:kSCHContentItemContentIdentifierTypesISBN13] forKey:kSCHLibreAccessWebServiceContentIdentifierType];
-    [ret setObject:title forKey:kSCHLibreAccessWebServiceTitle];
-    [ret setObject:author forKey:kSCHLibreAccessWebServiceAuthor];
+    [ret setObject:(title == nil ? (id)[NSNull null] : title) forKey:kSCHLibreAccessWebServiceTitle];
+    [ret setObject:(author == nil ? (id)[NSNull null] : author) forKey:kSCHLibreAccessWebServiceAuthor];
     [ret setObject:[NSString stringWithFormat:@"A book by %@", author] forKey:kSCHLibreAccessWebServiceDescription];
     [ret setObject:@"1" forKey:kSCHLibreAccessWebServiceVersion];
     [ret setObject:[NSNumber numberWithInteger:pageNumber] forKey:kSCHLibreAccessWebServicePageNumber];
@@ -460,6 +468,7 @@
     [ret setObject:(contentURL == nil ? (id)[NSNull null] : contentURL) forKey:kSCHLibreAccessWebServiceContentURL];
     [ret setObject:[NSNull null] forKey:kSCHLibreAccessWebServiceeReaderCategories];
     [ret setObject:[NSNumber numberWithBool:enhanced] forKey:kSCHLibreAccessWebServiceEnhanced];
+    [ret setObject:[NSNumber numberWithFloat:0.0] forKey:kSCHLibreAccessWebServiceAverageRating];
     
     return(ret);    
 }
@@ -468,6 +477,8 @@
                           drmQualifer:(SCHDRMQualifiers)drmQualifer
                            profileIDs:(NSArray *)profileIDs
 {
+    NSParameterAssert(contentIdentifier);
+
     NSMutableDictionary *ret = [NSMutableDictionary dictionary];    
     NSDate *dateNow = [NSDate date];
     NSString *version = @"1";
@@ -478,9 +489,9 @@
     for (NSNumber *profileID in profileIDs) {
         NSMutableDictionary *profileItem = [NSMutableDictionary dictionary];
         [profileItem setObject:profileID forKey:kSCHLibreAccessWebServiceProfileID];        
-        [profileItem setObject:[NSNumber numberWithBool:NO] forKey:kSCHLibreAccessWebServiceIsFavorite];        
         [profileItem setObject:[NSNumber numberWithInteger:0] forKey:kSCHLibreAccessWebServiceLastPageLocation];            
         [profileItem setObject:dateNow forKey:kSCHLibreAccessWebServiceLastModified];        
+        [profileItem setObject:[NSNumber numberWithInt:0] forKey:kSCHLibreAccessWebServiceRating];        
         [profileList addObject:profileItem];
         
         NSMutableDictionary *orderItem = [NSMutableDictionary dictionary];
@@ -489,7 +500,7 @@
         [orderList addObject:orderItem];
     }
     
-    [ret setObject:contentIdentifier forKey:kSCHLibreAccessWebServiceContentIdentifier];
+    [ret setObject:(contentIdentifier == nil ? (id)[NSNull null] : contentIdentifier) forKey:kSCHLibreAccessWebServiceContentIdentifier];
     [ret setObject:[NSNumber numberWithContentIdentifierType:kSCHContentItemContentIdentifierTypesISBN13] forKey:kSCHLibreAccessWebServiceContentIdentifierType];
     [ret setObject:[NSNumber numberWithDRMQualifier:drmQualifer] forKey:kSCHLibreAccessWebServiceDRMQualifier];
     [ret setObject:@"XPS" forKey:kSCHLibreAccessWebServiceFormat];
@@ -500,6 +511,7 @@
     [ret setObject:[NSNumber numberWithBool:NO] forKey:kSCHLibreAccessWebServiceFreeBook];        
     [ret setObject:dateNow forKey:kSCHLibreAccessWebServiceLastModified];
     [ret setObject:[NSNumber numberWithBool:NO] forKey:kSCHLibreAccessWebServiceDefaultAssignment];
+    [ret setObject:[NSNumber numberWithFloat:0.0] forKey:kSCHLibreAccessWebServiceAverageRating];
     
     return(ret);    
 }

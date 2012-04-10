@@ -14,6 +14,8 @@
 #import "SCHAnnotationSyncComponent.h"
 #import "SCHReadingStatsSyncComponent.h"
 #import "SCHSettingsSyncComponent.h"
+#import "SCHWishListSyncComponent.h"
+#import "SCHRecommendationSyncComponent.h"
 #import "SCHProfileItem.h"
 #import "SCHContentProfileItem.h"
 #import "SCHUserDefaults.h"
@@ -23,6 +25,8 @@
 #import "SCHAppContentProfileItem.h"
 #import "SCHAuthenticationManager.h"
 #import "SCHVersionDownloadManager.h"
+#import "SCHLibreAccessConstants.h"
+#import "SCHSettingItem.h"
 
 // Constants
 NSString * const SCHSyncManagerDidCompleteNotification = @"SCHSyncManagerDidCompleteNotification";
@@ -36,7 +40,8 @@ static NSUInteger const kSCHSyncManagerMaximumFailureRetries = 3;
 
 @property (nonatomic, retain) NSDate *lastFirstSyncEnded;
 @property (nonatomic, assign) BOOL syncAfterDelay;
-@property (nonatomic , assign) UIBackgroundTaskIdentifier backgroundTaskIdentifier;
+@property (nonatomic, assign) UIBackgroundTaskIdentifier backgroundTaskIdentifier;
+@property (nonatomic, assign) BOOL flushSaveMode;
 
 - (void)endBackgroundTask;
 - (void)updateAnnotationSync;
@@ -44,6 +49,8 @@ static NSUInteger const kSCHSyncManagerMaximumFailureRetries = 3;
 - (NSMutableArray *)bookAnnotationsFromProfile:(SCHProfileItem *)profileItem;
 - (NSDictionary *)annotationContentItemFromUserContentItem:(SCHUserContentItem *)userContentItem
                                                        forProfile:(NSNumber *)profileID;
+- (BOOL)recommendationSyncActive;
+- (SCHSyncComponent *)queueHead;
 - (void)addToQueue:(SCHSyncComponent *)component;
 - (void)moveToEndOfQueue:(SCHSyncComponent *)component;
 - (void)removeFromQueue:(SCHSyncComponent *)component 
@@ -61,6 +68,8 @@ static NSUInteger const kSCHSyncManagerMaximumFailureRetries = 3;
 @property (retain, nonatomic) SCHAnnotationSyncComponent *annotationSyncComponent;
 @property (retain, nonatomic) SCHReadingStatsSyncComponent *readingStatsSyncComponent;
 @property (retain, nonatomic) SCHSettingsSyncComponent *settingsSyncComponent;
+@property (retain, nonatomic) SCHWishListSyncComponent *wishListSyncComponent;
+@property (retain, nonatomic) SCHRecommendationSyncComponent *recommendationSyncComponent;
 
 @end
 
@@ -77,7 +86,10 @@ static NSUInteger const kSCHSyncManagerMaximumFailureRetries = 3;
 @synthesize annotationSyncComponent;
 @synthesize readingStatsSyncComponent;
 @synthesize settingsSyncComponent;
+@synthesize wishListSyncComponent;
+@synthesize recommendationSyncComponent;
 @synthesize backgroundTaskIdentifier;
+@synthesize flushSaveMode;
 @synthesize suspended;
 
 #pragma mark - Singleton Instance methods
@@ -114,8 +126,14 @@ static NSUInteger const kSCHSyncManagerMaximumFailureRetries = 3;
 		readingStatsSyncComponent.delegate = self;		
 		settingsSyncComponent = [[SCHSettingsSyncComponent alloc] init];		
 		settingsSyncComponent.delegate = self;	
-		
+		wishListSyncComponent = [[SCHWishListSyncComponent alloc] init];
+        wishListSyncComponent.delegate = self;
+        recommendationSyncComponent = [[SCHRecommendationSyncComponent alloc] init];
+        recommendationSyncComponent.delegate = self;
+        
         backgroundTaskIdentifier = UIBackgroundTaskInvalid;	
+        
+        flushSaveMode = NO;
         
         [[NSNotificationCenter defaultCenter] addObserver:self 
                                                  selector:@selector(coreDataHelperManagedObjectContextDidChangeNotification:) 
@@ -130,6 +148,11 @@ static NSUInteger const kSCHSyncManagerMaximumFailureRetries = 3;
         [[NSNotificationCenter defaultCenter] addObserver:self 
                                                  selector:@selector(updateAnnotationSync) 
                                                      name:SCHContentSyncComponentDidCompleteNotification 
+                                                   object:nil];	    
+
+        [[NSNotificationCenter defaultCenter] addObserver:self 
+                                                 selector:@selector(recommendationSync) 
+                                                     name:SCHSettingsSyncComponentDidCompleteNotification 
                                                    object:nil];	    
         
         [[NSNotificationCenter defaultCenter] addObserver:self
@@ -156,6 +179,8 @@ static NSUInteger const kSCHSyncManagerMaximumFailureRetries = 3;
 	[annotationSyncComponent release], annotationSyncComponent = nil;
 	[readingStatsSyncComponent release], readingStatsSyncComponent = nil;
 	[settingsSyncComponent release], settingsSyncComponent = nil;
+    [wishListSyncComponent release], wishListSyncComponent = nil;
+    [recommendationSyncComponent release], recommendationSyncComponent = nil;
 	
 	[super dealloc];
 }
@@ -171,26 +196,42 @@ static NSUInteger const kSCHSyncManagerMaximumFailureRetries = 3;
 	self.bookshelfSyncComponent.managedObjectContext = newManagedObjectContext;
 	self.annotationSyncComponent.managedObjectContext = newManagedObjectContext;		
 	self.readingStatsSyncComponent.managedObjectContext = newManagedObjectContext;		
-	self.settingsSyncComponent.managedObjectContext = newManagedObjectContext;			
+	self.settingsSyncComponent.managedObjectContext = newManagedObjectContext;	
+    self.wishListSyncComponent.managedObjectContext = newManagedObjectContext;
+    self.recommendationSyncComponent.managedObjectContext = newManagedObjectContext;
 }
 
 - (BOOL)isSynchronizing
 {
 	BOOL ret = NO;
 	
-	if ([self.queue count] > 0) {
-		SCHSyncComponent *syncComponent = [self.queue objectAtIndex:0];
-		
-		if (syncComponent != nil) {
-			ret = [syncComponent isSynchronizing];
-		}
+    SCHSyncComponent *syncComponent = [self queueHead];
+    if (syncComponent != nil) {
+        ret = [syncComponent isSynchronizing];
 	}		
+    
 	return ret;
 }
 
 - (BOOL)isQueueEmpty
 {
 	return [self.queue count] < 1;
+}
+
+- (void)setFlushSaveMode:(BOOL)setFlushSaveMode
+{
+    if (flushSaveMode != setFlushSaveMode) {
+        flushSaveMode = setFlushSaveMode;
+        
+        self.profileSyncComponent.saveOnly = flushSaveMode;
+        self.contentSyncComponent.saveOnly = flushSaveMode;
+        self.bookshelfSyncComponent.saveOnly = flushSaveMode;
+        self.annotationSyncComponent.saveOnly = flushSaveMode;
+        self.readingStatsSyncComponent.saveOnly = flushSaveMode;
+        self.settingsSyncComponent.saveOnly = flushSaveMode;
+        self.wishListSyncComponent.saveOnly = flushSaveMode;
+        self.recommendationSyncComponent.saveOnly = flushSaveMode;
+    }    
 }
 
 #pragma mark - NSManagedObjectContext Changed Notification
@@ -205,6 +246,7 @@ static NSUInteger const kSCHSyncManagerMaximumFailureRetries = 3;
 - (void)startHeartbeat
 {
 	[self stopHeartbeat];
+    self.flushSaveMode = NO;
 	self.timer = [NSTimer scheduledTimerWithTimeInterval:kSCHSyncManagerHeartbeatInterval 
                                              target:self 
                                            selector:@selector(backgroundSyncHeartbeat:) 
@@ -250,6 +292,8 @@ static NSUInteger const kSCHSyncManagerMaximumFailureRetries = 3;
 	[self.annotationSyncComponent clear];	
 	[self.readingStatsSyncComponent clear];	
 	[self.settingsSyncComponent clear];	
+	[self.wishListSyncComponent clear];	
+    [self.recommendationSyncComponent clear];
 	
     self.lastFirstSyncEnded = nil;
     self.syncAfterDelay = NO;
@@ -279,7 +323,8 @@ static NSUInteger const kSCHSyncManagerMaximumFailureRetries = 3;
 - (void)firstSync:(BOOL)syncNow requireDeviceAuthentication:(BOOL)requireAuthentication
 {
     // reset if the date has been changed in a backward motion
-    if ([self.lastFirstSyncEnded compare:[NSDate date]] == NSOrderedDescending) {
+    if (self.lastFirstSyncEnded != nil &&
+        [self.lastFirstSyncEnded compare:[NSDate date]] == NSOrderedDescending) {
         self.lastFirstSyncEnded = nil;
     }
     
@@ -305,6 +350,10 @@ static NSUInteger const kSCHSyncManagerMaximumFailureRetries = 3;
             
             [self addToQueue:self.readingStatsSyncComponent];
             [self addToQueue:self.settingsSyncComponent];
+            
+            if ([[SCHAppStateManager sharedAppStateManager] isCOPPACompliant] == YES) {
+                [self addToQueue:self.wishListSyncComponent];
+            }
             
             [self kickQueue];	
         } else {
@@ -336,6 +385,8 @@ static NSUInteger const kSCHSyncManagerMaximumFailureRetries = 3;
                                                                     object:nil];    
                 [[NSNotificationCenter defaultCenter] postNotificationName:SCHSettingsSyncComponentDidCompleteNotification
                                                                     object:nil];   
+                [[NSNotificationCenter defaultCenter] postNotificationName:SCHWishListSyncComponentDidCompleteNotification
+                                                                    object:nil];                   
             });
         }
     }
@@ -362,7 +413,7 @@ static NSUInteger const kSCHSyncManagerMaximumFailureRetries = 3;
 // guarantee the annotation sync contains any new profiles or books
 - (void)updateAnnotationSync
 {
-    if ([self shouldSync] == YES) {	    
+    if (self.flushSaveMode == NO && [self shouldSync] == YES) {	    
         [self addAllProfilesToAnnotationSync];
         if ([self.queue containsObject:self.annotationSyncComponent] == NO &&
             [self.annotationSyncComponent haveProfiles] == YES) {
@@ -370,6 +421,29 @@ static NSUInteger const kSCHSyncManagerMaximumFailureRetries = 3;
             [self kickQueue];	            
         }
     }
+}
+
+- (void)performFlushSaves
+{
+    if ([self shouldSync] == YES) {	  
+        // go into flush save mode
+        self.flushSaveMode = YES;
+        
+        NSLog(@"Performing Flush Saves");
+        
+        [self.queue removeAllObjects];
+        
+        [self addAllProfilesToAnnotationSync];
+        if ([self.annotationSyncComponent haveProfiles] == YES) {
+            [self.annotationSyncComponent synchronize];
+        }
+        [self.readingStatsSyncComponent synchronize];
+        [self.profileSyncComponent synchronize];
+        [self.contentSyncComponent synchronize];
+        if ([[SCHAppStateManager sharedAppStateManager] isCOPPACompliant] == YES) {
+            [self.wishListSyncComponent synchronize];
+        }
+    }    
 }
 
 - (void)addAllProfilesToAnnotationSync
@@ -469,16 +543,22 @@ static NSUInteger const kSCHSyncManagerMaximumFailureRetries = 3;
             id DRMQualifier = [userContentItem valueForKey:kSCHLibreAccessWebServiceDRMQualifier];
             id format = [userContentItem valueForKey:kSCHLibreAccessWebServiceFormat];
             id version = [userContentItem valueForKey:kSCHLibreAccessWebServiceLastVersion];
+            id averageRating = [userContentItem valueForKey:kSCHLibreAccessWebServiceAverageRating];
             
-            if (appContentProfileItem != nil && contentIdentifier != [NSNull null] && 
-                contentIdentifierType != [NSNull null] && DRMQualifier != [NSNull null] &&
-                format != [NSNull null] && version != [NSNull null]) {
+            if (appContentProfileItem != nil && 
+                contentIdentifier != nil && contentIdentifier != [NSNull null] && 
+                contentIdentifierType != nil && contentIdentifierType != [NSNull null] && 
+                DRMQualifier != nil && DRMQualifier != [NSNull null] &&
+                format != nil && format != [NSNull null] && 
+                version != nil && version != [NSNull null] &&
+                averageRating != nil && averageRating != [NSNull null]) {
                 ret = [NSMutableDictionary dictionary];
                 
                 [ret setObject:contentIdentifier forKey:kSCHLibreAccessWebServiceContentIdentifier];
                 [ret setObject:contentIdentifierType forKey:kSCHLibreAccessWebServiceContentIdentifierType];
                 [ret setObject:DRMQualifier forKey:kSCHLibreAccessWebServiceDRMQualifier];
                 [ret setObject:format forKey:kSCHLibreAccessWebServiceFormat];
+                [ret setObject:averageRating forKey:kSCHLibreAccessWebServiceAverageRating];
                 
                 NSMutableDictionary *privateAnnotation = [NSMutableDictionary dictionary];	
                 
@@ -530,8 +610,11 @@ static NSUInteger const kSCHSyncManagerMaximumFailureRetries = 3;
 - (void)closeDocumentSync:(SCHUserContentItem *)userContentItem forProfile:(NSNumber *)profileID
 {
     // save any changes first
-    NSError *error = nil;
-    [self.managedObjectContext save:&error];
+    NSError *error = nil;    
+    if ([self.managedObjectContext hasChanges] == YES &&
+        ![self.managedObjectContext save:&error]) {
+        NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
+    } 
     
     if ([self shouldSync] == YES) {	
         NSLog(@"Scheduling Close Document");
@@ -554,6 +637,33 @@ static NSUInteger const kSCHSyncManagerMaximumFailureRetries = 3;
             [[NSNotificationCenter defaultCenter] postNotificationName:SCHReadingStatsSyncComponentDidCompleteNotification
                                                                 object:nil];    
         });        
+    }
+}
+
+- (BOOL)recommendationSyncActive
+{
+    NSString *settingValue = [[SCHAppStateManager sharedAppStateManager] settingNamed:kSCHSettingItemRECOMMENDATIONS_ON];
+    
+    return [settingValue boolValue];
+}
+
+- (void)recommendationSync
+{
+    if ([self recommendationSyncActive] == YES) {
+        if ([self shouldSync] == YES) {	 
+            NSLog(@"Scheduling Recommendation");  
+            
+            [self addToQueue:self.recommendationSyncComponent];
+            
+            [self kickQueue];	
+        } else {
+            dispatch_async(dispatch_get_main_queue(), ^(void) {
+                [[NSNotificationCenter defaultCenter] postNotificationName:SCHRecommendationSyncComponentDidCompleteNotification 
+                                                                    object:self];		
+            });        
+        }
+    } else {
+        NSLog(@"Recommendations are OFF");
     }
 }
 
@@ -608,12 +718,24 @@ static NSUInteger const kSCHSyncManagerMaximumFailureRetries = 3;
     
     // Kick the queue to continue but leave the heartbeat to trigger if it's the 
     // failed component
-    if ([self.queue count] > 0 && [self.queue objectAtIndex:0] != component) {
+    SCHSyncComponent *queueHead = [self queueHead];
+    if (queueHead != nil && queueHead != component) {
         [self kickQueue];
     }
 }
 
-#pragma mark - Sync methods
+#pragma mark - Queue methods
+
+- (SCHSyncComponent *)queueHead
+{
+    SCHSyncComponent *ret = nil;
+    
+	if ([self.queue count] > 0) {
+		ret = [self.queue objectAtIndex:0];
+    }
+    
+    return ret;
+}
 
 - (void)addToQueue:(SCHSyncComponent *)component
 {
@@ -622,7 +744,9 @@ static NSUInteger const kSCHSyncManagerMaximumFailureRetries = 3;
             [self endBackgroundTask];
         }];			
     }
-
+    
+    self.flushSaveMode = NO;
+    
 	if ([self.queue containsObject:component] == NO) {
 		NSLog(@"Adding %@ to the sync manager queue", [component class]);
         [component clearFailures];
@@ -683,7 +807,7 @@ static NSUInteger const kSCHSyncManagerMaximumFailureRetries = 3;
         }
 	}
     
-	if ([self.queue count] < 1) {
+	if ([self isQueueEmpty] == YES) {
         [self endBackgroundTask];
     }
 }
@@ -694,11 +818,12 @@ static NSUInteger const kSCHSyncManagerMaximumFailureRetries = 3;
         NSLog(@"WARNING: Sync queue kicked whilst manager is suspended");
         return;
     }
+
+    SCHSyncComponent *syncComponent = [self queueHead];
     
-	if ([self.queue count] > 0) {
-		SCHSyncComponent *syncComponent = [self.queue objectAtIndex:0];
+    if (syncComponent != nil) {
 		NSLog(@"Sync component is %@", syncComponent);
-		if (syncComponent != nil && [syncComponent isSynchronizing] == NO) {
+		if ([syncComponent isSynchronizing] == NO) {
 			NSLog(@"Kicking %@", [syncComponent class]);			
 			// if the queue has stopped then start it up again
 			[syncComponent synchronize];
@@ -706,13 +831,13 @@ static NSUInteger const kSCHSyncManagerMaximumFailureRetries = 3;
 			NSLog(@"Kicked but already syncing %@", [syncComponent class]);
 		}
 	}  else {
-        if ([self.queue count] < 1) {
+        if ([self isQueueEmpty] == YES) {
             [self endBackgroundTask];			
         }    
         
         [[NSNotificationCenter defaultCenter] postNotificationName:SCHSyncManagerDidCompleteNotification 
                                                             object:self];        
-        if (self.syncAfterDelay == YES) {
+        if (self.flushSaveMode == NO && self.syncAfterDelay == YES) {
             [self firstSync:NO requireDeviceAuthentication:NO];   
         }
 	}

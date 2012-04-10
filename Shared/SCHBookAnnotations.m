@@ -21,6 +21,7 @@
 #import "SCHWordIndex.h"
 #import "SCHBookRange.h"
 #import "SCHAppStateManager.h"
+#import "SCHRating.h"
 
 @interface SCHBookAnnotations ()
 
@@ -72,7 +73,7 @@
 
 - (void)annotationSyncComponentDidCompleteNotification:(NSNotification *)notification
 {
-    NSNumber *profileID = [notification.userInfo objectForKey:SCHAnnotationSyncComponentCompletedProfileIDs];
+    NSNumber *profileID = [notification.userInfo objectForKey:SCHAnnotationSyncComponentProfileIDs];
     
     if (self.cachedProfileID) {
         if ([profileID isEqualToNumber:self.cachedProfileID] == YES) {
@@ -213,7 +214,8 @@
         }
     }];
     
-    if (found == YES) {
+    if (found == YES && 
+        pageRange.length > 0 && NSMaxRange(pageRange) <= [self.sortedHighlights count]) {
         ret = [self.sortedHighlights subarrayWithRange:pageRange];
     }
     
@@ -333,6 +335,16 @@
 - (SCHLastPage *)lastPage
 {
     return self.privateAnnotations.LastPage;
+}
+
+- (void)setUserRating:(NSInteger)userRating
+{
+    self.privateAnnotations.rating.rating = [NSNumber numberWithInteger:userRating];
+}
+
+- (NSInteger)userRating
+{
+    return [self.privateAnnotations.rating.rating integerValue];
 }
 
 @end

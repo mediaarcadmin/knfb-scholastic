@@ -35,6 +35,7 @@ extern NSString * const kSCHContentMetadataItem;
 @property (nonatomic, retain) SCHAppBook * AppBook;
 @property (nonatomic, retain) NSSet* eReaderCategories;
 @property (nonatomic, retain) NSString * FormatAuthorString;
+@property (nonatomic, retain) NSNumber * AverageRating;
 
 @property (nonatomic, readonly) NSSet *AnnotationsContentItem;
 @property (nonatomic, readonly) SCHUserContentItem *UserContentItem;

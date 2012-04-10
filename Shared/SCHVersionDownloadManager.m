@@ -364,12 +364,15 @@ NSString * const SCHVersionDownloadManagerSavedAppVersion = @"SCHVersionDownload
             NSString *currentVersion = [self bundleAppVersion];
             
             if (currentVersion) {
-                if (entry != nil && 
-                    [currentVersion compare:[entry toVersion] options:NSNumericSearch] == NSOrderedAscending) {
-                    if ([[[entry forced] uppercaseString] isEqualToString:@"TRUE"]) {
-                        forcedUpdate = YES;
+                if (entry != nil) {
+                    NSString *toVersion = [entry toVersion];
+                    if (toVersion != nil &&
+                        [currentVersion compare:toVersion options:NSNumericSearch] == NSOrderedAscending) {
+                        if ([[[entry forced] uppercaseString] isEqualToString:@"TRUE"]) {
+                            forcedUpdate = YES;
+                        }
+                        processUpdate = YES;
                     }
-                    processUpdate = YES;
                 }
             } else {
                 processUpdate = YES;

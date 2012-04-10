@@ -51,6 +51,10 @@ typedef enum
 
 - (void)hideToolbars;
 
+- (NSUInteger)generatedPageCountForReadingView:(SCHReadingView *)aReadingView;
+- (BOOL)readingView:(SCHReadingView *)readingView shouldGenerateViewForPageAtIndex:(NSUInteger)pageIndex;
+- (UIView *)generatedViewForPageAtIndex:(NSUInteger)pageIndex;
+
 @end
 
 @interface SCHReadingView : UIView <EucSelectorDelegate> {

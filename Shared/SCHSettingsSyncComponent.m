@@ -11,7 +11,7 @@
 #import "NSManagedObjectContext+Extensions.h"
 
 #import "SCHLibreAccessWebService.h"
-#import "SCHUserSettingsItem.h"
+#import "SCHSettingItem.h"
 #import "BITAPIError.h"
 
 // Constants
@@ -20,11 +20,34 @@ NSString * const SCHSettingsSyncComponentDidFailNotification = @"SCHSettingsSync
 
 @interface SCHSettingsSyncComponent ()
 
+@property (nonatomic, retain) SCHLibreAccessWebService *libreAccessWebService;
+
 - (void)updateUserSettings:(NSArray *)settingsList;
 
 @end
 
 @implementation SCHSettingsSyncComponent
+
+@synthesize libreAccessWebService;
+
+- (id)init
+{
+	self = [super init];
+	if (self != nil) {
+		libreAccessWebService = [[SCHLibreAccessWebService alloc] init];	
+		libreAccessWebService.delegate = self;
+	}
+	
+	return(self);
+}
+
+- (void)dealloc
+{
+    libreAccessWebService.delegate = nil;
+	[libreAccessWebService release], libreAccessWebService = nil;
+    
+	[super dealloc];
+}
 
 - (BOOL)synchronize
 {
@@ -62,10 +85,11 @@ NSString * const SCHSettingsSyncComponentDidFailNotification = @"SCHSettingsSync
 
 - (void)clear
 {
-    [super clear];
 	NSError *error = nil;
 	
-	if (![self.managedObjectContext BITemptyEntity:kSCHUserSettingsItem error:&error]) {
+    [self.libreAccessWebService clear];
+    
+	if (![self.managedObjectContext BITemptyEntity:kSCHSettingItem error:&error]) {
 		NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
 	}	
 }
@@ -101,23 +125,18 @@ NSString * const SCHSettingsSyncComponentDidFailNotification = @"SCHSettingsSync
 }
 
 - (void)updateUserSettings:(NSArray *)settingsList
-{
-	NSError *error = nil;
-	
+{	
     if ([settingsList count] > 0) {
         [self clear];
         
         for (id setting in settingsList) {
-            SCHUserSettingsItem *newUserSettingsItem = [NSEntityDescription insertNewObjectForEntityForName:kSCHUserSettingsItem inManagedObjectContext:self.managedObjectContext];
+            SCHSettingItem *newUserSettingsItem = [NSEntityDescription insertNewObjectForEntityForName:kSCHSettingItem inManagedObjectContext:self.managedObjectContext];
             
-            newUserSettingsItem.SettingType = [self makeNullNil:[setting objectForKey:kSCHLibreAccessWebServiceSettingType]];
+            newUserSettingsItem.SettingName = [self makeNullNil:[setting objectForKey:kSCHLibreAccessWebServiceSettingName]];
             newUserSettingsItem.SettingValue = [self makeNullNil:[setting objectForKey:kSCHLibreAccessWebServiceSettingValue]];
         }
         
-        // Save the context.
-        if (![self.managedObjectContext save:&error]) {
-            NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
-        }	
+        [self save];
     }
 }
 

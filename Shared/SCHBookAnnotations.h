@@ -19,6 +19,8 @@
 {    
 }
 
+@property (nonatomic, assign) NSInteger userRating;
+
 - (id)initWithPrivateAnnotations:(SCHPrivateAnnotations *)privateAnnotations;
 
 - (NSUInteger)bookmarksCount;

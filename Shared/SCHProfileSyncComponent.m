@@ -14,6 +14,10 @@
 #import "SCHAppProfile.h"
 #import "SCHAnnotationsItem.h"
 #import "BITAPIError.h"
+#import "SCHLibreAccessWebService.h"
+#import "SCHWishListProfile.h"
+#import "SCHWishListItem.h"
+#import "SCHWishListSyncComponent.h"
 
 // Constants
 NSString * const SCHProfileSyncComponentWillDeleteNotification = @"SCHProfileSyncComponentWillDeleteNotification";
@@ -23,6 +27,7 @@ NSString * const SCHProfileSyncComponentDidFailNotification = @"SCHProfileSyncCo
 
 @interface SCHProfileSyncComponent ()
 
+@property (nonatomic, retain) SCHLibreAccessWebService *libreAccessWebService;
 @property (retain, nonatomic) NSMutableArray *savedProfiles;
 
 - (void)trackProfileSaves:(NSArray *)profilesArray;
@@ -30,17 +35,22 @@ NSString * const SCHProfileSyncComponentDidFailNotification = @"SCHProfileSyncCo
 - (void)processSaveUserProfilesWithResult:(NSDictionary *)result;
 - (BOOL)updateProfiles;
 - (void)syncProfile:(NSDictionary *)webProfile withProfile:(SCHProfileItem *)localProfile;
+- (void)removeWishListForProfile:(SCHProfileItem *)profileItem;
 
 @end
 
 @implementation SCHProfileSyncComponent
 
+@synthesize libreAccessWebService;
 @synthesize savedProfiles;
 
 - (id)init 
 {
     self = [super init];
     if (self) {
+        libreAccessWebService = [[SCHLibreAccessWebService alloc] init];	
+		libreAccessWebService.delegate = self;
+
         savedProfiles = [[NSMutableArray array] retain];
     }
     return self;
@@ -48,6 +58,9 @@ NSString * const SCHProfileSyncComponentDidFailNotification = @"SCHProfileSyncCo
 
 - (void)dealloc 
 {
+    libreAccessWebService.delegate = nil;
+	[libreAccessWebService release], libreAccessWebService = nil;
+
     [savedProfiles release], savedProfiles = nil;
     [super dealloc];
 }
@@ -73,9 +86,10 @@ NSString * const SCHProfileSyncComponentDidFailNotification = @"SCHProfileSyncCo
 
 - (void)clear
 {
-    [super clear];
 	NSError *error = nil;
 	
+    [self.libreAccessWebService clear];
+    
     [self.savedProfiles removeAllObjects];
     
 	if (![self.managedObjectContext BITemptyEntity:kSCHProfileItem error:&error]) {
@@ -93,7 +107,7 @@ NSString * const SCHProfileSyncComponentDidFailNotification = @"SCHProfileSyncCo
             [self syncProfiles:[result objectForKey:kSCHLibreAccessWebServiceProfileList]];
             [[NSNotificationCenter defaultCenter] postNotificationName:SCHProfileSyncComponentDidCompleteNotification 
                                                                 object:self];		
-            [super method:method didCompleteWithResult:nil userInfo:userInfo];	
+            [super method:method didCompleteWithResult:result userInfo:userInfo];	
         }
     }
     @catch (NSException *exception) {
@@ -144,6 +158,7 @@ NSString * const SCHProfileSyncComponentDidFailNotification = @"SCHProfileSyncCo
                             break;
                         case kSCHSaveActionsRemove:                            
                         {
+                            [self removeWishListForProfile:(SCHProfileItem *)profileManagedObject];
                             [self.managedObjectContext deleteObject:profileManagedObject];
                         }
                             break;
@@ -164,7 +179,9 @@ NSString * const SCHProfileSyncComponentDidFailNotification = @"SCHProfileSyncCo
                                                forKey:SCHSyncEntityState];
                 }
             }
-            [self.savedProfiles removeObjectAtIndex:0];
+            if ([self.savedProfiles count] > 0) {
+                [self.savedProfiles removeObjectAtIndex:0];
+            }
         }
         [self save];
     }
@@ -176,20 +193,26 @@ NSString * const SCHProfileSyncComponentDidFailNotification = @"SCHProfileSyncCo
         [self applyProfileSaves:[result objectForKey:kSCHLibreAccessWebServiceProfileStatusList]];
     }        
     
-    self.isSynchronizing = [self.libreAccessWebService getUserProfiles];
-    if (self.isSynchronizing == NO) {
-        [[SCHAuthenticationManager sharedAuthenticationManager] authenticateWithSuccessBlock:^(SCHAuthenticationManagerConnectivityMode connectivityMode){
-            if (connectivityMode == SCHAuthenticationManagerConnectivityModeOnline) {
-                [self.delegate authenticationDidSucceed];
-            } else {
+    if (self.saveOnly == NO) {
+        self.isSynchronizing = [self.libreAccessWebService getUserProfiles];
+        if (self.isSynchronizing == NO) {
+            [[SCHAuthenticationManager sharedAuthenticationManager] authenticateWithSuccessBlock:^(SCHAuthenticationManagerConnectivityMode connectivityMode){
+                if (connectivityMode == SCHAuthenticationManagerConnectivityModeOnline) {
+                    [self.delegate authenticationDidSucceed];
+                } else {
+                    self.isSynchronizing = NO;
+                }
+            } failureBlock:^(NSError *error){
                 self.isSynchronizing = NO;
-            }
-        } failureBlock:^(NSError *error){
-            self.isSynchronizing = NO;
-            [[NSNotificationCenter defaultCenter] postNotificationName:SCHSyncComponentDidFailAuthenticationNotification
-                                                                object:self];            
-        }];				
-    }		    
+                [[NSNotificationCenter defaultCenter] postNotificationName:SCHSyncComponentDidFailAuthenticationNotification
+                                                                    object:self];            
+            }];				
+        }	
+    } else {
+        [[NSNotificationCenter defaultCenter] postNotificationName:SCHProfileSyncComponentDidCompleteNotification 
+                                                            object:self];		
+        [super method:nil didCompleteWithResult:result userInfo:nil];	
+    }
 }
 
 - (void)method:(NSString *)method didFailWithError:(NSError *)error 
@@ -245,7 +268,7 @@ NSString * const SCHProfileSyncComponentDidFailNotification = @"SCHProfileSyncCo
             }];				
 			ret = NO;			
 		}		
-	} else {
+	} else if (self.saveOnly == NO) {
 		
 		self.isSynchronizing = [self.libreAccessWebService getUserProfiles];
 		if (self.isSynchronizing == NO) {
@@ -262,7 +285,11 @@ NSString * const SCHProfileSyncComponentDidFailNotification = @"SCHProfileSyncCo
             }];					
 			ret = NO;
 		}
-	}
+	} else {
+        [[NSNotificationCenter defaultCenter] postNotificationName:SCHProfileSyncComponentDidCompleteNotification 
+                                                            object:self];		
+        [super method:nil didCompleteWithResult:nil userInfo:nil];
+    }
 	[fetchRequest release], fetchRequest = nil;
 	
 	return(ret);
@@ -322,8 +349,9 @@ NSString * const SCHProfileSyncComponentDidFailNotification = @"SCHProfileSyncCo
 		id localItemID = [localItem valueForKey:kSCHLibreAccessWebServiceID];
 
         if ((id)webItemID == [NSNull null]) {
-            // ignore any items with no ID
             webItem = nil;
+        } else if ((id)localItemID == [NSNull null]) {
+            localItem = nil;            
         } else {        
             switch ([webItemID compare:localItemID]) {
                 case NSOrderedSame:
@@ -353,13 +381,17 @@ NSString * const SCHProfileSyncComponentDidFailNotification = @"SCHProfileSyncCo
     if ([deletePool count] > 0) {
         NSMutableArray *deletedIDs = [NSMutableArray array];
         for (SCHProfileItem *profileItem in deletePool) {
-            [deletedIDs addObject:profileItem.ID];
+            NSNumber *profileID = profileItem.ID;
+            if (profileID != nil) {
+                [deletedIDs addObject:profileID];
+            }
         }        
         [[NSNotificationCenter defaultCenter] postNotificationName:SCHProfileSyncComponentWillDeleteNotification 
                                                             object:self 
                                                           userInfo:[NSDictionary dictionaryWithObject:deletedIDs 
                                                                                                forKey:SCHProfileSyncComponentDeletedProfileIDs]];				
         for (SCHProfileItem *profileItem in deletePool) {
+            [self removeWishListForProfile:profileItem];
             [self.managedObjectContext deleteObject:profileItem];
         }                
     }
@@ -397,6 +429,10 @@ NSString * const SCHProfileSyncComponentDidFailNotification = @"SCHProfileSyncCo
     SCHAnnotationsItem *newAnnotationsItem = [NSEntityDescription insertNewObjectForEntityForName:kSCHAnnotationsItem inManagedObjectContext:self.managedObjectContext];
     newAnnotationsItem.ProfileID = newProfileItem.ID;
     
+    SCHWishListProfile *newWishListProfile = [NSEntityDescription insertNewObjectForEntityForName:kSCHWishListProfile inManagedObjectContext:self.managedObjectContext];    
+    newWishListProfile.ProfileID = newProfileItem.ID;
+    newWishListProfile.ProfileName = newProfileItem.ScreenName;
+    
     NSLog(@"Added profile with screenname %@ and ID %@", newProfileItem.ScreenName, newProfileItem.ID);
 }
 
@@ -419,6 +455,31 @@ NSString * const SCHProfileSyncComponentDidFailNotification = @"SCHProfileSyncCo
         localProfile.LastName = [self makeNullNil:[webProfile valueForKey:kSCHLibreAccessWebServiceLastName]];
         localProfile.LastModified = [self makeNullNil:[webProfile valueForKey:kSCHLibreAccessWebServiceLastModified]];
         localProfile.State = [NSNumber numberWithStatus:kSCHStatusSyncUpdate];				
+    }
+}
+
+- (void)removeWishListForProfile:(SCHProfileItem *)profileItem
+{
+    if (profileItem != nil) {
+        SCHWishListProfile *wishListProfile = [profileItem.AppProfile wishListProfile];
+        if (wishListProfile != nil) {
+            NSMutableArray *deletedISBNs = [NSMutableArray array];
+            for (SCHWishListItem *item in wishListProfile.ItemList) {
+                NSString *isbn = item.ISBN;
+                if (isbn != nil) {
+                    [deletedISBNs addObject:isbn];
+                }
+            }
+            if ([deletedISBNs count] > 0) {
+                [[NSNotificationCenter defaultCenter] postNotificationName:SCHWishListSyncComponentWillDeleteNotification 
+                                                                    object:self 
+                                                                  userInfo:[NSDictionary dictionaryWithObject:[NSArray arrayWithArray:deletedISBNs]
+                                                                                                       forKey:SCHWishListSyncComponentISBNs]];
+                
+            }   
+            [self.managedObjectContext deleteObject:wishListProfile];
+            [self save];
+        }    
     }
 }
 

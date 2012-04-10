@@ -36,6 +36,7 @@
 #import "SCHStoriaWelcomeViewController.h"
 #import "SCHUserDefaults.h"
 #import "SCHVersionDownloadManager.h"
+#import "SCHBookAnnotations.h"
 
 static NSInteger const kSCHBookShelfViewControllerGridCellHeightPortrait = 138;
 static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 131;
@@ -50,7 +51,7 @@ typedef enum
 
 @interface SCHBookShelfViewController () <UIGestureRecognizerDelegate>
 
-@property (nonatomic, retain) SCHThemeButton *themeButton;
+@property (nonatomic, retain) SCHThemeButton *menuButton;
 @property (nonatomic, retain) SCHThemeButton *backButton;
 @property (nonatomic, assign) int moveToValue;
 @property (nonatomic, assign) BOOL updateShelfOnReturnToShelf;
@@ -61,6 +62,7 @@ typedef enum
 @property (nonatomic, assign) BOOL shouldShowBookshelfFailedErrorMessage;
 @property (nonatomic, assign) BOOL shouldWaitForCellsToLoad;
 @property (nonatomic, retain) BITModalSheetController *welcomePopoverController;
+@property (nonatomic, retain) BITModalSheetController *menuPopover;
 
 - (void)showWelcomeView;
 - (void)showWelcomeTwoView;
@@ -74,6 +76,8 @@ typedef enum
 - (BOOL)canOpenBook:(SCHBookIdentifier *)identifier error:(NSError **)error;
 - (void)selectBookAtIndex:(NSInteger)index startBlock:(dispatch_block_t)startBlock endBlock:(void (^)(BOOL didOpen))endBlock;
 
+- (void)bookIdentifier:(SCHBookIdentifier *)identifier userRatingChanged:(NSInteger)newRating;
+
 - (IBAction)changeToListView:(UIButton *)sender;
 - (IBAction)changeToGridView:(UIButton *)sender;
 
@@ -85,15 +89,13 @@ typedef enum
 
 @implementation SCHBookShelfViewController
 
-@synthesize themeButton;
+@synthesize menuButton;
 @synthesize backButton;
 @synthesize listTableView;
 @synthesize listTableCellNib;
 @synthesize gridView;
 @synthesize themePickerContainer;
 @synthesize customNavigationBar;
-@synthesize gridButton;
-@synthesize listButton;
 @synthesize listToggleView;
 @synthesize gridViewToggleView;
 @synthesize books;
@@ -113,6 +115,8 @@ typedef enum
 @synthesize shouldWaitForCellsToLoad;
 @synthesize showWelcome;
 @synthesize welcomePopoverController;
+@synthesize showingRatings;
+@synthesize menuPopover;
 
 #pragma mark - Object lifecycle
 
@@ -122,11 +126,9 @@ typedef enum
     [themePickerContainer release], themePickerContainer = nil;
     [customNavigationBar release], customNavigationBar = nil;
         
-    [themeButton release], themeButton = nil;
+    [menuButton release], menuButton = nil;
     [backButton release], backButton = nil;    
     [listTableView release], listTableView = nil;
-    [gridButton release], gridButton = nil;
-    [listButton release], listButton = nil;
     [listToggleView release], listToggleView = nil;
     [listTableCellNib release], listTableCellNib = nil;
     [gridViewToggleView release], gridViewToggleView = nil;
@@ -196,9 +198,11 @@ typedef enum
 - (void)viewDidLoad 
 {
     [super viewDidLoad];
+    
     self.gridViewNeedsRefreshed = YES;
     self.listViewNeedsRefreshed = YES;
     self.shouldShowBookshelfFailedErrorMessage = YES;
+    self.showingRatings = NO;
     
     [self.listTableView setAlwaysBounceVertical:NO]; // For some reason this doesn't work when set from the nib
     
@@ -207,13 +211,15 @@ typedef enum
         self.listTableCellNib = [UINib nibWithNibName:@"SCHBookShelfTableViewCell_iPad" bundle:nil];
     } else {
         self.listTableCellNib = [UINib nibWithNibName:@"SCHBookShelfTableViewCell_iPhone" bundle:nil];
+        self.showWelcome = NO;
     }
         
-    self.themeButton = [SCHThemeButton buttonWithType:UIButtonTypeCustom];
-    [self.themeButton setThemeIcon:kSCHThemeManagerThemeIcon iPadQualifier:kSCHThemeManagerPadQualifierSuffix];
-    [self.themeButton sizeToFit];    
-    [self.themeButton addTarget:self action:@selector(changeTheme) forControlEvents:UIControlEventTouchUpInside];    
-    self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithCustomView:self.themeButton] autorelease];
+    self.menuButton = [SCHThemeButton buttonWithType:UIButtonTypeCustom];
+    [self.menuButton setThemeIcon:kSCHThemeManagerMenuIcon iPadQualifier:kSCHThemeManagerPadQualifierSuffix];
+    [self.menuButton sizeToFit];    
+    [self.menuButton addTarget:self action:@selector(presentMenu) forControlEvents:UIControlEventTouchUpInside];    
+
+    self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithCustomView:self.menuButton] autorelease];
 
     self.backButton = [SCHThemeButton buttonWithType:UIButtonTypeCustom];
     [self.backButton setThemeIcon:kSCHThemeManagerHomeIcon iPadQualifier:kSCHThemeManagerPadQualifierSuffix];
@@ -288,32 +294,55 @@ typedef enum
     
     [self.listTableView setSeparatorColor:[UIColor clearColor]];
 
-    CGRect listFrame = self.listTableView.tableHeaderView.frame;
-    CGRect gridFrame = self.gridViewToggleView.frame;
+//    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
+//
+//        CGRect listFrame = self.listTableView.tableHeaderView.frame;
+//        CGRect gridFrame = self.gridViewToggleView.frame;
+//
+//        listFrame.size.width = self.view.frame.size.width;
+//        gridFrame.size.width = self.view.frame.size.width;
+//
+//        // this is the height of the top toggle view for both iPad and iPhone
+//        if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+//            listFrame.size.height = 66;
+//            gridFrame.size.height = 66;
+//        } else {
+//            listFrame.size.height = 44;
+//            gridFrame.size.height = 44;
+//        }
+//        self.listTableView.tableHeaderView.frame = listFrame;
+//        self.gridViewToggleView.frame = gridFrame;
+//    
+//        self.gridView.toggleView = self.gridViewToggleView;
+//    }
+    
 
-    listFrame.size.width = self.view.frame.size.width;
-    gridFrame.size.width = self.view.frame.size.width;
-    
-    // this is the height of the top toggle view for both iPad and iPhone
-    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
-        listFrame.size.height = 66;
-        gridFrame.size.height = 66;
-    } else {
-        listFrame.size.height = 44;
-        gridFrame.size.height = 44;
-    }
-    self.listTableView.tableHeaderView.frame = listFrame;
-    self.gridViewToggleView.frame = gridFrame;
-    
-    self.gridView.toggleView = self.gridViewToggleView;
+        CGRect listFrame = self.listTableView.tableHeaderView.frame;
+        CGRect gridFrame = self.gridViewToggleView.frame;
+
+        listFrame.size.width = self.view.frame.size.width;
+        gridFrame.size.width = self.view.frame.size.width;
+
+        // this is the height of the top toggle view for both iPad and iPhone
+        if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+            listFrame.size.height = 0;
+            gridFrame.size.height = 7;
+        } else {
+            listFrame.size.height = 0;
+            gridFrame.size.height = 7;
+        }
+        self.listTableView.tableHeaderView.frame = listFrame;
+        self.gridViewToggleView.frame = gridFrame;
+
     
     self.currentlyLoadingIndex = -1;
 
+    if ([self.profileItem.AppProfile.ShowListView boolValue] == YES) {
+        [self changeToListView:nil];
+    }
+    
     if (![[SCHAppStateManager sharedAppStateManager] isSampleStore]) {
         self.navigationItem.title = [self.profileItem bookshelfName:YES];
-        if ([self.profileItem.AppProfile.ShowListView boolValue] == YES) {
-            [self changeToListView:nil];
-        }
     } else {
         self.navigationItem.title = NSLocalizedString(@"My eBooks", @"Sample bookshelf title");
     }
@@ -472,7 +501,7 @@ typedef enum
 - (void)setupAssetsForOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
     [self.gridView setShelfImage:[[SCHThemeManager sharedThemeManager] imageForShelf:interfaceOrientation]];       
-    [self.themeButton updateTheme:interfaceOrientation];
+    [self.menuButton updateTheme:interfaceOrientation];
     [self.backButton updateTheme:interfaceOrientation];
     
     [self.backgroundView setImage:[[SCHThemeManager sharedThemeManager] imageForBackground:UIInterfaceOrientationPortrait]]; // Note we re-use portrait
@@ -523,13 +552,40 @@ typedef enum
 
 #pragma mark - Private methods
 
-- (void)changeTheme
+- (void)presentMenu
 {
-    self.themePickerContainer.modalPresentationStyle = UIModalPresentationFormSheet;
-    self.themePickerContainer.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
-    self.themePickerContainer.title = @"";
+    NSLog(@"Presenting menu...");
     
-	[self presentModalViewController:self.themePickerContainer animated:YES];		
+    SCHBookShelfMenuController *menuTableController = [[SCHBookShelfMenuController alloc] initWithNibName:@"SCHBookShelfMenuController" 
+                                                                                                   bundle:nil 
+                                                                                     managedObjectContext:self.managedObjectContext];
+    menuTableController.delegate = self;
+    menuTableController.userIsAuthenticated = !TOP_TEN_DISABLED && [[SCHAppStateManager sharedAppStateManager] canAuthenticate];
+    
+    UINavigationController *navCon = [[UINavigationController alloc] initWithRootViewController:menuTableController];
+    SCHCustomNavigationBar *customBar = [[SCHCustomNavigationBar alloc] init];
+
+    // NOTE: this is setting the custom toolbar using KVC 
+    // this is the same way the NIB does it, but in code
+    [navCon setValue:customBar forKeyPath:@"navigationBar"];
+    
+    [customBar setTheme:kSCHThemeManagerNavigationBarImage];
+    [customBar release];
+    
+    
+    // present from a modal sheet
+    self.menuPopover = [[[BITModalSheetController alloc] initWithContentViewController:navCon] autorelease];
+    
+    CGRect appFrame = [self.view convertRect:[[UIScreen mainScreen] applicationFrame] fromView:self.view.window];
+    [self.menuPopover setContentSize:appFrame.size];
+    [self.menuPopover setContentOffset:CGPointMake(0, 0)];
+    [self.menuPopover setAutoresizingMask:UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight];
+    
+    [self.menuPopover presentSheetInViewController:self animated:YES completion:nil];
+    
+    [menuTableController release];
+    [navCon release];
+
 }
 
 - (void)dismissLoadingView
@@ -557,6 +613,17 @@ typedef enum
 
 #pragma mark - Action methods
 
+- (void)toggleRatings
+{
+    self.showingRatings = !self.showingRatings;
+    
+    NSLog(@"Toggling ratings to %@. FIXME: need to change icon.", self.showingRatings?@"Yes":@"No");
+
+    self.gridViewNeedsRefreshed = YES;
+    self.listViewNeedsRefreshed = YES;
+    [self reloadData];
+}
+
 - (IBAction)back
 {
     self.profileItem.AppProfile.ShowListView = [NSNumber numberWithBool:self.listTableView.hidden == NO];
@@ -578,6 +645,56 @@ typedef enum
     self.sortType = kSCHBookSortTypeUser;
     
     return NO;
+}
+
+#pragma mark - Bookshelf Menu Delegate
+
+- (SCHBookSortType)sortTypeForBookShelfMenu:(SCHBookShelfMenuController *)controller
+{
+    return self.sortType;
+}
+
+- (void)bookShelfMenu:(SCHBookShelfMenuController *)controller changedSortType:(SCHBookSortType)newSortType
+{
+    self.sortType = newSortType;
+    [[self.profileItem AppProfile] setSortType:[NSNumber numberWithInt:self.sortType]];
+    
+    self.books = [self.profileItem allBookIdentifiers];
+    [self dismissLoadingView];
+    
+    if (self.menuPopover) {
+        [self.menuPopover dismissSheetAnimated:YES completion:^{}];
+    }
+}
+
+- (void)bookShelfMenuSwitchedToGridView:(SCHBookShelfMenuController *)controller
+{
+    if (self.menuPopover) {
+        [self.menuPopover dismissSheetAnimated:YES completion:^{}];
+    }
+
+    [self changeToGridView:nil];
+}
+
+- (void)bookShelfMenuSwitchedToListView:(SCHBookShelfMenuController *)controller
+{
+    if (self.menuPopover) {
+        [self.menuPopover dismissSheetAnimated:YES completion:^{}];
+    }
+
+    [self changeToListView:nil];
+}
+
+- (void)bookShelfMenuCancelled:(SCHBookShelfMenuController *)controller
+{
+    if (self.menuPopover) {
+        [self.menuPopover dismissSheetAnimated:YES completion:^{}];
+    }
+}
+
+- (SCHAppProfile *)appProfileForBookShelfMenu
+{
+    return self.profileItem.AppProfile;
 }
 
 #pragma mark - Accessor Methods
@@ -628,8 +745,10 @@ typedef enum
 - (IBAction)changeToGridView:(UIButton *)sender
 {
     if (self.gridView.hidden == YES) {
-        self.gridButton.highlighted = YES;
-        self.listButton.highlighted = NO;
+        // save change to profile
+        self.profileItem.AppProfile.ShowListView = [NSNumber numberWithBool:NO];
+        [self save];
+
         self.listTableView.hidden = YES;
         self.gridView.hidden = NO;
         [self reloadData];
@@ -639,8 +758,10 @@ typedef enum
 - (IBAction)changeToListView:(UIButton *)sender
 {
     if (self.listTableView.hidden == YES) {
-        self.gridButton.highlighted = NO;
-        self.listButton.highlighted = YES;
+        // save change to profile
+        self.profileItem.AppProfile.ShowListView = [NSNumber numberWithBool:YES];
+        [self save];
+
         self.listTableView.hidden = NO;
         self.gridView.hidden = YES;
         [self reloadData];
@@ -792,12 +913,40 @@ typedef enum
     }
 }
 
+#pragma mark - SCHBookShelfTableViewCellDelegate / SCHBookShelfGridViewCellDelegate
+
+- (void)bookshelfCell:(SCHBookShelfTableViewCell *)cell userRatingChanged:(NSInteger)newRating
+{
+    [self bookIdentifier:cell.identifier userRatingChanged:newRating];
+    self.gridViewNeedsRefreshed = YES;
+    [self reloadData];
+}
+
+- (void)gridCell:(SCHBookShelfGridViewCell *)cell userRatingChanged:(NSInteger)newRating
+{
+    [self bookIdentifier:cell.identifier userRatingChanged:newRating];
+    self.listViewNeedsRefreshed = YES;
+    [self reloadData];
+}
+
+- (void)bookIdentifier:(SCHBookIdentifier *)identifier userRatingChanged:(NSInteger)newRating
+{
+    NSLog(@"Book %@ changed to rating %d", identifier, newRating);
+    
+    SCHBookAnnotations *anno = [self.profileItem annotationsForBook:identifier];
+    
+    if (anno) {
+        [anno setUserRating:newRating];
+        [self save];
+    }
+}
+
 #pragma mark - UITableViewDataSource methods
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     static NSString *cellIdentifier = @"ScholasticBookshelfTableCell";
-    
+
     SCHBookShelfTableViewCell *cell = (SCHBookShelfTableViewCell *) [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
     
     if (cell == nil) {
@@ -817,6 +966,7 @@ typedef enum
 
     SCHBookIdentifier *identifier = [self.books objectAtIndex:[indexPath row]];
 
+    cell.delegate = self;
     cell.identifier = identifier;
     SCHAppContentProfileItem *appContentProfileItem = [self.profileItem appContentProfileItemForBookIdentifier:identifier];
     cell.isNewBook = [appContentProfileItem.IsNewBook boolValue];
@@ -834,6 +984,10 @@ typedef enum
         cell.loading = NO;
     }
     
+    
+    SCHBookAnnotations *anno = [self.profileItem annotationsForBook:identifier];
+    cell.userRating = [anno userRating];
+
     [cell endUpdates];
     return cell;
 }
@@ -850,9 +1004,17 @@ typedef enum
 - (float)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
-        return 100;
+        if (indexPath.row == 0) {
+            return 113;
+        } else {
+            return 106;
+        }
     } else {
-        return 62;
+        if (indexPath.row == 0) {
+            return 77;
+        } else {
+            return 66;
+        }
     }
 }
 
@@ -890,14 +1052,20 @@ typedef enum
     
 	[gridCell setIdentifier:[self.books objectAtIndex:index]];
     SCHAppContentProfileItem *appContentProfileItem = [self.profileItem appContentProfileItemForBookIdentifier:[self.books objectAtIndex:index]];
-    gridCell.isNewBook = [appContentProfileItem.IsNewBook boolValue];
+    gridCell.delegate = self;
+        gridCell.isNewBook = [appContentProfileItem.IsNewBook boolValue];
     gridCell.disabledForInteractions = [self.profileItem storyInteractionsDisabled];
+    gridCell.showRatings = self.showingRatings;
 
     if (self.currentlyLoadingIndex == index) {
         gridCell.loading = YES;
     } else {
         gridCell.loading = NO;
     }
+    
+    SCHBookAnnotations *anno = [self.profileItem annotationsForBook:[self.books objectAtIndex:index]];
+    gridCell.userRating = [anno userRating];
+
     
     [gridCell endUpdates];
 }
@@ -950,12 +1118,12 @@ typedef enum
 // Although this is called finishedMovingCellToIndex it actually passes the fromIndex
 - (void)gridView:(MRGridView*)gridView finishedMovingCellToIndex:(NSInteger)fromIndex
 {
-	if (self.moveToValue != -1 && (fromIndex != self.moveToValue)) {
+    NSUInteger toIndex = self.moveToValue;
+	if (toIndex != -1 && (fromIndex != toIndex) &&
+        fromIndex < [self.books count] && toIndex <= [self.books count]) {
         id book = [self.books objectAtIndex:fromIndex];
         [book retain];
         [self.books removeObjectAtIndex:fromIndex];
-
-        NSUInteger toIndex = self.moveToValue;
         
         [self.books insertObject:book atIndex:toIndex];
         [book release];

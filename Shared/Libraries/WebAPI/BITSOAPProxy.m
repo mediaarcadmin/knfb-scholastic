@@ -61,16 +61,40 @@
 }
 
 - (NSError *)confirmErrorDomain:(NSError *)error
+                  forDomainName:(NSString *)domainName
 {
-    // if this is a SOAP error domain  and not a connectivity error domain 
+    // if this is a SOAP error domain and not a connectivity error domain 
     // change the domain to BITAPIError
-    if ([[error domain] isEqualToString:@"LibreAccessServiceSoap11BindingResponseHTTP"] == YES) {
+    if (domainName != nil &&
+        [[error domain] isEqualToString:domainName] == YES) {
         error = [NSError errorWithDomain:kBITAPIErrorDomain 
                                     code:[error code] 
                                 userInfo:[error userInfo]];
     }
     
     return error;
+}
+
+- (id)fromObjectTranslate:(id)anObject
+{
+	static Class boolClass = nil;
+	id ret = nil;
+	
+	if (boolClass == nil) {
+		boolClass = [[[NSNumber numberWithBool:YES] class] retain];
+	}
+	
+	if (anObject != nil) {
+		if (anObject == [NSNull null]) {
+			ret = nil;
+		} else if ([anObject isKindOfClass:boolClass] == YES) {
+			ret = [[[USBoolean alloc] initWithBool:[anObject boolValue]] autorelease];
+		} else {
+			ret = anObject;
+		}
+	}
+	
+	return(ret);
 }
 
 #pragma mark -

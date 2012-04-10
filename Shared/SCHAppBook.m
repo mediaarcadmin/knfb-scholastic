@@ -11,6 +11,11 @@
 #import "NSURL+Extensions.h"
 #import "SCHAppStateManager.h"
 #import "NSDate+ServerDate.h"
+#import "SCHRecommendationItem.h"
+#import "SCHAppRecommendationItem.h"
+#import "SCHRecommendationConstants.h"
+#import "SCHRecommendationISBN.h"
+#import "SCHUserContentItem.h"
 
 // Constants
 NSString * const kSCHAppBookErrorDomain  = @"com.knfb.scholastic.AppBookErrorDomain";
@@ -68,6 +73,7 @@ NSString * const kSCHAppBookFilenameSeparator = @"-";
 
 @interface SCHAppBook()
 
+- (NSArray *)purchasedBooks;
 - (NSError *)errorWithCode:(NSInteger)code;
 - (BOOL)urlHasExpired:(NSString *)urlString;
 - (BOOL)urlStringIsBundleURL:(NSString *)urlString;
@@ -157,6 +163,19 @@ NSString * const kSCHAppBookFilenameSeparator = @"-";
 - (NSString *)FileName
 {
 	return self.ContentMetadataItem.FileName;
+}
+
+- (NSNumber *)AverageRating
+{
+    NSNumber *averageRating = nil;
+    SCHUserContentItem *userContentItem = self.ContentMetadataItem.UserContentItem;
+    
+    averageRating = userContentItem.AverageRating;
+    if (averageRating == nil) {
+        averageRating = [NSNumber numberWithInteger:0];
+    }
+            
+    return averageRating;
 }
 
 - (SCHBookIdentifier *)bookIdentifier
@@ -297,21 +316,23 @@ NSString * const kSCHAppBookFilenameSeparator = @"-";
 {
     NSString *ret = nil;
     
-    if ([self.XPSCategory caseInsensitiveCompare:kSCHAppBookYoungReader] == NSOrderedSame ||
-        [self.XPSCategory caseInsensitiveCompare:kSCHAppBookCategoryPictureBook] == NSOrderedSame ||
-        [self.XPSCategory caseInsensitiveCompare:kSCHAppBookCategoryEarlyReader] == NSOrderedSame ||        
-        [self.XPSCategory caseInsensitiveCompare:kSCHAppBookCategoryAdvancedReader] == NSOrderedSame ||                
-        [self.XPSCategory caseInsensitiveCompare:kSCHAppBookCategoryNonFictionEarly] == NSOrderedSame) {
-        ret = kSCHAppBookYoungReader;
-    } else if ([self.XPSCategory caseInsensitiveCompare:kSCHAppBookOldReader] == NSOrderedSame ||
-               [self.XPSCategory caseInsensitiveCompare:kSCHAppBookCategoryChapterBook] == NSOrderedSame ||
-               [self.XPSCategory caseInsensitiveCompare:kSCHAppBookCategoryNovelMiddleGrade] == NSOrderedSame ||
-               [self.XPSCategory caseInsensitiveCompare:kSCHAppBookCategoryNovelYoungAdult] == NSOrderedSame ||
-               [self.XPSCategory caseInsensitiveCompare:kSCHAppBookCategoryGraphicNovel] == NSOrderedSame ||
-               [self.XPSCategory caseInsensitiveCompare:kSCHAppBookCategoryReference] == NSOrderedSame ||
-               [self.XPSCategory caseInsensitiveCompare:kSCHAppBookCategoryNonFictionAdvanced] == NSOrderedSame) {
-        ret = kSCHAppBookOldReader;
-    }    
+    if (self.XPSCategory != nil) {
+        if ([self.XPSCategory caseInsensitiveCompare:kSCHAppBookYoungReader] == NSOrderedSame ||
+            [self.XPSCategory caseInsensitiveCompare:kSCHAppBookCategoryPictureBook] == NSOrderedSame ||
+            [self.XPSCategory caseInsensitiveCompare:kSCHAppBookCategoryEarlyReader] == NSOrderedSame ||        
+            [self.XPSCategory caseInsensitiveCompare:kSCHAppBookCategoryAdvancedReader] == NSOrderedSame ||                
+            [self.XPSCategory caseInsensitiveCompare:kSCHAppBookCategoryNonFictionEarly] == NSOrderedSame) {
+            ret = kSCHAppBookYoungReader;
+        } else if ([self.XPSCategory caseInsensitiveCompare:kSCHAppBookOldReader] == NSOrderedSame ||
+                   [self.XPSCategory caseInsensitiveCompare:kSCHAppBookCategoryChapterBook] == NSOrderedSame ||
+                   [self.XPSCategory caseInsensitiveCompare:kSCHAppBookCategoryNovelMiddleGrade] == NSOrderedSame ||
+                   [self.XPSCategory caseInsensitiveCompare:kSCHAppBookCategoryNovelYoungAdult] == NSOrderedSame ||
+                   [self.XPSCategory caseInsensitiveCompare:kSCHAppBookCategoryGraphicNovel] == NSOrderedSame ||
+                   [self.XPSCategory caseInsensitiveCompare:kSCHAppBookCategoryReference] == NSOrderedSame ||
+                   [self.XPSCategory caseInsensitiveCompare:kSCHAppBookCategoryNonFictionAdvanced] == NSOrderedSame) {
+            ret = kSCHAppBookOldReader;
+        }    
+    }
     
     return (ret);
 }
@@ -320,14 +341,16 @@ NSString * const kSCHAppBookFilenameSeparator = @"-";
 {
     BOOL ret = NO;
     
-    if ([self.XPSCategory caseInsensitiveCompare:kSCHAppBookOldReader] == NSOrderedSame ||
-        [self.XPSCategory caseInsensitiveCompare:kSCHAppBookCategoryChapterBook] == NSOrderedSame ||
-        [self.XPSCategory caseInsensitiveCompare:kSCHAppBookCategoryNovelMiddleGrade] == NSOrderedSame ||
-        [self.XPSCategory caseInsensitiveCompare:kSCHAppBookCategoryNovelYoungAdult] == NSOrderedSame ||
-        [self.XPSCategory caseInsensitiveCompare:kSCHAppBookCategoryReference] == NSOrderedSame ||
-        [self.XPSCategory caseInsensitiveCompare:kSCHAppBookCategoryNonFictionAdvanced] == NSOrderedSame) {
-        ret = YES;
-    }    
+    if (self.XPSCategory != nil) {
+        if ([self.XPSCategory caseInsensitiveCompare:kSCHAppBookOldReader] == NSOrderedSame ||
+            [self.XPSCategory caseInsensitiveCompare:kSCHAppBookCategoryChapterBook] == NSOrderedSame ||
+            [self.XPSCategory caseInsensitiveCompare:kSCHAppBookCategoryNovelMiddleGrade] == NSOrderedSame ||
+            [self.XPSCategory caseInsensitiveCompare:kSCHAppBookCategoryNovelYoungAdult] == NSOrderedSame ||
+            [self.XPSCategory caseInsensitiveCompare:kSCHAppBookCategoryReference] == NSOrderedSame ||
+            [self.XPSCategory caseInsensitiveCompare:kSCHAppBookCategoryNonFictionAdvanced] == NSOrderedSame) {
+            ret = YES;
+        }    
+    }
     
     return ret;
 }
@@ -336,13 +359,81 @@ NSString * const kSCHAppBookFilenameSeparator = @"-";
 {
     BOOL ret = NO;
     
-    if ([self.XPSCategory caseInsensitiveCompare:kSCHAppBookCategoryPictureBook] == NSOrderedSame) {
+    if (self.XPSCategory != nil && 
+        [self.XPSCategory caseInsensitiveCompare:kSCHAppBookCategoryPictureBook] == NSOrderedSame) {
         ret = YES;
     }    
     
     return ret;
 }
 
+- (SCHRecommendationISBN *)recommendationISBN
+{
+    SCHRecommendationISBN *ret = nil;
+    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+    
+    [fetchRequest setEntity:[NSEntityDescription entityForName:kSCHRecommendationISBN 
+                                        inManagedObjectContext:self.managedObjectContext]];	
+    [fetchRequest setPredicate:[NSPredicate predicateWithFormat:@"isbn = %@", self.bookIdentifier.isbn]];
+    
+    NSError *error = nil;
+    NSArray *books = [self.managedObjectContext executeFetchRequest:fetchRequest error:&error];	
+    if (books == nil) {
+        NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
+    } else if ([books count] > 0) {
+        ret = [books objectAtIndex:0];
+    }
+    
+    [fetchRequest release], fetchRequest = nil;        
+    
+    return ret;
+}
+
+// returns an array of isbns
+- (NSArray *)purchasedBooks
+{
+    NSArray *ret = nil;
+    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+    
+    [fetchRequest setEntity:[NSEntityDescription entityForName:kSCHUserContentItem 
+                                        inManagedObjectContext:self.managedObjectContext]];	
+    
+    NSError *error = nil;
+    NSArray *books = [self.managedObjectContext executeFetchRequest:fetchRequest error:&error];	
+    if (books == nil) {
+        NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
+    } else {
+        ret = [books valueForKeyPath:@"@unionOfObjects.ContentIdentifier"];
+    }
+    [fetchRequest release], fetchRequest = nil;        
+    
+    return ret;
+}
+
+- (NSArray *)recommendationDictionaries
+{
+    NSArray *ret = nil;
+    NSSet *allItems = [[self recommendationISBN] recommendationItems];
+    NSPredicate *readyRecommendations = [NSPredicate predicateWithFormat:@"appRecommendationItem.processingState = %d", kSCHAppRecommendationProcessingStateComplete];
+    NSArray *filteredItems = [[allItems filteredSetUsingPredicate:readyRecommendations]
+                              sortedArrayUsingDescriptors:[NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:@"order" ascending:YES]]];
+    
+    NSMutableArray *objectArray = [NSMutableArray arrayWithCapacity:[filteredItems count]];
+    NSArray *purchasedBooks = [self purchasedBooks];
+    
+    for(SCHRecommendationItem *item in filteredItems) {
+        NSDictionary *recommendationDictionary = [item.appRecommendationItem dictionary];
+        
+        if (recommendationDictionary && 
+            [purchasedBooks containsObject:[recommendationDictionary objectForKey:kSCHAppRecommendationISBN]] == NO) {
+            [objectArray addObject:recommendationDictionary];
+        }
+    }
+    
+    ret = [NSArray arrayWithArray:objectArray];
+    
+    return ret;
+}
 
 #pragma mark - Directory for Current Book
 

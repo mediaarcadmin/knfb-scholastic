@@ -9,8 +9,11 @@
 #import "SCHProfileViewCell.h"
 #import <QuartzCore/QuartzCore.h>
 
-static const CGFloat kProfileViewCellButtonWidth = 296.0f;
-static const CGFloat kProfileViewCellButtonEdge = 10.0f;
+static const CGFloat kProfileViewCellButtonWidthPad = 296.0f;
+static const CGFloat kProfileViewCellButtonWidthPhone1Up = 280.0f;
+static const CGFloat kProfileViewCellButtonWidthPhone2Up = 226.0f;
+static const CGFloat kProfileViewCellButtonEdgePad = 10.0f;
+static const CGFloat kProfileViewCellButtonEdgePhone = 5.0f;
 
 @interface SCHProfileViewCell ()
 
@@ -19,11 +22,9 @@ static const CGFloat kProfileViewCellButtonEdge = 10.0f;
 @property (nonatomic, retain) UIButton *rightCellButton;
 @property (nonatomic, retain) NSIndexPath *rightIndexPath;
 @property (nonatomic, assign) CGSize buttonImageSize;
-@property (nonatomic, assign) BOOL singleButtonMode;
+@property (nonatomic, assign) SCHProfileCellLayoutStyle cellStyle;
 
 - (UIButton *)addButtonWithBackground:(UIImage *)backgroundImage;
-- (void)setSingleButtonPosition;
-- (void)setDoubleButtonPosition;
 
 @end
 
@@ -35,7 +36,7 @@ static const CGFloat kProfileViewCellButtonEdge = 10.0f;
 @synthesize rightIndexPath;
 @synthesize buttonImageSize;
 @synthesize delegate;
-@synthesize singleButtonMode;
+@synthesize cellStyle;
 
 #pragma mark - Object lifecycle
 
@@ -94,64 +95,79 @@ static const CGFloat kProfileViewCellButtonEdge = 10.0f;
     return cellButton;
 }
 
-- (void)setLeftButtonTitle:(NSString *)leftButtonTitle 
-             leftIndexPath:(NSIndexPath *)aLeftIndexPath
-          rightButtonTitle:(NSString *)rightButtonTitle
-            rightIndexPath:(NSIndexPath *)aRightIndexPath
+- (void)setButtonTitles:(NSArray *)buttonTitles forIndexPaths:(NSArray *)indexPaths forCellStyle:(SCHProfileCellLayoutStyle)aStyle
 {
-    [self.leftCellButton setTitle:leftButtonTitle forState:UIControlStateNormal];
-    self.leftIndexPath = aLeftIndexPath;
-    [self.rightCellButton setTitle:rightButtonTitle forState:UIControlStateNormal];
-    self.rightIndexPath = aRightIndexPath;  
+    self.cellStyle = aStyle;
     
-    self.singleButtonMode = (rightButtonTitle == nil);
+    [self.leftCellButton setTitle:([buttonTitles count] > 0 ? [buttonTitles objectAtIndex:0] : nil) forState:UIControlStateNormal];
+    self.leftIndexPath = ([indexPaths count] > 0 ? [indexPaths objectAtIndex:0] : nil);
+    
+    [self.rightCellButton setTitle:([buttonTitles count] > 1 ? [buttonTitles objectAtIndex:1] : nil) forState:UIControlStateNormal];
+    self.rightIndexPath = ([indexPaths count] > 1 ? [indexPaths objectAtIndex:1] : nil);
 }
 
 - (void)layoutSubviews
 {
     [super layoutSubviews];
     
-    if (self.singleButtonMode == YES) {
-        [self setSingleButtonPosition];
+    CGFloat width;
+    CGRect contentRect = self.contentView.bounds;
+    CGSize imageSize = self.buttonImageSize;
+    
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+        width = kProfileViewCellButtonWidthPad;
     } else {
-        [self setDoubleButtonPosition];
-    }    
-}
-
-- (void)setSingleButtonPosition
-{
-    // the left button == center button
-    CGRect centerButtonRect = self.contentView.bounds;
+        switch (self.cellStyle) {
+            case kSCHProfileCellLayoutStyle1Up:          
+                width = kProfileViewCellButtonWidthPhone1Up;
+            break;
+            case kSCHProfileCellLayoutStyle2UpSideBySide: 
+            case kSCHProfileCellLayoutStyle2UpCentered:
+                width = kProfileViewCellButtonWidthPhone2Up;
+                break;
+        }
+    }
     
-    [self.leftCellButton setFrame:CGRectMake(CGRectGetMinX(centerButtonRect) + ceilf((CGRectGetWidth(centerButtonRect) - kProfileViewCellButtonWidth) / 2.0f), 
-                                             ceilf((CGRectGetHeight(centerButtonRect) - self.buttonImageSize.height) / 2.0f), 
-                                             kProfileViewCellButtonWidth, 
-                                             self.buttonImageSize.height)];
-    [self.leftCellButton setAutoresizingMask:UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin];        
-    
-    self.rightCellButton.hidden = YES;
-}
-
-- (void)setDoubleButtonPosition
-{
-    CGRect leftButtonRect = self.contentView.bounds;
-    leftButtonRect.size.width /= 2.0;
-    CGRect rightButtonRect = self.contentView.bounds;
-    rightButtonRect.size.width /= 2.0;
-    rightButtonRect.origin.x += rightButtonRect.size.width;    
-    
-    [self.leftCellButton setFrame:CGRectMake(CGRectGetMaxX(leftButtonRect) - kProfileViewCellButtonWidth - kProfileViewCellButtonEdge, 
-                                             ceilf((CGRectGetHeight(leftButtonRect) - self.buttonImageSize.height) / 2.0f), 
-                                             kProfileViewCellButtonWidth, 
-                                             self.buttonImageSize.height)];
-    [self.leftCellButton setAutoresizingMask:UIViewAutoresizingFlexibleLeftMargin];    
-    
-    self.rightCellButton.hidden = NO;    
-    [self.rightCellButton setFrame:CGRectMake(CGRectGetMinX(rightButtonRect) + kProfileViewCellButtonEdge,
-                                              ceilf((CGRectGetHeight(rightButtonRect) - self.buttonImageSize.height) / 2.0f), 
-                                              kProfileViewCellButtonWidth, 
-                                              self.buttonImageSize.height)];
-    [self.rightCellButton setAutoresizingMask:UIViewAutoresizingFlexibleRightMargin];        
+    switch (self.cellStyle) {
+        case kSCHProfileCellLayoutStyle1Up:
+        case kSCHProfileCellLayoutStyle2UpCentered: {
+            [self.leftCellButton setFrame:CGRectMake(CGRectGetMinX(contentRect) + ceilf((CGRectGetWidth(contentRect) - width) / 2.0f), 
+                                                     ceilf((CGRectGetHeight(contentRect) - imageSize.height) / 2.0f), 
+                                                     width, 
+                                                     imageSize.height)];
+            [self.leftCellButton setAutoresizingMask:UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin];        
+            
+            self.rightCellButton.hidden = YES;
+        } break;
+        case kSCHProfileCellLayoutStyle2UpSideBySide: {
+            CGRect leftButtonRect = contentRect;
+            leftButtonRect.size.width /= 2.0;
+            CGRect rightButtonRect = contentRect;
+            rightButtonRect.size.width /= 2.0;
+            rightButtonRect.origin.x += rightButtonRect.size.width;    
+            
+            CGFloat edge;
+            
+            if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+                edge = kProfileViewCellButtonEdgePad;
+            } else {
+                edge = kProfileViewCellButtonEdgePhone;
+            }
+            
+            [self.leftCellButton setFrame:CGRectMake(CGRectGetMaxX(leftButtonRect) - width - edge, 
+                                                     ceilf((CGRectGetHeight(leftButtonRect) - self.buttonImageSize.height) / 2.0f), 
+                                                     width, 
+                                                     self.buttonImageSize.height)];
+            [self.leftCellButton setAutoresizingMask:UIViewAutoresizingFlexibleLeftMargin];    
+            
+            self.rightCellButton.hidden = NO;    
+            [self.rightCellButton setFrame:CGRectMake(CGRectGetMinX(rightButtonRect) + edge,
+                                                      ceilf((CGRectGetHeight(rightButtonRect) - self.buttonImageSize.height) / 2.0f), 
+                                                      width, 
+                                                      self.buttonImageSize.height)];
+            [self.rightCellButton setAutoresizingMask:UIViewAutoresizingFlexibleRightMargin];
+        } break;
+    }
 }
 
 #pragma mark - Action methods

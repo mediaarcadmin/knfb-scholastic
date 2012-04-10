@@ -9,7 +9,7 @@
 #import "SCHBookCoverView.h"
 #import "SCHAppBook.h"
 #import "SCHBookManager.h"
-#import <ImageIO/ImageIO.h>
+#import "UIImage+ScholasticAdditions.h"
 #import <QuartzCore/QuartzCore.h>
 #import "AppDelegate_Shared.h"
 #import "SCHCoreDataHelper.h"
@@ -23,6 +23,10 @@
 - (void)resizeElementsForThumbSize: (CGSize) thumbSize;
 - (void)deferredRefreshBookCoverView;
 - (void)cachedImageFailureForBookIdentifier:(SCHBookIdentifier *)identifier;
+
+- (void)setFeatureTabHidden:(BOOL)newHidden;
+- (void)setErrorBadgeHidden:(BOOL)newHidden;
+- (void)setIsNewBadgeHidden:(BOOL)newHidden;
 
 @property (nonatomic, retain) UIImageView *coverImageView;
 @property (nonatomic, retain) NSString *currentImageName;
@@ -61,6 +65,7 @@
 @synthesize activitySpinner;
 @synthesize featureTab;
 @synthesize shouldWaitForExistingCachedThumbToLoad;
+@synthesize hideElementsForRatings;
 
 #pragma mark - Initialisation and dealloc
 
@@ -132,7 +137,7 @@
     // feature tab - only for iPad!
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
         self.featureTab = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"BookSampleTab"]] autorelease];
-        self.featureTab.hidden = YES;
+        [self setFeatureTabHidden:YES];
         self.featureTab.contentMode = UIViewContentModeRight;
         [self addSubview:self.featureTab];
     }
@@ -140,7 +145,7 @@
     // add the new graphic view
     self.isNewBadge = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"BookShelfNewIcon"]] autorelease];
     [self addSubview:self.isNewBadge];
-    self.isNewBadge.hidden = YES;
+    [self setIsNewBadgeHidden:YES];
     
     // placeholder
     self.showingPlaceholder = YES;
@@ -158,7 +163,7 @@
     // add the error badge - on top of everything else
     self.errorBadge = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"BookShelfErrorIcon"]] autorelease];
     [self addSubview:self.errorBadge];
-    self.errorBadge.hidden = YES;
+    [self setErrorBadgeHidden:YES];
 }
 
 #pragma mark - cell reuse and setters
@@ -208,8 +213,6 @@
                                                  selector:@selector(checkForImageUpdateFromNotification:)
                                                      name:@"SCHBookStateUpdate"
                                                    object:nil];
-        //self.coverImageView.image = nil;
-        //self.coverImageView.hidden = YES;
         self.currentImageName = nil;
         
         [self refreshBookCoverView];
@@ -230,6 +233,12 @@
     [self refreshBookCoverView];
 }
 
+- (void)setHideElementsForRatings:(BOOL)newHideElementsForRatings
+{
+    hideElementsForRatings = newHideElementsForRatings;
+    [self refreshBookCoverView];
+}
+
 - (void)setLoading:(BOOL)newLoading
 {
     loading = newLoading;
@@ -239,6 +248,34 @@
         [self.activitySpinner stopAnimating];
     }
 }
+
+- (void)setFeatureTabHidden:(BOOL)newHidden
+{
+    if (self.hideElementsForRatings) {
+        self.featureTab.hidden = YES;
+    } else {
+        self.featureTab.hidden = newHidden;
+    }
+}
+
+- (void)setErrorBadgeHidden:(BOOL)newHidden
+{
+    if (self.hideElementsForRatings) {
+        self.errorBadge.hidden = YES;
+    } else {
+        self.errorBadge.hidden = newHidden;
+    }
+}
+
+- (void)setIsNewBadgeHidden:(BOOL)newHidden
+{
+    if (self.hideElementsForRatings) {
+        self.isNewBadge.hidden = YES;
+    } else {
+        self.isNewBadge.hidden = newHidden;
+    }
+}
+
 
 #pragma mark - Drawing and positioning methods
 
@@ -395,13 +432,13 @@
         self.coverImageView.hidden = YES;
         self.currentImageName = nil;
         self.showingPlaceholder = YES;
-        self.featureTab.hidden = YES;
+        [self setFeatureTabHidden:YES];
         self.needsRefresh = NO;
         self.activitySpinner.center = [self.superview convertPoint:self.center toView:self];
         self.errorBadge.center = [self.superview convertPoint:self.center toView:self];
 
-        self.errorBadge.hidden = YES;
-        self.isNewBadge.hidden = YES;
+        [self setErrorBadgeHidden:YES];
+        [self setIsNewBadgeHidden:YES];
         self.progressView.hidden = YES;
         
         if (bookState >= SCHBookProcessingStateNoURLs) {
@@ -416,7 +453,7 @@
             case SCHBookProcessingStateError:
             case SCHBookProcessingStateBookVersionNotSupported:
                 [self.activitySpinner stopAnimating];
-                self.errorBadge.hidden = NO;
+                [self setErrorBadgeHidden:NO];
                 break;
             case SCHBookProcessingStateReadyToRead:
                 // Something has gone severely wrong, we have no book cover and yet the book is ready to read
@@ -551,7 +588,7 @@
             self.progressView.alpha = 1.0f;
             self.bookTintView.hidden = NO;
             self.progressView.hidden = NO;
-            self.errorBadge.hidden = YES;
+            [self setErrorBadgeHidden:YES];
             [self.progressView setProgress:[book currentDownloadedPercentage] * 0.8];            
             break;
         case SCHBookProcessingStateDownloadPaused:
@@ -559,7 +596,7 @@
             self.progressView.alpha = 0.0f;
             self.bookTintView.hidden = NO;
             self.progressView.hidden = NO;
-            self.errorBadge.hidden = YES;
+            [self setErrorBadgeHidden:YES];
             [self.progressView setProgress:[book currentDownloadedPercentage] * 0.8];            
             break;
         case SCHBookProcessingStateReadyForLicenseAcquisition:
@@ -569,14 +606,14 @@
             self.progressView.alpha = 1.0f;
             self.bookTintView.hidden = NO;
             self.progressView.hidden = NO;
-            self.errorBadge.hidden = YES;
+            [self setErrorBadgeHidden:YES];
             [self.progressView setProgress:0.8];            
             break;
         case SCHBookProcessingStateReadyToRead:
             self.progressView.alpha = 1.0f;
             self.bookTintView.hidden = YES;
             self.progressView.hidden = YES;
-            self.errorBadge.hidden = YES;
+            [self setErrorBadgeHidden:YES];
             break;
         case SCHBookProcessingStateError:
         case SCHBookProcessingStateDownloadFailed:
@@ -587,7 +624,7 @@
             self.progressView.alpha = 1.0f;
             self.bookTintView.hidden = NO;
             self.progressView.hidden = YES;
-            self.errorBadge.hidden = NO;
+            [self setErrorBadgeHidden:NO];
             break;
         case SCHBookProcessingStateReadyForSmartZoomPreParse:
         case SCHBookProcessingStateReadyForPagination:
@@ -595,16 +632,16 @@
             self.progressView.alpha = 1.0f;
             self.bookTintView.hidden = NO;
             self.progressView.hidden = YES;
-            self.errorBadge.hidden = YES;
+            [self setErrorBadgeHidden:YES];
             break;
     }
 
     
     
     if (self.isNewBook && self.errorBadge.hidden == YES) {
-        self.isNewBadge.hidden = NO;
+        [self setIsNewBadgeHidden:NO];
     } else {
-        self.isNewBadge.hidden = YES;
+        [self setIsNewBadgeHidden:YES];
     }
     
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad 
@@ -637,7 +674,7 @@
             case kSCHAppBookFeaturesNone:
             {
                 self.featureTab.image = nil;
-                self.featureTab.hidden = YES;
+                [self setFeatureTabHidden:YES];
                 doSizing = NO;
                 break;
             }   
@@ -682,7 +719,7 @@
             {
                 NSLog(@"Warning: unknown type for book features.");
                 self.featureTab.image = nil;
-                self.featureTab.hidden = YES;
+                [self setFeatureTabHidden:YES];
                 doSizing = NO;
                 break;
             }
@@ -708,8 +745,8 @@
                 frame.origin.y = self.frame.size.height - coverFrame.size.height - frame.size.height - overhang;
                 self.featureTab.frame = frame;
             }
-            
-            self.featureTab.hidden = NO;
+
+            [self setFeatureTabHidden:NO];
         }
         
     }
@@ -749,71 +786,12 @@
 
 - (UIImage *)createImageWithSourcePath:(NSString *)sourcePath destinationPath:(NSString *)destinationPath 
 {
-    UIImage *resizedImage = nil;
+    CGSize frameSizeWithInsets = CGSizeMake(self.frame.size.width - (self.leftRightInset * 2), 
+                                            self.frame.size.height - self.topInset);
     
-    // debug: make sure we're not running the image resizing on the main thread
-    NSAssert([NSThread currentThread] != [NSThread mainThread], @"Don't do image interpolation on the main thread!");
+    NSUInteger maxDimension = ceilf(MAX(frameSizeWithInsets.width, frameSizeWithInsets.height));
     
-    NSURL *sourceURL = [NSURL fileURLWithPath:sourcePath];
-    
-    CGImageSourceRef src = CGImageSourceCreateWithURL((CFURLRef)sourceURL, NULL);
-    
-    if (src != nil) {
-        // get the main image properties without loading it into memory
-        CGFloat width = 0.0f, height = 0.0f;
-        CFDictionaryRef imageProperties = CGImageSourceCopyPropertiesAtIndex(src, 0, NULL);
-        if (imageProperties != NULL) {
-            CFNumberRef widthNum  = CFDictionaryGetValue(imageProperties, kCGImagePropertyPixelWidth);
-            if (widthNum != NULL) {
-                CFNumberGetValue(widthNum, kCFNumberFloatType, &width);
-            }
-            
-            CFNumberRef heightNum = CFDictionaryGetValue(imageProperties, kCGImagePropertyPixelHeight);
-            if (heightNum != NULL) {
-                CFNumberGetValue(heightNum, kCFNumberFloatType, &height);
-            }
-            
-            CFRelease(imageProperties);
-        }
-        
-        CGSize frameSizeWithInsets = CGSizeMake(self.frame.size.width - (self.leftRightInset * 2), 
-                                                self.frame.size.height - self.topInset);
-        
-        CGFloat scale = 1.0f;
-        
-        if ([[UIScreen mainScreen] respondsToSelector:@selector(scale)]) {
-            scale = [[UIScreen mainScreen] scale];
-            frameSizeWithInsets = CGSizeApplyAffineTransform(frameSizeWithInsets, CGAffineTransformMakeScale(scale, scale));
-        }
-        
-        NSInteger maxDimension = frameSizeWithInsets.height;
-        
-        if (width >= height) {
-            maxDimension = frameSizeWithInsets.width;
-        }
-        
-        
-        NSDictionary* d = [NSDictionary dictionaryWithObjectsAndKeys:
-                           (id)kCFBooleanFalse, kCGImageSourceShouldAllowFloat,
-                           (id)kCFBooleanTrue, kCGImageSourceCreateThumbnailWithTransform,
-                           (id)kCFBooleanTrue, kCGImageSourceCreateThumbnailFromImageAlways,
-                           [NSNumber numberWithInt:maxDimension], kCGImageSourceThumbnailMaxPixelSize,
-                           nil];
-        
-        CGImageRef thumbnailRef = CGImageSourceCreateThumbnailAtIndex(src, 0, (CFDictionaryRef) d);
-        
-        resizedImage = [[UIImage alloc] initWithCGImage:thumbnailRef scale:scale orientation:UIImageOrientationUp];
-        
-        CGImageRelease(thumbnailRef);
-        CFRelease(src);
-        
-        if (resizedImage) {
-            NSData *pngData = UIImagePNGRepresentation(resizedImage);
-            [pngData writeToFile:destinationPath atomically:YES];
-        }
-    }
-    
-    return [resizedImage autorelease];
+    return [UIImage SCHCreateThumbWithSourcePath:sourcePath destinationPath:destinationPath maxDimension:maxDimension];
 }
 
 #pragma mark - Notification Methods

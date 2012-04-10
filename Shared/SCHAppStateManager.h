@@ -26,6 +26,9 @@
 - (BOOL)canSyncNotes;
 - (void)setCanSyncNotes:(BOOL)sync;
 
+- (BOOL)isCOPPACompliant;
+- (void)setCOPPACompliant:(BOOL)coppa;
+
 - (BOOL)canAuthenticate;
 - (void)setCanAuthenticate:(BOOL)auth;
 
@@ -41,5 +44,10 @@
 
 - (NSDate *)lastRemoteManifestUpdateDate;
 - (void)setLastRemoteManifestUpdateDate:(NSDate *)date;
+
+- (BOOL)lastScholasticAuthenticationFailed;
+- (void)setLastScholasticAuthenticationFailed:(BOOL)failure;
+
+- (NSString *)settingNamed:(NSString *)settingName;
 
 @end

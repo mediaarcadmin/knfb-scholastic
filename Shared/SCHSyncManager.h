@@ -21,8 +21,8 @@ extern NSString * const SCHSyncManagerDidCompleteNotification;
 }
 
 @property (nonatomic, retain) NSManagedObjectContext *managedObjectContext;
-@property (readonly, nonatomic) BOOL isSynchronizing;
-@property (readonly, nonatomic) BOOL isQueueEmpty;
+@property (nonatomic, readonly) BOOL isSynchronizing;
+@property (nonatomic, readonly) BOOL isQueueEmpty;
 @property (nonatomic, assign, getter=isSuspended) BOOL suspended;
 
 + (SCHSyncManager *)sharedSyncManager;
@@ -34,10 +34,12 @@ extern NSString * const SCHSyncManagerDidCompleteNotification;
 - (BOOL)havePerformedFirstSyncUpToBooks;
 
 - (void)firstSync:(BOOL)syncNow requireDeviceAuthentication:(BOOL)requireAuthentication;
+- (void)performFlushSaves;
 - (void)profileSync;
 - (void)bookshelfSync;
 - (void)openDocumentSync:(SCHUserContentItem *)userContentItem forProfile:(NSNumber *)profileID;
 - (void)closeDocumentSync:(SCHUserContentItem *)userContentItem forProfile:(NSNumber *)profileID;
+- (void)recommendationSync;
 
 // for populating Sample Store
 - (void)populateTestSampleStore;
