@@ -15,8 +15,8 @@
 NSString * const kSCHAppRecommendationItem = @"SCHAppRecommendationItem";
 NSString * const kSCHAppRecommendationItemIsbn = @"isbn";
 NSString * const kSCHAppRecommendationFilenameSeparator = @"-";
-NSUInteger const kSCHRecommendationThumbnailMaxDimensionPad = 160;
-NSUInteger const kSCHRecommendationThumbnailMaxDimensionPhone = 60;
+NSUInteger const kSCHRecommendationThumbnailMaxDimensionPad = 140;
+NSUInteger const kSCHRecommendationThumbnailMaxDimensionPhone = 134;
 
 NSString * const kSCHAppRecommendationTitle = @"Title";
 NSString * const kSCHAppRecommendationAuthor = @"Author";
