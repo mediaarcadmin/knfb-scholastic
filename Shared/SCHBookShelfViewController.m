@@ -570,6 +570,9 @@ typedef enum
     
     UINavigationController *navCon = [[UINavigationController alloc] initWithRootViewController:menuTableController];
     SCHCustomNavigationBar *customBar = [[SCHCustomNavigationBar alloc] init];
+
+    // NOTE: this is setting the custom toolbar using KVC 
+    // this is the same way the NIB does it, but in code
     [navCon setValue:customBar forKeyPath:@"navigationBar"];
     
     [customBar setTheme:kSCHThemeManagerNavigationBarImage];

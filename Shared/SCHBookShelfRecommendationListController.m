@@ -103,11 +103,9 @@
         [self.view.layer setBorderColor:[[SCHThemeManager sharedThemeManager] colorForModalSheetBorder].CGColor];
         [self.view.layer setBorderWidth:2.0f];
         
-        if ([self.closeButton respondsToSelector:@selector(setTintColor:)]) {
-            [self.closeButton setTintColor:[[SCHThemeManager sharedThemeManager] colorForModalSheetBorder]];
-            [self.bottomSegment setTintColor:[[SCHThemeManager sharedThemeManager] colorForModalSheetBorder]];
-        }
-        
+        [self.topToolbar setTintColor:[[SCHThemeManager sharedThemeManager] colorForModalSheetBorder]];
+        [self.bottomToolbar setTintColor:[[SCHThemeManager sharedThemeManager] colorForModalSheetBorder]];
+
         [self.topToolbar setBackgroundImage:[[SCHThemeManager sharedThemeManager] imageForNavigationBar:UIInterfaceOrientationPortrait]];
         [self.bottomToolbar setBackgroundImage:[[SCHThemeManager sharedThemeManager] imageForNavigationBar:UIInterfaceOrientationPortrait]];
         
