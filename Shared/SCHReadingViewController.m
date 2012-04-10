@@ -2312,14 +2312,15 @@ static const NSUInteger kReadingViewMaxRecommendationsCount = 4;
     [recommendationsContainer setFrame:self.readingView.bounds];
     
     UIView *container = recommendationsContainer.container;
-    CGFloat count = MIN([[self recommendationsDictionaries] count], kReadingViewMaxRecommendationsCount);
+    CGFloat count = MIN([[self recommendationsDictionaries] count], 4);
     CGFloat rowHeight = floorf((container.frame.size.height)/count);
-    
     for (int i = 0; i < count; i++) {
         NSDictionary *recommendationDictionary = [[self recommendationsDictionaries] objectAtIndex:i];
         
         SCHRecommendationListView *listView = [[[self.recommendationViewNib instantiateWithOwner:self options:nil] objectAtIndex:0] retain];
         listView.frame = CGRectMake(0, rowHeight * i, container.frame.size.width, rowHeight);
+        listView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin;
+
         listView.showsBottomRule = NO;
         listView.delegate = self;
         
