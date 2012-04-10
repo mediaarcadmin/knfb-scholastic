@@ -13,6 +13,9 @@ NSString * const kSCHUserDefaultsPerformedFirstSyncUpToBooks = @"PerformedFirstS
 NSString * const kSCHUserDefaultsSpaceSaverMode = @"SpaceSaverMode";
 NSString * const kSCHUserDefaultsSpaceSaverModeSetOffNotification = @"SpaceSaverModeSetOffNotification";
 NSString * const kSCHUserDefaultsWelcomeViewShowCount = @"SCHUserDefaultsWelcomeViewShowCount";
+// This matches the corresponding string in Blio, so as to avoid
+// having two different versions of the PlayReady lib.
+NSString * const kSCHUserDefaultsDeviceID = @"lastDevice";
 
 NSString * const kSCHAuthenticationManagerUserKey = @"AuthenticationManager.UserKey";   // AKA spsID
 NSString * const kSCHAuthenticationManagerDeviceKey = @"AuthenticationManager.DeviceKey";

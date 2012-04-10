@@ -349,6 +349,10 @@ static NSString* const binaryDevCertFilename = @"bdevcert.dat";
         }
     }
     
+    // Set the device id to be used by the DRM.
+    CFStringRef deviceUUID = CFUUIDCreateString(kCFAllocatorDefault, CFUUIDCreate(kCFAllocatorDefault));
+    [[NSUserDefaults standardUserDefaults] setObject:(id)deviceUUID forKey:kSCHUserDefaultsDeviceID]; 
+    
     // Expire the drmToken and the device Key so that it does a domain join again on next authentication
     [[SCHAuthenticationManager sharedAuthenticationManager] expireToken];
     [[SCHAuthenticationManager sharedAuthenticationManager] expireDeviceKey];

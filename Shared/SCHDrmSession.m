@@ -290,7 +290,7 @@ ErrorExit:
 							 [[UIDevice currentDevice] systemVersion]];
 	NSString* beginTags = @"<CustomData><AuthToken>";
 	NSString* middleTags = @"</AuthToken><devicePlatform>";
-	NSString* endTags = @"</devicePlatform></CustomData>";
+	NSString* endTags = @"</devicePlatform><targetLAVersion>1.2</targetLAVersion></CustomData>";
 	
 	DRM_CHAR* customData = (DRM_CHAR*)[[[[[[NSString stringWithString:beginTags] 
 										   stringByAppendingString:token] 
