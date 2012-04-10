@@ -221,6 +221,7 @@
             
             SCHRecommendationListView *recommendationView = [[[self.recommendationViewNib instantiateWithOwner:self options:nil] objectAtIndex:0] retain];
             recommendationView.frame = cell.frame;
+            cell.selectionStyle = UITableViewCellSelectionStyleNone;
 
             recommendationView.tag = 999;
             recommendationView.delegate = self;
