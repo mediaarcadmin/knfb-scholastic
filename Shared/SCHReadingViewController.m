@@ -3190,9 +3190,14 @@ static const NSUInteger kReadingViewMaxRecommendationsCount = 4;
 
 - (BOOL)recommendationsActive
 {
+    BOOL ret = NO;
     NSString *settingValue = [[SCHAppStateManager sharedAppStateManager] settingNamed:kSCHSettingItemRECOMMENDATIONS_ON];
     
-    return [settingValue boolValue];
+    if (settingValue != nil) {
+        ret = [settingValue boolValue];
+    }
+    
+    return ret;
 }
 
 - (NSArray *)recommendationsDictionaries
