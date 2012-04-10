@@ -554,12 +554,6 @@ typedef enum
 
 - (void)presentMenu
 {
-//    self.themePickerContainer.modalPresentationStyle = UIModalPresentationFormSheet;
-//    self.themePickerContainer.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
-//    self.themePickerContainer.title = @"";
-//    
-//	[self presentModalViewController:self.themePickerContainer animated:YES];		
-    
     NSLog(@"Presenting menu...");
     
     SCHBookShelfMenuController *menuTableController = [[SCHBookShelfMenuController alloc] initWithNibName:@"SCHBookShelfMenuController" 
@@ -586,14 +580,6 @@ typedef enum
     [self.menuPopover setContentSize:appFrame.size];
     [self.menuPopover setContentOffset:CGPointMake(0, 0)];
     [self.menuPopover setAutoresizingMask:UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight];
-    
-//    __block BITModalSheetController *weakPopoverController = self.menuPopover;
-//    __block SCHBookShelfViewController *weakSelf = self;
-    
-//    menuTableController.closeBlock = ^{
-//        [weakPopoverController dismissSheetAnimated:YES completion:nil];
-//        weakSelf.recommendationPopover = nil;
-//    };
     
     [self.menuPopover presentSheetInViewController:self animated:YES completion:nil];
     

@@ -13,6 +13,7 @@
 #import "SCHBookShelfRecommendationListController.h"
 #import "SCHSettingItem.h"
 #import "SCHAppStateManager.h"
+#import "SCHCustomNavigationBar.h"
 
 @interface SCHBookShelfMenuController ()
 
@@ -40,6 +41,7 @@
 
 - (void)dealloc
 {
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
     [managedObjectContext release], managedObjectContext = nil;
      
     [super dealloc];
@@ -65,9 +67,13 @@
         
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
         self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithTitle:@"Cancel" style:UIBarButtonItemStyleBordered target:self action:@selector(cancel)] autorelease];
-        
         self.view.backgroundColor = [UIColor clearColor];
     }
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(receivedRotate:) 
+                                                 name:UIDeviceOrientationDidChangeNotification
+                                               object:nil];
 }
 
 - (void)viewDidUnload
@@ -75,7 +81,59 @@
     [super viewDidUnload];
 }
 
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
+
+#pragma mark - Orientation methods
+
+- (void)receivedRotate:(NSNotification *)notification
+{
+    UIDeviceOrientation toDeviceOrientation = [[UIDevice currentDevice] orientation];
+    
+    if (UIDeviceOrientationIsValidInterfaceOrientation(toDeviceOrientation)) {
+        [self setupAssetsForOrientation:toDeviceOrientation];
+    }
+}
+
+- (void)setupAssetsForOrientation:(UIInterfaceOrientation)orientation
+{
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
+        if (UIInterfaceOrientationIsLandscape(orientation)) {
+            
+            CGRect barFrame = self.navigationController.navigationBar.frame;
+            if (barFrame.size.height == 44) {
+                barFrame.size.height = 32;
+                self.navigationController.navigationBar.frame = barFrame;
+                [self.navigationController.navigationBar sizeToFit];
+                
+                CGRect tableFrame = self.tableView.frame;
+                tableFrame.size.height += 12;
+                tableFrame.origin.y -= 12;
+                self.tableView.frame = tableFrame;
+
+                [(SCHCustomNavigationBar *)self.navigationController.navigationBar setBackgroundImage:
+                 [[SCHThemeManager sharedThemeManager] imageForNavigationBar:UIInterfaceOrientationLandscapeLeft]];
+            }
+            
+        } else {
+            
+            CGRect barFrame = self.navigationController.navigationBar.frame;
+            if (barFrame.size.height == 32) {
+                barFrame.size.height = 44;
+                self.navigationController.navigationBar.frame = barFrame;
+                [self.navigationController.navigationBar sizeToFit];
+                
+                CGRect tableFrame = self.tableView.frame;
+                tableFrame.size.height -= 12;
+                tableFrame.origin.y += 12;
+                self.tableView.frame = tableFrame;
+
+                [(SCHCustomNavigationBar *)self.navigationController.navigationBar setBackgroundImage:
+                 [[SCHThemeManager sharedThemeManager] imageForNavigationBar:UIInterfaceOrientationPortrait]];
+            }
+        }
+    }
+}
+
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation
 {
     return YES;
 }
