@@ -608,8 +608,13 @@ didSelectButtonAnimated:(BOOL)animated
 - (void)popToRootViewControllerAnimated:(BOOL)animated withCompletionHandler:(dispatch_block_t)completion
 {
     if (self.modalViewController) {
-        [self dismissModalViewControllerAnimated:animated];
-        [self.profileSetupDelegate popToRootViewControllerAnimated:NO withCompletionHandler:completion];
+        if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+            [self dismissModalViewControllerAnimated:animated];
+            [self.profileSetupDelegate popToRootViewControllerAnimated:NO withCompletionHandler:completion];
+        } else {
+            [self.profileSetupDelegate popToRootViewControllerAnimated:NO withCompletionHandler:completion];
+            [self dismissModalViewControllerAnimated:animated];
+        }
     } else {
         [self.profileSetupDelegate popToRootViewControllerAnimated:animated withCompletionHandler:completion];
     }

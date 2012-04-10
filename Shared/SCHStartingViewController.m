@@ -317,8 +317,13 @@ static const NSTimeInterval kSCHStartingViewControllerNonForcedAlertInterval = (
     }
     
     if (self.modalViewController) {
-        [self dismissModalViewControllerAnimated:animated];
-        [self.navigationController popToRootViewControllerAnimated:NO];
+        if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+            [self dismissModalViewControllerAnimated:animated];
+            [self.navigationController popToRootViewControllerAnimated:NO];
+        } else {
+            [self.navigationController popToRootViewControllerAnimated:NO];
+            [self dismissModalViewControllerAnimated:animated];
+        }
     } else {
         [self.navigationController popToRootViewControllerAnimated:animated];
     }
@@ -343,14 +348,13 @@ static const NSTimeInterval kSCHStartingViewControllerNonForcedAlertInterval = (
             break;
         }
     }
-    if (alreadyInUse == NO) {
-        [self.navigationController pushViewController:profile animated:animated];
-    }
     
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
-        if (self.modalViewController) {
-            [self dismissModalViewControllerAnimated:YES];
-        }
+        animated = NO;
+    }
+                                                                 
+    if (alreadyInUse == NO) {
+        [self.navigationController pushViewController:profile animated:animated];
     }
 }
 
@@ -652,9 +656,10 @@ static const NSTimeInterval kSCHStartingViewControllerNonForcedAlertInterval = (
             [self.loginPopoverController presentSheetInViewController:self animated:YES completion:nil];
         } else {
             [self.modalNavigationController setViewControllers:[NSArray arrayWithObject:login]];
-             if (!self.modalViewController) {
-                 [self presentModalViewController:self.modalNavigationController animated:NO];
+             if (self.modalViewController) {
+                 [self dismissModalViewControllerAnimated:NO];
              }
+            [self presentModalViewController:self.modalNavigationController animated:NO];
             [login release];
         }
     };
