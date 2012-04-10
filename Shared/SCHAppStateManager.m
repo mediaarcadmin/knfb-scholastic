@@ -393,7 +393,7 @@
         } else if ([fetchedObjects count] > 0) {
             SCHSettingItem *item = [fetchedObjects objectAtIndex:0];
             
-            ret = [[item.SettingValue copy] autorelease];
+            ret = [item.SettingValue copy];
         }    
         [fetchRequest release], fetchedObjects = nil;
     };
@@ -404,7 +404,7 @@
         dispatch_async(dispatch_get_main_queue(), accessBlock);
     }
     
-    return ret;    
+    return [ret autorelease];    
 }
 
 #pragma mark - NSManagedObjectContext Changed Notification

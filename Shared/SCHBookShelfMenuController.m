@@ -16,6 +16,8 @@
 
 @interface SCHBookShelfMenuController ()
 
+@property (nonatomic, retain) NSNumber *cachedRecommendationsActive;
+
 - (BOOL)recommendationsActive;
 
 @end
@@ -25,6 +27,7 @@
 @synthesize delegate;
 @synthesize userIsAuthenticated;
 @synthesize managedObjectContext;
+@synthesize cachedRecommendationsActive;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil 
  managedObjectContext:(NSManagedObjectContext *)setManagedObjectContext
@@ -41,7 +44,8 @@
 - (void)dealloc
 {
     [managedObjectContext release], managedObjectContext = nil;
-     
+    [cachedRecommendationsActive release], cachedRecommendationsActive = nil;
+    
     [super dealloc];
 }
 
@@ -95,9 +99,15 @@
 
 - (BOOL)recommendationsActive
 {
-    NSString *settingValue = [[SCHAppStateManager sharedAppStateManager] settingNamed:kSCHSettingItemRECOMMENDATIONS_ON];
+    if (self.cachedRecommendationsActive == nil) {
+        NSString *settingValue = [[SCHAppStateManager sharedAppStateManager] settingNamed:kSCHSettingItemRECOMMENDATIONS_ON];
+        
+        if (settingValue != nil) {
+            self.cachedRecommendationsActive = [NSNumber numberWithBool:[settingValue boolValue]];
+        }
+    }
     
-    return [settingValue boolValue];
+    return [self.cachedRecommendationsActive boolValue];
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section

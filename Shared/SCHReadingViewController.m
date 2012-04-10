@@ -134,6 +134,8 @@ static const NSUInteger kReadingViewMaxRecommendationsCount = 4;
 @property (nonatomic, retain) NSArray *wishListDictionaries;
 @property (nonatomic, retain) NSMutableArray *modifiedWishListDictionaries;
 
+@property (nonatomic, retain) NSNumber *cachedRecommendationsActive;
+
 - (void)updateNotesCounter;
 - (id)initFailureWithErrorCode:(NSInteger)code error:(NSError **)error;
 - (NSError *)errorWithCode:(NSInteger)code;
@@ -263,6 +265,7 @@ static const NSUInteger kReadingViewMaxRecommendationsCount = 4;
 @synthesize recommendationsDictionaries;
 @synthesize wishListDictionaries;
 @synthesize modifiedWishListDictionaries;
+@synthesize cachedRecommendationsActive;
 
 #pragma mark - Dealloc and View Teardown
 
@@ -299,6 +302,8 @@ static const NSUInteger kReadingViewMaxRecommendationsCount = 4;
     [recommendationsDictionaries release], recommendationsDictionaries = nil;
     [wishListDictionaries release], wishListDictionaries = nil;
     [modifiedWishListDictionaries release], modifiedWishListDictionaries = nil;
+    
+    [cachedRecommendationsActive release], cachedRecommendationsActive = nil;
     
     // Ideally the readingView would be release it viewDidUnload but it contains 
     // logic that this view controller uses while it is potentially off-screen (e.g. when a story interaction is being shown)
@@ -3191,9 +3196,15 @@ static const NSUInteger kReadingViewMaxRecommendationsCount = 4;
 
 - (BOOL)recommendationsActive
 {
-    NSString *settingValue = [[SCHAppStateManager sharedAppStateManager] settingNamed:kSCHSettingItemRECOMMENDATIONS_ON];
+    if (self.cachedRecommendationsActive == nil) {
+        NSString *settingValue = [[SCHAppStateManager sharedAppStateManager] settingNamed:kSCHSettingItemRECOMMENDATIONS_ON];
+        
+        if (settingValue != nil) {
+            self.cachedRecommendationsActive = [NSNumber numberWithBool:[settingValue boolValue]];
+        }
+    }
     
-    return [settingValue boolValue];
+    return [self.cachedRecommendationsActive boolValue];
 }
 
 - (NSArray *)recommendationsDictionaries
@@ -3202,6 +3213,7 @@ static const NSUInteger kReadingViewMaxRecommendationsCount = 4;
         SCHBookManager *bookManager = [SCHBookManager sharedBookManager];
         SCHAppBook *book = [bookManager bookWithIdentifier:self.bookIdentifier inManagedObjectContext:bookManager.mainThreadManagedObjectContext];    
         recommendationsDictionaries = [[book recommendationDictionaries] copy];
+        
     }
     
     return recommendationsDictionaries;
