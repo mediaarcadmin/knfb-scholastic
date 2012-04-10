@@ -39,7 +39,11 @@
     self.editable = NO;    
     self.imageViews = [NSMutableArray array];
     self.maxRating = 5;
-    self.midMargin = 5;
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+        self.midMargin = 5;
+    } else {
+        self.midMargin = 2;
+    }
     self.leftMargin = 0;
     self.minImageSize = CGSizeMake(5, 5);
     self.delegate = nil;    
@@ -94,7 +98,7 @@
     for (int i = 0; i < self.imageViews.count; ++i) {
         
         UIImageView *imageView = [self.imageViews objectAtIndex:i];
-        CGRect imageFrame = CGRectMake(self.leftMargin + i*(self.midMargin+imageWidth), 0, imageWidth, imageHeight);
+        CGRect imageFrame = CGRectIntegral(CGRectMake(self.leftMargin + i*(self.midMargin+imageWidth), 0, imageWidth, imageHeight));
         imageView.frame = imageFrame;
         
     }    
@@ -114,7 +118,7 @@
     // Add new image views
     for(int i = 0; i < maxRating; ++i) {
         UIImageView *imageView = [[UIImageView alloc] init];
-        imageView.contentMode = UIViewContentModeCenter;
+        imageView.contentMode = UIViewContentModeScaleAspectFit;
         [self.imageViews addObject:imageView];
         [self addSubview:imageView];
         [imageView release], imageView = nil;

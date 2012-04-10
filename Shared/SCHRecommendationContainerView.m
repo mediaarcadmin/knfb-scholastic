@@ -7,28 +7,36 @@
 //
 
 #import "SCHRecommendationContainerView.h"
+#import "UILabel+ScholasticAdditions.h"
 
 @implementation SCHRecommendationContainerView
 
 @synthesize container;
 @synthesize box;
-@synthesize title;
+@synthesize heading;
 
 - (void)awakeFromNib
 {
-    self.title.layer.cornerRadius = 10;
-    self.title.layer.borderWidth = 1;
-    self.title.layer.borderColor = [UIColor lightGrayColor].CGColor;
+    self.heading.layer.cornerRadius = 10;
+    self.heading.layer.borderWidth = 1;
+    self.heading.layer.borderColor = [UIColor lightGrayColor].CGColor;
     
     self.box.layer.borderWidth = 1;
     self.box.layer.borderColor = [UIColor lightGrayColor].CGColor;
+}
+
+- (void)layoutSubviews
+{
+    [super layoutSubviews];
+    
+    [self.heading adjustPointSizeToFitWidthWithPadding:2.0f];
 }
 
 - (void)dealloc
 {
     [container release], container = nil;
     [box release], box = nil;
-    [title release], title = nil;
+    [heading release], heading = nil;
     [super dealloc];
 }
 

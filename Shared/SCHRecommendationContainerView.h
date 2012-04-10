@@ -12,6 +12,6 @@
 
 @property (nonatomic, retain) IBOutlet UIView *container;
 @property (nonatomic, retain) IBOutlet UIView *box;
-@property (nonatomic, retain) IBOutlet UILabel *title;
+@property (nonatomic, retain) IBOutlet UILabel *heading;
 
 @end

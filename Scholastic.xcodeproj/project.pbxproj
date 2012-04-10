@@ -2805,6 +2805,10 @@
 		C9B7EAC413DEF29300BD5CB7 /* admin-updates-available@2x~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = C9B7EAC113DEF29200BD5CB7 /* admin-updates-available@2x~iphone.png */; };
 		C9B7EAC613DEF29300BD5CB7 /* admin-updates-available~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = C9B7EAC213DEF29300BD5CB7 /* admin-updates-available~iphone.png */; };
 		C9B7EAC813DEF29300BD5CB7 /* admin-updates-available~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = C9B7EAC313DEF29300BD5CB7 /* admin-updates-available~ipad.png */; };
+		C9BF1211153424E6009FE0B9 /* UILabel+ScholasticAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = C9BF1210153424E6009FE0B9 /* UILabel+ScholasticAdditions.m */; };
+		C9BF1212153424E6009FE0B9 /* UILabel+ScholasticAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = C9BF1210153424E6009FE0B9 /* UILabel+ScholasticAdditions.m */; };
+		C9BF1213153424E6009FE0B9 /* UILabel+ScholasticAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = C9BF1210153424E6009FE0B9 /* UILabel+ScholasticAdditions.m */; };
+		C9BF1214153424E6009FE0B9 /* UILabel+ScholasticAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = C9BF1210153424E6009FE0B9 /* UILabel+ScholasticAdditions.m */; };
 		C9C1D2D113B0AF3500441623 /* SCHBookShelfTableViewCell_iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = F86666A013AF8C370050979F /* SCHBookShelfTableViewCell_iPad.xib */; };
 		C9C1D2D313B0AF5B00441623 /* storyinteraction-bg-older-notitle~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = 5215349B13B08AB200131E37 /* storyinteraction-bg-older-notitle~iphone.png */; };
 		C9C1D2D413B0AF5B00441623 /* storyinteraction-bg-older-notitle@2x~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = 5215349C13B08AB200131E37 /* storyinteraction-bg-older-notitle@2x~iphone.png */; };
@@ -5585,6 +5589,8 @@
 		C9B7EAC113DEF29200BD5CB7 /* admin-updates-available@2x~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "admin-updates-available@2x~iphone.png"; path = "Resources/UIAssets/admin-updates-available@2x~iphone.png"; sourceTree = "<group>"; };
 		C9B7EAC213DEF29300BD5CB7 /* admin-updates-available~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "admin-updates-available~iphone.png"; path = "Resources/UIAssets/admin-updates-available~iphone.png"; sourceTree = "<group>"; };
 		C9B7EAC313DEF29300BD5CB7 /* admin-updates-available~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "admin-updates-available~ipad.png"; path = "Resources/UIAssets/admin-updates-available~ipad.png"; sourceTree = "<group>"; };
+		C9BF120F153424E6009FE0B9 /* UILabel+ScholasticAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "UILabel+ScholasticAdditions.h"; path = "Shared/UILabel+ScholasticAdditions.h"; sourceTree = "<group>"; };
+		C9BF1210153424E6009FE0B9 /* UILabel+ScholasticAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "UILabel+ScholasticAdditions.m"; path = "Shared/UILabel+ScholasticAdditions.m"; sourceTree = "<group>"; };
 		C9C1D29D13B0AD4B00441623 /* storyinteraction-bg-younger-notitle~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "storyinteraction-bg-younger-notitle~ipad.png"; sourceTree = "<group>"; };
 		C9C1D29E13B0AD4C00441623 /* storyinteraction-bg-older-notitle~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "storyinteraction-bg-older-notitle~ipad.png"; sourceTree = "<group>"; };
 		C9C27CB813AA536A00332229 /* Arial Black.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Arial Black.ttf"; sourceTree = "<group>"; };
@@ -7529,6 +7535,8 @@
 				525079411486FADC00712853 /* NSDate+ServerDate.m */,
 				C959076A1497D08000E024AF /* NSString+URLEncoding.h */,
 				C959076B1497D08000E024AF /* NSString+URLEncoding.m */,
+				C9BF120F153424E6009FE0B9 /* UILabel+ScholasticAdditions.h */,
+				C9BF1210153424E6009FE0B9 /* UILabel+ScholasticAdditions.m */,
 			);
 			name = Extensions;
 			sourceTree = "<group>";
@@ -12092,6 +12100,7 @@
 				52D343E4152481FF0066E73E /* SCHRating.m in Sources */,
 				F85E4990152B458900A9AF25 /* SCHBookshelfPopoverController.m in Sources */,
 				C9EB4995152EDCF500DA227A /* SCHRecommendationContainerView.m in Sources */,
+				C9BF1211153424E6009FE0B9 /* UILabel+ScholasticAdditions.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -12522,6 +12531,7 @@
 				52D343E5152481FF0066E73E /* SCHRating.m in Sources */,
 				F85E4991152B458900A9AF25 /* SCHBookshelfPopoverController.m in Sources */,
 				C9EB4996152EDCF500DA227A /* SCHRecommendationContainerView.m in Sources */,
+				C9BF1212153424E6009FE0B9 /* UILabel+ScholasticAdditions.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -12886,6 +12896,7 @@
 				52D343E6152481FF0066E73E /* SCHRating.m in Sources */,
 				F85E4992152B458900A9AF25 /* SCHBookshelfPopoverController.m in Sources */,
 				C9EB4997152EDCF500DA227A /* SCHRecommendationContainerView.m in Sources */,
+				C9BF1213153424E6009FE0B9 /* UILabel+ScholasticAdditions.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -13250,6 +13261,7 @@
 				52D343E7152481FF0066E73E /* SCHRating.m in Sources */,
 				F85E4993152B458900A9AF25 /* SCHBookshelfPopoverController.m in Sources */,
 				C9EB4998152EDCF500DA227A /* SCHRecommendationContainerView.m in Sources */,
+				C9BF1214153424E6009FE0B9 /* UILabel+ScholasticAdditions.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -9,6 +9,7 @@
 #import "SCHRecommendationListView.h"
 #import "SCHAppRecommendationItem.h"
 #import <QuartzCore/QuartzCore.h>
+#import "UILabel+ScholasticAdditions.h"
 
 #define RIGHT_ELEMENTS_PADDING 5.0
 #define TOP_BOTTOM_PADDING 18.0
@@ -200,6 +201,14 @@
     }
     
     return initialSelectedStateImage;
+}
+
+- (void)layoutSubviews
+{
+    [super layoutSubviews];
+    
+    [self.titleLabel adjustPointSizeToFitWidthWithPadding:0];
+    [self.subtitleLabel adjustPointSizeToFitWidthWithPadding:0];
 }
 
 @end
