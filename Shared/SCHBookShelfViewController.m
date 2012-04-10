@@ -577,10 +577,12 @@ typedef enum
     
     
     // present from a modal sheet
-    
     self.menuPopover = [[[BITModalSheetController alloc] initWithContentViewController:navCon] autorelease];
-    [self.menuPopover setContentSize:CGSizeMake(320, 460)];
+    
+    CGRect appFrame = [self.view convertRect:[[UIScreen mainScreen] applicationFrame] fromView:self.view.window];
+    [self.menuPopover setContentSize:appFrame.size];
     [self.menuPopover setContentOffset:CGPointMake(0, 0)];
+    [self.menuPopover setAutoresizingMask:UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight];
     
 //    __block BITModalSheetController *weakPopoverController = self.menuPopover;
 //    __block SCHBookShelfViewController *weakSelf = self;
