@@ -117,11 +117,14 @@
         if (self.currentRecommendation != nil) {
             NSMutableArray *items = [self.currentCategory objectForKey:kSCHRecommendationWebServiceItems];
             if (items != nil) {
-                [items addObject:self.currentRecommendation];
-                [self.currentRecommendation setValue:[NSNumber numberWithInteger:[items indexOfObject:self.currentRecommendation]]
-                                              forKey:kSCHRecommendationWebServiceOrder];
-                self.currentRecommendation = nil;
+                NSString *format = [self.currentRecommendation objectForKey:kSCHRecommendationWebServiceFormat];
+                if (format != nil && [format caseInsensitiveCompare:@"eBook"] == NSOrderedSame) {
+                    [items addObject:self.currentRecommendation];
+                    [self.currentRecommendation setValue:[NSNumber numberWithInteger:[items indexOfObject:self.currentRecommendation]]
+                                                  forKey:kSCHRecommendationWebServiceOrder];
+                }
             }
+            self.currentRecommendation = nil;
         }
     } else if ([elementName isEqualToString:kSCHRecommendationWebServiceName]) {	
         [self.currentRecommendation setValue:[NSString stringWithString:self.currentString] forKey:kSCHRecommendationWebServiceName];
