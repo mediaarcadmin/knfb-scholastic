@@ -32,6 +32,7 @@
 + (BOOL)urlHasExpired:(NSString *)urlString;
 
 @property (readwrite, retain) NSOperationQueue *processingQueue;
+@property (readwrite, retain) NSOperationQueue *downloadQueue;
 @property (nonatomic, assign) UIBackgroundTaskIdentifier backgroundTask;
 @property (readwrite, retain) NSMutableSet *currentlyProcessingIsbns;
 
@@ -43,6 +44,7 @@ static SCHRecommendationManager *sharedManager = nil;
 
 @synthesize managedObjectContext;
 @synthesize processingQueue;
+@synthesize downloadQueue;
 @synthesize backgroundTask;
 @synthesize currentlyProcessingIsbns;
 
@@ -52,6 +54,7 @@ static SCHRecommendationManager *sharedManager = nil;
     
     [managedObjectContext release], managedObjectContext = nil;
     [processingQueue release], processingQueue = nil;
+    [downloadQueue release], downloadQueue = nil;
     [currentlyProcessingIsbns release], currentlyProcessingIsbns = nil;
     [super dealloc];
 }
@@ -76,14 +79,20 @@ static SCHRecommendationManager *sharedManager = nil;
 {
     self.processingQueue = [[[NSOperationQueue alloc] init] autorelease];
     [self.processingQueue setMaxConcurrentOperationCount:2];
+    
+    self.downloadQueue = [[[NSOperationQueue alloc] init] autorelease];
+    [self.downloadQueue setMaxConcurrentOperationCount:2];
 }
 
 - (void)cancelAllOperations
 {
     @synchronized(self) {
         [self.processingQueue cancelAllOperations];    
-        
         self.processingQueue = nil;
+        
+        [self.downloadQueue cancelAllOperations];
+        self.downloadQueue = nil;
+        
         [self createProcessingQueues];
         
         [self.currentlyProcessingIsbns removeAllObjects];
@@ -93,13 +102,16 @@ static SCHRecommendationManager *sharedManager = nil;
 - (void)cancelAllOperationsForIsbn:(NSString *)isbn
 {
     @synchronized(self) {
-        for (SCHRecommendationOperation *op in [self.processingQueue operations]) {
+        
+        NSArray *allOps = [[self.processingQueue operations] arrayByAddingObjectsFromArray:[self.downloadQueue operations]];
+        
+        for (SCHRecommendationOperation *op in allOps) {
             if ([op.isbn isEqual:isbn] == YES) {
                 [op cancel];
                 break;
             }
         }
-               
+
         [self.currentlyProcessingIsbns removeObject:isbn];
     }
 }
@@ -237,7 +249,7 @@ static SCHRecommendationManager *sharedManager = nil;
                     [self redispatchIsbn:isbn];
                 }];
                 
-                    [self.processingQueue addOperation:downloadOp];
+                    [self.downloadQueue addOperation:downloadOp];
                 [downloadOp release];                
                 return;
             }
@@ -355,7 +367,7 @@ static SCHRecommendationManager *sharedManager = nil;
             return;
         }
         
-		if (([self.processingQueue operationCount] > 0)) {
+		if (([self.processingQueue operationCount] > 0) || ([self.downloadQueue operationCount] > 0)) {
 			NSLog(@"Recommendations processing needs more time - going into the background.");
 			
             self.backgroundTask = [[UIApplication sharedApplication] beginBackgroundTaskWithExpirationHandler:^{
@@ -372,7 +384,8 @@ static SCHRecommendationManager *sharedManager = nil;
 			dispatch_async(taskcompletion, ^{
 				NSLog(@"Emptying operation queues...");
                 if(self.backgroundTask != UIBackgroundTaskInvalid) {
-                    [self.processingQueue waitUntilAllOperationsAreFinished];    
+                    [self.processingQueue waitUntilAllOperationsAreFinished];
+                    [self.downloadQueue waitUntilAllOperationsAreFinished];
 					NSLog(@"operation queues are finished!");
                     if(self.backgroundTask != UIBackgroundTaskInvalid) {
                         [[UIApplication sharedApplication] endBackgroundTask:self.backgroundTask];
