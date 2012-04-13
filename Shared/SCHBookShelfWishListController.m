@@ -103,9 +103,9 @@
         [self.topToolbar setBackgroundImage:[[SCHThemeManager sharedThemeManager] imageForNavigationBar:UIInterfaceOrientationPortrait]];
         [self.bottomToolbar setBackgroundImage:[[SCHThemeManager sharedThemeManager] imageForNavigationBar:UIInterfaceOrientationPortrait]];
         
-        self.titleLabel.text = @"Your Wish List";
+        self.titleLabel.text = NSLocalizedString(@"Your Wish List", @"Your Wish List");
     } else {
-        self.title = @"Wish List";
+        self.title = NSLocalizedString(@"Wish List", @"Wish List");
         self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithTitle:@"Done" style:UIBarButtonItemStyleBordered target:self action:@selector(close:)] autorelease];
     }
 }
@@ -272,7 +272,7 @@
             cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier] autorelease];
             cell.backgroundColor = [UIColor colorWithRed:0.863 green:0.875 blue:0.902 alpha:1.0];
             UILabel *label = [[UILabel alloc] initWithFrame:cell.contentView.frame];
-            label.text = @"No Wish List Items.";
+            label.text = NSLocalizedString(@"No Wish List Items.", @"No Wish List Items.");
             label.font = [UIFont fontWithName:@"Arial-BoldMT" size:17.0f];
             label.textColor = [UIColor colorWithRed:0.004 green:0.192 blue:0.373 alpha:1.0];
             label.textAlignment = UITextAlignmentCenter;
