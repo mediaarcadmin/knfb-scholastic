@@ -103,7 +103,7 @@
         [self.topToolbar setBackgroundImage:[[SCHThemeManager sharedThemeManager] imageForNavigationBar:UIInterfaceOrientationPortrait]];
         [self.bottomToolbar setBackgroundImage:[[SCHThemeManager sharedThemeManager] imageForNavigationBar:UIInterfaceOrientationPortrait]];
         
-        self.titleLabel.text = NSLocalizedString(@"Your Wish List", @"Your Wish List");
+        self.titleLabel.text = NSLocalizedString(@"Here are eBooks on your wish list", @"Here are eBooks on your wish list");
     } else {
         self.title = NSLocalizedString(@"Wish List", @"Wish List");
         self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithTitle:@"Done" style:UIBarButtonItemStyleBordered target:self action:@selector(close:)] autorelease];

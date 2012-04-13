@@ -109,7 +109,7 @@
         [self.topToolbar setBackgroundImage:[[SCHThemeManager sharedThemeManager] imageForNavigationBar:UIInterfaceOrientationPortrait]];
         [self.bottomToolbar setBackgroundImage:[[SCHThemeManager sharedThemeManager] imageForNavigationBar:UIInterfaceOrientationPortrait]];
         
-        self.titleLabel.text = NSLocalizedString(@"Kids' Top Rated eBooks", @"Kids' Top Rated eBooks");
+        self.titleLabel.text = NSLocalizedString(@"Here are kids' top-rated eBooks", @"Here are kids' top-rated eBooks");
         
         if (self.lastAuthenticationFailed) {
             self.bottomSegment.enabled = NO;
