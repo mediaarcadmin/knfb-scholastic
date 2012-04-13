@@ -279,6 +279,8 @@
             label.backgroundColor = [UIColor clearColor];
             label.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
             
+            cell.selectionStyle = UITableViewCellSelectionStyleNone;
+            
             [cell.contentView addSubview:label];
             [label release];
         }
