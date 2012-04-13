@@ -46,9 +46,6 @@
             [book setValue:book.ContentMetadataItem.CoverURL forKey:kSCHAppBookCoverURL];
             [book setValue:book.ContentMetadataItem.ContentURL forKey:kSCHAppBookFileURL];                    
         }];
-    }
-
-    if (validContentMetadataURLs) {
         [self setProcessingState:SCHBookProcessingStateNoCoverImage];
         [self setIsProcessing:NO];                
         [self endOperation];
@@ -101,9 +98,9 @@
             
             // check here for invalidity
             if (!urlsValid) {
-                NSLog(@"Warning: URLs from the server were already invalid for %@!", bookIdentifier);
-                [self setProcessingState:SCHBookProcessingStateURLsNotPopulated];
+                [self setCoverURLExpiredState];
             } else {
+                [self resetCoverURLExpiredState];
                 NSLog(@"Successful URL retrieval for %@!", bookIdentifier);
                 [self setProcessingState:SCHBookProcessingStateNoCoverImage];
             }

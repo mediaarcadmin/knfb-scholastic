@@ -69,8 +69,7 @@
     BOOL coverURLIsValid = [SCHRecommendationManager urlIsValid:coverURL];
     
     if (!coverURLIsValid) {
-        NSLog(@"URL timed out requesting new URL for ISBN: %@", self.isbn);
-        [self setProcessingState:kSCHAppRecommendationProcessingStateNoMetadata];
+        [self setCoverURLExpiredState];
         [self endOperation];
         return;            
     }

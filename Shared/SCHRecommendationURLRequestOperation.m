@@ -87,9 +87,9 @@
             } 
             
             if (!coverUrlIsValid) {
-                NSLog(@"Warning: URLs from the server were already invalid for %@!", completedIsbn);
-                [self setProcessingState:kSCHAppRecommendationProcessingStateURLsNotPopulated];
+                [self setCoverURLExpiredState];
             } else {
+                [self resetCoverURLExpiredState];
                 NSLog(@"Successful URL retrieval for %@!", completedIsbn);
                 [self performWithRecommendationAndSave:^(SCHAppRecommendationItem *item) {
                     [item setCoverURL:[userInfo valueForKey:kSCHLibreAccessWebServiceCoverURL]];

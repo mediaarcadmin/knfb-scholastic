@@ -190,5 +190,28 @@
     }];
 }
 
+- (void)setCoverURLExpiredState
+{
+    [self performWithBookAndSave:^(SCHAppBook *book) {
+        NSInteger newURLExpiredCount = [book.urlExpiredCount integerValue] + 1;
+        
+        NSLog(@"Warning: URLs from the server are invalid for %@![%i]", book.ContentIdentifier, newURLExpiredCount);
+        
+        if (newURLExpiredCount >= 3) {
+            book.State = [NSNumber numberWithInt:SCHBookProcessingStateURLsNotPopulated];            
+            book.urlExpiredCount = [NSNumber numberWithInteger:0];
+        } else {
+            book.State = [NSNumber numberWithInt:SCHBookProcessingStateNoURLs];
+            book.urlExpiredCount = [NSNumber numberWithInteger:newURLExpiredCount];
+        }
+    }];
+}
+
+- (void)resetCoverURLExpiredState
+{
+    [self performWithBookAndSave:^(SCHAppBook *book) {
+            book.urlExpiredCount = [NSNumber numberWithInteger:0];
+    }];
+}
 
 @end
