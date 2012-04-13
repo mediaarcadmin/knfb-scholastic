@@ -147,4 +147,28 @@
     }];
 }
 
+- (void)setCoverURLExpiredState
+{
+    [self performWithRecommendationAndSave:^(SCHAppRecommendationItem *item) {
+        NSInteger newCoverURLExpiredCount = [item.coverURLExpiredCount integerValue] + 1;
+        
+        NSLog(@"Warning: URLs from the server were already invalid for %@![%i]", item.ContentIdentifier, newCoverURLExpiredCount);
+        
+        if (newCoverURLExpiredCount >= 3) {
+            item.state = [NSNumber numberWithInt:kSCHAppRecommendationProcessingStateURLsNotPopulated];            
+            item.coverURLExpiredCount = [NSNumber numberWithInteger:0];
+        } else {
+            item.state = [NSNumber numberWithInt:kSCHAppRecommendationProcessingStateNoMetadata];
+            item.coverURLExpiredCount = [NSNumber numberWithInteger:newCoverURLExpiredCount];
+        }
+    }];
+}
+
+- (void)resetCoverURLExpiredState
+{
+    [self performWithRecommendationAndSave:^(SCHAppRecommendationItem *item) {
+            item.coverURLExpiredCount = [NSNumber numberWithInteger:0];
+    }];    
+}
+
 @end

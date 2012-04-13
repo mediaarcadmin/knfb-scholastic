@@ -43,4 +43,7 @@
 - (void)setIsProcessing:(BOOL)isProcessing;
 - (void)setNotCancelledCompletionBlock:(void (^)(void))block;
 
+- (void)setCoverURLExpiredState;
+- (void)resetCoverURLExpiredState;
+
 @end

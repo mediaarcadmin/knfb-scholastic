@@ -89,11 +89,10 @@
         }];
         
         if (bookFileURLIsValid == NO) {
-            NSLog(@"URL timed out requesting new URL for ISBN: %@", self.identifier);    
             [self performWithBookAndSave:^(SCHAppBook *book) {  
                 book.ForceProcess = [NSNumber numberWithBool:YES];
             }];
-            [self setProcessingState:SCHBookProcessingStateNoURLs];
+            [self setCoverURLExpiredState];
             [self setIsProcessing:NO];                                
             [self endOperation];
             return;            
@@ -147,8 +146,7 @@
         }];
 		
         if (bookCoverURLIsValid == NO) {
-            NSLog(@"URL timed out requesting new URL for ISBN: %@", self.identifier);
-            [self setProcessingState:SCHBookProcessingStateNoURLs];
+            [self setCoverURLExpiredState];
             [self setIsProcessing:NO];                                
             [self endOperation];
             return;            

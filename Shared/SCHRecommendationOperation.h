@@ -28,4 +28,7 @@
 - (void)performWithRecommendationAndSave:(void (^)(SCHAppRecommendationItem *))block;
 - (void)setProcessingState:(SCHAppRecommendationProcessingState)state;
 
+- (void)setCoverURLExpiredState;
+- (void)resetCoverURLExpiredState;
+
 @end
