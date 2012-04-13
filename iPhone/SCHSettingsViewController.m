@@ -526,6 +526,7 @@ extern NSString * const kSCHUserDefaultsSpaceSaverModeSetOffNotification;
             });
         } else {
             [self registerForSyncNotifications];
+            [[SCHSyncManager sharedSyncManager] flushSyncQueue];
             [[SCHSyncManager sharedSyncManager] firstSync:YES requireDeviceAuthentication:YES];
         }
         

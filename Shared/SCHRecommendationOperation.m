@@ -147,6 +147,11 @@
     }];
 }
 
+// Used to track if a cover url expires. We repeat the url request 3 times and 
+// then set an error state if it is still expired. The state is stored in the 
+// app recommendation item entity and is shared between the url request and 
+// download cover operations to avoid any endless url request scenarios between
+// them.
 - (void)setCoverURLExpiredState
 {
     [self performWithRecommendationAndSave:^(SCHAppRecommendationItem *item) {

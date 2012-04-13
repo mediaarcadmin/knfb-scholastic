@@ -282,9 +282,14 @@ static NSUInteger const kSCHSyncManagerMaximumFailureRetries = 3;
 
 #pragma mark - Sync methods
 
+- (void)flushSyncQueue
+{
+    [self.queue removeAllObjects];    
+}
+
 - (void)clear
 {
-    [self.queue removeAllObjects];
+    [self flushSyncQueue];
     
 	[self.profileSyncComponent clear];	
 	[self.contentSyncComponent clear];	
@@ -431,7 +436,7 @@ static NSUInteger const kSCHSyncManagerMaximumFailureRetries = 3;
         
         NSLog(@"Performing Flush Saves");
         
-        [self.queue removeAllObjects];
+        [self flushSyncQueue];
         
         [self addAllProfilesToAnnotationSync];
         if ([self.annotationSyncComponent haveProfiles] == YES) {
