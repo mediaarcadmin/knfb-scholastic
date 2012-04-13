@@ -318,13 +318,11 @@ static NSInteger const kSCHBookShelfEdgePadding = 12;
 
 - (void)switchToWishListFromRecommendationListController:(SCHBookShelfRecommendationListController *)recommendationController
 {
-    NSLog(@"Switch to the wish list.");
     [self showWishListAnimated:NO];
 }
 
 - (void)switchToRecommendationsFromWishListController:(SCHBookShelfWishListController *)wishListController
 {
-    NSLog(@"Switch to the recommendations.");
     [self showRecommendationsListAnimated:NO];
 }
 
@@ -337,7 +335,6 @@ static NSInteger const kSCHBookShelfEdgePadding = 12;
     }
     
     if (self.recommendationPopover) {
-        NSLog(@"Dismissing wish list.");
         [self.recommendationPopover dismissSheetAnimated:NO completion:^{}];
     }
 
@@ -377,7 +374,6 @@ static NSInteger const kSCHBookShelfEdgePadding = 12;
     }
     
     if (self.recommendationPopover) {
-        NSLog(@"Dismissing recommendations.");
         [self.recommendationPopover dismissSheetAnimated:NO completion:^{}];
     }
     
