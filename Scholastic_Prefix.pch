@@ -59,8 +59,8 @@
 // Web Parent Tools server
 #define WEB_PARENT_TOOLS_SERVER_PAD_UAT @"https://ebooks2uat.scholastic.com/wpt/auth"
 #define WEB_PARENT_TOOLS_SERVER_PAD_PRODUCTION @"https://ebooks2.scholastic.com/wpt/auth"
-#define WEB_PARENT_TOOLS_SERVER_PHONE_UAT @"https://demomobile.usablenet.com/mt/myaccountqa.scholastic.com/com.scholastic.myaccount.MyAccount/MyAccount.html"
-#define WEB_PARENT_TOOLS_SERVER_PHONE_PRODUCTION @"https://demomobile.usablenet.com/mt/myaccountqa.scholastic.com/com.scholastic.myaccount.MyAccount/MyAccount.html"
+#define WEB_PARENT_TOOLS_SERVER_PHONE_UAT @"https://demomobile.usablenet.com/mt/ebooks2uat.scholastic.com/wpt/auth"
+#define WEB_PARENT_TOOLS_SERVER_PHONE_PRODUCTION @"https://demomobile.usablenet.com/mt/ebooks2uat.scholastic.com/wpt/auth"
 
 // Dictionary manifest location
 #define UPDATE_MANIFEST_TEST @"http://bits.blioreader.com/partners/Scholastic/SLInstall/QAStandard/UpdateManifest.xml"
