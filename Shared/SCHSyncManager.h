@@ -31,6 +31,7 @@ extern NSString * const SCHSyncManagerDidCompleteNotification;
 - (void)stopHeartbeat;
 
 - (void)clear;
+- (void)flushSyncQueue;
 - (BOOL)havePerformedFirstSyncUpToBooks;
 
 - (void)firstSync:(BOOL)syncNow requireDeviceAuthentication:(BOOL)requireAuthentication;

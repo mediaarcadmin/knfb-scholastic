@@ -190,6 +190,10 @@
     }];
 }
 
+// Used to track if a url expires. We repeat the url request 3 times and then
+// set an error state if it is still expired. The state is stored in the app 
+// book entity and is shared between the url request and download book 
+// operations to avoid any endless url request scenarios between them.
 - (void)setCoverURLExpiredState
 {
     [self performWithBookAndSave:^(SCHAppBook *book) {
