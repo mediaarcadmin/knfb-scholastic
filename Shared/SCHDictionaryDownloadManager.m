@@ -691,6 +691,15 @@ static SCHDictionaryDownloadManager *sharedManager = nil;
         case SCHDictionaryProcessingStateReady:
         {
             NSLog(@"Dictionary is ready.");
+
+            // for versions prior to 1.4, set the dictionary as readable
+            // this prevents the issue seen in ticket #1353 where the dictionary
+            // is usable, or partially processed, but was failing to work due to 
+            // this being missing
+            NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+            [defaults setObject:[NSNumber numberWithBool:YES] forKey:@"dictionaryIsCurrentlyReadable"];
+            [defaults synchronize];
+            
             break;
         }
 		default:

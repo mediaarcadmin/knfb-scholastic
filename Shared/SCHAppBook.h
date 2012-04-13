@@ -110,6 +110,7 @@ typedef enum {
 @property (nonatomic, retain) NSNumber *ForceProcess;
 @property (nonatomic, retain) NSNumber * BookCoverExists;
 @property (nonatomic, retain) NSNumber * XPSExists;
+@property (nonatomic, retain) NSNumber * urlExpiredCount;
 
 // convenience variables from the SCHContentMetadataItem
 @property (nonatomic, readonly) NSString * ContentIdentifier;
