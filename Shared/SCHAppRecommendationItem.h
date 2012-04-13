@@ -49,6 +49,7 @@ typedef enum {
 @property (nonatomic, retain) NSSet *recommendationItems;
 @property (nonatomic, retain) NSNumber * state;
 @property (nonatomic, retain) NSSet *wishListItems;
+@property (nonatomic, retain) NSNumber * coverURLExpiredCount;
 
 - (SCHAppRecommendationProcessingState)processingState;
 - (void)setProcessingState:(SCHAppRecommendationProcessingState)processingState;

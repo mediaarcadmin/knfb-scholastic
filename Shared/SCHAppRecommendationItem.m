@@ -42,6 +42,7 @@ NSString * const kSCHAppRecommendationCoverImage = @"CoverImage";
 @dynamic recommendationItems;
 @dynamic state;
 @dynamic wishListItems;
+@dynamic coverURLExpiredCount;
 
 @synthesize cachedRecommendationDirectory;
 

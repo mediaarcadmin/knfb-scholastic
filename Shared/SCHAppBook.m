@@ -108,6 +108,7 @@ NSString * const kSCHAppBookFilenameSeparator = @"-";
 @dynamic ForceProcess;
 @dynamic BookCoverExists;
 @dynamic XPSExists;
+@dynamic coverURLExpiredCount;
 
 @synthesize diskVersionOutOfDate;
 @synthesize cachedBookDirectory;
@@ -257,7 +258,7 @@ NSString * const kSCHAppBookFilenameSeparator = @"-";
         if (expires) {
             NSDate *expiresDate = [NSDate dateWithTimeIntervalSince1970:[expires integerValue]];
             
-            if ([expiresDate earlierDate:[[NSDate serverDate] dateByAddingTimeInterval:60]] == expiresDate) {
+            if ([expiresDate earlierDate:[NSDate serverDate]] == expiresDate) {
                 ret = YES;
             }
         }
