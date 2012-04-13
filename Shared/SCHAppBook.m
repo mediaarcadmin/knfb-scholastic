@@ -108,6 +108,7 @@ NSString * const kSCHAppBookFilenameSeparator = @"-";
 @dynamic ForceProcess;
 @dynamic BookCoverExists;
 @dynamic XPSExists;
+@dynamic coverURLExpiredCount;
 
 @synthesize diskVersionOutOfDate;
 @synthesize cachedBookDirectory;
