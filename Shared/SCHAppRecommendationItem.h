@@ -18,6 +18,7 @@
 // Constants
 extern NSString * const kSCHAppRecommendationItem;
 extern NSString * const kSCHAppRecommendationItemIsbn;
+extern NSString * const kSCHAppRecommendationItemErrorCode;
 extern NSUInteger const kSCHRecommendationThumbnailMaxDimensionPad;
 extern NSUInteger const kSCHRecommendationThumbnailMaxDimensionPhone;
 
@@ -28,15 +29,17 @@ extern NSString * const kSCHAppRecommendationAverageRating;
 extern NSString * const kSCHAppRecommendationCoverImage;
 
 typedef enum {
+    kSCHAppRecommendationProcessingStateInvalidRecommendation   = -6,
     kSCHAppRecommendationProcessingStateURLsNotPopulated        = -5,
     kSCHAppRecommendationProcessingStateDownloadFailed          = -4,
     kSCHAppRecommendationProcessingStateCachedCoverError        = -3,
     kSCHAppRecommendationProcessingStateThumbnailError          = -2,
-	kSCHAppRecommendationProcessingStateError                   = -1,
-	kSCHAppRecommendationProcessingStateNoMetadata              = 0,
-    kSCHAppRecommendationProcessingStateNoCover                 = 1,
-    kSCHAppRecommendationProcessingStateNoThumbnails            = 2,
-	kSCHAppRecommendationProcessingStateComplete                = 3
+	kSCHAppRecommendationProcessingStateUnspecifiedError        = -1,
+	kSCHAppRecommendationProcessingStateCheckValidity           = 0,
+	kSCHAppRecommendationProcessingStateNoMetadata              = 1,
+    kSCHAppRecommendationProcessingStateNoCover                 = 2,
+    kSCHAppRecommendationProcessingStateNoThumbnails            = 3,
+	kSCHAppRecommendationProcessingStateComplete                = 4
 } SCHAppRecommendationProcessingState;
 
 @interface SCHAppRecommendationItem : NSManagedObject <SCHISBNItem>

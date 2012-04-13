@@ -46,7 +46,7 @@
         [self setProcessingState:kSCHAppRecommendationProcessingStateNoCover];
         [self endOperation];
     } else if (!self.isbn) {
-        [self setProcessingState:kSCHAppRecommendationProcessingStateError];
+        [self setProcessingState:kSCHAppRecommendationProcessingStateUnspecifiedError];
         [self endOperation];
     } else {
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(urlSuccess:) name:kSCHURLManagerSuccess object:nil];
@@ -120,8 +120,14 @@
 	NSString *completedIsbn = [userInfo objectForKey:kSCHAppRecommendationItemIsbn];
 	
     if ([completedIsbn isEqualToString:self.isbn]) {
-        NSLog(@"Warning: recommendation URL request failed %@", userInfo);
-        [self setProcessingState:kSCHAppRecommendationProcessingStateURLsNotPopulated];
+        NSInteger errorCode = [[userInfo objectForKey:kSCHAppRecommendationItemErrorCode] intValue];
+
+        if (errorCode == 75) {
+            [self setProcessingState:kSCHAppRecommendationProcessingStateInvalidRecommendation];
+        } else {
+            NSLog(@"Warning: recommendation URL request failed %@", userInfo);
+            [self setProcessingState:kSCHAppRecommendationProcessingStateURLsNotPopulated];
+        }
         
         [[NSNotificationCenter defaultCenter] removeObserver:self];
         [self endOperation];        

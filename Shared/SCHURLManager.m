@@ -220,7 +220,7 @@ static NSUInteger const kSCHURLManagerMaxConnections = 6;
                 
                 if ([self.libreAccessWebService listContentMetadata:[NSArray arrayWithObject:isbnItem] 
                                                         includeURLs:YES coverURLOnly:[isbnItem coverURLOnly]] == YES) {
-                    NSLog(@"Requesting URLs for %@", isbnItem);
+                    NSLog(@"Requesting URLs for %@", [isbnItem ContentIdentifier]);
                     
                     requestCount++;
                     [removeFromTable addObject:isbnItem];
@@ -300,7 +300,7 @@ static NSUInteger const kSCHURLManagerMaxConnections = 6;
 
         [[NSNotificationCenter defaultCenter] postNotificationName:kSCHURLManagerFailure 
                                                             object:self 
-                                                          userInfo:[NSDictionary dictionaryWithObjects:[NSArray arrayWithObjects:bookIdentifier, bookIdentifier.isbn, nil]                                                                                                  forKeys:[NSArray arrayWithObjects:kSCHBookIdentifierBookIdentifier, kSCHAppRecommendationItemIsbn, nil]]];	
+                                                          userInfo:[NSDictionary dictionaryWithObjects:[NSArray arrayWithObjects:bookIdentifier, bookIdentifier.isbn, [NSNumber numberWithInt:[error code]], nil]                                                                                                  forKeys:[NSArray arrayWithObjects:kSCHBookIdentifierBookIdentifier, kSCHAppRecommendationItemIsbn, kSCHAppRecommendationItemErrorCode, nil]]];	
 	}
     
 	if (requestCount < 1) {

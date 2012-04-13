@@ -76,8 +76,8 @@
     }
     
     if (self.localPath == nil || coverURL == nil || [coverURL isEqualToString:@""]) {
-        NSLog(@"WARNING: problem with SCHAppBook (ISBN: %@ localPath: %@ coverURL: %@", self.isbn, self.localPath, coverURL);
-        [self setProcessingState:kSCHAppRecommendationProcessingStateError];
+        NSLog(@"WARNING: problem with SCHAppRecommendation (ISBN: %@ localPath: %@ coverURL: %@", self.isbn, self.localPath, coverURL);
+        [self setProcessingState:kSCHAppRecommendationProcessingStateUnspecifiedError];
         [self endOperation];
         return;
     }

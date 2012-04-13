@@ -14,6 +14,7 @@
 // Constants
 NSString * const kSCHAppRecommendationItem = @"SCHAppRecommendationItem";
 NSString * const kSCHAppRecommendationItemIsbn = @"isbn";
+NSString * const kSCHAppRecommendationItemErrorCode = @"errorCode";
 NSString * const kSCHAppRecommendationFilenameSeparator = @"-";
 NSUInteger const kSCHRecommendationThumbnailMaxDimensionPad = 140;
 NSUInteger const kSCHRecommendationThumbnailMaxDimensionPhone = 134;
@@ -193,17 +194,20 @@ NSString * const kSCHAppRecommendationCoverImage = @"CoverImage";
 {
     BOOL isReady = NO;
     
+    // N.B. This is a pretty loose definition of isReady. Provided we don't have an unexpected error and have got back a non-error response from LD that the book is in their system
+    // we allow the recommendation to be show, even if there was a problem getting the cover URLs, the cover or generating the thumbnails
     switch ([self processingState]) {
-        case kSCHAppRecommendationProcessingStateURLsNotPopulated:
-        case kSCHAppRecommendationProcessingStateCachedCoverError:    
-        case kSCHAppRecommendationProcessingStateThumbnailError:      
-        case kSCHAppRecommendationProcessingStateError:               
-        case kSCHAppRecommendationProcessingStateDownloadFailed:     
-        case kSCHAppRecommendationProcessingStateNoMetadata:          
-        case kSCHAppRecommendationProcessingStateNoCover:     
+        case kSCHAppRecommendationProcessingStateUnspecifiedError:               
+        case kSCHAppRecommendationProcessingStateCheckValidity:  
+        case kSCHAppRecommendationProcessingStateInvalidRecommendation:
             isReady = NO;
             break;
-        
+        case kSCHAppRecommendationProcessingStateThumbnailError:      
+        case kSCHAppRecommendationProcessingStateCachedCoverError:    
+        case kSCHAppRecommendationProcessingStateURLsNotPopulated:
+        case kSCHAppRecommendationProcessingStateDownloadFailed:
+        case kSCHAppRecommendationProcessingStateNoMetadata:          
+        case kSCHAppRecommendationProcessingStateNoCover:
         case kSCHAppRecommendationProcessingStateNoThumbnails:
         case kSCHAppRecommendationProcessingStateComplete:
             isReady = YES;
@@ -240,7 +244,16 @@ NSString * const kSCHAppRecommendationCoverImage = @"CoverImage";
     if ([self Title]) {
         [recommendationDict setValue:[self Title] 
                               forKey:kSCHAppRecommendationTitle];
+    } else {
+        for (SCHRecommendationItem *item in [self recommendationItems]) {
+            if ([[item name] length] > 0) {
+                [recommendationDict setValue:[item name] 
+                                      forKey:kSCHAppRecommendationTitle];
+                break;
+            }
+        }
     }
+    
     if ([self ContentIdentifier]) {
         [recommendationDict setValue:[self ContentIdentifier] 
                               forKey:kSCHAppRecommendationISBN];
@@ -249,7 +262,16 @@ NSString * const kSCHAppRecommendationCoverImage = @"CoverImage";
     if ([self Author]) {
         [recommendationDict setValue:[self Author]
                               forKey:kSCHAppRecommendationAuthor];
+    } else {
+        for (SCHRecommendationItem *item in [self recommendationItems]) {
+            if ([[item author] length] > 0) {
+                [recommendationDict setValue:[item author] 
+                                      forKey:kSCHAppRecommendationAuthor];
+                break;
+            }
+        }
     }
+    
     if ([self AverageRating]) {
         [recommendationDict setValue:[self AverageRating] 
                               forKey:kSCHAppRecommendationAverageRating];

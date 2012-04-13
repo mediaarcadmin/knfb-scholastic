@@ -148,10 +148,12 @@ static SCHRecommendationManager *sharedManager = nil;
                 case kSCHAppRecommendationProcessingStateURLsNotPopulated:
                 case kSCHAppRecommendationProcessingStateCachedCoverError:    
                 case kSCHAppRecommendationProcessingStateThumbnailError:      
-                case kSCHAppRecommendationProcessingStateError:               
+                case kSCHAppRecommendationProcessingStateUnspecifiedError:    
+                case kSCHAppRecommendationProcessingStateInvalidRecommendation: 
                 case kSCHAppRecommendationProcessingStateComplete:      
                     needsProcessing = NO;
                     break;
+                case kSCHAppRecommendationProcessingStateCheckValidity:
                 case kSCHAppRecommendationProcessingStateDownloadFailed:     
                 case kSCHAppRecommendationProcessingStateNoMetadata:          
                 case kSCHAppRecommendationProcessingStateNoCover:
@@ -203,6 +205,7 @@ static SCHRecommendationManager *sharedManager = nil;
     
     if (item != nil) {
         switch ([item processingState]) {
+            case kSCHAppRecommendationProcessingStateCheckValidity:
             case kSCHAppRecommendationProcessingStateNoMetadata:
             { 
                 SCHRecommendationURLRequestOperation *urlOp = [[SCHRecommendationURLRequestOperation alloc] init];
@@ -254,10 +257,11 @@ static SCHRecommendationManager *sharedManager = nil;
             }
             case kSCHAppRecommendationProcessingStateCachedCoverError:  
             case kSCHAppRecommendationProcessingStateThumbnailError:      
-            case kSCHAppRecommendationProcessingStateError:               
+            case kSCHAppRecommendationProcessingStateUnspecifiedError:               
             case kSCHAppRecommendationProcessingStateComplete: 
             case kSCHAppRecommendationProcessingStateDownloadFailed:  
             case kSCHAppRecommendationProcessingStateURLsNotPopulated:
+            case kSCHAppRecommendationProcessingStateInvalidRecommendation:
             {
                 // Do nothing until the sync kicks off again or the user initiates an action
                 // Prefer explicitly listing these state to just having a default because it catches
