@@ -21,7 +21,6 @@
         <attribute name="BookCoverURL" optional="YES" attributeType="String"/>
         <attribute name="BookCoverWidth" optional="YES" attributeType="Integer 16" defaultValueString="0"/>
         <attribute name="BookFileURL" optional="YES" attributeType="String"/>
-        <attribute name="coverURLExpiredCount" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
         <attribute name="DRMVersion" optional="YES" attributeType="String"/>
         <attribute name="ForceProcess" optional="YES" attributeType="Boolean" defaultValueString="NO"/>
         <attribute name="HasAudio" optional="YES" attributeType="Boolean"/>
@@ -35,6 +34,7 @@
         <attribute name="State" optional="YES" attributeType="Integer 16" defaultValueString="0"/>
         <attribute name="TextFlowPageRanges" optional="YES" attributeType="Transformable"/>
         <attribute name="TTSPermitted" optional="YES" attributeType="Boolean" defaultValueString="YES"/>
+        <attribute name="urlExpiredCount" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
         <attribute name="XPSAuthor" optional="YES" attributeType="String"/>
         <attribute name="XPSCategory" optional="YES" attributeType="String"/>
         <attribute name="XPSExists" optional="YES" attributeType="Boolean" defaultValueString="NO"/>
