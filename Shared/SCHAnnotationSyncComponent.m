@@ -149,6 +149,7 @@ NSString * const SCHAnnotationSyncComponentProfileIDs = @"SCHAnnotationSyncCompo
 	[annotations release], annotations = nil;
     [savedAnnotations release], savedAnnotations = nil;
 	[backgroundThreadManagedObjectContext release], backgroundThreadManagedObjectContext = nil;
+    [lastSyncSaveCalled release], lastSyncSaveCalled = nil;
     
 	[super dealloc];
 }

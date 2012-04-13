@@ -73,6 +73,7 @@ NSString * const SCHWishListSyncComponentDidFailNotification = @"SCHWishListSync
 {
     wishListWebService.delegate = nil;
 	[wishListWebService release], wishListWebService = nil;
+    [lastSyncSaveCalled release], lastSyncSaveCalled = nil;
     
 	[super dealloc];
 }
