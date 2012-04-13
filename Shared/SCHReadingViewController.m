@@ -146,9 +146,8 @@ static const NSUInteger kReadingViewMaxRecommendationsCount = 4;
 - (void)setToolbarVisibility:(BOOL)visibility animated:(BOOL)animated;
 - (void)startFadeTimer;
 - (void)cancelInitialTimer;
-- (void)adjustScrubberInfoViewHeightForImageSize:(CGSize)imageSize;
 - (void)updateScrubberValue;
-- (void)updateScrubberLabel;
+- (void)updateScrubberHUD;
 - (void)setupAssetsForOrientation:(UIInterfaceOrientation)orientation;
 - (void)pauseAudioPlayback;
 
@@ -2360,15 +2359,39 @@ static const NSUInteger kReadingViewMaxRecommendationsCount = 4;
 
 #pragma mark - Scrubber
 
-- (void)adjustScrubberInfoViewHeightForImageSize:(CGSize)imageSize
+- (void)updateScrubberHUD
 {
-    NSLog(@"adjustScrubberInfoViewHeightForImageSize:%@", NSStringFromCGSize(imageSize));
+    BOOL showRecommendationsLabel = NO;
+    
+    if (self.currentPageIndex != NSUIntegerMax) {
+        if (([self shouldShowBookRecommendationsForReadingView:self.readingView]) &&
+             (self.currentPageIndex == [self generatedPageCountForReadingView:self.readingView] - 1)) {
+            showRecommendationsLabel = YES;
+            [self.pageLabel setText:NSLocalizedString(@"Recommendations", nil)];
+        } else {
+            [self.pageLabel setText:[self.readingView pageLabelForPageAtIndex:self.currentPageIndex showChapters:self.shouldShowChapters]];
+        }
+    } else {
+        [self.pageLabel setText:nil];
+    }  
+    
+    if ((self.layoutType == SCHReadingViewLayoutTypeFixed) &&
+        (showRecommendationsLabel == NO)) {
+        
+            UIImage *scrubImage = [self.xpsProvider thumbnailForPage:self.currentPageIndex + 1];
+            self.scrubberThumbImage.image = scrubImage;
+    } else {
+        self.scrubberThumbImage.image = nil;
+    }
+    
+    CGSize imageSize = self.scrubberThumbImage.image.size;
+    
     CGRect scrubFrame = self.scrubberInfoView.frame;
     scrubFrame.origin.x = self.view.bounds.size.width / 2 - (scrubFrame.size.width / 2);
     
     CGRect statusFrame = [[UIApplication sharedApplication] statusBarFrame];
     float statusBarHeight = MIN(statusFrame.size.height, statusFrame.size.width);
-        
+    
     // if we're in fixed view, and there's an image size set, then check if we're showing an image
     if ((self.layoutType == SCHReadingViewLayoutTypeFixed) && imageSize.width > 0 && imageSize.height > 0) {
         
@@ -2394,9 +2417,9 @@ static const NSUInteger kReadingViewMaxRecommendationsCount = 4;
             desiredHeight = maxImageHeight;
         }
         
-//        NSLog(@"Max height: %d", maxImageHeight);
-//        NSLog(@"Desired height: %d", desiredHeight);
-
+        //        NSLog(@"Max height: %d", maxImageHeight);
+        //        NSLog(@"Desired height: %d", desiredHeight);
+        
         // if there's not enough space to sensibly render the image, don't try - just go with the text
         if (maxImageHeight < 40) {
             scrubFrame.size.height = kReadingViewStandardScrubHeight;
@@ -2414,7 +2437,7 @@ static const NSUInteger kReadingViewMaxRecommendationsCount = 4;
                 scrubFrame.size.height = kReadingViewStandardScrubHeight;
             }
             
-//            NSLog(@"Scrub frame height: %f", scrubFrame.size.height);
+            //            NSLog(@"Scrub frame height: %f", scrubFrame.size.height);
         }
     } else {
         scrubFrame.size.height = kReadingViewStandardScrubHeight;
@@ -2436,42 +2459,6 @@ static const NSUInteger kReadingViewMaxRecommendationsCount = 4;
     scrubFrame.origin.y = floorf(topLimit + topPoint);
     
     self.scrubberInfoView.frame = scrubFrame;
-}
-
-
-- (void)updateScrubberLabel
-{
-    BOOL showRecommendationsLabel = NO;
-    
-    if (self.currentPageIndex != NSUIntegerMax) {
-        if (([self shouldShowBookRecommendationsForReadingView:self.readingView]) &&
-             (self.currentPageIndex == [self generatedPageCountForReadingView:self.readingView] - 1)) {
-            showRecommendationsLabel = YES;
-            [self.pageLabel setText:NSLocalizedString(@"Recommendations", nil)];
-        } else {
-            [self.pageLabel setText:[self.readingView pageLabelForPageAtIndex:self.currentPageIndex showChapters:self.shouldShowChapters]];
-        }
-    } else {
-        [self.pageLabel setText:nil];
-    }  
-    
-    if ((self.layoutType == SCHReadingViewLayoutTypeFixed) &&
-        (showRecommendationsLabel == NO)) {
-        if (self.scrubberInfoView.frame.size.height == kReadingViewStandardScrubHeight) {
-            self.scrubberThumbImage.image = nil;
-        } else {
-            UIImage *scrubImage = [self.xpsProvider thumbnailForPage:self.currentPageIndex + 1];
-            self.scrubberThumbImage.image = scrubImage;
-        }
-    } else {
-        self.scrubberThumbImage.image = nil;
-    }
-    
-    if (self.pageLabel.text == nil && self.scrubberThumbImage.image == nil) {
-        self.scrubberInfoView.hidden = YES;
-    } else {
-        self.scrubberInfoView.hidden = NO;
-    }
 
 }
 
@@ -2486,8 +2473,6 @@ static const NSUInteger kReadingViewMaxRecommendationsCount = 4;
         self.pageSlider.maximumValue = 1;
         self.pageSlider.value = self.currentBookProgress;        
     }       
-    
-    [self updateScrubberLabel];
 }
 
 - (IBAction)scrubValueStartChanges:(UISlider *)slider
@@ -2502,20 +2487,7 @@ static const NSUInteger kReadingViewMaxRecommendationsCount = 4;
         self.currentPageIndex = roundf([slider value]);
     }
     
-    // add the scrub view here
-    // adjust the height of the scrubber info view first, then update the thumb
-    if (self.layoutType == SCHReadingViewLayoutTypeFixed) {
-        UIImage *scrubImage = [self.xpsProvider thumbnailForPage:self.currentPageIndex + 1];
-        self.scrubberThumbImage.image = scrubImage;
-        NSLog(@"1");
-        [self adjustScrubberInfoViewHeightForImageSize:scrubImage.size];
-    } else {
-        self.scrubberThumbImage.image = nil;
-        NSLog(@"2");
-        [self adjustScrubberInfoViewHeightForImageSize:CGSizeZero];
-    }
-
-    [self updateScrubberLabel];
+    [self updateScrubberHUD];
     
     [self.scrubberInfoView setAlpha:1.0f];
     [self.view addSubview:self.scrubberInfoView];
@@ -2553,7 +2525,6 @@ static const NSUInteger kReadingViewMaxRecommendationsCount = 4;
     
     [self jumpToCurrentPlaceInBookAnimated:YES];
     
-    [self updateScrubberLabel];
     self.currentlyScrubbing = NO;
 }
 
@@ -2579,9 +2550,7 @@ static const NSUInteger kReadingViewMaxRecommendationsCount = 4;
     }
     
     if (adjustScrubInfo) {
-        NSLog(@"3: %@", self.scrubberThumbImage);
-        [self adjustScrubberInfoViewHeightForImageSize:self.scrubberThumbImage.image.size];
-        [self updateScrubberLabel];
+        [self updateScrubberHUD];
     }
 }
 
