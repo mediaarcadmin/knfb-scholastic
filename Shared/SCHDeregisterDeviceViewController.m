@@ -25,6 +25,7 @@ static const CGFloat kDeregisterContentHeightLandscape = 380;
 @property (nonatomic, retain) UITextField *activeTextField;
 @property (nonatomic, retain) SCHAccountValidation *accountValidation;
 
+- (void)setEnablesUI:(BOOL)enablesUI;
 - (void)setupContentSizeForOrientation:(UIInterfaceOrientation)orientation;
 - (void)makeVisibleTextField:(UITextField *)textField;
 - (void)deregisterAfterSuccessfulAuthentication;
@@ -132,6 +133,13 @@ static const CGFloat kDeregisterContentHeightLandscape = 380;
     return(accountValidation);
 }
 
+- (void)setEnablesUI:(BOOL)enablesUI
+{
+    [self setEnablesBackButton:enablesUI];
+    
+    self.passwordField.enabled = enablesUI;
+}
+
 #pragma mark - Actions
 
 - (void)deregister:(id)sender
@@ -168,7 +176,7 @@ static const CGFloat kDeregisterContentHeightLandscape = 380;
             __block SCHDeregisterDeviceViewController *weakSelf = self;
             NSString *storedUsername = [[NSUserDefaults standardUserDefaults] stringForKey:kSCHAuthenticationManagerUsername];
             [self.spinner startAnimating];
-            [self setEnablesBackButton:NO];
+            [self setEnablesUI:NO];
             [self.accountValidation validateWithUserName:storedUsername withPassword:self.passwordField.text validateBlock:^(NSString *pToken, NSError *error) {
                 if (error != nil) {
                     LambdaAlert *alert = [[LambdaAlert alloc]
@@ -177,7 +185,7 @@ static const CGFloat kDeregisterContentHeightLandscape = 380;
                     [alert addButtonWithTitle:NSLocalizedString(@"OK", @"") block:^{
                         [weakSelf.deregisterButton setEnabled:YES];
                         [weakSelf.spinner stopAnimating];
-                        [weakSelf setEnablesBackButton:YES];                                    
+                        [weakSelf setEnablesUI:YES];                                    
                     }];
                     [alert show];
                     [alert release]; 
@@ -235,7 +243,7 @@ static const CGFloat kDeregisterContentHeightLandscape = 380;
                                   initWithTitle:NSLocalizedString(@"Unable to Deregister Device", @"") 
                                   message:[error localizedDescription]];
             [alert addButtonWithTitle:NSLocalizedString(@"OK", @"OK") block:^{
-                [self setEnablesBackButton:YES];
+                [self setEnablesUI:YES];
                 [self.deregisterButton setEnabled:YES];        
             }];
             [alert show];
@@ -260,7 +268,7 @@ static const CGFloat kDeregisterContentHeightLandscape = 380;
     [alert addButtonWithTitle:NSLocalizedString(@"OK", @"") block:^{
         [self.deregisterButton setEnabled:YES];
         [self.spinner stopAnimating];
-        [self setEnablesBackButton:YES];                                            
+        [self setEnablesUI:YES];                                            
     }];
     [alert show];
     [alert release];    
