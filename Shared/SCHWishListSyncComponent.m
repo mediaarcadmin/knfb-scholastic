@@ -102,6 +102,7 @@ NSString * const SCHWishListSyncComponentDidFailNotification = @"SCHWishListSync
 	NSError *error = nil;
 	
     [self.wishListWebService clear];
+    self.lastSyncSaveCalled = nil;
     
 	if (![self.managedObjectContext BITemptyEntity:kSCHWishListProfile error:&error] ||
         ![self.managedObjectContext BITemptyEntity:kSCHWishListItem error:&error] ||

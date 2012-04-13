@@ -265,6 +265,7 @@ NSString * const SCHAnnotationSyncComponentProfileIDs = @"SCHAnnotationSyncCompo
     
     [self.annotations removeAllObjects];
     [self.savedAnnotations removeAllObjects];
+    self.lastSyncSaveCalled = nil;
     
 	if (![self.managedObjectContext BITemptyEntity:kSCHAnnotationsItem error:&error]) {
 		NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
