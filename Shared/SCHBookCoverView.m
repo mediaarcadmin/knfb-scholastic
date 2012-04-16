@@ -436,6 +436,17 @@
         self.needsRefresh = NO;
         self.activitySpinner.center = [self.superview convertPoint:self.center toView:self];
         self.errorBadge.center = [self.superview convertPoint:self.center toView:self];
+        
+        // deal with the centre points potentially not being rounded
+        CGRect spinnerFrame = self.activitySpinner.frame;
+        spinnerFrame.origin.x = floorf(spinnerFrame.origin.x);
+        spinnerFrame.origin.y = floorf(spinnerFrame.origin.y);
+        self.activitySpinner.frame = spinnerFrame;
+        
+        CGRect errorFrame = self.errorBadge.frame;
+        errorFrame.origin.x = floorf(errorFrame.origin.x);
+        errorFrame.origin.y = floorf(errorFrame.origin.y);
+        self.errorBadge.frame = errorFrame;
 
         [self setErrorBadgeHidden:YES];
         [self setIsNewBadgeHidden:YES];
@@ -526,25 +537,32 @@
     // resize and position the thumb image view - the image view should never scale, and should always
     // be set to an integer value for positioning to avoid blurring
     
-    CGRect coverFrame = CGRectMake(floor((self.frame.size.width - thumbSize.width)/2), self.topInset, thumbSize.width, thumbSize.height);
+    CGRect coverFrame = CGRectMake(floor((self.frame.size.width - thumbSize.width)/2), floorf(self.frame.size.height - thumbSize.height), thumbSize.width, thumbSize.height);
     
     // if the thumb is not the full height of the view, then calculate differently
     // (cases where the thumb is wider than it is high)
-    if (thumbSize.height != self.frame.size.height) {
+    if (thumbSize.height < thumbSize.width) {
         tabOnRight = NO;
         
         if (self.coverViewMode == SCHBookCoverViewModeGridView) {
             // cover is attached to the bottom of the frame
-            coverFrame = CGRectMake(self.leftRightInset, self.frame.size.height - thumbSize.height, thumbSize.width, thumbSize.height);
+            coverFrame = CGRectMake(floorf((self.frame.size.width - thumbSize.width)/2), self.frame.size.height - thumbSize.height, thumbSize.width, thumbSize.height);
         } else if (self.coverViewMode == SCHBookCoverViewModeListView) {
             // cover is centred in the frame
-            coverFrame = CGRectMake(self.leftRightInset, floorf((self.frame.size.height - thumbSize.height)/2), thumbSize.width, thumbSize.height);
+            coverFrame = CGRectMake(floorf((self.frame.size.width - thumbSize.width)/2), floorf((self.frame.size.height - thumbSize.height)/2), thumbSize.width, thumbSize.height);
         }
     }
     
     self.coverImageView.frame = coverFrame;
     self.bookTintView.frame = coverFrame;
     self.activitySpinner.center = self.coverImageView.center;
+    
+    // deal with the centre point potentially not being rounded
+    CGRect spinnerFrame = self.activitySpinner.frame;
+    spinnerFrame.origin.x = floorf(spinnerFrame.origin.x);
+    spinnerFrame.origin.y = floorf(spinnerFrame.origin.y);
+    self.activitySpinner.frame = spinnerFrame;
+
 
     // move the new image view to the right spot, the bottom right hand corner
     CGPoint newCenter = CGPointMake(coverFrame.origin.x + coverFrame.size.width, 
@@ -560,6 +578,11 @@
     if (newCenter.x + (self.isNewBadge.frame.size.width / 2) > self.frame.size.width) {
         float difference = newCenter.x + (self.isNewBadge.frame.size.width / 2) - self.frame.size.width;
         newCenter.x = coverFrame.origin.x + coverFrame.size.width - difference;
+    }
+    
+    // move the new badge if the tab is Sample with Story Interactions
+    if (tabOnRight && book.bookFeatures == kSCHAppBookFeaturesSampleWithStoryInteractions) {
+        newCenter.x -= 8;
     }
     
     CGPoint errorCenter = newCenter;
@@ -649,8 +672,7 @@
         
         // the offset amount that the image tab is over onto the cover
         NSInteger overhang = 0;
-        // the size (width for right side, height for top side) of the tab
-        NSInteger tabSize = 25;
+        
         // whether to actually do the resizing work
         BOOL doSizing = YES;
         
@@ -682,10 +704,10 @@
             {
                 if (tabOnRight) {
                     self.featureTab.image = [UIImage imageNamed:@"BookSITab"];
-                    overhang = 13;
+                    overhang = 10;
                 } else {
                     self.featureTab.image = [UIImage imageNamed:@"BookSITabHorizontal"];
-                    overhang = 16;
+                    overhang = 20;
                 }
                 
                 break;
@@ -694,10 +716,10 @@
             {
                 if (tabOnRight) {
                     self.featureTab.image = [UIImage imageNamed:@"BookSISampleTab"];
-                    overhang = 13;
+                    overhang = 10;
                 } else {
                     self.featureTab.image = [UIImage imageNamed:@"BookSISampleTabHorizontal"];
-                    overhang = 15;
+                    overhang = 21;
                 }
                 
                 break;
@@ -707,10 +729,10 @@
             {
                 if (tabOnRight) {
                     self.featureTab.image = [UIImage imageNamed:@"BookSampleTab"];
-                    overhang = 3;
+                    overhang = 0;
                } else {
                     self.featureTab.image = [UIImage imageNamed:@"BookSampleTabHorizontal"];
-                   overhang = 3;
+                    overhang = 0;
                 }
                 
                 break;
@@ -725,32 +747,34 @@
             }
         }
         
+        // resize the feature tab image view to the size of the image - this changes between cells
+        CGRect tabFrame = self.featureTab.frame;
+        tabFrame.origin.x = 0;
+        tabFrame.origin.y = 0;
+        tabFrame.size.width = self.featureTab.image.size.width;
+        tabFrame.size.height = self.featureTab.image.size.height;
+        self.featureTab.frame = tabFrame;
+        
         if (doSizing) {
             if (tabOnRight) {
                 // move the tab to the right side of the cover
                 self.featureTab.contentMode = UIViewContentModeRight;
-                CGRect frame = self.featureTab.frame;
-                frame.origin.x = coverFrame.origin.x + coverFrame.size.width + overhang;
-                frame.origin.y = floorf(coverFrame.origin.y);
-                frame.size.height = coverFrame.size.height;
-                frame.size.width = tabSize;
-                self.featureTab.frame = frame;
+
+                tabFrame.origin.x = coverFrame.origin.x + coverFrame.size.width - overhang;
+                tabFrame.origin.y = floorf((self.frame.size.height - coverFrame.size.height) + (coverFrame.size.height / 2) - (tabFrame.size.height / 2));
+                self.featureTab.frame = tabFrame;
             } else {
                 // move the tab across the top of the cover
                 self.featureTab.contentMode = UIViewContentModeTop;
-                CGRect frame = self.featureTab.frame;
-                frame.origin.x = coverFrame.origin.x;
-                frame.size.width = coverFrame.size.width;
-                frame.size.height = tabSize;
-                frame.origin.y = self.frame.size.height - coverFrame.size.height - frame.size.height - overhang;
-                self.featureTab.frame = frame;
+
+                tabFrame.origin.x = floorf(coverFrame.origin.x + (coverFrame.size.width / 2)  - (tabFrame.size.width / 2));
+                tabFrame.origin.y = self.frame.size.height - coverFrame.size.height - tabFrame.size.height + overhang;
+                self.featureTab.frame = tabFrame;
             }
 
             [self setFeatureTabHidden:NO];
         }
-        
     }
-
 }
 
 #pragma mark - Thumbnail Creation
@@ -786,8 +810,10 @@
 
 - (UIImage *)createImageWithSourcePath:(NSString *)sourcePath destinationPath:(NSString *)destinationPath 
 {
+    UIImage *biggestTopTabImage = [UIImage imageNamed:@"BookSampleTabHorizontal"];
+
     CGSize frameSizeWithInsets = CGSizeMake(self.frame.size.width - (self.leftRightInset * 2), 
-                                            self.frame.size.height - self.topInset);
+                                            self.frame.size.height - biggestTopTabImage.size.height);
     
     NSUInteger maxDimension = ceilf(MAX(frameSizeWithInsets.width, frameSizeWithInsets.height));
     
