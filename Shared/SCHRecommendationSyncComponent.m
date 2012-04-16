@@ -122,6 +122,8 @@ static NSTimeInterval const kSCHRecommendationSyncComponentBookSyncDelayTimeInte
 {
 	NSError *error = nil;
 	
+    [super clear];
+    
     [self.recommendationWebService clear];
     
     self.remainingBatchedItems = nil;

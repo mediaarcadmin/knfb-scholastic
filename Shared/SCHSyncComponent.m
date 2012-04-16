@@ -55,6 +55,14 @@ NSString * const SCHSyncComponentDidFailAuthenticationNotification = @"SCHSyncCo
 	return(NO);
 }
 
+// SCHSyncComponent:clear needs to be overidden and super called in sub-classes
+- (void)clear
+{
+    self.isSynchronizing = NO;
+    self.saveOnly = NO;
+    [self clearFailures];
+}
+
 #pragma mark - Delegate methods
 
 - (void)method:(NSString *)method didCompleteWithResult:(NSDictionary *)result
@@ -63,7 +71,7 @@ NSString * const SCHSyncComponentDidFailAuthenticationNotification = @"SCHSyncCo
 	[self endBackgroundTask];
 	self.isSynchronizing = NO;
 	
-    self.failureCount = 0;
+    [self clearFailures];
     
     if (userInfo != nil) {
         NSNumber *serverDateDelta = [userInfo objectForKey:@"serverDateDelta"];

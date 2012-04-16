@@ -88,6 +88,8 @@ NSString * const SCHProfileSyncComponentDidFailNotification = @"SCHProfileSyncCo
 {
 	NSError *error = nil;
 	
+    [super clear];
+    
     [self.libreAccessWebService clear];
     
     [self.savedProfiles removeAllObjects];

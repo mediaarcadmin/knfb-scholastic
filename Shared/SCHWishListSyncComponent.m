@@ -101,6 +101,8 @@ NSString * const SCHWishListSyncComponentDidFailNotification = @"SCHWishListSync
 {
 	NSError *error = nil;
 	
+    [super clear];
+    
     [self.wishListWebService clear];
     self.lastSyncSaveCalled = nil;
     

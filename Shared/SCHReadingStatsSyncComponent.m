@@ -100,6 +100,8 @@ NSString * const SCHReadingStatsSyncComponentDidFailNotification = @"SCHReadingS
 
 - (void)clear
 {
+    [super clear];
+    
     [self.libreAccessWebService clear];
     
     [self clearStatistics];

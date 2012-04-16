@@ -100,6 +100,8 @@ NSString * const SCHBookshelfSyncComponentDidFailNotification = @"SCHBookshelfSy
 {
 	NSError *error = nil;
     
+    [super clear];
+    
     [self.libreAccessWebService clear];
     
     self.requestCount = 0;

@@ -261,6 +261,8 @@ NSString * const SCHAnnotationSyncComponentProfileIDs = @"SCHAnnotationSyncCompo
 {
 	NSError *error = nil;
 	
+    [super clear];
+    
     [self.libreAccessWebService clear];
     
     [self.annotations removeAllObjects];

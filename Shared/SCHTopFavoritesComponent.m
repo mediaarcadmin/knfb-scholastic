@@ -49,7 +49,7 @@ static NSString * const kSCHTopFavoritesComponentCategoryYoungAdults = @"Young A
 
 - (void)clear
 {
-    // nothing to clear
+    [self.libreAccessWebService clear];
 }
 
 - (BOOL)topFavoritesForAge:(NSUInteger)ageInYears

@@ -112,6 +112,8 @@ NSString * const SCHContentSyncComponentDidFailNotification = @"SCHContentSyncCo
 {
 	NSError *error = nil;
 	
+    [super clear];
+    
     [self.libreAccessWebService clear];
     
 	if (![self.managedObjectContext BITemptyEntity:kSCHUserContentItem error:&error] ||

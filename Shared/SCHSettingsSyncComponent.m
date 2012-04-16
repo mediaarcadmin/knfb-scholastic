@@ -87,6 +87,8 @@ NSString * const SCHSettingsSyncComponentDidFailNotification = @"SCHSettingsSync
 {
 	NSError *error = nil;
 	
+    [super clear];
+    
     [self.libreAccessWebService clear];
     
 	if (![self.managedObjectContext BITemptyEntity:kSCHSettingItem error:&error]) {
