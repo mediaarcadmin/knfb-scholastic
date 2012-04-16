@@ -19,6 +19,9 @@ NSString * const kSCHAccountValidationErrorDomain = @"AccountValidationErrorDoma
 NSInteger const kSCHAccountValidationPTokenError = 2000;
 NSInteger const kSCHAccountValidationCredentialsError = 200;
 
+// pToken timeout set to 29 minutes, same as windows - 1 minute for any errors
+static NSTimeInterval const kSCHAccountValidationpTokenTimeout = 1740.0;
+
 @interface SCHAccountValidation ()
 
 @property (nonatomic, copy, readwrite) NSString *pToken;
@@ -111,7 +114,7 @@ NSInteger const kSCHAccountValidationCredentialsError = 200;
     if (pToken != aPToken) {
         [pToken release];
         pToken = [aPToken copy];
-        self.pTokenRequested = (pToken == nil ? nil : [NSDate dateWithTimeIntervalSinceNow:360.0]);
+        self.pTokenRequested = (pToken == nil ? nil : [NSDate dateWithTimeIntervalSinceNow:kSCHAccountValidationpTokenTimeout]);
     }
 }
 
