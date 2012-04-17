@@ -475,7 +475,7 @@ NSString * const SCHContentSyncComponentDidFailNotification = @"SCHContentSyncCo
 	SCHContentProfileItem *ret = nil;
     NSError *error = nil;
     
-	if (contentProfileItem != nil) {		
+	if (contentProfileItem != nil && bookIdentifier != nil) {		
 		ret = [NSEntityDescription insertNewObjectForEntityForName:kSCHContentProfileItem 
                                             inManagedObjectContext:self.managedObjectContext];			
 		

@@ -194,10 +194,10 @@ NSString * const kSCHProfileItemDRM_QUALIFIER = @"DRM_QUALIFIER";
         
         for (SCHContentProfileItem *contentProfileItem in [self ContentProfileItem]) {
             for (SCHContentMetadataItem *contentMetadataItem in contentProfileItem.UserContentItem.ContentMetadataItem) {
-                SCHBookIdentifier *identifier = [[SCHBookIdentifier alloc] initWithISBN:contentMetadataItem.ContentIdentifier
-                                                                           DRMQualifier:contentMetadataItem.DRMQualifier];
-                [books addObject:identifier];
-                [identifier release];
+                SCHBookIdentifier *identifier = [contentMetadataItem bookIdentifier];
+                if (identifier != nil) {
+                    [books addObject:identifier];
+                }
             }
         }
         
@@ -331,10 +331,10 @@ NSString * const kSCHProfileItemDRM_QUALIFIER = @"DRM_QUALIFIER";
     
     // build the ISBN list
     for (SCHContentMetadataItem *item in bookObjects) {
-        SCHBookIdentifier *identifier = [[SCHBookIdentifier alloc] initWithISBN:item.ContentIdentifier
-                                                                   DRMQualifier:item.DRMQualifier];
-        [books addObject:identifier];
-        [identifier release];
+        SCHBookIdentifier *identifier = [item bookIdentifier];
+        if (identifier != nil) {
+            [books addObject:identifier];
+        }
     }
     
     return books;

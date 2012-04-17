@@ -162,19 +162,22 @@ NSString * const SCHAnnotationSyncComponentProfileIDs = @"SCHAnnotationSyncCompo
             // Only add books that do not already exist
             for (NSDictionary *book in books) {
                 SCHBookIdentifier *bookIdentifier = [[SCHBookIdentifier alloc] initWithObject:book];
-                __block BOOL bookAlreadyExists = NO;
-                [profileBooks enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
-                    SCHBookIdentifier *profileBookIdentifier = [[SCHBookIdentifier alloc] initWithObject:obj];
-                    if ([bookIdentifier isEqual:profileBookIdentifier] == YES) {
-                        bookAlreadyExists = YES;
-                        *stop = YES;
+                if (bookIdentifier != nil) {
+                    __block BOOL bookAlreadyExists = NO;
+                    [profileBooks enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+                        SCHBookIdentifier *profileBookIdentifier = [[SCHBookIdentifier alloc] initWithObject:obj];
+                        if (profileBookIdentifier != nil &&
+                            [bookIdentifier isEqual:profileBookIdentifier] == YES) {
+                            bookAlreadyExists = YES;
+                            *stop = YES;
+                        }
+                        [profileBookIdentifier release], profileBookIdentifier = nil;                    
+                    }];
+                    [bookIdentifier release], bookIdentifier = nil;
+                    
+                    if (bookAlreadyExists == NO) {
+                        [profileBooks addObject:book];
                     }
-                    [profileBookIdentifier release], profileBookIdentifier = nil;                    
-                }];
-                [bookIdentifier release], bookIdentifier = nil;
-                
-                if (bookAlreadyExists == NO) {
-                    [profileBooks addObject:book];
                 }
             }
         } else {
@@ -193,7 +196,8 @@ NSString * const SCHAnnotationSyncComponentProfileIDs = @"SCHAnnotationSyncCompo
                 __block NSUInteger removeBook = NSUIntegerMax;
                 [profileBooks enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
                     SCHBookIdentifier *profileBookIdentifier = [[SCHBookIdentifier alloc] initWithObject:obj];
-                    if ([bookIdentifier isEqual:profileBookIdentifier] == YES) {
+                    if (profileBookIdentifier != nil &&
+                        [bookIdentifier isEqual:profileBookIdentifier] == YES) {
                         removeBook = idx;
                         *stop = YES;
                     }

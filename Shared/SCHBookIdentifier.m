@@ -27,8 +27,13 @@ NSString * const kSCHBookIdentifierBookIdentifier = @"BookIdentifier";
 - (id)initWithISBN:(NSString *)aIsbn DRMQualifier:(NSNumber *)aDRMQualifier
 {
     if ((self = [super init])) {
-        isbn = [aIsbn copy];
-        DRMQualifier = [aDRMQualifier copy];
+        if ([[aIsbn stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]] length] > 0 &&
+            [aDRMQualifier isValidDRMQualifierValue] == YES) {
+            isbn = [aIsbn copy];
+            DRMQualifier = [aDRMQualifier copy];
+        } else {
+            [self release], self = nil;            
+        }
     }
     return self;
 }
@@ -37,26 +42,10 @@ NSString * const kSCHBookIdentifierBookIdentifier = @"BookIdentifier";
 // and DRM Qualifier such as ContentMetadataItem's from Core Data or the web service
 - (id)initWithObject:(NSDictionary *)object
 {
-    SCHBookIdentifier *ret = nil;
+    NSString *aIsbn = [object objectForKey:kSCHLibreAccessWebServiceContentIdentifier];
+    NSNumber *aDRMQualifier = [object objectForKey:kSCHLibreAccessWebServiceDRMQualifier];
     
-    if (object != nil) {
-        NSString *aIsbn = [object objectForKey:kSCHLibreAccessWebServiceContentIdentifier];
-        NSNumber *aDRMQualifier = [object objectForKey:kSCHLibreAccessWebServiceDRMQualifier];
-        
-        if (aIsbn != nil && aDRMQualifier != nil) {
-            ret = [self initWithISBN:aIsbn DRMQualifier:aDRMQualifier];
-        } else {
-            @throw [NSException exceptionWithName:NSInvalidArgumentException 
-                                           reason:@"missing contentIdentifer and/or DRMQualifer passed to initWithObject:" 
-                                         userInfo:nil];            
-        }
-    } else {
-        @throw [NSException exceptionWithName:NSInvalidArgumentException 
-                                       reason:@"null object passed to initWithObject:" 
-                                     userInfo:nil];
-    }
-    
-    return(ret);
+    return [self initWithISBN:aIsbn DRMQualifier:aDRMQualifier];
 }
 
 - (id)initWithEncodedString:(NSString *)string

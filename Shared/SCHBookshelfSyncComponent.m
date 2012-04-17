@@ -182,18 +182,9 @@ NSString * const SCHBookshelfSyncComponentDidFailNotification = @"SCHBookshelfSy
     NSMutableArray *bookIdentifiers = [NSMutableArray arrayWithCapacity:[contentMetadataItems count]];
     
     for (NSDictionary *book in contentMetadataItems) {
-        @try {
-            SCHBookIdentifier *bookIdentifier = [[[SCHBookIdentifier alloc] initWithObject:book] autorelease];
-            if (bookIdentifier) {
-                [bookIdentifiers addObject:bookIdentifier];
-            }
-        }
-        @catch (NSException *exception) {
-            NSLog(@"%@", exception);
-        }
-        @finally {
-            // if any of the responses do not have the book identifier 
-            // information then we just ignore them and continue
+        SCHBookIdentifier *bookIdentifier = [[[SCHBookIdentifier alloc] initWithObject:book] autorelease];
+        if (bookIdentifier) {
+            [bookIdentifiers addObject:bookIdentifier];
         }
     }
     
