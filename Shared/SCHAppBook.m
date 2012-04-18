@@ -16,6 +16,7 @@
 #import "SCHRecommendationConstants.h"
 #import "SCHRecommendationISBN.h"
 #import "SCHUserContentItem.h"
+#import "NSNumber+ObjectTypes.h"
 
 // Constants
 NSString * const kSCHAppBookErrorDomain  = @"com.knfb.scholastic.AppBookErrorDomain";
@@ -188,10 +189,16 @@ NSString * const kSCHAppBookFilenameSeparator = @"-";
     }
     
     if (!ret) {
-        ret = [SCHBookIdentifier invalidBookIdentifier];
+        ret = [SCHAppBook invalidBookIdentifier];
     }
     
     return ret;
+}
+
++ (SCHBookIdentifier *)invalidBookIdentifier
+{
+    return [[[SCHBookIdentifier alloc] initWithISBN:@"UNKNOWN" 
+                                       DRMQualifier:[NSNumber numberWithDRMQualifier:kSCHDRMQualifiersNone]] autorelease];
 }
 
 - (BOOL)bookCoverURLIsValid

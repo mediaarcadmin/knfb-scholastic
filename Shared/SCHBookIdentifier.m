@@ -107,10 +107,4 @@ NSString * const kSCHBookIdentifierBookIdentifier = @"BookIdentifier";
     return [NSString stringWithFormat:@"%@-%@", self.isbn, drm];
 }
 
-+ (SCHBookIdentifier *)invalidBookIdentifier
-{
-    return [[[SCHBookIdentifier alloc] initWithISBN:@"UNKNOWN" DRMQualifier:[NSNumber numberWithInt:0]] autorelease];
-
-}
-
 @end
