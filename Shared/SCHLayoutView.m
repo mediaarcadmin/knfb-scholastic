@@ -169,10 +169,12 @@ static const NSUInteger kSCHLayoutViewPageViewCacheLimit = 2;
 - (void)detachSelector
 {    
     if (selector) {
-        [super detachSelector];
+        [selector detatch];
 
         [selector removeObserver:self forKeyPath:@"tracking"];
-        [selector detatch];
+
+        [super detachSelector];
+
         [selector release], selector = nil;
     }
 }
@@ -214,8 +216,7 @@ managedObjectContext:(NSManagedObjectContext *)managedObjectContext
     if(!CGSizeEqualToSize(newSize, self.pageSize)) {
         
         if(self.selector.tracking) {
-            //[self.selector setSelectedRange:nil];
-            [self.selector performSelector:@selector(calculateAndSetSelectedRangeForRange:) withObject:nil];
+            [self.selector setSelectedRange:nil];
         }
                 
 		self.pageSize = newSize;

@@ -659,8 +659,7 @@ managedObjectContext:(NSManagedObjectContext *)managedObjectContext
 
 - (void)dismissSelector
 {
-    //[self.selector setSelectedRange:nil];
-    [self.selector performSelector:@selector(calculateAndSetSelectedRangeForRange:) withObject:nil];
+    [self.selector setSelectedRange:nil];
 }
 
 #pragma mark - Touch handling
