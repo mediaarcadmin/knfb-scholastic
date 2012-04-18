@@ -117,7 +117,7 @@ NSString * const kSCHAppBookFilenameSeparator = @"-";
 - (void)didTurnIntoFault
 {
     [cachedBookDirectory release], cachedBookDirectory = nil;
-    [super willTurnIntoFault];
+    [super didTurnIntoFault];
 }
 
 #pragma mark - Convenience Methods
