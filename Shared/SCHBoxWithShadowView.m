@@ -14,12 +14,18 @@
 
 - (void)configure
 {
-    self.layer.borderWidth = 2;
-    self.layer.cornerRadius = 2;
-    self.layer.borderColor = [[UIColor SCHDarkBlue1Color] CGColor];
-    self.layer.shadowColor = [[UIColor blackColor] CGColor];
-    self.layer.shadowOffset = CGSizeMake(2, 2);
-    self.layer.shadowOpacity = 0.5;
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+        self.layer.borderWidth = 2;
+        self.layer.cornerRadius = 2;
+        self.layer.borderColor = [[UIColor SCHDarkBlue1Color] CGColor];
+        self.layer.shadowColor = [[UIColor blackColor] CGColor];
+        self.layer.shadowOffset = CGSizeMake(2, 2);
+        self.layer.shadowOpacity = 0.5;
+    } else {
+        self.layer.borderWidth = 2;
+        self.layer.cornerRadius = 2;
+        self.layer.borderColor = [[UIColor SCHBlue2Color] CGColor];
+    }
 }
 
 - (id)initWithFrame:(CGRect)frame

@@ -135,9 +135,28 @@
     [UIView animateWithDuration:duration
                      animations:^{
                          CGSize resultsSize = UIInterfaceOrientationIsPortrait(toInterfaceOrientation) ? CGSizeMake(300, 150) : CGSizeMake(140, 230);
+
+                         // get the button size
+                         CGSize buttonSize = [[self.controlButtons objectAtIndex:0] frame].size;
+                         CGFloat buttonHeight = 0;
+                         
+                         // for portrait, the results box needs to move up, and the buttons 
+                         // need to move down
+                         if (UIInterfaceOrientationIsPortrait(toInterfaceOrientation)) {
+                             buttonHeight = buttonSize.height + 20;
+                         }
+                         
                          self.resultsContainerView.bounds = (CGRect) { CGPointZero, resultsSize };
                          self.resultsContainerView.center = CGPointMake(CGRectGetMaxX(self.contentsView.bounds)-5-resultsSize.width/2,
-                                                                        CGRectGetMaxY(self.contentsView.bounds)-10-resultsSize.height/2);
+                                                                        CGRectGetMaxY(self.contentsView.bounds)-buttonHeight-10-resultsSize.height/2);
+                         
+                         // move the buttons to the correct place
+                         for (UIButton *button in self.controlButtons) {
+                             CGRect buttonFrame = button.frame;
+                             buttonFrame.origin.y = UIInterfaceOrientationIsPortrait(toInterfaceOrientation) ? CGRectGetMaxY(self.resultsContainerView.frame) + 7 : CGRectGetMaxY(self.letterContainerView.frame) + 11;
+                             button.frame = buttonFrame;
+                         }
+
                      }];
 }
 
