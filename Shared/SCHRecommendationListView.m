@@ -17,6 +17,7 @@
 @interface SCHRecommendationListView ()
 
 - (void)initialiseView;
+- (void)setupImages;
 
 @property (nonatomic, retain) UIImage *initialNormalStateImage;
 @property (nonatomic, retain) UIImage *initialSelectedStateImage;
@@ -71,8 +72,7 @@
     self = [super initWithFrame:frame];
     
 	if (self) {
-        self.showsBottomRule = YES;
-        self.lastAuthenticationFailed = NO;
+        [self initialiseView];
 	}
     
 	return self;
@@ -83,10 +83,28 @@
     self = [super initWithCoder:aDecoder];
     
 	if (self) {
-        self.showsBottomRule = YES;
+        [self initialiseView];
 	}
     
 	return self;
+}
+
+- (void)initialiseView
+{    
+    self.showsBottomRule = YES;
+    self.lastAuthenticationFailed = NO;
+    self.rateView.editable = NO;
+}
+
+- (void)setupImages
+{
+    if (self.rateView && !self.rateView.fullSelectedImage) {
+        self.rateView.fullSelectedImage = [UIImage imageNamed:@"storiaBlueStarFull"];
+        self.rateView.notSelectedImage = [UIImage imageNamed:@"storiaBlueStarEmpty"];
+        self.rateView.halfSelectedImage = [UIImage imageNamed:@"storiaBlueStarHalfFull"];
+        self.ratingBackgroundImageView.image = [[UIImage imageNamed:@"BookShelfListRatingBackground"] stretchableImageWithLeftCapWidth:19 topCapHeight:0];
+        self.ruleImageView.image = [[UIImage imageNamed:@"ListViewRule"] stretchableImageWithLeftCapWidth:0 topCapHeight:0];
+    }
 }
 
 - (IBAction)toggledOnWishListButton:(UIButton *)wishListButton
@@ -122,8 +140,8 @@
 
 - (void)updateWithRecommendationItem:(NSDictionary *)item
 {
-    [self initialiseView];
-
+    [self setupImages];
+    
     self.ISBN = [item objectForKey:kSCHAppRecommendationISBN];
     self.titleLabel.text = [item objectForKey:kSCHAppRecommendationTitle];
     self.subtitleLabel.text = [item objectForKey:kSCHAppRecommendationAuthor];
@@ -133,12 +151,24 @@
     if (coverImage && ![coverImage isKindOfClass:[NSNull class]]) {
         self.coverImageView.image = coverImage;
     }
+    
+    if (self.showsBottomRule) {
+        self.ruleImageView.hidden = NO;
+    } else {
+        self.ruleImageView.hidden = YES;
+    }
+    
+    if (self.lastAuthenticationFailed) {
+        self.onWishListButton.hidden = YES;
+    } else {
+        self.onWishListButton.hidden = NO;
+    }
 }
 
 - (void)updateWithWishListItem:(NSDictionary *)item
 {
-    [self initialiseView];
-
+    [self setupImages];
+    
     self.ISBN = [item objectForKey:kSCHAppRecommendationISBN];
     self.titleLabel.text = [item objectForKey:kSCHAppRecommendationTitle];
     self.subtitleLabel.text = [item objectForKey:kSCHAppRecommendationAuthor];
@@ -147,6 +177,18 @@
     
     if (coverImage && ![coverImage isKindOfClass:[NSNull class]]) {
         self.coverImageView.image = coverImage;
+    }
+    
+    if (self.showsBottomRule) {
+        self.ruleImageView.hidden = NO;
+    } else {
+        self.ruleImageView.hidden = YES;
+    }
+    
+    if (self.lastAuthenticationFailed) {
+        self.onWishListButton.hidden = YES;
+    } else {
+        self.onWishListButton.hidden = NO;
     }
 }
 
@@ -159,30 +201,6 @@
     self.backgroundColor = self.recommendationBackgroundColor;
     self.titleLabel.backgroundColor = self.recommendationBackgroundColor;
     self.subtitleLabel.backgroundColor = self.recommendationBackgroundColor;
-}
-
-- (void)initialiseView
-{
-    self.rateView.editable = NO;
-    self.rateView.fullSelectedImage = [UIImage imageNamed:@"storiaBlueStarFull"];
-    self.rateView.notSelectedImage = [UIImage imageNamed:@"storiaBlueStarEmpty"];
-    self.rateView.halfSelectedImage = [UIImage imageNamed:@"storiaBlueStarHalfFull"];
-    
-    self.ratingBackgroundImageView.image = [[UIImage imageNamed:@"BookShelfListRatingBackground"] stretchableImageWithLeftCapWidth:19 topCapHeight:0];
-    
-    self.ruleImageView.image = [[UIImage imageNamed:@"ListViewRule"] stretchableImageWithLeftCapWidth:0 topCapHeight:0];
-
-    if (self.showsBottomRule) {
-        self.ruleImageView.hidden = NO;
-    } else {
-        self.ruleImageView.hidden = YES;
-    }
-    
-    if (self.lastAuthenticationFailed) {
-        self.onWishListButton.hidden = YES;
-    } else {
-        self.onWishListButton.hidden = NO;
-    }
 }
 
 - (UIImage *)initialNormalStateImage
