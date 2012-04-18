@@ -40,6 +40,7 @@ typedef enum {
 	kSCHContentItemContentIdentifierTypesISBN13,
 } SCHContentIdentifierTypes;
 
+// Any changes should be reflect in isValidDRMQualifierValue
 typedef enum {
 	kSCHDRMQualifiersNone = 0,
 	kSCHDRMQualifiersFullWithDRM,
@@ -96,6 +97,7 @@ typedef enum {
 + (NSNumber *)numberWithDRMQualifier:(SCHDRMQualifiers)value;
 - (id)initWithDRMQualifier:(SCHDRMQualifiers)value;
 - (SCHDRMQualifiers)DRMQualifierValue;
+- (BOOL)isValidDRMQualifierValue;
 
 + (NSNumber *)numberWithSaveAction:(SCHSaveActions)value;
 - (id)initWithSaveAction:(SCHSaveActions)value;

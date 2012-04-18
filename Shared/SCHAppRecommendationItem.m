@@ -50,7 +50,7 @@ NSString * const kSCHAppRecommendationCoverImage = @"CoverImage";
 - (void)didTurnIntoFault
 {
     [cachedRecommendationDirectory release], cachedRecommendationDirectory = nil;
-    [super willTurnIntoFault];
+    [super didTurnIntoFault];
 }
 
 - (SCHAppRecommendationProcessingState)processingState

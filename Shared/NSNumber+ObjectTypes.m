@@ -101,6 +101,16 @@
 	return([self intValue]);	
 }
 
+- (BOOL)isValidDRMQualifierValue
+{
+    int value = [self DRMQualifierValue];
+    
+    return value == kSCHDRMQualifiersNone ||
+    value == kSCHDRMQualifiersFullWithDRM ||
+    value == kSCHDRMQualifiersFullNoDRM ||
+    value == kSCHDRMQualifiersSample;
+}
+
 + (NSNumber *)numberWithSaveAction:(SCHSaveActions)value
 {
 	return([NSNumber numberWithInt:value]);	

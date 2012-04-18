@@ -54,11 +54,13 @@ NSString * const SCHContentSyncComponentDidFailNotification = @"SCHContentSyncCo
 - (void)syncOrderItems:(NSArray *)webOrderList 
         localOrderList:(NSSet *)localOrderList
             insertInto:(SCHUserContentItem *)userContentItem;
+- (BOOL)orderIDIsValid:(NSNumber *)orderID;
 - (void)syncOrderItem:(NSDictionary *)webOrderItem 
         withOrderItem:(SCHOrderItem *)localOrderItem;
 - (void)syncContentProfileItems:(NSArray *)webContentProfileList 
         localContentProfileList:(NSSet *)localContentProfileList
                      insertInto:(SCHUserContentItem *)userContentItem;
+- (BOOL)profileIDIsValid:(NSNumber *)profileID;
 - (void)syncContentProfileItem:(NSDictionary *)webContentProfileItem 
         withContentProfileItem:(SCHContentProfileItem *)localContentProfileItem;
 - (void)deleteUnusedContentMetadataItems;
@@ -293,37 +295,32 @@ NSString * const SCHContentSyncComponentDidFailNotification = @"SCHContentSyncCo
 			break;			
 		}
 		
-        if ([webItem objectForKey:kSCHLibreAccessWebServiceContentIdentifier] == [NSNull null] ||
-            [webItem objectForKey:kSCHLibreAccessWebServiceDRMQualifier] == [NSNull null]) {
+        SCHBookIdentifier *webBookIdentifier = [[SCHBookIdentifier alloc] initWithObject:webItem];
+        SCHBookIdentifier *localBookIdentifier = localItem.bookIdentifier;
+        
+        if (webBookIdentifier == nil) {
             webItem = nil;
+        } else if (localBookIdentifier == nil) {
+            localItem = nil;
         } else {
-            SCHBookIdentifier *webBookIdentifier = [[SCHBookIdentifier alloc] initWithObject:webItem];
-            SCHBookIdentifier *localBookIdentifier = localItem.bookIdentifier;
-            
-            if (webBookIdentifier == nil) {
-                webItem = nil;
-            } else if (localBookIdentifier == nil) {
-                localItem = nil;
-            } else {
-                switch ([webBookIdentifier compare:localBookIdentifier]) {
-                    case NSOrderedSame:
-                        [self syncUserContentItem:webItem withUserContentItem:localItem];
-                        webItem = nil;
-                        localItem = nil;
-                        break;
-                    case NSOrderedAscending:
-                        [creationPool addObject:webItem];
-                        webItem = nil;
-                        break;
-                    case NSOrderedDescending:
-                        [deletePool addObject:localItem];
-                        localItem = nil;
-                        break;			
-                }		
-            }
-            
-            [webBookIdentifier release];            
+            switch ([webBookIdentifier compare:localBookIdentifier]) {
+                case NSOrderedSame:
+                    [self syncUserContentItem:webItem withUserContentItem:localItem];
+                    webItem = nil;
+                    localItem = nil;
+                    break;
+                case NSOrderedAscending:
+                    [creationPool addObject:webItem];
+                    webItem = nil;
+                    break;
+                case NSOrderedDescending:
+                    [deletePool addObject:localItem];
+                    localItem = nil;
+                    break;			
+            }		
         }
+
+        [webBookIdentifier release];            
 		
 		if (webItem == nil) {
 			webItem = [webEnumerator nextObject];
@@ -353,38 +350,49 @@ NSString * const SCHContentSyncComponentDidFailNotification = @"SCHContentSyncCo
     [self deleteUnusedContentMetadataItems];
 }
 
-- (void)addUserContentItem:(NSDictionary *)webUserContentItem
+- (SCHUserContentItem *)addUserContentItem:(NSDictionary *)webUserContentItem
 {
-	SCHUserContentItem *newUserContentItem = [NSEntityDescription insertNewObjectForEntityForName:kSCHUserContentItem inManagedObjectContext:self.managedObjectContext];
-	
-	newUserContentItem.DRMQualifier = [self makeNullNil:[webUserContentItem objectForKey:kSCHLibreAccessWebServiceDRMQualifier]];
-	newUserContentItem.Version = [self makeNullNil:[webUserContentItem objectForKey:kSCHLibreAccessWebServiceVersion]];
-	newUserContentItem.ContentIdentifier = [self makeNullNil:[webUserContentItem objectForKey:kSCHLibreAccessWebServiceContentIdentifier]];
-	newUserContentItem.Format = [self makeNullNil:[webUserContentItem objectForKey:kSCHLibreAccessWebServiceFormat]];		
-	newUserContentItem.DefaultAssignment = [self makeNullNil:[webUserContentItem objectForKey:kSCHLibreAccessWebServiceDefaultAssignment]];		
-	newUserContentItem.ContentIdentifierType = [self makeNullNil:[webUserContentItem objectForKey:kSCHLibreAccessWebServiceContentIdentifierType]];				
-	
-    newUserContentItem.LastVersion = [self makeNullNil:[webUserContentItem objectForKey:kSCHLibreAccessWebServiceLastVersion]];
-	newUserContentItem.FreeBook = [self makeNullNil:[webUserContentItem objectForKey:kSCHLibreAccessWebServiceFreeBook]];    
-	newUserContentItem.AverageRating = [self makeNullNil:[webUserContentItem objectForKey:kSCHLibreAccessWebServiceAverageRating]];        
-
-	NSArray *orderList = [self makeNullNil:[webUserContentItem objectForKey:kSCHLibreAccessWebServiceOrderList]];
-	for (NSDictionary *orderItem in orderList) {
-		[newUserContentItem addOrderListObject:[self addOrderItem:orderItem]];
-	}
-	
-	NSArray *profileList = [self makeNullNil:[webUserContentItem objectForKey:kSCHLibreAccessWebServiceProfileList]];
-	for (NSDictionary *profileItem in profileList) {     
-        SCHContentProfileItem *contentProfileItem = [self addContentProfileItem:profileItem
-                                                                        forBook:newUserContentItem.bookIdentifier];
-        if (contentProfileItem != nil) {
-            [newUserContentItem addProfileListObject:contentProfileItem];
-            [self addAnnotationStructure:newUserContentItem forProfile:contentProfileItem];
+	SCHUserContentItem *newUserContentItem = nil;
+	SCHBookIdentifier *webBookIdentifier = [[SCHBookIdentifier alloc] initWithObject:webUserContentItem];
+    
+    if (webUserContentItem != nil && webBookIdentifier != nil) {
+        newUserContentItem = [NSEntityDescription insertNewObjectForEntityForName:kSCHUserContentItem inManagedObjectContext:self.managedObjectContext];
+        
+        newUserContentItem.DRMQualifier = webBookIdentifier.DRMQualifier;
+        newUserContentItem.Version = [self makeNullNil:[webUserContentItem objectForKey:kSCHLibreAccessWebServiceVersion]];
+        newUserContentItem.ContentIdentifier = webBookIdentifier.isbn;
+        newUserContentItem.Format = [self makeNullNil:[webUserContentItem objectForKey:kSCHLibreAccessWebServiceFormat]];		
+        newUserContentItem.DefaultAssignment = [self makeNullNil:[webUserContentItem objectForKey:kSCHLibreAccessWebServiceDefaultAssignment]];		
+        newUserContentItem.ContentIdentifierType = [self makeNullNil:[webUserContentItem objectForKey:kSCHLibreAccessWebServiceContentIdentifierType]];				
+        
+        newUserContentItem.LastVersion = [self makeNullNil:[webUserContentItem objectForKey:kSCHLibreAccessWebServiceLastVersion]];
+        newUserContentItem.FreeBook = [self makeNullNil:[webUserContentItem objectForKey:kSCHLibreAccessWebServiceFreeBook]];    
+        newUserContentItem.AverageRating = [self makeNullNil:[webUserContentItem objectForKey:kSCHLibreAccessWebServiceAverageRating]];        
+        
+        NSArray *orderList = [self makeNullNil:[webUserContentItem objectForKey:kSCHLibreAccessWebServiceOrderList]];
+        for (NSDictionary *orderItem in orderList) {
+            SCHOrderItem *newOrderItem = [self addOrderItem:orderItem];
+            if (newOrderItem != nil) { 
+                [newUserContentItem addOrderListObject:newOrderItem];
+            }
         }
-	}
+        
+        NSArray *profileList = [self makeNullNil:[webUserContentItem objectForKey:kSCHLibreAccessWebServiceProfileList]];
+        for (NSDictionary *profileItem in profileList) {     
+            SCHContentProfileItem *contentProfileItem = [self addContentProfileItem:profileItem
+                                                                            forBook:newUserContentItem.bookIdentifier];
+            if (contentProfileItem != nil) {
+                [newUserContentItem addProfileListObject:contentProfileItem];
+                [self addAnnotationStructure:newUserContentItem forProfile:contentProfileItem];
+            }
+        }
     	
-	newUserContentItem.LastModified = [self makeNullNil:[webUserContentItem objectForKey:kSCHLibreAccessWebServiceLastModified]];
-	newUserContentItem.State = [NSNumber numberWithStatus:kSCHStatusUnmodified];	
+        newUserContentItem.LastModified = [self makeNullNil:[webUserContentItem objectForKey:kSCHLibreAccessWebServiceLastModified]];
+        newUserContentItem.State = [NSNumber numberWithStatus:kSCHStatusUnmodified];	
+    }
+    [webBookIdentifier release], webBookIdentifier = nil;
+    
+    return newUserContentItem;
 }
 
 - (void)addAnnotationStructure:(SCHUserContentItem *)userContentItem 
@@ -458,15 +466,16 @@ NSString * const SCHContentSyncComponentDidFailNotification = @"SCHContentSyncCo
 - (SCHOrderItem *)addOrderItem:(NSDictionary *)orderItem
 {
 	SCHOrderItem *ret = nil;
-	
-	if (orderItem != nil) {	
+    id orderID = [self makeNullNil:[orderItem valueForKey:kSCHLibreAccessWebServiceOrderID]];
+    
+	if (orderItem != nil && [self orderIDIsValid:orderID] == YES) {	
 		ret = [NSEntityDescription insertNewObjectForEntityForName:kSCHOrderItem inManagedObjectContext:self.managedObjectContext];			
 		
-		ret.OrderID = [self makeNullNil:[orderItem objectForKey:kSCHLibreAccessWebServiceOrderID]];
+		ret.OrderID = orderID;
 		ret.OrderDate = [self makeNullNil:[orderItem objectForKey:kSCHLibreAccessWebServiceOrderDate]];
 	}
 	
-	return(ret);
+	return ret;
 }
 
 - (SCHContentProfileItem *)addContentProfileItem:(NSDictionary *)contentProfileItem 
@@ -474,15 +483,16 @@ NSString * const SCHContentSyncComponentDidFailNotification = @"SCHContentSyncCo
 {
 	SCHContentProfileItem *ret = nil;
     NSError *error = nil;
+    id profileID = [self makeNullNil:[contentProfileItem valueForKey:kSCHLibreAccessWebServiceProfileID]];
     
-	if (contentProfileItem != nil) {		
+	if (contentProfileItem != nil && bookIdentifier != nil && [self profileIDIsValid:profileID] == YES) {		
 		ret = [NSEntityDescription insertNewObjectForEntityForName:kSCHContentProfileItem 
                                             inManagedObjectContext:self.managedObjectContext];			
 		
 		ret.LastModified = [self makeNullNil:[contentProfileItem objectForKey:kSCHLibreAccessWebServiceLastModified]];
 		ret.State = [NSNumber numberWithStatus:kSCHStatusUnmodified];
 		
-		ret.ProfileID = [self makeNullNil:[contentProfileItem objectForKey:kSCHLibreAccessWebServiceProfileID]];
+		ret.ProfileID = profileID;
 		ret.LastPageLocation = [self makeNullNil:[contentProfileItem objectForKey:kSCHLibreAccessWebServiceLastPageLocation]];
         ret.Rating = [self makeNullNil:[contentProfileItem objectForKey:kSCHLibreAccessWebServiceRating]];
         
@@ -518,7 +528,7 @@ NSString * const SCHContentSyncComponentDidFailNotification = @"SCHContentSyncCo
         }
 	}
 	
-	return(ret);
+	return ret;
 }
 
 - (void)syncUserContentItem:(NSDictionary *)webUserContentItem withUserContentItem:(SCHUserContentItem *)localUserContentItem
@@ -582,12 +592,12 @@ NSString * const SCHContentSyncComponentDidFailNotification = @"SCHContentSyncCo
 			break;			
 		}
 		
-		NSNumber *webItemID = [webItem valueForKey:kSCHLibreAccessWebServiceOrderID];
-		NSNumber *localItemID = [localItem valueForKey:kSCHLibreAccessWebServiceOrderID];
+		id webItemID = [self makeNullNil:[webItem valueForKey:kSCHLibreAccessWebServiceOrderID]];
+		id localItemID = [localItem valueForKey:kSCHLibreAccessWebServiceOrderID];
 		
-        if ((id)webItemID == [NSNull null]) {
+        if (webItemID == nil || [self orderIDIsValid:webItemID] == NO) {
             webItem = nil;
-        } else if ((id)localItemID == [NSNull null]) {
+        } else if (localItemID == nil) {
             localItem = nil;            
         } else {
             switch ([webItemID compare:localItemID]) {
@@ -620,8 +630,16 @@ NSString * const SCHContentSyncComponentDidFailNotification = @"SCHContentSyncCo
 	}
 	
 	for (NSDictionary *webItem in creationPool) {
-		[userContentItem addOrderListObject:[self addOrderItem:webItem]];
+        SCHOrderItem *newOrderItem = [self addOrderItem:webItem];
+        if (newOrderItem != nil) {
+            [userContentItem addOrderListObject:newOrderItem];
+        }
 	}
+}
+
+- (BOOL)orderIDIsValid:(NSNumber *)orderID
+{
+    return [orderID integerValue] > 0;
 }
 
 - (void)syncOrderItem:(NSDictionary *)webOrderItem withOrderItem:(SCHOrderItem *)localOrderItem
@@ -667,12 +685,12 @@ NSString * const SCHContentSyncComponentDidFailNotification = @"SCHContentSyncCo
 			break;			
 		}
 		
-		NSNumber *webItemID = [webItem valueForKey:kSCHLibreAccessWebServiceProfileID];
-		NSNumber *localItemID = [localItem valueForKey:kSCHLibreAccessWebServiceProfileID];
+		id webItemID = [self makeNullNil:[webItem valueForKey:kSCHLibreAccessWebServiceProfileID]];
+		id localItemID = [localItem valueForKey:kSCHLibreAccessWebServiceProfileID];
 		
-        if ((id)webItemID == [NSNull null]) {
+        if (webItemID == nil || [self profileIDIsValid:webItemID] == NO) {
             webItem = nil;
-        } else if ((id)localItemID == [NSNull null]) {
+        } else if (localItemID == nil) {
             localItem = nil;            
         } else {                
             switch ([webItemID compare:localItemID]) {
@@ -716,6 +734,11 @@ NSString * const SCHContentSyncComponentDidFailNotification = @"SCHContentSyncCo
             [userContentItem addProfileListObject:item];
         }
 	}
+}
+
+- (BOOL)profileIDIsValid:(NSNumber *)profileID
+{
+    return [profileID integerValue] > 0;
 }
 
 - (void)syncContentProfileItem:(NSDictionary *)webContentProfileItem withContentProfileItem:(SCHContentProfileItem *)localContentProfileItem

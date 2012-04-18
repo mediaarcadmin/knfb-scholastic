@@ -11,6 +11,8 @@
 #import "SCHSyncComponent.h"
 #import "NSNumber+ObjectTypes.h"
 
+@class SCHProfileItem;
+
 // Constants
 extern NSString * const SCHProfileSyncComponentWillDeleteNotification;
 extern NSString * const SCHProfileSyncComponentDeletedProfileIDs;
@@ -22,7 +24,7 @@ extern NSString * const SCHProfileSyncComponentDidFailNotification;
 }
 
 - (NSArray *)localProfiles;
-- (void)addProfile:(NSDictionary *)webProfile;
+- (SCHProfileItem *)addProfile:(NSDictionary *)webProfile;
 - (void)syncProfiles:(NSArray *)profileList;
 
 @end

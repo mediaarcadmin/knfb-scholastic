@@ -182,18 +182,9 @@ NSString * const SCHBookshelfSyncComponentDidFailNotification = @"SCHBookshelfSy
     NSMutableArray *bookIdentifiers = [NSMutableArray arrayWithCapacity:[contentMetadataItems count]];
     
     for (NSDictionary *book in contentMetadataItems) {
-        @try {
-            SCHBookIdentifier *bookIdentifier = [[[SCHBookIdentifier alloc] initWithObject:book] autorelease];
-            if (bookIdentifier) {
-                [bookIdentifiers addObject:bookIdentifier];
-            }
-        }
-        @catch (NSException *exception) {
-            NSLog(@"%@", exception);
-        }
-        @finally {
-            // if any of the responses do not have the book identifier 
-            // information then we just ignore them and continue
+        SCHBookIdentifier *bookIdentifier = [[[SCHBookIdentifier alloc] initWithObject:book] autorelease];
+        if (bookIdentifier) {
+            [bookIdentifiers addObject:bookIdentifier];
         }
     }
     
@@ -403,39 +394,33 @@ NSString * const SCHBookshelfSyncComponentDidFailNotification = @"SCHBookshelfSy
 			break;			
 		}
 		
-        if ([webItem objectForKey:kSCHLibreAccessWebServiceContentIdentifier] == [NSNull null] ||
-            [webItem objectForKey:kSCHLibreAccessWebServiceDRMQualifier] == [NSNull null]) {
+        SCHBookIdentifier *webBookIdentifier = [[SCHBookIdentifier alloc] initWithObject:webItem];
+        SCHBookIdentifier *localBookIdentifier = localItem.bookIdentifier;
+        
+        if (webBookIdentifier == nil) {
             webItem = nil;
+        } else if (localBookIdentifier == nil) {
+            localItem = nil;                
         } else {
-            SCHBookIdentifier *webBookIdentifier = [[SCHBookIdentifier alloc] initWithObject:webItem];
-            SCHBookIdentifier *localBookIdentifier = localItem.bookIdentifier;
-            
-            if (webBookIdentifier == nil) {
-                webItem = nil;
-            } else if (localBookIdentifier == nil) {
-                localItem = nil;                
-            } else {
-                switch ([webBookIdentifier compare:localBookIdentifier]) {
-                    case NSOrderedSame:
-                        [self syncContentMetadataItem:webItem withContentMetadataItem:localItem];
-                        webItem = nil;
-                        localItem = nil;
-                        break;
-                    case NSOrderedAscending:
-                        [creationPool addObject:webItem];
-                        webItem = nil;
-                        break;
-                    case NSOrderedDescending:
-                        [deletePool addObject:localItem];                
-                        localItem = nil;
-                        break;			
-                }
+            switch ([webBookIdentifier compare:localBookIdentifier]) {
+                case NSOrderedSame:
+                    [self syncContentMetadataItem:webItem withContentMetadataItem:localItem];
+                    webItem = nil;
+                    localItem = nil;
+                    break;
+                case NSOrderedAscending:
+                    [creationPool addObject:webItem];
+                    webItem = nil;
+                    break;
+                case NSOrderedDescending:
+                    [deletePool addObject:localItem];                
+                    localItem = nil;
+                    break;			
             }
-            
-            [webBookIdentifier release];            
         }
-		
-
+            
+        [webBookIdentifier release];            
+        
 		if (webItem == nil) {
 			webItem = [webEnumerator nextObject];
 		}
@@ -474,26 +459,32 @@ NSString * const SCHBookshelfSyncComponentDidFailNotification = @"SCHBookshelfSy
 
 - (SCHContentMetadataItem *)addContentMetadataItem:(NSDictionary *)webContentMetadataItem
 {
-	SCHContentMetadataItem *newContentMetadataItem = [NSEntityDescription insertNewObjectForEntityForName:kSCHContentMetadataItem inManagedObjectContext:self.managedObjectContext];
-	
-	newContentMetadataItem.DRMQualifier = [self makeNullNil:[webContentMetadataItem objectForKey:kSCHLibreAccessWebServiceDRMQualifier]];
-	newContentMetadataItem.ContentIdentifierType = [self makeNullNil:[webContentMetadataItem objectForKey:kSCHLibreAccessWebServiceContentIdentifierType]];
-	newContentMetadataItem.ContentIdentifier = [self makeNullNil:[webContentMetadataItem objectForKey:kSCHLibreAccessWebServiceContentIdentifier]];
-	
-	newContentMetadataItem.Author = [self makeNullNil:[webContentMetadataItem objectForKey:kSCHLibreAccessWebServiceAuthor]];
-	newContentMetadataItem.Version = [self makeNullNil:[webContentMetadataItem objectForKey:kSCHLibreAccessWebServiceVersion]];
-	newContentMetadataItem.Enhanced = [self makeNullNil:[webContentMetadataItem objectForKey:kSCHLibreAccessWebServiceEnhanced]];
-	newContentMetadataItem.FileSize = [self makeNullNil:[webContentMetadataItem objectForKey:kSCHLibreAccessWebServiceFileSize]];
-	newContentMetadataItem.CoverURL = [self makeNullNil:[webContentMetadataItem objectForKey:kSCHLibreAccessWebServiceCoverURL]];
-	newContentMetadataItem.ContentURL = [self makeNullNil:[webContentMetadataItem objectForKey:kSCHLibreAccessWebServiceContentURL]];
-	newContentMetadataItem.PageNumber = [self makeNullNil:[webContentMetadataItem objectForKey:kSCHLibreAccessWebServicePageNumber]];
-	newContentMetadataItem.Title = [self makeNullNil:[webContentMetadataItem objectForKey:kSCHLibreAccessWebServiceTitle]];
-	newContentMetadataItem.Description = [self makeNullNil:[webContentMetadataItem objectForKey:kSCHLibreAccessWebServiceDescription]];
-	newContentMetadataItem.AverageRating = [self makeNullNil:[webContentMetadataItem objectForKey:kSCHLibreAccessWebServiceAverageRating]];
+    SCHContentMetadataItem *newContentMetadataItem = nil;
+    SCHBookIdentifier *webBookIdentifier = [[SCHBookIdentifier alloc] initWithObject:webContentMetadataItem];
     
-    newContentMetadataItem.AppBook = [NSEntityDescription insertNewObjectForEntityForName:kSCHAppBook inManagedObjectContext:self.managedObjectContext];
+    if (webContentMetadataItem != nil && webBookIdentifier != nil) {
+        newContentMetadataItem = [NSEntityDescription insertNewObjectForEntityForName:kSCHContentMetadataItem inManagedObjectContext:self.managedObjectContext];
+        
+        newContentMetadataItem.DRMQualifier = webBookIdentifier.DRMQualifier;
+        newContentMetadataItem.ContentIdentifierType = [self makeNullNil:[webContentMetadataItem objectForKey:kSCHLibreAccessWebServiceContentIdentifierType]];
+        newContentMetadataItem.ContentIdentifier = webBookIdentifier.isbn;
+        
+        newContentMetadataItem.Author = [self makeNullNil:[webContentMetadataItem objectForKey:kSCHLibreAccessWebServiceAuthor]];
+        newContentMetadataItem.Version = [self makeNullNil:[webContentMetadataItem objectForKey:kSCHLibreAccessWebServiceVersion]];
+        newContentMetadataItem.Enhanced = [self makeNullNil:[webContentMetadataItem objectForKey:kSCHLibreAccessWebServiceEnhanced]];
+        newContentMetadataItem.FileSize = [self makeNullNil:[webContentMetadataItem objectForKey:kSCHLibreAccessWebServiceFileSize]];
+        newContentMetadataItem.CoverURL = [self makeNullNil:[webContentMetadataItem objectForKey:kSCHLibreAccessWebServiceCoverURL]];
+        newContentMetadataItem.ContentURL = [self makeNullNil:[webContentMetadataItem objectForKey:kSCHLibreAccessWebServiceContentURL]];
+        newContentMetadataItem.PageNumber = [self makeNullNil:[webContentMetadataItem objectForKey:kSCHLibreAccessWebServicePageNumber]];
+        newContentMetadataItem.Title = [self makeNullNil:[webContentMetadataItem objectForKey:kSCHLibreAccessWebServiceTitle]];
+        newContentMetadataItem.Description = [self makeNullNil:[webContentMetadataItem objectForKey:kSCHLibreAccessWebServiceDescription]];
+        newContentMetadataItem.AverageRating = [self makeNullNil:[webContentMetadataItem objectForKey:kSCHLibreAccessWebServiceAverageRating]];
+        
+        newContentMetadataItem.AppBook = [NSEntityDescription insertNewObjectForEntityForName:kSCHAppBook inManagedObjectContext:self.managedObjectContext];
+    }
+    [webBookIdentifier release], webBookIdentifier = nil;
     
-    return(newContentMetadataItem);
+    return newContentMetadataItem;
 }
 
 - (void)syncContentMetadataItem:(NSDictionary *)webContentMetadataItem withContentMetadataItem:(SCHContentMetadataItem *)localContentMetadataItem

@@ -40,12 +40,14 @@ NSString * const SCHWishListSyncComponentDidFailNotification = @"SCHWishListSync
 - (NSArray *)localProfiles;
 - (NSArray *)localWishListProfilesWithItemStates:(NSArray *)changedStates;
 - (void)syncWishListProfiles:(NSArray *)webWishListProfiles;
+- (BOOL)wishListProfileIDIsValid:(NSNumber *)wishListProfileID;
 - (SCHWishListProfile *)wishListProfile:(NSDictionary *)wishListProfile;
 - (void)syncWishListProfile:(NSDictionary *)webWishListProfile 
         withWishListProfile:(SCHWishListProfile *)localWishListProfile;
 - (void)syncWishListItems:(NSArray *)webWishListItems
         withWishListItems:(NSSet *)localWishListItems
                insertInto:(SCHWishListProfile *)wishListProfile;
+- (BOOL)wishListItemIDIsValid:(NSString *)wishListItemID;
 - (SCHWishListItem *)wishListItem:(NSDictionary *)wishListItem;
 - (void)syncWishListItem:(NSDictionary *)webWishListItem 
         withWishListItem:(SCHWishListItem *)localWishListItem;
@@ -399,12 +401,12 @@ NSString * const SCHWishListSyncComponentDidFailNotification = @"SCHWishListSync
 		}
 		
         id webProfile = [self makeNullNil:[webItem valueForKey:kSCHWishListWebServiceProfile]];
-        id webItemID = [webProfile valueForKey:kSCHWishListWebServiceProfileID];
+        id webItemID =  [self makeNullNil:[webProfile valueForKey:kSCHWishListWebServiceProfileID]];
 		id localItemID = [localItem valueForKey:kSCHWishListWebServiceProfileID];
 		
-        if ((id)webItemID == [NSNull null]) {
+        if (webItemID == nil || [self wishListProfileIDIsValid:webItemID] == NO) {
             webItem = nil;
-        } else if ((id)localItemID == [NSNull null]) {
+        } else if (localItemID == nil) {
             localItem = nil;
         } else {
             switch ([webItemID compare:localItemID]) {
@@ -464,13 +466,20 @@ NSString * const SCHWishListSyncComponentDidFailNotification = @"SCHWishListSync
 	[self save];    
 }
 
+- (BOOL)wishListProfileIDIsValid:(NSNumber *)wishListProfileID
+{
+    return [wishListProfileID integerValue] > 0;
+}
+
 - (SCHWishListProfile *)wishListProfile:(NSDictionary *)wishListProfile
 {
 	SCHWishListProfile *ret = nil;
 	
 	if (wishListProfile != nil) {
         id webProfile = [self makeNullNil:[wishListProfile valueForKey:kSCHWishListWebServiceProfile]];
-        if (webProfile != nil) {            
+        id wishListProfileID = [self makeNullNil:[webProfile valueForKey:kSCHWishListWebServiceProfileID]];
+        
+        if (webProfile != nil && [self wishListProfileIDIsValid:wishListProfileID] == YES) {            
             ret = [NSEntityDescription insertNewObjectForEntityForName:kSCHWishListProfile 
                                                 inManagedObjectContext:self.managedObjectContext];			
             
@@ -478,7 +487,7 @@ NSString * const SCHWishListSyncComponentDidFailNotification = @"SCHWishListSync
             ret.LastModified = [self makeNullNil:[webProfile objectForKey:kSCHWishListWebServiceTimestamp]];
             ret.State = [NSNumber numberWithStatus:kSCHStatusUnmodified];
             
-            ret.ProfileID = [self makeNullNil:[webProfile objectForKey:kSCHWishListWebServiceProfileID]];
+            ret.ProfileID = wishListProfileID;
             ret.ProfileName = [self makeNullNil:[webProfile objectForKey:kSCHWishListWebServiceProfileName]];
             
             [self syncWishListItems:[self makeNullNil:[wishListProfile objectForKey:kSCHWishListWebServiceItemList]] 
@@ -487,7 +496,7 @@ NSString * const SCHWishListSyncComponentDidFailNotification = @"SCHWishListSync
         }
     }
 	
-	return(ret);
+	return ret;
 }
 
 - (void)syncWishListProfile:(NSDictionary *)webWishListProfile 
@@ -544,12 +553,12 @@ NSString * const SCHWishListSyncComponentDidFailNotification = @"SCHWishListSync
 			break;			
 		}
 		
-		id webItemID = [webItem valueForKey:kSCHWishListWebServiceISBN];
+		id webItemID =  [self makeNullNil:[webItem valueForKey:kSCHWishListWebServiceISBN]];
 		id localItemID = [localItem valueForKey:kSCHWishListWebServiceISBN];
 		
-        if ((id)webItemID == [NSNull null]) {
+        if (webItemID == nil || [self wishListItemIDIsValid:webItemID] == NO) {
             webItem = nil;
-        } else if ((id)localItemID == [NSNull null]) {
+        } else if (localItemID == nil) {
             localItem = nil;
         } else {
             switch ([webItemID compare:localItemID]) {
@@ -622,11 +631,17 @@ NSString * const SCHWishListSyncComponentDidFailNotification = @"SCHWishListSync
 	[self save];    
 }
 
+- (BOOL)wishListItemIDIsValid:(NSString *)wishListItemID
+{
+    return [[wishListItemID stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]] length] > 0;
+}
+
 - (SCHWishListItem *)wishListItem:(NSDictionary *)wishListItem
 {
 	SCHWishListItem *ret = nil;
-	
-	if (wishListItem != nil) {	
+	id wishListItemID = [self makeNullNil:[wishListItem valueForKey:kSCHWishListWebServiceISBN]];
+
+	if (wishListItem != nil && [self wishListItemIDIsValid:wishListItemID] == YES) {	
 		ret = [NSEntityDescription insertNewObjectForEntityForName:kSCHWishListItem 
                                             inManagedObjectContext:self.managedObjectContext];			
 
@@ -636,13 +651,13 @@ NSString * const SCHWishListSyncComponentDidFailNotification = @"SCHWishListSync
 
 		ret.Author = [self makeNullNil:[wishListItem objectForKey:kSCHWishListWebServiceAuthor]];
 		ret.InitiatedBy = [self makeNullNil:[wishListItem objectForKey:kSCHWishListWebServiceInitiatedBy]];
-        ret.ISBN = [self makeNullNil:[wishListItem objectForKey:kSCHWishListWebServiceISBN]];
+        ret.ISBN = wishListItemID;
         ret.Title = [self makeNullNil:[wishListItem objectForKey:kSCHWishListWebServiceTitle]];  
         
         [ret assignAppRecommendationItem];
 	}
 	
-	return(ret);
+	return ret;
 }
 
 - (void)syncWishListItem:(NSDictionary *)webWishListItem 
