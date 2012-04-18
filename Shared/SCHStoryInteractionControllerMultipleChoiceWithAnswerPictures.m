@@ -20,6 +20,7 @@
 
 - (void)setupQuestion;
 - (void)playCurrentQuestionAudio;
+- (void)setupButtonsForOrientation:(UIInterfaceOrientation)orientation;
 
 @end
 
@@ -68,6 +69,9 @@
 - (void)setupQuestion
 {
     [self setTitle:[self currentQuestion].prompt];
+    
+    [self setupButtonsForOrientation:self.interfaceOrientation];
+    
     self.simultaneousTapCount = 0;
     self.controllerState = SCHStoryInteractionControllerStateAskingOpeningQuestion;
     
@@ -148,6 +152,27 @@
                   }];
         }
     }];
+}
+
+- (void)rotateToOrientation:(UIInterfaceOrientation)orientation
+{
+    [super rotateToOrientation:orientation];
+    [self setupButtonsForOrientation:orientation];
+}
+
+- (void)setupButtonsForOrientation:(UIInterfaceOrientation)orientation
+{
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
+        if (UIInterfaceOrientationIsLandscape(orientation)) {
+            [(UIView *)[self.answerButtons objectAtIndex:0] setFrame:CGRectMake(17, 55, 140, 140)];
+            [(UIView *)[self.answerButtons objectAtIndex:1] setFrame:CGRectMake(165, 55, 140, 140)];
+            [(UIView *)[self.answerButtons objectAtIndex:2] setFrame:CGRectMake(313, 55, 140, 140)];
+        } else {
+            [(UIView *)[self.answerButtons objectAtIndex:0] setFrame:CGRectMake(11, 61, 140, 140)];
+            [(UIView *)[self.answerButtons objectAtIndex:1] setFrame:CGRectMake(159, 61, 140, 140)];
+            [(UIView *)[self.answerButtons objectAtIndex:2] setFrame:CGRectMake(85, 211, 140, 140)];
+        }
+    }
 }
 
 #pragma mark - Override for SCHStoryInteractionControllerStateReactions
