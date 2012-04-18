@@ -93,6 +93,7 @@ static CGFloat const kSCHStoryInteractionControllerVideoBorderWidth = 4.0;
         self.moviePlayer.controlStyle = MPMovieControlStyleNone;
         self.moviePlayer.shouldAutoplay = NO;
         [self.moviePlayer.view setFrame:self.movieContainerView.bounds];
+        self.moviePlayer.view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin | UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin;
         [self.movieContainerView addSubview:self.moviePlayer.view];
     }
     
