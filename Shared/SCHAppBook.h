@@ -129,7 +129,7 @@ typedef enum {
 @property (nonatomic, readonly) BOOL diskVersionOutOfDate;
 @property (nonatomic, readonly) NSNumber * AverageRating;
 
-
++ (SCHBookIdentifier *)invalidBookIdentifier;
 - (BOOL)bookCoverURLIsValid;
 - (BOOL)bookFileURLIsValid;
 - (BOOL)bookCoverURLIsBundleURL;

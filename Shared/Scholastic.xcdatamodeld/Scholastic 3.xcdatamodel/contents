@@ -42,7 +42,7 @@
         <relationship name="ContentMetadataItem" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="SCHContentMetadataItem" inverseName="AppBook" inverseEntity="SCHContentMetadataItem" indexed="YES"/>
     </entity>
     <entity name="SCHAppContentProfileItem" representedClassName="SCHAppContentProfileItem">
-        <attribute name="DRMQualifier" optional="YES" attributeType="Integer 16" defaultValueString="0" indexed="YES"/>
+        <attribute name="DRMQualifier" attributeType="Integer 16" defaultValueString="0" indexed="YES"/>
         <attribute name="ISBN" attributeType="String" defaultValueString="0" indexed="YES"/>
         <attribute name="IsNewBook" optional="YES" attributeType="Boolean" defaultValueString="YES"/>
         <attribute name="LastBookmarkAnnotationSync" optional="YES" attributeType="Date"/>
@@ -113,7 +113,7 @@
     <entity name="SCHContentItem" representedClassName="SCHContentItem" isAbstract="YES">
         <attribute name="ContentIdentifier" optional="YES" attributeType="String" indexed="YES"/>
         <attribute name="ContentIdentifierType" optional="YES" attributeType="Integer 16" defaultValueString="0"/>
-        <attribute name="DRMQualifier" optional="YES" attributeType="Integer 16" defaultValueString="0" indexed="YES"/>
+        <attribute name="DRMQualifier" attributeType="Integer 16" defaultValueString="0" indexed="YES"/>
     </entity>
     <entity name="SCHContentMetadataItem" representedClassName="SCHContentMetadataItem" parentEntity="SCHContentItem">
         <attribute name="Author" optional="YES" attributeType="String"/>
@@ -289,7 +289,7 @@
         <attribute name="ContentIdentifier" optional="YES" attributeType="String" indexed="YES"/>
         <attribute name="ContentIdentifierType" optional="YES" attributeType="Integer 16" defaultValueString="0"/>
         <attribute name="DefaultAssignment" optional="YES" attributeType="Boolean"/>
-        <attribute name="DRMQualifier" optional="YES" attributeType="Integer 16" defaultValueString="0" indexed="YES"/>
+        <attribute name="DRMQualifier" attributeType="Integer 16" defaultValueString="0" indexed="YES"/>
         <attribute name="Format" optional="YES" attributeType="String"/>
         <attribute name="FreeBook" optional="YES" attributeType="Boolean"/>
         <attribute name="LastVersion" optional="YES" attributeType="String"/>

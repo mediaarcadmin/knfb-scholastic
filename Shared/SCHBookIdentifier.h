@@ -25,6 +25,4 @@ extern NSString * const kSCHBookIdentifierBookIdentifier;
 - (id)initWithEncodedString:(NSString *)string;
 - (NSString *)encodeAsString;
 
-+ (SCHBookIdentifier *)invalidBookIdentifier;
-
 @end

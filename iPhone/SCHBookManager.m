@@ -148,6 +148,10 @@ static NSDictionary *featureCompatibilityDictionary = nil;
     NSAssert(identifier != nil, @"nil identifier at bookWithIdentifier");
     NSAssert(managedObjectContext != nil, @"nil managedObjectContext at bookWithIdentifier");
         
+    if (identifier == nil) {
+        return nil;
+    }
+    
     SCHAppBook *appBook = [self.appBookCache objectForKey:identifier];
     
     

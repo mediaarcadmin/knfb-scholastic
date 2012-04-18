@@ -460,12 +460,12 @@ static NSTimeInterval const kSCHRecommendationSyncComponentBookSyncDelayTimeInte
 			break;			
 		}
 		
-        id webItemID = [webItem valueForKey:kSCHRecommendationWebServiceAge];
+        id webItemID =  [self makeNullNil:[webItem valueForKey:kSCHRecommendationWebServiceAge]];
 		id localItemID = [localItem valueForKey:kSCHRecommendationWebServiceAge];
 		
-        if ((id)webItemID == [NSNull null]) {
+        if (webItemID == nil || [self recommendationProfileIDIsValid:webItemID] == NO) {
             webItem = nil;
-        } else if ((id)localItemID == [NSNull null]) {
+        } else if (localItemID == nil) {
             localItem = nil;
         } else {
             switch ([webItemID compare:localItemID]) {
@@ -502,16 +502,22 @@ static NSTimeInterval const kSCHRecommendationSyncComponentBookSyncDelayTimeInte
 	[self save];    
 }
 
+- (BOOL)recommendationProfileIDIsValid:(NSNumber *)recommendationProfileID
+{
+    return [recommendationProfileID integerValue] > 0;
+}
+
 - (SCHRecommendationProfile *)recommendationProfile:(NSDictionary *)webRecommendationProfile
                                            syncDate:(NSDate *)syncDate
 {
 	SCHRecommendationProfile *ret = nil;
-	
-	if (webRecommendationProfile != nil) {
+	id recommendationProfileID =  [self makeNullNil:[webRecommendationProfile valueForKey:kSCHRecommendationWebServiceAge]];
+
+	if (webRecommendationProfile != nil && [self recommendationProfileIDIsValid:recommendationProfileID] == YES) {
         ret = [NSEntityDescription insertNewObjectForEntityForName:kSCHRecommendationProfile 
                                             inManagedObjectContext:self.managedObjectContext];			
         
-        ret.age = [self makeNullNil:[webRecommendationProfile objectForKey:kSCHRecommendationWebServiceAge]];
+        ret.age = recommendationProfileID;
         ret.fetchDate = syncDate;
         
         [self syncRecommendationItems:[self makeNullNil:[webRecommendationProfile objectForKey:kSCHRecommendationWebServiceItems]] 
@@ -519,7 +525,7 @@ static NSTimeInterval const kSCHRecommendationSyncComponentBookSyncDelayTimeInte
                            insertInto:ret];            
     }
 	
-	return(ret);
+	return ret;
 }
 
 - (void)syncRecommendationProfile:(NSDictionary *)webRecommendationProfile 
@@ -566,12 +572,12 @@ static NSTimeInterval const kSCHRecommendationSyncComponentBookSyncDelayTimeInte
 			break;			
 		}
 		
-        id webItemID = [webItem valueForKey:kSCHRecommendationWebServiceISBN];
+        id webItemID = [self makeNullNil:[webItem valueForKey:kSCHRecommendationWebServiceISBN]];
 		id localItemID = [localItem valueForKey:kSCHRecommendationWebServiceISBN];
 		
-        if ((id)webItemID == [NSNull null]) {
+        if (webItemID == nil || [self recommendationISBNIDIsValid:webItemID] == NO) {
             webItem = nil;
-        } else if ((id)localItemID == [NSNull null]) {
+        } else if (localItemID == nil) {
             localItem = nil;
         } else {
             switch ([webItemID compare:localItemID]) {
@@ -608,16 +614,22 @@ static NSTimeInterval const kSCHRecommendationSyncComponentBookSyncDelayTimeInte
 	[self save];    
 }
 
+- (BOOL)recommendationISBNIDIsValid:(NSString *)recommendationISBNID
+{
+    return [[recommendationISBNID stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]] length] > 0;
+}
+
 - (SCHRecommendationISBN *)recommendationISBN:(NSDictionary *)webRecommendationISBN
                                      syncDate:(NSDate *)syncDate
 {
 	SCHRecommendationISBN *ret = nil;
-	
-	if (webRecommendationISBN != nil) {
+	id recommendationISBNID = [self makeNullNil:[webRecommendationISBN valueForKey:kSCHRecommendationWebServiceISBN]];
+    
+	if (webRecommendationISBN != nil && [self recommendationISBNIDIsValid:recommendationISBNID] == YES) {
         ret = [NSEntityDescription insertNewObjectForEntityForName:kSCHRecommendationISBN 
                                             inManagedObjectContext:self.managedObjectContext];			
         
-        ret.isbn = [self makeNullNil:[webRecommendationISBN objectForKey:kSCHRecommendationWebServiceISBN]];
+        ret.isbn = recommendationISBNID;
         ret.fetchDate = syncDate;
         
         [self syncRecommendationItems:[self makeNullNil:[webRecommendationISBN objectForKey:kSCHRecommendationWebServiceItems]] 
@@ -625,7 +637,7 @@ static NSTimeInterval const kSCHRecommendationSyncComponentBookSyncDelayTimeInte
                            insertInto:ret];            
     }
 	
-	return(ret);
+	return ret;
 }
 
 - (void)syncRecommendationISBN:(NSDictionary *)webRecommendationISBN 
@@ -675,12 +687,12 @@ static NSTimeInterval const kSCHRecommendationSyncComponentBookSyncDelayTimeInte
 			break;			
 		}
 		
-		id webItemID = [webItem valueForKey:kSCHRecommendationWebServiceProductCode];
+		id webItemID = [self makeNullNil:[webItem valueForKey:kSCHRecommendationWebServiceProductCode]];
 		id localItemID = [localItem valueForKey:kSCHRecommendationWebServiceProductCode];
 		
-        if ((id)webItemID == [NSNull null]) {
+        if (webItemID == nil || [self recommendationItemIDIsValid:webItemID] == NO) {
             webItem = nil;
-        } else if ((id)localItemID == [NSNull null]) {
+        } else if (localItemID == nil) {
             localItem = nil;
         } else {
             switch ([webItemID compare:localItemID]) {
@@ -753,11 +765,17 @@ static NSTimeInterval const kSCHRecommendationSyncComponentBookSyncDelayTimeInte
 	[self save];    
 }
 
+- (BOOL)recommendationItemIDIsValid:(NSString *)recommendationItemID
+{
+    return [[recommendationItemID stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]] length] > 0;
+}
+
 - (SCHRecommendationItem *)recommendationItem:(NSDictionary *)webRecommendationItem
 {
 	SCHRecommendationItem *ret = nil;
-	
-	if (webRecommendationItem != nil) {	
+	id recommendationItemID = [self makeNullNil:[webRecommendationItem valueForKey:kSCHRecommendationWebServiceProductCode]];
+    
+	if (webRecommendationItem != nil && [self recommendationItemIDIsValid:recommendationItemID] == YES) {	
 		ret = [NSEntityDescription insertNewObjectForEntityForName:kSCHRecommendationItem 
                                             inManagedObjectContext:self.managedObjectContext];			
         
@@ -766,7 +784,7 @@ static NSTimeInterval const kSCHRecommendationSyncComponentBookSyncDelayTimeInte
         ret.image_link = [self makeNullNil:[webRecommendationItem objectForKey:kSCHRecommendationWebServiceImageLink]];
         ret.regular_price = [self makeNullNil:[webRecommendationItem objectForKey:kSCHRecommendationWebServiceRegularPrice]];
         ret.sale_price = [self makeNullNil:[webRecommendationItem objectForKey:kSCHRecommendationWebServiceSalePrice]];        
-        ret.product_code = [self makeNullNil:[webRecommendationItem objectForKey:kSCHRecommendationWebServiceProductCode]];                
+        ret.product_code = recommendationItemID;
         ret.format = [self makeNullNil:[webRecommendationItem objectForKey:kSCHRecommendationWebServiceFormat]];                        
         ret.author = [self makeNullNil:[webRecommendationItem objectForKey:kSCHRecommendationWebServiceAuthor]];                                
         ret.order = [self makeNullNil:[webRecommendationItem objectForKey:kSCHRecommendationWebServiceOrder]];                                        
@@ -774,7 +792,7 @@ static NSTimeInterval const kSCHRecommendationSyncComponentBookSyncDelayTimeInte
         [ret assignAppRecommendationItem];        
 	}
 	
-	return(ret);
+	return ret;
 }
 
 - (void)syncRecommendationItem:(NSDictionary *)webRecommendationItem 

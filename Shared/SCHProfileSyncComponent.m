@@ -34,6 +34,7 @@ NSString * const SCHProfileSyncComponentDidFailNotification = @"SCHProfileSyncCo
 - (void)applyProfileSaves:(NSArray *)profilesArray;
 - (void)processSaveUserProfilesWithResult:(NSDictionary *)result;
 - (BOOL)updateProfiles;
+- (BOOL)profileIDIsValid:(NSNumber *)profileID;
 - (void)syncProfile:(NSDictionary *)webProfile withProfile:(SCHProfileItem *)localProfile;
 - (void)removeWishListForProfile:(SCHProfileItem *)profileItem;
 
@@ -347,12 +348,12 @@ NSString * const SCHProfileSyncComponentDidFailNotification = @"SCHProfileSyncCo
 			break;			
 		}
 
-		id webItemID = [webItem valueForKey:kSCHLibreAccessWebServiceID];
+		id webItemID = [self makeNullNil:[webItem valueForKey:kSCHLibreAccessWebServiceID]];
 		id localItemID = [localItem valueForKey:kSCHLibreAccessWebServiceID];
 
-        if ((id)webItemID == [NSNull null]) {
+        if (webItemID == nil || [self profileIDIsValid:webItemID] == NO) {
             webItem = nil;
-        } else if ((id)localItemID == [NSNull null]) {
+        } else if (localItemID == nil) {
             localItem = nil;            
         } else {        
             switch ([webItemID compare:localItemID]) {
@@ -405,37 +406,49 @@ NSString * const SCHProfileSyncComponentDidFailNotification = @"SCHProfileSyncCo
 	[self save];
 }
 
-- (void)addProfile:(NSDictionary *)webProfile
+- (BOOL)profileIDIsValid:(NSNumber *)profileID
 {
-    SCHProfileItem *newProfileItem = [NSEntityDescription insertNewObjectForEntityForName:kSCHProfileItem inManagedObjectContext:self.managedObjectContext];
+    return [profileID integerValue] > 0;
+}
+
+- (SCHProfileItem *)addProfile:(NSDictionary *)webProfile
+{
+    SCHProfileItem *newProfileItem = nil;
+    id profileID = [self makeNullNil:[webProfile valueForKey:kSCHLibreAccessWebServiceID]];
     
-    newProfileItem.StoryInteractionEnabled = [self makeNullNil:[webProfile valueForKey:kSCHLibreAccessWebServiceStoryInteractionEnabled]];
-    newProfileItem.ID = [self makeNullNil:[webProfile valueForKey:kSCHLibreAccessWebServiceID]];
-    newProfileItem.LastPasswordModified = [self makeNullNil:[webProfile valueForKey:kSCHLibreAccessWebServiceLastPasswordModified]];
-    newProfileItem.Password = [self makeNullNil:[webProfile valueForKey:kSCHLibreAccessWebServicePassword]];
-    newProfileItem.Birthday = [self makeNullNil:[webProfile valueForKey:kSCHLibreAccessWebServiceBirthday]];
-    newProfileItem.FirstName = [self makeNullNil:[webProfile valueForKey:kSCHLibreAccessWebServiceFirstName]];
-    newProfileItem.ProfilePasswordRequired = [self makeNullNil:[webProfile valueForKey:kSCHLibreAccessWebServiceProfilePasswordRequired]];
-    newProfileItem.Type = [self makeNullNil:[webProfile valueForKey:kSCHLibreAccessWebServiceType]];
-    newProfileItem.ScreenName = [self makeNullNil:[webProfile valueForKey:kSCHLibreAccessWebServiceScreenName]];
-    newProfileItem.AutoAssignContentToProfiles = [self makeNullNil:[webProfile valueForKey:kSCHLibreAccessWebServiceAutoAssignContentToProfiles]];
-    newProfileItem.LastScreenNameModified = [self makeNullNil:[webProfile valueForKey:kSCHLibreAccessWebServiceLastScreenNameModified]];
-    newProfileItem.UserKey = [self makeNullNil:[webProfile valueForKey:kSCHLibreAccessWebServiceUserKey]];
-    newProfileItem.BookshelfStyle = [self makeNullNil:[webProfile valueForKey:kSCHLibreAccessWebServiceBookshelfStyle]];
-    newProfileItem.LastName = [self makeNullNil:[webProfile valueForKey:kSCHLibreAccessWebServiceLastName]];
-    newProfileItem.LastModified = [self makeNullNil:[webProfile valueForKey:kSCHLibreAccessWebServiceLastModified]];
-    newProfileItem.State = [NSNumber numberWithStatus:kSCHStatusUnmodified];
+    if (webProfile != nil && [self profileIDIsValid:profileID] == YES) {
+        newProfileItem = [NSEntityDescription insertNewObjectForEntityForName:kSCHProfileItem inManagedObjectContext:self.managedObjectContext];
+        
+        newProfileItem.StoryInteractionEnabled = [self makeNullNil:[webProfile valueForKey:kSCHLibreAccessWebServiceStoryInteractionEnabled]];
+        newProfileItem.ID = profileID;
+        newProfileItem.LastPasswordModified = [self makeNullNil:[webProfile valueForKey:kSCHLibreAccessWebServiceLastPasswordModified]];
+        newProfileItem.Password = [self makeNullNil:[webProfile valueForKey:kSCHLibreAccessWebServicePassword]];
+        newProfileItem.Birthday = [self makeNullNil:[webProfile valueForKey:kSCHLibreAccessWebServiceBirthday]];
+        newProfileItem.FirstName = [self makeNullNil:[webProfile valueForKey:kSCHLibreAccessWebServiceFirstName]];
+        newProfileItem.ProfilePasswordRequired = [self makeNullNil:[webProfile valueForKey:kSCHLibreAccessWebServiceProfilePasswordRequired]];
+        newProfileItem.Type = [self makeNullNil:[webProfile valueForKey:kSCHLibreAccessWebServiceType]];
+        newProfileItem.ScreenName = [self makeNullNil:[webProfile valueForKey:kSCHLibreAccessWebServiceScreenName]];
+        newProfileItem.AutoAssignContentToProfiles = [self makeNullNil:[webProfile valueForKey:kSCHLibreAccessWebServiceAutoAssignContentToProfiles]];
+        newProfileItem.LastScreenNameModified = [self makeNullNil:[webProfile valueForKey:kSCHLibreAccessWebServiceLastScreenNameModified]];
+        newProfileItem.UserKey = [self makeNullNil:[webProfile valueForKey:kSCHLibreAccessWebServiceUserKey]];
+        newProfileItem.BookshelfStyle = [self makeNullNil:[webProfile valueForKey:kSCHLibreAccessWebServiceBookshelfStyle]];
+        newProfileItem.LastName = [self makeNullNil:[webProfile valueForKey:kSCHLibreAccessWebServiceLastName]];
+        newProfileItem.LastModified = [self makeNullNil:[webProfile valueForKey:kSCHLibreAccessWebServiceLastModified]];
+        newProfileItem.State = [NSNumber numberWithStatus:kSCHStatusUnmodified];
+        
+        newProfileItem.AppProfile = [NSEntityDescription insertNewObjectForEntityForName:kSCHAppProfile inManagedObjectContext:self.managedObjectContext];
+        
+        SCHAnnotationsItem *newAnnotationsItem = [NSEntityDescription insertNewObjectForEntityForName:kSCHAnnotationsItem inManagedObjectContext:self.managedObjectContext];
+        newAnnotationsItem.ProfileID = newProfileItem.ID;
+        
+        SCHWishListProfile *newWishListProfile = [NSEntityDescription insertNewObjectForEntityForName:kSCHWishListProfile inManagedObjectContext:self.managedObjectContext];    
+        newWishListProfile.ProfileID = newProfileItem.ID;
+        newWishListProfile.ProfileName = newProfileItem.ScreenName;
+        
+        NSLog(@"Added profile with screenname %@ and ID %@", newProfileItem.ScreenName, newProfileItem.ID);
+    }
     
-    newProfileItem.AppProfile = [NSEntityDescription insertNewObjectForEntityForName:kSCHAppProfile inManagedObjectContext:self.managedObjectContext];
-    
-    SCHAnnotationsItem *newAnnotationsItem = [NSEntityDescription insertNewObjectForEntityForName:kSCHAnnotationsItem inManagedObjectContext:self.managedObjectContext];
-    newAnnotationsItem.ProfileID = newProfileItem.ID;
-    
-    SCHWishListProfile *newWishListProfile = [NSEntityDescription insertNewObjectForEntityForName:kSCHWishListProfile inManagedObjectContext:self.managedObjectContext];    
-    newWishListProfile.ProfileID = newProfileItem.ID;
-    newWishListProfile.ProfileName = newProfileItem.ScreenName;
-    
-    NSLog(@"Added profile with screenname %@ and ID %@", newProfileItem.ScreenName, newProfileItem.ID);
+    return newProfileItem;
 }
 
 - (void)syncProfile:(NSDictionary *)webProfile withProfile:(SCHProfileItem *)localProfile

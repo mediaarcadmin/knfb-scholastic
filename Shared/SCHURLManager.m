@@ -298,10 +298,12 @@ static NSUInteger const kSCHURLManagerMaxConnections = 6;
         SCHBookIdentifier *bookIdentifier = [[[SCHBookIdentifier alloc] initWithObject:[list objectAtIndex:0]] autorelease];
         NSLog(@"Failed URLs for %@", bookIdentifier);
 
-        [[NSNotificationCenter defaultCenter] postNotificationName:kSCHURLManagerFailure 
-                                                            object:self 
-                                                          userInfo:[NSDictionary dictionaryWithObjects:[NSArray arrayWithObjects:bookIdentifier, bookIdentifier.isbn, [NSNumber numberWithInt:[error code]], nil]                                                                                                  forKeys:[NSArray arrayWithObjects:kSCHBookIdentifierBookIdentifier, kSCHAppRecommendationItemIsbn, kSCHAppRecommendationItemErrorCode, nil]]];	
-	}
+        if (bookIdentifier != nil) {
+            [[NSNotificationCenter defaultCenter] postNotificationName:kSCHURLManagerFailure 
+                                                                object:self 
+                                                              userInfo:[NSDictionary dictionaryWithObjects:[NSArray arrayWithObjects:bookIdentifier, bookIdentifier.isbn, [NSNumber numberWithInt:[error code]], nil]                                                                                                  forKeys:[NSArray arrayWithObjects:kSCHBookIdentifierBookIdentifier, kSCHAppRecommendationItemIsbn, kSCHAppRecommendationItemErrorCode, nil]]];	
+        }
+    }
     
 	if (requestCount < 1) {
 		if (self.backgroundTaskIdentifier != UIBackgroundTaskInvalid) {

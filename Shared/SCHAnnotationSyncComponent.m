@@ -162,19 +162,22 @@ NSString * const SCHAnnotationSyncComponentProfileIDs = @"SCHAnnotationSyncCompo
             // Only add books that do not already exist
             for (NSDictionary *book in books) {
                 SCHBookIdentifier *bookIdentifier = [[SCHBookIdentifier alloc] initWithObject:book];
-                __block BOOL bookAlreadyExists = NO;
-                [profileBooks enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
-                    SCHBookIdentifier *profileBookIdentifier = [[SCHBookIdentifier alloc] initWithObject:obj];
-                    if ([bookIdentifier isEqual:profileBookIdentifier] == YES) {
-                        bookAlreadyExists = YES;
-                        *stop = YES;
+                if (bookIdentifier != nil) {
+                    __block BOOL bookAlreadyExists = NO;
+                    [profileBooks enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+                        SCHBookIdentifier *profileBookIdentifier = [[SCHBookIdentifier alloc] initWithObject:obj];
+                        if (profileBookIdentifier != nil &&
+                            [bookIdentifier isEqual:profileBookIdentifier] == YES) {
+                            bookAlreadyExists = YES;
+                            *stop = YES;
+                        }
+                        [profileBookIdentifier release], profileBookIdentifier = nil;                    
+                    }];
+                    [bookIdentifier release], bookIdentifier = nil;
+                    
+                    if (bookAlreadyExists == NO) {
+                        [profileBooks addObject:book];
                     }
-                    [profileBookIdentifier release], profileBookIdentifier = nil;                    
-                }];
-                [bookIdentifier release], bookIdentifier = nil;
-                
-                if (bookAlreadyExists == NO) {
-                    [profileBooks addObject:book];
                 }
             }
         } else {
@@ -193,7 +196,8 @@ NSString * const SCHAnnotationSyncComponentProfileIDs = @"SCHAnnotationSyncCompo
                 __block NSUInteger removeBook = NSUIntegerMax;
                 [profileBooks enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
                     SCHBookIdentifier *profileBookIdentifier = [[SCHBookIdentifier alloc] initWithObject:obj];
-                    if ([bookIdentifier isEqual:profileBookIdentifier] == YES) {
+                    if (profileBookIdentifier != nil &&
+                        [bookIdentifier isEqual:profileBookIdentifier] == YES) {
                         removeBook = idx;
                         *stop = YES;
                     }
@@ -456,13 +460,7 @@ NSString * const SCHAnnotationSyncComponentProfileIDs = @"SCHAnnotationSyncCompo
 
 - (BOOL)annotationIDIsValid:(NSNumber *)annotationID
 {
-    BOOL ret = NO;
-    
-    if ([annotationID integerValue] > 0) {
-        ret = YES;
-    }
-    
-    return ret;
+    return [annotationID integerValue] > 0;
 }
 
 - (void)method:(NSString *)method didFailWithError:(NSError *)error 
@@ -733,41 +731,36 @@ NSString * const SCHAnnotationSyncComponentProfileIDs = @"SCHAnnotationSyncCompo
 			break;			
 		}
 				
-        if ([webItem objectForKey:kSCHLibreAccessWebServiceContentIdentifier] == [NSNull null] ||
-            [webItem objectForKey:kSCHLibreAccessWebServiceDRMQualifier] == [NSNull null]) {
+        SCHBookIdentifier *webBookIdentifier = [[SCHBookIdentifier alloc] initWithObject:webItem];
+        SCHBookIdentifier *localBookIdentifier = localItem.bookIdentifier;
+        
+        if (webBookIdentifier == nil) {
             webItem = nil;
-        } else {        
-            SCHBookIdentifier *webBookIdentifier = [[SCHBookIdentifier alloc] initWithObject:webItem];
-            SCHBookIdentifier *localBookIdentifier = localItem.bookIdentifier;
-            
-            if (webBookIdentifier == nil) {
-                webItem = nil;
-            } else if (localBookIdentifier == nil) {
-                localItem = nil;                                
-            } else {
-                switch ([webBookIdentifier compare:localBookIdentifier]) {
-                    case NSOrderedSame:
-                        [self syncAnnotationsContentItem:webItem 
-                              withAnnotationsContentItem:localItem 
-                                            canSyncNotes:canSyncNotes
-                                            canSyncRating:canSyncRating                         
-                                                syncDate:syncDate];
-                        [self backgroundSave:YES];
-                        webItem = nil;
-                        localItem = nil;
-                        break;
-                    case NSOrderedAscending:
-                        [creationPool addObject:webItem];
-                        webItem = nil;
-                        break;
-                    case NSOrderedDescending:
-                        localItem = nil;
-                        break;			
-                }		
-            }
-            
-            [webBookIdentifier release], webBookIdentifier = nil;
-        }
+        } else if (localBookIdentifier == nil) {
+            localItem = nil;                                
+        } else {
+            switch ([webBookIdentifier compare:localBookIdentifier]) {
+                case NSOrderedSame:
+                    [self syncAnnotationsContentItem:webItem 
+                          withAnnotationsContentItem:localItem 
+                                        canSyncNotes:canSyncNotes
+                                       canSyncRating:canSyncRating                         
+                                            syncDate:syncDate];
+                    [self backgroundSave:YES];
+                    webItem = nil;
+                    localItem = nil;
+                    break;
+                case NSOrderedAscending:
+                    [creationPool addObject:webItem];
+                    webItem = nil;
+                    break;
+                case NSOrderedDescending:
+                    localItem = nil;
+                    break;			
+            }		
+        }        
+        
+        [webBookIdentifier release], webBookIdentifier = nil;
         
 		if (webItem == nil) {
 			webItem = [webEnumerator nextObject];
@@ -841,20 +834,22 @@ NSString * const SCHAnnotationSyncComponentProfileIDs = @"SCHAnnotationSyncCompo
 {
     NSAssert([NSThread isMainThread] == NO, @"annotationsContentItem MUST NOT be executed on the main thread");
 	SCHAnnotationsContentItem *ret = nil;
-	
-	if (annotationsContentItem != nil) {
+	SCHBookIdentifier *webBookIdentifier = [[SCHBookIdentifier alloc] initWithObject:annotationsContentItem];
+    
+	if (annotationsContentItem != nil && webBookIdentifier != nil) {
         ret = [NSEntityDescription insertNewObjectForEntityForName:kSCHAnnotationsContentItem 
                                             inManagedObjectContext:self.backgroundThreadManagedObjectContext];
         
-		ret.DRMQualifier = [self makeNullNil:[annotationsContentItem objectForKey:kSCHLibreAccessWebServiceDRMQualifier]];
+		ret.DRMQualifier = webBookIdentifier.DRMQualifier;
 		ret.ContentIdentifierType = [self makeNullNil:[annotationsContentItem objectForKey:kSCHLibreAccessWebServiceContentIdentifierType]];
-		ret.ContentIdentifier = [self makeNullNil:[annotationsContentItem objectForKey:kSCHLibreAccessWebServiceContentIdentifier]];
+		ret.ContentIdentifier = webBookIdentifier.isbn;
 		
 		ret.Format = [self makeNullNil:[annotationsContentItem objectForKey:kSCHLibreAccessWebServiceFormat]];
         ret.PrivateAnnotations = [self privateAnnotation:[annotationsContentItem objectForKey:kSCHLibreAccessWebServicePrivateAnnotations]];        
     }
-	
-	return(ret);
+	[webBookIdentifier release], webBookIdentifier = nil;
+    
+	return ret;
 }
 
 - (SCHPrivateAnnotations *)privateAnnotation:(NSDictionary *)privateAnnotation
@@ -865,13 +860,22 @@ NSString * const SCHAnnotationSyncComponentProfileIDs = @"SCHAnnotationSyncCompo
 	
 	if (privateAnnotation != nil) {		
 		for (NSDictionary *highlight in [privateAnnotation objectForKey:kSCHLibreAccessWebServiceHighlights]) { 
-			[ret addHighlightsObject:[self highlight:highlight]];
+            SCHHighlight *newHighlight = [self highlight:highlight];
+            if (newHighlight != nil) {
+                [ret addHighlightsObject:newHighlight];
+            }
 		}
 		for (NSDictionary *note in [privateAnnotation objectForKey:kSCHLibreAccessWebServiceNotes]) { 
-			[ret addNotesObject:[self note:note]];
+            SCHNote *newNote = [self note:note];
+            if (newNote != nil) {
+                [ret addNotesObject:newNote];
+            }
 		}
 		for (NSDictionary *bookmark in [privateAnnotation objectForKey:kSCHLibreAccessWebServiceBookmarks]) { 
-			[ret addBookmarksObject:[self bookmark:bookmark]];
+            SCHBookmark *newBookmark = [self bookmark:bookmark];
+            if (newBookmark != nil) {
+                [ret addBookmarksObject:newBookmark];
+            }
 		}
 	}
     ret.LastPage = [self lastPage:[privateAnnotation objectForKey:kSCHLibreAccessWebServiceLastPage]];
@@ -914,12 +918,12 @@ NSString * const SCHAnnotationSyncComponentProfileIDs = @"SCHAnnotationSyncCompo
 			break;			
 		}
 		
-		id webItemID = [webItem valueForKey:kSCHLibreAccessWebServiceID];
+		id webItemID = [self makeNullNil:[webItem valueForKey:kSCHLibreAccessWebServiceID]];
 		id localItemID = [localItem valueForKey:kSCHLibreAccessWebServiceID];
 		
-        if ((id)webItemID == [NSNull null]) {
+        if (webItemID == nil || [self annotationIDIsValid:webItemID] == NO) {
             webItem = nil;
-        } else if ((id)localItemID == [NSNull null]) {
+        } else if (localItemID == nil) {
             localItem = nil;            
         } else {                
             switch ([webItemID compare:localItemID]) {
@@ -959,8 +963,11 @@ NSString * const SCHAnnotationSyncComponentProfileIDs = @"SCHAnnotationSyncCompo
     }                
 
 	for (NSDictionary *webItem in creationPool) {
-        [privateAnnotations addHighlightsObject:[self highlight:webItem]];
-        [self backgroundSave:YES];
+        SCHHighlight *newHighlight = [self highlight:webItem];
+        if (newHighlight != nil) {
+            [privateAnnotations addHighlightsObject:newHighlight];
+            [self backgroundSave:YES];
+        }
 	}
 
     SCHAppContentProfileItem *appContentProfileItem = [[privateAnnotations.AnnotationsContentItem.AnnotationsItem profileItem] 
@@ -994,15 +1001,16 @@ NSString * const SCHAnnotationSyncComponentProfileIDs = @"SCHAnnotationSyncCompo
 {
     NSAssert([NSThread isMainThread] == NO, @"highlight MUST NOT be executed on the main thread");
 	SCHHighlight *ret = nil;
-	
-	if (highlight != nil) {
+	id annotationID = [self makeNullNil:[highlight valueForKey:kSCHLibreAccessWebServiceID]];
+
+	if (highlight != nil && [self annotationIDIsValid:annotationID] == YES) {
 		ret = [NSEntityDescription insertNewObjectForEntityForName:kSCHHighlight 
                                             inManagedObjectContext:self.backgroundThreadManagedObjectContext];
 		
 		ret.LastModified = [self makeNullNil:[highlight objectForKey:kSCHLibreAccessWebServiceLastModified]];
         ret.State = [NSNumber numberWithStatus:kSCHStatusUnmodified];
         
-		ret.ID = [self makeNullNil:[highlight objectForKey:kSCHLibreAccessWebServiceID]];
+		ret.ID = annotationID;
 		ret.Version = [self makeNullNil:[highlight objectForKey:kSCHLibreAccessWebServiceVersion]];
 		
 		ret.Color = [self makeNullNil:[highlight objectForKey:kSCHLibreAccessWebServiceColor]];
@@ -1010,7 +1018,7 @@ NSString * const SCHAnnotationSyncComponentProfileIDs = @"SCHAnnotationSyncCompo
 		ret.Location = [self locationText:[highlight objectForKey:kSCHLibreAccessWebServiceLocation]];
 	}
 	
-	return(ret);
+	return ret;
 }
 
 - (void)syncLocationText:(NSDictionary *)webLocationText
@@ -1100,12 +1108,12 @@ NSString * const SCHAnnotationSyncComponentProfileIDs = @"SCHAnnotationSyncCompo
 			break;			
 		}
 		
-		id webItemID = [webItem valueForKey:kSCHLibreAccessWebServiceID];
+		id webItemID = [self makeNullNil:[webItem valueForKey:kSCHLibreAccessWebServiceID]];
 		id localItemID = [localItem valueForKey:kSCHLibreAccessWebServiceID];
 		
-        if ((id)webItemID == [NSNull null]) {
+        if (webItemID == nil || [self annotationIDIsValid:webItemID] == NO) {
             webItem = nil;
-        } else if ((id)localItemID == [NSNull null]) {
+        } else if (localItemID == nil) {
             localItem = nil;            
         } else {        
             switch ([webItemID compare:localItemID]) {
@@ -1145,8 +1153,11 @@ NSString * const SCHAnnotationSyncComponentProfileIDs = @"SCHAnnotationSyncCompo
     }                
 
 	for (NSDictionary *webItem in creationPool) {
-        [privateAnnotations addNotesObject:[self note:webItem]];
-        [self backgroundSave:YES];
+        SCHNote *newNote = [self note:webItem];
+        if (newNote != nil) {
+            [privateAnnotations addNotesObject:newNote];
+            [self backgroundSave:YES];
+        }
 	}
     
     SCHAppContentProfileItem *appContentProfileItem = [[privateAnnotations.AnnotationsContentItem.AnnotationsItem profileItem] 
@@ -1180,15 +1191,16 @@ NSString * const SCHAnnotationSyncComponentProfileIDs = @"SCHAnnotationSyncCompo
 {
     NSAssert([NSThread isMainThread] == NO, @"note MUST NOT be executed on the main thread");
 	SCHNote *ret = nil;
-	
-	if (note != nil) {
+	id annotationID = [self makeNullNil:[note valueForKey:kSCHLibreAccessWebServiceID]];
+    
+	if (note != nil && [self annotationIDIsValid:annotationID] == YES) {
 		ret = [NSEntityDescription insertNewObjectForEntityForName:kSCHNote 
                                             inManagedObjectContext:self.backgroundThreadManagedObjectContext];
 		
 		ret.LastModified = [self makeNullNil:[note objectForKey:kSCHLibreAccessWebServiceLastModified]];
         ret.State = [NSNumber numberWithStatus:kSCHStatusUnmodified];
         
-		ret.ID = [self makeNullNil:[note objectForKey:kSCHLibreAccessWebServiceID]];
+		ret.ID = annotationID;
 		ret.Version = [self makeNullNil:[note objectForKey:kSCHLibreAccessWebServiceVersion]];
 		
 		ret.Color = [self makeNullNil:[note objectForKey:kSCHLibreAccessWebServiceColor]];
@@ -1196,7 +1208,7 @@ NSString * const SCHAnnotationSyncComponentProfileIDs = @"SCHAnnotationSyncCompo
 		ret.Location = [self locationGraphics:[note objectForKey:kSCHLibreAccessWebServiceLocation]];
 	}
 	
-	return(ret);
+	return ret;
 }
 
 - (void)syncLocationGraphics:(NSDictionary *)webLocationGraphics 
@@ -1256,12 +1268,12 @@ NSString * const SCHAnnotationSyncComponentProfileIDs = @"SCHAnnotationSyncCompo
 			break;			
 		}
 		
-		id webItemID = [webItem valueForKey:kSCHLibreAccessWebServiceID];
+		id webItemID = [self makeNullNil:[webItem valueForKey:kSCHLibreAccessWebServiceID]];
 		id localItemID = [localItem valueForKey:kSCHLibreAccessWebServiceID];
 		
-        if ((id)webItemID == [NSNull null]) {
+        if (webItemID == nil || [self annotationIDIsValid:webItemID] == NO) {
             webItem = nil;
-        } else if ((id)localItemID == [NSNull null]) {
+        } else if (localItemID == nil) {
             localItem = nil;
         } else {
             switch ([webItemID compare:localItemID]) {
@@ -1301,8 +1313,11 @@ NSString * const SCHAnnotationSyncComponentProfileIDs = @"SCHAnnotationSyncCompo
     }                
 
 	for (NSDictionary *webItem in creationPool) {
-        [privateAnnotations addBookmarksObject:[self bookmark:webItem]];
-        [self backgroundSave:YES];
+        SCHBookmark *newBookmark = [self bookmark:webItem];
+        if (newBookmark != nil) {
+            [privateAnnotations addBookmarksObject:newBookmark];
+            [self backgroundSave:YES];
+        }
 	}
 	
     SCHAppContentProfileItem *appContentProfileItem = [[privateAnnotations.AnnotationsContentItem.AnnotationsItem profileItem] 
@@ -1336,15 +1351,16 @@ NSString * const SCHAnnotationSyncComponentProfileIDs = @"SCHAnnotationSyncCompo
 {
     NSAssert([NSThread isMainThread] == NO, @"bookmark MUST NOT be executed on the main thread");
 	SCHBookmark *ret = nil;
-	
-	if (bookmark != nil) {
+	id annotationID = [self makeNullNil:[bookmark valueForKey:kSCHLibreAccessWebServiceID]];
+    
+	if (bookmark != nil && [self annotationIDIsValid:annotationID] == YES) {
 		ret = [NSEntityDescription insertNewObjectForEntityForName:kSCHBookmark 
                                             inManagedObjectContext:self.backgroundThreadManagedObjectContext];
 		
 		ret.LastModified = [self makeNullNil:[bookmark objectForKey:kSCHLibreAccessWebServiceLastModified]];
         ret.State = [NSNumber numberWithStatus:kSCHStatusUnmodified];
         
-		ret.ID = [self makeNullNil:[bookmark objectForKey:kSCHLibreAccessWebServiceID]];
+		ret.ID = annotationID;
 		ret.Version = [self makeNullNil:[bookmark objectForKey:kSCHLibreAccessWebServiceVersion]];
 		
 		ret.Disabled = [self makeNullNil:[bookmark objectForKey:kSCHLibreAccessWebServiceDisabled]];
@@ -1352,7 +1368,7 @@ NSString * const SCHAnnotationSyncComponentProfileIDs = @"SCHAnnotationSyncCompo
 		ret.Location = [self locationBookmark:[bookmark objectForKey:kSCHLibreAccessWebServiceLocation]];
 	}
 	
-	return(ret);
+	return ret;
 }
 
 - (void)syncLocationBookmark:(NSDictionary *)webLocationBookmark 
