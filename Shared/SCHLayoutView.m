@@ -816,9 +816,11 @@ fastThumbnailUIImageForPageAtIndex:(NSUInteger)index
     [self detachSelector];
 	self.temporaryHighlightRange = nil;
     [generatedPageViewsCache release], generatedPageViewsCache = nil;
+    [self.pageTurningView willRotateToInterfaceOrientation:toInterfaceOrientation duration:duration];
 }
 
 - (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation {
+    [self.pageTurningView didRotateFromInterfaceOrientation:fromInterfaceOrientation];
     [self attachSelector];
 }
 
