@@ -15,5 +15,6 @@
 }
 
 @property (nonatomic, retain) IBOutletCollection(UIImageView) NSArray *imageButtons;
+@property (nonatomic, retain) IBOutlet UIView *buttonContainerView;
 
 @end

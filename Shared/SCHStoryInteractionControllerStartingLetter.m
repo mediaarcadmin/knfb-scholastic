@@ -19,12 +19,14 @@
 - (SCHStoryInteractionStartingLetterQuestion *)questionAtIndex:(NSUInteger)index;
 - (void)answerChosen:(SCHImageButton *)imageButton;
 - (BOOL)questionsCompleted;
+- (void)setupButtonsForOrientation:(UIInterfaceOrientation)orientation;
 
 @end
 
 @implementation SCHStoryInteractionControllerStartingLetter
 
 @synthesize imageButtons;
+@synthesize buttonContainerView;
 
 - (void)dealloc
 {
@@ -56,7 +58,8 @@
 - (void)setupViewAtIndex:(NSInteger)screenIndex
 {
     [self setTitle:[(SCHStoryInteractionStartingLetter *)self.storyInteraction prompt]];
-    
+    [self setupButtonsForOrientation:self.interfaceOrientation];
+
     [self shuffleImageButtons];
     for (SCHImageButton *imageButton in self.imageButtons) {
         SCHStoryInteractionStartingLetterQuestion *question = [self questionAtIndex:imageButton.tag - 1];
@@ -160,6 +163,26 @@
     
     return(ret);
 }
+
+#pragma mark - Rotation for iPhone
+
+- (void)rotateToOrientation:(UIInterfaceOrientation)orientation
+{
+    [super rotateToOrientation:orientation];
+    [self setupButtonsForOrientation:orientation];
+}
+
+- (void)setupButtonsForOrientation:(UIInterfaceOrientation)orientation
+{
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
+        if (UIInterfaceOrientationIsLandscape(orientation)) {
+            self.buttonContainerView.frame = CGRectMake(118, 0, 235, 250);
+        } else {
+            self.buttonContainerView.frame = CGRectMake(1, 33, 310, 340);
+        }
+    }
+}
+
 
 #pragma mark - Override for SCHStoryInteractionControllerStateReactions
 
