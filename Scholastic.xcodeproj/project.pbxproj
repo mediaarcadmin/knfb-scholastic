@@ -301,6 +301,10 @@
 		28FFD4F213AF635F00F28637 /* SCHGeometry.m in Sources */ = {isa = PBXBuildFile; fileRef = 28FFD4F113AF635F00F28637 /* SCHGeometry.m */; };
 		5200EFF112F6CFE400BAC355 /* SCHPrivateAnnotations.m in Sources */ = {isa = PBXBuildFile; fileRef = 5200EFEB12F6CFE400BAC355 /* SCHPrivateAnnotations.m */; };
 		5200EFF512F6D00B00BAC355 /* SCHeReaderCategories.m in Sources */ = {isa = PBXBuildFile; fileRef = 5200EFF312F6D00B00BAC355 /* SCHeReaderCategories.m */; };
+		52023D551541BA2000C36AD5 /* SCHProfileItemSortObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 52023D541541BA2000C36AD5 /* SCHProfileItemSortObject.m */; };
+		52023D561541BA2000C36AD5 /* SCHProfileItemSortObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 52023D541541BA2000C36AD5 /* SCHProfileItemSortObject.m */; };
+		52023D571541BA2000C36AD5 /* SCHProfileItemSortObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 52023D541541BA2000C36AD5 /* SCHProfileItemSortObject.m */; };
+		52023D581541BA2000C36AD5 /* SCHProfileItemSortObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 52023D541541BA2000C36AD5 /* SCHProfileItemSortObject.m */; };
 		5204B860135C1FC500FCBD90 /* SCHThemeButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 5204B85F135C1FC500FCBD90 /* SCHThemeButton.m */; };
 		5206FF2513744E7000FCE07C /* SCHAppProfile.m in Sources */ = {isa = PBXBuildFile; fileRef = 5206FF2413744E7000FCE07C /* SCHAppProfile.m */; };
 		520CD295139F84530018EA7E /* SCHStoryInteractionMultipleChoiceText_iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 520CD294139F84530018EA7E /* SCHStoryInteractionMultipleChoiceText_iPad.xib */; };
@@ -4618,6 +4622,8 @@
 		5200EFEB12F6CFE400BAC355 /* SCHPrivateAnnotations.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHPrivateAnnotations.m; path = Shared/SCHPrivateAnnotations.m; sourceTree = "<group>"; };
 		5200EFF212F6D00B00BAC355 /* SCHeReaderCategories.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHeReaderCategories.h; path = Shared/SCHeReaderCategories.h; sourceTree = "<group>"; };
 		5200EFF312F6D00B00BAC355 /* SCHeReaderCategories.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHeReaderCategories.m; path = Shared/SCHeReaderCategories.m; sourceTree = "<group>"; };
+		52023D531541BA2000C36AD5 /* SCHProfileItemSortObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHProfileItemSortObject.h; path = Shared/SCHProfileItemSortObject.h; sourceTree = "<group>"; };
+		52023D541541BA2000C36AD5 /* SCHProfileItemSortObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHProfileItemSortObject.m; path = Shared/SCHProfileItemSortObject.m; sourceTree = "<group>"; };
 		5204B85E135C1FC500FCBD90 /* SCHThemeButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHThemeButton.h; path = Shared/SCHThemeButton.h; sourceTree = "<group>"; };
 		5204B85F135C1FC500FCBD90 /* SCHThemeButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHThemeButton.m; path = Shared/SCHThemeButton.m; sourceTree = "<group>"; };
 		5206FF2313744E7000FCE07C /* SCHAppProfile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHAppProfile.h; path = Shared/SCHAppProfile.h; sourceTree = "<group>"; };
@@ -7148,6 +7154,8 @@
 				5200EFEB12F6CFE400BAC355 /* SCHPrivateAnnotations.m */,
 				52298A7D12F0EF5600BBBCE6 /* SCHProfileItem.h */,
 				52298A7E12F0EF5600BBBCE6 /* SCHProfileItem.m */,
+				52023D531541BA2000C36AD5 /* SCHProfileItemSortObject.h */,
+				52023D541541BA2000C36AD5 /* SCHProfileItemSortObject.m */,
 				5248E10A13C4858900FA2CDC /* SCHReadingStatsContentItem.h */,
 				5248E10B13C4858900FA2CDC /* SCHReadingStatsContentItem.m */,
 				5248E10E13C4858900FA2CDC /* SCHReadingStatsDetailItem.h */,
@@ -12101,6 +12109,7 @@
 				F85E4990152B458900A9AF25 /* SCHBookshelfPopoverController.m in Sources */,
 				C9EB4995152EDCF500DA227A /* SCHRecommendationContainerView.m in Sources */,
 				C9BF1211153424E6009FE0B9 /* UILabel+ScholasticAdditions.m in Sources */,
+				52023D551541BA2000C36AD5 /* SCHProfileItemSortObject.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -12532,6 +12541,7 @@
 				F85E4991152B458900A9AF25 /* SCHBookshelfPopoverController.m in Sources */,
 				C9EB4996152EDCF500DA227A /* SCHRecommendationContainerView.m in Sources */,
 				C9BF1212153424E6009FE0B9 /* UILabel+ScholasticAdditions.m in Sources */,
+				52023D561541BA2000C36AD5 /* SCHProfileItemSortObject.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -12897,6 +12907,7 @@
 				F85E4992152B458900A9AF25 /* SCHBookshelfPopoverController.m in Sources */,
 				C9EB4997152EDCF500DA227A /* SCHRecommendationContainerView.m in Sources */,
 				C9BF1213153424E6009FE0B9 /* UILabel+ScholasticAdditions.m in Sources */,
+				52023D571541BA2000C36AD5 /* SCHProfileItemSortObject.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -13262,6 +13273,7 @@
 				F85E4993152B458900A9AF25 /* SCHBookshelfPopoverController.m in Sources */,
 				C9EB4998152EDCF500DA227A /* SCHRecommendationContainerView.m in Sources */,
 				C9BF1214153424E6009FE0B9 /* UILabel+ScholasticAdditions.m in Sources */,
+				52023D581541BA2000C36AD5 /* SCHProfileItemSortObject.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
