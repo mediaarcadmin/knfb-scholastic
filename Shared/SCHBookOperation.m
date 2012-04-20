@@ -218,4 +218,31 @@
     }];
 }
 
+// Used to track if a download fails. We repeat the download request 3 times and 
+// then set an error state if it is still erroring. The state is stored in the 
+// app book entity.
+- (void)setDownloadFailedState
+{
+    [self performWithBookAndSave:^(SCHAppBook *book) {
+        NSInteger newDownloadFailedCount = [book.downloadFailedCount integerValue] + 1;
+        
+        NSLog(@"Warning: download failed for %@![%i]", book.ContentIdentifier, newDownloadFailedCount);
+        
+        if (newDownloadFailedCount >= 3) {
+            book.State = [NSNumber numberWithInt:SCHBookProcessingStateDownloadFailed];            
+            book.downloadFailedCount = [NSNumber numberWithInteger:0];
+        } else {
+            // the current download operation will go to the end of the queue and repeat
+            book.downloadFailedCount = [NSNumber numberWithInteger:newDownloadFailedCount];
+        }
+    }];
+}
+
+- (void)resetDownloadFailedState
+{
+    [self performWithBookAndSave:^(SCHAppBook *book) {
+        book.downloadFailedCount = [NSNumber numberWithInteger:0];
+    }];
+}
+
 @end

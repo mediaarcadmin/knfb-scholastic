@@ -21,6 +21,7 @@
         <attribute name="BookCoverURL" optional="YES" attributeType="String"/>
         <attribute name="BookCoverWidth" optional="YES" attributeType="Integer 16" defaultValueString="0"/>
         <attribute name="BookFileURL" optional="YES" attributeType="String"/>
+        <attribute name="downloadFailedCount" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
         <attribute name="DRMVersion" optional="YES" attributeType="String"/>
         <attribute name="ForceProcess" optional="YES" attributeType="Boolean" defaultValueString="NO"/>
         <attribute name="HasAudio" optional="YES" attributeType="Boolean"/>
@@ -371,7 +372,7 @@
         <element name="SCHAnnotation" positionX="292" positionY="362" width="128" height="90"/>
         <element name="SCHAnnotationsContentItem" positionX="438" positionY="661" width="128" height="135"/>
         <element name="SCHAnnotationsItem" positionX="438" positionY="362" width="128" height="75"/>
-        <element name="SCHAppBook" positionX="1177" positionY="600" width="128" height="420"/>
+        <element name="SCHAppBook" positionX="1177" positionY="600" width="128" height="435"/>
         <element name="SCHAppContentProfileItem" positionX="727" positionY="27" width="128" height="180"/>
         <element name="SCHAppDictionaryManifestEntry" positionX="1179" positionY="144" width="128" height="105"/>
         <element name="SCHAppDictionaryState" positionX="1197" positionY="315" width="128" height="105"/>

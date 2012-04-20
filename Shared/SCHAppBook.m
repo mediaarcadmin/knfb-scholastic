@@ -110,6 +110,7 @@ NSString * const kSCHAppBookFilenameSeparator = @"-";
 @dynamic BookCoverExists;
 @dynamic XPSExists;
 @dynamic urlExpiredCount;
+@dynamic downloadFailedCount;
 
 @synthesize diskVersionOutOfDate;
 @synthesize cachedBookDirectory;

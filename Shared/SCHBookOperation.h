@@ -45,5 +45,7 @@
 
 - (void)setCoverURLExpiredState;
 - (void)resetCoverURLExpiredState;
+- (void)setDownloadFailedState;
+- (void)resetDownloadFailedState;
 
 @end

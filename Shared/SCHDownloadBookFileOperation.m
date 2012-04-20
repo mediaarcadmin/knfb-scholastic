@@ -337,9 +337,7 @@
         __block SCHDownloadBookFileOperation *unretained_self = self;
         operation.completionBlock = ^{
             self.downloadOperation = nil;
-            [unretained_self setIsProcessing:NO];
-            [unretained_self setProcessingState:SCHBookProcessingStateDownloadFailed];
-            [unretained_self endOperation];
+            [unretained_self failedDownload];
         };        
     }    
 }
@@ -362,6 +360,7 @@
                 book.XPSExists = [NSNumber numberWithBool:YES];
             }];
             
+            [self resetDownloadFailedState];
             [self setProcessingState:SCHBookProcessingStateReadyForLicenseAcquisition];
             NSDictionary *userInfo = [NSDictionary dictionaryWithObjectsAndKeys:
                                       [NSNumber numberWithFloat:1.0], @"currentPercentage",
@@ -412,13 +411,14 @@
                 // if there was an error, the file is invalid and is removed
                 NSFileManager *fileManager = [[[NSFileManager alloc] init] autorelease];
                 [fileManager removeItemAtPath:self.localPath error:nil];
-                
-                [self setProcessingState:SCHBookProcessingStateDownloadFailed];        
+
+                [self setDownloadFailedState];
                 
             } else {
                 [self performWithBookAndSave:^(SCHAppBook *book) {
                     book.BookCoverExists = [NSNumber numberWithBool:YES];
                 }];            
+                [self resetDownloadFailedState];
                 [self setProcessingState:SCHBookProcessingStateReadyForBookFileDownload];
             }
 			break;
@@ -436,7 +436,7 @@
 
 - (void)failedDownload
 {
-    [self setProcessingState:SCHBookProcessingStateDownloadFailed];
+    [self setDownloadFailedState];
     [self setIsProcessing:NO];                                
     [self endOperation];
 }
