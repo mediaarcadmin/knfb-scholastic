@@ -31,6 +31,7 @@
 #import "SCHReadingStatsEntryItem.h"
 #import "SCHBookshelfSyncComponent.h"
 #import "SCHAnnotationsItem.h"
+#import "SCHProfileItemSortObject.h"
 
 // Constants
 NSString * const kSCHProfileItem = @"SCHProfileItem";
@@ -570,28 +571,6 @@ NSString * const kSCHProfileItemDRM_QUALIFIER = @"DRM_QUALIFIER";
 	CC_SHA1(data, strlen(data), md);
 	
 	return([[NSData dataWithBytes:md length:strlen((char *)md)] base64Encoding]);
-}
-
-@end
-
-@implementation SCHProfileItemSortObject
-
-@synthesize item;
-@synthesize date;
-@synthesize isNewBook;
-
-- (void)dealloc 
-{
-    [item release], item = nil;
-    [date release], date = nil;
-    
-    [super dealloc];
-}
-
-- (NSString *)description
-{
-    return [NSString stringWithFormat:@"%p %@ %@", self.item, self.date, 
-     (self.isNewBook == YES ? @"New" : @"") ];
 }
 
 @end

@@ -82,12 +82,3 @@ typedef enum {
 - (void)removeAppContentProfileItem:(NSSet *)value;
 
 @end
-
-
-@interface SCHProfileItemSortObject : NSObject
-
-@property (nonatomic, retain) SCHContentMetadataItem *item;
-@property (nonatomic, retain) NSDate *date;
-@property (nonatomic, assign) BOOL isNewBook;
-
-@end
