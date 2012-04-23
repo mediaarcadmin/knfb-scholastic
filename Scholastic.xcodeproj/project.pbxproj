@@ -309,10 +309,6 @@
 		52023D5C1541BBB600C36AD5 /* NSFileManager+DoNotBackupExtendedAttribute.m in Sources */ = {isa = PBXBuildFile; fileRef = 52023D5A1541BBB600C36AD5 /* NSFileManager+DoNotBackupExtendedAttribute.m */; };
 		52023D5D1541BBB600C36AD5 /* NSFileManager+DoNotBackupExtendedAttribute.m in Sources */ = {isa = PBXBuildFile; fileRef = 52023D5A1541BBB600C36AD5 /* NSFileManager+DoNotBackupExtendedAttribute.m */; };
 		52023D5E1541BBB600C36AD5 /* NSFileManager+DoNotBackupExtendedAttribute.m in Sources */ = {isa = PBXBuildFile; fileRef = 52023D5A1541BBB600C36AD5 /* NSFileManager+DoNotBackupExtendedAttribute.m */; };
-		52023EBF15458EA800C36AD5 /* SCHBackupPerformedDetector.m in Sources */ = {isa = PBXBuildFile; fileRef = 52023EBE15458EA800C36AD5 /* SCHBackupPerformedDetector.m */; };
-		52023EC015458EA800C36AD5 /* SCHBackupPerformedDetector.m in Sources */ = {isa = PBXBuildFile; fileRef = 52023EBE15458EA800C36AD5 /* SCHBackupPerformedDetector.m */; };
-		52023EC115458EA800C36AD5 /* SCHBackupPerformedDetector.m in Sources */ = {isa = PBXBuildFile; fileRef = 52023EBE15458EA800C36AD5 /* SCHBackupPerformedDetector.m */; };
-		52023EC215458EA800C36AD5 /* SCHBackupPerformedDetector.m in Sources */ = {isa = PBXBuildFile; fileRef = 52023EBE15458EA800C36AD5 /* SCHBackupPerformedDetector.m */; };
 		5204B860135C1FC500FCBD90 /* SCHThemeButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 5204B85F135C1FC500FCBD90 /* SCHThemeButton.m */; };
 		5206FF2513744E7000FCE07C /* SCHAppProfile.m in Sources */ = {isa = PBXBuildFile; fileRef = 5206FF2413744E7000FCE07C /* SCHAppProfile.m */; };
 		520CD295139F84530018EA7E /* SCHStoryInteractionMultipleChoiceText_iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 520CD294139F84530018EA7E /* SCHStoryInteractionMultipleChoiceText_iPad.xib */; };
@@ -4634,8 +4630,6 @@
 		52023D541541BA2000C36AD5 /* SCHProfileItemSortObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHProfileItemSortObject.m; path = Shared/SCHProfileItemSortObject.m; sourceTree = "<group>"; };
 		52023D591541BBB600C36AD5 /* NSFileManager+DoNotBackupExtendedAttribute.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSFileManager+DoNotBackupExtendedAttribute.h"; path = "Shared/NSFileManager+DoNotBackupExtendedAttribute.h"; sourceTree = "<group>"; };
 		52023D5A1541BBB600C36AD5 /* NSFileManager+DoNotBackupExtendedAttribute.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSFileManager+DoNotBackupExtendedAttribute.m"; path = "Shared/NSFileManager+DoNotBackupExtendedAttribute.m"; sourceTree = "<group>"; };
-		52023EBD15458EA800C36AD5 /* SCHBackupPerformedDetector.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHBackupPerformedDetector.h; path = Shared/SCHBackupPerformedDetector.h; sourceTree = "<group>"; };
-		52023EBE15458EA800C36AD5 /* SCHBackupPerformedDetector.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHBackupPerformedDetector.m; path = Shared/SCHBackupPerformedDetector.m; sourceTree = "<group>"; };
 		5204B85E135C1FC500FCBD90 /* SCHThemeButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHThemeButton.h; path = Shared/SCHThemeButton.h; sourceTree = "<group>"; };
 		5204B85F135C1FC500FCBD90 /* SCHThemeButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHThemeButton.m; path = Shared/SCHThemeButton.m; sourceTree = "<group>"; };
 		5206FF2313744E7000FCE07C /* SCHAppProfile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHAppProfile.h; path = Shared/SCHAppProfile.h; sourceTree = "<group>"; };
@@ -7004,8 +6998,6 @@
 				52162DA813DD88BF00D257C5 /* SCHUserDefaults.m */,
 				52A6762F13AF3744007A7FE6 /* UIColor+Scholastic.h */,
 				52A6763013AF3744007A7FE6 /* UIColor+Scholastic.m */,
-				52023EBD15458EA800C36AD5 /* SCHBackupPerformedDetector.h */,
-				52023EBE15458EA800C36AD5 /* SCHBackupPerformedDetector.m */,
 			);
 			name = Shared;
 			sourceTree = "<group>";
@@ -12127,7 +12119,6 @@
 				C9BF1211153424E6009FE0B9 /* UILabel+ScholasticAdditions.m in Sources */,
 				52023D551541BA2000C36AD5 /* SCHProfileItemSortObject.m in Sources */,
 				52023D5B1541BBB600C36AD5 /* NSFileManager+DoNotBackupExtendedAttribute.m in Sources */,
-				52023EBF15458EA800C36AD5 /* SCHBackupPerformedDetector.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -12561,7 +12552,6 @@
 				C9BF1212153424E6009FE0B9 /* UILabel+ScholasticAdditions.m in Sources */,
 				52023D561541BA2000C36AD5 /* SCHProfileItemSortObject.m in Sources */,
 				52023D5C1541BBB600C36AD5 /* NSFileManager+DoNotBackupExtendedAttribute.m in Sources */,
-				52023EC015458EA800C36AD5 /* SCHBackupPerformedDetector.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -12929,7 +12919,6 @@
 				C9BF1213153424E6009FE0B9 /* UILabel+ScholasticAdditions.m in Sources */,
 				52023D571541BA2000C36AD5 /* SCHProfileItemSortObject.m in Sources */,
 				52023D5D1541BBB600C36AD5 /* NSFileManager+DoNotBackupExtendedAttribute.m in Sources */,
-				52023EC115458EA800C36AD5 /* SCHBackupPerformedDetector.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -13297,7 +13286,6 @@
 				C9BF1214153424E6009FE0B9 /* UILabel+ScholasticAdditions.m in Sources */,
 				52023D581541BA2000C36AD5 /* SCHProfileItemSortObject.m in Sources */,
 				52023D5E1541BBB600C36AD5 /* NSFileManager+DoNotBackupExtendedAttribute.m in Sources */,
-				52023EC215458EA800C36AD5 /* SCHBackupPerformedDetector.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

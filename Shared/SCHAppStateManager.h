@@ -29,9 +29,6 @@
 - (BOOL)isCOPPACompliant;
 - (void)setCOPPACompliant:(BOOL)coppa;
 
-- (BOOL)backupPerformedDetectorExists;
-- (void)setBackupPerformedDetectorExists:(BOOL)exists;
-
 - (BOOL)canAuthenticate;
 - (void)setCanAuthenticate:(BOOL)auth;
 

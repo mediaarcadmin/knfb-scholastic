@@ -24,6 +24,5 @@ NSString * const kSCHAppStatefetchAppState = @"fetchAppState";
 @dynamic LastRemoteManifestUpdateDate;
 @dynamic isCOPPACompliant;
 @dynamic lastScholasticAuthenticationFailed;
-@dynamic backupPerformedDetectorExists;
 
 @end
