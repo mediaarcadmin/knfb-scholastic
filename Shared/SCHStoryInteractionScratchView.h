@@ -18,6 +18,7 @@
 @property (nonatomic, assign) BOOL interactionEnabled;
 
 - (void)setShowFullImage:(BOOL)showFullImage;
+- (NSUInteger)uncoveredPointsCount;
 
 @end
 

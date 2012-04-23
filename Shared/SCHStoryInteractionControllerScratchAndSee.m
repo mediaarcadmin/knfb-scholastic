@@ -114,19 +114,32 @@ enum ScratchState {
     static const CGFloat kLabelInset = 40;
     
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
+        CGPoint center = CGPointMake(CGRectGetMidX(self.contentsView.bounds), CGRectGetMidY(self.contentsView.bounds));
+        CGFloat gap = UIInterfaceOrientationIsLandscape(orientation) ? 10 : 20;
+        CGFloat height = CGRectGetHeight(self.scratchView.bounds)+gap+CGRectGetHeight(self.progressView.bounds);
+        CGFloat scratchOffset = height/2-CGRectGetMidY(self.scratchView.bounds);
+        
+        self.scratchView.center = CGPointMake(center.x, center.y-scratchOffset);
+        
         if (self.scratchState == kScratchStateFirstScratch || self.scratchState == kScratchStateSecondScratch) {
-            CGPoint center = CGPointMake(CGRectGetMidX(self.contentsView.bounds), CGRectGetMidY(self.contentsView.bounds));
-            CGFloat gap = UIInterfaceOrientationIsLandscape(orientation) ? 10 : 20;
-            CGFloat height = CGRectGetHeight(self.scratchView.bounds)+gap+CGRectGetHeight(self.progressView.bounds);
-            CGFloat scratchOffset = height/2-CGRectGetMidY(self.scratchView.bounds);
+            if (UIInterfaceOrientationIsLandscape(orientation)) {
+                self.scratchView.transform = CGAffineTransformIdentity;
+                self.progressView.transform = CGAffineTransformIdentity;
+            } else {
+                self.scratchView.transform = CGAffineTransformConcat(CGAffineTransformMakeTranslation(0, -16), CGAffineTransformMakeScale(1.5f, 1.5f));
+                self.progressView.transform = CGAffineTransformMakeTranslation(0, 36);
+            }
+            
             CGFloat progressOffset = (height-CGRectGetMidY(self.progressView.bounds))-height/2;
-            self.scratchView.center = CGPointMake(center.x, center.y-scratchOffset);
             self.progressView.center = CGPointMake(center.x, center.y+progressOffset);
         } else {
-            self.scratchView.center = CGPointMake(CGRectGetMidX(self.contentsView.bounds), CGRectGetMinY(self.buttonContainerView.frame)/2);
             CGFloat fontSize = 15;
             NSString *fontName = @"Arial-BoldMT";
             if (UIInterfaceOrientationIsLandscape(orientation)) {
+                self.scratchView.transform = CGAffineTransformIdentity;
+                self.progressView.transform = CGAffineTransformIdentity;
+                self.buttonContainerView.bounds = CGRectMake(0, 0, self.buttonContainerView.bounds.size.width, 40);
+                self.buttonContainerView.center = CGPointMake(self.buttonContainerView.center.x, 216);
                 // lay out buttons horizontally
                 CGFloat width = (CGRectGetWidth(self.buttonContainerView.bounds)-kButtonGap)/[self.answerButtons count] - kButtonGap;
                 CGFloat x = kButtonGap+width/2;
@@ -144,6 +157,10 @@ enum ScratchState {
                     x += kButtonGap+width;
                 }
             } else {
+                self.scratchView.transform = CGAffineTransformConcat(CGAffineTransformMakeTranslation(0, -26), CGAffineTransformMakeScale(1.4f, 1.4f));
+                self.progressView.transform = CGAffineTransformMakeTranslation(0, 36);
+                self.buttonContainerView.bounds = CGRectMake(0, 0, self.buttonContainerView.bounds.size.width, 130);
+                self.buttonContainerView.center = CGPointMake(self.buttonContainerView.center.x, 340);
                 // lay out buttons vertically
                 CGFloat width = CGRectGetWidth(self.buttonContainerView.bounds)-kButtonGap*2;
                 CGFloat height = CGRectGetHeight([[self.answerButtons objectAtIndex:0] bounds]);
@@ -170,6 +187,8 @@ enum ScratchState {
                 
             }
         }
+        
+        [self setProgressViewForScratchCount:[self.scratchView uncoveredPointsCount]];
     }
 }
 
