@@ -25,6 +25,7 @@
 #import "SCHAuthenticationManager.h"
 #import "SCHRecommendationManager.h"
 #import "NSFileManager+DoNotBackupExtendedAttribute.h"
+#import "SCHBackupPerformedDetector.h"
 
 #if RUN_KIF_TESTS
 #import "SCHKIFTestController.h"
@@ -106,6 +107,9 @@ static NSString* const binaryDevCertFilename = @"bdevcert.dat";
 	    
         SCHURLManager *urlManager = [SCHURLManager sharedURLManager];
         urlManager.managedObjectContext = self.coreDataHelper.managedObjectContext;
+        
+        SCHBackupPerformedDetector *backupDetector = [[[SCHBackupPerformedDetector alloc] init] autorelease];
+        [backupDetector createDetectorIfRequired];
         
         // instantiate the shared processing manager
         [SCHProcessingManager sharedProcessingManager].managedObjectContext = self.coreDataHelper.managedObjectContext;
@@ -389,8 +393,10 @@ static NSString* const binaryDevCertFilename = @"bdevcert.dat";
     [[SCHAuthenticationManager sharedAuthenticationManager] expireToken];
     [[SCHAuthenticationManager sharedAuthenticationManager] expireDeviceKey];
     
+    SCHBackupPerformedDetector *backupPerformed = [[[SCHBackupPerformedDetector alloc] init] autorelease];
     if ([[SCHAuthenticationManager sharedAuthenticationManager] hasUsernameAndPassword] && 
-        [[SCHSyncManager sharedSyncManager] havePerformedFirstSyncUpToBooks]) {
+        [[SCHSyncManager sharedSyncManager] havePerformedFirstSyncUpToBooks]
+        && [backupPerformed detectorExists] == YES) {
         
         [[SCHAuthenticationManager sharedAuthenticationManager] authenticateWithSuccessBlock:^(SCHAuthenticationManagerConnectivityMode connectivityMode) {
             [self ensureCorrectCertsAvailable];

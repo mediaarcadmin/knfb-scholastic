@@ -38,6 +38,7 @@
 #import "BITOperationWithBlocks.h"
 #import "SCHVersionDownloadManager.h"
 #import "SCHAccountValidationViewController.h"
+#import "SCHBackupPerformedDetector.h"
 
 typedef enum {
 	kSCHStartingViewControllerProfileSyncStateNone = 0,
@@ -95,7 +96,11 @@ static const NSTimeInterval kSCHStartingViewControllerNonForcedAlertInterval = (
 
 - (void)createInitialNavigationControllerStack
 {
-    if ([[SCHAuthenticationManager sharedAuthenticationManager] hasUsernameAndPassword] && [[SCHSyncManager sharedSyncManager] havePerformedFirstSyncUpToBooks]) {
+    SCHBackupPerformedDetector *backupPerformed = [[[SCHBackupPerformedDetector alloc] init] autorelease];
+    
+    if ([[SCHAuthenticationManager sharedAuthenticationManager] hasUsernameAndPassword] && 
+        [[SCHSyncManager sharedSyncManager] havePerformedFirstSyncUpToBooks] && 
+        [backupPerformed detectorExists] == YES) {
         [self runSetupProfileSequenceAnimated:NO pushProfile:YES showValidation:NO];
     } else if ([[SCHAppStateManager sharedAppStateManager] isSampleStore]) {
         [self pushSamplesAnimated:NO showWelcome:NO];
@@ -221,8 +226,10 @@ static const NSTimeInterval kSCHStartingViewControllerNonForcedAlertInterval = (
         [[SCHSyncManager sharedSyncManager] setSuspended:NO];
     }
     
+    SCHBackupPerformedDetector *backupPerformed = [[[SCHBackupPerformedDetector alloc] init] autorelease];   
     if ([[SCHAuthenticationManager sharedAuthenticationManager] hasUsernameAndPassword] &&
-        [[SCHSyncManager sharedSyncManager] havePerformedFirstSyncUpToBooks]) {
+        [[SCHSyncManager sharedSyncManager] havePerformedFirstSyncUpToBooks] && 
+        [backupPerformed detectorExists] == YES) {
         
         if ([self bookshelfSetupRequired]) {
             // Start the sync in case they have been set up since last sync
@@ -879,6 +886,8 @@ static const NSTimeInterval kSCHStartingViewControllerNonForcedAlertInterval = (
                                                                                     if (credentialsSuccessBlock) {
                                                                                         credentialsSuccessBlock(YES, NO);
                                                                                     }
+                                                                                    SCHBackupPerformedDetector *backupPerformed = [[[SCHBackupPerformedDetector alloc] init] autorelease];
+                                                                                    [backupPerformed resetDetectorIfRequired];
                                                                                     [[SCHSyncManager sharedSyncManager] firstSync:YES requireDeviceAuthentication:NO];
                                                                                     [[SCHSyncManager sharedSyncManager] recommendationSync];
                                                                                 } else { 

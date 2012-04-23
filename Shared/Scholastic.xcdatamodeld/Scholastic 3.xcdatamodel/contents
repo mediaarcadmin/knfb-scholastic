@@ -95,6 +95,7 @@
         <relationship name="wishListItems" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="SCHWishListItem" inverseName="appRecommendationItem" inverseEntity="SCHWishListItem" syncable="YES"/>
     </entity>
     <entity name="SCHAppState" representedClassName="SCHAppState">
+        <attribute name="backupPerformedDetectorExists" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
         <attribute name="DataStoreType" optional="YES" attributeType="Integer 16" defaultValueString="0"/>
         <attribute name="isCOPPACompliant" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
         <attribute name="LastKnownAuthToken" optional="YES" attributeType="String"/>
@@ -379,7 +380,7 @@
         <element name="SCHAppHelpState" positionX="160" positionY="192" width="128" height="135"/>
         <element name="SCHAppProfile" positionX="0" positionY="0" width="128" height="165"/>
         <element name="SCHAppRecommendationItem" positionX="160" positionY="192" width="128" height="165"/>
-        <element name="SCHAppState" positionX="0" positionY="0" width="128" height="165"/>
+        <element name="SCHAppState" positionX="0" positionY="0" width="128" height="195"/>
         <element name="SCHBookmark" positionX="292" positionY="653" width="128" height="105"/>
         <element name="SCHContentItem" positionX="772" positionY="531" width="128" height="90"/>
         <element name="SCHContentMetadataItem" positionX="990" positionY="586" width="128" height="255"/>

@@ -199,6 +199,26 @@
     }];
 }
 
+- (BOOL)backupPerformedDetectorExists
+{
+    __block BOOL ret = NO;
+    
+    [self performWithAppState:^(SCHAppState *appState) {
+        if (appState != nil) {
+            ret = [appState.backupPerformedDetectorExists boolValue];
+        }
+    }];
+    
+    return ret;
+}
+
+- (void)setBackupPerformedDetectorExists:(BOOL)exists
+{
+    [self performWithAppStateAndSave:^(SCHAppState *appState) {
+        [appState setBackupPerformedDetectorExists:[NSNumber numberWithBool:exists]];
+    }];
+}
+
 - (BOOL)canAuthenticate
 {
     __block BOOL ret = NO;
