@@ -275,6 +275,11 @@ NSTimeInterval const kSCHAuthenticationManagerSecondsInAMinute = 60.0;
     return(ret);
 }
 
+- (BOOL)hasDRMInformation
+{
+    return YES;
+}
+
 - (void)clear
 {
     [self performSelectorOnMainThread: @selector(clearOnMainThread) 
