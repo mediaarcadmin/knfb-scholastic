@@ -22,6 +22,7 @@
 @property (nonatomic, retain) IBOutlet UILabel *questionLabel;
 @property (nonatomic, retain) IBOutletCollection(UIButton) NSArray *answerButtons;
 
+@property (retain, nonatomic) IBOutlet UIView *buttonContainerView;
 @property (nonatomic, retain) IBOutlet UILabel *outcomeTitleLabel;
 @property (nonatomic, retain) IBOutlet UILabel *outcomeTextLabel;
 

@@ -42,6 +42,7 @@ typedef enum {
 @synthesize progressView;
 @synthesize questionLabel;
 @synthesize answerButtons;
+@synthesize buttonContainerView;
 @synthesize currentQuestionIndex;
 @synthesize simultaneousTapCount;
 
@@ -61,6 +62,7 @@ typedef enum {
     [outcomeTitleLabel release], outcomeTitleLabel = nil;
     [outcomeTextLabel release], outcomeTextLabel = nil;
     
+    [buttonContainerView release];
     [super dealloc];
 }
 
@@ -112,7 +114,9 @@ typedef enum {
         [item setBackgroundImage:[UIImage imageNamed:@"answer-button-green.png"] forState:(UIControlStateHighlighted|UIControlStateSelected)];
     }
     
-    [self setupQuestion];    
+    [self setupQuestion];   
+    
+    [self willRotateToInterfaceOrientation:self.interfaceOrientation duration:0.0];
 }
 
 - (void)setupOutcomeView
@@ -131,18 +135,23 @@ typedef enum {
     BOOL iPad = (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad);
     
     self.progressView.currentStep = self.currentQuestionIndex;
+    
     if (iPad == YES) {
         self.questionLabel.text = [[self currentQuestion] prompt];
     } else {
         [self setTitle:[[self currentQuestion] prompt]];
     }
+    
     NSInteger i = 0;
+    
     for (NSString *answer in [self currentQuestion].answers) {
         UIButton *button = [self.answerButtons objectAtIndex:i];
         [button setTitle:answer forState:UIControlStateNormal];
         [button setHidden:NO];
         ++i;
     }
+    
+    
     for (; i < [self.answerButtons count]; ++i) {
         [[self.answerButtons objectAtIndex:i] setHidden:YES];
     }
@@ -284,6 +293,75 @@ typedef enum {
         [self performSelector:@selector(removeFromHostView) withObject:nil afterDelay:0.5];
     }];
 }
+
+- (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
+{
+    [super willRotateToInterfaceOrientation:toInterfaceOrientation duration:duration];
+
+    // if we have questions to show...
+    if (self.currentQuestionIndex < self.progressView.numberOfSteps) {
+    
+        // button spacing and height
+        NSInteger activeButtonCount = [[[self currentQuestion] answers] count];
+        CGFloat areaHeight = CGRectGetHeight(self.buttonContainerView.frame);
+        
+        CGFloat buttonHeight = floorf(areaHeight * 0.7 / activeButtonCount);
+        CGFloat buttonSpacing = floorf((areaHeight - (activeButtonCount * buttonHeight)) / activeButtonCount);
+        CGFloat topBottomInset = floorf(buttonHeight * 0.4);
+        
+        buttonSpacing = floorf(((buttonSpacing * activeButtonCount) - buttonSpacing) / activeButtonCount);
+        
+        for (int i = 0; i < activeButtonCount; i++) {
+            UIButton *currentButton = (UIButton *)[self.answerButtons objectAtIndex:i];
+            CGRect buttonFrame = currentButton.frame;
+            buttonFrame.origin.y = topBottomInset + (i * buttonHeight) + (i * buttonSpacing);
+            buttonFrame.size.height = buttonHeight;
+            currentButton.frame = buttonFrame;
+        }
+    }
+}
+
+- (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation
+{
+    [super didRotateFromInterfaceOrientation:fromInterfaceOrientation];
+    
+    // font resizing and insets
+    UIEdgeInsets imageInsets = UIEdgeInsetsMake(0, CGRectGetWidth([[self.answerButtons objectAtIndex:0] bounds])-40, 0, 0);
+    for (UIButton *button in self.answerButtons) {
+        [button setImageEdgeInsets:imageInsets];
+    }
+    
+    [self adjustButtonsFont];
+}
+
+- (void)adjustButtonsFont
+{
+    NSString *fontName = [[[[self.answerButtons objectAtIndex:0] titleLabel] font] fontName];
+    CGFloat fontSize = 16;
+    BOOL tooBig;
+    do {
+        tooBig = NO;
+        for (UIButton *button in self.answerButtons) {
+            CGSize maximumSize = UIEdgeInsetsInsetRect(button.bounds, button.titleEdgeInsets).size;
+            NSString *text = [button titleForState:UIControlStateNormal];
+            CGSize constraintSize = CGSizeMake(maximumSize.width, CGFLOAT_MAX);
+            CGSize size = [text sizeWithFont:[UIFont fontWithName:fontName size:fontSize]
+                           constrainedToSize:constraintSize
+                               lineBreakMode:button.titleLabel.lineBreakMode];
+            if (size.height > maximumSize.height) {
+                tooBig = YES;
+                fontSize -= 2;
+                break;
+            }
+        }
+    } while (tooBig && fontSize > 10);
+    
+    UIFont *font = [UIFont fontWithName:fontName size:fontSize];
+    for (UIButton *button in self.answerButtons) {
+        button.titleLabel.font = font;
+    }
+}
+
 
 #pragma mark - Override for SCHStoryInteractionControllerStateReactions
 
