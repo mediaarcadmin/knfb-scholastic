@@ -48,6 +48,7 @@ extern NSString * const kSCHAuthenticationManagerServiceName;
 + (SCHAuthenticationManager *)sharedAuthenticationManager;
 
 - (BOOL)hasUsernameAndPassword;
+- (BOOL)hasDRMInformation;
 - (NSString *)pToken;
 - (BOOL)pTokenWithValidation:(ValidateBlock)aValidateBlock;
 - (NSURL *)webParentToolURL:(NSString *)pToken;

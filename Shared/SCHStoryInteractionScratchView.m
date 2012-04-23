@@ -161,10 +161,15 @@ static CGFloat distanceBetweenPoints(CGPoint pt1, CGPoint pt2)
     }
 }
 
+- (NSUInteger)uncoveredPointsCount
+{
+    return [self.pointsArray count];
+}
+
 - (void)updateDelegate
 {
     if (self.delegate && [self.delegate respondsToSelector:@selector(scratchView:uncoveredPoints:)]) {
-        [self.delegate scratchView:self uncoveredPoints:[self.pointsArray count]];
+        [self.delegate scratchView:self uncoveredPoints:[self uncoveredPointsCount]];
     }
 }
 
