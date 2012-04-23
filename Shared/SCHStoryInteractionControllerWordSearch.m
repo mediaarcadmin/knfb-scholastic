@@ -20,8 +20,8 @@
 @property (nonatomic, assign) NSInteger tapCount;
 
 - (void)playQuestionSequence;
-- (void)layoutWordViewsForPad;
-- (void)layoutWordViewsForPhone;
+- (void)layoutWordViewsMultipleColumns;
+- (void)layoutWordViewsSingleColumn;
 - (void)letterGridTapped:(UITapGestureRecognizer *)tap;
 - (void)wordTapped:(UITapGestureRecognizer *)tap;
 - (void)highlightAndReadOutWord:(SCHStoryInteractionStrikeOutLabelView *)view;
@@ -102,9 +102,9 @@
     self.wordViews = [NSArray arrayWithArray:views];
     
     if (iPad) {
-        [self layoutWordViewsForPad];
+        [self layoutWordViewsMultipleColumns];
     } else {
-        [self layoutWordViewsForPhone];
+        [self layoutWordViewsSingleColumn];
     }
     
     self.wordsContainerView.layer.borderColor = [[UIColor SCHLightBlue2Color] CGColor];
@@ -128,7 +128,7 @@
     [self playQuestionSequence];
 }
 
-- (void)layoutWordViewsForPad
+- (void)layoutWordViewsMultipleColumns
 {
     static const NSInteger kWordInset = 5;
     
@@ -136,11 +136,11 @@
     NSInteger wordCount = [self.wordViews count];
     NSInteger numberOfRows = MAX(1, (wordCount + 3) / 4);
     NSInteger wordsPerRow = wordCount/numberOfRows + (wordCount%2);
-    CGFloat rowHeight = (CGRectGetHeight(containerRect) - kWordInset*2) / numberOfRows;
+    CGFloat rowHeight = floorf((CGRectGetHeight(containerRect) - kWordInset*2) / numberOfRows);
     
     for (NSInteger row = 0; row < numberOfRows; ++row) {
         NSInteger wordsThisRow = MIN(wordsPerRow, wordCount-wordsPerRow*row);
-        CGFloat colWidth = (CGRectGetWidth(containerRect) - kWordInset*2) / wordsThisRow;
+        CGFloat colWidth = floorf((CGRectGetWidth(containerRect) - kWordInset*2) / wordsThisRow);
         CGRect wordRect = CGRectIntegral(CGRectMake(0, 0, colWidth, rowHeight));
         
         for (NSInteger col = 0; col < wordsThisRow; ++col) {
@@ -152,13 +152,13 @@
     }
 }
 
-- (void)layoutWordViewsForPhone
+- (void)layoutWordViewsSingleColumn
 {
     static const NSInteger kWordInset = 5;
     
     CGRect containerRect = self.wordsContainerView.bounds;
     NSInteger wordCount = [self.wordViews count];
-    CGFloat wordHeight = (CGRectGetHeight(containerRect)-kWordInset*2) / wordCount;
+    CGFloat wordHeight = floorf((CGRectGetHeight(containerRect)-kWordInset*2) / wordCount);
     CGRect wordRect = CGRectMake(0, 0, CGRectGetWidth(containerRect)-kWordInset*2, wordHeight);
     
     for (NSInteger index = 0; index < wordCount; ++index) {
@@ -168,6 +168,44 @@
         label.font = [UIFont boldSystemFontOfSize:17];
     }
 }
+
+- (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
+{
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
+        if (UIInterfaceOrientationIsLandscape(toInterfaceOrientation)) {
+            CGRect wordFrame = self.wordsContainerView.frame;
+            wordFrame.origin.x = 30;
+            wordFrame.origin.y = 10;
+            wordFrame.size.width = 140;
+            wordFrame.size.height = 230;
+            self.wordsContainerView.frame = wordFrame;
+            
+            CGRect searchFrame = self.lettersContainerView.frame;
+            searchFrame.origin.x = 215;
+            searchFrame.origin.y = 10;
+            self.lettersContainerView.frame = searchFrame;
+
+            [self layoutWordViewsSingleColumn];
+        } else {
+            CGRect wordFrame = self.wordsContainerView.frame;
+            wordFrame.origin.x = 20;
+            wordFrame.origin.y = 265;
+            wordFrame.size.width = 270;
+            wordFrame.size.height = 120;
+            self.wordsContainerView.frame = wordFrame;
+            
+            CGRect searchFrame = self.lettersContainerView.frame;
+            searchFrame.origin.x = 39;
+            searchFrame.origin.y = 20;
+            self.lettersContainerView.frame = searchFrame;
+            
+            [self layoutWordViewsMultipleColumns];
+        }
+    }
+    
+    [super willRotateToInterfaceOrientation:toInterfaceOrientation duration:duration];
+}
+
 
 - (void)playQuestionSequence
 {
@@ -301,6 +339,12 @@
         }
         
     }];
+}
+
+- (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation
+{
+    [self.lettersContainerView layoutSubviews];
+    [super didRotateFromInterfaceOrientation:fromInterfaceOrientation];
 }
 
 #pragma mark - Override for SCHStoryInteractionControllerStateReactions
