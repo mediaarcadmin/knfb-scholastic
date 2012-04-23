@@ -58,6 +58,7 @@ enum SCHToolType {
 @synthesize clearButton;
 @synthesize saveButton;
 @synthesize savingLabel;
+@synthesize colorShadowOverlayView;
 @synthesize stickers;
 @synthesize lastSelectedColour;
 @synthesize lastSelectedSize;
@@ -71,6 +72,7 @@ enum SCHToolType {
 
 - (void)dealloc
 {
+    [colorShadowOverlayView release], colorShadowOverlayView = nil;
     [drawingCanvas release], drawingCanvas = nil;
     [colorChooser release], colorChooser = nil;
     [sizeChooser release], sizeChooser = nil;
@@ -83,6 +85,7 @@ enum SCHToolType {
     [stickers release], stickers = nil;
     [clearActionSheet release], clearActionSheet = nil;
     [doneActionSheet release], doneActionSheet = nil;
+    [colorShadowOverlayView release];
     [super dealloc];
 }
 
@@ -203,16 +206,22 @@ enum SCHToolType {
                 self.clearButton.frame = CGRectMake(129, 263, 100, 37);
                 self.saveButton.frame = CGRectMake(237, 263, 100, 37);
                 self.colorChooser.superview.frame = CGRectMake(357, 10, 103, 110);
+                self.colorShadowOverlayView.frame = CGRectMake(357, 10, 103, 110);
                 self.stickerChoosersContainer.frame = CGRectMake(357, 127, 103, 173);
             } else {
                 self.drawingCanvas.superview.frame = CGRectMake(10, 10, 295, 269);
                 self.savingLabel.frame = CGRectMake(25, 115, 260, 60);
-                self.colorChooser.superview.frame = CGRectMake(10, 287, 103, 173);
-                self.stickerChoosersContainer.frame = CGRectMake(121, 287, 103, 173);
-                self.doneButton.frame = CGRectMake(232, 333, 68, 37);
-                self.clearButton.frame = CGRectMake(232, 378, 68, 37);
-                self.saveButton.frame = CGRectMake(232, 423, 68, 37);
+                self.colorChooser.superview.frame = CGRectMake(197, 287, 103, 173);
+                self.colorShadowOverlayView.frame = CGRectMake(197, 287, 103, 173);
+                self.stickerChoosersContainer.frame = CGRectMake(87, 287, 103, 173);
+                self.doneButton.frame = CGRectMake(10, 333, 68, 37);
+                self.clearButton.frame = CGRectMake(10, 378, 68, 37);
+                self.saveButton.frame = CGRectMake(10, 423, 68, 37);
             }
+            
+            UIScrollView *scrollView = (UIScrollView *)self.colorChooser.superview;
+            scrollView.contentSize = self.colorChooser.bounds.size;
+            [self applyRoundRectStyle:scrollView];
         }
     }
 }
@@ -278,6 +287,7 @@ enum SCHToolType {
     if ([self.colorChooser.superview isKindOfClass:[UIScrollView class]]) {
         UIScrollView *scrollView = (UIScrollView *)self.colorChooser.superview;
         scrollView.contentSize = self.colorChooser.bounds.size;
+        [self applyRoundRectStyle:scrollView];
     } else {
         [self applyRoundRectStyle:self.colorChooser];
     }
