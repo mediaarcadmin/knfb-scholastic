@@ -289,7 +289,7 @@ static Class controllerClassForStoryInteraction(SCHStoryInteraction *storyIntera
             UIImage *closeImage = [UIImage imageNamed:[NSString stringWithFormat:@"storyinteraction-bolt-%@", age]];
             self.closeButton = [UIButton buttonWithType:UIButtonTypeCustom];
             self.closeButton.autoresizingMask = 0;
-            self.closeButton.bounds = (CGRect){ CGPointZero, closeImage.size };
+            self.closeButton.frame = CGRectMake(0, 0, closeImage.size.width, closeImage.size.height);
             [self.closeButton setImage:closeImage forState:UIControlStateNormal];
             [self.closeButton addTarget:self action:@selector(closeButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
         }
