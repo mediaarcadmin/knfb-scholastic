@@ -24,6 +24,8 @@
 #import "SCHDrmSession.h"
 #import "SCHAuthenticationManager.h"
 #import "SCHRecommendationManager.h"
+#import "NSFileManager+DoNotBackupExtendedAttribute.h"
+
 #if RUN_KIF_TESTS
 #import "SCHKIFTestController.h"
 #endif
@@ -36,6 +38,7 @@ static NSString* const binaryDevCertFilename = @"bdevcert.dat";
 @interface AppDelegate_Shared ()
 
 - (void)setupUserDefaults;
+- (BOOL)setUserDefaultsFileSkipBackupAttribute;
 - (BOOL)createApplicationSupportDirectory;
 - (void)resetDRMState;
 - (void)ensureCorrectCertsAvailable;
@@ -213,6 +216,29 @@ static NSString* const binaryDevCertFilename = @"bdevcert.dat";
     
 	[[NSUserDefaults standardUserDefaults] registerDefaults:appDefaults];
     [[NSUserDefaults standardUserDefaults] synchronize];
+    
+    [self setUserDefaultsFileSkipBackupAttribute];
+}
+
+- (BOOL)setUserDefaultsFileSkipBackupAttribute
+{
+    BOOL ret = NO;
+	NSArray  *libraryPaths = NSSearchPathForDirectoriesInDomains(NSLibraryDirectory, NSUserDomainMask, YES);
+    NSString *libraryPath = ([libraryPaths count] > 0) ? [libraryPaths objectAtIndex:0] : nil;
+	NSString *userDefaultsPath = [libraryPath stringByAppendingPathComponent:@"Preferences"];
+    NSString *bundleIdentifier = [[NSBundle mainBundle] bundleIdentifier];
+
+    if (userDefaultsPath != nil && bundleIdentifier != nil) {
+        NSString *userDefaultsFilePath = [userDefaultsPath stringByAppendingPathComponent:bundleIdentifier];
+        userDefaultsFilePath = [userDefaultsFilePath stringByAppendingPathExtension:@"plist"];
+        
+        ret = [NSFileManager BITsetSkipBackupAttributeToItemAtFilePath:userDefaultsFilePath];
+        if (ret == NO) {
+            NSLog(@"FAILED: Application Support directory did not set Do Not Backup Extended Attribute.");                
+        }    
+    }
+    
+    return ret;
 }
 
 // Add any UserDefaults that can be cleared here, 
@@ -292,13 +318,13 @@ static NSString* const binaryDevCertFilename = @"bdevcert.dat";
 			NSLog(@"Error: could not create Application Support directory in the Library directory! %@, %@", 
 				  createApplicationSupportDirError, [createApplicationSupportDirError userInfo]);
 			return NO;
-		} 
-		else {
-			NSLog(@"Created Application Support directory within Library.");
-			return YES;
+		} else {
+            if ([NSFileManager BITsetSkipBackupAttributeToItemAtFilePath:applicationSupportPath] == NO) {
+                NSLog(@"Application Support directory did not set Do Not Backup Extended Attribute.");                
+            }
+            return YES;
 		}
-	}
-	else {
+	} else {
 		return YES;
 	}
 }
