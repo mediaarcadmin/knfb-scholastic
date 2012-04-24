@@ -257,13 +257,13 @@ didStartElement:(NSString *)elementName
 {
     self.connection = nil;
 
+    [SCHVersionDownloadManager sharedVersionManager].isProcessing = NO;
     [self willChangeValueForKey:@"isExecuting"];
     [self willChangeValueForKey:@"isFinished"];
 	self.finished = YES;
 	self.executing = NO;
     [self didChangeValueForKey:@"isExecuting"];
     [self didChangeValueForKey:@"isFinished"];
-	[SCHVersionDownloadManager sharedVersionManager].isProcessing = NO;
 }
 
 - (BOOL)isConcurrent

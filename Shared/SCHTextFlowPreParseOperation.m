@@ -104,10 +104,10 @@ static void pageFileXMLParsingStartElementHandler(void *ctx, const XML_Char *nam
     if (nil == data) {
         NSLog(@"Could not pre-parse TextFlow because TextFlow file did not exist at path: %@.", KNFBXPSTextFlowSectionsFile);
 
-        [self updateBookWithFailure];
         [xpsProvider reportReadingIfRequired];
         [[SCHBookManager sharedBookManager] checkInXPSProviderForBookIdentifier:self.identifier];
-
+        [self updateBookWithFailure];
+        
         [self setProcessingState:SCHBookProcessingStateReadyForSmartZoomPreParse];
         [self setIsProcessing:NO];
         [self endOperation];
@@ -143,9 +143,9 @@ static void pageFileXMLParsingStartElementHandler(void *ctx, const XML_Char *nam
         
         if (!data) {
             NSLog(@"Could not pre-parse TextFlow because TextFlow file did not exist with name: %@.", [pageRange fileName]);
-            [self updateBookWithFailure];
             [xpsProvider reportReadingIfRequired];
             [[SCHBookManager sharedBookManager] checkInXPSProviderForBookIdentifier:self.identifier];
+            [self updateBookWithFailure];
             [pool drain];
             return;
         }

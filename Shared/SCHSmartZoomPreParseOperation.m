@@ -81,8 +81,8 @@ static void smartZoomFileXMLParsingStartElementHandler(void *ctx, const XML_Char
 
         if (nil == data) {    
             // Not all books have this data
+            [[SCHBookManager sharedBookManager] checkInXPSProviderForBookIdentifier:self.identifier];            
             [self updateBookWithFailure];
-            [[SCHBookManager sharedBookManager] checkInXPSProviderForBookIdentifier:self.identifier];
             
             [pool drain];
             return;
