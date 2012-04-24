@@ -135,12 +135,12 @@
         [[SCHDictionaryDownloadManager sharedDownloadManager] threadSafeUpdateDictionaryState:SCHDictionaryProcessingStateNeedsUnzip];
     }
 
+    [SCHDictionaryDownloadManager sharedDownloadManager].isProcessing = NO;    
     [self willChangeValueForKey:@"isExecuting"];
     [self willChangeValueForKey:@"isFinished"];
     self.downloadOperation = nil;
     [self didChangeValueForKey:@"isFinished"];
     [self didChangeValueForKey:@"isExecuting"];
-    [SCHDictionaryDownloadManager sharedDownloadManager].isProcessing = NO;
 }
 
 #pragma mark - QHTTPOperationDelegate
@@ -194,12 +194,12 @@
         [[BITNetworkActivityManager sharedNetworkActivityManager] hideNetworkActivityIndicator];
     }
     
+    [SCHDictionaryDownloadManager sharedDownloadManager].isProcessing = NO;
     [self willChangeValueForKey:@"isExecuting"];
     [self willChangeValueForKey:@"isFinished"];
     self.downloadOperation = nil;
     [self didChangeValueForKey:@"isFinished"];
     [self didChangeValueForKey:@"isExecuting"];
-    [SCHDictionaryDownloadManager sharedDownloadManager].isProcessing = NO;
 }
 
 #pragma mark - progress

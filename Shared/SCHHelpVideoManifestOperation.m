@@ -202,13 +202,13 @@ didStartElement:(NSString *)elementName
 
 - (void)finishOp
 {
+    [SCHHelpManager sharedHelpManager].isProcessing = NO;
     [self willChangeValueForKey:@"isExecuting"];
     [self willChangeValueForKey:@"isFinished"];
 	self.finished = YES;
 	self.executing = NO;
     [self didChangeValueForKey:@"isExecuting"];
     [self didChangeValueForKey:@"isFinished"];
-	[SCHHelpManager sharedHelpManager].isProcessing = NO;
 }
 
 - (BOOL)isConcurrent
