@@ -505,10 +505,11 @@ static Class controllerClassForStoryInteraction(SCHStoryInteraction *storyIntera
     CGFloat backgroundWidth, backgroundHeight;
     switch (currentFrameStyle) {
         case SCHStoryInteractionFullScreen: {
-            CGSize size = [UIScreen mainScreen].bounds.size;  
-            backgroundWidth = size.height;
-            backgroundHeight = size.width;
-            // FIXME: should not be setting frame when transforms are used
+            
+            backgroundWidth = contentsSize.width;
+            backgroundHeight = contentsSize.height;
+            
+            // transforms are no longer being used here
             background.frame = CGRectIntegral(CGRectMake(0, 0, backgroundWidth, backgroundHeight));
             contents.frame = background.frame; 
             break;
@@ -602,10 +603,13 @@ static Class controllerClassForStoryInteraction(SCHStoryInteraction *storyIntera
 - (CGSize)maximumContentsSize
 {
     SCHFrameStyle currentFrameStyle = [self frameStyleForViewAtIndex:self.currentScreenIndex];
-    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad || currentFrameStyle == SCHStoryInteractionFullScreen) {
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
         return [UIScreen mainScreen].bounds.size; 
     }
+        
     switch (currentFrameStyle) {
+        case SCHStoryInteractionFullScreen:
+            return (UIInterfaceOrientationIsPortrait(self.interfaceOrientation) ? CGSizeMake(320, 480) : CGSizeMake(480, 320));
         case SCHStoryInteractionNoTitle:
             return (UIInterfaceOrientationIsPortrait(self.interfaceOrientation) ? CGSizeMake(315.0, 470.0) : CGSizeMake(470.0, 315.0));
         case SCHStoryInteractionTitle:
