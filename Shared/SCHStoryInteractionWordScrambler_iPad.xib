@@ -43,7 +43,7 @@
 					<object class="IBUILabel" id="924888056">
 						<reference key="NSNextResponder" ref="191373211"/>
 						<int key="NSvFlags">292</int>
-						<string key="NSFrame">{{20, 20}, {459, 47}}</string>
+						<string key="NSFrame">{{20, 20}, {500, 47}}</string>
 						<reference key="NSSuperview" ref="191373211"/>
 						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="273800243"/>
@@ -78,7 +78,7 @@
 					<object class="IBUILabel" id="593215873">
 						<reference key="NSNextResponder" ref="191373211"/>
 						<int key="NSvFlags">292</int>
-						<string key="NSFrame">{{20, 256}, {459, 21}}</string>
+						<string key="NSFrame">{{20, 314}, {500, 21}}</string>
 						<reference key="NSSuperview" ref="191373211"/>
 						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="870762544"/>
@@ -111,9 +111,10 @@
 					<object class="IBUIButton" id="870762544">
 						<reference key="NSNextResponder" ref="191373211"/>
 						<int key="NSvFlags">292</int>
-						<string key="NSFrame">{{213, 291}, {72, 37}}</string>
+						<string key="NSFrame">{{234, 343}, {72, 37}}</string>
 						<reference key="NSSuperview" ref="191373211"/>
 						<reference key="NSWindow"/>
+						<reference key="NSNextKeyView"/>
 						<bool key="IBUIOpaque">NO</bool>
 						<string key="targetRuntimeIdentifier">IBIPadFramework</string>
 						<int key="IBUIContentHorizontalAlignment">0</int>
@@ -151,7 +152,7 @@
 					<object class="IBUIView" id="273800243">
 						<reference key="NSNextResponder" ref="191373211"/>
 						<int key="NSvFlags">292</int>
-						<string key="NSFrame">{{20, 75}, {459, 173}}</string>
+						<string key="NSFrame">{{20, 75}, {500, 221}}</string>
 						<reference key="NSSuperview" ref="191373211"/>
 						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="593215873"/>
@@ -162,7 +163,7 @@
 						<string key="targetRuntimeIdentifier">IBIPadFramework</string>
 					</object>
 				</object>
-				<string key="NSFrameSize">{499, 348}</string>
+				<string key="NSFrameSize">{540, 400}</string>
 				<reference key="NSSuperview"/>
 				<reference key="NSWindow"/>
 				<reference key="NSNextKeyView" ref="924888056"/>
@@ -224,8 +225,8 @@
 						<object class="NSMutableArray" key="children">
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<reference ref="924888056"/>
-							<reference ref="593215873"/>
 							<reference ref="273800243"/>
+							<reference ref="593215873"/>
 							<reference ref="870762544"/>
 						</object>
 						<reference key="parent" ref="0"/>

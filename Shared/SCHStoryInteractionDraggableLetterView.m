@@ -23,12 +23,18 @@
         iv.tag = kTileTag;
         [self addSubview:iv];
         [iv release];
+        
+        CGFloat fontSize = 30;
+        if (tileImage.size.width <= 30) {
+            fontSize = 24;
+        }
+        
         UILabel *label = [[UILabel alloc] initWithFrame:self.bounds];
         label.backgroundColor = [UIColor clearColor];
         label.textColor = [UIColor whiteColor];
         label.textAlignment = UITextAlignmentCenter;
         label.text = [NSString stringWithCharacters:&aLetter length:1];
-        label.font = [UIFont fontWithName:@"Arial-BoldMT" size:30];
+        label.font = [UIFont fontWithName:@"Arial-BoldMT" size:fontSize];
         label.tag = kLabelTag;
         [self addSubview:label];
         [label release];
