@@ -80,7 +80,7 @@
     } else {
         LambdaAlert *lambdaAlert = [[LambdaAlert alloc]
                             initWithTitle:NSLocalizedString(@"Error", @"")
-                            message:NSLocalizedString(@"A problem occured accessing web parent tools with your account. Please contact support.", @"")];
+                            message:NSLocalizedString(@"A problem occured accessing web Parent Tools with your account. Please contact support.", @"")];
         [lambdaAlert addButtonWithTitle:NSLocalizedString(@"OK", @"") block:^{
             [self.modalPresenterDelegate dismissModalWebParentToolsAnimated:YES
                                                                    withSync:NO 
