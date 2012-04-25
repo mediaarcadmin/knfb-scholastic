@@ -632,6 +632,8 @@ typedef enum
     if ([[SCHAppStateManager sharedAppStateManager] isSampleStore] == YES) {
         [self.profileItem clearBookOrder:self.books];
         
+        // Fix for ticket #1493 - if the user has declined the dictionary, we want to 
+        // ask them again when they return to the sample bookshelf, or if they log in
         if ([[SCHDictionaryDownloadManager sharedDownloadManager] userRequestState] == SCHDictionaryUserDeclined) {
             [[SCHDictionaryDownloadManager sharedDownloadManager] setUserRequestState:SCHDictionaryUserNotYetAsked];
         }
