@@ -2669,6 +2669,8 @@
 		C97F7F9D14078A91002BB9FB /* reading-samplesi@2x~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = C97F7F9214078A91002BB9FB /* reading-samplesi@2x~iphone.png */; };
 		C97F84031407B349002BB9FB /* storyinteraction-wordbird-BalloonPop.png in Resources */ = {isa = PBXBuildFile; fileRef = C97F84021407B349002BB9FB /* storyinteraction-wordbird-BalloonPop.png */; };
 		C98648A01402686300B9DFE1 /* SCHReadingViewNavigationToolbar.m in Sources */ = {isa = PBXBuildFile; fileRef = C986489F1402686300B9DFE1 /* SCHReadingViewNavigationToolbar.m */; };
+		C98BDD7B1547F3DF00E265B8 /* 9780545364775_r7.MyFirstBiographyBenjaminFranklin.jpg in Resources */ = {isa = PBXBuildFile; fileRef = C98BDD791547F3DF00E265B8 /* 9780545364775_r7.MyFirstBiographyBenjaminFranklin.jpg */; };
+		C98BDD7C1547F3DF00E265B8 /* 9780545364775_r7.MyFirstBiographyBenjaminFranklin.xps in Resources */ = {isa = PBXBuildFile; fileRef = C98BDD7A1547F3DF00E265B8 /* 9780545364775_r7.MyFirstBiographyBenjaminFranklin.xps */; };
 		C9951722146D693600EA7337 /* LocalSamplesManifest.xml in Resources */ = {isa = PBXBuildFile; fileRef = C9951721146D693600EA7337 /* LocalSamplesManifest.xml */; };
 		C9951725146D694600EA7337 /* LocalSamplesManifest.xml in Resources */ = {isa = PBXBuildFile; fileRef = C9951724146D694600EA7337 /* LocalSamplesManifest.xml */; };
 		C99B4A971405124E00B3ADF0 /* reading-view-scrubber-rightcap-large.png in Resources */ = {isa = PBXBuildFile; fileRef = C99B4A911405124E00B3ADF0 /* reading-view-scrubber-rightcap-large.png */; };
@@ -5447,6 +5449,8 @@
 		C97F84021407B349002BB9FB /* storyinteraction-wordbird-BalloonPop.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "storyinteraction-wordbird-BalloonPop.png"; sourceTree = "<group>"; };
 		C986489E1402686300B9DFE1 /* SCHReadingViewNavigationToolbar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHReadingViewNavigationToolbar.h; path = Shared/SCHReadingViewNavigationToolbar.h; sourceTree = "<group>"; };
 		C986489F1402686300B9DFE1 /* SCHReadingViewNavigationToolbar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHReadingViewNavigationToolbar.m; path = Shared/SCHReadingViewNavigationToolbar.m; sourceTree = "<group>"; };
+		C98BDD791547F3DF00E265B8 /* 9780545364775_r7.MyFirstBiographyBenjaminFranklin.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = 9780545364775_r7.MyFirstBiographyBenjaminFranklin.jpg; path = "Shared/Debug Books/9780545364775_r7.MyFirstBiographyBenjaminFranklin.jpg"; sourceTree = "<group>"; };
+		C98BDD7A1547F3DF00E265B8 /* 9780545364775_r7.MyFirstBiographyBenjaminFranklin.xps */ = {isa = PBXFileReference; lastKnownFileType = file; name = 9780545364775_r7.MyFirstBiographyBenjaminFranklin.xps; path = "Shared/Debug Books/9780545364775_r7.MyFirstBiographyBenjaminFranklin.xps"; sourceTree = "<group>"; };
 		C9951721146D693600EA7337 /* LocalSamplesManifest.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = LocalSamplesManifest.xml; sourceTree = "<group>"; };
 		C9951724146D694600EA7337 /* LocalSamplesManifest.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = LocalSamplesManifest.xml; sourceTree = "<group>"; };
 		C99B4A911405124E00B3ADF0 /* reading-view-scrubber-rightcap-large.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "reading-view-scrubber-rightcap-large.png"; path = "Resources/UIAssets/reading-view-scrubber-rightcap-large.png"; sourceTree = "<group>"; };
@@ -8624,6 +8628,8 @@
 		F8509E7512F0620D00197EB5 /* Debug Books */ = {
 			isa = PBXGroup;
 			children = (
+				C98BDD791547F3DF00E265B8 /* 9780545364775_r7.MyFirstBiographyBenjaminFranklin.jpg */,
+				C98BDD7A1547F3DF00E265B8 /* 9780545364775_r7.MyFirstBiographyBenjaminFranklin.xps */,
 				C935BC7714698D5B00244A38 /* 9780545324328.1103.MixedUpAlphabet.xps */,
 				C935BC7814698D5B00244A38 /* 9780545324328.1103.MixedUpAlphabet.jpg */,
 				5296F99713FE7B4F009532F3 /* 9780545287012_r1.HalloweenParade.jpg */,
@@ -10693,6 +10699,8 @@
 				F84E5029152DA04000177BC1 /* storiaBlueStarFull~ipad.png in Resources */,
 				F84E502D152DA04000177BC1 /* storiaBlueStarHalfFull~ipad.png in Resources */,
 				C9EB4990152EDA9800DA227A /* SCHRecommendationListView-ReadingViewContainer.xib in Resources */,
+				C98BDD7B1547F3DF00E265B8 /* 9780545364775_r7.MyFirstBiographyBenjaminFranklin.jpg in Resources */,
+				C98BDD7C1547F3DF00E265B8 /* 9780545364775_r7.MyFirstBiographyBenjaminFranklin.xps in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
