@@ -286,7 +286,7 @@ extern NSString * const kSCHUserDefaultsSpaceSaverModeSetOffNotification;
         case SCHDictionaryProcessingStateNeedsParse:
         {
             NSUInteger progress = roundf([[SCHDictionaryDownloadManager sharedDownloadManager] currentDictionaryProcessingPercentage] * 100.0f);
-            [self.downloadDictionaryButton setTitle:[NSString stringWithFormat:NSLocalizedString(@"Processing Dictionary %d%%", @"Processing dictionary button title"), 
+            [self.downloadDictionaryButton setTitle:[NSString stringWithFormat:NSLocalizedString(@"Installing Dictionary %d%%", @"Installing dictionary button title"), 
                                                      progress]
                                            forState:UIControlStateNormal];
             break;
