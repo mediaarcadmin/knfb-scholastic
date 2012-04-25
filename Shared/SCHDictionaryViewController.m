@@ -275,7 +275,7 @@
         }
         case SCHDictionaryProcessingStateDeleting:
         {
-            self.bottomLabel.text = NSLocalizedString(@"The dictionary is being deleted. If you wish to re-download the dictionary, go to Parent Tools on the eReader sign-in screen.", nil);
+            self.bottomLabel.text = NSLocalizedString(@"The Scholastic dictionary is currently being deleted from your device. Go to Parent Tools on the eReader sign-in screen to download it again.", nil);
             [self.activityIndicator stopAnimating];
             self.progressBar.hidden = YES;
             break;
