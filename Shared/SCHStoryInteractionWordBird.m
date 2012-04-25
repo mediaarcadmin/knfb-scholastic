@@ -26,6 +26,11 @@
     return [KNFBXPSStoryInteractionsDirectory stringByAppendingPathComponent:filename];
 }
 
+- (NSString *)word
+{
+    return [word uppercaseString];
+}
+
 @end
 
 @implementation SCHStoryInteractionWordBird
