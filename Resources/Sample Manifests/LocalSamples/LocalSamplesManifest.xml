@@ -62,4 +62,13 @@
         <Version>1</Version>
         <IsEnhanced>false</IsEnhanced>
 	</Book>
+    <Book>
+		<Isbn13>9780545364775</Isbn13>
+		<Title>My First Biography: Benjamin Franklin</Title>
+		<Author>by Marion Dane Bauer, illustrated by Anthony Lewis</Author>
+		<CoverUrl>9780545364775_r7.MyFirstBiographyBenjaminFranklin.jpg</CoverUrl>
+		<DownloadUrl>9780545364775_r7.MyFirstBiographyBenjaminFranklin.xps</DownloadUrl>
+        <Version>1</Version>
+        <IsEnhanced>true</IsEnhanced>
+	</Book>
 </SampleManifest>
