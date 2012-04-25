@@ -42,6 +42,7 @@ static const CGFloat kContentHeightLandscape = 380;
 @synthesize topBar;
 @synthesize barSpacer;
 @synthesize closeButton;
+@synthesize goButton;
 @synthesize profileLabel;
 @synthesize containerView;
 @synthesize scrollView;
@@ -65,6 +66,7 @@ static const CGFloat kContentHeightLandscape = 380;
     [topBar release], topBar = nil;
     [barSpacer release], barSpacer = nil;
     [closeButton release], closeButton = nil;
+    [goButton release], goButton = nil;
     [profileLabel release], profileLabel = nil;
     [containerView release], containerView = nil;
     [scrollView release], scrollView = nil;
@@ -152,6 +154,18 @@ static const CGFloat kContentHeightLandscape = 380;
         }
         cellBGImage = [bgImage stretchableImageWithLeftCapWidth:11 topCapHeight:0];
         [self.loginButton setBackgroundImage:cellBGImage forState:UIControlStateNormal];
+    }
+    
+    // if we have a "Go" button (on the create profile password and enter 
+    // profile password views), then style the button appropriately
+    if (self.goButton) {
+        if (self.controllerType == kSCHControllerParentToolsView) {
+            bgImage = [UIImage imageNamed:@"button-login-red"];
+        } else {
+            bgImage = [UIImage imageNamed:@"button-login"];
+        }
+        cellBGImage = [bgImage stretchableImageWithLeftCapWidth:11 topCapHeight:0];
+        [self.goButton setBackgroundImage:cellBGImage forState:UIControlStateNormal];
     }
     
     [self setupAccessibility];

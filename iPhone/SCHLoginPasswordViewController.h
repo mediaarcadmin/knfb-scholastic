@@ -75,6 +75,7 @@ typedef void(^SCHActionBlock)(void);
 @property (nonatomic, retain) IBOutlet SCHUnderlinedButton *forgotUsernamePasswordURL;
 @property (nonatomic, retain) IBOutlet SCHUnderlinedButton *accountURL;
 @property (nonatomic, retain) IBOutlet UIButton *loginButton;
+@property (nonatomic, retain) IBOutlet UIButton *goButton;
 
 // IBAction - the "Login" or "Go" button action
 - (IBAction)actionButtonAction:(id)sender;
