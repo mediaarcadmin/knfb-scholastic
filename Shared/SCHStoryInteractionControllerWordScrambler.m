@@ -66,7 +66,7 @@
 - (void)setupViewAtIndex:(NSInteger)screenIndex
 {
     SCHStoryInteractionWordScrambler *wordScrambler = (SCHStoryInteractionWordScrambler *)self.storyInteraction;
-    self.clueLabel.text = wordScrambler.clue;
+    [self setClueLabelText:wordScrambler.clue];
     
     UIImage *letterTile = [UIImage imageNamed:@"storyinteraction-lettertile"];
     self.letterTileSize = letterTile.size;
@@ -87,6 +87,27 @@
     
     self.hasShownHint = NO;
     self.controllerState = SCHStoryInteractionControllerStateInteractionInProgress;
+}
+
+- (void)setClueLabelText:(NSString *)text
+{
+    self.clueLabel.text = text;
+
+    NSString *fontName = [self.clueLabel.font fontName];
+    CGFloat fontSize = [self.clueLabel.font pointSize];
+    CGSize constrainSize = CGSizeMake(CGRectGetWidth(self.clueLabel.bounds), CGFLOAT_MAX);
+    UIFont *font = nil;
+    while (fontSize > 10) {
+        font = [UIFont fontWithName:fontName size:fontSize];
+        CGSize size = [text sizeWithFont:font constrainedToSize:constrainSize lineBreakMode:self.clueLabel.lineBreakMode];
+        if (size.height <= CGRectGetHeight(self.clueLabel.bounds)) {
+            break;
+        }
+        fontSize -= 1;
+    }
+    if (font) {
+        self.clueLabel.font = font;
+    }
 }
 
 - (void)createAndLayoutLetterViews
