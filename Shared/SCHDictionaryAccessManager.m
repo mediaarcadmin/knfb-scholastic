@@ -510,11 +510,14 @@ static SCHDictionaryAccessManager *sharedManager = nil;
     BOOL trimmedWordExists = [[NSFileManager defaultManager] fileExistsAtPath:mp3Path];
     BOOL rootWordExists = [[NSFileManager defaultManager] fileExistsAtPath:mp3PathForRootWord];
     
-    if (trimmedWordExists || (!trimmedWordExists && rootWordExists && [category compare:kSCHDictionaryOlderReader] == NSOrderedSame)) {
+    // if this is a younger reader book, only pronounce the actual word highlighted
+    // if this is an older reader book, we should always pronounce the root word (see ticket #1368)
+    
+    if (trimmedWordExists || (rootWordExists && [category compare:kSCHDictionaryOlderReader] == NSOrderedSame)) {
         
         NSURL *url = nil;
         
-        if (!trimmedWordExists) {
+        if (!trimmedWordExists || ([category compare:kSCHDictionaryOlderReader] == NSOrderedSame)) {
             url = [NSURL fileURLWithPath:mp3PathForRootWord];
         } else {
             url = [NSURL fileURLWithPath:mp3Path];
