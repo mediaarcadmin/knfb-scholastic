@@ -20,7 +20,6 @@
 @property (nonatomic, retain) NSArray *jigsawPieceViews;
 
 - (IBAction)choosePuzzle:(id)sender;
-- (IBAction)playAgain:(id)sender;
 
 - (UIView<SCHStoryInteractionJigsawPieceView> *)newPieceViewForImage:(CGImageRef)image;
 - (CGRect)puzzlePreviewFrame;
