@@ -11,8 +11,7 @@
 #import "SCHFlowEucBook.h"
 #import "SCHBookPoint.h"
 #import "SCHBookRange.h"
-#import "KNFBTextFlow.h"
-#import "KNFBTextFlowParagraphSource.h"
+#import "KNFBParagraphSource.h"
 #import <libEucalyptus/EucBookView.h>
 #import <libEucalyptus/EucEPubBook.h>
 #import <libEucalyptus/EucBookPageIndexPoint.h>
@@ -26,8 +25,8 @@
 
 @interface SCHFlowView ()
 
-@property (nonatomic, retain) SCHFlowEucBook *eucBook;
-@property (nonatomic, retain) KNFBTextFlowParagraphSource *paragraphSource;
+@property (nonatomic, retain) EucEPubBook<SCHEPubBookmarkPointTranslation> *eucBook;
+@property (nonatomic, retain) id<KNFBParagraphSource> paragraphSource;
 @property (nonatomic, retain) EucBookView *eucBookView;
 
 @property (nonatomic, retain) NSArray *fontPointSizes;
@@ -66,7 +65,7 @@
         [eucBookView setPageTexture:self.currentPageTexture isDark:self.textureIsDark];
         
         if (self.openingPoint) {
-            [self jumpToBookPoint:self.openingPoint animated:NO];
+            //[self jumpToBookPoint:self.openingPoint animated:NO];
             self.openingPoint = nil;
         }
         
@@ -112,7 +111,7 @@ managedObjectContext:(NSManagedObjectContext *)managedObjectContext
         
         SCHBookManager *bookManager = [SCHBookManager sharedBookManager];
         eucBook = [[bookManager checkOutEucBookForBookIdentifier:self.identifier inManagedObjectContext:managedObjectContext] retain];
-        paragraphSource = (KNFBTextFlowParagraphSource *)[[bookManager checkOutParagraphSourceForBookIdentifier:self.identifier inManagedObjectContext:managedObjectContext] retain];
+        paragraphSource = [[bookManager checkOutParagraphSourceForBookIdentifier:self.identifier inManagedObjectContext:managedObjectContext] retain];
         
         openingPoint = [point retain];
     }

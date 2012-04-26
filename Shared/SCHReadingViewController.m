@@ -1335,6 +1335,7 @@ static const NSUInteger kReadingViewMaxRecommendationsCount = 4;
         } else {
 
             UINavigationController *navController = [[[UINavigationController alloc] initWithRootViewController:self.popoverOptionsViewController] autorelease];
+            self.popoverNavigationTitleLabel.autoresizingMask = UIViewAutoresizingNone; // Needed to display it in the popover titleView
             self.popoverOptionsViewController.navigationItem.titleView = self.popoverNavigationTitleLabel;
 
             self.popover = [[[UIPopoverController alloc] initWithContentViewController:navController] autorelease];

@@ -7,11 +7,13 @@
 //
 
 #import "KNFBXPSProvider.h"
+#import <libEucalyptus/EucEPubDataProvider.h>
 
 @class NSManagedObjectContext;
 @class SCHBookIdentifier;
+@protocol EucEPubDataProvider;
 
-@interface SCHXPSProvider : KNFBXPSProvider {
+@interface SCHXPSProvider : KNFBXPSProvider <EucEPubDataProvider> {
     SCHBookIdentifier *bookIdentifier;
 	id<KNFBDrmBookDecrypter> drmDecrypter;
 }
@@ -22,5 +24,6 @@
 
 - (NSData *)coverThumbData;
 - (void)resetDrmDecrypter;
+- (BOOL)containsEmbeddedEPub;
 
 @end

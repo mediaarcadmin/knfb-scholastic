@@ -555,6 +555,18 @@
         }
         [doc release], doc = nil;
 
+        if ([title length] == 0) {
+            title = [xpsFilePath lastPathComponent];
+        }
+        
+        if ([author length] == 0) {
+            author = @"Unknown Author";
+        }
+        
+        if ([ISBN length] == 0) {
+            ISBN = @"Unknown ISBN";
+        }
+        
         // check we don't already have the book
         SCHAppBook *appBook = [[SCHBookManager sharedBookManager] bookWithIdentifier:[[[SCHBookIdentifier alloc] initWithISBN:ISBN 
                                                                                                                  DRMQualifier:[NSNumber numberWithDRMQualifier:kSCHDRMQualifiersFullNoDRM]] autorelease]
@@ -586,6 +598,12 @@
             
             // extract the cover image
             NSData *imageData = [xpsProvider coverThumbData];
+            
+            // FIXME: hack for ePub covers
+            if (imageData == nil) {
+                imageData = [xpsProvider dataForComponentAtPath:@"OPS/images/cover.jpg"];
+            }
+            
             if (imageData != nil) {   
                 NSData *pngData = UIImagePNGRepresentation([UIImage imageWithData:imageData]);
                 if (![pngData writeToFile:[newContentMetadataItem.AppBook coverImagePath] atomically:YES]) {

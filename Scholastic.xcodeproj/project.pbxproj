@@ -1284,7 +1284,6 @@
 		52488BDE1407990500DA9AFA /* SCHStoryInteractionControllerPictureStarterFavorite.m in Sources */ = {isa = PBXBuildFile; fileRef = 28789AD41404FDA400910D31 /* SCHStoryInteractionControllerPictureStarterFavorite.m */; };
 		52488BE01407990500DA9AFA /* libEucalyptusIOSUI.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C947D573133B9C0100FB4404 /* libEucalyptusIOSUI.a */; };
 		52488BE11407990500DA9AFA /* libEucalyptusModel.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7D3F30F3140698D800C6F445 /* libEucalyptusModel.a */; };
-		52488BE21407990500DA9AFA /* libEucalyptusEPubIOSUI.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7D3F30F5140698D800C6F445 /* libEucalyptusEPubIOSUI.a */; };
 		52488BE31407990500DA9AFA /* libEucalyptusEPub.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C947D577133B9C0100FB4404 /* libEucalyptusEPub.a */; };
 		52488BE41407990500DA9AFA /* libEucalyptusCSS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C947D579133B9C0100FB4404 /* libEucalyptusCSS.a */; };
 		52488BE51407990500DA9AFA /* libEucalyptusBase.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C947D575133B9C0100FB4404 /* libEucalyptusBase.a */; };
@@ -1482,7 +1481,6 @@
 		7D3F313814069A5200C6F445 /* libEucalyptusBase.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C947D575133B9C0100FB4404 /* libEucalyptusBase.a */; };
 		7D3F313914069A5200C6F445 /* libEucalyptusCSS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C947D579133B9C0100FB4404 /* libEucalyptusCSS.a */; };
 		7D3F313A14069A5200C6F445 /* libEucalyptusEPub.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C947D577133B9C0100FB4404 /* libEucalyptusEPub.a */; };
-		7D3F313B14069A5200C6F445 /* libEucalyptusEPubIOSUI.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7D3F30F5140698D800C6F445 /* libEucalyptusEPubIOSUI.a */; };
 		7D3F313C14069A5200C6F445 /* libEucalyptusIOSUI.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C947D573133B9C0100FB4404 /* libEucalyptusIOSUI.a */; };
 		7D3F313D14069A5200C6F445 /* libEucalyptusModel.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7D3F30F3140698D800C6F445 /* libEucalyptusModel.a */; };
 		7D3F313E14069A5200C6F445 /* libexpat.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C947D57B133B9C0100FB4404 /* libexpat.a */; };
@@ -2309,7 +2307,6 @@
 		A3D3F48514CDDF31004A56A5 /* libBITOperation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C9C3FA3014B6FA5E00757038 /* libBITOperation.a */; };
 		A3D3F48614CDDF31004A56A5 /* libEucalyptusIOSUI.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C947D573133B9C0100FB4404 /* libEucalyptusIOSUI.a */; };
 		A3D3F48714CDDF31004A56A5 /* libEucalyptusModel.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7D3F30F3140698D800C6F445 /* libEucalyptusModel.a */; };
-		A3D3F48814CDDF31004A56A5 /* libEucalyptusEPubIOSUI.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7D3F30F5140698D800C6F445 /* libEucalyptusEPubIOSUI.a */; };
 		A3D3F48914CDDF31004A56A5 /* libEucalyptusEPub.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C947D577133B9C0100FB4404 /* libEucalyptusEPub.a */; };
 		A3D3F48A14CDDF31004A56A5 /* libEucalyptusCSS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C947D579133B9C0100FB4404 /* libEucalyptusCSS.a */; };
 		A3D3F48B14CDDF31004A56A5 /* libEucalyptusBase.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C947D575133B9C0100FB4404 /* libEucalyptusBase.a */; };
@@ -2663,6 +2660,16 @@
 		C98648A01402686300B9DFE1 /* SCHReadingViewNavigationToolbar.m in Sources */ = {isa = PBXBuildFile; fileRef = C986489F1402686300B9DFE1 /* SCHReadingViewNavigationToolbar.m */; };
 		C98BDD7B1547F3DF00E265B8 /* 9780545364775_r7.MyFirstBiographyBenjaminFranklin.jpg in Resources */ = {isa = PBXBuildFile; fileRef = C98BDD791547F3DF00E265B8 /* 9780545364775_r7.MyFirstBiographyBenjaminFranklin.jpg */; };
 		C98BDD7C1547F3DF00E265B8 /* 9780545364775_r7.MyFirstBiographyBenjaminFranklin.xps in Resources */ = {isa = PBXBuildFile; fileRef = C98BDD7A1547F3DF00E265B8 /* 9780545364775_r7.MyFirstBiographyBenjaminFranklin.xps */; };
+		C98BDDAA1548337C00E265B8 /* SCHEPubParagraphSource.m in Sources */ = {isa = PBXBuildFile; fileRef = C98BDDA91548337B00E265B8 /* SCHEPubParagraphSource.m */; };
+		C98BDDAB1548337C00E265B8 /* SCHEPubParagraphSource.m in Sources */ = {isa = PBXBuildFile; fileRef = C98BDDA91548337B00E265B8 /* SCHEPubParagraphSource.m */; };
+		C98BDDAC1548337C00E265B8 /* SCHEPubParagraphSource.m in Sources */ = {isa = PBXBuildFile; fileRef = C98BDDA91548337B00E265B8 /* SCHEPubParagraphSource.m */; };
+		C98BDDAD1548337C00E265B8 /* SCHEPubParagraphSource.m in Sources */ = {isa = PBXBuildFile; fileRef = C98BDDA91548337B00E265B8 /* SCHEPubParagraphSource.m */; };
+		C98BDDAE1548337C00E265B8 /* SCHEPubParagraphSource.m in Sources */ = {isa = PBXBuildFile; fileRef = C98BDDA91548337B00E265B8 /* SCHEPubParagraphSource.m */; };
+		C98BDDB11548625500E265B8 /* SCHEPubBook.m in Sources */ = {isa = PBXBuildFile; fileRef = C98BDDB01548625400E265B8 /* SCHEPubBook.m */; };
+		C98BDDB21548625500E265B8 /* SCHEPubBook.m in Sources */ = {isa = PBXBuildFile; fileRef = C98BDDB01548625400E265B8 /* SCHEPubBook.m */; };
+		C98BDDB31548625500E265B8 /* SCHEPubBook.m in Sources */ = {isa = PBXBuildFile; fileRef = C98BDDB01548625400E265B8 /* SCHEPubBook.m */; };
+		C98BDDB41548625500E265B8 /* SCHEPubBook.m in Sources */ = {isa = PBXBuildFile; fileRef = C98BDDB01548625400E265B8 /* SCHEPubBook.m */; };
+		C98BDDB51548625500E265B8 /* SCHEPubBook.m in Sources */ = {isa = PBXBuildFile; fileRef = C98BDDB01548625400E265B8 /* SCHEPubBook.m */; };
 		C9951722146D693600EA7337 /* LocalSamplesManifest.xml in Resources */ = {isa = PBXBuildFile; fileRef = C9951721146D693600EA7337 /* LocalSamplesManifest.xml */; };
 		C9951725146D694600EA7337 /* LocalSamplesManifest.xml in Resources */ = {isa = PBXBuildFile; fileRef = C9951724146D694600EA7337 /* LocalSamplesManifest.xml */; };
 		C99B4A971405124E00B3ADF0 /* reading-view-scrubber-rightcap-large.png in Resources */ = {isa = PBXBuildFile; fileRef = C99B4A911405124E00B3ADF0 /* reading-view-scrubber-rightcap-large.png */; };
@@ -3630,7 +3637,6 @@
 		C9D7038614ED50B100C10006 /* libBITOperation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C9C3FA3014B6FA5E00757038 /* libBITOperation.a */; };
 		C9D7038714ED50B100C10006 /* libEucalyptusIOSUI.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C947D573133B9C0100FB4404 /* libEucalyptusIOSUI.a */; };
 		C9D7038814ED50B100C10006 /* libEucalyptusModel.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7D3F30F3140698D800C6F445 /* libEucalyptusModel.a */; };
-		C9D7038914ED50B100C10006 /* libEucalyptusEPubIOSUI.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7D3F30F5140698D800C6F445 /* libEucalyptusEPubIOSUI.a */; };
 		C9D7038A14ED50B100C10006 /* libEucalyptusEPub.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C947D577133B9C0100FB4404 /* libEucalyptusEPub.a */; };
 		C9D7038B14ED50B100C10006 /* libEucalyptusCSS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C947D579133B9C0100FB4404 /* libEucalyptusCSS.a */; };
 		C9D7038C14ED50B100C10006 /* libEucalyptusBase.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C947D575133B9C0100FB4404 /* libEucalyptusBase.a */; };
@@ -4114,13 +4120,6 @@
 			proxyType = 2;
 			remoteGlobalIDString = 7D5FC0431403D61B009D2229;
 			remoteInfo = libEucalyptusModel;
-		};
-		7D3F30F4140698D800C6F445 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = C947D55D133B9C0000FB4404 /* libEucalyptus.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 7D8D910F1403D2E800632892;
-			remoteInfo = libEucalyptusEPubIOSUI;
 		};
 		7D3F30F8140698D800C6F445 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -5438,6 +5437,11 @@
 		C986489F1402686300B9DFE1 /* SCHReadingViewNavigationToolbar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHReadingViewNavigationToolbar.m; path = Shared/SCHReadingViewNavigationToolbar.m; sourceTree = "<group>"; };
 		C98BDD791547F3DF00E265B8 /* 9780545364775_r7.MyFirstBiographyBenjaminFranklin.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = 9780545364775_r7.MyFirstBiographyBenjaminFranklin.jpg; path = "Shared/Debug Books/9780545364775_r7.MyFirstBiographyBenjaminFranklin.jpg"; sourceTree = "<group>"; };
 		C98BDD7A1547F3DF00E265B8 /* 9780545364775_r7.MyFirstBiographyBenjaminFranklin.xps */ = {isa = PBXFileReference; lastKnownFileType = file; name = 9780545364775_r7.MyFirstBiographyBenjaminFranklin.xps; path = "Shared/Debug Books/9780545364775_r7.MyFirstBiographyBenjaminFranklin.xps"; sourceTree = "<group>"; };
+		C98BDDA81548337A00E265B8 /* SCHEPubParagraphSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHEPubParagraphSource.h; path = Shared/SCHEPubParagraphSource.h; sourceTree = "<group>"; };
+		C98BDDA91548337B00E265B8 /* SCHEPubParagraphSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHEPubParagraphSource.m; path = Shared/SCHEPubParagraphSource.m; sourceTree = "<group>"; };
+		C98BDDAF1548625300E265B8 /* SCHEPubBook.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHEPubBook.h; path = Shared/SCHEPubBook.h; sourceTree = "<group>"; };
+		C98BDDB01548625400E265B8 /* SCHEPubBook.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHEPubBook.m; path = Shared/SCHEPubBook.m; sourceTree = "<group>"; };
+		C98BDDB61548629400E265B8 /* SCHEPubBookmarkPointTranslation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHEPubBookmarkPointTranslation.h; path = Shared/SCHEPubBookmarkPointTranslation.h; sourceTree = "<group>"; };
 		C9951721146D693600EA7337 /* LocalSamplesManifest.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = LocalSamplesManifest.xml; sourceTree = "<group>"; };
 		C9951724146D694600EA7337 /* LocalSamplesManifest.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = LocalSamplesManifest.xml; sourceTree = "<group>"; };
 		C99B4A911405124E00B3ADF0 /* reading-view-scrubber-rightcap-large.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "reading-view-scrubber-rightcap-large.png"; path = "Resources/UIAssets/reading-view-scrubber-rightcap-large.png"; sourceTree = "<group>"; };
@@ -5981,7 +5985,6 @@
 				C9C3FA3814B6FA8400757038 /* libBITOperation.a in Frameworks */,
 				7D3F313C14069A5200C6F445 /* libEucalyptusIOSUI.a in Frameworks */,
 				7D3F313D14069A5200C6F445 /* libEucalyptusModel.a in Frameworks */,
-				7D3F313B14069A5200C6F445 /* libEucalyptusEPubIOSUI.a in Frameworks */,
 				7D3F313A14069A5200C6F445 /* libEucalyptusEPub.a in Frameworks */,
 				7D3F313914069A5200C6F445 /* libEucalyptusCSS.a in Frameworks */,
 				7D3F313814069A5200C6F445 /* libEucalyptusBase.a in Frameworks */,
@@ -6040,7 +6043,6 @@
 				C9C3FA3714B6FA7D00757038 /* libBITOperation.a in Frameworks */,
 				52488BE01407990500DA9AFA /* libEucalyptusIOSUI.a in Frameworks */,
 				52488BE11407990500DA9AFA /* libEucalyptusModel.a in Frameworks */,
-				52488BE21407990500DA9AFA /* libEucalyptusEPubIOSUI.a in Frameworks */,
 				52488BE31407990500DA9AFA /* libEucalyptusEPub.a in Frameworks */,
 				52488BE41407990500DA9AFA /* libEucalyptusCSS.a in Frameworks */,
 				52488BE51407990500DA9AFA /* libEucalyptusBase.a in Frameworks */,
@@ -6084,7 +6086,6 @@
 				A3D3F48514CDDF31004A56A5 /* libBITOperation.a in Frameworks */,
 				A3D3F48614CDDF31004A56A5 /* libEucalyptusIOSUI.a in Frameworks */,
 				A3D3F48714CDDF31004A56A5 /* libEucalyptusModel.a in Frameworks */,
-				A3D3F48814CDDF31004A56A5 /* libEucalyptusEPubIOSUI.a in Frameworks */,
 				A3D3F48914CDDF31004A56A5 /* libEucalyptusEPub.a in Frameworks */,
 				A3D3F48A14CDDF31004A56A5 /* libEucalyptusCSS.a in Frameworks */,
 				A3D3F48B14CDDF31004A56A5 /* libEucalyptusBase.a in Frameworks */,
@@ -6128,7 +6129,6 @@
 				C9D7038614ED50B100C10006 /* libBITOperation.a in Frameworks */,
 				C9D7038714ED50B100C10006 /* libEucalyptusIOSUI.a in Frameworks */,
 				C9D7038814ED50B100C10006 /* libEucalyptusModel.a in Frameworks */,
-				C9D7038914ED50B100C10006 /* libEucalyptusEPubIOSUI.a in Frameworks */,
 				C9D7038A14ED50B100C10006 /* libEucalyptusEPub.a in Frameworks */,
 				C9D7038B14ED50B100C10006 /* libEucalyptusCSS.a in Frameworks */,
 				C9D7038C14ED50B100C10006 /* libEucalyptusBase.a in Frameworks */,
@@ -7998,7 +7998,6 @@
 			children = (
 				C947D573133B9C0100FB4404 /* libEucalyptusIOSUI.a */,
 				7D3F30F3140698D800C6F445 /* libEucalyptusModel.a */,
-				7D3F30F5140698D800C6F445 /* libEucalyptusEPubIOSUI.a */,
 				C947D577133B9C0100FB4404 /* libEucalyptusEPub.a */,
 				C947D579133B9C0100FB4404 /* libEucalyptusCSS.a */,
 				C947D575133B9C0100FB4404 /* libEucalyptusBase.a */,
@@ -8917,10 +8916,15 @@
 				F82D39B4131EA79100289FF3 /* SCHBookContents.m */,
 				F81C74741344DA0700B1D9DB /* SCHFlowEucBook.h */,
 				F81C74751344DA0700B1D9DB /* SCHFlowEucBook.m */,
+				C98BDDB61548629400E265B8 /* SCHEPubBookmarkPointTranslation.h */,
+				C98BDDAF1548625300E265B8 /* SCHEPubBook.h */,
+				C98BDDB01548625400E265B8 /* SCHEPubBook.m */,
 				C9D4F6261345FFE7007F86E3 /* SCHTextFlow.h */,
 				C9D4F6271345FFE7007F86E3 /* SCHTextFlow.m */,
 				C93EBEAD13472FEC003B99FD /* SCHTextFlowParagraphSource.h */,
 				C93EBEAE13472FEC003B99FD /* SCHTextFlowParagraphSource.m */,
+				C98BDDA81548337A00E265B8 /* SCHEPubParagraphSource.h */,
+				C98BDDA91548337B00E265B8 /* SCHEPubParagraphSource.m */,
 				C92FA7D01355BE1F001BAA6B /* SCHSmartZoomBlockSource.h */,
 				C92FA7D11355BE20001BAA6B /* SCHSmartZoomBlockSource.m */,
 				52F15A1D1371A2CA0073941E /* SCHBookAnnotations.h */,
@@ -9116,13 +9120,6 @@
 			fileType = archive.ar;
 			path = libEucalyptusModel.a;
 			remoteRef = 7D3F30F2140698D800C6F445 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		7D3F30F5140698D800C6F445 /* libEucalyptusEPubIOSUI.a */ = {
-			isa = PBXReferenceProxy;
-			fileType = archive.ar;
-			path = libEucalyptusEPubIOSUI.a;
-			remoteRef = 7D3F30F4140698D800C6F445 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		7D3F30F9140698D800C6F445 /* PageLayoutTest */ = {
@@ -12101,6 +12098,8 @@
 				C9BF1211153424E6009FE0B9 /* UILabel+ScholasticAdditions.m in Sources */,
 				52023D551541BA2000C36AD5 /* SCHProfileItemSortObject.m in Sources */,
 				52023D5B1541BBB600C36AD5 /* NSFileManager+DoNotBackupExtendedAttribute.m in Sources */,
+				C98BDDAA1548337C00E265B8 /* SCHEPubParagraphSource.m in Sources */,
+				C98BDDB11548625500E265B8 /* SCHEPubBook.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -12167,6 +12166,8 @@
 				C9A6B402148B853C00B31277 /* SCHAppHelpState.m in Sources */,
 				F849155814FFA54D000D064B /* RateView.m in Sources */,
 				52943AE714FFD0E8002991EB /* SCHWishListSyncComponent.m in Sources */,
+				C98BDDAC1548337C00E265B8 /* SCHEPubParagraphSource.m in Sources */,
+				C98BDDB31548625500E265B8 /* SCHEPubBook.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -12534,6 +12535,8 @@
 				C9BF1212153424E6009FE0B9 /* UILabel+ScholasticAdditions.m in Sources */,
 				52023D561541BA2000C36AD5 /* SCHProfileItemSortObject.m in Sources */,
 				52023D5C1541BBB600C36AD5 /* NSFileManager+DoNotBackupExtendedAttribute.m in Sources */,
+				C98BDDAB1548337C00E265B8 /* SCHEPubParagraphSource.m in Sources */,
+				C98BDDB21548625500E265B8 /* SCHEPubBook.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -12901,6 +12904,8 @@
 				C9BF1213153424E6009FE0B9 /* UILabel+ScholasticAdditions.m in Sources */,
 				52023D571541BA2000C36AD5 /* SCHProfileItemSortObject.m in Sources */,
 				52023D5D1541BBB600C36AD5 /* NSFileManager+DoNotBackupExtendedAttribute.m in Sources */,
+				C98BDDAD1548337C00E265B8 /* SCHEPubParagraphSource.m in Sources */,
+				C98BDDB41548625500E265B8 /* SCHEPubBook.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -13268,6 +13273,8 @@
 				C9BF1214153424E6009FE0B9 /* UILabel+ScholasticAdditions.m in Sources */,
 				52023D581541BA2000C36AD5 /* SCHProfileItemSortObject.m in Sources */,
 				52023D5E1541BBB600C36AD5 /* NSFileManager+DoNotBackupExtendedAttribute.m in Sources */,
+				C98BDDAE1548337C00E265B8 /* SCHEPubParagraphSource.m in Sources */,
+				C98BDDB51548625500E265B8 /* SCHEPubBook.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
