@@ -1829,7 +1829,9 @@ static SCHDictionaryDownloadManager *sharedManager = nil;
             self.currentDictionaryDownloadPercentage = 0;
             self.currentDictionaryProcessingPercentage = 0;
             
-            [self setUserRequestState:SCHDictionaryUserDeclined];
+            // ticket #1371 - the user should be prompted to download again after
+            // deleting the dictionary
+            [self setUserRequestState:SCHDictionaryUserNotYetAsked];
             [self threadSafeUpdateDictionaryState:SCHDictionaryProcessingStateUserDeclined];
         }];
     }

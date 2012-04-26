@@ -183,7 +183,8 @@
             }
         }
     } else {
-        return 3;
+        // this disables wishlists, recommendations and sort for the samples bookshelf
+        return 2;
     }
 }
 
