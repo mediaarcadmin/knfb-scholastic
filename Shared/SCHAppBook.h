@@ -167,8 +167,6 @@ typedef enum {
 - (NSArray *)recommendationDictionaries;
 
 - (void)setForcedProcessing:(BOOL)forceProcess;
-- (void)deleteXPSFile;
-- (void)deleteCoverFile;
 
 @end
 
