@@ -93,6 +93,67 @@
     [self setupQuestion];
 }
 
+- (void)layoutViewsForPhoneOrientation:(UIInterfaceOrientation)orientation
+{
+    if (UIInterfaceOrientationIsPortrait(orientation)) {
+        CGRect containerRect = CGRectMake(0, 0, 310, 410);
+        for (NSInteger rowIndex = 0; rowIndex < 3; ++rowIndex) {
+            CGFloat centerY = CGRectGetHeight(containerRect)/6*(rowIndex*2+1);
+            CGFloat leftX   = CGRectGetWidth(containerRect)/6;
+            CGFloat midX    = CGRectGetWidth(containerRect)/2;
+            CGFloat rightX  = CGRectGetWidth(containerRect)*5/6;
+            SCHStoryInteractionDraggableView *wordView = [self.wordViews objectAtIndex:rowIndex];
+            if (wordView.lockedInPlace) {
+                NSInteger lockedRow = [self indexOfTargetWithMatchTag:wordView.matchTag];
+                CGFloat lockedY = CGRectGetHeight(containerRect)/6*(lockedRow*2+1);
+                wordView.center = CGPointMake(rightX, lockedY-self.sourceOffsetY);
+            } else {
+                wordView.center = CGPointMake(leftX, centerY-self.sourceOffsetY);
+                wordView.homePosition = wordView.center;
+            }
+            [[self.imageViews objectAtIndex:rowIndex] setCenter:CGPointMake(midX, centerY)];
+            [[self.targetViews objectAtIndex:rowIndex] setCenter:CGPointMake(rightX, centerY)];
+        }
+    } else {
+        CGRect containerRect = CGRectMake(0, 0, 470, 250);
+        for (NSInteger columnIndex = 0; columnIndex < 3; ++columnIndex) {
+            CGFloat centerX = CGRectGetWidth(containerRect)/6*(columnIndex*2+1);
+            CGFloat topY    = CGRectGetHeight(containerRect)/6-10;
+            CGFloat midY    = CGRectGetHeight(containerRect)/2;
+            CGFloat bottomY = CGRectGetHeight(containerRect)*5/6+10;
+            SCHStoryInteractionDraggableView *wordView = [self.wordViews objectAtIndex:columnIndex];
+            if (wordView.lockedInPlace) {
+                NSInteger lockedColumn = [self indexOfTargetWithMatchTag:wordView.matchTag];
+                CGFloat lockedX = CGRectGetWidth(containerRect)/6*(lockedColumn*2+1);
+                wordView.center = CGPointMake(lockedX, bottomY-self.sourceOffsetY);
+            } else {
+                wordView.center = CGPointMake(centerX, topY-self.sourceOffsetY);
+                wordView.homePosition = wordView.center;
+            }
+            [[self.imageViews objectAtIndex:columnIndex] setCenter:CGPointMake(centerX, midY)];
+            [[self.targetViews objectAtIndex:columnIndex] setCenter:CGPointMake(centerX, bottomY)];
+        }
+    }
+}
+
+- (NSInteger)indexOfTargetWithMatchTag:(NSInteger)matchTag
+{
+    for (NSInteger index = 0, count = [self.targetViews count]; index < count; ++index) {
+        if ([[self.targetViews objectAtIndex:index] matchTag] == matchTag) {
+            return index;
+        }
+    }
+    return NSNotFound;
+}
+
+- (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
+{
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
+        [self layoutViewsForPhoneOrientation:toInterfaceOrientation];
+    }
+    [super willRotateToInterfaceOrientation:toInterfaceOrientation duration:duration];
+}
+
 - (void)setupQuestion
 {
     self.numberOfCorrectItems = 0;
