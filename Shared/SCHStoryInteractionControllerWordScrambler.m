@@ -28,7 +28,7 @@
 - (BOOL)canLayoutLetterPositionsWithTileSize:(CGSize)tileSize letterGap:(NSInteger)gap inContainerSize:(CGSize)containerSize;
 - (void)layoutLetterPositionsWithTileSize:(CGSize)tileSize letterGap:(NSInteger)gap inContainerSize:(CGSize)containerSize;
 
-- (UIImage *)chooseLetterTileBackground;
+- (UIImage *)chooseLetterTileBackgroundForContainerSize:(CGSize)containerSize;
 - (void)createAndLayoutLetterViews;
 - (void)scrambleLetterPositions;
 - (void)layoutLetterViewsWithAnimationDuration:(NSTimeInterval)duration;
@@ -106,7 +106,7 @@
 {
     SCHStoryInteractionWordScrambler *wordScrambler = (SCHStoryInteractionWordScrambler *)self.storyInteraction;
 
-    UIImage *letterTile = [self chooseLetterTileBackground];
+    UIImage *letterTile = [self chooseLetterTileBackgroundForContainerSize:self.containerView.bounds.size];
     
     NSMutableArray *views = [NSMutableArray array];
     NSMutableArray *hints = [NSMutableArray array];
@@ -145,7 +145,7 @@
     self.letterTileSize = letterTile.size;
 }
 
-- (UIImage *)chooseLetterTileBackground
+- (UIImage *)chooseLetterTileBackgroundForContainerSize:(CGSize)containerSize
 {
     static const struct {
         NSString *letterTileName;
@@ -162,7 +162,7 @@
     for (size_t sizeIndex = 0; sizeIndex < kNumLetterTileSizes; ++sizeIndex) {
         letterTile = [UIImage imageNamed:kLetterTileSizes[sizeIndex].letterTileName];
         letterGap = kLetterTileSizes[sizeIndex].letterGap;
-        if ([self canLayoutLetterPositionsWithTileSize:letterTile.size letterGap:letterGap inContainerSize:self.lettersContainerView.bounds.size]) {
+        if ([self canLayoutLetterPositionsWithTileSize:letterTile.size letterGap:letterGap inContainerSize:containerSize]) {
             break;
         }
     }
@@ -292,7 +292,7 @@
         containerSize = self.lettersContainerView.bounds.size;
     }
     
-    UIImage *letterTile = [self chooseLetterTileBackground];
+    UIImage *letterTile = [self chooseLetterTileBackgroundForContainerSize:containerSize];
 
     for (SCHStoryInteractionDraggableLetterView *letter in self.letterViews) {
         [letter setTileImage:letterTile];
