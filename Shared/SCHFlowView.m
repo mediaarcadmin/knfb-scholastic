@@ -120,19 +120,25 @@ managedObjectContext:(NSManagedObjectContext *)managedObjectContext
 
 - (void)attachSelector
 {
+#if FLOW_VIEW_SELECTOR_DISABLED
+    self.eucBookView.allowsSelection = NO;
+#else
     self.eucBookView.allowsSelection = self.allowsSelection;
     self.eucBookView.selectorDelegate = self;
     
     [super attachSelector];
+#endif
 }
 
 - (void)detachSelector
 {
+#if FLOW_VIEW_SELECTOR_DISABLED
+#else   
     [super detachSelector];
 
     self.eucBookView.allowsSelection = NO;
     self.eucBookView.selectorDelegate = nil;
-
+#endif
 }
 
 - (void)configureSelectorForSelectionMode
@@ -184,6 +190,17 @@ managedObjectContext:(NSManagedObjectContext *)managedObjectContext
         [self attachSelector];
     }
 }
+
+#pragma mark - Rotation
+
+- (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
+    [self.eucBookView willRotateToInterfaceOrientation:toInterfaceOrientation duration:duration];
+}
+
+- (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation {
+    [self.eucBookView didRotateFromInterfaceOrientation:fromInterfaceOrientation];
+}
+
 
 #pragma mark - BookView Methods
 
@@ -332,6 +349,11 @@ managedObjectContext:(NSManagedObjectContext *)managedObjectContext
 - (void)bookView:(EucBookView *)bookView unhandledTapAtPoint:(CGPoint)point
 {
     [self unhandledTapAtPoint:point];
+}
+
+- (BOOL)bookView:(EucBookView *)bookView shouldHandleTapOnHyperlink:(NSURL *)link
+{
+    return YES;
 }
 
 - (void)bookViewPageTurnWillBegin:(EucBookView *)bookView

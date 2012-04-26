@@ -2670,6 +2670,15 @@
 		C98BDDB31548625500E265B8 /* SCHEPubBook.m in Sources */ = {isa = PBXBuildFile; fileRef = C98BDDB01548625400E265B8 /* SCHEPubBook.m */; };
 		C98BDDB41548625500E265B8 /* SCHEPubBook.m in Sources */ = {isa = PBXBuildFile; fileRef = C98BDDB01548625400E265B8 /* SCHEPubBook.m */; };
 		C98BDDB51548625500E265B8 /* SCHEPubBook.m in Sources */ = {isa = PBXBuildFile; fileRef = C98BDDB01548625400E265B8 /* SCHEPubBook.m */; };
+		C98BDF191549897B00E265B8 /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 526A8A5E1385182100101A96 /* CoreMedia.framework */; };
+		C98BDF1A1549898500E265B8 /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 526A8A5E1385182100101A96 /* CoreMedia.framework */; };
+		C98BDF1B1549898E00E265B8 /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 526A8A5E1385182100101A96 /* CoreMedia.framework */; };
+		C98BDF1C1549899500E265B8 /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 526A8A5E1385182100101A96 /* CoreMedia.framework */; };
+		C98BDF1E15498A5300E265B8 /* SCHEPUB3Overrides.css in Resources */ = {isa = PBXBuildFile; fileRef = C98BDF1D15498A5300E265B8 /* SCHEPUB3Overrides.css */; };
+		C98BDF1F15498A5300E265B8 /* SCHEPUB3Overrides.css in Resources */ = {isa = PBXBuildFile; fileRef = C98BDF1D15498A5300E265B8 /* SCHEPUB3Overrides.css */; };
+		C98BDF2015498A5300E265B8 /* SCHEPUB3Overrides.css in Resources */ = {isa = PBXBuildFile; fileRef = C98BDF1D15498A5300E265B8 /* SCHEPUB3Overrides.css */; };
+		C98BDF2115498A5300E265B8 /* SCHEPUB3Overrides.css in Resources */ = {isa = PBXBuildFile; fileRef = C98BDF1D15498A5300E265B8 /* SCHEPUB3Overrides.css */; };
+		C98BDF2215498A5300E265B8 /* SCHEPUB3Overrides.css in Resources */ = {isa = PBXBuildFile; fileRef = C98BDF1D15498A5300E265B8 /* SCHEPUB3Overrides.css */; };
 		C9951722146D693600EA7337 /* LocalSamplesManifest.xml in Resources */ = {isa = PBXBuildFile; fileRef = C9951721146D693600EA7337 /* LocalSamplesManifest.xml */; };
 		C9951725146D694600EA7337 /* LocalSamplesManifest.xml in Resources */ = {isa = PBXBuildFile; fileRef = C9951724146D694600EA7337 /* LocalSamplesManifest.xml */; };
 		C99B4A971405124E00B3ADF0 /* reading-view-scrubber-rightcap-large.png in Resources */ = {isa = PBXBuildFile; fileRef = C99B4A911405124E00B3ADF0 /* reading-view-scrubber-rightcap-large.png */; };
@@ -5442,6 +5451,7 @@
 		C98BDDAF1548625300E265B8 /* SCHEPubBook.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHEPubBook.h; path = Shared/SCHEPubBook.h; sourceTree = "<group>"; };
 		C98BDDB01548625400E265B8 /* SCHEPubBook.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHEPubBook.m; path = Shared/SCHEPubBook.m; sourceTree = "<group>"; };
 		C98BDDB61548629400E265B8 /* SCHEPubBookmarkPointTranslation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHEPubBookmarkPointTranslation.h; path = Shared/SCHEPubBookmarkPointTranslation.h; sourceTree = "<group>"; };
+		C98BDF1D15498A5300E265B8 /* SCHEPUB3Overrides.css */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.css; path = SCHEPUB3Overrides.css; sourceTree = "<group>"; };
 		C9951721146D693600EA7337 /* LocalSamplesManifest.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = LocalSamplesManifest.xml; sourceTree = "<group>"; };
 		C9951724146D694600EA7337 /* LocalSamplesManifest.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = LocalSamplesManifest.xml; sourceTree = "<group>"; };
 		C99B4A911405124E00B3ADF0 /* reading-view-scrubber-rightcap-large.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "reading-view-scrubber-rightcap-large.png"; path = "Resources/UIAssets/reading-view-scrubber-rightcap-large.png"; sourceTree = "<group>"; };
@@ -5979,6 +5989,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C98BDF191549897B00E265B8 /* CoreMedia.framework in Frameworks */,
 				7D95F778150F66160093BB90 /* CoreVideo.framework in Frameworks */,
 				7D95F773150F66030093BB90 /* libots.a in Frameworks */,
 				C9AC7DA414BDDE00009137BA /* libBITModalSheetController.a in Frameworks */,
@@ -6037,6 +6048,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C98BDF1A1549898500E265B8 /* CoreMedia.framework in Frameworks */,
 				7D95F77A150F66260093BB90 /* libots.a in Frameworks */,
 				7D95F779150F66220093BB90 /* CoreVideo.framework in Frameworks */,
 				C9AC7DA714BDDE0F009137BA /* libBITModalSheetController.a in Frameworks */,
@@ -6080,6 +6092,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C98BDF1B1549898E00E265B8 /* CoreMedia.framework in Frameworks */,
 				7D95F77C150F66380093BB90 /* CoreVideo.framework in Frameworks */,
 				7D95F77B150F66320093BB90 /* libots.a in Frameworks */,
 				A3D3F48414CDDF31004A56A5 /* libBITModalSheetController.a in Frameworks */,
@@ -6123,6 +6136,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C98BDF1C1549899500E265B8 /* CoreMedia.framework in Frameworks */,
 				7D95F77E150F66440093BB90 /* CoreVideo.framework in Frameworks */,
 				7D95F77D150F663D0093BB90 /* libots.a in Frameworks */,
 				C9D7038514ED50B100C10006 /* libBITModalSheetController.a in Frameworks */,
@@ -7248,6 +7262,7 @@
 				F8C6DA94136073D300D9E953 /* paper-neutral@2x.png */,
 				C908D880133F941100661718 /* paper-white.png */,
 				F8C6DA95136073D300D9E953 /* paper-white@2x.png */,
+				C98BDF1D15498A5300E265B8 /* SCHEPUB3Overrides.css */,
 				289A2B3A13F5140A0047EE45 /* Puzzle-6pc.xaml */,
 				289A2B3B13F5140A0047EE45 /* Puzzle-12pc.xaml */,
 				289A2B3C13F5140A0047EE45 /* Puzzle-20pc.xaml */,
@@ -9935,6 +9950,7 @@
 				F84E5028152DA04000177BC1 /* storiaBlueStarFull~ipad.png in Resources */,
 				F84E502C152DA04000177BC1 /* storiaBlueStarHalfFull~ipad.png in Resources */,
 				C9EB498F152EDA9800DA227A /* SCHRecommendationListView-ReadingViewContainer.xib in Resources */,
+				C98BDF1E15498A5300E265B8 /* SCHEPUB3Overrides.css in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -9968,6 +9984,7 @@
 				2866311D13F010990092A5DE /* StoryInteractionCardCollection1.xml in Resources */,
 				2898A0B713F436B100618172 /* Puzzle-6pc.xaml in Resources */,
 				C9367BE314731A8B0033A2EB /* SCHParentalToolsWebViewController_iPad.xib in Resources */,
+				C98BDF2015498A5300E265B8 /* SCHEPUB3Overrides.css in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -10676,6 +10693,7 @@
 				C9EB4990152EDA9800DA227A /* SCHRecommendationListView-ReadingViewContainer.xib in Resources */,
 				C98BDD7B1547F3DF00E265B8 /* 9780545364775_r7.MyFirstBiographyBenjaminFranklin.jpg in Resources */,
 				C98BDD7C1547F3DF00E265B8 /* 9780545364775_r7.MyFirstBiographyBenjaminFranklin.xps in Resources */,
+				C98BDF1F15498A5300E265B8 /* SCHEPUB3Overrides.css in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -11194,6 +11212,7 @@
 				F84E502A152DA04000177BC1 /* storiaBlueStarFull~ipad.png in Resources */,
 				F84E502E152DA04000177BC1 /* storiaBlueStarHalfFull~ipad.png in Resources */,
 				C9EB4991152EDA9800DA227A /* SCHRecommendationListView-ReadingViewContainer.xib in Resources */,
+				C98BDF2115498A5300E265B8 /* SCHEPUB3Overrides.css in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -11712,6 +11731,7 @@
 				F84E502B152DA04000177BC1 /* storiaBlueStarFull~ipad.png in Resources */,
 				F84E502F152DA04000177BC1 /* storiaBlueStarHalfFull~ipad.png in Resources */,
 				C9EB4992152EDA9800DA227A /* SCHRecommendationListView-ReadingViewContainer.xib in Resources */,
+				C98BDF2215498A5300E265B8 /* SCHEPUB3Overrides.css in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

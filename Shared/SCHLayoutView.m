@@ -41,6 +41,7 @@ static const NSUInteger kSCHLayoutViewPageViewCacheLimit = 2;
 @property (nonatomic, retain) SCHBookPoint *openingPoint;
 @property (nonatomic, retain) NSCache *generatedPageViewsCache;
 @property (nonatomic, retain) NSLock *pageViewsCacheLock;
+@property (nonatomic, assign) BOOL twoUp;
 
 - (void)initialiseView;
 
@@ -83,6 +84,7 @@ static const NSUInteger kSCHLayoutViewPageViewCacheLimit = 2;
 @synthesize openingPoint;
 @synthesize generatedPageViewsCache; // Lazily instantiated;
 @synthesize pageViewsCacheLock;
+@synthesize twoUp;
 
 - (void)dealloc
 {
@@ -129,10 +131,10 @@ static const NSUInteger kSCHLayoutViewPageViewCacheLimit = 2;
             } else {
                 pageTurningView.potentiallyVisiblePageEdgeCount = 0;
             }
-			pageTurningView.twoUp = YES;
+			self.twoUp = YES;
         } else {
             pageTurningView.potentiallyVisiblePageEdgeCount = 0;
-			pageTurningView.twoUp = NO;
+			self.twoUp = NO;
         } 
         
         if (CGRectEqualToRect(firstPageCrop, CGRectZero)) {
@@ -205,10 +207,10 @@ managedObjectContext:(NSManagedObjectContext *)managedObjectContext
         } else {
             pageTurningView.potentiallyVisiblePageEdgeCount = 0;
         }
-		self.pageTurningView.twoUp = YES;      
+		self.twoUp = YES;      
     } else {
         self.pageTurningView.potentiallyVisiblePageEdgeCount = 0;
-		self.pageTurningView.twoUp = NO;
+		self.twoUp = NO;
     }   
     [super layoutSubviews];
     CGSize newSize = self.bounds.size;
@@ -731,6 +733,11 @@ fastThumbnailUIImageForPageAtIndex:(NSUInteger)index
 }
 
 #pragma mark - EucPageTurningViewDelegate
+
+- (BOOL)pageTurningViewShouldBeTwoUp:(EucPageTurningView *)pageTurningView
+{
+    return self.twoUp;
+}
 
 - (void)pageTurningViewWillBeginPageTurn:(EucPageTurningView *)pageTurningView
 {

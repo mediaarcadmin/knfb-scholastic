@@ -85,7 +85,7 @@
 {
     NSMutableArray *ret = [[[super userAgentCSSDatasForDocumentTree:documentTree] mutableCopy] autorelease];
     
-    NSMutableString *cssString = [NSMutableString stringWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"BlioEPUB3Overrides" ofType:@"css"] 
+    NSMutableString *cssString = [NSMutableString stringWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"SCHEPUB3Overrides" ofType:@"css"] 
                                                                   encoding:NSUTF8StringEncoding error:NULL];
     [cssString replaceOccurrencesOfString:@"%VIDEOPLACEHOLDERTEXT%" 
                                withString:NSLocalizedString(@"Sorry, this version of Storia cannot play embedded videos.", @"Placeholder text for EPUB3 video content") 
@@ -96,7 +96,10 @@
                                   options:0 
                                     range:NSMakeRange(0, cssString.length)];
     
-    [ret addObject:[cssString dataUsingEncoding:NSUTF8StringEncoding]];
+    if (cssString) {
+        [ret addObject:[cssString dataUsingEncoding:NSUTF8StringEncoding]];
+    }
+    
     return ret;
 }
 
