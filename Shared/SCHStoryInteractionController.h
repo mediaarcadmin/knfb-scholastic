@@ -188,8 +188,8 @@ typedef enum
 // should the transition between successive views be animated? defaults to YES on iPad, NO on iPhone
 - (BOOL)shouldAnimateTransitionBetweenViews;
 
-// YES by default; override to return NO if the SI should be locked in its initial orientation
-- (BOOL)supportsAutoRotation;
+// YES by default; override if the SI has constrained orientation
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)orientation;
 
 // send then the nib is loaded and its view objects are attached to the container; similar
 // to viewDidLoad, but used a separate message name to avoid confusion.

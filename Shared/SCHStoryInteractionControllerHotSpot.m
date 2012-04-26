@@ -50,9 +50,11 @@
     return NO;
 }
 
-- (BOOL)supportsAutoRotation
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)orientation
 {
-    return NO;
+    // lock in initial orientation
+    return orientation == self.interfaceOrientation;
+
 }
 
 - (CGAffineTransform)viewToPageTransform
