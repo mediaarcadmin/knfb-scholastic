@@ -13,6 +13,7 @@
 #import <QuartzCore/QuartzCore.h>
 #import "AppDelegate_Shared.h"
 #import "SCHCoreDataHelper.h"
+#import <ImageIO/ImageIO.h>
 
 @interface SCHBookCoverView ()
 
@@ -810,14 +811,53 @@
 
 - (UIImage *)createImageWithSourcePath:(NSString *)sourcePath destinationPath:(NSString *)destinationPath 
 {
-    UIImage *biggestTopTabImage = [UIImage imageNamed:@"BookSampleTabHorizontal"];
-
-    CGSize frameSizeWithInsets = CGSizeMake(self.frame.size.width - (self.leftRightInset * 2), 
-                                            self.frame.size.height - biggestTopTabImage.size.height);
+    BOOL portraitAspect = YES;
     
-    NSUInteger maxDimension = ceilf(MAX(frameSizeWithInsets.width, frameSizeWithInsets.height));
+    NSURL *sourceURL = [NSURL fileURLWithPath:sourcePath];
     
-    return [UIImage SCHCreateThumbWithSourcePath:sourcePath destinationPath:destinationPath maxDimension:maxDimension];
+    // get the full size cover image properties without loading it into memory
+    // so we can figure out the aspect
+    CGImageSourceRef src = CGImageSourceCreateWithURL((CFURLRef)sourceURL, NULL);
+    
+    if (src != nil) {
+        CGFloat width = 0.0f, height = 0.0f;
+        CFDictionaryRef imageProperties = CGImageSourceCopyPropertiesAtIndex(src, 0, NULL);
+        if (imageProperties != NULL) {
+            CFNumberRef widthNum  = CFDictionaryGetValue(imageProperties, kCGImagePropertyPixelWidth);
+            if (widthNum != NULL) {
+                CFNumberGetValue(widthNum, kCFNumberFloatType, &width);
+            }
+            
+            CFNumberRef heightNum = CFDictionaryGetValue(imageProperties, kCGImagePropertyPixelHeight);
+            if (heightNum != NULL) {
+                CFNumberGetValue(heightNum, kCFNumberFloatType, &height);
+            }
+            
+            CFRelease(imageProperties);
+        }
+        
+        if (height < width) {
+            portraitAspect = NO;
+        }
+    }
+    
+    if (portraitAspect) {
+        // standard image - tab is on the right
+        return [UIImage SCHCreateThumbWithSourcePath:sourcePath destinationPath:destinationPath maxDimension:self.frame.size.height];
+    } else {
+        // tab on the top - make sure we provide enough space for it
+        
+        if (self.coverViewMode == SCHBookCoverViewModeGridView) {
+            if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+            UIImage *biggestTopTabImage = [UIImage imageNamed:@"BookSampleTabHorizontal"];
+                return [UIImage SCHCreateThumbWithSourcePath:sourcePath destinationPath:destinationPath maxDimension:(self.frame.size.height - biggestTopTabImage.size.height - 8)];
+            } else {
+                return [UIImage SCHCreateThumbWithSourcePath:sourcePath destinationPath:destinationPath maxDimension:(self.frame.size.width)];
+            }
+        } else {
+            return [UIImage SCHCreateThumbWithSourcePath:sourcePath destinationPath:destinationPath maxDimension:self.frame.size.width];
+        }
+    }
 }
 
 #pragma mark - Notification Methods
