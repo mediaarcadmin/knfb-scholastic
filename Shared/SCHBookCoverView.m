@@ -379,8 +379,8 @@
     // Nuclear option, delete the locally stored files
     [book setBookCoverExists:[NSNumber numberWithBool:NO]];
     [book setXPSExists:[NSNumber numberWithBool:NO]];
-    [book deleteXPSFile];
-    [book deleteCoverFile];
+    [book.ContentMetadataItem deleteXPSFile];
+    [book.ContentMetadataItem deleteCoverFile];
     
     [book setProcessingState:SCHBookProcessingStateCachedCoverError];
     

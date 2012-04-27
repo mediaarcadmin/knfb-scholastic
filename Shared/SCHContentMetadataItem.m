@@ -231,31 +231,50 @@ static NSString * const kSCHContentMetadataItemAnnotationsItemProfileID = @"Anno
 - (void)prepareForDeletion
 {
     [super prepareForDeletion];
-    [[SCHProcessingManager sharedProcessingManager] cancelAllOperationsForBookIdentifier:self.bookIdentifier];
+    [[SCHProcessingManager sharedProcessingManager] cancelAllOperationsForBookIdentifier:self.bookIdentifier
+                                                                       waitUntilFinished:NO];
     [[SCHBookManager sharedBookManager] removeBookIdentifierFromCache:self.bookIdentifier];    
     [self deleteAllFiles];
 }
 
 - (void)deleteAllFiles
-{
-    NSError *error = nil;
+{    
+    NSString *bookDirectory = self.AppBook.bookDirectory;
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{        
+        [[SCHProcessingManager sharedProcessingManager] cancelAllOperationsForBookIdentifier:self.bookIdentifier 
+                                                                           waitUntilFinished:YES];
+        NSError *error = nil;
+        NSFileManager *localManager = [[[NSFileManager alloc] init] autorelease];
+        if ([localManager removeItemAtPath:bookDirectory 
+                                     error:&error] == NO) {
+            NSLog(@"Failed to delete files for %@, error: %@", 
+                  self.ContentIdentifier, [error localizedDescription]);
+        }
+    });
     
-    [[SCHProcessingManager sharedProcessingManager] cancelAllOperationsForBookIdentifier:self.bookIdentifier];
-    if ([[NSFileManager defaultManager] removeItemAtPath:self.AppBook.bookDirectory 
-                                                   error:&error] == NO) {
-        NSLog(@"Failed to delete files for %@, error: %@", 
-              self.ContentIdentifier, [error localizedDescription]);
-    }
     [self.AppBook clearCachedBookDirectory];
 }
 
 - (void)deleteXPSFile
 {
     NSError *error = nil;
+    NSFileManager *localManager = [[[NSFileManager alloc] init] autorelease];
     
-    if ([[NSFileManager defaultManager] removeItemAtPath:self.AppBook.xpsPath 
+    if ([localManager removeItemAtPath:self.AppBook.xpsPath 
                                                    error:&error] == NO) {
         NSLog(@"Failed to delete XPS file for %@, error: %@", 
+              self.ContentIdentifier, [error localizedDescription]);
+    }
+}
+
+- (void)deleteCoverFile
+{
+    NSError *error = nil;
+    NSFileManager *localManager = [[[NSFileManager alloc] init] autorelease];
+    
+    if ([localManager removeItemAtPath:self.AppBook.coverImagePath 
+                                 error:&error] == NO) {
+        NSLog(@"Failed to delete cover file for %@, error: %@", 
               self.ContentIdentifier, [error localizedDescription]);
     }
 }
