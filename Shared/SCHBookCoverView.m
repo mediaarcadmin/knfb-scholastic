@@ -846,8 +846,17 @@
         return [UIImage SCHCreateThumbWithSourcePath:sourcePath destinationPath:destinationPath maxDimension:self.frame.size.height];
     } else {
         // tab on the top - make sure we provide enough space for it
-        UIImage *biggestTopTabImage = [UIImage imageNamed:@"BookSampleTabHorizontal"];
-        return [UIImage SCHCreateThumbWithSourcePath:sourcePath destinationPath:destinationPath maxDimension:(self.frame.size.height - biggestTopTabImage.size.height - 8)];
+        
+        if (self.coverViewMode == SCHBookCoverViewModeGridView) {
+            if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+            UIImage *biggestTopTabImage = [UIImage imageNamed:@"BookSampleTabHorizontal"];
+                return [UIImage SCHCreateThumbWithSourcePath:sourcePath destinationPath:destinationPath maxDimension:(self.frame.size.height - biggestTopTabImage.size.height - 8)];
+            } else {
+                return [UIImage SCHCreateThumbWithSourcePath:sourcePath destinationPath:destinationPath maxDimension:(self.frame.size.width)];
+            }
+        } else {
+            return [UIImage SCHCreateThumbWithSourcePath:sourcePath destinationPath:destinationPath maxDimension:self.frame.size.width];
+        }
     }
 }
 
