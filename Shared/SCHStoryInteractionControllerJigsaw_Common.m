@@ -14,33 +14,28 @@
 #import "NSArray+ViewSorting.h"
 #import "SCHGeometry.h"
 
-enum {
-    kPreviewImageTag = 1000,
-};
-
 @interface SCHStoryInteractionControllerJigsaw_Common ()
 
 @property (nonatomic, retain) SCHStoryInteractionJigsawPaths *jigsawPaths;
 
 - (UIImage *)puzzleImage;
 
-- (void)setupChoosePuzzleView;
 - (void)setupPuzzleView;
 
 @end
 
 @implementation SCHStoryInteractionControllerJigsaw_Common
 
-@synthesize choosePuzzleButtons;
 @synthesize puzzleBackground;
+@synthesize puzzlePreviewView;
 @synthesize numberOfPieces;
 @synthesize jigsawPieceViews;
 @synthesize jigsawPaths;
 
 - (void)dealloc
 {
-    [choosePuzzleButtons release], choosePuzzleButtons = nil;
     [puzzleBackground release], puzzleBackground = nil;
+    [puzzlePreviewView release], puzzlePreviewView = nil;
     [jigsawPieceViews release], jigsawPieceViews = nil;
     [jigsawPaths release], jigsawPaths = nil;
     [super dealloc];
@@ -160,13 +155,10 @@ enum {
 - (SCHStoryInteractionJigsawPreviewView *)puzzlePreviewWithFrame:(CGRect)frame;
 {
     SCHStoryInteractionJigsawPreviewView *preview = [[SCHStoryInteractionJigsawPreviewView alloc] initWithFrame:frame];
-    preview.autoresizingMask = (UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight
-                                | UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin
-                                | UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin);
+    preview.autoresizingMask = 0;
     preview.backgroundColor = [UIColor clearColor];
     preview.image = [self puzzleImage];
     preview.edgeColor = [UIColor whiteColor];
-    preview.tag = kPreviewImageTag;
     return [preview autorelease];
 }
 
@@ -183,12 +175,12 @@ enum {
 
 - (void)setupPuzzleView
 {
-    [[self.contentsView viewWithTag:kPreviewImageTag] removeFromSuperview];
+    [self.puzzlePreviewView removeFromSuperview];
     [self.puzzleBackground setAlpha:0];
     
-    SCHStoryInteractionJigsawPreviewView *preview = [self puzzlePreviewWithFrame:[self puzzlePreviewFrame]];
-    preview.paths = [self jigsawPaths];
-    [self.contentsView addSubview:preview];
+    self.puzzlePreviewView = [self puzzlePreviewWithFrame:[self puzzlePreviewFrame]];
+    self.puzzlePreviewView.paths = [self jigsawPaths];
+    [self.contentsView addSubview:self.puzzlePreviewView];
         
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{
         UIImage *puzzleImage = [self puzzleImage];
@@ -208,7 +200,6 @@ enum {
                 // create an image view for this image and frame it within the target puzzle frame
                 UIView *pieceView = [self newPieceViewForImage:pieceImage];
                 pieceView.frame = frame;
-                NSLog(@"create piece position = %@", NSStringFromCGPoint(pieceView.center));
                 [pieces addObject:pieceView];
                 [pieceView release];
                 CGImageRelease(pieceImage);
@@ -222,7 +213,7 @@ enum {
             
             // enable taps on the preview
             UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(previewTapped:)];
-            [preview addGestureRecognizer:tap];
+            [self.puzzlePreviewView addGestureRecognizer:tap];
             [tap release];
         });
     });
@@ -236,15 +227,15 @@ enum {
     [self.puzzleBackground setPaths:[self jigsawPaths]];
     [self.puzzleBackground setEdgeColor:[UIColor colorWithWhite:0.8 alpha:0.5]];
     
-    SCHStoryInteractionJigsawPreviewView *preview = (SCHStoryInteractionJigsawPreviewView *)[self.contentsView viewWithTag:kPreviewImageTag];    
-    [self setupPuzzlePiecesForInteractionFromPreview:preview];
-    [preview removeFromSuperview];
+    [self setupPuzzlePiecesForInteractionFromPreview:self.puzzlePreviewView];
+    [self.puzzlePreviewView removeFromSuperview];
+    self.puzzlePreviewView = nil;
 }
 
 - (BOOL)puzzleIsInteractive
 {
     // YES if the preview view has been removed
-    return [self.contentsView viewWithTag:kPreviewImageTag] == nil;
+    return self.puzzlePreviewView == nil;
 }
 
 - (void)checkForCompletion

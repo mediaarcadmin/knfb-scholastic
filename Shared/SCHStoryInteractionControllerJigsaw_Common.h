@@ -14,10 +14,12 @@
 
 @interface SCHStoryInteractionControllerJigsaw_Common : SCHStoryInteractionController {}
 
-@property (nonatomic, retain) IBOutletCollection(UIButton) NSArray *choosePuzzleButtons;
 @property (nonatomic, retain) IBOutlet SCHStoryInteractionJigsawPreviewView *puzzleBackground;
+@property (nonatomic, retain) SCHStoryInteractionJigsawPreviewView *puzzlePreviewView;
 @property (nonatomic, assign) NSInteger numberOfPieces;
 @property (nonatomic, retain) NSArray *jigsawPieceViews;
+
+- (void)setupChoosePuzzleView;
 
 - (IBAction)choosePuzzle:(id)sender;
 

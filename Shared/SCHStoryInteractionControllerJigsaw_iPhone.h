@@ -8,8 +8,12 @@
 
 #import "SCHStoryInteractionControllerJigsaw_Common.h"
 
+@class SCHStretchableImageButton;
+
 @interface SCHStoryInteractionControllerJigsaw_iPhone : SCHStoryInteractionControllerJigsaw_Common {}
 
+@property (nonatomic, retain) IBOutletCollection(UIView) NSArray *choosePuzzleButtons;
 @property (nonatomic, retain) IBOutlet UIScrollView *puzzlePieceScroller;
+@property (nonatomic, retain) IBOutlet UIImageView *puzzlePieceScrollerOverlay;
 
 @end

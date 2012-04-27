@@ -32,16 +32,75 @@ enum {
 
 @implementation SCHStoryInteractionControllerJigsaw_iPhone
 
+@synthesize choosePuzzleButtons;
 @synthesize puzzlePieceScroller;
+@synthesize puzzlePieceScrollerOverlay;
 @synthesize dragSourcePiece;
 @synthesize draggingPiece;
 @synthesize dragOffset;
 
 - (void)dealloc
 {
+    [choosePuzzleButtons release], choosePuzzleButtons = nil;
     [puzzlePieceScroller release], puzzlePieceScroller = nil;
+    [puzzlePieceScrollerOverlay release], puzzlePieceScrollerOverlay = nil;
     [draggingPiece release], draggingPiece = nil;
     [super dealloc];
+}
+
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)orientation
+{
+    // lock in initial orientation
+    return orientation == self.interfaceOrientation;
+}
+
+- (void)setupChoosePuzzleView
+{
+    [super setupChoosePuzzleView];
+    self.choosePuzzleButtons = [self.choosePuzzleButtons viewsSortedHorizontally];
+}
+
+- (void)layoutViewsForPhoneOrientation:(UIInterfaceOrientation)orientation
+{
+    CGRect puzzleFrame;
+    CGRect scrollerFrame;
+    CGAffineTransform scrollerOverlayTransform;
+    
+    if (UIInterfaceOrientationIsPortrait(orientation)) {
+        CGRect containerRect = CGRectMake(0, 0, 310, 410);
+        [[self.choosePuzzleButtons objectAtIndex:0] setCenter:CGPointMake(CGRectGetMidX(containerRect), CGRectGetHeight(containerRect)/4)];
+        [[self.choosePuzzleButtons objectAtIndex:1] setCenter:CGPointMake(CGRectGetWidth(containerRect)/4, CGRectGetHeight(containerRect)*3/4)];
+        [[self.choosePuzzleButtons objectAtIndex:2] setCenter:CGPointMake(CGRectGetWidth(containerRect)*3/4, CGRectGetHeight(containerRect)*3/4)];
+        
+        puzzleFrame = CGRectMake(10, 96, 300, 225);
+        scrollerFrame = CGRectMake(15, 341, 290, 80);
+        scrollerOverlayTransform = CGAffineTransformMakeRotation(M_PI_2);
+        
+    } else {
+        CGRect containerRect = CGRectMake(0, 0, 470, 250);
+        for (NSInteger index = 0; index < 3; ++index) {
+            [[self.choosePuzzleButtons objectAtIndex:index] setCenter:CGPointMake(CGRectGetWidth(containerRect)/6*(index*2+1), CGRectGetMidY(containerRect))];
+        }
+        
+        puzzleFrame = CGRectMake(98, 20, 360, 270);
+        scrollerFrame = CGRectMake(10, 55, 80, 235);
+        scrollerOverlayTransform = CGAffineTransformIdentity;
+    }
+    
+    self.puzzlePreviewView.frame = puzzleFrame;
+    self.puzzleBackground.frame = puzzleFrame;
+    self.puzzlePieceScroller.frame = scrollerFrame;
+    self.puzzlePieceScrollerOverlay.center = CGPointMake(CGRectGetMidX(scrollerFrame), CGRectGetMidY(scrollerFrame));
+    self.puzzlePieceScrollerOverlay.bounds = CGRectMake(0, 0, 80, MAX(CGRectGetWidth(scrollerFrame), CGRectGetHeight(scrollerFrame)));
+    self.puzzlePieceScrollerOverlay.transform = scrollerOverlayTransform;
+}
+
+- (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
+{
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
+        [self layoutViewsForPhoneOrientation:toInterfaceOrientation];
+    }
+    [super willRotateToInterfaceOrientation:toInterfaceOrientation duration:duration];
 }
 
 - (CGRect)puzzlePreviewFrame
@@ -56,21 +115,34 @@ enum {
     return pieceView;
 }
 
-- (NSArray *)homePositionsInScroller
+- (NSArray *)homePositionsInScrollerForOrientation:(UIInterfaceOrientation)orientation
 {
     NSMutableArray *positions = [NSMutableArray arrayWithCapacity:self.numberOfPieces];
-    CGFloat x = CGRectGetMidX(self.puzzlePieceScroller.bounds);
-    CGFloat y = kPieceHeightInScroller/2;
+    CGFloat x, y, dx, dy;
+    if (UIInterfaceOrientationIsLandscape(orientation)) {
+        x = CGRectGetMidX(self.puzzlePieceScroller.bounds);
+        y = kPieceHeightInScroller/2;
+        dx = 0;
+        dy = kPieceHeightInScroller;
+    } else {
+        x = kPieceHeightInScroller/2;
+        y = CGRectGetMidY(self.puzzlePieceScroller.bounds);
+        dx = kPieceHeightInScroller;
+        dy = 0;
+    }
     for (NSInteger i = 0; i < self.numberOfPieces; ++i) {
         [positions addObject:[NSValue valueWithCGPoint:CGPointMake(x, y)]];
-        y += kPieceHeightInScroller;
+        x += dx;
+        y += dy;
     }
     return positions;
 }
 
 - (void)setupPuzzlePiecesForInteractionFromPreview:(SCHStoryInteractionJigsawPreviewView *)preview
 {
-    NSArray *homePositions = [[self homePositionsInScroller] shuffled];
+    const BOOL landscape = UIInterfaceOrientationIsLandscape(self.interfaceOrientation);
+    
+    NSArray *homePositions = [[self homePositionsInScrollerForOrientation:self.interfaceOrientation] shuffled];
     NSInteger pieceIndex = 0;
     CGFloat maxPieceWidth = 0, maxPieceHeight = 0;
     for (SCHStoryInteractionJigsawPieceView_iPhone *piece in self.jigsawPieceViews) {
@@ -87,6 +159,7 @@ enum {
         
         SCHDragFromScrollViewGestureRecognizer *drag = [[SCHDragFromScrollViewGestureRecognizer alloc] initWithTarget:self action:@selector(handleDragFromScroller:)];
         drag.dragContainerView = self.contentsView;
+        drag.direction = landscape ? kSCHDragFromScrollViewHorizontally : kSCHDragFromScrollViewVertically;
         [piece addGestureRecognizer:drag];
         [drag release];
     }
@@ -94,7 +167,12 @@ enum {
     [self enqueueAudioWithPath:@"sfx_breakpuzzle.mp3" fromBundle:YES];
     
     // move the pieces into the scroller
-    CGFloat scale = (CGRectGetWidth(self.puzzlePieceScroller.bounds) - kPieceMargin) / maxPieceWidth;
+    CGFloat scale;
+    if (landscape) {
+        scale = (CGRectGetWidth(self.puzzlePieceScroller.bounds) - kPieceMargin) / maxPieceWidth;
+    } else {
+        scale = (CGRectGetHeight(self.puzzlePieceScroller.bounds) - kPieceMargin) / maxPieceHeight;
+    }
     CGAffineTransform pieceTransform = CGAffineTransformMakeScale(scale, scale);
     CGPoint scrollerOrigin = self.puzzlePieceScroller.frame.origin;
     [self.puzzlePieceScroller setContentOffset:CGPointZero animated:NO];
@@ -118,9 +196,15 @@ enum {
                              piece.center = piece.homePosition;
                              piece.alpha = 1;
                          }
-                         self.jigsawPieceViews = [self.jigsawPieceViews viewsSortedVertically];
-                         self.puzzlePieceScroller.contentSize = CGSizeMake(CGRectGetWidth(self.puzzlePieceScroller.bounds),
-                                                                           kPieceHeightInScroller*self.numberOfPieces);
+                         if (landscape) {
+                             self.jigsawPieceViews = [self.jigsawPieceViews viewsSortedVertically];
+                             self.puzzlePieceScroller.contentSize = CGSizeMake(CGRectGetWidth(self.puzzlePieceScroller.bounds),
+                                                                               kPieceHeightInScroller*self.numberOfPieces);
+                         } else {
+                             self.jigsawPieceViews = [self.jigsawPieceViews viewsSortedHorizontally];
+                             self.puzzlePieceScroller.contentSize = CGSizeMake(kPieceHeightInScroller*self.numberOfPieces,
+                                                                               CGRectGetHeight(self.puzzlePieceScroller.bounds));
+                         }
                      }];
 }
 
@@ -216,7 +300,7 @@ enum {
 - (void)coalescePiecesInScroller
 {
     NSMutableArray *remainingPieces = [NSMutableArray array];
-    NSArray *homePositions = [self homePositionsInScroller];
+    NSArray *homePositions = [self homePositionsInScrollerForOrientation:self.interfaceOrientation];
     
     for (SCHStoryInteractionJigsawPieceView_iPhone *piece in self.jigsawPieceViews) {
         if (![piece isInCorrectPosition]) {
@@ -237,7 +321,11 @@ enum {
                              if (self.puzzlePieceScroller.contentOffset.y > maxOffset) {
                                  [self.puzzlePieceScroller setContentOffset:CGPointMake(0, maxOffset) animated:NO];
                              }
-                             self.puzzlePieceScroller.contentSize = CGSizeMake(CGRectGetWidth(self.puzzlePieceScroller.bounds), height);
+                             if (UIInterfaceOrientationIsLandscape(self.interfaceOrientation)) {
+                                 self.puzzlePieceScroller.contentSize = CGSizeMake(CGRectGetWidth(self.puzzlePieceScroller.bounds), height);
+                             } else {
+                                 self.puzzlePieceScroller.contentSize = CGSizeMake(height, CGRectGetHeight(self.puzzlePieceScroller.bounds));
+                             }
                          }
                      }];
 }
