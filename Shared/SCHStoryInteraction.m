@@ -152,4 +152,9 @@
     return count;
 }
 
+- (BOOL)alwaysIncrementsQuestionIndex
+{
+    return NO;
+}
+
 @end

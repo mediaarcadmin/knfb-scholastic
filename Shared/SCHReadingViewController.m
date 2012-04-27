@@ -2872,10 +2872,17 @@ static const NSUInteger kReadingViewMaxRecommendationsCount = 4;
         [self.view insertSubview:view atIndex:0];
     }
     
+    NSRange pageIndices = [self storyInteractionPageIndices];
+    
+    if (success || [aStoryInteractionController.storyInteraction alwaysIncrementsQuestionIndex]) {
+        [self.bookStoryInteractions incrementQuestionIndexForPageIndices:pageIndices];
+    }
+
     if (success) {
         [self.bookStoryInteractions incrementQuestionsCompletedForStoryInteraction:aStoryInteractionController.storyInteraction
-                                                                       pageIndices:[self storyInteractionPageIndices]];
+                                                                       pageIndices:pageIndices];
     }
+    
 }
 
 - (void)storyInteractionControllerDidDismiss:(SCHStoryInteractionController *)aStoryInteractionController
@@ -2912,9 +2919,7 @@ static const NSUInteger kReadingViewMaxRecommendationsCount = 4;
 - (NSInteger)currentQuestionForStoryInteraction
 {
     NSRange pageIndices = [self storyInteractionPageIndices];
-    NSInteger completed = [self.bookStoryInteractions storyInteractionQuestionsCompletedForPageIndices:pageIndices];
-    NSInteger count = [self.bookStoryInteractions storyInteractionQuestionCountForPageIndices:pageIndices];
-    return count > 0 ? completed % count : 0;
+    return [self.bookStoryInteractions storyInteractionQuestionIndexForPageIndices:pageIndices];
 }
 
 - (BOOL)storyInteractionFinished
