@@ -57,7 +57,7 @@ NSString * const kSCHAppContentProfileItemOrder = @"Order";
         NSDate *assignmentDate = self.ContentProfileItem.LastModified;
         NSDate *lastReadDate = lastPage.LastModified;
         if (assignmentDate != nil && lastReadDate != nil &&
-            [lastReadDate laterDate:assignmentDate] == lastReadDate) {
+            [assignmentDate laterDate:lastReadDate] == lastReadDate) {
             ret = [NSNumber numberWithBool:NO];
             self.IsNewBook = ret;
         }
