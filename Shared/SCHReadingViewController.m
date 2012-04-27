@@ -273,7 +273,7 @@ static const NSUInteger kReadingViewMaxRecommendationsCount = 4;
     [[NSNotificationCenter defaultCenter] removeObserver:self];
     [self releaseViewObjects];
     
-    if (xpsProvider) {
+    if (xpsProvider && self.bookIdentifier) {
         [[SCHBookManager sharedBookManager] checkInXPSProviderForBookIdentifier:self.bookIdentifier];
     }
     
@@ -927,6 +927,7 @@ static const NSUInteger kReadingViewMaxRecommendationsCount = 4;
             [alert addButtonWithTitle:NSLocalizedString(@"OK", @"OK") block:^{}];
             [alert show];
             [alert release];
+            [[SCHBookManager sharedBookManager] checkInXPSProviderForBookIdentifier:self.bookIdentifier];
             self.bookIdentifier = nil;
             if (self.modalViewController != nil) {
                 [self.modalViewController dismissModalViewControllerAnimated:NO];
@@ -964,12 +965,13 @@ static const NSUInteger kReadingViewMaxRecommendationsCount = 4;
         NSNumber *profileID = [notification.userInfo objectForKey:SCHAnnotationSyncComponentProfileIDs];
         
         if ([profileID isEqualToNumber:self.profile.ID] == YES) {
+            SCHReadingViewController *weakSelf = self;
             // dispatch this onto the main thread to avoid a race condition with the notification going to the SCHBookAnnotations object
             dispatch_async(dispatch_get_main_queue(), ^{
-                [self updateNotesCounter];
-                NSRange visibleIndices = [self storyInteractionPageIndices];
+                [weakSelf updateNotesCounter];
+                NSRange visibleIndices = [weakSelf storyInteractionPageIndices];
                 for (NSUInteger i = 0; i < visibleIndices.length; i++) {
-                    [self.readingView refreshHighlightsForPageAtIndex:visibleIndices.location + i];
+                    [weakSelf.readingView refreshHighlightsForPageAtIndex:visibleIndices.location + i];
                 }
             });
         }
