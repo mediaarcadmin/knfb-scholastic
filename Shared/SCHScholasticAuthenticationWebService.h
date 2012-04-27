@@ -15,6 +15,16 @@
 extern NSString * const kSCHScholasticAuthenticationWebServiceProcessRemote;
 extern NSString * const kSCHScholasticAuthenticationWebServicePToken;
 
+// Scholastic Errors
+typedef enum {
+    // an unknown error
+    kSCHScholasticAuthenticationWebServiceErrorCodeUnknown = -1,
+    // no error
+    kSCHScholasticAuthenticationWebServiceErrorCodeNone = 0,
+    // valid errors from the web service
+    kSCHScholasticAuthenticationWebServiceErrorCodeInvalidUsernamePassword = 200
+} SCHScholasticAuthenticationWebServiceErrorCode;
+
 @interface SCHScholasticAuthenticationWebService : BITSOAPProxy <AuthenticateSoap11BindingResponseDelegate> 
 {
 }

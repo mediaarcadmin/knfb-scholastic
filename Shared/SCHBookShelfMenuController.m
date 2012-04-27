@@ -175,8 +175,8 @@
         if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
             return 4;
         } else {
-            // disable wishlists if the last authentication failed
-            if ([[SCHAppStateManager sharedAppStateManager] lastScholasticAuthenticationFailed]) {
+            // disable wishlists if the last authentication failed username/password
+            if ([[SCHAppStateManager sharedAppStateManager] lastScholasticAuthenticationErrorCode] == kSCHScholasticAuthenticationWebServiceErrorCodeInvalidUsernamePassword) {
                 return 4;
             } else {
                 return 5;
@@ -282,7 +282,7 @@
             } else {
                 SCHBookShelfRecommendationListController *recommendationList = [[SCHBookShelfRecommendationListController alloc] initWithNibName:@"SCHBookShelfRecommendationListController" bundle:nil];
                 recommendationList.appProfile = [self.delegate appProfileForBookShelfMenu];
-                recommendationList.lastAuthenticationFailed = [[SCHAppStateManager sharedAppStateManager] lastScholasticAuthenticationFailed];
+                recommendationList.lastAuthenticationFailedUsernamePassword = ([[SCHAppStateManager sharedAppStateManager] lastScholasticAuthenticationErrorCode] == kSCHScholasticAuthenticationWebServiceErrorCodeInvalidUsernamePassword);
                 recommendationList.closeBlock = ^{
                     [self.delegate bookShelfMenuCancelled:self];
                 };

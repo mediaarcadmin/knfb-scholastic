@@ -189,7 +189,7 @@ static NSTimeInterval const kSCHAccountValidationpTokenTimeout = 1740.0;
         }
         
         self.pToken = pTokenResponse;
-        [[SCHAppStateManager sharedAppStateManager] setLastScholasticAuthenticationFailed:NO];
+        [[SCHAppStateManager sharedAppStateManager] setLastScholasticAuthenticationErrorCode:kSCHScholasticAuthenticationWebServiceErrorCodeNone];
     }
     
     self.passwordUsed = nil;
@@ -204,7 +204,7 @@ static NSTimeInterval const kSCHAccountValidationpTokenTimeout = 1740.0;
 {
     NSLog(@"%@:didFailWithError\n%@", method, error);
     
-    [[SCHAppStateManager sharedAppStateManager] setLastScholasticAuthenticationFailed:YES];
+    [[SCHAppStateManager sharedAppStateManager] setLastScholasticAuthenticationErrorCode:[error code]];
     
     self.passwordUsed = nil;
     self.validateBlock(nil, error);

@@ -9,6 +9,7 @@
 #import <Foundation/Foundation.h>
 #import "NSNumber+ObjectTypes.h"
 #import "SCHAppState.h"
+#import "SCHScholasticAuthenticationWebService.h"
 
 @class NSManagedObjectContext;
 
@@ -45,8 +46,8 @@
 - (NSDate *)lastRemoteManifestUpdateDate;
 - (void)setLastRemoteManifestUpdateDate:(NSDate *)date;
 
-- (BOOL)lastScholasticAuthenticationFailed;
-- (void)setLastScholasticAuthenticationFailed:(BOOL)failure;
+- (SCHScholasticAuthenticationWebServiceErrorCode)lastScholasticAuthenticationErrorCode;
+- (void)setLastScholasticAuthenticationErrorCode:(SCHScholasticAuthenticationWebServiceErrorCode)errorCode;
 
 - (NSString *)settingNamed:(NSString *)settingName;
 

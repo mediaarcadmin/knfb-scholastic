@@ -316,23 +316,23 @@
     }];
 }
 
-- (BOOL)lastScholasticAuthenticationFailed
+- (SCHScholasticAuthenticationWebServiceErrorCode)lastScholasticAuthenticationErrorCode
 {
-    __block BOOL ret = NO;
+    __block SCHScholasticAuthenticationWebServiceErrorCode ret = kSCHScholasticAuthenticationWebServiceErrorCodeNone;
     
     [self performWithAppState:^(SCHAppState *appState) {
         if (appState != nil) {
-            ret = [appState.lastScholasticAuthenticationFailed boolValue];
+            ret = [appState.lastScholasticAuthenticationErrorCode intValue];
         }
     }];
     
     return ret;
 }
 
-- (void)setLastScholasticAuthenticationFailed:(BOOL)failure
+- (void)setLastScholasticAuthenticationErrorCode:(SCHScholasticAuthenticationWebServiceErrorCode)errorCode
 {
     [self performWithAppStateAndSave:^(SCHAppState *appState) {
-        [appState setLastScholasticAuthenticationFailed:[NSNumber numberWithBool:failure]];
+        [appState setLastScholasticAuthenticationErrorCode:[NSNumber numberWithInt:errorCode]];
     }];
 }
 

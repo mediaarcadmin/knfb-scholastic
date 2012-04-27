@@ -19,7 +19,7 @@
 @property (nonatomic, assign) id <SCHBookShelfRecommendationListControllerDelegate> delegate;
 @property (nonatomic, retain) SCHAppProfile *appProfile;
 @property (nonatomic, copy) dispatch_block_t closeBlock;
-@property (nonatomic, assign) BOOL lastAuthenticationFailed;
+@property (nonatomic, assign) BOOL lastAuthenticationFailedUsernamePassword;
 
 // IB
 @property (nonatomic, retain) IBOutlet UITableView *mainTableView;
