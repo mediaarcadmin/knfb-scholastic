@@ -87,19 +87,18 @@ static const CGFloat kSCHProfileViewControllerPhoneLogoHeightLandscape = 32;
     CGRect currentTitleBounds = self.navigationItem.titleView.bounds;
     CGRect newTitleBounds;
     
+    [(SCHCustomNavigationBar *)self.navigationController.navigationBar setBackgroundImage:
+     [UIImage imageNamed:@"red-toolbar.png"]];
+    
     if (UIInterfaceOrientationIsLandscape(orientation)) {
-        [(SCHCustomNavigationBar *)self.navigationController.navigationBar setBackgroundImage:
-         [UIImage imageNamed:@"admin-iphone-landscape-top-toolbar.png"]];
-        [self.backgroundView setImage:[UIImage imageNamed:@"plain-background-landscape.jpg"]];
+        [self.backgroundView setImage:[UIImage imageNamed:@"cloud-background-landscape.jpg"]];
         [self.settingsButton setImage:[UIImage imageNamed:@"settings-landscape.png"] 
                              forState:UIControlStateNormal];
         [self.settingsButton sizeToFit];
         
         newTitleBounds = CGRectMake(0, 0, kSCHProfileViewControllerPhoneLogoWidthLandscape, kSCHProfileViewControllerPhoneLogoHeightLandscape);
     } else {
-        [(SCHCustomNavigationBar *)self.navigationController.navigationBar setBackgroundImage:
-         [UIImage imageNamed:@"admin-iphone-portrait-top-toolbar.png"]];
-        [self.backgroundView setImage:[UIImage imageNamed:@"plain-background-portrait.jpg"]];
+        [self.backgroundView setImage:[UIImage imageNamed:@"cloud-background-portrait.jpg"]];
         [self.settingsButton setImage:[UIImage imageNamed:@"settings-portrait.png"] 
                              forState:UIControlStateNormal];
         [self.settingsButton sizeToFit];
