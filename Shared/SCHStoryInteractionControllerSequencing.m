@@ -81,6 +81,55 @@
     self.controllerState = SCHStoryInteractionControllerStateInteractionInProgress;
 }
 
+- (void)layoutViewsForPhoneOrientation:(UIInterfaceOrientation)orientation
+{
+    if (UIInterfaceOrientationIsPortrait(orientation)) {
+        CGRect containerRect = CGRectMake(0, 0, 310, 410);
+        for (NSInteger rowIndex = 0; rowIndex < 3; ++rowIndex) {
+            CGFloat y = CGRectGetHeight(containerRect)/6*(rowIndex*2+1);
+            CGFloat x = CGRectGetWidth(containerRect)*3/4;
+            [[self.targets objectAtIndex:rowIndex] setCenter:CGPointMake(x, y)];
+
+            SCHStoryInteractionDraggableView *image = [self.imageContainers objectAtIndex:rowIndex];
+            [image setHomePosition:CGPointMake(CGRectGetWidth(containerRect)/4, y)];
+            
+            SCHStoryInteractionDraggableTargetView *target = [self.attachedImages objectForKey:[NSNumber numberWithInteger:image.matchTag]];
+            if (target) {
+                NSInteger attachedRow = [self.targets indexOfObject:target];
+                [image setCenter:CGPointMake(x, CGRectGetHeight(containerRect)/6*(attachedRow*2+1))];
+            } else {
+                [image setCenter:image.homePosition];
+            }
+        } 
+    } else {
+        CGRect containerRect = CGRectMake(0, 0, 470, 250);
+        for (NSInteger columnIndex = 0; columnIndex < 3; ++columnIndex) {
+            CGFloat x = CGRectGetWidth(containerRect)/6*(columnIndex*2+1);
+            CGFloat y = CGRectGetHeight(containerRect)*3/4;
+            [[self.targets objectAtIndex:columnIndex] setCenter:CGPointMake(x, y)];
+            
+            SCHStoryInteractionDraggableView *image = [self.imageContainers objectAtIndex:columnIndex];
+            [image setHomePosition:CGPointMake(x, CGRectGetHeight(containerRect)/4)];
+            
+            SCHStoryInteractionDraggableTargetView *target = [self.attachedImages objectForKey:[NSNumber numberWithInteger:image.matchTag]];
+            if (target) {
+                NSInteger attachedRow = [self.targets indexOfObject:target];
+                [image setCenter:CGPointMake(CGRectGetWidth(containerRect)/6*(attachedRow*2+1), y)];
+            } else {
+                [image setCenter:image.homePosition];
+            }
+        }
+    }
+}
+
+- (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
+{
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
+        [self layoutViewsForPhoneOrientation:toInterfaceOrientation];
+    }
+    [super willRotateToInterfaceOrientation:toInterfaceOrientation duration:duration];
+}
+
 - (void)setView:(UIView *)view borderColor:(UIColor *)color
 {
     view.layer.borderColor = [color CGColor];

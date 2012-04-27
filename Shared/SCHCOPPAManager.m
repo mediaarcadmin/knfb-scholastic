@@ -109,7 +109,7 @@
 {    
     if (self.waitingOnResponse == NO &&
         [self.nextRequest earlierDate:[NSDate date]] == self.nextRequest &&        
-        [[SCHAppStateManager sharedAppStateManager] canSyncNotes] == NO) {
+        [[SCHAppStateManager sharedAppStateManager] isCOPPACompliant] == NO) {
         SCHCOPPAManager *weakSelf = self;
         self.waitingOnResponse = YES;
         [[SCHAuthenticationManager sharedAuthenticationManager] pTokenWithValidation:^(NSString *pToken, NSError *error) {

@@ -11,23 +11,24 @@
 #import "NSArray+Shuffling.h"
 #import "SCHGeometry.h"
 
-#define kLetterGap 3
-#define kSnapDistanceSq 1400
-
 @interface SCHStoryInteractionControllerWordScrambler ()
 
+@property (nonatomic, retain) NSArray *letterRows;
 @property (nonatomic, retain) NSArray *letterViews;
 @property (nonatomic, assign) CGSize letterTileSize;
 @property (nonatomic, retain) NSArray *letterPositions;
 @property (nonatomic, retain) NSMutableArray *lettersByPosition;
 @property (nonatomic, retain) NSArray *hintLetters;
 @property (nonatomic, assign) BOOL hasShownHint;
+@property (nonatomic, assign) NSInteger tileGap;
+@property (nonatomic, assign) NSInteger snapDistanceSq;
 
-- (NSArray *)wordsInCurrentScrambler;
-- (NSInteger)longestRowInCurrentScrambler;
-- (BOOL)canLayoutLetterPositionsWithTileSize:(CGSize)tileSize inContainerSize:(CGSize)containerSize;
-- (void)layoutLetterPositionsWithTileSize:(CGSize)tileSize inContainerSize:(CGSize)containerSize;
+- (void)splitScramblerIntoRows;
+- (NSInteger)longestRowInRows:(NSArray *)rows;
+- (BOOL)canLayoutLetterPositionsWithTileSize:(CGSize)tileSize letterGap:(NSInteger)gap inContainerSize:(CGSize)containerSize;
+- (void)layoutLetterPositionsWithTileSize:(CGSize)tileSize letterGap:(NSInteger)gap inContainerSize:(CGSize)containerSize;
 
+- (UIImage *)chooseLetterTileBackgroundForContainerSize:(CGSize)containerSize;
 - (void)createAndLayoutLetterViews;
 - (void)scrambleLetterPositions;
 - (void)layoutLetterViewsWithAnimationDuration:(NSTimeInterval)duration;
@@ -45,15 +46,19 @@
 @synthesize clueLabel;
 @synthesize lettersContainerView;
 @synthesize hintButton;
+@synthesize letterRows;
 @synthesize letterViews;
 @synthesize letterTileSize;
 @synthesize letterPositions;
 @synthesize lettersByPosition;
 @synthesize hintLetters;
 @synthesize hasShownHint;
+@synthesize tileGap;
+@synthesize snapDistanceSq;
 
 - (void)dealloc
 {
+    [letterRows release], letterRows = nil;
     [clueLabel release], clueLabel = nil;
     [lettersContainerView release], lettersContainerView = nil;
     [letterViews release], letterViews = nil;
@@ -66,45 +71,54 @@
 - (void)setupViewAtIndex:(NSInteger)screenIndex
 {
     SCHStoryInteractionWordScrambler *wordScrambler = (SCHStoryInteractionWordScrambler *)self.storyInteraction;
-    self.clueLabel.text = wordScrambler.clue;
-    
-    UIImage *letterTile = [UIImage imageNamed:@"storyinteraction-lettertile"];
-    self.letterTileSize = letterTile.size;
+    [self setClueLabelText:wordScrambler.clue];
 
-    // determine how many rows and columns of tiles to show
-    NSArray *words = [wordScrambler.answer componentsSeparatedByCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
-    NSLog(@"word scrambler : %@", words);
-    
-    NSInteger maxTilesPerRow = 0;
-    for (NSString *word in words) {
-        maxTilesPerRow = MAX(maxTilesPerRow, [word length]);
-    }
-
+    [self splitScramblerIntoRows];
     [self createAndLayoutLetterViews];
-    
-    // scramble the positions
     [self scrambleLetterPositions];
     
     self.hasShownHint = NO;
     self.controllerState = SCHStoryInteractionControllerStateInteractionInProgress;
 }
 
+- (void)setClueLabelText:(NSString *)text
+{
+    self.clueLabel.text = text;
+
+    NSString *fontName = [self.clueLabel.font fontName];
+    CGFloat fontSize = [self.clueLabel.font pointSize];
+    CGSize constrainSize = CGSizeMake(CGRectGetWidth(self.clueLabel.bounds), CGFLOAT_MAX);
+    UIFont *font = nil;
+    while (fontSize > 10) {
+        font = [UIFont fontWithName:fontName size:fontSize];
+        CGSize size = [text sizeWithFont:font constrainedToSize:constrainSize lineBreakMode:self.clueLabel.lineBreakMode];
+        if (size.height <= CGRectGetHeight(self.clueLabel.bounds)) {
+            break;
+        }
+        fontSize -= 1;
+    }
+    if (font) {
+        self.clueLabel.font = font;
+    }
+}
+
 - (void)createAndLayoutLetterViews
 {
     SCHStoryInteractionWordScrambler *wordScrambler = (SCHStoryInteractionWordScrambler *)self.storyInteraction;
 
-    UIImage *letterTile = [UIImage imageNamed:@"storyinteraction-lettertile"];
-    if (![self canLayoutLetterPositionsWithTileSize:letterTile.size inContainerSize:self.lettersContainerView.bounds.size]) {
-        letterTile = [UIImage imageNamed:@"storyinteraction-lettertile-small"];
-    }
+    UIImage *letterTile = [self chooseLetterTileBackgroundForContainerSize:self.containerView.bounds.size];
     
     NSMutableArray *views = [NSMutableArray array];
     NSMutableArray *hints = [NSMutableArray array];
     NSInteger characterIndex = 1;
 
-    for (NSString *word in [self wordsInCurrentScrambler]) {
-        for (NSInteger index = 0, count = [word length]; index < count; ++index) {
-            SCHStoryInteractionDraggableLetterView *letter = [[SCHStoryInteractionDraggableLetterView alloc] initWithLetter:[word characterAtIndex:index]
+    for (NSString *row in self.letterRows) {
+        for (NSInteger index = 0, count = [row length]; index < count; ++index) {
+            if ([row characterAtIndex:index] == ' ') {
+                characterIndex++;
+                continue;
+            }
+            SCHStoryInteractionDraggableLetterView *letter = [[SCHStoryInteractionDraggableLetterView alloc] initWithLetter:[row characterAtIndex:index]
                                                                                                                   tileImage:letterTile];
             letter.delegate = self;
             [views addObject:letter];
@@ -127,65 +141,115 @@
         [letter setTileImage:letterTile];
     }
     
-    [self layoutLetterPositionsWithTileSize:letterTile.size inContainerSize:self.lettersContainerView.bounds.size];
+    [self layoutLetterPositionsWithTileSize:letterTile.size letterGap:self.tileGap inContainerSize:self.lettersContainerView.bounds.size];
     self.letterTileSize = letterTile.size;
 }
 
-- (NSArray *)wordsInCurrentScrambler
+- (UIImage *)chooseLetterTileBackgroundForContainerSize:(CGSize)containerSize
 {
-    SCHStoryInteractionWordScrambler *wordScrambler = (SCHStoryInteractionWordScrambler *)self.storyInteraction;
-    return [wordScrambler.answer componentsSeparatedByCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+    static const struct {
+        NSString *letterTileName;
+        NSInteger letterGap;
+    } kLetterTileSizes[] = {
+        { @"storyinteraction-lettertile",       3 },
+        { @"storyinteraction-lettertile-small", 3 },
+        { @"storyinteraction-lettertile-tiny",  1 }
+    };
+    static const size_t kNumLetterTileSizes = sizeof(kLetterTileSizes)/sizeof(kLetterTileSizes[0]);
+    
+    UIImage *letterTile = nil;
+    NSInteger letterGap;
+    for (size_t sizeIndex = 0; sizeIndex < kNumLetterTileSizes; ++sizeIndex) {
+        letterTile = [UIImage imageNamed:kLetterTileSizes[sizeIndex].letterTileName];
+        letterGap = kLetterTileSizes[sizeIndex].letterGap;
+        if ([self canLayoutLetterPositionsWithTileSize:letterTile.size letterGap:letterGap inContainerSize:containerSize]) {
+            break;
+        }
+    }
+
+    NSInteger snapDistance = MIN(37, letterTile.size.width);
+    self.snapDistanceSq = snapDistance*snapDistance;
+    self.tileGap = letterGap;
+    
+    return letterTile;
 }
 
-- (NSInteger)longestRowInCurrentScrambler
+- (void)splitScramblerIntoRows
+{
+    SCHStoryInteractionWordScrambler *wordScrambler = (SCHStoryInteractionWordScrambler *)self.storyInteraction;
+    NSMutableArray *rows = [[wordScrambler.answer componentsSeparatedByCharactersInSet:[NSCharacterSet whitespaceCharacterSet]] mutableCopy];
+    
+    while ([rows count] > 4) {
+        // combine two shortest adjacent rows
+        NSInteger shortestRowPairIndex = 0;
+        NSInteger shortestRowPairLength = NSIntegerMax;
+        for (NSInteger rowIndex = 0, rowIndexMax = [rows count]-1; rowIndex < rowIndexMax; ++rowIndex) {
+            NSInteger length = [[rows objectAtIndex:rowIndex] length] + [[rows objectAtIndex:rowIndex+1] length] + 1;
+            if (length < shortestRowPairLength) {
+                shortestRowPairLength = length;
+                shortestRowPairIndex = rowIndex;
+            }
+        }
+        NSString *combinedRow = [NSString stringWithFormat:@"%@ %@", [rows objectAtIndex:shortestRowPairIndex], [rows objectAtIndex:shortestRowPairIndex+1]];
+        [rows replaceObjectAtIndex:shortestRowPairIndex withObject:combinedRow];
+        [rows removeObjectAtIndex:shortestRowPairIndex+1];
+    }
+
+    self.letterRows = [NSArray arrayWithArray:rows];
+    NSLog(@"scrambler rows: %@", self.letterRows);
+    [rows release];
+}
+
+- (NSInteger)longestRowInRows:(NSArray *)rows
 {
     NSInteger longestRow = 0;
-    for (NSString *word in [self wordsInCurrentScrambler]) {
-        longestRow = MAX(longestRow, [word length]);
+    for (NSString *row in rows) {
+        longestRow = MAX(longestRow, [row length]);
     }
     return longestRow;
 }
 
-- (BOOL)canLayoutLetterPositionsWithTileSize:(CGSize)tileSize inContainerSize:(CGSize)containerSize
+- (BOOL)canLayoutLetterPositionsWithTileSize:(CGSize)tileSize letterGap:(NSInteger)gap inContainerSize:(CGSize)containerSize
 {
-    if ([[self wordsInCurrentScrambler] count]*(tileSize.height+kLetterGap)+kLetterGap > containerSize.height) {
+    if ([self.letterRows count]*(tileSize.height+gap)+gap > containerSize.height) {
         return NO;
     }
         
-    if ([self longestRowInCurrentScrambler]*(tileSize.width+kLetterGap)+kLetterGap > containerSize.width) {
+    if ([self longestRowInRows:self.letterRows]*(tileSize.width+gap)+gap > containerSize.width) {
         return NO;
     }
     
     return YES;
 }
 
-- (void)layoutLetterPositionsWithTileSize:(CGSize)tileSize inContainerSize:(CGSize)containerSize
+- (void)layoutLetterPositionsWithTileSize:(CGSize)tileSize letterGap:(NSInteger)gap inContainerSize:(CGSize)containerSize
 {
-    NSArray *words = [self wordsInCurrentScrambler];
-    NSInteger numberOfRows = [words count];
+    NSInteger numberOfRows = [self.letterRows count];
     
-    NSInteger maxLettersPerRow = (containerSize.width-kLetterGap) / (tileSize.width+kLetterGap);
-    for (NSString *word in words) {
+    NSInteger maxLettersPerRow = (containerSize.width-gap) / (tileSize.width+gap);
+    for (NSString *row in self.letterRows) {
         // split any rows that are too wide
-        if ([word length] > maxLettersPerRow) {
+        if ([row length] > maxLettersPerRow) {
             numberOfRows++;
         }
     }
     
     NSMutableArray *positions = [NSMutableArray array];
     
-    CGFloat y = (containerSize.height - numberOfRows*tileSize.height - (numberOfRows-1)*kLetterGap)/2 - tileSize.height/2 - kLetterGap;
-    for (NSString *word in words) {
-        NSInteger length = [word length];
+    CGFloat y = (containerSize.height - numberOfRows*tileSize.height - (numberOfRows-1)*gap)/2 - tileSize.height/2 - gap;
+    for (NSString *row in self.letterRows) {
+        NSInteger length = [row length];
         CGFloat x = 0;
         for (int i = 0; i < length; ++i) {
             if ((i % maxLettersPerRow) == 0) {
                 NSInteger lettersThisRow = MIN(length-i, maxLettersPerRow);
-                x = (containerSize.width - lettersThisRow*tileSize.width - (lettersThisRow-1)*kLetterGap)/2 + tileSize.width/2;
-                y += tileSize.height + kLetterGap;
+                x = (containerSize.width - lettersThisRow*tileSize.width - (lettersThisRow-1)*gap)/2 + tileSize.width/2;
+                y += tileSize.height + gap;
             }
-            [positions addObject:[NSValue valueWithCGPoint:CGPointMake(x, y)]];
-            x += tileSize.width + kLetterGap;
+            if ([row characterAtIndex:i] != ' ') {
+                [positions addObject:[NSValue valueWithCGPoint:CGPointMake(x, y)]];
+            }
+            x += tileSize.width + gap;
         }
     }
 
@@ -228,16 +292,13 @@
         containerSize = self.lettersContainerView.bounds.size;
     }
     
-    UIImage *letterTile = [UIImage imageNamed:@"storyinteraction-lettertile"];
-    if (![self canLayoutLetterPositionsWithTileSize:letterTile.size inContainerSize:containerSize]) {
-        letterTile = [UIImage imageNamed:@"storyinteraction-lettertile-small"];
-    }
+    UIImage *letterTile = [self chooseLetterTileBackgroundForContainerSize:containerSize];
 
     for (SCHStoryInteractionDraggableLetterView *letter in self.letterViews) {
         [letter setTileImage:letterTile];
     }
     
-    [self layoutLetterPositionsWithTileSize:letterTile.size inContainerSize:containerSize];
+    [self layoutLetterPositionsWithTileSize:letterTile.size letterGap:self.tileGap inContainerSize:containerSize];
     [self layoutLetterViewsWithAnimationDuration:duration];
 
     [super willRotateToInterfaceOrientation:toInterfaceOrientation duration:duration];
@@ -301,9 +362,10 @@
 
     [self withLetterPositionCloseToPoint:position :^(NSInteger letterPosition, BOOL *stop) {
         SCHStoryInteractionDraggableLetterView *swapLetter = [self.lettersByPosition objectAtIndex:letterPosition];
-        if (swapLetter != nil && draggableView != nil && 
-            swapLetter != draggableView && !(self.hasShownHint && 
-              [self.hintLetters containsObject:swapLetter])) {
+        if (swapLetter != nil
+            && draggableView != nil
+            && swapLetter != draggableView
+            && !(self.hasShownHint && [self.hintLetters containsObject:swapLetter])) {
             [self performSelector:@selector(swapLetters:)
                        withObject:[NSArray arrayWithObjects:draggableView, swapLetter, nil]
                        afterDelay:0.75];
@@ -324,9 +386,10 @@
     
     [self withLetterPositionCloseToPoint:position :^(NSInteger letterPosition, BOOL *stop) {
         SCHStoryInteractionDraggableLetterView *swapLetter = [self.lettersByPosition objectAtIndex:letterPosition];
-        if (swapLetter != nil && draggableView != nil && 
-            swapLetter != draggableView && !(self.hasShownHint && 
-              [self.hintLetters containsObject:swapLetter])) {
+        if (swapLetter != nil
+            && draggableView != nil
+            && swapLetter != draggableView
+            && !(self.hasShownHint && [self.hintLetters containsObject:swapLetter])) {
             [self swapLetters:[NSArray arrayWithObjects:draggableView, swapLetter, nil]];
             *stop = YES;
         }
@@ -354,7 +417,7 @@
 {
     for (NSInteger i = 0, n = [self.letterPositions count]; i < n; ++i) {
         CGPoint letterPosition = [[self.letterPositions objectAtIndex:i] CGPointValue];
-        if (SCHCGPointDistanceSq(point, letterPosition) < kSnapDistanceSq) {
+        if (SCHCGPointDistanceSq(point, letterPosition) < self.snapDistanceSq) {
             BOOL stop = NO;
             block(i, &stop);
             if (stop) {

@@ -48,6 +48,11 @@
     return [self.questions count];
 }
 
+- (BOOL)alwaysIncrementsQuestionIndex
+{
+    return YES;
+}
+
 - (NSString *)title
 {
     return @"Word Bird";

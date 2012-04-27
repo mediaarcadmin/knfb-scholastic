@@ -54,6 +54,11 @@
                                                  selector:@selector(annotationSyncComponentDidCompleteNotification:) 
                                                      name:SCHAnnotationSyncComponentDidCompleteNotification 
                                                    object:nil];        
+        
+        [[NSNotificationCenter defaultCenter] addObserver:self 
+                                                 selector:@selector(managedObjectContextDidSaveNotification:) 
+                                                     name:NSManagedObjectContextDidSaveNotification 
+                                                   object:nil];        
     }
     return(self);
 }
@@ -83,6 +88,20 @@
         }
     } else {
         NSLog(@"Warning: unable to retrieve a cachedProfileID for this bookannotation");
+    }
+}
+
+- (void)managedObjectContextDidSaveNotification:(NSNotification *)notification
+{
+    if (self.privateAnnotations != nil) {
+        NSArray *deletedObjects = [notification.userInfo objectForKey:NSDeletedObjectsKey];    
+        
+        if ([deletedObjects containsObject:self.privateAnnotations] == YES) {
+            self.privateAnnotations = nil;
+            [sortedBookmarks release], sortedBookmarks = nil;
+            [sortedHighlights release], sortedHighlights = nil;
+            [sortedNotes release], sortedNotes = nil;
+        }
     }
 }
 

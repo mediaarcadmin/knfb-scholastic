@@ -28,7 +28,7 @@ enum {
 
 - (void)zoomToCardLayerFromView:(UIView *)view;
 - (void)showCardButtons;
-- (void)hideCardButtonsIncludingZoomout:(BOOL)hideZoomOutButton animated:(BOOL)animated;
+- (void)hideCardButtonsAnimated:(BOOL)animated;
 - (void)setPurpleBorderOnLayer:(CALayer *)layer;
 - (CALayer *)cardLayerWithFront:(UIImage *)front back:(UIImage *)back size:(CGSize)size;
 - (void)showCardsInScrollViewAtIndex:(NSInteger)index;
@@ -65,7 +65,6 @@ enum {
     [super dealloc];
 }
 
-
 - (void)setupViewAtIndex:(NSInteger)screenIndex
 {
     SCHStoryInteractionCardCollection *cardCollection = (SCHStoryInteractionCardCollection *)self.storyInteraction;
@@ -73,7 +72,7 @@ enum {
     self.titleView.adjustsFontSizeToFitWidth = YES;
     self.titleView.numberOfLines = 1;
     
-    [self hideCardButtonsIncludingZoomout:YES animated:NO];
+    [self hideCardButtonsAnimated:NO];
     self.zoomScrollView.hidden = YES;
     self.cardViews = [self.cardViews viewsInRowMajorOrder];
     
@@ -96,6 +95,19 @@ enum {
     }
     
     [self.cardScrollView setHidden:YES];
+    
+    UITapGestureRecognizer *scrollTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(scrollViewTapped:)];
+    [self.cardScrollView addGestureRecognizer:scrollTap];
+    [scrollTap release];
+}
+
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
+{
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+        return YES;
+    } else {
+        return UIInterfaceOrientationIsPortrait(interfaceOrientation);
+    }
 }
 
 - (void)storyInteractionDisableUserInteraction
@@ -112,8 +124,12 @@ enum {
     }
 }
 
+#pragma mark - card buttons
+
 - (void)showCardButtons
 {
+    [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(hideCardButtonsAfterDelay) object:nil];
+    
     const BOOL isFirstCard = ([self.scrollSublayers objectAtIndex:0] == self.cardLayer);
     const BOOL isLastCard = ([self.scrollSublayers lastObject] == self.cardLayer);
     
@@ -132,17 +148,40 @@ enum {
                              }
                          }
                      }
+                     completion:^(BOOL finished) {
+                         [self performSelector:@selector(hideCardButtonsAfterDelay) withObject:nil afterDelay:3.0];
+                     }];
+}
+
+- (void)showZoomOutButton
+{
+    [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(hideCardButtonsAfterDelay) object:nil];
+    
+    [UIView animateWithDuration:0.2
+                          delay:0
+                        options:UIViewAnimationOptionAllowUserInteraction
+                     animations:^{
+                         for (UIButton *button in self.cardButtons) {
+                             if (button.tag == kZoomOutButtonTag) {
+                                 button.userInteractionEnabled = YES;
+                                 button.alpha = 1;
+                             }
+                         }
+                     }
                      completion:nil];
 }
 
-- (void)hideCardButtonsIncludingZoomout:(BOOL)hideZoomOutButton animated:(BOOL)animated
+- (void)hideCardButtonsAfterDelay
+{
+    [self hideCardButtonsAnimated:YES];
+}
+
+- (void)hideCardButtonsAnimated:(BOOL)animated
 {
     dispatch_block_t block = ^{
         for (UIButton *button in self.cardButtons) {
-            if (button.tag != kZoomOutButtonTag || hideZoomOutButton) {
-                button.userInteractionEnabled = NO;
-                button.alpha = 0;
-            }
+            button.userInteractionEnabled = NO;
+            button.alpha = 0;
         }
     };
     
@@ -179,7 +218,7 @@ enum {
 
 - (void)zoomToCardLayerFromView:(UIView *)cardView
 {
-   SCHStoryInteractionCardCollection *cardCollection = (SCHStoryInteractionCardCollection *)self.storyInteraction;
+    SCHStoryInteractionCardCollection *cardCollection = (SCHStoryInteractionCardCollection *)self.storyInteraction;
     UIImage *backImage = [self imageAtPath:[cardCollection imagePathForCardBackAtIndex:cardView.tag]];
 
     self.selectedCardView = (UIImageView *)[cardView viewWithTag:kCardImageViewTag];
@@ -290,7 +329,7 @@ enum {
     
     [self.cardLayer addAnimation:group forKey:@"zoomOut"];
 
-    [self hideCardButtonsIncludingZoomout:YES animated:YES];
+    [self hideCardButtonsAnimated:YES];
 }
 
 - (void)setPurpleBorderOnLayer:(CALayer *)layer
@@ -438,18 +477,10 @@ enum {
     self.selectedCardView = (UIImageView *)[[self.cardViews objectAtIndex:cardIndex] viewWithTag:kCardImageViewTag];
 }
 
-- (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView
-{
-    if (scrollView == self.cardScrollView) {
-        [self hideCardButtonsIncludingZoomout:YES animated:YES];
-    }
-}
-
 - (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate
 {
     if (scrollView == self.cardScrollView && !decelerate) {
         [self syncCardLayerWithScrollView];
-        [self showCardButtons];
     }
 }
 
@@ -457,7 +488,6 @@ enum {
 {
     if (scrollView == self.cardScrollView) {
         [self syncCardLayerWithScrollView];
-        [self showCardButtons];
     }
 }
 
@@ -465,8 +495,12 @@ enum {
 {
     if (scrollView == self.cardScrollView) {
         [self syncCardLayerWithScrollView];
-        [self showCardButtons];
     }
+}
+
+- (void)scrollViewTapped:(UITapGestureRecognizer *)tap
+{
+    [self showCardButtons];
 }
 
 #pragma mark - Zoom view
@@ -498,7 +532,8 @@ enum {
     [self.zoomScrollView setHidden:NO];
     [self.zoomScrollView setZoomScale:1.0f animated:NO];
     [self.zoomScrollView setZoomScale:2.0f animated:YES];
-    [self hideCardButtonsIncludingZoomout:NO animated:YES];
+    [self hideCardButtonsAnimated:YES];
+    [self showZoomOutButton];
 }
 
 - (void)scrollViewDidEndZooming:(UIScrollView *)scrollView withView:(UIView *)view atScale:(float)scale

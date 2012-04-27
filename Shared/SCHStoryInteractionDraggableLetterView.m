@@ -17,23 +17,26 @@
 
 - (id)initWithLetter:(unichar)aLetter tileImage:(UIImage *)tileImage
 {
-    if ((self = [super initWithFrame:CGRectMake(0, 0, tileImage.size.width, tileImage.size.height)])) {
-        UIImageView *iv = [[UIImageView alloc] initWithImage:tileImage];
-        iv.frame = self.bounds;
+    if ((self = [super initWithFrame:CGRectZero])) {
+        UIImageView *iv = [[UIImageView alloc] initWithFrame:CGRectZero];
+        iv.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
         iv.tag = kTileTag;
         [self addSubview:iv];
         [iv release];
-        UILabel *label = [[UILabel alloc] initWithFrame:self.bounds];
+        
+        UILabel *label = [[UILabel alloc] initWithFrame:CGRectZero];
+        label.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
         label.backgroundColor = [UIColor clearColor];
         label.textColor = [UIColor whiteColor];
         label.textAlignment = UITextAlignmentCenter;
         label.text = [NSString stringWithCharacters:&aLetter length:1];
-        label.font = [UIFont fontWithName:@"Arial-BoldMT" size:30];
         label.tag = kLabelTag;
         [self addSubview:label];
         [label release];
         
         letter = aLetter;
+        
+        [self setTileImage:tileImage];
     }
     return self;
 }
@@ -58,6 +61,14 @@
     UIImageView *iv = (UIImageView *)[self viewWithTag:kTileTag];
     iv.image = tileImage;
     self.bounds = (CGRect){ CGPointZero, tileImage.size };
+
+    CGFloat fontSize = 30;
+    if (tileImage.size.width <= 30) {
+        fontSize = 24;
+    }
+    
+    UILabel *label = (UILabel *)[self viewWithTag:kLabelTag];
+    label.font = [UIFont fontWithName:@"Arial-BoldMT" size:fontSize];
 }
 
 @end

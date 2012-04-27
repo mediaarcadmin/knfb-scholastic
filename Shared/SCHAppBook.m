@@ -774,38 +774,6 @@ NSString * const kSCHAppBookFilenameSeparator = @"-";
     self.ForceProcess = [NSNumber numberWithBool:forceProcess];
 }
 
-- (void)deleteXPSFile
-{
-    NSError *error = nil;
-    
-    NSFileManager *localManager = [[[NSFileManager alloc] init] autorelease];
-    
-    if ([localManager fileExistsAtPath:self.xpsPath]) {
-        
-        if ([localManager removeItemAtPath:self.xpsPath 
-                                     error:&error] == NO) {
-            NSLog(@"Failed to delete XPS file for %@, error: %@", 
-                  self, [error localizedDescription]);
-        }
-    }
-}
-
-- (void)deleteCoverFile
-{
-    NSError *error = nil;
-    
-    NSFileManager *localManager = [[[NSFileManager alloc] init] autorelease];
-    
-    if ([localManager fileExistsAtPath:self.coverImagePath]) {
-        
-        if ([localManager removeItemAtPath:self.coverImagePath 
-                                     error:&error] == NO) {
-            NSLog(@"Failed to delete cover file for %@, error: %@", 
-                  self, [error localizedDescription]);
-        }
-    }
-}
-
 #pragma mark - Errors
 
 - (NSError *)errorWithCode:(NSInteger)code

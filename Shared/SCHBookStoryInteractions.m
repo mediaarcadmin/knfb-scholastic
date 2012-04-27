@@ -11,6 +11,7 @@
 
 @interface SCHBookStoryInteractions ()
 
+@property (nonatomic, retain) NSMutableDictionary *storyInteractionsQuestionIndex;
 @property (nonatomic, retain) NSMutableDictionary *storyInteractionsQuestionsCompletedCount;
 @property (nonatomic, retain) NSMutableDictionary *storyInteractionsComplete;
 
@@ -27,6 +28,7 @@
 
 @synthesize delegate;
 @synthesize storyInteractions;
+@synthesize storyInteractionsQuestionIndex;
 @synthesize storyInteractionsQuestionsCompletedCount;
 @synthesize storyInteractionsComplete;
 @synthesize oddPageIndicesAreLeftPages;
@@ -34,6 +36,7 @@
 - (void)dealloc
 {
     [storyInteractions release], storyInteractions = nil;
+    [storyInteractionsQuestionIndex release], storyInteractionsQuestionIndex = nil;
     [storyInteractionsQuestionsCompletedCount release], storyInteractionsQuestionsCompletedCount = nil;
     [storyInteractionsComplete release], storyInteractionsComplete = nil;
     [super dealloc];
@@ -47,6 +50,7 @@
     [storyInteractions release];
     
     self.storyInteractionsQuestionsCompletedCount = [NSMutableDictionary dictionary];
+    self.storyInteractionsQuestionIndex = [NSMutableDictionary dictionary];
     self.storyInteractionsComplete = [NSMutableDictionary dictionary];
     
     // only use valid story interactions
@@ -59,6 +63,9 @@
     // add reference to the Book Story Interactions object
     for (SCHStoryInteraction *interaction in self.storyInteractions) {
         interaction.bookStoryInteractions = self;
+        for (id pageKey in [self pageKeysForStoryInteraction:interaction]) {
+            [self.storyInteractionsQuestionIndex setObject:[NSNumber numberWithInteger:0] forKey:pageKey];
+        }
     }
 }
 
@@ -221,6 +228,17 @@
 
 #pragma mark - Interactions Complete methods
 
+- (NSInteger)storyInteractionQuestionIndexForPageIndices:(NSRange)pageIndices
+{
+    for (id pageKey in [self pageKeysForPageIndices:pageIndices]) {
+        NSNumber *indexForPage = [self.storyInteractionsQuestionIndex objectForKey:pageKey];
+        if (indexForPage) {
+            return [indexForPage integerValue];
+        }
+    }
+    return NSNotFound;
+}
+
 - (NSInteger)storyInteractionQuestionsCompletedForPageIndices:(NSRange)pageIndices
 {
     NSInteger count = 0;
@@ -329,6 +347,16 @@
     [self.storyInteractionsQuestionsCompletedCount setObject:count forKey:pageKey];
     
     NSLog(@"Now completed %d of %d interactions for page %@", [count intValue], questionCount, pageKey);
+}
+
+- (void)incrementQuestionIndexForPageIndices:(NSRange)pageIndices
+{
+    NSInteger count = [self storyInteractionQuestionCountForPageIndices:pageIndices];
+    for (id pageKey in [self pageKeysForPageIndices:pageIndices]) {
+        NSInteger index = [[self.storyInteractionsQuestionIndex objectForKey:pageKey] integerValue];
+        index = (index+1) % count;
+        [self.storyInteractionsQuestionIndex setObject:[NSNumber numberWithInteger:index] forKey:pageKey];
+    }
 }
 
 

@@ -37,6 +37,7 @@
 #import "SCHUserDefaults.h"
 #import "SCHVersionDownloadManager.h"
 #import "SCHBookAnnotations.h"
+#import "SCHDictionaryDownloadManager.h"
 
 static NSInteger const kSCHBookShelfViewControllerGridCellHeightPortrait = 138;
 static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 131;
@@ -630,6 +631,13 @@ typedef enum
     
     if ([[SCHAppStateManager sharedAppStateManager] isSampleStore] == YES) {
         [self.profileItem clearBookOrder:self.books];
+        
+        // Fix for ticket #1493 - if the user has declined the dictionary, we want to 
+        // ask them again when they return to the sample bookshelf, or if they log in
+        if ([[SCHDictionaryDownloadManager sharedDownloadManager] userRequestState] == SCHDictionaryUserDeclined) {
+            [[SCHDictionaryDownloadManager sharedDownloadManager] setUserRequestState:SCHDictionaryUserNotYetAsked];
+        }
+        
         [[self.profileItem AppProfile] setSortType:[NSNumber numberWithInt:kSCHBookSortTypeUser]];
         [self.navigationController popToRootViewControllerAnimated:NO];  
         [[SCHThemeManager sharedThemeManager] resetToDefault];

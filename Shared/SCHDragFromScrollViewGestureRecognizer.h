@@ -8,9 +8,17 @@
 
 #import <UIKit/UIKit.h>
 
+enum SCHDragFromScrollViewGestureRecognizerDirection {
+    kSCHDragFromScrollViewVertically,
+    kSCHDragFromScrollViewHorizontally
+};
+
 @interface SCHDragFromScrollViewGestureRecognizer : UIPanGestureRecognizer
 
 // the view (a superview of the scrollview) in which drags are contained
 @property (nonatomic, retain) UIView *dragContainerView;
+
+// this should be perpendicular to the scroll view direction
+@property (nonatomic, assign) enum SCHDragFromScrollViewGestureRecognizerDirection direction;
 
 @end

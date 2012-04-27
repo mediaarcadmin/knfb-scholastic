@@ -10,6 +10,7 @@
 #import <UIKit/UIGestureRecognizerSubclass.h>
 
 #define kTouchAndHoldDelay 0.4f
+#define kGestureDetectMotionThreshold 10.0f
 
 @interface SCHDragFromScrollViewGestureRecognizer ()
 
@@ -21,6 +22,7 @@
 
 @synthesize dragContainerView;
 @synthesize startPoint;
+@synthesize direction;
 
 - (void)dealloc
 {
@@ -47,10 +49,10 @@
         CGPoint p = [[touches anyObject] locationInView:self.dragContainerView];
         CGFloat dx = fabs(p.x - self.startPoint.x);
         CGFloat dy = fabs(p.y - self.startPoint.y);
-        if (dx < 10 && dy > 10) {
+        if ([self shouldCancelWithMotion:dx:dy]) {
             self.state = UIGestureRecognizerStateCancelled;
         }
-        if (dy < 10 && dx > 10) {
+        if ([self shouldBeginGestureWithMotion:dx:dy]) {
             self.state = UIGestureRecognizerStateBegan;
         }
     }
@@ -71,6 +73,24 @@
 - (void)didTouchAndHold
 {
     self.state = UIGestureRecognizerStateBegan;
+}
+
+- (BOOL)shouldCancelWithMotion:(CGFloat)dx :(CGFloat)dy
+{
+    if (self.direction == kSCHDragFromScrollViewHorizontally) {
+        return dx < kGestureDetectMotionThreshold && dy > kGestureDetectMotionThreshold;
+    } else {
+        return dy < kGestureDetectMotionThreshold && dx > kGestureDetectMotionThreshold;
+    }
+}
+
+- (BOOL)shouldBeginGestureWithMotion:(CGFloat)dx :(CGFloat)dy
+{
+    if (self.direction == kSCHDragFromScrollViewHorizontally) {
+        return dy < kGestureDetectMotionThreshold && dx > kGestureDetectMotionThreshold;
+    } else {
+        return dx < kGestureDetectMotionThreshold && dy > kGestureDetectMotionThreshold;
+    }
 }
 
 @end

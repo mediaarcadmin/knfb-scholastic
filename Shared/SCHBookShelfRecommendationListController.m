@@ -38,7 +38,7 @@
 @synthesize localWishListItems;
 @synthesize modifiedWishListItems;
 @synthesize recommendationViewNib;
-@synthesize lastAuthenticationFailed;
+@synthesize lastAuthenticationFailedUsernamePassword;
 
 #pragma mark - Memory Management
 
@@ -75,7 +75,7 @@
     if (self) {
         // Custom initialization
         self.recommendationViewNib = [UINib nibWithNibName:@"SCHRecommendationListView" bundle:nil];
-        self.lastAuthenticationFailed = NO;
+        self.lastAuthenticationFailedUsernamePassword = NO;
 
     }
     return self;
@@ -111,7 +111,7 @@
         
         self.titleLabel.text = NSLocalizedString(@"Here are kids' top-rated eBooks", @"Here are kids' top-rated eBooks");
         
-        if (self.lastAuthenticationFailed) {
+        if (self.lastAuthenticationFailedUsernamePassword) {
             self.bottomSegment.enabled = NO;
         } else {
             self.bottomSegment.enabled = YES;
@@ -269,7 +269,7 @@
             
             SCHRecommendationListView *recommendationView = [[[self.recommendationViewNib instantiateWithOwner:self options:nil] objectAtIndex:0] retain];
             recommendationView.frame = cell.frame;
-            recommendationView.lastAuthenticationFailed = self.lastAuthenticationFailed;
+            recommendationView.lastAuthenticationFailedUsernamePassword = self.lastAuthenticationFailedUsernamePassword;
             
             recommendationView.tag = 999;
             recommendationView.delegate = self;

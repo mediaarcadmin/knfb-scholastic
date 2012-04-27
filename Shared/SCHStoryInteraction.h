@@ -66,4 +66,8 @@
 - (BOOL)hasQuestionsOnRightPageForPageSize:(CGSize)pageSize;
 - (NSInteger)numberOfQuestionsWithPageAssociation:(enum SCHStoryInteractionQuestionPageAssociation)pageAssociation withPageSize:(CGSize)pageSize;
 
+// YES if this story interaction always asks a new question each time; NO if each question
+// must be completed correctly before moving on
+- (BOOL)alwaysIncrementsQuestionIndex;
+
 @end
