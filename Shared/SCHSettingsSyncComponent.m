@@ -129,7 +129,10 @@ NSString * const SCHSettingsSyncComponentDidFailNotification = @"SCHSettingsSync
 - (void)updateUserSettings:(NSArray *)settingsList
 {	
     if ([settingsList count] > 0) {
-        [self clear];
+        NSError *error = nil;
+        if (![self.managedObjectContext BITemptyEntity:kSCHSettingItem error:&error]) {
+            NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
+        }	
         
         for (id setting in settingsList) {
             SCHSettingItem *newUserSettingsItem = [NSEntityDescription insertNewObjectForEntityForName:kSCHSettingItem inManagedObjectContext:self.managedObjectContext];
