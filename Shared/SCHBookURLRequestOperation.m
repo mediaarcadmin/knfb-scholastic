@@ -34,6 +34,12 @@
         return;
     }
 
+    [self willChangeValueForKey:@"isExecuting"];
+    
+    self.executing = YES;
+    
+    [self didChangeValueForKey:@"isExecuting"];
+    
     __block BOOL validContentMetadataURLs = NO;
     
     // sync call to find out if we have valid contentMetadata URLs

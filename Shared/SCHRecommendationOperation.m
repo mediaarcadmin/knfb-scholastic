@@ -42,7 +42,9 @@
 	if (self.isbn && ![self isCancelled]) {
         [[SCHRecommendationManager sharedManager] setProcessing:YES forIsbn:self.isbn];
 		[self beginOperation];
-	}
+	} else {
+        [self endOperation];
+    }
 }
 
 - (BOOL)isConcurrent 

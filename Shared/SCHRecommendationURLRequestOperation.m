@@ -32,6 +32,12 @@
         return;
     }
     
+    [self willChangeValueForKey:@"isExecuting"];
+    
+    self.executing = YES;
+    
+    [self didChangeValueForKey:@"isExecuting"];
+    
     __block NSString *coverURL;
     
     [self performWithRecommendation:^(SCHAppRecommendationItem *item) {

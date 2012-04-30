@@ -66,7 +66,9 @@
 {
 	if (self.identifier && ![self isCancelled]) {
 		[self beginOperation];
-	}
+	} else {
+        [self endOperation];
+    }
 }
 
 - (BOOL)isConcurrent 
