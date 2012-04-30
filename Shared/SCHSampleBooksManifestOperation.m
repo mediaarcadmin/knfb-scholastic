@@ -81,7 +81,9 @@
                 [self startOp];
             }    
         }
-	}
+	} else {
+        [self finishOp];
+    }
 }
 
 - (NSArray *)sampleEntries

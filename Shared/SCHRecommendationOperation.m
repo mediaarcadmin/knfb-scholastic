@@ -40,9 +40,15 @@
 - (void)start
 {
 	if (self.isbn && ![self isCancelled]) {
+        [self willChangeValueForKey:@"isExecuting"];
+        self.executing = YES;
+        [self didChangeValueForKey:@"isExecuting"];
+        
         [[SCHRecommendationManager sharedManager] setProcessing:YES forIsbn:self.isbn];
 		[self beginOperation];
-	}
+	} else {
+        [self endOperation];
+    }
 }
 
 - (BOOL)isConcurrent 
