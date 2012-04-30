@@ -59,6 +59,7 @@
     
 	if ([self isCancelled]) {
 		NSLog(@"Cancelled.");
+        [self terminateOperation];
         return;
 	}
 

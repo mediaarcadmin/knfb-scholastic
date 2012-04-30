@@ -70,10 +70,13 @@
         if (self.connection == nil) {
             [[SCHHelpManager sharedHelpManager] threadSafeUpdateHelpState:SCHHelpProcessingStateError];
             [self cancel];
+            [self finishOp];            
         } else {
             [self startOp];
         }        
-	}
+	} else {
+        [self finishOp];
+    }
 }
 
 #pragma mark - NSURLConnection delegate

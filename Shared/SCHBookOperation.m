@@ -65,8 +65,14 @@
 - (void)start
 {
 	if (self.identifier && ![self isCancelled]) {
+        [self willChangeValueForKey:@"isExecuting"];
+        self.executing = YES;
+        [self didChangeValueForKey:@"isExecuting"];
+
 		[self beginOperation];
-	}
+	} else {
+        [self endOperation];
+    }
 }
 
 - (BOOL)isConcurrent 
