@@ -176,7 +176,7 @@
 																<string key="NSFrameSize">{250, 38}</string>
 																<reference key="NSSuperview" ref="639937899"/>
 																<reference key="NSWindow"/>
-																<reference key="NSNextKeyView" ref="847415403"/>
+																<reference key="NSNextKeyView" ref="208565302"/>
 																<string key="NSReuseIdentifierKey">_NS:9</string>
 																<int key="IBUITag">204</int>
 																<bool key="IBUIUserInteractionEnabled">NO</bool>
@@ -217,7 +217,7 @@
 																	<int key="NSfFlags">16</int>
 																</object>
 															</object>
-															<object class="IBUIButton" id="847415403">
+															<object class="IBUIButton" id="208565302">
 																<reference key="NSNextResponder" ref="639937899"/>
 																<int key="NSvFlags">274</int>
 																<string key="NSFrameSize">{270, 40}</string>
@@ -585,7 +585,7 @@
 							<reference ref="875962015"/>
 							<reference ref="679713105"/>
 							<reference ref="347253544"/>
-							<reference ref="847415403"/>
+							<reference ref="208565302"/>
 						</object>
 						<reference key="parent" ref="739321097"/>
 					</object>
@@ -626,7 +626,7 @@
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">41</int>
-						<reference key="object" ref="847415403"/>
+						<reference key="object" ref="208565302"/>
 						<reference key="parent" ref="639937899"/>
 					</object>
 				</object>
@@ -695,19 +695,9 @@
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<object class="NSMutableDictionary">
-						<string key="NS.key.0">IBUserDefinedRuntimeAttributesPlaceholderName</string>
-						<object class="IBUIUserDefinedRuntimeAttributesPlaceholder" key="NS.object.0">
-							<string key="name">IBUserDefinedRuntimeAttributesPlaceholderName</string>
-							<reference key="object" ref="847415403"/>
-							<object class="NSArray" key="userDefinedRuntimeAttributes">
-								<bool key="EncodedWithXMLCoder">YES</bool>
-								<object class="IBUserDefinedRuntimeAttribute">
-									<string key="typeIdentifier">com.apple.InterfaceBuilder.userDefinedRuntimeAttributeType.boolean</string>
-									<string key="keyPath">exclusiveTouch</string>
-									<boolean value="YES" key="value"/>
-								</object>
-							</object>
-						</object>
+						<bool key="EncodedWithXMLCoder">YES</bool>
+						<reference key="dict.sortedKeys" ref="0"/>
+						<reference key="dict.values" ref="0"/>
 					</object>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				</object>
