@@ -24,6 +24,7 @@
 // Constants
 NSString * const kSCHURLManagerSuccess = @"URLManagerSuccess";
 NSString * const kSCHURLManagerFailure = @"URLManagerFailure";
+NSString * const kSCHURLManagerCleared = @"URLManagerCleared";
 static NSUInteger const kSCHURLManagerMaxConnections = 6;
 
 @interface SCHURLManager ()
@@ -196,6 +197,8 @@ static NSUInteger const kSCHURLManagerMaxConnections = 6;
     NSAssert([NSThread isMainThread] == YES, @"SCHURLManager:clearOnMainThread MUST be executed on the main thread");
 	
     [table removeAllObjects];
+    [[NSNotificationCenter defaultCenter] postNotificationName:kSCHURLManagerCleared
+                                                        object:self];    
 }
 
 - (void)shakeTable
