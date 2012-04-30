@@ -52,6 +52,7 @@
     } else {
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(urlSuccess:) name:kSCHURLManagerSuccess object:nil];
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(urlFailure:) name:kSCHURLManagerFailure object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(urlCleared:) name:kSCHURLManagerCleared object:nil];
         
         [[SCHURLManager sharedURLManager] requestURLForBook:self.identifier];
     }
@@ -133,6 +134,24 @@
         [self setIsProcessing:NO];    
         [self endOperation];        
 	}
+}
+
+- (void)urlCleared:(NSNotification *)notification
+{
+    if (self.isCancelled) {
+        [[NSNotificationCenter defaultCenter] removeObserver:self];        
+        [self setIsProcessing:NO];        
+        [self endOperation];
+		return;
+	}
+    
+	NSAssert([NSThread currentThread] == [NSThread mainThread], @"Notification is not fired on the main thread!");
+
+    [self setProcessingState:SCHBookProcessingStateURLsNotPopulated];
+        
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+    [self setIsProcessing:NO];    
+    [self endOperation];        
 }
 
 @end
