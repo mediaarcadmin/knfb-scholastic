@@ -608,4 +608,12 @@ static void sortedHighlightRangePredicateInit() {
     return [self.eucBookView.pageTurningView screenshot];
 }
 
+
+#pragma mark - EucSelectorDelegate
+
+- (BOOL)eucSelector:(EucSelector *)selector shouldReceiveTouch:(UITouch *)touch
+{
+    return [self.eucBookView eucSelector:selector shouldReceiveTouch:touch];
+}
+
 @end
