@@ -201,11 +201,12 @@ static SCHRecommendationManager *sharedManager = nil;
 {
     @synchronized(self.currentlyProcessingIsbns) {
         if (processing) {
-            if (![self.currentlyProcessingIsbns containsObject:isbn]) {
+            if (isbn != nil &&
+                ![self.currentlyProcessingIsbns containsObject:isbn]) {
                 [self.currentlyProcessingIsbns addObject:isbn];
             }
             
-        } else {
+        } else if (isbn != nil) {
             [self.currentlyProcessingIsbns removeObject:isbn];
         }
     }

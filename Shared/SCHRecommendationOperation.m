@@ -72,6 +72,8 @@
 
 - (void)endOperation
 {
+    [[SCHRecommendationManager sharedManager] setProcessing:NO forIsbn:self.isbn];
+    
     [self willChangeValueForKey:@"isExecuting"];
     [self willChangeValueForKey:@"isFinished"];
     
@@ -81,8 +83,6 @@
     
     [self didChangeValueForKey:@"isExecuting"];
     [self didChangeValueForKey:@"isFinished"];
-    
-    [[SCHRecommendationManager sharedManager] setProcessing:NO forIsbn:self.isbn];
 }
 
 #pragma mark - thread safe access to book object
