@@ -51,7 +51,7 @@
 						<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 						<object class="NSCustomResource" key="IBUIImage">
 							<string key="NSClassName">NSImage</string>
-							<string key="NSResourceName">storia-loginbackground.png</string>
+							<string key="NSResourceName">storia-loginbackground~iphone.png</string>
 						</object>
 					</object>
 					<object class="IBUIScrollView" id="640900338">
@@ -272,6 +272,7 @@
 								<string key="NSFrame">{{83, 346}, {154, 37}}</string>
 								<reference key="NSSuperview" ref="640900338"/>
 								<reference key="NSWindow"/>
+								<reference key="NSNextKeyView"/>
 								<bool key="IBUIOpaque">NO</bool>
 								<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 								<int key="IBUIContentHorizontalAlignment">0</int>
@@ -620,7 +621,7 @@
 		<bool key="IBDocument.PluginDeclaredDependenciesTrackSystemTargetVersion">YES</bool>
 		<int key="IBDocument.defaultPropertyAccessControl">3</int>
 		<dictionary class="NSMutableDictionary" key="IBDocument.LastKnownImageSizes">
-			<string key="storia-loginbackground.png">{320, 460}</string>
+			<string key="storia-loginbackground~iphone.png">{320, 460}</string>
 			<string key="storia-setup-logo.png">{141, 95}</string>
 			<string key="storia-signin-button.png">{101, 46}</string>
 		</dictionary>
