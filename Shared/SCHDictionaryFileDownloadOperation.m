@@ -151,7 +151,11 @@
     if (expectedDataSize == NSURLResponseUnknownLength) {
         sufficientSpace = [self fileSystemHasBytesAvailable:1];
     } else {
-        sufficientSpace = [self fileSystemHasBytesAvailable:expectedDataSize];
+        // sufficient space = 1x full file size + 1.2x compressed file size
+        // we can't check this up front, but the zip file is unlikely to be
+        // highly compressed, as it consists mostly of already-compressed
+        // image files and MP3 files
+        sufficientSpace = [self fileSystemHasBytesAvailable:(expectedDataSize * 2.2)];
     }
     
     if (!sufficientSpace) {
