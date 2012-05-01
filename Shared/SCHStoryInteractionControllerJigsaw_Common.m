@@ -9,14 +9,17 @@
 #import "SCHStoryInteractionControllerJigsaw_Common.h"
 #import "SCHStoryInteractionJigsawPaths.h"
 #import "SCHStoryInteractionJigsaw.h"
-#import "SCHStoryInteractionJigsawPreviewView.h"
+#import "SCHStoryInteractionJigsawPiece.h"
 #import "SCHStoryInteractionJigsawPieceView.h"
+#import "SCHStoryInteractionJigsawPreviewView.h"
+#import "NSArray+Shuffling.h"
 #import "NSArray+ViewSorting.h"
 #import "SCHGeometry.h"
 
 @interface SCHStoryInteractionControllerJigsaw_Common ()
 
 @property (nonatomic, retain) SCHStoryInteractionJigsawPaths *jigsawPaths;
+@property (nonatomic, retain) NSArray *pieceShuffledIndex;
 
 - (UIImage *)puzzleImage;
 
@@ -24,20 +27,26 @@
 
 @end
 
-@implementation SCHStoryInteractionControllerJigsaw_Common
+@implementation SCHStoryInteractionControllerJigsaw_Common {
+    BOOL hasSetupPiecesForOrientation[2];
+}
 
 @synthesize puzzleBackground;
 @synthesize puzzlePreviewView;
 @synthesize numberOfPieces;
+@synthesize jigsawPieces;
 @synthesize jigsawPieceViews;
 @synthesize jigsawPaths;
+@synthesize pieceShuffledIndex;
 
 - (void)dealloc
 {
     [puzzleBackground release], puzzleBackground = nil;
     [puzzlePreviewView release], puzzlePreviewView = nil;
     [jigsawPieceViews release], jigsawPieceViews = nil;
+    [jigsawPieces release], jigsawPieces = nil;
     [jigsawPaths release], jigsawPaths = nil;
+    [pieceShuffledIndex release], pieceShuffledIndex = nil;
     [super dealloc];
 }
 
@@ -72,6 +81,25 @@
         return SCHStoryInteractionTitle;
     }
     return SCHStoryInteractionNoTitle;
+}
+
+
+- (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
+{
+    enum SCHStoryInteractionJigsawOrientation orientation =
+        (UIInterfaceOrientationIsLandscape(toInterfaceOrientation) ? kSCHStoryInteractionJigsawOrientationLandscape : kSCHStoryInteractionJigsawOrientationPortrait);
+    
+    CGRect puzzleRect = [self.puzzleBackground puzzleBounds];
+    [self setupPiecesForFrame:puzzleRect
+                  orientation:orientation
+               withCompletion:^{
+                   [self setupPieceViewsForOrientation:orientation puzzleRect:puzzleRect];
+                   if ([self puzzleIsInteractive]) {
+                       [self repositionPiecesToSolutionPosition:NO withOrientation:orientation];
+                   }
+               }];
+
+    [super willRotateToInterfaceOrientation:toInterfaceOrientation duration:duration];
 }
 
 #pragma mark - choose puzzle View
@@ -110,6 +138,17 @@
     return [self imageAtPath:path];
 }
 
+#pragma mark - piece generation and setup
+
+- (enum SCHStoryInteractionJigsawOrientation)currentJigsawOrientation
+{
+    if (UIInterfaceOrientationIsLandscape(self.interfaceOrientation)) {
+        return kSCHStoryInteractionJigsawOrientationLandscape;
+    } else {
+        return kSCHStoryInteractionJigsawOrientationPortrait;
+    }
+}
+
 - (SCHStoryInteractionJigsawPaths *)jigsawPaths
 {
     if (jigsawPaths == nil && self.numberOfPieces > 0) {
@@ -128,40 +167,6 @@
     return jigsawPaths;
 }
 
-- (void)generateJigsawPiecesFromImage:(CGImageRef)puzzleImage yieldBlock:(void(^)(CGImageRef image, CGRect frame))yield
-{
-    SCHStoryInteractionJigsawPaths *paths = [self jigsawPaths];
-    CGSize puzzleSize = CGSizeMake(CGImageGetWidth(puzzleImage), CGImageGetHeight(puzzleImage));
-    
-    // cut out individual pieces from scaled image
-    for (NSInteger pieceIndex = 0; pieceIndex < self.numberOfPieces; ++pieceIndex) {
-        // get a rectangular sub-image of the puzzle image
-        CGRect pieceRect = CGRectIntegral([paths boundsOfPieceAtIndex:pieceIndex forPuzzleSize:puzzleSize]);
-        CGImageRef pieceImage = CGImageCreateWithImageInRect(puzzleImage, pieceRect);
-
-        // create a new piece image by clipping this to the piece mask
-        CGImageRef pieceMask = [paths newMaskFromPathAtIndex:pieceIndex forPuzzleSize:puzzleSize];
-        CGImageRef maskedImage = CGImageCreateWithMask(pieceImage, pieceMask);
-        CGImageRelease(pieceMask);
-        CGImageRelease(pieceImage);
-        
-        CGRect pieceFrame = CGRectIntegral([paths boundsOfPieceAtIndex:pieceIndex forPuzzleSize:puzzleSize]);
-        yield(maskedImage, pieceFrame);
-
-        CGImageRelease(maskedImage);
-    }
-}
-
-- (SCHStoryInteractionJigsawPreviewView *)puzzlePreviewWithFrame:(CGRect)frame;
-{
-    SCHStoryInteractionJigsawPreviewView *preview = [[SCHStoryInteractionJigsawPreviewView alloc] initWithFrame:frame];
-    preview.autoresizingMask = 0;
-    preview.backgroundColor = [UIColor clearColor];
-    preview.image = [self puzzleImage];
-    preview.edgeColor = [UIColor whiteColor];
-    return [preview autorelease];
-}
-
 - (CGImageRef)newImageByScalingImage:(CGImageRef)image toSize:(CGSize)size
 {
     CGColorSpaceRef colorSpace = CGColorSpaceCreateDeviceRGB();
@@ -173,53 +178,104 @@
     return scaledImage;
 }
 
+- (void)setupPiecesForFrame:(CGRect)backgroundFrame
+                orientation:(enum SCHStoryInteractionJigsawOrientation)orientation
+             withCompletion:(void(^)(void))completion
+{
+    if (self.numberOfPieces == 0 || hasSetupPiecesForOrientation[orientation]) {
+        dispatch_async(dispatch_get_main_queue(), completion);
+        return;
+    }
+
+    hasSetupPiecesForOrientation[orientation] = YES;
+
+    UIImage *puzzleUIImage = [self puzzleImage];
+    CGSize puzzleImageSize = puzzleUIImage.size;
+    CGImageRef puzzleImage = CGImageRetain([puzzleUIImage CGImage]);
+
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{
+        CGRect puzzleFrame = SCHAspectFitSizeInTargetRect(puzzleImageSize, backgroundFrame);
+
+        CGImageRef scaledPuzzleImage = [self newImageByScalingImage:puzzleImage toSize:puzzleFrame.size];
+        CGImageRelease(puzzleImage);
+
+        SCHStoryInteractionJigsawPaths *paths = [self jigsawPaths];
+        
+        for (NSInteger pieceIndex = 0; pieceIndex < self.numberOfPieces; ++pieceIndex) {
+            
+            // get a rectangular sub-image of the puzzle image
+            NSInteger shuffledIndex = [[self.pieceShuffledIndex objectAtIndex:pieceIndex] integerValue];
+            CGRect pieceRect = CGRectIntegral([paths boundsOfPieceAtIndex:shuffledIndex forPuzzleSize:puzzleFrame.size]);
+            CGImageRef pieceImage = CGImageCreateWithImageInRect(scaledPuzzleImage, pieceRect);
+            
+            // create a new piece image by clipping this to the piece mask
+            CGImageRef pieceMask = [paths newMaskFromPathAtIndex:shuffledIndex forPuzzleSize:puzzleFrame.size];
+            CGImageRef maskedImage = CGImageCreateWithMask(pieceImage, pieceMask);
+            CGImageRelease(pieceMask);
+            CGImageRelease(pieceImage);
+            
+            CGRect frame = CGRectIntegral([paths boundsOfPieceAtIndex:shuffledIndex forPuzzleSize:puzzleFrame.size]);
+            
+            SCHStoryInteractionJigsawPiece *piece = [self.jigsawPieces objectAtIndex:pieceIndex];
+            [piece setImage:maskedImage forOrientation:orientation];
+            [piece setBounds:(CGRect){CGPointZero, frame.size} forOrientation:orientation];
+            [piece setSolutionPosition:CGPointMake(CGRectGetMidX(frame), CGRectGetMidY(frame)) forOrientation:orientation];
+            CGImageRelease(maskedImage);
+        }
+        
+        CGImageRelease(scaledPuzzleImage);
+        
+        dispatch_async(dispatch_get_main_queue(), completion);
+    });
+}
+
 - (void)setupPuzzleView
 {
     [self.puzzlePreviewView removeFromSuperview];
     [self.puzzleBackground setAlpha:0];
     
-    self.puzzlePreviewView = [self puzzlePreviewWithFrame:[self puzzlePreviewFrame]];
+    self.puzzlePreviewView = [self makePuzzlePreviewView];
+    self.puzzlePreviewView.image = [self puzzleImage];
     self.puzzlePreviewView.paths = [self jigsawPaths];
     [self.contentsView addSubview:self.puzzlePreviewView];
-        
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{
-        UIImage *puzzleImage = [self puzzleImage];
-        
-        __block CGRect puzzleFrame;
-        dispatch_sync(dispatch_get_main_queue(), ^{
-            puzzleFrame = SCHAspectFitSizeInTargetRect(puzzleImage.size, self.puzzleBackground.frame);
-            self.puzzleBackground.frame = puzzleFrame;
-        });
-        
-        CGImageRef scaledPuzzleImage = [self newImageByScalingImage:[puzzleImage CGImage] toSize:puzzleFrame.size];
-        NSMutableArray *pieces = [NSMutableArray arrayWithCapacity:self.numberOfPieces];
 
-        [self generateJigsawPiecesFromImage:scaledPuzzleImage yieldBlock:^(CGImageRef pieceImage, CGRect frame) {
-            CGImageRetain(pieceImage);
-            dispatch_async(dispatch_get_main_queue(), ^{
-                // create an image view for this image and frame it within the target puzzle frame
-                UIView *pieceView = [self newPieceViewForImage:pieceImage];
-                pieceView.frame = frame;
-                [pieces addObject:pieceView];
-                [pieceView release];
-                CGImageRelease(pieceImage);
-            });
-        }];
+    NSMutableArray *pieces = [[NSMutableArray alloc] initWithCapacity:self.numberOfPieces];
+    NSMutableArray *pieceViews = [[NSMutableArray alloc] initWithCapacity:self.numberOfPieces];
+    NSMutableArray *pieceIndices = [[NSMutableArray alloc] initWithCapacity:self.numberOfPieces];
+    for (NSInteger pieceIndex = 0; pieceIndex < self.numberOfPieces; ++pieceIndex) {
+        SCHStoryInteractionJigsawPiece *piece = [[SCHStoryInteractionJigsawPiece alloc] init];
+        [pieces addObject:piece];
+        [piece release];
         
-        CGImageRelease(scaledPuzzleImage);
+        UIView<SCHStoryInteractionJigsawPieceView> *pieceView = [self newPieceView];
+        [pieceViews addObject:pieceView];
+        [pieceView release];
         
-        dispatch_async(dispatch_get_main_queue(), ^{
-            self.jigsawPieceViews = pieces;
-            
-            // enable taps on the preview
-            UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(previewTapped:)];
-            [self.puzzlePreviewView addGestureRecognizer:tap];
-            [tap release];
-        });
-    });
+        [pieceIndices addObject:[NSNumber numberWithInteger:pieceIndex]];
+    }
+    self.jigsawPieces = [NSArray arrayWithArray:pieces];
+    self.jigsawPieceViews = [NSArray arrayWithArray:pieceViews];
+    self.pieceShuffledIndex = [pieceIndices shuffled];
+    [pieces release];
+    [pieceViews release];
+    [pieceIndices release];
+    
+    [self setupPiecesForFrame:self.puzzleBackground.frame
+                  orientation:[self currentJigsawOrientation]
+               withCompletion:^{
+                   // enable taps on the preview
+                   UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(previewTapped:)];
+                   [self.puzzlePreviewView addGestureRecognizer:tap];
+                   [tap release];
+               }];
 }
 
 #pragma mark - puzzle interaction
+
+- (SCHStoryInteractionJigsawPiece *)pieceForPieceView:(id<SCHStoryInteractionJigsawPieceView>)pieceView
+{
+    return [self.jigsawPieces objectAtIndex:[self.jigsawPieceViews indexOfObject:pieceView]];
+}
 
 - (void)previewTapped:(id)sender
 {
@@ -227,37 +283,42 @@
     [self.puzzleBackground setPaths:[self jigsawPaths]];
     [self.puzzleBackground setEdgeColor:[UIColor colorWithWhite:0.8 alpha:0.5]];
     
-    [self setupPuzzlePiecesForInteractionFromPreview:self.puzzlePreviewView];
+    [self setupPieceViewsForOrientation:[self currentJigsawOrientation] puzzleRect:[self.puzzlePreviewView puzzleBounds]];
+    [self repositionPiecesToSolutionPosition:YES withOrientation:[self currentJigsawOrientation]];
+    [self animatePiecesToHomePositionsForOrientation:[self currentJigsawOrientation]];
+    
     [self.puzzlePreviewView removeFromSuperview];
     self.puzzlePreviewView = nil;
 }
 
 - (BOOL)puzzleIsInteractive
 {
-    // YES if the preview view has been removed
-    return self.puzzlePreviewView == nil;
+    // YES if we have chosen a puzzle and the preview view has been removed
+    return self.numberOfPieces > 0 && self.puzzlePreviewView == nil;
 }
 
 - (void)checkForCompletion
 {
     NSInteger correctPieces = 0;
-    for (id<SCHStoryInteractionJigsawPieceView> piece in self.jigsawPieceViews) {
+    for (SCHStoryInteractionJigsawPiece *piece in self.jigsawPieces) {
         if ([piece isInCorrectPosition]) {
             correctPieces++;
         }
     }
-    if (correctPieces == [self.jigsawPieceViews count]) {
+    if (correctPieces == [self.jigsawPieces count]) {
         [self enqueueAudioWithPath:@"sfx_winround.mp3" fromBundle:YES];
 
-        CGRect frame = [self.puzzleBackground convertRect:[self.puzzleBackground puzzleBounds] toView:self.contentsView];
         [self.jigsawPieceViews makeObjectsPerformSelector:@selector(removeFromSuperview)];
         self.jigsawPieceViews = nil;
 
-        SCHStoryInteractionJigsawPreviewView *completed = [self puzzlePreviewWithFrame:frame];
+        SCHStoryInteractionJigsawPreviewView *completed = [self makePuzzlePreviewView];
+        CGRect completedFrame = completed.frame;
+        completed.frame = self.puzzleBackground.frame;
+        completed.image = [self puzzleImage];
         [self.contentsView addSubview:completed];
         [UIView animateWithDuration:0.5
                          animations:^{
-                             completed.frame = [self puzzlePreviewFrame];
+                             completed.frame = completedFrame;
                          }];
         
         self.controllerState = SCHStoryInteractionControllerStateInteractionFinishedSuccessfully;
@@ -270,17 +331,23 @@
 
 #pragma mark - subclass overrides
 
-- (UIView *)newPieceViewForImage:(CGImageRef)image
+- (UIView<SCHStoryInteractionJigsawPieceView> *)newPieceView
 {
     return nil;
 }
 
-- (CGRect)puzzlePreviewFrame
+- (SCHStoryInteractionJigsawPreviewView *)makePuzzlePreviewView
 {
-    return CGRectZero;
+    return nil;
 }
 
-- (void)setupPuzzlePiecesForInteractionFromPreview:(SCHStoryInteractionJigsawPreviewView *)preview
+- (void)setupPieceViewsForOrientation:(enum SCHStoryInteractionJigsawOrientation)orientation puzzleRect:(CGRect)puzzleRect
+{}
+
+- (void)animatePiecesToHomePositionsForOrientation:(enum SCHStoryInteractionJigsawOrientation)orientation
+{}
+
+- (void)repositionPiecesToSolutionPosition:(BOOL)moveToSolutionPosition withOrientation:(enum SCHStoryInteractionJigsawOrientation)orientation
 {}
 
 @end

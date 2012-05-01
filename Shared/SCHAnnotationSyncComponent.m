@@ -247,11 +247,8 @@ NSString * const SCHAnnotationSyncComponentProfileIDs = @"SCHAnnotationSyncCompo
 	BOOL ret = YES;
 	
 	if (self.isSynchronizing == NO) {
-		self.backgroundTaskIdentifier = [[UIApplication sharedApplication] beginBackgroundTaskWithExpirationHandler:^{ 
-			self.isSynchronizing = NO;
-            [self endBackgroundTask];
-		}];
-
+        [self beginBackgroundTask];
+        
 		ret = [self updateProfileContentAnnotations];
         if (ret == NO) {
             [self endBackgroundTask];
@@ -261,22 +258,30 @@ NSString * const SCHAnnotationSyncComponentProfileIDs = @"SCHAnnotationSyncCompo
 	return(ret);
 }
 
-- (void)clear
+#pragma - Overrideen methods used by resetSync
+
+- (void)resetWebService
 {
-	NSError *error = nil;
-	
-    [super clear];
-    
-    [self.libreAccessWebService clear];
-    
+    [self.libreAccessWebService clear];    
+}
+
+- (void)clearComponent
+{
     [self.annotations removeAllObjects];
     [self.savedAnnotations removeAllObjects];
-    self.lastSyncSaveCalled = nil;
-    
+    self.lastSyncSaveCalled = nil;    
+}
+
+- (void)clearCoreData
+{
+	NSError *error = nil;
+	    
 	if (![self.managedObjectContext BITemptyEntity:kSCHAnnotationsItem error:&error]) {
 		NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
-	}	
+	}	    
 }
+
+#pragma mark - Delegate methods
 
 - (void)method:(NSString *)method didCompleteWithResult:(NSDictionary *)result
       userInfo:(NSDictionary *)userInfo

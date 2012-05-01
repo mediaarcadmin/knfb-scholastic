@@ -7,9 +7,11 @@
 //
 
 #import "SCHStoryInteractionController.h"
+#import "SCHStoryInteractionJigsawOrientation.h"
 
-@class SCHStoryInteractionJigsawPreviewView;
 @class SCHStoryInteractionJigsawPaths;
+@class SCHStoryInteractionJigsawPiece;
+@class SCHStoryInteractionJigsawPreviewView;
 @protocol SCHStoryInteractionJigsawPieceView;
 
 @interface SCHStoryInteractionControllerJigsaw_Common : SCHStoryInteractionController {}
@@ -17,15 +19,28 @@
 @property (nonatomic, retain) IBOutlet SCHStoryInteractionJigsawPreviewView *puzzleBackground;
 @property (nonatomic, retain) SCHStoryInteractionJigsawPreviewView *puzzlePreviewView;
 @property (nonatomic, assign) NSInteger numberOfPieces;
+@property (nonatomic, retain) NSArray *jigsawPieces;
 @property (nonatomic, retain) NSArray *jigsawPieceViews;
+
+- (enum SCHStoryInteractionJigsawOrientation)currentJigsawOrientation;
 
 - (void)setupChoosePuzzleView;
 
 - (IBAction)choosePuzzle:(id)sender;
 
-- (UIView<SCHStoryInteractionJigsawPieceView> *)newPieceViewForImage:(CGImageRef)image;
-- (CGRect)puzzlePreviewFrame;
-- (void)setupPuzzlePiecesForInteractionFromPreview:(SCHStoryInteractionJigsawPreviewView *)preview;
+- (SCHStoryInteractionJigsawPreviewView *)makePuzzlePreviewView;
+
+- (void)setupPieceViewsForOrientation:(enum SCHStoryInteractionJigsawOrientation)orientation
+                           puzzleRect:(CGRect)puzzleRect;
+
+- (void)animatePiecesToHomePositionsForOrientation:(enum SCHStoryInteractionJigsawOrientation)orientation;
+
+- (void)repositionPiecesToSolutionPosition:(BOOL)moveToSolutionPosition withOrientation:(enum SCHStoryInteractionJigsawOrientation)orientation;
+
+- (UIView<SCHStoryInteractionJigsawPieceView> *)newPieceView;
+
+- (SCHStoryInteractionJigsawPiece *)pieceForPieceView:(id<SCHStoryInteractionJigsawPieceView>)pieceView;
+
 - (void)checkForCompletion;
 
 - (BOOL)puzzleIsInteractive;
