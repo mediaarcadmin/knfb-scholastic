@@ -642,7 +642,7 @@ static const NSTimeInterval kSCHStartingViewControllerNonForcedAlertInterval = (
             BITModalSheetController *aLoginPopoverController = [[BITModalSheetController alloc] initWithContentViewController:login];
             [aLoginPopoverController setAutoresizingMask:UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleBottomMargin];
             
-            [aLoginPopoverController setContentSize:CGSizeMake(605, 497)];
+            [aLoginPopoverController setContentSize:CGSizeMake(603, 496)];
             CGPoint offset;
             
             if (UIInterfaceOrientationIsPortrait(self.interfaceOrientation)) {

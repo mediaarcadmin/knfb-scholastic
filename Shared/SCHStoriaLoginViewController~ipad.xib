@@ -42,7 +42,7 @@
 					<object class="IBUIImageView" id="778033605">
 						<reference key="NSNextResponder" ref="766721923"/>
 						<int key="NSvFlags">274</int>
-						<string key="NSFrameSize">{605, 497}</string>
+						<string key="NSFrameSize">{603, 496}</string>
 						<reference key="NSSuperview" ref="766721923"/>
 						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="225590887"/>
@@ -51,13 +51,13 @@
 						<string key="targetRuntimeIdentifier">IBIPadFramework</string>
 						<object class="NSCustomResource" key="IBUIImage">
 							<string key="NSClassName">NSImage</string>
-							<string key="NSResourceName">storia-loginbackground~ipad.png</string>
+							<string key="NSResourceName">storia-loginbackground.png</string>
 						</object>
 					</object>
 					<object class="IBUITextField" id="713090979">
 						<reference key="NSNextResponder" ref="766721923"/>
 						<int key="NSvFlags">292</int>
-						<string key="NSFrame">{{169, 171}, {173, 31}}</string>
+						<string key="NSFrame">{{169, 171}, {187, 31}}</string>
 						<reference key="NSSuperview" ref="766721923"/>
 						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="23666349"/>
@@ -94,7 +94,7 @@
 					<object class="IBUITextField" id="329900527">
 						<reference key="NSNextResponder" ref="766721923"/>
 						<int key="NSvFlags">292</int>
-						<string key="NSFrame">{{169, 211}, {173, 31}}</string>
+						<string key="NSFrame">{{169, 211}, {187, 31}}</string>
 						<reference key="NSSuperview" ref="766721923"/>
 						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="951125602"/>
@@ -205,7 +205,7 @@
 					<object class="IBUILabel" id="951125602">
 						<reference key="NSNextResponder" ref="766721923"/>
 						<int key="NSvFlags">292</int>
-						<string key="NSFrame">{{382, 172}, {140, 71}}</string>
+						<string key="NSFrame">{{396, 172}, {140, 71}}</string>
 						<reference key="NSSuperview" ref="766721923"/>
 						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="737535226"/>
@@ -371,7 +371,7 @@
 						<reference key="IBUIFont" ref="783422483"/>
 					</object>
 				</array>
-				<string key="NSFrameSize">{605, 497}</string>
+				<string key="NSFrameSize">{603, 496}</string>
 				<reference key="NSSuperview"/>
 				<reference key="NSWindow"/>
 				<reference key="NSNextKeyView" ref="778033605"/>
@@ -682,7 +682,7 @@
 		<bool key="IBDocument.PluginDeclaredDependenciesTrackSystemTargetVersion">YES</bool>
 		<int key="IBDocument.defaultPropertyAccessControl">3</int>
 		<dictionary class="NSMutableDictionary" key="IBDocument.LastKnownImageSizes">
-			<string key="storia-loginbackground~ipad.png">{605, 497}</string>
+			<string key="storia-loginbackground.png">{16, 16}</string>
 			<string key="storia-signin-button.png">{101, 46}</string>
 		</dictionary>
 		<string key="IBCocoaTouchPluginVersion">1181</string>
