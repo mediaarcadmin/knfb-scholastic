@@ -426,10 +426,11 @@ managedObjectContext:(NSManagedObjectContext *)managedObjectContext
                 }
                 break;
             case SCHReadingViewSelectionModeOlderDictionary:
-                if ([self.delegate respondsToSelector:@selector(requestDictionaryForWord:mode:)]) {
-                    [self.delegate requestDictionaryForWord:word mode:SCHReadingViewSelectionModeOlderDictionary];
+                if (word) {
+                    if ([self.delegate respondsToSelector:@selector(requestDictionaryForWord:mode:)]) {
+                        [self.delegate requestDictionaryForWord:word mode:SCHReadingViewSelectionModeOlderDictionary];
+                    }
                 }
-                
                 // Next run-loop deselect the selector
                 [self performSelector:@selector(dismissSelector) withObject:nil afterDelay:0];
                 
