@@ -67,7 +67,11 @@ static NSString * const kSCHScholasticAuthenticationWebServiceAttributeErrorDesc
 {	
 	AuthenticateSvc_processRemote *request = [AuthenticateSvc_processRemote new];
 	
-	request.SPSWSXML = [NSString stringWithFormat:@"<SchWS><attribute name=\"clientID\" value=\"KNFB\"/><attribute name=\"isSingleToken\" value=\"true\"/><attribute name=\"userName\" value=\"%@\"/><attribute name=\"password\" value=\"%@\"/></SchWS>", (userName == nil ? @"" : userName), (password == nil ? @"" : password)];
+    userName = [userName stringByEscapingXML];
+    password = [password  stringByEscapingXML];
+    
+	request.SPSWSXML = [NSString stringWithFormat:@"<SchWS><attribute name=\"clientID\" value=\"KNFB\"/><attribute name=\"isSingleToken\" value=\"true\"/><attribute name=\"userName\" value=\"%@\"/><attribute name=\"password\" value=\"%@\"/></SchWS>",
+                        (userName == nil ? @"" : userName), (password == nil ? @"" : password)];
 	
 	[self.binding processRemoteAsyncUsingParameters:request delegate:self]; 
 	[[BITNetworkActivityManager sharedNetworkActivityManager] showNetworkActivityIndicator];
