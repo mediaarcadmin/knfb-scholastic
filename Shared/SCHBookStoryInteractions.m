@@ -59,14 +59,6 @@
     storyInteractions = [[validStoryInteractions sortedArrayUsingComparator:^NSComparisonResult(id obj1, id obj2) {
         return [(SCHStoryInteraction *)obj1 documentPageNumber] - [(SCHStoryInteraction *)obj2 documentPageNumber];
     }] retain];
-    
-    // add reference to the Book Story Interactions object
-    for (SCHStoryInteraction *interaction in self.storyInteractions) {
-        interaction.bookStoryInteractions = self;
-        for (id pageKey in [self pageKeysForStoryInteraction:interaction]) {
-            [self.storyInteractionsQuestionIndex setObject:[NSNumber numberWithInteger:0] forKey:pageKey];
-        }
-    }
 }
 
 - (BOOL)isLeftPageIndex:(NSInteger)pageIndex
@@ -235,8 +227,9 @@
         if (indexForPage) {
             return [indexForPage integerValue];
         }
+        [self.storyInteractionsQuestionIndex setObject:[NSNumber numberWithInteger:0] forKey:pageKey];
     }
-    return NSNotFound;
+    return 0;
 }
 
 - (NSInteger)storyInteractionQuestionsCompletedForPageIndices:(NSRange)pageIndices
