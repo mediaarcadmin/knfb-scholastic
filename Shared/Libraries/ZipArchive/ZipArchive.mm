@@ -75,6 +75,26 @@
     uLong kFileCount = 0;
     
     do{
+        
+        if (kFileCount % 100 == 0) {
+            // space check
+            NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+            NSString *docDirectory = ([paths count] > 0 ? [paths objectAtIndex:0] : nil);            
+            
+            NSDictionary* fsAttr = [fman attributesOfFileSystemForPath:docDirectory error:NULL];
+            
+            unsigned long long freeSize = [(NSNumber*)[fsAttr objectForKey:NSFileSystemFreeSize] unsignedLongLongValue];
+            
+//            NSLog(@"Checking space: %llu", freeSize);
+            
+            if (freeSize <= 10485760) {
+                [self OutputErrorMessage:@"Not enough free space."];
+                success = NO;
+                unzCloseCurrentFile( _unzFile );
+                break;
+            }
+        }
+        
         if( [_password length]==0 )
             ret = unzOpenCurrentFile( _unzFile );
         else
@@ -131,7 +151,14 @@
             read=unzReadCurrentFile(_unzFile, buffer, 4096);
             if( read > 0 )
             {
-                fwrite(buffer, read, 1, fp );
+                int files = fwrite(buffer, read, 1, fp );
+                
+                // if the file is not successfully written, we're out of file space
+                if (files != 1) {
+                    success = NO;
+                    unzCloseCurrentFile( _unzFile );
+                    break;
+                }
             }
             else if( read<0 )
             {
