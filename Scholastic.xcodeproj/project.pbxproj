@@ -2649,22 +2649,6 @@
 		C9765A4B154B046F00C876F7 /* storia-signin-button@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C9765A49154B046E00C876F7 /* storia-signin-button@2x.png */; };
 		C9765A4C154B046F00C876F7 /* storia-signin-button@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C9765A49154B046E00C876F7 /* storia-signin-button@2x.png */; };
 		C9765A4D154B046F00C876F7 /* storia-signin-button@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C9765A49154B046E00C876F7 /* storia-signin-button@2x.png */; };
-		C9765A52154B0E2600C876F7 /* cloud-background-landscape.jpg in Resources */ = {isa = PBXBuildFile; fileRef = C9765A4E154B0E1300C876F7 /* cloud-background-landscape.jpg */; };
-		C9765A53154B0E2600C876F7 /* cloud-background-landscape.jpg in Resources */ = {isa = PBXBuildFile; fileRef = C9765A4E154B0E1300C876F7 /* cloud-background-landscape.jpg */; };
-		C9765A54154B0E2600C876F7 /* cloud-background-landscape.jpg in Resources */ = {isa = PBXBuildFile; fileRef = C9765A4E154B0E1300C876F7 /* cloud-background-landscape.jpg */; };
-		C9765A55154B0E2600C876F7 /* cloud-background-landscape.jpg in Resources */ = {isa = PBXBuildFile; fileRef = C9765A4E154B0E1300C876F7 /* cloud-background-landscape.jpg */; };
-		C9765A56154B0E2600C876F7 /* cloud-background-landscape@2x.jpg in Resources */ = {isa = PBXBuildFile; fileRef = C9765A4F154B0E1700C876F7 /* cloud-background-landscape@2x.jpg */; };
-		C9765A57154B0E2600C876F7 /* cloud-background-landscape@2x.jpg in Resources */ = {isa = PBXBuildFile; fileRef = C9765A4F154B0E1700C876F7 /* cloud-background-landscape@2x.jpg */; };
-		C9765A58154B0E2600C876F7 /* cloud-background-landscape@2x.jpg in Resources */ = {isa = PBXBuildFile; fileRef = C9765A4F154B0E1700C876F7 /* cloud-background-landscape@2x.jpg */; };
-		C9765A59154B0E2600C876F7 /* cloud-background-landscape@2x.jpg in Resources */ = {isa = PBXBuildFile; fileRef = C9765A4F154B0E1700C876F7 /* cloud-background-landscape@2x.jpg */; };
-		C9765A5A154B0E2600C876F7 /* cloud-background-portrait.jpg in Resources */ = {isa = PBXBuildFile; fileRef = C9765A50154B0E1D00C876F7 /* cloud-background-portrait.jpg */; };
-		C9765A5B154B0E2600C876F7 /* cloud-background-portrait.jpg in Resources */ = {isa = PBXBuildFile; fileRef = C9765A50154B0E1D00C876F7 /* cloud-background-portrait.jpg */; };
-		C9765A5C154B0E2600C876F7 /* cloud-background-portrait.jpg in Resources */ = {isa = PBXBuildFile; fileRef = C9765A50154B0E1D00C876F7 /* cloud-background-portrait.jpg */; };
-		C9765A5D154B0E2600C876F7 /* cloud-background-portrait.jpg in Resources */ = {isa = PBXBuildFile; fileRef = C9765A50154B0E1D00C876F7 /* cloud-background-portrait.jpg */; };
-		C9765A5E154B0E2600C876F7 /* cloud-background-portrait@2x.jpg in Resources */ = {isa = PBXBuildFile; fileRef = C9765A51154B0E1F00C876F7 /* cloud-background-portrait@2x.jpg */; };
-		C9765A5F154B0E2600C876F7 /* cloud-background-portrait@2x.jpg in Resources */ = {isa = PBXBuildFile; fileRef = C9765A51154B0E1F00C876F7 /* cloud-background-portrait@2x.jpg */; };
-		C9765A60154B0E2600C876F7 /* cloud-background-portrait@2x.jpg in Resources */ = {isa = PBXBuildFile; fileRef = C9765A51154B0E1F00C876F7 /* cloud-background-portrait@2x.jpg */; };
-		C9765A61154B0E2700C876F7 /* cloud-background-portrait@2x.jpg in Resources */ = {isa = PBXBuildFile; fileRef = C9765A51154B0E1F00C876F7 /* cloud-background-portrait@2x.jpg */; };
 		C9765A63154B129300C876F7 /* logo@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C9765A62154B128D00C876F7 /* logo@2x.png */; };
 		C9765A64154B129300C876F7 /* logo@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C9765A62154B128D00C876F7 /* logo@2x.png */; };
 		C9765A65154B129300C876F7 /* logo@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C9765A62154B128D00C876F7 /* logo@2x.png */; };
@@ -2681,26 +2665,26 @@
 		C9765CCF154EDC4B00C876F7 /* storia-setup-logo@2x~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = C9765CCD154EDC4900C876F7 /* storia-setup-logo@2x~ipad.png */; };
 		C9765CD0154EDC4B00C876F7 /* storia-setup-logo@2x~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = C9765CCD154EDC4900C876F7 /* storia-setup-logo@2x~ipad.png */; };
 		C9765CD1154EDC4B00C876F7 /* storia-setup-logo@2x~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = C9765CCD154EDC4900C876F7 /* storia-setup-logo@2x~ipad.png */; };
-		C9765CD6154EE61100C876F7 /* cloud-background-landscape@2x~ipad.jpg in Resources */ = {isa = PBXBuildFile; fileRef = C9765CD2154EE5F200C876F7 /* cloud-background-landscape@2x~ipad.jpg */; };
-		C9765CD7154EE61100C876F7 /* cloud-background-landscape@2x~ipad.jpg in Resources */ = {isa = PBXBuildFile; fileRef = C9765CD2154EE5F200C876F7 /* cloud-background-landscape@2x~ipad.jpg */; };
-		C9765CD8154EE61100C876F7 /* cloud-background-landscape@2x~ipad.jpg in Resources */ = {isa = PBXBuildFile; fileRef = C9765CD2154EE5F200C876F7 /* cloud-background-landscape@2x~ipad.jpg */; };
-		C9765CD9154EE61100C876F7 /* cloud-background-landscape@2x~ipad.jpg in Resources */ = {isa = PBXBuildFile; fileRef = C9765CD2154EE5F200C876F7 /* cloud-background-landscape@2x~ipad.jpg */; };
-		C9765CDA154EE61100C876F7 /* cloud-background-landscape~ipad.jpg in Resources */ = {isa = PBXBuildFile; fileRef = C9765CD3154EE5F500C876F7 /* cloud-background-landscape~ipad.jpg */; };
-		C9765CDB154EE61100C876F7 /* cloud-background-landscape~ipad.jpg in Resources */ = {isa = PBXBuildFile; fileRef = C9765CD3154EE5F500C876F7 /* cloud-background-landscape~ipad.jpg */; };
-		C9765CDC154EE61100C876F7 /* cloud-background-landscape~ipad.jpg in Resources */ = {isa = PBXBuildFile; fileRef = C9765CD3154EE5F500C876F7 /* cloud-background-landscape~ipad.jpg */; };
-		C9765CDD154EE61100C876F7 /* cloud-background-landscape~ipad.jpg in Resources */ = {isa = PBXBuildFile; fileRef = C9765CD3154EE5F500C876F7 /* cloud-background-landscape~ipad.jpg */; };
-		C9765CDE154EE61100C876F7 /* cloud-background-portrait@2x~ipad.jpg in Resources */ = {isa = PBXBuildFile; fileRef = C9765CD4154EE60200C876F7 /* cloud-background-portrait@2x~ipad.jpg */; };
-		C9765CDF154EE61100C876F7 /* cloud-background-portrait@2x~ipad.jpg in Resources */ = {isa = PBXBuildFile; fileRef = C9765CD4154EE60200C876F7 /* cloud-background-portrait@2x~ipad.jpg */; };
-		C9765CE0154EE61100C876F7 /* cloud-background-portrait@2x~ipad.jpg in Resources */ = {isa = PBXBuildFile; fileRef = C9765CD4154EE60200C876F7 /* cloud-background-portrait@2x~ipad.jpg */; };
-		C9765CE1154EE61100C876F7 /* cloud-background-portrait@2x~ipad.jpg in Resources */ = {isa = PBXBuildFile; fileRef = C9765CD4154EE60200C876F7 /* cloud-background-portrait@2x~ipad.jpg */; };
-		C9765CE2154EE61100C876F7 /* cloud-background-portrait~ipad.jpg in Resources */ = {isa = PBXBuildFile; fileRef = C9765CD5154EE60600C876F7 /* cloud-background-portrait~ipad.jpg */; };
-		C9765CE3154EE61100C876F7 /* cloud-background-portrait~ipad.jpg in Resources */ = {isa = PBXBuildFile; fileRef = C9765CD5154EE60600C876F7 /* cloud-background-portrait~ipad.jpg */; };
-		C9765CE4154EE61100C876F7 /* cloud-background-portrait~ipad.jpg in Resources */ = {isa = PBXBuildFile; fileRef = C9765CD5154EE60600C876F7 /* cloud-background-portrait~ipad.jpg */; };
-		C9765CE5154EE61100C876F7 /* cloud-background-portrait~ipad.jpg in Resources */ = {isa = PBXBuildFile; fileRef = C9765CD5154EE60600C876F7 /* cloud-background-portrait~ipad.jpg */; };
 		C9765CE7154EEC1200C876F7 /* storia-loginbackground~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = C9765CE6154EEC1200C876F7 /* storia-loginbackground~iphone.png */; };
 		C9765CE8154EEC1200C876F7 /* storia-loginbackground~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = C9765CE6154EEC1200C876F7 /* storia-loginbackground~iphone.png */; };
 		C9765CE9154EEC1200C876F7 /* storia-loginbackground~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = C9765CE6154EEC1200C876F7 /* storia-loginbackground~iphone.png */; };
 		C9765CEA154EEC1200C876F7 /* storia-loginbackground~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = C9765CE6154EEC1200C876F7 /* storia-loginbackground~iphone.png */; };
+		C9765D31154FDA3800C876F7 /* cloud-background@2x~ipad.jpg in Resources */ = {isa = PBXBuildFile; fileRef = C9765D2F154FDA3700C876F7 /* cloud-background@2x~ipad.jpg */; };
+		C9765D32154FDA3800C876F7 /* cloud-background@2x~ipad.jpg in Resources */ = {isa = PBXBuildFile; fileRef = C9765D2F154FDA3700C876F7 /* cloud-background@2x~ipad.jpg */; };
+		C9765D33154FDA3800C876F7 /* cloud-background@2x~ipad.jpg in Resources */ = {isa = PBXBuildFile; fileRef = C9765D2F154FDA3700C876F7 /* cloud-background@2x~ipad.jpg */; };
+		C9765D34154FDA3800C876F7 /* cloud-background@2x~ipad.jpg in Resources */ = {isa = PBXBuildFile; fileRef = C9765D2F154FDA3700C876F7 /* cloud-background@2x~ipad.jpg */; };
+		C9765D35154FDA3800C876F7 /* cloud-background~ipad.jpg in Resources */ = {isa = PBXBuildFile; fileRef = C9765D30154FDA3800C876F7 /* cloud-background~ipad.jpg */; };
+		C9765D36154FDA3800C876F7 /* cloud-background~ipad.jpg in Resources */ = {isa = PBXBuildFile; fileRef = C9765D30154FDA3800C876F7 /* cloud-background~ipad.jpg */; };
+		C9765D37154FDA3800C876F7 /* cloud-background~ipad.jpg in Resources */ = {isa = PBXBuildFile; fileRef = C9765D30154FDA3800C876F7 /* cloud-background~ipad.jpg */; };
+		C9765D38154FDA3800C876F7 /* cloud-background~ipad.jpg in Resources */ = {isa = PBXBuildFile; fileRef = C9765D30154FDA3800C876F7 /* cloud-background~ipad.jpg */; };
+		C9765D3B154FDD5900C876F7 /* cloud-background.jpg in Resources */ = {isa = PBXBuildFile; fileRef = C9765D39154FDD5700C876F7 /* cloud-background.jpg */; };
+		C9765D3C154FDD5900C876F7 /* cloud-background.jpg in Resources */ = {isa = PBXBuildFile; fileRef = C9765D39154FDD5700C876F7 /* cloud-background.jpg */; };
+		C9765D3D154FDD5900C876F7 /* cloud-background.jpg in Resources */ = {isa = PBXBuildFile; fileRef = C9765D39154FDD5700C876F7 /* cloud-background.jpg */; };
+		C9765D3E154FDD5900C876F7 /* cloud-background.jpg in Resources */ = {isa = PBXBuildFile; fileRef = C9765D39154FDD5700C876F7 /* cloud-background.jpg */; };
+		C9765D3F154FDD5900C876F7 /* cloud-background@2x.jpg in Resources */ = {isa = PBXBuildFile; fileRef = C9765D3A154FDD5800C876F7 /* cloud-background@2x.jpg */; };
+		C9765D40154FDD5900C876F7 /* cloud-background@2x.jpg in Resources */ = {isa = PBXBuildFile; fileRef = C9765D3A154FDD5800C876F7 /* cloud-background@2x.jpg */; };
+		C9765D41154FDD5900C876F7 /* cloud-background@2x.jpg in Resources */ = {isa = PBXBuildFile; fileRef = C9765D3A154FDD5800C876F7 /* cloud-background@2x.jpg */; };
+		C9765D42154FDD5900C876F7 /* cloud-background@2x.jpg in Resources */ = {isa = PBXBuildFile; fileRef = C9765D3A154FDD5800C876F7 /* cloud-background@2x.jpg */; };
 		C979C6A2138C1F6300581F7F /* button-login@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C979C6A0138C1F6300581F7F /* button-login@2x.png */; };
 		C979C6A4138C1F6300581F7F /* button-login.png in Resources */ = {isa = PBXBuildFile; fileRef = C979C6A1138C1F6300581F7F /* button-login.png */; };
 		C979C6A8138C237C00581F7F /* button-field.png in Resources */ = {isa = PBXBuildFile; fileRef = C979C6A6138C237C00581F7F /* button-field.png */; };
@@ -5471,19 +5455,15 @@
 		C9747CE713EC12BB003ADC71 /* KNFBXPSPageNumbersParserDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = KNFBXPSPageNumbersParserDelegate.m; path = XPS/KNFBXPSPageNumbersParserDelegate.m; sourceTree = "<group>"; };
 		C9765A40154B006000C876F7 /* storia-loginbackground@2x~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "storia-loginbackground@2x~iphone.png"; path = "Resources/UIAssets/storia-loginbackground@2x~iphone.png"; sourceTree = "<group>"; };
 		C9765A49154B046E00C876F7 /* storia-signin-button@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "storia-signin-button@2x.png"; path = "Resources/UIAssets/storia-signin-button@2x.png"; sourceTree = "<group>"; };
-		C9765A4E154B0E1300C876F7 /* cloud-background-landscape.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = "cloud-background-landscape.jpg"; path = "Resources/UIAssets/cloud-background-landscape.jpg"; sourceTree = "<group>"; };
-		C9765A4F154B0E1700C876F7 /* cloud-background-landscape@2x.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = "cloud-background-landscape@2x.jpg"; path = "Resources/UIAssets/cloud-background-landscape@2x.jpg"; sourceTree = "<group>"; };
-		C9765A50154B0E1D00C876F7 /* cloud-background-portrait.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = "cloud-background-portrait.jpg"; path = "Resources/UIAssets/cloud-background-portrait.jpg"; sourceTree = "<group>"; };
-		C9765A51154B0E1F00C876F7 /* cloud-background-portrait@2x.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = "cloud-background-portrait@2x.jpg"; path = "Resources/UIAssets/cloud-background-portrait@2x.jpg"; sourceTree = "<group>"; };
 		C9765A62154B128D00C876F7 /* logo@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "logo@2x.png"; path = "Resources/UIAssets/logo@2x.png"; sourceTree = "<group>"; };
 		C9765A67154B15A400C876F7 /* red-toolbar.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "red-toolbar.png"; path = "Resources/UIAssets/red-toolbar.png"; sourceTree = "<group>"; };
 		C9765A68154B15AA00C876F7 /* red-toolbar@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "red-toolbar@2x.png"; path = "Resources/UIAssets/red-toolbar@2x.png"; sourceTree = "<group>"; };
 		C9765CCD154EDC4900C876F7 /* storia-setup-logo@2x~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "storia-setup-logo@2x~ipad.png"; path = "Resources/UIAssets/storia-setup-logo@2x~ipad.png"; sourceTree = "<group>"; };
-		C9765CD2154EE5F200C876F7 /* cloud-background-landscape@2x~ipad.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = "cloud-background-landscape@2x~ipad.jpg"; path = "Resources/UIAssets/cloud-background-landscape@2x~ipad.jpg"; sourceTree = "<group>"; };
-		C9765CD3154EE5F500C876F7 /* cloud-background-landscape~ipad.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = "cloud-background-landscape~ipad.jpg"; path = "Resources/UIAssets/cloud-background-landscape~ipad.jpg"; sourceTree = "<group>"; };
-		C9765CD4154EE60200C876F7 /* cloud-background-portrait@2x~ipad.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = "cloud-background-portrait@2x~ipad.jpg"; path = "Resources/UIAssets/cloud-background-portrait@2x~ipad.jpg"; sourceTree = "<group>"; };
-		C9765CD5154EE60600C876F7 /* cloud-background-portrait~ipad.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = "cloud-background-portrait~ipad.jpg"; path = "Resources/UIAssets/cloud-background-portrait~ipad.jpg"; sourceTree = "<group>"; };
 		C9765CE6154EEC1200C876F7 /* storia-loginbackground~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "storia-loginbackground~iphone.png"; path = "Resources/UIAssets/storia-loginbackground~iphone.png"; sourceTree = "<group>"; };
+		C9765D2F154FDA3700C876F7 /* cloud-background@2x~ipad.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = "cloud-background@2x~ipad.jpg"; path = "Resources/UIAssets/cloud-background@2x~ipad.jpg"; sourceTree = "<group>"; };
+		C9765D30154FDA3800C876F7 /* cloud-background~ipad.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = "cloud-background~ipad.jpg"; path = "Resources/UIAssets/cloud-background~ipad.jpg"; sourceTree = "<group>"; };
+		C9765D39154FDD5700C876F7 /* cloud-background.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = "cloud-background.jpg"; path = "Resources/UIAssets/cloud-background.jpg"; sourceTree = "<group>"; };
+		C9765D3A154FDD5800C876F7 /* cloud-background@2x.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = "cloud-background@2x.jpg"; path = "Resources/UIAssets/cloud-background@2x.jpg"; sourceTree = "<group>"; };
 		C979C6A0138C1F6300581F7F /* button-login@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "button-login@2x.png"; path = "Resources/UIAssets/button-login@2x.png"; sourceTree = "<group>"; };
 		C979C6A1138C1F6300581F7F /* button-login.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "button-login.png"; path = "Resources/UIAssets/button-login.png"; sourceTree = "<group>"; };
 		C979C6A6138C237C00581F7F /* button-field.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "button-field.png"; path = "Resources/UIAssets/button-field.png"; sourceTree = "<group>"; };
@@ -8004,14 +7984,10 @@
 				C9747CB913EAE6DD003ADC71 /* plain-background-landscape@2x.jpg */,
 				C9747CBA13EAE6DD003ADC71 /* plain-background-portrait.jpg */,
 				C9747CBB13EAE6DD003ADC71 /* plain-background-landscape.jpg */,
-				C9765A4E154B0E1300C876F7 /* cloud-background-landscape.jpg */,
-				C9765A4F154B0E1700C876F7 /* cloud-background-landscape@2x.jpg */,
-				C9765A50154B0E1D00C876F7 /* cloud-background-portrait.jpg */,
-				C9765A51154B0E1F00C876F7 /* cloud-background-portrait@2x.jpg */,
-				C9765CD2154EE5F200C876F7 /* cloud-background-landscape@2x~ipad.jpg */,
-				C9765CD3154EE5F500C876F7 /* cloud-background-landscape~ipad.jpg */,
-				C9765CD4154EE60200C876F7 /* cloud-background-portrait@2x~ipad.jpg */,
-				C9765CD5154EE60600C876F7 /* cloud-background-portrait~ipad.jpg */,
+				C9765D39154FDD5700C876F7 /* cloud-background.jpg */,
+				C9765D3A154FDD5800C876F7 /* cloud-background@2x.jpg */,
+				C9765D2F154FDA3700C876F7 /* cloud-background@2x~ipad.jpg */,
+				C9765D30154FDA3800C876F7 /* cloud-background~ipad.jpg */,
 				C9B7EAC113DEF29200BD5CB7 /* admin-updates-available@2x~iphone.png */,
 				C9B7EAC213DEF29300BD5CB7 /* admin-updates-available~iphone.png */,
 				C9B7EAC313DEF29300BD5CB7 /* admin-updates-available~ipad.png */,
@@ -10147,19 +10123,15 @@
 				28C3ED81154831D500F10DE5 /* storyinteraction-lettertile-tiny~iphone.png in Resources */,
 				C9765A45154B006100C876F7 /* storia-loginbackground@2x~iphone.png in Resources */,
 				C9765A4A154B046F00C876F7 /* storia-signin-button@2x.png in Resources */,
-				C9765A52154B0E2600C876F7 /* cloud-background-landscape.jpg in Resources */,
-				C9765A56154B0E2600C876F7 /* cloud-background-landscape@2x.jpg in Resources */,
-				C9765A5A154B0E2600C876F7 /* cloud-background-portrait.jpg in Resources */,
-				C9765A5E154B0E2600C876F7 /* cloud-background-portrait@2x.jpg in Resources */,
 				C9765A63154B129300C876F7 /* logo@2x.png in Resources */,
 				C9765A69154B15AF00C876F7 /* red-toolbar.png in Resources */,
 				C9765A6D154B15AF00C876F7 /* red-toolbar@2x.png in Resources */,
 				C9765CCE154EDC4B00C876F7 /* storia-setup-logo@2x~ipad.png in Resources */,
-				C9765CD6154EE61100C876F7 /* cloud-background-landscape@2x~ipad.jpg in Resources */,
-				C9765CDA154EE61100C876F7 /* cloud-background-landscape~ipad.jpg in Resources */,
-				C9765CDE154EE61100C876F7 /* cloud-background-portrait@2x~ipad.jpg in Resources */,
-				C9765CE2154EE61100C876F7 /* cloud-background-portrait~ipad.jpg in Resources */,
 				C9765CE7154EEC1200C876F7 /* storia-loginbackground~iphone.png in Resources */,
+				C9765D31154FDA3800C876F7 /* cloud-background@2x~ipad.jpg in Resources */,
+				C9765D35154FDA3800C876F7 /* cloud-background~ipad.jpg in Resources */,
+				C9765D3B154FDD5900C876F7 /* cloud-background.jpg in Resources */,
+				C9765D3F154FDD5900C876F7 /* cloud-background@2x.jpg in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -10899,19 +10871,15 @@
 				28C3ED82154831D500F10DE5 /* storyinteraction-lettertile-tiny~iphone.png in Resources */,
 				C9765A46154B006100C876F7 /* storia-loginbackground@2x~iphone.png in Resources */,
 				C9765A4B154B046F00C876F7 /* storia-signin-button@2x.png in Resources */,
-				C9765A53154B0E2600C876F7 /* cloud-background-landscape.jpg in Resources */,
-				C9765A57154B0E2600C876F7 /* cloud-background-landscape@2x.jpg in Resources */,
-				C9765A5B154B0E2600C876F7 /* cloud-background-portrait.jpg in Resources */,
-				C9765A5F154B0E2600C876F7 /* cloud-background-portrait@2x.jpg in Resources */,
 				C9765A64154B129300C876F7 /* logo@2x.png in Resources */,
 				C9765A6A154B15AF00C876F7 /* red-toolbar.png in Resources */,
 				C9765A6E154B15AF00C876F7 /* red-toolbar@2x.png in Resources */,
 				C9765CCF154EDC4B00C876F7 /* storia-setup-logo@2x~ipad.png in Resources */,
-				C9765CD7154EE61100C876F7 /* cloud-background-landscape@2x~ipad.jpg in Resources */,
-				C9765CDB154EE61100C876F7 /* cloud-background-landscape~ipad.jpg in Resources */,
-				C9765CDF154EE61100C876F7 /* cloud-background-portrait@2x~ipad.jpg in Resources */,
-				C9765CE3154EE61100C876F7 /* cloud-background-portrait~ipad.jpg in Resources */,
 				C9765CE8154EEC1200C876F7 /* storia-loginbackground~iphone.png in Resources */,
+				C9765D32154FDA3800C876F7 /* cloud-background@2x~ipad.jpg in Resources */,
+				C9765D36154FDA3800C876F7 /* cloud-background~ipad.jpg in Resources */,
+				C9765D3C154FDD5900C876F7 /* cloud-background.jpg in Resources */,
+				C9765D40154FDD5900C876F7 /* cloud-background@2x.jpg in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -11430,19 +11398,15 @@
 				28C3ED83154831D500F10DE5 /* storyinteraction-lettertile-tiny~iphone.png in Resources */,
 				C9765A47154B006100C876F7 /* storia-loginbackground@2x~iphone.png in Resources */,
 				C9765A4C154B046F00C876F7 /* storia-signin-button@2x.png in Resources */,
-				C9765A54154B0E2600C876F7 /* cloud-background-landscape.jpg in Resources */,
-				C9765A58154B0E2600C876F7 /* cloud-background-landscape@2x.jpg in Resources */,
-				C9765A5C154B0E2600C876F7 /* cloud-background-portrait.jpg in Resources */,
-				C9765A60154B0E2600C876F7 /* cloud-background-portrait@2x.jpg in Resources */,
 				C9765A65154B129300C876F7 /* logo@2x.png in Resources */,
 				C9765A6B154B15AF00C876F7 /* red-toolbar.png in Resources */,
 				C9765A6F154B15AF00C876F7 /* red-toolbar@2x.png in Resources */,
 				C9765CD0154EDC4B00C876F7 /* storia-setup-logo@2x~ipad.png in Resources */,
-				C9765CD8154EE61100C876F7 /* cloud-background-landscape@2x~ipad.jpg in Resources */,
-				C9765CDC154EE61100C876F7 /* cloud-background-landscape~ipad.jpg in Resources */,
-				C9765CE0154EE61100C876F7 /* cloud-background-portrait@2x~ipad.jpg in Resources */,
-				C9765CE4154EE61100C876F7 /* cloud-background-portrait~ipad.jpg in Resources */,
 				C9765CE9154EEC1200C876F7 /* storia-loginbackground~iphone.png in Resources */,
+				C9765D33154FDA3800C876F7 /* cloud-background@2x~ipad.jpg in Resources */,
+				C9765D37154FDA3800C876F7 /* cloud-background~ipad.jpg in Resources */,
+				C9765D3D154FDD5900C876F7 /* cloud-background.jpg in Resources */,
+				C9765D41154FDD5900C876F7 /* cloud-background@2x.jpg in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -11961,19 +11925,15 @@
 				28C3ED84154831D500F10DE5 /* storyinteraction-lettertile-tiny~iphone.png in Resources */,
 				C9765A48154B006100C876F7 /* storia-loginbackground@2x~iphone.png in Resources */,
 				C9765A4D154B046F00C876F7 /* storia-signin-button@2x.png in Resources */,
-				C9765A55154B0E2600C876F7 /* cloud-background-landscape.jpg in Resources */,
-				C9765A59154B0E2600C876F7 /* cloud-background-landscape@2x.jpg in Resources */,
-				C9765A5D154B0E2600C876F7 /* cloud-background-portrait.jpg in Resources */,
-				C9765A61154B0E2700C876F7 /* cloud-background-portrait@2x.jpg in Resources */,
 				C9765A66154B129300C876F7 /* logo@2x.png in Resources */,
 				C9765A6C154B15AF00C876F7 /* red-toolbar.png in Resources */,
 				C9765A70154B15AF00C876F7 /* red-toolbar@2x.png in Resources */,
 				C9765CD1154EDC4B00C876F7 /* storia-setup-logo@2x~ipad.png in Resources */,
-				C9765CD9154EE61100C876F7 /* cloud-background-landscape@2x~ipad.jpg in Resources */,
-				C9765CDD154EE61100C876F7 /* cloud-background-landscape~ipad.jpg in Resources */,
-				C9765CE1154EE61100C876F7 /* cloud-background-portrait@2x~ipad.jpg in Resources */,
-				C9765CE5154EE61100C876F7 /* cloud-background-portrait~ipad.jpg in Resources */,
 				C9765CEA154EEC1200C876F7 /* storia-loginbackground~iphone.png in Resources */,
+				C9765D34154FDA3800C876F7 /* cloud-background@2x~ipad.jpg in Resources */,
+				C9765D38154FDA3800C876F7 /* cloud-background~ipad.jpg in Resources */,
+				C9765D3E154FDD5900C876F7 /* cloud-background.jpg in Resources */,
+				C9765D42154FDD5900C876F7 /* cloud-background@2x.jpg in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

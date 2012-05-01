@@ -49,7 +49,7 @@
 					<object class="IBUIImageView" id="440019014">
 						<reference key="NSNextResponder" ref="594099141"/>
 						<int key="NSvFlags">274</int>
-						<string key="NSFrame">{{0, -44}, {320, 460}}</string>
+						<string key="NSFrameSize">{320, 416}</string>
 						<reference key="NSSuperview" ref="594099141"/>
 						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="288954164"/>
@@ -61,7 +61,7 @@
 						<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 						<object class="NSCustomResource" key="IBUIImage">
 							<string key="NSClassName">NSImage</string>
-							<string key="NSResourceName">cloud-background-portrait.jpg</string>
+							<string key="NSResourceName">cloud-background.jpg</string>
 						</object>
 					</object>
 					<object class="IBUITableView" id="288954164">
@@ -898,14 +898,14 @@
 				<bool key="EncodedWithXMLCoder">YES</bool>
 				<string>admin-iphone-top-shadow.png</string>
 				<string>admin-updates-available.png</string>
-				<string>cloud-background-portrait.jpg</string>
+				<string>cloud-background.jpg</string>
 				<string>storia-setup-logo.png</string>
 			</object>
 			<object class="NSArray" key="dict.values">
 				<bool key="EncodedWithXMLCoder">YES</bool>
 				<string>{7, 7}</string>
 				<string>{16, 16}</string>
-				<string>{320, 460}</string>
+				<string>{320, 416}</string>
 				<string>{141, 95}</string>
 			</object>
 		</object>
