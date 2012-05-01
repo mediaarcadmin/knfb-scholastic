@@ -28,5 +28,8 @@ extern NSString * const SCHSyncComponentDidFailAuthenticationNotification;
 
 - (BOOL)synchronize;
 - (void)clearFailures;
+- (void)resetSync;
+- (void)resetWebService;
+- (void)clearCoreData;
 
 @end

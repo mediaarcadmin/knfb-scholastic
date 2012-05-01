@@ -96,10 +96,7 @@ NSString * const SCHContentSyncComponentDidFailNotification = @"SCHContentSyncCo
 	BOOL ret = YES;
 	
 	if (self.isSynchronizing == NO) {
-		self.backgroundTaskIdentifier = [[UIApplication sharedApplication] beginBackgroundTaskWithExpirationHandler:^{ 
-			self.isSynchronizing = NO;
-            [self endBackgroundTask];
-		}];
+        [self beginBackgroundTask];
 		
 		ret = [self updateUserContentItems];
         if (ret == NO) {
@@ -110,13 +107,21 @@ NSString * const SCHContentSyncComponentDidFailNotification = @"SCHContentSyncCo
 	return(ret);		
 }
 
-- (void)clear
+#pragma - Overrideen methods used by resetSync
+
+- (void)resetWebService
+{
+    [self.libreAccessWebService clear];    
+}
+
+- (void)clearComponent
+{
+    // nop
+}
+
+- (void)clearCoreData
 {
 	NSError *error = nil;
-	
-    [super clear];
-    
-    [self.libreAccessWebService clear];
     
 	if (![self.managedObjectContext BITemptyEntity:kSCHUserContentItem error:&error] ||
 		![self.managedObjectContext BITemptyEntity:kSCHOrderItem error:&error] ||
@@ -124,6 +129,8 @@ NSString * const SCHContentSyncComponentDidFailNotification = @"SCHContentSyncCo
 		NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
 	}		
 }
+
+#pragma mark - Delegate methods
 
 - (void)method:(NSString *)method didCompleteWithResult:(NSDictionary *)result
       userInfo:(NSDictionary *)userInfo
