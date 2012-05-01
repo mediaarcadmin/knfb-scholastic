@@ -28,14 +28,14 @@
 
 - (IBAction)choosePuzzle:(id)sender;
 
-- (CGRect)puzzlePreviewFrame;
+- (SCHStoryInteractionJigsawPreviewView *)makePuzzlePreviewView;
 
 - (void)setupPieceViewsForOrientation:(enum SCHStoryInteractionJigsawOrientation)orientation
                            puzzleRect:(CGRect)puzzleRect;
 
 - (void)animatePiecesToHomePositionsForOrientation:(enum SCHStoryInteractionJigsawOrientation)orientation;
 
-- (void)repositionPiecesToSolutionPosition:(BOOL)moveToSolutionPosition withOrientation:(UIInterfaceOrientation)orientation;
+- (void)repositionPiecesToSolutionPosition:(BOOL)moveToSolutionPosition withOrientation:(enum SCHStoryInteractionJigsawOrientation)orientation;
 
 - (UIView<SCHStoryInteractionJigsawPieceView> *)newPieceView;
 

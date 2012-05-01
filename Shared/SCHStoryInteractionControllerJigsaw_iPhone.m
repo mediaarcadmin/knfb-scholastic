@@ -98,9 +98,13 @@ enum {
     [super willRotateToInterfaceOrientation:toInterfaceOrientation duration:duration];
 }
 
-- (CGRect)puzzlePreviewFrame
+- (SCHStoryInteractionJigsawPreviewView *)makePuzzlePreviewView
 {
-    return self.puzzleBackground.frame;
+    SCHStoryInteractionJigsawPreviewView *preview = [[SCHStoryInteractionJigsawPreviewView alloc] initWithFrame:self.puzzleBackground.frame];
+    preview.autoresizingMask = 0;
+    preview.backgroundColor = [UIColor clearColor];
+    preview.edgeColor = [UIColor whiteColor];
+    return [preview autorelease];
 }
 
 - (UIView<SCHStoryInteractionJigsawPieceView> *)newPieceView
@@ -153,7 +157,7 @@ enum {
     self.maxPieceSize = CGSizeMake(maxPieceWidth, maxPieceHeight);
 }
 
-- (void)repositionPiecesToSolutionPosition:(BOOL)moveToSolutionPosition withOrientation:(UIInterfaceOrientation)orientation
+- (void)repositionPiecesToSolutionPosition:(BOOL)moveToSolutionPosition withOrientation:(enum SCHStoryInteractionJigsawOrientation)orientation
 {    
     CGAffineTransform scrollerTransform = [self pieceTransformForScrollerInOrientation:orientation withMaxPieceSize:self.maxPieceSize];
 

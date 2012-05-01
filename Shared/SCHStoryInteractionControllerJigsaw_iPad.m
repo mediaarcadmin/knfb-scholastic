@@ -22,7 +22,9 @@ enum {
 
 @end
 
-@implementation SCHStoryInteractionControllerJigsaw_iPad
+@implementation SCHStoryInteractionControllerJigsaw_iPad {
+    CGAffineTransform puzzleTransform;
+}
 
 @synthesize isPlayingStartDrag;
 
@@ -36,22 +38,33 @@ enum {
     }
 }
 
-- (CGRect)puzzlePreviewFrame
+- (SCHStoryInteractionJigsawPreviewView *)makePuzzlePreviewView
 {
-    return CGRectInset(self.contentsView.bounds, 30, 10);
+    CGRect frame = CGRectInset(self.contentsView.bounds, 30, 10);
+    SCHStoryInteractionJigsawPreviewView *preview = [[SCHStoryInteractionJigsawPreviewView alloc] initWithFrame:frame];
+    preview.autoresizingMask = (UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight
+                                | UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin
+                                | UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin);
+    preview.backgroundColor = [UIColor clearColor];
+    preview.edgeColor = [UIColor whiteColor];
+    return [preview autorelease];
 }
 
 - (UIView<SCHStoryInteractionJigsawPieceView> *)newPieceView
 {
     SCHStoryInteractionJigsawPieceView_iPad *pieceView = [[SCHStoryInteractionJigsawPieceView_iPad alloc] initWithFrame:CGRectZero];
+    pieceView.autoresizingMask = (UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin
+                                  | UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin);
     return pieceView;
 }
 
-- (NSArray *)homePositionsAroundPuzzleForOrientation:(UIInterfaceOrientation)orientation
+- (NSArray *)homePositionsAroundPuzzleForOrientation:(enum SCHStoryInteractionJigsawOrientation)orientation
 {
     const CGRect bounds = self.contentsView.bounds;
     const CGRect puzzle = self.puzzleBackground.frame;
-    const BOOL landscape = UIInterfaceOrientationIsLandscape(orientation);
+    const BOOL landscape = (orientation == kSCHStoryInteractionJigsawOrientationLandscape);
+    
+    NSLog(@"bounds=%@ puzzle=%@ landscape=%d", NSStringFromCGRect(bounds), NSStringFromCGRect(puzzle),landscape);
     
     NSMutableArray *positions = [NSMutableArray arrayWithCapacity:6];
     void (^add)(CGFloat,CGFloat) = ^(CGFloat x, CGFloat y) {
@@ -85,31 +98,48 @@ enum {
     }
     
     NSAssert(self.numberOfPieces == [positions count], @"wrong number of positions");
-    return [positions shuffled];
+    
+    NSLog(@"positions=%@", positions);
+    return positions;
 }
 
 - (void)setupPieceViewsForOrientation:(enum SCHStoryInteractionJigsawOrientation)orientation puzzleRect:(CGRect)puzzleRect
 {
-    const enum SCHStoryInteractionJigsawOrientation jigsawOrientation =
-        (UIInterfaceOrientationIsLandscape(orientation) ? kSCHStoryInteractionJigsawOrientationLandscape : kSCHStoryInteractionJigsawOrientationPortrait);
-    
-    CGAffineTransform puzzleTransform = CGAffineTransformMakeScale(CGRectGetWidth(puzzleRect)/CGRectGetWidth(self.puzzleBackground.bounds),
-                                                                   CGRectGetHeight(puzzleRect)/CGRectGetHeight(self.puzzleBackground.bounds));
+    NSArray *homePositions = [self homePositionsAroundPuzzleForOrientation:orientation];
 
-    NSArray *homePositions = [self homePositionsAroundPuzzleForOrientation:self.interfaceOrientation];
+    puzzleTransform = CGAffineTransformMakeScale(CGRectGetWidth(puzzleRect)/CGRectGetWidth(self.puzzleBackground.bounds),
+                                                 CGRectGetHeight(puzzleRect)/CGRectGetHeight(self.puzzleBackground.bounds));
+
     for (NSInteger pieceIndex = 0; pieceIndex < self.numberOfPieces; ++pieceIndex) {
         SCHStoryInteractionJigsawPiece *piece = [self.jigsawPieces objectAtIndex:pieceIndex];
         SCHStoryInteractionJigsawPieceView_iPad *pieceView = [self.jigsawPieceViews objectAtIndex:pieceIndex];
-        CGPoint center = CGPointMake(CGRectGetMidX(pieceView.pieceFrame), CGRectGetMidY(pieceView.pieceFrame));
-        NSLog(@"piece position = %@", NSStringFromCGPoint(center));
-        [piece setSolutionPosition:center forOrientation:jigsawOrientation];
-        pieceView.bounds = (CGRect){ CGPointZero, pieceView.pieceFrame.size };
-        pieceView.center = CGPointMake(center.x+CGRectGetMinX(self.puzzleBackground.frame), center.y+CGRectGetMinY(self.puzzleBackground.frame));
+        pieceView.image = [piece imageForOrientation:orientation];
         pieceView.homePosition = [[homePositions objectAtIndex:pieceIndex] CGPointValue];
+        pieceView.solutionPosition = [self.puzzleBackground convertPoint:[piece solutionPositionForOrientation:orientation] toView:self.contentsView];
+        pieceView.bounds = [piece boundsForOrientation:orientation];
+        pieceView.center = pieceView.homePosition;
         pieceView.transform = puzzleTransform;
         pieceView.dragTransform = CGAffineTransformIdentity;
         pieceView.snappedTransform = CGAffineTransformIdentity;
         pieceView.delegate = self;
+    }
+}
+
+- (void)repositionPiecesToSolutionPosition:(BOOL)moveToSolutionPosition withOrientation:(enum SCHStoryInteractionJigsawOrientation)orientation
+{
+    CGAffineTransform pieceTransform = [self pieceTransformForHomePosition];
+    
+    for (NSInteger pieceIndex = 0; pieceIndex < self.numberOfPieces; ++pieceIndex) {
+        SCHStoryInteractionJigsawPiece *piece = [self.jigsawPieces objectAtIndex:pieceIndex];
+        SCHStoryInteractionJigsawPieceView_iPad *pieceView = [self.jigsawPieceViews objectAtIndex:pieceIndex];
+        
+        if (moveToSolutionPosition || [piece isInCorrectPosition]) {
+            pieceView.transform = puzzleTransform;
+            pieceView.center = pieceView.solutionPosition;
+        } else {
+            pieceView.transform = pieceTransform;
+            [pieceView moveToHomePosition];
+        }
         [self.contentsView addSubview:pieceView];
     }
 }
@@ -118,16 +148,8 @@ enum {
 {
     [self enqueueAudioWithPath:@"sfx_breakpuzzle.mp3" fromBundle:YES];
     
-    // scale the pieces down to fit in the margins around the puzzle background
-    CGFloat scale = 0.33;
-    switch (self.numberOfPieces) {
-        case 6: scale = 0.28; break;
-        case 12: scale = 0.33; break;
-        case 20: scale = 0.33; break;
-        default: scale = 0.33; break;
-    }
-    CGAffineTransform pieceTransform = CGAffineTransformMakeScale(scale, scale);
-//    [self.puzzleBackground setTransform:puzzleTransform];
+    CGAffineTransform pieceTransform = [self pieceTransformForHomePosition];
+    [self.puzzleBackground setTransform:puzzleTransform];
     
     // spread the pieces around the puzzle background
     [UIView animateWithDuration:0.5
@@ -143,25 +165,22 @@ enum {
                      completion:nil];
 }
 
-- (void)rotateToOrientation:(UIInterfaceOrientation)orientation
+- (CGAffineTransform)pieceTransformForHomePosition
 {
-    if (![self puzzleIsInteractive]) {
-        return;
+    // scale the pieces down to fit in the margins around the puzzle background
+    CGFloat scale = 0.33;
+    switch (self.numberOfPieces) {
+        case 6: scale = 0.28; break;
+        case 12: scale = 0.33; break;
+        case 20: scale = 0.33; break;
+        default: scale = 0.33; break;
     }
-    
-    NSArray *homePositions = [self homePositionsAroundPuzzleForOrientation:orientation];
- 
-    for (NSInteger pieceIndex = 0; pieceIndex < self.numberOfPieces; ++pieceIndex) {
-        SCHStoryInteractionJigsawPiece *piece = [self.jigsawPieces objectAtIndex:pieceIndex];
-        SCHStoryInteractionJigsawPieceView_iPad *pieceView = [self.jigsawPieceViews objectAtIndex:pieceIndex];
-        pieceView.homePosition = [[homePositions objectAtIndex:pieceIndex] CGPointValue];
-        if ([piece isInCorrectPosition]) {
-            pieceView.center = [piece solutionPositionForOrientation:[self currentJigsawOrientation]];
-        } else {
-            pieceView.center = pieceView.homePosition;
-        }
-        pieceIndex++;
-    }
+    return CGAffineTransformMakeScale(scale, scale);
+}
+
+- (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
+{
+    [super willRotateToInterfaceOrientation:toInterfaceOrientation duration:duration];
 }
 
 #pragma mark - draggable delegate
@@ -182,9 +201,9 @@ enum {
 
 - (BOOL)draggableView:(SCHStoryInteractionDraggableView *)draggableView shouldSnapFromPosition:(CGPoint)position toPosition:(CGPoint *)snapPosition
 {
-    SCHStoryInteractionJigsawPiece *piece = [self pieceForPieceView:(SCHStoryInteractionJigsawPieceView_iPad *)draggableView];
-    if ([piece isInCorrectPosition]) {
-        *snapPosition = [piece solutionPositionForOrientation:[self currentJigsawOrientation]];
+    SCHStoryInteractionJigsawPieceView_iPad *pieceView = (SCHStoryInteractionJigsawPieceView_iPad *)draggableView;
+    if ([pieceView shouldSnapToSolutionPositionFromPosition:position]) {
+        *snapPosition = pieceView.solutionPosition;
         return YES;
     }
     return NO;
@@ -193,14 +212,15 @@ enum {
 - (void)draggableView:(SCHStoryInteractionDraggableView *)draggableView didMoveToPosition:(CGPoint)position
 {
     SCHStoryInteractionJigsawPieceView_iPad *pieceView = (SCHStoryInteractionJigsawPieceView_iPad *)draggableView;
-    SCHStoryInteractionJigsawPiece *piece = [self pieceForPieceView:pieceView];
     
     // ensure we only play one drop sound at a time
     [NSObject cancelPreviousPerformRequestsWithTarget:self];
     [self performSelector:@selector(playDropSoundForPiece:) withObject:pieceView afterDelay:0.2];
     
-    if ([piece isInCorrectPosition]) {
+    if ([pieceView shouldSnapToSolutionPositionFromPosition:position]) {
+        pieceView.center = pieceView.solutionPosition;
         [pieceView setUserInteractionEnabled:NO];
+        [[self pieceForPieceView:pieceView] setInCorrectPosition:YES];
     } else {
         [pieceView moveToHomePosition];
     }

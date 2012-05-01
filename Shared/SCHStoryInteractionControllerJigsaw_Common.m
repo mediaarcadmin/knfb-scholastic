@@ -83,29 +83,22 @@
     return SCHStoryInteractionNoTitle;
 }
 
+
 - (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
 {
     enum SCHStoryInteractionJigsawOrientation orientation =
         (UIInterfaceOrientationIsLandscape(toInterfaceOrientation) ? kSCHStoryInteractionJigsawOrientationLandscape : kSCHStoryInteractionJigsawOrientationPortrait);
     
-    dispatch_block_t setupPieces = ^{
-        [self setupPieceViewsForOrientation:orientation puzzleRect:self.puzzleBackground.frame];
-        if ([self puzzleIsInteractive]) {
-            [self repositionPiecesToSolutionPosition:NO withOrientation:orientation];
-        }
-    };
-    
-    if (self.numberOfPieces > 0 && !hasSetupPiecesForOrientation[orientation]) {
-        [self setupPiecesForFrame:self.puzzleBackground.frame
-                      orientation:orientation
-                   withCompletion:^(CGRect frame) {
-                       self.puzzleBackground.frame = frame;
-                       setupPieces();
-                   }];
-    } else {
-        setupPieces();
-    }
-    
+    CGRect puzzleRect = [self.puzzleBackground puzzleBounds];
+    [self setupPiecesForFrame:puzzleRect
+                  orientation:orientation
+               withCompletion:^{
+                   [self setupPieceViewsForOrientation:orientation puzzleRect:puzzleRect];
+                   if ([self puzzleIsInteractive]) {
+                       [self repositionPiecesToSolutionPosition:NO withOrientation:orientation];
+                   }
+               }];
+
     [super willRotateToInterfaceOrientation:toInterfaceOrientation duration:duration];
 }
 
@@ -143,16 +136,6 @@
             break;
     }
     return [self imageAtPath:path];
-}
-
-- (SCHStoryInteractionJigsawPreviewView *)puzzlePreviewWithFrame:(CGRect)frame;
-{
-    SCHStoryInteractionJigsawPreviewView *preview = [[SCHStoryInteractionJigsawPreviewView alloc] initWithFrame:frame];
-    preview.autoresizingMask = 0;
-    preview.backgroundColor = [UIColor clearColor];
-    preview.image = [self puzzleImage];
-    preview.edgeColor = [UIColor whiteColor];
-    return [preview autorelease];
 }
 
 #pragma mark - piece generation and setup
@@ -197,13 +180,18 @@
 
 - (void)setupPiecesForFrame:(CGRect)backgroundFrame
                 orientation:(enum SCHStoryInteractionJigsawOrientation)orientation
-             withCompletion:(void(^)(CGRect))completion
+             withCompletion:(void(^)(void))completion
 {
+    if (self.numberOfPieces == 0 || hasSetupPiecesForOrientation[orientation]) {
+        dispatch_async(dispatch_get_main_queue(), completion);
+        return;
+    }
+
+    hasSetupPiecesForOrientation[orientation] = YES;
+
     UIImage *puzzleUIImage = [self puzzleImage];
     CGSize puzzleImageSize = puzzleUIImage.size;
     CGImageRef puzzleImage = CGImageRetain([puzzleUIImage CGImage]);
-
-    hasSetupPiecesForOrientation[orientation] = YES;
 
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{
         CGRect puzzleFrame = SCHAspectFitSizeInTargetRect(puzzleImageSize, backgroundFrame);
@@ -237,9 +225,7 @@
         
         CGImageRelease(scaledPuzzleImage);
         
-        dispatch_async(dispatch_get_main_queue(), ^{
-            completion(puzzleFrame);
-        });
+        dispatch_async(dispatch_get_main_queue(), completion);
     });
 }
 
@@ -248,7 +234,8 @@
     [self.puzzlePreviewView removeFromSuperview];
     [self.puzzleBackground setAlpha:0];
     
-    self.puzzlePreviewView = [self puzzlePreviewWithFrame:[self puzzlePreviewFrame]];
+    self.puzzlePreviewView = [self makePuzzlePreviewView];
+    self.puzzlePreviewView.image = [self puzzleImage];
     self.puzzlePreviewView.paths = [self jigsawPaths];
     [self.contentsView addSubview:self.puzzlePreviewView];
 
@@ -275,9 +262,7 @@
     
     [self setupPiecesForFrame:self.puzzleBackground.frame
                   orientation:[self currentJigsawOrientation]
-               withCompletion:^(CGRect backgroundFrame) {
-                   self.puzzleBackground.frame = backgroundFrame;
-                   
+               withCompletion:^{
                    // enable taps on the preview
                    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(previewTapped:)];
                    [self.puzzlePreviewView addGestureRecognizer:tap];
@@ -323,15 +308,17 @@
     if (correctPieces == [self.jigsawPieces count]) {
         [self enqueueAudioWithPath:@"sfx_winround.mp3" fromBundle:YES];
 
-        CGRect frame = [self.puzzleBackground convertRect:[self.puzzleBackground puzzleBounds] toView:self.contentsView];
         [self.jigsawPieceViews makeObjectsPerformSelector:@selector(removeFromSuperview)];
         self.jigsawPieceViews = nil;
 
-        SCHStoryInteractionJigsawPreviewView *completed = [self puzzlePreviewWithFrame:frame];
+        SCHStoryInteractionJigsawPreviewView *completed = [self makePuzzlePreviewView];
+        CGRect completedFrame = completed.frame;
+        completed.frame = self.puzzleBackground.frame;
+        completed.image = [self puzzleImage];
         [self.contentsView addSubview:completed];
         [UIView animateWithDuration:0.5
                          animations:^{
-                             completed.frame = [self puzzlePreviewFrame];
+                             completed.frame = completedFrame;
                          }];
         
         self.controllerState = SCHStoryInteractionControllerStateInteractionFinishedSuccessfully;
@@ -349,9 +336,9 @@
     return nil;
 }
 
-- (CGRect)puzzlePreviewFrame
+- (SCHStoryInteractionJigsawPreviewView *)makePuzzlePreviewView
 {
-    return CGRectZero;
+    return nil;
 }
 
 - (void)setupPieceViewsForOrientation:(enum SCHStoryInteractionJigsawOrientation)orientation puzzleRect:(CGRect)puzzleRect
@@ -360,7 +347,7 @@
 - (void)animatePiecesToHomePositionsForOrientation:(enum SCHStoryInteractionJigsawOrientation)orientation
 {}
 
-- (void)repositionPiecesToSolutionPosition:(BOOL)moveToSolutionPosition withOrientation:(UIInterfaceOrientation)orientation
+- (void)repositionPiecesToSolutionPosition:(BOOL)moveToSolutionPosition withOrientation:(enum SCHStoryInteractionJigsawOrientation)orientation
 {}
 
 @end

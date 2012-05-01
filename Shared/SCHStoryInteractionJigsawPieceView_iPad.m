@@ -33,6 +33,7 @@
     image = CGImageRetain(newImage);
     CGImageRelease(oldImage);
     [self setBackgroundColor:[UIColor clearColor]];
+    [self setNeedsDisplay];
 }
 
 - (void)drawRect:(CGRect)rect
