@@ -707,7 +707,7 @@ NSTimeInterval const kSCHAuthenticationManagerSecondsInAMinute = 60.0;
     [[SCHURLManager sharedURLManager] clear];
     [[SCHProcessingManager sharedProcessingManager] cancelAllOperations]; 
     [[SCHRecommendationManager sharedManager] cancelAllOperations];
-    [[SCHSyncManager sharedSyncManager] clear];    
+    [[SCHSyncManager sharedSyncManager] resetSync];    
 }
 
 #pragma mark - Private methods

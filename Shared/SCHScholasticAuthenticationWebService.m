@@ -152,17 +152,18 @@ static NSString * const kSCHScholasticAuthenticationWebServiceAttributeErrorDesc
 		}
 	}
 	
-	if (errorCode != nil) {
-		NSDictionary *userInfo = nil;
-		
-		if (errorDescription != nil) {
-			userInfo = [NSDictionary dictionaryWithObject:errorDescription
-												   forKey:NSLocalizedDescriptionKey];		
-		}
-		
-		*error = [NSError errorWithDomain:kBITAPIErrorDomain 
-									code:[errorCode integerValue]
-								userInfo:userInfo];
+    if (errorCode != nil || ret == nil) {
+        SCHScholasticAuthenticationWebServiceErrorCode tokenErrorCode = (errorCode == nil ? 
+                                                                         kSCHScholasticAuthenticationWebServiceErrorCodeUnknown : 
+                                                                         [errorCode integerValue]);
+        NSDictionary *userInfo = [NSDictionary dictionaryWithObject:(errorDescription == nil ? 
+                                                                     @"An unknown error occured" : 
+                                                                     errorDescription)
+                                                             forKey:NSLocalizedDescriptionKey];		
+        
+        *error = [NSError errorWithDomain:kBITAPIErrorDomain 
+                                     code:tokenErrorCode
+                                 userInfo:userInfo];
 	}
 	
 	[doc release], doc = nil;

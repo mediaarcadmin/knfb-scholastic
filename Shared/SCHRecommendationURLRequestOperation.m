@@ -32,6 +32,12 @@
         return;
     }
     
+    [self willChangeValueForKey:@"isExecuting"];
+    
+    self.executing = YES;
+    
+    [self didChangeValueForKey:@"isExecuting"];
+    
     __block NSString *coverURL;
     
     [self performWithRecommendation:^(SCHAppRecommendationItem *item) {
@@ -51,6 +57,7 @@
     } else {
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(urlSuccess:) name:kSCHURLManagerSuccess object:nil];
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(urlFailure:) name:kSCHURLManagerFailure object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(urlCleared:) name:kSCHURLManagerCleared object:nil];        
         
         [[SCHURLManager sharedURLManager] requestURLForRecommendation:self.isbn];
     }
@@ -132,6 +139,21 @@
         [[NSNotificationCenter defaultCenter] removeObserver:self];
         [self endOperation];        
 	}
+}
+
+- (void)urlCleared:(NSNotification *)notification
+{
+    if (self.isCancelled) {
+        [[NSNotificationCenter defaultCenter] removeObserver:self];    
+        [self endOperation];
+		return;
+	}
+    
+	NSAssert([NSThread currentThread] == [NSThread mainThread], @"Notification is not fired on the main thread!");
+	
+    [self setProcessingState:kSCHAppRecommendationProcessingStateURLsNotPopulated];
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+    [self endOperation];        
 }
 
 @end

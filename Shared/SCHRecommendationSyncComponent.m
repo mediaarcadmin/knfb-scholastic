@@ -104,10 +104,7 @@ static NSTimeInterval const kSCHRecommendationSyncComponentBookSyncDelayTimeInte
 	BOOL ret = YES;
 	
 	if (self.isSynchronizing == NO) {
-		self.backgroundTaskIdentifier = [[UIApplication sharedApplication] beginBackgroundTaskWithExpirationHandler:^{ 
-			self.isSynchronizing = NO;
-            [self endBackgroundTask];
-		}];
+        [self beginBackgroundTask];
 		
 		ret = [self updateRecommendations];
         if (ret == NO) {
@@ -118,16 +115,22 @@ static NSTimeInterval const kSCHRecommendationSyncComponentBookSyncDelayTimeInte
 	return(ret);		
 }
 
-- (void)clear
+#pragma - Overrideen methods used by resetSync
+
+- (void)resetWebService
+{
+    [self.recommendationWebService clear];
+}
+
+- (void)clearComponent
+{
+    self.remainingBatchedItems = nil;
+}
+
+- (void)clearCoreData
 {
 	NSError *error = nil;
-	
-    [super clear];
     
-    [self.recommendationWebService clear];
-    
-    self.remainingBatchedItems = nil;
-
 	if (![self.managedObjectContext BITemptyEntity:kSCHRecommendationProfile error:&error] ||
         ![self.managedObjectContext BITemptyEntity:kSCHRecommendationISBN error:&error] ||
         ![self.managedObjectContext BITemptyEntity:kSCHRecommendationItem error:&error] ||
@@ -135,6 +138,8 @@ static NSTimeInterval const kSCHRecommendationSyncComponentBookSyncDelayTimeInte
 		NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
 	}	
 }
+
+#pragma mark - Delegate methods
 
 - (BOOL)updateRecommendations
 {	

@@ -22,8 +22,6 @@ NSString * const SCHReadingStatsSyncComponentDidFailNotification = @"SCHReadingS
 
 @property (nonatomic, retain) SCHLibreAccessWebService *libreAccessWebService;
 
-- (void)clearStatistics;
-
 @end
 
 @implementation SCHReadingStatsSyncComponent
@@ -56,10 +54,7 @@ NSString * const SCHReadingStatsSyncComponentDidFailNotification = @"SCHReadingS
     NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
     
 	if (self.isSynchronizing == NO) {
-		self.backgroundTaskIdentifier = [[UIApplication sharedApplication] beginBackgroundTaskWithExpirationHandler:^{ 
-			self.isSynchronizing = NO;
-            [self endBackgroundTask];
-		}];
+        [self beginBackgroundTask];
 		
         [fetchRequest setEntity:[NSEntityDescription entityForName:kSCHReadingStatsDetailItem inManagedObjectContext:self.managedObjectContext]];	
        	NSArray *readingStats = [self.managedObjectContext executeFetchRequest:fetchRequest error:&error];
@@ -97,17 +92,19 @@ NSString * const SCHReadingStatsSyncComponentDidFailNotification = @"SCHReadingS
     
 	return(ret);		
 }
+#pragma - Overrideen methods used by resetSync
 
-- (void)clear
+- (void)resetWebService
 {
-    [super clear];
-    
-    [self.libreAccessWebService clear];
-    
-    [self clearStatistics];
+    [self.libreAccessWebService clear];    
 }
 
-- (void)clearStatistics
+- (void)clearComponent
+{
+    // nop
+}
+
+- (void)clearCoreData
 {
 	NSError *error = nil;
 	
@@ -116,11 +113,13 @@ NSString * const SCHReadingStatsSyncComponentDidFailNotification = @"SCHReadingS
 	}		
 }
 
+#pragma mark - Delegate methods
+
 - (void)method:(NSString *)method didCompleteWithResult:(NSDictionary *)result 
       userInfo:(NSDictionary *)userInfo
 {
     @try {
-        [self clearStatistics];
+        [self clearCoreData];
         [[NSNotificationCenter defaultCenter] postNotificationName:SCHReadingStatsSyncComponentDidCompleteNotification 
                                                             object:self];
         [super method:method didCompleteWithResult:nil userInfo:userInfo];				    
@@ -144,7 +143,7 @@ NSString * const SCHReadingStatsSyncComponentDidFailNotification = @"SCHReadingS
     
     // server error so clear the stats
     if ([error domain] == kBITAPIErrorDomain) {
-        [self clearStatistics];        
+        [self clearCoreData];        
     }    
     [[NSNotificationCenter defaultCenter] postNotificationName:SCHReadingStatsSyncComponentDidFailNotification 
                                                         object:self];

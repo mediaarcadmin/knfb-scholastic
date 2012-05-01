@@ -1488,8 +1488,8 @@
 		52F15A1F1371A2CA0073941E /* SCHBookAnnotations.m in Sources */ = {isa = PBXBuildFile; fileRef = 52F15A1E1371A2CA0073941E /* SCHBookAnnotations.m */; };
 		52FCCF3E14C6FDEB008C2626 /* SCHStoriaWelcomeTwoViewController~ipad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 52FCCF3D14C6FDEB008C2626 /* SCHStoriaWelcomeTwoViewController~ipad.xib */; };
 		52FCCF3F14C6FDEB008C2626 /* SCHStoriaWelcomeTwoViewController~ipad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 52FCCF3D14C6FDEB008C2626 /* SCHStoriaWelcomeTwoViewController~ipad.xib */; };
-		52FCCF4114C6FE71008C2626 /* storia-preview-two~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = 52FCCF4014C6FE71008C2626 /* storia-preview-two~ipad.png */; };
-		52FCCF4214C6FE71008C2626 /* storia-preview-two~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = 52FCCF4014C6FE71008C2626 /* storia-preview-two~ipad.png */; };
+		52FCCF4114C6FE71008C2626 /* storia-preview-two.png in Resources */ = {isa = PBXBuildFile; fileRef = 52FCCF4014C6FE71008C2626 /* storia-preview-two.png */; };
+		52FCCF4214C6FE71008C2626 /* storia-preview-two.png in Resources */ = {isa = PBXBuildFile; fileRef = 52FCCF4014C6FE71008C2626 /* storia-preview-two.png */; };
 		7D3F313714069A5200C6F445 /* libcss.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C947D583133B9C0100FB4404 /* libcss.a */; };
 		7D3F313814069A5200C6F445 /* libEucalyptusBase.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C947D575133B9C0100FB4404 /* libEucalyptusBase.a */; };
 		7D3F313914069A5200C6F445 /* libEucalyptusCSS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C947D579133B9C0100FB4404 /* libEucalyptusCSS.a */; };
@@ -1975,9 +1975,7 @@
 		A3D3F32614CDDF31004A56A5 /* SCHParentalToolsWebViewController_iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = C9367BE014731A8B0033A2EB /* SCHParentalToolsWebViewController_iPad.xib */; };
 		A3D3F32714CDDF31004A56A5 /* sbsd-license.html in Resources */ = {isa = PBXBuildFile; fileRef = C91CD8C41475422200226814 /* sbsd-license.html */; };
 		A3D3F32814CDDF31004A56A5 /* storiatoolbar.png in Resources */ = {isa = PBXBuildFile; fileRef = F88FA50114AC9F6E00AB1911 /* storiatoolbar.png */; };
-		A3D3F32914CDDF31004A56A5 /* storiatoolbar~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = F88FA50214AC9F6E00AB1911 /* storiatoolbar~ipad.png */; };
-		A3D3F32A14CDDF31004A56A5 /* largestoriaicon.png in Resources */ = {isa = PBXBuildFile; fileRef = F88FA50B14ADDAE500AB1911 /* largestoriaicon.png */; };
-		A3D3F32C14CDDF31004A56A5 /* largestoriaicon~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = F88FA50D14ADDAE500AB1911 /* largestoriaicon~ipad.png */; };
+		A3D3F32914CDDF31004A56A5 /* storiatoolbar@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F88FA50214AC9F6E00AB1911 /* storiatoolbar@2x.png */; };
 		A3D3F32D14CDDF31004A56A5 /* storia-parent-tools-logo.png in Resources */ = {isa = PBXBuildFile; fileRef = F8B1E4D814AE25670070EFCD /* storia-parent-tools-logo.png */; };
 		A3D3F32F14CDDF31004A56A5 /* storia-parent-tools-logo~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = F8B1E4DA14AE25670070EFCD /* storia-parent-tools-logo~ipad.png */; };
 		A3D3F33014CDDF31004A56A5 /* storia-setup-logo.png in Resources */ = {isa = PBXBuildFile; fileRef = F8B1E4E114AE28CE0070EFCD /* storia-setup-logo.png */; };
@@ -1985,10 +1983,9 @@
 		A3D3F33314CDDF31004A56A5 /* Default-Landscape~ipad.jpg in Resources */ = {isa = PBXBuildFile; fileRef = F8577FBA14AE2B200003FF20 /* Default-Landscape~ipad.jpg */; };
 		A3D3F33414CDDF31004A56A5 /* Default-Portrait~ipad.jpg in Resources */ = {isa = PBXBuildFile; fileRef = F8577FBB14AE2B200003FF20 /* Default-Portrait~ipad.jpg */; };
 		A3D3F33514CDDF31004A56A5 /* SCHStoriaLoginViewController~ipad.xib in Resources */ = {isa = PBXBuildFile; fileRef = C9F8FD5D14B4909800136C22 /* SCHStoriaLoginViewController~ipad.xib */; };
-		A3D3F33614CDDF31004A56A5 /* storia-signin-button~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = F81CFDF714B4910000F552A9 /* storia-signin-button~ipad.png */; };
+		A3D3F33614CDDF31004A56A5 /* storia-signin-button.png in Resources */ = {isa = PBXBuildFile; fileRef = F81CFDF714B4910000F552A9 /* storia-signin-button.png */; };
 		A3D3F33714CDDF31004A56A5 /* storia-loginbackground~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = F81CFDF814B4910000F552A9 /* storia-loginbackground~ipad.png */; };
-		A3D3F33814CDDF31004A56A5 /* storia-preview.png in Resources */ = {isa = PBXBuildFile; fileRef = F81CFDF914B4910000F552A9 /* storia-preview.png */; };
-		A3D3F33A14CDDF31004A56A5 /* storia-preview~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = F81CFDFB14B4910000F552A9 /* storia-preview~ipad.png */; };
+		A3D3F33A14CDDF31004A56A5 /* storia-preview.png in Resources */ = {isa = PBXBuildFile; fileRef = F81CFDFB14B4910000F552A9 /* storia-preview.png */; };
 		A3D3F33B14CDDF31004A56A5 /* SCHStoriaStartingView~ipad.xib in Resources */ = {isa = PBXBuildFile; fileRef = C9F8FDD714B4A24000136C22 /* SCHStoriaStartingView~ipad.xib */; };
 		A3D3F33C14CDDF31004A56A5 /* SCHStoriaStartingView~iphone.xib in Resources */ = {isa = PBXBuildFile; fileRef = C9C3F9E014B5DF5300757038 /* SCHStoriaStartingView~iphone.xib */; };
 		A3D3F33D14CDDF31004A56A5 /* SCHStoriaLoginViewController~iphone.xib in Resources */ = {isa = PBXBuildFile; fileRef = C9C3F9E314B5E01200757038 /* SCHStoriaLoginViewController~iphone.xib */; };
@@ -1996,7 +1993,7 @@
 		A3D3F33F14CDDF31004A56A5 /* storia-startviewcontroller-static-portrait~ipad.jpg in Resources */ = {isa = PBXBuildFile; fileRef = C9C3F9E714B5E87000757038 /* storia-startviewcontroller-static-portrait~ipad.jpg */; };
 		A3D3F34014CDDF31004A56A5 /* SCHStoriaWelcomeViewController~ipad.xib in Resources */ = {isa = PBXBuildFile; fileRef = C9C3FABA14B85F4300757038 /* SCHStoriaWelcomeViewController~ipad.xib */; };
 		A3D3F34114CDDF31004A56A5 /* SCHStoriaWelcomeTwoViewController~ipad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 52FCCF3D14C6FDEB008C2626 /* SCHStoriaWelcomeTwoViewController~ipad.xib */; };
-		A3D3F34214CDDF31004A56A5 /* storia-preview-two~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = 52FCCF4014C6FE71008C2626 /* storia-preview-two~ipad.png */; };
+		A3D3F34214CDDF31004A56A5 /* storia-preview-two.png in Resources */ = {isa = PBXBuildFile; fileRef = 52FCCF4014C6FE71008C2626 /* storia-preview-two.png */; };
 		A3D3F34314CDDF31004A56A5 /* storia-preview-close-button~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = C94975BF14C9B871008A19C7 /* storia-preview-close-button~ipad.png */; };
 		A3D3F34514CDDF31004A56A5 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B97316FDCFA39411CA2CEA /* main.m */; };
 		A3D3F34614CDDF31004A56A5 /* AppDelegate_iPad.m in Sources */ = {isa = PBXBuildFile; fileRef = 1D3623250D0F684500981E51 /* AppDelegate_iPad.m */; };
@@ -2649,6 +2646,50 @@
 		C9747CE013EAEAC5003ADC71 /* Default@2x.jpg in Resources */ = {isa = PBXBuildFile; fileRef = C9747CD913EAEAC5003ADC71 /* Default@2x.jpg */; };
 		C9747CE413EBF98E003ADC71 /* KNFBXPSEPubInfoParserDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = C9747CE313EBF98E003ADC71 /* KNFBXPSEPubInfoParserDelegate.m */; };
 		C9747CE813EC12BB003ADC71 /* KNFBXPSPageNumbersParserDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = C9747CE713EC12BB003ADC71 /* KNFBXPSPageNumbersParserDelegate.m */; };
+		C9765A45154B006100C876F7 /* storia-loginbackground@2x~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = C9765A40154B006000C876F7 /* storia-loginbackground@2x~iphone.png */; };
+		C9765A46154B006100C876F7 /* storia-loginbackground@2x~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = C9765A40154B006000C876F7 /* storia-loginbackground@2x~iphone.png */; };
+		C9765A47154B006100C876F7 /* storia-loginbackground@2x~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = C9765A40154B006000C876F7 /* storia-loginbackground@2x~iphone.png */; };
+		C9765A48154B006100C876F7 /* storia-loginbackground@2x~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = C9765A40154B006000C876F7 /* storia-loginbackground@2x~iphone.png */; };
+		C9765A4A154B046F00C876F7 /* storia-signin-button@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C9765A49154B046E00C876F7 /* storia-signin-button@2x.png */; };
+		C9765A4B154B046F00C876F7 /* storia-signin-button@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C9765A49154B046E00C876F7 /* storia-signin-button@2x.png */; };
+		C9765A4C154B046F00C876F7 /* storia-signin-button@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C9765A49154B046E00C876F7 /* storia-signin-button@2x.png */; };
+		C9765A4D154B046F00C876F7 /* storia-signin-button@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C9765A49154B046E00C876F7 /* storia-signin-button@2x.png */; };
+		C9765A63154B129300C876F7 /* logo@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C9765A62154B128D00C876F7 /* logo@2x.png */; };
+		C9765A64154B129300C876F7 /* logo@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C9765A62154B128D00C876F7 /* logo@2x.png */; };
+		C9765A65154B129300C876F7 /* logo@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C9765A62154B128D00C876F7 /* logo@2x.png */; };
+		C9765A66154B129300C876F7 /* logo@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C9765A62154B128D00C876F7 /* logo@2x.png */; };
+		C9765A69154B15AF00C876F7 /* red-toolbar.png in Resources */ = {isa = PBXBuildFile; fileRef = C9765A67154B15A400C876F7 /* red-toolbar.png */; };
+		C9765A6A154B15AF00C876F7 /* red-toolbar.png in Resources */ = {isa = PBXBuildFile; fileRef = C9765A67154B15A400C876F7 /* red-toolbar.png */; };
+		C9765A6B154B15AF00C876F7 /* red-toolbar.png in Resources */ = {isa = PBXBuildFile; fileRef = C9765A67154B15A400C876F7 /* red-toolbar.png */; };
+		C9765A6C154B15AF00C876F7 /* red-toolbar.png in Resources */ = {isa = PBXBuildFile; fileRef = C9765A67154B15A400C876F7 /* red-toolbar.png */; };
+		C9765A6D154B15AF00C876F7 /* red-toolbar@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C9765A68154B15AA00C876F7 /* red-toolbar@2x.png */; };
+		C9765A6E154B15AF00C876F7 /* red-toolbar@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C9765A68154B15AA00C876F7 /* red-toolbar@2x.png */; };
+		C9765A6F154B15AF00C876F7 /* red-toolbar@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C9765A68154B15AA00C876F7 /* red-toolbar@2x.png */; };
+		C9765A70154B15AF00C876F7 /* red-toolbar@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C9765A68154B15AA00C876F7 /* red-toolbar@2x.png */; };
+		C9765CCE154EDC4B00C876F7 /* storia-setup-logo@2x~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = C9765CCD154EDC4900C876F7 /* storia-setup-logo@2x~ipad.png */; };
+		C9765CCF154EDC4B00C876F7 /* storia-setup-logo@2x~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = C9765CCD154EDC4900C876F7 /* storia-setup-logo@2x~ipad.png */; };
+		C9765CD0154EDC4B00C876F7 /* storia-setup-logo@2x~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = C9765CCD154EDC4900C876F7 /* storia-setup-logo@2x~ipad.png */; };
+		C9765CD1154EDC4B00C876F7 /* storia-setup-logo@2x~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = C9765CCD154EDC4900C876F7 /* storia-setup-logo@2x~ipad.png */; };
+		C9765CE7154EEC1200C876F7 /* storia-loginbackground~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = C9765CE6154EEC1200C876F7 /* storia-loginbackground~iphone.png */; };
+		C9765CE8154EEC1200C876F7 /* storia-loginbackground~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = C9765CE6154EEC1200C876F7 /* storia-loginbackground~iphone.png */; };
+		C9765CE9154EEC1200C876F7 /* storia-loginbackground~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = C9765CE6154EEC1200C876F7 /* storia-loginbackground~iphone.png */; };
+		C9765CEA154EEC1200C876F7 /* storia-loginbackground~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = C9765CE6154EEC1200C876F7 /* storia-loginbackground~iphone.png */; };
+		C9765D31154FDA3800C876F7 /* cloud-background@2x~ipad.jpg in Resources */ = {isa = PBXBuildFile; fileRef = C9765D2F154FDA3700C876F7 /* cloud-background@2x~ipad.jpg */; };
+		C9765D32154FDA3800C876F7 /* cloud-background@2x~ipad.jpg in Resources */ = {isa = PBXBuildFile; fileRef = C9765D2F154FDA3700C876F7 /* cloud-background@2x~ipad.jpg */; };
+		C9765D33154FDA3800C876F7 /* cloud-background@2x~ipad.jpg in Resources */ = {isa = PBXBuildFile; fileRef = C9765D2F154FDA3700C876F7 /* cloud-background@2x~ipad.jpg */; };
+		C9765D34154FDA3800C876F7 /* cloud-background@2x~ipad.jpg in Resources */ = {isa = PBXBuildFile; fileRef = C9765D2F154FDA3700C876F7 /* cloud-background@2x~ipad.jpg */; };
+		C9765D35154FDA3800C876F7 /* cloud-background~ipad.jpg in Resources */ = {isa = PBXBuildFile; fileRef = C9765D30154FDA3800C876F7 /* cloud-background~ipad.jpg */; };
+		C9765D36154FDA3800C876F7 /* cloud-background~ipad.jpg in Resources */ = {isa = PBXBuildFile; fileRef = C9765D30154FDA3800C876F7 /* cloud-background~ipad.jpg */; };
+		C9765D37154FDA3800C876F7 /* cloud-background~ipad.jpg in Resources */ = {isa = PBXBuildFile; fileRef = C9765D30154FDA3800C876F7 /* cloud-background~ipad.jpg */; };
+		C9765D38154FDA3800C876F7 /* cloud-background~ipad.jpg in Resources */ = {isa = PBXBuildFile; fileRef = C9765D30154FDA3800C876F7 /* cloud-background~ipad.jpg */; };
+		C9765D3B154FDD5900C876F7 /* cloud-background.jpg in Resources */ = {isa = PBXBuildFile; fileRef = C9765D39154FDD5700C876F7 /* cloud-background.jpg */; };
+		C9765D3C154FDD5900C876F7 /* cloud-background.jpg in Resources */ = {isa = PBXBuildFile; fileRef = C9765D39154FDD5700C876F7 /* cloud-background.jpg */; };
+		C9765D3D154FDD5900C876F7 /* cloud-background.jpg in Resources */ = {isa = PBXBuildFile; fileRef = C9765D39154FDD5700C876F7 /* cloud-background.jpg */; };
+		C9765D3E154FDD5900C876F7 /* cloud-background.jpg in Resources */ = {isa = PBXBuildFile; fileRef = C9765D39154FDD5700C876F7 /* cloud-background.jpg */; };
+		C9765D3F154FDD5900C876F7 /* cloud-background@2x.jpg in Resources */ = {isa = PBXBuildFile; fileRef = C9765D3A154FDD5800C876F7 /* cloud-background@2x.jpg */; };
+		C9765D40154FDD5900C876F7 /* cloud-background@2x.jpg in Resources */ = {isa = PBXBuildFile; fileRef = C9765D3A154FDD5800C876F7 /* cloud-background@2x.jpg */; };
+		C9765D41154FDD5900C876F7 /* cloud-background@2x.jpg in Resources */ = {isa = PBXBuildFile; fileRef = C9765D3A154FDD5800C876F7 /* cloud-background@2x.jpg */; };
+		C9765D42154FDD5900C876F7 /* cloud-background@2x.jpg in Resources */ = {isa = PBXBuildFile; fileRef = C9765D3A154FDD5800C876F7 /* cloud-background@2x.jpg */; };
 		C979C6A2138C1F6300581F7F /* button-login@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C979C6A0138C1F6300581F7F /* button-login@2x.png */; };
 		C979C6A4138C1F6300581F7F /* button-login.png in Resources */ = {isa = PBXBuildFile; fileRef = C979C6A1138C1F6300581F7F /* button-login.png */; };
 		C979C6A8138C237C00581F7F /* button-field.png in Resources */ = {isa = PBXBuildFile; fileRef = C979C6A6138C237C00581F7F /* button-field.png */; };
@@ -3291,9 +3332,7 @@
 		C9D7022814ED50B100C10006 /* SCHParentalToolsWebViewController_iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = C9367BE014731A8B0033A2EB /* SCHParentalToolsWebViewController_iPad.xib */; };
 		C9D7022914ED50B100C10006 /* sbsd-license.html in Resources */ = {isa = PBXBuildFile; fileRef = C91CD8C41475422200226814 /* sbsd-license.html */; };
 		C9D7022A14ED50B100C10006 /* storiatoolbar.png in Resources */ = {isa = PBXBuildFile; fileRef = F88FA50114AC9F6E00AB1911 /* storiatoolbar.png */; };
-		C9D7022B14ED50B100C10006 /* storiatoolbar~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = F88FA50214AC9F6E00AB1911 /* storiatoolbar~ipad.png */; };
-		C9D7022C14ED50B100C10006 /* largestoriaicon.png in Resources */ = {isa = PBXBuildFile; fileRef = F88FA50B14ADDAE500AB1911 /* largestoriaicon.png */; };
-		C9D7022D14ED50B100C10006 /* largestoriaicon~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = F88FA50D14ADDAE500AB1911 /* largestoriaicon~ipad.png */; };
+		C9D7022B14ED50B100C10006 /* storiatoolbar@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F88FA50214AC9F6E00AB1911 /* storiatoolbar@2x.png */; };
 		C9D7022E14ED50B100C10006 /* storia-parent-tools-logo.png in Resources */ = {isa = PBXBuildFile; fileRef = F8B1E4D814AE25670070EFCD /* storia-parent-tools-logo.png */; };
 		C9D7022F14ED50B100C10006 /* storia-parent-tools-logo~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = F8B1E4DA14AE25670070EFCD /* storia-parent-tools-logo~ipad.png */; };
 		C9D7023014ED50B100C10006 /* storia-setup-logo.png in Resources */ = {isa = PBXBuildFile; fileRef = F8B1E4E114AE28CE0070EFCD /* storia-setup-logo.png */; };
@@ -3301,10 +3340,9 @@
 		C9D7023214ED50B100C10006 /* Default-Landscape~ipad.jpg in Resources */ = {isa = PBXBuildFile; fileRef = F8577FBA14AE2B200003FF20 /* Default-Landscape~ipad.jpg */; };
 		C9D7023314ED50B100C10006 /* Default-Portrait~ipad.jpg in Resources */ = {isa = PBXBuildFile; fileRef = F8577FBB14AE2B200003FF20 /* Default-Portrait~ipad.jpg */; };
 		C9D7023414ED50B100C10006 /* SCHStoriaLoginViewController~ipad.xib in Resources */ = {isa = PBXBuildFile; fileRef = C9F8FD5D14B4909800136C22 /* SCHStoriaLoginViewController~ipad.xib */; };
-		C9D7023514ED50B100C10006 /* storia-signin-button~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = F81CFDF714B4910000F552A9 /* storia-signin-button~ipad.png */; };
+		C9D7023514ED50B100C10006 /* storia-signin-button.png in Resources */ = {isa = PBXBuildFile; fileRef = F81CFDF714B4910000F552A9 /* storia-signin-button.png */; };
 		C9D7023614ED50B100C10006 /* storia-loginbackground~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = F81CFDF814B4910000F552A9 /* storia-loginbackground~ipad.png */; };
-		C9D7023714ED50B100C10006 /* storia-preview.png in Resources */ = {isa = PBXBuildFile; fileRef = F81CFDF914B4910000F552A9 /* storia-preview.png */; };
-		C9D7023814ED50B100C10006 /* storia-preview~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = F81CFDFB14B4910000F552A9 /* storia-preview~ipad.png */; };
+		C9D7023814ED50B100C10006 /* storia-preview.png in Resources */ = {isa = PBXBuildFile; fileRef = F81CFDFB14B4910000F552A9 /* storia-preview.png */; };
 		C9D7023914ED50B100C10006 /* SCHStoriaStartingView~ipad.xib in Resources */ = {isa = PBXBuildFile; fileRef = C9F8FDD714B4A24000136C22 /* SCHStoriaStartingView~ipad.xib */; };
 		C9D7023A14ED50B100C10006 /* SCHStoriaStartingView~iphone.xib in Resources */ = {isa = PBXBuildFile; fileRef = C9C3F9E014B5DF5300757038 /* SCHStoriaStartingView~iphone.xib */; };
 		C9D7023B14ED50B100C10006 /* SCHStoriaLoginViewController~iphone.xib in Resources */ = {isa = PBXBuildFile; fileRef = C9C3F9E314B5E01200757038 /* SCHStoriaLoginViewController~iphone.xib */; };
@@ -3312,7 +3350,7 @@
 		C9D7023D14ED50B100C10006 /* storia-startviewcontroller-static-portrait~ipad.jpg in Resources */ = {isa = PBXBuildFile; fileRef = C9C3F9E714B5E87000757038 /* storia-startviewcontroller-static-portrait~ipad.jpg */; };
 		C9D7023E14ED50B100C10006 /* SCHStoriaWelcomeViewController~ipad.xib in Resources */ = {isa = PBXBuildFile; fileRef = C9C3FABA14B85F4300757038 /* SCHStoriaWelcomeViewController~ipad.xib */; };
 		C9D7023F14ED50B100C10006 /* SCHStoriaWelcomeTwoViewController~ipad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 52FCCF3D14C6FDEB008C2626 /* SCHStoriaWelcomeTwoViewController~ipad.xib */; };
-		C9D7024014ED50B100C10006 /* storia-preview-two~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = 52FCCF4014C6FE71008C2626 /* storia-preview-two~ipad.png */; };
+		C9D7024014ED50B100C10006 /* storia-preview-two.png in Resources */ = {isa = PBXBuildFile; fileRef = 52FCCF4014C6FE71008C2626 /* storia-preview-two.png */; };
 		C9D7024114ED50B100C10006 /* storia-preview-close-button~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = C94975BF14C9B871008A19C7 /* storia-preview-close-button~ipad.png */; };
 		C9D7024214ED50B100C10006 /* answer-button-blue@2x~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = C9AC85C813ADFF3D000ECDAE /* answer-button-blue@2x~iphone.png */; };
 		C9D7024314ED50B100C10006 /* Icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C9722BF31393AA75008605E8 /* Icon@2x.png */; };
@@ -3757,16 +3795,12 @@
 		F81CA38213FAB230006EF9D6 /* BookSISampleTabHorizontal~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = F81CA37F13FAB230006EF9D6 /* BookSISampleTabHorizontal~ipad.png */; };
 		F81CA38413FAB230006EF9D6 /* BookSITabHorizontal~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = F81CA38013FAB230006EF9D6 /* BookSITabHorizontal~ipad.png */; };
 		F81CA38613FAB230006EF9D6 /* BookSampleTabHorizontal~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = F81CA38113FAB230006EF9D6 /* BookSampleTabHorizontal~ipad.png */; };
-		F81CFDFC14B4910000F552A9 /* storia-signin-button~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = F81CFDF714B4910000F552A9 /* storia-signin-button~ipad.png */; };
-		F81CFDFD14B4910000F552A9 /* storia-signin-button~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = F81CFDF714B4910000F552A9 /* storia-signin-button~ipad.png */; };
+		F81CFDFC14B4910000F552A9 /* storia-signin-button.png in Resources */ = {isa = PBXBuildFile; fileRef = F81CFDF714B4910000F552A9 /* storia-signin-button.png */; };
+		F81CFDFD14B4910000F552A9 /* storia-signin-button.png in Resources */ = {isa = PBXBuildFile; fileRef = F81CFDF714B4910000F552A9 /* storia-signin-button.png */; };
 		F81CFDFE14B4910000F552A9 /* storia-loginbackground~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = F81CFDF814B4910000F552A9 /* storia-loginbackground~ipad.png */; };
 		F81CFDFF14B4910000F552A9 /* storia-loginbackground~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = F81CFDF814B4910000F552A9 /* storia-loginbackground~ipad.png */; };
-		F81CFE0014B4910000F552A9 /* storia-preview.png in Resources */ = {isa = PBXBuildFile; fileRef = F81CFDF914B4910000F552A9 /* storia-preview.png */; };
-		F81CFE0114B4910000F552A9 /* storia-preview.png in Resources */ = {isa = PBXBuildFile; fileRef = F81CFDF914B4910000F552A9 /* storia-preview.png */; };
-		F81CFE0214B4910000F552A9 /* storia-preview@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F81CFDFA14B4910000F552A9 /* storia-preview@2x.png */; };
-		F81CFE0314B4910000F552A9 /* storia-preview@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F81CFDFA14B4910000F552A9 /* storia-preview@2x.png */; };
-		F81CFE0414B4910000F552A9 /* storia-preview~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = F81CFDFB14B4910000F552A9 /* storia-preview~ipad.png */; };
-		F81CFE0514B4910000F552A9 /* storia-preview~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = F81CFDFB14B4910000F552A9 /* storia-preview~ipad.png */; };
+		F81CFE0414B4910000F552A9 /* storia-preview.png in Resources */ = {isa = PBXBuildFile; fileRef = F81CFDFB14B4910000F552A9 /* storia-preview.png */; };
+		F81CFE0514B4910000F552A9 /* storia-preview.png in Resources */ = {isa = PBXBuildFile; fileRef = F81CFDFB14B4910000F552A9 /* storia-preview.png */; };
 		F82D39C5131EA79100289FF3 /* SCHBookContents.m in Sources */ = {isa = PBXBuildFile; fileRef = F82D39B4131EA79100289FF3 /* SCHBookContents.m */; };
 		F82D39DA131EA7D400289FF3 /* SCHBookShelfTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F82D39D8131EA7D400289FF3 /* SCHBookShelfTableViewCell.m */; };
 		F82F913E145943B000F609F9 /* SCHDictionaryOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = F82F913D145943B000F609F9 /* SCHDictionaryOperation.m */; };
@@ -3948,14 +3982,8 @@
 		F88F6FD815208A1600572E7C /* SCHBookShelfMenuController.xib in Resources */ = {isa = PBXBuildFile; fileRef = F88F6FD015208A1600572E7C /* SCHBookShelfMenuController.xib */; };
 		F88FA50314AC9F6E00AB1911 /* storiatoolbar.png in Resources */ = {isa = PBXBuildFile; fileRef = F88FA50114AC9F6E00AB1911 /* storiatoolbar.png */; };
 		F88FA50414AC9F6E00AB1911 /* storiatoolbar.png in Resources */ = {isa = PBXBuildFile; fileRef = F88FA50114AC9F6E00AB1911 /* storiatoolbar.png */; };
-		F88FA50514AC9F6E00AB1911 /* storiatoolbar~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = F88FA50214AC9F6E00AB1911 /* storiatoolbar~ipad.png */; };
-		F88FA50614AC9F6E00AB1911 /* storiatoolbar~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = F88FA50214AC9F6E00AB1911 /* storiatoolbar~ipad.png */; };
-		F88FA50E14ADDAE500AB1911 /* largestoriaicon.png in Resources */ = {isa = PBXBuildFile; fileRef = F88FA50B14ADDAE500AB1911 /* largestoriaicon.png */; };
-		F88FA50F14ADDAE500AB1911 /* largestoriaicon.png in Resources */ = {isa = PBXBuildFile; fileRef = F88FA50B14ADDAE500AB1911 /* largestoriaicon.png */; };
-		F88FA51014ADDAE500AB1911 /* largestoriaicon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F88FA50C14ADDAE500AB1911 /* largestoriaicon@2x.png */; };
-		F88FA51114ADDAE500AB1911 /* largestoriaicon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F88FA50C14ADDAE500AB1911 /* largestoriaicon@2x.png */; };
-		F88FA51214ADDAE500AB1911 /* largestoriaicon~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = F88FA50D14ADDAE500AB1911 /* largestoriaicon~ipad.png */; };
-		F88FA51314ADDAE500AB1911 /* largestoriaicon~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = F88FA50D14ADDAE500AB1911 /* largestoriaicon~ipad.png */; };
+		F88FA50514AC9F6E00AB1911 /* storiatoolbar@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F88FA50214AC9F6E00AB1911 /* storiatoolbar@2x.png */; };
+		F88FA50614AC9F6E00AB1911 /* storiatoolbar@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F88FA50214AC9F6E00AB1911 /* storiatoolbar@2x.png */; };
 		F89140C41511EB310026F16F /* SCHBookShelfRecommendationListController~ipad.xib in Resources */ = {isa = PBXBuildFile; fileRef = F89140BF1511EB310026F16F /* SCHBookShelfRecommendationListController~ipad.xib */; };
 		F89140C51511EB310026F16F /* SCHBookShelfRecommendationListController~ipad.xib in Resources */ = {isa = PBXBuildFile; fileRef = F89140BF1511EB310026F16F /* SCHBookShelfRecommendationListController~ipad.xib */; };
 		F89140C61511EB310026F16F /* SCHBookShelfRecommendationListController~ipad.xib in Resources */ = {isa = PBXBuildFile; fileRef = F89140BF1511EB310026F16F /* SCHBookShelfRecommendationListController~ipad.xib */; };
@@ -4936,7 +4964,7 @@
 		52F15A1D1371A2CA0073941E /* SCHBookAnnotations.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHBookAnnotations.h; path = Shared/SCHBookAnnotations.h; sourceTree = "<group>"; };
 		52F15A1E1371A2CA0073941E /* SCHBookAnnotations.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHBookAnnotations.m; path = Shared/SCHBookAnnotations.m; sourceTree = "<group>"; };
 		52FCCF3D14C6FDEB008C2626 /* SCHStoriaWelcomeTwoViewController~ipad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = "SCHStoriaWelcomeTwoViewController~ipad.xib"; path = "Shared/SCHStoriaWelcomeTwoViewController~ipad.xib"; sourceTree = "<group>"; };
-		52FCCF4014C6FE71008C2626 /* storia-preview-two~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "storia-preview-two~ipad.png"; path = "Resources/UIAssets/storia-preview-two~ipad.png"; sourceTree = "<group>"; };
+		52FCCF4014C6FE71008C2626 /* storia-preview-two.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "storia-preview-two.png"; path = "Resources/UIAssets/storia-preview-two.png"; sourceTree = "<group>"; };
 		7D95F777150F66160093BB90 /* CoreVideo.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreVideo.framework; path = System/Library/Frameworks/CoreVideo.framework; sourceTree = SDKROOT; };
 		8D1107310486CEB800E47090 /* Scholastic-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Scholastic-Info.plist"; plistStructureDefinitionIdentifier = "com.apple.xcode.plist.structure-definition.iphone.info-plist"; sourceTree = "<group>"; };
 		A33477FB13DF206000768DC6 /* 9780545287012_r1.HalloweenParade.xps */ = {isa = PBXFileReference; lastKnownFileType = file; name = 9780545287012_r1.HalloweenParade.xps; path = "Shared/Debug Books/9780545287012_r1.HalloweenParade.xps"; sourceTree = "<group>"; };
@@ -5433,6 +5461,17 @@
 		C9747CE313EBF98E003ADC71 /* KNFBXPSEPubInfoParserDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = KNFBXPSEPubInfoParserDelegate.m; path = XPS/KNFBXPSEPubInfoParserDelegate.m; sourceTree = "<group>"; };
 		C9747CE613EC12BB003ADC71 /* KNFBXPSPageNumbersParserDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = KNFBXPSPageNumbersParserDelegate.h; path = XPS/KNFBXPSPageNumbersParserDelegate.h; sourceTree = "<group>"; };
 		C9747CE713EC12BB003ADC71 /* KNFBXPSPageNumbersParserDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = KNFBXPSPageNumbersParserDelegate.m; path = XPS/KNFBXPSPageNumbersParserDelegate.m; sourceTree = "<group>"; };
+		C9765A40154B006000C876F7 /* storia-loginbackground@2x~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "storia-loginbackground@2x~iphone.png"; path = "Resources/UIAssets/storia-loginbackground@2x~iphone.png"; sourceTree = "<group>"; };
+		C9765A49154B046E00C876F7 /* storia-signin-button@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "storia-signin-button@2x.png"; path = "Resources/UIAssets/storia-signin-button@2x.png"; sourceTree = "<group>"; };
+		C9765A62154B128D00C876F7 /* logo@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "logo@2x.png"; path = "Resources/UIAssets/logo@2x.png"; sourceTree = "<group>"; };
+		C9765A67154B15A400C876F7 /* red-toolbar.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "red-toolbar.png"; path = "Resources/UIAssets/red-toolbar.png"; sourceTree = "<group>"; };
+		C9765A68154B15AA00C876F7 /* red-toolbar@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "red-toolbar@2x.png"; path = "Resources/UIAssets/red-toolbar@2x.png"; sourceTree = "<group>"; };
+		C9765CCD154EDC4900C876F7 /* storia-setup-logo@2x~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "storia-setup-logo@2x~ipad.png"; path = "Resources/UIAssets/storia-setup-logo@2x~ipad.png"; sourceTree = "<group>"; };
+		C9765CE6154EEC1200C876F7 /* storia-loginbackground~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "storia-loginbackground~iphone.png"; path = "Resources/UIAssets/storia-loginbackground~iphone.png"; sourceTree = "<group>"; };
+		C9765D2F154FDA3700C876F7 /* cloud-background@2x~ipad.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = "cloud-background@2x~ipad.jpg"; path = "Resources/UIAssets/cloud-background@2x~ipad.jpg"; sourceTree = "<group>"; };
+		C9765D30154FDA3800C876F7 /* cloud-background~ipad.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = "cloud-background~ipad.jpg"; path = "Resources/UIAssets/cloud-background~ipad.jpg"; sourceTree = "<group>"; };
+		C9765D39154FDD5700C876F7 /* cloud-background.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = "cloud-background.jpg"; path = "Resources/UIAssets/cloud-background.jpg"; sourceTree = "<group>"; };
+		C9765D3A154FDD5800C876F7 /* cloud-background@2x.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = "cloud-background@2x.jpg"; path = "Resources/UIAssets/cloud-background@2x.jpg"; sourceTree = "<group>"; };
 		C979C6A0138C1F6300581F7F /* button-login@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "button-login@2x.png"; path = "Resources/UIAssets/button-login@2x.png"; sourceTree = "<group>"; };
 		C979C6A1138C1F6300581F7F /* button-login.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "button-login.png"; path = "Resources/UIAssets/button-login.png"; sourceTree = "<group>"; };
 		C979C6A6138C237C00581F7F /* button-field.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "button-field.png"; path = "Resources/UIAssets/button-field.png"; sourceTree = "<group>"; };
@@ -5721,11 +5760,9 @@
 		F81CA37F13FAB230006EF9D6 /* BookSISampleTabHorizontal~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "BookSISampleTabHorizontal~ipad.png"; path = "Resources/BookSISampleTabHorizontal~ipad.png"; sourceTree = "<group>"; };
 		F81CA38013FAB230006EF9D6 /* BookSITabHorizontal~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "BookSITabHorizontal~ipad.png"; path = "Resources/BookSITabHorizontal~ipad.png"; sourceTree = "<group>"; };
 		F81CA38113FAB230006EF9D6 /* BookSampleTabHorizontal~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "BookSampleTabHorizontal~ipad.png"; path = "Resources/BookSampleTabHorizontal~ipad.png"; sourceTree = "<group>"; };
-		F81CFDF714B4910000F552A9 /* storia-signin-button~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "storia-signin-button~ipad.png"; path = "Resources/UIAssets/storia-signin-button~ipad.png"; sourceTree = "<group>"; };
+		F81CFDF714B4910000F552A9 /* storia-signin-button.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "storia-signin-button.png"; path = "Resources/UIAssets/storia-signin-button.png"; sourceTree = "<group>"; };
 		F81CFDF814B4910000F552A9 /* storia-loginbackground~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "storia-loginbackground~ipad.png"; path = "Resources/UIAssets/storia-loginbackground~ipad.png"; sourceTree = "<group>"; };
-		F81CFDF914B4910000F552A9 /* storia-preview.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "storia-preview.png"; path = "Resources/UIAssets/storia-preview.png"; sourceTree = "<group>"; };
-		F81CFDFA14B4910000F552A9 /* storia-preview@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "storia-preview@2x.png"; path = "Resources/UIAssets/storia-preview@2x.png"; sourceTree = "<group>"; };
-		F81CFDFB14B4910000F552A9 /* storia-preview~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "storia-preview~ipad.png"; path = "Resources/UIAssets/storia-preview~ipad.png"; sourceTree = "<group>"; };
+		F81CFDFB14B4910000F552A9 /* storia-preview.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "storia-preview.png"; path = "Resources/UIAssets/storia-preview.png"; sourceTree = "<group>"; };
 		F82D39B3131EA79100289FF3 /* SCHBookContents.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHBookContents.h; path = Shared/SCHBookContents.h; sourceTree = "<group>"; };
 		F82D39B4131EA79100289FF3 /* SCHBookContents.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHBookContents.m; path = Shared/SCHBookContents.m; sourceTree = "<group>"; };
 		F82D39D7131EA7D400289FF3 /* SCHBookShelfTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHBookShelfTableViewCell.h; path = Shared/SCHBookShelfTableViewCell.h; sourceTree = "<group>"; };
@@ -5868,10 +5905,7 @@
 		F88F6FCF15208A1600572E7C /* SCHBookShelfMenuController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHBookShelfMenuController.m; path = Shared/SCHBookShelfMenuController.m; sourceTree = "<group>"; };
 		F88F6FD015208A1600572E7C /* SCHBookShelfMenuController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = SCHBookShelfMenuController.xib; path = Shared/SCHBookShelfMenuController.xib; sourceTree = "<group>"; };
 		F88FA50114AC9F6E00AB1911 /* storiatoolbar.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = storiatoolbar.png; path = Resources/UIAssets/FromPSD/storiatoolbar.png; sourceTree = "<group>"; };
-		F88FA50214AC9F6E00AB1911 /* storiatoolbar~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "storiatoolbar~ipad.png"; path = "Resources/UIAssets/FromPSD/storiatoolbar~ipad.png"; sourceTree = "<group>"; };
-		F88FA50B14ADDAE500AB1911 /* largestoriaicon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = largestoriaicon.png; path = Resources/UIAssets/FromPSD/largestoriaicon.png; sourceTree = "<group>"; };
-		F88FA50C14ADDAE500AB1911 /* largestoriaicon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "largestoriaicon@2x.png"; path = "Resources/UIAssets/FromPSD/largestoriaicon@2x.png"; sourceTree = "<group>"; };
-		F88FA50D14ADDAE500AB1911 /* largestoriaicon~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "largestoriaicon~ipad.png"; path = "Resources/UIAssets/FromPSD/largestoriaicon~ipad.png"; sourceTree = "<group>"; };
+		F88FA50214AC9F6E00AB1911 /* storiatoolbar@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "storiatoolbar@2x.png"; path = "Resources/UIAssets/FromPSD/storiatoolbar@2x.png"; sourceTree = "<group>"; };
 		F89140BD1511EB310026F16F /* SCHBookShelfRecommendationListController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHBookShelfRecommendationListController.h; path = Shared/SCHBookShelfRecommendationListController.h; sourceTree = "<group>"; };
 		F89140BE1511EB310026F16F /* SCHBookShelfRecommendationListController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHBookShelfRecommendationListController.m; path = Shared/SCHBookShelfRecommendationListController.m; sourceTree = "<group>"; };
 		F89140BF1511EB310026F16F /* SCHBookShelfRecommendationListController~ipad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = "SCHBookShelfRecommendationListController~ipad.xib"; path = "Shared/SCHBookShelfRecommendationListController~ipad.xib"; sourceTree = "<group>"; };
@@ -7951,18 +7985,20 @@
 				F8B1E4E114AE28CE0070EFCD /* storia-setup-logo.png */,
 				F8B1E4E214AE28CE0070EFCD /* storia-setup-logo@2x.png */,
 				F8B1E4E314AE28CE0070EFCD /* storia-setup-logo~ipad.png */,
+				C9765CCD154EDC4900C876F7 /* storia-setup-logo@2x~ipad.png */,
 				F8B1E4D814AE25670070EFCD /* storia-parent-tools-logo.png */,
 				F8B1E4D914AE25670070EFCD /* storia-parent-tools-logo@2x.png */,
 				F8B1E4DA14AE25670070EFCD /* storia-parent-tools-logo~ipad.png */,
-				F88FA50B14ADDAE500AB1911 /* largestoriaicon.png */,
-				F88FA50C14ADDAE500AB1911 /* largestoriaicon@2x.png */,
-				F88FA50D14ADDAE500AB1911 /* largestoriaicon~ipad.png */,
 				C9747CB613EAE6DD003ADC71 /* plain-background-portrait~ipad.jpg */,
 				C9747CB713EAE6DD003ADC71 /* plain-background-landscape~ipad.jpg */,
 				C9747CB813EAE6DD003ADC71 /* plain-background-portrait@2x.jpg */,
 				C9747CB913EAE6DD003ADC71 /* plain-background-landscape@2x.jpg */,
 				C9747CBA13EAE6DD003ADC71 /* plain-background-portrait.jpg */,
 				C9747CBB13EAE6DD003ADC71 /* plain-background-landscape.jpg */,
+				C9765D39154FDD5700C876F7 /* cloud-background.jpg */,
+				C9765D3A154FDD5800C876F7 /* cloud-background@2x.jpg */,
+				C9765D2F154FDA3700C876F7 /* cloud-background@2x~ipad.jpg */,
+				C9765D30154FDA3800C876F7 /* cloud-background~ipad.jpg */,
 				C9B7EAC113DEF29200BD5CB7 /* admin-updates-available@2x~iphone.png */,
 				C9B7EAC213DEF29300BD5CB7 /* admin-updates-available~iphone.png */,
 				C9B7EAC313DEF29300BD5CB7 /* admin-updates-available~ipad.png */,
@@ -8176,12 +8212,10 @@
 		C9703A5213E9615C0003C4D8 /* Bookshelf */ = {
 			isa = PBXGroup;
 			children = (
-				F81CFDF914B4910000F552A9 /* storia-preview.png */,
-				F81CFDFA14B4910000F552A9 /* storia-preview@2x.png */,
-				F81CFDFB14B4910000F552A9 /* storia-preview~ipad.png */,
-				52FCCF4014C6FE71008C2626 /* storia-preview-two~ipad.png */,
+				F81CFDFB14B4910000F552A9 /* storia-preview.png */,
+				52FCCF4014C6FE71008C2626 /* storia-preview-two.png */,
 				F88FA50114AC9F6E00AB1911 /* storiatoolbar.png */,
-				F88FA50214AC9F6E00AB1911 /* storiatoolbar~ipad.png */,
+				F88FA50214AC9F6E00AB1911 /* storiatoolbar@2x.png */,
 				C9703A9113E994BA0003C4D8 /* bookshelf-topright-shadow~ipad.png */,
 				C9703A9213E994BA0003C4D8 /* bookshelf-topleft-shadow~ipad.png */,
 				C9703A9313E994BA0003C4D8 /* bookshelf-top-shadow~ipad.png */,
@@ -8357,9 +8391,12 @@
 				C901111D1361823C006694B3 /* button-translucent.png */,
 				C901111E1361823C006694B3 /* button-translucent@2x.png */,
 				C901111713617676006694B3 /* logo.png */,
+				C9765A62154B128D00C876F7 /* logo@2x.png */,
 				C901110B1361750B006694B3 /* admin-iphone-landscape-top-toolbar.png */,
 				C901110C1361750B006694B3 /* admin-iphone-landscape-top-toolbar@2x.png */,
 				C901110D1361750B006694B3 /* admin-iphone-portrait-top-toolbar.png */,
+				C9765A67154B15A400C876F7 /* red-toolbar.png */,
+				C9765A68154B15AA00C876F7 /* red-toolbar@2x.png */,
 				C901110E1361750B006694B3 /* admin-iphone-portrait-top-toolbar@2x.png */,
 				C90111421361FD47006694B3 /* settings-landscape@2x.png */,
 				C901114D1361FD83006694B3 /* settings-landscape.png */,
@@ -8651,8 +8688,11 @@
 				C94975BF14C9B871008A19C7 /* storia-preview-close-button~ipad.png */,
 				C9C3F9E614B5E87000757038 /* storia-startviewcontroller-static-landscape~ipad.jpg */,
 				C9C3F9E714B5E87000757038 /* storia-startviewcontroller-static-portrait~ipad.jpg */,
-				F81CFDF714B4910000F552A9 /* storia-signin-button~ipad.png */,
+				F81CFDF714B4910000F552A9 /* storia-signin-button.png */,
+				C9765A49154B046E00C876F7 /* storia-signin-button@2x.png */,
 				F81CFDF814B4910000F552A9 /* storia-loginbackground~ipad.png */,
+				C9765CE6154EEC1200C876F7 /* storia-loginbackground~iphone.png */,
+				C9765A40154B006000C876F7 /* storia-loginbackground@2x~iphone.png */,
 			);
 			name = "Start View";
 			sourceTree = "<group>";
@@ -10029,10 +10069,7 @@
 				C9367BE114731A8B0033A2EB /* SCHParentalToolsWebViewController_iPad.xib in Resources */,
 				C91CD8C51475422200226814 /* sbsd-license.html in Resources */,
 				F88FA50314AC9F6E00AB1911 /* storiatoolbar.png in Resources */,
-				F88FA50514AC9F6E00AB1911 /* storiatoolbar~ipad.png in Resources */,
-				F88FA50E14ADDAE500AB1911 /* largestoriaicon.png in Resources */,
-				F88FA51014ADDAE500AB1911 /* largestoriaicon@2x.png in Resources */,
-				F88FA51214ADDAE500AB1911 /* largestoriaicon~ipad.png in Resources */,
+				F88FA50514AC9F6E00AB1911 /* storiatoolbar@2x.png in Resources */,
 				F8B1E4DB14AE25670070EFCD /* storia-parent-tools-logo.png in Resources */,
 				F8B1E4DD14AE25670070EFCD /* storia-parent-tools-logo@2x.png in Resources */,
 				F8B1E4DF14AE25670070EFCD /* storia-parent-tools-logo~ipad.png in Resources */,
@@ -10042,11 +10079,9 @@
 				F8577FBC14AE2B200003FF20 /* Default-Landscape~ipad.jpg in Resources */,
 				F8577FBE14AE2B200003FF20 /* Default-Portrait~ipad.jpg in Resources */,
 				C9F8FD6014B4909800136C22 /* SCHStoriaLoginViewController~ipad.xib in Resources */,
-				F81CFDFC14B4910000F552A9 /* storia-signin-button~ipad.png in Resources */,
+				F81CFDFC14B4910000F552A9 /* storia-signin-button.png in Resources */,
 				F81CFDFE14B4910000F552A9 /* storia-loginbackground~ipad.png in Resources */,
-				F81CFE0014B4910000F552A9 /* storia-preview.png in Resources */,
-				F81CFE0214B4910000F552A9 /* storia-preview@2x.png in Resources */,
-				F81CFE0414B4910000F552A9 /* storia-preview~ipad.png in Resources */,
+				F81CFE0414B4910000F552A9 /* storia-preview.png in Resources */,
 				C9F8FDD814B4A24000136C22 /* SCHStoriaStartingView~ipad.xib in Resources */,
 				C9C3F9E114B5DF5300757038 /* SCHStoriaStartingView~iphone.xib in Resources */,
 				C9C3F9E414B5E01200757038 /* SCHStoriaLoginViewController~iphone.xib in Resources */,
@@ -10054,7 +10089,7 @@
 				C9C3F9EA14B5E87000757038 /* storia-startviewcontroller-static-portrait~ipad.jpg in Resources */,
 				C9C3FABD14B85F4400757038 /* SCHStoriaWelcomeViewController~ipad.xib in Resources */,
 				52FCCF3E14C6FDEB008C2626 /* SCHStoriaWelcomeTwoViewController~ipad.xib in Resources */,
-				52FCCF4114C6FE71008C2626 /* storia-preview-two~ipad.png in Resources */,
+				52FCCF4114C6FE71008C2626 /* storia-preview-two.png in Resources */,
 				C94975C014C9B871008A19C7 /* storia-preview-close-button~ipad.png in Resources */,
 				C937E7E7150F5718001882AC /* THFonts in Resources */,
 				F89140C41511EB310026F16F /* SCHBookShelfRecommendationListController~ipad.xib in Resources */,
@@ -10097,6 +10132,17 @@
 				C9EB498F152EDA9800DA227A /* SCHRecommendationListView-ReadingViewContainer.xib in Resources */,
 				28C3ED7D154831D500F10DE5 /* storyinteraction-lettertile-tiny@2x~iphone.png in Resources */,
 				28C3ED81154831D500F10DE5 /* storyinteraction-lettertile-tiny~iphone.png in Resources */,
+				C9765A45154B006100C876F7 /* storia-loginbackground@2x~iphone.png in Resources */,
+				C9765A4A154B046F00C876F7 /* storia-signin-button@2x.png in Resources */,
+				C9765A63154B129300C876F7 /* logo@2x.png in Resources */,
+				C9765A69154B15AF00C876F7 /* red-toolbar.png in Resources */,
+				C9765A6D154B15AF00C876F7 /* red-toolbar@2x.png in Resources */,
+				C9765CCE154EDC4B00C876F7 /* storia-setup-logo@2x~ipad.png in Resources */,
+				C9765CE7154EEC1200C876F7 /* storia-loginbackground~iphone.png in Resources */,
+				C9765D31154FDA3800C876F7 /* cloud-background@2x~ipad.jpg in Resources */,
+				C9765D35154FDA3800C876F7 /* cloud-background~ipad.jpg in Resources */,
+				C9765D3B154FDD5900C876F7 /* cloud-background.jpg in Resources */,
+				C9765D3F154FDD5900C876F7 /* cloud-background@2x.jpg in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -10769,10 +10815,7 @@
 				C9367BE214731A8B0033A2EB /* SCHParentalToolsWebViewController_iPad.xib in Resources */,
 				C91CD8C61475422200226814 /* sbsd-license.html in Resources */,
 				F88FA50414AC9F6E00AB1911 /* storiatoolbar.png in Resources */,
-				F88FA50614AC9F6E00AB1911 /* storiatoolbar~ipad.png in Resources */,
-				F88FA50F14ADDAE500AB1911 /* largestoriaicon.png in Resources */,
-				F88FA51114ADDAE500AB1911 /* largestoriaicon@2x.png in Resources */,
-				F88FA51314ADDAE500AB1911 /* largestoriaicon~ipad.png in Resources */,
+				F88FA50614AC9F6E00AB1911 /* storiatoolbar@2x.png in Resources */,
 				F8B1E4DC14AE25670070EFCD /* storia-parent-tools-logo.png in Resources */,
 				F8B1E4DE14AE25670070EFCD /* storia-parent-tools-logo@2x.png in Resources */,
 				F8B1E4E014AE25670070EFCD /* storia-parent-tools-logo~ipad.png in Resources */,
@@ -10782,11 +10825,9 @@
 				F8577FBD14AE2B200003FF20 /* Default-Landscape~ipad.jpg in Resources */,
 				F8577FBF14AE2B200003FF20 /* Default-Portrait~ipad.jpg in Resources */,
 				C9F8FD6114B4909800136C22 /* SCHStoriaLoginViewController~ipad.xib in Resources */,
-				F81CFDFD14B4910000F552A9 /* storia-signin-button~ipad.png in Resources */,
+				F81CFDFD14B4910000F552A9 /* storia-signin-button.png in Resources */,
 				F81CFDFF14B4910000F552A9 /* storia-loginbackground~ipad.png in Resources */,
-				F81CFE0114B4910000F552A9 /* storia-preview.png in Resources */,
-				F81CFE0314B4910000F552A9 /* storia-preview@2x.png in Resources */,
-				F81CFE0514B4910000F552A9 /* storia-preview~ipad.png in Resources */,
+				F81CFE0514B4910000F552A9 /* storia-preview.png in Resources */,
 				C9F8FDD914B4A24000136C22 /* SCHStoriaStartingView~ipad.xib in Resources */,
 				C9C3F9E214B5DF5300757038 /* SCHStoriaStartingView~iphone.xib in Resources */,
 				C9C3F9E514B5E01200757038 /* SCHStoriaLoginViewController~iphone.xib in Resources */,
@@ -10794,7 +10835,7 @@
 				C9C3F9EB14B5E87000757038 /* storia-startviewcontroller-static-portrait~ipad.jpg in Resources */,
 				C9C3FABE14B85F4400757038 /* SCHStoriaWelcomeViewController~ipad.xib in Resources */,
 				52FCCF3F14C6FDEB008C2626 /* SCHStoriaWelcomeTwoViewController~ipad.xib in Resources */,
-				52FCCF4214C6FE71008C2626 /* storia-preview-two~ipad.png in Resources */,
+				52FCCF4214C6FE71008C2626 /* storia-preview-two.png in Resources */,
 				C94975C114C9B871008A19C7 /* storia-preview-close-button~ipad.png in Resources */,
 				C937E7E8150F5718001882AC /* THFonts in Resources */,
 				F89140C51511EB310026F16F /* SCHBookShelfRecommendationListController~ipad.xib in Resources */,
@@ -10839,6 +10880,17 @@
 				C98BDD7C1547F3DF00E265B8 /* 9780545364775_r7.MyFirstBiographyBenjaminFranklin.xps in Resources */,
 				28C3ED7E154831D500F10DE5 /* storyinteraction-lettertile-tiny@2x~iphone.png in Resources */,
 				28C3ED82154831D500F10DE5 /* storyinteraction-lettertile-tiny~iphone.png in Resources */,
+				C9765A46154B006100C876F7 /* storia-loginbackground@2x~iphone.png in Resources */,
+				C9765A4B154B046F00C876F7 /* storia-signin-button@2x.png in Resources */,
+				C9765A64154B129300C876F7 /* logo@2x.png in Resources */,
+				C9765A6A154B15AF00C876F7 /* red-toolbar.png in Resources */,
+				C9765A6E154B15AF00C876F7 /* red-toolbar@2x.png in Resources */,
+				C9765CCF154EDC4B00C876F7 /* storia-setup-logo@2x~ipad.png in Resources */,
+				C9765CE8154EEC1200C876F7 /* storia-loginbackground~iphone.png in Resources */,
+				C9765D32154FDA3800C876F7 /* cloud-background@2x~ipad.jpg in Resources */,
+				C9765D36154FDA3800C876F7 /* cloud-background~ipad.jpg in Resources */,
+				C9765D3C154FDD5900C876F7 /* cloud-background.jpg in Resources */,
+				C9765D40154FDD5900C876F7 /* cloud-background@2x.jpg in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -11291,9 +11343,7 @@
 				A3D3F32614CDDF31004A56A5 /* SCHParentalToolsWebViewController_iPad.xib in Resources */,
 				A3D3F32714CDDF31004A56A5 /* sbsd-license.html in Resources */,
 				A3D3F32814CDDF31004A56A5 /* storiatoolbar.png in Resources */,
-				A3D3F32914CDDF31004A56A5 /* storiatoolbar~ipad.png in Resources */,
-				A3D3F32A14CDDF31004A56A5 /* largestoriaicon.png in Resources */,
-				A3D3F32C14CDDF31004A56A5 /* largestoriaicon~ipad.png in Resources */,
+				A3D3F32914CDDF31004A56A5 /* storiatoolbar@2x.png in Resources */,
 				A3D3F32D14CDDF31004A56A5 /* storia-parent-tools-logo.png in Resources */,
 				A3D3F32F14CDDF31004A56A5 /* storia-parent-tools-logo~ipad.png in Resources */,
 				A3D3F33014CDDF31004A56A5 /* storia-setup-logo.png in Resources */,
@@ -11301,10 +11351,9 @@
 				A3D3F33314CDDF31004A56A5 /* Default-Landscape~ipad.jpg in Resources */,
 				A3D3F33414CDDF31004A56A5 /* Default-Portrait~ipad.jpg in Resources */,
 				A3D3F33514CDDF31004A56A5 /* SCHStoriaLoginViewController~ipad.xib in Resources */,
-				A3D3F33614CDDF31004A56A5 /* storia-signin-button~ipad.png in Resources */,
+				A3D3F33614CDDF31004A56A5 /* storia-signin-button.png in Resources */,
 				A3D3F33714CDDF31004A56A5 /* storia-loginbackground~ipad.png in Resources */,
-				A3D3F33814CDDF31004A56A5 /* storia-preview.png in Resources */,
-				A3D3F33A14CDDF31004A56A5 /* storia-preview~ipad.png in Resources */,
+				A3D3F33A14CDDF31004A56A5 /* storia-preview.png in Resources */,
 				A3D3F33B14CDDF31004A56A5 /* SCHStoriaStartingView~ipad.xib in Resources */,
 				A3D3F33C14CDDF31004A56A5 /* SCHStoriaStartingView~iphone.xib in Resources */,
 				A3D3F33D14CDDF31004A56A5 /* SCHStoriaLoginViewController~iphone.xib in Resources */,
@@ -11312,7 +11361,7 @@
 				A3D3F33F14CDDF31004A56A5 /* storia-startviewcontroller-static-portrait~ipad.jpg in Resources */,
 				A3D3F34014CDDF31004A56A5 /* SCHStoriaWelcomeViewController~ipad.xib in Resources */,
 				A3D3F34114CDDF31004A56A5 /* SCHStoriaWelcomeTwoViewController~ipad.xib in Resources */,
-				A3D3F34214CDDF31004A56A5 /* storia-preview-two~ipad.png in Resources */,
+				A3D3F34214CDDF31004A56A5 /* storia-preview-two.png in Resources */,
 				A3D3F34314CDDF31004A56A5 /* storia-preview-close-button~ipad.png in Resources */,
 				A3D3F4AE14CDE6AA004A56A5 /* answer-button-blue@2x~iphone.png in Resources */,
 				A3775D8514D9BDAE00473314 /* Icon@2x.png in Resources */,
@@ -11358,6 +11407,17 @@
 				C9EB4991152EDA9800DA227A /* SCHRecommendationListView-ReadingViewContainer.xib in Resources */,
 				28C3ED7F154831D500F10DE5 /* storyinteraction-lettertile-tiny@2x~iphone.png in Resources */,
 				28C3ED83154831D500F10DE5 /* storyinteraction-lettertile-tiny~iphone.png in Resources */,
+				C9765A47154B006100C876F7 /* storia-loginbackground@2x~iphone.png in Resources */,
+				C9765A4C154B046F00C876F7 /* storia-signin-button@2x.png in Resources */,
+				C9765A65154B129300C876F7 /* logo@2x.png in Resources */,
+				C9765A6B154B15AF00C876F7 /* red-toolbar.png in Resources */,
+				C9765A6F154B15AF00C876F7 /* red-toolbar@2x.png in Resources */,
+				C9765CD0154EDC4B00C876F7 /* storia-setup-logo@2x~ipad.png in Resources */,
+				C9765CE9154EEC1200C876F7 /* storia-loginbackground~iphone.png in Resources */,
+				C9765D33154FDA3800C876F7 /* cloud-background@2x~ipad.jpg in Resources */,
+				C9765D37154FDA3800C876F7 /* cloud-background~ipad.jpg in Resources */,
+				C9765D3D154FDD5900C876F7 /* cloud-background.jpg in Resources */,
+				C9765D41154FDD5900C876F7 /* cloud-background@2x.jpg in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -11810,9 +11870,7 @@
 				C9D7022814ED50B100C10006 /* SCHParentalToolsWebViewController_iPad.xib in Resources */,
 				C9D7022914ED50B100C10006 /* sbsd-license.html in Resources */,
 				C9D7022A14ED50B100C10006 /* storiatoolbar.png in Resources */,
-				C9D7022B14ED50B100C10006 /* storiatoolbar~ipad.png in Resources */,
-				C9D7022C14ED50B100C10006 /* largestoriaicon.png in Resources */,
-				C9D7022D14ED50B100C10006 /* largestoriaicon~ipad.png in Resources */,
+				C9D7022B14ED50B100C10006 /* storiatoolbar@2x.png in Resources */,
 				C9D7022E14ED50B100C10006 /* storia-parent-tools-logo.png in Resources */,
 				C9D7022F14ED50B100C10006 /* storia-parent-tools-logo~ipad.png in Resources */,
 				C9D7023014ED50B100C10006 /* storia-setup-logo.png in Resources */,
@@ -11820,10 +11878,9 @@
 				C9D7023214ED50B100C10006 /* Default-Landscape~ipad.jpg in Resources */,
 				C9D7023314ED50B100C10006 /* Default-Portrait~ipad.jpg in Resources */,
 				C9D7023414ED50B100C10006 /* SCHStoriaLoginViewController~ipad.xib in Resources */,
-				C9D7023514ED50B100C10006 /* storia-signin-button~ipad.png in Resources */,
+				C9D7023514ED50B100C10006 /* storia-signin-button.png in Resources */,
 				C9D7023614ED50B100C10006 /* storia-loginbackground~ipad.png in Resources */,
-				C9D7023714ED50B100C10006 /* storia-preview.png in Resources */,
-				C9D7023814ED50B100C10006 /* storia-preview~ipad.png in Resources */,
+				C9D7023814ED50B100C10006 /* storia-preview.png in Resources */,
 				C9D7023914ED50B100C10006 /* SCHStoriaStartingView~ipad.xib in Resources */,
 				C9D7023A14ED50B100C10006 /* SCHStoriaStartingView~iphone.xib in Resources */,
 				C9D7023B14ED50B100C10006 /* SCHStoriaLoginViewController~iphone.xib in Resources */,
@@ -11831,7 +11888,7 @@
 				C9D7023D14ED50B100C10006 /* storia-startviewcontroller-static-portrait~ipad.jpg in Resources */,
 				C9D7023E14ED50B100C10006 /* SCHStoriaWelcomeViewController~ipad.xib in Resources */,
 				C9D7023F14ED50B100C10006 /* SCHStoriaWelcomeTwoViewController~ipad.xib in Resources */,
-				C9D7024014ED50B100C10006 /* storia-preview-two~ipad.png in Resources */,
+				C9D7024014ED50B100C10006 /* storia-preview-two.png in Resources */,
 				C9D7024114ED50B100C10006 /* storia-preview-close-button~ipad.png in Resources */,
 				C9D7024214ED50B100C10006 /* answer-button-blue@2x~iphone.png in Resources */,
 				C9D7024314ED50B100C10006 /* Icon@2x.png in Resources */,
@@ -11877,6 +11934,17 @@
 				C9EB4992152EDA9800DA227A /* SCHRecommendationListView-ReadingViewContainer.xib in Resources */,
 				28C3ED80154831D500F10DE5 /* storyinteraction-lettertile-tiny@2x~iphone.png in Resources */,
 				28C3ED84154831D500F10DE5 /* storyinteraction-lettertile-tiny~iphone.png in Resources */,
+				C9765A48154B006100C876F7 /* storia-loginbackground@2x~iphone.png in Resources */,
+				C9765A4D154B046F00C876F7 /* storia-signin-button@2x.png in Resources */,
+				C9765A66154B129300C876F7 /* logo@2x.png in Resources */,
+				C9765A6C154B15AF00C876F7 /* red-toolbar.png in Resources */,
+				C9765A70154B15AF00C876F7 /* red-toolbar@2x.png in Resources */,
+				C9765CD1154EDC4B00C876F7 /* storia-setup-logo@2x~ipad.png in Resources */,
+				C9765CEA154EEC1200C876F7 /* storia-loginbackground~iphone.png in Resources */,
+				C9765D34154FDA3800C876F7 /* cloud-background@2x~ipad.jpg in Resources */,
+				C9765D38154FDA3800C876F7 /* cloud-background~ipad.jpg in Resources */,
+				C9765D3E154FDD5900C876F7 /* cloud-background.jpg in Resources */,
+				C9765D42154FDD5900C876F7 /* cloud-background@2x.jpg in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
