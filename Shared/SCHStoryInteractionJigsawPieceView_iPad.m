@@ -13,12 +13,18 @@
 
 @synthesize image;
 @synthesize solutionPosition;
-@synthesize puzzleFrame;
+@synthesize pieceFrame;
 
 - (void)dealloc
 {
     CGImageRelease(image), image = NULL;
     [super dealloc];
+}
+
+- (void)didMoveToSuperview
+{
+    [super didMoveToSuperview];
+    [self setNeedsDisplay];
 }
 
 - (void)setImage:(CGImageRef)newImage
@@ -27,7 +33,6 @@
     image = CGImageRetain(newImage);
     CGImageRelease(oldImage);
     [self setBackgroundColor:[UIColor clearColor]];
-    [self setNeedsDisplay];
 }
 
 - (void)drawRect:(CGRect)rect
@@ -40,20 +45,10 @@
     }
 }
 
-- (CGPoint)correctPosition
+- (BOOL)shouldSnapToSolutionPositionFromPosition:(CGPoint)position
 {
-    return CGPointMake(self.puzzleFrame.origin.x+self.solutionPosition.x, self.puzzleFrame.origin.y+self.solutionPosition.y);
-}
-
-- (BOOL)isInCorrectPosition
-{
-    static const CGFloat kSnapDistanceSq = 900;
-    return SCHCGPointDistanceSq(self.center, [self correctPosition]) < kSnapDistanceSq;
-}
-
-- (BOOL)isLockedInCorrectPosition
-{
-    return ![self isUserInteractionEnabled];
+    CGFloat distanceSq = SCHCGPointDistanceSq(position, self.solutionPosition);
+    return distanceSq < 900;
 }
 
 - (void)beginDrag

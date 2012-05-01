@@ -7,11 +7,17 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "SCHDragFromScrollViewGestureRecognizer.h"
 #import "SCHStoryInteractionJigsawPieceView.h"
 
 @interface SCHStoryInteractionJigsawPieceView_iPhone : UIView <SCHStoryInteractionJigsawPieceView> {}
 
 @property (nonatomic, assign) CGPoint homePosition;
+
+- (void)addDragFromScrollerGestureRecognizerWithTarget:(id)target
+                                                action:(SEL)action
+                                             container:(UIView *)containerView
+                                             direction:(enum SCHDragFromScrollViewGestureRecognizerDirection)direction;
 
 - (void)moveToHomePosition;
 

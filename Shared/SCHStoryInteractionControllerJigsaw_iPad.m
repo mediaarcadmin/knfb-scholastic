@@ -7,6 +7,7 @@
 //
 
 #import "SCHStoryInteractionControllerJigsaw_iPad.h"
+#import "SCHStoryInteractionJigsawPiece.h"
 #import "SCHStoryInteractionJigsawPieceView_iPad.h"
 #import "SCHStoryInteractionJigsawPreviewView.h"
 #import "NSArray+Shuffling.h"
@@ -40,10 +41,9 @@ enum {
     return CGRectInset(self.contentsView.bounds, 30, 10);
 }
 
-- (UIView<SCHStoryInteractionJigsawPieceView> *)newPieceViewForImage:(CGImageRef)image
+- (UIView<SCHStoryInteractionJigsawPieceView> *)newPieceView
 {
     SCHStoryInteractionJigsawPieceView_iPad *pieceView = [[SCHStoryInteractionJigsawPieceView_iPad alloc] initWithFrame:CGRectZero];
-    pieceView.image = image;
     return pieceView;
 }
 
@@ -88,29 +88,34 @@ enum {
     return [positions shuffled];
 }
 
-- (void)setupPuzzlePiecesForInteractionFromPreview:(SCHStoryInteractionJigsawPreviewView *)preview;
+- (void)setupPieceViewsForOrientation:(enum SCHStoryInteractionJigsawOrientation)orientation puzzleRect:(CGRect)puzzleRect
 {
-    CGRect puzzleBounds = [preview puzzleBounds];
-    CGAffineTransform puzzleTransform = CGAffineTransformMakeScale(CGRectGetWidth(puzzleBounds)/CGRectGetWidth(self.puzzleBackground.bounds),
-                                                                   CGRectGetHeight(puzzleBounds)/CGRectGetHeight(self.puzzleBackground.bounds));
+    const enum SCHStoryInteractionJigsawOrientation jigsawOrientation =
+        (UIInterfaceOrientationIsLandscape(orientation) ? kSCHStoryInteractionJigsawOrientationLandscape : kSCHStoryInteractionJigsawOrientationPortrait);
+    
+    CGAffineTransform puzzleTransform = CGAffineTransformMakeScale(CGRectGetWidth(puzzleRect)/CGRectGetWidth(self.puzzleBackground.bounds),
+                                                                   CGRectGetHeight(puzzleRect)/CGRectGetHeight(self.puzzleBackground.bounds));
 
     NSArray *homePositions = [self homePositionsAroundPuzzleForOrientation:self.interfaceOrientation];
-    NSInteger pieceIndex = 0;
-    for (SCHStoryInteractionJigsawPieceView_iPad *piece in self.jigsawPieceViews) {
-        CGPoint center = piece.center;
+    for (NSInteger pieceIndex = 0; pieceIndex < self.numberOfPieces; ++pieceIndex) {
+        SCHStoryInteractionJigsawPiece *piece = [self.jigsawPieces objectAtIndex:pieceIndex];
+        SCHStoryInteractionJigsawPieceView_iPad *pieceView = [self.jigsawPieceViews objectAtIndex:pieceIndex];
+        CGPoint center = CGPointMake(CGRectGetMidX(pieceView.pieceFrame), CGRectGetMidY(pieceView.pieceFrame));
         NSLog(@"piece position = %@", NSStringFromCGPoint(center));
-        piece.solutionPosition = center;
-        piece.center = CGPointMake(center.x+CGRectGetMinX(self.puzzleBackground.frame), center.y+CGRectGetMinY(self.puzzleBackground.frame));
-        piece.puzzleFrame = self.puzzleBackground.frame;
-        piece.homePosition = [[homePositions objectAtIndex:pieceIndex] CGPointValue];
-        piece.transform = puzzleTransform;
-        piece.dragTransform = CGAffineTransformIdentity;
-        piece.snappedTransform = CGAffineTransformIdentity;
-        piece.delegate = self;
-        [self.contentsView addSubview:piece];
-        pieceIndex++;
+        [piece setSolutionPosition:center forOrientation:jigsawOrientation];
+        pieceView.bounds = (CGRect){ CGPointZero, pieceView.pieceFrame.size };
+        pieceView.center = CGPointMake(center.x+CGRectGetMinX(self.puzzleBackground.frame), center.y+CGRectGetMinY(self.puzzleBackground.frame));
+        pieceView.homePosition = [[homePositions objectAtIndex:pieceIndex] CGPointValue];
+        pieceView.transform = puzzleTransform;
+        pieceView.dragTransform = CGAffineTransformIdentity;
+        pieceView.snappedTransform = CGAffineTransformIdentity;
+        pieceView.delegate = self;
+        [self.contentsView addSubview:pieceView];
     }
-    
+}
+
+- (void)animatePiecesToHomePositionsForOrientation:(enum SCHStoryInteractionJigsawOrientation)orientation
+{
     [self enqueueAudioWithPath:@"sfx_breakpuzzle.mp3" fromBundle:YES];
     
     // scale the pieces down to fit in the margins around the puzzle background
@@ -122,7 +127,7 @@ enum {
         default: scale = 0.33; break;
     }
     CGAffineTransform pieceTransform = CGAffineTransformMakeScale(scale, scale);
-    [self.puzzleBackground setTransform:puzzleTransform];
+//    [self.puzzleBackground setTransform:puzzleTransform];
     
     // spread the pieces around the puzzle background
     [UIView animateWithDuration:0.5
@@ -146,14 +151,14 @@ enum {
     
     NSArray *homePositions = [self homePositionsAroundPuzzleForOrientation:orientation];
  
-    NSInteger pieceIndex = 0;
-    for (SCHStoryInteractionJigsawPieceView_iPad *piece in self.jigsawPieceViews) {
-        piece.puzzleFrame = self.puzzleBackground.frame;
-        piece.homePosition = [[homePositions objectAtIndex:pieceIndex] CGPointValue];
-        if ([piece isLockedInCorrectPosition]) {
-            piece.center = [piece correctPosition];
+    for (NSInteger pieceIndex = 0; pieceIndex < self.numberOfPieces; ++pieceIndex) {
+        SCHStoryInteractionJigsawPiece *piece = [self.jigsawPieces objectAtIndex:pieceIndex];
+        SCHStoryInteractionJigsawPieceView_iPad *pieceView = [self.jigsawPieceViews objectAtIndex:pieceIndex];
+        pieceView.homePosition = [[homePositions objectAtIndex:pieceIndex] CGPointValue];
+        if ([piece isInCorrectPosition]) {
+            pieceView.center = [piece solutionPositionForOrientation:[self currentJigsawOrientation]];
         } else {
-            piece.center = piece.homePosition;
+            pieceView.center = pieceView.homePosition;
         }
         pieceIndex++;
     }
@@ -177,9 +182,9 @@ enum {
 
 - (BOOL)draggableView:(SCHStoryInteractionDraggableView *)draggableView shouldSnapFromPosition:(CGPoint)position toPosition:(CGPoint *)snapPosition
 {
-    SCHStoryInteractionJigsawPieceView_iPad *piece = (SCHStoryInteractionJigsawPieceView_iPad *)draggableView;
+    SCHStoryInteractionJigsawPiece *piece = [self pieceForPieceView:(SCHStoryInteractionJigsawPieceView_iPad *)draggableView];
     if ([piece isInCorrectPosition]) {
-        *snapPosition = [piece correctPosition];
+        *snapPosition = [piece solutionPositionForOrientation:[self currentJigsawOrientation]];
         return YES;
     }
     return NO;
@@ -187,21 +192,24 @@ enum {
 
 - (void)draggableView:(SCHStoryInteractionDraggableView *)draggableView didMoveToPosition:(CGPoint)position
 {
-    SCHStoryInteractionJigsawPieceView_iPad *piece = (SCHStoryInteractionJigsawPieceView_iPad *)draggableView;
+    SCHStoryInteractionJigsawPieceView_iPad *pieceView = (SCHStoryInteractionJigsawPieceView_iPad *)draggableView;
+    SCHStoryInteractionJigsawPiece *piece = [self pieceForPieceView:pieceView];
     
     // ensure we only play one drop sound at a time
     [NSObject cancelPreviousPerformRequestsWithTarget:self];
-    [self performSelector:@selector(playDropSoundForPiece:) withObject:piece afterDelay:0.2];
+    [self performSelector:@selector(playDropSoundForPiece:) withObject:pieceView afterDelay:0.2];
     
     if ([piece isInCorrectPosition]) {
-        [piece setUserInteractionEnabled:NO];
+        [pieceView setUserInteractionEnabled:NO];
     } else {
-        [piece moveToHomePosition];
+        [pieceView moveToHomePosition];
     }
 }
 
-- (void)playDropSoundForPiece:(SCHStoryInteractionJigsawPieceView_iPad *)piece
+- (void)playDropSoundForPiece:(SCHStoryInteractionJigsawPieceView_iPad *)pieceView
 {
+    SCHStoryInteractionJigsawPiece *piece = [self pieceForPieceView:pieceView];
+    
     if ([piece isInCorrectPosition]) {
         [self enqueueAudioWithPath:@"sfx_dropOK.mp3"
                         fromBundle:YES
@@ -218,7 +226,5 @@ enum {
               synchronizedEndBlock:nil];
     }
 }
-
-
 
 @end
