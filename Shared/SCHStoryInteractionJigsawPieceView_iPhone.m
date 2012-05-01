@@ -9,11 +9,13 @@
 #import "SCHStoryInteractionJigsawPieceView_iPhone.h"
 #import "SCHGeometry.h"
 
-@implementation SCHStoryInteractionJigsawPieceView_iPhone
+@implementation SCHStoryInteractionJigsawPieceView_iPhone {
+    UIGestureRecognizer *dragFromScrollGestureRecognizer;
+}
 
 @synthesize image;
 @synthesize solutionPosition;
-@synthesize puzzleFrame;
+@synthesize pieceFrame;
 @synthesize homePosition;
 
 - (void)dealloc
@@ -31,12 +33,17 @@
     return self;
 }
 
+- (void)didMoveToSuperview
+{
+    [super didMoveToSuperview];
+    [self setNeedsDisplay];
+}
+
 - (void)setImage:(CGImageRef)newImage
 {
     CGImageRef oldImage = image;
     image = CGImageRetain(newImage);
     CGImageRelease(oldImage);
-    [self setBackgroundColor:[UIColor clearColor]];
     [self setNeedsDisplay];
 }
 
@@ -50,25 +57,32 @@
     }
 }
 
-- (CGPoint)correctPosition
+- (BOOL)shouldSnapToSolutionPositionFromPosition:(CGPoint)position
 {
-    return CGPointMake(self.puzzleFrame.origin.x+self.solutionPosition.x, self.puzzleFrame.origin.y+self.solutionPosition.y);
-}
-
-- (BOOL)isInCorrectPosition
-{
-    static const CGFloat kSnapDistanceSq = 500;
-    return SCHCGPointDistanceSq(self.center, [self correctPosition]) < kSnapDistanceSq;
-}
-
-- (BOOL)isLockedInCorrectPosition
-{
-    return ![self isUserInteractionEnabled];
+    CGFloat distanceSq = SCHCGPointDistanceSq(position, self.solutionPosition);
+    return distanceSq < 500;
 }
 
 - (void)moveToHomePosition
 {
     self.center = self.homePosition;
+}
+
+- (void)addDragFromScrollerGestureRecognizerWithTarget:(id)target
+                                                action:(SEL)action
+                                             container:(UIView *)containerView
+                                             direction:(enum SCHDragFromScrollViewGestureRecognizerDirection)direction
+{
+    if (dragFromScrollGestureRecognizer) {
+        [self removeGestureRecognizer:dragFromScrollGestureRecognizer];
+    }
+    
+    SCHDragFromScrollViewGestureRecognizer *drag = [[SCHDragFromScrollViewGestureRecognizer alloc] initWithTarget:target action:action];
+    drag.dragContainerView = containerView;
+    drag.direction = direction;
+    [self addGestureRecognizer:drag];
+    dragFromScrollGestureRecognizer = drag;
+    [drag release];
 }
 
 @end
