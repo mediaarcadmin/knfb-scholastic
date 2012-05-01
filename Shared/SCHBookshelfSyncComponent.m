@@ -82,10 +82,7 @@ NSString * const SCHBookshelfSyncComponentDidFailNotification = @"SCHBookshelfSy
 	BOOL ret = YES;
 	
 	if (self.isSynchronizing == NO) {
-		self.backgroundTaskIdentifier = [[UIApplication sharedApplication] beginBackgroundTaskWithExpirationHandler:^{ 
-			self.isSynchronizing = NO;
-            [self endBackgroundTask];
-		}];
+        [self beginBackgroundTask];
 		
 		ret = [self updateContentMetadataItems];
         if (ret == NO) {
@@ -96,21 +93,29 @@ NSString * const SCHBookshelfSyncComponentDidFailNotification = @"SCHBookshelfSy
 	return(ret);		
 }
 
-- (void)clear
+#pragma - Overrideen methods used by resetSync
+
+- (void)resetWebService
 {
-	NSError *error = nil;
-    
-    [super clear];
-    
-    [self.libreAccessWebService clear];
-    
+    [self.libreAccessWebService clear];    
+}
+
+- (void)clearComponent
+{
     self.requestCount = 0;
     [self.didReceiveFailedResponseBooks removeAllObjects];
+}
+
+- (void)clearCoreData
+{
+	NSError *error = nil;
     
 	if (![self.managedObjectContext BITemptyEntity:kSCHContentMetadataItem error:&error]) {
 		NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
 	}	
 }
+
+#pragma mark - Delegate methods
 
 - (void)method:(NSString *)method didCompleteWithResult:(NSDictionary *)result
       userInfo:(NSDictionary *)userInfo

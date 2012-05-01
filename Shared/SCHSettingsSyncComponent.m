@@ -54,10 +54,7 @@ NSString * const SCHSettingsSyncComponentDidFailNotification = @"SCHSettingsSync
 	BOOL ret = YES;
 	
 	if (self.isSynchronizing == NO) {
-		self.backgroundTaskIdentifier = [[UIApplication sharedApplication] beginBackgroundTaskWithExpirationHandler:^{ 
-			self.isSynchronizing = NO;
-            [self endBackgroundTask];
-		}];
+        [self beginBackgroundTask];
 		
 		self.isSynchronizing = [self.libreAccessWebService listUserSettings];
 		if (self.isSynchronizing == NO) {
@@ -83,18 +80,28 @@ NSString * const SCHSettingsSyncComponentDidFailNotification = @"SCHSettingsSync
 	return(ret);	
 }
 
-- (void)clear
+#pragma - Overrideen methods used by resetSync
+
+- (void)resetWebService
+{
+    [self.libreAccessWebService clear];    
+}
+
+- (void)clearComponent
+{
+    // nop
+}
+
+- (void)clearCoreData
 {
 	NSError *error = nil;
-	
-    [super clear];
-    
-    [self.libreAccessWebService clear];
     
 	if (![self.managedObjectContext BITemptyEntity:kSCHSettingItem error:&error]) {
 		NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
 	}	
 }
+
+#pragma mark - Delegate methods
 
 - (void)method:(NSString *)method didCompleteWithResult:(NSDictionary *)result 
       userInfo:(NSDictionary *)userInfo
@@ -129,10 +136,7 @@ NSString * const SCHSettingsSyncComponentDidFailNotification = @"SCHSettingsSync
 - (void)updateUserSettings:(NSArray *)settingsList
 {	
     if ([settingsList count] > 0) {
-        NSError *error = nil;
-        if (![self.managedObjectContext BITemptyEntity:kSCHSettingItem error:&error]) {
-            NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
-        }	
+        [self clearCoreData];
         
         for (id setting in settingsList) {
             SCHSettingItem *newUserSettingsItem = [NSEntityDescription insertNewObjectForEntityForName:kSCHSettingItem inManagedObjectContext:self.managedObjectContext];

@@ -287,18 +287,18 @@ static NSUInteger const kSCHSyncManagerMaximumFailureRetries = 3;
     [self.queue removeAllObjects];    
 }
 
-- (void)clear
+- (void)resetSync
 {
     [self flushSyncQueue];
     
-	[self.profileSyncComponent clear];	
-	[self.contentSyncComponent clear];	
-	[self.bookshelfSyncComponent clear];
-	[self.annotationSyncComponent clear];	
-	[self.readingStatsSyncComponent clear];	
-	[self.settingsSyncComponent clear];	
-	[self.wishListSyncComponent clear];	
-    [self.recommendationSyncComponent clear];
+	[self.profileSyncComponent resetSync];	
+	[self.contentSyncComponent resetSync];	
+	[self.bookshelfSyncComponent resetSync];
+	[self.annotationSyncComponent resetSync];	
+	[self.readingStatsSyncComponent resetSync];	
+	[self.settingsSyncComponent resetSync];	
+	[self.wishListSyncComponent resetSync];	
+    [self.recommendationSyncComponent resetSync];
 	
     self.lastFirstSyncEnded = nil;
     self.syncAfterDelay = NO;
