@@ -13,13 +13,10 @@
 		<object class="NSArray" key="IBDocument.IntegratedClassDependencies">
 			<bool key="EncodedWithXMLCoder">YES</bool>
 			<string>IBProxyObject</string>
-			<string>IBUINavigationController</string>
 			<string>IBUIImageView</string>
-			<string>IBUILabel</string>
 			<string>IBUIViewController</string>
+			<string>IBUILabel</string>
 			<string>IBUIBarButtonItem</string>
-			<string>IBUIToolbar</string>
-			<string>IBUINavigationBar</string>
 			<string>IBUITableView</string>
 			<string>IBUINavigationItem</string>
 			<string>IBUIView</string>
@@ -110,7 +107,6 @@
 						<string key="NSFrame">{{826, 8}, {178, 154}}</string>
 						<reference key="NSSuperview" ref="766721923"/>
 						<reference key="NSWindow"/>
-						<reference key="NSNextKeyView"/>
 						<int key="IBUIContentMode">4</int>
 						<bool key="IBUIUserInteractionEnabled">NO</bool>
 						<string key="targetRuntimeIdentifier">IBIPadFramework</string>
@@ -152,7 +148,6 @@
 						<string key="NSFrame">{{224, 300}, {320, 52}}</string>
 						<reference key="NSSuperview" ref="897561001"/>
 						<reference key="NSWindow"/>
-						<reference key="NSNextKeyView"/>
 						<object class="NSColor" key="IBUIBackgroundColor">
 							<int key="NSColorSpace">3</int>
 							<bytes key="NSWhite">MSAwAA</bytes>
@@ -208,36 +203,6 @@
 				<reference key="IBUIBackgroundColor" ref="1063746030"/>
 				<string key="targetRuntimeIdentifier">IBIPadFramework</string>
 			</object>
-			<object class="IBUINavigationController" id="27393608">
-				<object class="IBUISimulatedOrientationMetrics" key="IBUISimulatedOrientationMetrics">
-					<int key="IBUIInterfaceOrientation">1</int>
-					<int key="interfaceOrientation">1</int>
-				</object>
-				<string key="targetRuntimeIdentifier">IBIPadFramework</string>
-				<bool key="IBUIHorizontal">NO</bool>
-				<object class="IBUINavigationBar" key="IBUINavigationBar" id="73892392">
-					<nil key="NSNextResponder"/>
-					<int key="NSvFlags">256</int>
-					<string key="NSFrameSize">{0, 0}</string>
-					<bool key="IBUIClipsSubviews">YES</bool>
-					<bool key="IBUIMultipleTouchEnabled">YES</bool>
-					<string key="targetRuntimeIdentifier">IBIPadFramework</string>
-				</object>
-				<object class="IBUIToolbar" key="IBUIToolbar" id="961626817">
-					<nil key="NSNextResponder"/>
-					<int key="NSvFlags">256</int>
-					<string key="NSFrame">{{0, 980}, {768, 44}}</string>
-					<bool key="IBUIOpaque">NO</bool>
-					<bool key="IBUIClipsSubviews">YES</bool>
-					<int key="IBUIContentMode">4</int>
-					<bool key="IBUIMultipleTouchEnabled">YES</bool>
-					<string key="targetRuntimeIdentifier">IBIPadFramework</string>
-				</object>
-				<object class="NSMutableArray" key="IBUIViewControllers">
-					<bool key="EncodedWithXMLCoder">YES</bool>
-				</object>
-				<bool key="IBUINavigationBarHidden">YES</bool>
-			</object>
 			<object class="IBUIViewController" id="27370276">
 				<object class="IBUINavigationItem" key="IBUINavigationItem" id="403862072">
 					<string key="IBUITitle">Parent Tools</string>
@@ -292,14 +257,6 @@
 						<reference key="destination" ref="27370276"/>
 					</object>
 					<int key="connectionID">40</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBCocoaTouchOutletConnection" key="connection">
-						<string key="label">modalNavigationController</string>
-						<reference key="source" ref="841351856"/>
-						<reference key="destination" ref="27393608"/>
-					</object>
-					<int key="connectionID">41</int>
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBCocoaTouchOutletConnection" key="connection">
@@ -416,21 +373,6 @@
 						<reference key="parent" ref="766721923"/>
 					</object>
 					<object class="IBObjectRecord">
-						<int key="objectID">22</int>
-						<reference key="object" ref="27393608"/>
-						<object class="NSMutableArray" key="children">
-							<bool key="EncodedWithXMLCoder">YES</bool>
-							<reference ref="73892392"/>
-							<reference ref="961626817"/>
-						</object>
-						<reference key="parent" ref="0"/>
-					</object>
-					<object class="IBObjectRecord">
-						<int key="objectID">23</int>
-						<reference key="object" ref="73892392"/>
-						<reference key="parent" ref="27393608"/>
-					</object>
-					<object class="IBObjectRecord">
 						<int key="objectID">24</int>
 						<reference key="object" ref="27370276"/>
 						<object class="NSMutableArray" key="children">
@@ -452,11 +394,6 @@
 						<int key="objectID">32</int>
 						<reference key="object" ref="325072269"/>
 						<reference key="parent" ref="403862072"/>
-					</object>
-					<object class="IBObjectRecord">
-						<int key="objectID">44</int>
-						<reference key="object" ref="961626817"/>
-						<reference key="parent" ref="27393608"/>
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">46</int>
@@ -486,16 +423,11 @@
 					<string>11.IBPluginDependency</string>
 					<string>13.IBPluginDependency</string>
 					<string>2.IBPluginDependency</string>
-					<string>22.CustomClassName</string>
-					<string>22.IBPluginDependency</string>
-					<string>23.CustomClassName</string>
-					<string>23.IBPluginDependency</string>
 					<string>24.CustomClassName</string>
 					<string>24.IBPluginDependency</string>
 					<string>25.IBPluginDependency</string>
 					<string>31.IBPluginDependency</string>
 					<string>32.IBPluginDependency</string>
-					<string>44.IBPluginDependency</string>
 					<string>46.IBPluginDependency</string>
 					<string>49.IBPluginDependency</string>
 					<string>5.IBPluginDependency</string>
@@ -510,12 +442,7 @@
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
-					<string>SCHNavigationControllerForModalForm</string>
-					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
-					<string>SCHCustomNavigationBar</string>
-					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>SCHSettingsViewController</string>
-					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
@@ -637,27 +564,11 @@
 					</object>
 				</object>
 				<object class="IBPartialClassDescription">
-					<string key="className">SCHCustomNavigationBar</string>
-					<string key="superclassName">UINavigationBar</string>
-					<object class="IBClassDescriptionSource" key="sourceIdentifier">
-						<string key="majorKey">IBProjectSource</string>
-						<string key="minorKey">./Classes/SCHCustomNavigationBar.h</string>
-					</object>
-				</object>
-				<object class="IBPartialClassDescription">
 					<string key="className">SCHCustomToolbar</string>
 					<string key="superclassName">UIToolbar</string>
 					<object class="IBClassDescriptionSource" key="sourceIdentifier">
 						<string key="majorKey">IBProjectSource</string>
 						<string key="minorKey">./Classes/SCHCustomToolbar.h</string>
-					</object>
-				</object>
-				<object class="IBPartialClassDescription">
-					<string key="className">SCHNavigationControllerForModalForm</string>
-					<string key="superclassName">UINavigationController</string>
-					<object class="IBClassDescriptionSource" key="sourceIdentifier">
-						<string key="majorKey">IBProjectSource</string>
-						<string key="minorKey">./Classes/SCHNavigationControllerForModalForm.h</string>
 					</object>
 				</object>
 				<object class="IBPartialClassDescription">
@@ -937,7 +848,7 @@
 				<bool key="EncodedWithXMLCoder">YES</bool>
 				<string>{7, 7}</string>
 				<string>{178, 154}</string>
-				<string>{16, 16}</string>
+				<string>{320, 416}</string>
 				<string>{141, 95}</string>
 			</object>
 		</object>
