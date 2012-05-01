@@ -64,8 +64,6 @@ enum {
     const CGRect puzzle = self.puzzleBackground.frame;
     const BOOL landscape = (orientation == kSCHStoryInteractionJigsawOrientationLandscape);
     
-    NSLog(@"bounds=%@ puzzle=%@ landscape=%d", NSStringFromCGRect(bounds), NSStringFromCGRect(puzzle),landscape);
-    
     NSMutableArray *positions = [NSMutableArray arrayWithCapacity:6];
     void (^add)(CGFloat,CGFloat) = ^(CGFloat x, CGFloat y) {
         [positions addObject:[NSValue valueWithCGPoint:CGPointMake(floorf(x), floorf(y))]];
@@ -98,8 +96,6 @@ enum {
     }
     
     NSAssert(self.numberOfPieces == [positions count], @"wrong number of positions");
-    
-    NSLog(@"positions=%@", positions);
     return positions;
 }
 

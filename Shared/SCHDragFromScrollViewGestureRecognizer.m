@@ -50,7 +50,7 @@
         CGFloat dx = fabs(p.x - self.startPoint.x);
         CGFloat dy = fabs(p.y - self.startPoint.y);
         if ([self shouldCancelWithMotion:dx:dy]) {
-            self.state = UIGestureRecognizerStateCancelled;
+            self.state = UIGestureRecognizerStateFailed;
         }
         if ([self shouldBeginGestureWithMotion:dx:dy]) {
             self.state = UIGestureRecognizerStateBegan;
@@ -62,12 +62,14 @@
 {
     [NSObject cancelPreviousPerformRequestsWithTarget:self];
     [super touchesEnded:touches withEvent:event];
+    self.state = UIGestureRecognizerStateEnded;
 }
 
 - (void)touchesCancelled:(NSSet *)touches withEvent:(UIEvent *)event
 {
     [NSObject cancelPreviousPerformRequestsWithTarget:self];
     [super touchesCancelled:touches withEvent:event];
+    self.state = UIGestureRecognizerStateCancelled;
 }
 
 - (void)didTouchAndHold

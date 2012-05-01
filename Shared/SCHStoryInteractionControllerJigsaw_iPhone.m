@@ -255,7 +255,8 @@ enum {
             break;
         }
         case UIGestureRecognizerStateEnded:
-        case UIGestureRecognizerStateCancelled: {
+        case UIGestureRecognizerStateCancelled:
+        case UIGestureRecognizerStateFailed: {
             [self endDrag];
             break;
         }
@@ -266,6 +267,10 @@ enum {
 
 - (void)beginDragFromView:(SCHStoryInteractionJigsawPieceView_iPhone *)sourceView point:(CGPoint)point
 {
+    if (self.dragSourcePiece != nil) {
+        [self endDrag];
+    }
+    
     self.dragSourcePiece = sourceView;
     
     self.draggingPieceView = [[[SCHStoryInteractionJigsawPieceView_iPhone alloc] initWithFrame:sourceView.bounds] autorelease];
@@ -279,14 +284,17 @@ enum {
     [self.contentsView addSubview:self.draggingPieceView];
     [sourceView setAlpha:0];
     
+    UIView *draggingPiece = self.draggingPieceView;
     [UIView animateWithDuration:0.25 animations:^{
-        [self.draggingPieceView setAlpha:0.8];
-        [self.draggingPieceView setTransform:CGAffineTransformIdentity];
+        [draggingPiece setAlpha:0.8];
+        [draggingPiece setTransform:CGAffineTransformIdentity];
     }];
     
     [self.puzzlePieceScroller setUserInteractionEnabled:NO];
     
-    [self enqueueAudioWithPath:@"sfx_pickup.mp3" fromBundle:YES];
+    [self cancelQueuedAudioExecutingSynchronizedBlocksBefore:^{
+        [self enqueueAudioWithPath:@"sfx_pickup.mp3" fromBundle:YES];
+    }];
 }
 
 - (void)endDrag
@@ -308,20 +316,23 @@ enum {
         [self checkForCompletion];
     } else {
         [self enqueueAudioWithPath:@"sfx_dropNo.mp3" fromBundle:YES];
+
         // animate the dragging piece back to its home
+        UIView *draggingPiece = self.draggingPieceView;
+        UIView *sourcePiece = self.dragSourcePiece;
         [UIView animateWithDuration:0.25
                               delay:0
                             options:UIViewAnimationCurveEaseInOut
                          animations:^{
-                             self.draggingPieceView.transform = self.dragSourcePiece.transform;
-                             self.draggingPieceView.center = self.draggingPieceView.homePosition;
+                             draggingPiece.transform = self.dragSourcePiece.transform;
+                             draggingPiece.center = self.draggingPieceView.homePosition;
                          }
                          completion:^(BOOL finished) {
-                             [self.draggingPieceView removeFromSuperview];
-                             self.draggingPieceView = nil;
-                             self.dragSourcePiece.alpha = 1;
-                             self.dragSourcePiece = nil;
+                             [draggingPiece removeFromSuperview];
+                             [sourcePiece setAlpha:1];
                          }];
+        self.draggingPieceView = nil;
+        self.dragSourcePiece = nil;
     }
     
     [self.puzzlePieceScroller setUserInteractionEnabled:YES];
