@@ -14,6 +14,8 @@
 
 @interface SCHDownloadDictionaryViewController ()
 - (void)layoutLabelsForOrientation:(UIInterfaceOrientation)orientation;
+- (BOOL)fileSystemHasBytesAvailable:(unsigned long long)sizeInBytes;
+
 @end
 
 @implementation SCHDownloadDictionaryViewController
@@ -82,13 +84,28 @@
 
 - (void)downloadDictionary:(id)sender
 {
-    [[SCHDictionaryDownloadManager sharedDownloadManager] beginDictionaryDownload];
-    
     dispatch_block_t afterDownload = ^{
         if (completion) {
             completion();
         }
     };
+
+    // we need to have 1GB free for initial dictionary download
+    // less for subsequent updates
+    BOOL fileSpaceAvailable = [self fileSystemHasBytesAvailable:1073741824];
+
+    if (fileSpaceAvailable == NO) {
+        LambdaAlert *alert = [[LambdaAlert alloc]
+                              initWithTitle:NSLocalizedString(@"Not Enough Free Space", @"")
+                              message:NSLocalizedString(@"You do not have enough memory on your device to download the Scholastic Dictionary. Please clear some space and then go to Parent Tools from the eReader sign-in screen to download the Dictionary.", @"")];
+        [alert addButtonWithTitle:NSLocalizedString(@"OK", @"") block:afterDownload];
+        [alert show];
+        [alert release];   
+        return;
+    }
+    
+    [[SCHDictionaryDownloadManager sharedDownloadManager] beginDictionaryDownload];
+    
     
     BOOL reachable = [[Reachability reachabilityForLocalWiFi] isReachable];
     
@@ -147,6 +164,23 @@
        self.downloadDictionaryButton.frame = dictionaryButtonFrame;
        self.closeButton.frame = closeButtonFrame;
    }
+}
+
+- (BOOL)fileSystemHasBytesAvailable:(unsigned long long)sizeInBytes
+{
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    NSString *docDirectory = ([paths count] > 0 ? [paths objectAtIndex:0] : nil);            
+    
+    NSFileManager *localFileManager = [[NSFileManager alloc] init];
+    
+    NSDictionary* fsAttr = [localFileManager attributesOfFileSystemForPath:docDirectory error:NULL];
+    
+    [localFileManager release];
+    
+    unsigned long long freeSize = [(NSNumber*)[fsAttr objectForKey:NSFileSystemFreeSize] unsignedLongLongValue];
+    //NSLog(@"Freesize: %llu", freeSize);
+    
+    return (sizeInBytes <= freeSize);
 }
 
 @end

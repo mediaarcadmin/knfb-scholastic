@@ -49,6 +49,7 @@
 								<int key="NSvFlags">290</int>
 								<string key="NSFrameSize">{234, 176}</string>
 								<reference key="NSSuperview" ref="994187041"/>
+								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="941291736"/>
 								<bool key="IBUIOpaque">NO</bool>
 								<int key="IBUITag">6</int>
@@ -88,6 +89,7 @@
 								<int key="NSvFlags">298</int>
 								<string key="NSFrame">{{25, 206}, {185, 56}}</string>
 								<reference key="NSSuperview" ref="994187041"/>
+								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="143111558"/>
 								<bool key="IBUIOpaque">NO</bool>
 								<int key="IBUITag">6</int>
@@ -117,6 +119,7 @@
 						</object>
 						<string key="NSFrame">{{40, 40}, {234, 262}}</string>
 						<reference key="NSSuperview" ref="191373211"/>
+						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="780617887"/>
 						<object class="NSColor" key="IBUIBackgroundColor" id="958280769">
 							<int key="NSColorSpace">3</int>
@@ -134,6 +137,7 @@
 								<int key="NSvFlags">290</int>
 								<string key="NSFrameSize">{234, 176}</string>
 								<reference key="NSSuperview" ref="143111558"/>
+								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="483026036"/>
 								<bool key="IBUIOpaque">NO</bool>
 								<int key="IBUITag">12</int>
@@ -158,6 +162,7 @@
 								<int key="NSvFlags">298</int>
 								<string key="NSFrame">{{25, 206}, {185, 56}}</string>
 								<reference key="NSSuperview" ref="143111558"/>
+								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="170165083"/>
 								<bool key="IBUIOpaque">NO</bool>
 								<int key="IBUITag">12</int>
@@ -178,6 +183,7 @@
 						</object>
 						<string key="NSFrame">{{282, 40}, {234, 262}}</string>
 						<reference key="NSSuperview" ref="191373211"/>
+						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="395837400"/>
 						<reference key="IBUIBackgroundColor" ref="958280769"/>
 						<string key="targetRuntimeIdentifier">IBIPadFramework</string>
@@ -192,6 +198,7 @@
 								<int key="NSvFlags">290</int>
 								<string key="NSFrameSize">{234, 176}</string>
 								<reference key="NSSuperview" ref="170165083"/>
+								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="476500754"/>
 								<bool key="IBUIOpaque">NO</bool>
 								<int key="IBUITag">20</int>
@@ -216,6 +223,7 @@
 								<int key="NSvFlags">298</int>
 								<string key="NSFrame">{{25, 202}, {185, 56}}</string>
 								<reference key="NSSuperview" ref="170165083"/>
+								<reference key="NSWindow"/>
 								<bool key="IBUIOpaque">NO</bool>
 								<int key="IBUITag">20</int>
 								<string key="targetRuntimeIdentifier">IBIPadFramework</string>
@@ -235,6 +243,7 @@
 						</object>
 						<string key="NSFrame">{{524, 40}, {234, 258}}</string>
 						<reference key="NSSuperview" ref="191373211"/>
+						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="330395358"/>
 						<reference key="IBUIBackgroundColor" ref="958280769"/>
 						<string key="targetRuntimeIdentifier">IBIPadFramework</string>
@@ -242,6 +251,7 @@
 				</object>
 				<string key="NSFrameSize">{798, 342}</string>
 				<reference key="NSSuperview"/>
+				<reference key="NSWindow"/>
 				<reference key="NSNextKeyView" ref="994187041"/>
 				<reference key="IBUIBackgroundColor" ref="958280769"/>
 				<string key="targetRuntimeIdentifier">IBIPadFramework</string>
@@ -256,6 +266,7 @@
 						<int key="NSvFlags">301</int>
 						<string key="NSFrame">{{130, 100}, {640, 480}}</string>
 						<reference key="NSSuperview" ref="768899461"/>
+						<reference key="NSWindow"/>
 						<object class="NSColor" key="IBUIBackgroundColor">
 							<int key="NSColorSpace">2</int>
 							<bytes key="NSRGB">MC43ODQzMTM3OTggMC43ODQzMTM3OTggMC43ODQzMTM3OTgAA</bytes>
@@ -265,6 +276,7 @@
 				</object>
 				<string key="NSFrameSize">{900, 680}</string>
 				<reference key="NSSuperview"/>
+				<reference key="NSWindow"/>
 				<reference key="NSNextKeyView" ref="283699013"/>
 				<reference key="IBUIBackgroundColor" ref="958280769"/>
 				<string key="targetRuntimeIdentifier">IBIPadFramework</string>
@@ -508,7 +520,76 @@
 			<nil key="sourceID"/>
 			<int key="maxID">34</int>
 		</object>
-		<object class="IBClassDescriber" key="IBDocument.Classes"/>
+		<object class="IBClassDescriber" key="IBDocument.Classes">
+			<object class="NSMutableArray" key="referencedPartialClassDescriptions">
+				<bool key="EncodedWithXMLCoder">YES</bool>
+				<object class="IBPartialClassDescription">
+					<string key="className">SCHStoryInteractionController</string>
+					<string key="superclassName">NSObject</string>
+					<object class="NSMutableDictionary" key="actions">
+						<string key="NS.key.0">playAudioButtonTapped:</string>
+						<string key="NS.object.0">id</string>
+					</object>
+					<object class="NSMutableDictionary" key="actionInfosByName">
+						<string key="NS.key.0">playAudioButtonTapped:</string>
+						<object class="IBActionInfo" key="NS.object.0">
+							<string key="name">playAudioButtonTapped:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+					</object>
+					<object class="IBClassDescriptionSource" key="sourceIdentifier">
+						<string key="majorKey">IBProjectSource</string>
+						<string key="minorKey">./Classes/SCHStoryInteractionController.h</string>
+					</object>
+				</object>
+				<object class="IBPartialClassDescription">
+					<string key="className">SCHStoryInteractionControllerJigsaw_Common</string>
+					<string key="superclassName">SCHStoryInteractionController</string>
+					<object class="NSMutableDictionary" key="actions">
+						<string key="NS.key.0">choosePuzzle:</string>
+						<string key="NS.object.0">id</string>
+					</object>
+					<object class="NSMutableDictionary" key="actionInfosByName">
+						<string key="NS.key.0">choosePuzzle:</string>
+						<object class="IBActionInfo" key="NS.object.0">
+							<string key="name">choosePuzzle:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+					</object>
+					<object class="NSMutableDictionary" key="outlets">
+						<string key="NS.key.0">puzzleBackground</string>
+						<string key="NS.object.0">SCHStoryInteractionJigsawPreviewView</string>
+					</object>
+					<object class="NSMutableDictionary" key="toOneOutletInfosByName">
+						<string key="NS.key.0">puzzleBackground</string>
+						<object class="IBToOneOutletInfo" key="NS.object.0">
+							<string key="name">puzzleBackground</string>
+							<string key="candidateClassName">SCHStoryInteractionJigsawPreviewView</string>
+						</object>
+					</object>
+					<object class="IBClassDescriptionSource" key="sourceIdentifier">
+						<string key="majorKey">IBProjectSource</string>
+						<string key="minorKey">./Classes/SCHStoryInteractionControllerJigsaw_Common.h</string>
+					</object>
+				</object>
+				<object class="IBPartialClassDescription">
+					<string key="className">SCHStoryInteractionJigsawPreviewView</string>
+					<string key="superclassName">UIView</string>
+					<object class="IBClassDescriptionSource" key="sourceIdentifier">
+						<string key="majorKey">IBProjectSource</string>
+						<string key="minorKey">./Classes/SCHStoryInteractionJigsawPreviewView.h</string>
+					</object>
+				</object>
+				<object class="IBPartialClassDescription">
+					<string key="className">SCHStretchableImageButton</string>
+					<string key="superclassName">UIButton</string>
+					<object class="IBClassDescriptionSource" key="sourceIdentifier">
+						<string key="majorKey">IBProjectSource</string>
+						<string key="minorKey">./Classes/SCHStretchableImageButton.h</string>
+					</object>
+				</object>
+			</object>
+		</object>
 		<int key="IBDocument.localizationMode">0</int>
 		<string key="IBDocument.TargetRuntimeIdentifier">IBIPadFramework</string>
 		<object class="NSMutableDictionary" key="IBDocument.PluginDeclaredDependencyDefaults">
