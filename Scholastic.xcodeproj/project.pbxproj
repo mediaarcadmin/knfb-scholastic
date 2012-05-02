@@ -1332,6 +1332,10 @@
 		5248E11413C4858900FA2CDC /* SCHReadingStatsEntryItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 5248E11313C4858900FA2CDC /* SCHReadingStatsEntryItem.m */; };
 		525079421486FADC00712853 /* NSDate+ServerDate.m in Sources */ = {isa = PBXBuildFile; fileRef = 525079411486FADC00712853 /* NSDate+ServerDate.m */; };
 		525079431486FADC00712853 /* NSDate+ServerDate.m in Sources */ = {isa = PBXBuildFile; fileRef = 525079411486FADC00712853 /* NSDate+ServerDate.m */; };
+		5251716515501FB5009C3B61 /* NSFileManager+Extensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 5251716415501FB5009C3B61 /* NSFileManager+Extensions.m */; };
+		5251716615501FB5009C3B61 /* NSFileManager+Extensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 5251716415501FB5009C3B61 /* NSFileManager+Extensions.m */; };
+		5251716715501FB5009C3B61 /* NSFileManager+Extensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 5251716415501FB5009C3B61 /* NSFileManager+Extensions.m */; };
+		5251716815501FB5009C3B61 /* NSFileManager+Extensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 5251716415501FB5009C3B61 /* NSFileManager+Extensions.m */; };
 		5256686F150F697A00570623 /* SCHRecommendationISBN.m in Sources */ = {isa = PBXBuildFile; fileRef = 5256686E150F697A00570623 /* SCHRecommendationISBN.m */; };
 		52566870150F697A00570623 /* SCHRecommendationISBN.m in Sources */ = {isa = PBXBuildFile; fileRef = 5256686E150F697A00570623 /* SCHRecommendationISBN.m */; };
 		52566871150F697A00570623 /* SCHRecommendationISBN.m in Sources */ = {isa = PBXBuildFile; fileRef = 5256686E150F697A00570623 /* SCHRecommendationISBN.m */; };
@@ -4796,6 +4800,8 @@
 		5248E11313C4858900FA2CDC /* SCHReadingStatsEntryItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHReadingStatsEntryItem.m; path = Shared/SCHReadingStatsEntryItem.m; sourceTree = "<group>"; };
 		525079401486FADC00712853 /* NSDate+ServerDate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSDate+ServerDate.h"; path = "Shared/NSDate+ServerDate.h"; sourceTree = "<group>"; };
 		525079411486FADC00712853 /* NSDate+ServerDate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSDate+ServerDate.m"; path = "Shared/NSDate+ServerDate.m"; sourceTree = "<group>"; };
+		5251716315501FB5009C3B61 /* NSFileManager+Extensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSFileManager+Extensions.h"; path = "Shared/NSFileManager+Extensions.h"; sourceTree = "<group>"; };
+		5251716415501FB5009C3B61 /* NSFileManager+Extensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSFileManager+Extensions.m"; path = "Shared/NSFileManager+Extensions.m"; sourceTree = "<group>"; };
 		525477D114BD9B6D001E2388 /* Scholastic 2.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Scholastic 2.xcdatamodel"; sourceTree = "<group>"; };
 		5256686D150F697A00570623 /* SCHRecommendationISBN.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHRecommendationISBN.h; path = Shared/SCHRecommendationISBN.h; sourceTree = "<group>"; };
 		5256686E150F697A00570623 /* SCHRecommendationISBN.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHRecommendationISBN.m; path = Shared/SCHRecommendationISBN.m; sourceTree = "<group>"; };
@@ -7776,6 +7782,8 @@
 				C9BF1210153424E6009FE0B9 /* UILabel+ScholasticAdditions.m */,
 				52023D591541BBB600C36AD5 /* NSFileManager+DoNotBackupExtendedAttribute.h */,
 				52023D5A1541BBB600C36AD5 /* NSFileManager+DoNotBackupExtendedAttribute.m */,
+				5251716315501FB5009C3B61 /* NSFileManager+Extensions.h */,
+				5251716415501FB5009C3B61 /* NSFileManager+Extensions.m */,
 			);
 			name = Extensions;
 			sourceTree = "<group>";
@@ -12411,6 +12419,7 @@
 				52023D5B1541BBB600C36AD5 /* NSFileManager+DoNotBackupExtendedAttribute.m in Sources */,
 				287639B7154E857100540861 /* SCHStoryInteractionJigsawPiece.m in Sources */,
 				F858319815514DC5004960E8 /* SCHDownloadDictionaryFromSettingsViewController.m in Sources */,
+				5251716515501FB5009C3B61 /* NSFileManager+Extensions.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -12847,6 +12856,7 @@
 				52023D5C1541BBB600C36AD5 /* NSFileManager+DoNotBackupExtendedAttribute.m in Sources */,
 				287639B8154E857100540861 /* SCHStoryInteractionJigsawPiece.m in Sources */,
 				F858319915514DC5004960E8 /* SCHDownloadDictionaryFromSettingsViewController.m in Sources */,
+				5251716615501FB5009C3B61 /* NSFileManager+Extensions.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -13216,6 +13226,7 @@
 				52023D5D1541BBB600C36AD5 /* NSFileManager+DoNotBackupExtendedAttribute.m in Sources */,
 				287639BA154E857100540861 /* SCHStoryInteractionJigsawPiece.m in Sources */,
 				F858319A15514DC5004960E8 /* SCHDownloadDictionaryFromSettingsViewController.m in Sources */,
+				5251716715501FB5009C3B61 /* NSFileManager+Extensions.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -13585,6 +13596,7 @@
 				52023D5E1541BBB600C36AD5 /* NSFileManager+DoNotBackupExtendedAttribute.m in Sources */,
 				287639BB154E857100540861 /* SCHStoryInteractionJigsawPiece.m in Sources */,
 				F858319B15514DC5004960E8 /* SCHDownloadDictionaryFromSettingsViewController.m in Sources */,
+				5251716815501FB5009C3B61 /* NSFileManager+Extensions.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

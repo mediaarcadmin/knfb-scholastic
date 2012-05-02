@@ -11,10 +11,10 @@
 #import "SCHAppStateManager.h"
 #import "Reachability.h"
 #import "LambdaAlert.h"
+#import "NSFileManager+Extensions.h"
 
 @interface SCHDownloadDictionaryViewController ()
 - (void)layoutLabelsForOrientation:(UIInterfaceOrientation)orientation;
-- (BOOL)fileSystemHasBytesAvailable:(unsigned long long)sizeInBytes;
 
 @end
 
@@ -92,7 +92,7 @@
 
     // we need to have 1GB free for initial dictionary download
     // less for subsequent updates
-    BOOL fileSpaceAvailable = [self fileSystemHasBytesAvailable:1073741824];
+    BOOL fileSpaceAvailable = [[NSFileManager defaultManager] BITfileSystemHasBytesAvailable:1073741824];
 
     if (fileSpaceAvailable == NO) {
         LambdaAlert *alert = [[LambdaAlert alloc]
@@ -172,23 +172,6 @@
        }
        
    }
-}
-
-- (BOOL)fileSystemHasBytesAvailable:(unsigned long long)sizeInBytes
-{
-    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-    NSString *docDirectory = ([paths count] > 0 ? [paths objectAtIndex:0] : nil);            
-    
-    NSFileManager *localFileManager = [[NSFileManager alloc] init];
-    
-    NSDictionary* fsAttr = [localFileManager attributesOfFileSystemForPath:docDirectory error:NULL];
-    
-    [localFileManager release];
-    
-    unsigned long long freeSize = [(NSNumber*)[fsAttr objectForKey:NSFileSystemFreeSize] unsignedLongLongValue];
-    //NSLog(@"Freesize: %llu", freeSize);
-    
-    return (sizeInBytes <= freeSize);
 }
 
 @end
