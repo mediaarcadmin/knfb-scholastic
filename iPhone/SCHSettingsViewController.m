@@ -30,6 +30,7 @@
 #import "LambdaAlert.h"
 #import "SCHAccountValidationViewController.h"
 #import "SCHVersionDownloadManager.h"
+#import "SCHDownloadDictionaryFromSettingsViewController.h"
 
 extern NSString * const kSCHAuthenticationManagerDeviceKey;
 extern NSString * const kSCHUserDefaultsSpaceSaverModeSetOffNotification;
@@ -575,16 +576,18 @@ extern NSString * const kSCHUserDefaultsSpaceSaverModeSetOffNotification;
         [self.navigationController pushViewController:vc animated:YES];
         [vc release];
     } else {
-        if ([self connectionIsReachableViaWiFi] == YES) {
-            [[SCHDictionaryDownloadManager sharedDownloadManager] beginDictionaryDownload];
-        } else {
-            LambdaAlert *alert = [[LambdaAlert alloc]
-                                  initWithTitle:NSLocalizedString(@"No WiFi", @"")
-                                  message:NSLocalizedString(@"Downloading the dictionary requires a Wi-Fi connection. Please connect to Wi-Fi and then try again.", @"")];
-            [alert addButtonWithTitle:NSLocalizedString(@"OK", @"") block:nil];
-            [alert show];
-            [alert release];
-        }
+        
+        SCHDownloadDictionaryFromSettingsViewController *downloadController = [[SCHDownloadDictionaryFromSettingsViewController alloc] initWithNibName:nil bundle:nil];
+        
+        __block SCHSettingsViewController *weakSelf = self;
+        
+        downloadController.completion = ^{
+            [weakSelf back:nil];
+        };
+        
+
+        [self.navigationController pushViewController:downloadController animated:YES];
+        [downloadController release];
     }
 }
 

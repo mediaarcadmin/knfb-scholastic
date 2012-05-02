@@ -133,8 +133,8 @@
 {
    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
        CGFloat width = UIInterfaceOrientationIsLandscape(orientation) ? 460 : 280;
-       CGFloat gap = UIInterfaceOrientationIsLandscape(orientation) ? 6 : 18;
-       CGFloat yOffset = UIInterfaceOrientationIsLandscape(orientation) ? 12 : 24;
+       CGFloat gap = UIInterfaceOrientationIsLandscape(orientation) ? 10 : 18;
+       CGFloat yOffset = UIInterfaceOrientationIsLandscape(orientation) ? 24 : 24;
        CGFloat downloadButtonXOrigin = UIInterfaceOrientationIsLandscape(orientation) ? 30 : 20;
        CGFloat closeButtonYOffset = UIInterfaceOrientationIsLandscape(orientation) ? 0 : 54;
        CGFloat closeButtonXOrigin = UIInterfaceOrientationIsLandscape(orientation) ? 240 : 20;
@@ -147,22 +147,30 @@
                                     lineBreakMode:label.lineBreakMode];
            label.center = CGPointMake(label.center.x, floorf(y+size.height/2));
            y += size.height + gap;
+           
+           // round frame positions
+           label.frame = CGRectIntegral(label.frame);
+           
+           NSLog(@"Frame: %@", NSStringFromCGRect(label.frame));
        }
               
-       CGRect dictionaryButtonFrame = self.downloadDictionaryButton.frame;
-
-       dictionaryButtonFrame.origin.x = downloadButtonXOrigin;
-       dictionaryButtonFrame.origin.y = y;
-       dictionaryButtonFrame.size.width = buttonWidth;
+       if (self.closeButton) {
        
-       CGRect closeButtonFrame = self.closeButton.frame;
-       closeButtonFrame.origin.x = closeButtonXOrigin;
-       closeButtonFrame.origin.y = y + closeButtonYOffset;
-       closeButtonFrame.size.width = buttonWidth;
+           CGRect dictionaryButtonFrame = self.downloadDictionaryButton.frame;
+           
+           dictionaryButtonFrame.origin.x = downloadButtonXOrigin;
+           dictionaryButtonFrame.origin.y = y;
+           dictionaryButtonFrame.size.width = buttonWidth;
+           
+           CGRect closeButtonFrame = self.closeButton.frame;
+           closeButtonFrame.origin.x = closeButtonXOrigin;
+           closeButtonFrame.origin.y = y + closeButtonYOffset;
+           closeButtonFrame.size.width = buttonWidth;
 
+           self.closeButton.frame = closeButtonFrame;
+           self.downloadDictionaryButton.frame = dictionaryButtonFrame;
+       }
        
-       self.downloadDictionaryButton.frame = dictionaryButtonFrame;
-       self.closeButton.frame = closeButtonFrame;
    }
 }
 

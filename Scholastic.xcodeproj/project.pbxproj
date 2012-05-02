@@ -3901,6 +3901,18 @@
 		F8577FBD14AE2B200003FF20 /* Default-Landscape~ipad.jpg in Resources */ = {isa = PBXBuildFile; fileRef = F8577FBA14AE2B200003FF20 /* Default-Landscape~ipad.jpg */; };
 		F8577FBE14AE2B200003FF20 /* Default-Portrait~ipad.jpg in Resources */ = {isa = PBXBuildFile; fileRef = F8577FBB14AE2B200003FF20 /* Default-Portrait~ipad.jpg */; };
 		F8577FBF14AE2B200003FF20 /* Default-Portrait~ipad.jpg in Resources */ = {isa = PBXBuildFile; fileRef = F8577FBB14AE2B200003FF20 /* Default-Portrait~ipad.jpg */; };
+		F858319215514D73004960E8 /* SCHDownloadDictionaryFromSettingsViewController~ipad.xib in Resources */ = {isa = PBXBuildFile; fileRef = F858319115514D73004960E8 /* SCHDownloadDictionaryFromSettingsViewController~ipad.xib */; };
+		F858319315514D73004960E8 /* SCHDownloadDictionaryFromSettingsViewController~ipad.xib in Resources */ = {isa = PBXBuildFile; fileRef = F858319115514D73004960E8 /* SCHDownloadDictionaryFromSettingsViewController~ipad.xib */; };
+		F858319415514D73004960E8 /* SCHDownloadDictionaryFromSettingsViewController~ipad.xib in Resources */ = {isa = PBXBuildFile; fileRef = F858319115514D73004960E8 /* SCHDownloadDictionaryFromSettingsViewController~ipad.xib */; };
+		F858319515514D73004960E8 /* SCHDownloadDictionaryFromSettingsViewController~ipad.xib in Resources */ = {isa = PBXBuildFile; fileRef = F858319115514D73004960E8 /* SCHDownloadDictionaryFromSettingsViewController~ipad.xib */; };
+		F858319815514DC5004960E8 /* SCHDownloadDictionaryFromSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F858319715514DC5004960E8 /* SCHDownloadDictionaryFromSettingsViewController.m */; };
+		F858319915514DC5004960E8 /* SCHDownloadDictionaryFromSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F858319715514DC5004960E8 /* SCHDownloadDictionaryFromSettingsViewController.m */; };
+		F858319A15514DC5004960E8 /* SCHDownloadDictionaryFromSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F858319715514DC5004960E8 /* SCHDownloadDictionaryFromSettingsViewController.m */; };
+		F858319B15514DC5004960E8 /* SCHDownloadDictionaryFromSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F858319715514DC5004960E8 /* SCHDownloadDictionaryFromSettingsViewController.m */; };
+		F858319D15515010004960E8 /* SCHDownloadDictionaryFromSettingsViewController~iphone.xib in Resources */ = {isa = PBXBuildFile; fileRef = F858319C15515010004960E8 /* SCHDownloadDictionaryFromSettingsViewController~iphone.xib */; };
+		F858319E15515010004960E8 /* SCHDownloadDictionaryFromSettingsViewController~iphone.xib in Resources */ = {isa = PBXBuildFile; fileRef = F858319C15515010004960E8 /* SCHDownloadDictionaryFromSettingsViewController~iphone.xib */; };
+		F858319F15515010004960E8 /* SCHDownloadDictionaryFromSettingsViewController~iphone.xib in Resources */ = {isa = PBXBuildFile; fileRef = F858319C15515010004960E8 /* SCHDownloadDictionaryFromSettingsViewController~iphone.xib */; };
+		F85831A015515010004960E8 /* SCHDownloadDictionaryFromSettingsViewController~iphone.xib in Resources */ = {isa = PBXBuildFile; fileRef = F858319C15515010004960E8 /* SCHDownloadDictionaryFromSettingsViewController~iphone.xib */; };
 		F859D998139F9D0E009DB54F /* SCHStoryInteractionScratchView.m in Sources */ = {isa = PBXBuildFile; fileRef = F859D997139F9D0E009DB54F /* SCHStoryInteractionScratchView.m */; };
 		F85C8CF71394FC42008DD042 /* SCHNotesCountView.m in Sources */ = {isa = PBXBuildFile; fileRef = F85C8CF61394FC42008DD042 /* SCHNotesCountView.m */; };
 		F85C9D8C13E19CA8006F0546 /* BookShelfErrorIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = F85C9D8A13E19CA8006F0546 /* BookShelfErrorIcon.png */; };
@@ -5841,6 +5853,10 @@
 		F8537F19139E47B40092C743 /* SCHStoryInteractionAboutYouQuiz_iPad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SCHStoryInteractionAboutYouQuiz_iPad.xib; sourceTree = "<group>"; };
 		F8577FBA14AE2B200003FF20 /* Default-Landscape~ipad.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "Default-Landscape~ipad.jpg"; sourceTree = "<group>"; };
 		F8577FBB14AE2B200003FF20 /* Default-Portrait~ipad.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "Default-Portrait~ipad.jpg"; sourceTree = "<group>"; };
+		F858319115514D73004960E8 /* SCHDownloadDictionaryFromSettingsViewController~ipad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = "SCHDownloadDictionaryFromSettingsViewController~ipad.xib"; path = "iPad/SCHDownloadDictionaryFromSettingsViewController~ipad.xib"; sourceTree = "<group>"; };
+		F858319615514DC5004960E8 /* SCHDownloadDictionaryFromSettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHDownloadDictionaryFromSettingsViewController.h; path = Shared/SCHDownloadDictionaryFromSettingsViewController.h; sourceTree = "<group>"; };
+		F858319715514DC5004960E8 /* SCHDownloadDictionaryFromSettingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHDownloadDictionaryFromSettingsViewController.m; path = Shared/SCHDownloadDictionaryFromSettingsViewController.m; sourceTree = "<group>"; };
+		F858319C15515010004960E8 /* SCHDownloadDictionaryFromSettingsViewController~iphone.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "SCHDownloadDictionaryFromSettingsViewController~iphone.xib"; sourceTree = "<group>"; };
 		F859D996139F9D0E009DB54F /* SCHStoryInteractionScratchView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCHStoryInteractionScratchView.h; sourceTree = "<group>"; };
 		F859D997139F9D0E009DB54F /* SCHStoryInteractionScratchView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCHStoryInteractionScratchView.m; sourceTree = "<group>"; };
 		F85C8CF51394FC42008DD042 /* SCHNotesCountView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHNotesCountView.h; path = Shared/SCHNotesCountView.h; sourceTree = "<group>"; };
@@ -6520,6 +6536,8 @@
 				28D2AA0D13D6E8F700BEB359 /* SCHDownloadDictionaryViewController.m */,
 				28D67DED13D9B30500F715CD /* SCHRemoveDictionaryViewController.h */,
 				28D67DEE13D9B30500F715CD /* SCHRemoveDictionaryViewController.m */,
+				F858319615514DC5004960E8 /* SCHDownloadDictionaryFromSettingsViewController.h */,
+				F858319715514DC5004960E8 /* SCHDownloadDictionaryFromSettingsViewController.m */,
 			);
 			name = Dictionary;
 			sourceTree = "<group>";
@@ -8276,6 +8294,7 @@
 				C972283F1392B245008605E8 /* SCHSettingsViewController_iPhone.xib */,
 				28BF26EF13D5A15400535A82 /* SCHSetupBookshelvesViewController~iphone.xib */,
 				284DE23013D98D8B009FE14E /* SCHDownloadDictionaryViewController~iphone.xib */,
+				F858319C15515010004960E8 /* SCHDownloadDictionaryFromSettingsViewController~iphone.xib */,
 				28D67DEA13D9B28700F715CD /* SCHRemoveDictionaryViewController~iphone.xib */,
 				284DE1E513D968FB009FE14E /* SCHDeregisterDeviceViewController~iphone.xib */,
 				28986DF413DD9BDE0011B148 /* SCHUpdateBooksViewController~iphone.xib */,
@@ -8315,6 +8334,7 @@
 				529385B412DF231800045B44 /* SCHSettingsViewController_iPad.xib */,
 				28BF26F713D5AD1000535A82 /* SCHSetupBookshelvesViewController~ipad.xib */,
 				28D2AA0913D6E80D00BEB359 /* SCHDownloadDictionaryViewController~ipad.xib */,
+				F858319115514D73004960E8 /* SCHDownloadDictionaryFromSettingsViewController~ipad.xib */,
 				2811879013D9C490001522FE /* SCHRemoveDictionaryViewController~ipad.xib */,
 				284DE1E813D96924009FE14E /* SCHDeregisterDeviceViewController~ipad.xib */,
 				28986DF113DD7DD80011B148 /* SCHUpdateBooksViewController~ipad.xib */,
@@ -10178,6 +10198,8 @@
 				C9765D4E154FFA3400C876F7 /* storia-startviewcontroller-static-portrait@2x~ipad.jpg in Resources */,
 				C9765D7F154FFDE200C876F7 /* Default-Landscape@2x~ipad.jpg in Resources */,
 				C9765D83154FFDE200C876F7 /* Default-Portrait@2x~ipad.jpg in Resources */,
+				F858319215514D73004960E8 /* SCHDownloadDictionaryFromSettingsViewController~ipad.xib in Resources */,
+				F858319D15515010004960E8 /* SCHDownloadDictionaryFromSettingsViewController~iphone.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -10931,6 +10953,8 @@
 				C9765D4F154FFA3400C876F7 /* storia-startviewcontroller-static-portrait@2x~ipad.jpg in Resources */,
 				C9765D80154FFDE200C876F7 /* Default-Landscape@2x~ipad.jpg in Resources */,
 				C9765D84154FFDE200C876F7 /* Default-Portrait@2x~ipad.jpg in Resources */,
+				F858319315514D73004960E8 /* SCHDownloadDictionaryFromSettingsViewController~ipad.xib in Resources */,
+				F858319E15515010004960E8 /* SCHDownloadDictionaryFromSettingsViewController~iphone.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -11463,6 +11487,8 @@
 				C9765D50154FFA3400C876F7 /* storia-startviewcontroller-static-portrait@2x~ipad.jpg in Resources */,
 				C9765D81154FFDE200C876F7 /* Default-Landscape@2x~ipad.jpg in Resources */,
 				C9765D85154FFDE200C876F7 /* Default-Portrait@2x~ipad.jpg in Resources */,
+				F858319415514D73004960E8 /* SCHDownloadDictionaryFromSettingsViewController~ipad.xib in Resources */,
+				F858319F15515010004960E8 /* SCHDownloadDictionaryFromSettingsViewController~iphone.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -11995,6 +12021,8 @@
 				C9765D51154FFA3400C876F7 /* storia-startviewcontroller-static-portrait@2x~ipad.jpg in Resources */,
 				C9765D82154FFDE200C876F7 /* Default-Landscape@2x~ipad.jpg in Resources */,
 				C9765D86154FFDE200C876F7 /* Default-Portrait@2x~ipad.jpg in Resources */,
+				F858319515514D73004960E8 /* SCHDownloadDictionaryFromSettingsViewController~ipad.xib in Resources */,
+				F85831A015515010004960E8 /* SCHDownloadDictionaryFromSettingsViewController~iphone.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -12382,6 +12410,7 @@
 				52023D551541BA2000C36AD5 /* SCHProfileItemSortObject.m in Sources */,
 				52023D5B1541BBB600C36AD5 /* NSFileManager+DoNotBackupExtendedAttribute.m in Sources */,
 				287639B7154E857100540861 /* SCHStoryInteractionJigsawPiece.m in Sources */,
+				F858319815514DC5004960E8 /* SCHDownloadDictionaryFromSettingsViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -12817,6 +12846,7 @@
 				52023D561541BA2000C36AD5 /* SCHProfileItemSortObject.m in Sources */,
 				52023D5C1541BBB600C36AD5 /* NSFileManager+DoNotBackupExtendedAttribute.m in Sources */,
 				287639B8154E857100540861 /* SCHStoryInteractionJigsawPiece.m in Sources */,
+				F858319915514DC5004960E8 /* SCHDownloadDictionaryFromSettingsViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -13185,6 +13215,7 @@
 				52023D571541BA2000C36AD5 /* SCHProfileItemSortObject.m in Sources */,
 				52023D5D1541BBB600C36AD5 /* NSFileManager+DoNotBackupExtendedAttribute.m in Sources */,
 				287639BA154E857100540861 /* SCHStoryInteractionJigsawPiece.m in Sources */,
+				F858319A15514DC5004960E8 /* SCHDownloadDictionaryFromSettingsViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -13553,6 +13584,7 @@
 				52023D581541BA2000C36AD5 /* SCHProfileItemSortObject.m in Sources */,
 				52023D5E1541BBB600C36AD5 /* NSFileManager+DoNotBackupExtendedAttribute.m in Sources */,
 				287639BB154E857100540861 /* SCHStoryInteractionJigsawPiece.m in Sources */,
+				F858319B15514DC5004960E8 /* SCHDownloadDictionaryFromSettingsViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
