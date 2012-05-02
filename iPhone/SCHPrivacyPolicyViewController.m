@@ -29,7 +29,9 @@
 - (BOOL)webView:(UIWebView *)inWeb shouldStartLoadWithRequest:(NSURLRequest *)inRequest navigationType:(UIWebViewNavigationType)inType 
 {
     if (inType == UIWebViewNavigationTypeLinkClicked ) {
-        if ([[[inRequest URL] scheme] isEqualToString:@"http"]) {
+        NSString *scheme = [[inRequest URL] scheme];
+        
+        if ([scheme isEqualToString:@"http"] || [scheme isEqualToString:@"mailto"]) {
             [[UIApplication sharedApplication] openURL:[inRequest URL]];
             return NO;
         }
