@@ -542,8 +542,12 @@
     
     // if the thumb is not the full height of the view, then calculate differently
     // (cases where the thumb is wider than it is high)
+    
     if (thumbSize.height < thumbSize.width) {
         tabOnRight = NO;
+    }
+    
+    if (thumbSize.height <= thumbSize.width) {
         
         if (self.coverViewMode == SCHBookCoverViewModeGridView) {
             // cover is attached to the bottom of the frame
@@ -812,6 +816,7 @@
 - (UIImage *)createImageWithSourcePath:(NSString *)sourcePath destinationPath:(NSString *)destinationPath 
 {
     BOOL portraitAspect = YES;
+    BOOL squareImage = NO;
     
     NSURL *sourceURL = [NSURL fileURLWithPath:sourcePath];
     
@@ -836,27 +841,35 @@
             CFRelease(imageProperties);
         }
         
+        if (height == width) {
+            squareImage = YES;
+        }
+        
         if (height < width) {
             portraitAspect = NO;
         }
     }
     
-    if (portraitAspect) {
+    // iPhone and list view are straightforward - just use width as max dimension
+    if (self.coverViewMode == SCHBookCoverViewModeListView 
+        || UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
+        return [UIImage SCHCreateThumbWithSourcePath:sourcePath destinationPath:destinationPath maxDimension:(self.frame.size.width)];
+    }
+    
+    if (squareImage) {
+        CGFloat widthHeightDiff = fabsf(self.frame.size.width - self.frame.size.height);
+        UIImage *biggestRightTabImage = [UIImage imageNamed:@"BookSampleTab"];
+
+        // square image - tab on the right, but we need to shrink the image to fit
+        return [UIImage SCHCreateThumbWithSourcePath:sourcePath destinationPath:destinationPath maxDimension:self.frame.size.width - widthHeightDiff - biggestRightTabImage.size.width - 8];
+
+    } else if (portraitAspect) {
         // standard image - tab is on the right
         return [UIImage SCHCreateThumbWithSourcePath:sourcePath destinationPath:destinationPath maxDimension:self.frame.size.height];
     } else {
         // tab on the top - make sure we provide enough space for it
-        
-        if (self.coverViewMode == SCHBookCoverViewModeGridView) {
-            if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
-            UIImage *biggestTopTabImage = [UIImage imageNamed:@"BookSampleTabHorizontal"];
-                return [UIImage SCHCreateThumbWithSourcePath:sourcePath destinationPath:destinationPath maxDimension:(self.frame.size.height - biggestTopTabImage.size.height - 8)];
-            } else {
-                return [UIImage SCHCreateThumbWithSourcePath:sourcePath destinationPath:destinationPath maxDimension:(self.frame.size.width)];
-            }
-        } else {
-            return [UIImage SCHCreateThumbWithSourcePath:sourcePath destinationPath:destinationPath maxDimension:self.frame.size.width];
-        }
+        UIImage *biggestTopTabImage = [UIImage imageNamed:@"BookSampleTabHorizontal"];
+            return [UIImage SCHCreateThumbWithSourcePath:sourcePath destinationPath:destinationPath maxDimension:(self.frame.size.height - biggestTopTabImage.size.height - 8)];
     }
 }
 
