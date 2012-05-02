@@ -183,7 +183,7 @@
             }
         }
     } else {
-        // this disables wishlists, recommendations and sort for the samples bookshelf
+        // disable wishlists, recommendations and sort for the samples bookshelf
         return 2;
     }
 }
@@ -198,36 +198,53 @@
         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     }
     
-    // Configure the cell...
-    switch (indexPath.row) {
-        case 0:
-        {
-            cell.textLabel.text = NSLocalizedString(@"View", @"View");
-            break;
-        }   
-        case 1:
-        {
-            cell.textLabel.text = NSLocalizedString(@"Theme", @"Theme");
-            break;
-        }   
-        case 2:
-        {
-            cell.textLabel.text = NSLocalizedString(@"Sort", @"Sort");
-            break;
-        }   
-        case 3:
-        {
-            if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
-                cell.textLabel.text = NSLocalizedString(@"More eBooks", @"More eBooks");
-            } else {
-                cell.textLabel.text = NSLocalizedString(@"Kids' Top Rated eBooks", @"Kids' Top Rated eBooks");
+    if (self.userIsAuthenticated && [self recommendationsActive] == YES) {
+        // Show View, Sort, Wallpaper, and the wishlist/recommendations items
+        switch (indexPath.row) {
+            case 0:
+            {
+                cell.textLabel.text = NSLocalizedString(@"View", @"View");
+                break;
+            }   
+            case 1:
+            {
+                cell.textLabel.text = NSLocalizedString(@"Sort", @"Sort");
+                break;
+            }   
+            case 2:
+            {
+                cell.textLabel.text = NSLocalizedString(@"Wallpaper", @"Wallpaper");
+                break;
+            }   
+            case 3:
+            {
+                if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+                    cell.textLabel.text = NSLocalizedString(@"More eBooks", @"More eBooks");
+                } else {
+                    cell.textLabel.text = NSLocalizedString(@"Kids' Top Rated eBooks", @"Kids' Top Rated eBooks");
+                }
+                break;
             }
-            break;
+            case 4:
+            {
+                cell.textLabel.text = NSLocalizedString(@"Wish List", @"Wish List");
+                break;
+            }
         }
-        case 4:
-        {
-            cell.textLabel.text = NSLocalizedString(@"Wish List", @"Wish List");
-            break;
+    } else {
+        switch (indexPath.row) {
+            // only show view and wallpaper
+            // order has changed, so this special case is necessary
+            case 0:
+            {
+                cell.textLabel.text = NSLocalizedString(@"View", @"View");
+                break;
+            }   
+            case 1:
+            {
+                cell.textLabel.text = NSLocalizedString(@"Wallpaper", @"Wallpaper");
+                break;
+            }   
         }
     }
     
@@ -238,8 +255,16 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    // Navigation logic may go here. Create and push another view controller.
-    switch (indexPath.row) {
+    // some extra logic to skip "sort" if we are not authenticated
+    NSInteger selectedRow = indexPath.row;
+    
+    if (!(self.userIsAuthenticated && [self recommendationsActive] == YES)) {
+        if (selectedRow == 1) {
+            selectedRow = 2;
+        }
+    }
+    
+    switch (selectedRow) {
         case 0:
         {
             SCHBookShelfTypeMenuTableController *typeMenuController = [[SCHBookShelfTypeMenuTableController alloc] initWithNibName:@"SCHBookShelfTypeMenuTableController" bundle:nil];
@@ -250,26 +275,26 @@
 
             break;
         }
-        // themes
+        // sort
         case 1:
+        {
+            SCHBookShelfSortTableView *sortTable = [[SCHBookShelfSortTableView alloc] initWithNibName:nil bundle:nil];
+            sortTable.sortType = [self.delegate sortTypeForBookShelfMenu:self];
+            sortTable.delegate = self;
+            
+            [self.navigationController pushViewController:sortTable animated:YES];
+            [sortTable release];
+            
+            break;
+        }
+        // themes
+        case 2:
         {
             SCHThemePickerViewController *themePicker = [[SCHThemePickerViewController alloc] initWithNibName:nil bundle:nil];
             themePicker.delegate = self;
             
             [self.navigationController pushViewController:themePicker animated:YES];
             [themePicker release];
-            
-            break;
-        }
-        // sort
-        case 2:
-        {
-            SCHBookShelfSortTableView *sortTable = [[SCHBookShelfSortTableView alloc] initWithNibName:nil bundle:nil];
-            sortTable.sortType = [self.delegate sortTypeForBookShelfMenu:self];
-            sortTable.delegate = self;
-
-            [self.navigationController pushViewController:sortTable animated:YES];
-            [sortTable release];
             
             break;
         }
