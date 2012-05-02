@@ -653,6 +653,9 @@ NSString * const kSCHAppBookFilenameSeparator = @"-";
 {
 	NSString *status = @"Unknown!";
 	switch ([[self State] intValue]) {
+		case SCHBookProcessingStateNotEnoughStorageError:
+			status = @"Error Not Enough Storage Space";
+			break;
 		case SCHBookProcessingStateURLsNotPopulated:
 			status = @"Error URLs not Populated";
 			break;
@@ -723,6 +726,9 @@ NSString * const kSCHAppBookFilenameSeparator = @"-";
 	} else if(error != NULL) {
         ret = NO;
         switch ([self.State intValue]) {
+            case SCHBookProcessingStateNotEnoughStorageError:
+                *error = [self errorWithCode:kSCHAppBookNotEnoughStorageError];
+                break;
             case SCHBookProcessingStateUnableToAcquireLicense:
                 *error = [self errorWithCode:kSCHAppBookUnableToAcquireLicenseError];
                 break;
@@ -781,6 +787,9 @@ NSString * const kSCHAppBookFilenameSeparator = @"-";
     NSString *description = nil;
     
     switch (code) {
+        case kSCHAppBookNotEnoughStorageError:
+            description = NSLocalizedString(@"Not enough storage. You do not have enough storage on your device to complete this function. Please clear some space and then try again.", @"Not enough storage error message from AppBook");
+            break;            
         case kSCHAppBookStillBeingProcessedError:
             description = NSLocalizedString(@"The eBook is still being processed.", @"Still being processed error message from AppBook");
             break;
