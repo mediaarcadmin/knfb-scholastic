@@ -3107,8 +3107,8 @@ static const NSUInteger kReadingViewMaxRecommendationsCount = 4;
 {
     // only show on the first page, if toolbars are not visible, not in highlights mode
     // and the audio isn't already playing (and it's in younger mode!)
-    BOOL shouldShow = YES;//(self.currentPageIndex == 0 && !self.toolbarsVisible && !self.audioBookPlayer.playing 
-//                       && self.youngerMode && !self.highlightsModeEnabled);
+    BOOL shouldShow = (self.currentPageIndex == 0 && !self.toolbarsVisible && !self.audioBookPlayer.playing 
+                       && self.youngerMode && !self.highlightsModeEnabled);
     float buttonAlpha = 0.0f;
     
     if (shouldShow) {
@@ -3134,16 +3134,20 @@ static const NSUInteger kReadingViewMaxRecommendationsCount = 4;
 
 - (void)positionCornerAudioButtonForOrientation:(UIInterfaceOrientation)newOrientation
 {
-    CGRect bookCoverFrame = [self.readingView pageRect];
+    BOOL shouldShow = (self.currentPageIndex == 0 && !self.toolbarsVisible && !self.audioBookPlayer.playing 
+                       && self.youngerMode && !self.highlightsModeEnabled);
     
-    CGRect frame = self.cornerAudioButtonView.frame;
-    
-    // offsets are to accommodate borders in the images
-    frame.origin.x = bookCoverFrame.origin.x + 5;
-    frame.origin.y = bookCoverFrame.origin.y + ceilf(bookCoverFrame.size.height - frame.size.height) - 5;
-    
-    self.cornerAudioButtonView.frame = frame;
-    
+    if (shouldShow) {
+        CGRect bookCoverFrame = [self.readingView pageRect];
+        
+        CGRect frame = self.cornerAudioButtonView.frame;
+        
+        // offsets are to accommodate borders in the images
+        frame.origin.x = bookCoverFrame.origin.x + 5;
+        frame.origin.y = bookCoverFrame.origin.y + ceilf(bookCoverFrame.size.height - frame.size.height) - 5;
+        
+        self.cornerAudioButtonView.frame = frame;
+    }
 }
 
 #pragma mark - Help View Delegate
