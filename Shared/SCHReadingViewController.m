@@ -178,7 +178,6 @@ static const NSUInteger kReadingViewMaxRecommendationsCount = 4;
 - (void)checkCornerAudioButtonVisibilityWithAnimation:(BOOL)animated;
 - (void)positionCornerAudioButtonForOrientation:(UIInterfaceOrientation)newOrientation;
 - (BOOL)shouldShowBookRecommendationsForReadingView:(SCHReadingView *)readingView;
-- (void)reloadRecommendations;
 - (void)commitWishListChanges;
 
 @end
@@ -3237,7 +3236,6 @@ static const NSUInteger kReadingViewMaxRecommendationsCount = 4;
                         forKey:kSCHWishListTitle];
         
         [self.modifiedWishListDictionaries addObject:wishListItem];
-        [self reloadRecommendations];
     }
 }
      
@@ -3251,14 +3249,7 @@ static const NSUInteger kReadingViewMaxRecommendationsCount = 4;
     
     if (modifiedItemsIndex != NSNotFound) {
         [self.modifiedWishListDictionaries removeObjectAtIndex:modifiedItemsIndex];
-        [self reloadRecommendations];
     }
-}
-
-- (void)reloadRecommendations
-{
-    // Reload the recommendations
-    // TODO: speak to Jamie about a way to force this reload, rather than relying on the button updating itself
 }
 
 - (void)commitWishListChanges
