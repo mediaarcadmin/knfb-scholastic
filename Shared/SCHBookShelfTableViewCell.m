@@ -96,6 +96,7 @@ static NSInteger const CELL_STAR_PERSONAL_RATING_VIEW = 302;
         self.personalRateView.halfSelectedImage = [UIImage imageNamed:@"storiaStarHalfFull"];
         self.personalRateView.rating = 0;
         self.userRating = 0;
+        self.personalRateView.preventUnrating = YES;
         self.personalRateView.editable = YES;
         self.personalRateView.maxRating = 5;
         self.personalRateView.delegate = self;
