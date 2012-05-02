@@ -458,6 +458,7 @@
         }
         
         switch (bookState) {
+            case SCHBookProcessingStateNotEnoughStorageError:
             case SCHBookProcessingStateURLsNotPopulated:
             case SCHBookProcessingStateDownloadFailed:
             case SCHBookProcessingStateUnableToAcquireLicense:
@@ -644,6 +645,7 @@
             [self setErrorBadgeHidden:YES];
             break;
         case SCHBookProcessingStateError:
+        case SCHBookProcessingStateNotEnoughStorageError:            
         case SCHBookProcessingStateDownloadFailed:
         case SCHBookProcessingStateURLsNotPopulated:
         case SCHBookProcessingStateUnableToAcquireLicense:

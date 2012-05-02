@@ -328,6 +328,17 @@
     if ([error.domain isEqualToString:NSCocoaErrorDomain] && error.code == NSUserCancelledError) {
         [self setIsProcessing:NO];        
         [self endOperation];
+    } else if ([error.domain isEqualToString:NSPOSIXErrorDomain] && error.code == ENOSPC) {
+        // remove the partial file to free up some disk space
+        NSFileManager *fileManager = [[[NSFileManager alloc] init] autorelease];
+        [fileManager removeItemAtPath:self.localPath error:nil];
+        
+        [[BITNetworkActivityManager sharedNetworkActivityManager] hideNetworkActivityIndicator];
+        
+        self.downloadOperation = nil;
+        [self setProcessingState:SCHBookProcessingStateNotEnoughStorageError];
+        [self setIsProcessing:NO];        
+        [self endOperation];
     } else {
         NSLog(@"book download operation failed with error: %@", error);
         
