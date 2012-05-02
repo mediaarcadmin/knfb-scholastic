@@ -20,6 +20,7 @@
 @synthesize midMargin;
 @synthesize leftMargin;
 @synthesize minImageSize;
+@synthesize preventUnrating;
 @synthesize delegate;
 
 - (void)dealloc
@@ -32,6 +33,7 @@
 }
 
 - (void)baseInit {
+    self.preventUnrating = NO;
     self.notSelectedImage = nil;
     self.halfSelectedImage = nil;
     self.fullSelectedImage = nil;
@@ -169,6 +171,11 @@
             newRating = i+1;
             break;
         }
+    }
+    
+    // prevent "unrating" - ticket #1551
+    if (self.preventUnrating && newRating == 0) {
+        return;
     }
     
     self.rating = newRating;

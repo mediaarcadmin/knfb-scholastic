@@ -100,7 +100,7 @@ static NSTimeInterval const kSCHThemePickerViewControllerThemeTransitionDuration
     self.tableView.separatorColor = [UIColor whiteColor];
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleSingleLineEtched;
     
-    self.title = NSLocalizedString(@"Theme", @"Theme");
+    self.title = NSLocalizedString(@"Wallpaper", @"Wallpaper");
 }
 
 - (void)viewDidUnload

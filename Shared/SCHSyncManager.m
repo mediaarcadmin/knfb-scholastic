@@ -27,12 +27,16 @@
 #import "SCHVersionDownloadManager.h"
 #import "SCHLibreAccessConstants.h"
 #import "SCHSettingItem.h"
+#import "NSFileManager+Extensions.h"
 
 // Constants
 NSString * const SCHSyncManagerDidCompleteNotification = @"SCHSyncManagerDidCompleteNotification";
 
 static NSTimeInterval const kSCHSyncManagerHeartbeatInterval = 30.0;
 static NSTimeInterval const kSCHLastFirstSyncInterval = -300.0;
+
+// Core Data will fail to save changes if there is no disk space left
+static unsigned long long const kSCHSyncManagerMinimumDiskSpaceRequiredForSync = 10485760; // 10mb
 
 static NSUInteger const kSCHSyncManagerMaximumFailureRetries = 3;
 
@@ -850,7 +854,8 @@ static NSUInteger const kSCHSyncManagerMaximumFailureRetries = 3;
 
 - (BOOL)shouldSync
 {
-    return [[SCHAppStateManager sharedAppStateManager] canSync];
+    return [[SCHAppStateManager sharedAppStateManager] canSync] && 
+        [[NSFileManager defaultManager] BITfileSystemHasBytesAvailable:kSCHSyncManagerMinimumDiskSpaceRequiredForSync];
 }
 
 #pragma mark - Population methods
