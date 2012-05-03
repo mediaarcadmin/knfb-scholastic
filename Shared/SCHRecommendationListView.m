@@ -227,6 +227,43 @@
     
     [self.titleLabel adjustPointSizeToFitWidthWithPadding:0];
     [self.subtitleLabel adjustPointSizeToFitWidthWithPadding:0];
+    [self.ratingLabel adjustPointSizeToFitWidthWithPadding:0];
+    
+    // wish list button aspect ratio
+    UIImage *buttonImage = [self.onWishListButton imageForState:self.onWishListButton.state];
+    
+    if (buttonImage) {
+        CGSize buttonSize = buttonImage.size;
+        CGFloat aspect = buttonSize.width / buttonSize.height;
+        
+        CGRect buttonFrame = self.onWishListButton.frame;
+        buttonFrame.size.height = floorf(buttonFrame.size.width / aspect);
+        self.onWishListButton.frame = buttonFrame;
+    }
+    
+    
+    // rating view width
+    
+    CGSize textSize = [self.ratingLabel.text sizeWithFont:self.ratingLabel.font
+                                        constrainedToSize:self.ratingLabel.frame.size];
+    CGRect ratingLabelFrame = self.ratingLabel.frame;
+    ratingLabelFrame.size.width = floorf(textSize.width + 15);
+    self.ratingLabel.frame = ratingLabelFrame;
+    
+    CGRect rateViewFrame = self.rateView.frame;
+    rateViewFrame.origin.x = ratingLabelFrame.size.width + 10;
+    self.rateView.frame = rateViewFrame;
+    
+    CGRect backgroundImageFrame = self.ratingBackgroundImageView.frame;
+    backgroundImageFrame.size.width = ratingLabelFrame.size.width + rateViewFrame.size.width + 20;
+    self.ratingBackgroundImageView.frame = backgroundImageFrame;
+    
+    
+    NSLog(@"self frame: %@", NSStringFromCGRect(self.frame));
+//    NSLog(@"rating background frame: %@", NSStringFromCGRect(self.ratingBackgroundImageView.frame));
+//    NSLog(@"rating label frame: %@", NSStringFromCGRect(self.ratingLabel.frame));
+//    NSLog(@"rating frame: %@", NSStringFromCGRect(self.rateView.frame));
+//    NSLog(@"cover frame: %@", NSStringFromCGRect(self.coverImageView.frame));
 }
 
 @end

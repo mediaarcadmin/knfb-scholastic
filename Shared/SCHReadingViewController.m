@@ -2313,7 +2313,17 @@ static const NSUInteger kReadingViewMaxRecommendationsCount = 4;
     
     UIView *container = recommendationsContainer.container;
     CGFloat count = MIN([[self recommendationsDictionaries] count], 4);
-    CGFloat rowHeight = floorf((container.frame.size.height)/count);
+    CGFloat rowHeight = floorf((container.frame.size.height)/4);
+    
+    // minimum height code; 88 for iPad, 66 for iPhone
+    
+//    CGFloat minRowHeight = (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)?88:66;
+//    
+//    if (rowHeight < minRowHeight) {
+//        count--;
+//        rowHeight = floorf((container.frame.size.height)/count);
+//    }
+    
     for (int i = 0; i < count; i++) {
         NSDictionary *recommendationDictionary = [[self recommendationsDictionaries] objectAtIndex:i];
         
