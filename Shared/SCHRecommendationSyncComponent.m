@@ -742,7 +742,6 @@ static NSTimeInterval const kSCHRecommendationSyncComponentBookSyncDelayTimeInte
         }        
         for (SCHRecommendationItem *recommendationItem in deletePool) {
             [self.managedObjectContext deleteObject:recommendationItem];
-            [self save];
         }                        
     }
       
@@ -756,9 +755,11 @@ static NSTimeInterval const kSCHRecommendationSyncComponentBookSyncDelayTimeInte
                     [insertedISBNs addObject:isbn];
                 }
                 [recommendation addRecommendationItemsObject:recommendationItem];
-                [self save];
             }
         }
+        
+        [self save];
+        
         if ([insertedISBNs count] > 0) {
             [[NSNotificationCenter defaultCenter] postNotificationName:SCHRecommendationSyncComponentDidInsertNotification 
                                                                 object:self 
