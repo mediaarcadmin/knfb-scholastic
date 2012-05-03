@@ -841,6 +841,8 @@
         if (height < width) {
             portraitAspect = NO;
         }
+        
+        CFRelease(src);
     }
     
     if (portraitAspect) {

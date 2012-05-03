@@ -174,7 +174,7 @@
 - (void)resetCoverURLExpiredState
 {
     [self performWithRecommendationAndSave:^(SCHAppRecommendationItem *item) {
-            item.coverURLExpiredCount = [NSNumber numberWithInteger:0];
+        item.coverURLExpiredCount = [NSNumber numberWithInteger:0];
     }];    
 }
 
