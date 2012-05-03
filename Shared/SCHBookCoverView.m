@@ -850,6 +850,8 @@
         if (height < width) {
             portraitAspect = NO;
         }
+        
+        CFRelease(src);
     }
     
     // iPhone and list view are straightforward - just use width as max dimension
