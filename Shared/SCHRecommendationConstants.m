@@ -31,3 +31,4 @@ NSString * const kSCHRecommendationWebServiceSalePrice = @"sale_price";
 NSString * const kSCHRecommendationWebServiceProductCode = @"product_code";
 NSString * const kSCHRecommendationWebServiceFormat = @"format";
 NSString * const kSCHRecommendationWebServiceAuthor = @"author";
+NSString * const kSCHRecommendationWebServiceDRMQualifier = @"DRMQualifier";

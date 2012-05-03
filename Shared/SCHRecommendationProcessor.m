@@ -9,6 +9,7 @@
 #import "SCHRecommendationProcessor.h"
 
 #import "SCHRecommendationConstants.h"
+#import "NSNumber+ObjectTypes.h"
 
 @interface SCHRecommendationProcessor () <NSXMLParserDelegate>
 
@@ -79,7 +80,9 @@
             NSString *isbn = [attributeDict objectForKey:kSCHRecommendationWebServiceInputValue];
             if (isbn != nil) {
                 self.currentCategory = [NSMutableDictionary dictionaryWithObjectsAndKeys:isbn, kSCHRecommendationWebServiceISBN,
-                                        [NSMutableArray array], kSCHRecommendationWebServiceItems, nil];
+                                        [NSMutableArray array], kSCHRecommendationWebServiceItems, 
+                                        [NSNumber numberWithDRMQualifier:kSCHDRMQualifiersFullWithDRM], kSCHRecommendationWebServiceDRMQualifier, 
+                                        nil];
             }        
         }
     } else if ([elementName isEqualToString:kSCHRecommendationWebServiceItem]) {		

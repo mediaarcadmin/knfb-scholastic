@@ -31,3 +31,4 @@ extern NSString * const kSCHRecommendationWebServiceSalePrice;
 extern NSString * const kSCHRecommendationWebServiceProductCode;
 extern NSString * const kSCHRecommendationWebServiceFormat;
 extern NSString * const kSCHRecommendationWebServiceAuthor;
+extern NSString * const kSCHRecommendationWebServiceDRMQualifier;
