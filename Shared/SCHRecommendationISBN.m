@@ -8,6 +8,8 @@
 
 #import "SCHRecommendationISBN.h"
 
+#import "SCHBookIdentifier.h"
+
 // Constants
 NSString * const kSCHRecommendationISBN = @"SCHRecommendationISBN";
 
@@ -15,6 +17,14 @@ NSString * const kSCHRecommendationISBN = @"SCHRecommendationISBN";
 
 @dynamic isbn;
 @dynamic fetchDate;
+@dynamic DRMQualifier;
 @dynamic recommendationItems;
+
+- (SCHBookIdentifier *)bookIdentifier
+{
+    SCHBookIdentifier *identifier = [[SCHBookIdentifier alloc] initWithISBN:self.isbn
+                                                               DRMQualifier:self.DRMQualifier];
+    return [identifier autorelease];
+}
 
 @end
