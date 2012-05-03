@@ -316,10 +316,10 @@ NSString * const kSCHAppBookFilenameSeparator = @"-";
 	return [[SCHProcessingManager sharedProcessingManager] identifierIsProcessing:[self bookIdentifier]];
 }
 
-- (void)setProcessing:(BOOL)value
-{
-	[[SCHProcessingManager sharedProcessingManager] setProcessing:value forIdentifier:[self bookIdentifier]];
-}
+//- (void)setProcessing:(BOOL)value
+//{
+//	[[SCHProcessingManager sharedProcessingManager] setProcessing:value forIdentifier:[self bookIdentifier]];
+//}
 
 - (NSString *)categoryType
 {
@@ -383,7 +383,8 @@ NSString * const kSCHAppBookFilenameSeparator = @"-";
     
     [fetchRequest setEntity:[NSEntityDescription entityForName:kSCHRecommendationISBN 
                                         inManagedObjectContext:self.managedObjectContext]];	
-    [fetchRequest setPredicate:[NSPredicate predicateWithFormat:@"isbn = %@", self.bookIdentifier.isbn]];
+    [fetchRequest setPredicate:[NSPredicate predicateWithFormat:@"isbn = %@ AND DRMQualifier = %@", 
+                                self.bookIdentifier.isbn, self.bookIdentifier.DRMQualifier]];
     
     NSError *error = nil;
     NSArray *books = [self.managedObjectContext executeFetchRequest:fetchRequest error:&error];	
@@ -406,6 +407,8 @@ NSString * const kSCHAppBookFilenameSeparator = @"-";
     
     [fetchRequest setEntity:[NSEntityDescription entityForName:kSCHUserContentItem 
                                         inManagedObjectContext:self.managedObjectContext]];	
+    [fetchRequest setPredicate:[NSPredicate predicateWithFormat:@"DRMQualifier != %@", 
+                                [NSNumber numberWithDRMQualifier:kSCHDRMQualifiersSample]]];
     
     NSError *error = nil;
     NSArray *books = [self.managedObjectContext executeFetchRequest:fetchRequest error:&error];	
