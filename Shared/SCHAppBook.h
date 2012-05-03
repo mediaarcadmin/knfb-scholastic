@@ -146,7 +146,7 @@ typedef enum {
 
 - (NSString *)processingStateAsString;
 - (BOOL)isProcessing;
-- (void)setProcessing:(BOOL)value;
+//- (void)setProcessing:(BOOL)value;
 
 // the path to the XPS file within the system - by default, in the cache directory
 - (NSString *)xpsPath;

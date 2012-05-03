@@ -238,17 +238,17 @@ static SCHProcessingManager *sharedManager = nil;
     NSAssert([NSThread isMainThread], @"checkStateForBook must run on main thread");
 
     NSArray *identifiers = [[notification userInfo] objectForKey:@"bookIdentifiers"];
-
-    for (SCHBookIdentifier *identifier in identifiers) {
     
-        SCHAppBook *book = [[SCHBookManager sharedBookManager] bookWithIdentifier:identifier inManagedObjectContext:self.managedObjectContext];
+    for (SCHBookIdentifier *identifier in identifiers) {
         
-        if (book != nil) {
-            // if the book is currently processing, it will already be taken care of 
-            // when it finishes processing, so no need to add it for consideration
-            if (![book isProcessing] && [self identifierNeedsProcessing:identifier]) {
+        // if the book is currently processing, it will already be taken care of 
+        // when it finishes processing, so no need to add it for consideration
+        if ([self identifierIsProcessing:identifier]) {
+            
+            if ([self identifierNeedsProcessing:identifier]) {
                 [self processIdentifier:identifier];
             }
+            
         }
     }
 
@@ -764,22 +764,13 @@ static SCHProcessingManager *sharedManager = nil;
 - (void)checkIfProcessing
 {
     NSAssert([NSThread isMainThread], @"checkIfProcessing must be called on main thread");
-    
-    // check to see if we're processing
-    //	int totalOperations = [[self.networkOperationQueue operations] count] + 
-    //	[[self.webServiceOperationQueue operations] count];
-    
+        
     int totalBooksProcessing = 0;
     
-	NSArray *allBooks = [[SCHBookManager sharedBookManager] allBookIdentifiersInManagedObjectContext:self.managedObjectContext];
+	NSArray *allBookIdentifiers = [[SCHBookManager sharedBookManager] allBookIdentifiersInManagedObjectContext:self.managedObjectContext];
 	
-	// FIXME: add prioritisation
-    
-	// get all the books independent of profile
-	for (SCHBookIdentifier *identifier in allBooks) {
-		SCHAppBook *book = [[SCHBookManager sharedBookManager] bookWithIdentifier:identifier inManagedObjectContext:self.managedObjectContext];
-        
-        if (book != nil && [book isProcessing]) {
+	for (SCHBookIdentifier *identifier in allBookIdentifiers) {
+        if ([self identifierIsProcessing:identifier]) {
             totalBooksProcessing++;
         }
 	}	

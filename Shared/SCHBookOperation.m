@@ -176,9 +176,8 @@
 
 - (void)setIsProcessing:(BOOL)isProcessing
 {
-    [self performWithBookAndSave:^(SCHAppBook *book) {
-        [book setProcessing:isProcessing];
-    }];
+    // Doesn't need to be called on main thread as processing manager synchronises this
+    [[SCHProcessingManager sharedProcessingManager] setProcessing:isProcessing forIdentifier:[self identifier]];
 }
 
 - (void)setNotCancelledCompletionBlock:(void (^)(void))block

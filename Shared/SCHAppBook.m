@@ -316,10 +316,10 @@ NSString * const kSCHAppBookFilenameSeparator = @"-";
 	return [[SCHProcessingManager sharedProcessingManager] identifierIsProcessing:[self bookIdentifier]];
 }
 
-- (void)setProcessing:(BOOL)value
-{
-	[[SCHProcessingManager sharedProcessingManager] setProcessing:value forIdentifier:[self bookIdentifier]];
-}
+//- (void)setProcessing:(BOOL)value
+//{
+//	[[SCHProcessingManager sharedProcessingManager] setProcessing:value forIdentifier:[self bookIdentifier]];
+//}
 
 - (NSString *)categoryType
 {
