@@ -233,6 +233,13 @@ static NSInteger const CELL_STAR_PERSONAL_RATING_VIEW = 302;
         }
     }
     
+    if (bookFeatures == kSCHAppBookFeaturesSample ||
+        bookFeatures == kSCHAppBookFeaturesSampleWithStoryInteractions) {
+        [self.starView setHidden:YES];
+    } else {
+        [self.starView setHidden:NO];
+    }
+    
     switch (bookFeatures) {
         case kSCHAppBookFeaturesNone:
         {
