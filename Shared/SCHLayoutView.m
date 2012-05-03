@@ -984,9 +984,14 @@ fastThumbnailUIImageForPageAtIndex:(NSUInteger)index
 {
     NSMutableArray *pagesBlocks = [NSMutableArray array];
     
+    // N.B. we use pageCount, not generatedPageCount for determining if we should return blocks. This is because sample books
+    // can have left page blocks beyond their page count. The correct fix for this eventually will be to implement the new selector 
+    // didReceiveTouch functionality and stop the selector from recieving a touch on a generated page. 
+    // Scholastic needs to be on future-stable for that.
+    
     if (self.pageTurningView.isTwoUp) {
         NSInteger leftPageIndex = [self.pageTurningView leftPageIndex];
-        if (leftPageIndex >= 0) {
+        if ((leftPageIndex >= 0) && (leftPageIndex < pageCount)) {
             [pagesBlocks addObjectsFromArray:[self.textFlow blocksForPageAtIndex:leftPageIndex includingFolioBlocks:NO]];
         }
     }
