@@ -569,14 +569,19 @@ extern NSString * const kSCHUserDefaultsSpaceSaverModeSetOffNotification;
 
 - (IBAction)downloadDictionary:(id)sender
 {
+    SCHDictionaryProcessingState dictionaryState = [[SCHDictionaryDownloadManager sharedDownloadManager] dictionaryProcessingState];
+    
     if ([[SCHVersionDownloadManager sharedVersionManager] isAppVersionOutdated] == YES) {
         [self showAppVersionOutdatedAlert];
-    } else if ([[SCHDictionaryDownloadManager sharedDownloadManager] dictionaryProcessingState] == SCHDictionaryProcessingStateReady) {
+    } else if (dictionaryState == SCHDictionaryProcessingStateReady) {
         SCHRemoveDictionaryViewController *vc = [[SCHRemoveDictionaryViewController alloc] init];
         [self.navigationController pushViewController:vc animated:YES];
         [vc release];
+    } else if (dictionaryState == SCHDictionaryProcessingStateError ||
+               dictionaryState == SCHDictionaryProcessingStateUnexpectedConnectivityFailureError) {
+
+        [[SCHDictionaryDownloadManager sharedDownloadManager] beginDictionaryDownload];
     } else {
-        
         SCHDownloadDictionaryFromSettingsViewController *downloadController = [[SCHDownloadDictionaryFromSettingsViewController alloc] initWithNibName:nil bundle:nil];
         
         __block SCHSettingsViewController *weakSelf = self;
