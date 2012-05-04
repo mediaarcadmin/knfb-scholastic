@@ -364,6 +364,22 @@ NSString * const kSCHAppBookFilenameSeparator = @"-";
     return ret;
 }
 
+- (BOOL)shouldShowPageNumbers
+{
+    BOOL ret = YES;
+    
+    if (self.XPSCategory != nil) {
+        if ([self.XPSCategory caseInsensitiveCompare:kSCHAppBookYoungReader] == NSOrderedSame ||
+            [self.XPSCategory caseInsensitiveCompare:kSCHAppBookCategoryPictureBook] == NSOrderedSame ||
+            [self.XPSCategory caseInsensitiveCompare:kSCHAppBookCategoryEarlyReader] == NSOrderedSame ||
+            [self.XPSCategory caseInsensitiveCompare:kSCHAppBookCategoryAdvancedReader] == NSOrderedSame) {
+            ret = NO;
+        }    
+    }
+    
+    return ret;
+}
+
 - (BOOL)alwaysOpenToCover
 {
     BOOL ret = NO;

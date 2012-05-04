@@ -123,6 +123,7 @@ static const NSUInteger kReadingViewMaxRecommendationsCount = 4;
 @property (nonatomic, retain) UIImageView *sampleSICoverMarker;
 @property (nonatomic, assign) BOOL coverMarkerShouldAppear;
 @property (nonatomic, assign) BOOL shouldShowChapters;
+@property (nonatomic, assign) BOOL shouldShowPageNumbers;
 @property (nonatomic, assign) NSNumber *forceOpenToCover;
 
 @property (nonatomic, assign) BOOL highlightsModeEnabled;
@@ -252,6 +253,7 @@ static const NSUInteger kReadingViewMaxRecommendationsCount = 4;
 @synthesize sampleSICoverMarker;
 @synthesize coverMarkerShouldAppear;
 @synthesize shouldShowChapters;
+@synthesize shouldShowPageNumbers;
 @synthesize forceOpenToCover;
 @synthesize highlightsModeEnabled;
 @synthesize highlightsInfoButton;
@@ -440,6 +442,7 @@ static const NSUInteger kReadingViewMaxRecommendationsCount = 4;
         SCHAppBook *book = [[SCHBookManager sharedBookManager] bookWithIdentifier:aIdentifier inManagedObjectContext:self.managedObjectContext];       
         
         self.shouldShowChapters = book.shouldShowChapters;
+        self.shouldShowPageNumbers = book.shouldShowPageNumbers;
         self.forceOpenToCover = [NSNumber numberWithBool:book.alwaysOpenToCover];
         
         [[SCHSyncManager sharedSyncManager] openDocumentSync:book.ContentMetadataItem.UserContentItem 
@@ -2369,7 +2372,7 @@ static const NSUInteger kReadingViewMaxRecommendationsCount = 4;
 {
     BOOL showRecommendationsLabel = NO;
     
-    if (self.currentPageIndex != NSUIntegerMax) {
+    if (self.currentPageIndex != NSUIntegerMax && self.shouldShowPageNumbers) {
         if (([self shouldShowBookRecommendationsForReadingView:self.readingView]) &&
              (self.currentPageIndex == [self generatedPageCountForReadingView:self.readingView] - 1)) {
             showRecommendationsLabel = YES;
@@ -2403,6 +2406,20 @@ static const NSUInteger kReadingViewMaxRecommendationsCount = 4;
         
         // the maximum space available for an image
         int maxImageHeight = (self.view.frame.size.height - scrubberToolbar.frame.size.height - self.navigationToolbar.frame.size.height - kReadingViewStandardScrubHeight - 60);
+        
+        // if we don't need page numbers, adjust the frame
+        // if the page numbers are not showing, increase available space
+        if (!self.shouldShowPageNumbers) {
+            CGRect imageFrame = self.scrubberThumbImage.frame;
+            CGFloat heightDiff = imageFrame.origin.y - self.pageLabel.frame.origin.y;
+            imageFrame.size.height = imageFrame.size.height + heightDiff;
+            imageFrame.origin.y = self.pageLabel.frame.origin.y + 5;
+            self.scrubberThumbImage.frame = imageFrame;
+            self.pageLabel.hidden = YES;
+
+            scrubFrame.size.height -= self.pageLabel.frame.size.height;
+        }
+        
         
         // if the double toolbar is visible, reduce available space
         if ([self.olderBottomToolbar superview]) {
@@ -2463,8 +2480,13 @@ static const NSUInteger kReadingViewMaxRecommendationsCount = 4;
     float topPoint = ((bottomLimit - topLimit) / 2) - (scrubFrame.size.height / 2);
     
     scrubFrame.origin.y = floorf(topLimit + topPoint);
+
+    // if the page numbers are not showing, shrink the background to match the new cover position
+    if (!self.shouldShowPageNumbers) {
+        scrubFrame.size.height -= self.pageLabel.frame.size.height;
+    }
     
-    self.scrubberInfoView.frame = scrubFrame;
+    self.scrubberInfoView.frame = CGRectIntegral(scrubFrame);
 
 }
 
