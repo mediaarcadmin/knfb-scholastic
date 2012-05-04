@@ -219,14 +219,20 @@ static const CGFloat kDeregisterContentHeightLandscape = 380;
     [[SCHSyncManager sharedSyncManager] performFlushSaves];
     
     SCHDrmDeregistrationSuccessBlock deregistrationCompletionBlock = ^{
-        [self.settingsDelegate popToRootViewControllerAnimated:YES withCompletionHandler:^{
+        dispatch_block_t block = ^{
             LambdaAlert *alert = [[LambdaAlert alloc]
                                   initWithTitle:NSLocalizedString(@"Device Deregistered", @"Device Deregistered") 
                                   message:NSLocalizedString(@"This device has been deregistered. To read eBooks, please register this device again.", @"") ];
             [alert addButtonWithTitle:NSLocalizedString(@"OK", @"OK") block:nil];
             [alert show];
             [alert release];
-        }];  
+        };  
+        
+        if (self.settingsDelegate != nil) {
+            [self.settingsDelegate popToRootViewControllerAnimated:YES withCompletionHandler:block];
+        } else if (self.profileSetupDelegate != nil) {
+            [self.profileSetupDelegate popToRootViewControllerAnimated:YES withCompletionHandler:block];            
+        }
     };
     
     [[SCHAuthenticationManager sharedAuthenticationManager] deregisterWithSuccessBlock:^{
