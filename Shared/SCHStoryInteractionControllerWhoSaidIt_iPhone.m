@@ -178,6 +178,7 @@
     } else {
         self.controllerState = SCHStoryInteractionControllerStateInteractionInProgress;
         [self presentNextView];
+        [self enqueueAudioWithPath:[self.storyInteraction storyInteractionRevealSoundFilename] fromBundle:YES];
     }
 }
 
