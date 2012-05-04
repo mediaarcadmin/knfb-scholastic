@@ -3196,8 +3196,27 @@ static const NSUInteger kReadingViewMaxRecommendationsCount = 4;
     if (!recommendationsDictionaries) {
         SCHBookManager *bookManager = [SCHBookManager sharedBookManager];
         SCHAppBook *book = [bookManager bookWithIdentifier:self.bookIdentifier inManagedObjectContext:bookManager.mainThreadManagedObjectContext];    
-        recommendationsDictionaries = [[book recommendationDictionaries] copy];
+        NSArray *allRecommendationsDictionaries = [book recommendationDictionaries];
+                
+        // all books that are not already on the wishlist
+        NSIndexSet *recommendationsNotOnWishlist = [allRecommendationsDictionaries indexesOfObjectsPassingTest:^BOOL (id obj, NSUInteger idx, BOOL *stop) {
+            NSString *recommendationISBN = [obj objectForKey:kSCHAppRecommendationISBN];
+            
+            if (recommendationISBN != nil && recommendationISBN != (id)[NSNull null]) {
+                for (NSDictionary *wishlistItem in [self wishListDictionaries]) {
+                    NSString *wishListISBN = [wishlistItem objectForKey:kSCHWishListISBN];
+                    
+                    if ([wishListISBN isEqualToString:recommendationISBN] == YES) {
+                        *stop = YES;
+                        return NO;
+                    }
+                }                
+            }
+            
+            return YES;
+        }];
         
+        recommendationsDictionaries = [[allRecommendationsDictionaries objectsAtIndexes:recommendationsNotOnWishlist] retain];
     }
     
     return recommendationsDictionaries;
