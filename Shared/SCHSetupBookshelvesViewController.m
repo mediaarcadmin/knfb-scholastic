@@ -29,14 +29,12 @@
 @implementation SCHSetupBookshelvesViewController
 
 @synthesize setupBookshelvesButton;
-@synthesize deregisterButton;
 @synthesize topToolbar;
 @synthesize moveToWebParentToolsTimer;
 
 - (void)releaseViewObjects
 {
     [setupBookshelvesButton release], setupBookshelvesButton = nil;
-    [deregisterButton release], deregisterButton = nil;
     [super releaseViewObjects];
 }
 
@@ -53,7 +51,6 @@
 {
     [super viewDidLoad];
     [self setButtonBackground:self.setupBookshelvesButton];
-    [self setButtonBackground:self.deregisterButton];
     
     self.title = NSLocalizedString(@"Set Up Your Bookshelves", @"");
     

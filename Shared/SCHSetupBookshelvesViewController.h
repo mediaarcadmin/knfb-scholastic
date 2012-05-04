@@ -12,7 +12,6 @@
 @interface SCHSetupBookshelvesViewController : SCHBaseModalViewController {}
 
 @property (nonatomic, retain) IBOutlet UIButton *setupBookshelvesButton;
-@property (nonatomic, retain) IBOutlet UIButton *deregisterButton;
 
 - (IBAction)setupBookshelves:(id)sender;
 - (IBAction)deregister:(id)sender;
