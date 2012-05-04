@@ -11,11 +11,19 @@
 #import "SCHParentalToolsWebViewController.h"
 #import "SCHAuthenticationManager.h"
 #import "SCHAccountValidationViewController.h"
+#import "SCHVersionDownloadManager.h"
+#import "SCHDeregisterDeviceViewController.h"
+#import "LambdaAlert.h"
+#import "Reachability.h"
 
 @interface SCHSetupBookshelvesViewController ()
 
 @property (nonatomic, retain) NSTimer *moveToWebParentToolsTimer;
-           
+
+- (BOOL)connectionIsReachable;
+- (void)showAppVersionOutdatedAlert;
+- (void)showNoInternetConnectionAlert;
+
 @end 
 
 @implementation SCHSetupBookshelvesViewController
@@ -107,7 +115,41 @@
 
 - (IBAction)deregister:(id)sender
 {
-        
+    if ([[SCHVersionDownloadManager sharedVersionManager] isAppVersionOutdated] == YES) {
+        [self showAppVersionOutdatedAlert];
+    } else if ([self connectionIsReachable]) {
+        SCHDeregisterDeviceViewController *vc = [[SCHDeregisterDeviceViewController alloc] init];
+        vc.profileSetupDelegate = self.profileSetupDelegate;
+        [self.navigationController pushViewController:vc animated:YES];
+        [vc release];
+    } else {
+        [self showNoInternetConnectionAlert];
+    }
+}
+
+- (BOOL)connectionIsReachable
+{
+    return [[Reachability reachabilityForInternetConnection] isReachable];
+}
+
+- (void)showAppVersionOutdatedAlert
+{
+    LambdaAlert *alert = [[LambdaAlert alloc]
+                          initWithTitle:NSLocalizedString(@"Update Required", @"")
+                          message:NSLocalizedString(@"This function requires that you update Storia. Please visit the App Store to update your app.", @"")];
+    [alert addButtonWithTitle:NSLocalizedString(@"OK", @"") block:nil];
+    [alert show];
+    [alert release];         
+}
+
+- (void)showNoInternetConnectionAlert
+{
+    LambdaAlert *alert = [[LambdaAlert alloc]
+                          initWithTitle:NSLocalizedString(@"No Internet Connection", @"")
+                          message:NSLocalizedString(@"This function requires an Internet connection. Please connect to the internet and then try again.", @"")];
+    [alert addButtonWithTitle:NSLocalizedString(@"OK", @"") block:nil];
+    [alert show];
+    [alert release];
 }
 
 - (void)moveToWebParentTools:(NSTimer *)theTimer
