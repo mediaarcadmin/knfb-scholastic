@@ -22,6 +22,8 @@ static NSString * const kSCHContentMetadataItemAnnotationsItemProfileID = @"Anno
 
 @interface SCHContentMetadataItem (CoreDataGeneratedPrimitiveAccessors)
 
+- (NSString *)primitiveFormatTitleString;
+- (void)setPrimitiveFormatTitleString:(NSString *)newFormatTitleString;
 - (NSString *)primitiveFormatAuthorString;
 - (void)setPrimitiveFormatAuthorString:(NSString *)newFormatAuthorString;
 
@@ -48,6 +50,7 @@ static NSString * const kSCHContentMetadataItemAnnotationsItemProfileID = @"Anno
 @dynamic AppBook;
 @dynamic eReaderCategories;
 @dynamic FormatAuthorString;
+@dynamic formatTitleString;
 @dynamic AverageRating;
 
 - (NSSet *)AnnotationsContentItem
@@ -98,7 +101,64 @@ static NSString * const kSCHContentMetadataItemAnnotationsItemProfileID = @"Anno
     return(ret);
 }
 
-- (NSComparisonResult)compare:(SCHContentMetadataItem *)contentMetadataItem
+- (NSComparisonResult)titleCompare:(SCHContentMetadataItem *)contentMetadataItem
+{
+    NSComparisonResult ret;
+    
+    if (self.Title == nil || 
+        [[self.Title stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]] length] < 1) {
+        ret = NSOrderedDescending;
+    } else if (contentMetadataItem.Title == nil || 
+               [[contentMetadataItem.Title stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]] length] < 1) {
+        ret = NSOrderedAscending;
+    } else {
+        ret = [self.FormatTitleString compare:contentMetadataItem.FormatTitleString];
+    }
+    
+    return ret;
+}
+
+- (NSString *)FormatTitleString
+{
+    [self willAccessValueForKey:@"formatTitleString"];
+    NSString *formatTitleString = [self primitiveFormatTitleString];
+    [self didAccessValueForKey:@"formatTitleString"];
+    if (formatTitleString == nil)
+    {
+        NSString *title = self.Title;
+        NSRange range;
+
+        if (title == nil ||
+            [[title stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]] length] < 1) {
+            return title;
+        } 
+
+        range = [title rangeOfString:@"The " options:NSCaseInsensitiveSearch|NSAnchoredSearch];
+        if (range.location != NSNotFound) {
+            formatTitleString = [title substringFromIndex:range.length];           
+        } else {
+            range = [title rangeOfString:@"An " options:NSCaseInsensitiveSearch|NSAnchoredSearch];        
+            if (range.location != NSNotFound) {
+                formatTitleString = [title substringFromIndex:range.length];           
+            } else {
+                range = [title rangeOfString:@"A " options:NSCaseInsensitiveSearch|NSAnchoredSearch];        
+                if (range.location != NSNotFound) {
+                    formatTitleString = [title substringFromIndex:range.length];           
+                }
+            }
+        }
+        if (formatTitleString == nil) {
+            formatTitleString = title;
+        }
+        
+        NSLog(@"%@", formatTitleString);
+        [self setPrimitiveFormatTitleString:formatTitleString];
+    }
+    
+    return formatTitleString;
+}
+        
+- (NSComparisonResult)authorCompare:(SCHContentMetadataItem *)contentMetadataItem
 {
     NSComparisonResult ret;
     
