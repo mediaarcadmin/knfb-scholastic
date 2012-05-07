@@ -227,7 +227,7 @@
     
     [self.titleLabel adjustPointSizeToFitWidthWithPadding:0];
     [self.subtitleLabel adjustPointSizeToFitWidthWithPadding:0];
-    [self.ratingLabel adjustPointSizeToFitWidthWithPadding:0];
+    self.ratingLabel.font = self.subtitleLabel.font;
     
     // wish list button aspect ratio
     UIImage *buttonImage = [self.onWishListButton imageForState:self.onWishListButton.state];
@@ -238,7 +238,19 @@
         
         CGRect buttonFrame = self.onWishListButton.frame;
         buttonFrame.size.height = floorf(buttonFrame.size.width / aspect);
-        self.onWishListButton.frame = buttonFrame;
+        
+        CGFloat bottomButtonPosition = buttonFrame.origin.y + buttonFrame.size.height;
+        CGFloat imageBottomPosition = self.coverImageView.frame.origin.y + self.coverImageView.frame.size.height;
+        
+        CGFloat diff = bottomButtonPosition - imageBottomPosition;
+        
+        if (diff > 0) {
+            // alter the button size to fit the space available
+            buttonFrame.size.height -= diff;
+            buttonFrame.size.width -= (diff * aspect);
+        }
+        
+        self.onWishListButton.frame = CGRectIntegral(buttonFrame);
     }
     
     
