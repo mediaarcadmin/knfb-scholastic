@@ -111,6 +111,13 @@
     value == kSCHDRMQualifiersSample;
 }
 
++ (NSArray *)arrayOfPurchasedDRMQualifiers
+{
+    return [NSArray arrayWithObjects:[NSNumber numberWithDRMQualifier:kSCHDRMQualifiersFullWithDRM], 
+            [NSNumber numberWithDRMQualifier:kSCHDRMQualifiersFullNoDRM],
+            nil];
+}
+
 + (NSNumber *)numberWithSaveAction:(SCHSaveActions)value
 {
 	return([NSNumber numberWithInt:value]);	

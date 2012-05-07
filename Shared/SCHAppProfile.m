@@ -18,6 +18,7 @@
 #import "NSNumber+ObjectTypes.h"
 #import "SCHWishListConstants.h"
 #import "SCHUserContentItem.h"
+#import "NSNumber+ObjectTypes.h"
 
 // Constants
 NSString * const kSCHAppProfile = @"SCHAppProfile";
@@ -71,7 +72,9 @@ NSString * const kSCHAppProfile = @"SCHAppProfile";
     
     [fetchRequest setEntity:[NSEntityDescription entityForName:kSCHUserContentItem 
                                         inManagedObjectContext:self.managedObjectContext]];	
-    
+    [fetchRequest setPredicate:[NSPredicate predicateWithFormat:@"DRMQualifier IN %@", 
+                                [NSNumber arrayOfPurchasedDRMQualifiers]]];
+
     NSError *error = nil;
     NSArray *books = [self.managedObjectContext executeFetchRequest:fetchRequest error:&error];	
     if (books == nil) {
@@ -93,14 +96,16 @@ NSString * const kSCHAppProfile = @"SCHAppProfile";
                               sortedArrayUsingDescriptors:[NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:@"order" ascending:YES]]];
 
     NSMutableArray *objectArray = [NSMutableArray arrayWithCapacity:[filteredItems count]];
-    NSArray *purchasedBooks = [self purchasedBooks];
-    
-    for(SCHRecommendationItem *item in filteredItems) {
-        NSDictionary *recommendationDictionary = [item.appRecommendationItem dictionary];
+    if ([filteredItems count] > 0) {
+        NSArray *purchasedBooks = [self purchasedBooks];
         
-        if (recommendationDictionary && 
-            [purchasedBooks containsObject:[recommendationDictionary objectForKey:kSCHAppRecommendationISBN]] == NO) {
-            [objectArray addObject:recommendationDictionary];
+        for(SCHRecommendationItem *item in filteredItems) {
+            NSDictionary *recommendationDictionary = [item.appRecommendationItem dictionary];
+            
+            if (recommendationDictionary && 
+                [purchasedBooks containsObject:[recommendationDictionary objectForKey:kSCHAppRecommendationISBN]] == NO) {
+                [objectArray addObject:recommendationDictionary];
+            }
         }
     }
     
