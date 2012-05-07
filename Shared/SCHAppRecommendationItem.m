@@ -24,6 +24,7 @@ NSString * const kSCHAppRecommendationAuthor = @"Author";
 NSString * const kSCHAppRecommendationISBN = @"ISBN";
 NSString * const kSCHAppRecommendationAverageRating = @"AverageRating";
 NSString * const kSCHAppRecommendationCoverImage = @"CoverImage";
+NSString * const kSCHAppRecommendationFullCoverImagePath = @"FullCoverImagePath";
 
 @interface SCHAppRecommendationItem()
 
@@ -276,6 +277,11 @@ NSString * const kSCHAppRecommendationCoverImage = @"CoverImage";
     if ([self AverageRating]) {
         [recommendationDict setValue:[self AverageRating] 
                               forKey:kSCHAppRecommendationAverageRating];
+    }
+    
+    if ([self coverImagePath]) {
+        [recommendationDict setValue:[self coverImagePath] 
+                              forKey:kSCHAppRecommendationFullCoverImagePath];
     }
     
     UIImage *coverImage = [self bookCover];

@@ -165,10 +165,14 @@ typedef enum {
 - (BOOL)canOpenBookError:(NSError **)error;
 - (CGSize)bookCoverImageSize;
 - (SCHAppBookFeatures) bookFeatures;
+- (BOOL)isSampleBook;
 - (SCHRecommendationISBN *)recommendationISBN;
 - (NSArray *)recommendationDictionaries;
 
 - (void)setForcedProcessing:(BOOL)forceProcess;
+
+// a list of all books purchased
+- (NSArray *)purchasedBooks;
 
 @end
 

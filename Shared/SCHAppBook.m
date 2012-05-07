@@ -74,7 +74,6 @@ NSString * const kSCHAppBookFilenameSeparator = @"-";
 
 @interface SCHAppBook()
 
-- (NSArray *)purchasedBooks;
 - (NSError *)errorWithCode:(NSInteger)code;
 - (BOOL)urlHasExpired:(NSString *)urlString;
 - (BOOL)urlStringIsBundleURL:(NSString *)urlString;
@@ -448,12 +447,15 @@ NSString * const kSCHAppBookFilenameSeparator = @"-";
     
     NSMutableArray *objectArray = [NSMutableArray arrayWithCapacity:[filteredItems count]];
     NSArray *purchasedBooks = [self purchasedBooks];
-    
+
     for(SCHRecommendationItem *item in filteredItems) {
         NSDictionary *recommendationDictionary = [item.appRecommendationItem dictionary];
         
         if (recommendationDictionary && 
-            [purchasedBooks containsObject:[recommendationDictionary objectForKey:kSCHAppRecommendationISBN]] == NO) {
+            ([self isSampleBook] ||
+             [purchasedBooks containsObject:[recommendationDictionary objectForKey:kSCHAppRecommendationISBN]] == NO)
+            ) {
+            
             [objectArray addObject:recommendationDictionary];
         }
     }
@@ -775,6 +777,11 @@ NSString * const kSCHAppBookFilenameSeparator = @"-";
 - (CGSize)bookCoverImageSize
 {
     return CGSizeMake([self.BookCoverWidth intValue], [self.BookCoverHeight intValue]);
+}
+
+- (BOOL)isSampleBook
+{
+    return ([self.ContentMetadataItem.DRMQualifier DRMQualifierValue] == kSCHDRMQualifiersSample);
 }
 
 - (SCHAppBookFeatures)bookFeatures

@@ -3831,6 +3831,18 @@
 		F81CFE0514B4910000F552A9 /* storia-preview.png in Resources */ = {isa = PBXBuildFile; fileRef = F81CFDFB14B4910000F552A9 /* storia-preview.png */; };
 		F82D39C5131EA79100289FF3 /* SCHBookContents.m in Sources */ = {isa = PBXBuildFile; fileRef = F82D39B4131EA79100289FF3 /* SCHBookContents.m */; };
 		F82D39DA131EA7D400289FF3 /* SCHBookShelfTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F82D39D8131EA7D400289FF3 /* SCHBookShelfTableViewCell.m */; };
+		F82F54971557D9C500041D0E /* SCHRecommendationSampleView~ipad.xib in Resources */ = {isa = PBXBuildFile; fileRef = F82F54961557D9C500041D0E /* SCHRecommendationSampleView~ipad.xib */; };
+		F82F54981557D9C500041D0E /* SCHRecommendationSampleView~ipad.xib in Resources */ = {isa = PBXBuildFile; fileRef = F82F54961557D9C500041D0E /* SCHRecommendationSampleView~ipad.xib */; };
+		F82F54991557D9C500041D0E /* SCHRecommendationSampleView~ipad.xib in Resources */ = {isa = PBXBuildFile; fileRef = F82F54961557D9C500041D0E /* SCHRecommendationSampleView~ipad.xib */; };
+		F82F549A1557D9C500041D0E /* SCHRecommendationSampleView~ipad.xib in Resources */ = {isa = PBXBuildFile; fileRef = F82F54961557D9C500041D0E /* SCHRecommendationSampleView~ipad.xib */; };
+		F82F54A31557DB2C00041D0E /* SCHRecommendationSampleView.m in Sources */ = {isa = PBXBuildFile; fileRef = F82F54A21557DB2C00041D0E /* SCHRecommendationSampleView.m */; };
+		F82F54A41557DB2C00041D0E /* SCHRecommendationSampleView.m in Sources */ = {isa = PBXBuildFile; fileRef = F82F54A21557DB2C00041D0E /* SCHRecommendationSampleView.m */; };
+		F82F54A51557DB2C00041D0E /* SCHRecommendationSampleView.m in Sources */ = {isa = PBXBuildFile; fileRef = F82F54A21557DB2C00041D0E /* SCHRecommendationSampleView.m */; };
+		F82F54A61557DB2C00041D0E /* SCHRecommendationSampleView.m in Sources */ = {isa = PBXBuildFile; fileRef = F82F54A21557DB2C00041D0E /* SCHRecommendationSampleView.m */; };
+		F82F54A8155806C200041D0E /* SCHRecommendationSampleView~iphone.xib in Resources */ = {isa = PBXBuildFile; fileRef = F82F54A7155806C200041D0E /* SCHRecommendationSampleView~iphone.xib */; };
+		F82F54A9155806C200041D0E /* SCHRecommendationSampleView~iphone.xib in Resources */ = {isa = PBXBuildFile; fileRef = F82F54A7155806C200041D0E /* SCHRecommendationSampleView~iphone.xib */; };
+		F82F54AA155806C200041D0E /* SCHRecommendationSampleView~iphone.xib in Resources */ = {isa = PBXBuildFile; fileRef = F82F54A7155806C200041D0E /* SCHRecommendationSampleView~iphone.xib */; };
+		F82F54AB155806C200041D0E /* SCHRecommendationSampleView~iphone.xib in Resources */ = {isa = PBXBuildFile; fileRef = F82F54A7155806C200041D0E /* SCHRecommendationSampleView~iphone.xib */; };
 		F82F913E145943B000F609F9 /* SCHDictionaryOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = F82F913D145943B000F609F9 /* SCHDictionaryOperation.m */; };
 		F82F913F145943B000F609F9 /* SCHDictionaryOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = F82F913D145943B000F609F9 /* SCHDictionaryOperation.m */; };
 		F8302C01152AFE3D00F172EC /* SCHRecommendationListView-ReadingView~ipad.xib in Resources */ = {isa = PBXBuildFile; fileRef = F8302C00152AFE3D00F172EC /* SCHRecommendationListView-ReadingView~ipad.xib */; };
@@ -5818,6 +5830,10 @@
 		F82E3BBA13F9289A000B67A4 /* BookShelfErrorIcon~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "BookShelfErrorIcon~ipad.png"; path = "Resources/BookShelfErrorIcon~ipad.png"; sourceTree = "<group>"; };
 		F82E3BBB13F9289A000B67A4 /* BookSISampleTab~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "BookSISampleTab~ipad.png"; path = "Resources/BookSISampleTab~ipad.png"; sourceTree = "<group>"; };
 		F82E3BBC13F9289A000B67A4 /* BookSITab~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "BookSITab~ipad.png"; path = "Resources/BookSITab~ipad.png"; sourceTree = "<group>"; };
+		F82F54961557D9C500041D0E /* SCHRecommendationSampleView~ipad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = "SCHRecommendationSampleView~ipad.xib"; path = "Shared/SCHRecommendationSampleView~ipad.xib"; sourceTree = "<group>"; };
+		F82F54A11557DB2C00041D0E /* SCHRecommendationSampleView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHRecommendationSampleView.h; path = Shared/SCHRecommendationSampleView.h; sourceTree = "<group>"; };
+		F82F54A21557DB2C00041D0E /* SCHRecommendationSampleView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHRecommendationSampleView.m; path = Shared/SCHRecommendationSampleView.m; sourceTree = "<group>"; };
+		F82F54A7155806C200041D0E /* SCHRecommendationSampleView~iphone.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = "SCHRecommendationSampleView~iphone.xib"; path = "Shared/SCHRecommendationSampleView~iphone.xib"; sourceTree = "<group>"; };
 		F82F913C145943B000F609F9 /* SCHDictionaryOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHDictionaryOperation.h; path = Shared/SCHDictionaryOperation.h; sourceTree = "<group>"; };
 		F82F913D145943B000F609F9 /* SCHDictionaryOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHDictionaryOperation.m; path = Shared/SCHDictionaryOperation.m; sourceTree = "<group>"; };
 		F8302C00152AFE3D00F172EC /* SCHRecommendationListView-ReadingView~ipad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = "SCHRecommendationListView-ReadingView~ipad.xib"; path = "Shared/SCHRecommendationListView-ReadingView~ipad.xib"; sourceTree = "<group>"; };
@@ -8792,11 +8808,15 @@
 				F81B00DC1510A67F002DEE25 /* SCHRecommendationListView.m */,
 				C9EB4993152EDCF500DA227A /* SCHRecommendationContainerView.h */,
 				C9EB4994152EDCF500DA227A /* SCHRecommendationContainerView.m */,
+				C9EB498E152EDA9800DA227A /* SCHRecommendationListView-ReadingViewContainer.xib */,
 				F87FFBF5152C69DD00A0282E /* SCHRecommendationListView~ipad.xib */,
 				F801DF861552D7AD0081C3EA /* SCHRecommendationListView-ReadingView.xib */,
 				F8302C00152AFE3D00F172EC /* SCHRecommendationListView-ReadingView~ipad.xib */,
-				C9EB498E152EDA9800DA227A /* SCHRecommendationListView-ReadingViewContainer.xib */,
 				F89304D5152C6A4F00C0398A /* SCHRecommendationListView.xib */,
+				F82F54A11557DB2C00041D0E /* SCHRecommendationSampleView.h */,
+				F82F54A21557DB2C00041D0E /* SCHRecommendationSampleView.m */,
+				F82F54961557D9C500041D0E /* SCHRecommendationSampleView~ipad.xib */,
+				F82F54A7155806C200041D0E /* SCHRecommendationSampleView~iphone.xib */,
 			);
 			name = "Recommendation Views";
 			sourceTree = "<group>";
@@ -10215,6 +10235,8 @@
 				F858319215514D73004960E8 /* SCHDownloadDictionaryFromSettingsViewController~ipad.xib in Resources */,
 				F858319D15515010004960E8 /* SCHDownloadDictionaryFromSettingsViewController~iphone.xib in Resources */,
 				F801DF871552D7AD0081C3EA /* SCHRecommendationListView-ReadingView.xib in Resources */,
+				F82F54971557D9C500041D0E /* SCHRecommendationSampleView~ipad.xib in Resources */,
+				F82F54A8155806C200041D0E /* SCHRecommendationSampleView~iphone.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -10971,6 +10993,8 @@
 				F858319315514D73004960E8 /* SCHDownloadDictionaryFromSettingsViewController~ipad.xib in Resources */,
 				F858319E15515010004960E8 /* SCHDownloadDictionaryFromSettingsViewController~iphone.xib in Resources */,
 				F801DF881552D7AD0081C3EA /* SCHRecommendationListView-ReadingView.xib in Resources */,
+				F82F54981557D9C500041D0E /* SCHRecommendationSampleView~ipad.xib in Resources */,
+				F82F54A9155806C200041D0E /* SCHRecommendationSampleView~iphone.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -11506,6 +11530,8 @@
 				F858319415514D73004960E8 /* SCHDownloadDictionaryFromSettingsViewController~ipad.xib in Resources */,
 				F858319F15515010004960E8 /* SCHDownloadDictionaryFromSettingsViewController~iphone.xib in Resources */,
 				F801DF891552D7AD0081C3EA /* SCHRecommendationListView-ReadingView.xib in Resources */,
+				F82F54991557D9C500041D0E /* SCHRecommendationSampleView~ipad.xib in Resources */,
+				F82F54AA155806C200041D0E /* SCHRecommendationSampleView~iphone.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -12041,6 +12067,8 @@
 				F858319515514D73004960E8 /* SCHDownloadDictionaryFromSettingsViewController~ipad.xib in Resources */,
 				F85831A015515010004960E8 /* SCHDownloadDictionaryFromSettingsViewController~iphone.xib in Resources */,
 				F801DF8A1552D7AD0081C3EA /* SCHRecommendationListView-ReadingView.xib in Resources */,
+				F82F549A1557D9C500041D0E /* SCHRecommendationSampleView~ipad.xib in Resources */,
+				F82F54AB155806C200041D0E /* SCHRecommendationSampleView~iphone.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -12430,6 +12458,7 @@
 				287639B7154E857100540861 /* SCHStoryInteractionJigsawPiece.m in Sources */,
 				F858319815514DC5004960E8 /* SCHDownloadDictionaryFromSettingsViewController.m in Sources */,
 				5251716515501FB5009C3B61 /* NSFileManager+Extensions.m in Sources */,
+				F82F54A31557DB2C00041D0E /* SCHRecommendationSampleView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -12867,6 +12896,7 @@
 				287639B8154E857100540861 /* SCHStoryInteractionJigsawPiece.m in Sources */,
 				F858319915514DC5004960E8 /* SCHDownloadDictionaryFromSettingsViewController.m in Sources */,
 				5251716615501FB5009C3B61 /* NSFileManager+Extensions.m in Sources */,
+				F82F54A41557DB2C00041D0E /* SCHRecommendationSampleView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -13237,6 +13267,7 @@
 				287639BA154E857100540861 /* SCHStoryInteractionJigsawPiece.m in Sources */,
 				F858319A15514DC5004960E8 /* SCHDownloadDictionaryFromSettingsViewController.m in Sources */,
 				5251716715501FB5009C3B61 /* NSFileManager+Extensions.m in Sources */,
+				F82F54A51557DB2C00041D0E /* SCHRecommendationSampleView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -13607,6 +13638,7 @@
 				287639BB154E857100540861 /* SCHStoryInteractionJigsawPiece.m in Sources */,
 				F858319B15514DC5004960E8 /* SCHDownloadDictionaryFromSettingsViewController.m in Sources */,
 				5251716815501FB5009C3B61 /* NSFileManager+Extensions.m in Sources */,
+				F82F54A61557DB2C00041D0E /* SCHRecommendationSampleView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

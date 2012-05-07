@@ -16,6 +16,7 @@ NSString * const kSCHWishListTitle = @"Title";
 NSString * const kSCHWishListAuthor = @"Author";
 NSString * const kSCHWishListISBN = @"ISBN";
 NSString * const kSCHWishListAverageRating = @"AverageRating";
+NSString * const kSCHWishListFullCoverImagePath = @"FullCoverImagePath";
 NSString * const kSCHWishListCoverImage = @"CoverImage";
 NSString * const kSCHWishListObjectID = @"objectID";
 
@@ -91,6 +92,11 @@ NSString * const kSCHWishListObjectID = @"objectID";
     if ([recommendationItem AverageRating] ) {
         [wishListDict setValue:[recommendationItem AverageRating] 
                         forKey:kSCHWishListAverageRating];
+    }
+    
+    if ([recommendationItem coverImagePath] ) {
+        [wishListDict setValue:[recommendationItem coverImagePath] 
+                        forKey:kSCHWishListFullCoverImagePath];
     }
     
     UIImage *coverImage = [recommendationItem bookCover];
