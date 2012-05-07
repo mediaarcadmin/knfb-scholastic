@@ -215,12 +215,14 @@ typedef enum
         self.showWelcome = NO;
     }
         
-    self.menuButton = [SCHThemeButton buttonWithType:UIButtonTypeCustom];
-    [self.menuButton setThemeIcon:kSCHThemeManagerMenuIcon iPadQualifier:kSCHThemeManagerPadQualifierSuffix];
-    [self.menuButton sizeToFit];    
-    [self.menuButton addTarget:self action:@selector(presentMenu) forControlEvents:UIControlEventTouchUpInside];    
+    if (![[SCHAppStateManager sharedAppStateManager] isSampleStore]) {
+        self.menuButton = [SCHThemeButton buttonWithType:UIButtonTypeCustom];
+        [self.menuButton setThemeIcon:kSCHThemeManagerMenuIcon iPadQualifier:kSCHThemeManagerPadQualifierSuffix];
+        [self.menuButton sizeToFit];    
+        [self.menuButton addTarget:self action:@selector(presentMenu) forControlEvents:UIControlEventTouchUpInside];    
 
-    self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithCustomView:self.menuButton] autorelease];
+        self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithCustomView:self.menuButton] autorelease];
+    }
 
     self.backButton = [SCHThemeButton buttonWithType:UIButtonTypeCustom];
     [self.backButton setThemeIcon:kSCHThemeManagerHomeIcon iPadQualifier:kSCHThemeManagerPadQualifierSuffix];
