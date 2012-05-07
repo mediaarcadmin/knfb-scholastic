@@ -701,16 +701,16 @@
 		524889721407990500DA9AFA /* SCHStoryInteractionHotSpot_iPhone.xib in Resources */ = {isa = PBXBuildFile; fileRef = 28F689C613B0E616008A9BF9 /* SCHStoryInteractionHotSpot_iPhone.xib */; };
 		524889731407990500DA9AFA /* storyinteraction-bg-younger-titleonly~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = 28F689C913B0F305008A9BF9 /* storyinteraction-bg-younger-titleonly~iphone.png */; };
 		524889741407990500DA9AFA /* storyinteraction-bg-younger-titleonly@2x~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = 28F689CA13B0F305008A9BF9 /* storyinteraction-bg-younger-titleonly@2x~iphone.png */; };
-		524889751407990500DA9AFA /* BookShelfNewIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = F8687ED513BA234100B59987 /* BookShelfNewIcon.png */; };
+		524889751407990500DA9AFA /* BookShelfNewIcon~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = F8687ED513BA234100B59987 /* BookShelfNewIcon~iphone.png */; };
 		524889761407990500DA9AFA /* SCHBookShelfTableViewCell_iPhone.xib in Resources */ = {isa = PBXBuildFile; fileRef = F837018413BB2B7A009B280D /* SCHBookShelfTableViewCell_iPhone.xib */; };
 		524889771407990500DA9AFA /* ListViewTrashCan.png in Resources */ = {isa = PBXBuildFile; fileRef = F837018713BB2F51009B280D /* ListViewTrashCan.png */; };
 		524889781407990500DA9AFA /* ListViewTrashCan@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F837018813BB2F51009B280D /* ListViewTrashCan@2x.png */; };
-		524889791407990500DA9AFA /* SampleIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = F837018E13BB3241009B280D /* SampleIcon.png */; };
-		5248897A1407990500DA9AFA /* SampleIcon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F837018F13BB3241009B280D /* SampleIcon@2x.png */; };
-		5248897B1407990500DA9AFA /* SIIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = F837019013BB3241009B280D /* SIIcon.png */; };
-		5248897C1407990500DA9AFA /* SIIcon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F837019113BB3241009B280D /* SIIcon@2x.png */; };
-		5248897D1407990500DA9AFA /* SISampleIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = F837019213BB3241009B280D /* SISampleIcon.png */; };
-		5248897E1407990500DA9AFA /* SISampleIcon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F837019313BB3241009B280D /* SISampleIcon@2x.png */; };
+		524889791407990500DA9AFA /* SampleIcon~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = F837018E13BB3241009B280D /* SampleIcon~iphone.png */; };
+		5248897A1407990500DA9AFA /* SampleIcon@2x~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = F837018F13BB3241009B280D /* SampleIcon@2x~iphone.png */; };
+		5248897B1407990500DA9AFA /* SIIcon~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = F837019013BB3241009B280D /* SIIcon~iphone.png */; };
+		5248897C1407990500DA9AFA /* SIIcon@2x~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = F837019113BB3241009B280D /* SIIcon@2x~iphone.png */; };
+		5248897D1407990500DA9AFA /* SISampleIcon~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = F837019213BB3241009B280D /* SISampleIcon~iphone.png */; };
+		5248897E1407990500DA9AFA /* SISampleIcon@2x~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = F837019313BB3241009B280D /* SISampleIcon@2x~iphone.png */; };
 		5248897F1407990500DA9AFA /* BookShelfModeGridActive@2x~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = F83701A013BC7006009B280D /* BookShelfModeGridActive@2x~iphone.png */; };
 		524889801407990500DA9AFA /* BookShelfModeGridInactive@2x~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = F83701A113BC7006009B280D /* BookShelfModeGridInactive@2x~iphone.png */; };
 		524889811407990500DA9AFA /* BookShelfModeListActive@2x~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = F83701A213BC7006009B280D /* BookShelfModeListActive@2x~iphone.png */; };
@@ -735,7 +735,7 @@
 		524889941407990500DA9AFA /* ListViewRule.png in Resources */ = {isa = PBXBuildFile; fileRef = F80A38B213C22D4000D2B47C /* ListViewRule.png */; };
 		524889951407990500DA9AFA /* ListViewRule@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F80A38B313C22D4000D2B47C /* ListViewRule@2x.png */; };
 		524889961407990500DA9AFA /* ListViewRule~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = F80A38B413C22D4100D2B47C /* ListViewRule~ipad.png */; };
-		524889971407990500DA9AFA /* BookShelfNewIcon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F8048EA113C33B740060C6F5 /* BookShelfNewIcon@2x.png */; };
+		524889971407990500DA9AFA /* BookShelfNewIcon@2x~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = F8048EA113C33B740060C6F5 /* BookShelfNewIcon@2x~iphone.png */; };
 		524889981407990500DA9AFA /* BookShelfNewIcon~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = F8048EA213C33B740060C6F5 /* BookShelfNewIcon~ipad.png */; };
 		524889991407990500DA9AFA /* SCHSetupBookshelvesViewController~iphone.xib in Resources */ = {isa = PBXBuildFile; fileRef = 28BF26EF13D5A15400535A82 /* SCHSetupBookshelvesViewController~iphone.xib */; };
 		5248899A1407990500DA9AFA /* SCHSetupBookshelvesViewController~ipad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 28BF26F713D5AD1000535A82 /* SCHSetupBookshelvesViewController~ipad.xib */; };
@@ -1758,12 +1758,12 @@
 		A3D3F1E714CDDF31004A56A5 /* storyinteraction-bg-younger-titleonly~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = 2807DF2E13B0C99A007C8F41 /* storyinteraction-bg-younger-titleonly~ipad.png */; };
 		A3D3F1E814CDDF31004A56A5 /* SCHStoryInteractionHotSpot_iPhone.xib in Resources */ = {isa = PBXBuildFile; fileRef = 28F689C613B0E616008A9BF9 /* SCHStoryInteractionHotSpot_iPhone.xib */; };
 		A3D3F1E914CDDF31004A56A5 /* storyinteraction-bg-younger-titleonly~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = 28F689C913B0F305008A9BF9 /* storyinteraction-bg-younger-titleonly~iphone.png */; };
-		A3D3F1EB14CDDF31004A56A5 /* BookShelfNewIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = F8687ED513BA234100B59987 /* BookShelfNewIcon.png */; };
+		A3D3F1EB14CDDF31004A56A5 /* BookShelfNewIcon~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = F8687ED513BA234100B59987 /* BookShelfNewIcon~iphone.png */; };
 		A3D3F1EC14CDDF31004A56A5 /* SCHBookShelfTableViewCell_iPhone.xib in Resources */ = {isa = PBXBuildFile; fileRef = F837018413BB2B7A009B280D /* SCHBookShelfTableViewCell_iPhone.xib */; };
 		A3D3F1ED14CDDF31004A56A5 /* ListViewTrashCan.png in Resources */ = {isa = PBXBuildFile; fileRef = F837018713BB2F51009B280D /* ListViewTrashCan.png */; };
-		A3D3F1EF14CDDF31004A56A5 /* SampleIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = F837018E13BB3241009B280D /* SampleIcon.png */; };
-		A3D3F1F114CDDF31004A56A5 /* SIIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = F837019013BB3241009B280D /* SIIcon.png */; };
-		A3D3F1F314CDDF31004A56A5 /* SISampleIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = F837019213BB3241009B280D /* SISampleIcon.png */; };
+		A3D3F1EF14CDDF31004A56A5 /* SampleIcon~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = F837018E13BB3241009B280D /* SampleIcon~iphone.png */; };
+		A3D3F1F114CDDF31004A56A5 /* SIIcon~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = F837019013BB3241009B280D /* SIIcon~iphone.png */; };
+		A3D3F1F314CDDF31004A56A5 /* SISampleIcon~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = F837019213BB3241009B280D /* SISampleIcon~iphone.png */; };
 		A3D3F1F914CDDF31004A56A5 /* BookShelfModeGridActive~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = F83701AC13BC73BE009B280D /* BookShelfModeGridActive~iphone.png */; };
 		A3D3F1FA14CDDF31004A56A5 /* BookShelfModeGridInactive~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = F83701AD13BC73BE009B280D /* BookShelfModeGridInactive~iphone.png */; };
 		A3D3F1FB14CDDF31004A56A5 /* BookShelfModeListActive~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = F83701AE13BC73BE009B280D /* BookShelfModeListActive~iphone.png */; };
@@ -3135,12 +3135,12 @@
 		C9D7014914ED50B100C10006 /* storyinteraction-bg-younger-titleonly~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = 2807DF2E13B0C99A007C8F41 /* storyinteraction-bg-younger-titleonly~ipad.png */; };
 		C9D7014A14ED50B100C10006 /* SCHStoryInteractionHotSpot_iPhone.xib in Resources */ = {isa = PBXBuildFile; fileRef = 28F689C613B0E616008A9BF9 /* SCHStoryInteractionHotSpot_iPhone.xib */; };
 		C9D7014B14ED50B100C10006 /* storyinteraction-bg-younger-titleonly~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = 28F689C913B0F305008A9BF9 /* storyinteraction-bg-younger-titleonly~iphone.png */; };
-		C9D7014C14ED50B100C10006 /* BookShelfNewIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = F8687ED513BA234100B59987 /* BookShelfNewIcon.png */; };
+		C9D7014C14ED50B100C10006 /* BookShelfNewIcon~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = F8687ED513BA234100B59987 /* BookShelfNewIcon~iphone.png */; };
 		C9D7014D14ED50B100C10006 /* SCHBookShelfTableViewCell_iPhone.xib in Resources */ = {isa = PBXBuildFile; fileRef = F837018413BB2B7A009B280D /* SCHBookShelfTableViewCell_iPhone.xib */; };
 		C9D7014E14ED50B100C10006 /* ListViewTrashCan.png in Resources */ = {isa = PBXBuildFile; fileRef = F837018713BB2F51009B280D /* ListViewTrashCan.png */; };
-		C9D7014F14ED50B100C10006 /* SampleIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = F837018E13BB3241009B280D /* SampleIcon.png */; };
-		C9D7015014ED50B100C10006 /* SIIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = F837019013BB3241009B280D /* SIIcon.png */; };
-		C9D7015114ED50B100C10006 /* SISampleIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = F837019213BB3241009B280D /* SISampleIcon.png */; };
+		C9D7014F14ED50B100C10006 /* SampleIcon~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = F837018E13BB3241009B280D /* SampleIcon~iphone.png */; };
+		C9D7015014ED50B100C10006 /* SIIcon~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = F837019013BB3241009B280D /* SIIcon~iphone.png */; };
+		C9D7015114ED50B100C10006 /* SISampleIcon~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = F837019213BB3241009B280D /* SISampleIcon~iphone.png */; };
 		C9D7015214ED50B100C10006 /* BookShelfModeGridActive~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = F83701AC13BC73BE009B280D /* BookShelfModeGridActive~iphone.png */; };
 		C9D7015314ED50B100C10006 /* BookShelfModeGridInactive~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = F83701AD13BC73BE009B280D /* BookShelfModeGridInactive~iphone.png */; };
 		C9D7015414ED50B100C10006 /* BookShelfModeListActive~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = F83701AE13BC73BE009B280D /* BookShelfModeListActive~iphone.png */; };
@@ -3805,7 +3805,7 @@
 		F801DF881552D7AD0081C3EA /* SCHRecommendationListView-ReadingView.xib in Resources */ = {isa = PBXBuildFile; fileRef = F801DF861552D7AD0081C3EA /* SCHRecommendationListView-ReadingView.xib */; };
 		F801DF891552D7AD0081C3EA /* SCHRecommendationListView-ReadingView.xib in Resources */ = {isa = PBXBuildFile; fileRef = F801DF861552D7AD0081C3EA /* SCHRecommendationListView-ReadingView.xib */; };
 		F801DF8A1552D7AD0081C3EA /* SCHRecommendationListView-ReadingView.xib in Resources */ = {isa = PBXBuildFile; fileRef = F801DF861552D7AD0081C3EA /* SCHRecommendationListView-ReadingView.xib */; };
-		F8048EA313C33B740060C6F5 /* BookShelfNewIcon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F8048EA113C33B740060C6F5 /* BookShelfNewIcon@2x.png */; };
+		F8048EA313C33B740060C6F5 /* BookShelfNewIcon@2x~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = F8048EA113C33B740060C6F5 /* BookShelfNewIcon@2x~iphone.png */; };
 		F8048EA513C33B740060C6F5 /* BookShelfNewIcon~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = F8048EA213C33B740060C6F5 /* BookShelfNewIcon~ipad.png */; };
 		F806563313FEB00900DFAE43 /* OptionsViewTopBackground.png in Resources */ = {isa = PBXBuildFile; fileRef = F806563113FEB00900DFAE43 /* OptionsViewTopBackground.png */; };
 		F806563513FEB00900DFAE43 /* OptionsViewTopBackground@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F806563213FEB00900DFAE43 /* OptionsViewTopBackground@2x.png */; };
@@ -3842,12 +3842,12 @@
 		F837018513BB2B7A009B280D /* SCHBookShelfTableViewCell_iPhone.xib in Resources */ = {isa = PBXBuildFile; fileRef = F837018413BB2B7A009B280D /* SCHBookShelfTableViewCell_iPhone.xib */; };
 		F837018913BB2F51009B280D /* ListViewTrashCan.png in Resources */ = {isa = PBXBuildFile; fileRef = F837018713BB2F51009B280D /* ListViewTrashCan.png */; };
 		F837018B13BB2F51009B280D /* ListViewTrashCan@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F837018813BB2F51009B280D /* ListViewTrashCan@2x.png */; };
-		F837019413BB3241009B280D /* SampleIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = F837018E13BB3241009B280D /* SampleIcon.png */; };
-		F837019613BB3241009B280D /* SampleIcon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F837018F13BB3241009B280D /* SampleIcon@2x.png */; };
-		F837019813BB3241009B280D /* SIIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = F837019013BB3241009B280D /* SIIcon.png */; };
-		F837019A13BB3241009B280D /* SIIcon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F837019113BB3241009B280D /* SIIcon@2x.png */; };
-		F837019C13BB3241009B280D /* SISampleIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = F837019213BB3241009B280D /* SISampleIcon.png */; };
-		F837019E13BB3241009B280D /* SISampleIcon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F837019313BB3241009B280D /* SISampleIcon@2x.png */; };
+		F837019413BB3241009B280D /* SampleIcon~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = F837018E13BB3241009B280D /* SampleIcon~iphone.png */; };
+		F837019613BB3241009B280D /* SampleIcon@2x~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = F837018F13BB3241009B280D /* SampleIcon@2x~iphone.png */; };
+		F837019813BB3241009B280D /* SIIcon~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = F837019013BB3241009B280D /* SIIcon~iphone.png */; };
+		F837019A13BB3241009B280D /* SIIcon@2x~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = F837019113BB3241009B280D /* SIIcon@2x~iphone.png */; };
+		F837019C13BB3241009B280D /* SISampleIcon~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = F837019213BB3241009B280D /* SISampleIcon~iphone.png */; };
+		F837019E13BB3241009B280D /* SISampleIcon@2x~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = F837019313BB3241009B280D /* SISampleIcon@2x~iphone.png */; };
 		F83701A413BC7006009B280D /* BookShelfModeGridActive@2x~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = F83701A013BC7006009B280D /* BookShelfModeGridActive@2x~iphone.png */; };
 		F83701A613BC7006009B280D /* BookShelfModeGridInactive@2x~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = F83701A113BC7006009B280D /* BookShelfModeGridInactive@2x~iphone.png */; };
 		F83701A813BC7006009B280D /* BookShelfModeListActive@2x~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = F83701A213BC7006009B280D /* BookShelfModeListActive@2x~iphone.png */; };
@@ -3941,7 +3941,7 @@
 		F864916E15139122003A8B81 /* sampleCoverImage.jpg in Resources */ = {isa = PBXBuildFile; fileRef = F864916C15139122003A8B81 /* sampleCoverImage.jpg */; };
 		F864916F15139122003A8B81 /* sampleCoverImage.jpg in Resources */ = {isa = PBXBuildFile; fileRef = F864916C15139122003A8B81 /* sampleCoverImage.jpg */; };
 		F864917015139122003A8B81 /* sampleCoverImage.jpg in Resources */ = {isa = PBXBuildFile; fileRef = F864916C15139122003A8B81 /* sampleCoverImage.jpg */; };
-		F8687ED613BA234100B59987 /* BookShelfNewIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = F8687ED513BA234100B59987 /* BookShelfNewIcon.png */; };
+		F8687ED613BA234100B59987 /* BookShelfNewIcon~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = F8687ED513BA234100B59987 /* BookShelfNewIcon~iphone.png */; };
 		F86DEBFE13A21B6800053999 /* SCHStoryInteractionControllerStartingLetter.m in Sources */ = {isa = PBXBuildFile; fileRef = F86DEBFB13A21B6800053999 /* SCHStoryInteractionControllerStartingLetter.m */; };
 		F86DEC0613A21C5F00053999 /* SCHImageButton.m in Sources */ = {isa = PBXBuildFile; fileRef = F86DEC0513A21C5F00053999 /* SCHImageButton.m */; };
 		F86DEC2413A21F2600053999 /* sfx_breakpuzzle.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = F86DEC0913A21F2600053999 /* sfx_breakpuzzle.mp3 */; };
@@ -5786,7 +5786,7 @@
 		F80060FA13D88924001CA881 /* SCHBookCoverView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHBookCoverView.m; path = Shared/SCHBookCoverView.m; sourceTree = "<group>"; };
 		F80060FD13D9CF76001CA881 /* ImageIO.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ImageIO.framework; path = System/Library/Frameworks/ImageIO.framework; sourceTree = SDKROOT; };
 		F801DF861552D7AD0081C3EA /* SCHRecommendationListView-ReadingView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = "SCHRecommendationListView-ReadingView.xib"; path = "iPhone/SCHRecommendationListView-ReadingView.xib"; sourceTree = "<group>"; };
-		F8048EA113C33B740060C6F5 /* BookShelfNewIcon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "BookShelfNewIcon@2x.png"; path = "Resources/BookShelfNewIcon@2x.png"; sourceTree = "<group>"; };
+		F8048EA113C33B740060C6F5 /* BookShelfNewIcon@2x~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "BookShelfNewIcon@2x~iphone.png"; path = "Resources/BookShelfNewIcon@2x~iphone.png"; sourceTree = "<group>"; };
 		F8048EA213C33B740060C6F5 /* BookShelfNewIcon~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "BookShelfNewIcon~ipad.png"; path = "Resources/BookShelfNewIcon~ipad.png"; sourceTree = "<group>"; };
 		F806563113FEB00900DFAE43 /* OptionsViewTopBackground.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = OptionsViewTopBackground.png; path = Resources/UIAssets/OptionsViewTopBackground.png; sourceTree = "<group>"; };
 		F806563213FEB00900DFAE43 /* OptionsViewTopBackground@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "OptionsViewTopBackground@2x.png"; path = "Resources/UIAssets/OptionsViewTopBackground@2x.png"; sourceTree = "<group>"; };
@@ -5826,12 +5826,12 @@
 		F837018413BB2B7A009B280D /* SCHBookShelfTableViewCell_iPhone.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = SCHBookShelfTableViewCell_iPhone.xib; path = Shared/SCHBookShelfTableViewCell_iPhone.xib; sourceTree = "<group>"; };
 		F837018713BB2F51009B280D /* ListViewTrashCan.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ListViewTrashCan.png; path = Resources/ListViewTrashCan.png; sourceTree = "<group>"; };
 		F837018813BB2F51009B280D /* ListViewTrashCan@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ListViewTrashCan@2x.png"; path = "Resources/ListViewTrashCan@2x.png"; sourceTree = "<group>"; };
-		F837018E13BB3241009B280D /* SampleIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = SampleIcon.png; path = Resources/SampleIcon.png; sourceTree = "<group>"; };
-		F837018F13BB3241009B280D /* SampleIcon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "SampleIcon@2x.png"; path = "Resources/SampleIcon@2x.png"; sourceTree = "<group>"; };
-		F837019013BB3241009B280D /* SIIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = SIIcon.png; path = Resources/SIIcon.png; sourceTree = "<group>"; };
-		F837019113BB3241009B280D /* SIIcon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "SIIcon@2x.png"; path = "Resources/SIIcon@2x.png"; sourceTree = "<group>"; };
-		F837019213BB3241009B280D /* SISampleIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = SISampleIcon.png; path = Resources/SISampleIcon.png; sourceTree = "<group>"; };
-		F837019313BB3241009B280D /* SISampleIcon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "SISampleIcon@2x.png"; path = "Resources/SISampleIcon@2x.png"; sourceTree = "<group>"; };
+		F837018E13BB3241009B280D /* SampleIcon~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "SampleIcon~iphone.png"; path = "Resources/SampleIcon~iphone.png"; sourceTree = "<group>"; };
+		F837018F13BB3241009B280D /* SampleIcon@2x~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "SampleIcon@2x~iphone.png"; path = "Resources/SampleIcon@2x~iphone.png"; sourceTree = "<group>"; };
+		F837019013BB3241009B280D /* SIIcon~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "SIIcon~iphone.png"; path = "Resources/SIIcon~iphone.png"; sourceTree = "<group>"; };
+		F837019113BB3241009B280D /* SIIcon@2x~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "SIIcon@2x~iphone.png"; path = "Resources/SIIcon@2x~iphone.png"; sourceTree = "<group>"; };
+		F837019213BB3241009B280D /* SISampleIcon~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "SISampleIcon~iphone.png"; path = "Resources/SISampleIcon~iphone.png"; sourceTree = "<group>"; };
+		F837019313BB3241009B280D /* SISampleIcon@2x~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "SISampleIcon@2x~iphone.png"; path = "Resources/SISampleIcon@2x~iphone.png"; sourceTree = "<group>"; };
 		F83701A013BC7006009B280D /* BookShelfModeGridActive@2x~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "BookShelfModeGridActive@2x~iphone.png"; path = "Resources/BookShelfModeGridActive@2x~iphone.png"; sourceTree = "<group>"; };
 		F83701A113BC7006009B280D /* BookShelfModeGridInactive@2x~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "BookShelfModeGridInactive@2x~iphone.png"; path = "Resources/BookShelfModeGridInactive@2x~iphone.png"; sourceTree = "<group>"; };
 		F83701A213BC7006009B280D /* BookShelfModeListActive@2x~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "BookShelfModeListActive@2x~iphone.png"; path = "Resources/BookShelfModeListActive@2x~iphone.png"; sourceTree = "<group>"; };
@@ -5889,7 +5889,7 @@
 		F864916C15139122003A8B81 /* sampleCoverImage.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = sampleCoverImage.jpg; sourceTree = "<group>"; };
 		F86666A013AF8C370050979F /* SCHBookShelfTableViewCell_iPad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = SCHBookShelfTableViewCell_iPad.xib; path = iPad/SCHBookShelfTableViewCell_iPad.xib; sourceTree = "<group>"; };
 		F8678D89133218D8001FDB2F /* ScholasticFeatureCompatibility.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = ScholasticFeatureCompatibility.plist; path = ../../../../../../Users/john/Projects/BitWink/Scholastic/Scholastic/Shared/ScholasticFeatureCompatibility.plist; sourceTree = "<group>"; };
-		F8687ED513BA234100B59987 /* BookShelfNewIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = BookShelfNewIcon.png; path = Resources/BookShelfNewIcon.png; sourceTree = "<group>"; };
+		F8687ED513BA234100B59987 /* BookShelfNewIcon~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "BookShelfNewIcon~iphone.png"; path = "Resources/BookShelfNewIcon~iphone.png"; sourceTree = "<group>"; };
 		F86DEBFA13A21B6800053999 /* SCHStoryInteractionControllerStartingLetter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCHStoryInteractionControllerStartingLetter.h; sourceTree = "<group>"; };
 		F86DEBFB13A21B6800053999 /* SCHStoryInteractionControllerStartingLetter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCHStoryInteractionControllerStartingLetter.m; sourceTree = "<group>"; };
 		F86DEBFC13A21B6800053999 /* SCHStoryInteractionStartingLetter_iPad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SCHStoryInteractionStartingLetter_iPad.xib; sourceTree = "<group>"; };
@@ -8814,8 +8814,8 @@
 				F82E3BBC13F9289A000B67A4 /* BookSITab~ipad.png */,
 				F85C9D8A13E19CA8006F0546 /* BookShelfErrorIcon.png */,
 				F85C9D8B13E19CA8006F0546 /* BookShelfErrorIcon@2x.png */,
-				F8687ED513BA234100B59987 /* BookShelfNewIcon.png */,
-				F8048EA113C33B740060C6F5 /* BookShelfNewIcon@2x.png */,
+				F8687ED513BA234100B59987 /* BookShelfNewIcon~iphone.png */,
+				F8048EA113C33B740060C6F5 /* BookShelfNewIcon@2x~iphone.png */,
 				F8048EA213C33B740060C6F5 /* BookShelfNewIcon~ipad.png */,
 				F80A38B213C22D4000D2B47C /* ListViewRule.png */,
 				F80A38B313C22D4000D2B47C /* ListViewRule@2x.png */,
@@ -8834,14 +8834,14 @@
 				F83701A313BC7006009B280D /* BookShelfModeListInactive@2x~iphone.png */,
 				F837018713BB2F51009B280D /* ListViewTrashCan.png */,
 				F837018813BB2F51009B280D /* ListViewTrashCan@2x.png */,
-				F837018E13BB3241009B280D /* SampleIcon.png */,
-				F837018F13BB3241009B280D /* SampleIcon@2x.png */,
+				F837018E13BB3241009B280D /* SampleIcon~iphone.png */,
+				F837018F13BB3241009B280D /* SampleIcon@2x~iphone.png */,
 				F80A387513C1C37100D2B47C /* SampleIcon~ipad.png */,
-				F837019013BB3241009B280D /* SIIcon.png */,
-				F837019113BB3241009B280D /* SIIcon@2x.png */,
+				F837019013BB3241009B280D /* SIIcon~iphone.png */,
+				F837019113BB3241009B280D /* SIIcon@2x~iphone.png */,
 				F80A387813C1C39500D2B47C /* SIIcon~ipad.png */,
-				F837019213BB3241009B280D /* SISampleIcon.png */,
-				F837019313BB3241009B280D /* SISampleIcon@2x.png */,
+				F837019213BB3241009B280D /* SISampleIcon~iphone.png */,
+				F837019313BB3241009B280D /* SISampleIcon@2x~iphone.png */,
 				F80A387913C1C39500D2B47C /* SISampleIcon~ipad.png */,
 			);
 			name = "List View Icons";
@@ -9818,16 +9818,16 @@
 				28F689C713B0E616008A9BF9 /* SCHStoryInteractionHotSpot_iPhone.xib in Resources */,
 				28F689CB13B0F305008A9BF9 /* storyinteraction-bg-younger-titleonly~iphone.png in Resources */,
 				28F689CD13B0F305008A9BF9 /* storyinteraction-bg-younger-titleonly@2x~iphone.png in Resources */,
-				F8687ED613BA234100B59987 /* BookShelfNewIcon.png in Resources */,
+				F8687ED613BA234100B59987 /* BookShelfNewIcon~iphone.png in Resources */,
 				F837018513BB2B7A009B280D /* SCHBookShelfTableViewCell_iPhone.xib in Resources */,
 				F837018913BB2F51009B280D /* ListViewTrashCan.png in Resources */,
 				F837018B13BB2F51009B280D /* ListViewTrashCan@2x.png in Resources */,
-				F837019413BB3241009B280D /* SampleIcon.png in Resources */,
-				F837019613BB3241009B280D /* SampleIcon@2x.png in Resources */,
-				F837019813BB3241009B280D /* SIIcon.png in Resources */,
-				F837019A13BB3241009B280D /* SIIcon@2x.png in Resources */,
-				F837019C13BB3241009B280D /* SISampleIcon.png in Resources */,
-				F837019E13BB3241009B280D /* SISampleIcon@2x.png in Resources */,
+				F837019413BB3241009B280D /* SampleIcon~iphone.png in Resources */,
+				F837019613BB3241009B280D /* SampleIcon@2x~iphone.png in Resources */,
+				F837019813BB3241009B280D /* SIIcon~iphone.png in Resources */,
+				F837019A13BB3241009B280D /* SIIcon@2x~iphone.png in Resources */,
+				F837019C13BB3241009B280D /* SISampleIcon~iphone.png in Resources */,
+				F837019E13BB3241009B280D /* SISampleIcon@2x~iphone.png in Resources */,
 				F83701A413BC7006009B280D /* BookShelfModeGridActive@2x~iphone.png in Resources */,
 				F83701A613BC7006009B280D /* BookShelfModeGridInactive@2x~iphone.png in Resources */,
 				F83701A813BC7006009B280D /* BookShelfModeListActive@2x~iphone.png in Resources */,
@@ -9852,7 +9852,7 @@
 				F80A38B513C22D4100D2B47C /* ListViewRule.png in Resources */,
 				F80A38B713C22D4100D2B47C /* ListViewRule@2x.png in Resources */,
 				F80A38B913C22D4100D2B47C /* ListViewRule~ipad.png in Resources */,
-				F8048EA313C33B740060C6F5 /* BookShelfNewIcon@2x.png in Resources */,
+				F8048EA313C33B740060C6F5 /* BookShelfNewIcon@2x~iphone.png in Resources */,
 				F8048EA513C33B740060C6F5 /* BookShelfNewIcon~ipad.png in Resources */,
 				28BF26F213D5A15400535A82 /* SCHSetupBookshelvesViewController~iphone.xib in Resources */,
 				28BF26F813D5AD1000535A82 /* SCHSetupBookshelvesViewController~ipad.xib in Resources */,
@@ -10558,16 +10558,16 @@
 				524889721407990500DA9AFA /* SCHStoryInteractionHotSpot_iPhone.xib in Resources */,
 				524889731407990500DA9AFA /* storyinteraction-bg-younger-titleonly~iphone.png in Resources */,
 				524889741407990500DA9AFA /* storyinteraction-bg-younger-titleonly@2x~iphone.png in Resources */,
-				524889751407990500DA9AFA /* BookShelfNewIcon.png in Resources */,
+				524889751407990500DA9AFA /* BookShelfNewIcon~iphone.png in Resources */,
 				524889761407990500DA9AFA /* SCHBookShelfTableViewCell_iPhone.xib in Resources */,
 				524889771407990500DA9AFA /* ListViewTrashCan.png in Resources */,
 				524889781407990500DA9AFA /* ListViewTrashCan@2x.png in Resources */,
-				524889791407990500DA9AFA /* SampleIcon.png in Resources */,
-				5248897A1407990500DA9AFA /* SampleIcon@2x.png in Resources */,
-				5248897B1407990500DA9AFA /* SIIcon.png in Resources */,
-				5248897C1407990500DA9AFA /* SIIcon@2x.png in Resources */,
-				5248897D1407990500DA9AFA /* SISampleIcon.png in Resources */,
-				5248897E1407990500DA9AFA /* SISampleIcon@2x.png in Resources */,
+				524889791407990500DA9AFA /* SampleIcon~iphone.png in Resources */,
+				5248897A1407990500DA9AFA /* SampleIcon@2x~iphone.png in Resources */,
+				5248897B1407990500DA9AFA /* SIIcon~iphone.png in Resources */,
+				5248897C1407990500DA9AFA /* SIIcon@2x~iphone.png in Resources */,
+				5248897D1407990500DA9AFA /* SISampleIcon~iphone.png in Resources */,
+				5248897E1407990500DA9AFA /* SISampleIcon@2x~iphone.png in Resources */,
 				5248897F1407990500DA9AFA /* BookShelfModeGridActive@2x~iphone.png in Resources */,
 				524889801407990500DA9AFA /* BookShelfModeGridInactive@2x~iphone.png in Resources */,
 				524889811407990500DA9AFA /* BookShelfModeListActive@2x~iphone.png in Resources */,
@@ -10592,7 +10592,7 @@
 				524889941407990500DA9AFA /* ListViewRule.png in Resources */,
 				524889951407990500DA9AFA /* ListViewRule@2x.png in Resources */,
 				524889961407990500DA9AFA /* ListViewRule~ipad.png in Resources */,
-				524889971407990500DA9AFA /* BookShelfNewIcon@2x.png in Resources */,
+				524889971407990500DA9AFA /* BookShelfNewIcon@2x~iphone.png in Resources */,
 				524889981407990500DA9AFA /* BookShelfNewIcon~ipad.png in Resources */,
 				524889991407990500DA9AFA /* SCHSetupBookshelvesViewController~iphone.xib in Resources */,
 				5248899A1407990500DA9AFA /* SCHSetupBookshelvesViewController~ipad.xib in Resources */,
@@ -11202,12 +11202,12 @@
 				A3D3F1E714CDDF31004A56A5 /* storyinteraction-bg-younger-titleonly~ipad.png in Resources */,
 				A3D3F1E814CDDF31004A56A5 /* SCHStoryInteractionHotSpot_iPhone.xib in Resources */,
 				A3D3F1E914CDDF31004A56A5 /* storyinteraction-bg-younger-titleonly~iphone.png in Resources */,
-				A3D3F1EB14CDDF31004A56A5 /* BookShelfNewIcon.png in Resources */,
+				A3D3F1EB14CDDF31004A56A5 /* BookShelfNewIcon~iphone.png in Resources */,
 				A3D3F1EC14CDDF31004A56A5 /* SCHBookShelfTableViewCell_iPhone.xib in Resources */,
 				A3D3F1ED14CDDF31004A56A5 /* ListViewTrashCan.png in Resources */,
-				A3D3F1EF14CDDF31004A56A5 /* SampleIcon.png in Resources */,
-				A3D3F1F114CDDF31004A56A5 /* SIIcon.png in Resources */,
-				A3D3F1F314CDDF31004A56A5 /* SISampleIcon.png in Resources */,
+				A3D3F1EF14CDDF31004A56A5 /* SampleIcon~iphone.png in Resources */,
+				A3D3F1F114CDDF31004A56A5 /* SIIcon~iphone.png in Resources */,
+				A3D3F1F314CDDF31004A56A5 /* SISampleIcon~iphone.png in Resources */,
 				A3D3F1F914CDDF31004A56A5 /* BookShelfModeGridActive~iphone.png in Resources */,
 				A3D3F1FA14CDDF31004A56A5 /* BookShelfModeGridInactive~iphone.png in Resources */,
 				A3D3F1FB14CDDF31004A56A5 /* BookShelfModeListActive~iphone.png in Resources */,
@@ -11737,12 +11737,12 @@
 				C9D7014914ED50B100C10006 /* storyinteraction-bg-younger-titleonly~ipad.png in Resources */,
 				C9D7014A14ED50B100C10006 /* SCHStoryInteractionHotSpot_iPhone.xib in Resources */,
 				C9D7014B14ED50B100C10006 /* storyinteraction-bg-younger-titleonly~iphone.png in Resources */,
-				C9D7014C14ED50B100C10006 /* BookShelfNewIcon.png in Resources */,
+				C9D7014C14ED50B100C10006 /* BookShelfNewIcon~iphone.png in Resources */,
 				C9D7014D14ED50B100C10006 /* SCHBookShelfTableViewCell_iPhone.xib in Resources */,
 				C9D7014E14ED50B100C10006 /* ListViewTrashCan.png in Resources */,
-				C9D7014F14ED50B100C10006 /* SampleIcon.png in Resources */,
-				C9D7015014ED50B100C10006 /* SIIcon.png in Resources */,
-				C9D7015114ED50B100C10006 /* SISampleIcon.png in Resources */,
+				C9D7014F14ED50B100C10006 /* SampleIcon~iphone.png in Resources */,
+				C9D7015014ED50B100C10006 /* SIIcon~iphone.png in Resources */,
+				C9D7015114ED50B100C10006 /* SISampleIcon~iphone.png in Resources */,
 				C9D7015214ED50B100C10006 /* BookShelfModeGridActive~iphone.png in Resources */,
 				C9D7015314ED50B100C10006 /* BookShelfModeGridInactive~iphone.png in Resources */,
 				C9D7015414ED50B100C10006 /* BookShelfModeListActive~iphone.png in Resources */,
