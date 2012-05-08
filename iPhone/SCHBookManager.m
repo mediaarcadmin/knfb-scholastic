@@ -335,11 +335,11 @@ static int allocCountXPS = 0;
 
 static int checkoutCountEucBook = 0;
 
-- (EucEPubBook<SCHEPubBookmarkPointTranslation> *)checkOutEucBookForBookIdentifier:(SCHBookIdentifier *)identifier inManagedObjectContext:(NSManagedObjectContext *)managedObjectContext
+- (id<EucBook, SCHEPubBookmarkPointTranslation>)checkOutEucBookForBookIdentifier:(SCHBookIdentifier *)identifier inManagedObjectContext:(NSManagedObjectContext *)managedObjectContext
 {
     NSParameterAssert(identifier);
     
-	EucEPubBook<SCHEPubBookmarkPointTranslation> *ret = nil;
+	id<EucBook, SCHEPubBookmarkPointTranslation> ret = nil;
 	
     checkoutCountEucBook++;
     
@@ -357,7 +357,7 @@ static int checkoutCountEucBook = 0;
             }
             ret = previouslyCachedEucBook;
         } else {
-            EucEPubBook<SCHEPubBookmarkPointTranslation> *eucBook = nil;
+            id<EucBook, SCHEPubBookmarkPointTranslation> eucBook = nil;
             
             SCHXPSProvider *xpsProvider = [self checkOutXPSProviderForBookIdentifier:identifier inManagedObjectContext:managedObjectContext];
             BOOL hasEPub = [xpsProvider containsEmbeddedEPub];
@@ -390,11 +390,11 @@ static int checkoutCountEucBook = 0;
     return(ret);
 }
 
-- (EucEPubBook<SCHEPubBookmarkPointTranslation> *)threadSafeCheckOutEucBookForBookIdentifier:(SCHBookIdentifier *)identifier
+- (id<EucBook, SCHEPubBookmarkPointTranslation>)threadSafeCheckOutEucBookForBookIdentifier:(SCHBookIdentifier *)identifier
 {
     NSParameterAssert(identifier);
     
-    __block EucEPubBook<SCHEPubBookmarkPointTranslation> *eucBook;
+    __block id<EucBook, SCHEPubBookmarkPointTranslation> eucBook;
     [self performOnMainThread:^{
         eucBook = [[self checkOutEucBookForBookIdentifier:identifier inManagedObjectContext:self.mainThreadManagedObjectContext] retain];
     }];

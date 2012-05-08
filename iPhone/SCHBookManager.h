@@ -13,13 +13,13 @@
 
 @class SCHXPSProvider;
 @class SCHTextFlow;
-@class EucEPubBook;
 @class SCHAppBook;
 @class SCHSmartZoomBlockSource;
 @class SCHBookIdentifier;
 
 @protocol KNFBParagraphSource;
 @protocol SCHEPubBookmarkPointTranslation;
+@protocol EucBook;
 
 @interface SCHBookManager : NSObject 
 {
@@ -38,7 +38,7 @@
 - (SCHXPSProvider *)checkOutXPSProviderForBookIdentifier:(SCHBookIdentifier *)identifier inManagedObjectContext:(NSManagedObjectContext *)managedObjectContext;
 - (void)checkInXPSProviderForBookIdentifier:(SCHBookIdentifier *)identifier;
 
-- (EucEPubBook<SCHEPubBookmarkPointTranslation> *)checkOutEucBookForBookIdentifier:(SCHBookIdentifier *)identifier inManagedObjectContext:(NSManagedObjectContext *)managedObjectContext;
+- (id<EucBook, SCHEPubBookmarkPointTranslation>)checkOutEucBookForBookIdentifier:(SCHBookIdentifier *)identifier inManagedObjectContext:(NSManagedObjectContext *)managedObjectContext;
 - (void)checkInEucBookForBookIdentifier:(SCHBookIdentifier *)identifier;
 
 - (SCHTextFlow *)checkOutTextFlowForBookIdentifier:(SCHBookIdentifier *)identifier inManagedObjectContext:(NSManagedObjectContext *)managedObjectContext;
@@ -49,7 +49,7 @@
 
 // these are like the normal checkout method but synchronously jump to the main thread to do core data access
 - (SCHXPSProvider *)threadSafeCheckOutXPSProviderForBookIdentifier:(SCHBookIdentifier *)identifier;
-- (EucEPubBook<SCHEPubBookmarkPointTranslation> *)threadSafeCheckOutEucBookForBookIdentifier:(SCHBookIdentifier *)identifier;
+- (id<EucBook, SCHEPubBookmarkPointTranslation>)threadSafeCheckOutEucBookForBookIdentifier:(SCHBookIdentifier *)identifier;
 
 
 + (BOOL)checkAppCompatibilityForFeature:(NSString *)key version:(float)version;
