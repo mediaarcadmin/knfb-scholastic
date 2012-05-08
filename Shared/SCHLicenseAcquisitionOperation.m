@@ -105,7 +105,7 @@
 - (NSNumber *)useDRM
 {
     if (useDRM == nil) {
-        SCHXPSProvider *xpsProvider = [[SCHBookManager sharedBookManager] threadSafeCheckOutXPSProviderForBookIdentifier:self.identifier];
+        SCHXPSProvider *xpsProvider = (SCHXPSProvider *)[[SCHBookManager sharedBookManager] threadSafeCheckOutBookPackageProviderForBookIdentifier:self.identifier];
         
         useDRM = [[NSNumber numberWithBool:[xpsProvider isEncrypted]] retain];
         
@@ -113,7 +113,7 @@
             [xpsProvider resetDrmDecrypter];
         }
         
-        [[SCHBookManager sharedBookManager] checkInXPSProviderForBookIdentifier:self.identifier];
+        [[SCHBookManager sharedBookManager] checkInBookPackageProviderForBookIdentifier:self.identifier];
     }
     
     return useDRM;

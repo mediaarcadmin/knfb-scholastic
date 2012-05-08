@@ -340,9 +340,9 @@ static SCHProcessingManager *sharedManager = nil;
     
     if (hasCompletedLicenseAquisitionProcessingOperation) {
         NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
-        SCHXPSProvider *xpsProvider = [[SCHBookManager sharedBookManager] threadSafeCheckOutXPSProviderForBookIdentifier:identifier];
-        hasAquiredLicense = [xpsProvider isEncrypted];
-        [[SCHBookManager sharedBookManager] checkInXPSProviderForBookIdentifier:identifier];
+        id <SCHBookPackageProvider> provider = [[SCHBookManager sharedBookManager] threadSafeCheckOutBookPackageProviderForBookIdentifier:identifier];
+        hasAquiredLicense = [provider isEncrypted];
+        [[SCHBookManager sharedBookManager] checkInBookPackageProviderForBookIdentifier:identifier];
         [pool drain];
     }
     

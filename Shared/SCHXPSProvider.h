@@ -7,13 +7,13 @@
 //
 
 #import "KNFBXPSProvider.h"
-#import <libEucalyptus/EucEPubDataProvider.h>
+#import "SCHBookPackageProvider.h"
 
 @class NSManagedObjectContext;
 @class SCHBookIdentifier;
-@protocol EucEPubDataProvider;
+@protocol SCHBookPackageProvider;
 
-@interface SCHXPSProvider : KNFBXPSProvider <EucEPubDataProvider> {
+@interface SCHXPSProvider : KNFBXPSProvider <SCHBookPackageProvider> {
     SCHBookIdentifier *bookIdentifier;
 	id<KNFBDrmBookDecrypter> drmDecrypter;
 }

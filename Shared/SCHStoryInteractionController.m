@@ -227,7 +227,7 @@ static Class controllerClassForStoryInteraction(SCHStoryInteraction *storyIntera
     if (self.containerView == nil) {
         [self enqueueAudioWithPath:[storyInteraction storyInteractionOpeningSoundFilename] fromBundle:YES];        
 
-        self.xpsProvider = [[SCHBookManager sharedBookManager] threadSafeCheckOutXPSProviderForBookIdentifier:self.bookIdentifier];
+        self.xpsProvider = (SCHXPSProvider *)[[SCHBookManager sharedBookManager] threadSafeCheckOutBookPackageProviderForBookIdentifier:self.bookIdentifier];
         
         // set up the transparent full-size container to trap touch events before they get
         // to the underlying view; this effectively makes the story interaction modal
@@ -679,7 +679,7 @@ static Class controllerClassForStoryInteraction(SCHStoryInteraction *storyIntera
         
         [self cancelQueuedAudio];
         
-        [[SCHBookManager sharedBookManager] checkInXPSProviderForBookIdentifier:self.bookIdentifier];
+        [[SCHBookManager sharedBookManager] checkInBookPackageProviderForBookIdentifier:self.bookIdentifier];
         
         // report success so that the reading view can keep track of it properly
         if (delegate && [delegate respondsToSelector:@selector(storyInteractionController:willDismissWithSuccess:)]) {

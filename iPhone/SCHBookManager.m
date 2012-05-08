@@ -11,9 +11,9 @@
 #import "SCHAppBook.h"
 #import "SCHBookContents.h"
 #import "SCHTextFlow.h"
-#import "SCHXPSProvider.h"
 #import "SCHFlowEucBook.h"
 #import "SCHEPubBook.h"
+#import "SCHXPSProvider.h"
 #import "SCHTextFlowParagraphSource.h"
 #import "SCHEPubParagraphSource.h"
 #import "SCHBookIdentifier.h"
@@ -244,11 +244,11 @@ static NSDictionary *featureCompatibilityDictionary = nil;
 static int checkoutCountXPS = 0;
 static int allocCountXPS = 0;
 
-- (SCHXPSProvider *)checkOutXPSProviderForBookIdentifier:(SCHBookIdentifier *)identifier inManagedObjectContext:(NSManagedObjectContext *)managedObjectContext
+- (id <SCHBookPackageProvider>)checkOutBookPackageProviderForBookIdentifier:(SCHBookIdentifier *)identifier inManagedObjectContext:(NSManagedObjectContext *)managedObjectContext
 {
     NSParameterAssert(identifier);
     
-	SCHXPSProvider *ret = nil;
+	id <SCHBookPackageProvider> ret = nil;
 	
     checkoutCountXPS++;
     
@@ -256,7 +256,7 @@ static int allocCountXPS = 0;
 	
     NSMutableDictionary *myCachedXPSProviders = self.cachedXPSProviders;
     @synchronized(myCachedXPSProviders) {
-        SCHXPSProvider *previouslyCachedXPSProvider = [myCachedXPSProviders objectForKey:identifier];
+        id <SCHBookPackageProvider> previouslyCachedXPSProvider = [myCachedXPSProviders objectForKey:identifier];
         if(previouslyCachedXPSProvider) {
             //NSLog(@"Returning cached XPSProvider for book with identifier %@", identifier);
             if (identifier != nil) {
@@ -266,20 +266,20 @@ static int allocCountXPS = 0;
         } else {
             allocCountXPS++;
             SCHAppBook *book = [self bookWithIdentifier:identifier inManagedObjectContext:managedObjectContext];
-			SCHXPSProvider *xpsProvider = [[SCHXPSProvider alloc] initWithBookIdentifier:identifier xpsPath:[book xpsPath]];
-			if(xpsProvider) {
+			id <SCHBookPackageProvider> provider = [[SCHXPSProvider alloc] initWithBookIdentifier:identifier xpsPath:[book xpsPath]];
+			if(provider) {
 				NSCountedSet *myCachedXPSProviderCheckoutCounts = self.cachedXPSProviderCheckoutCounts;
 				if(!myCachedXPSProviderCheckoutCounts) {
 					myCachedXPSProviderCheckoutCounts = [NSCountedSet set];
 					self.cachedXPSProviderCheckoutCounts = myCachedXPSProviderCheckoutCounts;
 				}
 				
-				[myCachedXPSProviders setObject:xpsProvider forKey:identifier];
+				[myCachedXPSProviders setObject:provider forKey:identifier];
                 if (identifier != nil) {
                     [myCachedXPSProviderCheckoutCounts addObject:identifier];
                 }
-				ret = xpsProvider;
-				[xpsProvider release];
+				ret = provider;
+				[provider release];
 			}
         }
     }
@@ -289,18 +289,18 @@ static int allocCountXPS = 0;
     return(ret);	
 }
 
-- (SCHXPSProvider *)threadSafeCheckOutXPSProviderForBookIdentifier:(SCHBookIdentifier *)identifier
+- (id <SCHBookPackageProvider>)threadSafeCheckOutBookPackageProviderForBookIdentifier:(SCHBookIdentifier *)identifier
 {
     NSParameterAssert(identifier);
     
-    __block SCHXPSProvider *xpsProvider = nil;
+    __block id <SCHBookPackageProvider> provider = nil;
     [self performOnMainThread:^{
-        xpsProvider = [[self checkOutXPSProviderForBookIdentifier:identifier inManagedObjectContext:self.mainThreadManagedObjectContext] retain];
+        provider = [[self checkOutBookPackageProviderForBookIdentifier:identifier inManagedObjectContext:self.mainThreadManagedObjectContext] retain];
     }];
-    return [xpsProvider autorelease];
+    return [provider autorelease];
 }
 
-- (void)checkInXPSProviderForBookIdentifier:(SCHBookIdentifier *)identifier
+- (void)checkInBookPackageProviderForBookIdentifier:(SCHBookIdentifier *)identifier
 {
     NSParameterAssert(identifier);
     
@@ -359,7 +359,7 @@ static int checkoutCountEucBook = 0;
         } else {
             id<EucBook, SCHEPubBookmarkPointTranslation> eucBook = nil;
             
-            SCHXPSProvider *xpsProvider = [self checkOutXPSProviderForBookIdentifier:identifier inManagedObjectContext:managedObjectContext];
+            SCHXPSProvider *xpsProvider = (SCHXPSProvider *)[self checkOutBookPackageProviderForBookIdentifier:identifier inManagedObjectContext:managedObjectContext];
             BOOL hasEPub = [xpsProvider containsEmbeddedEPub];
             
             if (hasEPub) {
@@ -368,7 +368,7 @@ static int checkoutCountEucBook = 0;
                 eucBook = [[SCHFlowEucBook alloc] initWithBookIdentifier:identifier managedObjectContext:managedObjectContext];
             }
             
-            [self checkInXPSProviderForBookIdentifier:identifier];
+            [self checkInBookPackageProviderForBookIdentifier:identifier];
             
 			if(eucBook) {
 				NSCountedSet *myCachedEucBookCheckoutCounts = self.cachedEucBookCheckoutCounts;
@@ -528,7 +528,7 @@ static int checkoutCountParagraph = 0;
             
             id<KNFBParagraphSource> paragraphSource = nil;
             
-            SCHXPSProvider *xpsProvider = [self checkOutXPSProviderForBookIdentifier:identifier inManagedObjectContext:managedObjectContext];
+            SCHXPSProvider *xpsProvider = (SCHXPSProvider *)[self checkOutBookPackageProviderForBookIdentifier:identifier inManagedObjectContext:managedObjectContext];
             BOOL hasEPub = [xpsProvider containsEmbeddedEPub];
             
             if (hasEPub) {
@@ -537,7 +537,7 @@ static int checkoutCountParagraph = 0;
                 paragraphSource = [[SCHTextFlowParagraphSource alloc] initWithBookIdentifier:identifier managedObjectContext:managedObjectContext];
             }
             
-            [self checkInXPSProviderForBookIdentifier:identifier];
+            [self checkInBookPackageProviderForBookIdentifier:identifier];
                         
             if(paragraphSource) {
                 //NSLog(@"Creating and caching ParagraphSource for book with ID %@", identifier);

@@ -72,7 +72,7 @@ static void smartZoomFileXMLParsingStartElementHandler(void *ctx, const XML_Char
 {
     NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
     
-    SCHXPSProvider *xpsProvider = [[SCHBookManager sharedBookManager] threadSafeCheckOutXPSProviderForBookIdentifier:self.identifier];
+    SCHXPSProvider *xpsProvider = (SCHXPSProvider *)[[SCHBookManager sharedBookManager] threadSafeCheckOutBookPackageProviderForBookIdentifier:self.identifier];
     BOOL hasSmartZoom = [xpsProvider componentExistsAtPath:KNFBXPSKNFBSmartZoomFile];
     
     if (hasSmartZoom) {
@@ -81,7 +81,7 @@ static void smartZoomFileXMLParsingStartElementHandler(void *ctx, const XML_Char
 
         if (nil == data) {    
             // Not all books have this data
-            [[SCHBookManager sharedBookManager] checkInXPSProviderForBookIdentifier:self.identifier];            
+            [[SCHBookManager sharedBookManager] checkInBookPackageProviderForBookIdentifier:self.identifier];            
             [self updateBookWithFailure];
             
             [pool drain];
@@ -105,7 +105,7 @@ static void smartZoomFileXMLParsingStartElementHandler(void *ctx, const XML_Char
         }];
     }
     
-    [[SCHBookManager sharedBookManager] checkInXPSProviderForBookIdentifier:self.identifier];
+    [[SCHBookManager sharedBookManager] checkInBookPackageProviderForBookIdentifier:self.identifier];
         
     [self updateBookWithSuccess];
     

@@ -98,14 +98,14 @@ static void pageFileXMLParsingStartElementHandler(void *ctx, const XML_Char *nam
 {
     NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
     
-    SCHXPSProvider *xpsProvider = [[SCHBookManager sharedBookManager] threadSafeCheckOutXPSProviderForBookIdentifier:self.identifier];
+    SCHXPSProvider *xpsProvider = (SCHXPSProvider *)[[SCHBookManager sharedBookManager] threadSafeCheckOutBookPackageProviderForBookIdentifier:self.identifier];
     NSData *data = [xpsProvider dataForComponentAtPath:KNFBXPSTextFlowSectionsFile];
     
     if (nil == data) {
         NSLog(@"Could not pre-parse TextFlow because TextFlow file did not exist at path: %@.", KNFBXPSTextFlowSectionsFile);
 
         [xpsProvider reportReadingIfRequired];
-        [[SCHBookManager sharedBookManager] checkInXPSProviderForBookIdentifier:self.identifier];
+        [[SCHBookManager sharedBookManager] checkInBookPackageProviderForBookIdentifier:self.identifier];
         [self updateBookWithFailure];
         
         [self setProcessingState:SCHBookProcessingStateReadyForSmartZoomPreParse];
@@ -144,7 +144,7 @@ static void pageFileXMLParsingStartElementHandler(void *ctx, const XML_Char *nam
         if (!data) {
             NSLog(@"Could not pre-parse TextFlow because TextFlow file did not exist with name: %@.", [pageRange fileName]);
             [xpsProvider reportReadingIfRequired];
-            [[SCHBookManager sharedBookManager] checkInXPSProviderForBookIdentifier:self.identifier];
+            [[SCHBookManager sharedBookManager] checkInBookPackageProviderForBookIdentifier:self.identifier];
             [self updateBookWithFailure];
             [pool drain];
             return;
@@ -175,7 +175,7 @@ static void pageFileXMLParsingStartElementHandler(void *ctx, const XML_Char *nam
     }];
     
     [xpsProvider reportReadingIfRequired];
-    [[SCHBookManager sharedBookManager] checkInXPSProviderForBookIdentifier:self.identifier];
+    [[SCHBookManager sharedBookManager] checkInBookPackageProviderForBookIdentifier:self.identifier];
     
     [self fireNotificationForPercentage:1.0f];
 

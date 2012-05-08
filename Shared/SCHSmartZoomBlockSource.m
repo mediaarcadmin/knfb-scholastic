@@ -28,7 +28,7 @@
 - (void)dealloc
 {
     if (self.xpsProvider) {
-        [[SCHBookManager sharedBookManager] checkInXPSProviderForBookIdentifier:self.identifier];
+        [[SCHBookManager sharedBookManager] checkInBookPackageProviderForBookIdentifier:self.identifier];
     }
     
     [identifier release], identifier = nil;
@@ -43,7 +43,7 @@
         identifier = [bookIdentifier retain];
         self.managedObjectContext = moc;
         
-        self.xpsProvider = [[SCHBookManager sharedBookManager] checkOutXPSProviderForBookIdentifier:bookIdentifier inManagedObjectContext:moc];
+        self.xpsProvider = (SCHXPSProvider *)[[SCHBookManager sharedBookManager] checkOutBookPackageProviderForBookIdentifier:bookIdentifier inManagedObjectContext:moc];
     }
     return self;
 }

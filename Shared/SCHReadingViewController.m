@@ -91,7 +91,7 @@ static const NSUInteger kReadingViewMaxRecommendationsCount = 4;
 @property (nonatomic, assign) CGFloat currentBookProgress;
 
 // XPS book data provider
-@property (nonatomic, retain) SCHXPSProvider *xpsProvider;
+@property (nonatomic, retain) id<SCHBookPackageProvider> xpsProvider;
 
 // temporary flag to prevent nav bar from being positioned behind the status bar on rotation
 @property (nonatomic, assign) BOOL currentlyRotating;
@@ -277,7 +277,7 @@ static const NSUInteger kReadingViewMaxRecommendationsCount = 4;
     [self releaseViewObjects];
     
     if (xpsProvider && self.bookIdentifier) {
-        [[SCHBookManager sharedBookManager] checkInXPSProviderForBookIdentifier:self.bookIdentifier];
+        [[SCHBookManager sharedBookManager] checkInBookPackageProviderForBookIdentifier:self.bookIdentifier];
     }
     
     [xpsProvider release], xpsProvider = nil;
@@ -420,7 +420,7 @@ static const NSUInteger kReadingViewMaxRecommendationsCount = 4;
         }
         
         bookIdentifier = [aIdentifier retain];
-        xpsProvider = [[[SCHBookManager sharedBookManager] checkOutXPSProviderForBookIdentifier:bookIdentifier inManagedObjectContext:moc] retain];
+        xpsProvider = [[[SCHBookManager sharedBookManager] checkOutBookPackageProviderForBookIdentifier:bookIdentifier inManagedObjectContext:moc] retain];
 
         if (!xpsProvider || ([xpsProvider pageCount] == 0)) {
             return [self initFailureWithErrorCode:kSCHReadingViewXPSCheckoutFailedError error:error];
@@ -512,7 +512,7 @@ static const NSUInteger kReadingViewMaxRecommendationsCount = 4;
 - (SCHBookStoryInteractions *)bookStoryInteractions
 {
     if (bookStoryInteractions == nil) {
-        bookStoryInteractions = [[SCHBookStoryInteractions alloc] initWithXPSProvider:self.xpsProvider
+        bookStoryInteractions = [[SCHBookStoryInteractions alloc] initWithXPSProvider:(SCHXPSProvider *)self.xpsProvider
                                                                        oddPagesOnLeft:YES
                                                                              delegate:self];
         
@@ -933,7 +933,7 @@ static const NSUInteger kReadingViewMaxRecommendationsCount = 4;
             [alert addButtonWithTitle:NSLocalizedString(@"OK", @"OK") block:^{}];
             [alert show];
             [alert release];
-            [[SCHBookManager sharedBookManager] checkInXPSProviderForBookIdentifier:self.bookIdentifier];
+            [[SCHBookManager sharedBookManager] checkInBookPackageProviderForBookIdentifier:self.bookIdentifier];
             self.bookIdentifier = nil;
             if (self.modalViewController != nil) {
                 [self.modalViewController dismissModalViewControllerAnimated:NO];
@@ -1141,7 +1141,7 @@ static const NSUInteger kReadingViewMaxRecommendationsCount = 4;
         
         if(audioBookReferences != nil && [audioBookReferences count] > 0) {        
             self.audioBookPlayer = [[[SCHAudioBookPlayer alloc] init] autorelease];
-            self.audioBookPlayer.xpsProvider = self.xpsProvider;
+            self.audioBookPlayer.xpsProvider = (SCHXPSProvider *)self.xpsProvider;
             BOOL success = [self.audioBookPlayer prepareAudio:audioBookReferences error:&error 
                                                  wordBlockOld:^(NSUInteger layoutPage, NSUInteger pageWordOffset) {
                                                      //NSLog(@"WORD UP! at layoutPage %d pageWordOffset %d", layoutPage, pageWordOffset);
@@ -1629,7 +1629,7 @@ static const NSUInteger kReadingViewMaxRecommendationsCount = 4;
     self.storyInteractionController = [SCHStoryInteractionController storyInteractionControllerForStoryInteraction:storyInteraction];
     self.storyInteractionController.bookIdentifier= self.bookIdentifier;
     self.storyInteractionController.delegate = self;
-    self.storyInteractionController.xpsProvider = self.xpsProvider;
+    self.storyInteractionController.xpsProvider = (SCHXPSProvider *)self.xpsProvider;
     
     NSRange pageIndices = [self storyInteractionPageIndices];
     if (pageIndices.length == 2) {

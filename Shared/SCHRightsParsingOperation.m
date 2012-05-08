@@ -49,11 +49,11 @@
 
 - (void)beginOperation
 {
-	SCHXPSProvider *xpsProvider = [[SCHBookManager sharedBookManager] threadSafeCheckOutXPSProviderForBookIdentifier:self.identifier];
+	id <SCHBookPackageProvider> provider = [[SCHBookManager sharedBookManager] threadSafeCheckOutBookPackageProviderForBookIdentifier:self.identifier];
 	
-	BOOL hasAudio = [xpsProvider componentExistsAtPath:KNFBXPSAudiobookMetadataFile];
-	BOOL hasStoryInteractions = [xpsProvider componentExistsAtPath:KNFBXPSStoryInteractionsMetadataFile];
-	BOOL hasExtras = [xpsProvider componentExistsAtPath:KNFBXPSExtrasMetadataFile];
+	BOOL hasAudio = [provider componentExistsAtPath:KNFBXPSAudiobookMetadataFile];
+	BOOL hasStoryInteractions = [provider componentExistsAtPath:KNFBXPSStoryInteractionsMetadataFile];
+	BOOL hasExtras = [provider componentExistsAtPath:KNFBXPSExtrasMetadataFile];
 	
     [self performWithBookAndSave:^(SCHAppBook *book) {
         [book setValue:[NSNumber numberWithBool:hasAudio] forKey:kSCHAppBookHasAudio];
@@ -62,9 +62,9 @@
     }];
     
 	// check for metadata file
-	NSData *metadataData = [xpsProvider dataForComponentAtPath:KNFBXPSKNFBMetadataFile];
+	NSData *metadataData = [provider dataForComponentAtPath:KNFBXPSKNFBMetadataFile];
 	
-	[[SCHBookManager sharedBookManager] checkInXPSProviderForBookIdentifier:self.identifier];
+	[[SCHBookManager sharedBookManager] checkInBookPackageProviderForBookIdentifier:self.identifier];
 	
 	if (metadataData) {
 		self.parsingComplete = NO;

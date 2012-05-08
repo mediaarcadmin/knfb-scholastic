@@ -5561,6 +5561,7 @@
 		C984D3F31559CC3A001E3016 /* 9780545232166.1397.embeddedepub.xps */ = {isa = PBXFileReference; lastKnownFileType = file; name = 9780545232166.1397.embeddedepub.xps; path = "Shared/Debug Books/9780545232166.1397.embeddedepub.xps"; sourceTree = "<group>"; };
 		C984D3F61559CE28001E3016 /* BranchingSample.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = BranchingSample.jpg; path = "Shared/Debug Books/BranchingSample.jpg"; sourceTree = "<group>"; };
 		C984D3F71559CE28001E3016 /* BranchingSample.bsb */ = {isa = PBXFileReference; lastKnownFileType = file; name = BranchingSample.bsb; path = "Shared/Debug Books/BranchingSample.bsb"; sourceTree = "<group>"; };
+		C984D3FA1559D178001E3016 /* SCHBookPackageProvider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHBookPackageProvider.h; path = Shared/SCHBookPackageProvider.h; sourceTree = SOURCE_ROOT; };
 		C986489E1402686300B9DFE1 /* SCHReadingViewNavigationToolbar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHReadingViewNavigationToolbar.h; path = Shared/SCHReadingViewNavigationToolbar.h; sourceTree = "<group>"; };
 		C986489F1402686300B9DFE1 /* SCHReadingViewNavigationToolbar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHReadingViewNavigationToolbar.m; path = Shared/SCHReadingViewNavigationToolbar.m; sourceTree = "<group>"; };
 		C98BDD791547F3DF00E265B8 /* 9780545364775_r7.MyFirstBiographyBenjaminFranklin.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = 9780545364775_r7.MyFirstBiographyBenjaminFranklin.jpg; path = "Shared/Debug Books/9780545364775_r7.MyFirstBiographyBenjaminFranklin.jpg"; sourceTree = "<group>"; };
@@ -8941,6 +8942,7 @@
 		F8509E8A12F0621E00197EB5 /* XPS Provider */ = {
 			isa = PBXGroup;
 			children = (
+				C984D3FA1559D178001E3016 /* SCHBookPackageProvider.h */,
 				C9EFB28C134F782800ADF905 /* SCHXPSProvider.h */,
 				C9EFB28D134F782A00ADF905 /* SCHXPSProvider.m */,
 				C9EFB291134F795800ADF905 /* SCHXPSURLProtocol.h */,
