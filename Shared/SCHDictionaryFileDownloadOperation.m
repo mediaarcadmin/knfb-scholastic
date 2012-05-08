@@ -8,6 +8,7 @@
 
 #import "SCHDictionaryFileDownloadOperation.h"
 #import "BITNetworkActivityManager.h"
+#import "NSFileManager+Extensions.h"
 
 #pragma mark Class Extension
 
@@ -28,7 +29,6 @@
 
 - (void)fireProgressUpdate:(float)progress;
 - (void)finishedDownload;
-- (BOOL)fileSystemHasBytesAvailable:(unsigned long long)sizeInBytes;
 - (void)cancelOperationAndSuboperations;
 
 @end
@@ -110,19 +110,6 @@
     [self.downloadOperation start];
 }
 
-- (BOOL)fileSystemHasBytesAvailable:(unsigned long long)sizeInBytes
-{
-    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-    NSString *docDirectory = ([paths count] > 0 ? [paths objectAtIndex:0] : nil);            
-
-    NSDictionary* fsAttr = [self.localFileManager attributesOfFileSystemForPath:docDirectory error:NULL];
-    
-    unsigned long long freeSize = [(NSNumber*)[fsAttr objectForKey:NSFileSystemFreeSize] unsignedLongLongValue];
-    //NSLog(@"Freesize: %llu", freeSize);
-    
-    return (sizeInBytes <= freeSize);
-}
-
 - (void)finishedDownload
 {
     [self.downloadOperation waitUntilFinished];
@@ -147,11 +134,16 @@
 
 - (void)httpOperation:(QHTTPOperation *)operation startedDownloadingDataSize:(long long)expectedDataSize
 {
+    NSFileManager *fileManager = [[[NSFileManager alloc] init] autorelease];
     BOOL sufficientSpace;
     if (expectedDataSize == NSURLResponseUnknownLength) {
-        sufficientSpace = [self fileSystemHasBytesAvailable:1];
+        sufficientSpace = [fileManager BITfileSystemHasBytesAvailable:1];
     } else {
-        sufficientSpace = [self fileSystemHasBytesAvailable:expectedDataSize];
+        // sufficient space = 1x full file size + 1.2x compressed file size
+        // we can't check this up front, but the zip file is unlikely to be
+        // highly compressed, as it consists mostly of already-compressed
+        // image files and MP3 files
+        sufficientSpace = [fileManager BITfileSystemHasBytesAvailable:(expectedDataSize * 2.2)];
     }
     
     if (!sufficientSpace) {

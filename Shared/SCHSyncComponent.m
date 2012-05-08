@@ -55,12 +55,24 @@ NSString * const SCHSyncComponentDidFailAuthenticationNotification = @"SCHSyncCo
 	return(NO);
 }
 
-// SCHSyncComponent:clear needs to be overidden and super called in sub-classes
-- (void)clear
+- (void)resetSync
 {
     self.isSynchronizing = NO;
     self.saveOnly = NO;
     [self clearFailures];
+    [self resetWebService];
+    [self clearComponent];
+    [self clearCoreData];
+}
+
+- (void)resetWebService
+{
+    NSAssert(NO, @"SCHSyncComponent:resetWebService needs to be overidden in sub-classes");    
+}
+
+- (void)clearCoreData
+{
+    NSAssert(NO, @"SCHSyncComponent:clearCoreData needs to be overidden in sub-classes");        
 }
 
 #pragma mark - Delegate methods
@@ -96,6 +108,16 @@ NSString * const SCHSyncComponentDidFailAuthenticationNotification = @"SCHSyncCo
     self.failureCount = self.failureCount + 1;
     
 	[super method:method didFailWithError:error requestInfo:requestInfo result:result];
+}
+
+- (void)beginBackgroundTask
+{
+    if (self.backgroundTaskIdentifier == UIBackgroundTaskInvalid) {
+        self.backgroundTaskIdentifier = [[UIApplication sharedApplication] beginBackgroundTaskWithExpirationHandler:^{ 
+            self.isSynchronizing = NO;
+            [self endBackgroundTask];
+        }];
+    }
 }
 
 - (void)endBackgroundTask

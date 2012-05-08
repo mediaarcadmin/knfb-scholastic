@@ -85,10 +85,7 @@ NSString * const SCHWishListSyncComponentDidFailNotification = @"SCHWishListSync
 	BOOL ret = YES;
 	
 	if (self.isSynchronizing == NO) {
-		self.backgroundTaskIdentifier = [[UIApplication sharedApplication] beginBackgroundTaskWithExpirationHandler:^{ 
-			self.isSynchronizing = NO;
-            [self endBackgroundTask];
-		}];
+        [self beginBackgroundTask];
 		
 		ret = [self updateWishListItems];
         if (ret == NO) {
@@ -99,14 +96,21 @@ NSString * const SCHWishListSyncComponentDidFailNotification = @"SCHWishListSync
 	return(ret);		
 }
 
-- (void)clear
+#pragma - Overrideen methods used by resetSync
+
+- (void)resetWebService
+{
+    [self.wishListWebService clear];
+}
+
+- (void)clearComponent
+{
+    self.lastSyncSaveCalled = nil;    
+}
+
+- (void)clearCoreData
 {
 	NSError *error = nil;
-	
-    [super clear];
-    
-    [self.wishListWebService clear];
-    self.lastSyncSaveCalled = nil;
     
 	if (![self.managedObjectContext BITemptyEntity:kSCHWishListProfile error:&error] ||
         ![self.managedObjectContext BITemptyEntity:kSCHWishListItem error:&error] ||
@@ -114,6 +118,8 @@ NSString * const SCHWishListSyncComponentDidFailNotification = @"SCHWishListSync
 		NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
 	}		
 }
+
+#pragma mark - Delegate methods
 
 - (void)method:(NSString *)method didCompleteWithResult:(NSDictionary *)result 
       userInfo:(NSDictionary *)userInfo

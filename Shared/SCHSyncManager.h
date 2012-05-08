@@ -30,7 +30,7 @@ extern NSString * const SCHSyncManagerDidCompleteNotification;
 - (void)startHeartbeat;
 - (void)stopHeartbeat;
 
-- (void)clear;
+- (void)resetSync;
 - (void)flushSyncQueue;
 - (BOOL)havePerformedFirstSyncUpToBooks;
 

@@ -12,6 +12,9 @@
 static const UIEdgeInsets kSCHReadingStoryInteractionButtonFillInsetYounger = { 16, 6, 16, 0 };
 static const UIEdgeInsets kSCHReadingStoryInteractionButtonFillInsetOlder =  { 8, 4, 12, 0 };
 
+static const UIEdgeInsets kSCHReadingStoryInteractionButtonFillInsetYounger_iPhone = { 4, 6, 4, 0 };
+static const UIEdgeInsets kSCHReadingStoryInteractionButtonFillInsetOlder_iPhone =  { 6, 4, 0, 0 };
+
 @interface SCHReadingStoryInteractionButtonFillLayer : CALayer
 @property (nonatomic, assign) float fillLevel;
 @property (nonatomic, assign) CGImageRef fillImage;
@@ -121,10 +124,20 @@ static const UIEdgeInsets kSCHReadingStoryInteractionButtonFillInsetOlder =  { 8
     self.fillLayer.bounds = (CGRect){CGPointZero, fillImage.size};
     self.fillLayer.position = CGPointMake(fillImage.size.width/2, fillImage.size.height/2);
     
+    BOOL iPad = UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad;
+    
     if (isYounger) {
-        self.fillLayer.fillInset = kSCHReadingStoryInteractionButtonFillInsetYounger;
+        if (iPad) {
+            self.fillLayer.fillInset = kSCHReadingStoryInteractionButtonFillInsetYounger;
+        } else {
+            self.fillLayer.fillInset = kSCHReadingStoryInteractionButtonFillInsetYounger_iPhone;
+        }
     } else {
-        self.fillLayer.fillInset = kSCHReadingStoryInteractionButtonFillInsetOlder;
+        if (iPad) {
+            self.fillLayer.fillInset = kSCHReadingStoryInteractionButtonFillInsetOlder;
+        } else {
+            self.fillLayer.fillInset = kSCHReadingStoryInteractionButtonFillInsetOlder_iPhone;
+        }
     }
 }
 

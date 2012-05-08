@@ -10,6 +10,7 @@
 #import <CoreData/CoreData.h>
 
 @class SCHRecommendationItem;
+@class SCHBookIdentifier;
 
 // Constants
 extern NSString * const kSCHRecommendationISBN;
@@ -18,7 +19,11 @@ extern NSString * const kSCHRecommendationISBN;
 
 @property (nonatomic, retain) NSString * isbn;
 @property (nonatomic, retain) NSDate * fetchDate;
+@property (nonatomic, retain) NSNumber * DRMQualifier;
 @property (nonatomic, retain) NSSet *recommendationItems;
+
+- (SCHBookIdentifier *)bookIdentifier;
+
 @end
 
 @interface SCHRecommendationISBN (CoreDataGeneratedAccessors)
@@ -27,4 +32,5 @@ extern NSString * const kSCHRecommendationISBN;
 - (void)removeRecommendationItemsObject:(SCHRecommendationItem *)value;
 - (void)addRecommendationItems:(NSSet *)values;
 - (void)removeRecommendationItems:(NSSet *)values;
+
 @end

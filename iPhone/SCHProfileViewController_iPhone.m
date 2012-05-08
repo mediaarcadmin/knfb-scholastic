@@ -91,14 +91,12 @@ static const CGFloat kSCHProfileViewControllerPhoneLogoHeightLandscape = 32;
      [UIImage imageNamed:@"red-toolbar.png"]];
     
     if (UIInterfaceOrientationIsLandscape(orientation)) {
-        [self.backgroundView setImage:[UIImage imageNamed:@"cloud-background-landscape.jpg"]];
         [self.settingsButton setImage:[UIImage imageNamed:@"settings-landscape.png"] 
                              forState:UIControlStateNormal];
         [self.settingsButton sizeToFit];
         
         newTitleBounds = CGRectMake(0, 0, kSCHProfileViewControllerPhoneLogoWidthLandscape, kSCHProfileViewControllerPhoneLogoHeightLandscape);
     } else {
-        [self.backgroundView setImage:[UIImage imageNamed:@"cloud-background-portrait.jpg"]];
         [self.settingsButton setImage:[UIImage imageNamed:@"settings-portrait.png"] 
                              forState:UIControlStateNormal];
         [self.settingsButton sizeToFit];
@@ -108,6 +106,9 @@ static const CGFloat kSCHProfileViewControllerPhoneLogoHeightLandscape = 32;
     if (!CGRectEqualToRect(newTitleBounds, currentTitleBounds)) {
         [self.navigationItem.titleView setBounds:newTitleBounds];
     }
+    
+    [(SCHCustomNavigationBar *)self.navigationController.navigationBar setBackgroundImage:
+     [UIImage imageNamed:@"red-toolbar.png"]];
     
 }
 

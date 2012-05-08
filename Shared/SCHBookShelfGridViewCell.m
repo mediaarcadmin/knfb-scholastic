@@ -90,6 +90,7 @@
         self.personalRateView.rating = 0;
         self.personalRateView.editable = YES;
         self.personalRateView.maxRating = 5;
+        self.personalRateView.preventUnrating = YES;
         self.personalRateView.backgroundColor = [UIColor whiteColor];
         self.personalRateView.delegate = self;
         

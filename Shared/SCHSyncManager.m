@@ -27,12 +27,16 @@
 #import "SCHVersionDownloadManager.h"
 #import "SCHLibreAccessConstants.h"
 #import "SCHSettingItem.h"
+#import "NSFileManager+Extensions.h"
 
 // Constants
 NSString * const SCHSyncManagerDidCompleteNotification = @"SCHSyncManagerDidCompleteNotification";
 
 static NSTimeInterval const kSCHSyncManagerHeartbeatInterval = 30.0;
 static NSTimeInterval const kSCHLastFirstSyncInterval = -300.0;
+
+// Core Data will fail to save changes if there is no disk space left
+static unsigned long long const kSCHSyncManagerMinimumDiskSpaceRequiredForSync = 10485760; // 10mb
 
 static NSUInteger const kSCHSyncManagerMaximumFailureRetries = 3;
 
@@ -287,18 +291,18 @@ static NSUInteger const kSCHSyncManagerMaximumFailureRetries = 3;
     [self.queue removeAllObjects];    
 }
 
-- (void)clear
+- (void)resetSync
 {
     [self flushSyncQueue];
     
-	[self.profileSyncComponent clear];	
-	[self.contentSyncComponent clear];	
-	[self.bookshelfSyncComponent clear];
-	[self.annotationSyncComponent clear];	
-	[self.readingStatsSyncComponent clear];	
-	[self.settingsSyncComponent clear];	
-	[self.wishListSyncComponent clear];	
-    [self.recommendationSyncComponent clear];
+	[self.profileSyncComponent resetSync];	
+	[self.contentSyncComponent resetSync];	
+	[self.bookshelfSyncComponent resetSync];
+	[self.annotationSyncComponent resetSync];	
+	[self.readingStatsSyncComponent resetSync];	
+	[self.settingsSyncComponent resetSync];	
+	[self.wishListSyncComponent resetSync];	
+    [self.recommendationSyncComponent resetSync];
 	
     self.lastFirstSyncEnded = nil;
     self.syncAfterDelay = NO;
@@ -850,7 +854,8 @@ static NSUInteger const kSCHSyncManagerMaximumFailureRetries = 3;
 
 - (BOOL)shouldSync
 {
-    return [[SCHAppStateManager sharedAppStateManager] canSync];
+    return [[SCHAppStateManager sharedAppStateManager] canSync] && 
+        [[NSFileManager defaultManager] BITfileSystemHasBytesAvailable:kSCHSyncManagerMinimumDiskSpaceRequiredForSync];
 }
 
 #pragma mark - Population methods

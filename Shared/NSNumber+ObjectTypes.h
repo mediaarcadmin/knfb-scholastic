@@ -98,6 +98,7 @@ typedef enum {
 - (id)initWithDRMQualifier:(SCHDRMQualifiers)value;
 - (SCHDRMQualifiers)DRMQualifierValue;
 - (BOOL)isValidDRMQualifierValue;
++ (NSArray *)arrayOfPurchasedDRMQualifiers;
 
 + (NSNumber *)numberWithSaveAction:(SCHSaveActions)value;
 - (id)initWithSaveAction:(SCHSaveActions)value;

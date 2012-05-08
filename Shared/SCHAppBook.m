@@ -74,7 +74,6 @@ NSString * const kSCHAppBookFilenameSeparator = @"-";
 
 @interface SCHAppBook()
 
-- (NSArray *)purchasedBooks;
 - (NSError *)errorWithCode:(NSInteger)code;
 - (BOOL)urlHasExpired:(NSString *)urlString;
 - (BOOL)urlStringIsBundleURL:(NSString *)urlString;
@@ -316,10 +315,10 @@ NSString * const kSCHAppBookFilenameSeparator = @"-";
 	return [[SCHProcessingManager sharedProcessingManager] identifierIsProcessing:[self bookIdentifier]];
 }
 
-- (void)setProcessing:(BOOL)value
-{
-	[[SCHProcessingManager sharedProcessingManager] setProcessing:value forIdentifier:[self bookIdentifier]];
-}
+//- (void)setProcessing:(BOOL)value
+//{
+//	[[SCHProcessingManager sharedProcessingManager] setProcessing:value forIdentifier:[self bookIdentifier]];
+//}
 
 - (NSString *)categoryType
 {
@@ -364,6 +363,22 @@ NSString * const kSCHAppBookFilenameSeparator = @"-";
     return ret;
 }
 
+- (BOOL)shouldShowPageNumbers
+{
+    BOOL ret = YES;
+    
+    if (self.XPSCategory != nil) {
+        if ([self.XPSCategory caseInsensitiveCompare:kSCHAppBookYoungReader] == NSOrderedSame ||
+            [self.XPSCategory caseInsensitiveCompare:kSCHAppBookCategoryPictureBook] == NSOrderedSame ||
+            [self.XPSCategory caseInsensitiveCompare:kSCHAppBookCategoryEarlyReader] == NSOrderedSame ||
+            [self.XPSCategory caseInsensitiveCompare:kSCHAppBookCategoryAdvancedReader] == NSOrderedSame) {
+            ret = NO;
+        }    
+    }
+    
+    return ret;
+}
+
 - (BOOL)alwaysOpenToCover
 {
     BOOL ret = NO;
@@ -383,7 +398,8 @@ NSString * const kSCHAppBookFilenameSeparator = @"-";
     
     [fetchRequest setEntity:[NSEntityDescription entityForName:kSCHRecommendationISBN 
                                         inManagedObjectContext:self.managedObjectContext]];	
-    [fetchRequest setPredicate:[NSPredicate predicateWithFormat:@"isbn = %@", self.bookIdentifier.isbn]];
+    [fetchRequest setPredicate:[NSPredicate predicateWithFormat:@"isbn = %@ AND DRMQualifier = %@", 
+                                self.bookIdentifier.isbn, self.bookIdentifier.DRMQualifier]];
     
     NSError *error = nil;
     NSArray *books = [self.managedObjectContext executeFetchRequest:fetchRequest error:&error];	
@@ -406,6 +422,8 @@ NSString * const kSCHAppBookFilenameSeparator = @"-";
     
     [fetchRequest setEntity:[NSEntityDescription entityForName:kSCHUserContentItem 
                                         inManagedObjectContext:self.managedObjectContext]];	
+    [fetchRequest setPredicate:[NSPredicate predicateWithFormat:@"DRMQualifier != %@", 
+                                [NSNumber numberWithDRMQualifier:kSCHDRMQualifiersSample]]];
     
     NSError *error = nil;
     NSArray *books = [self.managedObjectContext executeFetchRequest:fetchRequest error:&error];	
@@ -429,12 +447,15 @@ NSString * const kSCHAppBookFilenameSeparator = @"-";
     
     NSMutableArray *objectArray = [NSMutableArray arrayWithCapacity:[filteredItems count]];
     NSArray *purchasedBooks = [self purchasedBooks];
-    
+
     for(SCHRecommendationItem *item in filteredItems) {
         NSDictionary *recommendationDictionary = [item.appRecommendationItem dictionary];
         
         if (recommendationDictionary && 
-            [purchasedBooks containsObject:[recommendationDictionary objectForKey:kSCHAppRecommendationISBN]] == NO) {
+            ([self isSampleBook] ||
+             [purchasedBooks containsObject:[recommendationDictionary objectForKey:kSCHAppRecommendationISBN]] == NO)
+            ) {
+            
             [objectArray addObject:recommendationDictionary];
         }
     }
@@ -653,6 +674,9 @@ NSString * const kSCHAppBookFilenameSeparator = @"-";
 {
 	NSString *status = @"Unknown!";
 	switch ([[self State] intValue]) {
+		case SCHBookProcessingStateNotEnoughStorageError:
+			status = @"Error Not Enough Storage Space";
+			break;
 		case SCHBookProcessingStateURLsNotPopulated:
 			status = @"Error URLs not Populated";
 			break;
@@ -723,6 +747,9 @@ NSString * const kSCHAppBookFilenameSeparator = @"-";
 	} else if(error != NULL) {
         ret = NO;
         switch ([self.State intValue]) {
+            case SCHBookProcessingStateNotEnoughStorageError:
+                *error = [self errorWithCode:kSCHAppBookNotEnoughStorageError];
+                break;
             case SCHBookProcessingStateUnableToAcquireLicense:
                 *error = [self errorWithCode:kSCHAppBookUnableToAcquireLicenseError];
                 break;
@@ -750,6 +777,11 @@ NSString * const kSCHAppBookFilenameSeparator = @"-";
 - (CGSize)bookCoverImageSize
 {
     return CGSizeMake([self.BookCoverWidth intValue], [self.BookCoverHeight intValue]);
+}
+
+- (BOOL)isSampleBook
+{
+    return ([self.ContentMetadataItem.DRMQualifier DRMQualifierValue] == kSCHDRMQualifiersSample);
 }
 
 - (SCHAppBookFeatures)bookFeatures
@@ -781,6 +813,9 @@ NSString * const kSCHAppBookFilenameSeparator = @"-";
     NSString *description = nil;
     
     switch (code) {
+        case kSCHAppBookNotEnoughStorageError:
+            description = NSLocalizedString(@"Not enough storage. You do not have enough storage on your device to complete this function. Please clear some space and then try again.", @"Not enough storage error message from AppBook");
+            break;            
         case kSCHAppBookStillBeingProcessedError:
             description = NSLocalizedString(@"The eBook is still being processed.", @"Still being processed error message from AppBook");
             break;

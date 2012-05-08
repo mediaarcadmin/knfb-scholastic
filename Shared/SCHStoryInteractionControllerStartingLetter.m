@@ -15,6 +15,8 @@
 
 @interface SCHStoryInteractionControllerStartingLetter ()
 
+@property (nonatomic, assign) NSInteger simultaneousTapCount;
+
 - (void)shuffleImageButtons;
 - (SCHStoryInteractionStartingLetterQuestion *)questionAtIndex:(NSUInteger)index;
 - (void)answerChosen:(SCHImageButton *)imageButton;
@@ -27,6 +29,7 @@
 
 @synthesize imageButtons;
 @synthesize buttonContainerView;
+@synthesize simultaneousTapCount;
 
 - (void)dealloc
 {
@@ -57,6 +60,8 @@
 
 - (void)setupViewAtIndex:(NSInteger)screenIndex
 {
+    self.simultaneousTapCount = 0;
+    
     [self setTitle:[(SCHStoryInteractionStartingLetter *)self.storyInteraction prompt]];
     [self setupButtonsForOrientation:self.interfaceOrientation];
 
@@ -91,13 +96,23 @@
 
 - (void)answerChosen:(SCHImageButton *)imageButton
 {
-    // ignore multiple taps
-    if (self.controllerState != SCHStoryInteractionControllerStateInteractionInProgress) {
-        return;
+    self.simultaneousTapCount++;
+    if (self.simultaneousTapCount == 1) {
+        [self performSelector:@selector(answerChosenAfterDelay:) withObject:imageButton afterDelay:kMinimumDistinguishedAnswerDelay];
     }
-    
+}
+
+
+- (void)answerChosenAfterDelay:(SCHImageButton *)imageButton
+{
+//    // ignore multiple taps
+//    if (self.controllerState != SCHStoryInteractionControllerStateInteractionInProgress) {
+//        return;
+//    }
+//    
     [self cancelQueuedAudioExecutingSynchronizedBlocksBefore:^{
         self.controllerState = SCHStoryInteractionControllerStateInteractionReadingAnswerWithPause;
+        self.simultaneousTapCount = 0;
         
         imageButton.selected = YES;
         SCHStoryInteractionStartingLetterQuestion *question = [self questionAtIndex:imageButton.tag - 1]; 
@@ -145,7 +160,8 @@
                           self.controllerState = SCHStoryInteractionControllerStateInteractionInProgress;
                       }];
             }
-        }    
+        }   
+        
     }];
 }
 

@@ -24,6 +24,7 @@
 #import "Reachability.h"
 #import "SCHProfileSyncComponent.h"
 #import "BITModalSheetController.h"
+#import "SCHNavigationControllerForModalForm.h"
 
 @interface SCHProfileViewController_Shared()  
 
@@ -173,6 +174,16 @@
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
         [self.tableView reloadData];
     }
+}
+
+- (UINavigationController *)modalNavigationController
+{
+    if (!modalNavigationController) {
+        modalNavigationController = [[SCHNavigationControllerForModalForm alloc] init];
+        modalNavigationController.navigationBarHidden = YES;
+    }
+    
+    return modalNavigationController;
 }
 
 #pragma mark - NSManagedObjectContext Changed Notification

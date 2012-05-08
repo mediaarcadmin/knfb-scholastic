@@ -11,9 +11,11 @@
 #import "SCHAppStateManager.h"
 #import "Reachability.h"
 #import "LambdaAlert.h"
+#import "NSFileManager+Extensions.h"
 
 @interface SCHDownloadDictionaryViewController ()
 - (void)layoutLabelsForOrientation:(UIInterfaceOrientation)orientation;
+
 @end
 
 @implementation SCHDownloadDictionaryViewController
@@ -82,13 +84,28 @@
 
 - (void)downloadDictionary:(id)sender
 {
-    [[SCHDictionaryDownloadManager sharedDownloadManager] beginDictionaryDownload];
-    
     dispatch_block_t afterDownload = ^{
         if (completion) {
             completion();
         }
     };
+
+    // we need to have 1GB free for initial dictionary download
+    // less for subsequent updates
+    BOOL fileSpaceAvailable = [[NSFileManager defaultManager] BITfileSystemHasBytesAvailable:1073741824];
+
+    if (fileSpaceAvailable == NO) {
+        LambdaAlert *alert = [[LambdaAlert alloc]
+                              initWithTitle:NSLocalizedString(@"Not Enough Free Space", @"")
+                              message:NSLocalizedString(@"You do not have enough memory on your device to download the Scholastic Dictionary. Please clear some space and then go to Parent Tools from the eReader sign-in screen to download the Dictionary.", @"")];
+        [alert addButtonWithTitle:NSLocalizedString(@"OK", @"") block:afterDownload];
+        [alert show];
+        [alert release];   
+        return;
+    }
+    
+    [[SCHDictionaryDownloadManager sharedDownloadManager] beginDictionaryDownload];
+    
     
     BOOL reachable = [[Reachability reachabilityForLocalWiFi] isReachable];
     
@@ -116,8 +133,8 @@
 {
    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
        CGFloat width = UIInterfaceOrientationIsLandscape(orientation) ? 460 : 280;
-       CGFloat gap = UIInterfaceOrientationIsLandscape(orientation) ? 6 : 18;
-       CGFloat yOffset = UIInterfaceOrientationIsLandscape(orientation) ? 12 : 24;
+       CGFloat gap = UIInterfaceOrientationIsLandscape(orientation) ? 10 : 18;
+       CGFloat yOffset = UIInterfaceOrientationIsLandscape(orientation) ? 24 : 24;
        CGFloat downloadButtonXOrigin = UIInterfaceOrientationIsLandscape(orientation) ? 30 : 20;
        CGFloat closeButtonYOffset = UIInterfaceOrientationIsLandscape(orientation) ? 0 : 54;
        CGFloat closeButtonXOrigin = UIInterfaceOrientationIsLandscape(orientation) ? 240 : 20;
@@ -130,22 +147,30 @@
                                     lineBreakMode:label.lineBreakMode];
            label.center = CGPointMake(label.center.x, floorf(y+size.height/2));
            y += size.height + gap;
+           
+           // round frame positions
+           label.frame = CGRectIntegral(label.frame);
+           
+           NSLog(@"Frame: %@", NSStringFromCGRect(label.frame));
        }
               
-       CGRect dictionaryButtonFrame = self.downloadDictionaryButton.frame;
-
-       dictionaryButtonFrame.origin.x = downloadButtonXOrigin;
-       dictionaryButtonFrame.origin.y = y;
-       dictionaryButtonFrame.size.width = buttonWidth;
+       if (self.closeButton) {
        
-       CGRect closeButtonFrame = self.closeButton.frame;
-       closeButtonFrame.origin.x = closeButtonXOrigin;
-       closeButtonFrame.origin.y = y + closeButtonYOffset;
-       closeButtonFrame.size.width = buttonWidth;
+           CGRect dictionaryButtonFrame = self.downloadDictionaryButton.frame;
+           
+           dictionaryButtonFrame.origin.x = downloadButtonXOrigin;
+           dictionaryButtonFrame.origin.y = y;
+           dictionaryButtonFrame.size.width = buttonWidth;
+           
+           CGRect closeButtonFrame = self.closeButton.frame;
+           closeButtonFrame.origin.x = closeButtonXOrigin;
+           closeButtonFrame.origin.y = y + closeButtonYOffset;
+           closeButtonFrame.size.width = buttonWidth;
 
+           self.closeButton.frame = closeButtonFrame;
+           self.downloadDictionaryButton.frame = dictionaryButtonFrame;
+       }
        
-       self.downloadDictionaryButton.frame = dictionaryButtonFrame;
-       self.closeButton.frame = closeButtonFrame;
    }
 }
 

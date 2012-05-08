@@ -13,9 +13,9 @@
 
 @synthesize delegate;
 
-- (void)clear
+- (void)clearComponent
 {
-    NSAssert(NO, @"SCHComponent:clear needs to be overidden in sub-classes");
+    NSAssert(NO, @"SCHComponent:clearComponent needs to be overidden in sub-classes");
 }
 
 #pragma mark - Delegate methods

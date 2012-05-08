@@ -14,6 +14,7 @@
 @synthesize container;
 @synthesize box;
 @synthesize heading;
+@synthesize subtitle;
 
 - (void)awakeFromNib
 {
@@ -30,6 +31,7 @@
     [super layoutSubviews];
     
     [self.heading adjustPointSizeToFitWidthWithPadding:2.0f];
+    [self.subtitle adjustPointSizeToFitWidthWithPadding:0.0f];
 }
 
 - (void)dealloc
@@ -37,6 +39,7 @@
     [container release], container = nil;
     [box release], box = nil;
     [heading release], heading = nil;
+    [subtitle release], subtitle = nil;
     [super dealloc];
 }
 

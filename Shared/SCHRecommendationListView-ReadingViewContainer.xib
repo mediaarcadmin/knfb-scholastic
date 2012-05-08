@@ -2,7 +2,7 @@
 <archive type="com.apple.InterfaceBuilder3.CocoaTouch.iPad.XIB" version="8.00">
 	<data>
 		<int key="IBDocument.SystemTarget">1296</int>
-		<string key="IBDocument.SystemVersion">11D50d</string>
+		<string key="IBDocument.SystemVersion">11D50b</string>
 		<string key="IBDocument.InterfaceBuilderVersion">2182</string>
 		<string key="IBDocument.AppKitVersion">1138.32</string>
 		<string key="IBDocument.HIToolboxVersion">568.00</string>
@@ -46,7 +46,7 @@
 									<object class="IBUIView" id="881874066">
 										<reference key="NSNextResponder" ref="332178720"/>
 										<int key="NSvFlags">287</int>
-										<string key="NSFrame">{{20, 126}, {552, 715}}</string>
+										<string key="NSFrame">{{20, 110}, {552, 780}}</string>
 										<reference key="NSSuperview" ref="332178720"/>
 										<reference key="NSWindow"/>
 										<reference key="NSNextKeyView" ref="639654280"/>
@@ -60,7 +60,7 @@
 									<object class="IBUILabel" id="368957432">
 										<reference key="NSNextResponder" ref="332178720"/>
 										<int key="NSvFlags">319</int>
-										<string key="NSFrame">{{90, 46}, {413, 64}}</string>
+										<string key="NSFrame">{{90, 47}, {413, 44}}</string>
 										<reference key="NSSuperview" ref="332178720"/>
 										<reference key="NSWindow"/>
 										<reference key="NSNextKeyView" ref="881874066"/>
@@ -93,7 +93,7 @@
 										</object>
 									</object>
 								</array>
-								<string key="NSFrame">{{0, 36}, {592, 861}}</string>
+								<string key="NSFrame">{{0, 37}, {592, 890}}</string>
 								<reference key="NSSuperview" ref="645767592"/>
 								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="368957432"/>
@@ -107,9 +107,10 @@
 							<object class="IBUILabel" id="639654280">
 								<reference key="NSNextResponder" ref="645767592"/>
 								<int key="NSvFlags">311</int>
-								<string key="NSFrame">{{109, 0}, {374, 67}}</string>
+								<string key="NSFrame">{{109, 0}, {374, 69}}</string>
 								<reference key="NSSuperview" ref="645767592"/>
 								<reference key="NSWindow"/>
+								<reference key="NSNextKeyView"/>
 								<string key="NSReuseIdentifierKey">_NS:9</string>
 								<object class="NSColor" key="IBUIBackgroundColor">
 									<int key="NSColorSpace">3</int>
@@ -142,7 +143,7 @@
 								</object>
 							</object>
 						</array>
-						<string key="NSFrame">{{54, 73}, {592, 897}}</string>
+						<string key="NSFrame">{{54, 48}, {592, 928}}</string>
 						<reference key="NSSuperview" ref="191373211"/>
 						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="332178720"/>
@@ -192,6 +193,14 @@
 						<reference key="destination" ref="639654280"/>
 					</object>
 					<int key="connectionID">14</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBCocoaTouchOutletConnection" key="connection">
+						<string key="label">subtitle</string>
+						<reference key="source" ref="191373211"/>
+						<reference key="destination" ref="368957432"/>
+					</object>
+					<int key="connectionID">15</int>
 				</object>
 			</array>
 			<object class="IBMutableOrderedSet" key="objectRecords">
@@ -274,7 +283,7 @@
 			<nil key="activeLocalization"/>
 			<dictionary class="NSMutableDictionary" key="localizations"/>
 			<nil key="sourceID"/>
-			<int key="maxID">14</int>
+			<int key="maxID">15</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<array class="NSMutableArray" key="referencedPartialClassDescriptions">
@@ -282,17 +291,12 @@
 					<string key="className">SCHRecommendationContainerView</string>
 					<string key="superclassName">UIView</string>
 					<dictionary class="NSMutableDictionary" key="outlets">
-						<string key="author">UILabel</string>
 						<string key="box">UIView</string>
 						<string key="container">UIView</string>
 						<string key="heading">UILabel</string>
-						<string key="title">UILabel</string>
+						<string key="subtitle">UILabel</string>
 					</dictionary>
 					<dictionary class="NSMutableDictionary" key="toOneOutletInfosByName">
-						<object class="IBToOneOutletInfo" key="author">
-							<string key="name">author</string>
-							<string key="candidateClassName">UILabel</string>
-						</object>
 						<object class="IBToOneOutletInfo" key="box">
 							<string key="name">box</string>
 							<string key="candidateClassName">UIView</string>
@@ -305,8 +309,8 @@
 							<string key="name">heading</string>
 							<string key="candidateClassName">UILabel</string>
 						</object>
-						<object class="IBToOneOutletInfo" key="title">
-							<string key="name">title</string>
+						<object class="IBToOneOutletInfo" key="subtitle">
+							<string key="name">subtitle</string>
 							<string key="candidateClassName">UILabel</string>
 						</object>
 					</dictionary>

@@ -15,6 +15,7 @@ extern NSString * const kSCHAppBookErrorDomain;
 typedef enum 
 {
 	kSCHAppBookStillBeingProcessedError = 0,
+    kSCHAppBookNotEnoughStorageError,
     kSCHAppBookUnableToAcquireLicenseError,
     kSCHAppBookCachedCoverError,
     kSCHAppBookDownloadFailedError,
@@ -126,6 +127,7 @@ typedef enum {
 @property (nonatomic, readonly) SCHBookIdentifier *bookIdentifier;
 @property (nonatomic, readonly) NSString *categoryType;
 @property (nonatomic, readonly) BOOL shouldShowChapters;
+@property (nonatomic, readonly) BOOL shouldShowPageNumbers;
 @property (nonatomic, readonly) BOOL alwaysOpenToCover;
 @property (nonatomic, readonly) BOOL diskVersionOutOfDate;
 @property (nonatomic, readonly) NSNumber * AverageRating;
@@ -145,7 +147,7 @@ typedef enum {
 
 - (NSString *)processingStateAsString;
 - (BOOL)isProcessing;
-- (void)setProcessing:(BOOL)value;
+//- (void)setProcessing:(BOOL)value;
 
 // the path to the XPS file within the system - by default, in the cache directory
 - (NSString *)xpsPath;
@@ -163,10 +165,14 @@ typedef enum {
 - (BOOL)canOpenBookError:(NSError **)error;
 - (CGSize)bookCoverImageSize;
 - (SCHAppBookFeatures) bookFeatures;
+- (BOOL)isSampleBook;
 - (SCHRecommendationISBN *)recommendationISBN;
 - (NSArray *)recommendationDictionaries;
 
 - (void)setForcedProcessing:(BOOL)forceProcess;
+
+// a list of all books purchased
+- (NSArray *)purchasedBooks;
 
 @end
 

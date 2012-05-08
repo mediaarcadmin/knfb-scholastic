@@ -98,18 +98,20 @@ static NSInteger const kSCHBookShelfEdgePadding = 12;
     [homeButton addTarget:self action:@selector(back) forControlEvents:UIControlEventTouchUpInside];    
     homeButton.accessibilityLabel = @"Back To Bookshelves Button";
     
-    SCHThemeButton *menuButton = [SCHThemeButton buttonWithType:UIButtonTypeCustom];
-    [menuButton setThemeIcon:kSCHThemeManagerMenuIcon iPadQualifier:kSCHThemeManagerPadQualifierSuffix];
-    [menuButton sizeToFit];    
-    [menuButton addTarget:self action:@selector(menuAction:) forControlEvents:UIControlEventTouchUpInside];    
-    menuButton.accessibilityLabel = @"Menu Button";
-
-    UIView *rightContainerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth(menuButton.frame) + kSCHBookShelfEdgePadding + 1, CGRectGetHeight(menuButton.frame))];
-
-    [rightContainerView addSubview:menuButton];
-
-    self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithCustomView:rightContainerView] autorelease];
-    [rightContainerView release];
+    if (![[SCHAppStateManager sharedAppStateManager] isSampleStore]) {
+        SCHThemeButton *menuButton = [SCHThemeButton buttonWithType:UIButtonTypeCustom];
+        [menuButton setThemeIcon:kSCHThemeManagerMenuIcon iPadQualifier:kSCHThemeManagerPadQualifierSuffix];
+        [menuButton sizeToFit];    
+        [menuButton addTarget:self action:@selector(menuAction:) forControlEvents:UIControlEventTouchUpInside];    
+        menuButton.accessibilityLabel = @"Menu Button";
+        
+        UIView *rightContainerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth(menuButton.frame) + kSCHBookShelfEdgePadding + 1, CGRectGetHeight(menuButton.frame))];
+        
+        [rightContainerView addSubview:menuButton];
+        
+        self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithCustomView:rightContainerView] autorelease];
+        [rightContainerView release];
+    }
     
     UIImageView *storiaLogoView = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"storiatoolbar"]] autorelease];
     

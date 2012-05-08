@@ -9,6 +9,7 @@
 #import "SCHHelpVideoFileDownloadOperation.h"
 #import "SCHHelpManager.h"
 #import "BITNetworkActivityManager.h"
+#import "NSFileManager+Extensions.h"
 
 #pragma mark Class Extension
 
@@ -160,19 +161,6 @@
     [SCHHelpManager sharedHelpManager].isProcessing = NO;
 }
 
-- (BOOL)fileSystemHasBytesAvailable:(unsigned long long)sizeInBytes
-{
-    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-    NSString *docDirectory = ([paths count] > 0 ? [paths objectAtIndex:0] : nil);            
-
-    NSDictionary* fsAttr = [self.localFileManager attributesOfFileSystemForPath:docDirectory error:NULL];
-    
-    unsigned long long freeSize = [(NSNumber*)[fsAttr objectForKey:NSFileSystemFreeSize] unsignedLongLongValue];
-    //NSLog(@"Freesize: %llu", freeSize);
-    
-    return (sizeInBytes <= freeSize);
-}
-
 - (void)fireProgressUpdate:(float)progress
 {
     dispatch_async(dispatch_get_main_queue(), ^{
@@ -193,10 +181,11 @@
     self.lastUpdatePercentage = -1;
     
     BOOL sufficientSpace;
+    NSFileManager *fileManager = [[[NSFileManager alloc] init] autorelease];
     if (expectedDataSize == NSURLResponseUnknownLength) {
-        sufficientSpace = [self fileSystemHasBytesAvailable:1];
+        sufficientSpace = [fileManager BITfileSystemHasBytesAvailable:1];
     } else {
-        sufficientSpace = [self fileSystemHasBytesAvailable:expectedDataSize];
+        sufficientSpace = [fileManager BITfileSystemHasBytesAvailable:expectedDataSize];
     }
     
     if (!sufficientSpace) {

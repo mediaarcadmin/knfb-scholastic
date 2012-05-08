@@ -71,10 +71,7 @@ NSString * const SCHProfileSyncComponentDidFailNotification = @"SCHProfileSyncCo
 	BOOL ret = YES;
 	
 	if (self.isSynchronizing == NO) {
-		self.backgroundTaskIdentifier = [[UIApplication sharedApplication] beginBackgroundTaskWithExpirationHandler:^{ 
-			self.isSynchronizing = NO;
-            [self endBackgroundTask];
-		}];
+        [self beginBackgroundTask];
 		
 		ret = [self updateProfiles];	
         if (ret == NO) {
@@ -84,21 +81,28 @@ NSString * const SCHProfileSyncComponentDidFailNotification = @"SCHProfileSyncCo
 
 	return(ret);	
 }
+#pragma - Overrideen methods used by resetSync
 
-- (void)clear
+- (void)resetWebService
+{
+    [self.libreAccessWebService clear];    
+}
+
+- (void)clearComponent
+{
+    [self.savedProfiles removeAllObjects];    
+}
+
+- (void)clearCoreData
 {
 	NSError *error = nil;
-	
-    [super clear];
-    
-    [self.libreAccessWebService clear];
-    
-    [self.savedProfiles removeAllObjects];
     
 	if (![self.managedObjectContext BITemptyEntity:kSCHProfileItem error:&error]) {
 		NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
 	}		
 }
+
+#pragma mark - Delegate methods
 
 - (void)method:(NSString *)method didCompleteWithResult:(NSDictionary *)result 
       userInfo:(NSDictionary *)userInfo

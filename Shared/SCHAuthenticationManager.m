@@ -608,7 +608,7 @@ NSTimeInterval const kSCHAuthenticationManagerSecondsInAMinute = 60.0;
             if (self.aToken != nil && [[self.aToken stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]] length] > 0) {
                 [self.libreAccessWebService renewToken:self.aToken];
             } else if (deviceKey != nil && [[deviceKey stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]] length] > 0) {
-                [self.libreAccessWebService authenticateDevice:deviceKey forUserKey:nil];
+                [self.libreAccessWebService authenticateDevice:deviceKey forUserKey:[[NSUserDefaults standardUserDefaults] stringForKey:kSCHAuthenticationManagerUserKey]];
             } else if ([[storedUsername stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]] length] > 0 &&
                        [[storedPassword stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]] length] > 0) {
                 
@@ -707,7 +707,7 @@ NSTimeInterval const kSCHAuthenticationManagerSecondsInAMinute = 60.0;
     [[SCHURLManager sharedURLManager] clear];
     [[SCHProcessingManager sharedProcessingManager] cancelAllOperations]; 
     [[SCHRecommendationManager sharedManager] cancelAllOperations];
-    [[SCHSyncManager sharedSyncManager] clear];    
+    [[SCHSyncManager sharedSyncManager] resetSync];    
 }
 
 #pragma mark - Private methods
@@ -776,7 +776,7 @@ NSTimeInterval const kSCHAuthenticationManagerSecondsInAMinute = 60.0;
             self.registrationSuccessBlock = ^(NSString *deviceKey){
                 [[NSUserDefaults standardUserDefaults] setObject:deviceKey forKey:kSCHAuthenticationManagerDeviceKey];
                 [[NSUserDefaults standardUserDefaults] synchronize];
-                [libreAccessWebService authenticateDevice:deviceKey forUserKey:nil];
+                [libreAccessWebService authenticateDevice:deviceKey forUserKey:[[NSUserDefaults standardUserDefaults] stringForKey:kSCHAuthenticationManagerUserKey]];
             };
             
             self.registrationFailureBlock = ^(NSError *error){

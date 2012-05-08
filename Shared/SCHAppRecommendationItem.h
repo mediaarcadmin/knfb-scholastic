@@ -27,6 +27,7 @@ extern NSString * const kSCHAppRecommendationAuthor;
 extern NSString * const kSCHAppRecommendationISBN;
 extern NSString * const kSCHAppRecommendationAverageRating;
 extern NSString * const kSCHAppRecommendationCoverImage;
+extern NSString * const kSCHAppRecommendationFullCoverImagePath;
 
 typedef enum {
     kSCHAppRecommendationProcessingStateInvalidRecommendation   = -6,

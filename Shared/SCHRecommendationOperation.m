@@ -42,7 +42,9 @@
 	if (self.isbn && ![self isCancelled]) {
         [[SCHRecommendationManager sharedManager] setProcessing:YES forIsbn:self.isbn];
 		[self beginOperation];
-	}
+	} else {
+        [self endOperation];
+    }
 }
 
 - (BOOL)isConcurrent 
@@ -72,6 +74,8 @@
 
 - (void)endOperation
 {
+    [[SCHRecommendationManager sharedManager] setProcessing:NO forIsbn:self.isbn];
+    
     [self willChangeValueForKey:@"isExecuting"];
     [self willChangeValueForKey:@"isFinished"];
     
@@ -81,8 +85,6 @@
     
     [self didChangeValueForKey:@"isExecuting"];
     [self didChangeValueForKey:@"isFinished"];
-    
-    [[SCHRecommendationManager sharedManager] setProcessing:NO forIsbn:self.isbn];
 }
 
 #pragma mark - thread safe access to book object
@@ -172,7 +174,7 @@
 - (void)resetCoverURLExpiredState
 {
     [self performWithRecommendationAndSave:^(SCHAppRecommendationItem *item) {
-            item.coverURLExpiredCount = [NSNumber numberWithInteger:0];
+        item.coverURLExpiredCount = [NSNumber numberWithInteger:0];
     }];    
 }
 

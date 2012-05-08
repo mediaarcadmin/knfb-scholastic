@@ -18,6 +18,7 @@
 #import "SCHReadingViewNavigationToolbar.h"
 #import "SCHHelpViewController.h"
 #import "SCHBookStoryInteractionsDelegate.h"
+#import "SCHRecommendationSampleView.h"
 
 extern NSString * const kSCHReadingViewErrorDomain;
 
@@ -51,7 +52,7 @@ typedef enum
 @interface SCHReadingViewController : UIViewController <SCHReadingViewDelegate, SCHReadingNotesListControllerDelegate, 
 SCHReadingNoteViewDelegate, SCHReadingInteractionsListControllerDelegate, SCHAudioBookPlayerDelegate, UIPopoverControllerDelegate,
 SCHStoryInteractionControllerDelegate, SCHReadingViewNavigationToolbarDelegate, SCHHelpViewControllerDelegate,
-SCHBookStoryInteractionsDelegate> 
+SCHBookStoryInteractionsDelegate, SCHRecommendationSampleViewDelegate> 
 {}
 
 @property (nonatomic, assign) BOOL youngerMode;

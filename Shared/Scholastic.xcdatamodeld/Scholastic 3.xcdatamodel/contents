@@ -126,6 +126,7 @@
         <attribute name="FileName" optional="YES" attributeType="String"/>
         <attribute name="FileSize" optional="YES" attributeType="Integer 32" defaultValueString="0"/>
         <attribute name="FormatAuthorString" optional="YES" transient="YES" attributeType="String"/>
+        <attribute name="formatTitleString" optional="YES" transient="YES" attributeType="String"/>
         <attribute name="PageNumber" optional="YES" attributeType="Integer 32" defaultValueString="0"/>
         <attribute name="Title" optional="YES" attributeType="String"/>
         <attribute name="Version" optional="YES" attributeType="String"/>
@@ -254,6 +255,7 @@
         <relationship name="ReadingStatsContentItem" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="SCHReadingStatsContentItem" inverseName="ReadingStatsEntryItem" inverseEntity="SCHReadingStatsContentItem" indexed="YES"/>
     </entity>
     <entity name="SCHRecommendationISBN" representedClassName="SCHRecommendationISBN" syncable="YES">
+        <attribute name="DRMQualifier" attributeType="Integer 16" defaultValueString="1" indexed="YES"/>
         <attribute name="fetchDate" attributeType="Date" syncable="YES"/>
         <attribute name="isbn" attributeType="String" indexed="YES" syncable="YES"/>
         <relationship name="recommendationItems" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="SCHRecommendationItem" inverseName="recommendationISBN" inverseEntity="SCHRecommendationItem" syncable="YES"/>
@@ -378,11 +380,11 @@
         <element name="SCHAppDictionaryState" positionX="1197" positionY="315" width="128" height="105"/>
         <element name="SCHAppHelpState" positionX="160" positionY="192" width="128" height="135"/>
         <element name="SCHAppProfile" positionX="0" positionY="0" width="128" height="165"/>
-        <element name="SCHAppRecommendationItem" positionX="160" positionY="192" width="128" height="165"/>
+        <element name="SCHAppRecommendationItem" positionX="160" positionY="192" width="128" height="180"/>
         <element name="SCHAppState" positionX="0" positionY="0" width="128" height="180"/>
         <element name="SCHBookmark" positionX="292" positionY="653" width="128" height="105"/>
         <element name="SCHContentItem" positionX="772" positionY="531" width="128" height="90"/>
-        <element name="SCHContentMetadataItem" positionX="990" positionY="586" width="128" height="255"/>
+        <element name="SCHContentMetadataItem" positionX="990" positionY="586" width="128" height="270"/>
         <element name="SCHContentProfileItem" positionX="806" positionY="1147" width="128" height="120"/>
         <element name="SCHDeviceInfo" positionX="1336" positionY="1274" width="128" height="225"/>
         <element name="SCHDictionaryEntry" positionX="151" positionY="1080" width="128" height="105"/>
