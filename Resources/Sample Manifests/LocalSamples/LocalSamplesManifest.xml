@@ -71,4 +71,22 @@
         <Version>1</Version>
         <IsEnhanced>true</IsEnhanced>
 	</Book>
+    <Book>
+		<Isbn13>9780545232166</Isbn13>
+		<Title>What I saw and How I Lied</Title>
+		<Author>by Judy Blundell</Author>
+		<CoverUrl>9780545232166.1397.embeddedepub.jpg</CoverUrl>
+		<DownloadUrl>9780545232166.1397.embeddedepub.xps</DownloadUrl>
+        <Version>1</Version>
+        <IsEnhanced>false</IsEnhanced>
+	</Book>
+    <Book>
+		<Isbn13>1234567890123</Isbn13>
+		<Title>Branching Stories Test</Title>
+		<Author>by Testy McTesterson</Author>
+		<CoverUrl>BranchingSample.jpg</CoverUrl>
+		<DownloadUrl>BranchingSample.bsb</DownloadUrl>
+        <Version>1</Version>
+        <IsEnhanced>false</IsEnhanced>
+	</Book>
 </SampleManifest>

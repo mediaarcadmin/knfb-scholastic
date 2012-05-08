@@ -2736,6 +2736,10 @@
 		C97F7F9B14078A91002BB9FB /* reading-samplesi~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = C97F7F9114078A91002BB9FB /* reading-samplesi~iphone.png */; };
 		C97F7F9D14078A91002BB9FB /* reading-samplesi@2x~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = C97F7F9214078A91002BB9FB /* reading-samplesi@2x~iphone.png */; };
 		C97F84031407B349002BB9FB /* storyinteraction-wordbird-BalloonPop.png in Resources */ = {isa = PBXBuildFile; fileRef = C97F84021407B349002BB9FB /* storyinteraction-wordbird-BalloonPop.png */; };
+		C984D3F41559CC3A001E3016 /* 9780545232166.1397.embeddedepub.jpg in Resources */ = {isa = PBXBuildFile; fileRef = C984D3F21559CC39001E3016 /* 9780545232166.1397.embeddedepub.jpg */; };
+		C984D3F51559CC3A001E3016 /* 9780545232166.1397.embeddedepub.xps in Resources */ = {isa = PBXBuildFile; fileRef = C984D3F31559CC3A001E3016 /* 9780545232166.1397.embeddedepub.xps */; };
+		C984D3F81559CE28001E3016 /* BranchingSample.jpg in Resources */ = {isa = PBXBuildFile; fileRef = C984D3F61559CE28001E3016 /* BranchingSample.jpg */; };
+		C984D3F91559CE28001E3016 /* BranchingSample.bsb in Resources */ = {isa = PBXBuildFile; fileRef = C984D3F71559CE28001E3016 /* BranchingSample.bsb */; };
 		C98648A01402686300B9DFE1 /* SCHReadingViewNavigationToolbar.m in Sources */ = {isa = PBXBuildFile; fileRef = C986489F1402686300B9DFE1 /* SCHReadingViewNavigationToolbar.m */; };
 		C98BDD7B1547F3DF00E265B8 /* 9780545364775_r7.MyFirstBiographyBenjaminFranklin.jpg in Resources */ = {isa = PBXBuildFile; fileRef = C98BDD791547F3DF00E265B8 /* 9780545364775_r7.MyFirstBiographyBenjaminFranklin.jpg */; };
 		C98BDD7C1547F3DF00E265B8 /* 9780545364775_r7.MyFirstBiographyBenjaminFranklin.xps in Resources */ = {isa = PBXBuildFile; fileRef = C98BDD7A1547F3DF00E265B8 /* 9780545364775_r7.MyFirstBiographyBenjaminFranklin.xps */; };
@@ -5553,6 +5557,10 @@
 		C97F7F9114078A91002BB9FB /* reading-samplesi~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "reading-samplesi~iphone.png"; path = "Resources/UIAssets/reading-samplesi~iphone.png"; sourceTree = "<group>"; };
 		C97F7F9214078A91002BB9FB /* reading-samplesi@2x~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "reading-samplesi@2x~iphone.png"; path = "Resources/UIAssets/reading-samplesi@2x~iphone.png"; sourceTree = "<group>"; };
 		C97F84021407B349002BB9FB /* storyinteraction-wordbird-BalloonPop.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "storyinteraction-wordbird-BalloonPop.png"; sourceTree = "<group>"; };
+		C984D3F21559CC39001E3016 /* 9780545232166.1397.embeddedepub.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = 9780545232166.1397.embeddedepub.jpg; path = "Shared/Debug Books/9780545232166.1397.embeddedepub.jpg"; sourceTree = "<group>"; };
+		C984D3F31559CC3A001E3016 /* 9780545232166.1397.embeddedepub.xps */ = {isa = PBXFileReference; lastKnownFileType = file; name = 9780545232166.1397.embeddedepub.xps; path = "Shared/Debug Books/9780545232166.1397.embeddedepub.xps"; sourceTree = "<group>"; };
+		C984D3F61559CE28001E3016 /* BranchingSample.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = BranchingSample.jpg; path = "Shared/Debug Books/BranchingSample.jpg"; sourceTree = "<group>"; };
+		C984D3F71559CE28001E3016 /* BranchingSample.bsb */ = {isa = PBXFileReference; lastKnownFileType = file; name = BranchingSample.bsb; path = "Shared/Debug Books/BranchingSample.bsb"; sourceTree = "<group>"; };
 		C986489E1402686300B9DFE1 /* SCHReadingViewNavigationToolbar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHReadingViewNavigationToolbar.h; path = Shared/SCHReadingViewNavigationToolbar.h; sourceTree = "<group>"; };
 		C986489F1402686300B9DFE1 /* SCHReadingViewNavigationToolbar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHReadingViewNavigationToolbar.m; path = Shared/SCHReadingViewNavigationToolbar.m; sourceTree = "<group>"; };
 		C98BDD791547F3DF00E265B8 /* 9780545364775_r7.MyFirstBiographyBenjaminFranklin.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = 9780545364775_r7.MyFirstBiographyBenjaminFranklin.jpg; path = "Shared/Debug Books/9780545364775_r7.MyFirstBiographyBenjaminFranklin.jpg"; sourceTree = "<group>"; };
@@ -8904,6 +8912,10 @@
 		F8509E7512F0620D00197EB5 /* Debug Books */ = {
 			isa = PBXGroup;
 			children = (
+				C984D3F21559CC39001E3016 /* 9780545232166.1397.embeddedepub.jpg */,
+				C984D3F61559CE28001E3016 /* BranchingSample.jpg */,
+				C984D3F71559CE28001E3016 /* BranchingSample.bsb */,
+				C984D3F31559CC3A001E3016 /* 9780545232166.1397.embeddedepub.xps */,
 				C98BDD791547F3DF00E265B8 /* 9780545364775_r7.MyFirstBiographyBenjaminFranklin.jpg */,
 				C98BDD7A1547F3DF00E265B8 /* 9780545364775_r7.MyFirstBiographyBenjaminFranklin.xps */,
 				C935BC7714698D5B00244A38 /* 9780545324328.1103.MixedUpAlphabet.xps */,
@@ -11004,6 +11016,10 @@
 				F82F54981557D9C500041D0E /* SCHRecommendationSampleView~ipad.xib in Resources */,
 				F82F54A9155806C200041D0E /* SCHRecommendationSampleView~iphone.xib in Resources */,
 				C96C4DA61557D62C00B47E56 /* storia-settings-logo@2x~ipad.png in Resources */,
+				C984D3F41559CC3A001E3016 /* 9780545232166.1397.embeddedepub.jpg in Resources */,
+				C984D3F51559CC3A001E3016 /* 9780545232166.1397.embeddedepub.xps in Resources */,
+				C984D3F81559CE28001E3016 /* BranchingSample.jpg in Resources */,
+				C984D3F91559CE28001E3016 /* BranchingSample.bsb in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
