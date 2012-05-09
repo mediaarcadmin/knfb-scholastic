@@ -6,8 +6,8 @@
 //  Copyright (c) 2012 BitWink. All rights reserved.
 //
 
-#import <libEucalyptus/EucPageLayoutController.h>
+#import <libEucalyptus/EucPageLayoutControllerProtocol.h>
 
-@interface SCHBSBPageLayoutController : NSObject <EucPageLayoutController>
+@interface SCHBSBPageLayoutController : NSObject <EucPageLayoutControllerProtocol>
 
 @end
