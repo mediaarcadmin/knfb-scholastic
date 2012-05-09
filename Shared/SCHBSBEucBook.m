@@ -12,8 +12,13 @@
 #import "SCHBookManager.h"
 #import "SCHAppBook.h"
 #import "SCHBookPoint.h"
+#import "SCHBSBPageContentsViewSpirit.h"
+#import <libEucalyptus/EucPageLayoutController.h>
+#import <libEucalyptus/EucCSSIntermediateDocument.h>
+#import <libEucalyptus/EucCSSXHTMLTree.h>
+#import <libEucalyptus/THEmbeddedResourceManager.h>
 
-@interface SCHBSBEucBook()
+@interface SCHBSBEucBook() <EucCSSIntermediateDocumentDataProvider>
 
 @property (nonatomic, retain) id <SCHBookPackageProvider> provider;
 @property (nonatomic, retain) SCHBookIdentifier *identifier;
@@ -70,16 +75,36 @@
     return self;
 }
 
+- (EucCSSIntermediateDocument *)intermediateDocumentForIndexPoint:(EucBookPageIndexPoint *)indexPoint 
+                                                      pageOptions:(NSDictionary *)pageOptions
+{
+    NSData *xmlData = [self.provider dataForComponentAtPath:@"good_morning.xml"];
+    NSURL *docURL = [NSURL URLWithString:[NSString stringWithFormat:@"bsb://%@", self.identifier]];
+    
+    id <EucCSSDocumentTree> docTree = [[[EucCSSXHTMLTree alloc] initWithData:xmlData] autorelease];
+    EucCSSIntermediateDocument *doc = [[EucCSSIntermediateDocument alloc] initWithDocumentTree:docTree 
+                                                                                        forURL:docURL 
+                                                                                   pageOptions:pageOptions 
+                                                                                    dataSource:self];
+    
+    return [doc autorelease];
+}
+
+- (NSUInteger)sourceCount
+{
+    return 1;
+}
+
 #pragma mark - EucBook
 
 - (Class)pageLayoutControllerClass
 {
-    return nil;
+    return [EucPageLayoutController class];
 }
 
 - (Class)pageContentsViewSpiritClass
 {
-    return nil;
+    return [SCHBSBPageContentsViewSpirit class];
 }
 
 - (NSArray *)navPoints
@@ -109,12 +134,15 @@
 
 - (EucBookPageIndexPoint *)offTheEndIndexPoint
 {
-    return nil;
+    EucBookPageIndexPoint *point = [[[EucBookPageIndexPoint alloc] init] autorelease];
+    point.source = 1;
+    
+    return point;
 }
 
 - (NSArray *)hardPageBreakIndexPoints
 {
-    return nil;
+    return [NSArray arrayWithObject:[[[EucBookPageIndexPoint alloc] init] autorelease]];
 }
 
 - (BOOL)fullBleedPageForIndexPoint:(EucBookPageIndexPoint *)indexPoint
@@ -170,5 +198,40 @@
 {
     return nil;
 }
+                                       
+#pragma mark - EucCSSIntermediateDocumentDataProvider
 
+- (NSData *)dataForURL:(NSURL *)url
+{
+    return nil;
+}
+
+- (NSURL *)externalURLForURL:(NSURL *)url
+{
+    return nil;
+}
+
+- (NSArray *)userAgentCSSDatasForDocumentTree:(id<EucCSSDocumentTree>)documentTree
+{
+    return [NSArray arrayWithObject:[THEmbeddedResourceManager embeddedResourceWithName:@"EPubUserAgent.css"]];
+}
+
+- (NSArray *)userCSSDatasForDocumentTree:(id<EucCSSDocumentTree>)documentTree
+{
+    NSString *nodeBlockOverride = @"node { display: block }";
+    
+	return [NSArray arrayWithObjects:[THEmbeddedResourceManager embeddedResourceWithName:@"EPubOverrides.css"],
+            [nodeBlockOverride dataUsingEncoding:NSUTF8StringEncoding], nil];
+}
+
+- (NSArray *)userCSSURLsForDocument:(EucCSSIntermediateDocument *)document
+{
+    return [[self userCSSDatasForDocumentTree:[document documentTree]] valueForKey:@"thDataURL"];
+}
+
+- (NSArray *)userAgentCSSURLsForDocument:(EucCSSIntermediateDocument *)document
+{
+    return [[self userAgentCSSDatasForDocumentTree:[document documentTree]] valueForKey:@"thDataURL"];
+}
+                                       
 @end

@@ -2929,6 +2929,10 @@
 		C9C33C7B155AA27900C7041F /* DELETE_ME_SCHBSBPageLayoutController.m in Sources */ = {isa = PBXBuildFile; fileRef = C9C33C79155AA27900C7041F /* DELETE_ME_SCHBSBPageLayoutController.m */; };
 		C9C33C7C155AA27900C7041F /* DELETE_ME_SCHBSBPageLayoutController.m in Sources */ = {isa = PBXBuildFile; fileRef = C9C33C79155AA27900C7041F /* DELETE_ME_SCHBSBPageLayoutController.m */; };
 		C9C33C7D155AA27900C7041F /* DELETE_ME_SCHBSBPageLayoutController.m in Sources */ = {isa = PBXBuildFile; fileRef = C9C33C79155AA27900C7041F /* DELETE_ME_SCHBSBPageLayoutController.m */; };
+		C9C33C85155AA9DE00C7041F /* SCHBSBPageContentsViewSpirit.m in Sources */ = {isa = PBXBuildFile; fileRef = C9C33C84155AA9DE00C7041F /* SCHBSBPageContentsViewSpirit.m */; };
+		C9C33C86155AA9DE00C7041F /* SCHBSBPageContentsViewSpirit.m in Sources */ = {isa = PBXBuildFile; fileRef = C9C33C84155AA9DE00C7041F /* SCHBSBPageContentsViewSpirit.m */; };
+		C9C33C87155AA9DE00C7041F /* SCHBSBPageContentsViewSpirit.m in Sources */ = {isa = PBXBuildFile; fileRef = C9C33C84155AA9DE00C7041F /* SCHBSBPageContentsViewSpirit.m */; };
+		C9C33C88155AA9DE00C7041F /* SCHBSBPageContentsViewSpirit.m in Sources */ = {isa = PBXBuildFile; fileRef = C9C33C84155AA9DE00C7041F /* SCHBSBPageContentsViewSpirit.m */; };
 		C9C3F9E114B5DF5300757038 /* SCHStoriaStartingView~iphone.xib in Resources */ = {isa = PBXBuildFile; fileRef = C9C3F9E014B5DF5300757038 /* SCHStoriaStartingView~iphone.xib */; };
 		C9C3F9E214B5DF5300757038 /* SCHStoriaStartingView~iphone.xib in Resources */ = {isa = PBXBuildFile; fileRef = C9C3F9E014B5DF5300757038 /* SCHStoriaStartingView~iphone.xib */; };
 		C9C3F9E414B5E01200757038 /* SCHStoriaLoginViewController~iphone.xib in Resources */ = {isa = PBXBuildFile; fileRef = C9C3F9E314B5E01200757038 /* SCHStoriaLoginViewController~iphone.xib */; };
@@ -5748,6 +5752,8 @@
 		C9C33C69155A903D00C7041F /* SCHBSBEucBook.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHBSBEucBook.m; path = Shared/SCHBSBEucBook.m; sourceTree = "<group>"; };
 		C9C33C78155AA27900C7041F /* DELETE_ME_SCHBSBPageLayoutController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DELETE_ME_SCHBSBPageLayoutController.h; path = Shared/DELETE_ME_SCHBSBPageLayoutController.h; sourceTree = "<group>"; };
 		C9C33C79155AA27900C7041F /* DELETE_ME_SCHBSBPageLayoutController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DELETE_ME_SCHBSBPageLayoutController.m; path = Shared/DELETE_ME_SCHBSBPageLayoutController.m; sourceTree = "<group>"; };
+		C9C33C83155AA9DE00C7041F /* SCHBSBPageContentsViewSpirit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHBSBPageContentsViewSpirit.h; path = Shared/SCHBSBPageContentsViewSpirit.h; sourceTree = "<group>"; };
+		C9C33C84155AA9DE00C7041F /* SCHBSBPageContentsViewSpirit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHBSBPageContentsViewSpirit.m; path = Shared/SCHBSBPageContentsViewSpirit.m; sourceTree = "<group>"; };
 		C9C3F9E014B5DF5300757038 /* SCHStoriaStartingView~iphone.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "SCHStoriaStartingView~iphone.xib"; sourceTree = "<group>"; };
 		C9C3F9E314B5E01200757038 /* SCHStoriaLoginViewController~iphone.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "SCHStoriaLoginViewController~iphone.xib"; sourceTree = "<group>"; };
 		C9C3F9E614B5E87000757038 /* storia-startviewcontroller-static-landscape~ipad.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = "storia-startviewcontroller-static-landscape~ipad.jpg"; path = "Resources/UIAssets/storia-startviewcontroller-static-landscape~ipad.jpg"; sourceTree = "<group>"; };
@@ -8644,6 +8650,8 @@
 			children = (
 				C9C33C68155A903D00C7041F /* SCHBSBEucBook.h */,
 				C9C33C69155A903D00C7041F /* SCHBSBEucBook.m */,
+				C9C33C83155AA9DE00C7041F /* SCHBSBPageContentsViewSpirit.h */,
+				C9C33C84155AA9DE00C7041F /* SCHBSBPageContentsViewSpirit.m */,
 				C9C33C78155AA27900C7041F /* DELETE_ME_SCHBSBPageLayoutController.h */,
 				C9C33C79155AA27900C7041F /* DELETE_ME_SCHBSBPageLayoutController.m */,
 			);
@@ -12525,6 +12533,7 @@
 				C9C33C64155A7F6600C7041F /* SCHBSBProvider.m in Sources */,
 				C9C33C6A155A903D00C7041F /* SCHBSBEucBook.m in Sources */,
 				C9C33C7A155AA27900C7041F /* DELETE_ME_SCHBSBPageLayoutController.m in Sources */,
+				C9C33C85155AA9DE00C7041F /* SCHBSBPageContentsViewSpirit.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -12970,6 +12979,7 @@
 				C9C33C65155A7F6600C7041F /* SCHBSBProvider.m in Sources */,
 				C9C33C6B155A903D00C7041F /* SCHBSBEucBook.m in Sources */,
 				C9C33C7B155AA27900C7041F /* DELETE_ME_SCHBSBPageLayoutController.m in Sources */,
+				C9C33C86155AA9DE00C7041F /* SCHBSBPageContentsViewSpirit.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -13346,6 +13356,7 @@
 				C9C33C66155A7F6600C7041F /* SCHBSBProvider.m in Sources */,
 				C9C33C6C155A903D00C7041F /* SCHBSBEucBook.m in Sources */,
 				C9C33C7C155AA27900C7041F /* DELETE_ME_SCHBSBPageLayoutController.m in Sources */,
+				C9C33C87155AA9DE00C7041F /* SCHBSBPageContentsViewSpirit.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -13722,6 +13733,7 @@
 				C9C33C67155A7F6600C7041F /* SCHBSBProvider.m in Sources */,
 				C9C33C6D155A903D00C7041F /* SCHBSBEucBook.m in Sources */,
 				C9C33C7D155AA27900C7041F /* DELETE_ME_SCHBSBPageLayoutController.m in Sources */,
+				C9C33C88155AA9DE00C7041F /* SCHBSBPageContentsViewSpirit.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

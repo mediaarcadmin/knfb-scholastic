@@ -10,10 +10,14 @@
 #import "SCHEucBookmarkPointTranslation.h"
 
 @class EucBookIndex, EucBookNavPoint, EucBookPageIndexPoint, EucBookPageIndexPointRange;
+@class EucCSSIntermediateDocument;
 @class SCHBookIdentifier;
 
 @interface SCHBSBEucBook : NSObject <EucBook, SCHEucBookmarkPointTranslation>
 
 - (id)initWithBookIdentifier:(SCHBookIdentifier *)newIdentifier managedObjectContext:(NSManagedObjectContext *)moc;
+- (EucCSSIntermediateDocument *)intermediateDocumentForIndexPoint:(EucBookPageIndexPoint *)indexPoint 
+                                                      pageOptions:(NSDictionary *)pageOptions;
+- (NSUInteger)sourceCount;
 
 @end

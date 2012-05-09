@@ -67,16 +67,4 @@
     return nil;
 }
 
-#pragma mark - EucEPubDataProvider
-
-- (NSData *)dataForComponentAtPath:(NSString *)path
-{
-    return nil;
-}
-
-- (NSURL *)fileURLForPath:(NSString *)path
-{
-    return nil;
-}
-
 @end
