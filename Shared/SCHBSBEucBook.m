@@ -72,11 +72,6 @@
 
 #pragma mark - EucBook
 
-- (NSString *)cacheDirectoryPath
-{
-    return  nil;
-}
-
 - (Class)pageLayoutControllerClass
 {
     return nil;
