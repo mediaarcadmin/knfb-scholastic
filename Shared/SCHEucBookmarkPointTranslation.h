@@ -1,5 +1,5 @@
 //
-//  SCHEPubBookmarkPointTranslation.h
+//  SCHEucBookmarkPointTranslation.h.h
 //  Scholastic
 //
 //  Created by Matt Farrugia on 25/04/2012.
@@ -9,7 +9,7 @@
 #import <libEucalyptus/EucBookPageIndexPoint.h>
 #import "SCHBookPoint.h"
 
-@protocol SCHEPubBookmarkPointTranslation <NSObject>
+@protocol SCHEucBookmarkPointTranslation <NSObject>
 
 - (SCHBookPoint *)bookPointFromBookPageIndexPoint:(EucBookPageIndexPoint *)indexPoint;
 - (EucBookPageIndexPoint *)bookPageIndexPointFromBookPoint:(SCHBookPoint *)bookPoint;

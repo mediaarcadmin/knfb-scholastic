@@ -17,7 +17,7 @@
 @class SCHBookIdentifier;
 
 @protocol KNFBParagraphSource;
-@protocol SCHEPubBookmarkPointTranslation;
+@protocol SCHEucBookmarkPointTranslation;
 @protocol EucBook;
 @protocol SCHBookPackageProvider;
 
@@ -38,7 +38,7 @@
 - (id <SCHBookPackageProvider>)checkOutBookPackageProviderForBookIdentifier:(SCHBookIdentifier *)identifier inManagedObjectContext:(NSManagedObjectContext *)managedObjectContext;
 - (void)checkInBookPackageProviderForBookIdentifier:(SCHBookIdentifier *)identifier;
 
-- (id<EucBook, SCHEPubBookmarkPointTranslation>)checkOutEucBookForBookIdentifier:(SCHBookIdentifier *)identifier inManagedObjectContext:(NSManagedObjectContext *)managedObjectContext;
+- (id<EucBook, SCHEucBookmarkPointTranslation>)checkOutEucBookForBookIdentifier:(SCHBookIdentifier *)identifier inManagedObjectContext:(NSManagedObjectContext *)managedObjectContext;
 - (void)checkInEucBookForBookIdentifier:(SCHBookIdentifier *)identifier;
 
 - (SCHTextFlow *)checkOutTextFlowForBookIdentifier:(SCHBookIdentifier *)identifier inManagedObjectContext:(NSManagedObjectContext *)managedObjectContext;
@@ -49,7 +49,7 @@
 
 // these are like the normal checkout method but synchronously jump to the main thread to do core data access
 - (id <SCHBookPackageProvider>)threadSafeCheckOutBookPackageProviderForBookIdentifier:(SCHBookIdentifier *)identifier;
-- (id<EucBook, SCHEPubBookmarkPointTranslation>)threadSafeCheckOutEucBookForBookIdentifier:(SCHBookIdentifier *)identifier;
+- (id<EucBook, SCHEucBookmarkPointTranslation>)threadSafeCheckOutEucBookForBookIdentifier:(SCHBookIdentifier *)identifier;
 
 
 + (BOOL)checkAppCompatibilityForFeature:(NSString *)key version:(float)version;

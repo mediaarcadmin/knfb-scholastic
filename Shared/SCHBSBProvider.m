@@ -37,7 +37,9 @@
 
 - (BOOL)componentExistsAtPath:(NSString *)path
 {
-    return YES;
+    NSData *componentData = [self dataForComponentAtPath:path];
+    
+    return (componentData != nil);
 }
 
 - (BOOL)isEncrypted

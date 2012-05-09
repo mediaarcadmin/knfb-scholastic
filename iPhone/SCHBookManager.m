@@ -13,6 +13,7 @@
 #import "SCHTextFlow.h"
 #import "SCHFlowEucBook.h"
 #import "SCHEPubBook.h"
+#import "SCHBSBEucBook.h"
 #import "SCHXPSProvider.h"
 #import "SCHBSBProvider.h"
 #import "SCHTextFlowParagraphSource.h"
@@ -349,11 +350,11 @@ static int allocCountXPS = 0;
 
 static int checkoutCountEucBook = 0;
 
-- (id<EucBook, SCHEPubBookmarkPointTranslation>)checkOutEucBookForBookIdentifier:(SCHBookIdentifier *)identifier inManagedObjectContext:(NSManagedObjectContext *)managedObjectContext
+- (id<EucBook, SCHEucBookmarkPointTranslation>)checkOutEucBookForBookIdentifier:(SCHBookIdentifier *)identifier inManagedObjectContext:(NSManagedObjectContext *)managedObjectContext
 {
     NSParameterAssert(identifier);
     
-	id<EucBook, SCHEPubBookmarkPointTranslation> ret = nil;
+	id<EucBook, SCHEucBookmarkPointTranslation> ret = nil;
 	
     checkoutCountEucBook++;
     
@@ -371,15 +372,20 @@ static int checkoutCountEucBook = 0;
             }
             ret = previouslyCachedEucBook;
         } else {
-            id<EucBook, SCHEPubBookmarkPointTranslation> eucBook = nil;
+            id<EucBook, SCHEucBookmarkPointTranslation> eucBook = nil;
             
-            SCHXPSProvider *xpsProvider = (SCHXPSProvider *)[self checkOutBookPackageProviderForBookIdentifier:identifier inManagedObjectContext:managedObjectContext];
-            BOOL hasEPub = [xpsProvider containsEmbeddedEPub];
+            id <SCHBookPackageProvider> provider = [self checkOutBookPackageProviderForBookIdentifier:identifier inManagedObjectContext:managedObjectContext];
             
-            if (hasEPub) {
-                eucBook = [[SCHEPubBook alloc] initWithBookIdentifier:identifier managedObjectContext:managedObjectContext];
+            if ([provider isKindOfClass:[SCHBSBProvider class]]) {
+                eucBook = [[SCHBSBEucBook alloc] initWithBookIdentifier:identifier managedObjectContext:managedObjectContext];;
             } else {
-                eucBook = [[SCHFlowEucBook alloc] initWithBookIdentifier:identifier managedObjectContext:managedObjectContext];
+                BOOL hasEPub = [(SCHXPSProvider *)provider containsEmbeddedEPub];
+                
+                if (hasEPub) {
+                    eucBook = [[SCHEPubBook alloc] initWithBookIdentifier:identifier managedObjectContext:managedObjectContext];
+                } else {
+                    eucBook = [[SCHFlowEucBook alloc] initWithBookIdentifier:identifier managedObjectContext:managedObjectContext];
+                }
             }
             
             [self checkInBookPackageProviderForBookIdentifier:identifier];
@@ -404,11 +410,11 @@ static int checkoutCountEucBook = 0;
     return(ret);
 }
 
-- (id<EucBook, SCHEPubBookmarkPointTranslation>)threadSafeCheckOutEucBookForBookIdentifier:(SCHBookIdentifier *)identifier
+- (id<EucBook, SCHEucBookmarkPointTranslation>)threadSafeCheckOutEucBookForBookIdentifier:(SCHBookIdentifier *)identifier
 {
     NSParameterAssert(identifier);
     
-    __block id<EucBook, SCHEPubBookmarkPointTranslation> eucBook;
+    __block id<EucBook, SCHEucBookmarkPointTranslation> eucBook;
     [self performOnMainThread:^{
         eucBook = [[self checkOutEucBookForBookIdentifier:identifier inManagedObjectContext:self.mainThreadManagedObjectContext] retain];
     }];

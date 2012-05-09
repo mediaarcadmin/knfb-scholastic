@@ -50,12 +50,14 @@
     }];
     CFAbsoluteTime startTime = CFAbsoluteTimeGetCurrent();
 #endif
-    EucEPubBook *eucBook = [[SCHBookManager sharedBookManager] threadSafeCheckOutEucBookForBookIdentifier:self.identifier];
-
+    id <EucBook> eucBook = [[SCHBookManager sharedBookManager] threadSafeCheckOutEucBookForBookIdentifier:self.identifier];
+    
     if (eucBook) {
-        [eucBook generateAndCacheUncachedRecachableData];
-        [[SCHBookManager sharedBookManager] checkInEucBookForBookIdentifier:self.identifier];
-        NSLog(@"Analysis of book %@ took %ld seconds", title, (long)round(CFAbsoluteTimeGetCurrent() - startTime));
+        if ([eucBook isKindOfClass:[EucEPubBook class]]) {
+            [(EucEPubBook *)eucBook generateAndCacheUncachedRecachableData];
+            [[SCHBookManager sharedBookManager] checkInEucBookForBookIdentifier:self.identifier];
+            NSLog(@"Analysis of book %@ took %ld seconds", title, (long)round(CFAbsoluteTimeGetCurrent() - startTime));
+        }
         [self updateBookWithSuccess];
     } else {
         NSLog(@"Pagination of book %@ failed. Could not checkout out SCHFlowEucBook", title);

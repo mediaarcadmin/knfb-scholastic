@@ -25,7 +25,7 @@
 
 @interface SCHFlowView ()
 
-@property (nonatomic, retain) EucEPubBook<SCHEPubBookmarkPointTranslation> *eucBook;
+@property (nonatomic, retain) EucEPubBook<SCHEucBookmarkPointTranslation> *eucBook;
 @property (nonatomic, retain) id<KNFBParagraphSource> paragraphSource;
 @property (nonatomic, retain) EucBookView *eucBookView;
 
@@ -111,7 +111,10 @@ managedObjectContext:(NSManagedObjectContext *)managedObjectContext
         
         SCHBookManager *bookManager = [SCHBookManager sharedBookManager];
         eucBook = [[bookManager checkOutEucBookForBookIdentifier:self.identifier inManagedObjectContext:managedObjectContext] retain];
-        paragraphSource = [[bookManager checkOutParagraphSourceForBookIdentifier:self.identifier inManagedObjectContext:managedObjectContext] retain];
+        
+        if ([eucBook isKindOfClass:[EucEPubBook class]]) {
+            paragraphSource = [[bookManager checkOutParagraphSourceForBookIdentifier:self.identifier inManagedObjectContext:managedObjectContext] retain];
+        }
         
         openingPoint = [point retain];
     }

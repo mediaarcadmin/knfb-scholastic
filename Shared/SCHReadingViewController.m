@@ -565,7 +565,9 @@ static const NSUInteger kReadingViewMaxRecommendationsCount = 4;
         self.paperType = SCHReadingViewPaperTypeWhite;
     } else {
         
-        
+        if (1) {
+            self.layoutType = SCHReadingViewLayoutTypeFlow;
+        } else {
         // Default layout type
         NSNumber *savedLayoutType = [[self.profile AppProfile] LayoutType];
         if (savedLayoutType) {
@@ -576,6 +578,7 @@ static const NSUInteger kReadingViewMaxRecommendationsCount = 4;
             } else {
                 self.layoutType = SCHReadingViewLayoutTypeFixed;
             }
+        }
         }
         
         // Default font size index

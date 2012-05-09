@@ -8,14 +8,14 @@
 
 #import <Foundation/Foundation.h>
 #import "KNFBFlowEucBook.h"
-#import "SCHEPubBookmarkPointTranslation.h"
+#import "SCHEucBookmarkPointTranslation.h"
 
 @class EucBookPageIndexPoint;
 @class SCHBookPoint;
 @class SCHBookIdentifier;
 @class NSManagedObjectContext;
 
-@interface SCHFlowEucBook : KNFBFlowEucBook <SCHEPubBookmarkPointTranslation> {}
+@interface SCHFlowEucBook : KNFBFlowEucBook <SCHEucBookmarkPointTranslation> {}
 
 @property (nonatomic, retain, readonly) SCHBookIdentifier *identifier;
 

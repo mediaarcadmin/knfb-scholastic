@@ -98,19 +98,25 @@ static void pageFileXMLParsingStartElementHandler(void *ctx, const XML_Char *nam
 {
     NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
     
-    SCHXPSProvider *xpsProvider = (SCHXPSProvider *)[[SCHBookManager sharedBookManager] threadSafeCheckOutBookPackageProviderForBookIdentifier:self.identifier];
-    NSData *data = [xpsProvider dataForComponentAtPath:KNFBXPSTextFlowSectionsFile];
+    id <SCHBookPackageProvider> provider = [[SCHBookManager sharedBookManager] threadSafeCheckOutBookPackageProviderForBookIdentifier:self.identifier];
+    NSData *data = [provider dataForComponentAtPath:KNFBXPSTextFlowSectionsFile];
     
     if (nil == data) {
-        NSLog(@"Could not pre-parse TextFlow because TextFlow file did not exist at path: %@.", KNFBXPSTextFlowSectionsFile);
+        if ([provider isKindOfClass:[SCHXPSProvider class]]) {
+            NSLog(@"Could not pre-parse TextFlow because TextFlow file did not exist at path: %@.", KNFBXPSTextFlowSectionsFile);
 
-        [xpsProvider reportReadingIfRequired];
-        [[SCHBookManager sharedBookManager] checkInBookPackageProviderForBookIdentifier:self.identifier];
-        [self updateBookWithFailure];
+            [provider reportReadingIfRequired];
+            [[SCHBookManager sharedBookManager] checkInBookPackageProviderForBookIdentifier:self.identifier];
+            [self updateBookWithFailure];
+            
+            
+            [self setProcessingState:SCHBookProcessingStateReadyForSmartZoomPreParse];
+            [self setIsProcessing:NO];
+            [self endOperation];
         
-        [self setProcessingState:SCHBookProcessingStateReadyForSmartZoomPreParse];
-        [self setIsProcessing:NO];
-        [self endOperation];
+        } else {
+            [self updateBookWithSuccess];
+        }
         
         [pool drain];
         return;
@@ -138,12 +144,12 @@ static void pageFileXMLParsingStartElementHandler(void *ctx, const XML_Char *nam
         
         NSAutoreleasePool *innerPool = [[NSAutoreleasePool alloc] init];
         
-        NSData *data = [xpsProvider dataForComponentAtPath:[KNFBXPSEncryptedTextFlowDir stringByAppendingPathComponent:[pageRange fileName]]];
+        NSData *data = [provider dataForComponentAtPath:[KNFBXPSEncryptedTextFlowDir stringByAppendingPathComponent:[pageRange fileName]]];
 
         
         if (!data) {
             NSLog(@"Could not pre-parse TextFlow because TextFlow file did not exist with name: %@.", [pageRange fileName]);
-            [xpsProvider reportReadingIfRequired];
+            [provider reportReadingIfRequired];
             [[SCHBookManager sharedBookManager] checkInBookPackageProviderForBookIdentifier:self.identifier];
             [self updateBookWithFailure];
             [pool drain];
@@ -174,7 +180,7 @@ static void pageFileXMLParsingStartElementHandler(void *ctx, const XML_Char *nam
         [book setValue:[NSNumber numberWithInteger:[[sortedRanges lastObject] endPageIndex]] forKey:kSCHAppBookLayoutPageEquivalentCount];
     }];
     
-    [xpsProvider reportReadingIfRequired];
+    [provider reportReadingIfRequired];
     [[SCHBookManager sharedBookManager] checkInBookPackageProviderForBookIdentifier:self.identifier];
     
     [self fireNotificationForPercentage:1.0f];
