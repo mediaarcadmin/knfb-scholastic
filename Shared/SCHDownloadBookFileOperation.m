@@ -82,7 +82,7 @@
         __block BOOL bookFileURLIsValid = NO;
         
         [self performWithBook:^(SCHAppBook *book) {
-            self.localPath = [book xpsPath];
+            self.localPath = [book bookPackagePath];
             bookFileURL = [[book BookFileURL] retain];
             bookFileURLIsFileURL = [book bookFileURLIsBundleURL];
             bookFileURLIsValid = [book bookFileURLIsValid];

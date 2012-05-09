@@ -2917,6 +2917,10 @@
 		C9C1D2D713B0AF5B00441623 /* storyinteraction-bg-younger-notitle~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = C9C1D29D13B0AD4B00441623 /* storyinteraction-bg-younger-notitle~ipad.png */; };
 		C9C1D2D813B0AF5B00441623 /* storyinteraction-bg-older-notitle~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = C9C1D29E13B0AD4C00441623 /* storyinteraction-bg-older-notitle~ipad.png */; };
 		C9C27CB913AA536C00332229 /* Arial Black.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C9C27CB813AA536A00332229 /* Arial Black.ttf */; };
+		C9C33C64155A7F6600C7041F /* SCHBSBProvider.m in Sources */ = {isa = PBXBuildFile; fileRef = C9C33C63155A7F6600C7041F /* SCHBSBProvider.m */; };
+		C9C33C65155A7F6600C7041F /* SCHBSBProvider.m in Sources */ = {isa = PBXBuildFile; fileRef = C9C33C63155A7F6600C7041F /* SCHBSBProvider.m */; };
+		C9C33C66155A7F6600C7041F /* SCHBSBProvider.m in Sources */ = {isa = PBXBuildFile; fileRef = C9C33C63155A7F6600C7041F /* SCHBSBProvider.m */; };
+		C9C33C67155A7F6600C7041F /* SCHBSBProvider.m in Sources */ = {isa = PBXBuildFile; fileRef = C9C33C63155A7F6600C7041F /* SCHBSBProvider.m */; };
 		C9C3F9E114B5DF5300757038 /* SCHStoriaStartingView~iphone.xib in Resources */ = {isa = PBXBuildFile; fileRef = C9C3F9E014B5DF5300757038 /* SCHStoriaStartingView~iphone.xib */; };
 		C9C3F9E214B5DF5300757038 /* SCHStoriaStartingView~iphone.xib in Resources */ = {isa = PBXBuildFile; fileRef = C9C3F9E014B5DF5300757038 /* SCHStoriaStartingView~iphone.xib */; };
 		C9C3F9E414B5E01200757038 /* SCHStoriaLoginViewController~iphone.xib in Resources */ = {isa = PBXBuildFile; fileRef = C9C3F9E314B5E01200757038 /* SCHStoriaLoginViewController~iphone.xib */; };
@@ -5730,6 +5734,8 @@
 		C9C1D29D13B0AD4B00441623 /* storyinteraction-bg-younger-notitle~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "storyinteraction-bg-younger-notitle~ipad.png"; sourceTree = "<group>"; };
 		C9C1D29E13B0AD4C00441623 /* storyinteraction-bg-older-notitle~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "storyinteraction-bg-older-notitle~ipad.png"; sourceTree = "<group>"; };
 		C9C27CB813AA536A00332229 /* Arial Black.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Arial Black.ttf"; sourceTree = "<group>"; };
+		C9C33C62155A7F6600C7041F /* SCHBSBProvider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHBSBProvider.h; path = ../Shared/SCHBSBProvider.h; sourceTree = "<group>"; };
+		C9C33C63155A7F6600C7041F /* SCHBSBProvider.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHBSBProvider.m; path = ../Shared/SCHBSBProvider.m; sourceTree = "<group>"; };
 		C9C3F9E014B5DF5300757038 /* SCHStoriaStartingView~iphone.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "SCHStoriaStartingView~iphone.xib"; sourceTree = "<group>"; };
 		C9C3F9E314B5E01200757038 /* SCHStoriaLoginViewController~iphone.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "SCHStoriaLoginViewController~iphone.xib"; sourceTree = "<group>"; };
 		C9C3F9E614B5E87000757038 /* storia-startviewcontroller-static-landscape~ipad.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = "storia-startviewcontroller-static-landscape~ipad.jpg"; path = "Resources/UIAssets/storia-startviewcontroller-static-landscape~ipad.jpg"; sourceTree = "<group>"; };
@@ -7235,7 +7241,8 @@
 				C9F5B74D138FB057009DE113 /* Authentication Controllers */,
 				F8DC5655138C09DB00F27146 /* Reading View Controllers */,
 				526A8A42138510CD00101A96 /* AudioBookPlayer */,
-				F8509E8A12F0621E00197EB5 /* XPS Provider */,
+				C9C33C61155A7F3E00C7041F /* Branching Stories */,
+				F8509E8A12F0621E00197EB5 /* Book Package Providers */,
 				52EF594712EECA7200E374F7 /* Extensions */,
 				52D19C681338A57B00A68D75 /* Views */,
 				C9C909681455A02100548DDE /* Sample Books Processing */,
@@ -8620,6 +8627,13 @@
 			path = Shared/Libraries/LambdaAlert;
 			sourceTree = "<group>";
 		};
+		C9C33C61155A7F3E00C7041F /* Branching Stories */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = "Branching Stories";
+			sourceTree = "<group>";
+		};
 		C9C3FA2814B6FA5E00757038 /* Products */ = {
 			isa = PBXGroup;
 			children = (
@@ -8939,16 +8953,18 @@
 			name = "Debug Books";
 			sourceTree = "<group>";
 		};
-		F8509E8A12F0621E00197EB5 /* XPS Provider */ = {
+		F8509E8A12F0621E00197EB5 /* Book Package Providers */ = {
 			isa = PBXGroup;
 			children = (
 				C984D3FA1559D178001E3016 /* SCHBookPackageProvider.h */,
+				C9C33C62155A7F6600C7041F /* SCHBSBProvider.h */,
+				C9C33C63155A7F6600C7041F /* SCHBSBProvider.m */,
 				C9EFB28C134F782800ADF905 /* SCHXPSProvider.h */,
 				C9EFB28D134F782A00ADF905 /* SCHXPSProvider.m */,
 				C9EFB291134F795800ADF905 /* SCHXPSURLProtocol.h */,
 				C9EFB292134F795800ADF905 /* SCHXPSURLProtocol.m */,
 			);
-			name = "XPS Provider";
+			name = "Book Package Providers";
 			path = iPhone;
 			sourceTree = "<group>";
 		};
@@ -12490,6 +12506,7 @@
 				F858319815514DC5004960E8 /* SCHDownloadDictionaryFromSettingsViewController.m in Sources */,
 				5251716515501FB5009C3B61 /* NSFileManager+Extensions.m in Sources */,
 				F82F54A31557DB2C00041D0E /* SCHRecommendationSampleView.m in Sources */,
+				C9C33C64155A7F6600C7041F /* SCHBSBProvider.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -12932,6 +12949,7 @@
 				F858319915514DC5004960E8 /* SCHDownloadDictionaryFromSettingsViewController.m in Sources */,
 				5251716615501FB5009C3B61 /* NSFileManager+Extensions.m in Sources */,
 				F82F54A41557DB2C00041D0E /* SCHRecommendationSampleView.m in Sources */,
+				C9C33C65155A7F6600C7041F /* SCHBSBProvider.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -13305,6 +13323,7 @@
 				F858319A15514DC5004960E8 /* SCHDownloadDictionaryFromSettingsViewController.m in Sources */,
 				5251716715501FB5009C3B61 /* NSFileManager+Extensions.m in Sources */,
 				F82F54A51557DB2C00041D0E /* SCHRecommendationSampleView.m in Sources */,
+				C9C33C66155A7F6600C7041F /* SCHBSBProvider.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -13678,6 +13697,7 @@
 				F858319B15514DC5004960E8 /* SCHDownloadDictionaryFromSettingsViewController.m in Sources */,
 				5251716815501FB5009C3B61 /* NSFileManager+Extensions.m in Sources */,
 				F82F54A61557DB2C00041D0E /* SCHRecommendationSampleView.m in Sources */,
+				C9C33C67155A7F6600C7041F /* SCHBSBProvider.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

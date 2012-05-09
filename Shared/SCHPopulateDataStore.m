@@ -45,6 +45,7 @@
                                  enhanced:(BOOL)enhanced;
 - (NSDictionary *)userContentItemWith:(NSString *)contentIdentifier 
                           drmQualifer:(SCHDRMQualifiers)drmQualifer
+                               format:(NSString *)format
                            profileIDs:(NSArray *)profileIDs;
 - (NSArray *)listXPSFilesFrom:(NSString *)directory;
 - (BOOL)populateBook:(NSString *)xpsFilePath profileIDs:(NSArray *)profileIDs;
@@ -205,6 +206,7 @@
     if (book != nil && profileIDs != nil && [profileIDs count] > 0) {
         [self.contentSyncComponent addUserContentItem:[self userContentItemWith:[book objectForKey:kSCHLibreAccessWebServiceContentIdentifier]
                                                                     drmQualifer:[[book objectForKey:kSCHLibreAccessWebServiceDRMQualifier] DRMQualifierValue]
+                                                                         format:[book objectForKey:kSCHLibreAccessWebServiceFormat]
                                                                      profileIDs:profileIDs]];
         
         [self.bookshelfSyncComponent addContentMetadataItem:book];
@@ -223,6 +225,7 @@
             for (NSNumber *profileID in profileIDs) {
                 [userContentItems addObject:[self userContentItemWith:[entry objectForKey:@"Isbn13"]
                                                           drmQualifer:kSCHDRMQualifiersNone
+                                                               format:[[entry objectForKey:@"DownloadUrl"] pathExtension]
                                                            profileIDs:profileIDs]];
             }
             
@@ -475,6 +478,7 @@
 
 - (NSDictionary *)userContentItemWith:(NSString *)contentIdentifier
                           drmQualifer:(SCHDRMQualifiers)drmQualifer
+                               format:(NSString *)format
                            profileIDs:(NSArray *)profileIDs
 {
     NSParameterAssert(contentIdentifier);
@@ -503,7 +507,7 @@
     [ret setObject:(contentIdentifier == nil ? (id)[NSNull null] : contentIdentifier) forKey:kSCHLibreAccessWebServiceContentIdentifier];
     [ret setObject:[NSNumber numberWithContentIdentifierType:kSCHContentItemContentIdentifierTypesISBN13] forKey:kSCHLibreAccessWebServiceContentIdentifierType];
     [ret setObject:[NSNumber numberWithDRMQualifier:drmQualifer] forKey:kSCHLibreAccessWebServiceDRMQualifier];
-    [ret setObject:@"XPS" forKey:kSCHLibreAccessWebServiceFormat];
+    [ret setObject:(format == nil ? @"XPS" : [format uppercaseString]) forKey:kSCHLibreAccessWebServiceFormat];
     [ret setObject:version forKey:kSCHLibreAccessWebServiceVersion];    
     [ret setObject:profileList forKey:kSCHLibreAccessWebServiceProfileList];
     [ret setObject:orderList forKey:kSCHLibreAccessWebServiceOrderList]; 
@@ -591,7 +595,8 @@
                                                       enhanced:[xpsProvider componentExistsAtPath:KNFBXPSStoryInteractionsMetadataFile]];
             
             [self.contentSyncComponent addUserContentItem:[self userContentItemWith:[book objectForKey:kSCHLibreAccessWebServiceContentIdentifier] 
-                                                                        drmQualifer:[[book objectForKey:kSCHLibreAccessWebServiceDRMQualifier] DRMQualifierValue]                                                    
+                                                                        drmQualifer:[[book objectForKey:kSCHLibreAccessWebServiceDRMQualifier] DRMQualifierValue]  
+                                                                             format:[book objectForKey:kSCHLibreAccessWebServiceFormat]
                                                                          profileIDs:profileIDs]];
             SCHContentMetadataItem *newContentMetadataItem = [self.bookshelfSyncComponent addContentMetadataItem:book];
             newContentMetadataItem.FileName = [xpsFilePath lastPathComponent];
@@ -615,7 +620,7 @@
             
             // move the XPS file
             [[NSFileManager defaultManager] moveItemAtPath:xpsFilePath 
-                                                    toPath:[newContentMetadataItem.AppBook xpsPath] 
+                                                    toPath:[newContentMetadataItem.AppBook bookPackagePath] 
                                                      error:&error];        
             if (error != nil) {
                 NSLog(@"Error moving XPS file: %@, %@", error, [error userInfo]);

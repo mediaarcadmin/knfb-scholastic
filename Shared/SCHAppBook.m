@@ -72,11 +72,15 @@ NSString * const kSCHAppBookEucalyptusCacheDir = @"libEucalyptusCache";
 
 NSString * const kSCHAppBookFilenameSeparator = @"-";
 
+NSString * const kSCHAppBookPackageTypeExtensionXPS = @"XPS";
+NSString * const kSCHAppBookPackageTypeExtensionBSB = @"BSB";
+
 @interface SCHAppBook()
 
 - (NSError *)errorWithCode:(NSInteger)code;
 - (BOOL)urlHasExpired:(NSString *)urlString;
 - (BOOL)urlStringIsBundleURL:(NSString *)urlString;
+- (NSString *)bookPackageExtension;
 
 @property (nonatomic, copy) NSString *cachedBookDirectory;
 
@@ -563,14 +567,40 @@ NSString * const kSCHAppBookFilenameSeparator = @"-";
 
 #pragma mark - Current Book Information
 
-- (NSString *)xpsPath
+- (SCHAppBookPackageType)bookPackageType
+{
+    SCHAppBookPackageType type = kSCHAppBookPackageTypeXPS;
+    
+    if ([[[self bookPackageExtension] uppercaseString] isEqualToString:kSCHAppBookPackageTypeExtensionBSB]) {
+        type = kSCHAppBookPackageTypeBSB;
+    }
+    
+    return type;
+}
+
+- (NSString *)bookPackageExtension
+{
+    NSString *extension = kSCHAppBookPackageTypeExtensionXPS;
+    NSString *packageExtension = [[self BookFileURL] pathExtension];
+    
+    if ([[packageExtension uppercaseString] isEqualToString:kSCHAppBookPackageTypeExtensionBSB]) {
+        extension = kSCHAppBookPackageTypeExtensionBSB;
+    }
+    
+    return extension;
+}
+
+- (NSString *)bookPackagePath
 {
     NSString *bookDirectory = [self bookDirectory];
-    NSString *fullXPSPath = [bookDirectory stringByAppendingPathComponent:[NSString stringWithFormat:@"%@%@%@.xps", 
+    NSString *fullPath = [bookDirectory stringByAppendingPathComponent:[NSString stringWithFormat:@"%@%@%@.%@", 
                                                                            self.bookIdentifier.isbn, 
                                                                            kSCHAppBookFilenameSeparator,
-                                                                           self.bookIdentifier.DRMQualifier]];
-	return fullXPSPath;    
+                                                                           self.bookIdentifier.DRMQualifier,
+                                                                           [[self bookPackageExtension] lowercaseString]]];
+    
+    NSLog(@"path: %@", fullPath); 
+	return fullPath;    
 }
 
 - (NSString *)coverImagePath
@@ -653,13 +683,13 @@ NSString * const kSCHAppBookFilenameSeparator = @"-";
 {
 	float percentage = 0.0f;
 	
-	NSString *xpsPath = [self xpsPath];
+	NSString *packagePath = [self bookPackagePath];
 	NSError *error = nil;
 	
-	if ([[NSFileManager defaultManager] fileExistsAtPath:xpsPath]) {
+	if ([[NSFileManager defaultManager] fileExistsAtPath:packagePath]) {
 		// check to see how much of the file has been downloaded
 		
-		unsigned long long fileSize = [[[NSFileManager defaultManager] attributesOfItemAtPath:xpsPath error:&error] fileSize];
+		unsigned long long fileSize = [[[NSFileManager defaultManager] attributesOfItemAtPath:packagePath error:&error] fileSize];
 		percentage = (float) ((float) fileSize/[self.ContentMetadataItem.FileSize floatValue]);
 		
 		if (error) {

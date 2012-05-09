@@ -14,6 +14,12 @@ extern NSString * const kSCHAppBookErrorDomain;
 
 typedef enum 
 {
+	kSCHAppBookPackageTypeXPS = 0,
+    kSCHAppBookPackageTypeBSB
+} SCHAppBookPackageType;
+
+typedef enum 
+{
 	kSCHAppBookStillBeingProcessedError = 0,
     kSCHAppBookNotEnoughStorageError,
     kSCHAppBookUnableToAcquireLicenseError,
@@ -147,10 +153,9 @@ typedef enum {
 
 - (NSString *)processingStateAsString;
 - (BOOL)isProcessing;
-//- (void)setProcessing:(BOOL)value;
 
-// the path to the XPS file within the system - by default, in the cache directory
-- (NSString *)xpsPath;
+- (SCHAppBookPackageType)bookPackageType;
+- (NSString *)bookPackagePath;
 - (NSString *)coverImagePath;
 - (NSString *)thumbPathForSize:(CGSize)size;
 + (NSString *)booksDirectory;

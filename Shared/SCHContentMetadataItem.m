@@ -315,12 +315,12 @@ static NSString * const kSCHContentMetadataItemAnnotationsItemProfileID = @"Anno
     [self.AppBook clearCachedBookDirectory];
 }
 
-- (void)deleteXPSFile
+- (void)deleteBookPackageFile
 {
     NSError *error = nil;
     NSFileManager *localManager = [[[NSFileManager alloc] init] autorelease];
     
-    if ([localManager removeItemAtPath:self.AppBook.xpsPath 
+    if ([localManager removeItemAtPath:self.AppBook.bookPackagePath 
                                                    error:&error] == NO) {
         NSLog(@"Failed to delete XPS file for %@, error: %@", 
               self.ContentIdentifier, [error localizedDescription]);

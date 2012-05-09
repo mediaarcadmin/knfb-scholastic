@@ -14,6 +14,7 @@
 #import "SCHFlowEucBook.h"
 #import "SCHEPubBook.h"
 #import "SCHXPSProvider.h"
+#import "SCHBSBProvider.h"
 #import "SCHTextFlowParagraphSource.h"
 #import "SCHEPubParagraphSource.h"
 #import "SCHBookIdentifier.h"
@@ -266,8 +267,21 @@ static int allocCountXPS = 0;
         } else {
             allocCountXPS++;
             SCHAppBook *book = [self bookWithIdentifier:identifier inManagedObjectContext:managedObjectContext];
-			id <SCHBookPackageProvider> provider = [[SCHXPSProvider alloc] initWithBookIdentifier:identifier xpsPath:[book xpsPath]];
-			if(provider) {
+            id <SCHBookPackageProvider> provider = nil;
+            
+            SCHAppBookPackageType packageType = [book bookPackageType];
+            
+            switch (packageType) {
+                case kSCHAppBookPackageTypeXPS:
+                    provider = [[SCHXPSProvider alloc] initWithBookIdentifier:identifier xpsPath:[book bookPackagePath]];
+                    break;
+                    
+                case kSCHAppBookPackageTypeBSB:
+                    provider = [[SCHBSBProvider alloc] initWithBookIdentifier:identifier path:[book bookPackagePath]];
+                    break;
+            }
+
+			if (provider) {
 				NSCountedSet *myCachedXPSProviderCheckoutCounts = self.cachedXPSProviderCheckoutCounts;
 				if(!myCachedXPSProviderCheckoutCounts) {
 					myCachedXPSProviderCheckoutCounts = [NSCountedSet set];

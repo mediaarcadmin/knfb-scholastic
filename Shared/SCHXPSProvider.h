@@ -9,7 +9,6 @@
 #import "KNFBXPSProvider.h"
 #import "SCHBookPackageProvider.h"
 
-@class NSManagedObjectContext;
 @class SCHBookIdentifier;
 @protocol SCHBookPackageProvider;
 
