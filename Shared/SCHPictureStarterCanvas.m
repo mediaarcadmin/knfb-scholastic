@@ -16,11 +16,11 @@
 #define kPinchInProgressMinimumZoom 1.0f
 #define kEndOfPinchMinimumZoom 1.4f
 
-@interface SCHPictureStarterCanvas ()
+@interface SCHPictureStarterCanvas () <UIGestureRecognizerDelegate>
 
 @property (nonatomic, assign) CGFloat deviceScale;
-@property (nonatomic, assign) CGPoint pinchPoint;
 @property (nonatomic, assign) CGFloat zoomScale;
+@property (nonatomic, assign) CGPoint zoomOffset;
 @property (nonatomic, retain) CALayer *backgroundLayer;
 @property (nonatomic, retain) CALayer *paintedLayer;
 @property (nonatomic, retain) CALayer *liveLayer;
@@ -31,16 +31,19 @@
 - (void)cancelCurrentDrawingInstruction;
 - (void)commitDrawingInstruction:(id<SCHPictureStarterDrawingInstruction>)instruction;
 - (CGContextRef)newPaintContext;
-- (CGFloat)updateZoom:(CGFloat)scale point:(CGPoint)point minimumZoom:(CGFloat)minimumZoom animated:(BOOL)animated;
 
 @end;
 
-@implementation SCHPictureStarterCanvas
+@implementation SCHPictureStarterCanvas {
+    CGPoint panStartPoint;
+    CGPoint pinchStartCenter;
+    CGPoint pinchStartOffset;
+}
 
 @synthesize delegate;
 @synthesize deviceScale;
-@synthesize pinchPoint;
 @synthesize zoomScale;
+@synthesize zoomOffset;
 @synthesize backgroundLayer;
 @synthesize paintedLayer;
 @synthesize liveLayer;
@@ -68,10 +71,19 @@
     self = [super initWithCoder:aDecoder];
     if (self) {
         UIPinchGestureRecognizer *pinch = [[UIPinchGestureRecognizer alloc] initWithTarget:self action:@selector(handlePinch:)];
+        pinch.delegate = self;
         [self addGestureRecognizer:pinch];
         [pinch release];
         
+        UIPanGestureRecognizer *pan = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(handlePan:)];
+        pan.delegate = self;
+        pan.minimumNumberOfTouches = 2;
+        pan.maximumNumberOfTouches = 2;
+        [self addGestureRecognizer:pan];
+        [pan release];
+        
         self.zoomScale = 1.0f;
+        self.zoomOffset = CGPointZero;
         self.deviceScale = [[UIScreen mainScreen] scale];
 
         self.backgroundLayer = [CALayer layer];
@@ -198,58 +210,104 @@
 - (void)handlePinch:(UIPinchGestureRecognizer *)pinch
 {
     switch ([pinch state]) {
-        case UIGestureRecognizerStateBegan:
+        case UIGestureRecognizerStateBegan: {
             [self cancelCurrentDrawingInstruction];
-            self.pinchPoint = [pinch locationInView:self];
-            self.pinchSmoother = [SCHGestureSmoother smoother];
-            [self.pinchSmoother addPoint:[pinch locationInView:self]];
+            CGPoint point = [pinch locationInView:self.superview];
+            pinchStartCenter = self.center;
+            pinchStartOffset = CGPointMake(point.x-pinchStartCenter.x, point.y-pinchStartCenter.y);
             break;
-        case UIGestureRecognizerStateChanged:
-            [self.pinchSmoother addPoint:[pinch locationInView:self]];
-            [self updateZoom:pinch.scale point:[self.pinchSmoother smoothedPoint] minimumZoom:kPinchInProgressMinimumZoom animated:NO];
+        }
+        case UIGestureRecognizerStateChanged: {
+            CGPoint center = [self adjustedCenterForPinchScale:pinch.scale];
+            [self setScale:self.zoomScale*pinch.scale animated:NO];
+            [self setCenter:center clamped:NO animated:NO];
             break;
-        case UIGestureRecognizerStateEnded:
-            [self.pinchSmoother addPoint:[pinch locationInView:self]];
-            self.zoomScale = [self updateZoom:pinch.scale point:[self.pinchSmoother smoothedPoint] minimumZoom:kPinchInProgressMinimumZoom animated:NO];
-            self.pinchSmoother = nil;
+        }
+        case UIGestureRecognizerStateEnded: {
+            CGPoint center = [self adjustedCenterForPinchScale:pinch.scale];
+            self.zoomScale = MAX(1.0f, self.zoomScale*pinch.scale);
+            [self setScale:self.zoomScale animated:YES];
+            [self setCenter:center clamped:YES animated:YES];
             break;
+        }
         case UIGestureRecognizerStateCancelled:
-        case UIGestureRecognizerStateFailed:
-            [self updateZoom:self.zoomScale point:self.pinchPoint minimumZoom:kEndOfPinchMinimumZoom animated:YES];
-            self.pinchSmoother = nil;
+        case UIGestureRecognizerStateFailed: {
+            [self setScale:self.zoomScale animated:YES];
+            [self setCenter:pinchStartCenter clamped:YES animated:YES];
             break;
+        }
         default:
             break;
     }
 }
 
+- (void)handlePan:(UIPanGestureRecognizer *)pan
+{
+    switch ([pan state]) {
+        case UIGestureRecognizerStateBegan: {
+            [self cancelCurrentDrawingInstruction];
+            panStartPoint = self.center;
+            break;
+        }
+        case UIGestureRecognizerStateChanged: {
+            CGPoint translate = [pan translationInView:self];
+            CGPoint center = CGPointMake(panStartPoint.x+translate.x*self.zoomScale,
+                                         panStartPoint.y+translate.y*self.zoomScale);
+            [self setCenter:center clamped:NO animated:NO];
+            break;
+        }
+        case UIGestureRecognizerStateEnded: {
+            [self setCenter:self.center clamped:YES animated:YES];
+            break;
+        }
+        case UIGestureRecognizerStateCancelled:
+        case UIGestureRecognizerStateFailed: {
+            [self setCenter:panStartPoint clamped:YES animated:YES];
+            break;
+        }
+        default:
+            break;
+    }
+}
+
+- (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer
+{
+    return NO;
+}
+
 #pragma mark - Zoom
 
-- (CGFloat)updateZoom:(CGFloat)scale point:(CGPoint)point minimumZoom:(CGFloat)minimumZoom animated:(BOOL)animated
+- (CGPoint)adjustedCenterForPinchScale:(CGFloat)pinchScale
 {
-    CGFloat absoluteScale = MIN(10.0f, self.zoomScale*scale);
-    CGPoint translatePoint;
-    if (absoluteScale < minimumZoom) {
-        absoluteScale = 1.0f;
-        translatePoint = self.pinchPoint;
-    } else {
-        translatePoint = CGPointMake(point.x*absoluteScale, point.y*absoluteScale);
+    CGFloat offsetX = pinchStartOffset.x*(pinchScale-1.0f);
+    CGFloat offsetY = pinchStartOffset.y*(pinchScale-1.0f);
+    CGPoint center = CGPointMake(pinchStartCenter.x-offsetX, pinchStartCenter.y-offsetY);
+    return center;
+}
+
+- (void)setCenter:(CGPoint)center clamped:(BOOL)clamped animated:(BOOL)animated
+{
+    if (clamped) {
+        CGFloat maxX = CGRectGetWidth(self.bounds)/2*self.zoomScale;
+        CGFloat minX = CGRectGetMaxX(self.bounds)-maxX;
+        CGFloat maxY = CGRectGetHeight(self.bounds)/2*self.zoomScale;
+        CGFloat minY = CGRectGetMaxY(self.bounds)-maxY;
+        center = CGPointMake(MAX(minX, MIN(maxX, center.x)),
+                             MAX(minY, MIN(maxY, center.y)));
     }
     
-    CGAffineTransform t1 = CGAffineTransformMakeTranslation(-self.pinchPoint.x, -self.pinchPoint.y);
-    CGAffineTransform t2 = CGAffineTransformMakeScale(absoluteScale, absoluteScale);
-    CGAffineTransform t3 = CGAffineTransformMakeTranslation(translatePoint.x, translatePoint.y);
-    dispatch_block_t block = ^{
-        self.transform = CGAffineTransformConcat(CGAffineTransformConcat(t1, t2), t3);
-    };
-    
-    if (animated) {
-        [UIView animateWithDuration:0.2 animations:block];
-    } else {
-        block();
-    }
-    
-    return absoluteScale;
+    [UIView animateWithDuration:(animated ? 0.2f : 0.0f)
+                     animations:^{
+                         self.center = center;
+                     }];
+}
+
+- (void)setScale:(CGFloat)scale animated:(BOOL)animated
+{
+    [UIView animateWithDuration:(animated ? 0.2f : 0.0f)
+                     animations:^{
+                         self.transform = CGAffineTransformMakeScale(scale, scale);
+                     }];
 }
 
 #pragma mark - Painting
