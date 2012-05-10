@@ -153,13 +153,6 @@
         
         if (pageCSSViewSpirit) {
             [self addSubSpirit:pageCSSViewSpirit];
-            
-            UIView *aView = [[[UIView alloc] initWithFrame:CGRectMake(100, 600, 300, 40)] autorelease];
-            aView.backgroundColor = [UIColor redColor];
-            
-            EucUIViewViewSpiritElement *aViewSpiritElement = [[[EucUIViewViewSpiritElement alloc] initWithView:aView inContainingSpirit:self] autorelease];
-            
-            [self addElement:aViewSpiritElement];
         }
                 
         // Work out if you started on the left and the next page is on the left it adds a blank page

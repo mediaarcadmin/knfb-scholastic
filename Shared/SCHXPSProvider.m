@@ -89,4 +89,9 @@
     return [self componentExistsAtPath:@"META-INF/container.xml"];
 }
 
+- (BOOL)isValid
+{
+    return ([self pageCount] > 0);
+}
+
 @end

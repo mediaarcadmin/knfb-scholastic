@@ -7,6 +7,9 @@
 //
 
 #import "SCHBSBProvider.h"
+#import "SCHBSBConstants.h"
+
+NSString * const SCHBSBManifestFile = @"/manifest.xml";
 
 @interface SCHBSBProvider()
 
@@ -47,9 +50,9 @@
     return NO;
 }
 
-- (NSUInteger)pageCount
+- (BOOL)isValid
 {
-    return 10;
+    return [self componentExistsAtPath:SCHBSBManifestFile];
 }
 
 - (BOOL)decryptionIsAvailable
@@ -65,6 +68,20 @@
 - (UIImage *)thumbnailForPage:(NSInteger)pageNumber
 {
     return nil;
+}
+
+- (NSData *)dataForComponentAtPath:(NSString *)path
+{
+    @synchronized(self) {
+        return [super dataForComponentAtPath:path];
+    }
+}
+
+- (NSURL *)fileURLForPath:(NSString *)path
+{
+    @synchronized(self) {
+        return [super fileURLForPath:path];
+    }
 }
 
 @end

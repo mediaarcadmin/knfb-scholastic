@@ -14,7 +14,7 @@
 
 - (BOOL)componentExistsAtPath:(NSString *)path;
 - (BOOL)isEncrypted;
-- (NSUInteger)pageCount;
+- (BOOL)isValid;
 - (BOOL)decryptionIsAvailable;
 - (void)reportReadingIfRequired;
 - (UIImage *)thumbnailForPage:(NSInteger)pageNumber;

@@ -7,12 +7,15 @@
 //
 
 #import "SCHBSBEucBook.h"
+#import "SCHBSBConstants.h"
 #import "SCHBookPackageProvider.h"
 #import "SCHBookIdentifier.h"
 #import "SCHBookManager.h"
 #import "SCHAppBook.h"
 #import "SCHBookPoint.h"
 #import "SCHBSBPageContentsViewSpirit.h"
+#import "SCHBSBManifest.h"
+#import "SCHBSBNode.h"
 #import <libEucalyptus/EucPageLayoutController.h>
 #import <libEucalyptus/EucCSSIntermediateDocument.h>
 #import <libEucalyptus/EucCSSXHTMLTree.h>
@@ -23,6 +26,8 @@
 @property (nonatomic, retain) id <SCHBookPackageProvider> provider;
 @property (nonatomic, retain) SCHBookIdentifier *identifier;
 @property (nonatomic, retain) NSManagedObjectContext *managedObjectContext;
+@property (nonatomic, retain) SCHBSBManifest *manifest;
+@property (nonatomic, retain) NSMutableArray *decisionNodes;
 
 @end
 
@@ -32,6 +37,8 @@
 @synthesize managedObjectContext;
 @synthesize provider;
 @synthesize cacheDirectoryPath;
+@synthesize manifest;
+@synthesize decisionNodes;
 
 - (void)dealloc
 {
@@ -43,6 +50,7 @@
     [identifier release], identifier = nil;
     [managedObjectContext release], managedObjectContext = nil;
     [cacheDirectoryPath release], cacheDirectoryPath = nil;
+    [manifest release], manifest = nil;
      
     [super dealloc];
 }
@@ -66,7 +74,18 @@
             }
         }
         
-        if (!identifier) {
+        if (identifier) {
+            NSData *packageData = [self.provider dataForComponentAtPath:SCHBSBManifestFile];
+            manifest = [[SCHBSBManifest alloc] initWithXMLData:packageData];
+            
+            decisionNodes = [[NSMutableArray alloc] init];
+            
+            // TEMP
+            for (SCHBSBNode *node in manifest.nodes) {
+                [decisionNodes addObject:node];
+            }
+            
+        } else {
             [self release];
             self = nil;
         }
@@ -78,21 +97,33 @@
 - (EucCSSIntermediateDocument *)intermediateDocumentForIndexPoint:(EucBookPageIndexPoint *)indexPoint 
                                                       pageOptions:(NSDictionary *)pageOptions
 {
-    NSData *xmlData = [self.provider dataForComponentAtPath:@"good_morning.xml"];
-    NSURL *docURL = [NSURL URLWithString:[NSString stringWithFormat:@"bsb://%@", self.identifier]];
+    NSLog(@"EstimatedPercentage: %f", [self estimatedPercentageForIndexPoint:indexPoint]);
+          
+    EucCSSIntermediateDocument *doc = nil;
+    SCHBSBNode *node = [self.decisionNodes objectAtIndex:indexPoint.source];
     
-    id <EucCSSDocumentTree> docTree = [[[EucCSSXHTMLTree alloc] initWithData:xmlData] autorelease];
-    EucCSSIntermediateDocument *doc = [[EucCSSIntermediateDocument alloc] initWithDocumentTree:docTree 
-                                                                                        forURL:docURL 
-                                                                                   pageOptions:pageOptions 
-                                                                                    dataSource:self];
+    if (node.uri) {
+        NSData *xmlData = [self.provider dataForComponentAtPath:node.uri];
+        
+        if ([xmlData length]) {
+            NSURL *docURL = [NSURL URLWithString:[[NSString stringWithFormat:@"bsb://%@", self.identifier] stringByAppendingPathComponent:node.uri]];
+        
+            id <EucCSSDocumentTree> docTree = [[[EucCSSXHTMLTree alloc] initWithData:xmlData] autorelease];
+            doc = [[EucCSSIntermediateDocument alloc] initWithDocumentTree:docTree 
+                                                                forURL:docURL 
+                                                           pageOptions:pageOptions 
+                                                            dataSource:self];
+        } else {
+            NSLog(@"Warning: No data at path: %@", node.uri);
+        }
+    }
     
     return [doc autorelease];
 }
 
 - (NSUInteger)sourceCount
 {
-    return 1;
+    return [self.decisionNodes count];
 }
 
 #pragma mark - EucBook
@@ -109,40 +140,67 @@
 
 - (NSArray *)navPoints
 {
+    // Not required for BSB
     return nil;
 }
 
 - (EucBookNavPoint *)navPointWithUuid:(NSString *)uuid
 {
+    // Not required for BSB
     return nil;
 }
 
 - (EucBookPageIndexPoint *)indexPointForUuid:(NSString *)identifier
 {
+    // Not required for BSB
     return nil;
 }
 
 - (float)estimatedPercentageForIndexPoint:(EucBookPageIndexPoint *)point
 {
-    return 0.0f;
+    CGFloat estimate = 0;
+    NSUInteger decisionCount = [self.decisionNodes count];
+    
+    if (decisionCount) {
+        estimate = point.source / (CGFloat)decisionCount;
+    }
+    
+    return estimate;
 }
 
 - (EucBookPageIndexPoint *)estimatedIndexPointForPercentage:(float)percentage
 {
-    return nil;
+    percentage = MIN(percentage, 1);
+    NSUInteger decisionCount = [self.decisionNodes count];
+    NSUInteger source = decisionCount * percentage;
+    
+    EucBookPageIndexPoint *indexPoint = [[EucBookPageIndexPoint alloc] init];
+    indexPoint.source = source;
+    
+    return indexPoint;
 }
 
 - (EucBookPageIndexPoint *)offTheEndIndexPoint
 {
-    EucBookPageIndexPoint *point = [[[EucBookPageIndexPoint alloc] init] autorelease];
-    point.source = 1;
+    EucBookPageIndexPoint *indexPoint = [[EucBookPageIndexPoint alloc] init];
+    indexPoint.source = self.sourceCount;
     
-    return point;
+    return [indexPoint autorelease];
 }
 
 - (NSArray *)hardPageBreakIndexPoints
 {
-    return [NSArray arrayWithObject:[[[EucBookPageIndexPoint alloc] init] autorelease]];
+    
+    NSMutableArray *allNodes = [[NSMutableArray alloc] initWithCapacity:self.sourceCount];
+    
+    for (int i = 0; i < self.sourceCount; i++) {
+        EucBookPageIndexPoint *nodePoint = [[EucBookPageIndexPoint alloc] init];
+        nodePoint.source = i;
+        [allNodes addObject:nodePoint];
+        [nodePoint release];
+    }
+    
+    return [allNodes autorelease];
 }
 
 - (BOOL)fullBleedPageForIndexPoint:(EucBookPageIndexPoint *)indexPoint
@@ -152,6 +210,7 @@
 
 - (NSString *)stringForIndexPointRange:(EucBookPageIndexPointRange *)indexPointRange
 {
+    // Not required for BSB
     return nil;
 }
 
@@ -203,12 +262,14 @@
 
 - (NSData *)dataForURL:(NSURL *)url
 {
-    return nil;
+    NSString *componentPath = [url relativeString];
+    
+    return [self.provider dataForComponentAtPath:componentPath];
 }
 
 - (NSURL *)externalURLForURL:(NSURL *)url
 {
-    return nil;
+    return url;
 }
 
 - (NSArray *)userAgentCSSDatasForDocumentTree:(id<EucCSSDocumentTree>)documentTree

@@ -422,7 +422,7 @@ static const NSUInteger kReadingViewMaxRecommendationsCount = 4;
         bookIdentifier = [aIdentifier retain];
         bookPackageProvider = [[[SCHBookManager sharedBookManager] checkOutBookPackageProviderForBookIdentifier:bookIdentifier inManagedObjectContext:moc] retain];
 
-        if (!bookPackageProvider || ([bookPackageProvider pageCount] == 0)) {
+        if (!bookPackageProvider || ([bookPackageProvider isValid] == NO)) {
             return [self initFailureWithErrorCode:kSCHReadingViewXPSCheckoutFailedError error:error];
         }
         
