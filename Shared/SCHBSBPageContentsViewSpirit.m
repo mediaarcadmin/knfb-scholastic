@@ -221,9 +221,9 @@
     SCHBSBTreeNode *node = (SCHBSBTreeNode *)[self.document.documentTree nodeForKey:documentTreeNode];
     
     if ([node isUIKitNode]) {
-        UIButton *aView = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+        
+        UIView *aView = [self viewForNode:node constrainedToSize:frame.size];
         aView.frame = frame;
-        [aView setTitle:@"Hello World" forState:UIControlStateNormal];
         
         EucUIViewViewSpiritElement *aViewSpiritElement = [[EucUIViewViewSpiritElement alloc] initWithView:aView inContainingSpirit:self];
         
@@ -235,7 +235,25 @@
 
 - (UIView *)viewForNode:(SCHBSBTreeNode *)node constrainedToSize:(CGSize)constrainedSize
 {
-    return nil;
+    UIView *view = nil;
+    CGRect constrainedFrame = CGRectZero;
+    constrainedFrame.size = constrainedSize;
+    
+    NSString *dataType = [node attributeWithName:@"data-type"];
+    
+    if ([dataType isEqualToString:@"text"]) {
+        UITextField *aTextField = [[UITextField alloc] initWithFrame:constrainedFrame];
+        aTextField.frame = constrainedFrame;
+        aTextField.borderStyle = UITextBorderStyleRoundedRect;
+        view = [aTextField autorelease];
+    } else {
+        UIButton *aButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+        aButton.frame = constrainedFrame;
+        [aButton setTitle:@"Hello World" forState:UIControlStateNormal];
+        view = aButton;
+    }
+    
+    return view;
 }
 
 @end
