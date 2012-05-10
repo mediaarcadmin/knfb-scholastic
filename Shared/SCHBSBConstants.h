@@ -7,3 +7,5 @@
 //
 
 extern NSString * const SCHBSBManifestFile;
+extern NSString * const SCHBSBManifestMetadataAuthorKey;
+extern NSString * const SCHBSBManifestMetadataTitleKey;

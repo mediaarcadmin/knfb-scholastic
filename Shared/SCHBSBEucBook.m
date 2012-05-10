@@ -97,8 +97,6 @@
 - (EucCSSIntermediateDocument *)intermediateDocumentForIndexPoint:(EucBookPageIndexPoint *)indexPoint 
                                                       pageOptions:(NSDictionary *)pageOptions
 {
-    NSLog(@"EstimatedPercentage: %f", [self estimatedPercentageForIndexPoint:indexPoint]);
-          
     EucCSSIntermediateDocument *doc = nil;
     SCHBSBNode *node = [self.decisionNodes objectAtIndex:indexPoint.source];
     
@@ -218,31 +216,35 @@
 
 - (NSString *)uniqueIdentifier
 {
+    // Not required for BSB
     return nil;
 }
 
 - (NSString *)title
 {
-    return nil;
+    return [self.manifest.metadata valueForKey:SCHBSBManifestMetadataTitleKey];
 }
 
 - (NSString *)author
 {
-    return nil;
+    return [self.manifest.metadata valueForKey:SCHBSBManifestMetadataAuthorKey];
 }
 
 - (NSData *)coverImageData
 {
+    // Not required for BSB
     return nil;
 }
 
 - (NSString *)humanReadableAuthor
 {
+    // Not required for BSB
     return nil;
 }
 
 - (NSString *)humanReadableTitle
 {
+    // Not required for BSB
     return nil;
 }
 
