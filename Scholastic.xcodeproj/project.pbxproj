@@ -2937,6 +2937,14 @@
 		C9C33C9D155BDAD300C7041F /* SCHBSBNode.m in Sources */ = {isa = PBXBuildFile; fileRef = C9C33C9B155BDAD200C7041F /* SCHBSBNode.m */; };
 		C9C33C9E155BDAD300C7041F /* SCHBSBNode.m in Sources */ = {isa = PBXBuildFile; fileRef = C9C33C9B155BDAD200C7041F /* SCHBSBNode.m */; };
 		C9C33C9F155BDAD300C7041F /* SCHBSBNode.m in Sources */ = {isa = PBXBuildFile; fileRef = C9C33C9B155BDAD200C7041F /* SCHBSBNode.m */; };
+		C9C33CEF155C059600C7041F /* SCHBSBTreeNode.m in Sources */ = {isa = PBXBuildFile; fileRef = C9C33CEE155C059600C7041F /* SCHBSBTreeNode.m */; };
+		C9C33CF0155C059600C7041F /* SCHBSBTreeNode.m in Sources */ = {isa = PBXBuildFile; fileRef = C9C33CEE155C059600C7041F /* SCHBSBTreeNode.m */; };
+		C9C33CF1155C059600C7041F /* SCHBSBTreeNode.m in Sources */ = {isa = PBXBuildFile; fileRef = C9C33CEE155C059600C7041F /* SCHBSBTreeNode.m */; };
+		C9C33CF2155C059600C7041F /* SCHBSBTreeNode.m in Sources */ = {isa = PBXBuildFile; fileRef = C9C33CEE155C059600C7041F /* SCHBSBTreeNode.m */; };
+		C9C33CF5155C05D400C7041F /* SCHBSBTree.m in Sources */ = {isa = PBXBuildFile; fileRef = C9C33CF4155C05D300C7041F /* SCHBSBTree.m */; };
+		C9C33CF6155C05D400C7041F /* SCHBSBTree.m in Sources */ = {isa = PBXBuildFile; fileRef = C9C33CF4155C05D300C7041F /* SCHBSBTree.m */; };
+		C9C33CF7155C05D400C7041F /* SCHBSBTree.m in Sources */ = {isa = PBXBuildFile; fileRef = C9C33CF4155C05D300C7041F /* SCHBSBTree.m */; };
+		C9C33CF8155C05D400C7041F /* SCHBSBTree.m in Sources */ = {isa = PBXBuildFile; fileRef = C9C33CF4155C05D300C7041F /* SCHBSBTree.m */; };
 		C9C3F9E114B5DF5300757038 /* SCHStoriaStartingView~iphone.xib in Resources */ = {isa = PBXBuildFile; fileRef = C9C3F9E014B5DF5300757038 /* SCHStoriaStartingView~iphone.xib */; };
 		C9C3F9E214B5DF5300757038 /* SCHStoriaStartingView~iphone.xib in Resources */ = {isa = PBXBuildFile; fileRef = C9C3F9E014B5DF5300757038 /* SCHStoriaStartingView~iphone.xib */; };
 		C9C3F9E414B5E01200757038 /* SCHStoriaLoginViewController~iphone.xib in Resources */ = {isa = PBXBuildFile; fileRef = C9C3F9E314B5E01200757038 /* SCHStoriaLoginViewController~iphone.xib */; };
@@ -5761,6 +5769,10 @@
 		C9C33C95155BC8C300C7041F /* SCHBSBManifest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHBSBManifest.m; path = Shared/SCHBSBManifest.m; sourceTree = "<group>"; };
 		C9C33C9A155BDAD200C7041F /* SCHBSBNode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHBSBNode.h; path = Shared/SCHBSBNode.h; sourceTree = "<group>"; };
 		C9C33C9B155BDAD200C7041F /* SCHBSBNode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHBSBNode.m; path = Shared/SCHBSBNode.m; sourceTree = "<group>"; };
+		C9C33CED155C059500C7041F /* SCHBSBTreeNode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHBSBTreeNode.h; path = Shared/SCHBSBTreeNode.h; sourceTree = "<group>"; };
+		C9C33CEE155C059600C7041F /* SCHBSBTreeNode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHBSBTreeNode.m; path = Shared/SCHBSBTreeNode.m; sourceTree = "<group>"; };
+		C9C33CF3155C05D300C7041F /* SCHBSBTree.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHBSBTree.h; path = Shared/SCHBSBTree.h; sourceTree = "<group>"; };
+		C9C33CF4155C05D300C7041F /* SCHBSBTree.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHBSBTree.m; path = Shared/SCHBSBTree.m; sourceTree = "<group>"; };
 		C9C3F9E014B5DF5300757038 /* SCHStoriaStartingView~iphone.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "SCHStoriaStartingView~iphone.xib"; sourceTree = "<group>"; };
 		C9C3F9E314B5E01200757038 /* SCHStoriaLoginViewController~iphone.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "SCHStoriaLoginViewController~iphone.xib"; sourceTree = "<group>"; };
 		C9C3F9E614B5E87000757038 /* storia-startviewcontroller-static-landscape~ipad.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = "storia-startviewcontroller-static-landscape~ipad.jpg"; path = "Resources/UIAssets/storia-startviewcontroller-static-landscape~ipad.jpg"; sourceTree = "<group>"; };
@@ -8663,6 +8675,10 @@
 				C9C33C9B155BDAD200C7041F /* SCHBSBNode.m */,
 				C9C33C83155AA9DE00C7041F /* SCHBSBPageContentsViewSpirit.h */,
 				C9C33C84155AA9DE00C7041F /* SCHBSBPageContentsViewSpirit.m */,
+				C9C33CF3155C05D300C7041F /* SCHBSBTree.h */,
+				C9C33CF4155C05D300C7041F /* SCHBSBTree.m */,
+				C9C33CED155C059500C7041F /* SCHBSBTreeNode.h */,
+				C9C33CEE155C059600C7041F /* SCHBSBTreeNode.m */,
 			);
 			name = "Branching Stories";
 			sourceTree = "<group>";
@@ -12545,6 +12561,8 @@
 				C9C33C85155AA9DE00C7041F /* SCHBSBPageContentsViewSpirit.m in Sources */,
 				C9C33C96155BC8C300C7041F /* SCHBSBManifest.m in Sources */,
 				C9C33C9C155BDAD300C7041F /* SCHBSBNode.m in Sources */,
+				C9C33CEF155C059600C7041F /* SCHBSBTreeNode.m in Sources */,
+				C9C33CF5155C05D400C7041F /* SCHBSBTree.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -12992,6 +13010,8 @@
 				C9C33C86155AA9DE00C7041F /* SCHBSBPageContentsViewSpirit.m in Sources */,
 				C9C33C97155BC8C300C7041F /* SCHBSBManifest.m in Sources */,
 				C9C33C9D155BDAD300C7041F /* SCHBSBNode.m in Sources */,
+				C9C33CF0155C059600C7041F /* SCHBSBTreeNode.m in Sources */,
+				C9C33CF6155C05D400C7041F /* SCHBSBTree.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -13370,6 +13390,8 @@
 				C9C33C87155AA9DE00C7041F /* SCHBSBPageContentsViewSpirit.m in Sources */,
 				C9C33C98155BC8C300C7041F /* SCHBSBManifest.m in Sources */,
 				C9C33C9E155BDAD300C7041F /* SCHBSBNode.m in Sources */,
+				C9C33CF1155C059600C7041F /* SCHBSBTreeNode.m in Sources */,
+				C9C33CF7155C05D400C7041F /* SCHBSBTree.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -13748,6 +13770,8 @@
 				C9C33C88155AA9DE00C7041F /* SCHBSBPageContentsViewSpirit.m in Sources */,
 				C9C33C99155BC8C300C7041F /* SCHBSBManifest.m in Sources */,
 				C9C33C9F155BDAD300C7041F /* SCHBSBNode.m in Sources */,
+				C9C33CF2155C059600C7041F /* SCHBSBTreeNode.m in Sources */,
+				C9C33CF8155C05D400C7041F /* SCHBSBTree.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

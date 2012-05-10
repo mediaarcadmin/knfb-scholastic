@@ -16,9 +16,9 @@
 #import "SCHBSBPageContentsViewSpirit.h"
 #import "SCHBSBManifest.h"
 #import "SCHBSBNode.h"
+#import "SCHBSBTree.h"
 #import <libEucalyptus/EucPageLayoutController.h>
 #import <libEucalyptus/EucCSSIntermediateDocument.h>
-#import <libEucalyptus/EucCSSXHTMLTree.h>
 #import <libEucalyptus/THEmbeddedResourceManager.h>
 
 @interface SCHBSBEucBook() <EucCSSIntermediateDocumentDataProvider>
@@ -106,7 +106,7 @@
         if ([xmlData length]) {
             NSURL *docURL = [NSURL URLWithString:[[NSString stringWithFormat:@"bsb://%@", self.identifier] stringByAppendingPathComponent:node.uri]];
         
-            id <EucCSSDocumentTree> docTree = [[[EucCSSXHTMLTree alloc] initWithData:xmlData] autorelease];
+            id <EucCSSDocumentTree> docTree = [[[SCHBSBTree alloc] initWithData:xmlData] autorelease];
             doc = [[EucCSSIntermediateDocument alloc] initWithDocumentTree:docTree 
                                                                 forURL:docURL 
                                                            pageOptions:pageOptions 

@@ -8,15 +8,18 @@
 
 #import "SCHBSBPageContentsViewSpirit.h"
 #import "SCHBSBEucBook.h"
+#import "SCHBSBTreeNode.h"
 #import <libEucalyptus/EucCSSDPI.h>
 #import <libEucalyptus/EucCSSIntermediateDocument.h>
+#import <libEucalyptus/EucCSSXHTMLTree.h>
 #import <libEucalyptus/EucCSSRenderPageViewSpirit.h>
 #import <libEucalyptus/EucBookPageIndexPointRange.h>
 #import <libEucalyptus/EucUIViewViewSpiritElement.h>
 
-@interface SCHBSBPageContentsViewSpirit()
+@interface SCHBSBPageContentsViewSpirit() <EucCSSRenderPageViewSpiritDelegate>
 
 @property (nonatomic, retain) EucCSSRenderPageViewSpirit *pageCSSViewSpirit;
+@property (nonatomic, retain) EucCSSIntermediateDocument *document;
 
 @end
 
@@ -26,12 +29,14 @@
 @synthesize pointSize;
 @synthesize pageRanges;
 @synthesize pageCSSViewSpirit;
+@synthesize document;
 
 - (void)dealloc
 {
     [pageOptions release], pageOptions = nil;
     [pageRanges release], pageRanges = nil;
     [pageCSSViewSpirit release], pageCSSViewSpirit = nil;
+    [document release], document = nil;
     
     [super dealloc];
 }
@@ -66,7 +71,7 @@
     
     EucBookPageIndexPoint *nextPageStartPoint = nil;
     
-    EucCSSIntermediateDocument *document = [book intermediateDocumentForIndexPoint:point pageOptions:self.pageOptions];
+    document = [[book intermediateDocumentForIndexPoint:point pageOptions:self.pageOptions] retain];
     
     EucBookIndexPointPlacement pointPlacement = point.placement;
     
@@ -94,7 +99,7 @@
                                                                                            inFrame:self.bounds
                                                                                        scaleFactor:scaleFactor
                                                                                     shrinkingToFit:centerOnPage 
-                                                                                          delegate:nil /* self */ ];
+                                                                                          delegate:self];
         
         
         
@@ -204,6 +209,33 @@
 - (NSString *)accessibilityLabelForElementWithIdentifier:(id)elementId ofBlockWithIdentifier:(id)blockId
 {
     return [self.pageCSSViewSpirit accessibilityLabelForElementWithIdentifier:elementId ofBlockWithIdentifier:blockId];
+}
+
+#pragma mark - EucCSSRenderPageViewSpiritDelegate
+
+- (THCGViewSpiritElement *)eucCSSRenderPageViewSpirit:(EucCSSRenderPageViewSpirit *)pageViewSpirit
+             overlayElementForDocumentTreeNodeWithKey:(uint32_t)documentTreeNode
+                                              inFrame:(CGRect)frame
+{
+    
+    SCHBSBTreeNode *node = (SCHBSBTreeNode *)[self.document.documentTree nodeForKey:documentTreeNode];
+    
+    if ([node isUIKitNode]) {
+        UIButton *aView = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+        aView.frame = frame;
+        [aView setTitle:@"Hello World" forState:UIControlStateNormal];
+        
+        EucUIViewViewSpiritElement *aViewSpiritElement = [[EucUIViewViewSpiritElement alloc] initWithView:aView inContainingSpirit:self];
+        
+        return [aViewSpiritElement autorelease];
+    }
+    
+    return nil;
+}
+
+- (UIView *)viewForNode:(SCHBSBTreeNode *)node constrainedToSize:(CGSize)constrainedSize
+{
+    return nil;
 }
 
 @end
