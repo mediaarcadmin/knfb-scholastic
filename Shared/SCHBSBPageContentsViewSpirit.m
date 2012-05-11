@@ -246,6 +246,12 @@
         aTextField.frame = constrainedFrame;
         aTextField.borderStyle = UITextBorderStyleRoundedRect;
         view = [aTextField autorelease];
+    } else if ([dataType isEqualToString:@"radio"]) {
+        UIButton *aButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+        aButton.frame = constrainedFrame;
+        [aButton setTitle:@"Tap to Select" forState:UIControlStateNormal];
+        [aButton addTarget:self action:@selector(showButton:) forControlEvents:UIControlEventTouchUpInside];
+        view = aButton;
     } else {
         UIButton *aButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
         aButton.frame = constrainedFrame;
@@ -254,6 +260,24 @@
     }
     
     return view;
+}
+
+- (void)showButton:(UIView *)button
+{
+    UIPickerView *picker = [[UIPickerView alloc] init];
+    UIViewController *vc = [[UIViewController alloc] init];
+    vc.view = picker;
+    [vc setContentSizeForViewInPopover:picker.frame.size];
+
+    
+    UIPopoverController *popover = [[UIPopoverController alloc] initWithContentViewController:vc];
+    
+    [picker release];
+    [vc release];
+    
+    [popover presentPopoverFromRect:button.frame inView:button.superview permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
+    
+    //[popover release];
 }
 
 @end
