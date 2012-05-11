@@ -12,4 +12,6 @@
 
 @property (nonatomic, assign) unichar letter;
 
+- (id)initWithFrame:(CGRect)frame wordLength:(NSInteger)aWordLength;
+
 @end
