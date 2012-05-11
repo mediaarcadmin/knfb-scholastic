@@ -2529,8 +2529,6 @@ static const NSUInteger kReadingViewMaxRecommendationsCount = 4;
     
     self.scrubberInfoView.frame = CGRectIntegral(scrubFrame);
 
-    NSLog(@"label: %@", self.pageLabel);
-
 }
 
 - (void)updateScrubberValue
