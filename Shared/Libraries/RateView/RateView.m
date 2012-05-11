@@ -69,11 +69,12 @@
 }
 
 - (void)refresh {
+    
     for(int i = 0; i < self.imageViews.count; ++i) {
         UIImageView *imageView = [self.imageViews objectAtIndex:i];
-        if (self.rating >= i+1) {
+        if (self.rating >= i + 0.75f) {
             imageView.image = self.fullSelectedImage;
-        } else if (self.rating > i) {
+        } else if (self.rating >= (i + 0.25f)) {
             imageView.image = self.halfSelectedImage;
         } else {
             imageView.image = self.notSelectedImage;
