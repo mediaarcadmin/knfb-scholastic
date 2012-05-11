@@ -157,7 +157,7 @@ static const CGFloat kDeregisterContentHeightLandscape = 380;
         } else if ([[self.passwordField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]] length] < 1) {
             LambdaAlert *alert = [[LambdaAlert alloc]
                                   initWithTitle:NSLocalizedString(@"Incorrect Password", @"")
-                                  message:NSLocalizedString(@"Incorrect password for deregistration", @"")];
+                                  message:NSLocalizedString(@"Please enter the password", @"")];
             [alert addButtonWithTitle:NSLocalizedString(@"OK", @"") block:^{
                 [self.deregisterButton setEnabled:YES];
             }];
