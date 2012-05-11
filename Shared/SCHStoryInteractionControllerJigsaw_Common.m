@@ -311,15 +311,43 @@
         [self.jigsawPieceViews makeObjectsPerformSelector:@selector(removeFromSuperview)];
         self.jigsawPieceViews = nil;
 
+        self.puzzleBackground.hidden = YES;
+        
         SCHStoryInteractionJigsawPreviewView *completed = [self makePuzzlePreviewView];
         CGRect completedFrame = completed.frame;
         completed.frame = self.puzzleBackground.frame;
         completed.image = [self puzzleImage];
         [self.contentsView addSubview:completed];
-        [UIView animateWithDuration:0.5
+        completed.frame = completedFrame;
+
+        
+        // wiggle animation
+        [UIView animateWithDuration:0.3
+                              delay:0.0 
+                            options:UIViewAnimationOptionCurveEaseInOut 
                          animations:^{
-                             completed.frame = completedFrame;
+                             completed.transform = CGAffineTransformScale(CGAffineTransformMakeRotation(35 * M_PI / 180.0), 0.9, 0.9);
+                         }
+                         completion:^(BOOL finished) {
+                            
+                             [UIView animateWithDuration:0.3
+                                                   delay:0.0 
+                                                 options:UIViewAnimationOptionCurveEaseInOut 
+                                              animations:^{
+                                                  completed.transform = CGAffineTransformScale(CGAffineTransformMakeRotation(325 * M_PI / 180.0), 0.75, 0.75);
+                                              }
+                                              completion:^(BOOL finished) {
+                                                  
+                                                  [UIView animateWithDuration:0.3
+                                                                        delay:0.0 
+                                                                      options:UIViewAnimationOptionCurveEaseInOut 
+                                                                   animations:^{
+                                                                       completed.transform = CGAffineTransformIdentity;
+                                                                   }
+                                                                   completion:nil];
+                                              }];
                          }];
+        
         
         self.controllerState = SCHStoryInteractionControllerStateInteractionFinishedSuccessfully;
         
