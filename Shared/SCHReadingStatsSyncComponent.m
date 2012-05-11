@@ -21,12 +21,16 @@ NSString * const SCHReadingStatsSyncComponentDidFailNotification = @"SCHReadingS
 @interface SCHReadingStatsSyncComponent ()
 
 @property (nonatomic, retain) SCHLibreAccessWebService *libreAccessWebService;
+@property (nonatomic, retain) NSManagedObjectContext *backgroundThreadManagedObjectContext;
+
+- (void)clearCoreDataUsingContext:(NSManagedObjectContext *)aManagedObjectContext;
 
 @end
 
 @implementation SCHReadingStatsSyncComponent
 
 @synthesize libreAccessWebService;
+@synthesize backgroundThreadManagedObjectContext;
 
 - (id)init
 {
@@ -43,6 +47,7 @@ NSString * const SCHReadingStatsSyncComponentDidFailNotification = @"SCHReadingS
 {
     libreAccessWebService.delegate = nil;
 	[libreAccessWebService release], libreAccessWebService = nil;
+    [backgroundThreadManagedObjectContext release], backgroundThreadManagedObjectContext = nil;
     
 	[super dealloc];
 }
@@ -106,9 +111,14 @@ NSString * const SCHReadingStatsSyncComponentDidFailNotification = @"SCHReadingS
 
 - (void)clearCoreData
 {
+    [self clearCoreDataUsingContext:self.managedObjectContext];
+}
+
+- (void)clearCoreDataUsingContext:(NSManagedObjectContext *)aManagedObjectContext
+{
 	NSError *error = nil;
 	
-	if (![self.managedObjectContext BITemptyEntity:kSCHReadingStatsDetailItem error:&error]) {
+	if (![aManagedObjectContext BITemptyEntity:kSCHReadingStatsDetailItem error:&error]) {
 		NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
 	}		
 }
@@ -119,10 +129,20 @@ NSString * const SCHReadingStatsSyncComponentDidFailNotification = @"SCHReadingS
       userInfo:(NSDictionary *)userInfo
 {
     @try {
-        [self clearCoreData];
-        [[NSNotificationCenter defaultCenter] postNotificationName:SCHReadingStatsSyncComponentDidCompleteNotification 
-                                                            object:self];
-        [super method:method didCompleteWithResult:nil userInfo:userInfo];				    
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{
+            self.backgroundThreadManagedObjectContext = [[[NSManagedObjectContext alloc] init] autorelease];
+            [self.backgroundThreadManagedObjectContext setPersistentStoreCoordinator:self.managedObjectContext.persistentStoreCoordinator];
+            
+            [self clearCoreDataUsingContext:self.backgroundThreadManagedObjectContext];
+            
+            self.backgroundThreadManagedObjectContext = nil;
+            
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [[NSNotificationCenter defaultCenter] postNotificationName:SCHReadingStatsSyncComponentDidCompleteNotification 
+                                                                    object:self];
+                [super method:method didCompleteWithResult:nil userInfo:userInfo];	
+            });                
+        });                                            
     }
     @catch (NSException *exception) {
         [[NSNotificationCenter defaultCenter] postNotificationName:SCHReadingStatsSyncComponentDidFailNotification 
@@ -141,13 +161,23 @@ NSString * const SCHReadingStatsSyncComponentDidFailNotification = @"SCHReadingS
 {
     NSLog(@"%@:didFailWithError\n%@", method, error);
     
-    // server error so clear the stats
-    if ([error domain] == kBITAPIErrorDomain) {
-        [self clearCoreData];        
-    }    
-    [[NSNotificationCenter defaultCenter] postNotificationName:SCHReadingStatsSyncComponentDidFailNotification 
-                                                        object:self];
-    [super method:method didFailWithError:error requestInfo:requestInfo result:result];    
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{        
+        // server error so clear the stats
+        if ([error domain] == kBITAPIErrorDomain) {
+            self.backgroundThreadManagedObjectContext = [[[NSManagedObjectContext alloc] init] autorelease];
+            [self.backgroundThreadManagedObjectContext setPersistentStoreCoordinator:self.managedObjectContext.persistentStoreCoordinator];
+            
+            [self clearCoreDataUsingContext:self.backgroundThreadManagedObjectContext];
+            
+            self.backgroundThreadManagedObjectContext = nil;
+        }    
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [[NSNotificationCenter defaultCenter] postNotificationName:SCHReadingStatsSyncComponentDidFailNotification 
+                                                                object:self];
+            [super method:method didFailWithError:error requestInfo:requestInfo result:result];    
+        });                
+    });                                                        
 }
 
 @end

@@ -39,6 +39,7 @@ NSString * const SCHContentSyncComponentDidFailNotification = @"SCHContentSyncCo
 @interface SCHContentSyncComponent ()
 
 @property (nonatomic, retain) SCHLibreAccessWebService *libreAccessWebService;
+@property (nonatomic, retain) NSManagedObjectContext *backgroundThreadManagedObjectContext;
 
 - (BOOL)updateUserContentItems;
 
@@ -65,12 +66,14 @@ NSString * const SCHContentSyncComponentDidFailNotification = @"SCHContentSyncCo
         withContentProfileItem:(SCHContentProfileItem *)localContentProfileItem;
 - (void)deleteUnusedContentMetadataItems;
 - (void)removeRecommendationForBook:(SCHContentMetadataItem *)contentMetadataItem;
+- (void)backgroundSave:(BOOL)batch;
 
 @end
 
 @implementation SCHContentSyncComponent
 
 @synthesize libreAccessWebService;
+@synthesize backgroundThreadManagedObjectContext;
 
 - (id)init
 {
@@ -87,6 +90,7 @@ NSString * const SCHContentSyncComponentDidFailNotification = @"SCHContentSyncCo
 {
     libreAccessWebService.delegate = nil;
 	[libreAccessWebService release], libreAccessWebService = nil;
+    [backgroundThreadManagedObjectContext release], backgroundThreadManagedObjectContext = nil;
     
 	[super dealloc];
 }
@@ -158,12 +162,22 @@ NSString * const SCHContentSyncComponentDidFailNotification = @"SCHContentSyncCo
                 [super method:method didCompleteWithResult:result userInfo:userInfo];				                
             }
         } else if([method compare:kSCHLibreAccessWebServiceListUserContentForRatings] == NSOrderedSame) {
-            NSArray *content = [result objectForKey:kSCHLibreAccessWebServiceUserContentList];
-            
-            [self syncUserContentItems:content];
-            [[NSNotificationCenter defaultCenter] postNotificationName:SCHContentSyncComponentDidCompleteNotification 
-                                                                object:self];
-            [super method:method didCompleteWithResult:result userInfo:userInfo];				
+            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{
+                self.backgroundThreadManagedObjectContext = [[[NSManagedObjectContext alloc] init] autorelease];
+                [self.backgroundThreadManagedObjectContext setPersistentStoreCoordinator:self.managedObjectContext.persistentStoreCoordinator];
+
+                NSArray *content = [result objectForKey:kSCHLibreAccessWebServiceUserContentList];
+                [self syncUserContentItems:content];
+
+                [self backgroundSave:NO];
+                self.backgroundThreadManagedObjectContext = nil;
+                
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    [[NSNotificationCenter defaultCenter] postNotificationName:SCHContentSyncComponentDidCompleteNotification 
+                                                                        object:self];
+                    [super method:method didCompleteWithResult:result userInfo:userInfo];				
+                });                
+            });            
         }
     }
     @catch (NSException *exception) {
@@ -252,15 +266,17 @@ NSString * const SCHContentSyncComponentDidFailNotification = @"SCHContentSyncCo
 
 - (NSArray *)localUserContentItems
 {
+    NSAssert([NSThread isMainThread] == NO, @"localUserContentItems MUST NOT be executed on the main thread");        
 	NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
     NSError *error = nil;
     
-	[fetchRequest setEntity:[NSEntityDescription entityForName:kSCHUserContentItem inManagedObjectContext:self.managedObjectContext]];	
+	[fetchRequest setEntity:[NSEntityDescription entityForName:kSCHUserContentItem 
+                                        inManagedObjectContext:self.backgroundThreadManagedObjectContext]];	
 	[fetchRequest setSortDescriptors:[NSArray arrayWithObjects:[NSSortDescriptor sortDescriptorWithKey:kSCHLibreAccessWebServiceContentIdentifier ascending:YES],
                                       [NSSortDescriptor sortDescriptorWithKey:kSCHLibreAccessWebServiceDRMQualifier ascending:YES],
                                       nil]];
 	
-	NSArray *ret = [self.managedObjectContext executeFetchRequest:fetchRequest error:&error];	
+	NSArray *ret = [self.backgroundThreadManagedObjectContext executeFetchRequest:fetchRequest error:&error];	
 	[fetchRequest release], fetchRequest = nil;
     if (ret == nil) {
         NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
@@ -271,6 +287,7 @@ NSString * const SCHContentSyncComponentDidFailNotification = @"SCHContentSyncCo
 
 - (void)syncUserContentItems:(NSArray *)userContentList
 {		
+    NSAssert([NSThread isMainThread] == NO, @"syncUserContentItems MUST NOT be executed on the main thread");    
 	NSMutableArray *deletePool = [NSMutableArray array];
 	NSMutableArray *creationPool = [NSMutableArray array];
 	
@@ -340,30 +357,33 @@ NSString * const SCHContentSyncComponentDidFailNotification = @"SCHContentSyncCo
     for (SCHUserContentItem *userContentItem in deletePool) {
         for (SCHContentProfileItem *contentProfileItem in userContentItem.ProfileList) {
             [self removeAnnotationStructure:userContentItem forProfile:contentProfileItem];        
-            [[NSNotificationCenter defaultCenter] postNotificationName:SCHContentSyncComponentWillDeleteNotification 
-                                                                object:self 
-                                                              userInfo:[NSDictionary dictionaryWithObject:[NSArray arrayWithObject:[userContentItem bookIdentifier]]
-                                                                                                   forKey:[contentProfileItem ProfileID]]];
+            dispatch_sync(dispatch_get_main_queue(), ^{
+                [[NSNotificationCenter defaultCenter] postNotificationName:SCHContentSyncComponentWillDeleteNotification 
+                                                                    object:self 
+                                                                  userInfo:[NSDictionary dictionaryWithObject:[NSArray arrayWithObject:[userContentItem bookIdentifier]]
+                                                                                                       forKey:[contentProfileItem ProfileID]]];
+            });
         }
-        [self.managedObjectContext deleteObject:userContentItem];
+        [self.backgroundThreadManagedObjectContext deleteObject:userContentItem];
     }
             
     for (NSDictionary *webItem in creationPool) {
         [self addUserContentItem:webItem];
     }
 	
-	[self save];
+	[self backgroundSave:NO];
     
     [self deleteUnusedContentMetadataItems];
 }
 
 - (SCHUserContentItem *)addUserContentItem:(NSDictionary *)webUserContentItem
 {
+    NSAssert([NSThread isMainThread] == NO, @"addUserContentItem MUST NOT be executed on the main thread");        
 	SCHUserContentItem *newUserContentItem = nil;
 	SCHBookIdentifier *webBookIdentifier = [[SCHBookIdentifier alloc] initWithObject:webUserContentItem];
     
     if (webUserContentItem != nil && webBookIdentifier != nil) {
-        newUserContentItem = [NSEntityDescription insertNewObjectForEntityForName:kSCHUserContentItem inManagedObjectContext:self.managedObjectContext];
+        newUserContentItem = [NSEntityDescription insertNewObjectForEntityForName:kSCHUserContentItem inManagedObjectContext:self.backgroundThreadManagedObjectContext];
         
         newUserContentItem.DRMQualifier = webBookIdentifier.DRMQualifier;
         newUserContentItem.Version = [self makeNullNil:[webUserContentItem objectForKey:kSCHLibreAccessWebServiceVersion]];
@@ -405,14 +425,15 @@ NSString * const SCHContentSyncComponentDidFailNotification = @"SCHContentSyncCo
 - (void)addAnnotationStructure:(SCHUserContentItem *)userContentItem 
                     forProfile:(SCHContentProfileItem *)contentProfileItem
 {
+    NSAssert([NSThread isMainThread] == NO, @"addAnnotationStructure MUST NOT be executed on the main thread");            
     if (userContentItem != nil && contentProfileItem != nil) {
         NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
         NSError *error = nil;
         
-        [fetchRequest setEntity:[NSEntityDescription entityForName:kSCHAnnotationsItem inManagedObjectContext:self.managedObjectContext]];	
+        [fetchRequest setEntity:[NSEntityDescription entityForName:kSCHAnnotationsItem inManagedObjectContext:self.backgroundThreadManagedObjectContext]];	
         [fetchRequest setPredicate:[NSPredicate predicateWithFormat:@"ProfileID == %@", contentProfileItem.ProfileID]];
         
-        NSArray *annotationsItems = [self.managedObjectContext executeFetchRequest:fetchRequest error:&error];	
+        NSArray *annotationsItems = [self.backgroundThreadManagedObjectContext executeFetchRequest:fetchRequest error:&error];	
         [fetchRequest release], fetchRequest = nil;
         if (annotationsItems == nil) {
             NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
@@ -420,20 +441,20 @@ NSString * const SCHContentSyncComponentDidFailNotification = @"SCHContentSyncCo
 
         if([annotationsItems count] > 0) {
             SCHLastPage *newLastPage = [NSEntityDescription insertNewObjectForEntityForName:kSCHLastPage 
-                                                                     inManagedObjectContext:self.managedObjectContext];
+                                                                     inManagedObjectContext:self.backgroundThreadManagedObjectContext];
             [newLastPage setInitialValues];
 
             SCHRating *newRating = [NSEntityDescription insertNewObjectForEntityForName:kSCHRating 
-                                                                     inManagedObjectContext:self.managedObjectContext];
+                                                                     inManagedObjectContext:self.backgroundThreadManagedObjectContext];
             [newRating setInitialValues];
 
             SCHPrivateAnnotations *newPrivateAnnotations = [NSEntityDescription insertNewObjectForEntityForName:kSCHPrivateAnnotations 
-                                                                                         inManagedObjectContext:self.managedObjectContext];
+                                                                                         inManagedObjectContext:self.backgroundThreadManagedObjectContext];
             newPrivateAnnotations.LastPage = newLastPage;
             newPrivateAnnotations.rating = newRating;
             
             SCHAnnotationsContentItem *newAnnotationsContentItem = [NSEntityDescription insertNewObjectForEntityForName:kSCHAnnotationsContentItem 
-                                                                                                 inManagedObjectContext:self.managedObjectContext];
+                                                                                                 inManagedObjectContext:self.backgroundThreadManagedObjectContext];
             newAnnotationsContentItem.AnnotationsItem = [annotationsItems objectAtIndex:0];
             newAnnotationsContentItem.DRMQualifier = userContentItem.DRMQualifier;
             newAnnotationsContentItem.ContentIdentifier = userContentItem.ContentIdentifier;
@@ -447,14 +468,17 @@ NSString * const SCHContentSyncComponentDidFailNotification = @"SCHContentSyncCo
 - (void)removeAnnotationStructure:(SCHUserContentItem *)userContentItem 
                        forProfile:(SCHContentProfileItem *)contentProfileItem
 {
+    NSAssert([NSThread isMainThread] == NO, @"removeAnnotationStructure MUST NOT be executed on the main thread");        
     if (userContentItem != nil && contentProfileItem != nil) {
         NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
         NSError *error = nil;
         
-        [fetchRequest setEntity:[NSEntityDescription entityForName:kSCHAnnotationsItem inManagedObjectContext:self.managedObjectContext]];	
+        [fetchRequest setEntity:[NSEntityDescription entityForName:kSCHAnnotationsItem 
+                                            inManagedObjectContext:self.backgroundThreadManagedObjectContext]];	
         [fetchRequest setPredicate:[NSPredicate predicateWithFormat:@"ProfileID == %@", contentProfileItem.ProfileID]];
         
-        NSArray *annotationsItems = [self.managedObjectContext executeFetchRequest:fetchRequest error:&error];	
+        NSArray *annotationsItems = [self.backgroundThreadManagedObjectContext executeFetchRequest:fetchRequest 
+                                                                                             error:&error];	
         [fetchRequest release], fetchRequest = nil;
         if (annotationsItems == nil) {
             NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
@@ -464,7 +488,7 @@ NSString * const SCHContentSyncComponentDidFailNotification = @"SCHContentSyncCo
             SCHBookIdentifier *bookIdentifier = userContentItem.bookIdentifier;
             for (SCHAnnotationsContentItem *item in [[annotationsItems objectAtIndex:0] AnnotationsContentItem]) {
                 if ([bookIdentifier isEqual:item.bookIdentifier] == YES)
-                    [self.managedObjectContext deleteObject:item];
+                    [self.backgroundThreadManagedObjectContext deleteObject:item];
             }        
         }
     }    
@@ -472,11 +496,13 @@ NSString * const SCHContentSyncComponentDidFailNotification = @"SCHContentSyncCo
 
 - (SCHOrderItem *)addOrderItem:(NSDictionary *)orderItem
 {
+    NSAssert([NSThread isMainThread] == NO, @"addOrderItem MUST NOT be executed on the main thread");            
 	SCHOrderItem *ret = nil;
     id orderID = [self makeNullNil:[orderItem valueForKey:kSCHLibreAccessWebServiceOrderID]];
     
 	if (orderItem != nil && [self orderIDIsValid:orderID] == YES) {	
-		ret = [NSEntityDescription insertNewObjectForEntityForName:kSCHOrderItem inManagedObjectContext:self.managedObjectContext];			
+		ret = [NSEntityDescription insertNewObjectForEntityForName:kSCHOrderItem 
+                                            inManagedObjectContext:self.backgroundThreadManagedObjectContext];			
 		
 		ret.OrderID = orderID;
 		ret.OrderDate = [self makeNullNil:[orderItem objectForKey:kSCHLibreAccessWebServiceOrderDate]];
@@ -488,13 +514,14 @@ NSString * const SCHContentSyncComponentDidFailNotification = @"SCHContentSyncCo
 - (SCHContentProfileItem *)addContentProfileItem:(NSDictionary *)contentProfileItem 
                                          forBook:(SCHBookIdentifier *)bookIdentifier;
 {
+    NSAssert([NSThread isMainThread] == NO, @"addContentProfileItem MUST NOT be executed on the main thread");        
 	SCHContentProfileItem *ret = nil;
     NSError *error = nil;
     id profileID = [self makeNullNil:[contentProfileItem valueForKey:kSCHLibreAccessWebServiceProfileID]];
     
 	if (contentProfileItem != nil && bookIdentifier != nil && [self profileIDIsValid:profileID] == YES) {		
 		ret = [NSEntityDescription insertNewObjectForEntityForName:kSCHContentProfileItem 
-                                            inManagedObjectContext:self.managedObjectContext];			
+                                            inManagedObjectContext:self.backgroundThreadManagedObjectContext];			
 		
 		ret.LastModified = [self makeNullNil:[contentProfileItem objectForKey:kSCHLibreAccessWebServiceLastModified]];
 		ret.State = [NSNumber numberWithStatus:kSCHStatusUnmodified];
@@ -504,7 +531,7 @@ NSString * const SCHContentSyncComponentDidFailNotification = @"SCHContentSyncCo
         ret.Rating = [self makeNullNil:[contentProfileItem objectForKey:kSCHLibreAccessWebServiceRating]];
         
         SCHAppContentProfileItem *newAppContentProfileItem = [NSEntityDescription insertNewObjectForEntityForName:kSCHAppContentProfileItem 
-                                                                             inManagedObjectContext:self.managedObjectContext];    
+                                                                             inManagedObjectContext:self.backgroundThreadManagedObjectContext];    
 
         newAppContentProfileItem.ISBN = bookIdentifier.isbn;       
         newAppContentProfileItem.DRMQualifier = bookIdentifier.DRMQualifier;
@@ -513,9 +540,9 @@ NSString * const SCHContentSyncComponentDidFailNotification = @"SCHContentSyncCo
 
         NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
         [fetchRequest setEntity:[NSEntityDescription entityForName:kSCHProfileItem 
-                                            inManagedObjectContext:self.managedObjectContext]];	
+                                            inManagedObjectContext:self.backgroundThreadManagedObjectContext]];	
         [fetchRequest setPredicate:[NSPredicate predicateWithFormat:@"ID == %@", ret.ProfileID]];
-        NSArray *results = [self.managedObjectContext executeFetchRequest:fetchRequest error:&error];
+        NSArray *results = [self.backgroundThreadManagedObjectContext executeFetchRequest:fetchRequest error:&error];
         [fetchRequest release];
         if (results == nil) {
             NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
@@ -527,9 +554,11 @@ NSString * const SCHContentSyncComponentDidFailNotification = @"SCHContentSyncCo
             NSArray *dictionaryObjects = [NSArray arrayWithObjects:[newAppContentProfileItem bookIdentifier], ret.ProfileID, nil];
             NSArray *dictionaryKeys    = [NSArray arrayWithObjects:SCHContentSyncComponentAddedBookIdentifier, SCHContentSyncComponentAddedProfileIdentifier, nil];
 
-            [[NSNotificationCenter defaultCenter] postNotificationName:SCHContentSyncComponentDidAddBookToProfileNotification 
-                                                                object:self 
-                                                              userInfo:[NSDictionary dictionaryWithObjects:dictionaryObjects forKeys:dictionaryKeys]];   
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [[NSNotificationCenter defaultCenter] postNotificationName:SCHContentSyncComponentDidAddBookToProfileNotification 
+                                                                    object:self 
+                                                                  userInfo:[NSDictionary dictionaryWithObjects:dictionaryObjects forKeys:dictionaryKeys]];   
+            });
         }
 	}
 	
@@ -538,6 +567,7 @@ NSString * const SCHContentSyncComponentDidFailNotification = @"SCHContentSyncCo
 
 - (void)syncUserContentItem:(NSDictionary *)webUserContentItem withUserContentItem:(SCHUserContentItem *)localUserContentItem
 {
+    NSAssert([NSThread isMainThread] == NO, @"syncUserContentItem MUST NOT be executed on the main thread");        
     if (webUserContentItem != nil) {
         localUserContentItem.DRMQualifier = [self makeNullNil:[webUserContentItem objectForKey:kSCHLibreAccessWebServiceDRMQualifier]];
         localUserContentItem.Version = [self makeNullNil:[webUserContentItem objectForKey:kSCHLibreAccessWebServiceVersion]];
@@ -567,6 +597,7 @@ NSString * const SCHContentSyncComponentDidFailNotification = @"SCHContentSyncCo
         localOrderList:(NSSet *)localOrderList
             insertInto:(SCHUserContentItem *)userContentItem
 {		
+    NSAssert([NSThread isMainThread] == NO, @"syncOrderItems MUST NOT be executed on the main thread");            
 	NSArray *sortDescriptor = [NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:kSCHLibreAccessWebServiceOrderID ascending:YES]];
 	NSMutableArray *deletePool = [NSMutableArray array];
 	NSMutableArray *creationPool = [NSMutableArray array];
@@ -631,7 +662,7 @@ NSString * const SCHContentSyncComponentDidFailNotification = @"SCHContentSyncCo
 	}
 	
 	for (SCHOrderItem *localItem in deletePool) {
-		[self.managedObjectContext deleteObject:localItem];
+		[self.backgroundThreadManagedObjectContext deleteObject:localItem];
 	}
 	
 	for (NSDictionary *webItem in creationPool) {
@@ -660,6 +691,7 @@ NSString * const SCHContentSyncComponentDidFailNotification = @"SCHContentSyncCo
                     insertInto:(SCHUserContentItem *)userContentItem
 
 {		
+    NSAssert([NSThread isMainThread] == NO, @"syncContentProfileItems MUST NOT be executed on the main thread");            
 	NSArray *sortDescriptor = [NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:kSCHLibreAccessWebServiceProfileID ascending:YES]];
 	NSMutableArray *deletePool = [NSMutableArray array];
 	NSMutableArray *creationPool = [NSMutableArray array];
@@ -724,11 +756,13 @@ NSString * const SCHContentSyncComponentDidFailNotification = @"SCHContentSyncCo
 	}
 	
     for (SCHContentProfileItem *contentProfileItem in deletePool) {
-        [[NSNotificationCenter defaultCenter] postNotificationName:SCHContentSyncComponentWillDeleteNotification 
-                                                            object:self 
-                                                          userInfo:[NSDictionary dictionaryWithObject:[NSArray arrayWithObject:[contentProfileItem.UserContentItem bookIdentifier]]
-                                                                                               forKey:[contentProfileItem ProfileID]]];
-        [self.managedObjectContext deleteObject:contentProfileItem];            
+        dispatch_sync(dispatch_get_main_queue(), ^{        
+            [[NSNotificationCenter defaultCenter] postNotificationName:SCHContentSyncComponentWillDeleteNotification 
+                                                                object:self 
+                                                              userInfo:[NSDictionary dictionaryWithObject:[NSArray arrayWithObject:[contentProfileItem.UserContentItem bookIdentifier]]
+                                                                                                   forKey:[contentProfileItem ProfileID]]];
+        });
+        [self.backgroundThreadManagedObjectContext deleteObject:contentProfileItem];            
     }
 
 	for (NSDictionary *webItem in creationPool) {
@@ -763,12 +797,13 @@ NSString * const SCHContentSyncComponentDidFailNotification = @"SCHContentSyncCo
 // any of the on disk files
 - (void)deleteUnusedContentMetadataItems
 {
+    NSAssert([NSThread isMainThread] == NO, @"deleteUnusedContentMetadataItems MUST NOT be executed on the main thread");                
     NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init]; 
     NSError *error = nil;    
     [fetchRequest setEntity:[NSEntityDescription entityForName:kSCHContentMetadataItem
-                                        inManagedObjectContext:self.managedObjectContext]];
+                                        inManagedObjectContext:self.backgroundThreadManagedObjectContext]];
     
-    NSArray *contentMetadataItems = [self.managedObjectContext executeFetchRequest:fetchRequest 
+    NSArray *contentMetadataItems = [self.backgroundThreadManagedObjectContext executeFetchRequest:fetchRequest 
                                                                              error:&error];
     [fetchRequest release], fetchRequest = nil;
     if (contentMetadataItems == nil) {
@@ -779,15 +814,16 @@ NSString * const SCHContentSyncComponentDidFailNotification = @"SCHContentSyncCo
         SCHUserContentItem *userContentItem = [contentMetadataItem UserContentItem];
         if (userContentItem == nil || [userContentItem.ProfileList count] == 0) {
             [self removeRecommendationForBook:contentMetadataItem];
-            [self.managedObjectContext deleteObject:contentMetadataItem];
+            [self.backgroundThreadManagedObjectContext deleteObject:contentMetadataItem];
         }
     }   
     
-    [self save];
+    [self backgroundSave:NO];
 }
 
 - (void)removeRecommendationForBook:(SCHContentMetadataItem *)contentMetadataItem
 {
+    NSAssert([NSThread isMainThread] == NO, @"removeRecommendationForBook MUST NOT be executed on the main thread");                    
     if (contentMetadataItem != nil) {
         SCHRecommendationISBN *recommendationISBN = [contentMetadataItem.AppBook recommendationISBN];
         if (recommendationISBN != nil) {
@@ -798,15 +834,34 @@ NSString * const SCHContentSyncComponentDidFailNotification = @"SCHContentSyncCo
                     [deletedISBNs addObject:isbn];
                 }
             }
+
             if ([deletedISBNs count] > 0) {
-                [[NSNotificationCenter defaultCenter] postNotificationName:SCHRecommendationSyncComponentWillDeleteNotification 
-                                                                    object:self 
-                                                                  userInfo:[NSDictionary dictionaryWithObject:[NSArray arrayWithArray:deletedISBNs]
-                                                                                                       forKey:SCHRecommendationSyncComponentISBNs]];
+                dispatch_sync(dispatch_get_main_queue(), ^{
+                    [[NSNotificationCenter defaultCenter] postNotificationName:SCHRecommendationSyncComponentWillDeleteNotification 
+                                                                        object:self 
+                                                                      userInfo:[NSDictionary dictionaryWithObject:[NSArray arrayWithArray:deletedISBNs]
+                                                                                                           forKey:SCHRecommendationSyncComponentISBNs]];
+                });
             }
-            [self.managedObjectContext deleteObject:recommendationISBN];
-            [self save];
+            [self.backgroundThreadManagedObjectContext deleteObject:recommendationISBN];
+            [self backgroundSave:NO];
         }
+    }
+}
+
+- (void)backgroundSave:(BOOL)batch
+{
+    NSAssert([NSThread isMainThread] == NO, @"backgroundSave MUST NOT be executed on the main thread");
+    
+    NSError *error = nil;
+    static NSUInteger batchCount = 0;
+    
+    if (batch == NO || ++batchCount > 250) {
+        batchCount = 0;
+        if ([self.backgroundThreadManagedObjectContext hasChanges] == YES &&
+            ![self.backgroundThreadManagedObjectContext save:&error]) {
+            NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
+        } 
     }
 }
 
