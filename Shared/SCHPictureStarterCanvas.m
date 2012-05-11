@@ -71,16 +71,8 @@
     self = [super initWithCoder:aDecoder];
     if (self) {
         UIPinchGestureRecognizer *pinch = [[UIPinchGestureRecognizer alloc] initWithTarget:self action:@selector(handlePinch:)];
-        pinch.delegate = self;
         [self addGestureRecognizer:pinch];
         [pinch release];
-        
-        UIPanGestureRecognizer *pan = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(handlePan:)];
-        pan.delegate = self;
-        pan.minimumNumberOfTouches = 2;
-        pan.maximumNumberOfTouches = 2;
-        [self addGestureRecognizer:pan];
-        [pan release];
         
         self.zoomScale = 1.0f;
         self.zoomOffset = CGPointZero;
@@ -213,18 +205,19 @@
         case UIGestureRecognizerStateBegan: {
             [self cancelCurrentDrawingInstruction];
             CGPoint point = [pinch locationInView:self.superview];
+            panStartPoint = point;
             pinchStartCenter = self.center;
             pinchStartOffset = CGPointMake(point.x-pinchStartCenter.x, point.y-pinchStartCenter.y);
             break;
         }
         case UIGestureRecognizerStateChanged: {
-            CGPoint center = [self adjustedCenterForPinchScale:pinch.scale];
+            CGPoint center = [self adjustedCenterForPinch:pinch];
             [self setScale:self.zoomScale*pinch.scale animated:NO];
             [self setCenter:center clamped:NO animated:NO];
             break;
         }
         case UIGestureRecognizerStateEnded: {
-            CGPoint center = [self adjustedCenterForPinchScale:pinch.scale];
+            CGPoint center = [self adjustedCenterForPinch:pinch];
             self.zoomScale = MAX(1.0f, self.zoomScale*pinch.scale);
             [self setScale:self.zoomScale animated:YES];
             [self setCenter:center clamped:YES animated:YES];
@@ -241,46 +234,13 @@
     }
 }
 
-- (void)handlePan:(UIPanGestureRecognizer *)pan
-{
-    switch ([pan state]) {
-        case UIGestureRecognizerStateBegan: {
-            [self cancelCurrentDrawingInstruction];
-            panStartPoint = self.center;
-            break;
-        }
-        case UIGestureRecognizerStateChanged: {
-            CGPoint translate = [pan translationInView:self];
-            CGPoint center = CGPointMake(panStartPoint.x+translate.x*self.zoomScale,
-                                         panStartPoint.y+translate.y*self.zoomScale);
-            [self setCenter:center clamped:NO animated:NO];
-            break;
-        }
-        case UIGestureRecognizerStateEnded: {
-            [self setCenter:self.center clamped:YES animated:YES];
-            break;
-        }
-        case UIGestureRecognizerStateCancelled:
-        case UIGestureRecognizerStateFailed: {
-            [self setCenter:panStartPoint clamped:YES animated:YES];
-            break;
-        }
-        default:
-            break;
-    }
-}
-
-- (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer
-{
-    return NO;
-}
-
 #pragma mark - Zoom
 
-- (CGPoint)adjustedCenterForPinchScale:(CGFloat)pinchScale
+- (CGPoint)adjustedCenterForPinch:(UIPinchGestureRecognizer *)pinch
 {
-    CGFloat offsetX = pinchStartOffset.x*(pinchScale-1.0f);
-    CGFloat offsetY = pinchStartOffset.y*(pinchScale-1.0f);
+    CGPoint point = [pinch locationInView:self.superview];
+    CGFloat offsetX = pinchStartOffset.x*(pinch.scale-1.0f) + (panStartPoint.x-point.x);
+    CGFloat offsetY = pinchStartOffset.y*(pinch.scale-1.0f) + (panStartPoint.y-point.y);
     CGPoint center = CGPointMake(pinchStartCenter.x-offsetX, pinchStartCenter.y-offsetY);
     return center;
 }
