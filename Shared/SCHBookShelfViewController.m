@@ -41,7 +41,6 @@
 
 static NSInteger const kSCHBookShelfViewControllerGridCellHeightPortrait = 138;
 static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 131;
-static NSInteger const kSCHBookShelfViewControllerWelcomeShowMaximumCount = 2;
 
 NSString * const kSCHBookShelfErrorDomain  = @"com.knfb.scholastic.BookShelfErrorDomain";
 
@@ -395,21 +394,14 @@ typedef enum
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
     NSInteger currentWelcomeShowCount = [userDefaults integerForKey:kSCHUserDefaultsWelcomeViewShowCount];
     
-    if (self.showWelcome &&
-        currentWelcomeShowCount < kSCHBookShelfViewControllerWelcomeShowMaximumCount) {
-        switch (currentWelcomeShowCount) {
-            case 0:
-                currentWelcomeShowCount++;
-                [self showWelcomeView];        
-                break;
-            case 1:
-                currentWelcomeShowCount++;
-                [self showWelcomeTwoView];        
-                break;
-                
-            default:
-                break;
+    if (self.showWelcome) {
+        if (currentWelcomeShowCount == 0) {
+            [self showWelcomeView];        
+        } else {
+            [self showWelcomeTwoView]; 
         }
+    
+        currentWelcomeShowCount++;
         
         [userDefaults setInteger:currentWelcomeShowCount
                           forKey:kSCHUserDefaultsWelcomeViewShowCount];
