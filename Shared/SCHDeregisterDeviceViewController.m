@@ -17,6 +17,7 @@
 #import "SCHDrmSession.h"
 #import "SCHVersionDownloadManager.h"
 #import "SCHSyncManager.h"
+#import "SCHDictionaryDownloadManager.h"
 
 static const CGFloat kDeregisterContentHeightLandscape = 380;
 
@@ -220,6 +221,12 @@ static const CGFloat kDeregisterContentHeightLandscape = 380;
     
     SCHDrmDeregistrationSuccessBlock deregistrationCompletionBlock = ^{
         dispatch_block_t block = ^{
+            
+            if ([[SCHDictionaryDownloadManager sharedDownloadManager] userRequestState] == SCHDictionaryUserDeclined) {
+                NSLog(@"Resetting dictionary question; user will be prompted to download dictionary.");
+                [[SCHDictionaryDownloadManager sharedDownloadManager] setUserRequestState:SCHDictionaryUserNotYetAsked];
+            }
+            
             LambdaAlert *alert = [[LambdaAlert alloc]
                                   initWithTitle:NSLocalizedString(@"Device Deregistered", @"Device Deregistered") 
                                   message:NSLocalizedString(@"This device has been deregistered. To read eBooks, please register this device again.", @"") ];
