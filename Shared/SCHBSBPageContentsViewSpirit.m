@@ -16,6 +16,18 @@
 #import <libEucalyptus/EucBookPageIndexPointRange.h>
 #import <libEucalyptus/EucUIViewViewSpiritElement.h>
 
+@interface SCHBSBViewSpiritRenderableLayer : CALayer
+@end
+
+@interface SCHBSBPageContentsViewSpiritWebView : UIWebView <UIWebViewDelegate>
+
+- (void)synchronouslyLoadHTMLString:(NSString *)string baseURL:(NSURL *)baseURL;
+
+@end
+
+@interface SCHBSBPageContentsViewSpiritTextField : UITextField
+@end
+
 @interface SCHBSBPageContentsViewSpirit() <EucCSSRenderPageViewSpiritDelegate>
 
 @property (nonatomic, retain) EucCSSRenderPageViewSpirit *pageCSSViewSpirit;
@@ -242,16 +254,59 @@
     NSString *dataType = [node attributeWithName:@"data-type"];
     
     if ([dataType isEqualToString:@"text"]) {
-        UITextField *aTextField = [[UITextField alloc] initWithFrame:constrainedFrame];
+        SCHBSBPageContentsViewSpiritTextField *aTextField = [[SCHBSBPageContentsViewSpiritTextField alloc] initWithFrame:constrainedFrame];
         aTextField.frame = constrainedFrame;
         aTextField.borderStyle = UITextBorderStyleRoundedRect;
         view = [aTextField autorelease];
     } else if ([dataType isEqualToString:@"radio"]) {
-        UIButton *aButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-        aButton.frame = constrainedFrame;
-        [aButton setTitle:@"Tap to Select" forState:UIControlStateNormal];
-        [aButton addTarget:self action:@selector(showButton:) forControlEvents:UIControlEventTouchUpInside];
-        view = aButton;
+        SCHBSBPageContentsViewSpiritWebView *radio = [[SCHBSBPageContentsViewSpiritWebView alloc] init];
+        
+        NSString *dataBinding = [node attributeWithName:@"data-binding"];
+        
+        NSMutableString *htmlString = [NSMutableString stringWithString:@"<body><form>"];
+        
+        SCHBSBTreeNode *childNode = node.firstChild;
+        
+        while (childNode != nil) {
+            NSString *dataKey = [childNode attributeWithName:@"data-key"];
+            NSString *dataValue = [childNode attributeWithName:@"data-value"];
+            
+            if (dataKey && dataValue) {
+                [htmlString appendFormat:@"<input type='radio' name='%@' value='%@' /> %@<br />", dataBinding, dataValue, dataKey];
+            }
+            
+            childNode = childNode.nextSibling;
+        }
+        
+        [htmlString appendString:@"</form></body>"];
+        
+        [radio synchronouslyLoadHTMLString:htmlString baseURL:nil];
+        radio.frame = constrainedFrame;
+        view = radio;
+    } else if ([dataType isEqualToString:@"dropdown"]) {
+        SCHBSBPageContentsViewSpiritWebView *dropdown = [[SCHBSBPageContentsViewSpiritWebView alloc] init];
+        NSString *dataBinding = [node attributeWithName:@"data-binding"];
+        
+        NSMutableString *htmlString = [NSMutableString stringWithFormat:@"<body><form><select name='%@'>", dataBinding];
+        
+        SCHBSBTreeNode *childNode = node.firstChild;
+        
+        while (childNode != nil) {
+            NSString *dataKey = [childNode attributeWithName:@"data-key"];
+            NSString *dataValue = [childNode attributeWithName:@"data-value"];
+            
+            if (dataKey && dataValue) {
+                [htmlString appendFormat:@"<option value='%@'>%@</option>", dataValue, dataKey];
+            }
+            
+            childNode = childNode.nextSibling;
+        }
+        
+        [htmlString appendString:@"</select></form></body>"];
+        
+        [dropdown synchronouslyLoadHTMLString:htmlString baseURL:nil];
+        dropdown.frame = constrainedFrame;
+        view = dropdown;
     } else {
         UIButton *aButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
         aButton.frame = constrainedFrame;
@@ -262,22 +317,74 @@
     return view;
 }
 
-- (void)showButton:(UIView *)button
-{
-    UIPickerView *picker = [[UIPickerView alloc] init];
-    UIViewController *vc = [[UIViewController alloc] init];
-    vc.view = picker;
-    [vc setContentSizeForViewInPopover:picker.frame.size];
+@end
 
+@implementation SCHBSBPageContentsViewSpiritWebView
+
+- (id)initWithFrame:(CGRect)frame
+{
+    if ((self = [super initWithFrame:frame])) {
+        if ([self respondsToSelector:@selector(scrollView)]) {
+            UIScrollView *aScrollView = [self scrollView];
+            [aScrollView setBounces:NO];
+            [aScrollView setScrollEnabled:NO];
+        }
+        
+        self.delegate = self;
+    }
     
-    UIPopoverController *popover = [[UIPopoverController alloc] initWithContentViewController:vc];
-    
-    [picker release];
-    [vc release];
-    
-    [popover presentPopoverFromRect:button.frame inView:button.superview permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
-    
-    //[popover release];
+    return self;
+}
+
+- (void)synchronouslyLoadHTMLString:(NSString *)string baseURL:(NSURL *)baseURL
+{
+    [self loadHTMLString:string baseURL:baseURL];    
+    CFRunLoopRunInMode((CFStringRef)NSDefaultRunLoopMode, 0.1, NO);
+}
+
+- (void)scrollViewDidScroll:(UIScrollView *)aScrollView
+{
+    // Only required for iOS < 4.0
+    [aScrollView setContentOffset: CGPointMake(aScrollView.contentOffset.x, 0)];
+}
+
+- (void)webViewDidFinishLoad:(UIWebView *)webView
+{
+    CFRunLoopRef runLoop = [[NSRunLoop currentRunLoop] getCFRunLoop];
+	CFRunLoopStop(runLoop);
+}
+
+- (void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error
+{
+    CFRunLoopRef runLoop = [[NSRunLoop currentRunLoop] getCFRunLoop];
+	CFRunLoopStop(runLoop);
+}
+
++ (Class)layerClass
+{
+    return [SCHBSBViewSpiritRenderableLayer class];
+}
+
+@end
+
+@implementation SCHBSBPageContentsViewSpiritTextField
+
++ (Class)layerClass
+{
+    return [SCHBSBViewSpiritRenderableLayer class];
+}
+
+@end
+
+@implementation SCHBSBViewSpiritRenderableLayer
+
+- (void)renderInContext:(CGContextRef)ctx
+{
+    if (self == self.presentationLayer) {
+        [self.modelLayer renderInContext:ctx];
+    } else {
+        [super renderInContext:ctx];
+    }
 }
 
 @end
