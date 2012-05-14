@@ -65,11 +65,14 @@ static NSInteger const kSCHLibreAccessWebServiceVaid = 33;
 - (NSDictionary *)objectFromAnnotationStatusForRatingsItem:(LibreAccessServiceSvc_AnnotationStatusForRatingsItem *)anObject;
 - (NSDictionary *)objectFromStatusHolder:(LibreAccessServiceSvc_StatusHolder *)anObject;
 - (NSDictionary *)objectFromAnnotationStatusContentForRatingsItem:(LibreAccessServiceSvc_AnnotationStatusContentForRatingsItem *)anObject;
-- (NSDictionary *)objectFromPrivateAnnotationsStatus:(LibreAccessServiceSvc_PrivateAnnotationsStatusForRatings *)anObject;
+- (NSMutableDictionary *)objectFromPrivateAnnotationsStatus:(LibreAccessServiceSvc_PrivateAnnotationsStatusForRatings *)anObject;
 - (NSDictionary *)objectFromAnnotationTypeStatusItem:(LibreAccessServiceSvc_AnnotationTypeStatusItem *)anObject;
 - (NSDictionary *)objectFromISBNItem:(LibreAccessServiceSvc_isbnItem *)anObject;
 
 - (id)objectFromTranslate:(id)anObject;
+- (void)combineMultipleAnnotationStatusContentBooks:(NSDictionary *)annotationStatusForRatingsItem;
+- (void)overwritePrivateAnnotations:(NSDictionary *)existingPrivateAnnotations
+             withPrivateAnnotations:(NSDictionary *)newPrivateAnnotations;
 
 - (void)fromObject:(NSDictionary *)object intoSaveProfileItem:(LibreAccessServiceSvc_SaveProfileItem *)intoObject;
 - (void)fromObject:(NSDictionary *)object intoISBNItem:(LibreAccessServiceSvc_isbnItem *)intoObject;
@@ -96,6 +99,8 @@ static NSInteger const kSCHLibreAccessWebServiceVaid = 33;
 - (void)fromObject:(NSDictionary *)object intoReadingStatsContentItem:(LibreAccessServiceSvc_ReadingStatsContentItem *)intoObject;
 - (void)fromObject:(NSDictionary *)object intoReadingStatsEntryItem:(LibreAccessServiceSvc_ReadingStatsEntryItem *)intoObject;
 - (void)fromObject:(NSDictionary *)object intoTopFavoritesItem:(LibreAccessServiceSvc_TopFavoritesRequestItem *)intoObject;
+
+- (id)makeNullNil:(id)object;
 
 @end
 
@@ -1315,9 +1320,9 @@ static NSInteger const kSCHLibreAccessWebServiceVaid = 33;
 	return(ret);
 }
 
-- (NSDictionary *)objectFromPrivateAnnotationsStatus:(LibreAccessServiceSvc_PrivateAnnotationsStatusForRatings *)anObject
+- (NSMutableDictionary *)objectFromPrivateAnnotationsStatus:(LibreAccessServiceSvc_PrivateAnnotationsStatusForRatings *)anObject
 {
-	NSDictionary *ret = nil;
+	NSMutableDictionary *ret = nil;
 	
 	if (anObject != nil) {
 		NSMutableDictionary *objects = [NSMutableDictionary dictionary];
@@ -1456,7 +1461,55 @@ static NSInteger const kSCHLibreAccessWebServiceVaid = 33;
 				}
 			} else if ([firstItem isKindOfClass:[LibreAccessServiceSvc_AnnotationStatusForRatingsItem class]] == YES) {
 				for (id item in anObject) {
-					[ret addObject:[self objectFromAnnotationStatusForRatingsItem:item]];	
+                    // the server sends a separate AnnotationStatusContentItem
+                    // for each bookmark/note/highlight/rating/last page (it 
+                    // shouldnt but it does) so we combine them here
+                    NSDictionary *newAnnotationStatusForRatingsItem = [self objectFromAnnotationStatusForRatingsItem:item];
+
+                    if (newAnnotationStatusForRatingsItem != nil) {
+                        NSNumber *newProfileID = [self makeNullNil:[newAnnotationStatusForRatingsItem objectForKey:kSCHLibreAccessWebServiceProfileID]];
+                        NSUInteger statusAlreadyExists = NSNotFound;
+                        
+                        if (newProfileID != nil) {
+                            statusAlreadyExists = [ret indexOfObjectPassingTest:^BOOL (id obj, NSUInteger idx, BOOL *stop) {
+                                NSNumber *currentProfileID = [self makeNullNil:[obj objectForKey:kSCHLibreAccessWebServiceProfileID]];
+                                if ([currentProfileID isEqualToNumber:newProfileID] == YES) {
+                                    *stop = YES;
+                                    return YES;
+                                } else {
+                                    return NO;
+                                }
+                            }];
+                        }
+                        
+                        if (statusAlreadyExists == NSNotFound) {
+                            [self combineMultipleAnnotationStatusContentBooks:newAnnotationStatusForRatingsItem];
+                            [ret addObject:newAnnotationStatusForRatingsItem];	
+                        } else {
+                            NSDictionary *existingAnnotationStatusForRatingsItem = [ret objectAtIndex:statusAlreadyExists];
+                            NSArray *existingAnnotationStatusContentList = [self makeNullNil:[existingAnnotationStatusForRatingsItem objectForKey:kSCHLibreAccessWebServiceAnnotationStatusContentList]];
+                            NSArray *newAnnotationStatusContentList = [self makeNullNil:[newAnnotationStatusForRatingsItem objectForKey:kSCHLibreAccessWebServiceAnnotationStatusContentList]];
+                            
+                            for (NSDictionary *newAnnotationStatusContent in newAnnotationStatusContentList) {
+                                NSString *newContentIdentifier = [self makeNullNil:[newAnnotationStatusContent objectForKey:kSCHLibreAccessWebServiceContentIdentifier]];                                
+                                NSIndexSet *existingBooks = nil;
+                                
+                                if (newContentIdentifier != nil) {
+                                    existingBooks = [existingAnnotationStatusContentList indexesOfObjectsPassingTest:^BOOL (id obj, NSUInteger idx, BOOL *stop) {
+                                        NSString *currentContentIdentifer = [self makeNullNil:[obj objectForKey:kSCHLibreAccessWebServiceContentIdentifier]];
+                                        return [currentContentIdentifer isEqualToString:newContentIdentifier];
+                                    }];
+                                }
+                                
+                                [existingBooks enumerateIndexesUsingBlock:^(NSUInteger idx, BOOL *stop) {
+                                    NSDictionary *existingBook = [existingAnnotationStatusContentList objectAtIndex:idx];
+                                    
+                                    [self overwritePrivateAnnotations:[self makeNullNil:[existingBook objectForKey:kSCHLibreAccessWebServicePrivateAnnotationsStatus]]
+                                               withPrivateAnnotations:[self makeNullNil:[newAnnotationStatusContent objectForKey:kSCHLibreAccessWebServicePrivateAnnotationsStatus]]];                                                                        
+                                }];
+                            }
+                        }
+                    }
 				}
 			} else if ([firstItem isKindOfClass:[LibreAccessServiceSvc_AnnotationStatusContentForRatingsItem class]] == YES) {
 				for (id item in anObject) {
@@ -1503,6 +1556,69 @@ static NSInteger const kSCHLibreAccessWebServiceVaid = 33;
 	}
 
 	return(ret);
+}
+
+- (void)combineMultipleAnnotationStatusContentBooks:(NSDictionary *)annotationStatusForRatingsItem
+{
+    NSMutableArray *annotationStatusContentList = [self makeNullNil:[annotationStatusForRatingsItem objectForKey:kSCHLibreAccessWebServiceAnnotationStatusContentList]];
+    
+    if ([annotationStatusContentList count] > 1) {
+        for (NSUInteger idx = 1; idx < [annotationStatusContentList count]; idx++) {
+            NSDictionary *annotationStatusContent = [annotationStatusContentList objectAtIndex:idx];
+            NSString *contentIdentifier = [self makeNullNil:[annotationStatusContent objectForKey:kSCHLibreAccessWebServiceContentIdentifier]];                                
+            NSIndexSet *existingBooks = nil;
+            
+            if (contentIdentifier != nil) {
+                existingBooks = [annotationStatusContentList indexesOfObjectsPassingTest:^BOOL (id obj, NSUInteger idx, BOOL *stop) {
+                    NSString *currentContentIdentifer = [self makeNullNil:[obj objectForKey:kSCHLibreAccessWebServiceContentIdentifier]];
+                    return (obj != annotationStatusContent &&
+                        [currentContentIdentifer isEqualToString:contentIdentifier]);
+                }];
+            }
+            
+            NSMutableIndexSet *deleteBooks = [NSMutableIndexSet indexSet];
+            [existingBooks enumerateIndexesUsingBlock:^(NSUInteger idx, BOOL *stop) {
+                NSDictionary *duplicateBook = [annotationStatusContentList objectAtIndex:idx];
+                
+                if (duplicateBook != annotationStatusContent) {
+                    [self overwritePrivateAnnotations:[self makeNullNil:[annotationStatusContent objectForKey:kSCHLibreAccessWebServicePrivateAnnotationsStatus]]
+                               withPrivateAnnotations:[self makeNullNil:[duplicateBook objectForKey:kSCHLibreAccessWebServicePrivateAnnotationsStatus]]];                                                                        
+                    
+                    [deleteBooks addIndex:idx];
+                }
+            }];
+            [annotationStatusContentList removeObjectsAtIndexes:deleteBooks];
+        }
+    }
+}
+
+- (void)overwritePrivateAnnotations:(NSMutableDictionary *)existingPrivateAnnotations
+             withPrivateAnnotations:(NSDictionary *)newPrivateAnnotations
+{        
+    if (existingPrivateAnnotations != nil && newPrivateAnnotations != nil &&
+        existingPrivateAnnotations != newPrivateAnnotations) {
+        NSDictionary *newHighlights = [self makeNullNil:[newPrivateAnnotations objectForKey:kSCHLibreAccessWebServiceHighlightsStatusList]];
+        if ([newHighlights count] > 0) {
+            [existingPrivateAnnotations setValue:newHighlights forKey:kSCHLibreAccessWebServiceHighlightsStatusList];
+        }
+        NSDictionary *newNotes = [self makeNullNil:[newPrivateAnnotations objectForKey:kSCHLibreAccessWebServiceNotesStatusList]];                
+        if ([newNotes count] > 0) {
+            [existingPrivateAnnotations setValue:newNotes forKey:kSCHLibreAccessWebServiceNotesStatusList];
+        }                
+        NSDictionary *newBookmarks = [self makeNullNil:[newPrivateAnnotations objectForKey:kSCHLibreAccessWebServiceBookmarksStatusList]];                                
+        if ([newBookmarks count] > 0) {
+            [existingPrivateAnnotations setValue:newBookmarks forKey:kSCHLibreAccessWebServiceBookmarksStatusList];
+        }
+        
+        NSDictionary *newLastPage = [self makeNullNil:[newPrivateAnnotations objectForKey:kSCHLibreAccessWebServiceLastPageStatus]];                                                
+        if (newLastPage != nil) {
+            [existingPrivateAnnotations setValue:newLastPage forKey:kSCHLibreAccessWebServiceLastPageStatus];
+        }                
+        NSDictionary *newRating = [self makeNullNil:[newPrivateAnnotations objectForKey:kSCHLibreAccessWebServiceRatingStatus]];                                 
+        if (newRating != nil) {
+            [existingPrivateAnnotations setValue:newRating forKey:kSCHLibreAccessWebServiceRatingStatus];
+        }
+    }
 }
 
 #pragma mark -
@@ -1958,6 +2074,11 @@ static NSInteger const kSCHLibreAccessWebServiceVaid = 33;
 	}	
 }
 
+- (id)makeNullNil:(id)object
+{
+    return(object == [NSNull null] ? nil : object);
+}
+                                                  
 #pragma mark - Internal Debug Methods
 
 // Call this from GDB with:
