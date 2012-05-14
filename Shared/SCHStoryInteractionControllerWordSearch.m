@@ -130,24 +130,63 @@
 
 - (void)layoutWordViewsMultipleColumns
 {
-    static const NSInteger kWordInset = 5;
+    NSInteger wordCount = [self.wordViews count];
+    NSInteger kWordInset = 5;
+    CGFloat fontSize = 20;
+    
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone && wordCount >= 7) {
+        fontSize = 16;
+    }
     
     CGRect containerRect = self.wordsContainerView.bounds;
-    NSInteger wordCount = [self.wordViews count];
     NSInteger numberOfRows = MAX(1, (wordCount + 3) / 4);
     NSInteger wordsPerRow = wordCount/numberOfRows + (wordCount%2);
     CGFloat rowHeight = floorf((CGRectGetHeight(containerRect) - kWordInset*2) / numberOfRows);
     
     for (NSInteger row = 0; row < numberOfRows; ++row) {
         NSInteger wordsThisRow = MIN(wordsPerRow, wordCount-wordsPerRow*row);
-        CGFloat colWidth = floorf((CGRectGetWidth(containerRect) - kWordInset*2) / wordsThisRow);
-        CGRect wordRect = CGRectIntegral(CGRectMake(0, 0, colWidth, rowHeight));
+        CGFloat maxColWidth = floorf((CGRectGetWidth(containerRect)) / wordsThisRow);
+        CGFloat totalWordWidth = 0;
         
         for (NSInteger col = 0; col < wordsThisRow; ++col) {
             UILabel *label = [self.wordViews objectAtIndex:(row*wordsPerRow+col)];
-            label.bounds = wordRect;
-            label.center = CGPointMake(floorf(kWordInset+colWidth*col+colWidth/2), floorf(kWordInset+rowHeight*row+rowHeight/2));
-            label.font = [UIFont boldSystemFontOfSize:20];
+            totalWordWidth += [label.text sizeWithFont:label.font
+                                           minFontSize:label.minimumFontSize
+                                        actualFontSize:NULL
+                                              forWidth:maxColWidth
+                                         lineBreakMode:UILineBreakModeClip].width;
+        }
+        
+        // for future reference; code calculates the gaps required between words
+        // and applies that gap to each side, so for example, for four words:
+        //
+        // Gap WORD Gap WORD Gap WORD Gap WORD Gap
+        // 
+        // Word width is variable, so we use the actual word width to make the 
+        // centring look right. 
+        
+        CGFloat wordGap = (containerRect.size.width - totalWordWidth) / (wordsThisRow + 1);
+        
+        CGFloat wordXPos = wordGap;
+        
+        for (NSInteger col = 0; col < wordsThisRow; ++col) {
+            UILabel *label = [self.wordViews objectAtIndex:(row*wordsPerRow+col)];
+            
+            CGFloat actualFontSize = -1;
+            
+            CGFloat wordWidth = [label.text sizeWithFont:label.font
+                                     minFontSize:label.minimumFontSize
+                                  actualFontSize:&actualFontSize
+                                        forWidth:maxColWidth
+                                   lineBreakMode:UILineBreakModeClip].width;
+        
+            CGRect wordRect = CGRectIntegral(CGRectMake(wordXPos, kWordInset+rowHeight*row, wordWidth, rowHeight));
+            
+            label.frame = wordRect;
+            label.font = [UIFont boldSystemFontOfSize:fontSize];
+            
+            wordXPos += wordWidth + wordGap;
+
         }
     }
 }
