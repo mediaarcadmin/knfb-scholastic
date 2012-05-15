@@ -943,6 +943,23 @@ typedef enum
     }
 }
 
+- (void)openBookForBookshelfCell:(SCHBookShelfTableViewCell *)cell
+{
+    NSIndexPath *indexPath = [self.listTableView indexPathForCell:cell];
+    
+    [self.listTableView deselectRowAtIndexPath:indexPath animated:YES];
+    
+    [self selectBookAtIndex:[indexPath row] 
+                 startBlock:^{
+                     [cell setLoading:YES];
+                 }
+                   endBlock:^(BOOL didOpen){
+                       if (didOpen) {
+                           [cell setLoading:NO];
+                       }
+                   }];
+}
+
 #pragma mark - UITableViewDataSource methods
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -1023,23 +1040,7 @@ typedef enum
 
 - (void)tableView:(UITableView *)aTableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    SCHBookShelfTableViewCell *cell = (SCHBookShelfTableViewCell *) [aTableView cellForRowAtIndexPath:indexPath];
-    
-    if ([indexPath section] != 0) {
-        return;
-    }
-    
-    [aTableView deselectRowAtIndexPath:indexPath animated:YES];
-    
-    [self selectBookAtIndex:[indexPath row] 
-                 startBlock:^{
-                     [cell setLoading:YES];
-                 }
-                   endBlock:^(BOOL didOpen){
-                       if (didOpen) {
-                           [cell setLoading:NO];
-                       }
-                   }];
+    // nop; delegate is now used to open the book
 }
 
 #pragma mark - SCHBookShelfGridViewDataSource methods

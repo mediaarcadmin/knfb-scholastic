@@ -695,6 +695,12 @@ fastThumbnailUIImageForPageAtIndex:(NSUInteger)index
 
 - (NSArray *)pageTurningView:(EucIndexBasedPageTurningView *)pageTurningView highlightsForPageAtIndex:(NSUInteger)pageIndex
 {
+#if IPHONE_HIGHLIGHTS_DISABLED
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
+        return nil;
+    }
+#endif
+
     return [self highlightRectsForPageAtIndex:pageIndex excluding:nil];
 }
 
@@ -848,6 +854,13 @@ fastThumbnailUIImageForPageAtIndex:(NSUInteger)index
 }
 
 - (NSArray *)highlightRangesForCurrentPage {
+    
+#if IPHONE_HIGHLIGHTS_DISABLED
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
+        return nil;
+    }
+#endif
+
 	NSUInteger startPageIndex = self.pageTurningView.leftPageIndex;
     NSUInteger endPageIndex = self.pageTurningView.rightPageIndex;
     if(startPageIndex == NSUIntegerMax) {
@@ -868,6 +881,13 @@ fastThumbnailUIImageForPageAtIndex:(NSUInteger)index
 }
 
 - (NSArray *)highlightRectsForPageAtIndex:(NSInteger)pageIndex excluding:(SCHBookRange *)excludedBookmark {
+
+#if IPHONE_HIGHLIGHTS_DISABLED
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
+        return nil;
+    }
+#endif
+
     NSMutableArray *allHighlights = [NSMutableArray array];
     
     NSArray *highlightRanges = [self highlightsForLayoutPage:pageIndex + 1];

@@ -28,10 +28,13 @@
 - (void)endUpdates;
 - (void)refreshCell;
 
+- (IBAction)tapBookCover:(id)sender;
+
 @end
 
 @protocol SCHBookShelfTableViewCellDelegate <NSObject>
 
 - (void)bookshelfCell:(SCHBookShelfTableViewCell *)cell userRatingChanged:(NSInteger)newRating;
+- (void)openBookForBookshelfCell:(SCHBookShelfTableViewCell *)cell;
 
 @end
