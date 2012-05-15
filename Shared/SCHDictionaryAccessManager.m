@@ -301,6 +301,16 @@ static SCHDictionaryAccessManager *sharedManager = nil;
     }
     
     SCHDictionaryEntry *entry = [self entryForWord:dictionaryWord category:category];
+    
+    NSString *errorString = @"<html><head></head><body><div class=\"entry OD\"><span class=\"hw\">replacewordhere</span><table class=\"OD\"><tr><td><span class=\"sense\"><span class=\"def\"><span class=\"deftext\">This word is not in the dictionary.</span></span></span></td></tr></table></div></body></html>";
+    
+    NSString *trimmedWord = [dictionaryWord stringByTrimmingCharactersInSet:
+                             [NSCharacterSet whitespaceAndNewlineCharacterSet]];
+    trimmedWord = [trimmedWord stringByTrimmingCharactersInSet:
+                   [NSCharacterSet punctuationCharacterSet]];
+    
+    errorString = [errorString stringByReplacingOccurrencesOfString:@"replacewordhere" withString:trimmedWord];
+    
     __block NSString *result = nil;
     BOOL skipLookup = NO;
     
@@ -308,14 +318,7 @@ static SCHDictionaryAccessManager *sharedManager = nil;
         if ([category compare:kSCHDictionaryYoungReader] == NSOrderedSame) {
             return nil;
         } else {
-            result = @"<html><head></head><body><div class=\"entry OD\"><span class=\"hw\">replacewordhere</span><table class=\"OD\"><tr><td><span class=\"sense\"><span class=\"def\"><span class=\"deftext\">This word is not in the dictionary.</span></span></span></td></tr></table></div></body></html>";
-            
-            NSString *trimmedWord = [dictionaryWord stringByTrimmingCharactersInSet:
-                                     [NSCharacterSet whitespaceAndNewlineCharacterSet]];
-            trimmedWord = [trimmedWord stringByTrimmingCharactersInSet:
-                           [NSCharacterSet punctuationCharacterSet]];
-            
-            result = [result stringByReplacingOccurrencesOfString:@"replacewordhere" withString:trimmedWord];
+            result = errorString;
             skipLookup = YES;
         }
     }
@@ -420,6 +423,10 @@ static SCHDictionaryAccessManager *sharedManager = nil;
                 fclose(file);
             }
         });
+    }
+    
+    if (!result) { 
+        result = errorString;
     }
     
     // write HEAD from YoungDictionary.css/OldDictionary.css

@@ -703,15 +703,24 @@ static const NSUInteger kReadingViewMaxRecommendationsCount = 4;
     
     [self setToolbarVisibility:NO animated:NO];
     
+    NSMutableArray *toolbarArray = [[NSMutableArray alloc] initWithArray:self.olderBottomToolbar.items];
+    
 #if FLOW_VIEW_DISABLED
     // if flow view is disabled, then remove the options button
-    NSMutableArray *toolbarArray = [[NSMutableArray alloc] initWithArray:self.olderBottomToolbar.items];
     if ([toolbarArray count] >= 9) {
         [toolbarArray removeObjectsAtIndexes:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(6, 2)]];
     }
+#endif
+    
+#if IPHONE_HIGHLIGHTS_DISABLED
+    // if highlights are disabled on iPhone, remove the highlights button
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone && [toolbarArray count] >= 7) {
+        [toolbarArray removeObjectsAtIndexes:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(2, 2)]];
+    }
+#endif
+
     self.olderBottomToolbar.items = [NSArray arrayWithArray:toolbarArray];
     [toolbarArray release];
-#endif
     
 }
 
@@ -2528,8 +2537,6 @@ static const NSUInteger kReadingViewMaxRecommendationsCount = 4;
     }
     
     self.scrubberInfoView.frame = CGRectIntegral(scrubFrame);
-
-    NSLog(@"label: %@", self.pageLabel);
 
 }
 
