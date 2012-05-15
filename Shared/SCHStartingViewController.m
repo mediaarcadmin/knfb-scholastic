@@ -284,16 +284,17 @@ static const NSTimeInterval kSCHStartingViewControllerNonForcedAlertInterval = (
 
 - (void)popToAuthenticatedProfileAnimated:(BOOL)animated
 {
-    if (self.modalViewController) {
-        [self dismissModalViewControllerAnimated:animated];
-    }
+    dispatch_block_t completion = ^{
+        
+        if ([self bookshelfSetupRequired]) {
+            [self.navigationController setViewControllers:[NSArray arrayWithObject:self] animated:animated];
+            [self runSetupProfileSequenceAnimated:animated];
+        } else {
+            [self.navigationController setViewControllers:[NSArray arrayWithObjects:self, [self profileViewController], nil] animated:animated];
+        }
+    };
     
-    if ([self bookshelfSetupRequired]) {
-        [self.navigationController setViewControllers:[NSArray arrayWithObject:self] animated:animated];
-        [self runSetupProfileSequenceAnimated:animated];
-    } else {
-        [self.navigationController setViewControllers:[NSArray arrayWithObjects:self, [self profileViewController], nil] animated:animated];
-    }
+    [self dismissModalViewControllerAnimated:animated withCompletionHandler:completion];
 }
 
 - (void)dismissModalViewControllerAnimated:(BOOL)animated withCompletionHandler:(dispatch_block_t)completion;
@@ -466,6 +467,12 @@ static const NSTimeInterval kSCHStartingViewControllerNonForcedAlertInterval = (
 - (void)waitingForPassword
 {
     self.profileSyncState = kSCHStartingViewControllerProfileSyncStateWaitingForPassword;
+}
+
+- (void)waitingForBookshelves
+{
+    [self.modalNavigationController setViewControllers:nil];
+    [self pushBookshelfSetupModalControllerAnimated:YES showValidation:NO];
 }
 
 - (void)waitingForWebParentToolsToComplete
@@ -754,25 +761,41 @@ static const NSTimeInterval kSCHStartingViewControllerNonForcedAlertInterval = (
 
 - (void)pushBookshelfSetupModalControllerAnimated:(BOOL)animated showValidation:(BOOL)showValidation
 {
+    // TODO: this should really just build this up from scratch - it is a source of bugs because 
+    // the contents of the viewCOntrollers might actually be the settings view controllers
+    // Currently this is worked around by setting viewControllers nil in waitingForBookshelves
     NSMutableArray *controllers = [NSMutableArray arrayWithArray:[self.modalNavigationController viewControllers]];
+
+    NSAssert([controllers count] <= 2, @"Don't expect there to be >2 controllers on the modalNavigationController stack");
     
-    if (![[controllers lastObject] isKindOfClass:NSClassFromString(@"SCHSetupBookshelvesViewController")]) {
+    if (!([[controllers lastObject] isKindOfClass:NSClassFromString(@"SCHSetupBookshelvesViewController")]) &&
+        !([[controllers lastObject] isKindOfClass:NSClassFromString(@"SCHAccountValidationViewController")])) {
+        NSAssert([controllers count] == 0, @"Don't expect there to be something other than the bookshelf setup or account validation controller on the stack when pushing bookshelves");
         SCHSetupBookshelvesViewController *setupBookshelves = [[[SCHSetupBookshelvesViewController alloc] init] autorelease];
         setupBookshelves.profileSetupDelegate = self;
         [controllers addObject:setupBookshelves];
     }
     
     if (showValidation) {
-        SCHAccountValidationViewController *accountValidationViewController = [[[SCHAccountValidationViewController alloc] init] autorelease];
-        accountValidationViewController.profileSetupDelegate = self;        
-        accountValidationViewController.validatedControllerShouldHideCloseButton = YES;
-        accountValidationViewController.title = NSLocalizedString(@"Set Up Your Bookshelves", @"");
-        [controllers addObject:accountValidationViewController];
+        if (![[controllers lastObject] isKindOfClass:NSClassFromString(@"SCHAccountValidationViewController")]) {
+            SCHAccountValidationViewController *accountValidationViewController = [[[SCHAccountValidationViewController alloc] init] autorelease];
+            accountValidationViewController.profileSetupDelegate = self;        
+            accountValidationViewController.validatedControllerShouldHideCloseButton = YES;
+            accountValidationViewController.title = NSLocalizedString(@"Set Up Your Bookshelves", @"");
+            [controllers addObject:accountValidationViewController];
+        }
     }
     
     if (!self.modalViewController) {
         [self.modalNavigationController setViewControllers:controllers];
         [self presentModalViewController:self.modalNavigationController animated:animated];
+    } else if (self.modalViewController != self.modalNavigationController) {
+        [self dismissModalViewControllerAnimated:YES withCompletionHandler:^{
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [self.modalNavigationController setViewControllers:controllers];
+                [self presentModalViewController:self.modalNavigationController animated:YES];
+            });
+        }];
     } else {
         [self.modalNavigationController setViewControllers:controllers animated:YES];
     }

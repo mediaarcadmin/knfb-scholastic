@@ -33,6 +33,7 @@
 @property (nonatomic, retain) SCHParentalToolsWebViewController *parentalToolsWebViewController; 
 
 - (void)checkForBookUpdates;
+- (void)checkForBookshelves;
 - (void)showUpdatesBubble:(BOOL)show;
 - (void)updatesBubbleTapped:(UIGestureRecognizer *)gr;
 - (void)obtainPasswordThenPushBookshelvesControllerWithProfileItem:(SCHProfileItem *)profileItem;
@@ -393,7 +394,7 @@ didSelectButtonAnimated:(BOOL)animated
         [self.headerLabel setNumberOfLines:1];
     } else {
         [self.headerLabel setText:NSLocalizedString(@"Please go to Parent Tools to create bookshelves.", @"Profile header text for 0 bookshelves")];
-        [self.headerLabel setNumberOfLines:2];
+        [self.headerLabel setNumberOfLines:2];        
     }
     
     return fetchedResultsController_;
@@ -603,17 +604,26 @@ didSelectButtonAnimated:(BOOL)animated
 - (void)dismissModalViewControllerAnimated:(BOOL)animated withCompletionHandler:(dispatch_block_t)completion;
 {
     
+    SCHProfileViewController_Shared *weakSelf = self;
+    
+    dispatch_block_t afterDismiss = ^{
+        if (completion) {
+            completion();
+        }
+        
+        [weakSelf checkForBookshelves];
+    };
+    
     [CATransaction begin];
     
-    if (completion) {
-        [CATransaction setCompletionBlock:completion];
-    }
+    [CATransaction setCompletionBlock:afterDismiss];
     
     if (self.modalViewController) {
         [self dismissModalViewControllerAnimated:animated];
     }
     
     [CATransaction commit];
+
 }
 
 - (void)popToRootViewControllerAnimated:(BOOL)animated withCompletionHandler:(dispatch_block_t)completion
@@ -791,6 +801,18 @@ didSelectButtonAnimated:(BOOL)animated
         [alert show];
         [alert release];
     }];  
+}
+
+- (void)checkForBookshelves
+{
+    if ([[self.fetchedResultsController fetchedObjects] count] == 0) {
+                
+        __block SCHProfileViewController_Shared *weakSelf = self;
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [weakSelf.profileSetupDelegate waitingForBookshelves];
+        });
+    }
 }
 
 - (void)profileSyncDidComplete:(NSNotification *)notification
