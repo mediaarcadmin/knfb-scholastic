@@ -887,14 +887,6 @@ static const NSUInteger kReadingViewMaxRecommendationsCount = 4;
 
 - (void)didEnterBackgroundNotification:(NSNotification *)notification
 {
-    // relaunch the book
-    SCHAppBook *book = [[SCHBookManager sharedBookManager] bookWithIdentifier:self.bookIdentifier inManagedObjectContext:self.managedObjectContext];
-    
-    NSString *categoryType = book.categoryType;
-    if (categoryType != nil && [categoryType isEqualToString:kSCHAppBookCategoryPictureBook] == NO) {
-        self.profile.AppProfile.AutomaticallyLaunchBook = [self.bookIdentifier encodeAsString];
-    }
-    
     [self updateBookState];
         
     [self.readingView dismissFollowAlongHighlighter];  
