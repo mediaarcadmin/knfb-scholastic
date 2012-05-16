@@ -214,6 +214,7 @@ static NSTimeInterval const kSCHRecommendationSyncComponentBookSyncDelayTimeInte
             dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{
                 self.backgroundThreadManagedObjectContext = [[[NSManagedObjectContext alloc] init] autorelease];
                 [self.backgroundThreadManagedObjectContext setPersistentStoreCoordinator:self.managedObjectContext.persistentStoreCoordinator];
+                [self.backgroundThreadManagedObjectContext setMergePolicy:NSMergeByPropertyObjectTrumpMergePolicy];
                 
                 NSArray *profiles = [self makeNullNil:[result objectForKey:kSCHRecommendationWebServiceRetrieveRecommendationsForProfile]];
                 if ([profiles count] > 0) {
@@ -250,6 +251,7 @@ static NSTimeInterval const kSCHRecommendationSyncComponentBookSyncDelayTimeInte
             dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{
                 self.backgroundThreadManagedObjectContext = [[[NSManagedObjectContext alloc] init] autorelease];
                 [self.backgroundThreadManagedObjectContext setPersistentStoreCoordinator:self.managedObjectContext.persistentStoreCoordinator];
+                [self.backgroundThreadManagedObjectContext setMergePolicy:NSMergeByPropertyObjectTrumpMergePolicy];
                 
                 NSArray *books = [self makeNullNil:[result objectForKey:kSCHRecommendationWebServiceRetrieveRecommendationsForBooks]];
                 if ([books count] > 0) { 

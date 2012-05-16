@@ -132,6 +132,7 @@ NSString * const SCHReadingStatsSyncComponentDidFailNotification = @"SCHReadingS
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{
             self.backgroundThreadManagedObjectContext = [[[NSManagedObjectContext alloc] init] autorelease];
             [self.backgroundThreadManagedObjectContext setPersistentStoreCoordinator:self.managedObjectContext.persistentStoreCoordinator];
+            [self.backgroundThreadManagedObjectContext setMergePolicy:NSMergeByPropertyObjectTrumpMergePolicy];
             
             [self clearCoreDataUsingContext:self.backgroundThreadManagedObjectContext];
             
@@ -166,6 +167,7 @@ NSString * const SCHReadingStatsSyncComponentDidFailNotification = @"SCHReadingS
         if ([error domain] == kBITAPIErrorDomain) {
             self.backgroundThreadManagedObjectContext = [[[NSManagedObjectContext alloc] init] autorelease];
             [self.backgroundThreadManagedObjectContext setPersistentStoreCoordinator:self.managedObjectContext.persistentStoreCoordinator];
+            [self.backgroundThreadManagedObjectContext setMergePolicy:NSMergeByPropertyObjectTrumpMergePolicy];
             
             [self clearCoreDataUsingContext:self.backgroundThreadManagedObjectContext];
             

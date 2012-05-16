@@ -165,6 +165,7 @@ NSString * const SCHContentSyncComponentDidFailNotification = @"SCHContentSyncCo
             dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{
                 self.backgroundThreadManagedObjectContext = [[[NSManagedObjectContext alloc] init] autorelease];
                 [self.backgroundThreadManagedObjectContext setPersistentStoreCoordinator:self.managedObjectContext.persistentStoreCoordinator];
+                [self.backgroundThreadManagedObjectContext setMergePolicy:NSMergeByPropertyObjectTrumpMergePolicy];
 
                 NSArray *content = [result objectForKey:kSCHLibreAccessWebServiceUserContentList];
                 [self syncUserContentItems:content];

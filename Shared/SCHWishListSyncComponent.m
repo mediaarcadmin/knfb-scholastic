@@ -133,6 +133,7 @@ NSString * const SCHWishListSyncComponentDidFailNotification = @"SCHWishListSync
             dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{
                 self.backgroundThreadManagedObjectContext = [[[NSManagedObjectContext alloc] init] autorelease];
                 [self.backgroundThreadManagedObjectContext setPersistentStoreCoordinator:self.managedObjectContext.persistentStoreCoordinator];
+                [self.backgroundThreadManagedObjectContext setMergePolicy:NSMergeByPropertyObjectTrumpMergePolicy];
 
                 NSDictionary *deleteWishListItems = [self makeNullNil:[result objectForKey:kSCHWishListWebServiceDeleteWishListItems]];
                 NSArray *profileStatusList = [self makeNullNil:[deleteWishListItems objectForKey:kSCHWishListWebServiceProfileStatusList]];                
@@ -181,6 +182,7 @@ NSString * const SCHWishListSyncComponentDidFailNotification = @"SCHWishListSync
             dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{
                 self.backgroundThreadManagedObjectContext = [[[NSManagedObjectContext alloc] init] autorelease];
                 [self.backgroundThreadManagedObjectContext setPersistentStoreCoordinator:self.managedObjectContext.persistentStoreCoordinator];
+                [self.backgroundThreadManagedObjectContext setMergePolicy:NSMergeByPropertyObjectTrumpMergePolicy];
                 
                 NSDictionary *wishListItems = [self makeNullNil:[result objectForKey:kSCHWishListWebServiceGetWishListItems]];
                 NSArray *profileItems = [self makeNullNil:[wishListItems objectForKey:kSCHWishListWebServiceProfileItemList]];
