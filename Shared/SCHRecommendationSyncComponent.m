@@ -220,6 +220,7 @@ static NSTimeInterval const kSCHRecommendationSyncComponentBookSyncDelayTimeInte
                 if ([profiles count] > 0) {
                     [self syncRecommendationProfiles:profiles];                        
                 }
+                
                 [self backgroundSave:NO];
                 self.backgroundThreadManagedObjectContext = nil;
                 
@@ -257,6 +258,7 @@ static NSTimeInterval const kSCHRecommendationSyncComponentBookSyncDelayTimeInte
                 if ([books count] > 0) { 
                     [self syncRecommendationISBNs:books];            
                 }            
+                
                 [self backgroundSave:NO];
                 self.backgroundThreadManagedObjectContext = nil;
 
@@ -315,6 +317,10 @@ static NSTimeInterval const kSCHRecommendationSyncComponentBookSyncDelayTimeInte
     
     if ([sampleBooks count] > 0) {
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{
+            self.backgroundThreadManagedObjectContext = [[[NSManagedObjectContext alloc] init] autorelease];
+            [self.backgroundThreadManagedObjectContext setPersistentStoreCoordinator:self.managedObjectContext.persistentStoreCoordinator];
+            [self.backgroundThreadManagedObjectContext setMergePolicy:NSMergeByPropertyObjectTrumpMergePolicy];
+            
             NSMutableArray *sampleBooksObject = [NSMutableArray arrayWithCapacity:[sampleBooks count]];
             
             for (SCHUserContentItem *item in sampleBooks) {
@@ -332,7 +338,10 @@ static NSTimeInterval const kSCHRecommendationSyncComponentBookSyncDelayTimeInte
                                               [NSArray arrayWithObject:currentRecommendation], kSCHRecommendationWebServiceItems, nil]];
             }
             
-            [self syncRecommendationISBNs:sampleBooksObject];            
+            [self syncRecommendationISBNs:sampleBooksObject];  
+            
+            [self backgroundSave:NO];
+            self.backgroundThreadManagedObjectContext = nil;            
         });
     }
 }
