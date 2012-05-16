@@ -238,7 +238,16 @@ typedef enum
     [self.gridView setBackgroundColor:[UIColor clearColor]];
     
     if ([[SCHAppStateManager sharedAppStateManager] isSampleStore]) {
-        [self.gridView setFooterText:NSLocalizedString(@"Notes and highlights made to sample eBooks will be lost when you sign in to your Scholastic account.", @"")];
+        
+        NSString *footerText = NSLocalizedString(@"Notes and highlights made to sample eBooks will be lost when you sign in to your Scholastic account.", @"");
+        
+#if IPHONE_HIGHLIGHTS_DISABLED
+        if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
+            footerText = NSLocalizedString(@"Notes made in sample eBooks will be lost when you sign in to your Scholastic account.", @"");
+        }
+#endif
+        
+        [self.gridView setFooterText:footerText];
         [self.gridView setFooterTextIsDark:[[SCHThemeManager sharedThemeManager] gridTextColorIsDark]];
     }
     

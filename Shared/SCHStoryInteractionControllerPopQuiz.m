@@ -16,6 +16,7 @@
 @property (nonatomic, assign) NSInteger currentQuestionIndex;
 @property (nonatomic, assign) NSInteger score;
 @property (nonatomic, assign) NSInteger simultaneousTapCount;
+@property (nonatomic, assign) BOOL successfullyCompleted;
 
 - (void)setupQuestionView;
 - (void)setupScoreView;
@@ -35,6 +36,7 @@
 @synthesize currentQuestionIndex;
 @synthesize score;
 @synthesize simultaneousTapCount;
+@synthesize successfullyCompleted;
 
 - (void)dealloc
 {
@@ -44,6 +46,26 @@
     [scoreLabel release];
     [scoreSublabel release];
     [super dealloc];
+}
+
+- (id)initWithStoryInteraction:(SCHStoryInteraction *)storyInteraction
+{
+    self = [super initWithStoryInteraction:storyInteraction];
+    
+    if (self) {
+        self.successfullyCompleted = NO;
+    }
+    
+    return self;
+}
+
+- (void)closeButtonTapped:(id)sender
+{
+    if (self.successfullyCompleted) {
+        self.controllerState = SCHStoryInteractionControllerStateInteractionFinishedSuccessfully;
+    }
+    
+    [super closeButtonTapped:sender];    
 }
 
 - (SCHStoryInteractionPopQuizQuestion *)currentQuestion
@@ -91,7 +113,7 @@
         self.scoreSublabel.text = popQuiz.scoreResponseMedium;
     } else {
         self.scoreSublabel.text = popQuiz.scoreResponseHigh;
-        self.controllerState = SCHStoryInteractionControllerStateInteractionFinishedSuccessfully;
+        self.successfullyCompleted = YES;
     }
     [self enqueueAudioWithPath:[self.storyInteraction storyInteractionRevealSoundFilename] fromBundle:YES];
 }
