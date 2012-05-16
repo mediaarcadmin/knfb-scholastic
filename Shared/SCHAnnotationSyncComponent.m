@@ -39,6 +39,10 @@ NSString * const SCHAnnotationSyncComponentProfileIDs = @"SCHAnnotationSyncCompo
 @interface SCHAnnotationSyncComponent ()
 
 @property (nonatomic, retain) SCHLibreAccessWebService *libreAccessWebService;
+@property (nonatomic, retain) NSManagedObjectContext *backgroundThreadManagedObjectContext;
+@property (retain, nonatomic) NSMutableDictionary *annotations;
+@property (retain, nonatomic) NSMutableArray *savedAnnotations;
+@property (nonatomic, retain) NSDate *lastSyncSaveCalled;
 
 - (NSNumber *)currentProfile;
 - (BOOL)updateProfileContentAnnotations;
@@ -112,19 +116,14 @@ NSString * const SCHAnnotationSyncComponentProfileIDs = @"SCHAnnotationSyncCompo
 - (void)backgroundSave:(BOOL)batch;
 - (NSArray *)removeNewlyCreatedAndSavedAnnotations:(NSArray *)annotationArray;
 
-@property (retain, nonatomic) NSMutableDictionary *annotations;
-@property (retain, nonatomic) NSMutableArray *savedAnnotations;
-@property (nonatomic, retain) NSManagedObjectContext *backgroundThreadManagedObjectContext;
-@property (nonatomic, retain) NSDate *lastSyncSaveCalled;
-
 @end
 
 @implementation SCHAnnotationSyncComponent
 
 @synthesize libreAccessWebService;
+@synthesize backgroundThreadManagedObjectContext;
 @synthesize annotations;
 @synthesize savedAnnotations;
-@synthesize backgroundThreadManagedObjectContext;
 @synthesize lastSyncSaveCalled;
 
 - (id)init
@@ -145,10 +144,10 @@ NSString * const SCHAnnotationSyncComponentProfileIDs = @"SCHAnnotationSyncCompo
 {
     libreAccessWebService.delegate = nil;
 	[libreAccessWebService release], libreAccessWebService = nil;
-
+	[backgroundThreadManagedObjectContext release], backgroundThreadManagedObjectContext = nil;
+    
 	[annotations release], annotations = nil;
     [savedAnnotations release], savedAnnotations = nil;
-	[backgroundThreadManagedObjectContext release], backgroundThreadManagedObjectContext = nil;
     [lastSyncSaveCalled release], lastSyncSaveCalled = nil;
     
 	[super dealloc];
@@ -291,7 +290,16 @@ NSString * const SCHAnnotationSyncComponentProfileIDs = @"SCHAnnotationSyncCompo
     if (profileID != nil) {
         @try {
             if([method compare:kSCHLibreAccessWebServiceSaveProfileContentAnnotationsForRatings] == NSOrderedSame) {
-                [self processSaveProfileContentAnnotations:profileID result:result];
+                dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{
+                    self.backgroundThreadManagedObjectContext = [[[NSManagedObjectContext alloc] init] autorelease];
+                    [self.backgroundThreadManagedObjectContext setPersistentStoreCoordinator:self.managedObjectContext.persistentStoreCoordinator];
+                    [self.backgroundThreadManagedObjectContext setMergePolicy:NSMergeByPropertyObjectTrumpMergePolicy];
+                    
+                    [self processSaveProfileContentAnnotations:profileID result:result];
+                    
+                    [self backgroundSave:NO];
+                    self.backgroundThreadManagedObjectContext = nil;
+                });
             } else if([method compare:kSCHLibreAccessWebServiceListProfileContentAnnotationsForRatings] == NSOrderedSame) {
                 BOOL canSyncNotes = [[SCHAppStateManager sharedAppStateManager] canSyncNotes];
                 BOOL canSyncRating = [[SCHAppStateManager sharedAppStateManager] isCOPPACompliant];
@@ -310,7 +318,8 @@ NSString * const SCHAnnotationSyncComponentProfileIDs = @"SCHAnnotationSyncCompo
                                            canSyncNotes:canSyncNotes
                                           canSyncRating:canSyncRating
                                                syncDate:syncDate];	            
-                    
+
+                    [self backgroundSave:NO];
                     self.backgroundThreadManagedObjectContext = nil;
                     
                     dispatch_async(dispatch_get_main_queue(), ^{
@@ -346,6 +355,7 @@ NSString * const SCHAnnotationSyncComponentProfileIDs = @"SCHAnnotationSyncCompo
 - (void)processSaveProfileContentAnnotations:(NSNumber *)profileID 
                                       result:(NSDictionary *)result
 {
+    NSAssert([NSThread isMainThread] == NO, @"processSaveProfileContentAnnotations MUST NOT be executed on the main thread");        
     NSArray *books = [self.annotations objectForKey:profileID];
     BOOL shouldSyncNotes = NO;
     
@@ -369,34 +379,36 @@ NSString * const SCHAnnotationSyncComponentProfileIDs = @"SCHAnnotationSyncCompo
         }
     }
     
-    if (self.saveOnly == NO) {
-        self.isSynchronizing = [self.libreAccessWebService listProfileContentAnnotations:books 
-                                                                              forProfile:profileID];
-        if (self.isSynchronizing == NO) {
-            [[SCHAuthenticationManager sharedAuthenticationManager] authenticateWithSuccessBlock:^(SCHAuthenticationManagerConnectivityMode connectivityMode){
-                if (connectivityMode == SCHAuthenticationManagerConnectivityModeOnline) {
-                    [self.delegate authenticationDidSucceed];
-                } else {
+    dispatch_async(dispatch_get_main_queue(), ^{
+        if (self.saveOnly == NO) {
+            self.isSynchronizing = [self.libreAccessWebService listProfileContentAnnotations:books 
+                                                                                  forProfile:profileID];
+            if (self.isSynchronizing == NO) {
+                [[SCHAuthenticationManager sharedAuthenticationManager] authenticateWithSuccessBlock:^(SCHAuthenticationManagerConnectivityMode connectivityMode){
+                    if (connectivityMode == SCHAuthenticationManagerConnectivityModeOnline) {
+                        [self.delegate authenticationDidSucceed];
+                    } else {
+                        self.isSynchronizing = NO;
+                    }
+                } failureBlock:^(NSError *error){
                     self.isSynchronizing = NO;
-                }
-            } failureBlock:^(NSError *error){
-                self.isSynchronizing = NO;
-                [[NSNotificationCenter defaultCenter] postNotificationName:SCHSyncComponentDidFailAuthenticationNotification
-                                                                    object:self];
-            }];	
-        }            
-    } else {
-        [[NSNotificationCenter defaultCenter] postNotificationName:SCHAnnotationSyncComponentDidCompleteNotification 
-                                                            object:self 
-                                                          userInfo:[NSDictionary dictionaryWithObject:(profileID == nil ? (id)[NSNull null] : profileID)
-                                                                                               forKey:SCHAnnotationSyncComponentProfileIDs]];        
-        if (profileID != nil) {
-            [self.annotations removeObjectForKey:profileID];
+                    [[NSNotificationCenter defaultCenter] postNotificationName:SCHSyncComponentDidFailAuthenticationNotification
+                                                                        object:self];
+                }];	
+            }            
+        } else {
+            [[NSNotificationCenter defaultCenter] postNotificationName:SCHAnnotationSyncComponentDidCompleteNotification 
+                                                                object:self 
+                                                              userInfo:[NSDictionary dictionaryWithObject:(profileID == nil ? (id)[NSNull null] : profileID)
+                                                                                                   forKey:SCHAnnotationSyncComponentProfileIDs]];        
+            if (profileID != nil) {
+                [self.annotations removeObjectForKey:profileID];
+            }
+            
+            [super method:nil didCompleteWithResult:nil userInfo:nil];
+            [self.savedAnnotations removeAllObjects];        
         }
-        
-        [super method:nil didCompleteWithResult:nil userInfo:nil];
-        [self.savedAnnotations removeAllObjects];        
-    }
+    });
 }
 
 // track annotations that need to be saved
@@ -415,6 +427,7 @@ NSString * const SCHAnnotationSyncComponentProfileIDs = @"SCHAnnotationSyncCompo
 // the next list annotation will then resolve the issue
 - (void)applyAnnotationSaves:(NSArray *)annotationsArray
 {
+    NSAssert([NSThread isMainThread] == NO, @"processSaveProfileContentAnnotations MUST NOT be executed on the main thread");            
     NSManagedObjectID *managedObjectID = nil;
     NSManagedObject *annotationManagedObject = nil;
     
@@ -423,7 +436,7 @@ NSString * const SCHAnnotationSyncComponentProfileIDs = @"SCHAnnotationSyncCompo
             managedObjectID = [self.savedAnnotations objectAtIndex:0];
             if (managedObjectID != nil) {
                 BOOL updatedID = NO;
-                annotationManagedObject = [self.managedObjectContext objectWithID:managedObjectID];
+                annotationManagedObject = [self.backgroundThreadManagedObjectContext objectWithID:managedObjectID];
                 
                 if ([[[annotation objectForKey:kSCHLibreAccessWebServiceStatusMessage] 
                       objectForKey:kSCHLibreAccessWebServiceStatus] statusCodeValue] == kSCHStatusCodesSuccess) {
@@ -439,7 +452,7 @@ NSString * const SCHAnnotationSyncComponentProfileIDs = @"SCHAnnotationSyncCompo
                             break;
                         case kSCHSaveActionsRemove:                            
                         {
-                            [self.managedObjectContext deleteObject:annotationManagedObject];
+                            [self.backgroundThreadManagedObjectContext deleteObject:annotationManagedObject];
                         }
                             break;
 
@@ -460,7 +473,7 @@ NSString * const SCHAnnotationSyncComponentProfileIDs = @"SCHAnnotationSyncCompo
                 [self.savedAnnotations removeObjectAtIndex:0];
             }
         }
-        [self save];
+        [self backgroundSave:NO];
     }
 }
 

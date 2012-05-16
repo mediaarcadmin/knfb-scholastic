@@ -21,14 +21,18 @@ NSString * const SCHSettingsSyncComponentDidFailNotification = @"SCHSettingsSync
 @interface SCHSettingsSyncComponent ()
 
 @property (nonatomic, retain) SCHLibreAccessWebService *libreAccessWebService;
+@property (nonatomic, retain) NSManagedObjectContext *backgroundThreadManagedObjectContext;
 
+- (void)clearCoreDataUsingContext:(NSManagedObjectContext *)aManagedObjectContext;
 - (void)updateUserSettings:(NSArray *)settingsList;
+- (void)backgroundSave:(BOOL)batch;
 
 @end
 
 @implementation SCHSettingsSyncComponent
 
 @synthesize libreAccessWebService;
+@synthesize backgroundThreadManagedObjectContext;
 
 - (id)init
 {
@@ -45,6 +49,7 @@ NSString * const SCHSettingsSyncComponentDidFailNotification = @"SCHSettingsSync
 {
     libreAccessWebService.delegate = nil;
 	[libreAccessWebService release], libreAccessWebService = nil;
+    [backgroundThreadManagedObjectContext release], backgroundThreadManagedObjectContext = nil;
     
 	[super dealloc];
 }
@@ -94,9 +99,14 @@ NSString * const SCHSettingsSyncComponentDidFailNotification = @"SCHSettingsSync
 
 - (void)clearCoreData
 {
+    [self clearCoreDataUsingContext:self.managedObjectContext];
+}
+
+- (void)clearCoreDataUsingContext:(NSManagedObjectContext *)aManagedObjectContext
+{
 	NSError *error = nil;
-    
-	if (![self.managedObjectContext BITemptyEntity:kSCHSettingItem error:&error]) {
+	
+	if (![aManagedObjectContext BITemptyEntity:kSCHSettingItem error:&error]) {
 		NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
 	}	
 }
@@ -107,9 +117,21 @@ NSString * const SCHSettingsSyncComponentDidFailNotification = @"SCHSettingsSync
       userInfo:(NSDictionary *)userInfo
 {	
     @try {
-        [self updateUserSettings:[result objectForKey:kSCHLibreAccessWebServiceUserSettingsList]];
-        [[NSNotificationCenter defaultCenter] postNotificationName:SCHSettingsSyncComponentDidCompleteNotification object:self];			
-        [super method:method didCompleteWithResult:nil userInfo:userInfo];	
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{        
+            self.backgroundThreadManagedObjectContext = [[[NSManagedObjectContext alloc] init] autorelease];
+            [self.backgroundThreadManagedObjectContext setPersistentStoreCoordinator:self.managedObjectContext.persistentStoreCoordinator];
+            [self.backgroundThreadManagedObjectContext setMergePolicy:NSMergeByPropertyObjectTrumpMergePolicy];
+            
+            [self updateUserSettings:[result objectForKey:kSCHLibreAccessWebServiceUserSettingsList]];
+            
+            [self backgroundSave:NO];
+            self.backgroundThreadManagedObjectContext = nil;
+            
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [[NSNotificationCenter defaultCenter] postNotificationName:SCHSettingsSyncComponentDidCompleteNotification object:self];			
+                [super method:method didCompleteWithResult:nil userInfo:userInfo];	
+            });                
+        });                                                        
     }
     @catch (NSException *exception) {
         [[NSNotificationCenter defaultCenter] postNotificationName:SCHSettingsSyncComponentDidFailNotification 
@@ -135,17 +157,35 @@ NSString * const SCHSettingsSyncComponentDidFailNotification = @"SCHSettingsSync
 
 - (void)updateUserSettings:(NSArray *)settingsList
 {	
+    NSAssert([NSThread isMainThread] == NO, @"updateUserSettings MUST NOT be executed on the main thread");        
     if ([settingsList count] > 0) {
-        [self clearCoreData];
+        [self clearCoreDataUsingContext:self.backgroundThreadManagedObjectContext];
         
         for (id setting in settingsList) {
-            SCHSettingItem *newUserSettingsItem = [NSEntityDescription insertNewObjectForEntityForName:kSCHSettingItem inManagedObjectContext:self.managedObjectContext];
+            SCHSettingItem *newUserSettingsItem = [NSEntityDescription insertNewObjectForEntityForName:kSCHSettingItem 
+                                                                                inManagedObjectContext:self.backgroundThreadManagedObjectContext];
             
             newUserSettingsItem.SettingName = [self makeNullNil:[setting objectForKey:kSCHLibreAccessWebServiceSettingName]];
             newUserSettingsItem.SettingValue = [self makeNullNil:[setting objectForKey:kSCHLibreAccessWebServiceSettingValue]];
         }
         
-        [self save];
+        [self backgroundSave:NO];
+    }
+}
+
+- (void)backgroundSave:(BOOL)batch
+{
+    NSAssert([NSThread isMainThread] == NO, @"backgroundSave MUST NOT be executed on the main thread");
+    
+    NSError *error = nil;
+    static NSUInteger batchCount = 0;
+    
+    if (batch == NO || ++batchCount > 250) {
+        batchCount = 0;
+        if ([self.backgroundThreadManagedObjectContext hasChanges] == YES &&
+            ![self.backgroundThreadManagedObjectContext save:&error]) {
+            NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
+        } 
     }
 }
 
