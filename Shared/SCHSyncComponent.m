@@ -110,6 +110,8 @@ NSString * const SCHSyncComponentDidFailAuthenticationNotification = @"SCHSyncCo
 	[super method:method didFailWithError:error requestInfo:requestInfo result:result];
 }
 
+#pragma mark - Background task methods
+
 - (void)beginBackgroundTask
 {
     if (self.backgroundTaskIdentifier == UIBackgroundTaskInvalid) {
