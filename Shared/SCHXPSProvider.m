@@ -84,4 +84,21 @@
     return [self dataForComponentAtPath:@"Metadata/Thumbnail.jpg"];
 }
 
+#pragma mark - Overriden Methods
+
+- (UIImage *)thumbnailForPage:(NSInteger)pageNumber 
+{
+    // We override this method because we know thumbnails are always deflated inside scholastic books. This gives us non-blocking access to them.
+    
+    UIImage *thumbnail = nil;
+    NSString *thumbPath = [KNFBXPSMetaDataDir stringByAppendingPathComponent:[NSString stringWithFormat:@"%d.jpg", pageNumber]];
+    NSData *thumbData = [self dataForComponentAtPath:thumbPath hint:kKNFBXPSProviderComponentDataHintDeflated];
+    
+    if (thumbData) {
+        thumbnail = [UIImage imageWithData:thumbData];
+    }
+    
+    return thumbnail;
+}
+
 @end
