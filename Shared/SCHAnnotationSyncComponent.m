@@ -296,6 +296,7 @@ NSString * const SCHAnnotationSyncComponentProfileIDs = @"SCHAnnotationSyncCompo
                     [self.backgroundThreadManagedObjectContext setMergePolicy:NSMergeByPropertyObjectTrumpMergePolicy];
                     
                     [self processSaveProfileContentAnnotations:profileID result:result];
+                    
                     [self backgroundSave:NO];
                     self.backgroundThreadManagedObjectContext = nil;
                 });

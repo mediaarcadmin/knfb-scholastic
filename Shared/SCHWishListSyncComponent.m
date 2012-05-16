@@ -466,7 +466,7 @@ NSString * const SCHWishListSyncComponentDidFailNotification = @"SCHWishListSync
                 case NSOrderedSame:
                     [self syncWishListProfile:webItem 
                           withWishListProfile:localItem];
-                    [self save];
+                    [self backgroundSave:YES];
                     webItem = nil;
                     localItem = nil;
                     break;
