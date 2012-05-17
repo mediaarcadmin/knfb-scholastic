@@ -57,7 +57,8 @@
 
 - (void)bookmarkPoint:(id)bookmarkPoint toParagraphID:(id *)paragraphID wordOffset:(uint32_t *)wordOffset
 {
-    
+    *paragraphID = nil;
+    *wordOffset = 0;
 }
 
 - (id)bookmarkPointFromParagraphID:(id)paragraphID wordOffset:(uint32_t)wordOffset
