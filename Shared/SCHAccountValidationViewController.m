@@ -146,8 +146,8 @@ static const CGFloat kDeregisterContentHeightLandscape = 380;
     } else {
         if ([[passwordField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]] length] < 1) {
             LambdaAlert *alert = [[LambdaAlert alloc]
-                                  initWithTitle:NSLocalizedString(@"Error", @"error alert title")
-                                  message:NSLocalizedString(@"Incorrect password", @"error alert title")];
+                                  initWithTitle:NSLocalizedString(@"Incorrect Password", @"error alert title")
+                                  message:NSLocalizedString(@"Please enter the password", @"error alert title")];
             [alert addButtonWithTitle:NSLocalizedString(@"OK", @"") block:nil];
             [alert show];
             [alert release];                

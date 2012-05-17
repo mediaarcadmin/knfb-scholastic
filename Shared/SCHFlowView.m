@@ -391,6 +391,12 @@ static void sortedHighlightRangePredicateInit() {
 
 - (NSArray *)sortedHighlightsInRange:(SCHBookRange *)range {
     
+#if IPHONE_HIGHLIGHTS_DISABLED
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
+        return nil;
+    }
+#endif
+    
     SCHBookPoint *startBookPoint = range.startPoint;
     SCHBookPoint *endBookPoint = range.endPoint;
         

@@ -33,11 +33,11 @@
 @property (nonatomic, retain) SCHParentalToolsWebViewController *parentalToolsWebViewController; 
 
 - (void)checkForBookUpdates;
+- (void)checkForBookshelves;
 - (void)showUpdatesBubble:(BOOL)show;
 - (void)updatesBubbleTapped:(UIGestureRecognizer *)gr;
 - (void)obtainPasswordThenPushBookshelvesControllerWithProfileItem:(SCHProfileItem *)profileItem;
 - (void)queryPasswordBeforePushingBookshelvesControllerWithProfileItem:(SCHProfileItem *)profileItem;
-- (SCHBookIdentifier *)bookToLaunchForBookbookShelfViewController:(SCHBookShelfViewController *)bookShelfViewController;
 - (void)pushBookshelvesControllerWithProfileItem:(SCHProfileItem *)profileItem 
                                         animated:(BOOL)animated;
 - (void)pushSettingsControllerAnimated:(BOOL)animated;
@@ -393,7 +393,7 @@ didSelectButtonAnimated:(BOOL)animated
         [self.headerLabel setNumberOfLines:1];
     } else {
         [self.headerLabel setText:NSLocalizedString(@"Please go to Parent Tools to create bookshelves.", @"Profile header text for 0 bookshelves")];
-        [self.headerLabel setNumberOfLines:2];
+        [self.headerLabel setNumberOfLines:2];        
     }
     
     return fetchedResultsController_;
@@ -510,23 +510,6 @@ didSelectButtonAnimated:(BOOL)animated
 
 #pragma mark - Push bookshelves controller
 
-- (SCHBookIdentifier *)bookToLaunchForBookbookShelfViewController:(SCHBookShelfViewController *)bookShelfViewController
-{
-    SCHBookIdentifier *bookIdentifier = nil;
-    SCHProfileItem *profileItem = bookShelfViewController.profileItem;
-    
-    if (profileItem.AppProfile.AutomaticallyLaunchBook != nil) {
-        bookIdentifier = [[[SCHBookIdentifier alloc] initWithEncodedString:profileItem.AppProfile.AutomaticallyLaunchBook] autorelease];
-    }
-    
-    if (bookIdentifier && [bookShelfViewController isBookOnShelf:bookIdentifier]) {
-        return bookIdentifier;
-    } else {
-        return nil;
-    }
-
-}
-
 - (NSArray *)viewControllersForProfileItem:(SCHProfileItem *)profileItem showWelcome:(BOOL)welcome
 {
     NSMutableArray *viewControllers = [NSMutableArray array];
@@ -538,21 +521,6 @@ didSelectButtonAnimated:(BOOL)animated
     bookShelfViewController.showWelcome = welcome;
     
     [viewControllers addObject:bookShelfViewController];
-    
-    SCHBookIdentifier *bookIdentifier = [self bookToLaunchForBookbookShelfViewController:bookShelfViewController];
-    
-    if (bookIdentifier) {        
-        NSError *error;
-        SCHReadingViewController *readingViewController = [bookShelfViewController openBook:bookIdentifier error:&error];
-        
-        if (readingViewController) {
-            [viewControllers addObject:readingViewController];
-        } else {
-            NSLog(@"Failed to automatically launch an eBook with error: %@ : %@", error, [error localizedDescription]);
-        }
-        
-        profileItem.AppProfile.AutomaticallyLaunchBook = nil;
-    }
 
     return viewControllers;
 }
@@ -603,17 +571,26 @@ didSelectButtonAnimated:(BOOL)animated
 - (void)dismissModalViewControllerAnimated:(BOOL)animated withCompletionHandler:(dispatch_block_t)completion;
 {
     
+    SCHProfileViewController_Shared *weakSelf = self;
+    
+    dispatch_block_t afterDismiss = ^{
+        if (completion) {
+            completion();
+        }
+        
+        [weakSelf checkForBookshelves];
+    };
+    
     [CATransaction begin];
     
-    if (completion) {
-        [CATransaction setCompletionBlock:completion];
-    }
+    [CATransaction setCompletionBlock:afterDismiss];
     
     if (self.modalViewController) {
         [self dismissModalViewControllerAnimated:animated];
     }
     
     [CATransaction commit];
+
 }
 
 - (void)popToRootViewControllerAnimated:(BOOL)animated withCompletionHandler:(dispatch_block_t)completion
@@ -791,6 +768,18 @@ didSelectButtonAnimated:(BOOL)animated
         [alert show];
         [alert release];
     }];  
+}
+
+- (void)checkForBookshelves
+{
+    if ([[self.fetchedResultsController fetchedObjects] count] == 0) {
+                
+        __block SCHProfileViewController_Shared *weakSelf = self;
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [weakSelf.profileSetupDelegate waitingForBookshelves];
+        });
+    }
 }
 
 - (void)profileSyncDidComplete:(NSNotification *)notification

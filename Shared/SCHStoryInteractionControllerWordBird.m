@@ -127,18 +127,26 @@ enum {
     self.answerContainer.layer.masksToBounds = YES;
 
     NSInteger letterCount = [[[self currentQuestion] word] length];
+    
+    // reduce letter gap if there are lots of letters
+    CGFloat letterGap = kAnswerLetterGap;
+    if (letterCount >= 10) {
+        letterGap = 2;
+    }
+    
     NSMutableArray *letters = [NSMutableArray arrayWithCapacity:letterCount];
 
-    CGFloat letterWidth = floorf(MIN(kAnswerLetterWidth, (CGRectGetWidth(self.answerContainer.bounds)-kAnswerLetterGap*2)/letterCount-kAnswerLetterGap));
-    CGFloat width = letterWidth*letterCount + kAnswerLetterGap*(letterCount-1);
+    CGFloat letterWidth = floorf(MIN(kAnswerLetterWidth, (CGRectGetWidth(self.answerContainer.bounds)-letterGap*2)/letterCount-letterGap));
+    CGFloat width = letterWidth*letterCount + letterGap*(letterCount-1);
     CGFloat left = (CGRectGetWidth(self.answerContainer.bounds)-width)/2;
     CGFloat top = (CGRectGetHeight(self.answerContainer.bounds)-kAnswerLetterHeight)/2;
     
     for (NSInteger letterIndex = 0; letterIndex < letterCount; ++letterIndex) {
-        CGRect frame = CGRectIntegral(CGRectMake(left+(letterWidth+kAnswerLetterGap)*letterIndex, top, letterWidth, kAnswerLetterHeight));
-        SCHStoryInteractionWordBirdAnswerLetterView *letterView = [[SCHStoryInteractionWordBirdAnswerLetterView alloc] initWithFrame:frame];
+        CGRect frame = CGRectIntegral(CGRectMake(left+(letterWidth+letterGap)*letterIndex, top, letterWidth, kAnswerLetterHeight));
+        SCHStoryInteractionWordBirdAnswerLetterView *letterView = [[SCHStoryInteractionWordBirdAnswerLetterView alloc] initWithFrame:frame wordLength:letterCount];
         letterView.textColor = answerColor;
         letterView.letter = ' ';
+        letterView.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin;
         [letters addObject:letterView];
         [self.answerContainer addSubview:letterView];
         [letterView release];

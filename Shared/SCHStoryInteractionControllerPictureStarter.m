@@ -387,6 +387,7 @@ enum SCHToolType {
             if (buttonIndex == actionSheet.destructiveButtonIndex) {
                 [self.drawingCanvas clear];
                 self.drawingChanged = NO;
+                self.clearButton.enabled = NO;
             }
             self.clearActionSheet = nil;
         }
@@ -470,6 +471,7 @@ enum SCHToolType {
 - (void)canvas:(SCHPictureStarterCanvas *)canvas didCommitDrawingInstruction:(id<SCHPictureStarterDrawingInstruction>)drawingInstruction
 {
     self.drawingChanged = YES;
+    self.clearButton.enabled = YES;
 }
 
 #pragma mark - Save to photo library
