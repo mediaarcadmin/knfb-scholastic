@@ -11,7 +11,7 @@
 
 @interface SCHSyncComponent ()
 
-- (void)save;
+- (void)saveWithManagedObjectContext:(NSManagedObjectContext *)aManagedObjectContext;
 
 @property (assign, nonatomic) UIBackgroundTaskIdentifier backgroundTaskIdentifier;
 

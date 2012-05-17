@@ -28,24 +28,29 @@ NSString * const SCHProfileSyncComponentDidFailNotification = @"SCHProfileSyncCo
 @interface SCHProfileSyncComponent ()
 
 @property (nonatomic, retain) SCHLibreAccessWebService *libreAccessWebService;
-@property (nonatomic, retain) NSManagedObjectContext *backgroundThreadManagedObjectContext;
-@property (retain, nonatomic) NSMutableArray *savedProfiles;
+@property (retain, atomic) NSMutableArray *savedProfiles;
 
 - (void)trackProfileSaves:(NSArray *)profilesArray;
-- (void)applyProfileSaves:(NSArray *)profilesArray;
-- (void)processSaveUserProfilesWithResult:(NSDictionary *)result;
+- (void)applyProfileSaves:(NSArray *)profilesArray
+     managedObjectContext:(NSManagedObjectContext *)aManagedObjectContext;
+- (void)processSaveUserProfilesWithResult:(NSDictionary *)result
+                     managedObjectContext:(NSManagedObjectContext *)aManagedObjectContext;
 - (BOOL)updateProfiles;
+- (NSArray *)localProfilesWithManagedObjectContext:(NSManagedObjectContext *)aManagedObjectContext;
+- (void)syncProfiles:(NSArray *)profileList
+managedObjectContext:(NSManagedObjectContext *)aManagedObjectContext;
+- (SCHProfileItem *)addProfile:(NSDictionary *)webProfile
+          managedObjectContext:(NSManagedObjectContext *)aManagedObjectContext;
 - (BOOL)profileIDIsValid:(NSNumber *)profileID;
 - (void)syncProfile:(NSDictionary *)webProfile withProfile:(SCHProfileItem *)localProfile;
-- (void)removeWishListForProfile:(SCHProfileItem *)profileItem;
-- (void)backgroundSave:(BOOL)batch;
+- (void)removeWishListForProfile:(SCHProfileItem *)profileItem
+            managedObjectContext:(NSManagedObjectContext *)aManagedObjectContext;
 
 @end
 
 @implementation SCHProfileSyncComponent
 
 @synthesize libreAccessWebService;
-@synthesize backgroundThreadManagedObjectContext;
 @synthesize savedProfiles;
 
 - (id)init 
@@ -64,7 +69,6 @@ NSString * const SCHProfileSyncComponentDidFailNotification = @"SCHProfileSyncCo
 {
     libreAccessWebService.delegate = nil;
 	[libreAccessWebService release], libreAccessWebService = nil;
-	[backgroundThreadManagedObjectContext release], backgroundThreadManagedObjectContext = nil;
     
     [savedProfiles release], savedProfiles = nil;
     [super dealloc];
@@ -114,25 +118,27 @@ NSString * const SCHProfileSyncComponentDidFailNotification = @"SCHProfileSyncCo
     @try {
         if([method compare:kSCHLibreAccessWebServiceSaveUserProfiles] == NSOrderedSame) {
             dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{
-                self.backgroundThreadManagedObjectContext = [[[NSManagedObjectContext alloc] init] autorelease];
-                [self.backgroundThreadManagedObjectContext setPersistentStoreCoordinator:self.managedObjectContext.persistentStoreCoordinator];
-                [self.backgroundThreadManagedObjectContext setMergePolicy:NSMergeByPropertyObjectTrumpMergePolicy];
+                NSManagedObjectContext *backgroundThreadManagedObjectContext = [[NSManagedObjectContext alloc] init];
+                [backgroundThreadManagedObjectContext setPersistentStoreCoordinator:self.managedObjectContext.persistentStoreCoordinator];
+                [backgroundThreadManagedObjectContext setMergePolicy:NSMergeByPropertyObjectTrumpMergePolicy];
                 
-                [self processSaveUserProfilesWithResult:result];
+                [self processSaveUserProfilesWithResult:result
+                                   managedObjectContext:backgroundThreadManagedObjectContext];
                 
-                [self backgroundSave:NO];
-                self.backgroundThreadManagedObjectContext = nil;
+                [self saveWithManagedObjectContext:backgroundThreadManagedObjectContext];
+                [backgroundThreadManagedObjectContext release], backgroundThreadManagedObjectContext = nil;
             });                                
         } else if([method compare:kSCHLibreAccessWebServiceGetUserProfiles] == NSOrderedSame) {
             dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{
-                self.backgroundThreadManagedObjectContext = [[[NSManagedObjectContext alloc] init] autorelease];
-                [self.backgroundThreadManagedObjectContext setPersistentStoreCoordinator:self.managedObjectContext.persistentStoreCoordinator];
-                [self.backgroundThreadManagedObjectContext setMergePolicy:NSMergeByPropertyObjectTrumpMergePolicy];
+                NSManagedObjectContext *backgroundThreadManagedObjectContext = [[NSManagedObjectContext alloc] init];
+                [backgroundThreadManagedObjectContext setPersistentStoreCoordinator:self.managedObjectContext.persistentStoreCoordinator];
+                [backgroundThreadManagedObjectContext setMergePolicy:NSMergeByPropertyObjectTrumpMergePolicy];
                 
-                [self syncProfiles:[result objectForKey:kSCHLibreAccessWebServiceProfileList]];
+                [self syncProfiles:[result objectForKey:kSCHLibreAccessWebServiceProfileList] 
+                 managedObjectContext:backgroundThreadManagedObjectContext];
                 
-                [self backgroundSave:NO];
-                self.backgroundThreadManagedObjectContext = nil;
+                [self saveWithManagedObjectContext:backgroundThreadManagedObjectContext];
+                [backgroundThreadManagedObjectContext release], backgroundThreadManagedObjectContext = nil;
                 
                 dispatch_async(dispatch_get_main_queue(), ^{
                     [[NSNotificationCenter defaultCenter] postNotificationName:SCHProfileSyncComponentDidCompleteNotification 
@@ -164,9 +170,9 @@ NSString * const SCHProfileSyncComponentDidFailNotification = @"SCHProfileSyncCo
     }
 }
 
-- (void)applyProfileSaves:(NSArray *)profilesArray
+- (void)applyProfileSaves:(NSArray *)profilesArray 
+     managedObjectContext:(NSManagedObjectContext *)aManagedObjectContext
 {
-    NSAssert([NSThread isMainThread] == NO, @"applyProfileSaves MUST NOT be executed on the main thread");            
     NSManagedObjectID *managedObjectID = nil;
     NSManagedObject *profileManagedObject = nil;
     
@@ -174,7 +180,7 @@ NSString * const SCHProfileSyncComponentDidFailNotification = @"SCHProfileSyncCo
         if ([self.savedProfiles count] > 0) {
             managedObjectID = [self.savedProfiles objectAtIndex:0];
             if (managedObjectID != nil) {
-                profileManagedObject = [self.backgroundThreadManagedObjectContext objectWithID:managedObjectID];
+                profileManagedObject = [aManagedObjectContext objectWithID:managedObjectID];
                 
                 if ([[profile objectForKey:kSCHLibreAccessWebServiceStatus] statusCodeValue] == kSCHStatusCodesSuccess) {
                     switch ([[profile objectForKey:kSCHLibreAccessWebServiceStatus] saveActionValue]) {
@@ -185,14 +191,15 @@ NSString * const SCHProfileSyncComponentDidFailNotification = @"SCHProfileSyncCo
                                 [profileManagedObject setValue:profileID forKey:kSCHLibreAccessWebServiceID];
                             } else {
                                 // if the server didnt give us an ID then we remove the profile
-                                [self.backgroundThreadManagedObjectContext deleteObject:profileManagedObject];
+                                [aManagedObjectContext deleteObject:profileManagedObject];
                             }                                                    
                         }
                             break;
                         case kSCHSaveActionsRemove:                            
                         {
-                            [self removeWishListForProfile:(SCHProfileItem *)profileManagedObject];
-                            [self.backgroundThreadManagedObjectContext deleteObject:profileManagedObject];
+                            [self removeWishListForProfile:(SCHProfileItem *)profileManagedObject
+                                      managedObjectContext:aManagedObjectContext];
+                            [aManagedObjectContext deleteObject:profileManagedObject];
                         }
                             break;
                             
@@ -202,7 +209,7 @@ NSString * const SCHProfileSyncComponentDidFailNotification = @"SCHProfileSyncCo
                     }
                 } else {
                     // if the server wasnt happy then we remove the profile
-                    [self.backgroundThreadManagedObjectContext deleteObject:profileManagedObject];
+                    [aManagedObjectContext deleteObject:profileManagedObject];
                 }
                 
                 // We've attempted to save changes, reset to unmodified and now 
@@ -216,15 +223,16 @@ NSString * const SCHProfileSyncComponentDidFailNotification = @"SCHProfileSyncCo
                 [self.savedProfiles removeObjectAtIndex:0];
             }
         }
-        [self backgroundSave:NO];
+        [self saveWithManagedObjectContext:aManagedObjectContext];
     }
 }
 
 - (void)processSaveUserProfilesWithResult:(NSDictionary *)result
+                     managedObjectContext:(NSManagedObjectContext *)aManagedObjectContext
 {
-    NSAssert([NSThread isMainThread] == NO, @"processSaveUserProfilesWithResult MUST NOT be executed on the main thread");        
     if (result != nil && [self.savedProfiles count] > 0) {
-        [self applyProfileSaves:[result objectForKey:kSCHLibreAccessWebServiceProfileStatusList]];
+        [self applyProfileSaves:[result objectForKey:kSCHLibreAccessWebServiceProfileStatusList]
+           managedObjectContext:aManagedObjectContext];
     }        
     
     dispatch_async(dispatch_get_main_queue(), ^{
@@ -260,7 +268,8 @@ NSString * const SCHProfileSyncComponentDidFailNotification = @"SCHProfileSyncCo
     // server error so process the result
     if ([error domain] == kBITAPIErrorDomain && 
         [method compare:kSCHLibreAccessWebServiceSaveUserProfiles] == NSOrderedSame) {
-        [self processSaveUserProfilesWithResult:result];
+        [self processSaveUserProfilesWithResult:result 
+                           managedObjectContext:self.managedObjectContext];
     } else {
         [[NSNotificationCenter defaultCenter] postNotificationName:SCHProfileSyncComponentDidFailNotification 
                                                             object:self];		    
@@ -331,17 +340,16 @@ NSString * const SCHProfileSyncComponentDidFailNotification = @"SCHProfileSyncCo
 	return(ret);
 }
 
-- (NSArray *)localProfiles
+- (NSArray *)localProfilesWithManagedObjectContext:(NSManagedObjectContext *)aManagedObjectContext
 {
-    NSAssert([NSThread isMainThread] == NO, @"localProfiles MUST NOT be executed on the main thread");
 	NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
     NSError *error = nil;
 	
 	[fetchRequest setEntity:[NSEntityDescription entityForName:kSCHProfileItem 
-                                        inManagedObjectContext:self.backgroundThreadManagedObjectContext]];	
+                                        inManagedObjectContext:aManagedObjectContext]];	
 	[fetchRequest setSortDescriptors:[NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:kSCHLibreAccessWebServiceID ascending:YES]]];
 	
-	NSArray *ret = [self.backgroundThreadManagedObjectContext executeFetchRequest:fetchRequest error:&error];	
+	NSArray *ret = [aManagedObjectContext executeFetchRequest:fetchRequest error:&error];	
 	[fetchRequest release], fetchRequest = nil;
     if (ret == nil) {
         NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
@@ -350,14 +358,19 @@ NSString * const SCHProfileSyncComponentDidFailNotification = @"SCHProfileSyncCo
 	return(ret);
 }
 
-- (void)syncProfiles:(NSArray *)profileList
+- (void)syncProfilesFromMainThread:(NSArray *)profileList
+{
+    [self syncProfiles:profileList managedObjectContext:self.managedObjectContext];
+}
+
+- (void)syncProfiles:(NSArray *)profileList 
+managedObjectContext:(NSManagedObjectContext *)aManagedObjectContext
 {		
-    NSAssert([NSThread isMainThread] == NO, @"syncProfiles MUST NOT be executed on the main thread");
 	NSMutableArray *deletePool = [NSMutableArray array];
 	NSMutableArray *creationPool = [NSMutableArray array];
 	
 	NSArray *webProfiles = [profileList sortedArrayUsingDescriptors:[NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:kSCHLibreAccessWebServiceID ascending:YES]]];		
-	NSArray *localProfiles = [self localProfiles];
+	NSArray *localProfiles = [self localProfilesWithManagedObjectContext:aManagedObjectContext];
 						   
 	NSEnumerator *webEnumerator = [webProfiles objectEnumerator];			  
 	NSEnumerator *localEnumerator = [localProfiles objectEnumerator];			  			  
@@ -425,23 +438,24 @@ NSString * const SCHProfileSyncComponentDidFailNotification = @"SCHProfileSyncCo
                 [deletedIDs addObject:profileID];
             }
         }        
-        dispatch_sync(dispatch_get_main_queue(), ^{
+        [self performOnMainThreadSync:^{
             [[NSNotificationCenter defaultCenter] postNotificationName:SCHProfileSyncComponentWillDeleteNotification 
                                                                 object:self 
                                                               userInfo:[NSDictionary dictionaryWithObject:deletedIDs 
                                                                                                    forKey:SCHProfileSyncComponentDeletedProfileIDs]];				
-        });
+        }];
         for (SCHProfileItem *profileItem in deletePool) {
-            [self removeWishListForProfile:profileItem];
-            [self.backgroundThreadManagedObjectContext deleteObject:profileItem];
+            [self removeWishListForProfile:profileItem
+                      managedObjectContext:aManagedObjectContext];
+            [aManagedObjectContext deleteObject:profileItem];
         }                
     }
     
 	for (NSDictionary *webItem in creationPool) {
-		[self addProfile:webItem];
+		[self addProfile:webItem managedObjectContext:aManagedObjectContext];
 	}
 	
-	[self backgroundSave:NO];
+	[self saveWithManagedObjectContext:aManagedObjectContext];
 }
 
 - (BOOL)profileIDIsValid:(NSNumber *)profileID
@@ -449,15 +463,21 @@ NSString * const SCHProfileSyncComponentDidFailNotification = @"SCHProfileSyncCo
     return [profileID integerValue] > 0;
 }
 
-- (SCHProfileItem *)addProfile:(NSDictionary *)webProfile
+- (void)addProfileFromMainThread:(NSDictionary *)webProfile
 {
-    NSAssert([NSThread isMainThread] == NO, @"addProfile MUST NOT be executed on the main thread");
+    [self addProfile:webProfile managedObjectContext:self.managedObjectContext];
+    [self saveWithManagedObjectContext:self.managedObjectContext];
+}
+
+- (SCHProfileItem *)addProfile:(NSDictionary *)webProfile
+          managedObjectContext:(NSManagedObjectContext *)aManagedObjectContext
+{
     SCHProfileItem *newProfileItem = nil;
     id profileID = [self makeNullNil:[webProfile valueForKey:kSCHLibreAccessWebServiceID]];
     
     if (webProfile != nil && [self profileIDIsValid:profileID] == YES) {
         newProfileItem = [NSEntityDescription insertNewObjectForEntityForName:kSCHProfileItem 
-                                                       inManagedObjectContext:self.backgroundThreadManagedObjectContext];
+                                                       inManagedObjectContext:aManagedObjectContext];
         
         newProfileItem.StoryInteractionEnabled = [self makeNullNil:[webProfile valueForKey:kSCHLibreAccessWebServiceStoryInteractionEnabled]];
         newProfileItem.ID = profileID;
@@ -477,14 +497,14 @@ NSString * const SCHProfileSyncComponentDidFailNotification = @"SCHProfileSyncCo
         newProfileItem.State = [NSNumber numberWithStatus:kSCHStatusUnmodified];
         
         newProfileItem.AppProfile = [NSEntityDescription insertNewObjectForEntityForName:kSCHAppProfile 
-                                                                  inManagedObjectContext:self.backgroundThreadManagedObjectContext];
+                                                                  inManagedObjectContext:aManagedObjectContext];
         
         SCHAnnotationsItem *newAnnotationsItem = [NSEntityDescription insertNewObjectForEntityForName:kSCHAnnotationsItem 
-                                                                               inManagedObjectContext:self.backgroundThreadManagedObjectContext];
+                                                                               inManagedObjectContext:aManagedObjectContext];
         newAnnotationsItem.ProfileID = newProfileItem.ID;
         
         SCHWishListProfile *newWishListProfile = [NSEntityDescription insertNewObjectForEntityForName:kSCHWishListProfile 
-                                                                               inManagedObjectContext:self.backgroundThreadManagedObjectContext];    
+                                                                               inManagedObjectContext:aManagedObjectContext];    
         newWishListProfile.ProfileID = newProfileItem.ID;
         newWishListProfile.ProfileName = newProfileItem.ScreenName;
         
@@ -517,8 +537,8 @@ NSString * const SCHProfileSyncComponentDidFailNotification = @"SCHProfileSyncCo
 }
 
 - (void)removeWishListForProfile:(SCHProfileItem *)profileItem
+            managedObjectContext:(NSManagedObjectContext *)aManagedObjectContext
 {
-    NSAssert([NSThread isMainThread] == NO, @"removeWishListForProfile MUST NOT be executed on the main thread");    
     if (profileItem != nil) {
         SCHWishListProfile *wishListProfile = [profileItem.AppProfile wishListProfile];
         if (wishListProfile != nil) {
@@ -530,33 +550,16 @@ NSString * const SCHProfileSyncComponentDidFailNotification = @"SCHProfileSyncCo
                 }
             }
             if ([deletedISBNs count] > 0) {
-                dispatch_sync(dispatch_get_main_queue(), ^{
+                [self performOnMainThreadSync:^{
                     [[NSNotificationCenter defaultCenter] postNotificationName:SCHWishListSyncComponentWillDeleteNotification 
                                                                         object:self 
                                                                       userInfo:[NSDictionary dictionaryWithObject:[NSArray arrayWithArray:deletedISBNs]
                                                                                                            forKey:SCHWishListSyncComponentISBNs]];
-                });
-                
-            }   
-            [self.backgroundThreadManagedObjectContext deleteObject:wishListProfile];
-            [self backgroundSave:NO];
+                }];
+            }
+            [aManagedObjectContext deleteObject:wishListProfile];
+            [self saveWithManagedObjectContext:aManagedObjectContext];
         }    
-    }
-}
-
-- (void)backgroundSave:(BOOL)batch
-{
-    NSAssert([NSThread isMainThread] == NO, @"backgroundSave MUST NOT be executed on the main thread");
-    
-    NSError *error = nil;
-    static NSUInteger batchCount = 0;
-    
-    if (batch == NO || ++batchCount > 250) {
-        batchCount = 0;
-        if ([self.backgroundThreadManagedObjectContext hasChanges] == YES &&
-            ![self.backgroundThreadManagedObjectContext save:&error]) {
-            NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
-        } 
     }
 }
 
