@@ -231,11 +231,6 @@ managedObjectContext:(NSManagedObjectContext *)managedObjectContext
 
 - (void)attachSelector
 {
-#if FLOW_VIEW_SELECTOR_DISABLED
-    if ([self isKindOfClass:NSClassFromString(@"SCHFlowView")]) {
-        return;
-    }
-#endif 
     [self.selector addObserver:self forKeyPath:@"trackingStage" options:NSKeyValueObservingOptionPrior context:NULL];
     
     self.selector.magnifiesDuringSelection = NO;
@@ -246,21 +241,11 @@ managedObjectContext:(NSManagedObjectContext *)managedObjectContext
 
 - (void)detachSelector
 {
-#if FLOW_VIEW_SELECTOR_DISABLED
-    if ([self isKindOfClass:NSClassFromString(@"SCHFlowView")]) {
-        return;
-    }
-#endif
     [self.selector removeObserver:self forKeyPath:@"trackingStage"];
 }
 
 - (void)configureSelectorForSelectionMode
 {
-#if FLOW_VIEW_SELECTOR_DISABLED
-    if ([self isKindOfClass:NSClassFromString(@"SCHFlowView")]) {
-        return;
-    }
-#endif
     EucSelector *mySelector = self.selector;
     switch (self.selectionMode) {
         case SCHReadingViewSelectionModeYoungerNoDictionary:
