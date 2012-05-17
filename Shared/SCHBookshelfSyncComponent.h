@@ -23,10 +23,10 @@ extern NSString * const SCHBookshelfSyncComponentDidFailNotification;
 {
 }
 
-@property (nonatomic, assign) BOOL useIndividualRequests;
+@property (atomic, assign) BOOL useIndividualRequests;
 
-- (SCHContentMetadataItem *)addContentMetadataItem:(NSDictionary *)webContentMetadataItem;
-- (void)syncContentMetadataItems:(NSArray *)contentMetadataList;
+- (SCHContentMetadataItem *)addContentMetadataItemFromMainThread:(NSDictionary *)webContentMetadataItem;
+- (void)syncContentMetadataItemsFromMainThread:(NSArray *)contentMetadataList;
 - (void)syncContentMetadataItem:(NSDictionary *)webContentMetadataItem
         withContentMetadataItem:(SCHContentMetadataItem *)localContentMetadataItem;
 
