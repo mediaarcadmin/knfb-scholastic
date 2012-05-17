@@ -979,7 +979,7 @@ static NSTimeInterval const kSCHRecommendationSyncComponentBookSyncDelayTimeInte
                         
                     }                       
                     [self.managedObjectContext deleteObject:profile];
-                    [self save];
+                    [self saveWithManagedObjectContext:self.managedObjectContext];
                 }
             }   
         }        
