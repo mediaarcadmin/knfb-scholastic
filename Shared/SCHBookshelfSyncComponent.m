@@ -460,7 +460,7 @@ NSString * const SCHBookshelfSyncComponentDidFailNotification = @"SCHBookshelfSy
 		[self addContentMetadataItem:webItem];
 	}
 	
-	[self save];
+    [self saveWithManagedObjectContext:self.managedObjectContext];
 }
 
 - (SCHContentMetadataItem *)addContentMetadataItem:(NSDictionary *)webContentMetadataItem

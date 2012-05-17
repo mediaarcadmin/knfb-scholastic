@@ -90,7 +90,7 @@
                                                     password:@"pass"                                 
                                                          age:5 
                                                    bookshelf:kSCHBookshelfStyleYoungChild];
-    [self.profileSyncComponent addProfile:youngerProfileItem];
+    [self.profileSyncComponent addProfileFromMainThread:youngerProfileItem];
     
     // Older bookshelf    
     NSDictionary *olderProfileItem = [self profileItemWith:2
@@ -98,7 +98,7 @@
                                                   password:@"pass"                                 
                                                        age:14 
                                                  bookshelf:kSCHBookshelfStyleOlderChild];
-    [self.profileSyncComponent addProfile:olderProfileItem];
+    [self.profileSyncComponent addProfileFromMainThread:olderProfileItem];
     
     NSArray *youngerBookshelfOnly = [NSArray arrayWithObject:[youngerProfileItem objectForKey:kSCHLibreAccessWebServiceID]];
     NSArray *olderBookshelfOnly = [NSArray arrayWithObject:[olderProfileItem objectForKey:kSCHLibreAccessWebServiceID]];
@@ -203,9 +203,9 @@
 - (void)addBook:(NSDictionary *)book forProfiles:(NSArray *)profileIDs
 {
     if (book != nil && profileIDs != nil && [profileIDs count] > 0) {
-        [self.contentSyncComponent addUserContentItem:[self userContentItemWith:[book objectForKey:kSCHLibreAccessWebServiceContentIdentifier]
-                                                                    drmQualifer:[[book objectForKey:kSCHLibreAccessWebServiceDRMQualifier] DRMQualifierValue]
-                                                                     profileIDs:profileIDs]];
+        [self.contentSyncComponent addUserContentItemFromMainThread:[self userContentItemWith:[book objectForKey:kSCHLibreAccessWebServiceContentIdentifier]
+                                                                                  drmQualifer:[[book objectForKey:kSCHLibreAccessWebServiceDRMQualifier] DRMQualifierValue]
+                                                                                   profileIDs:profileIDs]];
         
         [self.bookshelfSyncComponent addContentMetadataItem:book];
     }
@@ -246,8 +246,8 @@
                                                 bookshelf:kSCHBookshelfStyleOlderChild]];
         }
 
-        [self.profileSyncComponent syncProfiles:profileItems];
-        [self.contentSyncComponent syncUserContentItems:userContentItems];
+        [self.profileSyncComponent syncProfilesFromMainThread:profileItems];
+        [self.contentSyncComponent syncUserContentItemsFromMainThread:userContentItems];
         [self.bookshelfSyncComponent syncContentMetadataItems:contentMetadataItems];        
     }
 }
@@ -346,7 +346,7 @@
                                                     password:@"pass"                                 
                                                          age:5 
                                                    bookshelf:kSCHBookshelfStyleYoungChild];
-    [self.profileSyncComponent addProfile:youngerProfileItem];
+    [self.profileSyncComponent addProfileFromMainThread:youngerProfileItem];
     
     NSDictionary *youngerBook = [self contentMetaDataItemWith:@"0-393-05158-7"
                                                         title:@"A Christmas Carol"
@@ -365,7 +365,7 @@
                                                   password:@"pass"
                                                        age:14 
                                                  bookshelf:kSCHBookshelfStyleOlderChild];
-    [self.profileSyncComponent addProfile:olderProfileItem];
+    [self.profileSyncComponent addProfileFromMainThread:olderProfileItem];
     
     NSDictionary *olderBook = [self contentMetaDataItemWith:@"978-0-14-143960-0"
                                                       title:@"A Tale of Two Cities"
@@ -578,9 +578,9 @@
                                                     contentURL:nil
                                                       enhanced:[xpsProvider componentExistsAtPath:KNFBXPSStoryInteractionsMetadataFile]];
             
-            [self.contentSyncComponent addUserContentItem:[self userContentItemWith:[book objectForKey:kSCHLibreAccessWebServiceContentIdentifier] 
-                                                                        drmQualifer:[[book objectForKey:kSCHLibreAccessWebServiceDRMQualifier] DRMQualifierValue]                                                    
-                                                                         profileIDs:profileIDs]];
+            [self.contentSyncComponent addUserContentItemFromMainThread:[self userContentItemWith:[book objectForKey:kSCHLibreAccessWebServiceContentIdentifier] 
+                                                                                      drmQualifer:[[book objectForKey:kSCHLibreAccessWebServiceDRMQualifier] DRMQualifierValue]                                                    
+                                                                                       profileIDs:profileIDs]];
             SCHContentMetadataItem *newContentMetadataItem = [self.bookshelfSyncComponent addContentMetadataItem:book];
             newContentMetadataItem.FileName = [xpsFilePath lastPathComponent];
             

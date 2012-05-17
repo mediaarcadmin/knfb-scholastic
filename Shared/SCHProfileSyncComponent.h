@@ -23,8 +23,7 @@ extern NSString * const SCHProfileSyncComponentDidFailNotification;
 {
 }
 
-- (NSArray *)localProfiles;
-- (SCHProfileItem *)addProfile:(NSDictionary *)webProfile;
-- (void)syncProfiles:(NSArray *)profileList;
+- (void)syncProfilesFromMainThread:(NSArray *)profileList;
+- (void)addProfileFromMainThread:(NSDictionary *)webProfile;
 
 @end
