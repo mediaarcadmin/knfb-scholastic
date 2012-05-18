@@ -58,6 +58,7 @@ enum SCHToolType {
 @synthesize clearButton;
 @synthesize saveButton;
 @synthesize savingLabel;
+@synthesize savingBackground;
 @synthesize colorShadowOverlayView;
 @synthesize stickers;
 @synthesize lastSelectedColour;
@@ -82,10 +83,12 @@ enum SCHToolType {
     [clearButton release], clearButton = nil;
     [saveButton release], saveButton = nil;
     [savingLabel release], savingLabel = nil;
+    [savingBackground release], savingBackground = nil;
     [stickers release], stickers = nil;
     [clearActionSheet release], clearActionSheet = nil;
     [doneActionSheet release], doneActionSheet = nil;
     [colorShadowOverlayView release];
+    [savingBackground release];
     [super dealloc];
 }
 
@@ -178,7 +181,7 @@ enum SCHToolType {
         if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
             if (UIInterfaceOrientationIsLandscape(orientation)) {
                 self.drawingCanvas.superview.frame = CGRectMake(10, 10, 692, 615);
-                self.savingLabel.frame = CGRectMake(250, 330, 310, 60);
+//                self.savingLabel.frame = CGRectMake(250, 330, 310, 60);
                 self.doneButton.frame = CGRectMake(53, 653, 210, 37);
                 self.clearButton.frame = CGRectMake(271, 653, 210, 37);
                 self.saveButton.frame = CGRectMake(489, 653, 210, 37);
@@ -189,7 +192,7 @@ enum SCHToolType {
                 self.stickerChoosersContainer.frame = CGRectMake(730, 318, 210, 372);
             } else {
                 self.drawingCanvas.superview.frame = CGRectMake(10, 20, 672, 615);
-                self.savingLabel.frame = CGRectMake(192, 298, 310, 60);
+//                self.savingLabel.frame = CGRectMake(192, 298, 310, 60);
                 self.stickerChoosersContainer.frame = CGRectMake(472, 643, 210, 222);
                 self.colorChooser.frame = CGRectMake(180, 643, 210, 222);
                 self.sizeChooser.center = CGPointMake(430, 754);
@@ -210,7 +213,7 @@ enum SCHToolType {
                 self.stickerChoosersContainer.frame = CGRectMake(357, 127, 103, 173);
             } else {
                 self.drawingCanvas.superview.frame = CGRectMake(10, 10, 295, 269);
-                self.savingLabel.frame = CGRectMake(25, 115, 260, 60);
+//                self.savingLabel.frame = CGRectMake(25, 115, 260, 60);
                 self.colorChooser.superview.frame = CGRectMake(197, 287, 103, 173);
                 self.colorShadowOverlayView.frame = CGRectMake(197, 287, 103, 173);
                 self.stickerChoosersContainer.frame = CGRectMake(87, 287, 103, 173);
@@ -251,8 +254,8 @@ enum SCHToolType {
     self.contentsView.backgroundColor = [UIColor clearColor];
     [self applyRoundRectStyle:self.drawingCanvas.superview];
     [self applyRoundRectStyle:self.sizeChooser];
-    [self applyRoundRectStyle:self.savingLabel];
-    self.savingLabel.alpha = 0;
+    [self applyRoundRectStyle:self.savingBackground];
+    self.savingBackground.alpha = 0;
     
     [self.drawingCanvas setBackgroundImage:[self drawingBackgroundImage]];
     self.drawingCanvas.delegate = self;
@@ -478,10 +481,13 @@ enum SCHToolType {
 
 - (void)savePicture:(void (^)(BOOL))completionBlock
 {
+    self.savingLabel.frame = CGRectIntegral(self.savingLabel.frame);
+    self.savingBackground.frame = CGRectIntegral(self.savingBackground.frame);
+
     self.savingLabel.text = NSLocalizedString(@"Saving...", @"");
     [UIView animateWithDuration:0.25
                      animations:^{
-                         self.savingLabel.alpha = 1;
+                         self.savingBackground.alpha = 1;
                      }];
     
     ALAssetsLibrary *library = [[ALAssetsLibrary alloc] init];
@@ -489,7 +495,7 @@ enum SCHToolType {
                               orientation:ALAssetOrientationUp
                           completionBlock:^(NSURL *assetURL, NSError *error) {
                               if (error) {
-                                  self.savingLabel.alpha = 0;
+                                  self.savingBackground.alpha = 0;
                                   UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error", @"Error")
                                                                                   message:[error localizedDescription]
                                                                                  delegate:nil
@@ -499,12 +505,12 @@ enum SCHToolType {
                                   [alert release];
                                   completionBlock(NO);
                               } else {
-                                  self.savingLabel.text = NSLocalizedString(@"    Your picture has been saved to your photos.    ", @"");
+                                  self.savingLabel.text = NSLocalizedString(@"Your picture has been saved to your photos.", @"");
                                   [UIView animateWithDuration:0.25
                                                         delay:1.5
                                                       options:UIViewAnimationOptionAllowUserInteraction
                                                    animations:^{
-                                                       self.savingLabel.alpha = 0;
+                                                       self.savingBackground.alpha = 0;
                                                    }
                                                    completion:^(BOOL finished) {
                                                        completionBlock(YES);
