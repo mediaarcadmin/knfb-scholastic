@@ -608,68 +608,12 @@ static void sortedHighlightRangePredicateInit() {
     return [self.eucBookView.pageTurningView screenshot];
 }
 
-- (NSArray *)wordStringsFromSelection:(EucSelectorRange *)selectorRange
-{
-    SCHBookRange *range = nil;
-    
-    NSArray *bookRanges = [self bookRangesFromSelectorRange:selectorRange];
-    
-    if ([bookRanges count]) {
-        range = [bookRanges objectAtIndex:0];
-    }
-    
-    if (range == nil) {
-        return nil;
-    }
-        
-    id startParagraphID;
-    uint32_t startWordOffset;
-    [self.paragraphSource bookmarkPoint:range.startPoint
-                     toParagraphID:&startParagraphID
-                        wordOffset:&startWordOffset];
-    
-    id endParagraphID;
-    uint32_t endWordOffset;
-    [self.paragraphSource bookmarkPoint:range.endPoint
-                     toParagraphID:&endParagraphID
-                        wordOffset:&endWordOffset];  
-    
-    NSMutableArray *buildWords = [[NSMutableArray alloc] init];
-    id paragraphID = startParagraphID;
-    for(;;) {
-        if (paragraphID == nil) {
-            break;
-        }
-        
-        NSArray *words = [self.paragraphSource wordsForParagraphWithID:paragraphID];
-        if([paragraphID isEqual:startParagraphID] && [paragraphID isEqual:endParagraphID]) {
-            words = [words subarrayWithRange:NSMakeRange(startWordOffset, endWordOffset - startWordOffset + 1)];
-        } else if([paragraphID isEqual:startParagraphID]) {
-            words = [words subarrayWithRange:NSMakeRange(startWordOffset, words.count - startWordOffset)];
-        } else if([paragraphID isEqual:endParagraphID]) {
-            words = [words subarrayWithRange:NSMakeRange(0, endWordOffset + 1)];
-        }
-        [buildWords addObjectsFromArray:words];
-        
-        if([paragraphID isEqual:endParagraphID]) {
-            break;
-        } else {
-            paragraphID = [self.paragraphSource nextParagraphIdForParagraphWithID:paragraphID];
-        }
-    }
-    
-    return [buildWords autorelease];
-}
-
 - (NSString *)wordFromSelection:(EucSelectorRange *)selectorRange
 {    
-    NSArray *wordStrings = [self wordStringsFromSelection:selectorRange];
+    EucBookPageIndexPointRange *indexPointRange = [self.eucBookView pageIndexPointRangeFromSelectorRange:selectorRange];
+    NSString *word = [self.eucBook stringForIndexPointRange:indexPointRange];
     
-    if ([wordStrings count] > 0) {
-        return [wordStrings componentsJoinedByString:@" "];
-    } else {
-        return nil;
-    }
+    return word;
 }
 
 #pragma mark - EucSelectorDelegate
