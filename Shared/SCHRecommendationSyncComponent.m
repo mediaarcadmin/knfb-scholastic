@@ -82,7 +82,6 @@ static NSTimeInterval const kSCHRecommendationSyncComponentBookSyncDelayTimeInte
 - (void)syncRecommendationItem:(NSDictionary *)webRecommendationItem 
         withRecommendationItem:(SCHRecommendationItem *)localRecommendationItem;
 - (void)deleteUnusedProfileAges:(NSArray *)profileAges;
-- (void)backgroundSave:(NSManagedObjectContext *)aManagedObjectContext;
 
 @end
 
@@ -230,7 +229,7 @@ static NSTimeInterval const kSCHRecommendationSyncComponentBookSyncDelayTimeInte
                                 managedObjectContext:backgroundThreadManagedObjectContext];                        
                 }
                 
-                [self backgroundSave:NO];
+                [self saveWithManagedObjectContext:backgroundThreadManagedObjectContext];
                 [backgroundThreadManagedObjectContext release], backgroundThreadManagedObjectContext = nil;
                 
                 dispatch_async(dispatch_get_main_queue(), ^{
@@ -271,7 +270,7 @@ static NSTimeInterval const kSCHRecommendationSyncComponentBookSyncDelayTimeInte
                              managedObjectContext:backgroundThreadManagedObjectContext];            
                 }            
                 
-                [self backgroundSave:NO];
+                [self saveWithManagedObjectContext:backgroundThreadManagedObjectContext];
                 [backgroundThreadManagedObjectContext release], backgroundThreadManagedObjectContext = nil;
 
                 dispatch_async(dispatch_get_main_queue(), ^{
@@ -354,7 +353,7 @@ static NSTimeInterval const kSCHRecommendationSyncComponentBookSyncDelayTimeInte
             [self syncRecommendationISBNs:sampleBooksObject 
                      managedObjectContext:backgroundThreadManagedObjectContext];  
             
-            [self backgroundSave:NO];
+            [self saveWithManagedObjectContext:backgroundThreadManagedObjectContext];
         }
         [backgroundThreadManagedObjectContext release], backgroundThreadManagedObjectContext = nil;
     });
@@ -490,7 +489,6 @@ static NSTimeInterval const kSCHRecommendationSyncComponentBookSyncDelayTimeInte
 
 - (NSArray *)localRecommendationProfilesWithManagedObjectContext:(NSManagedObjectContext *)aManagedObjectContext
 {
-    NSAssert([NSThread isMainThread] == NO, @"syncRecommendationProfiles MUST NOT be executed on the main thread");            
 	NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
 	
 	[fetchRequest setEntity:[NSEntityDescription entityForName:kSCHRecommendationProfile
@@ -511,7 +509,6 @@ static NSTimeInterval const kSCHRecommendationSyncComponentBookSyncDelayTimeInte
 
 - (NSArray *)localRecommendationISBNsWithManagedObjectContext:(NSManagedObjectContext *)aManagedObjectContext
 {
-    NSAssert([NSThread isMainThread] == NO, @"localRecommendationISBNs MUST NOT be executed on the main thread");                        
 	NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
 	
 	[fetchRequest setEntity:[NSEntityDescription entityForName:kSCHRecommendationISBN 
@@ -537,7 +534,6 @@ static NSTimeInterval const kSCHRecommendationSyncComponentBookSyncDelayTimeInte
 - (void)syncRecommendationProfiles:(NSArray *)webRecommendationProfiles
               managedObjectContext:(NSManagedObjectContext *)aManagedObjectContext
 {
-    NSAssert([NSThread isMainThread] == NO, @"syncRecommendationProfiles MUST NOT be executed on the main thread");        
     NSDate *syncDate = [NSDate date];
 	NSMutableArray *creationPool = [NSMutableArray array];
 	
@@ -578,7 +574,6 @@ static NSTimeInterval const kSCHRecommendationSyncComponentBookSyncDelayTimeInte
                           withRecommendationProfile:localItem 
                                            syncDate:syncDate
                                managedObjectContext:aManagedObjectContext];
-                    [self backgroundSave:NO];
                     webItem = nil;
                     localItem = nil;
                     break;
@@ -606,7 +601,7 @@ static NSTimeInterval const kSCHRecommendationSyncComponentBookSyncDelayTimeInte
                managedObjectContext:aManagedObjectContext];
 	}
     
-	[self backgroundSave:NO];    
+	[self saveWithManagedObjectContext:aManagedObjectContext];    
 }
 
 - (BOOL)recommendationProfileIDIsValid:(NSNumber *)recommendationProfileID
@@ -618,7 +613,6 @@ static NSTimeInterval const kSCHRecommendationSyncComponentBookSyncDelayTimeInte
                                            syncDate:(NSDate *)syncDate
                                managedObjectContext:(NSManagedObjectContext *)aManagedObjectContext
 {
-    NSAssert([NSThread isMainThread] == NO, @"recommendationProfile MUST NOT be executed on the main thread");                
 	SCHRecommendationProfile *ret = nil;
 	id recommendationProfileID =  [self makeNullNil:[webRecommendationProfile valueForKey:kSCHRecommendationWebServiceAge]];
 
@@ -643,7 +637,6 @@ static NSTimeInterval const kSCHRecommendationSyncComponentBookSyncDelayTimeInte
                          syncDate:(NSDate *)syncDate
              managedObjectContext:(NSManagedObjectContext *)aManagedObjectContext
 {
-    NSAssert([NSThread isMainThread] == NO, @"syncRecommendationProfile MUST NOT be executed on the main thread");            
     if (webRecommendationProfile != nil) {
         localRecommendationProfile.age = [self makeNullNil:[webRecommendationProfile objectForKey:kSCHRecommendationWebServiceAge]];
         localRecommendationProfile.fetchDate = syncDate;
@@ -660,7 +653,6 @@ static NSTimeInterval const kSCHRecommendationSyncComponentBookSyncDelayTimeInte
 - (void)syncRecommendationISBNs:(NSArray *)webRecommendationISBNs 
            managedObjectContext:(NSManagedObjectContext *)aManagedObjectContext
 {
-    NSAssert([NSThread isMainThread] == NO, @"syncRecommendationISBNs MUST NOT be executed on the main thread");                    
     NSDate *syncDate = [NSDate date];
 	NSMutableArray *creationPool = [NSMutableArray array];
 	
@@ -702,7 +694,6 @@ static NSTimeInterval const kSCHRecommendationSyncComponentBookSyncDelayTimeInte
                           withRecommendationISBN:localItem 
                                         syncDate:syncDate
                             managedObjectContext:aManagedObjectContext];
-                    [self backgroundSave:NO];
                     webItem = nil;
                     localItem = nil;
                     break;
@@ -732,14 +723,13 @@ static NSTimeInterval const kSCHRecommendationSyncComponentBookSyncDelayTimeInte
             managedObjectContext:aManagedObjectContext];
 	}
     
-	[self backgroundSave:NO];    
+	[self saveWithManagedObjectContext:aManagedObjectContext];    
 }
 
 - (SCHRecommendationISBN *)recommendationISBN:(NSDictionary *)webRecommendationISBN
                                      syncDate:(NSDate *)syncDate
                          managedObjectContext:(NSManagedObjectContext *)aManagedObjectContext
 {
-    NSAssert([NSThread isMainThread] == NO, @"recommendationISBN MUST NOT be executed on the main thread");                            
 	SCHRecommendationISBN *ret = nil;
 	SCHBookIdentifier *webBookIdentifier = [[SCHBookIdentifier alloc] initWithISBN:[self makeNullNil:[webRecommendationISBN objectForKey:kSCHRecommendationWebServiceISBN]]
                                                                                         DRMQualifier:[self makeNullNil:[webRecommendationISBN objectForKey:kSCHRecommendationWebServiceDRMQualifier]]];    
@@ -767,7 +757,6 @@ static NSTimeInterval const kSCHRecommendationSyncComponentBookSyncDelayTimeInte
                       syncDate:(NSDate *)syncDate
           managedObjectContext:(NSManagedObjectContext *)aManagedObjectContext
 {
-    NSAssert([NSThread isMainThread] == NO, @"syncRecommendationISBN MUST NOT be executed on the main thread");                        
     if (webRecommendationISBN != nil) {
         localRecommendationISBN.isbn = [self makeNullNil:[webRecommendationISBN objectForKey:kSCHRecommendationWebServiceISBN]];
         localRecommendationISBN.DRMQualifier = [self makeNullNil:[webRecommendationISBN objectForKey:kSCHRecommendationWebServiceDRMQualifier]];        
@@ -785,7 +774,6 @@ static NSTimeInterval const kSCHRecommendationSyncComponentBookSyncDelayTimeInte
                insertInto:(id)recommendation
            managedObjectContext:(NSManagedObjectContext *)aManagedObjectContext
 {
-    NSAssert([NSThread isMainThread] == NO, @"syncRecommendationItems MUST NOT be executed on the main thread");                    
 	NSMutableArray *deletePool = [NSMutableArray array];
 	NSMutableArray *creationPool = [NSMutableArray array];
 	
@@ -830,7 +818,6 @@ static NSTimeInterval const kSCHRecommendationSyncComponentBookSyncDelayTimeInte
             switch ([webItemID compare:localItemID]) {
                 case NSOrderedSame:
                     [self syncRecommendationItem:webItem withRecommendationItem:localItem];
-                    [self backgroundSave:NO];
                     webItem = nil;
                     localItem = nil;
                     break;
@@ -897,7 +884,7 @@ static NSTimeInterval const kSCHRecommendationSyncComponentBookSyncDelayTimeInte
         } 
     }
     
-	[self backgroundSave:NO];    
+	[self saveWithManagedObjectContext:aManagedObjectContext];    
 }
 
 - (BOOL)recommendationItemIDIsValid:(NSString *)recommendationItemID
@@ -908,7 +895,6 @@ static NSTimeInterval const kSCHRecommendationSyncComponentBookSyncDelayTimeInte
 - (SCHRecommendationItem *)recommendationItem:(NSDictionary *)webRecommendationItem 
                          managedObjectContext:(NSManagedObjectContext *)aManagedObjectContext
 {
-    NSAssert([NSThread isMainThread] == NO, @"recommendationItem MUST NOT be executed on the main thread");                    
 	SCHRecommendationItem *ret = nil;
 	id recommendationItemID = [self makeNullNil:[webRecommendationItem valueForKey:kSCHRecommendationWebServiceProductCode]];
     
@@ -979,22 +965,11 @@ static NSTimeInterval const kSCHRecommendationSyncComponentBookSyncDelayTimeInte
                         
                     }                       
                     [self.managedObjectContext deleteObject:profile];
-                    [self saveWithManagedObjectContext:self.managedObjectContext];
                 }
             }   
+            [self saveWithManagedObjectContext:self.managedObjectContext];            
         }        
     }
-}
-
-- (void)backgroundSave:(NSManagedObjectContext *)aManagedObjectContext
-{
-    NSAssert([NSThread isMainThread] == NO, @"backgroundSave MUST NOT be executed on the main thread");    
-	NSError *error = nil;
-    
-    if ([aManagedObjectContext hasChanges] == YES &&
-        ![aManagedObjectContext save:&error]) {
-        NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
-    } 
 }
 
 @end

@@ -29,39 +29,42 @@ NSString * const SCHWishListSyncComponentDidFailNotification = @"SCHWishListSync
 @interface SCHWishListSyncComponent ()
 
 @property (nonatomic, retain) SCHWishListWebService *wishListWebService;
-@property (nonatomic, retain) NSManagedObjectContext *backgroundThreadManagedObjectContext;
-@property (nonatomic, retain) NSDate *lastSyncSaveCalled;
+@property (atomic, retain) NSDate *lastSyncSaveCalled;
 
 - (BOOL)updateWishListItems;
 - (BOOL)createWishLists:(NSArray *)wishListProfiles;
 - (BOOL)retrieveWishLists:(NSArray *)profiles;
 - (BOOL)deleteWishLists:(NSArray *)wishListProfiles;
-- (void)processDeletedWishListItems:(NSArray *)wishListItems;
-
+- (void)processDeletedWishListItems:(NSArray *)wishListItems
+               managedObjectContext:(NSManagedObjectContext *)aManagedObjectContext;
 - (NSArray *)localProfiles;
-- (NSArray *)localWishListProfiles;
+- (NSArray *)localWishListProfilesWithManagedObjectContext:(NSManagedObjectContext *)aManagedObjectContext;
 - (NSArray *)localWishListProfilesWithItemStates:(NSArray *)changedStates;
-- (void)syncWishListProfiles:(NSArray *)webWishListProfiles;
+- (void)syncWishListProfiles:(NSArray *)webWishListProfiles
+        managedObjectContext:(NSManagedObjectContext *)aManagedObjectContext;
 - (BOOL)wishListProfileIDIsValid:(NSNumber *)wishListProfileID;
-- (SCHWishListProfile *)wishListProfile:(NSDictionary *)wishListProfile;
+- (SCHWishListProfile *)wishListProfile:(NSDictionary *)wishListProfile
+                   managedObjectContext:(NSManagedObjectContext *)aManagedObjectContext;
 - (void)syncWishListProfile:(NSDictionary *)webWishListProfile 
-        withWishListProfile:(SCHWishListProfile *)localWishListProfile;
+        withWishListProfile:(SCHWishListProfile *)localWishListProfile
+       managedObjectContext:(NSManagedObjectContext *)aManagedObjectContext;
 - (void)syncWishListItems:(NSArray *)webWishListItems
         withWishListItems:(NSSet *)localWishListItems
-               insertInto:(SCHWishListProfile *)wishListProfile;
+               insertInto:(SCHWishListProfile *)wishListProfile
+     managedObjectContext:(NSManagedObjectContext *)aManagedObjectContext;
 - (BOOL)wishListItemIDIsValid:(NSString *)wishListItemID;
-- (SCHWishListItem *)wishListItem:(NSDictionary *)wishListItem;
+- (SCHWishListItem *)wishListItem:(NSDictionary *)wishListItem
+             managedObjectContext:(NSManagedObjectContext *)aManagedObjectContext;
 - (void)syncWishListItem:(NSDictionary *)webWishListItem 
         withWishListItem:(SCHWishListItem *)localWishListItem;
-- (NSArray *)removeNewlyCreatedDeletedWishListItems:(NSArray *)annotationArray;
-- (void)backgroundSave:(BOOL)batch;
+- (NSArray *)removeNewlyCreatedDeletedWishListItems:(NSArray *)annotationArray
+                               managedObjectContext:(NSManagedObjectContext *)aManagedObjectContext;
 
 @end
 
 @implementation SCHWishListSyncComponent
 
 @synthesize wishListWebService;
-@synthesize backgroundThreadManagedObjectContext;
 @synthesize lastSyncSaveCalled;
 
 - (id)init
@@ -79,7 +82,6 @@ NSString * const SCHWishListSyncComponentDidFailNotification = @"SCHWishListSync
 {
     wishListWebService.delegate = nil;
 	[wishListWebService release], wishListWebService = nil;
-    [backgroundThreadManagedObjectContext release], backgroundThreadManagedObjectContext = nil;    
     [lastSyncSaveCalled release], lastSyncSaveCalled = nil;
     
 	[super dealloc];
@@ -132,19 +134,20 @@ NSString * const SCHWishListSyncComponentDidFailNotification = @"SCHWishListSync
     @try {
         if([method compare:kSCHWishListWebServiceDeleteWishListItems] == NSOrderedSame) {            
             dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{
-                self.backgroundThreadManagedObjectContext = [[[NSManagedObjectContext alloc] init] autorelease];
-                [self.backgroundThreadManagedObjectContext setPersistentStoreCoordinator:self.managedObjectContext.persistentStoreCoordinator];
-                [self.backgroundThreadManagedObjectContext setMergePolicy:NSMergeByPropertyObjectTrumpMergePolicy];
+                NSManagedObjectContext *backgroundThreadManagedObjectContext = [[NSManagedObjectContext alloc] init];
+                [backgroundThreadManagedObjectContext setPersistentStoreCoordinator:self.managedObjectContext.persistentStoreCoordinator];
+                [backgroundThreadManagedObjectContext setMergePolicy:NSMergeByPropertyObjectTrumpMergePolicy];
 
                 NSDictionary *deleteWishListItems = [self makeNullNil:[result objectForKey:kSCHWishListWebServiceDeleteWishListItems]];
                 NSArray *profileStatusList = [self makeNullNil:[deleteWishListItems objectForKey:kSCHWishListWebServiceProfileStatusList]];                
                 
                 if ([profileStatusList count] > 0) {
-                    [self processDeletedWishListItems:profileStatusList];
+                    [self processDeletedWishListItems:profileStatusList 
+                                 managedObjectContext:backgroundThreadManagedObjectContext];
                 }
                 
-                [self backgroundSave:NO];
-                self.backgroundThreadManagedObjectContext = nil;
+                [self saveWithManagedObjectContext:backgroundThreadManagedObjectContext];
+                [backgroundThreadManagedObjectContext release], backgroundThreadManagedObjectContext = nil;
 
                 dispatch_async(dispatch_get_main_queue(), ^{
                     NSArray *wishListProfilesToCreate = [self localWishListProfilesWithItemStates:
@@ -181,17 +184,18 @@ NSString * const SCHWishListSyncComponentDidFailNotification = @"SCHWishListSync
             }
         } else if([method compare:kSCHWishListWebServiceGetWishListItems] == NSOrderedSame) {
             dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{
-                self.backgroundThreadManagedObjectContext = [[[NSManagedObjectContext alloc] init] autorelease];
-                [self.backgroundThreadManagedObjectContext setPersistentStoreCoordinator:self.managedObjectContext.persistentStoreCoordinator];
-                [self.backgroundThreadManagedObjectContext setMergePolicy:NSMergeByPropertyObjectTrumpMergePolicy];
+                NSManagedObjectContext *backgroundThreadManagedObjectContext = [[NSManagedObjectContext alloc] init];
+                [backgroundThreadManagedObjectContext setPersistentStoreCoordinator:self.managedObjectContext.persistentStoreCoordinator];
+                [backgroundThreadManagedObjectContext setMergePolicy:NSMergeByPropertyObjectTrumpMergePolicy];
                 
                 NSDictionary *wishListItems = [self makeNullNil:[result objectForKey:kSCHWishListWebServiceGetWishListItems]];
                 NSArray *profileItems = [self makeNullNil:[wishListItems objectForKey:kSCHWishListWebServiceProfileItemList]];
                 
-                [self syncWishListProfiles:profileItems];
+                [self syncWishListProfiles:profileItems
+                      managedObjectContext:backgroundThreadManagedObjectContext];
                 
-                [self backgroundSave:NO];
-                self.backgroundThreadManagedObjectContext = nil;
+                [self saveWithManagedObjectContext:backgroundThreadManagedObjectContext];
+                [backgroundThreadManagedObjectContext release], backgroundThreadManagedObjectContext = nil;
                 
                 dispatch_async(dispatch_get_main_queue(), ^{
                     [[NSNotificationCenter defaultCenter] postNotificationName:SCHWishListSyncComponentDidCompleteNotification 
@@ -327,8 +331,8 @@ NSString * const SCHWishListSyncComponentDidFailNotification = @"SCHWishListSync
 }
 
 - (void)processDeletedWishListItems:(NSArray *)wishListItems
+               managedObjectContext:(NSManagedObjectContext *)aManagedObjectContext
 {
-    NSAssert([NSThread isMainThread] == NO, @"processDeletedWishListItems MUST NOT be executed on the main thread");            
     if ([wishListItems count] > 0) {
         for (NSDictionary *wishListItem in wishListItems) {
             NSNumber *profileID = [self makeNullNil:[wishListItem objectForKey:kSCHWishListWebServiceProfileID]];
@@ -344,23 +348,23 @@ NSString * const SCHWishListSyncComponentDidFailNotification = @"SCHWishListSync
                             NSError *error = nil;
                             
                             [fetchRequest setEntity:[NSEntityDescription entityForName:kSCHWishListItem 
-                                                                inManagedObjectContext:self.backgroundThreadManagedObjectContext]];	
+                                                                inManagedObjectContext:aManagedObjectContext]];	
                             [fetchRequest setPredicate:[NSPredicate predicateWithFormat:
                                                         @"ISBN = %@ AND WishListProfile.ProfileID = %@", isbn, profileID]];
                             
-                            NSArray *localWishListItem = [self.backgroundThreadManagedObjectContext executeFetchRequest:fetchRequest error:&error];	
+                            NSArray *localWishListItem = [aManagedObjectContext executeFetchRequest:fetchRequest error:&error];	
                             [fetchRequest release], fetchRequest = nil;
                             if (localWishListItem == nil) {
                                 NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
                             } else if ([localWishListItem count] > 0) {
-                                [self.backgroundThreadManagedObjectContext deleteObject:[localWishListItem objectAtIndex:0]];
-                                [self backgroundSave:NO];
+                                [aManagedObjectContext deleteObject:[localWishListItem objectAtIndex:0]];
                             }
                         }
                     }
                 }
             }
         }
+        [self saveWithManagedObjectContext:aManagedObjectContext];
     }
 }
 
@@ -381,16 +385,15 @@ NSString * const SCHWishListSyncComponentDidFailNotification = @"SCHWishListSync
 	return(ret);
 }
 
-- (NSArray *)localWishListProfiles
+- (NSArray *)localWishListProfilesWithManagedObjectContext:(NSManagedObjectContext *)aManagedObjectContext
 {
-    NSAssert([NSThread isMainThread] == NO, @"localWishListProfiles MUST NOT be executed on the main thread");                
 	NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
     NSError *error = nil;
 	
-	[fetchRequest setEntity:[NSEntityDescription entityForName:kSCHWishListProfile inManagedObjectContext:self.backgroundThreadManagedObjectContext]];	
+	[fetchRequest setEntity:[NSEntityDescription entityForName:kSCHWishListProfile inManagedObjectContext:aManagedObjectContext]];	
 	[fetchRequest setSortDescriptors:[NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:kSCHWishListWebServiceProfileID ascending:YES]]];
     
-	NSArray *ret = [self.backgroundThreadManagedObjectContext executeFetchRequest:fetchRequest error:&error];	
+	NSArray *ret = [aManagedObjectContext executeFetchRequest:fetchRequest error:&error];	
 	[fetchRequest release], fetchRequest = nil;
     if (ret == nil) {
         NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
@@ -422,13 +425,13 @@ NSString * const SCHWishListSyncComponentDidFailNotification = @"SCHWishListSync
 }
 
 - (void)syncWishListProfiles:(NSArray *)webWishListProfiles
+        managedObjectContext:(NSManagedObjectContext *)aManagedObjectContext
 {
-    NSAssert([NSThread isMainThread] == NO, @"syncWishListProfiles MUST NOT be executed on the main thread");            
 	NSMutableArray *deletePool = [NSMutableArray array];
 	NSMutableArray *creationPool = [NSMutableArray array];
 	
 	webWishListProfiles = [webWishListProfiles sortedArrayUsingDescriptors:[NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:kSCHWishListWebServiceProfileID ascending:YES]]];		
-	NSArray *localWishListProfilesArray = [self localWishListProfiles];
+	NSArray *localWishListProfilesArray = [self localWishListProfilesWithManagedObjectContext:aManagedObjectContext];
     
 	NSEnumerator *webEnumerator = [webWishListProfiles objectEnumerator];			  
 	NSEnumerator *localEnumerator = [localWishListProfilesArray objectEnumerator];			  			  
@@ -465,8 +468,8 @@ NSString * const SCHWishListSyncComponentDidFailNotification = @"SCHWishListSync
             switch ([webItemID compare:localItemID]) {
                 case NSOrderedSame:
                     [self syncWishListProfile:webItem 
-                          withWishListProfile:localItem];
-                    [self backgroundSave:YES];
+                          withWishListProfile:localItem
+                         managedObjectContext:aManagedObjectContext];
                     webItem = nil;
                     localItem = nil;
                     break;
@@ -500,22 +503,23 @@ NSString * const SCHWishListSyncComponentDidFailNotification = @"SCHWishListSync
             }            
         }
         if ([deletedISBNs count] > 0) {
-            dispatch_sync(dispatch_get_main_queue(), ^{            
+            [self performOnMainThreadSync:^{            
                 [[NSNotificationCenter defaultCenter] postNotificationName:SCHWishListSyncComponentWillDeleteNotification 
                                                                     object:self 
                                                                   userInfo:[NSDictionary dictionaryWithObject:[NSArray arrayWithArray:deletedISBNs]
                                                                                                        forKey:SCHWishListSyncComponentISBNs]];
-            });
+            }];
         }           
         
         [wishListProfile removeItemList:wishListProfile.ItemList];
     }                
     
 	for (NSDictionary *webItem in creationPool) {
-        [self wishListProfile:webItem];
+        [self wishListProfile:webItem
+         managedObjectContext:aManagedObjectContext];
 	}
     
-	[self backgroundSave:NO];    
+	[self saveWithManagedObjectContext:aManagedObjectContext];    
 }
 
 - (BOOL)wishListProfileIDIsValid:(NSNumber *)wishListProfileID
@@ -524,8 +528,8 @@ NSString * const SCHWishListSyncComponentDidFailNotification = @"SCHWishListSync
 }
 
 - (SCHWishListProfile *)wishListProfile:(NSDictionary *)wishListProfile
+                   managedObjectContext:(NSManagedObjectContext *)aManagedObjectContext
 {
-    NSAssert([NSThread isMainThread] == NO, @"wishListProfile MUST NOT be executed on the main thread");                    
 	SCHWishListProfile *ret = nil;
 	
 	if (wishListProfile != nil) {
@@ -534,7 +538,7 @@ NSString * const SCHWishListSyncComponentDidFailNotification = @"SCHWishListSync
         
         if (webProfile != nil && [self wishListProfileIDIsValid:wishListProfileID] == YES) {            
             ret = [NSEntityDescription insertNewObjectForEntityForName:kSCHWishListProfile 
-                                                inManagedObjectContext:self.backgroundThreadManagedObjectContext];			
+                                                inManagedObjectContext:aManagedObjectContext];			
             
             // convert timestamp to lastmodified
             ret.LastModified = [self makeNullNil:[webProfile objectForKey:kSCHWishListWebServiceTimestamp]];
@@ -545,7 +549,8 @@ NSString * const SCHWishListSyncComponentDidFailNotification = @"SCHWishListSync
             
             [self syncWishListItems:[self makeNullNil:[wishListProfile objectForKey:kSCHWishListWebServiceItemList]] 
                   withWishListItems:[ret ItemList]
-                         insertInto:ret];            
+                         insertInto:ret
+               managedObjectContext:aManagedObjectContext];            
         }
     }
 	
@@ -554,8 +559,8 @@ NSString * const SCHWishListSyncComponentDidFailNotification = @"SCHWishListSync
 
 - (void)syncWishListProfile:(NSDictionary *)webWishListProfile 
            withWishListProfile:(SCHWishListProfile *)localWishListProfile
+       managedObjectContext:(NSManagedObjectContext *)aManagedObjectContext
 {
-    NSAssert([NSThread isMainThread] == NO, @"syncWishListProfile MUST NOT be executed on the main thread");                
     if (webWishListProfile != nil) {
         id webProfile = [self makeNullNil:[webWishListProfile valueForKey:kSCHWishListWebServiceProfile]];
         if (webProfile != nil) {                    
@@ -568,22 +573,24 @@ NSString * const SCHWishListSyncComponentDidFailNotification = @"SCHWishListSync
             
             [self syncWishListItems:[self makeNullNil:[webWishListProfile objectForKey:kSCHWishListWebServiceItemList]] 
                   withWishListItems:localWishListProfile.ItemList
-                         insertInto:localWishListProfile];
+                         insertInto:localWishListProfile
+               managedObjectContext:aManagedObjectContext];
         }
     }
 }
 
 - (void)syncWishListItems:(NSArray *)webWishListItems
         withWishListItems:(NSSet *)localWishListItems
-           insertInto:(SCHWishListProfile *)wishListProfile
+               insertInto:(SCHWishListProfile *)wishListProfile
+     managedObjectContext:(NSManagedObjectContext *)aManagedObjectContext
 {
-    NSAssert([NSThread isMainThread] == NO, @"syncWishListItems MUST NOT be executed on the main thread");                 
 	NSMutableArray *deletePool = [NSMutableArray array];
 	NSMutableArray *creationPool = [NSMutableArray array];
 	
 	webWishListItems = [webWishListItems sortedArrayUsingDescriptors:[NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:kSCHWishListWebServiceISBN ascending:YES]]];		
 	NSArray *localWishListItemsArray = [localWishListItems sortedArrayUsingDescriptors:[NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:kSCHWishListWebServiceISBN ascending:YES]]];
-    localWishListItemsArray = [self removeNewlyCreatedDeletedWishListItems:localWishListItemsArray];
+    localWishListItemsArray = [self removeNewlyCreatedDeletedWishListItems:localWishListItemsArray
+                               managedObjectContext:aManagedObjectContext];
     
 	NSEnumerator *webEnumerator = [webWishListItems objectEnumerator];			  
 	NSEnumerator *localEnumerator = [localWishListItemsArray objectEnumerator];			  			  
@@ -619,7 +626,6 @@ NSString * const SCHWishListSyncComponentDidFailNotification = @"SCHWishListSync
             switch ([webItemID compare:localItemID]) {
                 case NSOrderedSame:
                     [self syncWishListItem:webItem withWishListItem:localItem];
-                    [self backgroundSave:YES];    
                     webItem = nil;
                     localItem = nil;
                     break;
@@ -651,22 +657,23 @@ NSString * const SCHWishListSyncComponentDidFailNotification = @"SCHWishListSync
             }
         }
         if ([deletedISBNs count] > 0) {
-            dispatch_sync(dispatch_get_main_queue(), ^{            
+            [self performOnMainThreadSync:^{           
                 [[NSNotificationCenter defaultCenter] postNotificationName:SCHWishListSyncComponentWillDeleteNotification 
                                                                     object:self 
                                                                   userInfo:[NSDictionary dictionaryWithObject:[NSArray arrayWithArray:deletedISBNs]
                                                                                                        forKey:SCHWishListSyncComponentISBNs]];
-            });
+            }];
         }        
         for (SCHWishListItem *wishListItem in deletePool) {
-            [self.backgroundThreadManagedObjectContext deleteObject:wishListItem];
+            [aManagedObjectContext deleteObject:wishListItem];
         }                        
     }
 
     if ([creationPool count] > 0) {
         NSMutableArray *insertedISBNs = [NSMutableArray arrayWithCapacity:[creationPool count]];
         for (NSDictionary *webItem in creationPool) {
-            SCHWishListItem *wishListItem = [self wishListItem:webItem];
+            SCHWishListItem *wishListItem = [self wishListItem:webItem
+                                          managedObjectContext:aManagedObjectContext];
             if (wishListItem != nil) {
                 NSString *isbn = wishListItem.ISBN;
                 if (isbn != nil) {
@@ -685,7 +692,7 @@ NSString * const SCHWishListSyncComponentDidFailNotification = @"SCHWishListSync
         } 
     }
     
-	[self backgroundSave:NO];    
+	[self saveWithManagedObjectContext:aManagedObjectContext];    
 }
 
 - (BOOL)wishListItemIDIsValid:(NSString *)wishListItemID
@@ -694,14 +701,14 @@ NSString * const SCHWishListSyncComponentDidFailNotification = @"SCHWishListSync
 }
 
 - (SCHWishListItem *)wishListItem:(NSDictionary *)wishListItem
+             managedObjectContext:(NSManagedObjectContext *)aManagedObjectContext
 {
-    NSAssert([NSThread isMainThread] == NO, @"wishListItem MUST NOT be executed on the main thread");                
 	SCHWishListItem *ret = nil;
 	id wishListItemID = [self makeNullNil:[wishListItem valueForKey:kSCHWishListWebServiceISBN]];
 
 	if (wishListItem != nil && [self wishListItemIDIsValid:wishListItemID] == YES) {	
 		ret = [NSEntityDescription insertNewObjectForEntityForName:kSCHWishListItem 
-                                            inManagedObjectContext:self.backgroundThreadManagedObjectContext];			
+                                            inManagedObjectContext:aManagedObjectContext];			
 
         // convert timestamp to lastmodified
         ret.LastModified = [self makeNullNil:[wishListItem objectForKey:kSCHWishListWebServiceTimestamp]];
@@ -736,8 +743,8 @@ NSString * const SCHWishListSyncComponentDidFailNotification = @"SCHWishListSync
 // remove any created or deleted wishlist items that had issues
 // the next get will then up date with the truth
 - (NSArray *)removeNewlyCreatedDeletedWishListItems:(NSArray *)annotationArray
+                               managedObjectContext:(NSManagedObjectContext *)aManagedObjectContext
 {
-    NSAssert([NSThread isMainThread] == NO, @"removeNewlyCreatedDeletedWishListItems MUST NOT be executed on the main thread");            
     NSMutableArray *ret = nil;
     
     if (self.lastSyncSaveCalled == nil || [annotationArray count] < 1) {
@@ -750,32 +757,16 @@ NSString * const SCHWishListSyncComponentDidFailNotification = @"SCHWishListSync
             NSDate *lastModified = [obj LastModified];
             if ((status == kSCHStatusCreated || status == kSCHStatusDeleted) &&
                 [lastModified earlierDate:self.lastSyncSaveCalled] == lastModified) {
-                [self.backgroundThreadManagedObjectContext deleteObject:obj];
+                [aManagedObjectContext deleteObject:obj];
             } else {
                 [ret addObject:obj];
             }
         }];
         
-        [self backgroundSave:NO];
+        [self saveWithManagedObjectContext:aManagedObjectContext];
     }
     
     return ret;
-}
-
-- (void)backgroundSave:(BOOL)batch
-{
-    NSAssert([NSThread isMainThread] == NO, @"backgroundSave MUST NOT be executed on the main thread");
-    
-    NSError *error = nil;
-    static NSUInteger batchCount = 0;
-    
-    if (batch == NO || ++batchCount > 250) {
-        batchCount = 0;
-        if ([self.backgroundThreadManagedObjectContext hasChanges] == YES &&
-            ![self.backgroundThreadManagedObjectContext save:&error]) {
-            NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
-        } 
-    }
 }
 
 @end
