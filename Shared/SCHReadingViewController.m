@@ -657,9 +657,6 @@ static const NSUInteger kReadingViewMaxRecommendationsCount = 4;
     self.navigationToolbar = aNavigationToolbar;
     [aNavigationToolbar release];
  
-    // if the book has no story interactions disable the button
-    self.storyInteractionsListButton.enabled = [[self.bookStoryInteractions allStoryInteractionsExcludingInteractionWithPage:NO] count] > 0;
-        
     [self.view addSubview:self.navigationToolbar];
     
     // Set non-rotation specific graphics
@@ -705,6 +702,9 @@ static const NSUInteger kReadingViewMaxRecommendationsCount = 4;
     
     NSMutableArray *toolbarArray = [[NSMutableArray alloc] initWithArray:self.olderBottomToolbar.items];
     
+    // Conditional Button Logic - remove buttons in reverse order to guarantee
+    // that buttons and spacers are where we expect
+    
 #if FLOW_VIEW_DISABLED
     // if flow view is disabled, then remove the options button
     if ([toolbarArray count] >= 9) {
@@ -714,10 +714,16 @@ static const NSUInteger kReadingViewMaxRecommendationsCount = 4;
     
 #if IPHONE_HIGHLIGHTS_DISABLED
     // if highlights are disabled on iPhone, remove the highlights button
-    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone && [toolbarArray count] >= 7) {
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone && [toolbarArray count] >= 5) {
         [toolbarArray removeObjectsAtIndexes:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(2, 2)]];
     }
 #endif
+    
+    // if the book has no story interactions remove the SI button
+    if ([[self.bookStoryInteractions allStoryInteractionsExcludingInteractionWithPage:NO] count] <= 0 
+        && [toolbarArray count] >= 2) {
+        [toolbarArray removeObjectsAtIndexes:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, 2)]];
+    }
 
     self.olderBottomToolbar.items = [NSArray arrayWithArray:toolbarArray];
     [toolbarArray release];
