@@ -21,7 +21,6 @@ NSString * const SCHReadingStatsSyncComponentDidFailNotification = @"SCHReadingS
 @interface SCHReadingStatsSyncComponent ()
 
 @property (nonatomic, retain) SCHLibreAccessWebService *libreAccessWebService;
-@property (nonatomic, retain) NSManagedObjectContext *backgroundThreadManagedObjectContext;
 
 - (void)clearCoreDataUsingContext:(NSManagedObjectContext *)aManagedObjectContext;
 
@@ -30,7 +29,6 @@ NSString * const SCHReadingStatsSyncComponentDidFailNotification = @"SCHReadingS
 @implementation SCHReadingStatsSyncComponent
 
 @synthesize libreAccessWebService;
-@synthesize backgroundThreadManagedObjectContext;
 
 - (id)init
 {
@@ -47,7 +45,6 @@ NSString * const SCHReadingStatsSyncComponentDidFailNotification = @"SCHReadingS
 {
     libreAccessWebService.delegate = nil;
 	[libreAccessWebService release], libreAccessWebService = nil;
-    [backgroundThreadManagedObjectContext release], backgroundThreadManagedObjectContext = nil;
     
 	[super dealloc];
 }
@@ -130,13 +127,13 @@ NSString * const SCHReadingStatsSyncComponentDidFailNotification = @"SCHReadingS
 {
     @try {
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{
-            self.backgroundThreadManagedObjectContext = [[[NSManagedObjectContext alloc] init] autorelease];
-            [self.backgroundThreadManagedObjectContext setPersistentStoreCoordinator:self.managedObjectContext.persistentStoreCoordinator];
-            [self.backgroundThreadManagedObjectContext setMergePolicy:NSMergeByPropertyObjectTrumpMergePolicy];
+            NSManagedObjectContext *backgroundThreadManagedObjectContext = [[NSManagedObjectContext alloc] init];
+            [backgroundThreadManagedObjectContext setPersistentStoreCoordinator:self.managedObjectContext.persistentStoreCoordinator];
+            [backgroundThreadManagedObjectContext setMergePolicy:NSMergeByPropertyObjectTrumpMergePolicy];
             
-            [self clearCoreDataUsingContext:self.backgroundThreadManagedObjectContext];
+            [self clearCoreDataUsingContext:backgroundThreadManagedObjectContext];
             
-            self.backgroundThreadManagedObjectContext = nil;
+            [backgroundThreadManagedObjectContext release], backgroundThreadManagedObjectContext = nil;
             
             dispatch_async(dispatch_get_main_queue(), ^{
                 [[NSNotificationCenter defaultCenter] postNotificationName:SCHReadingStatsSyncComponentDidCompleteNotification 
@@ -165,13 +162,13 @@ NSString * const SCHReadingStatsSyncComponentDidFailNotification = @"SCHReadingS
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{        
         // server error so clear the stats
         if ([error domain] == kBITAPIErrorDomain) {
-            self.backgroundThreadManagedObjectContext = [[[NSManagedObjectContext alloc] init] autorelease];
-            [self.backgroundThreadManagedObjectContext setPersistentStoreCoordinator:self.managedObjectContext.persistentStoreCoordinator];
-            [self.backgroundThreadManagedObjectContext setMergePolicy:NSMergeByPropertyObjectTrumpMergePolicy];
+            NSManagedObjectContext *backgroundThreadManagedObjectContext = [[NSManagedObjectContext alloc] init];
+            [backgroundThreadManagedObjectContext setPersistentStoreCoordinator:self.managedObjectContext.persistentStoreCoordinator];
+            [backgroundThreadManagedObjectContext setMergePolicy:NSMergeByPropertyObjectTrumpMergePolicy];
             
-            [self clearCoreDataUsingContext:self.backgroundThreadManagedObjectContext];
+            [self clearCoreDataUsingContext:backgroundThreadManagedObjectContext];
             
-            self.backgroundThreadManagedObjectContext = nil;
+            [backgroundThreadManagedObjectContext release], backgroundThreadManagedObjectContext = nil;
         }    
         
         dispatch_async(dispatch_get_main_queue(), ^{
