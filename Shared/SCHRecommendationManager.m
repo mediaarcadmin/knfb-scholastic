@@ -100,6 +100,7 @@ static SCHRecommendationManager *sharedManager = nil;
 }
 
 - (void)cancelAllOperationsForIsbn:(NSString *)isbn
+                 waitUntilFinished:(BOOL)waitUntilFinished
 {
     @synchronized(self) {
         
@@ -108,6 +109,9 @@ static SCHRecommendationManager *sharedManager = nil;
         for (SCHRecommendationOperation *op in allOps) {
             if ([op.isbn isEqual:isbn] == YES) {
                 [op cancel];
+                if (waitUntilFinished == YES) {
+                    [op waitUntilFinished];
+                }                
                 break;
             }
         }
