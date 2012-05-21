@@ -106,11 +106,13 @@ static CGFloat const kSCHStoryInteractionControllerVideoBorderWidth = 4.0;
 
 - (IBAction)playAudioButtonTapped:(id)sender
 {
-    NSString *path = [self.storyInteraction audioPathForQuestion];
-    if (path != nil) {
-        [self pause];
-        [self enqueueAudioWithPath:path fromBundle:NO];
-    }   
+    [self cancelQueuedAudioExecutingSynchronizedBlocksBefore:^{
+        NSString *path = [self.storyInteraction audioPathForQuestion];
+        if (path != nil) {
+            [self pause];
+            [self enqueueAudioWithPath:path fromBundle:NO];
+        }   
+    }];
 }
 
 - (void)pause
