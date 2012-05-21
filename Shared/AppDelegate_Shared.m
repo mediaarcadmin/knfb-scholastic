@@ -103,9 +103,6 @@ static NSString* const binaryDevCertFilename = @"bdevcert.dat";
         syncManager.managedObjectContext = self.coreDataHelper.managedObjectContext;
         [syncManager startHeartbeat];
 	    
-        SCHURLManager *urlManager = [SCHURLManager sharedURLManager];
-        urlManager.managedObjectContext = self.coreDataHelper.managedObjectContext;
-        
         // instantiate the shared processing manager
         [SCHProcessingManager sharedProcessingManager].managedObjectContext = self.coreDataHelper.managedObjectContext;
         

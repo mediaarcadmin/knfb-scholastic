@@ -2913,6 +2913,10 @@
 		C9C3FABE14B85F4400757038 /* SCHStoriaWelcomeViewController~ipad.xib in Resources */ = {isa = PBXBuildFile; fileRef = C9C3FABA14B85F4300757038 /* SCHStoriaWelcomeViewController~ipad.xib */; };
 		C9C9096B1455A06B00548DDE /* SCHSampleBooksImporter.m in Sources */ = {isa = PBXBuildFile; fileRef = C9C9096A1455A06B00548DDE /* SCHSampleBooksImporter.m */; };
 		C9C9096C1455A06B00548DDE /* SCHSampleBooksImporter.m in Sources */ = {isa = PBXBuildFile; fileRef = C9C9096A1455A06B00548DDE /* SCHSampleBooksImporter.m */; };
+		C9D37724156A52A700900844 /* SCHISBNItemObject.m in Sources */ = {isa = PBXBuildFile; fileRef = C9D37723156A52A600900844 /* SCHISBNItemObject.m */; };
+		C9D37725156A52A700900844 /* SCHISBNItemObject.m in Sources */ = {isa = PBXBuildFile; fileRef = C9D37723156A52A600900844 /* SCHISBNItemObject.m */; };
+		C9D37726156A52A700900844 /* SCHISBNItemObject.m in Sources */ = {isa = PBXBuildFile; fileRef = C9D37723156A52A600900844 /* SCHISBNItemObject.m */; };
+		C9D37727156A52A700900844 /* SCHISBNItemObject.m in Sources */ = {isa = PBXBuildFile; fileRef = C9D37723156A52A600900844 /* SCHISBNItemObject.m */; };
 		C9D4F6281345FFE8007F86E3 /* SCHTextFlow.m in Sources */ = {isa = PBXBuildFile; fileRef = C9D4F6271345FFE7007F86E3 /* SCHTextFlow.m */; };
 		C9D7006614ED50B100C10006 /* MainWindow_iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 28AD733E0D9D9553002E5188 /* MainWindow_iPad.xib */; };
 		C9D7006714ED50B100C10006 /* MainWindow_iPhone.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2860E389111B897F00E27156 /* MainWindow_iPhone.xib */; };
@@ -5718,6 +5722,8 @@
 		C9C3FABA14B85F4300757038 /* SCHStoriaWelcomeViewController~ipad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = "SCHStoriaWelcomeViewController~ipad.xib"; path = "Shared/SCHStoriaWelcomeViewController~ipad.xib"; sourceTree = "<group>"; };
 		C9C909691455A06B00548DDE /* SCHSampleBooksImporter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHSampleBooksImporter.h; path = Shared/SCHSampleBooksImporter.h; sourceTree = "<group>"; };
 		C9C9096A1455A06B00548DDE /* SCHSampleBooksImporter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHSampleBooksImporter.m; path = Shared/SCHSampleBooksImporter.m; sourceTree = "<group>"; };
+		C9D37722156A52A600900844 /* SCHISBNItemObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHISBNItemObject.h; path = Shared/SCHISBNItemObject.h; sourceTree = "<group>"; };
+		C9D37723156A52A600900844 /* SCHISBNItemObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHISBNItemObject.m; path = Shared/SCHISBNItemObject.m; sourceTree = "<group>"; };
 		C9D4F6261345FFE7007F86E3 /* SCHTextFlow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHTextFlow.h; path = Shared/SCHTextFlow.h; sourceTree = "<group>"; };
 		C9D4F6271345FFE7007F86E3 /* SCHTextFlow.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHTextFlow.m; path = Shared/SCHTextFlow.m; sourceTree = "<group>"; };
 		C9D703AC14ED50B100C10006 /* Storia.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Storia.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -7436,6 +7442,8 @@
 				52D612B612E4650B0033DA92 /* NSNumber+ObjectTypes.h */,
 				52D612B712E4650B0033DA92 /* NSNumber+ObjectTypes.m */,
 				521BB6C015207FF00045AC92 /* SCHISBNItem.h */,
+				C9D37722156A52A600900844 /* SCHISBNItemObject.h */,
+				C9D37723156A52A600900844 /* SCHISBNItemObject.m */,
 			);
 			name = "Core Data Models";
 			sourceTree = "<group>";
@@ -12453,6 +12461,7 @@
 				F858319815514DC5004960E8 /* SCHDownloadDictionaryFromSettingsViewController.m in Sources */,
 				5251716515501FB5009C3B61 /* NSFileManager+Extensions.m in Sources */,
 				F82F54A31557DB2C00041D0E /* SCHRecommendationSampleView.m in Sources */,
+				C9D37724156A52A700900844 /* SCHISBNItemObject.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -12891,6 +12900,7 @@
 				F858319915514DC5004960E8 /* SCHDownloadDictionaryFromSettingsViewController.m in Sources */,
 				5251716615501FB5009C3B61 /* NSFileManager+Extensions.m in Sources */,
 				F82F54A41557DB2C00041D0E /* SCHRecommendationSampleView.m in Sources */,
+				C9D37725156A52A700900844 /* SCHISBNItemObject.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -13262,6 +13272,7 @@
 				F858319A15514DC5004960E8 /* SCHDownloadDictionaryFromSettingsViewController.m in Sources */,
 				5251716715501FB5009C3B61 /* NSFileManager+Extensions.m in Sources */,
 				F82F54A51557DB2C00041D0E /* SCHRecommendationSampleView.m in Sources */,
+				C9D37726156A52A700900844 /* SCHISBNItemObject.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -13633,6 +13644,7 @@
 				F858319B15514DC5004960E8 /* SCHDownloadDictionaryFromSettingsViewController.m in Sources */,
 				5251716815501FB5009C3B61 /* NSFileManager+Extensions.m in Sources */,
 				F82F54A61557DB2C00041D0E /* SCHRecommendationSampleView.m in Sources */,
+				C9D37727156A52A700900844 /* SCHISBNItemObject.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
