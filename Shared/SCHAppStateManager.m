@@ -17,6 +17,8 @@
 
 - (SCHAppState *)createAppStateIfNeeded;
 
+@property (nonatomic, retain) SCHAppState *cachedAppState;
+
 // thread-safe access to appstate object; the block is executed synchronously so may make
 // changes to any __block storage locals
 - (void)performWithAppState:(void (^)(SCHAppState *appState))block;
@@ -29,6 +31,7 @@
 @implementation SCHAppStateManager
 
 @synthesize managedObjectContext;
+@synthesize cachedAppState;
 
 #pragma mark - Singleton Instance methods
 
@@ -62,6 +65,7 @@
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
     
+    [cachedAppState release], cachedAppState = nil;
     [managedObjectContext release], managedObjectContext = nil;
     
     [super dealloc];
@@ -72,35 +76,16 @@
 - (SCHAppState *)appState
 {
     NSAssert([NSThread isMainThread] == YES, @"appState SHOULD be executed on the main thread");
-    SCHAppState *ret = nil;
-    NSError *error = nil;
-    
+
     if (!self.managedObjectContext) {
         return nil;
     }
-    
-    NSEntityDescription *entityDescription = [NSEntityDescription 
-                                              entityForName:kSCHAppState
-                                              inManagedObjectContext:self.managedObjectContext];
-    NSFetchRequest *fetchRequest = [entityDescription.managedObjectModel 
-                                    fetchRequestTemplateForName:kSCHAppStatefetchAppState];
-    
-    NSArray *state = [self.managedObjectContext executeFetchRequest:fetchRequest error:&error];	
-    if (state == nil) {
-        NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
-    }
 
-    if ([state count] > 0) {
-        ret = [state objectAtIndex:0];
-    } else {
-        ret = [self createAppStateIfNeeded];
+    if (self.cachedAppState == nil) {
+        self.cachedAppState = [self createAppStateIfNeeded];
     }
     
-    if (!ret) {
-        NSLog(@"WARNING!!! App state is nil. This will lead to unexpected behaviour.");
-    }
-    
-    return(ret);    
+    return self.cachedAppState;    
 }
 
 - (SCHAppState *)createAppStateIfNeeded
@@ -130,6 +115,10 @@
         }     
     } else {
         ret = [state objectAtIndex:0];
+    }
+    
+    if (ret == nil) {
+        NSLog(@"WARNING!!! App state is nil. This will lead to unexpected behaviour.");
     }
     
     return ret;
