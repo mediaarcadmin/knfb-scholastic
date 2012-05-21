@@ -169,12 +169,16 @@ static BOOL is_leap_year(unsigned year) {
  */
 + (NSDate *)dateForString:(NSString *)str strictly:(BOOL)strict timeSeparator:(unichar)timeSep getRange:(out NSRange *)outRange {
   static NSCalendar *gregorian = nil;
-  if (gregorian == nil) {
-    gregorian = [[NSCalendar alloc]
-      initWithCalendarIdentifier:NSGregorianCalendar];
-  }
+  static dispatch_once_t pred;
+    
+  dispatch_once(&pred, ^{
+    gregorian = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
+  });
   NSDate *now = [NSDate date];
-  NSDateComponents *dateComps = [gregorian components: NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit fromDate: now];
+  NSDateComponents *dateComps = nil;
+  @synchronized (gregorian) {
+    dateComps = [gregorian components: NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit fromDate: now];
+  }
   unsigned
   //Date
   year,
@@ -576,7 +580,9 @@ static BOOL is_leap_year(unsigned year) {
     
     if(isValidDate) {
       if (timeZone != nil)
-        [gregorian setTimeZone: timeZone];
+        @synchronized (gregorian) {
+          [gregorian setTimeZone: timeZone];
+        }
       
       switch(dateSpecification) {
         case monthAndDate:
@@ -586,7 +592,9 @@ static BOOL is_leap_year(unsigned year) {
           [dateComps setHour: hour];
           [dateComps setMinute: minute];
           [dateComps setSecond: second];
-          date = [gregorian dateFromComponents: dateComps];
+          @synchronized (gregorian) {
+            date = [gregorian dateFromComponents: dateComps];
+          }
           break;
           
         case week:;
@@ -608,14 +616,18 @@ static BOOL is_leap_year(unsigned year) {
           [dateComps setHour: hour];
           [dateComps setMinute: minute];
           [dateComps setSecond: second];
-          date = [gregorian dateFromComponents: dateComps];
+          @synchronized (gregorian) {
+            date = [gregorian dateFromComponents: dateComps];
+          }
           [dateComps setYear: 0];
           [dateComps setMonth: 0];
           [dateComps setDay: (day - 1)];
           [dateComps setHour: 0];
           [dateComps setMinute: 0];
           [dateComps setSecond: 0];
-          date = [gregorian dateByAddingComponents: dateComps toDate: date options: 0];
+          @synchronized (gregorian) {
+            date = [gregorian dateByAddingComponents: dateComps toDate: date options: 0];
+          }
           break;
       }
     }
