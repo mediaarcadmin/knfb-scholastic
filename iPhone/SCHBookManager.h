@@ -48,6 +48,7 @@
 - (void)checkInParagraphSourceForBookIdentifier:(SCHBookIdentifier *)identifier;
 
 // these are like the normal checkout method but synchronously jump to the main thread to do core data access
+- (id<KNFBParagraphSource>)threadSafeCheckOutParagraphSourceForBookIdentifier:(SCHBookIdentifier *)identifier;
 - (SCHXPSProvider *)threadSafeCheckOutXPSProviderForBookIdentifier:(SCHBookIdentifier *)identifier;
 - (EucEPubBook<SCHEPubBookmarkPointTranslation> *)threadSafeCheckOutEucBookForBookIdentifier:(SCHBookIdentifier *)identifier;
 

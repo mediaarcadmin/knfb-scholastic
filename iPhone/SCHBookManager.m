@@ -15,7 +15,7 @@
 #import "SCHFlowEucBook.h"
 #import "SCHEPubBook.h"
 #import "SCHTextFlowParagraphSource.h"
-#import "SCHEPubParagraphSource.h"
+#import "SCHEPubToTextFlowMappingParagraphSource.h"
 #import "SCHBookIdentifier.h"
 #import "SCHCoreDataHelper.h"
 #import "KNFBParagraphSource.h"
@@ -507,6 +507,17 @@ static int checkoutCountTextFlow = 0;
 
 static int checkoutCountParagraph = 0;
 
+- (id<KNFBParagraphSource>)threadSafeCheckOutParagraphSourceForBookIdentifier:(SCHBookIdentifier *)identifier
+{
+    NSParameterAssert(identifier);
+    
+    __block id<KNFBParagraphSource> paragraphSource = nil;
+    [self performOnMainThread:^{
+        paragraphSource = [[self checkOutParagraphSourceForBookIdentifier:identifier inManagedObjectContext:self.mainThreadManagedObjectContext] retain];
+    }];
+    return [paragraphSource autorelease];
+}
+
 - (id<KNFBParagraphSource>)checkOutParagraphSourceForBookIdentifier:(SCHBookIdentifier *)identifier inManagedObjectContext:(NSManagedObjectContext *)managedObjectContext;
 {   
     NSParameterAssert(identifier);
@@ -532,7 +543,7 @@ static int checkoutCountParagraph = 0;
             BOOL hasEPub = [xpsProvider containsEmbeddedEPub];
             
             if (hasEPub) {
-                paragraphSource = [[SCHEPubParagraphSource alloc] initWithBookIdentifier:identifier managedObjectContext:managedObjectContext];
+                paragraphSource = [[SCHEPubToTextFlowMappingParagraphSource alloc] initWithBookIdentifier:identifier managedObjectContext:managedObjectContext];
             } else {
                 paragraphSource = [[SCHTextFlowParagraphSource alloc] initWithBookIdentifier:identifier managedObjectContext:managedObjectContext];
             }

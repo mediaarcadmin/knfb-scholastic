@@ -1,5 +1,5 @@
 //
-//  SCHEPubParagraphSource.h
+//  SCHEPubToTextFlowMappingParagraphSource.h
 //  Scholastic
 //
 //  Created by Matt Farrugia on 25/04/2012.
@@ -11,7 +11,7 @@
 @class NSManagedObjectContext;
 @class SCHBookIdentifier;
 
-@interface SCHEPubParagraphSource : NSObject <KNFBParagraphSource> {}
+@interface SCHEPubToTextFlowMappingParagraphSource : NSObject <KNFBParagraphSource> {}
 
 - (id)initWithBookIdentifier:(SCHBookIdentifier *)identifier managedObjectContext:(NSManagedObjectContext *)moc;
 

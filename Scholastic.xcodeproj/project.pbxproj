@@ -2739,11 +2739,11 @@
 		C98648A01402686300B9DFE1 /* SCHReadingViewNavigationToolbar.m in Sources */ = {isa = PBXBuildFile; fileRef = C986489F1402686300B9DFE1 /* SCHReadingViewNavigationToolbar.m */; };
 		C98BDD7B1547F3DF00E265B8 /* 9780545364775_r7.MyFirstBiographyBenjaminFranklin.jpg in Resources */ = {isa = PBXBuildFile; fileRef = C98BDD791547F3DF00E265B8 /* 9780545364775_r7.MyFirstBiographyBenjaminFranklin.jpg */; };
 		C98BDD7C1547F3DF00E265B8 /* 9780545364775_r7.MyFirstBiographyBenjaminFranklin.xps in Resources */ = {isa = PBXBuildFile; fileRef = C98BDD7A1547F3DF00E265B8 /* 9780545364775_r7.MyFirstBiographyBenjaminFranklin.xps */; };
-		C98BDDAA1548337C00E265B8 /* SCHEPubParagraphSource.m in Sources */ = {isa = PBXBuildFile; fileRef = C98BDDA91548337B00E265B8 /* SCHEPubParagraphSource.m */; };
-		C98BDDAB1548337C00E265B8 /* SCHEPubParagraphSource.m in Sources */ = {isa = PBXBuildFile; fileRef = C98BDDA91548337B00E265B8 /* SCHEPubParagraphSource.m */; };
-		C98BDDAC1548337C00E265B8 /* SCHEPubParagraphSource.m in Sources */ = {isa = PBXBuildFile; fileRef = C98BDDA91548337B00E265B8 /* SCHEPubParagraphSource.m */; };
-		C98BDDAD1548337C00E265B8 /* SCHEPubParagraphSource.m in Sources */ = {isa = PBXBuildFile; fileRef = C98BDDA91548337B00E265B8 /* SCHEPubParagraphSource.m */; };
-		C98BDDAE1548337C00E265B8 /* SCHEPubParagraphSource.m in Sources */ = {isa = PBXBuildFile; fileRef = C98BDDA91548337B00E265B8 /* SCHEPubParagraphSource.m */; };
+		C98BDDAA1548337C00E265B8 /* SCHEPubToTextFlowMappingParagraphSource.m in Sources */ = {isa = PBXBuildFile; fileRef = C98BDDA91548337B00E265B8 /* SCHEPubToTextFlowMappingParagraphSource.m */; };
+		C98BDDAB1548337C00E265B8 /* SCHEPubToTextFlowMappingParagraphSource.m in Sources */ = {isa = PBXBuildFile; fileRef = C98BDDA91548337B00E265B8 /* SCHEPubToTextFlowMappingParagraphSource.m */; };
+		C98BDDAC1548337C00E265B8 /* SCHEPubToTextFlowMappingParagraphSource.m in Sources */ = {isa = PBXBuildFile; fileRef = C98BDDA91548337B00E265B8 /* SCHEPubToTextFlowMappingParagraphSource.m */; };
+		C98BDDAD1548337C00E265B8 /* SCHEPubToTextFlowMappingParagraphSource.m in Sources */ = {isa = PBXBuildFile; fileRef = C98BDDA91548337B00E265B8 /* SCHEPubToTextFlowMappingParagraphSource.m */; };
+		C98BDDAE1548337C00E265B8 /* SCHEPubToTextFlowMappingParagraphSource.m in Sources */ = {isa = PBXBuildFile; fileRef = C98BDDA91548337B00E265B8 /* SCHEPubToTextFlowMappingParagraphSource.m */; };
 		C98BDDB11548625500E265B8 /* SCHEPubBook.m in Sources */ = {isa = PBXBuildFile; fileRef = C98BDDB01548625400E265B8 /* SCHEPubBook.m */; };
 		C98BDDB21548625500E265B8 /* SCHEPubBook.m in Sources */ = {isa = PBXBuildFile; fileRef = C98BDDB01548625400E265B8 /* SCHEPubBook.m */; };
 		C98BDDB31548625500E265B8 /* SCHEPubBook.m in Sources */ = {isa = PBXBuildFile; fileRef = C98BDDB01548625400E265B8 /* SCHEPubBook.m */; };
@@ -5557,8 +5557,8 @@
 		C986489F1402686300B9DFE1 /* SCHReadingViewNavigationToolbar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHReadingViewNavigationToolbar.m; path = Shared/SCHReadingViewNavigationToolbar.m; sourceTree = "<group>"; };
 		C98BDD791547F3DF00E265B8 /* 9780545364775_r7.MyFirstBiographyBenjaminFranklin.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = 9780545364775_r7.MyFirstBiographyBenjaminFranklin.jpg; path = "Shared/Debug Books/9780545364775_r7.MyFirstBiographyBenjaminFranklin.jpg"; sourceTree = "<group>"; };
 		C98BDD7A1547F3DF00E265B8 /* 9780545364775_r7.MyFirstBiographyBenjaminFranklin.xps */ = {isa = PBXFileReference; lastKnownFileType = file; name = 9780545364775_r7.MyFirstBiographyBenjaminFranklin.xps; path = "Shared/Debug Books/9780545364775_r7.MyFirstBiographyBenjaminFranklin.xps"; sourceTree = "<group>"; };
-		C98BDDA81548337A00E265B8 /* SCHEPubParagraphSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHEPubParagraphSource.h; path = Shared/SCHEPubParagraphSource.h; sourceTree = "<group>"; };
-		C98BDDA91548337B00E265B8 /* SCHEPubParagraphSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHEPubParagraphSource.m; path = Shared/SCHEPubParagraphSource.m; sourceTree = "<group>"; };
+		C98BDDA81548337A00E265B8 /* SCHEPubToTextFlowMappingParagraphSource.h */ = {isa = PBXFileReference; fileEncoding = 4; name = SCHEPubToTextFlowMappingParagraphSource.h; path = Shared/SCHEPubToTextFlowMappingParagraphSource.h; sourceTree = "<group>"; };
+		C98BDDA91548337B00E265B8 /* SCHEPubToTextFlowMappingParagraphSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHEPubToTextFlowMappingParagraphSource.m; path = Shared/SCHEPubToTextFlowMappingParagraphSource.m; sourceTree = "<group>"; };
 		C98BDDAF1548625300E265B8 /* SCHEPubBook.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHEPubBook.h; path = Shared/SCHEPubBook.h; sourceTree = "<group>"; };
 		C98BDDB01548625400E265B8 /* SCHEPubBook.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHEPubBook.m; path = Shared/SCHEPubBook.m; sourceTree = "<group>"; };
 		C98BDDB61548629400E265B8 /* SCHEPubBookmarkPointTranslation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHEPubBookmarkPointTranslation.h; path = Shared/SCHEPubBookmarkPointTranslation.h; sourceTree = "<group>"; };
@@ -9216,8 +9216,8 @@
 				C9D4F6271345FFE7007F86E3 /* SCHTextFlow.m */,
 				C93EBEAD13472FEC003B99FD /* SCHTextFlowParagraphSource.h */,
 				C93EBEAE13472FEC003B99FD /* SCHTextFlowParagraphSource.m */,
-				C98BDDA81548337A00E265B8 /* SCHEPubParagraphSource.h */,
-				C98BDDA91548337B00E265B8 /* SCHEPubParagraphSource.m */,
+				C98BDDA81548337A00E265B8 /* SCHEPubToTextFlowMappingParagraphSource.h */,
+				C98BDDA91548337B00E265B8 /* SCHEPubToTextFlowMappingParagraphSource.m */,
 				C92FA7D01355BE1F001BAA6B /* SCHSmartZoomBlockSource.h */,
 				C92FA7D11355BE20001BAA6B /* SCHSmartZoomBlockSource.m */,
 				52F15A1D1371A2CA0073941E /* SCHBookAnnotations.h */,
@@ -12466,7 +12466,7 @@
 				C9BF1211153424E6009FE0B9 /* UILabel+ScholasticAdditions.m in Sources */,
 				52023D551541BA2000C36AD5 /* SCHProfileItemSortObject.m in Sources */,
 				52023D5B1541BBB600C36AD5 /* NSFileManager+DoNotBackupExtendedAttribute.m in Sources */,
-				C98BDDAA1548337C00E265B8 /* SCHEPubParagraphSource.m in Sources */,
+				C98BDDAA1548337C00E265B8 /* SCHEPubToTextFlowMappingParagraphSource.m in Sources */,
 				C98BDDB11548625500E265B8 /* SCHEPubBook.m in Sources */,
 				287639B7154E857100540861 /* SCHStoryInteractionJigsawPiece.m in Sources */,
 				F858319815514DC5004960E8 /* SCHDownloadDictionaryFromSettingsViewController.m in Sources */,
@@ -12538,7 +12538,7 @@
 				C9A6B402148B853C00B31277 /* SCHAppHelpState.m in Sources */,
 				F849155814FFA54D000D064B /* RateView.m in Sources */,
 				52943AE714FFD0E8002991EB /* SCHWishListSyncComponent.m in Sources */,
-				C98BDDAC1548337C00E265B8 /* SCHEPubParagraphSource.m in Sources */,
+				C98BDDAC1548337C00E265B8 /* SCHEPubToTextFlowMappingParagraphSource.m in Sources */,
 				C98BDDB31548625500E265B8 /* SCHEPubBook.m in Sources */,
 				287639B9154E857100540861 /* SCHStoryInteractionJigsawPiece.m in Sources */,
 			);
@@ -12908,7 +12908,7 @@
 				C9BF1212153424E6009FE0B9 /* UILabel+ScholasticAdditions.m in Sources */,
 				52023D561541BA2000C36AD5 /* SCHProfileItemSortObject.m in Sources */,
 				52023D5C1541BBB600C36AD5 /* NSFileManager+DoNotBackupExtendedAttribute.m in Sources */,
-				C98BDDAB1548337C00E265B8 /* SCHEPubParagraphSource.m in Sources */,
+				C98BDDAB1548337C00E265B8 /* SCHEPubToTextFlowMappingParagraphSource.m in Sources */,
 				C98BDDB21548625500E265B8 /* SCHEPubBook.m in Sources */,
 				287639B8154E857100540861 /* SCHStoryInteractionJigsawPiece.m in Sources */,
 				F858319915514DC5004960E8 /* SCHDownloadDictionaryFromSettingsViewController.m in Sources */,
@@ -13281,7 +13281,7 @@
 				C9BF1213153424E6009FE0B9 /* UILabel+ScholasticAdditions.m in Sources */,
 				52023D571541BA2000C36AD5 /* SCHProfileItemSortObject.m in Sources */,
 				52023D5D1541BBB600C36AD5 /* NSFileManager+DoNotBackupExtendedAttribute.m in Sources */,
-				C98BDDAD1548337C00E265B8 /* SCHEPubParagraphSource.m in Sources */,
+				C98BDDAD1548337C00E265B8 /* SCHEPubToTextFlowMappingParagraphSource.m in Sources */,
 				C98BDDB41548625500E265B8 /* SCHEPubBook.m in Sources */,
 				287639BA154E857100540861 /* SCHStoryInteractionJigsawPiece.m in Sources */,
 				F858319A15514DC5004960E8 /* SCHDownloadDictionaryFromSettingsViewController.m in Sources */,
@@ -13654,7 +13654,7 @@
 				C9BF1214153424E6009FE0B9 /* UILabel+ScholasticAdditions.m in Sources */,
 				52023D581541BA2000C36AD5 /* SCHProfileItemSortObject.m in Sources */,
 				52023D5E1541BBB600C36AD5 /* NSFileManager+DoNotBackupExtendedAttribute.m in Sources */,
-				C98BDDAE1548337C00E265B8 /* SCHEPubParagraphSource.m in Sources */,
+				C98BDDAE1548337C00E265B8 /* SCHEPubToTextFlowMappingParagraphSource.m in Sources */,
 				C98BDDB51548625500E265B8 /* SCHEPubBook.m in Sources */,
 				287639BB154E857100540861 /* SCHStoryInteractionJigsawPiece.m in Sources */,
 				F858319B15514DC5004960E8 /* SCHDownloadDictionaryFromSettingsViewController.m in Sources */,

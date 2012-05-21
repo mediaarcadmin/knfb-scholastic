@@ -65,7 +65,7 @@
         [eucBookView setPageTexture:self.currentPageTexture isDark:self.textureIsDark];
         
         if (self.openingPoint) {
-            //[self jumpToBookPoint:self.openingPoint animated:NO];
+            [self jumpToBookPoint:self.openingPoint animated:NO];
             self.openingPoint = nil;
         }
         
