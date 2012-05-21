@@ -767,13 +767,9 @@ static SCHProcessingManager *sharedManager = nil;
         
     int totalBooksProcessing = 0;
     
-	NSArray *allBookIdentifiers = [[SCHBookManager sharedBookManager] allBookIdentifiersInManagedObjectContext:self.managedObjectContext];
-	
-	for (SCHBookIdentifier *identifier in allBookIdentifiers) {
-        if ([self identifierIsProcessing:identifier]) {
-            totalBooksProcessing++;
-        }
-	}	
+    @synchronized(self.currentlyProcessingIdentifiers) {
+        totalBooksProcessing = [self.currentlyProcessingIdentifiers count];
+    }
 	
 	if (totalBooksProcessing == 0) {
 		self.connectionIsIdle = YES;
