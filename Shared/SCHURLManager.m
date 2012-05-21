@@ -31,6 +31,7 @@ static NSUInteger const kSCHURLManagerMaxConnections = 6;
 - (void)requestURLForRecommendationOnMainThread:(NSString *)isbn;
 - (void)clearOnMainThread;
 - (void)shakeTable;
+- (void)endBackgroundTask;
 
 @property (retain, nonatomic) NSMutableSet *table;
 @property (assign, nonatomic) UIBackgroundTaskIdentifier backgroundTaskIdentifier;
@@ -164,10 +165,14 @@ static NSUInteger const kSCHURLManagerMaxConnections = 6;
 	if ([table count] > 0) {
 		NSMutableSet *removeFromTable = [NSMutableSet set];
 		
-		self.backgroundTaskIdentifier = [[UIApplication sharedApplication] beginBackgroundTaskWithExpirationHandler:^{ 
-            [[UIApplication sharedApplication] endBackgroundTask:self.backgroundTaskIdentifier];            
-			self.backgroundTaskIdentifier = UIBackgroundTaskInvalid;
-		}];
+        if (self.backgroundTaskIdentifier == UIBackgroundTaskInvalid) {
+            self.backgroundTaskIdentifier = [[UIApplication sharedApplication] beginBackgroundTaskWithExpirationHandler:^{ 
+                if (self.backgroundTaskIdentifier != UIBackgroundTaskInvalid) { 
+                    [[UIApplication sharedApplication] endBackgroundTask:self.backgroundTaskIdentifier];            
+                    self.backgroundTaskIdentifier = UIBackgroundTaskInvalid;
+                }
+            }];
+        }
 		
 		for (id<SCHISBNItem> isbnItem in table) {
             if ([isbnItem conformsToProtocol:@protocol(SCHISBNItem)] == YES) {
@@ -186,10 +191,8 @@ static NSUInteger const kSCHURLManagerMaxConnections = 6;
                     requestCount++;
                     [removeFromTable addObject:isbnItem];
                 } else {
-                    if (self.backgroundTaskIdentifier != UIBackgroundTaskInvalid) {
-                        [[UIApplication sharedApplication] endBackgroundTask:self.backgroundTaskIdentifier];
-                        self.backgroundTaskIdentifier = UIBackgroundTaskInvalid;			
-                    }
+                    
+                    [self endBackgroundTask];
                     
                     [[SCHAuthenticationManager sharedAuthenticationManager] authenticateWithSuccessBlock:^(SCHAuthenticationManagerConnectivityMode connectivityMode){
                         if (connectivityMode == SCHAuthenticationManagerConnectivityModeOnline) {
@@ -221,12 +224,7 @@ static NSUInteger const kSCHURLManagerMaxConnections = 6;
 		}		
 	}
 	
-	if (requestCount < 1) {
-		if (self.backgroundTaskIdentifier != UIBackgroundTaskInvalid) {
-			[[UIApplication sharedApplication] endBackgroundTask:self.backgroundTaskIdentifier];
-			self.backgroundTaskIdentifier = UIBackgroundTaskInvalid;			
-		}
-	}	
+    [self endBackgroundTask];
     
     [self shakeTable];
 }
@@ -250,14 +248,18 @@ static NSUInteger const kSCHURLManagerMaxConnections = 6;
         }
     }
     
-	if (requestCount < 1) {
-		if (self.backgroundTaskIdentifier != UIBackgroundTaskInvalid) {
-			[[UIApplication sharedApplication] endBackgroundTask:self.backgroundTaskIdentifier];
-			self.backgroundTaskIdentifier = UIBackgroundTaskInvalid;			
-		}
-	}	
+    [self endBackgroundTask];
 	
     [self shakeTable];
+}
+
+- (void)endBackgroundTask
+{
+    if (requestCount < 1 && 
+        self.backgroundTaskIdentifier != UIBackgroundTaskInvalid) {
+        [[UIApplication sharedApplication] endBackgroundTask:self.backgroundTaskIdentifier];
+        self.backgroundTaskIdentifier = UIBackgroundTaskInvalid;			
+    }	
 }
 
 @end
