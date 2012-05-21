@@ -300,15 +300,15 @@ static NSString * const kSCHContentMetadataItemAnnotationsItemProfileID = @"Anno
 - (void)deleteAllFiles
 {    
     NSString *bookDirectory = self.AppBook.bookDirectory;
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{        
-        [[SCHProcessingManager sharedProcessingManager] cancelAllOperationsForBookIdentifier:self.bookIdentifier 
+    SCHBookIdentifier *bookIdentifier = self.bookIdentifier;
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{
+        [[SCHProcessingManager sharedProcessingManager] cancelAllOperationsForBookIdentifier:bookIdentifier 
                                                                            waitUntilFinished:YES];
         NSError *error = nil;
         NSFileManager *localManager = [[[NSFileManager alloc] init] autorelease];
-        if ([localManager removeItemAtPath:bookDirectory 
-                                     error:&error] == NO) {
+        if ([localManager removeItemAtPath:bookDirectory error:&error] == NO) {
             NSLog(@"Failed to delete files for %@, error: %@", 
-                  self.ContentIdentifier, [error localizedDescription]);
+                  bookIdentifier, [error localizedDescription]);
         }
     });
     
