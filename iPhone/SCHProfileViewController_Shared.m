@@ -364,7 +364,8 @@ didSelectButtonAnimated:(BOOL)animated
     
     // Edit the sort key as appropriate.
     NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:kSCHLibreAccessWebServiceFirstName 
-                                                                   ascending:YES];
+                                                                   ascending:YES
+                                                                    selector:@selector(caseInsensitiveCompare:)];
     NSArray *sortDescriptors = [[NSArray alloc] initWithObjects:sortDescriptor, nil];
     
     [fetchRequest setSortDescriptors:sortDescriptors];
