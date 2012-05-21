@@ -126,11 +126,18 @@ NSString * const SCHBookshelfSyncComponentDidFailNotification = @"SCHBookshelfSy
 {	
     @try {
         if([method compare:kSCHLibreAccessWebServiceListContentMetadata] == NSOrderedSame) {
-            if (self.useIndividualRequests == YES) {
-                self.requestCount--;
-            }
             
             dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{
+                BOOL triggerDidCompleteNotification = NO;
+                if (self.useIndividualRequests == YES) {
+                    // make sure this is an atomic operation in case other 
+                    // threads are detecting that they are the last request too
+                    @synchronized (self) {
+                        self.requestCount--;
+                        triggerDidCompleteNotification = (self.requestCount < 1);
+                    }
+                }
+
                 NSManagedObjectContext *backgroundThreadManagedObjectContext = [[NSManagedObjectContext alloc] init];
                 [backgroundThreadManagedObjectContext setPersistentStoreCoordinator:self.managedObjectContext.persistentStoreCoordinator];
                 [backgroundThreadManagedObjectContext setMergePolicy:NSMergeByPropertyObjectTrumpMergePolicy];
@@ -144,7 +151,7 @@ NSString * const SCHBookshelfSyncComponentDidFailNotification = @"SCHBookshelfSy
                         [self postBookshelfSyncComponentBookReceivedNotification:[NSArray arrayWithObject:[list objectAtIndex:0]]];
                     }
                     
-                    if (self.requestCount < 1) {
+                    if (triggerDidCompleteNotification == YES) {
                         dispatch_async(dispatch_get_main_queue(), ^{
                             [[NSNotificationCenter defaultCenter] postNotificationName:SCHBookshelfSyncComponentDidCompleteNotification 
                                                                                 object:self];
@@ -306,7 +313,7 @@ NSString * const SCHBookshelfSyncComponentDidFailNotification = @"SCHBookshelfSy
                     }];					
 					ret = NO;			
 				} else {
-					requestCount++;
+					self.requestCount++;
 					NSLog(@"Requesting %@ Book information", [ISBN valueForKey:kSCHLibreAccessWebServiceContentIdentifier]);					
 				}
 			}
