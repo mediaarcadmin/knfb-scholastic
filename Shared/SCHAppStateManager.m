@@ -405,6 +405,7 @@
 - (void)coreDataHelperManagedObjectContextDidChangeNotification:(NSNotification *)notification
 {
     self.managedObjectContext = [[notification userInfo] objectForKey:SCHCoreDataHelperManagedObjectContext];
+    self.cachedAppState = nil;
 }
 
 @end
