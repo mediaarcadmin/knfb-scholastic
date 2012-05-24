@@ -22,6 +22,7 @@
 #import <libEucalyptus/EucCSSIntermediateDocument.h>
 #import <libEucalyptus/EucCSSIntermediateDocumentNode.h>
 #import <libEucalyptus/EucChapterNameFormatting.h>
+#import <libEucalyptus/EucCSSXMLTree.h>
 #import "levenshtein_distance.h"
 
 #define MATCHING_WINDOW_SIZE 11
@@ -367,84 +368,128 @@ static NSString * const kNoWordPlaceholder = @"NO_WORD_PLACEHOLDER";
         // to single-byte values, then calculating the levenshtein distance
         // between these hash arrays for both candidate windows, and choosing
         // the word in the center if the best matching window.
-        
-        EucBookPageIndexPoint *eucIndexPoint = [[EucBookPageIndexPoint alloc] init];
-        eucIndexPoint.source = [paragraphID indexAtPosition:0];
+    
+    // First, work out which pages in the text flow to bound the search in. Go forwards until we find the next page anchor or end of book, then 
+    // go backwards until we find the previous page anchor or start of book
+    
+    EucBookPageIndexPoint *eucIndexPoint = [[EucBookPageIndexPoint alloc] init];
+    eucIndexPoint.source = [paragraphID indexAtPosition:0];
+    EucCSSIntermediateDocument *document = [self.ePubBook intermediateDocumentForIndexPoint:eucIndexPoint];
+    
+    if(!document) {
+        ret = [[SCHBookPoint alloc] init];
+        ret.layoutPage = self.textFlow.lastPageIndex + 2; // + 2 to get 1-based, and off-the-end.
+        return [ret autorelease];
+    }
+    
+    EucCSSLayoutRunExtractor *runExtractor = [[EucCSSLayoutRunExtractor alloc] initWithDocument:document];
+    
+    uint32_t xamlFlowTreeKey = [paragraphID indexAtPosition:1];
+    uint32_t documentKey = [EucCSSIntermediateDocument keyForDocumentTreeNodeKey:xamlFlowTreeKey];
+    EucCSSLayoutRun *wordContainingRun = [runExtractor runForNodeWithKey:documentKey];
+    
+    if(wordContainingRun) {
+        if(wordOffset >= wordContainingRun.wordsCount) {
+            wordOffset = wordContainingRun.wordsCount - 1;
+        }
+    
+    NSInteger startPageIndex = NSNotFound;
+    NSInteger endPageIndex   = NSNotFound;
+    NSInteger sourceIndex    = [paragraphID indexAtPosition:0];
+    
+    NSUInteger sourceCount = [self.ePubBook sourceCount];
+    
+
+    eucIndexPoint.source = sourceIndex;
+    uint32_t documentTreeNodeKey = [paragraphID indexAtPosition:1];
+    
+    // Search forwards through the entire book for a page anchor
+    while ((sourceIndex < sourceCount) && (endPageIndex == NSNotFound)) {
+        eucIndexPoint.source = sourceIndex;
         EucCSSIntermediateDocument *document = [self.ePubBook intermediateDocumentForIndexPoint:eucIndexPoint];
-        [eucIndexPoint release];
         
-        if(!document) {
-            ret = [[SCHBookPoint alloc] init];
-            ret.layoutPage = self.textFlow.lastPageIndex + 2; // + 2 to get 1-based, and off-the-end.
-            return [ret autorelease];
+        id<EucCSSDocumentTree> documentTree = [document documentTree];
+        uint32_t nodeCount = [documentTree nodeCount];
+        uint32_t documentKey = [EucCSSIntermediateDocument keyForDocumentTreeNodeKey:documentTreeNodeKey];
+
+        while (documentKey < nodeCount) {
+            id<EucCSSDocumentTreeNode> currentNode = [documentTree nodeForKey:documentKey];
+            
+            NSString *nodeName = [currentNode name];
+            NSString *nodeId   = [currentNode attributeWithName:@"id"];
+            
+            if (nodeName && nodeId && ([nodeName caseInsensitiveCompare:@"a"] == NSOrderedSame)) {
+                if ([nodeId hasPrefix:@"page"]) {
+                    NSString *pageString = [nodeId substringFromIndex:4];
+                    if ([pageString length]) {
+                        endPageIndex = [pageString integerValue] - 1;
+                    }
+                    break;
+                }
+            }
+            
+            documentKey++;
+        }
+
+        documentTreeNodeKey = 0;
+        sourceIndex++;
+    }
+    
+    // Reset the search point
+    sourceIndex         = [paragraphID indexAtPosition:0];
+    documentTreeNodeKey = [paragraphID indexAtPosition:1];
+    
+    // Search backwards through the entire book for a page anchor
+    while ((sourceIndex >= 0) && (startPageIndex == NSNotFound)) {
+        eucIndexPoint.source = sourceIndex;
+        EucCSSIntermediateDocument *document = [self.ePubBook intermediateDocumentForIndexPoint:eucIndexPoint];
+        
+        id<EucCSSDocumentTree> documentTree = [document documentTree];
+        NSInteger documentKey = [EucCSSIntermediateDocument keyForDocumentTreeNodeKey:documentTreeNodeKey];
+        
+        while (documentKey >= 0) {
+            id<EucCSSDocumentTreeNode> currentNode = [documentTree nodeForKey:documentKey];
+            
+            NSString *nodeName = [currentNode name];
+            NSString *nodeId   = [currentNode attributeWithName:@"id"];
+            
+            if (nodeName && nodeId && ([nodeName caseInsensitiveCompare:@"a"] == NSOrderedSame)) {
+                if ([nodeId hasPrefix:@"page"]) {
+                    NSString *pageString = [nodeId substringFromIndex:4];
+                    if ([pageString length]) {
+                        startPageIndex = [pageString integerValue] - 1;
+                    }
+                    break;
+                }
+            }
+            
+            documentKey--;
         }
         
-        EucCSSLayoutRunExtractor *runExtractor = [[EucCSSLayoutRunExtractor alloc] initWithDocument:document];
+        sourceIndex--;
+        eucIndexPoint.source = sourceIndex;
+        document = [self.ePubBook intermediateDocumentForIndexPoint:eucIndexPoint];
+        documentTreeNodeKey = [documentTree nodeCount] - 1;
+    }
         
-        uint32_t xamlFlowTreeKey = [paragraphID indexAtPosition:1];
-        uint32_t documentKey = [EucCSSIntermediateDocument keyForDocumentTreeNodeKey:xamlFlowTreeKey];
-        EucCSSLayoutRun *wordContainingRun = [runExtractor runForNodeWithKey:documentKey];
+        if (startPageIndex == NSNotFound) {
+            startPageIndex = 0;
+        }
+    
+    [eucIndexPoint release];
         
-        if(wordContainingRun) {
-            if(wordOffset >= wordContainingRun.wordsCount) {
-                wordOffset = wordContainingRun.wordsCount - 1;
-            }
+        if (startPageIndex != NSNotFound) {
             
-            NSUInteger startPageIndex = 0;
-            NSUInteger endPageIndex = 0;
-            
-            // Find the page number of a /subsequent/ run in the XAML document
-            // to bound our block search.
-            {
-                EucCSSLayoutRun *testRun = wordContainingRun;
-                NSArray *thisParagraphTags = [testRun attributeValuesForWordsForAttributeName:@"Tag"];
-                NSInteger testOffset = wordOffset + (MATCHING_WINDOW_SIZE / 2);
-                NSString *thisPageTag = nil;
-                do {
-                    if(thisParagraphTags.count <= testOffset) {
-                        testOffset -= thisParagraphTags.count;
-                        do {
-                            testRun = [runExtractor nextRunForRun:testRun];
-                            thisParagraphTags = [testRun attributeValuesForWordsForAttributeName:@"Tag"];
-                        } while(testRun && thisParagraphTags.count == 0);
-                    } else {
-                        thisPageTag = [thisParagraphTags objectAtIndex:testOffset++];
-                    }
-                } while(testRun && ![thisPageTag hasPrefix:@"__"]);
-                if(testRun) {
-                    endPageIndex = [[thisPageTag substringFromIndex:2] integerValue];
-                }
-            }
             // Search onto the next page, so that we get our trailing overlap.
             ++endPageIndex;
+        }
             
-            // Find the page number of a /previous/ run in the XAML document
-            // to bound our block search.
-            {
-                EucCSSLayoutRun *testRun = wordContainingRun;
-                NSArray *thisParagraphTags = [testRun attributeValuesForWordsForAttributeName:@"Tag"];
-                NSInteger testOffset = wordOffset - 1 - (MATCHING_WINDOW_SIZE / 2);
-                NSString *thisPageTag = nil;
-                do {
-                    if(testOffset < 0) {
-                        do {
-                            testRun = [runExtractor previousRunForRun:testRun];
-                            thisParagraphTags = [testRun attributeValuesForWordsForAttributeName:@"Tag"];
-                        } while(testRun && thisParagraphTags.count == 0);
-                        testOffset = thisParagraphTags.count + testOffset;
-                    } else {
-                        thisPageTag = [thisParagraphTags objectAtIndex:testOffset--];
-                    }
-                } while(testRun && ![thisPageTag hasPrefix:@"__"]);
-                if(testRun) {
-                    startPageIndex = [[thisPageTag substringFromIndex:2] integerValue];
-                }
-            }
             if(startPageIndex > 0) {
                 // Search onto the previous page, so that we get our trailing overlap.
                 --startPageIndex;
             }
             
+
             NSArray *flowReferences = self.textFlow.flowReferences;
             
             NSUInteger sectionStartIndex = 0;
