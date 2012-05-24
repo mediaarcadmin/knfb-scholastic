@@ -316,11 +316,34 @@
     }
 }
 
-- (SCHNote *)createEmptyNote
+// This is a scratch version of a SCHNote designed to be created on an independant
+// NSManagedObjectContext and then when the user saves it provided to createNoteWithNote
+// to create the Note for real
+// Note: this SCHNote is identified by privateAnnotations = nil
+- (SCHNote *)createEmptyScratchNoteInManagedObjectContext:(NSManagedObjectContext *)managedObjectContext
 {
     SCHNote *note = nil;
     
-    if (self.privateAnnotations != nil) {
+    if (managedObjectContext != nil) {
+        note = [NSEntityDescription insertNewObjectForEntityForName:kSCHNote 
+                                             inManagedObjectContext:managedObjectContext];
+        
+        SCHLocationGraphics *locationGraphics = [NSEntityDescription insertNewObjectForEntityForName:kSCHLocationGraphics
+                                                                              inManagedObjectContext:managedObjectContext];
+        
+        note.NoteColor = [UIColor whiteColor];
+        note.Location = locationGraphics;        
+        note.NoteText = @"";
+	}
+    
+	return note;
+}
+
+- (SCHNote *)createNoteWithNote:(SCHNote *)scratchNote
+{
+    SCHNote *note = nil;
+    
+    if (scratchNote != nil && self.privateAnnotations != nil) {
         note = [NSEntityDescription insertNewObjectForEntityForName:kSCHNote 
                                              inManagedObjectContext:self.privateAnnotations.managedObjectContext];
         
@@ -328,9 +351,11 @@
                                                                               inManagedObjectContext:self.privateAnnotations.managedObjectContext];
         
         note.PrivateAnnotations = self.privateAnnotations;
-        note.NoteColor = [UIColor whiteColor];
+        note.NoteColor = scratchNote.NoteColor;
         note.Location = locationGraphics;
-        note.NoteText = @"";
+        note.noteLayoutPage = scratchNote.noteLayoutPage;        
+        note.NoteText = scratchNote.NoteText;
+        note.Version = scratchNote.Version;
         
         [sortedNotes release], sortedNotes = nil;
 	}

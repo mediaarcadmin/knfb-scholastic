@@ -111,6 +111,7 @@ static const NSUInteger kReadingViewMaxRecommendationsCount = 4;
 
 @property (nonatomic, retain) SCHReadingNoteView *notesView;
 @property (nonatomic, retain) SCHNotesCountView *notesCountView;
+@property (nonatomic, retain) NSManagedObjectContext *scratchNoteManagedObjectContext;
 
 @property (nonatomic, retain) SCHBookStoryInteractions *bookStoryInteractions;
 @property (nonatomic, retain) SCHStoryInteractionController *storyInteractionController;
@@ -214,6 +215,7 @@ static const NSUInteger kReadingViewMaxRecommendationsCount = 4;
 @synthesize popover;
 @synthesize notesView;
 @synthesize notesCountView;
+@synthesize scratchNoteManagedObjectContext;
 
 @synthesize optionsView;
 @synthesize customOptionsView;
@@ -290,6 +292,7 @@ static const NSUInteger kReadingViewMaxRecommendationsCount = 4;
     [bookStatistics release], bookStatistics = nil;
     [bookStatisticsReadingStartTime release], bookStatisticsReadingStartTime = nil;
     [audioBookPlayer release], audioBookPlayer = nil;
+    [scratchNoteManagedObjectContext release], scratchNoteManagedObjectContext = nil;
     [bookStoryInteractions release], bookStoryInteractions = nil;
     [popoverOptionsViewController release], popoverOptionsViewController = nil;
     [queuedAudioPlayer release], queuedAudioPlayer = nil;
@@ -2790,32 +2793,33 @@ static const NSUInteger kReadingViewMaxRecommendationsCount = 4;
 - (void)readingNotesViewCreatingNewNote:(SCHReadingNotesListController *)readingNotesView
 {
     NSLog(@"Requesting a new note be created!");
-    SCHNote *newNote = [self.bookAnnotations createEmptyNote];
-    
-    SCHAppContentProfileItem *appContentProfileItem = [profile appContentProfileItemForBookIdentifier:self.bookIdentifier];
-    if (appContentProfileItem != nil) {
-        newNote.Version = [NSNumber numberWithInteger:[appContentProfileItem.ContentProfileItem.UserContentItem.LastVersion integerValue]];
+    if (self.scratchNoteManagedObjectContext != nil) {
+        SCHNote *scratchNote = [self.bookAnnotations createEmptyScratchNoteInManagedObjectContext:self.scratchNoteManagedObjectContext];
+        
+        SCHAppContentProfileItem *appContentProfileItem = [profile appContentProfileItemForBookIdentifier:self.bookIdentifier];
+        if (appContentProfileItem != nil) {
+            scratchNote.Version = [NSNumber numberWithInteger:[appContentProfileItem.ContentProfileItem.UserContentItem.LastVersion integerValue]];
+        }
+        
+        SCHBookPoint *currentPoint = [self.readingView currentBookPoint];
+        
+        NSUInteger layoutPage = 0;
+        NSUInteger pageWordOffset = 0;
+        [self.readingView layoutPage:&layoutPage pageWordOffset:&pageWordOffset forBookPoint:currentPoint includingFolioBlocks:YES];
+        
+        NSLog(@"Current book point: %@", currentPoint);
+        scratchNote.noteLayoutPage = layoutPage;
+        
+        SCHReadingNoteView *aNotesView = [[SCHReadingNoteView alloc] initWithNote:scratchNote];    
+        aNotesView.delegate = self;
+        aNotesView.newNote = YES;
+        
+        [self setupStoryInteractionButtonForCurrentPagesAnimated:YES];
+        [self setToolbarVisibility:NO animated:YES];
+        
+        [aNotesView showInView:self.view animated:YES];
+        [aNotesView release];
     }
-    [self save];
-    
-    SCHBookPoint *currentPoint = [self.readingView currentBookPoint];
-    
-    NSUInteger layoutPage = 0;
-    NSUInteger pageWordOffset = 0;
-    [self.readingView layoutPage:&layoutPage pageWordOffset:&pageWordOffset forBookPoint:currentPoint includingFolioBlocks:YES];
-
-    NSLog(@"Current book point: %@", currentPoint);
-    newNote.noteLayoutPage = layoutPage;
-
-    SCHReadingNoteView *aNotesView = [[SCHReadingNoteView alloc] initWithNote:newNote];    
-    aNotesView.delegate = self;
-    aNotesView.newNote = YES;
-    
-    [self setupStoryInteractionButtonForCurrentPagesAnimated:YES];
-    [self setToolbarVisibility:NO animated:YES];
-    
-    [aNotesView showInView:self.view animated:YES];
-    [aNotesView release];
 }
 
 - (void)readingNotesView:(SCHReadingNotesListController *)readingNotesView didSelectNote:(SCHNote *)note
@@ -2862,9 +2866,27 @@ static const NSUInteger kReadingViewMaxRecommendationsCount = 4;
 
 #pragma mark - SCHNotesViewDelegate methods
 
+// We are only using this to create a temporary scratch version of a Note
+// until the user says save then it's create on the main NSManagedObjectContext
+- (NSManagedObjectContext *)scratchNoteManagedObjectContext
+{
+    if (scratchNoteManagedObjectContext == nil && 
+        self.managedObjectContext != nil) {
+        scratchNoteManagedObjectContext = [[NSManagedObjectContext alloc] init];
+        [scratchNoteManagedObjectContext setPersistentStoreCoordinator:self.managedObjectContext.persistentStoreCoordinator];
+    }
+    
+    return scratchNoteManagedObjectContext;
+}
+
 - (void)notesView:(SCHReadingNoteView *)aNotesView savedNote:(SCHNote *)note;
 {
     NSLog(@"Saving note...");
+    
+    if (note != nil && note.PrivateAnnotations == nil) {
+        [self.bookAnnotations createNoteWithNote:note];        
+    }    
+    self.scratchNoteManagedObjectContext = nil;
     // a new object will already have been created and added to the data store
     [self save];    
     [self setupStoryInteractionButtonForCurrentPagesAnimated:YES];
@@ -2876,12 +2898,7 @@ static const NSUInteger kReadingViewMaxRecommendationsCount = 4;
 
 - (void)notesViewCancelled:(SCHReadingNoteView *)aNotesView
 {    
-    // if we created the note but it's been cancelled, delete the note
-    if (aNotesView.newNote) {
-        [self.bookAnnotations deleteNote:aNotesView.note];
-        
-        [self save];
-    }
+    self.scratchNoteManagedObjectContext = nil;
     
     [self setupStoryInteractionButtonForCurrentPagesAnimated:YES];
     [self setToolbarVisibility:YES animated:YES];
