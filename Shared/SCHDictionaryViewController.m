@@ -317,7 +317,7 @@
         }
         case SCHDictionaryProcessingStateNeedsDownload:
         {
-            self.bottomLabel.text = NSLocalizedString(@"The dictionary is downloading from the Internet. You can wait for it to finish, or look up your word later.", nil);
+            self.bottomLabel.text = NSLocalizedString(@"The dictionary is currently downloading from the Internet. You can wait for it to finish, or look up your word later.", nil);
             [self.activityIndicator stopAnimating];
             self.progressBar.hidden = NO;
             self.progressBar.progress = [SCHDictionaryDownloadManager sharedDownloadManager].currentDictionaryDownloadPercentage;

@@ -207,7 +207,7 @@
                                                                                   drmQualifer:[[book objectForKey:kSCHLibreAccessWebServiceDRMQualifier] DRMQualifierValue]
                                                                                    profileIDs:profileIDs]];
         
-        [self.bookshelfSyncComponent addContentMetadataItem:book];
+        [self.bookshelfSyncComponent addContentMetadataItemFromMainThread:book];
     }
 }
 
@@ -248,7 +248,7 @@
 
         [self.profileSyncComponent syncProfilesFromMainThread:profileItems];
         [self.contentSyncComponent syncUserContentItemsFromMainThread:userContentItems];
-        [self.bookshelfSyncComponent syncContentMetadataItems:contentMetadataItems];        
+        [self.bookshelfSyncComponent syncContentMetadataItemsFromMainThread:contentMetadataItems];        
     }
 }
 
@@ -593,7 +593,7 @@
             [self.contentSyncComponent addUserContentItemFromMainThread:[self userContentItemWith:[book objectForKey:kSCHLibreAccessWebServiceContentIdentifier] 
                                                                                       drmQualifer:[[book objectForKey:kSCHLibreAccessWebServiceDRMQualifier] DRMQualifierValue]                                                    
                                                                                        profileIDs:profileIDs]];
-            SCHContentMetadataItem *newContentMetadataItem = [self.bookshelfSyncComponent addContentMetadataItem:book];
+            SCHContentMetadataItem *newContentMetadataItem = [self.bookshelfSyncComponent addContentMetadataItemFromMainThread:book];
             newContentMetadataItem.FileName = [xpsFilePath lastPathComponent];
             
             // extract the cover image

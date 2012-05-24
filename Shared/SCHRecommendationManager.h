@@ -16,7 +16,8 @@
 @property (nonatomic, retain) NSManagedObjectContext *managedObjectContext;
 
 - (void)cancelAllOperations;
-- (void)cancelAllOperationsForIsbn:(NSString *)isbn;
+- (void)cancelAllOperationsForIsbn:(NSString *)isbn
+waitUntilFinished:(BOOL)waitUntilFinished;
 - (SCHAppRecommendationItem *)appRecommendationForIsbn:(NSString *)isbn;
 - (void)setProcessing:(BOOL)processing forIsbn:(NSString *)isbn;
 

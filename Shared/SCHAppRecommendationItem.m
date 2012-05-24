@@ -230,14 +230,19 @@ NSString * const kSCHAppRecommendationFullCoverImagePath = @"FullCoverImagePath"
 // gets deleted as well as the on disk files
 - (void)deleteAllFiles
 {
-    NSError *error = nil;
-    
-    [[SCHRecommendationManager sharedManager] cancelAllOperationsForIsbn:self.ContentIdentifier];
-    if ([[NSFileManager defaultManager] removeItemAtPath:[self recommendationDirectory]
-                                                   error:&error] == NO) {
-        NSLog(@"Failed to delete files for %@, error: %@", 
-              self.ContentIdentifier, [error localizedDescription]);
-    }
+    NSString *recommendationDirectory = [self recommendationDirectory];
+    NSString *contentIdentifier = self.ContentIdentifier;
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{        
+        [[SCHRecommendationManager sharedManager] cancelAllOperationsForIsbn:contentIdentifier
+                                                           waitUntilFinished:YES];
+        NSError *error = nil;
+        NSFileManager *localManager = [[[NSFileManager alloc] init] autorelease];
+        if ([localManager removeItemAtPath:recommendationDirectory
+                                     error:&error] == NO) {
+            NSLog(@"Failed to delete files for %@, error: %@", 
+                  contentIdentifier, [error localizedDescription]);
+        }
+    });
 }
 
 - (NSDictionary *)dictionary {

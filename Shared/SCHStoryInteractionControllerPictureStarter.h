@@ -27,6 +27,7 @@
 @property (nonatomic, retain) IBOutlet SCHStretchableImageButton *clearButton;
 @property (nonatomic, retain) IBOutlet SCHStretchableImageButton *saveButton;
 @property (nonatomic, retain) IBOutlet UILabel *savingLabel;
+@property (retain, nonatomic) IBOutlet UIView *savingBackground;
 
 @property (retain, nonatomic) IBOutlet UIImageView *colorShadowOverlayView;
 

@@ -105,6 +105,25 @@
     return [[self currentQuestion] audioPathForQuestion];
 }
 
+- (IBAction)playAudioButtonTapped:(id)sender
+{
+    [self cancelQueuedAudioExecutingSynchronizedBlocksBefore:^{
+        NSString *path = [self audioPathForQuestion];
+        if (path != nil) {
+            [self enqueueAudioWithPath:path 
+                            fromBundle:NO 
+                            startDelay:0 
+                synchronizedStartBlock:^{
+                    self.controllerState = SCHStoryInteractionControllerStateInteractionReadingAnswerWithPause;
+                }
+                  synchronizedEndBlock:^{
+                      self.controllerState = SCHStoryInteractionControllerStateInteractionInProgress;
+                  }
+             ];
+        }   
+    }];
+}
+
 - (void)setupViewAtIndex:(NSInteger)screenIndex
 {
     [self setTitle:[[self currentQuestion] prompt]];

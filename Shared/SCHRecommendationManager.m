@@ -26,7 +26,6 @@
 - (BOOL)isbnNeedsProcessing:(NSString *)isbn;
 - (void)processIsbn:(NSString *)isbn;
 - (void)checkStateForAllRecommendations;
-- (void)checkIfProcessing;
 - (void)redispatchIsbn:(NSString *)isbn;
 
 + (BOOL)urlHasExpired:(NSString *)urlString;
@@ -100,6 +99,7 @@ static SCHRecommendationManager *sharedManager = nil;
 }
 
 - (void)cancelAllOperationsForIsbn:(NSString *)isbn
+                 waitUntilFinished:(BOOL)waitUntilFinished
 {
     @synchronized(self) {
         
@@ -108,6 +108,9 @@ static SCHRecommendationManager *sharedManager = nil;
         for (SCHRecommendationOperation *op in allOps) {
             if ([op.isbn isEqual:isbn] == YES) {
                 [op cancel];
+                if (waitUntilFinished == YES) {
+                    [op waitUntilFinished];
+                }                
                 break;
             }
         }
@@ -146,8 +149,6 @@ static SCHRecommendationManager *sharedManager = nil;
     for (NSString *isbn in isbnsToBeProcessed) {
         [self processIsbn:isbn];
     }
-    
-    [self checkIfProcessing];
 }
 
 - (BOOL)recommendationNeedsProcessing:(SCHAppRecommendationItem *)recommendationItem
@@ -291,8 +292,6 @@ static SCHRecommendationManager *sharedManager = nil;
         if ([self isbnNeedsProcessing:isbn]) {
             [self processIsbn:isbn];
         }
-        
-        [self checkIfProcessing];
     };
     
     if ([NSThread isMainThread]) {
@@ -300,54 +299,6 @@ static SCHRecommendationManager *sharedManager = nil;
     } else {
         dispatch_async(dispatch_get_main_queue(), redispatchBlock);
     }
-}
-
-- (void)checkIfProcessing
-{
-    NSAssert([NSThread isMainThread], @"checkIfProcessing must be called on main thread");
-    
-#if 0
-    // check to see if we're processing
-    //	int totalOperations = [[self.networkOperationQueue operations] count] + 
-    //	[[self.webServiceOperationQueue operations] count];
-    
-    int totalBooksProcessing = 0;
-    
-	NSArray *allBooks = [[SCHBookManager sharedBookManager] allBookIdentifiersInManagedObjectContext:self.managedObjectContext];
-	
-	// FIXME: add prioritisation
-    
-	// get all the books independent of profile
-	for (SCHBookIdentifier *identifier in allBooks) {
-		SCHAppBook *book = [[SCHBookManager sharedBookManager] bookWithIdentifier:identifier inManagedObjectContext:self.managedObjectContext];
-        
-        if (book != nil && [book isProcessing]) {
-            totalBooksProcessing++;
-        }
-	}	
-	
-	if (totalBooksProcessing == 0) {
-		self.connectionIsIdle = YES;
-        
-		if (!self.connectionIsIdle || !self.firedFirstBusyIdleNotification) {
-			[self performSelectorOnMainThread:@selector(sendNotification:) withObject:kSCHProcessingManagerConnectionIdle waitUntilDone:YES];
-            self.firedFirstBusyIdleNotification = YES;
-		}
-        
-#ifndef __OPTIMIZE__
-        // FIXME: remove this logging when we are satisfied we aren't failing to clean up the vended objects from the shared book manager
-        NSLog(@"Processing stopped. SharedBookManager: %@", [SCHBookManager sharedBookManager]);
-#endif
-        
-	} else {
-		self.connectionIsIdle = NO;
-        
-		if (self.connectionIsIdle || !self.firedFirstBusyIdleNotification) {
-			[self performSelectorOnMainThread:@selector(sendNotification:) withObject:kSCHProcessingManagerConnectionBusy waitUntilDone:YES];
-            self.firedFirstBusyIdleNotification = YES;
-		}
-	}
-#endif
 }
 
 #pragma mark - Notification handlers
