@@ -764,9 +764,17 @@ extern NSString * const kSCHUserDefaultsSpaceSaverModeSetOffNotification;
     [self deregisterForSyncNotifications];
     
     if (self.checkBooksAlert) {
+        NSString *message = nil;
+        
+        if ([[NSUserDefaults standardUserDefaults] boolForKey:kSCHUserDefaultsSpaceSaverMode] == YES) {
+            message = NSLocalizedString(@"You have new eBooks! Go to your bookshelves to download and read the new eBooks.", @"");
+        } else {
+            message = NSLocalizedString(@"You have new eBooks! The new eBooks will download in the background while you continue to read.", @"");
+        }
+        
         LambdaAlert *alert = [[LambdaAlert alloc]
                               initWithTitle:NSLocalizedString(@"Sync Complete", @"")
-                              message:NSLocalizedString(@"You have new eBooks! Go to your bookshelves to download and read the new eBooks.", @"")];
+                              message:message];
         [alert addButtonWithTitle:NSLocalizedString(@"OK", @"") block:^{
             if ([[SCHAppStateManager sharedAppStateManager] canAuthenticate] != NO) {
                 [self.checkBooksButton setEnabled:YES];
