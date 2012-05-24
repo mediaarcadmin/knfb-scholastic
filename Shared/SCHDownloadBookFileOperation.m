@@ -11,6 +11,7 @@
 #import "SCHAppBook.h"
 #import "BITNetworkActivityManager.h"
 #import "SCHUserContentItem.h"
+#import "NSFileManager+Extensions.h"
 
 #pragma mark - Class Extension
 
@@ -307,6 +308,26 @@
     if (self.fileType == kSCHDownloadFileTypeCoverImage) {
         self.expectedImageFileSize = expectedDataSize;
     } 
+    
+    NSFileManager *fileManager = [[[NSFileManager alloc] init] autorelease];
+    BOOL sufficientSpace;
+    if (expectedDataSize == NSURLResponseUnknownLength) {
+        sufficientSpace = [fileManager BITfileSystemHasBytesAvailable:1];
+    } else {
+        // sufficient space = 1x full file size + 0.5 to allow for book covers, etc.
+        sufficientSpace = [fileManager BITfileSystemHasBytesAvailable:(expectedDataSize * 1.5)];
+    }
+    
+    if (!sufficientSpace) {
+        NSLog(@"Insufficient space for book/cover download.");
+        
+        [self setProcessingState:SCHBookProcessingStateNotEnoughStorageError];
+        [self cancelOperationAndSuboperations];
+        [self setIsProcessing:NO];        
+        [self endOperation];
+        return;
+    }
+
     
     NSLog(@"Filesize receiving:%llu for file %@", expectedDataSize, self.localPath);
 }
