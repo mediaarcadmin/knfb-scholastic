@@ -201,7 +201,8 @@ NSString * const kSCHAppProfile = @"SCHAppProfile";
     if (wishListItem != nil) {
         NSManagedObjectID *objectID = [wishListItem objectForKey:kSCHWishListObjectID];
         if (objectID != nil) {
-            SCHWishListItem *wishListItem = (SCHWishListItem *)[self.managedObjectContext objectRegisteredForID:objectID];
+            SCHWishListItem *wishListItem = (SCHWishListItem *)[self.managedObjectContext existingObjectWithID:objectID 
+                                                                                                         error:nil];
             [wishListItem syncDelete];
             [self save];
         }

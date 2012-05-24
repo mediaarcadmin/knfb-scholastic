@@ -329,8 +329,10 @@ enum {
 
 - (void)startOverTapped:(id)sender
 {
-    [self.flipContainer.subviews makeObjectsPerformSelector:@selector(removeFromSuperview)];
-    [self presentNextView];
+    [self cancelQueuedAudioExecutingSynchronizedBlocksBefore:^{
+        [self.flipContainer.subviews makeObjectsPerformSelector:@selector(removeFromSuperview)];
+        [self presentNextView];
+    }];
 }
 
 - (CAAnimation *)flipAnimationFrom:(CGFloat)fromAngle to:(CGFloat)toAngle
