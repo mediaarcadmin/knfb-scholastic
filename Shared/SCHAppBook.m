@@ -561,6 +561,29 @@ NSString * const kSCHAppBookFilenameSeparator = @"-";
     return libEucalyptusCacheDirectory;
 }
 
+- (NSString *)storyInteractionsCacheDirectoryWithProfileID:(NSString *)profileID
+{
+    NSString *bookDir = [self bookDirectory];
+    NSString *storyInteractionsCacheDirectory = [bookDir stringByAppendingPathComponent:[NSString stringWithFormat:@"StoryInteractionsCache/%@", profileID]];
+    
+    NSFileManager *localFileManager = [[NSFileManager alloc] init];
+    NSError *error = nil;
+    BOOL isDirectory = NO;
+    
+    if (![localFileManager fileExistsAtPath:storyInteractionsCacheDirectory isDirectory:&isDirectory]) {
+        [localFileManager createDirectoryAtPath:storyInteractionsCacheDirectory withIntermediateDirectories:YES attributes:nil error:&error];
+        
+        if (error) {
+            NSLog(@"Warning: problem creating book cache directory. %@", [error localizedDescription]);
+        }
+    }
+    
+    [localFileManager release], localFileManager = nil;
+    
+    return storyInteractionsCacheDirectory;
+}
+
+
 #pragma mark - Current Book Information
 
 - (NSString *)xpsPath

@@ -3032,6 +3032,17 @@ static const NSUInteger kReadingViewMaxRecommendationsCount = 4;
     }
 }
 
+- (NSString *)storyInteractionCacheDirectory
+{
+    if (self.profile && self.profile.ID && self.bookIdentifier) {
+        SCHBookManager *bookManager = [SCHBookManager sharedBookManager];
+        SCHAppBook *book = [bookManager bookWithIdentifier:self.bookIdentifier inManagedObjectContext:bookManager.mainThreadManagedObjectContext];    
+        return [book storyInteractionsCacheDirectoryWithProfileID:[self.profile.ID stringValue]];
+    } else {
+        return nil;
+    }
+}
+
 #pragma mark - SCHBookStoryInteractionsDelegate
 
 - (CGSize)sizeOfPageAtIndex:(NSInteger)pageIndex

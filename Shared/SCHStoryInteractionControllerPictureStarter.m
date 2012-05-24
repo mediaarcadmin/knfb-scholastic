@@ -19,6 +19,7 @@
 #import "SCHStretchableImageButton.h"
 #import "UIColor+Scholastic.h"
 #import "NSArray+ViewSorting.h"
+#import "SCHStoryInteractionControllerDelegate.h"
 
 enum SCHToolType {
     SCHToolTypeNone,
@@ -40,7 +41,10 @@ enum SCHToolType {
 @property (nonatomic, retain) UIActionSheet *doneActionSheet;
 @property (nonatomic, assign) BOOL drawingChanged;
 
-- (void)savePicture:(void(^)(BOOL success))completionBlock;
+- (void)savePictureToPhotoLibrary:(void(^)(BOOL success))completionBlock;
+- (void)loadCachedPictureFromDisk;
+- (void)saveCachedPictureToDisk;
+- (void)clearCachedPictureFromDisk;
 - (BOOL)shouldAutoSaveWhenDone;
 - (void)close;
 
@@ -239,6 +243,11 @@ enum SCHToolType {
     return nil;
 }
 
+- (NSString *)pictureStarterSavedImageName
+{
+    return nil;
+}
+
 #pragma mark - Drawing screen
 
 - (void)applyRoundRectStyle:(UIView *)view
@@ -295,6 +304,8 @@ enum SCHToolType {
         [self applyRoundRectStyle:self.colorChooser];
     }
     
+    [self loadCachedPictureFromDisk];
+    
     self.drawingChanged = NO;
 }
 
@@ -328,7 +339,7 @@ enum SCHToolType {
 {
     [self storyInteractionDisableUserInteraction];
     
-    [self savePicture:^(BOOL success) {
+    [self savePictureToPhotoLibrary:^(BOOL success) {
         [self storyInteractionEnableUserInteraction];
         if (success) {
             self.drawingChanged = NO;
@@ -361,8 +372,11 @@ enum SCHToolType {
     if (!self.drawingChanged) {
         [self close];
     } else {
+        
+        [self saveCachedPictureToDisk];
+        
         if ([self shouldAutoSaveWhenDone]) {
-            [self savePicture:^(BOOL success) {
+            [self savePictureToPhotoLibrary:^(BOOL success) {
                 [self close];
             }];
         } else {
@@ -388,6 +402,7 @@ enum SCHToolType {
     [self cancelQueuedAudioExecutingSynchronizedBlocksBefore:^{
         if (actionSheet == self.clearActionSheet) {
             if (buttonIndex == actionSheet.destructiveButtonIndex) {
+                [self clearCachedPictureFromDisk];
                 [self.drawingCanvas clear];
                 self.drawingChanged = NO;
                 self.clearButton.enabled = NO;
@@ -399,7 +414,7 @@ enum SCHToolType {
                 [self close];
             }
             else if (buttonIndex != actionSheet.cancelButtonIndex) {
-                [self savePicture:^(BOOL success) {
+                [self savePictureToPhotoLibrary:^(BOOL success) {
                     if (success) {
                         [self close];
                     }
@@ -477,9 +492,58 @@ enum SCHToolType {
     self.clearButton.enabled = YES;
 }
 
+#pragma mark - Load/Save/Delete work in progress from local storage
+
+- (void)loadCachedPictureFromDisk
+{
+    if (!self.delegate) {
+        return;
+    }
+    
+    NSString *cacheDir = [self.delegate storyInteractionCacheDirectory];
+    NSString *fullPath = [NSString stringWithFormat:@"%@/%@.png", cacheDir, [self pictureStarterSavedImageName]];
+
+    UIImage *previousImage = [UIImage imageWithContentsOfFile:fullPath];
+    
+    if (previousImage) {
+        [self.drawingCanvas setDrawnImage:previousImage];
+        self.clearButton.enabled = YES;
+    }
+}
+
+- (void)saveCachedPictureToDisk
+{
+    if (!self.delegate) {
+        return;
+    }
+    
+    NSString *cacheDir = [self.delegate storyInteractionCacheDirectory];
+    NSString *fullPath = [NSString stringWithFormat:@"%@/%@.png", cacheDir, [self pictureStarterSavedImageName]];
+    
+    NSData *imageData = UIImagePNGRepresentation([UIImage imageWithCGImage:[self.drawingCanvas image]]);
+    [imageData writeToFile:fullPath atomically:YES];
+}
+
+- (void)clearCachedPictureFromDisk
+{
+    NSString *cacheDir = [self.delegate storyInteractionCacheDirectory];
+    NSString *fullPath = [NSString stringWithFormat:@"%@/%@.png", cacheDir, [self pictureStarterSavedImageName]];
+    
+    NSFileManager *localFileManager = [[NSFileManager alloc] init];
+    
+    NSError *error = nil;
+    
+    [localFileManager removeItemAtPath:fullPath error:&error];
+    
+    if (error) {
+        NSLog(@"Error deleting cached SI image: %@", [error localizedDescription]);
+    }
+
+}
+
 #pragma mark - Save to photo library
 
-- (void)savePicture:(void (^)(BOOL))completionBlock
+- (void)savePictureToPhotoLibrary:(void (^)(BOOL))completionBlock
 {
     self.savingLabel.frame = CGRectIntegral(self.savingLabel.frame);
     self.savingBackground.frame = CGRectIntegral(self.savingBackground.frame);

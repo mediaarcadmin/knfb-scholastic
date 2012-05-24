@@ -140,6 +140,20 @@
     [CATransaction commit];
 }
 
+- (void)setDrawnImage:(UIImage *)drawnImage
+{
+    [CATransaction begin];
+    [CATransaction setDisableActions:YES];
+    if (paintContext) {
+        // grab the current image and redraw into the resized context
+        paintContext = [self newPaintContext];
+        CGContextDrawImage(paintContext, self.bounds, drawnImage.CGImage);
+    }
+    self.paintedLayer.contents = (id)[drawnImage CGImage];
+    [CATransaction commit];
+
+}
+
 #pragma mark - Gesture recognition
 
 - (CGPoint)touchPoint:(NSSet *)touches

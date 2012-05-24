@@ -158,6 +158,7 @@ typedef enum {
 - (void)clearCachedBookDirectory;
 - (NSString *)bookDirectory;
 - (NSString *)libEucalyptusCache;
+- (NSString *)storyInteractionsCacheDirectoryWithProfileID:(NSString *)profileID;
 - (void)clearToDefaultValues;
 
 - (float)currentDownloadedPercentage;

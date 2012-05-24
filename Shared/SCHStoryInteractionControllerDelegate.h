@@ -9,6 +9,7 @@
 #import <Foundation/Foundation.h>
 
 @class SCHStoryInteractionController;
+@class SCHAppBook;
 
 @protocol SCHStoryInteractionControllerDelegate <NSObject>
 
@@ -38,5 +39,8 @@
 
 // should this be displayed as an older story interaction
 - (BOOL)isOlderStoryInteraction;
+
+// The SI Cache directory for the current SI
+- (NSString *)storyInteractionCacheDirectory;
 
 @end

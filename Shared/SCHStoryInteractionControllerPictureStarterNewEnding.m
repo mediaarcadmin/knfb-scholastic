@@ -23,4 +23,9 @@
     [self presentNextView];
 }
 
+- (NSString *)pictureStarterSavedImageName
+{
+    return @"SavedImage_PictureStarterNewEnding";
+}
+
 @end

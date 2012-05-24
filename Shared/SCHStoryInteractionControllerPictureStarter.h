@@ -42,5 +42,6 @@
 - (void)setupOpeningScreen;
 - (void)setupDrawingScreen;
 - (UIImage *)drawingBackgroundImage;
+- (NSString *)pictureStarterSavedImageName;
 
 @end
