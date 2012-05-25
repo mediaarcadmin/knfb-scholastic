@@ -29,6 +29,7 @@ typedef void (^SCHDrmDeregistrationSuccessBlock)(void);
 typedef void (^SCHDrmDeregistrationFailureBlock)(NSError *error);
 
 extern NSString * const SCHAuthenticationManagerReceivedServerDeregistrationNotification;
+extern NSString * const SCHAuthenticationManagerDidDeregisterNotification;
 
 extern NSString * const kSCHAuthenticationManagerErrorDomain;
 extern NSInteger const kSCHAuthenticationManagerGeneralError;
