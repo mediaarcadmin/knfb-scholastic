@@ -373,8 +373,6 @@ enum SCHToolType {
         [self close];
     } else {
         
-        [self saveCachedPictureToDisk];
-        
         if ([self shouldAutoSaveWhenDone]) {
             [self savePictureToPhotoLibrary:^(BOOL success) {
                 [self close];
@@ -579,6 +577,9 @@ enum SCHToolType {
                                                    completion:^(BOOL finished) {
                                                        completionBlock(YES);
                                                    }];
+                                  
+                                  [self saveCachedPictureToDisk];
+                                  
                               }
                           }];
     [library release];
