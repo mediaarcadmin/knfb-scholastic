@@ -112,4 +112,10 @@
     return [self imageAtPath:[pictureStarter imagePathAtIndex:self.chosenBackgroundIndex]];
 }
 
+- (NSString *)pictureStarterSavedImageName
+{
+    return [NSString stringWithFormat:@"SavedImage_PictureStarterCustom_%d", self.chosenBackgroundIndex];
+}
+
+
 @end
