@@ -905,6 +905,7 @@ static const NSTimeInterval kSCHStartingViewControllerNonForcedAlertInterval = (
                                                                                     if (credentialsSuccessBlock) {
                                                                                         credentialsSuccessBlock(YES, NO);
                                                                                     }
+                                                                                    [[SCHSyncManager sharedSyncManager] resetSync];                                                                                    
                                                                                     [[SCHSyncManager sharedSyncManager] firstSync:YES requireDeviceAuthentication:NO];
                                                                                     [[SCHSyncManager sharedSyncManager] recommendationSync];
                                                                                 } else { 
