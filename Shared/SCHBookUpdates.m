@@ -13,6 +13,7 @@
 #import "SCHAppStateManager.h"
 #import "SCHContentMetadataItem.h"
 #import "SCHUserContentItem.h"
+#import "SCHAuthenticationManager.h"
 
 #define DEBUG_FORCE_ENABLE_UPDATES 0
 
@@ -44,6 +45,11 @@
         [[NSNotificationCenter defaultCenter] addObserver:self
                                                  selector:@selector(bookStateDidUpdate:)
                                                      name:@"SCHBookStateUpdate"
+                                                   object:nil];
+  
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(authenticationManagerDidDeregisterNotification:)
+                                                     name:SCHAuthenticationManagerDidDeregisterNotification
                                                    object:nil];
 
         self.results = [NSMutableArray array];
@@ -111,6 +117,11 @@
 - (void)bookStateDidUpdate:(NSNotification *)note
 {
     self.refreshNeeded = YES;
+}
+
+- (void)authenticationManagerDidDeregisterNotification:(NSNotification *)note
+{
+    self.refreshNeeded = YES;    
 }
 
 @end
