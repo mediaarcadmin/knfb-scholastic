@@ -23,6 +23,7 @@
 #import <libEucalyptus/EucCSSIntermediateDocumentNode.h>
 #import <libEucalyptus/EucChapterNameFormatting.h>
 #import <libEucalyptus/EucCSSXMLTree.h>
+#import <libEucalyptus/EucCSSXMLTreeNode.h>
 #import "levenshtein_distance.h"
 
 #define MATCHING_WINDOW_SIZE 11
@@ -76,7 +77,7 @@ static NSString * const kNoWordPlaceholder = @"NO_WORD_PLACEHOLDER";
 - (void)bookmarkPoint:(id)bookmarkPoint toParagraphID:(id *)paragraphID wordOffset:(uint32_t *)wordOffset
 {
     // This method is a slight adaptation of the equivalent XAML method in SCHTextFlowParagraphSource which is a direct port from Blio.
-#if 0    
+    
     NSUInteger flowIndex = 0;
     NSUInteger bookmarkPageIndex = [bookmarkPoint layoutPage] - 1;
     NSArray *flowReferences = self.textFlow.flowReferences;
@@ -90,269 +91,236 @@ static NSString * const kNoWordPlaceholder = @"NO_WORD_PLACEHOLDER";
         }
     }
     
-    if(self.textFlow.flowTreeKind == KNFBTextFlowFlowTreeKindXaml) {
-        // See comments in
-        // - (id)bookmarkPointFromParagraphID:(id)paragraphID wordOffset:(uint32_t)wordOffset;
-        // about the overall word matching strategy used here.
-        
-        
-        // Build an array of word hashes to search for from around the point.
-        NSString *lookForStrings[MATCHING_WINDOW_SIZE];
-        char lookForHashes[MATCHING_WINDOW_SIZE];
-        
-        NSInteger lowerPageIndexBound = [[flowReferences objectAtIndex:flowIndex] startPage];
-        NSInteger upperPageIndexBound;
-        if(nextFlowIndex < flowReferences.count) {
-            upperPageIndexBound = [[flowReferences objectAtIndex:nextFlowIndex] startPage] - 1;
-        } else {
-            upperPageIndexBound = self.textFlow.lastPageIndex;
-        }
-        
-        NSArray *bookmarkPageBlocks = [self.textFlow blocksForPageAtIndex:bookmarkPageIndex includingFolioBlocks:YES];
-        NSArray *words;
-        if(bookmarkPageBlocks.count > [bookmarkPoint blockOffset]) {
-            words = ((KNFBTextFlowBlock *)[bookmarkPageBlocks objectAtIndex:[bookmarkPoint blockOffset]]).wordStrings;
-        } else {
-            words = [NSArray array];
-        }
-        NSInteger middleWordOffset = [bookmarkPoint wordOffset];
-        
-        {
-            NSArray *pageBlocks = bookmarkPageBlocks;
-            
-            NSInteger tryPageOffset = bookmarkPageIndex;
-            NSInteger tryBlockOffset = [bookmarkPoint blockOffset];
-            
-            while(middleWordOffset + MATCHING_WINDOW_SIZE / 2 + 1 > words.count) {
-                ++tryBlockOffset;
-                if(tryBlockOffset >= pageBlocks.count) {
-                    tryBlockOffset = -1; // We'll increment it back to 0 on the next iteration.
-                    ++tryPageOffset;
-                    if(tryPageOffset > upperPageIndexBound) {
-                        NSInteger needMore = middleWordOffset + MATCHING_WINDOW_SIZE / 2 + 1 - words.count;
-                        NSMutableArray *newWords = [[NSMutableArray alloc] initWithCapacity:needMore];
-                        for(NSInteger i = 0; i < needMore; ++i) {
-                            [newWords addObject:kNoWordPlaceholder];
-                        }
-                        words = [words arrayByAddingObjectsFromArray:newWords];
-                        [newWords release];
-                    } else {
-                        pageBlocks = [self.textFlow blocksForPageAtIndex:tryPageOffset includingFolioBlocks:YES];
-                    }
-                } else {
-                    KNFBTextFlowBlock *block = [pageBlocks objectAtIndex:tryBlockOffset];
-                    if(!block.folio) {
-                        words = [words arrayByAddingObjectsFromArray:block.wordStrings];
-                    }
-                }
-            }
-        }
-        
-        {
-            NSArray *pageBlocks = bookmarkPageBlocks;
-            
-            NSInteger tryPageOffset = bookmarkPageIndex;
-            NSInteger tryBlockOffset = [bookmarkPoint blockOffset];
-            
-            while(middleWordOffset < MATCHING_WINDOW_SIZE / 2) {
-                --tryBlockOffset;
-                if(tryBlockOffset < 0) {
-                    --tryPageOffset;
-                    if(tryPageOffset < lowerPageIndexBound) {
-                        NSInteger needMore = MATCHING_WINDOW_SIZE / 2 - middleWordOffset;
-                        NSMutableArray *newWords = [[NSMutableArray alloc] initWithCapacity:needMore];
-                        for(NSInteger i = 0; i < needMore; ++i) {
-                            [newWords addObject:kNoWordPlaceholder];
-                        }
-                        words = [newWords arrayByAddingObjectsFromArray:words];
-                        [newWords release];
-                        middleWordOffset += needMore;
-                    } else {
-                        pageBlocks = [self.textFlow blocksForPageAtIndex:tryPageOffset includingFolioBlocks:YES];
-                        tryBlockOffset = pageBlocks.count; // Will decrement to the index of the last block on the next iteration.
-                    }
-                } else {
-                    KNFBTextFlowBlock *block = [pageBlocks objectAtIndex:tryBlockOffset];
-                    if(!block.folio) {
-                        NSArray *newWords = block.wordStrings;
-                        words = [newWords arrayByAddingObjectsFromArray:words];
-                        middleWordOffset += newWords.count;
-                    }
-                }
-            }
-        }
-        
-        NSInteger i, j;
-        for(i = -(MATCHING_WINDOW_SIZE / 2), j = 0 ; i <= MATCHING_WINDOW_SIZE / 2; ++i, ++j) {
-            lookForHashes[j] = [[words objectAtIndex:middleWordOffset + i] hash] % 256;
-            lookForStrings[j] = [words objectAtIndex:middleWordOffset + i];
-        }
-        
-        /*
-         NSLog(@"Searching for:");
-         for(NSInteger i = 0; i < MATCHING_WINDOW_SIZE; ++i) {
-         NSLog(@"\t%@", lookForStrings[i]);
-         }
-         */
-        
-        EucBookPageIndexPoint *eucIndexPoint = [[EucBookPageIndexPoint alloc] init];
-        eucIndexPoint.source = flowIndex;
-        EucCSSIntermediateDocument *document = [self.xamlEucBook intermediateDocumentForIndexPoint:eucIndexPoint];
-        [eucIndexPoint release];
-        
-        EucCSSLayoutRunExtractor *runExtractor = [[EucCSSLayoutRunExtractor alloc] initWithDocument:document];
-        EucCSSLayoutRun *run = nil;
-        
-        NSUInteger lookForPageIndex = bookmarkPageIndex;
-        
-        // Bound our search from the last XAML run that starts on a previous
-        // page to the one we're looking for, to the first XAML run on a 
-        // subsequent page.
-        uint32_t lowerBoundRunKey = 0;
-        uint32_t upperBoundRunKey = 0;
-        
-        NSArray *rawNodes = ((EucCSSXMLTree *)(document.documentTree)).nodes;
-        for(KNFBTextFlowXAMLTreeNode *node in rawNodes) {
-            upperBoundRunKey = node.key;
-            NSString *tag = node.tag;
-            if(tag && [tag hasPrefix:@"__"]) {
-                NSUInteger pageIndex = [[tag substringFromIndex:2] integerValue];
-                if(pageIndex < lookForPageIndex) {
-                    lowerBoundRunKey = node.key;
-                }
-                if(pageIndex > lookForPageIndex) {
-                    break;
-                }
-            }
-        }
-        upperBoundRunKey = [EucCSSIntermediateDocument keyForDocumentTreeNodeKey:upperBoundRunKey];
-        lowerBoundRunKey = [EucCSSIntermediateDocument keyForDocumentTreeNodeKey:lowerBoundRunKey];
-        
-        char blockHashes[MATCHING_WINDOW_SIZE];
-        NSString *blockStrings[MATCHING_WINDOW_SIZE];
-        
-        uint32_t runKeys[MATCHING_WINDOW_SIZE];
-        uint32_t wordOffsets[MATCHING_WINDOW_SIZE];
-        
-        uint32_t examiningRunKey = lowerBoundRunKey;
-        run = [runExtractor runForNodeWithKey:examiningRunKey];
-        examiningRunKey = run.id;
-        
-        char emptyHash = [kNoWordPlaceholder hash] % 256;
-        for(NSInteger i = 0; i < MATCHING_WINDOW_SIZE; ++i) {
-            blockStrings[i] = kNoWordPlaceholder;
-            blockHashes[i] = emptyHash;
-            runKeys[i] = examiningRunKey;
-            wordOffsets[i] = 0;
-        }
-        
-        int bestDistance = INT_MAX;
-        uint32_t bestRunKey = examiningRunKey;
-        uint32_t bestWordOffset = 0;
-        
-        NSArray *runWords = run.words;
-        while(runWords && examiningRunKey <= upperBoundRunKey) {
-            NSUInteger examiningWordOffset = 0;
-            for(NSString *word in runWords) {
-                memmove(blockHashes, blockHashes + 1, sizeof(char) * MATCHING_WINDOW_SIZE - 1);
-                blockHashes[MATCHING_WINDOW_SIZE - 1] = [word hash] % 256;
-                
-                memmove(blockStrings, blockStrings + 1, sizeof(NSString *) * MATCHING_WINDOW_SIZE - 1);
-                blockStrings[MATCHING_WINDOW_SIZE - 1] = word;
-                
-                memmove(runKeys, runKeys + 1, sizeof(uint32_t) * MATCHING_WINDOW_SIZE - 1);
-                runKeys[MATCHING_WINDOW_SIZE - 1] = examiningRunKey;
-                
-                memmove(wordOffsets, wordOffsets + 1, sizeof(uint32_t) * MATCHING_WINDOW_SIZE - 1);
-                wordOffsets[MATCHING_WINDOW_SIZE - 1] = examiningWordOffset;
-                
-                int distance = levenshtein_distance_with_bytes(lookForHashes, MATCHING_WINDOW_SIZE, blockHashes, MATCHING_WINDOW_SIZE);
-                if(distance < bestDistance || 
-                   (distance == bestDistance && [blockStrings[MATCHING_WINDOW_SIZE / 2] isEqualToString:lookForStrings[MATCHING_WINDOW_SIZE / 2]])) {
-                    /*
-                     NSLog(@"Found, distance %d:", distance);
-                     for(NSInteger i = 0;  i < MATCHING_WINDOW_SIZE; ++i) {
-                     NSLog(@"\t%@", blockStrings[i]);
-                     }
-                     */
-                    bestDistance = distance;
-                    bestRunKey = runKeys[MATCHING_WINDOW_SIZE / 2];
-                    bestWordOffset = wordOffsets[MATCHING_WINDOW_SIZE / 2];
-                }
-                ++examiningWordOffset;
-            }
-            if(!run) {
-                runWords = nil;
-            } else {
-                run = [runExtractor nextRunForRun:run];
-                examiningRunKey = run.id;
-                if(!run || examiningRunKey > upperBoundRunKey) {
-                    // Fake out some extra words at the end to aid in matching
-                    // runs at the end of sections.
-                    examiningRunKey = upperBoundRunKey;
-                    run = nil;
-                    NSString *extraWords[MATCHING_WINDOW_SIZE / 2];
-                    for(NSInteger i = 0; i < MATCHING_WINDOW_SIZE / 2; ++i) {
-                        extraWords[i] = kNoWordPlaceholder;
-                    }
-                    runWords = [NSArray arrayWithObjects:extraWords count:MATCHING_WINDOW_SIZE / 2];                        
-                } else {
-                    runWords = run.words;
-                }
-            }
-        }
-        
-        NSUInteger indexes[2] = { flowIndex, [EucCSSIntermediateDocument documentTreeNodeKeyForKey:bestRunKey] };
-        *paragraphID = [NSIndexPath indexPathWithIndexes:indexes length:2];
-        *wordOffset = bestWordOffset;
-        
-        [runExtractor release];
+    // See comments in
+    // - (id)bookmarkPointFromParagraphID:(id)paragraphID wordOffset:(uint32_t)wordOffset;
+    // about the overall word matching strategy used here.
+    
+    
+    // Build an array of word hashes to search for from around the point.
+    NSString *lookForStrings[MATCHING_WINDOW_SIZE];
+    char lookForHashes[MATCHING_WINDOW_SIZE];
+    
+    NSInteger lowerPageIndexBound = [[flowReferences objectAtIndex:flowIndex] startPage];
+    NSInteger upperPageIndexBound;
+    if(nextFlowIndex < flowReferences.count) {
+        upperPageIndexBound = [[flowReferences objectAtIndex:nextFlowIndex] startPage] - 1;
     } else {
-        KNFBTextFlowFlowTree *flowFlowTree = [self flowFlowTreeForIndex:flowIndex];
-        KNFBTextFlowParagraph *bestParagraph = flowFlowTree.firstParagraph;
+        upperPageIndexBound = self.textFlow.lastPageIndex;
+    }
+    
+    NSArray *bookmarkPageBlocks = [self.textFlow blocksForPageAtIndex:bookmarkPageIndex includingFolioBlocks:YES];
+    NSArray *words;
+    if(bookmarkPageBlocks.count > [bookmarkPoint blockOffset]) {
+        words = ((KNFBTextFlowBlock *)[bookmarkPageBlocks objectAtIndex:[bookmarkPoint blockOffset]]).wordStrings;
+    } else {
+        words = [NSArray array];
+    }
+    NSInteger middleWordOffset = [bookmarkPoint wordOffset];
+    
+    {
+        NSArray *pageBlocks = bookmarkPageBlocks;
         
-        BOOL stop = NO;
-        KNFBTextFlowParagraph *nextParagraph;
-        while(!stop && (nextParagraph = bestParagraph.nextSibling)) {
-            NSArray *ranges = nextParagraph.paragraphWords.ranges;
-            if(ranges.count) {
-                SCHBookRange *range = [nextParagraph.paragraphWords.ranges objectAtIndex:0];
-                SCHBookPoint *startPoint = range.startPoint;
-                if([startPoint compare:bookmarkPoint] == NSOrderedDescending) {
-                    break;
+        NSInteger tryPageOffset = bookmarkPageIndex;
+        NSInteger tryBlockOffset = [bookmarkPoint blockOffset];
+        
+        while(middleWordOffset + MATCHING_WINDOW_SIZE / 2 + 1 > words.count) {
+            ++tryBlockOffset;
+            if(tryBlockOffset >= pageBlocks.count) {
+                tryBlockOffset = -1; // We'll increment it back to 0 on the next iteration.
+                ++tryPageOffset;
+                if(tryPageOffset > upperPageIndexBound) {
+                    NSInteger needMore = middleWordOffset + MATCHING_WINDOW_SIZE / 2 + 1 - words.count;
+                    NSMutableArray *newWords = [[NSMutableArray alloc] initWithCapacity:needMore];
+                    for(NSInteger i = 0; i < needMore; ++i) {
+                        [newWords addObject:kNoWordPlaceholder];
+                    }
+                    words = [words arrayByAddingObjectsFromArray:newWords];
+                    [newWords release];
+                } else {
+                    pageBlocks = [self.textFlow blocksForPageAtIndex:tryPageOffset includingFolioBlocks:YES];
+                }
+            } else {
+                KNFBTextFlowBlock *block = [pageBlocks objectAtIndex:tryBlockOffset];
+                if(!block.folio) {
+                    words = [words arrayByAddingObjectsFromArray:block.wordStrings];
                 }
             }
-            bestParagraph = nextParagraph;
         }
+    }
+    
+    {
+        NSArray *pageBlocks = bookmarkPageBlocks;
         
-        uint32_t bestWordOffset = 0;
-        SCHBookPoint *comparisonPoint = [[SCHBookPoint alloc] init];
-        NSArray *words = bestParagraph.paragraphWords.words;
-        for(KNFBTextFlowPositionedWord *word in words) {
-            comparisonPoint.layoutPage = [KNFBTextFlowBlock pageIndexForBlockID:word.blockID] + 1;
-            comparisonPoint.blockOffset = [KNFBTextFlowBlock blockIndexForBlockID:word.blockID];
-            comparisonPoint.wordOffset = word.wordIndex;
-            if([comparisonPoint compare:bookmarkPoint] <= NSOrderedSame) {
-                ++bestWordOffset;
+        NSInteger tryPageOffset = bookmarkPageIndex;
+        NSInteger tryBlockOffset = [bookmarkPoint blockOffset];
+        
+        while(middleWordOffset < MATCHING_WINDOW_SIZE / 2) {
+            --tryBlockOffset;
+            if(tryBlockOffset < 0) {
+                --tryPageOffset;
+                if(tryPageOffset < lowerPageIndexBound) {
+                    NSInteger needMore = MATCHING_WINDOW_SIZE / 2 - middleWordOffset;
+                    NSMutableArray *newWords = [[NSMutableArray alloc] initWithCapacity:needMore];
+                    for(NSInteger i = 0; i < needMore; ++i) {
+                        [newWords addObject:kNoWordPlaceholder];
+                    }
+                    words = [newWords arrayByAddingObjectsFromArray:words];
+                    [newWords release];
+                    middleWordOffset += needMore;
+                } else {
+                    pageBlocks = [self.textFlow blocksForPageAtIndex:tryPageOffset includingFolioBlocks:YES];
+                    tryBlockOffset = pageBlocks.count; // Will decrement to the index of the last block on the next iteration.
+                }
             } else {
-                break;
+                KNFBTextFlowBlock *block = [pageBlocks objectAtIndex:tryBlockOffset];
+                if(!block.folio) {
+                    NSArray *newWords = block.wordStrings;
+                    words = [newWords arrayByAddingObjectsFromArray:words];
+                    middleWordOffset += newWords.count;
+                }
             }
         }
-        if(bestWordOffset) {
-            bestWordOffset--;
-        }        
-        if(bestWordOffset == words.count) {
-            bestParagraph = nextParagraph; 
-            bestWordOffset = 0;
-        }
-        [comparisonPoint release];
-        
-        
-        NSUInteger indexes[2] = { flowIndex, bestParagraph.key };
-        *paragraphID = [NSIndexPath indexPathWithIndexes:indexes length:2];
-        *wordOffset = bestWordOffset;
     }
-#endif
+    
+    NSInteger i, j;
+    for(i = -(MATCHING_WINDOW_SIZE / 2), j = 0 ; i <= MATCHING_WINDOW_SIZE / 2; ++i, ++j) {
+        lookForHashes[j] = [[words objectAtIndex:middleWordOffset + i] hash] % 256;
+        lookForStrings[j] = [words objectAtIndex:middleWordOffset + i];
+    }
+    
+    /*
+     NSLog(@"Searching for:");
+     for(NSInteger i = 0; i < MATCHING_WINDOW_SIZE; ++i) {
+     NSLog(@"\t%@", lookForStrings[i]);
+     }
+     */
+    
+    EucBookPageIndexPoint *eucIndexPoint = [[EucBookPageIndexPoint alloc] init];
+    eucIndexPoint.source = flowIndex;
+    EucCSSIntermediateDocument *document = [self.ePubBook intermediateDocumentForIndexPoint:eucIndexPoint];
+    [eucIndexPoint release];
+    
+    EucCSSLayoutRunExtractor *runExtractor = [[EucCSSLayoutRunExtractor alloc] initWithDocument:document];
+    EucCSSLayoutRun *run = nil;
+    
+    NSUInteger lookForPageIndex = bookmarkPageIndex;
+    
+    // Bound our search from the last run that starts on a previous
+    // page to the one we're looking for, to the first run on a 
+    // subsequent page.
+    uint32_t lowerBoundRunKey = 0;
+    uint32_t upperBoundRunKey = 0;
+    
+    NSArray *rawNodes = ((EucCSSXMLTree *)(document.documentTree)).nodes;
+    
+    for(id<EucCSSDocumentTreeNode>currentNode in rawNodes) {
+        upperBoundRunKey = currentNode.key;
+        NSString *nodeName = [currentNode name];
+        NSString *nodeId   = [currentNode attributeWithName:@"id"];
+        
+        if (nodeName && nodeId && ([nodeName caseInsensitiveCompare:@"a"] == NSOrderedSame)) {
+            if ([nodeId hasPrefix:@"page"]) {
+                NSString *pageString = [nodeId substringFromIndex:4];
+                if ([pageString length]) {
+                    NSUInteger pageIndex = [pageString integerValue] - 1;
+                    
+                    if(pageIndex < lookForPageIndex) {
+                        lowerBoundRunKey = currentNode.key;
+                    }
+                    if(pageIndex > lookForPageIndex) {
+                        break;
+                    }
+                }
+            }
+        }
+    }
+    
+    // FIXME: this needs to lookup the pageIndex in PageNumebrs.xml but our sample book doesn't have the correct mapping
+    lowerBoundRunKey = [(id<EucCSSDocumentTreeNode>)[rawNodes objectAtIndex:0] key];
+    upperBoundRunKey = [(id<EucCSSDocumentTreeNode>)[rawNodes lastObject] key];
+    
+    upperBoundRunKey = [EucCSSIntermediateDocument keyForDocumentTreeNodeKey:upperBoundRunKey];
+    lowerBoundRunKey = [EucCSSIntermediateDocument keyForDocumentTreeNodeKey:lowerBoundRunKey];
+    
+    char blockHashes[MATCHING_WINDOW_SIZE];
+    NSString *blockStrings[MATCHING_WINDOW_SIZE];
+    
+    uint32_t runKeys[MATCHING_WINDOW_SIZE];
+    uint32_t wordOffsets[MATCHING_WINDOW_SIZE];
+    
+    uint32_t examiningRunKey = lowerBoundRunKey;
+    run = [runExtractor runForNodeWithKey:examiningRunKey];
+    examiningRunKey = run.id;
+    
+    char emptyHash = [kNoWordPlaceholder hash] % 256;
+    for(NSInteger i = 0; i < MATCHING_WINDOW_SIZE; ++i) {
+        blockStrings[i] = kNoWordPlaceholder;
+        blockHashes[i] = emptyHash;
+        runKeys[i] = examiningRunKey;
+        wordOffsets[i] = 0;
+    }
+    
+    int bestDistance = INT_MAX;
+    uint32_t bestRunKey = examiningRunKey;
+    uint32_t bestWordOffset = 0;
+    
+    NSArray *runWords = run.words;
+    while(runWords && examiningRunKey <= upperBoundRunKey) {
+        NSUInteger examiningWordOffset = 0;
+        for(NSString *word in runWords) {
+            memmove(blockHashes, blockHashes + 1, sizeof(char) * MATCHING_WINDOW_SIZE - 1);
+            blockHashes[MATCHING_WINDOW_SIZE - 1] = [word hash] % 256;
+            
+            memmove(blockStrings, blockStrings + 1, sizeof(NSString *) * MATCHING_WINDOW_SIZE - 1);
+            blockStrings[MATCHING_WINDOW_SIZE - 1] = word;
+            
+            memmove(runKeys, runKeys + 1, sizeof(uint32_t) * MATCHING_WINDOW_SIZE - 1);
+            runKeys[MATCHING_WINDOW_SIZE - 1] = examiningRunKey;
+            
+            memmove(wordOffsets, wordOffsets + 1, sizeof(uint32_t) * MATCHING_WINDOW_SIZE - 1);
+            wordOffsets[MATCHING_WINDOW_SIZE - 1] = examiningWordOffset;
+            
+            int distance = levenshtein_distance_with_bytes(lookForHashes, MATCHING_WINDOW_SIZE, blockHashes, MATCHING_WINDOW_SIZE);
+            if(distance < bestDistance || 
+               (distance == bestDistance && [blockStrings[MATCHING_WINDOW_SIZE / 2] isEqualToString:lookForStrings[MATCHING_WINDOW_SIZE / 2]])) {
+                /*
+                 NSLog(@"Found, distance %d:", distance);
+                 for(NSInteger i = 0;  i < MATCHING_WINDOW_SIZE; ++i) {
+                 NSLog(@"\t%@", blockStrings[i]);
+                 }
+                 */
+                bestDistance = distance;
+                bestRunKey = runKeys[MATCHING_WINDOW_SIZE / 2];
+                bestWordOffset = wordOffsets[MATCHING_WINDOW_SIZE / 2];
+            }
+            ++examiningWordOffset;
+        }
+        if(!run) {
+            runWords = nil;
+        } else {
+            run = [runExtractor nextRunForRun:run];
+            examiningRunKey = run.id;
+            if(!run || examiningRunKey > upperBoundRunKey) {
+                // Fake out some extra words at the end to aid in matching
+                // runs at the end of sections.
+                examiningRunKey = upperBoundRunKey;
+                run = nil;
+                NSString *extraWords[MATCHING_WINDOW_SIZE / 2];
+                for(NSInteger i = 0; i < MATCHING_WINDOW_SIZE / 2; ++i) {
+                    extraWords[i] = kNoWordPlaceholder;
+                }
+                runWords = [NSArray arrayWithObjects:extraWords count:MATCHING_WINDOW_SIZE / 2];                        
+            } else {
+                runWords = run.words;
+            }
+        }
+    }
+    
+    NSUInteger indexes[2] = { flowIndex, [EucCSSIntermediateDocument documentTreeNodeKeyForKey:bestRunKey] };
+    *paragraphID = [NSIndexPath indexPathWithIndexes:indexes length:2];
+    *wordOffset = bestWordOffset;
+    
+    [runExtractor release];
 }
 
 - (id)bookmarkPointFromParagraphID:(id)paragraphID wordOffset:(uint32_t)wordOffset
@@ -478,7 +446,8 @@ static NSString * const kNoWordPlaceholder = @"NO_WORD_PLACEHOLDER";
     
     [eucIndexPoint release];
         
-        if (startPageIndex != NSNotFound) {
+        //NSLog(@"Found startIndex: %d, endIndex: %d", startPageIndex, endPageIndex);
+        if (endPageIndex != NSNotFound) {
             
             // Search onto the next page, so that we get our trailing overlap.
             ++endPageIndex;
@@ -489,6 +458,8 @@ static NSString * const kNoWordPlaceholder = @"NO_WORD_PLACEHOLDER";
                 --startPageIndex;
             }
             
+        //NSLog(@"Using startIndex: %d, endIndex: %d", startPageIndex, endPageIndex);
+
 
             NSArray *flowReferences = self.textFlow.flowReferences;
             
@@ -642,12 +613,12 @@ static NSString * const kNoWordPlaceholder = @"NO_WORD_PLACEHOLDER";
                             int distance = levenshtein_distance_with_bytes(lookForHashes, MATCHING_WINDOW_SIZE, blockHashes, MATCHING_WINDOW_SIZE);
                             if(distance < bestDistance || 
                                (distance == bestDistance && [blockStrings[MATCHING_WINDOW_SIZE / 2] isEqualToString:lookForStrings[MATCHING_WINDOW_SIZE / 2]])) {
-                                /*
+                                
                                  NSLog(@"Found, distance %d:", distance);
                                  for(NSInteger i = 0;  i < MATCHING_WINDOW_SIZE; ++i) {
                                  NSLog(@"\t%@: %ld, %ld, %ld", blockStrings[i], (long)pageIndexes[i], (long)blockOffsets[i], (long)wordOffsets[i]);
                                  }
-                                 */
+                                 
                                 bestDistance = distance;
                                 bestPageIndex = pageIndexes[MATCHING_WINDOW_SIZE / 2];
                                 bestBlockOffset = blockOffsets[MATCHING_WINDOW_SIZE / 2];
@@ -664,6 +635,8 @@ static NSString * const kNoWordPlaceholder = @"NO_WORD_PLACEHOLDER";
             ret.layoutPage = bestPageIndex + 1;
             ret.blockOffset = bestBlockOffset;
             ret.wordOffset = bestWordOffset;
+        
+       // NSLog(@"Returning point: %@", ret);
             
             [ret autorelease];
         }

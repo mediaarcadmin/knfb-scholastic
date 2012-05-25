@@ -1053,6 +1053,9 @@ static const NSUInteger kReadingViewMaxRecommendationsCount = 4;
     
     SCHBookPoint *lastPoint = [[[SCHBookPoint alloc] init] autorelease];
 
+    // FIXME: the last page location is not working for side-loaded books
+    lastPageLocation = [annotationsLastPage LastPageLocation];
+    
     if (lastPageLocation) {
         lastPoint.layoutPage = MAX([lastPageLocation integerValue], 1);
     } else {
@@ -1435,6 +1438,7 @@ static const NSUInteger kReadingViewMaxRecommendationsCount = 4;
 
 - (void)setupStoryInteractionButtonForCurrentPagesAnimated:(BOOL)animated
 {     
+    return;
     // if a story interaction is active, hide the button
     if (self.storyInteractionController != nil) {
         // But still set up the fill level

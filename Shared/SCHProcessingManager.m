@@ -250,7 +250,7 @@ static SCHProcessingManager *sharedManager = nil;
             }
             
         }
-    }
+    }   
 
     [self checkIfProcessing];
 }

@@ -12,6 +12,7 @@
 #import "SCHBookPoint.h"
 #import "SCHBookRange.h"
 #import "KNFBParagraphSource.h"
+#import "SCHEPubBook.h"
 #import <libEucalyptus/EucBookView.h>
 #import <libEucalyptus/EucEPubBook.h>
 #import <libEucalyptus/EucBookPageIndexPoint.h>
@@ -440,6 +441,11 @@ static void sortedHighlightRangePredicateInit() {
 {
     NSArray *ret = nil;
     
+    // Don't support highlights in ePub books
+    if ([self.eucBook isKindOfClass:[SCHEPubBook class]]) {
+        return ret;
+    }
+    
     SCHBookPoint *startBookPoint = [self.eucBook bookPointFromBookPageIndexPoint:startPoint];
     SCHBookPoint *endBookPoint = [self.eucBook bookPointFromBookPageIndexPoint:endPoint];
     SCHBookRange *pageRange = [[SCHBookRange alloc] init];
@@ -454,16 +460,20 @@ static void sortedHighlightRangePredicateInit() {
     if(count) {
         NSMutableArray *eucRanges = [[NSMutableArray alloc] initWithCapacity:count];
         for(SCHBookRange *bookRange in allHighlights) {
+            //NSLog(@"highlight range from %@ to %@ is %@", startBookPoint, endBookPoint, bookRange);
+
             EucHighlightRange *eucRange = [[EucHighlightRange alloc] init];
             eucRange.startPoint = [self.eucBook bookPageIndexPointFromBookPoint:bookRange.startPoint];
             eucRange.endPoint = [self.eucBook bookPageIndexPointFromBookPoint:bookRange.endPoint];
             eucRange.color = [self.delegate highlightColor];
             [eucRanges addObject:eucRange];
+            
+            //NSLog(@"Converted bookrange: %@ into %@", bookRange, eucRange);
             [eucRange release];
         }
         ret = [eucRanges autorelease];
     }
-    
+        
     return ret;
 }
 
