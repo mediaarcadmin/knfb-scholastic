@@ -527,7 +527,7 @@ enum SCHToolType {
     NSString *cacheDir = [self.delegate storyInteractionCacheDirectory];
     NSString *fullPath = [NSString stringWithFormat:@"%@/%@.png", cacheDir, [self pictureStarterSavedImageName]];
     
-    NSFileManager *localFileManager = [[NSFileManager alloc] init];
+    NSFileManager *localFileManager = [[[NSFileManager alloc] init] autorelease];
     
     NSError *error = nil;
     
