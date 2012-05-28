@@ -210,8 +210,10 @@ static NSUInteger const kSCHAudioBookPlayerNoAudioLoaded = NSUIntegerMax;
                         }  
                         
                         if (pageTurnAtTime <= currentPlayTime) {
-                            pageTurnAtTime = NSUIntegerMax;
-                            pageTurnBlock(pageTurnToLayoutPage);
+                            if (pageTurnAtTime == wordTiming.endTime) {
+                                pageTurnBlock(pageTurnToLayoutPage);
+                            }
+                            pageTurnAtTime = NSUIntegerMax;                            
                         }
                         
                         if (wordTiming != lastTriggered && [wordTiming compareTime:currentPlayTime] == NSOrderedSame) {
