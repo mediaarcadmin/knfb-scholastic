@@ -494,6 +494,11 @@ enum SCHToolType {
 
 - (void)loadCachedPictureFromDisk
 {
+    
+#if PICTURE_STARTER_CACHE_DISABLED
+    return;
+#endif
+
     if (!self.delegate) {
         return;
     }
@@ -511,6 +516,11 @@ enum SCHToolType {
 
 - (void)saveCachedPictureToDisk
 {
+    
+#if PICTURE_STARTER_CACHE_DISABLED
+    return;
+#endif
+
     if (!self.delegate) {
         return;
     }
@@ -524,6 +534,11 @@ enum SCHToolType {
 
 - (void)clearCachedPictureFromDisk
 {
+    
+#if PICTURE_STARTER_CACHE_DISABLED
+    return;
+#endif
+
     NSString *cacheDir = [self.delegate storyInteractionCacheDirectory];
     NSString *fullPath = [NSString stringWithFormat:@"%@/%@.png", cacheDir, [self pictureStarterSavedImageName]];
     
