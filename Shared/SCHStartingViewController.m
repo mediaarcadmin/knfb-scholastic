@@ -907,7 +907,6 @@ static const NSTimeInterval kSCHStartingViewControllerNonForcedAlertInterval = (
                                                                                     }
                                                                                     [[SCHSyncManager sharedSyncManager] resetSync];                                                                                    
                                                                                     [[SCHSyncManager sharedSyncManager] firstSync:YES requireDeviceAuthentication:NO];
-                                                                                    [[SCHSyncManager sharedSyncManager] recommendationSync];
                                                                                 } else { 
                                                                                     NSError *anError = [NSError errorWithDomain:kSCHAuthenticationManagerErrorDomain  
                                                                                                                            code:kSCHAuthenticationManagerOfflineError  

@@ -248,6 +248,7 @@ static NSString* const binaryDevCertFilename = @"bdevcert.dat";
 - (void)applicationDidEnterBackground:(UIApplication *)application 
 {
     [self.coreDataHelper saveContext];
+    [[SCHSyncManager sharedSyncManager] wishListSync];
 }
 
 - (void)applicationWillEnterForeground:(UIApplication *)application 
