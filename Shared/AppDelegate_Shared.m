@@ -347,12 +347,21 @@ static NSString* const binaryDevCertFilename = @"bdevcert.dat";
     [[SCHSyncManager sharedSyncManager] setSuspended:YES]; 
 }
 
+- (void)recoverFromUnintializedDRM
+{
+    [self resetDRMState];
+    [self ensureCorrectCertsAvailable];
+    abort();
+}
+   
 - (void)resetDRMState
 {
     fprintf(stderr, "\nStoria: Resetting the DRM state");
 
     // Clear out the DRM Keychain items
     [SCHDrmSession resetDRMKeychainItems];
+    [[NSUserDefaults standardUserDefaults] removeObjectForKey:kSCHUserDefaultsDeviceID];
+    [[NSUserDefaults standardUserDefaults] synchronize];
     
     NSString *supportDirectory = [[self applicationSupportDocumentsDirectory] path];
     
@@ -391,15 +400,17 @@ static NSString* const binaryDevCertFilename = @"bdevcert.dat";
 
 - (void)ensureCorrectCertsAvailable 
 {
-    
+    if (![[NSUserDefaults standardUserDefaults] objectForKey:kSCHUserDefaultsDeviceID]) {
 #if UUID_DISABLED
-    [[NSUserDefaults standardUserDefaults] setObject:(id)[[UIDevice currentDevice] uniqueIdentifier] forKey:kSCHUserDefaultsDeviceID];  
+        [[NSUserDefaults standardUserDefaults] setObject:(id)[[UIDevice currentDevice] uniqueIdentifier] forKey:kSCHUserDefaultsDeviceID];  
 #else
-    CFUUIDRef uuidObject = CFUUIDCreate(kCFAllocatorDefault);
-    NSString *uuidStr = [(NSString *)CFUUIDCreateString(kCFAllocatorDefault, uuidObject) autorelease];
-    [[NSUserDefaults standardUserDefaults] setObject:uuidStr forKey:kSCHUserDefaultsDeviceID];
-    CFRelease(uuidObject);
+        CFUUIDRef uuidObject = CFUUIDCreate(kCFAllocatorDefault);
+        NSString *uuidStr = [(NSString *)CFUUIDCreateString(kCFAllocatorDefault, uuidObject) autorelease];
+        [[NSUserDefaults standardUserDefaults] setObject:uuidStr forKey:kSCHUserDefaultsDeviceID];
+        CFRelease(uuidObject);
 #endif
+        [[NSUserDefaults standardUserDefaults] synchronize];
+    }
     
     // Copy DRM resources to writeable directory.
 	if (![self createApplicationSupportDirectory]) {

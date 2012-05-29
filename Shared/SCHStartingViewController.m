@@ -950,12 +950,23 @@ static const NSTimeInterval kSCHStartingViewControllerNonForcedAlertInterval = (
                     credentialsSuccessBlock(NO, NO);
                 }
             }];
-            [alert addButtonWithTitle:NSLocalizedString(@"Retry", @"Retry") block:^{
-                if (credentialsSuccessBlock) {
-                    credentialsSuccessBlock(NO, YES);
-                }
-                [self runLoginSequenceWithUsername:username password:password credentialsSuccessBlock:credentialsSuccessBlock];
-            }];
+            if (([[error domain] isEqualToString:@"kSCHDrmErrorDomain"]) && ([error code] == kSCHDrmInitializationError)) {
+                [alert addButtonWithTitle:NSLocalizedString(@"Reset", @"Reset") block:^{
+                    if (credentialsSuccessBlock) {
+                        credentialsSuccessBlock(NO, YES);
+                    }
+                    AppDelegate_Shared *appDelegate = (AppDelegate_Shared *)[[UIApplication sharedApplication] delegate];
+                    [appDelegate recoverFromUnintializedDRM];
+                    [self runLoginSequenceWithUsername:username password:password credentialsSuccessBlock:credentialsSuccessBlock];
+                }];
+            } else {
+                [alert addButtonWithTitle:NSLocalizedString(@"Retry", @"Retry") block:^{
+                    if (credentialsSuccessBlock) {
+                        credentialsSuccessBlock(NO, YES);
+                    }
+                    [self runLoginSequenceWithUsername:username password:password credentialsSuccessBlock:credentialsSuccessBlock];
+                }];
+            }
             [alert show];
             [alert release];
         } else {

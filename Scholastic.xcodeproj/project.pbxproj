@@ -4209,6 +4209,13 @@
 			remoteGlobalIDString = 7D3AC23914054DBA007F91AD;
 			remoteInfo = PageLayoutTest;
 		};
+		C9153D6E1574C983004FDD4A /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = C947D55D133B9C0000FB4404 /* libEucalyptus.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 7D8D910F1403D2E800632892;
+			remoteInfo = libEucalyptusEPubIOSUI;
+		};
 		C937E7E3150F5335001882AC /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = C947D55D133B9C0000FB4404 /* libEucalyptus.xcodeproj */;
@@ -8253,6 +8260,7 @@
 			children = (
 				C947D573133B9C0100FB4404 /* libEucalyptusIOSUI.a */,
 				7D3F30F3140698D800C6F445 /* libEucalyptusModel.a */,
+				C9153D6F1574C983004FDD4A /* libEucalyptusEPubIOSUI.a */,
 				C947D577133B9C0100FB4404 /* libEucalyptusEPub.a */,
 				C947D579133B9C0100FB4404 /* libEucalyptusCSS.a */,
 				C947D575133B9C0100FB4404 /* libEucalyptusBase.a */,
@@ -9393,6 +9401,13 @@
 			fileType = "compiled.mach-o.executable";
 			path = PageLayoutTest;
 			remoteRef = 7D3F30F8140698D800C6F445 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		C9153D6F1574C983004FDD4A /* libEucalyptusEPubIOSUI.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libEucalyptusEPubIOSUI.a;
+			remoteRef = C9153D6E1574C983004FDD4A /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		C937E7E4150F5335001882AC /* libots.a */ = {
