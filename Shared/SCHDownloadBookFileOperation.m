@@ -15,6 +15,11 @@
 
 #pragma mark - Class Extension
 
+// If the already downloaded file size is (bookFileSize - kSCHDownloadBookFileSizeCompleteMarginOfError bytes) or greater
+// then assume we have the whole file. Unfortunately bookFileSize is not accurate. We see downloaded books larger than this size. We also
+// see downloaded books that are complete but are slightly smaller. This 100 byte margin is to handle that
+static NSUInteger const kSCHDownloadBookFileSizeCompleteMarginOfError = 100;
+
 @interface SCHDownloadBookFileOperation ()
 
 @property (nonatomic, copy) NSString *localPath;
@@ -225,6 +230,13 @@
 	}
 		
 	if (currentFilesize > 0) {
+        if (currentFilesize >= ([self bookFileSize] - kSCHDownloadBookFileSizeCompleteMarginOfError)) {
+            // Assume the book is already complete.
+            // If this is incorrect then the book will fail to open and will need reprocessed
+            [self didChangeValueForKey:@"isExecuting"];
+            [self completedDownload];
+            return;
+        }
         NSLog(@"Already have %llu bytes, need %llu bytes more.", currentFilesize, self.bookFileSize - currentFilesize);
 		[request setValue:[NSString stringWithFormat:@"bytes=%llu-", currentFilesize] forHTTPHeaderField:@"Range"];
         self.alreadyDownloadedSize = currentFilesize;
@@ -364,6 +376,12 @@
         NSLog(@"book download operation failed with error: %@", error);
         
         [[BITNetworkActivityManager sharedNetworkActivityManager] hideNetworkActivityIndicator];
+        
+        if ([error.domain isEqualToString:kQHTTPOperationErrorDomain] && error.code == 416) {
+            // There was a problem with the range. Delete the files on the disk        
+            NSFileManager *fileManager = [[[NSFileManager alloc] init] autorelease];
+            [fileManager removeItemAtPath:self.localPath error:nil];
+        }
         
         // allow the operation to complete but change the completion handling
         __block SCHDownloadBookFileOperation *unretained_self = self;

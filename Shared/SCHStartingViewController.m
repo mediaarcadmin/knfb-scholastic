@@ -1020,9 +1020,6 @@ static const NSTimeInterval kSCHStartingViewControllerNonForcedAlertInterval = (
 {
     AppDelegate_Shared *appDelegate = (AppDelegate_Shared *)[[UIApplication sharedApplication] delegate];
     [appDelegate setStoreType:kSCHStoreTypeStandardStore];
-    
-    // clear all books
-    [SCHAppBook clearBooksDirectory];
 }
 
 - (void)versionDownloadManagerCompleted:(NSNotification *)note
