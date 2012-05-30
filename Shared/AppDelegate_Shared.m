@@ -9,6 +9,7 @@
 #import "AppDelegate_Shared.h"
 #import "AppDelegate_Private.h"
 #import "SCHBookManager.h"
+#import "SCHAppBook.h"
 #import "SCHSyncManager.h"
 #import "SCHUserDefaults.h"
 #import "SCHURLManager.h"
@@ -40,6 +41,8 @@ static NSString* const binaryDevCertFilename = @"bdevcert.dat";
 - (void)setupUserDefaults;
 - (BOOL)createApplicationSupportDirectory;
 - (void)resetDRMState;
+- (void)upgradeApp;
+- (void)suspendSyncingAndProcessing;
 - (void)ensureCorrectCertsAvailable;
 - (void)catastrophicFailureWithError:(NSError *)error;
 
@@ -112,10 +115,8 @@ static NSString* const binaryDevCertFilename = @"bdevcert.dat";
         // Store the current version to preferences so that on next launch the check is up to date
         [[SCHVersionDownloadManager sharedVersionManager] saveAppVersionToPreferences];
         
-        if (!(lastVersion && [bundleVersion isEqualToString:lastVersion])) {
-            // We force the DRM to reset on an upgrade
-            // This will also force a reset on first install
-            [self resetDRMState];
+        if (lastVersion && (![bundleVersion isEqualToString:lastVersion])) {
+            [self upgradeApp];
         } else {
             [self ensureCorrectCertsAvailable];
         }
@@ -247,6 +248,7 @@ static NSString* const binaryDevCertFilename = @"bdevcert.dat";
 - (void)applicationDidEnterBackground:(UIApplication *)application 
 {
     [self.coreDataHelper saveContext];
+    [[SCHSyncManager sharedSyncManager] wishListSync];
 }
 
 - (void)applicationWillEnterForeground:(UIApplication *)application 
@@ -302,17 +304,64 @@ static NSString* const binaryDevCertFilename = @"bdevcert.dat";
 	}
 }
 
-- (void)resetDRMState
+- (void)upgradeApp
 {
-    fprintf(stderr, "\nStoria: Resetting the DRM state");
+    [self suspendSyncingAndProcessing];
     
+    if ([[SCHAuthenticationManager sharedAuthenticationManager] hasUsernameAndPassword] && 
+        [[SCHSyncManager sharedSyncManager] havePerformedFirstSyncUpToBooks]) {
+        
+        LambdaAlert *upgradeAlert = [[[LambdaAlert alloc]
+                                      initWithTitle:NSLocalizedString(@"Upgrading, please wait", @"")
+                                      message:@"\n"] autorelease];
+        [upgradeAlert setSpinnerHidden:NO];
+        [upgradeAlert show];
+        
+        // Remove the username key so that the sign-in screen is presented by the startingviewcontroller
+        // There should probably be a cleaner way to do this
+        [[NSUserDefaults standardUserDefaults] removeObjectForKey:kSCHAuthenticationManagerUsername];
+        [[NSUserDefaults standardUserDefaults] synchronize];
+        
+        [SCHAppBook moveBooksDirectoryToTmp];
+
+        [[SCHAuthenticationManager sharedAuthenticationManager] forceDeregistrationWithCompletionBlock:^{
+            [self resetDRMState];
+            [self ensureCorrectCertsAvailable];
+            [self.coreDataHelper resetMainStore];
+            [SCHAppBook restoreBooksDirectoryFromTmp];
+            [[SCHSyncManager sharedSyncManager] setSuspended:NO];
+            [upgradeAlert dismissAnimated:YES];
+        }];
+    } else {
+        [self resetDRMState];
+        [self ensureCorrectCertsAvailable];
+        [[SCHSyncManager sharedSyncManager] setSuspended:NO];
+    }
+}
+
+- (void)suspendSyncingAndProcessing
+{
     // Suspend syncing and processing
     [[SCHProcessingManager sharedProcessingManager] cancelAllOperations];
     [[SCHRecommendationManager sharedManager] cancelAllOperations];
     [[SCHSyncManager sharedSyncManager] setSuspended:YES]; 
-    
+}
+
+- (void)recoverFromUnintializedDRM
+{
+    [self resetDRMState];
+    [self ensureCorrectCertsAvailable];
+    abort();
+}
+   
+- (void)resetDRMState
+{
+    fprintf(stderr, "\nStoria: Resetting the DRM state");
+
     // Clear out the DRM Keychain items
     [SCHDrmSession resetDRMKeychainItems];
+    [[NSUserDefaults standardUserDefaults] removeObjectForKey:kSCHUserDefaultsDeviceID];
+    [[NSUserDefaults standardUserDefaults] synchronize];
     
     NSString *supportDirectory = [[self applicationSupportDocumentsDirectory] path];
     
@@ -347,60 +396,22 @@ static NSString* const binaryDevCertFilename = @"bdevcert.dat";
             fprintf(stderr, "\nbdevcert.dat deleted.\n");
         }
     }
-    
-    // Set the device id to be used by the DRM.
-#if UUID_DISABLED
-    [[NSUserDefaults standardUserDefaults] setObject:(id)[[UIDevice currentDevice] uniqueIdentifier] forKey:kSCHUserDefaultsDeviceID];  
-#else
-    CFUUIDRef uuidObject = CFUUIDCreate(kCFAllocatorDefault);
-    NSString *uuidStr = [(NSString *)CFUUIDCreateString(kCFAllocatorDefault, uuidObject) autorelease];
-    [[NSUserDefaults standardUserDefaults] setObject:uuidStr forKey:kSCHUserDefaultsDeviceID];
-    CFRelease(uuidObject);
-#endif
-    
-    // Expire the drmToken and the device Key so that it does a domain join again on next authentication
-    [[SCHAuthenticationManager sharedAuthenticationManager] expireToken];
-    [[SCHAuthenticationManager sharedAuthenticationManager] expireDeviceKey];
-    
-    if ([[SCHAuthenticationManager sharedAuthenticationManager] hasUsernameAndPassword] && 
-        [[SCHSyncManager sharedSyncManager] havePerformedFirstSyncUpToBooks]) {
-        
-        [[SCHAuthenticationManager sharedAuthenticationManager] authenticateWithSuccessBlock:^(SCHAuthenticationManagerConnectivityMode connectivityMode) {
-            [self ensureCorrectCertsAvailable];
-            // Force the books to re-aquire licenses
-            [[SCHProcessingManager sharedProcessingManager] forceAllBooksToReAcquireLicense];
-            [[SCHSyncManager sharedSyncManager] setSuspended:NO];
-            [[SCHSyncManager sharedSyncManager] firstSync:YES requireDeviceAuthentication:NO];
-            [[SCHSyncManager sharedSyncManager] recommendationSync];            
-        } failureBlock:^(NSError *error) {
-            NSString *authMessage = [[SCHAuthenticationManager sharedAuthenticationManager] localizedMessageForAuthenticationError:error];
-            
-            if (!authMessage) {
-                authMessage = NSLocalizedString(@"Unable to authenticate Storia. Please make sure you are connected to the internet and try again.", nil);
-            }
-            LambdaAlert *alert = [[LambdaAlert alloc]
-                                  initWithTitle:NSLocalizedString(@"Unable to Authenticate", @"Unable to Authenticate") 
-                                  message:authMessage];
-            [alert addButtonWithTitle:NSLocalizedString(@"Retry", @"Retry") block:^{
-                [self resetDRMState];
-            }];
-            [alert addButtonWithTitle:NSLocalizedString(@"Reset", @"Reset") block:^{
-                [[SCHAuthenticationManager sharedAuthenticationManager] forceDeregistrationWithCompletionBlock:^{
-                    abort();
-                }];
-            }];
-            [alert show];
-            [alert release];
-        } waitUntilVersionCheckIsDone:YES];
-    } else {
-        [self ensureCorrectCertsAvailable];
-        [[SCHSyncManager sharedSyncManager] setSuspended:NO];
-    }
-
 }
 
 - (void)ensureCorrectCertsAvailable 
 {
+    if (![[NSUserDefaults standardUserDefaults] objectForKey:kSCHUserDefaultsDeviceID]) {
+#if UUID_DISABLED
+        [[NSUserDefaults standardUserDefaults] setObject:(id)[[UIDevice currentDevice] uniqueIdentifier] forKey:kSCHUserDefaultsDeviceID];  
+#else
+        CFUUIDRef uuidObject = CFUUIDCreate(kCFAllocatorDefault);
+        NSString *uuidStr = [(NSString *)CFUUIDCreateString(kCFAllocatorDefault, uuidObject) autorelease];
+        [[NSUserDefaults standardUserDefaults] setObject:uuidStr forKey:kSCHUserDefaultsDeviceID];
+        CFRelease(uuidObject);
+#endif
+        [[NSUserDefaults standardUserDefaults] synchronize];
+    }
+    
     // Copy DRM resources to writeable directory.
 	if (![self createApplicationSupportDirectory]) {
 		NSLog(@"Application Support directory could not be created for DRM certificates.");

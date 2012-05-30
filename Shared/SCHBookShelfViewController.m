@@ -162,12 +162,7 @@ typedef enum
         [[NSNotificationCenter defaultCenter] addObserver:self
                                                  selector:@selector(profileDeleted:)
                                                      name:SCHProfileSyncComponentWillDeleteNotification
-                                                   object:nil];
-        
-        [[NSNotificationCenter defaultCenter] addObserver:self
-                                                 selector:@selector(managedObjectContextDidSaveNotification:)
-                                                     name:NSManagedObjectContextDidSaveNotification
-                                                   object:nil];
+                                                   object:nil];        
     }
     
     return self;
@@ -648,6 +643,7 @@ typedef enum
         [self.profileSetupDelegate popToAuthenticatedProfileAnimated:YES];
     }
     
+    [[SCHSyncManager sharedSyncManager] wishListSync];                        
 }
 
 - (BOOL)gestureRecognizerShouldBegin:(UIGestureRecognizer *)gestureRecognizer 
@@ -724,6 +720,24 @@ typedef enum
         
     // tell the theme manager which profile to use for storage
     [SCHThemeManager sharedThemeManager].appProfile = self.profileItem.AppProfile;
+}
+
+- (void)setManagedObjectContext:(NSManagedObjectContext *)aManagedObjectContext
+{
+    if (managedObjectContext != aManagedObjectContext) {
+        [[NSNotificationCenter defaultCenter] removeObserver:self
+                                                        name:NSManagedObjectContextDidSaveNotification
+                                                      object:nil];
+        if (aManagedObjectContext != nil) {        
+            [[NSNotificationCenter defaultCenter] addObserver:self
+                                                     selector:@selector(managedObjectContextDidSaveNotification:)
+                                                         name:NSManagedObjectContextDidSaveNotification
+                                                       object:aManagedObjectContext];                    
+        }
+        [aManagedObjectContext retain];        
+        [managedObjectContext release];
+        managedObjectContext = aManagedObjectContext;
+    }
 }
 
 - (void)setBooks:(NSMutableArray *)newBooks

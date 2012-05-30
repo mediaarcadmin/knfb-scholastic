@@ -34,6 +34,7 @@ NSString * const SCHSyncManagerDidCompleteNotification = @"SCHSyncManagerDidComp
 
 static NSTimeInterval const kSCHSyncManagerHeartbeatInterval = 30.0;
 static NSTimeInterval const kSCHLastFirstSyncInterval = -300.0;
+static NSTimeInterval const kSCHLastWishListSyncInterval = -300.0;
 
 // Core Data will fail to save changes if there is no disk space left
 static unsigned long long const kSCHSyncManagerMinimumDiskSpaceRequiredForSync = 10485760; // 10mb
@@ -43,7 +44,9 @@ static NSUInteger const kSCHSyncManagerMaximumFailureRetries = 3;
 @interface SCHSyncManager ()
 
 @property (nonatomic, retain) NSDate *lastFirstSyncEnded;
-@property (nonatomic, assign) BOOL syncAfterDelay;
+@property (nonatomic, assign) BOOL firstSyncAfterDelay;
+@property (nonatomic, retain) NSDate *lastWishListSyncEnded;
+@property (nonatomic, assign) BOOL wishListSyncAfterDelay;
 @property (nonatomic, assign) UIBackgroundTaskIdentifier backgroundTaskIdentifier;
 @property (nonatomic, assign) BOOL flushSaveMode;
 
@@ -52,8 +55,9 @@ static NSUInteger const kSCHSyncManagerMaximumFailureRetries = 3;
 - (void)addAllProfilesToAnnotationSync;
 - (NSMutableArray *)bookAnnotationsFromProfile:(SCHProfileItem *)profileItem;
 - (NSDictionary *)annotationContentItemFromUserContentItem:(SCHUserContentItem *)userContentItem
-                                                       forProfile:(NSNumber *)profileID;
+                                                forProfile:(NSNumber *)profileID;
 - (BOOL)recommendationSyncActive;
+- (BOOL)wishListSyncActive;
 - (SCHSyncComponent *)queueHead;
 - (void)addToQueue:(SCHSyncComponent *)component;
 - (void)moveToEndOfQueue:(SCHSyncComponent *)component;
@@ -80,7 +84,9 @@ static NSUInteger const kSCHSyncManagerMaximumFailureRetries = 3;
 @implementation SCHSyncManager
 
 @synthesize lastFirstSyncEnded;
-@synthesize syncAfterDelay;
+@synthesize firstSyncAfterDelay;
+@synthesize lastWishListSyncEnded;
+@synthesize wishListSyncAfterDelay;
 @synthesize timer;
 @synthesize queue;
 @synthesize managedObjectContext;
@@ -175,6 +181,7 @@ static NSUInteger const kSCHSyncManagerMaximumFailureRetries = 3;
     [self endBackgroundTask];
     
     [lastFirstSyncEnded release], lastFirstSyncEnded = nil;
+    [lastWishListSyncEnded release], lastWishListSyncEnded = nil;
 	[timer release], timer = nil;
 	[queue release], queue = nil;
 	[profileSyncComponent release], profileSyncComponent = nil;
@@ -305,7 +312,9 @@ static NSUInteger const kSCHSyncManagerMaximumFailureRetries = 3;
     [self.recommendationSyncComponent resetSync];
 	
     self.lastFirstSyncEnded = nil;
-    self.syncAfterDelay = NO;
+    self.firstSyncAfterDelay = NO;
+    self.lastWishListSyncEnded = nil;
+    self.wishListSyncAfterDelay = NO;
     self.suspended = NO;
     
     [self endBackgroundTask];
@@ -346,7 +355,7 @@ static NSUInteger const kSCHSyncManagerMaximumFailureRetries = 3;
             [self.lastFirstSyncEnded timeIntervalSinceNow] < kSCHLastFirstSyncInterval) {
             NSLog(@"Scheduling First Sync");
             
-            self.syncAfterDelay = NO;
+            self.firstSyncAfterDelay = NO;
             
             [self addToQueue:self.profileSyncComponent];
             [self addToQueue:self.contentSyncComponent];
@@ -359,14 +368,14 @@ static NSUInteger const kSCHSyncManagerMaximumFailureRetries = 3;
             
             [self addToQueue:self.readingStatsSyncComponent];
             [self addToQueue:self.settingsSyncComponent];
+                   
+            // recommendationSync will be called on completion of settingsSync
             
-            if ([[SCHAppStateManager sharedAppStateManager] isCOPPACompliant] == YES) {
-                [self addToQueue:self.wishListSyncComponent];
-            }
+            [self wishListSync];
             
             [self kickQueue];	
         } else {
-            self.syncAfterDelay = YES;
+            self.firstSyncAfterDelay = YES;
         }
     } else  {
         BOOL importedBooks = NO;
@@ -660,7 +669,7 @@ static NSUInteger const kSCHSyncManagerMaximumFailureRetries = 3;
 {
     if ([self recommendationSyncActive] == YES) {
         if ([self shouldSync] == YES) {	 
-            NSLog(@"Scheduling Recommendation");  
+            NSLog(@"Scheduling Recommendation Sync");  
             
             [self addToQueue:self.recommendationSyncComponent];
             
@@ -673,6 +682,49 @@ static NSUInteger const kSCHSyncManagerMaximumFailureRetries = 3;
         }
     } else {
         NSLog(@"Recommendations are OFF");
+    }
+}
+
+- (BOOL)wishListSyncActive
+{    
+    return [[SCHAppStateManager sharedAppStateManager] isCOPPACompliant];
+}
+
+- (void)wishListSync
+{
+    // reset if the date has been changed in a backward motion
+    if (self.lastWishListSyncEnded != nil &&
+        [self.lastWishListSyncEnded compare:[NSDate date]] == NSOrderedDescending) {
+        self.lastWishListSyncEnded = nil;
+    }
+    
+    if ([self wishListSyncActive] == YES) {
+        if ([self shouldSync] == YES) {
+            if (self.lastWishListSyncEnded == nil || 
+                [self.lastWishListSyncEnded timeIntervalSinceNow] < kSCHLastWishListSyncInterval) {
+                NSLog(@"Scheduling Wishlist Sync");  
+                
+                self.wishListSyncAfterDelay = NO;
+                
+                [self addToQueue:self.wishListSyncComponent];
+                
+                [self kickQueue];	
+            } else {
+                self.wishListSyncAfterDelay = YES;                
+            }
+        } else {
+            if (self.lastWishListSyncEnded == nil || 
+                [self.lastWishListSyncEnded timeIntervalSinceNow] < kSCHLastWishListSyncInterval) {
+                self.lastWishListSyncEnded = [NSDate date];
+                
+                dispatch_async(dispatch_get_main_queue(), ^(void) {
+                    [[NSNotificationCenter defaultCenter] postNotificationName:SCHWishListSyncComponentDidCompleteNotification 
+                                                                        object:self];		
+                });        
+            }
+        }
+    } else {
+        NSLog(@"Wishlists are OFF");
     }
 }
 
@@ -697,7 +749,11 @@ static NSUInteger const kSCHSyncManagerMaximumFailureRetries = 3;
     if ([component isKindOfClass:[SCHSettingsSyncComponent class]] == YES) {
         self.lastFirstSyncEnded = [NSDate date];
     }
-    
+
+    if ([component isKindOfClass:[SCHWishListSyncComponent class]] == YES) {
+        self.lastWishListSyncEnded = [NSDate date];
+    }
+
 	[self kickQueue];
 }
 
@@ -846,8 +902,12 @@ static NSUInteger const kSCHSyncManagerMaximumFailureRetries = 3;
         
         [[NSNotificationCenter defaultCenter] postNotificationName:SCHSyncManagerDidCompleteNotification 
                                                             object:self];        
-        if (self.flushSaveMode == NO && self.syncAfterDelay == YES) {
-            [self firstSync:NO requireDeviceAuthentication:NO];   
+        if (self.flushSaveMode == NO) {
+            if (self.firstSyncAfterDelay == YES) {
+                [self firstSync:NO requireDeviceAuthentication:NO];   
+            } else if (self.wishListSyncAfterDelay == YES) {
+                [self wishListSync];
+            }
         }
 	}
 }

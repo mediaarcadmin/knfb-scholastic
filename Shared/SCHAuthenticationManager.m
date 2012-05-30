@@ -29,6 +29,7 @@
 
 // Constants
 NSString * const SCHAuthenticationManagerReceivedServerDeregistrationNotification = @"SCHAuthenticationManagerReceivedServerDeregistrationNotification";
+NSString * const SCHAuthenticationManagerDidDeregisterNotification = @"SCHAuthenticationManagerDidDeregisterNotification";
 NSString * const kSCHAuthenticationManagerNSError = @"NSError";
 
 NSString * const kSCHAuthenticationManagerErrorDomain = @"AuthenticationManagerErrorDomain";
@@ -717,6 +718,10 @@ NSTimeInterval const kSCHAuthenticationManagerSecondsInAMinute = 60.0;
     [self clearOnMainThread];
     [self clearAppProcessingOnMainThread];
     [(AppDelegate_Shared *)[[UIApplication sharedApplication] delegate] clearUserDefaults];
+    
+    [[NSNotificationCenter defaultCenter] postNotificationName:SCHAuthenticationManagerDidDeregisterNotification
+                                                        object:self 
+                                                      userInfo:nil];
     
     self.authenticationSuccessBlock = nil;
     self.authenticationFailureBlock = nil;

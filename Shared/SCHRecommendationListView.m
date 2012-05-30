@@ -271,7 +271,7 @@
     self.ratingBackgroundImageView.frame = backgroundImageFrame;
     
     
-    NSLog(@"self frame: %@", NSStringFromCGRect(self.frame));
+    //NSLog(@"self frame: %@", NSStringFromCGRect(self.frame));
 //    NSLog(@"rating background frame: %@", NSStringFromCGRect(self.ratingBackgroundImageView.frame));
 //    NSLog(@"rating label frame: %@", NSStringFromCGRect(self.ratingLabel.frame));
 //    NSLog(@"rating frame: %@", NSStringFromCGRect(self.rateView.frame));

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model name="" userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="1171" systemVersion="11D50b" minimumToolsVersion="Xcode 4.2" macOSVersion="Automatic" iOSVersion="Automatic">
+<model name="" userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="1171" systemVersion="11E53" minimumToolsVersion="Xcode 4.2" macOSVersion="Automatic" iOSVersion="Automatic">
     <entity name="SCHAnnotation" representedClassName="SCHAnnotation" isAbstract="YES" parentEntity="SCHSyncEntity">
         <attribute name="Action" optional="YES" attributeType="Integer 16" defaultValueString="0"/>
         <attribute name="ID" optional="YES" attributeType="Integer 64" defaultValueString="0"/>
@@ -212,7 +212,7 @@
         <relationship name="Highlights" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="SCHHighlight" inverseName="PrivateAnnotations" inverseEntity="SCHHighlight" indexed="YES"/>
         <relationship name="LastPage" optional="YES" minCount="1" maxCount="1" deletionRule="Cascade" destinationEntity="SCHLastPage" inverseName="PrivateAnnotations" inverseEntity="SCHLastPage" indexed="YES"/>
         <relationship name="Notes" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="SCHNote" inverseName="PrivateAnnotations" inverseEntity="SCHNote" indexed="YES"/>
-        <relationship name="rating" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="SCHRating" inverseName="PrivateAnnotations" inverseEntity="SCHRating" syncable="YES"/>
+        <relationship name="rating" optional="YES" minCount="1" maxCount="1" deletionRule="Cascade" destinationEntity="SCHRating" inverseName="PrivateAnnotations" inverseEntity="SCHRating" syncable="YES"/>
     </entity>
     <entity name="SCHProfileItem" representedClassName="SCHProfileItem" parentEntity="SCHSyncEntity">
         <attribute name="AutoAssignContentToProfiles" optional="YES" attributeType="Boolean"/>
@@ -397,7 +397,7 @@
         <element name="SCHLocationText" positionX="0" positionY="362" width="128" height="90"/>
         <element name="SCHNote" positionX="146" positionY="653" width="128" height="105"/>
         <element name="SCHOrderItem" positionX="990" positionY="1147" width="128" height="90"/>
-        <element name="SCHPrivateAnnotations" positionX="365" positionY="862" width="128" height="120"/>
+        <element name="SCHPrivateAnnotations" positionX="365" positionY="862" width="128" height="135"/>
         <element name="SCHProfileItem" positionX="584" positionY="265" width="128" height="285"/>
         <element name="SCHRating" positionX="160" positionY="192" width="128" height="90"/>
         <element name="SCHReadingStatsContentItem" positionX="0" positionY="0" width="128" height="90"/>

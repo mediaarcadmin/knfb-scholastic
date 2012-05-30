@@ -905,8 +905,8 @@ static const NSTimeInterval kSCHStartingViewControllerNonForcedAlertInterval = (
                                                                                     if (credentialsSuccessBlock) {
                                                                                         credentialsSuccessBlock(YES, NO);
                                                                                     }
+                                                                                    [[SCHSyncManager sharedSyncManager] resetSync];                                                                                    
                                                                                     [[SCHSyncManager sharedSyncManager] firstSync:YES requireDeviceAuthentication:NO];
-                                                                                    [[SCHSyncManager sharedSyncManager] recommendationSync];
                                                                                 } else { 
                                                                                     NSError *anError = [NSError errorWithDomain:kSCHAuthenticationManagerErrorDomain  
                                                                                                                            code:kSCHAuthenticationManagerOfflineError  
@@ -950,12 +950,23 @@ static const NSTimeInterval kSCHStartingViewControllerNonForcedAlertInterval = (
                     credentialsSuccessBlock(NO, NO);
                 }
             }];
-            [alert addButtonWithTitle:NSLocalizedString(@"Retry", @"Retry") block:^{
-                if (credentialsSuccessBlock) {
-                    credentialsSuccessBlock(NO, YES);
-                }
-                [self runLoginSequenceWithUsername:username password:password credentialsSuccessBlock:credentialsSuccessBlock];
-            }];
+            if (([[error domain] isEqualToString:@"kSCHDrmErrorDomain"]) && ([error code] == kSCHDrmInitializationError)) {
+                [alert addButtonWithTitle:NSLocalizedString(@"Reset", @"Reset") block:^{
+                    if (credentialsSuccessBlock) {
+                        credentialsSuccessBlock(NO, YES);
+                    }
+                    AppDelegate_Shared *appDelegate = (AppDelegate_Shared *)[[UIApplication sharedApplication] delegate];
+                    [appDelegate recoverFromUnintializedDRM];
+                    [self runLoginSequenceWithUsername:username password:password credentialsSuccessBlock:credentialsSuccessBlock];
+                }];
+            } else {
+                [alert addButtonWithTitle:NSLocalizedString(@"Retry", @"Retry") block:^{
+                    if (credentialsSuccessBlock) {
+                        credentialsSuccessBlock(NO, YES);
+                    }
+                    [self runLoginSequenceWithUsername:username password:password credentialsSuccessBlock:credentialsSuccessBlock];
+                }];
+            }
             [alert show];
             [alert release];
         } else {
@@ -1019,9 +1030,6 @@ static const NSTimeInterval kSCHStartingViewControllerNonForcedAlertInterval = (
 {
     AppDelegate_Shared *appDelegate = (AppDelegate_Shared *)[[UIApplication sharedApplication] delegate];
     [appDelegate setStoreType:kSCHStoreTypeStandardStore];
-    
-    // clear all books
-    [SCHAppBook clearBooksDirectory];
 }
 
 - (void)versionDownloadManagerCompleted:(NSNotification *)note

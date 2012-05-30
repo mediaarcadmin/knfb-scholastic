@@ -507,6 +507,43 @@ NSString * const kSCHAppBookFilenameSeparator = @"-";
     }
 }
 
++ (void)moveBooksDirectoryToTmp
+{
+    NSString *booksDirectory = [SCHAppBook booksDirectory];
+    NSString *tmpDirectory = [NSTemporaryDirectory() stringByAppendingPathComponent:@"booksBackup"];
+    NSError *error = nil;
+    
+    if (booksDirectory != nil) {
+        if ([[NSFileManager defaultManager] fileExistsAtPath:tmpDirectory]) {
+            [[NSFileManager defaultManager] removeItemAtPath:tmpDirectory error:NULL];
+        }
+
+        if ([[NSFileManager defaultManager] moveItemAtPath:booksDirectory 
+                                                    toPath:tmpDirectory
+                                                       error:&error] == NO) {
+            NSLog(@"Error moving books directory to tmp: %@", [error localizedDescription]);                        
+        }
+    }
+}
+
++ (void)restoreBooksDirectoryFromTmp
+{
+    NSString *booksDirectory = [SCHAppBook booksDirectory];
+    NSError *error = nil;
+    
+    if (booksDirectory != nil) {
+        if ([[NSFileManager defaultManager] fileExistsAtPath:booksDirectory]) {
+            [[NSFileManager defaultManager] removeItemAtPath:booksDirectory error:NULL];
+        }
+        
+        if ([[NSFileManager defaultManager] moveItemAtPath:[NSTemporaryDirectory() stringByAppendingPathComponent:@"booksBackup"]
+                                                    toPath:booksDirectory
+                                                     error:&error] == NO) {
+            NSLog(@"Error restoring books directory from tmp: %@", [error localizedDescription]);                        
+        }
+    }
+}
+
 - (void)clearCachedBookDirectory
 {
     self.cachedBookDirectory = nil;

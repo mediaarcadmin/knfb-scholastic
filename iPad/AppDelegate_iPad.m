@@ -60,7 +60,6 @@ static NSTimeInterval const kAppDelegate_iPadSyncManagerWakeDelay = 5.0;
         dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);
         dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
             [[SCHSyncManager sharedSyncManager] firstSync:NO requireDeviceAuthentication:NO];
-            [[SCHSyncManager sharedSyncManager] recommendationSync];            
         });
     }
 }

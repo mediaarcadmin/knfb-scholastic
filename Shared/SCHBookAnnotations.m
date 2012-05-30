@@ -55,10 +55,12 @@
                                                      name:SCHAnnotationSyncComponentDidCompleteNotification 
                                                    object:nil];        
         
-        [[NSNotificationCenter defaultCenter] addObserver:self 
-                                                 selector:@selector(managedObjectContextDidSaveNotification:) 
-                                                     name:NSManagedObjectContextDidSaveNotification 
-                                                   object:nil];        
+        if (self.privateAnnotations.managedObjectContext != nil) {
+            [[NSNotificationCenter defaultCenter] addObserver:self 
+                                                     selector:@selector(managedObjectContextDidSaveNotification:) 
+                                                         name:NSManagedObjectContextDidSaveNotification 
+                                                       object:self.privateAnnotations.managedObjectContext];                    
+        }
     }
     return(self);
 }
