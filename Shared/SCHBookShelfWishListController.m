@@ -119,7 +119,11 @@
 
 - (void)viewWillDisappear:(BOOL)animated
 {
-    [self commitWishListDeletions];
+    // commit wish list deletion on close - iPhone only
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
+        [self commitWishListDeletions];
+    }
+    
     [super viewWillDisappear:animated];
 }
 
@@ -127,6 +131,9 @@
 
 - (IBAction)close:(id)sender
 {
+    // commit wish list deletion on close - iPad only
+    [self commitWishListDeletions];
+
     if (closeBlock) {
         closeBlock();
     }
