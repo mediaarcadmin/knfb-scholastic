@@ -144,6 +144,7 @@
 
 - (IBAction)close:(id)sender
 {
+    [self commitWishListChanges];
     if (closeBlock) {
         closeBlock();
     }
