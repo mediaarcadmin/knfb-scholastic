@@ -475,11 +475,6 @@ static const NSUInteger kReadingViewMaxRecommendationsCount = 4;
                                                    object:nil];
 
         [[NSNotificationCenter defaultCenter] addObserver:self
-                                                 selector:@selector(managedObjectContextDidSaveNotification:)
-                                                     name:NSManagedObjectContextDidSaveNotification
-                                                   object:nil];
-
-        [[NSNotificationCenter defaultCenter] addObserver:self
                                                  selector:@selector(annotationChanges:)
                                                      name:SCHAnnotationSyncComponentDidCompleteNotification
                                                    object:nil];
@@ -526,6 +521,23 @@ static const NSUInteger kReadingViewMaxRecommendationsCount = 4;
     return bookStoryInteractions;
 }
 
+- (void)setManagedObjectContext:(NSManagedObjectContext *)aManagedObjectContext
+{
+    if (managedObjectContext != aManagedObjectContext) {
+        [[NSNotificationCenter defaultCenter] removeObserver:self
+                                                        name:NSManagedObjectContextDidSaveNotification
+                                                      object:nil];
+        if (aManagedObjectContext != nil) {        
+            [[NSNotificationCenter defaultCenter] addObserver:self
+                                                     selector:@selector(managedObjectContextDidSaveNotification:)
+                                                         name:NSManagedObjectContextDidSaveNotification
+                                                       object:aManagedObjectContext];                    
+        }
+        [aManagedObjectContext retain];        
+        [managedObjectContext release];
+        managedObjectContext = aManagedObjectContext;
+    }
+}
 
 #pragma mark - View Lifecycle
 
