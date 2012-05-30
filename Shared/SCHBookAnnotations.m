@@ -95,6 +95,8 @@
 
 - (void)managedObjectContextDidSaveNotification:(NSNotification *)notification
 {
+    NSAssert([NSThread isMainThread] == YES, @"SCHBookAnnotation:managedObjectContextDidSaveNotification MUST be executed on the main thread");
+    
     if (self.privateAnnotations != nil) {
         NSArray *deletedObjects = [notification.userInfo objectForKey:NSDeletedObjectsKey];    
         
