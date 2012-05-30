@@ -3320,7 +3320,6 @@ static const NSUInteger kReadingViewMaxRecommendationsCount = 4;
                         NSString *wishListISBN = [wishlistItem objectForKey:kSCHWishListISBN];
                         
                         if ([wishListISBN isEqualToString:recommendationISBN] == YES) {
-                            *stop = YES;
                             return NO;
                         }
                     }                
