@@ -829,6 +829,8 @@ typedef enum
 // detect any changes to the data
 - (void)managedObjectContextDidSaveNotification:(NSNotification *)notification
 {
+    NSAssert([NSThread isMainThread] == YES, @"SCHBookAnnotation:managedObjectContextDidSaveNotification MUST be executed on the main thread");    
+    
     BOOL refreshTable = NO;
     BOOL refreshBooks = NO;
     
