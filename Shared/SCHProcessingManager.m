@@ -130,7 +130,8 @@ static SCHProcessingManager *sharedManager = nil;
 
 + (SCHProcessingManager *)sharedProcessingManager
 {
-	if (sharedManager == nil) {
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
 		sharedManager = [[SCHProcessingManager alloc] init];
 		[[NSNotificationCenter defaultCenter] addObserver:sharedManager 
 												 selector:@selector(checkStateForAllBooks) 
@@ -156,7 +157,7 @@ static SCHProcessingManager *sharedManager = nil;
 												 selector:@selector(enterForeground) 
 													 name:UIApplicationWillEnterForegroundNotification 
 												   object:nil];	
-    } 
+    });
 	
 	return sharedManager;
 }

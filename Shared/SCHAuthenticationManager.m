@@ -97,7 +97,7 @@ NSTimeInterval const kSCHAuthenticationManagerSecondsInAMinute = 60.0;
 #endif
     });
     
-    return(sharedAuthenticationManager);
+    return sharedAuthenticationManager;
 }
 
 #pragma mark - Object lifecycle 
@@ -124,7 +124,7 @@ NSTimeInterval const kSCHAuthenticationManagerSecondsInAMinute = 60.0;
                                                      name:UIApplicationSignificantTimeChangeNotification 
                                                    object:nil];
 	}
-	return(self);
+	return self;
 }
 
 - (void)dealloc 
@@ -159,7 +159,7 @@ NSTimeInterval const kSCHAuthenticationManagerSecondsInAMinute = 60.0;
         drmRegistrationSession.delegate = self;   
     }
     
-    return(drmRegistrationSession);
+    return drmRegistrationSession;
 }
 
 #pragma mark - methods
@@ -273,7 +273,7 @@ NSTimeInterval const kSCHAuthenticationManagerSecondsInAMinute = 60.0;
                            withObject:resultValue 
                         waitUntilDone:YES];
 
-    return(ret);
+    return ret;
 }
 
 - (BOOL)hasDRMInformation
@@ -358,7 +358,7 @@ NSTimeInterval const kSCHAuthenticationManagerSecondsInAMinute = 60.0;
     
 - (NSString *)pToken
 {
-    return(self.accountValidation.pToken);    
+    return self.accountValidation.pToken;    
 }
 
 - (BOOL)pTokenWithValidation:(ValidateBlock)aValidateBlock
@@ -442,7 +442,7 @@ NSTimeInterval const kSCHAuthenticationManagerSecondsInAMinute = 60.0;
                            withObject:nil 
                         waitUntilDone:YES];
     
-	return(aToken);
+	return aToken;
 }
 
 - (BOOL)isAuthenticated
@@ -455,7 +455,7 @@ NSTimeInterval const kSCHAuthenticationManagerSecondsInAMinute = 60.0;
                            withObject:resultValue 
                         waitUntilDone:YES];
     
-    return(ret);
+    return ret;
 }
 
 #pragma mark - Notification methods

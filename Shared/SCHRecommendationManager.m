@@ -413,7 +413,8 @@ static SCHRecommendationManager *sharedManager = nil;
 
 + (SCHRecommendationManager *)sharedManager
 {
-    if (sharedManager == nil) {
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
 		sharedManager = [[SCHRecommendationManager alloc] init];
 		
 		[[NSNotificationCenter defaultCenter] addObserver:sharedManager 
@@ -430,7 +431,7 @@ static SCHRecommendationManager *sharedManager = nil;
 												 selector:@selector(recommendationSyncDidComplete:) 
 													 name:SCHRecommendationSyncComponentDidCompleteNotification 
 												   object:nil];
-    } 
+    }); 
 	
 	return sharedManager;
 }

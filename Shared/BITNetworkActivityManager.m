@@ -33,12 +33,13 @@ static BITNetworkActivityManager *sharedNetworkActivityManager = nil;
 
 + (BITNetworkActivityManager *)sharedNetworkActivityManager
 {
-    if (sharedNetworkActivityManager == nil) {
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
         // we block until the selector completes to make sure we always have the object before use
         [BITNetworkActivityManager performSelectorOnMainThread:@selector(sharedNetworkActivityManagerOnMainThread) withObject:nil waitUntilDone:YES];
-    }
+    });
 	
-    return(sharedNetworkActivityManager);
+    return sharedNetworkActivityManager;
 }
 
 #pragma mark - methods
@@ -49,7 +50,7 @@ static BITNetworkActivityManager *sharedNetworkActivityManager = nil;
 	if (self != nil) {
 		self.count = 0;
 	}
-	return(self);
+	return self;
 }
 
 - (void)showNetworkActivityIndicator
@@ -66,11 +67,8 @@ static BITNetworkActivityManager *sharedNetworkActivityManager = nil;
 
 + (BITNetworkActivityManager *)sharedNetworkActivityManagerOnMainThread
 {
-    if (sharedNetworkActivityManager == nil) {
-        sharedNetworkActivityManager = [[super allocWithZone:NULL] init];		
-    }
-	
-    return(sharedNetworkActivityManager);
+    sharedNetworkActivityManager = [[super allocWithZone:NULL] init];		
+    return sharedNetworkActivityManager;
 }
 
 - (void)showNetworkActivityIndicatorOnMainThread

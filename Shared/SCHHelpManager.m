@@ -112,7 +112,8 @@ static SCHHelpManager *sharedManager = nil;
 
 + (SCHHelpManager *)sharedHelpManager
 {
-	if (sharedManager == nil) {
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
 		sharedManager = [[SCHHelpManager alloc] init];
         
 		// notifications for changes in reachability
@@ -133,7 +134,7 @@ static SCHHelpManager *sharedManager = nil;
 												   object:nil];		
         
 		[sharedManager.reachability startNotifier];
-	} 
+	});
 	
 	return sharedManager;
 }

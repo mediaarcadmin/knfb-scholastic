@@ -185,7 +185,8 @@ static SCHDictionaryDownloadManager *sharedManager = nil;
 
 + (SCHDictionaryDownloadManager *)sharedDownloadManager
 {
-	if (sharedManager == nil) {
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
 		sharedManager = [[SCHDictionaryDownloadManager alloc] init];
         
 		// notifications for changes in reachability
@@ -221,7 +222,7 @@ static SCHDictionaryDownloadManager *sharedManager = nil;
 												   object:nil];	
                 
 		[sharedManager.wifiReach startNotifier];
-	} 
+	});
 	
 	return sharedManager;
 }
