@@ -140,12 +140,13 @@ static NSString* const binaryDevCertFilename = @"bdevcert.dat";
         SCHDictionaryDownloadManager *ddm = [SCHDictionaryDownloadManager sharedDownloadManager];
         ddm.mainThreadManagedObjectContext = self.coreDataHelper.managedObjectContext;
         ddm.persistentStoreCoordinator = persistentStoreCoordinator;
-        [ddm checkIfDictionaryUpdateNeeded];
         
         // instantiate the shared dictionary access manager
         SCHDictionaryAccessManager *dam = [SCHDictionaryAccessManager sharedAccessManager];
         dam.mainThreadManagedObjectContext = self.coreDataHelper.managedObjectContext;
         dam.persistentStoreCoordinator = persistentStoreCoordinator;
+        
+        [ddm checkIfDictionaryUpdateNeeded];
 
         SCHVersionDownloadManager *versionManager = [SCHVersionDownloadManager sharedVersionManager];
         [versionManager checkVersion];

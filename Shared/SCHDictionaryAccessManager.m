@@ -53,7 +53,8 @@ static SCHDictionaryAccessManager *sharedManager = nil;
 
 + (SCHDictionaryAccessManager *)sharedAccessManager
 {
-	if (sharedManager == nil) {
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
 		sharedManager = [[SCHDictionaryAccessManager alloc] init];
         sharedManager.dictionaryAccessQueue = dispatch_queue_create("com.scholastic.DictionaryAccessQueue", NULL);
         [[NSNotificationCenter defaultCenter] addObserver:sharedManager selector:@selector(setAccessFromState) name:kSCHDictionaryStateChange object:nil];
@@ -66,7 +67,7 @@ static SCHDictionaryAccessManager *sharedManager = nil;
                                                           NSLog(@"Dictionary speaking entering background!");
                                                           [sharedManager stopAllSpeaking];
                                                       }];
-	} 
+    });
 	
 	return sharedManager;
 }
