@@ -893,6 +893,7 @@ static const NSTimeInterval kSCHStartingViewControllerNonForcedAlertInterval = (
     [setupSequenceAttemptServiceLogin addSuccessDependency:setupSequenceCheckConnectivity];
     setupSequenceAttemptServiceLogin.syncMain = ^(BITOperationIsCancelledBlock isCancelled, BITOperationFailedBlock failed) {
         
+        [[SCHSyncManager sharedSyncManager] resetSync]; 
         [self setStandardStore];
         self.profileSyncState = kSCHStartingViewControllerProfileSyncStateWaitingForLoginToComplete;
         
@@ -905,7 +906,7 @@ static const NSTimeInterval kSCHStartingViewControllerNonForcedAlertInterval = (
                                                                                     if (credentialsSuccessBlock) {
                                                                                         credentialsSuccessBlock(YES, NO);
                                                                                     }
-                                                                                    [[SCHSyncManager sharedSyncManager] resetSync];                                                                                    
+                                                                                                                                                            
                                                                                     [[SCHSyncManager sharedSyncManager] firstSync:YES requireDeviceAuthentication:NO];
                                                                                 } else { 
                                                                                     NSError *anError = [NSError errorWithDomain:kSCHAuthenticationManagerErrorDomain  
