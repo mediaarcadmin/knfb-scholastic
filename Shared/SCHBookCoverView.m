@@ -492,14 +492,17 @@
         [self resizeElementsForThumbSize:self.coverImageView.frame.size];
     } else {
         
-        BOOL successfullyLoaded = NO;
+        __block BOOL successfullyLoaded = NO;
         
         if (self.shouldWaitForExistingCachedThumbToLoad) {
             NSFileManager *threadLocalFileManager = [[[NSFileManager alloc] init] autorelease];
             if ([threadLocalFileManager fileExistsAtPath:thumbPath]) {
-                UIImage *thumbImage = [UIImage imageWithContentsOfFile:thumbPath];
-                [self updateCachedImage:thumbImage atPath:thumbPath forIdentifier:localIdentifier waitUntilDone:YES];
-                successfullyLoaded = YES;
+
+                dispatch_sync([SCHProcessingManager sharedProcessingManager].thumbnailAccessQueue, ^{
+                    UIImage *thumbImage = [UIImage imageWithContentsOfFile:thumbPath];
+                    [self updateCachedImage:thumbImage atPath:thumbPath forIdentifier:localIdentifier waitUntilDone:YES];
+                    successfullyLoaded = YES;
+                });
             }
         }
         
