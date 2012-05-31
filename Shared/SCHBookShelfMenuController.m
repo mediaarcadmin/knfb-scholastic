@@ -15,20 +15,11 @@
 #import "SCHAppStateManager.h"
 #import "SCHCustomNavigationBar.h"
 
-@interface SCHBookShelfMenuController ()
-
-@property (nonatomic, retain) NSNumber *cachedRecommendationsActive;
-
-- (BOOL)recommendationsActive;
-
-@end
-
 @implementation SCHBookShelfMenuController
 
 @synthesize delegate;
 @synthesize userIsAuthenticated;
 @synthesize managedObjectContext;
-@synthesize cachedRecommendationsActive;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil 
  managedObjectContext:(NSManagedObjectContext *)setManagedObjectContext
@@ -46,7 +37,6 @@
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
     [managedObjectContext release], managedObjectContext = nil;
-    [cachedRecommendationsActive release], cachedRecommendationsActive = nil;
     
     [super dealloc];
 }
@@ -155,23 +145,10 @@
     return 1;
 }
 
-- (BOOL)recommendationsActive
-{
-    if (self.cachedRecommendationsActive == nil) {
-        NSString *settingValue = [[SCHAppStateManager sharedAppStateManager] settingNamed:kSCHSettingItemRECOMMENDATIONS_ON];
-        
-        if (settingValue != nil) {
-            self.cachedRecommendationsActive = [NSNumber numberWithBool:[settingValue boolValue]];
-        }
-    }
-    
-    return [self.cachedRecommendationsActive boolValue];
-}
-
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     // Return the number of rows in the section.
-    if (self.userIsAuthenticated && [self recommendationsActive] == YES) {
+    if (self.userIsAuthenticated) {
         if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
             return 4;
         } else {
@@ -198,7 +175,7 @@
         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     }
     
-    if (self.userIsAuthenticated && [self recommendationsActive] == YES) {
+    if (self.userIsAuthenticated) {
         // Show View, Sort, Wallpaper, and the wishlist/recommendations items
         switch (indexPath.row) {
             case 0:
@@ -258,7 +235,7 @@
     // some extra logic to skip "sort" if we are not authenticated
     NSInteger selectedRow = indexPath.row;
     
-    if (!(self.userIsAuthenticated && [self recommendationsActive] == YES)) {
+    if (!self.userIsAuthenticated) {
         if (selectedRow == 1) {
             selectedRow = 2;
         }
