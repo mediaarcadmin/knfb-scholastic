@@ -14,6 +14,7 @@
 @property (nonatomic, copy) void (^loginBlock)(NSString *topFieldString, NSString *bottomFieldString);
 @property (nonatomic, copy) dispatch_block_t previewBlock;
 
+@property (nonatomic, retain) IBOutlet UILabel *topFieldLabel;
 @property (nonatomic, retain) IBOutlet UITextField *topField;
 @property (nonatomic, retain) IBOutlet UITextField *bottomField;
 @property (nonatomic, retain) IBOutlet UIButton *loginButton;
