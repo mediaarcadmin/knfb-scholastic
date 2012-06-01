@@ -496,11 +496,13 @@ static NSUInteger const kSCHDownloadBookFileSizeCompleteMarginOfError = 100;
                 
                 dispatch_sync([SCHProcessingManager sharedProcessingManager].thumbnailAccessQueue, ^{
 
-                    // move the book cover to the real location
-                    [fileManager moveItemAtPath:self.temporaryLocalPath toPath:self.realLocalPath error:&fileMoveError];
-                    
-                    if (fileMoveError) {
-                        [fileManager removeItemAtPath:self.temporaryLocalPath error:nil];
+                    if (self.temporaryLocalPath) {
+                        // move the book cover to the real location
+                        [fileManager moveItemAtPath:self.temporaryLocalPath toPath:self.realLocalPath error:&fileMoveError];
+                        
+                        if (fileMoveError) {
+                            [fileManager removeItemAtPath:self.temporaryLocalPath error:nil];
+                        }
                     }
                 });
                 
