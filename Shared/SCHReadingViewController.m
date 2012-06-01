@@ -2160,9 +2160,15 @@ static const NSUInteger kReadingViewMaxRecommendationsCount = 4;
         self.coverMarkerShouldAppear = NO;
         
         [self dismissCoverCornerViewWithAnimation:YES];
-
     }
     
+    // Hide the corner button until audio is checked in viewDidAppear
+    [UIView animateWithDuration:0.1
+                     animations:^{
+                         self.cornerAudioButtonView.alpha = 0;
+                     }];
+    
+    // hide the audio button
     if (self.audioBookPlayer && self.audioBookPlayer.playing) {
         [self setStoryInteractionButtonVisible:NO animated:NO withSound:YES completion:nil];
     } else {
