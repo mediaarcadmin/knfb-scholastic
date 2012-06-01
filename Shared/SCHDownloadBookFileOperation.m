@@ -494,21 +494,30 @@ static NSUInteger const kSCHDownloadBookFileSizeCompleteMarginOfError = 100;
                 [self setDownloadFailedState];
                 
             } else {
-                __block NSError *fileMoveError = nil;
+                __block BOOL fileMoveFailed = NO;
                 
                 dispatch_sync([SCHProcessingManager sharedProcessingManager].thumbnailAccessQueue, ^{
 
                     if (self.temporaryLocalPath) {
                         // move the book cover to the real location
-                        [fileManager moveItemAtPath:self.temporaryLocalPath toPath:self.realLocalPath error:&fileMoveError];
+                        NSError *fileMoveError = nil;
                         
-                        if (fileMoveError) {
-                            [fileManager removeItemAtPath:self.temporaryLocalPath error:nil];
+                        NSFileManager *threadSafeManager = [[[NSFileManager alloc] init] autorelease];
+                        
+                        if ([threadSafeManager fileExistsAtPath:self.realLocalPath]) {
+                            NSLog(@"Warning file already exists at path. Replacing it: %@", self.realLocalPath);
+                            [threadSafeManager removeItemAtPath:self.realLocalPath error:nil];
+                        }
+                        
+                        if (![threadSafeManager moveItemAtPath:self.temporaryLocalPath toPath:self.realLocalPath error:&fileMoveError]) {
+                            NSLog(@"Failed to move temp file item: %@", fileMoveError);
+                            fileMoveFailed = YES;
+                            [threadSafeManager removeItemAtPath:self.temporaryLocalPath error:nil];
                         }
                     }
                 });
                 
-                if (fileMoveError) {
+                if (fileMoveFailed) {
                     [self setDownloadFailedState];
                     return;
                 }
