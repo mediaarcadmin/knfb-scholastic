@@ -38,6 +38,7 @@
 #import "BITOperationWithBlocks.h"
 #import "SCHVersionDownloadManager.h"
 #import "SCHAccountValidationViewController.h"
+#import "NSString+EmailValidation.h"
 
 typedef enum {
 	kSCHStartingViewControllerProfileSyncStateNone = 0,
@@ -893,41 +894,57 @@ static const NSTimeInterval kSCHStartingViewControllerNonForcedAlertInterval = (
     [setupSequenceAttemptServiceLogin addSuccessDependency:setupSequenceCheckConnectivity];
     setupSequenceAttemptServiceLogin.syncMain = ^(BITOperationIsCancelledBlock isCancelled, BITOperationFailedBlock failed) {
         
+        [[SCHSyncManager sharedSyncManager] resetSync]; 
         [self setStandardStore];
         self.profileSyncState = kSCHStartingViewControllerProfileSyncStateWaitingForLoginToComplete;
         
         if ([[username stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]] length] > 0 &&
             [[password stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]] length] > 0) {      
-            [[SCHAuthenticationManager sharedAuthenticationManager] authenticateWithUser:username 
-                                                                                password:password
-                                                                            successBlock:^(SCHAuthenticationManagerConnectivityMode connectivityMode) { 
-                                                                                if (connectivityMode == SCHAuthenticationManagerConnectivityModeOnline) { 
-                                                                                    if (credentialsSuccessBlock) {
-                                                                                        credentialsSuccessBlock(YES, NO);
-                                                                                    }
-                                                                                    [[SCHSyncManager sharedSyncManager] resetSync];                                                                                    
-                                                                                    [[SCHSyncManager sharedSyncManager] firstSync:YES requireDeviceAuthentication:NO];
-                                                                                } else { 
-                                                                                    NSError *anError = [NSError errorWithDomain:kSCHAuthenticationManagerErrorDomain  
-                                                                                                                           code:kSCHAuthenticationManagerOfflineError  
-                                                                                                                       userInfo:[NSDictionary dictionaryWithObject:NSLocalizedString(@"There was a problem checking your username and password. Please try again.", @"")  
-                                                                                                                                                            forKey:NSLocalizedDescriptionKey]];        
-                                                                                    failed(anError);
+#if USE_EMAIL_ADDRESS_AS_USERNAME
+            NSString *errorMessage = NSLocalizedString(@"There was a problem checking your email and password. Please try again.", @"");
+            if ([username isValidEmailAddress] == NO) {
+                NSError *anError = [NSError errorWithDomain:kSCHAccountValidationErrorDomain  
+                                                       code:kSCHAccountValidationCredentialsError  
+                                                   userInfo:[NSDictionary dictionaryWithObject:NSLocalizedString(@"Email address is not valid. Please try again.", @"")  
+                                                                                        forKey:NSLocalizedDescriptionKey]];
+                failed(anError);
+                
+            } else {
+#else 
+                NSString *errorMessage = NSLocalizedString(@"There was a problem checking your username and password. Please try again.", @"");
+#endif
+                [[SCHAuthenticationManager sharedAuthenticationManager] authenticateWithUser:username 
+                                                                                    password:password
+                                                                                successBlock:^(SCHAuthenticationManagerConnectivityMode connectivityMode) { 
+                                                                                    if (connectivityMode == SCHAuthenticationManagerConnectivityModeOnline) { 
+                                                                                        if (credentialsSuccessBlock) {
+                                                                                            credentialsSuccessBlock(YES, NO);
+                                                                                        }
+                                                                                        [[SCHSyncManager sharedSyncManager] firstSync:YES requireDeviceAuthentication:NO];
+                                                                                    } else { 
+                                                                                        NSError *anError = [NSError errorWithDomain:kSCHAuthenticationManagerErrorDomain  
+                                                                                                                               code:kSCHAuthenticationManagerOfflineError  
+                                                                                                                           userInfo:[NSDictionary dictionaryWithObject:errorMessage  
+                                                                                                                                                                forKey:NSLocalizedDescriptionKey]];        
+                                                                                        failed(anError);
+                                                                                    } 
                                                                                 } 
-                                                                            } 
-                                                                            failureBlock:^(NSError * error){
-                                                                                if (error == nil) {
-                                                                                    NSError *anError = [NSError errorWithDomain:kSCHAuthenticationManagerErrorDomain  
-                                                                                                                           code:kSCHAuthenticationManagerGeneralError  
-                                                                                                                       userInfo:[NSDictionary dictionaryWithObject:NSLocalizedString(@"There was a problem checking your username and password. Please try again.", @"")  
-                                                                                                                                                            forKey:NSLocalizedDescriptionKey]];  
-                                                                                    
-                                                                                    failed(anError);
-                                                                                } else {
-                                                                                    failed(error);
+                                                                                failureBlock:^(NSError * error){
+                                                                                    if (error == nil) {
+                                                                                        NSError *anError = [NSError errorWithDomain:kSCHAuthenticationManagerErrorDomain  
+                                                                                                                               code:kSCHAuthenticationManagerGeneralError  
+                                                                                                                           userInfo:[NSDictionary dictionaryWithObject:errorMessage  
+                                                                                                                                                                forKey:NSLocalizedDescriptionKey]];  
+                                                                                        
+                                                                                        failed(anError);
+                                                                                    } else {
+                                                                                        failed(error);
+                                                                                    }
                                                                                 }
-                                                                            }
-                                                             waitUntilVersionCheckIsDone:YES];    
+                                                                 waitUntilVersionCheckIsDone:YES];    
+#if USE_EMAIL_ADDRESS_AS_USERNAME
+            }
+#endif
         } else {
             NSError *anError = [NSError errorWithDomain:kSCHAccountValidationErrorDomain  
                                                    code:kSCHAccountValidationCredentialsError  

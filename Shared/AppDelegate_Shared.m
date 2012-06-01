@@ -177,17 +177,17 @@ static NSString* const binaryDevCertFilename = @"bdevcert.dat";
 
 - (void)setStoreType:(SCHStoreType)storeType
 {
+    // N.B. We always reset the store when going to standard store, just in case there are remnants
+    // For sample store we only set it if we are switching, because there won't be any sync remnants
     switch (storeType) {
-        case kSCHStoreTypeStandardStore:
-            if ([[SCHAppStateManager sharedAppStateManager] isSampleStore]) {
-                [self.coreDataHelper resetMainStore];
-                SCHPopulateDataStore *populator = [[SCHPopulateDataStore alloc] init];
-                [populator setManagedObjectContext:self.coreDataHelper.managedObjectContext];
-                [populator setAppStateForStandard];
-                [populator release];
-            }
-            break;
-        case kSCHStoreTypeSampleStore:
+        case kSCHStoreTypeStandardStore: {
+            [self.coreDataHelper resetMainStore];
+            SCHPopulateDataStore *populator = [[SCHPopulateDataStore alloc] init];
+            [populator setManagedObjectContext:self.coreDataHelper.managedObjectContext];
+            [populator setAppStateForStandard];
+            [populator release];
+        } break;
+        case kSCHStoreTypeSampleStore: {
             if ([[SCHAppStateManager sharedAppStateManager] isStandardStore]) {
                 [self.coreDataHelper resetMainStore];
                 SCHPopulateDataStore *populator = [[SCHPopulateDataStore alloc] init];
@@ -195,7 +195,7 @@ static NSString* const binaryDevCertFilename = @"bdevcert.dat";
                 [populator setAppStateForSample];
                 [populator release];
             }
-            break; 
+        } break; 
     }
 }
 

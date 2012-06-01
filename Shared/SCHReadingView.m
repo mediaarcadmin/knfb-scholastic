@@ -303,6 +303,9 @@ managedObjectContext:(NSManagedObjectContext *)managedObjectContext
                                                                                action:@selector(selectYoungerWord:)] autorelease];
                     
                     ret = [NSArray arrayWithObjects:dictionaryItem, nil];
+                } else {
+                    // no dictionary entry so let the user see the highlight before dismissing it
+                    [self performSelector:@selector(dismissSelector) withObject:nil afterDelay:0.2];                
                 }
             }
         } break;

@@ -27,6 +27,7 @@ static const CGFloat kSCHStoriaLoginContentHeightLandscape = 420;
 
 @synthesize loginBlock;
 @synthesize previewBlock;
+@synthesize topFieldLabel;
 @synthesize topField;
 @synthesize bottomField;
 @synthesize loginButton;
@@ -51,6 +52,7 @@ static const CGFloat kSCHStoriaLoginContentHeightLandscape = 420;
         [[NSNotificationCenter defaultCenter] removeObserver:self];
     }
     
+    [topFieldLabel release], topFieldLabel = nil;
     [topField release], topField = nil;
     [bottomField release], bottomField = nil;
     [loginButton release], loginButton = nil;
@@ -84,6 +86,14 @@ static const CGFloat kSCHStoriaLoginContentHeightLandscape = 420;
 {
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
+    
+#if USE_EMAIL_ADDRESS_AS_USERNAME    
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+        topFieldLabel.text = NSLocalizedString(@"Email", @"");
+    } else if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
+        topField.placeholder = NSLocalizedString(@"Email", @"");
+    }
+#endif    
     
     [self.scrollView setAlwaysBounceVertical:NO];
     
@@ -211,7 +221,11 @@ static const CGFloat kSCHStoriaLoginContentHeightLandscape = 420;
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
         CGRect frame = self.promptLabel.frame;
         if (showWarning) {
-            self.promptLabel.text = NSLocalizedString(@"Your User Name or Password was not recognized. Please try again.", @"");
+#if USE_EMAIL_ADDRESS_AS_USERNAME            
+            self.promptLabel.text = NSLocalizedString(@"Your Email or Password was not recognized. Please try again.", @"");
+#else 
+            self.promptLabel.text = NSLocalizedString(@"Your User Name or Password was not recognized. Please try again.", @"");            
+#endif            
             frame.size.width = 200;
         } else {
             self.promptLabel.text = NSLocalizedString(@"You must have a Scholastic account to sign in.", @"");

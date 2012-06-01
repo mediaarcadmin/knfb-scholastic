@@ -95,9 +95,25 @@
         self.questions = [(SCHStoryInteractionHotSpot *)self.storyInteraction questionsWithPageAssociation:self.pageAssociation
                                                                                                   pageSize:pageSize];
     }
+    
     NSInteger currentQuestionIndex = [self.delegate currentQuestionForStoryInteraction];
     NSAssert(currentQuestionIndex < [questions count], @"index must be within array bounds");    
-    return [questions objectAtIndex:currentQuestionIndex];
+    
+    SCHStoryInteractionHotSpotQuestion *currentQuestion = (SCHStoryInteractionHotSpotQuestion *)[questions objectAtIndex:currentQuestionIndex];
+    if ([currentQuestion answered]) {
+        // loop through the questions trying to find an unanswered one
+        // otherwise just return the default question
+        
+        for (SCHStoryInteractionHotSpotQuestion *question in questions) {
+            if ([question answered] == NO) {
+                currentQuestion = question;
+                break;
+            }
+        }
+        
+    }
+    
+    return currentQuestion;
 }
 
 - (NSString *)audioPathForQuestion
@@ -272,6 +288,7 @@
 {
     self.controllerState = SCHStoryInteractionControllerStateInteractionFinishedSuccessfully;
     [self setUserInteractionsEnabled:NO];
+    [self.currentQuestion setAnswered:YES];
     
     CGFloat scale = 1.0f / self.scrollView.zoomScale;
     UIColor *fillColors[3] = {

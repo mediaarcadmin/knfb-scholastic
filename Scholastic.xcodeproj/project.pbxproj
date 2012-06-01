@@ -1432,6 +1432,10 @@
 		52943AE614FFD0E8002991EB /* SCHWishListSyncComponent.m in Sources */ = {isa = PBXBuildFile; fileRef = 52943AE414FFD0E8002991EB /* SCHWishListSyncComponent.m */; };
 		52943AE714FFD0E8002991EB /* SCHWishListSyncComponent.m in Sources */ = {isa = PBXBuildFile; fileRef = 52943AE414FFD0E8002991EB /* SCHWishListSyncComponent.m */; };
 		52943AE814FFD0E8002991EB /* SCHWishListSyncComponent.m in Sources */ = {isa = PBXBuildFile; fileRef = 52943AE414FFD0E8002991EB /* SCHWishListSyncComponent.m */; };
+		529645A315775FBA006F01D9 /* NSString+EmailValidation.m in Sources */ = {isa = PBXBuildFile; fileRef = 529645A215775FBA006F01D9 /* NSString+EmailValidation.m */; };
+		529645A415775FBA006F01D9 /* NSString+EmailValidation.m in Sources */ = {isa = PBXBuildFile; fileRef = 529645A215775FBA006F01D9 /* NSString+EmailValidation.m */; };
+		529645A515775FBA006F01D9 /* NSString+EmailValidation.m in Sources */ = {isa = PBXBuildFile; fileRef = 529645A215775FBA006F01D9 /* NSString+EmailValidation.m */; };
+		529645A615775FBA006F01D9 /* NSString+EmailValidation.m in Sources */ = {isa = PBXBuildFile; fileRef = 529645A215775FBA006F01D9 /* NSString+EmailValidation.m */; };
 		5297B44913A8C362008ADD9B /* SCHStoryInteractionControllerMultipleChoiceWithAnswerPictures.m in Sources */ = {isa = PBXBuildFile; fileRef = 5297B44813A8C362008ADD9B /* SCHStoryInteractionControllerMultipleChoiceWithAnswerPictures.m */; };
 		5297B44C13A8C489008ADD9B /* SCHStoryInteractionMultipleChoiceWithAnswerPictures_iPhone.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5297B44B13A8C489008ADD9B /* SCHStoryInteractionMultipleChoiceWithAnswerPictures_iPhone.xib */; };
 		52985F7213C48D32009AD121 /* SCHBookStatistics.m in Sources */ = {isa = PBXBuildFile; fileRef = 52985F7113C48D32009AD121 /* SCHBookStatistics.m */; };
@@ -4924,6 +4928,8 @@
 		5293883212E03CD000045B44 /* SCHBookShelfViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = SCHBookShelfViewController.xib; path = Shared/SCHBookShelfViewController.xib; sourceTree = "<group>"; };
 		52943AE314FFD0E8002991EB /* SCHWishListSyncComponent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHWishListSyncComponent.h; path = Shared/SCHWishListSyncComponent.h; sourceTree = "<group>"; };
 		52943AE414FFD0E8002991EB /* SCHWishListSyncComponent.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHWishListSyncComponent.m; path = Shared/SCHWishListSyncComponent.m; sourceTree = "<group>"; };
+		529645A115775FBA006F01D9 /* NSString+EmailValidation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSString+EmailValidation.h"; path = "Shared/NSString+EmailValidation.h"; sourceTree = "<group>"; };
+		529645A215775FBA006F01D9 /* NSString+EmailValidation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSString+EmailValidation.m"; path = "Shared/NSString+EmailValidation.m"; sourceTree = "<group>"; };
 		5296F99713FE7B4F009532F3 /* 9780545287012_r1.HalloweenParade.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = 9780545287012_r1.HalloweenParade.jpg; path = "Shared/Debug Books/9780545287012_r1.HalloweenParade.jpg"; sourceTree = "<group>"; };
 		5296F99813FE7B4F009532F3 /* 9780545289726_r1.OlliesNewTricks.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = 9780545289726_r1.OlliesNewTricks.jpg; path = "Shared/Debug Books/9780545289726_r1.OlliesNewTricks.jpg"; sourceTree = "<group>"; };
 		5296F99913FE7B4F009532F3 /* 9780545308656.6.StableMatesPatch.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = 9780545308656.6.StableMatesPatch.jpg; path = "Shared/Debug Books/9780545308656.6.StableMatesPatch.jpg"; sourceTree = "<group>"; };
@@ -7802,6 +7808,8 @@
 				52023D5A1541BBB600C36AD5 /* NSFileManager+DoNotBackupExtendedAttribute.m */,
 				5251716315501FB5009C3B61 /* NSFileManager+Extensions.h */,
 				5251716415501FB5009C3B61 /* NSFileManager+Extensions.m */,
+				529645A115775FBA006F01D9 /* NSString+EmailValidation.h */,
+				529645A215775FBA006F01D9 /* NSString+EmailValidation.m */,
 			);
 			name = Extensions;
 			sourceTree = "<group>";
@@ -12454,6 +12462,7 @@
 				5251716515501FB5009C3B61 /* NSFileManager+Extensions.m in Sources */,
 				F82F54A31557DB2C00041D0E /* SCHRecommendationSampleView.m in Sources */,
 				C9D37724156A52A700900844 /* SCHISBNItemObject.m in Sources */,
+				529645A315775FBA006F01D9 /* NSString+EmailValidation.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -12893,6 +12902,7 @@
 				5251716615501FB5009C3B61 /* NSFileManager+Extensions.m in Sources */,
 				F82F54A41557DB2C00041D0E /* SCHRecommendationSampleView.m in Sources */,
 				C9D37725156A52A700900844 /* SCHISBNItemObject.m in Sources */,
+				529645A415775FBA006F01D9 /* NSString+EmailValidation.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -13265,6 +13275,7 @@
 				5251716715501FB5009C3B61 /* NSFileManager+Extensions.m in Sources */,
 				F82F54A51557DB2C00041D0E /* SCHRecommendationSampleView.m in Sources */,
 				C9D37726156A52A700900844 /* SCHISBNItemObject.m in Sources */,
+				529645A515775FBA006F01D9 /* NSString+EmailValidation.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -13637,6 +13648,7 @@
 				5251716815501FB5009C3B61 /* NSFileManager+Extensions.m in Sources */,
 				F82F54A61557DB2C00041D0E /* SCHRecommendationSampleView.m in Sources */,
 				C9D37727156A52A700900844 /* SCHISBNItemObject.m in Sources */,
+				529645A615775FBA006F01D9 /* NSString+EmailValidation.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

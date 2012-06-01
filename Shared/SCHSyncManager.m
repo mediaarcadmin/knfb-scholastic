@@ -64,6 +64,7 @@ static NSUInteger const kSCHSyncManagerMaximumFailureRetries = 3;
 - (void)removeFromQueue:(SCHSyncComponent *)component 
       includeDependants:(BOOL)includeDependants;
 - (void)kickQueue;
+- (void)performDelayedSyncIfRequired;
 - (BOOL)shouldSync;
 
 - (SCHPopulateDataStore *)populateDataStore;
@@ -145,6 +146,11 @@ static NSUInteger const kSCHSyncManagerMaximumFailureRetries = 3;
         
         flushSaveMode = NO;
         
+        [[NSNotificationCenter defaultCenter] addObserver:self 
+                                                 selector:@selector(applicationDidEnterBackground:) 
+                                                     name:UIApplicationDidEnterBackgroundNotification 
+                                                   object:nil];	
+
         [[NSNotificationCenter defaultCenter] addObserver:self 
                                                  selector:@selector(coreDataHelperManagedObjectContextDidChangeNotification:) 
                                                      name:SCHCoreDataHelperManagedObjectContextDidChangeNotification 
@@ -902,20 +908,39 @@ static NSUInteger const kSCHSyncManagerMaximumFailureRetries = 3;
         
         [[NSNotificationCenter defaultCenter] postNotificationName:SCHSyncManagerDidCompleteNotification 
                                                             object:self];        
-        if (self.flushSaveMode == NO) {
-            if (self.firstSyncAfterDelay == YES) {
-                [self firstSync:NO requireDeviceAuthentication:NO];   
-            } else if (self.wishListSyncAfterDelay == YES) {
-                [self wishListSync];
-            }
-        }
+        
+        [self performDelayedSyncIfRequired];
 	}
+}
+
+- (void)performDelayedSyncIfRequired
+{
+    if (self.flushSaveMode == NO) {
+        if (self.firstSyncAfterDelay == YES) {
+            [self firstSync:NO requireDeviceAuthentication:NO];   
+        } else if (self.wishListSyncAfterDelay == YES) {
+            [self wishListSync];
+        }
+    } 
 }
 
 - (BOOL)shouldSync
 {
     return [[SCHAppStateManager sharedAppStateManager] canSync] && 
         [[NSFileManager defaultManager] BITfileSystemHasBytesAvailable:kSCHSyncManagerMinimumDiskSpaceRequiredForSync];
+}
+
+#pragma mark - Notification methods
+
+- (void)applicationDidEnterBackground:(NSNotification *)notification 
+{
+    if (self.flushSaveMode == NO) {
+        // force any delayed syncs to perform now
+        self.lastFirstSyncEnded = nil;
+        self.lastWishListSyncEnded = nil;
+        
+        [self performDelayedSyncIfRequired];
+    }
 }
 
 #pragma mark - Population methods
