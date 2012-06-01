@@ -139,6 +139,8 @@ static const NSUInteger kReadingViewMaxRecommendationsCount = 4;
 
 @property (nonatomic, retain) NSNumber *cachedRecommendationsActive;
 
+@property (nonatomic, assign) BOOL isInBackground;
+
 - (void)updateNotesCounter;
 - (id)initFailureWithErrorCode:(NSInteger)code error:(NSError **)error;
 - (NSError *)errorWithCode:(NSInteger)code;
@@ -270,6 +272,7 @@ static const NSUInteger kReadingViewMaxRecommendationsCount = 4;
 @synthesize wishListDictionaries;
 @synthesize modifiedWishListDictionaries;
 @synthesize cachedRecommendationsActive;
+@synthesize isInBackground;
 
 #pragma mark - Dealloc and View Teardown
 
@@ -908,18 +911,17 @@ static const NSUInteger kReadingViewMaxRecommendationsCount = 4;
 
 - (void)didEnterBackgroundNotification:(NSNotification *)notification
 {
-    [self updateBookState];
-        
-    [self.readingView dismissFollowAlongHighlighter];  
-//    self.audioBookPlayer = nil;
-    [self pauseAudioPlayback];
-    
-    // if the user kills the app while we are performing background tasks the 
-    // DidEnterBackground notification is called again, so we disable it and 
+    // If the user kills the app while we are performing background tasks the 
+    // DidEnterBackground notification is called again, so we use a BOOL value to detect this
+    // This is also used to prtect against updating highlights after backgrounding the app
     // enable it in the foreground
-    [[NSNotificationCenter defaultCenter] removeObserver:self 
-                                                    name:UIApplicationDidEnterBackgroundNotification 
-                                                  object:nil];    
+    if (!self.isInBackground) {
+        self.isInBackground = YES;
+    
+        [self updateBookState];
+        [self.readingView dismissFollowAlongHighlighter];  
+        [self pauseAudioPlayback];
+    } 
 }
 
 - (void)willTerminateNotification:(NSNotification *)notification
@@ -930,11 +932,7 @@ static const NSUInteger kReadingViewMaxRecommendationsCount = 4;
 
 - (void)willEnterForegroundNotification:(NSNotification *)notification
 {
-    [[NSNotificationCenter defaultCenter] addObserver:self 
-                                             selector:@selector(didEnterBackgroundNotification:) 
-                                                 name:UIApplicationDidEnterBackgroundNotification 
-                                               object:nil];	
-
+    self.isInBackground = NO;
     self.bookStatisticsReadingStartTime = [NSDate serverDate];
 }
 
@@ -998,8 +996,14 @@ static const NSUInteger kReadingViewMaxRecommendationsCount = 4;
             dispatch_async(dispatch_get_main_queue(), ^{
                 [weakSelf updateNotesCounter];
                 NSRange visibleIndices = [weakSelf storyInteractionPageIndices];
-                for (NSUInteger i = 0; i < visibleIndices.length; i++) {
-                    [weakSelf.readingView refreshHighlightsForPageAtIndex:visibleIndices.location + i];
+                
+                // We don't want to update the views if we are in the background
+                // Normally we shouldn't have time to dispatch to the main thread during backgrouding but it can happen
+                // so this BOOL check is required
+                if (!self.isInBackground) {
+                    for (NSUInteger i = 0; i < visibleIndices.length; i++) {
+                        [weakSelf.readingView refreshHighlightsForPageAtIndex:visibleIndices.location + i];
+                    }
                 }
             });
         }
