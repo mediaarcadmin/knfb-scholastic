@@ -2091,7 +2091,7 @@ static const NSUInteger kReadingViewMaxRecommendationsCount = 4;
 - (void)setDictionarySelectionMode
 {
     if (self.youngerMode) {
-        if ([[SCHDictionaryDownloadManager sharedDownloadManager] dictionaryProcessingState] != SCHDictionaryProcessingStateReady) {
+        if ([[SCHDictionaryDownloadManager sharedDownloadManager] dictionaryIsAvailable] == NO) {
             [self.readingView setSelectionMode:SCHReadingViewSelectionModeYoungerNoDictionary];
         } else {
             [self.readingView setSelectionMode:SCHReadingViewSelectionModeYoungerDictionary];
