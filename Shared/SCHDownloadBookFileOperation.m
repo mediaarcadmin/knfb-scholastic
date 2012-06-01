@@ -194,8 +194,10 @@ static NSUInteger const kSCHDownloadBookFileSizeCompleteMarginOfError = 100;
             request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:coverURL]];
             
             // create a temporary path
-            NSInteger random = arc4random() % 100000;
-            self.temporaryLocalPath = [NSString stringWithFormat:@"%@_inprogress_%d", self.realLocalPath, random];
+            CFUUIDRef theUUID = CFUUIDCreate(NULL);
+            CFStringRef UUIDString = CFUUIDCreateString(NULL, theUUID);
+            self.temporaryLocalPath = [NSString stringWithFormat:@"%@_inprogress_%@", self.realLocalPath, UUIDString];
+            CFRelease(theUUID);
         }
         
         [bookDirectory release];
