@@ -143,6 +143,22 @@
             highlight = [UIImage imageNamed:@"answer-button-red"];
         }
         SCHStretchableImageButton *button = [self.answerButtons objectAtIndex:i];
+        
+        BOOL iPad = (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad);
+        
+        CGSize buttonSize = button.frame.size;
+        UIFont *buttonFont = [UIFont fontWithName:@"Arial-BoldMT" size:iPad?15:15];
+        
+        float actualFontSize = 15;
+        float leftRightPadding = 10;
+        [answer sizeWithFont:buttonFont 
+                                               minFontSize:6 
+                                            actualFontSize:&actualFontSize 
+                                                  forWidth:buttonSize.width - leftRightPadding
+                                             lineBreakMode:UILineBreakModeMiddleTruncation];
+        
+        [button.titleLabel setFont:[UIFont fontWithName:@"Arial-BoldMT" size:actualFontSize]];
+
         [button setTitle:answer forState:UIControlStateNormal];
         [button setHidden:NO];
         [button setCustomTopCap:10];
