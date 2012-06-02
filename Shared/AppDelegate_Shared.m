@@ -334,9 +334,14 @@ static NSString* const binaryDevCertFilename = @"bdevcert.dat";
             [upgradeAlert dismissAnimated:YES];
         }];
     } else {
+        
+        if ([[SCHAppStateManager sharedAppStateManager] isSampleStore]) {
+            [self setStoreType:kSCHStoreTypeStandardStore];
+        }
+        
         [self resetDRMState];
         [self ensureCorrectCertsAvailable];
-        [[SCHSyncManager sharedSyncManager] setSuspended:NO];
+        [[SCHSyncManager sharedSyncManager] setSuspended:NO];        
     }
 }
 
