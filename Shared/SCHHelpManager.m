@@ -412,27 +412,27 @@ static SCHHelpManager *sharedManager = nil;
 
 - (NSString *)helpVideoVersion
 {
-    __block NSString *helpVideoVersion;
+    __block NSString *helpVideoVersion = nil;
     [self withAppHelpStatePerform:^(SCHAppHelpState *state) {
-        helpVideoVersion = [[state helpVideoVersion] retain];
+        helpVideoVersion = [[state helpVideoVersion] copy];
     }];
     return [helpVideoVersion autorelease];
 }
 
 - (NSString *)helpVideoOlderURL
 {
-    __block NSString *helpVideoURL;
+    __block NSString *helpVideoURL = nil;
     [self withAppHelpStatePerform:^(SCHAppHelpState *state) {
-        helpVideoURL = [[state helpVideoOlderURL] retain];
+        helpVideoURL = [[state helpVideoOlderURL] copy];
     }];
     return [helpVideoURL autorelease];
 }
 
 - (NSString *)helpVideoYoungerURL
 {
-    __block NSString *helpVideoURL;
+    __block NSString *helpVideoURL = nil;
     [self withAppHelpStatePerform:^(SCHAppHelpState *state) {
-        helpVideoURL = [[state helpVideoYoungerURL] retain];
+        helpVideoURL = [[state helpVideoYoungerURL] copy];
     }];
     return [helpVideoURL autorelease];
 }

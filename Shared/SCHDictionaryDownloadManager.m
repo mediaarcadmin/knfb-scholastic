@@ -820,9 +820,9 @@ static SCHDictionaryDownloadManager *sharedManager = nil;
 
 - (NSString *)dictionaryVersion
 {
-    __block NSString *version;
+    __block NSString *version = nil;
     [self withAppDictionaryStatePerform:^(SCHAppDictionaryState *state) {
-        version = [[state Version] retain];
+        version = [[state Version] copy];
     }];
     return [version autorelease];
 }

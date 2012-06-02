@@ -44,7 +44,7 @@
     
 #ifndef __OPTIMIZE__    
     // This title is only used for logging
-    __block NSString *title;
+    __block NSString *title = nil;
     [self performWithBook:^(SCHAppBook *book) {
         title = [book.Title retain];
     }];

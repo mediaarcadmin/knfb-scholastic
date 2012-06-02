@@ -272,11 +272,11 @@
     
     [self performWithAppState:^(SCHAppState *appState) {
         if (appState != nil) {
-            ret = appState.LastKnownAuthToken;
+            ret = [appState.LastKnownAuthToken copy];
         }
     }];
     
-    return ret;  
+    return [ret autorelease];  
 }
 
 - (void)setLastKnownAuthToken:(NSString *)token

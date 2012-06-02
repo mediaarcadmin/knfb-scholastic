@@ -92,7 +92,7 @@ static NSUInteger const kSCHDownloadBookFileSizeCompleteMarginOfError = 100;
         
         [self performWithBook:^(SCHAppBook *book) {
             self.realLocalPath = [book xpsPath];
-            bookFileURL = [[book BookFileURL] retain];
+            bookFileURL = [[book BookFileURL] copy];
             bookFileURLIsFileURL = [book bookFileURLIsBundleURL];
             bookFileURLIsValid = [book bookFileURLIsValid];
         }];
@@ -146,10 +146,10 @@ static NSUInteger const kSCHDownloadBookFileSizeCompleteMarginOfError = 100;
         __block BOOL bookCoverURLIsValid = NO;
         
         [self performWithBook:^(SCHAppBook *book) {
-            bookDirectory = [[book bookDirectory] retain];
-            contentIdentifier = [[book ContentIdentifier] retain];
+            bookDirectory = [[book bookDirectory] copy];
+            contentIdentifier = [[book ContentIdentifier] copy];
             self.realLocalPath = [book coverImagePath];
-            coverURL = [[book BookCoverURL] retain];
+            coverURL = [[book BookCoverURL] copy];
             coverURLIsFileURL = [book bookCoverURLIsBundleURL];
             bookCoverURLIsValid = [book bookCoverURLIsValid];
         }];
