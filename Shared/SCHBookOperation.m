@@ -232,6 +232,11 @@
         if (newDownloadFailedCount >= 3) {
             book.State = [NSNumber numberWithInt:SCHBookProcessingStateDownloadFailed];            
             book.downloadFailedCount = [NSNumber numberWithInteger:0];
+            
+            NSDictionary *userInfo = [NSDictionary dictionaryWithObjectsAndKeys:
+                                      (self.identifier == nil ? (id)[NSNull null] : self.identifier), @"bookIdentifier",
+                                      nil];
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"SCHBookStateUpdate" object:nil userInfo:userInfo];
         } else {
             // the current download operation will go to the end of the queue and repeat
             book.downloadFailedCount = [NSNumber numberWithInteger:newDownloadFailedCount];

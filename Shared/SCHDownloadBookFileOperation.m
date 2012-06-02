@@ -519,14 +519,13 @@ static NSUInteger const kSCHDownloadBookFileSizeCompleteMarginOfError = 100;
                 
                 if (fileMoveFailed) {
                     [self setDownloadFailedState];
-                    return;
+                } else {
+                    [self performWithBookAndSave:^(SCHAppBook *book) {
+                        book.BookCoverExists = [NSNumber numberWithBool:YES];
+                    }];            
+                    [self resetDownloadFailedState];
+                    [self setProcessingState:SCHBookProcessingStateReadyForBookFileDownload];
                 }
-                
-                [self performWithBookAndSave:^(SCHAppBook *book) {
-                    book.BookCoverExists = [NSNumber numberWithBool:YES];
-                }];            
-                [self resetDownloadFailedState];
-                [self setProcessingState:SCHBookProcessingStateReadyForBookFileDownload];
             }
 			break;
         }
