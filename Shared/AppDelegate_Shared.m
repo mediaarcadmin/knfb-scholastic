@@ -42,7 +42,7 @@ static NSString* const binaryDevCertFilename = @"bdevcert.dat";
 - (BOOL)createApplicationSupportDirectory;
 - (void)resetDRMState;
 - (void)upgradeApp;
-- (void)suspendSyncingAndProcessing;
+- (void)suspendSyncingAndCancelProcessing;
 - (void)ensureCorrectCertsAvailable;
 - (void)catastrophicFailureWithError:(NSError *)error;
 
@@ -307,7 +307,7 @@ static NSString* const binaryDevCertFilename = @"bdevcert.dat";
 
 - (void)upgradeApp
 {
-    [self suspendSyncingAndProcessing];
+    [self suspendSyncingAndCancelProcessing];
     
     if ([[SCHAuthenticationManager sharedAuthenticationManager] hasUsernameAndPassword] && 
         [[SCHSyncManager sharedSyncManager] havePerformedFirstSyncUpToBooks]) {
@@ -340,12 +340,12 @@ static NSString* const binaryDevCertFilename = @"bdevcert.dat";
     }
 }
 
-- (void)suspendSyncingAndProcessing
+- (void)suspendSyncingAndCancelProcessing
 {
     // Suspend syncing and processing
-    [[SCHProcessingManager sharedProcessingManager] cancelAllOperations];
-    [[SCHRecommendationManager sharedManager] cancelAllOperations];
-    [[SCHSyncManager sharedSyncManager] setSuspended:YES]; 
+    [[SCHSyncManager sharedSyncManager] setSuspended:YES];
+    [[SCHProcessingManager sharedProcessingManager] cancelAllOperationsWaitUntilFinished:NO];
+    [[SCHRecommendationManager sharedManager] cancelAllOperationsWaitUntilFinished:NO];
 }
 
 - (void)recoverFromUnintializedDRM

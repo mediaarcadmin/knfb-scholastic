@@ -72,7 +72,7 @@ static NSString * const kSCHCoreDataHelperDictionaryStoreName = @"Scholastic_Dic
     NSPersistentStore *currentMainStore = [self currentMainPersistentStore];
     NSError *error = nil;
     
-    [[SCHAuthenticationManager sharedAuthenticationManager] clearAppProcessing];
+    [[SCHAuthenticationManager sharedAuthenticationManager] clearAppProcessingWaitUntilFinished:NO];
     [[self managedObjectContext] reset];
     [[self persistentStoreCoordinator] removePersistentStore:currentMainStore 
                                                        error:&error];  

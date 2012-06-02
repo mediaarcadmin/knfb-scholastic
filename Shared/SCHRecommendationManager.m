@@ -83,13 +83,26 @@ static SCHRecommendationManager *sharedManager = nil;
     [self.downloadQueue setMaxConcurrentOperationCount:2];
 }
 
-- (void)cancelAllOperations
+- (void)cancelAllOperationsWaitUntilFinished:(BOOL)waitUntilFinished
 {
+    // The current architecture will deadlock if we attempt to wait until done. There are multiple points of failure. 2 in particular are 
+    // the URL manager which will not be able to notify the waiting operation that it has a result (because the main thread is blocked waiting)
+    // and the fact that performWithBook does a dispatch_sync to the main thread.
+    // Because of these issues here and in the recommendations manager, waitUntilFinished is disabled. The correct pattern is to
+    // Allow opeations to complete concurrently but since the core data stack may have been cleaned up, any managed object acces
+    // *Must* be wrapped in a check for cancellation
+    NSAssert(waitUntilFinished == NO, @"The current architecture doesn't support waitUntilFinished");
+    
     @synchronized(self) {
         [self.processingQueue cancelAllOperations];    
-        self.processingQueue = nil;
-        
         [self.downloadQueue cancelAllOperations];
+        
+        if (waitUntilFinished) {
+            [self.processingQueue waitUntilAllOperationsAreFinished];
+            [self.downloadQueue waitUntilAllOperationsAreFinished];
+        }
+        
+        self.processingQueue = nil;
         self.downloadQueue = nil;
         
         [self createProcessingQueues];
@@ -266,6 +279,7 @@ static SCHRecommendationManager *sharedManager = nil;
                 }];
                 
                 [self.processingQueue addOperation:thumbOp];
+
                 [thumbOp release];
                 return;
             }

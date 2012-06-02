@@ -57,7 +57,7 @@ extern NSString * const kSCHProcessingManagerConnectionBusy;
 - (void)setProcessing:(BOOL)processing forIdentifier:(SCHBookIdentifier *)identifier;
 
 // stop all the processing
-- (void)cancelAllOperations;
+- (void)cancelAllOperationsWaitUntilFinished:(BOOL)waitUntilFinished;
 // stop processing a book
 - (void)cancelAllOperationsForBookIdentifier:(SCHBookIdentifier *)bookIdentifier
                            waitUntilFinished:(BOOL)waitUntilFinished;

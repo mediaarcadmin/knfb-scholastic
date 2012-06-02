@@ -125,7 +125,13 @@
     if ([NSThread isMainThread]) {
         accessBlock();
     } else {
-        dispatch_sync(dispatch_get_main_queue(), accessBlock);
+        dispatch_sync(dispatch_get_main_queue(), ^{
+            if (![self isCancelled]) {
+                accessBlock();
+            } else {
+                NSLog(@"dispatch_sync performWithBook discarded due to operation being cancelled");
+            }
+        });
     }
 }
 
