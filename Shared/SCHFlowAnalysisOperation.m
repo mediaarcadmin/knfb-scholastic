@@ -46,7 +46,7 @@
     // This title is only used for logging
     __block NSString *title = nil;
     [self performWithBook:^(SCHAppBook *book) {
-        title = [book.Title retain];
+        title = [book.Title copy];
     }];
     CFAbsoluteTime startTime = CFAbsoluteTimeGetCurrent();
 #endif
