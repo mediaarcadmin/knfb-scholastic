@@ -1011,10 +1011,8 @@ static const NSUInteger kReadingViewMaxRecommendationsCount = 4;
 }
 
 - (void)dictionaryStateChange:(NSNotification *)notification
-{
-    SCHDictionaryProcessingState state = [[SCHDictionaryDownloadManager sharedDownloadManager] dictionaryProcessingState];
-    
-    if ((state == SCHDictionaryProcessingStateReady) &&
+{    
+    if ([[SCHDictionaryDownloadManager sharedDownloadManager] dictionaryIsAvailable] == YES &&
         (self.readingView.selectionMode == SCHReadingViewSelectionModeYoungerNoDictionary)) {
         [self setDictionarySelectionMode];
     }
