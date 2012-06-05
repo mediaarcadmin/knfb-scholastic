@@ -55,6 +55,7 @@ NSString * const kSCHAppBookOldReader = @"OldReader";
 
 NSString * const kSCHAppBookCategoryPictureBook = @"Picture Book";
 NSString * const kSCHAppBookCategoryEarlyReader = @"Early Reader";
+NSString * const kSCHAppBookCategoryMiddleReader = @"Middle Reader";
 NSString * const kSCHAppBookCategoryAdvancedReader = @"Advanced Reader";
 NSString * const kSCHAppBookCategoryChapterBook = @"Chapter Book";
 NSString * const kSCHAppBookCategoryNovelMiddleGrade = @"Novel - Middle Grade";
@@ -327,7 +328,8 @@ NSString * const kSCHAppBookFilenameSeparator = @"-";
     if (self.XPSCategory != nil) {
         if ([self.XPSCategory caseInsensitiveCompare:kSCHAppBookYoungReader] == NSOrderedSame ||
             [self.XPSCategory caseInsensitiveCompare:kSCHAppBookCategoryPictureBook] == NSOrderedSame ||
-            [self.XPSCategory caseInsensitiveCompare:kSCHAppBookCategoryEarlyReader] == NSOrderedSame ||        
+            [self.XPSCategory caseInsensitiveCompare:kSCHAppBookCategoryEarlyReader] == NSOrderedSame ||
+            [self.XPSCategory caseInsensitiveCompare:kSCHAppBookCategoryMiddleReader] == NSOrderedSame ||
             [self.XPSCategory caseInsensitiveCompare:kSCHAppBookCategoryAdvancedReader] == NSOrderedSame ||                
             [self.XPSCategory caseInsensitiveCompare:kSCHAppBookCategoryNonFictionEarly] == NSOrderedSame) {
             ret = kSCHAppBookYoungReader;
@@ -371,6 +373,7 @@ NSString * const kSCHAppBookFilenameSeparator = @"-";
         if ([self.XPSCategory caseInsensitiveCompare:kSCHAppBookYoungReader] == NSOrderedSame ||
             [self.XPSCategory caseInsensitiveCompare:kSCHAppBookCategoryPictureBook] == NSOrderedSame ||
             [self.XPSCategory caseInsensitiveCompare:kSCHAppBookCategoryEarlyReader] == NSOrderedSame ||
+            [self.XPSCategory caseInsensitiveCompare:kSCHAppBookCategoryMiddleReader] == NSOrderedSame ||
             [self.XPSCategory caseInsensitiveCompare:kSCHAppBookCategoryAdvancedReader] == NSOrderedSame) {
             ret = NO;
         }    

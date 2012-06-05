@@ -59,6 +59,7 @@ extern NSString * const kSCHAppBookOldReader;
 
 extern NSString * const kSCHAppBookCategoryPictureBook;
 extern NSString * const kSCHAppBookCategoryEarlyReader;
+extern NSString * const kSCHAppBookCategoryMiddleReader;
 extern NSString * const kSCHAppBookCategoryAdvancedReader;
 extern NSString * const kSCHAppBookCategoryChapterBook;
 extern NSString * const kSCHAppBookCategoryNovelMiddleGrade;
