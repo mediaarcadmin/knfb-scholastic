@@ -207,7 +207,7 @@ managedObjectContext:(NSManagedObjectContext *)managedObjectContext
                     includingFolioBlocks:(BOOL)folio
 {
     SCHBookPoint *bookPoint = [[SCHBookPoint alloc] init];
-    bookPoint.layoutPage = layoutPage;
+    bookPoint.layoutPage = MAX(layoutPage, 1);
     bookPoint.wordOffset = pageWordOffset;
     
     NSArray *wordBlocks = [self.textFlow blocksForPageAtIndex:bookPoint.layoutPage - 1 includingFolioBlocks:YES];
