@@ -137,8 +137,6 @@ static const NSUInteger kReadingViewMaxRecommendationsCount = 4;
 @property (nonatomic, retain) NSArray *wishListDictionaries;
 @property (nonatomic, retain) NSMutableArray *modifiedWishListDictionaries;
 
-@property (nonatomic, retain) NSNumber *cachedRecommendationsActive;
-
 @property (nonatomic, assign) BOOL isInBackground;
 
 - (void)updateNotesCounter;
@@ -271,7 +269,6 @@ static const NSUInteger kReadingViewMaxRecommendationsCount = 4;
 @synthesize recommendationsDictionaries;
 @synthesize wishListDictionaries;
 @synthesize modifiedWishListDictionaries;
-@synthesize cachedRecommendationsActive;
 @synthesize isInBackground;
 
 #pragma mark - Dealloc and View Teardown
@@ -311,8 +308,6 @@ static const NSUInteger kReadingViewMaxRecommendationsCount = 4;
     [recommendationsDictionaries release], recommendationsDictionaries = nil;
     [wishListDictionaries release], wishListDictionaries = nil;
     [modifiedWishListDictionaries release], modifiedWishListDictionaries = nil;
-    
-    [cachedRecommendationsActive release], cachedRecommendationsActive = nil;
     
     // Ideally the readingView would be release it viewDidUnload but it contains 
     // logic that this view controller uses while it is potentially off-screen (e.g. when a story interaction is being shown)
@@ -3298,15 +3293,20 @@ static const NSUInteger kReadingViewMaxRecommendationsCount = 4;
 
 - (BOOL)recommendationsActive
 {
-    if (self.cachedRecommendationsActive == nil) {
-        NSString *settingValue = [[SCHAppStateManager sharedAppStateManager] settingNamed:kSCHSettingItemRECOMMENDATIONS_ON];
+    BOOL ret = NO;
+    
+    if ([[SCHAppStateManager sharedAppStateManager] isSampleStore] == YES) {
+        ret = NO;
+    } else if ([[self.profile recommendationsOn] boolValue] == YES) {
+        ret = YES;
+    } else {
+        SCHBookManager *bookManager = [SCHBookManager sharedBookManager];
+        SCHAppBook *book = [bookManager bookWithIdentifier:self.bookIdentifier inManagedObjectContext:bookManager.mainThreadManagedObjectContext];    
         
-        if (settingValue != nil) {
-            self.cachedRecommendationsActive = [NSNumber numberWithBool:[settingValue boolValue]];
-        }
+        ret = [book isSampleBook];
     }
     
-    return [self.cachedRecommendationsActive boolValue];
+    return ret;
 }
 
 - (NSArray *)recommendationsDictionaries
