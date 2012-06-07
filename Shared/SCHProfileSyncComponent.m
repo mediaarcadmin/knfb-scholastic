@@ -493,6 +493,7 @@ managedObjectContext:(NSManagedObjectContext *)aManagedObjectContext
         newProfileItem.UserKey = [self makeNullNil:[webProfile valueForKey:kSCHLibreAccessWebServiceUserKey]];
         newProfileItem.BookshelfStyle = [self makeNullNil:[webProfile valueForKey:kSCHLibreAccessWebServiceBookshelfStyle]];
         newProfileItem.LastName = [self makeNullNil:[webProfile valueForKey:kSCHLibreAccessWebServiceLastName]];
+        newProfileItem.recommendationsOn = [self makeNullNil:[webProfile valueForKey:kSCHLibreAccessWebServiceRecommendationsOn]];        
         newProfileItem.LastModified = [self makeNullNil:[webProfile valueForKey:kSCHLibreAccessWebServiceLastModified]];
         newProfileItem.State = [NSNumber numberWithStatus:kSCHStatusUnmodified];
         
@@ -531,6 +532,7 @@ managedObjectContext:(NSManagedObjectContext *)aManagedObjectContext
         localProfile.UserKey = [self makeNullNil:[webProfile valueForKey:kSCHLibreAccessWebServiceUserKey]];
         localProfile.BookshelfStyle = [self makeNullNil:[webProfile valueForKey:kSCHLibreAccessWebServiceBookshelfStyle]];
         localProfile.LastName = [self makeNullNil:[webProfile valueForKey:kSCHLibreAccessWebServiceLastName]];
+        localProfile.recommendationsOn = [self makeNullNil:[webProfile valueForKey:kSCHLibreAccessWebServiceRecommendationsOn]];
         localProfile.LastModified = [self makeNullNil:[webProfile valueForKey:kSCHLibreAccessWebServiceLastModified]];
         localProfile.State = [NSNumber numberWithStatus:kSCHStatusSyncUpdate];				
     }

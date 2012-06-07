@@ -434,6 +434,7 @@
     [ret setObject:@"" forKey:kSCHLibreAccessWebServiceUserKey];            
     [ret setObject:[NSNumber numberWithBookshelfStyle:bookshelf] forKey:kSCHLibreAccessWebServiceBookshelfStyle];                
     [ret setObject:(title == nil ? (id)[NSNull null] : title) forKey:kSCHLibreAccessWebServiceLastName];                
+    [ret setObject:[NSNumber numberWithBool:YES] forKey:kSCHLibreAccessWebServiceRecommendationsOn];            
     [ret setObject:dateNow forKey:kSCHLibreAccessWebServiceLastModified];                
     
     return(ret);

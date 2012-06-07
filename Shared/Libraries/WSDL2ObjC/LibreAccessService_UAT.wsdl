@@ -374,6 +374,7 @@
                     <xsd:element name="action" type="tns:SaveActions"/>
                     <xsd:element minOccurs="0" name="BookshelfStyle" type="tns:BookshelfStyle"/>
                     <xsd:element minOccurs="0" name="storyInteractionEnabled" type="xsd:boolean"/>
+                    <xsd:element minOccurs="0" name="recommendationsOn" type="xsd:boolean"/>
                 </xsd:sequence>
             </xsd:complexType>
             <xsd:complexType name="ProfileList">
@@ -399,6 +400,20 @@
                     <xsd:element minOccurs="0" name="LastPasswordModified" type="xsd:dateTime"/>
                     <xsd:element minOccurs="0" name="storyInteractionEnabled" type="xsd:boolean"/>
                 </xsd:sequence>
+            </xsd:complexType>
+            <xsd:complexType name="ProfileListRecommendations">
+                <xsd:sequence>
+                    <xsd:element maxOccurs="unbounded" minOccurs="0" name="ProfileItem" type="tns:ProfileItemRecommendations"/>
+                </xsd:sequence>
+            </xsd:complexType>
+            <xsd:complexType name="ProfileItemRecommendations">
+                <xsd:complexContent>
+                    <xsd:extension base="tns:ProfileItem">
+                        <xsd:sequence>
+                            <xsd:element minOccurs="0" name="recommendationsOn" type="xsd:boolean"/>
+                        </xsd:sequence>
+                    </xsd:extension>
+                </xsd:complexContent>
             </xsd:complexType>
             <xsd:complexType name="ApplicationSettingList">
                 <xsd:sequence>
@@ -1067,6 +1082,77 @@
                     <xsd:element name="Format" type="xsd:string"/>
                 </xsd:sequence>
             </xsd:complexType>
+            <xsd:complexType name="ListRatingsRequestList">
+                <xsd:sequence>
+                    <xsd:element maxOccurs="unbounded" name="listRatingsItem" type="tns:ListRatingsItem"/>
+                </xsd:sequence>
+            </xsd:complexType>
+            <xsd:complexType name="ListRatingsItem">
+                <xsd:sequence>
+                    <xsd:element name="listRatingsContentList" type="tns:ListRatingsContentList"/>
+                    <xsd:element name="profileId" type="xsd:long"/>
+                </xsd:sequence>
+            </xsd:complexType>
+            <xsd:complexType name="ListRatingsContentList">
+                <xsd:sequence>
+                    <xsd:element maxOccurs="unbounded" name="listRatingsContentItem" type="tns:ListRatingsContentItem"/>
+                </xsd:sequence>
+            </xsd:complexType>
+            <xsd:complexType name="ListRatingsContentItem">
+                <xsd:sequence>
+                    <xsd:element name="contentIdentifier" type="xsd:string"/>
+                    <xsd:element name="contentIdentifierType" type="tns:ContentIdentifierTypes"/>
+                </xsd:sequence>
+            </xsd:complexType>
+            <xsd:complexType name="RatingsStatusList">
+                <xsd:sequence>
+                    <xsd:element maxOccurs="unbounded" minOccurs="0" name="ratingsStatusItem" type="tns:RatingsStatusItem"/>
+                </xsd:sequence>
+            </xsd:complexType>
+            <xsd:complexType name="RatingsStatusItem">
+                <xsd:sequence>
+                    <xsd:element name="profileId" type="xsd:long"/>
+                    <xsd:element name="statusMessage" type="tns:StatusHolder"/>
+                    <xsd:element name="profileRatingsStatusList" type="tns:ProfileRatingsStatusList"/>
+                </xsd:sequence>
+            </xsd:complexType>
+            <xsd:complexType name="ProfileRatingsStatusList">
+                <xsd:sequence>
+                    <xsd:element maxOccurs="unbounded" minOccurs="0" name="profileRatingsStatusItem" type="tns:ProfileRatingsStatusItem"/>
+                </xsd:sequence>
+            </xsd:complexType>
+            <xsd:complexType name="ProfileRatingsStatusItem">
+                <xsd:sequence>
+                    <xsd:element name="contentIdentifier" type="xsd:string"/>
+                    <xsd:element name="contentIdentifierType" type="tns:ContentIdentifierTypes"/>
+                    <xsd:element name="rating" type="tns:Rating"/>
+                    <xsd:element name="averageRating" type="xsd:decimal"/>
+                    <xsd:element name="statusMessage" type="tns:StatusHolder"/>
+                </xsd:sequence>
+            </xsd:complexType>
+            <xsd:complexType name="RatingsList">
+                <xsd:sequence>
+                    <xsd:element maxOccurs="unbounded" name="ratingsItem" type="tns:RatingsItem"/>
+                </xsd:sequence>
+            </xsd:complexType>
+            <xsd:complexType name="RatingsItem">
+                <xsd:sequence>
+                    <xsd:element name="profileRatingsList" type="tns:ProfileRatingsList"/>
+                    <xsd:element name="profileId" type="xsd:long"/>
+                </xsd:sequence>
+            </xsd:complexType>
+            <xsd:complexType name="ProfileRatingsList">
+                <xsd:sequence>
+                    <xsd:element maxOccurs="unbounded" name="profileRatingsItem" type="tns:ProfileRatingsItem"/>
+                </xsd:sequence>
+            </xsd:complexType>
+            <xsd:complexType name="ProfileRatingsItem">
+                <xsd:sequence>
+                    <xsd:element name="contentIdentifier" type="xsd:string"/>
+                    <xsd:element name="contentIdentifierType" type="tns:ContentIdentifierTypes"/>
+                    <xsd:element name="rating" type="tns:Rating"/>
+                </xsd:sequence>
+            </xsd:complexType>
             <xsd:element name="TokenExchange">
                 <xsd:complexType>
                     <xsd:sequence>
@@ -1203,6 +1289,43 @@
                     </xsd:sequence>
                 </xsd:complexType>
             </xsd:element>
+            <xsd:element name="ListBooksAssignment">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="authToken" type="xsd:string"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="ListBooksAssignmentResponse">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="statusMessage" type="tns:StatusHolder"/>
+                        <xsd:element name="booksAssignmentList">
+                            <xsd:complexType>
+                                <xsd:sequence>
+                                    <xsd:element maxOccurs="unbounded" minOccurs="0" name="booksAssignment" type="tns:BooksAssignment"/>
+                                </xsd:sequence>
+                            </xsd:complexType>
+                        </xsd:element>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:complexType name="BooksAssignment">
+                <xsd:sequence>
+                    <xsd:element name="ContentIdentifier" type="xsd:string"/>
+                    <xsd:element name="ContentIdentifierType" type="tns:ContentIdentifierTypes"/>
+                    <xsd:element name="DRMQualifier" type="tns:drmqualifiers"/>
+                    <xsd:element name="Format" type="xsd:string"/>
+                    <xsd:element name="version" type="xsd:int"/>
+                    <xsd:element name="lastOrderDate" type="xsd:dateTime"/>
+                    <xsd:element minOccurs="0" name="defaultAssignment" type="xsd:boolean"/>
+                    <xsd:element name="freeBook" type="xsd:boolean"/>
+                    <xsd:element name="lastVersion" type="xsd:int"/>
+                    <xsd:element minOccurs="0" name="quantity" type="xsd:int"/>
+                    <xsd:element minOccurs="0" name="quantityInit" type="xsd:int"/>
+                    <xsd:element minOccurs="0" name="contentProfileList" type="tns:ContentProfileForRatingsList"/>
+                </xsd:sequence>
+            </xsd:complexType>
             <xsd:element name="ListUserContent">
                 <xsd:complexType>
                     <xsd:sequence>
@@ -1468,6 +1591,21 @@
                     <xsd:sequence>
                         <xsd:element name="statusmessage" type="tns:StatusHolder"/>
                         <xsd:element name="ProfileList" type="tns:ProfileList"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="GetUserProfilesRecommendationsRequest">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="authtoken" type="xsd:string"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="GetUserProfilesRecommendationsResponse">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="statusmessage" type="tns:StatusHolder"/>
+                        <xsd:element name="ProfileList" type="tns:ProfileListRecommendations"/>
                     </xsd:sequence>
                 </xsd:complexType>
             </xsd:element>
@@ -2038,6 +2176,9 @@
                     </xsd:sequence>
                 </xsd:complexType>
             </xsd:element>
+            <xsd:element name="HealthCheckRequest">
+                <xsd:complexType/>
+            </xsd:element>
             <xsd:element name="HealthCheckResponse">
                 <xsd:complexType>
                     <xsd:sequence>
@@ -2139,6 +2280,39 @@
                     </xsd:sequence>
                 </xsd:complexType>
             </xsd:element>
+            <xsd:element name="SaveRatingsRequest">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="authToken" type="xsd:string"/>
+                        <xsd:element name="ratingsList" type="tns:RatingsList"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="SaveRatingsResponse">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="statusMessage" type="tns:StatusHolder"/>
+                        <xsd:element name="ratingsList" type="tns:RatingsStatusList"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="ListRatingsRequest">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="authToken" type="xsd:string"/>
+                        <xsd:element name="ratingsList" type="tns:ListRatingsRequestList"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="ListRatingsResponse">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="statusMessage" type="tns:StatusHolder"/>
+                        <xsd:element name="ratingsList" type="tns:RatingsStatusList"/>
+                        <xsd:element name="itemsCount" type="tns:ItemsCount"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
         </xsd:schema>
     </wsdl:types>
     <wsdl:message name="ValidateScreenNameRequest">
@@ -2177,7 +2351,9 @@
     <wsdl:message name="SaveUserCSRNotesResponse">
         <wsdl:part name="parameters" element="tns:SaveUserCSRNotesResponse"/>
     </wsdl:message>
-    <wsdl:message name="HealthCheckRequest"/>
+    <wsdl:message name="HealthCheckRequest">
+        <wsdl:part name="parameters" element="tns:HealthCheckRequest"/>
+    </wsdl:message>
     <wsdl:message name="HealthCheckResponse">
         <wsdl:part name="parameters" element="tns:HealthCheckResponse"/>
     </wsdl:message>
@@ -2223,6 +2399,12 @@
     <wsdl:message name="ListUserSettingsExResponse">
         <wsdl:part name="parameters" element="tns:ListUserSettingsExResponse"/>
     </wsdl:message>
+    <wsdl:message name="GetUserProfilesRecommendationsRequest">
+        <wsdl:part name="parameters" element="tns:GetUserProfilesRecommendationsRequest"/>
+    </wsdl:message>
+    <wsdl:message name="GetUserProfilesRecommendationsResponse">
+        <wsdl:part name="parameters" element="tns:GetUserProfilesRecommendationsResponse"/>
+    </wsdl:message>
     <wsdl:message name="ListUserContentForRatingsRequest">
         <wsdl:part name="body" element="tns:ListUserContentForRatingsRequest"/>
     </wsdl:message>
@@ -2258,6 +2440,12 @@
     </wsdl:message>
     <wsdl:message name="SaveLastPageLocationResponse">
         <wsdl:part name="parameters" element="tns:SaveLastPageLocationResponse"/>
+    </wsdl:message>
+    <wsdl:message name="SaveRatingsRequest">
+        <wsdl:part name="parameters" element="tns:SaveRatingsRequest"/>
+    </wsdl:message>
+    <wsdl:message name="SaveRatingsResponse">
+        <wsdl:part name="parameters" element="tns:SaveRatingsResponse"/>
     </wsdl:message>
     <wsdl:message name="ListUserCSRNotesRequest">
         <wsdl:part name="parameters" element="tns:ListUserCSRNotesRequest"/>
@@ -2318,6 +2506,12 @@
     </wsdl:message>
     <wsdl:message name="GetDeviceInfoResponse">
         <wsdl:part name="parameters" element="tns:GetDeviceInfoResponse"/>
+    </wsdl:message>
+    <wsdl:message name="ListBooksAssignmentRequest">
+        <wsdl:part name="body" element="tns:ListBooksAssignment"/>
+    </wsdl:message>
+    <wsdl:message name="ListBooksAssignmentResponse">
+        <wsdl:part name="body" element="tns:ListBooksAssignmentResponse"/>
     </wsdl:message>
     <wsdl:message name="SaveReadingStatisticsDetailedRequest">
         <wsdl:part name="parameters" element="tns:SaveReadingStatisticsDetailedRequest"/>
@@ -2415,23 +2609,29 @@
     <wsdl:message name="DeleteBookShelfEntryResponse">
         <wsdl:part name="parameters" element="tns:DeleteBookShelfEntryResponse"/>
     </wsdl:message>
+    <wsdl:message name="ListRatingsRequest">
+        <wsdl:part name="parameters" element="tns:ListRatingsRequest"/>
+    </wsdl:message>
+    <wsdl:message name="ListRatingsResponse">
+        <wsdl:part name="parameters" element="tns:ListRatingsResponse"/>
+    </wsdl:message>
     <wsdl:message name="SetLoggingLevelRequest">
         <wsdl:part name="parameters" element="tns:SetLoggingLevelRequest"/>
     </wsdl:message>
     <wsdl:message name="SetLoggingLevelResponse">
         <wsdl:part name="parameters" element="tns:SetLoggingLevelResponse"/>
     </wsdl:message>
-    <wsdl:message name="SaveUserSettingsExRequest">
-        <wsdl:part name="parameters" element="tns:SaveUserSettingsExRequest"/>
-    </wsdl:message>
-    <wsdl:message name="SaveUserSettingsExResponse">
-        <wsdl:part name="parameters" element="tns:SaveUserSettingsExResponse"/>
-    </wsdl:message>
     <wsdl:message name="ListUserSettingsRequest">
         <wsdl:part name="parameters" element="tns:ListUserSettingsRequest"/>
     </wsdl:message>
     <wsdl:message name="ListUserSettingsResponse">
         <wsdl:part name="parameters" element="tns:ListUserSettingsResponse"/>
+    </wsdl:message>
+    <wsdl:message name="SaveUserSettingsExRequest">
+        <wsdl:part name="parameters" element="tns:SaveUserSettingsExRequest"/>
+    </wsdl:message>
+    <wsdl:message name="SaveUserSettingsExResponse">
+        <wsdl:part name="parameters" element="tns:SaveUserSettingsExResponse"/>
     </wsdl:message>
     <wsdl:message name="IsEntitledToLicenseRequest">
         <wsdl:part name="parameters" element="tns:EntitledToLicenceRequest"/>
@@ -2550,6 +2750,10 @@
             <wsdl:input message="tns:ListUserSettingsExRequest" wsaw:Action="http://webservices.libredigital.com/libreaccess/ListUserSettingsEx"/>
             <wsdl:output message="tns:ListUserSettingsExResponse" wsaw:Action="http://webservices.libredigital.com/LibreAccess/2010-02-10/LibreAccessServicePortType/ListUserSettingsExResponse"/>
         </wsdl:operation>
+        <wsdl:operation name="GetUserProfilesRecommendations">
+            <wsdl:input message="tns:GetUserProfilesRecommendationsRequest" wsaw:Action="http://webservices.libredigital.com/libreaccess/GetUserProfilesRecommendations"/>
+            <wsdl:output message="tns:GetUserProfilesRecommendationsResponse" wsaw:Action="http://webservices.libredigital.com/LibreAccess/2010-02-10/LibreAccessServicePortType/GetUserProfilesRecommendationsResponse"/>
+        </wsdl:operation>
         <wsdl:operation name="ListUserContentForRatings">
             <wsdl:input message="tns:ListUserContentForRatingsRequest" wsaw:Action="http://webservices.libredigital.com/libreaccess/ListUserContentForRatings"/>
             <wsdl:output message="tns:ListUserContentForRatingsResponse" wsaw:Action="http://webservices.libredigital.com/LibreAccess/2010-02-10/LibreAccessServicePortType/ListUserContentForRatingsResponse"/>
@@ -2573,6 +2777,10 @@
         <wsdl:operation name="SaveLastPageLocation">
             <wsdl:input message="tns:SaveLastPageLocationRequest" wsaw:Action="http://webservices.libredigital.com/libreaccess/SaveLastPageLocation"/>
             <wsdl:output message="tns:SaveLastPageLocationResponse" wsaw:Action="http://webservices.libredigital.com/LibreAccess/2010-02-10/LibreAccessServicePortType/SaveLastPageLocationResponse"/>
+        </wsdl:operation>
+        <wsdl:operation name="SaveRatings">
+            <wsdl:input message="tns:SaveRatingsRequest" wsaw:Action="http://webservices.libredigital.com/libreaccess/SaveRatings"/>
+            <wsdl:output message="tns:SaveRatingsResponse" wsaw:Action="http://webservices.libredigital.com/LibreAccess/2010-02-10/LibreAccessServicePortType/SaveRatingsResponse"/>
         </wsdl:operation>
         <wsdl:operation name="ListUserCSRNotes">
             <wsdl:input message="tns:ListUserCSRNotesRequest" wsaw:Action="http://webservices.libredigital.com/libreaccess/ListUserCSRNotes"/>
@@ -2613,6 +2821,10 @@
         <wsdl:operation name="GetDeviceInfo">
             <wsdl:input message="tns:GetDeviceInfoRequest" wsaw:Action="http://webservices.libredigital.com/libreaccess/GetDeviceInfo"/>
             <wsdl:output message="tns:GetDeviceInfoResponse" wsaw:Action="http://webservices.libredigital.com/LibreAccess/2010-02-10/LibreAccessServicePortType/GetDeviceInfoResponse"/>
+        </wsdl:operation>
+        <wsdl:operation name="ListBooksAssignment">
+            <wsdl:input message="tns:ListBooksAssignmentRequest" wsaw:Action="http://webservices.libredigital.com/libreaccess/ListBooksAssignment"/>
+            <wsdl:output message="tns:ListBooksAssignmentResponse" wsaw:Action="http://webservices.libredigital.com/LibreAccess/2010-02-10/LibreAccessServicePortType/ListBooksAssignmentResponse"/>
         </wsdl:operation>
         <wsdl:operation name="SaveReadingStatisticsDetailed">
             <wsdl:input message="tns:SaveReadingStatisticsDetailedRequest" wsaw:Action="http://webservices.libredigital.com/libreaccess/SaveReadingStatisticsDetailed"/>
@@ -2678,17 +2890,21 @@
             <wsdl:input message="tns:DeleteBookShelfEntryRequest" wsaw:Action="http://webservices.libredigital.com/libreaccess/DeleteBookShelfEntry"/>
             <wsdl:output message="tns:DeleteBookShelfEntryResponse" wsaw:Action="http://webservices.libredigital.com/LibreAccess/2010-02-10/LibreAccessServicePortType/DeleteBookShelfEntryResponse"/>
         </wsdl:operation>
+        <wsdl:operation name="ListRatings">
+            <wsdl:input message="tns:ListRatingsRequest" wsaw:Action="http://webservices.libredigital.com/libreaccess/ListRatings"/>
+            <wsdl:output message="tns:ListRatingsResponse" wsaw:Action="http://webservices.libredigital.com/LibreAccess/2010-02-10/LibreAccessServicePortType/ListRatingsResponse"/>
+        </wsdl:operation>
         <wsdl:operation name="SetLoggingLevel">
             <wsdl:input message="tns:SetLoggingLevelRequest" wsaw:Action="http://webservices.libredigital.com/libreaccess/SetLoggingLevel"/>
             <wsdl:output message="tns:SetLoggingLevelResponse" wsaw:Action="http://webservices.libredigital.com/LibreAccess/2010-02-10/LibreAccessServicePortType/SetLoggingLevelResponse"/>
         </wsdl:operation>
-        <wsdl:operation name="SaveUserSettingsEx">
-            <wsdl:input message="tns:SaveUserSettingsExRequest" wsaw:Action="http://webservices.libredigital.com/libreaccess/SaveUserSettingsEx"/>
-            <wsdl:output message="tns:SaveUserSettingsExResponse" wsaw:Action="http://webservices.libredigital.com/LibreAccess/2010-02-10/LibreAccessServicePortType/SaveUserSettingsExResponse"/>
-        </wsdl:operation>
         <wsdl:operation name="ListUserSettings">
             <wsdl:input message="tns:ListUserSettingsRequest" wsaw:Action="http://webservices.libredigital.com/libreaccess/ListUserSettings"/>
             <wsdl:output message="tns:ListUserSettingsResponse" wsaw:Action="http://webservices.libredigital.com/LibreAccess/2010-02-10/LibreAccessServicePortType/ListUserSettingsResponse"/>
+        </wsdl:operation>
+        <wsdl:operation name="SaveUserSettingsEx">
+            <wsdl:input message="tns:SaveUserSettingsExRequest" wsaw:Action="http://webservices.libredigital.com/libreaccess/SaveUserSettingsEx"/>
+            <wsdl:output message="tns:SaveUserSettingsExResponse" wsaw:Action="http://webservices.libredigital.com/LibreAccess/2010-02-10/LibreAccessServicePortType/SaveUserSettingsExResponse"/>
         </wsdl:operation>
         <wsdl:operation name="IsEntitledToLicense">
             <wsdl:input message="tns:IsEntitledToLicenseRequest" wsaw:Action="http://webservices.libredigital.com/libreaccess/IsEntitledToLicense"/>
@@ -2850,6 +3066,15 @@
                 <soap:body use="literal"/>
             </wsdl:output>
         </wsdl:operation>
+        <wsdl:operation name="GetUserProfilesRecommendations">
+            <soap:operation soapAction="http://webservices.libredigital.com/libreaccess/GetUserProfilesRecommendations" style="document"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
         <wsdl:operation name="ListUserSettingsEx">
             <soap:operation soapAction="http://webservices.libredigital.com/libreaccess/ListUserSettingsEx" style="document"/>
             <wsdl:input>
@@ -2922,6 +3147,15 @@
                 <soap:body use="literal"/>
             </wsdl:output>
         </wsdl:operation>
+        <wsdl:operation name="SaveRatings">
+            <soap:operation soapAction="http://webservices.libredigital.com/libreaccess/SaveRatings" style="document"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
         <wsdl:operation name="RenewToken">
             <soap:operation soapAction="http://webservices.libredigital.com/libreaccess/RenewToken" style="document"/>
             <wsdl:input>
@@ -2978,6 +3212,15 @@
         </wsdl:operation>
         <wsdl:operation name="DeviceLeftDomain">
             <soap:operation soapAction="http://webservices.libredigital.com/libreaccess/DeviceLeftDomain" style="document"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="ListBooksAssignment">
+            <soap:operation soapAction="http://webservices.libredigital.com/libreaccess/ListBooksAssignment" style="document"/>
             <wsdl:input>
                 <soap:body use="literal"/>
             </wsdl:input>
@@ -3147,8 +3390,8 @@
                 <soap:body use="literal"/>
             </wsdl:output>
         </wsdl:operation>
-        <wsdl:operation name="SaveUserSettingsEx">
-            <soap:operation soapAction="http://webservices.libredigital.com/libreaccess/SaveUserSettingsEx" style="document"/>
+        <wsdl:operation name="ListRatings">
+            <soap:operation soapAction="http://webservices.libredigital.com/libreaccess/ListRatings" style="document"/>
             <wsdl:input>
                 <soap:body use="literal"/>
             </wsdl:input>
@@ -3167,6 +3410,15 @@
         </wsdl:operation>
         <wsdl:operation name="ListUserSettings">
             <soap:operation soapAction="http://webservices.libredigital.com/libreaccess/ListUserSettings" style="document"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="SaveUserSettingsEx">
+            <soap:operation soapAction="http://webservices.libredigital.com/libreaccess/SaveUserSettingsEx" style="document"/>
             <wsdl:input>
                 <soap:body use="literal"/>
             </wsdl:input>
@@ -3384,6 +3636,15 @@
                 <soap12:body use="literal"/>
             </wsdl:output>
         </wsdl:operation>
+        <wsdl:operation name="GetUserProfilesRecommendations">
+            <soap12:operation soapAction="http://webservices.libredigital.com/libreaccess/GetUserProfilesRecommendations" style="document"/>
+            <wsdl:input>
+                <soap12:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap12:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
         <wsdl:operation name="ListUserSettingsEx">
             <soap12:operation soapAction="http://webservices.libredigital.com/libreaccess/ListUserSettingsEx" style="document"/>
             <wsdl:input>
@@ -3456,6 +3717,15 @@
                 <soap12:body use="literal"/>
             </wsdl:output>
         </wsdl:operation>
+        <wsdl:operation name="SaveRatings">
+            <soap12:operation soapAction="http://webservices.libredigital.com/libreaccess/SaveRatings" style="document"/>
+            <wsdl:input>
+                <soap12:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap12:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
         <wsdl:operation name="RenewToken">
             <soap12:operation soapAction="http://webservices.libredigital.com/libreaccess/RenewToken" style="document"/>
             <wsdl:input>
@@ -3512,6 +3782,15 @@
         </wsdl:operation>
         <wsdl:operation name="DeviceLeftDomain">
             <soap12:operation soapAction="http://webservices.libredigital.com/libreaccess/DeviceLeftDomain" style="document"/>
+            <wsdl:input>
+                <soap12:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap12:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="ListBooksAssignment">
+            <soap12:operation soapAction="http://webservices.libredigital.com/libreaccess/ListBooksAssignment" style="document"/>
             <wsdl:input>
                 <soap12:body use="literal"/>
             </wsdl:input>
@@ -3681,8 +3960,8 @@
                 <soap12:body use="literal"/>
             </wsdl:output>
         </wsdl:operation>
-        <wsdl:operation name="SaveUserSettingsEx">
-            <soap12:operation soapAction="http://webservices.libredigital.com/libreaccess/SaveUserSettingsEx" style="document"/>
+        <wsdl:operation name="ListRatings">
+            <soap12:operation soapAction="http://webservices.libredigital.com/libreaccess/ListRatings" style="document"/>
             <wsdl:input>
                 <soap12:body use="literal"/>
             </wsdl:input>
@@ -3701,6 +3980,15 @@
         </wsdl:operation>
         <wsdl:operation name="ListUserSettings">
             <soap12:operation soapAction="http://webservices.libredigital.com/libreaccess/ListUserSettings" style="document"/>
+            <wsdl:input>
+                <soap12:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap12:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="SaveUserSettingsEx">
+            <soap12:operation soapAction="http://webservices.libredigital.com/libreaccess/SaveUserSettingsEx" style="document"/>
             <wsdl:input>
                 <soap12:body use="literal"/>
             </wsdl:input>
@@ -3918,6 +4206,15 @@
                 <mime:content type="text/xml" part="AssignBooksToAllUsers"/>
             </wsdl:output>
         </wsdl:operation>
+        <wsdl:operation name="GetUserProfilesRecommendations">
+            <http:operation location="GetUserProfilesRecommendations"/>
+            <wsdl:input>
+                <mime:content type="text/xml" part="GetUserProfilesRecommendations"/>
+            </wsdl:input>
+            <wsdl:output>
+                <mime:content type="text/xml" part="GetUserProfilesRecommendations"/>
+            </wsdl:output>
+        </wsdl:operation>
         <wsdl:operation name="ListUserSettingsEx">
             <http:operation location="ListUserSettingsEx"/>
             <wsdl:input>
@@ -3990,6 +4287,15 @@
                 <mime:content type="text/xml" part="ListUserCSRNotes"/>
             </wsdl:output>
         </wsdl:operation>
+        <wsdl:operation name="SaveRatings">
+            <http:operation location="SaveRatings"/>
+            <wsdl:input>
+                <mime:content type="text/xml" part="SaveRatings"/>
+            </wsdl:input>
+            <wsdl:output>
+                <mime:content type="text/xml" part="SaveRatings"/>
+            </wsdl:output>
+        </wsdl:operation>
         <wsdl:operation name="RenewToken">
             <http:operation location="RenewToken"/>
             <wsdl:input>
@@ -4051,6 +4357,15 @@
             </wsdl:input>
             <wsdl:output>
                 <mime:content type="text/xml" part="DeviceLeftDomain"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="ListBooksAssignment">
+            <http:operation location="ListBooksAssignment"/>
+            <wsdl:input>
+                <mime:content type="text/xml" part="ListBooksAssignment"/>
+            </wsdl:input>
+            <wsdl:output>
+                <mime:content type="text/xml" part="ListBooksAssignment"/>
             </wsdl:output>
         </wsdl:operation>
         <wsdl:operation name="GetDeviceInfo">
@@ -4215,13 +4530,13 @@
                 <mime:content type="text/xml" part="DeleteBookShelfEntry"/>
             </wsdl:output>
         </wsdl:operation>
-        <wsdl:operation name="SaveUserSettingsEx">
-            <http:operation location="SaveUserSettingsEx"/>
+        <wsdl:operation name="ListRatings">
+            <http:operation location="ListRatings"/>
             <wsdl:input>
-                <mime:content type="text/xml" part="SaveUserSettingsEx"/>
+                <mime:content type="text/xml" part="ListRatings"/>
             </wsdl:input>
             <wsdl:output>
-                <mime:content type="text/xml" part="SaveUserSettingsEx"/>
+                <mime:content type="text/xml" part="ListRatings"/>
             </wsdl:output>
         </wsdl:operation>
         <wsdl:operation name="SetLoggingLevel">
@@ -4240,6 +4555,15 @@
             </wsdl:input>
             <wsdl:output>
                 <mime:content type="text/xml" part="ListUserSettings"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="SaveUserSettingsEx">
+            <http:operation location="SaveUserSettingsEx"/>
+            <wsdl:input>
+                <mime:content type="text/xml" part="SaveUserSettingsEx"/>
+            </wsdl:input>
+            <wsdl:output>
+                <mime:content type="text/xml" part="SaveUserSettingsEx"/>
             </wsdl:output>
         </wsdl:operation>
         <wsdl:operation name="IsEntitledToLicense">

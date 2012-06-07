@@ -46,7 +46,6 @@ NSString * const kSCHProfileItemDRM_QUALIFIER = @"DRM_QUALIFIER";
 - (void)deleteAnnotations;
 - (void)deleteStatistics;
 - (SCHReadingStatsContentItem *)makeReadingStatsContentItemForBook:(SCHBookIdentifier *)bookIdentifier;
-- (NSString *)MD5:(NSString *)string;
 - (NSString *)SHA1:(NSString *)string;
 
 @end
@@ -67,6 +66,7 @@ NSString * const kSCHProfileItemDRM_QUALIFIER = @"DRM_QUALIFIER";
 @dynamic UserKey;
 @dynamic BookshelfStyle;
 @dynamic LastName;
+@dynamic recommendationsOn;
 @dynamic AppProfile;
 @dynamic AppContentProfileItem;
 
@@ -550,18 +550,6 @@ NSString * const kSCHProfileItemDRM_QUALIFIER = @"DRM_QUALIFIER";
 }
 
 #pragma mark - Encryption methods
-
-- (NSString *)MD5:(NSString *)string
-{
-	const char *data = [string UTF8String];
-	unsigned char md[CC_MD5_DIGEST_LENGTH+1];
-    
-	bzero(md, CC_MD5_DIGEST_LENGTH+1);
-	
-	CC_MD5(data, strlen(data), md);
-	
-	return([[NSData dataWithBytes:md length:strlen((char *)md)] base64Encoding]);
-}
 
 - (NSString *)SHA1:(NSString *)string
 {
