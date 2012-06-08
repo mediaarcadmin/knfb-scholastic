@@ -67,18 +67,7 @@ static NSUInteger const kSCHAudioBookPlayerNoAudioLoaded = NSUIntegerMax;
     if (self) {
         loadedAudioReferencesIndex = kSCHAudioBookPlayerNoAudioLoaded;
         resumeInterruptedPlayer = NO;
-        timer = NULL;
-        
-        // register for going into the background
-        [[NSNotificationCenter defaultCenter] addObserver:self
-                                                 selector:@selector(willResignActiveNotification:)
-                                                     name:UIApplicationWillResignActiveNotification
-                                                   object:nil];            
-        // register for coming out of background
-        [[NSNotificationCenter defaultCenter] addObserver:self
-                                                 selector:@selector(didBecomeActiveNotification:)
-                                                     name:UIApplicationDidBecomeActiveNotification
-                                                   object:nil];        
+        timer = NULL;        
     }
     return(self);
 }
@@ -86,8 +75,6 @@ static NSUInteger const kSCHAudioBookPlayerNoAudioLoaded = NSUIntegerMax;
 - (void)dealloc 
 {
     [UIApplication sharedApplication].idleTimerDisabled = NO;
-    
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
 
     if (timer != NULL) {
         dispatch_source_cancel(timer);
@@ -303,7 +290,6 @@ static NSUInteger const kSCHAudioBookPlayerNoAudioLoaded = NSUIntegerMax;
         [self suspend];
         [self.player pause];
     }
-    self.resumeInterruptedPlayer = NO;
 }
 
 - (BOOL)playing
@@ -403,18 +389,6 @@ static NSUInteger const kSCHAudioBookPlayerNoAudioLoaded = NSUIntegerMax;
         self.resumeInterruptedPlayer = NO;
         [self play];
     }    
-}
-
-#pragma mark - Notification methods
-
-- (void)willResignActiveNotification:(NSNotification *)notification
-{
-    [self pauseToResume];
-}
-
-- (void)didBecomeActiveNotification:(NSNotification *)notification
-{
-    [self resumeFromPause];
 }
 
 #pragma mark - AVAudioPlayer Delegate methods
