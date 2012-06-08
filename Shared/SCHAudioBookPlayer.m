@@ -290,7 +290,7 @@ static NSUInteger const kSCHAudioBookPlayerNoAudioLoaded = NSUIntegerMax;
     NSLog(@"SCHAudioBookPlayer pause");    
     if (self.player.playing == YES) {
         [self suspend];
-        [self.player pause];
+        [self.player stop];
     }
 }
 
