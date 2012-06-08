@@ -771,7 +771,12 @@ static const NSTimeInterval kSCHStartingViewControllerNonForcedAlertInterval = (
     
     if (!([[controllers lastObject] isKindOfClass:NSClassFromString(@"SCHSetupBookshelvesViewController")]) &&
         !([[controllers lastObject] isKindOfClass:NSClassFromString(@"SCHAccountValidationViewController")])) {
-        NSAssert([controllers count] == 0, @"Don't expect there to be something other than the bookshelf setup or account validation controller on the stack when pushing bookshelves");
+        if ([controllers count] > 0) {
+            // There must have been something else on the controllers stack (e.g. the deregistration controller)
+            // Clear it out and start again
+            controllers = [NSMutableArray array];
+        }
+
         SCHSetupBookshelvesViewController *setupBookshelves = [[[SCHSetupBookshelvesViewController alloc] init] autorelease];
         setupBookshelves.profileSetupDelegate = self;
         [controllers addObject:setupBookshelves];
