@@ -67,7 +67,18 @@ static NSUInteger const kSCHAudioBookPlayerNoAudioLoaded = NSUIntegerMax;
     if (self) {
         loadedAudioReferencesIndex = kSCHAudioBookPlayerNoAudioLoaded;
         resumeInterruptedPlayer = NO;
-        timer = NULL;        
+        timer = NULL;
+        
+        // register for going into the background
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(willResignActiveNotification:)
+                                                     name:UIApplicationWillResignActiveNotification
+                                                   object:nil];            
+        // register for coming out of background
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(didBecomeActiveNotification:)
+                                                     name:UIApplicationDidBecomeActiveNotification
+                                                   object:nil];        
     }
     return(self);
 }
@@ -75,6 +86,8 @@ static NSUInteger const kSCHAudioBookPlayerNoAudioLoaded = NSUIntegerMax;
 - (void)dealloc 
 {
     [UIApplication sharedApplication].idleTimerDisabled = NO;
+    
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 
     if (timer != NULL) {
         dispatch_source_cancel(timer);
@@ -275,6 +288,7 @@ static NSUInteger const kSCHAudioBookPlayerNoAudioLoaded = NSUIntegerMax;
 
 - (BOOL)playAtLayoutPage:(NSUInteger)layoutPage pageWordOffset:(NSUInteger)pageWordOffset
 {  
+    NSLog(@"SCHAudioBookPlayer playAtLayoutPage");  
     BOOL ret = NO;
     
     SCHAudioInfo *audioInfo = [self audioInfoForPageIndex:(layoutPage == 0 ? 0 : layoutPage - 1)];
@@ -290,8 +304,9 @@ static NSUInteger const kSCHAudioBookPlayerNoAudioLoaded = NSUIntegerMax;
     NSLog(@"SCHAudioBookPlayer pause");    
     if (self.player.playing == YES) {
         [self suspend];
-        [self.player stop];
+        [self.player pause];
     }
+    self.resumeInterruptedPlayer = NO;
 }
 
 - (BOOL)playing
@@ -391,6 +406,20 @@ static NSUInteger const kSCHAudioBookPlayerNoAudioLoaded = NSUIntegerMax;
         self.resumeInterruptedPlayer = NO;
         [self play];
     }    
+}
+
+#pragma mark - Notification methods
+
+- (void)willResignActiveNotification:(NSNotification *)notification
+{
+    NSLog(@"SCHAudioBookPlayer willResignActiveNotification"); 
+    [self pauseToResume];
+}
+
+- (void)didBecomeActiveNotification:(NSNotification *)notification
+{
+    NSLog(@"SCHAudioBookPlayer didBecomeActiveNotification");    
+    [self resumeFromPause];
 }
 
 #pragma mark - AVAudioPlayer Delegate methods
