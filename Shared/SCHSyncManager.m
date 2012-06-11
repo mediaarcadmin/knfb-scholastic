@@ -58,7 +58,6 @@ static NSUInteger const kSCHSyncManagerMaximumFailureRetries = 3;
 - (void)postSettingsSyncCompletedSyncs;
 - (BOOL)readingStatsActive;
 - (void)readingStatsSync;
-- (BOOL)recommendationSyncActive;
 - (BOOL)wishListSyncActive;
 - (SCHSyncComponent *)queueHead;
 - (void)addToQueue:(SCHSyncComponent *)component;
@@ -377,7 +376,7 @@ static NSUInteger const kSCHSyncManagerMaximumFailureRetries = 3;
             // readingStatsSync will be called on completion of settingsSync
             [self addToQueue:self.settingsSyncComponent];
                    
-            // recommendationSync will be called on completion of settingsSync
+            [self recommendationSync];
             
             [self wishListSync];
             
@@ -701,30 +700,19 @@ static NSUInteger const kSCHSyncManagerMaximumFailureRetries = 3;
     }
 }
 
-- (BOOL)recommendationSyncActive
-{
-    NSString *settingValue = [[SCHAppStateManager sharedAppStateManager] settingNamed:kSCHSettingItemRECOMMENDATIONS_ON];
-    
-    return [settingValue boolValue];
-}
-
 - (void)recommendationSync
 {
-    if ([self recommendationSyncActive] == YES) {
-        if ([self shouldSync] == YES) {	 
-            NSLog(@"Scheduling Recommendation Sync");  
-            
-            [self addToQueue:self.recommendationSyncComponent];
-            
-            [self kickQueue];	
-        } else {
-            dispatch_async(dispatch_get_main_queue(), ^(void) {
-                [[NSNotificationCenter defaultCenter] postNotificationName:SCHRecommendationSyncComponentDidCompleteNotification 
-                                                                    object:self];		
-            });        
-        }
+    if ([self shouldSync] == YES) {	 
+        NSLog(@"Scheduling Recommendation Sync");  
+        
+        [self addToQueue:self.recommendationSyncComponent];
+        
+        [self kickQueue];	
     } else {
-        NSLog(@"Recommendations are OFF");
+        dispatch_async(dispatch_get_main_queue(), ^(void) {
+            [[NSNotificationCenter defaultCenter] postNotificationName:SCHRecommendationSyncComponentDidCompleteNotification 
+                                                                object:self];		
+        });        
     }
 }
 
