@@ -39,7 +39,11 @@
 
 #else
 
+#if USE_EMAIL_ADDRESS_AS_USERNAME
+#define AUTHENTICATION_SERVER_ENDPOINT AUTHENTICATION_SERVER_ENDPOINT_QA2
+#else
 #define AUTHENTICATION_SERVER_ENDPOINT AUTHENTICATION_SERVER_ENDPOINT_QA
+#endif
 #define WISHLIST_SERVER_ENDPOINT WISHLIST_SERVER_ENDPOINT_QA
 #define GETUSERINFO_SERVER_ENDPOINT GETUSERINFO_SERVER_ENDPOINT_QA
 #define RECOMMENDATION_SERVER_ENDPOINT RECOMMENDATION_SERVER_ENDPOINT_PRODUCTION
@@ -55,6 +59,7 @@
 
 // Authentication server EndPoint
 #define AUTHENTICATION_SERVER_ENDPOINT_QA @"https://esvcsqa.scholastic.com/SchWS/services/SPS/Authenticate.AuthenticateHttpsSoap11Endpoint/"
+#define AUTHENTICATION_SERVER_ENDPOINT_QA2 @"https://esvcsqa2.scholastic.com/SchWS/services/SPS/Authenticate.AuthenticateHttpsSoap11Endpoint/"
 #define AUTHENTICATION_SERVER_ENDPOINT_PRODUCTION @"https://esvcs.scholastic.com/SchWS/services/SPS/Authenticate.AuthenticateHttpsSoap11Endpoint/"
 
 // GetUserInfo server EndPoint
