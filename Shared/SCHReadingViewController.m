@@ -374,11 +374,14 @@ static const NSUInteger kReadingViewMaxRecommendationsCount = 4;
         case kSCHReadingViewMissingParametersError:
             description = NSLocalizedString(@"An unexpected error occured (missing parameters). Please try again.", @"Missing paramaters error message from ReadingViewController");
             break;
-        case kSCHReadingViewXPSCheckoutFailedError:
-            description = NSLocalizedString(@"An unexpected error occured (XPS checkout failed). Please try again.", @"XPS Checkout failed error message from ReadingViewController");
+        case kSCHReadingViewXPSCheckoutFailedForUnspecifiedReasonError:
+            description = NSLocalizedString(@"An unexpected error occured (XPS checkout failed). Please try again.", @"XPS Checkout failed due to unspecified error message from ReadingViewController");
+            break;
+        case kSCHReadingViewXPSCheckoutFailedDueToInsufficientDiskSpaceError:
+            description = NSLocalizedString(@"You do not have enough storage on your device to complete this function. Please clear some space and then try again.", @"XPS Checkout failed due to insufficient space error message from ReadingViewController");
             break;
         case kSCHReadingViewDecryptionUnavailableError:
-            description = NSLocalizedString(@"It has not been possible to acquire a DRM license for this eBook. Please make sure this device is authorized and connected to the internet and try again.", @"Decryption not available error message from ReadingViewController");
+            description = NSLocalizedString(@"It has not been possible to acquire a DRM license for this eBook. Please make sure this device is authorized, connected to the internet and you have enough free storage space.", @"Decryption not available error message from ReadingViewController");
             break;
         case kSCHReadingViewUnspecifiedError:
         default:
@@ -421,10 +424,20 @@ static const NSUInteger kReadingViewMaxRecommendationsCount = 4;
         }
         
         bookIdentifier = [aIdentifier retain];
-        xpsProvider = [[[SCHBookManager sharedBookManager] checkOutXPSProviderForBookIdentifier:bookIdentifier inManagedObjectContext:moc] retain];
+        NSError *xpsError;
+        
+        xpsProvider = [[[SCHBookManager sharedBookManager] checkOutXPSProviderForBookIdentifier:bookIdentifier inManagedObjectContext:moc error:&xpsError] retain];
 
-        if (!xpsProvider || ([xpsProvider pageCount] == 0)) {
-            return [self initFailureWithErrorCode:kSCHReadingViewXPSCheckoutFailedError error:error];
+        if (!xpsProvider) {
+            if ([xpsError code] == kKNFBXPSProviderNotEnoughDiskSpaceError) {
+                return [self initFailureWithErrorCode:kSCHReadingViewXPSCheckoutFailedDueToInsufficientDiskSpaceError error:error];
+            } else {
+                return [self initFailureWithErrorCode:kSCHReadingViewXPSCheckoutFailedForUnspecifiedReasonError error:error];
+            }
+        }
+        
+        if ([xpsProvider pageCount] == 0) {
+            return [self initFailureWithErrorCode:kSCHReadingViewXPSCheckoutFailedForUnspecifiedReasonError error:error];
         }
         
         if ([xpsProvider isEncrypted]) {

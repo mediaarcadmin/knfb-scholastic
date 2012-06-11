@@ -883,7 +883,7 @@ NSString * const kSCHAppBookFilenameSeparator = @"-";
             description = NSLocalizedString(@"The eBook is still being processed.", @"Still being processed error message from AppBook");
             break;
         case kSCHAppBookUnableToAcquireLicenseError:
-            description = NSLocalizedString(@"It has not been possible to acquire a DRM license for this eBook. Please make sure this device is authorized and connected to the internet and try again.", @"Decryption not available error message from AppBook");
+            description = NSLocalizedString(@"It has not been possible to acquire a DRM license for this eBook. Please make sure this device is authorized, connected to the internet and you have enough free storage space.", @"Decryption not available error message from AppBook");
             break;
         case kSCHAppBookCachedCoverError:
             description = NSLocalizedString(@"There was a problem retrieving the cover for this eBook. Please try again.", @"Cached Cover error message from AppBook");

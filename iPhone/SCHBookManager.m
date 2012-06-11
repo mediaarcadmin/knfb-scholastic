@@ -240,6 +240,11 @@ static int allocCountXPS = 0;
 
 - (SCHXPSProvider *)checkOutXPSProviderForBookIdentifier:(SCHBookIdentifier *)identifier inManagedObjectContext:(NSManagedObjectContext *)managedObjectContext
 {
+    return [self checkOutXPSProviderForBookIdentifier:identifier inManagedObjectContext:managedObjectContext error:NULL];
+}
+
+- (SCHXPSProvider *)checkOutXPSProviderForBookIdentifier:(SCHBookIdentifier *)identifier inManagedObjectContext:(NSManagedObjectContext *)managedObjectContext error:(NSError **)error
+{
     NSParameterAssert(identifier);
     
 	SCHXPSProvider *ret = nil;
@@ -260,7 +265,7 @@ static int allocCountXPS = 0;
         } else {
             allocCountXPS++;
             SCHAppBook *book = [self bookWithIdentifier:identifier inManagedObjectContext:managedObjectContext];
-			SCHXPSProvider *xpsProvider = [[SCHXPSProvider alloc] initWithBookIdentifier:identifier xpsPath:[book xpsPath]];
+			SCHXPSProvider *xpsProvider = [[SCHXPSProvider alloc] initWithBookIdentifier:identifier xpsPath:[book xpsPath] error:error];
 			if(xpsProvider) {
 				NSCountedSet *myCachedXPSProviderCheckoutCounts = self.cachedXPSProviderCheckoutCounts;
 				if(!myCachedXPSProviderCheckoutCounts) {
