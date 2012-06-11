@@ -37,6 +37,9 @@ static NSUInteger const kSCHAudioBookPlayerNoAudioLoaded = NSUIntegerMax;
 @property (nonatomic, assign) BOOL resumeInterruptedPlayer;
 @property (nonatomic, assign) dispatch_source_t timer;
 
+@property (nonatomic, assign) BOOL isPlaying;
+@property (nonatomic, assign) BOOL isSuspended;
+
 - (SCHAudioInfo *)audioInfoForPageIndex:(NSUInteger)pageIndex;
 - (BOOL)prepareToPlay:(SCHAudioInfo *)audioInfoToPrepare 
            pageWordOffset:(NSUInteger)pageWordOffset;
@@ -57,7 +60,8 @@ static NSUInteger const kSCHAudioBookPlayerNoAudioLoaded = NSUIntegerMax;
 @synthesize loadedAudioReferencesIndex;
 @synthesize resumeInterruptedPlayer;
 @synthesize timer;
-@synthesize playing;
+@synthesize isPlaying;
+@synthesize isSuspended;
 
 #pragma mark - Object lifecycle
 
@@ -68,6 +72,8 @@ static NSUInteger const kSCHAudioBookPlayerNoAudioLoaded = NSUIntegerMax;
         loadedAudioReferencesIndex = kSCHAudioBookPlayerNoAudioLoaded;
         resumeInterruptedPlayer = NO;
         timer = NULL;
+        isPlaying = NO;
+        isSuspended = NO;
         
         // register for going into the background
         [[NSNotificationCenter defaultCenter] addObserver:self
@@ -139,7 +145,7 @@ static NSUInteger const kSCHAudioBookPlayerNoAudioLoaded = NSUIntegerMax;
                 dispatch_release(self.timer), self.timer = NULL;
             });
             dispatch_source_set_event_handler(self.timer, ^{                
-                if (self.player.playing == YES && [self.wordTimings count ] > 0) {
+                if (self.isPlaying == YES && [self.wordTimings count] > 0) {
                     // We're using the WordTimings file use of integers for time
                     NSUInteger currentPlayTime = (NSUInteger)(self.player.currentTime * kSCHAudioBookPlayerMilliSecondsInASecond);
                     if (currentPosition < [self.wordTimings count]) {
@@ -278,9 +284,11 @@ static NSUInteger const kSCHAudioBookPlayerNoAudioLoaded = NSUIntegerMax;
     BOOL ret = NO;
     
     ret = [self.player play];
+    self.isPlaying = ret;
     if (ret == YES && self.timer != NULL) {
         [UIApplication sharedApplication].idleTimerDisabled = YES;        
-        dispatch_resume(self.timer);        
+        dispatch_resume(self.timer);
+        self.isSuspended = NO;
     }
 
     return(ret);
@@ -302,16 +310,12 @@ static NSUInteger const kSCHAudioBookPlayerNoAudioLoaded = NSUIntegerMax;
 - (void)pause
 {
     NSLog(@"SCHAudioBookPlayer pause");    
-    if (self.player.playing == YES) {
+    if (self.isPlaying == YES) {
         [self suspend];
         [self.player pause];
+        self.isPlaying = NO;        
     }
     self.resumeInterruptedPlayer = NO;
-}
-
-- (BOOL)playing
-{
-    return(self.player.playing);
 }
 
 #pragma mark - Private methods
@@ -386,15 +390,16 @@ static NSUInteger const kSCHAudioBookPlayerNoAudioLoaded = NSUIntegerMax;
 
 - (void)suspend
 {
-    if (self.timer != NULL) {
+    if (self.timer != NULL && self.isSuspended == NO) {
         dispatch_suspend(self.timer);
+        self.isSuspended = YES;
     }
     [UIApplication sharedApplication].idleTimerDisabled = NO;    
 }
 
 - (void)pauseToResume
 {
-    if (self.player.playing == YES) {
+    if (self.isPlaying == YES) {
         [self pause];
         self.resumeInterruptedPlayer = YES;
     }    

@@ -50,7 +50,6 @@
 #import "SCHRecommendationContainerView.h"
 #import "SCHAppStateManager.h"
 #import "SCHAppRecommendationItem.h"
-#import "SCHSettingItem.h"
 
 // constants
 NSString *const kSCHReadingViewErrorDomain  = @"com.knfb.scholastic.ReadingViewErrorDomain";
@@ -1206,7 +1205,7 @@ static const NSUInteger kReadingViewMaxRecommendationsCount = 4;
                 [errorAlert release];                                               
             }
         }
-    } else if(self.audioBookPlayer.playing == NO) {
+    } else if(self.audioBookPlayer.isPlaying == NO) {
         [self.audioBookPlayer playAtLayoutPage:layoutPage pageWordOffset:pageWordOffset];
         [self setToolbarVisibility:NO animated:YES];
     } else {
@@ -1468,14 +1467,14 @@ static const NSUInteger kReadingViewMaxRecommendationsCount = 4;
     self.lastPageInteractionSoundPlayedOn = [self storyInteractionPageIndices].location;
     
     // if the audio book is playing, hide the story interaction button
-    if (totalInteractionCount < 1 && (self.audioBookPlayer && self.audioBookPlayer.playing)) {
+    if (totalInteractionCount < 1 && (self.audioBookPlayer && self.audioBookPlayer.isPlaying)) {
         // No interactions, audio playing. Hiding button without animation
         [self setStoryInteractionButtonVisible:NO animated:NO withSound:NO completion:nil];
     } else if (totalInteractionCount < 1) {
         // No interactions. Hiding button with animation
         [self setStoryInteractionButtonVisible:NO animated:YES withSound:playAppearanceSound completion:nil];
     } else {
-        if (totalInteractionCount >= 1 && (self.audioBookPlayer && self.audioBookPlayer.playing)) {
+        if (totalInteractionCount >= 1 && (self.audioBookPlayer && self.audioBookPlayer.isPlaying)) {
             // Interactions while reading. Showing button without animation
             playAppearanceSound = NO;
             animated = NO;
@@ -1515,7 +1514,7 @@ static const NSUInteger kReadingViewMaxRecommendationsCount = 4;
             }
             
             // play the sound effect
-            if (sound && !self.storyInteractionController && (!self.audioBookPlayer || !self.audioBookPlayer.playing)) {
+            if (sound && !self.storyInteractionController && (!self.audioBookPlayer || !self.audioBookPlayer.isPlaying)) {
                 // play sound effect only if requested - e.g. toolbar hide/show doesn't play sound
                 // play sound effect only if there isn't a story interaction visible
                 // play sound effect only if the book reading is not happening (which should never happen!)
@@ -2162,7 +2161,7 @@ static const NSUInteger kReadingViewMaxRecommendationsCount = 4;
                      }];
     
     // hide the audio button
-    if (self.audioBookPlayer && self.audioBookPlayer.playing) {
+    if (self.audioBookPlayer && self.audioBookPlayer.isPlaying) {
         [self setStoryInteractionButtonVisible:NO animated:NO withSound:YES completion:nil];
     } else {
         [self setStoryInteractionButtonVisible:NO animated:YES withSound:YES completion:nil];
@@ -3229,7 +3228,7 @@ static const NSUInteger kReadingViewMaxRecommendationsCount = 4;
 {
     // only show on the first page, if toolbars are not visible, not in highlights mode
     // and the audio isn't already playing (and it's in younger mode!)
-    BOOL shouldShow = (self.currentPageIndex == 0 && !self.toolbarsVisible && !self.audioBookPlayer.playing 
+    BOOL shouldShow = (self.currentPageIndex == 0 && !self.toolbarsVisible && !self.audioBookPlayer.isPlaying 
                        && self.youngerMode && !self.highlightsModeEnabled);
     float buttonAlpha = 0.0f;
     
@@ -3256,7 +3255,7 @@ static const NSUInteger kReadingViewMaxRecommendationsCount = 4;
 
 - (void)positionCornerAudioButtonForOrientation:(UIInterfaceOrientation)newOrientation
 {
-    BOOL shouldShow = (self.currentPageIndex == 0 && !self.toolbarsVisible && !self.audioBookPlayer.playing 
+    BOOL shouldShow = (self.currentPageIndex == 0 && !self.toolbarsVisible && !self.audioBookPlayer.isPlaying 
                        && self.youngerMode && !self.highlightsModeEnabled);
     
     if (shouldShow) {
