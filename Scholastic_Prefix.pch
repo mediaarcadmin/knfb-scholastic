@@ -15,7 +15,7 @@
 #define FLOW_VIEW_DISABLED 1
 #define TOP_TEN_DISABLED 0
 #define UPDATE_BOOKS_DISABLED 0
-#define IGNORE_COPPA_COMPLIANCE 1
+#define IGNORE_COPPA_COMPLIANCE 0
 #define UUID_DISABLED 0
 #define IPHONE_HIGHLIGHTS_DISABLED 1
 #define PICTURE_STARTER_CACHE_DISABLED 1
@@ -97,7 +97,12 @@
 #define FREE_MANIFEST_TEST @"http://bits.blioreader.com/partners/Scholastic/SampleBookshelf/SampleBookshelfManifest_v2.xml"
 #define FREE_MANIFEST_PRODUCTION @"http://reader.ebooks2.scholastic.com/reader/sch/free/FreeManifest.xml"
 
-// Stops all NSLog() functions executing under release builds
 #ifdef __OPTIMIZE__
+    // Stops all NSLog() functions executing under release builds
 	#define NSLog(...);
+    
+    // Ensure we don't leave COPPA COMPLIANCE disabled under release builds
+    #if IGNORE_COPPA_COMPLIANCE
+        #warning IGNORE_COPPA_COMPLIANCE is set to 1
+    #endif
 #endif
