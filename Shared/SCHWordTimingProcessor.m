@@ -39,7 +39,7 @@ static NSUInteger kSCHWordTimingProcessorRTXNewFormatLineCount = 9;
     } else {
         NSString *wordTimingString = [[NSString alloc] initWithBytesNoCopy:(void *)wordTimingData.bytes 
                                                                     length:[wordTimingData length] 
-                                                                  encoding:NSASCIIStringEncoding 
+                                                                  encoding:NSUTF8StringEncoding 
                                                               freeWhenDone:NO];
         NSArray *timingLines = [wordTimingString componentsSeparatedByCharactersInSet:[NSCharacterSet newlineCharacterSet]];
         [wordTimingString release], wordTimingString = nil;
