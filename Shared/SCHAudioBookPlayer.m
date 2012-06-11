@@ -274,6 +274,7 @@ static NSUInteger const kSCHAudioBookPlayerNoAudioLoaded = NSUIntegerMax;
 
 - (BOOL)play
 {
+    NSLog(@"SCHAudioBookPlayer play");        
     BOOL ret = NO;
     
     ret = [self.player play];
@@ -287,6 +288,7 @@ static NSUInteger const kSCHAudioBookPlayerNoAudioLoaded = NSUIntegerMax;
 
 - (BOOL)playAtLayoutPage:(NSUInteger)layoutPage pageWordOffset:(NSUInteger)pageWordOffset
 {  
+    NSLog(@"SCHAudioBookPlayer playAtLayoutPage");  
     BOOL ret = NO;
     
     SCHAudioInfo *audioInfo = [self audioInfoForPageIndex:(layoutPage == 0 ? 0 : layoutPage - 1)];
@@ -299,6 +301,7 @@ static NSUInteger const kSCHAudioBookPlayerNoAudioLoaded = NSUIntegerMax;
 
 - (void)pause
 {
+    NSLog(@"SCHAudioBookPlayer pause");    
     if (self.player.playing == YES) {
         [self suspend];
         [self.player pause];
@@ -409,11 +412,13 @@ static NSUInteger const kSCHAudioBookPlayerNoAudioLoaded = NSUIntegerMax;
 
 - (void)willResignActiveNotification:(NSNotification *)notification
 {
+    NSLog(@"SCHAudioBookPlayer willResignActiveNotification"); 
     [self pauseToResume];
 }
 
 - (void)didBecomeActiveNotification:(NSNotification *)notification
 {
+    NSLog(@"SCHAudioBookPlayer didBecomeActiveNotification");    
     [self resumeFromPause];
 }
 
@@ -421,16 +426,19 @@ static NSUInteger const kSCHAudioBookPlayerNoAudioLoaded = NSUIntegerMax;
 
 - (void)audioPlayerBeginInterruption:(AVAudioPlayer *)player
 {
+    NSLog(@"SCHAudioBookPlayer audioPlayerBeginInterruption");
     [self pauseToResume];
 }
 
 - (void)audioPlayerEndInterruption:(AVAudioPlayer *)player
 {
+    NSLog(@"SCHAudioBookPlayer audioPlayerEndInterruption");    
     [self resumeFromPause];
 }
 
 - (void)audioPlayerDidFinishPlaying:(AVAudioPlayer *)player successfully:(BOOL)flag
 {
+    NSLog(@"SCHAudioBookPlayer audioPlayerDidFinishPlaying");
     NSUInteger nextAudioReferencesIndex = self.loadedAudioReferencesIndex + 1;
     if (nextAudioReferencesIndex < [self.audioBookReferences count]) {
         if ([self prepareToPlay:[self.audioBookReferences objectAtIndex:nextAudioReferencesIndex] 
@@ -448,6 +456,7 @@ static NSUInteger const kSCHAudioBookPlayerNoAudioLoaded = NSUIntegerMax;
 
 - (void)audioPlayerDecodeErrorDidOccur:(AVAudioPlayer *)player error:(NSError *)error
 {
+    NSLog(@"SCHAudioBookPlayer audioPlayerDecodeErrorDidOccur");    
     [self suspend];
     
     if([(id)self.delegate respondsToSelector:@selector(audioBookPlayerErrorDidOccur:error:)]) {

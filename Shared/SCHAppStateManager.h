@@ -10,6 +10,7 @@
 #import "NSNumber+ObjectTypes.h"
 #import "SCHAppState.h"
 #import "SCHScholasticAuthenticationWebService.h"
+#import "SCHSettingItem.h"
 
 @class NSManagedObjectContext;
 

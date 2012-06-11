@@ -11,7 +11,6 @@
 #import <CoreData/CoreData.h>
 #import "SCHCoreDataHelper.h"
 #import "NSNumber+ObjectTypes.h"
-#import "SCHSettingItem.h"
 
 @interface SCHAppStateManager()
 
