@@ -11,7 +11,6 @@
 #import "SCHBookshelfPopoverController.h"
 #import "SCHBookShelfWishListController.h"
 #import "SCHBookShelfRecommendationListController.h"
-#import "SCHSettingItem.h"
 #import "SCHAppStateManager.h"
 #import "SCHCustomNavigationBar.h"
 

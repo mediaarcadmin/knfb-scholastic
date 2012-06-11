@@ -26,7 +26,6 @@
 #import "SCHAuthenticationManager.h"
 #import "SCHVersionDownloadManager.h"
 #import "SCHLibreAccessConstants.h"
-#import "SCHSettingItem.h"
 #import "NSFileManager+Extensions.h"
 
 // Constants
@@ -56,6 +55,9 @@ static NSUInteger const kSCHSyncManagerMaximumFailureRetries = 3;
 - (NSMutableArray *)bookAnnotationsFromProfile:(SCHProfileItem *)profileItem;
 - (NSDictionary *)annotationContentItemFromUserContentItem:(SCHUserContentItem *)userContentItem
                                                 forProfile:(NSNumber *)profileID;
+- (void)postSettingsSyncCompletedSyncs;
+- (BOOL)readingStatsActive;
+- (void)readingStatsSync;
 - (BOOL)recommendationSyncActive;
 - (BOOL)wishListSyncActive;
 - (SCHSyncComponent *)queueHead;
@@ -167,7 +169,7 @@ static NSUInteger const kSCHSyncManagerMaximumFailureRetries = 3;
                                                    object:nil];	    
 
         [[NSNotificationCenter defaultCenter] addObserver:self 
-                                                 selector:@selector(recommendationSync) 
+                                                 selector:@selector(postSettingsSyncCompletedSyncs) 
                                                      name:SCHSettingsSyncComponentDidCompleteNotification 
                                                    object:nil];	    
         
@@ -372,7 +374,7 @@ static NSUInteger const kSCHSyncManagerMaximumFailureRetries = 3;
                 [self addToQueue:self.annotationSyncComponent];		
             }
             
-            [self addToQueue:self.readingStatsSyncComponent];
+            // readingStatsSync will be called on completion of settingsSync
             [self addToQueue:self.settingsSyncComponent];
                    
             // recommendationSync will be called on completion of settingsSync
@@ -461,10 +463,12 @@ static NSUInteger const kSCHSyncManagerMaximumFailureRetries = 3;
         if ([self.annotationSyncComponent haveProfiles] == YES) {
             [self.annotationSyncComponent synchronize];
         }
-        [self.readingStatsSyncComponent synchronize];
+        if ([self readingStatsActive] == YES) {
+            [self.readingStatsSyncComponent synchronize];
+        }
         [self.profileSyncComponent synchronize];
         [self.contentSyncComponent synchronize];
-        if ([[SCHAppStateManager sharedAppStateManager] isCOPPACompliant] == YES) {
+        if ([self wishListSyncActive] == YES) {
             [self.wishListSyncComponent synchronize];
         }
     }    
@@ -649,7 +653,7 @@ static NSUInteger const kSCHSyncManagerMaximumFailureRetries = 3;
                 [self.annotationSyncComponent addProfile:profileID 
                                                withBooks:[NSMutableArray arrayWithObject:annotationContentItem]];	
                 [self addToQueue:self.annotationSyncComponent];
-                [self addToQueue:self.readingStatsSyncComponent];
+                [self readingStatsSync];
                 
                 [self kickQueue];	
             }
@@ -661,6 +665,39 @@ static NSUInteger const kSCHSyncManagerMaximumFailureRetries = 3;
             [[NSNotificationCenter defaultCenter] postNotificationName:SCHReadingStatsSyncComponentDidCompleteNotification
                                                                 object:nil];    
         });        
+    }
+}
+
+- (void)postSettingsSyncCompletedSyncs
+{
+    [self readingStatsSync];
+    [self recommendationSync];
+}
+
+- (BOOL)readingStatsActive
+{
+    NSString *settingValue = [[SCHAppStateManager sharedAppStateManager] settingNamed:kSCHSettingItemSTORE_READ_STAT];
+    
+    return [settingValue boolValue];
+}
+
+- (void)readingStatsSync
+{
+    if ([self readingStatsActive] == YES) {
+        if ([self shouldSync] == YES) {	 
+            NSLog(@"Scheduling Reading Stats Sync");  
+            
+            [self addToQueue:self.readingStatsSyncComponent];
+            
+            [self kickQueue];	
+        } else {
+            dispatch_async(dispatch_get_main_queue(), ^(void) {
+                [[NSNotificationCenter defaultCenter] postNotificationName:SCHReadingStatsSyncComponentDidCompleteNotification 
+                                                                    object:self];		
+            });        
+        }
+    } else {
+        NSLog(@"Reading Stats are OFF");
     }
 }
 
