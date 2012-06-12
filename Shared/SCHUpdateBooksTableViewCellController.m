@@ -34,6 +34,7 @@ NSString * const kSCHBookUpdatedSuccessfullyNotification = @"book-updated-succes
 @synthesize managedObjectContext;
 @synthesize bookIdentifier;
 @synthesize index;
+@synthesize bookEnabledToggleBlock;
 
 - (void)dealloc
 {
@@ -42,6 +43,7 @@ NSString * const kSCHBookUpdatedSuccessfullyNotification = @"book-updated-succes
     [cell release], cell = nil;
     [managedObjectContext release], managedObjectContext = nil;
     [bookIdentifier release], bookIdentifier = nil;
+    [bookEnabledToggleBlock release], bookEnabledToggleBlock = nil;
     [super dealloc];
 }
 
@@ -87,6 +89,16 @@ NSString * const kSCHBookUpdatedSuccessfullyNotification = @"book-updated-succes
     cell.onCheckboxUpdate = ^(BOOL enable) {
         self.bookEnabledForUpdate = enable;
     };
+}
+
+- (void)setBookEnabledForUpdate:(BOOL)newBookEnabledForUpdate
+{
+    bookEnabledForUpdate = newBookEnabledForUpdate;
+    
+    if (bookEnabledToggleBlock) {
+        bookEnabledToggleBlock();
+    }
+    
 }
 
 - (BOOL)spinnerStateForProcessingState:(SCHBookCurrentProcessingState)state
