@@ -197,6 +197,7 @@ static NSUInteger const kSCHDownloadBookFileSizeCompleteMarginOfError = 100;
             CFUUIDRef theUUID = CFUUIDCreate(NULL);
             CFStringRef UUIDString = CFUUIDCreateString(NULL, theUUID);
             self.temporaryLocalPath = [NSString stringWithFormat:@"%@_inprogress_%@", self.realLocalPath, UUIDString];
+            CFRelease(UUIDString);
             CFRelease(theUUID);
         }
         
