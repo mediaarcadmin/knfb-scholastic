@@ -86,8 +86,10 @@ NSString * const kSCHBookUpdatedSuccessfullyNotification = @"book-updated-succes
     [cell enabledForUpdateCheckbox].selected = self.bookEnabledForUpdate;
     [cell enableSpinner:[self spinnerStateForProcessingState:[book processingState]]];
     
+    __block SCHUpdateBooksTableViewCellController *weakSelf = self;
+    
     cell.onCheckboxUpdate = ^(BOOL enable) {
-        self.bookEnabledForUpdate = enable;
+        weakSelf.bookEnabledForUpdate = enable;
     };
 }
 
