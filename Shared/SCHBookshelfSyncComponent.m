@@ -287,7 +287,7 @@ NSString * const SCHBookshelfSyncComponentDidFailNotification = @"SCHBookshelfSy
         NSSet *contentMetadataItems = (NSSet *)[obj ContentMetadataItem];
         
         if ([contentMetadataItems count] < 1 || 
-            [[[contentMetadataItems anyObject] Version] integerValue] != [[obj LastVersion] integerValue]) {
+            [[[contentMetadataItems anyObject] Version] integerValue] != [[obj Version] integerValue]) {
             [results addObject:obj];
         }
     }];
