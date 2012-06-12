@@ -2406,6 +2406,7 @@ static const NSUInteger kReadingViewMaxRecommendationsCount = 4;
             listView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin;
             
             listView.showsBottomRule = NO;
+            listView.dimEmptyRatings = NO;
             listView.delegate = self;
             
             [listView updateWithRecommendationItem:recommendationDictionary];

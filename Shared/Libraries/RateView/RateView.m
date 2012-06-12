@@ -22,6 +22,7 @@
 @synthesize minImageSize;
 @synthesize preventUnrating;
 @synthesize delegate;
+@synthesize dimEmptyRatings;
 
 - (void)dealloc
 {
@@ -33,6 +34,7 @@
 }
 
 - (void)baseInit {
+    self.dimEmptyRatings = YES;
     self.preventUnrating = NO;
     self.notSelectedImage = nil;
     self.halfSelectedImage = nil;
@@ -41,6 +43,7 @@
     self.editable = NO;    
     self.imageViews = [NSMutableArray array];
     self.maxRating = 5;
+    
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
         self.midMargin = 5;
     } else {
@@ -81,7 +84,11 @@
         }
         
         if (!self.editable && self.rating == 0) {
-            imageView.alpha = 0.3;
+            if (self.dimEmptyRatings) {
+                imageView.alpha = 0.3;
+            } else {
+                imageView.alpha = 1;
+            }
         } else {
             imageView.alpha = 1;
         }

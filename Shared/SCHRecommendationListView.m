@@ -45,6 +45,7 @@
 @synthesize ruleImageView;
 @synthesize initialNormalStateImage;
 @synthesize initialSelectedStateImage;
+@synthesize dimEmptyRatings;
 
 - (void)dealloc
 {
@@ -94,6 +95,7 @@
     self.showsBottomRule = YES;
     self.lastAuthenticationFailedUsernamePassword = NO;
     self.rateView.editable = NO;
+    self.dimEmptyRatings = YES;
 }
 
 - (void)setupImages
@@ -145,6 +147,7 @@
     self.ISBN = [item objectForKey:kSCHAppRecommendationISBN];
     self.titleLabel.text = [item objectForKey:kSCHAppRecommendationTitle];
     self.subtitleLabel.text = [item objectForKey:kSCHAppRecommendationAuthor];
+    self.rateView.dimEmptyRatings = self.dimEmptyRatings;
     self.rateView.rating = [[item objectForKey:kSCHAppRecommendationAverageRating] floatValue];
     UIImage *coverImage = [item objectForKey:kSCHAppRecommendationCoverImage];
     

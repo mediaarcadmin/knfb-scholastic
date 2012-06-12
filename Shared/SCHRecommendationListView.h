@@ -19,6 +19,7 @@
 @property (nonatomic, retain) NSString *ISBN;
 @property (nonatomic, assign) BOOL isOnWishList;
 @property (nonatomic, assign) BOOL showsBottomRule;
+@property (nonatomic, assign) BOOL dimEmptyRatings; // default yes
 @property (nonatomic, assign) BOOL lastAuthenticationFailedUsernamePassword;
 @property (nonatomic, retain) UIColor *recommendationBackgroundColor;
 
