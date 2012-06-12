@@ -41,7 +41,7 @@
 - (void)dealloc
 {
     for (SCHUpdateBooksTableViewCellController *c in self.cellControllers) {
-        [c removeObserver:self forKeyPath:@"bookEnabledForUpdate"];
+        [c removeObserver:self forKeyPath:@"bookEnabledForUpdate" context:nil];
     }
     
     [bookUpdates release], bookUpdates = nil;

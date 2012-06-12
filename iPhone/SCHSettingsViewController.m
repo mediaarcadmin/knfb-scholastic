@@ -37,7 +37,6 @@ extern NSString * const kSCHAuthenticationManagerDeviceKey;
 @interface SCHSettingsViewController()
 
 @property (nonatomic, retain) SCHBookUpdates *bookUpdates;
-@property (nonatomic, retain) SCHUpdateBooksViewController *updateBooksViewController;
 @property (nonatomic, retain) LambdaAlert *checkBooksAlert;
 @property (nonatomic, retain) Reachability *syncReachability;
 
@@ -63,7 +62,6 @@ extern NSString * const kSCHAuthenticationManagerDeviceKey;
 @synthesize deregisterDeviceButton;
 @synthesize downloadDictionaryButton;
 @synthesize bookUpdates;
-@synthesize updateBooksViewController;
 @synthesize managedObjectContext;
 @synthesize checkBooksAlert;
 @synthesize syncReachability;
@@ -80,7 +78,6 @@ extern NSString * const kSCHAuthenticationManagerDeviceKey;
     [manageBooksButton release], manageBooksButton = nil;
     [deregisterDeviceButton release], deregisterDeviceButton = nil;
     [downloadDictionaryButton release], downloadDictionaryButton = nil;
-    [updateBooksViewController release], updateBooksViewController = nil;
     [checkBooksAlert release], checkBooksAlert = nil;
     
     [super releaseViewObjects];
@@ -149,7 +146,10 @@ extern NSString * const kSCHAuthenticationManagerDeviceKey;
     
     if ([self.bookUpdates areBookUpdatesAvailable] &&
         [[Reachability reachabilityForInternetConnection] isReachable]) {
-        viewControllers = [NSArray arrayWithObjects:self, self.updateBooksViewController, nil];
+        SCHUpdateBooksViewController *updateBooksViewController = [[SCHUpdateBooksViewController alloc] init];
+        updateBooksViewController.bookUpdates = self.bookUpdates;
+        viewControllers = [NSArray arrayWithObjects:self, updateBooksViewController, nil];
+        [updateBooksViewController release];
     } else {
         viewControllers = [NSArray arrayWithObject:self];
     }
@@ -166,16 +166,6 @@ extern NSString * const kSCHAuthenticationManagerDeviceKey;
     }
     
     return bookUpdates;
-}
-
-- (SCHUpdateBooksViewController *)updateBooksViewController
-{
-    if (!updateBooksViewController) {
-        updateBooksViewController = [[SCHUpdateBooksViewController alloc] init];
-        updateBooksViewController.bookUpdates = self.bookUpdates;
-    }
-    
-    return updateBooksViewController;
 }
 
 - (void)viewDidUnload 
