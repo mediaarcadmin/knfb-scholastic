@@ -569,7 +569,7 @@ static NSUInteger const kSCHSyncManagerMaximumFailureRetries = 3;
             id contentIdentifierType = [userContentItem valueForKey:kSCHLibreAccessWebServiceContentIdentifierType];
             id DRMQualifier = [userContentItem valueForKey:kSCHLibreAccessWebServiceDRMQualifier];
             id format = [userContentItem valueForKey:kSCHLibreAccessWebServiceFormat];
-            id version = [userContentItem valueForKey:kSCHLibreAccessWebServiceLastVersion];
+            id version = [userContentItem valueForKey:kSCHLibreAccessWebServiceVersion];
             id averageRating = [userContentItem valueForKey:kSCHLibreAccessWebServiceAverageRating];
             
             if (appContentProfileItem != nil && 

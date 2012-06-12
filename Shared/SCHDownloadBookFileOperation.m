@@ -429,12 +429,12 @@ static NSUInteger const kSCHDownloadBookFileSizeCompleteMarginOfError = 100;
             [self performWithBookAndSave:^(SCHAppBook *book) {
                 
                 int contentMetadataVersion = [[[book ContentMetadataItem] Version] intValue];
-                int userContentVersion = [[[[book ContentMetadataItem] UserContentItem] LastVersion] intValue];
+                int userContentVersion = [[[[book ContentMetadataItem] UserContentItem] Version] intValue];
                 
                 if (contentMetadataVersion > userContentVersion) {
                     book.OnDiskVersion = [[book ContentMetadataItem] Version];
                 } else {
-                    book.OnDiskVersion = [[[book ContentMetadataItem] UserContentItem] LastVersion];
+                    book.OnDiskVersion = [[[book ContentMetadataItem] UserContentItem] Version];
                 }
                 book.XPSExists = [NSNumber numberWithBool:YES];
             }];
