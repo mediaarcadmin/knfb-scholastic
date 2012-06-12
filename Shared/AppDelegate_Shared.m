@@ -208,7 +208,6 @@ static NSString* const binaryDevCertFilename = @"bdevcert.dat";
 {
     NSDictionary *appDefaults = [NSDictionary dictionaryWithObjectsAndKeys:
 								 [NSNumber numberWithBool:NO], kSCHUserDefaultsPerformedFirstSyncUpToBooks,
-								 [NSNumber numberWithBool:YES], kSCHUserDefaultsSpaceSaverMode,
                                  [NSNumber numberWithInteger:0], kSCHUserDefaultsWelcomeViewShowCount,
                                  nil];
     
@@ -221,7 +220,6 @@ static NSString* const binaryDevCertFilename = @"bdevcert.dat";
 - (NSArray *)clearableUserDefaults
 {
     return [NSArray arrayWithObjects:kSCHUserDefaultsPerformedFirstSyncUpToBooks,
-            kSCHUserDefaultsSpaceSaverMode,
             kSCHAuthenticationManagerUserKey,
             kSCHAuthenticationManagerDeviceKey,
             kSCHAuthenticationManagerUsername,

@@ -29,8 +29,6 @@
 NSString * const kSCHProcessingManagerConnectionIdle = @"SCHProcessingManagerConnectionIdle";
 NSString * const kSCHProcessingManagerConnectionBusy = @"SCHProcessingManagerConnectionBusy";
 
-extern NSString * const kSCHUserDefaultsSpaceSaverModeSetOffNotification;
-
 #pragma mark - Class Extension
 
 @interface SCHProcessingManager()
@@ -64,7 +62,6 @@ extern NSString * const kSCHUserDefaultsSpaceSaverModeSetOffNotification;
 @property BOOL connectionIsIdle;
 @property BOOL firedFirstBusyIdleNotification;
 
-- (BOOL)spaceSaverMode;
 - (void)postBookStateUpdate:(SCHBookIdentifier *)identifier;
 
 @end
@@ -141,11 +138,6 @@ static SCHProcessingManager *sharedManager = nil;
 		[[NSNotificationCenter defaultCenter] addObserver:sharedManager 
 												 selector:@selector(checkStateForBook:) 
 													 name:SCHBookshelfSyncComponentBookReceivedNotification 
-												   object:nil];
-		
-        [[NSNotificationCenter defaultCenter] addObserver:sharedManager 
-												 selector:@selector(checkStateForBook:) 
-													 name:kSCHUserDefaultsSpaceSaverModeSetOffNotification 
 												   object:nil];
 		
 		[[NSNotificationCenter defaultCenter] addObserver:sharedManager 
@@ -298,13 +290,10 @@ static SCHProcessingManager *sharedManager = nil;
     BOOL needsProcessing = YES;
 	SCHAppBook *book = [[SCHBookManager sharedBookManager] bookWithIdentifier:identifier inManagedObjectContext:self.managedObjectContext];
     
-    if (book != nil) {
-        BOOL spaceSaverMode = [self spaceSaverMode];
-        
+    if (book != nil) {        
         if (book.processingState == SCHBookProcessingStateReadyToRead) {
             needsProcessing = NO;
-        } else if (book.processingState == SCHBookProcessingStateReadyForBookFileDownload
-                   && spaceSaverMode == YES) {
+        } else if (book.processingState == SCHBookProcessingStateReadyForBookFileDownload) {
             needsProcessing = NO;
         }
     } else {
@@ -348,17 +337,6 @@ static SCHProcessingManager *sharedManager = nil;
     }
     
 	return hasAquiredLicense;
-}
-
-- (BOOL)spaceSaverMode
-{
-    BOOL ret = YES;
-    
-    if ([[SCHAppStateManager sharedAppStateManager] isSampleStore] == NO) {
-    	ret = [[NSUserDefaults standardUserDefaults] boolForKey:kSCHUserDefaultsSpaceSaverMode];
-    }
-    
-    return(ret);
 }
 
 #pragma mark - Processing Book Tracking
@@ -737,7 +715,6 @@ static SCHProcessingManager *sharedManager = nil;
         
         if (book != nil) {
             // check for space saver mode
-            BOOL spaceSaverMode = [self spaceSaverMode];
             BOOL bookFileURLIsBundleURL = [book bookFileURLIsBundleURL];
             
             switch (book.processingState) {
@@ -757,7 +734,7 @@ static SCHProcessingManager *sharedManager = nil;
                     // if space saver mode is off, bump the book to the download state and start download
                 case SCHBookProcessingStateDownloadPaused:
                 case SCHBookProcessingStateReadyForBookFileDownload:
-                    if (!spaceSaverMode || [[book ForceProcess] boolValue] || bookFileURLIsBundleURL) {
+                    if ([[book ForceProcess] boolValue] || bookFileURLIsBundleURL) {
                         [book setProcessingState:SCHBookProcessingStateDownloadStarted];
                         [self processIdentifier:identifier];
                     }
