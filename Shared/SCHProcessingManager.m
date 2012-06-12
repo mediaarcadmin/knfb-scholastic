@@ -843,6 +843,28 @@ static SCHProcessingManager *sharedManager = nil;
     }
 }
 
+- (BOOL)forceReDownloadForBookWithIdentifier:(SCHBookIdentifier *)identifier
+{
+    NSAssert([NSThread isMainThread], @"forceReDownloadForBookWithIdentifier: must be called on main thread");
+    
+    if ([self identifierIsProcessing:identifier]) {
+        NSAssert([NSThread isMainThread], @"you cannot forceReDownloadForBookWithIdentifier if teh book is already processing");
+        return NO;
+    }
+    
+    SCHAppBook *book = [[SCHBookManager sharedBookManager] bookWithIdentifier:identifier inManagedObjectContext:self.managedObjectContext];
+    
+    if (book != nil) {
+        book.ForceProcess = [NSNumber numberWithBool:YES];
+        [book setProcessingState:SCHBookProcessingStateNoURLs];
+        [self postBookStateUpdate:identifier];
+        [self redispatchIdentifier:identifier];
+        return YES;
+    }
+    
+    return NO;
+}
+
 - (void)userRequestedRetryForBookWithIdentifier:(SCHBookIdentifier *)identifier
 {
     NSAssert([NSThread isMainThread], @"userRequestedRetryForBookWithIdentifier: must be called on main thread");

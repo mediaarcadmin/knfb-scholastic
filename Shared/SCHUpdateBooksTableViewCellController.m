@@ -127,9 +127,7 @@ NSString * const kSCHBookUpdatedSuccessfullyNotification = @"book-updated-succes
 }
 
 - (void)startUpdateIfEnabled
-{
-    NSError *error = nil;
-    
+{    
     if (self.bookEnabledForUpdate) {
         SCHAppBook *book = [self book];
         if (book != nil) {
@@ -137,13 +135,10 @@ NSString * const kSCHBookUpdatedSuccessfullyNotification = @"book-updated-succes
             [book.ContentMetadataItem deleteAllFiles];
             [book clearToDefaultValues];
             
-            // start reprocessing the updated book
-            [book setProcessingState:SCHBookProcessingStateURLsNotPopulated];            
-            if ([self.managedObjectContext save:&error] == NO) {
-                NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
+            // start redownloading the updated book
+            if ([[SCHProcessingManager sharedProcessingManager] forceReDownloadForBookWithIdentifier:[book bookIdentifier]]) {
+                [self.cell enableSpinner:[self spinnerStateForProcessingState:[book processingState]]];
             }
-            [[SCHProcessingManager sharedProcessingManager] userRequestedRetryForBookWithIdentifier:[book bookIdentifier]];
-            [self.cell enableSpinner:[self spinnerStateForProcessingState:[book processingState]]];
         }
     }
 }
