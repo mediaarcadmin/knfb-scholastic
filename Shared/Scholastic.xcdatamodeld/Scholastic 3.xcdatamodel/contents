@@ -45,7 +45,7 @@
     <entity name="SCHAppContentProfileItem" representedClassName="SCHAppContentProfileItem">
         <attribute name="DRMQualifier" attributeType="Integer 16" defaultValueString="0" indexed="YES"/>
         <attribute name="ISBN" attributeType="String" defaultValueString="0" indexed="YES"/>
-        <attribute name="IsNewBook" attributeType="Boolean" defaultValueString="YES"/>
+        <attribute name="IsNewBook" optional="YES" attributeType="Boolean"/>
         <attribute name="LastBookmarkAnnotationSync" optional="YES" attributeType="Date"/>
         <attribute name="LastHighlightAnnotationSync" optional="YES" attributeType="Date"/>
         <attribute name="LastNoteAnnotationSync" optional="YES" attributeType="Date"/>
