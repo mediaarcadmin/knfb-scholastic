@@ -170,6 +170,10 @@ static NSString * const kSCHContentMetadataItemAnnotationsItemProfileID = @"Anno
         ret = NSOrderedAscending;
     } else {
         ret = [self.FormatAuthorString compare:contentMetadataItem.FormatAuthorString];
+        // when the author is the same then use the book title as a secondary compare
+        if (ret == NSOrderedSame) {
+            ret = [self titleCompare:contentMetadataItem];
+        }
     }
     
     return ret;
