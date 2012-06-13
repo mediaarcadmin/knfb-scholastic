@@ -26,6 +26,7 @@ enum {
 @property (nonatomic, assign) NSInteger numberOfPairsFound;
 @property (nonatomic, assign) NSInteger numberOfFlips;
 @property (nonatomic, assign) UIView *firstFlippedTile;
+@property (nonatomic, assign) BOOL selectedPuzzleType;
 
 - (void)setupChooseLevelView;
 - (void)setupPuzzleView;
@@ -48,6 +49,18 @@ enum {
 @synthesize numberOfPairsFound;
 @synthesize numberOfFlips;
 @synthesize firstFlippedTile;
+@synthesize selectedPuzzleType;
+
+- (id)initWithStoryInteraction:(SCHStoryInteraction *)storyInteraction
+{
+    self = [super initWithStoryInteraction:storyInteraction];
+    
+    if (self) {
+        selectedPuzzleType = NO;
+    }
+    
+    return self;
+}
 
 - (void)dealloc
 {
@@ -132,6 +145,21 @@ enum {
     [self layoutTiles];
 }
 
+- (IBAction)playAudioButtonTapped:(id)sender
+{
+    [self cancelQueuedAudioExecutingSynchronizedBlocksBefore:^{
+        NSString *path = nil;
+        if (!self.selectedPuzzleType) {
+            path = [(SCHStoryInteractionConcentration *)self.storyInteraction audioPathForIntroduction];
+        } else {
+            path = [self.storyInteraction audioPathForQuestion];
+        }
+        if (path != nil) {
+            [self enqueueAudioWithPath:path fromBundle:NO];
+        }   
+    }];
+}
+
 #pragma mark - Choose level view
 
 - (void)setupChooseLevelView
@@ -147,6 +175,7 @@ enum {
     [self cancelQueuedAudioExecutingSynchronizedBlocksBefore:^{
         self.numberOfPairs = [(UIView *)sender tag];
         [self presentNextView];
+        self.selectedPuzzleType = YES;
     }];
 }
 
