@@ -572,6 +572,11 @@ static Class controllerClassForStoryInteraction(SCHStoryInteraction *storyIntera
             break;
         }
     }
+
+    // an additional check here to make sure that the contents view and background view frames are integral
+    // prevents later blurriness on iPhone
+    contents.frame = CGRectIntegral(contents.frame);
+    self.backgroundView.frame = CGRectIntegral(self.backgroundView.frame);
 }
 
 - (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration

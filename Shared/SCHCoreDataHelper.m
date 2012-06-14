@@ -74,8 +74,11 @@ static NSString * const kSCHCoreDataHelperDictionaryStoreName = @"Scholastic_Dic
     
     [[SCHAuthenticationManager sharedAuthenticationManager] clearAppProcessingWaitUntilFinished:NO];
     [[self managedObjectContext] reset];
-    [[self persistentStoreCoordinator] removePersistentStore:currentMainStore 
-                                                       error:&error];  
+    if (currentMainStore != nil &&
+        [[self persistentStoreCoordinator] removePersistentStore:currentMainStore 
+                                                           error:&error] == NO) {
+		NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
+	}      
     [self removeStoreAtURL:[self storeURL:kSCHCoreDataHelperStandardStoreName]];
     
     self.managedObjectContext = nil;

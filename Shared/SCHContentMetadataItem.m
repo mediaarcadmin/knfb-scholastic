@@ -31,7 +31,11 @@ static NSString * const kSCHContentMetadataItemAnnotationsItemProfileID = @"Anno
 
 @interface SCHContentMetadataItem ()
 
+- (NSComparisonResult)titleCompare:(SCHContentMetadataItem *)contentMetadataItem
+                  secondaryCompare:(BOOL)secondaryCompare;
 - (NSString *)formatSingleAuthor:(NSString *)author;
+- (NSComparisonResult)authorCompare:(SCHContentMetadataItem *)contentMetadataItem
+                   secondaryCompare:(BOOL)secondaryCompare;
 
 @end
 
@@ -103,6 +107,12 @@ static NSString * const kSCHContentMetadataItemAnnotationsItemProfileID = @"Anno
 
 - (NSComparisonResult)titleCompare:(SCHContentMetadataItem *)contentMetadataItem
 {
+    return [self titleCompare:contentMetadataItem secondaryCompare:YES];
+}
+
+- (NSComparisonResult)titleCompare:(SCHContentMetadataItem *)contentMetadataItem
+                     secondaryCompare:(BOOL)secondaryCompare
+{
     NSComparisonResult ret;
     
     if (self.Title == nil || 
@@ -113,6 +123,10 @@ static NSString * const kSCHContentMetadataItemAnnotationsItemProfileID = @"Anno
         ret = NSOrderedAscending;
     } else {
         ret = [self.FormatTitleString compare:contentMetadataItem.FormatTitleString];
+        // when the title is the same then use the book author as a secondary compare
+        if (ret == NSOrderedSame && secondaryCompare == YES) {
+            ret = [self authorCompare:contentMetadataItem secondaryCompare:NO];
+        }        
     }
     
     return ret;
@@ -160,6 +174,12 @@ static NSString * const kSCHContentMetadataItemAnnotationsItemProfileID = @"Anno
         
 - (NSComparisonResult)authorCompare:(SCHContentMetadataItem *)contentMetadataItem
 {
+    return [self authorCompare:contentMetadataItem secondaryCompare:YES];
+}
+
+- (NSComparisonResult)authorCompare:(SCHContentMetadataItem *)contentMetadataItem
+                      secondaryCompare:(BOOL)secondaryCompare
+{
     NSComparisonResult ret;
     
     if (self.Author == nil || 
@@ -170,6 +190,10 @@ static NSString * const kSCHContentMetadataItemAnnotationsItemProfileID = @"Anno
         ret = NSOrderedAscending;
     } else {
         ret = [self.FormatAuthorString compare:contentMetadataItem.FormatAuthorString];
+        // when the author is the same then use the book title as a secondary compare
+        if (ret == NSOrderedSame && secondaryCompare == YES) {
+            ret = [self titleCompare:contentMetadataItem secondaryCompare:NO];
+        }
     }
     
     return ret;
