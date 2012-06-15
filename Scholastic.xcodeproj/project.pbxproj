@@ -354,6 +354,18 @@
 		521B7AEB1521D67E00DC0739 /* WishListServiceSvc+Binding.m in Sources */ = {isa = PBXBuildFile; fileRef = 521B7AE91521D67E00DC0739 /* WishListServiceSvc+Binding.m */; };
 		521B7AEC1521D67E00DC0739 /* WishListServiceSvc+Binding.m in Sources */ = {isa = PBXBuildFile; fileRef = 521B7AE91521D67E00DC0739 /* WishListServiceSvc+Binding.m */; };
 		521B7AED1521D67E00DC0739 /* WishListServiceSvc+Binding.m in Sources */ = {isa = PBXBuildFile; fileRef = 521B7AE91521D67E00DC0739 /* WishListServiceSvc+Binding.m */; };
+		5222F290158A1C12006040D7 /* SCHSyncComponentOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 5222F28F158A1C11006040D7 /* SCHSyncComponentOperation.m */; };
+		5222F291158A1C12006040D7 /* SCHSyncComponentOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 5222F28F158A1C11006040D7 /* SCHSyncComponentOperation.m */; };
+		5222F292158A1C12006040D7 /* SCHSyncComponentOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 5222F28F158A1C11006040D7 /* SCHSyncComponentOperation.m */; };
+		5222F293158A1C12006040D7 /* SCHSyncComponentOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 5222F28F158A1C11006040D7 /* SCHSyncComponentOperation.m */; };
+		5222F296158A2BF3006040D7 /* SCHGetUserProfilesResponseOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 5222F295158A2BF2006040D7 /* SCHGetUserProfilesResponseOperation.m */; };
+		5222F297158A2BF3006040D7 /* SCHGetUserProfilesResponseOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 5222F295158A2BF2006040D7 /* SCHGetUserProfilesResponseOperation.m */; };
+		5222F298158A2BF3006040D7 /* SCHGetUserProfilesResponseOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 5222F295158A2BF2006040D7 /* SCHGetUserProfilesResponseOperation.m */; };
+		5222F299158A2BF3006040D7 /* SCHGetUserProfilesResponseOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 5222F295158A2BF2006040D7 /* SCHGetUserProfilesResponseOperation.m */; };
+		5222F29C158B1F11006040D7 /* SCHSaveUserProfilesOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 5222F29B158B1F10006040D7 /* SCHSaveUserProfilesOperation.m */; };
+		5222F29D158B1F11006040D7 /* SCHSaveUserProfilesOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 5222F29B158B1F10006040D7 /* SCHSaveUserProfilesOperation.m */; };
+		5222F29E158B1F11006040D7 /* SCHSaveUserProfilesOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 5222F29B158B1F10006040D7 /* SCHSaveUserProfilesOperation.m */; };
+		5222F29F158B1F11006040D7 /* SCHSaveUserProfilesOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 5222F29B158B1F10006040D7 /* SCHSaveUserProfilesOperation.m */; };
 		5226C70514A489CB00307634 /* SCHVersionDownloadManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 5226C70214A489CB00307634 /* SCHVersionDownloadManager.m */; };
 		5226C70614A489CB00307634 /* SCHVersionDownloadManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 5226C70214A489CB00307634 /* SCHVersionDownloadManager.m */; };
 		5226C70714A489CB00307634 /* SCHVersionManifestOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 5226C70414A489CB00307634 /* SCHVersionManifestOperation.m */; };
@@ -4744,6 +4756,12 @@
 		521B7AE81521D67E00DC0739 /* WishListServiceSvc+Binding.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "WishListServiceSvc+Binding.h"; sourceTree = "<group>"; };
 		521B7AE91521D67E00DC0739 /* WishListServiceSvc+Binding.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "WishListServiceSvc+Binding.m"; sourceTree = "<group>"; };
 		521BB6C015207FF00045AC92 /* SCHISBNItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHISBNItem.h; path = Shared/SCHISBNItem.h; sourceTree = "<group>"; };
+		5222F28E158A1C11006040D7 /* SCHSyncComponentOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHSyncComponentOperation.h; path = Shared/SCHSyncComponentOperation.h; sourceTree = "<group>"; };
+		5222F28F158A1C11006040D7 /* SCHSyncComponentOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHSyncComponentOperation.m; path = Shared/SCHSyncComponentOperation.m; sourceTree = "<group>"; };
+		5222F294158A2BF2006040D7 /* SCHGetUserProfilesResponseOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHGetUserProfilesResponseOperation.h; path = Shared/SCHGetUserProfilesResponseOperation.h; sourceTree = "<group>"; };
+		5222F295158A2BF2006040D7 /* SCHGetUserProfilesResponseOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHGetUserProfilesResponseOperation.m; path = Shared/SCHGetUserProfilesResponseOperation.m; sourceTree = "<group>"; };
+		5222F29A158B1F10006040D7 /* SCHSaveUserProfilesOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHSaveUserProfilesOperation.h; path = Shared/SCHSaveUserProfilesOperation.h; sourceTree = "<group>"; };
+		5222F29B158B1F10006040D7 /* SCHSaveUserProfilesOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHSaveUserProfilesOperation.m; path = Shared/SCHSaveUserProfilesOperation.m; sourceTree = "<group>"; };
 		5226C70114A489CB00307634 /* SCHVersionDownloadManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHVersionDownloadManager.h; path = Shared/SCHVersionDownloadManager.h; sourceTree = "<group>"; };
 		5226C70214A489CB00307634 /* SCHVersionDownloadManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHVersionDownloadManager.m; path = Shared/SCHVersionDownloadManager.m; sourceTree = "<group>"; };
 		5226C70314A489CB00307634 /* SCHVersionManifestOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHVersionManifestOperation.h; path = Shared/SCHVersionManifestOperation.h; sourceTree = "<group>"; };
@@ -7740,6 +7758,10 @@
 				52E36768131D3ED200ACCBEE /* SCHBookshelfSyncComponent.m */,
 				52AD9D69130000570099FB88 /* SCHProfileSyncComponent.h */,
 				52AD9D6A130000570099FB88 /* SCHProfileSyncComponent.m */,
+				5222F29A158B1F10006040D7 /* SCHSaveUserProfilesOperation.h */,
+				5222F29B158B1F10006040D7 /* SCHSaveUserProfilesOperation.m */,
+				5222F294158A2BF2006040D7 /* SCHGetUserProfilesResponseOperation.h */,
+				5222F295158A2BF2006040D7 /* SCHGetUserProfilesResponseOperation.m */,
 				52AD9D6B130000570099FB88 /* SCHReadingStatsSyncComponent.h */,
 				52AD9D6C130000570099FB88 /* SCHReadingStatsSyncComponent.m */,
 				52AD9D6D130000570099FB88 /* SCHSettingsSyncComponent.h */,
@@ -7748,6 +7770,8 @@
 				52943AE414FFD0E8002991EB /* SCHWishListSyncComponent.m */,
 				525668DD150F80F600570623 /* SCHRecommendationSyncComponent.h */,
 				525668DE150F80F600570623 /* SCHRecommendationSyncComponent.m */,
+				5222F28E158A1C11006040D7 /* SCHSyncComponentOperation.h */,
+				5222F28F158A1C11006040D7 /* SCHSyncComponentOperation.m */,
 			);
 			name = Sync;
 			sourceTree = "<group>";
@@ -12463,6 +12487,9 @@
 				F82F54A31557DB2C00041D0E /* SCHRecommendationSampleView.m in Sources */,
 				C9D37724156A52A700900844 /* SCHISBNItemObject.m in Sources */,
 				529645A315775FBA006F01D9 /* NSString+EmailValidation.m in Sources */,
+				5222F290158A1C12006040D7 /* SCHSyncComponentOperation.m in Sources */,
+				5222F296158A2BF3006040D7 /* SCHGetUserProfilesResponseOperation.m in Sources */,
+				5222F29C158B1F11006040D7 /* SCHSaveUserProfilesOperation.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -12903,6 +12930,9 @@
 				F82F54A41557DB2C00041D0E /* SCHRecommendationSampleView.m in Sources */,
 				C9D37725156A52A700900844 /* SCHISBNItemObject.m in Sources */,
 				529645A415775FBA006F01D9 /* NSString+EmailValidation.m in Sources */,
+				5222F291158A1C12006040D7 /* SCHSyncComponentOperation.m in Sources */,
+				5222F297158A2BF3006040D7 /* SCHGetUserProfilesResponseOperation.m in Sources */,
+				5222F29D158B1F11006040D7 /* SCHSaveUserProfilesOperation.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -13276,6 +13306,9 @@
 				F82F54A51557DB2C00041D0E /* SCHRecommendationSampleView.m in Sources */,
 				C9D37726156A52A700900844 /* SCHISBNItemObject.m in Sources */,
 				529645A515775FBA006F01D9 /* NSString+EmailValidation.m in Sources */,
+				5222F292158A1C12006040D7 /* SCHSyncComponentOperation.m in Sources */,
+				5222F298158A2BF3006040D7 /* SCHGetUserProfilesResponseOperation.m in Sources */,
+				5222F29E158B1F11006040D7 /* SCHSaveUserProfilesOperation.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -13649,6 +13682,9 @@
 				F82F54A61557DB2C00041D0E /* SCHRecommendationSampleView.m in Sources */,
 				C9D37727156A52A700900844 /* SCHISBNItemObject.m in Sources */,
 				529645A615775FBA006F01D9 /* NSString+EmailValidation.m in Sources */,
+				5222F293158A1C12006040D7 /* SCHSyncComponentOperation.m in Sources */,
+				5222F299158A2BF3006040D7 /* SCHGetUserProfilesResponseOperation.m in Sources */,
+				5222F29F158B1F11006040D7 /* SCHSaveUserProfilesOperation.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

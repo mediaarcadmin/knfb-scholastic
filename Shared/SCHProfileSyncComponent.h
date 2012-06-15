@@ -20,10 +20,14 @@ extern NSString * const SCHProfileSyncComponentDidCompleteNotification;
 extern NSString * const SCHProfileSyncComponentDidFailNotification;
 
 @interface SCHProfileSyncComponent : SCHSyncComponent
-{
-}
 
+@property (atomic, retain) NSMutableArray *savedProfiles;
+
+- (BOOL)requestUserProfiles;
 - (void)syncProfilesFromMainThread:(NSArray *)profileList;
 - (void)addProfileFromMainThread:(NSDictionary *)webProfile;
+
++ (void)removeWishListForProfile:(SCHProfileItem *)profileItem
+            managedObjectContext:(NSManagedObjectContext *)aManagedObjectContext;
 
 @end

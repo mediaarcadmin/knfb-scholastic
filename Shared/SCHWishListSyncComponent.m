@@ -21,7 +21,6 @@
 
 // Constants
 NSString * const SCHWishListSyncComponentDidInsertNotification = @"SCHWishListSyncComponentDidInsertNotification";
-NSString * const SCHWishListSyncComponentWillDeleteNotification = @"SCHWishListSyncComponentWillDeleteNotification";
 NSString * const SCHWishListSyncComponentISBNs = @"SCHWishListSyncComponentISBNs";
 NSString * const SCHWishListSyncComponentDidCompleteNotification = @"SCHWishListSyncComponentDidCompleteNotification";
 NSString * const SCHWishListSyncComponentDidFailNotification = @"SCHWishListSyncComponentDidFailNotification";
@@ -495,22 +494,6 @@ NSString * const SCHWishListSyncComponentDidFailNotification = @"SCHWishListSync
     for (SCHWishListProfile *wishListProfile in deletePool) {
         // we leave the actual deletion to the profile sync but we do delete 
         // the items
-        NSMutableArray *deletedISBNs = [NSMutableArray array];
-        for (SCHWishListItem *item in wishListProfile.ItemList) {
-            NSString *isbn = item.ISBN;
-            if (isbn != nil) {
-                [deletedISBNs addObject:isbn];
-            }            
-        }
-        if ([deletedISBNs count] > 0) {
-            [self performOnMainThreadSync:^{            
-                [[NSNotificationCenter defaultCenter] postNotificationName:SCHWishListSyncComponentWillDeleteNotification 
-                                                                    object:self 
-                                                                  userInfo:[NSDictionary dictionaryWithObject:[NSArray arrayWithArray:deletedISBNs]
-                                                                                                       forKey:SCHWishListSyncComponentISBNs]];
-            }];
-        }           
-        
         [wishListProfile removeItemList:wishListProfile.ItemList];
     }                
     
@@ -648,26 +631,9 @@ NSString * const SCHWishListSyncComponentDidFailNotification = @"SCHWishListSync
 		}		
 	}
     
-    if ([deletePool count] > 0) {
-        NSMutableArray *deletedISBNs = [NSMutableArray arrayWithCapacity:[deletePool count]];
-        for (SCHWishListItem *item in deletePool) {
-            NSString *isbn = item.ISBN;
-            if (isbn != nil) {
-                [deletedISBNs addObject:isbn];
-            }
-        }
-        if ([deletedISBNs count] > 0) {
-            [self performOnMainThreadSync:^{           
-                [[NSNotificationCenter defaultCenter] postNotificationName:SCHWishListSyncComponentWillDeleteNotification 
-                                                                    object:self 
-                                                                  userInfo:[NSDictionary dictionaryWithObject:[NSArray arrayWithArray:deletedISBNs]
-                                                                                                       forKey:SCHWishListSyncComponentISBNs]];
-            }];
-        }        
-        for (SCHWishListItem *wishListItem in deletePool) {
-            [aManagedObjectContext deleteObject:wishListItem];
-        }                        
-    }
+    for (SCHWishListItem *wishListItem in deletePool) {
+        [aManagedObjectContext deleteObject:wishListItem];
+    }                        
 
     if ([creationPool count] > 0) {
         NSMutableArray *insertedISBNs = [NSMutableArray arrayWithCapacity:[creationPool count]];

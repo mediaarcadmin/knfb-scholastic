@@ -14,6 +14,7 @@
 
 // Constants
 extern NSString * const SCHSyncComponentDidFailAuthenticationNotification;
+extern double const SCHSyncComponentThreadLowPriority;
 
 @interface SCHSyncComponent : SCHComponent
 {
@@ -31,5 +32,15 @@ extern NSString * const SCHSyncComponentDidFailAuthenticationNotification;
 - (void)resetSync;
 - (void)resetWebService;
 - (void)clearCoreData;
+
+- (void)completeWithSuccessMethod:(NSString *)method 
+                           result:(NSDictionary *)result 
+                         userInfo:(NSDictionary *)userInfo
+                 notificationName:(NSString *)notificationName;
+- (void)completeWithFailureMethod:(NSString *)method 
+                            error:(NSError *)error 
+                      requestInfo:(NSDictionary *)requestInfo 
+                           result:(NSDictionary *)result
+                 notificationName:(NSString *)notificationName;
 
 @end
