@@ -112,18 +112,22 @@
         [[SCHAppStateManager sharedAppStateManager] isCOPPACompliant] == NO) {
         SCHCOPPAManager *weakSelf = self;
         self.waitingOnResponse = YES;
-        [[SCHAuthenticationManager sharedAuthenticationManager] pTokenWithValidation:^(NSString *pToken, NSError *error) {
+        if (![[SCHAuthenticationManager sharedAuthenticationManager] pTokenWithValidation:^(NSString *pToken, NSError *error) {
             if (error == nil) {
                 [weakSelf.scholasticWebService getUserInfo:pToken];     
             } else {
                 weakSelf.waitingOnResponse = NO;
             }
-        }];
+        }]) {
+            self.waitingOnResponse = NO;
+        }
     }
 }
 
 - (void)resetCOPPA
 {
+    self.nextRequest = [NSDate date];
+    self.waitingOnResponse = NO;
     [[SCHAppStateManager sharedAppStateManager] setCanSyncNotes:NO];
     [[SCHAppStateManager sharedAppStateManager] setCOPPACompliant:NO];    
 }
