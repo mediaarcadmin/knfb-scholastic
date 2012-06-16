@@ -324,7 +324,7 @@ static NSString * const kSCHContentMetadataItemAnnotationsItemProfileID = @"Anno
 - (void)deleteAllFiles
 {    
     NSString *bookDirectory = self.AppBook.bookDirectory;
-    SCHBookIdentifier *bookIdentifier = self.bookIdentifier;
+    SCHBookIdentifier *bookIdentifier = [[self.bookIdentifier copy] autorelease];
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{
         [[SCHProcessingManager sharedProcessingManager] cancelAllOperationsForBookIdentifier:bookIdentifier 
                                                                            waitUntilFinished:YES];

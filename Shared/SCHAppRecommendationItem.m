@@ -231,7 +231,7 @@ NSString * const kSCHAppRecommendationFullCoverImagePath = @"FullCoverImagePath"
 - (void)deleteAllFiles
 {
     NSString *recommendationDirectory = [self recommendationDirectory];
-    NSString *contentIdentifier = self.ContentIdentifier;
+    NSString *contentIdentifier = [[self.ContentIdentifier copy] autorelease];
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{        
         [[SCHRecommendationManager sharedManager] cancelAllOperationsForIsbn:contentIdentifier
                                                            waitUntilFinished:YES];

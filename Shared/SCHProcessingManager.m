@@ -409,37 +409,41 @@ static SCHProcessingManager *sharedManager = nil;
                            waitUntilFinished:(BOOL)waitUntilFinished
 {
     @synchronized(self) {
-        for (SCHBookOperation *bookOperation in [self.webServiceOperationQueue operations]) {
-            if ([bookOperation.identifier isEqual:bookIdentifier] == YES) {
-                [bookOperation cancel];
-                if (waitUntilFinished == YES) {
-                    [bookOperation waitUntilFinished];
+        if (bookIdentifier) {
+            for (SCHBookOperation *bookOperation in [self.webServiceOperationQueue operations]) {
+                if ([bookOperation.identifier isEqual:bookIdentifier] == YES) {
+                    [bookOperation cancel];
+                    if (waitUntilFinished == YES) {
+                        [bookOperation waitUntilFinished];
+                    }
+                    break;
                 }
-                break;
+            }
+            
+            for (SCHBookOperation *bookOperation in [self.networkOperationQueue operations]) {
+                if ([bookOperation.identifier isEqual:bookIdentifier] == YES) {
+                    [bookOperation cancel];
+                    if (waitUntilFinished == YES) {
+                        [bookOperation waitUntilFinished];
+                    }
+                    break;
+                }
+            }
+            
+            for (SCHBookOperation *bookOperation in [self.localProcessingQueue operations]) {
+                if ([bookOperation.identifier isEqual:bookIdentifier] == YES) {
+                    [bookOperation cancel];
+                    if (waitUntilFinished == YES) {
+                        [bookOperation waitUntilFinished];
+                    }
+                    break;
+                }
+            }
+            
+            if ([self.currentlyProcessingIdentifiers containsObject:bookIdentifier]) {
+                [self.currentlyProcessingIdentifiers removeObject:bookIdentifier];
             }
         }
-        
-        for (SCHBookOperation *bookOperation in [self.networkOperationQueue operations]) {
-            if ([bookOperation.identifier isEqual:bookIdentifier] == YES) {
-                [bookOperation cancel];
-                if (waitUntilFinished == YES) {
-                    [bookOperation waitUntilFinished];
-                }
-                break;
-            }
-        }
-        
-        for (SCHBookOperation *bookOperation in [self.localProcessingQueue operations]) {
-            if ([bookOperation.identifier isEqual:bookIdentifier] == YES) {
-                [bookOperation cancel];
-                if (waitUntilFinished == YES) {
-                    [bookOperation waitUntilFinished];
-                }
-                break;
-            }
-        }
-        
-        [self.currentlyProcessingIdentifiers removeObject:bookIdentifier];
     }
 }
 

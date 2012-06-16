@@ -115,20 +115,24 @@ static SCHRecommendationManager *sharedManager = nil;
                  waitUntilFinished:(BOOL)waitUntilFinished
 {
     @synchronized(self) {
-        
-        NSArray *allOps = [[self.processingQueue operations] arrayByAddingObjectsFromArray:[self.downloadQueue operations]];
-        
-        for (SCHRecommendationOperation *op in allOps) {
-            if ([op.isbn isEqual:isbn] == YES) {
-                [op cancel];
-                if (waitUntilFinished == YES) {
-                    [op waitUntilFinished];
-                }                
-                break;
+        if (isbn) {
+            NSArray *allOps = [[self.processingQueue operations] arrayByAddingObjectsFromArray:[self.downloadQueue operations]];
+            
+            for (SCHRecommendationOperation *op in allOps) {
+                if ([op.isbn isEqual:isbn] == YES) {
+                    [op cancel];
+                    if (waitUntilFinished == YES) {
+                        [op waitUntilFinished];
+                    }                
+                    break;
+                }
+            }
+            
+            
+            if ([self.currentlyProcessingIsbns containsObject:isbn]) {
+                [self.currentlyProcessingIsbns removeObject:isbn];
             }
         }
-
-        [self.currentlyProcessingIsbns removeObject:isbn];
     }
 }
 
