@@ -88,11 +88,18 @@ double const SCHSyncComponentThreadLowPriority = 0.25;
     NSAssert(NO, @"SCHSyncComponent:clearCoreData needs to be overidden in sub-classes");        
 }
 
-#pragma mark - Delegate methods
-
-- (void)method:(NSString *)method didCompleteWithResult:(NSDictionary *)result
-      userInfo:(NSDictionary *)userInfo
-{	
+- (void)completeWithSuccessMethod:(NSString *)method 
+                           result:(NSDictionary *)result 
+                         userInfo:(NSDictionary *)userInfo
+                 notificationName:(NSString *)notificationName
+             notificationUserInfo:(NSDictionary *)notificationUserInfo
+{
+    if (notificationName != nil) {
+        [[NSNotificationCenter defaultCenter] postNotificationName:notificationName 
+                                                            object:self
+                                                          userInfo:notificationUserInfo];                
+    }
+    
 	[self endBackgroundTask];
 	self.isSynchronizing = NO;
 	
@@ -108,34 +115,11 @@ double const SCHSyncComponentThreadLowPriority = 0.25;
         }
     }
     
-	[super method:method didCompleteWithResult:result userInfo:userInfo];	
-}
-
-- (void)method:(NSString *)method didFailWithError:(NSError *)error 
-   requestInfo:(NSDictionary *)requestInfo
-        result:(NSDictionary *)result
-{
-	[self endBackgroundTask];
-	self.isSynchronizing = NO;
-	
-    self.failureCount = self.failureCount + 1;
-    
-	[super method:method didFailWithError:error requestInfo:requestInfo result:result];
-}
-
-- (void)completeWithSuccessMethod:(NSString *)method 
-                           result:(NSDictionary *)result 
-                         userInfo:(NSDictionary *)userInfo
-                 notificationName:(NSString *)notificationName
-             notificationUserInfo:(NSDictionary *)notificationUserInfo
-{
-    if (notificationName != nil) {
-        [[NSNotificationCenter defaultCenter] postNotificationName:notificationName 
-                                                            object:self
-                                                          userInfo:notificationUserInfo];                
-    }
-    
-    [super method:method didCompleteWithResult:result userInfo:userInfo];                                
+    [super completeWithSuccessMethod:method 
+                              result:result 
+                            userInfo:userInfo
+                    notificationName:notificationName
+                notificationUserInfo:notificationUserInfo];
 }
 
 - (void)completeWithFailureMethod:(NSString *)method 
@@ -151,7 +135,17 @@ double const SCHSyncComponentThreadLowPriority = 0.25;
                                                           userInfo:notificationUserInfo];        
     }
     
-    [super method:method didFailWithError:error requestInfo:requestInfo result:result];    
+    [self endBackgroundTask];
+	self.isSynchronizing = NO;
+	
+    self.failureCount = self.failureCount + 1;
+
+    [super completeWithFailureMethod:method 
+                               error:error 
+                         requestInfo:requestInfo 
+                              result:result
+                    notificationName:notificationName
+                notificationUserInfo:notificationUserInfo];
 }
 
 #pragma mark - Background task methods
