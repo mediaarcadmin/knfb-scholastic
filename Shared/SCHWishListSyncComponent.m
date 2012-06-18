@@ -158,16 +158,18 @@ NSString * const SCHWishListSyncComponentDidFailNotification = @"SCHWishListSync
                         if ([profiles count] > 0) {
                             [self retrieveWishLists:profiles];       
                         } else {
-                            [[NSNotificationCenter defaultCenter] postNotificationName:SCHWishListSyncComponentDidCompleteNotification 
-                                                                                object:self 
-                                                                              userInfo:nil];                
-                            [super method:nil didCompleteWithResult:nil userInfo:nil];                                
+                            [self completeWithSuccessMethod:nil 
+                                                     result:nil 
+                                                   userInfo:nil 
+                                           notificationName:SCHWishListSyncComponentDidCompleteNotification 
+                                       notificationUserInfo:nil];
                         }
                     } else {
-                        [[NSNotificationCenter defaultCenter] postNotificationName:SCHWishListSyncComponentDidCompleteNotification 
-                                                                            object:self 
-                                                                          userInfo:nil];                
-                        [super method:nil didCompleteWithResult:nil userInfo:nil];                
+                        [self completeWithSuccessMethod:nil 
+                                                 result:nil 
+                                               userInfo:nil 
+                                       notificationName:SCHWishListSyncComponentDidCompleteNotification 
+                                   notificationUserInfo:nil];
                     }
                 });
             });
@@ -176,10 +178,11 @@ NSString * const SCHWishListSyncComponentDidFailNotification = @"SCHWishListSync
             if ([profiles count] > 0) {
                 [self retrieveWishLists:profiles];       
             } else {
-                [[NSNotificationCenter defaultCenter] postNotificationName:SCHWishListSyncComponentDidCompleteNotification 
-                                                                    object:self 
-                                                                  userInfo:nil];                
-                [super method:nil didCompleteWithResult:nil userInfo:nil];                                
+                [self completeWithSuccessMethod:nil 
+                                         result:nil 
+                                       userInfo:nil 
+                               notificationName:SCHWishListSyncComponentDidCompleteNotification 
+                           notificationUserInfo:nil];
             }
         } else if([method compare:kSCHWishListWebServiceGetWishListItems] == NSOrderedSame) {
             dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{
@@ -197,21 +200,26 @@ NSString * const SCHWishListSyncComponentDidFailNotification = @"SCHWishListSync
                 [backgroundThreadManagedObjectContext release], backgroundThreadManagedObjectContext = nil;
                 
                 dispatch_async(dispatch_get_main_queue(), ^{
-                    [[NSNotificationCenter defaultCenter] postNotificationName:SCHWishListSyncComponentDidCompleteNotification 
-                                                                        object:self];		            
-                    [super method:method didCompleteWithResult:result userInfo:userInfo];				                
+                    [self completeWithSuccessMethod:method 
+                                             result:result 
+                                           userInfo:userInfo 
+                                   notificationName:SCHWishListSyncComponentDidCompleteNotification 
+                               notificationUserInfo:nil];
                 });
             });
         }        
     }
     @catch (NSException *exception) {
-        [[NSNotificationCenter defaultCenter] postNotificationName:SCHWishListSyncComponentDidFailNotification 
-                                                            object:self];		    
         NSError *error = [NSError errorWithDomain:kBITAPIErrorDomain 
                                              code:kBITAPIExceptionError 
                                          userInfo:[NSDictionary dictionaryWithObject:[exception reason]
                                                                               forKey:NSLocalizedDescriptionKey]];
-        [super method:method didFailWithError:error requestInfo:nil result:result];
+        [self completeWithFailureMethod:method 
+                                  error:error 
+                            requestInfo:nil 
+                                 result:result 
+                       notificationName:SCHWishListSyncComponentDidFailNotification 
+                   notificationUserInfo:nil];
     }
 }
 
@@ -221,9 +229,12 @@ NSString * const SCHWishListSyncComponentDidFailNotification = @"SCHWishListSync
 {
     NSLog(@"%@:didFailWithError\n%@", method, error);
     
-    [[NSNotificationCenter defaultCenter] postNotificationName:SCHWishListSyncComponentDidFailNotification 
-                                                        object:self];        
-    [super method:method didFailWithError:error requestInfo:requestInfo result:result];
+    [self completeWithFailureMethod:method 
+                              error:error 
+                        requestInfo:requestInfo 
+                             result:result 
+                   notificationName:SCHWishListSyncComponentDidFailNotification 
+               notificationUserInfo:nil];
 }
 
 - (BOOL)updateWishListItems
@@ -245,16 +256,18 @@ NSString * const SCHWishListSyncComponentDidFailNotification = @"SCHWishListSync
             if ([profiles count] > 0) {
                 ret = [self retrieveWishLists:profiles];       
             } else {
-                [[NSNotificationCenter defaultCenter] postNotificationName:SCHWishListSyncComponentDidCompleteNotification 
-                                                                    object:self 
-                                                                  userInfo:nil];                
-                [super method:nil didCompleteWithResult:nil userInfo:nil];                                
+                [self completeWithSuccessMethod:nil 
+                                         result:nil 
+                                       userInfo:nil 
+                               notificationName:SCHWishListSyncComponentDidCompleteNotification 
+                           notificationUserInfo:nil];
             }
         } else {
-            [[NSNotificationCenter defaultCenter] postNotificationName:SCHWishListSyncComponentDidCompleteNotification 
-                                                                object:self 
-                                                              userInfo:nil];                
-            [super method:nil didCompleteWithResult:nil userInfo:nil];                
+            [self completeWithSuccessMethod:nil 
+                                     result:nil 
+                                   userInfo:nil 
+                           notificationName:SCHWishListSyncComponentDidCompleteNotification 
+                       notificationUserInfo:nil];
         }
     }
     

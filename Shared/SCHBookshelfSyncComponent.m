@@ -153,18 +153,22 @@ NSString * const SCHBookshelfSyncComponentDidFailNotification = @"SCHBookshelfSy
                     
                     if (triggerDidCompleteNotification == YES) {
                         dispatch_async(dispatch_get_main_queue(), ^{
-                            [[NSNotificationCenter defaultCenter] postNotificationName:SCHBookshelfSyncComponentDidCompleteNotification 
-                                                                                object:self];
-                            [super method:method didCompleteWithResult:nil userInfo:userInfo];				
+                            [self completeWithSuccessMethod:method 
+                                                     result:nil 
+                                                   userInfo:userInfo 
+                                           notificationName:SCHBookshelfSyncComponentDidCompleteNotification 
+                                       notificationUserInfo:nil];
                         });
                     }
                 } else {
                     [self postBookshelfSyncComponentBookReceivedNotification:list];
                     
                     dispatch_async(dispatch_get_main_queue(), ^{
-                        [[NSNotificationCenter defaultCenter] postNotificationName:SCHBookshelfSyncComponentDidCompleteNotification 
-                                                                            object:self];
-                        [super method:method didCompleteWithResult:nil userInfo:userInfo];				
+                        [self completeWithSuccessMethod:method 
+                                                 result:nil 
+                                               userInfo:userInfo 
+                                       notificationName:SCHBookshelfSyncComponentDidCompleteNotification 
+                                   notificationUserInfo:nil];
                     });
                 }
                 
@@ -180,29 +184,35 @@ NSString * const SCHBookshelfSyncComponentDidFailNotification = @"SCHBookshelfSy
             [self.didReceiveFailedResponseBooks addObjectsFromArray:bookIdentifiers];
             
             if (self.requestCount < 1) {
-                [[NSNotificationCenter defaultCenter] postNotificationName:SCHBookshelfSyncComponentDidFailNotification 
-                                                                    object:self
-                                                                  userInfo:[NSDictionary dictionaryWithObject:self.didReceiveFailedResponseBooks 
-                                                                                                       forKey:SCHBookshelfSyncComponentBookIdentifiers]];
+                NSDictionary *notificationUserInfo = [NSDictionary dictionaryWithObject:self.didReceiveFailedResponseBooks 
+                                                                                 forKey:SCHBookshelfSyncComponentBookIdentifiers];
 
                 
                 NSError *error = [NSError errorWithDomain:kBITAPIErrorDomain 
                                                      code:kBITAPIExceptionError 
                                                  userInfo:[NSDictionary dictionaryWithObject:[exception reason]
                                                                                       forKey:NSLocalizedDescriptionKey]];
-                [super method:method didFailWithError:error requestInfo:nil result:result];
+                [self completeWithFailureMethod:method 
+                                         error:error 
+                                   requestInfo:nil 
+                                        result:result 
+                              notificationName:SCHBookshelfSyncComponentDidFailNotification 
+                          notificationUserInfo:notificationUserInfo];
             }
         } else {
-            [[NSNotificationCenter defaultCenter] postNotificationName:SCHBookshelfSyncComponentDidFailNotification 
-                                                                object:self
-                                                              userInfo:[NSDictionary dictionaryWithObject:bookIdentifiers 
-                                                                                                   forKey:SCHBookshelfSyncComponentBookIdentifiers]];
+            NSDictionary *notificationUserInfo = [NSDictionary dictionaryWithObject:bookIdentifiers 
+                                                                             forKey:SCHBookshelfSyncComponentBookIdentifiers];
 
             NSError *error = [NSError errorWithDomain:kBITAPIErrorDomain 
                                                  code:kBITAPIExceptionError 
                                              userInfo:[NSDictionary dictionaryWithObject:[exception reason]
                                                                                   forKey:NSLocalizedDescriptionKey]];
-            [super method:method didFailWithError:error requestInfo:nil result:result];            
+            [self completeWithFailureMethod:method 
+                                      error:error 
+                                requestInfo:nil 
+                                     result:result 
+                           notificationName:SCHBookshelfSyncComponentDidFailNotification 
+                       notificationUserInfo:notificationUserInfo];
         }            
     }
 }
@@ -240,22 +250,26 @@ NSString * const SCHBookshelfSyncComponentDidFailNotification = @"SCHBookshelfSy
         [self.didReceiveFailedResponseBooks addObjectsFromArray:bookIdentifiers];
         
         if (self.requestCount < 1) {            
-            [[NSNotificationCenter defaultCenter] postNotificationName:SCHBookshelfSyncComponentDidFailNotification 
-                                                                object:self 
-                                                              userInfo:[NSDictionary dictionaryWithObject:self.didReceiveFailedResponseBooks 
-                                                                                                   forKey:SCHBookshelfSyncComponentBookIdentifiers]];
+            NSDictionary *notificationUserInfo = [NSDictionary dictionaryWithObject:self.didReceiveFailedResponseBooks 
+                                                                             forKey:SCHBookshelfSyncComponentBookIdentifiers];
             
-            [super method:method didFailWithError:error requestInfo:requestInfo result:result];
+            [self completeWithFailureMethod:method 
+                                      error:error 
+                                requestInfo:requestInfo 
+                                     result:result 
+                           notificationName:SCHBookshelfSyncComponentDidFailNotification 
+                       notificationUserInfo:notificationUserInfo];
         }
     } else {
+        NSDictionary *notificationUserInfo = [NSDictionary dictionaryWithObject:bookIdentifiers 
+                                                                         forKey:SCHBookshelfSyncComponentBookIdentifiers];
         
-        
-        [[NSNotificationCenter defaultCenter] postNotificationName:SCHBookshelfSyncComponentDidFailNotification 
-                                                            object:self
-                                                          userInfo:[NSDictionary dictionaryWithObject:bookIdentifiers 
-                                                                                               forKey:SCHBookshelfSyncComponentBookIdentifiers]];
-        
-        [super method:method didFailWithError:error requestInfo:requestInfo result:result];
+        [self completeWithFailureMethod:method 
+                                  error:error 
+                            requestInfo:requestInfo 
+                                 result:result 
+                       notificationName:SCHBookshelfSyncComponentDidFailNotification 
+                   notificationUserInfo:notificationUserInfo];
     }
 }
 
@@ -338,10 +352,11 @@ NSString * const SCHBookshelfSyncComponentDidFailNotification = @"SCHBookshelfSy
 			}
 		}
 	} else {
-        [[NSNotificationCenter defaultCenter] postNotificationName:SCHBookshelfSyncComponentDidCompleteNotification 
-                                                            object:self];
-        
-        [super method:nil didCompleteWithResult:nil userInfo:nil];			
+        [self completeWithSuccessMethod:nil 
+                                 result:nil 
+                               userInfo:nil 
+                       notificationName:SCHBookshelfSyncComponentDidCompleteNotification 
+                   notificationUserInfo:nil];
         
 		ret = NO;
 	}

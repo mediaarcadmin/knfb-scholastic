@@ -81,9 +81,11 @@ NSString * const SCHReadingStatsSyncComponentDidFailNotification = @"SCHReadingS
                 ret = NO;			
             }		            
         } else {
-            [[NSNotificationCenter defaultCenter] postNotificationName:SCHReadingStatsSyncComponentDidCompleteNotification 
-                                                                object:self];            
-            [super method:nil didCompleteWithResult:nil userInfo:nil];		
+            [self completeWithSuccessMethod:nil 
+                                     result:nil 
+                                   userInfo:nil 
+                           notificationName:SCHReadingStatsSyncComponentDidCompleteNotification 
+                       notificationUserInfo:nil];
         }
 
         if (ret == NO) {
@@ -136,20 +138,25 @@ NSString * const SCHReadingStatsSyncComponentDidFailNotification = @"SCHReadingS
             [backgroundThreadManagedObjectContext release], backgroundThreadManagedObjectContext = nil;
             
             dispatch_async(dispatch_get_main_queue(), ^{
-                [[NSNotificationCenter defaultCenter] postNotificationName:SCHReadingStatsSyncComponentDidCompleteNotification 
-                                                                    object:self];
-                [super method:method didCompleteWithResult:nil userInfo:userInfo];	
+                [self completeWithSuccessMethod:method 
+                                         result:nil 
+                                       userInfo:userInfo 
+                               notificationName:SCHReadingStatsSyncComponentDidCompleteNotification 
+                           notificationUserInfo:nil];
             });                
         });                                            
     }
     @catch (NSException *exception) {
-        [[NSNotificationCenter defaultCenter] postNotificationName:SCHReadingStatsSyncComponentDidFailNotification 
-                                                            object:self];
         NSError *error = [NSError errorWithDomain:kBITAPIErrorDomain 
                                              code:kBITAPIExceptionError 
                                          userInfo:[NSDictionary dictionaryWithObject:[exception reason]
                                                                               forKey:NSLocalizedDescriptionKey]];
-        [super method:method didFailWithError:error requestInfo:nil result:result];
+        [self completeWithFailureMethod:method 
+                                  error:error 
+                            requestInfo:nil 
+                                 result:result 
+                       notificationName:SCHReadingStatsSyncComponentDidFailNotification 
+                   notificationUserInfo:nil];
     }
 }
 
@@ -172,9 +179,12 @@ NSString * const SCHReadingStatsSyncComponentDidFailNotification = @"SCHReadingS
         }    
         
         dispatch_async(dispatch_get_main_queue(), ^{
-            [[NSNotificationCenter defaultCenter] postNotificationName:SCHReadingStatsSyncComponentDidFailNotification 
-                                                                object:self];
-            [super method:method didFailWithError:error requestInfo:requestInfo result:result];    
+            [self completeWithFailureMethod:method 
+                                      error:error 
+                                requestInfo:requestInfo 
+                                     result:result 
+                           notificationName:SCHReadingStatsSyncComponentDidFailNotification 
+                       notificationUserInfo:nil];
         });                
     });                                                        
 }

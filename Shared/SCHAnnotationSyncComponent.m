@@ -351,23 +351,29 @@ managedObjectContext:(NSManagedObjectContext *)aManagedObjectContext;
             }
         }
         @catch (NSException *exception) {
-            [[NSNotificationCenter defaultCenter] postNotificationName:SCHAnnotationSyncComponentDidFailNotification 
-                                                                object:self 
-                                                              userInfo:[NSDictionary dictionaryWithObject:(profileID == nil ? (id)[NSNull null] : profileID)
-                                                                                                   forKey:SCHAnnotationSyncComponentProfileIDs]];            
+            NSDictionary *notificationUserInfo = [NSDictionary dictionaryWithObject:(profileID == nil ? (id)[NSNull null] : profileID)
+                                                                             forKey:SCHAnnotationSyncComponentProfileIDs];            
             NSError *error = [NSError errorWithDomain:kBITAPIErrorDomain 
                                                  code:kBITAPIExceptionError 
                                              userInfo:[NSDictionary dictionaryWithObject:[exception reason]
                                                                                   forKey:NSLocalizedDescriptionKey]];
-            [super method:method didFailWithError:error requestInfo:nil result:result];
+            
+            [self completeWithFailureMethod:method 
+                                      error:error 
+                                requestInfo:nil 
+                                     result:result 
+                           notificationName:SCHAnnotationSyncComponentDidFailNotification
+                       notificationUserInfo:notificationUserInfo];
             [self.savedAnnotations removeAllObjects];
         }    
     } else {
-        [[NSNotificationCenter defaultCenter] postNotificationName:SCHAnnotationSyncComponentDidCompleteNotification
-                                                            object:self 
-                                                          userInfo:[NSDictionary dictionaryWithObject:(profileID == nil ? (id)[NSNull null] : profileID)
-                                                                                               forKey:SCHAnnotationSyncComponentProfileIDs]];                    
-        [super method:method didCompleteWithResult:result userInfo:nil];        
+        NSDictionary *notificationUserInfo = [NSDictionary dictionaryWithObject:(profileID == nil ? (id)[NSNull null] : profileID)
+                                                                         forKey:SCHAnnotationSyncComponentProfileIDs];                    
+        [self completeWithSuccessMethod:method 
+                                 result:result 
+                               userInfo:nil 
+                       notificationName:SCHAnnotationSyncComponentDidCompleteNotification 
+                   notificationUserInfo:notificationUserInfo];
         [self.savedAnnotations removeAllObjects];        
     }
 }
@@ -420,15 +426,17 @@ managedObjectContext:(NSManagedObjectContext *)aManagedObjectContext;
                 }];	
             }            
         } else {
-            [[NSNotificationCenter defaultCenter] postNotificationName:SCHAnnotationSyncComponentDidCompleteNotification 
-                                                                object:self 
-                                                              userInfo:[NSDictionary dictionaryWithObject:(profileID == nil ? (id)[NSNull null] : profileID)
-                                                                                                   forKey:SCHAnnotationSyncComponentProfileIDs]];        
+            NSDictionary *notificationUserInfo = [NSDictionary dictionaryWithObject:(profileID == nil ? (id)[NSNull null] : profileID)
+                                                                             forKey:SCHAnnotationSyncComponentProfileIDs];        
             if (profileID != nil) {
                 [self.annotations removeObjectForKey:profileID];
             }
             
-            [super method:nil didCompleteWithResult:nil userInfo:nil];
+            [self completeWithSuccessMethod:nil 
+                                     result:nil 
+                                   userInfo:nil 
+                           notificationName:SCHAnnotationSyncComponentDidCompleteNotification 
+                       notificationUserInfo:notificationUserInfo];
             [self.savedAnnotations removeAllObjects];        
         }
     });
@@ -520,18 +528,24 @@ managedObjectContext:(NSManagedObjectContext *)aManagedObjectContext;
                                                 result:result
                                   managedObjectContext:self.managedObjectContext];
         } else {
-            [[NSNotificationCenter defaultCenter] postNotificationName:SCHAnnotationSyncComponentDidFailNotification 
-                                                                object:self 
-                                                              userInfo:[NSDictionary dictionaryWithObject:(profileID == nil ? (id)[NSNull null] : profileID)
-                                                                                                   forKey:SCHAnnotationSyncComponentProfileIDs]];            
-            [super method:method didFailWithError:error requestInfo:requestInfo result:result];            
+            NSDictionary *notificationUserInfo = [NSDictionary dictionaryWithObject:(profileID == nil ? (id)[NSNull null] : profileID)
+                                                                             forKey:SCHAnnotationSyncComponentProfileIDs];            
+            [self completeWithFailureMethod:method 
+                                      error:error 
+                                requestInfo:requestInfo 
+                                     result:result 
+                           notificationName:SCHAnnotationSyncComponentDidFailNotification 
+                       notificationUserInfo:notificationUserInfo];
         }
     } else {
-        [[NSNotificationCenter defaultCenter] postNotificationName:SCHAnnotationSyncComponentDidFailNotification 
-                                                            object:self 
-                                                          userInfo:[NSDictionary dictionaryWithObject:(profileID == nil ? (id)[NSNull null] : profileID)
-                                                                                               forKey:SCHAnnotationSyncComponentProfileIDs]];            
-        [super method:method didFailWithError:error requestInfo:requestInfo result:result];
+        NSDictionary *notificationUserInfo = [NSDictionary dictionaryWithObject:(profileID == nil ? (id)[NSNull null] : profileID)
+                                                                         forKey:SCHAnnotationSyncComponentProfileIDs];            
+        [self completeWithFailureMethod:method 
+                                  error:error 
+                            requestInfo:requestInfo 
+                                 result:result 
+                       notificationName:SCHAnnotationSyncComponentDidFailNotification 
+                   notificationUserInfo:notificationUserInfo];
     }
     [self.savedAnnotations removeAllObjects];
 }
@@ -596,24 +610,28 @@ managedObjectContext:(NSManagedObjectContext *)aManagedObjectContext;
                 ret = NO;
             }
         } else {
-            [[NSNotificationCenter defaultCenter] postNotificationName:SCHAnnotationSyncComponentDidCompleteNotification 
-                                                                object:self 
-                                                              userInfo:[NSDictionary dictionaryWithObject:(profileID == nil ? (id)[NSNull null] : profileID)
-                                                                                                   forKey:SCHAnnotationSyncComponentProfileIDs]];        
+            NSDictionary *notificationUserInfo = [NSDictionary dictionaryWithObject:(profileID == nil ? (id)[NSNull null] : profileID)
+                                                                             forKey:SCHAnnotationSyncComponentProfileIDs];        
             if (profileID != nil) {
                 [self.annotations removeObjectForKey:profileID];
             }
             
-            [super method:nil didCompleteWithResult:nil userInfo:nil];
+            [self completeWithSuccessMethod:nil 
+                                     result:nil 
+                                   userInfo:nil 
+                           notificationName:SCHAnnotationSyncComponentDidCompleteNotification 
+                       notificationUserInfo:notificationUserInfo];
             [self.savedAnnotations removeAllObjects];                    
         }
     } else {
-        [[NSNotificationCenter defaultCenter] postNotificationName:SCHAnnotationSyncComponentDidCompleteNotification 
-                                                            object:self 
-                                                          userInfo:[NSDictionary dictionaryWithObject:(profileID == nil ? (id)[NSNull null] : profileID)
-                                                                                               forKey:SCHAnnotationSyncComponentProfileIDs]];        
+        NSDictionary *notificationUserInfo = [NSDictionary dictionaryWithObject:(profileID == nil ? (id)[NSNull null] : profileID)
+                                                                         forKey:SCHAnnotationSyncComponentProfileIDs];        
         
-        [super method:nil didCompleteWithResult:nil userInfo:nil];        
+        [self completeWithSuccessMethod:nil 
+                                 result:nil 
+                               userInfo:nil 
+                       notificationName:SCHAnnotationSyncComponentDidCompleteNotification 
+                   notificationUserInfo:notificationUserInfo];
         [self.savedAnnotations removeAllObjects];                            
     }
 	
@@ -731,15 +749,17 @@ managedObjectContext:(NSManagedObjectContext *)aManagedObjectContext;
 {
     NSParameterAssert(profileID);
     
-    [[NSNotificationCenter defaultCenter] postNotificationName:SCHAnnotationSyncComponentDidCompleteNotification 
-                                                        object:self 
-                                                      userInfo:[NSDictionary dictionaryWithObject:(profileID == nil ? (id)[NSNull null] : profileID) 
-                                                                                           forKey:SCHAnnotationSyncComponentProfileIDs]];        
+    NSDictionary *notificationUserInfo = [NSDictionary dictionaryWithObject:(profileID == nil ? (id)[NSNull null] : profileID) 
+                                                         forKey:SCHAnnotationSyncComponentProfileIDs];        
     if (profileID != nil) {
         [self.annotations removeObjectForKey:profileID];
     }
     
-    [super method:method didCompleteWithResult:nil userInfo:userInfo];
+    [self completeWithSuccessMethod:method 
+                             result:nil 
+                           userInfo:userInfo 
+                   notificationName:SCHAnnotationSyncComponentDidCompleteNotification 
+               notificationUserInfo:notificationUserInfo];
     [self.savedAnnotations removeAllObjects];        
 }
 

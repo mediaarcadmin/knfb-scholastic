@@ -128,7 +128,8 @@ NSString * const SCHProfileSyncComponentDidFailNotification = @"SCHProfileSyncCo
                                   error:error 
                             requestInfo:nil 
                                  result:result 
-                       notificationName:SCHProfileSyncComponentDidFailNotification];
+                       notificationName:SCHProfileSyncComponentDidFailNotification
+                   notificationUserInfo:nil];
         [self.savedProfiles removeAllObjects];        
     }
 }
@@ -192,7 +193,8 @@ NSString * const SCHProfileSyncComponentDidFailNotification = @"SCHProfileSyncCo
         [self completeWithSuccessMethod:nil 
                                  result:nil 
                                userInfo:nil 
-                       notificationName:SCHProfileSyncComponentDidCompleteNotification];
+                       notificationName:SCHProfileSyncComponentDidCompleteNotification
+                   notificationUserInfo:nil];
     }
     
     return ret;
@@ -217,7 +219,8 @@ NSString * const SCHProfileSyncComponentDidFailNotification = @"SCHProfileSyncCo
                                   error:error 
                             requestInfo:requestInfo 
                                  result:result 
-                       notificationName:SCHProfileSyncComponentDidFailNotification];
+                       notificationName:SCHProfileSyncComponentDidFailNotification
+                   notificationUserInfo:nil];
     }
     [self.savedProfiles removeAllObjects];
 }

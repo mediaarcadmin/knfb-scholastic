@@ -36,11 +36,13 @@ extern double const SCHSyncComponentThreadLowPriority;
 - (void)completeWithSuccessMethod:(NSString *)method 
                            result:(NSDictionary *)result 
                          userInfo:(NSDictionary *)userInfo
-                 notificationName:(NSString *)notificationName;
+                 notificationName:(NSString *)notificationName
+             notificationUserInfo:(NSDictionary *)notificationUserInfo;
 - (void)completeWithFailureMethod:(NSString *)method 
                             error:(NSError *)error 
                       requestInfo:(NSDictionary *)requestInfo 
                            result:(NSDictionary *)result
-                 notificationName:(NSString *)notificationName;
+                 notificationName:(NSString *)notificationName
+             notificationUserInfo:(NSDictionary *)notificationUserInfo;
 
 @end

@@ -7750,6 +7750,8 @@
 				52AD9B1A12FC1B6B0099FB88 /* SCHSyncComponent.h */,
 				52AD9B1B12FC1B6B0099FB88 /* SCHSyncComponent.m */,
 				52AD9D9813000CAA0099FB88 /* SCHSyncComponentProtected.h */,
+				5222F28E158A1C11006040D7 /* SCHSyncComponentOperation.h */,
+				5222F28F158A1C11006040D7 /* SCHSyncComponentOperation.m */,
 				52AD9D63130000570099FB88 /* SCHAnnotationSyncComponent.h */,
 				52AD9D64130000570099FB88 /* SCHAnnotationSyncComponent.m */,
 				52AD9D67130000570099FB88 /* SCHContentSyncComponent.h */,
@@ -7770,8 +7772,6 @@
 				52943AE414FFD0E8002991EB /* SCHWishListSyncComponent.m */,
 				525668DD150F80F600570623 /* SCHRecommendationSyncComponent.h */,
 				525668DE150F80F600570623 /* SCHRecommendationSyncComponent.m */,
-				5222F28E158A1C11006040D7 /* SCHSyncComponentOperation.h */,
-				5222F28F158A1C11006040D7 /* SCHSyncComponentOperation.m */,
 			);
 			name = Sync;
 			sourceTree = "<group>";

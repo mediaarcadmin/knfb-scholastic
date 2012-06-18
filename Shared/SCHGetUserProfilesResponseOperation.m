@@ -42,7 +42,8 @@
                 [self.syncComponent completeWithSuccessMethod:kSCHLibreAccessWebServiceGetUserProfiles
                                                        result:nil
                                                      userInfo:self.userInfo 
-                                             notificationName:SCHProfileSyncComponentDidCompleteNotification];
+                                             notificationName:SCHProfileSyncComponentDidCompleteNotification
+                                         notificationUserInfo:nil];
             }
         });                
         [self save];        

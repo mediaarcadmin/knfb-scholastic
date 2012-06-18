@@ -127,11 +127,14 @@ double const SCHSyncComponentThreadLowPriority = 0.25;
                            result:(NSDictionary *)result 
                          userInfo:(NSDictionary *)userInfo
                  notificationName:(NSString *)notificationName
+             notificationUserInfo:(NSDictionary *)notificationUserInfo
 {
     if (notificationName != nil) {
         [[NSNotificationCenter defaultCenter] postNotificationName:notificationName 
-                                                            object:self];                
+                                                            object:self
+                                                          userInfo:notificationUserInfo];                
     }
+    
     [super method:method didCompleteWithResult:result userInfo:userInfo];                                
 }
 
@@ -140,10 +143,12 @@ double const SCHSyncComponentThreadLowPriority = 0.25;
                       requestInfo:(NSDictionary *)requestInfo 
                            result:(NSDictionary *)result
                  notificationName:(NSString *)notificationName
+             notificationUserInfo:(NSDictionary *)notificationUserInfo
 {
     if (notificationName != nil) {
         [[NSNotificationCenter defaultCenter] postNotificationName:notificationName 
-                                                            object:self];        
+                                                            object:self 
+                                                          userInfo:notificationUserInfo];        
     }
     
     [super method:method didFailWithError:error requestInfo:requestInfo result:result];    

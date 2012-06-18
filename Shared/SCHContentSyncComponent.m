@@ -166,9 +166,11 @@ NSString * const SCHContentSyncComponentDidFailNotification = @"SCHContentSyncCo
                     }];				
                 }
             } else {
-                [[NSNotificationCenter defaultCenter] postNotificationName:SCHContentSyncComponentDidCompleteNotification 
-                                                                    object:self];
-                [super method:method didCompleteWithResult:result userInfo:userInfo];				                
+                [self completeWithSuccessMethod:method 
+                                         result:result 
+                                       userInfo:userInfo 
+                               notificationName:SCHContentSyncComponentDidCompleteNotification 
+                           notificationUserInfo:nil];
             }
         } else if([method compare:kSCHLibreAccessWebServiceListUserContentForRatings] == NSOrderedSame) {
             dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{
@@ -184,22 +186,26 @@ NSString * const SCHContentSyncComponentDidFailNotification = @"SCHContentSyncCo
                 [backgroundThreadManagedObjectContext release], backgroundThreadManagedObjectContext = nil;
                 
                 dispatch_async(dispatch_get_main_queue(), ^{
-                    [[NSNotificationCenter defaultCenter] postNotificationName:SCHContentSyncComponentDidCompleteNotification 
-                                                                        object:self];
-                    [super method:method didCompleteWithResult:result userInfo:userInfo];				
+                    [self completeWithSuccessMethod:method 
+                                             result:result 
+                                           userInfo:userInfo 
+                                   notificationName:SCHContentSyncComponentDidCompleteNotification 
+                               notificationUserInfo:nil];
                 });                
             });            
         }
     }
     @catch (NSException *exception) {
-        [[NSNotificationCenter defaultCenter] postNotificationName:SCHContentSyncComponentDidFailNotification 
-                                                            object:self];            
-        
         NSError *error = [NSError errorWithDomain:kBITAPIErrorDomain 
                                              code:kBITAPIExceptionError 
                                          userInfo:[NSDictionary dictionaryWithObject:[exception reason]
                                                                               forKey:NSLocalizedDescriptionKey]];
-        [super method:method didFailWithError:error requestInfo:nil result:result];
+        [self completeWithFailureMethod:method 
+                                  error:error 
+                            requestInfo:nil 
+                                 result:result 
+                       notificationName:SCHContentSyncComponentDidFailNotification 
+                   notificationUserInfo:nil];
     }
 }
 
@@ -209,10 +215,12 @@ NSString * const SCHContentSyncComponentDidFailNotification = @"SCHContentSyncCo
 {
     NSLog(@"%@:didFailWithError\n%@", method, error);
     
-    [[NSNotificationCenter defaultCenter] postNotificationName:SCHContentSyncComponentDidFailNotification 
-                                                        object:self];            
-    
-    [super method:method didFailWithError:error requestInfo:requestInfo result:result];        
+    [self completeWithFailureMethod:method 
+                              error:error 
+                        requestInfo:requestInfo 
+                             result:result 
+                   notificationName:SCHContentSyncComponentDidFailNotification 
+               notificationUserInfo:nil];
 }
 
 - (BOOL)updateUserContentItems
@@ -265,9 +273,11 @@ NSString * const SCHContentSyncComponentDidFailNotification = @"SCHContentSyncCo
                 ret = NO;
             }
         } else {
-            [[NSNotificationCenter defaultCenter] postNotificationName:SCHContentSyncComponentDidCompleteNotification 
-                                                                object:self];
-            [super method:nil didCompleteWithResult:nil userInfo:nil];				                            
+            [self completeWithSuccessMethod:nil 
+                                     result:nil 
+                                   userInfo:nil 
+                           notificationName:SCHContentSyncComponentDidCompleteNotification 
+                       notificationUserInfo:nil];
         }
 	}
 	[fetchRequest release], fetchRequest = nil;

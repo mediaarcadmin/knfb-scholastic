@@ -126,19 +126,25 @@ NSString * const SCHSettingsSyncComponentDidFailNotification = @"SCHSettingsSync
             [backgroundThreadManagedObjectContext release], backgroundThreadManagedObjectContext = nil;
             
             dispatch_async(dispatch_get_main_queue(), ^{
-                [[NSNotificationCenter defaultCenter] postNotificationName:SCHSettingsSyncComponentDidCompleteNotification object:self];			
-                [super method:method didCompleteWithResult:nil userInfo:userInfo];	
+                [self completeWithSuccessMethod:method 
+                                         result:nil 
+                                       userInfo:userInfo 
+                               notificationName:SCHSettingsSyncComponentDidCompleteNotification 
+                           notificationUserInfo:nil];
             });                
         });                                                        
     }
     @catch (NSException *exception) {
-        [[NSNotificationCenter defaultCenter] postNotificationName:SCHSettingsSyncComponentDidFailNotification 
-                                                            object:self];        
         NSError *error = [NSError errorWithDomain:kBITAPIErrorDomain 
                                              code:kBITAPIExceptionError 
                                          userInfo:[NSDictionary dictionaryWithObject:[exception reason]
                                                                               forKey:NSLocalizedDescriptionKey]];
-        [super method:method didFailWithError:error requestInfo:nil result:result];
+        [self completeWithFailureMethod:method 
+                                  error:error 
+                            requestInfo:nil 
+                                 result:result 
+                       notificationName:SCHSettingsSyncComponentDidFailNotification 
+                   notificationUserInfo:nil];
     }
 }
 
@@ -148,9 +154,12 @@ NSString * const SCHSettingsSyncComponentDidFailNotification = @"SCHSettingsSync
 {
     NSLog(@"%@:didFailWithError\n%@", method, error);
     
-    [[NSNotificationCenter defaultCenter] postNotificationName:SCHSettingsSyncComponentDidFailNotification 
-                                                        object:self];        
-    [super method:method didFailWithError:error requestInfo:requestInfo result:result];
+    [self completeWithFailureMethod:method 
+                              error:error 
+                        requestInfo:requestInfo 
+                             result:result 
+                   notificationName:SCHSettingsSyncComponentDidFailNotification 
+               notificationUserInfo:nil];
 }
 
 - (void)updateUserSettings:(NSArray *)settingsList 

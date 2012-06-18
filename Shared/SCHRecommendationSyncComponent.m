@@ -39,13 +39,6 @@ static NSTimeInterval const kSCHRecommendationSyncComponentBookSyncDelayTimeInte
 @property (nonatomic, retain) NSMutableArray *remainingBatchedItems;
 
 - (BOOL)updateRecommendations;
-- (void)completeWithSuccess:(NSString *)method 
-                     result:(NSDictionary *)result 
-                   userInfo:(NSDictionary *)userInfo;
-- (void)completeWithFailure:(NSString *)method 
-                      error:(NSError *)error 
-                requestInfo:(NSDictionary *)requestInfo 
-                     result:(NSDictionary *)result;
 - (BOOL)retrieveBooks:(NSArray *)books;
 - (BOOL)retrieveProfiles:(NSArray *)profiles;
 - (NSMutableArray *)removeBatchItemsFrom:(NSMutableArray *)items;
@@ -174,41 +167,60 @@ static NSTimeInterval const kSCHRecommendationSyncComponentBookSyncDelayTimeInte
                 self.remainingBatchedItems = [self removeBatchItemsFrom:books];
                 ret = [self retrieveBooks:books];
             } else {
-                [self completeWithSuccess:nil result:nil userInfo:nil];
+                [self completeWithSuccessMethod:nil 
+                                         result:nil 
+                                       userInfo:nil 
+                               notificationName:SCHRecommendationSyncComponentDidCompleteNotification 
+                           notificationUserInfo:nil];
             }
         } else {
-            [self completeWithSuccess:nil result:nil userInfo:nil];
+            [self completeWithSuccessMethod:nil 
+                                     result:nil 
+                                   userInfo:nil 
+                           notificationName:SCHRecommendationSyncComponentDidCompleteNotification 
+                       notificationUserInfo:nil];
         }
     } else {
-        [self completeWithSuccess:nil result:nil userInfo:nil];
+        [self completeWithSuccessMethod:nil 
+                                 result:nil 
+                               userInfo:nil 
+                       notificationName:SCHRecommendationSyncComponentDidCompleteNotification 
+                   notificationUserInfo:nil];
     }
     
     return  ret;
 }
 
-- (void)completeWithSuccess:(NSString *)method 
-                     result:(NSDictionary *)result 
-                   userInfo:(NSDictionary *)userInfo
+#pragma - Overridden methods
+
+- (void)completeWithSuccessMethod:(NSString *)method 
+                           result:(NSDictionary *)result 
+                         userInfo:(NSDictionary *)userInfo
+                 notificationName:(NSString *)notificationName
+             notificationUserInfo:(NSDictionary *)notificationUserInfo
 {
     self.remainingBatchedItems = nil;
-    [[NSNotificationCenter defaultCenter] postNotificationName:SCHRecommendationSyncComponentDidCompleteNotification 
-                                                        object:self 
-                                                      userInfo:nil];                
-    [super method:nil didCompleteWithResult:result userInfo:userInfo];                                
+    [super completeWithSuccessMethod:method 
+                              result:result 
+                            userInfo:userInfo 
+                    notificationName:notificationName 
+                notificationUserInfo:notificationUserInfo];
 }
 
-- (void)completeWithFailure:(NSString *)method 
-                      error:(NSError *)error 
-                requestInfo:(NSDictionary *)requestInfo 
-                     result:(NSDictionary *)result
+- (void)completeWithFailureMethod:(NSString *)method 
+                            error:(NSError *)error 
+                      requestInfo:(NSDictionary *)requestInfo 
+                           result:(NSDictionary *)result
+                 notificationName:(NSString *)notificationName
+             notificationUserInfo:(NSDictionary *)notificationUserInfo
 {
-    [[NSNotificationCenter defaultCenter] postNotificationName:SCHRecommendationSyncComponentDidFailNotification 
-                                                        object:self];        
     self.remainingBatchedItems = nil;
-    [super method:method 
- didFailWithError:error 
-      requestInfo:requestInfo 
-           result:result];    
+    [super completeWithFailureMethod:method 
+                               error:error 
+                         requestInfo:requestInfo 
+                              result:result 
+                    notificationName:notificationName 
+                notificationUserInfo:notificationUserInfo];
 }
 
 #pragma - Web Service delegate methods
@@ -250,11 +262,19 @@ static NSTimeInterval const kSCHRecommendationSyncComponentBookSyncDelayTimeInte
                                 self.remainingBatchedItems = [self removeBatchItemsFrom:books];
                                 [self retrieveBooks:books];
                             } else {
-                                [self completeWithSuccess:method result:result userInfo:userInfo];
+                                [self completeWithSuccessMethod:method 
+                                                         result:result 
+                                                       userInfo:userInfo 
+                                               notificationName:SCHRecommendationSyncComponentDidCompleteNotification 
+                                           notificationUserInfo:nil];
                             }
                         }
                     } else {
-                        [self completeWithSuccess:method result:result userInfo:userInfo];                
+                        [self completeWithSuccessMethod:method 
+                                                 result:result 
+                                               userInfo:userInfo 
+                                       notificationName:SCHRecommendationSyncComponentDidCompleteNotification 
+                                   notificationUserInfo:nil];
                     }            
                 });                                        
             });
@@ -279,12 +299,20 @@ static NSTimeInterval const kSCHRecommendationSyncComponentBookSyncDelayTimeInte
                         [self retrieveBooks:self.remainingBatchedItems];                    
                         self.remainingBatchedItems = remainingBooks;                
                     } else {
-                        [self completeWithSuccess:method result:result userInfo:userInfo];
+                        [self completeWithSuccessMethod:method 
+                                                 result:result 
+                                               userInfo:userInfo 
+                                       notificationName:SCHRecommendationSyncComponentDidCompleteNotification 
+                                   notificationUserInfo:nil];
                     }
                 });
             });
         } else {
-            [self completeWithSuccess:method result:result userInfo:userInfo];            
+            [self completeWithSuccessMethod:method 
+                                     result:result 
+                                   userInfo:userInfo 
+                           notificationName:SCHRecommendationSyncComponentDidCompleteNotification 
+                       notificationUserInfo:nil];
         }
     } 
     @catch (NSException *exception) {
@@ -292,8 +320,12 @@ static NSTimeInterval const kSCHRecommendationSyncComponentBookSyncDelayTimeInte
                                              code:kBITAPIExceptionError 
                                          userInfo:[NSDictionary dictionaryWithObject:[exception reason]
                                                                               forKey:NSLocalizedDescriptionKey]];
-        [self completeWithFailure:method error:error requestInfo:nil 
-                           result:result];
+        [self completeWithFailureMethod:method 
+                                  error:error 
+                            requestInfo:nil 
+                                 result:result 
+                       notificationName:SCHRecommendationSyncComponentDidFailNotification 
+                   notificationUserInfo:nil];
     }
 }
 
@@ -303,8 +335,12 @@ static NSTimeInterval const kSCHRecommendationSyncComponentBookSyncDelayTimeInte
 {
     NSLog(@"%@:didFailWithError\n%@", method, error);
     
-    [self completeWithFailure:method error:error requestInfo:requestInfo 
-                       result:result];
+    [self completeWithFailureMethod:method 
+                              error:error 
+                        requestInfo:requestInfo 
+                             result:result 
+                   notificationName:SCHRecommendationSyncComponentDidFailNotification 
+               notificationUserInfo:nil];
 }
 
 #pragma - Web API methods
