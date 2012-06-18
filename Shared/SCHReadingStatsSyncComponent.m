@@ -13,6 +13,7 @@
 #import "SCHLibreAccessWebService.h"
 #import "SCHReadingStatsDetailItem.h"
 #import "BITAPIError.h"
+#import "SCHSaveReadingStatisticsDetailedOperation.h"
 
 // Constants
 NSString * const SCHReadingStatsSyncComponentDidCompleteNotification = @"SCHReadingStatsSyncComponentDidCompleteNotification";
@@ -21,8 +22,6 @@ NSString * const SCHReadingStatsSyncComponentDidFailNotification = @"SCHReadingS
 @interface SCHReadingStatsSyncComponent ()
 
 @property (nonatomic, retain) SCHLibreAccessWebService *libreAccessWebService;
-
-- (void)clearCoreDataUsingContext:(NSManagedObjectContext *)aManagedObjectContext;
 
 @end
 
@@ -127,37 +126,11 @@ NSString * const SCHReadingStatsSyncComponentDidFailNotification = @"SCHReadingS
 - (void)method:(NSString *)method didCompleteWithResult:(NSDictionary *)result 
       userInfo:(NSDictionary *)userInfo
 {
-    @try {
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{
-            NSManagedObjectContext *backgroundThreadManagedObjectContext = [[NSManagedObjectContext alloc] init];
-            [backgroundThreadManagedObjectContext setPersistentStoreCoordinator:self.managedObjectContext.persistentStoreCoordinator];
-            [backgroundThreadManagedObjectContext setMergePolicy:NSMergeByPropertyObjectTrumpMergePolicy];
-            
-            [self clearCoreDataUsingContext:backgroundThreadManagedObjectContext];
-            
-            [backgroundThreadManagedObjectContext release], backgroundThreadManagedObjectContext = nil;
-            
-            dispatch_async(dispatch_get_main_queue(), ^{
-                [self completeWithSuccessMethod:method 
-                                         result:nil 
-                                       userInfo:userInfo 
-                               notificationName:SCHReadingStatsSyncComponentDidCompleteNotification 
-                           notificationUserInfo:nil];
-            });                
-        });                                            
-    }
-    @catch (NSException *exception) {
-        NSError *error = [NSError errorWithDomain:kBITAPIErrorDomain 
-                                             code:kBITAPIExceptionError 
-                                         userInfo:[NSDictionary dictionaryWithObject:[exception reason]
-                                                                              forKey:NSLocalizedDescriptionKey]];
-        [self completeWithFailureMethod:method 
-                                  error:error 
-                            requestInfo:nil 
-                                 result:result 
-                       notificationName:SCHReadingStatsSyncComponentDidFailNotification 
-                   notificationUserInfo:nil];
-    }
+    SCHSaveReadingStatisticsDetailedOperation *operation = [[[SCHSaveReadingStatisticsDetailedOperation alloc] initWithSyncComponent:self
+                                                                                                                              result:result
+                                                                                                                            userInfo:userInfo] autorelease];
+    [operation setThreadPriority:SCHSyncComponentThreadLowPriority];
+    [self.backgroundProcessingQueue addOperation:operation];
 }
 
 - (void)method:(NSString *)method didFailWithError:(NSError *)error 
@@ -166,27 +139,21 @@ NSString * const SCHReadingStatsSyncComponentDidFailNotification = @"SCHReadingS
 {
     NSLog(@"%@:didFailWithError\n%@", method, error);
     
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{        
-        // server error so clear the stats
-        if ([error domain] == kBITAPIErrorDomain) {
-            NSManagedObjectContext *backgroundThreadManagedObjectContext = [[NSManagedObjectContext alloc] init];
-            [backgroundThreadManagedObjectContext setPersistentStoreCoordinator:self.managedObjectContext.persistentStoreCoordinator];
-            [backgroundThreadManagedObjectContext setMergePolicy:NSMergeByPropertyObjectTrumpMergePolicy];
-            
-            [self clearCoreDataUsingContext:backgroundThreadManagedObjectContext];
-            
-            [backgroundThreadManagedObjectContext release], backgroundThreadManagedObjectContext = nil;
-        }    
-        
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [self completeWithFailureMethod:method 
-                                      error:error 
-                                requestInfo:requestInfo 
-                                     result:result 
-                           notificationName:SCHReadingStatsSyncComponentDidFailNotification 
-                       notificationUserInfo:nil];
-        });                
-    });                                                        
+    // server error so clear the stats
+    if ([error domain] == kBITAPIErrorDomain) {
+        SCHSaveReadingStatisticsDetailedOperation *operation = [[[SCHSaveReadingStatisticsDetailedOperation alloc] initWithSyncComponent:self
+                                                                                                                                  result:result
+                                                                                                                                userInfo:nil] autorelease];
+        [operation setThreadPriority:SCHSyncComponentThreadLowPriority];
+        [self.backgroundProcessingQueue addOperation:operation];
+    } else {
+        [self completeWithFailureMethod:method 
+                                  error:error 
+                            requestInfo:requestInfo 
+                                 result:result 
+                       notificationName:SCHReadingStatsSyncComponentDidFailNotification 
+                   notificationUserInfo:nil];        
+    }    
 }
 
 @end

@@ -332,6 +332,10 @@
 		520E14C6158F883C003773E3 /* SCHListUserSettingsOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 520E14C4158F883C003773E3 /* SCHListUserSettingsOperation.m */; };
 		520E14C7158F883C003773E3 /* SCHListUserSettingsOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 520E14C4158F883C003773E3 /* SCHListUserSettingsOperation.m */; };
 		520E14C8158F883C003773E3 /* SCHListUserSettingsOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 520E14C4158F883C003773E3 /* SCHListUserSettingsOperation.m */; };
+		520E14CB158FDE63003773E3 /* SCHSaveReadingStatisticsDetailedOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 520E14CA158FDE62003773E3 /* SCHSaveReadingStatisticsDetailedOperation.m */; };
+		520E14CC158FDE63003773E3 /* SCHSaveReadingStatisticsDetailedOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 520E14CA158FDE62003773E3 /* SCHSaveReadingStatisticsDetailedOperation.m */; };
+		520E14CD158FDE63003773E3 /* SCHSaveReadingStatisticsDetailedOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 520E14CA158FDE62003773E3 /* SCHSaveReadingStatisticsDetailedOperation.m */; };
+		520E14CE158FDE63003773E3 /* SCHSaveReadingStatisticsDetailedOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 520E14CA158FDE62003773E3 /* SCHSaveReadingStatisticsDetailedOperation.m */; };
 		520FE8A1143F3B15002AB30B /* SCHLibreAccessConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = 520FE8A0143F3B14002AB30B /* SCHLibreAccessConstants.m */; };
 		520FE8A2143F3B15002AB30B /* SCHLibreAccessConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = 520FE8A0143F3B14002AB30B /* SCHLibreAccessConstants.m */; };
 		520FE8A3143F3B15002AB30B /* SCHLibreAccessConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = 520FE8A0143F3B14002AB30B /* SCHLibreAccessConstants.m */; };
@@ -4743,6 +4747,8 @@
 		520D28CB14F4E2F9005AAF4F /* SCHWishListWebService.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHWishListWebService.m; path = Shared/SCHWishListWebService.m; sourceTree = "<group>"; };
 		520E14C3158F883B003773E3 /* SCHListUserSettingsOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCHListUserSettingsOperation.h; sourceTree = "<group>"; };
 		520E14C4158F883C003773E3 /* SCHListUserSettingsOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCHListUserSettingsOperation.m; sourceTree = "<group>"; };
+		520E14C9158FDE61003773E3 /* SCHSaveReadingStatisticsDetailedOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHSaveReadingStatisticsDetailedOperation.h; path = Shared/SCHSaveReadingStatisticsDetailedOperation.h; sourceTree = "<group>"; };
+		520E14CA158FDE62003773E3 /* SCHSaveReadingStatisticsDetailedOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHSaveReadingStatisticsDetailedOperation.m; path = Shared/SCHSaveReadingStatisticsDetailedOperation.m; sourceTree = "<group>"; };
 		520FE89F143F3B14002AB30B /* SCHLibreAccessConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHLibreAccessConstants.h; path = Shared/SCHLibreAccessConstants.h; sourceTree = "<group>"; };
 		520FE8A0143F3B14002AB30B /* SCHLibreAccessConstants.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHLibreAccessConstants.m; path = Shared/SCHLibreAccessConstants.m; sourceTree = "<group>"; };
 		521399EE13717BB10081FD3D /* SCHLocationBookmark.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHLocationBookmark.h; path = Shared/SCHLocationBookmark.h; sourceTree = "<group>"; };
@@ -7772,6 +7778,8 @@
 				5222F295158A2BF2006040D7 /* SCHGetUserProfilesResponseOperation.m */,
 				52AD9D6B130000570099FB88 /* SCHReadingStatsSyncComponent.h */,
 				52AD9D6C130000570099FB88 /* SCHReadingStatsSyncComponent.m */,
+				520E14C9158FDE61003773E3 /* SCHSaveReadingStatisticsDetailedOperation.h */,
+				520E14CA158FDE62003773E3 /* SCHSaveReadingStatisticsDetailedOperation.m */,
 				52AD9D6D130000570099FB88 /* SCHSettingsSyncComponent.h */,
 				52AD9D6E130000570099FB88 /* SCHSettingsSyncComponent.m */,
 				520E14C3158F883B003773E3 /* SCHListUserSettingsOperation.h */,
@@ -12499,6 +12507,7 @@
 				5222F296158A2BF3006040D7 /* SCHGetUserProfilesResponseOperation.m in Sources */,
 				5222F29C158B1F11006040D7 /* SCHSaveUserProfilesOperation.m in Sources */,
 				520E14C5158F883C003773E3 /* SCHListUserSettingsOperation.m in Sources */,
+				520E14CB158FDE63003773E3 /* SCHSaveReadingStatisticsDetailedOperation.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -12943,6 +12952,7 @@
 				5222F297158A2BF3006040D7 /* SCHGetUserProfilesResponseOperation.m in Sources */,
 				5222F29D158B1F11006040D7 /* SCHSaveUserProfilesOperation.m in Sources */,
 				520E14C6158F883C003773E3 /* SCHListUserSettingsOperation.m in Sources */,
+				520E14CC158FDE63003773E3 /* SCHSaveReadingStatisticsDetailedOperation.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -13320,6 +13330,7 @@
 				5222F298158A2BF3006040D7 /* SCHGetUserProfilesResponseOperation.m in Sources */,
 				5222F29E158B1F11006040D7 /* SCHSaveUserProfilesOperation.m in Sources */,
 				520E14C7158F883C003773E3 /* SCHListUserSettingsOperation.m in Sources */,
+				520E14CD158FDE63003773E3 /* SCHSaveReadingStatisticsDetailedOperation.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -13697,6 +13708,7 @@
 				5222F299158A2BF3006040D7 /* SCHGetUserProfilesResponseOperation.m in Sources */,
 				5222F29F158B1F11006040D7 /* SCHSaveUserProfilesOperation.m in Sources */,
 				520E14C8158F883C003773E3 /* SCHListUserSettingsOperation.m in Sources */,
+				520E14CE158FDE63003773E3 /* SCHSaveReadingStatisticsDetailedOperation.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
