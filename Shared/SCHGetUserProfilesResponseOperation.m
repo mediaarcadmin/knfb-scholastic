@@ -40,7 +40,7 @@
         dispatch_async(dispatch_get_main_queue(), ^{
             if (self.isCancelled == NO) {
                 [self.syncComponent completeWithSuccessMethod:kSCHLibreAccessWebServiceGetUserProfiles
-                                                       result:nil
+                                                       result:self.result
                                                      userInfo:self.userInfo 
                                              notificationName:SCHProfileSyncComponentDidCompleteNotification
                                          notificationUserInfo:nil];
