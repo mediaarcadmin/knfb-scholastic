@@ -328,6 +328,10 @@
 		520D28CC14F4E2F9005AAF4F /* SCHWishListWebService.m in Sources */ = {isa = PBXBuildFile; fileRef = 520D28CB14F4E2F9005AAF4F /* SCHWishListWebService.m */; };
 		520D28CD14F4E2F9005AAF4F /* SCHWishListWebService.m in Sources */ = {isa = PBXBuildFile; fileRef = 520D28CB14F4E2F9005AAF4F /* SCHWishListWebService.m */; };
 		520D28CE14F4E2F9005AAF4F /* SCHWishListWebService.m in Sources */ = {isa = PBXBuildFile; fileRef = 520D28CB14F4E2F9005AAF4F /* SCHWishListWebService.m */; };
+		520E14C5158F883C003773E3 /* SCHListUserSettingsOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 520E14C4158F883C003773E3 /* SCHListUserSettingsOperation.m */; };
+		520E14C6158F883C003773E3 /* SCHListUserSettingsOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 520E14C4158F883C003773E3 /* SCHListUserSettingsOperation.m */; };
+		520E14C7158F883C003773E3 /* SCHListUserSettingsOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 520E14C4158F883C003773E3 /* SCHListUserSettingsOperation.m */; };
+		520E14C8158F883C003773E3 /* SCHListUserSettingsOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 520E14C4158F883C003773E3 /* SCHListUserSettingsOperation.m */; };
 		520FE8A1143F3B15002AB30B /* SCHLibreAccessConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = 520FE8A0143F3B14002AB30B /* SCHLibreAccessConstants.m */; };
 		520FE8A2143F3B15002AB30B /* SCHLibreAccessConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = 520FE8A0143F3B14002AB30B /* SCHLibreAccessConstants.m */; };
 		520FE8A3143F3B15002AB30B /* SCHLibreAccessConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = 520FE8A0143F3B14002AB30B /* SCHLibreAccessConstants.m */; };
@@ -4737,6 +4741,8 @@
 		520CD294139F84530018EA7E /* SCHStoryInteractionMultipleChoiceText_iPad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SCHStoryInteractionMultipleChoiceText_iPad.xib; sourceTree = "<group>"; };
 		520D28CA14F4E2F9005AAF4F /* SCHWishListWebService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHWishListWebService.h; path = Shared/SCHWishListWebService.h; sourceTree = "<group>"; };
 		520D28CB14F4E2F9005AAF4F /* SCHWishListWebService.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHWishListWebService.m; path = Shared/SCHWishListWebService.m; sourceTree = "<group>"; };
+		520E14C3158F883B003773E3 /* SCHListUserSettingsOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCHListUserSettingsOperation.h; sourceTree = "<group>"; };
+		520E14C4158F883C003773E3 /* SCHListUserSettingsOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCHListUserSettingsOperation.m; sourceTree = "<group>"; };
 		520FE89F143F3B14002AB30B /* SCHLibreAccessConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHLibreAccessConstants.h; path = Shared/SCHLibreAccessConstants.h; sourceTree = "<group>"; };
 		520FE8A0143F3B14002AB30B /* SCHLibreAccessConstants.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHLibreAccessConstants.m; path = Shared/SCHLibreAccessConstants.m; sourceTree = "<group>"; };
 		521399EE13717BB10081FD3D /* SCHLocationBookmark.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHLocationBookmark.h; path = Shared/SCHLocationBookmark.h; sourceTree = "<group>"; };
@@ -7768,6 +7774,8 @@
 				52AD9D6C130000570099FB88 /* SCHReadingStatsSyncComponent.m */,
 				52AD9D6D130000570099FB88 /* SCHSettingsSyncComponent.h */,
 				52AD9D6E130000570099FB88 /* SCHSettingsSyncComponent.m */,
+				520E14C3158F883B003773E3 /* SCHListUserSettingsOperation.h */,
+				520E14C4158F883C003773E3 /* SCHListUserSettingsOperation.m */,
 				52943AE314FFD0E8002991EB /* SCHWishListSyncComponent.h */,
 				52943AE414FFD0E8002991EB /* SCHWishListSyncComponent.m */,
 				525668DD150F80F600570623 /* SCHRecommendationSyncComponent.h */,
@@ -12490,6 +12498,7 @@
 				5222F290158A1C12006040D7 /* SCHSyncComponentOperation.m in Sources */,
 				5222F296158A2BF3006040D7 /* SCHGetUserProfilesResponseOperation.m in Sources */,
 				5222F29C158B1F11006040D7 /* SCHSaveUserProfilesOperation.m in Sources */,
+				520E14C5158F883C003773E3 /* SCHListUserSettingsOperation.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -12933,6 +12942,7 @@
 				5222F291158A1C12006040D7 /* SCHSyncComponentOperation.m in Sources */,
 				5222F297158A2BF3006040D7 /* SCHGetUserProfilesResponseOperation.m in Sources */,
 				5222F29D158B1F11006040D7 /* SCHSaveUserProfilesOperation.m in Sources */,
+				520E14C6158F883C003773E3 /* SCHListUserSettingsOperation.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -13309,6 +13319,7 @@
 				5222F292158A1C12006040D7 /* SCHSyncComponentOperation.m in Sources */,
 				5222F298158A2BF3006040D7 /* SCHGetUserProfilesResponseOperation.m in Sources */,
 				5222F29E158B1F11006040D7 /* SCHSaveUserProfilesOperation.m in Sources */,
+				520E14C7158F883C003773E3 /* SCHListUserSettingsOperation.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -13685,6 +13696,7 @@
 				5222F293158A1C12006040D7 /* SCHSyncComponentOperation.m in Sources */,
 				5222F299158A2BF3006040D7 /* SCHGetUserProfilesResponseOperation.m in Sources */,
 				5222F29F158B1F11006040D7 /* SCHSaveUserProfilesOperation.m in Sources */,
+				520E14C8158F883C003773E3 /* SCHListUserSettingsOperation.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
