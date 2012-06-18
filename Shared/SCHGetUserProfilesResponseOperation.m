@@ -29,7 +29,7 @@
 
 @implementation SCHGetUserProfilesResponseOperation
 
-- (void)beginOperation
+- (void)main
 {
     if (self.isCancelled == NO) {
         NSArray *profileList = [self.result objectForKey:kSCHLibreAccessWebServiceProfileList];
@@ -45,9 +45,8 @@
                                              notificationName:SCHProfileSyncComponentDidCompleteNotification];
             }
         });                
+        [self save];        
     }
-    
-    [self saveAndEndOperation];
 }
 
 - (void)syncProfiles:(NSArray *)profileList 

@@ -21,11 +21,13 @@
 
 @implementation SCHSaveUserProfilesOperation
 
-- (void)beginOperation
+- (void)main
 {
-    [self processSaveUserProfiles];
-    
-    [self saveAndEndOperation];
+    if (self.isCancelled == NO) {
+        [self processSaveUserProfiles];
+        
+        [self save];
+    }
 }
 
 - (void)processSaveUserProfiles

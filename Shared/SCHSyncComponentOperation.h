@@ -20,9 +20,7 @@
 - (id)initWithSyncComponent:(SCHSyncComponent *)aSyncComponent
                      result:(NSDictionary *)aResult
                    userInfo:(NSDictionary *)aUserInfo;
-- (void)beginOperation;
 - (void)save;
-- (void)saveAndEndOperation;
 
 - (id)makeNullNil:(id)object;
 
