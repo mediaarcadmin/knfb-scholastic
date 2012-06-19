@@ -374,6 +374,14 @@
 		5222F29D158B1F11006040D7 /* SCHSaveUserProfilesOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 5222F29B158B1F10006040D7 /* SCHSaveUserProfilesOperation.m */; };
 		5222F29E158B1F11006040D7 /* SCHSaveUserProfilesOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 5222F29B158B1F10006040D7 /* SCHSaveUserProfilesOperation.m */; };
 		5222F29F158B1F11006040D7 /* SCHSaveUserProfilesOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 5222F29B158B1F10006040D7 /* SCHSaveUserProfilesOperation.m */; };
+		522543C31590930F0006F0B1 /* SCHSaveProfileContentAnnotationsOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 522543C21590930F0006F0B1 /* SCHSaveProfileContentAnnotationsOperation.m */; };
+		522543C41590930F0006F0B1 /* SCHSaveProfileContentAnnotationsOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 522543C21590930F0006F0B1 /* SCHSaveProfileContentAnnotationsOperation.m */; };
+		522543C51590930F0006F0B1 /* SCHSaveProfileContentAnnotationsOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 522543C21590930F0006F0B1 /* SCHSaveProfileContentAnnotationsOperation.m */; };
+		522543C61590930F0006F0B1 /* SCHSaveProfileContentAnnotationsOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 522543C21590930F0006F0B1 /* SCHSaveProfileContentAnnotationsOperation.m */; };
+		522543C9159093380006F0B1 /* SCHListProfileContentAnnotationsOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 522543C8159093380006F0B1 /* SCHListProfileContentAnnotationsOperation.m */; };
+		522543CA159093380006F0B1 /* SCHListProfileContentAnnotationsOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 522543C8159093380006F0B1 /* SCHListProfileContentAnnotationsOperation.m */; };
+		522543CB159093380006F0B1 /* SCHListProfileContentAnnotationsOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 522543C8159093380006F0B1 /* SCHListProfileContentAnnotationsOperation.m */; };
+		522543CC159093380006F0B1 /* SCHListProfileContentAnnotationsOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 522543C8159093380006F0B1 /* SCHListProfileContentAnnotationsOperation.m */; };
 		5226C70514A489CB00307634 /* SCHVersionDownloadManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 5226C70214A489CB00307634 /* SCHVersionDownloadManager.m */; };
 		5226C70614A489CB00307634 /* SCHVersionDownloadManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 5226C70214A489CB00307634 /* SCHVersionDownloadManager.m */; };
 		5226C70714A489CB00307634 /* SCHVersionManifestOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 5226C70414A489CB00307634 /* SCHVersionManifestOperation.m */; };
@@ -4774,6 +4782,10 @@
 		5222F295158A2BF2006040D7 /* SCHGetUserProfilesResponseOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHGetUserProfilesResponseOperation.m; path = Shared/SCHGetUserProfilesResponseOperation.m; sourceTree = "<group>"; };
 		5222F29A158B1F10006040D7 /* SCHSaveUserProfilesOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHSaveUserProfilesOperation.h; path = Shared/SCHSaveUserProfilesOperation.h; sourceTree = "<group>"; };
 		5222F29B158B1F10006040D7 /* SCHSaveUserProfilesOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHSaveUserProfilesOperation.m; path = Shared/SCHSaveUserProfilesOperation.m; sourceTree = "<group>"; };
+		522543C11590930F0006F0B1 /* SCHSaveProfileContentAnnotationsOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHSaveProfileContentAnnotationsOperation.h; path = Shared/SCHSaveProfileContentAnnotationsOperation.h; sourceTree = "<group>"; };
+		522543C21590930F0006F0B1 /* SCHSaveProfileContentAnnotationsOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHSaveProfileContentAnnotationsOperation.m; path = Shared/SCHSaveProfileContentAnnotationsOperation.m; sourceTree = "<group>"; };
+		522543C7159093380006F0B1 /* SCHListProfileContentAnnotationsOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHListProfileContentAnnotationsOperation.h; path = Shared/SCHListProfileContentAnnotationsOperation.h; sourceTree = "<group>"; };
+		522543C8159093380006F0B1 /* SCHListProfileContentAnnotationsOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHListProfileContentAnnotationsOperation.m; path = Shared/SCHListProfileContentAnnotationsOperation.m; sourceTree = "<group>"; };
 		5226C70114A489CB00307634 /* SCHVersionDownloadManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHVersionDownloadManager.h; path = Shared/SCHVersionDownloadManager.h; sourceTree = "<group>"; };
 		5226C70214A489CB00307634 /* SCHVersionDownloadManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHVersionDownloadManager.m; path = Shared/SCHVersionDownloadManager.m; sourceTree = "<group>"; };
 		5226C70314A489CB00307634 /* SCHVersionManifestOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHVersionManifestOperation.h; path = Shared/SCHVersionManifestOperation.h; sourceTree = "<group>"; };
@@ -7766,6 +7778,10 @@
 				5222F28F158A1C11006040D7 /* SCHSyncComponentOperation.m */,
 				52AD9D63130000570099FB88 /* SCHAnnotationSyncComponent.h */,
 				52AD9D64130000570099FB88 /* SCHAnnotationSyncComponent.m */,
+				522543C11590930F0006F0B1 /* SCHSaveProfileContentAnnotationsOperation.h */,
+				522543C21590930F0006F0B1 /* SCHSaveProfileContentAnnotationsOperation.m */,
+				522543C7159093380006F0B1 /* SCHListProfileContentAnnotationsOperation.h */,
+				522543C8159093380006F0B1 /* SCHListProfileContentAnnotationsOperation.m */,
 				52AD9D67130000570099FB88 /* SCHContentSyncComponent.h */,
 				52AD9D68130000570099FB88 /* SCHContentSyncComponent.m */,
 				52E36767131D3ED200ACCBEE /* SCHBookshelfSyncComponent.h */,
@@ -12508,6 +12524,8 @@
 				5222F29C158B1F11006040D7 /* SCHSaveUserProfilesOperation.m in Sources */,
 				520E14C5158F883C003773E3 /* SCHListUserSettingsOperation.m in Sources */,
 				520E14CB158FDE63003773E3 /* SCHSaveReadingStatisticsDetailedOperation.m in Sources */,
+				522543C31590930F0006F0B1 /* SCHSaveProfileContentAnnotationsOperation.m in Sources */,
+				522543C9159093380006F0B1 /* SCHListProfileContentAnnotationsOperation.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -12953,6 +12971,8 @@
 				5222F29D158B1F11006040D7 /* SCHSaveUserProfilesOperation.m in Sources */,
 				520E14C6158F883C003773E3 /* SCHListUserSettingsOperation.m in Sources */,
 				520E14CC158FDE63003773E3 /* SCHSaveReadingStatisticsDetailedOperation.m in Sources */,
+				522543C41590930F0006F0B1 /* SCHSaveProfileContentAnnotationsOperation.m in Sources */,
+				522543CA159093380006F0B1 /* SCHListProfileContentAnnotationsOperation.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -13331,6 +13351,8 @@
 				5222F29E158B1F11006040D7 /* SCHSaveUserProfilesOperation.m in Sources */,
 				520E14C7158F883C003773E3 /* SCHListUserSettingsOperation.m in Sources */,
 				520E14CD158FDE63003773E3 /* SCHSaveReadingStatisticsDetailedOperation.m in Sources */,
+				522543C51590930F0006F0B1 /* SCHSaveProfileContentAnnotationsOperation.m in Sources */,
+				522543CB159093380006F0B1 /* SCHListProfileContentAnnotationsOperation.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -13709,6 +13731,8 @@
 				5222F29F158B1F11006040D7 /* SCHSaveUserProfilesOperation.m in Sources */,
 				520E14C8158F883C003773E3 /* SCHListUserSettingsOperation.m in Sources */,
 				520E14CE158FDE63003773E3 /* SCHSaveReadingStatisticsDetailedOperation.m in Sources */,
+				522543C61590930F0006F0B1 /* SCHSaveProfileContentAnnotationsOperation.m in Sources */,
+				522543CC159093380006F0B1 /* SCHListProfileContentAnnotationsOperation.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
