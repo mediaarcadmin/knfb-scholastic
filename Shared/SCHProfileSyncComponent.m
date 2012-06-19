@@ -206,6 +206,7 @@ NSString * const SCHProfileSyncComponentDidFailNotification = @"SCHProfileSyncCo
                                  result:result 
                        notificationName:SCHProfileSyncComponentDidFailNotification
                    notificationUserInfo:nil];
+        [self.savedProfiles removeAllObjects];
     }
 }
 
