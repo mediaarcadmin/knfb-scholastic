@@ -360,7 +360,7 @@ NSString * const SCHAnnotationSyncComponentProfileIDs = @"SCHAnnotationSyncCompo
                 self.lastSyncSaveCalled = [NSDate date];
             }
         } else {
-            [self requestListProfileContentAnnotationsForProfileID:profileID];    
+            ret = [self requestListProfileContentAnnotationsForProfileID:profileID];    
         }
     } else {
         NSDictionary *notificationUserInfo = [NSDictionary dictionaryWithObject:(profileID == nil ? (id)[NSNull null] : profileID)
