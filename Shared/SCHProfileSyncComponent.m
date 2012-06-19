@@ -261,7 +261,6 @@ NSString * const SCHProfileSyncComponentDidFailNotification = @"SCHProfileSyncCo
                                                                                                                       result:nil
                                                                                                                     userInfo:nil] autorelease];
         [operation syncProfiles:profileList managedObjectContext:self.managedObjectContext];
-        [self saveWithManagedObjectContext:self.managedObjectContext];
     }
 }
 

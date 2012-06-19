@@ -58,7 +58,7 @@
 {	
     if ([settingsList count] > 0) {
         [(SCHSettingsSyncComponent *)self.syncComponent clearCoreDataUsingContext:self.backgroundThreadManagedObjectContext];
-        [self save];
+        [self saveWithManagedObjectContext:self.backgroundThreadManagedObjectContext];
         
         for (id setting in settingsList) {
             SCHSettingItem *newUserSettingsItem = [NSEntityDescription insertNewObjectForEntityForName:kSCHSettingItem 
@@ -68,7 +68,7 @@
             newUserSettingsItem.SettingValue = [self makeNullNil:[setting objectForKey:kSCHLibreAccessWebServiceSettingValue]];
         }
         
-        [self save];
+        [self saveWithManagedObjectContext:self.backgroundThreadManagedObjectContext];
     }
 }
 

@@ -56,15 +56,13 @@
 
 #pragma mark - SCHSyncComponentOperation methods
 
-- (void)save
+- (void)saveWithManagedObjectContext:(NSManagedObjectContext *)aManagedObjectContext
 {
-    // we purposefully don't call the self.accessor here as we don't want to 
-    // create the managed object context if it's not been used        
-    if (self.isCancelled == NO && backgroundThreadManagedObjectContext != nil) {
+    if (self.isCancelled == NO && aManagedObjectContext != nil) {
         NSError *error = nil;
         
-        if ([self.backgroundThreadManagedObjectContext hasChanges] == YES &&
-            [self.backgroundThreadManagedObjectContext save:&error] == NO) {
+        if ([aManagedObjectContext hasChanges] == YES &&
+            [aManagedObjectContext save:&error] == NO) {
             NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
         } 
     }

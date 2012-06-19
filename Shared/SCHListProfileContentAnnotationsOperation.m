@@ -181,7 +181,7 @@
         }
     }
     
-	[self save];
+	[self saveWithManagedObjectContext:self.backgroundThreadManagedObjectContext];
 }
 
 - (NSArray *)localAnnotationsItemForProfile:(NSNumber *)profileID
@@ -288,7 +288,7 @@
         }
     }
     
-    [self save];
+    [self saveWithManagedObjectContext:self.backgroundThreadManagedObjectContext];
 }
 
 - (void)syncAnnotationsContentItem:(NSDictionary *)webAnnotationsContentItem 
@@ -480,7 +480,7 @@
         appContentProfileItem.LastHighlightAnnotationSync = syncDate;
     }
 	
-	[self save];        
+	[self saveWithManagedObjectContext:self.backgroundThreadManagedObjectContext];        
 }
 
 - (void)syncHighlight:(NSDictionary *)webHighlight
@@ -663,7 +663,7 @@
         appContentProfileItem.LastNoteAnnotationSync = syncDate;
     }
 	
-	[self save];        
+	[self saveWithManagedObjectContext:self.backgroundThreadManagedObjectContext];        
 }
 
 - (void)syncNote:(NSDictionary *)webNote
@@ -817,7 +817,7 @@
         appContentProfileItem.LastBookmarkAnnotationSync = syncDate;
     }    
     
-	[self save];    
+	[self saveWithManagedObjectContext:self.backgroundThreadManagedObjectContext];    
 }
 
 - (void)syncBookmark:(NSDictionary *)webBookmark 
@@ -988,7 +988,7 @@
             }
         }];
         
-        [self save];
+        [self saveWithManagedObjectContext:self.backgroundThreadManagedObjectContext];
     }
     
     return ret;

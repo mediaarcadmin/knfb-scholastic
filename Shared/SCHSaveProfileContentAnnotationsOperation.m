@@ -36,7 +36,7 @@
 {
     @try {
         [self processSaveProfileContentAnnotations];
-        [self save];
+        [self saveWithManagedObjectContext:self.backgroundThreadManagedObjectContext];
     }
     @catch (NSException *exception) {
         dispatch_async(dispatch_get_main_queue(), ^{
@@ -145,7 +145,7 @@
             }
         }
     }
-    [self save];    
+    [self saveWithManagedObjectContext:self.backgroundThreadManagedObjectContext];    
 }
 
 @end

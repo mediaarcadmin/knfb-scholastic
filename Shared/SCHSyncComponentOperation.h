@@ -20,7 +20,7 @@
 - (id)initWithSyncComponent:(SCHSyncComponent *)aSyncComponent
                      result:(NSDictionary *)aResult
                    userInfo:(NSDictionary *)aUserInfo;
-- (void)save;
+- (void)saveWithManagedObjectContext:(NSManagedObjectContext *)aManagedObjectContext;
 
 - (id)makeNullNil:(id)object;
 

@@ -18,7 +18,7 @@
 {
     @try {
         [(SCHReadingStatsSyncComponent *)self.syncComponent clearCoreDataUsingContext:self.backgroundThreadManagedObjectContext];
-        [self save];
+        [self saveWithManagedObjectContext:self.backgroundThreadManagedObjectContext];
     }
     @catch (NSException *exception) {
         dispatch_async(dispatch_get_main_queue(), ^{

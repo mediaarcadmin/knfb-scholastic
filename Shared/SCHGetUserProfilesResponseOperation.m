@@ -36,7 +36,6 @@
         if (profileList != nil) {
             [self syncProfiles:profileList 
           managedObjectContext:self.backgroundThreadManagedObjectContext];
-            [self save];
         }
         
         dispatch_async(dispatch_get_main_queue(), ^{
@@ -160,6 +159,8 @@ managedObjectContext:(NSManagedObjectContext *)aManagedObjectContext
 	for (NSDictionary *webItem in creationPool) {
 		[self addProfile:webItem managedObjectContext:aManagedObjectContext];
 	}
+    
+    [self saveWithManagedObjectContext:self.backgroundThreadManagedObjectContext];    
 }
 
 - (NSArray *)localProfilesUsingManagedObjectContext:(NSManagedObjectContext *)aManagedObjectContext

@@ -26,7 +26,7 @@
 {
     @try {
         [self processSaveUserProfiles];
-        [self save];
+        [self saveWithManagedObjectContext:self.backgroundThreadManagedObjectContext];
     }
     @catch (NSException *exception) {
         dispatch_async(dispatch_get_main_queue(), ^{
@@ -113,7 +113,7 @@
                 [profileSyncComponent.savedProfiles removeObjectAtIndex:0];
             }
         }
-        [self save];
+        [self saveWithManagedObjectContext:self.backgroundThreadManagedObjectContext];
     }
 }
 
