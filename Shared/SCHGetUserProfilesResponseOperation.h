@@ -14,5 +14,7 @@
 
 - (SCHProfileItem *)addProfile:(NSDictionary *)webProfile
           managedObjectContext:(NSManagedObjectContext *)aManagedObjectContext;
+- (void)syncProfiles:(NSArray *)profileList
+managedObjectContext:(NSManagedObjectContext *)aManagedObjectContext;
 
 @end

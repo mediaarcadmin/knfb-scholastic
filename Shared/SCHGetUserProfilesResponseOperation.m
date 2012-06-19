@@ -16,11 +16,11 @@
 #import "SCHWishListProfile.h"
 #import "SCHWishListItem.h"
 #import "SCHWishListSyncComponent.h"
+#import "BITAPIError.h"
 
 @interface SCHGetUserProfilesResponseOperation ()
 
-- (void)syncProfiles:(NSArray *)profileList;
-- (NSArray *)localProfiles;
+- (NSArray *)localProfilesUsingManagedObjectContext:(NSManagedObjectContext *)aManagedObjectContext;
 - (BOOL)profileIDIsValid:(NSNumber *)profileID;
 - (void)syncProfile:(NSDictionary *)webProfile 
         withProfile:(SCHProfileItem *)localProfile;
@@ -31,10 +31,12 @@
 
 - (void)main
 {
-    if (self.isCancelled == NO) {
+    @try {
         NSArray *profileList = [self.result objectForKey:kSCHLibreAccessWebServiceProfileList];
         if (profileList != nil) {
-            [self syncProfiles:profileList];
+            [self syncProfiles:profileList 
+          managedObjectContext:self.backgroundThreadManagedObjectContext];
+            [self save];
         }
         
         dispatch_async(dispatch_get_main_queue(), ^{
@@ -46,17 +48,33 @@
                                          notificationUserInfo:nil];
             }
         });                
-        [self save];        
     }
+    @catch (NSException *exception) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            if (self.isCancelled == NO) {
+                NSError *error = [NSError errorWithDomain:kBITAPIErrorDomain 
+                                                     code:kBITAPIExceptionError 
+                                                 userInfo:[NSDictionary dictionaryWithObject:[exception reason]
+                                                                                      forKey:NSLocalizedDescriptionKey]];
+                [self.syncComponent completeWithFailureMethod:kSCHLibreAccessWebServiceGetUserProfiles 
+                                                        error:error 
+                                                  requestInfo:nil 
+                                                       result:self.result 
+                                             notificationName:SCHProfileSyncComponentDidFailNotification
+                                         notificationUserInfo:nil];
+            }
+        });   
+    }                    
 }
 
 - (void)syncProfiles:(NSArray *)profileList 
+managedObjectContext:(NSManagedObjectContext *)aManagedObjectContext
 {		
 	NSMutableArray *deletePool = [NSMutableArray array];
 	NSMutableArray *creationPool = [NSMutableArray array];
 	
 	NSArray *webProfiles = [profileList sortedArrayUsingDescriptors:[NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:kSCHLibreAccessWebServiceID ascending:YES]]];		
-	NSArray *localProfiles = [self localProfiles];
+	NSArray *localProfiles = [self localProfilesUsingManagedObjectContext:aManagedObjectContext];
     
 	NSEnumerator *webEnumerator = [webProfiles objectEnumerator];			  
 	NSEnumerator *localEnumerator = [localProfiles objectEnumerator];			  			  
@@ -134,28 +152,26 @@
         });
         for (SCHProfileItem *profileItem in deletePool) {
             [SCHProfileSyncComponent removeWishListForProfile:profileItem 
-                                         managedObjectContext:self.backgroundThreadManagedObjectContext];
-            [self.backgroundThreadManagedObjectContext deleteObject:profileItem];
+                                         managedObjectContext:aManagedObjectContext];
+            [aManagedObjectContext deleteObject:profileItem];
         }                
     }
     
 	for (NSDictionary *webItem in creationPool) {
-		[self addProfile:webItem managedObjectContext:self.backgroundThreadManagedObjectContext];
+		[self addProfile:webItem managedObjectContext:aManagedObjectContext];
 	}
-	
-	[self save];
 }
 
-- (NSArray *)localProfiles
+- (NSArray *)localProfilesUsingManagedObjectContext:(NSManagedObjectContext *)aManagedObjectContext
 {
 	NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
     NSError *error = nil;
 	
 	[fetchRequest setEntity:[NSEntityDescription entityForName:kSCHProfileItem 
-                                        inManagedObjectContext:self.backgroundThreadManagedObjectContext]];	
+                                        inManagedObjectContext:aManagedObjectContext]];	
 	[fetchRequest setSortDescriptors:[NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:kSCHLibreAccessWebServiceID ascending:YES]]];
 	
-	NSArray *ret = [self.backgroundThreadManagedObjectContext 
+	NSArray *ret = [aManagedObjectContext
                     executeFetchRequest:fetchRequest error:&error];	
 	[fetchRequest release], fetchRequest = nil;
     if (ret == nil) {

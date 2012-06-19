@@ -104,33 +104,18 @@ NSString * const SCHProfileSyncComponentDidFailNotification = @"SCHProfileSyncCo
 - (void)method:(NSString *)method didCompleteWithResult:(NSDictionary *)result 
       userInfo:(NSDictionary *)userInfo
 {	
-    @try {
-        if([method compare:kSCHLibreAccessWebServiceSaveUserProfiles] == NSOrderedSame) {
-            SCHSaveUserProfilesOperation *operation = [[[SCHSaveUserProfilesOperation alloc] initWithSyncComponent:self
-                                                                                                            result:result
-                                                                                                          userInfo:userInfo] autorelease];
-            [operation setThreadPriority:SCHSyncComponentThreadLowPriority];
-            [self.backgroundProcessingQueue addOperation:operation];
-        } else if([method compare:kSCHLibreAccessWebServiceGetUserProfiles] == NSOrderedSame) {
-            SCHGetUserProfilesResponseOperation *operation = [[[SCHGetUserProfilesResponseOperation alloc] initWithSyncComponent:self
-                                                                                                                         result:result
-                                                                                                                       userInfo:userInfo] autorelease];
-            [operation setThreadPriority:SCHSyncComponentThreadLowPriority];
-            [self.backgroundProcessingQueue addOperation:operation];
-        }
-    }
-    @catch (NSException *exception) {
-        NSError *error = [NSError errorWithDomain:kBITAPIErrorDomain 
-                                             code:kBITAPIExceptionError 
-                                         userInfo:[NSDictionary dictionaryWithObject:[exception reason]
-                                                                              forKey:NSLocalizedDescriptionKey]];
-        [self completeWithFailureMethod:method 
-                                  error:error 
-                            requestInfo:nil 
-                                 result:result 
-                       notificationName:SCHProfileSyncComponentDidFailNotification
-                   notificationUserInfo:nil];
-        [self.savedProfiles removeAllObjects];        
+    if([method compare:kSCHLibreAccessWebServiceSaveUserProfiles] == NSOrderedSame) {
+        SCHSaveUserProfilesOperation *operation = [[[SCHSaveUserProfilesOperation alloc] initWithSyncComponent:self
+                                                                                                        result:result
+                                                                                                      userInfo:userInfo] autorelease];
+        [operation setThreadPriority:SCHSyncComponentThreadLowPriority];
+        [self.backgroundProcessingQueue addOperation:operation];
+    } else if([method compare:kSCHLibreAccessWebServiceGetUserProfiles] == NSOrderedSame) {
+        SCHGetUserProfilesResponseOperation *operation = [[[SCHGetUserProfilesResponseOperation alloc] initWithSyncComponent:self
+                                                                                                                      result:result
+                                                                                                                    userInfo:userInfo] autorelease];
+        [operation setThreadPriority:SCHSyncComponentThreadLowPriority];
+        [self.backgroundProcessingQueue addOperation:operation];
     }
 }
 
@@ -222,7 +207,6 @@ NSString * const SCHProfileSyncComponentDidFailNotification = @"SCHProfileSyncCo
                        notificationName:SCHProfileSyncComponentDidFailNotification
                    notificationUserInfo:nil];
     }
-    [self.savedProfiles removeAllObjects];
 }
 
 - (BOOL)updateProfiles
@@ -272,22 +256,24 @@ NSString * const SCHProfileSyncComponentDidFailNotification = @"SCHProfileSyncCo
 - (void)syncProfilesFromMainThread:(NSArray *)profileList
 {
     if (profileList != nil) {
-        NSDictionary *result = [NSDictionary dictionaryWithObject:profileList forKey:kSCHLibreAccessWebServiceProfileList];
         SCHGetUserProfilesResponseOperation *operation = [[[SCHGetUserProfilesResponseOperation alloc] initWithSyncComponent:self 
-                                                                                                                      result:result
+                                                                                                                      result:nil
                                                                                                                     userInfo:nil] autorelease];
-        [operation start];
+        [operation syncProfiles:profileList managedObjectContext:self.managedObjectContext];
+        [self saveWithManagedObjectContext:self.managedObjectContext];
     }
 }
 
 - (void)addProfileFromMainThread:(NSDictionary *)webProfile
 {
-    SCHGetUserProfilesResponseOperation *operation = [[[SCHGetUserProfilesResponseOperation alloc] initWithSyncComponent:self 
-                                                                                                                  result:nil
-                                                                                                                userInfo:nil] autorelease];
-    
-    [operation addProfile:webProfile managedObjectContext:self.managedObjectContext];
-    [self saveWithManagedObjectContext:self.managedObjectContext];
+    if (webProfile != nil) {
+        SCHGetUserProfilesResponseOperation *operation = [[[SCHGetUserProfilesResponseOperation alloc] initWithSyncComponent:self 
+                                                                                                                      result:nil
+                                                                                                                    userInfo:nil] autorelease];
+        
+        [operation addProfile:webProfile managedObjectContext:self.managedObjectContext];
+        [self saveWithManagedObjectContext:self.managedObjectContext];
+    }
 }
 
 #pragma mark - Class methods

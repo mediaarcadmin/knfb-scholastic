@@ -11,6 +11,7 @@
 #import "SCHProfileSyncComponent.h"
 #import "SCHProfileItem.h"
 #import "SCHLibreAccessWebService.h"
+#import "BITAPIError.h"
 
 @interface SCHSaveUserProfilesOperation ()
 
@@ -23,11 +24,27 @@
 
 - (void)main
 {
-    if (self.isCancelled == NO) {
+    @try {
         [self processSaveUserProfiles];
-        
         [self save];
     }
+    @catch (NSException *exception) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            if (self.isCancelled == NO) {
+                NSError *error = [NSError errorWithDomain:kBITAPIErrorDomain 
+                                                     code:kBITAPIExceptionError 
+                                                 userInfo:[NSDictionary dictionaryWithObject:[exception reason]
+                                                                                      forKey:NSLocalizedDescriptionKey]];
+                [self.syncComponent completeWithFailureMethod:kSCHLibreAccessWebServiceSaveUserProfiles 
+                                                        error:error 
+                                                  requestInfo:nil 
+                                                       result:self.result 
+                                             notificationName:SCHProfileSyncComponentDidFailNotification
+                                         notificationUserInfo:nil];
+                [((SCHProfileSyncComponent *)self.syncComponent).savedProfiles removeAllObjects];        
+            }
+        });   
+    }            
 }
 
 - (void)processSaveUserProfiles
@@ -50,9 +67,6 @@
     SCHProfileSyncComponent *profileSyncComponent = (SCHProfileSyncComponent *)self.syncComponent;
     
     for (NSDictionary *profile in profilesArray) {
-        if (self.isCancelled == YES) {
-            return;
-        }
         if ([profileSyncComponent.savedProfiles count] > 0) {
             managedObjectID = [profileSyncComponent.savedProfiles objectAtIndex:0];
             if (managedObjectID != nil) {
