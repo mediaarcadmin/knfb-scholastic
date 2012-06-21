@@ -89,9 +89,9 @@ static const CGFloat kSCHStoriaLoginContentHeightLandscape = 420;
     
 #if USE_EMAIL_ADDRESS_AS_USERNAME    
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
-        topFieldLabel.text = NSLocalizedString(@"Email", @"");
+        topFieldLabel.text = NSLocalizedString(@"E-Mail Address", @"");
     } else if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
-        topField.placeholder = NSLocalizedString(@"Email", @"");
+        topField.placeholder = NSLocalizedString(@"E-Mail Address", @"");
     }
 #endif    
     
@@ -222,7 +222,7 @@ static const CGFloat kSCHStoriaLoginContentHeightLandscape = 420;
         CGRect frame = self.promptLabel.frame;
         if (showWarning) {
 #if USE_EMAIL_ADDRESS_AS_USERNAME            
-            self.promptLabel.text = NSLocalizedString(@"Your Email or Password was not recognized. Please try again.", @"");
+            self.promptLabel.text = NSLocalizedString(@"Your E-mail Address or Password was not recognized. Please try again.", @"");
 #else 
             self.promptLabel.text = NSLocalizedString(@"Your User Name or Password was not recognized. Please try again.", @"");            
 #endif            
