@@ -172,10 +172,15 @@ enum {
 
 - (void)levelButtonTapped:(id)sender
 {
+    if (self.selectedPuzzleType) {
+        // already chosen
+        return;
+    }
+    self.selectedPuzzleType = YES;
+    
     [self cancelQueuedAudioExecutingSynchronizedBlocksBefore:^{
         self.numberOfPairs = [(UIView *)sender tag];
         [self presentNextView];
-        self.selectedPuzzleType = YES;
     }];
 }
 
