@@ -288,6 +288,8 @@
 {
     self.controllerState = SCHStoryInteractionControllerStateInteractionFinishedSuccessfully;
     [self setUserInteractionsEnabled:NO];
+    
+    NSString *correctAnswerAudioPath = [[self currentQuestion] audioPathForCorrectAnswer];
     [self.currentQuestion setAnswered:YES];
     
     CGFloat scale = 1.0f / self.scrollView.zoomScale;
@@ -328,7 +330,7 @@
     
     [self cancelQueuedAudioExecutingSynchronizedBlocksBefore:^{
         [self enqueueAudioWithPath:[self.storyInteraction storyInteractionCorrectAnswerSoundFilename] fromBundle:YES];
-        [self enqueueAudioWithPath:[[self currentQuestion] audioPathForCorrectAnswer]
+        [self enqueueAudioWithPath:correctAnswerAudioPath
                         fromBundle:NO
                         startDelay:0
             synchronizedStartBlock:nil
