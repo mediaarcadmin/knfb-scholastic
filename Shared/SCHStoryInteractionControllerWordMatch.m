@@ -183,6 +183,7 @@
                     startDelay:0
         synchronizedStartBlock:nil
           synchronizedEndBlock:^{
+              self.controllerState = SCHStoryInteractionControllerStateInteractionFinishedSuccessfully;
               [self removeFromHostView];
           }];
 }
