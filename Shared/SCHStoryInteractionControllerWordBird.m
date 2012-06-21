@@ -166,6 +166,7 @@ enum {
         [self.lettersContainer addSubview:letterView];
     }  
     [self layoutLetterViews];
+    self.tappedLetter = 0;
 }
 
 - (void)layoutLetterViews
@@ -186,9 +187,7 @@ enum {
         }
         SCHStoryInteractionWordBirdLetterView *letterView = [letterViews objectAtIndex:(letter-L'A')];
         letterView.frame = CGRectMake(left+(size+kTileLetterGap)*(letter-firstInRow), top, size, size);
-    }
-    
-    self.tappedLetter = 0;
+    }    
 }
 
 - (void)setupAnimationView
