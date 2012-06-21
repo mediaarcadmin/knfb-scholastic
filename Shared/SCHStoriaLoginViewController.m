@@ -89,9 +89,9 @@ static const CGFloat kSCHStoriaLoginContentHeightLandscape = 420;
     
 #if USE_EMAIL_ADDRESS_AS_USERNAME    
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
-        topFieldLabel.text = NSLocalizedString(@"Email", @"");
+        topFieldLabel.text = NSLocalizedString(@"E-Mail Address", @"");
     } else if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
-        topField.placeholder = NSLocalizedString(@"Email", @"");
+        topField.placeholder = NSLocalizedString(@"E-Mail Address", @"");
     }
 #endif    
     
