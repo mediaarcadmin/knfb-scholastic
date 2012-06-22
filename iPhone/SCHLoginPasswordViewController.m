@@ -369,7 +369,11 @@ static const CGFloat kContentHeightLandscape = 380;
             self.promptLabel.text = NSLocalizedString(@"Please enter a valid e-mail address.", @"");
             break;
         case kSCHLoginHandlerCredentialsWarningAuthenticationFailure:
-            self.promptLabel.text = NSLocalizedString(@"Your User Name or Password was not recognized. Please try again.", @"");
+#if USE_EMAIL_ADDRESS_AS_USERNAME            
+            self.promptLabel.text = NSLocalizedString(@"Your E-mail Address or Password was not recognized. Please try again or contact Scholastic customer service at storia@scholastic.com.", @"");
+#else 
+            self.promptLabel.text = NSLocalizedString(@"Your User Name or Password was not recognized. Please try again.", @"");            
+#endif     
             break;
     }
 }

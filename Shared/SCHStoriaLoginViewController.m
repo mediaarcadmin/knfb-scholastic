@@ -231,7 +231,7 @@ static const CGFloat kSCHStoriaLoginContentHeightLandscape = 420;
                 break;
             case kSCHLoginHandlerCredentialsWarningAuthenticationFailure:
 #if USE_EMAIL_ADDRESS_AS_USERNAME            
-                self.promptLabel.text = NSLocalizedString(@"Your E-mail Address or Password was not recognized. Please try again.", @"");
+                self.promptLabel.text = NSLocalizedString(@"Your E-mail Address or Password was not recognized. Please try again or contact Scholastic customer service at storia@scholastic.com.", @"");
 #else 
                 self.promptLabel.text = NSLocalizedString(@"Your User Name or Password was not recognized. Please try again.", @"");            
 #endif     
