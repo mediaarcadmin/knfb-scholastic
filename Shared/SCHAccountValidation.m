@@ -13,6 +13,7 @@
 #import "SCHAppStateManager.h"
 #import "SFHFKeychainUtils.h"
 #import "SCHAuthenticationManager.h"
+#import "BITAPIError.h"
 
 // Constants
 NSString * const kSCHAccountValidationErrorDomain = @"AccountValidationErrorDomain";
@@ -203,17 +204,24 @@ static NSTimeInterval const kSCHAccountValidationpTokenTimeout = 1740.0;
         result:(NSDictionary *)result
 {
     NSLog(@"%@:didFailWithError\n%@", method, error);
+ 
+    NSError *authenticationError;
     
-    NSString *username = [[NSUserDefaults standardUserDefaults] objectForKey:kSCHAuthenticationManagerUsername];
-    NSString *errorMessage;
-    
-    if ([username length]) {
-        errorMessage = [NSString stringWithFormat:NSLocalizedString(@"The password you entered for %@ was incorrect. Please try again.", @""), username];
+    if ([[error domain] isEqualToString:kBITAPIErrorDomain]) {
+        NSString *username = [[NSUserDefaults standardUserDefaults] objectForKey:kSCHAuthenticationManagerUsername];
+        NSString *errorMessage;
+        
+        if ([username length]) {
+            errorMessage = [NSString stringWithFormat:NSLocalizedString(@"The password you entered for %@ was incorrect. Please try again.", @""), username];
+        } else {
+            errorMessage = NSLocalizedString(@"The password you entered was incorrect. Please try again.", @"");
+        }
+        
+        authenticationError = [NSError errorWithDomain:[error domain] code:[error code] userInfo:[NSDictionary dictionaryWithObject:errorMessage forKey:NSLocalizedDescriptionKey]];
+        
     } else {
-        errorMessage = NSLocalizedString(@"The password you entered was incorrect. Please try again.", @"");
+        authenticationError = error;
     }
-    
-    NSError *authenticationError = [NSError errorWithDomain:[error domain] code:[error code] userInfo:[NSDictionary dictionaryWithObject:errorMessage forKey:NSLocalizedDescriptionKey]];
     
     [[SCHAppStateManager sharedAppStateManager] setLastScholasticAuthenticationErrorCode:[authenticationError code]];
     
