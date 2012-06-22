@@ -128,7 +128,7 @@ static const CGFloat kSCHStoriaLoginContentHeightLandscape = 420;
     [self stopShowingProgress];
     [self setupContentSizeForOrientation:self.interfaceOrientation];
     [self clearFields];
-    [self setDisplayIncorrectCredentialsWarning:NO];    
+    [self setDisplayIncorrectCredentialsWarning:kSCHLoginHandlerCredentialsWarningNone];    
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
@@ -190,7 +190,7 @@ static const CGFloat kSCHStoriaLoginContentHeightLandscape = 420;
     [self.bottomField setEnabled:NO];
     [self.spinner startAnimating];
     [self.loginButton setEnabled:NO];
-    [self setDisplayIncorrectCredentialsWarning:NO];
+    [self setDisplayIncorrectCredentialsWarning:kSCHLoginHandlerCredentialsWarningNone];
     [self.previewButton setEnabled:NO];
 }
 
@@ -216,20 +216,27 @@ static const CGFloat kSCHStoriaLoginContentHeightLandscape = 420;
     [self.loginButton setEnabled:YES];
 }
 
-- (void)setDisplayIncorrectCredentialsWarning:(BOOL)showWarning
+- (void)setDisplayIncorrectCredentialsWarning:(SCHLoginHandlerCredentialsWarning)credentialsWarning
 {
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
         CGRect frame = self.promptLabel.frame;
-        if (showWarning) {
+        switch (credentialsWarning) {
+            case kSCHLoginHandlerCredentialsWarningNone:
+                self.promptLabel.text = NSLocalizedString(@"You must have a Scholastic account to sign in.", @"");
+                frame.size.width = 140;
+                break;
+            case kSCHLoginHandlerCredentialsWarningMalformedEmail:
+                self.promptLabel.text = NSLocalizedString(@"Please enter a valid E-Mail Address.", @"");
+                frame.size.width = 140;
+                break;
+            case kSCHLoginHandlerCredentialsWarningAuthenticationFailure:
 #if USE_EMAIL_ADDRESS_AS_USERNAME            
-            self.promptLabel.text = NSLocalizedString(@"Your E-mail Address or Password was not recognized. Please try again.", @"");
+                self.promptLabel.text = NSLocalizedString(@"Your E-mail Address or Password was not recognized. Please try again.", @"");
 #else 
-            self.promptLabel.text = NSLocalizedString(@"Your User Name or Password was not recognized. Please try again.", @"");            
-#endif            
-            frame.size.width = 200;
-        } else {
-            self.promptLabel.text = NSLocalizedString(@"You must have a Scholastic account to sign in.", @"");
-            frame.size.width = 140;
+                self.promptLabel.text = NSLocalizedString(@"Your User Name or Password was not recognized. Please try again.", @"");            
+#endif     
+                frame.size.width = 200;
+                break;
         }
         
         [CATransaction begin];

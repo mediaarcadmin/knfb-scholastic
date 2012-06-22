@@ -6,6 +6,12 @@
 //  Copyright (c) 2012 BitWink. All rights reserved.
 //
 
+typedef enum {
+	kSCHLoginHandlerCredentialsWarningNone = 0,
+    kSCHLoginHandlerCredentialsWarningMalformedEmail,
+    kSCHLoginHandlerCredentialsWarningAuthenticationFailure,
+} SCHLoginHandlerCredentialsWarning;
+
 @protocol SCHLoginHandlerDelegate
 
 @required
@@ -13,7 +19,7 @@
 - (void)stopShowingProgress;
 - (void)clearFields;
 - (void)clearBottomField;
-- (void)setDisplayIncorrectCredentialsWarning:(BOOL)showWarning;
+- (void)setDisplayIncorrectCredentialsWarning:(SCHLoginHandlerCredentialsWarning)warning;
 
 @end
 

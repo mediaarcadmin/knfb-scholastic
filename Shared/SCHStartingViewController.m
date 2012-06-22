@@ -65,7 +65,7 @@ static const NSTimeInterval kSCHStartingViewControllerNonForcedAlertInterval = (
 
 - (void)runInitialChoiceSequence;
 - (void)runSetupSamplesSequence;
-- (void)runLoginSequenceWithUsername:(NSString *)username password:(NSString *)password credentialsSuccessBlock:(void(^)(BOOL success, BOOL retrying))credentialsSuccessBlock;
+- (void)runLoginSequenceWithUsername:(NSString *)username password:(NSString *)password credentialsSuccessBlock:(void(^)(BOOL success, BOOL retrying, NSError *error))credentialsSuccessBlock;
 - (void)runSetupProfileSequenceAnimated:(BOOL)animated;
 
 - (void)pushSamplesAnimated:(BOOL)animated showWelcome:(BOOL)welcome;
@@ -629,8 +629,17 @@ static const NSTimeInterval kSCHStartingViewControllerNonForcedAlertInterval = (
         
         login.loginBlock = ^(NSString *username, NSString *password) {
             [weakLoginRef startShowingProgress];
-            [self runLoginSequenceWithUsername:username password:password credentialsSuccessBlock:^(BOOL success, BOOL retrying){
-                [weakLoginRef setDisplayIncorrectCredentialsWarning:!success];
+            [self runLoginSequenceWithUsername:username password:password credentialsSuccessBlock:^(BOOL success, BOOL retrying, NSError *error){
+                if (success) {
+                    [weakLoginRef setDisplayIncorrectCredentialsWarning:kSCHLoginHandlerCredentialsWarningNone];
+                } else {
+                    if (error && [[error domain] isEqualToString:kSCHAccountValidationErrorDomain] && ([error code] == kSCHAccountValidationCredentialsError)) {
+                        [weakLoginRef setDisplayIncorrectCredentialsWarning:kSCHLoginHandlerCredentialsWarningMalformedEmail];
+                    } else {
+                        [weakLoginRef setDisplayIncorrectCredentialsWarning:kSCHLoginHandlerCredentialsWarningAuthenticationFailure];
+                    }                          
+                }
+                
                 [weakLoginRef stopShowingProgress];
                 
                 if (!success) {
@@ -868,7 +877,7 @@ static const NSTimeInterval kSCHStartingViewControllerNonForcedAlertInterval = (
     }
 }
 
-- (void)runLoginSequenceWithUsername:(NSString *)username password:(NSString *)password credentialsSuccessBlock:(void(^)(BOOL success, BOOL retrying))credentialsSuccessBlock
+- (void)runLoginSequenceWithUsername:(NSString *)username password:(NSString *)password credentialsSuccessBlock:(void(^)(BOOL success, BOOL retrying, NSError *error))credentialsSuccessBlock
 {
     BITOperationWithBlocks *setupSequenceCheckConnectivity = [[BITOperationWithBlocks alloc] init];
     setupSequenceCheckConnectivity.syncMain = ^(BITOperationIsCancelledBlock isCancelled, BITOperationFailedBlock failed) {
@@ -884,7 +893,7 @@ static const NSTimeInterval kSCHStartingViewControllerNonForcedAlertInterval = (
     setupSequenceCheckConnectivity.failed = ^(NSError *error){
         
         if (credentialsSuccessBlock) {
-            credentialsSuccessBlock(NO, NO);
+            credentialsSuccessBlock(NO, NO, error);
         }
         
         LambdaAlert *alert = [[LambdaAlert alloc]
@@ -923,7 +932,7 @@ static const NSTimeInterval kSCHStartingViewControllerNonForcedAlertInterval = (
                                                                                 successBlock:^(SCHAuthenticationManagerConnectivityMode connectivityMode) { 
                                                                                     if (connectivityMode == SCHAuthenticationManagerConnectivityModeOnline) { 
                                                                                         if (credentialsSuccessBlock) {
-                                                                                            credentialsSuccessBlock(YES, NO);
+                                                                                            credentialsSuccessBlock(YES, NO, nil);
                                                                                         }
                                                                                         [[SCHSyncManager sharedSyncManager] firstSync:YES requireDeviceAuthentication:NO];
                                                                                     } else { 
@@ -969,13 +978,13 @@ static const NSTimeInterval kSCHStartingViewControllerNonForcedAlertInterval = (
                                   message:localizedMessage];
             [alert addButtonWithTitle:NSLocalizedString(@"Cancel", @"Cancel") block:^{
                 if (credentialsSuccessBlock) {
-                    credentialsSuccessBlock(NO, NO);
+                    credentialsSuccessBlock(NO, NO, error);
                 }
             }];
             if (([[error domain] isEqualToString:@"kSCHDrmErrorDomain"]) && ([error code] == kSCHDrmInitializationError)) {
                 [alert addButtonWithTitle:NSLocalizedString(@"Reset", @"Reset") block:^{
                     if (credentialsSuccessBlock) {
-                        credentialsSuccessBlock(NO, YES);
+                        credentialsSuccessBlock(NO, YES, error);
                     }
                     AppDelegate_Shared *appDelegate = (AppDelegate_Shared *)[[UIApplication sharedApplication] delegate];
                     [appDelegate recoverFromUnintializedDRM];
@@ -984,7 +993,7 @@ static const NSTimeInterval kSCHStartingViewControllerNonForcedAlertInterval = (
             } else {
                 [alert addButtonWithTitle:NSLocalizedString(@"Retry", @"Retry") block:^{
                     if (credentialsSuccessBlock) {
-                        credentialsSuccessBlock(NO, YES);
+                        credentialsSuccessBlock(NO, YES, error);
                     }
                     [self runLoginSequenceWithUsername:username password:password credentialsSuccessBlock:credentialsSuccessBlock];
                 }];
@@ -993,7 +1002,7 @@ static const NSTimeInterval kSCHStartingViewControllerNonForcedAlertInterval = (
             [alert release];
         } else {
             if (credentialsSuccessBlock) {
-                credentialsSuccessBlock(NO, NO);
+                credentialsSuccessBlock(NO, NO, error);
             }
         }
     };

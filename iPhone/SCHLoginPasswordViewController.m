@@ -178,7 +178,7 @@ static const CGFloat kContentHeightLandscape = 380;
     [self setupAssetsForOrientation:self.interfaceOrientation];
     [self setupContentSizeForOrientation:self.interfaceOrientation];
     [self clearFields];
-    [self setDisplayIncorrectCredentialsWarning:NO];
+    [self setDisplayIncorrectCredentialsWarning:kSCHLoginHandlerCredentialsWarningNone];
 
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
         UIColor *borderColor;
@@ -359,12 +359,18 @@ static const CGFloat kContentHeightLandscape = 380;
     self.bottomField.text = @"";
 }
 
-- (void)setDisplayIncorrectCredentialsWarning:(BOOL)showWarning
+- (void)setDisplayIncorrectCredentialsWarning:(SCHLoginHandlerCredentialsWarning)credentialsWarning
 {
-    if (showWarning) {
-        self.promptLabel.text = NSLocalizedString(@"Your User Name or Password was not recognized. Please try again.", @"");
-    } else {
-        self.promptLabel.text = NSLocalizedString(@"To start reading your eBooks, enter your Scholastic User Name and Password.", @"");
+    switch (credentialsWarning) {
+        case kSCHLoginHandlerCredentialsWarningNone:
+            self.promptLabel.text = NSLocalizedString(@"To start reading your eBooks, enter your Scholastic User Name and Password.", @"");
+            break;
+        case kSCHLoginHandlerCredentialsWarningMalformedEmail:
+            self.promptLabel.text = NSLocalizedString(@"Please enter a valid e-mail address.", @"");
+            break;
+        case kSCHLoginHandlerCredentialsWarningAuthenticationFailure:
+            self.promptLabel.text = NSLocalizedString(@"Your User Name or Password was not recognized. Please try again.", @"");
+            break;
     }
 }
 
