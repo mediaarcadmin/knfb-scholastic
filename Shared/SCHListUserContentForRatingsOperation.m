@@ -174,22 +174,48 @@
 		}		
 	}
 	
-    for (SCHUserContentItem *userContentItem in deletePool) {
-        for (SCHContentProfileItem *contentProfileItem in userContentItem.ProfileList) {
-            [self removeAnnotationStructure:userContentItem 
-                                 forProfile:contentProfileItem
-                       managedObjectContext:aManagedObjectContext];     
-            
+    if ([deletePool count] > 0) {
+        // send notifications for deletions
+        NSMutableDictionary *profilesWithBookIdentifiers = [NSMutableDictionary dictionary];        
+        for (SCHUserContentItem *userContentItem in deletePool) {
+            SCHBookIdentifier *bookIdentifier = [userContentItem bookIdentifier];
+            if (bookIdentifier != nil) {
+                for (SCHContentProfileItem *contentProfileItem in userContentItem.ProfileList) {
+                    NSNumber *profileID = contentProfileItem.ProfileID;
+                    if (profileID != nil) {
+                        NSMutableArray *books = [profilesWithBookIdentifiers objectForKey:profileID];
+                        if (books == nil) {
+                            books = [NSMutableArray array];
+                            [profilesWithBookIdentifiers setObject:books forKey:profileID];
+                        }
+                        [books addObject:bookIdentifier];
+                    }
+                }
+            }
+        }
+        if ([profilesWithBookIdentifiers count] > 0) {
             dispatch_async(dispatch_get_main_queue(), ^{
-                if (self.isCancelled == NO) {
-                    [[NSNotificationCenter defaultCenter] postNotificationName:SCHContentSyncComponentWillDeleteNotification 
-                                                                        object:self 
-                                                                      userInfo:[NSDictionary dictionaryWithObject:[NSArray arrayWithObject:[userContentItem bookIdentifier]]
-                                                                                                           forKey:[contentProfileItem ProfileID]]];
+                if (self.isCancelled == NO) {        
+                    for (NSNumber *profileID in [profilesWithBookIdentifiers allKeys]) {
+                        [[NSNotificationCenter defaultCenter] postNotificationName:SCHContentSyncComponentWillDeleteNotification 
+                                                                            object:self 
+                                                                          userInfo:[NSDictionary dictionaryWithObject:[profilesWithBookIdentifiers objectForKey:profileID]
+                                                                                                               forKey:profileID]];                    
+                    }
                 }
             });
         }
-        [aManagedObjectContext deleteObject:userContentItem];
+        
+        // delete objects
+        for (SCHUserContentItem *userContentItem in deletePool) {
+            for (SCHContentProfileItem *contentProfileItem in userContentItem.ProfileList) {
+                [self removeAnnotationStructure:userContentItem 
+                                     forProfile:contentProfileItem
+                           managedObjectContext:aManagedObjectContext];                
+            }
+            
+            [aManagedObjectContext deleteObject:userContentItem];
+        }
     }
     
     for (NSDictionary *webItem in creationPool) {
@@ -612,16 +638,39 @@
 		}		
 	}
 	
-    for (SCHContentProfileItem *contentProfileItem in deletePool) {
-        dispatch_async(dispatch_get_main_queue(), ^{
-            if (self.isCancelled == NO) {        
-                [[NSNotificationCenter defaultCenter] postNotificationName:SCHContentSyncComponentWillDeleteNotification 
-                                                                    object:self 
-                                                                  userInfo:[NSDictionary dictionaryWithObject:[NSArray arrayWithObject:[contentProfileItem.UserContentItem bookIdentifier]]
-                                                                                                       forKey:[contentProfileItem ProfileID]]];
+    if ([deletePool count] > 0) {
+        // send notifications for deletions
+        NSMutableDictionary *profilesWithBookIdentifiers = [NSMutableDictionary dictionaryWithCapacity:[deletePool count]];
+        for (SCHContentProfileItem *contentProfileItem in deletePool) {
+            NSNumber *profileID = [contentProfileItem ProfileID];
+            SCHBookIdentifier *bookIdentifier = [contentProfileItem.UserContentItem bookIdentifier];
+            if (profileID != nil && bookIdentifier != nil) {
+                NSMutableArray *books = [profilesWithBookIdentifiers objectForKey:profileID];
+                if (books == nil) {
+                    books = [NSMutableArray array];
+                    [profilesWithBookIdentifiers setObject:books forKey:profileID];
+                }                
+                [books addObject:bookIdentifier];
             }
-        });
-        [aManagedObjectContext deleteObject:contentProfileItem];            
+        }
+        if ([profilesWithBookIdentifiers count] > 0) {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                if (self.isCancelled == NO) {        
+                    for (NSNumber *profileID in [profilesWithBookIdentifiers allKeys]) {
+                        [[NSNotificationCenter defaultCenter] postNotificationName:SCHContentSyncComponentWillDeleteNotification 
+                                                                            object:self 
+                                                                          userInfo:[NSDictionary dictionaryWithObject:[profilesWithBookIdentifiers objectForKey:profileID]
+                                                                                                               forKey:profileID]];                    
+                    }
+                }
+            });
+        }
+        
+        // delete objects
+        for (SCHContentProfileItem *contentProfileItem in deletePool) {
+            [aManagedObjectContext deleteObject:contentProfileItem];            
+        }
+        
     }
     
 	for (NSDictionary *webItem in creationPool) {
