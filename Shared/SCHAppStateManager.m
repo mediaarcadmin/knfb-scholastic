@@ -231,6 +231,17 @@
     return ret;  
 }
 
+- (BOOL)shouldShowWishList
+{
+    if ([self lastScholasticAuthenticationErrorCode] == kSCHScholasticAuthenticationWebServiceErrorCodeInvalidUsernamePassword) {
+        return NO;
+    } else if (![self isCOPPACompliant]) {
+        return NO;
+    } else {
+        return YES;
+    }
+}
+
 - (BOOL)isStandardStore
 {
     // Assume a standard store if there is no app state

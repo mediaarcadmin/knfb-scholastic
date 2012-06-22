@@ -20,7 +20,7 @@
 @property (nonatomic, assign) BOOL isOnWishList;
 @property (nonatomic, assign) BOOL showsBottomRule;
 @property (nonatomic, assign) BOOL dimEmptyRatings; // default yes
-@property (nonatomic, assign) BOOL lastAuthenticationFailedUsernamePassword;
+@property (nonatomic, assign) BOOL showsWishListButton; // default yes
 @property (nonatomic, retain) UIColor *recommendationBackgroundColor;
 
 @property (nonatomic, retain) IBOutlet UIImageView *coverImageView;

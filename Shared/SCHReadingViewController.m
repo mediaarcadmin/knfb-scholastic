@@ -2408,6 +2408,7 @@ static const NSUInteger kReadingViewMaxRecommendationsCount = 4;
             listView.showsBottomRule = NO;
             listView.dimEmptyRatings = NO;
             listView.delegate = self;
+            listView.showsWishListButton = [[SCHAppStateManager sharedAppStateManager] shouldShowWishList];
             
             [listView updateWithRecommendationItem:recommendationDictionary];
             

@@ -9,6 +9,7 @@
 #import "SCHBookShelfRecommendationListController.h"
 #import "SCHAppRecommendationItem.h"
 #import "SCHThemeManager.h"
+#import "SCHAppStateManager.h"
 
 @interface SCHBookShelfRecommendationListController ()
 
@@ -39,7 +40,7 @@
 @synthesize localWishListItems;
 @synthesize modifiedWishListItems;
 @synthesize recommendationViewNib;
-@synthesize lastAuthenticationFailedUsernamePassword;
+@synthesize shouldShowWishList;
 
 #pragma mark - Memory Management
 
@@ -76,7 +77,7 @@
     if (self) {
         // Custom initialization
         self.recommendationViewNib = [UINib nibWithNibName:@"SCHRecommendationListView" bundle:nil];
-        self.lastAuthenticationFailedUsernamePassword = NO;
+        self.shouldShowWishList = YES;
 
     }
     return self;
@@ -108,10 +109,10 @@
         
         self.titleLabel.text = NSLocalizedString(@"Here are kids' top-rated eBooks", @"Here are kids' top-rated eBooks");
         
-        if (self.lastAuthenticationFailedUsernamePassword) {
-            self.bottomSegment.enabled = NO;
+        if (self.shouldShowWishList) {
+            self.bottomSegment.hidden = NO;
         } else {
-            self.bottomSegment.enabled = YES;
+            self.bottomSegment.hidden = YES;
         }
         
     } else {
@@ -284,7 +285,7 @@
             
             SCHRecommendationListView *recommendationView = [[[self.recommendationViewNib instantiateWithOwner:self options:nil] objectAtIndex:0] retain];
             recommendationView.frame = cell.frame;
-            recommendationView.lastAuthenticationFailedUsernamePassword = self.lastAuthenticationFailedUsernamePassword;
+            recommendationView.showsWishListButton = self.shouldShowWishList;
             
             recommendationView.tag = 999;
             recommendationView.delegate = self;

@@ -37,6 +37,8 @@
 - (void)setServerDateDelta:(NSTimeInterval)seconds;
 - (NSTimeInterval)serverDateDelta;
 
+- (BOOL)shouldShowWishList;
+
 - (BOOL)isStandardStore;
 - (BOOL)isSampleStore;
 - (void)setDataStoreType:(SCHDataStoreTypes)type;

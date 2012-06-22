@@ -29,7 +29,7 @@
 @synthesize delegate;
 @synthesize ISBN;
 @synthesize isOnWishList;
-@synthesize lastAuthenticationFailedUsernamePassword;
+@synthesize showsWishListButton;
 @synthesize showsBottomRule;
 @synthesize recommendationBackgroundColor;
 
@@ -93,7 +93,7 @@
 - (void)initialiseView
 {    
     self.showsBottomRule = YES;
-    self.lastAuthenticationFailedUsernamePassword = NO;
+    self.showsWishListButton = YES;
     self.rateView.editable = NO;
     self.dimEmptyRatings = YES;
 }
@@ -161,10 +161,10 @@
         self.ruleImageView.hidden = YES;
     }
     
-    if (self.lastAuthenticationFailedUsernamePassword) {
-        self.onWishListButton.hidden = YES;
-    } else {
+    if (self.showsWishListButton) {
         self.onWishListButton.hidden = NO;
+    } else {
+        self.onWishListButton.hidden = YES;
     }
 }
 
@@ -188,10 +188,10 @@
         self.ruleImageView.hidden = YES;
     }
     
-    if (self.lastAuthenticationFailedUsernamePassword) {
-        self.onWishListButton.hidden = YES;
-    } else {
+    if (self.showsWishListButton) {
         self.onWishListButton.hidden = NO;
+    } else {
+        self.onWishListButton.hidden = YES;
     }
 }
 
