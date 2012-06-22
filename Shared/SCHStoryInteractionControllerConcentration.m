@@ -172,10 +172,15 @@ enum {
 
 - (void)levelButtonTapped:(id)sender
 {
+    if (self.selectedPuzzleType) {
+        // already chosen
+        return;
+    }
+    self.selectedPuzzleType = YES;
+    
     [self cancelQueuedAudioExecutingSynchronizedBlocksBefore:^{
         self.numberOfPairs = [(UIView *)sender tag];
         [self presentNextView];
-        self.selectedPuzzleType = YES;
     }];
 }
 
@@ -373,8 +378,15 @@ enum {
     return flip;
 }
 
+#pragma mark - touch handling
+
 - (void)tileTapped:(UITapGestureRecognizer *)tap
 {
+    if (tap.state != UIGestureRecognizerStateEnded
+        || self.controllerState != SCHStoryInteractionControllerStateInteractionInProgress) {
+        return;
+    }
+    
     UIView *tile = tap.view;
     if (tile == self.firstFlippedTile) {
         return;
@@ -435,10 +447,10 @@ enum {
             [self enqueueAudioWithPath:[self.storyInteraction storyInteractionWrongAnswerSoundFilename]
                             fromBundle:YES
                             startDelay:0
-                synchronizedStartBlock:nil
-                  synchronizedEndBlock:^{
-                      self.controllerState = SCHStoryInteractionControllerStateInteractionInProgress;
-                  }];
+                synchronizedStartBlock:^{
+                    self.controllerState = SCHStoryInteractionControllerStateInteractionInProgress;
+                }
+                  synchronizedEndBlock:nil];
         });
     }
 }

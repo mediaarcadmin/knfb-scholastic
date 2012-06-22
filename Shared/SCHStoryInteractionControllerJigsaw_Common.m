@@ -132,8 +132,14 @@
 
 - (void)choosePuzzle:(UIButton *)sender
 {
+    if (self.numberOfPieces > 0) {
+        // ignore multi-tap
+        return;
+    }
+    
+    self.numberOfPieces = sender.tag;
+    
     [self cancelQueuedAudioExecutingSynchronizedBlocksBefore:^{
-        self.numberOfPieces = sender.tag;
         [self presentNextViewAnimated:NO];
     }];
 }
