@@ -204,10 +204,21 @@ static NSTimeInterval const kSCHAccountValidationpTokenTimeout = 1740.0;
 {
     NSLog(@"%@:didFailWithError\n%@", method, error);
     
-    [[SCHAppStateManager sharedAppStateManager] setLastScholasticAuthenticationErrorCode:[error code]];
+    NSString *username = [[NSUserDefaults standardUserDefaults] objectForKey:kSCHAuthenticationManagerUsername];
+    NSString *errorMessage;
+    
+    if ([username length]) {
+        errorMessage = [NSString stringWithFormat:NSLocalizedString(@"The password you entered for %@ was incorrect. Please try again.", @""), username];
+    } else {
+        errorMessage = NSLocalizedString(@"The password you entered was incorrect. Please try again.", @"");
+    }
+    
+    NSError *authenticationError = [NSError errorWithDomain:[error domain] code:[error code] userInfo:[NSDictionary dictionaryWithObject:errorMessage forKey:NSLocalizedDescriptionKey]];
+    
+    [[SCHAppStateManager sharedAppStateManager] setLastScholasticAuthenticationErrorCode:[authenticationError code]];
     
     self.passwordUsed = nil;
-    self.validateBlock(nil, error);
+    self.validateBlock(nil, authenticationError);
     self.validateBlock = nil;    
     self.waitingOnResponse = NO;    
 }
