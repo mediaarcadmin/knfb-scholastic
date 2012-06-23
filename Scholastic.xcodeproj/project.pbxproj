@@ -1395,6 +1395,10 @@
 		525C57E31591295A005AC7B3 /* SCHListUserContentForRatingsOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 525C57E115912959005AC7B3 /* SCHListUserContentForRatingsOperation.m */; };
 		525C57E41591295A005AC7B3 /* SCHListUserContentForRatingsOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 525C57E115912959005AC7B3 /* SCHListUserContentForRatingsOperation.m */; };
 		525C57E51591295A005AC7B3 /* SCHListUserContentForRatingsOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 525C57E115912959005AC7B3 /* SCHListUserContentForRatingsOperation.m */; };
+		525C583E159528B0005AC7B3 /* SCHListContentMetadataOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 525C583D159528AF005AC7B3 /* SCHListContentMetadataOperation.m */; };
+		525C583F159528B0005AC7B3 /* SCHListContentMetadataOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 525C583D159528AF005AC7B3 /* SCHListContentMetadataOperation.m */; };
+		525C5840159528B0005AC7B3 /* SCHListContentMetadataOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 525C583D159528AF005AC7B3 /* SCHListContentMetadataOperation.m */; };
+		525C5841159528B0005AC7B3 /* SCHListContentMetadataOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 525C583D159528AF005AC7B3 /* SCHListContentMetadataOperation.m */; };
 		525E82D3138FFFF7006A6775 /* SCHAudioInfoProcessor.m in Sources */ = {isa = PBXBuildFile; fileRef = 525E82D2138FFFF7006A6775 /* SCHAudioInfoProcessor.m */; };
 		525E82D713938548006A6775 /* SCHAudioInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 525E82D613938548006A6775 /* SCHAudioInfo.m */; };
 		5264FAC713A7555200D4F659 /* SCHBookShelfTopTenPopoverTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5264FAC513A7555200D4F659 /* SCHBookShelfTopTenPopoverTableView.m */; };
@@ -4883,6 +4887,8 @@
 		525668EA1511DEBF00570623 /* SCHRecommendationProcessor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHRecommendationProcessor.m; path = Shared/SCHRecommendationProcessor.m; sourceTree = "<group>"; };
 		525C57E015912959005AC7B3 /* SCHListUserContentForRatingsOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHListUserContentForRatingsOperation.h; path = Shared/SCHListUserContentForRatingsOperation.h; sourceTree = "<group>"; };
 		525C57E115912959005AC7B3 /* SCHListUserContentForRatingsOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHListUserContentForRatingsOperation.m; path = Shared/SCHListUserContentForRatingsOperation.m; sourceTree = "<group>"; };
+		525C583C159528AF005AC7B3 /* SCHListContentMetadataOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHListContentMetadataOperation.h; path = Shared/SCHListContentMetadataOperation.h; sourceTree = "<group>"; };
+		525C583D159528AF005AC7B3 /* SCHListContentMetadataOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHListContentMetadataOperation.m; path = Shared/SCHListContentMetadataOperation.m; sourceTree = "<group>"; };
 		525E82D1138FFFF6006A6775 /* SCHAudioInfoProcessor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHAudioInfoProcessor.h; path = Shared/SCHAudioInfoProcessor.h; sourceTree = "<group>"; };
 		525E82D2138FFFF7006A6775 /* SCHAudioInfoProcessor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHAudioInfoProcessor.m; path = Shared/SCHAudioInfoProcessor.m; sourceTree = "<group>"; };
 		525E82D513938547006A6775 /* SCHAudioInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHAudioInfo.h; path = Shared/SCHAudioInfo.h; sourceTree = "<group>"; };
@@ -7794,6 +7800,8 @@
 				525C57E115912959005AC7B3 /* SCHListUserContentForRatingsOperation.m */,
 				52E36767131D3ED200ACCBEE /* SCHBookshelfSyncComponent.h */,
 				52E36768131D3ED200ACCBEE /* SCHBookshelfSyncComponent.m */,
+				525C583C159528AF005AC7B3 /* SCHListContentMetadataOperation.h */,
+				525C583D159528AF005AC7B3 /* SCHListContentMetadataOperation.m */,
 				52AD9D69130000570099FB88 /* SCHProfileSyncComponent.h */,
 				52AD9D6A130000570099FB88 /* SCHProfileSyncComponent.m */,
 				5222F29A158B1F10006040D7 /* SCHSaveUserProfilesOperation.h */,
@@ -12535,6 +12543,7 @@
 				522543C31590930F0006F0B1 /* SCHSaveProfileContentAnnotationsOperation.m in Sources */,
 				522543C9159093380006F0B1 /* SCHListProfileContentAnnotationsOperation.m in Sources */,
 				525C57E21591295A005AC7B3 /* SCHListUserContentForRatingsOperation.m in Sources */,
+				525C583E159528B0005AC7B3 /* SCHListContentMetadataOperation.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -12983,6 +12992,7 @@
 				522543C41590930F0006F0B1 /* SCHSaveProfileContentAnnotationsOperation.m in Sources */,
 				522543CA159093380006F0B1 /* SCHListProfileContentAnnotationsOperation.m in Sources */,
 				525C57E31591295A005AC7B3 /* SCHListUserContentForRatingsOperation.m in Sources */,
+				525C583F159528B0005AC7B3 /* SCHListContentMetadataOperation.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -13364,6 +13374,7 @@
 				522543C51590930F0006F0B1 /* SCHSaveProfileContentAnnotationsOperation.m in Sources */,
 				522543CB159093380006F0B1 /* SCHListProfileContentAnnotationsOperation.m in Sources */,
 				525C57E41591295A005AC7B3 /* SCHListUserContentForRatingsOperation.m in Sources */,
+				525C5840159528B0005AC7B3 /* SCHListContentMetadataOperation.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -13745,6 +13756,7 @@
 				522543C61590930F0006F0B1 /* SCHSaveProfileContentAnnotationsOperation.m in Sources */,
 				522543CC159093380006F0B1 /* SCHListProfileContentAnnotationsOperation.m in Sources */,
 				525C57E51591295A005AC7B3 /* SCHListUserContentForRatingsOperation.m in Sources */,
+				525C5841159528B0005AC7B3 /* SCHListContentMetadataOperation.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

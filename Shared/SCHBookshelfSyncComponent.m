@@ -10,16 +10,11 @@
 #import "SCHSyncComponentProtected.h"
 #import "NSManagedObjectContext+Extensions.h"
 
-#import "SCHLibreAccessConstants.h"
 #import "SCHContentMetadataItem.h"
 #import "SCHUserContentItem.h"
-#import "SCHAppBook.h"
-#import "SCHAnnotationsContentItem.h"
-#import "SCHBookIdentifier.h"
-#import "SCHReadingStatsContentItem.h"
-#import "BITAPIError.h"
 #import "SCHBookIdentifier.h"
 #import "SCHLibreAccessWebService.h"
+#import "SCHListContentMetadataOperation.h"
 
 // Constants
 NSString * const SCHBookshelfSyncComponentWillDeleteNotification = @"SCHBookshelfSyncComponentWillDeleteNotification";
@@ -31,22 +26,9 @@ NSString * const SCHBookshelfSyncComponentDidFailNotification = @"SCHBookshelfSy
 @interface SCHBookshelfSyncComponent ()
 
 @property (nonatomic, retain) SCHLibreAccessWebService *libreAccessWebService;
-@property (atomic, assign) NSInteger requestCount;
-@property (nonatomic, retain) NSMutableArray *didReceiveFailedResponseBooks;
 
-- (NSArray *)bookIdentifiersFromRequestInfo:(NSArray *)contentMetadataItems;
-- (void)postBookshelfSyncComponentBookReceivedNotification:(NSArray *)contentMetadataItems;
 - (BOOL)updateContentMetadataItems;
-- (NSArray *)localContentMetadataItemsWithManagedObjectContext:(NSManagedObjectContext *)aManagedObjectContext;
 - (NSArray *)localUserContentItems;
-- (SCHContentMetadataItem *)addContentMetadataItem:(NSDictionary *)webContentMetadataItem
-                              managedObjectContext:(NSManagedObjectContext *)aManagedObjectContext;
-- (void)syncContentMetadataItems:(NSArray *)contentMetadataList
-            managedObjectContext:(NSManagedObjectContext *)aManagedObjectContext;
-- (void)deleteAnnotationsForBook:(SCHBookIdentifier *)identifier
-            managedObjectContext:(NSManagedObjectContext *)aManagedObjectContext;
-- (void)deleteStatisticsForBook:(SCHBookIdentifier *)identifier
-           managedObjectContext:(NSManagedObjectContext *)aManagedObjectContext;
 
 @end
 
@@ -124,117 +106,13 @@ NSString * const SCHBookshelfSyncComponentDidFailNotification = @"SCHBookshelfSy
 - (void)method:(NSString *)method didCompleteWithResult:(NSDictionary *)result
       userInfo:(NSDictionary *)userInfo
 {	
-    @try {
-        if([method compare:kSCHLibreAccessWebServiceListContentMetadata] == NSOrderedSame) {
-            
-            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{
-                BOOL triggerDidCompleteNotification = NO;
-                if (self.useIndividualRequests == YES) {
-                    // make sure this is an atomic operation in case other 
-                    // threads are detecting that they are the last request too
-                    @synchronized (self) {
-                        self.requestCount--;
-                        triggerDidCompleteNotification = (self.requestCount < 1);
-                    }
-                }
-
-                NSManagedObjectContext *backgroundThreadManagedObjectContext = [[NSManagedObjectContext alloc] init];
-                [backgroundThreadManagedObjectContext setPersistentStoreCoordinator:self.managedObjectContext.persistentStoreCoordinator];
-                [backgroundThreadManagedObjectContext setMergePolicy:NSMergeByPropertyObjectTrumpMergePolicy];
-                
-                NSArray *list = [result objectForKey:kSCHLibreAccessWebServiceContentMetadataList];
-                [self syncContentMetadataItems:list 
-                          managedObjectContext:backgroundThreadManagedObjectContext];
-                
-                if (self.useIndividualRequests == YES) {
-                    if ([list count] > 0) {
-                        [self postBookshelfSyncComponentBookReceivedNotification:[NSArray arrayWithObject:[list objectAtIndex:0]]];
-                    }
-                    
-                    if (triggerDidCompleteNotification == YES) {
-                        dispatch_async(dispatch_get_main_queue(), ^{
-                            [self completeWithSuccessMethod:method 
-                                                     result:nil 
-                                                   userInfo:userInfo 
-                                           notificationName:SCHBookshelfSyncComponentDidCompleteNotification 
-                                       notificationUserInfo:nil];
-                        });
-                    }
-                } else {
-                    [self postBookshelfSyncComponentBookReceivedNotification:list];
-                    
-                    dispatch_async(dispatch_get_main_queue(), ^{
-                        [self completeWithSuccessMethod:method 
-                                                 result:nil 
-                                               userInfo:userInfo 
-                                       notificationName:SCHBookshelfSyncComponentDidCompleteNotification 
-                                   notificationUserInfo:nil];
-                    });
-                }
-                
-                [self saveWithManagedObjectContext:backgroundThreadManagedObjectContext];
-                [backgroundThreadManagedObjectContext release], backgroundThreadManagedObjectContext = nil;
-            });    
-        }
-    }
-    @catch (NSException *exception) {
-        NSArray *bookIdentifiers = [self bookIdentifiersFromRequestInfo:[result objectForKey:kSCHLibreAccessWebServiceContentMetadataList]];
-        
-        if (self.useIndividualRequests == YES) {
-            [self.didReceiveFailedResponseBooks addObjectsFromArray:bookIdentifiers];
-            
-            if (self.requestCount < 1) {
-                NSDictionary *notificationUserInfo = [NSDictionary dictionaryWithObject:self.didReceiveFailedResponseBooks 
-                                                                                 forKey:SCHBookshelfSyncComponentBookIdentifiers];
-
-                
-                NSError *error = [NSError errorWithDomain:kBITAPIErrorDomain 
-                                                     code:kBITAPIExceptionError 
-                                                 userInfo:[NSDictionary dictionaryWithObject:[exception reason]
-                                                                                      forKey:NSLocalizedDescriptionKey]];
-                [self completeWithFailureMethod:method 
-                                         error:error 
-                                   requestInfo:nil 
-                                        result:result 
-                              notificationName:SCHBookshelfSyncComponentDidFailNotification 
-                          notificationUserInfo:notificationUserInfo];
-            }
-        } else {
-            NSDictionary *notificationUserInfo = [NSDictionary dictionaryWithObject:bookIdentifiers 
-                                                                             forKey:SCHBookshelfSyncComponentBookIdentifiers];
-
-            NSError *error = [NSError errorWithDomain:kBITAPIErrorDomain 
-                                                 code:kBITAPIExceptionError 
-                                             userInfo:[NSDictionary dictionaryWithObject:[exception reason]
-                                                                                  forKey:NSLocalizedDescriptionKey]];
-            [self completeWithFailureMethod:method 
-                                      error:error 
-                                requestInfo:nil 
-                                     result:result 
-                           notificationName:SCHBookshelfSyncComponentDidFailNotification 
-                       notificationUserInfo:notificationUserInfo];
-        }            
-    }
-}
-
-- (void)postBookshelfSyncComponentBookReceivedNotification:(NSArray *)contentMetadataItems
-{
-    NSMutableArray *bookIdentifiers = [NSMutableArray arrayWithCapacity:[contentMetadataItems count]];
-    
-    for (NSDictionary *book in contentMetadataItems) {
-        SCHBookIdentifier *bookIdentifier = [[[SCHBookIdentifier alloc] initWithObject:book] autorelease];
-        if (bookIdentifier) {
-            [bookIdentifiers addObject:bookIdentifier];
-        }
-    }
-    
-    if ([bookIdentifiers count] > 0) {
-        NSLog(@"Book information received:\n%@", bookIdentifiers);
-        [self performOnMainThreadSync:^{
-            [[NSNotificationCenter defaultCenter] postNotificationName:SCHBookshelfSyncComponentBookReceivedNotification 
-                                                                object:self 
-                                                              userInfo:[NSDictionary dictionaryWithObject:bookIdentifiers forKey:@"bookIdentifiers"]];				
-        }];
+    if([method compare:kSCHLibreAccessWebServiceListContentMetadata] == NSOrderedSame) {
+        SCHListContentMetadataOperation *operation = [[[SCHListContentMetadataOperation alloc] initWithSyncComponent:self
+                                                                                                              result:result
+                                                                                                            userInfo:userInfo] autorelease];
+        [operation setThreadPriority:SCHSyncComponentThreadLowPriority];
+        operation.useIndividualRequests = self.useIndividualRequests;
+        [self.backgroundProcessingQueue addOperation:operation];
     }
 }
 
@@ -364,27 +242,6 @@ NSString * const SCHBookshelfSyncComponentDidFailNotification = @"SCHBookshelfSy
 	return(ret);	
 }
 
-- (NSArray *)localContentMetadataItemsWithManagedObjectContext:(NSManagedObjectContext *)aManagedObjectContext
-{
-	NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
-    NSError *error = nil;
-    
-	[fetchRequest setEntity:[NSEntityDescription entityForName:kSCHContentMetadataItem 
-                                        inManagedObjectContext:aManagedObjectContext]];	
-	[fetchRequest setSortDescriptors:[NSArray arrayWithObjects:
-                                      [NSSortDescriptor sortDescriptorWithKey:kSCHLibreAccessWebServiceContentIdentifier ascending:YES],
-                                      [NSSortDescriptor sortDescriptorWithKey:kSCHLibreAccessWebServiceDRMQualifier ascending:YES],
-                                      nil]];
-	
-	NSArray *ret = [aManagedObjectContext executeFetchRequest:fetchRequest error:&error];	
-	[fetchRequest release], fetchRequest = nil;
-    if (ret == nil) {
-        NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
-    }
-
-	return(ret);
-}
-
 - (NSArray *)localUserContentItems
 {
 	NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
@@ -409,231 +266,29 @@ NSString * const SCHBookshelfSyncComponentDidFailNotification = @"SCHBookshelfSy
 
 - (void)syncContentMetadataItemsFromMainThread:(NSArray *)contentMetadataList
 {
-    [self syncContentMetadataItems:contentMetadataList managedObjectContext:self.managedObjectContext];
-}
-
-- (void)syncContentMetadataItems:(NSArray *)contentMetadataList 
-            managedObjectContext:(NSManagedObjectContext *)aManagedObjectContext
-{		
-	NSMutableArray *deletePool = [NSMutableArray array];    
-	NSMutableArray *creationPool = [NSMutableArray array];
-	
-	NSArray *webProfiles = [contentMetadataList sortedArrayUsingDescriptors:
-                            [NSArray arrayWithObjects:
-                             [NSSortDescriptor sortDescriptorWithKey:kSCHLibreAccessWebServiceContentIdentifier ascending:YES],
-                             [NSSortDescriptor sortDescriptorWithKey:kSCHLibreAccessWebServiceDRMQualifier ascending:YES],                                                                             
-                             nil]];		
-	NSArray *localProfiles = [self localContentMetadataItemsWithManagedObjectContext:aManagedObjectContext];
-		
-	NSEnumerator *webEnumerator = [webProfiles objectEnumerator];			  
-	NSEnumerator *localEnumerator = [localProfiles objectEnumerator];			  			  
-
-	NSDictionary *webItem = [webEnumerator nextObject];
-	SCHContentMetadataItem *localItem = [localEnumerator nextObject];
-	
-	while (webItem != nil || localItem != nil) {		
-		if (webItem == nil) {
-			while (localItem != nil) {
-				[deletePool addObject:localItem];
-				localItem = [localEnumerator nextObject];
-			} 
-			break;
-		}
-		
-		if (localItem == nil) {
-			while (webItem != nil) {
-				[creationPool addObject:webItem];
-				webItem = [webEnumerator nextObject];
-			} 
-			break;			
-		}
-		
-        SCHBookIdentifier *webBookIdentifier = [[SCHBookIdentifier alloc] initWithObject:webItem];
-        SCHBookIdentifier *localBookIdentifier = localItem.bookIdentifier;
-        
-        if (webBookIdentifier == nil) {
-            webItem = nil;
-        } else if (localBookIdentifier == nil) {
-            localItem = nil;                
-        } else {
-            switch ([webBookIdentifier compare:localBookIdentifier]) {
-                case NSOrderedSame:
-                    [self syncContentMetadataItem:webItem withContentMetadataItem:localItem];
-                    webItem = nil;
-                    localItem = nil;
-                    break;
-                case NSOrderedAscending:
-                    [creationPool addObject:webItem];
-                    webItem = nil;
-                    break;
-                case NSOrderedDescending:
-                    [deletePool addObject:localItem];                
-                    localItem = nil;
-                    break;			
-            }
-        }
-            
-        [webBookIdentifier release];            
-        
-		if (webItem == nil) {
-			webItem = [webEnumerator nextObject];
-		}
-		if (localItem == nil) {
-			localItem = [localEnumerator nextObject];
-		}		
-	}
-		
-    if (self.useIndividualRequests == NO && [deletePool count] > 0) {
-        NSMutableArray *deletedBookIdentifiers = [NSMutableArray array];
-        for (SCHContentMetadataItem *contentMetadataItem in deletePool) {
-            SCHBookIdentifier *bookIdentifier = [contentMetadataItem bookIdentifier];
-            if (bookIdentifier != nil) {
-                [deletedBookIdentifiers addObject:bookIdentifier];            
-            }
-        }
-        [self performOnMainThreadSync:^{
-            [[NSNotificationCenter defaultCenter] postNotificationName:SCHBookshelfSyncComponentWillDeleteNotification 
-                                                                object:self 
-                                                              userInfo:[NSDictionary dictionaryWithObject:deletedBookIdentifiers 
-                                                                                                   forKey:SCHBookshelfSyncComponentBookIdentifiers]];        
-        }];
-        
-        for (SCHContentMetadataItem *contentMetadataItem in deletePool) {
-            [self deleteStatisticsForBook:[contentMetadataItem bookIdentifier]
-                     managedObjectContext:aManagedObjectContext];
-            [self deleteAnnotationsForBook:[contentMetadataItem bookIdentifier]
-                      managedObjectContext:aManagedObjectContext];
-            [aManagedObjectContext deleteObject:contentMetadataItem];
-        }
+    if (contentMetadataList != nil) {
+        SCHListContentMetadataOperation *operation = [[[SCHListContentMetadataOperation alloc] initWithSyncComponent:self 
+                                                                                                              result:nil
+                                                                                                            userInfo:nil] autorelease];
+        [operation syncContentMetadataItems:contentMetadataList managedObjectContext:self.managedObjectContext];
     }
     
-	for (NSDictionary *webItem in creationPool) {
-		[self addContentMetadataItem:webItem
-                managedObjectContext:aManagedObjectContext];
-	}
-	
-    [self saveWithManagedObjectContext:aManagedObjectContext];
 }
 
 - (SCHContentMetadataItem *)addContentMetadataItemFromMainThread:(NSDictionary *)webContentMetadataItem
 {
-    return [self addContentMetadataItem:webContentMetadataItem managedObjectContext:self.managedObjectContext];
-}
-
-- (SCHContentMetadataItem *)addContentMetadataItem:(NSDictionary *)webContentMetadataItem
-                              managedObjectContext:(NSManagedObjectContext *)aManagedObjectContext
-{
-    SCHContentMetadataItem *newContentMetadataItem = nil;
-    SCHBookIdentifier *webBookIdentifier = [[SCHBookIdentifier alloc] initWithObject:webContentMetadataItem];
+    SCHContentMetadataItem *ret = nil;
     
-    if (webContentMetadataItem != nil && webBookIdentifier != nil) {
-        newContentMetadataItem = [NSEntityDescription insertNewObjectForEntityForName:kSCHContentMetadataItem 
-                                                               inManagedObjectContext:aManagedObjectContext];
-        
-        newContentMetadataItem.DRMQualifier = webBookIdentifier.DRMQualifier;
-        newContentMetadataItem.ContentIdentifierType = [self makeNullNil:[webContentMetadataItem objectForKey:kSCHLibreAccessWebServiceContentIdentifierType]];
-        newContentMetadataItem.ContentIdentifier = webBookIdentifier.isbn;
-        
-        newContentMetadataItem.Author = [self makeNullNil:[webContentMetadataItem objectForKey:kSCHLibreAccessWebServiceAuthor]];
-        newContentMetadataItem.Version = [self makeNullNil:[webContentMetadataItem objectForKey:kSCHLibreAccessWebServiceVersion]];
-        newContentMetadataItem.Enhanced = [self makeNullNil:[webContentMetadataItem objectForKey:kSCHLibreAccessWebServiceEnhanced]];
-        newContentMetadataItem.FileSize = [self makeNullNil:[webContentMetadataItem objectForKey:kSCHLibreAccessWebServiceFileSize]];
-        newContentMetadataItem.CoverURL = [self makeNullNil:[webContentMetadataItem objectForKey:kSCHLibreAccessWebServiceCoverURL]];
-        newContentMetadataItem.ContentURL = [self makeNullNil:[webContentMetadataItem objectForKey:kSCHLibreAccessWebServiceContentURL]];
-        newContentMetadataItem.PageNumber = [self makeNullNil:[webContentMetadataItem objectForKey:kSCHLibreAccessWebServicePageNumber]];
-        newContentMetadataItem.Title = [self makeNullNil:[webContentMetadataItem objectForKey:kSCHLibreAccessWebServiceTitle]];
-        newContentMetadataItem.Description = [self makeNullNil:[webContentMetadataItem objectForKey:kSCHLibreAccessWebServiceDescription]];
-        newContentMetadataItem.AverageRating = [self makeNullNil:[webContentMetadataItem objectForKey:kSCHLibreAccessWebServiceAverageRating]];
-        
-        newContentMetadataItem.AppBook = [NSEntityDescription insertNewObjectForEntityForName:kSCHAppBook 
-                                                                       inManagedObjectContext:aManagedObjectContext];
-    }
-    [webBookIdentifier release], webBookIdentifier = nil;
-    
-    return newContentMetadataItem;
-}
-
-- (void)syncContentMetadataItem:(NSDictionary *)webContentMetadataItem 
-        withContentMetadataItem:(SCHContentMetadataItem *)localContentMetadataItem
-{
     if (webContentMetadataItem != nil) {
-        localContentMetadataItem.DRMQualifier = [self makeNullNil:[webContentMetadataItem objectForKey:kSCHLibreAccessWebServiceDRMQualifier]];
-        localContentMetadataItem.ContentIdentifierType = [self makeNullNil:[webContentMetadataItem objectForKey:kSCHLibreAccessWebServiceContentIdentifierType]];
-        localContentMetadataItem.ContentIdentifier = [self makeNullNil:[webContentMetadataItem objectForKey:kSCHLibreAccessWebServiceContentIdentifier]];
+        SCHListContentMetadataOperation *operation = [[[SCHListContentMetadataOperation alloc] initWithSyncComponent:self 
+                                                                                                              result:nil
+                                                                                                            userInfo:nil] autorelease];
         
-        localContentMetadataItem.Author = [self makeNullNil:[webContentMetadataItem objectForKey:kSCHLibreAccessWebServiceAuthor]];
-        localContentMetadataItem.Version = [self makeNullNil:[webContentMetadataItem objectForKey:kSCHLibreAccessWebServiceVersion]];
-        localContentMetadataItem.Enhanced = [self makeNullNil:[webContentMetadataItem objectForKey:kSCHLibreAccessWebServiceEnhanced]];
-        localContentMetadataItem.FileSize = [self makeNullNil:[webContentMetadataItem objectForKey:kSCHLibreAccessWebServiceFileSize]];
-        NSString *coverURL = [self makeNullNil:[webContentMetadataItem objectForKey:kSCHLibreAccessWebServiceCoverURL]];
-        if (coverURL != nil){
-            localContentMetadataItem.CoverURL = coverURL;
-        }
-        NSString *contentURL = [self makeNullNil:[webContentMetadataItem objectForKey:kSCHLibreAccessWebServiceContentURL]];
-        if (contentURL != nil) {
-            localContentMetadataItem.ContentURL = contentURL;
-        }
-        localContentMetadataItem.PageNumber = [self makeNullNil:[webContentMetadataItem objectForKey:kSCHLibreAccessWebServicePageNumber]];
-        localContentMetadataItem.Title = [self makeNullNil:[webContentMetadataItem objectForKey:kSCHLibreAccessWebServiceTitle]];
-        localContentMetadataItem.Description = [self makeNullNil:[webContentMetadataItem objectForKey:kSCHLibreAccessWebServiceDescription]];
-        localContentMetadataItem.AverageRating = [self makeNullNil:[webContentMetadataItem objectForKey:kSCHLibreAccessWebServiceAverageRating]];
+        ret = [operation addContentMetadataItem:webContentMetadataItem managedObjectContext:self.managedObjectContext];
+        [self saveWithManagedObjectContext:self.managedObjectContext];
     }
-}
 
-- (void)deleteAnnotationsForBook:(SCHBookIdentifier *)identifier
-            managedObjectContext:(NSManagedObjectContext *)aManagedObjectContext
-{
-    NSError *error = nil;
-    
-    if (identifier != nil) {
-        NSEntityDescription *entityDescription = [NSEntityDescription 
-                                                  entityForName:kSCHAnnotationsContentItem
-                                                  inManagedObjectContext:aManagedObjectContext];
-        
-        NSFetchRequest *fetchRequest = [entityDescription.managedObjectModel 
-                                        fetchRequestFromTemplateWithName:kSCHAppBookFetchWithContentIdentifier 
-                                        substitutionVariables:[NSDictionary 
-                                                               dictionaryWithObjectsAndKeys:
-                                                               identifier.isbn, kSCHAppBookCONTENT_IDENTIFIER,
-                                                               identifier.DRMQualifier, kSCHAppBookDRM_QUALIFIER,
-                                                               nil]];
-        NSArray *bookArray = [aManagedObjectContext executeFetchRequest:fetchRequest error:&error];
-        if (bookArray == nil) {
-            NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
-        }
-
-        if ([bookArray count] > 0) {
-            [aManagedObjectContext deleteObject:[bookArray objectAtIndex:0]];
-        }
-    }    
-}
-
-- (void)deleteStatisticsForBook:(SCHBookIdentifier *)identifier
-           managedObjectContext:(NSManagedObjectContext *)aManagedObjectContext
-{
-    NSError *error = nil;
-    
-    if (identifier != nil) {
-        NSEntityDescription *entityDescription = [NSEntityDescription 
-                                                  entityForName:kSCHReadingStatsContentItem
-                                                  inManagedObjectContext:aManagedObjectContext];
-        
-        NSFetchRequest *fetchRequest = [entityDescription.managedObjectModel 
-                                        fetchRequestFromTemplateWithName:kSCHReadingStatsContentItemFetchReadingStatsContentItemForBook 
-                                        substitutionVariables:[NSDictionary 
-                                                               dictionaryWithObjectsAndKeys:
-                                                               identifier.isbn, kSCHReadingStatsContentItemCONTENT_IDENTIFIER,
-                                                               identifier.DRMQualifier, kSCHReadingStatsContentItemDRM_QUALIFIER,
-                                                               nil]];
-        NSArray *bookArray = [aManagedObjectContext executeFetchRequest:fetchRequest error:&error];
-        if (bookArray == nil) {
-            NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
-        }
-
-        if ([bookArray count] > 0) {
-            [aManagedObjectContext deleteObject:[bookArray objectAtIndex:0]];
-        }
-    }    
+    return ret;
 }
 
 @end
