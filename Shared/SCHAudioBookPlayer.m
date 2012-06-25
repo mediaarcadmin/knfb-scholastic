@@ -215,16 +215,16 @@ static NSUInteger const kSCHAudioBookPlayerNoAudioLoaded = NSUIntegerMax;
                                 break;                                
                         }  
                         
-                        if (pageTurnAtTime <= currentPlayTime) {
-                            if (pageTurnAtTime == wordTiming.endTime) {
-                                pageTurnBlock(pageTurnToLayoutPage);
-                            }
+                        if ((pageTurnAtTime != NSUIntegerMax) && (currentPlayTime >= pageTurnAtTime)) {
+                            //NSLog(@"executing page turn for time %d at currentPlayTime %d", pageTurnAtTime, currentPlayTime);
+                            pageTurnBlock(pageTurnToLayoutPage);
                             pageTurnAtTime = NSUIntegerMax;                            
                         }
                         
                         if (wordTiming != lastTriggered && [wordTiming compareTime:currentPlayTime] == NSOrderedSame) {
                             lastTriggered = wordTiming;
                             if (self.usingNewRTXFormat == YES) {
+                                //NSLog(@"wordTiming: %d currentPlayTime: %d", wordTiming.startTime, currentPlayTime);
                                 wordBlockNew(wordTiming.pageIndex + 1, wordTiming.blockID, wordTiming.wordID);
                                 
                                 pageTurnAtTime = NSUIntegerMax; 
@@ -280,7 +280,8 @@ static NSUInteger const kSCHAudioBookPlayerNoAudioLoaded = NSUIntegerMax;
 
 - (BOOL)play
 {
-    NSLog(@"SCHAudioBookPlayer play");        
+    //NSLog(@"SCHAudioBookPlayer play with current time: %d", (NSUInteger)(self.player.currentTime * kSCHAudioBookPlayerMilliSecondsInASecond));    
+
     BOOL ret = NO;
     
     ret = [self.player play];
@@ -296,10 +297,11 @@ static NSUInteger const kSCHAudioBookPlayerNoAudioLoaded = NSUIntegerMax;
 
 - (BOOL)playAtLayoutPage:(NSUInteger)layoutPage pageWordOffset:(NSUInteger)pageWordOffset
 {  
-    NSLog(@"SCHAudioBookPlayer playAtLayoutPage");  
+    //NSLog(@"SCHAudioBookPlayer playAtLayoutPage");  
     BOOL ret = NO;
     
     SCHAudioInfo *audioInfo = [self audioInfoForPageIndex:(layoutPage == 0 ? 0 : layoutPage - 1)];
+    
     if (audioInfo != nil && [self prepareToPlay:audioInfo pageWordOffset:pageWordOffset] == YES) {        
         ret = [self play];
     }
@@ -309,7 +311,7 @@ static NSUInteger const kSCHAudioBookPlayerNoAudioLoaded = NSUIntegerMax;
 
 - (void)pause
 {
-    NSLog(@"SCHAudioBookPlayer pause");    
+    //NSLog(@"SCHAudioBookPlayer pause with current time: %d", (NSUInteger)(self.player.currentTime * kSCHAudioBookPlayerMilliSecondsInASecond));    
     if (self.isPlaying == YES) {
         [self suspend];
         [self.player pause];
@@ -387,7 +389,15 @@ static NSUInteger const kSCHAudioBookPlayerNoAudioLoaded = NSUIntegerMax;
         NSUInteger wordIndex = audioInfoToPrepare.timeIndex + pageWordOffset;                    
         if (wordIndex < [self.wordTimings count]) {
             SCHWordTiming *wordTiming = [self.wordTimings objectAtIndex:wordIndex];
-            self.player.currentTime = [wordTiming startTimeAsSeconds];
+            NSTimeInterval startTime = [wordTiming startTimeAsSeconds];
+            self.player.currentTime = startTime;       
+            
+            if (self.player.currentTime < startTime) {
+                // Skip forward a quarter second in case we got a time in the past.
+                // This is required because setting self.player.currentTime will often give you a time in the past by a small amount
+                self.player.currentTime = startTime + 0.25f;
+
+            }
         }
     }
     
