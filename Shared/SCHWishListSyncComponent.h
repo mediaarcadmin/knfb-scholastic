@@ -11,11 +11,14 @@
 #import "SCHSyncComponent.h"
 
 extern NSString * const SCHWishListSyncComponentDidInsertNotification;
-extern NSString * const SCHWishListSyncComponentWillDeleteNotification;
 extern NSString * const SCHWishListSyncComponentISBNs;
 extern NSString * const SCHWishListSyncComponentDidCompleteNotification;
 extern NSString * const SCHWishListSyncComponentDidFailNotification;
 
 @interface SCHWishListSyncComponent : SCHSyncComponent
+
+- (void)deleteWishListItemsCompletion;
+- (NSArray *)removeNewlyCreatedDeletedWishListItems:(NSArray *)annotationArray
+                               managedObjectContext:(NSManagedObjectContext *)aManagedObjectContext;
 
 @end

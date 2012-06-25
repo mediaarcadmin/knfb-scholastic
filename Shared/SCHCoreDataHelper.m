@@ -178,6 +178,8 @@ static NSString * const kSCHCoreDataHelperDictionaryStoreName = @"Scholastic_Dic
 - (void)mergeChangesFromContextDidSaveNotification:(NSNotification *)notification 
 {
     if (notification.object != self.managedObjectContext) {
+        // please do not change this async call, the sync component operations
+        // depend it when called WillDelete notifications async
         dispatch_async(dispatch_get_main_queue(), ^{
             NSError *error = nil;
             [[self managedObjectContext] mergeChangesFromContextDidSaveNotification:notification];

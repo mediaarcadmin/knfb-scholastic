@@ -12,7 +12,7 @@
 
 #import "SCHLibreAccessWebService.h"
 #import "SCHSettingItem.h"
-#import "BITAPIError.h"
+#import "SCHListUserSettingsOperation.h"
 
 // Constants
 NSString * const SCHSettingsSyncComponentDidCompleteNotification = @"SCHSettingsSyncComponentDidCompleteNotification";
@@ -22,9 +22,6 @@ NSString * const SCHSettingsSyncComponentDidFailNotification = @"SCHSettingsSync
 
 @property (nonatomic, retain) SCHLibreAccessWebService *libreAccessWebService;
 
-- (void)clearCoreDataUsingContext:(NSManagedObjectContext *)aManagedObjectContext;
-- (void)updateUserSettings:(NSArray *)settingsList 
-      managedObjectContext:(NSManagedObjectContext *)aManagedObjectContext;
 
 @end
 
@@ -113,33 +110,11 @@ NSString * const SCHSettingsSyncComponentDidFailNotification = @"SCHSettingsSync
 - (void)method:(NSString *)method didCompleteWithResult:(NSDictionary *)result 
       userInfo:(NSDictionary *)userInfo
 {	
-    @try {
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{        
-            NSManagedObjectContext *backgroundThreadManagedObjectContext = [[NSManagedObjectContext alloc] init];
-            [backgroundThreadManagedObjectContext setPersistentStoreCoordinator:self.managedObjectContext.persistentStoreCoordinator];
-            [backgroundThreadManagedObjectContext setMergePolicy:NSMergeByPropertyObjectTrumpMergePolicy];
-            
-            [self updateUserSettings:[result objectForKey:kSCHLibreAccessWebServiceUserSettingsList]
-             managedObjectContext:backgroundThreadManagedObjectContext];
-            
-            [self saveWithManagedObjectContext:backgroundThreadManagedObjectContext];
-            [backgroundThreadManagedObjectContext release], backgroundThreadManagedObjectContext = nil;
-            
-            dispatch_async(dispatch_get_main_queue(), ^{
-                [[NSNotificationCenter defaultCenter] postNotificationName:SCHSettingsSyncComponentDidCompleteNotification object:self];			
-                [super method:method didCompleteWithResult:nil userInfo:userInfo];	
-            });                
-        });                                                        
-    }
-    @catch (NSException *exception) {
-        [[NSNotificationCenter defaultCenter] postNotificationName:SCHSettingsSyncComponentDidFailNotification 
-                                                            object:self];        
-        NSError *error = [NSError errorWithDomain:kBITAPIErrorDomain 
-                                             code:kBITAPIExceptionError 
-                                         userInfo:[NSDictionary dictionaryWithObject:[exception reason]
-                                                                              forKey:NSLocalizedDescriptionKey]];
-        [super method:method didFailWithError:error requestInfo:nil result:result];
-    }
+    SCHListUserSettingsOperation *operation = [[[SCHListUserSettingsOperation alloc] initWithSyncComponent:self
+                                                                                                    result:result
+                                                                                                  userInfo:userInfo] autorelease];
+    [operation setThreadPriority:SCHSyncComponentThreadLowPriority];
+    [self.backgroundProcessingQueue addOperation:operation];
 }
 
 - (void)method:(NSString *)method didFailWithError:(NSError *)error 
@@ -148,27 +123,12 @@ NSString * const SCHSettingsSyncComponentDidFailNotification = @"SCHSettingsSync
 {
     NSLog(@"%@:didFailWithError\n%@", method, error);
     
-    [[NSNotificationCenter defaultCenter] postNotificationName:SCHSettingsSyncComponentDidFailNotification 
-                                                        object:self];        
-    [super method:method didFailWithError:error requestInfo:requestInfo result:result];
-}
-
-- (void)updateUserSettings:(NSArray *)settingsList 
-      managedObjectContext:(NSManagedObjectContext *)aManagedObjectContext
-{	
-    if ([settingsList count] > 0) {
-        [self clearCoreDataUsingContext:aManagedObjectContext];
-        
-        for (id setting in settingsList) {
-            SCHSettingItem *newUserSettingsItem = [NSEntityDescription insertNewObjectForEntityForName:kSCHSettingItem 
-                                                                                inManagedObjectContext:aManagedObjectContext];
-            
-            newUserSettingsItem.SettingName = [self makeNullNil:[setting objectForKey:kSCHLibreAccessWebServiceSettingName]];
-            newUserSettingsItem.SettingValue = [self makeNullNil:[setting objectForKey:kSCHLibreAccessWebServiceSettingValue]];
-        }
-        
-        [self saveWithManagedObjectContext:aManagedObjectContext];
-    }
+    [self completeWithFailureMethod:method 
+                              error:error 
+                        requestInfo:requestInfo 
+                             result:result 
+                   notificationName:SCHSettingsSyncComponentDidFailNotification 
+               notificationUserInfo:nil];
 }
 
 @end
