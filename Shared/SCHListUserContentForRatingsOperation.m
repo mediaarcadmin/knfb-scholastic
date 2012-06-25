@@ -25,7 +25,6 @@
 #import "SCHContentMetadataItem.h"
 #import "SCHRecommendationISBN.h"
 #import "SCHRecommendationItem.h"
-#import "SCHRecommendationSyncComponent.h"
 
 @interface SCHListUserContentForRatingsOperation ()
 
@@ -736,24 +735,6 @@
     if (contentMetadataItem != nil) {
         SCHRecommendationISBN *recommendationISBN = [contentMetadataItem.AppBook recommendationISBN];
         if (recommendationISBN != nil) {
-            NSMutableArray *deletedISBNs = [NSMutableArray array];
-            for (SCHRecommendationItem *item in recommendationISBN.recommendationItems) {
-                NSString *isbn = item.product_code;
-                if (isbn != nil) {
-                    [deletedISBNs addObject:isbn];
-                }
-            }
-            
-            if ([deletedISBNs count] > 0) {
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    if (self.isCancelled == NO) {
-                        [[NSNotificationCenter defaultCenter] postNotificationName:SCHRecommendationSyncComponentWillDeleteNotification 
-                                                                            object:self 
-                                                                          userInfo:[NSDictionary dictionaryWithObject:[NSArray arrayWithArray:deletedISBNs]
-                                                                                                               forKey:SCHRecommendationSyncComponentISBNs]];
-                    }
-                });
-            }
             [aManagedObjectContext deleteObject:recommendationISBN];
             [self saveWithManagedObjectContext:aManagedObjectContext];
         }
