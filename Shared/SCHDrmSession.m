@@ -496,23 +496,6 @@ ErrorExit:
 	
 }
 
-- (void)connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)aResponse
-{
-	if ([aResponse expectedContentLength] < 0)
-	{
-		[self.urlConnection cancel];
-        
-        NSError *error = [self drmError:kSCHDrmNetworkError 
-                                message:NSLocalizedString(@"Cannot register device because URL is invalid.",@"DRM invalid url message")];
-        
-        if (self.isJoining) {
-            [self registrationCallFailureDelegate:error];
-        } else {
-            [self deregistrationCallFailureDelegate:error];
-        }
-	}
-}
-
 - (void)connection:(NSURLConnection *)connection didReceiveData:(NSData *)data
 {
 	[self.connectionData appendData:data];
@@ -556,7 +539,7 @@ ErrorExit:
         }
 	}
 	else {
-		NSLog(@"DRM leave domain response: %s",(unsigned char*)pbResponse);
+		//NSLog(@"DRM leave domain response: %s",(unsigned char*)pbResponse);
 		@synchronized (self) {
 			ChkDR( Drm_LeaveDomain_ProcessResponse( drmIVars->drmAppContext,
 												   pbResponse,
@@ -722,7 +705,7 @@ ErrorExit:
 	}
     
     
-	NSLog(@"DRM license acknowledgment response: %s",(unsigned char*)pbResponse);
+	//NSLog(@"DRM license acknowledgment response: %s",(unsigned char*)pbResponse);
 	@synchronized (self) {
 		ChkDR( Drm_LicenseAcq_ProcessAckResponse(drmIVars->drmAppContext, pbResponse, cbResponse, NULL) );
 	}
@@ -836,7 +819,7 @@ ErrorExit:
 		pbResponse[cbResponse] = '\0';
 	}
     
-    NSLog(@"DRM license acquisition response: %s",(unsigned char*)pbResponse);
+    //NSLog(@"DRM license acquisition response: %s",(unsigned char*)pbResponse);
     @synchronized (self) {
         ChkDR( Drm_LicenseAcq_ProcessResponse( drmIVars->drmAppContext,
                                               NULL,
