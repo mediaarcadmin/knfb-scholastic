@@ -437,6 +437,14 @@
 		5243212115986A0B00CCB8F1 /* SCHRetrieveSampleBooksOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 5243211F15986A0A00CCB8F1 /* SCHRetrieveSampleBooksOperation.m */; };
 		5243212215986A0B00CCB8F1 /* SCHRetrieveSampleBooksOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 5243211F15986A0A00CCB8F1 /* SCHRetrieveSampleBooksOperation.m */; };
 		5243212315986A0B00CCB8F1 /* SCHRetrieveSampleBooksOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 5243211F15986A0A00CCB8F1 /* SCHRetrieveSampleBooksOperation.m */; };
+		52432126159890E500CCB8F1 /* SCHDeleteWishListItemsOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 52432125159890E500CCB8F1 /* SCHDeleteWishListItemsOperation.m */; };
+		52432127159890E500CCB8F1 /* SCHDeleteWishListItemsOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 52432125159890E500CCB8F1 /* SCHDeleteWishListItemsOperation.m */; };
+		52432128159890E500CCB8F1 /* SCHDeleteWishListItemsOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 52432125159890E500CCB8F1 /* SCHDeleteWishListItemsOperation.m */; };
+		52432129159890E500CCB8F1 /* SCHDeleteWishListItemsOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 52432125159890E500CCB8F1 /* SCHDeleteWishListItemsOperation.m */; };
+		524321321598912400CCB8F1 /* SCHGetWishListItemsOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 524321311598912400CCB8F1 /* SCHGetWishListItemsOperation.m */; };
+		524321331598912400CCB8F1 /* SCHGetWishListItemsOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 524321311598912400CCB8F1 /* SCHGetWishListItemsOperation.m */; };
+		524321341598912400CCB8F1 /* SCHGetWishListItemsOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 524321311598912400CCB8F1 /* SCHGetWishListItemsOperation.m */; };
+		524321351598912400CCB8F1 /* SCHGetWishListItemsOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 524321311598912400CCB8F1 /* SCHGetWishListItemsOperation.m */; };
 		5243545A13337BAC00282B53 /* SCHAppContentProfileItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 5243545713337BAC00282B53 /* SCHAppContentProfileItem.m */; };
 		524888291407990500DA9AFA /* MainWindow_iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 28AD733E0D9D9553002E5188 /* MainWindow_iPad.xib */; };
 		5248882A1407990500DA9AFA /* MainWindow_iPhone.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2860E389111B897F00E27156 /* MainWindow_iPhone.xib */; };
@@ -4875,6 +4883,10 @@
 		524321191598593700CCB8F1 /* SCHRetrieveRecommendationsForBooksOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHRetrieveRecommendationsForBooksOperation.m; path = Shared/SCHRetrieveRecommendationsForBooksOperation.m; sourceTree = "<group>"; };
 		5243211E15986A0A00CCB8F1 /* SCHRetrieveSampleBooksOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHRetrieveSampleBooksOperation.h; path = Shared/SCHRetrieveSampleBooksOperation.h; sourceTree = "<group>"; };
 		5243211F15986A0A00CCB8F1 /* SCHRetrieveSampleBooksOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHRetrieveSampleBooksOperation.m; path = Shared/SCHRetrieveSampleBooksOperation.m; sourceTree = "<group>"; };
+		52432124159890E400CCB8F1 /* SCHDeleteWishListItemsOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHDeleteWishListItemsOperation.h; path = Shared/SCHDeleteWishListItemsOperation.h; sourceTree = "<group>"; };
+		52432125159890E500CCB8F1 /* SCHDeleteWishListItemsOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHDeleteWishListItemsOperation.m; path = Shared/SCHDeleteWishListItemsOperation.m; sourceTree = "<group>"; };
+		524321301598912300CCB8F1 /* SCHGetWishListItemsOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHGetWishListItemsOperation.h; path = Shared/SCHGetWishListItemsOperation.h; sourceTree = "<group>"; };
+		524321311598912400CCB8F1 /* SCHGetWishListItemsOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHGetWishListItemsOperation.m; path = Shared/SCHGetWishListItemsOperation.m; sourceTree = "<group>"; };
 		5243545613337BAC00282B53 /* SCHAppContentProfileItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHAppContentProfileItem.h; path = Shared/SCHAppContentProfileItem.h; sourceTree = "<group>"; };
 		5243545713337BAC00282B53 /* SCHAppContentProfileItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHAppContentProfileItem.m; path = Shared/SCHAppContentProfileItem.m; sourceTree = "<group>"; };
 		52488C051407990500DA9AFA /* Storia.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Storia.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -7836,6 +7848,10 @@
 				520E14C4158F883C003773E3 /* SCHListUserSettingsOperation.m */,
 				52943AE314FFD0E8002991EB /* SCHWishListSyncComponent.h */,
 				52943AE414FFD0E8002991EB /* SCHWishListSyncComponent.m */,
+				52432124159890E400CCB8F1 /* SCHDeleteWishListItemsOperation.h */,
+				52432125159890E500CCB8F1 /* SCHDeleteWishListItemsOperation.m */,
+				524321301598912300CCB8F1 /* SCHGetWishListItemsOperation.h */,
+				524321311598912400CCB8F1 /* SCHGetWishListItemsOperation.m */,
 				525668DD150F80F600570623 /* SCHRecommendationSyncComponent.h */,
 				525668DE150F80F600570623 /* SCHRecommendationSyncComponent.m */,
 				524321121598591300CCB8F1 /* SCHRetrieveRecommendationsForProfileOperation.h */,
@@ -12571,6 +12587,8 @@
 				524321141598591300CCB8F1 /* SCHRetrieveRecommendationsForProfileOperation.m in Sources */,
 				5243211A1598593700CCB8F1 /* SCHRetrieveRecommendationsForBooksOperation.m in Sources */,
 				5243212015986A0B00CCB8F1 /* SCHRetrieveSampleBooksOperation.m in Sources */,
+				52432126159890E500CCB8F1 /* SCHDeleteWishListItemsOperation.m in Sources */,
+				524321321598912400CCB8F1 /* SCHGetWishListItemsOperation.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -13023,6 +13041,8 @@
 				524321151598591300CCB8F1 /* SCHRetrieveRecommendationsForProfileOperation.m in Sources */,
 				5243211B1598593700CCB8F1 /* SCHRetrieveRecommendationsForBooksOperation.m in Sources */,
 				5243212115986A0B00CCB8F1 /* SCHRetrieveSampleBooksOperation.m in Sources */,
+				52432127159890E500CCB8F1 /* SCHDeleteWishListItemsOperation.m in Sources */,
+				524321331598912400CCB8F1 /* SCHGetWishListItemsOperation.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -13408,6 +13428,8 @@
 				524321161598591300CCB8F1 /* SCHRetrieveRecommendationsForProfileOperation.m in Sources */,
 				5243211C1598593700CCB8F1 /* SCHRetrieveRecommendationsForBooksOperation.m in Sources */,
 				5243212215986A0B00CCB8F1 /* SCHRetrieveSampleBooksOperation.m in Sources */,
+				52432128159890E500CCB8F1 /* SCHDeleteWishListItemsOperation.m in Sources */,
+				524321341598912400CCB8F1 /* SCHGetWishListItemsOperation.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -13793,6 +13815,8 @@
 				524321171598591300CCB8F1 /* SCHRetrieveRecommendationsForProfileOperation.m in Sources */,
 				5243211D1598593700CCB8F1 /* SCHRetrieveRecommendationsForBooksOperation.m in Sources */,
 				5243212315986A0B00CCB8F1 /* SCHRetrieveSampleBooksOperation.m in Sources */,
+				52432129159890E500CCB8F1 /* SCHDeleteWishListItemsOperation.m in Sources */,
+				524321351598912400CCB8F1 /* SCHGetWishListItemsOperation.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

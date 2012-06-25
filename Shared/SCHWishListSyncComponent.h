@@ -17,4 +17,8 @@ extern NSString * const SCHWishListSyncComponentDidFailNotification;
 
 @interface SCHWishListSyncComponent : SCHSyncComponent
 
+- (void)deleteWishListItemsCompletion;
+- (NSArray *)removeNewlyCreatedDeletedWishListItems:(NSArray *)annotationArray
+                               managedObjectContext:(NSManagedObjectContext *)aManagedObjectContext;
+
 @end
