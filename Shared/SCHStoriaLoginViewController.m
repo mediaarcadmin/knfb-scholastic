@@ -224,16 +224,20 @@ static const CGFloat kSCHStoriaLoginContentHeightLandscape = 420;
             case kSCHLoginHandlerCredentialsWarningNone:
                 self.promptLabel.text = NSLocalizedString(@"You must have a Scholastic account to sign in.", @"");
                 frame.size.width = 140;
+                self.promptLabel.font = [self.promptLabel.font fontWithSize:15.0f];
                 break;
             case kSCHLoginHandlerCredentialsWarningMalformedEmail:
                 self.promptLabel.text = NSLocalizedString(@"Please enter a valid E-Mail Address.", @"");
                 frame.size.width = 140;
+                self.promptLabel.font = [self.promptLabel.font fontWithSize:15.0f];
                 break;
             case kSCHLoginHandlerCredentialsWarningAuthenticationFailure:
 #if USE_EMAIL_ADDRESS_AS_USERNAME            
                 self.promptLabel.text = NSLocalizedString(@"Your E-mail Address or Password was not recognized. Please try again or contact Scholastic customer service at storia@scholastic.com.", @"");
+                self.promptLabel.font = [self.promptLabel.font fontWithSize:13.0f];
 #else 
-                self.promptLabel.text = NSLocalizedString(@"Your User Name or Password was not recognized. Please try again.", @"");            
+                self.promptLabel.text = NSLocalizedString(@"Your User Name or Password was not recognized. Please try again.", @"");  
+                self.promptLabel.font = [self.promptLabel.font fontWithSize:15.0f];
 #endif     
                 frame.size.width = 200;
                 break;
