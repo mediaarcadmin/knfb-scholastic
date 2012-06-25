@@ -195,14 +195,19 @@ NSString * const kSCHProfileItemDRM_QUALIFIER = @"DRM_QUALIFIER";
         NSMutableArray *books = [NSMutableArray array];
         
         for (SCHContentProfileItem *contentProfileItem in [self ContentProfileItem]) {
-            for (SCHContentMetadataItem *contentMetadataItem in contentProfileItem.UserContentItem.ContentMetadataItem) {
-                SCHBookIdentifier *identifier = [contentMetadataItem bookIdentifier];
-                if (identifier != nil) {
-                    [books addObject:identifier];
+            NSSet *contentMetadataItems = contentProfileItem.UserContentItem.ContentMetadataItem;
+            if ([contentMetadataItems count] > 0) {
+                for (SCHContentMetadataItem *contentMetadataItem in contentProfileItem.UserContentItem.ContentMetadataItem) {
+                    SCHBookIdentifier *identifier = [contentMetadataItem bookIdentifier];
+                    if (identifier != nil) {
+                        [books addObject:identifier];
+                    }
                 }
+            } else {
+                NSLog(@"Warning, no contentMetadataItems for contentProfileItem %@", contentProfileItem);
             }
         }
-        
+                
         // order the books
         if ([self.AppContentProfileItem count] > 0) {
             NSArray *bookOrder = [self.AppContentProfileItem sortedArrayUsingDescriptors:
