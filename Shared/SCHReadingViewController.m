@@ -1205,12 +1205,16 @@ static const NSUInteger kReadingViewMaxRecommendationsCount = 4;
                                                  }];
             if (success) {
                 self.audioBookPlayer.delegate = self;
-                [self.audioBookPlayer playAtLayoutPage:layoutPage pageWordOffset:pageWordOffset];
+                
+                success = [self.audioBookPlayer playAtLayoutPage:layoutPage pageWordOffset:pageWordOffset];
+            }
+            
+            if (success) {
                 [self setToolbarVisibility:NO animated:YES];
             } else {
                 self.audioBookPlayer = nil;   
                 UIAlertView *errorAlert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error", @"Error") 
-                                                                     message:NSLocalizedString(@"Due to a problem with the audio we can not play this audiobook.", @"") 
+                                                                     message:NSLocalizedString(@"Due to a problem with the audio we cannot play this audiobook.", @"") 
                                                                     delegate:nil 
                                                            cancelButtonTitle:NSLocalizedString(@"OK", @"OK")
                                                            otherButtonTitles:nil]; 

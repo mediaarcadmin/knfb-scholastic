@@ -355,9 +355,15 @@ static NSUInteger const kSCHAudioBookPlayerNoAudioLoaded = NSUIntegerMax;
             SCHWordTimingProcessor *wordTimingProcessor = [[SCHWordTimingProcessor alloc] init];
             self.wordTimings = [wordTimingProcessor startTimesFrom:wordTimingData error:&error];
             self.usingNewRTXFormat = wordTimingProcessor.newRTXFormat;
+
+            BOOL valid = [wordTimingProcessor validateWordTimings:self.wordTimings 
+                                                        pageIndex:audioInfoToPrepare.pageIndex
+                                                        timeIndex:audioInfoToPrepare.timeIndex
+                                                       timeOffset:audioInfoToPrepare.timeOffset];            
+            
             [wordTimingProcessor release], wordTimingProcessor = nil;
             
-            if (self.wordTimings != nil) {
+            if (self.wordTimings != nil && valid) {
                 // audio
                 NSData *audioData = [self.xpsProvider dataForComponentAtPath:
                                      [KNFBXPSAudiobookDirectory stringByAppendingPathComponent:
