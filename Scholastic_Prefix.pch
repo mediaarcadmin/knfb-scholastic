@@ -100,7 +100,7 @@
 
 // Remote sample books manifest location
 #define FREE_MANIFEST_TEST @"http://bits.blioreader.com/partners/Scholastic/SampleBookshelf/SampleBookshelfManifest_v2.xml"
-#define FREE_MANIFEST_PRODUCTION @"http://reader.ebooks2.scholastic.com/reader/sch/free/FreeManifest.xml"
+#define FREE_MANIFEST_PRODUCTION @"http://reader.ebooks2.scholastic.com/reader/sch/free/FreeManifest2.xml"
 
 #ifdef __OPTIMIZE__
     // Stops all NSLog() functions executing under release builds
