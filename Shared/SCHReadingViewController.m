@@ -2410,7 +2410,7 @@ static const NSUInteger kReadingViewMaxRecommendationsCount = 4;
             listView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin;
             
             listView.showsBottomRule = NO;
-            listView.dimEmptyRatings = NO;
+            listView.showOnBackCover = YES;
             listView.delegate = self;
             listView.showsWishListButton = [[SCHAppStateManager sharedAppStateManager] shouldShowWishList];
             
