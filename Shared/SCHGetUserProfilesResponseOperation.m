@@ -160,7 +160,7 @@ managedObjectContext:(NSManagedObjectContext *)aManagedObjectContext
 		[self addProfile:webItem managedObjectContext:aManagedObjectContext];
 	}
     
-    [self saveWithManagedObjectContext:self.backgroundThreadManagedObjectContext];    
+    [self saveWithManagedObjectContext:aManagedObjectContext];    
 }
 
 - (NSArray *)localProfilesUsingManagedObjectContext:(NSManagedObjectContext *)aManagedObjectContext
