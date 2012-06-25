@@ -14,6 +14,7 @@
 
 // Constants
 extern NSString * const SCHSyncComponentDidFailAuthenticationNotification;
+extern double const SCHSyncComponentThreadLowPriority;
 
 @interface SCHSyncComponent : SCHComponent
 {

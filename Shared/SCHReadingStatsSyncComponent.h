@@ -15,9 +15,7 @@ extern NSString * const SCHReadingStatsSyncComponentDidCompleteNotification;
 extern NSString * const SCHReadingStatsSyncComponentDidFailNotification;
 
 @interface SCHReadingStatsSyncComponent : SCHSyncComponent
-{
 
-}
-
+- (void)clearCoreDataUsingContext:(NSManagedObjectContext *)aManagedObjectContext;
 
 @end

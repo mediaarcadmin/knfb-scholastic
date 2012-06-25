@@ -328,6 +328,14 @@
 		520D28CC14F4E2F9005AAF4F /* SCHWishListWebService.m in Sources */ = {isa = PBXBuildFile; fileRef = 520D28CB14F4E2F9005AAF4F /* SCHWishListWebService.m */; };
 		520D28CD14F4E2F9005AAF4F /* SCHWishListWebService.m in Sources */ = {isa = PBXBuildFile; fileRef = 520D28CB14F4E2F9005AAF4F /* SCHWishListWebService.m */; };
 		520D28CE14F4E2F9005AAF4F /* SCHWishListWebService.m in Sources */ = {isa = PBXBuildFile; fileRef = 520D28CB14F4E2F9005AAF4F /* SCHWishListWebService.m */; };
+		520E14C5158F883C003773E3 /* SCHListUserSettingsOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 520E14C4158F883C003773E3 /* SCHListUserSettingsOperation.m */; };
+		520E14C6158F883C003773E3 /* SCHListUserSettingsOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 520E14C4158F883C003773E3 /* SCHListUserSettingsOperation.m */; };
+		520E14C7158F883C003773E3 /* SCHListUserSettingsOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 520E14C4158F883C003773E3 /* SCHListUserSettingsOperation.m */; };
+		520E14C8158F883C003773E3 /* SCHListUserSettingsOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 520E14C4158F883C003773E3 /* SCHListUserSettingsOperation.m */; };
+		520E14CB158FDE63003773E3 /* SCHSaveReadingStatisticsDetailedOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 520E14CA158FDE62003773E3 /* SCHSaveReadingStatisticsDetailedOperation.m */; };
+		520E14CC158FDE63003773E3 /* SCHSaveReadingStatisticsDetailedOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 520E14CA158FDE62003773E3 /* SCHSaveReadingStatisticsDetailedOperation.m */; };
+		520E14CD158FDE63003773E3 /* SCHSaveReadingStatisticsDetailedOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 520E14CA158FDE62003773E3 /* SCHSaveReadingStatisticsDetailedOperation.m */; };
+		520E14CE158FDE63003773E3 /* SCHSaveReadingStatisticsDetailedOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 520E14CA158FDE62003773E3 /* SCHSaveReadingStatisticsDetailedOperation.m */; };
 		520FE8A1143F3B15002AB30B /* SCHLibreAccessConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = 520FE8A0143F3B14002AB30B /* SCHLibreAccessConstants.m */; };
 		520FE8A2143F3B15002AB30B /* SCHLibreAccessConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = 520FE8A0143F3B14002AB30B /* SCHLibreAccessConstants.m */; };
 		520FE8A3143F3B15002AB30B /* SCHLibreAccessConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = 520FE8A0143F3B14002AB30B /* SCHLibreAccessConstants.m */; };
@@ -354,6 +362,26 @@
 		521B7AEB1521D67E00DC0739 /* WishListServiceSvc+Binding.m in Sources */ = {isa = PBXBuildFile; fileRef = 521B7AE91521D67E00DC0739 /* WishListServiceSvc+Binding.m */; };
 		521B7AEC1521D67E00DC0739 /* WishListServiceSvc+Binding.m in Sources */ = {isa = PBXBuildFile; fileRef = 521B7AE91521D67E00DC0739 /* WishListServiceSvc+Binding.m */; };
 		521B7AED1521D67E00DC0739 /* WishListServiceSvc+Binding.m in Sources */ = {isa = PBXBuildFile; fileRef = 521B7AE91521D67E00DC0739 /* WishListServiceSvc+Binding.m */; };
+		5222F290158A1C12006040D7 /* SCHSyncComponentOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 5222F28F158A1C11006040D7 /* SCHSyncComponentOperation.m */; };
+		5222F291158A1C12006040D7 /* SCHSyncComponentOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 5222F28F158A1C11006040D7 /* SCHSyncComponentOperation.m */; };
+		5222F292158A1C12006040D7 /* SCHSyncComponentOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 5222F28F158A1C11006040D7 /* SCHSyncComponentOperation.m */; };
+		5222F293158A1C12006040D7 /* SCHSyncComponentOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 5222F28F158A1C11006040D7 /* SCHSyncComponentOperation.m */; };
+		5222F296158A2BF3006040D7 /* SCHGetUserProfilesResponseOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 5222F295158A2BF2006040D7 /* SCHGetUserProfilesResponseOperation.m */; };
+		5222F297158A2BF3006040D7 /* SCHGetUserProfilesResponseOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 5222F295158A2BF2006040D7 /* SCHGetUserProfilesResponseOperation.m */; };
+		5222F298158A2BF3006040D7 /* SCHGetUserProfilesResponseOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 5222F295158A2BF2006040D7 /* SCHGetUserProfilesResponseOperation.m */; };
+		5222F299158A2BF3006040D7 /* SCHGetUserProfilesResponseOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 5222F295158A2BF2006040D7 /* SCHGetUserProfilesResponseOperation.m */; };
+		5222F29C158B1F11006040D7 /* SCHSaveUserProfilesOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 5222F29B158B1F10006040D7 /* SCHSaveUserProfilesOperation.m */; };
+		5222F29D158B1F11006040D7 /* SCHSaveUserProfilesOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 5222F29B158B1F10006040D7 /* SCHSaveUserProfilesOperation.m */; };
+		5222F29E158B1F11006040D7 /* SCHSaveUserProfilesOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 5222F29B158B1F10006040D7 /* SCHSaveUserProfilesOperation.m */; };
+		5222F29F158B1F11006040D7 /* SCHSaveUserProfilesOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 5222F29B158B1F10006040D7 /* SCHSaveUserProfilesOperation.m */; };
+		522543C31590930F0006F0B1 /* SCHSaveProfileContentAnnotationsOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 522543C21590930F0006F0B1 /* SCHSaveProfileContentAnnotationsOperation.m */; };
+		522543C41590930F0006F0B1 /* SCHSaveProfileContentAnnotationsOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 522543C21590930F0006F0B1 /* SCHSaveProfileContentAnnotationsOperation.m */; };
+		522543C51590930F0006F0B1 /* SCHSaveProfileContentAnnotationsOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 522543C21590930F0006F0B1 /* SCHSaveProfileContentAnnotationsOperation.m */; };
+		522543C61590930F0006F0B1 /* SCHSaveProfileContentAnnotationsOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 522543C21590930F0006F0B1 /* SCHSaveProfileContentAnnotationsOperation.m */; };
+		522543C9159093380006F0B1 /* SCHListProfileContentAnnotationsOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 522543C8159093380006F0B1 /* SCHListProfileContentAnnotationsOperation.m */; };
+		522543CA159093380006F0B1 /* SCHListProfileContentAnnotationsOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 522543C8159093380006F0B1 /* SCHListProfileContentAnnotationsOperation.m */; };
+		522543CB159093380006F0B1 /* SCHListProfileContentAnnotationsOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 522543C8159093380006F0B1 /* SCHListProfileContentAnnotationsOperation.m */; };
+		522543CC159093380006F0B1 /* SCHListProfileContentAnnotationsOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 522543C8159093380006F0B1 /* SCHListProfileContentAnnotationsOperation.m */; };
 		5226C70514A489CB00307634 /* SCHVersionDownloadManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 5226C70214A489CB00307634 /* SCHVersionDownloadManager.m */; };
 		5226C70614A489CB00307634 /* SCHVersionDownloadManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 5226C70214A489CB00307634 /* SCHVersionDownloadManager.m */; };
 		5226C70714A489CB00307634 /* SCHVersionManifestOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 5226C70414A489CB00307634 /* SCHVersionManifestOperation.m */; };
@@ -397,6 +425,26 @@
 		523EC29A14F6326800EBB843 /* SCHWishListConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = 523EC29914F6326800EBB843 /* SCHWishListConstants.m */; };
 		523EC29B14F6326800EBB843 /* SCHWishListConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = 523EC29914F6326800EBB843 /* SCHWishListConstants.m */; };
 		523EC29C14F6326800EBB843 /* SCHWishListConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = 523EC29914F6326800EBB843 /* SCHWishListConstants.m */; };
+		524321141598591300CCB8F1 /* SCHRetrieveRecommendationsForProfileOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 524321131598591300CCB8F1 /* SCHRetrieveRecommendationsForProfileOperation.m */; };
+		524321151598591300CCB8F1 /* SCHRetrieveRecommendationsForProfileOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 524321131598591300CCB8F1 /* SCHRetrieveRecommendationsForProfileOperation.m */; };
+		524321161598591300CCB8F1 /* SCHRetrieveRecommendationsForProfileOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 524321131598591300CCB8F1 /* SCHRetrieveRecommendationsForProfileOperation.m */; };
+		524321171598591300CCB8F1 /* SCHRetrieveRecommendationsForProfileOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 524321131598591300CCB8F1 /* SCHRetrieveRecommendationsForProfileOperation.m */; };
+		5243211A1598593700CCB8F1 /* SCHRetrieveRecommendationsForBooksOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 524321191598593700CCB8F1 /* SCHRetrieveRecommendationsForBooksOperation.m */; };
+		5243211B1598593700CCB8F1 /* SCHRetrieveRecommendationsForBooksOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 524321191598593700CCB8F1 /* SCHRetrieveRecommendationsForBooksOperation.m */; };
+		5243211C1598593700CCB8F1 /* SCHRetrieveRecommendationsForBooksOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 524321191598593700CCB8F1 /* SCHRetrieveRecommendationsForBooksOperation.m */; };
+		5243211D1598593700CCB8F1 /* SCHRetrieveRecommendationsForBooksOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 524321191598593700CCB8F1 /* SCHRetrieveRecommendationsForBooksOperation.m */; };
+		5243212015986A0B00CCB8F1 /* SCHRetrieveSampleBooksOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 5243211F15986A0A00CCB8F1 /* SCHRetrieveSampleBooksOperation.m */; };
+		5243212115986A0B00CCB8F1 /* SCHRetrieveSampleBooksOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 5243211F15986A0A00CCB8F1 /* SCHRetrieveSampleBooksOperation.m */; };
+		5243212215986A0B00CCB8F1 /* SCHRetrieveSampleBooksOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 5243211F15986A0A00CCB8F1 /* SCHRetrieveSampleBooksOperation.m */; };
+		5243212315986A0B00CCB8F1 /* SCHRetrieveSampleBooksOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 5243211F15986A0A00CCB8F1 /* SCHRetrieveSampleBooksOperation.m */; };
+		52432126159890E500CCB8F1 /* SCHDeleteWishListItemsOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 52432125159890E500CCB8F1 /* SCHDeleteWishListItemsOperation.m */; };
+		52432127159890E500CCB8F1 /* SCHDeleteWishListItemsOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 52432125159890E500CCB8F1 /* SCHDeleteWishListItemsOperation.m */; };
+		52432128159890E500CCB8F1 /* SCHDeleteWishListItemsOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 52432125159890E500CCB8F1 /* SCHDeleteWishListItemsOperation.m */; };
+		52432129159890E500CCB8F1 /* SCHDeleteWishListItemsOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 52432125159890E500CCB8F1 /* SCHDeleteWishListItemsOperation.m */; };
+		524321321598912400CCB8F1 /* SCHGetWishListItemsOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 524321311598912400CCB8F1 /* SCHGetWishListItemsOperation.m */; };
+		524321331598912400CCB8F1 /* SCHGetWishListItemsOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 524321311598912400CCB8F1 /* SCHGetWishListItemsOperation.m */; };
+		524321341598912400CCB8F1 /* SCHGetWishListItemsOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 524321311598912400CCB8F1 /* SCHGetWishListItemsOperation.m */; };
+		524321351598912400CCB8F1 /* SCHGetWishListItemsOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 524321311598912400CCB8F1 /* SCHGetWishListItemsOperation.m */; };
 		5243545A13337BAC00282B53 /* SCHAppContentProfileItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 5243545713337BAC00282B53 /* SCHAppContentProfileItem.m */; };
 		524888291407990500DA9AFA /* MainWindow_iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 28AD733E0D9D9553002E5188 /* MainWindow_iPad.xib */; };
 		5248882A1407990500DA9AFA /* MainWindow_iPhone.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2860E389111B897F00E27156 /* MainWindow_iPhone.xib */; };
@@ -1363,6 +1411,14 @@
 		525668EC1511DEBF00570623 /* SCHRecommendationProcessor.m in Sources */ = {isa = PBXBuildFile; fileRef = 525668EA1511DEBF00570623 /* SCHRecommendationProcessor.m */; };
 		525668ED1511DEBF00570623 /* SCHRecommendationProcessor.m in Sources */ = {isa = PBXBuildFile; fileRef = 525668EA1511DEBF00570623 /* SCHRecommendationProcessor.m */; };
 		525668EE1511DEBF00570623 /* SCHRecommendationProcessor.m in Sources */ = {isa = PBXBuildFile; fileRef = 525668EA1511DEBF00570623 /* SCHRecommendationProcessor.m */; };
+		525C57E21591295A005AC7B3 /* SCHListUserContentForRatingsOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 525C57E115912959005AC7B3 /* SCHListUserContentForRatingsOperation.m */; };
+		525C57E31591295A005AC7B3 /* SCHListUserContentForRatingsOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 525C57E115912959005AC7B3 /* SCHListUserContentForRatingsOperation.m */; };
+		525C57E41591295A005AC7B3 /* SCHListUserContentForRatingsOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 525C57E115912959005AC7B3 /* SCHListUserContentForRatingsOperation.m */; };
+		525C57E51591295A005AC7B3 /* SCHListUserContentForRatingsOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 525C57E115912959005AC7B3 /* SCHListUserContentForRatingsOperation.m */; };
+		525C583E159528B0005AC7B3 /* SCHListContentMetadataOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 525C583D159528AF005AC7B3 /* SCHListContentMetadataOperation.m */; };
+		525C583F159528B0005AC7B3 /* SCHListContentMetadataOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 525C583D159528AF005AC7B3 /* SCHListContentMetadataOperation.m */; };
+		525C5840159528B0005AC7B3 /* SCHListContentMetadataOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 525C583D159528AF005AC7B3 /* SCHListContentMetadataOperation.m */; };
+		525C5841159528B0005AC7B3 /* SCHListContentMetadataOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 525C583D159528AF005AC7B3 /* SCHListContentMetadataOperation.m */; };
 		525E82D3138FFFF7006A6775 /* SCHAudioInfoProcessor.m in Sources */ = {isa = PBXBuildFile; fileRef = 525E82D2138FFFF7006A6775 /* SCHAudioInfoProcessor.m */; };
 		525E82D713938548006A6775 /* SCHAudioInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 525E82D613938548006A6775 /* SCHAudioInfo.m */; };
 		5264FAC713A7555200D4F659 /* SCHBookShelfTopTenPopoverTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5264FAC513A7555200D4F659 /* SCHBookShelfTopTenPopoverTableView.m */; };
@@ -4727,6 +4783,10 @@
 		520CD294139F84530018EA7E /* SCHStoryInteractionMultipleChoiceText_iPad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SCHStoryInteractionMultipleChoiceText_iPad.xib; sourceTree = "<group>"; };
 		520D28CA14F4E2F9005AAF4F /* SCHWishListWebService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHWishListWebService.h; path = Shared/SCHWishListWebService.h; sourceTree = "<group>"; };
 		520D28CB14F4E2F9005AAF4F /* SCHWishListWebService.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHWishListWebService.m; path = Shared/SCHWishListWebService.m; sourceTree = "<group>"; };
+		520E14C3158F883B003773E3 /* SCHListUserSettingsOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCHListUserSettingsOperation.h; sourceTree = "<group>"; };
+		520E14C4158F883C003773E3 /* SCHListUserSettingsOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCHListUserSettingsOperation.m; sourceTree = "<group>"; };
+		520E14C9158FDE61003773E3 /* SCHSaveReadingStatisticsDetailedOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHSaveReadingStatisticsDetailedOperation.h; path = Shared/SCHSaveReadingStatisticsDetailedOperation.h; sourceTree = "<group>"; };
+		520E14CA158FDE62003773E3 /* SCHSaveReadingStatisticsDetailedOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHSaveReadingStatisticsDetailedOperation.m; path = Shared/SCHSaveReadingStatisticsDetailedOperation.m; sourceTree = "<group>"; };
 		520FE89F143F3B14002AB30B /* SCHLibreAccessConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHLibreAccessConstants.h; path = Shared/SCHLibreAccessConstants.h; sourceTree = "<group>"; };
 		520FE8A0143F3B14002AB30B /* SCHLibreAccessConstants.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHLibreAccessConstants.m; path = Shared/SCHLibreAccessConstants.m; sourceTree = "<group>"; };
 		521399EE13717BB10081FD3D /* SCHLocationBookmark.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHLocationBookmark.h; path = Shared/SCHLocationBookmark.h; sourceTree = "<group>"; };
@@ -4746,6 +4806,16 @@
 		521B7AE81521D67E00DC0739 /* WishListServiceSvc+Binding.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "WishListServiceSvc+Binding.h"; sourceTree = "<group>"; };
 		521B7AE91521D67E00DC0739 /* WishListServiceSvc+Binding.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "WishListServiceSvc+Binding.m"; sourceTree = "<group>"; };
 		521BB6C015207FF00045AC92 /* SCHISBNItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHISBNItem.h; path = Shared/SCHISBNItem.h; sourceTree = "<group>"; };
+		5222F28E158A1C11006040D7 /* SCHSyncComponentOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHSyncComponentOperation.h; path = Shared/SCHSyncComponentOperation.h; sourceTree = "<group>"; };
+		5222F28F158A1C11006040D7 /* SCHSyncComponentOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHSyncComponentOperation.m; path = Shared/SCHSyncComponentOperation.m; sourceTree = "<group>"; };
+		5222F294158A2BF2006040D7 /* SCHGetUserProfilesResponseOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHGetUserProfilesResponseOperation.h; path = Shared/SCHGetUserProfilesResponseOperation.h; sourceTree = "<group>"; };
+		5222F295158A2BF2006040D7 /* SCHGetUserProfilesResponseOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHGetUserProfilesResponseOperation.m; path = Shared/SCHGetUserProfilesResponseOperation.m; sourceTree = "<group>"; };
+		5222F29A158B1F10006040D7 /* SCHSaveUserProfilesOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHSaveUserProfilesOperation.h; path = Shared/SCHSaveUserProfilesOperation.h; sourceTree = "<group>"; };
+		5222F29B158B1F10006040D7 /* SCHSaveUserProfilesOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHSaveUserProfilesOperation.m; path = Shared/SCHSaveUserProfilesOperation.m; sourceTree = "<group>"; };
+		522543C11590930F0006F0B1 /* SCHSaveProfileContentAnnotationsOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHSaveProfileContentAnnotationsOperation.h; path = Shared/SCHSaveProfileContentAnnotationsOperation.h; sourceTree = "<group>"; };
+		522543C21590930F0006F0B1 /* SCHSaveProfileContentAnnotationsOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHSaveProfileContentAnnotationsOperation.m; path = Shared/SCHSaveProfileContentAnnotationsOperation.m; sourceTree = "<group>"; };
+		522543C7159093380006F0B1 /* SCHListProfileContentAnnotationsOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHListProfileContentAnnotationsOperation.h; path = Shared/SCHListProfileContentAnnotationsOperation.h; sourceTree = "<group>"; };
+		522543C8159093380006F0B1 /* SCHListProfileContentAnnotationsOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHListProfileContentAnnotationsOperation.m; path = Shared/SCHListProfileContentAnnotationsOperation.m; sourceTree = "<group>"; };
 		5226C70114A489CB00307634 /* SCHVersionDownloadManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHVersionDownloadManager.h; path = Shared/SCHVersionDownloadManager.h; sourceTree = "<group>"; };
 		5226C70214A489CB00307634 /* SCHVersionDownloadManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHVersionDownloadManager.m; path = Shared/SCHVersionDownloadManager.m; sourceTree = "<group>"; };
 		5226C70314A489CB00307634 /* SCHVersionManifestOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHVersionManifestOperation.h; path = Shared/SCHVersionManifestOperation.h; sourceTree = "<group>"; };
@@ -4809,6 +4879,16 @@
 		523E19F113A0241D00A785B6 /* SCHStoryInteractionVideo_iPad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SCHStoryInteractionVideo_iPad.xib; sourceTree = "<group>"; };
 		523EC29814F6326800EBB843 /* SCHWishListConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHWishListConstants.h; path = Shared/SCHWishListConstants.h; sourceTree = "<group>"; };
 		523EC29914F6326800EBB843 /* SCHWishListConstants.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHWishListConstants.m; path = Shared/SCHWishListConstants.m; sourceTree = "<group>"; };
+		524321121598591300CCB8F1 /* SCHRetrieveRecommendationsForProfileOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHRetrieveRecommendationsForProfileOperation.h; path = Shared/SCHRetrieveRecommendationsForProfileOperation.h; sourceTree = "<group>"; };
+		524321131598591300CCB8F1 /* SCHRetrieveRecommendationsForProfileOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHRetrieveRecommendationsForProfileOperation.m; path = Shared/SCHRetrieveRecommendationsForProfileOperation.m; sourceTree = "<group>"; };
+		524321181598593700CCB8F1 /* SCHRetrieveRecommendationsForBooksOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHRetrieveRecommendationsForBooksOperation.h; path = Shared/SCHRetrieveRecommendationsForBooksOperation.h; sourceTree = "<group>"; };
+		524321191598593700CCB8F1 /* SCHRetrieveRecommendationsForBooksOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHRetrieveRecommendationsForBooksOperation.m; path = Shared/SCHRetrieveRecommendationsForBooksOperation.m; sourceTree = "<group>"; };
+		5243211E15986A0A00CCB8F1 /* SCHRetrieveSampleBooksOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHRetrieveSampleBooksOperation.h; path = Shared/SCHRetrieveSampleBooksOperation.h; sourceTree = "<group>"; };
+		5243211F15986A0A00CCB8F1 /* SCHRetrieveSampleBooksOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHRetrieveSampleBooksOperation.m; path = Shared/SCHRetrieveSampleBooksOperation.m; sourceTree = "<group>"; };
+		52432124159890E400CCB8F1 /* SCHDeleteWishListItemsOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHDeleteWishListItemsOperation.h; path = Shared/SCHDeleteWishListItemsOperation.h; sourceTree = "<group>"; };
+		52432125159890E500CCB8F1 /* SCHDeleteWishListItemsOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHDeleteWishListItemsOperation.m; path = Shared/SCHDeleteWishListItemsOperation.m; sourceTree = "<group>"; };
+		524321301598912300CCB8F1 /* SCHGetWishListItemsOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHGetWishListItemsOperation.h; path = Shared/SCHGetWishListItemsOperation.h; sourceTree = "<group>"; };
+		524321311598912400CCB8F1 /* SCHGetWishListItemsOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHGetWishListItemsOperation.m; path = Shared/SCHGetWishListItemsOperation.m; sourceTree = "<group>"; };
 		5243545613337BAC00282B53 /* SCHAppContentProfileItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHAppContentProfileItem.h; path = Shared/SCHAppContentProfileItem.h; sourceTree = "<group>"; };
 		5243545713337BAC00282B53 /* SCHAppContentProfileItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHAppContentProfileItem.m; path = Shared/SCHAppContentProfileItem.m; sourceTree = "<group>"; };
 		52488C051407990500DA9AFA /* Storia.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Storia.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -4837,6 +4917,10 @@
 		525668E4150FAAA100570623 /* SCHRecommendationConstants.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHRecommendationConstants.m; path = Shared/SCHRecommendationConstants.m; sourceTree = "<group>"; };
 		525668E91511DEBE00570623 /* SCHRecommendationProcessor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHRecommendationProcessor.h; path = Shared/SCHRecommendationProcessor.h; sourceTree = "<group>"; };
 		525668EA1511DEBF00570623 /* SCHRecommendationProcessor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHRecommendationProcessor.m; path = Shared/SCHRecommendationProcessor.m; sourceTree = "<group>"; };
+		525C57E015912959005AC7B3 /* SCHListUserContentForRatingsOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHListUserContentForRatingsOperation.h; path = Shared/SCHListUserContentForRatingsOperation.h; sourceTree = "<group>"; };
+		525C57E115912959005AC7B3 /* SCHListUserContentForRatingsOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHListUserContentForRatingsOperation.m; path = Shared/SCHListUserContentForRatingsOperation.m; sourceTree = "<group>"; };
+		525C583C159528AF005AC7B3 /* SCHListContentMetadataOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHListContentMetadataOperation.h; path = Shared/SCHListContentMetadataOperation.h; sourceTree = "<group>"; };
+		525C583D159528AF005AC7B3 /* SCHListContentMetadataOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHListContentMetadataOperation.m; path = Shared/SCHListContentMetadataOperation.m; sourceTree = "<group>"; };
 		525E82D1138FFFF6006A6775 /* SCHAudioInfoProcessor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHAudioInfoProcessor.h; path = Shared/SCHAudioInfoProcessor.h; sourceTree = "<group>"; };
 		525E82D2138FFFF7006A6775 /* SCHAudioInfoProcessor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHAudioInfoProcessor.m; path = Shared/SCHAudioInfoProcessor.m; sourceTree = "<group>"; };
 		525E82D513938547006A6775 /* SCHAudioInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHAudioInfo.h; path = Shared/SCHAudioInfo.h; sourceTree = "<group>"; };
@@ -7736,22 +7820,50 @@
 				52AD9B1A12FC1B6B0099FB88 /* SCHSyncComponent.h */,
 				52AD9B1B12FC1B6B0099FB88 /* SCHSyncComponent.m */,
 				52AD9D9813000CAA0099FB88 /* SCHSyncComponentProtected.h */,
+				5222F28E158A1C11006040D7 /* SCHSyncComponentOperation.h */,
+				5222F28F158A1C11006040D7 /* SCHSyncComponentOperation.m */,
 				52AD9D63130000570099FB88 /* SCHAnnotationSyncComponent.h */,
 				52AD9D64130000570099FB88 /* SCHAnnotationSyncComponent.m */,
+				522543C11590930F0006F0B1 /* SCHSaveProfileContentAnnotationsOperation.h */,
+				522543C21590930F0006F0B1 /* SCHSaveProfileContentAnnotationsOperation.m */,
+				522543C7159093380006F0B1 /* SCHListProfileContentAnnotationsOperation.h */,
+				522543C8159093380006F0B1 /* SCHListProfileContentAnnotationsOperation.m */,
 				52AD9D67130000570099FB88 /* SCHContentSyncComponent.h */,
 				52AD9D68130000570099FB88 /* SCHContentSyncComponent.m */,
+				525C57E015912959005AC7B3 /* SCHListUserContentForRatingsOperation.h */,
+				525C57E115912959005AC7B3 /* SCHListUserContentForRatingsOperation.m */,
 				52E36767131D3ED200ACCBEE /* SCHBookshelfSyncComponent.h */,
 				52E36768131D3ED200ACCBEE /* SCHBookshelfSyncComponent.m */,
+				525C583C159528AF005AC7B3 /* SCHListContentMetadataOperation.h */,
+				525C583D159528AF005AC7B3 /* SCHListContentMetadataOperation.m */,
 				52AD9D69130000570099FB88 /* SCHProfileSyncComponent.h */,
 				52AD9D6A130000570099FB88 /* SCHProfileSyncComponent.m */,
+				5222F29A158B1F10006040D7 /* SCHSaveUserProfilesOperation.h */,
+				5222F29B158B1F10006040D7 /* SCHSaveUserProfilesOperation.m */,
+				5222F294158A2BF2006040D7 /* SCHGetUserProfilesResponseOperation.h */,
+				5222F295158A2BF2006040D7 /* SCHGetUserProfilesResponseOperation.m */,
 				52AD9D6B130000570099FB88 /* SCHReadingStatsSyncComponent.h */,
 				52AD9D6C130000570099FB88 /* SCHReadingStatsSyncComponent.m */,
+				520E14C9158FDE61003773E3 /* SCHSaveReadingStatisticsDetailedOperation.h */,
+				520E14CA158FDE62003773E3 /* SCHSaveReadingStatisticsDetailedOperation.m */,
 				52AD9D6D130000570099FB88 /* SCHSettingsSyncComponent.h */,
 				52AD9D6E130000570099FB88 /* SCHSettingsSyncComponent.m */,
+				520E14C3158F883B003773E3 /* SCHListUserSettingsOperation.h */,
+				520E14C4158F883C003773E3 /* SCHListUserSettingsOperation.m */,
 				52943AE314FFD0E8002991EB /* SCHWishListSyncComponent.h */,
 				52943AE414FFD0E8002991EB /* SCHWishListSyncComponent.m */,
+				52432124159890E400CCB8F1 /* SCHDeleteWishListItemsOperation.h */,
+				52432125159890E500CCB8F1 /* SCHDeleteWishListItemsOperation.m */,
+				524321301598912300CCB8F1 /* SCHGetWishListItemsOperation.h */,
+				524321311598912400CCB8F1 /* SCHGetWishListItemsOperation.m */,
 				525668DD150F80F600570623 /* SCHRecommendationSyncComponent.h */,
 				525668DE150F80F600570623 /* SCHRecommendationSyncComponent.m */,
+				524321121598591300CCB8F1 /* SCHRetrieveRecommendationsForProfileOperation.h */,
+				524321131598591300CCB8F1 /* SCHRetrieveRecommendationsForProfileOperation.m */,
+				524321181598593700CCB8F1 /* SCHRetrieveRecommendationsForBooksOperation.h */,
+				524321191598593700CCB8F1 /* SCHRetrieveRecommendationsForBooksOperation.m */,
+				5243211E15986A0A00CCB8F1 /* SCHRetrieveSampleBooksOperation.h */,
+				5243211F15986A0A00CCB8F1 /* SCHRetrieveSampleBooksOperation.m */,
 			);
 			name = Sync;
 			sourceTree = "<group>";
@@ -12471,6 +12583,20 @@
 				F82F54A31557DB2C00041D0E /* SCHRecommendationSampleView.m in Sources */,
 				C9D37724156A52A700900844 /* SCHISBNItemObject.m in Sources */,
 				529645A315775FBA006F01D9 /* NSString+EmailValidation.m in Sources */,
+				5222F290158A1C12006040D7 /* SCHSyncComponentOperation.m in Sources */,
+				5222F296158A2BF3006040D7 /* SCHGetUserProfilesResponseOperation.m in Sources */,
+				5222F29C158B1F11006040D7 /* SCHSaveUserProfilesOperation.m in Sources */,
+				520E14C5158F883C003773E3 /* SCHListUserSettingsOperation.m in Sources */,
+				520E14CB158FDE63003773E3 /* SCHSaveReadingStatisticsDetailedOperation.m in Sources */,
+				522543C31590930F0006F0B1 /* SCHSaveProfileContentAnnotationsOperation.m in Sources */,
+				522543C9159093380006F0B1 /* SCHListProfileContentAnnotationsOperation.m in Sources */,
+				525C57E21591295A005AC7B3 /* SCHListUserContentForRatingsOperation.m in Sources */,
+				525C583E159528B0005AC7B3 /* SCHListContentMetadataOperation.m in Sources */,
+				524321141598591300CCB8F1 /* SCHRetrieveRecommendationsForProfileOperation.m in Sources */,
+				5243211A1598593700CCB8F1 /* SCHRetrieveRecommendationsForBooksOperation.m in Sources */,
+				5243212015986A0B00CCB8F1 /* SCHRetrieveSampleBooksOperation.m in Sources */,
+				52432126159890E500CCB8F1 /* SCHDeleteWishListItemsOperation.m in Sources */,
+				524321321598912400CCB8F1 /* SCHGetWishListItemsOperation.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -12911,6 +13037,20 @@
 				F82F54A41557DB2C00041D0E /* SCHRecommendationSampleView.m in Sources */,
 				C9D37725156A52A700900844 /* SCHISBNItemObject.m in Sources */,
 				529645A415775FBA006F01D9 /* NSString+EmailValidation.m in Sources */,
+				5222F291158A1C12006040D7 /* SCHSyncComponentOperation.m in Sources */,
+				5222F297158A2BF3006040D7 /* SCHGetUserProfilesResponseOperation.m in Sources */,
+				5222F29D158B1F11006040D7 /* SCHSaveUserProfilesOperation.m in Sources */,
+				520E14C6158F883C003773E3 /* SCHListUserSettingsOperation.m in Sources */,
+				520E14CC158FDE63003773E3 /* SCHSaveReadingStatisticsDetailedOperation.m in Sources */,
+				522543C41590930F0006F0B1 /* SCHSaveProfileContentAnnotationsOperation.m in Sources */,
+				522543CA159093380006F0B1 /* SCHListProfileContentAnnotationsOperation.m in Sources */,
+				525C57E31591295A005AC7B3 /* SCHListUserContentForRatingsOperation.m in Sources */,
+				525C583F159528B0005AC7B3 /* SCHListContentMetadataOperation.m in Sources */,
+				524321151598591300CCB8F1 /* SCHRetrieveRecommendationsForProfileOperation.m in Sources */,
+				5243211B1598593700CCB8F1 /* SCHRetrieveRecommendationsForBooksOperation.m in Sources */,
+				5243212115986A0B00CCB8F1 /* SCHRetrieveSampleBooksOperation.m in Sources */,
+				52432127159890E500CCB8F1 /* SCHDeleteWishListItemsOperation.m in Sources */,
+				524321331598912400CCB8F1 /* SCHGetWishListItemsOperation.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -13284,6 +13424,20 @@
 				F82F54A51557DB2C00041D0E /* SCHRecommendationSampleView.m in Sources */,
 				C9D37726156A52A700900844 /* SCHISBNItemObject.m in Sources */,
 				529645A515775FBA006F01D9 /* NSString+EmailValidation.m in Sources */,
+				5222F292158A1C12006040D7 /* SCHSyncComponentOperation.m in Sources */,
+				5222F298158A2BF3006040D7 /* SCHGetUserProfilesResponseOperation.m in Sources */,
+				5222F29E158B1F11006040D7 /* SCHSaveUserProfilesOperation.m in Sources */,
+				520E14C7158F883C003773E3 /* SCHListUserSettingsOperation.m in Sources */,
+				520E14CD158FDE63003773E3 /* SCHSaveReadingStatisticsDetailedOperation.m in Sources */,
+				522543C51590930F0006F0B1 /* SCHSaveProfileContentAnnotationsOperation.m in Sources */,
+				522543CB159093380006F0B1 /* SCHListProfileContentAnnotationsOperation.m in Sources */,
+				525C57E41591295A005AC7B3 /* SCHListUserContentForRatingsOperation.m in Sources */,
+				525C5840159528B0005AC7B3 /* SCHListContentMetadataOperation.m in Sources */,
+				524321161598591300CCB8F1 /* SCHRetrieveRecommendationsForProfileOperation.m in Sources */,
+				5243211C1598593700CCB8F1 /* SCHRetrieveRecommendationsForBooksOperation.m in Sources */,
+				5243212215986A0B00CCB8F1 /* SCHRetrieveSampleBooksOperation.m in Sources */,
+				52432128159890E500CCB8F1 /* SCHDeleteWishListItemsOperation.m in Sources */,
+				524321341598912400CCB8F1 /* SCHGetWishListItemsOperation.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -13657,6 +13811,20 @@
 				F82F54A61557DB2C00041D0E /* SCHRecommendationSampleView.m in Sources */,
 				C9D37727156A52A700900844 /* SCHISBNItemObject.m in Sources */,
 				529645A615775FBA006F01D9 /* NSString+EmailValidation.m in Sources */,
+				5222F293158A1C12006040D7 /* SCHSyncComponentOperation.m in Sources */,
+				5222F299158A2BF3006040D7 /* SCHGetUserProfilesResponseOperation.m in Sources */,
+				5222F29F158B1F11006040D7 /* SCHSaveUserProfilesOperation.m in Sources */,
+				520E14C8158F883C003773E3 /* SCHListUserSettingsOperation.m in Sources */,
+				520E14CE158FDE63003773E3 /* SCHSaveReadingStatisticsDetailedOperation.m in Sources */,
+				522543C61590930F0006F0B1 /* SCHSaveProfileContentAnnotationsOperation.m in Sources */,
+				522543CC159093380006F0B1 /* SCHListProfileContentAnnotationsOperation.m in Sources */,
+				525C57E51591295A005AC7B3 /* SCHListUserContentForRatingsOperation.m in Sources */,
+				525C5841159528B0005AC7B3 /* SCHListContentMetadataOperation.m in Sources */,
+				524321171598591300CCB8F1 /* SCHRetrieveRecommendationsForProfileOperation.m in Sources */,
+				5243211D1598593700CCB8F1 /* SCHRetrieveRecommendationsForBooksOperation.m in Sources */,
+				5243212315986A0B00CCB8F1 /* SCHRetrieveSampleBooksOperation.m in Sources */,
+				52432129159890E500CCB8F1 /* SCHDeleteWishListItemsOperation.m in Sources */,
+				524321351598912400CCB8F1 /* SCHGetWishListItemsOperation.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

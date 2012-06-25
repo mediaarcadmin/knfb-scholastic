@@ -11,7 +11,7 @@
 #import "SCHLibreAccessConstants.h"
 #import "SCHAppBook.h"
 #import "SCHBookIdentifier.h"
-#import "SCHBookshelfSyncComponent.h"
+#import "SCHListContentMetadataOperation.h"
 
 @implementation SCHBookURLRequestOperation
 
@@ -91,15 +91,17 @@
             __block BOOL urlsValid = NO;
             
             [self performWithBookAndSave:^(SCHAppBook *book) {
-                SCHBookshelfSyncComponent *localComponent = [[SCHBookshelfSyncComponent alloc] init];
-                [localComponent syncContentMetadataItem:userInfo withContentMetadataItem:book.ContentMetadataItem];
+                SCHListContentMetadataOperation *localOperation = [[SCHListContentMetadataOperation alloc] initWithSyncComponent:nil 
+                                                                                                                          result:nil
+                                                                                                                        userInfo:nil];
+                [localOperation syncContentMetadataItem:userInfo withContentMetadataItem:book.ContentMetadataItem];
                 
                 if (([book contentMetadataCoverURLIsValid] && [book contentMetadataFileURLIsValid])) {
                     [book setValue:[userInfo valueForKey:kSCHLibreAccessWebServiceCoverURL] forKey:kSCHAppBookCoverURL];
                     [book setValue:[userInfo valueForKey:kSCHLibreAccessWebServiceContentURL] forKey:kSCHAppBookFileURL];
                     urlsValid = YES;
                 }
-                [localComponent release];
+                [localOperation release];
                 
             }];
             

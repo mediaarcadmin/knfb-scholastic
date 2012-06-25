@@ -15,8 +15,7 @@ extern NSString * const SCHSettingsSyncComponentDidCompleteNotification;
 extern NSString * const SCHSettingsSyncComponentDidFailNotification;
 
 @interface SCHSettingsSyncComponent : SCHSyncComponent
-{
 
-}
+- (void)clearCoreDataUsingContext:(NSManagedObjectContext *)aManagedObjectContext;
 
 @end
