@@ -85,4 +85,28 @@ static NSUInteger kSCHWordTimingProcessorRTXNewFormatLineCount = 9;
 	return(ret);    
 }
 
+- (BOOL)validateWordTimings:(NSArray *)wordTimings 
+                  pageIndex:(NSUInteger)pageIndex
+                  timeIndex:(NSUInteger)timeIndex
+                 timeOffset:(NSUInteger)timeOffset
+{
+    BOOL valid = NO;
+    
+    if (timeIndex < [wordTimings count]) {
+        SCHWordTiming *wordTiming = [wordTimings objectAtIndex:timeIndex];
+        
+        if ((wordTiming.pageIndex == pageIndex) &&
+            (wordTiming.startTime == timeOffset)) {
+            valid = YES;
+        } else {
+            NSLog(@"VALIDATION: Word time entry %@ does not match timeIndex %d pageIndex %d timeOffset %d", wordTiming, timeIndex, pageIndex, timeOffset);
+        }
+                
+    } else {
+        NSLog(@"VALIDATION: Word time index %d does not exist in word timings arrray (size %d)", timeIndex, [wordTimings count]);
+    }
+    
+    return valid;
+}
+
 @end
