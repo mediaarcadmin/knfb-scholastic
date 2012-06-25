@@ -285,7 +285,6 @@ NSString * const SCHBookshelfSyncComponentDidFailNotification = @"SCHBookshelfSy
                                                                                                             userInfo:nil] autorelease];
         
         ret = [operation addContentMetadataItem:webContentMetadataItem managedObjectContext:self.managedObjectContext];
-        [self saveWithManagedObjectContext:self.managedObjectContext];
     }
 
     return ret;
