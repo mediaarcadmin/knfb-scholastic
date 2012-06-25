@@ -39,6 +39,7 @@
 #import "SCHVersionDownloadManager.h"
 #import "SCHAccountValidationViewController.h"
 #import "NSString+EmailValidation.h"
+#import "BITAPIError.h"
 
 typedef enum {
 	kSCHStartingViewControllerProfileSyncStateNone = 0,
@@ -635,9 +636,11 @@ static const NSTimeInterval kSCHStartingViewControllerNonForcedAlertInterval = (
                 } else {
                     if (error && [[error domain] isEqualToString:kSCHAccountValidationErrorDomain] && ([error code] == kSCHAccountValidationCredentialsError)) {
                         [weakLoginRef setDisplayIncorrectCredentialsWarning:kSCHLoginHandlerCredentialsWarningMalformedEmail];
-                    } else {
+                    } else if (error && [[error domain] isEqualToString:kBITAPIErrorDomain]){
                         [weakLoginRef setDisplayIncorrectCredentialsWarning:kSCHLoginHandlerCredentialsWarningAuthenticationFailure];
-                    }                          
+                    } else {
+                        [weakLoginRef setDisplayIncorrectCredentialsWarning:kSCHLoginHandlerCredentialsWarningNone];
+                    }
                 }
                 
                 [weakLoginRef stopShowingProgress];
