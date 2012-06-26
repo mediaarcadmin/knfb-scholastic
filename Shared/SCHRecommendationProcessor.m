@@ -41,6 +41,7 @@
 
 - (NSArray *)recommendationsFrom:(NSData *)recommendationXML
 {
+//    NSLog(@"%@", [[[NSString alloc] initWithData:recommendationXML encoding:NSUTF8StringEncoding] autorelease]);
     NSXMLParser *xmlParser = [[NSXMLParser alloc] initWithData:recommendationXML];
     if (xmlParser != nil) {
         self.results = [NSMutableArray array];
