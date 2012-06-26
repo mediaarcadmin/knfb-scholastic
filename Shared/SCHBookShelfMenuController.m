@@ -74,6 +74,25 @@
     [super viewDidUnload];
 }
 
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    
+    // Hack workaround for the popover not resizing again when popping the nav controller
+    // See http://stackoverflow.com/questions/2752394/popover-with-embedded-navigation-controller-doesnt-respect-size-on-back-nav/7754107#7754107
+    
+    CGSize currentSetSizeForPopover = self.contentSizeForViewInPopover;
+    CGSize fakeMomentarySize = CGSizeMake(currentSetSizeForPopover.width - 1.0f, currentSetSizeForPopover.height - 1.0f);
+    self.contentSizeForViewInPopover = fakeMomentarySize;
+}
+
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    
+    CGSize currentSetSizeForPopover = self.contentSizeForViewInPopover;
+    self.contentSizeForViewInPopover = currentSetSizeForPopover;
+}
 
 #pragma mark - Orientation methods
 
