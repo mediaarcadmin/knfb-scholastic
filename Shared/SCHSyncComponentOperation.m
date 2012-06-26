@@ -10,6 +10,10 @@
 
 #import "SCHSyncComponent.h"
 
+/*
+ * Any sync operations should be used serially and NOT concurrently
+ */
+
 @implementation SCHSyncComponentOperation
 
 @synthesize backgroundThreadManagedObjectContext;
