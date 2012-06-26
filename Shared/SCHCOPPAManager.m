@@ -126,6 +126,7 @@
 
 - (void)resetCOPPA
 {
+    [self releaseResources];
     self.nextRequest = [NSDate date];
     self.waitingOnResponse = NO;
     [[SCHAppStateManager sharedAppStateManager] setCanSyncNotes:NO];
