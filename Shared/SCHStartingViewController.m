@@ -634,7 +634,7 @@ static const NSTimeInterval kSCHStartingViewControllerNonForcedAlertInterval = (
                 if (success) {
                     [weakLoginRef setDisplayIncorrectCredentialsWarning:kSCHLoginHandlerCredentialsWarningNone];
                 } else {
-                    if (error && [[error domain] isEqualToString:kSCHAccountValidationErrorDomain] && ([error code] == kSCHAccountValidationCredentialsError)) {
+                    if (error && [[error domain] isEqualToString:kSCHAccountValidationErrorDomain] && ([error code] == kSCHAccountValidationMalformedEmailError)) {
                         [weakLoginRef setDisplayIncorrectCredentialsWarning:kSCHLoginHandlerCredentialsWarningMalformedEmail];
                     } else if (error && [[error domain] isEqualToString:kBITAPIErrorDomain]){
                         [weakLoginRef setDisplayIncorrectCredentialsWarning:kSCHLoginHandlerCredentialsWarningAuthenticationFailure];
@@ -921,7 +921,7 @@ static const NSTimeInterval kSCHStartingViewControllerNonForcedAlertInterval = (
             NSString *errorMessage = NSLocalizedString(@"There was a problem checking your email and password. Please try again.", @"");
             if ([username isValidEmailAddress] == NO) {
                 NSError *anError = [NSError errorWithDomain:kSCHAccountValidationErrorDomain  
-                                                       code:kSCHAccountValidationCredentialsError  
+                                                       code:kSCHAccountValidationMalformedEmailError  
                                                    userInfo:[NSDictionary dictionaryWithObject:NSLocalizedString(@"Email address is not valid. Please try again.", @"")  
                                                                                         forKey:NSLocalizedDescriptionKey]];
                 failed(anError);
@@ -964,7 +964,7 @@ static const NSTimeInterval kSCHStartingViewControllerNonForcedAlertInterval = (
 #endif
         } else {
             NSError *anError = [NSError errorWithDomain:kSCHAccountValidationErrorDomain  
-                                                   code:kSCHAccountValidationCredentialsError  
+                                                   code:kSCHAccountValidationCredentialsMissingError  
                                                userInfo:[NSDictionary dictionaryWithObject:NSLocalizedString(@"Username and password must not be blank. Please try again.", @"")  
                                                                                     forKey:NSLocalizedDescriptionKey]];
             failed(anError);
@@ -973,7 +973,7 @@ static const NSTimeInterval kSCHStartingViewControllerNonForcedAlertInterval = (
     
     setupSequenceAttemptServiceLogin.failed = ^(NSError *error){
         
-        if ([error code] != kSCHAccountValidationCredentialsError) {
+        if ([error code] != kSCHAccountValidationMalformedEmailError) {
             NSString *localizedMessage = [[SCHAuthenticationManager sharedAuthenticationManager] localizedMessageForAuthenticationError:error];
             
             LambdaAlert *alert = [[LambdaAlert alloc]
