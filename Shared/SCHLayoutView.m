@@ -998,6 +998,12 @@ fastThumbnailUIImageForPageAtIndex:(NSUInteger)index
             }
 		}
     } else {
+        if (bookPoint) {
+            __block SCHLayoutView *weakSelf = self;
+            self.jumpToPageCompletionHandler = ^{
+                [weakSelf followAlongHighlightWordAtPoint:bookPoint withCompletionHandler:completion];
+            };
+        }
         [self dismissFollowAlongHighlighter];
     }
 }

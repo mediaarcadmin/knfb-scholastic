@@ -225,7 +225,6 @@ NSString * const SCHContentSyncComponentDidFailNotification = @"SCHContentSyncCo
                                                                                                                         userInfo:nil] autorelease];
         
         [operation addUserContentItem:webUserContentItem managedObjectContext:self.managedObjectContext];
-        [self saveWithManagedObjectContext:self.managedObjectContext];
     }
 }
 

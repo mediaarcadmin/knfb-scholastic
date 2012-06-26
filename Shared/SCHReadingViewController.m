@@ -1183,7 +1183,7 @@ static const NSUInteger kReadingViewMaxRecommendationsCount = 4;
                                                                                            self.pauseAudioOnNextPageTurn = YES;
                                                                                        }];
                                                  } wordBlockNew:^(NSUInteger layoutPage, NSUInteger audioBlockID, NSUInteger audioWordID) {
-                                                     //NSLog(@"WORD UP! at layoutPage %d blockIndex %d wordIndex %d", layoutPage, blockIndex, wordIndex);
+                                                     //NSLog(@"WORD UP! at layoutPage %d blockIndex %d wordIndex %d", layoutPage, audioBlockID, audioWordID);
                                                      self.pauseAudioOnNextPageTurn = NO;
                                                      // this assumes the RTX file format uses the same blockID and wordID as the textFlow
                                                      SCHBookPoint *bookPoint = [[[SCHBookPoint alloc] init] autorelease];

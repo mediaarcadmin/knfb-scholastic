@@ -44,7 +44,7 @@
 							<object class="IBUILabel" id="406599561">
 								<reference key="NSNextResponder" ref="826164361"/>
 								<int key="NSvFlags">318</int>
-								<string key="NSFrame">{{2, 2}, {108, 5}}</string>
+								<string key="NSFrame">{{4, 2}, {107, 5}}</string>
 								<reference key="NSSuperview" ref="826164361"/>
 								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="404304412"/>
@@ -78,7 +78,7 @@
 							<object class="IBUILabel" id="404304412">
 								<reference key="NSNextResponder" ref="826164361"/>
 								<int key="NSvFlags">318</int>
-								<string key="NSFrame">{{2, 9}, {108, 5}}</string>
+								<string key="NSFrame">{{4, 9}, {107, 5}}</string>
 								<reference key="NSSuperview" ref="826164361"/>
 								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="343969739"/>
@@ -97,7 +97,7 @@
 									<int key="type">1</int>
 									<double key="pointSize">5</double>
 								</object>
-								<object class="NSFont" key="IBUIFont">
+								<object class="NSFont" key="IBUIFont" id="273216252">
 									<string key="NSName">Helvetica</string>
 									<double key="NSSize">5</double>
 									<int key="NSfFlags">16</int>
@@ -154,7 +154,7 @@
 									<object class="IBUIImageView" id="886625132">
 										<reference key="NSNextResponder" ref="343969739"/>
 										<int key="NSvFlags">319</int>
-										<string key="NSFrameSize">{94, 9}</string>
+										<string key="NSFrameSize">{88, 9}</string>
 										<reference key="NSSuperview" ref="343969739"/>
 										<reference key="NSWindow"/>
 										<reference key="NSNextKeyView" ref="398565804"/>
@@ -190,13 +190,9 @@
 											<string key="name">Helvetica</string>
 											<string key="family">Helvetica</string>
 											<int key="traits">0</int>
-											<double key="pointSize">6</double>
+											<double key="pointSize">5</double>
 										</object>
-										<object class="NSFont" key="IBUIFont">
-											<string key="NSName">Helvetica</string>
-											<double key="NSSize">6</double>
-											<int key="NSfFlags">16</int>
-										</object>
+										<reference key="IBUIFont" ref="273216252"/>
 									</object>
 									<object class="IBUIView" id="1027586691">
 										<reference key="NSNextResponder" ref="343969739"/>
@@ -211,7 +207,7 @@
 										<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 									</object>
 								</array>
-								<string key="NSFrame">{{2, 18}, {94, 9}}</string>
+								<string key="NSFrame">{{0, 18}, {88, 9}}</string>
 								<reference key="NSSuperview" ref="826164361"/>
 								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="886625132"/>
@@ -234,7 +230,6 @@
 						<string key="NSFrame">{{0, 62}, {328, 2}}</string>
 						<reference key="NSSuperview" ref="37005870"/>
 						<reference key="NSWindow"/>
-						<reference key="NSNextKeyView"/>
 						<reference key="IBUIBackgroundColor" ref="504535312"/>
 						<int key="IBUITag">202</int>
 						<bool key="IBUIUserInteractionEnabled">NO</bool>
