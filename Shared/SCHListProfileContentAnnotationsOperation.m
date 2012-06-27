@@ -104,7 +104,7 @@
         BOOL canSyncRating = [[SCHAppStateManager sharedAppStateManager] isCOPPACompliant];
         NSDate *syncDate = [self.userInfo objectForKey:@"serverDate"];
         
-        // if we don't have a serverDate then use the current device date
+        // if we don't have a serverDate from the request then use the persisted server date
         if (syncDate == nil || syncDate == (id)[NSNull null]) {
             syncDate = [NSDate serverDate];
         }
