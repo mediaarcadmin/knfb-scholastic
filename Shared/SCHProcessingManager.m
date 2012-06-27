@@ -817,7 +817,7 @@ static SCHProcessingManager *sharedManager = nil;
                     [(SCHDownloadBookFileOperation *)bookOperation fileType] == kSCHDownloadFileTypeXPSBook &&
                     [bookOperation.identifier isEqual:identifier] == YES) {
                     [bookOperation cancel];
-                    [bookOperation waitUntilFinished];
+                    // do not need to wait until finishing; calling cancel immediately stops the download stream
                     break;
                 }
             }
