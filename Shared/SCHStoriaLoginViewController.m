@@ -93,6 +93,9 @@ static const CGFloat kSCHStoriaLoginContentHeightLandscape = 420;
     } else if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
         topField.placeholder = NSLocalizedString(@"E-Mail Address", @"");
     }
+    
+    topField.keyboardType = UIKeyboardTypeEmailAddress;
+    bottomField.keyboardType = UIKeyboardTypeEmailAddress;
 #endif    
     
     [self.scrollView setAlwaysBounceVertical:NO];
