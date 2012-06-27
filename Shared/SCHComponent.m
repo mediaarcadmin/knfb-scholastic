@@ -65,17 +65,4 @@
 	return(object == [NSNull null] ? nil : object);
 }
 
-- (void)performOnMainThreadSync:(dispatch_block_t)block
-{
-    if (block != nil) {
-        if ([NSThread isMainThread] == YES) {
-            block();				            
-        } else {
-            dispatch_sync(dispatch_get_main_queue(), ^{
-                block();
-            });
-        }    
-    }
-}
-
 @end

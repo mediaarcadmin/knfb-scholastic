@@ -11,6 +11,5 @@
 @interface SCHComponent ()
 
 - (id)makeNullNil:(id)object;
-- (void)performOnMainThreadSync:(dispatch_block_t)block;
 
 @end
