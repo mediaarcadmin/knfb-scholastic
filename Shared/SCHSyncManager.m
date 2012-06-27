@@ -378,7 +378,7 @@ static NSUInteger const kSCHSyncManagerMaximumFailureRetries = 3;
                    
             [self recommendationSync];
             
-            [self wishListSync];
+            [self wishListSync:syncNow];
             
             [self kickQueue];	
         } else {
@@ -721,7 +721,7 @@ static NSUInteger const kSCHSyncManagerMaximumFailureRetries = 3;
     return [[SCHAppStateManager sharedAppStateManager] isCOPPACompliant];
 }
 
-- (void)wishListSync
+- (void)wishListSync:(BOOL)syncNow
 {
     // reset if the date has been changed in a backward motion
     if (self.lastWishListSyncEnded != nil &&
@@ -731,7 +731,7 @@ static NSUInteger const kSCHSyncManagerMaximumFailureRetries = 3;
     
     if ([self wishListSyncActive] == YES) {
         if ([self shouldSync] == YES) {
-            if (self.lastWishListSyncEnded == nil || 
+            if (syncNow == YES || self.lastWishListSyncEnded == nil || 
                 [self.lastWishListSyncEnded timeIntervalSinceNow] < kSCHLastWishListSyncInterval) {
                 NSLog(@"Scheduling Wishlist Sync");  
                 
@@ -744,7 +744,7 @@ static NSUInteger const kSCHSyncManagerMaximumFailureRetries = 3;
                 self.wishListSyncAfterDelay = YES;                
             }
         } else {
-            if (self.lastWishListSyncEnded == nil || 
+            if (syncNow == YES || self.lastWishListSyncEnded == nil || 
                 [self.lastWishListSyncEnded timeIntervalSinceNow] < kSCHLastWishListSyncInterval) {
                 self.lastWishListSyncEnded = [NSDate date];
                 
@@ -944,7 +944,7 @@ static NSUInteger const kSCHSyncManagerMaximumFailureRetries = 3;
         if (self.firstSyncAfterDelay == YES) {
             [self firstSync:NO requireDeviceAuthentication:NO];   
         } else if (self.wishListSyncAfterDelay == YES) {
-            [self wishListSync];
+            [self wishListSync:NO];
         }
     } 
 }

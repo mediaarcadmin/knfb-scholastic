@@ -649,7 +649,7 @@ typedef enum
         [self.profileSetupDelegate popToAuthenticatedProfileAnimated:YES];
     }
     
-    [[SCHSyncManager sharedSyncManager] wishListSync];                        
+    [[SCHSyncManager sharedSyncManager] wishListSync:NO];                        
 }
 
 - (BOOL)gestureRecognizerShouldBegin:(UIGestureRecognizer *)gestureRecognizer 

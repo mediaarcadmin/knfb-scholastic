@@ -18,7 +18,8 @@
 // Constants
 NSString * const kSCHAccountValidationErrorDomain = @"AccountValidationErrorDomain";
 NSInteger const kSCHAccountValidationPTokenError = 2000;
-NSInteger const kSCHAccountValidationCredentialsError = 200;
+NSInteger const kSCHAccountValidationMalformedEmailError = 200;
+NSInteger const kSCHAccountValidationCredentialsMissingError = 201;
 
 // pToken timeout set to 29 minutes, same as windows - 1 minute for any errors
 static NSTimeInterval const kSCHAccountValidationpTokenTimeout = 1740.0;
