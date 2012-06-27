@@ -48,6 +48,7 @@
 
 - (void)dealloc
 {
+    NSLog(@"SCHDictionaryFileDownloadOperation is deallocing");
     [localFileManager release], localFileManager = nil;
     [downloadOperation release], downloadOperation = nil;
 	[super dealloc];
@@ -95,19 +96,22 @@
     }
 
     self.downloadOperation = [[[QHTTPOperation alloc] initWithRequest:request] autorelease];
+    self.downloadOperation.runLoopThread = [NSThread currentThread];
     self.downloadOperation.responseOutputStream = [NSOutputStream outputStreamToFileAtPath:localPath append:append];
     self.downloadOperation.delegate = self;
-    
-    __block SCHDictionaryFileDownloadOperation *unretained_self = self;
-    self.downloadOperation.completionBlock = ^{
-        [unretained_self finishedDownload];
-    };
 
     [self didChangeValueForKey:@"isExecuting"];
     
     [[BITNetworkActivityManager sharedNetworkActivityManager] showNetworkActivityIndicator];
     
     [self.downloadOperation start];
+    
+    while ([self.downloadOperation isExecuting]) {
+        [[NSRunLoop currentRunLoop] runMode:NSDefaultRunLoopMode beforeDate:[NSDate distantFuture]];
+    }
+    
+    [self finishedDownload];
+        
 }
 
 - (void)finishedDownload
