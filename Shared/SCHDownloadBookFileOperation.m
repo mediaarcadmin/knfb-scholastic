@@ -275,6 +275,7 @@ static NSUInteger const kSCHDownloadBookFileSizeCompleteMarginOfError = 100;
     [acceptableStatusCodes addIndex:206];
     
     self.downloadOperation = [[[QHTTPOperation alloc] initWithRequest:request] autorelease];
+    self.downloadOperation.runLoopThread = [NSThread currentThread];
     self.downloadOperation.acceptableStatusCodes = acceptableStatusCodes;
     if (self.temporaryLocalPath) {
         self.downloadOperation.responseOutputStream = [NSOutputStream outputStreamToFileAtPath:self.temporaryLocalPath append:append];
@@ -282,24 +283,29 @@ static NSUInteger const kSCHDownloadBookFileSizeCompleteMarginOfError = 100;
         self.downloadOperation.responseOutputStream = [NSOutputStream outputStreamToFileAtPath:self.realLocalPath append:append];
     }
     self.downloadOperation.delegate = self;
-	
-    __block SCHDownloadBookFileOperation *unretained_self = self;
-    self.downloadOperation.completionBlock = ^{
-        if (unretained_self.fileType == kSCHDownloadFileTypeXPSBook) {
-            NSLog(@"Finished file %@. [downloaded: %llu expected:%lu]", [unretained_self.realLocalPath lastPathComponent], 
-                  currentFilesize, unretained_self.bookFileSize);
-        } else {
-            NSLog(@"Finished file %@. [downloaded: %llu]", [unretained_self.realLocalPath lastPathComponent], currentFilesize);        
-        }
-        
-        [[BITNetworkActivityManager sharedNetworkActivityManager] hideNetworkActivityIndicator];
-        [unretained_self completedDownload];
-    };
-        
+    
+    [self didChangeValueForKey:@"isExecuting"];
+    
     [[BITNetworkActivityManager sharedNetworkActivityManager] showNetworkActivityIndicator];                
     
     [self.downloadOperation start];
-    [self didChangeValueForKey:@"isExecuting"];
+    
+    while ([self.downloadOperation isExecuting]) {
+        [[NSRunLoop currentRunLoop] runMode:NSDefaultRunLoopMode beforeDate:[NSDate distantFuture]];
+    }
+    
+
+    if (![self isCancelled]) {
+        if (self.fileType == kSCHDownloadFileTypeXPSBook) {
+            NSLog(@"Finished file %@. [downloaded: %llu expected:%lu]", [self.realLocalPath lastPathComponent], 
+                  currentFilesize, self.bookFileSize);
+        } else {
+            NSLog(@"Finished file %@. [downloaded: %llu]", [self.realLocalPath lastPathComponent], currentFilesize);        
+        }
+        
+        [[BITNetworkActivityManager sharedNetworkActivityManager] hideNetworkActivityIndicator];
+        [self completedDownload];
+    }
 }
 
 - (NSString *)fullPathToBundledFile:(NSString *)fileName
