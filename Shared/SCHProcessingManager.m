@@ -815,28 +815,29 @@ static SCHProcessingManager *sharedManager = nil;
             return;
         } 
 		
-        // if the book is currently paused or ready for download, start downloading
-        if (book.processingState == SCHBookProcessingStateDownloadPaused ||
-            book.processingState == SCHBookProcessingStateReadyForBookFileDownload) {
-            [book setProcessingState:SCHBookProcessingStateDownloadStarted];
-            
-            [self postBookStateUpdate:identifier];
-            
-            [self processIdentifier:identifier];
-        }
-        
         if (![self identifierIsProcessing:identifier]) {
+            
+            // if the book is currently paused or ready for download, start downloading
+            if (book.processingState == SCHBookProcessingStateDownloadPaused ||
+                book.processingState == SCHBookProcessingStateReadyForBookFileDownload) {
+                [book setProcessingState:SCHBookProcessingStateDownloadStarted];
+                
+                [self postBookStateUpdate:identifier];
+                
+                [self processIdentifier:identifier];
+            }
+            
             switch (book.processingState) {
                 case SCHBookProcessingStateNoURLs:
-                    case SCHBookProcessingStateNoCoverImage:
-                    case SCHBookProcessingStateReadyForLicenseAcquisition:
-                    case SCHBookProcessingStateReadyForRightsParsing:
-                    case SCHBookProcessingStateReadyForAudioInfoParsing:
-                    case SCHBookProcessingStateReadyForTextFlowPreParse:
-                    case SCHBookProcessingStateReadyForSmartZoomPreParse:
-                    case SCHBookProcessingStateReadyForPagination:
-                        // Book is not processing, but is not waiting for user interaction - this is an error state, re-kick off processing for all books
-                        [self checkStateForAllBooks];
+                case SCHBookProcessingStateNoCoverImage:
+                case SCHBookProcessingStateReadyForLicenseAcquisition:
+                case SCHBookProcessingStateReadyForRightsParsing:
+                case SCHBookProcessingStateReadyForAudioInfoParsing:
+                case SCHBookProcessingStateReadyForTextFlowPreParse:
+                case SCHBookProcessingStateReadyForSmartZoomPreParse:
+                case SCHBookProcessingStateReadyForPagination:
+                    // Book is not processing, but is not waiting for user interaction - this is an error state, re-kick off processing for all books
+                    [self checkStateForAllBooks];
                     break;                      
                 default:
                     break;

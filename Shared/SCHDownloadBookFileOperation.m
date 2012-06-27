@@ -359,13 +359,13 @@ static NSUInteger const kSCHDownloadBookFileSizeCompleteMarginOfError = 100;
         // sufficient space = 1x full file size + 0.5 to allow for book covers, etc.
         sufficientSpace = [fileManager BITfileSystemHasBytesAvailable:(expectedDataSize * 1.5)];
     }
-    
+
     if (!sufficientSpace) {
         NSLog(@"Insufficient space for book/cover download.");
         
         [self setProcessingState:SCHBookProcessingStateNotEnoughStorageError];
-        [self cancelOperationAndSuboperations];
         [self setIsProcessing:NO];        
+        [self cancelOperationAndSuboperations];
         [self endOperation];
         return;
     }
@@ -377,7 +377,9 @@ static NSUInteger const kSCHDownloadBookFileSizeCompleteMarginOfError = 100;
 - (void)httpOperation:(QHTTPOperation *)operation updatedDownloadSize:(long long)downloadedSize
 {
     if ([self processingState] == SCHBookProcessingStateDownloadPaused) {
+        [self setIsProcessing:NO];        
         [self cancelOperationAndSuboperations];
+        [self endOperation];
     } else {
         self.currentDownloadedSize = downloadedSize;
         if (self.fileType == kSCHDownloadFileTypeXPSBook) {
