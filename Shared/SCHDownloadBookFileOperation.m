@@ -376,9 +376,10 @@ static NSUInteger const kSCHDownloadBookFileSizeCompleteMarginOfError = 100;
 
 - (void)httpOperation:(QHTTPOperation *)operation updatedDownloadSize:(long long)downloadedSize
 {
-    if ([self processingState] == SCHBookProcessingStateDownloadPaused) {
-        [self cancelOperationAndSuboperations];
-    } else {
+//    if ([self processingState] == SCHBookProcessingStateDownloadPaused) {
+//        [self cancelOperationAndSuboperations];
+//    } else {
+    if (![self isCancelled]) {
         self.currentDownloadedSize = downloadedSize;
         if (self.fileType == kSCHDownloadFileTypeXPSBook) {
             [self createPercentageUpdate];

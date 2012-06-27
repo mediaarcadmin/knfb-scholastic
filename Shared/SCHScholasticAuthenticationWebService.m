@@ -56,6 +56,7 @@ static NSString * const kSCHScholasticAuthenticationWebServiceAttributeErrorDesc
 
 - (void)dealloc
 {
+    [binding clearBindingOperations]; // Will invalidate the delegate on any underway operations        
 	[binding release], binding = nil;
 	
 	[super dealloc];

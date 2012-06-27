@@ -806,9 +806,21 @@ static SCHProcessingManager *sharedManager = nil;
 	
     if (book != nil) {
         // if the book is currently downloading, pause it
-        // (changing the state will cause the operation to cancel)
         if (book.processingState == SCHBookProcessingStateDownloadStarted) {
             [book setProcessingState:SCHBookProcessingStateDownloadPaused];
+            
+            // explicitly cancel any book file download operations
+            // a) for this identifier
+            // b) that are XPSBook download types; there may be book cover operations ongoing
+            for (SCHBookOperation *bookOperation in [self.networkOperationQueue operations]) {
+                if ([bookOperation isKindOfClass:[SCHDownloadBookFileOperation class]] && 
+                    [(SCHDownloadBookFileOperation *)bookOperation fileType] == kSCHDownloadFileTypeXPSBook &&
+                    [bookOperation.identifier isEqual:identifier] == YES) {
+                    [bookOperation cancel];
+                    // do not need to wait until finishing; calling cancel immediately stops the download stream
+                    break;
+                }
+            }
             
             [self postBookStateUpdate:identifier];
             
