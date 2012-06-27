@@ -156,42 +156,43 @@
 
 - (void)completedDownload
 {
-    BOOL validImage = YES;
-    
-    // if there has been no data received, then the image is invalid
-    if (!self.lastTwoBytes) {
-        NSLog(@"Error downloading file %@ (no image data)", [self.localPath lastPathComponent]);
-        validImage = NO;
-    }
-    
-    // ignore validity check for books copied from a local file
-    if (self.downloadOperation != nil) {
-        NSData *jpegEOF = [self jpegEOF];
+    if (![self isCancelled]) {
+        BOOL validImage = YES;
         
-        // if the last two bytes don't match the EOI marker, the image is invalid
-        if (![jpegEOF isEqualToData:self.lastTwoBytes]) {
-            NSLog(@"Error downloading file %@ (invalid JPEG End Of Image marker)", [self.localPath lastPathComponent]);
+        // if there has been no data received, then the image is invalid
+        if (!self.lastTwoBytes) {
+            NSLog(@"Error downloading file %@ (no image data)", [self.localPath lastPathComponent]);
             validImage = NO;
         }
         
-        // NOTE: this could be expanded to verify PNG images too
-        // IEND Image Trailer is 73 69 78 68 (decimal)
-        // reference: http://www.w3.org/TR/PNG/#11IEND
-    }
-    
-    if (!validImage) {
-        [[BITNetworkActivityManager sharedNetworkActivityManager] hideNetworkActivityIndicator];
+        // ignore validity check for books copied from a local file
+        if (self.downloadOperation != nil) {
+            NSData *jpegEOF = [self jpegEOF];
+            
+            // if the last two bytes don't match the EOI marker, the image is invalid
+            if (![jpegEOF isEqualToData:self.lastTwoBytes]) {
+                NSLog(@"Error downloading file %@ (invalid JPEG End Of Image marker)", [self.localPath lastPathComponent]);
+                validImage = NO;
+            }
+            
+            // NOTE: this could be expanded to verify PNG images too
+            // IEND Image Trailer is 73 69 78 68 (decimal)
+            // reference: http://www.w3.org/TR/PNG/#11IEND
+        }
         
-        // if there was an error, the file is invalid and is removed
-        NSFileManager *fileManager = [[[NSFileManager alloc] init] autorelease];
-        [fileManager removeItemAtPath:self.localPath error:nil];
-        
-        [self setProcessingState:kSCHAppRecommendationProcessingStateDownloadFailed];        
-        
-    } else {        
-        [self setProcessingState:kSCHAppRecommendationProcessingStateNoThumbnails];
-    }
-	
+        if (!validImage) {
+            [[BITNetworkActivityManager sharedNetworkActivityManager] hideNetworkActivityIndicator];
+            
+            // if there was an error, the file is invalid and is removed
+            NSFileManager *fileManager = [[[NSFileManager alloc] init] autorelease];
+            [fileManager removeItemAtPath:self.localPath error:nil];
+            
+            [self setProcessingState:kSCHAppRecommendationProcessingStateDownloadFailed];        
+            
+        } else {        
+            [self setProcessingState:kSCHAppRecommendationProcessingStateNoThumbnails];
+        }
+	}
     
     self.downloadOperation = nil;
     [self endOperation];
