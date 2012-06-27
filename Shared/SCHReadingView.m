@@ -419,7 +419,7 @@ managedObjectContext:(NSManagedObjectContext *)managedObjectContext
                 }
                 
                 // Next run-loop deselect the selector
-                [self performSelector:@selector(dismissSelector) withObject:nil afterDelay:0];
+                [self performSelector:@selector(dismissSelector) withObject:nil afterDelay:0.1];
                 
                 break;
             case SCHReadingViewSelectionModeHighlights:
