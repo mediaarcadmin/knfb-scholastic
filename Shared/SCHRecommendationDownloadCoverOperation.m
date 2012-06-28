@@ -103,22 +103,19 @@
     
     self.downloadOperation = [[[QHTTPOperation alloc] initWithRequest:request] autorelease];
     self.downloadOperation.acceptableStatusCodes = acceptableStatusCodes;
-    self.downloadOperation.runLoopThread = [NSThread currentThread];
     self.downloadOperation.responseOutputStream = [NSOutputStream outputStreamToFileAtPath:self.localPath append:NO];
     self.downloadOperation.delegate = self;
-
-    [self didChangeValueForKey:@"isExecuting"];
+	
+    __block SCHRecommendationDownloadCoverOperation *unretained_self = self;
+    self.downloadOperation.completionBlock = ^{        
+        [[BITNetworkActivityManager sharedNetworkActivityManager] hideNetworkActivityIndicator];
+        [unretained_self completedDownload];
+    };
     
     [[BITNetworkActivityManager sharedNetworkActivityManager] showNetworkActivityIndicator];                
     
     [self.downloadOperation start];
-    
-    while ([self.downloadOperation isExecuting]) {
-        [[NSRunLoop currentRunLoop] runMode:NSDefaultRunLoopMode beforeDate:[NSDate distantFuture]];
-    }
-    
-    [[BITNetworkActivityManager sharedNetworkActivityManager] hideNetworkActivityIndicator];
-    [self completedDownload];
+    [self didChangeValueForKey:@"isExecuting"];
 }
 
 #pragma mark - QHTTPOperationDelegate methods
