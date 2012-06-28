@@ -100,6 +100,8 @@ static NSString * const kSCHCoreDataHelperDictionaryStoreName = @"Scholastic_Dic
 
 - (void)resetDictionaryStore
 {
+    NSAssert([NSThread isMainThread], @"Must be called on main thread");
+    
     NSPersistentStore *currentDictionaryStore = [self currentDictionaryPersistentStore];
     NSError *error = nil;
     
@@ -212,6 +214,8 @@ static NSString * const kSCHCoreDataHelperDictionaryStoreName = @"Scholastic_Dic
  */
 - (NSPersistentStoreCoordinator *)persistentStoreCoordinatorWithError:(NSError **)errorPtr
 {    
+    NSAssert([NSThread isMainThread], @"Must be called on main thread");
+    
     if (persistentStoreCoordinator != nil) {
         return(persistentStoreCoordinator);
     }
@@ -345,6 +349,8 @@ static NSString * const kSCHCoreDataHelperDictionaryStoreName = @"Scholastic_Dic
 
 - (void)saveContext 
 {    
+    NSAssert([NSThread isMainThread], @"Must be called on main thread");
+    
     NSError *error = nil;
     if (self.managedObjectContext != nil) {
         if ([self.managedObjectContext hasChanges] && 
