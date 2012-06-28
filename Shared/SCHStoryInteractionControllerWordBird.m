@@ -176,7 +176,7 @@ enum {
         letterView.letter = letter;
         [letterView addTarget:self action:@selector(letterTouched:) forControlEvents:UIControlEventTouchDown];
         [letterView addTarget:self action:@selector(letterTapped:) forControlEvents:UIControlEventTouchUpInside];
-        [letterView addTarget:self action:@selector(letterTapCancelled:) forControlEvents:UIControlEventTouchUpOutside];
+        [letterView addTarget:self action:@selector(letterTapCancelled:) forControlEvents:(UIControlEventTouchUpOutside | UIControlEventTouchCancel)];
         [self.lettersContainer addSubview:letterView];
     }  
     [self layoutLetterViews];
