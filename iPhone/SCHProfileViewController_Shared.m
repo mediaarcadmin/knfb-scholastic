@@ -397,7 +397,7 @@ didSelectButtonAnimated:(BOOL)animated
         [self.headerLabel setText:NSLocalizedString(@"Choose Your Bookshelf", @"Profile header text for > 0 bookshelves")];
         [self.headerLabel setNumberOfLines:1];
     } else {
-        [self.headerLabel setText:NSLocalizedString(@"Please go to Parent Tools to create bookshelves.", @"Profile header text for 0 bookshelves")];
+        [self.headerLabel setText:NSLocalizedString(@"Please go to the Parent Tools menu to create bookshelves.", @"Profile header text for 0 bookshelves")];
         [self.headerLabel setNumberOfLines:2];        
     }
     
