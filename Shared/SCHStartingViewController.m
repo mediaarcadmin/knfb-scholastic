@@ -883,14 +883,16 @@ static const NSTimeInterval kSCHStartingViewControllerNonForcedAlertInterval = (
 - (void)runLoginSequenceWithUsername:(NSString *)username password:(NSString *)password credentialsSuccessBlock:(void(^)(BOOL success, BOOL retrying, NSError *error))credentialsSuccessBlock
 {
     BITOperationWithBlocks *setupSequenceCheckConnectivity = [[BITOperationWithBlocks alloc] init];
-    setupSequenceCheckConnectivity.syncMain = ^(BITOperationIsCancelledBlock isCancelled, BITOperationFailedBlock failed) {
+    setupSequenceCheckConnectivity.asyncMain = ^(BITOperationIsCancelledBlock isCancelled, BITOperationAsyncCompletionBlock completion) {
+        NSError *error = nil;
+        
         if ([[Reachability reachabilityForInternetConnection] isReachable] == NO) {
-            NSError *error = [NSError errorWithDomain:nil  
+            error = [NSError errorWithDomain:nil  
                                                    code:0  
                                                userInfo:[NSDictionary dictionaryWithObject:NSLocalizedString(@"An Internet connection is required to sign into your account.", @"")  
                                                                                     forKey:NSLocalizedDescriptionKey]];  
-            failed(error);
         }
+        completion(error);
     };
     
     setupSequenceCheckConnectivity.failed = ^(NSError *error){
@@ -909,7 +911,7 @@ static const NSTimeInterval kSCHStartingViewControllerNonForcedAlertInterval = (
     
     BITOperationWithBlocks *setupSequenceAttemptServiceLogin = [[BITOperationWithBlocks alloc] init];
     [setupSequenceAttemptServiceLogin addSuccessDependency:setupSequenceCheckConnectivity];
-    setupSequenceAttemptServiceLogin.syncMain = ^(BITOperationIsCancelledBlock isCancelled, BITOperationFailedBlock failed) {
+    setupSequenceAttemptServiceLogin.asyncMain = ^(BITOperationIsCancelledBlock isCancelled, BITOperationAsyncCompletionBlock completion) {
         
         [[SCHSyncManager sharedSyncManager] resetSync]; 
         [self setStandardStore];
@@ -924,8 +926,7 @@ static const NSTimeInterval kSCHStartingViewControllerNonForcedAlertInterval = (
                                                        code:kSCHAccountValidationMalformedEmailError  
                                                    userInfo:[NSDictionary dictionaryWithObject:NSLocalizedString(@"Email address is not valid. Please try again.", @"")  
                                                                                         forKey:NSLocalizedDescriptionKey]];
-                failed(anError);
-                
+                completion(anError);
             } else {
 #else 
                 NSString *errorMessage = NSLocalizedString(@"There was a problem checking your username and password. Please try again.", @"");
@@ -938,12 +939,13 @@ static const NSTimeInterval kSCHStartingViewControllerNonForcedAlertInterval = (
                                                                                             credentialsSuccessBlock(YES, NO, nil);
                                                                                         }
                                                                                         [[SCHSyncManager sharedSyncManager] firstSync:YES requireDeviceAuthentication:NO];
+                                                                                        completion(nil);
                                                                                     } else { 
                                                                                         NSError *anError = [NSError errorWithDomain:kSCHAuthenticationManagerErrorDomain  
                                                                                                                                code:kSCHAuthenticationManagerOfflineError  
                                                                                                                            userInfo:[NSDictionary dictionaryWithObject:errorMessage  
                                                                                                                                                                 forKey:NSLocalizedDescriptionKey]];        
-                                                                                        failed(anError);
+                                                                                        completion(anError);
                                                                                     } 
                                                                                 } 
                                                                                 failureBlock:^(NSError * error){
@@ -953,9 +955,9 @@ static const NSTimeInterval kSCHStartingViewControllerNonForcedAlertInterval = (
                                                                                                                            userInfo:[NSDictionary dictionaryWithObject:errorMessage  
                                                                                                                                                                 forKey:NSLocalizedDescriptionKey]];  
                                                                                         
-                                                                                        failed(anError);
+                                                                                        completion(anError);
                                                                                     } else {
-                                                                                        failed(error);
+                                                                                        completion(error);
                                                                                     }
                                                                                 }
                                                                  waitUntilVersionCheckIsDone:YES];    
@@ -967,7 +969,7 @@ static const NSTimeInterval kSCHStartingViewControllerNonForcedAlertInterval = (
                                                    code:kSCHAccountValidationCredentialsMissingError  
                                                userInfo:[NSDictionary dictionaryWithObject:NSLocalizedString(@"Username and password must not be blank. Please try again.", @"")  
                                                                                     forKey:NSLocalizedDescriptionKey]];
-            failed(anError);
+            completion(anError);
         }
     };
     

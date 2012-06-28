@@ -256,6 +256,7 @@ static NSUInteger const kSCHSyncManagerMaximumFailureRetries = 3;
 
 - (void)coreDataHelperManagedObjectContextDidChangeNotification:(NSNotification *)notification
 {
+    NSAssert([NSThread isMainThread], @"Must be called on main thread");
     self.managedObjectContext = [[notification userInfo] objectForKey:SCHCoreDataHelperManagedObjectContext];
 }
 
@@ -263,6 +264,8 @@ static NSUInteger const kSCHSyncManagerMaximumFailureRetries = 3;
 
 - (void)startHeartbeat
 {
+    NSAssert([NSThread isMainThread], @"Must be called on main thread");
+    
 	[self stopHeartbeat];
     self.flushSaveMode = NO;
 	self.timer = [NSTimer scheduledTimerWithTimeInterval:kSCHSyncManagerHeartbeatInterval 
@@ -274,6 +277,8 @@ static NSUInteger const kSCHSyncManagerMaximumFailureRetries = 3;
 
 - (void)stopHeartbeat
 {
+    NSAssert([NSThread isMainThread], @"Must be called on main thread");
+    
 	[timer invalidate];
 	self.timer = nil;
 }
@@ -302,11 +307,15 @@ static NSUInteger const kSCHSyncManagerMaximumFailureRetries = 3;
 
 - (void)flushSyncQueue
 {
+    NSAssert([NSThread isMainThread], @"Must be called on main thread");
+    
     [self.queue removeAllObjects];    
 }
 
 - (void)resetSync
 {
+    NSAssert([NSThread isMainThread], @"Must be called on main thread");
+    
     [self flushSyncQueue];
     
 	[self.profileSyncComponent resetSync];	
@@ -347,6 +356,8 @@ static NSUInteger const kSCHSyncManagerMaximumFailureRetries = 3;
 
 - (void)firstSync:(BOOL)syncNow requireDeviceAuthentication:(BOOL)requireAuthentication
 {
+    NSAssert([NSThread isMainThread], @"Must be called on main thread");
+    
     // reset if the date has been changed in a backward motion
     if (self.lastFirstSyncEnded != nil &&
         [self.lastFirstSyncEnded compare:[NSDate date]] == NSOrderedDescending) {
@@ -450,6 +461,8 @@ static NSUInteger const kSCHSyncManagerMaximumFailureRetries = 3;
 
 - (void)performFlushSaves
 {
+    NSAssert([NSThread isMainThread], @"Must be called on main thread");
+    
     if ([self shouldSync] == YES) {	  
         // go into flush save mode
         self.flushSaveMode = YES;
@@ -496,6 +509,8 @@ static NSUInteger const kSCHSyncManagerMaximumFailureRetries = 3;
 
 - (void)profileSync
 {
+    NSAssert([NSThread isMainThread], @"Must be called on main thread");
+    
     if ([self shouldSync] == YES) {	
         NSLog(@"Scheduling Change Profile");
         
@@ -512,6 +527,8 @@ static NSUInteger const kSCHSyncManagerMaximumFailureRetries = 3;
 
 - (void)bookshelfSync
 {
+    NSAssert([NSThread isMainThread], @"Must be called on main thread");
+    
     if ([self shouldSync] == YES) {	
         NSLog(@"Scheduling Update Bookshelf");
         
@@ -613,6 +630,8 @@ static NSUInteger const kSCHSyncManagerMaximumFailureRetries = 3;
 - (void)openDocumentSync:(SCHUserContentItem *)userContentItem 
           forProfile:(NSNumber *)profileID
 {
+    NSAssert([NSThread isMainThread], @"Must be called on main thread");
+    
     if ([self shouldSync] == YES) {	
         NSLog(@"Scheduling Open Document");
         
@@ -636,6 +655,8 @@ static NSUInteger const kSCHSyncManagerMaximumFailureRetries = 3;
 
 - (void)closeDocumentSync:(SCHUserContentItem *)userContentItem forProfile:(NSNumber *)profileID
 {
+    NSAssert([NSThread isMainThread], @"Must be called on main thread");
+    
     // save any changes first
     NSError *error = nil;    
     if ([self.managedObjectContext hasChanges] == YES &&
@@ -702,6 +723,8 @@ static NSUInteger const kSCHSyncManagerMaximumFailureRetries = 3;
 
 - (void)recommendationSync
 {
+    NSAssert([NSThread isMainThread], @"Must be called on main thread");
+    
     if ([self shouldSync] == YES) {	 
         NSLog(@"Scheduling Recommendation Sync");  
         
@@ -723,6 +746,8 @@ static NSUInteger const kSCHSyncManagerMaximumFailureRetries = 3;
 
 - (void)wishListSync:(BOOL)syncNow
 {
+    NSAssert([NSThread isMainThread], @"Must be called on main thread");
+    
     // reset if the date has been changed in a backward motion
     if (self.lastWishListSyncEnded != nil &&
         [self.lastWishListSyncEnded compare:[NSDate date]] == NSOrderedDescending) {
@@ -763,6 +788,8 @@ static NSUInteger const kSCHSyncManagerMaximumFailureRetries = 3;
 
 - (void)authenticationDidSucceed
 {
+    NSAssert([NSThread isMainThread], @"Must be called on main thread");
+    
     [self kickQueue];
 }
 
@@ -972,6 +999,8 @@ static NSUInteger const kSCHSyncManagerMaximumFailureRetries = 3;
 
 - (void)populateTestSampleStore
 {
+    NSAssert([NSThread isMainThread], @"Must be called on main thread");
+    
     SCHPopulateDataStore *populateDataStore = [self populateDataStore];
     
     [populateDataStore populateTestSampleStore];
@@ -979,6 +1008,8 @@ static NSUInteger const kSCHSyncManagerMaximumFailureRetries = 3;
 
 - (void)populateSampleStore
 {
+    NSAssert([NSThread isMainThread], @"Must be called on main thread");
+    
     SCHPopulateDataStore *populateDataStore = [self populateDataStore];
     
     [populateDataStore populateSampleStore];
@@ -986,6 +1017,8 @@ static NSUInteger const kSCHSyncManagerMaximumFailureRetries = 3;
 
 - (BOOL)populateSampleStoreFromManifestEntries:(NSArray *)entries;
 {
+    NSAssert([NSThread isMainThread], @"Must be called on main thread");
+    
     SCHPopulateDataStore *populateDataStore = [self populateDataStore];
     return [populateDataStore populateSampleStoreFromManifestEntries:entries];
 }
