@@ -147,6 +147,7 @@ typedef enum {
     for (NSString *answer in [self currentQuestion].answers) {
         SCHStretchableImageButton *button = [self.answerButtons objectAtIndex:i];
 
+        button.titleLabel.textAlignment = UITextAlignmentCenter;
         [button setTitle:answer forState:UIControlStateNormal];
         [button setHidden:NO];
         ++i;
