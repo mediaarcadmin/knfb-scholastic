@@ -140,15 +140,33 @@
 #endif
     
     @synchronized (self) {
-        self.cachedCanSync = [NSNumber numberWithBool:canSync];
-        self.cachedCanSyncNotes = [NSNumber numberWithBool:syncNotes];   
-        self.cachedCOPPACompliant = [NSNumber numberWithBool:coppa]; 
-        self.cachedCanAuthenticate = [NSNumber numberWithBool:canAuthenticate];
-        self.cachedServerDateDelta = [NSNumber numberWithDouble:serverDateDelta];   
-        self.cachedDataStoreType = [NSNumber numberWithDataStoreType:dataStoreType];
-        self.cachedLastKnownAuthToken = lastKnownAuthToken;
-        self.cachedLastRemoteManifestUpdateDate = lastRemoteManifestUpdateDate;
-        self.cachedLastScholasticAuthenticationErrorCode = [NSNumber numberWithInt:lastScholasticAuthenticationErrorCode];
+        if (self.cachedCanSync == nil) {
+            self.cachedCanSync = [NSNumber numberWithBool:canSync];
+        }
+        if (self.cachedCanSyncNotes == nil) {
+            self.cachedCanSyncNotes = [NSNumber numberWithBool:syncNotes];   
+        }
+        if (self.cachedCOPPACompliant == nil) {
+            self.cachedCOPPACompliant = [NSNumber numberWithBool:coppa]; 
+        }        
+        if (self.cachedCanAuthenticate == nil) {
+            self.cachedCanAuthenticate = [NSNumber numberWithBool:canAuthenticate];
+        }
+        if (self.cachedServerDateDelta == nil) {
+            self.cachedServerDateDelta = [NSNumber numberWithDouble:serverDateDelta];   
+        }
+        if (self.cachedDataStoreType == nil) {
+            self.cachedDataStoreType = [NSNumber numberWithDataStoreType:dataStoreType];
+        }
+        if (self.cachedLastKnownAuthToken == nil) {
+            self.cachedLastKnownAuthToken = lastKnownAuthToken;
+        }
+        if (self.cachedLastRemoteManifestUpdateDate == nil) {
+            self.cachedLastRemoteManifestUpdateDate = lastRemoteManifestUpdateDate;
+        }
+        if (self.cachedLastScholasticAuthenticationErrorCode == nil) {
+            self.cachedLastScholasticAuthenticationErrorCode = [NSNumber numberWithInt:lastScholasticAuthenticationErrorCode];
+        }
     }    
 }
 
