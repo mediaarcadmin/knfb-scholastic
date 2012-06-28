@@ -50,7 +50,9 @@ enum {
 
 @end
 
-@implementation SCHStoryInteractionControllerWordBird
+@implementation SCHStoryInteractionControllerWordBird {
+    BOOL completed;
+}
 
 @synthesize answerContainer;
 @synthesize lettersContainer;
@@ -65,6 +67,7 @@ enum {
 @synthesize loseAnimationLayers;
 @synthesize tappedLetter;
 @synthesize playButton;
+@synthesize introLabel;
 
 - (void)dealloc
 {
@@ -72,6 +75,7 @@ enum {
     [lettersContainer release], lettersContainer = nil;
     [animationContainer release], animationContainer = nil;
     [playButton release], playButton = nil;
+    [introLabel release], introLabel = nil;
     [answerLetters release], answerLetters = nil;
     [shockedPenguinLayer release], shockedPenguinLayer = nil;
     [happyPenguinLayer release], happyPenguinLayer = nil;
@@ -93,13 +97,19 @@ enum {
 
 - (BOOL)shouldPlayQuestionAudioForViewAtIndex:(NSInteger)screenIndex
 {
-    return screenIndex == 0;
+    return screenIndex == 0 && !completed;
 }
 
 - (void)setupViewAtIndex:(NSInteger)screenIndex
 {
     if (screenIndex == 0) {
-        self.playButton.enabled = YES;
+        if (completed) {
+            [self.introLabel setTextAlignment:UITextAlignmentCenter];
+            [self.introLabel setText:@"Nice Flying!"];
+            [self.playButton setTitle:@"Play Again" forState:UIControlStateNormal];
+        }
+        [self.playButton setEnabled:YES];
+
     } else if (screenIndex == 1) {
         [self setupAnswerView];
         [self setupLetterViews];
@@ -119,6 +129,8 @@ enum {
 
 - (void)setupAnswerView
 {
+    [self.answerContainer.subviews makeObjectsPerformSelector:@selector(removeFromSuperview)];
+    
     UIColor *answerColor = [UIColor SCHBlue2Color];
     
     self.answerContainer.layer.borderColor = [answerColor CGColor];
@@ -157,15 +169,18 @@ enum {
 
 - (void)setupLetterViews
 {
+    [self.lettersContainer.subviews makeObjectsPerformSelector:@selector(removeFromSuperview)];
+    
     for (unichar letter = L'A'; letter <= L'Z'; ++letter) {
         SCHStoryInteractionWordBirdLetterView *letterView = [SCHStoryInteractionWordBirdLetterView letter];
         letterView.letter = letter;
         [letterView addTarget:self action:@selector(letterTouched:) forControlEvents:UIControlEventTouchDown];
         [letterView addTarget:self action:@selector(letterTapped:) forControlEvents:UIControlEventTouchUpInside];
-        [letterView addTarget:self action:@selector(letterTapCancelled:) forControlEvents:UIControlEventTouchUpOutside];
+        [letterView addTarget:self action:@selector(letterTapCancelled:) forControlEvents:(UIControlEventTouchUpOutside | UIControlEventTouchCancel)];
         [self.lettersContainer addSubview:letterView];
     }  
     [self layoutLetterViews];
+    self.tappedLetter = 0;
 }
 
 - (void)layoutLetterViews
@@ -186,13 +201,13 @@ enum {
         }
         SCHStoryInteractionWordBirdLetterView *letterView = [letterViews objectAtIndex:(letter-L'A')];
         letterView.frame = CGRectMake(left+(size+kTileLetterGap)*(letter-firstInRow), top, size, size);
-    }
-    
-    self.tappedLetter = 0;
+    }    
 }
 
 - (void)setupAnimationView
 {
+    [self.animationContainerLayer.sublayers makeObjectsPerformSelector:@selector(removeFromSuperlayer)];
+    
     CGRect bounds = CGRectMake(0, 0, 260, 400);
     self.animationContainerLayer = [SCHAnimatedLayer layer];
     self.animationContainerLayer.bounds = bounds;
@@ -308,6 +323,8 @@ enum {
     }];
 }
 
+#pragma mark - letter taps
+
 - (void)letterTouched:(SCHStoryInteractionWordBirdLetterView *)sender
 {
     if (self.tappedLetter == 0) {
@@ -323,7 +340,6 @@ enum {
         self.tappedLetter = 0;
     }
 }
-
 
 - (void)letterTapped:(SCHStoryInteractionWordBirdLetterView *)sender
 {
@@ -380,11 +396,12 @@ enum {
     [self enqueueAudioWithPath:[(SCHStoryInteractionWordBird *)self.storyInteraction audioPathForNiceFlying]
                     fromBundle:NO
                     startDelay:0
-        synchronizedStartBlock:nil
-          synchronizedEndBlock:^{
-              self.controllerState = SCHStoryInteractionControllerStateInteractionFinishedSuccessfully;
-              [self removeFromHostView];
-          }];
+        synchronizedStartBlock:^{
+            completed = YES;
+            [self.delegate advanceToNextQuestionForStoryInteraction];
+            [self presentNextView];
+        }
+          synchronizedEndBlock:nil];
 }
 
 #pragma mark - animations

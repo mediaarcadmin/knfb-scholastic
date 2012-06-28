@@ -38,9 +38,15 @@
 @synthesize jigsawPieceViews;
 @synthesize jigsawPaths;
 @synthesize pieceShuffledIndex;
+@synthesize tapToBeginView;
+@synthesize tapToBeginButton;
+@synthesize tapToBeginLabel;
 
 - (void)dealloc
 {
+    [tapToBeginLabel release], tapToBeginLabel = nil;
+    [tapToBeginButton release], tapToBeginButton = nil;
+    [tapToBeginView release], tapToBeginView = nil;
     [puzzleBackground release], puzzleBackground = nil;
     [puzzlePreviewView release], puzzlePreviewView = nil;
     [jigsawPieceViews release], jigsawPieceViews = nil;
@@ -98,8 +104,22 @@
                        [self repositionPiecesToSolutionPosition:NO withOrientation:orientation];
                    }
                }];
+    
+    self.tapToBeginView.alpha = 0;
 
     [super willRotateToInterfaceOrientation:toInterfaceOrientation duration:duration];
+}
+
+- (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation
+{
+    self.tapToBeginView.center = self.puzzlePreviewView.center;
+    self.tapToBeginView.frame = CGRectIntegral(self.tapToBeginView.frame);
+
+    [UIView animateWithDuration:0.2 animations:^{
+        self.tapToBeginView.alpha = 1;
+    }];
+    
+    [super didRotateFromInterfaceOrientation:fromInterfaceOrientation];
 }
 
 #pragma mark - choose puzzle View
@@ -112,8 +132,14 @@
 
 - (void)choosePuzzle:(UIButton *)sender
 {
+    if (self.numberOfPieces > 0) {
+        // ignore multi-tap
+        return;
+    }
+    
+    self.numberOfPieces = sender.tag;
+    
     [self cancelQueuedAudioExecutingSynchronizedBlocksBefore:^{
-        self.numberOfPieces = sender.tag;
         [self presentNextViewAnimated:NO];
     }];
 }
@@ -268,6 +294,15 @@
                    [self.puzzlePreviewView addGestureRecognizer:tap];
                    [tap release];
                }];
+    
+    
+    [self.tapToBeginButton addTarget:self action:@selector(previewTapped:) forControlEvents:UIControlEventTouchUpInside];
+    self.tapToBeginView.layer.cornerRadius = 20;
+    
+    self.tapToBeginView.center = self.puzzleBackground.center;
+    self.tapToBeginView.frame = CGRectIntegral(self.tapToBeginView.frame);
+    
+    [self.tapToBeginView.superview bringSubviewToFront:self.tapToBeginView];
 }
 
 #pragma mark - puzzle interaction
@@ -279,6 +314,14 @@
 
 - (void)previewTapped:(id)sender
 {
+    
+    [UIView animateWithDuration:0.5 animations:^{
+        self.tapToBeginView.alpha = 0;
+    }
+                     completion:^(BOOL finished) {
+                         [self.tapToBeginView removeFromSuperview];
+                     }];
+    
     [self.puzzleBackground setAlpha:1.0];
     [self.puzzleBackground setPaths:[self jigsawPaths]];
     [self.puzzleBackground setEdgeColor:[UIColor colorWithWhite:0.8 alpha:0.5]];

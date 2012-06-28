@@ -30,6 +30,8 @@ NSString * const kSCHDictionaryProcessingPercentageUpdate = @"SCHDictionaryProce
 
 NSString * const kSCHDictionaryStateChange = @"SCHDictionaryStateChange";
 
+static NSString *const kSCHDictionaryDownloadManagerDictionaryIsCurrentlyReadable = @"dictionaryIsCurrentlyReadable";
+
 static NSString * const kSCHDictionaryDownloadDirectoryName = @"Dictionary";
 
 int const kSCHDictionaryManifestEntryEntryTableBufferSize = 8192;
@@ -185,7 +187,8 @@ static SCHDictionaryDownloadManager *sharedManager = nil;
 
 + (SCHDictionaryDownloadManager *)sharedDownloadManager
 {
-	if (sharedManager == nil) {
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
 		sharedManager = [[SCHDictionaryDownloadManager alloc] init];
         
 		// notifications for changes in reachability
@@ -221,7 +224,7 @@ static SCHDictionaryDownloadManager *sharedManager = nil;
 												   object:nil];	
                 
 		[sharedManager.wifiReach startNotifier];
-	} 
+	});
 	
 	return sharedManager;
 }
@@ -560,9 +563,7 @@ static SCHDictionaryDownloadManager *sharedManager = nil;
                 [self threadSafeUpdateDictionaryState:SCHDictionaryProcessingStateNeedsDownload];
                 [self processDictionary];
             } else {
-                NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-                [defaults setObject:[NSNumber numberWithBool:YES] forKey:@"dictionaryIsCurrentlyReadable"];
-                [defaults synchronize];
+                [self setDictionaryIsCurrentlyReadable:YES];
                 [self threadSafeUpdateDictionaryState:SCHDictionaryProcessingStateReady];
                 [self processDictionary];
             }
@@ -607,10 +608,6 @@ static SCHDictionaryDownloadManager *sharedManager = nil;
 		}	
 		case SCHDictionaryProcessingStateNeedsUnzip:
 		{
-            NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-            [defaults setObject:[NSNumber numberWithBool:NO] forKey:@"dictionaryIsCurrentlyReadable"];
-            [defaults synchronize];
-
 			NSLog(@"needs unzip...");
 			// create unzip operation
             
@@ -628,6 +625,9 @@ static SCHDictionaryDownloadManager *sharedManager = nil;
                 [self processDictionary];
                 return;
             }
+            
+            // only set DictionaryIsCurrentlyReadable once we know we will begin unzipping
+            [self setDictionaryIsCurrentlyReadable:NO];
             
             self.currentDictionaryProcessingPercentage = 0.0;
             
@@ -649,9 +649,7 @@ static SCHDictionaryDownloadManager *sharedManager = nil;
 		{
 			NSLog(@"needs parse...");
             
-            NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-            [defaults setObject:[NSNumber numberWithBool:NO] forKey:@"dictionaryIsCurrentlyReadable"];
-            [defaults synchronize];
+            [self setDictionaryIsCurrentlyReadable:NO];
             
             self.currentDictionaryProcessingPercentage = kSCHDictionaryFileUnzipMaxPercentage;
 
@@ -696,9 +694,7 @@ static SCHDictionaryDownloadManager *sharedManager = nil;
             // this prevents the issue seen in ticket #1353 where the dictionary
             // is usable, or partially processed, but was failing to work due to 
             // this being missing
-            NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-            [defaults setObject:[NSNumber numberWithBool:YES] forKey:@"dictionaryIsCurrentlyReadable"];
-            [defaults synchronize];
+            [self setDictionaryIsCurrentlyReadable:YES];
             
             break;
         }
@@ -824,9 +820,9 @@ static SCHDictionaryDownloadManager *sharedManager = nil;
 
 - (NSString *)dictionaryVersion
 {
-    __block NSString *version;
+    __block NSString *version = nil;
     [self withAppDictionaryStatePerform:^(SCHAppDictionaryState *state) {
-        version = [[state Version] retain];
+        version = [[state Version] copy];
     }];
     return [version autorelease];
 }
@@ -1782,9 +1778,7 @@ static SCHDictionaryDownloadManager *sharedManager = nil;
 {
     self.isProcessing = YES;
 
-    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    [defaults setObject:[NSNumber numberWithBool:NO] forKey:@"dictionaryIsCurrentlyReadable"];
-    [defaults synchronize];
+    [self setDictionaryIsCurrentlyReadable:NO];
     
     [self threadSafeUpdateDictionaryState:SCHDictionaryProcessingStateDeleting];
 
@@ -1837,10 +1831,18 @@ static SCHDictionaryDownloadManager *sharedManager = nil;
     }
 }
 
+- (void)setDictionaryIsCurrentlyReadable:(BOOL)setDictionaryIsCurrentlyReadableFlag
+{
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    [defaults setObject:[NSNumber numberWithBool:setDictionaryIsCurrentlyReadableFlag] 
+                 forKey:kSCHDictionaryDownloadManagerDictionaryIsCurrentlyReadable];
+    [defaults synchronize];    
+}
+
 - (BOOL)dictionaryIsAvailable
 {
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    BOOL isReadable = [[defaults objectForKey:@"dictionaryIsCurrentlyReadable"] boolValue];
+    BOOL isReadable = [[defaults objectForKey:kSCHDictionaryDownloadManagerDictionaryIsCurrentlyReadable] boolValue];
     return isReadable;
 
 }

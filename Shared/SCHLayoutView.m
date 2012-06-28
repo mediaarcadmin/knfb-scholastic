@@ -428,11 +428,15 @@ managedObjectContext:(NSManagedObjectContext *)managedObjectContext
         self.jumpToPageCompletionHandler = completion;
     }
     
+    BOOL animatedPageTurn = animated;
+    
     if (pageIndex < [self generatedPageCount]) {
         [self.pageTurningView turnToPageAtIndex:pageIndex animated:animated];
-	}
+	} else {
+        animatedPageTurn = NO;
+    }
     
-    if (!animated) {
+    if (!animatedPageTurn) {
         [self updateCurrentPageIndex];
         if (completion != nil) {
             completion();
@@ -1001,6 +1005,12 @@ fastThumbnailUIImageForPageAtIndex:(NSUInteger)index
             }
 		}
     } else {
+        if (bookPoint) {
+            __block SCHLayoutView *weakSelf = self;
+            self.jumpToPageCompletionHandler = ^{
+                [weakSelf followAlongHighlightWordAtPoint:bookPoint withCompletionHandler:completion];
+            };
+        }
         [self dismissFollowAlongHighlighter];
     }
 }

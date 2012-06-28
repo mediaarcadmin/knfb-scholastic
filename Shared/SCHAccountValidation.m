@@ -13,11 +13,13 @@
 #import "SCHAppStateManager.h"
 #import "SFHFKeychainUtils.h"
 #import "SCHAuthenticationManager.h"
+#import "BITAPIError.h"
 
 // Constants
 NSString * const kSCHAccountValidationErrorDomain = @"AccountValidationErrorDomain";
 NSInteger const kSCHAccountValidationPTokenError = 2000;
-NSInteger const kSCHAccountValidationCredentialsError = 200;
+NSInteger const kSCHAccountValidationMalformedEmailError = 200;
+NSInteger const kSCHAccountValidationCredentialsMissingError = 201;
 
 // pToken timeout set to 29 minutes, same as windows - 1 minute for any errors
 static NSTimeInterval const kSCHAccountValidationpTokenTimeout = 1740.0;
@@ -203,11 +205,29 @@ static NSTimeInterval const kSCHAccountValidationpTokenTimeout = 1740.0;
         result:(NSDictionary *)result
 {
     NSLog(@"%@:didFailWithError\n%@", method, error);
+ 
+    NSError *authenticationError;
     
-    [[SCHAppStateManager sharedAppStateManager] setLastScholasticAuthenticationErrorCode:[error code]];
+    if ([[error domain] isEqualToString:kBITAPIErrorDomain]) {
+        NSString *username = [[NSUserDefaults standardUserDefaults] objectForKey:kSCHAuthenticationManagerUsername];
+        NSString *errorMessage;
+        
+        if ([username length]) {
+            errorMessage = [NSString stringWithFormat:NSLocalizedString(@"The password you entered for %@ was incorrect. Please try again.", @""), username];
+        } else {
+            errorMessage = NSLocalizedString(@"The password you entered was incorrect. Please try again.", @"");
+        }
+        
+        authenticationError = [NSError errorWithDomain:[error domain] code:[error code] userInfo:[NSDictionary dictionaryWithObject:errorMessage forKey:NSLocalizedDescriptionKey]];
+        
+    } else {
+        authenticationError = error;
+    }
+    
+    [[SCHAppStateManager sharedAppStateManager] setLastScholasticAuthenticationErrorCode:[authenticationError code]];
     
     self.passwordUsed = nil;
-    self.validateBlock(nil, error);
+    self.validateBlock(nil, authenticationError);
     self.validateBlock = nil;    
     self.waitingOnResponse = NO;    
 }

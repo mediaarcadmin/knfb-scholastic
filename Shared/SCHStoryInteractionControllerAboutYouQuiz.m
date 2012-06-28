@@ -145,7 +145,8 @@ typedef enum {
     NSInteger i = 0;
     
     for (NSString *answer in [self currentQuestion].answers) {
-        UIButton *button = [self.answerButtons objectAtIndex:i];
+        SCHStretchableImageButton *button = [self.answerButtons objectAtIndex:i];
+
         [button setTitle:answer forState:UIControlStateNormal];
         [button setHidden:NO];
         ++i;
@@ -305,9 +306,9 @@ typedef enum {
         NSInteger activeButtonCount = [[[self currentQuestion] answers] count];
         CGFloat areaHeight = CGRectGetHeight(self.buttonContainerView.frame);
         
-        CGFloat buttonHeight = floorf(areaHeight * 0.7 / activeButtonCount);
+        CGFloat buttonHeight = floorf(areaHeight * 0.9 / activeButtonCount);
         CGFloat buttonSpacing = floorf((areaHeight - (activeButtonCount * buttonHeight)) / activeButtonCount);
-        CGFloat topBottomInset = floorf(buttonHeight * 0.4);
+        CGFloat topBottomInset = floorf(buttonHeight * 0.2);
         
         buttonSpacing = floorf(((buttonSpacing * activeButtonCount) - buttonSpacing) / activeButtonCount);
         
@@ -342,7 +343,10 @@ typedef enum {
     do {
         tooBig = NO;
         for (UIButton *button in self.answerButtons) {
-            CGSize maximumSize = UIEdgeInsetsInsetRect(button.bounds, button.titleEdgeInsets).size;
+            
+            UIEdgeInsets buttonInsets = UIEdgeInsetsMake(10, 10, 10, 10);
+            
+            CGSize maximumSize = UIEdgeInsetsInsetRect(button.bounds, buttonInsets).size;
             NSString *text = [button titleForState:UIControlStateNormal];
             CGSize constraintSize = CGSizeMake(maximumSize.width, CGFLOAT_MAX);
             CGSize size = [text sizeWithFont:[UIFont fontWithName:fontName size:fontSize]

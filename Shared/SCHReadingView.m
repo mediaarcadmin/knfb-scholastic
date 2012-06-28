@@ -207,7 +207,7 @@ managedObjectContext:(NSManagedObjectContext *)managedObjectContext
                     includingFolioBlocks:(BOOL)folio
 {
     SCHBookPoint *bookPoint = [[SCHBookPoint alloc] init];
-    bookPoint.layoutPage = layoutPage;
+    bookPoint.layoutPage = MAX(layoutPage, 1);
     bookPoint.wordOffset = pageWordOffset;
     
     NSArray *wordBlocks = [self.textFlow blocksForPageAtIndex:bookPoint.layoutPage - 1 includingFolioBlocks:YES];
@@ -303,6 +303,9 @@ managedObjectContext:(NSManagedObjectContext *)managedObjectContext
                                                                                action:@selector(selectYoungerWord:)] autorelease];
                     
                     ret = [NSArray arrayWithObjects:dictionaryItem, nil];
+                } else {
+                    // no dictionary entry so let the user see the highlight before dismissing it
+                    [self performSelector:@selector(dismissSelector) withObject:nil afterDelay:0.2];                
                 }
             }
         } break;
@@ -417,7 +420,7 @@ managedObjectContext:(NSManagedObjectContext *)managedObjectContext
                     }
                 }
                 // Next run-loop deselect the selector
-                [self performSelector:@selector(dismissSelector) withObject:nil afterDelay:0];
+                [self performSelector:@selector(dismissSelector) withObject:nil afterDelay:0.1];
                 
                 break;
             case SCHReadingViewSelectionModeHighlights:

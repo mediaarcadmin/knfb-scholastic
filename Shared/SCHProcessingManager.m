@@ -29,8 +29,6 @@
 NSString * const kSCHProcessingManagerConnectionIdle = @"SCHProcessingManagerConnectionIdle";
 NSString * const kSCHProcessingManagerConnectionBusy = @"SCHProcessingManagerConnectionBusy";
 
-extern NSString * const kSCHUserDefaultsSpaceSaverModeSetOffNotification;
-
 #pragma mark - Class Extension
 
 @interface SCHProcessingManager()
@@ -64,7 +62,6 @@ extern NSString * const kSCHUserDefaultsSpaceSaverModeSetOffNotification;
 @property BOOL connectionIsIdle;
 @property BOOL firedFirstBusyIdleNotification;
 
-- (BOOL)spaceSaverMode;
 - (void)postBookStateUpdate:(SCHBookIdentifier *)identifier;
 
 @end
@@ -130,7 +127,8 @@ static SCHProcessingManager *sharedManager = nil;
 
 + (SCHProcessingManager *)sharedProcessingManager
 {
-	if (sharedManager == nil) {
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
 		sharedManager = [[SCHProcessingManager alloc] init];
 		[[NSNotificationCenter defaultCenter] addObserver:sharedManager 
 												 selector:@selector(checkStateForAllBooks) 
@@ -142,11 +140,6 @@ static SCHProcessingManager *sharedManager = nil;
 													 name:SCHBookshelfSyncComponentBookReceivedNotification 
 												   object:nil];
 		
-        [[NSNotificationCenter defaultCenter] addObserver:sharedManager 
-												 selector:@selector(checkStateForBook:) 
-													 name:kSCHUserDefaultsSpaceSaverModeSetOffNotification 
-												   object:nil];
-		
 		[[NSNotificationCenter defaultCenter] addObserver:sharedManager 
 												 selector:@selector(enterBackground) 
 													 name:UIApplicationDidEnterBackgroundNotification 
@@ -156,7 +149,7 @@ static SCHProcessingManager *sharedManager = nil;
 												 selector:@selector(enterForeground) 
 													 name:UIApplicationWillEnterForegroundNotification 
 												   object:nil];	
-    } 
+    });
 	
 	return sharedManager;
 }
@@ -297,13 +290,10 @@ static SCHProcessingManager *sharedManager = nil;
     BOOL needsProcessing = YES;
 	SCHAppBook *book = [[SCHBookManager sharedBookManager] bookWithIdentifier:identifier inManagedObjectContext:self.managedObjectContext];
     
-    if (book != nil) {
-        BOOL spaceSaverMode = [self spaceSaverMode];
-        
+    if (book != nil) {        
         if (book.processingState == SCHBookProcessingStateReadyToRead) {
             needsProcessing = NO;
-        } else if (book.processingState == SCHBookProcessingStateReadyForBookFileDownload
-                   && spaceSaverMode == YES) {
+        } else if (book.processingState == SCHBookProcessingStateReadyForBookFileDownload) {
             needsProcessing = NO;
         }
     } else {
@@ -349,17 +339,6 @@ static SCHProcessingManager *sharedManager = nil;
 	return hasAquiredLicense;
 }
 
-- (BOOL)spaceSaverMode
-{
-    BOOL ret = YES;
-    
-    if ([[SCHAppStateManager sharedAppStateManager] isSampleStore] == NO) {
-    	ret = [[NSUserDefaults standardUserDefaults] boolForKey:kSCHUserDefaultsSpaceSaverMode];
-    }
-    
-    return(ret);
-}
-
 #pragma mark - Processing Book Tracking
 
 - (BOOL)identifierIsProcessing:(SCHBookIdentifier *)identifier
@@ -394,12 +373,27 @@ static SCHProcessingManager *sharedManager = nil;
     [self.webServiceOperationQueue setMaxConcurrentOperationCount:10];
 }
 
-- (void)cancelAllOperations
+- (void)cancelAllOperationsWaitUntilFinished:(BOOL)waitUntilFinished
 {
+    
+    // The current architecture will deadlock if we attempt to wait until done. There are multiple points of failure. 2 in particular are 
+    // the URL manager which will not be able to notify the waiting operation that it has a result (because the main thread is blocked waiting)
+    // and the fact that performWithBook does a dispatch_sync to the main thread.
+    // Because of these issues here and in the recommendations manager, waitUntilFinished is disabled. The correct pattern is to
+    // Allow opeations to complete concurrently but since the core data stack may have been cleaned up, any managed object acces
+    // *Must* be wrapped in a check for cancellation
+    NSAssert(waitUntilFinished == NO, @"The current architecture doesn't support waitUntilFinished");
+    
     @synchronized(self) {
         [self.webServiceOperationQueue cancelAllOperations];
         [self.networkOperationQueue cancelAllOperations];    
-        [self.localProcessingQueue cancelAllOperations];    
+        [self.localProcessingQueue cancelAllOperations];
+        
+        if (waitUntilFinished) {
+            [self.webServiceOperationQueue waitUntilAllOperationsAreFinished];
+            [self.networkOperationQueue waitUntilAllOperationsAreFinished];
+            [self.localProcessingQueue waitUntilAllOperationsAreFinished];
+        }
         
         self.localProcessingQueue = nil;
         self.webServiceOperationQueue = nil;
@@ -415,37 +409,41 @@ static SCHProcessingManager *sharedManager = nil;
                            waitUntilFinished:(BOOL)waitUntilFinished
 {
     @synchronized(self) {
-        for (SCHBookOperation *bookOperation in [self.webServiceOperationQueue operations]) {
-            if ([bookOperation.identifier isEqual:bookIdentifier] == YES) {
-                [bookOperation cancel];
-                if (waitUntilFinished == YES) {
-                    [bookOperation waitUntilFinished];
+        if (bookIdentifier) {
+            for (SCHBookOperation *bookOperation in [self.webServiceOperationQueue operations]) {
+                if ([bookOperation.identifier isEqual:bookIdentifier] == YES) {
+                    [bookOperation cancel];
+                    if (waitUntilFinished == YES) {
+                        [bookOperation waitUntilFinished];
+                    }
+                    break;
                 }
-                break;
+            }
+            
+            for (SCHBookOperation *bookOperation in [self.networkOperationQueue operations]) {
+                if ([bookOperation.identifier isEqual:bookIdentifier] == YES) {
+                    [bookOperation cancel];
+                    if (waitUntilFinished == YES) {
+                        [bookOperation waitUntilFinished];
+                    }
+                    break;
+                }
+            }
+            
+            for (SCHBookOperation *bookOperation in [self.localProcessingQueue operations]) {
+                if ([bookOperation.identifier isEqual:bookIdentifier] == YES) {
+                    [bookOperation cancel];
+                    if (waitUntilFinished == YES) {
+                        [bookOperation waitUntilFinished];
+                    }
+                    break;
+                }
+            }
+            
+            if ([self.currentlyProcessingIdentifiers containsObject:bookIdentifier]) {
+                [self.currentlyProcessingIdentifiers removeObject:bookIdentifier];
             }
         }
-        
-        for (SCHBookOperation *bookOperation in [self.networkOperationQueue operations]) {
-            if ([bookOperation.identifier isEqual:bookIdentifier] == YES) {
-                [bookOperation cancel];
-                if (waitUntilFinished == YES) {
-                    [bookOperation waitUntilFinished];
-                }
-                break;
-            }
-        }
-        
-        for (SCHBookOperation *bookOperation in [self.localProcessingQueue operations]) {
-            if ([bookOperation.identifier isEqual:bookIdentifier] == YES) {
-                [bookOperation cancel];
-                if (waitUntilFinished == YES) {
-                    [bookOperation waitUntilFinished];
-                }
-                break;
-            }
-        }
-        
-        [self.currentlyProcessingIdentifiers removeObject:bookIdentifier];
     }
 }
 
@@ -721,7 +719,6 @@ static SCHProcessingManager *sharedManager = nil;
         
         if (book != nil) {
             // check for space saver mode
-            BOOL spaceSaverMode = [self spaceSaverMode];
             BOOL bookFileURLIsBundleURL = [book bookFileURLIsBundleURL];
             
             switch (book.processingState) {
@@ -741,7 +738,7 @@ static SCHProcessingManager *sharedManager = nil;
                     // if space saver mode is off, bump the book to the download state and start download
                 case SCHBookProcessingStateDownloadPaused:
                 case SCHBookProcessingStateReadyForBookFileDownload:
-                    if (!spaceSaverMode || [[book ForceProcess] boolValue] || bookFileURLIsBundleURL) {
+                    if ([[book ForceProcess] boolValue] || bookFileURLIsBundleURL) {
                         [book setProcessingState:SCHBookProcessingStateDownloadStarted];
                         [self processIdentifier:identifier];
                     }
@@ -809,9 +806,21 @@ static SCHProcessingManager *sharedManager = nil;
 	
     if (book != nil) {
         // if the book is currently downloading, pause it
-        // (changing the state will cause the operation to cancel)
         if (book.processingState == SCHBookProcessingStateDownloadStarted) {
             [book setProcessingState:SCHBookProcessingStateDownloadPaused];
+            
+            // explicitly cancel any book file download operations
+            // a) for this identifier
+            // b) that are XPSBook download types; there may be book cover operations ongoing
+            for (SCHBookOperation *bookOperation in [self.networkOperationQueue operations]) {
+                if ([bookOperation isKindOfClass:[SCHDownloadBookFileOperation class]] && 
+                    [(SCHDownloadBookFileOperation *)bookOperation fileType] == kSCHDownloadFileTypeXPSBook &&
+                    [bookOperation.identifier isEqual:identifier] == YES) {
+                    [bookOperation cancel];
+                    // do not need to wait until finishing; calling cancel immediately stops the download stream
+                    break;
+                }
+            }
             
             [self postBookStateUpdate:identifier];
             
@@ -848,6 +857,28 @@ static SCHProcessingManager *sharedManager = nil;
         
         // otherwise ignore the touch
     }
+}
+
+- (BOOL)forceReDownloadForBookWithIdentifier:(SCHBookIdentifier *)identifier
+{
+    NSAssert([NSThread isMainThread], @"forceReDownloadForBookWithIdentifier: must be called on main thread");
+    
+    if ([self identifierIsProcessing:identifier]) {
+        NSAssert([NSThread isMainThread], @"you cannot forceReDownloadForBookWithIdentifier if teh book is already processing");
+        return NO;
+    }
+    
+    SCHAppBook *book = [[SCHBookManager sharedBookManager] bookWithIdentifier:identifier inManagedObjectContext:self.managedObjectContext];
+    
+    if (book != nil) {
+        book.ForceProcess = [NSNumber numberWithBool:YES];
+        [book setProcessingState:SCHBookProcessingStateNoURLs];
+        [self postBookStateUpdate:identifier];
+        [self redispatchIdentifier:identifier];
+        return YES;
+    }
+    
+    return NO;
 }
 
 - (void)userRequestedRetryForBookWithIdentifier:(SCHBookIdentifier *)identifier

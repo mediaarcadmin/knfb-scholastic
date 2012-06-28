@@ -72,10 +72,13 @@ static NSString * const kSCHCoreDataHelperDictionaryStoreName = @"Scholastic_Dic
     NSPersistentStore *currentMainStore = [self currentMainPersistentStore];
     NSError *error = nil;
     
-    [[SCHAuthenticationManager sharedAuthenticationManager] clearAppProcessing];
+    [[SCHAuthenticationManager sharedAuthenticationManager] clearAppProcessingWaitUntilFinished:NO];
     [[self managedObjectContext] reset];
-    [[self persistentStoreCoordinator] removePersistentStore:currentMainStore 
-                                                       error:&error];  
+    if (currentMainStore != nil &&
+        [[self persistentStoreCoordinator] removePersistentStore:currentMainStore 
+                                                           error:&error] == NO) {
+		NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
+	}      
     [self removeStoreAtURL:[self storeURL:kSCHCoreDataHelperStandardStoreName]];
     
     self.managedObjectContext = nil;
@@ -175,6 +178,8 @@ static NSString * const kSCHCoreDataHelperDictionaryStoreName = @"Scholastic_Dic
 - (void)mergeChangesFromContextDidSaveNotification:(NSNotification *)notification 
 {
     if (notification.object != self.managedObjectContext) {
+        // please do not change this async call, the sync component operations
+        // depend it when called WillDelete notifications async
         dispatch_async(dispatch_get_main_queue(), ^{
             NSError *error = nil;
             [[self managedObjectContext] mergeChangesFromContextDidSaveNotification:notification];

@@ -11,24 +11,14 @@
 #import "SCHBookshelfPopoverController.h"
 #import "SCHBookShelfWishListController.h"
 #import "SCHBookShelfRecommendationListController.h"
-#import "SCHSettingItem.h"
 #import "SCHAppStateManager.h"
 #import "SCHCustomNavigationBar.h"
-
-@interface SCHBookShelfMenuController ()
-
-@property (nonatomic, retain) NSNumber *cachedRecommendationsActive;
-
-- (BOOL)recommendationsActive;
-
-@end
 
 @implementation SCHBookShelfMenuController
 
 @synthesize delegate;
 @synthesize userIsAuthenticated;
 @synthesize managedObjectContext;
-@synthesize cachedRecommendationsActive;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil 
  managedObjectContext:(NSManagedObjectContext *)setManagedObjectContext
@@ -46,7 +36,6 @@
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
     [managedObjectContext release], managedObjectContext = nil;
-    [cachedRecommendationsActive release], cachedRecommendationsActive = nil;
     
     [super dealloc];
 }
@@ -85,6 +74,25 @@
     [super viewDidUnload];
 }
 
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    
+    // Hack workaround for the popover not resizing again when popping the nav controller
+    // See http://stackoverflow.com/questions/2752394/popover-with-embedded-navigation-controller-doesnt-respect-size-on-back-nav/7754107#7754107
+    
+    CGSize currentSetSizeForPopover = self.contentSizeForViewInPopover;
+    CGSize fakeMomentarySize = CGSizeMake(currentSetSizeForPopover.width - 1.0f, currentSetSizeForPopover.height - 1.0f);
+    self.contentSizeForViewInPopover = fakeMomentarySize;
+}
+
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    
+    CGSize currentSetSizeForPopover = self.contentSizeForViewInPopover;
+    self.contentSizeForViewInPopover = currentSetSizeForPopover;
+}
 
 #pragma mark - Orientation methods
 
@@ -155,28 +163,18 @@
     return 1;
 }
 
-- (BOOL)recommendationsActive
-{
-    if (self.cachedRecommendationsActive == nil) {
-        NSString *settingValue = [[SCHAppStateManager sharedAppStateManager] settingNamed:kSCHSettingItemRECOMMENDATIONS_ON];
-        
-        if (settingValue != nil) {
-            self.cachedRecommendationsActive = [NSNumber numberWithBool:[settingValue boolValue]];
-        }
-    }
-    
-    return [self.cachedRecommendationsActive boolValue];
-}
-
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     // Return the number of rows in the section.
-    if (self.userIsAuthenticated && [self recommendationsActive] == YES) {
+    if (self.userIsAuthenticated) {
         if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
             return 4;
         } else {
-            // disable wishlists if the last authentication failed username/password
+            // disable wishlists if the last authentication failed username/password or if the account 
+            // is not COPPA compliant
             if ([[SCHAppStateManager sharedAppStateManager] lastScholasticAuthenticationErrorCode] == kSCHScholasticAuthenticationWebServiceErrorCodeInvalidUsernamePassword) {
+                return 4;
+            } else if (![[SCHAppStateManager sharedAppStateManager] isCOPPACompliant]) {
                 return 4;
             } else {
                 return 5;
@@ -198,7 +196,7 @@
         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     }
     
-    if (self.userIsAuthenticated && [self recommendationsActive] == YES) {
+    if (self.userIsAuthenticated) {
         // Show View, Sort, Wallpaper, and the wishlist/recommendations items
         switch (indexPath.row) {
             case 0:
@@ -258,7 +256,7 @@
     // some extra logic to skip "sort" if we are not authenticated
     NSInteger selectedRow = indexPath.row;
     
-    if (!(self.userIsAuthenticated && [self recommendationsActive] == YES)) {
+    if (!self.userIsAuthenticated) {
         if (selectedRow == 1) {
             selectedRow = 2;
         }
@@ -307,7 +305,8 @@
             } else {
                 SCHBookShelfRecommendationListController *recommendationList = [[SCHBookShelfRecommendationListController alloc] initWithNibName:@"SCHBookShelfRecommendationListController" bundle:nil];
                 recommendationList.appProfile = [self.delegate appProfileForBookShelfMenu];
-                recommendationList.lastAuthenticationFailedUsernamePassword = ([[SCHAppStateManager sharedAppStateManager] lastScholasticAuthenticationErrorCode] == kSCHScholasticAuthenticationWebServiceErrorCodeInvalidUsernamePassword);
+                recommendationList.shouldShowWishList = [[SCHAppStateManager sharedAppStateManager] shouldShowWishList];
+                                
                 recommendationList.closeBlock = ^{
                     [self.delegate bookShelfMenuCancelled:self];
                 };

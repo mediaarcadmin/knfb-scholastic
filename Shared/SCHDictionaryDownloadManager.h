@@ -109,6 +109,7 @@ typedef enum {
 - (void)beginDictionaryDownload;
 - (void)deleteDictionary;
 
+- (void)setDictionaryIsCurrentlyReadable:(BOOL)setDictionaryIsCurrentlyReadableFlag;
 - (BOOL)dictionaryIsAvailable;
 
 @end

@@ -38,6 +38,7 @@
 #import "SCHVersionDownloadManager.h"
 #import "SCHBookAnnotations.h"
 #import "SCHDictionaryDownloadManager.h"
+#import "SCHAnnotationSyncComponent.h"
 
 static NSInteger const kSCHBookShelfViewControllerGridCellHeightPortrait = 138;
 static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 131;
@@ -162,12 +163,7 @@ typedef enum
         [[NSNotificationCenter defaultCenter] addObserver:self
                                                  selector:@selector(profileDeleted:)
                                                      name:SCHProfileSyncComponentWillDeleteNotification
-                                                   object:nil];
-        
-        [[NSNotificationCenter defaultCenter] addObserver:self
-                                                 selector:@selector(managedObjectContextDidSaveNotification:)
-                                                     name:NSManagedObjectContextDidSaveNotification
-                                                   object:nil];
+                                                   object:nil];        
     }
     
     return self;
@@ -274,6 +270,11 @@ typedef enum
 											 selector:@selector(bookshelfSyncComponentDidFail:)
 												 name:SCHBookshelfSyncComponentDidFailNotification
 											   object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(annotationSyncComponentDidComplete:) 
+                                                 name:SCHAnnotationSyncComponentDidCompleteNotification
+                                               object:nil];
 
     if (!self.showWelcome) {
         if (![[SCHSyncManager sharedSyncManager] havePerformedFirstSyncUpToBooks] && [[SCHSyncManager sharedSyncManager] isSynchronizing]) {
@@ -648,6 +649,7 @@ typedef enum
         [self.profileSetupDelegate popToAuthenticatedProfileAnimated:YES];
     }
     
+    [[SCHSyncManager sharedSyncManager] wishListSync:NO];                        
 }
 
 - (BOOL)gestureRecognizerShouldBegin:(UIGestureRecognizer *)gestureRecognizer 
@@ -724,6 +726,24 @@ typedef enum
         
     // tell the theme manager which profile to use for storage
     [SCHThemeManager sharedThemeManager].appProfile = self.profileItem.AppProfile;
+}
+
+- (void)setManagedObjectContext:(NSManagedObjectContext *)aManagedObjectContext
+{
+    if (managedObjectContext != aManagedObjectContext) {
+        [[NSNotificationCenter defaultCenter] removeObserver:self
+                                                        name:NSManagedObjectContextDidSaveNotification
+                                                      object:nil];
+        if (aManagedObjectContext != nil) {        
+            [[NSNotificationCenter defaultCenter] addObserver:self
+                                                     selector:@selector(managedObjectContextDidSaveNotification:)
+                                                         name:NSManagedObjectContextDidSaveNotification
+                                                       object:aManagedObjectContext];                    
+        }
+        [aManagedObjectContext retain];        
+        [managedObjectContext release];
+        managedObjectContext = aManagedObjectContext;
+    }
 }
 
 - (void)setBooks:(NSMutableArray *)newBooks
@@ -815,6 +835,8 @@ typedef enum
 // detect any changes to the data
 - (void)managedObjectContextDidSaveNotification:(NSNotification *)notification
 {
+    NSAssert([NSThread isMainThread] == YES, @"SCHBookAnnotation:managedObjectContextDidSaveNotification MUST be executed on the main thread");    
+    
     BOOL refreshTable = NO;
     BOOL refreshBooks = NO;
     
@@ -912,6 +934,13 @@ typedef enum
         [self replaceLoadingAlertWithAlert:alert];
         [alert release];
     }
+}
+
+- (void)annotationSyncComponentDidComplete:(NSNotification *)notification
+{
+    self.gridViewNeedsRefreshed = YES;
+    self.listViewNeedsRefreshed = YES;
+    [self reloadData];            
 }
 
 #pragma mark - Core Data Table View Methods

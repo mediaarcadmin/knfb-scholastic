@@ -363,10 +363,15 @@ didSelectButtonAnimated:(BOOL)animated
     [fetchRequest setFetchBatchSize:20];
     
     // Edit the sort key as appropriate.
-    NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:kSCHLibreAccessWebServiceFirstName 
-                                                                   ascending:YES
-                                                                    selector:@selector(caseInsensitiveCompare:)];
-    NSArray *sortDescriptors = [[NSArray alloc] initWithObjects:sortDescriptor, nil];
+    NSSortDescriptor *screenNameSortDescriptor = [NSSortDescriptor sortDescriptorWithKey:kSCHLibreAccessWebServiceScreenName 
+                                                                               ascending:YES
+                                                                                selector:@selector(caseInsensitiveCompare:)];
+    NSSortDescriptor *firstNameSortDescriptor = [NSSortDescriptor sortDescriptorWithKey:kSCHLibreAccessWebServiceFirstName 
+                                                                              ascending:YES
+                                                                               selector:@selector(caseInsensitiveCompare:)];
+    NSSortDescriptor *idSortDescriptor = [NSSortDescriptor sortDescriptorWithKey:kSCHLibreAccessWebServiceID 
+                                                                       ascending:YES];
+    NSArray *sortDescriptors = [[NSArray alloc] initWithObjects:screenNameSortDescriptor, firstNameSortDescriptor, idSortDescriptor, nil];
     
     [fetchRequest setSortDescriptors:sortDescriptors];
     
@@ -381,7 +386,6 @@ didSelectButtonAnimated:(BOOL)animated
     
     [aFetchedResultsController release];
     [fetchRequest release];
-    [sortDescriptor release];
     [sortDescriptors release];
     
     NSError *error = nil;
@@ -393,7 +397,7 @@ didSelectButtonAnimated:(BOOL)animated
         [self.headerLabel setText:NSLocalizedString(@"Choose Your Bookshelf", @"Profile header text for > 0 bookshelves")];
         [self.headerLabel setNumberOfLines:1];
     } else {
-        [self.headerLabel setText:NSLocalizedString(@"Please go to Parent Tools to create bookshelves.", @"Profile header text for 0 bookshelves")];
+        [self.headerLabel setText:NSLocalizedString(@"Please go to the Parent Tools menu to create bookshelves.", @"Profile header text for 0 bookshelves")];
         [self.headerLabel setNumberOfLines:2];        
     }
     

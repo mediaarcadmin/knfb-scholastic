@@ -9,11 +9,13 @@
 #import "SCHBookShelfRecommendationListController.h"
 #import "SCHAppRecommendationItem.h"
 #import "SCHThemeManager.h"
+#import "SCHAppStateManager.h"
 
 @interface SCHBookShelfRecommendationListController ()
 
 - (void)releaseViewObjects;
 - (void)commitWishListChanges;
+- (void)refreshFromAppProfile;
 
 @property (nonatomic, retain) NSArray *localRecommendationItems;
 @property (nonatomic, retain) NSArray *localWishListItems;
@@ -38,7 +40,7 @@
 @synthesize localWishListItems;
 @synthesize modifiedWishListItems;
 @synthesize recommendationViewNib;
-@synthesize lastAuthenticationFailedUsernamePassword;
+@synthesize shouldShowWishList;
 
 #pragma mark - Memory Management
 
@@ -75,7 +77,7 @@
     if (self) {
         // Custom initialization
         self.recommendationViewNib = [UINib nibWithNibName:@"SCHRecommendationListView" bundle:nil];
-        self.lastAuthenticationFailedUsernamePassword = NO;
+        self.shouldShowWishList = YES;
 
     }
     return self;
@@ -87,11 +89,7 @@
 {
     [super viewDidLoad];
     
-    self.localRecommendationItems = [self.appProfile recommendationDictionaries];
-    self.localWishListItems = [self.appProfile wishListItemDictionaries];
-
-    // take a copy of the original state of the wish list and modify that instead
-    self.modifiedWishListItems = [NSMutableArray arrayWithArray:self.localWishListItems];
+    [self refreshFromAppProfile];
     
     // iPad specific setup
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
@@ -111,10 +109,10 @@
         
         self.titleLabel.text = NSLocalizedString(@"Here are kids' top-rated eBooks", @"Here are kids' top-rated eBooks");
         
-        if (self.lastAuthenticationFailedUsernamePassword) {
-            self.bottomSegment.enabled = NO;
+        if (self.shouldShowWishList) {
+            self.bottomSegment.hidden = NO;
         } else {
-            self.bottomSegment.enabled = YES;
+            self.bottomSegment.hidden = YES;
         }
         
     } else {
@@ -133,6 +131,7 @@
 
 - (void)viewWillDisappear:(BOOL)animated
 {
+    // commit wish list changes on close - iPhone only
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
         [self commitWishListChanges];
     }
@@ -144,6 +143,9 @@
 
 - (IBAction)close:(id)sender
 {
+    // commit wish list changes on close - iPad only
+    [self commitWishListChanges];
+    
     if (closeBlock) {
         closeBlock();
     }
@@ -207,6 +209,15 @@
 
 #pragma mark - Wish List Changes
 
+- (void)refreshFromAppProfile
+{
+    self.localRecommendationItems = [self.appProfile recommendationDictionaries];
+    self.localWishListItems = [self.appProfile wishListItemDictionaries];
+    
+    // take a copy of the original state of the wish list and modify that instead
+    self.modifiedWishListItems = [NSMutableArray arrayWithArray:self.localWishListItems];
+}
+
 - (void)commitWishListChanges
 {
     // look for items that are in the new list but not in the original list
@@ -224,6 +235,10 @@
             [self.appProfile removeFromWishList:item];
         }
     }
+    
+    // sync with the new changes we've just made - this makes multiple calls
+    // to commitWishListChanges safe
+    [self refreshFromAppProfile];
 }
 
 #pragma mark - Segmented Control
@@ -231,6 +246,7 @@
 - (IBAction)segmentChanged:(UISegmentedControl *)sender 
 {
     if (sender.selectedSegmentIndex == 1) {
+        // commit wish list changes on segment change - iPad only
         [self commitWishListChanges];
         
         if (self.delegate) {
@@ -269,7 +285,7 @@
             
             SCHRecommendationListView *recommendationView = [[[self.recommendationViewNib instantiateWithOwner:self options:nil] objectAtIndex:0] retain];
             recommendationView.frame = cell.frame;
-            recommendationView.lastAuthenticationFailedUsernamePassword = self.lastAuthenticationFailedUsernamePassword;
+            recommendationView.showsWishListButton = self.shouldShowWishList;
             
             recommendationView.tag = 999;
             recommendationView.delegate = self;

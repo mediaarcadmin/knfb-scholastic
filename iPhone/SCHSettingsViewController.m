@@ -33,16 +33,13 @@
 #import "SCHDownloadDictionaryFromSettingsViewController.h"
 
 extern NSString * const kSCHAuthenticationManagerDeviceKey;
-extern NSString * const kSCHUserDefaultsSpaceSaverModeSetOffNotification;
 
 @interface SCHSettingsViewController()
 
 @property (nonatomic, retain) SCHBookUpdates *bookUpdates;
-@property (nonatomic, retain) SCHUpdateBooksViewController *updateBooksViewController;
 @property (nonatomic, retain) LambdaAlert *checkBooksAlert;
 @property (nonatomic, retain) Reachability *syncReachability;
 
-- (void)updateSpaceSaverButton;
 - (void)updateDictionaryButton;
 - (void)releaseViewObjects;
 - (void)replaceCheckBooksAlertWithAlert:(LambdaAlert *)alert;
@@ -64,9 +61,7 @@ extern NSString * const kSCHUserDefaultsSpaceSaverModeSetOffNotification;
 @synthesize manageBooksButton;
 @synthesize deregisterDeviceButton;
 @synthesize downloadDictionaryButton;
-@synthesize spaceSaverButton;
 @synthesize bookUpdates;
-@synthesize updateBooksViewController;
 @synthesize managedObjectContext;
 @synthesize checkBooksAlert;
 @synthesize syncReachability;
@@ -83,8 +78,6 @@ extern NSString * const kSCHUserDefaultsSpaceSaverModeSetOffNotification;
     [manageBooksButton release], manageBooksButton = nil;
     [deregisterDeviceButton release], deregisterDeviceButton = nil;
     [downloadDictionaryButton release], downloadDictionaryButton = nil;
-    [spaceSaverButton release], spaceSaverButton = nil;
-    [updateBooksViewController release], updateBooksViewController = nil;
     [checkBooksAlert release], checkBooksAlert = nil;
     
     [super releaseViewObjects];
@@ -114,7 +107,6 @@ extern NSString * const kSCHUserDefaultsSpaceSaverModeSetOffNotification;
     
     [self setButtonBackground:self.checkBooksButton];
     [self setButtonBackground:self.manageBooksButton];
-    [self setButtonBackground:self.spaceSaverButton];
     [self setButtonBackground:self.downloadDictionaryButton];
     [self setButtonBackground:self.deregisterDeviceButton];
     
@@ -154,7 +146,10 @@ extern NSString * const kSCHUserDefaultsSpaceSaverModeSetOffNotification;
     
     if ([self.bookUpdates areBookUpdatesAvailable] &&
         [[Reachability reachabilityForInternetConnection] isReachable]) {
-        viewControllers = [NSArray arrayWithObjects:self, self.updateBooksViewController, nil];
+        SCHUpdateBooksViewController *updateBooksViewController = [[SCHUpdateBooksViewController alloc] init];
+        updateBooksViewController.bookUpdates = self.bookUpdates;
+        viewControllers = [NSArray arrayWithObjects:self, updateBooksViewController, nil];
+        [updateBooksViewController release];
     } else {
         viewControllers = [NSArray arrayWithObject:self];
     }
@@ -173,16 +168,6 @@ extern NSString * const kSCHUserDefaultsSpaceSaverModeSetOffNotification;
     return bookUpdates;
 }
 
-- (SCHUpdateBooksViewController *)updateBooksViewController
-{
-    if (!updateBooksViewController) {
-        updateBooksViewController = [[SCHUpdateBooksViewController alloc] init];
-        updateBooksViewController.bookUpdates = self.bookUpdates;
-    }
-    
-    return updateBooksViewController;
-}
-
 - (void)viewDidUnload 
 {
     [super viewDidUnload];
@@ -192,7 +177,6 @@ extern NSString * const kSCHUserDefaultsSpaceSaverModeSetOffNotification;
 - (void)viewWillAppear:(BOOL)animated 
 {
     [super viewWillAppear:animated];    
-    [self updateSpaceSaverButton];
     [self updateDictionaryButton];
     
     if ([[SCHAppStateManager sharedAppStateManager] canAuthenticate] == NO) {
@@ -214,17 +198,6 @@ extern NSString * const kSCHUserDefaultsSpaceSaverModeSetOffNotification;
 }
 
 #pragma mark - Button states
-
-- (void)updateSpaceSaverButton
-{
-    NSNumber *spaceSaver = [[NSUserDefaults standardUserDefaults] objectForKey:kSCHUserDefaultsSpaceSaverMode];
-    
-    if ([spaceSaver boolValue] == YES) {
-        [self.spaceSaverButton setTitle:NSLocalizedString(@"Turn Off Space Saver", @"Turn Off Space Saver") forState:UIControlStateNormal];
-    } else {
-        [self.spaceSaverButton setTitle:NSLocalizedString(@"Turn On Space Saver", @"Turn On Space Saver") forState:UIControlStateNormal];        
-    }
-}
 
 - (void)updateDictionaryButton
 {
@@ -536,37 +509,6 @@ extern NSString * const kSCHUserDefaultsSpaceSaverModeSetOffNotification;
     }    
 }
 
-- (IBAction)toggleSpaceSaverMode:(id)sender
-{
-    NSNumber *spaceSaver = [[NSUserDefaults standardUserDefaults] objectForKey:kSCHUserDefaultsSpaceSaverMode];
-    BOOL toggledSpaceSaver = ![spaceSaver boolValue];
-        
-    [[NSUserDefaults standardUserDefaults] setBool:toggledSpaceSaver forKey:kSCHUserDefaultsSpaceSaverMode];
-    [[NSUserDefaults standardUserDefaults] synchronize];
-    
-    if (toggledSpaceSaver) {
-        LambdaAlert *alert = [[LambdaAlert alloc]
-                              initWithTitle:NSLocalizedString(@"Space Saver is On", @"")
-                              message:NSLocalizedString(@"New eBooks will not be downloaded until someone chooses to read them. This can save storage space on your device and data transfer if using a mobile data plan.", @"")];
-        [alert addButtonWithTitle:NSLocalizedString(@"OK", @"") block:^{
-            [self updateSpaceSaverButton];
-        }];
-        [alert show];
-        [alert release];         
-    } else {
-        LambdaAlert *alert = [[LambdaAlert alloc]
-                              initWithTitle:NSLocalizedString(@"Space Saver is Off", @"")
-                              message:NSLocalizedString(@"New eBooks will be downloaded immediately when they are assigned to a bookshelf.", @"")];
-        [alert addButtonWithTitle:NSLocalizedString(@"OK", @"") block:^{
-            [self updateSpaceSaverButton];
-        }];
-        [alert show];
-        [alert release]; 
-        
-        [[NSNotificationCenter defaultCenter] postNotificationName:kSCHUserDefaultsSpaceSaverModeSetOffNotification object:nil userInfo:nil];
-    }
-}
-
 - (IBAction)downloadDictionary:(id)sender
 {
     SCHDictionaryProcessingState dictionaryState = [[SCHDictionaryDownloadManager sharedDownloadManager] dictionaryProcessingState];
@@ -764,13 +706,7 @@ extern NSString * const kSCHUserDefaultsSpaceSaverModeSetOffNotification;
     [self deregisterForSyncNotifications];
     
     if (self.checkBooksAlert) {
-        NSString *message = nil;
-        
-        if ([[NSUserDefaults standardUserDefaults] boolForKey:kSCHUserDefaultsSpaceSaverMode] == YES) {
-            message = NSLocalizedString(@"You have new eBooks! Go to your bookshelves to download and read the new eBooks.", @"");
-        } else {
-            message = NSLocalizedString(@"You have new eBooks! The new eBooks will download in the background while you continue to read.", @"");
-        }
+        NSString *message = NSLocalizedString(@"You have new eBooks! Go to your bookshelves to download and read the new eBooks.", @"");
         
         LambdaAlert *alert = [[LambdaAlert alloc]
                               initWithTitle:NSLocalizedString(@"Sync Complete", @"")

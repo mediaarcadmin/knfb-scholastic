@@ -52,6 +52,9 @@
         [localFileManager removeItemAtPath:[dictManager dictionaryZipPath] error:nil];
         [localFileManager release];
         
+        // the dictionary is ready to be used, we will do a version check
+        // to see if there are any updates available though 
+        [dictManager setDictionaryIsCurrentlyReadable:YES];
         [[SCHDictionaryDownloadManager sharedDownloadManager] threadSafeUpdateDictionaryState:SCHDictionaryProcessingStateManifestVersionCheck];
         dictManager.isProcessing = NO;
 

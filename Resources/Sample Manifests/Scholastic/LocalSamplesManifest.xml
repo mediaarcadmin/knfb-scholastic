@@ -1,11 +1,11 @@
 <SampleManifest>
 	<Book>
-		<Isbn13>9780545324328</Isbn13>
-		<Title>The Mixed-up Alphabet</Title>
-		<Author>by Steve Metzger, illustrated by Jonnie Ho</Author>
-		<CoverUrl>9780545324328.1103.MixedUpAlphabet.jpg</CoverUrl>
-		<DownloadUrl>9780545324328.1103.MixedUpAlphabet.xps</DownloadUrl>
-        <Version>1</Version>
-        <IsEnhanced>false</IsEnhanced>
+		<Isbn13>9780545443326</Isbn13>
+		<Title>Ready, Freddy! #1: Tooth Trouble</Title>
+		<Author>by Abby Klein, illustrated by John McKinley</Author>
+		<CoverUrl>9780545443326_enr_v2.ToothTrouble.jpg</CoverUrl>
+		<DownloadUrl>9780545443326_enr_v2.ToothTrouble.xps</DownloadUrl>
+        <Version>2</Version>
+        <IsEnhanced>true</IsEnhanced>
 	</Book>
 </SampleManifest>

@@ -104,7 +104,7 @@
         NSString *onDiskVersion = [(SCHAppBook*) obj OnDiskVersion];
         BOOL validOnDiskVersion = (onDiskVersion != nil);
                 
-        if (validOnDiskVersion && ([contentMetadataItem.UserContentItem.LastVersion integerValue] > [onDiskVersion integerValue])) {
+        if (validOnDiskVersion && ([contentMetadataItem.UserContentItem.Version integerValue] > [onDiskVersion integerValue])) {
             [self.results addObject:obj];
         }
     }];

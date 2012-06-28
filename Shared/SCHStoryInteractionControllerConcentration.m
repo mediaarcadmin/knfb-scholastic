@@ -26,6 +26,7 @@ enum {
 @property (nonatomic, assign) NSInteger numberOfPairsFound;
 @property (nonatomic, assign) NSInteger numberOfFlips;
 @property (nonatomic, assign) UIView *firstFlippedTile;
+@property (nonatomic, assign) BOOL selectedPuzzleType;
 
 - (void)setupChooseLevelView;
 - (void)setupPuzzleView;
@@ -48,6 +49,18 @@ enum {
 @synthesize numberOfPairsFound;
 @synthesize numberOfFlips;
 @synthesize firstFlippedTile;
+@synthesize selectedPuzzleType;
+
+- (id)initWithStoryInteraction:(SCHStoryInteraction *)storyInteraction
+{
+    self = [super initWithStoryInteraction:storyInteraction];
+    
+    if (self) {
+        selectedPuzzleType = NO;
+    }
+    
+    return self;
+}
 
 - (void)dealloc
 {
@@ -132,6 +145,21 @@ enum {
     [self layoutTiles];
 }
 
+- (IBAction)playAudioButtonTapped:(id)sender
+{
+    [self cancelQueuedAudioExecutingSynchronizedBlocksBefore:^{
+        NSString *path = nil;
+        if (!self.selectedPuzzleType) {
+            path = [(SCHStoryInteractionConcentration *)self.storyInteraction audioPathForIntroduction];
+        } else {
+            path = [self.storyInteraction audioPathForQuestion];
+        }
+        if (path != nil) {
+            [self enqueueAudioWithPath:path fromBundle:NO];
+        }   
+    }];
+}
+
 #pragma mark - Choose level view
 
 - (void)setupChooseLevelView
@@ -144,6 +172,12 @@ enum {
 
 - (void)levelButtonTapped:(id)sender
 {
+    if (self.selectedPuzzleType) {
+        // already chosen
+        return;
+    }
+    self.selectedPuzzleType = YES;
+    
     [self cancelQueuedAudioExecutingSynchronizedBlocksBefore:^{
         self.numberOfPairs = [(UIView *)sender tag];
         [self presentNextView];
@@ -344,8 +378,15 @@ enum {
     return flip;
 }
 
+#pragma mark - touch handling
+
 - (void)tileTapped:(UITapGestureRecognizer *)tap
 {
+    if (tap.state != UIGestureRecognizerStateEnded
+        || self.controllerState != SCHStoryInteractionControllerStateInteractionInProgress) {
+        return;
+    }
+    
     UIView *tile = tap.view;
     if (tile == self.firstFlippedTile) {
         return;
@@ -406,10 +447,10 @@ enum {
             [self enqueueAudioWithPath:[self.storyInteraction storyInteractionWrongAnswerSoundFilename]
                             fromBundle:YES
                             startDelay:0
-                synchronizedStartBlock:nil
-                  synchronizedEndBlock:^{
-                      self.controllerState = SCHStoryInteractionControllerStateInteractionInProgress;
-                  }];
+                synchronizedStartBlock:^{
+                    self.controllerState = SCHStoryInteractionControllerStateInteractionInProgress;
+                }
+                  synchronizedEndBlock:nil];
         });
     }
 }

@@ -29,7 +29,7 @@ extern NSInteger const kSCHAudioBookPlayerDataError;
 
 @property (nonatomic, assign) id<SCHAudioBookPlayerDelegate> delegate; 
 @property (nonatomic, retain) SCHXPSProvider *xpsProvider;
-@property (nonatomic, readonly) BOOL playing;
+@property (nonatomic, readonly) BOOL isPlaying;
 
 - (BOOL)prepareAudio:(NSArray *)setAudioBookReferences 
                error:(NSError **)outError 

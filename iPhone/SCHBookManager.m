@@ -64,15 +64,13 @@ static NSDictionary *featureCompatibilityDictionary = nil;
 
 + (SCHBookManager *)sharedBookManager
 {
-    // We don't need to bother being thread-safe in the initialisation here,
-    // because the object can't be used until the NSPersistentStoreCoordinator 
-    // is set, so that has to be all done on the main thread before other calls
-    // are made anyway.
-    if(!sSharedBookManager) {
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
         sSharedBookManager = [[self alloc] init];
 		sSharedBookManager.threadSafeMutationLock = [[[NSLock alloc] init] autorelease];
 
-    }
+    });
+    
     return sSharedBookManager;
 }
 
@@ -246,6 +244,11 @@ static int allocCountXPS = 0;
 
 - (SCHXPSProvider *)checkOutXPSProviderForBookIdentifier:(SCHBookIdentifier *)identifier inManagedObjectContext:(NSManagedObjectContext *)managedObjectContext
 {
+    return [self checkOutXPSProviderForBookIdentifier:identifier inManagedObjectContext:managedObjectContext error:NULL];
+}
+
+- (SCHXPSProvider *)checkOutXPSProviderForBookIdentifier:(SCHBookIdentifier *)identifier inManagedObjectContext:(NSManagedObjectContext *)managedObjectContext error:(NSError **)error
+{
     NSParameterAssert(identifier);
     
 	SCHXPSProvider *ret = nil;
@@ -266,7 +269,7 @@ static int allocCountXPS = 0;
         } else {
             allocCountXPS++;
             SCHAppBook *book = [self bookWithIdentifier:identifier inManagedObjectContext:managedObjectContext];
-			SCHXPSProvider *xpsProvider = [[SCHXPSProvider alloc] initWithBookIdentifier:identifier xpsPath:[book xpsPath]];
+			SCHXPSProvider *xpsProvider = [[SCHXPSProvider alloc] initWithBookIdentifier:identifier xpsPath:[book xpsPath] error:error];
 			if(xpsProvider) {
 				NSCountedSet *myCachedXPSProviderCheckoutCounts = self.cachedXPSProviderCheckoutCounts;
 				if(!myCachedXPSProviderCheckoutCounts) {

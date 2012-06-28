@@ -29,7 +29,7 @@
 @synthesize delegate;
 @synthesize ISBN;
 @synthesize isOnWishList;
-@synthesize lastAuthenticationFailedUsernamePassword;
+@synthesize showsWishListButton;
 @synthesize showsBottomRule;
 @synthesize recommendationBackgroundColor;
 
@@ -45,6 +45,7 @@
 @synthesize ruleImageView;
 @synthesize initialNormalStateImage;
 @synthesize initialSelectedStateImage;
+@synthesize showOnBackCover;
 
 - (void)dealloc
 {
@@ -92,8 +93,9 @@
 - (void)initialiseView
 {    
     self.showsBottomRule = YES;
-    self.lastAuthenticationFailedUsernamePassword = NO;
+    self.showsWishListButton = YES;
     self.rateView.editable = NO;
+    self.showOnBackCover = NO;
 }
 
 - (void)setupImages
@@ -145,6 +147,7 @@
     self.ISBN = [item objectForKey:kSCHAppRecommendationISBN];
     self.titleLabel.text = [item objectForKey:kSCHAppRecommendationTitle];
     self.subtitleLabel.text = [item objectForKey:kSCHAppRecommendationAuthor];
+    self.rateView.dimEmptyRatings = !self.showOnBackCover;
     self.rateView.rating = [[item objectForKey:kSCHAppRecommendationAverageRating] floatValue];
     UIImage *coverImage = [item objectForKey:kSCHAppRecommendationCoverImage];
     
@@ -158,10 +161,10 @@
         self.ruleImageView.hidden = YES;
     }
     
-    if (self.lastAuthenticationFailedUsernamePassword) {
-        self.onWishListButton.hidden = YES;
-    } else {
+    if (self.showsWishListButton) {
         self.onWishListButton.hidden = NO;
+    } else {
+        self.onWishListButton.hidden = YES;
     }
 }
 
@@ -185,10 +188,10 @@
         self.ruleImageView.hidden = YES;
     }
     
-    if (self.lastAuthenticationFailedUsernamePassword) {
-        self.onWishListButton.hidden = YES;
-    } else {
+    if (self.showsWishListButton) {
         self.onWishListButton.hidden = NO;
+    } else {
+        self.onWishListButton.hidden = YES;
     }
 }
 
@@ -224,10 +227,6 @@
 - (void)layoutSubviews
 {
     [super layoutSubviews];
-    
-    [self.titleLabel adjustPointSizeToFitWidthWithPadding:0];
-    [self.subtitleLabel adjustPointSizeToFitWidthWithPadding:0];
-    self.ratingLabel.font = self.subtitleLabel.font;
     
     // wish list button aspect ratio
     UIImage *buttonImage = [self.onWishListButton imageForState:self.onWishListButton.state];
@@ -271,7 +270,51 @@
     self.ratingBackgroundImageView.frame = backgroundImageFrame;
     
     
-    NSLog(@"self frame: %@", NSStringFromCGRect(self.frame));
+    if (!self.showOnBackCover)  {
+        [self.titleLabel adjustPointSizeToFitWidthWithPadding:0];
+        [self.subtitleLabel adjustPointSizeToFitWidthWithPadding:0];
+        self.ratingLabel.font = self.subtitleLabel.font;
+    } else {
+        // two line title view
+        // size the title view
+        CGSize restrictedWidthSize = CGSizeMake(self.titleLabel.frame.size.width, CGFLOAT_MAX);
+        CGSize oneLineSize = [@"W" sizeWithFont:self.titleLabel.font];
+        
+        CGSize textSize = [self.titleLabel.text sizeWithFont:self.titleLabel.font
+                                           constrainedToSize:restrictedWidthSize
+                                               lineBreakMode:UILineBreakModeWordWrap];
+        
+        CGFloat titleLabelHeight = MIN(oneLineSize.height * 2, textSize.height);
+        CGRect titleFrame = self.titleLabel.frame;
+        CGRect subtitleFrame = self.subtitleLabel.frame;
+        
+        CGRect rateFrame = self.ratingBackgroundImageView.superview.frame;
+
+        // if we're limited on space (i.e. two lines won't fit) revert to one line
+        if (rateFrame.origin.y < titleFrame.origin.y + titleLabelHeight + 2 + subtitleFrame.size.height) {
+            titleLabelHeight = oneLineSize.height;
+            self.titleLabel.lineBreakMode = UILineBreakModeTailTruncation;
+        } else {
+            self.titleLabel.lineBreakMode = UILineBreakModeWordWrap;
+        }
+        
+        
+//        NSLog(@"Text size for %@: %@", self.titleLabel.text, NSStringFromCGSize(textSize));
+//        NSLog(@"Title label height: %f", titleLabelHeight);
+        
+        titleFrame.size.height = titleLabelHeight;
+        
+        // move the subtitle view to match
+        subtitleFrame.origin.y = titleFrame.origin.y + titleFrame.size.height + 2;
+
+        self.titleLabel.frame = titleFrame;
+        self.subtitleLabel.frame = subtitleFrame;
+        
+        
+    }
+
+    
+    //NSLog(@"self frame: %@", NSStringFromCGRect(self.frame));
 //    NSLog(@"rating background frame: %@", NSStringFromCGRect(self.ratingBackgroundImageView.frame));
 //    NSLog(@"rating label frame: %@", NSStringFromCGRect(self.ratingLabel.frame));
 //    NSLog(@"rating frame: %@", NSStringFromCGRect(self.rateView.frame));

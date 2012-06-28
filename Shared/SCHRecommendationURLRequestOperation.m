@@ -38,10 +38,10 @@
     
     [self didChangeValueForKey:@"isExecuting"];
     
-    __block NSString *coverURL;
+    __block NSString *coverURL = nil;
     
     [self performWithRecommendation:^(SCHAppRecommendationItem *item) {
-        coverURL = [item.CoverURL retain];
+        coverURL = [item.CoverURL copy];
     }];
     
     [coverURL autorelease];

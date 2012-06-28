@@ -27,6 +27,7 @@ static const CGFloat kSCHStoriaLoginContentHeightLandscape = 420;
 
 @synthesize loginBlock;
 @synthesize previewBlock;
+@synthesize topFieldLabel;
 @synthesize topField;
 @synthesize bottomField;
 @synthesize loginButton;
@@ -51,6 +52,7 @@ static const CGFloat kSCHStoriaLoginContentHeightLandscape = 420;
         [[NSNotificationCenter defaultCenter] removeObserver:self];
     }
     
+    [topFieldLabel release], topFieldLabel = nil;
     [topField release], topField = nil;
     [bottomField release], bottomField = nil;
     [loginButton release], loginButton = nil;
@@ -85,6 +87,17 @@ static const CGFloat kSCHStoriaLoginContentHeightLandscape = 420;
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
     
+#if USE_EMAIL_ADDRESS_AS_USERNAME    
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+        topFieldLabel.text = NSLocalizedString(@"E-Mail Address", @"");
+    } else if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
+        topField.placeholder = NSLocalizedString(@"E-Mail Address", @"");
+    }
+    
+    topField.keyboardType = UIKeyboardTypeEmailAddress;
+    bottomField.keyboardType = UIKeyboardTypeEmailAddress;
+#endif    
+    
     [self.scrollView setAlwaysBounceVertical:NO];
     
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
@@ -118,7 +131,7 @@ static const CGFloat kSCHStoriaLoginContentHeightLandscape = 420;
     [self stopShowingProgress];
     [self setupContentSizeForOrientation:self.interfaceOrientation];
     [self clearFields];
-    [self setDisplayIncorrectCredentialsWarning:NO];    
+    [self setDisplayIncorrectCredentialsWarning:kSCHLoginHandlerCredentialsWarningNone];    
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
@@ -180,7 +193,7 @@ static const CGFloat kSCHStoriaLoginContentHeightLandscape = 420;
     [self.bottomField setEnabled:NO];
     [self.spinner startAnimating];
     [self.loginButton setEnabled:NO];
-    [self setDisplayIncorrectCredentialsWarning:NO];
+    [self setDisplayIncorrectCredentialsWarning:kSCHLoginHandlerCredentialsWarningNone];
     [self.previewButton setEnabled:NO];
 }
 
@@ -206,16 +219,31 @@ static const CGFloat kSCHStoriaLoginContentHeightLandscape = 420;
     [self.loginButton setEnabled:YES];
 }
 
-- (void)setDisplayIncorrectCredentialsWarning:(BOOL)showWarning
+- (void)setDisplayIncorrectCredentialsWarning:(SCHLoginHandlerCredentialsWarning)credentialsWarning
 {
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
         CGRect frame = self.promptLabel.frame;
-        if (showWarning) {
-            self.promptLabel.text = NSLocalizedString(@"Your User Name or Password was not recognized. Please try again.", @"");
-            frame.size.width = 200;
-        } else {
-            self.promptLabel.text = NSLocalizedString(@"You must have a Scholastic account to sign in.", @"");
-            frame.size.width = 140;
+        switch (credentialsWarning) {
+            case kSCHLoginHandlerCredentialsWarningNone:
+                self.promptLabel.text = NSLocalizedString(@"You must have a Scholastic account to sign in.", @"");
+                frame.size.width = 140;
+                self.promptLabel.font = [self.promptLabel.font fontWithSize:15.0f];
+                break;
+            case kSCHLoginHandlerCredentialsWarningMalformedEmail:
+                self.promptLabel.text = NSLocalizedString(@"Please enter a valid E-Mail Address.", @"");
+                frame.size.width = 140;
+                self.promptLabel.font = [self.promptLabel.font fontWithSize:15.0f];
+                break;
+            case kSCHLoginHandlerCredentialsWarningAuthenticationFailure:
+#if USE_EMAIL_ADDRESS_AS_USERNAME            
+                self.promptLabel.text = NSLocalizedString(@"Your E-mail Address or Password was not recognized. Please try again or contact Scholastic customer service at storia@scholastic.com.", @"");
+                self.promptLabel.font = [self.promptLabel.font fontWithSize:13.0f];
+#else 
+                self.promptLabel.text = NSLocalizedString(@"Your User Name or Password was not recognized. Please try again.", @"");  
+                self.promptLabel.font = [self.promptLabel.font fontWithSize:15.0f];
+#endif     
+                frame.size.width = 200;
+                break;
         }
         
         [CATransaction begin];

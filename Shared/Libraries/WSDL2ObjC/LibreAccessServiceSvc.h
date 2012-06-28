@@ -43,6 +43,8 @@
 @class LibreAccessServiceSvc_SaveProfileItem;
 @class LibreAccessServiceSvc_ProfileList;
 @class LibreAccessServiceSvc_ProfileItem;
+@class LibreAccessServiceSvc_ProfileListRecommendations;
+@class LibreAccessServiceSvc_ProfileItemRecommendations;
 @class LibreAccessServiceSvc_ApplicationSettingList;
 @class LibreAccessServiceSvc_ApplicationSettingItem;
 @class LibreAccessServiceSvc_ProfileStatusList;
@@ -144,6 +146,18 @@
 @class LibreAccessServiceSvc_AssignBooksToAllUsersItem;
 @class LibreAccessServiceSvc_AssignBooksToAllUsersBooksList;
 @class LibreAccessServiceSvc_AssignBooksToAllUsersBooksItem;
+@class LibreAccessServiceSvc_ListRatingsRequestList;
+@class LibreAccessServiceSvc_ListRatingsItem;
+@class LibreAccessServiceSvc_ListRatingsContentList;
+@class LibreAccessServiceSvc_ListRatingsContentItem;
+@class LibreAccessServiceSvc_RatingsStatusList;
+@class LibreAccessServiceSvc_RatingsStatusItem;
+@class LibreAccessServiceSvc_ProfileRatingsStatusList;
+@class LibreAccessServiceSvc_ProfileRatingsStatusItem;
+@class LibreAccessServiceSvc_RatingsList;
+@class LibreAccessServiceSvc_RatingsItem;
+@class LibreAccessServiceSvc_ProfileRatingsList;
+@class LibreAccessServiceSvc_ProfileRatingsItem;
 @class LibreAccessServiceSvc_TokenExchange;
 @class LibreAccessServiceSvc_TokenExchangeResponse;
 @class LibreAccessServiceSvc_TokenExchangeEx;
@@ -156,6 +170,10 @@
 @class LibreAccessServiceSvc_AuthenticateDeviceResponse;
 @class LibreAccessServiceSvc_RenewTokenRequest;
 @class LibreAccessServiceSvc_RenewTokenResponse;
+@class LibreAccessServiceSvc_ListBooksAssignment;
+@class LibreAccessServiceSvc_ListBooksAssignmentResponse;
+@class LibreAccessServiceSvc_booksAssignmentList;
+@class LibreAccessServiceSvc_BooksAssignment;
 @class LibreAccessServiceSvc_ListUserContent;
 @class LibreAccessServiceSvc_ListUserContentResponse;
 @class LibreAccessServiceSvc_UserContentList;
@@ -190,6 +208,8 @@
 @class LibreAccessServiceSvc_ListProfileContentAnnotationsForRatingsResponse;
 @class LibreAccessServiceSvc_GetUserProfilesRequest;
 @class LibreAccessServiceSvc_GetUserProfilesResponse;
+@class LibreAccessServiceSvc_GetUserProfilesRecommendationsRequest;
+@class LibreAccessServiceSvc_GetUserProfilesRecommendationsResponse;
 @class LibreAccessServiceSvc_SaveUserProfilesRequest;
 @class LibreAccessServiceSvc_SaveUserProfilesResponse;
 @class LibreAccessServiceSvc_ListApplicationSettingsRequest;
@@ -260,6 +280,7 @@
 @class LibreAccessServiceSvc_AssignBooksToAllUsersResponse;
 @class LibreAccessServiceSvc_SetLoggingLevelRequest;
 @class LibreAccessServiceSvc_SetLoggingLevelResponse;
+@class LibreAccessServiceSvc_HealthCheckRequest;
 @class LibreAccessServiceSvc_HealthCheckResponse;
 @class LibreAccessServiceSvc_EndpointsList;
 @class LibreAccessServiceSvc_DBSchemaError;
@@ -272,6 +293,10 @@
 @class LibreAccessServiceSvc_GetVersionResponse;
 @class LibreAccessServiceSvc_ListTopRatingsRequest;
 @class LibreAccessServiceSvc_ListTopRatingsResponse;
+@class LibreAccessServiceSvc_SaveRatingsRequest;
+@class LibreAccessServiceSvc_SaveRatingsResponse;
+@class LibreAccessServiceSvc_ListRatingsRequest;
+@class LibreAccessServiceSvc_ListRatingsResponse;
 typedef enum {
 	LibreAccessServiceSvc_statuscodes_none = 0,
 	LibreAccessServiceSvc_statuscodes_SUCCESS,
@@ -1205,6 +1230,7 @@ NSString * LibreAccessServiceSvc_SaveActions_stringFromEnum(LibreAccessServiceSv
 	LibreAccessServiceSvc_SaveActions action;
 	LibreAccessServiceSvc_BookshelfStyle BookshelfStyle;
 	USBoolean * storyInteractionEnabled;
+	USBoolean * recommendationsOn;
 /* attributes */
 }
 - (NSString *)nsPrefix;
@@ -1229,6 +1255,7 @@ NSString * LibreAccessServiceSvc_SaveActions_stringFromEnum(LibreAccessServiceSv
 @property (nonatomic, assign) LibreAccessServiceSvc_SaveActions action;
 @property (nonatomic, assign) LibreAccessServiceSvc_BookshelfStyle BookshelfStyle;
 @property (nonatomic, retain) USBoolean * storyInteractionEnabled;
+@property (nonatomic, retain) USBoolean * recommendationsOn;
 /* attributes */
 - (NSDictionary *)attributes;
 @end
@@ -1309,6 +1336,41 @@ NSString * LibreAccessServiceSvc_SaveActions_stringFromEnum(LibreAccessServiceSv
 - (void)deserializeElementsFromNode:(xmlNodePtr)cur;
 /* elements */
 - (void)addProfileItem:(LibreAccessServiceSvc_ProfileItem *)toAdd;
+@property (nonatomic, readonly) NSMutableArray * ProfileItem;
+/* attributes */
+- (NSDictionary *)attributes;
+@end
+@interface LibreAccessServiceSvc_ProfileItemRecommendations : LibreAccessServiceSvc_ProfileItem {
+/* elements */
+	USBoolean * recommendationsOn;
+/* attributes */
+}
+- (NSString *)nsPrefix;
+- (xmlNodePtr)xmlNodeForDoc:(xmlDocPtr)doc elementName:(NSString *)elName elementNSPrefix:(NSString *)elNSPrefix;
+- (void)addAttributesToNode:(xmlNodePtr)node;
+- (void)addElementsToNode:(xmlNodePtr)node;
++ (LibreAccessServiceSvc_ProfileItemRecommendations *)deserializeNode:(xmlNodePtr)cur;
+- (void)deserializeAttributesFromNode:(xmlNodePtr)cur;
+- (void)deserializeElementsFromNode:(xmlNodePtr)cur;
+/* elements */
+@property (nonatomic, retain) USBoolean * recommendationsOn;
+/* attributes */
+- (NSDictionary *)attributes;
+@end
+@interface LibreAccessServiceSvc_ProfileListRecommendations : NSObject <NSCoding> {
+/* elements */
+	NSMutableArray *ProfileItem;
+/* attributes */
+}
+- (NSString *)nsPrefix;
+- (xmlNodePtr)xmlNodeForDoc:(xmlDocPtr)doc elementName:(NSString *)elName elementNSPrefix:(NSString *)elNSPrefix;
+- (void)addAttributesToNode:(xmlNodePtr)node;
+- (void)addElementsToNode:(xmlNodePtr)node;
++ (LibreAccessServiceSvc_ProfileListRecommendations *)deserializeNode:(xmlNodePtr)cur;
+- (void)deserializeAttributesFromNode:(xmlNodePtr)cur;
+- (void)deserializeElementsFromNode:(xmlNodePtr)cur;
+/* elements */
+- (void)addProfileItem:(LibreAccessServiceSvc_ProfileItemRecommendations *)toAdd;
 @property (nonatomic, readonly) NSMutableArray * ProfileItem;
 /* attributes */
 - (NSDictionary *)attributes;
@@ -3375,6 +3437,238 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
 /* attributes */
 - (NSDictionary *)attributes;
 @end
+@interface LibreAccessServiceSvc_ListRatingsContentItem : NSObject <NSCoding> {
+/* elements */
+	NSString * contentIdentifier;
+	LibreAccessServiceSvc_ContentIdentifierTypes contentIdentifierType;
+/* attributes */
+}
+- (NSString *)nsPrefix;
+- (xmlNodePtr)xmlNodeForDoc:(xmlDocPtr)doc elementName:(NSString *)elName elementNSPrefix:(NSString *)elNSPrefix;
+- (void)addAttributesToNode:(xmlNodePtr)node;
+- (void)addElementsToNode:(xmlNodePtr)node;
++ (LibreAccessServiceSvc_ListRatingsContentItem *)deserializeNode:(xmlNodePtr)cur;
+- (void)deserializeAttributesFromNode:(xmlNodePtr)cur;
+- (void)deserializeElementsFromNode:(xmlNodePtr)cur;
+/* elements */
+@property (nonatomic, retain) NSString * contentIdentifier;
+@property (nonatomic, assign) LibreAccessServiceSvc_ContentIdentifierTypes contentIdentifierType;
+/* attributes */
+- (NSDictionary *)attributes;
+@end
+@interface LibreAccessServiceSvc_ListRatingsContentList : NSObject <NSCoding> {
+/* elements */
+	NSMutableArray *listRatingsContentItem;
+/* attributes */
+}
+- (NSString *)nsPrefix;
+- (xmlNodePtr)xmlNodeForDoc:(xmlDocPtr)doc elementName:(NSString *)elName elementNSPrefix:(NSString *)elNSPrefix;
+- (void)addAttributesToNode:(xmlNodePtr)node;
+- (void)addElementsToNode:(xmlNodePtr)node;
++ (LibreAccessServiceSvc_ListRatingsContentList *)deserializeNode:(xmlNodePtr)cur;
+- (void)deserializeAttributesFromNode:(xmlNodePtr)cur;
+- (void)deserializeElementsFromNode:(xmlNodePtr)cur;
+/* elements */
+- (void)addListRatingsContentItem:(LibreAccessServiceSvc_ListRatingsContentItem *)toAdd;
+@property (nonatomic, readonly) NSMutableArray * listRatingsContentItem;
+/* attributes */
+- (NSDictionary *)attributes;
+@end
+@interface LibreAccessServiceSvc_ListRatingsItem : NSObject <NSCoding> {
+/* elements */
+	LibreAccessServiceSvc_ListRatingsContentList * listRatingsContentList;
+	NSNumber * profileId;
+/* attributes */
+}
+- (NSString *)nsPrefix;
+- (xmlNodePtr)xmlNodeForDoc:(xmlDocPtr)doc elementName:(NSString *)elName elementNSPrefix:(NSString *)elNSPrefix;
+- (void)addAttributesToNode:(xmlNodePtr)node;
+- (void)addElementsToNode:(xmlNodePtr)node;
++ (LibreAccessServiceSvc_ListRatingsItem *)deserializeNode:(xmlNodePtr)cur;
+- (void)deserializeAttributesFromNode:(xmlNodePtr)cur;
+- (void)deserializeElementsFromNode:(xmlNodePtr)cur;
+/* elements */
+@property (nonatomic, retain) LibreAccessServiceSvc_ListRatingsContentList * listRatingsContentList;
+@property (nonatomic, retain) NSNumber * profileId;
+/* attributes */
+- (NSDictionary *)attributes;
+@end
+@interface LibreAccessServiceSvc_ListRatingsRequestList : NSObject <NSCoding> {
+/* elements */
+	NSMutableArray *listRatingsItem;
+/* attributes */
+}
+- (NSString *)nsPrefix;
+- (xmlNodePtr)xmlNodeForDoc:(xmlDocPtr)doc elementName:(NSString *)elName elementNSPrefix:(NSString *)elNSPrefix;
+- (void)addAttributesToNode:(xmlNodePtr)node;
+- (void)addElementsToNode:(xmlNodePtr)node;
++ (LibreAccessServiceSvc_ListRatingsRequestList *)deserializeNode:(xmlNodePtr)cur;
+- (void)deserializeAttributesFromNode:(xmlNodePtr)cur;
+- (void)deserializeElementsFromNode:(xmlNodePtr)cur;
+/* elements */
+- (void)addListRatingsItem:(LibreAccessServiceSvc_ListRatingsItem *)toAdd;
+@property (nonatomic, readonly) NSMutableArray * listRatingsItem;
+/* attributes */
+- (NSDictionary *)attributes;
+@end
+@interface LibreAccessServiceSvc_ProfileRatingsStatusItem : NSObject <NSCoding> {
+/* elements */
+	NSString * contentIdentifier;
+	LibreAccessServiceSvc_ContentIdentifierTypes contentIdentifierType;
+	LibreAccessServiceSvc_Rating * rating;
+	NSNumber * averageRating;
+	LibreAccessServiceSvc_StatusHolder * statusMessage;
+/* attributes */
+}
+- (NSString *)nsPrefix;
+- (xmlNodePtr)xmlNodeForDoc:(xmlDocPtr)doc elementName:(NSString *)elName elementNSPrefix:(NSString *)elNSPrefix;
+- (void)addAttributesToNode:(xmlNodePtr)node;
+- (void)addElementsToNode:(xmlNodePtr)node;
++ (LibreAccessServiceSvc_ProfileRatingsStatusItem *)deserializeNode:(xmlNodePtr)cur;
+- (void)deserializeAttributesFromNode:(xmlNodePtr)cur;
+- (void)deserializeElementsFromNode:(xmlNodePtr)cur;
+/* elements */
+@property (nonatomic, retain) NSString * contentIdentifier;
+@property (nonatomic, assign) LibreAccessServiceSvc_ContentIdentifierTypes contentIdentifierType;
+@property (nonatomic, retain) LibreAccessServiceSvc_Rating * rating;
+@property (nonatomic, retain) NSNumber * averageRating;
+@property (nonatomic, retain) LibreAccessServiceSvc_StatusHolder * statusMessage;
+/* attributes */
+- (NSDictionary *)attributes;
+@end
+@interface LibreAccessServiceSvc_ProfileRatingsStatusList : NSObject <NSCoding> {
+/* elements */
+	NSMutableArray *profileRatingsStatusItem;
+/* attributes */
+}
+- (NSString *)nsPrefix;
+- (xmlNodePtr)xmlNodeForDoc:(xmlDocPtr)doc elementName:(NSString *)elName elementNSPrefix:(NSString *)elNSPrefix;
+- (void)addAttributesToNode:(xmlNodePtr)node;
+- (void)addElementsToNode:(xmlNodePtr)node;
++ (LibreAccessServiceSvc_ProfileRatingsStatusList *)deserializeNode:(xmlNodePtr)cur;
+- (void)deserializeAttributesFromNode:(xmlNodePtr)cur;
+- (void)deserializeElementsFromNode:(xmlNodePtr)cur;
+/* elements */
+- (void)addProfileRatingsStatusItem:(LibreAccessServiceSvc_ProfileRatingsStatusItem *)toAdd;
+@property (nonatomic, readonly) NSMutableArray * profileRatingsStatusItem;
+/* attributes */
+- (NSDictionary *)attributes;
+@end
+@interface LibreAccessServiceSvc_RatingsStatusItem : NSObject <NSCoding> {
+/* elements */
+	NSNumber * profileId;
+	LibreAccessServiceSvc_StatusHolder * statusMessage;
+	LibreAccessServiceSvc_ProfileRatingsStatusList * profileRatingsStatusList;
+/* attributes */
+}
+- (NSString *)nsPrefix;
+- (xmlNodePtr)xmlNodeForDoc:(xmlDocPtr)doc elementName:(NSString *)elName elementNSPrefix:(NSString *)elNSPrefix;
+- (void)addAttributesToNode:(xmlNodePtr)node;
+- (void)addElementsToNode:(xmlNodePtr)node;
++ (LibreAccessServiceSvc_RatingsStatusItem *)deserializeNode:(xmlNodePtr)cur;
+- (void)deserializeAttributesFromNode:(xmlNodePtr)cur;
+- (void)deserializeElementsFromNode:(xmlNodePtr)cur;
+/* elements */
+@property (nonatomic, retain) NSNumber * profileId;
+@property (nonatomic, retain) LibreAccessServiceSvc_StatusHolder * statusMessage;
+@property (nonatomic, retain) LibreAccessServiceSvc_ProfileRatingsStatusList * profileRatingsStatusList;
+/* attributes */
+- (NSDictionary *)attributes;
+@end
+@interface LibreAccessServiceSvc_RatingsStatusList : NSObject <NSCoding> {
+/* elements */
+	NSMutableArray *ratingsStatusItem;
+/* attributes */
+}
+- (NSString *)nsPrefix;
+- (xmlNodePtr)xmlNodeForDoc:(xmlDocPtr)doc elementName:(NSString *)elName elementNSPrefix:(NSString *)elNSPrefix;
+- (void)addAttributesToNode:(xmlNodePtr)node;
+- (void)addElementsToNode:(xmlNodePtr)node;
++ (LibreAccessServiceSvc_RatingsStatusList *)deserializeNode:(xmlNodePtr)cur;
+- (void)deserializeAttributesFromNode:(xmlNodePtr)cur;
+- (void)deserializeElementsFromNode:(xmlNodePtr)cur;
+/* elements */
+- (void)addRatingsStatusItem:(LibreAccessServiceSvc_RatingsStatusItem *)toAdd;
+@property (nonatomic, readonly) NSMutableArray * ratingsStatusItem;
+/* attributes */
+- (NSDictionary *)attributes;
+@end
+@interface LibreAccessServiceSvc_ProfileRatingsItem : NSObject <NSCoding> {
+/* elements */
+	NSString * contentIdentifier;
+	LibreAccessServiceSvc_ContentIdentifierTypes contentIdentifierType;
+	LibreAccessServiceSvc_Rating * rating;
+/* attributes */
+}
+- (NSString *)nsPrefix;
+- (xmlNodePtr)xmlNodeForDoc:(xmlDocPtr)doc elementName:(NSString *)elName elementNSPrefix:(NSString *)elNSPrefix;
+- (void)addAttributesToNode:(xmlNodePtr)node;
+- (void)addElementsToNode:(xmlNodePtr)node;
++ (LibreAccessServiceSvc_ProfileRatingsItem *)deserializeNode:(xmlNodePtr)cur;
+- (void)deserializeAttributesFromNode:(xmlNodePtr)cur;
+- (void)deserializeElementsFromNode:(xmlNodePtr)cur;
+/* elements */
+@property (nonatomic, retain) NSString * contentIdentifier;
+@property (nonatomic, assign) LibreAccessServiceSvc_ContentIdentifierTypes contentIdentifierType;
+@property (nonatomic, retain) LibreAccessServiceSvc_Rating * rating;
+/* attributes */
+- (NSDictionary *)attributes;
+@end
+@interface LibreAccessServiceSvc_ProfileRatingsList : NSObject <NSCoding> {
+/* elements */
+	NSMutableArray *profileRatingsItem;
+/* attributes */
+}
+- (NSString *)nsPrefix;
+- (xmlNodePtr)xmlNodeForDoc:(xmlDocPtr)doc elementName:(NSString *)elName elementNSPrefix:(NSString *)elNSPrefix;
+- (void)addAttributesToNode:(xmlNodePtr)node;
+- (void)addElementsToNode:(xmlNodePtr)node;
++ (LibreAccessServiceSvc_ProfileRatingsList *)deserializeNode:(xmlNodePtr)cur;
+- (void)deserializeAttributesFromNode:(xmlNodePtr)cur;
+- (void)deserializeElementsFromNode:(xmlNodePtr)cur;
+/* elements */
+- (void)addProfileRatingsItem:(LibreAccessServiceSvc_ProfileRatingsItem *)toAdd;
+@property (nonatomic, readonly) NSMutableArray * profileRatingsItem;
+/* attributes */
+- (NSDictionary *)attributes;
+@end
+@interface LibreAccessServiceSvc_RatingsItem : NSObject <NSCoding> {
+/* elements */
+	LibreAccessServiceSvc_ProfileRatingsList * profileRatingsList;
+	NSNumber * profileId;
+/* attributes */
+}
+- (NSString *)nsPrefix;
+- (xmlNodePtr)xmlNodeForDoc:(xmlDocPtr)doc elementName:(NSString *)elName elementNSPrefix:(NSString *)elNSPrefix;
+- (void)addAttributesToNode:(xmlNodePtr)node;
+- (void)addElementsToNode:(xmlNodePtr)node;
++ (LibreAccessServiceSvc_RatingsItem *)deserializeNode:(xmlNodePtr)cur;
+- (void)deserializeAttributesFromNode:(xmlNodePtr)cur;
+- (void)deserializeElementsFromNode:(xmlNodePtr)cur;
+/* elements */
+@property (nonatomic, retain) LibreAccessServiceSvc_ProfileRatingsList * profileRatingsList;
+@property (nonatomic, retain) NSNumber * profileId;
+/* attributes */
+- (NSDictionary *)attributes;
+@end
+@interface LibreAccessServiceSvc_RatingsList : NSObject <NSCoding> {
+/* elements */
+	NSMutableArray *ratingsItem;
+/* attributes */
+}
+- (NSString *)nsPrefix;
+- (xmlNodePtr)xmlNodeForDoc:(xmlDocPtr)doc elementName:(NSString *)elName elementNSPrefix:(NSString *)elNSPrefix;
+- (void)addAttributesToNode:(xmlNodePtr)node;
+- (void)addElementsToNode:(xmlNodePtr)node;
++ (LibreAccessServiceSvc_RatingsList *)deserializeNode:(xmlNodePtr)cur;
+- (void)deserializeAttributesFromNode:(xmlNodePtr)cur;
+- (void)deserializeElementsFromNode:(xmlNodePtr)cur;
+/* elements */
+- (void)addRatingsItem:(LibreAccessServiceSvc_RatingsItem *)toAdd;
+@property (nonatomic, readonly) NSMutableArray * ratingsItem;
+/* attributes */
+- (NSDictionary *)attributes;
+@end
 @interface LibreAccessServiceSvc_TokenExchange : NSObject <NSCoding> {
 /* elements */
 	NSString * ptoken;
@@ -3680,6 +3974,99 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
 @property (nonatomic, retain) NSNumber * expiresIn;
 @property (nonatomic, retain) NSString * userKey;
 @property (nonatomic, retain) LibreAccessServiceSvc_StatusHolder * statusmessage;
+/* attributes */
+- (NSDictionary *)attributes;
+@end
+@interface LibreAccessServiceSvc_ListBooksAssignment : NSObject <NSCoding> {
+/* elements */
+	NSString * authToken;
+/* attributes */
+}
+- (NSString *)nsPrefix;
+- (xmlNodePtr)xmlNodeForDoc:(xmlDocPtr)doc elementName:(NSString *)elName elementNSPrefix:(NSString *)elNSPrefix;
+- (void)addAttributesToNode:(xmlNodePtr)node;
+- (void)addElementsToNode:(xmlNodePtr)node;
++ (LibreAccessServiceSvc_ListBooksAssignment *)deserializeNode:(xmlNodePtr)cur;
+- (void)deserializeAttributesFromNode:(xmlNodePtr)cur;
+- (void)deserializeElementsFromNode:(xmlNodePtr)cur;
+/* elements */
+@property (nonatomic, retain) NSString * authToken;
+/* attributes */
+- (NSDictionary *)attributes;
+@end
+@interface LibreAccessServiceSvc_BooksAssignment : NSObject <NSCoding> {
+/* elements */
+	NSString * ContentIdentifier;
+	LibreAccessServiceSvc_ContentIdentifierTypes ContentIdentifierType;
+	LibreAccessServiceSvc_drmqualifiers DRMQualifier;
+	NSString * Format;
+	NSNumber * version;
+	NSDate * lastOrderDate;
+	USBoolean * defaultAssignment;
+	USBoolean * freeBook;
+	NSNumber * lastVersion;
+	NSNumber * quantity;
+	NSNumber * quantityInit;
+	LibreAccessServiceSvc_ContentProfileForRatingsList * contentProfileList;
+/* attributes */
+}
+- (NSString *)nsPrefix;
+- (xmlNodePtr)xmlNodeForDoc:(xmlDocPtr)doc elementName:(NSString *)elName elementNSPrefix:(NSString *)elNSPrefix;
+- (void)addAttributesToNode:(xmlNodePtr)node;
+- (void)addElementsToNode:(xmlNodePtr)node;
++ (LibreAccessServiceSvc_BooksAssignment *)deserializeNode:(xmlNodePtr)cur;
+- (void)deserializeAttributesFromNode:(xmlNodePtr)cur;
+- (void)deserializeElementsFromNode:(xmlNodePtr)cur;
+/* elements */
+@property (nonatomic, retain) NSString * ContentIdentifier;
+@property (nonatomic, assign) LibreAccessServiceSvc_ContentIdentifierTypes ContentIdentifierType;
+@property (nonatomic, assign) LibreAccessServiceSvc_drmqualifiers DRMQualifier;
+@property (nonatomic, retain) NSString * Format;
+@property (nonatomic, retain) NSNumber * version;
+@property (nonatomic, retain) NSDate * lastOrderDate;
+@property (nonatomic, retain) USBoolean * defaultAssignment;
+@property (nonatomic, retain) USBoolean * freeBook;
+@property (nonatomic, retain) NSNumber * lastVersion;
+@property (nonatomic, retain) NSNumber * quantity;
+@property (nonatomic, retain) NSNumber * quantityInit;
+@property (nonatomic, retain) LibreAccessServiceSvc_ContentProfileForRatingsList * contentProfileList;
+/* attributes */
+- (NSDictionary *)attributes;
+@end
+@interface LibreAccessServiceSvc_booksAssignmentList : NSObject <NSCoding> {
+/* elements */
+	NSMutableArray *booksAssignment;
+/* attributes */
+}
+- (NSString *)nsPrefix;
+- (xmlNodePtr)xmlNodeForDoc:(xmlDocPtr)doc elementName:(NSString *)elName elementNSPrefix:(NSString *)elNSPrefix;
+- (void)addAttributesToNode:(xmlNodePtr)node;
+- (void)addElementsToNode:(xmlNodePtr)node;
++ (LibreAccessServiceSvc_booksAssignmentList *)deserializeNode:(xmlNodePtr)cur;
+- (void)deserializeAttributesFromNode:(xmlNodePtr)cur;
+- (void)deserializeElementsFromNode:(xmlNodePtr)cur;
+/* elements */
+- (void)addBooksAssignment:(LibreAccessServiceSvc_BooksAssignment *)toAdd;
+@property (nonatomic, readonly) NSMutableArray * booksAssignment;
+/* attributes */
+- (NSDictionary *)attributes;
+@end
+@interface LibreAccessServiceSvc_ListBooksAssignmentResponse : NSObject <NSCoding> {
+/* elements */
+	LibreAccessServiceSvc_StatusHolder * statusMessage;
+	LibreAccessServiceSvc_booksAssignmentList * booksAssignmentList;
+/* attributes */
+}
+- (NSString *)nsPrefix;
+- (xmlNodePtr)xmlNodeForDoc:(xmlDocPtr)doc elementName:(NSString *)elName elementNSPrefix:(NSString *)elNSPrefix;
+- (void)addAttributesToNode:(xmlNodePtr)node;
+- (void)addElementsToNode:(xmlNodePtr)node;
++ (LibreAccessServiceSvc_ListBooksAssignmentResponse *)deserializeNode:(xmlNodePtr)cur;
+- (void)deserializeAttributesFromNode:(xmlNodePtr)cur;
+- (void)deserializeElementsFromNode:(xmlNodePtr)cur;
+/* elements */
+@property (nonatomic, retain) LibreAccessServiceSvc_StatusHolder * statusMessage;
+@property (nonatomic, retain) LibreAccessServiceSvc_booksAssignmentList * booksAssignmentList;
 /* attributes */
 - (NSDictionary *)attributes;
 @end
@@ -4339,6 +4726,42 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
 /* elements */
 @property (nonatomic, retain) LibreAccessServiceSvc_StatusHolder * statusmessage;
 @property (nonatomic, retain) LibreAccessServiceSvc_ProfileList * ProfileList;
+/* attributes */
+- (NSDictionary *)attributes;
+@end
+@interface LibreAccessServiceSvc_GetUserProfilesRecommendationsRequest : NSObject <NSCoding> {
+/* elements */
+	NSString * authtoken;
+/* attributes */
+}
+- (NSString *)nsPrefix;
+- (xmlNodePtr)xmlNodeForDoc:(xmlDocPtr)doc elementName:(NSString *)elName elementNSPrefix:(NSString *)elNSPrefix;
+- (void)addAttributesToNode:(xmlNodePtr)node;
+- (void)addElementsToNode:(xmlNodePtr)node;
++ (LibreAccessServiceSvc_GetUserProfilesRecommendationsRequest *)deserializeNode:(xmlNodePtr)cur;
+- (void)deserializeAttributesFromNode:(xmlNodePtr)cur;
+- (void)deserializeElementsFromNode:(xmlNodePtr)cur;
+/* elements */
+@property (nonatomic, retain) NSString * authtoken;
+/* attributes */
+- (NSDictionary *)attributes;
+@end
+@interface LibreAccessServiceSvc_GetUserProfilesRecommendationsResponse : NSObject <NSCoding> {
+/* elements */
+	LibreAccessServiceSvc_StatusHolder * statusmessage;
+	LibreAccessServiceSvc_ProfileListRecommendations * ProfileList;
+/* attributes */
+}
+- (NSString *)nsPrefix;
+- (xmlNodePtr)xmlNodeForDoc:(xmlDocPtr)doc elementName:(NSString *)elName elementNSPrefix:(NSString *)elNSPrefix;
+- (void)addAttributesToNode:(xmlNodePtr)node;
+- (void)addElementsToNode:(xmlNodePtr)node;
++ (LibreAccessServiceSvc_GetUserProfilesRecommendationsResponse *)deserializeNode:(xmlNodePtr)cur;
+- (void)deserializeAttributesFromNode:(xmlNodePtr)cur;
+- (void)deserializeElementsFromNode:(xmlNodePtr)cur;
+/* elements */
+@property (nonatomic, retain) LibreAccessServiceSvc_StatusHolder * statusmessage;
+@property (nonatomic, retain) LibreAccessServiceSvc_ProfileListRecommendations * ProfileList;
 /* attributes */
 - (NSDictionary *)attributes;
 @end
@@ -5686,6 +6109,21 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
 /* attributes */
 - (NSDictionary *)attributes;
 @end
+@interface LibreAccessServiceSvc_HealthCheckRequest : NSObject <NSCoding> {
+/* elements */
+/* attributes */
+}
+- (NSString *)nsPrefix;
+- (xmlNodePtr)xmlNodeForDoc:(xmlDocPtr)doc elementName:(NSString *)elName elementNSPrefix:(NSString *)elNSPrefix;
+- (void)addAttributesToNode:(xmlNodePtr)node;
+- (void)addElementsToNode:(xmlNodePtr)node;
++ (LibreAccessServiceSvc_HealthCheckRequest *)deserializeNode:(xmlNodePtr)cur;
+- (void)deserializeAttributesFromNode:(xmlNodePtr)cur;
+- (void)deserializeElementsFromNode:(xmlNodePtr)cur;
+/* elements */
+/* attributes */
+- (NSDictionary *)attributes;
+@end
 @interface LibreAccessServiceSvc_EndpointsList : NSObject <NSCoding> {
 /* elements */
 	NSMutableArray *Endpoint;
@@ -5925,6 +6363,84 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
 /* attributes */
 - (NSDictionary *)attributes;
 @end
+@interface LibreAccessServiceSvc_SaveRatingsRequest : NSObject <NSCoding> {
+/* elements */
+	NSString * authToken;
+	LibreAccessServiceSvc_RatingsList * ratingsList;
+/* attributes */
+}
+- (NSString *)nsPrefix;
+- (xmlNodePtr)xmlNodeForDoc:(xmlDocPtr)doc elementName:(NSString *)elName elementNSPrefix:(NSString *)elNSPrefix;
+- (void)addAttributesToNode:(xmlNodePtr)node;
+- (void)addElementsToNode:(xmlNodePtr)node;
++ (LibreAccessServiceSvc_SaveRatingsRequest *)deserializeNode:(xmlNodePtr)cur;
+- (void)deserializeAttributesFromNode:(xmlNodePtr)cur;
+- (void)deserializeElementsFromNode:(xmlNodePtr)cur;
+/* elements */
+@property (nonatomic, retain) NSString * authToken;
+@property (nonatomic, retain) LibreAccessServiceSvc_RatingsList * ratingsList;
+/* attributes */
+- (NSDictionary *)attributes;
+@end
+@interface LibreAccessServiceSvc_SaveRatingsResponse : NSObject <NSCoding> {
+/* elements */
+	LibreAccessServiceSvc_StatusHolder * statusMessage;
+	LibreAccessServiceSvc_RatingsStatusList * ratingsList;
+/* attributes */
+}
+- (NSString *)nsPrefix;
+- (xmlNodePtr)xmlNodeForDoc:(xmlDocPtr)doc elementName:(NSString *)elName elementNSPrefix:(NSString *)elNSPrefix;
+- (void)addAttributesToNode:(xmlNodePtr)node;
+- (void)addElementsToNode:(xmlNodePtr)node;
++ (LibreAccessServiceSvc_SaveRatingsResponse *)deserializeNode:(xmlNodePtr)cur;
+- (void)deserializeAttributesFromNode:(xmlNodePtr)cur;
+- (void)deserializeElementsFromNode:(xmlNodePtr)cur;
+/* elements */
+@property (nonatomic, retain) LibreAccessServiceSvc_StatusHolder * statusMessage;
+@property (nonatomic, retain) LibreAccessServiceSvc_RatingsStatusList * ratingsList;
+/* attributes */
+- (NSDictionary *)attributes;
+@end
+@interface LibreAccessServiceSvc_ListRatingsRequest : NSObject <NSCoding> {
+/* elements */
+	NSString * authToken;
+	LibreAccessServiceSvc_ListRatingsRequestList * ratingsList;
+/* attributes */
+}
+- (NSString *)nsPrefix;
+- (xmlNodePtr)xmlNodeForDoc:(xmlDocPtr)doc elementName:(NSString *)elName elementNSPrefix:(NSString *)elNSPrefix;
+- (void)addAttributesToNode:(xmlNodePtr)node;
+- (void)addElementsToNode:(xmlNodePtr)node;
++ (LibreAccessServiceSvc_ListRatingsRequest *)deserializeNode:(xmlNodePtr)cur;
+- (void)deserializeAttributesFromNode:(xmlNodePtr)cur;
+- (void)deserializeElementsFromNode:(xmlNodePtr)cur;
+/* elements */
+@property (nonatomic, retain) NSString * authToken;
+@property (nonatomic, retain) LibreAccessServiceSvc_ListRatingsRequestList * ratingsList;
+/* attributes */
+- (NSDictionary *)attributes;
+@end
+@interface LibreAccessServiceSvc_ListRatingsResponse : NSObject <NSCoding> {
+/* elements */
+	LibreAccessServiceSvc_StatusHolder * statusMessage;
+	LibreAccessServiceSvc_RatingsStatusList * ratingsList;
+	LibreAccessServiceSvc_ItemsCount * itemsCount;
+/* attributes */
+}
+- (NSString *)nsPrefix;
+- (xmlNodePtr)xmlNodeForDoc:(xmlDocPtr)doc elementName:(NSString *)elName elementNSPrefix:(NSString *)elNSPrefix;
+- (void)addAttributesToNode:(xmlNodePtr)node;
+- (void)addElementsToNode:(xmlNodePtr)node;
++ (LibreAccessServiceSvc_ListRatingsResponse *)deserializeNode:(xmlNodePtr)cur;
+- (void)deserializeAttributesFromNode:(xmlNodePtr)cur;
+- (void)deserializeElementsFromNode:(xmlNodePtr)cur;
+/* elements */
+@property (nonatomic, retain) LibreAccessServiceSvc_StatusHolder * statusMessage;
+@property (nonatomic, retain) LibreAccessServiceSvc_RatingsStatusList * ratingsList;
+@property (nonatomic, retain) LibreAccessServiceSvc_ItemsCount * itemsCount;
+/* attributes */
+- (NSDictionary *)attributes;
+@end
 /* Cookies handling provided by http://en.wikibooks.org/wiki/Programming:WebObjects/Web_Services/Web_Service_Provider */
 #import <libxml/parser.h>
 #import "xsd.h"
@@ -5976,8 +6492,8 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
 - (void)SharedTokenExchangeAsyncUsingBody:(LibreAccessServiceSvc_SharedTokenExchangeRequest *)aBody  delegate:(id<LibreAccessServiceSoap11BindingResponseDelegate>)responseDelegate;
 - (LibreAccessServiceSoap11BindingResponse *)SaveUserCSRNotesUsingParameters:(LibreAccessServiceSvc_SaveUserCSRNotesRequest *)aParameters ;
 - (void)SaveUserCSRNotesAsyncUsingParameters:(LibreAccessServiceSvc_SaveUserCSRNotesRequest *)aParameters  delegate:(id<LibreAccessServiceSoap11BindingResponseDelegate>)responseDelegate;
-- (LibreAccessServiceSoap11BindingResponse *)HealthCheck:(id)noParameters;
-- (void)HealthCheckAsync:(id)noParameters delegate:(id<LibreAccessServiceSoap11BindingResponseDelegate>)responseDelegate;
+- (LibreAccessServiceSoap11BindingResponse *)HealthCheckUsingParameters:(LibreAccessServiceSvc_HealthCheckRequest *)aParameters ;
+- (void)HealthCheckAsyncUsingParameters:(LibreAccessServiceSvc_HealthCheckRequest *)aParameters  delegate:(id<LibreAccessServiceSoap11BindingResponseDelegate>)responseDelegate;
 - (LibreAccessServiceSoap11BindingResponse *)SaveNewDomainUsingParameters:(LibreAccessServiceSvc_SaveNewDomainRequest *)aParameters ;
 - (void)SaveNewDomainAsyncUsingParameters:(LibreAccessServiceSvc_SaveNewDomainRequest *)aParameters  delegate:(id<LibreAccessServiceSoap11BindingResponseDelegate>)responseDelegate;
 - (LibreAccessServiceSoap11BindingResponse *)ListDefaultBooksUsingParameters:(LibreAccessServiceSvc_ListDefaultBooksRequest *)aParameters ;
@@ -5992,6 +6508,8 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
 - (void)SaveProfileContentAnnotationsForRatingsAsyncUsingParameters:(LibreAccessServiceSvc_SaveProfileContentAnnotationsForRatingsRequest *)aParameters  delegate:(id<LibreAccessServiceSoap11BindingResponseDelegate>)responseDelegate;
 - (LibreAccessServiceSoap11BindingResponse *)ListUserSettingsExUsingParameters:(LibreAccessServiceSvc_ListUserSettingsExRequest *)aParameters ;
 - (void)ListUserSettingsExAsyncUsingParameters:(LibreAccessServiceSvc_ListUserSettingsExRequest *)aParameters  delegate:(id<LibreAccessServiceSoap11BindingResponseDelegate>)responseDelegate;
+- (LibreAccessServiceSoap11BindingResponse *)GetUserProfilesRecommendationsUsingParameters:(LibreAccessServiceSvc_GetUserProfilesRecommendationsRequest *)aParameters ;
+- (void)GetUserProfilesRecommendationsAsyncUsingParameters:(LibreAccessServiceSvc_GetUserProfilesRecommendationsRequest *)aParameters  delegate:(id<LibreAccessServiceSoap11BindingResponseDelegate>)responseDelegate;
 - (LibreAccessServiceSoap11BindingResponse *)ListUserContentForRatingsUsingBody:(LibreAccessServiceSvc_ListUserContentForRatingsRequest *)aBody ;
 - (void)ListUserContentForRatingsAsyncUsingBody:(LibreAccessServiceSvc_ListUserContentForRatingsRequest *)aBody  delegate:(id<LibreAccessServiceSoap11BindingResponseDelegate>)responseDelegate;
 - (LibreAccessServiceSoap11BindingResponse *)GetLastPageLocationUsingParameters:(LibreAccessServiceSvc_GetLastPageLocationRequest *)aParameters ;
@@ -6004,6 +6522,8 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
 - (void)GetLicensableStatusAsyncUsingParameters:(LibreAccessServiceSvc_GetLicensableStatusRequest *)aParameters  delegate:(id<LibreAccessServiceSoap11BindingResponseDelegate>)responseDelegate;
 - (LibreAccessServiceSoap11BindingResponse *)SaveLastPageLocationUsingParameters:(LibreAccessServiceSvc_SaveLastPageLocationRequest *)aParameters ;
 - (void)SaveLastPageLocationAsyncUsingParameters:(LibreAccessServiceSvc_SaveLastPageLocationRequest *)aParameters  delegate:(id<LibreAccessServiceSoap11BindingResponseDelegate>)responseDelegate;
+- (LibreAccessServiceSoap11BindingResponse *)SaveRatingsUsingParameters:(LibreAccessServiceSvc_SaveRatingsRequest *)aParameters ;
+- (void)SaveRatingsAsyncUsingParameters:(LibreAccessServiceSvc_SaveRatingsRequest *)aParameters  delegate:(id<LibreAccessServiceSoap11BindingResponseDelegate>)responseDelegate;
 - (LibreAccessServiceSoap11BindingResponse *)ListUserCSRNotesUsingParameters:(LibreAccessServiceSvc_ListUserCSRNotesRequest *)aParameters ;
 - (void)ListUserCSRNotesAsyncUsingParameters:(LibreAccessServiceSvc_ListUserCSRNotesRequest *)aParameters  delegate:(id<LibreAccessServiceSoap11BindingResponseDelegate>)responseDelegate;
 - (LibreAccessServiceSoap11BindingResponse *)RenewTokenUsingBody:(LibreAccessServiceSvc_RenewTokenRequest *)aBody ;
@@ -6024,6 +6544,8 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
 - (void)ListReadBooksAsyncUsingParameters:(LibreAccessServiceSvc_ListReadBooksRequest *)aParameters  delegate:(id<LibreAccessServiceSoap11BindingResponseDelegate>)responseDelegate;
 - (LibreAccessServiceSoap11BindingResponse *)GetDeviceInfoUsingParameters:(LibreAccessServiceSvc_GetDeviceInfoRequest *)aParameters ;
 - (void)GetDeviceInfoAsyncUsingParameters:(LibreAccessServiceSvc_GetDeviceInfoRequest *)aParameters  delegate:(id<LibreAccessServiceSoap11BindingResponseDelegate>)responseDelegate;
+- (LibreAccessServiceSoap11BindingResponse *)ListBooksAssignmentUsingBody:(LibreAccessServiceSvc_ListBooksAssignment *)aBody ;
+- (void)ListBooksAssignmentAsyncUsingBody:(LibreAccessServiceSvc_ListBooksAssignment *)aBody  delegate:(id<LibreAccessServiceSoap11BindingResponseDelegate>)responseDelegate;
 - (LibreAccessServiceSoap11BindingResponse *)SaveReadingStatisticsDetailedUsingParameters:(LibreAccessServiceSvc_SaveReadingStatisticsDetailedRequest *)aParameters ;
 - (void)SaveReadingStatisticsDetailedAsyncUsingParameters:(LibreAccessServiceSvc_SaveReadingStatisticsDetailedRequest *)aParameters  delegate:(id<LibreAccessServiceSoap11BindingResponseDelegate>)responseDelegate;
 - (LibreAccessServiceSoap11BindingResponse *)SaveContentProfileAssignmentUsingParameters:(LibreAccessServiceSvc_SaveContentProfileAssignmentRequest *)aParameters ;
@@ -6056,12 +6578,14 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
 - (void)GetUserProfilesAsyncUsingParameters:(LibreAccessServiceSvc_GetUserProfilesRequest *)aParameters  delegate:(id<LibreAccessServiceSoap11BindingResponseDelegate>)responseDelegate;
 - (LibreAccessServiceSoap11BindingResponse *)DeleteBookShelfEntryUsingParameters:(LibreAccessServiceSvc_DeleteBookShelfEntryRequest *)aParameters ;
 - (void)DeleteBookShelfEntryAsyncUsingParameters:(LibreAccessServiceSvc_DeleteBookShelfEntryRequest *)aParameters  delegate:(id<LibreAccessServiceSoap11BindingResponseDelegate>)responseDelegate;
+- (LibreAccessServiceSoap11BindingResponse *)ListRatingsUsingParameters:(LibreAccessServiceSvc_ListRatingsRequest *)aParameters ;
+- (void)ListRatingsAsyncUsingParameters:(LibreAccessServiceSvc_ListRatingsRequest *)aParameters  delegate:(id<LibreAccessServiceSoap11BindingResponseDelegate>)responseDelegate;
 - (LibreAccessServiceSoap11BindingResponse *)SetLoggingLevelUsingParameters:(LibreAccessServiceSvc_SetLoggingLevelRequest *)aParameters ;
 - (void)SetLoggingLevelAsyncUsingParameters:(LibreAccessServiceSvc_SetLoggingLevelRequest *)aParameters  delegate:(id<LibreAccessServiceSoap11BindingResponseDelegate>)responseDelegate;
-- (LibreAccessServiceSoap11BindingResponse *)SaveUserSettingsExUsingParameters:(LibreAccessServiceSvc_SaveUserSettingsExRequest *)aParameters ;
-- (void)SaveUserSettingsExAsyncUsingParameters:(LibreAccessServiceSvc_SaveUserSettingsExRequest *)aParameters  delegate:(id<LibreAccessServiceSoap11BindingResponseDelegate>)responseDelegate;
 - (LibreAccessServiceSoap11BindingResponse *)ListUserSettingsUsingParameters:(LibreAccessServiceSvc_ListUserSettingsRequest *)aParameters ;
 - (void)ListUserSettingsAsyncUsingParameters:(LibreAccessServiceSvc_ListUserSettingsRequest *)aParameters  delegate:(id<LibreAccessServiceSoap11BindingResponseDelegate>)responseDelegate;
+- (LibreAccessServiceSoap11BindingResponse *)SaveUserSettingsExUsingParameters:(LibreAccessServiceSvc_SaveUserSettingsExRequest *)aParameters ;
+- (void)SaveUserSettingsExAsyncUsingParameters:(LibreAccessServiceSvc_SaveUserSettingsExRequest *)aParameters  delegate:(id<LibreAccessServiceSoap11BindingResponseDelegate>)responseDelegate;
 - (LibreAccessServiceSoap11BindingResponse *)IsEntitledToLicenseUsingParameters:(LibreAccessServiceSvc_EntitledToLicenceRequest *)aParameters ;
 - (void)IsEntitledToLicenseAsyncUsingParameters:(LibreAccessServiceSvc_EntitledToLicenceRequest *)aParameters  delegate:(id<LibreAccessServiceSoap11BindingResponseDelegate>)responseDelegate;
 - (LibreAccessServiceSoap11BindingResponse *)RemoveOrderUsingParameters:(LibreAccessServiceSvc_RemoveOrderRequest *)aParameters ;
@@ -6154,8 +6678,11 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
 ;
 @end
 @interface LibreAccessServiceSoap11Binding_HealthCheck : LibreAccessServiceSoap11BindingOperation {
+	LibreAccessServiceSvc_HealthCheckRequest * parameters;
 }
+@property (nonatomic, retain) LibreAccessServiceSvc_HealthCheckRequest * parameters;
 - (id)initWithBinding:(LibreAccessServiceSoap11Binding *)aBinding delegate:(id<LibreAccessServiceSoap11BindingResponseDelegate>)aDelegate
+	parameters:(LibreAccessServiceSvc_HealthCheckRequest *)aParameters
 ;
 @end
 @interface LibreAccessServiceSoap11Binding_SaveNewDomain : LibreAccessServiceSoap11BindingOperation {
@@ -6214,6 +6741,14 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
 	parameters:(LibreAccessServiceSvc_ListUserSettingsExRequest *)aParameters
 ;
 @end
+@interface LibreAccessServiceSoap11Binding_GetUserProfilesRecommendations : LibreAccessServiceSoap11BindingOperation {
+	LibreAccessServiceSvc_GetUserProfilesRecommendationsRequest * parameters;
+}
+@property (nonatomic, retain) LibreAccessServiceSvc_GetUserProfilesRecommendationsRequest * parameters;
+- (id)initWithBinding:(LibreAccessServiceSoap11Binding *)aBinding delegate:(id<LibreAccessServiceSoap11BindingResponseDelegate>)aDelegate
+	parameters:(LibreAccessServiceSvc_GetUserProfilesRecommendationsRequest *)aParameters
+;
+@end
 @interface LibreAccessServiceSoap11Binding_ListUserContentForRatings : LibreAccessServiceSoap11BindingOperation {
 	LibreAccessServiceSvc_ListUserContentForRatingsRequest * body;
 }
@@ -6260,6 +6795,14 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
 @property (nonatomic, retain) LibreAccessServiceSvc_SaveLastPageLocationRequest * parameters;
 - (id)initWithBinding:(LibreAccessServiceSoap11Binding *)aBinding delegate:(id<LibreAccessServiceSoap11BindingResponseDelegate>)aDelegate
 	parameters:(LibreAccessServiceSvc_SaveLastPageLocationRequest *)aParameters
+;
+@end
+@interface LibreAccessServiceSoap11Binding_SaveRatings : LibreAccessServiceSoap11BindingOperation {
+	LibreAccessServiceSvc_SaveRatingsRequest * parameters;
+}
+@property (nonatomic, retain) LibreAccessServiceSvc_SaveRatingsRequest * parameters;
+- (id)initWithBinding:(LibreAccessServiceSoap11Binding *)aBinding delegate:(id<LibreAccessServiceSoap11BindingResponseDelegate>)aDelegate
+	parameters:(LibreAccessServiceSvc_SaveRatingsRequest *)aParameters
 ;
 @end
 @interface LibreAccessServiceSoap11Binding_ListUserCSRNotes : LibreAccessServiceSoap11BindingOperation {
@@ -6340,6 +6883,14 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
 @property (nonatomic, retain) LibreAccessServiceSvc_GetDeviceInfoRequest * parameters;
 - (id)initWithBinding:(LibreAccessServiceSoap11Binding *)aBinding delegate:(id<LibreAccessServiceSoap11BindingResponseDelegate>)aDelegate
 	parameters:(LibreAccessServiceSvc_GetDeviceInfoRequest *)aParameters
+;
+@end
+@interface LibreAccessServiceSoap11Binding_ListBooksAssignment : LibreAccessServiceSoap11BindingOperation {
+	LibreAccessServiceSvc_ListBooksAssignment * body;
+}
+@property (nonatomic, retain) LibreAccessServiceSvc_ListBooksAssignment * body;
+- (id)initWithBinding:(LibreAccessServiceSoap11Binding *)aBinding delegate:(id<LibreAccessServiceSoap11BindingResponseDelegate>)aDelegate
+	body:(LibreAccessServiceSvc_ListBooksAssignment *)aBody
 ;
 @end
 @interface LibreAccessServiceSoap11Binding_SaveReadingStatisticsDetailed : LibreAccessServiceSoap11BindingOperation {
@@ -6470,6 +7021,14 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
 	parameters:(LibreAccessServiceSvc_DeleteBookShelfEntryRequest *)aParameters
 ;
 @end
+@interface LibreAccessServiceSoap11Binding_ListRatings : LibreAccessServiceSoap11BindingOperation {
+	LibreAccessServiceSvc_ListRatingsRequest * parameters;
+}
+@property (nonatomic, retain) LibreAccessServiceSvc_ListRatingsRequest * parameters;
+- (id)initWithBinding:(LibreAccessServiceSoap11Binding *)aBinding delegate:(id<LibreAccessServiceSoap11BindingResponseDelegate>)aDelegate
+	parameters:(LibreAccessServiceSvc_ListRatingsRequest *)aParameters
+;
+@end
 @interface LibreAccessServiceSoap11Binding_SetLoggingLevel : LibreAccessServiceSoap11BindingOperation {
 	LibreAccessServiceSvc_SetLoggingLevelRequest * parameters;
 }
@@ -6478,20 +7037,20 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
 	parameters:(LibreAccessServiceSvc_SetLoggingLevelRequest *)aParameters
 ;
 @end
-@interface LibreAccessServiceSoap11Binding_SaveUserSettingsEx : LibreAccessServiceSoap11BindingOperation {
-	LibreAccessServiceSvc_SaveUserSettingsExRequest * parameters;
-}
-@property (nonatomic, retain) LibreAccessServiceSvc_SaveUserSettingsExRequest * parameters;
-- (id)initWithBinding:(LibreAccessServiceSoap11Binding *)aBinding delegate:(id<LibreAccessServiceSoap11BindingResponseDelegate>)aDelegate
-	parameters:(LibreAccessServiceSvc_SaveUserSettingsExRequest *)aParameters
-;
-@end
 @interface LibreAccessServiceSoap11Binding_ListUserSettings : LibreAccessServiceSoap11BindingOperation {
 	LibreAccessServiceSvc_ListUserSettingsRequest * parameters;
 }
 @property (nonatomic, retain) LibreAccessServiceSvc_ListUserSettingsRequest * parameters;
 - (id)initWithBinding:(LibreAccessServiceSoap11Binding *)aBinding delegate:(id<LibreAccessServiceSoap11BindingResponseDelegate>)aDelegate
 	parameters:(LibreAccessServiceSvc_ListUserSettingsRequest *)aParameters
+;
+@end
+@interface LibreAccessServiceSoap11Binding_SaveUserSettingsEx : LibreAccessServiceSoap11BindingOperation {
+	LibreAccessServiceSvc_SaveUserSettingsExRequest * parameters;
+}
+@property (nonatomic, retain) LibreAccessServiceSvc_SaveUserSettingsExRequest * parameters;
+- (id)initWithBinding:(LibreAccessServiceSoap11Binding *)aBinding delegate:(id<LibreAccessServiceSoap11BindingResponseDelegate>)aDelegate
+	parameters:(LibreAccessServiceSvc_SaveUserSettingsExRequest *)aParameters
 ;
 @end
 @interface LibreAccessServiceSoap11Binding_IsEntitledToLicense : LibreAccessServiceSoap11BindingOperation {

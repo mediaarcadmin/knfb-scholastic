@@ -247,7 +247,7 @@
             if (isSampleStore) {
                 self.bottomLabel.text = NSLocalizedString(@"You have not yet downloaded the Storia dictionary.", nil);
             } else {
-                self.bottomLabel.text = NSLocalizedString(@"You have not yet downloaded the Storia dictionary. To download the dictionary, go to Parent Tools on the eReader sign-in screen.", nil);
+                self.bottomLabel.text = NSLocalizedString(@"You have not yet downloaded the Storia dictionary. To download the dictionary, go to the Parent Tools menu.", nil);
             }
             
             [self.activityIndicator stopAnimating];
@@ -275,7 +275,7 @@
         }
         case SCHDictionaryProcessingStateDeleting:
         {
-            self.bottomLabel.text = NSLocalizedString(@"The Scholastic dictionary is currently being deleted from your device. Go to Parent Tools on the eReader sign-in screen to download it again.", nil);
+            self.bottomLabel.text = NSLocalizedString(@"The Storia dictionary is currently being deleted from your device. Go to the Parent Tools menu to download it again.", nil);
             [self.activityIndicator stopAnimating];
             self.progressBar.hidden = YES;
             break;
@@ -305,7 +305,7 @@
                 if (isSampleStore) {
                     self.bottomLabel.text = NSLocalizedString(@"You have not yet downloaded the Storia dictionary.", nil);
                 } else {
-                    self.bottomLabel.text =NSLocalizedString( @"You have not yet downloaded the Storia dictionary. To download the dictionary, go to Parent Tools on the eReader sign-in screen.", nil);
+                    self.bottomLabel.text =NSLocalizedString( @"You have not yet downloaded the Storia dictionary. To download the dictionary, go to the Parent Tools menu.", nil);
                 }
             } else {
                 self.bottomLabel.text = NSLocalizedString(@"The dictionary is currently downloading from the Internet. You can wait for it to finish, or look up your word later.", nil);

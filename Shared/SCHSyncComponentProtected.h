@@ -13,6 +13,7 @@
 
 - (void)saveWithManagedObjectContext:(NSManagedObjectContext *)aManagedObjectContext;
 
+@property (nonatomic, retain) NSOperationQueue *backgroundProcessingQueue;
 @property (assign, nonatomic) UIBackgroundTaskIdentifier backgroundTaskIdentifier;
 
 - (void)beginBackgroundTask;

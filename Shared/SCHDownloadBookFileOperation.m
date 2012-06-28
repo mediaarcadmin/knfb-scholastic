@@ -15,9 +15,15 @@
 
 #pragma mark - Class Extension
 
+// If the already downloaded file size is (bookFileSize - kSCHDownloadBookFileSizeCompleteMarginOfError bytes) or greater
+// then assume we have the whole file. Unfortunately bookFileSize is not accurate. We see downloaded books larger than this size. We also
+// see downloaded books that are complete but are slightly smaller. This 100 byte margin is to handle that
+static NSUInteger const kSCHDownloadBookFileSizeCompleteMarginOfError = 100;
+
 @interface SCHDownloadBookFileOperation ()
 
-@property (nonatomic, copy) NSString *localPath;
+@property (nonatomic, copy) NSString *realLocalPath;
+@property (nonatomic, copy) NSString *temporaryLocalPath;
 @property (nonatomic, assign) unsigned long bookFileSize;
 @property (nonatomic, assign) unsigned long long expectedImageFileSize;
 @property (nonatomic, retain) QHTTPOperation *downloadOperation;
@@ -39,7 +45,8 @@
 @implementation SCHDownloadBookFileOperation
 
 @synthesize resume;
-@synthesize localPath;
+@synthesize realLocalPath;
+@synthesize temporaryLocalPath;
 @synthesize fileType;
 @synthesize bookFileSize;
 @synthesize previousPercentage;
@@ -51,7 +58,8 @@
 - (void)dealloc 
 {
     [downloadOperation release], downloadOperation = nil;
-    [localPath release], localPath = nil;
+    [realLocalPath release], realLocalPath = nil;
+    [temporaryLocalPath release], temporaryLocalPath = nil;
 	[super dealloc];
 }
 
@@ -83,8 +91,8 @@
         __block BOOL bookFileURLIsValid = NO;
         
         [self performWithBook:^(SCHAppBook *book) {
-            self.localPath = [book xpsPath];
-            bookFileURL = [[book BookFileURL] retain];
+            self.realLocalPath = [book xpsPath];
+            bookFileURL = [[book BookFileURL] copy];
             bookFileURLIsFileURL = [book bookFileURLIsBundleURL];
             bookFileURLIsValid = [book bookFileURLIsValid];
         }];
@@ -99,22 +107,22 @@
             return;            
         }
         
-        if (self.localPath == nil || bookFileURL == nil || [bookFileURL compare:@""] == NSOrderedSame) {
-            NSLog(@"WARNING: problem with SCHAppBook (ISBN: %@ localPath: %@ bookFileURL: %@", self.identifier, self.localPath, bookFileURL);
+        if (self.realLocalPath == nil || bookFileURL == nil || [bookFileURL compare:@""] == NSOrderedSame) {
+            NSLog(@"WARNING: problem with SCHAppBook (ISBN: %@ localPath: %@ bookFileURL: %@", self.identifier, self.realLocalPath, bookFileURL);
             [self failedDownload];
             [bookFileURL release];            
             return;
         }
         
         if (bookFileURLIsFileURL) {
-            if ([fileManager fileExistsAtPath:self.localPath]) {
-                if (![fileManager removeItemAtPath:self.localPath error:&error]) {
-                    NSLog(@"Unable to remove existing item at path: %@ %@", self.localPath, error);
+            if ([fileManager fileExistsAtPath:self.realLocalPath]) {
+                if (![fileManager removeItemAtPath:self.realLocalPath error:&error]) {
+                    NSLog(@"Unable to remove existing item at path: %@ %@", self.realLocalPath, error);
                 }
             }
             
             if (![fileManager copyItemAtPath:[self fullPathToBundledFile:bookFileURL]
-                                      toPath:self.localPath 
+                                      toPath:self.realLocalPath 
                                        error:&error]) {   
                 NSLog(@"Error copying XPS file from bundle: %@, %@", error, [error userInfo]);
                 [self failedDownload];
@@ -138,10 +146,10 @@
         __block BOOL bookCoverURLIsValid = NO;
         
         [self performWithBook:^(SCHAppBook *book) {
-            bookDirectory = [[book bookDirectory] retain];
-            contentIdentifier = [[book ContentIdentifier] retain];
-            self.localPath = [book coverImagePath];
-            coverURL = [[book BookCoverURL] retain];
+            bookDirectory = [[book bookDirectory] copy];
+            contentIdentifier = [[book ContentIdentifier] copy];
+            self.realLocalPath = [book coverImagePath];
+            coverURL = [[book BookCoverURL] copy];
             coverURLIsFileURL = [book bookCoverURLIsBundleURL];
             bookCoverURLIsValid = [book bookCoverURLIsValid];
         }];
@@ -153,8 +161,8 @@
             return;            
         }
 
-        if (self.localPath == nil || coverURL == nil || [coverURL compare:@""] == NSOrderedSame) {
-            NSLog(@"WARNING: problem with SCHAppBook (ISBN: %@ localPath: %@ coverURL: %@", self.identifier, self.localPath, coverURL);
+        if (self.realLocalPath == nil || coverURL == nil || [coverURL compare:@""] == NSOrderedSame) {
+            NSLog(@"WARNING: problem with SCHAppBook (ISBN: %@ localPath: %@ coverURL: %@", self.identifier, self.realLocalPath, coverURL);
             [self setProcessingState:SCHBookProcessingStateError];
             [self setIsProcessing:NO];                                
             [self endOperation];
@@ -163,14 +171,14 @@
         }
 
         if (coverURLIsFileURL) {
-            if ([fileManager fileExistsAtPath:self.localPath]) {
-                if (![fileManager removeItemAtPath:self.localPath error:&error]) {
-                    NSLog(@"Unable to remove existing item at path: %@ %@", self.localPath, error);
+            if ([fileManager fileExistsAtPath:self.realLocalPath]) {
+                if (![fileManager removeItemAtPath:self.realLocalPath error:&error]) {
+                    NSLog(@"Unable to remove existing item at path: %@ %@", self.realLocalPath, error);
                 }
             }
             
             if (![fileManager copyItemAtPath:[self fullPathToBundledFile:coverURL]
-                                                    toPath:self.localPath 
+                                                    toPath:self.realLocalPath 
                                        error:&error]) {     
                 NSLog(@"Error copying cover file from bundle: %@, %@", error, [error userInfo]);
                 [self failedDownload];
@@ -184,6 +192,13 @@
 
         } else {
             request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:coverURL]];
+            
+            // create a temporary path
+            CFUUIDRef theUUID = CFUUIDCreate(NULL);
+            CFStringRef UUIDString = CFUUIDCreateString(NULL, theUUID);
+            self.temporaryLocalPath = [NSString stringWithFormat:@"%@_inprogress_%@", self.realLocalPath, UUIDString];
+            CFRelease(UUIDString);
+            CFRelease(theUUID);
         }
         
         [bookDirectory release];
@@ -200,54 +215,81 @@
     self.previousPercentage = -1;
 	self.expectedImageFileSize = 0;
     self.alreadyDownloadedSize = 0;
-    
-	if ([fileManager fileExistsAtPath:self.localPath]) {
-		// check to see how much of the file has been downloaded
+   
+    // skip all the existing file checking if we have a temporary local path
+    // just delete any existing file
+    if (self.temporaryLocalPath) {
+        
+        if ([fileManager fileExistsAtPath:self.temporaryLocalPath]) {
+            NSError *error = nil;
+            if (![fileManager removeItemAtPath:self.temporaryLocalPath error:&error]) {
+                NSLog(@"Error when deleting an existing file. Stopping. (%@)", [error localizedDescription]);
+                [self failedDownload];
+                return;
+            }
+        }
+    } else {
+        if ([fileManager fileExistsAtPath:self.realLocalPath]) {
+            // check to see how much of the file has been downloaded
 
-		if (!self.resume) {
-			// if we're not resuming, delete the existing file first
-            NSError *error = nil;
-			if (![fileManager removeItemAtPath:localPath error:&error]) {
-				NSLog(@"Error when deleting an existing file. Stopping. (%@)", [error localizedDescription]);
-                [self failedDownload];
-				return;
-			}
-		} else {
-            NSError *error = nil;
-			NSDictionary *attributes = [fileManager attributesOfItemAtPath:localPath error:&error];
-            if (!attributes) {
-				NSLog(@"Error when reading file attributes. Stopping. (%@)", [error localizedDescription]);
-                [self failedDownload];
-				return;
-			}
-            currentFilesize = [attributes fileSize];
-		}
-	}
-		
-	if (currentFilesize > 0) {
-        NSLog(@"Already have %llu bytes, need %llu bytes more.", currentFilesize, self.bookFileSize - currentFilesize);
-		[request setValue:[NSString stringWithFormat:@"bytes=%llu-", currentFilesize] forHTTPHeaderField:@"Range"];
-        self.alreadyDownloadedSize = currentFilesize;
-        append = YES;
-	} else {
-		[fileManager createFileAtPath:self.localPath contents:nil attributes:nil];
-	}
-    
+            if (!self.resume) {
+                // if we're not resuming, delete the existing file first
+                NSError *error = nil;
+                if (![fileManager removeItemAtPath:self.realLocalPath error:&error]) {
+                    NSLog(@"Error when deleting an existing file. Stopping. (%@)", [error localizedDescription]);
+                    [self failedDownload];
+                    return;
+                }
+            } else {
+                NSError *error = nil;
+                NSDictionary *attributes = [fileManager attributesOfItemAtPath:self.realLocalPath error:&error];
+                if (!attributes) {
+                    NSLog(@"Error when reading file attributes. Stopping. (%@)", [error localizedDescription]);
+                    [self failedDownload];
+                    return;
+                }
+                currentFilesize = [attributes fileSize];
+            }
+        }
+            
+        if (currentFilesize > 0) {
+            if (currentFilesize >= ([self bookFileSize] - kSCHDownloadBookFileSizeCompleteMarginOfError)) {
+                // Assume the book is already complete.
+                // If this is incorrect then the book will fail to open and will need reprocessed
+                [self didChangeValueForKey:@"isExecuting"];
+                [self completedDownload];
+                return;
+            }
+            NSLog(@"Already have %llu bytes, need %llu bytes more.", currentFilesize, self.bookFileSize - currentFilesize);
+            [request setValue:[NSString stringWithFormat:@"bytes=%llu-", currentFilesize] forHTTPHeaderField:@"Range"];
+            self.alreadyDownloadedSize = currentFilesize;
+            append = YES;
+        } else {
+            [fileManager createFileAtPath:self.realLocalPath contents:nil attributes:nil];
+        }
+        
+
+    }
+
     NSMutableIndexSet *acceptableStatusCodes = [NSMutableIndexSet indexSetWithIndex:200];
     [acceptableStatusCodes addIndex:206];
-
+    
     self.downloadOperation = [[[QHTTPOperation alloc] initWithRequest:request] autorelease];
     self.downloadOperation.acceptableStatusCodes = acceptableStatusCodes;
-    self.downloadOperation.responseOutputStream = [NSOutputStream outputStreamToFileAtPath:self.localPath append:append];
+    if (self.temporaryLocalPath) {
+        self.downloadOperation.responseOutputStream = [NSOutputStream outputStreamToFileAtPath:self.temporaryLocalPath append:append];
+    } else {
+        self.downloadOperation.responseOutputStream = [NSOutputStream outputStreamToFileAtPath:self.realLocalPath append:append];
+    }
     self.downloadOperation.delegate = self;
 	
     __block SCHDownloadBookFileOperation *unretained_self = self;
     self.downloadOperation.completionBlock = ^{
         if (unretained_self.fileType == kSCHDownloadFileTypeXPSBook) {
-            NSLog(@"Finished file %@. [downloaded: %llu expected:%lu]", [unretained_self.localPath lastPathComponent], 
+            NSLog(@"Finished file %@. [downloaded: %llu expected:%lu]", [unretained_self.realLocalPath lastPathComponent], 
                   currentFilesize, unretained_self.bookFileSize);
         } else {
-            NSLog(@"Finished file %@. [downloaded: %llu]", [unretained_self.localPath lastPathComponent], currentFilesize);        
+            NSLog(@"Finished file %@. [downloaded: %llu]", [unretained_self.realLocalPath lastPathComponent], currentFilesize);        
         }
         
         [[BITNetworkActivityManager sharedNetworkActivityManager] hideNetworkActivityIndicator];
@@ -329,14 +371,15 @@
     }
 
     
-    NSLog(@"Filesize receiving:%llu for file %@", expectedDataSize, self.localPath);
+    NSLog(@"Filesize receiving:%llu for file %@", expectedDataSize, self.temporaryLocalPath?self.temporaryLocalPath:self.realLocalPath);
 }
 
 - (void)httpOperation:(QHTTPOperation *)operation updatedDownloadSize:(long long)downloadedSize
 {
-    if ([self processingState] == SCHBookProcessingStateDownloadPaused) {
-        [self cancelOperationAndSuboperations];
-    } else {
+//    if ([self processingState] == SCHBookProcessingStateDownloadPaused) {
+//        [self cancelOperationAndSuboperations];
+//    } else {
+    if (![self isCancelled]) {
         self.currentDownloadedSize = downloadedSize;
         if (self.fileType == kSCHDownloadFileTypeXPSBook) {
             [self createPercentageUpdate];
@@ -352,7 +395,7 @@
     } else if ([error.domain isEqualToString:NSPOSIXErrorDomain] && error.code == ENOSPC) {
         // remove the partial file to free up some disk space
         NSFileManager *fileManager = [[[NSFileManager alloc] init] autorelease];
-        [fileManager removeItemAtPath:self.localPath error:nil];
+        [fileManager removeItemAtPath:self.temporaryLocalPath?self.temporaryLocalPath:self.realLocalPath error:nil];
         
         [[BITNetworkActivityManager sharedNetworkActivityManager] hideNetworkActivityIndicator];
         
@@ -364,6 +407,12 @@
         NSLog(@"book download operation failed with error: %@", error);
         
         [[BITNetworkActivityManager sharedNetworkActivityManager] hideNetworkActivityIndicator];
+        
+        if ([error.domain isEqualToString:kQHTTPOperationErrorDomain] && error.code == 416) {
+            // There was a problem with the range. Delete the files on the disk        
+            NSFileManager *fileManager = [[[NSFileManager alloc] init] autorelease];
+            [fileManager removeItemAtPath:self.temporaryLocalPath?self.temporaryLocalPath:self.realLocalPath error:nil];
+        }
         
         // allow the operation to complete but change the completion handling
         __block SCHDownloadBookFileOperation *unretained_self = self;
@@ -382,12 +431,12 @@
             [self performWithBookAndSave:^(SCHAppBook *book) {
                 
                 int contentMetadataVersion = [[[book ContentMetadataItem] Version] intValue];
-                int userContentVersion = [[[[book ContentMetadataItem] UserContentItem] LastVersion] intValue];
+                int userContentVersion = [[[[book ContentMetadataItem] UserContentItem] Version] intValue];
                 
                 if (contentMetadataVersion > userContentVersion) {
                     book.OnDiskVersion = [[book ContentMetadataItem] Version];
                 } else {
-                    book.OnDiskVersion = [[[book ContentMetadataItem] UserContentItem] LastVersion];
+                    book.OnDiskVersion = [[[book ContentMetadataItem] UserContentItem] Version];
                 }
                 book.XPSExists = [NSNumber numberWithBool:YES];
             }];
@@ -412,13 +461,13 @@
             // if not, it has likely become corrupt
             unsigned long long totalDownloadedSize = self.alreadyDownloadedSize + self.currentDownloadedSize;
             if (self.expectedImageFileSize != totalDownloadedSize) {
-                NSLog(@"Error downloading file %@ (image filesize did not match)", [self.localPath lastPathComponent]);
+                NSLog(@"Error downloading file %@ (image filesize did not match)", [self.temporaryLocalPath lastPathComponent]);
                 validImage = NO;
             } 
             
             // if there has been no data received, then the image is invalid
             if (!self.lastTwoBytes) {
-                NSLog(@"Error downloading file %@ (no image data)", [self.localPath lastPathComponent]);
+                NSLog(@"Error downloading file %@ (no image data)", [self.temporaryLocalPath lastPathComponent]);
                 validImage = NO;
             }
             
@@ -428,7 +477,7 @@
                 
                 // if the last two bytes don't match the EOI marker, the image is invalid
                 if (![jpegEOF isEqualToData:self.lastTwoBytes]) {
-                    NSLog(@"Error downloading file %@ (invalid JPEG End Of Image marker)", [self.localPath lastPathComponent]);
+                    NSLog(@"Error downloading file %@ (invalid JPEG End Of Image marker)", [self.temporaryLocalPath lastPathComponent]);
                     validImage = NO;
                 }
                 
@@ -437,21 +486,48 @@
                 // reference: http://www.w3.org/TR/PNG/#11IEND
             }
             
+            NSFileManager *fileManager = [[[NSFileManager alloc] init] autorelease];
             if (!validImage) {
                 [[BITNetworkActivityManager sharedNetworkActivityManager] hideNetworkActivityIndicator];
                 
                 // if there was an error, the file is invalid and is removed
-                NSFileManager *fileManager = [[[NSFileManager alloc] init] autorelease];
-                [fileManager removeItemAtPath:self.localPath error:nil];
+                [fileManager removeItemAtPath:self.temporaryLocalPath error:nil];
 
                 [self setDownloadFailedState];
                 
             } else {
-                [self performWithBookAndSave:^(SCHAppBook *book) {
-                    book.BookCoverExists = [NSNumber numberWithBool:YES];
-                }];            
-                [self resetDownloadFailedState];
-                [self setProcessingState:SCHBookProcessingStateReadyForBookFileDownload];
+                __block BOOL fileMoveFailed = NO;
+                
+                dispatch_sync([SCHProcessingManager sharedProcessingManager].thumbnailAccessQueue, ^{
+
+                    if (self.temporaryLocalPath) {
+                        // move the book cover to the real location
+                        NSError *fileMoveError = nil;
+                        
+                        NSFileManager *threadSafeManager = [[[NSFileManager alloc] init] autorelease];
+                        
+                        if ([threadSafeManager fileExistsAtPath:self.realLocalPath]) {
+                            NSLog(@"Warning file already exists at path. Replacing it: %@", self.realLocalPath);
+                            [threadSafeManager removeItemAtPath:self.realLocalPath error:nil];
+                        }
+                        
+                        if (![threadSafeManager moveItemAtPath:self.temporaryLocalPath toPath:self.realLocalPath error:&fileMoveError]) {
+                            NSLog(@"Failed to move temp file item: %@", fileMoveError);
+                            fileMoveFailed = YES;
+                            [threadSafeManager removeItemAtPath:self.temporaryLocalPath error:nil];
+                        }
+                    }
+                });
+                
+                if (fileMoveFailed) {
+                    [self setDownloadFailedState];
+                } else {
+                    [self performWithBookAndSave:^(SCHAppBook *book) {
+                        book.BookCoverExists = [NSNumber numberWithBool:YES];
+                    }];            
+                    [self resetDownloadFailedState];
+                    [self setProcessingState:SCHBookProcessingStateReadyForBookFileDownload];
+                }
             }
 			break;
         }
@@ -487,7 +563,7 @@
 
 - (NSData *)lastTwoBytes
 {
-    NSData *downloadedFile = [NSData dataWithContentsOfMappedFile:self.localPath];
+    NSData *downloadedFile = [NSData dataWithContentsOfMappedFile:self.temporaryLocalPath?self.temporaryLocalPath:self.realLocalPath];
     if ([downloadedFile length] < 2) {
         return nil;
     }

@@ -55,6 +55,7 @@ NSString * const kSCHAppBookOldReader = @"OldReader";
 
 NSString * const kSCHAppBookCategoryPictureBook = @"Picture Book";
 NSString * const kSCHAppBookCategoryEarlyReader = @"Early Reader";
+NSString * const kSCHAppBookCategoryMiddleReader = @"Middle Reader";
 NSString * const kSCHAppBookCategoryAdvancedReader = @"Advanced Reader";
 NSString * const kSCHAppBookCategoryChapterBook = @"Chapter Book";
 NSString * const kSCHAppBookCategoryNovelMiddleGrade = @"Novel - Middle Grade";
@@ -327,7 +328,8 @@ NSString * const kSCHAppBookFilenameSeparator = @"-";
     if (self.XPSCategory != nil) {
         if ([self.XPSCategory caseInsensitiveCompare:kSCHAppBookYoungReader] == NSOrderedSame ||
             [self.XPSCategory caseInsensitiveCompare:kSCHAppBookCategoryPictureBook] == NSOrderedSame ||
-            [self.XPSCategory caseInsensitiveCompare:kSCHAppBookCategoryEarlyReader] == NSOrderedSame ||        
+            [self.XPSCategory caseInsensitiveCompare:kSCHAppBookCategoryEarlyReader] == NSOrderedSame ||
+            [self.XPSCategory caseInsensitiveCompare:kSCHAppBookCategoryMiddleReader] == NSOrderedSame ||
             [self.XPSCategory caseInsensitiveCompare:kSCHAppBookCategoryAdvancedReader] == NSOrderedSame ||                
             [self.XPSCategory caseInsensitiveCompare:kSCHAppBookCategoryNonFictionEarly] == NSOrderedSame) {
             ret = kSCHAppBookYoungReader;
@@ -371,6 +373,7 @@ NSString * const kSCHAppBookFilenameSeparator = @"-";
         if ([self.XPSCategory caseInsensitiveCompare:kSCHAppBookYoungReader] == NSOrderedSame ||
             [self.XPSCategory caseInsensitiveCompare:kSCHAppBookCategoryPictureBook] == NSOrderedSame ||
             [self.XPSCategory caseInsensitiveCompare:kSCHAppBookCategoryEarlyReader] == NSOrderedSame ||
+            [self.XPSCategory caseInsensitiveCompare:kSCHAppBookCategoryMiddleReader] == NSOrderedSame ||
             [self.XPSCategory caseInsensitiveCompare:kSCHAppBookCategoryAdvancedReader] == NSOrderedSame) {
             ret = NO;
         }    
@@ -504,6 +507,43 @@ NSString * const kSCHAppBookFilenameSeparator = @"-";
                                                        error:&error] == NO) {
             NSLog(@"Error deleting XPS file: %@", [error localizedDescription]);                        
         }                                                
+    }
+}
+
++ (void)moveBooksDirectoryToTmp
+{
+    NSString *booksDirectory = [SCHAppBook booksDirectory];
+    NSString *tmpDirectory = [NSTemporaryDirectory() stringByAppendingPathComponent:@"booksBackup"];
+    NSError *error = nil;
+    
+    if (booksDirectory != nil) {
+        if ([[NSFileManager defaultManager] fileExistsAtPath:tmpDirectory]) {
+            [[NSFileManager defaultManager] removeItemAtPath:tmpDirectory error:NULL];
+        }
+
+        if ([[NSFileManager defaultManager] moveItemAtPath:booksDirectory 
+                                                    toPath:tmpDirectory
+                                                       error:&error] == NO) {
+            NSLog(@"Error moving books directory to tmp: %@", [error localizedDescription]);                        
+        }
+    }
+}
+
++ (void)restoreBooksDirectoryFromTmp
+{
+    NSString *booksDirectory = [SCHAppBook booksDirectory];
+    NSError *error = nil;
+    
+    if (booksDirectory != nil) {
+        if ([[NSFileManager defaultManager] fileExistsAtPath:booksDirectory]) {
+            [[NSFileManager defaultManager] removeItemAtPath:booksDirectory error:NULL];
+        }
+        
+        if ([[NSFileManager defaultManager] moveItemAtPath:[NSTemporaryDirectory() stringByAppendingPathComponent:@"booksBackup"]
+                                                    toPath:booksDirectory
+                                                     error:&error] == NO) {
+            NSLog(@"Error restoring books directory from tmp: %@", [error localizedDescription]);                        
+        }
     }
 }
 
@@ -843,7 +883,7 @@ NSString * const kSCHAppBookFilenameSeparator = @"-";
             description = NSLocalizedString(@"The eBook is still being processed.", @"Still being processed error message from AppBook");
             break;
         case kSCHAppBookUnableToAcquireLicenseError:
-            description = NSLocalizedString(@"It has not been possible to acquire a DRM license for this eBook. Please make sure this device is authorized and connected to the internet and try again.", @"Decryption not available error message from AppBook");
+            description = NSLocalizedString(@"It has not been possible to acquire a DRM license for this eBook. Please make sure this device is authorized, connected to the internet and you have enough free storage space.", @"Decryption not available error message from AppBook");
             break;
         case kSCHAppBookCachedCoverError:
             description = NSLocalizedString(@"There was a problem retrieving the cover for this eBook. Please try again.", @"Cached Cover error message from AppBook");

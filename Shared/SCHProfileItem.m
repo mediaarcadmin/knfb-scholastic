@@ -32,6 +32,7 @@
 #import "SCHBookshelfSyncComponent.h"
 #import "SCHAnnotationsItem.h"
 #import "SCHProfileItemSortObject.h"
+#import "SCHAppStateManager.h"
 
 // Constants
 NSString * const kSCHProfileItem = @"SCHProfileItem";
@@ -46,7 +47,6 @@ NSString * const kSCHProfileItemDRM_QUALIFIER = @"DRM_QUALIFIER";
 - (void)deleteAnnotations;
 - (void)deleteStatistics;
 - (SCHReadingStatsContentItem *)makeReadingStatsContentItemForBook:(SCHBookIdentifier *)bookIdentifier;
-- (NSString *)MD5:(NSString *)string;
 - (NSString *)SHA1:(NSString *)string;
 
 @end
@@ -67,6 +67,7 @@ NSString * const kSCHProfileItemDRM_QUALIFIER = @"DRM_QUALIFIER";
 @dynamic UserKey;
 @dynamic BookshelfStyle;
 @dynamic LastName;
+@dynamic recommendationsOn;
 @dynamic AppProfile;
 @dynamic AppContentProfileItem;
 
@@ -194,14 +195,19 @@ NSString * const kSCHProfileItemDRM_QUALIFIER = @"DRM_QUALIFIER";
         NSMutableArray *books = [NSMutableArray array];
         
         for (SCHContentProfileItem *contentProfileItem in [self ContentProfileItem]) {
-            for (SCHContentMetadataItem *contentMetadataItem in contentProfileItem.UserContentItem.ContentMetadataItem) {
-                SCHBookIdentifier *identifier = [contentMetadataItem bookIdentifier];
-                if (identifier != nil) {
-                    [books addObject:identifier];
+            NSSet *contentMetadataItems = contentProfileItem.UserContentItem.ContentMetadataItem;
+            if ([contentMetadataItems count] > 0) {
+                for (SCHContentMetadataItem *contentMetadataItem in contentProfileItem.UserContentItem.ContentMetadataItem) {
+                    SCHBookIdentifier *identifier = [contentMetadataItem bookIdentifier];
+                    if (identifier != nil) {
+                        [books addObject:identifier];
+                    }
                 }
+            } else {
+                NSLog(@"Warning, no contentMetadataItems for contentProfileItem %@", contentProfileItem);
             }
         }
-        
+                
         // order the books
         if ([self.AppContentProfileItem count] > 0) {
             NSArray *bookOrder = [self.AppContentProfileItem sortedArrayUsingDescriptors:
@@ -372,54 +378,59 @@ NSString * const kSCHProfileItemDRM_QUALIFIER = @"DRM_QUALIFIER";
 
 - (void)newStatistics:(SCHBookStatistics *)bookStatistics forBook:(SCHBookIdentifier *)bookIdentifier
 {
-    SCHReadingStatsDetailItem *readingStatsDetailItem = nil;
-    SCHReadingStatsContentItem *readingStatsContentItem = nil;
-    SCHReadingStatsEntryItem *readingStatsEntryItem = nil;
-    NSError *error = nil;
+    NSString *settingValue = [[SCHAppStateManager sharedAppStateManager] settingNamed:kSCHSettingItemSTORE_READ_STAT];
     
-    if (bookStatistics != nil && [bookStatistics hasStatistics] == YES && 
-        bookIdentifier != nil) {
-        NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+    // we only store statistics if the settings allows us
+    if ([settingValue boolValue] == YES) {
+        SCHReadingStatsDetailItem *readingStatsDetailItem = nil;
+        SCHReadingStatsContentItem *readingStatsContentItem = nil;
+        SCHReadingStatsEntryItem *readingStatsEntryItem = nil;
+        NSError *error = nil;
         
-        [fetchRequest setEntity:[NSEntityDescription entityForName:kSCHReadingStatsDetailItem 
-                                            inManagedObjectContext:self.managedObjectContext]];	
-        [fetchRequest setPredicate:[NSPredicate predicateWithFormat:@"ProfileID == %@", self.ID]];
-        [fetchRequest setFetchLimit:1];
-        
-        NSArray *result = [self.managedObjectContext executeFetchRequest:fetchRequest 
-                                                                   error:&error];
-        [fetchRequest release], fetchRequest = nil;
-        if (result == nil) {
-            NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
+        if (bookStatistics != nil && [bookStatistics hasStatistics] == YES && 
+            bookIdentifier != nil) {
+            NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+            
+            [fetchRequest setEntity:[NSEntityDescription entityForName:kSCHReadingStatsDetailItem 
+                                                inManagedObjectContext:self.managedObjectContext]];	
+            [fetchRequest setPredicate:[NSPredicate predicateWithFormat:@"ProfileID == %@", self.ID]];
+            [fetchRequest setFetchLimit:1];
+            
+            NSArray *result = [self.managedObjectContext executeFetchRequest:fetchRequest 
+                                                                       error:&error];
+            [fetchRequest release], fetchRequest = nil;
+            if (result == nil) {
+                NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
+            }
+            
+            if ([result count] > 0) {
+                readingStatsDetailItem = [result objectAtIndex:0];
+                for (SCHReadingStatsContentItem *contentItem in readingStatsDetailItem.ReadingStatsContentItem) {
+                    if ([[contentItem bookIdentifier] isEqual:bookIdentifier] == YES) {
+                        readingStatsContentItem = contentItem;
+                        break;
+                    }
+                }            
+            } else {
+                readingStatsDetailItem = [NSEntityDescription insertNewObjectForEntityForName:kSCHReadingStatsDetailItem 
+                                                                       inManagedObjectContext:self.managedObjectContext];
+                readingStatsDetailItem.ProfileID = self.ID;  
+            } 
+            
+            if (readingStatsContentItem == nil) {
+                readingStatsContentItem = [self makeReadingStatsContentItemForBook:bookIdentifier];   
+                readingStatsContentItem.ReadingStatsDetailItem = readingStatsDetailItem;                
+            }
+            
+            readingStatsEntryItem = [NSEntityDescription insertNewObjectForEntityForName:kSCHReadingStatsEntryItem 
+                                                                  inManagedObjectContext:self.managedObjectContext];            
+            readingStatsEntryItem.ReadingStatsContentItem = readingStatsContentItem;                            
+            
+            readingStatsEntryItem.ReadingDuration = [NSNumber numberWithUnsignedInteger:bookStatistics.readingDuration];
+            readingStatsEntryItem.PagesRead = [NSNumber numberWithUnsignedInteger:bookStatistics.pagesRead];
+            readingStatsEntryItem.StoryInteractions = [NSNumber numberWithUnsignedInteger:bookStatistics.storyInteractions];
+            readingStatsEntryItem.DictionaryLookupsList = bookStatistics.dictionaryLookupsList;        
         }
-        
-        if ([result count] > 0) {
-            readingStatsDetailItem = [result objectAtIndex:0];
-            for (SCHReadingStatsContentItem *contentItem in readingStatsDetailItem.ReadingStatsContentItem) {
-                if ([[contentItem bookIdentifier] isEqual:bookIdentifier] == YES) {
-                    readingStatsContentItem = contentItem;
-                    break;
-                }
-            }            
-        } else {
-            readingStatsDetailItem = [NSEntityDescription insertNewObjectForEntityForName:kSCHReadingStatsDetailItem 
-                                                                   inManagedObjectContext:self.managedObjectContext];
-            readingStatsDetailItem.ProfileID = self.ID;  
-        } 
-        
-        if (readingStatsContentItem == nil) {
-            readingStatsContentItem = [self makeReadingStatsContentItemForBook:bookIdentifier];   
-            readingStatsContentItem.ReadingStatsDetailItem = readingStatsDetailItem;                
-        }
-
-        readingStatsEntryItem = [NSEntityDescription insertNewObjectForEntityForName:kSCHReadingStatsEntryItem 
-                                                              inManagedObjectContext:self.managedObjectContext];            
-        readingStatsEntryItem.ReadingStatsContentItem = readingStatsContentItem;                            
-        
-        readingStatsEntryItem.ReadingDuration = [NSNumber numberWithUnsignedInteger:bookStatistics.readingDuration];
-        readingStatsEntryItem.PagesRead = [NSNumber numberWithUnsignedInteger:bookStatistics.pagesRead];
-        readingStatsEntryItem.StoryInteractions = [NSNumber numberWithUnsignedInteger:bookStatistics.storyInteractions];
-        readingStatsEntryItem.DictionaryLookupsList = bookStatistics.dictionaryLookupsList;        
     }
 }
 
@@ -550,18 +561,6 @@ NSString * const kSCHProfileItemDRM_QUALIFIER = @"DRM_QUALIFIER";
 }
 
 #pragma mark - Encryption methods
-
-- (NSString *)MD5:(NSString *)string
-{
-	const char *data = [string UTF8String];
-	unsigned char md[CC_MD5_DIGEST_LENGTH+1];
-    
-	bzero(md, CC_MD5_DIGEST_LENGTH+1);
-	
-	CC_MD5(data, strlen(data), md);
-	
-	return([[NSData dataWithBytes:md length:strlen((char *)md)] base64Encoding]);
-}
 
 - (NSString *)SHA1:(NSString *)string
 {

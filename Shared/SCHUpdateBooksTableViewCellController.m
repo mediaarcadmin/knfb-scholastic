@@ -34,6 +34,7 @@ NSString * const kSCHBookUpdatedSuccessfullyNotification = @"book-updated-succes
 @synthesize managedObjectContext;
 @synthesize bookIdentifier;
 @synthesize index;
+@synthesize bookEnabledToggleBlock;
 
 - (void)dealloc
 {
@@ -42,6 +43,7 @@ NSString * const kSCHBookUpdatedSuccessfullyNotification = @"book-updated-succes
     [cell release], cell = nil;
     [managedObjectContext release], managedObjectContext = nil;
     [bookIdentifier release], bookIdentifier = nil;
+    [bookEnabledToggleBlock release], bookEnabledToggleBlock = nil;
     [super dealloc];
 }
 
@@ -84,9 +86,21 @@ NSString * const kSCHBookUpdatedSuccessfullyNotification = @"book-updated-succes
     [cell enabledForUpdateCheckbox].selected = self.bookEnabledForUpdate;
     [cell enableSpinner:[self spinnerStateForProcessingState:[book processingState]]];
     
+    __block SCHUpdateBooksTableViewCellController *weakSelf = self;
+    
     cell.onCheckboxUpdate = ^(BOOL enable) {
-        self.bookEnabledForUpdate = enable;
+        weakSelf.bookEnabledForUpdate = enable;
     };
+}
+
+- (void)setBookEnabledForUpdate:(BOOL)newBookEnabledForUpdate
+{
+    bookEnabledForUpdate = newBookEnabledForUpdate;
+    
+    if (bookEnabledToggleBlock) {
+        bookEnabledToggleBlock();
+    }
+    
 }
 
 - (BOOL)spinnerStateForProcessingState:(SCHBookCurrentProcessingState)state
@@ -127,7 +141,7 @@ NSString * const kSCHBookUpdatedSuccessfullyNotification = @"book-updated-succes
 }
 
 - (void)startUpdateIfEnabled
-{
+{    
     if (self.bookEnabledForUpdate) {
         SCHAppBook *book = [self book];
         if (book != nil) {
@@ -135,10 +149,10 @@ NSString * const kSCHBookUpdatedSuccessfullyNotification = @"book-updated-succes
             [book.ContentMetadataItem deleteAllFiles];
             [book clearToDefaultValues];
             
-            // start reprocessing the updated book
-            [book setProcessingState:SCHBookProcessingStateNoURLs];            
-            [[SCHProcessingManager sharedProcessingManager] userRequestedRetryForBookWithIdentifier:[book bookIdentifier]];
-            [self.cell enableSpinner:[self spinnerStateForProcessingState:[book processingState]]];
+            // start redownloading the updated book
+            if ([[SCHProcessingManager sharedProcessingManager] forceReDownloadForBookWithIdentifier:[book bookIdentifier]]) {
+                [self.cell enableSpinner:[self spinnerStateForProcessingState:[book processingState]]];
+            }
         }
     }
 }

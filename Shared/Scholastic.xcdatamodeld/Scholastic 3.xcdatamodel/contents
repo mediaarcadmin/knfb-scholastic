@@ -45,7 +45,7 @@
     <entity name="SCHAppContentProfileItem" representedClassName="SCHAppContentProfileItem">
         <attribute name="DRMQualifier" attributeType="Integer 16" defaultValueString="0" indexed="YES"/>
         <attribute name="ISBN" attributeType="String" defaultValueString="0" indexed="YES"/>
-        <attribute name="IsNewBook" attributeType="Boolean" defaultValueString="YES"/>
+        <attribute name="IsNewBook" optional="YES" attributeType="Boolean"/>
         <attribute name="LastBookmarkAnnotationSync" optional="YES" attributeType="Date"/>
         <attribute name="LastHighlightAnnotationSync" optional="YES" attributeType="Date"/>
         <attribute name="LastNoteAnnotationSync" optional="YES" attributeType="Date"/>
@@ -225,6 +225,7 @@
         <attribute name="LastScreenNameModified" optional="YES" attributeType="Date"/>
         <attribute name="Password" optional="YES" attributeType="String"/>
         <attribute name="ProfilePasswordRequired" optional="YES" attributeType="Boolean"/>
+        <attribute name="recommendationsOn" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
         <attribute name="ScreenName" optional="YES" attributeType="String"/>
         <attribute name="StoryInteractionEnabled" optional="YES" attributeType="Boolean"/>
         <attribute name="Type" optional="YES" attributeType="Integer 16" defaultValueString="0"/>
@@ -398,7 +399,7 @@
         <element name="SCHNote" positionX="146" positionY="653" width="128" height="105"/>
         <element name="SCHOrderItem" positionX="990" positionY="1147" width="128" height="90"/>
         <element name="SCHPrivateAnnotations" positionX="365" positionY="862" width="128" height="135"/>
-        <element name="SCHProfileItem" positionX="584" positionY="265" width="128" height="285"/>
+        <element name="SCHProfileItem" positionX="584" positionY="265" width="128" height="300"/>
         <element name="SCHRating" positionX="160" positionY="192" width="128" height="90"/>
         <element name="SCHReadingStatsContentItem" positionX="0" positionY="0" width="128" height="90"/>
         <element name="SCHReadingStatsDetailItem" positionX="0" positionY="0" width="128" height="75"/>

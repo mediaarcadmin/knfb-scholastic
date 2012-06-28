@@ -13,6 +13,7 @@
 #import "SCHVersionManifestEntry.h"
 
 // Constants
+static NSTimeInterval const kSCHVersionDownloadManagerErrorRetryInterval = 30.0;
 NSString * const SCHVersionDownloadManagerCompletedNotification = @"SCHVersionDownloadManagerCompletedNotification";
 NSString * const SCHVersionDownloadManagerCompletionAppVersionState = @"SCHVersionDownloadManagerCompletionAppVersionState";
 NSString * const SCHVersionDownloadManagerSavedAppVersion = @"SCHVersionDownloadManagerSavedAppVersion";
@@ -329,7 +330,14 @@ NSString * const SCHVersionDownloadManagerSavedAppVersion = @"SCHVersionDownload
         case SCHVersionDownloadManagerProcessingStateParseError:
         case SCHVersionDownloadManagerProcessingStateError:     
             [self handleUnexpectedVersionCheckError];
-            [self process];
+            
+            // Introduce a retry backoff, otherwise in an error state we spin continuously
+            double delayInSeconds = kSCHVersionDownloadManagerErrorRetryInterval;
+            dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);
+            dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+                [self process];
+            });
+            
             break;
         case SCHVersionDownloadManagerProcessingStateFetchingManifest:
         case SCHVersionDownloadManagerProcessingStateUnknown:

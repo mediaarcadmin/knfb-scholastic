@@ -59,6 +59,7 @@ extern NSString * const kSCHAppBookOldReader;
 
 extern NSString * const kSCHAppBookCategoryPictureBook;
 extern NSString * const kSCHAppBookCategoryEarlyReader;
+extern NSString * const kSCHAppBookCategoryMiddleReader;
 extern NSString * const kSCHAppBookCategoryAdvancedReader;
 extern NSString * const kSCHAppBookCategoryChapterBook;
 extern NSString * const kSCHAppBookCategoryNovelMiddleGrade;
@@ -155,6 +156,8 @@ typedef enum {
 - (NSString *)thumbPathForSize:(CGSize)size;
 + (NSString *)booksDirectory;
 + (void)clearBooksDirectory;
++ (void)moveBooksDirectoryToTmp;
++ (void)restoreBooksDirectoryFromTmp;
 - (void)clearCachedBookDirectory;
 - (NSString *)bookDirectory;
 - (NSString *)libEucalyptusCache;
