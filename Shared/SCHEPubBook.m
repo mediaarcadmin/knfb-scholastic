@@ -108,7 +108,7 @@
 }
 
 
-- (SCHBookPoint *)bookPointFromBookPageIndexPoint:(EucBookPageIndexPoint *)eucIndexPoint
+- (SCHBookPoint *)bookPointFromBookPageIndexPointFull:(EucBookPageIndexPoint *)eucIndexPoint
 {
     if(!eucIndexPoint) {
         return nil;   
@@ -178,6 +178,70 @@
             }
         }
         return bookPoint;
+    }
+}
+
+// Simple implementation
+- (SCHBookPoint *)bookPointFromBookPageIndexPoint:(EucBookPageIndexPoint *)eucIndexPoint
+{
+    if(!eucIndexPoint) {
+        return nil;   
+    } else {
+        SCHBookPoint *bookPoint = [[[SCHBookPoint alloc] init] autorelease];
+        if(eucIndexPoint.source == 0 && self.fakeCover) {
+            // This is the cover section.
+            bookPoint.layoutPage = 1;
+            bookPoint.blockOffset = 0;
+            bookPoint.wordOffset = 0;
+            bookPoint.elementOffset = 0;
+        } else {
+            NSUInteger indexes[2];
+            if (self.fakeCover) {
+                indexes[0] = eucIndexPoint.source - 1;
+            } else {
+                indexes[0] = eucIndexPoint.source;
+            }
+            
+            
+            EucCSSIntermediateDocument *document = [self intermediateDocumentForIndexPoint:eucIndexPoint];
+            
+            // All the pageXX anchors will be in this dictionary
+            NSDictionary *idToNodeKey = [document idToNodeKey];
+            
+            NSLog(@"idToNodeKey: %@", idToNodeKey);
+            
+            EucCSSLayoutRunExtractor *extractor = [[EucCSSLayoutRunExtractor alloc] initWithDocument:document];
+            EucCSSIntermediateDocumentNode *docNode = [document nodeForKey:eucIndexPoint.block];
+            EucCSSLayoutPoint layoutPoint = [extractor layoutPointForNode:docNode];
+            [extractor release];
+                        
+            NSInteger lowestIndexMatch = NSNotFound;
+            NSInteger lowestNodeKeyMatch = NSNotFound;
+            NSInteger targetNodeKey = [EucCSSIntermediateDocument documentTreeNodeKeyForKey:layoutPoint.nodeKey];
+            
+            for (NSString *pageAnchor in [idToNodeKey allKeys]) {
+                if ([pageAnchor hasPrefix:@"page"]) {
+                    NSString *pageString = [pageAnchor substringFromIndex:4];
+                    if ([pageString length]) {
+                        NSInteger pageIndex = [pageString integerValue];
+                        NSInteger nodeKey = [[idToNodeKey valueForKey:pageAnchor] integerValue];
+                        
+                        if ((lowestNodeKeyMatch > nodeKey) && (targetNodeKey < nodeKey)) {
+                            lowestNodeKeyMatch = nodeKey;
+                            lowestIndexMatch = pageIndex;
+                        }
+                    }
+                }
+            }
+            
+            bookPoint.layoutPage = lowestIndexMatch + 1;
+            bookPoint.blockOffset = 0;
+            bookPoint.wordOffset = 0;
+            bookPoint.elementOffset = 0;
+        }
+        
+        return bookPoint;
+        
     }
 }
 

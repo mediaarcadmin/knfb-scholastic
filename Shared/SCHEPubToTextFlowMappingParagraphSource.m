@@ -74,7 +74,7 @@ static NSString * const kNoWordPlaceholder = @"NO_WORD_PLACEHOLDER";
 
 #pragma mark - KNFBParagraphSource
 
-- (void)bookmarkPoint:(id)bookmarkPoint toParagraphID:(id *)paragraphID wordOffset:(uint32_t *)wordOffset
+- (void)bookmarkPointFull:(id)bookmarkPoint toParagraphID:(id *)paragraphID wordOffset:(uint32_t *)wordOffset
 {
     // This method is a slight adaptation of the equivalent XAML method in SCHTextFlowParagraphSource which is a direct port from Blio.
     
@@ -321,6 +321,34 @@ static NSString * const kNoWordPlaceholder = @"NO_WORD_PLACEHOLDER";
     *wordOffset = bestWordOffset;
     
     [runExtractor release];
+}
+
+- (void)bookmarkPoint:(id)bookmarkPoint toParagraphID:(id *)paragraphID wordOffset:(uint32_t *)wordOffset
+{    
+    NSUInteger bookmarkPageIndex = [bookmarkPoint layoutPage] - 1;
+    NSString *pageId = [NSString stringWithFormat:@"page%d", bookmarkPageIndex];
+    
+    EucBookPageIndexPoint *eucIndexPoint = nil;
+    
+    for (NSString *nodeId in [self.ePubBook idToIndexPoint]) {
+        NSURL *nodeURL = [NSURL URLWithString:nodeId];
+        NSString *nodeFragment = [nodeURL fragment];
+        
+        if ([nodeFragment isEqualToString:pageId]) {
+            eucIndexPoint = [[self.ePubBook idToIndexPoint] valueForKey:nodeId];
+            break;
+        }
+    }
+    
+    EucCSSIntermediateDocument *document = [self.ePubBook intermediateDocumentForIndexPoint:eucIndexPoint];
+    EucCSSLayoutRunExtractor *extractor = [[EucCSSLayoutRunExtractor alloc] initWithDocument:document];
+    EucCSSIntermediateDocumentNode *docNode = [document nodeForKey:eucIndexPoint.block];
+    EucCSSLayoutPoint layoutPoint = [extractor layoutPointForNode:docNode];
+    [extractor release];
+    
+    NSUInteger indexes[2] = { eucIndexPoint.source, [EucCSSIntermediateDocument documentTreeNodeKeyForKey:layoutPoint.nodeKey] };
+    *paragraphID = [NSIndexPath indexPathWithIndexes:indexes length:2];
+    *wordOffset = 0;
 }
 
 - (id)bookmarkPointFromParagraphID:(id)paragraphID wordOffset:(uint32_t)wordOffset
