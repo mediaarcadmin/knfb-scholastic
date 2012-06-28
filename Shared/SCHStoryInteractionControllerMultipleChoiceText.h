@@ -16,5 +16,6 @@
 
 - (IBAction)answerButtonTouched:(UIButton *)sender;
 - (IBAction)answerButtonTapped:(id)sender;
+- (IBAction)answerButtonTouchCancelled:(id)sender;
 
 @end
