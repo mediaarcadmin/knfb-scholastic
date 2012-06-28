@@ -361,7 +361,13 @@ static NSUInteger const kSCHAudioBookPlayerNoAudioLoaded = NSUIntegerMax;
             BOOL valid = [wordTimingProcessor validateWordTimings:self.wordTimings 
                                                         pageIndex:audioInfoToPrepare.pageIndex
                                                         timeIndex:audioInfoToPrepare.timeIndex
-                                                       timeOffset:audioInfoToPrepare.timeOffset];            
+                                                       timeOffset:audioInfoToPrepare.timeOffset];  
+            
+            // Scholastic request that we still plow on and highlight words randomly, even if there is a mismatch
+            if (!valid) {
+                NSLog(@"Warning: wordTimings are not valid but continuing with highlighting anyway");
+                valid = YES;
+            }
             
             [wordTimingProcessor release], wordTimingProcessor = nil;
             
