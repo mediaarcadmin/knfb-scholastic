@@ -22,6 +22,7 @@
 @property (nonatomic, assign) long long currentDownloadSize;
 @property (nonatomic, assign) NSInteger lastUpdatePercentage;
 
+- (void)beginNextDownload;
 - (void)finishedAllDownloads;
 - (void)terminateOperation;
 - (void)fireProgressUpdate:(float)progress;
@@ -45,7 +46,6 @@
 
 - (void)dealloc
 {
-    NSLog(@"SCHHelpVideoFileDownloadOperation is deallocing");
     [localFileManager release], localFileManager = nil;
     [downloadQueue release], downloadQueue = nil;
     [currentOperation release], currentOperation = nil;
@@ -93,7 +93,6 @@
         
         QHTTPOperation *httpOperation = [[QHTTPOperation alloc] initWithRequest:request];
         httpOperation.delegate = self;
-        httpOperation.runLoopThread = [NSThread currentThread];
         httpOperation.responseOutputStream = [NSOutputStream outputStreamToFileAtPath:localPath append:append];
         [self.downloadQueue addObject:httpOperation];
         [httpOperation release];
@@ -104,25 +103,29 @@
     [[BITNetworkActivityManager sharedNetworkActivityManager] showNetworkActivityIndicator];
     
     self.totalDownloadCount = [self.downloadQueue count];
-    
-    while ([self.downloadQueue count] > 0) {
-        
-        if ([self isCancelled]) {
-            [self terminateOperation];
-            return;
-        }
-        
-        self.currentOperation = [self.downloadQueue objectAtIndex:0];
-        [self.downloadQueue removeObjectAtIndex:0];
-        
-        [self.currentOperation start];
-        
-        while ([self.currentOperation isExecuting]) {
-            [[NSRunLoop currentRunLoop] runMode:NSDefaultRunLoopMode beforeDate:[NSDate distantFuture]];
-        }
+    [self beginNextDownload];
+}
+
+- (void)beginNextDownload
+{
+    if ([self isCancelled]) {
+        [self terminateOperation];
+        return;
     }
     
-    [self finishedAllDownloads];
+    if ([self.downloadQueue count] == 0) {
+        [self finishedAllDownloads];
+        return;
+    }
+    
+    self.currentOperation = [self.downloadQueue objectAtIndex:0];
+    [self.downloadQueue removeObjectAtIndex:0];
+    
+    __block SCHHelpVideoFileDownloadOperation *unretained_self = self;
+    self.currentOperation.completionBlock = ^{
+        [unretained_self beginNextDownload];
+    };
+    [self.currentOperation start];
 }
 
 - (void)finishedAllDownloads
@@ -131,15 +134,13 @@
 
     // we've successfully downloaded all files
     // set the version string to 1.0 (hardcoded at present)
-    if (![self isCancelled]) {
-        [[SCHHelpManager sharedHelpManager] threadSafeUpdateHelpVideoVersion:@"1.0" 
-                                                                    olderURL:[self.videoManifest olderURLForCurrentDevice] 
-                                                                  youngerURL:[self.videoManifest youngerURLForCurrentDevice]];
-        
-        [self fireProgressUpdate:1.0f];
-        
-        [[SCHHelpManager sharedHelpManager] threadSafeUpdateHelpState:SCHHelpProcessingStateReady];
-    }
+    [[SCHHelpManager sharedHelpManager] threadSafeUpdateHelpVideoVersion:@"1.0" 
+                                                                     olderURL:[self.videoManifest olderURLForCurrentDevice] 
+                                                                   youngerURL:[self.videoManifest youngerURLForCurrentDevice]];
+    
+    [self fireProgressUpdate:1.0f];
+    
+    [[SCHHelpManager sharedHelpManager] threadSafeUpdateHelpState:SCHHelpProcessingStateReady];
     
     self.currentOperation = nil;
     [self terminateOperation];
