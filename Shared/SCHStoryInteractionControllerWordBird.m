@@ -323,14 +323,6 @@ enum {
     }];
 }
 
-- (void)removeFromHostView
-{
-    if (completed) {
-        self.controllerState = SCHStoryInteractionControllerStateInteractionFinishedSuccessfully;
-    }
-    [super removeFromHostView];
-}
-
 #pragma mark - letter taps
 
 - (void)letterTouched:(SCHStoryInteractionWordBirdLetterView *)sender
@@ -406,6 +398,7 @@ enum {
                     startDelay:0
         synchronizedStartBlock:^{
             completed = YES;
+            [self.delegate advanceToNextQuestionForStoryInteraction];
             [self presentNextView];
         }
           synchronizedEndBlock:nil];

@@ -25,6 +25,9 @@
 // to determine the current question index
 - (NSInteger)currentQuestionForStoryInteraction;
 
+// advance to the next question for the current pages
+- (void)advanceToNextQuestionForStoryInteraction;
+
 // has the current story interaction already been completed?
 - (BOOL)storyInteractionFinished;
 
