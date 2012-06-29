@@ -15,6 +15,8 @@
 #import "SCHOrderItem.h"
 #import "SCHContentProfileItem.h"
 #import "SCHListUserContentForRatingsOperation.h"
+#import "SCHAnnotationsContentItem.h"
+#import "SCHReadingStatsContentItem.h"
 
 // Constants
 NSString * const SCHContentSyncComponentWillDeleteNotification = @"SCHContentSyncComponentWillDeleteNotification";
@@ -89,7 +91,9 @@ NSString * const SCHContentSyncComponentDidFailNotification = @"SCHContentSyncCo
     
 	if (![self.managedObjectContext BITemptyEntity:kSCHUserContentItem error:&error] ||
 		![self.managedObjectContext BITemptyEntity:kSCHOrderItem error:&error] ||
-		![self.managedObjectContext BITemptyEntity:kSCHContentProfileItem error:&error]) {
+		![self.managedObjectContext BITemptyEntity:kSCHContentProfileItem error:&error] ||
+        ![self.managedObjectContext BITemptyEntity:kSCHAnnotationsContentItem error:&error] ||
+        ![self.managedObjectContext BITemptyEntity:kSCHReadingStatsContentItem error:&error]) {
 		NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
 	}		
 }

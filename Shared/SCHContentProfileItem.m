@@ -16,13 +16,6 @@
 // Constants
 NSString * const kSCHContentProfileItem = @"SCHContentProfileItem";
 
-@interface SCHContentProfileItem ()
-
-- (void)deleteAnnotationsForBook:(SCHBookIdentifier *)bookIdentifier;
-- (void)deleteStatisticsForBook:(SCHBookIdentifier *)bookIdentifier;
-
-@end
-
 @implementation SCHContentProfileItem 
 
 @dynamic ProfileID;
@@ -30,18 +23,6 @@ NSString * const kSCHContentProfileItem = @"SCHContentProfileItem";
 @dynamic UserContentItem;
 @dynamic AppContentProfileItem;
 @dynamic Rating;
-
-- (void)prepareForDeletion
-{
-    [super prepareForDeletion];
-
-    SCHBookIdentifier *bookIdentifier = [self.UserContentItem bookIdentifier];
-    
-    if (bookIdentifier != nil) {
-        [self deleteStatisticsForBook:bookIdentifier];    
-        [self deleteAnnotationsForBook:bookIdentifier];
-    }    
-}
 
 - (void)deleteAnnotationsForBook:(SCHBookIdentifier *)bookIdentifier
 {

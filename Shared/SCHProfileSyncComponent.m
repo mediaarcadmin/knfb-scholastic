@@ -19,6 +19,8 @@
 #import "SCHWishListSyncComponent.h"
 #import "SCHGetUserProfilesResponseOperation.h"
 #import "SCHSaveUserProfilesOperation.h"
+#import "SCHAnnotationsItem.h"
+#import "SCHReadingStatsDetailItem.h"
 
 // Constants
 NSString * const SCHProfileSyncComponentWillDeleteNotification = @"SCHProfileSyncComponentWillDeleteNotification";
@@ -94,7 +96,9 @@ NSString * const SCHProfileSyncComponentDidFailNotification = @"SCHProfileSyncCo
 {
 	NSError *error = nil;
     
-	if (![self.managedObjectContext BITemptyEntity:kSCHProfileItem error:&error]) {
+	if (![self.managedObjectContext BITemptyEntity:kSCHProfileItem error:&error] ||
+        ![self.managedObjectContext BITemptyEntity:kSCHAnnotationsItem error:&error] ||
+        ![self.managedObjectContext BITemptyEntity:kSCHReadingStatsDetailItem error:&error]) {
 		NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
 	}		
 }

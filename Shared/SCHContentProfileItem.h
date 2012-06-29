@@ -11,6 +11,7 @@
 
 @class SCHUserContentItem;
 @class SCHAppContentProfileItem;
+@class SCHBookIdentifier;
 
 // Constants
 extern NSString * const kSCHContentProfileItem;
@@ -24,6 +25,9 @@ extern NSString * const kSCHContentProfileItem;
 @property (nonatomic, retain) SCHUserContentItem * UserContentItem;
 @property (nonatomic, retain) SCHAppContentProfileItem * AppContentProfileItem;
 @property (nonatomic, retain) NSNumber * Rating;
+
+- (void)deleteAnnotationsForBook:(SCHBookIdentifier *)bookIdentifier;
+- (void)deleteStatisticsForBook:(SCHBookIdentifier *)bookIdentifier;
 
 @end
 

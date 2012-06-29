@@ -667,6 +667,14 @@
         
         // delete objects
         for (SCHContentProfileItem *contentProfileItem in deletePool) {
+            
+            SCHBookIdentifier *bookIdentifier = [contentProfileItem.UserContentItem bookIdentifier];
+            
+            if (bookIdentifier != nil) {
+                [contentProfileItem deleteStatisticsForBook:bookIdentifier];    
+                [contentProfileItem deleteAnnotationsForBook:bookIdentifier];
+            }  
+            
             [aManagedObjectContext deleteObject:contentProfileItem];            
         }
         

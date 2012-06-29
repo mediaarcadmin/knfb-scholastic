@@ -152,6 +152,10 @@ managedObjectContext:(NSManagedObjectContext *)aManagedObjectContext
         for (SCHProfileItem *profileItem in deletePool) {
             [SCHProfileSyncComponent removeWishListForProfile:profileItem 
                                          managedObjectContext:aManagedObjectContext];
+            
+            [profileItem deleteAnnotations];
+            [profileItem deleteStatistics];
+
             [aManagedObjectContext deleteObject:profileItem];
         }                
     }
