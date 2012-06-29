@@ -52,6 +52,12 @@ typedef enum {
 //static const NSTimeInterval kSCHStartingViewControllerNonForcedAlertInterval = 60 * 60 * 24 * 7; // 1 week
 static const NSTimeInterval kSCHStartingViewControllerNonForcedAlertInterval = (60 * 5) - 1;
 
+// Constants
+NSString * const kSCHLoginErrorDomain = @"LoginErrorDomain";
+NSInteger const kSCHLoginReachabilityError = 1000;
+NSString * const kSCHSamplesErrorDomain = @"SamplesErrorDomain";
+NSInteger const kSCHSamplesUnspecifiedError = 1000;
+
 @interface SCHStartingViewController ()
 
 @property (nonatomic, retain) SCHProfileViewController_Shared *profileViewController;
@@ -724,7 +730,7 @@ static const NSTimeInterval kSCHStartingViewControllerNonForcedAlertInterval = (
                                                                             completion(nil);
                                                                         }
                                                                         failureBlock:^(NSString * failureReason){
-                                                                            NSError *error = [NSError errorWithDomain:nil code:0 userInfo:[NSDictionary dictionaryWithObject:failureReason forKey:@"failureReason"]];
+                                                                            NSError *error = [NSError errorWithDomain:kSCHSamplesErrorDomain code:kSCHSamplesUnspecifiedError userInfo:[NSDictionary dictionaryWithObject:failureReason forKey:@"failureReason"]];
                                                                             completion(error);
                                                                         }];
     };
@@ -887,8 +893,8 @@ static const NSTimeInterval kSCHStartingViewControllerNonForcedAlertInterval = (
         NSError *error = nil;
         
         if ([[Reachability reachabilityForInternetConnection] isReachable] == NO) {
-            error = [NSError errorWithDomain:nil  
-                                                   code:0  
+            error = [NSError errorWithDomain:kSCHLoginErrorDomain  
+                                                   code:kSCHLoginReachabilityError 
                                                userInfo:[NSDictionary dictionaryWithObject:NSLocalizedString(@"An Internet connection is required to sign into your account.", @"")  
                                                                                     forKey:NSLocalizedDescriptionKey]];  
         }
