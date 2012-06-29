@@ -63,14 +63,14 @@
 - (void)applyProfileSaves:(NSArray *)profilesArray
 {
     NSManagedObjectID *managedObjectID = nil;
-    NSManagedObject *profileManagedObject = nil;
+    SCHProfileItem *profileManagedObject = nil;
     SCHProfileSyncComponent *profileSyncComponent = (SCHProfileSyncComponent *)self.syncComponent;
     
     for (NSDictionary *profile in profilesArray) {
         if ([profileSyncComponent.savedProfiles count] > 0) {
             managedObjectID = [profileSyncComponent.savedProfiles objectAtIndex:0];
             if (managedObjectID != nil) {
-                profileManagedObject = [self.backgroundThreadManagedObjectContext objectWithID:managedObjectID];
+                profileManagedObject = (SCHProfileItem *)[self.backgroundThreadManagedObjectContext objectWithID:managedObjectID];
                 
                 if ([[profile objectForKey:kSCHLibreAccessWebServiceStatus] statusCodeValue] == kSCHStatusCodesSuccess) {
                     switch ([[profile objectForKey:kSCHLibreAccessWebServiceStatus] saveActionValue]) {
@@ -81,14 +81,18 @@
                                 [profileManagedObject setValue:profileID forKey:kSCHLibreAccessWebServiceID];
                             } else {
                                 // if the server didnt give us an ID then we remove the profile
+                                [profileManagedObject deleteAnnotations];
+                                [profileManagedObject deleteStatistics];                                                                                
                                 [self.backgroundThreadManagedObjectContext deleteObject:profileManagedObject];
                             }                                                    
                         }
                             break;
                         case kSCHSaveActionsRemove:                            
                         {
-                            [SCHProfileSyncComponent removeWishListForProfile:(SCHProfileItem *)profileManagedObject 
+                            [SCHProfileSyncComponent removeWishListForProfile:profileManagedObject 
                                                          managedObjectContext:self.backgroundThreadManagedObjectContext];
+                            [profileManagedObject deleteAnnotations];
+                            [profileManagedObject deleteStatistics];                                                
                             [self.backgroundThreadManagedObjectContext deleteObject:profileManagedObject];
                         }
                             break;
@@ -99,6 +103,10 @@
                     }
                 } else {
                     // if the server wasnt happy then we remove the profile
+                    [SCHProfileSyncComponent removeWishListForProfile:profileManagedObject 
+                                                 managedObjectContext:self.backgroundThreadManagedObjectContext];                    
+                    [profileManagedObject deleteAnnotations];
+                    [profileManagedObject deleteStatistics];                    
                     [self.backgroundThreadManagedObjectContext deleteObject:profileManagedObject];
                 }
                 
