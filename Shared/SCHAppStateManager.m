@@ -35,6 +35,7 @@
 - (void)performWithAppStateAndSave:(void (^)(SCHAppState *appState))block;
 
 - (void)warmupCachedProperties;
+- (void)clearCachedProperties;
 
 @end
 
@@ -85,6 +86,16 @@
     [[NSNotificationCenter defaultCenter] removeObserver:self];
     
     [cachedAppState release], cachedAppState = nil;
+    [cachedCanSync release], cachedCanSync = nil;
+    [cachedCanSyncNotes release], cachedCanSyncNotes = nil;
+    [cachedCOPPACompliant release], cachedCOPPACompliant = nil;
+    [cachedCanAuthenticate release], cachedCanAuthenticate = nil;
+    [cachedServerDateDelta release], cachedServerDateDelta = nil;
+    [cachedDataStoreType release], cachedDataStoreType = nil;
+    [cachedLastKnownAuthToken release], cachedLastKnownAuthToken = nil;
+    [cachedLastRemoteManifestUpdateDate release], cachedLastRemoteManifestUpdateDate = nil;
+    [cachedLastScholasticAuthenticationErrorCode release], cachedLastScholasticAuthenticationErrorCode = nil;
+    
     [managedObjectContext release], managedObjectContext = nil;
     
     [super dealloc];
@@ -92,18 +103,26 @@
 
 #pragma mark - methods
 
+- (void)setManagedObjectContext:(NSManagedObjectContext *)newManagedObjectContext
+{
+    NSAssert([NSThread isMainThread] == YES, @"setManagedObjectContext SHOULD be executed on the main thread");
+    
+    if (managedObjectContext != newManagedObjectContext) {
+        [managedObjectContext release];
+        managedObjectContext = [newManagedObjectContext retain];
+        if (managedObjectContext != nil) {
+            self.cachedAppState = [self createAppStateIfNeeded];
+            [self warmupCachedProperties];
+        } else {
+            self.cachedAppState = nil;
+            [self clearCachedProperties];
+        }
+    }
+}
+
 - (SCHAppState *)appState
 {
     NSAssert([NSThread isMainThread] == YES, @"appState SHOULD be executed on the main thread");
-
-    if (!self.managedObjectContext) {
-        return nil;
-    }
-
-    if (self.cachedAppState == nil) {
-        self.cachedAppState = [self createAppStateIfNeeded];
-        [self warmupCachedProperties];
-    }
     
     return self.cachedAppState;    
 }
@@ -140,33 +159,30 @@
 #endif
     
     @synchronized (self) {
-        if (self.cachedCanSync == nil) {
-            self.cachedCanSync = [NSNumber numberWithBool:canSync];
-        }
-        if (self.cachedCanSyncNotes == nil) {
-            self.cachedCanSyncNotes = [NSNumber numberWithBool:syncNotes];   
-        }
-        if (self.cachedCOPPACompliant == nil) {
-            self.cachedCOPPACompliant = [NSNumber numberWithBool:coppa]; 
-        }        
-        if (self.cachedCanAuthenticate == nil) {
-            self.cachedCanAuthenticate = [NSNumber numberWithBool:canAuthenticate];
-        }
-        if (self.cachedServerDateDelta == nil) {
-            self.cachedServerDateDelta = [NSNumber numberWithDouble:serverDateDelta];   
-        }
-        if (self.cachedDataStoreType == nil) {
-            self.cachedDataStoreType = [NSNumber numberWithDataStoreType:dataStoreType];
-        }
-        if (self.cachedLastKnownAuthToken == nil) {
-            self.cachedLastKnownAuthToken = lastKnownAuthToken;
-        }
-        if (self.cachedLastRemoteManifestUpdateDate == nil) {
-            self.cachedLastRemoteManifestUpdateDate = lastRemoteManifestUpdateDate;
-        }
-        if (self.cachedLastScholasticAuthenticationErrorCode == nil) {
-            self.cachedLastScholasticAuthenticationErrorCode = [NSNumber numberWithInt:lastScholasticAuthenticationErrorCode];
-        }
+        self.cachedCanSync = [NSNumber numberWithBool:canSync];
+        self.cachedCanSyncNotes = [NSNumber numberWithBool:syncNotes];   
+        self.cachedCOPPACompliant = [NSNumber numberWithBool:coppa]; 
+        self.cachedCanAuthenticate = [NSNumber numberWithBool:canAuthenticate];
+        self.cachedServerDateDelta = [NSNumber numberWithDouble:serverDateDelta];   
+        self.cachedDataStoreType = [NSNumber numberWithDataStoreType:dataStoreType];
+        self.cachedLastKnownAuthToken = lastKnownAuthToken;
+        self.cachedLastRemoteManifestUpdateDate = lastRemoteManifestUpdateDate;
+        self.cachedLastScholasticAuthenticationErrorCode = [NSNumber numberWithInt:lastScholasticAuthenticationErrorCode];
+    }    
+}
+
+- (void)clearCachedProperties
+{
+    @synchronized (self) {
+        self.cachedCanSync = nil;
+        self.cachedCanSyncNotes = nil;   
+        self.cachedCOPPACompliant = nil; 
+        self.cachedCanAuthenticate = nil;
+        self.cachedServerDateDelta = nil;   
+        self.cachedDataStoreType = nil;
+        self.cachedLastKnownAuthToken = nil;
+        self.cachedLastRemoteManifestUpdateDate = nil;
+        self.cachedLastScholasticAuthenticationErrorCode = nil;
     }    
 }
 
@@ -526,8 +542,9 @@
 
 - (void)coreDataHelperManagedObjectContextDidChangeNotification:(NSNotification *)notification
 {
+    NSAssert([NSThread isMainThread] == YES, @"coreDataHelperManagedObjectContextDidChangeNotification SHOULD be executed on the main thread");
+    // setting the managed object context also resets the caches
     self.managedObjectContext = [[notification userInfo] objectForKey:SCHCoreDataHelperManagedObjectContext];
-    self.cachedAppState = nil;
 }
 
 @end
