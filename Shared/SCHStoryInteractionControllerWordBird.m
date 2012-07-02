@@ -176,7 +176,7 @@ enum {
         letterView.letter = letter;
         [letterView addTarget:self action:@selector(letterTouched:) forControlEvents:UIControlEventTouchDown];
         [letterView addTarget:self action:@selector(letterTapped:) forControlEvents:UIControlEventTouchUpInside];
-        [letterView addTarget:self action:@selector(letterTapCancelled:) forControlEvents:UIControlEventTouchUpOutside];
+        [letterView addTarget:self action:@selector(letterTapCancelled:) forControlEvents:(UIControlEventTouchUpOutside | UIControlEventTouchCancel)];
         [self.lettersContainer addSubview:letterView];
     }  
     [self layoutLetterViews];
@@ -323,14 +323,6 @@ enum {
     }];
 }
 
-- (void)removeFromHostView
-{
-    if (completed) {
-        self.controllerState = SCHStoryInteractionControllerStateInteractionFinishedSuccessfully;
-    }
-    [super removeFromHostView];
-}
-
 #pragma mark - letter taps
 
 - (void)letterTouched:(SCHStoryInteractionWordBirdLetterView *)sender
@@ -406,6 +398,7 @@ enum {
                     startDelay:0
         synchronizedStartBlock:^{
             completed = YES;
+            [self.delegate advanceToNextQuestionForStoryInteraction];
             [self presentNextView];
         }
           synchronizedEndBlock:nil];

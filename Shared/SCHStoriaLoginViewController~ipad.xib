@@ -97,7 +97,7 @@
 						<string key="NSFrame">{{169, 211}, {187, 31}}</string>
 						<reference key="NSSuperview" ref="766721923"/>
 						<reference key="NSWindow"/>
-						<reference key="NSNextKeyView" ref="951125602"/>
+						<reference key="NSNextKeyView" ref="737535226"/>
 						<bool key="IBUIOpaque">NO</bool>
 						<bool key="IBUIClipsSubviews">YES</bool>
 						<string key="targetRuntimeIdentifier">IBIPadFramework</string>
@@ -123,7 +123,7 @@
 						<string key="NSFrame">{{169, 254}, {101, 46}}</string>
 						<reference key="NSSuperview" ref="766721923"/>
 						<reference key="NSWindow"/>
-						<reference key="NSNextKeyView" ref="918514944"/>
+						<reference key="NSNextKeyView" ref="951125602"/>
 						<bool key="IBUIOpaque">NO</bool>
 						<string key="targetRuntimeIdentifier">IBIPadFramework</string>
 						<int key="IBUIContentHorizontalAlignment">0</int>
@@ -209,7 +209,7 @@
 						<string key="NSFrame">{{396, 142}, {140, 124}}</string>
 						<reference key="NSSuperview" ref="766721923"/>
 						<reference key="NSWindow"/>
-						<reference key="NSNextKeyView" ref="737535226"/>
+						<reference key="NSNextKeyView" ref="918514944"/>
 						<object class="NSColor" key="IBUIBackgroundColor">
 							<int key="NSColorSpace">3</int>
 							<bytes key="NSWhite">MSAwAA</bytes>
@@ -220,7 +220,7 @@
 						<int key="IBUIContentMode">7</int>
 						<bool key="IBUIUserInteractionEnabled">NO</bool>
 						<string key="targetRuntimeIdentifier">IBIPadFramework</string>
-						<string key="IBUIText">You must have a Scholastic account to sign in.</string>
+						<string key="IBUIText">Please enter your Scholastic account E-Mail Address and Password.</string>
 						<reference key="IBUITextColor" ref="572311957"/>
 						<nil key="IBUIHighlightedColor"/>
 						<object class="NSColor" key="IBUIShadowColor">

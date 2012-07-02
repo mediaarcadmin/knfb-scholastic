@@ -73,6 +73,9 @@ typedef enum {
 - (BOOL)validatePasswordWith:(NSString *)withPassword;
 - (BOOL)storyInteractionsDisabled;
 
+- (void)deleteAnnotations;
+- (void)deleteStatistics;
+
 @end
 
 @interface SCHProfileItem (CoreDataGeneratedAccessors)

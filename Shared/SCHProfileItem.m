@@ -44,8 +44,6 @@ NSString * const kSCHProfileItemDRM_QUALIFIER = @"DRM_QUALIFIER";
 
 @interface SCHProfileItem ()
 
-- (void)deleteAnnotations;
-- (void)deleteStatistics;
 - (SCHReadingStatsContentItem *)makeReadingStatsContentItemForBook:(SCHBookIdentifier *)bookIdentifier;
 - (NSString *)SHA1:(NSString *)string;
 
@@ -104,14 +102,6 @@ NSString * const kSCHProfileItemDRM_QUALIFIER = @"DRM_QUALIFIER";
     }
     
     return ret;
-}
-
-- (void)prepareForDeletion
-{
-    [super prepareForDeletion];
-    
-    [self deleteStatistics];    
-    [self deleteAnnotations];
 }
 
 - (void)deleteAnnotations

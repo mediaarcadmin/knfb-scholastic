@@ -106,7 +106,7 @@
 {
     SCHStoryInteractionWordScrambler *wordScrambler = (SCHStoryInteractionWordScrambler *)self.storyInteraction;
 
-    UIImage *letterTile = [self chooseLetterTileBackgroundForContainerSize:self.containerView.bounds.size];
+    UIImage *letterTile = [self chooseLetterTileBackgroundForContainerSize:self.lettersContainerView.bounds.size];
     
     NSMutableArray *views = [NSMutableArray array];
     NSMutableArray *hints = [NSMutableArray array];
@@ -151,6 +151,7 @@
         NSString *letterTileName;
         NSInteger letterGap;
     } kLetterTileSizes[] = {
+        // must be ordered largest to smallest
         { @"storyinteraction-lettertile",       3 },
         { @"storyinteraction-lettertile-small", 3 },
         { @"storyinteraction-lettertile-tiny",  1 }
@@ -160,7 +161,12 @@
     UIImage *letterTile = nil;
     NSInteger letterGap;
     for (size_t sizeIndex = 0; sizeIndex < kNumLetterTileSizes; ++sizeIndex) {
-        letterTile = [UIImage imageNamed:kLetterTileSizes[sizeIndex].letterTileName];
+        UIImage *nextLetterTile = [UIImage imageNamed:kLetterTileSizes[sizeIndex].letterTileName];
+        if (!nextLetterTile) {
+            // no more tile sizes for this device; use the smallest available
+            break;
+        }
+        letterTile = nextLetterTile;
         letterGap = kLetterTileSizes[sizeIndex].letterGap;
         if ([self canLayoutLetterPositionsWithTileSize:letterTile.size letterGap:letterGap inContainerSize:containerSize]) {
             break;
@@ -177,7 +183,8 @@
 - (void)splitScramblerIntoRows
 {
     SCHStoryInteractionWordScrambler *wordScrambler = (SCHStoryInteractionWordScrambler *)self.storyInteraction;
-    NSMutableArray *rows = [[wordScrambler.answer componentsSeparatedByCharactersInSet:[NSCharacterSet whitespaceCharacterSet]] mutableCopy];
+    NSCharacterSet *splitCharacters = [NSCharacterSet whitespaceCharacterSet];
+    NSMutableArray *rows = [[wordScrambler.answer componentsSeparatedByCharactersInSet:splitCharacters] mutableCopy];
     
     while ([rows count] > 4) {
         // combine two shortest adjacent rows
@@ -247,7 +254,7 @@
                 y += tileSize.height + gap;
             }
             if ([row characterAtIndex:i] != ' ') {
-                [positions addObject:[NSValue valueWithCGPoint:CGPointMake(x, y)]];
+                [positions addObject:[NSValue valueWithCGPoint:CGPointMake(floorf(x), floorf(y))]];
             }
             x += tileSize.width + gap;
         }

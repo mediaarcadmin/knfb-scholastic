@@ -365,6 +365,7 @@ enum {
 {
     [self cancelQueuedAudioExecutingSynchronizedBlocksBefore:^{
         [self.flipContainer.subviews makeObjectsPerformSelector:@selector(removeFromSuperview)];
+        self.selectedPuzzleType = NO;
         [self presentNextView];
     }];
 }

@@ -207,7 +207,12 @@
         
         // delete objects
         for (SCHUserContentItem *userContentItem in deletePool) {
+            SCHBookIdentifier *bookIdentifier = [userContentItem bookIdentifier];
             for (SCHContentProfileItem *contentProfileItem in userContentItem.ProfileList) {
+                if (bookIdentifier != nil) {
+                    [contentProfileItem deleteStatisticsForBook:bookIdentifier];    
+                    [contentProfileItem deleteAnnotationsForBook:bookIdentifier];
+                } 
                 [self removeAnnotationStructure:userContentItem 
                                      forProfile:contentProfileItem
                            managedObjectContext:aManagedObjectContext];                
@@ -667,6 +672,14 @@
         
         // delete objects
         for (SCHContentProfileItem *contentProfileItem in deletePool) {
+            
+            SCHBookIdentifier *bookIdentifier = [contentProfileItem.UserContentItem bookIdentifier];
+            
+            if (bookIdentifier != nil) {
+                [contentProfileItem deleteStatisticsForBook:bookIdentifier];    
+                [contentProfileItem deleteAnnotationsForBook:bookIdentifier];
+            }  
+            
             [aManagedObjectContext deleteObject:contentProfileItem];            
         }
         

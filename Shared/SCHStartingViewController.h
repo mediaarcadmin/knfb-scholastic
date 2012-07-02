@@ -9,6 +9,12 @@
 #import <UIKit/UIKit.h>
 #import "SCHProfileSetupDelegate.h"
 
+// Constants
+extern NSString * const kSCHLoginErrorDomain;
+extern NSInteger const kSCHLoginReachabilityError;
+extern NSString * const kSCHSamplesErrorDomain;
+extern NSInteger const kSCHSamplesUnspecifiedError;
+
 @interface SCHStartingViewController : UIViewController <SCHProfileSetupDelegate> {}
 
 @property (nonatomic, retain) IBOutlet UIImageView *backgroundView;

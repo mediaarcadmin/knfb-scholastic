@@ -50,6 +50,7 @@
 #import "SCHRecommendationContainerView.h"
 #import "SCHAppStateManager.h"
 #import "SCHAppRecommendationItem.h"
+#import "SCHCoreDataHelper.h"
 
 // constants
 NSString *const kSCHReadingViewErrorDomain  = @"com.knfb.scholastic.ReadingViewErrorDomain";
@@ -499,6 +500,11 @@ static const NSUInteger kReadingViewMaxRecommendationsCount = 4;
                                                      name:kSCHDictionaryStateChange 
                                                    object:nil];
         
+        [[NSNotificationCenter defaultCenter] addObserver:self 
+                                                 selector:@selector(coreDataHelperManagedObjectContextDidChangeNotification:) 
+                                                     name:SCHCoreDataHelperManagedObjectContextDidChangeNotification 
+                                                   object:nil];	
+        
         self.lastPageInteractionSoundPlayedOn = -1;
         
         self.queuedAudioPlayer = [[[SCHQueuedAudioPlayer alloc] init] autorelease];
@@ -891,6 +897,10 @@ static const NSUInteger kReadingViewMaxRecommendationsCount = 4;
 
 - (void)updateBookState
 {
+    if (self.managedObjectContext == nil) {
+        return;
+    }
+    
     if (self.bookIdentifier != nil) {
  
         [self commitWishListChanges];
@@ -947,6 +957,10 @@ static const NSUInteger kReadingViewMaxRecommendationsCount = 4;
 
 - (void)bookDeleted:(NSNotification *)notification
 {    
+    if (self.managedObjectContext == nil) {
+        return;
+    }
+    
     NSArray *bookIdentifiers = [notification.userInfo objectForKey:self.profile.ID];
     
     for (SCHBookIdentifier *bookId in bookIdentifiers) {
@@ -1036,6 +1050,27 @@ static const NSUInteger kReadingViewMaxRecommendationsCount = 4;
         }
     }    
 }
+
+#pragma mark - NSManagedObjectContext Changed Notification
+
+- (void)coreDataHelperManagedObjectContextDidChangeNotification:(NSNotification *)notification
+{
+    // This is actually an error condition - we should *not* be changing the core data stack whilst in a book.
+    // However as a defensive measure, make sure we release any retained managed object properties when this happens
+
+    NSLog(@"WARNING: SCHReadingViewController is still in existence when the core data stack is reset. This is an error condition!");
+    
+    self.profile = nil;
+    self.bookAnnotations = nil;
+    self.bookStatistics = nil;
+    self.managedObjectContext = nil;
+    
+    // Also, as an optimisation, check if our reading view is actually on screen. If not then release those objects too, otherwise we will run out of memory soon
+    if ([self.readingView window] == nil) {
+        [self releaseViewObjects];
+    }
+}    
+    
 
 #pragma mark - Book Positions
 
@@ -3011,7 +3046,6 @@ static const NSUInteger kReadingViewMaxRecommendationsCount = 4;
         [self.bookStoryInteractions incrementQuestionsCompletedForStoryInteraction:aStoryInteractionController.storyInteraction
                                                                        pageIndices:pageIndices];
     }
-    
 }
 
 - (void)storyInteractionControllerDidDismiss:(SCHStoryInteractionController *)aStoryInteractionController
@@ -3049,6 +3083,18 @@ static const NSUInteger kReadingViewMaxRecommendationsCount = 4;
 {
     NSRange pageIndices = [self storyInteractionPageIndices];
     return [self.bookStoryInteractions storyInteractionQuestionIndexForPageIndices:pageIndices];
+}
+
+- (void)advanceToNextQuestionForStoryInteraction
+{
+    NSRange pageIndices = [self storyInteractionPageIndices];
+    
+    if ([self.storyInteractionController.storyInteraction alwaysIncrementsQuestionIndex]) {
+        [self.bookStoryInteractions incrementQuestionIndexForPageIndices:pageIndices];
+    }
+    
+    [self.bookStoryInteractions incrementQuestionsCompletedForStoryInteraction:self.storyInteractionController.storyInteraction
+                                                                   pageIndices:pageIndices];
 }
 
 - (BOOL)storyInteractionFinished

@@ -93,6 +93,9 @@ static const CGFloat kSCHStoriaLoginContentHeightLandscape = 420;
     } else if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
         topField.placeholder = NSLocalizedString(@"E-Mail Address", @"");
     }
+    
+    topField.keyboardType = UIKeyboardTypeEmailAddress;
+    bottomField.keyboardType = UIKeyboardTypeEmailAddress;
 #endif    
     
     [self.scrollView setAlwaysBounceVertical:NO];
@@ -222,7 +225,11 @@ static const CGFloat kSCHStoriaLoginContentHeightLandscape = 420;
         CGRect frame = self.promptLabel.frame;
         switch (credentialsWarning) {
             case kSCHLoginHandlerCredentialsWarningNone:
-                self.promptLabel.text = NSLocalizedString(@"You must have a Scholastic account to sign in.", @"");
+#if USE_EMAIL_ADDRESS_AS_USERNAME    
+                self.promptLabel.text = NSLocalizedString(@"Please enter your Scholastic account E-Mail Address and Password.", @"");
+#else 
+                self.promptLabel.text = NSLocalizedString(@"Please enter your Scholastic account User Name and Password.", @"");
+#endif  
                 frame.size.width = 140;
                 self.promptLabel.font = [self.promptLabel.font fontWithSize:15.0f];
                 break;

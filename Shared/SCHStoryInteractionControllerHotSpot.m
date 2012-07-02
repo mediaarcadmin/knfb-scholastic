@@ -96,8 +96,8 @@
                                                                                                   pageSize:pageSize];
     }
     
-    NSInteger currentQuestionIndex = [self.delegate currentQuestionForStoryInteraction];
-    NSAssert(currentQuestionIndex < [questions count], @"index must be within array bounds");    
+    NSAssert([self.questions count] > 0, @"must be at least 1 question");
+    NSInteger currentQuestionIndex = [self.delegate currentQuestionForStoryInteraction] % [self.questions count];
     
     SCHStoryInteractionHotSpotQuestion *currentQuestion = (SCHStoryInteractionHotSpotQuestion *)[questions objectAtIndex:currentQuestionIndex];
     if ([currentQuestion answered]) {
