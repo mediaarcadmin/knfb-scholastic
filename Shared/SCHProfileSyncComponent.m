@@ -281,7 +281,7 @@ NSString * const SCHProfileSyncComponentDidFailNotification = @"SCHProfileSyncCo
 + (void)removeWishListForProfile:(SCHProfileItem *)profileItem
             managedObjectContext:(NSManagedObjectContext *)aManagedObjectContext
 {
-    if (profileItem != nil) {
+    if (profileItem != nil && aManagedObjectContext != nil) {
         SCHWishListProfile *wishListProfile = [profileItem.AppProfile wishListProfile];
         if (wishListProfile != nil) {
             [aManagedObjectContext deleteObject:wishListProfile];
