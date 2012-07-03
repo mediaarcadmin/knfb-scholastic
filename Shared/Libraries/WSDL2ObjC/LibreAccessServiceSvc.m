@@ -5709,6 +5709,7 @@ NSString * LibreAccessServiceSvc_TopFavoritesTypes_stringFromEnum(LibreAccessSer
 		Format = 0;
 		IdentifierType = 0;
 		Qualifier = 0;
+		version = 0;
 	}
 	
 	return self;
@@ -5717,6 +5718,7 @@ NSString * LibreAccessServiceSvc_TopFavoritesTypes_stringFromEnum(LibreAccessSer
 {
 	if(ISBN != nil) [ISBN release];
 	if(Format != nil) [Format release];
+	if(version != nil) [version release];
 	
 	[super dealloc];
 }
@@ -5762,12 +5764,16 @@ NSString * LibreAccessServiceSvc_TopFavoritesTypes_stringFromEnum(LibreAccessSer
 	if(self.Qualifier != 0) {
 		xmlNewChild(node, NULL, (const xmlChar*)"Qualifier", [LibreAccessServiceSvc_drmqualifiers_stringFromEnum(self.Qualifier) xmlString]);
 	}
+	if(self.version != 0) {
+		xmlAddChild(node, [self.version xmlNodeForDoc:node->doc elementName:@"version" elementNSPrefix:nil]);
+	}
 }
 /* elements */
 @synthesize ISBN;
 @synthesize Format;
 @synthesize IdentifierType;
 @synthesize Qualifier;
+@synthesize version;
 /* attributes */
 - (NSDictionary *)attributes
 {
@@ -5894,6 +5900,48 @@ NSString * LibreAccessServiceSvc_TopFavoritesTypes_stringFromEnum(LibreAccessSer
 				
 				LibreAccessServiceSvc_drmqualifiers enumRepresentation = LibreAccessServiceSvc_drmqualifiers_enumFromString(elementString);
 				self.Qualifier = enumRepresentation;
+			}
+			if(xmlStrEqual(cur->name, (const xmlChar *) "version")) {
+				BOOL nilProperty = NO;
+                for(xmlAttrPtr attr = cur->properties; attr != NULL; attr = attr->next) {
+                    if(xmlStrEqual(attr->name, (const xmlChar *) "nil") &&
+                       attr->children &&
+                       xmlStrEqual(attr->children->content, (const xmlChar *) "true"))
+                        nilProperty = YES;
+                        break;
+                }
+                if (nilProperty == NO) {				
+                    Class elementClass = nil;
+                    xmlChar *instanceType = xmlGetNsProp(cur, (const xmlChar *) "type", (const xmlChar *) "http://www.w3.org/2001/XMLSchema-instance");
+                    if(instanceType == NULL) {
+                        elementClass = [NSNumber class];
+                    } else {
+                        NSString *elementTypeString = [NSString stringWithCString:(char*)instanceType encoding:NSUTF8StringEncoding];
+					
+                        NSArray *elementTypeArray = [elementTypeString componentsSeparatedByString:@":"];
+					
+                        NSString *elementClassString = nil;
+                        if([elementTypeArray count] > 1) {
+                            NSString *prefix = [elementTypeArray objectAtIndex:0];
+                            NSString *localName = [elementTypeArray objectAtIndex:1];
+						
+                            xmlNsPtr elementNamespace = xmlSearchNs(cur->doc, cur, [prefix xmlString]);
+						
+                            NSString *standardPrefix = [[USGlobals sharedInstance].wsdlStandardNamespaces objectForKey:[NSString stringWithCString:(char*)elementNamespace->href encoding:NSUTF8StringEncoding]];
+						
+                            elementClassString = [NSString stringWithFormat:@"%@_%@", standardPrefix, localName];
+                        } else {
+                            elementClassString = [elementTypeString stringByReplacingOccurrencesOfString:@":" withString:@"_" options:0 range:NSMakeRange(0, [elementTypeString length])];
+                        }
+					
+                        elementClass = NSClassFromString(elementClassString);
+                        xmlFree(instanceType);
+                    }
+				
+                    id newChild = [elementClass deserializeNode:cur];
+				
+                    self.version = newChild;
+                }
 			}
 		}
 	}
@@ -7295,6 +7343,184 @@ NSString * LibreAccessServiceSvc_TopFavoritesTypes_stringFromEnum(LibreAccessSer
                     id newChild = [elementClass deserializeNode:cur];
 				
                     self.Enhanced = newChild;
+                }
+			}
+		}
+	}
+}
+/* NSCoder functions taken from: 
+ * http://davedelong.com/blog/2009/04/13/aspect-oriented-programming-objective-c
+ */
+- (id) initWithCoder:(NSCoder *)decoder {
+	//if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
+	//	self = [(id)super initWithCoder:decoder];
+	//} else {
+		self = [super init];
+	//}
+	if (self == nil) { return nil; }
+ 
+	NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
+	unsigned int numIvars = 0;
+	Ivar * ivars = class_copyIvarList([self class], &numIvars);
+	for(int i = 0; i < numIvars; i++) {
+		Ivar thisIvar = ivars[i];
+		NSString * key = [NSString stringWithUTF8String:ivar_getName(thisIvar)];
+		id val = [decoder decodeObjectForKey:key];
+		if (val == nil) { val = [NSNumber numberWithFloat:0.0]; }
+		[self setValue:val forKey:key];
+	}
+	if (numIvars > 0) { free(ivars); }
+	[pool drain];
+	return self;
+}
+- (void) encodeWithCoder:(NSCoder *)encoder {
+	if ([super respondsToSelector:@selector(encodeWithCoder:)] && ![self isKindOfClass:[super class]]) {
+		[super performSelector:@selector(encodeWithCoder:) withObject:encoder];
+	}
+	NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
+	unsigned int numIvars = 0;
+	Ivar * ivars = class_copyIvarList([self class], &numIvars);
+	for (int i = 0; i < numIvars; i++) {
+		Ivar thisIvar = ivars[i];
+		NSString * key = [NSString stringWithUTF8String:ivar_getName(thisIvar)];
+		id val = [self valueForKey:key];
+		[encoder encodeObject:val forKey:key];
+	}
+	if (numIvars > 0) { free(ivars); }
+	[pool drain];
+}
+@end
+@implementation LibreAccessServiceSvc_ContentMetadataThumbnailsItem
+- (id)init
+{
+	if((self = [super init])) {
+		ThumbnailURL = 0;
+	}
+	
+	return self;
+}
+- (void)dealloc
+{
+	if(ThumbnailURL != nil) [ThumbnailURL release];
+	
+	[super dealloc];
+}
+- (NSString *)nsPrefix
+{
+	return @"LibreAccessServiceSvc";
+}
+- (xmlNodePtr)xmlNodeForDoc:(xmlDocPtr)doc elementName:(NSString *)elName elementNSPrefix:(NSString *)elNSPrefix
+{
+	NSString *nodeName = nil;
+	if(elNSPrefix != nil && [elNSPrefix length] > 0)
+	{
+		nodeName = [NSString stringWithFormat:@"%@:%@", elNSPrefix, elName];
+	}
+	else
+	{
+		nodeName = elName;
+	}
+	xmlNodePtr node = xmlNewDocNode(doc, NULL, [nodeName xmlString], NULL);
+	xmlNodePtr root = xmlDocGetRootElement(doc);
+	xmlNsPtr xsi = xmlSearchNs(doc, root, (const xmlChar*)"xsi");
+	xmlSetNsProp(node, xsi, (const xmlChar*)"type", (const xmlChar*)"LibreAccessServiceSvc:ContentMetadataThumbnailsItem");
+	
+	[self addAttributesToNode:node];
+	
+	[self addElementsToNode:node];
+	
+	return node;
+}
+- (void)addAttributesToNode:(xmlNodePtr)node
+{
+	[super addAttributesToNode:node];
+	
+}
+- (void)addElementsToNode:(xmlNodePtr)node
+{
+	[super addElementsToNode:node];
+	
+	if(self.ThumbnailURL != 0) {
+		xmlAddChild(node, [self.ThumbnailURL xmlNodeForDoc:node->doc elementName:@"ThumbnailURL" elementNSPrefix:nil]);
+	}
+}
+/* elements */
+@synthesize ThumbnailURL;
+/* attributes */
+- (NSDictionary *)attributes
+{
+	NSMutableDictionary *attributes = [NSMutableDictionary dictionary];
+	
+	return attributes;
+}
++ (LibreAccessServiceSvc_ContentMetadataThumbnailsItem *)deserializeNode:(xmlNodePtr)cur
+{
+	LibreAccessServiceSvc_ContentMetadataThumbnailsItem *newObject = [[LibreAccessServiceSvc_ContentMetadataThumbnailsItem new] autorelease];
+	
+	[newObject deserializeAttributesFromNode:cur];
+	[newObject deserializeElementsFromNode:cur];
+	
+	return newObject;
+}
+- (void)deserializeAttributesFromNode:(xmlNodePtr)cur
+{
+	[super deserializeAttributesFromNode:cur];
+}
+- (void)deserializeElementsFromNode:(xmlNodePtr)cur
+{
+	
+	[super deserializeElementsFromNode:cur];
+	
+	for( cur = cur->children ; cur != NULL ; cur = cur->next ) {
+		if(cur->type == XML_ELEMENT_NODE) {
+			xmlChar *elementText = xmlNodeListGetString(cur->doc, cur->children, 1);
+			NSString *elementString = nil;
+			
+			if(elementText != NULL) {
+				elementString = [NSString stringWithCString:(char*)elementText encoding:NSUTF8StringEncoding];
+				[elementString self]; // avoid compiler warning for unused var
+				xmlFree(elementText);
+			}
+			if(xmlStrEqual(cur->name, (const xmlChar *) "ThumbnailURL")) {
+				BOOL nilProperty = NO;
+                for(xmlAttrPtr attr = cur->properties; attr != NULL; attr = attr->next) {
+                    if(xmlStrEqual(attr->name, (const xmlChar *) "nil") &&
+                       attr->children &&
+                       xmlStrEqual(attr->children->content, (const xmlChar *) "true"))
+                        nilProperty = YES;
+                        break;
+                }
+                if (nilProperty == NO) {				
+                    Class elementClass = nil;
+                    xmlChar *instanceType = xmlGetNsProp(cur, (const xmlChar *) "type", (const xmlChar *) "http://www.w3.org/2001/XMLSchema-instance");
+                    if(instanceType == NULL) {
+                        elementClass = [NSString class];
+                    } else {
+                        NSString *elementTypeString = [NSString stringWithCString:(char*)instanceType encoding:NSUTF8StringEncoding];
+					
+                        NSArray *elementTypeArray = [elementTypeString componentsSeparatedByString:@":"];
+					
+                        NSString *elementClassString = nil;
+                        if([elementTypeArray count] > 1) {
+                            NSString *prefix = [elementTypeArray objectAtIndex:0];
+                            NSString *localName = [elementTypeArray objectAtIndex:1];
+						
+                            xmlNsPtr elementNamespace = xmlSearchNs(cur->doc, cur, [prefix xmlString]);
+						
+                            NSString *standardPrefix = [[USGlobals sharedInstance].wsdlStandardNamespaces objectForKey:[NSString stringWithCString:(char*)elementNamespace->href encoding:NSUTF8StringEncoding]];
+						
+                            elementClassString = [NSString stringWithFormat:@"%@_%@", standardPrefix, localName];
+                        } else {
+                            elementClassString = [elementTypeString stringByReplacingOccurrencesOfString:@":" withString:@"_" options:0 range:NSMakeRange(0, [elementTypeString length])];
+                        }
+					
+                        elementClass = NSClassFromString(elementClassString);
+                        xmlFree(instanceType);
+                    }
+				
+                    id newChild = [elementClass deserializeNode:cur];
+				
+                    self.ThumbnailURL = newChild;
                 }
 			}
 		}
@@ -43470,6 +43696,7 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
 		DRMQualifier = 0;
 		Format = 0;
 		version = 0;
+		averageRating = 0;
 		lastOrderDate = 0;
 		defaultAssignment = 0;
 		freeBook = 0;
@@ -43486,6 +43713,7 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
 	if(ContentIdentifier != nil) [ContentIdentifier release];
 	if(Format != nil) [Format release];
 	if(version != nil) [version release];
+	if(averageRating != nil) [averageRating release];
 	if(lastOrderDate != nil) [lastOrderDate release];
 	if(defaultAssignment != nil) [defaultAssignment release];
 	if(freeBook != nil) [freeBook release];
@@ -43541,6 +43769,9 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
 	if(self.version != 0) {
 		xmlAddChild(node, [self.version xmlNodeForDoc:node->doc elementName:@"version" elementNSPrefix:nil]);
 	}
+	if(self.averageRating != 0) {
+		xmlAddChild(node, [self.averageRating xmlNodeForDoc:node->doc elementName:@"averageRating" elementNSPrefix:nil]);
+	}
 	if(self.lastOrderDate != 0) {
 		xmlAddChild(node, [self.lastOrderDate xmlNodeForDoc:node->doc elementName:@"lastOrderDate" elementNSPrefix:nil]);
 	}
@@ -43569,6 +43800,7 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
 @synthesize DRMQualifier;
 @synthesize Format;
 @synthesize version;
+@synthesize averageRating;
 @synthesize lastOrderDate;
 @synthesize defaultAssignment;
 @synthesize freeBook;
@@ -43743,6 +43975,48 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
                     id newChild = [elementClass deserializeNode:cur];
 				
                     self.version = newChild;
+                }
+			}
+			if(xmlStrEqual(cur->name, (const xmlChar *) "averageRating")) {
+				BOOL nilProperty = NO;
+                for(xmlAttrPtr attr = cur->properties; attr != NULL; attr = attr->next) {
+                    if(xmlStrEqual(attr->name, (const xmlChar *) "nil") &&
+                       attr->children &&
+                       xmlStrEqual(attr->children->content, (const xmlChar *) "true"))
+                        nilProperty = YES;
+                        break;
+                }
+                if (nilProperty == NO) {				
+                    Class elementClass = nil;
+                    xmlChar *instanceType = xmlGetNsProp(cur, (const xmlChar *) "type", (const xmlChar *) "http://www.w3.org/2001/XMLSchema-instance");
+                    if(instanceType == NULL) {
+                        elementClass = [NSNumber class];
+                    } else {
+                        NSString *elementTypeString = [NSString stringWithCString:(char*)instanceType encoding:NSUTF8StringEncoding];
+					
+                        NSArray *elementTypeArray = [elementTypeString componentsSeparatedByString:@":"];
+					
+                        NSString *elementClassString = nil;
+                        if([elementTypeArray count] > 1) {
+                            NSString *prefix = [elementTypeArray objectAtIndex:0];
+                            NSString *localName = [elementTypeArray objectAtIndex:1];
+						
+                            xmlNsPtr elementNamespace = xmlSearchNs(cur->doc, cur, [prefix xmlString]);
+						
+                            NSString *standardPrefix = [[USGlobals sharedInstance].wsdlStandardNamespaces objectForKey:[NSString stringWithCString:(char*)elementNamespace->href encoding:NSUTF8StringEncoding]];
+						
+                            elementClassString = [NSString stringWithFormat:@"%@_%@", standardPrefix, localName];
+                        } else {
+                            elementClassString = [elementTypeString stringByReplacingOccurrencesOfString:@":" withString:@"_" options:0 range:NSMakeRange(0, [elementTypeString length])];
+                        }
+					
+                        elementClass = NSClassFromString(elementClassString);
+                        xmlFree(instanceType);
+                    }
+				
+                    id newChild = [elementClass deserializeNode:cur];
+				
+                    self.averageRating = newChild;
                 }
 			}
 			if(xmlStrEqual(cur->name, (const xmlChar *) "lastOrderDate")) {
@@ -47520,6 +47794,723 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
                     id newChild = [elementClass deserializeNode:cur];
 				
                     self.ContentMetadataForRatingsList = newChild;
+                }
+			}
+		}
+	}
+}
+/* NSCoder functions taken from: 
+ * http://davedelong.com/blog/2009/04/13/aspect-oriented-programming-objective-c
+ */
+- (id) initWithCoder:(NSCoder *)decoder {
+	//if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
+	//	self = [(id)super initWithCoder:decoder];
+	//} else {
+		self = [super init];
+	//}
+	if (self == nil) { return nil; }
+ 
+	NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
+	unsigned int numIvars = 0;
+	Ivar * ivars = class_copyIvarList([self class], &numIvars);
+	for(int i = 0; i < numIvars; i++) {
+		Ivar thisIvar = ivars[i];
+		NSString * key = [NSString stringWithUTF8String:ivar_getName(thisIvar)];
+		id val = [decoder decodeObjectForKey:key];
+		if (val == nil) { val = [NSNumber numberWithFloat:0.0]; }
+		[self setValue:val forKey:key];
+	}
+	if (numIvars > 0) { free(ivars); }
+	[pool drain];
+	return self;
+}
+- (void) encodeWithCoder:(NSCoder *)encoder {
+	if ([super respondsToSelector:@selector(encodeWithCoder:)] && ![self isKindOfClass:[super class]]) {
+		[super performSelector:@selector(encodeWithCoder:) withObject:encoder];
+	}
+	NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
+	unsigned int numIvars = 0;
+	Ivar * ivars = class_copyIvarList([self class], &numIvars);
+	for (int i = 0; i < numIvars; i++) {
+		Ivar thisIvar = ivars[i];
+		NSString * key = [NSString stringWithUTF8String:ivar_getName(thisIvar)];
+		id val = [self valueForKey:key];
+		[encoder encodeObject:val forKey:key];
+	}
+	if (numIvars > 0) { free(ivars); }
+	[pool drain];
+}
+@end
+@implementation LibreAccessServiceSvc_ListContentMetadataThumbnailsRequest
+- (id)init
+{
+	if((self = [super init])) {
+		authtoken = 0;
+		includeurls = 0;
+		coverURLOnly = 0;
+		isbn13s = [[NSMutableArray alloc] init];
+	}
+	
+	return self;
+}
+- (void)dealloc
+{
+	if(authtoken != nil) [authtoken release];
+	if(includeurls != nil) [includeurls release];
+	if(coverURLOnly != nil) [coverURLOnly release];
+	if(isbn13s != nil) [isbn13s release];
+	
+	[super dealloc];
+}
+- (NSString *)nsPrefix
+{
+	return @"LibreAccessServiceSvc";
+}
+- (xmlNodePtr)xmlNodeForDoc:(xmlDocPtr)doc elementName:(NSString *)elName elementNSPrefix:(NSString *)elNSPrefix
+{
+	NSString *nodeName = nil;
+	if(elNSPrefix != nil && [elNSPrefix length] > 0)
+	{
+		nodeName = [NSString stringWithFormat:@"%@:%@", elNSPrefix, elName];
+	}
+	else
+	{
+		nodeName = elName;
+	}
+	xmlNodePtr node = xmlNewDocNode(doc, NULL, [nodeName xmlString], NULL);
+	
+	[self addAttributesToNode:node];
+	
+	[self addElementsToNode:node];
+	
+	return node;
+}
+- (void)addAttributesToNode:(xmlNodePtr)node
+{
+	
+}
+- (void)addElementsToNode:(xmlNodePtr)node
+{
+	
+	if(self.authtoken != 0) {
+		xmlAddChild(node, [self.authtoken xmlNodeForDoc:node->doc elementName:@"authtoken" elementNSPrefix:nil]);
+	}
+	if(self.includeurls != 0) {
+		xmlAddChild(node, [self.includeurls xmlNodeForDoc:node->doc elementName:@"includeurls" elementNSPrefix:nil]);
+	}
+	if(self.coverURLOnly != 0) {
+		xmlAddChild(node, [self.coverURLOnly xmlNodeForDoc:node->doc elementName:@"coverURLOnly" elementNSPrefix:nil]);
+	}
+	if(self.isbn13s != 0) {
+		for(LibreAccessServiceSvc_isbnItem * child in self.isbn13s) {
+			xmlAddChild(node, [child xmlNodeForDoc:node->doc elementName:@"isbn13s" elementNSPrefix:nil]);
+		}
+	}
+}
+/* elements */
+@synthesize authtoken;
+@synthesize includeurls;
+@synthesize coverURLOnly;
+@synthesize isbn13s;
+- (void)addIsbn13s:(LibreAccessServiceSvc_isbnItem *)toAdd
+{
+	if(toAdd != nil) [isbn13s addObject:toAdd];
+}
+/* attributes */
+- (NSDictionary *)attributes
+{
+	NSMutableDictionary *attributes = [NSMutableDictionary dictionary];
+	
+	return attributes;
+}
++ (LibreAccessServiceSvc_ListContentMetadataThumbnailsRequest *)deserializeNode:(xmlNodePtr)cur
+{
+	LibreAccessServiceSvc_ListContentMetadataThumbnailsRequest *newObject = [[LibreAccessServiceSvc_ListContentMetadataThumbnailsRequest new] autorelease];
+	
+	[newObject deserializeAttributesFromNode:cur];
+	[newObject deserializeElementsFromNode:cur];
+	
+	return newObject;
+}
+- (void)deserializeAttributesFromNode:(xmlNodePtr)cur
+{
+}
+- (void)deserializeElementsFromNode:(xmlNodePtr)cur
+{
+	
+	
+	for( cur = cur->children ; cur != NULL ; cur = cur->next ) {
+		if(cur->type == XML_ELEMENT_NODE) {
+			xmlChar *elementText = xmlNodeListGetString(cur->doc, cur->children, 1);
+			NSString *elementString = nil;
+			
+			if(elementText != NULL) {
+				elementString = [NSString stringWithCString:(char*)elementText encoding:NSUTF8StringEncoding];
+				[elementString self]; // avoid compiler warning for unused var
+				xmlFree(elementText);
+			}
+			if(xmlStrEqual(cur->name, (const xmlChar *) "authtoken")) {
+				BOOL nilProperty = NO;
+                for(xmlAttrPtr attr = cur->properties; attr != NULL; attr = attr->next) {
+                    if(xmlStrEqual(attr->name, (const xmlChar *) "nil") &&
+                       attr->children &&
+                       xmlStrEqual(attr->children->content, (const xmlChar *) "true"))
+                        nilProperty = YES;
+                        break;
+                }
+                if (nilProperty == NO) {				
+                    Class elementClass = nil;
+                    xmlChar *instanceType = xmlGetNsProp(cur, (const xmlChar *) "type", (const xmlChar *) "http://www.w3.org/2001/XMLSchema-instance");
+                    if(instanceType == NULL) {
+                        elementClass = [NSString class];
+                    } else {
+                        NSString *elementTypeString = [NSString stringWithCString:(char*)instanceType encoding:NSUTF8StringEncoding];
+					
+                        NSArray *elementTypeArray = [elementTypeString componentsSeparatedByString:@":"];
+					
+                        NSString *elementClassString = nil;
+                        if([elementTypeArray count] > 1) {
+                            NSString *prefix = [elementTypeArray objectAtIndex:0];
+                            NSString *localName = [elementTypeArray objectAtIndex:1];
+						
+                            xmlNsPtr elementNamespace = xmlSearchNs(cur->doc, cur, [prefix xmlString]);
+						
+                            NSString *standardPrefix = [[USGlobals sharedInstance].wsdlStandardNamespaces objectForKey:[NSString stringWithCString:(char*)elementNamespace->href encoding:NSUTF8StringEncoding]];
+						
+                            elementClassString = [NSString stringWithFormat:@"%@_%@", standardPrefix, localName];
+                        } else {
+                            elementClassString = [elementTypeString stringByReplacingOccurrencesOfString:@":" withString:@"_" options:0 range:NSMakeRange(0, [elementTypeString length])];
+                        }
+					
+                        elementClass = NSClassFromString(elementClassString);
+                        xmlFree(instanceType);
+                    }
+				
+                    id newChild = [elementClass deserializeNode:cur];
+				
+                    self.authtoken = newChild;
+                }
+			}
+			if(xmlStrEqual(cur->name, (const xmlChar *) "includeurls")) {
+				BOOL nilProperty = NO;
+                for(xmlAttrPtr attr = cur->properties; attr != NULL; attr = attr->next) {
+                    if(xmlStrEqual(attr->name, (const xmlChar *) "nil") &&
+                       attr->children &&
+                       xmlStrEqual(attr->children->content, (const xmlChar *) "true"))
+                        nilProperty = YES;
+                        break;
+                }
+                if (nilProperty == NO) {				
+                    Class elementClass = nil;
+                    xmlChar *instanceType = xmlGetNsProp(cur, (const xmlChar *) "type", (const xmlChar *) "http://www.w3.org/2001/XMLSchema-instance");
+                    if(instanceType == NULL) {
+                        elementClass = [USBoolean class];
+                    } else {
+                        NSString *elementTypeString = [NSString stringWithCString:(char*)instanceType encoding:NSUTF8StringEncoding];
+					
+                        NSArray *elementTypeArray = [elementTypeString componentsSeparatedByString:@":"];
+					
+                        NSString *elementClassString = nil;
+                        if([elementTypeArray count] > 1) {
+                            NSString *prefix = [elementTypeArray objectAtIndex:0];
+                            NSString *localName = [elementTypeArray objectAtIndex:1];
+						
+                            xmlNsPtr elementNamespace = xmlSearchNs(cur->doc, cur, [prefix xmlString]);
+						
+                            NSString *standardPrefix = [[USGlobals sharedInstance].wsdlStandardNamespaces objectForKey:[NSString stringWithCString:(char*)elementNamespace->href encoding:NSUTF8StringEncoding]];
+						
+                            elementClassString = [NSString stringWithFormat:@"%@_%@", standardPrefix, localName];
+                        } else {
+                            elementClassString = [elementTypeString stringByReplacingOccurrencesOfString:@":" withString:@"_" options:0 range:NSMakeRange(0, [elementTypeString length])];
+                        }
+					
+                        elementClass = NSClassFromString(elementClassString);
+                        xmlFree(instanceType);
+                    }
+				
+                    id newChild = [elementClass deserializeNode:cur];
+				
+                    self.includeurls = newChild;
+                }
+			}
+			if(xmlStrEqual(cur->name, (const xmlChar *) "coverURLOnly")) {
+				BOOL nilProperty = NO;
+                for(xmlAttrPtr attr = cur->properties; attr != NULL; attr = attr->next) {
+                    if(xmlStrEqual(attr->name, (const xmlChar *) "nil") &&
+                       attr->children &&
+                       xmlStrEqual(attr->children->content, (const xmlChar *) "true"))
+                        nilProperty = YES;
+                        break;
+                }
+                if (nilProperty == NO) {				
+                    Class elementClass = nil;
+                    xmlChar *instanceType = xmlGetNsProp(cur, (const xmlChar *) "type", (const xmlChar *) "http://www.w3.org/2001/XMLSchema-instance");
+                    if(instanceType == NULL) {
+                        elementClass = [USBoolean class];
+                    } else {
+                        NSString *elementTypeString = [NSString stringWithCString:(char*)instanceType encoding:NSUTF8StringEncoding];
+					
+                        NSArray *elementTypeArray = [elementTypeString componentsSeparatedByString:@":"];
+					
+                        NSString *elementClassString = nil;
+                        if([elementTypeArray count] > 1) {
+                            NSString *prefix = [elementTypeArray objectAtIndex:0];
+                            NSString *localName = [elementTypeArray objectAtIndex:1];
+						
+                            xmlNsPtr elementNamespace = xmlSearchNs(cur->doc, cur, [prefix xmlString]);
+						
+                            NSString *standardPrefix = [[USGlobals sharedInstance].wsdlStandardNamespaces objectForKey:[NSString stringWithCString:(char*)elementNamespace->href encoding:NSUTF8StringEncoding]];
+						
+                            elementClassString = [NSString stringWithFormat:@"%@_%@", standardPrefix, localName];
+                        } else {
+                            elementClassString = [elementTypeString stringByReplacingOccurrencesOfString:@":" withString:@"_" options:0 range:NSMakeRange(0, [elementTypeString length])];
+                        }
+					
+                        elementClass = NSClassFromString(elementClassString);
+                        xmlFree(instanceType);
+                    }
+				
+                    id newChild = [elementClass deserializeNode:cur];
+				
+                    self.coverURLOnly = newChild;
+                }
+			}
+			if(xmlStrEqual(cur->name, (const xmlChar *) "isbn13s")) {
+				BOOL nilProperty = NO;
+                for(xmlAttrPtr attr = cur->properties; attr != NULL; attr = attr->next) {
+                    if(xmlStrEqual(attr->name, (const xmlChar *) "nil") &&
+                       attr->children &&
+                       xmlStrEqual(attr->children->content, (const xmlChar *) "true"))
+                        nilProperty = YES;
+                        break;
+                }
+                if (nilProperty == NO) {				
+                    Class elementClass = nil;
+                    xmlChar *instanceType = xmlGetNsProp(cur, (const xmlChar *) "type", (const xmlChar *) "http://www.w3.org/2001/XMLSchema-instance");
+                    if(instanceType == NULL) {
+                        elementClass = [LibreAccessServiceSvc_isbnItem class];
+                    } else {
+                        NSString *elementTypeString = [NSString stringWithCString:(char*)instanceType encoding:NSUTF8StringEncoding];
+					
+                        NSArray *elementTypeArray = [elementTypeString componentsSeparatedByString:@":"];
+					
+                        NSString *elementClassString = nil;
+                        if([elementTypeArray count] > 1) {
+                            NSString *prefix = [elementTypeArray objectAtIndex:0];
+                            NSString *localName = [elementTypeArray objectAtIndex:1];
+						
+                            xmlNsPtr elementNamespace = xmlSearchNs(cur->doc, cur, [prefix xmlString]);
+						
+                            NSString *standardPrefix = [[USGlobals sharedInstance].wsdlStandardNamespaces objectForKey:[NSString stringWithCString:(char*)elementNamespace->href encoding:NSUTF8StringEncoding]];
+						
+                            elementClassString = [NSString stringWithFormat:@"%@_%@", standardPrefix, localName];
+                        } else {
+                            elementClassString = [elementTypeString stringByReplacingOccurrencesOfString:@":" withString:@"_" options:0 range:NSMakeRange(0, [elementTypeString length])];
+                        }
+					
+                        elementClass = NSClassFromString(elementClassString);
+                        xmlFree(instanceType);
+                    }
+				
+                    id newChild = [elementClass deserializeNode:cur];
+				
+                    if(newChild != nil) [self.isbn13s addObject:newChild];
+                }
+			}
+		}
+	}
+}
+/* NSCoder functions taken from: 
+ * http://davedelong.com/blog/2009/04/13/aspect-oriented-programming-objective-c
+ */
+- (id) initWithCoder:(NSCoder *)decoder {
+	//if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
+	//	self = [(id)super initWithCoder:decoder];
+	//} else {
+		self = [super init];
+	//}
+	if (self == nil) { return nil; }
+ 
+	NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
+	unsigned int numIvars = 0;
+	Ivar * ivars = class_copyIvarList([self class], &numIvars);
+	for(int i = 0; i < numIvars; i++) {
+		Ivar thisIvar = ivars[i];
+		NSString * key = [NSString stringWithUTF8String:ivar_getName(thisIvar)];
+		id val = [decoder decodeObjectForKey:key];
+		if (val == nil) { val = [NSNumber numberWithFloat:0.0]; }
+		[self setValue:val forKey:key];
+	}
+	if (numIvars > 0) { free(ivars); }
+	[pool drain];
+	return self;
+}
+- (void) encodeWithCoder:(NSCoder *)encoder {
+	if ([super respondsToSelector:@selector(encodeWithCoder:)] && ![self isKindOfClass:[super class]]) {
+		[super performSelector:@selector(encodeWithCoder:) withObject:encoder];
+	}
+	NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
+	unsigned int numIvars = 0;
+	Ivar * ivars = class_copyIvarList([self class], &numIvars);
+	for (int i = 0; i < numIvars; i++) {
+		Ivar thisIvar = ivars[i];
+		NSString * key = [NSString stringWithUTF8String:ivar_getName(thisIvar)];
+		id val = [self valueForKey:key];
+		[encoder encodeObject:val forKey:key];
+	}
+	if (numIvars > 0) { free(ivars); }
+	[pool drain];
+}
+@end
+@implementation LibreAccessServiceSvc_ContentMetadataThumbnailsList
+- (id)init
+{
+	if((self = [super init])) {
+		ContentMetadataThumbnailsItem = [[NSMutableArray alloc] init];
+	}
+	
+	return self;
+}
+- (void)dealloc
+{
+	if(ContentMetadataThumbnailsItem != nil) [ContentMetadataThumbnailsItem release];
+	
+	[super dealloc];
+}
+- (NSString *)nsPrefix
+{
+	return @"LibreAccessServiceSvc";
+}
+- (xmlNodePtr)xmlNodeForDoc:(xmlDocPtr)doc elementName:(NSString *)elName elementNSPrefix:(NSString *)elNSPrefix
+{
+	NSString *nodeName = nil;
+	if(elNSPrefix != nil && [elNSPrefix length] > 0)
+	{
+		nodeName = [NSString stringWithFormat:@"%@:%@", elNSPrefix, elName];
+	}
+	else
+	{
+		nodeName = elName;
+	}
+	xmlNodePtr node = xmlNewDocNode(doc, NULL, [nodeName xmlString], NULL);
+	
+	[self addAttributesToNode:node];
+	
+	[self addElementsToNode:node];
+	
+	return node;
+}
+- (void)addAttributesToNode:(xmlNodePtr)node
+{
+	
+}
+- (void)addElementsToNode:(xmlNodePtr)node
+{
+	
+	if(self.ContentMetadataThumbnailsItem != 0) {
+		for(LibreAccessServiceSvc_ContentMetadataThumbnailsItem * child in self.ContentMetadataThumbnailsItem) {
+			xmlAddChild(node, [child xmlNodeForDoc:node->doc elementName:@"ContentMetadataThumbnailsItem" elementNSPrefix:nil]);
+		}
+	}
+}
+/* elements */
+@synthesize ContentMetadataThumbnailsItem;
+- (void)addContentMetadataThumbnailsItem:(LibreAccessServiceSvc_ContentMetadataThumbnailsItem *)toAdd
+{
+	if(toAdd != nil) [ContentMetadataThumbnailsItem addObject:toAdd];
+}
+/* attributes */
+- (NSDictionary *)attributes
+{
+	NSMutableDictionary *attributes = [NSMutableDictionary dictionary];
+	
+	return attributes;
+}
++ (LibreAccessServiceSvc_ContentMetadataThumbnailsList *)deserializeNode:(xmlNodePtr)cur
+{
+	LibreAccessServiceSvc_ContentMetadataThumbnailsList *newObject = [[LibreAccessServiceSvc_ContentMetadataThumbnailsList new] autorelease];
+	
+	[newObject deserializeAttributesFromNode:cur];
+	[newObject deserializeElementsFromNode:cur];
+	
+	return newObject;
+}
+- (void)deserializeAttributesFromNode:(xmlNodePtr)cur
+{
+}
+- (void)deserializeElementsFromNode:(xmlNodePtr)cur
+{
+	
+	
+	for( cur = cur->children ; cur != NULL ; cur = cur->next ) {
+		if(cur->type == XML_ELEMENT_NODE) {
+			xmlChar *elementText = xmlNodeListGetString(cur->doc, cur->children, 1);
+			NSString *elementString = nil;
+			
+			if(elementText != NULL) {
+				elementString = [NSString stringWithCString:(char*)elementText encoding:NSUTF8StringEncoding];
+				[elementString self]; // avoid compiler warning for unused var
+				xmlFree(elementText);
+			}
+			if(xmlStrEqual(cur->name, (const xmlChar *) "ContentMetadataThumbnailsItem")) {
+				BOOL nilProperty = NO;
+                for(xmlAttrPtr attr = cur->properties; attr != NULL; attr = attr->next) {
+                    if(xmlStrEqual(attr->name, (const xmlChar *) "nil") &&
+                       attr->children &&
+                       xmlStrEqual(attr->children->content, (const xmlChar *) "true"))
+                        nilProperty = YES;
+                        break;
+                }
+                if (nilProperty == NO) {				
+                    Class elementClass = nil;
+                    xmlChar *instanceType = xmlGetNsProp(cur, (const xmlChar *) "type", (const xmlChar *) "http://www.w3.org/2001/XMLSchema-instance");
+                    if(instanceType == NULL) {
+                        elementClass = [LibreAccessServiceSvc_ContentMetadataThumbnailsItem class];
+                    } else {
+                        NSString *elementTypeString = [NSString stringWithCString:(char*)instanceType encoding:NSUTF8StringEncoding];
+					
+                        NSArray *elementTypeArray = [elementTypeString componentsSeparatedByString:@":"];
+					
+                        NSString *elementClassString = nil;
+                        if([elementTypeArray count] > 1) {
+                            NSString *prefix = [elementTypeArray objectAtIndex:0];
+                            NSString *localName = [elementTypeArray objectAtIndex:1];
+						
+                            xmlNsPtr elementNamespace = xmlSearchNs(cur->doc, cur, [prefix xmlString]);
+						
+                            NSString *standardPrefix = [[USGlobals sharedInstance].wsdlStandardNamespaces objectForKey:[NSString stringWithCString:(char*)elementNamespace->href encoding:NSUTF8StringEncoding]];
+						
+                            elementClassString = [NSString stringWithFormat:@"%@_%@", standardPrefix, localName];
+                        } else {
+                            elementClassString = [elementTypeString stringByReplacingOccurrencesOfString:@":" withString:@"_" options:0 range:NSMakeRange(0, [elementTypeString length])];
+                        }
+					
+                        elementClass = NSClassFromString(elementClassString);
+                        xmlFree(instanceType);
+                    }
+				
+                    id newChild = [elementClass deserializeNode:cur];
+				
+                    if(newChild != nil) [self.ContentMetadataThumbnailsItem addObject:newChild];
+                }
+			}
+		}
+	}
+}
+/* NSCoder functions taken from: 
+ * http://davedelong.com/blog/2009/04/13/aspect-oriented-programming-objective-c
+ */
+- (id) initWithCoder:(NSCoder *)decoder {
+	//if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
+	//	self = [(id)super initWithCoder:decoder];
+	//} else {
+		self = [super init];
+	//}
+	if (self == nil) { return nil; }
+ 
+	NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
+	unsigned int numIvars = 0;
+	Ivar * ivars = class_copyIvarList([self class], &numIvars);
+	for(int i = 0; i < numIvars; i++) {
+		Ivar thisIvar = ivars[i];
+		NSString * key = [NSString stringWithUTF8String:ivar_getName(thisIvar)];
+		id val = [decoder decodeObjectForKey:key];
+		if (val == nil) { val = [NSNumber numberWithFloat:0.0]; }
+		[self setValue:val forKey:key];
+	}
+	if (numIvars > 0) { free(ivars); }
+	[pool drain];
+	return self;
+}
+- (void) encodeWithCoder:(NSCoder *)encoder {
+	if ([super respondsToSelector:@selector(encodeWithCoder:)] && ![self isKindOfClass:[super class]]) {
+		[super performSelector:@selector(encodeWithCoder:) withObject:encoder];
+	}
+	NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
+	unsigned int numIvars = 0;
+	Ivar * ivars = class_copyIvarList([self class], &numIvars);
+	for (int i = 0; i < numIvars; i++) {
+		Ivar thisIvar = ivars[i];
+		NSString * key = [NSString stringWithUTF8String:ivar_getName(thisIvar)];
+		id val = [self valueForKey:key];
+		[encoder encodeObject:val forKey:key];
+	}
+	if (numIvars > 0) { free(ivars); }
+	[pool drain];
+}
+@end
+@implementation LibreAccessServiceSvc_ListContentMetadataThumbnailsResponse
+- (id)init
+{
+	if((self = [super init])) {
+		statusmessage = 0;
+		ContentMetadataThumbnailsList = 0;
+	}
+	
+	return self;
+}
+- (void)dealloc
+{
+	if(statusmessage != nil) [statusmessage release];
+	if(ContentMetadataThumbnailsList != nil) [ContentMetadataThumbnailsList release];
+	
+	[super dealloc];
+}
+- (NSString *)nsPrefix
+{
+	return @"LibreAccessServiceSvc";
+}
+- (xmlNodePtr)xmlNodeForDoc:(xmlDocPtr)doc elementName:(NSString *)elName elementNSPrefix:(NSString *)elNSPrefix
+{
+	NSString *nodeName = nil;
+	if(elNSPrefix != nil && [elNSPrefix length] > 0)
+	{
+		nodeName = [NSString stringWithFormat:@"%@:%@", elNSPrefix, elName];
+	}
+	else
+	{
+		nodeName = elName;
+	}
+	xmlNodePtr node = xmlNewDocNode(doc, NULL, [nodeName xmlString], NULL);
+	
+	[self addAttributesToNode:node];
+	
+	[self addElementsToNode:node];
+	
+	return node;
+}
+- (void)addAttributesToNode:(xmlNodePtr)node
+{
+	
+}
+- (void)addElementsToNode:(xmlNodePtr)node
+{
+	
+	if(self.statusmessage != 0) {
+		xmlAddChild(node, [self.statusmessage xmlNodeForDoc:node->doc elementName:@"statusmessage" elementNSPrefix:nil]);
+	}
+	if(self.ContentMetadataThumbnailsList != 0) {
+		xmlAddChild(node, [self.ContentMetadataThumbnailsList xmlNodeForDoc:node->doc elementName:@"ContentMetadataThumbnailsList" elementNSPrefix:nil]);
+	}
+}
+/* elements */
+@synthesize statusmessage;
+@synthesize ContentMetadataThumbnailsList;
+/* attributes */
+- (NSDictionary *)attributes
+{
+	NSMutableDictionary *attributes = [NSMutableDictionary dictionary];
+	
+	return attributes;
+}
++ (LibreAccessServiceSvc_ListContentMetadataThumbnailsResponse *)deserializeNode:(xmlNodePtr)cur
+{
+	LibreAccessServiceSvc_ListContentMetadataThumbnailsResponse *newObject = [[LibreAccessServiceSvc_ListContentMetadataThumbnailsResponse new] autorelease];
+	
+	[newObject deserializeAttributesFromNode:cur];
+	[newObject deserializeElementsFromNode:cur];
+	
+	return newObject;
+}
+- (void)deserializeAttributesFromNode:(xmlNodePtr)cur
+{
+}
+- (void)deserializeElementsFromNode:(xmlNodePtr)cur
+{
+	
+	
+	for( cur = cur->children ; cur != NULL ; cur = cur->next ) {
+		if(cur->type == XML_ELEMENT_NODE) {
+			xmlChar *elementText = xmlNodeListGetString(cur->doc, cur->children, 1);
+			NSString *elementString = nil;
+			
+			if(elementText != NULL) {
+				elementString = [NSString stringWithCString:(char*)elementText encoding:NSUTF8StringEncoding];
+				[elementString self]; // avoid compiler warning for unused var
+				xmlFree(elementText);
+			}
+			if(xmlStrEqual(cur->name, (const xmlChar *) "statusmessage")) {
+				BOOL nilProperty = NO;
+                for(xmlAttrPtr attr = cur->properties; attr != NULL; attr = attr->next) {
+                    if(xmlStrEqual(attr->name, (const xmlChar *) "nil") &&
+                       attr->children &&
+                       xmlStrEqual(attr->children->content, (const xmlChar *) "true"))
+                        nilProperty = YES;
+                        break;
+                }
+                if (nilProperty == NO) {				
+                    Class elementClass = nil;
+                    xmlChar *instanceType = xmlGetNsProp(cur, (const xmlChar *) "type", (const xmlChar *) "http://www.w3.org/2001/XMLSchema-instance");
+                    if(instanceType == NULL) {
+                        elementClass = [LibreAccessServiceSvc_StatusHolder class];
+                    } else {
+                        NSString *elementTypeString = [NSString stringWithCString:(char*)instanceType encoding:NSUTF8StringEncoding];
+					
+                        NSArray *elementTypeArray = [elementTypeString componentsSeparatedByString:@":"];
+					
+                        NSString *elementClassString = nil;
+                        if([elementTypeArray count] > 1) {
+                            NSString *prefix = [elementTypeArray objectAtIndex:0];
+                            NSString *localName = [elementTypeArray objectAtIndex:1];
+						
+                            xmlNsPtr elementNamespace = xmlSearchNs(cur->doc, cur, [prefix xmlString]);
+						
+                            NSString *standardPrefix = [[USGlobals sharedInstance].wsdlStandardNamespaces objectForKey:[NSString stringWithCString:(char*)elementNamespace->href encoding:NSUTF8StringEncoding]];
+						
+                            elementClassString = [NSString stringWithFormat:@"%@_%@", standardPrefix, localName];
+                        } else {
+                            elementClassString = [elementTypeString stringByReplacingOccurrencesOfString:@":" withString:@"_" options:0 range:NSMakeRange(0, [elementTypeString length])];
+                        }
+					
+                        elementClass = NSClassFromString(elementClassString);
+                        xmlFree(instanceType);
+                    }
+				
+                    id newChild = [elementClass deserializeNode:cur];
+				
+                    self.statusmessage = newChild;
+                }
+			}
+			if(xmlStrEqual(cur->name, (const xmlChar *) "ContentMetadataThumbnailsList")) {
+				BOOL nilProperty = NO;
+                for(xmlAttrPtr attr = cur->properties; attr != NULL; attr = attr->next) {
+                    if(xmlStrEqual(attr->name, (const xmlChar *) "nil") &&
+                       attr->children &&
+                       xmlStrEqual(attr->children->content, (const xmlChar *) "true"))
+                        nilProperty = YES;
+                        break;
+                }
+                if (nilProperty == NO) {				
+                    Class elementClass = nil;
+                    xmlChar *instanceType = xmlGetNsProp(cur, (const xmlChar *) "type", (const xmlChar *) "http://www.w3.org/2001/XMLSchema-instance");
+                    if(instanceType == NULL) {
+                        elementClass = [LibreAccessServiceSvc_ContentMetadataThumbnailsList class];
+                    } else {
+                        NSString *elementTypeString = [NSString stringWithCString:(char*)instanceType encoding:NSUTF8StringEncoding];
+					
+                        NSArray *elementTypeArray = [elementTypeString componentsSeparatedByString:@":"];
+					
+                        NSString *elementClassString = nil;
+                        if([elementTypeArray count] > 1) {
+                            NSString *prefix = [elementTypeArray objectAtIndex:0];
+                            NSString *localName = [elementTypeArray objectAtIndex:1];
+						
+                            xmlNsPtr elementNamespace = xmlSearchNs(cur->doc, cur, [prefix xmlString]);
+						
+                            NSString *standardPrefix = [[USGlobals sharedInstance].wsdlStandardNamespaces objectForKey:[NSString stringWithCString:(char*)elementNamespace->href encoding:NSUTF8StringEncoding]];
+						
+                            elementClassString = [NSString stringWithFormat:@"%@_%@", standardPrefix, localName];
+                        } else {
+                            elementClassString = [elementTypeString stringByReplacingOccurrencesOfString:@":" withString:@"_" options:0 range:NSMakeRange(0, [elementTypeString length])];
+                        }
+					
+                        elementClass = NSClassFromString(elementClassString);
+                        xmlFree(instanceType);
+                    }
+				
+                    id newChild = [elementClass deserializeNode:cur];
+				
+                    self.ContentMetadataThumbnailsList = newChild;
                 }
 			}
 		}
@@ -71799,6 +72790,396 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
 	[pool drain];
 }
 @end
+@implementation LibreAccessServiceSvc_DeregisterAllDevicesRequest
+- (id)init
+{
+	if((self = [super init])) {
+		authToken = 0;
+		deregistrationConfirmed = 0;
+	}
+	
+	return self;
+}
+- (void)dealloc
+{
+	if(authToken != nil) [authToken release];
+	if(deregistrationConfirmed != nil) [deregistrationConfirmed release];
+	
+	[super dealloc];
+}
+- (NSString *)nsPrefix
+{
+	return @"LibreAccessServiceSvc";
+}
+- (xmlNodePtr)xmlNodeForDoc:(xmlDocPtr)doc elementName:(NSString *)elName elementNSPrefix:(NSString *)elNSPrefix
+{
+	NSString *nodeName = nil;
+	if(elNSPrefix != nil && [elNSPrefix length] > 0)
+	{
+		nodeName = [NSString stringWithFormat:@"%@:%@", elNSPrefix, elName];
+	}
+	else
+	{
+		nodeName = elName;
+	}
+	xmlNodePtr node = xmlNewDocNode(doc, NULL, [nodeName xmlString], NULL);
+	
+	[self addAttributesToNode:node];
+	
+	[self addElementsToNode:node];
+	
+	return node;
+}
+- (void)addAttributesToNode:(xmlNodePtr)node
+{
+	
+}
+- (void)addElementsToNode:(xmlNodePtr)node
+{
+	
+	if(self.authToken != 0) {
+		xmlAddChild(node, [self.authToken xmlNodeForDoc:node->doc elementName:@"authToken" elementNSPrefix:nil]);
+	}
+	if(self.deregistrationConfirmed != 0) {
+		xmlAddChild(node, [self.deregistrationConfirmed xmlNodeForDoc:node->doc elementName:@"deregistrationConfirmed" elementNSPrefix:nil]);
+	}
+}
+/* elements */
+@synthesize authToken;
+@synthesize deregistrationConfirmed;
+/* attributes */
+- (NSDictionary *)attributes
+{
+	NSMutableDictionary *attributes = [NSMutableDictionary dictionary];
+	
+	return attributes;
+}
++ (LibreAccessServiceSvc_DeregisterAllDevicesRequest *)deserializeNode:(xmlNodePtr)cur
+{
+	LibreAccessServiceSvc_DeregisterAllDevicesRequest *newObject = [[LibreAccessServiceSvc_DeregisterAllDevicesRequest new] autorelease];
+	
+	[newObject deserializeAttributesFromNode:cur];
+	[newObject deserializeElementsFromNode:cur];
+	
+	return newObject;
+}
+- (void)deserializeAttributesFromNode:(xmlNodePtr)cur
+{
+}
+- (void)deserializeElementsFromNode:(xmlNodePtr)cur
+{
+	
+	
+	for( cur = cur->children ; cur != NULL ; cur = cur->next ) {
+		if(cur->type == XML_ELEMENT_NODE) {
+			xmlChar *elementText = xmlNodeListGetString(cur->doc, cur->children, 1);
+			NSString *elementString = nil;
+			
+			if(elementText != NULL) {
+				elementString = [NSString stringWithCString:(char*)elementText encoding:NSUTF8StringEncoding];
+				[elementString self]; // avoid compiler warning for unused var
+				xmlFree(elementText);
+			}
+			if(xmlStrEqual(cur->name, (const xmlChar *) "authToken")) {
+				BOOL nilProperty = NO;
+                for(xmlAttrPtr attr = cur->properties; attr != NULL; attr = attr->next) {
+                    if(xmlStrEqual(attr->name, (const xmlChar *) "nil") &&
+                       attr->children &&
+                       xmlStrEqual(attr->children->content, (const xmlChar *) "true"))
+                        nilProperty = YES;
+                        break;
+                }
+                if (nilProperty == NO) {				
+                    Class elementClass = nil;
+                    xmlChar *instanceType = xmlGetNsProp(cur, (const xmlChar *) "type", (const xmlChar *) "http://www.w3.org/2001/XMLSchema-instance");
+                    if(instanceType == NULL) {
+                        elementClass = [NSString class];
+                    } else {
+                        NSString *elementTypeString = [NSString stringWithCString:(char*)instanceType encoding:NSUTF8StringEncoding];
+					
+                        NSArray *elementTypeArray = [elementTypeString componentsSeparatedByString:@":"];
+					
+                        NSString *elementClassString = nil;
+                        if([elementTypeArray count] > 1) {
+                            NSString *prefix = [elementTypeArray objectAtIndex:0];
+                            NSString *localName = [elementTypeArray objectAtIndex:1];
+						
+                            xmlNsPtr elementNamespace = xmlSearchNs(cur->doc, cur, [prefix xmlString]);
+						
+                            NSString *standardPrefix = [[USGlobals sharedInstance].wsdlStandardNamespaces objectForKey:[NSString stringWithCString:(char*)elementNamespace->href encoding:NSUTF8StringEncoding]];
+						
+                            elementClassString = [NSString stringWithFormat:@"%@_%@", standardPrefix, localName];
+                        } else {
+                            elementClassString = [elementTypeString stringByReplacingOccurrencesOfString:@":" withString:@"_" options:0 range:NSMakeRange(0, [elementTypeString length])];
+                        }
+					
+                        elementClass = NSClassFromString(elementClassString);
+                        xmlFree(instanceType);
+                    }
+				
+                    id newChild = [elementClass deserializeNode:cur];
+				
+                    self.authToken = newChild;
+                }
+			}
+			if(xmlStrEqual(cur->name, (const xmlChar *) "deregistrationConfirmed")) {
+				BOOL nilProperty = NO;
+                for(xmlAttrPtr attr = cur->properties; attr != NULL; attr = attr->next) {
+                    if(xmlStrEqual(attr->name, (const xmlChar *) "nil") &&
+                       attr->children &&
+                       xmlStrEqual(attr->children->content, (const xmlChar *) "true"))
+                        nilProperty = YES;
+                        break;
+                }
+                if (nilProperty == NO) {				
+                    Class elementClass = nil;
+                    xmlChar *instanceType = xmlGetNsProp(cur, (const xmlChar *) "type", (const xmlChar *) "http://www.w3.org/2001/XMLSchema-instance");
+                    if(instanceType == NULL) {
+                        elementClass = [USBoolean class];
+                    } else {
+                        NSString *elementTypeString = [NSString stringWithCString:(char*)instanceType encoding:NSUTF8StringEncoding];
+					
+                        NSArray *elementTypeArray = [elementTypeString componentsSeparatedByString:@":"];
+					
+                        NSString *elementClassString = nil;
+                        if([elementTypeArray count] > 1) {
+                            NSString *prefix = [elementTypeArray objectAtIndex:0];
+                            NSString *localName = [elementTypeArray objectAtIndex:1];
+						
+                            xmlNsPtr elementNamespace = xmlSearchNs(cur->doc, cur, [prefix xmlString]);
+						
+                            NSString *standardPrefix = [[USGlobals sharedInstance].wsdlStandardNamespaces objectForKey:[NSString stringWithCString:(char*)elementNamespace->href encoding:NSUTF8StringEncoding]];
+						
+                            elementClassString = [NSString stringWithFormat:@"%@_%@", standardPrefix, localName];
+                        } else {
+                            elementClassString = [elementTypeString stringByReplacingOccurrencesOfString:@":" withString:@"_" options:0 range:NSMakeRange(0, [elementTypeString length])];
+                        }
+					
+                        elementClass = NSClassFromString(elementClassString);
+                        xmlFree(instanceType);
+                    }
+				
+                    id newChild = [elementClass deserializeNode:cur];
+				
+                    self.deregistrationConfirmed = newChild;
+                }
+			}
+		}
+	}
+}
+/* NSCoder functions taken from: 
+ * http://davedelong.com/blog/2009/04/13/aspect-oriented-programming-objective-c
+ */
+- (id) initWithCoder:(NSCoder *)decoder {
+	//if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
+	//	self = [(id)super initWithCoder:decoder];
+	//} else {
+		self = [super init];
+	//}
+	if (self == nil) { return nil; }
+ 
+	NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
+	unsigned int numIvars = 0;
+	Ivar * ivars = class_copyIvarList([self class], &numIvars);
+	for(int i = 0; i < numIvars; i++) {
+		Ivar thisIvar = ivars[i];
+		NSString * key = [NSString stringWithUTF8String:ivar_getName(thisIvar)];
+		id val = [decoder decodeObjectForKey:key];
+		if (val == nil) { val = [NSNumber numberWithFloat:0.0]; }
+		[self setValue:val forKey:key];
+	}
+	if (numIvars > 0) { free(ivars); }
+	[pool drain];
+	return self;
+}
+- (void) encodeWithCoder:(NSCoder *)encoder {
+	if ([super respondsToSelector:@selector(encodeWithCoder:)] && ![self isKindOfClass:[super class]]) {
+		[super performSelector:@selector(encodeWithCoder:) withObject:encoder];
+	}
+	NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
+	unsigned int numIvars = 0;
+	Ivar * ivars = class_copyIvarList([self class], &numIvars);
+	for (int i = 0; i < numIvars; i++) {
+		Ivar thisIvar = ivars[i];
+		NSString * key = [NSString stringWithUTF8String:ivar_getName(thisIvar)];
+		id val = [self valueForKey:key];
+		[encoder encodeObject:val forKey:key];
+	}
+	if (numIvars > 0) { free(ivars); }
+	[pool drain];
+}
+@end
+@implementation LibreAccessServiceSvc_DeregisterAllDevicesResponse
+- (id)init
+{
+	if((self = [super init])) {
+		statusMessage = 0;
+	}
+	
+	return self;
+}
+- (void)dealloc
+{
+	if(statusMessage != nil) [statusMessage release];
+	
+	[super dealloc];
+}
+- (NSString *)nsPrefix
+{
+	return @"LibreAccessServiceSvc";
+}
+- (xmlNodePtr)xmlNodeForDoc:(xmlDocPtr)doc elementName:(NSString *)elName elementNSPrefix:(NSString *)elNSPrefix
+{
+	NSString *nodeName = nil;
+	if(elNSPrefix != nil && [elNSPrefix length] > 0)
+	{
+		nodeName = [NSString stringWithFormat:@"%@:%@", elNSPrefix, elName];
+	}
+	else
+	{
+		nodeName = elName;
+	}
+	xmlNodePtr node = xmlNewDocNode(doc, NULL, [nodeName xmlString], NULL);
+	
+	[self addAttributesToNode:node];
+	
+	[self addElementsToNode:node];
+	
+	return node;
+}
+- (void)addAttributesToNode:(xmlNodePtr)node
+{
+	
+}
+- (void)addElementsToNode:(xmlNodePtr)node
+{
+	
+	if(self.statusMessage != 0) {
+		xmlAddChild(node, [self.statusMessage xmlNodeForDoc:node->doc elementName:@"statusMessage" elementNSPrefix:nil]);
+	}
+}
+/* elements */
+@synthesize statusMessage;
+/* attributes */
+- (NSDictionary *)attributes
+{
+	NSMutableDictionary *attributes = [NSMutableDictionary dictionary];
+	
+	return attributes;
+}
++ (LibreAccessServiceSvc_DeregisterAllDevicesResponse *)deserializeNode:(xmlNodePtr)cur
+{
+	LibreAccessServiceSvc_DeregisterAllDevicesResponse *newObject = [[LibreAccessServiceSvc_DeregisterAllDevicesResponse new] autorelease];
+	
+	[newObject deserializeAttributesFromNode:cur];
+	[newObject deserializeElementsFromNode:cur];
+	
+	return newObject;
+}
+- (void)deserializeAttributesFromNode:(xmlNodePtr)cur
+{
+}
+- (void)deserializeElementsFromNode:(xmlNodePtr)cur
+{
+	
+	
+	for( cur = cur->children ; cur != NULL ; cur = cur->next ) {
+		if(cur->type == XML_ELEMENT_NODE) {
+			xmlChar *elementText = xmlNodeListGetString(cur->doc, cur->children, 1);
+			NSString *elementString = nil;
+			
+			if(elementText != NULL) {
+				elementString = [NSString stringWithCString:(char*)elementText encoding:NSUTF8StringEncoding];
+				[elementString self]; // avoid compiler warning for unused var
+				xmlFree(elementText);
+			}
+			if(xmlStrEqual(cur->name, (const xmlChar *) "statusMessage")) {
+				BOOL nilProperty = NO;
+                for(xmlAttrPtr attr = cur->properties; attr != NULL; attr = attr->next) {
+                    if(xmlStrEqual(attr->name, (const xmlChar *) "nil") &&
+                       attr->children &&
+                       xmlStrEqual(attr->children->content, (const xmlChar *) "true"))
+                        nilProperty = YES;
+                        break;
+                }
+                if (nilProperty == NO) {				
+                    Class elementClass = nil;
+                    xmlChar *instanceType = xmlGetNsProp(cur, (const xmlChar *) "type", (const xmlChar *) "http://www.w3.org/2001/XMLSchema-instance");
+                    if(instanceType == NULL) {
+                        elementClass = [LibreAccessServiceSvc_StatusHolder class];
+                    } else {
+                        NSString *elementTypeString = [NSString stringWithCString:(char*)instanceType encoding:NSUTF8StringEncoding];
+					
+                        NSArray *elementTypeArray = [elementTypeString componentsSeparatedByString:@":"];
+					
+                        NSString *elementClassString = nil;
+                        if([elementTypeArray count] > 1) {
+                            NSString *prefix = [elementTypeArray objectAtIndex:0];
+                            NSString *localName = [elementTypeArray objectAtIndex:1];
+						
+                            xmlNsPtr elementNamespace = xmlSearchNs(cur->doc, cur, [prefix xmlString]);
+						
+                            NSString *standardPrefix = [[USGlobals sharedInstance].wsdlStandardNamespaces objectForKey:[NSString stringWithCString:(char*)elementNamespace->href encoding:NSUTF8StringEncoding]];
+						
+                            elementClassString = [NSString stringWithFormat:@"%@_%@", standardPrefix, localName];
+                        } else {
+                            elementClassString = [elementTypeString stringByReplacingOccurrencesOfString:@":" withString:@"_" options:0 range:NSMakeRange(0, [elementTypeString length])];
+                        }
+					
+                        elementClass = NSClassFromString(elementClassString);
+                        xmlFree(instanceType);
+                    }
+				
+                    id newChild = [elementClass deserializeNode:cur];
+				
+                    self.statusMessage = newChild;
+                }
+			}
+		}
+	}
+}
+/* NSCoder functions taken from: 
+ * http://davedelong.com/blog/2009/04/13/aspect-oriented-programming-objective-c
+ */
+- (id) initWithCoder:(NSCoder *)decoder {
+	//if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
+	//	self = [(id)super initWithCoder:decoder];
+	//} else {
+		self = [super init];
+	//}
+	if (self == nil) { return nil; }
+ 
+	NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
+	unsigned int numIvars = 0;
+	Ivar * ivars = class_copyIvarList([self class], &numIvars);
+	for(int i = 0; i < numIvars; i++) {
+		Ivar thisIvar = ivars[i];
+		NSString * key = [NSString stringWithUTF8String:ivar_getName(thisIvar)];
+		id val = [decoder decodeObjectForKey:key];
+		if (val == nil) { val = [NSNumber numberWithFloat:0.0]; }
+		[self setValue:val forKey:key];
+	}
+	if (numIvars > 0) { free(ivars); }
+	[pool drain];
+	return self;
+}
+- (void) encodeWithCoder:(NSCoder *)encoder {
+	if ([super respondsToSelector:@selector(encodeWithCoder:)] && ![self isKindOfClass:[super class]]) {
+		[super performSelector:@selector(encodeWithCoder:) withObject:encoder];
+	}
+	NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
+	unsigned int numIvars = 0;
+	Ivar * ivars = class_copyIvarList([self class], &numIvars);
+	for (int i = 0; i < numIvars; i++) {
+		Ivar thisIvar = ivars[i];
+		NSString * key = [NSString stringWithUTF8String:ivar_getName(thisIvar)];
+		id val = [self valueForKey:key];
+		[encoder encodeObject:val forKey:key];
+	}
+	if (numIvars > 0) { free(ivars); }
+	[pool drain];
+}
+@end
 @implementation LibreAccessServiceSvc
 + (void)initialize
 {
@@ -72283,18 +73664,6 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
 																							 parameters:aParameters
 																							 ] autorelease]];
 }
-- (LibreAccessServiceSoap11BindingResponse *)SaveContentProfileAssignmentUsingParameters:(LibreAccessServiceSvc_SaveContentProfileAssignmentRequest *)aParameters 
-{
-	return [self performSynchronousOperation:[[(LibreAccessServiceSoap11Binding_SaveContentProfileAssignment*)[LibreAccessServiceSoap11Binding_SaveContentProfileAssignment alloc] initWithBinding:self delegate:self
-																							parameters:aParameters
-																							] autorelease]];
-}
-- (void)SaveContentProfileAssignmentAsyncUsingParameters:(LibreAccessServiceSvc_SaveContentProfileAssignmentRequest *)aParameters  delegate:(id<LibreAccessServiceSoap11BindingResponseDelegate>)responseDelegate
-{
-	[self performAsynchronousOperation: [[(LibreAccessServiceSoap11Binding_SaveContentProfileAssignment*)[LibreAccessServiceSoap11Binding_SaveContentProfileAssignment alloc] initWithBinding:self delegate:responseDelegate
-																							 parameters:aParameters
-																							 ] autorelease]];
-}
 - (LibreAccessServiceSoap11BindingResponse *)TokenExchangeUsingBody:(LibreAccessServiceSvc_TokenExchange *)aBody 
 {
 	return [self performSynchronousOperation:[[(LibreAccessServiceSoap11Binding_TokenExchange*)[LibreAccessServiceSoap11Binding_TokenExchange alloc] initWithBinding:self delegate:self
@@ -72316,6 +73685,30 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
 - (void)SetAccountPasswordRequiredAsyncUsingParameters:(LibreAccessServiceSvc_SetAccountPasswordRequiredRequest *)aParameters  delegate:(id<LibreAccessServiceSoap11BindingResponseDelegate>)responseDelegate
 {
 	[self performAsynchronousOperation: [[(LibreAccessServiceSoap11Binding_SetAccountPasswordRequired*)[LibreAccessServiceSoap11Binding_SetAccountPasswordRequired alloc] initWithBinding:self delegate:responseDelegate
+																							 parameters:aParameters
+																							 ] autorelease]];
+}
+- (LibreAccessServiceSoap11BindingResponse *)SaveContentProfileAssignmentUsingParameters:(LibreAccessServiceSvc_SaveContentProfileAssignmentRequest *)aParameters 
+{
+	return [self performSynchronousOperation:[[(LibreAccessServiceSoap11Binding_SaveContentProfileAssignment*)[LibreAccessServiceSoap11Binding_SaveContentProfileAssignment alloc] initWithBinding:self delegate:self
+																							parameters:aParameters
+																							] autorelease]];
+}
+- (void)SaveContentProfileAssignmentAsyncUsingParameters:(LibreAccessServiceSvc_SaveContentProfileAssignmentRequest *)aParameters  delegate:(id<LibreAccessServiceSoap11BindingResponseDelegate>)responseDelegate
+{
+	[self performAsynchronousOperation: [[(LibreAccessServiceSoap11Binding_SaveContentProfileAssignment*)[LibreAccessServiceSoap11Binding_SaveContentProfileAssignment alloc] initWithBinding:self delegate:responseDelegate
+																							 parameters:aParameters
+																							 ] autorelease]];
+}
+- (LibreAccessServiceSoap11BindingResponse *)DeregisterAllDevicesUsingParameters:(LibreAccessServiceSvc_DeregisterAllDevicesRequest *)aParameters 
+{
+	return [self performSynchronousOperation:[[(LibreAccessServiceSoap11Binding_DeregisterAllDevices*)[LibreAccessServiceSoap11Binding_DeregisterAllDevices alloc] initWithBinding:self delegate:self
+																							parameters:aParameters
+																							] autorelease]];
+}
+- (void)DeregisterAllDevicesAsyncUsingParameters:(LibreAccessServiceSvc_DeregisterAllDevicesRequest *)aParameters  delegate:(id<LibreAccessServiceSoap11BindingResponseDelegate>)responseDelegate
+{
+	[self performAsynchronousOperation: [[(LibreAccessServiceSoap11Binding_DeregisterAllDevices*)[LibreAccessServiceSoap11Binding_DeregisterAllDevices alloc] initWithBinding:self delegate:responseDelegate
 																							 parameters:aParameters
 																							 ] autorelease]];
 }
@@ -72581,6 +73974,18 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
 {
 	[self performAsynchronousOperation: [[(LibreAccessServiceSoap11Binding_SaveDefaultBooks*)[LibreAccessServiceSoap11Binding_SaveDefaultBooks alloc] initWithBinding:self delegate:responseDelegate
 																							 parameters:aParameters
+																							 ] autorelease]];
+}
+- (LibreAccessServiceSoap11BindingResponse *)ListContentMetadataThumbnailsUsingBody:(LibreAccessServiceSvc_ListContentMetadataThumbnailsRequest *)aBody 
+{
+	return [self performSynchronousOperation:[[(LibreAccessServiceSoap11Binding_ListContentMetadataThumbnails*)[LibreAccessServiceSoap11Binding_ListContentMetadataThumbnails alloc] initWithBinding:self delegate:self
+																							body:aBody
+																							] autorelease]];
+}
+- (void)ListContentMetadataThumbnailsAsyncUsingBody:(LibreAccessServiceSvc_ListContentMetadataThumbnailsRequest *)aBody  delegate:(id<LibreAccessServiceSoap11BindingResponseDelegate>)responseDelegate
+{
+	[self performAsynchronousOperation: [[(LibreAccessServiceSoap11Binding_ListContentMetadataThumbnails*)[LibreAccessServiceSoap11Binding_ListContentMetadataThumbnails alloc] initWithBinding:self delegate:responseDelegate
+																							 body:aBody
 																							 ] autorelease]];
 }
 - (LibreAccessServiceSoap11BindingResponse *)ListFavoriteTypesUsingParameters:(LibreAccessServiceSvc_ListFavoriteTypesRequest *)aParameters 
@@ -76487,114 +77892,6 @@ parameters:(LibreAccessServiceSvc_SaveReadingStatisticsDetailedRequest *)aParame
 	}
 }
 @end
-@implementation LibreAccessServiceSoap11Binding_SaveContentProfileAssignment
-@synthesize parameters;
-- (id)initWithBinding:(LibreAccessServiceSoap11Binding *)aBinding delegate:(id<LibreAccessServiceSoap11BindingResponseDelegate>)responseDelegate
-parameters:(LibreAccessServiceSvc_SaveContentProfileAssignmentRequest *)aParameters
-{
-	if((self = [super initWithBinding:aBinding delegate:responseDelegate])) {
-		self.parameters = aParameters;
-	}
-	
-	return self;
-}
-- (void)dealloc
-{
-	if(parameters != nil) [parameters release];
-	
-	[super dealloc];
-}
-- (void)main
-{
-	[response autorelease];
-	response = [LibreAccessServiceSoap11BindingResponse new];
-	
-	LibreAccessServiceSoap11Binding_envelope *envelope = [LibreAccessServiceSoap11Binding_envelope sharedInstance];
-	
-	NSMutableDictionary *headerElements = nil;
-	headerElements = [NSMutableDictionary dictionary];
-	
-	NSMutableDictionary *bodyElements = nil;
-	NSMutableArray *bodyKeys = nil;
-	bodyElements = [NSMutableDictionary dictionary];
-	bodyKeys = [NSMutableArray array];
-	id obj;
-	obj = nil;
-	if(parameters != nil) obj = parameters;
-	if(obj != nil) {
-		[bodyElements setObject:obj forKey:@"SaveContentProfileAssignmentRequest"];
-		[bodyKeys addObject:@"SaveContentProfileAssignmentRequest"];
-	}
-	
-	NSString *operationXMLString = [envelope serializedFormUsingHeaderElements:headerElements bodyElements:bodyElements bodyKeys:bodyKeys];
-	
-	[binding sendHTTPCallUsingBody:operationXMLString soapAction:@"http://webservices.libredigital.com/libreaccess/SaveContentProfileAssignment" forOperation:self];
-}
-- (void)connectionDidFinishLoading:(NSURLConnection *)connection
-{
-	if (responseData != nil && delegate != nil)
-	{
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-			xmlDocPtr doc;
-			xmlNodePtr cur;
-		
-			if (binding.logXMLInOut) {
-				NSLog(@"ResponseBody:\n%@", [[[NSString alloc] initWithData:responseData encoding:NSUTF8StringEncoding] autorelease]);
-			}
-		
-#if !TARGET_OS_IPHONE && (!defined(MAC_OS_X_VERSION_10_6) || MAC_OS_X_VERSION_MIN_REQUIRED < MAC_OS_X_VERSION_10_6)
-	// Not yet defined in 10.5 libxml
-	#define XML_PARSE_COMPACT 0
-#endif
-			doc = xmlReadMemory([responseData bytes], [responseData length], NULL, NULL, XML_PARSE_COMPACT | XML_PARSE_NOBLANKS);
-		
-			if (doc == NULL) {
-				NSDictionary *userInfo = [NSDictionary dictionaryWithObject:@"Errors while parsing returned XML" forKey:NSLocalizedDescriptionKey];
-			
-				response.error = [NSError errorWithDomain:@"LibreAccessServiceSoap11BindingResponseXML" code:1 userInfo:userInfo];
-			} else {
-				cur = xmlDocGetRootElement(doc);
-				cur = cur->children;
-			
-				for( ; cur != NULL ; cur = cur->next) {
-					if(cur->type == XML_ELEMENT_NODE) {
-					
-						if(xmlStrEqual(cur->name, (const xmlChar *) "Body")) {
-							NSMutableArray *responseBodyParts = [NSMutableArray array];
-						
-							xmlNodePtr bodyNode;
-							for(bodyNode=cur->children ; bodyNode != NULL ; bodyNode = bodyNode->next) {
-								if(cur->type == XML_ELEMENT_NODE) {
-									if(xmlStrEqual(bodyNode->name, (const xmlChar *) "SaveContentProfileAssignmentResponse")) {
-										LibreAccessServiceSvc_SaveContentProfileAssignmentResponse *bodyObject = [LibreAccessServiceSvc_SaveContentProfileAssignmentResponse deserializeNode:bodyNode];
-										//NSAssert1(bodyObject != nil, @"Errors while parsing body %s", bodyNode->name);
-										if (bodyObject != nil) [responseBodyParts addObject:bodyObject];
-									}
-									if ((bodyNode->ns != nil && xmlStrEqual(bodyNode->ns->prefix, cur->ns->prefix)) && 
-										xmlStrEqual(bodyNode->name, (const xmlChar *) "Fault")) {
-										SOAPFault *bodyObject = [SOAPFault deserializeNode:bodyNode];
-										//NSAssert1(bodyObject != nil, @"Errors while parsing body %s", bodyNode->name);
-										if (bodyObject != nil) [responseBodyParts addObject:bodyObject];
-									}
-								}
-							}
-						
-							response.bodyParts = responseBodyParts;
-						}
-					}
-				}
-			
-				xmlFreeDoc(doc);
-			}
-			if(delegate != nil && [delegate respondsToSelector:@selector(operation:completedWithResponse:)] == YES) {
-				dispatch_async(dispatch_get_main_queue(), ^{
-					[delegate operation:self completedWithResponse:response];
-				});
-			}
-		});
-	}
-}
-@end
 @implementation LibreAccessServiceSoap11Binding_TokenExchange
 @synthesize body;
 - (id)initWithBinding:(LibreAccessServiceSoap11Binding *)aBinding delegate:(id<LibreAccessServiceSoap11BindingResponseDelegate>)responseDelegate
@@ -76783,6 +78080,222 @@ parameters:(LibreAccessServiceSvc_SetAccountPasswordRequiredRequest *)aParameter
 								if(cur->type == XML_ELEMENT_NODE) {
 									if(xmlStrEqual(bodyNode->name, (const xmlChar *) "SetAccountPasswordRequiredResponse")) {
 										LibreAccessServiceSvc_SetAccountPasswordRequiredResponse *bodyObject = [LibreAccessServiceSvc_SetAccountPasswordRequiredResponse deserializeNode:bodyNode];
+										//NSAssert1(bodyObject != nil, @"Errors while parsing body %s", bodyNode->name);
+										if (bodyObject != nil) [responseBodyParts addObject:bodyObject];
+									}
+									if ((bodyNode->ns != nil && xmlStrEqual(bodyNode->ns->prefix, cur->ns->prefix)) && 
+										xmlStrEqual(bodyNode->name, (const xmlChar *) "Fault")) {
+										SOAPFault *bodyObject = [SOAPFault deserializeNode:bodyNode];
+										//NSAssert1(bodyObject != nil, @"Errors while parsing body %s", bodyNode->name);
+										if (bodyObject != nil) [responseBodyParts addObject:bodyObject];
+									}
+								}
+							}
+						
+							response.bodyParts = responseBodyParts;
+						}
+					}
+				}
+			
+				xmlFreeDoc(doc);
+			}
+			if(delegate != nil && [delegate respondsToSelector:@selector(operation:completedWithResponse:)] == YES) {
+				dispatch_async(dispatch_get_main_queue(), ^{
+					[delegate operation:self completedWithResponse:response];
+				});
+			}
+		});
+	}
+}
+@end
+@implementation LibreAccessServiceSoap11Binding_SaveContentProfileAssignment
+@synthesize parameters;
+- (id)initWithBinding:(LibreAccessServiceSoap11Binding *)aBinding delegate:(id<LibreAccessServiceSoap11BindingResponseDelegate>)responseDelegate
+parameters:(LibreAccessServiceSvc_SaveContentProfileAssignmentRequest *)aParameters
+{
+	if((self = [super initWithBinding:aBinding delegate:responseDelegate])) {
+		self.parameters = aParameters;
+	}
+	
+	return self;
+}
+- (void)dealloc
+{
+	if(parameters != nil) [parameters release];
+	
+	[super dealloc];
+}
+- (void)main
+{
+	[response autorelease];
+	response = [LibreAccessServiceSoap11BindingResponse new];
+	
+	LibreAccessServiceSoap11Binding_envelope *envelope = [LibreAccessServiceSoap11Binding_envelope sharedInstance];
+	
+	NSMutableDictionary *headerElements = nil;
+	headerElements = [NSMutableDictionary dictionary];
+	
+	NSMutableDictionary *bodyElements = nil;
+	NSMutableArray *bodyKeys = nil;
+	bodyElements = [NSMutableDictionary dictionary];
+	bodyKeys = [NSMutableArray array];
+	id obj;
+	obj = nil;
+	if(parameters != nil) obj = parameters;
+	if(obj != nil) {
+		[bodyElements setObject:obj forKey:@"SaveContentProfileAssignmentRequest"];
+		[bodyKeys addObject:@"SaveContentProfileAssignmentRequest"];
+	}
+	
+	NSString *operationXMLString = [envelope serializedFormUsingHeaderElements:headerElements bodyElements:bodyElements bodyKeys:bodyKeys];
+	
+	[binding sendHTTPCallUsingBody:operationXMLString soapAction:@"http://webservices.libredigital.com/libreaccess/SaveContentProfileAssignment" forOperation:self];
+}
+- (void)connectionDidFinishLoading:(NSURLConnection *)connection
+{
+	if (responseData != nil && delegate != nil)
+	{
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+			xmlDocPtr doc;
+			xmlNodePtr cur;
+		
+			if (binding.logXMLInOut) {
+				NSLog(@"ResponseBody:\n%@", [[[NSString alloc] initWithData:responseData encoding:NSUTF8StringEncoding] autorelease]);
+			}
+		
+#if !TARGET_OS_IPHONE && (!defined(MAC_OS_X_VERSION_10_6) || MAC_OS_X_VERSION_MIN_REQUIRED < MAC_OS_X_VERSION_10_6)
+	// Not yet defined in 10.5 libxml
+	#define XML_PARSE_COMPACT 0
+#endif
+			doc = xmlReadMemory([responseData bytes], [responseData length], NULL, NULL, XML_PARSE_COMPACT | XML_PARSE_NOBLANKS);
+		
+			if (doc == NULL) {
+				NSDictionary *userInfo = [NSDictionary dictionaryWithObject:@"Errors while parsing returned XML" forKey:NSLocalizedDescriptionKey];
+			
+				response.error = [NSError errorWithDomain:@"LibreAccessServiceSoap11BindingResponseXML" code:1 userInfo:userInfo];
+			} else {
+				cur = xmlDocGetRootElement(doc);
+				cur = cur->children;
+			
+				for( ; cur != NULL ; cur = cur->next) {
+					if(cur->type == XML_ELEMENT_NODE) {
+					
+						if(xmlStrEqual(cur->name, (const xmlChar *) "Body")) {
+							NSMutableArray *responseBodyParts = [NSMutableArray array];
+						
+							xmlNodePtr bodyNode;
+							for(bodyNode=cur->children ; bodyNode != NULL ; bodyNode = bodyNode->next) {
+								if(cur->type == XML_ELEMENT_NODE) {
+									if(xmlStrEqual(bodyNode->name, (const xmlChar *) "SaveContentProfileAssignmentResponse")) {
+										LibreAccessServiceSvc_SaveContentProfileAssignmentResponse *bodyObject = [LibreAccessServiceSvc_SaveContentProfileAssignmentResponse deserializeNode:bodyNode];
+										//NSAssert1(bodyObject != nil, @"Errors while parsing body %s", bodyNode->name);
+										if (bodyObject != nil) [responseBodyParts addObject:bodyObject];
+									}
+									if ((bodyNode->ns != nil && xmlStrEqual(bodyNode->ns->prefix, cur->ns->prefix)) && 
+										xmlStrEqual(bodyNode->name, (const xmlChar *) "Fault")) {
+										SOAPFault *bodyObject = [SOAPFault deserializeNode:bodyNode];
+										//NSAssert1(bodyObject != nil, @"Errors while parsing body %s", bodyNode->name);
+										if (bodyObject != nil) [responseBodyParts addObject:bodyObject];
+									}
+								}
+							}
+						
+							response.bodyParts = responseBodyParts;
+						}
+					}
+				}
+			
+				xmlFreeDoc(doc);
+			}
+			if(delegate != nil && [delegate respondsToSelector:@selector(operation:completedWithResponse:)] == YES) {
+				dispatch_async(dispatch_get_main_queue(), ^{
+					[delegate operation:self completedWithResponse:response];
+				});
+			}
+		});
+	}
+}
+@end
+@implementation LibreAccessServiceSoap11Binding_DeregisterAllDevices
+@synthesize parameters;
+- (id)initWithBinding:(LibreAccessServiceSoap11Binding *)aBinding delegate:(id<LibreAccessServiceSoap11BindingResponseDelegate>)responseDelegate
+parameters:(LibreAccessServiceSvc_DeregisterAllDevicesRequest *)aParameters
+{
+	if((self = [super initWithBinding:aBinding delegate:responseDelegate])) {
+		self.parameters = aParameters;
+	}
+	
+	return self;
+}
+- (void)dealloc
+{
+	if(parameters != nil) [parameters release];
+	
+	[super dealloc];
+}
+- (void)main
+{
+	[response autorelease];
+	response = [LibreAccessServiceSoap11BindingResponse new];
+	
+	LibreAccessServiceSoap11Binding_envelope *envelope = [LibreAccessServiceSoap11Binding_envelope sharedInstance];
+	
+	NSMutableDictionary *headerElements = nil;
+	headerElements = [NSMutableDictionary dictionary];
+	
+	NSMutableDictionary *bodyElements = nil;
+	NSMutableArray *bodyKeys = nil;
+	bodyElements = [NSMutableDictionary dictionary];
+	bodyKeys = [NSMutableArray array];
+	id obj;
+	obj = nil;
+	if(parameters != nil) obj = parameters;
+	if(obj != nil) {
+		[bodyElements setObject:obj forKey:@"DeregisterAllDevicesRequest"];
+		[bodyKeys addObject:@"DeregisterAllDevicesRequest"];
+	}
+	
+	NSString *operationXMLString = [envelope serializedFormUsingHeaderElements:headerElements bodyElements:bodyElements bodyKeys:bodyKeys];
+	
+	[binding sendHTTPCallUsingBody:operationXMLString soapAction:@"http://webservices.libredigital.com/libreaccess/DeregisterAllDevices" forOperation:self];
+}
+- (void)connectionDidFinishLoading:(NSURLConnection *)connection
+{
+	if (responseData != nil && delegate != nil)
+	{
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+			xmlDocPtr doc;
+			xmlNodePtr cur;
+		
+			if (binding.logXMLInOut) {
+				NSLog(@"ResponseBody:\n%@", [[[NSString alloc] initWithData:responseData encoding:NSUTF8StringEncoding] autorelease]);
+			}
+		
+#if !TARGET_OS_IPHONE && (!defined(MAC_OS_X_VERSION_10_6) || MAC_OS_X_VERSION_MIN_REQUIRED < MAC_OS_X_VERSION_10_6)
+	// Not yet defined in 10.5 libxml
+	#define XML_PARSE_COMPACT 0
+#endif
+			doc = xmlReadMemory([responseData bytes], [responseData length], NULL, NULL, XML_PARSE_COMPACT | XML_PARSE_NOBLANKS);
+		
+			if (doc == NULL) {
+				NSDictionary *userInfo = [NSDictionary dictionaryWithObject:@"Errors while parsing returned XML" forKey:NSLocalizedDescriptionKey];
+			
+				response.error = [NSError errorWithDomain:@"LibreAccessServiceSoap11BindingResponseXML" code:1 userInfo:userInfo];
+			} else {
+				cur = xmlDocGetRootElement(doc);
+				cur = cur->children;
+			
+				for( ; cur != NULL ; cur = cur->next) {
+					if(cur->type == XML_ELEMENT_NODE) {
+					
+						if(xmlStrEqual(cur->name, (const xmlChar *) "Body")) {
+							NSMutableArray *responseBodyParts = [NSMutableArray array];
+						
+							xmlNodePtr bodyNode;
+							for(bodyNode=cur->children ; bodyNode != NULL ; bodyNode = bodyNode->next) {
+								if(cur->type == XML_ELEMENT_NODE) {
+									if(xmlStrEqual(bodyNode->name, (const xmlChar *) "DeregisterAllDevicesResponse")) {
+										LibreAccessServiceSvc_DeregisterAllDevicesResponse *bodyObject = [LibreAccessServiceSvc_DeregisterAllDevicesResponse deserializeNode:bodyNode];
 										//NSAssert1(bodyObject != nil, @"Errors while parsing body %s", bodyNode->name);
 										if (bodyObject != nil) [responseBodyParts addObject:bodyObject];
 									}
@@ -79159,6 +80672,114 @@ parameters:(LibreAccessServiceSvc_SaveDefaultBooksRequest *)aParameters
 								if(cur->type == XML_ELEMENT_NODE) {
 									if(xmlStrEqual(bodyNode->name, (const xmlChar *) "SaveDefaultBooksResponse")) {
 										LibreAccessServiceSvc_SaveDefaultBooksResponse *bodyObject = [LibreAccessServiceSvc_SaveDefaultBooksResponse deserializeNode:bodyNode];
+										//NSAssert1(bodyObject != nil, @"Errors while parsing body %s", bodyNode->name);
+										if (bodyObject != nil) [responseBodyParts addObject:bodyObject];
+									}
+									if ((bodyNode->ns != nil && xmlStrEqual(bodyNode->ns->prefix, cur->ns->prefix)) && 
+										xmlStrEqual(bodyNode->name, (const xmlChar *) "Fault")) {
+										SOAPFault *bodyObject = [SOAPFault deserializeNode:bodyNode];
+										//NSAssert1(bodyObject != nil, @"Errors while parsing body %s", bodyNode->name);
+										if (bodyObject != nil) [responseBodyParts addObject:bodyObject];
+									}
+								}
+							}
+						
+							response.bodyParts = responseBodyParts;
+						}
+					}
+				}
+			
+				xmlFreeDoc(doc);
+			}
+			if(delegate != nil && [delegate respondsToSelector:@selector(operation:completedWithResponse:)] == YES) {
+				dispatch_async(dispatch_get_main_queue(), ^{
+					[delegate operation:self completedWithResponse:response];
+				});
+			}
+		});
+	}
+}
+@end
+@implementation LibreAccessServiceSoap11Binding_ListContentMetadataThumbnails
+@synthesize body;
+- (id)initWithBinding:(LibreAccessServiceSoap11Binding *)aBinding delegate:(id<LibreAccessServiceSoap11BindingResponseDelegate>)responseDelegate
+body:(LibreAccessServiceSvc_ListContentMetadataThumbnailsRequest *)aBody
+{
+	if((self = [super initWithBinding:aBinding delegate:responseDelegate])) {
+		self.body = aBody;
+	}
+	
+	return self;
+}
+- (void)dealloc
+{
+	if(body != nil) [body release];
+	
+	[super dealloc];
+}
+- (void)main
+{
+	[response autorelease];
+	response = [LibreAccessServiceSoap11BindingResponse new];
+	
+	LibreAccessServiceSoap11Binding_envelope *envelope = [LibreAccessServiceSoap11Binding_envelope sharedInstance];
+	
+	NSMutableDictionary *headerElements = nil;
+	headerElements = [NSMutableDictionary dictionary];
+	
+	NSMutableDictionary *bodyElements = nil;
+	NSMutableArray *bodyKeys = nil;
+	bodyElements = [NSMutableDictionary dictionary];
+	bodyKeys = [NSMutableArray array];
+	id obj;
+	obj = nil;
+	if(body != nil) obj = body;
+	if(obj != nil) {
+		[bodyElements setObject:obj forKey:@"ListContentMetadataThumbnailsRequest"];
+		[bodyKeys addObject:@"ListContentMetadataThumbnailsRequest"];
+	}
+	
+	NSString *operationXMLString = [envelope serializedFormUsingHeaderElements:headerElements bodyElements:bodyElements bodyKeys:bodyKeys];
+	
+	[binding sendHTTPCallUsingBody:operationXMLString soapAction:@"http://webservices.libredigital.com/libreaccess/ListContentMetadataThumbnails" forOperation:self];
+}
+- (void)connectionDidFinishLoading:(NSURLConnection *)connection
+{
+	if (responseData != nil && delegate != nil)
+	{
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+			xmlDocPtr doc;
+			xmlNodePtr cur;
+		
+			if (binding.logXMLInOut) {
+				NSLog(@"ResponseBody:\n%@", [[[NSString alloc] initWithData:responseData encoding:NSUTF8StringEncoding] autorelease]);
+			}
+		
+#if !TARGET_OS_IPHONE && (!defined(MAC_OS_X_VERSION_10_6) || MAC_OS_X_VERSION_MIN_REQUIRED < MAC_OS_X_VERSION_10_6)
+	// Not yet defined in 10.5 libxml
+	#define XML_PARSE_COMPACT 0
+#endif
+			doc = xmlReadMemory([responseData bytes], [responseData length], NULL, NULL, XML_PARSE_COMPACT | XML_PARSE_NOBLANKS);
+		
+			if (doc == NULL) {
+				NSDictionary *userInfo = [NSDictionary dictionaryWithObject:@"Errors while parsing returned XML" forKey:NSLocalizedDescriptionKey];
+			
+				response.error = [NSError errorWithDomain:@"LibreAccessServiceSoap11BindingResponseXML" code:1 userInfo:userInfo];
+			} else {
+				cur = xmlDocGetRootElement(doc);
+				cur = cur->children;
+			
+				for( ; cur != NULL ; cur = cur->next) {
+					if(cur->type == XML_ELEMENT_NODE) {
+					
+						if(xmlStrEqual(cur->name, (const xmlChar *) "Body")) {
+							NSMutableArray *responseBodyParts = [NSMutableArray array];
+						
+							xmlNodePtr bodyNode;
+							for(bodyNode=cur->children ; bodyNode != NULL ; bodyNode = bodyNode->next) {
+								if(cur->type == XML_ELEMENT_NODE) {
+									if(xmlStrEqual(bodyNode->name, (const xmlChar *) "ListContentMetadataThumbnailsResponse")) {
+										LibreAccessServiceSvc_ListContentMetadataThumbnailsResponse *bodyObject = [LibreAccessServiceSvc_ListContentMetadataThumbnailsResponse deserializeNode:bodyNode];
 										//NSAssert1(bodyObject != nil, @"Errors while parsing body %s", bodyNode->name);
 										if (bodyObject != nil) [responseBodyParts addObject:bodyObject];
 									}

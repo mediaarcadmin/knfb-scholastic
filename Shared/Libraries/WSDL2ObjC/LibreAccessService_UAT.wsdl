@@ -131,6 +131,7 @@
                     <xsd:element minOccurs="0" name="Format" type="xsd:string"/>
                     <xsd:element minOccurs="0" name="IdentifierType" type="tns:ContentIdentifierTypes"/>
                     <xsd:element minOccurs="0" name="Qualifier" type="tns:drmqualifiers"/>
+                    <xsd:element minOccurs="0" name="version" type="xsd:int"/>
                 </xsd:sequence>
             </xsd:complexType>
             <xsd:complexType name="ContentMetadataItem">
@@ -167,6 +168,15 @@
                     <xsd:element maxOccurs="unbounded" minOccurs="0" name="EreaderCategories" type="xsd:string"/>
                     <xsd:element minOccurs="0" name="Enhanced" type="xsd:boolean"/>
                 </xsd:sequence>
+            </xsd:complexType>
+            <xsd:complexType name="ContentMetadataThumbnailsItem">
+                <xsd:complexContent>
+                    <xsd:extension base="tns:ContentMetadataForRatingsItem">
+                        <xsd:sequence>
+                            <xsd:element minOccurs="0" name="ThumbnailURL" type="xsd:anyURI"/>
+                        </xsd:sequence>
+                    </xsd:extension>
+                </xsd:complexContent>
             </xsd:complexType>
             <xsd:simpleType name="ContentIdentifierTypes">
                 <xsd:restriction base="xsd:string">
@@ -1317,6 +1327,7 @@
                     <xsd:element name="DRMQualifier" type="tns:drmqualifiers"/>
                     <xsd:element name="Format" type="xsd:string"/>
                     <xsd:element name="version" type="xsd:int"/>
+                    <xsd:element name="averageRating" type="xsd:decimal"/>
                     <xsd:element name="lastOrderDate" type="xsd:dateTime"/>
                     <xsd:element minOccurs="0" name="defaultAssignment" type="xsd:boolean"/>
                     <xsd:element name="freeBook" type="xsd:boolean"/>
@@ -1428,6 +1439,30 @@
                             <xsd:complexType>
                                 <xsd:sequence>
                                     <xsd:element maxOccurs="unbounded" minOccurs="0" name="ContentMetadataForRatingsItem" type="tns:ContentMetadataForRatingsItem"/>
+                                </xsd:sequence>
+                            </xsd:complexType>
+                        </xsd:element>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="ListContentMetadataThumbnailsRequest">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="authtoken" type="xsd:string"/>
+                        <xsd:element name="includeurls" type="xsd:boolean"/>
+                        <xsd:element default="false" minOccurs="0" name="coverURLOnly" type="xsd:boolean"/>
+                        <xsd:element maxOccurs="unbounded" minOccurs="0" name="isbn13s" type="tns:isbnItem"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="ListContentMetadataThumbnailsResponse">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="statusmessage" type="tns:StatusHolder"/>
+                        <xsd:element name="ContentMetadataThumbnailsList">
+                            <xsd:complexType>
+                                <xsd:sequence>
+                                    <xsd:element maxOccurs="unbounded" minOccurs="0" name="ContentMetadataThumbnailsItem" type="tns:ContentMetadataThumbnailsItem"/>
                                 </xsd:sequence>
                             </xsd:complexType>
                         </xsd:element>
@@ -2313,6 +2348,21 @@
                     </xsd:sequence>
                 </xsd:complexType>
             </xsd:element>
+            <xsd:element name="DeregisterAllDevicesRequest">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="authToken" type="xsd:string"/>
+                        <xsd:element minOccurs="0" name="deregistrationConfirmed" type="xsd:boolean"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="DeregisterAllDevicesResponse">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="statusMessage" type="tns:StatusHolder"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
         </xsd:schema>
     </wsdl:types>
     <wsdl:message name="ValidateScreenNameRequest">
@@ -2519,12 +2569,6 @@
     <wsdl:message name="SaveReadingStatisticsDetailedResponse">
         <wsdl:part name="parameters" element="tns:SaveReadingStatisticsDetailedResponse"/>
     </wsdl:message>
-    <wsdl:message name="SaveContentProfileAssignmentRequest">
-        <wsdl:part name="parameters" element="tns:SaveContentProfileAssignmentRequest"/>
-    </wsdl:message>
-    <wsdl:message name="SaveContentProfileAssignmentResponse">
-        <wsdl:part name="parameters" element="tns:SaveContentProfileAssignmentResponse"/>
-    </wsdl:message>
     <wsdl:message name="TokenExchangeRequest">
         <wsdl:part name="body" element="tns:TokenExchange"/>
     </wsdl:message>
@@ -2536,6 +2580,18 @@
     </wsdl:message>
     <wsdl:message name="SetAccountPasswordRequiredResponse">
         <wsdl:part name="parameters" element="tns:SetAccountPasswordRequiredResponse"/>
+    </wsdl:message>
+    <wsdl:message name="SaveContentProfileAssignmentRequest">
+        <wsdl:part name="parameters" element="tns:SaveContentProfileAssignmentRequest"/>
+    </wsdl:message>
+    <wsdl:message name="SaveContentProfileAssignmentResponse">
+        <wsdl:part name="parameters" element="tns:SaveContentProfileAssignmentResponse"/>
+    </wsdl:message>
+    <wsdl:message name="DeregisterAllDevicesRequest">
+        <wsdl:part name="parameters" element="tns:DeregisterAllDevicesRequest"/>
+    </wsdl:message>
+    <wsdl:message name="DeregisterAllDevicesResponse">
+        <wsdl:part name="parameters" element="tns:DeregisterAllDevicesResponse"/>
     </wsdl:message>
     <wsdl:message name="GetVersionRequest">
         <wsdl:part name="parameters" element="tns:GetVersionRequest"/>
@@ -2668,6 +2724,12 @@
     </wsdl:message>
     <wsdl:message name="SaveDefaultBooksResponse">
         <wsdl:part name="parameters" element="tns:SaveDefaultBooksResponse"/>
+    </wsdl:message>
+    <wsdl:message name="ListContentMetadataThumbnailsRequest">
+        <wsdl:part name="body" element="tns:ListContentMetadataThumbnailsRequest"/>
+    </wsdl:message>
+    <wsdl:message name="ListContentMetadataThumbnailsResponse">
+        <wsdl:part name="body" element="tns:ListContentMetadataThumbnailsResponse"/>
     </wsdl:message>
     <wsdl:message name="ListFavoriteTypesRequest">
         <wsdl:part name="parameters" element="tns:ListFavoriteTypesRequest"/>
@@ -2830,10 +2892,6 @@
             <wsdl:input message="tns:SaveReadingStatisticsDetailedRequest" wsaw:Action="http://webservices.libredigital.com/libreaccess/SaveReadingStatisticsDetailed"/>
             <wsdl:output message="tns:SaveReadingStatisticsDetailedResponse" wsaw:Action="http://webservices.libredigital.com/LibreAccess/2010-02-10/LibreAccessServicePortType/SaveReadingStatisticsDetailedResponse"/>
         </wsdl:operation>
-        <wsdl:operation name="SaveContentProfileAssignment">
-            <wsdl:input message="tns:SaveContentProfileAssignmentRequest" wsaw:Action="http://webservices.libredigital.com/libreaccess/SaveContentProfileAssignment"/>
-            <wsdl:output message="tns:SaveContentProfileAssignmentResponse" wsaw:Action="http://webservices.libredigital.com/LibreAccess/2010-02-10/LibreAccessServicePortType/SaveContentProfileAssignmentResponse"/>
-        </wsdl:operation>
         <wsdl:operation name="TokenExchange">
             <wsdl:input message="tns:TokenExchangeRequest" wsaw:Action="http://webservices.libredigital.com/libreaccess/TokenExchange"/>
             <wsdl:output message="tns:TokenExchangeResponse" wsaw:Action="http://webservices.libredigital.com/LibreAccess/2010-02-10/LibreAccessServicePortType/TokenExchangeResponse"/>
@@ -2841,6 +2899,14 @@
         <wsdl:operation name="SetAccountPasswordRequired">
             <wsdl:input message="tns:SetAccountPasswordRequiredRequest" wsaw:Action="http://webservices.libredigital.com/libreaccess/SetAccountPasswordRequired"/>
             <wsdl:output message="tns:SetAccountPasswordRequiredResponse" wsaw:Action="http://webservices.libredigital.com/LibreAccess/2010-02-10/LibreAccessServicePortType/SetAccountPasswordRequiredResponse"/>
+        </wsdl:operation>
+        <wsdl:operation name="SaveContentProfileAssignment">
+            <wsdl:input message="tns:SaveContentProfileAssignmentRequest" wsaw:Action="http://webservices.libredigital.com/libreaccess/SaveContentProfileAssignment"/>
+            <wsdl:output message="tns:SaveContentProfileAssignmentResponse" wsaw:Action="http://webservices.libredigital.com/LibreAccess/2010-02-10/LibreAccessServicePortType/SaveContentProfileAssignmentResponse"/>
+        </wsdl:operation>
+        <wsdl:operation name="DeregisterAllDevices">
+            <wsdl:input message="tns:DeregisterAllDevicesRequest" wsaw:Action="http://webservices.libredigital.com/libreaccess/DeregisterAllDevices"/>
+            <wsdl:output message="tns:DeregisterAllDevicesResponse" wsaw:Action="http://webservices.libredigital.com/LibreAccess/2010-02-10/LibreAccessServicePortType/DeregisterAllDevicesResponse"/>
         </wsdl:operation>
         <wsdl:operation name="GetVersion">
             <wsdl:input message="tns:GetVersionRequest" wsaw:Action="http://webservices.libredigital.com/libreaccess/GetVersion"/>
@@ -2929,6 +2995,10 @@
         <wsdl:operation name="SaveDefaultBooks">
             <wsdl:input message="tns:SaveDefaultBooksRequest" wsaw:Action="http://webservices.libredigital.com/libreaccess/SaveDefaultBooks"/>
             <wsdl:output message="tns:SaveDefaultBooksResponse" wsaw:Action="http://webservices.libredigital.com/LibreAccess/2010-02-10/LibreAccessServicePortType/SaveDefaultBooksResponse"/>
+        </wsdl:operation>
+        <wsdl:operation name="ListContentMetadataThumbnails">
+            <wsdl:input message="tns:ListContentMetadataThumbnailsRequest" wsaw:Action="http://webservices.libredigital.com/libreaccess/ListContentMetadataThumbnails"/>
+            <wsdl:output message="tns:ListContentMetadataThumbnailsResponse" wsaw:Action="http://webservices.libredigital.com/LibreAccess/2010-02-10/LibreAccessServicePortType/ListContentMetadataThumbnailsResponse"/>
         </wsdl:operation>
         <wsdl:operation name="ListFavoriteTypes">
             <wsdl:input message="tns:ListFavoriteTypesRequest" wsaw:Action="http://webservices.libredigital.com/libreaccess/ListFavoriteTypes"/>
@@ -3255,15 +3325,6 @@
                 <soap:body use="literal"/>
             </wsdl:output>
         </wsdl:operation>
-        <wsdl:operation name="SaveContentProfileAssignment">
-            <soap:operation soapAction="http://webservices.libredigital.com/libreaccess/SaveContentProfileAssignment" style="document"/>
-            <wsdl:input>
-                <soap:body use="literal"/>
-            </wsdl:input>
-            <wsdl:output>
-                <soap:body use="literal"/>
-            </wsdl:output>
-        </wsdl:operation>
         <wsdl:operation name="TokenExchange">
             <soap:operation soapAction="http://webservices.libredigital.com/libreaccess/TokenExchange" style="document"/>
             <wsdl:input>
@@ -3275,6 +3336,24 @@
         </wsdl:operation>
         <wsdl:operation name="SetAccountPasswordRequired">
             <soap:operation soapAction="http://webservices.libredigital.com/libreaccess/SetAccountPasswordRequired" style="document"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="SaveContentProfileAssignment">
+            <soap:operation soapAction="http://webservices.libredigital.com/libreaccess/SaveContentProfileAssignment" style="document"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="DeregisterAllDevices">
+            <soap:operation soapAction="http://webservices.libredigital.com/libreaccess/DeregisterAllDevices" style="document"/>
             <wsdl:input>
                 <soap:body use="literal"/>
             </wsdl:input>
@@ -3473,6 +3552,15 @@
         </wsdl:operation>
         <wsdl:operation name="SaveDefaultBooks">
             <soap:operation soapAction="http://webservices.libredigital.com/libreaccess/SaveDefaultBooks" style="document"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="ListContentMetadataThumbnails">
+            <soap:operation soapAction="http://webservices.libredigital.com/libreaccess/ListContentMetadataThumbnails" style="document"/>
             <wsdl:input>
                 <soap:body use="literal"/>
             </wsdl:input>
@@ -3825,15 +3913,6 @@
                 <soap12:body use="literal"/>
             </wsdl:output>
         </wsdl:operation>
-        <wsdl:operation name="SaveContentProfileAssignment">
-            <soap12:operation soapAction="http://webservices.libredigital.com/libreaccess/SaveContentProfileAssignment" style="document"/>
-            <wsdl:input>
-                <soap12:body use="literal"/>
-            </wsdl:input>
-            <wsdl:output>
-                <soap12:body use="literal"/>
-            </wsdl:output>
-        </wsdl:operation>
         <wsdl:operation name="TokenExchange">
             <soap12:operation soapAction="http://webservices.libredigital.com/libreaccess/TokenExchange" style="document"/>
             <wsdl:input>
@@ -3845,6 +3924,24 @@
         </wsdl:operation>
         <wsdl:operation name="SetAccountPasswordRequired">
             <soap12:operation soapAction="http://webservices.libredigital.com/libreaccess/SetAccountPasswordRequired" style="document"/>
+            <wsdl:input>
+                <soap12:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap12:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="SaveContentProfileAssignment">
+            <soap12:operation soapAction="http://webservices.libredigital.com/libreaccess/SaveContentProfileAssignment" style="document"/>
+            <wsdl:input>
+                <soap12:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap12:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="DeregisterAllDevices">
+            <soap12:operation soapAction="http://webservices.libredigital.com/libreaccess/DeregisterAllDevices" style="document"/>
             <wsdl:input>
                 <soap12:body use="literal"/>
             </wsdl:input>
@@ -4043,6 +4140,15 @@
         </wsdl:operation>
         <wsdl:operation name="SaveDefaultBooks">
             <soap12:operation soapAction="http://webservices.libredigital.com/libreaccess/SaveDefaultBooks" style="document"/>
+            <wsdl:input>
+                <soap12:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap12:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="ListContentMetadataThumbnails">
+            <soap12:operation soapAction="http://webservices.libredigital.com/libreaccess/ListContentMetadataThumbnails" style="document"/>
             <wsdl:input>
                 <soap12:body use="literal"/>
             </wsdl:input>
@@ -4395,15 +4501,6 @@
                 <mime:content type="text/xml" part="SaveReadingStatisticsDetailed"/>
             </wsdl:output>
         </wsdl:operation>
-        <wsdl:operation name="SaveContentProfileAssignment">
-            <http:operation location="SaveContentProfileAssignment"/>
-            <wsdl:input>
-                <mime:content type="text/xml" part="SaveContentProfileAssignment"/>
-            </wsdl:input>
-            <wsdl:output>
-                <mime:content type="text/xml" part="SaveContentProfileAssignment"/>
-            </wsdl:output>
-        </wsdl:operation>
         <wsdl:operation name="TokenExchange">
             <http:operation location="TokenExchange"/>
             <wsdl:input>
@@ -4420,6 +4517,24 @@
             </wsdl:input>
             <wsdl:output>
                 <mime:content type="text/xml" part="SetAccountPasswordRequired"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="SaveContentProfileAssignment">
+            <http:operation location="SaveContentProfileAssignment"/>
+            <wsdl:input>
+                <mime:content type="text/xml" part="SaveContentProfileAssignment"/>
+            </wsdl:input>
+            <wsdl:output>
+                <mime:content type="text/xml" part="SaveContentProfileAssignment"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="DeregisterAllDevices">
+            <http:operation location="DeregisterAllDevices"/>
+            <wsdl:input>
+                <mime:content type="text/xml" part="DeregisterAllDevices"/>
+            </wsdl:input>
+            <wsdl:output>
+                <mime:content type="text/xml" part="DeregisterAllDevices"/>
             </wsdl:output>
         </wsdl:operation>
         <wsdl:operation name="ListUserContentEx">
@@ -4618,6 +4733,15 @@
             </wsdl:input>
             <wsdl:output>
                 <mime:content type="text/xml" part="SaveDefaultBooks"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="ListContentMetadataThumbnails">
+            <http:operation location="ListContentMetadataThumbnails"/>
+            <wsdl:input>
+                <mime:content type="text/xml" part="ListContentMetadataThumbnails"/>
+            </wsdl:input>
+            <wsdl:output>
+                <mime:content type="text/xml" part="ListContentMetadataThumbnails"/>
             </wsdl:output>
         </wsdl:operation>
         <wsdl:operation name="ListFavoriteTypes">
