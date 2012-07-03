@@ -29,6 +29,9 @@ void printPath(void *info, const CGPathElement *element)
              element->points[1].x, element->points[1].y,
              element->points[2].x, element->points[2].y];
              break;
+        case kCGPathElementAddQuadCurveToPoint:
+            [str appendString:@"FIXME: quad curves not handled"];
+            break;
         case kCGPathElementCloseSubpath:
             [str appendFormat:@"Z "];
             break;
@@ -50,7 +53,7 @@ NSString *NSStringFromCGPath(CGPathRef path)
     if (!data) {
         return nil;
     }
-    SCHStoryInteractionJigsawPathTests *paths = [[SCHStoryInteractionJigsawPaths alloc] initWithData:data];
+    SCHStoryInteractionJigsawPaths *paths = [[SCHStoryInteractionJigsawPaths alloc] initWithData:data];
     return [paths autorelease];
 }
 

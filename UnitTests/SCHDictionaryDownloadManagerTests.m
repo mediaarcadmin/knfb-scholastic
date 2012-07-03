@@ -14,6 +14,7 @@
 #import "SCHAppDictionaryState.h"
 #import "SCHAppDictionaryManifestEntry.h"
 #import "SCHDictionaryOperation.h"
+//#import "SCHHelpVideoManifest.h"
 
 #pragma mark - Dummy implementations of operation classes
 
@@ -61,26 +62,26 @@ static void setLastCreatedOperation(SCHDummyOperation *op)
     lastCreatedOperation = [op retain];
 }
 
-@interface SCHHelpVideoManifestOperation : SCHDummyOperation
-@end
-@implementation SCHHelpVideoManifestOperation
-@end
+//@interface SCHHelpVideoManifestOperation : SCHDummyOperation
+//@end
+//@implementation SCHHelpVideoManifestOperation
+//@end
 
-@interface SCHHelpVideoFileDownloadOperation : SCHDummyOperation
-@property (nonatomic, retain) SCHHelpVideoManifest *videoManifest;
-@end
+//@interface SCHHelpVideoFileDownloadOperation : SCHDummyOperation
+//@property (nonatomic, retain) SCHHelpVideoManifest *videoManifest;
+//@end
 
-@implementation SCHHelpVideoFileDownloadOperation
-
-@synthesize videoManifest;
-
-- (void)dealloc
-{
-    [videoManifest release], videoManifest = nil;
-    [super dealloc];
-}
-
-@end
+//@implementation SCHHelpVideoFileDownloadOperation
+//
+//@synthesize videoManifest;
+//
+//- (void)dealloc
+//{
+//    [videoManifest release], videoManifest = nil;
+//    [super dealloc];
+//}
+//
+//@end
 
 @interface SCHDictionaryManifestOperation : SCHDummyOperation
 @end
@@ -210,64 +211,64 @@ static NSString * const kSCHCoreDataHelperDictionaryStoreConfiguration = @"Dicti
 
 #pragma mark - Tests
 
-- (void)testVideoDownloadStateMachineFlow
-{
-    STAssertEquals([dictionaryDownloadManager dictionaryProcessingState], SCHDictionaryProcessingStateHelpVideoManifest, @"initial state should be HelpVideoManifest");
-    
-    [self processDictionary];
-    STAssertNotNil(lastCreatedOperation, @"processing from initial state should have created an operation");
-    STAssertTrue([lastCreatedOperation isKindOfClass:[SCHHelpVideoManifestOperation class]], @"processing from initial state should have created SCHHelpVideoManifestOperation");
+//- (void)testVideoDownloadStateMachineFlow
+//{
+//    STAssertEquals([dictionaryDownloadManager dictionaryProcessingState], SCHDictionaryProcessingStateHelpVideoManifest, @"initial state should be HelpVideoManifest");
+//    
+//    [self processDictionary];
+//    STAssertNotNil(lastCreatedOperation, @"processing from initial state should have created an operation");
+//    STAssertTrue([lastCreatedOperation isKindOfClass:[SCHHelpVideoManifestOperation class]], @"processing from initial state should have created SCHHelpVideoManifestOperation");
+//
+//    // simulate completion of the help manifest operation
+//    SCHHelpVideoManifest *helpVideoManifest = [[SCHHelpVideoManifest alloc] init];
+//    dictionaryDownloadManager.helpVideoManifest = helpVideoManifest;
+//    [self finishLastCreatedOperation:SCHDictionaryProcessingStateDownloadingHelpVideos];
+//
+//    STAssertNotNil(lastCreatedOperation, @"completion of HelpManifestOperation should have created a new operation");
+//    STAssertTrue([lastCreatedOperation isKindOfClass:[SCHHelpVideoFileDownloadOperation class]], @"should have created SCHHelpVideoFileDownloadOperation");
+//    STAssertEquals([(SCHHelpVideoFileDownloadOperation *)lastCreatedOperation videoManifest], helpVideoManifest, @"SCHHelpVideoFileDownloadOperation should be initialised with videoManifest");
+//
+//    [self finishLastCreatedOperation:SCHDictionaryProcessingStateNeedsManifest];
+//
+//    [self cancelLastCreatedOperation];
+//    [helpVideoManifest release];
+//}
 
-    // simulate completion of the help manifest operation
-    SCHHelpVideoManifest *helpVideoManifest = [[SCHHelpVideoManifest alloc] init];
-    dictionaryDownloadManager.helpVideoManifest = helpVideoManifest;
-    [self finishLastCreatedOperation:SCHDictionaryProcessingStateDownloadingHelpVideos];
+//- (void)testVideoManifestErrorState
+//{
+//    [self processDictionary];
+//    STAssertTrue([lastCreatedOperation isKindOfClass:[SCHHelpVideoManifestOperation class]], @"processing from initial state should have created SCHHelpVideoManifestOperation");
+//
+//    [self finishLastCreatedOperation:SCHDictionaryProcessingStateError];
+//    STAssertNil(lastCreatedOperation, @"processing should end with error state");
+//}
+//
+//- (void)testVideoDownloadIdleState:(SCHDictionaryProcessingState)state
+//{
+//    SCHHelpVideoManifest *helpVideoManifest = [[SCHHelpVideoManifest alloc] init];
+//    dictionaryDownloadManager.helpVideoManifest = helpVideoManifest;
+//    [dictionaryDownloadManager threadSafeUpdateDictionaryState:SCHDictionaryProcessingStateDownloadingHelpVideos];
+//    [self processDictionary];
+//    STAssertTrue([lastCreatedOperation isKindOfClass:[SCHHelpVideoFileDownloadOperation class]], @"should have created SCHHelpVideoFileDownloadOperation: %@", lastCreatedOperation);
+//
+//    [self finishLastCreatedOperation:state];
+//    STAssertNil(lastCreatedOperation, @"processing should end with error state");
+//}
 
-    STAssertNotNil(lastCreatedOperation, @"completion of HelpManifestOperation should have created a new operation");
-    STAssertTrue([lastCreatedOperation isKindOfClass:[SCHHelpVideoFileDownloadOperation class]], @"should have created SCHHelpVideoFileDownloadOperation");
-    STAssertEquals([(SCHHelpVideoFileDownloadOperation *)lastCreatedOperation videoManifest], helpVideoManifest, @"SCHHelpVideoFileDownloadOperation should be initialised with videoManifest");
-
-    [self finishLastCreatedOperation:SCHDictionaryProcessingStateNeedsManifest];
-
-    [self cancelLastCreatedOperation];
-    [helpVideoManifest release];
-}
-
-- (void)testVideoManifestErrorState
-{
-    [self processDictionary];
-    STAssertTrue([lastCreatedOperation isKindOfClass:[SCHHelpVideoManifestOperation class]], @"processing from initial state should have created SCHHelpVideoManifestOperation");
-
-    [self finishLastCreatedOperation:SCHDictionaryProcessingStateError];
-    STAssertNil(lastCreatedOperation, @"processing should end with error state");
-}
-
-- (void)testVideoDownloadIdleState:(SCHDictionaryProcessingState)state
-{
-    SCHHelpVideoManifest *helpVideoManifest = [[SCHHelpVideoManifest alloc] init];
-    dictionaryDownloadManager.helpVideoManifest = helpVideoManifest;
-    [dictionaryDownloadManager threadSafeUpdateDictionaryState:SCHDictionaryProcessingStateDownloadingHelpVideos];
-    [self processDictionary];
-    STAssertTrue([lastCreatedOperation isKindOfClass:[SCHHelpVideoFileDownloadOperation class]], @"should have created SCHHelpVideoFileDownloadOperation: %@", lastCreatedOperation);
-
-    [self finishLastCreatedOperation:state];
-    STAssertNil(lastCreatedOperation, @"processing should end with error state");
-}
-
-- (void)testVideoDownloadErrorState
-{
-    [self testVideoDownloadIdleState:SCHDictionaryProcessingStateError];
-}
-
-- (void)testVideoDownloadUserSetupState
-{
-    [self testVideoDownloadIdleState:SCHDictionaryProcessingStateUserSetup];
-}
-
-- (void)testVideoDownloadUserDeclinedState
-{
-    [self testVideoDownloadIdleState:SCHDictionaryProcessingStateUserDeclined];
-}
+//- (void)testVideoDownloadErrorState
+//{
+//    [self testVideoDownloadIdleState:SCHDictionaryProcessingStateError];
+//}
+//
+//- (void)testVideoDownloadUserSetupState
+//{
+//    [self testVideoDownloadIdleState:SCHDictionaryProcessingStateUserSetup];
+//}
+//
+//- (void)testVideoDownloadUserDeclinedState
+//{
+//    [self testVideoDownloadIdleState:SCHDictionaryProcessingStateUserDeclined];
+//}
 
 - (void)testDictionaryManifestNoUpdates
 {
@@ -352,7 +353,7 @@ static NSString * const kSCHCoreDataHelperDictionaryStoreConfiguration = @"Dicti
     STAssertTrue([lastCreatedOperation isKindOfClass:[SCHDictionaryFileDownloadOperation class]], @"should have created SCHDictionaryFileDownloadOperation: %@", lastCreatedOperation);
     STAssertEquals([(SCHDictionaryFileDownloadOperation *)lastCreatedOperation manifestEntry], manifestEntry, @"SCHDictionaryFileDownloadOperation should have been initialised with manifestEntry");
     
-    [self finishLastCreatedOperation:SCHDictionaryProcessingStateNotEnoughFreeSpace];
+    [self finishLastCreatedOperation:SCHDictionaryProcessingStateNotEnoughFreeSpaceError];
     STAssertNil(lastCreatedOperation, @"notEnoughFreeSpace should end processing");
 }
 
