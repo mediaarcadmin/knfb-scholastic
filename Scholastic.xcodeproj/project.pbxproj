@@ -37,14 +37,10 @@
 		2815719F13EFEB880071B73C /* SCHStoryInteractionPictureStarter.m in Sources */ = {isa = PBXBuildFile; fileRef = 28D81EE613E8413B00A2B25F /* SCHStoryInteractionPictureStarter.m */; };
 		2819307D112F81BE00ECF9B4 /* Scholastic.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 2819307C112F81BE00ECF9B4 /* Scholastic.xcdatamodeld */; };
 		281B74B013DEED4900BA157C /* SCHBookUpdates.m in Sources */ = {isa = PBXBuildFile; fileRef = 281B74AF13DEED4900BA157C /* SCHBookUpdates.m */; };
-		281CC4031457FB030049F736 /* SCHDictionaryDownloadManagerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 281CC4021457FB030049F736 /* SCHDictionaryDownloadManagerTests.m */; };
 		281CC4061457FE170049F736 /* libexpat.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C947D57B133B9C0100FB4404 /* libexpat.a */; };
-		281CC4071457FF7C0049F736 /* SCHDictionaryDownloadManager.m in Sources */ = {isa = PBXBuildFile; fileRef = F8C4C3FA1332594A0057420E /* SCHDictionaryDownloadManager.m */; };
 		281CC4081457FF9F0049F736 /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = 529386B912DF3A4900045B44 /* Reachability.m */; };
-		281CC4091457FFE50049F736 /* SCHCoreDataHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = F8DCE5C313EC415F00100B6A /* SCHCoreDataHelper.m */; };
 		281CC40A1457FFF70049F736 /* SCHAppDictionaryState.m in Sources */ = {isa = PBXBuildFile; fileRef = 528433EA133382EA0010BAAB /* SCHAppDictionaryState.m */; };
 		281CC40B145800010049F736 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 529386C412DF3A9000045B44 /* SystemConfiguration.framework */; };
-		281CC40C145800100049F736 /* SCHAppStateManager.m in Sources */ = {isa = PBXBuildFile; fileRef = F8FAF2F213F12F20009C7E9F /* SCHAppStateManager.m */; };
 		281CC40D145800190049F736 /* SCHAppState.m in Sources */ = {isa = PBXBuildFile; fileRef = 52C7F8711377DEE800DB08C9 /* SCHAppState.m */; };
 		281CC40E145800220049F736 /* SCHDictionaryEntry.m in Sources */ = {isa = PBXBuildFile; fileRef = F8B55E3F134B530C0028534A /* SCHDictionaryEntry.m */; };
 		281CC40F1458002C0049F736 /* SCHDictionaryWordForm.m in Sources */ = {isa = PBXBuildFile; fileRef = F8C5DC6E134B5DF30020D610 /* SCHDictionaryWordForm.m */; };
@@ -96,7 +92,6 @@
 		2866313E13F02ABA0092A5DE /* storyinteraction-concentration-tile-orange~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = 2866313D13F02ABA0092A5DE /* storyinteraction-concentration-tile-orange~ipad.png */; };
 		2868A45213BA13F1000110D5 /* SCHTestFixtureWithCoreDataStack.m in Sources */ = {isa = PBXBuildFile; fileRef = 2868A45113BA13F1000110D5 /* SCHTestFixtureWithCoreDataStack.m */; };
 		2868A45713BA14CB000110D5 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 28EEBFDC1118E19E00187D67 /* CoreData.framework */; };
-		2868A45913BA1B62000110D5 /* SCHAppBook.m in Sources */ = {isa = PBXBuildFile; fileRef = F8BEE8AE1334FD44008B40DA /* SCHAppBook.m */; };
 		2868A45F13BA1C36000110D5 /* SCHProcessingManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 2868A45E13BA1C36000110D5 /* SCHProcessingManager.m */; };
 		2868A46013BA1D9E000110D5 /* Scholastic.xcdatamodel in Sources */ = {isa = PBXBuildFile; fileRef = 2870939E111907710040F596 /* Scholastic.xcdatamodel */; };
 		2869896F13B723C300C08908 /* SCHSemaphoreGroup.m in Sources */ = {isa = PBXBuildFile; fileRef = 2869896E13B723C300C08908 /* SCHSemaphoreGroup.m */; };
@@ -1486,7 +1481,6 @@
 		5293883412E03CD000045B44 /* SCHBookShelfViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5293883212E03CD000045B44 /* SCHBookShelfViewController.xib */; };
 		52943AE514FFD0E8002991EB /* SCHWishListSyncComponent.m in Sources */ = {isa = PBXBuildFile; fileRef = 52943AE414FFD0E8002991EB /* SCHWishListSyncComponent.m */; };
 		52943AE614FFD0E8002991EB /* SCHWishListSyncComponent.m in Sources */ = {isa = PBXBuildFile; fileRef = 52943AE414FFD0E8002991EB /* SCHWishListSyncComponent.m */; };
-		52943AE714FFD0E8002991EB /* SCHWishListSyncComponent.m in Sources */ = {isa = PBXBuildFile; fileRef = 52943AE414FFD0E8002991EB /* SCHWishListSyncComponent.m */; };
 		52943AE814FFD0E8002991EB /* SCHWishListSyncComponent.m in Sources */ = {isa = PBXBuildFile; fileRef = 52943AE414FFD0E8002991EB /* SCHWishListSyncComponent.m */; };
 		529645A315775FBA006F01D9 /* NSString+EmailValidation.m in Sources */ = {isa = PBXBuildFile; fileRef = 529645A215775FBA006F01D9 /* NSString+EmailValidation.m */; };
 		529645A415775FBA006F01D9 /* NSString+EmailValidation.m in Sources */ = {isa = PBXBuildFile; fileRef = 529645A215775FBA006F01D9 /* NSString+EmailValidation.m */; };
@@ -2821,7 +2815,6 @@
 		C9A112A113608319007FD763 /* button-blue@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C9A1129613608319007FD763 /* button-blue@2x.png */; };
 		C9A6B3FB148B7F0900B31277 /* SCHHelpManager.m in Sources */ = {isa = PBXBuildFile; fileRef = C9A6B3FA148B7F0900B31277 /* SCHHelpManager.m */; };
 		C9A6B3FC148B7F0900B31277 /* SCHHelpManager.m in Sources */ = {isa = PBXBuildFile; fileRef = C9A6B3FA148B7F0900B31277 /* SCHHelpManager.m */; };
-		C9A6B3FD148B7F0900B31277 /* SCHHelpManager.m in Sources */ = {isa = PBXBuildFile; fileRef = C9A6B3FA148B7F0900B31277 /* SCHHelpManager.m */; };
 		C9A6B400148B853C00B31277 /* SCHAppHelpState.m in Sources */ = {isa = PBXBuildFile; fileRef = C9A6B3FF148B853C00B31277 /* SCHAppHelpState.m */; };
 		C9A6B401148B853C00B31277 /* SCHAppHelpState.m in Sources */ = {isa = PBXBuildFile; fileRef = C9A6B3FF148B853C00B31277 /* SCHAppHelpState.m */; };
 		C9A6B402148B853C00B31277 /* SCHAppHelpState.m in Sources */ = {isa = PBXBuildFile; fileRef = C9A6B3FF148B853C00B31277 /* SCHAppHelpState.m */; };
@@ -12632,7 +12625,6 @@
 				2807DEFC13B0BA5C007C8F41 /* SCHGeometry.m in Sources */,
 				2869896F13B723C300C08908 /* SCHSemaphoreGroup.m in Sources */,
 				2868A45213BA13F1000110D5 /* SCHTestFixtureWithCoreDataStack.m in Sources */,
-				2868A45913BA1B62000110D5 /* SCHAppBook.m in Sources */,
 				2868A45F13BA1C36000110D5 /* SCHProcessingManager.m in Sources */,
 				52162DA713DD763500D257C5 /* BITAPIError.m in Sources */,
 				52162DAB13DD88C700D257C5 /* SCHUserDefaults.m in Sources */,
@@ -12645,12 +12637,8 @@
 				2898A0B513F435C600618172 /* SCHStoryInteractionJigsawPathTests.m in Sources */,
 				2895A9B013F4373800D75448 /* SCHStoryInteractionJigsawPaths.m in Sources */,
 				520FE8A3143F3B15002AB30B /* SCHLibreAccessConstants.m in Sources */,
-				281CC4031457FB030049F736 /* SCHDictionaryDownloadManagerTests.m in Sources */,
-				281CC4071457FF7C0049F736 /* SCHDictionaryDownloadManager.m in Sources */,
 				281CC4081457FF9F0049F736 /* Reachability.m in Sources */,
-				281CC4091457FFE50049F736 /* SCHCoreDataHelper.m in Sources */,
 				281CC40A1457FFF70049F736 /* SCHAppDictionaryState.m in Sources */,
-				281CC40C145800100049F736 /* SCHAppStateManager.m in Sources */,
 				281CC40D145800190049F736 /* SCHAppState.m in Sources */,
 				281CC40E145800220049F736 /* SCHDictionaryEntry.m in Sources */,
 				281CC40F1458002C0049F736 /* SCHDictionaryWordForm.m in Sources */,
@@ -12659,10 +12647,8 @@
 				28EF28001462D40800DD1939 /* SCHBookStoryInteractionsTests.m in Sources */,
 				28EF28051462D76100DD1939 /* SCHDictionaryOperation.m in Sources */,
 				C9367BDA1472E89A0033A2EB /* KNFBXMLParserLock.m in Sources */,
-				C9A6B3FD148B7F0900B31277 /* SCHHelpManager.m in Sources */,
 				C9A6B402148B853C00B31277 /* SCHAppHelpState.m in Sources */,
 				F849155814FFA54D000D064B /* RateView.m in Sources */,
-				52943AE714FFD0E8002991EB /* SCHWishListSyncComponent.m in Sources */,
 				287639B9154E857100540861 /* SCHStoryInteractionJigsawPiece.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
