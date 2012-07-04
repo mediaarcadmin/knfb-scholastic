@@ -4185,18 +4185,6 @@
 		F8C7C52F1521C08D0067674D /* popover-black-top-arrow-image.png in Resources */ = {isa = PBXBuildFile; fileRef = F8C7C51C1521C08D0067674D /* popover-black-top-arrow-image.png */; };
 		F8C7C5301521C08D0067674D /* popover-black-top-arrow-image.png in Resources */ = {isa = PBXBuildFile; fileRef = F8C7C51C1521C08D0067674D /* popover-black-top-arrow-image.png */; };
 		F8C8FC2A136065AD0097F9DD /* SCHCustomNavigationBar.m in Sources */ = {isa = PBXBuildFile; fileRef = F8C8FC29136065AD0097F9DD /* SCHCustomNavigationBar.m */; };
-		F8D220C215A2F33C0028D35F /* SCHSyncComponent.m in Sources */ = {isa = PBXBuildFile; fileRef = 52AD9B1B12FC1B6B0099FB88 /* SCHSyncComponent.m */; };
-		F8D220C315A2F3A20028D35F /* SCHComponent.m in Sources */ = {isa = PBXBuildFile; fileRef = 5266D38313007D15004E3AC6 /* SCHComponent.m */; };
-		F8D220C415A2F4F40028D35F /* SCHWishListWebService.m in Sources */ = {isa = PBXBuildFile; fileRef = 520D28CB14F4E2F9005AAF4F /* SCHWishListWebService.m */; };
-		F8D220C515A2F4FA0028D35F /* WishListServiceSvc+Binding.m in Sources */ = {isa = PBXBuildFile; fileRef = 521B7AE91521D67E00DC0739 /* WishListServiceSvc+Binding.m */; };
-		F8D220C715A2F5100028D35F /* SCHWishListConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = 523EC29914F6326800EBB843 /* SCHWishListConstants.m */; };
-		F8D220C815A2F5170028D35F /* BITNetworkActivityManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 5233E0D713159CA80088F18C /* BITNetworkActivityManager.m */; };
-		F8D220C915A2F8190028D35F /* SCHBookIdentifier.m in Sources */ = {isa = PBXBuildFile; fileRef = 284EF24313BC4CDF00F9BD5A /* SCHBookIdentifier.m */; };
-		F8D220CA15A2F84C0028D35F /* SCHAppRecommendationItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 5279E09115176481000D7D8D /* SCHAppRecommendationItem.m */; };
-		F8D220CB15A300030028D35F /* SCHRecommendationISBN.m in Sources */ = {isa = PBXBuildFile; fileRef = 5256686E150F697A00570623 /* SCHRecommendationISBN.m */; };
-		F8D220CC15A300D60028D35F /* WishListServiceSvc.m in Sources */ = {isa = PBXBuildFile; fileRef = 523B2E6F14F403E300413883 /* WishListServiceSvc.m */; };
-		F8D220CD15A301970028D35F /* ax21.m in Sources */ = {isa = PBXBuildFile; fileRef = 523B2E6D14F403E300413883 /* ax21.m */; };
-		F8D220CE15A305D90028D35F /* SCHProfileItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 52298A7E12F0EF5600BBBCE6 /* SCHProfileItem.m */; };
 		F8DA34CF139F88AC0032B1B3 /* SCHStoryInteractionControllerScratchAndSee.m in Sources */ = {isa = PBXBuildFile; fileRef = F8DA34CE139F88AC0032B1B3 /* SCHStoryInteractionControllerScratchAndSee.m */; };
 		F8DA34D2139F88F80032B1B3 /* SCHStoryInteractionScratchAndSee_iPhone.xib in Resources */ = {isa = PBXBuildFile; fileRef = F8DA34D1139F88F80032B1B3 /* SCHStoryInteractionScratchAndSee_iPhone.xib */; };
 		F8DA34D5139F891C0032B1B3 /* SCHStoryInteractionScratchAndSee_iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = F8DA34D4139F891C0032B1B3 /* SCHStoryInteractionScratchAndSee_iPad.xib */; };
@@ -12676,18 +12664,6 @@
 				F849155814FFA54D000D064B /* RateView.m in Sources */,
 				52943AE714FFD0E8002991EB /* SCHWishListSyncComponent.m in Sources */,
 				287639B9154E857100540861 /* SCHStoryInteractionJigsawPiece.m in Sources */,
-				F8D220C215A2F33C0028D35F /* SCHSyncComponent.m in Sources */,
-				F8D220C315A2F3A20028D35F /* SCHComponent.m in Sources */,
-				F8D220C415A2F4F40028D35F /* SCHWishListWebService.m in Sources */,
-				F8D220C515A2F4FA0028D35F /* WishListServiceSvc+Binding.m in Sources */,
-				F8D220C715A2F5100028D35F /* SCHWishListConstants.m in Sources */,
-				F8D220C815A2F5170028D35F /* BITNetworkActivityManager.m in Sources */,
-				F8D220C915A2F8190028D35F /* SCHBookIdentifier.m in Sources */,
-				F8D220CA15A2F84C0028D35F /* SCHAppRecommendationItem.m in Sources */,
-				F8D220CB15A300030028D35F /* SCHRecommendationISBN.m in Sources */,
-				F8D220CC15A300D60028D35F /* WishListServiceSvc.m in Sources */,
-				F8D220CD15A301970028D35F /* ax21.m in Sources */,
-				F8D220CE15A305D90028D35F /* SCHProfileItem.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -13947,7 +13923,7 @@
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = Scholastic_Prefix.pch;
+				GCC_PREFIX_HEADER = "UnitTests/UnitTests-Prefix.pch";
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					DEBUG,
 					UNITTESTS,
@@ -13975,7 +13951,7 @@
 				);
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = Scholastic_Prefix.pch;
+				GCC_PREFIX_HEADER = "UnitTests/UnitTests-Prefix.pch";
 				GCC_PREPROCESSOR_DEFINITIONS = "";
 				INFOPLIST_FILE = "UnitTests/UnitTests-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
@@ -13999,7 +13975,7 @@
 				);
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = Scholastic_Prefix.pch;
+				GCC_PREFIX_HEADER = "UnitTests/UnitTests-Prefix.pch";
 				INFOPLIST_FILE = "UnitTests/UnitTests-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
 				OTHER_LDFLAGS = (
