@@ -10,35 +10,71 @@
 #import "SCHBookRange.h"
 #import "SCHBookPoint.h"
 
+@interface SCHBookDataTests ()
+
+@property (nonatomic, retain) SCHBookPoint *pointAtBeginning;
+@property (nonatomic, retain) SCHBookPoint *pointAlsoAtBeginning;
+@property (nonatomic, retain) SCHBookPoint *pointInMiddle;
+@property (nonatomic, retain) SCHBookPoint *pointAlsoInMiddle;
+@property (nonatomic, retain) SCHBookPoint *pointAtEnd;
+
+
+@end
+
+
 @implementation SCHBookDataTests
 
-- (void)testBookPoint
+@synthesize pointAtBeginning;
+@synthesize pointAlsoAtBeginning;
+@synthesize pointInMiddle;
+@synthesize pointAlsoInMiddle;
+@synthesize pointAtEnd;
+
+- (void)setUp
 {
-    SCHBookPoint *pointAtBeginning = [[[SCHBookPoint alloc] init] autorelease];
+    self.pointAtBeginning = [[[SCHBookPoint alloc] init] autorelease];
     pointAtBeginning.layoutPage = 1;
     pointAtBeginning.blockOffset = 0;
     pointAtBeginning.wordOffset = 0;
     pointAtBeginning.elementOffset = 0;
     
-    SCHBookPoint *pointAlsoAtBeginning = [[[SCHBookPoint alloc] init] autorelease];
+    self.pointAlsoAtBeginning = [[[SCHBookPoint alloc] init] autorelease];
     pointAlsoAtBeginning.layoutPage = 1;
     pointAlsoAtBeginning.blockOffset = 0;
     pointAlsoAtBeginning.wordOffset = 0;
     pointAlsoAtBeginning.elementOffset = 0;
     
-    SCHBookPoint *pointInMiddle = [[[SCHBookPoint alloc] init] autorelease];
+    self.pointInMiddle = [[[SCHBookPoint alloc] init] autorelease];
     pointInMiddle.layoutPage = 10;
     pointInMiddle.blockOffset = 0;
     pointInMiddle.wordOffset = 0;
     pointInMiddle.elementOffset = 0;
     
-    SCHBookPoint *pointAtEnd = [[[SCHBookPoint alloc] init] autorelease];
+    self.pointAlsoInMiddle = [[[SCHBookPoint alloc] init] autorelease];
+    pointAlsoInMiddle.layoutPage = 10;
+    pointAlsoInMiddle.blockOffset = 0;
+    pointAlsoInMiddle.wordOffset = 0;
+    pointAlsoInMiddle.elementOffset = 0;
+    
+    self.pointAtEnd = [[[SCHBookPoint alloc] init] autorelease];
     pointAtEnd.layoutPage = 20;
     pointAtEnd.blockOffset = 0;
     pointAtEnd.wordOffset = 0;
     pointAtEnd.elementOffset = 0;
     
-    
+}
+
+- (void)tearDown
+{
+    self.pointAtBeginning = nil;
+    self.pointAlsoAtBeginning = nil;
+    self.pointInMiddle = nil;
+    self.pointAlsoInMiddle = nil;
+    self.pointAtEnd = nil;
+}
+
+- (void)testBookPoint
+{
     STAssertTrue(([pointAtBeginning compare:pointInMiddle] == NSOrderedAscending), @"Point at beginning should be before point in middle.");
     STAssertTrue(([pointInMiddle compare:pointAtBeginning] == NSOrderedDescending), @"Point at beginning should be before point in middle.");
     STAssertTrue(([pointInMiddle compare:pointInMiddle] == NSOrderedSame), @"Point should be ordered as equal to itself.");
@@ -84,6 +120,30 @@
     // test element offset
     STAssertTrue([firstPoint compare:secondPoint] == NSOrderedAscending, @"Element offset of second point should be after first point");
 
+}
+
+- (void)testBookRange
+{
+    SCHBookRange *firstRange = [[[SCHBookRange alloc] init] autorelease];
+    firstRange.startPoint = self.pointAtBeginning;
+    firstRange.endPoint = self.pointInMiddle;
+    
+    SCHBookRange *secondRange = [[[SCHBookRange alloc] init] autorelease];
+    secondRange.startPoint = self.pointInMiddle;
+    secondRange.endPoint = self.pointAtEnd;
+    
+    STAssertFalse([firstRange isEqual:secondRange], @"Ranges with different point values should not be equal.");
+    
+    secondRange.startPoint = self.pointAtBeginning;
+    secondRange.endPoint = self.pointInMiddle;
+    
+    STAssertTrue([firstRange isEqual:secondRange], @"Ranges with the same point values should be equal.");
+    
+    secondRange.startPoint = self.pointAlsoAtBeginning;
+    secondRange.endPoint = self.pointAlsoInMiddle;
+    
+    STAssertTrue([firstRange isEqual:secondRange], @"Ranges with different point objects with the same values should be equal.");
+    
 }
 
 @end
