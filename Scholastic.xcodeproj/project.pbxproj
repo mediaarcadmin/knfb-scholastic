@@ -4178,6 +4178,12 @@
 		F8C7C52F1521C08D0067674D /* popover-black-top-arrow-image.png in Resources */ = {isa = PBXBuildFile; fileRef = F8C7C51C1521C08D0067674D /* popover-black-top-arrow-image.png */; };
 		F8C7C5301521C08D0067674D /* popover-black-top-arrow-image.png in Resources */ = {isa = PBXBuildFile; fileRef = F8C7C51C1521C08D0067674D /* popover-black-top-arrow-image.png */; };
 		F8C8FC2A136065AD0097F9DD /* SCHCustomNavigationBar.m in Sources */ = {isa = PBXBuildFile; fileRef = F8C8FC29136065AD0097F9DD /* SCHCustomNavigationBar.m */; };
+		F8D199EF15A594B500EA17C6 /* SCHRecommendationOperationsTests.m in Sources */ = {isa = PBXBuildFile; fileRef = F8D199EE15A594B500EA17C6 /* SCHRecommendationOperationsTests.m */; };
+		F8D199F015A598E700EA17C6 /* SCHRecommendationDownloadCoverOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = C9B2F631151C9E030044BBCC /* SCHRecommendationDownloadCoverOperation.m */; };
+		F8D199F315A599A600EA17C6 /* SCHDummyRecommendationOperations.m in Sources */ = {isa = PBXBuildFile; fileRef = F8D199F215A599A600EA17C6 /* SCHDummyRecommendationOperations.m */; };
+		F8D199FA15A5ADA300EA17C6 /* SCHBookDataTests.m in Sources */ = {isa = PBXBuildFile; fileRef = F8D199F915A5ADA300EA17C6 /* SCHBookDataTests.m */; };
+		F8D199FB15A5ADB500EA17C6 /* SCHBookRange.m in Sources */ = {isa = PBXBuildFile; fileRef = C93EBDFC13462883003B99FD /* SCHBookRange.m */; };
+		F8D199FC15A5AF1E00EA17C6 /* SCHBookPoint.m in Sources */ = {isa = PBXBuildFile; fileRef = C97D6DA213696D7B0017974B /* SCHBookPoint.m */; };
 		F8DA34CF139F88AC0032B1B3 /* SCHStoryInteractionControllerScratchAndSee.m in Sources */ = {isa = PBXBuildFile; fileRef = F8DA34CE139F88AC0032B1B3 /* SCHStoryInteractionControllerScratchAndSee.m */; };
 		F8DA34D2139F88F80032B1B3 /* SCHStoryInteractionScratchAndSee_iPhone.xib in Resources */ = {isa = PBXBuildFile; fileRef = F8DA34D1139F88F80032B1B3 /* SCHStoryInteractionScratchAndSee_iPhone.xib */; };
 		F8DA34D5139F891C0032B1B3 /* SCHStoryInteractionScratchAndSee_iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = F8DA34D4139F891C0032B1B3 /* SCHStoryInteractionScratchAndSee_iPad.xib */; };
@@ -6115,6 +6121,11 @@
 		F8C8FC29136065AD0097F9DD /* SCHCustomNavigationBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHCustomNavigationBar.m; path = iPhone/SCHCustomNavigationBar.m; sourceTree = "<group>"; };
 		F8CD24C912F9714D001C748B /* SCHBookManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHBookManager.h; path = iPhone/SCHBookManager.h; sourceTree = "<group>"; };
 		F8CD24CA12F9714D001C748B /* SCHBookManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHBookManager.m; path = iPhone/SCHBookManager.m; sourceTree = "<group>"; };
+		F8D199ED15A594B500EA17C6 /* SCHRecommendationOperationsTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCHRecommendationOperationsTests.h; sourceTree = "<group>"; };
+		F8D199EE15A594B500EA17C6 /* SCHRecommendationOperationsTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCHRecommendationOperationsTests.m; sourceTree = "<group>"; };
+		F8D199F215A599A600EA17C6 /* SCHDummyRecommendationOperations.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCHDummyRecommendationOperations.m; sourceTree = "<group>"; };
+		F8D199F815A5ADA300EA17C6 /* SCHBookDataTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCHBookDataTests.h; sourceTree = "<group>"; };
+		F8D199F915A5ADA300EA17C6 /* SCHBookDataTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCHBookDataTests.m; sourceTree = "<group>"; };
 		F8DA34CD139F88AC0032B1B3 /* SCHStoryInteractionControllerScratchAndSee.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCHStoryInteractionControllerScratchAndSee.h; sourceTree = "<group>"; };
 		F8DA34CE139F88AC0032B1B3 /* SCHStoryInteractionControllerScratchAndSee.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCHStoryInteractionControllerScratchAndSee.m; sourceTree = "<group>"; };
 		F8DA34D1139F88F80032B1B3 /* SCHStoryInteractionScratchAndSee_iPhone.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SCHStoryInteractionScratchAndSee_iPhone.xib; sourceTree = "<group>"; };
@@ -6683,6 +6694,8 @@
 		28A08CFF13952CB4006FD008 /* UnitTests */ = {
 			isa = PBXGroup;
 			children = (
+				F8D199F715A5AD8F00EA17C6 /* Book Data Tests */,
+				F868383A15A4A73600051B52 /* Recommendation Processing */,
 				2868A45013BA13F1000110D5 /* SCHTestFixtureWithCoreDataStack.h */,
 				2868A45113BA13F1000110D5 /* SCHTestFixtureWithCoreDataStack.m */,
 				2869896D13B723C300C08908 /* SCHSemaphoreGroup.h */,
@@ -9114,6 +9127,16 @@
 			name = "Dictionary & Help Processing";
 			sourceTree = "<group>";
 		};
+		F868383A15A4A73600051B52 /* Recommendation Processing */ = {
+			isa = PBXGroup;
+			children = (
+				F8D199ED15A594B500EA17C6 /* SCHRecommendationOperationsTests.h */,
+				F8D199EE15A594B500EA17C6 /* SCHRecommendationOperationsTests.m */,
+				F8D199F215A599A600EA17C6 /* SCHDummyRecommendationOperations.m */,
+			);
+			name = "Recommendation Processing";
+			sourceTree = "<group>";
+		};
 		F86DEC0813A21F2600053999 /* Sounds */ = {
 			isa = PBXGroup;
 			children = (
@@ -9271,6 +9294,15 @@
 				F8C7C51C1521C08D0067674D /* popover-black-top-arrow-image.png */,
 			);
 			name = "Custom Popover Graphics";
+			sourceTree = "<group>";
+		};
+		F8D199F715A5AD8F00EA17C6 /* Book Data Tests */ = {
+			isa = PBXGroup;
+			children = (
+				F8D199F815A5ADA300EA17C6 /* SCHBookDataTests.h */,
+				F8D199F915A5ADA300EA17C6 /* SCHBookDataTests.m */,
+			);
+			name = "Book Data Tests";
 			sourceTree = "<group>";
 		};
 		F8DC5655138C09DB00F27146 /* Reading View Controllers */ = {
@@ -12650,6 +12682,12 @@
 				C9A6B402148B853C00B31277 /* SCHAppHelpState.m in Sources */,
 				F849155814FFA54D000D064B /* RateView.m in Sources */,
 				287639B9154E857100540861 /* SCHStoryInteractionJigsawPiece.m in Sources */,
+				F8D199EF15A594B500EA17C6 /* SCHRecommendationOperationsTests.m in Sources */,
+				F8D199F015A598E700EA17C6 /* SCHRecommendationDownloadCoverOperation.m in Sources */,
+				F8D199F315A599A600EA17C6 /* SCHDummyRecommendationOperations.m in Sources */,
+				F8D199FA15A5ADA300EA17C6 /* SCHBookDataTests.m in Sources */,
+				F8D199FB15A5ADB500EA17C6 /* SCHBookRange.m in Sources */,
+				F8D199FC15A5AF1E00EA17C6 /* SCHBookPoint.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
