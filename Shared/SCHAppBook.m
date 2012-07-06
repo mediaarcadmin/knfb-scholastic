@@ -44,6 +44,7 @@ NSString * const kSCHAppBookLayoutPageEquivalentCount = @"LayoutPageEquivalentCo
 NSString * const kSCHAppBookAudioBookReferences = @"AudioBookReferences";
 NSString * const kSCHAppBookBookCoverExists = @"BookCoverExists";
 NSString * const kSCHAppBookXPSExists = @"XPSExists";
+NSString * const kSCHAppBookSuppressFollowAlongHighlights = @"suppressFollowAlongHighlights";
 
 // Audio File keys
 NSString * const kSCHAppBookAudioFile = @"AudioFile";
@@ -111,6 +112,7 @@ NSString * const kSCHAppBookFilenameSeparator = @"-";
 @dynamic XPSExists;
 @dynamic urlExpiredCount;
 @dynamic downloadFailedCount;
+@dynamic suppressFollowAlongHighlights;
 
 @synthesize diskVersionOutOfDate;
 @synthesize cachedBookDirectory;
@@ -710,6 +712,7 @@ NSString * const kSCHAppBookFilenameSeparator = @"-";
     self.XPSCategory = [[properties valueForKey:@"XPSCategory"] defaultValue];
     self.XPSExists = [[properties valueForKey:@"XPSExists"] defaultValue];
     self.XPSTitle = [[properties valueForKey:@"XPSTitle"] defaultValue];
+    self.suppressFollowAlongHighlights = [[properties valueForKey:@"suppressFollowAlongHighlights"] defaultValue];
 }
 
 - (float)currentDownloadedPercentage
