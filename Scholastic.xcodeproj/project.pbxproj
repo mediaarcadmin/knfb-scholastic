@@ -1466,7 +1466,7 @@
 		529386B112DF3A3F00045B44 /* CXMLDocument.m in Sources */ = {isa = PBXBuildFile; fileRef = 529386A512DF3A3F00045B44 /* CXMLDocument.m */; };
 		529386B212DF3A3F00045B44 /* CXMLDocument_PrivateExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 529386A712DF3A3F00045B44 /* CXMLDocument_PrivateExtensions.m */; };
 		529386B312DF3A3F00045B44 /* CXMLElement.m in Sources */ = {isa = PBXBuildFile; fileRef = 529386A912DF3A3F00045B44 /* CXMLElement.m */; };
-		529386B412DF3A3F00045B44 /* CXMLNode.m in Sources */ = {isa = PBXBuildFile; fileRef = 529386AB12DF3A3F00045B44 /* CXMLNode.m */; };
+		529386B412DF3A3F00045B44 /* CXMLNode.m in Sources */ = {isa = PBXBuildFile; fileRef = 529386AB12DF3A3F00045B44 /* CXMLNode.m */; settings = {COMPILER_FLAGS = "-Wno-switch"; }; };
 		529386B512DF3A3F00045B44 /* CXMLNode_PrivateExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 529386AD12DF3A3F00045B44 /* CXMLNode_PrivateExtensions.m */; };
 		529386B612DF3A3F00045B44 /* CXMLNode_XPathExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 529386AF12DF3A3F00045B44 /* CXMLNode_XPathExtensions.m */; };
 		529386BA12DF3A4900045B44 /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = 529386B912DF3A4900045B44 /* Reachability.m */; };
@@ -4202,7 +4202,7 @@
 		F8DC5681138C150F00F27146 /* SCHDictionaryViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = F8DC567E138C150F00F27146 /* SCHDictionaryViewController.xib */; };
 		F8DCE5C413EC415F00100B6A /* SCHCoreDataHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = F8DCE5C313EC415F00100B6A /* SCHCoreDataHelper.m */; };
 		F8E2D3C113B9C7D0001E207B /* CoreText.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F8E2D3BF13B9C7AC001E207B /* CoreText.framework */; };
-		F8E2D3D113B9CB8A001E207B /* TTTAttributedLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = F8E2D3D013B9CB8A001E207B /* TTTAttributedLabel.m */; };
+		F8E2D3D113B9CB8A001E207B /* TTTAttributedLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = F8E2D3D013B9CB8A001E207B /* TTTAttributedLabel.m */; settings = {COMPILER_FLAGS = "-Wno-switch"; }; };
 		F8EB725A13FBD81F00FE2410 /* BookSITab~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = F82E3BBC13F9289A000B67A4 /* BookSITab~ipad.png */; };
 		F8EB725C13FBD82700FE2410 /* BookSISampleTab~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = F82E3BBB13F9289A000B67A4 /* BookSISampleTab~ipad.png */; };
 		F8EB725E13FBD82E00FE2410 /* BookShelfErrorIcon~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = F82E3BBA13F9289A000B67A4 /* BookShelfErrorIcon~ipad.png */; };
