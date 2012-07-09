@@ -28,6 +28,7 @@ static NSString * const kSCHHelpVideosDirectoryName = @"HelpVideos";
 @property (readwrite, retain) NSOperationQueue *downloadQueue;
 @property (readwrite, retain) Reachability *reachability;
 @property (readwrite, retain) NSTimer *startTimer;
+@property (nonatomic, retain) NSTimer *backoffTimer;
 @property (readwrite) float currentHelpVideoDownloadPercentage;
 @property BOOL internetAvailable;
 
@@ -48,6 +49,7 @@ static NSString * const kSCHHelpVideosDirectoryName = @"HelpVideos";
 @synthesize downloadQueue;
 @synthesize reachability;
 @synthesize startTimer;
+@synthesize backoffTimer;
 @synthesize internetAvailable;
 //@synthesize connectionIdle;
 @synthesize isProcessing;
@@ -63,13 +65,14 @@ static NSString * const kSCHHelpVideosDirectoryName = @"HelpVideos";
 {
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
 	
-	self.downloadQueue = nil;
+	[downloadQueue release], downloadQueue = nil;
 	
     [self.reachability stopNotifier];
-	self.reachability = nil;
+	[reachability release], reachability = nil;
     
-    self.mainThreadManagedObjectContext = nil;
-    self.persistentStoreCoordinator = nil;
+    [mainThreadManagedObjectContext release], mainThreadManagedObjectContext = nil;
+    [persistentStoreCoordinator release], persistentStoreCoordinator = nil;
+    [backoffTimer release], backoffTimer = nil;
 	[super dealloc];
 }
 
@@ -146,7 +149,13 @@ static SCHHelpManager *sharedManager = nil;
 {
     UIDevice* device = [UIDevice currentDevice];
     BOOL backgroundSupported = [device respondsToSelector:@selector(isMultitaskingSupported)] && device.multitaskingSupported;
-    if(backgroundSupported) {        
+    if(backgroundSupported) {   
+        
+        // kill the backoff timer, we'll check for downloading when we return from the foreground
+        if (self.backoffTimer) {
+            [self.backoffTimer invalidate];
+            self.backoffTimer = nil;
+        }
 		
         // if there's already a background monitoring task, then return - the existing one will work
         if (self.backgroundTask && self.backgroundTask != UIBackgroundTaskInvalid) {
@@ -256,10 +265,11 @@ static SCHHelpManager *sharedManager = nil;
 			self.startTimer = nil; 
 		} 
         
-		NSLog(@"********* Starting help timer...");
         if (immediately) {
+            NSLog(@"********* Processing help immediately!");
             [self processHelp];
         } else {
+            NSLog(@"********* Starting help timer...");
             self.startTimer = [NSTimer scheduledTimerWithTimeInterval:3
                                                                target:self
                                                              selector:@selector(processHelp)
@@ -288,6 +298,11 @@ static SCHHelpManager *sharedManager = nil;
 		[self performSelectorOnMainThread:@selector(processHelp) withObject:nil waitUntilDone:NO];
 		return;
 	}
+    
+    if (self.backoffTimer) {
+        [self.backoffTimer invalidate];
+        self.backoffTimer = nil;
+    }
 	
     if (!self.internetAvailable) {
         NSLog(@"Process help called, but no wifi available.");
@@ -359,7 +374,15 @@ static SCHHelpManager *sharedManager = nil;
         }
         case SCHHelpProcessingStateError:
         {
-            NSLog(@"An error occured attempting to download Help videos");
+            NSLog(@"An error occurred attempting to download Help videos");
+            
+            NSLog(@"********* Starting back off timer...");
+            // 1800 seconds = 30 minutes
+            self.backoffTimer = [NSTimer scheduledTimerWithTimeInterval:1800
+                                                               target:self
+                                                             selector:@selector(retryHelpDownload)
+                                                             userInfo:nil
+                                                              repeats:NO];
             break;
         }
         case SCHHelpProcessingStateNotEnoughFreeSpace:
