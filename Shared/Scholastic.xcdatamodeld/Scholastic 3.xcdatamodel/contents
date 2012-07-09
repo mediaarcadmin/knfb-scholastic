@@ -33,6 +33,7 @@
         <attribute name="ReflowPermitted" optional="YES" attributeType="Boolean"/>
         <attribute name="SmartZoomPageMarkers" optional="YES" attributeType="Transformable"/>
         <attribute name="State" optional="YES" attributeType="Integer 16" defaultValueString="0"/>
+        <attribute name="suppressFollowAlongHighlights" optional="YES" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
         <attribute name="TextFlowPageRanges" optional="YES" attributeType="Transformable"/>
         <attribute name="TTSPermitted" optional="YES" attributeType="Boolean" defaultValueString="YES"/>
         <attribute name="urlExpiredCount" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
@@ -375,7 +376,7 @@
         <element name="SCHAnnotation" positionX="292" positionY="362" width="128" height="90"/>
         <element name="SCHAnnotationsContentItem" positionX="438" positionY="661" width="128" height="135"/>
         <element name="SCHAnnotationsItem" positionX="438" positionY="362" width="128" height="75"/>
-        <element name="SCHAppBook" positionX="1177" positionY="600" width="128" height="435"/>
+        <element name="SCHAppBook" positionX="1177" positionY="600" width="128" height="450"/>
         <element name="SCHAppContentProfileItem" positionX="727" positionY="27" width="128" height="180"/>
         <element name="SCHAppDictionaryManifestEntry" positionX="1179" positionY="144" width="128" height="105"/>
         <element name="SCHAppDictionaryState" positionX="1197" positionY="315" width="128" height="105"/>

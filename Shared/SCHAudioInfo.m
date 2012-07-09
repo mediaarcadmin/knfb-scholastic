@@ -32,7 +32,7 @@
 
 - (NSString *)description
 {
-    return([NSString stringWithFormat:@"p:%lu ti:%lu to:%lu a:%lu", self.pageIndex, 
+    return([NSString stringWithFormat:@"p:%u ti:%u to:%u a:%u", self.pageIndex, 
             self.timeIndex, self.timeOffset, self.audioReferenceIndex]);
 }
 

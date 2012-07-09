@@ -32,6 +32,9 @@ void printPath(void *info, const CGPathElement *element)
         case kCGPathElementCloseSubpath:
             [str appendFormat:@"Z "];
             break;
+        case kCGPathElementAddQuadCurveToPoint:
+            [str appendFormat:@"quad curves not handled "];
+            break;
     }
 }
 
@@ -50,7 +53,7 @@ NSString *NSStringFromCGPath(CGPathRef path)
     if (!data) {
         return nil;
     }
-    SCHStoryInteractionJigsawPathTests *paths = [[SCHStoryInteractionJigsawPaths alloc] initWithData:data];
+    SCHStoryInteractionJigsawPaths *paths = [[SCHStoryInteractionJigsawPaths alloc] initWithData:data];
     return [paths autorelease];
 }
 
