@@ -20,6 +20,7 @@
 #define IPHONE_HIGHLIGHTS_DISABLED 1
 #define PICTURE_STARTER_CACHE_DISABLED 1
 #define USE_EMAIL_ADDRESS_AS_USERNAME 1
+#define USE_QA2_ENDPOINTS 1
 
 #define PRODUCTION_ENVIRONMENT 0
 
@@ -39,13 +40,16 @@
 
 #else
 
-#if USE_EMAIL_ADDRESS_AS_USERNAME
+#if USE_QA2_ENDPOINTS
 #define AUTHENTICATION_SERVER_ENDPOINT AUTHENTICATION_SERVER_ENDPOINT_QA2
+#define WISHLIST_SERVER_ENDPOINT WISHLIST_SERVER_ENDPOINT_QA2
+#define GETUSERINFO_SERVER_ENDPOINT GETUSERINFO_SERVER_ENDPOINT_QA2
 #else
 #define AUTHENTICATION_SERVER_ENDPOINT AUTHENTICATION_SERVER_ENDPOINT_QA
-#endif
 #define WISHLIST_SERVER_ENDPOINT WISHLIST_SERVER_ENDPOINT_QA
 #define GETUSERINFO_SERVER_ENDPOINT GETUSERINFO_SERVER_ENDPOINT_QA
+#endif
+
 #define RECOMMENDATION_SERVER_ENDPOINT RECOMMENDATION_SERVER_ENDPOINT_PRODUCTION
 #define LIBREDIGITAL_SERVER_ENDPOINT LIBREDIGITAL_SERVER_ENDPOINT_UAT
 #define DRM_RIGHTSMANAGER_SERVER DRM_RIGHTSMANAGER_SERVER_UAT
@@ -64,6 +68,7 @@
 
 // GetUserInfo server EndPoint
 #define GETUSERINFO_SERVER_ENDPOINT_QA @"https://esvcsqa.scholastic.com/SchWS/services/SPS/GetUserInfo.GetUserInfoHttpsSoap11Endpoint/"
+#define GETUSERINFO_SERVER_ENDPOINT_QA2 @"https://esvcsqa2.scholastic.com/SchWS/services/SPS/GetUserInfo.GetUserInfoHttpsSoap11Endpoint/"
 #define GETUSERINFO_SERVER_ENDPOINT_PRODUCTION @"https://esvcs.scholastic.com/SchWS/services/SPS/GetUserInfo.GetUserInfoHttpsSoap11Endpoint/"
 
 // Libre Digital server EndPoint
@@ -73,6 +78,7 @@
 
 // Wishlist Server EndPoint
 #define WISHLIST_SERVER_ENDPOINT_QA @"https://esvcsqa.scholastic.com/SchWS/services/SPS/WishListService.WishListServiceHttpsSoap11Endpoint/"
+#define WISHLIST_SERVER_ENDPOINT_QA2 @"https://esvcsqa2.scholastic.com/SchWS/services/SPS/WishListService.WishListServiceHttpsSoap11Endpoint/"
 #define WISHLIST_SERVER_ENDPOINT_PRODUCTION @"https://esvcs.scholastic.com/SchWS/services/SPS/WishListService.WishListServiceHttpsSoap11Endpoint/"
 
 // Recommendation Server EndPoint
