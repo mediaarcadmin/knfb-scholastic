@@ -17,6 +17,8 @@ NSString * const kSCHHelpDownloadPercentageUpdate = @"kSCHHelpDownloadPercentage
 NSString * const kSCHHelpStateChange = @"kSCHHelpStateChange";
 char * const kSCHHelpManifestEntryColumnSeparator = "\t";
 
+NSUInteger const kSCHHelpBackOffPeriodInSeconds = 1800;
+
 static NSString * const kSCHHelpVideosDirectoryName = @"HelpVideos";
 
 
@@ -378,7 +380,7 @@ static SCHHelpManager *sharedManager = nil;
             
             NSLog(@"********* Starting back off timer...");
             // 1800 seconds = 30 minutes
-            self.backoffTimer = [NSTimer scheduledTimerWithTimeInterval:1800
+            self.backoffTimer = [NSTimer scheduledTimerWithTimeInterval:kSCHHelpBackOffPeriodInSeconds
                                                                target:self
                                                              selector:@selector(retryHelpDownload)
                                                              userInfo:nil
