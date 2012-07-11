@@ -81,7 +81,7 @@
         <attribute name="PaperType" optional="YES" attributeType="Integer 16"/>
         <attribute name="SelectedTheme" optional="YES" attributeType="Integer 16" defaultValueString="0"/>
         <attribute name="ShowListView" optional="YES" attributeType="Boolean" defaultValueString="NO"/>
-        <attribute name="SortType" optional="YES" attributeType="Integer 16"/>
+        <attribute name="SortType" optional="YES" attributeType="Integer 16" defaultValueString="0"/>
         <relationship name="ProfileItem" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="SCHProfileItem" inverseName="AppProfile" inverseEntity="SCHProfileItem" indexed="YES"/>
     </entity>
     <entity name="SCHAppRecommendationItem" representedClassName="SCHAppRecommendationItem">
