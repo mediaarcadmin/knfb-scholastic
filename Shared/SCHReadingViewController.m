@@ -138,6 +138,7 @@ static const NSUInteger kReadingViewMaxRecommendationsCount = 4;
 @property (nonatomic, retain) NSMutableArray *modifiedWishListDictionaries;
 
 @property (nonatomic, assign) BOOL isInBackground;
+@property (nonatomic, assign) BOOL appBookIsSuppressingHighlights;
 
 - (void)updateNotesCounter;
 - (id)initFailureWithErrorCode:(NSInteger)code error:(NSError **)error;
@@ -270,6 +271,7 @@ static const NSUInteger kReadingViewMaxRecommendationsCount = 4;
 @synthesize wishListDictionaries;
 @synthesize modifiedWishListDictionaries;
 @synthesize isInBackground;
+@synthesize appBookIsSuppressingHighlights;
 
 #pragma mark - Dealloc and View Teardown
 
@@ -452,6 +454,7 @@ static const NSUInteger kReadingViewMaxRecommendationsCount = 4;
         
         currentlyRotating = NO;
         currentlyScrubbing = NO;
+        appBookIsSuppressingHighlights = NO;
         currentPageIndex = NSUIntegerMax;
         
         managedObjectContext = [moc retain];
@@ -743,12 +746,21 @@ static const NSUInteger kReadingViewMaxRecommendationsCount = 4;
     }
 #endif
     
+    BOOL alreadyRemovedHighlights = NO;
+    
 #if IPHONE_HIGHLIGHTS_DISABLED
     // if highlights are disabled on iPhone, remove the highlights button
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone && [toolbarArray count] >= 5) {
         [toolbarArray removeObjectsAtIndexes:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(2, 2)]];
+        alreadyRemovedHighlights = YES;
     }
 #endif
+    
+    self.appBookIsSuppressingHighlights = [[book valueForKey:kSCHAppBookSuppressFollowAlongHighlights] boolValue];
+
+    if (self.appBookIsSuppressingHighlights && !alreadyRemovedHighlights && [toolbarArray count] >= 5) {
+        [toolbarArray removeObjectsAtIndexes:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(2, 2)]];
+    }
     
     // if the book has no story interactions remove the SI button
     if ([[self.bookStoryInteractions allStoryInteractionsExcludingInteractionWithPage:NO] count] <= 0 
@@ -2190,6 +2202,19 @@ static const NSUInteger kReadingViewMaxRecommendationsCount = 4;
 
 - (NSArray *)highlightsForLayoutPage:(NSUInteger)page
 {
+    
+#if IPHONE_HIGHLIGHTS_DISABLED
+    // disable highlights if we're on the iPhone and the toggle is set
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
+        return nil;
+    }
+#endif
+    
+    // check if the app book suppressing highlights
+    if (self.appBookIsSuppressingHighlights) {
+        return nil;
+    } 
+
     return [self.bookAnnotations highlightsForPage:page];    
 }
 
