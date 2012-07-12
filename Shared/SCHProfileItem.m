@@ -71,7 +71,6 @@ NSString * const kSCHProfileItemDRM_QUALIFIER = @"DRM_QUALIFIER";
 
 @synthesize age;
 
-// we are prefetching the ContentProfileItem.UserContentItem and returning non-faulted objects
 - (NSSet *)ContentProfileItem
 {
     NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
@@ -80,8 +79,6 @@ NSString * const kSCHProfileItemDRM_QUALIFIER = @"DRM_QUALIFIER";
     [fetchRequest setEntity:[NSEntityDescription entityForName:kSCHContentProfileItem 
                                         inManagedObjectContext:self.managedObjectContext]];	
     [fetchRequest setPredicate:[NSPredicate predicateWithFormat:@"ProfileID == %@", self.ID]];
-    [fetchRequest setReturnsObjectsAsFaults:NO];
-    [fetchRequest setRelationshipKeyPathsForPrefetching:[NSArray arrayWithObject:@"UserContentItem"]];
     
     NSArray *result = [self.managedObjectContext executeFetchRequest:fetchRequest 
                                                                error:&error];
@@ -172,7 +169,6 @@ NSString * const kSCHProfileItemDRM_QUALIFIER = @"DRM_QUALIFIER";
 }
 
 // all book identifiers available for use, i.e. we have the metadata information
-// sort type kSCHBookSortTypeUser DOES NOT guarentee we have metadata information
 - (NSMutableArray *)allBookIdentifiers
 {
     NSNumber *sortTypeObj = [[self AppProfile] SortType];
@@ -185,18 +181,45 @@ NSString * const kSCHProfileItemDRM_QUALIFIER = @"DRM_QUALIFIER";
     SCHBookSortType sortType = [sortTypeObj intValue];
     
     if (sortType == kSCHBookSortTypeUser) {
+        
+        NSMutableArray *books = [NSMutableArray array];
+        
+        for (SCHContentProfileItem *contentProfileItem in [self ContentProfileItem]) {
+            NSSet *contentMetadataItems = contentProfileItem.UserContentItem.ContentMetadataItem;
+            if ([contentMetadataItems count] > 0) {
+                for (SCHContentMetadataItem *contentMetadataItem in contentProfileItem.UserContentItem.ContentMetadataItem) {
+                    SCHBookIdentifier *identifier = [contentMetadataItem bookIdentifier];
+                    if (identifier != nil) {
+                        [books addObject:identifier];
+                    }
+                }
+            } else {
+                NSLog(@"Warning, no contentMetadataItems for contentProfileItem %@", contentProfileItem);
+            }
+        }
                 
         // order the books
-        NSMutableArray *books = [NSMutableArray arrayWithCapacity:[self.AppContentProfileItem count]];
         if ([self.AppContentProfileItem count] > 0) {
             NSArray *bookOrder = [self.AppContentProfileItem sortedArrayUsingDescriptors:
                                   [NSArray arrayWithObjects:[NSSortDescriptor sortDescriptorWithKey:kSCHAppContentProfileItemOrder ascending:YES], 
                                    [NSSortDescriptor sortDescriptorWithKey:kSCHAppContentProfileItemISBN ascending:YES], 
                                    [NSSortDescriptor sortDescriptorWithKey:kSCHAppContentProfileItemDRMQualifier ascending:YES], nil]];
-            for (SCHAppContentProfileItem *appContentProfileItem in bookOrder) {
-                SCHBookIdentifier *identifier = [appContentProfileItem bookIdentifier];
-                if (identifier != nil) {
-                    [books addObject:identifier];
+            for (int i = 0; i < [bookOrder count]; i++) {
+                SCHAppContentProfileItem *appContentProfileItem = [bookOrder objectAtIndex:i];
+                
+                NSUInteger bookIndex = [books indexOfObjectPassingTest:^(id obj, NSUInteger idx, BOOL *stop) {
+                    if ([[appContentProfileItem bookIdentifier] isEqual:obj] == YES) {
+                        *stop = YES;
+                        return YES;
+                    } else {
+                        return NO;
+                    }
+                }];
+                
+                if(bookIndex != NSNotFound) {
+                    if ((i < [books count]) && (bookIndex < [books count])) {
+                        [books exchangeObjectAtIndex:i withObjectAtIndex:bookIndex];
+                    }
                 }
             }
         }
@@ -296,6 +319,7 @@ NSString * const kSCHProfileItemDRM_QUALIFIER = @"DRM_QUALIFIER";
             
             [sortArray release];
 
+            
             break;
         }
         default:
