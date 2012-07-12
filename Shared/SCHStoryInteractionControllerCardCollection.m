@@ -99,6 +99,8 @@ enum {
     UITapGestureRecognizer *scrollTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(scrollViewTapped:)];
     [self.cardScrollView addGestureRecognizer:scrollTap];
     [scrollTap release];
+    
+    self.controllerState = SCHStoryInteractionControllerStateInteractionFinishedSuccessfully;
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation

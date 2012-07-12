@@ -96,9 +96,9 @@ static NSTimeInterval const kSCHWordTimingMilliSecondsInASecond = 1000.0;
 - (NSString *)description
 {
     if (self.pageIndex == NSUIntegerMax) {
-        return([NSString stringWithFormat:@"%lu - %lu", self.startTime, self.endTime]);
+        return([NSString stringWithFormat:@"%u - %u", self.startTime, self.endTime]);
     } else {
-        return([NSString stringWithFormat:@"%lu - %lu %@ (pageIndex:%lu blockID:%lu wordID:%lu)", 
+        return([NSString stringWithFormat:@"%u - %u %@ (pageIndex:%u blockID:%u wordID:%u)",
                 self.startTime, 
                 self.endTime, 
                 self.word, 

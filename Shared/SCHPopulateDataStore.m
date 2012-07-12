@@ -496,7 +496,7 @@
         [profileList addObject:profileItem];
         
         NSMutableDictionary *orderItem = [NSMutableDictionary dictionary];
-        [orderItem setObject:[NSString stringWithFormat:@"%lx", orderID++] forKey:kSCHLibreAccessWebServiceOrderID];        
+        [orderItem setObject:[NSString stringWithFormat:@"%x", orderID++] forKey:kSCHLibreAccessWebServiceOrderID];        
         [orderItem setObject:[dateNow dateByAddingTimeInterval:orderID * 60] forKey:kSCHLibreAccessWebServiceOrderDate];                
         [orderList addObject:orderItem];
     }

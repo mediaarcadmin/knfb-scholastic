@@ -12,7 +12,7 @@
 // Constants
 extern NSString * const kSCHBookIdentifierBookIdentifier;
 
-@interface SCHBookIdentifier : NSObject {}
+@interface SCHBookIdentifier : NSObject <NSCopying> {}
 
 @property (nonatomic, readonly) NSString *isbn;
 @property (nonatomic, readonly) NSNumber *DRMQualifier;

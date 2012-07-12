@@ -91,7 +91,7 @@ static Class controllerClassForStoryInteraction(SCHStoryInteraction *storyIntera
 {
     Class controllerClass = controllerClassForStoryInteraction(storyInteraction);
     if (!controllerClass) {
-        NSLog(@"Can't find controller class for %@", object_getClassName(storyInteraction));
+        NSLog(@"Can't find controller class for %s", object_getClassName(storyInteraction));
         return nil;
     }
     return [[[controllerClass alloc] initWithStoryInteraction:storyInteraction] autorelease];

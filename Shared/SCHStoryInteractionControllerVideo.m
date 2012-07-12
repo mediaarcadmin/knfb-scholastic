@@ -137,7 +137,7 @@ static CGFloat const kSCHStoryInteractionControllerVideoBorderWidth = 4.0;
             case MPMoviePlaybackStatePaused:
                 self.playButton.play = NO;
                 if (self.moviePlayer.currentPlaybackTime >= self.moviePlayer.duration) {
-                    self.playButton.icon = SCHPlayButtonIconPlay;  
+                    [self removeFromHostView];
                 }
                 break;
             case MPMoviePlaybackStatePlaying:

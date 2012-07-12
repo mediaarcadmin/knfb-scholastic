@@ -37,14 +37,10 @@
 		2815719F13EFEB880071B73C /* SCHStoryInteractionPictureStarter.m in Sources */ = {isa = PBXBuildFile; fileRef = 28D81EE613E8413B00A2B25F /* SCHStoryInteractionPictureStarter.m */; };
 		2819307D112F81BE00ECF9B4 /* Scholastic.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 2819307C112F81BE00ECF9B4 /* Scholastic.xcdatamodeld */; };
 		281B74B013DEED4900BA157C /* SCHBookUpdates.m in Sources */ = {isa = PBXBuildFile; fileRef = 281B74AF13DEED4900BA157C /* SCHBookUpdates.m */; };
-		281CC4031457FB030049F736 /* SCHDictionaryDownloadManagerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 281CC4021457FB030049F736 /* SCHDictionaryDownloadManagerTests.m */; };
 		281CC4061457FE170049F736 /* libexpat.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C947D57B133B9C0100FB4404 /* libexpat.a */; };
-		281CC4071457FF7C0049F736 /* SCHDictionaryDownloadManager.m in Sources */ = {isa = PBXBuildFile; fileRef = F8C4C3FA1332594A0057420E /* SCHDictionaryDownloadManager.m */; };
 		281CC4081457FF9F0049F736 /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = 529386B912DF3A4900045B44 /* Reachability.m */; };
-		281CC4091457FFE50049F736 /* SCHCoreDataHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = F8DCE5C313EC415F00100B6A /* SCHCoreDataHelper.m */; };
 		281CC40A1457FFF70049F736 /* SCHAppDictionaryState.m in Sources */ = {isa = PBXBuildFile; fileRef = 528433EA133382EA0010BAAB /* SCHAppDictionaryState.m */; };
 		281CC40B145800010049F736 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 529386C412DF3A9000045B44 /* SystemConfiguration.framework */; };
-		281CC40C145800100049F736 /* SCHAppStateManager.m in Sources */ = {isa = PBXBuildFile; fileRef = F8FAF2F213F12F20009C7E9F /* SCHAppStateManager.m */; };
 		281CC40D145800190049F736 /* SCHAppState.m in Sources */ = {isa = PBXBuildFile; fileRef = 52C7F8711377DEE800DB08C9 /* SCHAppState.m */; };
 		281CC40E145800220049F736 /* SCHDictionaryEntry.m in Sources */ = {isa = PBXBuildFile; fileRef = F8B55E3F134B530C0028534A /* SCHDictionaryEntry.m */; };
 		281CC40F1458002C0049F736 /* SCHDictionaryWordForm.m in Sources */ = {isa = PBXBuildFile; fileRef = F8C5DC6E134B5DF30020D610 /* SCHDictionaryWordForm.m */; };
@@ -96,7 +92,6 @@
 		2866313E13F02ABA0092A5DE /* storyinteraction-concentration-tile-orange~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = 2866313D13F02ABA0092A5DE /* storyinteraction-concentration-tile-orange~ipad.png */; };
 		2868A45213BA13F1000110D5 /* SCHTestFixtureWithCoreDataStack.m in Sources */ = {isa = PBXBuildFile; fileRef = 2868A45113BA13F1000110D5 /* SCHTestFixtureWithCoreDataStack.m */; };
 		2868A45713BA14CB000110D5 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 28EEBFDC1118E19E00187D67 /* CoreData.framework */; };
-		2868A45913BA1B62000110D5 /* SCHAppBook.m in Sources */ = {isa = PBXBuildFile; fileRef = F8BEE8AE1334FD44008B40DA /* SCHAppBook.m */; };
 		2868A45F13BA1C36000110D5 /* SCHProcessingManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 2868A45E13BA1C36000110D5 /* SCHProcessingManager.m */; };
 		2868A46013BA1D9E000110D5 /* Scholastic.xcdatamodel in Sources */ = {isa = PBXBuildFile; fileRef = 2870939E111907710040F596 /* Scholastic.xcdatamodel */; };
 		2869896F13B723C300C08908 /* SCHSemaphoreGroup.m in Sources */ = {isa = PBXBuildFile; fileRef = 2869896E13B723C300C08908 /* SCHSemaphoreGroup.m */; };
@@ -1471,7 +1466,7 @@
 		529386B112DF3A3F00045B44 /* CXMLDocument.m in Sources */ = {isa = PBXBuildFile; fileRef = 529386A512DF3A3F00045B44 /* CXMLDocument.m */; };
 		529386B212DF3A3F00045B44 /* CXMLDocument_PrivateExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 529386A712DF3A3F00045B44 /* CXMLDocument_PrivateExtensions.m */; };
 		529386B312DF3A3F00045B44 /* CXMLElement.m in Sources */ = {isa = PBXBuildFile; fileRef = 529386A912DF3A3F00045B44 /* CXMLElement.m */; };
-		529386B412DF3A3F00045B44 /* CXMLNode.m in Sources */ = {isa = PBXBuildFile; fileRef = 529386AB12DF3A3F00045B44 /* CXMLNode.m */; };
+		529386B412DF3A3F00045B44 /* CXMLNode.m in Sources */ = {isa = PBXBuildFile; fileRef = 529386AB12DF3A3F00045B44 /* CXMLNode.m */; settings = {COMPILER_FLAGS = "-Wno-switch"; }; };
 		529386B512DF3A3F00045B44 /* CXMLNode_PrivateExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 529386AD12DF3A3F00045B44 /* CXMLNode_PrivateExtensions.m */; };
 		529386B612DF3A3F00045B44 /* CXMLNode_XPathExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 529386AF12DF3A3F00045B44 /* CXMLNode_XPathExtensions.m */; };
 		529386BA12DF3A4900045B44 /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = 529386B912DF3A4900045B44 /* Reachability.m */; };
@@ -1486,7 +1481,6 @@
 		5293883412E03CD000045B44 /* SCHBookShelfViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5293883212E03CD000045B44 /* SCHBookShelfViewController.xib */; };
 		52943AE514FFD0E8002991EB /* SCHWishListSyncComponent.m in Sources */ = {isa = PBXBuildFile; fileRef = 52943AE414FFD0E8002991EB /* SCHWishListSyncComponent.m */; };
 		52943AE614FFD0E8002991EB /* SCHWishListSyncComponent.m in Sources */ = {isa = PBXBuildFile; fileRef = 52943AE414FFD0E8002991EB /* SCHWishListSyncComponent.m */; };
-		52943AE714FFD0E8002991EB /* SCHWishListSyncComponent.m in Sources */ = {isa = PBXBuildFile; fileRef = 52943AE414FFD0E8002991EB /* SCHWishListSyncComponent.m */; };
 		52943AE814FFD0E8002991EB /* SCHWishListSyncComponent.m in Sources */ = {isa = PBXBuildFile; fileRef = 52943AE414FFD0E8002991EB /* SCHWishListSyncComponent.m */; };
 		529645A315775FBA006F01D9 /* NSString+EmailValidation.m in Sources */ = {isa = PBXBuildFile; fileRef = 529645A215775FBA006F01D9 /* NSString+EmailValidation.m */; };
 		529645A415775FBA006F01D9 /* NSString+EmailValidation.m in Sources */ = {isa = PBXBuildFile; fileRef = 529645A215775FBA006F01D9 /* NSString+EmailValidation.m */; };
@@ -2821,7 +2815,6 @@
 		C9A112A113608319007FD763 /* button-blue@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C9A1129613608319007FD763 /* button-blue@2x.png */; };
 		C9A6B3FB148B7F0900B31277 /* SCHHelpManager.m in Sources */ = {isa = PBXBuildFile; fileRef = C9A6B3FA148B7F0900B31277 /* SCHHelpManager.m */; };
 		C9A6B3FC148B7F0900B31277 /* SCHHelpManager.m in Sources */ = {isa = PBXBuildFile; fileRef = C9A6B3FA148B7F0900B31277 /* SCHHelpManager.m */; };
-		C9A6B3FD148B7F0900B31277 /* SCHHelpManager.m in Sources */ = {isa = PBXBuildFile; fileRef = C9A6B3FA148B7F0900B31277 /* SCHHelpManager.m */; };
 		C9A6B400148B853C00B31277 /* SCHAppHelpState.m in Sources */ = {isa = PBXBuildFile; fileRef = C9A6B3FF148B853C00B31277 /* SCHAppHelpState.m */; };
 		C9A6B401148B853C00B31277 /* SCHAppHelpState.m in Sources */ = {isa = PBXBuildFile; fileRef = C9A6B3FF148B853C00B31277 /* SCHAppHelpState.m */; };
 		C9A6B402148B853C00B31277 /* SCHAppHelpState.m in Sources */ = {isa = PBXBuildFile; fileRef = C9A6B3FF148B853C00B31277 /* SCHAppHelpState.m */; };
@@ -4185,6 +4178,12 @@
 		F8C7C52F1521C08D0067674D /* popover-black-top-arrow-image.png in Resources */ = {isa = PBXBuildFile; fileRef = F8C7C51C1521C08D0067674D /* popover-black-top-arrow-image.png */; };
 		F8C7C5301521C08D0067674D /* popover-black-top-arrow-image.png in Resources */ = {isa = PBXBuildFile; fileRef = F8C7C51C1521C08D0067674D /* popover-black-top-arrow-image.png */; };
 		F8C8FC2A136065AD0097F9DD /* SCHCustomNavigationBar.m in Sources */ = {isa = PBXBuildFile; fileRef = F8C8FC29136065AD0097F9DD /* SCHCustomNavigationBar.m */; };
+		F8D199EF15A594B500EA17C6 /* SCHRecommendationOperationsTests.m in Sources */ = {isa = PBXBuildFile; fileRef = F8D199EE15A594B500EA17C6 /* SCHRecommendationOperationsTests.m */; };
+		F8D199F015A598E700EA17C6 /* SCHRecommendationDownloadCoverOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = C9B2F631151C9E030044BBCC /* SCHRecommendationDownloadCoverOperation.m */; };
+		F8D199F315A599A600EA17C6 /* SCHDummyRecommendationOperations.m in Sources */ = {isa = PBXBuildFile; fileRef = F8D199F215A599A600EA17C6 /* SCHDummyRecommendationOperations.m */; };
+		F8D199FA15A5ADA300EA17C6 /* SCHBookDataTests.m in Sources */ = {isa = PBXBuildFile; fileRef = F8D199F915A5ADA300EA17C6 /* SCHBookDataTests.m */; };
+		F8D199FB15A5ADB500EA17C6 /* SCHBookRange.m in Sources */ = {isa = PBXBuildFile; fileRef = C93EBDFC13462883003B99FD /* SCHBookRange.m */; };
+		F8D199FC15A5AF1E00EA17C6 /* SCHBookPoint.m in Sources */ = {isa = PBXBuildFile; fileRef = C97D6DA213696D7B0017974B /* SCHBookPoint.m */; };
 		F8DA34CF139F88AC0032B1B3 /* SCHStoryInteractionControllerScratchAndSee.m in Sources */ = {isa = PBXBuildFile; fileRef = F8DA34CE139F88AC0032B1B3 /* SCHStoryInteractionControllerScratchAndSee.m */; };
 		F8DA34D2139F88F80032B1B3 /* SCHStoryInteractionScratchAndSee_iPhone.xib in Resources */ = {isa = PBXBuildFile; fileRef = F8DA34D1139F88F80032B1B3 /* SCHStoryInteractionScratchAndSee_iPhone.xib */; };
 		F8DA34D5139F891C0032B1B3 /* SCHStoryInteractionScratchAndSee_iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = F8DA34D4139F891C0032B1B3 /* SCHStoryInteractionScratchAndSee_iPad.xib */; };
@@ -4203,7 +4202,7 @@
 		F8DC5681138C150F00F27146 /* SCHDictionaryViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = F8DC567E138C150F00F27146 /* SCHDictionaryViewController.xib */; };
 		F8DCE5C413EC415F00100B6A /* SCHCoreDataHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = F8DCE5C313EC415F00100B6A /* SCHCoreDataHelper.m */; };
 		F8E2D3C113B9C7D0001E207B /* CoreText.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F8E2D3BF13B9C7AC001E207B /* CoreText.framework */; };
-		F8E2D3D113B9CB8A001E207B /* TTTAttributedLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = F8E2D3D013B9CB8A001E207B /* TTTAttributedLabel.m */; };
+		F8E2D3D113B9CB8A001E207B /* TTTAttributedLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = F8E2D3D013B9CB8A001E207B /* TTTAttributedLabel.m */; settings = {COMPILER_FLAGS = "-Wno-switch"; }; };
 		F8EB725A13FBD81F00FE2410 /* BookSITab~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = F82E3BBC13F9289A000B67A4 /* BookSITab~ipad.png */; };
 		F8EB725C13FBD82700FE2410 /* BookSISampleTab~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = F82E3BBB13F9289A000B67A4 /* BookSISampleTab~ipad.png */; };
 		F8EB725E13FBD82E00FE2410 /* BookShelfErrorIcon~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = F82E3BBA13F9289A000B67A4 /* BookShelfErrorIcon~ipad.png */; };
@@ -6122,6 +6121,11 @@
 		F8C8FC29136065AD0097F9DD /* SCHCustomNavigationBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHCustomNavigationBar.m; path = iPhone/SCHCustomNavigationBar.m; sourceTree = "<group>"; };
 		F8CD24C912F9714D001C748B /* SCHBookManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHBookManager.h; path = iPhone/SCHBookManager.h; sourceTree = "<group>"; };
 		F8CD24CA12F9714D001C748B /* SCHBookManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHBookManager.m; path = iPhone/SCHBookManager.m; sourceTree = "<group>"; };
+		F8D199ED15A594B500EA17C6 /* SCHRecommendationOperationsTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCHRecommendationOperationsTests.h; sourceTree = "<group>"; };
+		F8D199EE15A594B500EA17C6 /* SCHRecommendationOperationsTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCHRecommendationOperationsTests.m; sourceTree = "<group>"; };
+		F8D199F215A599A600EA17C6 /* SCHDummyRecommendationOperations.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCHDummyRecommendationOperations.m; sourceTree = "<group>"; };
+		F8D199F815A5ADA300EA17C6 /* SCHBookDataTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCHBookDataTests.h; sourceTree = "<group>"; };
+		F8D199F915A5ADA300EA17C6 /* SCHBookDataTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCHBookDataTests.m; sourceTree = "<group>"; };
 		F8DA34CD139F88AC0032B1B3 /* SCHStoryInteractionControllerScratchAndSee.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCHStoryInteractionControllerScratchAndSee.h; sourceTree = "<group>"; };
 		F8DA34CE139F88AC0032B1B3 /* SCHStoryInteractionControllerScratchAndSee.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCHStoryInteractionControllerScratchAndSee.m; sourceTree = "<group>"; };
 		F8DA34D1139F88F80032B1B3 /* SCHStoryInteractionScratchAndSee_iPhone.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SCHStoryInteractionScratchAndSee_iPhone.xib; sourceTree = "<group>"; };
@@ -6690,6 +6694,8 @@
 		28A08CFF13952CB4006FD008 /* UnitTests */ = {
 			isa = PBXGroup;
 			children = (
+				F8D199F715A5AD8F00EA17C6 /* Book Data Tests */,
+				F868383A15A4A73600051B52 /* Recommendation Processing */,
 				2868A45013BA13F1000110D5 /* SCHTestFixtureWithCoreDataStack.h */,
 				2868A45113BA13F1000110D5 /* SCHTestFixtureWithCoreDataStack.m */,
 				2869896D13B723C300C08908 /* SCHSemaphoreGroup.h */,
@@ -9121,6 +9127,16 @@
 			name = "Dictionary & Help Processing";
 			sourceTree = "<group>";
 		};
+		F868383A15A4A73600051B52 /* Recommendation Processing */ = {
+			isa = PBXGroup;
+			children = (
+				F8D199ED15A594B500EA17C6 /* SCHRecommendationOperationsTests.h */,
+				F8D199EE15A594B500EA17C6 /* SCHRecommendationOperationsTests.m */,
+				F8D199F215A599A600EA17C6 /* SCHDummyRecommendationOperations.m */,
+			);
+			name = "Recommendation Processing";
+			sourceTree = "<group>";
+		};
 		F86DEC0813A21F2600053999 /* Sounds */ = {
 			isa = PBXGroup;
 			children = (
@@ -9278,6 +9294,15 @@
 				F8C7C51C1521C08D0067674D /* popover-black-top-arrow-image.png */,
 			);
 			name = "Custom Popover Graphics";
+			sourceTree = "<group>";
+		};
+		F8D199F715A5AD8F00EA17C6 /* Book Data Tests */ = {
+			isa = PBXGroup;
+			children = (
+				F8D199F815A5ADA300EA17C6 /* SCHBookDataTests.h */,
+				F8D199F915A5ADA300EA17C6 /* SCHBookDataTests.m */,
+			);
+			name = "Book Data Tests";
 			sourceTree = "<group>";
 		};
 		F8DC5655138C09DB00F27146 /* Reading View Controllers */ = {
@@ -12632,7 +12657,6 @@
 				2807DEFC13B0BA5C007C8F41 /* SCHGeometry.m in Sources */,
 				2869896F13B723C300C08908 /* SCHSemaphoreGroup.m in Sources */,
 				2868A45213BA13F1000110D5 /* SCHTestFixtureWithCoreDataStack.m in Sources */,
-				2868A45913BA1B62000110D5 /* SCHAppBook.m in Sources */,
 				2868A45F13BA1C36000110D5 /* SCHProcessingManager.m in Sources */,
 				52162DA713DD763500D257C5 /* BITAPIError.m in Sources */,
 				52162DAB13DD88C700D257C5 /* SCHUserDefaults.m in Sources */,
@@ -12645,12 +12669,8 @@
 				2898A0B513F435C600618172 /* SCHStoryInteractionJigsawPathTests.m in Sources */,
 				2895A9B013F4373800D75448 /* SCHStoryInteractionJigsawPaths.m in Sources */,
 				520FE8A3143F3B15002AB30B /* SCHLibreAccessConstants.m in Sources */,
-				281CC4031457FB030049F736 /* SCHDictionaryDownloadManagerTests.m in Sources */,
-				281CC4071457FF7C0049F736 /* SCHDictionaryDownloadManager.m in Sources */,
 				281CC4081457FF9F0049F736 /* Reachability.m in Sources */,
-				281CC4091457FFE50049F736 /* SCHCoreDataHelper.m in Sources */,
 				281CC40A1457FFF70049F736 /* SCHAppDictionaryState.m in Sources */,
-				281CC40C145800100049F736 /* SCHAppStateManager.m in Sources */,
 				281CC40D145800190049F736 /* SCHAppState.m in Sources */,
 				281CC40E145800220049F736 /* SCHDictionaryEntry.m in Sources */,
 				281CC40F1458002C0049F736 /* SCHDictionaryWordForm.m in Sources */,
@@ -12659,11 +12679,15 @@
 				28EF28001462D40800DD1939 /* SCHBookStoryInteractionsTests.m in Sources */,
 				28EF28051462D76100DD1939 /* SCHDictionaryOperation.m in Sources */,
 				C9367BDA1472E89A0033A2EB /* KNFBXMLParserLock.m in Sources */,
-				C9A6B3FD148B7F0900B31277 /* SCHHelpManager.m in Sources */,
 				C9A6B402148B853C00B31277 /* SCHAppHelpState.m in Sources */,
 				F849155814FFA54D000D064B /* RateView.m in Sources */,
-				52943AE714FFD0E8002991EB /* SCHWishListSyncComponent.m in Sources */,
 				287639B9154E857100540861 /* SCHStoryInteractionJigsawPiece.m in Sources */,
+				F8D199EF15A594B500EA17C6 /* SCHRecommendationOperationsTests.m in Sources */,
+				F8D199F015A598E700EA17C6 /* SCHRecommendationDownloadCoverOperation.m in Sources */,
+				F8D199F315A599A600EA17C6 /* SCHDummyRecommendationOperations.m in Sources */,
+				F8D199FA15A5ADA300EA17C6 /* SCHBookDataTests.m in Sources */,
+				F8D199FB15A5ADB500EA17C6 /* SCHBookRange.m in Sources */,
+				F8D199FC15A5AF1E00EA17C6 /* SCHBookPoint.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
