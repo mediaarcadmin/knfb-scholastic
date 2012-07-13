@@ -63,16 +63,32 @@
 - (NSError *)confirmErrorDomain:(NSError *)error
                   forDomainName:(NSString *)domainName
 {
-    // if this is a SOAP error domain and not a connectivity error domain 
-    // change the domain to BITAPIError
+    NSError *ret = error;
+    
+    // if this is a SOAP error domain and not a connectivity error domain change
+    // the domain to BITAPIError and move the technical description to faliure 
+    // reason replacing with user facing text
     if (domainName != nil &&
         [[error domain] isEqualToString:domainName] == YES) {
-        error = [NSError errorWithDomain:kBITAPIErrorDomain 
+        NSMutableDictionary *userInfo = [NSMutableDictionary dictionary];
+        
+        if ([error userInfo] != nil) {
+            NSString *originalLocalizedDescription = [[error userInfo] objectForKey:NSLocalizedDescriptionKey];
+            
+            [userInfo addEntriesFromDictionary:[error userInfo]];
+            if (originalLocalizedDescription != nil) {
+                [userInfo setObject:originalLocalizedDescription forKey:NSLocalizedFailureReasonErrorKey];
+            }
+        }
+        
+        [userInfo setObject:NSLocalizedString(@"A problem occured talking to the server.", nil) forKey:NSLocalizedDescriptionKey];
+        
+        ret = [NSError errorWithDomain:kBITAPIErrorDomain 
                                     code:[error code] 
-                                userInfo:[error userInfo]];
+                                userInfo:[NSDictionary dictionaryWithDictionary:userInfo]];
     }
     
-    return error;
+    return ret;
 }
 
 - (id)fromObjectTranslate:(id)anObject
