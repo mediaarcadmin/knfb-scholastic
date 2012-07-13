@@ -159,7 +159,7 @@
     static const size_t kNumLetterTileSizes = sizeof(kLetterTileSizes)/sizeof(kLetterTileSizes[0]);
     
     UIImage *letterTile = nil;
-    NSInteger letterGap;
+    NSInteger letterGap = 0;
     for (size_t sizeIndex = 0; sizeIndex < kNumLetterTileSizes; ++sizeIndex) {
         UIImage *nextLetterTile = [UIImage imageNamed:kLetterTileSizes[sizeIndex].letterTileName];
         if (!nextLetterTile) {
