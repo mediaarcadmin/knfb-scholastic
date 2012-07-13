@@ -12,4 +12,6 @@
 
 - (BOOL)BITfileSystemHasBytesAvailable:(unsigned long long)sizeInBytes;
 
++ (NSString *)BITtemporaryDirectoryIfExistsOrCreated;
+
 @end
