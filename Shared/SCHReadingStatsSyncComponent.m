@@ -116,7 +116,7 @@ NSString * const SCHReadingStatsSyncComponentDidFailNotification = @"SCHReadingS
 {
 	NSError *error = nil;
 	
-	if (![aManagedObjectContext BITemptyEntity:kSCHReadingStatsDetailItem error:&error]) {
+	if (![aManagedObjectContext BITemptyEntity:kSCHReadingStatsDetailItem error:&error priorToDeletionBlock:nil]) {
 		NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
 	}		
 }

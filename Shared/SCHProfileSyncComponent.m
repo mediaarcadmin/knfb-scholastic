@@ -96,9 +96,9 @@ NSString * const SCHProfileSyncComponentDidFailNotification = @"SCHProfileSyncCo
 {
 	NSError *error = nil;
     
-	if (![self.managedObjectContext BITemptyEntity:kSCHProfileItem error:&error] ||
-        ![self.managedObjectContext BITemptyEntity:kSCHAnnotationsItem error:&error] ||
-        ![self.managedObjectContext BITemptyEntity:kSCHReadingStatsDetailItem error:&error]) {
+	if (![self.managedObjectContext BITemptyEntity:kSCHProfileItem error:&error priorToDeletionBlock:nil] ||
+        ![self.managedObjectContext BITemptyEntity:kSCHAnnotationsItem error:&error priorToDeletionBlock:nil] ||
+        ![self.managedObjectContext BITemptyEntity:kSCHReadingStatsDetailItem error:&error priorToDeletionBlock:nil]) {
 		NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
 	}		
 }

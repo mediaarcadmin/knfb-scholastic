@@ -100,7 +100,7 @@ NSString * const SCHSettingsSyncComponentDidFailNotification = @"SCHSettingsSync
 {
 	NSError *error = nil;
 	
-	if (![aManagedObjectContext BITemptyEntity:kSCHSettingItem error:&error]) {
+	if (![aManagedObjectContext BITemptyEntity:kSCHSettingItem error:&error priorToDeletionBlock:nil]) {
 		NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
 	}	
 }

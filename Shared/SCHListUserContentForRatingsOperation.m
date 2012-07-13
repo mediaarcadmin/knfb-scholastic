@@ -735,6 +735,7 @@
         if (userContentItem == nil || [userContentItem.ProfileList count] == 0) {
             [self removeRecommendationForBook:contentMetadataItem
                          managedObjectContext:aManagedObjectContext];
+            [contentMetadataItem deleteAllFiles];
             [aManagedObjectContext deleteObject:contentMetadataItem];
         }
     }   

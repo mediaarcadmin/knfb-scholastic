@@ -92,7 +92,7 @@ static NSTimeInterval const kSCHRecommendationSyncComponentBookSyncDelayTimeInte
 	return(ret);		
 }
 
-#pragma - Overrideen methods used by resetSync
+#pragma mark - Overridden methods used by resetSync
 
 - (void)resetWebService
 {
@@ -108,10 +108,12 @@ static NSTimeInterval const kSCHRecommendationSyncComponentBookSyncDelayTimeInte
 {
 	NSError *error = nil;
     
-	if (![self.managedObjectContext BITemptyEntity:kSCHRecommendationProfile error:&error] ||
-        ![self.managedObjectContext BITemptyEntity:kSCHRecommendationISBN error:&error] ||
-        ![self.managedObjectContext BITemptyEntity:kSCHRecommendationItem error:&error] ||
-        ![self.managedObjectContext BITemptyEntity:kSCHAppRecommendationItem error:&error]) {
+	if (![self.managedObjectContext BITemptyEntity:kSCHRecommendationProfile error:&error priorToDeletionBlock:nil] ||
+        ![self.managedObjectContext BITemptyEntity:kSCHRecommendationISBN error:&error priorToDeletionBlock:nil] ||
+        ![self.managedObjectContext BITemptyEntity:kSCHRecommendationItem error:&error priorToDeletionBlock:nil] ||
+        ![self.managedObjectContext BITemptyEntity:kSCHAppRecommendationItem error:&error priorToDeletionBlock:^(NSManagedObject *managedObject) {
+        [(SCHAppRecommendationItem *)managedObject deleteAllFiles];
+    }]) {
 		NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
 	}	
 }
@@ -168,7 +170,7 @@ static NSTimeInterval const kSCHRecommendationSyncComponentBookSyncDelayTimeInte
     return  ret;
 }
 
-#pragma - Overridden methods
+#pragma mark - Overridden methods
 
 - (void)completeWithSuccessMethod:(NSString *)method 
                            result:(NSDictionary *)result 
@@ -177,6 +179,7 @@ static NSTimeInterval const kSCHRecommendationSyncComponentBookSyncDelayTimeInte
              notificationUserInfo:(NSDictionary *)notificationUserInfo
 {
     self.remainingBatchedItems = nil;
+    [SCHAppRecommendationItem purgeUnusedAppRecommendationItemsUsingManagedObjectContext:self.managedObjectContext];    
     [super completeWithSuccessMethod:method 
                               result:result 
                             userInfo:userInfo 

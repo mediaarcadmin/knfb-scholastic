@@ -14,6 +14,7 @@
 #import "SCHBookManager.h"
 #import "SCHBookIdentifier.h"
 #import "SCHProcessingManager.h"
+#import "NSFileManager+Extensions.h"
 
 // Constants
 NSString * const kSCHContentMetadataItem = @"SCHContentMetadataItem";
@@ -312,25 +313,44 @@ static NSString * const kSCHContentMetadataItemAnnotationsItemProfileID = @"Anno
 	return(annotations);	
 }
 
-- (void)prepareForDeletion
-{
-    [super prepareForDeletion];
-    [[SCHProcessingManager sharedProcessingManager] cancelAllOperationsForBookIdentifier:self.bookIdentifier
-                                                                       waitUntilFinished:NO];
-    [[SCHBookManager sharedBookManager] removeBookIdentifierFromCache:self.bookIdentifier];    
-    [self deleteAllFiles];
-}
-
 - (void)deleteAllFiles
 {    
     NSString *bookDirectory = self.AppBook.bookDirectory;
     SCHBookIdentifier *bookIdentifier = [[self.bookIdentifier copy] autorelease];
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{
-        [[SCHProcessingManager sharedProcessingManager] cancelAllOperationsForBookIdentifier:bookIdentifier 
-                                                                           waitUntilFinished:YES];
+    
+    // cancel operations using this book
+    [[SCHProcessingManager sharedProcessingManager] cancelAllOperationsForBookIdentifier:bookIdentifier
+                                                                       waitUntilFinished:NO];
+    [[SCHBookManager sharedBookManager] removeBookIdentifierFromCache:bookIdentifier];    
+    
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{        
         NSError *error = nil;
         NSFileManager *localManager = [[[NSFileManager alloc] init] autorelease];
-        if ([localManager removeItemAtPath:bookDirectory error:&error] == NO) {
+        NSString *temporaryDirectory = [NSFileManager BITtemporaryDirectoryIfExistsOrCreated];
+        NSString *temporaryBookDirectory = nil;
+
+        // wait till any processing of this book has finished
+        [[SCHProcessingManager sharedProcessingManager] cancelAllOperationsForBookIdentifier:bookIdentifier 
+                                                                           waitUntilFinished:YES];        
+
+        // if possible move the directory to tmp while we delete it
+        if (temporaryDirectory != nil) {
+            CFUUIDRef uuid = CFUUIDCreate(kCFAllocatorDefault);
+            NSString *uniqueDirectoryName = (NSString *)CFUUIDCreateString(kCFAllocatorDefault, uuid);
+            [uniqueDirectoryName autorelease];
+            CFRelease(uuid);
+            
+            temporaryBookDirectory = [temporaryDirectory stringByAppendingPathComponent:uniqueDirectoryName];
+            
+            if ([localManager moveItemAtPath:bookDirectory 
+                                      toPath:temporaryBookDirectory error:&error] == NO) {
+                NSLog(@"Unable to create tempory directory for deleted contentMetadataItem files with error %@ : %@", error, [error userInfo]);
+                temporaryBookDirectory = nil;
+            }
+        }
+
+        if ([localManager removeItemAtPath:(temporaryBookDirectory != nil ? temporaryBookDirectory : bookDirectory) 
+                                     error:&error] == NO) {
             NSLog(@"Failed to delete files for %@, error: %@", 
                   bookIdentifier, [error localizedDescription]);
         }

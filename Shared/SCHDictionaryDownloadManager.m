@@ -977,7 +977,7 @@ static SCHDictionaryDownloadManager *sharedManager = nil;
         NSLog(@"Removing any existing %@ objects.", kSCHDictionaryEntry);
                 
         NSError *error = nil;
-        [context BITemptyEntity:kSCHDictionaryEntry error:&error];
+        [context BITemptyEntity:kSCHDictionaryEntry error:&error priorToDeletionBlock:nil];
         if (error) {
             NSLog(@"Error during processing; could not remove %@ objects. %@", kSCHDictionaryEntry, [error localizedDescription]);            
         }
@@ -1108,7 +1108,7 @@ static SCHDictionaryDownloadManager *sharedManager = nil;
         NSLog(@"Removing any existing %@ objects.", kSCHDictionaryWordForm);
         
         NSError *error = nil;
-        [context BITemptyEntity:kSCHDictionaryWordForm error:&error];
+        [context BITemptyEntity:kSCHDictionaryWordForm error:&error priorToDeletionBlock:nil];
         if (error) {
             NSLog(@"Error during processing; could not remove %@ objects. %@", kSCHDictionaryWordForm, [error localizedDescription]);            
         }

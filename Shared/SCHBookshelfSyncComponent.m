@@ -96,7 +96,9 @@ NSString * const SCHBookshelfSyncComponentDidFailNotification = @"SCHBookshelfSy
 {
 	NSError *error = nil;
     
-	if (![self.managedObjectContext BITemptyEntity:kSCHContentMetadataItem error:&error]) {
+	if (![self.managedObjectContext BITemptyEntity:kSCHContentMetadataItem error:&error priorToDeletionBlock: ^(NSManagedObject *managedObject) {
+        [(SCHContentMetadataItem *)managedObject deleteAllFiles];
+    }]) {
 		NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
 	}	
 }

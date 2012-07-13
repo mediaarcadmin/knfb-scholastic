@@ -89,11 +89,11 @@ NSString * const SCHContentSyncComponentDidFailNotification = @"SCHContentSyncCo
 {
 	NSError *error = nil;
     
-	if (![self.managedObjectContext BITemptyEntity:kSCHUserContentItem error:&error] ||
-		![self.managedObjectContext BITemptyEntity:kSCHOrderItem error:&error] ||
-		![self.managedObjectContext BITemptyEntity:kSCHContentProfileItem error:&error] ||
-        ![self.managedObjectContext BITemptyEntity:kSCHAnnotationsContentItem error:&error] ||
-        ![self.managedObjectContext BITemptyEntity:kSCHReadingStatsContentItem error:&error]) {
+	if (![self.managedObjectContext BITemptyEntity:kSCHUserContentItem error:&error priorToDeletionBlock:nil] ||
+		![self.managedObjectContext BITemptyEntity:kSCHOrderItem error:&error priorToDeletionBlock:nil] ||
+		![self.managedObjectContext BITemptyEntity:kSCHContentProfileItem error:&error priorToDeletionBlock:nil] ||
+        ![self.managedObjectContext BITemptyEntity:kSCHAnnotationsContentItem error:&error priorToDeletionBlock:nil] ||
+        ![self.managedObjectContext BITemptyEntity:kSCHReadingStatsContentItem error:&error priorToDeletionBlock:nil]) {
 		NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
 	}		
 }

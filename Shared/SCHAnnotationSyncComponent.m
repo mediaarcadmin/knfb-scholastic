@@ -194,7 +194,7 @@ NSString * const SCHAnnotationSyncComponentProfileIDs = @"SCHAnnotationSyncCompo
 {
 	NSError *error = nil;
 	    
-	if (![self.managedObjectContext BITemptyEntity:kSCHAnnotationsItem error:&error]) {
+	if (![self.managedObjectContext BITemptyEntity:kSCHAnnotationsItem error:&error priorToDeletionBlock:nil]) {
 		NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
 	}	    
 }

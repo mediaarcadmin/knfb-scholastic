@@ -10,6 +10,9 @@
 
 @interface NSManagedObjectContext (Extensions)
 
-- (BOOL)BITemptyEntity:(NSString *)entityName error:(NSError **)error;
+typedef void (^BITemptyEntityPriorToDeletionBlock)(NSManagedObject *managedObject);
+
+- (BOOL)BITemptyEntity:(NSString *)entityName error:(NSError **)error 
+  priorToDeletionBlock:(BITemptyEntityPriorToDeletionBlock)priorToDeletionBlock;
 
 @end

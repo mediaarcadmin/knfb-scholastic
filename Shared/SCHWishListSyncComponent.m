@@ -97,9 +97,11 @@ NSString * const SCHWishListSyncComponentDidFailNotification = @"SCHWishListSync
 {
 	NSError *error = nil;
     
-	if (![self.managedObjectContext BITemptyEntity:kSCHWishListProfile error:&error] ||
-        ![self.managedObjectContext BITemptyEntity:kSCHWishListItem error:&error] ||
-        ![self.managedObjectContext BITemptyEntity:kSCHAppRecommendationItem error:&error]) {
+	if (![self.managedObjectContext BITemptyEntity:kSCHWishListProfile error:&error priorToDeletionBlock:nil] ||
+        ![self.managedObjectContext BITemptyEntity:kSCHWishListItem error:&error priorToDeletionBlock:nil] ||
+        ![self.managedObjectContext BITemptyEntity:kSCHAppRecommendationItem error:&error priorToDeletionBlock:^(NSManagedObject *managedObject) {
+        [(SCHAppRecommendationItem *)managedObject deleteAllFiles];
+    }]) {
 		NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
 	}		
 }
@@ -317,6 +319,22 @@ NSString * const SCHWishListSyncComponentDidFailNotification = @"SCHWishListSync
     }
 	
 	return(ret);
+}
+
+#pragma mark - Overridden methods
+
+- (void)completeWithSuccessMethod:(NSString *)method 
+                           result:(NSDictionary *)result 
+                         userInfo:(NSDictionary *)userInfo
+                 notificationName:(NSString *)notificationName
+             notificationUserInfo:(NSDictionary *)notificationUserInfo
+{
+    [SCHAppRecommendationItem purgeUnusedAppRecommendationItemsUsingManagedObjectContext:self.managedObjectContext];
+    [super completeWithSuccessMethod:method 
+                              result:result 
+                            userInfo:userInfo 
+                    notificationName:notificationName 
+                notificationUserInfo:notificationUserInfo];
 }
 
 // remove any created or deleted wishlist items that had issues
