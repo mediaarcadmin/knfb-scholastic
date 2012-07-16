@@ -18,12 +18,12 @@
 #import "SCHAppBook.h"
 #import "SCHXPSProvider.h"
 #import "KNFBXPSConstants.h"
-#import "TouchXML.h"
 #import "SCHBookManager.h"
 #import "SCHBookIdentifier.h"
 #import "SCHSampleBooksImporter.h"
 #import "LambdaAlert.h"
 #import "SCHLibreAccessConstants.h"
+#import "SCHXPSKNFBMetadataFileParser.h"
 
 @interface SCHPopulateDataStore ()
 
@@ -529,32 +529,15 @@
                                                                          xpsPath:xpsFilePath];
     
     if(xpsProvider != nil) {
-        CXMLDocument *doc = [[CXMLDocument alloc] initWithData:[xpsProvider dataForComponentAtPath:KNFBXPSKNFBMetadataFile] 
-                                                       options:0 
-                                                         error:&error];
-        NSArray *nodes = nil;
-        
-        if (error == nil) {
-            nodes = [doc nodesForXPath:@"//Title" error:&error];
-            if (error == nil) {		
-                for (CXMLElement *node in nodes) {
-                    title = [[node attributeForName:@"Main"] stringValue];
-                }	
-            }
-            nodes = [doc nodesForXPath:@"//Contributor" error:&error];
-            if (error == nil) {		
-                for (CXMLElement *node in nodes) {
-                    author = [[node attributeForName:@"Author"] stringValue];
-                }	
-            }		
-            nodes = [doc nodesForXPath:@"//Identifier" error:&error];
-            if (error == nil) {		
-                for (CXMLElement *node in nodes) {
-                    ISBN = [[node attributeForName:@"ISBN"] stringValue];
-                }	
-            }		
+        SCHXPSKNFBMetadataFileParser *metadataFileParser = [[[SCHXPSKNFBMetadataFileParser alloc] init] autorelease];
+        NSDictionary *metadataInfo = [metadataFileParser parseXMLData:[xpsProvider dataForComponentAtPath:KNFBXPSKNFBMetadataFile]];
+
+        if (metadataInfo != nil) {
+            title = [metadataInfo objectForKey:kSCHXPSKNFBMetadataFileParserTitle];
+            author = [metadataInfo objectForKey:kSCHXPSKNFBMetadataFileParserAuthor];            
+            ISBN = [metadataInfo objectForKey:kSCHXPSKNFBMetadataFileParserISBN];            
+
         }
-        [doc release], doc = nil;
 
         // check we don't already have the book
         SCHAppBook *appBook = [[SCHBookManager sharedBookManager] bookWithIdentifier:[[[SCHBookIdentifier alloc] initWithISBN:ISBN 
