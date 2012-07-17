@@ -1216,7 +1216,6 @@ static const NSUInteger kReadingViewMaxRecommendationsCount = 4;
         SCHAppBook *book = [[SCHBookManager sharedBookManager] bookWithIdentifier:self.bookIdentifier inManagedObjectContext:self.managedObjectContext];
         NSArray *audioBookReferences = [book valueForKey:kSCHAppBookAudioBookReferences];
         NSError *error = nil;
-        BOOL suppressFollowAlongHighlighting = [[book valueForKey:kSCHAppBookSuppressFollowAlongHighlights] boolValue];
         
         if(audioBookReferences != nil && [audioBookReferences count] > 0) {        
             self.audioBookPlayer = [[[SCHAudioBookPlayer alloc] init] autorelease];
@@ -1226,13 +1225,11 @@ static const NSUInteger kReadingViewMaxRecommendationsCount = 4;
                                                      //NSLog(@"WORD UP! at layoutPage %d pageWordOffset %d", layoutPage, pageWordOffset);
                                                      self.pauseAudioOnNextPageTurn = NO;
                                                      
-                                                     if (!suppressFollowAlongHighlighting) {
-                                                         [self.readingView followAlongHighlightWordForLayoutPage:layoutPage 
-                                                                                                  pageWordOffset:pageWordOffset 
-                                                                                           withCompletionHandler:^{
-                                                                                               self.pauseAudioOnNextPageTurn = YES;
-                                                                                           }];
-                                                     }
+                                                     [self.readingView followAlongHighlightWordForLayoutPage:layoutPage 
+                                                                                              pageWordOffset:pageWordOffset 
+                                                                                       withCompletionHandler:^{
+                                                                                           self.pauseAudioOnNextPageTurn = YES;
+                                                                                       }];
 
                                                  } wordBlockNew:^(NSUInteger layoutPage, NSUInteger audioBlockID, NSUInteger audioWordID) {
                                                      //NSLog(@"WORD UP! at layoutPage %d blockIndex %d wordIndex %d", layoutPage, audioBlockID, audioWordID);
@@ -1243,12 +1240,10 @@ static const NSUInteger kReadingViewMaxRecommendationsCount = 4;
                                                      bookPoint.blockOffset = audioBlockID;
                                                      bookPoint.wordOffset = audioWordID;
 
-                                                     if (!suppressFollowAlongHighlighting) {
-                                                         [self.readingView followAlongHighlightWordAtPoint:bookPoint 
-                                                                                     withCompletionHandler:^{
-                                                                                         self.pauseAudioOnNextPageTurn = YES;
-                                                                                     }];
-                                                     }
+                                                     [self.readingView followAlongHighlightWordAtPoint:bookPoint 
+                                                                                 withCompletionHandler:^{
+                                                                                     self.pauseAudioOnNextPageTurn = YES;
+                                                                                 }];
                                                  } pageTurnBlock:^(NSUInteger turnToLayoutPage) {
                                                      //NSLog(@"Turn to layoutPage %d", turnToLayoutPage);
                                                      if (self.layoutType == SCHReadingViewLayoutTypeFixed) {
