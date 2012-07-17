@@ -222,7 +222,7 @@
 							<object class="IBUILabel" id="1054820602">
 								<reference key="NSNextResponder" ref="640900338"/>
 								<int key="NSvFlags">293</int>
-								<string key="NSFrame">{{26, 117}, {268, 54}}</string>
+								<string key="NSFrame">{{18, 114}, {284, 60}}</string>
 								<reference key="NSSuperview" ref="640900338"/>
 								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="78638969"/>
@@ -519,6 +519,7 @@
 				<string key="-1.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<string key="-2.CustomClassName">UIResponder</string>
 				<string key="-2.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
+				<string key="10.CustomClassName">TTTAttributedLabel</string>
 				<string key="10.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<string key="11.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<string key="13.CustomClassName">SCHUnderlinedButton</string>
@@ -562,7 +563,7 @@
 						<string key="bottomField">UITextField</string>
 						<string key="loginButton">UIButton</string>
 						<string key="previewButton">UIButton</string>
-						<string key="promptLabel">UILabel</string>
+						<string key="promptLabel">TTTAttributedLabel</string>
 						<string key="scrollView">UIScrollView</string>
 						<string key="spinner">UIActivityIndicatorView</string>
 						<string key="topField">UITextField</string>
@@ -583,7 +584,7 @@
 						</object>
 						<object class="IBToOneOutletInfo" key="promptLabel">
 							<string key="name">promptLabel</string>
-							<string key="candidateClassName">UILabel</string>
+							<string key="candidateClassName">TTTAttributedLabel</string>
 						</object>
 						<object class="IBToOneOutletInfo" key="scrollView">
 							<string key="name">scrollView</string>
@@ -613,6 +614,14 @@
 					<object class="IBClassDescriptionSource" key="sourceIdentifier">
 						<string key="majorKey">IBProjectSource</string>
 						<string key="minorKey">./Classes/SCHUnderlinedButton.h</string>
+					</object>
+				</object>
+				<object class="IBPartialClassDescription">
+					<string key="className">TTTAttributedLabel</string>
+					<string key="superclassName">UILabel</string>
+					<object class="IBClassDescriptionSource" key="sourceIdentifier">
+						<string key="majorKey">IBProjectSource</string>
+						<string key="minorKey">./Classes/TTTAttributedLabel.h</string>
 					</object>
 				</object>
 			</array>

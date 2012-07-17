@@ -97,7 +97,25 @@ static const CGFloat kSCHStoriaLoginContentHeightLandscape = 420;
     topField.keyboardType = UIKeyboardTypeEmailAddress;
     bottomField.keyboardType = UIKeyboardTypeEmailAddress;
 #endif    
+
     
+    self.promptLabel.dataDetectorTypes = UIDataDetectorTypeAll;
+    self.promptLabel.backgroundColor = [UIColor clearColor];
+    self.promptLabel.delegate = self;
+    self.promptLabel.leading = 20;
+    
+    NSMutableDictionary *mutableLinkAttributes = [NSMutableDictionary dictionary];
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
+        self.promptLabel.textAlignment = UITextAlignmentCenter;
+        [mutableLinkAttributes setValue:(id)[[UIColor colorWithRed:0.056 green:0.367 blue:0.577 alpha:1] CGColor] forKey:(NSString*)kCTForegroundColorAttributeName];
+    } else {
+        [mutableLinkAttributes setValue:(id)[[UIColor colorWithRed:0.256 green:0.667 blue:0.877 alpha:1] CGColor] forKey:(NSString*)kCTForegroundColorAttributeName];
+    }
+    
+    [mutableLinkAttributes setValue:[NSNumber numberWithBool:YES] forKey:(NSString *)kCTUnderlineStyleAttributeName];
+    self.promptLabel.linkAttributes = [NSDictionary dictionaryWithDictionary:mutableLinkAttributes];
+
+
     [self.scrollView setAlwaysBounceVertical:NO];
     
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
@@ -131,6 +149,7 @@ static const CGFloat kSCHStoriaLoginContentHeightLandscape = 420;
     [self stopShowingProgress];
     [self setupContentSizeForOrientation:self.interfaceOrientation];
     [self clearFields];
+    
     [self setDisplayIncorrectCredentialsWarning:kSCHLoginHandlerCredentialsWarningNone];    
 }
 
@@ -221,40 +240,69 @@ static const CGFloat kSCHStoriaLoginContentHeightLandscape = 420;
 
 - (void)setDisplayIncorrectCredentialsWarning:(SCHLoginHandlerCredentialsWarning)credentialsWarning
 {
-    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+//    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
         CGRect frame = self.promptLabel.frame;
+        
+        NSUInteger fontSize = 15;
+        
+        NSString *promptText = nil;
+        
         switch (credentialsWarning) {
             case kSCHLoginHandlerCredentialsWarningNone:
 #if USE_EMAIL_ADDRESS_AS_USERNAME    
-                self.promptLabel.text = NSLocalizedString(@"Please enter your Scholastic account E-Mail Address and Password.", @"");
+                promptText = NSLocalizedString(@"Please enter your Scholastic account E-mail Address and Password.", @"");
 #else 
-                self.promptLabel.text = NSLocalizedString(@"Please enter your Scholastic account User Name and Password.", @"");
+                promptText = NSLocalizedString(@"Please enter your Scholastic account User Name and Password.", @"");
 #endif  
-                frame.size.width = 140;
-                self.promptLabel.font = [self.promptLabel.font fontWithSize:15.0f];
+                if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+                    frame.size.width = 140;
+                }
                 break;
             case kSCHLoginHandlerCredentialsWarningMalformedEmail:
-                self.promptLabel.text = NSLocalizedString(@"Please enter a valid E-Mail Address.", @"");
-                frame.size.width = 140;
-                self.promptLabel.font = [self.promptLabel.font fontWithSize:15.0f];
+                promptText = NSLocalizedString(@"Please enter a valid E-mail Address.", @"");
+                if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+                    frame.size.width = 140;
+                }
                 break;
             case kSCHLoginHandlerCredentialsWarningAuthenticationFailure:
 #if USE_EMAIL_ADDRESS_AS_USERNAME            
-                self.promptLabel.text = NSLocalizedString(@"Your E-mail Address or Password was not recognized. Please try again or contact Scholastic customer service at storia@scholastic.com.", @"");
-                self.promptLabel.font = [self.promptLabel.font fontWithSize:13.0f];
+                promptText = NSLocalizedString(@"Your E-mail Address or Password was not recognized. Please try again or contact Scholastic customer service at storia@scholastic.com.", @"");
+                if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+                    fontSize = 13;
+                } else {
+                    fontSize = 12;
+                }
 #else 
-                self.promptLabel.text = NSLocalizedString(@"Your User Name or Password was not recognized. Please try again.", @"");  
-                self.promptLabel.font = [self.promptLabel.font fontWithSize:15.0f];
+                promptText = NSLocalizedString(@"Your User Name or Password was not recognized. Please try again.", @"");  
 #endif     
-                frame.size.width = 200;
+                if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+                    frame.size.width = 200;
+                }
                 break;
         }
+        CTFontRef labelFontRef = CTFontCreateWithName((CFStringRef)self.promptLabel.font.fontName, fontSize, NULL);
+        NSMutableAttributedString *attributedPromptText = [[[NSMutableAttributedString alloc] initWithString:promptText] autorelease];
+        [attributedPromptText addAttribute:(NSString *)kCTFontAttributeName value:(id)labelFontRef range:NSMakeRange(0, [promptText length])];
+        [attributedPromptText addAttribute:(NSString *)kCTForegroundColorAttributeName value:(id)[UIColor colorWithRed:0.295 green:0.295 blue:0.295 alpha:1].CGColor range:NSMakeRange(0, [promptText length])];   
+    
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
+        CTTextAlignment theAlignment = kCTCenterTextAlignment;
+        CFIndex theNumberOfSettings = 1;
+        CTParagraphStyleSetting theSettings[1] = {{ kCTParagraphStyleSpecifierAlignment, sizeof(CTTextAlignment), &theAlignment }};
+        CTParagraphStyleRef theParagraphRef = CTParagraphStyleCreate(theSettings, theNumberOfSettings);
+        [attributedPromptText addAttribute:(NSString *)kCTParagraphStyleAttributeName value:(id)theParagraphRef range:NSMakeRange(0, [promptText length])];
+    }
+    
+        self.promptLabel.text = attributedPromptText;
+        
+        CFRelease(labelFontRef);
         
         [CATransaction begin];
         [CATransaction setDisableActions:YES];
         self.promptLabel.frame = frame;
         [CATransaction commit];
-    }
+        
+//    }
 }
 
 #pragma mark - UITextFieldDelegate
@@ -327,6 +375,15 @@ static const CGFloat kSCHStoriaLoginContentHeightLandscape = 420;
 {
     self.activeTextField = nil;
     [self setupContentSizeForOrientation:self.interfaceOrientation];
+}
+
+#pragma mark - TTTAttributedLabelDelegate
+
+- (void)attributedLabel:(TTTAttributedLabel *)label didSelectLinkWithURL:(NSURL *)url
+{
+    if (url) {
+        [[UIApplication sharedApplication] openURL:url];
+    }
 }
 
 @end
