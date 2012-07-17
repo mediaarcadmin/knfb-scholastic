@@ -26,11 +26,15 @@
 #import "BITModalSheetController.h"
 #import "SCHNavigationControllerForModalForm.h"
 
+// Constants
+static double const kSCHProfileViewControllerMinimumDistinguishedTapDelay = 0.1;
+
 @interface SCHProfileViewController_Shared()  
 
 @property (nonatomic, retain) SCHBookUpdates *bookUpdates;
 @property (nonatomic, retain) BITModalSheetController *webParentToolsPopoverController;
 @property (nonatomic, retain) SCHParentalToolsWebViewController *parentalToolsWebViewController; 
+@property (nonatomic, assign) NSInteger simultaneousTapCount;
 
 - (void)checkForBookUpdates;
 - (void)checkForBookshelves;
@@ -61,6 +65,7 @@
 @synthesize profileSetupDelegate;
 @synthesize webParentToolsPopoverController;
 @synthesize parentalToolsWebViewController;
+@synthesize simultaneousTapCount;
 
 #pragma mark - Object lifecycle
 
@@ -326,13 +331,23 @@ didSelectButtonAnimated:(BOOL)animated
         return;
     }
 
-    SCHProfileItem *profileItem = [[self fetchedResultsController] objectAtIndexPath:indexPath];
-    if ([profileItem.ProfilePasswordRequired boolValue] == NO) {
-        [self pushBookshelvesControllerWithProfileItem:profileItem animated:YES];            
-    } else if (![profileItem hasPassword]) {
-        [self obtainPasswordThenPushBookshelvesControllerWithProfileItem:profileItem];
-    } else {
-        [self queryPasswordBeforePushingBookshelvesControllerWithProfileItem:profileItem];
+    // only trigger if there are no other simultaneous taps 
+    if (self.simultaneousTapCount == 0) {    
+        self.simultaneousTapCount++;
+        SCHProfileViewController_Shared *weakSelf = self;
+        dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, kSCHProfileViewControllerMinimumDistinguishedTapDelay * NSEC_PER_SEC);
+        dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+            weakSelf.simultaneousTapCount = 0;
+            
+            SCHProfileItem *profileItem = [[weakSelf fetchedResultsController] objectAtIndexPath:indexPath];
+            if ([profileItem.ProfilePasswordRequired boolValue] == NO) {
+                [weakSelf pushBookshelvesControllerWithProfileItem:profileItem animated:YES];            
+            } else if (![profileItem hasPassword]) {
+                [weakSelf obtainPasswordThenPushBookshelvesControllerWithProfileItem:profileItem];
+            } else {
+                [weakSelf queryPasswordBeforePushingBookshelvesControllerWithProfileItem:profileItem];
+            }            
+        });
     }
 }
 
@@ -557,7 +572,17 @@ didSelectButtonAnimated:(BOOL)animated
 
 - (void)pushSettingsController
 {
-    [self pushSettingsControllerAnimated:YES];
+    // only trigger if there are no other simultaneous taps    
+    if (self.simultaneousTapCount == 0) {    
+        self.simultaneousTapCount++;
+        SCHProfileViewController_Shared *weakSelf = self;
+        dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, kSCHProfileViewControllerMinimumDistinguishedTapDelay * NSEC_PER_SEC);
+        dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+            weakSelf.simultaneousTapCount = 0;
+            
+            [weakSelf pushSettingsControllerAnimated:YES];
+        });
+    }            
 }
 
 - (void)pushSettingsControllerAnimated:(BOOL)animated
