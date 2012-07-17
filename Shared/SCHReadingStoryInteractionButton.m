@@ -12,7 +12,7 @@
 static const UIEdgeInsets kSCHReadingStoryInteractionButtonFillInsetYounger = { 16, 6, 16, 0 };
 static const UIEdgeInsets kSCHReadingStoryInteractionButtonFillInsetOlder =  { 8, 4, 12, 0 };
 
-static const UIEdgeInsets kSCHReadingStoryInteractionButtonFillInsetYounger_iPhone = { 4, 6, 4, 0 };
+static const UIEdgeInsets kSCHReadingStoryInteractionButtonFillInsetYounger_iPhone = { 12, 6, 12, 0 };
 static const UIEdgeInsets kSCHReadingStoryInteractionButtonFillInsetOlder_iPhone =  { 6, 4, 0, 0 };
 
 @interface SCHReadingStoryInteractionButtonFillLayer : CALayer
