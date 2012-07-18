@@ -2791,6 +2791,25 @@
 		C98648A01402686300B9DFE1 /* SCHReadingViewNavigationToolbar.m in Sources */ = {isa = PBXBuildFile; fileRef = C986489F1402686300B9DFE1 /* SCHReadingViewNavigationToolbar.m */; };
 		C98BDD7B1547F3DF00E265B8 /* 9780545364775_r7.MyFirstBiographyBenjaminFranklin.jpg in Resources */ = {isa = PBXBuildFile; fileRef = C98BDD791547F3DF00E265B8 /* 9780545364775_r7.MyFirstBiographyBenjaminFranklin.jpg */; };
 		C98BDD7C1547F3DF00E265B8 /* 9780545364775_r7.MyFirstBiographyBenjaminFranklin.xps in Resources */ = {isa = PBXBuildFile; fileRef = C98BDD7A1547F3DF00E265B8 /* 9780545364775_r7.MyFirstBiographyBenjaminFranklin.xps */; };
+		C98BDDAA1548337C00E265B8 /* SCHEPubToTextFlowMappingParagraphSource.m in Sources */ = {isa = PBXBuildFile; fileRef = C98BDDA91548337B00E265B8 /* SCHEPubToTextFlowMappingParagraphSource.m */; };
+		C98BDDAB1548337C00E265B8 /* SCHEPubToTextFlowMappingParagraphSource.m in Sources */ = {isa = PBXBuildFile; fileRef = C98BDDA91548337B00E265B8 /* SCHEPubToTextFlowMappingParagraphSource.m */; };
+		C98BDDAC1548337C00E265B8 /* SCHEPubToTextFlowMappingParagraphSource.m in Sources */ = {isa = PBXBuildFile; fileRef = C98BDDA91548337B00E265B8 /* SCHEPubToTextFlowMappingParagraphSource.m */; };
+		C98BDDAD1548337C00E265B8 /* SCHEPubToTextFlowMappingParagraphSource.m in Sources */ = {isa = PBXBuildFile; fileRef = C98BDDA91548337B00E265B8 /* SCHEPubToTextFlowMappingParagraphSource.m */; };
+		C98BDDAE1548337C00E265B8 /* SCHEPubToTextFlowMappingParagraphSource.m in Sources */ = {isa = PBXBuildFile; fileRef = C98BDDA91548337B00E265B8 /* SCHEPubToTextFlowMappingParagraphSource.m */; };
+		C98BDDB11548625500E265B8 /* SCHEPubBook.m in Sources */ = {isa = PBXBuildFile; fileRef = C98BDDB01548625400E265B8 /* SCHEPubBook.m */; };
+		C98BDDB21548625500E265B8 /* SCHEPubBook.m in Sources */ = {isa = PBXBuildFile; fileRef = C98BDDB01548625400E265B8 /* SCHEPubBook.m */; };
+		C98BDDB31548625500E265B8 /* SCHEPubBook.m in Sources */ = {isa = PBXBuildFile; fileRef = C98BDDB01548625400E265B8 /* SCHEPubBook.m */; };
+		C98BDDB41548625500E265B8 /* SCHEPubBook.m in Sources */ = {isa = PBXBuildFile; fileRef = C98BDDB01548625400E265B8 /* SCHEPubBook.m */; };
+		C98BDDB51548625500E265B8 /* SCHEPubBook.m in Sources */ = {isa = PBXBuildFile; fileRef = C98BDDB01548625400E265B8 /* SCHEPubBook.m */; };
+		C98BDF191549897B00E265B8 /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 526A8A5E1385182100101A96 /* CoreMedia.framework */; };
+		C98BDF1A1549898500E265B8 /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 526A8A5E1385182100101A96 /* CoreMedia.framework */; };
+		C98BDF1B1549898E00E265B8 /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 526A8A5E1385182100101A96 /* CoreMedia.framework */; };
+		C98BDF1C1549899500E265B8 /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 526A8A5E1385182100101A96 /* CoreMedia.framework */; };
+		C98BDF1E15498A5300E265B8 /* SCHEPUB3Overrides.css in Resources */ = {isa = PBXBuildFile; fileRef = C98BDF1D15498A5300E265B8 /* SCHEPUB3Overrides.css */; };
+		C98BDF1F15498A5300E265B8 /* SCHEPUB3Overrides.css in Resources */ = {isa = PBXBuildFile; fileRef = C98BDF1D15498A5300E265B8 /* SCHEPUB3Overrides.css */; };
+		C98BDF2015498A5300E265B8 /* SCHEPUB3Overrides.css in Resources */ = {isa = PBXBuildFile; fileRef = C98BDF1D15498A5300E265B8 /* SCHEPUB3Overrides.css */; };
+		C98BDF2115498A5300E265B8 /* SCHEPUB3Overrides.css in Resources */ = {isa = PBXBuildFile; fileRef = C98BDF1D15498A5300E265B8 /* SCHEPUB3Overrides.css */; };
+		C98BDF2215498A5300E265B8 /* SCHEPUB3Overrides.css in Resources */ = {isa = PBXBuildFile; fileRef = C98BDF1D15498A5300E265B8 /* SCHEPUB3Overrides.css */; };
 		C9951722146D693600EA7337 /* LocalSamplesManifest.xml in Resources */ = {isa = PBXBuildFile; fileRef = C9951721146D693600EA7337 /* LocalSamplesManifest.xml */; };
 		C9951725146D694600EA7337 /* LocalSamplesManifest.xml in Resources */ = {isa = PBXBuildFile; fileRef = C9951724146D694600EA7337 /* LocalSamplesManifest.xml */; };
 		C99B4A971405124E00B3ADF0 /* reading-view-scrubber-rightcap-large.png in Resources */ = {isa = PBXBuildFile; fileRef = C99B4A911405124E00B3ADF0 /* reading-view-scrubber-rightcap-large.png */; };
@@ -4251,20 +4270,6 @@
 			remoteGlobalIDString = 7D5FC0431403D61B009D2229;
 			remoteInfo = libEucalyptusModel;
 		};
-		7D3F30F8140698D800C6F445 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = C947D55D133B9C0000FB4404 /* libEucalyptus.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 7D3AC23914054DBA007F91AD;
-			remoteInfo = PageLayoutTest;
-		};
-		C9153D6E1574C983004FDD4A /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = C947D55D133B9C0000FB4404 /* libEucalyptus.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 7D8D910F1403D2E800632892;
-			remoteInfo = libEucalyptusEPubIOSUI;
-		};
 		C937E7E3150F5335001882AC /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = C947D55D133B9C0000FB4404 /* libEucalyptus.xcodeproj */;
@@ -4348,6 +4353,13 @@
 			proxyType = 2;
 			remoteGlobalIDString = 7D034F8910C2CCBE0085778B;
 			remoteInfo = TransitionTest;
+		};
+		C9674ACF159C9A0400476987 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = C947D55D133B9C0000FB4404 /* libEucalyptus.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 7D3AC23914054DBA007F91AD;
+			remoteInfo = PageLayoutTest;
 		};
 		C9AC7D9E14BDDDE2009137BA /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -5625,6 +5637,12 @@
 		C986489F1402686300B9DFE1 /* SCHReadingViewNavigationToolbar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHReadingViewNavigationToolbar.m; path = Shared/SCHReadingViewNavigationToolbar.m; sourceTree = "<group>"; };
 		C98BDD791547F3DF00E265B8 /* 9780545364775_r7.MyFirstBiographyBenjaminFranklin.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = 9780545364775_r7.MyFirstBiographyBenjaminFranklin.jpg; path = "Shared/Debug Books/9780545364775_r7.MyFirstBiographyBenjaminFranklin.jpg"; sourceTree = "<group>"; };
 		C98BDD7A1547F3DF00E265B8 /* 9780545364775_r7.MyFirstBiographyBenjaminFranklin.xps */ = {isa = PBXFileReference; lastKnownFileType = file; name = 9780545364775_r7.MyFirstBiographyBenjaminFranklin.xps; path = "Shared/Debug Books/9780545364775_r7.MyFirstBiographyBenjaminFranklin.xps"; sourceTree = "<group>"; };
+		C98BDDA81548337A00E265B8 /* SCHEPubToTextFlowMappingParagraphSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHEPubToTextFlowMappingParagraphSource.h; path = Shared/SCHEPubToTextFlowMappingParagraphSource.h; sourceTree = "<group>"; };
+		C98BDDA91548337B00E265B8 /* SCHEPubToTextFlowMappingParagraphSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHEPubToTextFlowMappingParagraphSource.m; path = Shared/SCHEPubToTextFlowMappingParagraphSource.m; sourceTree = "<group>"; };
+		C98BDDAF1548625300E265B8 /* SCHEPubBook.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHEPubBook.h; path = Shared/SCHEPubBook.h; sourceTree = "<group>"; };
+		C98BDDB01548625400E265B8 /* SCHEPubBook.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHEPubBook.m; path = Shared/SCHEPubBook.m; sourceTree = "<group>"; };
+		C98BDDB61548629400E265B8 /* SCHEPubBookmarkPointTranslation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHEPubBookmarkPointTranslation.h; path = Shared/SCHEPubBookmarkPointTranslation.h; sourceTree = "<group>"; };
+		C98BDF1D15498A5300E265B8 /* SCHEPUB3Overrides.css */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.css; path = SCHEPUB3Overrides.css; sourceTree = "<group>"; };
 		C9951721146D693600EA7337 /* LocalSamplesManifest.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = LocalSamplesManifest.xml; sourceTree = "<group>"; };
 		C9951724146D694600EA7337 /* LocalSamplesManifest.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = LocalSamplesManifest.xml; sourceTree = "<group>"; };
 		C99B4A911405124E00B3ADF0 /* reading-view-scrubber-rightcap-large.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "reading-view-scrubber-rightcap-large.png"; path = "Resources/UIAssets/reading-view-scrubber-rightcap-large.png"; sourceTree = "<group>"; };
@@ -6170,6 +6188,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C98BDF191549897B00E265B8 /* CoreMedia.framework in Frameworks */,
 				7D95F778150F66160093BB90 /* CoreVideo.framework in Frameworks */,
 				7D95F773150F66030093BB90 /* libots.a in Frameworks */,
 				C9AC7DA414BDDE00009137BA /* libBITModalSheetController.a in Frameworks */,
@@ -6228,6 +6247,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C98BDF1A1549898500E265B8 /* CoreMedia.framework in Frameworks */,
 				7D95F77A150F66260093BB90 /* libots.a in Frameworks */,
 				7D95F779150F66220093BB90 /* CoreVideo.framework in Frameworks */,
 				C9AC7DA714BDDE0F009137BA /* libBITModalSheetController.a in Frameworks */,
@@ -6271,6 +6291,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C98BDF1B1549898E00E265B8 /* CoreMedia.framework in Frameworks */,
 				7D95F77C150F66380093BB90 /* CoreVideo.framework in Frameworks */,
 				7D95F77B150F66320093BB90 /* libots.a in Frameworks */,
 				A3D3F48414CDDF31004A56A5 /* libBITModalSheetController.a in Frameworks */,
@@ -6314,6 +6335,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C98BDF1C1549899500E265B8 /* CoreMedia.framework in Frameworks */,
 				7D95F77E150F66440093BB90 /* CoreVideo.framework in Frameworks */,
 				7D95F77D150F663D0093BB90 /* libots.a in Frameworks */,
 				C9D7038514ED50B100C10006 /* libBITModalSheetController.a in Frameworks */,
@@ -7592,6 +7614,7 @@
 				F8C6DA94136073D300D9E953 /* paper-neutral@2x.png */,
 				C908D880133F941100661718 /* paper-white.png */,
 				F8C6DA95136073D300D9E953 /* paper-white@2x.png */,
+				C98BDF1D15498A5300E265B8 /* SCHEPUB3Overrides.css */,
 				289A2B3A13F5140A0047EE45 /* Puzzle-6pc.xaml */,
 				289A2B3B13F5140A0047EE45 /* Puzzle-12pc.xaml */,
 				289A2B3C13F5140A0047EE45 /* Puzzle-20pc.xaml */,
@@ -8375,7 +8398,6 @@
 			children = (
 				C947D573133B9C0100FB4404 /* libEucalyptusIOSUI.a */,
 				7D3F30F3140698D800C6F445 /* libEucalyptusModel.a */,
-				C9153D6F1574C983004FDD4A /* libEucalyptusEPubIOSUI.a */,
 				C947D577133B9C0100FB4404 /* libEucalyptusEPub.a */,
 				C947D579133B9C0100FB4404 /* libEucalyptusCSS.a */,
 				C947D575133B9C0100FB4404 /* libEucalyptusBase.a */,
@@ -8387,7 +8409,7 @@
 				C947D583133B9C0100FB4404 /* libcss.a */,
 				C947D585133B9C0100FB4404 /* libminiunzip.a */,
 				C947D587133B9C0100FB4404 /* TransitionTest.app */,
-				7D3F30F9140698D800C6F445 /* PageLayoutTest */,
+				C9674AD0159C9A0400476987 /* PageLayoutTest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -9331,10 +9353,15 @@
 				F82D39B4131EA79100289FF3 /* SCHBookContents.m */,
 				F81C74741344DA0700B1D9DB /* SCHFlowEucBook.h */,
 				F81C74751344DA0700B1D9DB /* SCHFlowEucBook.m */,
+				C98BDDB61548629400E265B8 /* SCHEPubBookmarkPointTranslation.h */,
+				C98BDDAF1548625300E265B8 /* SCHEPubBook.h */,
+				C98BDDB01548625400E265B8 /* SCHEPubBook.m */,
 				C9D4F6261345FFE7007F86E3 /* SCHTextFlow.h */,
 				C9D4F6271345FFE7007F86E3 /* SCHTextFlow.m */,
 				C93EBEAD13472FEC003B99FD /* SCHTextFlowParagraphSource.h */,
 				C93EBEAE13472FEC003B99FD /* SCHTextFlowParagraphSource.m */,
+				C98BDDA81548337A00E265B8 /* SCHEPubToTextFlowMappingParagraphSource.h */,
+				C98BDDA91548337B00E265B8 /* SCHEPubToTextFlowMappingParagraphSource.m */,
 				C92FA7D01355BE1F001BAA6B /* SCHSmartZoomBlockSource.h */,
 				C92FA7D11355BE20001BAA6B /* SCHSmartZoomBlockSource.m */,
 				52F15A1D1371A2CA0073941E /* SCHBookAnnotations.h */,
@@ -9532,20 +9559,6 @@
 			remoteRef = 7D3F30F2140698D800C6F445 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		7D3F30F9140698D800C6F445 /* PageLayoutTest */ = {
-			isa = PBXReferenceProxy;
-			fileType = "compiled.mach-o.executable";
-			path = PageLayoutTest;
-			remoteRef = 7D3F30F8140698D800C6F445 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		C9153D6F1574C983004FDD4A /* libEucalyptusEPubIOSUI.a */ = {
-			isa = PBXReferenceProxy;
-			fileType = archive.ar;
-			path = libEucalyptusEPubIOSUI.a;
-			remoteRef = C9153D6E1574C983004FDD4A /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
 		C937E7E4150F5335001882AC /* libots.a */ = {
 			isa = PBXReferenceProxy;
 			fileType = archive.ar;
@@ -9628,6 +9641,13 @@
 			fileType = wrapper.application;
 			path = TransitionTest.app;
 			remoteRef = C947D586133B9C0100FB4404 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		C9674AD0159C9A0400476987 /* PageLayoutTest */ = {
+			isa = PBXReferenceProxy;
+			fileType = "compiled.mach-o.executable";
+			path = PageLayoutTest;
+			remoteRef = C9674ACF159C9A0400476987 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		C9AC7D9F14BDDDE2009137BA /* libBITModalSheetController.a */ = {
@@ -10342,6 +10362,7 @@
 				F84E5028152DA04000177BC1 /* storiaBlueStarFull~ipad.png in Resources */,
 				F84E502C152DA04000177BC1 /* storiaBlueStarHalfFull~ipad.png in Resources */,
 				C9EB498F152EDA9800DA227A /* SCHRecommendationListView-ReadingViewContainer.xib in Resources */,
+				C98BDF1E15498A5300E265B8 /* SCHEPUB3Overrides.css in Resources */,
 				28C3ED7D154831D500F10DE5 /* storyinteraction-lettertile-tiny@2x~iphone.png in Resources */,
 				28C3ED81154831D500F10DE5 /* storyinteraction-lettertile-tiny~iphone.png in Resources */,
 				C9765A45154B006100C876F7 /* storia-loginbackground@2x~iphone.png in Resources */,
@@ -10401,6 +10422,7 @@
 				2866311D13F010990092A5DE /* StoryInteractionCardCollection1.xml in Resources */,
 				2898A0B713F436B100618172 /* Puzzle-6pc.xaml in Resources */,
 				C9367BE314731A8B0033A2EB /* SCHParentalToolsWebViewController_iPad.xib in Resources */,
+				C98BDF2015498A5300E265B8 /* SCHEPUB3Overrides.css in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -11101,6 +11123,7 @@
 				C9EB4990152EDA9800DA227A /* SCHRecommendationListView-ReadingViewContainer.xib in Resources */,
 				C98BDD7B1547F3DF00E265B8 /* 9780545364775_r7.MyFirstBiographyBenjaminFranklin.jpg in Resources */,
 				C98BDD7C1547F3DF00E265B8 /* 9780545364775_r7.MyFirstBiographyBenjaminFranklin.xps in Resources */,
+				C98BDF1F15498A5300E265B8 /* SCHEPUB3Overrides.css in Resources */,
 				28C3ED7E154831D500F10DE5 /* storyinteraction-lettertile-tiny@2x~iphone.png in Resources */,
 				28C3ED82154831D500F10DE5 /* storyinteraction-lettertile-tiny~iphone.png in Resources */,
 				C9765A46154B006100C876F7 /* storia-loginbackground@2x~iphone.png in Resources */,
@@ -11638,6 +11661,7 @@
 				F84E502A152DA04000177BC1 /* storiaBlueStarFull~ipad.png in Resources */,
 				F84E502E152DA04000177BC1 /* storiaBlueStarHalfFull~ipad.png in Resources */,
 				C9EB4991152EDA9800DA227A /* SCHRecommendationListView-ReadingViewContainer.xib in Resources */,
+				C98BDF2115498A5300E265B8 /* SCHEPUB3Overrides.css in Resources */,
 				28C3ED7F154831D500F10DE5 /* storyinteraction-lettertile-tiny@2x~iphone.png in Resources */,
 				28C3ED83154831D500F10DE5 /* storyinteraction-lettertile-tiny~iphone.png in Resources */,
 				C9765A47154B006100C876F7 /* storia-loginbackground@2x~iphone.png in Resources */,
@@ -12175,6 +12199,7 @@
 				F84E502B152DA04000177BC1 /* storiaBlueStarFull~ipad.png in Resources */,
 				F84E502F152DA04000177BC1 /* storiaBlueStarHalfFull~ipad.png in Resources */,
 				C9EB4992152EDA9800DA227A /* SCHRecommendationListView-ReadingViewContainer.xib in Resources */,
+				C98BDF2215498A5300E265B8 /* SCHEPUB3Overrides.css in Resources */,
 				28C3ED80154831D500F10DE5 /* storyinteraction-lettertile-tiny@2x~iphone.png in Resources */,
 				28C3ED84154831D500F10DE5 /* storyinteraction-lettertile-tiny~iphone.png in Resources */,
 				C9765A48154B006100C876F7 /* storia-loginbackground@2x~iphone.png in Resources */,
@@ -12581,6 +12606,8 @@
 				C9BF1211153424E6009FE0B9 /* UILabel+ScholasticAdditions.m in Sources */,
 				52023D551541BA2000C36AD5 /* SCHProfileItemSortObject.m in Sources */,
 				52023D5B1541BBB600C36AD5 /* NSFileManager+DoNotBackupExtendedAttribute.m in Sources */,
+				C98BDDAA1548337C00E265B8 /* SCHEPubToTextFlowMappingParagraphSource.m in Sources */,
+				C98BDDB11548625500E265B8 /* SCHEPubBook.m in Sources */,
 				287639B7154E857100540861 /* SCHStoryInteractionJigsawPiece.m in Sources */,
 				F858319815514DC5004960E8 /* SCHDownloadDictionaryFromSettingsViewController.m in Sources */,
 				5251716515501FB5009C3B61 /* NSFileManager+Extensions.m in Sources */,
@@ -12662,6 +12689,9 @@
 				C9367BDA1472E89A0033A2EB /* KNFBXMLParserLock.m in Sources */,
 				C9A6B402148B853C00B31277 /* SCHAppHelpState.m in Sources */,
 				F849155814FFA54D000D064B /* RateView.m in Sources */,
+				52943AE714FFD0E8002991EB /* SCHWishListSyncComponent.m in Sources */,
+				C98BDDAC1548337C00E265B8 /* SCHEPubToTextFlowMappingParagraphSource.m in Sources */,
+				C98BDDB31548625500E265B8 /* SCHEPubBook.m in Sources */,
 				287639B9154E857100540861 /* SCHStoryInteractionJigsawPiece.m in Sources */,
 				F8D199EF15A594B500EA17C6 /* SCHRecommendationOperationsTests.m in Sources */,
 				F8D199F015A598E700EA17C6 /* SCHRecommendationDownloadCoverOperation.m in Sources */,
@@ -13034,6 +13064,8 @@
 				C9BF1212153424E6009FE0B9 /* UILabel+ScholasticAdditions.m in Sources */,
 				52023D561541BA2000C36AD5 /* SCHProfileItemSortObject.m in Sources */,
 				52023D5C1541BBB600C36AD5 /* NSFileManager+DoNotBackupExtendedAttribute.m in Sources */,
+				C98BDDAB1548337C00E265B8 /* SCHEPubToTextFlowMappingParagraphSource.m in Sources */,
+				C98BDDB21548625500E265B8 /* SCHEPubBook.m in Sources */,
 				287639B8154E857100540861 /* SCHStoryInteractionJigsawPiece.m in Sources */,
 				F858319915514DC5004960E8 /* SCHDownloadDictionaryFromSettingsViewController.m in Sources */,
 				5251716615501FB5009C3B61 /* NSFileManager+Extensions.m in Sources */,
@@ -13417,6 +13449,8 @@
 				C9BF1213153424E6009FE0B9 /* UILabel+ScholasticAdditions.m in Sources */,
 				52023D571541BA2000C36AD5 /* SCHProfileItemSortObject.m in Sources */,
 				52023D5D1541BBB600C36AD5 /* NSFileManager+DoNotBackupExtendedAttribute.m in Sources */,
+				C98BDDAD1548337C00E265B8 /* SCHEPubToTextFlowMappingParagraphSource.m in Sources */,
+				C98BDDB41548625500E265B8 /* SCHEPubBook.m in Sources */,
 				287639BA154E857100540861 /* SCHStoryInteractionJigsawPiece.m in Sources */,
 				F858319A15514DC5004960E8 /* SCHDownloadDictionaryFromSettingsViewController.m in Sources */,
 				5251716715501FB5009C3B61 /* NSFileManager+Extensions.m in Sources */,
@@ -13800,6 +13834,8 @@
 				C9BF1214153424E6009FE0B9 /* UILabel+ScholasticAdditions.m in Sources */,
 				52023D581541BA2000C36AD5 /* SCHProfileItemSortObject.m in Sources */,
 				52023D5E1541BBB600C36AD5 /* NSFileManager+DoNotBackupExtendedAttribute.m in Sources */,
+				C98BDDAE1548337C00E265B8 /* SCHEPubToTextFlowMappingParagraphSource.m in Sources */,
+				C98BDDB51548625500E265B8 /* SCHEPubBook.m in Sources */,
 				287639BB154E857100540861 /* SCHStoryInteractionJigsawPiece.m in Sources */,
 				F858319B15514DC5004960E8 /* SCHDownloadDictionaryFromSettingsViewController.m in Sources */,
 				5251716815501FB5009C3B61 /* NSFileManager+Extensions.m in Sources */,

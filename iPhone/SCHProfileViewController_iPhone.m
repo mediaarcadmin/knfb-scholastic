@@ -87,6 +87,9 @@ static const CGFloat kSCHProfileViewControllerPhoneLogoHeightLandscape = 32;
     CGRect currentTitleBounds = self.navigationItem.titleView.bounds;
     CGRect newTitleBounds;
     
+    [(SCHCustomNavigationBar *)self.navigationController.navigationBar setBackgroundImage:
+     [UIImage imageNamed:@"red-toolbar.png"]];
+    
     if (UIInterfaceOrientationIsLandscape(orientation)) {
         [self.settingsButton setImage:[UIImage imageNamed:@"settings-landscape.png"] 
                              forState:UIControlStateNormal];

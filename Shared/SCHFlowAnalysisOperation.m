@@ -50,7 +50,7 @@
     }];
     CFAbsoluteTime startTime = CFAbsoluteTimeGetCurrent();
 #endif
-    SCHFlowEucBook *eucBook = [[SCHBookManager sharedBookManager] threadSafeCheckOutEucBookForBookIdentifier:self.identifier];
+    EucEPubBook *eucBook = [[SCHBookManager sharedBookManager] threadSafeCheckOutEucBookForBookIdentifier:self.identifier];
 
     if (eucBook) {
         [eucBook generateAndCacheUncachedRecachableData];

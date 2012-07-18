@@ -13,11 +13,13 @@
 
 @class SCHXPSProvider;
 @class SCHTextFlow;
-@class SCHFlowEucBook;
-@class SCHTextFlowParagraphSource;
+@class EucEPubBook;
 @class SCHAppBook;
 @class SCHSmartZoomBlockSource;
 @class SCHBookIdentifier;
+
+@protocol KNFBParagraphSource;
+@protocol SCHEPubBookmarkPointTranslation;
 
 @interface SCHBookManager : NSObject 
 {
@@ -37,18 +39,19 @@
 - (SCHXPSProvider *)checkOutXPSProviderForBookIdentifier:(SCHBookIdentifier *)identifier inManagedObjectContext:(NSManagedObjectContext *)managedObjectContext error:(NSError **)error;
 - (void)checkInXPSProviderForBookIdentifier:(SCHBookIdentifier *)identifier;
 
-- (SCHFlowEucBook *)checkOutEucBookForBookIdentifier:(SCHBookIdentifier *)identifier inManagedObjectContext:(NSManagedObjectContext *)managedObjectContext;
+- (EucEPubBook<SCHEPubBookmarkPointTranslation> *)checkOutEucBookForBookIdentifier:(SCHBookIdentifier *)identifier inManagedObjectContext:(NSManagedObjectContext *)managedObjectContext;
 - (void)checkInEucBookForBookIdentifier:(SCHBookIdentifier *)identifier;
 
 - (SCHTextFlow *)checkOutTextFlowForBookIdentifier:(SCHBookIdentifier *)identifier inManagedObjectContext:(NSManagedObjectContext *)managedObjectContext;
 - (void)checkInTextFlowForBookIdentifier:(SCHBookIdentifier *)identifier;
 
-- (SCHTextFlowParagraphSource *)checkOutParagraphSourceForBookIdentifier:(SCHBookIdentifier *)identifier inManagedObjectContext:(NSManagedObjectContext *)managedObjectContext;
+- (id<KNFBParagraphSource>)checkOutParagraphSourceForBookIdentifier:(SCHBookIdentifier *)identifier inManagedObjectContext:(NSManagedObjectContext *)managedObjectContext;
 - (void)checkInParagraphSourceForBookIdentifier:(SCHBookIdentifier *)identifier;
 
 // these are like the normal checkout method but synchronously jump to the main thread to do core data access
+- (id<KNFBParagraphSource>)threadSafeCheckOutParagraphSourceForBookIdentifier:(SCHBookIdentifier *)identifier;
 - (SCHXPSProvider *)threadSafeCheckOutXPSProviderForBookIdentifier:(SCHBookIdentifier *)identifier;
-- (SCHFlowEucBook *)threadSafeCheckOutEucBookForBookIdentifier:(SCHBookIdentifier *)identifier;
+- (EucEPubBook<SCHEPubBookmarkPointTranslation> *)threadSafeCheckOutEucBookForBookIdentifier:(SCHBookIdentifier *)identifier;
 
 
 + (BOOL)checkAppCompatibilityForFeature:(NSString *)key version:(float)version;

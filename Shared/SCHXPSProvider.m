@@ -89,4 +89,9 @@
     return [self dataForComponentAtPath:@"Metadata/Thumbnail.jpg"];
 }
 
+- (BOOL)containsEmbeddedEPub
+{
+    return [self componentExistsAtPath:@"META-INF/container.xml"];
+}
+
 @end

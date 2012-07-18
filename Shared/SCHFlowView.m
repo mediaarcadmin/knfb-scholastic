@@ -11,8 +11,8 @@
 #import "SCHFlowEucBook.h"
 #import "SCHBookPoint.h"
 #import "SCHBookRange.h"
-#import "KNFBTextFlow.h"
-#import "KNFBTextFlowParagraphSource.h"
+#import "KNFBParagraphSource.h"
+#import "SCHEPubBook.h"
 #import <libEucalyptus/EucBookView.h>
 #import <libEucalyptus/EucEPubBook.h>
 #import <libEucalyptus/EucBookPageIndexPoint.h>
@@ -26,8 +26,8 @@
 
 @interface SCHFlowView ()
 
-@property (nonatomic, retain) SCHFlowEucBook *eucBook;
-@property (nonatomic, retain) KNFBTextFlowParagraphSource *paragraphSource;
+@property (nonatomic, retain) EucEPubBook<SCHEPubBookmarkPointTranslation> *eucBook;
+@property (nonatomic, retain) id<KNFBParagraphSource> paragraphSource;
 @property (nonatomic, retain) EucBookView *eucBookView;
 
 @property (nonatomic, retain) NSArray *fontPointSizes;
@@ -112,7 +112,7 @@ managedObjectContext:(NSManagedObjectContext *)managedObjectContext
         
         SCHBookManager *bookManager = [SCHBookManager sharedBookManager];
         eucBook = [[bookManager checkOutEucBookForBookIdentifier:self.identifier inManagedObjectContext:managedObjectContext] retain];
-        paragraphSource = (KNFBTextFlowParagraphSource *)[[bookManager checkOutParagraphSourceForBookIdentifier:self.identifier inManagedObjectContext:managedObjectContext] retain];
+        paragraphSource = [[bookManager checkOutParagraphSourceForBookIdentifier:self.identifier inManagedObjectContext:managedObjectContext] retain];
         
         openingPoint = [point retain];
     }
@@ -121,6 +121,7 @@ managedObjectContext:(NSManagedObjectContext *)managedObjectContext
 
 - (void)attachSelector
 {
+    self.eucBookView.allowsSelection = NO;
     self.eucBookView.allowsSelection = self.allowsSelection;
     self.eucBookView.selectorDelegate = self;
     
@@ -133,7 +134,6 @@ managedObjectContext:(NSManagedObjectContext *)managedObjectContext
 
     self.eucBookView.allowsSelection = NO;
     self.eucBookView.selectorDelegate = nil;
-
 }
 
 - (void)configureSelectorForSelectionMode
@@ -185,6 +185,17 @@ managedObjectContext:(NSManagedObjectContext *)managedObjectContext
         [self attachSelector];
     }
 }
+
+#pragma mark - Rotation
+
+- (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
+    [self.eucBookView willRotateToInterfaceOrientation:toInterfaceOrientation duration:duration];
+}
+
+- (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation {
+    [self.eucBookView didRotateFromInterfaceOrientation:fromInterfaceOrientation];
+}
+
 
 #pragma mark - BookView Methods
 
@@ -335,6 +346,11 @@ managedObjectContext:(NSManagedObjectContext *)managedObjectContext
     [self unhandledTapAtPoint:point];
 }
 
+- (BOOL)bookView:(EucBookView *)bookView shouldHandleTapOnHyperlink:(NSURL *)link
+{
+    return YES;
+}
+
 - (void)bookViewPageTurnWillBegin:(EucBookView *)bookView
 {
     [self.delegate readingViewWillBeginTurning:self];
@@ -419,6 +435,11 @@ static void sortedHighlightRangePredicateInit() {
 {
     NSArray *ret = nil;
     
+    // Don't support highlights in ePub books
+    if ([self.eucBook isKindOfClass:[SCHEPubBook class]]) {
+        return ret;
+    }
+    
     SCHBookPoint *startBookPoint = [self.eucBook bookPointFromBookPageIndexPoint:startPoint];
     SCHBookPoint *endBookPoint = [self.eucBook bookPointFromBookPageIndexPoint:endPoint];
     SCHBookRange *pageRange = [[SCHBookRange alloc] init];
@@ -433,16 +454,20 @@ static void sortedHighlightRangePredicateInit() {
     if(count) {
         NSMutableArray *eucRanges = [[NSMutableArray alloc] initWithCapacity:count];
         for(SCHBookRange *bookRange in allHighlights) {
+            //NSLog(@"highlight range from %@ to %@ is %@", startBookPoint, endBookPoint, bookRange);
+
             EucHighlightRange *eucRange = [[EucHighlightRange alloc] init];
             eucRange.startPoint = [self.eucBook bookPageIndexPointFromBookPoint:bookRange.startPoint];
             eucRange.endPoint = [self.eucBook bookPageIndexPointFromBookPoint:bookRange.endPoint];
             eucRange.color = [self.delegate highlightColor];
             [eucRanges addObject:eucRange];
+            
+            //NSLog(@"Converted bookrange: %@ into %@", bookRange, eucRange);
             [eucRange release];
         }
         ret = [eucRanges autorelease];
     }
-    
+        
     return ret;
 }
 
@@ -585,6 +610,21 @@ static void sortedHighlightRangePredicateInit() {
 - (UIImage *)pageSnapshot
 {
     return [self.eucBookView.pageTurningView screenshot];
+}
+
+- (NSString *)wordFromSelection:(EucSelectorRange *)selectorRange
+{    
+    EucBookPageIndexPointRange *indexPointRange = [self.eucBookView pageIndexPointRangeFromSelectorRange:selectorRange];
+    NSString *word = [self.eucBook stringForIndexPointRange:indexPointRange];
+    
+    return word;
+}
+
+#pragma mark - EucSelectorDelegate
+
+- (BOOL)eucSelector:(EucSelector *)selector shouldReceiveTouch:(UITouch *)touch
+{
+    return [self.eucBookView eucSelector:selector shouldReceiveTouch:touch];
 }
 
 @end
