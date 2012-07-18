@@ -12689,7 +12689,6 @@
 				C9367BDA1472E89A0033A2EB /* KNFBXMLParserLock.m in Sources */,
 				C9A6B402148B853C00B31277 /* SCHAppHelpState.m in Sources */,
 				F849155814FFA54D000D064B /* RateView.m in Sources */,
-				52943AE714FFD0E8002991EB /* SCHWishListSyncComponent.m in Sources */,
 				C98BDDAC1548337C00E265B8 /* SCHEPubToTextFlowMappingParagraphSource.m in Sources */,
 				C98BDDB31548625500E265B8 /* SCHEPubBook.m in Sources */,
 				287639B9154E857100540861 /* SCHStoryInteractionJigsawPiece.m in Sources */,
