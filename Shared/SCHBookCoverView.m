@@ -570,7 +570,6 @@
         case kSCHAppBookFeaturesSampleWithStoryInteractions:
         {
             minimumTabGraphicHeight = [UIImage imageNamed:@"BookSISampleTab"].size.height - 11;
-            NSLog(@"Graphic height: %f Min Height: %f Cover Height: %f", minimumTabGraphicHeight + 11, minimumTabGraphicHeight, coverFrame.size.height);
             break;
         }   
             
