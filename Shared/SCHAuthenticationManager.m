@@ -1083,14 +1083,17 @@ deregistrationDidFailWithError:(NSError *)error
 {
     NSString *localizedMessage = nil;
     
-    if ([error code] == kSCHDrmDeviceLimitError) {
+    if([[error domain] isEqualToString:kBITAPIErrorDomain] == YES) {
+        localizedMessage = [NSString stringWithFormat:
+                            NSLocalizedString(@"A server error occurred. If this problem persists please contact support.", nil)];           
+    } else if ([error code] == kSCHDrmDeviceLimitError) {
         localizedMessage = NSLocalizedString(@"Storia is already installed on five devices, which is the maximum allowed. Before installing it on this device, you need to deregister Storia on one of your current devices.", nil);
     } else if (([error code] == kSCHDrmDeviceRegisteredToAnotherDevice) || 
                ([error code] == kSCHDrmDeviceUnableToAssign)) {
         localizedMessage = NSLocalizedString(@"This device is registered to another Scholastic account. The owner of that account needs to deregister this device before it can be registered to a new account.", nil);
     } else {
         localizedMessage = [NSString stringWithFormat:
-                            NSLocalizedString(@"A problem occured. If this problem persists please contact support.\n\n '%@'", nil), 
+                            NSLocalizedString(@"A problem occurred. If this problem persists please contact support.\n\n '%@'", nil), 
                             [error localizedDescription]];   
     }
     
