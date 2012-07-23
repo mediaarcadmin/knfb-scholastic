@@ -38,7 +38,8 @@ extern NSInteger const kSCHAudioBookPlayerDataError;
        pageTurnBlock:(PageTurnBlock)pageTurnBlock;
 - (void)cleanAudio;
 - (BOOL)play;
-- (BOOL)playAtLayoutPage:(NSUInteger)layoutPage pageWordOffset:(NSUInteger)pageWordOffset;
+- (BOOL)playAtLayoutPage:(NSUInteger)layoutPage 
+          pageWordOffset:(NSUInteger)pageWordOffset;
 - (void)pause;
 
 @end
