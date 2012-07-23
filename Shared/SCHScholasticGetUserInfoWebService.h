@@ -14,6 +14,7 @@
 // ProcessRemote Constants
 extern NSString * const kSCHScholasticGetUserInfoWebServiceProcessRemote;
 extern NSString * const kSCHScholasticGetUserInfoWebServiceCOPPA;
+extern NSString * const kSCHScholasticGetUserInfoWebServiceSPSID;
 
 // Scholastic Errors
 typedef enum {
