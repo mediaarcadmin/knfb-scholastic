@@ -550,8 +550,10 @@ didSelectButtonAnimated:(BOOL)animated
 {
     NSMutableArray *viewControllers = [NSMutableArray array];
     
-    if (self.profileSetupDelegate) {
-        [viewControllers addObject:self.profileSetupDelegate];
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+        if (self.profileSetupDelegate) {
+            [viewControllers addObject:self.profileSetupDelegate];
+        }
     }
     
     [viewControllers addObject:self];

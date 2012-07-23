@@ -14,6 +14,14 @@
 #import "SCHAuthenticationManager.h"
 #import "SCHThemeManager.h"
 #import "SCHAppStateManager.h"
+#import "SCHAppModel.h"
+#import "SCHPhoneAppController.h"
+
+@interface AppDelegate_iPhone()
+
+@property (nonatomic, retain) SCHPhoneAppController *appController;
+
+@end
 
 extern NSString * const kSCHAuthenticationManagerDeviceKey;
 
@@ -23,6 +31,8 @@ static NSTimeInterval const kAppDelegate_iPhoneSyncManagerWakeDelay = 5.0;
 
 @synthesize navigationController;
 @synthesize customNavigationBar;
+@synthesize appModel;
+@synthesize appController;
 
 #pragma mark - Application lifecycle
 
@@ -36,7 +46,8 @@ static NSTimeInterval const kAppDelegate_iPhoneSyncManagerWakeDelay = 5.0;
     [customNavigationBar setTheme:kSCHThemeManagerNavigationBarImage];
     
     if (success) {
-        [self.startingViewController createInitialNavigationControllerStack];
+        self.appController = (SCHPhoneAppController *)self.navigationController;
+        self.appModel = [[[SCHAppModel alloc] initWithAppController:self.appController] autorelease];
     }
     
     return(YES);
@@ -66,6 +77,8 @@ static NSTimeInterval const kAppDelegate_iPhoneSyncManagerWakeDelay = 5.0;
 {
 	[navigationController release], navigationController = nil;
     [customNavigationBar release], customNavigationBar = nil;
+    [appModel release], appModel = nil;
+    [appController release], appController = nil;
 
 	[super dealloc];
 }

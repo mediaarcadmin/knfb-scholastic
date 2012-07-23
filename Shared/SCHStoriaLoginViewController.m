@@ -146,6 +146,11 @@ static const CGFloat kSCHStoriaLoginContentHeightLandscape = 420;
 - (void)viewWillAppear:(BOOL)animated 
 {
     [super viewWillAppear:animated];
+    
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
+        [self.navigationController setNavigationBarHidden:YES];
+    }
+    
     [self stopShowingProgress];
     [self setupContentSizeForOrientation:self.interfaceOrientation];
     [self clearFields];

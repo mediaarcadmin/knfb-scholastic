@@ -209,9 +209,9 @@ NSInteger const kSCHSamplesUnspecifiedError = 1000;
     [self.navigationController setNavigationBarHidden:YES];
     [self setupAssetsForOrientation:self.interfaceOrientation];
     
-    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
-        [self checkState];
-    }
+//    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
+//        [self checkState];
+//    }
 }
 
 - (void)viewDidAppear:(BOOL)animated
