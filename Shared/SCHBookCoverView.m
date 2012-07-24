@@ -14,6 +14,7 @@
 #import "AppDelegate_Shared.h"
 #import "SCHCoreDataHelper.h"
 #import <ImageIO/ImageIO.h>
+#import "SCHThemeManager.h"
 
 @interface SCHBookCoverView ()
 
@@ -331,7 +332,11 @@
         CGFloat kDashLengths[2] = { dashLength, dashLength };
 
         if (self.coverViewMode == SCHBookCoverViewModeGridView) {
-            CGContextSetStrokeColorWithColor(context, [UIColor colorWithRed:0.8 green:0.8 blue:0.8 alpha:0.4].CGColor);
+            if ([[SCHThemeManager sharedThemeManager] gridTextColorIsDark] == YES) {
+                CGContextSetStrokeColorWithColor(context, [UIColor darkGrayColor].CGColor);                                
+            } else {
+                CGContextSetStrokeColorWithColor(context, [UIColor colorWithRed:0.8 green:0.8 blue:0.8 alpha:0.4].CGColor);                
+            }
         } else {
             CGContextSetStrokeColorWithColor(context, [UIColor colorWithRed:0.071 green:0.467 blue:0.643 alpha:0.4].CGColor);
         }
