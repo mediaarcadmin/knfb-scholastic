@@ -65,6 +65,12 @@ enum {
     [super dealloc];
 }
 
+- (void)closeButtonTapped:(id)sender
+{
+    self.controllerState = SCHStoryInteractionControllerStateInteractionFinishedSuccessfully;
+    [super closeButtonTapped:sender];    
+}
+
 - (void)setupViewAtIndex:(NSInteger)screenIndex
 {
     SCHStoryInteractionCardCollection *cardCollection = (SCHStoryInteractionCardCollection *)self.storyInteraction;
@@ -99,8 +105,6 @@ enum {
     UITapGestureRecognizer *scrollTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(scrollViewTapped:)];
     [self.cardScrollView addGestureRecognizer:scrollTap];
     [scrollTap release];
-    
-    self.controllerState = SCHStoryInteractionControllerStateInteractionFinishedSuccessfully;
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
