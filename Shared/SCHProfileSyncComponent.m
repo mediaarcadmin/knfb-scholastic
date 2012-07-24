@@ -27,6 +27,8 @@ NSString * const SCHProfileSyncComponentWillDeleteNotification = @"SCHProfileSyn
 NSString * const SCHProfileSyncComponentDeletedProfileIDs = @"SCHProfileSyncComponentDeletedProfileIDs";
 NSString * const SCHProfileSyncComponentDidCompleteNotification = @"SCHProfileSyncComponentDidCompleteNotification";
 NSString * const SCHProfileSyncComponentDidFailNotification = @"SCHProfileSyncComponentDidFailNotification";
+NSString * const kSCHSyncManagerErrorDomain = @"SyncManagerErrorDomain";
+NSInteger const kSCHSyncManagerGeneralError = 2000;
 
 @interface SCHProfileSyncComponent ()
 

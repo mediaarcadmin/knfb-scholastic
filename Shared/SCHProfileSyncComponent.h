@@ -18,6 +18,8 @@ extern NSString * const SCHProfileSyncComponentWillDeleteNotification;
 extern NSString * const SCHProfileSyncComponentDeletedProfileIDs;
 extern NSString * const SCHProfileSyncComponentDidCompleteNotification;
 extern NSString * const SCHProfileSyncComponentDidFailNotification;
+extern NSString * const kSCHSyncManagerErrorDomain;
+extern NSInteger const kSCHSyncManagerGeneralError;
 
 @interface SCHProfileSyncComponent : SCHSyncComponent
 

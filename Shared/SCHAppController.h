@@ -23,5 +23,6 @@
 
 - (void)failedSamplesWithError:(NSError *)error;
 - (void)failedLoginWithError:(NSError *)error;
+- (void)failedSyncWithError:(NSError *)error;
 
 @end

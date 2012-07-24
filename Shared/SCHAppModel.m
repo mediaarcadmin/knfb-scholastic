@@ -18,6 +18,7 @@
 #import "AppDelegate_Shared.h"
 #import "SCHStartingViewController.h" /* For errors */
 #import "NSString+EmailValidation.h"
+#import "SCHProfileSyncComponent.h"
 
 typedef enum {
 	kSCHAppModelSyncStateNone = 0,
@@ -33,6 +34,7 @@ typedef enum {
 @property (nonatomic, assign) SCHAppModelSyncState syncState;
 
 - (BOOL)hasProfilesInManagedObjectContext:(NSManagedObjectContext *)moc;
+- (void)startSyncNow:(BOOL)now requireAuthentication:(BOOL)authenticate;
 
 @end
 
@@ -156,8 +158,8 @@ typedef enum {
                 [authenticationManager authenticateWithUser:username 
                                                         password:password
                                                     successBlock:^(SCHAuthenticationManagerConnectivityMode connectivityMode) { 
-                                                        if (connectivityMode == SCHAuthenticationManagerConnectivityModeOnline) { 
-                                                            [[SCHSyncManager sharedSyncManager] firstSync:YES requireDeviceAuthentication:NO];
+                                                        if (connectivityMode == SCHAuthenticationManagerConnectivityModeOnline) {
+                                                            [self startSyncNow:YES requireAuthentication:NO];
                                                         } else { 
                                                             NSError *anError = [NSError errorWithDomain:kSCHAuthenticationManagerErrorDomain  
                                                                                                    code:kSCHAuthenticationManagerOfflineError  
@@ -214,6 +216,14 @@ typedef enum {
 
 #pragma mark - Utility Methods
 
+- (void)startSyncNow:(BOOL)now requireAuthentication:(BOOL)authenticate
+{
+    SCHSyncManager *syncManager = [SCHSyncManager sharedSyncManager];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(syncSucceeded:) name:SCHProfileSyncComponentDidCompleteNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(syncFailed:) name:SCHProfileSyncComponentDidFailNotification object:nil];
+    [syncManager firstSync:now requireDeviceAuthentication:authenticate];
+}
+
 - (BOOL)hasProfilesInManagedObjectContext:(NSManagedObjectContext *)moc
 {
     NSAssert([NSThread isMainThread], @"hasProfiles must be called on the main thread");
@@ -245,6 +255,62 @@ typedef enum {
     || ([[SCHDictionaryDownloadManager sharedDownloadManager] dictionaryProcessingState] == SCHDictionaryProcessingStateUserSetup);
     
     return (downloadRequired && [[Reachability reachabilityForLocalWiFi] isReachable]);
+}
+
+#pragma mark - Notification handlers
+
+- (void)syncSucceeded:(NSNotification *)note
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:SCHProfileSyncComponentDidCompleteNotification object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:SCHProfileSyncComponentDidFailNotification object:nil];
+    
+    SCHAppModelSyncState currentSyncState = self.syncState;
+    self.syncState = kSCHAppModelSyncStateNone;
+    
+    switch (currentSyncState) {
+        case kSCHAppModelSyncStateWaitingForLoginToComplete:
+            [self.appController presentProfiles];
+            break;
+        case kSCHAppModelSyncStateWaitingForBookshelves:
+            if ([self hasProfilesInManagedObjectContext:[SCHAppStateManager sharedAppStateManager].managedObjectContext]) {
+                [self.appController presentProfilesSetup];
+            } else {
+                [self.appController presentProfiles];
+            }
+            break;
+        case kSCHAppModelSyncStateWaitingForPassword:
+            if (![self hasProfilesInManagedObjectContext:[SCHAppStateManager sharedAppStateManager].managedObjectContext]) {
+                [self.appController presentProfiles];
+            } else {
+                self.syncState = kSCHAppModelSyncStateWaitingForPassword;
+            }
+            break;
+        case kSCHAppModelSyncStateWaitingForWebParentToolsToComplete:
+            if (![self hasProfilesInManagedObjectContext:[SCHAppStateManager sharedAppStateManager].managedObjectContext]) {
+                [self.appController presentProfiles];
+            } else {
+                self.syncState = kSCHAppModelSyncStateWaitingForWebParentToolsToComplete;
+            }
+            break;
+        default:
+            break;
+    }
+}
+
+- (void)syncFailed:(NSNotification *)note
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:SCHProfileSyncComponentDidCompleteNotification object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:SCHProfileSyncComponentDidFailNotification object:nil];
+    
+    NSError *error = [NSError errorWithDomain:kSCHSyncManagerErrorDomain  
+                                         code:kSCHSyncManagerGeneralError  
+                                     userInfo:nil];  
+    
+    if (self.syncState == kSCHAppModelSyncStateWaitingForLoginToComplete) {
+        [self.appController failedLoginWithError:error];
+    } else { 
+        [self.appController failedSyncWithError:error];
+    }
 }
 
 @end

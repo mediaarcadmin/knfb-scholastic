@@ -640,8 +640,13 @@ didSelectButtonAnimated:(BOOL)animated
             [self dismissModalViewControllerAnimated:animated];
             [self.profileSetupDelegate popToRootViewControllerAnimated:NO withCompletionHandler:completion];
         } else {
-            [self.profileSetupDelegate popToRootViewControllerAnimated:NO withCompletionHandler:completion];
+            [CATransaction begin];
+            [CATransaction setCompletionBlock:^{
+                [self.profileSetupDelegate popToRootViewControllerAnimated:NO withCompletionHandler:completion];
+            }];
             [self dismissModalViewControllerAnimated:animated];
+            [CATransaction commit];
+
         }
     } else {
         [self.profileSetupDelegate popToRootViewControllerAnimated:animated withCompletionHandler:completion];

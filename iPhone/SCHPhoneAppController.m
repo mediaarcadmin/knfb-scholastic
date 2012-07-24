@@ -215,6 +215,11 @@
     }
 }
 
+- (void)failedSyncWithError:(NSError *)error
+{
+    
+}
+
 - (BOOL)dictionaryDownloadRequired
 {
     BOOL downloadRequired = 

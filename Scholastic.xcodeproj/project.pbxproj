@@ -2821,6 +2821,7 @@
 		C99B4A9D1405124E00B3ADF0 /* reading-view-scrubber-leftcap-large@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C99B4A941405124E00B3ADF0 /* reading-view-scrubber-leftcap-large@2x.png */; };
 		C99B4A9F1405124E00B3ADF0 /* reading-view-scrubber-knob-large.png in Resources */ = {isa = PBXBuildFile; fileRef = C99B4A951405124E00B3ADF0 /* reading-view-scrubber-knob-large.png */; };
 		C99B4AA11405124E00B3ADF0 /* reading-view-scrubber-knob-large@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C99B4A961405124E00B3ADF0 /* reading-view-scrubber-knob-large@2x.png */; };
+		C99BAB6F15BEB4CF00B18436 /* SCHAppModel.m in Sources */ = {isa = PBXBuildFile; fileRef = C9F229AB15B82EDD009939D1 /* SCHAppModel.m */; };
 		C99F7DC2140560570091160B /* icon-higlights-cancel-landscape.png in Resources */ = {isa = PBXBuildFile; fileRef = C99F7DBC140560570091160B /* icon-higlights-cancel-landscape.png */; };
 		C99F7DC4140560580091160B /* icon-higlights-cancel-landscape@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C99F7DBD140560570091160B /* icon-higlights-cancel-landscape@2x.png */; };
 		C99F7DC6140560580091160B /* icon-higlights-cancel.png in Resources */ = {isa = PBXBuildFile; fileRef = C99F7DBE140560570091160B /* icon-higlights-cancel.png */; };
@@ -3852,7 +3853,6 @@
 		C9F229AD15B82EDD009939D1 /* SCHAppModel.m in Sources */ = {isa = PBXBuildFile; fileRef = C9F229AB15B82EDD009939D1 /* SCHAppModel.m */; };
 		C9F229AE15B82EDD009939D1 /* SCHAppModel.m in Sources */ = {isa = PBXBuildFile; fileRef = C9F229AB15B82EDD009939D1 /* SCHAppModel.m */; };
 		C9F229AF15B82EDD009939D1 /* SCHAppModel.m in Sources */ = {isa = PBXBuildFile; fileRef = C9F229AB15B82EDD009939D1 /* SCHAppModel.m */; };
-		C9F229B015B82EDD009939D1 /* SCHAppModel.m in Sources */ = {isa = PBXBuildFile; fileRef = C9F229AB15B82EDD009939D1 /* SCHAppModel.m */; };
 		C9F229E915B9B37E009939D1 /* SCHPhoneAppController.m in Sources */ = {isa = PBXBuildFile; fileRef = C9F229E815B9B37E009939D1 /* SCHPhoneAppController.m */; };
 		C9F229EA15B9B37E009939D1 /* SCHPhoneAppController.m in Sources */ = {isa = PBXBuildFile; fileRef = C9F229E815B9B37E009939D1 /* SCHPhoneAppController.m */; };
 		C9F229EB15B9B37E009939D1 /* SCHPhoneAppController.m in Sources */ = {isa = PBXBuildFile; fileRef = C9F229E815B9B37E009939D1 /* SCHPhoneAppController.m */; };
@@ -13887,8 +13887,8 @@
 				52A36A6315B0521D00162753 /* SCHScholasticResponseParser.m in Sources */,
 				52A36A6E15B444D300162753 /* SCHXPSKNFBMetadataFileParser.m in Sources */,
 				52EB1F8815B976F0007E60D3 /* SCHAccountVerifier.m in Sources */,
-				C9F229B015B82EDD009939D1 /* SCHAppModel.m in Sources */,
 				C9F229ED15B9B37E009939D1 /* SCHPhoneAppController.m in Sources */,
+				C99BAB6F15BEB4CF00B18436 /* SCHAppModel.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
