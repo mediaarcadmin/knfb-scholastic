@@ -28,3 +28,4 @@
 #import "SCHStoryInteractionWordMatch.h"
 #import "SCHStoryInteractionWordScrambler.h"
 #import "SCHStoryInteractionWordSearch.h"
+#import "SCHStoryInteractionReadingQuiz.h"

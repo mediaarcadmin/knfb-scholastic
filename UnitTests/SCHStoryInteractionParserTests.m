@@ -359,7 +359,39 @@ NSString * const KNFBXPSStoryInteractionsDirectory = @"/Documents/1/Other/KNFB/I
             0 }
     };
     NSUInteger expectCount = sizeof(expect)/sizeof(expect[0]);
+    
+    STAssertEquals([story.questions count], expectCount, @"incorrect question count");
+    for (NSUInteger i = 0; i < MIN([story.questions count], expectCount); ++i) {
+        SCHStoryInteractionMultipleChoiceTextQuestion *q = [story.questions objectAtIndex:i];
+        STAssertEqualObjects(q.prompt, expect[i].prompt, @"incorrect prompt for question %d", i+1);
+        STAssertEqualObjects(q.answers, expect[i].answers, @"incorrect answers for question %d", i+1);
+        STAssertEquals(q.correctAnswer, expect[i].correctAnswer, @"incorrect correctAnswer for question %d", i+1);
+    }
+}
 
+- (void)testReadingQuiz1
+{
+    NSArray *stories = [self parse:@"ReadingQuiz1"];
+    STAssertEquals([stories count], 1U, @"incorrect story count");
+    STAssertTrue([[stories lastObject] isKindOfClass:[SCHStoryInteractionReadingQuiz class]], @"incorrect class");
+    
+    SCHStoryInteractionPopQuiz *story = [stories lastObject];
+    STAssertTrue(CGPointEqualToPoint(story.position, CGPointMake(180, 10)), @"incorrect position");
+
+    struct {
+        NSString *prompt;
+        NSArray *answers;
+        NSInteger correctAnswer;
+    } expect[] = {
+        { @"Pedro followed the puppy to a",
+            [NSArray arrayWithObjects:@"store.", @"park.", @"boat.", @"cave.", nil],
+            1 },
+        { @"Glenn saw Pedro",
+            [NSArray arrayWithObjects:@"toss a baseball.", @"chase a butterfly.", @"make a sandwich.", @"play a trumpet.", nil],
+            0 }
+    };
+    NSUInteger expectCount = sizeof(expect)/sizeof(expect[0]);
+    
     STAssertEquals([story.questions count], expectCount, @"incorrect question count");
     for (NSUInteger i = 0; i < MIN([story.questions count], expectCount); ++i) {
         SCHStoryInteractionMultipleChoiceTextQuestion *q = [story.questions objectAtIndex:i];

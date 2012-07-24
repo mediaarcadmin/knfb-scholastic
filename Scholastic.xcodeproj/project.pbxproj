@@ -2793,12 +2793,10 @@
 		C98BDD7C1547F3DF00E265B8 /* 9780545364775_r7.MyFirstBiographyBenjaminFranklin.xps in Resources */ = {isa = PBXBuildFile; fileRef = C98BDD7A1547F3DF00E265B8 /* 9780545364775_r7.MyFirstBiographyBenjaminFranklin.xps */; };
 		C98BDDAA1548337C00E265B8 /* SCHEPubToTextFlowMappingParagraphSource.m in Sources */ = {isa = PBXBuildFile; fileRef = C98BDDA91548337B00E265B8 /* SCHEPubToTextFlowMappingParagraphSource.m */; };
 		C98BDDAB1548337C00E265B8 /* SCHEPubToTextFlowMappingParagraphSource.m in Sources */ = {isa = PBXBuildFile; fileRef = C98BDDA91548337B00E265B8 /* SCHEPubToTextFlowMappingParagraphSource.m */; };
-		C98BDDAC1548337C00E265B8 /* SCHEPubToTextFlowMappingParagraphSource.m in Sources */ = {isa = PBXBuildFile; fileRef = C98BDDA91548337B00E265B8 /* SCHEPubToTextFlowMappingParagraphSource.m */; };
 		C98BDDAD1548337C00E265B8 /* SCHEPubToTextFlowMappingParagraphSource.m in Sources */ = {isa = PBXBuildFile; fileRef = C98BDDA91548337B00E265B8 /* SCHEPubToTextFlowMappingParagraphSource.m */; };
 		C98BDDAE1548337C00E265B8 /* SCHEPubToTextFlowMappingParagraphSource.m in Sources */ = {isa = PBXBuildFile; fileRef = C98BDDA91548337B00E265B8 /* SCHEPubToTextFlowMappingParagraphSource.m */; };
 		C98BDDB11548625500E265B8 /* SCHEPubBook.m in Sources */ = {isa = PBXBuildFile; fileRef = C98BDDB01548625400E265B8 /* SCHEPubBook.m */; };
 		C98BDDB21548625500E265B8 /* SCHEPubBook.m in Sources */ = {isa = PBXBuildFile; fileRef = C98BDDB01548625400E265B8 /* SCHEPubBook.m */; };
-		C98BDDB31548625500E265B8 /* SCHEPubBook.m in Sources */ = {isa = PBXBuildFile; fileRef = C98BDDB01548625400E265B8 /* SCHEPubBook.m */; };
 		C98BDDB41548625500E265B8 /* SCHEPubBook.m in Sources */ = {isa = PBXBuildFile; fileRef = C98BDDB01548625400E265B8 /* SCHEPubBook.m */; };
 		C98BDDB51548625500E265B8 /* SCHEPubBook.m in Sources */ = {isa = PBXBuildFile; fileRef = C98BDDB01548625400E265B8 /* SCHEPubBook.m */; };
 		C98BDF191549897B00E265B8 /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 526A8A5E1385182100101A96 /* CoreMedia.framework */; };
@@ -4054,6 +4052,16 @@
 		F878D6B81344996400DDB98B /* SCHBookOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = F878D6B71344996400DDB98B /* SCHBookOperation.m */; };
 		F87B6E2E1398ED65005CC0FA /* SCHBookShelfSortTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = F87B6E2C1398ED65005CC0FA /* SCHBookShelfSortTableView.m */; };
 		F87B6E301398ED65005CC0FA /* SCHBookShelfSortTableView.xib in Resources */ = {isa = PBXBuildFile; fileRef = F87B6E2D1398ED65005CC0FA /* SCHBookShelfSortTableView.xib */; };
+		F87FE00A15BE93E50051C6E8 /* SCHStoryInteractionReadingQuiz.m in Sources */ = {isa = PBXBuildFile; fileRef = F87FE00915BE93E50051C6E8 /* SCHStoryInteractionReadingQuiz.m */; };
+		F87FE00B15BE93E50051C6E8 /* SCHStoryInteractionReadingQuiz.m in Sources */ = {isa = PBXBuildFile; fileRef = F87FE00915BE93E50051C6E8 /* SCHStoryInteractionReadingQuiz.m */; };
+		F87FE00C15BE93E50051C6E8 /* SCHStoryInteractionReadingQuiz.m in Sources */ = {isa = PBXBuildFile; fileRef = F87FE00915BE93E50051C6E8 /* SCHStoryInteractionReadingQuiz.m */; };
+		F87FE00D15BE93E50051C6E8 /* SCHStoryInteractionReadingQuiz.m in Sources */ = {isa = PBXBuildFile; fileRef = F87FE00915BE93E50051C6E8 /* SCHStoryInteractionReadingQuiz.m */; };
+		F87FE00E15BE93E50051C6E8 /* SCHStoryInteractionReadingQuiz.m in Sources */ = {isa = PBXBuildFile; fileRef = F87FE00915BE93E50051C6E8 /* SCHStoryInteractionReadingQuiz.m */; };
+		F87FE01015BE956D0051C6E8 /* StoryInteractionReadingQuiz1.xml in Resources */ = {isa = PBXBuildFile; fileRef = F87FE00F15BE956D0051C6E8 /* StoryInteractionReadingQuiz1.xml */; };
+		F87FE01115BE956D0051C6E8 /* StoryInteractionReadingQuiz1.xml in Resources */ = {isa = PBXBuildFile; fileRef = F87FE00F15BE956D0051C6E8 /* StoryInteractionReadingQuiz1.xml */; };
+		F87FE01215BE956D0051C6E8 /* StoryInteractionReadingQuiz1.xml in Resources */ = {isa = PBXBuildFile; fileRef = F87FE00F15BE956D0051C6E8 /* StoryInteractionReadingQuiz1.xml */; };
+		F87FE01315BE956D0051C6E8 /* StoryInteractionReadingQuiz1.xml in Resources */ = {isa = PBXBuildFile; fileRef = F87FE00F15BE956D0051C6E8 /* StoryInteractionReadingQuiz1.xml */; };
+		F87FE01415BE956D0051C6E8 /* StoryInteractionReadingQuiz1.xml in Resources */ = {isa = PBXBuildFile; fileRef = F87FE00F15BE956D0051C6E8 /* StoryInteractionReadingQuiz1.xml */; };
 		F87FFBD8152C59CB00A0282E /* storiaStarEmpty@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F87FFBD7152C59CB00A0282E /* storiaStarEmpty@2x.png */; };
 		F87FFBD9152C59CB00A0282E /* storiaStarEmpty@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F87FFBD7152C59CB00A0282E /* storiaStarEmpty@2x.png */; };
 		F87FFBDA152C59CB00A0282E /* storiaStarEmpty@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F87FFBD7152C59CB00A0282E /* storiaStarEmpty@2x.png */; };
@@ -6047,6 +6055,9 @@
 		F87B6E2B1398ED65005CC0FA /* SCHBookShelfSortTableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHBookShelfSortTableView.h; path = Shared/SCHBookShelfSortTableView.h; sourceTree = "<group>"; };
 		F87B6E2C1398ED65005CC0FA /* SCHBookShelfSortTableView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHBookShelfSortTableView.m; path = Shared/SCHBookShelfSortTableView.m; sourceTree = "<group>"; };
 		F87B6E2D1398ED65005CC0FA /* SCHBookShelfSortTableView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = SCHBookShelfSortTableView.xib; path = Shared/SCHBookShelfSortTableView.xib; sourceTree = "<group>"; };
+		F87FE00815BE93E50051C6E8 /* SCHStoryInteractionReadingQuiz.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCHStoryInteractionReadingQuiz.h; sourceTree = "<group>"; };
+		F87FE00915BE93E50051C6E8 /* SCHStoryInteractionReadingQuiz.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCHStoryInteractionReadingQuiz.m; sourceTree = "<group>"; };
+		F87FE00F15BE956D0051C6E8 /* StoryInteractionReadingQuiz1.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = StoryInteractionReadingQuiz1.xml; sourceTree = "<group>"; };
 		F87FFBD7152C59CB00A0282E /* storiaStarEmpty@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "storiaStarEmpty@2x.png"; path = "Resources/storiaStarEmpty@2x.png"; sourceTree = "<group>"; };
 		F87FFBDC152C5AB600A0282E /* storiaStarFull@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "storiaStarFull@2x.png"; path = "Resources/storiaStarFull@2x.png"; sourceTree = "<group>"; };
 		F87FFBDD152C5AB600A0282E /* storiaStarHalfFull@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "storiaStarHalfFull@2x.png"; path = "Resources/storiaStarHalfFull@2x.png"; sourceTree = "<group>"; };
@@ -6680,6 +6691,7 @@
 				28A60F5D1397708C0090853E /* Multiple Choice */,
 				2802476A139F7F6B00B73703 /* Pop Quiz */,
 				28D81EE413E840E100A2B25F /* Picture Starter */,
+				F87FE00715BE93390051C6E8 /* Reading Quiz */,
 				28BFE9C3139F81AC00415075 /* Scratch and See */,
 				28BFE9C4139F81BF00415075 /* Sequencing */,
 				28BFE9C5139F81CC00415075 /* Starting Letter */,
@@ -6735,6 +6747,7 @@
 				2891B71D13954355005FC4DD /* StoryInteractionMultipleChoiceText1.xml */,
 				28A60EF013966DC20090853E /* StoryInteractionMultipleChoicePicture1.xml */,
 				2891B71F13954804005FC4DD /* StoryInteractionPopQuiz1.xml */,
+				F87FE00F15BE956D0051C6E8 /* StoryInteractionReadingQuiz1.xml */,
 				2891B72113954CDC005FC4DD /* StoryInteractionScratchAndSee1.xml */,
 				28A60EF7139672930090853E /* StoryInteractionSequencing1.xml */,
 				28A60EE4139647410090853E /* StoryInteractionStartingLetter1.xml */,
@@ -9180,6 +9193,15 @@
 			path = Resources/Sounds;
 			sourceTree = "<group>";
 		};
+		F87FE00715BE93390051C6E8 /* Reading Quiz */ = {
+			isa = PBXGroup;
+			children = (
+				F87FE00815BE93E50051C6E8 /* SCHStoryInteractionReadingQuiz.h */,
+				F87FE00915BE93E50051C6E8 /* SCHStoryInteractionReadingQuiz.m */,
+			);
+			name = "Reading Quiz";
+			sourceTree = "<group>";
+		};
 		F8844BF1137D6416003D3014 /* Profile View Controller */ = {
 			isa = PBXGroup;
 			children = (
@@ -10389,6 +10411,7 @@
 				C96C4DA51557D62C00B47E56 /* storia-settings-logo@2x~ipad.png in Resources */,
 				A3E96F74159254C40069F1B9 /* 9780545443326_enr_v2.ToothTrouble.jpg in Resources */,
 				A3E96F78159254C40069F1B9 /* 9780545443326_enr_v2.ToothTrouble.xps in Resources */,
+				F87FE01015BE956D0051C6E8 /* StoryInteractionReadingQuiz1.xml in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -10423,6 +10446,7 @@
 				2898A0B713F436B100618172 /* Puzzle-6pc.xaml in Resources */,
 				C9367BE314731A8B0033A2EB /* SCHParentalToolsWebViewController_iPad.xib in Resources */,
 				C98BDF2015498A5300E265B8 /* SCHEPUB3Overrides.css in Resources */,
+				F87FE01215BE956D0051C6E8 /* StoryInteractionReadingQuiz1.xml in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -11150,6 +11174,7 @@
 				C96C4DA61557D62C00B47E56 /* storia-settings-logo@2x~ipad.png in Resources */,
 				A382C4131593639B00FDE3E3 /* 9780545324328.1103.MixedUpAlphabet.xps in Resources */,
 				A382C414159363B200FDE3E3 /* 9780545324328.1103.MixedUpAlphabet.jpg in Resources */,
+				F87FE01115BE956D0051C6E8 /* StoryInteractionReadingQuiz1.xml in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -11688,6 +11713,7 @@
 				C96C4DA71557D62C00B47E56 /* storia-settings-logo@2x~ipad.png in Resources */,
 				A3E96F76159254C40069F1B9 /* 9780545443326_enr_v2.ToothTrouble.jpg in Resources */,
 				A3E96F7A159254C40069F1B9 /* 9780545443326_enr_v2.ToothTrouble.xps in Resources */,
+				F87FE01315BE956D0051C6E8 /* StoryInteractionReadingQuiz1.xml in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -12226,6 +12252,7 @@
 				C96C4DA81557D62C00B47E56 /* storia-settings-logo@2x~ipad.png in Resources */,
 				A3E96F77159254C40069F1B9 /* 9780545443326_enr_v2.ToothTrouble.jpg in Resources */,
 				A3E96F7B159254C40069F1B9 /* 9780545443326_enr_v2.ToothTrouble.xps in Resources */,
+				F87FE01415BE956D0051C6E8 /* StoryInteractionReadingQuiz1.xml in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -12630,6 +12657,7 @@
 				524321321598912400CCB8F1 /* SCHGetWishListItemsOperation.m in Sources */,
 				52A36A5F15B0521D00162753 /* SCHScholasticResponseParser.m in Sources */,
 				52A36A6A15B444D300162753 /* SCHXPSKNFBMetadataFileParser.m in Sources */,
+				F87FE00A15BE93E50051C6E8 /* SCHStoryInteractionReadingQuiz.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -12689,8 +12717,6 @@
 				C9367BDA1472E89A0033A2EB /* KNFBXMLParserLock.m in Sources */,
 				C9A6B402148B853C00B31277 /* SCHAppHelpState.m in Sources */,
 				F849155814FFA54D000D064B /* RateView.m in Sources */,
-				C98BDDAC1548337C00E265B8 /* SCHEPubToTextFlowMappingParagraphSource.m in Sources */,
-				C98BDDB31548625500E265B8 /* SCHEPubBook.m in Sources */,
 				287639B9154E857100540861 /* SCHStoryInteractionJigsawPiece.m in Sources */,
 				F8D199EF15A594B500EA17C6 /* SCHRecommendationOperationsTests.m in Sources */,
 				F8D199F015A598E700EA17C6 /* SCHRecommendationDownloadCoverOperation.m in Sources */,
@@ -12702,6 +12728,7 @@
 				52A36A6715B068D300162753 /* SCHScholasticResponseParserTests.m in Sources */,
 				52A36A6C15B444D300162753 /* SCHXPSKNFBMetadataFileParser.m in Sources */,
 				52A36A7115B458C900162753 /* SCHXPSKNFBMetadataFileParserTests.m in Sources */,
+				F87FE00C15BE93E50051C6E8 /* SCHStoryInteractionReadingQuiz.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -13087,6 +13114,7 @@
 				524321331598912400CCB8F1 /* SCHGetWishListItemsOperation.m in Sources */,
 				52A36A6015B0521D00162753 /* SCHScholasticResponseParser.m in Sources */,
 				52A36A6B15B444D300162753 /* SCHXPSKNFBMetadataFileParser.m in Sources */,
+				F87FE00B15BE93E50051C6E8 /* SCHStoryInteractionReadingQuiz.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -13472,6 +13500,7 @@
 				524321341598912400CCB8F1 /* SCHGetWishListItemsOperation.m in Sources */,
 				52A36A6215B0521D00162753 /* SCHScholasticResponseParser.m in Sources */,
 				52A36A6D15B444D300162753 /* SCHXPSKNFBMetadataFileParser.m in Sources */,
+				F87FE00D15BE93E50051C6E8 /* SCHStoryInteractionReadingQuiz.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -13857,6 +13886,7 @@
 				524321351598912400CCB8F1 /* SCHGetWishListItemsOperation.m in Sources */,
 				52A36A6315B0521D00162753 /* SCHScholasticResponseParser.m in Sources */,
 				52A36A6E15B444D300162753 /* SCHXPSKNFBMetadataFileParser.m in Sources */,
+				F87FE00E15BE93E50051C6E8 /* SCHStoryInteractionReadingQuiz.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

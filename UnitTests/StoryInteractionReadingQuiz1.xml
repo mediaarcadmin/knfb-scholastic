@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<SIConfigFile>
+    <StoryInteractions>
+        <StoryInteraction StoryInteractionType="ReadingQuiz">
+            <Position>180,10</Position>
+            <Quiz>
+                <Question>
+                    <QuestionPrompt Transcript="Pedro followed the puppy to a " />
+                    <Answers>
+                        <Answer Transcript="store." />
+                        <Answer Transcript="park." IsCorrect="true" />
+                        <Answer Transcript="boat." />
+                        <Answer Transcript="cave." />
+                    </Answers>
+                </Question>
+                <Question>
+                    <QuestionPrompt Transcript="Glenn saw Pedro " />
+                    <Answers>
+                        <Answer Transcript="toss a baseball." IsCorrect="true" />
+                        <Answer Transcript="chase a butterfly." />
+                        <Answer Transcript="make a sandwich." />
+                        <Answer Transcript="play a trumpet." />
+                    </Answers>
+                </Question>
+            </Quiz>
+        </StoryInteraction>
+    </StoryInteractions>
+</SIConfigFile>
