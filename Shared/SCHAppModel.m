@@ -30,74 +30,62 @@ typedef enum {
 @interface SCHAppModel()
 
 @property (nonatomic, assign) id<SCHAppController> appController;
-@property (nonatomic, assign) SCHAppStateManager *appStateManager;
-@property (nonatomic, assign) SCHAuthenticationManager *authenticationManager;
-@property (nonatomic, assign) SCHSyncManager *syncManager;
 @property (nonatomic, assign) SCHAppModelSyncState syncState;
 
-- (BOOL)hasProfiles;
+- (BOOL)hasProfilesInManagedObjectContext:(NSManagedObjectContext *)moc;
 
 @end
 
 @implementation SCHAppModel
 
 @synthesize appController;
-@synthesize appStateManager;
-@synthesize authenticationManager;
-@synthesize syncManager;
 @synthesize syncState;
 
 - (void)dealloc
 {
     appController = nil;
-    appStateManager = nil;
-    authenticationManager = nil;
-    syncManager = nil;
     
     [super dealloc];
 }
 
 - (id)initWithAppController:(id<SCHAppController>)anAppController
 {
-    return [self initWithAppController:anAppController
-                       appStateManager:[SCHAppStateManager sharedAppStateManager]
-                 authenticationManager:[SCHAuthenticationManager sharedAuthenticationManager]
-                           syncManager:[SCHSyncManager sharedSyncManager]];
-            
-}
-
-- (id)initWithAppController:(id<SCHAppController>)anAppController
-            appStateManager:(SCHAppStateManager *)anAppStateManager
-      authenticationManager:(SCHAuthenticationManager *)anAuthenticationManager
-                syncManager:(SCHSyncManager *)aSyncManager
-{
     if ((self = [super init])) {
         
         appController = anAppController;
-        appStateManager = anAppStateManager;
-        authenticationManager = anAuthenticationManager;
-        syncManager = aSyncManager;
-        
-        if ([authenticationManager hasUsernameAndPassword] && 
-            [authenticationManager hasDRMInformation] && 
-            [syncManager havePerformedFirstSyncUpToBooks]) {
-            
-            if ([self hasProfiles]) {
-                [appController presentProfiles];
-            } else {
-                [appController presentProfilesSetup];
-            }
-        } else if ([appStateManager isSampleStore]) {
-            [appController presentSamplesWithWelcome:NO];
-        } else {
-            [appController presentLogin];
-        }
     }
     
     return self;
 }
 
 #pragma mark - Actions
+
+- (void)restoreAppState
+{
+    [self restoreAppStateWithAppStateManager:[SCHAppStateManager sharedAppStateManager]
+                       authenticationManager:[SCHAuthenticationManager sharedAuthenticationManager]
+                                 syncManager:[SCHSyncManager sharedSyncManager]];
+}
+
+- (void)restoreAppStateWithAppStateManager:(SCHAppStateManager *)appStateManager
+                     authenticationManager:(SCHAuthenticationManager *)authenticationManager
+                               syncManager:(SCHSyncManager *)syncManager
+{
+    if ([authenticationManager hasUsernameAndPassword] && 
+        [authenticationManager hasDRMInformation] && 
+        [syncManager havePerformedFirstSyncUpToBooks]) {
+        
+        if ([self hasProfilesInManagedObjectContext:appStateManager.managedObjectContext]) {
+            [self.appController presentProfiles];
+        } else {
+            [self.appController presentProfilesSetup];
+        }
+    } else if ([appStateManager isSampleStore]) {
+        [self.appController presentSamplesWithWelcome:NO];
+    } else {
+        [self.appController presentLogin];
+    }
+}
 
 - (void)setupPreview
 {
@@ -125,6 +113,17 @@ typedef enum {
 
 - (void)loginWithUsername:(NSString *)username password:(NSString *)password
 {
+    [self loginWithUsername:username
+                   password:password 
+                syncManager:[SCHSyncManager sharedSyncManager] 
+      authenticationManager:[SCHAuthenticationManager sharedAuthenticationManager]];
+}
+
+- (void)loginWithUsername:(NSString *)username 
+                 password:(NSString *)password 
+              syncManager:(SCHSyncManager *)syncManager
+    authenticationManager:(SCHAuthenticationManager *)authenticationManager
+{
     if ([[Reachability reachabilityForInternetConnection] isReachable] == NO) {
         NSError *error = [NSError errorWithDomain:kSCHLoginErrorDomain  
                                              code:kSCHLoginReachabilityError 
@@ -134,7 +133,7 @@ typedef enum {
         [self.appController failedLoginWithError:error];
         
     } else {
-        [self.syncManager resetSync]; 
+        [syncManager resetSync]; 
         AppDelegate_Shared *appDelegate = (AppDelegate_Shared *)[[UIApplication sharedApplication] delegate];
         [appDelegate setStoreType:kSCHStoreTypeStandardStore];
         
@@ -154,7 +153,7 @@ typedef enum {
 #else 
                 NSString *errorMessage = NSLocalizedString(@"There was a problem checking your username and password. Please try again.", @"");
 #endif
-                [self.authenticationManager authenticateWithUser:username 
+                [authenticationManager authenticateWithUser:username 
                                                         password:password
                                                     successBlock:^(SCHAuthenticationManagerConnectivityMode connectivityMode) { 
                                                         if (connectivityMode == SCHAuthenticationManagerConnectivityModeOnline) { 
@@ -215,13 +214,12 @@ typedef enum {
 
 #pragma mark - Utility Methods
 
-- (BOOL)hasProfiles;
+- (BOOL)hasProfilesInManagedObjectContext:(NSManagedObjectContext *)moc
 {
     NSAssert([NSThread isMainThread], @"hasProfiles must be called on the main thread");
     
     BOOL ret = NO;
-    NSManagedObjectContext *moc = self.appStateManager.managedObjectContext;
-    
+
     if (moc) {
         
         NSFetchRequest *request = [[NSFetchRequest alloc] init];

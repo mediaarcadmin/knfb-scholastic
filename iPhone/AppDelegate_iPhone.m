@@ -48,6 +48,7 @@ static NSTimeInterval const kAppDelegate_iPhoneSyncManagerWakeDelay = 5.0;
     if (success) {
         self.appController = (SCHPhoneAppController *)self.navigationController;
         self.appModel = [[[SCHAppModel alloc] initWithAppController:self.appController] autorelease];
+        [self.appModel restoreAppState];
     }
     
     return(YES);

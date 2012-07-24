@@ -12,13 +12,15 @@
 
 @required
 
-// App Presentation Methods
+// Presentation Methods
+
 - (void)presentProfiles;
 - (void)presentProfilesSetup;
 - (void)presentSamplesWithWelcome:(BOOL)welcome;
 - (void)presentLogin;
 
-// App Failure Methods
+// Failure Methods
+
 - (void)failedSamplesWithError:(NSError *)error;
 - (void)failedLoginWithError:(NSError *)error;
 

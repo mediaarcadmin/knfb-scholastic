@@ -326,18 +326,21 @@
 
 - (void)popToRootViewControllerAnimated:(BOOL)animated withCompletionHandler:(dispatch_block_t)completion
 {
-    if (completion) {
-        [CATransaction begin];
-        [CATransaction setCompletionBlock:completion];
-    }
+    [CATransaction begin];
+    [CATransaction setCompletionBlock:^{
+        [self setViewControllers:nil];
+        if (completion) {
+            completion();
+        }
+    }];
+ 
     
-    [self presentModalViewController:[self loginViewController] animated:animated];
+    UIViewController *login = [self loginViewController];
+    self.modalContainerView = [[[UINavigationController alloc] initWithRootViewController:login] autorelease];
+    [self presentModalViewController:self.modalContainerView animated:animated];
     [self popToRootViewControllerAnimated:animated];
-    [self setViewControllers:nil];
     
-    if (completion) {
-        [CATransaction commit];
-    }
+    [CATransaction commit];
 }
 
 - (void)presentWebParentToolsModallyWithToken:(NSString *)token 

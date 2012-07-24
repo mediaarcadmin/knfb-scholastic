@@ -17,20 +17,24 @@
 
 @interface SCHAppModel : NSObject
 
-- (id)initWithAppController:(id<SCHAppController>)appController; // uses shared instances
+- (id)initWithAppController:(id<SCHAppController>)appController;
 
-- (id)initWithAppController:(id<SCHAppController>)appController
-            appStateManager:(SCHAppStateManager *)appStateManager
-      authenticationManager:(SCHAuthenticationManager *)authenticationManager
-                syncManager:(SCHSyncManager *)syncManager;
+// Shared Instance Actions
+
+- (void)restoreAppState;
+- (void)setupPreview;
+- (void)loginWithUsername:(NSString *)username password:(NSString *)password;
 
 // Actions
 
-- (void)setupPreview;
+- (void)restoreAppStateWithAppStateManager:(SCHAppStateManager *)appStateManager
+                     authenticationManager:(SCHAuthenticationManager *)authenticationManager
+                               syncManager:(SCHSyncManager *)syncManager;
 - (void)setupPreviewWithImporter:(SCHSampleBooksImporter *)importer;
-
-- (void)loginWithUsername:(NSString *)username password:(NSString *)password;
-
+- (void)loginWithUsername:(NSString *)username 
+                 password:(NSString *)password 
+              syncManager:(SCHSyncManager *)syncManager
+    authenticationManager:(SCHAuthenticationManager *)authenticationManager;
 
 // Temp State methods TODO: remove
 
