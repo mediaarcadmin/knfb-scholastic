@@ -16,8 +16,10 @@
 // ProcessRemote Constants
 NSString * const kSCHScholasticGetUserInfoWebServiceProcessRemote = @"processRemote";
 NSString * const kSCHScholasticGetUserInfoWebServiceCOPPA = @"COPPA";
+NSString * const kSCHScholasticGetUserInfoWebServiceSPSID = @"SPSID";
 
 static NSString * const kSCHScholasticGetUserInfoWebServiceAttributeCOPPA_FLAG_KEY = @"COPPA_FLAG_KEY";
+static NSString * const kSCHScholasticGetUserInfoWebServiceAttributeSPSID = @"spsid";
 
 /*
  * This class is thread safe when using the Thread Confinement design pattern.
@@ -60,7 +62,7 @@ static NSString * const kSCHScholasticGetUserInfoWebServiceAttributeCOPPA_FLAG_K
 {	
 	GetUserInfoSvc_processRemote *request = [GetUserInfoSvc_processRemote new];
 
-	request.SPSWSXML = [NSString stringWithFormat:@"<SchWS><attribute name=\"clientID\" value=\"LD\"/><attribute name=\"isSingleToken\" value=\"true\"/><attribute name=\"token\" value=\"%@\"/><attribute name=\"requestedProps\" value=\"COPPA_FLAG_KEY\"/></SchWS>", (token == nil ? @"" : token)];
+	request.SPSWSXML = [NSString stringWithFormat:@"<SchWS><attribute name=\"clientID\" value=\"LD\"/><attribute name=\"isSingleToken\" value=\"true\"/><attribute name=\"token\" value=\"%@\"/><attribute name=\"requestedProps\" value=\"spsid,COPPA_FLAG_KEY\"/></SchWS>", (token == nil ? @"" : token)];
     
 	[self.binding processRemoteAsyncUsingParameters:request delegate:self]; 
 	[[BITNetworkActivityManager sharedNetworkActivityManager] showNetworkActivityIndicator];
@@ -110,8 +112,9 @@ completedWithResponse:(GetUserInfoSoap11BindingResponse *)response
                     }                    
                 } else {
                     NSString *coppaFlag = [responseDictionary objectForKey:kSCHScholasticGetUserInfoWebServiceAttributeCOPPA_FLAG_KEY];
-
-                    if (coppaFlag == nil) {
+                    NSString *spsId = [responseDictionary objectForKey:kSCHScholasticGetUserInfoWebServiceAttributeSPSID];
+                    
+                    if (coppaFlag == nil && spsId == nil) {
                         if([(id)self.delegate respondsToSelector:@selector(method:didFailWithError:requestInfo:result:)]) {                        
                             NSError *error = [SCHScholasticResponseParser errorFromDictionary:responseDictionary];
                             
@@ -132,17 +135,24 @@ completedWithResponse:(GetUserInfoSoap11BindingResponse *)response
                         NSDictionary *userInfo = [NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithDouble:(double)operation.serverDateDelta], @"serverDateDelta",
                                                   (serverDate == nil ? (id)[NSNull null] : serverDate), @"serverDate",
                                                   nil];
-                        
-                        NSNumber *coppaValue = nil;
-                        if (coppaFlag == (id)[NSNull null]) {
-                            coppaValue = [NSNumber numberWithBool:NO];
-                        } else {
-                            coppaValue = [NSNumber numberWithBool:[coppaFlag boolValue]];
+                        NSMutableDictionary *result = [NSMutableDictionary dictionary];
+
+                        if (coppaFlag != nil) {
+                            NSNumber *coppaValue = nil;
+                            if (coppaFlag == (id)[NSNull null]) {
+                                coppaValue = [NSNumber numberWithBool:NO];
+                            } else {
+                                coppaValue = [NSNumber numberWithBool:[coppaFlag boolValue]];
+                            }
+                            [result setObject:coppaValue forKey:kSCHScholasticGetUserInfoWebServiceCOPPA];
                         }
-                        
+                                                
+                        if (spsId != nil) {
+                            [result setObject:spsId forKey:kSCHScholasticGetUserInfoWebServiceSPSID];
+                        }
+                            
                         [(id)self.delegate method:kSCHScholasticGetUserInfoWebServiceProcessRemote 
-                            didCompleteWithResult:[NSDictionary dictionaryWithObject:coppaValue 
-                                                                              forKey:kSCHScholasticGetUserInfoWebServiceCOPPA]
+                            didCompleteWithResult:[NSDictionary dictionaryWithDictionary:result]
                                          userInfo:userInfo];
                     }
                 }

@@ -29,6 +29,7 @@
 @synthesize updateBooksButton;
 @synthesize estimatedDownloadTimeLabel;
 @synthesize bookUpdates;
+@synthesize noteUpdateNoticeLabel;
 @synthesize cellControllers;
 @synthesize availableBookUpdates;
 
@@ -36,6 +37,7 @@
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
     
+    [noteUpdateNoticeLabel release], noteUpdateNoticeLabel = nil;
     [booksTable release], booksTable = nil;
     [updateBooksButton release], updateBooksButton = nil;
     [estimatedDownloadTimeLabel release], estimatedDownloadTimeLabel = nil;
@@ -67,6 +69,13 @@
                                              selector:@selector(bookUpdatedSuccessfully:)
                                                  name:kSCHBookUpdatedSuccessfullyNotification
                                                object:nil];
+    
+#if IPHONE_HIGHLIGHTS_DISABLED
+        if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
+            self.noteUpdateNoticeLabel.text = NSLocalizedString(@"Notes made in an eBook will be lost when you upgrade.", @"");
+        }
+#endif
+
 }
 
 - (void)viewDidUnload

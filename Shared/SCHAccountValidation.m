@@ -32,6 +32,7 @@ static NSTimeInterval const kSCHAccountValidationpTokenTimeout = 1740.0;
 @property (nonatomic, assign) BOOL waitingOnResponse;
 @property (nonatomic, retain) SCHScholasticAuthenticationWebService *scholasticWebService;
 @property (nonatomic, copy) ValidateBlock validateBlock;
+@property (nonatomic, assign) BOOL updatePassword;
 
 @end
 
@@ -43,6 +44,7 @@ static NSTimeInterval const kSCHAccountValidationpTokenTimeout = 1740.0;
 @synthesize waitingOnResponse;
 @synthesize scholasticWebService;
 @synthesize validateBlock;
+@synthesize updatePassword;
 
 #pragma mark - Object lifecycle 
 
@@ -90,6 +92,7 @@ static NSTimeInterval const kSCHAccountValidationpTokenTimeout = 1740.0;
 
 - (BOOL)validateWithUserName:(NSString *)username 
                 withPassword:(NSString *)password 
+              updatePassword:(BOOL)setUpdatePassword
                validateBlock:(ValidateBlock)aValidateBlock
 {
     BOOL ret = NO;
@@ -102,6 +105,7 @@ static NSTimeInterval const kSCHAccountValidationpTokenTimeout = 1740.0;
         self.passwordUsed = password;
         self.validateBlock = aValidateBlock;
         self.waitingOnResponse = YES;
+        self.updatePassword = setUpdatePassword;
         [self.scholasticWebService authenticateUserName:username withPassword:password]; 
         ret = YES; 
     }
@@ -177,17 +181,19 @@ static NSTimeInterval const kSCHAccountValidationpTokenTimeout = 1740.0;
                                      code:kSCHAccountValidationPTokenError
                                  userInfo:userInfo];
     } else {
-        NSString *storedUsername = [[NSUserDefaults standardUserDefaults] stringForKey:kSCHAuthenticationManagerUsername];
-        NSString *storedPassword = [SFHFKeychainUtils getPasswordForUsername:storedUsername 
-                                                              andServiceName:kSCHAuthenticationManagerServiceName 
-                                                                       error:nil];
-
-        if ([self.passwordUsed isEqualToString:storedPassword] == NO) {
-            [SFHFKeychainUtils storeUsername:storedUsername 
-                                 andPassword:self.passwordUsed 
-                              forServiceName:kSCHAuthenticationManagerServiceName 
-                              updateExisting:YES 
-                                       error:nil];
+        if (self.updatePassword == YES) {
+            NSString *storedUsername = [[NSUserDefaults standardUserDefaults] stringForKey:kSCHAuthenticationManagerUsername];
+            NSString *storedPassword = [SFHFKeychainUtils getPasswordForUsername:storedUsername 
+                                                                  andServiceName:kSCHAuthenticationManagerServiceName 
+                                                                           error:nil];
+            
+            if ([self.passwordUsed isEqualToString:storedPassword] == NO) {
+                [SFHFKeychainUtils storeUsername:storedUsername 
+                                     andPassword:self.passwordUsed 
+                                  forServiceName:kSCHAuthenticationManagerServiceName 
+                                  updateExisting:YES 
+                                           error:nil];
+            }
         }
         
         self.pToken = pTokenResponse;

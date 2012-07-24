@@ -24,6 +24,7 @@ NSInteger const kSCHAudioBookPlayerDataError = 2001;
 static NSTimeInterval const kSCHAudioBookPlayerMilliSecondsInASecond = 1000.0;
 static NSInteger const kSCHAudioBookPlayerWordTimerInterval = 4 * NSEC_PER_MSEC;
 static NSUInteger const kSCHAudioBookPlayerNoAudioLoaded = NSUIntegerMax;
+static NSTimeInterval const kSCHAudioBookPlayerMinimumHighlightDelay = 0.1;
 
 @interface SCHAudioBookPlayer ()
 
@@ -40,9 +41,11 @@ static NSUInteger const kSCHAudioBookPlayerNoAudioLoaded = NSUIntegerMax;
 @property (nonatomic, assign) BOOL isPlaying;
 @property (nonatomic, assign) BOOL isSuspended;
 
+- (BOOL)playWithHighlightDelay:(NSTimeInterval)highlightDelayTime;
 - (SCHAudioInfo *)audioInfoForPageIndex:(NSUInteger)pageIndex;
 - (BOOL)prepareToPlay:(SCHAudioInfo *)audioInfoToPrepare 
-           pageWordOffset:(NSUInteger)pageWordOffset;
+       pageWordOffset:(NSUInteger)pageWordOffset
+    currentTimeOffset:(NSTimeInterval *)currentTimeOffset;
 - (void)suspend;
 - (void)pauseToResume;
 - (void)resumeFromPause;
@@ -86,7 +89,7 @@ static NSUInteger const kSCHAudioBookPlayerNoAudioLoaded = NSUIntegerMax;
                                                      name:UIApplicationDidBecomeActiveNotification
                                                    object:nil];        
     }
-    return(self);
+    return self ;
 }
 
 - (void)dealloc 
@@ -257,7 +260,7 @@ static NSUInteger const kSCHAudioBookPlayerNoAudioLoaded = NSUIntegerMax;
         }
     }
     
-    return(ret);
+    return ret;
 }
 
 - (void)cleanAudio
@@ -280,33 +283,55 @@ static NSUInteger const kSCHAudioBookPlayerNoAudioLoaded = NSUIntegerMax;
 
 - (BOOL)play
 {
+    return [self playWithHighlightDelay:0.0];
+}
+
+- (BOOL)playWithHighlightDelay:(NSTimeInterval)highlightDelayTime
+{
     //NSLog(@"SCHAudioBookPlayer play with current time: %d", (NSUInteger)(self.player.currentTime * kSCHAudioBookPlayerMilliSecondsInASecond));    
 
     BOOL ret = NO;
     
     ret = [self.player play];
-    self.isPlaying = ret;
-    if (ret == YES && self.timer != NULL) {
-        [UIApplication sharedApplication].idleTimerDisabled = YES;        
-        dispatch_resume(self.timer);
-        self.isSuspended = NO;
+    if (ret == NO) {
+        self.isPlaying = NO;
+    } else {
+        SCHAudioBookPlayer *weakSelf = self;
+        dispatch_block_t block = ^{
+            weakSelf.isPlaying = YES;
+            if (weakSelf.timer != NULL) {
+                [UIApplication sharedApplication].idleTimerDisabled = YES;        
+                dispatch_resume(weakSelf.timer);
+                weakSelf.isSuspended = NO;
+            }        
+        };
+        
+        if (highlightDelayTime > 0.0) {
+            dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, highlightDelayTime * NSEC_PER_SEC);
+            dispatch_after(popTime, dispatch_get_main_queue(), block);        
+        } else {
+            block();
+        }
     }
 
-    return(ret);
+    return ret;
 }
 
 - (BOOL)playAtLayoutPage:(NSUInteger)layoutPage pageWordOffset:(NSUInteger)pageWordOffset
 {  
     //NSLog(@"SCHAudioBookPlayer playAtLayoutPage");  
     BOOL ret = NO;
+    NSTimeInterval currentTimeOffset = 0.0;
     
     SCHAudioInfo *audioInfo = [self audioInfoForPageIndex:(layoutPage == 0 ? 0 : layoutPage - 1)];
     
-    if (audioInfo != nil && [self prepareToPlay:audioInfo pageWordOffset:pageWordOffset] == YES) {        
-        ret = [self play];
+    if (audioInfo != nil && [self prepareToPlay:audioInfo 
+                                 pageWordOffset:pageWordOffset 
+                              currentTimeOffset:&currentTimeOffset] == YES) {        
+        ret = [self playWithHighlightDelay:currentTimeOffset];
     }
     
-    return(ret);
+    return ret;
 }
 
 - (void)pause
@@ -335,10 +360,12 @@ static NSUInteger const kSCHAudioBookPlayerNoAudioLoaded = NSUIntegerMax;
         }
     }
     
-    return(ret);
+    return ret;
 }
 
-- (BOOL)prepareToPlay:(SCHAudioInfo *)audioInfoToPrepare pageWordOffset:(NSUInteger)pageWordOffset
+- (BOOL)prepareToPlay:(SCHAudioInfo *)audioInfoToPrepare 
+       pageWordOffset:(NSUInteger)pageWordOffset
+    currentTimeOffset:(NSTimeInterval *)currentTimeOffset
 {    
     BOOL ret = NO;
     NSError *error = nil;
@@ -398,16 +425,17 @@ static NSUInteger const kSCHAudioBookPlayerNoAudioLoaded = NSUIntegerMax;
             NSTimeInterval startTime = [wordTiming startTimeAsSeconds];
             self.player.currentTime = startTime;       
             
+            // Setting self.player.currentTime will often give you a time in the
+            // past by a small amount, we delay resuming highlighting block so 
+            // we don't end up with a backward page flip
             if (self.player.currentTime < startTime) {
-                // Skip forward a quarter second in case we got a time in the past.
-                // This is required because setting self.player.currentTime will often give you a time in the past by a small amount
-                self.player.currentTime = startTime + 0.25f;
+                *currentTimeOffset = MAX(kSCHAudioBookPlayerMinimumHighlightDelay, startTime - self.player.currentTime);
 
             }
         }
     }
     
-    return(ret);
+    return ret;
 }
 
 - (void)suspend
@@ -467,10 +495,13 @@ static NSUInteger const kSCHAudioBookPlayerNoAudioLoaded = NSUIntegerMax;
 {
     NSLog(@"SCHAudioBookPlayer audioPlayerDidFinishPlaying");
     NSUInteger nextAudioReferencesIndex = self.loadedAudioReferencesIndex + 1;
+    NSTimeInterval currentTimeOffset = 0.0;
+    
     if (nextAudioReferencesIndex < [self.audioBookReferences count]) {
         if ([self prepareToPlay:[self.audioBookReferences objectAtIndex:nextAudioReferencesIndex] 
-                                 pageWordOffset:0] == YES) {        
-            [self play];
+                                 pageWordOffset:0 
+              currentTimeOffset:&currentTimeOffset] == YES) {        
+            [self playWithHighlightDelay:currentTimeOffset];
         }
     } else {
         [self suspend];

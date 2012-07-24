@@ -179,7 +179,10 @@ static const CGFloat kDeregisterContentHeightLandscape = 380;
             NSString *storedUsername = [[NSUserDefaults standardUserDefaults] stringForKey:kSCHAuthenticationManagerUsername];
             [self.spinner startAnimating];
             [self setEnablesUI:NO];
-            [self.accountValidation validateWithUserName:storedUsername withPassword:self.passwordField.text validateBlock:^(NSString *pToken, NSError *error) {
+            [self.accountValidation validateWithUserName:storedUsername 
+                                            withPassword:self.passwordField.text 
+                                          updatePassword:YES
+                                           validateBlock:^(NSString *pToken, NSError *error) {
                 if (error != nil) {
                     LambdaAlert *alert = [[LambdaAlert alloc]
                                           initWithTitle:NSLocalizedString(@"Error", @"error alert title")

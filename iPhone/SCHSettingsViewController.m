@@ -250,7 +250,7 @@ extern NSString * const kSCHAuthenticationManagerDeviceKey;
                                                          progress]
                                                forState:UIControlStateNormal];
             } else {
-                [self.downloadDictionaryButton setTitle:NSLocalizedString(@"Dictionary Download Paused.\nWaiting for WiFi...", @"Waiting for WiFi dictionary button title")
+                [self.downloadDictionaryButton setTitle:NSLocalizedString(@"Dictionary Download Paused.\nWaiting for Wi-Fi.", @"Waiting for Wi-Fi dictionary button title")
                                                forState:UIControlStateNormal];
                 doubleLine = YES;
             }

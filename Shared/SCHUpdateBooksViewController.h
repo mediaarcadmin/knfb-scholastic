@@ -17,6 +17,7 @@
 @property (nonatomic, retain) IBOutlet UIButton *updateBooksButton;
 @property (nonatomic, retain) IBOutlet UILabel *estimatedDownloadTimeLabel;
 @property (nonatomic, retain) SCHBookUpdates *bookUpdates;
+@property (retain, nonatomic) IBOutlet UILabel *noteUpdateNoticeLabel;
 
 - (IBAction)updateBooks:(id)sender;
 

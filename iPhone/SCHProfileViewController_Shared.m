@@ -414,6 +414,14 @@ didSelectButtonAnimated:(BOOL)animated
     } else {
         [self.headerLabel setText:NSLocalizedString(@"Please go to the Parent Tools menu to create bookshelves.", @"Profile header text for 0 bookshelves")];
         [self.headerLabel setNumberOfLines:2];        
+        
+        NSInteger fontSize = 18;
+        
+        if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
+            fontSize = 15;
+        }
+        
+        [self.headerLabel setFont:[UIFont fontWithName:@"Arial-BoldMT" size:fontSize]];
     }
     
     return fetchedResultsController_;
