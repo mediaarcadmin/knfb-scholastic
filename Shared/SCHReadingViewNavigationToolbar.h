@@ -14,9 +14,13 @@ typedef enum
 {
 	kSCHReadingViewNavigationToolbarStyleYoungerPhone = 0,
     kSCHReadingViewNavigationToolbarStyleYoungerPictureStarterPhone,
+    kSCHReadingViewNavigationToolbarStyleYoungerReadingQuizPhone,
+    kSCHReadingViewNavigationToolbarStyleYoungerPictureStarterAndReadingQuizPhone,
 	kSCHReadingViewNavigationToolbarStyleOlderPhone,
 	kSCHReadingViewNavigationToolbarStyleYoungerPad,
     kSCHReadingViewNavigationToolbarStyleYoungerPictureStarterPad,
+    kSCHReadingViewNavigationToolbarStyleYoungerReadingQuizPad,
+    kSCHReadingViewNavigationToolbarStyleYoungerPictureStarterAndReadingQuizPad,
     kSCHReadingViewNavigationToolbarStyleOlderPad
 } SCHReadingViewNavigationToolbarStyle;
 
@@ -25,6 +29,7 @@ typedef enum
 @optional
 
 - (IBAction)backAction:(id)sender;
+- (IBAction)readingQuizAction:(id)sender;
 - (IBAction)pictureStarterAction:(id)sender;
 - (IBAction)audioAction:(id)sender;
 - (IBAction)helpAction:(id)sender;

@@ -648,19 +648,33 @@ static const NSUInteger kReadingViewMaxRecommendationsCount = 4;
     if ([[self.bookStoryInteractions storyInteractionsOfClass:[SCHStoryInteractionPictureStarter class]] count]) {
         pictureStarter = YES;
     }
-        
+    
+    BOOL readingQuiz = NO;
+    
+    if ([[self.bookStoryInteractions storyInteractionsOfClass:[SCHStoryInteractionReadingQuiz class]] count]) {
+        readingQuiz = YES;
+    }
+    
     SCHReadingViewNavigationToolbarStyle style = 0;
     
     if (self.youngerMode) {
         if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
-            if (pictureStarter) {
+            if (pictureStarter && readingQuiz) {
+                style = kSCHReadingViewNavigationToolbarStyleYoungerPictureStarterAndReadingQuizPhone;
+            } else if (pictureStarter) {
                 style = kSCHReadingViewNavigationToolbarStyleYoungerPictureStarterPhone;
+            } else if (readingQuiz) {
+                style = kSCHReadingViewNavigationToolbarStyleYoungerReadingQuizPhone;
             } else {
                 style = kSCHReadingViewNavigationToolbarStyleYoungerPhone;
             }
         } else {
-            if (pictureStarter) {
-                style = kSCHReadingViewNavigationToolbarStyleYoungerPictureStarterPad; 
+            if (pictureStarter && readingQuiz) {
+                style = kSCHReadingViewNavigationToolbarStyleYoungerPictureStarterAndReadingQuizPad; 
+            } else if (pictureStarter) {
+                style = kSCHReadingViewNavigationToolbarStyleYoungerPictureStarterPad;
+            } else if (readingQuiz) {
+                style = kSCHReadingViewNavigationToolbarStyleYoungerReadingQuizPad;
             } else {
                 style = kSCHReadingViewNavigationToolbarStyleYoungerPad; 
             }
@@ -1199,6 +1213,19 @@ static const NSUInteger kReadingViewMaxRecommendationsCount = 4;
     NSArray *storyInteractions = [self.bookStoryInteractions storyInteractionsOfClass:[SCHStoryInteractionPictureStarter class]];
     if ([storyInteractions count] < 1) {
         NSLog(@"No PictureStarter found - button should be disabled");
+        return;
+    }
+    
+    [self presentStoryInteraction:[storyInteractions lastObject]];
+}
+
+- (void)readingQuizAction:(id)sender
+{
+    [self toolbarButtonPressed];
+    
+    NSArray *storyInteractions = [self.bookStoryInteractions storyInteractionsOfClass:[SCHStoryInteractionReadingQuiz class]];
+    if ([storyInteractions count] < 1) {
+        NSLog(@"No Reading Quiz found - button should be disabled");
         return;
     }
     
