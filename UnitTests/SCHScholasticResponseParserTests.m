@@ -34,13 +34,18 @@
 
 #pragma mark - General Tests
 
-- (void)testEmptyXMLStrings
+- (void)testNilXMLString
 {
     NSDictionary *responseDictionary = nil;
     
     responseDictionary = [self.scholasticResponseParser parseXMLString:nil];
     STAssertNil(responseDictionary, @"passing nil to parseXMLString: should return nil");
+}
 
+- (void)testEmptyXMLStrings
+{
+    NSDictionary *responseDictionary = nil;
+        
     responseDictionary = [self.scholasticResponseParser parseXMLString:@""];
     STAssertEquals([responseDictionary count], (NSUInteger)0, @"A '' XML string should return an empty dictionary");
     
@@ -187,36 +192,82 @@
 
 #pragma mark - Scholastic GetInfo Tests
 
-- (void)testScholasticGetInfoValidResponse
+- (void)testScholasticGetInfoCOPPAYESResponse
+{
+    NSString *response = @"<SchWS><attribute name=\"COPPA_FLAG_KEY\" value=\"1\"/></SchWS>";
+    NSDictionary *responseDictionary = [self.scholasticResponseParser parseXMLString:response];
+    NSString *coppaFlag = coppaFlag = [responseDictionary objectForKey:@"COPPA_FLAG_KEY"];
+    STAssertNotNil(coppaFlag, @"a valid COPPA_FLAG_KEY should exist in the dictionary");
+    STAssertEqualObjects(coppaFlag, @"1", @"a COPPA_FLAG_KEY should have a valid value (true)");
+}
+
+- (void)testScholasticGetInfoCOPPANOResponse
+{
+    NSString *response = @"<SchWS><attribute name=\"COPPA_FLAG_KEY\" value=\"0\"/></SchWS>";
+    NSDictionary *responseDictionary = [self.scholasticResponseParser parseXMLString:response];
+    NSString *coppaFlag = coppaFlag = [responseDictionary objectForKey:@"COPPA_FLAG_KEY"];
+    STAssertNotNil(coppaFlag, @"a valid COPPA_FLAG_KEY should exist in the dictionary");
+    STAssertEqualObjects(coppaFlag, @"0", @"a COPPA_FLAG_KEY should have a valid value (false)");
+}
+
+- (void)testScholasticGetInfoCOPPANilResponse
+{
+    NSString *response = @"<SchWS><attribute name=\"COPPA_FLAG_KEY\"/></SchWS>";
+    NSDictionary *responseDictionary = [self.scholasticResponseParser parseXMLString:response];    
+    NSString *coppaFlag = [responseDictionary objectForKey:@"COPPA_FLAG_KEY"];
+    STAssertNotNil(coppaFlag, @"a valid COPPA_FLAG_KEY should exist in the dictionary");
+    STAssertEqualObjects(coppaFlag, [NSNull null], @"COPPA_FLAG_KEY should be NSNull if there is no value");        
+}
+
+- (void)testScholasticGetInfoSPSIDResponse
+{
+    NSString *response = @"<SchWS><attribute name=\"spsid\" value=\"123456\"/></SchWS>";
+    NSDictionary *responseDictionary = [self.scholasticResponseParser parseXMLString:response];
+    NSString *spsId = [responseDictionary objectForKey:@"spsid"];
+    STAssertNotNil(spsId, @"a valid spsid should exist in the dictionary");
+    STAssertEqualObjects(spsId, @"123456", @"a spsid should have a valid value (123456)");    
+}
+
+- (void)testScholasticGetInfoCOPPAANDSPSIDResponse
 {
     NSString *response = nil;
     NSDictionary *responseDictionary = nil;
     NSString *coppaFlag = nil;
+    NSString *spsId = nil;
     
-    response = @"<SchWS><attribute name=\"COPPA_FLAG_KEY\" value=\"1\"/></SchWS>";
+    response = @"<SchWS><attribute name=\"COPPA_FLAG_KEY\" value=\"1\"/><attribute name=\"spsid\" value=\"123456\"/></SchWS>";
     responseDictionary = [self.scholasticResponseParser parseXMLString:response];
+
     coppaFlag = [responseDictionary objectForKey:@"COPPA_FLAG_KEY"];
     STAssertNotNil(coppaFlag, @"a valid COPPA_FLAG_KEY should exist in the dictionary");
     STAssertEqualObjects(coppaFlag, @"1", @"a COPPA_FLAG_KEY should have a valid value (true)");
-
-    response = @"<SchWS><attribute name=\"COPPA_FLAG_KEY\" value=\"0\"/></SchWS>";
-    responseDictionary = [self.scholasticResponseParser parseXMLString:response];
-    coppaFlag = [responseDictionary objectForKey:@"COPPA_FLAG_KEY"];
-    STAssertNotNil(coppaFlag, @"a valid COPPA_FLAG_KEY should exist in the dictionary");
-    STAssertEqualObjects(coppaFlag, @"0", @"a COPPA_FLAG_KEY should have a valid value (false)");
-
-    response = @"<SchWS><attribute name=\"COPPA_FLAG_KEY\"/></SchWS>";
-    responseDictionary = [self.scholasticResponseParser parseXMLString:response];
     
-    coppaFlag = [responseDictionary objectForKey:@"COPPA_FLAG_KEY"];
-    STAssertNotNil(coppaFlag, @"a valid COPPA_FLAG_KEY should exist in the dictionary");
-    STAssertEqualObjects(coppaFlag, [NSNull null], @"COPPA_FLAG_KEY should be NSNull if there is no value");    
+    spsId = [responseDictionary objectForKey:@"spsid"];
+    STAssertNotNil(spsId, @"a valid spsid should exist in the dictionary");
+    STAssertEqualObjects(spsId, @"123456", @"a spsid should have a valid value (123456)");    
+}
+
+- (void)testScholasticGetInfoMissingAttributesResponse
+{
+    NSString *response = nil;
+    NSDictionary *responseDictionary = nil;
     
     response = @"<SchWS><attribute value=\"1\"/></SchWS>";
     responseDictionary = [self.scholasticResponseParser parseXMLString:response];
     
-    coppaFlag = [responseDictionary objectForKey:@"COPPA_FLAG_KEY"];
-    STAssertNil(coppaFlag, @"a value with no name should return nil");    
+    NSString *coppaFlag = [responseDictionary objectForKey:@"COPPA_FLAG_KEY"];
+    STAssertNil(coppaFlag, @"missing COPPA_FLAG_KEY flag should return nil"); 
+    
+    NSString *spsId = [responseDictionary objectForKey:@"spsid"];
+    STAssertNil(spsId, @"missing spsid flag should return nil"); 
+}
+
+- (void)testScholasticGetInfoMissingCOPPANameInAttributeResponse
+{
+    NSString *response = @"<SchWS><attribute value=\"1\"/></SchWS>";
+    NSDictionary *responseDictionary = [self.scholasticResponseParser parseXMLString:response];    
+    NSString *coppaFlag = [responseDictionary objectForKey:@"COPPA_FLAG_KEY"];
+    STAssertNil(coppaFlag, @"a value with no name should return nil");     
 }
 
 @end
