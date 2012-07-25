@@ -2797,12 +2797,10 @@
 		C98BDD7C1547F3DF00E265B8 /* 9780545364775_r7.MyFirstBiographyBenjaminFranklin.xps in Resources */ = {isa = PBXBuildFile; fileRef = C98BDD7A1547F3DF00E265B8 /* 9780545364775_r7.MyFirstBiographyBenjaminFranklin.xps */; };
 		C98BDDAA1548337C00E265B8 /* SCHEPubToTextFlowMappingParagraphSource.m in Sources */ = {isa = PBXBuildFile; fileRef = C98BDDA91548337B00E265B8 /* SCHEPubToTextFlowMappingParagraphSource.m */; };
 		C98BDDAB1548337C00E265B8 /* SCHEPubToTextFlowMappingParagraphSource.m in Sources */ = {isa = PBXBuildFile; fileRef = C98BDDA91548337B00E265B8 /* SCHEPubToTextFlowMappingParagraphSource.m */; };
-		C98BDDAC1548337C00E265B8 /* SCHEPubToTextFlowMappingParagraphSource.m in Sources */ = {isa = PBXBuildFile; fileRef = C98BDDA91548337B00E265B8 /* SCHEPubToTextFlowMappingParagraphSource.m */; };
 		C98BDDAD1548337C00E265B8 /* SCHEPubToTextFlowMappingParagraphSource.m in Sources */ = {isa = PBXBuildFile; fileRef = C98BDDA91548337B00E265B8 /* SCHEPubToTextFlowMappingParagraphSource.m */; };
 		C98BDDAE1548337C00E265B8 /* SCHEPubToTextFlowMappingParagraphSource.m in Sources */ = {isa = PBXBuildFile; fileRef = C98BDDA91548337B00E265B8 /* SCHEPubToTextFlowMappingParagraphSource.m */; };
 		C98BDDB11548625500E265B8 /* SCHEPubBook.m in Sources */ = {isa = PBXBuildFile; fileRef = C98BDDB01548625400E265B8 /* SCHEPubBook.m */; };
 		C98BDDB21548625500E265B8 /* SCHEPubBook.m in Sources */ = {isa = PBXBuildFile; fileRef = C98BDDB01548625400E265B8 /* SCHEPubBook.m */; };
-		C98BDDB31548625500E265B8 /* SCHEPubBook.m in Sources */ = {isa = PBXBuildFile; fileRef = C98BDDB01548625400E265B8 /* SCHEPubBook.m */; };
 		C98BDDB41548625500E265B8 /* SCHEPubBook.m in Sources */ = {isa = PBXBuildFile; fileRef = C98BDDB01548625400E265B8 /* SCHEPubBook.m */; };
 		C98BDDB51548625500E265B8 /* SCHEPubBook.m in Sources */ = {isa = PBXBuildFile; fileRef = C98BDDB01548625400E265B8 /* SCHEPubBook.m */; };
 		C98BDF191549897B00E265B8 /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 526A8A5E1385182100101A96 /* CoreMedia.framework */; };
@@ -12698,8 +12696,6 @@
 				C9367BDA1472E89A0033A2EB /* KNFBXMLParserLock.m in Sources */,
 				C9A6B402148B853C00B31277 /* SCHAppHelpState.m in Sources */,
 				F849155814FFA54D000D064B /* RateView.m in Sources */,
-				C98BDDAC1548337C00E265B8 /* SCHEPubToTextFlowMappingParagraphSource.m in Sources */,
-				C98BDDB31548625500E265B8 /* SCHEPubBook.m in Sources */,
 				287639B9154E857100540861 /* SCHStoryInteractionJigsawPiece.m in Sources */,
 				F8D199EF15A594B500EA17C6 /* SCHRecommendationOperationsTests.m in Sources */,
 				F8D199F015A598E700EA17C6 /* SCHRecommendationDownloadCoverOperation.m in Sources */,
