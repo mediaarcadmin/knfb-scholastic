@@ -2330,6 +2330,11 @@ static const NSUInteger kReadingViewMaxRecommendationsCount = 4;
         self.currentBookProgress = -1;
         self.currentPageIndices = NSMakeRange(NSNotFound, 0);
         
+        if (([self generatedPageCountForReadingView:self.readingView] - 1) == self.currentPageIndex) {
+            // FIXME: add in hook for reading quiz
+            NSLog(@"We're on the last page!");
+        }
+        
         [self readingViewHasMoved];
     }
 }
@@ -2365,6 +2370,11 @@ static const NSUInteger kReadingViewMaxRecommendationsCount = 4;
     self.currentBookProgress = -1;
     self.currentPageIndices = pageIndicesRange;
     
+    if (NSLocationInRange([self generatedPageCountForReadingView:self.readingView] - 1, self.currentPageIndices)) {
+        // FIXME: add in hook for reading quiz
+        NSLog(@"We're on the last page!");
+    }
+
     [self readingViewHasMoved];
 }
 
@@ -2380,6 +2390,12 @@ static const NSUInteger kReadingViewMaxRecommendationsCount = 4;
     self.currentBookProgress = progress;
     self.currentPageIndices = NSMakeRange(NSNotFound, 0);
     
+    if (self.currentBookProgress == 1) {
+        
+        // FIXME: add in hook for reading quiz
+        NSLog(@"We're on the last page!");
+    }
+
     [self readingViewHasMoved];
 }
 
