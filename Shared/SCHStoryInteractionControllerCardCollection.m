@@ -25,6 +25,7 @@ enum {
 @property (nonatomic, retain) UIImageView *selectedCardView;
 @property (nonatomic, retain) CALayer *cardLayer;
 @property (nonatomic, retain) NSArray *scrollSublayers;
+@property (nonatomic, assign) NSInteger simultaneousTapCount;
 
 - (void)zoomToCardLayerFromView:(UIView *)view;
 - (void)showCardButtons;
@@ -49,6 +50,7 @@ enum {
 @synthesize selectedCardView;
 @synthesize cardLayer;
 @synthesize scrollSublayers;
+@synthesize simultaneousTapCount;
 
 - (void)dealloc
 {
@@ -65,12 +67,20 @@ enum {
     [super dealloc];
 }
 
+- (void)closeButtonTapped:(id)sender
+{
+    self.controllerState = SCHStoryInteractionControllerStateInteractionFinishedSuccessfully;
+    [super closeButtonTapped:sender];    
+}
+
 - (void)setupViewAtIndex:(NSInteger)screenIndex
 {
     SCHStoryInteractionCardCollection *cardCollection = (SCHStoryInteractionCardCollection *)self.storyInteraction;
 
     self.titleView.adjustsFontSizeToFitWidth = YES;
     self.titleView.numberOfLines = 1;
+
+    self.simultaneousTapCount = 0;
     
     [self hideCardButtonsAnimated:NO];
     self.zoomScrollView.hidden = YES;
@@ -99,8 +109,6 @@ enum {
     UITapGestureRecognizer *scrollTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(scrollViewTapped:)];
     [self.cardScrollView addGestureRecognizer:scrollTap];
     [scrollTap release];
-    
-    self.controllerState = SCHStoryInteractionControllerStateInteractionFinishedSuccessfully;
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
@@ -203,7 +211,22 @@ enum {
     if (self.cardLayer != nil) {
         return;
     }
+    
+    self.simultaneousTapCount++;
+    if (self.simultaneousTapCount == 1) {    
+        [self performSelector:@selector(performCardTap:) withObject:tap afterDelay:kMinimumDistinguishedAnswerDelay]; 
+    }
+}
 
+- (void)performCardTap:(UITapGestureRecognizer *)tap
+{
+    // ignore simultaneous taps on multiple buttons
+    NSInteger answersTapped = self.simultaneousTapCount;
+    self.simultaneousTapCount = 0;
+    if (answersTapped > 1) {
+        return;
+    }
+    
     // hide other card views
     [UIView animateWithDuration:0.2
                      animations:^{

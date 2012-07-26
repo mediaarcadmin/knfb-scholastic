@@ -60,7 +60,10 @@
             self.tokenExpires = nil;                
             
             __block SCHAuthenticationManager *weakSelf = self;
-            [self.accountValidation validateWithUserName:storedUsername withPassword:storedPassword validateBlock:^(NSString *pToken, NSError *error) {
+            [self.accountValidation validateWithUserName:storedUsername 
+                                            withPassword:storedPassword 
+                                          updatePassword:YES
+                                           validateBlock:^(NSString *pToken, NSError *error) {
                 if (error != nil) {
                     [weakSelf authenticationDidFailWithError:error];                            
                 } else {
