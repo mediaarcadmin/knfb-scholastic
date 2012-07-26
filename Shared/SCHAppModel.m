@@ -177,7 +177,22 @@ typedef enum {
                                                             
                                                             [self.appController failedLoginWithError:anError];
                                                         } else {
-                                                            [self.appController failedLoginWithError:error];
+                                                            NSMutableDictionary *mutableInfo = nil;
+                                                            if ([error userInfo]) {
+                                                                mutableInfo = [[[error userInfo] mutableCopy] autorelease];
+                                                            } else {
+                                                                mutableInfo = [NSMutableDictionary dictionary];
+                                                            }
+                                                            
+                                                            NSString *localizedMessage = [[SCHAuthenticationManager sharedAuthenticationManager] localizedMessageForAuthenticationError:error];
+                                                            
+                                                            if (localizedMessage) {
+                                                                [mutableInfo setValue:localizedMessage forKey:NSLocalizedDescriptionKey];
+                                                            }
+                                                            
+                                                            NSError *localizedError = [NSError errorWithDomain:[error domain] code:[error code] userInfo:mutableInfo];
+                                                            
+                                                            [self.appController failedLoginWithError:localizedError];
                                                         }
                                                     }
                                      waitUntilVersionCheckIsDone:YES];    

@@ -26,6 +26,7 @@
 #import "SCHDrmSession.h"
 #import "SCHAppModel.h"
 #import "SCHParentalToolsWebViewController.h"
+#import "SCHScholasticAuthenticationWebService.h"
 
 @interface SCHPhoneAppController () <SCHProfileSetupDelegate>
 
@@ -171,7 +172,7 @@
         [login setDisplayIncorrectCredentialsWarning:kSCHLoginHandlerCredentialsWarningMalformedEmail];
         [login stopShowingProgress];
         [login clearBottomField];
-    } else if (error && [[error domain] isEqualToString:kBITAPIErrorDomain]){
+    } else if (error && [[error domain] isEqualToString:kBITAPIErrorDomain] && ([error code] == kSCHScholasticAuthenticationWebServiceErrorCodeInvalidUsernamePassword)){
         [login setDisplayIncorrectCredentialsWarning:kSCHLoginHandlerCredentialsWarningAuthenticationFailure];
         [login stopShowingProgress];
         [login clearBottomField];
