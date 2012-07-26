@@ -169,8 +169,12 @@
     
     if (error && [[error domain] isEqualToString:kSCHAccountValidationErrorDomain] && ([error code] == kSCHAccountValidationMalformedEmailError)) {
         [login setDisplayIncorrectCredentialsWarning:kSCHLoginHandlerCredentialsWarningMalformedEmail];
+        [login stopShowingProgress];
+        [login clearBottomField];
     } else if (error && [[error domain] isEqualToString:kBITAPIErrorDomain]){
         [login setDisplayIncorrectCredentialsWarning:kSCHLoginHandlerCredentialsWarningAuthenticationFailure];
+        [login stopShowingProgress];
+        [login clearBottomField];
     } else {
         [login setDisplayIncorrectCredentialsWarning:kSCHLoginHandlerCredentialsWarningNone];
         
