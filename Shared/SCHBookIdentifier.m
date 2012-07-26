@@ -27,7 +27,9 @@ NSString * const kSCHBookIdentifierBookIdentifier = @"BookIdentifier";
 - (id)initWithISBN:(NSString *)aIsbn DRMQualifier:(NSNumber *)aDRMQualifier
 {
     if ((self = [super init])) {
-        if ([[aIsbn stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]] length] > 0 &&
+        if (aIsbn != (id)[NSNull null] &&
+            aDRMQualifier != (id)[NSNull null] &&
+            [[aIsbn stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]] length] > 0 &&
             [aDRMQualifier isValidDRMQualifierValue] == YES) {
             isbn = [aIsbn copy];
             DRMQualifier = [aDRMQualifier copy];
@@ -86,6 +88,8 @@ NSString * const kSCHBookIdentifierBookIdentifier = @"BookIdentifier";
 
 - (NSComparisonResult)compare:(SCHBookIdentifier *)aBookIdentifier
 {
+    NSParameterAssert(aBookIdentifier);
+    
     NSComparisonResult ret = [self.isbn compare:aBookIdentifier.isbn];
     
     if (ret == NSOrderedSame) {
