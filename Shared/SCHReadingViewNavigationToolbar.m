@@ -325,14 +325,14 @@
     switch (self.style) {
         case kSCHReadingViewNavigationToolbarStyleYoungerReadingQuizPad:
         case kSCHReadingViewNavigationToolbarStyleYoungerPictureStarterAndReadingQuizPad:
-            [readingQuizItemButton setImage:[UIImage imageNamed:@"icon-readingview-younger.png"] forState:UIControlStateNormal];
+            [readingQuizItemButton setImage:[UIImage imageNamed:@"icon-readingquiz-younger.png"] forState:UIControlStateNormal];
             break;
         case kSCHReadingViewNavigationToolbarStyleYoungerReadingQuizPhone:
         case kSCHReadingViewNavigationToolbarStyleYoungerPictureStarterAndReadingQuizPhone:
             if (UIInterfaceOrientationIsPortrait(orientation)) {
-                [readingQuizItemButton setImage:[UIImage imageNamed:@"icon-readingview-younger-portrait.png"] forState:UIControlStateNormal];
+                [readingQuizItemButton setImage:[UIImage imageNamed:@"icon-readingquiz-younger-portrait.png"] forState:UIControlStateNormal];
             } else {
-                [readingQuizItemButton setImage:[UIImage imageNamed:@"icon-readingview-younger-landscape.png"] forState:UIControlStateNormal];
+                [readingQuizItemButton setImage:[UIImage imageNamed:@"icon-readingquiz-younger-landscape.png"] forState:UIControlStateNormal];
             }
             break;
         default:
