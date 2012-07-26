@@ -353,10 +353,14 @@
     switch (self.style) {
         case kSCHReadingViewNavigationToolbarStyleYoungerPad:
         case kSCHReadingViewNavigationToolbarStyleYoungerPictureStarterPad:
+        case kSCHReadingViewNavigationToolbarStyleYoungerReadingQuizPad:
+        case kSCHReadingViewNavigationToolbarStyleYoungerPictureStarterAndReadingQuizPad:
             [audioItemButton setImage:[UIImage imageNamed:@"icon-audio-younger.png"] forState:UIControlStateNormal];
             break;
         case kSCHReadingViewNavigationToolbarStyleYoungerPhone:
         case kSCHReadingViewNavigationToolbarStyleYoungerPictureStarterPhone:
+        case kSCHReadingViewNavigationToolbarStyleYoungerReadingQuizPhone:
+        case kSCHReadingViewNavigationToolbarStyleYoungerPictureStarterAndReadingQuizPhone:
             if (UIInterfaceOrientationIsPortrait(orientation)) {
                 [audioItemButton setImage:[UIImage imageNamed:@"icon-audio-younger-portrait.png"] forState:UIControlStateNormal];
             } else {
