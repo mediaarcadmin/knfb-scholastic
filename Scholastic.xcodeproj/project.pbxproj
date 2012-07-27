@@ -4293,6 +4293,22 @@
 		F8F726961524875F00250724 /* BookShelfListWhiteGradientBackground.png in Resources */ = {isa = PBXBuildFile; fileRef = F8F726931524875F00250724 /* BookShelfListWhiteGradientBackground.png */; };
 		F8F726971524875F00250724 /* BookShelfListWhiteGradientBackground.png in Resources */ = {isa = PBXBuildFile; fileRef = F8F726931524875F00250724 /* BookShelfListWhiteGradientBackground.png */; };
 		F8FAF2F313F12F20009C7E9F /* SCHAppStateManager.m in Sources */ = {isa = PBXBuildFile; fileRef = F8FAF2F213F12F20009C7E9F /* SCHAppStateManager.m */; };
+		F8FDF01715C2CC4F00F0F929 /* SCHStoryInteractionReadingQuizResultView.m in Sources */ = {isa = PBXBuildFile; fileRef = F8FDF01615C2CC4F00F0F929 /* SCHStoryInteractionReadingQuizResultView.m */; };
+		F8FDF01815C2CC4F00F0F929 /* SCHStoryInteractionReadingQuizResultView.m in Sources */ = {isa = PBXBuildFile; fileRef = F8FDF01615C2CC4F00F0F929 /* SCHStoryInteractionReadingQuizResultView.m */; };
+		F8FDF01915C2CC4F00F0F929 /* SCHStoryInteractionReadingQuizResultView.m in Sources */ = {isa = PBXBuildFile; fileRef = F8FDF01615C2CC4F00F0F929 /* SCHStoryInteractionReadingQuizResultView.m */; };
+		F8FDF01A15C2CC4F00F0F929 /* SCHStoryInteractionReadingQuizResultView.m in Sources */ = {isa = PBXBuildFile; fileRef = F8FDF01615C2CC4F00F0F929 /* SCHStoryInteractionReadingQuizResultView.m */; };
+		F8FDF01E15C2D69100F0F929 /* ReadingQuizAnswerCross.png in Resources */ = {isa = PBXBuildFile; fileRef = F8FDF01C15C2D69100F0F929 /* ReadingQuizAnswerCross.png */; };
+		F8FDF01F15C2D69100F0F929 /* ReadingQuizAnswerCross.png in Resources */ = {isa = PBXBuildFile; fileRef = F8FDF01C15C2D69100F0F929 /* ReadingQuizAnswerCross.png */; };
+		F8FDF02015C2D69100F0F929 /* ReadingQuizAnswerCross.png in Resources */ = {isa = PBXBuildFile; fileRef = F8FDF01C15C2D69100F0F929 /* ReadingQuizAnswerCross.png */; };
+		F8FDF02115C2D69100F0F929 /* ReadingQuizAnswerCross.png in Resources */ = {isa = PBXBuildFile; fileRef = F8FDF01C15C2D69100F0F929 /* ReadingQuizAnswerCross.png */; };
+		F8FDF02215C2D69100F0F929 /* ReadingQuizAnswerTick.png in Resources */ = {isa = PBXBuildFile; fileRef = F8FDF01D15C2D69100F0F929 /* ReadingQuizAnswerTick.png */; };
+		F8FDF02315C2D69100F0F929 /* ReadingQuizAnswerTick.png in Resources */ = {isa = PBXBuildFile; fileRef = F8FDF01D15C2D69100F0F929 /* ReadingQuizAnswerTick.png */; };
+		F8FDF02415C2D69100F0F929 /* ReadingQuizAnswerTick.png in Resources */ = {isa = PBXBuildFile; fileRef = F8FDF01D15C2D69100F0F929 /* ReadingQuizAnswerTick.png */; };
+		F8FDF02515C2D69100F0F929 /* ReadingQuizAnswerTick.png in Resources */ = {isa = PBXBuildFile; fileRef = F8FDF01D15C2D69100F0F929 /* ReadingQuizAnswerTick.png */; };
+		F8FDF02815C2EDC500F0F929 /* SCHStoryInteractionGradientView.m in Sources */ = {isa = PBXBuildFile; fileRef = F8FDF02715C2EDC500F0F929 /* SCHStoryInteractionGradientView.m */; };
+		F8FDF02915C2EDC500F0F929 /* SCHStoryInteractionGradientView.m in Sources */ = {isa = PBXBuildFile; fileRef = F8FDF02715C2EDC500F0F929 /* SCHStoryInteractionGradientView.m */; };
+		F8FDF02A15C2EDC500F0F929 /* SCHStoryInteractionGradientView.m in Sources */ = {isa = PBXBuildFile; fileRef = F8FDF02715C2EDC500F0F929 /* SCHStoryInteractionGradientView.m */; };
+		F8FDF02B15C2EDC500F0F929 /* SCHStoryInteractionGradientView.m in Sources */ = {isa = PBXBuildFile; fileRef = F8FDF02715C2EDC500F0F929 /* SCHStoryInteractionGradientView.m */; };
 		F8FF8D81139513B000CD7B73 /* OldDictionary-additions.css in Resources */ = {isa = PBXBuildFile; fileRef = F8FF8D7F139513B000CD7B73 /* OldDictionary-additions.css */; };
 		F8FF8D83139513B000CD7B73 /* YoungDictionary-additions.css in Resources */ = {isa = PBXBuildFile; fileRef = F8FF8D80139513B000CD7B73 /* YoungDictionary-additions.css */; };
 /* End PBXBuildFile section */
@@ -6235,6 +6251,12 @@
 		F8F726931524875F00250724 /* BookShelfListWhiteGradientBackground.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = BookShelfListWhiteGradientBackground.png; path = Resources/BookShelfListWhiteGradientBackground.png; sourceTree = "<group>"; };
 		F8FAF2F113F12F20009C7E9F /* SCHAppStateManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHAppStateManager.h; path = Shared/SCHAppStateManager.h; sourceTree = "<group>"; };
 		F8FAF2F213F12F20009C7E9F /* SCHAppStateManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHAppStateManager.m; path = Shared/SCHAppStateManager.m; sourceTree = "<group>"; };
+		F8FDF01515C2CC4F00F0F929 /* SCHStoryInteractionReadingQuizResultView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCHStoryInteractionReadingQuizResultView.h; sourceTree = "<group>"; };
+		F8FDF01615C2CC4F00F0F929 /* SCHStoryInteractionReadingQuizResultView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCHStoryInteractionReadingQuizResultView.m; sourceTree = "<group>"; };
+		F8FDF01C15C2D69100F0F929 /* ReadingQuizAnswerCross.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ReadingQuizAnswerCross.png; path = Resources/ReadingQuizAnswerCross.png; sourceTree = SOURCE_ROOT; };
+		F8FDF01D15C2D69100F0F929 /* ReadingQuizAnswerTick.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ReadingQuizAnswerTick.png; path = Resources/ReadingQuizAnswerTick.png; sourceTree = SOURCE_ROOT; };
+		F8FDF02615C2EDC500F0F929 /* SCHStoryInteractionGradientView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCHStoryInteractionGradientView.h; sourceTree = "<group>"; };
+		F8FDF02715C2EDC500F0F929 /* SCHStoryInteractionGradientView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCHStoryInteractionGradientView.m; sourceTree = "<group>"; };
 		F8FF8D7F139513B000CD7B73 /* OldDictionary-additions.css */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.css; name = "OldDictionary-additions.css"; path = "Resources/OldDictionary-additions.css"; sourceTree = "<group>"; };
 		F8FF8D80139513B000CD7B73 /* YoungDictionary-additions.css */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.css; name = "YoungDictionary-additions.css"; path = "Resources/YoungDictionary-additions.css"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -6876,6 +6898,7 @@
 				28C9BC52154851EF006F4B13 /* Concentration */,
 				28766C021548543D001D72B6 /* Jigsaw */,
 				28C9BC4F154851B3006F4B13 /* Picture Starter */,
+				F8FDF01B15C2D66400F0F929 /* Reading Quiz */,
 				284D4CF61548537100982636 /* Scratch and See */,
 				28C9BC591548530C006F4B13 /* Sequencing */,
 				28766BFF154853DF001D72B6 /* Touch The Page */,
@@ -9254,6 +9277,10 @@
 				F87FE01615BE98D50051C6E8 /* SCHStoryInteractionControllerReadingQuiz.m */,
 				F87FE01B15BE994C0051C6E8 /* SCHStoryInteractionReadingQuiz_iPhone.xib */,
 				F87FE01F15BE99740051C6E8 /* SCHStoryInteractionReadingQuiz_iPad.xib */,
+				F8FDF01515C2CC4F00F0F929 /* SCHStoryInteractionReadingQuizResultView.h */,
+				F8FDF01615C2CC4F00F0F929 /* SCHStoryInteractionReadingQuizResultView.m */,
+				F8FDF02615C2EDC500F0F929 /* SCHStoryInteractionGradientView.h */,
+				F8FDF02715C2EDC500F0F929 /* SCHStoryInteractionGradientView.m */,
 			);
 			name = "Reading Quiz";
 			sourceTree = "<group>";
@@ -9477,6 +9504,15 @@
 				F8EDE541138561390079BFD8 /* SCHReadingNoteView.m */,
 			);
 			name = Notes;
+			sourceTree = "<group>";
+		};
+		F8FDF01B15C2D66400F0F929 /* Reading Quiz */ = {
+			isa = PBXGroup;
+			children = (
+				F8FDF01C15C2D69100F0F929 /* ReadingQuizAnswerCross.png */,
+				F8FDF01D15C2D69100F0F929 /* ReadingQuizAnswerTick.png */,
+			);
+			name = "Reading Quiz";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -10475,6 +10511,8 @@
 				F8A23CA915C15D7C00F5F6A1 /* icon-readingquiz-younger-portrait@2x~iphone.png in Resources */,
 				F8A23CAD15C15D7C00F5F6A1 /* icon-readingquiz-younger-portrait~iphone.png in Resources */,
 				F8A23CB115C15D7C00F5F6A1 /* icon-readingquiz-younger~ipad.png in Resources */,
+				F8FDF01E15C2D69100F0F929 /* ReadingQuizAnswerCross.png in Resources */,
+				F8FDF02215C2D69100F0F929 /* ReadingQuizAnswerTick.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -11245,6 +11283,8 @@
 				F8A23CAA15C15D7C00F5F6A1 /* icon-readingquiz-younger-portrait@2x~iphone.png in Resources */,
 				F8A23CAE15C15D7C00F5F6A1 /* icon-readingquiz-younger-portrait~iphone.png in Resources */,
 				F8A23CB215C15D7C00F5F6A1 /* icon-readingquiz-younger~ipad.png in Resources */,
+				F8FDF01F15C2D69100F0F929 /* ReadingQuizAnswerCross.png in Resources */,
+				F8FDF02315C2D69100F0F929 /* ReadingQuizAnswerTick.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -11790,6 +11830,8 @@
 				F8A23CAB15C15D7C00F5F6A1 /* icon-readingquiz-younger-portrait@2x~iphone.png in Resources */,
 				F8A23CAF15C15D7C00F5F6A1 /* icon-readingquiz-younger-portrait~iphone.png in Resources */,
 				F8A23CB315C15D7C00F5F6A1 /* icon-readingquiz-younger~ipad.png in Resources */,
+				F8FDF02015C2D69100F0F929 /* ReadingQuizAnswerCross.png in Resources */,
+				F8FDF02415C2D69100F0F929 /* ReadingQuizAnswerTick.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -12335,6 +12377,8 @@
 				F8A23CAC15C15D7C00F5F6A1 /* icon-readingquiz-younger-portrait@2x~iphone.png in Resources */,
 				F8A23CB015C15D7C00F5F6A1 /* icon-readingquiz-younger-portrait~iphone.png in Resources */,
 				F8A23CB415C15D7C00F5F6A1 /* icon-readingquiz-younger~ipad.png in Resources */,
+				F8FDF02115C2D69100F0F929 /* ReadingQuizAnswerCross.png in Resources */,
+				F8FDF02515C2D69100F0F929 /* ReadingQuizAnswerTick.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -12742,6 +12786,8 @@
 				F87FE00A15BE93E50051C6E8 /* SCHStoryInteractionReadingQuiz.m in Sources */,
 				F87FE01715BE98D50051C6E8 /* SCHStoryInteractionControllerReadingQuiz.m in Sources */,
 				52EB1F8515B976F0007E60D3 /* SCHAccountVerifier.m in Sources */,
+				F8FDF01715C2CC4F00F0F929 /* SCHStoryInteractionReadingQuizResultView.m in Sources */,
+				F8FDF02815C2EDC500F0F929 /* SCHStoryInteractionGradientView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -13201,6 +13247,8 @@
 				F87FE00B15BE93E50051C6E8 /* SCHStoryInteractionReadingQuiz.m in Sources */,
 				F87FE01815BE98D50051C6E8 /* SCHStoryInteractionControllerReadingQuiz.m in Sources */,
 				52EB1F8615B976F0007E60D3 /* SCHAccountVerifier.m in Sources */,
+				F8FDF01815C2CC4F00F0F929 /* SCHStoryInteractionReadingQuizResultView.m in Sources */,
+				F8FDF02915C2EDC500F0F929 /* SCHStoryInteractionGradientView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -13589,6 +13637,8 @@
 				F87FE00D15BE93E50051C6E8 /* SCHStoryInteractionReadingQuiz.m in Sources */,
 				F87FE01915BE98D50051C6E8 /* SCHStoryInteractionControllerReadingQuiz.m in Sources */,
 				52EB1F8715B976F0007E60D3 /* SCHAccountVerifier.m in Sources */,
+				F8FDF01915C2CC4F00F0F929 /* SCHStoryInteractionReadingQuizResultView.m in Sources */,
+				F8FDF02A15C2EDC500F0F929 /* SCHStoryInteractionGradientView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -13977,6 +14027,8 @@
 				F87FE00E15BE93E50051C6E8 /* SCHStoryInteractionReadingQuiz.m in Sources */,
 				F87FE01A15BE98D50051C6E8 /* SCHStoryInteractionControllerReadingQuiz.m in Sources */,
 				52EB1F8815B976F0007E60D3 /* SCHAccountVerifier.m in Sources */,
+				F8FDF01A15C2CC4F00F0F929 /* SCHStoryInteractionReadingQuizResultView.m in Sources */,
+				F8FDF02B15C2EDC500F0F929 /* SCHStoryInteractionGradientView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -9,6 +9,8 @@
 #import "SCHStoryInteractionController.h"
 #import "TTTAttributedLabel.h"
 #import "SCHStretchableImageButton.h"
+#import "SCHStoryInteractionReadingQuizResultView.h"
+#import "SCHStoryInteractionGradientView.h"
 
 @class SCHStoryInteractionProgressView;
 
@@ -18,6 +20,9 @@
 @property (retain, nonatomic) IBOutlet UILabel *introSubtitleLabel;
 @property (retain, nonatomic) IBOutlet SCHStretchableImageButton *introActionButton;
 
+@property (retain, nonatomic) IBOutlet UIScrollView *answerScrollView;
+@property (retain, nonatomic) IBOutlet UIView *answerScrollViewContainer;
+@property (retain, nonatomic) IBOutlet SCHStoryInteractionGradientView *answerGradientView;
 
 @property (nonatomic, retain) IBOutlet SCHStoryInteractionProgressView *progressView;
 @property (nonatomic, retain) IBOutlet UILabel *questionLabel;

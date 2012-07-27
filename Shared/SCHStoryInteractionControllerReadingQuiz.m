@@ -17,8 +17,11 @@
 @property (nonatomic, assign) NSInteger score;
 @property (nonatomic, assign) NSInteger simultaneousTapCount;
 
+@property (nonatomic, retain) NSMutableArray *answersGiven;
 @property (nonatomic, assign) BOOL completedReadthrough;
 @property (nonatomic, assign) NSInteger bestScore;
+
+@property (nonatomic, retain) NSMutableArray *answerViews;
 
 - (void)setupQuestionView;
 - (void)setupScoreView;
@@ -33,6 +36,9 @@
 @synthesize introTitleLabel;
 @synthesize introSubtitleLabel;
 @synthesize introActionButton;
+@synthesize answerScrollView;
+@synthesize answerScrollViewContainer;
+@synthesize answerGradientView;
 @synthesize progressView;
 @synthesize questionLabel;
 @synthesize answerButtons;
@@ -43,9 +49,13 @@
 @synthesize simultaneousTapCount;
 @synthesize completedReadthrough;
 @synthesize bestScore;
+@synthesize answersGiven;
+@synthesize answerViews;
 
 - (void)dealloc
 {
+    [answerViews release];
+    [answersGiven release];
     [progressView release];
     [questionLabel release];
     [answerButtons release];
@@ -54,6 +64,9 @@
     [introTitleLabel release];
     [introSubtitleLabel release];
     [introActionButton release];
+    [answerScrollView release];
+    [answerScrollViewContainer release];
+    [answerGradientView release];
     [super dealloc];
 }
 
@@ -64,6 +77,8 @@
     if (self) {
         self.completedReadthrough = NO;
         self.bestScore = -1;
+        self.answersGiven = [NSMutableArray array];
+        self.answerViews = [NSMutableArray array];
     }
     
     return self;
@@ -135,6 +150,7 @@
 
 - (void)setupQuestionView
 {
+    [self.answersGiven removeAllObjects];
     self.currentQuestionIndex = 0;
     self.score = 0;
     self.progressView.numberOfSteps = [[(SCHStoryInteractionReadingQuiz *)self.storyInteraction questions] count];
@@ -145,6 +161,16 @@
 
 - (void)setupScoreView
 {
+    UIColor *backgroundColor = [UIColor whiteColor];
+    
+    if (!self.storyInteraction.olderStoryInteraction) {
+        // FIXME: figure out shade
+        backgroundColor = [UIColor colorWithRed:0.812 green:0.929 blue:1.000 alpha:1];
+    }
+    
+    self.answerGradientView.topColor = [backgroundColor colorWithAlphaComponent:0];
+    self.answerGradientView.bottomColor = backgroundColor;
+    
     NSInteger maxScore = self.progressView.numberOfSteps;
     self.scoreLabel.text = [NSString stringWithFormat:@"You got %d out of %d right!", self.score, maxScore];
     if (score <= (int) ceil((float)maxScore/2.0f)) {
@@ -157,6 +183,51 @@
         // 100%
         self.scoreSublabel.text = NSLocalizedString(@"Great reading!", @"Great reading!");
     }
+    
+    for (UIView *existingView in [self.answerScrollViewContainer subviews]) {
+        if (existingView.tag == 999) {
+            [existingView removeFromSuperview];
+        }
+    }
+    
+    CGFloat currentY = self.scoreSublabel.frame.origin.y + self.scoreSublabel.frame.size.height + 10;
+    
+    const CGFloat resultHeight = 60;
+    
+    CGRect containerFrame = self.answerScrollViewContainer.frame;
+    containerFrame.size.height = currentY + (self.answersGiven.count * resultHeight);
+    self.answerScrollViewContainer.frame = containerFrame;
+    
+    self.answerScrollView.contentSize = self.answerScrollViewContainer.frame.size;
+    
+    for (int i = 0; i < self.answersGiven.count; i++)
+    {
+        NSInteger answerGiven = [[self.answersGiven objectAtIndex:i] intValue];
+        SCHStoryInteractionReadingQuizQuestion *question = [[(SCHStoryInteractionReadingQuiz *)self.storyInteraction questions] objectAtIndex:i];
+        BOOL correctAnswer = (answerGiven == question.correctAnswer);
+        
+        SCHStoryInteractionReadingQuizResultView *resultView = [[SCHStoryInteractionReadingQuizResultView alloc] init];
+        
+        resultView.tag = 999;
+        resultView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
+        
+        [resultView setQuestion:[NSString stringWithFormat:@"%d. %@", i + 1, question.prompt]];
+        
+        NSString *answer = [[question answers] objectAtIndex:answerGiven];
+        
+        if (correctAnswer) {
+            [resultView setCorrectAnswer:answer];
+        } else {
+            [resultView setWrongAnswer:answer];
+        }
+        
+        resultView.frame = CGRectMake(0, currentY, self.answerScrollViewContainer.frame.size.width, resultHeight);
+        
+        currentY += resultHeight;
+        [self.answerScrollViewContainer addSubview:resultView];
+    }
+    
+    
     [self enqueueAudioWithPath:[self.storyInteraction storyInteractionRevealSoundFilename] fromBundle:YES];
     
     if (score > self.bestScore) {
@@ -164,7 +235,7 @@
         // FIXME: In here, send the new score to sync
         
     }
-    
+
 }
 
 - (void)nextQuestion
@@ -252,21 +323,17 @@
         return;
     }
     
-    
-    [sender setSelected:YES];
-    
     dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, 1.0 * NSEC_PER_SEC);
     dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
-        [sender setSelected:NO];
         [self nextQuestion];
     });
-    
+
+    [self enqueueAudioWithPath:[self.storyInteraction storyInteractionCorrectAnswerSoundFilename] fromBundle:YES];
+
+    [self.answersGiven addObject:[NSNumber numberWithInt:chosenAnswer]];
+
     if (chosenAnswer == [self currentQuestion].correctAnswer) {
-        [self enqueueAudioWithPath:[self.storyInteraction storyInteractionCorrectAnswerSoundFilename] fromBundle:YES];
         self.score++;
-        
-    } else {
-        [self enqueueAudioWithPath:[self.storyInteraction storyInteractionWrongAnswerSoundFilename] fromBundle:YES];
     }
 }
 

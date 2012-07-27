@@ -35,7 +35,7 @@
 
 - (NSString *)title
 {
-    return @"Reading Quiz";
+    return @"Reading Challenge";
 }
 
 
