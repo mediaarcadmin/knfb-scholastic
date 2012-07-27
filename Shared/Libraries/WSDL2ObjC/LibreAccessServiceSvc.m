@@ -81290,7 +81290,7 @@ static LibreAccessServiceSoap11Binding_envelope *LibreAccessServiceSoap11Binding
 		
 		for(NSString *key in bodyKeys) {
 			id body = [bodyElements objectForKey:key];
-			xmlAddChild(bodyNode, [body xmlNodeForDoc:doc elementName:key elementNSPrefix:nil]);
+			xmlAddChild(bodyNode, [body xmlNodeForDoc:doc elementName:key elementNSPrefix:@"LibreAccessServiceSvc"]);
 		}
 	}
 	

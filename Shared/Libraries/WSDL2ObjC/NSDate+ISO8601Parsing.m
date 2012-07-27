@@ -176,7 +176,7 @@ static BOOL is_leap_year(unsigned year) {
   });
   NSDate *now = [NSDate date];
   NSDateComponents *dateComps = nil;
-  @synchronized (gregorian) {
+  @synchronized (self) {
     dateComps = [gregorian components: NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit fromDate: now];
   }
   unsigned
@@ -580,7 +580,7 @@ static BOOL is_leap_year(unsigned year) {
     
     if(isValidDate) {
       if (timeZone != nil)
-        @synchronized (gregorian) {
+        @synchronized (self) {
           [gregorian setTimeZone: timeZone];
         }
       
@@ -592,7 +592,7 @@ static BOOL is_leap_year(unsigned year) {
           [dateComps setHour: hour];
           [dateComps setMinute: minute];
           [dateComps setSecond: second];
-          @synchronized (gregorian) {
+          @synchronized (self) {
             date = [gregorian dateFromComponents: dateComps];
           }
           break;
@@ -616,7 +616,7 @@ static BOOL is_leap_year(unsigned year) {
           [dateComps setHour: hour];
           [dateComps setMinute: minute];
           [dateComps setSecond: second];
-          @synchronized (gregorian) {
+          @synchronized (self) {
             date = [gregorian dateFromComponents: dateComps];
           }
           [dateComps setYear: 0];
@@ -625,7 +625,7 @@ static BOOL is_leap_year(unsigned year) {
           [dateComps setHour: 0];
           [dateComps setMinute: 0];
           [dateComps setSecond: 0];
-          @synchronized (gregorian) {
+          @synchronized (self) {
             date = [gregorian dateByAddingComponents: dateComps toDate: date options: 0];
           }
           break;
