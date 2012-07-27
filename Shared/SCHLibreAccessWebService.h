@@ -25,7 +25,7 @@
 - (void)renewToken:(NSString *)aToken;
 - (BOOL)getUserProfiles;
 - (BOOL)saveUserProfiles:(NSArray *)userProfiles;
-- (BOOL)listUserContent;
+- (BOOL)listBooksAssignment;
 - (BOOL)listFavoriteTypes;
 - (BOOL)listTopFavorites:(NSArray *)favorites withCount:(NSUInteger)count;
 - (BOOL)listContentMetadata:(NSArray *)bookISBNs 

@@ -1,12 +1,12 @@
 //
-//  SCHListUserContentForRatingsOperation.m
+//  SCHListBooksAssignmentOperation.m
 //  Scholastic
 //
 //  Created by John Eddie on 19/06/2012.
 //  Copyright (c) 2012 BitWink. All rights reserved.
 //
 
-#import "SCHListUserContentForRatingsOperation.h"
+#import "SCHListBooksAssignmentOperation.h"
 
 #import "SCHContentSyncComponent.h"
 #import "SCHLibreAccessWebService.h"
@@ -26,7 +26,7 @@
 #import "SCHRecommendationISBN.h"
 #import "SCHRecommendationItem.h"
 
-@interface SCHListUserContentForRatingsOperation ()
+@interface SCHListBooksAssignmentOperation ()
 
 - (NSArray *)localUserContentItemsWithManagedObjectContext:(NSManagedObjectContext *)aManagedObjectContext;
 - (void)addAnnotationStructure:(SCHUserContentItem *)userContentItem 
@@ -63,7 +63,7 @@
 
 @end
 
-@implementation SCHListUserContentForRatingsOperation
+@implementation SCHListBooksAssignmentOperation
 
 - (void)main
 {
@@ -76,7 +76,7 @@
         
         dispatch_async(dispatch_get_main_queue(), ^{
             if (self.isCancelled == NO) {
-                [self.syncComponent completeWithSuccessMethod:kSCHLibreAccessWebServiceListUserContentForRatings 
+                [self.syncComponent completeWithSuccessMethod:kSCHLibreAccessWebServiceListBooksAssignment
                                                        result:self.result 
                                                      userInfo:self.userInfo 
                                              notificationName:SCHContentSyncComponentDidCompleteNotification 
@@ -91,7 +91,7 @@
                                                      code:kBITAPIExceptionError 
                                                  userInfo:[NSDictionary dictionaryWithObject:[exception reason]
                                                                                       forKey:NSLocalizedDescriptionKey]];
-                [self.syncComponent completeWithFailureMethod:kSCHLibreAccessWebServiceListUserContentForRatings 
+                [self.syncComponent completeWithFailureMethod:kSCHLibreAccessWebServiceListBooksAssignment 
                                                         error:error 
                                                   requestInfo:nil 
                                                        result:self.result 

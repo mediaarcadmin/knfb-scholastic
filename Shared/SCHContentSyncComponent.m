@@ -14,7 +14,7 @@
 #import "SCHUserContentItem.h"
 #import "SCHOrderItem.h"
 #import "SCHContentProfileItem.h"
-#import "SCHListUserContentForRatingsOperation.h"
+#import "SCHListBooksAssignmentOperation.h"
 #import "SCHAnnotationsContentItem.h"
 #import "SCHReadingStatsContentItem.h"
 
@@ -105,7 +105,7 @@ NSString * const SCHContentSyncComponentDidFailNotification = @"SCHContentSyncCo
 {	
     if([method compare:kSCHLibreAccessWebServiceSaveContentProfileAssignment] == NSOrderedSame) {	
         if (self.saveOnly == NO) {
-            self.isSynchronizing = [self.libreAccessWebService listUserContent];
+            self.isSynchronizing = [self.libreAccessWebService listBooksAssignment];
             if (self.isSynchronizing == NO) {
                 [[SCHAuthenticationManager sharedAuthenticationManager] authenticateWithSuccessBlock:^(SCHAuthenticationManagerConnectivityMode connectivityMode){
                     if (connectivityMode == SCHAuthenticationManagerConnectivityModeOnline) {
@@ -126,8 +126,8 @@ NSString * const SCHContentSyncComponentDidFailNotification = @"SCHContentSyncCo
                            notificationName:SCHContentSyncComponentDidCompleteNotification 
                        notificationUserInfo:nil];
         }
-    } else if([method compare:kSCHLibreAccessWebServiceListUserContentForRatings] == NSOrderedSame) {
-        SCHListUserContentForRatingsOperation *operation = [[[SCHListUserContentForRatingsOperation alloc] initWithSyncComponent:self
+    } else if([method compare:kSCHLibreAccessWebServiceListBooksAssignment] == NSOrderedSame) {
+        SCHListBooksAssignmentOperation *operation = [[[SCHListBooksAssignmentOperation alloc] initWithSyncComponent:self
                                                                                                                           result:result
                                                                                                                         userInfo:userInfo] autorelease];
         [operation setThreadPriority:SCHSyncComponentThreadLowPriority];
@@ -183,7 +183,7 @@ NSString * const SCHContentSyncComponentDidFailNotification = @"SCHContentSyncCo
 		}		
 	} else {
         if (self.saveOnly == NO) {
-            self.isSynchronizing = [self.libreAccessWebService listUserContent];
+            self.isSynchronizing = [self.libreAccessWebService listBooksAssignment];
             if (self.isSynchronizing == NO) {
                 [[SCHAuthenticationManager sharedAuthenticationManager] authenticateWithSuccessBlock:^(SCHAuthenticationManagerConnectivityMode connectivityMode){
                     if (connectivityMode == SCHAuthenticationManagerConnectivityModeOnline) {
@@ -214,7 +214,7 @@ NSString * const SCHContentSyncComponentDidFailNotification = @"SCHContentSyncCo
 - (void)syncUserContentItemsFromMainThread:(NSArray *)userContentList
 {
     if (userContentList != nil) {
-        SCHListUserContentForRatingsOperation *operation = [[[SCHListUserContentForRatingsOperation alloc] initWithSyncComponent:self 
+        SCHListBooksAssignmentOperation *operation = [[[SCHListBooksAssignmentOperation alloc] initWithSyncComponent:self 
                                                                                                                           result:nil
                                                                                                                         userInfo:nil] autorelease];
         [operation syncUserContentItems:userContentList managedObjectContext:self.managedObjectContext];
@@ -224,7 +224,7 @@ NSString * const SCHContentSyncComponentDidFailNotification = @"SCHContentSyncCo
 - (void)addUserContentItemFromMainThread:(NSDictionary *)webUserContentItem
 {
     if (webUserContentItem != nil) {
-        SCHListUserContentForRatingsOperation *operation = [[[SCHListUserContentForRatingsOperation alloc] initWithSyncComponent:self 
+        SCHListBooksAssignmentOperation *operation = [[[SCHListBooksAssignmentOperation alloc] initWithSyncComponent:self 
                                                                                                                           result:nil
                                                                                                                         userInfo:nil] autorelease];
         
