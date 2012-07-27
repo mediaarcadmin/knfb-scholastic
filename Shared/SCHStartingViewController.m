@@ -472,6 +472,16 @@ NSInteger const kSCHSamplesUnspecifiedError = 1000;
     }    
 }
 
+- (void)popModalWebParentToolsToValidationAnimated:(BOOL)animated
+{
+    [self dismissModalWebParentToolsAnimated:animated withSync:NO showValidation:YES];
+}
+
+- (void)dismissModalWebParentToolsAnimated:(BOOL)animated
+{
+    [self dismissModalWebParentToolsAnimated:animated withSync:YES showValidation:NO];
+}
+
 - (void)waitingForPassword
 {
     self.profileSyncState = kSCHStartingViewControllerProfileSyncStateWaitingForPassword;

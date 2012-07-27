@@ -27,18 +27,22 @@
 #import "SCHAppModel.h"
 #import "SCHParentalToolsWebViewController.h"
 #import "SCHScholasticAuthenticationWebService.h"
+#import "SCHAccountValidationViewController.h"
+#import "SCHSetupBookshelvesViewController.h"
 
 @interface SCHPhoneAppController () <SCHProfileSetupDelegate>
 
 @property (nonatomic, retain) NSOperationQueue *setupSequenceQueue;
 @property (nonatomic, retain) UINavigationController *modalContainerView;
-@property (nonatomic, retain) LambdaAlert *checkProfilesAlert;
+@property (nonatomic, retain) LambdaAlert *undismissableAlert;
 
 - (BOOL)dictionaryDownloadRequired;
 - (void)pushSamplesAnimated:(BOOL)animated showWelcome:(BOOL)welcome;
 - (void)pushProfileAnimated:(BOOL)animated;
+- (void)pushProfileSetupAnimated:(BOOL)animated;
 
 - (UIViewController *)loginViewController;
+- (BOOL)isCurrentlyModal;
 
 @end
 
@@ -46,13 +50,13 @@
 
 @synthesize setupSequenceQueue;
 @synthesize modalContainerView;
-@synthesize checkProfilesAlert;
+@synthesize undismissableAlert;
 
 - (void)dealloc
 {
     [setupSequenceQueue release], setupSequenceQueue = nil;
     [modalContainerView release], modalContainerView = nil;
-    [checkProfilesAlert release], checkProfilesAlert = nil;
+    [undismissableAlert release], undismissableAlert = nil;
     
     [super dealloc];
 }
@@ -86,10 +90,13 @@
 }
 
 - (void)presentProfiles
-{
-    BOOL presentFromLogin = ([self.modalContainerView.viewControllers count] > 0);
+{        
+    if (self.undismissableAlert) {
+        [self.undismissableAlert dismissAnimated:YES];
+        self.undismissableAlert = nil;
+    }
     
-    if (presentFromLogin) {
+    if ([self isCurrentlyModal]) {
         // Check if dictionary needs set up
         if ([self dictionaryDownloadRequired]) {
             SCHDownloadDictionaryViewController *downloadDictionary = [[SCHDownloadDictionaryViewController alloc] init];
@@ -113,15 +120,29 @@
 }
 
 - (void)presentProfilesSetup
-{
-    
+{    
+    if ([self isCurrentlyModal]) {
+        // Check if dictionary needs set up
+        if ([self dictionaryDownloadRequired]) {
+            SCHDownloadDictionaryViewController *downloadDictionary = [[SCHDownloadDictionaryViewController alloc] init];
+            downloadDictionary.completion = ^{
+                [self pushProfileSetupAnimated:YES];
+            };
+            
+            [self.modalContainerView pushViewController:downloadDictionary animated:YES];
+            [downloadDictionary release];
+        } else {
+            [self pushProfileSetupAnimated:YES];
+        }
+    } else {
+        BOOL shouldAnimate = ([self.viewControllers count] > 0);
+        [self pushProfileSetupAnimated:shouldAnimate];
+    }
 }
 
 - (void)presentSamplesWithWelcome:(BOOL)welcome
-{
-    BOOL presentFromLogin = ([self.modalContainerView.viewControllers count] > 0);
-    
-    if (presentFromLogin) {
+{    
+    if ([self isCurrentlyModal]) {
         // Check if dictionary needs set up
         if ([self dictionaryDownloadRequired]) {
             SCHDownloadDictionaryViewController *downloadDictionary = [[SCHDownloadDictionaryViewController alloc] init];
@@ -233,6 +254,23 @@
     
     return (downloadRequired && [[Reachability reachabilityForLocalWiFi] isReachable]);
 }
+   
+- (void)pushProfileSetupAnimated:(BOOL)animated
+{    
+    SCHSetupBookshelvesViewController *setupBookshelves = [[[SCHSetupBookshelvesViewController alloc] init] autorelease];
+    setupBookshelves.profileSetupDelegate = self;
+    
+    UIViewController *login = [self loginViewController];
+    NSMutableArray *controllers = [NSMutableArray arrayWithObjects:login, setupBookshelves, nil];
+
+    if ([self isCurrentlyModal]) {
+        [self.modalContainerView setViewControllers:controllers animated:animated];
+    } else {
+        self.modalContainerView = [[[UINavigationController alloc] init] autorelease];
+        [self.modalContainerView setViewControllers:controllers animated:NO];
+        [self presentModalViewController:self.modalContainerView animated:animated];
+    }    
+}
 
 - (void)pushProfileAnimated:(BOOL)animated
 {
@@ -274,7 +312,6 @@
     SCHProfileItem *profileItem = [[profileViewController profileItems] lastObject]; // Only one sample bookshelf so any result will do
     
     if (profileItem) {
-        
         NSMutableArray *viewControllers = [NSMutableArray array];
         [viewControllers addObjectsFromArray:[profileViewController viewControllersForProfileItem:profileItem showWelcome:welcome]];
         [self setViewControllers:viewControllers animated:animated];
@@ -309,14 +346,14 @@
 {
     AppDelegate_iPhone *appDelegate = (AppDelegate_iPhone *)[[UIApplication sharedApplication] delegate];
     SCHAppModel *appModel = [appDelegate appModel];
-    [appModel waitingForPassword];
+    [appModel waitForPassword];
 }
 
 - (void)waitingForBookshelves
 {
     AppDelegate_iPhone *appDelegate = (AppDelegate_iPhone *)[[UIApplication sharedApplication] delegate];
     SCHAppModel *appModel = [appDelegate appModel];
-    [appModel waitingForBookshelves];
+    [appModel waitForBookshelves];
 }
 
 - (void)dismissModalViewControllerAnimated:(BOOL)animated withCompletionHandler:(dispatch_block_t)completion
@@ -343,12 +380,14 @@
             completion();
         }
     }];
- 
     
-    UIViewController *login = [self loginViewController];
-    self.modalContainerView = [[[UINavigationController alloc] initWithRootViewController:login] autorelease];
-    [self presentModalViewController:self.modalContainerView animated:animated];
-    [self popToRootViewControllerAnimated:animated];
+    if ([self isCurrentlyModal]) {
+        [self.modalContainerView popToRootViewControllerAnimated:animated];
+    } else {
+        UIViewController *login = [self loginViewController];
+        self.modalContainerView = [[[UINavigationController alloc] initWithRootViewController:login] autorelease];
+        [self presentModalViewController:self.modalContainerView animated:animated];
+    }
     
     [CATransaction commit];
 }
@@ -358,80 +397,66 @@
                                    modalStyle:(UIModalPresentationStyle)style 
                         shouldHideCloseButton:(BOOL)shouldHide
 {
-    [CATransaction begin];
-    [CATransaction setDisableActions:YES];
-    
-    if (self.modalViewController) {
-        [self dismissModalViewControllerAnimated:NO];
-    }
-    
     SCHParentalToolsWebViewController *parentalToolsWebViewController = [[[SCHParentalToolsWebViewController alloc] init] autorelease];
     parentalToolsWebViewController.title = title;
     parentalToolsWebViewController.modalPresenterDelegate = self;
     parentalToolsWebViewController.pToken = token;
     parentalToolsWebViewController.shouldHideCloseButton = shouldHide;
+        
+    UIViewController *login = [self loginViewController];
+    NSMutableArray *controllers = [NSMutableArray arrayWithObjects:login, parentalToolsWebViewController, nil];
     
-    [self presentModalViewController:parentalToolsWebViewController animated:YES];        
-    
-    [CATransaction commit];
+    if ([self isCurrentlyModal]) {
+        [self.modalContainerView setViewControllers:controllers animated:YES];
+    } else {
+        self.modalContainerView = [[[UINavigationController alloc] init] autorelease];
+        [self.modalContainerView setViewControllers:controllers animated:NO];
+        [self presentModalViewController:self.modalContainerView animated:YES];
+    } 
 }
 
-- (void)dismissModalWebParentToolsAnimated:(BOOL)animated withSync:(BOOL)shouldSync showValidation:(BOOL)showValidation
-{
-    if (self.modalViewController) {
-        [self dismissModalViewControllerAnimated:NO];
-    }
-   #if 0 
-    SCHStartingViewController *weakSelf = self;
+- (void)popModalWebParentToolsToValidationAnimated:(BOOL)animated
+{    
+    SCHSetupBookshelvesViewController *setupBookshelves = [[[SCHSetupBookshelvesViewController alloc] init] autorelease];
+    setupBookshelves.profileSetupDelegate = self;
     
-    dispatch_block_t completion = ^{
-        
-        if (showValidation) {
-            [self waitingForPassword];
-        } else {
-            [self waitingForBookshelves];
-        }
-
-        [weakSelf runSetupProfileSequenceAnimated:NO pushProfile:NO showValidation:showValidation];
-        
-        if (shouldSync) {
-            dispatch_async(dispatch_get_main_queue(), ^{
-                [[SCHSyncManager sharedSyncManager] firstSync:YES requireDeviceAuthentication:YES];
-                weakSelf.checkProfilesAlert = [[[LambdaAlert alloc]
-                                                initWithTitle:NSLocalizedString(@"Syncing with Your Account", @"")
-                                                message:@"\n"] autorelease];
-                [weakSelf.checkProfilesAlert setSpinnerHidden:NO];
-                [weakSelf.checkProfilesAlert show];
-            });
-        }
-    };
+    SCHAccountValidationViewController *accountValidationViewController = [[[SCHAccountValidationViewController alloc] init] autorelease];
+    accountValidationViewController.profileSetupDelegate = self;        
+    accountValidationViewController.validatedControllerShouldHideCloseButton = YES;
+    accountValidationViewController.title = NSLocalizedString(@"Set Up Your Bookshelves", @"");
     
-    if ([self.webParentToolsPopoverController isModalSheetVisible]) {
-        if (animated) {
-            [self.webParentToolsPopoverController setContentSize:CGSizeMake(540, 620) animated:YES completion:^{
-                [CATransaction begin];
-                [CATransaction setDisableActions:YES];
-                [weakSelf.webParentToolsPopoverController dismissSheetAnimated:NO completion:^{
-                    completion();
-                    [CATransaction commit];
-                }];
-            }];
-        } else {
-            [weakSelf.webParentToolsPopoverController dismissSheetAnimated:NO completion:nil];
-            completion();
-        }
+    UIViewController *login = [self loginViewController];
+    NSMutableArray *controllers = [NSMutableArray arrayWithObjects:login, setupBookshelves, accountValidationViewController, nil];
+    
+    if ([self isCurrentlyModal]) {
+        [self.modalContainerView setViewControllers:controllers animated:animated];
     } else {
-        completion();
+        self.modalContainerView = [[[UINavigationController alloc] init] autorelease];
+        [self.modalContainerView setViewControllers:controllers animated:NO];
+        [self presentModalViewController:self.modalContainerView animated:animated];
     } 
-#endif
+    
+    [self waitingForPassword];
+}
 
+- (void)dismissModalWebParentToolsAnimated:(BOOL)animated
+{
+    [self waitingForBookshelves];
+    
+    dispatch_async(dispatch_get_main_queue(), ^{
+        self.undismissableAlert = [[[LambdaAlert alloc]
+                                        initWithTitle:NSLocalizedString(@"Syncing with Your Account", @"")
+                                        message:@"\n"] autorelease];
+        [self.undismissableAlert setSpinnerHidden:NO];
+        [self.undismissableAlert show];
+    });
 }
 
 - (void)waitingForWebParentToolsToComplete
 {
     AppDelegate_iPhone *appDelegate = (AppDelegate_iPhone *)[[UIApplication sharedApplication] delegate];
     SCHAppModel *appModel = [appDelegate appModel];
-    [appModel waitingForWebParentToolsToComplete];
+    [appModel waitForWebParentToolsToComplete];
 }
 
 #pragma mark - View Controllers
@@ -455,6 +480,14 @@
     };
     
     return login;
+}
+
+#pragma mark - Utilities
+
+- (BOOL)isCurrentlyModal
+{
+    // This will eventually be deprecated and we will have to add a conditional check
+    return (self.modalViewController != nil);
 }
 
 @end

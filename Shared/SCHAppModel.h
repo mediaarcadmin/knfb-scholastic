@@ -38,8 +38,8 @@
 
 // Temp State methods TODO: remove
 
-- (void)waitingForPassword;
-- (void)waitingForBookshelves;
-- (void)waitingForWebParentToolsToComplete;
+- (void)waitForPassword;
+- (void)waitForBookshelves;
+- (void)waitForWebParentToolsToComplete;
 
 @end

@@ -211,22 +211,23 @@ typedef enum {
 
 #pragma mark - Temp state methods
 
-- (void)waitingForPassword
+- (void)waitForPassword
 {
     self.syncState = kSCHAppModelSyncStateWaitingForPassword;
 }
 
-- (void)waitingForBookshelves
+- (void)waitForBookshelves
 {
     self.syncState = kSCHAppModelSyncStateWaitingForBookshelves;
+    [self startSyncNow:YES requireAuthentication:YES];
 }
 
-- (void)waitingForWebParentToolsToComplete
+- (void)waitForWebParentToolsToComplete
 {
     self.syncState = kSCHAppModelSyncStateWaitingForWebParentToolsToComplete;
-    // Need to also sync here in case the user has has set up a bookshelf in WPT outside teh app
+    // Need to also sync here in case the user has has set up a bookshelf in WPT outside the app
     // We never want to enter WPT not in wizard mode as there is no close button
-    [[SCHSyncManager sharedSyncManager] firstSync:YES requireDeviceAuthentication:YES];
+    [self startSyncNow:YES requireAuthentication:YES];
 }
 
 #pragma mark - Utility Methods
@@ -282,33 +283,26 @@ typedef enum {
     SCHAppModelSyncState currentSyncState = self.syncState;
     self.syncState = kSCHAppModelSyncStateNone;
     
-    switch (currentSyncState) {
-        case kSCHAppModelSyncStateWaitingForLoginToComplete:
-            [self.appController presentProfiles];
-            break;
-        case kSCHAppModelSyncStateWaitingForBookshelves:
-            if ([self hasProfilesInManagedObjectContext:[SCHAppStateManager sharedAppStateManager].managedObjectContext]) {
-                [self.appController presentProfilesSetup];
-            } else {
-                [self.appController presentProfiles];
-            }
-            break;
-        case kSCHAppModelSyncStateWaitingForPassword:
-            if (![self hasProfilesInManagedObjectContext:[SCHAppStateManager sharedAppStateManager].managedObjectContext]) {
-                [self.appController presentProfiles];
-            } else {
+    if (![self hasProfilesInManagedObjectContext:[SCHAppStateManager sharedAppStateManager].managedObjectContext]) {
+        switch (currentSyncState) {
+            case kSCHAppModelSyncStateWaitingForPassword:
                 self.syncState = kSCHAppModelSyncStateWaitingForPassword;
-            }
-            break;
-        case kSCHAppModelSyncStateWaitingForWebParentToolsToComplete:
-            if (![self hasProfilesInManagedObjectContext:[SCHAppStateManager sharedAppStateManager].managedObjectContext]) {
-                [self.appController presentProfiles];
-            } else {
+                break;
+            case kSCHAppModelSyncStateWaitingForWebParentToolsToComplete:
                 self.syncState = kSCHAppModelSyncStateWaitingForWebParentToolsToComplete;
-            }
-            break;
-        default:
-            break;
+                break;
+            default:
+                [self.appController presentProfilesSetup];
+        }
+    } else {
+        switch (currentSyncState) {
+            case kSCHAppModelSyncStateWaitingForLoginToComplete:
+            case kSCHAppModelSyncStateWaitingForBookshelves:
+                [self.appController presentProfiles];
+                break;
+            default:
+                break;
+        }
     }
 }
 

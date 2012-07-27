@@ -1,3 +1,4 @@
+
 //
 //  SCHParentalToolsWebViewController.m
 //  Scholastic
@@ -82,9 +83,7 @@
                             initWithTitle:NSLocalizedString(@"Error", @"")
                             message:NSLocalizedString(@"A problem occured accessing web Parent Tools with your account. Please contact support.", @"")];
         [lambdaAlert addButtonWithTitle:NSLocalizedString(@"OK", @"") block:^{
-            [self.modalPresenterDelegate dismissModalWebParentToolsAnimated:YES
-                                                                   withSync:NO 
-                                                             showValidation:NO];
+            [self.modalPresenterDelegate dismissModalWebParentToolsAnimated:YES];
         }];
         [lambdaAlert show];
         [lambdaAlert release], lambdaAlert = nil;
@@ -102,23 +101,19 @@
 
 - (void)back:(id)sender
 {
-    [self.modalPresenterDelegate dismissModalWebParentToolsAnimated:YES
-                                                           withSync:YES 
-                                                     showValidation:NO];
+    [self.modalPresenterDelegate dismissModalWebParentToolsAnimated:YES];
 }
 
 - (void)requestPasswordAnimated:(BOOL)animated
 {
-    [self.modalPresenterDelegate dismissModalWebParentToolsAnimated:animated
-                                                           withSync:NO 
-                                                     showValidation:YES];
+    [self.modalPresenterDelegate popModalWebParentToolsToValidationAnimated:animated];
 }
 
 #pragma mark - Notification methods
 
 - (void)didEnterBackground:(NSNotification *)notification
 {
-    [self requestPasswordAnimated:NO];
+    [self.modalPresenterDelegate popModalWebParentToolsToValidationAnimated:NO];
 }
 
 #pragma mark - UIWebView delegate methods
@@ -136,7 +131,7 @@
         if ([cmd isEqualToString:@"bookshelfSetupDidCompleteWithSuccess"] == YES) {
             ret = NO;
             
-            [self.modalPresenterDelegate dismissModalWebParentToolsAnimated:YES withSync:YES showValidation:NO];
+            [self.modalPresenterDelegate dismissModalWebParentToolsAnimated:YES];
         }
     }
     

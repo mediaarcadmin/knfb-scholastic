@@ -642,7 +642,9 @@ didSelectButtonAnimated:(BOOL)animated
         } else {
             [CATransaction begin];
             [CATransaction setCompletionBlock:^{
-                [self.profileSetupDelegate popToRootViewControllerAnimated:NO withCompletionHandler:completion];
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    [self.profileSetupDelegate popToRootViewControllerAnimated:animated withCompletionHandler:completion];
+                });
             }];
             [self dismissModalViewControllerAnimated:animated];
             [CATransaction commit];
@@ -761,6 +763,16 @@ didSelectButtonAnimated:(BOOL)animated
     } else {
         completion();
     }  
+}
+
+- (void)popModalWebParentToolsToValidationAnimated:(BOOL)animated
+{
+    [self dismissModalWebParentToolsAnimated:animated withSync:NO showValidation:YES];
+}
+
+- (void)dismissModalWebParentToolsAnimated:(BOOL)animated
+{
+    [self dismissModalWebParentToolsAnimated:animated withSync:YES showValidation:NO];
 }
 
 - (void)waitingForWebParentToolsToComplete
