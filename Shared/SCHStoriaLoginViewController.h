@@ -23,6 +23,7 @@
 @property (nonatomic, retain) IBOutlet UIActivityIndicatorView *spinner;
 @property (nonatomic, retain) IBOutlet TTTAttributedLabel *promptLabel;
 @property (nonatomic, retain) IBOutlet UIScrollView *scrollView;
+@property (nonatomic, retain) IBOutlet UIImageView *backgroundView;
 
 - (IBAction)loginButtonAction:(id)sender;
 - (IBAction)previewButtonAction:(id)sender;
