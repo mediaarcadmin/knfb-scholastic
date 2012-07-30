@@ -10,6 +10,8 @@
 
 @interface SCHStoryInteractionReadingQuizResultView : UIView
 
+- (CGFloat)heightForCurrentTextWithWidth:(CGFloat)width;
+
 - (void)setCorrectAnswer:(NSString *)answer;
 - (void)setWrongAnswer:(NSString *)answer;
 - (void)setQuestion:(NSString *)question;

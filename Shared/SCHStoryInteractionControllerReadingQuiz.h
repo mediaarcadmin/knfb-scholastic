@@ -30,6 +30,7 @@
 
 @property (nonatomic, retain) IBOutlet UILabel *scoreLabel;
 @property (nonatomic, retain) IBOutlet UILabel *scoreSublabel;
+@property (retain, nonatomic) IBOutlet UILabel *resultsHeaderLabel;
 
 - (IBAction)startViewButtonTapped:(id)sender;
 

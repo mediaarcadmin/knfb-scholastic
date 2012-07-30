@@ -9,6 +9,11 @@
 #import "SCHStoryInteractionReadingQuizResultView.h"
 #import <QuartzCore/QuartzCore.h>
 
+#define TEXT_GAP 2
+#define SIDE_INSET 20
+#define IMAGE_WIDTH 30
+#define TOP_BOTTOM_INSET 5
+
 @interface SCHStoryInteractionReadingQuizResultView ()
 
 @property (nonatomic, retain) UILabel *questionLabel;
@@ -88,14 +93,32 @@
     self.questionLabel.text = question;
 }
 
+- (CGFloat)heightForCurrentTextWithWidth:(CGFloat)width
+{
+//    CGFloat questionHeight = [self.questionLabel.text sizeWithFont:self.questionLabel.font
+//                                                       forWidth:width - (2 * SIDE_INSET)
+//                                                  lineBreakMode:UILineBreakModeWordWrap].height;
+    
+    NSLog(@"Width for question: %f", width - (2 * SIDE_INSET));
+    NSLog(@"Width for answer: %f", width - IMAGE_WIDTH - TEXT_GAP - (2 * SIDE_INSET));
+    
+    CGFloat questionHeight = [self.questionLabel.text sizeWithFont:self.questionLabel.font constrainedToSize:CGSizeMake(width - (2 * SIDE_INSET), CGFLOAT_MAX) lineBreakMode:UILineBreakModeWordWrap].height;
+    CGFloat answerHeight = [self.answerLabel.text sizeWithFont:self.answerLabel.font constrainedToSize:CGSizeMake(width - IMAGE_WIDTH - TEXT_GAP - (2 * SIDE_INSET), CGFLOAT_MAX) lineBreakMode:UILineBreakModeWordWrap].height;
+
+    NSLog(@"Getting height. %@ (%f) %@ (%f)", self.questionLabel.text, questionHeight, self.answerLabel.text, answerHeight);
+    return questionHeight + TEXT_GAP + answerHeight + (TOP_BOTTOM_INSET * 2);
+}
+
 
 - (void)layoutSubviews
 {
-    const CGFloat inset = 20;
+    CGFloat questionHeight = [self.questionLabel.text sizeWithFont:self.questionLabel.font constrainedToSize:CGSizeMake(self.frame.size.width - (2 * SIDE_INSET), CGFLOAT_MAX) lineBreakMode:UILineBreakModeWordWrap].height;
+    CGFloat answerHeight = [self.answerLabel.text sizeWithFont:self.answerLabel.font constrainedToSize:CGSizeMake(self.frame.size.width - IMAGE_WIDTH - TEXT_GAP - (2 * SIDE_INSET), CGFLOAT_MAX) lineBreakMode:UILineBreakModeWordWrap].height;
+
     
-    CGRect topFrame = CGRectMake(inset, 0, self.frame.size.width - (inset * 2), floorf(self.frame.size.height / 2));
-    CGRect tickCrossFrame = CGRectMake(inset, topFrame.size.height + 1, 30, floorf(self.frame.size.height /2));
-    CGRect bottomFrame = CGRectMake(inset + 32, topFrame.size.height + 1, self.frame.size.width - 32 - (inset * 2), floorf(self.frame.size.height / 2));
+    CGRect topFrame = CGRectMake(SIDE_INSET, TOP_BOTTOM_INSET, self.frame.size.width - (SIDE_INSET * 2), floorf(questionHeight));
+    CGRect tickCrossFrame = CGRectMake(SIDE_INSET, TOP_BOTTOM_INSET + topFrame.size.height + 4, IMAGE_WIDTH, floorf(answerHeight));
+    CGRect bottomFrame = CGRectMake(SIDE_INSET + IMAGE_WIDTH + TEXT_GAP, TOP_BOTTOM_INSET + topFrame.size.height + 4, self.frame.size.width - 32 - (SIDE_INSET * 2), floorf(answerHeight));
     
     self.questionLabel.frame = topFrame;
     self.answerLabel.frame = bottomFrame;

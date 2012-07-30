@@ -44,6 +44,7 @@
 @synthesize answerButtons;
 @synthesize scoreLabel;
 @synthesize scoreSublabel;
+@synthesize resultsHeaderLabel;
 @synthesize currentQuestionIndex;
 @synthesize score;
 @synthesize simultaneousTapCount;
@@ -67,6 +68,7 @@
     [answerScrollView release];
     [answerScrollViewContainer release];
     [answerGradientView release];
+    [resultsHeaderLabel release];
     [super dealloc];
 }
 
@@ -164,7 +166,11 @@
     UIColor *backgroundColor = [UIColor whiteColor];
     
     if (!self.storyInteraction.olderStoryInteraction) {
-        backgroundColor = [UIColor colorWithRed:0.812 green:0.929 blue:1.000 alpha:1];
+        if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+            backgroundColor = [UIColor colorWithRed:0.843 green:0.945 blue:1.000 alpha:1];
+        } else {
+            backgroundColor = [UIColor colorWithRed:0.812 green:0.929 blue:1.000 alpha:1];
+        }
     }
     
     self.answerGradientView.topColor = [backgroundColor colorWithAlphaComponent:0];
@@ -182,22 +188,28 @@
         // 100%
         self.scoreSublabel.text = NSLocalizedString(@"Great reading!", @"Great reading!");
     }
+
+    [self enqueueAudioWithPath:[self.storyInteraction storyInteractionRevealSoundFilename] fromBundle:YES];
     
+    if (score > self.bestScore) {
+        self.bestScore = score;
+        // FIXME: In here, send the new score to sync
+        
+    }
+    
+    [self setupScoreAnswers];
+
+}
+
+- (void)setupScoreAnswers
+{
     for (UIView *existingView in [self.answerScrollViewContainer subviews]) {
         if (existingView.tag == 999) {
             [existingView removeFromSuperview];
         }
     }
     
-    CGFloat currentY = self.scoreSublabel.frame.origin.y + self.scoreSublabel.frame.size.height + 10;
-    
-    const CGFloat resultHeight = 60;
-    
-    CGRect containerFrame = self.answerScrollViewContainer.frame;
-    containerFrame.size.height = currentY + (self.answersGiven.count * resultHeight);
-    self.answerScrollViewContainer.frame = containerFrame;
-    
-    self.answerScrollView.contentSize = self.answerScrollViewContainer.frame.size;
+    CGFloat currentY = self.resultsHeaderLabel.frame.origin.y + self.resultsHeaderLabel.frame.size.height;
     
     for (int i = 0; i < self.answersGiven.count; i++)
     {
@@ -220,22 +232,38 @@
             [resultView setWrongAnswer:answer];
         }
         
-        resultView.frame = CGRectMake(0, currentY, self.answerScrollViewContainer.frame.size.width, resultHeight);
         
-        currentY += resultHeight;
+        CGFloat answerHeight = [resultView heightForCurrentTextWithWidth:self.answerScrollViewContainer.frame.size.width];
+        resultView.frame = CGRectMake(0, currentY, self.answerScrollViewContainer.frame.size.width, answerHeight);
+        
+        currentY += answerHeight;
         [self.answerScrollViewContainer addSubview:resultView];
     }
     
     
-    [self enqueueAudioWithPath:[self.storyInteraction storyInteractionRevealSoundFilename] fromBundle:YES];
+    CGRect containerFrame = self.answerScrollViewContainer.frame;
+    containerFrame.size.height = currentY;
+    self.answerScrollViewContainer.frame = containerFrame;
     
-    if (score > self.bestScore) {
-        self.bestScore = score;
-        // FIXME: In here, send the new score to sync
+    self.answerScrollView.contentSize = self.answerScrollViewContainer.frame.size;
+    
+    [self.answerScrollView flashScrollIndicators];
+}
+
+- (void)rotateToOrientation:(UIInterfaceOrientation)orientation
+{
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
+        
+        double delayInSeconds = 0.15;
+        dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);
+        dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+            [self setupScoreAnswers];
+        });
         
     }
-
 }
+
+
 
 - (void)nextQuestion
 {
