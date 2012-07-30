@@ -18,7 +18,8 @@
                                    modalStyle:(UIModalPresentationStyle)style 
                         shouldHideCloseButton:(BOOL)shouldHide;
 
-- (void)dismissModalWebParentToolsAnimated:(BOOL)animated withSync:(BOOL)shouldSync showValidation:(BOOL)showValidation;
+- (void)dismissModalWebParentToolsAnimated:(BOOL)animated;
+- (void)popModalWebParentToolsToValidationAnimated:(BOOL)animated;
 - (void)waitingForWebParentToolsToComplete;
 
 @end

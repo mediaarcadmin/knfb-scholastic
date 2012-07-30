@@ -209,9 +209,9 @@ NSInteger const kSCHSamplesUnspecifiedError = 1000;
     [self.navigationController setNavigationBarHidden:YES];
     [self setupAssetsForOrientation:self.interfaceOrientation];
     
-    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
-        [self checkState];
-    }
+//    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
+//        [self checkState];
+//    }
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -470,6 +470,16 @@ NSInteger const kSCHSamplesUnspecifiedError = 1000;
     } else {
         completion();
     }    
+}
+
+- (void)popModalWebParentToolsToValidationAnimated:(BOOL)animated
+{
+    [self dismissModalWebParentToolsAnimated:animated withSync:NO showValidation:YES];
+}
+
+- (void)dismissModalWebParentToolsAnimated:(BOOL)animated
+{
+    [self dismissModalWebParentToolsAnimated:animated withSync:YES showValidation:NO];
 }
 
 - (void)waitingForPassword

@@ -386,7 +386,11 @@ typedef enum
 {
     [super viewWillAppear:animated];
     [self.navigationController.navigationBar setBarStyle:UIBarStyleBlackOpaque]; // For the title text
-    [self.navigationController setNavigationBarHidden:NO];
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
+        [self.navigationController setNavigationBarHidden:NO animated:NO];
+    } else {
+        [self.navigationController setNavigationBarHidden:NO];
+    }
     
     [self setupAssetsForOrientation:self.interfaceOrientation];
     if (self.updateShelfOnReturnToShelf == YES) {
@@ -643,7 +647,11 @@ typedef enum
         }
         
         [[self.profileItem AppProfile] setSortType:[NSNumber numberWithInt:kSCHBookSortTypeUser]];
-        [self.navigationController popToRootViewControllerAnimated:NO];  
+        if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
+            [self.profileSetupDelegate popToRootViewControllerAnimated:YES withCompletionHandler:nil];
+        } else {
+            [self.navigationController popToRootViewControllerAnimated:NO];  
+        }
         [[SCHThemeManager sharedThemeManager] resetToDefault];
     } else {
         [self.profileSetupDelegate popToAuthenticatedProfileAnimated:YES];

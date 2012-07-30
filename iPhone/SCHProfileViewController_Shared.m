@@ -558,8 +558,10 @@ didSelectButtonAnimated:(BOOL)animated
 {
     NSMutableArray *viewControllers = [NSMutableArray array];
     
-    if (self.profileSetupDelegate) {
-        [viewControllers addObject:self.profileSetupDelegate];
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+        if (self.profileSetupDelegate) {
+            [viewControllers addObject:self.profileSetupDelegate];
+        }
     }
     
     [viewControllers addObject:self];
@@ -638,8 +640,15 @@ didSelectButtonAnimated:(BOOL)animated
             [self dismissModalViewControllerAnimated:animated];
             [self.profileSetupDelegate popToRootViewControllerAnimated:NO withCompletionHandler:completion];
         } else {
-            [self.profileSetupDelegate popToRootViewControllerAnimated:NO withCompletionHandler:completion];
+            [CATransaction begin];
+            [CATransaction setCompletionBlock:^{
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    [self.profileSetupDelegate popToRootViewControllerAnimated:animated withCompletionHandler:completion];
+                });
+            }];
             [self dismissModalViewControllerAnimated:animated];
+            [CATransaction commit];
+
         }
     } else {
         [self.profileSetupDelegate popToRootViewControllerAnimated:animated withCompletionHandler:completion];
@@ -754,6 +763,16 @@ didSelectButtonAnimated:(BOOL)animated
     } else {
         completion();
     }  
+}
+
+- (void)popModalWebParentToolsToValidationAnimated:(BOOL)animated
+{
+    [self dismissModalWebParentToolsAnimated:animated withSync:NO showValidation:YES];
+}
+
+- (void)dismissModalWebParentToolsAnimated:(BOOL)animated
+{
+    [self dismissModalWebParentToolsAnimated:animated withSync:YES showValidation:NO];
 }
 
 - (void)waitingForWebParentToolsToComplete

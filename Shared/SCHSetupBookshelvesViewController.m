@@ -68,6 +68,10 @@
 {
     [super viewWillAppear:animated];
     
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
+        [self.navigationController setNavigationBarHidden:YES];
+    }
+    
     self.moveToWebParentToolsTimer = [NSTimer scheduledTimerWithTimeInterval:300.0 
                                                                       target:self 
                                                                     selector:@selector(moveToWebParentTools:) 
