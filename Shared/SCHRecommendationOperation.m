@@ -177,6 +177,8 @@
     }];
 }
 
+// NOTE: SCHRecommendationURLRequestOperation performs the same operation in it's
+// own performWithRecommendationAndSave
 - (void)resetCoverURLExpiredState
 {
     [self performWithRecommendationAndSave:^(SCHAppRecommendationItem *item) {
