@@ -164,7 +164,6 @@
     UIColor *backgroundColor = [UIColor whiteColor];
     
     if (!self.storyInteraction.olderStoryInteraction) {
-        // FIXME: figure out shade
         backgroundColor = [UIColor colorWithRed:0.812 green:0.929 blue:1.000 alpha:1];
     }
     
