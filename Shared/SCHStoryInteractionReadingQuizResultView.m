@@ -99,13 +99,13 @@
 //                                                       forWidth:width - (2 * SIDE_INSET)
 //                                                  lineBreakMode:UILineBreakModeWordWrap].height;
     
-    NSLog(@"Width for question: %f", width - (2 * SIDE_INSET));
-    NSLog(@"Width for answer: %f", width - IMAGE_WIDTH - TEXT_GAP - (2 * SIDE_INSET));
+//    NSLog(@"Width for question: %f", width - (2 * SIDE_INSET));
+//    NSLog(@"Width for answer: %f", width - IMAGE_WIDTH - TEXT_GAP - (2 * SIDE_INSET));
     
     CGFloat questionHeight = [self.questionLabel.text sizeWithFont:self.questionLabel.font constrainedToSize:CGSizeMake(width - (2 * SIDE_INSET), CGFLOAT_MAX) lineBreakMode:UILineBreakModeWordWrap].height;
     CGFloat answerHeight = [self.answerLabel.text sizeWithFont:self.answerLabel.font constrainedToSize:CGSizeMake(width - IMAGE_WIDTH - TEXT_GAP - (2 * SIDE_INSET), CGFLOAT_MAX) lineBreakMode:UILineBreakModeWordWrap].height;
 
-    NSLog(@"Getting height. %@ (%f) %@ (%f)", self.questionLabel.text, questionHeight, self.answerLabel.text, answerHeight);
+//    NSLog(@"Getting height. %@ (%f) %@ (%f)", self.questionLabel.text, questionHeight, self.answerLabel.text, answerHeight);
     return questionHeight + TEXT_GAP + answerHeight + (TOP_BOTTOM_INSET * 2);
 }
 

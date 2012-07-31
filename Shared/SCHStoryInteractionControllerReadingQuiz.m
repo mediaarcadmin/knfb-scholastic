@@ -203,6 +203,8 @@
 
 - (void)setupScoreAnswers
 {
+    [self.answerScrollView scrollRectToVisible:CGRectMake(0, 0, self.answerScrollView.frame.size.width, self.answerScrollView.frame.size.height) animated:NO];
+    
     for (UIView *existingView in [self.answerScrollViewContainer subviews]) {
         if (existingView.tag == 999) {
             [existingView removeFromSuperview];
@@ -242,12 +244,16 @@
     
     
     CGRect containerFrame = self.answerScrollViewContainer.frame;
-    containerFrame.size.height = currentY;
+    containerFrame.size.height = currentY + 15;
     self.answerScrollViewContainer.frame = containerFrame;
     
     self.answerScrollView.contentSize = self.answerScrollViewContainer.frame.size;
     
-    [self.answerScrollView flashScrollIndicators];
+    double delayInSeconds = 0.5;
+    dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);
+    dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+        [self.answerScrollView flashScrollIndicators];
+    });
 }
 
 - (void)rotateToOrientation:(UIInterfaceOrientation)orientation

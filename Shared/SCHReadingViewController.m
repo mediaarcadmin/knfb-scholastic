@@ -755,10 +755,15 @@ static const NSUInteger kReadingViewMaxRecommendationsCount = 4;
     
 #if FLOW_VIEW_DISABLED
     // if flow view is disabled, then remove the options button
-    if ([toolbarArray count] >= 9) {
-        [toolbarArray removeObjectsAtIndexes:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(6, 2)]];
+    if ([toolbarArray count] >= 11) {
+        [toolbarArray removeObjectsAtIndexes:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(8, 2)]];
     }
 #endif
+    
+    // Reading Quiz
+    if (!readingQuiz && [toolbarArray count] >= 9) {
+        [toolbarArray removeObjectsAtIndexes:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(6, 2)]];
+    }
     
     BOOL alreadyRemovedHighlights = NO;
     
@@ -1219,7 +1224,7 @@ static const NSUInteger kReadingViewMaxRecommendationsCount = 4;
     [self presentStoryInteraction:[storyInteractions lastObject]];
 }
 
-- (void)readingQuizAction:(id)sender
+- (IBAction)readingQuizAction:(UIButton *)sender 
 {
     [self toolbarButtonPressed];
     
@@ -1430,6 +1435,7 @@ static const NSUInteger kReadingViewMaxRecommendationsCount = 4;
     
     [self pauseAudioPlayback];
 }
+
 
 - (IBAction)settingsAction:(UIButton *)sender
 {

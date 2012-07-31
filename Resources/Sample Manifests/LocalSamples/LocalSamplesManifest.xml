@@ -71,4 +71,31 @@
         <Version>1</Version>
         <IsEnhanced>true</IsEnhanced>
 	</Book>
+    <Book>
+		<Isbn13>9780545364775</Isbn13>
+		<Title>My First Biography: Benjamin Franklin</Title>
+		<Author>by Marion Dane Bauer, illustrated by Anthony Lewis</Author>
+		<CoverUrl>9780545364775_r7.MyFirstBiographyBenjaminFranklin.jpg</CoverUrl>
+		<DownloadUrl>9780545364775_r7.MyFirstBiographyBenjaminFranklin.xps</DownloadUrl>
+        <Version>1</Version>
+        <IsEnhanced>true</IsEnhanced>
+	</Book>
+    <Book>
+		<Isbn13>9780545283564</Isbn13>
+		<Title>Horrorland: Revenge of the Living Dummy</Title>
+		<Author>R.L. Stine</Author>
+		<CoverUrl>GoosebumpsWithQuiz.jpg</CoverUrl>
+		<DownloadUrl>GoosebumpsWithQuiz.xps</DownloadUrl>
+        <Version>1</Version>
+        <IsEnhanced>true</IsEnhanced>
+	</Book>
+    <Book>
+		<Isbn13>9780545322287</Isbn13>
+		<Title>Astroblast!: Code Blue</Title>
+		<Author>Bob Kolar</Author>
+		<CoverUrl>AstroBlastWithQuiz.jpg</CoverUrl>
+		<DownloadUrl>AstroBlastWithQuiz.xps</DownloadUrl>
+        <Version>1</Version>
+        <IsEnhanced>true</IsEnhanced>
+	</Book>
 </SampleManifest>
