@@ -19,11 +19,20 @@
 // index into answers
 @property (nonatomic, assign) NSInteger correctAnswer;
 
+- (NSString *)audioPathForQuestion;
+- (NSString *)audioPathForAnswerAtIndex:(NSInteger)answerIndex;
+
 @end
 
 
 @interface SCHStoryInteractionReadingQuiz : SCHStoryInteraction {}
 
 @property (nonatomic, retain) NSArray *questions;
+
+- (NSString *)audioPathForNotCompletedBook;
+- (NSString *)audioPathForIntroduction;
+- (NSString *)audioPathForAllCorrect;
+- (NSString *)audioPathForMoreThanFiftyPercent;
+- (NSString *)audioPathForLessThanFiftyPercent;
 
 @end

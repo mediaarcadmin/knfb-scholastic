@@ -10,23 +10,23 @@
 #import "TTTAttributedLabel.h"
 #import "SCHStretchableImageButton.h"
 #import "SCHStoryInteractionReadingQuizResultView.h"
-#import "SCHStoryInteractionGradientView.h"
 
 @class SCHStoryInteractionProgressView;
 
 @interface SCHStoryInteractionControllerReadingQuiz : SCHStoryInteractionController
 
-@property (retain, nonatomic) IBOutlet TTTAttributedLabel *introTitleLabel;
+@property (retain, nonatomic) IBOutlet UILabel *introTitleLabel;
 @property (retain, nonatomic) IBOutlet UILabel *introSubtitleLabel;
+@property (retain, nonatomic) IBOutlet UILabel *bestScoreLabel;
 @property (retain, nonatomic) IBOutlet SCHStretchableImageButton *introActionButton;
 
+@property (retain, nonatomic) IBOutlet UILabel *ipadQuestionLabel;
 @property (retain, nonatomic) IBOutlet UIScrollView *answerScrollView;
 @property (retain, nonatomic) IBOutlet UIView *answerScrollViewContainer;
-@property (retain, nonatomic) IBOutlet SCHStoryInteractionGradientView *answerGradientView;
 
 @property (nonatomic, retain) IBOutlet SCHStoryInteractionProgressView *progressView;
-@property (nonatomic, retain) IBOutlet UILabel *questionLabel;
 @property (nonatomic, retain) IBOutletCollection(UIButton) NSArray *answerButtons;
+@property (retain, nonatomic) IBOutlet UIView *answerBackgroundView;
 
 @property (nonatomic, retain) IBOutlet UILabel *scoreLabel;
 @property (nonatomic, retain) IBOutlet UILabel *scoreSublabel;

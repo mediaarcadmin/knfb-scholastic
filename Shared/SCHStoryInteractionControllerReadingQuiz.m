@@ -29,6 +29,8 @@
 - (void)nextQuestion;
 - (void)setupQuestion;
 
+- (void)playQuestionAudioAndHighlightAnswers;
+
 @end
 
 @implementation SCHStoryInteractionControllerReadingQuiz
@@ -36,12 +38,12 @@
 @synthesize introTitleLabel;
 @synthesize introSubtitleLabel;
 @synthesize introActionButton;
+@synthesize ipadQuestionLabel;
 @synthesize answerScrollView;
 @synthesize answerScrollViewContainer;
-@synthesize answerGradientView;
 @synthesize progressView;
-@synthesize questionLabel;
 @synthesize answerButtons;
+@synthesize answerBackgroundView;
 @synthesize scoreLabel;
 @synthesize scoreSublabel;
 @synthesize resultsHeaderLabel;
@@ -52,13 +54,14 @@
 @synthesize bestScore;
 @synthesize answersGiven;
 @synthesize answerViews;
+@synthesize bestScoreLabel;
 
 - (void)dealloc
 {
+    [bestScoreLabel release];
     [answerViews release];
     [answersGiven release];
     [progressView release];
-    [questionLabel release];
     [answerButtons release];
     [scoreLabel release];
     [scoreSublabel release];
@@ -67,8 +70,9 @@
     [introActionButton release];
     [answerScrollView release];
     [answerScrollViewContainer release];
-    [answerGradientView release];
     [resultsHeaderLabel release];
+    [answerBackgroundView release];
+    [ipadQuestionLabel release];
     [super dealloc];
 }
 
@@ -130,18 +134,23 @@
     self.completedReadthrough = YES;
     
     if (self.completedReadthrough) {
-        self.introTitleLabel.text = @"How carefully did you read this Book?\nTake this quiz and find out.";
-        self.introSubtitleLabel.text = [NSString stringWithFormat:@"Best Score: %d/%d", bestScore, [[(SCHStoryInteractionReadingQuiz *)self.storyInteraction questions] count]];
+        [self enqueueAudioWithPath:[(SCHStoryInteractionReadingQuiz *)self.storyInteraction audioPathForIntroduction]
+                        fromBundle:NO];
+        
+        self.bestScoreLabel.text = [NSString stringWithFormat:@"Best Score: %d/%d", bestScore, [[(SCHStoryInteractionReadingQuiz *)self.storyInteraction questions] count]];
         [self.introActionButton setTitle:@"Start" forState:UIControlStateNormal];
         if (self.bestScore >= 0) {
-            self.introSubtitleLabel.hidden = NO;
+            self.bestScoreLabel.hidden = NO;
         } else {
-            self.introSubtitleLabel.hidden = YES;
+            self.bestScoreLabel.hidden = YES;
         }
     } else {
+        [self enqueueAudioWithPath:[(SCHStoryInteractionReadingQuiz *)self.storyInteraction audioPathForNotCompletedBook]
+                        fromBundle:NO];
         self.introTitleLabel.text = @"Finish reading this book before trying this reading quiz.";
         [self.introActionButton setTitle:@"OK" forState:UIControlStateNormal];
         self.introSubtitleLabel.hidden = YES;
+        self.bestScoreLabel.hidden = YES;
     }
 }
 
@@ -165,31 +174,43 @@
 {
     UIColor *backgroundColor = [UIColor whiteColor];
     
-    if (!self.storyInteraction.olderStoryInteraction) {
-        if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
-            backgroundColor = [UIColor colorWithRed:0.843 green:0.945 blue:1.000 alpha:1];
-        } else {
-            backgroundColor = [UIColor colorWithRed:0.812 green:0.929 blue:1.000 alpha:1];
-        }
+    if (self.storyInteraction.olderStoryInteraction) {
+        backgroundColor = [UIColor colorWithRed:0.851 green:0.945 blue:0.996 alpha:1];
+    } else {
+        backgroundColor = [UIColor colorWithRed:0.992 green:1.000 blue:0.816 alpha:1];
     }
     
-    self.answerGradientView.topColor = [backgroundColor colorWithAlphaComponent:0];
-    self.answerGradientView.bottomColor = backgroundColor;
+    self.answerBackgroundView.backgroundColor = backgroundColor;
+
+    [self enqueueAudioWithPath:[self.storyInteraction storyInteractionRevealSoundFilename] fromBundle:YES];
     
     NSInteger maxScore = self.progressView.numberOfSteps;
     self.scoreLabel.text = [NSString stringWithFormat:@"You got %d out of %d right!", self.score, maxScore];
     if (score <= (int) ceil((float)maxScore/2.0f)) {
         // 50% or less
+        if (!self.storyInteraction.olderStoryInteraction) {
+            [self enqueueAudioWithPath:[(SCHStoryInteractionReadingQuiz *)self.storyInteraction audioPathForLessThanFiftyPercent]
+                        fromBundle:NO];
+        }
+
         self.scoreSublabel.text = NSLocalizedString(@"Try reading the book again to find more answers.", @"Try reading the book again to find more answers.");
     } else if (score < ceil((float)maxScore)) {
         // less than 100%
+        if (!self.storyInteraction.olderStoryInteraction) {
+            [self enqueueAudioWithPath:[(SCHStoryInteractionReadingQuiz *)self.storyInteraction audioPathForMoreThanFiftyPercent]
+                        fromBundle:NO];
+        }
+        
         self.scoreSublabel.text = NSLocalizedString(@"Great job! Read the book again for an even higher score.", @"Great job! Read the book again for an even higher score.");
     } else {
         // 100%
+        if (!self.storyInteraction.olderStoryInteraction) {
+            [self enqueueAudioWithPath:[(SCHStoryInteractionReadingQuiz *)self.storyInteraction audioPathForAllCorrect]
+                        fromBundle:NO];
+        }
+        
         self.scoreSublabel.text = NSLocalizedString(@"Great reading!", @"Great reading!");
     }
-
-    [self enqueueAudioWithPath:[self.storyInteraction storyInteractionRevealSoundFilename] fromBundle:YES];
     
     if (score > self.bestScore) {
         self.bestScore = score;
@@ -245,9 +266,25 @@
     
     CGRect containerFrame = self.answerScrollViewContainer.frame;
     containerFrame.size.height = currentY + 15;
+    containerFrame.size.width = self.answerScrollView.frame.size.width;
     self.answerScrollViewContainer.frame = containerFrame;
+
+    containerFrame.origin.y = 0;
+    self.answerBackgroundView.frame = containerFrame;
     
-    self.answerScrollView.contentSize = self.answerScrollViewContainer.frame.size;
+    // provide a rounded bottom edge for the answer background view
+    UIBezierPath* rounded = [UIBezierPath bezierPathWithRoundedRect:self.answerBackgroundView.bounds
+                                                  byRoundingCorners:UIRectCornerBottomLeft | UIRectCornerBottomRight
+                                                        cornerRadii:CGSizeMake(10.0, 10.0)];
+    
+    CAShapeLayer* shape = [[CAShapeLayer alloc] init];
+    [shape setPath:rounded.CGPath];
+    
+    self.answerBackgroundView.layer.mask = shape;
+    
+
+//    self.answerScrollView.contentSize = self.answerScrollViewContainer.frame.size;
+    self.answerScrollView.contentSize = CGSizeMake(self.answerScrollView.frame.size.width, self.answerScrollViewContainer.frame.size.height + self.answerScrollViewContainer.frame.origin.y);
     
     double delayInSeconds = 0.5;
     dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);
@@ -269,7 +306,28 @@
     }
 }
 
-
+- (void)playQuestionAudioAndHighlightAnswers
+{
+    [self enqueueAudioWithPath:[[self currentQuestion] audioPathForQuestion]
+                    fromBundle:NO];
+    
+    NSInteger index = 0;
+    for (UIButton *button in self.answerButtons) {
+        [self enqueueAudioWithPath:[[self currentQuestion] audioPathForAnswerAtIndex:index]
+                        fromBundle:NO
+                        startDelay:0.5
+            synchronizedStartBlock:^{
+                [button setHighlighted:YES];
+            }
+              synchronizedEndBlock:^{
+                  [button setHighlighted:NO];
+                  if (index + 1 == [self.answerButtons count]) {
+                      self.controllerState = SCHStoryInteractionControllerStateInteractionInProgress;
+                  }
+              }];
+        index++;
+    }
+}
 
 - (void)nextQuestion
 {
@@ -286,7 +344,13 @@
 {
     self.simultaneousTapCount = 0;
     self.progressView.currentStep = self.currentQuestionIndex;
-    self.questionLabel.text = [self currentQuestion].prompt;
+//    self.questionLabel.text = [self currentQuestion].prompt;
+
+    if (self.ipadQuestionLabel) {
+        self.ipadQuestionLabel.text = [self currentQuestion].prompt;
+    } else {
+        [self setTitle:[self currentQuestion].prompt];
+    }
     NSInteger i = 0;
     for (NSString *answer in [self currentQuestion].answers) {
         UIImage *highlight = nil;
@@ -322,6 +386,10 @@
     }
     for (; i < [self.answerButtons count]; ++i) {
         [[self.answerButtons objectAtIndex:i] setHidden:YES];
+    }
+    
+    if (!self.storyInteraction.olderStoryInteraction) {
+        [self playQuestionAudioAndHighlightAnswers];
     }
 }
 
