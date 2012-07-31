@@ -218,6 +218,8 @@
     }];
 }
 
+// NOTE: SCHBookURLRequestOperation.m performs the same operation in it's own
+// performWithRecommendationAndSave
 - (void)resetCoverURLExpiredState
 {
     [self performWithBookAndSave:^(SCHAppBook *book) {
