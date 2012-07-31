@@ -67,94 +67,109 @@
 
 - (void)urlSuccess:(NSNotification *)notification
 {
+    NSAssert([NSThread currentThread] == [NSThread mainThread], @"Notification is not fired on the main thread!");
+    
     if (self.isCancelled) {
         [[NSNotificationCenter defaultCenter] removeObserver:self];        
         [self endOperation];
 		return;
 	}
-    
-	NSAssert([NSThread currentThread] == [NSThread mainThread], @"Notification is not fired on the main thread!");
     
 	NSDictionary *userInfo = [notification userInfo];
     NSString *completedIsbn = [userInfo objectForKey:kSCHLibreAccessWebServiceContentIdentifier];
 	
     if ([completedIsbn isEqualToString:self.isbn]) {
-        
-        if ([[userInfo valueForKey:kSCHLibreAccessWebServiceCoverURL] isEqual:[NSNull null]]) {
-            NSLog(@"Warning: recommendation URL request was missing cover URL: %@", userInfo);
-            [self setProcessingState:kSCHAppRecommendationProcessingStateURLsNotPopulated];
-        } else {
-            
-            NSString *coverURL = [userInfo valueForKey:kSCHLibreAccessWebServiceCoverURL];
-            
-            BOOL coverUrlIsValid = NO;
-            
-            if ([SCHRecommendationManager urlIsValid:coverURL]) {                
-                coverUrlIsValid = YES;
-            } 
-            
-            if (!coverUrlIsValid) {
-                [self setCoverURLExpiredState];
-            } else {
-                NSLog(@"Successful URL retrieval for %@!", completedIsbn);
-                [self performWithRecommendationAndSave:^(SCHAppRecommendationItem *item) {
-                    [item setCoverURL:[userInfo valueForKey:kSCHLibreAccessWebServiceCoverURL]];
-                    [item setAuthor:[userInfo valueForKey:kSCHLibreAccessWebServiceAuthor]];
-                    [item setTitle:[userInfo valueForKey:kSCHLibreAccessWebServiceTitle]];
-                    [item setAverageRating:[userInfo valueForKey:kSCHLibreAccessWebServiceAverageRating]];
-                    // combine resetCoverURLExpiredState and setProcessingState:kSCHAppRecommendationProcessingStateNoCover into this one save
-                    [item setState:[NSNumber numberWithInt:kSCHAppRecommendationProcessingStateNoCover]];
-                    [item setCoverURLExpiredCount:[NSNumber numberWithInteger:0]];
-                }];
-                
-            }
-        }
-        
         [[NSNotificationCenter defaultCenter] removeObserver:self];
-        [self endOperation];        
+        
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{
+            if (self.isCancelled == NO) {
+                if ([[userInfo valueForKey:kSCHLibreAccessWebServiceCoverURL] isEqual:[NSNull null]]) {
+                    NSLog(@"Warning: recommendation URL request was missing cover URL: %@", userInfo);
+                    [self setProcessingState:kSCHAppRecommendationProcessingStateURLsNotPopulated];
+                } else {
+                    
+                    NSString *coverURL = [userInfo valueForKey:kSCHLibreAccessWebServiceCoverURL];
+                    
+                    BOOL coverUrlIsValid = NO;
+                    
+                    if ([SCHRecommendationManager urlIsValid:coverURL]) {
+                        coverUrlIsValid = YES;
+                    }
+                    
+                    if (!coverUrlIsValid) {
+                        [self setCoverURLExpiredState];
+                    } else {
+                        NSLog(@"Successful URL retrieval for %@!", completedIsbn);
+                        [self performWithRecommendationAndSave:^(SCHAppRecommendationItem *item) {
+                            [item setCoverURL:[userInfo valueForKey:kSCHLibreAccessWebServiceCoverURL]];
+                            [item setAuthor:[userInfo valueForKey:kSCHLibreAccessWebServiceAuthor]];
+                            [item setTitle:[userInfo valueForKey:kSCHLibreAccessWebServiceTitle]];
+                            [item setAverageRating:[userInfo valueForKey:kSCHLibreAccessWebServiceAverageRating]];
+                            // combine resetCoverURLExpiredState and setProcessingState:kSCHAppRecommendationProcessingStateNoCover into this one save
+                            [item setState:[NSNumber numberWithInt:kSCHAppRecommendationProcessingStateNoCover]];
+                            [item setCoverURLExpiredCount:[NSNumber numberWithInteger:0]];
+                        }];
+                        
+                    }
+                }
+            }
+            
+            [self endOperation];
+        });
 	}
 }
 
 - (void)urlFailure:(NSNotification *)notification
 {
+	NSAssert([NSThread currentThread] == [NSThread mainThread], @"Notification is not fired on the main thread!");
+    
     if (self.isCancelled) {
         [[NSNotificationCenter defaultCenter] removeObserver:self];        
         [self endOperation];
 		return;
 	}
     
-	NSAssert([NSThread currentThread] == [NSThread mainThread], @"Notification is not fired on the main thread!");
 	NSDictionary *userInfo = [notification userInfo];
 	NSString *completedIsbn = [userInfo objectForKey:kSCHAppRecommendationItemIsbn];
 	
     if ([completedIsbn isEqualToString:self.isbn]) {
-        NSInteger errorCode = [[userInfo objectForKey:kSCHAppRecommendationItemErrorCode] intValue];
-
-        if (errorCode == 75) {
-            [self setProcessingState:kSCHAppRecommendationProcessingStateInvalidRecommendation];
-        } else {
-            NSLog(@"Warning: recommendation URL request failed %@", userInfo);
-            [self setProcessingState:kSCHAppRecommendationProcessingStateURLsNotPopulated];
-        }
-        
         [[NSNotificationCenter defaultCenter] removeObserver:self];
-        [self endOperation];        
+        
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{
+            if (self.isCancelled == NO) {
+                NSInteger errorCode = [[userInfo objectForKey:kSCHAppRecommendationItemErrorCode] intValue];
+                
+                if (errorCode == 75) {
+                    [self setProcessingState:kSCHAppRecommendationProcessingStateInvalidRecommendation];
+                } else {
+                    NSLog(@"Warning: recommendation URL request failed %@", userInfo);
+                    [self setProcessingState:kSCHAppRecommendationProcessingStateURLsNotPopulated];
+                }
+            }
+            
+            [self endOperation];
+        });
 	}
 }
 
 - (void)urlCleared:(NSNotification *)notification
 {
+	NSAssert([NSThread currentThread] == [NSThread mainThread], @"Notification is not fired on the main thread!");
+    
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+    
     if (self.isCancelled) {
-        [[NSNotificationCenter defaultCenter] removeObserver:self];    
         [self endOperation];
 		return;
 	}
     
-	NSAssert([NSThread currentThread] == [NSThread mainThread], @"Notification is not fired on the main thread!");
-	
-    [self setProcessingState:kSCHAppRecommendationProcessingStateURLsNotPopulated];
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
-    [self endOperation];        
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{
+        if (self.isCancelled == NO) {
+            [self setProcessingState:kSCHAppRecommendationProcessingStateURLsNotPopulated];
+        }
+
+        [self endOperation];
+    });
 }
 
 @end
