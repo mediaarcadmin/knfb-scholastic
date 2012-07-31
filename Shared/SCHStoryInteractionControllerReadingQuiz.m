@@ -160,7 +160,7 @@
         [self.introActionButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
         [self.introActionButton setTitleColor:[UIColor whiteColor] forState:UIControlStateHighlighted];
     } else {
-        [self.introActionButton setTitleColor:[UIColor SCHBlue1Color] forState:UIControlStateNormal];
+        [self.introActionButton setTitleColor:[UIColor SCHDarkBlue1Color] forState:UIControlStateNormal];
     }
 }
 
@@ -174,6 +174,9 @@
     if (!self.storyInteraction.olderStoryInteraction) {
         self.progressView.youngerMode = YES;
     }
+    
+    self.progressView.layer.borderColor = [UIColor orangeColor].CGColor;
+    self.progressView.layer.borderWidth = 1;
     
     [self.answersGiven removeAllObjects];
     self.currentQuestionIndex = 0;
@@ -199,7 +202,7 @@
         [self.tryAgainButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
         [self.tryAgainButton setTitleColor:[UIColor whiteColor] forState:UIControlStateHighlighted];
     } else {
-        [self.tryAgainButton setTitleColor:[UIColor SCHBlue1Color] forState:UIControlStateNormal];
+        [self.tryAgainButton setTitleColor:[UIColor SCHDarkBlue1Color] forState:UIControlStateNormal];
     }
     
     self.answerBackgroundView.backgroundColor = backgroundColor;
@@ -382,7 +385,7 @@
             [button setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
             [button setTitleColor:[UIColor whiteColor] forState:UIControlStateHighlighted];
         } else {
-            [button setTitleColor:[UIColor SCHBlue1Color] forState:UIControlStateNormal];
+            [button setTitleColor:[UIColor SCHDarkBlue1Color] forState:UIControlStateNormal];
         }
         
         BOOL iPad = (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad);

@@ -56,7 +56,7 @@
 
 - (void)setupIndicators
 {
-    NSString *filledImageName = @"storyinteration-progress-filled";
+    NSString *filledImageName = @"storyinteraction-progress-filled";
     NSString *unfilledImageName = @"storyinteraction-progress-unfilled";
     
     if (self.youngerMode) {
@@ -71,8 +71,6 @@
            
             
             UIImage *image = [UIImage imageNamed:filledImageName];
-            
-            
             
             UIImageView *imageView = [[UIImageView alloc] initWithImage:image];
             imageView.contentMode = UIViewContentModeCenter;
@@ -114,7 +112,7 @@
 {
     [super layoutSubviews];
 
-    NSString *filledImageName = @"storyinteration-progress-filled";
+    NSString *filledImageName = @"storyinteraction-progress-filled";
     
     if (self.youngerMode) {
         filledImageName = @"storyinteraction-younger-progress-filled";
