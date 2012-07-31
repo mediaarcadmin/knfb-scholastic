@@ -68,68 +68,62 @@
 
 - (void)urlSuccess:(NSNotification *)notification
 {
-    NSAssert([NSThread currentThread] == [NSThread mainThread], @"Notification is not fired on the main thread!");
-    
     if (self.isCancelled) {
         [[NSNotificationCenter defaultCenter] removeObserver:self];        
         [self setIsProcessing:NO];        
         [self endOperation];
 		return;
 	}
+
+	NSAssert([NSThread currentThread] == [NSThread mainThread], @"Notification is not fired on the main thread!");
 
 	NSDictionary *userInfo = [notification userInfo];
     SCHBookIdentifier *bookIdentifier = [[[SCHBookIdentifier alloc] initWithObject:userInfo] autorelease];
 	
     if ([bookIdentifier isEqual:self.identifier]) {
-        [[NSNotificationCenter defaultCenter] removeObserver:self];
         
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{
-            if (self.isCancelled == NO) {
-                if ([[userInfo valueForKey:kSCHLibreAccessWebServiceCoverURL] isEqual:[NSNull null]] ||
-                    [[userInfo valueForKey:kSCHLibreAccessWebServiceContentURL] isEqual:[NSNull null]]) {
-                    NSLog(@"Warning: book URL request was missing cover and/or content URL: %@", userInfo);
-                    [self setProcessingState:SCHBookProcessingStateURLsNotPopulated];
-                } else {
-                    
-                    __block BOOL urlsValid = NO;
-                    
-                    [self performWithBookAndSave:^(SCHAppBook *book) {
-                        SCHListContentMetadataOperation *localOperation = [[SCHListContentMetadataOperation alloc] initWithSyncComponent:nil
-                                                                                                                                  result:nil
-                                                                                                                                userInfo:nil];
-                        [localOperation syncContentMetadataItem:userInfo withContentMetadataItem:book.ContentMetadataItem];
-                        
-                        if (([book contentMetadataCoverURLIsValid] && [book contentMetadataFileURLIsValid])) {
-                            [book setValue:[userInfo valueForKey:kSCHLibreAccessWebServiceCoverURL] forKey:kSCHAppBookCoverURL];
-                            [book setValue:[userInfo valueForKey:kSCHLibreAccessWebServiceContentURL] forKey:kSCHAppBookFileURL];
-                            urlsValid = YES;
-                            
-                            // combine resetCoverURLExpiredState and setProcessingState:kSCHAppRecommendationProcessingStateNoCover into this one save
-                            [book setUrlExpiredCount:[NSNumber numberWithInteger:0]];
-                            NSLog(@"Successful URL retrieval for %@!", bookIdentifier);
-                            [book setState:[NSNumber numberWithInt:SCHBookProcessingStateNoCoverImage]];
-                        }
-                        [localOperation release];
-                        
-                    }];
-                    
-                    // check here for invalidity
-                    if (!urlsValid) {
-                        [self setCoverURLExpiredState];
-                    }
-                }
-            }
+        if ([[userInfo valueForKey:kSCHLibreAccessWebServiceCoverURL] isEqual:[NSNull null]] || 
+            [[userInfo valueForKey:kSCHLibreAccessWebServiceContentURL] isEqual:[NSNull null]]) {
+            NSLog(@"Warning: book URL request was missing cover and/or content URL: %@", userInfo);
+            [self setProcessingState:SCHBookProcessingStateURLsNotPopulated];
+        } else {
             
-            [self setIsProcessing:NO];        
-            [self endOperation];
-        });
+            __block BOOL urlsValid = NO;
+            
+            [self performWithBookAndSave:^(SCHAppBook *book) {
+                SCHListContentMetadataOperation *localOperation = [[SCHListContentMetadataOperation alloc] initWithSyncComponent:nil 
+                                                                                                                          result:nil
+                                                                                                                        userInfo:nil];
+                [localOperation syncContentMetadataItem:userInfo withContentMetadataItem:book.ContentMetadataItem];
+                
+                if (([book contentMetadataCoverURLIsValid] && [book contentMetadataFileURLIsValid])) {
+                    [book setValue:[userInfo valueForKey:kSCHLibreAccessWebServiceCoverURL] forKey:kSCHAppBookCoverURL];
+                    [book setValue:[userInfo valueForKey:kSCHLibreAccessWebServiceContentURL] forKey:kSCHAppBookFileURL];
+                    urlsValid = YES;
+                    
+                    // combine resetCoverURLExpiredState and setProcessingState:kSCHAppRecommendationProcessingStateNoCover into this one save
+                    [book setUrlExpiredCount:[NSNumber numberWithInteger:0]];
+                    NSLog(@"Successful URL retrieval for %@!", bookIdentifier);
+                    [book setState:[NSNumber numberWithInt:SCHBookProcessingStateNoCoverImage]];
+                }
+                [localOperation release];
+                
+            }];
+            
+            // check here for invalidity
+            if (!urlsValid) {
+                [self setCoverURLExpiredState];
+            }
+        }
+        
+        [[NSNotificationCenter defaultCenter] removeObserver:self];
+        [self setIsProcessing:NO];        
+        [self endOperation];        
 	}
 }
 
 - (void)urlFailure:(NSNotification *)notification
 {
-    NSAssert([NSThread currentThread] == [NSThread mainThread], @"Notification is not fired on the main thread!");
-    
     if (self.isCancelled) {
         [[NSNotificationCenter defaultCenter] removeObserver:self];        
         [self setIsProcessing:NO];        
@@ -137,44 +131,36 @@
 		return;
 	}
 
-    NSDictionary *userInfo = [notification userInfo];
-    SCHBookIdentifier *completedBookIdentifier = [userInfo objectForKey:kSCHBookIdentifierBookIdentifier];
-
+	NSAssert([NSThread currentThread] == [NSThread mainThread], @"Notification is not fired on the main thread!");
+	NSDictionary *userInfo = [notification userInfo];
+	SCHBookIdentifier *completedBookIdentifier = [userInfo objectForKey:kSCHBookIdentifierBookIdentifier];
+	
     if ([completedBookIdentifier isEqual:self.identifier]) {
+        NSLog(@"Warning: book URL request was missing cover and/or content URL: %@", userInfo);
+        [self setProcessingState:SCHBookProcessingStateURLsNotPopulated];
+
         [[NSNotificationCenter defaultCenter] removeObserver:self];
-        
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{
-            if (self.isCancelled == NO) {
-                NSLog(@"Warning: book URL request was missing cover and/or content URL: %@", userInfo);
-                [self setProcessingState:SCHBookProcessingStateURLsNotPopulated];
-            }
-            
-            [self setIsProcessing:NO];
-            [self endOperation];
-        });
-    }
+        [self setIsProcessing:NO];    
+        [self endOperation];        
+	}
 }
 
 - (void)urlCleared:(NSNotification *)notification
 {
-    NSAssert([NSThread currentThread] == [NSThread mainThread], @"Notification is not fired on the main thread!");
-    
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
-    
     if (self.isCancelled) {
+        [[NSNotificationCenter defaultCenter] removeObserver:self];        
         [self setIsProcessing:NO];        
         [self endOperation];
 		return;
 	}
     
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{
-        if(self.isCancelled == NO) {
-            [self setProcessingState:SCHBookProcessingStateURLsNotPopulated];
-        }
+	NSAssert([NSThread currentThread] == [NSThread mainThread], @"Notification is not fired on the main thread!");
+
+    [self setProcessingState:SCHBookProcessingStateURLsNotPopulated];
         
-        [self setIsProcessing:NO];
-        [self endOperation];
-    });
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+    [self setIsProcessing:NO];    
+    [self endOperation];        
 }
 
 @end
