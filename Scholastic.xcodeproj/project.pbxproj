@@ -1429,6 +1429,7 @@
 		527CE87B13A6420900BAC8E1 /* SCHStoryInteractionWordScrambler_iPhone.xib in Resources */ = {isa = PBXBuildFile; fileRef = 527CE87A13A6420900BAC8E1 /* SCHStoryInteractionWordScrambler_iPhone.xib */; };
 		527DDC64144C6A0D004D4FE3 /* SCHParentalToolsWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 527DDC62144C6A0D004D4FE3 /* SCHParentalToolsWebViewController.m */; };
 		527DDC65144C6A0D004D4FE3 /* SCHParentalToolsWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 527DDC62144C6A0D004D4FE3 /* SCHParentalToolsWebViewController.m */; };
+		527FA6EB15C7C68F002D0250 /* UNIX2003Remapping.c in Sources */ = {isa = PBXBuildFile; fileRef = 527FA6EA15C7C68F002D0250 /* UNIX2003Remapping.c */; };
 		528433EB133382EA0010BAAB /* SCHAppDictionaryState.m in Sources */ = {isa = PBXBuildFile; fileRef = 528433EA133382EA0010BAAB /* SCHAppDictionaryState.m */; };
 		528465EF144DB5F7009DBADD /* SCHAccountValidationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 528465EE144DB5F7009DBADD /* SCHAccountValidationViewController.m */; };
 		528465F0144DB5F7009DBADD /* SCHAccountValidationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 528465EE144DB5F7009DBADD /* SCHAccountValidationViewController.m */; };
@@ -2658,6 +2659,358 @@
 		C95ECB52133A77FC00D88768 /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C95ECB44133A76C400D88768 /* Accelerate.framework */; };
 		C9613DDD1405359A00AE1F8C /* icon-audio-younger-small.png in Resources */ = {isa = PBXBuildFile; fileRef = C9613DDB1405359A00AE1F8C /* icon-audio-younger-small.png */; };
 		C9613DDF1405359A00AE1F8C /* icon-audio-younger-small@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C9613DDC1405359A00AE1F8C /* icon-audio-younger-small@2x.png */; };
+		C96C174915C7D6B3002EBEBB /* SCHDrmSession.m in Sources */ = {isa = PBXBuildFile; fileRef = C96C174815C7D6B3002EBEBB /* SCHDrmSession.m */; };
+		C96C174B15C7F2A5002EBEBB /* SCHAppModel.m in Sources */ = {isa = PBXBuildFile; fileRef = C9F229AB15B82EDD009939D1 /* SCHAppModel.m */; };
+		C96C174C15C7F2B4002EBEBB /* SCHAppStateManager.m in Sources */ = {isa = PBXBuildFile; fileRef = F8FAF2F213F12F20009C7E9F /* SCHAppStateManager.m */; };
+		C96C174D15C7F2C2002EBEBB /* SCHAuthenticationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 52EF543F12E9A5D400E374F7 /* SCHAuthenticationManager.m */; };
+		C96C174E15C7F2CC002EBEBB /* SCHSyncManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 52AD9ACE12FC0EEF0099FB88 /* SCHSyncManager.m */; };
+		C96C174F15C7F2D6002EBEBB /* SCHSampleBooksImporter.m in Sources */ = {isa = PBXBuildFile; fileRef = C9C9096A1455A06B00548DDE /* SCHSampleBooksImporter.m */; };
+		C96C175015C7F2F2002EBEBB /* SCHDictionaryDownloadManager.m in Sources */ = {isa = PBXBuildFile; fileRef = F8C4C3FA1332594A0057420E /* SCHDictionaryDownloadManager.m */; };
+		C96C175115C7F305002EBEBB /* SCHProfileSyncComponent.m in Sources */ = {isa = PBXBuildFile; fileRef = 52AD9D6A130000570099FB88 /* SCHProfileSyncComponent.m */; };
+		C96C175215C7F318002EBEBB /* SCHAccountValidation.m in Sources */ = {isa = PBXBuildFile; fileRef = 526760AB144C85AF00F3FE56 /* SCHAccountValidation.m */; };
+		C96C175315C7F32E002EBEBB /* SCHProfileItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 52298A7E12F0EF5600BBBCE6 /* SCHProfileItem.m */; };
+		C96C175415C7F35E002EBEBB /* SCHStartingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 28C3D1A613E2B30300931F5C /* SCHStartingViewController.m */; };
+		C96C175515C7F5E1002EBEBB /* SCHCoreDataHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = F8DCE5C313EC415F00100B6A /* SCHCoreDataHelper.m */; };
+		C96C175615C7F5EB002EBEBB /* SCHSettingItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 52298A6012F0EF5600BBBCE6 /* SCHSettingItem.m */; };
+		C96C175715C7F5FB002EBEBB /* SCHLibreAccessWebService.m in Sources */ = {isa = PBXBuildFile; fileRef = 5293872C12DF43CB00045B44 /* SCHLibreAccessWebService.m */; };
+		C96C175815C7F68E002EBEBB /* SFHFKeychainUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 52EF579612EDBE6E00E374F7 /* SFHFKeychainUtils.m */; };
+		C96C175915C7F69B002EBEBB /* SCHVersionDownloadManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 5226C70214A489CB00307634 /* SCHVersionDownloadManager.m */; };
+		C96C175A15C7F6A0002EBEBB /* SCHCOPPAManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 52C62CE814F2A4F100F261DA /* SCHCOPPAManager.m */; };
+		C96C175B15C7F6A7002EBEBB /* SCHURLManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 52322C33132693F500BB071D /* SCHURLManager.m */; };
+		C96C175C15C7F6AD002EBEBB /* SCHBookshelfSyncComponent.m in Sources */ = {isa = PBXBuildFile; fileRef = 52E36768131D3ED200ACCBEE /* SCHBookshelfSyncComponent.m */; };
+		C96C175D15C7F738002EBEBB /* SCHBookManager.m in Sources */ = {isa = PBXBuildFile; fileRef = F8CD24CA12F9714D001C748B /* SCHBookManager.m */; };
+		C96C175E15C7F745002EBEBB /* SCHAnnotationSyncComponent.m in Sources */ = {isa = PBXBuildFile; fileRef = 52AD9D64130000570099FB88 /* SCHAnnotationSyncComponent.m */; };
+		C96C175F15C7F74B002EBEBB /* SCHRecommendationSyncComponent.m in Sources */ = {isa = PBXBuildFile; fileRef = 525668DE150F80F600570623 /* SCHRecommendationSyncComponent.m */; };
+		C96C176015C7F752002EBEBB /* SCHPopulateDataStore.m in Sources */ = {isa = PBXBuildFile; fileRef = 52D6D3841403EC6900962FC6 /* SCHPopulateDataStore.m */; };
+		C96C176115C7F75B002EBEBB /* SCHWishListSyncComponent.m in Sources */ = {isa = PBXBuildFile; fileRef = 52943AE414FFD0E8002991EB /* SCHWishListSyncComponent.m */; };
+		C96C176215C7F765002EBEBB /* SCHContentSyncComponent.m in Sources */ = {isa = PBXBuildFile; fileRef = 52AD9D68130000570099FB88 /* SCHContentSyncComponent.m */; };
+		C96C176315C7F76C002EBEBB /* SCHReadingStatsSyncComponent.m in Sources */ = {isa = PBXBuildFile; fileRef = 52AD9D6C130000570099FB88 /* SCHReadingStatsSyncComponent.m */; };
+		C96C176415C7F79E002EBEBB /* SCHSettingsSyncComponent.m in Sources */ = {isa = PBXBuildFile; fileRef = 52AD9D6E130000570099FB88 /* SCHSettingsSyncComponent.m */; };
+		C96C176515C7F96D002EBEBB /* SCHVersionManifestOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 5226C70414A489CB00307634 /* SCHVersionManifestOperation.m */; };
+		C96C176615C7F9DD002EBEBB /* SCHProfileViewController_iPhone.m in Sources */ = {isa = PBXBuildFile; fileRef = F8844BEE137D5F88003D3014 /* SCHProfileViewController_iPhone.m */; };
+		C96C176715C7F9DD002EBEBB /* SCHScrubberView.m in Sources */ = {isa = PBXBuildFile; fileRef = F8509E9B12F0621E00197EB5 /* SCHScrubberView.m */; };
+		C96C176815C7F9DD002EBEBB /* AppDelegate_iPhone.m in Sources */ = {isa = PBXBuildFile; fileRef = 2860E388111B897F00E27156 /* AppDelegate_iPhone.m */; };
+		C96C176915C7F9DD002EBEBB /* SCHPhoneAppController.m in Sources */ = {isa = PBXBuildFile; fileRef = C9F229E815B9B37E009939D1 /* SCHPhoneAppController.m */; };
+		C96C176A15C7F9DD002EBEBB /* SCHProfileViewController_iPad.m in Sources */ = {isa = PBXBuildFile; fileRef = F8844BF7137D6654003D3014 /* SCHProfileViewController_iPad.m */; };
+		C96C176B15C7F9DD002EBEBB /* SCHBookShelfViewController_iPad.m in Sources */ = {isa = PBXBuildFile; fileRef = F864333613813B0100BEB8EB /* SCHBookShelfViewController_iPad.m */; };
+		C96C176C15C7F9DD002EBEBB /* SCHBookShelfSortTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = F87B6E2C1398ED65005CC0FA /* SCHBookShelfSortTableView.m */; };
+		C96C176D15C7F9DD002EBEBB /* SCHBookShelfTopTenPopoverTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5264FAC513A7555200D4F659 /* SCHBookShelfTopTenPopoverTableView.m */; };
+		C96C176E15C7F9DD002EBEBB /* SCHBookshelfPopoverController.m in Sources */ = {isa = PBXBuildFile; fileRef = F85E498F152B458900A9AF25 /* SCHBookshelfPopoverController.m */; };
+		C96C176F15C7F9DD002EBEBB /* AppDelegate_iPad.m in Sources */ = {isa = PBXBuildFile; fileRef = 1D3623250D0F684500981E51 /* AppDelegate_iPad.m */; };
+		C96C177015C7F9DD002EBEBB /* SCHBookShelfRecommendationListController.m in Sources */ = {isa = PBXBuildFile; fileRef = F89140BE1511EB310026F16F /* SCHBookShelfRecommendationListController.m */; };
+		C96C177115C7F9DD002EBEBB /* SCHBookShelfWishListController.m in Sources */ = {isa = PBXBuildFile; fileRef = F8A57E701517702000390D56 /* SCHBookShelfWishListController.m */; };
+		C96C177215C7F9DD002EBEBB /* SCHBookShelfMenuController.m in Sources */ = {isa = PBXBuildFile; fileRef = F88F6FCF15208A1600572E7C /* SCHBookShelfMenuController.m */; };
+		C96C177315C7F9DD002EBEBB /* SCHBookShelfMenuPopoverBackgroundView.m in Sources */ = {isa = PBXBuildFile; fileRef = F84DB7581520B9F10025BFCF /* SCHBookShelfMenuPopoverBackgroundView.m */; };
+		C96C177415C7F9DD002EBEBB /* SCHBookShelfTypeMenuTableController.m in Sources */ = {isa = PBXBuildFile; fileRef = F84DB76C1520D2750025BFCF /* SCHBookShelfTypeMenuTableController.m */; };
+		C96C177515C7F9DD002EBEBB /* SCHRecommendationURLRequestOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = C9B2F62B151BD64B0044BBCC /* SCHRecommendationURLRequestOperation.m */; };
+		C96C177615C7F9DD002EBEBB /* SCHRecommendationThumbnailOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = C95D6ECA1521FCA7000C4168 /* SCHRecommendationThumbnailOperation.m */; };
+		C96C177915C7F9DD002EBEBB /* SCHRecommendationListView.m in Sources */ = {isa = PBXBuildFile; fileRef = F81B00DC1510A67F002DEE25 /* SCHRecommendationListView.m */; };
+		C96C177A15C7F9DD002EBEBB /* SCHRecommendationContainerView.m in Sources */ = {isa = PBXBuildFile; fileRef = C9EB4994152EDCF500DA227A /* SCHRecommendationContainerView.m */; };
+		C96C177B15C7F9DD002EBEBB /* SCHRecommendationSampleView.m in Sources */ = {isa = PBXBuildFile; fileRef = F82F54A21557DB2C00041D0E /* SCHRecommendationSampleView.m */; };
+		C96C177C15C7F9DD002EBEBB /* SCHHelpViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 528C615D13FAA56C00D033F8 /* SCHHelpViewController.m */; };
+		C96C177D15C7F9DD002EBEBB /* SCHStoriaLoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C9F8FD5C14B4909800136C22 /* SCHStoriaLoginViewController.m */; };
+		C96C177E15C7F9DD002EBEBB /* SCHAboutViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A38CF1FE1374504F00EABF43 /* SCHAboutViewController.m */; };
+		C96C177F15C7F9DD002EBEBB /* SCHPrivacyPolicyViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A39009941379B13000D6B608 /* SCHPrivacyPolicyViewController.m */; };
+		C96C178015C7F9DD002EBEBB /* SCHBaseTextViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 28C7415A13D8A06700EEAB36 /* SCHBaseTextViewController.m */; };
+		C96C178115C7F9DD002EBEBB /* SCHAccountValidationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 528465EE144DB5F7009DBADD /* SCHAccountValidationViewController.m */; };
+		C96C178215C7F9DD002EBEBB /* SCHBaseModalViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 28E6BCF013D72C7500A5C9E3 /* SCHBaseModalViewController.m */; };
+		C96C178315C7F9DD002EBEBB /* SCHSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 529385B312DF231800045B44 /* SCHSettingsViewController.m */; };
+		C96C178415C7F9DD002EBEBB /* SCHSetupBookshelvesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 28BF26EE13D5A15400535A82 /* SCHSetupBookshelvesViewController.m */; };
+		C96C178515C7F9DD002EBEBB /* SCHNavigationControllerForModalForm.m in Sources */ = {isa = PBXBuildFile; fileRef = 2830DAC113D822B6001366D9 /* SCHNavigationControllerForModalForm.m */; };
+		C96C178615C7F9DD002EBEBB /* SCHParentalToolsWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 527DDC62144C6A0D004D4FE3 /* SCHParentalToolsWebViewController.m */; };
+		C96C178715C7F9DD002EBEBB /* SCHDownloadDictionaryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 28D2AA0D13D6E8F700BEB359 /* SCHDownloadDictionaryViewController.m */; };
+		C96C178815C7F9F5002EBEBB /* SCHRemoveDictionaryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 28D67DEE13D9B30500F715CD /* SCHRemoveDictionaryViewController.m */; };
+		C96C178915C7F9F5002EBEBB /* SCHDownloadDictionaryFromSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F858319715514DC5004960E8 /* SCHDownloadDictionaryFromSettingsViewController.m */; };
+		C96C178A15C7F9F5002EBEBB /* SCHDeregisterDeviceViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 28C7416113D8A4E700EEAB36 /* SCHDeregisterDeviceViewController.m */; };
+		C96C178B15C7F9F5002EBEBB /* SCHUpdateBooksViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 28986DDC13DD62E30011B148 /* SCHUpdateBooksViewController.m */; };
+		C96C178C15C7F9F5002EBEBB /* SCHUpdateBooksTableViewCellController.m in Sources */ = {isa = PBXBuildFile; fileRef = 28986DEA13DD701A0011B148 /* SCHUpdateBooksTableViewCellController.m */; };
+		C96C178D15C7F9F5002EBEBB /* SCHUpdateBooksTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 2873B04713E024BF008C9F0D /* SCHUpdateBooksTableViewCell.m */; };
+		C96C178E15C7F9F5002EBEBB /* SCHLoginPasswordViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 52EF4E5D12E6E01C00E374F7 /* SCHLoginPasswordViewController.m */; };
+		C96C178F15C7F9F5002EBEBB /* SCHUnderlinedButton.m in Sources */ = {isa = PBXBuildFile; fileRef = C9F5B74F138FBBB3009DE113 /* SCHUnderlinedButton.m */; };
+		C96C179015C7F9F5002EBEBB /* SCHReadingNotesListController.m in Sources */ = {isa = PBXBuildFile; fileRef = F8DC5658138C0BCA00F27146 /* SCHReadingNotesListController.m */; };
+		C96C179115C7F9F5002EBEBB /* SCHReadingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F8DC565C138C0BCA00F27146 /* SCHReadingViewController.m */; };
+		C96C179215C7F9F5002EBEBB /* SCHReadingViewNavigationToolbar.m in Sources */ = {isa = PBXBuildFile; fileRef = C986489F1402686300B9DFE1 /* SCHReadingViewNavigationToolbar.m */; };
+		C96C179315C7F9F5002EBEBB /* SCHReadingInteractionsListController.m in Sources */ = {isa = PBXBuildFile; fileRef = F8DC564F138BBE7D00F27146 /* SCHReadingInteractionsListController.m */; };
+		C96C179415C7F9F5002EBEBB /* SCHDictionaryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F8DC567D138C150F00F27146 /* SCHDictionaryViewController.m */; };
+		C96C179515C7F9F5002EBEBB /* SCHNotesCountView.m in Sources */ = {isa = PBXBuildFile; fileRef = F85C8CF61394FC42008DD042 /* SCHNotesCountView.m */; };
+		C96C179615C7F9F5002EBEBB /* SCHReadingStoryInteractionButton.m in Sources */ = {isa = PBXBuildFile; fileRef = C9B7851A142B7CD40070BEDE /* SCHReadingStoryInteractionButton.m */; };
+		C96C179715C7FA06002EBEBB /* SCHWordTiming.m in Sources */ = {isa = PBXBuildFile; fileRef = C9722BE61393A9D0008605E8 /* SCHWordTiming.m */; };
+		C96C179815C7FA06002EBEBB /* SCHWordTimingProcessor.m in Sources */ = {isa = PBXBuildFile; fileRef = C920DB061385226C00F1583D /* SCHWordTimingProcessor.m */; };
+		C96C179915C7FA06002EBEBB /* SCHAudioBookPlayer.m in Sources */ = {isa = PBXBuildFile; fileRef = C920DB091385226C00F1583D /* SCHAudioBookPlayer.m */; };
+		C96C179A15C7FA06002EBEBB /* SCHAudioInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 525E82D613938548006A6775 /* SCHAudioInfo.m */; };
+		C96C179B15C7FA06002EBEBB /* SCHAudioInfoProcessor.m in Sources */ = {isa = PBXBuildFile; fileRef = 525E82D2138FFFF7006A6775 /* SCHAudioInfoProcessor.m */; };
+		C96C179C15C7FA06002EBEBB /* SCHXPSProvider.m in Sources */ = {isa = PBXBuildFile; fileRef = C9EFB28D134F782A00ADF905 /* SCHXPSProvider.m */; };
+		C96C179D15C7FA06002EBEBB /* SCHXPSURLProtocol.m in Sources */ = {isa = PBXBuildFile; fileRef = C9EFB292134F795800ADF905 /* SCHXPSURLProtocol.m */; };
+		C96C179E15C7FA06002EBEBB /* UIColor+Extensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 52C489CA1369AC4200460876 /* UIColor+Extensions.m */; };
+		C96C179F15C7FA06002EBEBB /* NSManagedObjectContext+Extensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 52EF570912ED977C00E374F7 /* NSManagedObjectContext+Extensions.m */; };
+		C96C17A015C7FA06002EBEBB /* UIImage+BlioAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = C9722BFC1393AAD0008605E8 /* UIImage+BlioAdditions.m */; };
+		C96C17A115C7FA06002EBEBB /* UIImage+ScholasticAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = C95D6EC41520C92D000C4168 /* UIImage+ScholasticAdditions.m */; };
+		C96C17A215C7FA06002EBEBB /* NSURL+Extensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 526760AF144D6A6A00F3FE56 /* NSURL+Extensions.m */; };
+		C96C17A315C7FA06002EBEBB /* NSDate+ServerDate.m in Sources */ = {isa = PBXBuildFile; fileRef = 525079411486FADC00712853 /* NSDate+ServerDate.m */; };
+		C96C17A415C7FA06002EBEBB /* NSString+URLEncoding.m in Sources */ = {isa = PBXBuildFile; fileRef = C959076B1497D08000E024AF /* NSString+URLEncoding.m */; };
+		C96C17A515C7FA06002EBEBB /* UILabel+ScholasticAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = C9BF1210153424E6009FE0B9 /* UILabel+ScholasticAdditions.m */; };
+		C96C17A615C7FA06002EBEBB /* NSFileManager+DoNotBackupExtendedAttribute.m in Sources */ = {isa = PBXBuildFile; fileRef = 52023D5A1541BBB600C36AD5 /* NSFileManager+DoNotBackupExtendedAttribute.m */; };
+		C96C17A715C7FA06002EBEBB /* NSFileManager+Extensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 5251716415501FB5009C3B61 /* NSFileManager+Extensions.m */; };
+		C96C17A815C7FA06002EBEBB /* NSString+EmailValidation.m in Sources */ = {isa = PBXBuildFile; fileRef = 529645A215775FBA006F01D9 /* NSString+EmailValidation.m */; };
+		C96C17A915C7FA19002EBEBB /* SCHGradientView.m in Sources */ = {isa = PBXBuildFile; fileRef = C979D889138C2D9100581F7F /* SCHGradientView.m */; };
+		C96C17AA15C7FA19002EBEBB /* SCHCheckbox.m in Sources */ = {isa = PBXBuildFile; fileRef = 28986DD413DD4F120011B148 /* SCHCheckbox.m */; };
+		C96C17AB15C7FA19002EBEBB /* SCHReadingNoteView.m in Sources */ = {isa = PBXBuildFile; fileRef = F8EDE541138561390079BFD8 /* SCHReadingNoteView.m */; };
+		C96C17AC15C7FA19002EBEBB /* SCHProfileViewController_Shared.m in Sources */ = {isa = PBXBuildFile; fileRef = 528A2D5F12CDE39C0053A343 /* SCHProfileViewController_Shared.m */; };
+		C96C17AD15C7FA19002EBEBB /* SCHProfileViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F8898902135877B100D236ED /* SCHProfileViewCell.m */; };
+		C96C17AE15C7FA19002EBEBB /* SCHThemePickerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F8DC566B138C0C2E00F27146 /* SCHThemePickerViewController.m */; };
+		C96C17AF15C7FA19002EBEBB /* SCHThemeManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 52E622FA13584EBE00245CA7 /* SCHThemeManager.m */; };
+		C96C17B015C7FA19002EBEBB /* SCHThemeButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 5204B85F135C1FC500FCBD90 /* SCHThemeButton.m */; };
+		C96C17B115C7FA19002EBEBB /* SCHThemeImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 52BAFB68135DAB8600C2AFF3 /* SCHThemeImageView.m */; };
+		C96C17B215C7FA19002EBEBB /* SCHReadingView.m in Sources */ = {isa = PBXBuildFile; fileRef = C908D859133F91FA00661718 /* SCHReadingView.m */; };
+		C96C17B315C7FA19002EBEBB /* SCHFlowView.m in Sources */ = {isa = PBXBuildFile; fileRef = C908D8B0133F945300661718 /* SCHFlowView.m */; };
+		C96C17B415C7FA19002EBEBB /* SCHLayoutView.m in Sources */ = {isa = PBXBuildFile; fileRef = C908D857133F91FA00661718 /* SCHLayoutView.m */; };
+		C96C17B515C7FA19002EBEBB /* SCHCustomToolbar.m in Sources */ = {isa = PBXBuildFile; fileRef = F85E0308134F59E700E81D58 /* SCHCustomToolbar.m */; };
+		C96C17B615C7FA19002EBEBB /* SCHCustomNavigationBar.m in Sources */ = {isa = PBXBuildFile; fileRef = F8C8FC29136065AD0097F9DD /* SCHCustomNavigationBar.m */; };
+		C96C17B715C7FA3B002EBEBB /* SCHBookCoverView.m in Sources */ = {isa = PBXBuildFile; fileRef = F80060FA13D88924001CA881 /* SCHBookCoverView.m */; };
+		C96C17B815C7FA3B002EBEBB /* SCHBookShelfViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5293883112E03CD000045B44 /* SCHBookShelfViewController.m */; };
+		C96C17B915C7FA3B002EBEBB /* SCHBookShelfShadowsView.m in Sources */ = {isa = PBXBuildFile; fileRef = C9703A8E13E986690003C4D8 /* SCHBookShelfShadowsView.m */; };
+		C96C17BA15C7FA3B002EBEBB /* SCHTopPicksBookShelfViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 52E334F51303049B002F3011 /* SCHTopPicksBookShelfViewController.m */; };
+		C96C17BB15C7FA3B002EBEBB /* SCHBookShelfGridViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F8C4C40C133259810057420E /* SCHBookShelfGridViewCell.m */; };
+		C96C17BC15C7FA3B002EBEBB /* SCHBookShelfGridView.m in Sources */ = {isa = PBXBuildFile; fileRef = C95C7CC0135C3C8A00472AF6 /* SCHBookShelfGridView.m */; };
+		C96C17BD15C7FA3B002EBEBB /* SCHBookShelfGridShelvesView.m in Sources */ = {isa = PBXBuildFile; fileRef = C95C7CC4135C3F1300472AF6 /* SCHBookShelfGridShelvesView.m */; };
+		C96C17BE15C7FA3B002EBEBB /* SCHBookShelfTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F82D39D8131EA7D400289FF3 /* SCHBookShelfTableViewCell.m */; };
+		C96C17BF15C7FA3B002EBEBB /* SCHStoriaWelcomeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C9C3FAB914B85F4200757038 /* SCHStoriaWelcomeViewController.m */; };
+		C96C17C015C7FA3B002EBEBB /* SCHSampleBooksManifestOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = C9045C581456038D009A3133 /* SCHSampleBooksManifestOperation.m */; };
+		C96C17C115C7FA3B002EBEBB /* SCHVersionManifestEntry.m in Sources */ = {isa = PBXBuildFile; fileRef = 5226C70A14A48C6100307634 /* SCHVersionManifestEntry.m */; };
+		C96C17C215C7FA3B002EBEBB /* SCHHelpVideoManifestOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = F8615B18144D69F100D0D265 /* SCHHelpVideoManifestOperation.m */; };
+		C96C17C315C7FA3B002EBEBB /* SCHHelpVideoFileDownloadOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = F8615B1C144D6E7000D0D265 /* SCHHelpVideoFileDownloadOperation.m */; };
+		C96C17C415C7FA62002EBEBB /* SCHDictionaryManifestOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = F8C4C57F13326E6C0057420E /* SCHDictionaryManifestOperation.m */; };
+		C96C17C515C7FA62002EBEBB /* SCHDictionaryFileDownloadOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = F8C4C57D13326E6C0057420E /* SCHDictionaryFileDownloadOperation.m */; };
+		C96C17C615C7FA62002EBEBB /* SCHDictionaryFileUnzipOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = F8B55E06134B190B0028534A /* SCHDictionaryFileUnzipOperation.m */; };
+		C96C17C715C7FA62002EBEBB /* SCHDictionaryParseOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = F8B55E37134B2A190028534A /* SCHDictionaryParseOperation.m */; };
+		C96C17C815C7FA62002EBEBB /* SCHHelpManager.m in Sources */ = {isa = PBXBuildFile; fileRef = C9A6B3FA148B7F0900B31277 /* SCHHelpManager.m */; };
+		C96C17C915C7FA62002EBEBB /* SCHDictionaryAccessManager.m in Sources */ = {isa = PBXBuildFile; fileRef = F88A7F7E138D151D006A7D12 /* SCHDictionaryAccessManager.m */; };
+		C96C17CA15C7FA62002EBEBB /* SCHAudioPreParseOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = C9722BE21393A9B9008605E8 /* SCHAudioPreParseOperation.m */; };
+		C96C17CB15C7FA62002EBEBB /* SCHBookURLRequestOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = F878D6A3134498FB00DDB98B /* SCHBookURLRequestOperation.m */; };
+		C96C17CC15C7FA62002EBEBB /* SCHDownloadBookFileOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = F878D6A5134498FB00DDB98B /* SCHDownloadBookFileOperation.m */; };
+		C96C17CD15C7FA62002EBEBB /* SCHRightsParsingOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = F878D6A7134498FB00DDB98B /* SCHRightsParsingOperation.m */; };
+		C96C17CE15C7FA62002EBEBB /* SCHTextFlowPreParseOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = F878D6A9134498FB00DDB98B /* SCHTextFlowPreParseOperation.m */; };
+		C96C17CF15C7FA62002EBEBB /* SCHSmartZoomPreParseOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = C90AB9A5135495C5009DC49D /* SCHSmartZoomPreParseOperation.m */; };
+		C96C17D015C7FA62002EBEBB /* SCHFlowAnalysisOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = F81C74791344DC1200B1D9DB /* SCHFlowAnalysisOperation.m */; };
+		C96C17D115C7FA62002EBEBB /* SCHLicenseAcquisitionOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = F81B4BF91356E9FE00C0DAF4 /* SCHLicenseAcquisitionOperation.m */; };
+		C96C17D315C7FA62002EBEBB /* SCHBookOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = F878D6B71344996400DDB98B /* SCHBookOperation.m */; };
+		C96C17D415C7FA62002EBEBB /* SCHCoreDataOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 287ADE9E13BB7A1B00D03247 /* SCHCoreDataOperation.m */; };
+		C96C17D515C7FB0F002EBEBB /* SCHBookContents.m in Sources */ = {isa = PBXBuildFile; fileRef = F82D39B4131EA79100289FF3 /* SCHBookContents.m */; };
+		C96C17D615C7FB0F002EBEBB /* SCHFlowEucBook.m in Sources */ = {isa = PBXBuildFile; fileRef = F81C74751344DA0700B1D9DB /* SCHFlowEucBook.m */; };
+		C96C17D715C7FB0F002EBEBB /* SCHEPubBook.m in Sources */ = {isa = PBXBuildFile; fileRef = C98BDDB01548625400E265B8 /* SCHEPubBook.m */; };
+		C96C17D815C7FB0F002EBEBB /* SCHTextFlow.m in Sources */ = {isa = PBXBuildFile; fileRef = C9D4F6271345FFE7007F86E3 /* SCHTextFlow.m */; };
+		C96C17D915C7FB0F002EBEBB /* SCHTextFlowParagraphSource.m in Sources */ = {isa = PBXBuildFile; fileRef = C93EBEAE13472FEC003B99FD /* SCHTextFlowParagraphSource.m */; };
+		C96C17DA15C7FB0F002EBEBB /* SCHEPubToTextFlowMappingParagraphSource.m in Sources */ = {isa = PBXBuildFile; fileRef = C98BDDA91548337B00E265B8 /* SCHEPubToTextFlowMappingParagraphSource.m */; };
+		C96C17DB15C7FB0F002EBEBB /* SCHSmartZoomBlockSource.m in Sources */ = {isa = PBXBuildFile; fileRef = C92FA7D11355BE20001BAA6B /* SCHSmartZoomBlockSource.m */; };
+		C96C17DC15C7FB0F002EBEBB /* SCHBookAnnotations.m in Sources */ = {isa = PBXBuildFile; fileRef = 52F15A1E1371A2CA0073941E /* SCHBookAnnotations.m */; };
+		C96C17DD15C7FB0F002EBEBB /* SCHBookStatistics.m in Sources */ = {isa = PBXBuildFile; fileRef = 52985F7113C48D32009AD121 /* SCHBookStatistics.m */; };
+		C96C17DE15C7FB0F002EBEBB /* SCHBookUpdates.m in Sources */ = {isa = PBXBuildFile; fileRef = 281B74AF13DEED4900BA157C /* SCHBookUpdates.m */; };
+		C96C17DF15C7FB0F002EBEBB /* SCHBookStoryInteractions+XPS.m in Sources */ = {isa = PBXBuildFile; fileRef = 28EF28021462D51000DD1939 /* SCHBookStoryInteractions+XPS.m */; };
+		C96C17E015C7FB0F002EBEBB /* SCHStoryInteractionController.m in Sources */ = {isa = PBXBuildFile; fileRef = 28A60F5F139770C90090853E /* SCHStoryInteractionController.m */; };
+		C96C17E115C7FB0F002EBEBB /* SCHStoryInteractionStandaloneViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 28211CD4140E160300872701 /* SCHStoryInteractionStandaloneViewController.m */; };
+		C96C17E215C7FB0F002EBEBB /* NSArray+ViewSorting.m in Sources */ = {isa = PBXBuildFile; fileRef = 2827824413A20FA200E968C1 /* NSArray+ViewSorting.m */; };
+		C96C17E315C7FB0F002EBEBB /* NSArray+Shuffling.m in Sources */ = {isa = PBXBuildFile; fileRef = 286E213E13AB7EBF00CB4232 /* NSArray+Shuffling.m */; };
+		C96C17E415C7FB0F002EBEBB /* SCHAnimationDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 28DAC0F813E98C0500C0A97D /* SCHAnimationDelegate.m */; };
+		C96C17E515C7FB0F002EBEBB /* SCHImageButton.m in Sources */ = {isa = PBXBuildFile; fileRef = F86DEC0513A21C5F00053999 /* SCHImageButton.m */; };
+		C96C17E615C7FB0F002EBEBB /* SCHPlayButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 523756AE13A275E800B38441 /* SCHPlayButton.m */; };
+		C96C17E715C7FB0F002EBEBB /* SCHStoryInteractionDraggableTargetView.m in Sources */ = {isa = PBXBuildFile; fileRef = 28CC9857139CD550001F560F /* SCHStoryInteractionDraggableTargetView.m */; };
+		C96C17E815C7FB0F002EBEBB /* SCHStoryInteractionDraggableView.m in Sources */ = {isa = PBXBuildFile; fileRef = 28CC9859139CD550001F560F /* SCHStoryInteractionDraggableView.m */; };
+		C96C17E915C7FB0F002EBEBB /* SCHStoryInteractionDraggableLetterView.m in Sources */ = {isa = PBXBuildFile; fileRef = 28E9B98113A0EBF60056874F /* SCHStoryInteractionDraggableLetterView.m */; };
+		C96C17EA15C7FB0F002EBEBB /* SCHStretchableImageButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 28A60F771397B96B0090853E /* SCHStretchableImageButton.m */; };
+		C96C17EB15C7FB0F002EBEBB /* SCHStoryInteractionProgressView.m in Sources */ = {isa = PBXBuildFile; fileRef = 280C99C61397C65E00381C31 /* SCHStoryInteractionProgressView.m */; };
+		C96C17EC15C7FB0F002EBEBB /* SCHBoxWithShadowView.m in Sources */ = {isa = PBXBuildFile; fileRef = 28CC985F139CD574001F560F /* SCHBoxWithShadowView.m */; };
+		C96C17ED15C7FB0F002EBEBB /* SCHAnimatedLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 2842A77213FBE9B10049AEE1 /* SCHAnimatedLayer.m */; };
+		C96C17EE15C7FB8E002EBEBB /* SCHStoryInteractionControllerAboutYouQuiz.m in Sources */ = {isa = PBXBuildFile; fileRef = F8537F16139E3E4C0092C743 /* SCHStoryInteractionControllerAboutYouQuiz.m */; };
+		C96C17EF15C7FB8E002EBEBB /* SCHStoryInteractionControllerCardCollection.m in Sources */ = {isa = PBXBuildFile; fileRef = 28DAC0E813E945AA00C0A97D /* SCHStoryInteractionControllerCardCollection.m */; };
+		C96C17F015C7FB8E002EBEBB /* SCHStoryInteractionControllerConcentration.m in Sources */ = {isa = PBXBuildFile; fileRef = 2866311F13F01C700092A5DE /* SCHStoryInteractionControllerConcentration.m */; };
+		C96C17F115C7FB8E002EBEBB /* SCH3DView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2866314313F03C140092A5DE /* SCH3DView.m */; };
+		C96C17F215C7FDD6002EBEBB /* SCHStoryInteractionControllerImage.m in Sources */ = {isa = PBXBuildFile; fileRef = 527BBADE13A011D4000B407C /* SCHStoryInteractionControllerImage.m */; };
+		C96C17F315C7FDD6002EBEBB /* SCHStoryInteractionControllerJigsaw_Common.m in Sources */ = {isa = PBXBuildFile; fileRef = 289A2B1E13F505B80047EE45 /* SCHStoryInteractionControllerJigsaw_Common.m */; };
+		C96C17F415C7FDD6002EBEBB /* SCHStoryInteractionControllerJigsaw_iPad.m in Sources */ = {isa = PBXBuildFile; fileRef = 286000FF13F96A69005C6AEB /* SCHStoryInteractionControllerJigsaw_iPad.m */; };
+		C96C17F515C7FDD6002EBEBB /* SCHStoryInteractionControllerJigsaw_iPhone.m in Sources */ = {isa = PBXBuildFile; fileRef = 2860010313F96CFC005C6AEB /* SCHStoryInteractionControllerJigsaw_iPhone.m */; };
+		C96C17F615C7FDD6002EBEBB /* SCHStoryInteractionJigsawPreviewView.m in Sources */ = {isa = PBXBuildFile; fileRef = 289A2B3713F511EC0047EE45 /* SCHStoryInteractionJigsawPreviewView.m */; };
+		C96C17F715C7FDD6002EBEBB /* SCHStoryInteractionJigsawPieceView_iPad.m in Sources */ = {isa = PBXBuildFile; fileRef = 287D771A13F55C8000C76070 /* SCHStoryInteractionJigsawPieceView_iPad.m */; };
+		C96C17F815C7FDD6002EBEBB /* SCHStoryInteractionJigsawPieceView_iPhone.m in Sources */ = {isa = PBXBuildFile; fileRef = 2860010713F9782C005C6AEB /* SCHStoryInteractionJigsawPieceView_iPhone.m */; };
+		C96C17F915C7FDD6002EBEBB /* SCHDragFromScrollViewGestureRecognizer.m in Sources */ = {isa = PBXBuildFile; fileRef = 286000F513F955A6005C6AEB /* SCHDragFromScrollViewGestureRecognizer.m */; };
+		C96C17FA15C7FE36002EBEBB /* SCHStoryInteractionControllerMultipleChoiceText.m in Sources */ = {isa = PBXBuildFile; fileRef = 28A60F6813977B8B0090853E /* SCHStoryInteractionControllerMultipleChoiceText.m */; };
+		C96C17FB15C7FE36002EBEBB /* SCHStoryInteractionControllerMultipleChoiceWithAnswerPictures.m in Sources */ = {isa = PBXBuildFile; fileRef = 5297B44813A8C362008ADD9B /* SCHStoryInteractionControllerMultipleChoiceWithAnswerPictures.m */; };
+		C96C17FC15C7FE36002EBEBB /* SCHStoryInteractionControllerPopQuiz.m in Sources */ = {isa = PBXBuildFile; fileRef = 28A60F721397B6750090853E /* SCHStoryInteractionControllerPopQuiz.m */; };
+		C96C17FD15C7FE36002EBEBB /* SCHStoryInteractionControllerPictureStarter.m in Sources */ = {isa = PBXBuildFile; fileRef = 287186B914027B7B000A3761 /* SCHStoryInteractionControllerPictureStarter.m */; };
+		C96C17FE15C7FE36002EBEBB /* SCHStoryInteractionControllerPictureStarterCustom.m in Sources */ = {isa = PBXBuildFile; fileRef = 28F8B3D613FEA38B00BE0B47 /* SCHStoryInteractionControllerPictureStarterCustom.m */; };
+		C96C17FF15C7FE36002EBEBB /* SCHStoryInteractionControllerPictureStarterNewEnding.m in Sources */ = {isa = PBXBuildFile; fileRef = 28789AC71404F94B00910D31 /* SCHStoryInteractionControllerPictureStarterNewEnding.m */; };
+		C96C180015C7FE36002EBEBB /* SCHStoryInteractionControllerPictureStarterFavorite.m in Sources */ = {isa = PBXBuildFile; fileRef = 28789AD41404FDA400910D31 /* SCHStoryInteractionControllerPictureStarterFavorite.m */; };
+		C96C180115C7FE36002EBEBB /* SCHPictureStarterCanvas.m in Sources */ = {isa = PBXBuildFile; fileRef = 28B7FF051402865B009E26F5 /* SCHPictureStarterCanvas.m */; };
+		C96C180215C7FE36002EBEBB /* SCHPictureStarterDrawingInstruction.m in Sources */ = {isa = PBXBuildFile; fileRef = 2861EE2B1403DC2F00B5EB3D /* SCHPictureStarterDrawingInstruction.m */; };
+		C96C180315C7FE36002EBEBB /* SCHGestureSmoother.m in Sources */ = {isa = PBXBuildFile; fileRef = 28789AAC140417BA00910D31 /* SCHGestureSmoother.m */; };
+		C96C180415C7FE36002EBEBB /* SCHPictureStarterColorChooser.m in Sources */ = {isa = PBXBuildFile; fileRef = 28B7FF09140286C6009E26F5 /* SCHPictureStarterColorChooser.m */; };
+		C96C180515C7FE36002EBEBB /* SCHPictureStarterSizeChooser.m in Sources */ = {isa = PBXBuildFile; fileRef = 28B7FF0D140286D6009E26F5 /* SCHPictureStarterSizeChooser.m */; };
+		C96C180615C7FE36002EBEBB /* SCHPictureStarterStickers.m in Sources */ = {isa = PBXBuildFile; fileRef = 28B7FF351402B1F1009E26F5 /* SCHPictureStarterStickers.m */; };
+		C96C180715C7FE36002EBEBB /* SCHPictureStarterStickerChooser.m in Sources */ = {isa = PBXBuildFile; fileRef = 28B7FF1514028708009E26F5 /* SCHPictureStarterStickerChooser.m */; };
+		C96C180815C7FE36002EBEBB /* SCHPictureStarterStickerChooserThumbnailView.m in Sources */ = {isa = PBXBuildFile; fileRef = 286F30C91402C15B00051CBC /* SCHPictureStarterStickerChooserThumbnailView.m */; };
+		C96C180915C7FE48002EBEBB /* SCHStoryInteractionControllerScratchAndSee.m in Sources */ = {isa = PBXBuildFile; fileRef = F8DA34CE139F88AC0032B1B3 /* SCHStoryInteractionControllerScratchAndSee.m */; };
+		C96C180A15C7FE48002EBEBB /* SCHStoryInteractionScratchView.m in Sources */ = {isa = PBXBuildFile; fileRef = F859D997139F9D0E009DB54F /* SCHStoryInteractionScratchView.m */; };
+		C96C180B15C7FE48002EBEBB /* SCHStoryInteractionControllerSequencing.m in Sources */ = {isa = PBXBuildFile; fileRef = 28BFE9CC139F8F9100415075 /* SCHStoryInteractionControllerSequencing.m */; };
+		C96C180C15C7FE48002EBEBB /* SCHStoryInteractionControllerStartingLetter.m in Sources */ = {isa = PBXBuildFile; fileRef = F86DEBFB13A21B6800053999 /* SCHStoryInteractionControllerStartingLetter.m */; };
+		C96C180D15C7FE48002EBEBB /* SCHStoryInteractionControllerHotSpot.m in Sources */ = {isa = PBXBuildFile; fileRef = 2894E7FF13B09E5800AEAD79 /* SCHStoryInteractionControllerHotSpot.m */; };
+		C96C180E15C7FE48002EBEBB /* SCHStarView.m in Sources */ = {isa = PBXBuildFile; fileRef = 280D6A1713B1D6180032085D /* SCHStarView.m */; };
+		C96C180F15C7FE48002EBEBB /* SCHStoryInteractionControllerVideo.m in Sources */ = {isa = PBXBuildFile; fileRef = 523E19EB13A0206E00A785B6 /* SCHStoryInteractionControllerVideo.m */; };
+		C96C181015C7FE93002EBEBB /* SCHStoryInteractionControllerWhoSaidIt_iPad.m in Sources */ = {isa = PBXBuildFile; fileRef = 28CC9861139CD575001F560F /* SCHStoryInteractionControllerWhoSaidIt_iPad.m */; };
+		C96C181115C7FE94002EBEBB /* SCHStoryInteractionControllerWhoSaidIt_iPhone.m in Sources */ = {isa = PBXBuildFile; fileRef = 28A72BC313A65B0B00215DEA /* SCHStoryInteractionControllerWhoSaidIt_iPhone.m */; };
+		C96C181215C7FE94002EBEBB /* SCHStoryInteractionWhoSaidItNameView.m in Sources */ = {isa = PBXBuildFile; fileRef = 28204BBB140CD715007D0935 /* SCHStoryInteractionWhoSaidItNameView.m */; };
+		C96C181315C7FE94002EBEBB /* SCHStoryInteractionControllerWordBird.m in Sources */ = {isa = PBXBuildFile; fileRef = 28CD42FF13F3D3EC00919F18 /* SCHStoryInteractionControllerWordBird.m */; };
+		C96C181415C7FE94002EBEBB /* SCHStoryInteractionWordBirdAnswerLetterView.m in Sources */ = {isa = PBXBuildFile; fileRef = 28CD430613F3D71800919F18 /* SCHStoryInteractionWordBirdAnswerLetterView.m */; };
+		C96C181515C7FE94002EBEBB /* SCHStoryInteractionWordBirdLetterView.m in Sources */ = {isa = PBXBuildFile; fileRef = 28CD430A13F3EAD300919F18 /* SCHStoryInteractionWordBirdLetterView.m */; };
+		C96C181615C7FE94002EBEBB /* SCHStoryInteractionControllerWordMatch.m in Sources */ = {isa = PBXBuildFile; fileRef = 286E210613AB53FF00CB4232 /* SCHStoryInteractionControllerWordMatch.m */; };
+		C96C181715C7FE94002EBEBB /* SCHStoryInteractionControllerWordScrambler.m in Sources */ = {isa = PBXBuildFile; fileRef = 2827827913A241E100E968C1 /* SCHStoryInteractionControllerWordScrambler.m */; };
+		C96C181815C7FEC1002EBEBB /* SCHStoryInteractionControllerWordSearch.m in Sources */ = {isa = PBXBuildFile; fileRef = 2856BA02139E3BF800A73D58 /* SCHStoryInteractionControllerWordSearch.m */; };
+		C96C181915C7FEC1002EBEBB /* SCHStoryInteractionStrikeOutLabelView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2856BA09139E407600A73D58 /* SCHStoryInteractionStrikeOutLabelView.m */; };
+		C96C181A15C7FEC1002EBEBB /* SCHStoryInteractionWordSearchContainerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2856BA13139E570700A73D58 /* SCHStoryInteractionWordSearchContainerView.m */; };
+		C96C181B15C7FEC1002EBEBB /* SCHStoryInteractionControllerTitleTwister.m in Sources */ = {isa = PBXBuildFile; fileRef = 2848D34513A0C647007DD45F /* SCHStoryInteractionControllerTitleTwister.m */; };
+		C96C181C15C7FEC1002EBEBB /* SCHNonDRMAuthenticationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = F84CE155134C691D0044729E /* SCHNonDRMAuthenticationManager.m */; };
+		C96C181D15C7FEC1002EBEBB /* SCHAccountVerifier.m in Sources */ = {isa = PBXBuildFile; fileRef = 52EB1F8415B976F0007E60D3 /* SCHAccountVerifier.m */; };
+		C96C181E15C7FEC1002EBEBB /* SCHScholasticAuthenticationWebService.m in Sources */ = {isa = PBXBuildFile; fileRef = 5293872F12DF43D200045B44 /* SCHScholasticAuthenticationWebService.m */; };
+		C96C181F15C7FEC1002EBEBB /* SCHScholasticGetUserInfoWebService.m in Sources */ = {isa = PBXBuildFile; fileRef = 52C62CFA14F3A2FA00F261DA /* SCHScholasticGetUserInfoWebService.m */; };
+		C96C182015C7FEC1002EBEBB /* SCHWishListWebService.m in Sources */ = {isa = PBXBuildFile; fileRef = 520D28CB14F4E2F9005AAF4F /* SCHWishListWebService.m */; };
+		C96C182115C7FEC1002EBEBB /* SCHWishListConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = 523EC29914F6326800EBB843 /* SCHWishListConstants.m */; };
+		C96C182215C7FEC1002EBEBB /* SCHRecommendationWebService.m in Sources */ = {isa = PBXBuildFile; fileRef = 525668D8150F6DCC00570623 /* SCHRecommendationWebService.m */; };
+		C96C182315C7FEC1002EBEBB /* SCHRecommendationConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = 525668E4150FAAA100570623 /* SCHRecommendationConstants.m */; };
+		C96C182415C7FEC1002EBEBB /* SCHRecommendationProcessor.m in Sources */ = {isa = PBXBuildFile; fileRef = 525668EA1511DEBF00570623 /* SCHRecommendationProcessor.m */; };
+		C96C182515C7FEC1002EBEBB /* SCHComponent.m in Sources */ = {isa = PBXBuildFile; fileRef = 5266D38313007D15004E3AC6 /* SCHComponent.m */; };
+		C96C182615C7FEC1002EBEBB /* SCHTopFavoritesComponent.m in Sources */ = {isa = PBXBuildFile; fileRef = 5266D34B13007A1C004E3AC6 /* SCHTopFavoritesComponent.m */; };
+		C96C182715C7FEFB002EBEBB /* SCHSyncComponent.m in Sources */ = {isa = PBXBuildFile; fileRef = 52AD9B1B12FC1B6B0099FB88 /* SCHSyncComponent.m */; };
+		C96C182815C7FEFB002EBEBB /* SCHSyncComponentOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 5222F28F158A1C11006040D7 /* SCHSyncComponentOperation.m */; };
+		C96C182915C7FEFB002EBEBB /* SCHSaveProfileContentAnnotationsOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 522543C21590930F0006F0B1 /* SCHSaveProfileContentAnnotationsOperation.m */; };
+		C96C182A15C7FF19002EBEBB /* SCHListProfileContentAnnotationsOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 522543C8159093380006F0B1 /* SCHListProfileContentAnnotationsOperation.m */; };
+		C96C182B15C7FF19002EBEBB /* SCHListUserContentForRatingsOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 525C57E115912959005AC7B3 /* SCHListUserContentForRatingsOperation.m */; };
+		C96C182C15C7FF19002EBEBB /* SCHListContentMetadataOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 525C583D159528AF005AC7B3 /* SCHListContentMetadataOperation.m */; };
+		C96C182D15C7FF19002EBEBB /* SCHSaveUserProfilesOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 5222F29B158B1F10006040D7 /* SCHSaveUserProfilesOperation.m */; };
+		C96C182E15C7FF19002EBEBB /* SCHGetUserProfilesResponseOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 5222F295158A2BF2006040D7 /* SCHGetUserProfilesResponseOperation.m */; };
+		C96C182F15C7FF19002EBEBB /* SCHSaveReadingStatisticsDetailedOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 520E14CA158FDE62003773E3 /* SCHSaveReadingStatisticsDetailedOperation.m */; };
+		C96C183015C7FF19002EBEBB /* SCHListUserSettingsOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 520E14C4158F883C003773E3 /* SCHListUserSettingsOperation.m */; };
+		C96C183115C7FF19002EBEBB /* SCHDeleteWishListItemsOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 52432125159890E500CCB8F1 /* SCHDeleteWishListItemsOperation.m */; };
+		C96C183215C7FF19002EBEBB /* SCHGetWishListItemsOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 524321311598912400CCB8F1 /* SCHGetWishListItemsOperation.m */; };
+		C96C183315C7FF19002EBEBB /* SCHRetrieveRecommendationsForProfileOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 524321131598591300CCB8F1 /* SCHRetrieveRecommendationsForProfileOperation.m */; };
+		C96C183415C7FF19002EBEBB /* SCHRetrieveRecommendationsForBooksOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 524321191598593700CCB8F1 /* SCHRetrieveRecommendationsForBooksOperation.m */; };
+		C96C183515C7FF19002EBEBB /* SCHRetrieveSampleBooksOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 5243211F15986A0A00CCB8F1 /* SCHRetrieveSampleBooksOperation.m */; };
+		C96C183615C7FF30002EBEBB /* SCHRating.m in Sources */ = {isa = PBXBuildFile; fileRef = 52D343E3152481FF0066E73E /* SCHRating.m */; };
+		C96C183715C7FF30002EBEBB /* SCHAppBook.m in Sources */ = {isa = PBXBuildFile; fileRef = F8BEE8AE1334FD44008B40DA /* SCHAppBook.m */; };
+		C96C183815C7FF30002EBEBB /* SCHAppContentProfileItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 5243545713337BAC00282B53 /* SCHAppContentProfileItem.m */; };
+		C96C183915C7FF30002EBEBB /* SCHAppProfile.m in Sources */ = {isa = PBXBuildFile; fileRef = 5206FF2413744E7000FCE07C /* SCHAppProfile.m */; };
+		C96C183A15C7FF30002EBEBB /* SCHAppRecommendationItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 5279E09115176481000D7D8D /* SCHAppRecommendationItem.m */; };
+		C96C183B15C7FF30002EBEBB /* SCHAnnotation.m in Sources */ = {isa = PBXBuildFile; fileRef = 52298A7A12F0EF5600BBBCE6 /* SCHAnnotation.m */; };
+		C96C183C15C7FF30002EBEBB /* SCHAnnotationsContentItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 52298A7812F0EF5600BBBCE6 /* SCHAnnotationsContentItem.m */; };
+		C96C183D15C7FF30002EBEBB /* SCHAnnotationsItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 52AD966612F9B1B40099FB88 /* SCHAnnotationsItem.m */; };
+		C96C183E15C7FF30002EBEBB /* SCHBookmark.m in Sources */ = {isa = PBXBuildFile; fileRef = 52298A7212F0EF5600BBBCE6 /* SCHBookmark.m */; };
+		C96C183F15C7FF30002EBEBB /* SCHContentItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 52298A7412F0EF5600BBBCE6 /* SCHContentItem.m */; };
+		C96C184015C7FF30002EBEBB /* SCHContentMetadataItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 52298A6212F0EF5600BBBCE6 /* SCHContentMetadataItem.m */; };
+		C96C184115C7FF30002EBEBB /* SCHContentProfileItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 52298A6E12F0EF5600BBBCE6 /* SCHContentProfileItem.m */; };
+		C96C184215C7FF46002EBEBB /* SCHDeviceInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 5233E03213154EEA0088F18C /* SCHDeviceInfo.m */; };
+		C96C184315C7FF46002EBEBB /* SCHeReaderCategories.m in Sources */ = {isa = PBXBuildFile; fileRef = 5200EFF312F6D00B00BAC355 /* SCHeReaderCategories.m */; };
+		C96C184415C7FF46002EBEBB /* SCHHighlight.m in Sources */ = {isa = PBXBuildFile; fileRef = 52298A8612F0EF5600BBBCE6 /* SCHHighlight.m */; };
+		C96C184515C7FF46002EBEBB /* SCHLastPage.m in Sources */ = {isa = PBXBuildFile; fileRef = 52298A6412F0EF5600BBBCE6 /* SCHLastPage.m */; };
+		C96C184615C7FF46002EBEBB /* SCHLocationBookmark.m in Sources */ = {isa = PBXBuildFile; fileRef = 521399EF13717BB10081FD3D /* SCHLocationBookmark.m */; };
+		C96C184715C7FF46002EBEBB /* SCHLocationGraphics.m in Sources */ = {isa = PBXBuildFile; fileRef = 52298A8212F0EF5600BBBCE6 /* SCHLocationGraphics.m */; };
+		C96C184815C7FF46002EBEBB /* SCHLocationText.m in Sources */ = {isa = PBXBuildFile; fileRef = 52298A6612F0EF5600BBBCE6 /* SCHLocationText.m */; };
+		C96C184915C7FF46002EBEBB /* SCHNote.m in Sources */ = {isa = PBXBuildFile; fileRef = 52298A5E12F0EF5600BBBCE6 /* SCHNote.m */; };
+		C96C184A15C7FF46002EBEBB /* SCHOrderItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 52298A6A12F0EF5600BBBCE6 /* SCHOrderItem.m */; };
+		C96C184B15C7FF46002EBEBB /* SCHPrivateAnnotations.m in Sources */ = {isa = PBXBuildFile; fileRef = 5200EFEB12F6CFE400BAC355 /* SCHPrivateAnnotations.m */; };
+		C96C184C15C7FF46002EBEBB /* SCHProfileItemSortObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 52023D541541BA2000C36AD5 /* SCHProfileItemSortObject.m */; };
+		C96C184D15C7FF46002EBEBB /* SCHReadingStatsContentItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 5248E10B13C4858900FA2CDC /* SCHReadingStatsContentItem.m */; };
+		C96C184E15C7FF46002EBEBB /* SCHReadingStatsDetailItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 5248E10F13C4858900FA2CDC /* SCHReadingStatsDetailItem.m */; };
+		C96C184F15C7FF46002EBEBB /* SCHReadingStatsEntryItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 5248E11313C4858900FA2CDC /* SCHReadingStatsEntryItem.m */; };
+		C96C185015C7FF46002EBEBB /* SCHRecommendationISBN.m in Sources */ = {isa = PBXBuildFile; fileRef = 5256686E150F697A00570623 /* SCHRecommendationISBN.m */; };
+		C96C185115C7FF46002EBEBB /* SCHRecommendationItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 52566874150F698800570623 /* SCHRecommendationItem.m */; };
+		C96C185215C7FF53002EBEBB /* SCHRecommendationProfile.m in Sources */ = {isa = PBXBuildFile; fileRef = 5256687A150F699800570623 /* SCHRecommendationProfile.m */; };
+		C96C185315C7FF53002EBEBB /* SCHSyncEntity.m in Sources */ = {isa = PBXBuildFile; fileRef = 52298A7012F0EF5600BBBCE6 /* SCHSyncEntity.m */; };
+		C96C185415C7FF53002EBEBB /* SCHUserContentItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 52298A6812F0EF5600BBBCE6 /* SCHUserContentItem.m */; };
+		C96C185515C7FF53002EBEBB /* SCHWishListItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 52EA323715011CA10069C72E /* SCHWishListItem.m */; };
+		C96C185615C7FF53002EBEBB /* SCHWishListProfile.m in Sources */ = {isa = PBXBuildFile; fileRef = 52EA323015011C2E0069C72E /* SCHWishListProfile.m */; };
+		C96C185715C7FF53002EBEBB /* SCHWordIndex.m in Sources */ = {isa = PBXBuildFile; fileRef = 52298A6C12F0EF5600BBBCE6 /* SCHWordIndex.m */; };
+		C96C185815C7FF53002EBEBB /* SCHISBNItemObject.m in Sources */ = {isa = PBXBuildFile; fileRef = C9D37723156A52A600900844 /* SCHISBNItemObject.m */; };
+		C96C185915C7FF53002EBEBB /* SCHUnqueuedAudioPlayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 280DA9D1145AB3C300583695 /* SCHUnqueuedAudioPlayer.m */; };
+		C96C185A15C8031B002EBEBB /* libBITModalSheetController.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C9AC7D9F14BDDDE2009137BA /* libBITModalSheetController.a */; };
+		C96C185B15C8031B002EBEBB /* libBITOperation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C9C3FA3014B6FA5E00757038 /* libBITOperation.a */; };
+		C96C185C15C8031B002EBEBB /* libcss.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C947D583133B9C0100FB4404 /* libcss.a */; };
+		C96C185D15C8031B002EBEBB /* libEucalyptusBase.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C947D575133B9C0100FB4404 /* libEucalyptusBase.a */; };
+		C96C185E15C8031B002EBEBB /* libEucalyptusCSS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C947D579133B9C0100FB4404 /* libEucalyptusCSS.a */; };
+		C96C185F15C8031B002EBEBB /* libEucalyptusEPub.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C947D577133B9C0100FB4404 /* libEucalyptusEPub.a */; };
+		C96C186015C8031B002EBEBB /* libEucalyptusIOSUI.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C947D573133B9C0100FB4404 /* libEucalyptusIOSUI.a */; };
+		C96C186115C8031B002EBEBB /* libEucalyptusModel.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7D3F30F3140698D800C6F445 /* libEucalyptusModel.a */; };
+		C96C186215C8031B002EBEBB /* libhyphenate.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C947D57D133B9C0100FB4404 /* libhyphenate.a */; };
+		C96C186315C8031B002EBEBB /* libminiunzip.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C947D585133B9C0100FB4404 /* libminiunzip.a */; };
+		C96C186415C8031B002EBEBB /* libots.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C937E7E4150F5335001882AC /* libots.a */; };
+		C96C186515C8031B002EBEBB /* libparserutils.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C947D581133B9C0100FB4404 /* libparserutils.a */; };
+		C96C186615C8031B002EBEBB /* libwapcaplet.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C947D57F133B9C0100FB4404 /* libwapcaplet.a */; };
+		C96C186715C80370002EBEBB /* KNFBZipArchive.m in Sources */ = {isa = PBXBuildFile; fileRef = C9EFB179134F4C9F00ADF905 /* KNFBZipArchive.m */; };
+		C96C186815C80370002EBEBB /* KNFBXPSProvider.m in Sources */ = {isa = PBXBuildFile; fileRef = C9EFB17B134F4C9F00ADF905 /* KNFBXPSProvider.m */; };
+		C96C186915C80370002EBEBB /* KNFBXPSEPubInfoParserDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = C9747CE313EBF98E003ADC71 /* KNFBXPSEPubInfoParserDelegate.m */; };
+		C96C186A15C80370002EBEBB /* KNFBXPSPageNumbersParserDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = C9747CE713EC12BB003ADC71 /* KNFBXPSPageNumbersParserDelegate.m */; };
+		C96C186B15C80370002EBEBB /* KNFBXPSBitmapReleaseCallback.m in Sources */ = {isa = PBXBuildFile; fileRef = C9EFB17E134F4C9F00ADF905 /* KNFBXPSBitmapReleaseCallback.m */; };
+		C96C186C15C80370002EBEBB /* KNFBTimeOrderedCache.m in Sources */ = {isa = PBXBuildFile; fileRef = C9EFB180134F4C9F00ADF905 /* KNFBTimeOrderedCache.m */; };
+		C96C186D15C80370002EBEBB /* KNFBLayoutHyperlink.m in Sources */ = {isa = PBXBuildFile; fileRef = C9EFB182134F4C9F00ADF905 /* KNFBLayoutHyperlink.m */; };
+		C96C186E15C80370002EBEBB /* KNFBFlowEucBook.m in Sources */ = {isa = PBXBuildFile; fileRef = C9B08B051344D34F001963D0 /* KNFBFlowEucBook.m */; };
+		C96C186F15C8038C002EBEBB /* KNFBTextFlow.m in Sources */ = {isa = PBXBuildFile; fileRef = C9B08B091344D34F001963D0 /* KNFBTextFlow.m */; };
+		C96C187015C8038C002EBEBB /* KNFBTextFlowBlock.m in Sources */ = {isa = PBXBuildFile; fileRef = C9B08B0B1344D34F001963D0 /* KNFBTextFlowBlock.m */; };
+		C96C187115C8038C002EBEBB /* KNFBTextFlowBlockCombiner.m in Sources */ = {isa = PBXBuildFile; fileRef = C9B08B0D1344D34F001963D0 /* KNFBTextFlowBlockCombiner.m */; };
+		C96C187215C8038C002EBEBB /* KNFBTextFlowCombinedBlock.m in Sources */ = {isa = PBXBuildFile; fileRef = C9B08B0F1344D34F001963D0 /* KNFBTextFlowCombinedBlock.m */; };
+		C96C187315C8038C002EBEBB /* KNFBTextFlowFlow.m in Sources */ = {isa = PBXBuildFile; fileRef = C9B08B111344D34F001963D0 /* KNFBTextFlowFlow.m */; };
+		C96C187415C8038C002EBEBB /* KNFBTextFlowFlowReference.m in Sources */ = {isa = PBXBuildFile; fileRef = C9B08B131344D34F001963D0 /* KNFBTextFlowFlowReference.m */; };
+		C96C187515C8038C002EBEBB /* KNFBTextFlowFlowTree.m in Sources */ = {isa = PBXBuildFile; fileRef = C9B08B151344D34F001963D0 /* KNFBTextFlowFlowTree.m */; };
+		C96C187615C8038C002EBEBB /* KNFBPageMarker.m in Sources */ = {isa = PBXBuildFile; fileRef = C9B08B171344D34F001963D0 /* KNFBPageMarker.m */; };
+		C96C187715C8038C002EBEBB /* KNFBTextFlowPageRange.m in Sources */ = {isa = PBXBuildFile; fileRef = C9B08B191344D34F001963D0 /* KNFBTextFlowPageRange.m */; };
+		C96C187815C8038C002EBEBB /* KNFBTextFlowParagraph.m in Sources */ = {isa = PBXBuildFile; fileRef = C9B08B1B1344D34F001963D0 /* KNFBTextFlowParagraph.m */; };
+		C96C187915C8038C002EBEBB /* KNFBTextFlowParagraphSource.m in Sources */ = {isa = PBXBuildFile; fileRef = C9B08B1D1344D34F001963D0 /* KNFBTextFlowParagraphSource.m */; };
+		C96C187A15C8038C002EBEBB /* KNFBTextFlowParagraphWords.m in Sources */ = {isa = PBXBuildFile; fileRef = C9B08B1F1344D34F001963D0 /* KNFBTextFlowParagraphWords.m */; };
+		C96C187B15C8038C002EBEBB /* KNFBTextFlowPositionedWord.m in Sources */ = {isa = PBXBuildFile; fileRef = C9B08B211344D34F001963D0 /* KNFBTextFlowPositionedWord.m */; };
+		C96C187C15C8038C002EBEBB /* KNFBTextFlowReference.m in Sources */ = {isa = PBXBuildFile; fileRef = C9B08B231344D34F001963D0 /* KNFBTextFlowReference.m */; };
+		C96C187D15C8038C002EBEBB /* KNFBTextFlowXAMLTree.m in Sources */ = {isa = PBXBuildFile; fileRef = C9B08B251344D34F001963D0 /* KNFBTextFlowXAMLTree.m */; };
+		C96C187E15C8038C002EBEBB /* KNFBTextFlowXAMLTreeNode.m in Sources */ = {isa = PBXBuildFile; fileRef = C9B08B271344D34F001963D0 /* KNFBTextFlowXAMLTreeNode.m */; };
+		C96C187F15C8038C002EBEBB /* KNFBTOCEntry.m in Sources */ = {isa = PBXBuildFile; fileRef = C9B08B291344D34F001963D0 /* KNFBTOCEntry.m */; };
+		C96C188015C8039C002EBEBB /* KNFBSmartZoomBlock.m in Sources */ = {isa = PBXBuildFile; fileRef = C92FA7E71355E8F2001BAA6B /* KNFBSmartZoomBlock.m */; };
+		C96C188115C8039C002EBEBB /* KNFBSmartZoomBlockSource.m in Sources */ = {isa = PBXBuildFile; fileRef = C92FA7CC1355B8B7001BAA6B /* KNFBSmartZoomBlockSource.m */; };
+		C96C188215C80546002EBEBB /* MRGridView.m in Sources */ = {isa = PBXBuildFile; fileRef = C923A27312F06FE60054426F /* MRGridView.m */; };
+		C96C188315C80546002EBEBB /* MRGridViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C923A27512F06FE60054426F /* MRGridViewCell.m */; };
+		C96C188415C80546002EBEBB /* MRGridViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C923A27712F06FE60054426F /* MRGridViewController.m */; };
+		C96C188515C80556002EBEBB /* BITSyncProcess.m in Sources */ = {isa = PBXBuildFile; fileRef = 529386FC12DF3ED800045B44 /* BITSyncProcess.m */; };
+		C96C188615C80556002EBEBB /* BITAPIProxy.m in Sources */ = {isa = PBXBuildFile; fileRef = 5293870112DF3EDF00045B44 /* BITAPIProxy.m */; };
+		C96C188715C80556002EBEBB /* BITSOAPProxy.m in Sources */ = {isa = PBXBuildFile; fileRef = 5293870512DF3EDF00045B44 /* BITSOAPProxy.m */; };
+		C96C188815C80556002EBEBB /* TTTAttributedLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = F8E2D3D013B9CB8A001E207B /* TTTAttributedLabel.m */; };
+		C96C188915C80556002EBEBB /* ZipArchive.mm in Sources */ = {isa = PBXBuildFile; fileRef = F8B55E44134B57A20028534A /* ZipArchive.mm */; };
+		C96C188A15C80556002EBEBB /* LambdaAlert.m in Sources */ = {isa = PBXBuildFile; fileRef = C9B59BD113D048D000C7760D /* LambdaAlert.m */; };
+		C96C188B15C80556002EBEBB /* LambdaSheet.m in Sources */ = {isa = PBXBuildFile; fileRef = C9B59BD313D048D000C7760D /* LambdaSheet.m */; };
+		C96C188C15C80C38002EBEBB /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 526A8A5E1385182100101A96 /* CoreMedia.framework */; };
+		C96C188D15C80C40002EBEBB /* CoreVideo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7D95F777150F66160093BB90 /* CoreVideo.framework */; };
+		C96C188E15C80C77002EBEBB /* AssetsLibrary.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 28B193ED1405253100313821 /* AssetsLibrary.framework */; };
+		C96C188F15C80C77002EBEBB /* ImageIO.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F80060FD13D9CF76001CA881 /* ImageIO.framework */; };
+		C96C189015C80C7C002EBEBB /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C9B7EABD13DEDBAB00BD5CB7 /* MessageUI.framework */; };
+		C96C189115C80C7C002EBEBB /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C95ECB44133A76C400D88768 /* Accelerate.framework */; };
+		C96C189215C80C7C002EBEBB /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C95ECB4C133A77A500D88768 /* AudioToolbox.framework */; };
+		C96C189315C80C7C002EBEBB /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 529386C212DF3A8900045B44 /* CFNetwork.framework */; };
+		C96C189415C80C7C002EBEBB /* CoreText.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F8E2D3BF13B9C7AC001E207B /* CoreText.framework */; };
+		C96C189515C80C7C002EBEBB /* MediaPlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 523756AA13A2548E00B38441 /* MediaPlayer.framework */; };
+		C96C189615C80C7C002EBEBB /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C95ECB48133A770B00D88768 /* OpenGLES.framework */; };
+		C96C189715C80C7C002EBEBB /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C95ECB46133A76DE00D88768 /* QuartzCore.framework */; };
+		C96C189815C80C7C002EBEBB /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 52EF553D12E9EB8500E374F7 /* Security.framework */; };
+		C96C189915C80CB6002EBEBB /* AuthenticateSvc.m in Sources */ = {isa = PBXBuildFile; fileRef = 5293868F12DF3A3300045B44 /* AuthenticateSvc.m */; };
+		C96C189A15C80CB6002EBEBB /* AuthenticateSvc+Binding.m in Sources */ = {isa = PBXBuildFile; fileRef = 521B7AD71521D1ED00DC0739 /* AuthenticateSvc+Binding.m */; };
+		C96C189B15C80CB6002EBEBB /* GetUserInfoSvc.m in Sources */ = {isa = PBXBuildFile; fileRef = 52C62CF014F3A02100F261DA /* GetUserInfoSvc.m */; };
+		C96C189C15C80CB6002EBEBB /* GetUserInfoSvc+Binding.m in Sources */ = {isa = PBXBuildFile; fileRef = 521B7AE31521D61200DC0739 /* GetUserInfoSvc+Binding.m */; };
+		C96C189D15C80CB6002EBEBB /* ax25.m in Sources */ = {isa = PBXBuildFile; fileRef = 52C62CF514F3A25700F261DA /* ax25.m */; };
+		C96C189E15C80CB6002EBEBB /* LibreAccessServiceSvc.m in Sources */ = {isa = PBXBuildFile; fileRef = 52EF508612E739E900E374F7 /* LibreAccessServiceSvc.m */; };
+		C96C189F15C80CB6002EBEBB /* LibreAccessServiceSvc+Binding.m in Sources */ = {isa = PBXBuildFile; fileRef = 521B7ADD1521D4BC00DC0739 /* LibreAccessServiceSvc+Binding.m */; };
+		C96C18A015C80CB6002EBEBB /* ax21.m in Sources */ = {isa = PBXBuildFile; fileRef = 523B2E6D14F403E300413883 /* ax21.m */; };
+		C96C18A115C80CB6002EBEBB /* WishListServiceSvc.m in Sources */ = {isa = PBXBuildFile; fileRef = 523B2E6F14F403E300413883 /* WishListServiceSvc.m */; };
+		C96C18A215C80CB6002EBEBB /* WishListServiceSvc+Binding.m in Sources */ = {isa = PBXBuildFile; fileRef = 521B7AE91521D67E00DC0739 /* WishListServiceSvc+Binding.m */; };
+		C96C18A315C80CB6002EBEBB /* NSDate+ISO8601Parsing.m in Sources */ = {isa = PBXBuildFile; fileRef = 5293869312DF3A3300045B44 /* NSDate+ISO8601Parsing.m */; };
+		C96C18A415C80CB6002EBEBB /* NSDate+ISO8601Unparsing.m in Sources */ = {isa = PBXBuildFile; fileRef = 5293869512DF3A3300045B44 /* NSDate+ISO8601Unparsing.m */; };
+		C96C18A515C80CB6002EBEBB /* USGlobals.m in Sources */ = {isa = PBXBuildFile; fileRef = 5293869912DF3A3300045B44 /* USGlobals.m */; };
+		C96C18A615C80CB6002EBEBB /* xsd.m in Sources */ = {isa = PBXBuildFile; fileRef = 5293869B12DF3A3300045B44 /* xsd.m */; };
+		C96C18A715C80CFF002EBEBB /* QHTTPOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 2808E21B1456BDFD004EA40E /* QHTTPOperation.m */; };
+		C96C18A815C80CFF002EBEBB /* QRunLoopOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 2808E21D1456BDFD004EA40E /* QRunLoopOperation.m */; };
+		C96C18A915C80D1A002EBEBB /* libXpsSDKipad.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C9EFB176134F4C8E00ADF905 /* libXpsSDKipad.a */; };
+		C96C18AA15C80D92002EBEBB /* AppDelegate_Shared.m in Sources */ = {isa = PBXBuildFile; fileRef = 28EEC04A1118E28000187D67 /* AppDelegate_Shared.m */; };
+		C96C18AB15C80E15002EBEBB /* libiconv.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = C9ED56811343328F00A25486 /* libiconv.dylib */; };
+		C96C18AC15C80EA9002EBEBB /* levenshtein_distance.c in Sources */ = {isa = PBXBuildFile; fileRef = C9E89A491369B87A00E7ED53 /* levenshtein_distance.c */; };
 		C96C4DA51557D62C00B47E56 /* storia-settings-logo@2x~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = C96C4DA41557D62C00B47E56 /* storia-settings-logo@2x~ipad.png */; };
 		C96C4DA61557D62C00B47E56 /* storia-settings-logo@2x~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = C96C4DA41557D62C00B47E56 /* storia-settings-logo@2x~ipad.png */; };
 		C96C4DA71557D62C00B47E56 /* storia-settings-logo@2x~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = C96C4DA41557D62C00B47E56 /* storia-settings-logo@2x~ipad.png */; };
@@ -3853,11 +4206,9 @@
 		C9F1A57A133B83D100FD984C /* libxml2.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = C9F1A579133B83D100FD984C /* libxml2.dylib */; };
 		C9F229AC15B82EDD009939D1 /* SCHAppModel.m in Sources */ = {isa = PBXBuildFile; fileRef = C9F229AB15B82EDD009939D1 /* SCHAppModel.m */; };
 		C9F229AD15B82EDD009939D1 /* SCHAppModel.m in Sources */ = {isa = PBXBuildFile; fileRef = C9F229AB15B82EDD009939D1 /* SCHAppModel.m */; };
-		C9F229AE15B82EDD009939D1 /* SCHAppModel.m in Sources */ = {isa = PBXBuildFile; fileRef = C9F229AB15B82EDD009939D1 /* SCHAppModel.m */; };
 		C9F229AF15B82EDD009939D1 /* SCHAppModel.m in Sources */ = {isa = PBXBuildFile; fileRef = C9F229AB15B82EDD009939D1 /* SCHAppModel.m */; };
 		C9F229E915B9B37E009939D1 /* SCHPhoneAppController.m in Sources */ = {isa = PBXBuildFile; fileRef = C9F229E815B9B37E009939D1 /* SCHPhoneAppController.m */; };
 		C9F229EA15B9B37E009939D1 /* SCHPhoneAppController.m in Sources */ = {isa = PBXBuildFile; fileRef = C9F229E815B9B37E009939D1 /* SCHPhoneAppController.m */; };
-		C9F229EB15B9B37E009939D1 /* SCHPhoneAppController.m in Sources */ = {isa = PBXBuildFile; fileRef = C9F229E815B9B37E009939D1 /* SCHPhoneAppController.m */; };
 		C9F229EC15B9B37E009939D1 /* SCHPhoneAppController.m in Sources */ = {isa = PBXBuildFile; fileRef = C9F229E815B9B37E009939D1 /* SCHPhoneAppController.m */; };
 		C9F229ED15B9B37E009939D1 /* SCHPhoneAppController.m in Sources */ = {isa = PBXBuildFile; fileRef = C9F229E815B9B37E009939D1 /* SCHPhoneAppController.m */; };
 		C9F5B750138FBBB3009DE113 /* SCHUnderlinedButton.m in Sources */ = {isa = PBXBuildFile; fileRef = C9F5B74F138FBBB3009DE113 /* SCHUnderlinedButton.m */; };
@@ -5074,6 +5425,7 @@
 		527CE87A13A6420900BAC8E1 /* SCHStoryInteractionWordScrambler_iPhone.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SCHStoryInteractionWordScrambler_iPhone.xib; sourceTree = "<group>"; };
 		527DDC61144C6A0D004D4FE3 /* SCHParentalToolsWebViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHParentalToolsWebViewController.h; path = Shared/SCHParentalToolsWebViewController.h; sourceTree = "<group>"; };
 		527DDC62144C6A0D004D4FE3 /* SCHParentalToolsWebViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHParentalToolsWebViewController.m; path = Shared/SCHParentalToolsWebViewController.m; sourceTree = "<group>"; };
+		527FA6EA15C7C68F002D0250 /* UNIX2003Remapping.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = UNIX2003Remapping.c; sourceTree = "<group>"; };
 		528433E9133382EA0010BAAB /* SCHAppDictionaryState.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHAppDictionaryState.h; path = Shared/SCHAppDictionaryState.h; sourceTree = "<group>"; };
 		528433EA133382EA0010BAAB /* SCHAppDictionaryState.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHAppDictionaryState.m; path = Shared/SCHAppDictionaryState.m; sourceTree = "<group>"; };
 		528465ED144DB5F7009DBADD /* SCHAccountValidationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHAccountValidationViewController.h; path = Shared/SCHAccountValidationViewController.h; sourceTree = "<group>"; };
@@ -5680,6 +6032,8 @@
 		C95ECB4C133A77A500D88768 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
 		C9613DDB1405359A00AE1F8C /* icon-audio-younger-small.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "icon-audio-younger-small.png"; path = "Resources/icon-audio-younger-small.png"; sourceTree = "<group>"; };
 		C9613DDC1405359A00AE1F8C /* icon-audio-younger-small@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "icon-audio-younger-small@2x.png"; path = "Resources/icon-audio-younger-small@2x.png"; sourceTree = "<group>"; };
+		C96C174715C7D6B3002EBEBB /* SCHDrmSession.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCHDrmSession.h; sourceTree = "<group>"; };
+		C96C174815C7D6B3002EBEBB /* SCHDrmSession.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCHDrmSession.m; sourceTree = "<group>"; };
 		C96C4DA41557D62C00B47E56 /* storia-settings-logo@2x~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "storia-settings-logo@2x~ipad.png"; path = "Resources/UIAssets/storia-settings-logo@2x~ipad.png"; sourceTree = "<group>"; };
 		C9703A5313E9617F0003C4D8 /* bookshelf-bottom-shadow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "bookshelf-bottom-shadow.png"; path = "Resources/UIAssets/bookshelf-bottom-shadow.png"; sourceTree = "<group>"; };
 		C9703A5413E9617F0003C4D8 /* bookshelf-top-shadow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "bookshelf-top-shadow.png"; path = "Resources/UIAssets/bookshelf-top-shadow.png"; sourceTree = "<group>"; };
@@ -6398,6 +6752,21 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C96C188D15C80C40002EBEBB /* CoreVideo.framework in Frameworks */,
+				C96C188C15C80C38002EBEBB /* CoreMedia.framework in Frameworks */,
+				C96C185A15C8031B002EBEBB /* libBITModalSheetController.a in Frameworks */,
+				C96C185B15C8031B002EBEBB /* libBITOperation.a in Frameworks */,
+				C96C185C15C8031B002EBEBB /* libcss.a in Frameworks */,
+				C96C185D15C8031B002EBEBB /* libEucalyptusBase.a in Frameworks */,
+				C96C185E15C8031B002EBEBB /* libEucalyptusCSS.a in Frameworks */,
+				C96C185F15C8031B002EBEBB /* libEucalyptusEPub.a in Frameworks */,
+				C96C186015C8031B002EBEBB /* libEucalyptusIOSUI.a in Frameworks */,
+				C96C186115C8031B002EBEBB /* libEucalyptusModel.a in Frameworks */,
+				C96C186215C8031B002EBEBB /* libhyphenate.a in Frameworks */,
+				C96C186315C8031B002EBEBB /* libminiunzip.a in Frameworks */,
+				C96C186415C8031B002EBEBB /* libots.a in Frameworks */,
+				C96C186515C8031B002EBEBB /* libparserutils.a in Frameworks */,
+				C96C186615C8031B002EBEBB /* libwapcaplet.a in Frameworks */,
 				281CC4061457FE170049F736 /* libexpat.a in Frameworks */,
 				28A08CFC13952CB4006FD008 /* UIKit.framework in Frameworks */,
 				28A08CFD13952CB4006FD008 /* Foundation.framework in Frameworks */,
@@ -6406,6 +6775,19 @@
 				2894E81513B0A68B00AEAD79 /* libxml2.dylib in Frameworks */,
 				2868A45713BA14CB000110D5 /* CoreData.framework in Frameworks */,
 				281CC40B145800010049F736 /* SystemConfiguration.framework in Frameworks */,
+				C96C188E15C80C77002EBEBB /* AssetsLibrary.framework in Frameworks */,
+				C96C188F15C80C77002EBEBB /* ImageIO.framework in Frameworks */,
+				C96C189015C80C7C002EBEBB /* MessageUI.framework in Frameworks */,
+				C96C189115C80C7C002EBEBB /* Accelerate.framework in Frameworks */,
+				C96C189215C80C7C002EBEBB /* AudioToolbox.framework in Frameworks */,
+				C96C189315C80C7C002EBEBB /* CFNetwork.framework in Frameworks */,
+				C96C189415C80C7C002EBEBB /* CoreText.framework in Frameworks */,
+				C96C189515C80C7C002EBEBB /* MediaPlayer.framework in Frameworks */,
+				C96C189615C80C7C002EBEBB /* OpenGLES.framework in Frameworks */,
+				C96C189715C80C7C002EBEBB /* QuartzCore.framework in Frameworks */,
+				C96C189815C80C7C002EBEBB /* Security.framework in Frameworks */,
+				C96C18A915C80D1A002EBEBB /* libXpsSDKipad.a in Frameworks */,
+				C96C18AB15C80E15002EBEBB /* libiconv.dylib in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -6721,6 +7103,8 @@
 				286E21B113AC93CB00CB4232 /* DummyAVAudioPlayer.m */,
 				2868A45D13BA1C36000110D5 /* SCHProcessingManager.h */,
 				2868A45E13BA1C36000110D5 /* SCHProcessingManager.m */,
+				C96C174715C7D6B3002EBEBB /* SCHDrmSession.h */,
+				C96C174815C7D6B3002EBEBB /* SCHDrmSession.m */,
 			);
 			name = "Dummy Implementations";
 			sourceTree = "<group>";
@@ -6896,6 +7280,7 @@
 				28A08D0113952CB4006FD008 /* UnitTests-Info.plist */,
 				28A08D0213952CB4006FD008 /* InfoPlist.strings */,
 				28A08D0513952CB4006FD008 /* UnitTests-Prefix.pch */,
+				527FA6EA15C7C68F002D0250 /* UNIX2003Remapping.c */,
 				28A60EE213963B1D0090853E /* StoryInteractionAboutYouQuiz1.xml */,
 				2866311C13F010990092A5DE /* StoryInteractionCardCollection1.xml */,
 				2866311A13F00F290092A5DE /* StoryInteractionConcentration1.xml */,
@@ -13031,12 +13416,335 @@
 				52A36A6C15B444D300162753 /* SCHXPSKNFBMetadataFileParser.m in Sources */,
 				52A36A7115B458C900162753 /* SCHXPSKNFBMetadataFileParserTests.m in Sources */,
 				F87FE00C15BE93E50051C6E8 /* SCHStoryInteractionReadingQuiz.m in Sources */,
-				C9F229AE15B82EDD009939D1 /* SCHAppModel.m in Sources */,
-				C9F229EB15B9B37E009939D1 /* SCHPhoneAppController.m in Sources */,
 				52CEC19215C148FD004C749A /* SCHBookIdentifierTests.m in Sources */,
 				52CEC19315C14C6E004C749A /* SCHBookIdentifier.m in Sources */,
 				52CEC19415C14C97004C749A /* NSNumber+ObjectTypes.m in Sources */,
 				52CEC19815C166A3004C749A /* NSNumber+ObjectTypesTests.m in Sources */,
+				527FA6EB15C7C68F002D0250 /* UNIX2003Remapping.c in Sources */,
+				C96C174915C7D6B3002EBEBB /* SCHDrmSession.m in Sources */,
+				C96C174B15C7F2A5002EBEBB /* SCHAppModel.m in Sources */,
+				C96C174C15C7F2B4002EBEBB /* SCHAppStateManager.m in Sources */,
+				C96C174D15C7F2C2002EBEBB /* SCHAuthenticationManager.m in Sources */,
+				C96C174E15C7F2CC002EBEBB /* SCHSyncManager.m in Sources */,
+				C96C174F15C7F2D6002EBEBB /* SCHSampleBooksImporter.m in Sources */,
+				C96C175015C7F2F2002EBEBB /* SCHDictionaryDownloadManager.m in Sources */,
+				C96C175115C7F305002EBEBB /* SCHProfileSyncComponent.m in Sources */,
+				C96C175215C7F318002EBEBB /* SCHAccountValidation.m in Sources */,
+				C96C175315C7F32E002EBEBB /* SCHProfileItem.m in Sources */,
+				C96C175415C7F35E002EBEBB /* SCHStartingViewController.m in Sources */,
+				C96C175515C7F5E1002EBEBB /* SCHCoreDataHelper.m in Sources */,
+				C96C175615C7F5EB002EBEBB /* SCHSettingItem.m in Sources */,
+				C96C175715C7F5FB002EBEBB /* SCHLibreAccessWebService.m in Sources */,
+				C96C175815C7F68E002EBEBB /* SFHFKeychainUtils.m in Sources */,
+				C96C175915C7F69B002EBEBB /* SCHVersionDownloadManager.m in Sources */,
+				C96C175A15C7F6A0002EBEBB /* SCHCOPPAManager.m in Sources */,
+				C96C175B15C7F6A7002EBEBB /* SCHURLManager.m in Sources */,
+				C96C175C15C7F6AD002EBEBB /* SCHBookshelfSyncComponent.m in Sources */,
+				C96C175D15C7F738002EBEBB /* SCHBookManager.m in Sources */,
+				C96C175E15C7F745002EBEBB /* SCHAnnotationSyncComponent.m in Sources */,
+				C96C175F15C7F74B002EBEBB /* SCHRecommendationSyncComponent.m in Sources */,
+				C96C176015C7F752002EBEBB /* SCHPopulateDataStore.m in Sources */,
+				C96C176115C7F75B002EBEBB /* SCHWishListSyncComponent.m in Sources */,
+				C96C176215C7F765002EBEBB /* SCHContentSyncComponent.m in Sources */,
+				C96C176315C7F76C002EBEBB /* SCHReadingStatsSyncComponent.m in Sources */,
+				C96C176415C7F79E002EBEBB /* SCHSettingsSyncComponent.m in Sources */,
+				C96C176515C7F96D002EBEBB /* SCHVersionManifestOperation.m in Sources */,
+				C96C176615C7F9DD002EBEBB /* SCHProfileViewController_iPhone.m in Sources */,
+				C96C176715C7F9DD002EBEBB /* SCHScrubberView.m in Sources */,
+				C96C176815C7F9DD002EBEBB /* AppDelegate_iPhone.m in Sources */,
+				C96C176915C7F9DD002EBEBB /* SCHPhoneAppController.m in Sources */,
+				C96C176A15C7F9DD002EBEBB /* SCHProfileViewController_iPad.m in Sources */,
+				C96C176B15C7F9DD002EBEBB /* SCHBookShelfViewController_iPad.m in Sources */,
+				C96C176C15C7F9DD002EBEBB /* SCHBookShelfSortTableView.m in Sources */,
+				C96C176D15C7F9DD002EBEBB /* SCHBookShelfTopTenPopoverTableView.m in Sources */,
+				C96C176E15C7F9DD002EBEBB /* SCHBookshelfPopoverController.m in Sources */,
+				C96C176F15C7F9DD002EBEBB /* AppDelegate_iPad.m in Sources */,
+				C96C177015C7F9DD002EBEBB /* SCHBookShelfRecommendationListController.m in Sources */,
+				C96C177115C7F9DD002EBEBB /* SCHBookShelfWishListController.m in Sources */,
+				C96C177215C7F9DD002EBEBB /* SCHBookShelfMenuController.m in Sources */,
+				C96C177315C7F9DD002EBEBB /* SCHBookShelfMenuPopoverBackgroundView.m in Sources */,
+				C96C177415C7F9DD002EBEBB /* SCHBookShelfTypeMenuTableController.m in Sources */,
+				C96C177515C7F9DD002EBEBB /* SCHRecommendationURLRequestOperation.m in Sources */,
+				C96C177615C7F9DD002EBEBB /* SCHRecommendationThumbnailOperation.m in Sources */,
+				C96C177915C7F9DD002EBEBB /* SCHRecommendationListView.m in Sources */,
+				C96C177A15C7F9DD002EBEBB /* SCHRecommendationContainerView.m in Sources */,
+				C96C177B15C7F9DD002EBEBB /* SCHRecommendationSampleView.m in Sources */,
+				C96C177C15C7F9DD002EBEBB /* SCHHelpViewController.m in Sources */,
+				C96C177D15C7F9DD002EBEBB /* SCHStoriaLoginViewController.m in Sources */,
+				C96C177E15C7F9DD002EBEBB /* SCHAboutViewController.m in Sources */,
+				C96C177F15C7F9DD002EBEBB /* SCHPrivacyPolicyViewController.m in Sources */,
+				C96C178015C7F9DD002EBEBB /* SCHBaseTextViewController.m in Sources */,
+				C96C178115C7F9DD002EBEBB /* SCHAccountValidationViewController.m in Sources */,
+				C96C178215C7F9DD002EBEBB /* SCHBaseModalViewController.m in Sources */,
+				C96C178315C7F9DD002EBEBB /* SCHSettingsViewController.m in Sources */,
+				C96C178415C7F9DD002EBEBB /* SCHSetupBookshelvesViewController.m in Sources */,
+				C96C178515C7F9DD002EBEBB /* SCHNavigationControllerForModalForm.m in Sources */,
+				C96C178615C7F9DD002EBEBB /* SCHParentalToolsWebViewController.m in Sources */,
+				C96C178715C7F9DD002EBEBB /* SCHDownloadDictionaryViewController.m in Sources */,
+				C96C178815C7F9F5002EBEBB /* SCHRemoveDictionaryViewController.m in Sources */,
+				C96C178915C7F9F5002EBEBB /* SCHDownloadDictionaryFromSettingsViewController.m in Sources */,
+				C96C178A15C7F9F5002EBEBB /* SCHDeregisterDeviceViewController.m in Sources */,
+				C96C178B15C7F9F5002EBEBB /* SCHUpdateBooksViewController.m in Sources */,
+				C96C178C15C7F9F5002EBEBB /* SCHUpdateBooksTableViewCellController.m in Sources */,
+				C96C178D15C7F9F5002EBEBB /* SCHUpdateBooksTableViewCell.m in Sources */,
+				C96C178E15C7F9F5002EBEBB /* SCHLoginPasswordViewController.m in Sources */,
+				C96C178F15C7F9F5002EBEBB /* SCHUnderlinedButton.m in Sources */,
+				C96C179015C7F9F5002EBEBB /* SCHReadingNotesListController.m in Sources */,
+				C96C179115C7F9F5002EBEBB /* SCHReadingViewController.m in Sources */,
+				C96C179215C7F9F5002EBEBB /* SCHReadingViewNavigationToolbar.m in Sources */,
+				C96C179315C7F9F5002EBEBB /* SCHReadingInteractionsListController.m in Sources */,
+				C96C179415C7F9F5002EBEBB /* SCHDictionaryViewController.m in Sources */,
+				C96C179515C7F9F5002EBEBB /* SCHNotesCountView.m in Sources */,
+				C96C179615C7F9F5002EBEBB /* SCHReadingStoryInteractionButton.m in Sources */,
+				C96C179715C7FA06002EBEBB /* SCHWordTiming.m in Sources */,
+				C96C179815C7FA06002EBEBB /* SCHWordTimingProcessor.m in Sources */,
+				C96C179915C7FA06002EBEBB /* SCHAudioBookPlayer.m in Sources */,
+				C96C179A15C7FA06002EBEBB /* SCHAudioInfo.m in Sources */,
+				C96C179B15C7FA06002EBEBB /* SCHAudioInfoProcessor.m in Sources */,
+				C96C179C15C7FA06002EBEBB /* SCHXPSProvider.m in Sources */,
+				C96C179D15C7FA06002EBEBB /* SCHXPSURLProtocol.m in Sources */,
+				C96C179E15C7FA06002EBEBB /* UIColor+Extensions.m in Sources */,
+				C96C179F15C7FA06002EBEBB /* NSManagedObjectContext+Extensions.m in Sources */,
+				C96C17A015C7FA06002EBEBB /* UIImage+BlioAdditions.m in Sources */,
+				C96C17A115C7FA06002EBEBB /* UIImage+ScholasticAdditions.m in Sources */,
+				C96C17A215C7FA06002EBEBB /* NSURL+Extensions.m in Sources */,
+				C96C17A315C7FA06002EBEBB /* NSDate+ServerDate.m in Sources */,
+				C96C17A415C7FA06002EBEBB /* NSString+URLEncoding.m in Sources */,
+				C96C17A515C7FA06002EBEBB /* UILabel+ScholasticAdditions.m in Sources */,
+				C96C17A615C7FA06002EBEBB /* NSFileManager+DoNotBackupExtendedAttribute.m in Sources */,
+				C96C17A715C7FA06002EBEBB /* NSFileManager+Extensions.m in Sources */,
+				C96C17A815C7FA06002EBEBB /* NSString+EmailValidation.m in Sources */,
+				C96C17A915C7FA19002EBEBB /* SCHGradientView.m in Sources */,
+				C96C17AA15C7FA19002EBEBB /* SCHCheckbox.m in Sources */,
+				C96C17AB15C7FA19002EBEBB /* SCHReadingNoteView.m in Sources */,
+				C96C17AC15C7FA19002EBEBB /* SCHProfileViewController_Shared.m in Sources */,
+				C96C17AD15C7FA19002EBEBB /* SCHProfileViewCell.m in Sources */,
+				C96C17AE15C7FA19002EBEBB /* SCHThemePickerViewController.m in Sources */,
+				C96C17AF15C7FA19002EBEBB /* SCHThemeManager.m in Sources */,
+				C96C17B015C7FA19002EBEBB /* SCHThemeButton.m in Sources */,
+				C96C17B115C7FA19002EBEBB /* SCHThemeImageView.m in Sources */,
+				C96C17B215C7FA19002EBEBB /* SCHReadingView.m in Sources */,
+				C96C17B315C7FA19002EBEBB /* SCHFlowView.m in Sources */,
+				C96C17B415C7FA19002EBEBB /* SCHLayoutView.m in Sources */,
+				C96C17B515C7FA19002EBEBB /* SCHCustomToolbar.m in Sources */,
+				C96C17B615C7FA19002EBEBB /* SCHCustomNavigationBar.m in Sources */,
+				C96C17B715C7FA3B002EBEBB /* SCHBookCoverView.m in Sources */,
+				C96C17B815C7FA3B002EBEBB /* SCHBookShelfViewController.m in Sources */,
+				C96C17B915C7FA3B002EBEBB /* SCHBookShelfShadowsView.m in Sources */,
+				C96C17BA15C7FA3B002EBEBB /* SCHTopPicksBookShelfViewController.m in Sources */,
+				C96C17BB15C7FA3B002EBEBB /* SCHBookShelfGridViewCell.m in Sources */,
+				C96C17BC15C7FA3B002EBEBB /* SCHBookShelfGridView.m in Sources */,
+				C96C17BD15C7FA3B002EBEBB /* SCHBookShelfGridShelvesView.m in Sources */,
+				C96C17BE15C7FA3B002EBEBB /* SCHBookShelfTableViewCell.m in Sources */,
+				C96C17BF15C7FA3B002EBEBB /* SCHStoriaWelcomeViewController.m in Sources */,
+				C96C17C015C7FA3B002EBEBB /* SCHSampleBooksManifestOperation.m in Sources */,
+				C96C17C115C7FA3B002EBEBB /* SCHVersionManifestEntry.m in Sources */,
+				C96C17C215C7FA3B002EBEBB /* SCHHelpVideoManifestOperation.m in Sources */,
+				C96C17C315C7FA3B002EBEBB /* SCHHelpVideoFileDownloadOperation.m in Sources */,
+				C96C17C415C7FA62002EBEBB /* SCHDictionaryManifestOperation.m in Sources */,
+				C96C17C515C7FA62002EBEBB /* SCHDictionaryFileDownloadOperation.m in Sources */,
+				C96C17C615C7FA62002EBEBB /* SCHDictionaryFileUnzipOperation.m in Sources */,
+				C96C17C715C7FA62002EBEBB /* SCHDictionaryParseOperation.m in Sources */,
+				C96C17C815C7FA62002EBEBB /* SCHHelpManager.m in Sources */,
+				C96C17C915C7FA62002EBEBB /* SCHDictionaryAccessManager.m in Sources */,
+				C96C17CA15C7FA62002EBEBB /* SCHAudioPreParseOperation.m in Sources */,
+				C96C17CB15C7FA62002EBEBB /* SCHBookURLRequestOperation.m in Sources */,
+				C96C17CC15C7FA62002EBEBB /* SCHDownloadBookFileOperation.m in Sources */,
+				C96C17CD15C7FA62002EBEBB /* SCHRightsParsingOperation.m in Sources */,
+				C96C17CE15C7FA62002EBEBB /* SCHTextFlowPreParseOperation.m in Sources */,
+				C96C17CF15C7FA62002EBEBB /* SCHSmartZoomPreParseOperation.m in Sources */,
+				C96C17D015C7FA62002EBEBB /* SCHFlowAnalysisOperation.m in Sources */,
+				C96C17D115C7FA62002EBEBB /* SCHLicenseAcquisitionOperation.m in Sources */,
+				C96C17D315C7FA62002EBEBB /* SCHBookOperation.m in Sources */,
+				C96C17D415C7FA62002EBEBB /* SCHCoreDataOperation.m in Sources */,
+				C96C17D515C7FB0F002EBEBB /* SCHBookContents.m in Sources */,
+				C96C17D615C7FB0F002EBEBB /* SCHFlowEucBook.m in Sources */,
+				C96C17D715C7FB0F002EBEBB /* SCHEPubBook.m in Sources */,
+				C96C17D815C7FB0F002EBEBB /* SCHTextFlow.m in Sources */,
+				C96C17D915C7FB0F002EBEBB /* SCHTextFlowParagraphSource.m in Sources */,
+				C96C17DA15C7FB0F002EBEBB /* SCHEPubToTextFlowMappingParagraphSource.m in Sources */,
+				C96C17DB15C7FB0F002EBEBB /* SCHSmartZoomBlockSource.m in Sources */,
+				C96C17DC15C7FB0F002EBEBB /* SCHBookAnnotations.m in Sources */,
+				C96C17DD15C7FB0F002EBEBB /* SCHBookStatistics.m in Sources */,
+				C96C17DE15C7FB0F002EBEBB /* SCHBookUpdates.m in Sources */,
+				C96C17DF15C7FB0F002EBEBB /* SCHBookStoryInteractions+XPS.m in Sources */,
+				C96C17E015C7FB0F002EBEBB /* SCHStoryInteractionController.m in Sources */,
+				C96C17E115C7FB0F002EBEBB /* SCHStoryInteractionStandaloneViewController.m in Sources */,
+				C96C17E215C7FB0F002EBEBB /* NSArray+ViewSorting.m in Sources */,
+				C96C17E315C7FB0F002EBEBB /* NSArray+Shuffling.m in Sources */,
+				C96C17E415C7FB0F002EBEBB /* SCHAnimationDelegate.m in Sources */,
+				C96C17E515C7FB0F002EBEBB /* SCHImageButton.m in Sources */,
+				C96C17E615C7FB0F002EBEBB /* SCHPlayButton.m in Sources */,
+				C96C17E715C7FB0F002EBEBB /* SCHStoryInteractionDraggableTargetView.m in Sources */,
+				C96C17E815C7FB0F002EBEBB /* SCHStoryInteractionDraggableView.m in Sources */,
+				C96C17E915C7FB0F002EBEBB /* SCHStoryInteractionDraggableLetterView.m in Sources */,
+				C96C17EA15C7FB0F002EBEBB /* SCHStretchableImageButton.m in Sources */,
+				C96C17EB15C7FB0F002EBEBB /* SCHStoryInteractionProgressView.m in Sources */,
+				C96C17EC15C7FB0F002EBEBB /* SCHBoxWithShadowView.m in Sources */,
+				C96C17ED15C7FB0F002EBEBB /* SCHAnimatedLayer.m in Sources */,
+				C96C17EE15C7FB8E002EBEBB /* SCHStoryInteractionControllerAboutYouQuiz.m in Sources */,
+				C96C17EF15C7FB8E002EBEBB /* SCHStoryInteractionControllerCardCollection.m in Sources */,
+				C96C17F015C7FB8E002EBEBB /* SCHStoryInteractionControllerConcentration.m in Sources */,
+				C96C17F115C7FB8E002EBEBB /* SCH3DView.m in Sources */,
+				C96C17F215C7FDD6002EBEBB /* SCHStoryInteractionControllerImage.m in Sources */,
+				C96C17F315C7FDD6002EBEBB /* SCHStoryInteractionControllerJigsaw_Common.m in Sources */,
+				C96C17F415C7FDD6002EBEBB /* SCHStoryInteractionControllerJigsaw_iPad.m in Sources */,
+				C96C17F515C7FDD6002EBEBB /* SCHStoryInteractionControllerJigsaw_iPhone.m in Sources */,
+				C96C17F615C7FDD6002EBEBB /* SCHStoryInteractionJigsawPreviewView.m in Sources */,
+				C96C17F715C7FDD6002EBEBB /* SCHStoryInteractionJigsawPieceView_iPad.m in Sources */,
+				C96C17F815C7FDD6002EBEBB /* SCHStoryInteractionJigsawPieceView_iPhone.m in Sources */,
+				C96C17F915C7FDD6002EBEBB /* SCHDragFromScrollViewGestureRecognizer.m in Sources */,
+				C96C17FA15C7FE36002EBEBB /* SCHStoryInteractionControllerMultipleChoiceText.m in Sources */,
+				C96C17FB15C7FE36002EBEBB /* SCHStoryInteractionControllerMultipleChoiceWithAnswerPictures.m in Sources */,
+				C96C17FC15C7FE36002EBEBB /* SCHStoryInteractionControllerPopQuiz.m in Sources */,
+				C96C17FD15C7FE36002EBEBB /* SCHStoryInteractionControllerPictureStarter.m in Sources */,
+				C96C17FE15C7FE36002EBEBB /* SCHStoryInteractionControllerPictureStarterCustom.m in Sources */,
+				C96C17FF15C7FE36002EBEBB /* SCHStoryInteractionControllerPictureStarterNewEnding.m in Sources */,
+				C96C180015C7FE36002EBEBB /* SCHStoryInteractionControllerPictureStarterFavorite.m in Sources */,
+				C96C180115C7FE36002EBEBB /* SCHPictureStarterCanvas.m in Sources */,
+				C96C180215C7FE36002EBEBB /* SCHPictureStarterDrawingInstruction.m in Sources */,
+				C96C180315C7FE36002EBEBB /* SCHGestureSmoother.m in Sources */,
+				C96C180415C7FE36002EBEBB /* SCHPictureStarterColorChooser.m in Sources */,
+				C96C180515C7FE36002EBEBB /* SCHPictureStarterSizeChooser.m in Sources */,
+				C96C180615C7FE36002EBEBB /* SCHPictureStarterStickers.m in Sources */,
+				C96C180715C7FE36002EBEBB /* SCHPictureStarterStickerChooser.m in Sources */,
+				C96C180815C7FE36002EBEBB /* SCHPictureStarterStickerChooserThumbnailView.m in Sources */,
+				C96C180915C7FE48002EBEBB /* SCHStoryInteractionControllerScratchAndSee.m in Sources */,
+				C96C180A15C7FE48002EBEBB /* SCHStoryInteractionScratchView.m in Sources */,
+				C96C180B15C7FE48002EBEBB /* SCHStoryInteractionControllerSequencing.m in Sources */,
+				C96C180C15C7FE48002EBEBB /* SCHStoryInteractionControllerStartingLetter.m in Sources */,
+				C96C180D15C7FE48002EBEBB /* SCHStoryInteractionControllerHotSpot.m in Sources */,
+				C96C180E15C7FE48002EBEBB /* SCHStarView.m in Sources */,
+				C96C180F15C7FE48002EBEBB /* SCHStoryInteractionControllerVideo.m in Sources */,
+				C96C181015C7FE93002EBEBB /* SCHStoryInteractionControllerWhoSaidIt_iPad.m in Sources */,
+				C96C181115C7FE94002EBEBB /* SCHStoryInteractionControllerWhoSaidIt_iPhone.m in Sources */,
+				C96C181215C7FE94002EBEBB /* SCHStoryInteractionWhoSaidItNameView.m in Sources */,
+				C96C181315C7FE94002EBEBB /* SCHStoryInteractionControllerWordBird.m in Sources */,
+				C96C181415C7FE94002EBEBB /* SCHStoryInteractionWordBirdAnswerLetterView.m in Sources */,
+				C96C181515C7FE94002EBEBB /* SCHStoryInteractionWordBirdLetterView.m in Sources */,
+				C96C181615C7FE94002EBEBB /* SCHStoryInteractionControllerWordMatch.m in Sources */,
+				C96C181715C7FE94002EBEBB /* SCHStoryInteractionControllerWordScrambler.m in Sources */,
+				C96C181815C7FEC1002EBEBB /* SCHStoryInteractionControllerWordSearch.m in Sources */,
+				C96C181915C7FEC1002EBEBB /* SCHStoryInteractionStrikeOutLabelView.m in Sources */,
+				C96C181A15C7FEC1002EBEBB /* SCHStoryInteractionWordSearchContainerView.m in Sources */,
+				C96C181B15C7FEC1002EBEBB /* SCHStoryInteractionControllerTitleTwister.m in Sources */,
+				C96C181C15C7FEC1002EBEBB /* SCHNonDRMAuthenticationManager.m in Sources */,
+				C96C181D15C7FEC1002EBEBB /* SCHAccountVerifier.m in Sources */,
+				C96C181E15C7FEC1002EBEBB /* SCHScholasticAuthenticationWebService.m in Sources */,
+				C96C181F15C7FEC1002EBEBB /* SCHScholasticGetUserInfoWebService.m in Sources */,
+				C96C182015C7FEC1002EBEBB /* SCHWishListWebService.m in Sources */,
+				C96C182115C7FEC1002EBEBB /* SCHWishListConstants.m in Sources */,
+				C96C182215C7FEC1002EBEBB /* SCHRecommendationWebService.m in Sources */,
+				C96C182315C7FEC1002EBEBB /* SCHRecommendationConstants.m in Sources */,
+				C96C182415C7FEC1002EBEBB /* SCHRecommendationProcessor.m in Sources */,
+				C96C182515C7FEC1002EBEBB /* SCHComponent.m in Sources */,
+				C96C182615C7FEC1002EBEBB /* SCHTopFavoritesComponent.m in Sources */,
+				C96C182715C7FEFB002EBEBB /* SCHSyncComponent.m in Sources */,
+				C96C182815C7FEFB002EBEBB /* SCHSyncComponentOperation.m in Sources */,
+				C96C182915C7FEFB002EBEBB /* SCHSaveProfileContentAnnotationsOperation.m in Sources */,
+				C96C182A15C7FF19002EBEBB /* SCHListProfileContentAnnotationsOperation.m in Sources */,
+				C96C182B15C7FF19002EBEBB /* SCHListUserContentForRatingsOperation.m in Sources */,
+				C96C182C15C7FF19002EBEBB /* SCHListContentMetadataOperation.m in Sources */,
+				C96C182D15C7FF19002EBEBB /* SCHSaveUserProfilesOperation.m in Sources */,
+				C96C182E15C7FF19002EBEBB /* SCHGetUserProfilesResponseOperation.m in Sources */,
+				C96C182F15C7FF19002EBEBB /* SCHSaveReadingStatisticsDetailedOperation.m in Sources */,
+				C96C183015C7FF19002EBEBB /* SCHListUserSettingsOperation.m in Sources */,
+				C96C183115C7FF19002EBEBB /* SCHDeleteWishListItemsOperation.m in Sources */,
+				C96C183215C7FF19002EBEBB /* SCHGetWishListItemsOperation.m in Sources */,
+				C96C183315C7FF19002EBEBB /* SCHRetrieveRecommendationsForProfileOperation.m in Sources */,
+				C96C183415C7FF19002EBEBB /* SCHRetrieveRecommendationsForBooksOperation.m in Sources */,
+				C96C183515C7FF19002EBEBB /* SCHRetrieveSampleBooksOperation.m in Sources */,
+				C96C183615C7FF30002EBEBB /* SCHRating.m in Sources */,
+				C96C183715C7FF30002EBEBB /* SCHAppBook.m in Sources */,
+				C96C183815C7FF30002EBEBB /* SCHAppContentProfileItem.m in Sources */,
+				C96C183915C7FF30002EBEBB /* SCHAppProfile.m in Sources */,
+				C96C183A15C7FF30002EBEBB /* SCHAppRecommendationItem.m in Sources */,
+				C96C183B15C7FF30002EBEBB /* SCHAnnotation.m in Sources */,
+				C96C183C15C7FF30002EBEBB /* SCHAnnotationsContentItem.m in Sources */,
+				C96C183D15C7FF30002EBEBB /* SCHAnnotationsItem.m in Sources */,
+				C96C183E15C7FF30002EBEBB /* SCHBookmark.m in Sources */,
+				C96C183F15C7FF30002EBEBB /* SCHContentItem.m in Sources */,
+				C96C184015C7FF30002EBEBB /* SCHContentMetadataItem.m in Sources */,
+				C96C184115C7FF30002EBEBB /* SCHContentProfileItem.m in Sources */,
+				C96C184215C7FF46002EBEBB /* SCHDeviceInfo.m in Sources */,
+				C96C184315C7FF46002EBEBB /* SCHeReaderCategories.m in Sources */,
+				C96C184415C7FF46002EBEBB /* SCHHighlight.m in Sources */,
+				C96C184515C7FF46002EBEBB /* SCHLastPage.m in Sources */,
+				C96C184615C7FF46002EBEBB /* SCHLocationBookmark.m in Sources */,
+				C96C184715C7FF46002EBEBB /* SCHLocationGraphics.m in Sources */,
+				C96C184815C7FF46002EBEBB /* SCHLocationText.m in Sources */,
+				C96C184915C7FF46002EBEBB /* SCHNote.m in Sources */,
+				C96C184A15C7FF46002EBEBB /* SCHOrderItem.m in Sources */,
+				C96C184B15C7FF46002EBEBB /* SCHPrivateAnnotations.m in Sources */,
+				C96C184C15C7FF46002EBEBB /* SCHProfileItemSortObject.m in Sources */,
+				C96C184D15C7FF46002EBEBB /* SCHReadingStatsContentItem.m in Sources */,
+				C96C184E15C7FF46002EBEBB /* SCHReadingStatsDetailItem.m in Sources */,
+				C96C184F15C7FF46002EBEBB /* SCHReadingStatsEntryItem.m in Sources */,
+				C96C185015C7FF46002EBEBB /* SCHRecommendationISBN.m in Sources */,
+				C96C185115C7FF46002EBEBB /* SCHRecommendationItem.m in Sources */,
+				C96C185215C7FF53002EBEBB /* SCHRecommendationProfile.m in Sources */,
+				C96C185315C7FF53002EBEBB /* SCHSyncEntity.m in Sources */,
+				C96C185415C7FF53002EBEBB /* SCHUserContentItem.m in Sources */,
+				C96C185515C7FF53002EBEBB /* SCHWishListItem.m in Sources */,
+				C96C185615C7FF53002EBEBB /* SCHWishListProfile.m in Sources */,
+				C96C185715C7FF53002EBEBB /* SCHWordIndex.m in Sources */,
+				C96C185815C7FF53002EBEBB /* SCHISBNItemObject.m in Sources */,
+				C96C185915C7FF53002EBEBB /* SCHUnqueuedAudioPlayer.m in Sources */,
+				C96C186715C80370002EBEBB /* KNFBZipArchive.m in Sources */,
+				C96C186815C80370002EBEBB /* KNFBXPSProvider.m in Sources */,
+				C96C186915C80370002EBEBB /* KNFBXPSEPubInfoParserDelegate.m in Sources */,
+				C96C186A15C80370002EBEBB /* KNFBXPSPageNumbersParserDelegate.m in Sources */,
+				C96C186B15C80370002EBEBB /* KNFBXPSBitmapReleaseCallback.m in Sources */,
+				C96C186C15C80370002EBEBB /* KNFBTimeOrderedCache.m in Sources */,
+				C96C186D15C80370002EBEBB /* KNFBLayoutHyperlink.m in Sources */,
+				C96C186E15C80370002EBEBB /* KNFBFlowEucBook.m in Sources */,
+				C96C186F15C8038C002EBEBB /* KNFBTextFlow.m in Sources */,
+				C96C187015C8038C002EBEBB /* KNFBTextFlowBlock.m in Sources */,
+				C96C187115C8038C002EBEBB /* KNFBTextFlowBlockCombiner.m in Sources */,
+				C96C187215C8038C002EBEBB /* KNFBTextFlowCombinedBlock.m in Sources */,
+				C96C187315C8038C002EBEBB /* KNFBTextFlowFlow.m in Sources */,
+				C96C187415C8038C002EBEBB /* KNFBTextFlowFlowReference.m in Sources */,
+				C96C187515C8038C002EBEBB /* KNFBTextFlowFlowTree.m in Sources */,
+				C96C187615C8038C002EBEBB /* KNFBPageMarker.m in Sources */,
+				C96C187715C8038C002EBEBB /* KNFBTextFlowPageRange.m in Sources */,
+				C96C187815C8038C002EBEBB /* KNFBTextFlowParagraph.m in Sources */,
+				C96C187915C8038C002EBEBB /* KNFBTextFlowParagraphSource.m in Sources */,
+				C96C187A15C8038C002EBEBB /* KNFBTextFlowParagraphWords.m in Sources */,
+				C96C187B15C8038C002EBEBB /* KNFBTextFlowPositionedWord.m in Sources */,
+				C96C187C15C8038C002EBEBB /* KNFBTextFlowReference.m in Sources */,
+				C96C187D15C8038C002EBEBB /* KNFBTextFlowXAMLTree.m in Sources */,
+				C96C187E15C8038C002EBEBB /* KNFBTextFlowXAMLTreeNode.m in Sources */,
+				C96C187F15C8038C002EBEBB /* KNFBTOCEntry.m in Sources */,
+				C96C188015C8039C002EBEBB /* KNFBSmartZoomBlock.m in Sources */,
+				C96C188115C8039C002EBEBB /* KNFBSmartZoomBlockSource.m in Sources */,
+				C96C188215C80546002EBEBB /* MRGridView.m in Sources */,
+				C96C188315C80546002EBEBB /* MRGridViewCell.m in Sources */,
+				C96C188415C80546002EBEBB /* MRGridViewController.m in Sources */,
+				C96C188515C80556002EBEBB /* BITSyncProcess.m in Sources */,
+				C96C188615C80556002EBEBB /* BITAPIProxy.m in Sources */,
+				C96C188715C80556002EBEBB /* BITSOAPProxy.m in Sources */,
+				C96C188815C80556002EBEBB /* TTTAttributedLabel.m in Sources */,
+				C96C188915C80556002EBEBB /* ZipArchive.mm in Sources */,
+				C96C188A15C80556002EBEBB /* LambdaAlert.m in Sources */,
+				C96C188B15C80556002EBEBB /* LambdaSheet.m in Sources */,
+				C96C189915C80CB6002EBEBB /* AuthenticateSvc.m in Sources */,
+				C96C189A15C80CB6002EBEBB /* AuthenticateSvc+Binding.m in Sources */,
+				C96C189B15C80CB6002EBEBB /* GetUserInfoSvc.m in Sources */,
+				C96C189C15C80CB6002EBEBB /* GetUserInfoSvc+Binding.m in Sources */,
+				C96C189D15C80CB6002EBEBB /* ax25.m in Sources */,
+				C96C189E15C80CB6002EBEBB /* LibreAccessServiceSvc.m in Sources */,
+				C96C189F15C80CB6002EBEBB /* LibreAccessServiceSvc+Binding.m in Sources */,
+				C96C18A015C80CB6002EBEBB /* ax21.m in Sources */,
+				C96C18A115C80CB6002EBEBB /* WishListServiceSvc.m in Sources */,
+				C96C18A215C80CB6002EBEBB /* WishListServiceSvc+Binding.m in Sources */,
+				C96C18A315C80CB6002EBEBB /* NSDate+ISO8601Parsing.m in Sources */,
+				C96C18A415C80CB6002EBEBB /* NSDate+ISO8601Unparsing.m in Sources */,
+				C96C18A515C80CB6002EBEBB /* USGlobals.m in Sources */,
+				C96C18A615C80CB6002EBEBB /* xsd.m in Sources */,
+				C96C18A715C80CFF002EBEBB /* QHTTPOperation.m in Sources */,
+				C96C18A815C80CFF002EBEBB /* QRunLoopOperation.m in Sources */,
+				C96C18AA15C80D92002EBEBB /* AppDelegate_Shared.m in Sources */,
+				C96C18AC15C80EA9002EBEBB /* levenshtein_distance.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -14309,6 +15017,8 @@
 					"$(DEVELOPER_LIBRARY_DIR)/Frameworks",
 				);
 				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_GENERATE_TEST_COVERAGE_FILES = YES;
+				GCC_INSTRUMENT_PROGRAM_FLOW_ARCS = YES;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "UnitTests/UnitTests-Prefix.pch";
@@ -14319,6 +15029,10 @@
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				INFOPLIST_FILE = "UnitTests/UnitTests-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)/Shared/Libraries/Submodules/libKNFBReader/Pagemark\"",
+				);
 				OTHER_LDFLAGS = (
 					"-framework",
 					SenTestingKit,
@@ -14338,11 +15052,17 @@
 					"$(DEVELOPER_LIBRARY_DIR)/Frameworks",
 				);
 				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_GENERATE_TEST_COVERAGE_FILES = YES;
+				GCC_INSTRUMENT_PROGRAM_FLOW_ARCS = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "UnitTests/UnitTests-Prefix.pch";
 				GCC_PREPROCESSOR_DEFINITIONS = "";
 				INFOPLIST_FILE = "UnitTests/UnitTests-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)/Shared/Libraries/Submodules/libKNFBReader/Pagemark\"",
+				);
 				OTHER_LDFLAGS = (
 					"-framework",
 					SenTestingKit,
@@ -14362,10 +15082,16 @@
 					"$(DEVELOPER_LIBRARY_DIR)/Frameworks",
 				);
 				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_GENERATE_TEST_COVERAGE_FILES = YES;
+				GCC_INSTRUMENT_PROGRAM_FLOW_ARCS = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "UnitTests/UnitTests-Prefix.pch";
 				INFOPLIST_FILE = "UnitTests/UnitTests-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)/Shared/Libraries/Submodules/libKNFBReader/Pagemark\"",
+				);
 				OTHER_LDFLAGS = (
 					"-framework",
 					SenTestingKit,

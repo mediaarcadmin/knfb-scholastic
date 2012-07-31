@@ -100,6 +100,11 @@
                     [book setValue:[userInfo valueForKey:kSCHLibreAccessWebServiceCoverURL] forKey:kSCHAppBookCoverURL];
                     [book setValue:[userInfo valueForKey:kSCHLibreAccessWebServiceContentURL] forKey:kSCHAppBookFileURL];
                     urlsValid = YES;
+                    
+                    // combine resetCoverURLExpiredState and setProcessingState:kSCHAppRecommendationProcessingStateNoCover into this one save
+                    [book setUrlExpiredCount:[NSNumber numberWithInteger:0]];
+                    NSLog(@"Successful URL retrieval for %@!", bookIdentifier);
+                    [book setState:[NSNumber numberWithInt:SCHBookProcessingStateNoCoverImage]];
                 }
                 [localOperation release];
                 
@@ -108,10 +113,6 @@
             // check here for invalidity
             if (!urlsValid) {
                 [self setCoverURLExpiredState];
-            } else {
-                [self resetCoverURLExpiredState];
-                NSLog(@"Successful URL retrieval for %@!", bookIdentifier);
-                [self setProcessingState:SCHBookProcessingStateNoCoverImage];
             }
         }
         
