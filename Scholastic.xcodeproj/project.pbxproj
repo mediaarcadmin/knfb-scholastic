@@ -3964,6 +3964,36 @@
 		F839EB1715C7DAE7000F452E /* GoosebumpsWithQuiz.xps in Resources */ = {isa = PBXBuildFile; fileRef = F839EB0515C7DAE7000F452E /* GoosebumpsWithQuiz.xps */; };
 		F839EB1815C7DAE7000F452E /* GoosebumpsWithQuiz.xps in Resources */ = {isa = PBXBuildFile; fileRef = F839EB0515C7DAE7000F452E /* GoosebumpsWithQuiz.xps */; };
 		F839EB1915C7DAE7000F452E /* GoosebumpsWithQuiz.xps in Resources */ = {isa = PBXBuildFile; fileRef = F839EB0515C7DAE7000F452E /* GoosebumpsWithQuiz.xps */; };
+		F839EB2015C813F7000F452E /* storyinteraction-younger-progress-filled@2x~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = F839EB1A15C813F4000F452E /* storyinteraction-younger-progress-filled@2x~iphone.png */; };
+		F839EB2115C813F7000F452E /* storyinteraction-younger-progress-filled@2x~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = F839EB1A15C813F4000F452E /* storyinteraction-younger-progress-filled@2x~iphone.png */; };
+		F839EB2215C813F7000F452E /* storyinteraction-younger-progress-filled@2x~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = F839EB1A15C813F4000F452E /* storyinteraction-younger-progress-filled@2x~iphone.png */; };
+		F839EB2315C813F7000F452E /* storyinteraction-younger-progress-filled@2x~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = F839EB1A15C813F4000F452E /* storyinteraction-younger-progress-filled@2x~iphone.png */; };
+		F839EB2415C813F7000F452E /* storyinteraction-younger-progress-filled@2x~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = F839EB1A15C813F4000F452E /* storyinteraction-younger-progress-filled@2x~iphone.png */; };
+		F839EB2515C813F7000F452E /* storyinteraction-younger-progress-filled~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = F839EB1B15C813F4000F452E /* storyinteraction-younger-progress-filled~ipad.png */; };
+		F839EB2615C813F7000F452E /* storyinteraction-younger-progress-filled~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = F839EB1B15C813F4000F452E /* storyinteraction-younger-progress-filled~ipad.png */; };
+		F839EB2715C813F7000F452E /* storyinteraction-younger-progress-filled~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = F839EB1B15C813F4000F452E /* storyinteraction-younger-progress-filled~ipad.png */; };
+		F839EB2815C813F7000F452E /* storyinteraction-younger-progress-filled~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = F839EB1B15C813F4000F452E /* storyinteraction-younger-progress-filled~ipad.png */; };
+		F839EB2915C813F7000F452E /* storyinteraction-younger-progress-filled~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = F839EB1B15C813F4000F452E /* storyinteraction-younger-progress-filled~ipad.png */; };
+		F839EB2A15C813F7000F452E /* storyinteraction-younger-progress-filled~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = F839EB1C15C813F5000F452E /* storyinteraction-younger-progress-filled~iphone.png */; };
+		F839EB2B15C813F7000F452E /* storyinteraction-younger-progress-filled~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = F839EB1C15C813F5000F452E /* storyinteraction-younger-progress-filled~iphone.png */; };
+		F839EB2C15C813F7000F452E /* storyinteraction-younger-progress-filled~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = F839EB1C15C813F5000F452E /* storyinteraction-younger-progress-filled~iphone.png */; };
+		F839EB2D15C813F7000F452E /* storyinteraction-younger-progress-filled~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = F839EB1C15C813F5000F452E /* storyinteraction-younger-progress-filled~iphone.png */; };
+		F839EB2E15C813F7000F452E /* storyinteraction-younger-progress-filled~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = F839EB1C15C813F5000F452E /* storyinteraction-younger-progress-filled~iphone.png */; };
+		F839EB2F15C813F7000F452E /* storyinteraction-younger-progress-unfilled@2x~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = F839EB1D15C813F5000F452E /* storyinteraction-younger-progress-unfilled@2x~iphone.png */; };
+		F839EB3015C813F7000F452E /* storyinteraction-younger-progress-unfilled@2x~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = F839EB1D15C813F5000F452E /* storyinteraction-younger-progress-unfilled@2x~iphone.png */; };
+		F839EB3115C813F7000F452E /* storyinteraction-younger-progress-unfilled@2x~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = F839EB1D15C813F5000F452E /* storyinteraction-younger-progress-unfilled@2x~iphone.png */; };
+		F839EB3215C813F7000F452E /* storyinteraction-younger-progress-unfilled@2x~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = F839EB1D15C813F5000F452E /* storyinteraction-younger-progress-unfilled@2x~iphone.png */; };
+		F839EB3315C813F7000F452E /* storyinteraction-younger-progress-unfilled@2x~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = F839EB1D15C813F5000F452E /* storyinteraction-younger-progress-unfilled@2x~iphone.png */; };
+		F839EB3415C813F7000F452E /* storyinteraction-younger-progress-unfilled~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = F839EB1E15C813F6000F452E /* storyinteraction-younger-progress-unfilled~ipad.png */; };
+		F839EB3515C813F7000F452E /* storyinteraction-younger-progress-unfilled~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = F839EB1E15C813F6000F452E /* storyinteraction-younger-progress-unfilled~ipad.png */; };
+		F839EB3615C813F7000F452E /* storyinteraction-younger-progress-unfilled~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = F839EB1E15C813F6000F452E /* storyinteraction-younger-progress-unfilled~ipad.png */; };
+		F839EB3715C813F7000F452E /* storyinteraction-younger-progress-unfilled~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = F839EB1E15C813F6000F452E /* storyinteraction-younger-progress-unfilled~ipad.png */; };
+		F839EB3815C813F7000F452E /* storyinteraction-younger-progress-unfilled~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = F839EB1E15C813F6000F452E /* storyinteraction-younger-progress-unfilled~ipad.png */; };
+		F839EB3915C813F7000F452E /* storyinteraction-younger-progress-unfilled~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = F839EB1F15C813F6000F452E /* storyinteraction-younger-progress-unfilled~iphone.png */; };
+		F839EB3A15C813F7000F452E /* storyinteraction-younger-progress-unfilled~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = F839EB1F15C813F6000F452E /* storyinteraction-younger-progress-unfilled~iphone.png */; };
+		F839EB3B15C813F7000F452E /* storyinteraction-younger-progress-unfilled~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = F839EB1F15C813F6000F452E /* storyinteraction-younger-progress-unfilled~iphone.png */; };
+		F839EB3C15C813F7000F452E /* storyinteraction-younger-progress-unfilled~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = F839EB1F15C813F6000F452E /* storyinteraction-younger-progress-unfilled~iphone.png */; };
+		F839EB3D15C813F7000F452E /* storyinteraction-younger-progress-unfilled~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = F839EB1F15C813F6000F452E /* storyinteraction-younger-progress-unfilled~iphone.png */; };
 		F844DF3C15C7D681001D075F /* icon-readingquiz.png in Resources */ = {isa = PBXBuildFile; fileRef = F844DF3A15C7D681001D075F /* icon-readingquiz.png */; };
 		F844DF3D15C7D681001D075F /* icon-readingquiz.png in Resources */ = {isa = PBXBuildFile; fileRef = F844DF3A15C7D681001D075F /* icon-readingquiz.png */; };
 		F844DF3E15C7D681001D075F /* icon-readingquiz.png in Resources */ = {isa = PBXBuildFile; fileRef = F844DF3A15C7D681001D075F /* icon-readingquiz.png */; };
@@ -6061,6 +6091,12 @@
 		F839EB0315C7DAE7000F452E /* AstroBlastWithQuiz.xps */ = {isa = PBXFileReference; lastKnownFileType = file; name = AstroBlastWithQuiz.xps; path = "Shared/Debug Books/AstroBlastWithQuiz.xps"; sourceTree = "<group>"; };
 		F839EB0415C7DAE7000F452E /* GoosebumpsWithQuiz.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = GoosebumpsWithQuiz.jpg; path = "Shared/Debug Books/GoosebumpsWithQuiz.jpg"; sourceTree = "<group>"; };
 		F839EB0515C7DAE7000F452E /* GoosebumpsWithQuiz.xps */ = {isa = PBXFileReference; lastKnownFileType = file; name = GoosebumpsWithQuiz.xps; path = "Shared/Debug Books/GoosebumpsWithQuiz.xps"; sourceTree = "<group>"; };
+		F839EB1A15C813F4000F452E /* storyinteraction-younger-progress-filled@2x~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "storyinteraction-younger-progress-filled@2x~iphone.png"; sourceTree = "<group>"; };
+		F839EB1B15C813F4000F452E /* storyinteraction-younger-progress-filled~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "storyinteraction-younger-progress-filled~ipad.png"; sourceTree = "<group>"; };
+		F839EB1C15C813F5000F452E /* storyinteraction-younger-progress-filled~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "storyinteraction-younger-progress-filled~iphone.png"; sourceTree = "<group>"; };
+		F839EB1D15C813F5000F452E /* storyinteraction-younger-progress-unfilled@2x~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "storyinteraction-younger-progress-unfilled@2x~iphone.png"; sourceTree = "<group>"; };
+		F839EB1E15C813F6000F452E /* storyinteraction-younger-progress-unfilled~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "storyinteraction-younger-progress-unfilled~ipad.png"; sourceTree = "<group>"; };
+		F839EB1F15C813F6000F452E /* storyinteraction-younger-progress-unfilled~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "storyinteraction-younger-progress-unfilled~iphone.png"; sourceTree = "<group>"; };
 		F844DF3A15C7D681001D075F /* icon-readingquiz.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "icon-readingquiz.png"; path = "Resources/icon-readingquiz.png"; sourceTree = "<group>"; };
 		F844DF3B15C7D681001D075F /* icon-readingquiz@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "icon-readingquiz@2x.png"; path = "Resources/icon-readingquiz@2x.png"; sourceTree = "<group>"; };
 		F848F40A152B4F9C00048074 /* BookShelfListRatingBackground.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = BookShelfListRatingBackground.png; path = Resources/BookShelfListRatingBackground.png; sourceTree = "<group>"; };
@@ -7312,6 +7348,12 @@
 			children = (
 				F8DB746813A0DDA2006E8D06 /* progressbar-cover.png */,
 				F8DB746313A0DCC3006E8D06 /* progressbar-fill.png */,
+				F839EB1A15C813F4000F452E /* storyinteraction-younger-progress-filled@2x~iphone.png */,
+				F839EB1B15C813F4000F452E /* storyinteraction-younger-progress-filled~ipad.png */,
+				F839EB1C15C813F5000F452E /* storyinteraction-younger-progress-filled~iphone.png */,
+				F839EB1D15C813F5000F452E /* storyinteraction-younger-progress-unfilled@2x~iphone.png */,
+				F839EB1E15C813F6000F452E /* storyinteraction-younger-progress-unfilled~ipad.png */,
+				F839EB1F15C813F6000F452E /* storyinteraction-younger-progress-unfilled~iphone.png */,
 				C9AC85FA13AE7E6C000ECDAE /* storyinteraction-progress-unfilled~iphone.png */,
 				C9AC85FB13AE7E76000ECDAE /* storyinteraction-progress-unfilled@2x~iphone.png */,
 				C9AC85FC13AE7E80000ECDAE /* storyinteraction-progress-unfilled~ipad.png */,
@@ -10592,6 +10634,12 @@
 				F839EB0B15C7DAE7000F452E /* AstroBlastWithQuiz.xps in Resources */,
 				F839EB1015C7DAE7000F452E /* GoosebumpsWithQuiz.jpg in Resources */,
 				F839EB1515C7DAE7000F452E /* GoosebumpsWithQuiz.xps in Resources */,
+				F839EB2015C813F7000F452E /* storyinteraction-younger-progress-filled@2x~iphone.png in Resources */,
+				F839EB2515C813F7000F452E /* storyinteraction-younger-progress-filled~ipad.png in Resources */,
+				F839EB2A15C813F7000F452E /* storyinteraction-younger-progress-filled~iphone.png in Resources */,
+				F839EB2F15C813F7000F452E /* storyinteraction-younger-progress-unfilled@2x~iphone.png in Resources */,
+				F839EB3415C813F7000F452E /* storyinteraction-younger-progress-unfilled~ipad.png in Resources */,
+				F839EB3915C813F7000F452E /* storyinteraction-younger-progress-unfilled~iphone.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -10631,6 +10679,12 @@
 				F839EB0D15C7DAE7000F452E /* AstroBlastWithQuiz.xps in Resources */,
 				F839EB1215C7DAE7000F452E /* GoosebumpsWithQuiz.jpg in Resources */,
 				F839EB1715C7DAE7000F452E /* GoosebumpsWithQuiz.xps in Resources */,
+				F839EB2215C813F7000F452E /* storyinteraction-younger-progress-filled@2x~iphone.png in Resources */,
+				F839EB2715C813F7000F452E /* storyinteraction-younger-progress-filled~ipad.png in Resources */,
+				F839EB2C15C813F7000F452E /* storyinteraction-younger-progress-filled~iphone.png in Resources */,
+				F839EB3115C813F7000F452E /* storyinteraction-younger-progress-unfilled@2x~iphone.png in Resources */,
+				F839EB3615C813F7000F452E /* storyinteraction-younger-progress-unfilled~ipad.png in Resources */,
+				F839EB3B15C813F7000F452E /* storyinteraction-younger-progress-unfilled~iphone.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -11373,6 +11427,12 @@
 				F839EB0C15C7DAE7000F452E /* AstroBlastWithQuiz.xps in Resources */,
 				F839EB1115C7DAE7000F452E /* GoosebumpsWithQuiz.jpg in Resources */,
 				F839EB1615C7DAE7000F452E /* GoosebumpsWithQuiz.xps in Resources */,
+				F839EB2115C813F7000F452E /* storyinteraction-younger-progress-filled@2x~iphone.png in Resources */,
+				F839EB2615C813F7000F452E /* storyinteraction-younger-progress-filled~ipad.png in Resources */,
+				F839EB2B15C813F7000F452E /* storyinteraction-younger-progress-filled~iphone.png in Resources */,
+				F839EB3015C813F7000F452E /* storyinteraction-younger-progress-unfilled@2x~iphone.png in Resources */,
+				F839EB3515C813F7000F452E /* storyinteraction-younger-progress-unfilled~ipad.png in Resources */,
+				F839EB3A15C813F7000F452E /* storyinteraction-younger-progress-unfilled~iphone.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -11925,6 +11985,12 @@
 				F839EB0E15C7DAE7000F452E /* AstroBlastWithQuiz.xps in Resources */,
 				F839EB1315C7DAE7000F452E /* GoosebumpsWithQuiz.jpg in Resources */,
 				F839EB1815C7DAE7000F452E /* GoosebumpsWithQuiz.xps in Resources */,
+				F839EB2315C813F7000F452E /* storyinteraction-younger-progress-filled@2x~iphone.png in Resources */,
+				F839EB2815C813F7000F452E /* storyinteraction-younger-progress-filled~ipad.png in Resources */,
+				F839EB2D15C813F7000F452E /* storyinteraction-younger-progress-filled~iphone.png in Resources */,
+				F839EB3215C813F7000F452E /* storyinteraction-younger-progress-unfilled@2x~iphone.png in Resources */,
+				F839EB3715C813F7000F452E /* storyinteraction-younger-progress-unfilled~ipad.png in Resources */,
+				F839EB3C15C813F7000F452E /* storyinteraction-younger-progress-unfilled~iphone.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -12477,6 +12543,12 @@
 				F839EB0F15C7DAE7000F452E /* AstroBlastWithQuiz.xps in Resources */,
 				F839EB1415C7DAE7000F452E /* GoosebumpsWithQuiz.jpg in Resources */,
 				F839EB1915C7DAE7000F452E /* GoosebumpsWithQuiz.xps in Resources */,
+				F839EB2415C813F7000F452E /* storyinteraction-younger-progress-filled@2x~iphone.png in Resources */,
+				F839EB2915C813F7000F452E /* storyinteraction-younger-progress-filled~ipad.png in Resources */,
+				F839EB2E15C813F7000F452E /* storyinteraction-younger-progress-filled~iphone.png in Resources */,
+				F839EB3315C813F7000F452E /* storyinteraction-younger-progress-unfilled@2x~iphone.png in Resources */,
+				F839EB3815C813F7000F452E /* storyinteraction-younger-progress-unfilled~ipad.png in Resources */,
+				F839EB3D15C813F7000F452E /* storyinteraction-younger-progress-unfilled~iphone.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

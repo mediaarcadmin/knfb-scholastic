@@ -19,6 +19,7 @@
 @property (retain, nonatomic) IBOutlet UILabel *introSubtitleLabel;
 @property (retain, nonatomic) IBOutlet UILabel *bestScoreLabel;
 @property (retain, nonatomic) IBOutlet SCHStretchableImageButton *introActionButton;
+@property (retain, nonatomic) IBOutlet SCHStretchableImageButton *tryAgainButton;
 
 @property (retain, nonatomic) IBOutlet UILabel *ipadQuestionLabel;
 @property (retain, nonatomic) IBOutlet UIScrollView *answerScrollView;

@@ -13,5 +13,6 @@
 
 @property (nonatomic, assign) NSUInteger numberOfSteps;
 @property (nonatomic, assign) NSUInteger currentStep;
+@property (nonatomic, assign) BOOL youngerMode;
 
 @end

@@ -38,6 +38,7 @@
 @synthesize introTitleLabel;
 @synthesize introSubtitleLabel;
 @synthesize introActionButton;
+@synthesize tryAgainButton;
 @synthesize ipadQuestionLabel;
 @synthesize answerScrollView;
 @synthesize answerScrollViewContainer;
@@ -73,6 +74,7 @@
     [resultsHeaderLabel release];
     [answerBackgroundView release];
     [ipadQuestionLabel release];
+    [tryAgainButton release];
     [super dealloc];
 }
 
@@ -152,6 +154,14 @@
         self.introSubtitleLabel.hidden = YES;
         self.bestScoreLabel.hidden = YES;
     }
+    
+    if (!self.storyInteraction.olderStoryInteraction) {
+        [self.introActionButton setBackgroundImage:[UIImage imageNamed:@"answer-button-blue"] forState:UIControlStateNormal];
+        [self.introActionButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+        [self.introActionButton setTitleColor:[UIColor whiteColor] forState:UIControlStateHighlighted];
+    } else {
+        [self.introActionButton setTitleColor:[UIColor SCHBlue1Color] forState:UIControlStateNormal];
+    }
 }
 
 - (BOOL)shouldPlayQuestionAudioForViewAtIndex:(NSInteger)screenIndex
@@ -161,6 +171,10 @@
 
 - (void)setupQuestionView
 {
+    if (!self.storyInteraction.olderStoryInteraction) {
+        self.progressView.youngerMode = YES;
+    }
+    
     [self.answersGiven removeAllObjects];
     self.currentQuestionIndex = 0;
     self.score = 0;
@@ -178,6 +192,14 @@
         backgroundColor = [UIColor colorWithRed:0.851 green:0.945 blue:0.996 alpha:1];
     } else {
         backgroundColor = [UIColor colorWithRed:0.992 green:1.000 blue:0.816 alpha:1];
+    }
+    
+    if (!self.storyInteraction.olderStoryInteraction) {
+        [self.tryAgainButton setBackgroundImage:[UIImage imageNamed:@"answer-button-blue"] forState:UIControlStateNormal];
+        [self.tryAgainButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+        [self.tryAgainButton setTitleColor:[UIColor whiteColor] forState:UIControlStateHighlighted];
+    } else {
+        [self.tryAgainButton setTitleColor:[UIColor SCHBlue1Color] forState:UIControlStateNormal];
     }
     
     self.answerBackgroundView.backgroundColor = backgroundColor;
@@ -353,13 +375,15 @@
     }
     NSInteger i = 0;
     for (NSString *answer in [self currentQuestion].answers) {
-        UIImage *highlight = nil;
-        if (i == [self currentQuestion].correctAnswer) {
-            highlight = [UIImage imageNamed:@"answer-button-green"];
-        } else {
-            highlight = [UIImage imageNamed:@"answer-button-red"];
-        }
         SCHStretchableImageButton *button = [self.answerButtons objectAtIndex:i];
+        
+        if (!self.storyInteraction.olderStoryInteraction) {
+            [button setBackgroundImage:[UIImage imageNamed:@"answer-button-blue"] forState:UIControlStateNormal];
+            [button setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+            [button setTitleColor:[UIColor whiteColor] forState:UIControlStateHighlighted];
+        } else {
+            [button setTitleColor:[UIColor SCHBlue1Color] forState:UIControlStateNormal];
+        }
         
         BOOL iPad = (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad);
         
@@ -381,7 +405,8 @@
         [button setTitle:answer forState:UIControlStateNormal];
         [button setHidden:NO];
         [button setCustomTopCap:10];
-        [button setBackgroundImage:highlight forState:UIControlStateSelected];
+        
+        
         ++i;
     }
     for (; i < [self.answerButtons count]; ++i) {

@@ -23,6 +23,18 @@
 @synthesize numberOfSteps;
 @synthesize currentStep;
 @synthesize indicators;
+@synthesize youngerMode;
+
+- (id)initWithCoder:(NSCoder *)aDecoder
+{
+    self = [super initWithCoder:aDecoder];
+    
+    if (self) {
+        self.youngerMode = NO;
+    }
+    
+    return self;
+}
 
 - (void)dealloc
 {
@@ -44,10 +56,24 @@
 
 - (void)setupIndicators
 {
+    NSString *filledImageName = @"storyinteration-progress-filled";
+    NSString *unfilledImageName = @"storyinteraction-progress-unfilled";
+    
+    if (self.youngerMode) {
+        filledImageName = @"storyinteraction-younger-progress-filled";
+        unfilledImageName = @"storyinteraction-younger-progress-unfilled";
+    }
+
+    
     NSMutableArray *newIndicators = [NSMutableArray arrayWithCapacity:numberOfSteps];
     for (NSUInteger i = 0; i < numberOfSteps; ++i) {
         if (i == currentStep) {
-            UIImage *image = [UIImage imageNamed:@"storyinteraction-progress-filled"];
+           
+            
+            UIImage *image = [UIImage imageNamed:filledImageName];
+            
+            
+            
             UIImageView *imageView = [[UIImageView alloc] initWithImage:image];
             imageView.contentMode = UIViewContentModeCenter;
             imageView.frame = CGRectMake(0, 0, image.size.width, image.size.height);
@@ -67,7 +93,7 @@
             [imageView release];
             [label release];
         } else {
-            UIImage *image = [UIImage imageNamed:@"storyinteraction-progress-unfilled"];
+            UIImage *image = [UIImage imageNamed:unfilledImageName];
             UIImageView *imageView = [[UIImageView alloc] initWithImage:image];
             imageView.contentMode = UIViewContentModeCenter;
             imageView.frame = CGRectMake(0, 0, image.size.width, image.size.height);
@@ -88,10 +114,16 @@
 {
     [super layoutSubviews];
 
+    NSString *filledImageName = @"storyinteration-progress-filled";
+    
+    if (self.youngerMode) {
+        filledImageName = @"storyinteraction-younger-progress-filled";
+    }
+    
     CGFloat width = CGRectGetWidth(self.bounds);
     CGFloat height = CGRectGetHeight(self.bounds);
     
-    UIImage *image = [UIImage imageNamed:@"storyinteraction-progress-filled"];
+    UIImage *image = [UIImage imageNamed:filledImageName];
     CGSize imageSize = image.size;
     
     CGFloat x = (width - numberOfSteps*imageSize.width - (numberOfSteps-1)*kImageGap) / 2;
