@@ -175,9 +175,6 @@
         self.progressView.youngerMode = YES;
     }
     
-    self.progressView.layer.borderColor = [UIColor orangeColor].CGColor;
-    self.progressView.layer.borderWidth = 1;
-    
     [self.answersGiven removeAllObjects];
     self.currentQuestionIndex = 0;
     self.score = 0;
