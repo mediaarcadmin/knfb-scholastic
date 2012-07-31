@@ -1429,6 +1429,7 @@
 		527CE87B13A6420900BAC8E1 /* SCHStoryInteractionWordScrambler_iPhone.xib in Resources */ = {isa = PBXBuildFile; fileRef = 527CE87A13A6420900BAC8E1 /* SCHStoryInteractionWordScrambler_iPhone.xib */; };
 		527DDC64144C6A0D004D4FE3 /* SCHParentalToolsWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 527DDC62144C6A0D004D4FE3 /* SCHParentalToolsWebViewController.m */; };
 		527DDC65144C6A0D004D4FE3 /* SCHParentalToolsWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 527DDC62144C6A0D004D4FE3 /* SCHParentalToolsWebViewController.m */; };
+		527FA6EB15C7C68F002D0250 /* UNIX2003Remapping.c in Sources */ = {isa = PBXBuildFile; fileRef = 527FA6EA15C7C68F002D0250 /* UNIX2003Remapping.c */; };
 		528433EB133382EA0010BAAB /* SCHAppDictionaryState.m in Sources */ = {isa = PBXBuildFile; fileRef = 528433EA133382EA0010BAAB /* SCHAppDictionaryState.m */; };
 		528465EF144DB5F7009DBADD /* SCHAccountValidationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 528465EE144DB5F7009DBADD /* SCHAccountValidationViewController.m */; };
 		528465F0144DB5F7009DBADD /* SCHAccountValidationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 528465EE144DB5F7009DBADD /* SCHAccountValidationViewController.m */; };
@@ -4954,6 +4955,7 @@
 		527CE87A13A6420900BAC8E1 /* SCHStoryInteractionWordScrambler_iPhone.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SCHStoryInteractionWordScrambler_iPhone.xib; sourceTree = "<group>"; };
 		527DDC61144C6A0D004D4FE3 /* SCHParentalToolsWebViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHParentalToolsWebViewController.h; path = Shared/SCHParentalToolsWebViewController.h; sourceTree = "<group>"; };
 		527DDC62144C6A0D004D4FE3 /* SCHParentalToolsWebViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHParentalToolsWebViewController.m; path = Shared/SCHParentalToolsWebViewController.m; sourceTree = "<group>"; };
+		527FA6EA15C7C68F002D0250 /* UNIX2003Remapping.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = UNIX2003Remapping.c; sourceTree = "<group>"; };
 		528433E9133382EA0010BAAB /* SCHAppDictionaryState.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHAppDictionaryState.h; path = Shared/SCHAppDictionaryState.h; sourceTree = "<group>"; };
 		528433EA133382EA0010BAAB /* SCHAppDictionaryState.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHAppDictionaryState.m; path = Shared/SCHAppDictionaryState.m; sourceTree = "<group>"; };
 		528465ED144DB5F7009DBADD /* SCHAccountValidationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHAccountValidationViewController.h; path = Shared/SCHAccountValidationViewController.h; sourceTree = "<group>"; };
@@ -6739,6 +6741,7 @@
 				28A08D0113952CB4006FD008 /* UnitTests-Info.plist */,
 				28A08D0213952CB4006FD008 /* InfoPlist.strings */,
 				28A08D0513952CB4006FD008 /* UnitTests-Prefix.pch */,
+				527FA6EA15C7C68F002D0250 /* UNIX2003Remapping.c */,
 				28A60EE213963B1D0090853E /* StoryInteractionAboutYouQuiz1.xml */,
 				2866311C13F010990092A5DE /* StoryInteractionCardCollection1.xml */,
 				2866311A13F00F290092A5DE /* StoryInteractionConcentration1.xml */,
@@ -12731,6 +12734,7 @@
 				52CEC19315C14C6E004C749A /* SCHBookIdentifier.m in Sources */,
 				52CEC19415C14C97004C749A /* NSNumber+ObjectTypes.m in Sources */,
 				52CEC19815C166A3004C749A /* NSNumber+ObjectTypesTests.m in Sources */,
+				527FA6EB15C7C68F002D0250 /* UNIX2003Remapping.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
