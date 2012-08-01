@@ -19,3 +19,6 @@
 [submodule "Shared/Libraries/TTTAttributedLabel"]
 	path = Shared/Libraries/TTTAttributedLabel
 	url = git://github.com/mattt/TTTAttributedLabel.git
+[submodule "Shared/Libraries/Submodules/ocmock"]
+	path = Shared/Libraries/Submodules/ocmock
+	url = https://github.com/erikdoe/ocmock

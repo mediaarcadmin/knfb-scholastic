@@ -33,8 +33,7 @@ typedef enum {
 @property (nonatomic, assign) id<SCHAppController> appController;
 @property (nonatomic, assign) SCHAppModelSyncState syncState;
 
-- (BOOL)hasProfilesInManagedObjectContext:(NSManagedObjectContext *)moc;
-- (void)startSyncNow:(BOOL)now requireAuthentication:(BOOL)authenticate;
+- (void)startSyncNow:(BOOL)now requireAuthentication:(BOOL)authenticate withSyncManager:(SCHSyncManager *)syncManager;
 
 @end
 
@@ -159,7 +158,7 @@ typedef enum {
                                                         password:password
                                                     successBlock:^(SCHAuthenticationManagerConnectivityMode connectivityMode) { 
                                                         if (connectivityMode == SCHAuthenticationManagerConnectivityModeOnline) {
-                                                            [self startSyncNow:YES requireAuthentication:NO];
+                                                            [self startSyncNow:YES requireAuthentication:NO withSyncManager:syncManager];
                                                         } else { 
                                                             NSError *anError = [NSError errorWithDomain:kSCHAuthenticationManagerErrorDomain  
                                                                                                    code:kSCHAuthenticationManagerOfflineError  
@@ -218,23 +217,32 @@ typedef enum {
 
 - (void)waitForBookshelves
 {
+    [self waitForBookshelvesWithSyncManager:[SCHSyncManager sharedSyncManager]];
+}
+
+- (void)waitForBookshelvesWithSyncManager:(SCHSyncManager *)syncManager
+{
     self.syncState = kSCHAppModelSyncStateWaitingForBookshelves;
-    [self startSyncNow:YES requireAuthentication:YES];
+    [self startSyncNow:YES requireAuthentication:YES withSyncManager:syncManager];
 }
 
 - (void)waitForWebParentToolsToComplete
 {
+    [self waitForWebParentToolsToCompleteWithSyncManager:[SCHSyncManager sharedSyncManager]];
+}
+
+- (void)waitForWebParentToolsToCompleteWithSyncManager:(SCHSyncManager *)syncManager
+{
     self.syncState = kSCHAppModelSyncStateWaitingForWebParentToolsToComplete;
     // Need to also sync here in case the user has has set up a bookshelf in WPT outside the app
     // We never want to enter WPT not in wizard mode as there is no close button
-    [self startSyncNow:YES requireAuthentication:YES];
+    [self startSyncNow:YES requireAuthentication:YES withSyncManager:syncManager];
 }
 
 #pragma mark - Utility Methods
 
-- (void)startSyncNow:(BOOL)now requireAuthentication:(BOOL)authenticate
+- (void)startSyncNow:(BOOL)now requireAuthentication:(BOOL)authenticate withSyncManager:(SCHSyncManager *)syncManager
 {
-    SCHSyncManager *syncManager = [SCHSyncManager sharedSyncManager];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(syncSucceeded:) name:SCHProfileSyncComponentDidCompleteNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(syncFailed:) name:SCHProfileSyncComponentDidFailNotification object:nil];
     [syncManager firstSync:now requireDeviceAuthentication:authenticate];

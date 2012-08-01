@@ -2976,7 +2976,6 @@
 		C96C188715C80556002EBEBB /* BITSOAPProxy.m in Sources */ = {isa = PBXBuildFile; fileRef = 5293870512DF3EDF00045B44 /* BITSOAPProxy.m */; };
 		C96C188815C80556002EBEBB /* TTTAttributedLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = F8E2D3D013B9CB8A001E207B /* TTTAttributedLabel.m */; };
 		C96C188915C80556002EBEBB /* ZipArchive.mm in Sources */ = {isa = PBXBuildFile; fileRef = F8B55E44134B57A20028534A /* ZipArchive.mm */; };
-		C96C188A15C80556002EBEBB /* LambdaAlert.m in Sources */ = {isa = PBXBuildFile; fileRef = C9B59BD113D048D000C7760D /* LambdaAlert.m */; };
 		C96C188B15C80556002EBEBB /* LambdaSheet.m in Sources */ = {isa = PBXBuildFile; fileRef = C9B59BD313D048D000C7760D /* LambdaSheet.m */; };
 		C96C188C15C80C38002EBEBB /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 526A8A5E1385182100101A96 /* CoreMedia.framework */; };
 		C96C188D15C80C40002EBEBB /* CoreVideo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7D95F777150F66160093BB90 /* CoreVideo.framework */; };
@@ -3011,6 +3010,9 @@
 		C96C18AA15C80D92002EBEBB /* AppDelegate_Shared.m in Sources */ = {isa = PBXBuildFile; fileRef = 28EEC04A1118E28000187D67 /* AppDelegate_Shared.m */; };
 		C96C18AB15C80E15002EBEBB /* libiconv.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = C9ED56811343328F00A25486 /* libiconv.dylib */; };
 		C96C18AC15C80EA9002EBEBB /* levenshtein_distance.c in Sources */ = {isa = PBXBuildFile; fileRef = C9E89A491369B87A00E7ED53 /* levenshtein_distance.c */; };
+		C96C199215C95CBB002EBEBB /* libOCMock.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C96C199115C95C7E002EBEBB /* libOCMock.a */; };
+		C96C199615C961A0002EBEBB /* SCHAppModelTests.m in Sources */ = {isa = PBXBuildFile; fileRef = C96C199515C961A0002EBEBB /* SCHAppModelTests.m */; };
+		C96C199915C980CF002EBEBB /* LambdaAlert.m in Sources */ = {isa = PBXBuildFile; fileRef = C96C199815C980CF002EBEBB /* LambdaAlert.m */; };
 		C96C4DA51557D62C00B47E56 /* storia-settings-logo@2x~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = C96C4DA41557D62C00B47E56 /* storia-settings-logo@2x~ipad.png */; };
 		C96C4DA61557D62C00B47E56 /* storia-settings-logo@2x~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = C96C4DA41557D62C00B47E56 /* storia-settings-logo@2x~ipad.png */; };
 		C96C4DA71557D62C00B47E56 /* storia-settings-logo@2x~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = C96C4DA41557D62C00B47E56 /* storia-settings-logo@2x~ipad.png */; };
@@ -4838,6 +4840,27 @@
 			remoteGlobalIDString = 7D3AC23914054DBA007F91AD;
 			remoteInfo = PageLayoutTest;
 		};
+		C96C198C15C95C7E002EBEBB /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = C96C198315C95C7E002EBEBB /* OCMock.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 030EF0A814632FD000B04273;
+			remoteInfo = OCMock;
+		};
+		C96C198E15C95C7E002EBEBB /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = C96C198315C95C7E002EBEBB /* OCMock.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 030EF0C014632FD000B04273;
+			remoteInfo = OCMockTests;
+		};
+		C96C199015C95C7E002EBEBB /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = C96C198315C95C7E002EBEBB /* OCMock.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 030EF0DC14632FF700B04273;
+			remoteInfo = OCMockLib;
+		};
 		C9AC7D9E14BDDDE2009137BA /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = C9AC7D9614BDDDE2009137BA /* BITModalSheetController.xcodeproj */;
@@ -6034,6 +6057,11 @@
 		C9613DDC1405359A00AE1F8C /* icon-audio-younger-small@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "icon-audio-younger-small@2x.png"; path = "Resources/icon-audio-younger-small@2x.png"; sourceTree = "<group>"; };
 		C96C174715C7D6B3002EBEBB /* SCHDrmSession.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCHDrmSession.h; sourceTree = "<group>"; };
 		C96C174815C7D6B3002EBEBB /* SCHDrmSession.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCHDrmSession.m; sourceTree = "<group>"; };
+		C96C198315C95C7E002EBEBB /* OCMock.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = OCMock.xcodeproj; path = Shared/Libraries/Submodules/ocmock/Source/OCMock.xcodeproj; sourceTree = "<group>"; };
+		C96C199415C961A0002EBEBB /* SCHAppModelTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCHAppModelTests.h; sourceTree = "<group>"; };
+		C96C199515C961A0002EBEBB /* SCHAppModelTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCHAppModelTests.m; sourceTree = "<group>"; };
+		C96C199715C980CF002EBEBB /* LambdaAlert.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LambdaAlert.h; sourceTree = "<group>"; };
+		C96C199815C980CF002EBEBB /* LambdaAlert.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LambdaAlert.m; sourceTree = "<group>"; };
 		C96C4DA41557D62C00B47E56 /* storia-settings-logo@2x~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "storia-settings-logo@2x~ipad.png"; path = "Resources/UIAssets/storia-settings-logo@2x~ipad.png"; sourceTree = "<group>"; };
 		C9703A5313E9617F0003C4D8 /* bookshelf-bottom-shadow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "bookshelf-bottom-shadow.png"; path = "Resources/UIAssets/bookshelf-bottom-shadow.png"; sourceTree = "<group>"; };
 		C9703A5413E9617F0003C4D8 /* bookshelf-top-shadow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "bookshelf-top-shadow.png"; path = "Resources/UIAssets/bookshelf-top-shadow.png"; sourceTree = "<group>"; };
@@ -6752,6 +6780,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C96C199215C95CBB002EBEBB /* libOCMock.a in Frameworks */,
 				C96C188D15C80C40002EBEBB /* CoreVideo.framework in Frameworks */,
 				C96C188C15C80C38002EBEBB /* CoreMedia.framework in Frameworks */,
 				C96C185A15C8031B002EBEBB /* libBITModalSheetController.a in Frameworks */,
@@ -7105,6 +7134,8 @@
 				2868A45E13BA1C36000110D5 /* SCHProcessingManager.m */,
 				C96C174715C7D6B3002EBEBB /* SCHDrmSession.h */,
 				C96C174815C7D6B3002EBEBB /* SCHDrmSession.m */,
+				C96C199715C980CF002EBEBB /* LambdaAlert.h */,
+				C96C199815C980CF002EBEBB /* LambdaAlert.m */,
 			);
 			name = "Dummy Implementations";
 			sourceTree = "<group>";
@@ -7252,6 +7283,7 @@
 		28A08CFF13952CB4006FD008 /* UnitTests */ = {
 			isa = PBXGroup;
 			children = (
+				C96C199315C96171002EBEBB /* App Model Tests */,
 				52CEC19515C16686004C749A /* Core Data Model Tests */,
 				52A36A6415B0689400162753 /* Web Service Tests */,
 				F8D199F715A5AD8F00EA17C6 /* Book Data Tests */,
@@ -8996,6 +9028,25 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
+		C96C198415C95C7E002EBEBB /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				C96C198D15C95C7E002EBEBB /* OCMock.framework */,
+				C96C198F15C95C7E002EBEBB /* OCMockTests.octest */,
+				C96C199115C95C7E002EBEBB /* libOCMock.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		C96C199315C96171002EBEBB /* App Model Tests */ = {
+			isa = PBXGroup;
+			children = (
+				C96C199415C961A0002EBEBB /* SCHAppModelTests.h */,
+				C96C199515C961A0002EBEBB /* SCHAppModelTests.m */,
+			);
+			name = "App Model Tests";
+			sourceTree = "<group>";
+		};
 		C9703A5213E9615C0003C4D8 /* Bookshelf */ = {
 			isa = PBXGroup;
 			children = (
@@ -9340,6 +9391,7 @@
 			isa = PBXGroup;
 			children = (
 				C9B08A751344D34F001963D0 /* libKNFBReader */,
+				C96C198315C95C7E002EBEBB /* OCMock.xcodeproj */,
 				C9C3FA2714B6FA5E00757038 /* BITOperation.xcodeproj */,
 				C9AC7D9614BDDDE2009137BA /* BITModalSheetController.xcodeproj */,
 				C947D55D133B9C0000FB4404 /* libEucalyptus.xcodeproj */,
@@ -10148,6 +10200,10 @@
 					ProductGroup = C947D55E133B9C0000FB4404 /* Products */;
 					ProjectRef = C947D55D133B9C0000FB4404 /* libEucalyptus.xcodeproj */;
 				},
+				{
+					ProductGroup = C96C198415C95C7E002EBEBB /* Products */;
+					ProjectRef = C96C198315C95C7E002EBEBB /* OCMock.xcodeproj */;
+				},
 			);
 			projectRoot = "";
 			targets = (
@@ -10264,6 +10320,27 @@
 			fileType = "compiled.mach-o.executable";
 			path = PageLayoutTest;
 			remoteRef = C9674ACF159C9A0400476987 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		C96C198D15C95C7E002EBEBB /* OCMock.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = OCMock.framework;
+			remoteRef = C96C198C15C95C7E002EBEBB /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		C96C198F15C95C7E002EBEBB /* OCMockTests.octest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = OCMockTests.octest;
+			remoteRef = C96C198E15C95C7E002EBEBB /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		C96C199115C95C7E002EBEBB /* libOCMock.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libOCMock.a;
+			remoteRef = C96C199015C95C7E002EBEBB /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		C9AC7D9F14BDDDE2009137BA /* libBITModalSheetController.a */ = {
@@ -13740,7 +13817,6 @@
 				C96C188715C80556002EBEBB /* BITSOAPProxy.m in Sources */,
 				C96C188815C80556002EBEBB /* TTTAttributedLabel.m in Sources */,
 				C96C188915C80556002EBEBB /* ZipArchive.mm in Sources */,
-				C96C188A15C80556002EBEBB /* LambdaAlert.m in Sources */,
 				C96C188B15C80556002EBEBB /* LambdaSheet.m in Sources */,
 				C96C189915C80CB6002EBEBB /* AuthenticateSvc.m in Sources */,
 				C96C189A15C80CB6002EBEBB /* AuthenticateSvc+Binding.m in Sources */,
@@ -13760,6 +13836,8 @@
 				C96C18A815C80CFF002EBEBB /* QRunLoopOperation.m in Sources */,
 				C96C18AA15C80D92002EBEBB /* AppDelegate_Shared.m in Sources */,
 				C96C18AC15C80EA9002EBEBB /* levenshtein_distance.c in Sources */,
+				C96C199615C961A0002EBEBB /* SCHAppModelTests.m in Sources */,
+				C96C199915C980CF002EBEBB /* LambdaAlert.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -15042,6 +15120,15 @@
 					UNITTESTS,
 				);
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				HEADER_SEARCH_PATHS = (
+					Shared/Libraries/Submodules/bitoperation/BITOperation,
+					Shared/Libraries/Submodules/bitmodalsheetcontroller/BITModalSheetController,
+					"\"$(TARGET_BUILD_DIR)/usr/local/lib/include\"",
+					"\"$(DSTROOT)/usr/local/lib/include\"",
+					"\"$(OBJROOT)/UninstalledProducts/include\"",
+					"\"$(SDKROOT)/usr/include/libxml2\"",
+					"\"$(SRCROOT)/Shared/Libraries/Submodules/ocmock\"/**",
+				);
 				INFOPLIST_FILE = "UnitTests/UnitTests-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
 				LIBRARY_SEARCH_PATHS = (
@@ -15051,6 +15138,8 @@
 				OTHER_LDFLAGS = (
 					"-framework",
 					SenTestingKit,
+					"-force_load",
+					"/Users/matt/Library/Developer/Xcode/DerivedData/Scholastic-draytecaocnvufgrsteueizczqne/Build/Products/Debug-iphonesimulator/libOCMock.a",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = octest;
@@ -15081,6 +15170,8 @@
 				OTHER_LDFLAGS = (
 					"-framework",
 					SenTestingKit,
+					"-force_load",
+					"/Users/matt/Library/Developer/Xcode/DerivedData/Scholastic-draytecaocnvufgrsteueizczqne/Build/Products/Debug-iphonesimulator/libOCMock.a",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = octest;
@@ -15110,6 +15201,8 @@
 				OTHER_LDFLAGS = (
 					"-framework",
 					SenTestingKit,
+					"-force_load",
+					"/Users/matt/Library/Developer/Xcode/DerivedData/Scholastic-draytecaocnvufgrsteueizczqne/Build/Products/Debug-iphonesimulator/libOCMock.a",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = octest;
