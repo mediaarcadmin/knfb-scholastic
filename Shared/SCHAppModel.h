@@ -42,4 +42,12 @@
 - (void)waitForBookshelves;
 - (void)waitForWebParentToolsToComplete;
 
+- (void)waitForBookshelvesWithSyncManager:(SCHSyncManager *)syncManager;
+- (void)waitForWebParentToolsToCompleteWithSyncManager:(SCHSyncManager *)syncManager;
+
+// Exposed for testing purposes
+
+- (BOOL)hasProfilesInManagedObjectContext:(NSManagedObjectContext *)moc;
+
+
 @end
