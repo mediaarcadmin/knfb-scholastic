@@ -10044,6 +10044,7 @@
 				28A08CF713952CB4006FD008 /* Frameworks */,
 				28A08CF813952CB4006FD008 /* Resources */,
 				28A08CF913952CB4006FD008 /* ShellScript */,
+				C96C192E15C9224B002EBEBB /* Test Coverage */,
 			);
 			buildRules = (
 			);
@@ -12952,6 +12953,20 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "# Run the unit tests in this test bundle.\n\"${SYSTEM_DEVELOPER_DIR}/Tools/RunUnitTests\"\n";
+		};
+		C96C192E15C9224B002EBEBB /* Test Coverage */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Test Coverage";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# Run gcov on the framework getting tested\nTARGET_NAME=\"UnitTests\"\nOBJ_DIR=${CONFIGURATION_TEMP_DIR}/${TARGET_NAME}.build/Objects-normal/${CURRENT_ARCH}\n\nmkdir -p ${CONFIGURATION_TEMP_DIR}/Coverage\npushd ${CONFIGURATION_TEMP_DIR}/Coverage\nfind \"${OBJROOT}\" -name '*.gcda' -exec gcov -o \"${OBJ_DIR}\" {} \\; 2>/tmp/gconv-stderr | egrep \"^File|^Lines\" | sed -E \"s@File '$SRCROOT/@@;s@(\\.[a-zA-Z])'@\\1: @;s@Lines executed:([0-9.%]+) of ([0-9]+)@\\1 (\\2)@\" | paste -d\" \" - - | egrep -v \"^File '\" | sed -E \"s@^([^:]+):([^(]*)(\\([^)]+\\))@\\2:\\1\\3@\" | sort -n | sed -E \"s@^([^:]+):([^(]*)(\\([^)]+\\))@\\2:\\1\\3@\" | egrep -v \"/Libraries/\"; cat /tmp/gconv-stderr | grep -v \"version.*, prefer.*\"; \npopd";
 		};
 /* End PBXShellScriptBuildPhase section */
 
