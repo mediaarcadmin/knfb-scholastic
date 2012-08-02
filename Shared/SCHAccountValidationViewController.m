@@ -128,6 +128,10 @@ static const CGFloat kDeregisterContentHeightLandscape = 380;
 {
     [super viewWillAppear:animated];
     
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
+        [self.navigationController setNavigationBarHidden:YES];
+    }
+    
     self.titleLabel.text = self.title;
     [self setupContentSizeForOrientation:self.interfaceOrientation];
 }

@@ -71,6 +71,7 @@ NSString * const kSCHProfileItemDRM_QUALIFIER = @"DRM_QUALIFIER";
 
 @synthesize age;
 
+// we are prefetching the ContentProfileItem.UserContentItem and returning non-faulted objects
 - (NSSet *)ContentProfileItem
 {
     NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
@@ -79,6 +80,8 @@ NSString * const kSCHProfileItemDRM_QUALIFIER = @"DRM_QUALIFIER";
     [fetchRequest setEntity:[NSEntityDescription entityForName:kSCHContentProfileItem 
                                         inManagedObjectContext:self.managedObjectContext]];	
     [fetchRequest setPredicate:[NSPredicate predicateWithFormat:@"ProfileID == %@", self.ID]];
+    [fetchRequest setReturnsObjectsAsFaults:NO];
+    [fetchRequest setRelationshipKeyPathsForPrefetching:[NSArray arrayWithObject:@"UserContentItem"]];
     
     NSArray *result = [self.managedObjectContext executeFetchRequest:fetchRequest 
                                                                error:&error];

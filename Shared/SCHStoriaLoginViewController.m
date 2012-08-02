@@ -36,6 +36,7 @@ static const CGFloat kSCHStoriaLoginContentHeightLandscape = 420;
 @synthesize promptLabel;
 @synthesize activeTextField;
 @synthesize scrollView;
+@synthesize backgroundView;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -61,6 +62,7 @@ static const CGFloat kSCHStoriaLoginContentHeightLandscape = 420;
     [promptLabel release], promptLabel = nil;
     [activeTextField release], activeTextField = nil;
     [scrollView release], scrollView = nil;
+    [backgroundView release], backgroundView = nil;
 }
 
 - (void)dealloc
@@ -146,6 +148,11 @@ static const CGFloat kSCHStoriaLoginContentHeightLandscape = 420;
 - (void)viewWillAppear:(BOOL)animated 
 {
     [super viewWillAppear:animated];
+    
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
+        [self.navigationController setNavigationBarHidden:YES];
+    }
+    
     [self stopShowingProgress];
     [self setupContentSizeForOrientation:self.interfaceOrientation];
     [self clearFields];
@@ -159,10 +166,22 @@ static const CGFloat kSCHStoriaLoginContentHeightLandscape = 420;
 	return YES;
 }
 
+- (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
+{
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
+        [CATransaction begin];
+        [CATransaction setAnimationDuration:duration];
+        [self setupContentSizeForOrientation:toInterfaceOrientation];
+        [CATransaction commit];
+    }
+}
+
 - (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation
 {
     [self.view endEditing:YES];
-    [self setupContentSizeForOrientation:self.interfaceOrientation];
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+        [self setupContentSizeForOrientation:self.interfaceOrientation];
+    }
 }
 
 - (void)setupContentSizeForOrientation:(UIInterfaceOrientation)orientation;
@@ -170,8 +189,10 @@ static const CGFloat kSCHStoriaLoginContentHeightLandscape = 420;
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
         if (UIInterfaceOrientationIsPortrait(orientation)) {
             self.scrollView.contentSize = CGSizeZero;
+            self.backgroundView.transform = CGAffineTransformIdentity;
         } else {
             self.scrollView.contentSize = CGSizeMake(self.view.bounds.size.width, kSCHStoriaLoginContentHeightLandscape);
+            self.backgroundView.transform = CGAffineTransformTranslate(CGAffineTransformMakeScale(1.5f, 1.5f), 0, -76);
         }
     } else {
         self.scrollView.contentSize = CGSizeZero;

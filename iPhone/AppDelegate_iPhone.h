@@ -10,6 +10,7 @@
 #import "AppDelegate_Shared.h"
 
 @class SCHCustomNavigationBar;
+@class SCHAppModel;
 
 @interface AppDelegate_iPhone : AppDelegate_Shared 
 {
@@ -17,6 +18,7 @@
 
 @property (nonatomic, retain) IBOutlet UINavigationController *navigationController;
 @property (nonatomic, retain) IBOutlet SCHCustomNavigationBar *customNavigationBar;
+@property (nonatomic, retain) SCHAppModel *appModel;
 
 @end
 
