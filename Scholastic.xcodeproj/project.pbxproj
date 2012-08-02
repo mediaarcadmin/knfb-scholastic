@@ -15139,7 +15139,7 @@
 					"-framework",
 					SenTestingKit,
 					"-force_load",
-					"/Users/matt/Library/Developer/Xcode/DerivedData/Scholastic-draytecaocnvufgrsteueizczqne/Build/Products/Debug-iphonesimulator/libOCMock.a",
+					"$(CONFIGURATION_BUILD_DIR)/libOCMock.a",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = octest;
@@ -15171,7 +15171,7 @@
 					"-framework",
 					SenTestingKit,
 					"-force_load",
-					"/Users/matt/Library/Developer/Xcode/DerivedData/Scholastic-draytecaocnvufgrsteueizczqne/Build/Products/Debug-iphonesimulator/libOCMock.a",
+					"$(CONFIGURATION_BUILD_DIR)/libOCMock.a",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = octest;
@@ -15202,7 +15202,7 @@
 					"-framework",
 					SenTestingKit,
 					"-force_load",
-					"/Users/matt/Library/Developer/Xcode/DerivedData/Scholastic-draytecaocnvufgrsteueizczqne/Build/Products/Debug-iphonesimulator/libOCMock.a",
+					"$(CONFIGURATION_BUILD_DIR)/libOCMock.a",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = octest;
