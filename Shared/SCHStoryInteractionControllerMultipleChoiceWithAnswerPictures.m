@@ -50,7 +50,7 @@
     return NO;
 }
 
-- (IBAction)playAudioButtonTapped:(id)sender
+- (void)tappedAudioButton:(id)sender withViewAtIndex:(NSInteger)screenIndex
 {
     [self cancelQueuedAudioExecutingSynchronizedBlocksBefore:^{
         [self playCurrentQuestionAudio];

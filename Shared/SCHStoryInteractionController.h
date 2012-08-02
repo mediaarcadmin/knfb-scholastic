@@ -198,6 +198,9 @@ typedef enum
 // override to return NO if the story interaction should not show the top-left close button
 - (BOOL)shouldShowCloseButtonForViewAtIndex:(NSInteger)screenIndex;
 
+// this can be overridden to precisely control when the audio button is shown
+- (BOOL)shouldShowAudioButtonForViewAtIndex:(NSInteger)screenIndex;
+
 // normally the question audio (if any) is played when the view appears; override
 // to change this behaviour
 - (BOOL)shouldPlayQuestionAudioForViewAtIndex:(NSInteger)screenIndex;
@@ -208,7 +211,7 @@ typedef enum
 
 // The user tapped the play audio button in the top right corner; default behaviour is
 // to repeat the question defined by [self audioPathForQuestion].
-- (IBAction)playAudioButtonTapped:(id)sender;
+- (void)tappedAudioButton:(id)sender withViewAtIndex:(NSInteger)screenIndex;
 
 // Override this for a simpler alternative to willRotateToInterfaceOrientation:duration;
 // This method is called in the rotation animation block so any adjustments will automatically

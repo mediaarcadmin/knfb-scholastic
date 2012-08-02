@@ -104,7 +104,7 @@ static CGFloat const kSCHStoryInteractionControllerVideoBorderWidth = 4.0;
                                                object:nil];
 }
 
-- (IBAction)playAudioButtonTapped:(id)sender
+- (void)tappedAudioButton:(id)sender withViewAtIndex:(NSInteger)screenIndex
 {
     [self cancelQueuedAudioExecutingSynchronizedBlocksBefore:^{
         NSString *path = [self.storyInteraction audioPathForQuestion];

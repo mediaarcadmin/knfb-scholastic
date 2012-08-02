@@ -198,7 +198,7 @@ enum ScratchState {
     return !completed && self.currentQuestionIndex == 0;
 }
 
-- (void)playAudioButtonTapped:(id)sender
+- (void)tappedAudioButton:(id)sender withViewAtIndex:(NSInteger)screenIndex
 {
     switch (self.scratchState) {
         case kScratchStateFirstQuestionAttempt:
@@ -218,7 +218,7 @@ enum ScratchState {
             }];
             break; 
         default:
-            [super playAudioButtonTapped:sender];
+            [super tappedAudioButton:sender withViewAtIndex:screenIndex];
             break;
     }
 }
