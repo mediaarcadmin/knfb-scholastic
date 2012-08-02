@@ -371,9 +371,9 @@ NSString * const KNFBXPSStoryInteractionParserTestsDirectory = @"/Documents/1/Ot
 
 - (void)testReadingQuiz1
 {
-    NSArray *stories = [self parse:@"ReadingQuiz1"];
+    NSArray *stories = [self parse:@"ReadingChallenge1"];
     STAssertEquals([stories count], 1U, @"incorrect story count");
-    STAssertTrue([[stories lastObject] isKindOfClass:[SCHStoryInteractionReadingQuiz class]], @"incorrect class");
+    STAssertTrue([[stories lastObject] isKindOfClass:[SCHStoryInteractionReadingChallenge class]], @"incorrect class");
     
     SCHStoryInteractionPopQuiz *story = [stories lastObject];
     STAssertTrue(CGPointEqualToPoint(story.position, CGPointMake(180, 10)), @"incorrect position");

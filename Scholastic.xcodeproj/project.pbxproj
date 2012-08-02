@@ -4477,26 +4477,26 @@
 		F878D6B81344996400DDB98B /* SCHBookOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = F878D6B71344996400DDB98B /* SCHBookOperation.m */; };
 		F87B6E2E1398ED65005CC0FA /* SCHBookShelfSortTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = F87B6E2C1398ED65005CC0FA /* SCHBookShelfSortTableView.m */; };
 		F87B6E301398ED65005CC0FA /* SCHBookShelfSortTableView.xib in Resources */ = {isa = PBXBuildFile; fileRef = F87B6E2D1398ED65005CC0FA /* SCHBookShelfSortTableView.xib */; };
-		F87FE00A15BE93E50051C6E8 /* SCHStoryInteractionReadingQuiz.m in Sources */ = {isa = PBXBuildFile; fileRef = F87FE00915BE93E50051C6E8 /* SCHStoryInteractionReadingQuiz.m */; };
-		F87FE00B15BE93E50051C6E8 /* SCHStoryInteractionReadingQuiz.m in Sources */ = {isa = PBXBuildFile; fileRef = F87FE00915BE93E50051C6E8 /* SCHStoryInteractionReadingQuiz.m */; };
-		F87FE00C15BE93E50051C6E8 /* SCHStoryInteractionReadingQuiz.m in Sources */ = {isa = PBXBuildFile; fileRef = F87FE00915BE93E50051C6E8 /* SCHStoryInteractionReadingQuiz.m */; };
-		F87FE00D15BE93E50051C6E8 /* SCHStoryInteractionReadingQuiz.m in Sources */ = {isa = PBXBuildFile; fileRef = F87FE00915BE93E50051C6E8 /* SCHStoryInteractionReadingQuiz.m */; };
-		F87FE00E15BE93E50051C6E8 /* SCHStoryInteractionReadingQuiz.m in Sources */ = {isa = PBXBuildFile; fileRef = F87FE00915BE93E50051C6E8 /* SCHStoryInteractionReadingQuiz.m */; };
-		F87FE01015BE956D0051C6E8 /* StoryInteractionReadingQuiz1.xml in Resources */ = {isa = PBXBuildFile; fileRef = F87FE00F15BE956D0051C6E8 /* StoryInteractionReadingQuiz1.xml */; };
-		F87FE01115BE956D0051C6E8 /* StoryInteractionReadingQuiz1.xml in Resources */ = {isa = PBXBuildFile; fileRef = F87FE00F15BE956D0051C6E8 /* StoryInteractionReadingQuiz1.xml */; };
-		F87FE01215BE956D0051C6E8 /* StoryInteractionReadingQuiz1.xml in Resources */ = {isa = PBXBuildFile; fileRef = F87FE00F15BE956D0051C6E8 /* StoryInteractionReadingQuiz1.xml */; };
-		F87FE01315BE956D0051C6E8 /* StoryInteractionReadingQuiz1.xml in Resources */ = {isa = PBXBuildFile; fileRef = F87FE00F15BE956D0051C6E8 /* StoryInteractionReadingQuiz1.xml */; };
-		F87FE01415BE956D0051C6E8 /* StoryInteractionReadingQuiz1.xml in Resources */ = {isa = PBXBuildFile; fileRef = F87FE00F15BE956D0051C6E8 /* StoryInteractionReadingQuiz1.xml */; };
-		F87FE01715BE98D50051C6E8 /* SCHStoryInteractionControllerReadingQuiz.m in Sources */ = {isa = PBXBuildFile; fileRef = F87FE01615BE98D50051C6E8 /* SCHStoryInteractionControllerReadingQuiz.m */; };
-		F87FE01815BE98D50051C6E8 /* SCHStoryInteractionControllerReadingQuiz.m in Sources */ = {isa = PBXBuildFile; fileRef = F87FE01615BE98D50051C6E8 /* SCHStoryInteractionControllerReadingQuiz.m */; };
-		F87FE01915BE98D50051C6E8 /* SCHStoryInteractionControllerReadingQuiz.m in Sources */ = {isa = PBXBuildFile; fileRef = F87FE01615BE98D50051C6E8 /* SCHStoryInteractionControllerReadingQuiz.m */; };
-		F87FE01A15BE98D50051C6E8 /* SCHStoryInteractionControllerReadingQuiz.m in Sources */ = {isa = PBXBuildFile; fileRef = F87FE01615BE98D50051C6E8 /* SCHStoryInteractionControllerReadingQuiz.m */; };
-		F87FE01C15BE994C0051C6E8 /* SCHStoryInteractionReadingQuiz_iPhone.xib in Resources */ = {isa = PBXBuildFile; fileRef = F87FE01B15BE994C0051C6E8 /* SCHStoryInteractionReadingQuiz_iPhone.xib */; };
-		F87FE01D15BE994C0051C6E8 /* SCHStoryInteractionReadingQuiz_iPhone.xib in Resources */ = {isa = PBXBuildFile; fileRef = F87FE01B15BE994C0051C6E8 /* SCHStoryInteractionReadingQuiz_iPhone.xib */; };
-		F87FE01E15BE994C0051C6E8 /* SCHStoryInteractionReadingQuiz_iPhone.xib in Resources */ = {isa = PBXBuildFile; fileRef = F87FE01B15BE994C0051C6E8 /* SCHStoryInteractionReadingQuiz_iPhone.xib */; };
-		F87FE02015BE99740051C6E8 /* SCHStoryInteractionReadingQuiz_iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = F87FE01F15BE99740051C6E8 /* SCHStoryInteractionReadingQuiz_iPad.xib */; };
-		F87FE02115BE99740051C6E8 /* SCHStoryInteractionReadingQuiz_iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = F87FE01F15BE99740051C6E8 /* SCHStoryInteractionReadingQuiz_iPad.xib */; };
-		F87FE02215BE99740051C6E8 /* SCHStoryInteractionReadingQuiz_iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = F87FE01F15BE99740051C6E8 /* SCHStoryInteractionReadingQuiz_iPad.xib */; };
+		F87FE00A15BE93E50051C6E8 /* SCHStoryInteractionReadingChallenge.m in Sources */ = {isa = PBXBuildFile; fileRef = F87FE00915BE93E50051C6E8 /* SCHStoryInteractionReadingChallenge.m */; };
+		F87FE00B15BE93E50051C6E8 /* SCHStoryInteractionReadingChallenge.m in Sources */ = {isa = PBXBuildFile; fileRef = F87FE00915BE93E50051C6E8 /* SCHStoryInteractionReadingChallenge.m */; };
+		F87FE00C15BE93E50051C6E8 /* SCHStoryInteractionReadingChallenge.m in Sources */ = {isa = PBXBuildFile; fileRef = F87FE00915BE93E50051C6E8 /* SCHStoryInteractionReadingChallenge.m */; };
+		F87FE00D15BE93E50051C6E8 /* SCHStoryInteractionReadingChallenge.m in Sources */ = {isa = PBXBuildFile; fileRef = F87FE00915BE93E50051C6E8 /* SCHStoryInteractionReadingChallenge.m */; };
+		F87FE00E15BE93E50051C6E8 /* SCHStoryInteractionReadingChallenge.m in Sources */ = {isa = PBXBuildFile; fileRef = F87FE00915BE93E50051C6E8 /* SCHStoryInteractionReadingChallenge.m */; };
+		F87FE01015BE956D0051C6E8 /* StoryInteractionReadingChallenge1.xml in Resources */ = {isa = PBXBuildFile; fileRef = F87FE00F15BE956D0051C6E8 /* StoryInteractionReadingChallenge1.xml */; };
+		F87FE01115BE956D0051C6E8 /* StoryInteractionReadingChallenge1.xml in Resources */ = {isa = PBXBuildFile; fileRef = F87FE00F15BE956D0051C6E8 /* StoryInteractionReadingChallenge1.xml */; };
+		F87FE01215BE956D0051C6E8 /* StoryInteractionReadingChallenge1.xml in Resources */ = {isa = PBXBuildFile; fileRef = F87FE00F15BE956D0051C6E8 /* StoryInteractionReadingChallenge1.xml */; };
+		F87FE01315BE956D0051C6E8 /* StoryInteractionReadingChallenge1.xml in Resources */ = {isa = PBXBuildFile; fileRef = F87FE00F15BE956D0051C6E8 /* StoryInteractionReadingChallenge1.xml */; };
+		F87FE01415BE956D0051C6E8 /* StoryInteractionReadingChallenge1.xml in Resources */ = {isa = PBXBuildFile; fileRef = F87FE00F15BE956D0051C6E8 /* StoryInteractionReadingChallenge1.xml */; };
+		F87FE01715BE98D50051C6E8 /* SCHStoryInteractionControllerReadingChallenge.m in Sources */ = {isa = PBXBuildFile; fileRef = F87FE01615BE98D50051C6E8 /* SCHStoryInteractionControllerReadingChallenge.m */; };
+		F87FE01815BE98D50051C6E8 /* SCHStoryInteractionControllerReadingChallenge.m in Sources */ = {isa = PBXBuildFile; fileRef = F87FE01615BE98D50051C6E8 /* SCHStoryInteractionControllerReadingChallenge.m */; };
+		F87FE01915BE98D50051C6E8 /* SCHStoryInteractionControllerReadingChallenge.m in Sources */ = {isa = PBXBuildFile; fileRef = F87FE01615BE98D50051C6E8 /* SCHStoryInteractionControllerReadingChallenge.m */; };
+		F87FE01A15BE98D50051C6E8 /* SCHStoryInteractionControllerReadingChallenge.m in Sources */ = {isa = PBXBuildFile; fileRef = F87FE01615BE98D50051C6E8 /* SCHStoryInteractionControllerReadingChallenge.m */; };
+		F87FE01C15BE994C0051C6E8 /* SCHStoryInteractionReadingChallenge_iPhone.xib in Resources */ = {isa = PBXBuildFile; fileRef = F87FE01B15BE994C0051C6E8 /* SCHStoryInteractionReadingChallenge_iPhone.xib */; };
+		F87FE01D15BE994C0051C6E8 /* SCHStoryInteractionReadingChallenge_iPhone.xib in Resources */ = {isa = PBXBuildFile; fileRef = F87FE01B15BE994C0051C6E8 /* SCHStoryInteractionReadingChallenge_iPhone.xib */; };
+		F87FE01E15BE994C0051C6E8 /* SCHStoryInteractionReadingChallenge_iPhone.xib in Resources */ = {isa = PBXBuildFile; fileRef = F87FE01B15BE994C0051C6E8 /* SCHStoryInteractionReadingChallenge_iPhone.xib */; };
+		F87FE02015BE99740051C6E8 /* SCHStoryInteractionReadingChallenge_iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = F87FE01F15BE99740051C6E8 /* SCHStoryInteractionReadingChallenge_iPad.xib */; };
+		F87FE02115BE99740051C6E8 /* SCHStoryInteractionReadingChallenge_iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = F87FE01F15BE99740051C6E8 /* SCHStoryInteractionReadingChallenge_iPad.xib */; };
+		F87FE02215BE99740051C6E8 /* SCHStoryInteractionReadingChallenge_iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = F87FE01F15BE99740051C6E8 /* SCHStoryInteractionReadingChallenge_iPad.xib */; };
 		F87FFBD8152C59CB00A0282E /* storiaStarEmpty@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F87FFBD7152C59CB00A0282E /* storiaStarEmpty@2x.png */; };
 		F87FFBD9152C59CB00A0282E /* storiaStarEmpty@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F87FFBD7152C59CB00A0282E /* storiaStarEmpty@2x.png */; };
 		F87FFBDA152C59CB00A0282E /* storiaStarEmpty@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F87FFBD7152C59CB00A0282E /* storiaStarEmpty@2x.png */; };
@@ -4714,10 +4714,10 @@
 		F8F726961524875F00250724 /* BookShelfListWhiteGradientBackground.png in Resources */ = {isa = PBXBuildFile; fileRef = F8F726931524875F00250724 /* BookShelfListWhiteGradientBackground.png */; };
 		F8F726971524875F00250724 /* BookShelfListWhiteGradientBackground.png in Resources */ = {isa = PBXBuildFile; fileRef = F8F726931524875F00250724 /* BookShelfListWhiteGradientBackground.png */; };
 		F8FAF2F313F12F20009C7E9F /* SCHAppStateManager.m in Sources */ = {isa = PBXBuildFile; fileRef = F8FAF2F213F12F20009C7E9F /* SCHAppStateManager.m */; };
-		F8FDF01715C2CC4F00F0F929 /* SCHStoryInteractionReadingQuizResultView.m in Sources */ = {isa = PBXBuildFile; fileRef = F8FDF01615C2CC4F00F0F929 /* SCHStoryInteractionReadingQuizResultView.m */; };
-		F8FDF01815C2CC4F00F0F929 /* SCHStoryInteractionReadingQuizResultView.m in Sources */ = {isa = PBXBuildFile; fileRef = F8FDF01615C2CC4F00F0F929 /* SCHStoryInteractionReadingQuizResultView.m */; };
-		F8FDF01915C2CC4F00F0F929 /* SCHStoryInteractionReadingQuizResultView.m in Sources */ = {isa = PBXBuildFile; fileRef = F8FDF01615C2CC4F00F0F929 /* SCHStoryInteractionReadingQuizResultView.m */; };
-		F8FDF01A15C2CC4F00F0F929 /* SCHStoryInteractionReadingQuizResultView.m in Sources */ = {isa = PBXBuildFile; fileRef = F8FDF01615C2CC4F00F0F929 /* SCHStoryInteractionReadingQuizResultView.m */; };
+		F8FDF01715C2CC4F00F0F929 /* SCHStoryInteractionReadingChallengeResultView.m in Sources */ = {isa = PBXBuildFile; fileRef = F8FDF01615C2CC4F00F0F929 /* SCHStoryInteractionReadingChallengeResultView.m */; };
+		F8FDF01815C2CC4F00F0F929 /* SCHStoryInteractionReadingChallengeResultView.m in Sources */ = {isa = PBXBuildFile; fileRef = F8FDF01615C2CC4F00F0F929 /* SCHStoryInteractionReadingChallengeResultView.m */; };
+		F8FDF01915C2CC4F00F0F929 /* SCHStoryInteractionReadingChallengeResultView.m in Sources */ = {isa = PBXBuildFile; fileRef = F8FDF01615C2CC4F00F0F929 /* SCHStoryInteractionReadingChallengeResultView.m */; };
+		F8FDF01A15C2CC4F00F0F929 /* SCHStoryInteractionReadingChallengeResultView.m in Sources */ = {isa = PBXBuildFile; fileRef = F8FDF01615C2CC4F00F0F929 /* SCHStoryInteractionReadingChallengeResultView.m */; };
 		F8FDF01E15C2D69100F0F929 /* ReadingQuizAnswerCross.png in Resources */ = {isa = PBXBuildFile; fileRef = F8FDF01C15C2D69100F0F929 /* ReadingQuizAnswerCross.png */; };
 		F8FDF01F15C2D69100F0F929 /* ReadingQuizAnswerCross.png in Resources */ = {isa = PBXBuildFile; fileRef = F8FDF01C15C2D69100F0F929 /* ReadingQuizAnswerCross.png */; };
 		F8FDF02015C2D69100F0F929 /* ReadingQuizAnswerCross.png in Resources */ = {isa = PBXBuildFile; fileRef = F8FDF01C15C2D69100F0F929 /* ReadingQuizAnswerCross.png */; };
@@ -6577,13 +6577,13 @@
 		F87B6E2B1398ED65005CC0FA /* SCHBookShelfSortTableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHBookShelfSortTableView.h; path = Shared/SCHBookShelfSortTableView.h; sourceTree = "<group>"; };
 		F87B6E2C1398ED65005CC0FA /* SCHBookShelfSortTableView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHBookShelfSortTableView.m; path = Shared/SCHBookShelfSortTableView.m; sourceTree = "<group>"; };
 		F87B6E2D1398ED65005CC0FA /* SCHBookShelfSortTableView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = SCHBookShelfSortTableView.xib; path = Shared/SCHBookShelfSortTableView.xib; sourceTree = "<group>"; };
-		F87FE00815BE93E50051C6E8 /* SCHStoryInteractionReadingQuiz.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCHStoryInteractionReadingQuiz.h; sourceTree = "<group>"; };
-		F87FE00915BE93E50051C6E8 /* SCHStoryInteractionReadingQuiz.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCHStoryInteractionReadingQuiz.m; sourceTree = "<group>"; };
-		F87FE00F15BE956D0051C6E8 /* StoryInteractionReadingQuiz1.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = StoryInteractionReadingQuiz1.xml; sourceTree = "<group>"; };
-		F87FE01515BE98D50051C6E8 /* SCHStoryInteractionControllerReadingQuiz.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCHStoryInteractionControllerReadingQuiz.h; sourceTree = "<group>"; };
-		F87FE01615BE98D50051C6E8 /* SCHStoryInteractionControllerReadingQuiz.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCHStoryInteractionControllerReadingQuiz.m; sourceTree = "<group>"; };
-		F87FE01B15BE994C0051C6E8 /* SCHStoryInteractionReadingQuiz_iPhone.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = SCHStoryInteractionReadingQuiz_iPhone.xib; path = iPhone/SCHStoryInteractionReadingQuiz_iPhone.xib; sourceTree = SOURCE_ROOT; };
-		F87FE01F15BE99740051C6E8 /* SCHStoryInteractionReadingQuiz_iPad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = SCHStoryInteractionReadingQuiz_iPad.xib; path = iPad/SCHStoryInteractionReadingQuiz_iPad.xib; sourceTree = SOURCE_ROOT; };
+		F87FE00815BE93E50051C6E8 /* SCHStoryInteractionReadingChallenge.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCHStoryInteractionReadingChallenge.h; sourceTree = "<group>"; };
+		F87FE00915BE93E50051C6E8 /* SCHStoryInteractionReadingChallenge.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCHStoryInteractionReadingChallenge.m; sourceTree = "<group>"; };
+		F87FE00F15BE956D0051C6E8 /* StoryInteractionReadingChallenge1.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = StoryInteractionReadingChallenge1.xml; sourceTree = "<group>"; };
+		F87FE01515BE98D50051C6E8 /* SCHStoryInteractionControllerReadingChallenge.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCHStoryInteractionControllerReadingChallenge.h; sourceTree = "<group>"; };
+		F87FE01615BE98D50051C6E8 /* SCHStoryInteractionControllerReadingChallenge.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCHStoryInteractionControllerReadingChallenge.m; sourceTree = "<group>"; };
+		F87FE01B15BE994C0051C6E8 /* SCHStoryInteractionReadingChallenge_iPhone.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = SCHStoryInteractionReadingChallenge_iPhone.xib; path = iPhone/SCHStoryInteractionReadingChallenge_iPhone.xib; sourceTree = SOURCE_ROOT; };
+		F87FE01F15BE99740051C6E8 /* SCHStoryInteractionReadingChallenge_iPad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = SCHStoryInteractionReadingChallenge_iPad.xib; path = iPad/SCHStoryInteractionReadingChallenge_iPad.xib; sourceTree = SOURCE_ROOT; };
 		F87FFBD7152C59CB00A0282E /* storiaStarEmpty@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "storiaStarEmpty@2x.png"; path = "Resources/storiaStarEmpty@2x.png"; sourceTree = "<group>"; };
 		F87FFBDC152C5AB600A0282E /* storiaStarFull@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "storiaStarFull@2x.png"; path = "Resources/storiaStarFull@2x.png"; sourceTree = "<group>"; };
 		F87FFBDD152C5AB600A0282E /* storiaStarHalfFull@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "storiaStarHalfFull@2x.png"; path = "Resources/storiaStarHalfFull@2x.png"; sourceTree = "<group>"; };
@@ -6721,8 +6721,8 @@
 		F8F726931524875F00250724 /* BookShelfListWhiteGradientBackground.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = BookShelfListWhiteGradientBackground.png; path = Resources/BookShelfListWhiteGradientBackground.png; sourceTree = "<group>"; };
 		F8FAF2F113F12F20009C7E9F /* SCHAppStateManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHAppStateManager.h; path = Shared/SCHAppStateManager.h; sourceTree = "<group>"; };
 		F8FAF2F213F12F20009C7E9F /* SCHAppStateManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHAppStateManager.m; path = Shared/SCHAppStateManager.m; sourceTree = "<group>"; };
-		F8FDF01515C2CC4F00F0F929 /* SCHStoryInteractionReadingQuizResultView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCHStoryInteractionReadingQuizResultView.h; sourceTree = "<group>"; };
-		F8FDF01615C2CC4F00F0F929 /* SCHStoryInteractionReadingQuizResultView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCHStoryInteractionReadingQuizResultView.m; sourceTree = "<group>"; };
+		F8FDF01515C2CC4F00F0F929 /* SCHStoryInteractionReadingChallengeResultView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCHStoryInteractionReadingChallengeResultView.h; sourceTree = "<group>"; };
+		F8FDF01615C2CC4F00F0F929 /* SCHStoryInteractionReadingChallengeResultView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCHStoryInteractionReadingChallengeResultView.m; sourceTree = "<group>"; };
 		F8FDF01C15C2D69100F0F929 /* ReadingQuizAnswerCross.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ReadingQuizAnswerCross.png; path = Resources/ReadingQuizAnswerCross.png; sourceTree = SOURCE_ROOT; };
 		F8FDF01D15C2D69100F0F929 /* ReadingQuizAnswerTick.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ReadingQuizAnswerTick.png; path = Resources/ReadingQuizAnswerTick.png; sourceTree = SOURCE_ROOT; };
 		F8FDF02615C2EDC500F0F929 /* SCHStoryInteractionGradientView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCHStoryInteractionGradientView.h; sourceTree = "<group>"; };
@@ -7263,7 +7263,7 @@
 				28A60F5D1397708C0090853E /* Multiple Choice */,
 				2802476A139F7F6B00B73703 /* Pop Quiz */,
 				28D81EE413E840E100A2B25F /* Picture Starter */,
-				F87FE00715BE93390051C6E8 /* Reading Quiz */,
+				F87FE00715BE93390051C6E8 /* Reading Challenge */,
 				28BFE9C3139F81AC00415075 /* Scratch and See */,
 				28BFE9C4139F81BF00415075 /* Sequencing */,
 				28BFE9C5139F81CC00415075 /* Starting Letter */,
@@ -7321,7 +7321,7 @@
 				2891B71D13954355005FC4DD /* StoryInteractionMultipleChoiceText1.xml */,
 				28A60EF013966DC20090853E /* StoryInteractionMultipleChoicePicture1.xml */,
 				2891B71F13954804005FC4DD /* StoryInteractionPopQuiz1.xml */,
-				F87FE00F15BE956D0051C6E8 /* StoryInteractionReadingQuiz1.xml */,
+				F87FE00F15BE956D0051C6E8 /* StoryInteractionReadingChallenge1.xml */,
 				2891B72113954CDC005FC4DD /* StoryInteractionScratchAndSee1.xml */,
 				28A60EF7139672930090853E /* StoryInteractionSequencing1.xml */,
 				28A60EE4139647410090853E /* StoryInteractionStartingLetter1.xml */,
@@ -9819,21 +9819,21 @@
 			path = Resources/Sounds;
 			sourceTree = "<group>";
 		};
-		F87FE00715BE93390051C6E8 /* Reading Quiz */ = {
+		F87FE00715BE93390051C6E8 /* Reading Challenge */ = {
 			isa = PBXGroup;
 			children = (
-				F87FE00815BE93E50051C6E8 /* SCHStoryInteractionReadingQuiz.h */,
-				F87FE00915BE93E50051C6E8 /* SCHStoryInteractionReadingQuiz.m */,
-				F87FE01515BE98D50051C6E8 /* SCHStoryInteractionControllerReadingQuiz.h */,
-				F87FE01615BE98D50051C6E8 /* SCHStoryInteractionControllerReadingQuiz.m */,
-				F87FE01B15BE994C0051C6E8 /* SCHStoryInteractionReadingQuiz_iPhone.xib */,
-				F87FE01F15BE99740051C6E8 /* SCHStoryInteractionReadingQuiz_iPad.xib */,
-				F8FDF01515C2CC4F00F0F929 /* SCHStoryInteractionReadingQuizResultView.h */,
-				F8FDF01615C2CC4F00F0F929 /* SCHStoryInteractionReadingQuizResultView.m */,
+				F87FE00815BE93E50051C6E8 /* SCHStoryInteractionReadingChallenge.h */,
+				F87FE00915BE93E50051C6E8 /* SCHStoryInteractionReadingChallenge.m */,
+				F87FE01515BE98D50051C6E8 /* SCHStoryInteractionControllerReadingChallenge.h */,
+				F87FE01615BE98D50051C6E8 /* SCHStoryInteractionControllerReadingChallenge.m */,
+				F87FE01B15BE994C0051C6E8 /* SCHStoryInteractionReadingChallenge_iPhone.xib */,
+				F87FE01F15BE99740051C6E8 /* SCHStoryInteractionReadingChallenge_iPad.xib */,
+				F8FDF01515C2CC4F00F0F929 /* SCHStoryInteractionReadingChallengeResultView.h */,
+				F8FDF01615C2CC4F00F0F929 /* SCHStoryInteractionReadingChallengeResultView.m */,
 				F8FDF02615C2EDC500F0F929 /* SCHStoryInteractionGradientView.h */,
 				F8FDF02715C2EDC500F0F929 /* SCHStoryInteractionGradientView.m */,
 			);
-			name = "Reading Quiz";
+			name = "Reading Challenge";
 			sourceTree = "<group>";
 		};
 		F8844BF1137D6416003D3014 /* Profile View Controller */ = {
@@ -11081,9 +11081,9 @@
 				C96C4DA51557D62C00B47E56 /* storia-settings-logo@2x~ipad.png in Resources */,
 				A3E96F74159254C40069F1B9 /* 9780545443326_enr_v2.ToothTrouble.jpg in Resources */,
 				A3E96F78159254C40069F1B9 /* 9780545443326_enr_v2.ToothTrouble.xps in Resources */,
-				F87FE01015BE956D0051C6E8 /* StoryInteractionReadingQuiz1.xml in Resources */,
-				F87FE01C15BE994C0051C6E8 /* SCHStoryInteractionReadingQuiz_iPhone.xib in Resources */,
-				F87FE02015BE99740051C6E8 /* SCHStoryInteractionReadingQuiz_iPad.xib in Resources */,
+				F87FE01015BE956D0051C6E8 /* StoryInteractionReadingChallenge1.xml in Resources */,
+				F87FE01C15BE994C0051C6E8 /* SCHStoryInteractionReadingChallenge_iPhone.xib in Resources */,
+				F87FE02015BE99740051C6E8 /* SCHStoryInteractionReadingChallenge_iPad.xib in Resources */,
 				F8A23CA115C15D7C00F5F6A1 /* icon-readingquiz-younger-landscape@2x~iphone.png in Resources */,
 				F8A23CA515C15D7C00F5F6A1 /* icon-readingquiz-younger-landscape~iphone.png in Resources */,
 				F8A23CA915C15D7C00F5F6A1 /* icon-readingquiz-younger-portrait@2x~iphone.png in Resources */,
@@ -11137,7 +11137,7 @@
 				2898A0B713F436B100618172 /* Puzzle-6pc.xaml in Resources */,
 				C9367BE314731A8B0033A2EB /* SCHParentalToolsWebViewController_iPad.xib in Resources */,
 				C98BDF2015498A5300E265B8 /* SCHEPUB3Overrides.css in Resources */,
-				F87FE01215BE956D0051C6E8 /* StoryInteractionReadingQuiz1.xml in Resources */,
+				F87FE01215BE956D0051C6E8 /* StoryInteractionReadingChallenge1.xml in Resources */,
 				F839EB0815C7DAE7000F452E /* AstroBlastWithQuiz.jpg in Resources */,
 				F839EB0D15C7DAE7000F452E /* AstroBlastWithQuiz.xps in Resources */,
 				F839EB1215C7DAE7000F452E /* GoosebumpsWithQuiz.jpg in Resources */,
@@ -11874,9 +11874,9 @@
 				C96C4DA61557D62C00B47E56 /* storia-settings-logo@2x~ipad.png in Resources */,
 				A382C4131593639B00FDE3E3 /* 9780545324328.1103.MixedUpAlphabet.xps in Resources */,
 				A382C414159363B200FDE3E3 /* 9780545324328.1103.MixedUpAlphabet.jpg in Resources */,
-				F87FE01115BE956D0051C6E8 /* StoryInteractionReadingQuiz1.xml in Resources */,
-				F87FE01D15BE994C0051C6E8 /* SCHStoryInteractionReadingQuiz_iPhone.xib in Resources */,
-				F87FE02115BE99740051C6E8 /* SCHStoryInteractionReadingQuiz_iPad.xib in Resources */,
+				F87FE01115BE956D0051C6E8 /* StoryInteractionReadingChallenge1.xml in Resources */,
+				F87FE01D15BE994C0051C6E8 /* SCHStoryInteractionReadingChallenge_iPhone.xib in Resources */,
+				F87FE02115BE99740051C6E8 /* SCHStoryInteractionReadingChallenge_iPad.xib in Resources */,
 				F8A23CA215C15D7C00F5F6A1 /* icon-readingquiz-younger-landscape@2x~iphone.png in Resources */,
 				F8A23CA615C15D7C00F5F6A1 /* icon-readingquiz-younger-landscape~iphone.png in Resources */,
 				F8A23CAA15C15D7C00F5F6A1 /* icon-readingquiz-younger-portrait@2x~iphone.png in Resources */,
@@ -12433,8 +12433,8 @@
 				C96C4DA71557D62C00B47E56 /* storia-settings-logo@2x~ipad.png in Resources */,
 				A3E96F76159254C40069F1B9 /* 9780545443326_enr_v2.ToothTrouble.jpg in Resources */,
 				A3E96F7A159254C40069F1B9 /* 9780545443326_enr_v2.ToothTrouble.xps in Resources */,
-				F87FE01315BE956D0051C6E8 /* StoryInteractionReadingQuiz1.xml in Resources */,
-				F87FE02215BE99740051C6E8 /* SCHStoryInteractionReadingQuiz_iPad.xib in Resources */,
+				F87FE01315BE956D0051C6E8 /* StoryInteractionReadingChallenge1.xml in Resources */,
+				F87FE02215BE99740051C6E8 /* SCHStoryInteractionReadingChallenge_iPad.xib in Resources */,
 				F8A23CA315C15D7C00F5F6A1 /* icon-readingquiz-younger-landscape@2x~iphone.png in Resources */,
 				F8A23CA715C15D7C00F5F6A1 /* icon-readingquiz-younger-landscape~iphone.png in Resources */,
 				F8A23CAB15C15D7C00F5F6A1 /* icon-readingquiz-younger-portrait@2x~iphone.png in Resources */,
@@ -12991,8 +12991,8 @@
 				C96C4DA81557D62C00B47E56 /* storia-settings-logo@2x~ipad.png in Resources */,
 				A3E96F77159254C40069F1B9 /* 9780545443326_enr_v2.ToothTrouble.jpg in Resources */,
 				A3E96F7B159254C40069F1B9 /* 9780545443326_enr_v2.ToothTrouble.xps in Resources */,
-				F87FE01415BE956D0051C6E8 /* StoryInteractionReadingQuiz1.xml in Resources */,
-				F87FE01E15BE994C0051C6E8 /* SCHStoryInteractionReadingQuiz_iPhone.xib in Resources */,
+				F87FE01415BE956D0051C6E8 /* StoryInteractionReadingChallenge1.xml in Resources */,
+				F87FE01E15BE994C0051C6E8 /* SCHStoryInteractionReadingChallenge_iPhone.xib in Resources */,
 				F8A23CA415C15D7C00F5F6A1 /* icon-readingquiz-younger-landscape@2x~iphone.png in Resources */,
 				F8A23CA815C15D7C00F5F6A1 /* icon-readingquiz-younger-landscape~iphone.png in Resources */,
 				F8A23CAC15C15D7C00F5F6A1 /* icon-readingquiz-younger-portrait@2x~iphone.png in Resources */,
@@ -13430,10 +13430,10 @@
 				524321321598912400CCB8F1 /* SCHGetWishListItemsOperation.m in Sources */,
 				52A36A5F15B0521D00162753 /* SCHScholasticResponseParser.m in Sources */,
 				52A36A6A15B444D300162753 /* SCHXPSKNFBMetadataFileParser.m in Sources */,
-				F87FE00A15BE93E50051C6E8 /* SCHStoryInteractionReadingQuiz.m in Sources */,
-				F87FE01715BE98D50051C6E8 /* SCHStoryInteractionControllerReadingQuiz.m in Sources */,
+				F87FE00A15BE93E50051C6E8 /* SCHStoryInteractionReadingChallenge.m in Sources */,
+				F87FE01715BE98D50051C6E8 /* SCHStoryInteractionControllerReadingChallenge.m in Sources */,
 				52EB1F8515B976F0007E60D3 /* SCHAccountVerifier.m in Sources */,
-				F8FDF01715C2CC4F00F0F929 /* SCHStoryInteractionReadingQuizResultView.m in Sources */,
+				F8FDF01715C2CC4F00F0F929 /* SCHStoryInteractionReadingChallengeResultView.m in Sources */,
 				F8FDF02815C2EDC500F0F929 /* SCHStoryInteractionGradientView.m in Sources */,
 				C9F229AC15B82EDD009939D1 /* SCHAppModel.m in Sources */,
 				C9F229E915B9B37E009939D1 /* SCHPhoneAppController.m in Sources */,
@@ -13507,7 +13507,7 @@
 				52A36A6715B068D300162753 /* SCHScholasticResponseParserTests.m in Sources */,
 				52A36A6C15B444D300162753 /* SCHXPSKNFBMetadataFileParser.m in Sources */,
 				52A36A7115B458C900162753 /* SCHXPSKNFBMetadataFileParserTests.m in Sources */,
-				F87FE00C15BE93E50051C6E8 /* SCHStoryInteractionReadingQuiz.m in Sources */,
+				F87FE00C15BE93E50051C6E8 /* SCHStoryInteractionReadingChallenge.m in Sources */,
 				52CEC19215C148FD004C749A /* SCHBookIdentifierTests.m in Sources */,
 				52CEC19315C14C6E004C749A /* SCHBookIdentifier.m in Sources */,
 				52CEC19415C14C97004C749A /* NSNumber+ObjectTypes.m in Sources */,
@@ -14223,10 +14223,10 @@
 				524321331598912400CCB8F1 /* SCHGetWishListItemsOperation.m in Sources */,
 				52A36A6015B0521D00162753 /* SCHScholasticResponseParser.m in Sources */,
 				52A36A6B15B444D300162753 /* SCHXPSKNFBMetadataFileParser.m in Sources */,
-				F87FE00B15BE93E50051C6E8 /* SCHStoryInteractionReadingQuiz.m in Sources */,
-				F87FE01815BE98D50051C6E8 /* SCHStoryInteractionControllerReadingQuiz.m in Sources */,
+				F87FE00B15BE93E50051C6E8 /* SCHStoryInteractionReadingChallenge.m in Sources */,
+				F87FE01815BE98D50051C6E8 /* SCHStoryInteractionControllerReadingChallenge.m in Sources */,
 				52EB1F8615B976F0007E60D3 /* SCHAccountVerifier.m in Sources */,
-				F8FDF01815C2CC4F00F0F929 /* SCHStoryInteractionReadingQuizResultView.m in Sources */,
+				F8FDF01815C2CC4F00F0F929 /* SCHStoryInteractionReadingChallengeResultView.m in Sources */,
 				F8FDF02915C2EDC500F0F929 /* SCHStoryInteractionGradientView.m in Sources */,
 				C9F229AD15B82EDD009939D1 /* SCHAppModel.m in Sources */,
 				C9F229EA15B9B37E009939D1 /* SCHPhoneAppController.m in Sources */,
@@ -14615,10 +14615,10 @@
 				524321341598912400CCB8F1 /* SCHGetWishListItemsOperation.m in Sources */,
 				52A36A6215B0521D00162753 /* SCHScholasticResponseParser.m in Sources */,
 				52A36A6D15B444D300162753 /* SCHXPSKNFBMetadataFileParser.m in Sources */,
-				F87FE00D15BE93E50051C6E8 /* SCHStoryInteractionReadingQuiz.m in Sources */,
-				F87FE01915BE98D50051C6E8 /* SCHStoryInteractionControllerReadingQuiz.m in Sources */,
+				F87FE00D15BE93E50051C6E8 /* SCHStoryInteractionReadingChallenge.m in Sources */,
+				F87FE01915BE98D50051C6E8 /* SCHStoryInteractionControllerReadingChallenge.m in Sources */,
 				52EB1F8715B976F0007E60D3 /* SCHAccountVerifier.m in Sources */,
-				F8FDF01915C2CC4F00F0F929 /* SCHStoryInteractionReadingQuizResultView.m in Sources */,
+				F8FDF01915C2CC4F00F0F929 /* SCHStoryInteractionReadingChallengeResultView.m in Sources */,
 				F8FDF02A15C2EDC500F0F929 /* SCHStoryInteractionGradientView.m in Sources */,
 				C9F229AF15B82EDD009939D1 /* SCHAppModel.m in Sources */,
 				C9F229EC15B9B37E009939D1 /* SCHPhoneAppController.m in Sources */,
@@ -15007,10 +15007,10 @@
 				524321351598912400CCB8F1 /* SCHGetWishListItemsOperation.m in Sources */,
 				52A36A6315B0521D00162753 /* SCHScholasticResponseParser.m in Sources */,
 				52A36A6E15B444D300162753 /* SCHXPSKNFBMetadataFileParser.m in Sources */,
-				F87FE00E15BE93E50051C6E8 /* SCHStoryInteractionReadingQuiz.m in Sources */,
-				F87FE01A15BE98D50051C6E8 /* SCHStoryInteractionControllerReadingQuiz.m in Sources */,
+				F87FE00E15BE93E50051C6E8 /* SCHStoryInteractionReadingChallenge.m in Sources */,
+				F87FE01A15BE98D50051C6E8 /* SCHStoryInteractionControllerReadingChallenge.m in Sources */,
 				52EB1F8815B976F0007E60D3 /* SCHAccountVerifier.m in Sources */,
-				F8FDF01A15C2CC4F00F0F929 /* SCHStoryInteractionReadingQuizResultView.m in Sources */,
+				F8FDF01A15C2CC4F00F0F929 /* SCHStoryInteractionReadingChallengeResultView.m in Sources */,
 				F8FDF02B15C2EDC500F0F929 /* SCHStoryInteractionGradientView.m in Sources */,
 				C9F229ED15B9B37E009939D1 /* SCHPhoneAppController.m in Sources */,
 				C99BAB6F15BEB4CF00B18436 /* SCHAppModel.m in Sources */,

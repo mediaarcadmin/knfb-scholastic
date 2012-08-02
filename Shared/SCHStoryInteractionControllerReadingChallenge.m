@@ -1,17 +1,17 @@
 //
-//  SCHStoryInteractionControllerReadingQuiz.m
+//  SCHStoryInteractionControllerReadingChallenge.m
 //  Scholastic
 //
 //  Created by Gordon Christie on 24/07/2012.
 //  Copyright (c) 2012 BitWink. All rights reserved.
 //
 
-#import "SCHStoryInteractionControllerReadingQuiz.h"
-#import "SCHStoryInteractionReadingQuiz.h"
+#import "SCHStoryInteractionControllerReadingChallenge.h"
+#import "SCHStoryInteractionReadingChallenge.h"
 #import "SCHStoryInteractionProgressView.h"
 #import "SCHStretchableImageButton.h"
 
-@interface SCHStoryInteractionControllerReadingQuiz ()
+@interface SCHStoryInteractionControllerReadingChallenge ()
 
 @property (nonatomic, assign) NSInteger currentQuestionIndex;
 @property (nonatomic, assign) NSInteger score;
@@ -33,7 +33,7 @@
 
 @end
 
-@implementation SCHStoryInteractionControllerReadingQuiz
+@implementation SCHStoryInteractionControllerReadingChallenge
 
 @synthesize introTitleLabel;
 @synthesize introSubtitleLabel;
@@ -97,11 +97,11 @@
     [super closeButtonTapped:sender];    
 }
 
-- (SCHStoryInteractionReadingQuizQuestion *)currentQuestion
+- (SCHStoryInteractionReadingChallengeQuestion *)currentQuestion
 {
-    NSParameterAssert(self.currentQuestionIndex < [[(SCHStoryInteractionReadingQuiz *)self.storyInteraction questions] count]);
+    NSParameterAssert(self.currentQuestionIndex < [[(SCHStoryInteractionReadingChallenge *)self.storyInteraction questions] count]);
     
-    return [[(SCHStoryInteractionReadingQuiz *)self.storyInteraction questions] objectAtIndex:currentQuestionIndex];
+    return [[(SCHStoryInteractionReadingChallenge *)self.storyInteraction questions] objectAtIndex:currentQuestionIndex];
 }
 
 - (void)setupViewAtIndex:(NSInteger)screenIndex
@@ -136,10 +136,10 @@
     self.completedReadthrough = YES;
     
     if (self.completedReadthrough) {
-        [self enqueueAudioWithPath:[(SCHStoryInteractionReadingQuiz *)self.storyInteraction audioPathForIntroduction]
+        [self enqueueAudioWithPath:[(SCHStoryInteractionReadingChallenge *)self.storyInteraction audioPathForIntroduction]
                         fromBundle:NO];
         
-        self.bestScoreLabel.text = [NSString stringWithFormat:@"Best Score: %d/%d", bestScore, [[(SCHStoryInteractionReadingQuiz *)self.storyInteraction questions] count]];
+        self.bestScoreLabel.text = [NSString stringWithFormat:@"Best Score: %d/%d", bestScore, [[(SCHStoryInteractionReadingChallenge *)self.storyInteraction questions] count]];
         [self.introActionButton setTitle:@"Start" forState:UIControlStateNormal];
         if (self.bestScore >= 0) {
             self.bestScoreLabel.hidden = NO;
@@ -147,9 +147,9 @@
             self.bestScoreLabel.hidden = YES;
         }
     } else {
-        [self enqueueAudioWithPath:[(SCHStoryInteractionReadingQuiz *)self.storyInteraction audioPathForNotCompletedBook]
+        [self enqueueAudioWithPath:[(SCHStoryInteractionReadingChallenge *)self.storyInteraction audioPathForNotCompletedBook]
                         fromBundle:NO];
-        self.introTitleLabel.text = @"Finish reading this book before trying this reading quiz.";
+        self.introTitleLabel.text = @"Finish reading this book before trying this reading challenge.";
         [self.introActionButton setTitle:@"OK" forState:UIControlStateNormal];
         self.introSubtitleLabel.hidden = YES;
         self.bestScoreLabel.hidden = YES;
@@ -178,7 +178,7 @@
     [self.answersGiven removeAllObjects];
     self.currentQuestionIndex = 0;
     self.score = 0;
-    self.progressView.numberOfSteps = [[(SCHStoryInteractionReadingQuiz *)self.storyInteraction questions] count];
+    self.progressView.numberOfSteps = [[(SCHStoryInteractionReadingChallenge *)self.storyInteraction questions] count];
     [self setupQuestion];
     
     self.controllerState = SCHStoryInteractionControllerStateInteractionInProgress;
@@ -211,7 +211,7 @@
     if (score <= (int) ceil((float)maxScore/2.0f)) {
         // 50% or less
         if (!self.storyInteraction.olderStoryInteraction) {
-            [self enqueueAudioWithPath:[(SCHStoryInteractionReadingQuiz *)self.storyInteraction audioPathForLessThanFiftyPercent]
+            [self enqueueAudioWithPath:[(SCHStoryInteractionReadingChallenge *)self.storyInteraction audioPathForLessThanFiftyPercent]
                         fromBundle:NO];
         }
 
@@ -219,7 +219,7 @@
     } else if (score < ceil((float)maxScore)) {
         // less than 100%
         if (!self.storyInteraction.olderStoryInteraction) {
-            [self enqueueAudioWithPath:[(SCHStoryInteractionReadingQuiz *)self.storyInteraction audioPathForMoreThanFiftyPercent]
+            [self enqueueAudioWithPath:[(SCHStoryInteractionReadingChallenge *)self.storyInteraction audioPathForMoreThanFiftyPercent]
                         fromBundle:NO];
         }
         
@@ -227,7 +227,7 @@
     } else {
         // 100%
         if (!self.storyInteraction.olderStoryInteraction) {
-            [self enqueueAudioWithPath:[(SCHStoryInteractionReadingQuiz *)self.storyInteraction audioPathForAllCorrect]
+            [self enqueueAudioWithPath:[(SCHStoryInteractionReadingChallenge *)self.storyInteraction audioPathForAllCorrect]
                         fromBundle:NO];
         }
         
@@ -259,10 +259,10 @@
     for (int i = 0; i < self.answersGiven.count; i++)
     {
         NSInteger answerGiven = [[self.answersGiven objectAtIndex:i] intValue];
-        SCHStoryInteractionReadingQuizQuestion *question = [[(SCHStoryInteractionReadingQuiz *)self.storyInteraction questions] objectAtIndex:i];
+        SCHStoryInteractionReadingChallengeQuestion *question = [[(SCHStoryInteractionReadingChallenge *)self.storyInteraction questions] objectAtIndex:i];
         BOOL correctAnswer = (answerGiven == question.correctAnswer);
         
-        SCHStoryInteractionReadingQuizResultView *resultView = [[SCHStoryInteractionReadingQuizResultView alloc] init];
+        SCHStoryInteractionReadingChallengeResultView *resultView = [[SCHStoryInteractionReadingChallengeResultView alloc] init];
         
         resultView.tag = 999;
         resultView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
@@ -287,7 +287,20 @@
     
     
     CGRect containerFrame = self.answerScrollViewContainer.frame;
-    containerFrame.size.height = currentY + 15;
+    
+    CGFloat containerFrameHeight = currentY + 15;
+    
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+        containerFrameHeight = MAX(containerFrameHeight, 210);
+     } else {
+         if (UIInterfaceOrientationIsPortrait(self.interfaceOrientation)) {
+             containerFrameHeight = MAX(containerFrameHeight, 260);
+         } else {
+             containerFrameHeight = MAX(containerFrameHeight, 102);
+         }
+     }
+    
+    containerFrame.size.height = containerFrameHeight;
     containerFrame.size.width = self.answerScrollView.frame.size.width;
     self.answerScrollViewContainer.frame = containerFrame;
 
@@ -304,9 +317,8 @@
     
     self.answerBackgroundView.layer.mask = shape;
     
-
-//    self.answerScrollView.contentSize = self.answerScrollViewContainer.frame.size;
-    self.answerScrollView.contentSize = CGSizeMake(self.answerScrollView.frame.size.width, self.answerScrollViewContainer.frame.size.height + self.answerScrollViewContainer.frame.origin.y);
+    self.answerScrollView.contentSize = CGSizeMake(self.answerScrollView.frame.size.width,
+                                                   self.answerScrollViewContainer.frame.size.height + self.answerScrollViewContainer.frame.origin.y);
     
     double delayInSeconds = 0.5;
     dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);
@@ -330,30 +342,35 @@
 
 - (void)playQuestionAudioAndHighlightAnswers
 {
-    [self enqueueAudioWithPath:[[self currentQuestion] audioPathForQuestion]
-                    fromBundle:NO];
+    [self cancelQueuedAudioExecutingSynchronizedBlocksBefore:^{
+        
+        self.controllerState = SCHStoryInteractionControllerStateInteractionReadingAnswerWithPause;
     
-    NSInteger index = 0;
-    for (UIButton *button in self.answerButtons) {
-        [self enqueueAudioWithPath:[[self currentQuestion] audioPathForAnswerAtIndex:index]
-                        fromBundle:NO
-                        startDelay:0.5
-            synchronizedStartBlock:^{
-                [button setHighlighted:YES];
-            }
-              synchronizedEndBlock:^{
-                  [button setHighlighted:NO];
-                  if (index + 1 == [self.answerButtons count]) {
-                      self.controllerState = SCHStoryInteractionControllerStateInteractionInProgress;
-                  }
-              }];
-        index++;
-    }
+        [self enqueueAudioWithPath:[[self currentQuestion] audioPathForQuestion]
+                        fromBundle:NO];
+        
+        NSInteger index = 0;
+        for (UIButton *button in self.answerButtons) {
+            [self enqueueAudioWithPath:[[self currentQuestion] audioPathForAnswerAtIndex:index]
+                            fromBundle:NO
+                            startDelay:0.5
+                synchronizedStartBlock:^{
+                    [button setHighlighted:YES];
+                }
+                  synchronizedEndBlock:^{
+                      [button setHighlighted:NO];
+                      if (index + 1 == [self.answerButtons count]) {
+                          self.controllerState = SCHStoryInteractionControllerStateInteractionInProgress;
+                      }
+                  }];
+            index++;
+        }
+    }];
+
 }
 
 - (void)nextQuestion
 {
-    self.controllerState = SCHStoryInteractionControllerStateInteractionInProgress;
     self.currentQuestionIndex++;
     if (self.currentQuestionIndex == self.progressView.numberOfSteps) {
         [self presentNextView];
@@ -443,24 +460,30 @@
     if (tapCount > 1) {
         return;
     }
-    
-    NSInteger chosenAnswer = [self.answerButtons indexOfObject:sender];
-    if (chosenAnswer == NSNotFound) {
-        return;
-    }
-    
-    dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, 1.0 * NSEC_PER_SEC);
-    dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
-        [self nextQuestion];
-    });
+ 
+    [self cancelQueuedAudioExecutingSynchronizedBlocksBefore:^{
+        NSInteger chosenAnswer = [self.answerButtons indexOfObject:sender];
+        if (chosenAnswer == NSNotFound) {
+            return;
+        }
+        
+        [self enqueueAudioWithPath:[self.storyInteraction storyInteractionCorrectAnswerSoundFilename] fromBundle:YES];
 
-    [self enqueueAudioWithPath:[self.storyInteraction storyInteractionCorrectAnswerSoundFilename] fromBundle:YES];
+        [self.answersGiven addObject:[NSNumber numberWithInt:chosenAnswer]];
 
-    [self.answersGiven addObject:[NSNumber numberWithInt:chosenAnswer]];
+        if (chosenAnswer == [self currentQuestion].correctAnswer) {
+            self.score++;
+            
+        }
+        
+        [self performSelector:@selector(unhighlightAndMoveOn:) withObject:sender afterDelay:1.0];
+    }];
+}
 
-    if (chosenAnswer == [self currentQuestion].correctAnswer) {
-        self.score++;
-    }
+- (void)unhighlightAndMoveOn:(UIButton *) sender
+{
+    self.controllerState = SCHStoryInteractionControllerStateInteractionInProgress;
+    [self nextQuestion];
 }
 
 - (void)playAgainButtonTapped:(id)sender

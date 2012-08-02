@@ -14,13 +14,13 @@ typedef enum
 {
 	kSCHReadingViewNavigationToolbarStyleYoungerPhone = 0,
     kSCHReadingViewNavigationToolbarStyleYoungerPictureStarterPhone,
-    kSCHReadingViewNavigationToolbarStyleYoungerReadingQuizPhone,
-    kSCHReadingViewNavigationToolbarStyleYoungerPictureStarterAndReadingQuizPhone,
+    kSCHReadingViewNavigationToolbarStyleYoungerReadingChallengePhone,
+    kSCHReadingViewNavigationToolbarStyleYoungerPictureStarterAndReadingChallengePhone,
 	kSCHReadingViewNavigationToolbarStyleOlderPhone,
 	kSCHReadingViewNavigationToolbarStyleYoungerPad,
     kSCHReadingViewNavigationToolbarStyleYoungerPictureStarterPad,
-    kSCHReadingViewNavigationToolbarStyleYoungerReadingQuizPad,
-    kSCHReadingViewNavigationToolbarStyleYoungerPictureStarterAndReadingQuizPad,
+    kSCHReadingViewNavigationToolbarStyleYoungerReadingChallengePad,
+    kSCHReadingViewNavigationToolbarStyleYoungerPictureStarterAndReadingChallengePad,
     kSCHReadingViewNavigationToolbarStyleOlderPad
 } SCHReadingViewNavigationToolbarStyle;
 

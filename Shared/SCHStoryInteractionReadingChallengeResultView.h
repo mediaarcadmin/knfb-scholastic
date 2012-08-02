@@ -1,5 +1,5 @@
 //
-//  SCHStoryInteractionReadingQuizResultView.h
+//  SCHStoryInteractionReadingChallengeResultView.h
 //  Scholastic
 //
 //  Created by Gordon Christie on 27/07/2012.
@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface SCHStoryInteractionReadingQuizResultView : UIView
+@interface SCHStoryInteractionReadingChallengeResultView : UIView
 
 - (CGFloat)heightForCurrentTextWithWidth:(CGFloat)width;
 

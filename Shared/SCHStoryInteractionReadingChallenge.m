@@ -1,14 +1,14 @@
 //
-//  SCHStoryInteractionReadingQuiz.m
+//  SCHStoryInteractionReadingChallenge.m
 //  Scholastic
 //
 //  Created by Gordon Christie on 24/07/2012.
 //  Copyright (c) 2012 BitWink. All rights reserved.
 //
 
-#import "SCHStoryInteractionReadingQuiz.h"
+#import "SCHStoryInteractionReadingChallenge.h"
 
-@implementation SCHStoryInteractionReadingQuizQuestion
+@implementation SCHStoryInteractionReadingChallengeQuestion
 
 @synthesize answers;
 @synthesize correctAnswer;
@@ -23,49 +23,49 @@
 
 - (NSString *)audioPathForQuestion
 {
-    NSString *filename = [NSString stringWithFormat:@"rq_q%d.mp3", self.questionIndex+1];
+    NSString *filename = [NSString stringWithFormat:@"%@_q%d.mp3", self.storyInteraction.ID, self.questionIndex+1];
     return [KNFBXPSStoryInteractionsDirectory stringByAppendingPathComponent:filename];
 }
 
 - (NSString *)audioPathForAnswerAtIndex:(NSInteger)answerIndex
 {
-    NSString *filename = [NSString stringWithFormat:@"rq_q%da%d.mp3", self.questionIndex+1, answerIndex+1];
+    NSString *filename = [NSString stringWithFormat:@"%@_q%da%d.mp3", self.storyInteraction.ID, self.questionIndex+1, answerIndex+1];
     return [KNFBXPSStoryInteractionsDirectory stringByAppendingPathComponent:filename];
 }
 
 @end
 
-@implementation SCHStoryInteractionReadingQuiz
+@implementation SCHStoryInteractionReadingChallenge
 
 @synthesize questions;
 
 - (NSString *)audioPathForNotCompletedBook
 {
-    NSString *filename = [NSString stringWithFormat:@"rq_notcomplete.mp3"];
+    NSString *filename = [NSString stringWithFormat:@"gen_introductionnotready.mp3"];
     return [KNFBXPSStoryInteractionsDirectory stringByAppendingPathComponent:filename];
 }
 
 - (NSString *)audioPathForIntroduction
 {
-    NSString *filename = [NSString stringWithFormat:@"rq_intro.mp3"];
+    NSString *filename = [NSString stringWithFormat:@"gen_introductionready.mp3"];
     return [KNFBXPSStoryInteractionsDirectory stringByAppendingPathComponent:filename];
 }
 
 - (NSString *)audioPathForAllCorrect
 {
-    NSString *filename = [NSString stringWithFormat:@"rq_allcorrect.mp3"];
+    NSString *filename = [NSString stringWithFormat:@"gen_scoreresponsehigh.mp3"];
     return [KNFBXPSStoryInteractionsDirectory stringByAppendingPathComponent:filename];
 }
 
 - (NSString *)audioPathForMoreThanFiftyPercent
 {
-    NSString *filename = [NSString stringWithFormat:@"rq_morethanfiftypercent.mp3"];
+    NSString *filename = [NSString stringWithFormat:@"gen_scoreresponsemedium.mp3"];
     return [KNFBXPSStoryInteractionsDirectory stringByAppendingPathComponent:filename];
 }
 
 - (NSString *)audioPathForLessThanFiftyPercent
 {
-    NSString *filename = [NSString stringWithFormat:@"rq_lessthanfiftypercent.mp3"];
+    NSString *filename = [NSString stringWithFormat:@"gen_scoreresponselow.mp3"];
     return [KNFBXPSStoryInteractionsDirectory stringByAppendingPathComponent:filename];
 }
 

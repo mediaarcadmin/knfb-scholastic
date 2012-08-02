@@ -1,12 +1,12 @@
 //
-//  SCHStoryInteractionReadingQuizResultView.m
+//  SCHStoryInteractionReadingChallengeResultView.m
 //  Scholastic
 //
 //  Created by Gordon Christie on 27/07/2012.
 //  Copyright (c) 2012 BitWink. All rights reserved.
 //
 
-#import "SCHStoryInteractionReadingQuizResultView.h"
+#import "SCHStoryInteractionReadingChallengeResultView.h"
 #import <QuartzCore/QuartzCore.h>
 
 #define TEXT_GAP 2
@@ -14,7 +14,7 @@
 #define IMAGE_WIDTH 30
 #define TOP_BOTTOM_INSET 5
 
-@interface SCHStoryInteractionReadingQuizResultView ()
+@interface SCHStoryInteractionReadingChallengeResultView ()
 
 @property (nonatomic, retain) UILabel *questionLabel;
 @property (nonatomic, retain) UILabel *answerLabel;
@@ -22,7 +22,7 @@
 
 @end
 
-@implementation SCHStoryInteractionReadingQuizResultView
+@implementation SCHStoryInteractionReadingChallengeResultView
 
 @synthesize questionLabel;
 @synthesize answerLabel;

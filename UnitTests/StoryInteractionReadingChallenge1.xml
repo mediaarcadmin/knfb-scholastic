@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <SIConfigFile>
     <StoryInteractions>
-        <StoryInteraction StoryInteractionType="ReadingQuiz">
+        <StoryInteraction StoryInteractionType="ReadingChallenge" ID="rc1">
             <Position>180,10</Position>
             <Quiz>
                 <Question>

@@ -649,32 +649,32 @@ static const NSUInteger kReadingViewMaxRecommendationsCount = 4;
         pictureStarter = YES;
     }
     
-    BOOL readingQuiz = NO;
+    BOOL readingChallenge = NO;
     
-    if ([[self.bookStoryInteractions storyInteractionsOfClass:[SCHStoryInteractionReadingQuiz class]] count]) {
-        readingQuiz = YES;
+    if ([[self.bookStoryInteractions storyInteractionsOfClass:[SCHStoryInteractionReadingChallenge class]] count]) {
+        readingChallenge = YES;
     }
     
     SCHReadingViewNavigationToolbarStyle style = 0;
     
     if (self.youngerMode) {
         if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
-            if (pictureStarter && readingQuiz) {
-                style = kSCHReadingViewNavigationToolbarStyleYoungerPictureStarterAndReadingQuizPhone;
+            if (pictureStarter && readingChallenge) {
+                style = kSCHReadingViewNavigationToolbarStyleYoungerPictureStarterAndReadingChallengePhone;
             } else if (pictureStarter) {
                 style = kSCHReadingViewNavigationToolbarStyleYoungerPictureStarterPhone;
-            } else if (readingQuiz) {
-                style = kSCHReadingViewNavigationToolbarStyleYoungerReadingQuizPhone;
+            } else if (readingChallenge) {
+                style = kSCHReadingViewNavigationToolbarStyleYoungerReadingChallengePhone;
             } else {
                 style = kSCHReadingViewNavigationToolbarStyleYoungerPhone;
             }
         } else {
-            if (pictureStarter && readingQuiz) {
-                style = kSCHReadingViewNavigationToolbarStyleYoungerPictureStarterAndReadingQuizPad; 
+            if (pictureStarter && readingChallenge) {
+                style = kSCHReadingViewNavigationToolbarStyleYoungerPictureStarterAndReadingChallengePad;
             } else if (pictureStarter) {
                 style = kSCHReadingViewNavigationToolbarStyleYoungerPictureStarterPad;
-            } else if (readingQuiz) {
-                style = kSCHReadingViewNavigationToolbarStyleYoungerReadingQuizPad;
+            } else if (readingChallenge) {
+                style = kSCHReadingViewNavigationToolbarStyleYoungerReadingChallengePad;
             } else {
                 style = kSCHReadingViewNavigationToolbarStyleYoungerPad; 
             }
@@ -761,7 +761,7 @@ static const NSUInteger kReadingViewMaxRecommendationsCount = 4;
 #endif
     
     // Reading Quiz
-    if (!readingQuiz && [toolbarArray count] >= 9) {
+    if (!readingChallenge && [toolbarArray count] >= 9) {
         [toolbarArray removeObjectsAtIndexes:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(6, 2)]];
     }
     
@@ -1228,7 +1228,7 @@ static const NSUInteger kReadingViewMaxRecommendationsCount = 4;
 {
     [self toolbarButtonPressed];
     
-    NSArray *storyInteractions = [self.bookStoryInteractions storyInteractionsOfClass:[SCHStoryInteractionReadingQuiz class]];
+    NSArray *storyInteractions = [self.bookStoryInteractions storyInteractionsOfClass:[SCHStoryInteractionReadingChallenge class]];
     if ([storyInteractions count] < 1) {
         NSLog(@"No Reading Quiz found - button should be disabled");
         return;

@@ -260,8 +260,8 @@
             break;
         case kSCHReadingViewNavigationToolbarStyleYoungerPad:
         case kSCHReadingViewNavigationToolbarStyleYoungerPictureStarterPad:
-        case kSCHReadingViewNavigationToolbarStyleYoungerReadingQuizPad:
-        case kSCHReadingViewNavigationToolbarStyleYoungerPictureStarterAndReadingQuizPad:
+        case kSCHReadingViewNavigationToolbarStyleYoungerReadingChallengePad:
+        case kSCHReadingViewNavigationToolbarStyleYoungerPictureStarterAndReadingChallengePad:
             [backItemButton setImage:[UIImage imageNamed:@"icon-back-younger.png"] forState:UIControlStateNormal];
             break;
         case kSCHReadingViewNavigationToolbarStyleOlderPhone:
@@ -273,8 +273,8 @@
             break;
         case kSCHReadingViewNavigationToolbarStyleYoungerPhone:
         case kSCHReadingViewNavigationToolbarStyleYoungerPictureStarterPhone:
-        case kSCHReadingViewNavigationToolbarStyleYoungerReadingQuizPhone:
-        case kSCHReadingViewNavigationToolbarStyleYoungerPictureStarterAndReadingQuizPhone:
+        case kSCHReadingViewNavigationToolbarStyleYoungerReadingChallengePhone:
+        case kSCHReadingViewNavigationToolbarStyleYoungerPictureStarterAndReadingChallengePhone:
             if (UIInterfaceOrientationIsPortrait(orientation)) {
                 [backItemButton setImage:[UIImage imageNamed:@"icon-back-younger-portrait.png"] forState:UIControlStateNormal];
             } else {
@@ -296,11 +296,11 @@
     
     switch (self.style) {
         case kSCHReadingViewNavigationToolbarStyleYoungerPictureStarterPad:
-        case kSCHReadingViewNavigationToolbarStyleYoungerPictureStarterAndReadingQuizPad:
+        case kSCHReadingViewNavigationToolbarStyleYoungerPictureStarterAndReadingChallengePad:
             [pictureStarterItemButton setImage:[UIImage imageNamed:@"icon-picturestarter-younger.png"] forState:UIControlStateNormal];
             break;
         case kSCHReadingViewNavigationToolbarStyleYoungerPictureStarterPhone:
-        case kSCHReadingViewNavigationToolbarStyleYoungerPictureStarterAndReadingQuizPhone:
+        case kSCHReadingViewNavigationToolbarStyleYoungerPictureStarterAndReadingChallengePhone:
             if (UIInterfaceOrientationIsPortrait(orientation)) {
                 [pictureStarterItemButton setImage:[UIImage imageNamed:@"icon-picturestarter-younger-portrait.png"] forState:UIControlStateNormal];
             } else {
@@ -323,12 +323,12 @@
     }
     
     switch (self.style) {
-        case kSCHReadingViewNavigationToolbarStyleYoungerReadingQuizPad:
-        case kSCHReadingViewNavigationToolbarStyleYoungerPictureStarterAndReadingQuizPad:
+        case kSCHReadingViewNavigationToolbarStyleYoungerReadingChallengePad:
+        case kSCHReadingViewNavigationToolbarStyleYoungerPictureStarterAndReadingChallengePad:
             [readingQuizItemButton setImage:[UIImage imageNamed:@"icon-readingquiz-younger.png"] forState:UIControlStateNormal];
             break;
-        case kSCHReadingViewNavigationToolbarStyleYoungerReadingQuizPhone:
-        case kSCHReadingViewNavigationToolbarStyleYoungerPictureStarterAndReadingQuizPhone:
+        case kSCHReadingViewNavigationToolbarStyleYoungerReadingChallengePhone:
+        case kSCHReadingViewNavigationToolbarStyleYoungerPictureStarterAndReadingChallengePhone:
             if (UIInterfaceOrientationIsPortrait(orientation)) {
                 [readingQuizItemButton setImage:[UIImage imageNamed:@"icon-readingquiz-younger-portrait.png"] forState:UIControlStateNormal];
             } else {
@@ -353,14 +353,14 @@
     switch (self.style) {
         case kSCHReadingViewNavigationToolbarStyleYoungerPad:
         case kSCHReadingViewNavigationToolbarStyleYoungerPictureStarterPad:
-        case kSCHReadingViewNavigationToolbarStyleYoungerReadingQuizPad:
-        case kSCHReadingViewNavigationToolbarStyleYoungerPictureStarterAndReadingQuizPad:
+        case kSCHReadingViewNavigationToolbarStyleYoungerReadingChallengePad:
+        case kSCHReadingViewNavigationToolbarStyleYoungerPictureStarterAndReadingChallengePad:
             [audioItemButton setImage:[UIImage imageNamed:@"icon-audio-younger.png"] forState:UIControlStateNormal];
             break;
         case kSCHReadingViewNavigationToolbarStyleYoungerPhone:
         case kSCHReadingViewNavigationToolbarStyleYoungerPictureStarterPhone:
-        case kSCHReadingViewNavigationToolbarStyleYoungerReadingQuizPhone:
-        case kSCHReadingViewNavigationToolbarStyleYoungerPictureStarterAndReadingQuizPhone:
+        case kSCHReadingViewNavigationToolbarStyleYoungerReadingChallengePhone:
+        case kSCHReadingViewNavigationToolbarStyleYoungerPictureStarterAndReadingChallengePhone:
             if (UIInterfaceOrientationIsPortrait(orientation)) {
                 [audioItemButton setImage:[UIImage imageNamed:@"icon-audio-younger-portrait.png"] forState:UIControlStateNormal];
             } else {
@@ -388,8 +388,8 @@
             break;
         case kSCHReadingViewNavigationToolbarStyleYoungerPad:
         case kSCHReadingViewNavigationToolbarStyleYoungerPictureStarterPad:
-        case kSCHReadingViewNavigationToolbarStyleYoungerReadingQuizPad:
-        case kSCHReadingViewNavigationToolbarStyleYoungerPictureStarterAndReadingQuizPad:
+        case kSCHReadingViewNavigationToolbarStyleYoungerReadingChallengePad:
+        case kSCHReadingViewNavigationToolbarStyleYoungerPictureStarterAndReadingChallengePad:
             [helpItemButton setImage:[UIImage imageNamed:@"icon-help-younger.png"] forState:UIControlStateNormal];
             break;
         case kSCHReadingViewNavigationToolbarStyleOlderPhone:
@@ -400,9 +400,9 @@
             }
             break;
         case kSCHReadingViewNavigationToolbarStyleYoungerPhone:
-        case kSCHReadingViewNavigationToolbarStyleYoungerReadingQuizPhone:
+        case kSCHReadingViewNavigationToolbarStyleYoungerReadingChallengePhone:
         case kSCHReadingViewNavigationToolbarStyleYoungerPictureStarterPhone:
-        case kSCHReadingViewNavigationToolbarStyleYoungerPictureStarterAndReadingQuizPhone:
+        case kSCHReadingViewNavigationToolbarStyleYoungerPictureStarterAndReadingChallengePhone:
             if (UIInterfaceOrientationIsPortrait(orientation)) {
                 [helpItemButton setImage:[UIImage imageNamed:@"icon-help-younger-portrait.png"] forState:UIControlStateNormal];
             } else {
@@ -452,12 +452,12 @@
             break;
         }
         case kSCHReadingViewNavigationToolbarStyleYoungerPictureStarterPhone:
-        case kSCHReadingViewNavigationToolbarStyleYoungerReadingQuizPhone:
+        case kSCHReadingViewNavigationToolbarStyleYoungerReadingChallengePhone:
         {
             [items addObject:[self backItemForOrientation:orientation]];
             [items addObject:[self flexibleItem]];
             
-            if (self.style == kSCHReadingViewNavigationToolbarStyleYoungerReadingQuizPhone) {
+            if (self.style == kSCHReadingViewNavigationToolbarStyleYoungerReadingChallengePhone) {
                 [items addObject:[self readingQuizItemForOrientation:orientation]];
             } else {
                 [items addObject:[self pictureStarterItemForOrientation:orientation]];
@@ -475,7 +475,7 @@
             
             break;
         }
-        case kSCHReadingViewNavigationToolbarStyleYoungerPictureStarterAndReadingQuizPhone:
+        case kSCHReadingViewNavigationToolbarStyleYoungerPictureStarterAndReadingChallengePhone:
         {
             [items addObject:[self backItemForOrientation:orientation]];
             [items addObject:[self flexibleItem]];
@@ -522,7 +522,7 @@
 
             break;
         }
-        case kSCHReadingViewNavigationToolbarStyleYoungerReadingQuizPad:
+        case kSCHReadingViewNavigationToolbarStyleYoungerReadingChallengePad:
         case kSCHReadingViewNavigationToolbarStyleYoungerPictureStarterPad:
         {
             [items addObject:[self backItemForOrientation:orientation]];
@@ -544,7 +544,7 @@
                 [items addObject:[self fixedItemOfWidth:9]];
             }
             
-            if (self.style == kSCHReadingViewNavigationToolbarStyleYoungerReadingQuizPad) {
+            if (self.style == kSCHReadingViewNavigationToolbarStyleYoungerReadingChallengePad) {
                 [items addObject:[self readingQuizItemForOrientation:orientation]];
             } else {
                 [items addObject:[self pictureStarterItemForOrientation:orientation]];
@@ -557,7 +557,7 @@
              
             break;
         }
-        case kSCHReadingViewNavigationToolbarStyleYoungerPictureStarterAndReadingQuizPad:
+        case kSCHReadingViewNavigationToolbarStyleYoungerPictureStarterAndReadingChallengePad:
         {
             [items addObject:[self backItemForOrientation:orientation]];
             
@@ -694,8 +694,8 @@
         switch (aStyle) {
             case kSCHReadingViewNavigationToolbarStyleYoungerPhone:
             case kSCHReadingViewNavigationToolbarStyleYoungerPictureStarterPhone:
-            case kSCHReadingViewNavigationToolbarStyleYoungerReadingQuizPhone:
-            case kSCHReadingViewNavigationToolbarStyleYoungerPictureStarterAndReadingQuizPhone:
+            case kSCHReadingViewNavigationToolbarStyleYoungerReadingChallengePhone:
+            case kSCHReadingViewNavigationToolbarStyleYoungerPictureStarterAndReadingChallengePhone:
                 size = CGSizeMake(320, 60);
                 break;
             case kSCHReadingViewNavigationToolbarStyleOlderPhone:
@@ -703,8 +703,8 @@
                 break;
             case kSCHReadingViewNavigationToolbarStyleYoungerPad:
             case kSCHReadingViewNavigationToolbarStyleYoungerPictureStarterPad:
-            case kSCHReadingViewNavigationToolbarStyleYoungerReadingQuizPad:
-            case kSCHReadingViewNavigationToolbarStyleYoungerPictureStarterAndReadingQuizPad:
+            case kSCHReadingViewNavigationToolbarStyleYoungerReadingChallengePad:
+            case kSCHReadingViewNavigationToolbarStyleYoungerPictureStarterAndReadingChallengePad:
                 size = CGSizeMake(768, 60);
                 break;
             case kSCHReadingViewNavigationToolbarStyleOlderPad:
@@ -715,8 +715,8 @@
         switch (aStyle) {
             case kSCHReadingViewNavigationToolbarStyleYoungerPhone:
             case kSCHReadingViewNavigationToolbarStyleYoungerPictureStarterPhone:
-            case kSCHReadingViewNavigationToolbarStyleYoungerReadingQuizPhone:
-            case kSCHReadingViewNavigationToolbarStyleYoungerPictureStarterAndReadingQuizPhone:
+            case kSCHReadingViewNavigationToolbarStyleYoungerReadingChallengePhone:
+            case kSCHReadingViewNavigationToolbarStyleYoungerPictureStarterAndReadingChallengePhone:
                 size = CGSizeMake(480, 44);
                 break;
             case kSCHReadingViewNavigationToolbarStyleOlderPhone:
@@ -724,8 +724,8 @@
                 break;
             case kSCHReadingViewNavigationToolbarStyleYoungerPad:
             case kSCHReadingViewNavigationToolbarStyleYoungerPictureStarterPad:    
-            case kSCHReadingViewNavigationToolbarStyleYoungerReadingQuizPad:    
-            case kSCHReadingViewNavigationToolbarStyleYoungerPictureStarterAndReadingQuizPad:
+            case kSCHReadingViewNavigationToolbarStyleYoungerReadingChallengePad:
+            case kSCHReadingViewNavigationToolbarStyleYoungerPictureStarterAndReadingChallengePad:
                 size = CGSizeMake(1024, 60);
                 break;
             case kSCHReadingViewNavigationToolbarStyleOlderPad:

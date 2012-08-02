@@ -1,5 +1,5 @@
 //
-//  SCHStoryInteractionControllerReadingQuiz.h
+//  SCHStoryInteractionControllerReadingChallenge.h
 //  Scholastic
 //
 //  Created by Gordon Christie on 24/07/2012.
@@ -9,11 +9,11 @@
 #import "SCHStoryInteractionController.h"
 #import "TTTAttributedLabel.h"
 #import "SCHStretchableImageButton.h"
-#import "SCHStoryInteractionReadingQuizResultView.h"
+#import "SCHStoryInteractionReadingChallengeResultView.h"
 
 @class SCHStoryInteractionProgressView;
 
-@interface SCHStoryInteractionControllerReadingQuiz : SCHStoryInteractionController
+@interface SCHStoryInteractionControllerReadingChallenge : SCHStoryInteractionController
 
 @property (retain, nonatomic) IBOutlet UILabel *introTitleLabel;
 @property (retain, nonatomic) IBOutlet UILabel *introSubtitleLabel;

@@ -549,9 +549,9 @@ static CGPathRef parseBase64EncodedPathAndFitToHotSpotRect(NSString *text, CGRec
 
 @end
 
-#pragma mark - ReadingQuiz
+#pragma mark - ReadingChallenge
 
-@implementation SCHStoryInteractionReadingQuizQuestion (Parse)
+@implementation SCHStoryInteractionReadingChallengeQuestion (Parse)
 
 - (void)startElement:(const XML_Char *)name attributes:(const XML_Char **)attributes parser:(SCHStoryInteractionParser *)parser
 {
@@ -588,12 +588,12 @@ static CGPathRef parseBase64EncodedPathAndFitToHotSpotRect(NSString *text, CGRec
 
 @end
 
-@implementation SCHStoryInteractionReadingQuiz (Parse)
+@implementation SCHStoryInteractionReadingChallenge (Parse)
 
 - (void)startElement:(const XML_Char *)name attributes:(const XML_Char **)attributes parser:(SCHStoryInteractionParser *)parser
 {
     if (strcmp(name,"Question") == 0) {
-        [parser beginQuestion:[SCHStoryInteractionReadingQuizQuestion class]];
+        [parser beginQuestion:[SCHStoryInteractionReadingChallengeQuestion class]];
     } else {
         [super startElement:name attributes:attributes parser:parser];
     }

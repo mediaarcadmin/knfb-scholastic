@@ -1,5 +1,5 @@
 //
-//  SCHStoryInteractionReadingQuiz.h
+//  SCHStoryInteractionReadingChallenge.h
 //  Scholastic
 //
 //  Created by Gordon Christie on 24/07/2012.
@@ -9,7 +9,7 @@
 #import <Foundation/Foundation.h>
 #import "SCHStoryInteraction.h"
 
-@interface SCHStoryInteractionReadingQuizQuestion : SCHStoryInteractionQuestion {}
+@interface SCHStoryInteractionReadingChallengeQuestion : SCHStoryInteractionQuestion {}
 
 @property (nonatomic, retain) NSString *prompt;
 
@@ -25,7 +25,7 @@
 @end
 
 
-@interface SCHStoryInteractionReadingQuiz : SCHStoryInteraction {}
+@interface SCHStoryInteractionReadingChallenge : SCHStoryInteraction {}
 
 @property (nonatomic, retain) NSArray *questions;
 
