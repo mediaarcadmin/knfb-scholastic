@@ -40,7 +40,7 @@
 
 - (NSString *)title
 {
-    return @"About You...";
+    return @"About You";
 }
 
 @end
