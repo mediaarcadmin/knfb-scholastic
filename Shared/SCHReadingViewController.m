@@ -1516,7 +1516,6 @@ static const NSUInteger kReadingViewMaxRecommendationsCount = 4;
 
 - (void)setupStoryInteractionButtonForCurrentPagesAnimated:(BOOL)animated
 {     
-    return;
     // if a story interaction is active, hide the button
     if (self.storyInteractionController != nil) {
         // But still set up the fill level
