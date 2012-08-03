@@ -27,7 +27,7 @@ NSString * const SCHBSBManifestFile = @"/manifest.xml";
     [super dealloc];
 }
 
-- (id)initWithBookIdentifier:(SCHBookIdentifier *)bookIdentifier path:(NSString *)bsbPath
+- (id)initWithBookIdentifier:(SCHBookIdentifier *)bookIdentifier path:(NSString *)bsbPath error:(NSError **)error
 {
     if ((self = [super initWithZipFileAtPath:bsbPath])) {
         
@@ -58,6 +58,11 @@ NSString * const SCHBSBManifestFile = @"/manifest.xml";
 - (BOOL)decryptionIsAvailable
 {
     return NO;
+}
+
+- (void)resetDrmDecrypter
+{
+    // noop
 }
 
 - (void)reportReadingIfRequired

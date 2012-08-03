@@ -19,6 +19,7 @@ extern NSString * const kSCHBookUpdatedSuccessfullyNotification;
 
 @property (nonatomic, retain) IBOutlet SCHUpdateBooksTableViewCell *cell;
 @property (nonatomic, assign) BOOL bookEnabledForUpdate;
+@property (nonatomic, copy) dispatch_block_t bookEnabledToggleBlock;
 
 - (id)initWithBookIdentifier:(SCHBookIdentifier *)bookIdentifier inManagedObjectContext:(NSManagedObjectContext *)managedObjectContext;
 

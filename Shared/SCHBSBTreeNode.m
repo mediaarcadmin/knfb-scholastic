@@ -12,9 +12,7 @@
 
 - (BOOL)isReplacedNode
 {
-    if ([self isImageNode] ||
-        [self isVideoNode] || 
-        [self isUIKitNode]) 
+    if ([self isUIKitNode]) 
     {
         return YES;
     }

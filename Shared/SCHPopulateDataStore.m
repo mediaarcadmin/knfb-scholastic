@@ -18,12 +18,12 @@
 #import "SCHAppBook.h"
 #import "SCHXPSProvider.h"
 #import "KNFBXPSConstants.h"
-#import "TouchXML.h"
 #import "SCHBookManager.h"
 #import "SCHBookIdentifier.h"
 #import "SCHSampleBooksImporter.h"
 #import "LambdaAlert.h"
 #import "SCHLibreAccessConstants.h"
+#import "SCHXPSKNFBMetadataFileParser.h"
 
 @interface SCHPopulateDataStore ()
 
@@ -91,7 +91,7 @@
                                                     password:@"pass"                                 
                                                          age:5 
                                                    bookshelf:kSCHBookshelfStyleYoungChild];
-    [self.profileSyncComponent addProfile:youngerProfileItem];
+    [self.profileSyncComponent addProfileFromMainThread:youngerProfileItem];
     
     // Older bookshelf    
     NSDictionary *olderProfileItem = [self profileItemWith:2
@@ -99,7 +99,7 @@
                                                   password:@"pass"                                 
                                                        age:14 
                                                  bookshelf:kSCHBookshelfStyleOlderChild];
-    [self.profileSyncComponent addProfile:olderProfileItem];
+    [self.profileSyncComponent addProfileFromMainThread:olderProfileItem];
     
     NSArray *youngerBookshelfOnly = [NSArray arrayWithObject:[youngerProfileItem objectForKey:kSCHLibreAccessWebServiceID]];
     NSArray *olderBookshelfOnly = [NSArray arrayWithObject:[olderProfileItem objectForKey:kSCHLibreAccessWebServiceID]];
@@ -204,12 +204,12 @@
 - (void)addBook:(NSDictionary *)book forProfiles:(NSArray *)profileIDs
 {
     if (book != nil && profileIDs != nil && [profileIDs count] > 0) {
-        [self.contentSyncComponent addUserContentItem:[self userContentItemWith:[book objectForKey:kSCHLibreAccessWebServiceContentIdentifier]
-                                                                    drmQualifer:[[book objectForKey:kSCHLibreAccessWebServiceDRMQualifier] DRMQualifierValue]
-                                                                         format:[book objectForKey:kSCHLibreAccessWebServiceFormat]
-                                                                     profileIDs:profileIDs]];
+        [self.contentSyncComponent addUserContentItemFromMainThread:[self userContentItemWith:[book objectForKey:kSCHLibreAccessWebServiceContentIdentifier]
+                                                                                  drmQualifer:[[book objectForKey:kSCHLibreAccessWebServiceDRMQualifier] DRMQualifierValue]
+																					   format:[book objectForKey:kSCHLibreAccessWebServiceFormat]
+                                                                                   profileIDs:profileIDs]];
         
-        [self.bookshelfSyncComponent addContentMetadataItem:book];
+        [self.bookshelfSyncComponent addContentMetadataItemFromMainThread:book];
     }
 }
 
@@ -249,9 +249,9 @@
                                                 bookshelf:kSCHBookshelfStyleOlderChild]];
         }
 
-        [self.profileSyncComponent syncProfiles:profileItems];
-        [self.contentSyncComponent syncUserContentItems:userContentItems];
-        [self.bookshelfSyncComponent syncContentMetadataItems:contentMetadataItems];        
+        [self.profileSyncComponent syncProfilesFromMainThread:profileItems];
+        [self.contentSyncComponent syncUserContentItemsFromMainThread:userContentItems];
+        [self.bookshelfSyncComponent syncContentMetadataItemsFromMainThread:contentMetadataItems];        
     }
 }
 
@@ -349,7 +349,7 @@
                                                     password:@"pass"                                 
                                                          age:5 
                                                    bookshelf:kSCHBookshelfStyleYoungChild];
-    [self.profileSyncComponent addProfile:youngerProfileItem];
+    [self.profileSyncComponent addProfileFromMainThread:youngerProfileItem];
     
     NSDictionary *youngerBook = [self contentMetaDataItemWith:@"0-393-05158-7"
                                                         title:@"A Christmas Carol"
@@ -368,7 +368,7 @@
                                                   password:@"pass"
                                                        age:14 
                                                  bookshelf:kSCHBookshelfStyleOlderChild];
-    [self.profileSyncComponent addProfile:olderProfileItem];
+    [self.profileSyncComponent addProfileFromMainThread:olderProfileItem];
     
     NSDictionary *olderBook = [self contentMetaDataItemWith:@"978-0-14-143960-0"
                                                       title:@"A Tale of Two Cities"
@@ -437,6 +437,7 @@
     [ret setObject:@"" forKey:kSCHLibreAccessWebServiceUserKey];            
     [ret setObject:[NSNumber numberWithBookshelfStyle:bookshelf] forKey:kSCHLibreAccessWebServiceBookshelfStyle];                
     [ret setObject:(title == nil ? (id)[NSNull null] : title) forKey:kSCHLibreAccessWebServiceLastName];                
+    [ret setObject:[NSNumber numberWithBool:YES] forKey:kSCHLibreAccessWebServiceRecommendationsOn];            
     [ret setObject:dateNow forKey:kSCHLibreAccessWebServiceLastModified];                
     
     return(ret);
@@ -499,7 +500,7 @@
         [profileList addObject:profileItem];
         
         NSMutableDictionary *orderItem = [NSMutableDictionary dictionary];
-        [orderItem setObject:[NSString stringWithFormat:@"%lx", orderID++] forKey:kSCHLibreAccessWebServiceOrderID];        
+        [orderItem setObject:[NSString stringWithFormat:@"%x", orderID++] forKey:kSCHLibreAccessWebServiceOrderID];        
         [orderItem setObject:[dateNow dateByAddingTimeInterval:orderID * 60] forKey:kSCHLibreAccessWebServiceOrderDate];                
         [orderList addObject:orderItem];
     }
@@ -532,32 +533,15 @@
                                                                          xpsPath:xpsFilePath];
     
     if(xpsProvider != nil) {
-        CXMLDocument *doc = [[CXMLDocument alloc] initWithData:[xpsProvider dataForComponentAtPath:KNFBXPSKNFBMetadataFile] 
-                                                       options:0 
-                                                         error:&error];
-        NSArray *nodes = nil;
-        
-        if (error == nil) {
-            nodes = [doc nodesForXPath:@"//Title" error:&error];
-            if (error == nil) {		
-                for (CXMLElement *node in nodes) {
-                    title = [[node attributeForName:@"Main"] stringValue];
-                }	
-            }
-            nodes = [doc nodesForXPath:@"//Contributor" error:&error];
-            if (error == nil) {		
-                for (CXMLElement *node in nodes) {
-                    author = [[node attributeForName:@"Author"] stringValue];
-                }	
-            }		
-            nodes = [doc nodesForXPath:@"//Identifier" error:&error];
-            if (error == nil) {		
-                for (CXMLElement *node in nodes) {
-                    ISBN = [[node attributeForName:@"ISBN"] stringValue];
-                }	
-            }		
+        SCHXPSKNFBMetadataFileParser *metadataFileParser = [[[SCHXPSKNFBMetadataFileParser alloc] init] autorelease];
+        NSDictionary *metadataInfo = [metadataFileParser parseXMLData:[xpsProvider dataForComponentAtPath:KNFBXPSKNFBMetadataFile]];
+
+        if (metadataInfo != nil) {
+            title = [metadataInfo objectForKey:kSCHXPSKNFBMetadataFileParserTitle];
+            author = [metadataInfo objectForKey:kSCHXPSKNFBMetadataFileParserAuthor];            
+            ISBN = [metadataInfo objectForKey:kSCHXPSKNFBMetadataFileParserISBN];            
+
         }
-        [doc release], doc = nil;
 
         if ([title length] == 0) {
             title = [xpsFilePath lastPathComponent];
@@ -594,11 +578,11 @@
                                                     contentURL:nil
                                                       enhanced:[xpsProvider componentExistsAtPath:KNFBXPSStoryInteractionsMetadataFile]];
             
-            [self.contentSyncComponent addUserContentItem:[self userContentItemWith:[book objectForKey:kSCHLibreAccessWebServiceContentIdentifier] 
-                                                                        drmQualifer:[[book objectForKey:kSCHLibreAccessWebServiceDRMQualifier] DRMQualifierValue]  
-                                                                             format:[book objectForKey:kSCHLibreAccessWebServiceFormat]
-                                                                         profileIDs:profileIDs]];
-            SCHContentMetadataItem *newContentMetadataItem = [self.bookshelfSyncComponent addContentMetadataItem:book];
+            [self.contentSyncComponent addUserContentItemFromMainThread:[self userContentItemWith:[book objectForKey:kSCHLibreAccessWebServiceContentIdentifier] 
+                                                                                      drmQualifer:[[book objectForKey:kSCHLibreAccessWebServiceDRMQualifier] DRMQualifierValue]                                                    
+																						   format:[book objectForKey:kSCHLibreAccessWebServiceFormat]
+                                                                                       profileIDs:profileIDs]];
+            SCHContentMetadataItem *newContentMetadataItem = [self.bookshelfSyncComponent addContentMetadataItemFromMainThread:book];
             newContentMetadataItem.FileName = [xpsFilePath lastPathComponent];
             
             // extract the cover image

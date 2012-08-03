@@ -53,6 +53,7 @@ typedef enum {
 @property (nonatomic, retain) NSString * UserKey;
 @property (nonatomic, retain) NSNumber * BookshelfStyle;
 @property (nonatomic, retain) NSString * LastName;
+@property (nonatomic, retain) NSNumber * recommendationsOn;
 @property (nonatomic, retain) SCHAppProfile * AppProfile;
 @property (nonatomic, retain) NSSet * AppContentProfileItem;
 
@@ -71,6 +72,9 @@ typedef enum {
 - (BOOL)hasPassword;
 - (BOOL)validatePasswordWith:(NSString *)withPassword;
 - (BOOL)storyInteractionsDisabled;
+
+- (void)deleteAnnotations;
+- (void)deleteStatistics;
 
 @end
 

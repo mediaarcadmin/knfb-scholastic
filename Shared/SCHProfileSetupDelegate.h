@@ -13,5 +13,6 @@
 - (void)popToAuthenticatedProfileAnimated:(BOOL)animated;
 - (void)pushCurrentProfileAnimated:(BOOL)animated;
 - (void)waitingForPassword;
+- (void)waitingForBookshelves;
 
 @end

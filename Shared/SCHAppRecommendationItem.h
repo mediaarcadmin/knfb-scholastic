@@ -61,6 +61,8 @@ typedef enum {
 - (BOOL)isInUse;
 - (BOOL)isReady;
 
+- (void)deleteAllFiles;
+
 - (NSString *)coverImagePath;
 - (NSString *)thumbPath;
 - (NSString *)recommendationDirectory;
@@ -82,5 +84,7 @@ typedef enum {
 - (void)removeWishListItemsObject:(SCHWishListItem *)value;
 - (void)addWishListItems:(NSSet *)values;
 - (void)removeWishListItems:(NSSet *)values;
+
++ (void)purgeUnusedAppRecommendationItemsUsingManagedObjectContext:(NSManagedObjectContext *)aManagedObjectContext;
 
 @end

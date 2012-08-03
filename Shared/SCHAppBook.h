@@ -54,6 +54,7 @@ extern NSString * const kSCHAppBookTextFlowPageRanges;
 extern NSString * const kSCHAppBookSmartZoomPageMarkers;
 extern NSString * const kSCHAppBookLayoutPageEquivalentCount;
 extern NSString * const kSCHAppBookAudioBookReferences;
+extern NSString * const kSCHAppBookSuppressFollowAlongHighlights;
 
 // Audio File keys
 extern NSString * const kSCHAppBookAudioFile;
@@ -65,6 +66,7 @@ extern NSString * const kSCHAppBookOldReader;
 
 extern NSString * const kSCHAppBookCategoryPictureBook;
 extern NSString * const kSCHAppBookCategoryEarlyReader;
+extern NSString * const kSCHAppBookCategoryMiddleReader;
 extern NSString * const kSCHAppBookCategoryAdvancedReader;
 extern NSString * const kSCHAppBookCategoryChapterBook;
 extern NSString * const kSCHAppBookCategoryNovelMiddleGrade;
@@ -119,6 +121,7 @@ typedef enum {
 @property (nonatomic, retain) NSNumber * XPSExists;
 @property (nonatomic, retain) NSNumber * urlExpiredCount;
 @property (nonatomic, retain) NSNumber * downloadFailedCount;
+@property (nonatomic, retain) NSNumber *suppressFollowAlongHighlights;
 
 // convenience variables from the SCHContentMetadataItem
 @property (nonatomic, readonly) NSString * ContentIdentifier;
@@ -160,9 +163,12 @@ typedef enum {
 - (NSString *)thumbPathForSize:(CGSize)size;
 + (NSString *)booksDirectory;
 + (void)clearBooksDirectory;
++ (void)moveBooksDirectoryToTmp;
++ (void)restoreBooksDirectoryFromTmp;
 - (void)clearCachedBookDirectory;
 - (NSString *)bookDirectory;
 - (NSString *)libEucalyptusCache;
+- (NSString *)storyInteractionsCacheDirectoryWithProfileID:(NSString *)profileID;
 - (void)clearToDefaultValues;
 
 - (float)currentDownloadedPercentage;

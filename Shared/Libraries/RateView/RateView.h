@@ -2,8 +2,7 @@
 //  RateView.h
 //  CustomView
 //
-//  Created by Ray Wenderlich on 2/17/12.
-//  Copyright (c) 2012 __MyCompanyName__. All rights reserved.
+//  Based on RateView by Ray Wenderlich
 //
 
 #import <UIKit/UIKit.h>
@@ -28,5 +27,6 @@
 @property (assign) int leftMargin;
 @property (assign) CGSize minImageSize;
 @property (assign) id <RateViewDelegate> delegate;
+@property (assign, nonatomic) BOOL dimEmptyRatings; // default yes
 
 @end

@@ -10,7 +10,6 @@
 
 #import "BITAPIProxyDelegate.h"
 
-@class NSManagedObjectContext;
 @class SCHBookIdentifier;
 
 // Constants
@@ -21,8 +20,6 @@ extern NSString * const kSCHURLManagerCleared;
 @interface SCHURLManager : NSObject <BITAPIProxyDelegate>
 {	
 }
-
-@property (nonatomic, retain) NSManagedObjectContext *managedObjectContext;
 
 + (SCHURLManager *)sharedURLManager;
 

@@ -157,11 +157,15 @@ NSString * const kSCHAppProfile = @"SCHAppProfile";
     if (result == nil) {
         NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
     } else {
+        
+        NSArray *purchasedBooks = [self purchasedBooks];
+        
         NSMutableArray *objectArray = [NSMutableArray arrayWithCapacity:[result count]];
         
         for (SCHWishListItem *item in result) {
             NSDictionary *wishlistDictionary = [item dictionary];
-            if (wishlistDictionary) {
+            if (wishlistDictionary &&
+                [purchasedBooks containsObject:[wishlistDictionary objectForKey:kSCHWishListISBN]] == NO) {
                 [objectArray addObject:wishlistDictionary];
             }
         }
@@ -201,7 +205,8 @@ NSString * const kSCHAppProfile = @"SCHAppProfile";
     if (wishListItem != nil) {
         NSManagedObjectID *objectID = [wishListItem objectForKey:kSCHWishListObjectID];
         if (objectID != nil) {
-            SCHWishListItem *wishListItem = (SCHWishListItem *)[self.managedObjectContext objectRegisteredForID:objectID];
+            SCHWishListItem *wishListItem = (SCHWishListItem *)[self.managedObjectContext existingObjectWithID:objectID 
+                                                                                                         error:nil];
             [wishListItem syncDelete];
             [self save];
         }

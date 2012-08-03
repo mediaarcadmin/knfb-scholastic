@@ -160,6 +160,10 @@
                     }];
 				}
 			}
+        } else if ( [elementName isEqualToString:@"SuppressHighlights"] ) {
+            [self performWithBook:^(SCHAppBook *book) {
+                [book setValue:[NSNumber numberWithBool:YES] forKey:kSCHAppBookSuppressFollowAlongHighlights];
+            }];
         }
 }
 

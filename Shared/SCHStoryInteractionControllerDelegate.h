@@ -9,6 +9,7 @@
 #import <Foundation/Foundation.h>
 
 @class SCHStoryInteractionController;
+@class SCHAppBook;
 
 @protocol SCHStoryInteractionControllerDelegate <NSObject>
 
@@ -24,6 +25,9 @@
 // to determine the current question index
 - (NSInteger)currentQuestionForStoryInteraction;
 
+// advance to the next question for the current pages
+- (void)advanceToNextQuestionForStoryInteraction;
+
 // has the current story interaction already been completed?
 - (BOOL)storyInteractionFinished;
 
@@ -38,5 +42,8 @@
 
 // should this be displayed as an older story interaction
 - (BOOL)isOlderStoryInteraction;
+
+// The SI Cache directory for the current SI
+- (NSString *)storyInteractionCacheDirectory;
 
 @end

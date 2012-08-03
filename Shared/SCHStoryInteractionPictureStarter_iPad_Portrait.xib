@@ -2,13 +2,13 @@
 <archive type="com.apple.InterfaceBuilder3.CocoaTouch.iPad.XIB" version="8.00">
 	<data>
 		<int key="IBDocument.SystemTarget">1280</int>
-		<string key="IBDocument.SystemVersion">11C74</string>
-		<string key="IBDocument.InterfaceBuilderVersion">1938</string>
-		<string key="IBDocument.AppKitVersion">1138.23</string>
-		<string key="IBDocument.HIToolboxVersion">567.00</string>
+		<string key="IBDocument.SystemVersion">11D50b</string>
+		<string key="IBDocument.InterfaceBuilderVersion">2182</string>
+		<string key="IBDocument.AppKitVersion">1138.32</string>
+		<string key="IBDocument.HIToolboxVersion">568.00</string>
 		<object class="NSMutableDictionary" key="IBDocument.PluginVersions">
 			<string key="NS.key.0">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
-			<string key="NS.object.0">933</string>
+			<string key="NS.object.0">1181</string>
 		</object>
 		<array key="IBDocument.IntegratedClassDependencies">
 			<string>IBUILabel</string>
@@ -43,7 +43,6 @@
 						<int key="NSvFlags">292</int>
 						<string key="NSFrame">{{175, 643}, {210, 222}}</string>
 						<reference key="NSSuperview" ref="339950655"/>
-						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="467667103"/>
 						<object class="NSColor" key="IBUIBackgroundColor">
 							<int key="NSColorSpace">3</int>
@@ -59,7 +58,6 @@
 						<int key="NSvFlags">292</int>
 						<string key="NSFrame">{{400, 643}, {210, 50}}</string>
 						<reference key="NSSuperview" ref="339950655"/>
-						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="936267747"/>
 						<object class="NSColor" key="IBUIBackgroundColor">
 							<int key="NSColorSpace">3</int>
@@ -77,7 +75,6 @@
 								<int key="NSvFlags">276</int>
 								<string key="NSFrameSize">{70, 372}</string>
 								<reference key="NSSuperview" ref="936267747"/>
-								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="644000335"/>
 								<bool key="IBUIClipsSubviews">YES</bool>
 								<bool key="IBUIMultipleTouchEnabled">YES</bool>
@@ -89,7 +86,6 @@
 								<int key="NSvFlags">277</int>
 								<string key="NSFrame">{{70, 0}, {70, 372}}</string>
 								<reference key="NSSuperview" ref="936267747"/>
-								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="16198380"/>
 								<bool key="IBUIClipsSubviews">YES</bool>
 								<bool key="IBUIMultipleTouchEnabled">YES</bool>
@@ -101,7 +97,6 @@
 								<int key="NSvFlags">273</int>
 								<string key="NSFrame">{{140, 0}, {70, 372}}</string>
 								<reference key="NSSuperview" ref="936267747"/>
-								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="784221819"/>
 								<bool key="IBUIClipsSubviews">YES</bool>
 								<bool key="IBUIMultipleTouchEnabled">YES</bool>
@@ -110,7 +105,6 @@
 						</array>
 						<string key="NSFrame">{{720, 308}, {210, 372}}</string>
 						<reference key="NSSuperview" ref="339950655"/>
-						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="984551293"/>
 						<string key="NSReuseIdentifierKey">_NS:212</string>
 						<object class="NSColor" key="IBUIBackgroundColor" id="234619721">
@@ -124,7 +118,6 @@
 						<int key="NSvFlags">265</int>
 						<string key="NSFrame">{{472, 643}, {210, 222}}</string>
 						<reference key="NSSuperview" ref="339950655"/>
-						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="539883552"/>
 						<bool key="IBUIUserInteractionEnabled">NO</bool>
 						<string key="targetRuntimeIdentifier">IBIPadFramework</string>
@@ -138,7 +131,6 @@
 						<int key="NSvFlags">292</int>
 						<string key="NSFrame">{{10, 735}, {150, 37}}</string>
 						<reference key="NSSuperview" ref="339950655"/>
-						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="365199176"/>
 						<bool key="IBUIOpaque">NO</bool>
 						<string key="targetRuntimeIdentifier">IBIPadFramework</string>
@@ -175,10 +167,10 @@
 						<int key="NSvFlags">292</int>
 						<string key="NSFrame">{{10, 783}, {150, 37}}</string>
 						<reference key="NSSuperview" ref="339950655"/>
-						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="680406658"/>
 						<bool key="IBUIOpaque">NO</bool>
 						<string key="targetRuntimeIdentifier">IBIPadFramework</string>
+						<bool key="IBUIEnabled">NO</bool>
 						<int key="IBUIContentHorizontalAlignment">0</int>
 						<int key="IBUIContentVerticalAlignment">0</int>
 						<string key="IBUINormalTitle">Clear</string>
@@ -197,8 +189,6 @@
 						<int key="NSvFlags">292</int>
 						<string key="NSFrame">{{10, 828}, {150, 37}}</string>
 						<reference key="NSSuperview" ref="339950655"/>
-						<reference key="NSWindow"/>
-						<reference key="NSNextKeyView"/>
 						<bool key="IBUIOpaque">NO</bool>
 						<string key="targetRuntimeIdentifier">IBIPadFramework</string>
 						<int key="IBUIContentHorizontalAlignment">0</int>
@@ -227,7 +217,6 @@
 										<int key="NSvFlags">292</int>
 										<string key="NSFrame">{{181, 278}, {310, 60}}</string>
 										<reference key="NSSuperview" ref="488105434"/>
-										<reference key="NSWindow"/>
 										<reference key="NSNextKeyView" ref="299170693"/>
 										<object class="NSColor" key="IBUIBackgroundColor">
 											<int key="NSColorSpace">3</int>
@@ -251,7 +240,6 @@
 								</array>
 								<string key="NSFrameSize">{672, 615}</string>
 								<reference key="NSSuperview" ref="586396536"/>
-								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="901576108"/>
 								<object class="NSColor" key="IBUIBackgroundColor">
 									<int key="NSColorSpace">3</int>
@@ -264,7 +252,6 @@
 						</array>
 						<string key="NSFrame">{{10, 20}, {672, 615}}</string>
 						<reference key="NSSuperview" ref="339950655"/>
-						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="488105434"/>
 						<reference key="IBUIBackgroundColor" ref="234619721"/>
 						<bool key="IBUIClipsSubviews">YES</bool>
@@ -274,7 +261,6 @@
 				</array>
 				<string key="NSFrameSize">{692, 885}</string>
 				<reference key="NSSuperview"/>
-				<reference key="NSWindow"/>
 				<reference key="NSNextKeyView" ref="586396536"/>
 				<object class="NSColor" key="IBUIBackgroundColor">
 					<int key="NSColorSpace">3</int>
@@ -434,50 +420,7 @@
 			<nil key="sourceID"/>
 			<int key="maxID">15</int>
 		</object>
-		<object class="IBClassDescriber" key="IBDocument.Classes">
-			<array class="NSMutableArray" key="referencedPartialClassDescriptions">
-				<object class="IBPartialClassDescription">
-					<string key="className">SCHPictureStarterCanvas</string>
-					<string key="superclassName">UIView</string>
-					<object class="IBClassDescriptionSource" key="sourceIdentifier">
-						<string key="majorKey">IBProjectSource</string>
-						<string key="minorKey">./Classes/SCHPictureStarterCanvas.h</string>
-					</object>
-				</object>
-				<object class="IBPartialClassDescription">
-					<string key="className">SCHPictureStarterColorChooser</string>
-					<string key="superclassName">UIControl</string>
-					<object class="IBClassDescriptionSource" key="sourceIdentifier">
-						<string key="majorKey">IBProjectSource</string>
-						<string key="minorKey">./Classes/SCHPictureStarterColorChooser.h</string>
-					</object>
-				</object>
-				<object class="IBPartialClassDescription">
-					<string key="className">SCHPictureStarterSizeChooser</string>
-					<string key="superclassName">UIControl</string>
-					<object class="IBClassDescriptionSource" key="sourceIdentifier">
-						<string key="majorKey">IBProjectSource</string>
-						<string key="minorKey">./Classes/SCHPictureStarterSizeChooser.h</string>
-					</object>
-				</object>
-				<object class="IBPartialClassDescription">
-					<string key="className">SCHPictureStarterStickerChooser</string>
-					<string key="superclassName">UITableView</string>
-					<object class="IBClassDescriptionSource" key="sourceIdentifier">
-						<string key="majorKey">IBProjectSource</string>
-						<string key="minorKey">./Classes/SCHPictureStarterStickerChooser.h</string>
-					</object>
-				</object>
-				<object class="IBPartialClassDescription">
-					<string key="className">SCHStretchableImageButton</string>
-					<string key="superclassName">UIButton</string>
-					<object class="IBClassDescriptionSource" key="sourceIdentifier">
-						<string key="majorKey">IBProjectSource</string>
-						<string key="minorKey">./Classes/SCHStretchableImageButton.h</string>
-					</object>
-				</object>
-			</array>
-		</object>
+		<object class="IBClassDescriber" key="IBDocument.Classes"/>
 		<int key="IBDocument.localizationMode">0</int>
 		<string key="IBDocument.TargetRuntimeIdentifier">IBIPadFramework</string>
 		<bool key="IBDocument.PluginDeclaredDependenciesTrackSystemTargetVersion">YES</bool>
@@ -488,6 +431,6 @@
 			<string key="storyinteraction-picturestarter-save.png">{16, 16}</string>
 			<string key="storyinteraction-picturestarter-scroller-overlay~ipad.png">{211, 260}</string>
 		</dictionary>
-		<string key="IBCocoaTouchPluginVersion">933</string>
+		<string key="IBCocoaTouchPluginVersion">1181</string>
 	</data>
 </archive>

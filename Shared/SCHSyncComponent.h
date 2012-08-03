@@ -14,13 +14,14 @@
 
 // Constants
 extern NSString * const SCHSyncComponentDidFailAuthenticationNotification;
+extern double const SCHSyncComponentThreadLowPriority;
 
 @interface SCHSyncComponent : SCHComponent
 {
 }
 
 @property (assign, nonatomic) BOOL isSynchronizing;
-@property (retain, nonatomic) NSManagedObjectContext *managedObjectContext;
+@property (retain, atomic) NSManagedObjectContext *managedObjectContext;
 
 @property (readonly, nonatomic) NSUInteger failureCount;
 

@@ -13,13 +13,22 @@
 
 @implementation SCHStoryInteractionWordBirdAnswerLetterView
 
-- (id)initWithFrame:(CGRect)frame
+- (id)initWithFrame:(CGRect)frame wordLength:(NSInteger)aWordLength
 {
     if ((self = [super initWithFrame:frame])) {
-        self.font = [UIFont fontWithName:@"Arial Black" size:35];
+        
+        const BOOL iPad = (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad);
+
+        NSInteger fontSize = iPad?35:26;
+        
+        if (aWordLength >= 10) {
+            fontSize = iPad?28:20;
+        }
+        
+        self.font = [UIFont fontWithName:@"Arial Black" size:fontSize];
         self.backgroundColor = [UIColor clearColor];
         self.textAlignment = UITextAlignmentCenter;
-        self.adjustsFontSizeToFitWidth = YES;
+        self.adjustsFontSizeToFitWidth = NO;
     }
     return self;
 }

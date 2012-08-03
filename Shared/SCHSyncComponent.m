@@ -12,6 +12,7 @@
 
 // Constants
 NSString * const SCHSyncComponentDidFailAuthenticationNotification = @"SCHSyncComponentDidFailAuthenticationNotification";
+double const SCHSyncComponentThreadLowPriority = 0.25;
 
 @interface SCHSyncComponent ()
  
@@ -25,6 +26,7 @@ NSString * const SCHSyncComponentDidFailAuthenticationNotification = @"SCHSyncCo
 @synthesize managedObjectContext;
 @synthesize backgroundTaskIdentifier;
 @synthesize failureCount;
+@synthesize backgroundProcessingQueue;
 @synthesize saveOnly;
 
 #pragma mark - Object lifecycle
@@ -44,6 +46,7 @@ NSString * const SCHSyncComponentDidFailAuthenticationNotification = @"SCHSyncCo
 - (void)dealloc 
 {
     [managedObjectContext release], managedObjectContext = nil;
+    [backgroundProcessingQueue release], backgroundProcessingQueue = nil;
     
     [super dealloc];
 }
@@ -57,6 +60,16 @@ NSString * const SCHSyncComponentDidFailAuthenticationNotification = @"SCHSyncCo
 
 - (void)resetSync
 {
+    // we purposefully don't call the self.accessor here as we don't want to 
+    // create the queue if it's not required to be used
+    if (backgroundProcessingQueue != nil) {
+        [self.backgroundProcessingQueue cancelAllOperations];
+        // yes this may block for a few seconds waiting, note currently the user
+        // will be presented with a wait spinner while this operation is performed
+        // each operation checks for cancellation as do all the dispatch_async calls
+        [self.backgroundProcessingQueue waitUntilAllOperationsAreFinished];
+    }
+    
     self.isSynchronizing = NO;
     self.saveOnly = NO;
     [self clearFailures];
@@ -75,11 +88,18 @@ NSString * const SCHSyncComponentDidFailAuthenticationNotification = @"SCHSyncCo
     NSAssert(NO, @"SCHSyncComponent:clearCoreData needs to be overidden in sub-classes");        
 }
 
-#pragma mark - Delegate methods
-
-- (void)method:(NSString *)method didCompleteWithResult:(NSDictionary *)result
-      userInfo:(NSDictionary *)userInfo
-{	
+- (void)completeWithSuccessMethod:(NSString *)method 
+                           result:(NSDictionary *)result 
+                         userInfo:(NSDictionary *)userInfo
+                 notificationName:(NSString *)notificationName
+             notificationUserInfo:(NSDictionary *)notificationUserInfo
+{
+    if (notificationName != nil) {
+        [[NSNotificationCenter defaultCenter] postNotificationName:notificationName 
+                                                            object:self
+                                                          userInfo:notificationUserInfo];                
+    }
+    
 	[self endBackgroundTask];
 	self.isSynchronizing = NO;
 	
@@ -95,20 +115,40 @@ NSString * const SCHSyncComponentDidFailAuthenticationNotification = @"SCHSyncCo
         }
     }
     
-	[super method:method didCompleteWithResult:result userInfo:userInfo];	
+    [super completeWithSuccessMethod:method 
+                              result:result 
+                            userInfo:userInfo
+                    notificationName:notificationName
+                notificationUserInfo:notificationUserInfo];
 }
 
-- (void)method:(NSString *)method didFailWithError:(NSError *)error 
-   requestInfo:(NSDictionary *)requestInfo
-        result:(NSDictionary *)result
+- (void)completeWithFailureMethod:(NSString *)method 
+                            error:(NSError *)error 
+                      requestInfo:(NSDictionary *)requestInfo 
+                           result:(NSDictionary *)result
+                 notificationName:(NSString *)notificationName
+             notificationUserInfo:(NSDictionary *)notificationUserInfo
 {
-	[self endBackgroundTask];
+    if (notificationName != nil) {
+        [[NSNotificationCenter defaultCenter] postNotificationName:notificationName 
+                                                            object:self 
+                                                          userInfo:notificationUserInfo];        
+    }
+    
+    [self endBackgroundTask];
 	self.isSynchronizing = NO;
 	
     self.failureCount = self.failureCount + 1;
-    
-	[super method:method didFailWithError:error requestInfo:requestInfo result:result];
+
+    [super completeWithFailureMethod:method 
+                               error:error 
+                         requestInfo:requestInfo 
+                              result:result
+                    notificationName:notificationName
+                notificationUserInfo:notificationUserInfo];
 }
+
+#pragma mark - Background task methods
 
 - (void)beginBackgroundTask
 {
@@ -128,6 +168,18 @@ NSString * const SCHSyncComponentDidFailAuthenticationNotification = @"SCHSyncCo
 	}
 }
 
+#pragma mark - Accessor methods
+
+- (NSOperationQueue *)backgroundProcessingQueue
+{
+    if (backgroundProcessingQueue == nil) {
+        backgroundProcessingQueue = [[NSOperationQueue alloc] init];
+        [backgroundProcessingQueue setMaxConcurrentOperationCount:1];        
+    }
+    
+    return backgroundProcessingQueue;
+}
+
 - (void)clearFailures
 {
     self.failureCount = 0;
@@ -135,12 +187,12 @@ NSString * const SCHSyncComponentDidFailAuthenticationNotification = @"SCHSyncCo
 
 #pragma mark - Private methods
 
-- (void)save
+- (void)saveWithManagedObjectContext:(NSManagedObjectContext *)aManagedObjectContext
 {
     NSError *error = nil;
     
-    if ([self.managedObjectContext hasChanges] == YES &&
-        ![self.managedObjectContext save:&error]) {
+    if ([aManagedObjectContext hasChanges] == YES &&
+        ![aManagedObjectContext save:&error]) {
         NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
     } 
 }

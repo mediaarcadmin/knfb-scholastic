@@ -24,6 +24,7 @@
 @property (nonatomic, retain) IBOutlet UILabel *cLabel;
 
 - (IBAction)questionButtonTouched:(UIButton *)sender;
+- (IBAction)questionButtonTouchCancelled:(id)sender;
 - (IBAction)questionButtonTapped:(UIButton *)sender;
 
 @end

@@ -428,11 +428,15 @@ managedObjectContext:(NSManagedObjectContext *)managedObjectContext
         self.jumpToPageCompletionHandler = completion;
     }
     
+    BOOL animatedPageTurn = animated;
+    
     if (pageIndex < [self generatedPageCount]) {
         [self.pageTurningView turnToPageAtIndex:pageIndex animated:animated];
-	}
+	} else {
+        animatedPageTurn = NO;
+    }
     
-    if (!animated) {
+    if (!animatedPageTurn) {
         [self updateCurrentPageIndex];
         if (completion != nil) {
             completion();
@@ -448,7 +452,7 @@ managedObjectContext:(NSManagedObjectContext *)managedObjectContext
 - (void)setPageTexture:(UIImage *)image isDark:(BOOL)isDark
 {
     [self.pageTurningView setPageTexture:image isDark:isDark];
-    [self.pageTurningView setNeedsDraw];
+    [self.pageTurningView setNeedsDisplay];
 }
 
 - (void)zoomOutToCurrentPage
@@ -842,19 +846,24 @@ fastThumbnailUIImageForPageAtIndex:(NSUInteger)index
 - (void)refreshHighlightsForPageAtIndex:(NSUInteger)index
 {
     [self.pageTurningView refreshHighlightsForPageAtIndex:index];
-    [self.pageTurningView setNeedsDraw]; 
+    [self.pageTurningView setNeedsDisplay]; 
 }
 
 - (void)refreshPageTurningViewImmediately:(BOOL)immediately
 {
     if (immediately) {
-        [self.pageTurningView drawView];
+        // [self.pageTurningView drawView];
+        [CATransaction begin];
+        [self.pageTurningView setNeedsDisplay];
+        [CATransaction flush];
+        [CATransaction commit];
     } else {
-        [self.pageTurningView setNeedsDraw];
+        [self.pageTurningView setNeedsDisplay];
     }
 }
 
 - (NSArray *)highlightRangesForCurrentPage {
+    
 	NSUInteger startPageIndex = self.pageTurningView.leftPageIndex;
     NSUInteger endPageIndex = self.pageTurningView.rightPageIndex;
     if(startPageIndex == NSUIntegerMax) {
@@ -875,6 +884,7 @@ fastThumbnailUIImageForPageAtIndex:(NSUInteger)index
 }
 
 - (NSArray *)highlightRectsForPageAtIndex:(NSInteger)pageIndex excluding:(SCHBookRange *)excludedBookmark {
+
     NSMutableArray *allHighlights = [NSMutableArray array];
     
     NSArray *highlightRanges = [self highlightsForLayoutPage:pageIndex + 1];
@@ -981,6 +991,12 @@ fastThumbnailUIImageForPageAtIndex:(NSUInteger)index
             }
 		}
     } else {
+        if (bookPoint) {
+            __block SCHLayoutView *weakSelf = self;
+            self.jumpToPageCompletionHandler = ^{
+                [weakSelf followAlongHighlightWordAtPoint:bookPoint withCompletionHandler:completion];
+            };
+        }
         [self dismissFollowAlongHighlighter];
     }
 }

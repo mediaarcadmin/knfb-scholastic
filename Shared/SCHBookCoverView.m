@@ -14,6 +14,7 @@
 #import "AppDelegate_Shared.h"
 #import "SCHCoreDataHelper.h"
 #import <ImageIO/ImageIO.h>
+#import "SCHThemeManager.h"
 
 @interface SCHBookCoverView ()
 
@@ -331,7 +332,11 @@
         CGFloat kDashLengths[2] = { dashLength, dashLength };
 
         if (self.coverViewMode == SCHBookCoverViewModeGridView) {
-            CGContextSetStrokeColorWithColor(context, [UIColor colorWithRed:0.8 green:0.8 blue:0.8 alpha:0.4].CGColor);
+            if ([[SCHThemeManager sharedThemeManager] gridTextColorIsDark] == YES) {
+                CGContextSetStrokeColorWithColor(context, [UIColor darkGrayColor].CGColor);                                
+            } else {
+                CGContextSetStrokeColorWithColor(context, [UIColor colorWithRed:0.8 green:0.8 blue:0.8 alpha:0.4].CGColor);                
+            }
         } else {
             CGContextSetStrokeColorWithColor(context, [UIColor colorWithRed:0.071 green:0.467 blue:0.643 alpha:0.4].CGColor);
         }
@@ -492,14 +497,17 @@
         [self resizeElementsForThumbSize:self.coverImageView.frame.size];
     } else {
         
-        BOOL successfullyLoaded = NO;
+        __block BOOL successfullyLoaded = NO;
         
         if (self.shouldWaitForExistingCachedThumbToLoad) {
             NSFileManager *threadLocalFileManager = [[[NSFileManager alloc] init] autorelease];
             if ([threadLocalFileManager fileExistsAtPath:thumbPath]) {
-                UIImage *thumbImage = [UIImage imageWithContentsOfFile:thumbPath];
-                [self updateCachedImage:thumbImage atPath:thumbPath forIdentifier:localIdentifier waitUntilDone:YES];
-                successfullyLoaded = YES;
+
+                dispatch_sync([SCHProcessingManager sharedProcessingManager].thumbnailAccessQueue, ^{
+                    UIImage *thumbImage = [UIImage imageWithContentsOfFile:thumbPath];
+                    [self updateCachedImage:thumbImage atPath:thumbPath forIdentifier:localIdentifier waitUntilDone:YES];
+                    successfullyLoaded = YES;
+                });
             }
         }
         
@@ -541,13 +549,6 @@
     
     CGRect coverFrame = CGRectMake(floor((self.frame.size.width - thumbSize.width)/2), floorf(self.frame.size.height - thumbSize.height), thumbSize.width, thumbSize.height);
     
-    // if the thumb is not the full height of the view, then calculate differently
-    // (cases where the thumb is wider than it is high)
-    
-    if (thumbSize.height < thumbSize.width) {
-        tabOnRight = NO;
-    }
-    
     if (thumbSize.height <= thumbSize.width) {
         
         if (self.coverViewMode == SCHBookCoverViewModeGridView) {
@@ -558,6 +559,41 @@
             coverFrame = CGRectMake(floorf((self.frame.size.width - thumbSize.width)/2), floorf((self.frame.size.height - thumbSize.height)/2), thumbSize.width, thumbSize.height);
         }
     }
+    
+    float minimumTabGraphicHeight = CGFLOAT_MAX;
+    
+    SCHAppBookFeatures bookFeatures = book.bookFeatures;
+//  SCHAppBookFeatures bookFeatures = kSCHAppBookFeaturesSampleWithStoryInteractions;
+    
+
+    switch (bookFeatures) {
+        case kSCHAppBookFeaturesStoryInteractions:
+        {
+            minimumTabGraphicHeight = [UIImage imageNamed:@"BookSITab"].size.height + 2;
+            break;
+        }   
+        case kSCHAppBookFeaturesSampleWithStoryInteractions:
+        {
+            minimumTabGraphicHeight = [UIImage imageNamed:@"BookSISampleTab"].size.height - 11;
+            break;
+        }   
+            
+        case kSCHAppBookFeaturesSample:
+        {
+            minimumTabGraphicHeight = [UIImage imageNamed:@"BookSampleTab"].size.height;
+            break;
+        }   
+        case kSCHAppBookFeaturesNone:
+        default:
+        {
+            break;
+        }   
+    }
+    
+    if (coverFrame.size.height < minimumTabGraphicHeight) {
+        tabOnRight = NO;
+    }
+    
     
     self.coverImageView.frame = coverFrame;
     self.bookTintView.frame = coverFrame;
@@ -680,10 +716,11 @@
         // the offset amount that the image tab is over onto the cover
         NSInteger overhang = 0;
         
+        // an offset for centring the tab properly - some of the images aren't symmetrical
+        NSInteger heightOffset = 0;
+        
         // whether to actually do the resizing work
         BOOL doSizing = YES;
-        
-        SCHAppBookFeatures bookFeatures = book.bookFeatures;
         
         if (self.disabledForInteractions) {
             switch (bookFeatures) {
@@ -712,6 +749,7 @@
                 if (tabOnRight) {
                     self.featureTab.image = [UIImage imageNamed:@"BookSITab"];
                     overhang = 10;
+                    heightOffset = -1;
                 } else {
                     self.featureTab.image = [UIImage imageNamed:@"BookSITabHorizontal"];
                     overhang = 20;
@@ -724,6 +762,7 @@
                 if (tabOnRight) {
                     self.featureTab.image = [UIImage imageNamed:@"BookSISampleTab"];
                     overhang = 10;
+                    heightOffset = -5;
                 } else {
                     self.featureTab.image = [UIImage imageNamed:@"BookSISampleTabHorizontal"];
                     overhang = 21;
@@ -737,6 +776,7 @@
                 if (tabOnRight) {
                     self.featureTab.image = [UIImage imageNamed:@"BookSampleTab"];
                     overhang = 0;
+                    heightOffset = 1;
                } else {
                     self.featureTab.image = [UIImage imageNamed:@"BookSampleTabHorizontal"];
                     overhang = 0;
@@ -768,7 +808,7 @@
                 self.featureTab.contentMode = UIViewContentModeRight;
 
                 tabFrame.origin.x = coverFrame.origin.x + coverFrame.size.width - overhang;
-                tabFrame.origin.y = floorf((self.frame.size.height - coverFrame.size.height) + (coverFrame.size.height / 2) - (tabFrame.size.height / 2));
+                tabFrame.origin.y = floorf((self.frame.size.height - coverFrame.size.height) + (coverFrame.size.height / 2) - (tabFrame.size.height / 2) + heightOffset);
                 self.featureTab.frame = tabFrame;
             } else {
                 // move the tab across the top of the cover

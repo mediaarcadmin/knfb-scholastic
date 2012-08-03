@@ -20,14 +20,13 @@ extern NSString * const SCHBookshelfSyncComponentDidCompleteNotification;
 extern NSString * const SCHBookshelfSyncComponentDidFailNotification;
 
 @interface SCHBookshelfSyncComponent : SCHSyncComponent
-{
-}
 
-@property (nonatomic, assign) BOOL useIndividualRequests;
+@property (atomic, assign) BOOL useIndividualRequests;
+@property (atomic, assign) NSInteger requestCount;
+@property (nonatomic, retain) NSMutableArray *didReceiveFailedResponseBooks;
 
-- (SCHContentMetadataItem *)addContentMetadataItem:(NSDictionary *)webContentMetadataItem;
-- (void)syncContentMetadataItems:(NSArray *)contentMetadataList;
-- (void)syncContentMetadataItem:(NSDictionary *)webContentMetadataItem
-        withContentMetadataItem:(SCHContentMetadataItem *)localContentMetadataItem;
+- (NSArray *)bookIdentifiersFromRequestInfo:(NSArray *)contentMetadataItems;
+- (SCHContentMetadataItem *)addContentMetadataItemFromMainThread:(NSDictionary *)webContentMetadataItem;
+- (void)syncContentMetadataItemsFromMainThread:(NSArray *)contentMetadataList;
 
 @end

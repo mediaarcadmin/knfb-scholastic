@@ -29,6 +29,7 @@ typedef void (^SCHDrmDeregistrationSuccessBlock)(void);
 typedef void (^SCHDrmDeregistrationFailureBlock)(NSError *error);
 
 extern NSString * const SCHAuthenticationManagerReceivedServerDeregistrationNotification;
+extern NSString * const SCHAuthenticationManagerDidDeregisterNotification;
 
 extern NSString * const kSCHAuthenticationManagerErrorDomain;
 extern NSInteger const kSCHAuthenticationManagerGeneralError;
@@ -53,7 +54,7 @@ extern NSString * const kSCHAuthenticationManagerServiceName;
 - (BOOL)pTokenWithValidation:(ValidateBlock)aValidateBlock;
 - (NSURL *)webParentToolURL:(NSString *)pToken;
 - (void)clear;
-- (void)clearAppProcessing;
+- (void)clearAppProcessingWaitUntilFinished:(BOOL)wait;
 
 - (void)authenticateWithUser:(NSString *)userName 
                     password:(NSString *)password

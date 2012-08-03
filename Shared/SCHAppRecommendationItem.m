@@ -10,6 +10,7 @@
 #import "SCHRecommendationItem.h"
 #import "NSNumber+ObjectTypes.h"
 #import "SCHRecommendationManager.h"
+#import "NSFileManager+Extensions.h"
 
 // Constants
 NSString * const kSCHAppRecommendationItem = @"SCHAppRecommendationItem";
@@ -29,8 +30,6 @@ NSString * const kSCHAppRecommendationFullCoverImagePath = @"FullCoverImagePath"
 @interface SCHAppRecommendationItem()
 
 @property (nonatomic, copy) NSString *cachedRecommendationDirectory;
-
-- (void)deleteAllFiles;
 
 @end
 
@@ -219,25 +218,45 @@ NSString * const kSCHAppRecommendationFullCoverImagePath = @"FullCoverImagePath"
     return isReady;
 }
 
-- (void)prepareForDeletion
-{
-    [super prepareForDeletion];
-
-    [self deleteAllFiles];
-}
-
 // when there are no wishlist or recommendation items the appRecommendationItem
 // gets deleted as well as the on disk files
 - (void)deleteAllFiles
 {
-    NSError *error = nil;
-    
-    [[SCHRecommendationManager sharedManager] cancelAllOperationsForIsbn:self.ContentIdentifier];
-    if ([[NSFileManager defaultManager] removeItemAtPath:[self recommendationDirectory]
-                                                   error:&error] == NO) {
-        NSLog(@"Failed to delete files for %@, error: %@", 
-              self.ContentIdentifier, [error localizedDescription]);
-    }
+    NSString *recommendationDirectory = [self recommendationDirectory];
+    NSString *contentIdentifier = [[self.ContentIdentifier copy] autorelease];
+
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{    
+        NSError *error = nil;
+        NSFileManager *localManager = [[[NSFileManager alloc] init] autorelease];
+        NSString *temporaryDirectory = [NSFileManager BITtemporaryDirectoryIfExistsOrCreated];
+        NSString *temporaryRecommendationDirectory = nil;
+
+        // wait till any processing of this book has finished        
+        [[SCHRecommendationManager sharedManager] cancelAllOperationsForIsbn:contentIdentifier
+                                                           waitUntilFinished:YES];
+
+        // if possible move the directory to tmp while we delete it
+        if (temporaryDirectory != nil) {
+            CFUUIDRef uuid = CFUUIDCreate(kCFAllocatorDefault);
+            NSString *uniqueDirectoryName = (NSString *)CFUUIDCreateString(kCFAllocatorDefault, uuid);
+            [uniqueDirectoryName autorelease];
+            CFRelease(uuid);
+            
+            temporaryRecommendationDirectory = [temporaryDirectory stringByAppendingPathComponent:uniqueDirectoryName];
+            
+            if ([localManager moveItemAtPath:recommendationDirectory 
+                                      toPath:temporaryRecommendationDirectory error:&error] == NO) {
+                NSLog(@"Unable to create tempory directory for deleted appRecommendationItem files with error %@ : %@", error, [error userInfo]);
+                temporaryRecommendationDirectory = nil;
+            }
+        }
+
+        if ([localManager removeItemAtPath:(temporaryRecommendationDirectory != nil ? temporaryRecommendationDirectory : recommendationDirectory)
+                                     error:&error] == NO) {
+            NSLog(@"Failed to delete files for %@, error: %@", 
+                  contentIdentifier, [error localizedDescription]);
+        }
+    });
 }
 
 - (NSDictionary *)dictionary {
@@ -293,6 +312,39 @@ NSString * const kSCHAppRecommendationFullCoverImagePath = @"FullCoverImagePath"
     
     return recommendationDict;
 
+}
+
+#pragma mark Class methods
+
++ (void)purgeUnusedAppRecommendationItemsUsingManagedObjectContext:(NSManagedObjectContext *)aManagedObjectContext
+{
+    NSParameterAssert(aManagedObjectContext);
+    
+    if (aManagedObjectContext != nil) {
+        NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+        NSEntityDescription *entity = [NSEntityDescription entityForName:kSCHAppRecommendationItem 
+                                                  inManagedObjectContext:aManagedObjectContext];
+        [fetchRequest setEntity:entity];
+        [fetchRequest setPredicate:[NSPredicate predicateWithFormat:@"recommendationItems.@count < 1 AND wishListItems.@count < 1"]];    
+        
+        NSError *error = nil;
+        NSArray *fetchedObjects = [aManagedObjectContext executeFetchRequest:fetchRequest 
+                                                                       error:&error];
+        if (fetchedObjects == nil) {
+            NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
+        } else if ([fetchedObjects count] > 1) {
+            for (SCHAppRecommendationItem *appRecommendationItem in fetchedObjects) {
+                [appRecommendationItem deleteAllFiles];
+                [aManagedObjectContext deleteObject:appRecommendationItem];
+            }
+            
+            if ([aManagedObjectContext save:&error] == NO) {
+                NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
+            } 
+        }
+        
+        [fetchRequest release], fetchRequest = nil;
+    }
 }
 
 @end

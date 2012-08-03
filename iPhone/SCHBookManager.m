@@ -17,7 +17,7 @@
 #import "SCHXPSProvider.h"
 #import "SCHBSBProvider.h"
 #import "SCHTextFlowParagraphSource.h"
-#import "SCHEPubParagraphSource.h"
+#import "SCHEPubToTextFlowMappingParagraphSource.h"
 #import "SCHBookIdentifier.h"
 #import "SCHCoreDataHelper.h"
 #import "KNFBParagraphSource.h"
@@ -66,15 +66,13 @@ static NSDictionary *featureCompatibilityDictionary = nil;
 
 + (SCHBookManager *)sharedBookManager
 {
-    // We don't need to bother being thread-safe in the initialisation here,
-    // because the object can't be used until the NSPersistentStoreCoordinator 
-    // is set, so that has to be all done on the main thread before other calls
-    // are made anyway.
-    if(!sSharedBookManager) {
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
         sSharedBookManager = [[self alloc] init];
 		sSharedBookManager.threadSafeMutationLock = [[[NSLock alloc] init] autorelease];
 
-    }
+    });
+    
     return sSharedBookManager;
 }
 
@@ -248,6 +246,11 @@ static int allocCountXPS = 0;
 
 - (id <SCHBookPackageProvider>)checkOutBookPackageProviderForBookIdentifier:(SCHBookIdentifier *)identifier inManagedObjectContext:(NSManagedObjectContext *)managedObjectContext
 {
+    return [self checkOutBookPackageProviderForBookIdentifier:identifier inManagedObjectContext:managedObjectContext error:NULL];
+}
+
+- (id <SCHBookPackageProvider>)checkOutBookPackageProviderForBookIdentifier:(SCHBookIdentifier *)identifier inManagedObjectContext:(NSManagedObjectContext *)managedObjectContext error:(NSError **)error
+{
     NSParameterAssert(identifier);
     
 	id <SCHBookPackageProvider> ret = nil;
@@ -274,11 +277,11 @@ static int allocCountXPS = 0;
             
             switch (packageType) {
                 case kSCHAppBookPackageTypeXPS:
-                    provider = [[SCHXPSProvider alloc] initWithBookIdentifier:identifier xpsPath:[book bookPackagePath]];
+                    provider = [[SCHXPSProvider alloc] initWithBookIdentifier:identifier xpsPath:[book bookPackagePath] error:error];
                     break;
                     
                 case kSCHAppBookPackageTypeBSB:
-                    provider = [[SCHBSBProvider alloc] initWithBookIdentifier:identifier path:[book bookPackagePath]];
+                    provider = [[SCHBSBProvider alloc] initWithBookIdentifier:identifier path:[book bookPackagePath] error:error];
                     break;
             }
 
@@ -527,6 +530,17 @@ static int checkoutCountTextFlow = 0;
 
 static int checkoutCountParagraph = 0;
 
+- (id<KNFBParagraphSource>)threadSafeCheckOutParagraphSourceForBookIdentifier:(SCHBookIdentifier *)identifier
+{
+    NSParameterAssert(identifier);
+    
+    __block id<KNFBParagraphSource> paragraphSource = nil;
+    [self performOnMainThread:^{
+        paragraphSource = [[self checkOutParagraphSourceForBookIdentifier:identifier inManagedObjectContext:self.mainThreadManagedObjectContext] retain];
+    }];
+    return [paragraphSource autorelease];
+}
+
 - (id<KNFBParagraphSource>)checkOutParagraphSourceForBookIdentifier:(SCHBookIdentifier *)identifier inManagedObjectContext:(NSManagedObjectContext *)managedObjectContext;
 {   
     NSParameterAssert(identifier);
@@ -552,7 +566,7 @@ static int checkoutCountParagraph = 0;
             BOOL hasEPub = [xpsProvider containsEmbeddedEPub];
             
             if (hasEPub) {
-                paragraphSource = [[SCHEPubParagraphSource alloc] initWithBookIdentifier:identifier managedObjectContext:managedObjectContext];
+                paragraphSource = [[SCHEPubToTextFlowMappingParagraphSource alloc] initWithBookIdentifier:identifier managedObjectContext:managedObjectContext];
             } else {
                 paragraphSource = [[SCHTextFlowParagraphSource alloc] initWithBookIdentifier:identifier managedObjectContext:managedObjectContext];
             }

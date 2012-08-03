@@ -8,8 +8,6 @@
 
 #import "SCHURLManager.h"
 
-#import <CoreData/CoreData.h>
-
 #import "SCHAuthenticationManager.h"
 #import "SCHLibreAccessWebService.h"
 #import "SCHContentMetadataItem.h"
@@ -19,7 +17,7 @@
 #import "SCHBookManager.h"
 #import "SCHAppRecommendationItem.h"
 #import "SCHContentItem.h"
-#import "SCHISBNItem.h"
+#import "SCHISBNItemObject.h"
 
 // Constants
 NSString * const kSCHURLManagerSuccess = @"URLManagerSuccess";
@@ -33,6 +31,7 @@ static NSUInteger const kSCHURLManagerMaxConnections = 6;
 - (void)requestURLForRecommendationOnMainThread:(NSString *)isbn;
 - (void)clearOnMainThread;
 - (void)shakeTable;
+- (void)endBackgroundTask;
 
 @property (retain, nonatomic) NSMutableSet *table;
 @property (assign, nonatomic) UIBackgroundTaskIdentifier backgroundTaskIdentifier;
@@ -50,7 +49,6 @@ static NSUInteger const kSCHURLManagerMaxConnections = 6;
 
 @implementation SCHURLManager
 
-@synthesize managedObjectContext;
 @synthesize table;
 @synthesize backgroundTaskIdentifier;
 @synthesize libreAccessWebService;
@@ -85,11 +83,6 @@ static NSUInteger const kSCHURLManagerMaxConnections = 6;
 		libreAccessWebService.delegate = self;
 		
 		self.requestCount = 0;
-        
-        [[NSNotificationCenter defaultCenter] addObserver:self 
-                                                 selector:@selector(coreDataHelperManagedObjectContextDidChangeNotification:) 
-                                                     name:SCHCoreDataHelperManagedObjectContextDidChangeNotification 
-                                                   object:nil];	
 	}
 	
 	return(self);
@@ -97,9 +90,6 @@ static NSUInteger const kSCHURLManagerMaxConnections = 6;
 
 - (void)dealloc
 {
-	[[NSNotificationCenter defaultCenter] removeObserver:self];
-	
-    [managedObjectContext release], managedObjectContext = nil;
 	[table release], table = nil;
 	[libreAccessWebService release], libreAccessWebService = nil;
 
@@ -121,13 +111,6 @@ static NSUInteger const kSCHURLManagerMaxConnections = 6;
     [self performSelectorOnMainThread:@selector(clearOnMainThread) withObject:nil waitUntilDone:NO];    
 }
 
-#pragma mark - NSManagedObjectContext Changed Notification
-
-- (void)coreDataHelperManagedObjectContextDidChangeNotification:(NSNotification *)notification
-{
-    self.managedObjectContext = [[notification userInfo] objectForKey:SCHCoreDataHelperManagedObjectContext];
-}
-
 #pragma mark - Private methods
 
 - (void)requestURLForBookOnMainThread:(SCHBookIdentifier *)bookIdentifier
@@ -135,29 +118,17 @@ static NSUInteger const kSCHURLManagerMaxConnections = 6;
     NSAssert([NSThread isMainThread] == YES, @"SCHURLManager:requestURLForBookOnMainThread MUST be executed on the main thread");
 
 	if (bookIdentifier != nil) {
-        NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
-        NSError *error = nil;
+        SCHISBNItemObject *isbnItem = [[SCHISBNItemObject alloc] init];
+        isbnItem.ContentIdentifier = bookIdentifier.isbn;
+        isbnItem.ContentIdentifierType = [NSNumber numberWithInt:kSCHContentItemContentIdentifierTypesISBN13];
+        isbnItem.DRMQualifier = bookIdentifier.DRMQualifier;
+        isbnItem.coverURLOnly = NO;
         
-        [fetchRequest setEntity:[NSEntityDescription entityForName:kSCHContentMetadataItem 
-                                            inManagedObjectContext:self.managedObjectContext]];	
-        [fetchRequest setPredicate:[NSPredicate predicateWithFormat:@"ContentIdentifier == %@ AND DRMQualifier == %@", 
-                                    bookIdentifier.isbn, bookIdentifier.DRMQualifier]];
+        [self.table addObject:isbnItem];
         
-		NSArray *book = [self.managedObjectContext executeFetchRequest:fetchRequest error:&error];	
-        [fetchRequest release], fetchRequest = nil;
-        if (book == nil) {
-            NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
-        }
-		
-		if ([book count] > 0) {
-			[table addObject:[book objectAtIndex:0]];
-			[self shakeTable];
-		} else {
-			[[NSNotificationCenter defaultCenter] postNotificationName:kSCHURLManagerFailure 
-																object:self
-                                                              userInfo:[NSDictionary dictionaryWithObject:bookIdentifier 
-                                                                                                   forKey:kSCHBookIdentifierBookIdentifier]];
-        }
+        [isbnItem release];
+        
+		[self shakeTable];
 	}
 }
 
@@ -165,30 +136,18 @@ static NSUInteger const kSCHURLManagerMaxConnections = 6;
 {	
     NSAssert([NSThread isMainThread] == YES, @"SCHURLManager:requestURLForRecommendationOnMainThread MUST be executed on the main thread");
     
-	if (isbn != nil) {
-        NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
-        NSError *error = nil;
+    if (isbn != nil) {
+        SCHISBNItemObject *isbnItem = [[SCHISBNItemObject alloc] init];
+        isbnItem.ContentIdentifier = isbn;
+        isbnItem.ContentIdentifierType = [NSNumber numberWithInt:kSCHContentItemContentIdentifierTypesISBN13];
+        isbnItem.DRMQualifier = [NSNumber numberWithInt:kSCHDRMQualifiersFullWithDRM];
+        isbnItem.coverURLOnly = YES;
         
-        [fetchRequest setEntity:[NSEntityDescription entityForName:kSCHAppRecommendationItem 
-                                            inManagedObjectContext:self.managedObjectContext]];	
-        [fetchRequest setPredicate:[NSPredicate predicateWithFormat:@"ContentIdentifier == %@", 
-                                    isbn]];
+        [self.table addObject:isbnItem];
         
-		NSArray *recommendations = [self.managedObjectContext executeFetchRequest:fetchRequest error:&error];	
-        [fetchRequest release], fetchRequest = nil;
-        if (recommendations == nil) {
-            NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
-        }
-		
-		if ([recommendations count] > 0) {
-			[table addObject:[recommendations objectAtIndex:0]];
-			[self shakeTable];
-		} else {
-			[[NSNotificationCenter defaultCenter] postNotificationName:kSCHURLManagerFailure 
-																object:self
-                                                              userInfo:[NSDictionary dictionaryWithObject:isbn 
-                                                                                                   forKey:kSCHAppRecommendationItemIsbn]];
-        }
+        [isbnItem release];
+        
+		[self shakeTable];
 	}
 }
 
@@ -206,10 +165,14 @@ static NSUInteger const kSCHURLManagerMaxConnections = 6;
 	if ([table count] > 0) {
 		NSMutableSet *removeFromTable = [NSMutableSet set];
 		
-		self.backgroundTaskIdentifier = [[UIApplication sharedApplication] beginBackgroundTaskWithExpirationHandler:^{ 
-            [[UIApplication sharedApplication] endBackgroundTask:self.backgroundTaskIdentifier];            
-			self.backgroundTaskIdentifier = UIBackgroundTaskInvalid;
-		}];
+        if (self.backgroundTaskIdentifier == UIBackgroundTaskInvalid) {
+            self.backgroundTaskIdentifier = [[UIApplication sharedApplication] beginBackgroundTaskWithExpirationHandler:^{ 
+                if (self.backgroundTaskIdentifier != UIBackgroundTaskInvalid) { 
+                    [[UIApplication sharedApplication] endBackgroundTask:self.backgroundTaskIdentifier];            
+                    self.backgroundTaskIdentifier = UIBackgroundTaskInvalid;
+                }
+            }];
+        }
 		
 		for (id<SCHISBNItem> isbnItem in table) {
             if ([isbnItem conformsToProtocol:@protocol(SCHISBNItem)] == YES) {
@@ -228,10 +191,8 @@ static NSUInteger const kSCHURLManagerMaxConnections = 6;
                     requestCount++;
                     [removeFromTable addObject:isbnItem];
                 } else {
-                    if (self.backgroundTaskIdentifier != UIBackgroundTaskInvalid) {
-                        [[UIApplication sharedApplication] endBackgroundTask:self.backgroundTaskIdentifier];
-                        self.backgroundTaskIdentifier = UIBackgroundTaskInvalid;			
-                    }
+                    
+                    [self endBackgroundTask];
                     
                     [[SCHAuthenticationManager sharedAuthenticationManager] authenticateWithSuccessBlock:^(SCHAuthenticationManagerConnectivityMode connectivityMode){
                         if (connectivityMode == SCHAuthenticationManagerConnectivityModeOnline) {
@@ -258,33 +219,12 @@ static NSUInteger const kSCHURLManagerMaxConnections = 6;
 		NSArray *list = [result objectForKey:kSCHLibreAccessWebServiceContentMetadataList];
 		
 		if ([list count] > 0) {
-            SCHBookIdentifier *bookIdentifier = [[[SCHBookIdentifier alloc] initWithObject:[list objectAtIndex:0]] autorelease];
-			NSLog(@"Received URLs for %@", bookIdentifier);
-            
-            // if this is a different version then update the ContentMetadataItem
-            // this guarentees the OnDiskVersion will be set correctly
-            SCHAppBook *book = [[SCHBookManager sharedBookManager] bookWithIdentifier:bookIdentifier 
-                                                               inManagedObjectContext:self.managedObjectContext];
-
-            if (book != nil) {
-                NSString *resultVersion = [[list objectAtIndex:0] valueForKey:kSCHLibreAccessWebServiceVersion];
-                if (resultVersion != nil &&
-                    [book.ContentMetadataItem.Version isEqualToString:resultVersion] == NO) {
-                    book.ContentMetadataItem.Version = resultVersion;
-                }
-            }
-            
             [[NSNotificationCenter defaultCenter] postNotificationName:kSCHURLManagerSuccess 
 																object:self userInfo:[list objectAtIndex:0]];
 		}		
 	}
 	
-	if (requestCount < 1) {
-		if (self.backgroundTaskIdentifier != UIBackgroundTaskInvalid) {
-			[[UIApplication sharedApplication] endBackgroundTask:self.backgroundTaskIdentifier];
-			self.backgroundTaskIdentifier = UIBackgroundTaskInvalid;			
-		}
-	}	
+    [self endBackgroundTask];
     
     [self shakeTable];
 }
@@ -308,14 +248,18 @@ static NSUInteger const kSCHURLManagerMaxConnections = 6;
         }
     }
     
-	if (requestCount < 1) {
-		if (self.backgroundTaskIdentifier != UIBackgroundTaskInvalid) {
-			[[UIApplication sharedApplication] endBackgroundTask:self.backgroundTaskIdentifier];
-			self.backgroundTaskIdentifier = UIBackgroundTaskInvalid;			
-		}
-	}	
+    [self endBackgroundTask];
 	
     [self shakeTable];
+}
+
+- (void)endBackgroundTask
+{
+    if (requestCount < 1 && 
+        self.backgroundTaskIdentifier != UIBackgroundTaskInvalid) {
+        [[UIApplication sharedApplication] endBackgroundTask:self.backgroundTaskIdentifier];
+        self.backgroundTaskIdentifier = UIBackgroundTaskInvalid;			
+    }	
 }
 
 @end

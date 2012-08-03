@@ -19,7 +19,8 @@
 @property (nonatomic, retain) NSString *ISBN;
 @property (nonatomic, assign) BOOL isOnWishList;
 @property (nonatomic, assign) BOOL showsBottomRule;
-@property (nonatomic, assign) BOOL lastAuthenticationFailedUsernamePassword;
+@property (nonatomic, assign) BOOL showOnBackCover; // default NO
+@property (nonatomic, assign) BOOL showsWishListButton; // default yes
 @property (nonatomic, retain) UIColor *recommendationBackgroundColor;
 
 @property (nonatomic, retain) IBOutlet UIImageView *coverImageView;

@@ -14,6 +14,6 @@
 
 @interface SCHBSBProvider : EucEPubZipCachingDataProvider <SCHBookPackageProvider>
 
-- (id)initWithBookIdentifier:(SCHBookIdentifier *)bookIdentifier path:(NSString *)bsbPath;
+- (id)initWithBookIdentifier:(SCHBookIdentifier *)bookIdentifier path:(NSString *)bsbPath error:(NSError **)error;
 
 @end

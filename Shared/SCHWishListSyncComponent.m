@@ -16,12 +16,12 @@
 #import "SCHWishListProfile.h"
 #import "SCHWishListItem.h"
 #import "SCHLibreAccessConstants.h"
-#import "BITAPIError.h" 
 #import "SCHAppRecommendationItem.h"
+#import "SCHDeleteWishListItemsOperation.h"
+#import "SCHGetWishListItemsOperation.h"
 
 // Constants
 NSString * const SCHWishListSyncComponentDidInsertNotification = @"SCHWishListSyncComponentDidInsertNotification";
-NSString * const SCHWishListSyncComponentWillDeleteNotification = @"SCHWishListSyncComponentWillDeleteNotification";
 NSString * const SCHWishListSyncComponentISBNs = @"SCHWishListSyncComponentISBNs";
 NSString * const SCHWishListSyncComponentDidCompleteNotification = @"SCHWishListSyncComponentDidCompleteNotification";
 NSString * const SCHWishListSyncComponentDidFailNotification = @"SCHWishListSyncComponentDidFailNotification";
@@ -29,29 +29,14 @@ NSString * const SCHWishListSyncComponentDidFailNotification = @"SCHWishListSync
 @interface SCHWishListSyncComponent ()
 
 @property (nonatomic, retain) SCHWishListWebService *wishListWebService;
-@property (nonatomic, retain) NSDate *lastSyncSaveCalled;
+@property (atomic, retain) NSDate *lastSyncSaveCalled;
 
 - (BOOL)updateWishListItems;
 - (BOOL)createWishLists:(NSArray *)wishListProfiles;
 - (BOOL)retrieveWishLists:(NSArray *)profiles;
 - (BOOL)deleteWishLists:(NSArray *)wishListProfiles;
-- (void)processDeletedWishListItems:(NSArray *)wishListItems;
-
 - (NSArray *)localProfiles;
 - (NSArray *)localWishListProfilesWithItemStates:(NSArray *)changedStates;
-- (void)syncWishListProfiles:(NSArray *)webWishListProfiles;
-- (BOOL)wishListProfileIDIsValid:(NSNumber *)wishListProfileID;
-- (SCHWishListProfile *)wishListProfile:(NSDictionary *)wishListProfile;
-- (void)syncWishListProfile:(NSDictionary *)webWishListProfile 
-        withWishListProfile:(SCHWishListProfile *)localWishListProfile;
-- (void)syncWishListItems:(NSArray *)webWishListItems
-        withWishListItems:(NSSet *)localWishListItems
-               insertInto:(SCHWishListProfile *)wishListProfile;
-- (BOOL)wishListItemIDIsValid:(NSString *)wishListItemID;
-- (SCHWishListItem *)wishListItem:(NSDictionary *)wishListItem;
-- (void)syncWishListItem:(NSDictionary *)webWishListItem 
-        withWishListItem:(SCHWishListItem *)localWishListItem;
-- (NSArray *)removeNewlyCreatedDeletedWishListItems:(NSArray *)annotationArray;
 
 @end
 
@@ -112,9 +97,11 @@ NSString * const SCHWishListSyncComponentDidFailNotification = @"SCHWishListSync
 {
 	NSError *error = nil;
     
-	if (![self.managedObjectContext BITemptyEntity:kSCHWishListProfile error:&error] ||
-        ![self.managedObjectContext BITemptyEntity:kSCHWishListItem error:&error] ||
-        ![self.managedObjectContext BITemptyEntity:kSCHAppRecommendationItem error:&error]) {
+	if (![self.managedObjectContext BITemptyEntity:kSCHWishListProfile error:&error priorToDeletionBlock:nil] ||
+        ![self.managedObjectContext BITemptyEntity:kSCHWishListItem error:&error priorToDeletionBlock:nil] ||
+        ![self.managedObjectContext BITemptyEntity:kSCHAppRecommendationItem error:&error priorToDeletionBlock:^(NSManagedObject *managedObject) {
+        [(SCHAppRecommendationItem *)managedObject deleteAllFiles];
+    }]) {
 		NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
 	}		
 }
@@ -124,65 +111,55 @@ NSString * const SCHWishListSyncComponentDidFailNotification = @"SCHWishListSync
 - (void)method:(NSString *)method didCompleteWithResult:(NSDictionary *)result 
       userInfo:(NSDictionary *)userInfo
 {	    
-    @try {
-        if([method compare:kSCHWishListWebServiceDeleteWishListItems] == NSOrderedSame) {            
-            NSDictionary *deleteWishListItems = [self makeNullNil:[result objectForKey:kSCHWishListWebServiceDeleteWishListItems]];
-            
-            NSArray *profileStatusList = [self makeNullNil:[deleteWishListItems objectForKey:kSCHWishListWebServiceProfileStatusList]];                
-            
-            if ([profileStatusList count] > 0) {
-                [self processDeletedWishListItems:profileStatusList];
-            }
+    if([method compare:kSCHWishListWebServiceDeleteWishListItems] == NSOrderedSame) {            
+        SCHDeleteWishListItemsOperation *operation = [[[SCHDeleteWishListItemsOperation alloc] initWithSyncComponent:self
+                                                                                                              result:result
+                                                                                                            userInfo:userInfo] autorelease];
+        [operation setThreadPriority:SCHSyncComponentThreadLowPriority];
+        [self.backgroundProcessingQueue addOperation:operation];
+    } else if([method compare:kSCHWishListWebServiceAddItemsToWishList] == NSOrderedSame) {
+        NSArray *profiles = [self localProfiles];
+        if ([profiles count] > 0) {
+            [self retrieveWishLists:profiles];       
+        } else {
+            [self completeWithSuccessMethod:nil 
+                                     result:nil 
+                                   userInfo:nil 
+                           notificationName:SCHWishListSyncComponentDidCompleteNotification 
+                       notificationUserInfo:nil];
+        }
+    } else if([method compare:kSCHWishListWebServiceGetWishListItems] == NSOrderedSame) {
+        SCHGetWishListItemsOperation *operation = [[[SCHGetWishListItemsOperation alloc] initWithSyncComponent:self
+                                                                                                        result:result
+                                                                                                      userInfo:userInfo] autorelease];
+        [operation setThreadPriority:SCHSyncComponentThreadLowPriority];
+        [self.backgroundProcessingQueue addOperation:operation];        
+    }        
+}
 
-            NSArray *wishListProfilesToCreate = [self localWishListProfilesWithItemStates:
-                                                 [NSArray arrayWithObject:[NSNumber numberWithStatus:kSCHStatusCreated]]];
-            if ([wishListProfilesToCreate count] > 0) {
-                [self createWishLists:wishListProfilesToCreate];
-            } else if (self.saveOnly == NO) {
-                NSArray *profiles = [self localProfiles];
-                if ([profiles count] > 0) {
-                    [self retrieveWishLists:profiles];       
-                } else {
-                    [[NSNotificationCenter defaultCenter] postNotificationName:SCHWishListSyncComponentDidCompleteNotification 
-                                                                        object:self 
-                                                                      userInfo:nil];                
-                    [super method:nil didCompleteWithResult:nil userInfo:nil];                                
-                }
-            } else {
-                [[NSNotificationCenter defaultCenter] postNotificationName:SCHWishListSyncComponentDidCompleteNotification 
-                                                                    object:self 
-                                                                  userInfo:nil];                
-                [super method:nil didCompleteWithResult:nil userInfo:nil];                
-            }
-        } else if([method compare:kSCHWishListWebServiceAddItemsToWishList] == NSOrderedSame) {
-            NSArray *profiles = [self localProfiles];
-            if ([profiles count] > 0) {
-                [self retrieveWishLists:profiles];       
-            } else {
-                [[NSNotificationCenter defaultCenter] postNotificationName:SCHWishListSyncComponentDidCompleteNotification 
-                                                                    object:self 
-                                                                  userInfo:nil];                
-                [super method:nil didCompleteWithResult:nil userInfo:nil];                                
-            }
-        } else if([method compare:kSCHWishListWebServiceGetWishListItems] == NSOrderedSame) {
-            NSDictionary *wishListItems = [self makeNullNil:[result objectForKey:kSCHWishListWebServiceGetWishListItems]];
-            NSArray *profileItems = [self makeNullNil:[wishListItems objectForKey:kSCHWishListWebServiceProfileItemList]];
-            
-            [self syncWishListProfiles:profileItems];
-            
-            [[NSNotificationCenter defaultCenter] postNotificationName:SCHWishListSyncComponentDidCompleteNotification 
-                                                                object:self];		            
-            [super method:method didCompleteWithResult:result userInfo:userInfo];				                
-        }        
-    }
-    @catch (NSException *exception) {
-        [[NSNotificationCenter defaultCenter] postNotificationName:SCHWishListSyncComponentDidFailNotification 
-                                                            object:self];		    
-        NSError *error = [NSError errorWithDomain:kBITAPIErrorDomain 
-                                             code:kBITAPIExceptionError 
-                                         userInfo:[NSDictionary dictionaryWithObject:[exception reason]
-                                                                              forKey:NSLocalizedDescriptionKey]];
-        [super method:method didFailWithError:error requestInfo:nil result:result];
+- (void)deleteWishListItemsCompletion
+{
+    NSArray *wishListProfilesToCreate = [self localWishListProfilesWithItemStates:
+                                         [NSArray arrayWithObject:[NSNumber numberWithStatus:kSCHStatusCreated]]];
+    if ([wishListProfilesToCreate count] > 0) {
+        [self createWishLists:wishListProfilesToCreate];
+    } else if (self.saveOnly == NO) {
+        NSArray *profiles = [self localProfiles];
+        if ([profiles count] > 0) {
+            [self retrieveWishLists:profiles];       
+        } else {
+            [self completeWithSuccessMethod:nil 
+                                     result:nil 
+                                   userInfo:nil 
+                           notificationName:SCHWishListSyncComponentDidCompleteNotification 
+                       notificationUserInfo:nil];
+        }
+    } else {
+        [self completeWithSuccessMethod:nil 
+                                 result:nil 
+                               userInfo:nil 
+                       notificationName:SCHWishListSyncComponentDidCompleteNotification 
+                   notificationUserInfo:nil];
     }
 }
 
@@ -192,9 +169,12 @@ NSString * const SCHWishListSyncComponentDidFailNotification = @"SCHWishListSync
 {
     NSLog(@"%@:didFailWithError\n%@", method, error);
     
-    [[NSNotificationCenter defaultCenter] postNotificationName:SCHWishListSyncComponentDidFailNotification 
-                                                        object:self];        
-    [super method:method didFailWithError:error requestInfo:requestInfo result:result];
+    [self completeWithFailureMethod:method 
+                              error:error 
+                        requestInfo:requestInfo 
+                             result:result 
+                   notificationName:SCHWishListSyncComponentDidFailNotification 
+               notificationUserInfo:nil];
 }
 
 - (BOOL)updateWishListItems
@@ -216,16 +196,18 @@ NSString * const SCHWishListSyncComponentDidFailNotification = @"SCHWishListSync
             if ([profiles count] > 0) {
                 ret = [self retrieveWishLists:profiles];       
             } else {
-                [[NSNotificationCenter defaultCenter] postNotificationName:SCHWishListSyncComponentDidCompleteNotification 
-                                                                    object:self 
-                                                                  userInfo:nil];                
-                [super method:nil didCompleteWithResult:nil userInfo:nil];                                
+                [self completeWithSuccessMethod:nil 
+                                         result:nil 
+                                       userInfo:nil 
+                               notificationName:SCHWishListSyncComponentDidCompleteNotification 
+                           notificationUserInfo:nil];
             }
         } else {
-            [[NSNotificationCenter defaultCenter] postNotificationName:SCHWishListSyncComponentDidCompleteNotification 
-                                                                object:self 
-                                                              userInfo:nil];                
-            [super method:nil didCompleteWithResult:nil userInfo:nil];                
+            [self completeWithSuccessMethod:nil 
+                                     result:nil 
+                                   userInfo:nil 
+                           notificationName:SCHWishListSyncComponentDidCompleteNotification 
+                       notificationUserInfo:nil];
         }
     }
     
@@ -300,42 +282,6 @@ NSString * const SCHWishListSyncComponentDidFailNotification = @"SCHWishListSync
     return ret;    
 }
 
-- (void)processDeletedWishListItems:(NSArray *)wishListItems
-{
-    if ([wishListItems count] > 0) {
-        for (NSDictionary *wishListItem in wishListItems) {
-            NSNumber *profileID = [self makeNullNil:[wishListItem objectForKey:kSCHWishListWebServiceProfileID]];
-            if ([profileID integerValue] > 0) {
-                for (NSDictionary *item in [self makeNullNil:[wishListItem objectForKey:kSCHWishListWebServiceItemStatusList]]) {
-                    NSString *isbn = [self makeNullNil:[item objectForKey:kSCHWishListWebServiceISBN]];
-                    NSDictionary *wishListError = [self makeNullNil:[item objectForKey:kSCHWishListWebServiceWishListError]];
-                    if (wishListError != nil) {
-                        NSNumber *errorCode = [self makeNullNil:[wishListError objectForKey:kSCHWishListWebServiceErrorCode]];
-                        
-                        if (isbn != nil && errorCode != nil && [errorCode integerValue] == 0) {
-                            NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
-                            NSError *error = nil;
-                            
-                            [fetchRequest setEntity:[NSEntityDescription entityForName:kSCHWishListItem inManagedObjectContext:self.managedObjectContext]];	
-                            [fetchRequest setPredicate:[NSPredicate predicateWithFormat:
-                                                        @"ISBN = %@ AND WishListProfile.ProfileID = %@", isbn, profileID]];
-                            
-                            NSArray *localWishListItem = [self.managedObjectContext executeFetchRequest:fetchRequest error:&error];	
-                            [fetchRequest release], fetchRequest = nil;
-                            if (localWishListItem == nil) {
-                                NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
-                            } else if ([localWishListItem count] > 0) {
-                                [self.managedObjectContext deleteObject:[localWishListItem objectAtIndex:0]];
-                                [self save];
-                            }
-                        }
-                    }
-                }
-            }
-        }
-    }
-}
-
 - (NSArray *)localProfiles
 {
 	NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
@@ -375,315 +321,26 @@ NSString * const SCHWishListSyncComponentDidFailNotification = @"SCHWishListSync
 	return(ret);
 }
 
-- (void)syncWishListProfiles:(NSArray *)webWishListProfiles
+#pragma mark - Overridden methods
+
+- (void)completeWithSuccessMethod:(NSString *)method 
+                           result:(NSDictionary *)result 
+                         userInfo:(NSDictionary *)userInfo
+                 notificationName:(NSString *)notificationName
+             notificationUserInfo:(NSDictionary *)notificationUserInfo
 {
-	NSMutableArray *deletePool = [NSMutableArray array];
-	NSMutableArray *creationPool = [NSMutableArray array];
-	
-	webWishListProfiles = [webWishListProfiles sortedArrayUsingDescriptors:[NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:kSCHWishListWebServiceProfileID ascending:YES]]];		
-	NSArray *localWishListProfilesArray = [self localWishListProfilesWithItemStates:nil];
-    
-	NSEnumerator *webEnumerator = [webWishListProfiles objectEnumerator];			  
-	NSEnumerator *localEnumerator = [localWishListProfilesArray objectEnumerator];			  			  
-    
-	NSDictionary *webItem = [webEnumerator nextObject];
-	SCHWishListProfile *localItem = [localEnumerator nextObject];
-	
-	while (webItem != nil || localItem != nil) {		            
-        if (webItem == nil) {
-			while (localItem != nil) {
-				[deletePool addObject:localItem];
-				localItem = [localEnumerator nextObject];
-			} 
-			break;
-		}
-		
-		if (localItem == nil) {
-			while (webItem != nil) {
-                [creationPool addObject:webItem];
-				webItem = [webEnumerator nextObject];
-			} 
-			break;			
-		}
-		
-        id webProfile = [self makeNullNil:[webItem valueForKey:kSCHWishListWebServiceProfile]];
-        id webItemID =  [self makeNullNil:[webProfile valueForKey:kSCHWishListWebServiceProfileID]];
-		id localItemID = [localItem valueForKey:kSCHWishListWebServiceProfileID];
-		
-        if (webItemID == nil || [self wishListProfileIDIsValid:webItemID] == NO) {
-            webItem = nil;
-        } else if (localItemID == nil) {
-            localItem = nil;
-        } else {
-            switch ([webItemID compare:localItemID]) {
-                case NSOrderedSame:
-                    [self syncWishListProfile:webItem 
-                          withWishListProfile:localItem];
-                    [self save];
-                    webItem = nil;
-                    localItem = nil;
-                    break;
-                case NSOrderedAscending:
-                    [creationPool addObject:webItem];
-                    webItem = nil;
-                    break;
-                case NSOrderedDescending:
-                    [deletePool addObject:localItem];                    
-                    localItem = nil;
-                    break;			
-            }		
-        }
-		
-		if (webItem == nil) {
-			webItem = [webEnumerator nextObject];
-		}
-		if (localItem == nil) {
-			localItem = [localEnumerator nextObject];
-		}		
-	}
-    
-    for (SCHWishListProfile *wishListProfile in deletePool) {
-        // we leave the actual deletion to the profile sync but we do delete 
-        // the items
-        NSMutableArray *deletedISBNs = [NSMutableArray array];
-        for (SCHWishListItem *item in wishListProfile.ItemList) {
-            NSString *isbn = item.ISBN;
-            if (isbn != nil) {
-                [deletedISBNs addObject:isbn];
-            }            
-        }
-        if ([deletedISBNs count] > 0) {
-            [[NSNotificationCenter defaultCenter] postNotificationName:SCHWishListSyncComponentWillDeleteNotification 
-                                                                object:self 
-                                                              userInfo:[NSDictionary dictionaryWithObject:[NSArray arrayWithArray:deletedISBNs]
-                                                                                                   forKey:SCHWishListSyncComponentISBNs]];
-            
-        }           
-        
-        [wishListProfile removeItemList:wishListProfile.ItemList];
-        [self save];
-    }                
-    
-	for (NSDictionary *webItem in creationPool) {
-        [self wishListProfile:webItem];
-        [self save];
-	}
-    
-	[self save];    
-}
-
-- (BOOL)wishListProfileIDIsValid:(NSNumber *)wishListProfileID
-{
-    return [wishListProfileID integerValue] > 0;
-}
-
-- (SCHWishListProfile *)wishListProfile:(NSDictionary *)wishListProfile
-{
-	SCHWishListProfile *ret = nil;
-	
-	if (wishListProfile != nil) {
-        id webProfile = [self makeNullNil:[wishListProfile valueForKey:kSCHWishListWebServiceProfile]];
-        id wishListProfileID = [self makeNullNil:[webProfile valueForKey:kSCHWishListWebServiceProfileID]];
-        
-        if (webProfile != nil && [self wishListProfileIDIsValid:wishListProfileID] == YES) {            
-            ret = [NSEntityDescription insertNewObjectForEntityForName:kSCHWishListProfile 
-                                                inManagedObjectContext:self.managedObjectContext];			
-            
-            // convert timestamp to lastmodified
-            ret.LastModified = [self makeNullNil:[webProfile objectForKey:kSCHWishListWebServiceTimestamp]];
-            ret.State = [NSNumber numberWithStatus:kSCHStatusUnmodified];
-            
-            ret.ProfileID = wishListProfileID;
-            ret.ProfileName = [self makeNullNil:[webProfile objectForKey:kSCHWishListWebServiceProfileName]];
-            
-            [self syncWishListItems:[self makeNullNil:[wishListProfile objectForKey:kSCHWishListWebServiceItemList]] 
-                  withWishListItems:[ret ItemList]
-                         insertInto:ret];            
-        }
-    }
-	
-	return ret;
-}
-
-- (void)syncWishListProfile:(NSDictionary *)webWishListProfile 
-           withWishListProfile:(SCHWishListProfile *)localWishListProfile
-{
-    if (webWishListProfile != nil) {
-        id webProfile = [self makeNullNil:[webWishListProfile valueForKey:kSCHWishListWebServiceProfile]];
-        if (webProfile != nil) {                    
-            // convert timestamp to lastmodified
-            localWishListProfile.LastModified = [self makeNullNil:[webProfile objectForKey:kSCHWishListWebServiceTimestamp]];
-            localWishListProfile.State = [NSNumber numberWithStatus:kSCHStatusSyncUpdate];
-            
-            localWishListProfile.ProfileID = [self makeNullNil:[webProfile objectForKey:kSCHWishListWebServiceProfileID]];
-            localWishListProfile.ProfileName = [self makeNullNil:[webProfile objectForKey:kSCHWishListWebServiceProfileName]];
-            
-            [self syncWishListItems:[self makeNullNil:[webWishListProfile objectForKey:kSCHWishListWebServiceItemList]] 
-                  withWishListItems:localWishListProfile.ItemList
-                         insertInto:localWishListProfile];
-        }
-    }
-}
-
-- (void)syncWishListItems:(NSArray *)webWishListItems
-        withWishListItems:(NSSet *)localWishListItems
-           insertInto:(SCHWishListProfile *)wishListProfile
-{
-	NSMutableArray *deletePool = [NSMutableArray array];
-	NSMutableArray *creationPool = [NSMutableArray array];
-	
-	webWishListItems = [webWishListItems sortedArrayUsingDescriptors:[NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:kSCHWishListWebServiceISBN ascending:YES]]];		
-	NSArray *localWishListItemsArray = [localWishListItems sortedArrayUsingDescriptors:[NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:kSCHWishListWebServiceISBN ascending:YES]]];
-    localWishListItemsArray = [self removeNewlyCreatedDeletedWishListItems:localWishListItemsArray];
-    
-	NSEnumerator *webEnumerator = [webWishListItems objectEnumerator];			  
-	NSEnumerator *localEnumerator = [localWishListItemsArray objectEnumerator];			  			  
-    
-	NSDictionary *webItem = [webEnumerator nextObject];
-	SCHWishListItem *localItem = [localEnumerator nextObject];
-	
-	while (webItem != nil || localItem != nil) {		            
-        if (webItem == nil) {
-			while (localItem != nil) {
-				[deletePool addObject:localItem];
-				localItem = [localEnumerator nextObject];
-			} 
-			break;
-		}
-		
-		if (localItem == nil) {
-			while (webItem != nil) {
-                [creationPool addObject:webItem];
-				webItem = [webEnumerator nextObject];
-			} 
-			break;			
-		}
-		
-		id webItemID =  [self makeNullNil:[webItem valueForKey:kSCHWishListWebServiceISBN]];
-		id localItemID = [localItem valueForKey:kSCHWishListWebServiceISBN];
-		
-        if (webItemID == nil || [self wishListItemIDIsValid:webItemID] == NO) {
-            webItem = nil;
-        } else if (localItemID == nil) {
-            localItem = nil;
-        } else {
-            switch ([webItemID compare:localItemID]) {
-                case NSOrderedSame:
-                    [self syncWishListItem:webItem withWishListItem:localItem];
-                    [self save];
-                    webItem = nil;
-                    localItem = nil;
-                    break;
-                case NSOrderedAscending:
-                    [creationPool addObject:webItem];
-                    webItem = nil;
-                    break;
-                case NSOrderedDescending:
-                    [deletePool addObject:localItem];                    
-                    localItem = nil;
-                    break;			
-            }		
-        }
-		
-		if (webItem == nil) {
-			webItem = [webEnumerator nextObject];
-		}
-		if (localItem == nil) {
-			localItem = [localEnumerator nextObject];
-		}		
-	}
-    
-    if ([deletePool count] > 0) {
-        NSMutableArray *deletedISBNs = [NSMutableArray arrayWithCapacity:[deletePool count]];
-        for (SCHWishListItem *item in deletePool) {
-            NSString *isbn = item.ISBN;
-            if (isbn != nil) {
-                [deletedISBNs addObject:isbn];
-            }
-        }
-        if ([deletedISBNs count] > 0) {
-            [[NSNotificationCenter defaultCenter] postNotificationName:SCHWishListSyncComponentWillDeleteNotification 
-                                                                object:self 
-                                                              userInfo:[NSDictionary dictionaryWithObject:[NSArray arrayWithArray:deletedISBNs]
-                                                                                                   forKey:SCHWishListSyncComponentISBNs]];
-        }        
-        for (SCHWishListItem *wishListItem in deletePool) {
-            [self.managedObjectContext deleteObject:wishListItem];
-            [self save];
-        }                        
-    }
-
-    if ([creationPool count] > 0) {
-        NSMutableArray *insertedISBNs = [NSMutableArray arrayWithCapacity:[creationPool count]];
-        for (NSDictionary *webItem in creationPool) {
-            SCHWishListItem *wishListItem = [self wishListItem:webItem];
-            if (wishListItem != nil) {
-                NSString *isbn = wishListItem.ISBN;
-                if (isbn != nil) {
-                    [insertedISBNs addObject:isbn];
-                }
-                [wishListProfile addItemListObject:wishListItem];
-                [self save];
-            }
-        }
-        if ([insertedISBNs count] > 0) {
-            [[NSNotificationCenter defaultCenter] postNotificationName:SCHWishListSyncComponentDidInsertNotification 
-                                                                object:self 
-                                                              userInfo:[NSDictionary dictionaryWithObject:[NSArray arrayWithArray:insertedISBNs]
-                                                                                                   forKey:SCHWishListSyncComponentISBNs]];
-        } 
-    }
-    
-	[self save];    
-}
-
-- (BOOL)wishListItemIDIsValid:(NSString *)wishListItemID
-{
-    return [[wishListItemID stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]] length] > 0;
-}
-
-- (SCHWishListItem *)wishListItem:(NSDictionary *)wishListItem
-{
-	SCHWishListItem *ret = nil;
-	id wishListItemID = [self makeNullNil:[wishListItem valueForKey:kSCHWishListWebServiceISBN]];
-
-	if (wishListItem != nil && [self wishListItemIDIsValid:wishListItemID] == YES) {	
-		ret = [NSEntityDescription insertNewObjectForEntityForName:kSCHWishListItem 
-                                            inManagedObjectContext:self.managedObjectContext];			
-
-        // convert timestamp to lastmodified
-        ret.LastModified = [self makeNullNil:[wishListItem objectForKey:kSCHWishListWebServiceTimestamp]];
-        ret.State = [NSNumber numberWithStatus:kSCHStatusUnmodified];
-
-		ret.Author = [self makeNullNil:[wishListItem objectForKey:kSCHWishListWebServiceAuthor]];
-		ret.InitiatedBy = [self makeNullNil:[wishListItem objectForKey:kSCHWishListWebServiceInitiatedBy]];
-        ret.ISBN = wishListItemID;
-        ret.Title = [self makeNullNil:[wishListItem objectForKey:kSCHWishListWebServiceTitle]];  
-        
-        [ret assignAppRecommendationItem];
-	}
-	
-	return ret;
-}
-
-- (void)syncWishListItem:(NSDictionary *)webWishListItem 
-        withWishListItem:(SCHWishListItem *)localWishListItem
-{
-    if (webWishListItem != nil) {
-        // convert timestamp to lastmodified
-        localWishListItem.LastModified = [self makeNullNil:[webWishListItem objectForKey:kSCHWishListWebServiceTimestamp]];
-        localWishListItem.State = [NSNumber numberWithStatus:kSCHStatusSyncUpdate];
-
-        localWishListItem.Author = [self makeNullNil:[webWishListItem objectForKey:kSCHWishListWebServiceAuthor]];
-        localWishListItem.InitiatedBy = [self makeNullNil:[webWishListItem objectForKey:kSCHWishListWebServiceInitiatedBy]];
-        localWishListItem.ISBN = [self makeNullNil:[webWishListItem objectForKey:kSCHWishListWebServiceISBN]];
-        localWishListItem.Title = [self makeNullNil:[webWishListItem objectForKey:kSCHWishListWebServiceTitle]];
-    }
+    [SCHAppRecommendationItem purgeUnusedAppRecommendationItemsUsingManagedObjectContext:self.managedObjectContext];
+    [super completeWithSuccessMethod:method 
+                              result:result 
+                            userInfo:userInfo 
+                    notificationName:notificationName 
+                notificationUserInfo:notificationUserInfo];
 }
 
 // remove any created or deleted wishlist items that had issues
 // the next get will then up date with the truth
 - (NSArray *)removeNewlyCreatedDeletedWishListItems:(NSArray *)annotationArray
+                               managedObjectContext:(NSManagedObjectContext *)aManagedObjectContext
 {
     NSMutableArray *ret = nil;
     
@@ -697,13 +354,13 @@ NSString * const SCHWishListSyncComponentDidFailNotification = @"SCHWishListSync
             NSDate *lastModified = [obj LastModified];
             if ((status == kSCHStatusCreated || status == kSCHStatusDeleted) &&
                 [lastModified earlierDate:self.lastSyncSaveCalled] == lastModified) {
-                [self.managedObjectContext deleteObject:obj];
+                [aManagedObjectContext deleteObject:obj];
             } else {
                 [ret addObject:obj];
             }
         }];
         
-        [self save];
+        [self saveWithManagedObjectContext:aManagedObjectContext];
     }
     
     return ret;

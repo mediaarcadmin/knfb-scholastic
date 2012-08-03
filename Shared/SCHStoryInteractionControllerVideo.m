@@ -106,11 +106,13 @@ static CGFloat const kSCHStoryInteractionControllerVideoBorderWidth = 4.0;
 
 - (IBAction)playAudioButtonTapped:(id)sender
 {
-    NSString *path = [self.storyInteraction audioPathForQuestion];
-    if (path != nil) {
-        [self pause];
-        [self enqueueAudioWithPath:path fromBundle:NO];
-    }   
+    [self cancelQueuedAudioExecutingSynchronizedBlocksBefore:^{
+        NSString *path = [self.storyInteraction audioPathForQuestion];
+        if (path != nil) {
+            [self pause];
+            [self enqueueAudioWithPath:path fromBundle:NO];
+        }   
+    }];
 }
 
 - (void)pause
@@ -135,7 +137,7 @@ static CGFloat const kSCHStoryInteractionControllerVideoBorderWidth = 4.0;
             case MPMoviePlaybackStatePaused:
                 self.playButton.play = NO;
                 if (self.moviePlayer.currentPlaybackTime >= self.moviePlayer.duration) {
-                    self.playButton.icon = SCHPlayButtonIconPlay;  
+                    [self removeFromHostView];
                 }
                 break;
             case MPMoviePlaybackStatePlaying:

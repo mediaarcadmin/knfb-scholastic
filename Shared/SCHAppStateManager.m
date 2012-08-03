@@ -11,11 +11,21 @@
 #import <CoreData/CoreData.h>
 #import "SCHCoreDataHelper.h"
 #import "NSNumber+ObjectTypes.h"
-#import "SCHSettingItem.h"
 
 @interface SCHAppStateManager()
 
 - (SCHAppState *)createAppStateIfNeeded;
+
+@property (nonatomic, retain) SCHAppState *cachedAppState;
+@property (nonatomic, retain) NSNumber *cachedCanSync;
+@property (nonatomic, retain) NSNumber *cachedCanSyncNotes;
+@property (nonatomic, retain) NSNumber *cachedCOPPACompliant;
+@property (nonatomic, retain) NSNumber *cachedCanAuthenticate;
+@property (nonatomic, retain) NSNumber *cachedServerDateDelta;
+@property (nonatomic, retain) NSNumber *cachedDataStoreType;
+@property (nonatomic, copy) NSString *cachedLastKnownAuthToken;
+@property (nonatomic, copy) NSDate *cachedLastRemoteManifestUpdateDate;
+@property (nonatomic, retain) NSNumber *cachedLastScholasticAuthenticationErrorCode;
 
 // thread-safe access to appstate object; the block is executed synchronously so may make
 // changes to any __block storage locals
@@ -24,11 +34,24 @@
 // thread-safe access to appstate object followed by save; the block is executed asynchronously
 - (void)performWithAppStateAndSave:(void (^)(SCHAppState *appState))block;
 
+- (void)warmupCachedProperties;
+- (void)clearCachedProperties;
+
 @end
 
 @implementation SCHAppStateManager
 
 @synthesize managedObjectContext;
+@synthesize cachedAppState;
+@synthesize cachedCanSync;
+@synthesize cachedCanSyncNotes;
+@synthesize cachedCOPPACompliant;
+@synthesize cachedCanAuthenticate;
+@synthesize cachedServerDateDelta;
+@synthesize cachedDataStoreType;
+@synthesize cachedLastKnownAuthToken;
+@synthesize cachedLastRemoteManifestUpdateDate;
+@synthesize cachedLastScholasticAuthenticationErrorCode;
 
 #pragma mark - Singleton Instance methods
 
@@ -62,6 +85,17 @@
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
     
+    [cachedAppState release], cachedAppState = nil;
+    [cachedCanSync release], cachedCanSync = nil;
+    [cachedCanSyncNotes release], cachedCanSyncNotes = nil;
+    [cachedCOPPACompliant release], cachedCOPPACompliant = nil;
+    [cachedCanAuthenticate release], cachedCanAuthenticate = nil;
+    [cachedServerDateDelta release], cachedServerDateDelta = nil;
+    [cachedDataStoreType release], cachedDataStoreType = nil;
+    [cachedLastKnownAuthToken release], cachedLastKnownAuthToken = nil;
+    [cachedLastRemoteManifestUpdateDate release], cachedLastRemoteManifestUpdateDate = nil;
+    [cachedLastScholasticAuthenticationErrorCode release], cachedLastScholasticAuthenticationErrorCode = nil;
+    
     [managedObjectContext release], managedObjectContext = nil;
     
     [super dealloc];
@@ -69,38 +103,87 @@
 
 #pragma mark - methods
 
+- (void)setManagedObjectContext:(NSManagedObjectContext *)newManagedObjectContext
+{
+    NSAssert([NSThread isMainThread] == YES, @"setManagedObjectContext SHOULD be executed on the main thread");
+    
+    if (managedObjectContext != newManagedObjectContext) {
+        [managedObjectContext release];
+        managedObjectContext = [newManagedObjectContext retain];
+        if (managedObjectContext != nil) {
+            self.cachedAppState = [self createAppStateIfNeeded];
+            [self warmupCachedProperties];
+        } else {
+            self.cachedAppState = nil;
+            [self clearCachedProperties];
+        }
+    }
+}
+
 - (SCHAppState *)appState
 {
     NSAssert([NSThread isMainThread] == YES, @"appState SHOULD be executed on the main thread");
-    SCHAppState *ret = nil;
-    NSError *error = nil;
     
-    if (!self.managedObjectContext) {
-        return nil;
-    }
-    
-    NSEntityDescription *entityDescription = [NSEntityDescription 
-                                              entityForName:kSCHAppState
-                                              inManagedObjectContext:self.managedObjectContext];
-    NSFetchRequest *fetchRequest = [entityDescription.managedObjectModel 
-                                    fetchRequestTemplateForName:kSCHAppStatefetchAppState];
-    
-    NSArray *state = [self.managedObjectContext executeFetchRequest:fetchRequest error:&error];	
-    if (state == nil) {
-        NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
-    }
+    return self.cachedAppState;    
+}
 
-    if ([state count] > 0) {
-        ret = [state objectAtIndex:0];
-    } else {
-        ret = [self createAppStateIfNeeded];
-    }
+- (void)warmupCachedProperties
+{
+    __block BOOL canSync = NO;
+    __block BOOL syncNotes = NO;
+    __block BOOL coppa = NO;
+    __block BOOL canAuthenticate = NO;    
+    __block NSTimeInterval serverDateDelta = 0.0;
+    // Assume a standard store if there is no app state    
+    __block SCHDataStoreTypes dataStoreType = kSCHDataStoreTypesStandard;
+    __block NSString *lastKnownAuthToken = nil;
+    __block NSDate *lastRemoteManifestUpdateDate = nil;
+    __block SCHScholasticAuthenticationWebServiceErrorCode lastScholasticAuthenticationErrorCode = kSCHScholasticAuthenticationWebServiceErrorCodeNone;
     
-    if (!ret) {
-        NSLog(@"WARNING!!! App state is nil. This will lead to unexpected behaviour.");
-    }
+    [self performWithAppState:^(SCHAppState *appState) {
+        if (appState != nil) {
+            canSync = [appState.ShouldSync boolValue];
+            syncNotes = [appState.ShouldSyncNotes boolValue]; 
+            coppa = [appState.isCOPPACompliant boolValue];  
+            canAuthenticate = [appState.ShouldAuthenticate boolValue];
+            serverDateDelta = [appState.ServerDateDelta doubleValue];
+            dataStoreType = [appState.DataStoreType dataStoreTypeValue];
+            lastKnownAuthToken = appState.LastKnownAuthToken;
+            lastRemoteManifestUpdateDate = appState.LastRemoteManifestUpdateDate;
+            lastScholasticAuthenticationErrorCode = [appState.lastScholasticAuthenticationErrorCode integerValue];
+        }
+    }];
+#if IGNORE_COPPA_COMPLIANCE
+    syncNotes = YES;
+    coppa = YES;
+#endif
     
-    return(ret);    
+    @synchronized (self) {
+        self.cachedCanSync = [NSNumber numberWithBool:canSync];
+        self.cachedCanSyncNotes = [NSNumber numberWithBool:syncNotes];   
+        self.cachedCOPPACompliant = [NSNumber numberWithBool:coppa]; 
+        self.cachedCanAuthenticate = [NSNumber numberWithBool:canAuthenticate];
+        self.cachedServerDateDelta = [NSNumber numberWithDouble:serverDateDelta];   
+        self.cachedDataStoreType = [NSNumber numberWithDataStoreType:dataStoreType];
+        self.cachedLastKnownAuthToken = lastKnownAuthToken;
+        self.cachedLastRemoteManifestUpdateDate = lastRemoteManifestUpdateDate;
+        self.cachedLastScholasticAuthenticationErrorCode = [NSNumber numberWithInt:lastScholasticAuthenticationErrorCode];
+    }    
+}
+
+- (void)clearCachedProperties
+{
+    @synchronized (self) {
+        self.cachedCanSync = nil;
+        self.cachedCanSyncNotes = nil;   
+        self.cachedCOPPACompliant = nil; 
+        self.cachedCanAuthenticate = nil;
+        self.cachedServerDateDelta = nil;   
+        self.cachedDataStoreType = nil;
+        self.cachedLastKnownAuthToken = nil;
+        self.cachedLastRemoteManifestUpdateDate = nil;
+        self.cachedLastScholasticAuthenticationErrorCode = nil;
+    }    
 }
 
 - (SCHAppState *)createAppStateIfNeeded
@@ -132,24 +215,32 @@
         ret = [state objectAtIndex:0];
     }
     
+    if (ret == nil) {
+        NSLog(@"WARNING!!! App state is nil. This will lead to unexpected behaviour.");
+    }
+    
     return ret;
 }
 
 - (BOOL)canSync
 {
-    __block BOOL ret = NO;
+    BOOL ret = NO;
     
-    [self performWithAppState:^(SCHAppState *appState) {
-        if (appState != nil) {
-            ret = [appState.ShouldSync boolValue];
+    @synchronized (self) {
+        if (self.cachedCanSync != nil) {
+            ret = [self.cachedCanSync boolValue];
         }
-    }];
+    }
     
     return ret;
 }
 
 - (void)setCanSync:(BOOL)sync
 {
+    @synchronized (self) {
+        self.cachedCanSync = [NSNumber numberWithBool:sync];
+    }
+    
     [self performWithAppStateAndSave:^(SCHAppState *appState) {
         [appState setShouldSync:[NSNumber numberWithBool:sync]];
     }];
@@ -157,23 +248,23 @@
 
 - (BOOL)canSyncNotes
 {
-    __block BOOL ret = NO;
+    BOOL ret = NO;
     
-#if IGNORE_COPPA_COMPLIANCE
-    ret = YES;
-#else
-    [self performWithAppState:^(SCHAppState *appState) {
-        if (appState != nil) {
-            ret = [appState.ShouldSyncNotes boolValue];
+    @synchronized (self) {
+        if (self.cachedCanSyncNotes != nil) {
+            ret = [self.cachedCanSyncNotes boolValue];
         }
-    }];
-#endif
+    }
     
     return ret;
 }
 
 - (void)setCanSyncNotes:(BOOL)sync
 {
+    @synchronized (self) {
+        self.cachedCanSyncNotes = [NSNumber numberWithBool:sync];
+    }
+
     [self performWithAppStateAndSave:^(SCHAppState *appState) {
         [appState setShouldSyncNotes:[NSNumber numberWithBool:sync]];
     }];
@@ -181,23 +272,23 @@
 
 - (BOOL)isCOPPACompliant
 {
-    __block BOOL ret = NO;
+    BOOL ret = NO;
     
-#if IGNORE_COPPA_COMPLIANCE
-    ret = YES;
-#else
-    [self performWithAppState:^(SCHAppState *appState) {
-        if (appState != nil) {
-            ret = [appState.isCOPPACompliant boolValue];
+    @synchronized (self) {
+        if (self.cachedCOPPACompliant != nil) {
+            ret = [self.cachedCOPPACompliant boolValue];
         }
-    }];
-#endif
+    }
     
     return ret;
 }
 
 - (void)setCOPPACompliant:(BOOL)coppa
 {
+    @synchronized (self) {
+        self.cachedCOPPACompliant = [NSNumber numberWithBool:coppa];
+    }
+    
     [self performWithAppStateAndSave:^(SCHAppState *appState) {
         [appState setIsCOPPACompliant:[NSNumber numberWithBool:coppa]];
     }];
@@ -205,19 +296,23 @@
 
 - (BOOL)canAuthenticate
 {
-    __block BOOL ret = NO;
+    BOOL ret = NO;
     
-    [self performWithAppState:^(SCHAppState *appState) {
-        if (appState != nil) {
-            ret = [appState.ShouldAuthenticate boolValue];
+    @synchronized (self) {
+        if (self.cachedCanAuthenticate != nil) {
+            ret = [self.cachedCanAuthenticate boolValue];
         }
-    }];
+    }
     
     return ret;  
 }
 
 - (void)setCanAuthenticate:(BOOL)auth
 {
+    @synchronized (self) {
+        self.cachedCanAuthenticate = [NSNumber numberWithBool:auth];
+    }
+
     [self performWithAppStateAndSave:^(SCHAppState *appState) {
         [appState setShouldAuthenticate:[NSNumber numberWithBool:auth]];
     }];
@@ -225,6 +320,10 @@
 
 - (void)setServerDateDelta:(NSTimeInterval)seconds
 {
+    @synchronized (self) {
+        self.cachedServerDateDelta = [NSNumber numberWithDouble:seconds];
+    }
+    
     [self performWithAppStateAndSave:^(SCHAppState *appState) {
         [appState setServerDateDelta:[NSNumber numberWithDouble:seconds]];
     }];
@@ -232,46 +331,61 @@
 
 - (NSTimeInterval)serverDateDelta
 {
-    __block NSTimeInterval ret = 0.0;
+    NSTimeInterval ret = 0.0;
     
-    [self performWithAppState:^(SCHAppState *appState) {
-        if (appState != nil) {
-            ret = [appState.ServerDateDelta doubleValue];
+    @synchronized (self) {
+        if (self.cachedServerDateDelta != nil) {
+            ret = [self.cachedServerDateDelta doubleValue];
         }
-    }];
+    }
     
     return ret;  
+}
+
+- (BOOL)shouldShowWishList
+{
+    if ([self lastScholasticAuthenticationErrorCode] == kSCHScholasticAuthenticationWebServiceErrorCodeInvalidUsernamePassword) {
+        return NO;
+    } else if (![self isCOPPACompliant]) {
+        return NO;
+    } else {
+        return YES;
+    }
 }
 
 - (BOOL)isStandardStore
 {
     // Assume a standard store if there is no app state
-    __block BOOL ret = YES;
-    
-    [self performWithAppState:^(SCHAppState *appState) {
-        if (appState != nil) {
-            ret = [appState.DataStoreType isEqualToNumber:[NSNumber numberWithDataStoreType:kSCHDataStoreTypesStandard]];
+    BOOL ret = YES;
+
+    @synchronized (self) {
+        if (self.cachedDataStoreType != nil) {
+            ret = [self.cachedDataStoreType isEqualToNumber:[NSNumber numberWithDataStoreType:kSCHDataStoreTypesStandard]];
         }
-    }];
+    }
     
     return ret;
 }
 
 - (BOOL)isSampleStore
 {
-    __block BOOL ret = NO;
+    BOOL ret = NO;
     
-    [self performWithAppState:^(SCHAppState *appState) {
-        if (appState != nil) {
-            ret = [appState.DataStoreType isEqualToNumber:[NSNumber numberWithDataStoreType:kSCHDataStoreTypesSample]];
+    @synchronized (self) {
+        if (self.cachedDataStoreType != nil) {
+            ret = [self.cachedDataStoreType isEqualToNumber:[NSNumber numberWithDataStoreType:kSCHDataStoreTypesSample]];
         }
-    }];
+    }
     
     return ret;
 }
 
 - (void)setDataStoreType:(SCHDataStoreTypes)type
 {
+    @synchronized (self) {
+        self.cachedDataStoreType = [NSNumber numberWithDataStoreType:type];
+    }
+
     [self performWithAppStateAndSave:^(SCHAppState *appState) {
         [appState setDataStoreType:[NSNumber numberWithDataStoreType:type]];
     }];
@@ -279,19 +393,23 @@
 
 - (NSString *)lastKnownAuthToken
 {
-    __block NSString *ret = nil;
-    
-    [self performWithAppState:^(SCHAppState *appState) {
-        if (appState != nil) {
-            ret = appState.LastKnownAuthToken;
+    NSString *ret = nil;
+
+    @synchronized (self) {
+        if (self.cachedLastKnownAuthToken != nil) {
+            ret = self.cachedLastKnownAuthToken;
         }
-    }];
+    }
     
     return ret;  
 }
 
 - (void)setLastKnownAuthToken:(NSString *)token
 {
+    @synchronized (self) {
+        self.cachedLastKnownAuthToken = token;
+    }
+
     [self performWithAppStateAndSave:^(SCHAppState *appState) {
         [appState setLastKnownAuthToken:token];
     }];
@@ -299,18 +417,23 @@
 
 - (NSDate *)lastRemoteManifestUpdateDate
 {
-    __block NSDate *ret = nil;
-    
-    [self performWithAppState:^(SCHAppState *appState) {
-        if (appState != nil) {
-            ret = appState.LastRemoteManifestUpdateDate;
+    NSDate *ret = nil;
+
+    @synchronized (self) {
+        if (self.cachedLastRemoteManifestUpdateDate != nil) {
+            ret = self.cachedLastRemoteManifestUpdateDate;
         }
-    }];
+    }
     
     return ret;  
 }
+
 - (void)setLastRemoteManifestUpdateDate:(NSDate *)date
 {
+    @synchronized (self) {
+        self.cachedLastRemoteManifestUpdateDate = date;
+    }
+
     [self performWithAppStateAndSave:^(SCHAppState *appState) {
         [appState setLastRemoteManifestUpdateDate:date];
     }];
@@ -318,19 +441,23 @@
 
 - (SCHScholasticAuthenticationWebServiceErrorCode)lastScholasticAuthenticationErrorCode
 {
-    __block SCHScholasticAuthenticationWebServiceErrorCode ret = kSCHScholasticAuthenticationWebServiceErrorCodeNone;
+    SCHScholasticAuthenticationWebServiceErrorCode ret = kSCHScholasticAuthenticationWebServiceErrorCodeNone;
     
-    [self performWithAppState:^(SCHAppState *appState) {
-        if (appState != nil) {
-            ret = [appState.lastScholasticAuthenticationErrorCode intValue];
+    @synchronized (self) {
+        if (self.cachedLastScholasticAuthenticationErrorCode != nil) {
+            ret = [self.cachedLastScholasticAuthenticationErrorCode intValue];
         }
-    }];
+    }
     
     return ret;
 }
 
 - (void)setLastScholasticAuthenticationErrorCode:(SCHScholasticAuthenticationWebServiceErrorCode)errorCode
 {
+    @synchronized (self) {
+        self.cachedLastScholasticAuthenticationErrorCode = [NSNumber numberWithInt:errorCode];
+    }
+
     [self performWithAppStateAndSave:^(SCHAppState *appState) {
         [appState setLastScholasticAuthenticationErrorCode:[NSNumber numberWithInt:errorCode]];
     }];
@@ -415,6 +542,8 @@
 
 - (void)coreDataHelperManagedObjectContextDidChangeNotification:(NSNotification *)notification
 {
+    NSAssert([NSThread isMainThread] == YES, @"coreDataHelperManagedObjectContextDidChangeNotification SHOULD be executed on the main thread");
+    // setting the managed object context also resets the caches
     self.managedObjectContext = [[notification userInfo] objectForKey:SCHCoreDataHelperManagedObjectContext];
 }
 

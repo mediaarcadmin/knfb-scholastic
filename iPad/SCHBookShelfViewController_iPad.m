@@ -344,8 +344,8 @@ static NSInteger const kSCHBookShelfEdgePadding = 12;
     [[SCHBookShelfRecommendationListController alloc] initWithNibName:@"SCHBookShelfRecommendationListController" bundle:nil];
     recommendationController.appProfile = self.profileItem.AppProfile;
     recommendationController.delegate = self;
-    recommendationController.lastAuthenticationFailedUsernamePassword = ([[SCHAppStateManager sharedAppStateManager] lastScholasticAuthenticationErrorCode] == kSCHScholasticAuthenticationWebServiceErrorCodeInvalidUsernamePassword);
-    
+    recommendationController.shouldShowWishList = [[SCHAppStateManager sharedAppStateManager] shouldShowWishList];
+        
     self.recommendationPopover = [[[BITModalSheetController alloc] initWithContentViewController:recommendationController] autorelease];
     [self.recommendationPopover setContentSize:CGSizeMake(640, 654)];
     [self.recommendationPopover setContentOffset:CGPointMake(0, 0)];

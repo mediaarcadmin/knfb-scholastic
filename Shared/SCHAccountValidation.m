@@ -13,11 +13,13 @@
 #import "SCHAppStateManager.h"
 #import "SFHFKeychainUtils.h"
 #import "SCHAuthenticationManager.h"
+#import "BITAPIError.h"
 
 // Constants
 NSString * const kSCHAccountValidationErrorDomain = @"AccountValidationErrorDomain";
 NSInteger const kSCHAccountValidationPTokenError = 2000;
-NSInteger const kSCHAccountValidationCredentialsError = 200;
+NSInteger const kSCHAccountValidationMalformedEmailError = 200;
+NSInteger const kSCHAccountValidationCredentialsMissingError = 201;
 
 // pToken timeout set to 29 minutes, same as windows - 1 minute for any errors
 static NSTimeInterval const kSCHAccountValidationpTokenTimeout = 1740.0;
@@ -30,6 +32,7 @@ static NSTimeInterval const kSCHAccountValidationpTokenTimeout = 1740.0;
 @property (nonatomic, assign) BOOL waitingOnResponse;
 @property (nonatomic, retain) SCHScholasticAuthenticationWebService *scholasticWebService;
 @property (nonatomic, copy) ValidateBlock validateBlock;
+@property (nonatomic, assign) BOOL updatePassword;
 
 @end
 
@@ -41,6 +44,7 @@ static NSTimeInterval const kSCHAccountValidationpTokenTimeout = 1740.0;
 @synthesize waitingOnResponse;
 @synthesize scholasticWebService;
 @synthesize validateBlock;
+@synthesize updatePassword;
 
 #pragma mark - Object lifecycle 
 
@@ -88,6 +92,7 @@ static NSTimeInterval const kSCHAccountValidationpTokenTimeout = 1740.0;
 
 - (BOOL)validateWithUserName:(NSString *)username 
                 withPassword:(NSString *)password 
+              updatePassword:(BOOL)setUpdatePassword
                validateBlock:(ValidateBlock)aValidateBlock
 {
     BOOL ret = NO;
@@ -100,6 +105,7 @@ static NSTimeInterval const kSCHAccountValidationpTokenTimeout = 1740.0;
         self.passwordUsed = password;
         self.validateBlock = aValidateBlock;
         self.waitingOnResponse = YES;
+        self.updatePassword = setUpdatePassword;
         [self.scholasticWebService authenticateUserName:username withPassword:password]; 
         ret = YES; 
     }
@@ -175,17 +181,19 @@ static NSTimeInterval const kSCHAccountValidationpTokenTimeout = 1740.0;
                                      code:kSCHAccountValidationPTokenError
                                  userInfo:userInfo];
     } else {
-        NSString *storedUsername = [[NSUserDefaults standardUserDefaults] stringForKey:kSCHAuthenticationManagerUsername];
-        NSString *storedPassword = [SFHFKeychainUtils getPasswordForUsername:storedUsername 
-                                                              andServiceName:kSCHAuthenticationManagerServiceName 
-                                                                       error:nil];
-
-        if ([self.passwordUsed isEqualToString:storedPassword] == NO) {
-            [SFHFKeychainUtils storeUsername:storedUsername 
-                                 andPassword:self.passwordUsed 
-                              forServiceName:kSCHAuthenticationManagerServiceName 
-                              updateExisting:YES 
-                                       error:nil];
+        if (self.updatePassword == YES) {
+            NSString *storedUsername = [[NSUserDefaults standardUserDefaults] stringForKey:kSCHAuthenticationManagerUsername];
+            NSString *storedPassword = [SFHFKeychainUtils getPasswordForUsername:storedUsername 
+                                                                  andServiceName:kSCHAuthenticationManagerServiceName 
+                                                                           error:nil];
+            
+            if ([self.passwordUsed isEqualToString:storedPassword] == NO) {
+                [SFHFKeychainUtils storeUsername:storedUsername 
+                                     andPassword:self.passwordUsed 
+                                  forServiceName:kSCHAuthenticationManagerServiceName 
+                                  updateExisting:YES 
+                                           error:nil];
+            }
         }
         
         self.pToken = pTokenResponse;
@@ -203,11 +211,29 @@ static NSTimeInterval const kSCHAccountValidationpTokenTimeout = 1740.0;
         result:(NSDictionary *)result
 {
     NSLog(@"%@:didFailWithError\n%@", method, error);
+ 
+    NSError *authenticationError;
     
-    [[SCHAppStateManager sharedAppStateManager] setLastScholasticAuthenticationErrorCode:[error code]];
+    if ([[error domain] isEqualToString:kBITAPIErrorDomain]) {
+        NSString *username = [[NSUserDefaults standardUserDefaults] objectForKey:kSCHAuthenticationManagerUsername];
+        NSString *errorMessage;
+        
+        if ([username length]) {
+            errorMessage = [NSString stringWithFormat:NSLocalizedString(@"The password you entered for %@ was incorrect. Please try again.", @""), username];
+        } else {
+            errorMessage = NSLocalizedString(@"The password you entered was incorrect. Please try again.", @"");
+        }
+        
+        authenticationError = [NSError errorWithDomain:[error domain] code:[error code] userInfo:[NSDictionary dictionaryWithObject:errorMessage forKey:NSLocalizedDescriptionKey]];
+        
+    } else {
+        authenticationError = error;
+    }
+    
+    [[SCHAppStateManager sharedAppStateManager] setLastScholasticAuthenticationErrorCode:[authenticationError code]];
     
     self.passwordUsed = nil;
-    self.validateBlock(nil, error);
+    self.validateBlock(nil, authenticationError);
     self.validateBlock = nil;    
     self.waitingOnResponse = NO;    
 }

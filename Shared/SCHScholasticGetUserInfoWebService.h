@@ -14,6 +14,17 @@
 // ProcessRemote Constants
 extern NSString * const kSCHScholasticGetUserInfoWebServiceProcessRemote;
 extern NSString * const kSCHScholasticGetUserInfoWebServiceCOPPA;
+extern NSString * const kSCHScholasticGetUserInfoWebServiceSPSID;
+
+// Scholastic Errors
+typedef enum {
+    // an unknown error
+    kSCHScholasticGetUserInfoWebServiceErrorCodeUnknown = -1,
+    // no error
+    kSCHScholasticGetUserInfoWebServiceErrorCodeNone = 0,
+    // valid errors from the web service
+    kSCHScholasticGetUserInfoWebServiceErrorCodeInvalidToken = 300
+} SCHScholasticGetUserInfoWebServiceWebServiceErrorCode;
 
 @interface SCHScholasticGetUserInfoWebService : BITSOAPProxy <GetUserInfoSoap11BindingResponseDelegate> 
 

@@ -117,6 +117,7 @@ extern NSString * const kSCHLibreAccessWebServiceRatingStatus;
 extern NSString * const kSCHLibreAccessWebServiceReadingDuration;
 extern NSString * const kSCHLibreAccessWebServiceReadingStatsContentItem;
 extern NSString * const kSCHLibreAccessWebServiceReadingStatsEntryItem;
+extern NSString * const kSCHLibreAccessWebServiceRecommendationsOn;
 extern NSString * const kSCHLibreAccessWebServiceRemoveReason;
 extern NSString * const kSCHLibreAccessWebServiceReturned;
 extern NSString * const kSCHLibreAccessWebServiceScreenName;

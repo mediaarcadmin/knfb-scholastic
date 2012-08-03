@@ -11,11 +11,11 @@
 @protocol SCHBookPackageProvider <EucEPubDataProvider>
 
 @required
-
 - (BOOL)componentExistsAtPath:(NSString *)path;
 - (BOOL)isEncrypted;
 - (BOOL)isValid;
 - (BOOL)decryptionIsAvailable;
+- (void)resetDrmDecrypter;
 - (void)reportReadingIfRequired;
 - (UIImage *)thumbnailForPage:(NSInteger)pageNumber;
 

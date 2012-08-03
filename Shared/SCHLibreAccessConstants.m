@@ -119,6 +119,7 @@ NSString * const kSCHLibreAccessWebServiceRatingStatus = @"RatingStatus";
 NSString * const kSCHLibreAccessWebServiceReadingDuration = @"ReadingDuration";
 NSString * const kSCHLibreAccessWebServiceReadingStatsContentItem = @"ReadingStatsContentItem";
 NSString * const kSCHLibreAccessWebServiceReadingStatsEntryItem = @"ReadingStatsEntryItem";
+NSString * const kSCHLibreAccessWebServiceRecommendationsOn = @"RecommendationsOn";
 NSString * const kSCHLibreAccessWebServiceRemoveReason = @"RemoveReason";
 NSString * const kSCHLibreAccessWebServiceReturned = @"Returned";
 NSString * const kSCHLibreAccessWebServiceScreenName = @"ScreenName";

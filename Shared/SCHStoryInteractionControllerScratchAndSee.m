@@ -378,6 +378,11 @@ enum ScratchState {
     self.controllerState = SCHStoryInteractionControllerStateInteractionReadingAnswerWithPause;    
 }
 
+- (IBAction)questionButtonTouchCancelled:(id)sender
+{
+    self.controllerState = SCHStoryInteractionControllerStateInteractionInProgress;
+}
+
 - (IBAction)questionButtonTapped:(UIButton *)sender
 {
     self.simultaneousTapCount++;

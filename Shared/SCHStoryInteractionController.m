@@ -91,7 +91,7 @@ static Class controllerClassForStoryInteraction(SCHStoryInteraction *storyIntera
 {
     Class controllerClass = controllerClassForStoryInteraction(storyInteraction);
     if (!controllerClass) {
-        NSLog(@"Can't find controller class for %@", object_getClassName(storyInteraction));
+        NSLog(@"Can't find controller class for %s", object_getClassName(storyInteraction));
         return nil;
     }
     return [[[controllerClass alloc] initWithStoryInteraction:storyInteraction] autorelease];
@@ -572,6 +572,11 @@ static Class controllerClassForStoryInteraction(SCHStoryInteraction *storyIntera
             break;
         }
     }
+
+    // an additional check here to make sure that the contents view and background view frames are integral
+    // prevents later blurriness on iPhone
+    contents.frame = CGRectIntegral(contents.frame);
+    self.backgroundView.frame = CGRectIntegral(self.backgroundView.frame);
 }
 
 - (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration

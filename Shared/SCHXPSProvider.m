@@ -40,7 +40,12 @@
 
 - (id)initWithBookIdentifier:(SCHBookIdentifier *)aBookIdentifier xpsPath:(NSString *)xpsPath
 {
-    if (xpsPath && (self = [super initWithPath:xpsPath])) {
+    return [self initWithBookIdentifier:aBookIdentifier xpsPath:xpsPath error:NULL];
+}
+
+- (id)initWithBookIdentifier:(SCHBookIdentifier *)aBookIdentifier xpsPath:(NSString *)xpsPath error:(NSError **)error
+{
+    if (xpsPath && (self = [super initWithPath:xpsPath error:error])) {
         bookIdentifier = [aBookIdentifier retain];
     }
     

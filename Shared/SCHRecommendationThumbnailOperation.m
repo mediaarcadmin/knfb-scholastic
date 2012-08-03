@@ -18,8 +18,8 @@
     __block NSString *thumbPath = nil;
     
     [self performWithRecommendation:^(SCHAppRecommendationItem *item) {
-        coverPath = [[item coverImagePath] retain];
-        thumbPath = [[item thumbPath] retain];
+        coverPath = [[item coverImagePath] copy];
+        thumbPath = [[item thumbPath] copy];
     }];
     
     [coverPath autorelease];

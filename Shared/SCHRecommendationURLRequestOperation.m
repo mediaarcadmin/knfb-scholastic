@@ -38,10 +38,10 @@
     
     [self didChangeValueForKey:@"isExecuting"];
     
-    __block NSString *coverURL;
+    __block NSString *coverURL = nil;
     
     [self performWithRecommendation:^(SCHAppRecommendationItem *item) {
-        coverURL = [item.CoverURL retain];
+        coverURL = [item.CoverURL copy];
     }];
     
     [coverURL autorelease];
@@ -96,16 +96,17 @@
             if (!coverUrlIsValid) {
                 [self setCoverURLExpiredState];
             } else {
-                [self resetCoverURLExpiredState];
                 NSLog(@"Successful URL retrieval for %@!", completedIsbn);
                 [self performWithRecommendationAndSave:^(SCHAppRecommendationItem *item) {
                     [item setCoverURL:[userInfo valueForKey:kSCHLibreAccessWebServiceCoverURL]];
                     [item setAuthor:[userInfo valueForKey:kSCHLibreAccessWebServiceAuthor]];
                     [item setTitle:[userInfo valueForKey:kSCHLibreAccessWebServiceTitle]];
                     [item setAverageRating:[userInfo valueForKey:kSCHLibreAccessWebServiceAverageRating]];
+                    // combine resetCoverURLExpiredState and setProcessingState:kSCHAppRecommendationProcessingStateNoCover into this one save
+                    [item setState:[NSNumber numberWithInt:kSCHAppRecommendationProcessingStateNoCover]];
+                    [item setCoverURLExpiredCount:[NSNumber numberWithInteger:0]];
                 }];
                 
-                [self setProcessingState:kSCHAppRecommendationProcessingStateNoCover];
             }
         }
         

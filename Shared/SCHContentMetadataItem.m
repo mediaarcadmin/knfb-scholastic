@@ -14,6 +14,7 @@
 #import "SCHBookManager.h"
 #import "SCHBookIdentifier.h"
 #import "SCHProcessingManager.h"
+#import "NSFileManager+Extensions.h"
 
 // Constants
 NSString * const kSCHContentMetadataItem = @"SCHContentMetadataItem";
@@ -31,7 +32,11 @@ static NSString * const kSCHContentMetadataItemAnnotationsItemProfileID = @"Anno
 
 @interface SCHContentMetadataItem ()
 
+- (NSComparisonResult)titleCompare:(SCHContentMetadataItem *)contentMetadataItem
+                  secondaryCompare:(BOOL)secondaryCompare;
 - (NSString *)formatSingleAuthor:(NSString *)author;
+- (NSComparisonResult)authorCompare:(SCHContentMetadataItem *)contentMetadataItem
+                   secondaryCompare:(BOOL)secondaryCompare;
 
 @end
 
@@ -103,6 +108,12 @@ static NSString * const kSCHContentMetadataItemAnnotationsItemProfileID = @"Anno
 
 - (NSComparisonResult)titleCompare:(SCHContentMetadataItem *)contentMetadataItem
 {
+    return [self titleCompare:contentMetadataItem secondaryCompare:YES];
+}
+
+- (NSComparisonResult)titleCompare:(SCHContentMetadataItem *)contentMetadataItem
+                     secondaryCompare:(BOOL)secondaryCompare
+{
     NSComparisonResult ret;
     
     if (self.Title == nil || 
@@ -113,6 +124,10 @@ static NSString * const kSCHContentMetadataItemAnnotationsItemProfileID = @"Anno
         ret = NSOrderedAscending;
     } else {
         ret = [self.FormatTitleString compare:contentMetadataItem.FormatTitleString];
+        // when the title is the same then use the book author as a secondary compare
+        if (ret == NSOrderedSame && secondaryCompare == YES) {
+            ret = [self authorCompare:contentMetadataItem secondaryCompare:NO];
+        }        
     }
     
     return ret;
@@ -160,6 +175,12 @@ static NSString * const kSCHContentMetadataItemAnnotationsItemProfileID = @"Anno
         
 - (NSComparisonResult)authorCompare:(SCHContentMetadataItem *)contentMetadataItem
 {
+    return [self authorCompare:contentMetadataItem secondaryCompare:YES];
+}
+
+- (NSComparisonResult)authorCompare:(SCHContentMetadataItem *)contentMetadataItem
+                      secondaryCompare:(BOOL)secondaryCompare
+{
     NSComparisonResult ret;
     
     if (self.Author == nil || 
@@ -170,6 +191,10 @@ static NSString * const kSCHContentMetadataItemAnnotationsItemProfileID = @"Anno
         ret = NSOrderedAscending;
     } else {
         ret = [self.FormatAuthorString compare:contentMetadataItem.FormatAuthorString];
+        // when the author is the same then use the book title as a secondary compare
+        if (ret == NSOrderedSame && secondaryCompare == YES) {
+            ret = [self titleCompare:contentMetadataItem secondaryCompare:NO];
+        }
     }
     
     return ret;
@@ -288,27 +313,46 @@ static NSString * const kSCHContentMetadataItemAnnotationsItemProfileID = @"Anno
 	return(annotations);	
 }
 
-- (void)prepareForDeletion
-{
-    [super prepareForDeletion];
-    [[SCHProcessingManager sharedProcessingManager] cancelAllOperationsForBookIdentifier:self.bookIdentifier
-                                                                       waitUntilFinished:NO];
-    [[SCHBookManager sharedBookManager] removeBookIdentifierFromCache:self.bookIdentifier];    
-    [self deleteAllFiles];
-}
-
 - (void)deleteAllFiles
 {    
     NSString *bookDirectory = self.AppBook.bookDirectory;
+    SCHBookIdentifier *bookIdentifier = [[self.bookIdentifier copy] autorelease];
+    
+    // cancel operations using this book
+    [[SCHProcessingManager sharedProcessingManager] cancelAllOperationsForBookIdentifier:bookIdentifier
+                                                                       waitUntilFinished:NO];
+    [[SCHBookManager sharedBookManager] removeBookIdentifierFromCache:bookIdentifier];    
+    
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{        
-        [[SCHProcessingManager sharedProcessingManager] cancelAllOperationsForBookIdentifier:self.bookIdentifier 
-                                                                           waitUntilFinished:YES];
         NSError *error = nil;
         NSFileManager *localManager = [[[NSFileManager alloc] init] autorelease];
-        if ([localManager removeItemAtPath:bookDirectory 
+        NSString *temporaryDirectory = [NSFileManager BITtemporaryDirectoryIfExistsOrCreated];
+        NSString *temporaryBookDirectory = nil;
+
+        // wait till any processing of this book has finished
+        [[SCHProcessingManager sharedProcessingManager] cancelAllOperationsForBookIdentifier:bookIdentifier 
+                                                                           waitUntilFinished:YES];        
+
+        // if possible move the directory to tmp while we delete it
+        if (temporaryDirectory != nil) {
+            CFUUIDRef uuid = CFUUIDCreate(kCFAllocatorDefault);
+            NSString *uniqueDirectoryName = (NSString *)CFUUIDCreateString(kCFAllocatorDefault, uuid);
+            [uniqueDirectoryName autorelease];
+            CFRelease(uuid);
+            
+            temporaryBookDirectory = [temporaryDirectory stringByAppendingPathComponent:uniqueDirectoryName];
+            
+            if ([localManager moveItemAtPath:bookDirectory 
+                                      toPath:temporaryBookDirectory error:&error] == NO) {
+                NSLog(@"Unable to create tempory directory for deleted contentMetadataItem files with error %@ : %@", error, [error userInfo]);
+                temporaryBookDirectory = nil;
+            }
+        }
+
+        if ([localManager removeItemAtPath:(temporaryBookDirectory != nil ? temporaryBookDirectory : bookDirectory) 
                                      error:&error] == NO) {
             NSLog(@"Failed to delete files for %@, error: %@", 
-                  self.ContentIdentifier, [error localizedDescription]);
+                  bookIdentifier, [error localizedDescription]);
         }
     });
     

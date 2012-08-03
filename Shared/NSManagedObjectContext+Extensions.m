@@ -13,6 +13,7 @@ static NSUInteger const kNSManagedObjectContextBITBatchCount = 250;
 @implementation NSManagedObjectContext (Extensions)
 
 - (BOOL)BITemptyEntity:(NSString *)entityName error:(NSError **)error
+  priorToDeletionBlock:(BITemptyEntityPriorToDeletionBlock)priorToDeletionBlock;
 {
 	BOOL ret = NO;
 	NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
@@ -26,6 +27,9 @@ static NSUInteger const kNSManagedObjectContextBITBatchCount = 250;
     }
     
 	for (NSManagedObject *managedObject in results) {
+        if (priorToDeletionBlock != nil) {
+            priorToDeletionBlock(managedObject);
+        }
 		[self deleteObject:managedObject];
         batchCount++;
         if (batchCount >= kNSManagedObjectContextBITBatchCount) {

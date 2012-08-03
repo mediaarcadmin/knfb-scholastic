@@ -146,6 +146,13 @@ static NSInteger const CELL_STAR_PERSONAL_RATING_VIEW = 302;
     }
 }
 
+- (IBAction)tapBookCover:(id)sender 
+{
+    NSLog(@"Book cover is being tapped!");
+    [self.delegate openBookForBookshelfCell:self];
+}
+
+
 - (void)refreshCell
 {
     if (self.coalesceRefreshes) {

@@ -31,6 +31,7 @@ typedef enum {
 - (void)clearUserDefaults;
 - (void)setStoreType:(SCHStoreType)storeType;
 - (void)resetDictionaryStore;
+- (void)recoverFromUnintializedDRM;
 
 @end
 

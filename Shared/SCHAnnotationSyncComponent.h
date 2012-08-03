@@ -16,12 +16,20 @@ extern NSString * const SCHAnnotationSyncComponentDidFailNotification;
 extern NSString * const SCHAnnotationSyncComponentProfileIDs;
 
 @interface SCHAnnotationSyncComponent : SCHSyncComponent 
-{
-}
+
+@property (atomic, retain) NSMutableArray *savedAnnotations;
+@property (atomic, retain) NSDate *lastSyncSaveCalled;
 
 - (void)addProfile:(NSNumber *)profileID withBooks:(NSArray *)books;
 - (void)removeProfile:(NSNumber *)profileID withBooks:(NSArray *)books;
 - (BOOL)haveProfiles;
 - (BOOL)nextProfile;
+
+- (BOOL)annotationIDIsValid:(NSNumber *)annotationID;
+- (BOOL)requestListProfileContentAnnotationsForProfileID:(NSNumber *)profileID;
+- (void)syncProfileContentAnnotationsCompleted:(NSNumber *)profileID 
+                                   usingMethod:(NSString *)method
+                                      userInfo:(NSDictionary *)userInfo;
+
 
 @end

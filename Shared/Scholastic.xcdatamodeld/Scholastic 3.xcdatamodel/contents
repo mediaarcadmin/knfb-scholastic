@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model name="" userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="1171" systemVersion="11D50b" minimumToolsVersion="Xcode 4.2" macOSVersion="Automatic" iOSVersion="Automatic">
+<model name="" userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="1171" systemVersion="11E53" minimumToolsVersion="Xcode 4.2" macOSVersion="Automatic" iOSVersion="Automatic">
     <entity name="SCHAnnotation" representedClassName="SCHAnnotation" isAbstract="YES" parentEntity="SCHSyncEntity">
         <attribute name="Action" optional="YES" attributeType="Integer 16" defaultValueString="0"/>
         <attribute name="ID" optional="YES" attributeType="Integer 64" defaultValueString="0"/>
@@ -33,6 +33,7 @@
         <attribute name="ReflowPermitted" optional="YES" attributeType="Boolean"/>
         <attribute name="SmartZoomPageMarkers" optional="YES" attributeType="Transformable"/>
         <attribute name="State" optional="YES" attributeType="Integer 16" defaultValueString="0"/>
+        <attribute name="suppressFollowAlongHighlights" optional="YES" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
         <attribute name="TextFlowPageRanges" optional="YES" attributeType="Transformable"/>
         <attribute name="TTSPermitted" optional="YES" attributeType="Boolean" defaultValueString="YES"/>
         <attribute name="urlExpiredCount" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
@@ -45,7 +46,7 @@
     <entity name="SCHAppContentProfileItem" representedClassName="SCHAppContentProfileItem">
         <attribute name="DRMQualifier" attributeType="Integer 16" defaultValueString="0" indexed="YES"/>
         <attribute name="ISBN" attributeType="String" defaultValueString="0" indexed="YES"/>
-        <attribute name="IsNewBook" attributeType="Boolean" defaultValueString="YES"/>
+        <attribute name="IsNewBook" optional="YES" attributeType="Boolean"/>
         <attribute name="LastBookmarkAnnotationSync" optional="YES" attributeType="Date"/>
         <attribute name="LastHighlightAnnotationSync" optional="YES" attributeType="Date"/>
         <attribute name="LastNoteAnnotationSync" optional="YES" attributeType="Date"/>
@@ -80,7 +81,7 @@
         <attribute name="PaperType" optional="YES" attributeType="Integer 16"/>
         <attribute name="SelectedTheme" optional="YES" attributeType="Integer 16" defaultValueString="0"/>
         <attribute name="ShowListView" optional="YES" attributeType="Boolean" defaultValueString="NO"/>
-        <attribute name="SortType" optional="YES" attributeType="Integer 16"/>
+        <attribute name="SortType" optional="YES" attributeType="Integer 16" defaultValueString="0"/>
         <relationship name="ProfileItem" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="SCHProfileItem" inverseName="AppProfile" inverseEntity="SCHProfileItem" indexed="YES"/>
     </entity>
     <entity name="SCHAppRecommendationItem" representedClassName="SCHAppRecommendationItem">
@@ -212,7 +213,7 @@
         <relationship name="Highlights" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="SCHHighlight" inverseName="PrivateAnnotations" inverseEntity="SCHHighlight" indexed="YES"/>
         <relationship name="LastPage" optional="YES" minCount="1" maxCount="1" deletionRule="Cascade" destinationEntity="SCHLastPage" inverseName="PrivateAnnotations" inverseEntity="SCHLastPage" indexed="YES"/>
         <relationship name="Notes" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="SCHNote" inverseName="PrivateAnnotations" inverseEntity="SCHNote" indexed="YES"/>
-        <relationship name="rating" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="SCHRating" inverseName="PrivateAnnotations" inverseEntity="SCHRating" syncable="YES"/>
+        <relationship name="rating" optional="YES" minCount="1" maxCount="1" deletionRule="Cascade" destinationEntity="SCHRating" inverseName="PrivateAnnotations" inverseEntity="SCHRating" syncable="YES"/>
     </entity>
     <entity name="SCHProfileItem" representedClassName="SCHProfileItem" parentEntity="SCHSyncEntity">
         <attribute name="AutoAssignContentToProfiles" optional="YES" attributeType="Boolean"/>
@@ -225,6 +226,7 @@
         <attribute name="LastScreenNameModified" optional="YES" attributeType="Date"/>
         <attribute name="Password" optional="YES" attributeType="String"/>
         <attribute name="ProfilePasswordRequired" optional="YES" attributeType="Boolean"/>
+        <attribute name="recommendationsOn" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
         <attribute name="ScreenName" optional="YES" attributeType="String"/>
         <attribute name="StoryInteractionEnabled" optional="YES" attributeType="Boolean"/>
         <attribute name="Type" optional="YES" attributeType="Integer 16" defaultValueString="0"/>
@@ -374,7 +376,7 @@
         <element name="SCHAnnotation" positionX="292" positionY="362" width="128" height="90"/>
         <element name="SCHAnnotationsContentItem" positionX="438" positionY="661" width="128" height="135"/>
         <element name="SCHAnnotationsItem" positionX="438" positionY="362" width="128" height="75"/>
-        <element name="SCHAppBook" positionX="1177" positionY="600" width="128" height="435"/>
+        <element name="SCHAppBook" positionX="1177" positionY="600" width="128" height="450"/>
         <element name="SCHAppContentProfileItem" positionX="727" positionY="27" width="128" height="180"/>
         <element name="SCHAppDictionaryManifestEntry" positionX="1179" positionY="144" width="128" height="105"/>
         <element name="SCHAppDictionaryState" positionX="1197" positionY="315" width="128" height="105"/>
@@ -397,8 +399,8 @@
         <element name="SCHLocationText" positionX="0" positionY="362" width="128" height="90"/>
         <element name="SCHNote" positionX="146" positionY="653" width="128" height="105"/>
         <element name="SCHOrderItem" positionX="990" positionY="1147" width="128" height="90"/>
-        <element name="SCHPrivateAnnotations" positionX="365" positionY="862" width="128" height="120"/>
-        <element name="SCHProfileItem" positionX="584" positionY="265" width="128" height="285"/>
+        <element name="SCHPrivateAnnotations" positionX="365" positionY="862" width="128" height="135"/>
+        <element name="SCHProfileItem" positionX="584" positionY="265" width="128" height="300"/>
         <element name="SCHRating" positionX="160" positionY="192" width="128" height="90"/>
         <element name="SCHReadingStatsContentItem" positionX="0" positionY="0" width="128" height="90"/>
         <element name="SCHReadingStatsDetailItem" positionX="0" positionY="0" width="128" height="75"/>

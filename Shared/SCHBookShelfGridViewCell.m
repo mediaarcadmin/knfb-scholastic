@@ -11,6 +11,7 @@
 #import "SCHAppBook.h"
 #import "SCHBookManager.h"
 #import "SCHBookCoverView.h"
+#import "SCHThemeManager.h"
 
 #define RATING_VIEW_HEIGHT 88
 #define RATING_VIEW_WIDTH_PADDING 20
@@ -21,6 +22,8 @@
 @property (nonatomic, retain) UIView *ratingContainerView;
 @property (nonatomic, retain) RateView *othersRateView;
 @property (nonatomic, retain) RateView *personalRateView;
+
+- (void)updateTheme;
 
 @end;
 
@@ -107,6 +110,11 @@
         
         
         [self.contentView addSubview:self.ratingContainerView];
+        
+        [[NSNotificationCenter defaultCenter] addObserver:self 
+                                                 selector:@selector(updateTheme) 
+                                                     name:kSCHThemeManagerThemeChangeNotification 
+                                                   object:nil];         
     }
 	
 	return(self);
@@ -172,6 +180,11 @@
 {
     disabledForInteractions = newDisabledForInteractions;
     self.bookCoverView.disabledForInteractions = newDisabledForInteractions;
+}
+
+- (void)updateTheme
+{
+    [self.bookCoverView setNeedsDisplay];
 }
 
 - (void)setLoading:(BOOL)newLoading

@@ -44,6 +44,7 @@ NSString * const kSCHAppBookLayoutPageEquivalentCount = @"LayoutPageEquivalentCo
 NSString * const kSCHAppBookAudioBookReferences = @"AudioBookReferences";
 NSString * const kSCHAppBookBookCoverExists = @"BookCoverExists";
 NSString * const kSCHAppBookXPSExists = @"XPSExists";
+NSString * const kSCHAppBookSuppressFollowAlongHighlights = @"suppressFollowAlongHighlights";
 
 // Audio File keys
 NSString * const kSCHAppBookAudioFile = @"AudioFile";
@@ -55,6 +56,7 @@ NSString * const kSCHAppBookOldReader = @"OldReader";
 
 NSString * const kSCHAppBookCategoryPictureBook = @"Picture Book";
 NSString * const kSCHAppBookCategoryEarlyReader = @"Early Reader";
+NSString * const kSCHAppBookCategoryMiddleReader = @"Middle Reader";
 NSString * const kSCHAppBookCategoryAdvancedReader = @"Advanced Reader";
 NSString * const kSCHAppBookCategoryChapterBook = @"Chapter Book";
 NSString * const kSCHAppBookCategoryNovelMiddleGrade = @"Novel - Middle Grade";
@@ -114,6 +116,7 @@ NSString * const kSCHAppBookPackageTypeExtensionBSB = @"BSB";
 @dynamic XPSExists;
 @dynamic urlExpiredCount;
 @dynamic downloadFailedCount;
+@dynamic suppressFollowAlongHighlights;
 
 @synthesize diskVersionOutOfDate;
 @synthesize cachedBookDirectory;
@@ -331,7 +334,8 @@ NSString * const kSCHAppBookPackageTypeExtensionBSB = @"BSB";
     if (self.XPSCategory != nil) {
         if ([self.XPSCategory caseInsensitiveCompare:kSCHAppBookYoungReader] == NSOrderedSame ||
             [self.XPSCategory caseInsensitiveCompare:kSCHAppBookCategoryPictureBook] == NSOrderedSame ||
-            [self.XPSCategory caseInsensitiveCompare:kSCHAppBookCategoryEarlyReader] == NSOrderedSame ||        
+            [self.XPSCategory caseInsensitiveCompare:kSCHAppBookCategoryEarlyReader] == NSOrderedSame ||
+            [self.XPSCategory caseInsensitiveCompare:kSCHAppBookCategoryMiddleReader] == NSOrderedSame ||
             [self.XPSCategory caseInsensitiveCompare:kSCHAppBookCategoryAdvancedReader] == NSOrderedSame ||                
             [self.XPSCategory caseInsensitiveCompare:kSCHAppBookCategoryNonFictionEarly] == NSOrderedSame) {
             ret = kSCHAppBookYoungReader;
@@ -375,6 +379,7 @@ NSString * const kSCHAppBookPackageTypeExtensionBSB = @"BSB";
         if ([self.XPSCategory caseInsensitiveCompare:kSCHAppBookYoungReader] == NSOrderedSame ||
             [self.XPSCategory caseInsensitiveCompare:kSCHAppBookCategoryPictureBook] == NSOrderedSame ||
             [self.XPSCategory caseInsensitiveCompare:kSCHAppBookCategoryEarlyReader] == NSOrderedSame ||
+            [self.XPSCategory caseInsensitiveCompare:kSCHAppBookCategoryMiddleReader] == NSOrderedSame ||
             [self.XPSCategory caseInsensitiveCompare:kSCHAppBookCategoryAdvancedReader] == NSOrderedSame) {
             ret = NO;
         }    
@@ -511,6 +516,43 @@ NSString * const kSCHAppBookPackageTypeExtensionBSB = @"BSB";
     }
 }
 
++ (void)moveBooksDirectoryToTmp
+{
+    NSString *booksDirectory = [SCHAppBook booksDirectory];
+    NSString *tmpDirectory = [NSTemporaryDirectory() stringByAppendingPathComponent:@"booksBackup"];
+    NSError *error = nil;
+    
+    if (booksDirectory != nil) {
+        if ([[NSFileManager defaultManager] fileExistsAtPath:tmpDirectory]) {
+            [[NSFileManager defaultManager] removeItemAtPath:tmpDirectory error:NULL];
+        }
+
+        if ([[NSFileManager defaultManager] moveItemAtPath:booksDirectory 
+                                                    toPath:tmpDirectory
+                                                       error:&error] == NO) {
+            NSLog(@"Error moving books directory to tmp: %@", [error localizedDescription]);                        
+        }
+    }
+}
+
++ (void)restoreBooksDirectoryFromTmp
+{
+    NSString *booksDirectory = [SCHAppBook booksDirectory];
+    NSError *error = nil;
+    
+    if (booksDirectory != nil) {
+        if ([[NSFileManager defaultManager] fileExistsAtPath:booksDirectory]) {
+            [[NSFileManager defaultManager] removeItemAtPath:booksDirectory error:NULL];
+        }
+        
+        if ([[NSFileManager defaultManager] moveItemAtPath:[NSTemporaryDirectory() stringByAppendingPathComponent:@"booksBackup"]
+                                                    toPath:booksDirectory
+                                                     error:&error] == NO) {
+            NSLog(@"Error restoring books directory from tmp: %@", [error localizedDescription]);                        
+        }
+    }
+}
+
 - (void)clearCachedBookDirectory
 {
     self.cachedBookDirectory = nil;
@@ -564,6 +606,29 @@ NSString * const kSCHAppBookPackageTypeExtensionBSB = @"BSB";
     
     return libEucalyptusCacheDirectory;
 }
+
+- (NSString *)storyInteractionsCacheDirectoryWithProfileID:(NSString *)profileID
+{
+    NSString *bookDir = [self bookDirectory];
+    NSString *storyInteractionsCacheDirectory = [bookDir stringByAppendingPathComponent:[NSString stringWithFormat:@"StoryInteractionsCache/%@", profileID]];
+    
+    NSFileManager *localFileManager = [[NSFileManager alloc] init];
+    NSError *error = nil;
+    BOOL isDirectory = NO;
+    
+    if (![localFileManager fileExistsAtPath:storyInteractionsCacheDirectory isDirectory:&isDirectory]) {
+        [localFileManager createDirectoryAtPath:storyInteractionsCacheDirectory withIntermediateDirectories:YES attributes:nil error:&error];
+        
+        if (error) {
+            NSLog(@"Warning: problem creating book cache directory. %@", [error localizedDescription]);
+        }
+    }
+    
+    [localFileManager release], localFileManager = nil;
+    
+    return storyInteractionsCacheDirectory;
+}
+
 
 #pragma mark - Current Book Information
 
@@ -677,6 +742,7 @@ NSString * const kSCHAppBookPackageTypeExtensionBSB = @"BSB";
     self.XPSCategory = [[properties valueForKey:@"XPSCategory"] defaultValue];
     self.XPSExists = [[properties valueForKey:@"XPSExists"] defaultValue];
     self.XPSTitle = [[properties valueForKey:@"XPSTitle"] defaultValue];
+    self.suppressFollowAlongHighlights = [[properties valueForKey:@"suppressFollowAlongHighlights"] defaultValue];
 }
 
 - (float)currentDownloadedPercentage
@@ -850,7 +916,7 @@ NSString * const kSCHAppBookPackageTypeExtensionBSB = @"BSB";
             description = NSLocalizedString(@"The eBook is still being processed.", @"Still being processed error message from AppBook");
             break;
         case kSCHAppBookUnableToAcquireLicenseError:
-            description = NSLocalizedString(@"It has not been possible to acquire a DRM license for this eBook. Please make sure this device is authorized and connected to the internet and try again.", @"Decryption not available error message from AppBook");
+            description = NSLocalizedString(@"It has not been possible to acquire a DRM license for this eBook. Please make sure this device is authorized, connected to the internet and you have enough free storage space.", @"Decryption not available error message from AppBook");
             break;
         case kSCHAppBookCachedCoverError:
             description = NSLocalizedString(@"There was a problem retrieving the cover for this eBook. Please try again.", @"Cached Cover error message from AppBook");

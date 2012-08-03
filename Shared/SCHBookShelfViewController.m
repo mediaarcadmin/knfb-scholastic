@@ -38,10 +38,10 @@
 #import "SCHVersionDownloadManager.h"
 #import "SCHBookAnnotations.h"
 #import "SCHDictionaryDownloadManager.h"
+#import "SCHAnnotationSyncComponent.h"
 
 static NSInteger const kSCHBookShelfViewControllerGridCellHeightPortrait = 138;
 static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 131;
-static NSInteger const kSCHBookShelfViewControllerWelcomeShowMaximumCount = 2;
 
 NSString * const kSCHBookShelfErrorDomain  = @"com.knfb.scholastic.BookShelfErrorDomain";
 
@@ -163,12 +163,7 @@ typedef enum
         [[NSNotificationCenter defaultCenter] addObserver:self
                                                  selector:@selector(profileDeleted:)
                                                      name:SCHProfileSyncComponentWillDeleteNotification
-                                                   object:nil];
-        
-        [[NSNotificationCenter defaultCenter] addObserver:self
-                                                 selector:@selector(managedObjectContextDidSaveNotification:)
-                                                     name:NSManagedObjectContextDidSaveNotification
-                                                   object:nil];
+                                                   object:nil];        
     }
     
     return self;
@@ -239,7 +234,16 @@ typedef enum
     [self.gridView setBackgroundColor:[UIColor clearColor]];
     
     if ([[SCHAppStateManager sharedAppStateManager] isSampleStore]) {
-        [self.gridView setFooterText:NSLocalizedString(@"Notes and highlights made to sample eBooks will be lost when you sign in to your Scholastic account.", @"")];
+        
+        NSString *footerText = NSLocalizedString(@"Notes and highlights made to sample eBooks will be lost when you sign in to your Scholastic account.", @"");
+        
+#if IPHONE_HIGHLIGHTS_DISABLED
+        if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
+            footerText = NSLocalizedString(@"Notes made in sample eBooks will be lost when you sign in to your Scholastic account.", @"");
+        }
+#endif
+        
+        [self.gridView setFooterText:footerText];
         [self.gridView setFooterTextIsDark:[[SCHThemeManager sharedThemeManager] gridTextColorIsDark]];
     }
     
@@ -266,6 +270,11 @@ typedef enum
 											 selector:@selector(bookshelfSyncComponentDidFail:)
 												 name:SCHBookshelfSyncComponentDidFailNotification
 											   object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(annotationSyncComponentDidComplete:) 
+                                                 name:SCHAnnotationSyncComponentDidCompleteNotification
+                                               object:nil];
 
     if (!self.showWelcome) {
         if (![[SCHSyncManager sharedSyncManager] havePerformedFirstSyncUpToBooks] && [[SCHSyncManager sharedSyncManager] isSynchronizing]) {
@@ -377,7 +386,11 @@ typedef enum
 {
     [super viewWillAppear:animated];
     [self.navigationController.navigationBar setBarStyle:UIBarStyleBlackOpaque]; // For the title text
-    [self.navigationController setNavigationBarHidden:NO];
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
+        [self.navigationController setNavigationBarHidden:NO animated:NO];
+    } else {
+        [self.navigationController setNavigationBarHidden:NO];
+    }
     
     [self setupAssetsForOrientation:self.interfaceOrientation];
     if (self.updateShelfOnReturnToShelf == YES) {
@@ -395,21 +408,14 @@ typedef enum
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
     NSInteger currentWelcomeShowCount = [userDefaults integerForKey:kSCHUserDefaultsWelcomeViewShowCount];
     
-    if (self.showWelcome &&
-        currentWelcomeShowCount < kSCHBookShelfViewControllerWelcomeShowMaximumCount) {
-        switch (currentWelcomeShowCount) {
-            case 0:
-                currentWelcomeShowCount++;
-                [self showWelcomeView];        
-                break;
-            case 1:
-                currentWelcomeShowCount++;
-                [self showWelcomeTwoView];        
-                break;
-                
-            default:
-                break;
+    if (self.showWelcome) {
+        if (currentWelcomeShowCount == 0) {
+            [self showWelcomeView];        
+        } else {
+            [self showWelcomeTwoView]; 
         }
+    
+        currentWelcomeShowCount++;
         
         [userDefaults setInteger:currentWelcomeShowCount
                           forKey:kSCHUserDefaultsWelcomeViewShowCount];
@@ -641,12 +647,17 @@ typedef enum
         }
         
         [[self.profileItem AppProfile] setSortType:[NSNumber numberWithInt:kSCHBookSortTypeUser]];
-        [self.navigationController popToRootViewControllerAnimated:NO];  
+        if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
+            [self.profileSetupDelegate popToRootViewControllerAnimated:YES withCompletionHandler:nil];
+        } else {
+            [self.navigationController popToRootViewControllerAnimated:NO];  
+        }
         [[SCHThemeManager sharedThemeManager] resetToDefault];
     } else {
         [self.profileSetupDelegate popToAuthenticatedProfileAnimated:YES];
     }
     
+    [[SCHSyncManager sharedSyncManager] wishListSync:NO];                        
 }
 
 - (BOOL)gestureRecognizerShouldBegin:(UIGestureRecognizer *)gestureRecognizer 
@@ -723,6 +734,24 @@ typedef enum
         
     // tell the theme manager which profile to use for storage
     [SCHThemeManager sharedThemeManager].appProfile = self.profileItem.AppProfile;
+}
+
+- (void)setManagedObjectContext:(NSManagedObjectContext *)aManagedObjectContext
+{
+    if (managedObjectContext != aManagedObjectContext) {
+        [[NSNotificationCenter defaultCenter] removeObserver:self
+                                                        name:NSManagedObjectContextDidSaveNotification
+                                                      object:nil];
+        if (aManagedObjectContext != nil) {        
+            [[NSNotificationCenter defaultCenter] addObserver:self
+                                                     selector:@selector(managedObjectContextDidSaveNotification:)
+                                                         name:NSManagedObjectContextDidSaveNotification
+                                                       object:aManagedObjectContext];                    
+        }
+        [aManagedObjectContext retain];        
+        [managedObjectContext release];
+        managedObjectContext = aManagedObjectContext;
+    }
 }
 
 - (void)setBooks:(NSMutableArray *)newBooks
@@ -814,6 +843,8 @@ typedef enum
 // detect any changes to the data
 - (void)managedObjectContextDidSaveNotification:(NSNotification *)notification
 {
+    NSAssert([NSThread isMainThread] == YES, @"SCHBookAnnotation:managedObjectContextDidSaveNotification MUST be executed on the main thread");    
+    
     BOOL refreshTable = NO;
     BOOL refreshBooks = NO;
     
@@ -913,6 +944,13 @@ typedef enum
     }
 }
 
+- (void)annotationSyncComponentDidComplete:(NSNotification *)notification
+{
+    self.gridViewNeedsRefreshed = YES;
+    self.listViewNeedsRefreshed = YES;
+    [self reloadData];            
+}
+
 #pragma mark - Core Data Table View Methods
 
 - (void)save
@@ -951,6 +989,23 @@ typedef enum
     }
 }
 
+- (void)openBookForBookshelfCell:(SCHBookShelfTableViewCell *)cell
+{
+    NSIndexPath *indexPath = [self.listTableView indexPathForCell:cell];
+    
+    [self.listTableView deselectRowAtIndexPath:indexPath animated:YES];
+    
+    [self selectBookAtIndex:[indexPath row] 
+                 startBlock:^{
+                     [cell setLoading:YES];
+                 }
+                   endBlock:^(BOOL didOpen){
+                       if (didOpen) {
+                           [cell setLoading:NO];
+                       }
+                   }];
+}
+
 #pragma mark - UITableViewDataSource methods
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -980,7 +1035,6 @@ typedef enum
     cell.identifier = identifier;
     SCHAppContentProfileItem *appContentProfileItem = [self.profileItem appContentProfileItemForBookIdentifier:identifier];
     cell.isNewBook = [appContentProfileItem.IsNewBook boolValue];
-    cell.disabledForInteractions = [self.profileItem storyInteractionsDisabled];
     
     if ([identifier isEqual:[self.books lastObject]]) {
         cell.lastCell = YES;
@@ -1032,23 +1086,7 @@ typedef enum
 
 - (void)tableView:(UITableView *)aTableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    SCHBookShelfTableViewCell *cell = (SCHBookShelfTableViewCell *) [aTableView cellForRowAtIndexPath:indexPath];
-    
-    if ([indexPath section] != 0) {
-        return;
-    }
-    
-    [aTableView deselectRowAtIndexPath:indexPath animated:YES];
-    
-    [self selectBookAtIndex:[indexPath row] 
-                 startBlock:^{
-                     [cell setLoading:YES];
-                 }
-                   endBlock:^(BOOL didOpen){
-                       if (didOpen) {
-                           [cell setLoading:NO];
-                       }
-                   }];
+    // nop; delegate is now used to open the book
 }
 
 #pragma mark - SCHBookShelfGridViewDataSource methods
@@ -1064,7 +1102,6 @@ typedef enum
     SCHAppContentProfileItem *appContentProfileItem = [self.profileItem appContentProfileItemForBookIdentifier:[self.books objectAtIndex:index]];
     gridCell.delegate = self;
         gridCell.isNewBook = [appContentProfileItem.IsNewBook boolValue];
-    gridCell.disabledForInteractions = [self.profileItem storyInteractionsDisabled];
     gridCell.showRatings = self.showingRatings;
 
     if (self.currentlyLoadingIndex == index) {

@@ -26,18 +26,22 @@
 #import "BITModalSheetController.h"
 #import "SCHNavigationControllerForModalForm.h"
 
+// Constants
+static double const kSCHProfileViewControllerMinimumDistinguishedTapDelay = 0.1;
+
 @interface SCHProfileViewController_Shared()  
 
 @property (nonatomic, retain) SCHBookUpdates *bookUpdates;
 @property (nonatomic, retain) BITModalSheetController *webParentToolsPopoverController;
 @property (nonatomic, retain) SCHParentalToolsWebViewController *parentalToolsWebViewController; 
+@property (nonatomic, assign) NSInteger simultaneousTapCount;
 
 - (void)checkForBookUpdates;
+- (void)checkForBookshelves;
 - (void)showUpdatesBubble:(BOOL)show;
 - (void)updatesBubbleTapped:(UIGestureRecognizer *)gr;
 - (void)obtainPasswordThenPushBookshelvesControllerWithProfileItem:(SCHProfileItem *)profileItem;
 - (void)queryPasswordBeforePushingBookshelvesControllerWithProfileItem:(SCHProfileItem *)profileItem;
-- (SCHBookIdentifier *)bookToLaunchForBookbookShelfViewController:(SCHBookShelfViewController *)bookShelfViewController;
 - (void)pushBookshelvesControllerWithProfileItem:(SCHProfileItem *)profileItem 
                                         animated:(BOOL)animated;
 - (void)pushSettingsControllerAnimated:(BOOL)animated;
@@ -61,6 +65,7 @@
 @synthesize profileSetupDelegate;
 @synthesize webParentToolsPopoverController;
 @synthesize parentalToolsWebViewController;
+@synthesize simultaneousTapCount;
 
 #pragma mark - Object lifecycle
 
@@ -326,13 +331,23 @@ didSelectButtonAnimated:(BOOL)animated
         return;
     }
 
-    SCHProfileItem *profileItem = [[self fetchedResultsController] objectAtIndexPath:indexPath];
-    if ([profileItem.ProfilePasswordRequired boolValue] == NO) {
-        [self pushBookshelvesControllerWithProfileItem:profileItem animated:YES];            
-    } else if (![profileItem hasPassword]) {
-        [self obtainPasswordThenPushBookshelvesControllerWithProfileItem:profileItem];
-    } else {
-        [self queryPasswordBeforePushingBookshelvesControllerWithProfileItem:profileItem];
+    // only trigger if there are no other simultaneous taps 
+    if (self.simultaneousTapCount == 0) {    
+        self.simultaneousTapCount++;
+        SCHProfileViewController_Shared *weakSelf = self;
+        dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, kSCHProfileViewControllerMinimumDistinguishedTapDelay * NSEC_PER_SEC);
+        dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+            weakSelf.simultaneousTapCount = 0;
+            
+            SCHProfileItem *profileItem = [[weakSelf fetchedResultsController] objectAtIndexPath:indexPath];
+            if ([profileItem.ProfilePasswordRequired boolValue] == NO) {
+                [weakSelf pushBookshelvesControllerWithProfileItem:profileItem animated:YES];            
+            } else if (![profileItem hasPassword]) {
+                [weakSelf obtainPasswordThenPushBookshelvesControllerWithProfileItem:profileItem];
+            } else {
+                [weakSelf queryPasswordBeforePushingBookshelvesControllerWithProfileItem:profileItem];
+            }            
+        });
     }
 }
 
@@ -363,9 +378,15 @@ didSelectButtonAnimated:(BOOL)animated
     [fetchRequest setFetchBatchSize:20];
     
     // Edit the sort key as appropriate.
-    NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:kSCHLibreAccessWebServiceFirstName 
-                                                                   ascending:YES];
-    NSArray *sortDescriptors = [[NSArray alloc] initWithObjects:sortDescriptor, nil];
+    NSSortDescriptor *screenNameSortDescriptor = [NSSortDescriptor sortDescriptorWithKey:kSCHLibreAccessWebServiceScreenName 
+                                                                               ascending:YES
+                                                                                selector:@selector(caseInsensitiveCompare:)];
+    NSSortDescriptor *firstNameSortDescriptor = [NSSortDescriptor sortDescriptorWithKey:kSCHLibreAccessWebServiceFirstName 
+                                                                              ascending:YES
+                                                                               selector:@selector(caseInsensitiveCompare:)];
+    NSSortDescriptor *idSortDescriptor = [NSSortDescriptor sortDescriptorWithKey:kSCHLibreAccessWebServiceID 
+                                                                       ascending:YES];
+    NSArray *sortDescriptors = [[NSArray alloc] initWithObjects:screenNameSortDescriptor, firstNameSortDescriptor, idSortDescriptor, nil];
     
     [fetchRequest setSortDescriptors:sortDescriptors];
     
@@ -380,7 +401,6 @@ didSelectButtonAnimated:(BOOL)animated
     
     [aFetchedResultsController release];
     [fetchRequest release];
-    [sortDescriptor release];
     [sortDescriptors release];
     
     NSError *error = nil;
@@ -392,8 +412,16 @@ didSelectButtonAnimated:(BOOL)animated
         [self.headerLabel setText:NSLocalizedString(@"Choose Your Bookshelf", @"Profile header text for > 0 bookshelves")];
         [self.headerLabel setNumberOfLines:1];
     } else {
-        [self.headerLabel setText:NSLocalizedString(@"Please go to Parent Tools to create bookshelves.", @"Profile header text for 0 bookshelves")];
-        [self.headerLabel setNumberOfLines:2];
+        [self.headerLabel setText:NSLocalizedString(@"Please go to the Parent Tools menu to create bookshelves.", @"Profile header text for 0 bookshelves")];
+        [self.headerLabel setNumberOfLines:2];        
+        
+        NSInteger fontSize = 18;
+        
+        if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
+            fontSize = 15;
+        }
+        
+        [self.headerLabel setFont:[UIFont fontWithName:@"Arial-BoldMT" size:fontSize]];
     }
     
     return fetchedResultsController_;
@@ -510,23 +538,6 @@ didSelectButtonAnimated:(BOOL)animated
 
 #pragma mark - Push bookshelves controller
 
-- (SCHBookIdentifier *)bookToLaunchForBookbookShelfViewController:(SCHBookShelfViewController *)bookShelfViewController
-{
-    SCHBookIdentifier *bookIdentifier = nil;
-    SCHProfileItem *profileItem = bookShelfViewController.profileItem;
-    
-    if (profileItem.AppProfile.AutomaticallyLaunchBook != nil) {
-        bookIdentifier = [[[SCHBookIdentifier alloc] initWithEncodedString:profileItem.AppProfile.AutomaticallyLaunchBook] autorelease];
-    }
-    
-    if (bookIdentifier && [bookShelfViewController isBookOnShelf:bookIdentifier]) {
-        return bookIdentifier;
-    } else {
-        return nil;
-    }
-
-}
-
 - (NSArray *)viewControllersForProfileItem:(SCHProfileItem *)profileItem showWelcome:(BOOL)welcome
 {
     NSMutableArray *viewControllers = [NSMutableArray array];
@@ -538,21 +549,6 @@ didSelectButtonAnimated:(BOOL)animated
     bookShelfViewController.showWelcome = welcome;
     
     [viewControllers addObject:bookShelfViewController];
-    
-    SCHBookIdentifier *bookIdentifier = [self bookToLaunchForBookbookShelfViewController:bookShelfViewController];
-    
-    if (bookIdentifier) {        
-        NSError *error;
-        SCHReadingViewController *readingViewController = [bookShelfViewController openBook:bookIdentifier error:&error];
-        
-        if (readingViewController) {
-            [viewControllers addObject:readingViewController];
-        } else {
-            NSLog(@"Failed to automatically launch an eBook with error: %@ : %@", error, [error localizedDescription]);
-        }
-        
-        profileItem.AppProfile.AutomaticallyLaunchBook = nil;
-    }
 
     return viewControllers;
 }
@@ -562,8 +558,10 @@ didSelectButtonAnimated:(BOOL)animated
 {
     NSMutableArray *viewControllers = [NSMutableArray array];
     
-    if (self.profileSetupDelegate) {
-        [viewControllers addObject:self.profileSetupDelegate];
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+        if (self.profileSetupDelegate) {
+            [viewControllers addObject:self.profileSetupDelegate];
+        }
     }
     
     [viewControllers addObject:self];
@@ -584,7 +582,17 @@ didSelectButtonAnimated:(BOOL)animated
 
 - (void)pushSettingsController
 {
-    [self pushSettingsControllerAnimated:YES];
+    // only trigger if there are no other simultaneous taps    
+    if (self.simultaneousTapCount == 0) {    
+        self.simultaneousTapCount++;
+        SCHProfileViewController_Shared *weakSelf = self;
+        dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, kSCHProfileViewControllerMinimumDistinguishedTapDelay * NSEC_PER_SEC);
+        dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+            weakSelf.simultaneousTapCount = 0;
+            
+            [weakSelf pushSettingsControllerAnimated:YES];
+        });
+    }            
 }
 
 - (void)pushSettingsControllerAnimated:(BOOL)animated
@@ -603,17 +611,26 @@ didSelectButtonAnimated:(BOOL)animated
 - (void)dismissModalViewControllerAnimated:(BOOL)animated withCompletionHandler:(dispatch_block_t)completion;
 {
     
+    SCHProfileViewController_Shared *weakSelf = self;
+    
+    dispatch_block_t afterDismiss = ^{
+        if (completion) {
+            completion();
+        }
+        
+        [weakSelf checkForBookshelves];
+    };
+    
     [CATransaction begin];
     
-    if (completion) {
-        [CATransaction setCompletionBlock:completion];
-    }
+    [CATransaction setCompletionBlock:afterDismiss];
     
     if (self.modalViewController) {
         [self dismissModalViewControllerAnimated:animated];
     }
     
     [CATransaction commit];
+
 }
 
 - (void)popToRootViewControllerAnimated:(BOOL)animated withCompletionHandler:(dispatch_block_t)completion
@@ -623,8 +640,15 @@ didSelectButtonAnimated:(BOOL)animated
             [self dismissModalViewControllerAnimated:animated];
             [self.profileSetupDelegate popToRootViewControllerAnimated:NO withCompletionHandler:completion];
         } else {
-            [self.profileSetupDelegate popToRootViewControllerAnimated:NO withCompletionHandler:completion];
+            [CATransaction begin];
+            [CATransaction setCompletionBlock:^{
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    [self.profileSetupDelegate popToRootViewControllerAnimated:animated withCompletionHandler:completion];
+                });
+            }];
             [self dismissModalViewControllerAnimated:animated];
+            [CATransaction commit];
+
         }
     } else {
         [self.profileSetupDelegate popToRootViewControllerAnimated:animated withCompletionHandler:completion];
@@ -741,6 +765,16 @@ didSelectButtonAnimated:(BOOL)animated
     }  
 }
 
+- (void)popModalWebParentToolsToValidationAnimated:(BOOL)animated
+{
+    [self dismissModalWebParentToolsAnimated:animated withSync:NO showValidation:YES];
+}
+
+- (void)dismissModalWebParentToolsAnimated:(BOOL)animated
+{
+    [self dismissModalWebParentToolsAnimated:animated withSync:YES showValidation:NO];
+}
+
 - (void)waitingForWebParentToolsToComplete
 {
     // Do nothing
@@ -791,6 +825,18 @@ didSelectButtonAnimated:(BOOL)animated
         [alert show];
         [alert release];
     }];  
+}
+
+- (void)checkForBookshelves
+{
+    if ([[self.fetchedResultsController fetchedObjects] count] == 0) {
+                
+        __block SCHProfileViewController_Shared *weakSelf = self;
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [weakSelf.profileSetupDelegate waitingForBookshelves];
+        });
+    }
 }
 
 - (void)profileSyncDidComplete:(NSNotification *)notification

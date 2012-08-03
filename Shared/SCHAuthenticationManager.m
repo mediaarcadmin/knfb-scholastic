@@ -29,6 +29,7 @@
 
 // Constants
 NSString * const SCHAuthenticationManagerReceivedServerDeregistrationNotification = @"SCHAuthenticationManagerReceivedServerDeregistrationNotification";
+NSString * const SCHAuthenticationManagerDidDeregisterNotification = @"SCHAuthenticationManagerDidDeregisterNotification";
 NSString * const kSCHAuthenticationManagerNSError = @"NSError";
 
 NSString * const kSCHAuthenticationManagerErrorDomain = @"AuthenticationManagerErrorDomain";
@@ -45,7 +46,7 @@ NSTimeInterval const kSCHAuthenticationManagerSecondsInAMinute = 60.0;
 - (void)aTokenOnMainThread;
 - (void)isAuthenticatedOnMainThread:(NSValue *)returnValue;
 - (void)hasUsernameAndPasswordOnMainThread:(NSValue *)returnValue;
-- (void)performPostDeregistration;
+- (void)performPostDeregistrationWaitUntilFinished:(BOOL)wait;
 - (void)setLastKnownAuthToken:(NSString *)token;
 
 @property (nonatomic, copy) SCHDrmRegistrationSuccessBlock registrationSuccessBlock;
@@ -96,7 +97,7 @@ NSTimeInterval const kSCHAuthenticationManagerSecondsInAMinute = 60.0;
 #endif
     });
     
-    return(sharedAuthenticationManager);
+    return sharedAuthenticationManager;
 }
 
 #pragma mark - Object lifecycle 
@@ -123,7 +124,7 @@ NSTimeInterval const kSCHAuthenticationManagerSecondsInAMinute = 60.0;
                                                      name:UIApplicationSignificantTimeChangeNotification 
                                                    object:nil];
 	}
-	return(self);
+	return self;
 }
 
 - (void)dealloc 
@@ -158,7 +159,7 @@ NSTimeInterval const kSCHAuthenticationManagerSecondsInAMinute = 60.0;
         drmRegistrationSession.delegate = self;   
     }
     
-    return(drmRegistrationSession);
+    return drmRegistrationSession;
 }
 
 #pragma mark - methods
@@ -181,9 +182,7 @@ NSTimeInterval const kSCHAuthenticationManagerSecondsInAMinute = 60.0;
         return;
     }
         
-    SCHAuthenticationSuccessBlock aSuccessBlock = ^(SCHAuthenticationManagerConnectivityMode connectivityMode){
-        [[SCHAuthenticationManager sharedAuthenticationManager] clearAppProcessing];
-        
+    SCHAuthenticationSuccessBlock aSuccessBlock = ^(SCHAuthenticationManagerConnectivityMode connectivityMode){        
         if (successBlock) {
             successBlock(connectivityMode);
         }
@@ -272,7 +271,7 @@ NSTimeInterval const kSCHAuthenticationManagerSecondsInAMinute = 60.0;
                            withObject:resultValue 
                         waitUntilDone:YES];
 
-    return(ret);
+    return ret;
 }
 
 - (BOOL)hasDRMInformation
@@ -287,11 +286,17 @@ NSTimeInterval const kSCHAuthenticationManagerSecondsInAMinute = 60.0;
                         waitUntilDone:YES];
 }
 
-- (void)clearAppProcessing
+- (void)clearAppProcessingWaitUntilFinished:(BOOL)wait
 {
-    [self performSelectorOnMainThread: @selector(clearAppProcessingOnMainThread) 
-                           withObject:nil 
-                        waitUntilDone:YES];
+    dispatch_block_t clearBlock = ^{
+        [self clearAppProcessingOnMainThreadWaitUntilFinished:wait];
+    };
+    
+    if ([NSThread isMainThread]) {
+        clearBlock();
+    } else {
+        dispatch_sync(dispatch_get_main_queue(), clearBlock);
+    }
 }
 
 - (void)forceDeregistrationWithCompletionBlock:(SCHDrmDeregistrationSuccessBlock)completionBlock
@@ -305,10 +310,11 @@ NSTimeInterval const kSCHAuthenticationManagerSecondsInAMinute = 60.0;
     
     self.deregistrationSuccessBlock = completionBlock;
     self.deregistrationFailureBlock = ^(NSError *error){
+        [self performPostDeregistrationWaitUntilFinished:NO];
+        
         if (completionBlock) {
             completionBlock();
         }
-        [self performPostDeregistration];
     };
         
     NSString *authToken = self.aToken;
@@ -357,7 +363,7 @@ NSTimeInterval const kSCHAuthenticationManagerSecondsInAMinute = 60.0;
     
 - (NSString *)pToken
 {
-    return(self.accountValidation.pToken);    
+    return self.accountValidation.pToken;    
 }
 
 - (BOOL)pTokenWithValidation:(ValidateBlock)aValidateBlock
@@ -371,6 +377,7 @@ NSTimeInterval const kSCHAuthenticationManagerSecondsInAMinute = 60.0;
         
         ret = [self.accountValidation validateWithUserName:storedUsername 
                                               withPassword:storedPassword 
+                                            updatePassword:YES
                                              validateBlock:aValidateBlock];
     } else {
         if (aValidateBlock != nil) {
@@ -441,7 +448,7 @@ NSTimeInterval const kSCHAuthenticationManagerSecondsInAMinute = 60.0;
                            withObject:nil 
                         waitUntilDone:YES];
     
-	return(aToken);
+	return aToken;
 }
 
 - (BOOL)isAuthenticated
@@ -454,7 +461,7 @@ NSTimeInterval const kSCHAuthenticationManagerSecondsInAMinute = 60.0;
                            withObject:resultValue 
                         waitUntilDone:YES];
     
-    return(ret);
+    return ret;
 }
 
 #pragma mark - Notification methods
@@ -614,7 +621,10 @@ NSTimeInterval const kSCHAuthenticationManagerSecondsInAMinute = 60.0;
                 
                 __block SCHAuthenticationManager *weakSelf = self;
                 
-                [self.accountValidation validateWithUserName:storedUsername withPassword:storedPassword validateBlock:^(NSString *pToken, NSError *error) {
+                [self.accountValidation validateWithUserName:storedUsername 
+                                                withPassword:storedPassword 
+                                              updatePassword:YES
+                                               validateBlock:^(NSString *pToken, NSError *error) {
                     if (error != nil) {
                         [weakSelf authenticationDidFailWithError:error];                            
                     } else {
@@ -699,23 +709,24 @@ NSTimeInterval const kSCHAuthenticationManagerSecondsInAMinute = 60.0;
     [[SCHCOPPAManager sharedCOPPAManager] resetCOPPA];
 }
 
-- (void)clearAppProcessingOnMainThread
+- (void)clearAppProcessingOnMainThreadWaitUntilFinished:(BOOL)wait
 {
     NSAssert([NSThread isMainThread] == YES, @"SCHAuthenticationManager::clearAppProcessingOnMainThread MUST be executed on the main thread");
+    NSAssert(wait == NO, @"wait until finished is not supported in the current architecture. See SCHProcessingManager and SCHRecommendationManager");
     
     [[SCHBookManager sharedBookManager] clearBookIdentifierCache];
     [[SCHURLManager sharedURLManager] clear];
-    [[SCHProcessingManager sharedProcessingManager] cancelAllOperations]; 
-    [[SCHRecommendationManager sharedManager] cancelAllOperations];
+    [[SCHProcessingManager sharedProcessingManager] cancelAllOperationsWaitUntilFinished:NO]; 
+    [[SCHRecommendationManager sharedManager] cancelAllOperationsWaitUntilFinished:NO];
     [[SCHSyncManager sharedSyncManager] resetSync];    
 }
 
 #pragma mark - Private methods
 
-- (void)performPostDeregistration
+- (void)performPostDeregistrationWaitUntilFinished:(BOOL)wait
 {	        
     [self clearOnMainThread];
-    [self clearAppProcessingOnMainThread];
+    [self clearAppProcessingOnMainThreadWaitUntilFinished:wait];
     [(AppDelegate_Shared *)[[UIApplication sharedApplication] delegate] clearUserDefaults];
     
     self.authenticationSuccessBlock = nil;
@@ -723,6 +734,10 @@ NSTimeInterval const kSCHAuthenticationManagerSecondsInAMinute = 60.0;
     self.deregistrationSuccessBlock = nil;
     self.deregistrationFailureBlock = nil;
     self.drmRegistrationSession = nil;    
+    
+    [[NSNotificationCenter defaultCenter] postNotificationName:SCHAuthenticationManagerDidDeregisterNotification
+                                                        object:self 
+                                                      userInfo:nil];
 }
 
 - (void)setLastKnownAuthToken:(NSString *)token
@@ -969,20 +984,25 @@ NSTimeInterval const kSCHAuthenticationManagerSecondsInAMinute = 60.0;
 - (void)registrationSession:(SCHDrmRegistrationSession *)registrationSession 
     deregistrationDidComplete:(NSString *)deviceKey
 {    
+    SCHDrmDeregistrationSuccessBlock postClearingBlock = nil;
+    
     if (self.deregistrationSuccessBlock) {
-        SCHDrmDeregistrationSuccessBlock handler = Block_copy(self.deregistrationSuccessBlock);
+        postClearingBlock = Block_copy(self.deregistrationSuccessBlock);
         self.deregistrationSuccessBlock = nil;
+    }
+    
+    [self performPostDeregistrationWaitUntilFinished:NO];
+
+    if (postClearingBlock) {
         dispatch_async(dispatch_get_main_queue(), ^{
-            handler();
+            postClearingBlock();
         });
-        Block_release(handler);
+        Block_release(postClearingBlock);
     }
     
     self.deregistrationFailureBlock = nil;
     self.drmRegistrationSession = nil;
     self.authenticating = NO;
-
-    [self performPostDeregistration];
 }
 
 - (void)registrationSession:(SCHDrmRegistrationSession *)registrationSession 
@@ -1067,14 +1087,17 @@ deregistrationDidFailWithError:(NSError *)error
 {
     NSString *localizedMessage = nil;
     
-    if ([error code] == kSCHDrmDeviceLimitError) {
+    if([[error domain] isEqualToString:kBITAPIErrorDomain] == YES) {
+        localizedMessage = [NSString stringWithFormat:
+                            NSLocalizedString(@"A server error occurred. If this problem persists please contact support.", nil)];           
+    } else if ([error code] == kSCHDrmDeviceLimitError) {
         localizedMessage = NSLocalizedString(@"Storia is already installed on five devices, which is the maximum allowed. Before installing it on this device, you need to deregister Storia on one of your current devices.", nil);
     } else if (([error code] == kSCHDrmDeviceRegisteredToAnotherDevice) || 
                ([error code] == kSCHDrmDeviceUnableToAssign)) {
         localizedMessage = NSLocalizedString(@"This device is registered to another Scholastic account. The owner of that account needs to deregister this device before it can be registered to a new account.", nil);
     } else {
         localizedMessage = [NSString stringWithFormat:
-                            NSLocalizedString(@"A problem occured. If this problem persists please contact support.\n\n '%@'", nil), 
+                            NSLocalizedString(@"A problem occurred. If this problem persists please contact support.\n\n '%@'", nil), 
                             [error localizedDescription]];   
     }
     

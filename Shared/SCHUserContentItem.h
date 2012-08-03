@@ -35,6 +35,9 @@ extern NSString * const kSCHUserContentItemDRM_QUALIFIER;
 @property (nonatomic, retain) NSSet* OrderList;
 @property (nonatomic, retain) NSSet* ProfileList;
 @property (nonatomic, retain) NSNumber * FreeBook;
+// The assumption is that we will never use LastVersion instead we use Versoin
+// LD added LastVersion, swapped what used to be in Version into LastVersion, 
+// and made Version correct from that point forward
 @property (nonatomic, retain) NSString * LastVersion;
 @property (nonatomic, retain) NSNumber * AverageRating;
 

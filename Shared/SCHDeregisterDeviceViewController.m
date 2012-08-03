@@ -17,6 +17,7 @@
 #import "SCHDrmSession.h"
 #import "SCHVersionDownloadManager.h"
 #import "SCHSyncManager.h"
+#import "SCHDictionaryDownloadManager.h"
 
 static const CGFloat kDeregisterContentHeightLandscape = 380;
 
@@ -29,7 +30,8 @@ static const CGFloat kDeregisterContentHeightLandscape = 380;
 - (void)setupContentSizeForOrientation:(UIInterfaceOrientation)orientation;
 - (void)makeVisibleTextField:(UITextField *)textField;
 - (void)deregisterAfterSuccessfulAuthentication;
-- (void)deregisterFailedAuthentication:(NSError *)error;
+- (void)deregisterFailedAuthentication:(NSError *)error 
+              offerForceDeregistration:(BOOL)offerForceDeregistration;
 - (void)showAppVersionOutdatedAlert;
 
 @end
@@ -157,7 +159,7 @@ static const CGFloat kDeregisterContentHeightLandscape = 380;
         } else if ([[self.passwordField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]] length] < 1) {
             LambdaAlert *alert = [[LambdaAlert alloc]
                                   initWithTitle:NSLocalizedString(@"Incorrect Password", @"")
-                                  message:NSLocalizedString(@"Incorrect password for deregistration", @"")];
+                                  message:NSLocalizedString(@"Please enter the password", @"")];
             [alert addButtonWithTitle:NSLocalizedString(@"OK", @"") block:^{
                 [self.deregisterButton setEnabled:YES];
             }];
@@ -177,7 +179,10 @@ static const CGFloat kDeregisterContentHeightLandscape = 380;
             NSString *storedUsername = [[NSUserDefaults standardUserDefaults] stringForKey:kSCHAuthenticationManagerUsername];
             [self.spinner startAnimating];
             [self setEnablesUI:NO];
-            [self.accountValidation validateWithUserName:storedUsername withPassword:self.passwordField.text validateBlock:^(NSString *pToken, NSError *error) {
+            [self.accountValidation validateWithUserName:storedUsername 
+                                            withPassword:self.passwordField.text 
+                                          updatePassword:YES
+                                           validateBlock:^(NSString *pToken, NSError *error) {
                 if (error != nil) {
                     LambdaAlert *alert = [[LambdaAlert alloc]
                                           initWithTitle:NSLocalizedString(@"Error", @"error alert title")
@@ -200,11 +205,12 @@ static const CGFloat kDeregisterContentHeightLandscape = 380;
                                 [weakSelf deregisterFailedAuthentication:[NSError errorWithDomain:kSCHAuthenticationManagerErrorDomain 
                                                                                              code:kSCHAuthenticationManagerOfflineError 
                                                                                          userInfo:[NSDictionary dictionaryWithObject:NSLocalizedString(@"You are in offline mode, you must be in online mode to deregister", @"") 
-                                                                                                                              forKey:NSLocalizedDescriptionKey]]];
+                                                                                                                              forKey:NSLocalizedDescriptionKey]] offerForceDeregistration:NO];
                             }
                         } 
                                                                                                 failureBlock:^(NSError *error){
-                                                                                                    [weakSelf deregisterFailedAuthentication:error];
+                                                                                                    [weakSelf deregisterFailedAuthentication:error
+                                                                                                                    offerForceDeregistration:YES];
                                                                                                 }
                                                                                  waitUntilVersionCheckIsDone:YES];
                     }                
@@ -220,6 +226,12 @@ static const CGFloat kDeregisterContentHeightLandscape = 380;
     
     SCHDrmDeregistrationSuccessBlock deregistrationCompletionBlock = ^{
         dispatch_block_t block = ^{
+            
+            if ([[SCHDictionaryDownloadManager sharedDownloadManager] userRequestState] == SCHDictionaryUserDeclined) {
+                NSLog(@"Resetting dictionary question; user will be prompted to download dictionary.");
+                [[SCHDictionaryDownloadManager sharedDownloadManager] setUserRequestState:SCHDictionaryUserNotYetAsked];
+            }
+            
             LambdaAlert *alert = [[LambdaAlert alloc]
                                   initWithTitle:NSLocalizedString(@"Device Deregistered", @"Device Deregistered") 
                                   message:NSLocalizedString(@"This device has been deregistered. To read eBooks, please register this device again.", @"") ];
@@ -241,7 +253,7 @@ static const CGFloat kDeregisterContentHeightLandscape = 380;
         if (([error code] == kSCHDrmDeregistrationError) ||
             ([error code] == kSCHDrmInitializationError)) {
             // We were already de-registered or did not have drm initialized. Force deregistration.
-            [[SCHAuthenticationManager sharedAuthenticationManager]  forceDeregistrationWithCompletionBlock:deregistrationCompletionBlock];
+            [[SCHAuthenticationManager sharedAuthenticationManager] forceDeregistrationWithCompletionBlock:deregistrationCompletionBlock];
         } else {
             [self.spinner stopAnimating];
             
@@ -258,20 +270,54 @@ static const CGFloat kDeregisterContentHeightLandscape = 380;
     }];
 }
 
-- (void)deregisterFailedAuthentication:(NSError *)error
+- (void)deregisterFailedAuthentication:(NSError *)error 
+              offerForceDeregistration:(BOOL)offerForceDeregistration
 {
     NSString *message = nil;
     
+    SCHDrmDeregistrationSuccessBlock deregistrationCompletionBlock = ^{
+        dispatch_block_t block = ^{
+            
+            if ([[SCHDictionaryDownloadManager sharedDownloadManager] userRequestState] == SCHDictionaryUserDeclined) {
+                NSLog(@"Resetting dictionary question; user will be prompted to download dictionary.");
+                [[SCHDictionaryDownloadManager sharedDownloadManager] setUserRequestState:SCHDictionaryUserNotYetAsked];
+            }
+            
+            LambdaAlert *alert = [[LambdaAlert alloc]
+                                  initWithTitle:NSLocalizedString(@"Device Deregistered", @"Device Deregistered") 
+                                  message:NSLocalizedString(@"This device has been deregistered. To read eBooks, please register this device again.", @"") ];
+            [alert addButtonWithTitle:NSLocalizedString(@"OK", @"OK") block:nil];
+            [alert show];
+            [alert release];
+        };  
+        
+        if (self.settingsDelegate != nil) {
+            [self.settingsDelegate popToRootViewControllerAnimated:YES withCompletionHandler:block];
+        } else if (self.profileSetupDelegate != nil) {
+            [self.profileSetupDelegate popToRootViewControllerAnimated:YES withCompletionHandler:block];            
+        }
+    };
+
     if (error == nil) {
-        message = NSLocalizedString(@"We are not able to authenticate your account with the server. Please try again later.", nil);
+        message = NSLocalizedString(@"We are not able to authenticate your account with the server. ", nil);
     } else {
-        message = [NSString stringWithFormat:NSLocalizedString(@"We are not able to authenticate your account with the server (%@). Please try again later.", nil), [error localizedDescription]];        
+        message = [NSString stringWithFormat:NSLocalizedString(@"We are not able to authenticate your account with the server (%@). ", nil), [error localizedDescription]];        
+    }
+    if (offerForceDeregistration == YES) {
+        message = [NSString stringWithFormat:@"%@%@", message, NSLocalizedString(@"Would you like to Continue or Cancel.", nil)];
+    } else {
+        message = [NSString stringWithFormat:@"%@%@", message, NSLocalizedString(@"Please try again later.", nil)];
     }
     
     LambdaAlert *alert = [[LambdaAlert alloc]
                           initWithTitle:NSLocalizedString(@"Unable To Authenticate", @"")
                           message:message];
-    [alert addButtonWithTitle:NSLocalizedString(@"OK", @"") block:^{
+    if (offerForceDeregistration == YES) {
+        [alert addButtonWithTitle:NSLocalizedString(@"Continue", @"") block:^{
+            [[SCHAuthenticationManager sharedAuthenticationManager] forceDeregistrationWithCompletionBlock:deregistrationCompletionBlock];            
+        }];        
+    }
+    [alert addButtonWithTitle:(offerForceDeregistration == YES ? NSLocalizedString(@"Cancel", @"") : NSLocalizedString(@"OK", @"") ) block:^{
         [self.deregisterButton setEnabled:YES];
         [self.spinner stopAnimating];
         [self setEnablesUI:YES];                                            

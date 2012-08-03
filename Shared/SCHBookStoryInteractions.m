@@ -328,7 +328,7 @@
     NSNumber *count = [self.storyInteractionsQuestionsCompletedCount objectForKey:pageKey];
     if (count == nil) {
         count = [NSNumber numberWithInteger:1];
-    } else {
+    } else if ([count intValue] < questionCount) {
         count = [NSNumber numberWithInteger:[count integerValue]+1];
     }
     

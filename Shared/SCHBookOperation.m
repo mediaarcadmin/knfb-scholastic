@@ -125,7 +125,13 @@
     if ([NSThread isMainThread]) {
         accessBlock();
     } else {
-        dispatch_sync(dispatch_get_main_queue(), accessBlock);
+        dispatch_sync(dispatch_get_main_queue(), ^{
+            if (![self isCancelled]) {
+                accessBlock();
+            } else {
+                NSLog(@"dispatch_sync performWithBook discarded due to operation being cancelled");
+            }
+        });
     }
 }
 
@@ -212,6 +218,8 @@
     }];
 }
 
+// NOTE: SCHBookURLRequestOperation.m performs the same operation in it's own
+// performWithRecommendationAndSave
 - (void)resetCoverURLExpiredState
 {
     [self performWithBookAndSave:^(SCHAppBook *book) {
@@ -232,6 +240,11 @@
         if (newDownloadFailedCount >= 3) {
             book.State = [NSNumber numberWithInt:SCHBookProcessingStateDownloadFailed];            
             book.downloadFailedCount = [NSNumber numberWithInteger:0];
+            
+            NSDictionary *userInfo = [NSDictionary dictionaryWithObjectsAndKeys:
+                                      (self.identifier == nil ? (id)[NSNull null] : self.identifier), @"bookIdentifier",
+                                      nil];
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"SCHBookStateUpdate" object:nil userInfo:userInfo];
         } else {
             // the current download operation will go to the end of the queue and repeat
             book.downloadFailedCount = [NSNumber numberWithInteger:newDownloadFailedCount];

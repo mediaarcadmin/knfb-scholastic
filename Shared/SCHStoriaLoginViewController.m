@@ -27,6 +27,7 @@ static const CGFloat kSCHStoriaLoginContentHeightLandscape = 420;
 
 @synthesize loginBlock;
 @synthesize previewBlock;
+@synthesize topFieldLabel;
 @synthesize topField;
 @synthesize bottomField;
 @synthesize loginButton;
@@ -35,6 +36,7 @@ static const CGFloat kSCHStoriaLoginContentHeightLandscape = 420;
 @synthesize promptLabel;
 @synthesize activeTextField;
 @synthesize scrollView;
+@synthesize backgroundView;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -51,6 +53,7 @@ static const CGFloat kSCHStoriaLoginContentHeightLandscape = 420;
         [[NSNotificationCenter defaultCenter] removeObserver:self];
     }
     
+    [topFieldLabel release], topFieldLabel = nil;
     [topField release], topField = nil;
     [bottomField release], bottomField = nil;
     [loginButton release], loginButton = nil;
@@ -59,6 +62,7 @@ static const CGFloat kSCHStoriaLoginContentHeightLandscape = 420;
     [promptLabel release], promptLabel = nil;
     [activeTextField release], activeTextField = nil;
     [scrollView release], scrollView = nil;
+    [backgroundView release], backgroundView = nil;
 }
 
 - (void)dealloc
@@ -85,6 +89,35 @@ static const CGFloat kSCHStoriaLoginContentHeightLandscape = 420;
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
     
+#if USE_EMAIL_ADDRESS_AS_USERNAME    
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+        topFieldLabel.text = NSLocalizedString(@"E-Mail Address", @"");
+    } else if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
+        topField.placeholder = NSLocalizedString(@"E-Mail Address", @"");
+    }
+    
+    topField.keyboardType = UIKeyboardTypeEmailAddress;
+    bottomField.keyboardType = UIKeyboardTypeEmailAddress;
+#endif    
+
+    
+    self.promptLabel.dataDetectorTypes = UIDataDetectorTypeAll;
+    self.promptLabel.backgroundColor = [UIColor clearColor];
+    self.promptLabel.delegate = self;
+    self.promptLabel.leading = 20;
+    
+    NSMutableDictionary *mutableLinkAttributes = [NSMutableDictionary dictionary];
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
+        self.promptLabel.textAlignment = UITextAlignmentCenter;
+        [mutableLinkAttributes setValue:(id)[[UIColor colorWithRed:0.056 green:0.367 blue:0.577 alpha:1] CGColor] forKey:(NSString*)kCTForegroundColorAttributeName];
+    } else {
+        [mutableLinkAttributes setValue:(id)[[UIColor colorWithRed:0.256 green:0.667 blue:0.877 alpha:1] CGColor] forKey:(NSString*)kCTForegroundColorAttributeName];
+    }
+    
+    [mutableLinkAttributes setValue:[NSNumber numberWithBool:YES] forKey:(NSString *)kCTUnderlineStyleAttributeName];
+    self.promptLabel.linkAttributes = [NSDictionary dictionaryWithDictionary:mutableLinkAttributes];
+
+
     [self.scrollView setAlwaysBounceVertical:NO];
     
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
@@ -115,10 +148,16 @@ static const CGFloat kSCHStoriaLoginContentHeightLandscape = 420;
 - (void)viewWillAppear:(BOOL)animated 
 {
     [super viewWillAppear:animated];
+    
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
+        [self.navigationController setNavigationBarHidden:YES];
+    }
+    
     [self stopShowingProgress];
     [self setupContentSizeForOrientation:self.interfaceOrientation];
     [self clearFields];
-    [self setDisplayIncorrectCredentialsWarning:NO];    
+    
+    [self setDisplayIncorrectCredentialsWarning:kSCHLoginHandlerCredentialsWarningNone];    
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
@@ -127,10 +166,22 @@ static const CGFloat kSCHStoriaLoginContentHeightLandscape = 420;
 	return YES;
 }
 
+- (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
+{
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
+        [CATransaction begin];
+        [CATransaction setAnimationDuration:duration];
+        [self setupContentSizeForOrientation:toInterfaceOrientation];
+        [CATransaction commit];
+    }
+}
+
 - (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation
 {
     [self.view endEditing:YES];
-    [self setupContentSizeForOrientation:self.interfaceOrientation];
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+        [self setupContentSizeForOrientation:self.interfaceOrientation];
+    }
 }
 
 - (void)setupContentSizeForOrientation:(UIInterfaceOrientation)orientation;
@@ -138,8 +189,10 @@ static const CGFloat kSCHStoriaLoginContentHeightLandscape = 420;
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
         if (UIInterfaceOrientationIsPortrait(orientation)) {
             self.scrollView.contentSize = CGSizeZero;
+            self.backgroundView.transform = CGAffineTransformIdentity;
         } else {
             self.scrollView.contentSize = CGSizeMake(self.view.bounds.size.width, kSCHStoriaLoginContentHeightLandscape);
+            self.backgroundView.transform = CGAffineTransformTranslate(CGAffineTransformMakeScale(1.5f, 1.5f), 0, -76);
         }
     } else {
         self.scrollView.contentSize = CGSizeZero;
@@ -180,7 +233,7 @@ static const CGFloat kSCHStoriaLoginContentHeightLandscape = 420;
     [self.bottomField setEnabled:NO];
     [self.spinner startAnimating];
     [self.loginButton setEnabled:NO];
-    [self setDisplayIncorrectCredentialsWarning:NO];
+    [self setDisplayIncorrectCredentialsWarning:kSCHLoginHandlerCredentialsWarningNone];
     [self.previewButton setEnabled:NO];
 }
 
@@ -206,23 +259,71 @@ static const CGFloat kSCHStoriaLoginContentHeightLandscape = 420;
     [self.loginButton setEnabled:YES];
 }
 
-- (void)setDisplayIncorrectCredentialsWarning:(BOOL)showWarning
+- (void)setDisplayIncorrectCredentialsWarning:(SCHLoginHandlerCredentialsWarning)credentialsWarning
 {
-    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+//    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
         CGRect frame = self.promptLabel.frame;
-        if (showWarning) {
-            self.promptLabel.text = NSLocalizedString(@"Your User Name or Password was not recognized. Please try again.", @"");
-            frame.size.width = 200;
-        } else {
-            self.promptLabel.text = NSLocalizedString(@"You must have a Scholastic account to sign in.", @"");
-            frame.size.width = 140;
+        
+        NSUInteger fontSize = 15;
+        
+        NSString *promptText = nil;
+        
+        switch (credentialsWarning) {
+            case kSCHLoginHandlerCredentialsWarningNone:
+#if USE_EMAIL_ADDRESS_AS_USERNAME    
+                promptText = NSLocalizedString(@"Please enter your Scholastic account E-mail Address and Password.", @"");
+#else 
+                promptText = NSLocalizedString(@"Please enter your Scholastic account User Name and Password.", @"");
+#endif  
+                if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+                    frame.size.width = 140;
+                }
+                break;
+            case kSCHLoginHandlerCredentialsWarningMalformedEmail:
+                promptText = NSLocalizedString(@"Please enter a valid E-mail Address.", @"");
+                if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+                    frame.size.width = 140;
+                }
+                break;
+            case kSCHLoginHandlerCredentialsWarningAuthenticationFailure:
+#if USE_EMAIL_ADDRESS_AS_USERNAME            
+                promptText = NSLocalizedString(@"Your E-mail Address or Password was not recognized. Please try again or contact Scholastic customer service at storia@scholastic.com.", @"");
+                if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+                    fontSize = 13;
+                } else {
+                    fontSize = 12;
+                }
+#else 
+                promptText = NSLocalizedString(@"Your User Name or Password was not recognized. Please try again.", @"");  
+#endif     
+                if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+                    frame.size.width = 200;
+                }
+                break;
         }
+        CTFontRef labelFontRef = CTFontCreateWithName((CFStringRef)self.promptLabel.font.fontName, fontSize, NULL);
+        NSMutableAttributedString *attributedPromptText = [[[NSMutableAttributedString alloc] initWithString:promptText] autorelease];
+        [attributedPromptText addAttribute:(NSString *)kCTFontAttributeName value:(id)labelFontRef range:NSMakeRange(0, [promptText length])];
+        [attributedPromptText addAttribute:(NSString *)kCTForegroundColorAttributeName value:(id)[UIColor colorWithRed:0.295 green:0.295 blue:0.295 alpha:1].CGColor range:NSMakeRange(0, [promptText length])];   
+    
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
+        CTTextAlignment theAlignment = kCTCenterTextAlignment;
+        CFIndex theNumberOfSettings = 1;
+        CTParagraphStyleSetting theSettings[1] = {{ kCTParagraphStyleSpecifierAlignment, sizeof(CTTextAlignment), &theAlignment }};
+        CTParagraphStyleRef theParagraphRef = CTParagraphStyleCreate(theSettings, theNumberOfSettings);
+        [attributedPromptText addAttribute:(NSString *)kCTParagraphStyleAttributeName value:(id)theParagraphRef range:NSMakeRange(0, [promptText length])];
+    }
+    
+        self.promptLabel.text = attributedPromptText;
+        
+        CFRelease(labelFontRef);
         
         [CATransaction begin];
         [CATransaction setDisableActions:YES];
         self.promptLabel.frame = frame;
         [CATransaction commit];
-    }
+        
+//    }
 }
 
 #pragma mark - UITextFieldDelegate
@@ -295,6 +396,15 @@ static const CGFloat kSCHStoriaLoginContentHeightLandscape = 420;
 {
     self.activeTextField = nil;
     [self setupContentSizeForOrientation:self.interfaceOrientation];
+}
+
+#pragma mark - TTTAttributedLabelDelegate
+
+- (void)attributedLabel:(TTTAttributedLabel *)label didSelectLinkWithURL:(NSURL *)url
+{
+    if (url) {
+        [[UIApplication sharedApplication] openURL:url];
+    }
 }
 
 @end

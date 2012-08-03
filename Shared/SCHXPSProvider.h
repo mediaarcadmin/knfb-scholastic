@@ -18,6 +18,7 @@
 }
 
 - (id)initWithBookIdentifier:(SCHBookIdentifier *)bookIdentifier xpsPath:(NSString *)xpsPath;
+- (id)initWithBookIdentifier:(SCHBookIdentifier *)bookIdentifier xpsPath:(NSString *)xpsPath error:(NSError **)error;
 
 // Scholastic convenience methods
 

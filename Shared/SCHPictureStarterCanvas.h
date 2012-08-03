@@ -14,6 +14,7 @@
 
 @property (nonatomic, assign) id<SCHPictureStarterCanvasDelegate> delegate;
 
+- (void)setDrawnImage:(UIImage *)drawnImage;
 - (void)setBackgroundImage:(UIImage *)backgroundImage;
 - (void)clear;
 

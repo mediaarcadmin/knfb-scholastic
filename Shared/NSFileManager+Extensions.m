@@ -26,4 +26,28 @@
     return ret;
 }
 
+#pragma mark - Class methods
+
++ (NSString *)BITtemporaryDirectoryIfExistsOrCreated
+{
+    NSString *temporaryDirectory = NSTemporaryDirectory();
+    
+    if (temporaryDirectory != nil) {        
+        NSFileManager *localManager = [[[NSFileManager alloc] init] autorelease];
+        NSError *error = nil;
+        
+        if ([localManager fileExistsAtPath:temporaryDirectory] == NO) {
+            if ([localManager createDirectoryAtPath:temporaryDirectory 
+                        withIntermediateDirectories:YES 
+                                         attributes:nil 
+                                              error:&error] == NO) {
+                NSLog(@"Unable to create temporary directory with error %@ : %@", error, [error userInfo]);
+                temporaryDirectory = nil;
+            }            
+        }
+    }
+    
+    return temporaryDirectory;
+}
+
 @end

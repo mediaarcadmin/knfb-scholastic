@@ -95,8 +95,8 @@
 {
     self.numberOfRows = [wordSearch matrixRows];
     self.numberOfColumns = [wordSearch matrixColumns];
-    self.letterSize = CGSizeMake((CGRectGetWidth(self.bounds)+self.letterGap)/self.numberOfRows - self.letterGap,
-                                 (CGRectGetHeight(self.bounds)+self.letterGap)/self.numberOfColumns - self.letterGap);
+    self.letterSize = CGSizeMake((CGRectGetWidth(self.bounds)+self.letterGap)/self.numberOfColumns - self.letterGap,
+                                 (CGRectGetHeight(self.bounds)+self.letterGap)/self.numberOfRows - self.letterGap);
     
     CGSize letterAreaSize = CGSizeMake(self.numberOfColumns * self.letterSize.width + (self.numberOfColumns-1) * self.letterGap,
                                        self.numberOfRows * self.letterSize.height + (self.numberOfRows-1) * self.letterGap);

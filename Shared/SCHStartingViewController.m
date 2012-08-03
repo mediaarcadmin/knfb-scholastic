@@ -38,6 +38,8 @@
 #import "BITOperationWithBlocks.h"
 #import "SCHVersionDownloadManager.h"
 #import "SCHAccountValidationViewController.h"
+#import "NSString+EmailValidation.h"
+#import "BITAPIError.h"
 
 typedef enum {
 	kSCHStartingViewControllerProfileSyncStateNone = 0,
@@ -49,6 +51,12 @@ typedef enum {
 
 //static const NSTimeInterval kSCHStartingViewControllerNonForcedAlertInterval = 60 * 60 * 24 * 7; // 1 week
 static const NSTimeInterval kSCHStartingViewControllerNonForcedAlertInterval = (60 * 5) - 1;
+
+// Constants
+NSString * const kSCHLoginErrorDomain = @"LoginErrorDomain";
+NSInteger const kSCHLoginReachabilityError = 1000;
+NSString * const kSCHSamplesErrorDomain = @"SamplesErrorDomain";
+NSInteger const kSCHSamplesUnspecifiedError = 1000;
 
 @interface SCHStartingViewController ()
 
@@ -64,7 +72,7 @@ static const NSTimeInterval kSCHStartingViewControllerNonForcedAlertInterval = (
 
 - (void)runInitialChoiceSequence;
 - (void)runSetupSamplesSequence;
-- (void)runLoginSequenceWithUsername:(NSString *)username password:(NSString *)password credentialsSuccessBlock:(void(^)(BOOL success, BOOL retrying))credentialsSuccessBlock;
+- (void)runLoginSequenceWithUsername:(NSString *)username password:(NSString *)password credentialsSuccessBlock:(void(^)(BOOL success, BOOL retrying, NSError *error))credentialsSuccessBlock;
 - (void)runSetupProfileSequenceAnimated:(BOOL)animated;
 
 - (void)pushSamplesAnimated:(BOOL)animated showWelcome:(BOOL)welcome;
@@ -201,9 +209,9 @@ static const NSTimeInterval kSCHStartingViewControllerNonForcedAlertInterval = (
     [self.navigationController setNavigationBarHidden:YES];
     [self setupAssetsForOrientation:self.interfaceOrientation];
     
-    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
-        [self checkState];
-    }
+//    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
+//        [self checkState];
+//    }
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -284,16 +292,17 @@ static const NSTimeInterval kSCHStartingViewControllerNonForcedAlertInterval = (
 
 - (void)popToAuthenticatedProfileAnimated:(BOOL)animated
 {
-    if (self.modalViewController) {
-        [self dismissModalViewControllerAnimated:animated];
-    }
+    dispatch_block_t completion = ^{
+        
+        if ([self bookshelfSetupRequired]) {
+            [self.navigationController setViewControllers:[NSArray arrayWithObject:self] animated:animated];
+            [self runSetupProfileSequenceAnimated:animated];
+        } else {
+            [self.navigationController setViewControllers:[NSArray arrayWithObjects:self, [self profileViewController], nil] animated:animated];
+        }
+    };
     
-    if ([self bookshelfSetupRequired]) {
-        [self.navigationController setViewControllers:[NSArray arrayWithObject:self] animated:animated];
-        [self runSetupProfileSequenceAnimated:animated];
-    } else {
-        [self.navigationController setViewControllers:[NSArray arrayWithObjects:self, [self profileViewController], nil] animated:animated];
-    }
+    [self dismissModalViewControllerAnimated:animated withCompletionHandler:completion];
 }
 
 - (void)dismissModalViewControllerAnimated:(BOOL)animated withCompletionHandler:(dispatch_block_t)completion;
@@ -463,9 +472,25 @@ static const NSTimeInterval kSCHStartingViewControllerNonForcedAlertInterval = (
     }    
 }
 
+- (void)popModalWebParentToolsToValidationAnimated:(BOOL)animated
+{
+    [self dismissModalWebParentToolsAnimated:animated withSync:NO showValidation:YES];
+}
+
+- (void)dismissModalWebParentToolsAnimated:(BOOL)animated
+{
+    [self dismissModalWebParentToolsAnimated:animated withSync:YES showValidation:NO];
+}
+
 - (void)waitingForPassword
 {
     self.profileSyncState = kSCHStartingViewControllerProfileSyncStateWaitingForPassword;
+}
+
+- (void)waitingForBookshelves
+{
+    [self.modalNavigationController setViewControllers:nil];
+    [self pushBookshelfSetupModalControllerAnimated:YES showValidation:NO];
 }
 
 - (void)waitingForWebParentToolsToComplete
@@ -621,8 +646,19 @@ static const NSTimeInterval kSCHStartingViewControllerNonForcedAlertInterval = (
         
         login.loginBlock = ^(NSString *username, NSString *password) {
             [weakLoginRef startShowingProgress];
-            [self runLoginSequenceWithUsername:username password:password credentialsSuccessBlock:^(BOOL success, BOOL retrying){
-                [weakLoginRef setDisplayIncorrectCredentialsWarning:!success];
+            [self runLoginSequenceWithUsername:username password:password credentialsSuccessBlock:^(BOOL success, BOOL retrying, NSError *error){
+                if (success) {
+                    [weakLoginRef setDisplayIncorrectCredentialsWarning:kSCHLoginHandlerCredentialsWarningNone];
+                } else {
+                    if (error && [[error domain] isEqualToString:kSCHAccountValidationErrorDomain] && ([error code] == kSCHAccountValidationMalformedEmailError)) {
+                        [weakLoginRef setDisplayIncorrectCredentialsWarning:kSCHLoginHandlerCredentialsWarningMalformedEmail];
+                    } else if (error && [[error domain] isEqualToString:kBITAPIErrorDomain]){
+                        [weakLoginRef setDisplayIncorrectCredentialsWarning:kSCHLoginHandlerCredentialsWarningAuthenticationFailure];
+                    } else {
+                        [weakLoginRef setDisplayIncorrectCredentialsWarning:kSCHLoginHandlerCredentialsWarningNone];
+                    }
+                }
+                
                 [weakLoginRef stopShowingProgress];
                 
                 if (!success) {
@@ -704,7 +740,7 @@ static const NSTimeInterval kSCHStartingViewControllerNonForcedAlertInterval = (
                                                                             completion(nil);
                                                                         }
                                                                         failureBlock:^(NSString * failureReason){
-                                                                            NSError *error = [NSError errorWithDomain:nil code:0 userInfo:[NSDictionary dictionaryWithObject:failureReason forKey:@"failureReason"]];
+                                                                            NSError *error = [NSError errorWithDomain:kSCHSamplesErrorDomain code:kSCHSamplesUnspecifiedError userInfo:[NSDictionary dictionaryWithObject:failureReason forKey:@"failureReason"]];
                                                                             completion(error);
                                                                         }];
     };
@@ -754,25 +790,46 @@ static const NSTimeInterval kSCHStartingViewControllerNonForcedAlertInterval = (
 
 - (void)pushBookshelfSetupModalControllerAnimated:(BOOL)animated showValidation:(BOOL)showValidation
 {
+    // TODO: this should really just build this up from scratch - it is a source of bugs because 
+    // the contents of the viewCOntrollers might actually be the settings view controllers
+    // Currently this is worked around by setting viewControllers nil in waitingForBookshelves
     NSMutableArray *controllers = [NSMutableArray arrayWithArray:[self.modalNavigationController viewControllers]];
+
+    NSAssert([controllers count] <= 2, @"Don't expect there to be >2 controllers on the modalNavigationController stack");
     
-    if (![[controllers lastObject] isKindOfClass:NSClassFromString(@"SCHSetupBookshelvesViewController")]) {
+    if (!([[controllers lastObject] isKindOfClass:NSClassFromString(@"SCHSetupBookshelvesViewController")]) &&
+        !([[controllers lastObject] isKindOfClass:NSClassFromString(@"SCHAccountValidationViewController")])) {
+        if ([controllers count] > 0) {
+            // There must have been something else on the controllers stack (e.g. the deregistration controller)
+            // Clear it out and start again
+            controllers = [NSMutableArray array];
+        }
+
         SCHSetupBookshelvesViewController *setupBookshelves = [[[SCHSetupBookshelvesViewController alloc] init] autorelease];
         setupBookshelves.profileSetupDelegate = self;
         [controllers addObject:setupBookshelves];
     }
     
     if (showValidation) {
-        SCHAccountValidationViewController *accountValidationViewController = [[[SCHAccountValidationViewController alloc] init] autorelease];
-        accountValidationViewController.profileSetupDelegate = self;        
-        accountValidationViewController.validatedControllerShouldHideCloseButton = YES;
-        accountValidationViewController.title = NSLocalizedString(@"Set Up Your Bookshelves", @"");
-        [controllers addObject:accountValidationViewController];
+        if (![[controllers lastObject] isKindOfClass:NSClassFromString(@"SCHAccountValidationViewController")]) {
+            SCHAccountValidationViewController *accountValidationViewController = [[[SCHAccountValidationViewController alloc] init] autorelease];
+            accountValidationViewController.profileSetupDelegate = self;        
+            accountValidationViewController.validatedControllerShouldHideCloseButton = YES;
+            accountValidationViewController.title = NSLocalizedString(@"Set Up Your Bookshelves", @"");
+            [controllers addObject:accountValidationViewController];
+        }
     }
     
     if (!self.modalViewController) {
         [self.modalNavigationController setViewControllers:controllers];
         [self presentModalViewController:self.modalNavigationController animated:animated];
+    } else if (self.modalViewController != self.modalNavigationController) {
+        [self dismissModalViewControllerAnimated:YES withCompletionHandler:^{
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [self.modalNavigationController setViewControllers:controllers];
+                [self presentModalViewController:self.modalNavigationController animated:YES];
+            });
+        }];
     } else {
         [self.modalNavigationController setViewControllers:controllers animated:YES];
     }
@@ -839,23 +896,25 @@ static const NSTimeInterval kSCHStartingViewControllerNonForcedAlertInterval = (
     }
 }
 
-- (void)runLoginSequenceWithUsername:(NSString *)username password:(NSString *)password credentialsSuccessBlock:(void(^)(BOOL success, BOOL retrying))credentialsSuccessBlock
+- (void)runLoginSequenceWithUsername:(NSString *)username password:(NSString *)password credentialsSuccessBlock:(void(^)(BOOL success, BOOL retrying, NSError *error))credentialsSuccessBlock
 {
     BITOperationWithBlocks *setupSequenceCheckConnectivity = [[BITOperationWithBlocks alloc] init];
-    setupSequenceCheckConnectivity.syncMain = ^(BITOperationIsCancelledBlock isCancelled, BITOperationFailedBlock failed) {
+    setupSequenceCheckConnectivity.asyncMain = ^(BITOperationIsCancelledBlock isCancelled, BITOperationAsyncCompletionBlock completion) {
+        NSError *error = nil;
+        
         if ([[Reachability reachabilityForInternetConnection] isReachable] == NO) {
-            NSError *error = [NSError errorWithDomain:nil  
-                                                   code:0  
+            error = [NSError errorWithDomain:kSCHLoginErrorDomain  
+                                                   code:kSCHLoginReachabilityError 
                                                userInfo:[NSDictionary dictionaryWithObject:NSLocalizedString(@"An Internet connection is required to sign into your account.", @"")  
                                                                                     forKey:NSLocalizedDescriptionKey]];  
-            failed(error);
         }
+        completion(error);
     };
     
     setupSequenceCheckConnectivity.failed = ^(NSError *error){
         
         if (credentialsSuccessBlock) {
-            credentialsSuccessBlock(NO, NO);
+            credentialsSuccessBlock(NO, NO, error);
         }
         
         LambdaAlert *alert = [[LambdaAlert alloc]
@@ -868,55 +927,71 @@ static const NSTimeInterval kSCHStartingViewControllerNonForcedAlertInterval = (
     
     BITOperationWithBlocks *setupSequenceAttemptServiceLogin = [[BITOperationWithBlocks alloc] init];
     [setupSequenceAttemptServiceLogin addSuccessDependency:setupSequenceCheckConnectivity];
-    setupSequenceAttemptServiceLogin.syncMain = ^(BITOperationIsCancelledBlock isCancelled, BITOperationFailedBlock failed) {
+    setupSequenceAttemptServiceLogin.asyncMain = ^(BITOperationIsCancelledBlock isCancelled, BITOperationAsyncCompletionBlock completion) {
         
+        [[SCHSyncManager sharedSyncManager] resetSync]; 
         [self setStandardStore];
         self.profileSyncState = kSCHStartingViewControllerProfileSyncStateWaitingForLoginToComplete;
         
         if ([[username stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]] length] > 0 &&
             [[password stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]] length] > 0) {      
-            [[SCHAuthenticationManager sharedAuthenticationManager] authenticateWithUser:username 
-                                                                                password:password
-                                                                            successBlock:^(SCHAuthenticationManagerConnectivityMode connectivityMode) { 
-                                                                                if (connectivityMode == SCHAuthenticationManagerConnectivityModeOnline) { 
-                                                                                    if (credentialsSuccessBlock) {
-                                                                                        credentialsSuccessBlock(YES, NO);
-                                                                                    }
-                                                                                    [[SCHSyncManager sharedSyncManager] firstSync:YES requireDeviceAuthentication:NO];
-                                                                                    [[SCHSyncManager sharedSyncManager] recommendationSync];
-                                                                                } else { 
-                                                                                    NSError *anError = [NSError errorWithDomain:kSCHAuthenticationManagerErrorDomain  
-                                                                                                                           code:kSCHAuthenticationManagerOfflineError  
-                                                                                                                       userInfo:[NSDictionary dictionaryWithObject:NSLocalizedString(@"There was a problem checking your username and password. Please try again.", @"")  
-                                                                                                                                                            forKey:NSLocalizedDescriptionKey]];        
-                                                                                    failed(anError);
+#if USE_EMAIL_ADDRESS_AS_USERNAME
+            NSString *errorMessage = NSLocalizedString(@"There was a problem checking your email and password. Please try again.", @"");
+            if ([username isValidEmailAddress] == NO) {
+                NSError *anError = [NSError errorWithDomain:kSCHAccountValidationErrorDomain  
+                                                       code:kSCHAccountValidationMalformedEmailError  
+                                                   userInfo:[NSDictionary dictionaryWithObject:NSLocalizedString(@"Email address is not valid. Please try again.", @"")  
+                                                                                        forKey:NSLocalizedDescriptionKey]];
+                completion(anError);
+            } else {
+#else 
+                NSString *errorMessage = NSLocalizedString(@"There was a problem checking your username and password. Please try again.", @"");
+#endif
+                [[SCHAuthenticationManager sharedAuthenticationManager] authenticateWithUser:username 
+                                                                                    password:password
+                                                                                successBlock:^(SCHAuthenticationManagerConnectivityMode connectivityMode) { 
+                                                                                    if (connectivityMode == SCHAuthenticationManagerConnectivityModeOnline) { 
+                                                                                        if (credentialsSuccessBlock) {
+                                                                                            credentialsSuccessBlock(YES, NO, nil);
+                                                                                        }
+                                                                                        [[SCHSyncManager sharedSyncManager] firstSync:YES requireDeviceAuthentication:NO];
+                                                                                        completion(nil);
+                                                                                    } else { 
+                                                                                        NSError *anError = [NSError errorWithDomain:kSCHAuthenticationManagerErrorDomain  
+                                                                                                                               code:kSCHAuthenticationManagerOfflineError  
+                                                                                                                           userInfo:[NSDictionary dictionaryWithObject:errorMessage  
+                                                                                                                                                                forKey:NSLocalizedDescriptionKey]];        
+                                                                                        completion(anError);
+                                                                                    } 
                                                                                 } 
-                                                                            } 
-                                                                            failureBlock:^(NSError * error){
-                                                                                if (error == nil) {
-                                                                                    NSError *anError = [NSError errorWithDomain:kSCHAuthenticationManagerErrorDomain  
-                                                                                                                           code:kSCHAuthenticationManagerGeneralError  
-                                                                                                                       userInfo:[NSDictionary dictionaryWithObject:NSLocalizedString(@"There was a problem checking your username and password. Please try again.", @"")  
-                                                                                                                                                            forKey:NSLocalizedDescriptionKey]];  
-                                                                                    
-                                                                                    failed(anError);
-                                                                                } else {
-                                                                                    failed(error);
+                                                                                failureBlock:^(NSError * error){
+                                                                                    if (error == nil) {
+                                                                                        NSError *anError = [NSError errorWithDomain:kSCHAuthenticationManagerErrorDomain  
+                                                                                                                               code:kSCHAuthenticationManagerGeneralError  
+                                                                                                                           userInfo:[NSDictionary dictionaryWithObject:errorMessage  
+                                                                                                                                                                forKey:NSLocalizedDescriptionKey]];  
+                                                                                        
+                                                                                        completion(anError);
+                                                                                    } else {
+                                                                                        completion(error);
+                                                                                    }
                                                                                 }
-                                                                            }
-                                                             waitUntilVersionCheckIsDone:YES];    
+                                                                 waitUntilVersionCheckIsDone:YES];    
+#if USE_EMAIL_ADDRESS_AS_USERNAME
+            }
+#endif
         } else {
             NSError *anError = [NSError errorWithDomain:kSCHAccountValidationErrorDomain  
-                                                   code:kSCHAccountValidationCredentialsError  
+                                                   code:kSCHAccountValidationCredentialsMissingError  
                                                userInfo:[NSDictionary dictionaryWithObject:NSLocalizedString(@"Username and password must not be blank. Please try again.", @"")  
                                                                                     forKey:NSLocalizedDescriptionKey]];
-            failed(anError);
+            completion(anError);
         }
     };
     
     setupSequenceAttemptServiceLogin.failed = ^(NSError *error){
         
-        if ([error code] != kSCHAccountValidationCredentialsError) {
+        if ([error code] != kSCHAccountValidationMalformedEmailError) {
             NSString *localizedMessage = [[SCHAuthenticationManager sharedAuthenticationManager] localizedMessageForAuthenticationError:error];
             
             LambdaAlert *alert = [[LambdaAlert alloc]
@@ -924,20 +999,31 @@ static const NSTimeInterval kSCHStartingViewControllerNonForcedAlertInterval = (
                                   message:localizedMessage];
             [alert addButtonWithTitle:NSLocalizedString(@"Cancel", @"Cancel") block:^{
                 if (credentialsSuccessBlock) {
-                    credentialsSuccessBlock(NO, NO);
+                    credentialsSuccessBlock(NO, NO, error);
                 }
             }];
-            [alert addButtonWithTitle:NSLocalizedString(@"Retry", @"Retry") block:^{
-                if (credentialsSuccessBlock) {
-                    credentialsSuccessBlock(NO, YES);
-                }
-                [self runLoginSequenceWithUsername:username password:password credentialsSuccessBlock:credentialsSuccessBlock];
-            }];
+            if (([[error domain] isEqualToString:@"kSCHDrmErrorDomain"]) && ([error code] == kSCHDrmInitializationError)) {
+                [alert addButtonWithTitle:NSLocalizedString(@"Reset", @"Reset") block:^{
+                    if (credentialsSuccessBlock) {
+                        credentialsSuccessBlock(NO, YES, error);
+                    }
+                    AppDelegate_Shared *appDelegate = (AppDelegate_Shared *)[[UIApplication sharedApplication] delegate];
+                    [appDelegate recoverFromUnintializedDRM];
+                    [self runLoginSequenceWithUsername:username password:password credentialsSuccessBlock:credentialsSuccessBlock];
+                }];
+            } else {
+                [alert addButtonWithTitle:NSLocalizedString(@"Retry", @"Retry") block:^{
+                    if (credentialsSuccessBlock) {
+                        credentialsSuccessBlock(NO, YES, error);
+                    }
+                    [self runLoginSequenceWithUsername:username password:password credentialsSuccessBlock:credentialsSuccessBlock];
+                }];
+            }
             [alert show];
             [alert release];
         } else {
             if (credentialsSuccessBlock) {
-                credentialsSuccessBlock(NO, NO);
+                credentialsSuccessBlock(NO, NO, error);
             }
         }
     };
@@ -996,9 +1082,6 @@ static const NSTimeInterval kSCHStartingViewControllerNonForcedAlertInterval = (
 {
     AppDelegate_Shared *appDelegate = (AppDelegate_Shared *)[[UIApplication sharedApplication] delegate];
     [appDelegate setStoreType:kSCHStoreTypeStandardStore];
-    
-    // clear all books
-    [SCHAppBook clearBooksDirectory];
 }
 
 - (void)versionDownloadManagerCompleted:(NSNotification *)note

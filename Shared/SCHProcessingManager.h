@@ -52,12 +52,14 @@ extern NSString * const kSCHProcessingManagerConnectionBusy;
 - (void)userSelectedBookWithIdentifier:(SCHBookIdentifier *)identifier;
 - (void)userRequestedRetryForBookWithIdentifier:(SCHBookIdentifier *)identifier;
 
+- (BOOL)forceReDownloadForBookWithIdentifier:(SCHBookIdentifier *)identifier;
+
 // methods for processing
 - (BOOL)identifierIsProcessing:(SCHBookIdentifier *)identifier;
 - (void)setProcessing:(BOOL)processing forIdentifier:(SCHBookIdentifier *)identifier;
 
 // stop all the processing
-- (void)cancelAllOperations;
+- (void)cancelAllOperationsWaitUntilFinished:(BOOL)waitUntilFinished;
 // stop processing a book
 - (void)cancelAllOperationsForBookIdentifier:(SCHBookIdentifier *)bookIdentifier
                            waitUntilFinished:(BOOL)waitUntilFinished;

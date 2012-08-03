@@ -28,7 +28,7 @@ extern NSTimeInterval const kSCHAuthenticationManagerSecondsInAMinute;
 @property (nonatomic, assign, getter=isAuthenticating) BOOL authenticating;
 
 - (void)clearOnMainThread;
-- (void)clearAppProcessingOnMainThread;
+- (void)clearAppProcessingOnMainThreadWaitUntilFinished:(BOOL)wait;
 
 - (void)authenticationDidSucceedWithOfflineMode:(SCHAuthenticationManagerConnectivityMode)connectivityMode;
 - (void)authenticationDidFailWithError:(NSError *)error;

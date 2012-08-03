@@ -11,7 +11,7 @@
 #import "SCHLibreAccessConstants.h"
 #import "SCHAppBook.h"
 #import "SCHBookIdentifier.h"
-#import "SCHBookshelfSyncComponent.h"
+#import "SCHListContentMetadataOperation.h"
 
 @implementation SCHBookURLRequestOperation
 
@@ -91,25 +91,28 @@
             __block BOOL urlsValid = NO;
             
             [self performWithBookAndSave:^(SCHAppBook *book) {
-                SCHBookshelfSyncComponent *localComponent = [[SCHBookshelfSyncComponent alloc] init];
-                [localComponent syncContentMetadataItem:userInfo withContentMetadataItem:book.ContentMetadataItem];
+                SCHListContentMetadataOperation *localOperation = [[SCHListContentMetadataOperation alloc] initWithSyncComponent:nil 
+                                                                                                                          result:nil
+                                                                                                                        userInfo:nil];
+                [localOperation syncContentMetadataItem:userInfo withContentMetadataItem:book.ContentMetadataItem];
                 
                 if (([book contentMetadataCoverURLIsValid] && [book contentMetadataFileURLIsValid])) {
                     [book setValue:[userInfo valueForKey:kSCHLibreAccessWebServiceCoverURL] forKey:kSCHAppBookCoverURL];
                     [book setValue:[userInfo valueForKey:kSCHLibreAccessWebServiceContentURL] forKey:kSCHAppBookFileURL];
                     urlsValid = YES;
+                    
+                    // combine resetCoverURLExpiredState and setProcessingState:kSCHAppRecommendationProcessingStateNoCover into this one save
+                    [book setUrlExpiredCount:[NSNumber numberWithInteger:0]];
+                    NSLog(@"Successful URL retrieval for %@!", bookIdentifier);
+                    [book setState:[NSNumber numberWithInt:SCHBookProcessingStateNoCoverImage]];
                 }
-                [localComponent release];
+                [localOperation release];
                 
             }];
             
             // check here for invalidity
             if (!urlsValid) {
                 [self setCoverURLExpiredState];
-            } else {
-                [self resetCoverURLExpiredState];
-                NSLog(@"Successful URL retrieval for %@!", bookIdentifier);
-                [self setProcessingState:SCHBookProcessingStateNoCoverImage];
             }
         }
         

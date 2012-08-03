@@ -16,6 +16,18 @@
 @synthesize hotSpotRect;
 @synthesize originalBookSize;
 @synthesize path;
+@synthesize answered;
+
+- (id)init
+{
+    self = [super init];
+    
+    if (self) {
+        answered = NO;
+    }
+    
+    return self;
+}
 
 - (void)dealloc
 {

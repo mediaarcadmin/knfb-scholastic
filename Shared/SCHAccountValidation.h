@@ -13,7 +13,8 @@
 // Constants
 extern NSString * const kSCHAccountValidationErrorDomain;
 extern NSInteger const kSCHAccountValidationPTokenError;
-extern NSInteger const kSCHAccountValidationCredentialsError;
+extern NSInteger const kSCHAccountValidationMalformedEmailError;
+extern NSInteger const kSCHAccountValidationCredentialsMissingError;
 
 typedef void (^ValidateBlock)(NSString *pToken, NSError *error);
 
@@ -22,7 +23,8 @@ typedef void (^ValidateBlock)(NSString *pToken, NSError *error);
 @property (nonatomic, copy, readonly) NSString *pToken;
 
 - (BOOL)validateWithUserName:(NSString *)username 
-                withPassword:(NSString *)password 
-               validateBlock:(ValidateBlock)validateBlock;
+                withPassword:(NSString *)password
+              updatePassword:(BOOL)setUpdatePassword
+               validateBlock:(ValidateBlock)aValidateBlock;
 
 @end

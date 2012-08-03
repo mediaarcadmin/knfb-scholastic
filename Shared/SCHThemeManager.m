@@ -64,11 +64,12 @@ static NSString * const kSCHThemeManagerName = @"Name";
 
 + (SCHThemeManager *)sharedThemeManager
 {
-    if (sharedThemeManager == nil) {
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
         sharedThemeManager = [[super allocWithZone:NULL] init];		
-    }
+    });
 	
-    return(sharedThemeManager);
+    return sharedThemeManager;
 }
 
 #pragma mark - Object lifecycle
@@ -95,7 +96,7 @@ static NSString * const kSCHThemeManagerName = @"Name";
         }
         
 	}
-	return(self);
+	return self;
 }
 
 - (void)dealloc 
@@ -174,7 +175,7 @@ static NSString * const kSCHThemeManagerName = @"Name";
         }
     }
     
-    return(ret);
+    return ret;
 }
 
 #pragma mark - Image Accessors
@@ -201,85 +202,85 @@ static NSString * const kSCHThemeManagerName = @"Name";
         }
     }
     
-    return(ret);
+    return ret;
 }
 
 - (UIImage *)imageFor:(NSString *)imageTitle orientation:(UIInterfaceOrientation)orientation
 {
-    return([UIImage imageNamed:[kSCHThemeManagerDirectory 
-                                stringByAppendingPathComponent:[self filePath:[self.selectedTheme objectForKey:imageTitle] orientation:orientation]]]);
+    return [UIImage imageNamed:[kSCHThemeManagerDirectory 
+                                stringByAppendingPathComponent:[self filePath:[self.selectedTheme objectForKey:imageTitle] orientation:orientation]]];
 }
 
 - (UIImage *)imageFor:(NSString *)imageTitle orientation:(UIInterfaceOrientation)orientation iPadQualifier:(SCHThemeManagerPadQualifier)iPadQualifier
 {
-    return([UIImage imageNamed:[kSCHThemeManagerDirectory 
-                                stringByAppendingPathComponent:[self filePath:[self.selectedTheme objectForKey:imageTitle] orientation:orientation iPadQualifier:iPadQualifier]]]);
+    return [UIImage imageNamed:[kSCHThemeManagerDirectory 
+                                stringByAppendingPathComponent:[self filePath:[self.selectedTheme objectForKey:imageTitle] orientation:orientation iPadQualifier:iPadQualifier]]];
 }
 
 - (UIImage *)imageForButton:(UIInterfaceOrientation)orientation
 {
-    return([UIImage imageNamed:[kSCHThemeManagerDirectory 
+    return [UIImage imageNamed:[kSCHThemeManagerDirectory 
                                 stringByAppendingPathComponent:[self filePath:[self.selectedTheme objectForKey:kSCHThemeManagerButtonImage] 
-                                                                  orientation:orientation]]]);
+                                                                  orientation:orientation]]];
 }
 
 - (UIImage *)imageForDoneButton:(UIInterfaceOrientation)orientation
 {
-    return([UIImage imageNamed:[kSCHThemeManagerDirectory 
+    return [UIImage imageNamed:[kSCHThemeManagerDirectory 
                                 stringByAppendingPathComponent:[self filePath:[self.selectedTheme objectForKey:kSCHThemeManagerDoneButtonImage] 
-                                                                  orientation:orientation]]]);
+                                                                  orientation:orientation]]];
 }
 
 - (UIImage *)imageForNavigationBar:(UIInterfaceOrientation)orientation
 {
-    return([UIImage imageNamed:[kSCHThemeManagerDirectory 
+    return [UIImage imageNamed:[kSCHThemeManagerDirectory 
                                 stringByAppendingPathComponent:[self filePath:[self.selectedTheme objectForKey:kSCHThemeManagerNavigationBarImage] 
-                                                                  orientation:orientation iPadQualifier:kSCHThemeManagerPadQualifierSuffix]]]);
+                                                                  orientation:orientation iPadQualifier:kSCHThemeManagerPadQualifierSuffix]]];
     
 }
 
 - (UIImage *)imageForBackground:(UIInterfaceOrientation)orientation
 {
-    return([UIImage imageNamed:[kSCHThemeManagerDirectory 
+    return [UIImage imageNamed:[kSCHThemeManagerDirectory 
                                 stringByAppendingPathComponent:[self filePath:[self.selectedTheme objectForKey:kSCHThemeManagerBackgroundImage] 
-                                                                  orientation:orientation iPadQualifier:kSCHThemeManagerPadQualifierRetina]]]);
+                                                                  orientation:orientation iPadQualifier:kSCHThemeManagerPadQualifierRetina]]];
 }
 
 - (UIImage *)imageForShelf:(UIInterfaceOrientation)orientation
 {
-    return([UIImage imageNamed:[kSCHThemeManagerDirectory 
+    return [UIImage imageNamed:[kSCHThemeManagerDirectory 
                                 stringByAppendingPathComponent:[self filePath:[self.selectedTheme objectForKey:kSCHThemeManagerShelfImage]
                                                                   orientation:orientation
-                                                                 iPadQualifier:kSCHThemeManagerPadQualifierSuffix]]]);
+                                                                 iPadQualifier:kSCHThemeManagerPadQualifierSuffix]]];
 }
 
 - (UIImage *)imageForHomeIcon:(UIInterfaceOrientation)orientation
 {
-    return([UIImage imageNamed:[kSCHThemeManagerDirectory 
+    return [UIImage imageNamed:[kSCHThemeManagerDirectory 
                                 stringByAppendingPathComponent:[self filePath:[self.selectedTheme objectForKey:kSCHThemeManagerHomeIcon]
-                                                                  orientation:orientation]]]);
+                                                                  orientation:orientation]]];
 }
 
 - (UIImage *)imageForThemeIcon:(UIInterfaceOrientation)orientation
 {
-    return([UIImage imageNamed:[kSCHThemeManagerDirectory 
+    return [UIImage imageNamed:[kSCHThemeManagerDirectory 
                                 stringByAppendingPathComponent:[self filePath:[self.selectedTheme objectForKey:kSCHThemeManagerThemeIcon]
-                                                                  orientation:orientation]]]);
+                                                                  orientation:orientation]]];
 }
 
 - (UIColor *)colorForListBackground
 {
-    return ([UIColor BITcolorWithHexString:[self.selectedTheme objectForKey:kSCHThemeManagerColorForListBackground]]);
+    return [UIColor BITcolorWithHexString:[self.selectedTheme objectForKey:kSCHThemeManagerColorForListBackground]];
 }
 
 - (UIColor *)colorForPopoverBackground
 {
-    return ([UIColor BITcolorWithHexString:[self.selectedTheme objectForKey:kSCHThemeManagerColorForPopoverBackground]]);
+    return [UIColor BITcolorWithHexString:[self.selectedTheme objectForKey:kSCHThemeManagerColorForPopoverBackground]];
 }
 
 - (UIColor *)colorForModalSheetBorder
 {
-    return ([UIColor BITcolorWithHexString:[self.selectedTheme objectForKey:kSCHThemeManagerColorForModalSheetBorder]]);
+    return [UIColor BITcolorWithHexString:[self.selectedTheme objectForKey:kSCHThemeManagerColorForModalSheetBorder]];
 }
 
 - (BOOL)gridTextColorIsDark

@@ -13,6 +13,7 @@
 #import "SCHLibreAccessWebService.h"
 #import "SCHReadingStatsDetailItem.h"
 #import "BITAPIError.h"
+#import "SCHSaveReadingStatisticsDetailedOperation.h"
 
 // Constants
 NSString * const SCHReadingStatsSyncComponentDidCompleteNotification = @"SCHReadingStatsSyncComponentDidCompleteNotification";
@@ -79,9 +80,11 @@ NSString * const SCHReadingStatsSyncComponentDidFailNotification = @"SCHReadingS
                 ret = NO;			
             }		            
         } else {
-            [[NSNotificationCenter defaultCenter] postNotificationName:SCHReadingStatsSyncComponentDidCompleteNotification 
-                                                                object:self];            
-            [super method:nil didCompleteWithResult:nil userInfo:nil];		
+            [self completeWithSuccessMethod:nil 
+                                     result:nil 
+                                   userInfo:nil 
+                           notificationName:SCHReadingStatsSyncComponentDidCompleteNotification 
+                       notificationUserInfo:nil];
         }
 
         if (ret == NO) {
@@ -106,9 +109,14 @@ NSString * const SCHReadingStatsSyncComponentDidFailNotification = @"SCHReadingS
 
 - (void)clearCoreData
 {
+    [self clearCoreDataUsingContext:self.managedObjectContext];
+}
+
+- (void)clearCoreDataUsingContext:(NSManagedObjectContext *)aManagedObjectContext
+{
 	NSError *error = nil;
 	
-	if (![self.managedObjectContext BITemptyEntity:kSCHReadingStatsDetailItem error:&error]) {
+	if (![aManagedObjectContext BITemptyEntity:kSCHReadingStatsDetailItem error:&error priorToDeletionBlock:nil]) {
 		NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
 	}		
 }
@@ -118,21 +126,11 @@ NSString * const SCHReadingStatsSyncComponentDidFailNotification = @"SCHReadingS
 - (void)method:(NSString *)method didCompleteWithResult:(NSDictionary *)result 
       userInfo:(NSDictionary *)userInfo
 {
-    @try {
-        [self clearCoreData];
-        [[NSNotificationCenter defaultCenter] postNotificationName:SCHReadingStatsSyncComponentDidCompleteNotification 
-                                                            object:self];
-        [super method:method didCompleteWithResult:nil userInfo:userInfo];				    
-    }
-    @catch (NSException *exception) {
-        [[NSNotificationCenter defaultCenter] postNotificationName:SCHReadingStatsSyncComponentDidFailNotification 
-                                                            object:self];
-        NSError *error = [NSError errorWithDomain:kBITAPIErrorDomain 
-                                             code:kBITAPIExceptionError 
-                                         userInfo:[NSDictionary dictionaryWithObject:[exception reason]
-                                                                              forKey:NSLocalizedDescriptionKey]];
-        [super method:method didFailWithError:error requestInfo:nil result:result];
-    }
+    SCHSaveReadingStatisticsDetailedOperation *operation = [[[SCHSaveReadingStatisticsDetailedOperation alloc] initWithSyncComponent:self
+                                                                                                                              result:result
+                                                                                                                            userInfo:userInfo] autorelease];
+    [operation setThreadPriority:SCHSyncComponentThreadLowPriority];
+    [self.backgroundProcessingQueue addOperation:operation];
 }
 
 - (void)method:(NSString *)method didFailWithError:(NSError *)error 
@@ -143,11 +141,19 @@ NSString * const SCHReadingStatsSyncComponentDidFailNotification = @"SCHReadingS
     
     // server error so clear the stats
     if ([error domain] == kBITAPIErrorDomain) {
-        [self clearCoreData];        
+        SCHSaveReadingStatisticsDetailedOperation *operation = [[[SCHSaveReadingStatisticsDetailedOperation alloc] initWithSyncComponent:self
+                                                                                                                                  result:result
+                                                                                                                                userInfo:nil] autorelease];
+        [operation setThreadPriority:SCHSyncComponentThreadLowPriority];
+        [self.backgroundProcessingQueue addOperation:operation];
+    } else {
+        [self completeWithFailureMethod:method 
+                                  error:error 
+                            requestInfo:requestInfo 
+                                 result:result 
+                       notificationName:SCHReadingStatsSyncComponentDidFailNotification 
+                   notificationUserInfo:nil];        
     }    
-    [[NSNotificationCenter defaultCenter] postNotificationName:SCHReadingStatsSyncComponentDidFailNotification 
-                                                        object:self];
-    [super method:method didFailWithError:error requestInfo:requestInfo result:result];    
 }
 
 @end

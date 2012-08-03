@@ -42,6 +42,7 @@
 @synthesize pageRanges;
 @synthesize pageCSSViewSpirit;
 @synthesize document;
+@synthesize invertLuminance;
 
 - (void)dealloc
 {
@@ -237,7 +238,7 @@
         UIView *aView = [self viewForNode:node constrainedToSize:frame.size];
         aView.frame = frame;
         
-        EucUIViewViewSpiritElement *aViewSpiritElement = [[EucUIViewViewSpiritElement alloc] initWithView:aView inContainingSpirit:self];
+        EucUIViewViewSpiritElement *aViewSpiritElement = [[EucUIViewViewSpiritElement alloc] initWithView:aView];
         
         return [aViewSpiritElement autorelease];
     }

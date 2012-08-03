@@ -119,6 +119,7 @@
 
 - (void)viewWillDisappear:(BOOL)animated
 {
+    // commit wish list deletion on close - iPhone only
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
         [self commitWishListDeletions];
     }
@@ -130,6 +131,9 @@
 
 - (IBAction)close:(id)sender
 {
+    // commit wish list deletion on close - iPad only
+    [self commitWishListDeletions];
+
     if (closeBlock) {
         closeBlock();
     }
@@ -189,6 +193,9 @@
     for (NSDictionary *dict in self.wishListItemsToRemove) {
         [self.appProfile removeFromWishList:dict];
     }
+    
+    // remove items that have been removed, so this can be called multiple times safely
+    [self.wishListItemsToRemove removeAllObjects];
 }
 
 #pragma mark - Table view data source

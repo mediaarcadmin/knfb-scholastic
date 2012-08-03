@@ -50,7 +50,7 @@
 #import "SCHRecommendationContainerView.h"
 #import "SCHAppStateManager.h"
 #import "SCHAppRecommendationItem.h"
-#import "SCHSettingItem.h"
+#import "SCHCoreDataHelper.h"
 
 // constants
 NSString *const kSCHReadingViewErrorDomain  = @"com.knfb.scholastic.ReadingViewErrorDomain";
@@ -111,6 +111,7 @@ static const NSUInteger kReadingViewMaxRecommendationsCount = 4;
 
 @property (nonatomic, retain) SCHReadingNoteView *notesView;
 @property (nonatomic, retain) SCHNotesCountView *notesCountView;
+@property (nonatomic, retain) NSManagedObjectContext *scratchNoteManagedObjectContext;
 
 @property (nonatomic, retain) SCHBookStoryInteractions *bookStoryInteractions;
 @property (nonatomic, retain) SCHStoryInteractionController *storyInteractionController;
@@ -136,7 +137,8 @@ static const NSUInteger kReadingViewMaxRecommendationsCount = 4;
 @property (nonatomic, retain) NSArray *wishListDictionaries;
 @property (nonatomic, retain) NSMutableArray *modifiedWishListDictionaries;
 
-@property (nonatomic, retain) NSNumber *cachedRecommendationsActive;
+@property (nonatomic, assign) BOOL isInBackground;
+@property (nonatomic, assign) BOOL appBookIsSuppressingHighlights;
 
 - (void)updateNotesCounter;
 - (id)initFailureWithErrorCode:(NSInteger)code error:(NSError **)error;
@@ -214,6 +216,7 @@ static const NSUInteger kReadingViewMaxRecommendationsCount = 4;
 @synthesize popover;
 @synthesize notesView;
 @synthesize notesCountView;
+@synthesize scratchNoteManagedObjectContext;
 
 @synthesize optionsView;
 @synthesize customOptionsView;
@@ -267,7 +270,8 @@ static const NSUInteger kReadingViewMaxRecommendationsCount = 4;
 @synthesize recommendationsDictionaries;
 @synthesize wishListDictionaries;
 @synthesize modifiedWishListDictionaries;
-@synthesize cachedRecommendationsActive;
+@synthesize isInBackground;
+@synthesize appBookIsSuppressingHighlights;
 
 #pragma mark - Dealloc and View Teardown
 
@@ -290,6 +294,7 @@ static const NSUInteger kReadingViewMaxRecommendationsCount = 4;
     [bookStatistics release], bookStatistics = nil;
     [bookStatisticsReadingStartTime release], bookStatisticsReadingStartTime = nil;
     [audioBookPlayer release], audioBookPlayer = nil;
+    [scratchNoteManagedObjectContext release], scratchNoteManagedObjectContext = nil;
     [bookStoryInteractions release], bookStoryInteractions = nil;
     [popoverOptionsViewController release], popoverOptionsViewController = nil;
     [queuedAudioPlayer release], queuedAudioPlayer = nil;
@@ -305,8 +310,6 @@ static const NSUInteger kReadingViewMaxRecommendationsCount = 4;
     [recommendationsDictionaries release], recommendationsDictionaries = nil;
     [wishListDictionaries release], wishListDictionaries = nil;
     [modifiedWishListDictionaries release], modifiedWishListDictionaries = nil;
-    
-    [cachedRecommendationsActive release], cachedRecommendationsActive = nil;
     
     // Ideally the readingView would be release it viewDidUnload but it contains 
     // logic that this view controller uses while it is potentially off-screen (e.g. when a story interaction is being shown)
@@ -373,11 +376,14 @@ static const NSUInteger kReadingViewMaxRecommendationsCount = 4;
         case kSCHReadingViewMissingParametersError:
             description = NSLocalizedString(@"An unexpected error occured (missing parameters). Please try again.", @"Missing paramaters error message from ReadingViewController");
             break;
-        case kSCHReadingViewXPSCheckoutFailedError:
-            description = NSLocalizedString(@"An unexpected error occured (XPS checkout failed). Please try again.", @"XPS Checkout failed error message from ReadingViewController");
+        case kSCHReadingViewXPSCheckoutFailedForUnspecifiedReasonError:
+            description = NSLocalizedString(@"An unexpected error occured (XPS checkout failed). Please try again.", @"XPS Checkout failed due to unspecified error message from ReadingViewController");
+            break;
+        case kSCHReadingViewXPSCheckoutFailedDueToInsufficientDiskSpaceError:
+            description = NSLocalizedString(@"You do not have enough storage on your device to complete this function. Please clear some space and then try again.", @"XPS Checkout failed due to insufficient space error message from ReadingViewController");
             break;
         case kSCHReadingViewDecryptionUnavailableError:
-            description = NSLocalizedString(@"It has not been possible to acquire a DRM license for this eBook. Please make sure this device is authorized and connected to the internet and try again.", @"Decryption not available error message from ReadingViewController");
+            description = NSLocalizedString(@"It has not been possible to acquire a DRM license for this eBook. Please make sure this device is authorized, connected to the internet and you have enough free storage space.", @"Decryption not available error message from ReadingViewController");
             break;
         case kSCHReadingViewUnspecifiedError:
         default:
@@ -420,10 +426,20 @@ static const NSUInteger kReadingViewMaxRecommendationsCount = 4;
         }
         
         bookIdentifier = [aIdentifier retain];
-        bookPackageProvider = [[[SCHBookManager sharedBookManager] checkOutBookPackageProviderForBookIdentifier:bookIdentifier inManagedObjectContext:moc] retain];
+        NSError *xpsError;
+        
+        bookPackageProvider = [[[SCHBookManager sharedBookManager] checkOutBookPackageProviderForBookIdentifier:bookIdentifier inManagedObjectContext:moc error:&xpsError] retain];
 
         if (!bookPackageProvider || ([bookPackageProvider isValid] == NO)) {
-            return [self initFailureWithErrorCode:kSCHReadingViewXPSCheckoutFailedError error:error];
+            if ([xpsError code] == kKNFBXPSProviderNotEnoughDiskSpaceError) {
+                return [self initFailureWithErrorCode:kSCHReadingViewXPSCheckoutFailedDueToInsufficientDiskSpaceError error:error];
+            } else {
+                return [self initFailureWithErrorCode:kSCHReadingViewXPSCheckoutFailedForUnspecifiedReasonError error:error];
+            }
+        }
+        
+        if ([bookPackageProvider isKindOfClass:[SCHXPSProvider class]] && [(SCHXPSProvider *)bookPackageProvider pageCount] == 0) {
+            return [self initFailureWithErrorCode:kSCHReadingViewXPSCheckoutFailedForUnspecifiedReasonError error:error];
         }
         
         if ([bookPackageProvider isEncrypted]) {
@@ -438,6 +454,7 @@ static const NSUInteger kReadingViewMaxRecommendationsCount = 4;
         
         currentlyRotating = NO;
         currentlyScrubbing = NO;
+        appBookIsSuppressingHighlights = NO;
         currentPageIndex = NSUIntegerMax;
         
         managedObjectContext = [moc retain];
@@ -472,11 +489,6 @@ static const NSUInteger kReadingViewMaxRecommendationsCount = 4;
                                                    object:nil];
 
         [[NSNotificationCenter defaultCenter] addObserver:self
-                                                 selector:@selector(managedObjectContextDidSaveNotification:)
-                                                     name:NSManagedObjectContextDidSaveNotification
-                                                   object:nil];
-
-        [[NSNotificationCenter defaultCenter] addObserver:self
                                                  selector:@selector(annotationChanges:)
                                                      name:SCHAnnotationSyncComponentDidCompleteNotification
                                                    object:nil];
@@ -490,6 +502,11 @@ static const NSUInteger kReadingViewMaxRecommendationsCount = 4;
                                                  selector:@selector(dictionaryStateChange:) 
                                                      name:kSCHDictionaryStateChange 
                                                    object:nil];
+        
+        [[NSNotificationCenter defaultCenter] addObserver:self 
+                                                 selector:@selector(coreDataHelperManagedObjectContextDidChangeNotification:) 
+                                                     name:SCHCoreDataHelperManagedObjectContextDidChangeNotification 
+                                                   object:nil];	
         
         self.lastPageInteractionSoundPlayedOn = -1;
         
@@ -523,6 +540,23 @@ static const NSUInteger kReadingViewMaxRecommendationsCount = 4;
     return bookStoryInteractions;
 }
 
+- (void)setManagedObjectContext:(NSManagedObjectContext *)aManagedObjectContext
+{
+    if (managedObjectContext != aManagedObjectContext) {
+        [[NSNotificationCenter defaultCenter] removeObserver:self
+                                                        name:NSManagedObjectContextDidSaveNotification
+                                                      object:nil];
+        if (aManagedObjectContext != nil) {        
+            [[NSNotificationCenter defaultCenter] addObserver:self
+                                                     selector:@selector(managedObjectContextDidSaveNotification:)
+                                                         name:NSManagedObjectContextDidSaveNotification
+                                                       object:aManagedObjectContext];                    
+        }
+        [aManagedObjectContext retain];        
+        [managedObjectContext release];
+        managedObjectContext = aManagedObjectContext;
+    }
+}
 
 #pragma mark - View Lifecycle
 
@@ -660,9 +694,6 @@ static const NSUInteger kReadingViewMaxRecommendationsCount = 4;
     self.navigationToolbar = aNavigationToolbar;
     [aNavigationToolbar release];
  
-    // if the book has no story interactions disable the button
-    self.storyInteractionsListButton.enabled = [[self.bookStoryInteractions allStoryInteractionsExcludingInteractionWithPage:NO] count] > 0;
-        
     [self.view addSubview:self.navigationToolbar];
     
     // Set non-rotation specific graphics
@@ -706,15 +737,42 @@ static const NSUInteger kReadingViewMaxRecommendationsCount = 4;
     
     [self setToolbarVisibility:NO animated:NO];
     
+    NSMutableArray *toolbarArray = [[NSMutableArray alloc] initWithArray:self.olderBottomToolbar.items];
+    
+    // Conditional Button Logic - remove buttons in reverse order to guarantee
+    // that buttons and spacers are where we expect
+    
 #if FLOW_VIEW_DISABLED
     // if flow view is disabled, then remove the options button
-    NSMutableArray *toolbarArray = [[NSMutableArray alloc] initWithArray:self.olderBottomToolbar.items];
     if ([toolbarArray count] >= 9) {
         [toolbarArray removeObjectsAtIndexes:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(6, 2)]];
     }
+#endif
+    
+    BOOL alreadyRemovedHighlights = NO;
+    
+#if IPHONE_HIGHLIGHTS_DISABLED
+    // if highlights are disabled on iPhone, remove the highlights button
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone && [toolbarArray count] >= 5) {
+        [toolbarArray removeObjectsAtIndexes:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(2, 2)]];
+        alreadyRemovedHighlights = YES;
+    }
+#endif
+    
+    self.appBookIsSuppressingHighlights = [[book valueForKey:kSCHAppBookSuppressFollowAlongHighlights] boolValue];
+
+    if (self.appBookIsSuppressingHighlights && !alreadyRemovedHighlights && [toolbarArray count] >= 5) {
+        [toolbarArray removeObjectsAtIndexes:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(2, 2)]];
+    }
+    
+    // if the book has no story interactions remove the SI button
+    if ([[self.bookStoryInteractions allStoryInteractionsExcludingInteractionWithPage:NO] count] <= 0 
+        && [toolbarArray count] >= 2) {
+        [toolbarArray removeObjectsAtIndexes:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, 2)]];
+    }
+
     self.olderBottomToolbar.items = [NSArray arrayWithArray:toolbarArray];
     [toolbarArray release];
-#endif
     
 }
 
@@ -854,6 +912,10 @@ static const NSUInteger kReadingViewMaxRecommendationsCount = 4;
 
 - (void)updateBookState
 {
+    if (self.managedObjectContext == nil) {
+        return;
+    }
+    
     if (self.bookIdentifier != nil) {
  
         [self commitWishListChanges];
@@ -881,26 +943,17 @@ static const NSUInteger kReadingViewMaxRecommendationsCount = 4;
 
 - (void)didEnterBackgroundNotification:(NSNotification *)notification
 {
-    // relaunch the book
-    SCHAppBook *book = [[SCHBookManager sharedBookManager] bookWithIdentifier:self.bookIdentifier inManagedObjectContext:self.managedObjectContext];
-    
-    NSString *categoryType = book.categoryType;
-    if (categoryType != nil && [categoryType isEqualToString:kSCHAppBookCategoryPictureBook] == NO) {
-        self.profile.AppProfile.AutomaticallyLaunchBook = [self.bookIdentifier encodeAsString];
-    }
-    
-    [self updateBookState];
-        
-    [self.readingView dismissFollowAlongHighlighter];  
-//    self.audioBookPlayer = nil;
-    [self pauseAudioPlayback];
-    
-    // if the user kills the app while we are performing background tasks the 
-    // DidEnterBackground notification is called again, so we disable it and 
+    // If the user kills the app while we are performing background tasks the 
+    // DidEnterBackground notification is called again, so we use a BOOL value to detect this
+    // This is also used to prtect against updating highlights after backgrounding the app
     // enable it in the foreground
-    [[NSNotificationCenter defaultCenter] removeObserver:self 
-                                                    name:UIApplicationDidEnterBackgroundNotification 
-                                                  object:nil];    
+    if (!self.isInBackground) {
+        self.isInBackground = YES;
+    
+        [self updateBookState];
+        [self.readingView dismissFollowAlongHighlighter];  
+        [self pauseAudioPlayback];
+    } 
 }
 
 - (void)willTerminateNotification:(NSNotification *)notification
@@ -911,11 +964,7 @@ static const NSUInteger kReadingViewMaxRecommendationsCount = 4;
 
 - (void)willEnterForegroundNotification:(NSNotification *)notification
 {
-    [[NSNotificationCenter defaultCenter] addObserver:self 
-                                             selector:@selector(didEnterBackgroundNotification:) 
-                                                 name:UIApplicationDidEnterBackgroundNotification 
-                                               object:nil];	
-
+    self.isInBackground = NO;
     self.bookStatisticsReadingStartTime = [NSDate serverDate];
 }
 
@@ -923,6 +972,10 @@ static const NSUInteger kReadingViewMaxRecommendationsCount = 4;
 
 - (void)bookDeleted:(NSNotification *)notification
 {    
+    if (self.managedObjectContext == nil) {
+        return;
+    }
+    
     NSArray *bookIdentifiers = [notification.userInfo objectForKey:self.profile.ID];
     
     for (SCHBookIdentifier *bookId in bookIdentifiers) {
@@ -979,8 +1032,14 @@ static const NSUInteger kReadingViewMaxRecommendationsCount = 4;
             dispatch_async(dispatch_get_main_queue(), ^{
                 [weakSelf updateNotesCounter];
                 NSRange visibleIndices = [weakSelf storyInteractionPageIndices];
-                for (NSUInteger i = 0; i < visibleIndices.length; i++) {
-                    [weakSelf.readingView refreshHighlightsForPageAtIndex:visibleIndices.location + i];
+                
+                // We don't want to update the views if we are in the background
+                // Normally we shouldn't have time to dispatch to the main thread during backgrouding but it can happen
+                // so this BOOL check is required
+                if (!self.isInBackground) {
+                    for (NSUInteger i = 0; i < visibleIndices.length; i++) {
+                        [weakSelf.readingView refreshHighlightsForPageAtIndex:visibleIndices.location + i];
+                    }
                 }
             });
         }
@@ -988,10 +1047,8 @@ static const NSUInteger kReadingViewMaxRecommendationsCount = 4;
 }
 
 - (void)dictionaryStateChange:(NSNotification *)notification
-{
-    SCHDictionaryProcessingState state = [[SCHDictionaryDownloadManager sharedDownloadManager] dictionaryProcessingState];
-    
-    if ((state == SCHDictionaryProcessingStateReady) &&
+{    
+    if ([[SCHDictionaryDownloadManager sharedDownloadManager] dictionaryIsAvailable] == YES &&
         (self.readingView.selectionMode == SCHReadingViewSelectionModeYoungerNoDictionary)) {
         [self setDictionarySelectionMode];
     }
@@ -1008,6 +1065,27 @@ static const NSUInteger kReadingViewMaxRecommendationsCount = 4;
         }
     }    
 }
+
+#pragma mark - NSManagedObjectContext Changed Notification
+
+- (void)coreDataHelperManagedObjectContextDidChangeNotification:(NSNotification *)notification
+{
+    // This is actually an error condition - we should *not* be changing the core data stack whilst in a book.
+    // However as a defensive measure, make sure we release any retained managed object properties when this happens
+
+    NSLog(@"WARNING: SCHReadingViewController is still in existence when the core data stack is reset. This is an error condition!");
+    
+    self.profile = nil;
+    self.bookAnnotations = nil;
+    self.bookStatistics = nil;
+    self.managedObjectContext = nil;
+    
+    // Also, as an optimisation, check if our reading view is actually on screen. If not then release those objects too, otherwise we will run out of memory soon
+    if ([self.readingView window] == nil) {
+        [self releaseViewObjects];
+    }
+}    
+    
 
 #pragma mark - Book Positions
 
@@ -1049,6 +1127,9 @@ static const NSUInteger kReadingViewMaxRecommendationsCount = 4;
     
     SCHBookPoint *lastPoint = [[[SCHBookPoint alloc] init] autorelease];
 
+    // FIXME: the last page location is not working for side-loaded books
+    lastPageLocation = [annotationsLastPage LastPageLocation];
+    
     if (lastPageLocation) {
         lastPoint.layoutPage = MAX([lastPageLocation integerValue], 1);
     } else {
@@ -1149,19 +1230,22 @@ static const NSUInteger kReadingViewMaxRecommendationsCount = 4;
                                                  wordBlockOld:^(NSUInteger layoutPage, NSUInteger pageWordOffset) {
                                                      //NSLog(@"WORD UP! at layoutPage %d pageWordOffset %d", layoutPage, pageWordOffset);
                                                      self.pauseAudioOnNextPageTurn = NO;
+                                                     
                                                      [self.readingView followAlongHighlightWordForLayoutPage:layoutPage 
                                                                                               pageWordOffset:pageWordOffset 
                                                                                        withCompletionHandler:^{
                                                                                            self.pauseAudioOnNextPageTurn = YES;
                                                                                        }];
+
                                                  } wordBlockNew:^(NSUInteger layoutPage, NSUInteger audioBlockID, NSUInteger audioWordID) {
-                                                     //NSLog(@"WORD UP! at layoutPage %d blockIndex %d wordIndex %d", layoutPage, blockIndex, wordIndex);
+                                                     //NSLog(@"WORD UP! at layoutPage %d blockIndex %d wordIndex %d", layoutPage, audioBlockID, audioWordID);
                                                      self.pauseAudioOnNextPageTurn = NO;
                                                      // this assumes the RTX file format uses the same blockID and wordID as the textFlow
                                                      SCHBookPoint *bookPoint = [[[SCHBookPoint alloc] init] autorelease];
                                                      bookPoint.layoutPage = layoutPage;
                                                      bookPoint.blockOffset = audioBlockID;
                                                      bookPoint.wordOffset = audioWordID;
+
                                                      [self.readingView followAlongHighlightWordAtPoint:bookPoint 
                                                                                  withCompletionHandler:^{
                                                                                      self.pauseAudioOnNextPageTurn = YES;
@@ -1177,12 +1261,16 @@ static const NSUInteger kReadingViewMaxRecommendationsCount = 4;
                                                  }];
             if (success) {
                 self.audioBookPlayer.delegate = self;
-                [self.audioBookPlayer playAtLayoutPage:layoutPage pageWordOffset:pageWordOffset];
+                
+                success = [self.audioBookPlayer playAtLayoutPage:layoutPage pageWordOffset:pageWordOffset];
+            }
+            
+            if (success) {
                 [self setToolbarVisibility:NO animated:YES];
             } else {
                 self.audioBookPlayer = nil;   
                 UIAlertView *errorAlert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error", @"Error") 
-                                                                     message:NSLocalizedString(@"Due to a problem with the audio we can not play this audiobook.", @"") 
+                                                                     message:NSLocalizedString(@"Due to a problem with the audio we cannot play this audiobook.", @"") 
                                                                     delegate:nil 
                                                            cancelButtonTitle:NSLocalizedString(@"OK", @"OK")
                                                            otherButtonTitles:nil]; 
@@ -1190,7 +1278,7 @@ static const NSUInteger kReadingViewMaxRecommendationsCount = 4;
                 [errorAlert release];                                               
             }
         }
-    } else if(self.audioBookPlayer.playing == NO) {
+    } else if(self.audioBookPlayer.isPlaying == NO) {
         [self.audioBookPlayer playAtLayoutPage:layoutPage pageWordOffset:pageWordOffset];
         [self setToolbarVisibility:NO animated:YES];
     } else {
@@ -1453,14 +1541,14 @@ static const NSUInteger kReadingViewMaxRecommendationsCount = 4;
     self.lastPageInteractionSoundPlayedOn = [self storyInteractionPageIndices].location;
     
     // if the audio book is playing, hide the story interaction button
-    if (totalInteractionCount < 1 && (self.audioBookPlayer && self.audioBookPlayer.playing)) {
+    if (totalInteractionCount < 1 && (self.audioBookPlayer && self.audioBookPlayer.isPlaying)) {
         // No interactions, audio playing. Hiding button without animation
         [self setStoryInteractionButtonVisible:NO animated:NO withSound:NO completion:nil];
     } else if (totalInteractionCount < 1) {
         // No interactions. Hiding button with animation
         [self setStoryInteractionButtonVisible:NO animated:YES withSound:playAppearanceSound completion:nil];
     } else {
-        if (totalInteractionCount >= 1 && (self.audioBookPlayer && self.audioBookPlayer.playing)) {
+        if (totalInteractionCount >= 1 && (self.audioBookPlayer && self.audioBookPlayer.isPlaying)) {
             // Interactions while reading. Showing button without animation
             playAppearanceSound = NO;
             animated = NO;
@@ -1500,7 +1588,7 @@ static const NSUInteger kReadingViewMaxRecommendationsCount = 4;
             }
             
             // play the sound effect
-            if (sound && !self.storyInteractionController && (!self.audioBookPlayer || !self.audioBookPlayer.playing)) {
+            if (sound && !self.storyInteractionController && (!self.audioBookPlayer || !self.audioBookPlayer.isPlaying)) {
                 // play sound effect only if requested - e.g. toolbar hide/show doesn't play sound
                 // play sound effect only if there isn't a story interaction visible
                 // play sound effect only if the book reading is not happening (which should never happen!)
@@ -2069,7 +2157,7 @@ static const NSUInteger kReadingViewMaxRecommendationsCount = 4;
 - (void)setDictionarySelectionMode
 {
     if (self.youngerMode) {
-        if ([[SCHDictionaryDownloadManager sharedDownloadManager] dictionaryProcessingState] != SCHDictionaryProcessingStateReady) {
+        if ([[SCHDictionaryDownloadManager sharedDownloadManager] dictionaryIsAvailable] == NO) {
             [self.readingView setSelectionMode:SCHReadingViewSelectionModeYoungerNoDictionary];
         } else {
             [self.readingView setSelectionMode:SCHReadingViewSelectionModeYoungerDictionary];
@@ -2093,7 +2181,7 @@ static const NSUInteger kReadingViewMaxRecommendationsCount = 4;
 
         SCHAppContentProfileItem *appContentProfileItem = [profile appContentProfileItemForBookIdentifier:self.bookIdentifier];
         if (appContentProfileItem != nil) {
-            newHighlight.Version = [NSNumber numberWithInteger:[appContentProfileItem.ContentProfileItem.UserContentItem.LastVersion integerValue]];
+            newHighlight.Version = [NSNumber numberWithInteger:[appContentProfileItem.ContentProfileItem.UserContentItem.Version integerValue]];
         }
         [self save];
     }
@@ -2116,6 +2204,19 @@ static const NSUInteger kReadingViewMaxRecommendationsCount = 4;
 
 - (NSArray *)highlightsForLayoutPage:(NSUInteger)page
 {
+    
+#if IPHONE_HIGHLIGHTS_DISABLED
+    // disable highlights if we're on the iPhone and the toggle is set
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
+        return nil;
+    }
+#endif
+    
+    // check if the app book suppressing highlights
+    if (self.appBookIsSuppressingHighlights) {
+        return nil;
+    } 
+
     return [self.bookAnnotations highlightsForPage:page];    
 }
 
@@ -2138,10 +2239,16 @@ static const NSUInteger kReadingViewMaxRecommendationsCount = 4;
         self.coverMarkerShouldAppear = NO;
         
         [self dismissCoverCornerViewWithAnimation:YES];
-
     }
     
-    if (self.audioBookPlayer && self.audioBookPlayer.playing) {
+    // Hide the corner button until audio is checked in viewDidAppear
+    [UIView animateWithDuration:0.1
+                     animations:^{
+                         self.cornerAudioButtonView.alpha = 0;
+                     }];
+    
+    // hide the audio button
+    if (self.audioBookPlayer && self.audioBookPlayer.isPlaying) {
         [self setStoryInteractionButtonVisible:NO animated:NO withSound:YES completion:nil];
     } else {
         [self setStoryInteractionButtonVisible:NO animated:YES withSound:YES completion:nil];
@@ -2373,7 +2480,9 @@ static const NSUInteger kReadingViewMaxRecommendationsCount = 4;
             listView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin;
             
             listView.showsBottomRule = NO;
+            listView.showOnBackCover = YES;
             listView.delegate = self;
+            listView.showsWishListButton = [[SCHAppStateManager sharedAppStateManager] shouldShowWishList];
             
             [listView updateWithRecommendationItem:recommendationDictionary];
             
@@ -2532,8 +2641,6 @@ static const NSUInteger kReadingViewMaxRecommendationsCount = 4;
     }
     
     self.scrubberInfoView.frame = CGRectIntegral(scrubFrame);
-
-    NSLog(@"label: %@", self.pageLabel);
 
 }
 
@@ -2789,32 +2896,33 @@ static const NSUInteger kReadingViewMaxRecommendationsCount = 4;
 - (void)readingNotesViewCreatingNewNote:(SCHReadingNotesListController *)readingNotesView
 {
     NSLog(@"Requesting a new note be created!");
-    SCHNote *newNote = [self.bookAnnotations createEmptyNote];
-    
-    SCHAppContentProfileItem *appContentProfileItem = [profile appContentProfileItemForBookIdentifier:self.bookIdentifier];
-    if (appContentProfileItem != nil) {
-        newNote.Version = [NSNumber numberWithInteger:[appContentProfileItem.ContentProfileItem.UserContentItem.LastVersion integerValue]];
+    if (self.scratchNoteManagedObjectContext != nil) {
+        SCHNote *scratchNote = [self.bookAnnotations createEmptyScratchNoteInManagedObjectContext:self.scratchNoteManagedObjectContext];
+        
+        SCHAppContentProfileItem *appContentProfileItem = [profile appContentProfileItemForBookIdentifier:self.bookIdentifier];
+        if (appContentProfileItem != nil) {
+            scratchNote.Version = [NSNumber numberWithInteger:[appContentProfileItem.ContentProfileItem.UserContentItem.Version integerValue]];
+        }
+        
+        SCHBookPoint *currentPoint = [self.readingView currentBookPoint];
+        
+        NSUInteger layoutPage = 0;
+        NSUInteger pageWordOffset = 0;
+        [self.readingView layoutPage:&layoutPage pageWordOffset:&pageWordOffset forBookPoint:currentPoint includingFolioBlocks:YES];
+        
+        NSLog(@"Current book point: %@", currentPoint);
+        scratchNote.noteLayoutPage = layoutPage;
+        
+        SCHReadingNoteView *aNotesView = [[SCHReadingNoteView alloc] initWithNote:scratchNote];    
+        aNotesView.delegate = self;
+        aNotesView.newNote = YES;
+        
+        [self setupStoryInteractionButtonForCurrentPagesAnimated:YES];
+        [self setToolbarVisibility:NO animated:YES];
+        
+        [aNotesView showInView:self.view animated:YES];
+        [aNotesView release];
     }
-    [self save];
-    
-    SCHBookPoint *currentPoint = [self.readingView currentBookPoint];
-    
-    NSUInteger layoutPage = 0;
-    NSUInteger pageWordOffset = 0;
-    [self.readingView layoutPage:&layoutPage pageWordOffset:&pageWordOffset forBookPoint:currentPoint includingFolioBlocks:YES];
-
-    NSLog(@"Current book point: %@", currentPoint);
-    newNote.noteLayoutPage = layoutPage;
-
-    SCHReadingNoteView *aNotesView = [[SCHReadingNoteView alloc] initWithNote:newNote];    
-    aNotesView.delegate = self;
-    aNotesView.newNote = YES;
-    
-    [self setupStoryInteractionButtonForCurrentPagesAnimated:YES];
-    [self setToolbarVisibility:NO animated:YES];
-    
-    [aNotesView showInView:self.view animated:YES];
-    [aNotesView release];
 }
 
 - (void)readingNotesView:(SCHReadingNotesListController *)readingNotesView didSelectNote:(SCHNote *)note
@@ -2861,9 +2969,27 @@ static const NSUInteger kReadingViewMaxRecommendationsCount = 4;
 
 #pragma mark - SCHNotesViewDelegate methods
 
+// We are only using this to create a temporary scratch version of a Note
+// until the user says save then it's create on the main NSManagedObjectContext
+- (NSManagedObjectContext *)scratchNoteManagedObjectContext
+{
+    if (scratchNoteManagedObjectContext == nil && 
+        self.managedObjectContext != nil) {
+        scratchNoteManagedObjectContext = [[NSManagedObjectContext alloc] init];
+        [scratchNoteManagedObjectContext setPersistentStoreCoordinator:self.managedObjectContext.persistentStoreCoordinator];
+    }
+    
+    return scratchNoteManagedObjectContext;
+}
+
 - (void)notesView:(SCHReadingNoteView *)aNotesView savedNote:(SCHNote *)note;
 {
     NSLog(@"Saving note...");
+    
+    if (note != nil && note.PrivateAnnotations == nil) {
+        [self.bookAnnotations createNoteWithNote:note];        
+    }    
+    self.scratchNoteManagedObjectContext = nil;
     // a new object will already have been created and added to the data store
     [self save];    
     [self setupStoryInteractionButtonForCurrentPagesAnimated:YES];
@@ -2875,12 +3001,7 @@ static const NSUInteger kReadingViewMaxRecommendationsCount = 4;
 
 - (void)notesViewCancelled:(SCHReadingNoteView *)aNotesView
 {    
-    // if we created the note but it's been cancelled, delete the note
-    if (aNotesView.newNote) {
-        [self.bookAnnotations deleteNote:aNotesView.note];
-        
-        [self save];
-    }
+    self.scratchNoteManagedObjectContext = nil;
     
     [self setupStoryInteractionButtonForCurrentPagesAnimated:YES];
     [self setToolbarVisibility:YES animated:YES];
@@ -2960,7 +3081,6 @@ static const NSUInteger kReadingViewMaxRecommendationsCount = 4;
         [self.bookStoryInteractions incrementQuestionsCompletedForStoryInteraction:aStoryInteractionController.storyInteraction
                                                                        pageIndices:pageIndices];
     }
-    
 }
 
 - (void)storyInteractionControllerDidDismiss:(SCHStoryInteractionController *)aStoryInteractionController
@@ -3000,6 +3120,18 @@ static const NSUInteger kReadingViewMaxRecommendationsCount = 4;
     return [self.bookStoryInteractions storyInteractionQuestionIndexForPageIndices:pageIndices];
 }
 
+- (void)advanceToNextQuestionForStoryInteraction
+{
+    NSRange pageIndices = [self storyInteractionPageIndices];
+    
+    if ([self.storyInteractionController.storyInteraction alwaysIncrementsQuestionIndex]) {
+        [self.bookStoryInteractions incrementQuestionIndexForPageIndices:pageIndices];
+    }
+    
+    [self.bookStoryInteractions incrementQuestionsCompletedForStoryInteraction:self.storyInteractionController.storyInteraction
+                                                                   pageIndices:pageIndices];
+}
+
 - (BOOL)storyInteractionFinished
 {
     return [self.bookStoryInteractions allQuestionsCompletedForPageIndices:[self storyInteractionPageIndices]];
@@ -3028,6 +3160,17 @@ static const NSUInteger kReadingViewMaxRecommendationsCount = 4;
         return CGAffineTransformInvert(pageToView);
     } else {
         return CGAffineTransformIdentity;
+    }
+}
+
+- (NSString *)storyInteractionCacheDirectory
+{
+    if (self.profile && self.profile.ID && self.bookIdentifier) {
+        SCHBookManager *bookManager = [SCHBookManager sharedBookManager];
+        SCHAppBook *book = [bookManager bookWithIdentifier:self.bookIdentifier inManagedObjectContext:bookManager.mainThreadManagedObjectContext];    
+        return [book storyInteractionsCacheDirectoryWithProfileID:[self.profile.ID stringValue]];
+    } else {
+        return nil;
     }
 }
 
@@ -3185,7 +3328,7 @@ static const NSUInteger kReadingViewMaxRecommendationsCount = 4;
 {
     // only show on the first page, if toolbars are not visible, not in highlights mode
     // and the audio isn't already playing (and it's in younger mode!)
-    BOOL shouldShow = (self.currentPageIndex == 0 && !self.toolbarsVisible && !self.audioBookPlayer.playing 
+    BOOL shouldShow = (self.currentPageIndex == 0 && !self.toolbarsVisible && !self.audioBookPlayer.isPlaying 
                        && self.youngerMode && !self.highlightsModeEnabled);
     float buttonAlpha = 0.0f;
     
@@ -3212,7 +3355,7 @@ static const NSUInteger kReadingViewMaxRecommendationsCount = 4;
 
 - (void)positionCornerAudioButtonForOrientation:(UIInterfaceOrientation)newOrientation
 {
-    BOOL shouldShow = (self.currentPageIndex == 0 && !self.toolbarsVisible && !self.audioBookPlayer.playing 
+    BOOL shouldShow = (self.currentPageIndex == 0 && !self.toolbarsVisible && !self.audioBookPlayer.isPlaying 
                        && self.youngerMode && !self.highlightsModeEnabled);
     
     if (shouldShow) {
@@ -3249,15 +3392,20 @@ static const NSUInteger kReadingViewMaxRecommendationsCount = 4;
 
 - (BOOL)recommendationsActive
 {
-    if (self.cachedRecommendationsActive == nil) {
-        NSString *settingValue = [[SCHAppStateManager sharedAppStateManager] settingNamed:kSCHSettingItemRECOMMENDATIONS_ON];
+    BOOL ret = NO;
+    
+    if ([[SCHAppStateManager sharedAppStateManager] isSampleStore] == YES) {
+        ret = NO;
+    } else if ([[self.profile recommendationsOn] boolValue] == YES) {
+        ret = YES;
+    } else {
+        SCHBookManager *bookManager = [SCHBookManager sharedBookManager];
+        SCHAppBook *book = [bookManager bookWithIdentifier:self.bookIdentifier inManagedObjectContext:bookManager.mainThreadManagedObjectContext];    
         
-        if (settingValue != nil) {
-            self.cachedRecommendationsActive = [NSNumber numberWithBool:[settingValue boolValue]];
-        }
+        ret = [book isSampleBook];
     }
     
-    return [self.cachedRecommendationsActive boolValue];
+    return ret;
 }
 
 - (NSArray *)recommendationsDictionaries
@@ -3279,7 +3427,6 @@ static const NSUInteger kReadingViewMaxRecommendationsCount = 4;
                         NSString *wishListISBN = [wishlistItem objectForKey:kSCHWishListISBN];
                         
                         if ([wishListISBN isEqualToString:recommendationISBN] == YES) {
-                            *stop = YES;
                             return NO;
                         }
                     }                

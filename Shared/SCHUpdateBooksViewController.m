@@ -15,8 +15,12 @@
 #import "UIColor+Scholastic.h"
 
 @interface SCHUpdateBooksViewController ()
+
 @property (nonatomic, retain) NSMutableDictionary *cellControllers;
 @property (nonatomic, retain) NSArray *availableBookUpdates;
+
+- (void)checkButtonState;
+
 @end
 
 @implementation SCHUpdateBooksViewController
@@ -25,6 +29,7 @@
 @synthesize updateBooksButton;
 @synthesize estimatedDownloadTimeLabel;
 @synthesize bookUpdates;
+@synthesize noteUpdateNoticeLabel;
 @synthesize cellControllers;
 @synthesize availableBookUpdates;
 
@@ -32,6 +37,7 @@
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
     
+    [noteUpdateNoticeLabel release], noteUpdateNoticeLabel = nil;
     [booksTable release], booksTable = nil;
     [updateBooksButton release], updateBooksButton = nil;
     [estimatedDownloadTimeLabel release], estimatedDownloadTimeLabel = nil;
@@ -40,10 +46,6 @@
 
 - (void)dealloc
 {
-    for (SCHUpdateBooksTableViewCellController *c in self.cellControllers) {
-        [c removeObserver:self forKeyPath:@"bookEnabledForUpdate"];
-    }
-    
     [bookUpdates release], bookUpdates = nil;
     [cellControllers release], cellControllers = nil;
     [self releaseViewObjects];
@@ -67,6 +69,13 @@
                                              selector:@selector(bookUpdatedSuccessfully:)
                                                  name:kSCHBookUpdatedSuccessfullyNotification
                                                object:nil];
+    
+#if IPHONE_HIGHLIGHTS_DISABLED
+        if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
+            self.noteUpdateNoticeLabel.text = NSLocalizedString(@"Notes made in an eBook will be lost when you upgrade.", @"");
+        }
+#endif
+
 }
 
 - (void)viewDidUnload
@@ -82,11 +91,16 @@
     self.cellControllers = [NSMutableDictionary dictionary];
     self.availableBookUpdates = [self.bookUpdates availableBookUpdates];
 
+    __block SCHUpdateBooksViewController *weakSelf = self;
+    
     for (SCHAppBook *book in self.availableBookUpdates) {
         SCHBookIdentifier *bookIdentifier = [book bookIdentifier];
         SCHUpdateBooksTableViewCellController *tvc = [[SCHUpdateBooksTableViewCellController alloc] initWithBookIdentifier:bookIdentifier
                                                                                                     inManagedObjectContext:self.bookUpdates.managedObjectContext];
-        [tvc addObserver:self forKeyPath:@"bookEnabledForUpdate" options:NSKeyValueObservingOptionNew context:nil];
+        [tvc setBookEnabledToggleBlock:^{
+            [weakSelf checkButtonState];
+        }];
+        
         [self.cellControllers setObject:tvc forKey:bookIdentifier];
         [tvc release];
     }
@@ -151,17 +165,15 @@
     }
 }
 
-- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
+- (void)checkButtonState
 {
-    if ([keyPath isEqualToString:@"bookEnabledForUpdate"]) {
-        NSInteger enabledCount = 0;
-        for (SCHUpdateBooksTableViewCellController *c in [self.cellControllers allValues]) {
-            if (c.bookEnabledForUpdate) {
-                enabledCount++;
-            }
+    NSInteger enabledCount = 0;
+    for (SCHUpdateBooksTableViewCellController *c in [self.cellControllers allValues]) {
+        if (c.bookEnabledForUpdate) {
+            enabledCount++;
         }
-        self.updateBooksButton.enabled = (enabledCount > 0);
     }
+    self.updateBooksButton.enabled = (enabledCount > 0);
 }
 
 @end

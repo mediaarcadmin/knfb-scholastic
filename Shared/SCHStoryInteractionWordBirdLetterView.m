@@ -20,6 +20,7 @@
     [letter setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [letter.titleLabel setTextAlignment:UITextAlignmentCenter];
     [letter.titleLabel setFont:[UIFont fontWithName:@"Arial-BoldMT" size:iPad?30:25]];
+    [letter.titleLabel setAdjustsFontSizeToFitWidth:NO];
     return letter;
 }
 

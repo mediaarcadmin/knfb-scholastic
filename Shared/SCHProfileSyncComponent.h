@@ -18,13 +18,18 @@ extern NSString * const SCHProfileSyncComponentWillDeleteNotification;
 extern NSString * const SCHProfileSyncComponentDeletedProfileIDs;
 extern NSString * const SCHProfileSyncComponentDidCompleteNotification;
 extern NSString * const SCHProfileSyncComponentDidFailNotification;
+extern NSString * const kSCHSyncManagerErrorDomain;
+extern NSInteger const kSCHSyncManagerGeneralError;
 
 @interface SCHProfileSyncComponent : SCHSyncComponent
-{
-}
 
-- (NSArray *)localProfiles;
-- (SCHProfileItem *)addProfile:(NSDictionary *)webProfile;
-- (void)syncProfiles:(NSArray *)profileList;
+@property (atomic, retain) NSMutableArray *savedProfiles;
+
+- (BOOL)requestUserProfiles;
+- (void)syncProfilesFromMainThread:(NSArray *)profileList;
+- (void)addProfileFromMainThread:(NSDictionary *)webProfile;
+
++ (void)removeWishListForProfile:(SCHProfileItem *)profileItem
+            managedObjectContext:(NSManagedObjectContext *)aManagedObjectContext;
 
 @end

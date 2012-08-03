@@ -8,19 +8,22 @@
 
 #import <UIKit/UIKit.h>
 #import "SCHLoginHandlerDelegate.h"
+#import "TTTAttributedLabel.h"
 
-@interface SCHStoriaLoginViewController : UIViewController <SCHLoginHandlerDelegate>
+@interface SCHStoriaLoginViewController : UIViewController <SCHLoginHandlerDelegate, TTTAttributedLabelDelegate>
 
 @property (nonatomic, copy) void (^loginBlock)(NSString *topFieldString, NSString *bottomFieldString);
 @property (nonatomic, copy) dispatch_block_t previewBlock;
 
+@property (nonatomic, retain) IBOutlet UILabel *topFieldLabel;
 @property (nonatomic, retain) IBOutlet UITextField *topField;
 @property (nonatomic, retain) IBOutlet UITextField *bottomField;
 @property (nonatomic, retain) IBOutlet UIButton *loginButton;
 @property (nonatomic, retain) IBOutlet UIButton *previewButton;
 @property (nonatomic, retain) IBOutlet UIActivityIndicatorView *spinner;
-@property (nonatomic, retain) IBOutlet UILabel *promptLabel;
+@property (nonatomic, retain) IBOutlet TTTAttributedLabel *promptLabel;
 @property (nonatomic, retain) IBOutlet UIScrollView *scrollView;
+@property (nonatomic, retain) IBOutlet UIImageView *backgroundView;
 
 - (IBAction)loginButtonAction:(id)sender;
 - (IBAction)previewButtonAction:(id)sender;

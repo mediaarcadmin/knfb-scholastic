@@ -23,14 +23,12 @@
 @property (nonatomic, retain) IBOutlet UIButton *manageBooksButton;
 @property (nonatomic, retain) IBOutlet UIButton *deregisterDeviceButton;
 @property (nonatomic, retain) IBOutlet UIButton *downloadDictionaryButton;
-@property (nonatomic, retain) IBOutlet UIButton *spaceSaverButton;
 @property (nonatomic, retain) NSManagedObjectContext *managedObjectContext;
 
 - (IBAction)dismissModalSettingsController:(id)sender;
 - (IBAction)manageBooks:(id)sender;
 - (IBAction)deregisterDevice:(id)sender;
 - (IBAction)checkBooks:(id)sender;
-- (IBAction)toggleSpaceSaverMode:(id)sender;
 - (IBAction)downloadDictionary:(id)sender;
 - (IBAction)showAboutView:(id)sender;
 - (IBAction)showPrivacyPolicy:(id)sender;

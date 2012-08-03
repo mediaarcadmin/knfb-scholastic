@@ -29,7 +29,8 @@
 
 - (NSUInteger)notesCount;
 - (SCHNote *)noteAtIndex:(NSUInteger)index;
-- (SCHNote *)createEmptyNote;
+- (SCHNote *)createEmptyScratchNoteInManagedObjectContext:(NSManagedObjectContext *)managedObjectContext;
+- (SCHNote *)createNoteWithNote:(SCHNote *)scratchNote;
 - (void)deleteNote:(SCHNote *)note;
 
 - (NSUInteger)highlightsCount;

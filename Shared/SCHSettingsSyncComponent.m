@@ -12,7 +12,7 @@
 
 #import "SCHLibreAccessWebService.h"
 #import "SCHSettingItem.h"
-#import "BITAPIError.h"
+#import "SCHListUserSettingsOperation.h"
 
 // Constants
 NSString * const SCHSettingsSyncComponentDidCompleteNotification = @"SCHSettingsSyncComponentDidCompleteNotification";
@@ -22,7 +22,6 @@ NSString * const SCHSettingsSyncComponentDidFailNotification = @"SCHSettingsSync
 
 @property (nonatomic, retain) SCHLibreAccessWebService *libreAccessWebService;
 
-- (void)updateUserSettings:(NSArray *)settingsList;
 
 @end
 
@@ -94,9 +93,14 @@ NSString * const SCHSettingsSyncComponentDidFailNotification = @"SCHSettingsSync
 
 - (void)clearCoreData
 {
+    [self clearCoreDataUsingContext:self.managedObjectContext];
+}
+
+- (void)clearCoreDataUsingContext:(NSManagedObjectContext *)aManagedObjectContext
+{
 	NSError *error = nil;
-    
-	if (![self.managedObjectContext BITemptyEntity:kSCHSettingItem error:&error]) {
+	
+	if (![aManagedObjectContext BITemptyEntity:kSCHSettingItem error:&error priorToDeletionBlock:nil]) {
 		NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
 	}	
 }
@@ -106,20 +110,11 @@ NSString * const SCHSettingsSyncComponentDidFailNotification = @"SCHSettingsSync
 - (void)method:(NSString *)method didCompleteWithResult:(NSDictionary *)result 
       userInfo:(NSDictionary *)userInfo
 {	
-    @try {
-        [self updateUserSettings:[result objectForKey:kSCHLibreAccessWebServiceUserSettingsList]];
-        [[NSNotificationCenter defaultCenter] postNotificationName:SCHSettingsSyncComponentDidCompleteNotification object:self];			
-        [super method:method didCompleteWithResult:nil userInfo:userInfo];	
-    }
-    @catch (NSException *exception) {
-        [[NSNotificationCenter defaultCenter] postNotificationName:SCHSettingsSyncComponentDidFailNotification 
-                                                            object:self];        
-        NSError *error = [NSError errorWithDomain:kBITAPIErrorDomain 
-                                             code:kBITAPIExceptionError 
-                                         userInfo:[NSDictionary dictionaryWithObject:[exception reason]
-                                                                              forKey:NSLocalizedDescriptionKey]];
-        [super method:method didFailWithError:error requestInfo:nil result:result];
-    }
+    SCHListUserSettingsOperation *operation = [[[SCHListUserSettingsOperation alloc] initWithSyncComponent:self
+                                                                                                    result:result
+                                                                                                  userInfo:userInfo] autorelease];
+    [operation setThreadPriority:SCHSyncComponentThreadLowPriority];
+    [self.backgroundProcessingQueue addOperation:operation];
 }
 
 - (void)method:(NSString *)method didFailWithError:(NSError *)error 
@@ -128,25 +123,12 @@ NSString * const SCHSettingsSyncComponentDidFailNotification = @"SCHSettingsSync
 {
     NSLog(@"%@:didFailWithError\n%@", method, error);
     
-    [[NSNotificationCenter defaultCenter] postNotificationName:SCHSettingsSyncComponentDidFailNotification 
-                                                        object:self];        
-    [super method:method didFailWithError:error requestInfo:requestInfo result:result];
-}
-
-- (void)updateUserSettings:(NSArray *)settingsList
-{	
-    if ([settingsList count] > 0) {
-        [self clearCoreData];
-        
-        for (id setting in settingsList) {
-            SCHSettingItem *newUserSettingsItem = [NSEntityDescription insertNewObjectForEntityForName:kSCHSettingItem inManagedObjectContext:self.managedObjectContext];
-            
-            newUserSettingsItem.SettingName = [self makeNullNil:[setting objectForKey:kSCHLibreAccessWebServiceSettingName]];
-            newUserSettingsItem.SettingValue = [self makeNullNil:[setting objectForKey:kSCHLibreAccessWebServiceSettingValue]];
-        }
-        
-        [self save];
-    }
+    [self completeWithFailureMethod:method 
+                              error:error 
+                        requestInfo:requestInfo 
+                             result:result 
+                   notificationName:SCHSettingsSyncComponentDidFailNotification 
+               notificationUserInfo:nil];
 }
 
 @end
