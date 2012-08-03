@@ -121,7 +121,7 @@
     return [[self currentQuestion] audioPathForQuestion];
 }
 
-- (IBAction)playAudioButtonTapped:(id)sender
+- (void)tappedAudioButton:(id)sender withViewAtIndex:(NSInteger)screenIndex
 {
     [self cancelQueuedAudioExecutingSynchronizedBlocksBefore:^{
         NSString *path = [self audioPathForQuestion];
